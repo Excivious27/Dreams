@@ -64,6 +64,8 @@ func _ready() -> void:
 		GameState.new_run("penguins", "dad", "Hero", "Dreamhollow", "Pup")
 	GameState.run["scene"] = scene_id()
 	build()
+	# build() is where subclasses set pad; the animated layer must follow it.
+	_anim_layer.position = offset()
 	# Outer ring is always solid; with a pad the organic border fills the rest.
 	for x in range(-pad, cols + pad):
 		blocked[Vector2i(x, -pad)] = true
@@ -1603,6 +1605,17 @@ func _draw_blob_edges(ci: CanvasItem, cells: Dictionary, edge_cells: Dictionary,
 ## A mass of raised rock (map edges, mountain walls): stone fill with a grassy
 ## lip facing the open ground and painted cliff faces on the sides that face south.
 func draw_rock_mass(cells: Dictionary) -> void:
+	if Art.has("tiles", "cliff_top_0"):
+		# Raised rock plateau with real edges on every side (W28 cliff set), so a
+		# blocked cliff band always reads as a wall, never as floor.
+		var fill := "mf_stone" if Art.has("tiles", "mf_stone") else "g_gravel"
+		for c: Vector2i in cells:
+			Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), 4)
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+			if h % 7 == 0 and Art.has("tiles", "rdeco_quarry_%d" % (h / 7 % 9)):
+				Art.draw_tile(self, "tiles", "rdeco_quarry_%d" % (h / 7 % 9), Vector2(c * TILE), 0)
+		Art.draw_blob(self, cells, "cliff", 16.0, 1)
+		return
 	var fill := "mf_stone" if Art.has("tiles", "mf_stone") else "g_gravel"
 	for c: Vector2i in cells:
 		if not Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), 4):

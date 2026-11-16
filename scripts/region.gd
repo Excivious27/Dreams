@@ -393,23 +393,45 @@ func draw_map() -> void:
 		WorldGen.draw_ground_detail(self, hash(region_id) % 100 + 1, float(R.get("detail", 0.1)))
 		# Region ground set (Prompts-08 batch 3): the region's own fill tiles in
 		# noise drifts over the grass, with its decals scattered on top.
-		var gs := str(R.get("ground_set", ""))
-		var gc := int(R.get("ground_count", 0))
-		if gs != "" and gc > 0 and Art.has("tiles", gs + "_0"):
+		var ps := str(R.get("patch_set", ""))
+		if ps != "" and Art.has("tiles", ps + "_top_0"):
+			# Coherent ground patches (noise blobs with real edges from the region's
+			# blob set) instead of a per-cell tile lottery.
 			var sd := hash(region_id) % 977
-			for y in range(-pad, rows + pad):
-				for x in range(-pad, cols + pad):
-					var n := WorldGen.fbm(float(x), float(y), sd, 8.0)
-					var h := absi((x * 73856093) ^ (y * 19349663))
-					if n > float(R.get("ground_threshold", -0.05)):
-						Art.draw_tile(self, "tiles", "%s_%d" % [gs, h % gc], Vector2(x * TILE, y * TILE), 0)
+			var cells := {}
+			for y in range(-pad + 1, rows + pad - 1):
+				for x in range(-pad + 1, cols + pad - 1):
+					var n := WorldGen.fbm(float(x), float(y), sd, float(R.get("patch_scale", 10.0)))
+					if n > float(R.get("ground_threshold", 0.08)):
+						cells[Vector2i(x, y)] = true
+			# Drop single-cell specks and fill single-cell holes so edges read cleanly.
+			for pass_i in 2:
+				var next := cells.duplicate()
+				for y in range(-pad + 1, rows + pad - 1):
+					for x in range(-pad + 1, cols + pad - 1):
+						var c := Vector2i(x, y)
+						var nb := 0
+						for off: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+							if cells.has(c + off):
+								nb += 1
+						if cells.has(c) and nb <= 1:
+							next.erase(c)
+						elif not cells.has(c) and nb >= 3:
+							next[c] = true
+				cells = next
+			for c: Vector2i in cells:
+				var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+				Art.draw_tile(self, "tiles", "%s_fill_%d" % [ps, h % 42], Vector2(c * TILE), 0)
+				if h % 11 == 0 and Art.has("tiles", "%s_deco_%d" % [ps, h / 11 % 36]):
+					Art.draw_tile(self, "tiles", "%s_deco_%d" % [ps, h / 11 % 36], Vector2(c * TILE), 0)
+			Art.draw_blob(self, cells, ps, 16.0, 0)
 			var ds := str(R.get("deco_set", ""))
 			var dc := int(R.get("deco_count", 0))
 			if ds != "" and dc > 0:
 				for y in range(0, rows):
 					for x in range(0, cols):
 						var h := absi((x * 73856093) ^ (y * 19349663) ^ 7)
-						if h % 17 == 0 and not blocked.has(Vector2i(x, y)):
+						if h % 41 == 0 and not blocked.has(Vector2i(x, y)):
 							Art.draw_tile(self, "tiles", "%s_%d" % [ds, h / 17 % dc], Vector2(x * TILE, y * TILE), 0)
 	elif Art.has("tiles", ground):
 		for y in range(-pad, rows + pad):

@@ -681,7 +681,7 @@ func draw_map() -> void:
 	else:
 		draw_ground("stone", _plaza)
 	# The river and the pond.
-	draw_water(_river, "grass")
+	draw_water(_river, "river" if Art.has("tiles", "river_top_0") else "grass")
 	draw_water(_pond, "grass")
 	draw_exits()
 	if not Art.has("buildings", "store"):
