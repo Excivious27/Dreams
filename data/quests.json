@@ -1,0 +1,517 @@
+{
+ "main": [
+  {
+   "id": "meet_town",
+   "arc": "both",
+   "text": "Visit the town and meet the people.",
+   "when": {},
+   "reward": {
+    "crystals": 20
+   }
+  },
+  {
+   "id": "first_harvest",
+   "arc": "both",
+   "text": "Harvest your first crop.",
+   "when": {},
+   "reward": {
+    "crystals": 25
+   }
+  },
+  {
+   "id": "clear_meadow",
+   "arc": "penguins",
+   "text": "Find out what's howling in the east meadow.",
+   "when": {
+    "day": 3
+   },
+   "reward": {
+    "crystals": 60
+   }
+  },
+  {
+   "id": "clear_meadow",
+   "arc": "gangsters",
+   "text": "Someone is asking about you. Check the east meadow.",
+   "when": {
+    "day": 3
+   },
+   "reward": {
+    "crystals": 60
+   }
+  },
+  {
+   "id": "spark",
+   "arc": "penguins",
+   "text": "Bring 3 Crystal Shards to the resonator and refine one.",
+   "when": {
+    "quest": "clear_meadow"
+   },
+   "done_when": {
+    "item": "crystal_refined"
+   },
+   "reward": {
+    "crystals": 80,
+    "xp": [
+     "mining",
+     20
+    ]
+   }
+  },
+  {
+   "id": "wastes_gate",
+   "arc": "penguins",
+   "text": "The Light Crystal wants you stronger before the Wastes: reach Combat 3.",
+   "when": {
+    "quest": "clear_meadow"
+   },
+   "done_when": {
+    "skill": [
+     "combat",
+     3
+    ]
+   },
+   "reward": {
+    "crystals": 50
+   }
+  },
+  {
+   "id": "commander",
+   "arc": "penguins",
+   "text": "Defeat the Grump Commander in the Wastes.",
+   "when": {
+    "quest": "wastes_gate"
+   },
+   "done_when": {
+    "flag": "boss_wastes"
+   },
+   "reward": {
+    "crystals": 300,
+    "item": [
+     "light_mote",
+     3
+    ]
+   }
+  },
+  {
+   "id": "sky_stair",
+   "arc": "penguins",
+   "text": "Climb the great tree in the forest.",
+   "when": {
+    "quest": "commander"
+   },
+   "done_when": {
+    "flag": "sky_seen"
+   },
+   "reward": {
+    "crystals": 100
+   }
+  },
+  {
+   "id": "knight",
+   "arc": "penguins",
+   "text": "Face the Crystal Knight on the sky islands.",
+   "when": {
+    "quest": "sky_stair"
+   },
+   "done_when": {
+    "flag": "boss_sky"
+   },
+   "reward": {
+    "crystals": 400,
+    "item": [
+     "crystal_refined",
+     2
+    ]
+   }
+  },
+  {
+   "id": "teleporter",
+   "arc": "penguins",
+   "text": "Power the moon teleporter with 3 Refined Crystals.",
+   "when": {
+    "quest": "knight"
+   },
+   "done_when": {
+    "flag": "tele_on"
+   },
+   "reward": {
+    "crystals": 500
+   }
+  },
+  {
+   "id": "hideout",
+   "arc": "gangsters",
+   "text": "Get through the gate to Hideout town and find a place to lie low.",
+   "when": {
+    "quest": "clear_meadow"
+   },
+   "done_when": {
+    "flag": "hideout_seen"
+   },
+   "reward": {
+    "crystals": 50
+   }
+  },
+  {
+   "id": "docks",
+   "arc": "gangsters",
+   "text": "The docks move everything. Take them from the dock boss.",
+   "when": {
+    "quest": "hideout"
+   },
+   "done_when": {
+    "flag": "boss_docks"
+   },
+   "reward": {
+    "crystals": 250,
+    "item": [
+     "leather",
+     3
+    ]
+   }
+  },
+  {
+   "id": "neon",
+   "arc": "gangsters",
+   "text": "Put out Flame in the neon district.",
+   "when": {
+    "quest": "docks"
+   },
+   "done_when": {
+    "flag": "boss_neon"
+   },
+   "reward": {
+    "crystals": 350
+   }
+  },
+  {
+   "id": "pit",
+   "arc": "gangsters",
+   "text": "Win the fight pit under the neon street.",
+   "when": {
+    "quest": "neon"
+   },
+   "done_when": {
+    "flag": "boss_underground"
+   },
+   "reward": {
+    "crystals": 300,
+    "item": [
+     "brass_knuckles",
+     1
+    ]
+   }
+  },
+  {
+   "id": "uptown",
+   "arc": "gangsters",
+   "text": "Reach the President's tower and beat his Enforcer.",
+   "when": {
+    "quest": "pit",
+    "skill": [
+     "combat",
+     5
+    ]
+   },
+   "done_when": {
+    "flag": "boss_uptown"
+   },
+   "reward": {
+    "crystals": 600,
+    "item": [
+     "enforcer_plate",
+     1
+    ]
+   }
+  }
+ ],
+ "side": [
+  {
+   "id": "maple_turnips",
+   "giver": "maple",
+   "text": "Maple wants 5 turnips for the store.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "turnip",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 60,
+    "friend": [
+     "maple",
+     10
+    ]
+   }
+  },
+  {
+   "id": "gideon_copper",
+   "giver": "gideon",
+   "text": "Gideon needs 10 copper ore.",
+   "when": {
+    "skill": [
+     "mining",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "copper",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 120,
+    "item": [
+     "copper_bar",
+     2
+    ],
+    "friend": [
+     "gideon",
+     10
+    ]
+   }
+  },
+  {
+   "id": "wren_herbs",
+   "giver": "wren",
+   "text": "Wren is out of wild herbs. Bring 6.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "wild_herb",
+     6
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "herb_remedy",
+     3
+    ],
+    "friend": [
+     "wren",
+     10
+    ]
+   }
+  },
+  {
+   "id": "finn_fish",
+   "giver": "finn",
+   "text": "Finn bets you can't catch 3 bass.",
+   "when": {
+    "skill": [
+     "fishing",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "bass",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 150,
+    "item": [
+     "bait",
+     10
+    ],
+    "friend": [
+     "finn",
+     12
+    ]
+   }
+  },
+  {
+   "id": "hazel_wood",
+   "giver": "hazel",
+   "text": "Hazel's fence is down. 30 wood would fix it.",
+   "when": {
+    "day": 4
+   },
+   "done_when": {
+    "item": [
+     "wood",
+     30
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 90,
+    "item": [
+     "wheat_seed",
+     6
+    ],
+    "friend": [
+     "hazel",
+     10
+    ]
+   }
+  },
+  {
+   "id": "lumi_flowers",
+   "giver": "lumi",
+   "text": "Lumi wants 8 wildflowers to paint.",
+   "when": {
+    "day": 5
+   },
+   "done_when": {
+    "item": [
+     "flower",
+     8
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "painting2_a",
+     1
+    ],
+    "friend": [
+     "lumi",
+     12
+    ]
+   }
+  },
+  {
+   "id": "theo_glowcap",
+   "giver": "theo",
+   "text": "Theo has read about glow-caps. Find one.",
+   "when": {
+    "skill": [
+     "foraging",
+     6
+    ]
+   },
+   "done_when": {
+    "item": [
+     "glowcap",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "friend": [
+     "theo",
+     15
+    ]
+   }
+  },
+  {
+   "id": "alder_stone",
+   "giver": "alder",
+   "text": "The mayor wants 40 stone for the fountain repair.",
+   "when": {
+    "day": 8
+   },
+   "done_when": {
+    "item": [
+     "stone",
+     40
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "friend": [
+     "alder",
+     10
+    ]
+   }
+  },
+  {
+   "id": "bram_stew",
+   "giver": "bram",
+   "text": "Bram will trade a recipe for 2 trout and a pumpkin.",
+   "when": {
+    "skill": [
+     "farming",
+     4
+    ]
+   },
+   "done_when": {
+    "items": [
+     [
+      "trout",
+      2
+     ],
+     [
+      "pumpkin",
+      1
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "fish_stew",
+     2
+    ],
+    "friend": [
+     "bram",
+     12
+    ]
+   }
+  },
+  {
+   "id": "juniper_honey",
+   "giver": "juniper",
+   "text": "Juniper needs honey for a remedy.",
+   "when": {
+    "day": 10
+   },
+   "done_when": {
+    "item": [
+     "honey",
+     2
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 120,
+    "item": [
+     "potion",
+     2
+    ],
+    "friend": [
+     "juniper",
+     10
+    ]
+   }
+  },
+  {
+   "id": "sal_cash",
+   "giver": "sal",
+   "arc": "gangsters",
+   "text": "Sal says rolled bills buy silence. Bring 5.",
+   "when": {
+    "quest": "hideout"
+   },
+   "done_when": {
+    "item": [
+     "thug_cash",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 250,
+    "friend": [
+     "sal",
+     15
+    ]
+   }
+  }
+ ]
+}

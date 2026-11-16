@@ -26,9 +26,7 @@ func build() -> void:
 	set_thing(PAD.x + 1, PAD.y, {"type": "pad", "hint": "A: fly home"}, false)
 	block_rect(CRATER.position.x + 1, CRATER.position.y + 1, CRATER.size.x - 2, CRATER.size.y - 2)
 	set_thing(5, 6, {"type": "house", "hint": "A: the rocket house"})
-	block_rect(3, 2, 5, 5)
 	set_thing(24, 20, {"type": "tele", "hint": "A: teleporter (unpowered)"})
-	block_rect(23, 19, 3, 2)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 111
 	for i in 30:
@@ -61,20 +59,13 @@ func after_ready() -> void:
 	prop("props", "rocket_house", Vector2i(3, 6), 4)
 	if Art.has("buildings", "greenhouse_dome"):
 		prop("buildings", "greenhouse_dome", Vector2i(24, 5), 4)
-		block_rect(24, 3, 5, 3)
 		prop("props", "radio_dish", Vector2i(15, 3), 1)
-		block_rect(15, 1, 2, 3)
 		prop("props", "solar_field", Vector2i(5, 14), 2)
-		block_rect(5, 13, 3, 2)
 		prop("props", "rover", Vector2i(18, 23), 2)
-		block_rect(18, 23, 3, 1)
 		prop("props", "crashed_probe", Vector2i(26, 14), 2)
-		block_rect(26, 13, 3, 2)
 		prop("props", "alien_stall", Vector2i(9, 6), 3)
-		block_rect(9, 5, 4, 2)
 		set_thing(10, 7, {"type": "alien_shop", "hint": "A: alien stall"}, false)
 		prop("props", "alien_vend_a", Vector2i(13, 7))
-		blocked[Vector2i(13, 7)] = true
 		var mc := AnimatedSprite2D.new()
 		mc.sprite_frames = Art.frames("props", {"idle": "moon_cow"}, {"idle": 2.0})
 		mc.animation = "idle"
@@ -114,10 +105,8 @@ func after_ready() -> void:
 				prop("props", ["moon_grass_a", "moon_grass_b", "moon_grass_c"][(k.x + k.y) % 3], k)
 	for c: Vector2i in [Vector2i(14, 4), Vector2i(27, 14), Vector2i(8, 22), Vector2i(26, 3)]:
 		prop("props", "moon_crystal_pink" if c.x > 15 else "moon_crystal_blue", c)
-		blocked[c] = true
 	for c: Vector2i in [Vector2i(16, 22), Vector2i(2, 14), Vector2i(20, 15)]:
 		prop("props", "bulb_plant", c)
-		blocked[c] = true
 	for c: Vector2i in [Vector2i(9, 12), Vector2i(21, 3), Vector2i(28, 22)]:
 		prop("props", "spiral_fern", c)
 	for i in 4:

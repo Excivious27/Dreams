@@ -9,6 +9,35 @@ const TILE := GameMap.TILE
 
 ## Scatter small ground decorations (drawn, not nodes) over free cells.
 ## Call from _draw(). density 0..1.
+## Smooth value noise in [-1, 1]. `scale` = cells per bump.
+static func noise2(x: float, y: float, seed_v: int, scale := 6.0) -> float:
+	var fx := x / scale
+	var fy := y / scale
+	var x0 := floori(fx)
+	var y0 := floori(fy)
+	var tx := fx - x0
+	var ty := fy - y0
+	tx = tx * tx * (3.0 - 2.0 * tx)
+	ty = ty * ty * (3.0 - 2.0 * ty)
+	var a := _hash01(x0, y0, seed_v)
+	var b := _hash01(x0 + 1, y0, seed_v)
+	var c := _hash01(x0, y0 + 1, seed_v)
+	var d := _hash01(x0 + 1, y0 + 1, seed_v)
+	var v := lerpf(lerpf(a, b, tx), lerpf(c, d, tx), ty)
+	return v * 2.0 - 1.0
+
+
+static func fbm(x: float, y: float, seed_v: int, scale := 8.0) -> float:
+	return noise2(x, y, seed_v, scale) * 0.6 + noise2(x, y, seed_v + 7, scale * 0.5) * 0.3 + noise2(x, y, seed_v + 13, scale * 0.25) * 0.1
+
+
+static func _hash01(x: int, y: int, seed_v: int) -> float:
+	var h := int((x * 374761393 + y * 668265263 + seed_v * 1274126177) & 0x7fffffff)
+	h = int((h ^ (h >> 13)) * 1274126177) & 0x7fffffff
+	h = h ^ (h >> 16)
+	return float(h % 10007) / 10007.0
+
+
 static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
@@ -164,7 +193,8 @@ class Critter:
 			anims["walk"] = "walk" if Art.has(g, "walk") else "idle"
 			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0, "walk": 8.0})
 			_anim.animation = "idle"
-			_anim.scale = Vector2(0.5, 0.5)
+			var sz: float = {"sparrow": 0.22, "crow": 0.3, "pigeon": 0.26, "seagull": 0.3, "bat": 0.28, "owl": 0.32, "bee": 0.16, "firefly": 0.16, "dragonfly": 0.2, "butterfly_orange": 0.2, "butterfly_blue": 0.2, "butterfly_yellow": 0.2, "butterfly": 0.2, "rabbit": 0.34, "squirrel": 0.3, "hedgehog": 0.3, "frog": 0.26, "turtle": 0.34, "crab": 0.26, "rat": 0.28, "duck": 0.36, "heron": 0.5, "deer": 0.55, "fox": 0.45, "goat": 0.5, "cat_grey": 0.4, "cat_orange": 0.4, "cat_black": 0.4, "stray_dog": 0.45, "jelly": 0.5, "six_deer": 0.55, "eagle": 0.4, "crystal_fish": 0.3, "fish_jump": 0.3}.get(kind, 0.4)
+			_anim.scale = Vector2(sz, sz)
 			_anim.frame_changed.connect(func() -> void:
 				var tex := _anim.sprite_frames.get_frame_texture(_anim.animation, _anim.frame)
 				if tex:

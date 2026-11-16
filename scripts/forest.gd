@@ -24,7 +24,6 @@ func build() -> void:
 	add_exit(FARM_EXIT, "farm", Vector2(36 * TILE, 3 * TILE + 8), "down", "▼ farm")
 	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 6 * TILE), "left", "◀ lake")
 	set_thing(SHRINE.x, SHRINE.y, {"type": "shrine", "hint": "A: forest shrine"})
-	block_rect(15, 5, 3, 2)
 	# Forage spots that respawn daily.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 61 + int(GameState.run["day"])
@@ -69,22 +68,16 @@ func after_ready() -> void:
 	# Woodcutter's clearing (NE) and the hidden pond (SE).
 	if Art.has("buildings", "woodcutter_hut"):
 		prop("buildings", "woodcutter_hut", Vector2i(23, 27), 4)
-		block_rect(23, 24, 5, 4)
 		prop("nature", "stump_axe", Vector2i(29, 27))
-		blocked[Vector2i(29, 27)] = true
 		prop("nature", "giant_log", Vector2i(4, 30), 3)
-		block_rect(4, 30, 4, 1)
 	else:
 		prop("props", "stall", Vector2i(24, 25), 1)
-		block_rect(24, 24, 2, 2)
 	prop("nature", "forest_shrine", SHRINE, 0, 2.0)
 	if Art.has("buildings", "great_tree"):
 		prop("buildings", "great_tree", Vector2i(16, 20), 6)
-		block_rect(15, 15, 7, 6)
 		set_thing(18, 21, {"type": "great_tree", "hint": "A: the great tree"}, false)
 	for c: Vector2i in [Vector2i(6, 12), Vector2i(28, 10), Vector2i(10, 33)]:
 		prop("nature", "hollow_tree" if c.x == 6 else ("willow" if c.x == 28 else "big_oak"), c, 1)
-		block_rect(c.x, c.y - 1, 2, 2)
 	prop("nature", "berry_thicket", Vector2i(21, 34), 1)
 	set_thing(21, 34, {"type": "bush", "key": "forest_thicket", "berries": int(GameState.run["flags"].get("forest_thicket", 0)) < int(GameState.run["day"]), "hint": "A: pick berries"})
 	var pond := Scenery.Pond.new()
@@ -97,7 +90,6 @@ func after_ready() -> void:
 	if Art.has("props", "lantern_lit"):
 		for c: Vector2i in [Vector2i(14, 8), Vector2i(18, 8)]:
 			prop("props", "lantern_lit", c)
-			blocked[c] = true
 	# A few things lurk in the woods (more at night).
 	var n := 2 + (2 if int(GameState.run["time"]) > 18 * 60 else 0)
 	for i in n:

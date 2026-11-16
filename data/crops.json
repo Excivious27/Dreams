@@ -1,6 +1,82 @@
 {
-  "turnip":      {"name": "Turnip", "days": 3, "stages": 3, "yield": "turnip", "color": "e7d9ff", "top": "b56bd8"},
-  "strawberry":  {"name": "Strawberry", "days": 5, "stages": 4, "yield": "strawberry", "color": "3f9a48", "top": "e23a3a"},
-  "corn":        {"name": "Corn", "days": 7, "stages": 4, "yield": "corn", "color": "5fb04f", "top": "f2d14f"},
-  "dreamflower": {"name": "Dream Flower", "days": 9, "stages": 5, "yield": "dreamflower", "color": "4f8fd0", "top": "a8d8ff"}
+ "turnip": {
+  "name": "Turnip",
+  "days": 3,
+  "stages": 3,
+  "yield": "turnip",
+  "color": "e7d9ff",
+  "top": "b56bd8"
+ },
+ "strawberry": {
+  "name": "Strawberry",
+  "days": 5,
+  "stages": 4,
+  "yield": "strawberry",
+  "color": "3f9a48",
+  "top": "e23a3a"
+ },
+ "corn": {
+  "name": "Corn",
+  "days": 7,
+  "stages": 4,
+  "yield": "corn",
+  "color": "5fb04f",
+  "top": "f2d14f"
+ },
+ "dreamflower": {
+  "name": "Dream Flower",
+  "days": 9,
+  "stages": 5,
+  "yield": "dreamflower",
+  "color": "4f8fd0",
+  "top": "a8d8ff"
+ },
+ "potato": {
+  "name": "Potato",
+  "days": 4,
+  "stages": 4,
+  "yield": "potato",
+  "color": "6e8f4a",
+  "top": "c9a66b"
+ },
+ "carrot": {
+  "name": "Carrot",
+  "days": 3,
+  "stages": 4,
+  "yield": "carrot",
+  "color": "4f9a3a",
+  "top": "e8862a"
+ },
+ "tomato": {
+  "name": "Tomato",
+  "days": 6,
+  "stages": 4,
+  "yield": "tomato",
+  "color": "3f9a48",
+  "top": "e23a3a"
+ },
+ "pumpkin": {
+  "name": "Pumpkin",
+  "days": 9,
+  "stages": 4,
+  "yield": "pumpkin",
+  "color": "4f8f3a",
+  "top": "e68a2a"
+ },
+ "melon": {
+  "name": "Melon",
+  "days": 10,
+  "stages": 4,
+  "yield": "melon",
+  "color": "3f9a48",
+  "top": "6fcf5a"
+ },
+ "wheat": {
+  "name": "Wheat",
+  "days": 5,
+  "stages": 4,
+  "yield": "wheat",
+  "color": "b9a04a",
+  "top": "e8d26b"
+ }
 }

@@ -11,6 +11,11 @@ const MINUTES_PER_SECOND := 1.0 / 0.7  # one game minute every 0.7s (about 23 mi
 static var run: Dictionary = {}
 static var items: Dictionary = {}
 static var crops: Dictionary = {}
+static var skills_data: Dictionary = {}
+static var recipes: Dictionary = {}
+static var enemy_data: Dictionary = {}
+static var forage_data: Dictionary = {}
+static var quests_data: Dictionary = {}
 static var npcs: Dictionary = {}
 static var arcs: Dictionary = {}
 static var playables: Dictionary = {}
@@ -24,6 +29,11 @@ static func load_data() -> void:
 	npcs = load_json("res://data/npcs.json")
 	arcs = load_json("res://data/arcs.json")
 	playables = load_json("res://data/playable.json")
+	skills_data = load_json("res://data/skills.json")
+	recipes = load_json("res://data/recipes.json")
+	enemy_data = load_json("res://data/enemies.json")
+	forage_data = load_json("res://data/forage.json")
+	quests_data = load_json("res://data/quests.json")
 
 
 static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String) -> void:
@@ -32,6 +42,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 	for id in load_json("res://data/skills.json").keys():
 		skills[id] = {"level": 1, "xp": 0}
 	run = {
+		"equip": {"head": "", "body": "", "feet": "", "ring": "", "charm": ""},
 		"arc": arc,
 		"playable": playable_id,
 		"names": {"character": character_name, "town": town_name, "pet": pet_name},
@@ -199,9 +210,12 @@ static func add_tool(id: String) -> void:
 
 
 static func sword_damage() -> int:
-	var best := 0
-	for t in run["tools"]:
-		best = maxi(best, int(items.get(t, {}).get("damage", 0)))
+	var held := held_tool()
+	var best := int(items.get(held, {}).get("damage", 0))
+	if best == 0:
+		for t in run["tools"]:
+			best = maxi(best, int(items.get(t, {}).get("damage", 0)))
+	best += (1 if has_perk("combat", "Fighter") else 0) + (1 if has_perk("combat", "Berserker") else 0) + gear_stat("damage")
 	return maxi(best, 1)
 
 
@@ -216,15 +230,144 @@ static func add_xp(skill: String, xp: int) -> bool:
 		s["level"] = int(s["level"]) + 1
 		leveled = true
 	run["skills"][skill] = s
+	if leveled:
+		_apply_max_stats()
 	return leveled
 
 
+## Slow, steady curve: 40, 76, 136, 220, 328, 460, 616, 796, 1000...
 static func xp_for_next(level: int) -> int:
-	return 20 + level * 15
+	return 40 + level * level * 12 - 12 * level + (level - 1) * 24
 
 
 static func skill_level(skill: String) -> int:
 	return int(run["skills"].get(skill, {}).get("level", 1))
+
+
+## Perk unlocked when the skill reaches the perk's level (see data/skills.json).
+static func has_perk(skill: String, perk_name: String) -> bool:
+	for pk in skills_data.get(skill, {}).get("perks", []):
+		if str(pk[1]) == perk_name:
+			return skill_level(skill) >= int(pk[0])
+	return false
+
+
+static func perks_of(skill: String) -> Array:
+	return skills_data.get(skill, {}).get("perks", [])
+
+
+# ---- equipment ----------------------------------------------------------------
+
+const SLOTS := ["head", "body", "feet", "ring", "charm"]
+
+
+static func equipped(slot: String) -> String:
+	return str(run.get("equip", {}).get(slot, ""))
+
+
+static func equip(id: String) -> void:
+	var it: Dictionary = items.get(id, {})
+	if it.get("type", "") != "equip":
+		return
+	var slot := str(it.get("slot", ""))
+	var eq: Dictionary = run.get("equip", {})
+	var old := str(eq.get(slot, ""))
+	if old != "":
+		add_item(old, 1)
+	add_item(id, -1)
+	eq[slot] = id
+	run["equip"] = eq
+	_apply_max_stats()
+
+
+static func unequip(slot: String) -> void:
+	var eq: Dictionary = run.get("equip", {})
+	var old := str(eq.get(slot, ""))
+	if old == "":
+		return
+	add_item(old, 1)
+	eq[slot] = ""
+	run["equip"] = eq
+	_apply_max_stats()
+
+
+## Sum of a stat across worn gear: defense, speed, luck, damage, energy.
+static func gear_stat(stat: String) -> int:
+	var total := 0
+	for slot in SLOTS:
+		var id := equipped(slot)
+		if id != "":
+			total += int(items.get(id, {}).get("stats", {}).get(stat, 0))
+	return total
+
+
+static func _apply_max_stats() -> void:
+	var base_hp := 6 + (1 if has_perk("combat", "Tough") else 0) + (2 if has_perk("combat", "Warrior") else 0)
+	var base_en := 100 + (10 if has_perk("combat", "Stamina") else 0) + gear_stat("energy")
+	run["max_hp"] = base_hp
+	run["max_energy"] = base_en
+	run["hp"] = mini(int(run["hp"]), base_hp)
+
+
+static func refresh_stats() -> void:
+	_apply_max_stats()
+
+
+# ---- economy modifiers ---------------------------------------------------------
+
+static func buy_multiplier() -> float:
+	var m := 1.0
+	if has_perk("bartering", "Haggler"): m -= 0.05
+	if has_perk("bartering", "Tycoon"): m -= 0.15
+	return maxf(0.5, m)
+
+
+static func sell_multiplier() -> float:
+	var m := 1.0
+	if has_perk("bartering", "Trader"): m += 0.05
+	if has_perk("bartering", "Appraiser"): m += 0.10
+	if has_perk("bartering", "Monopolist"): m += 0.20
+	return m
+
+
+## Roll a drop table: Array of [item, chance, n]. Luck nudges the chance.
+static func roll_drops(table: Array, luck_bonus := 0) -> Dictionary:
+	var out := {}
+	var luck := 1.0 + 0.05 * (gear_stat("luck") + luck_bonus)
+	for row in table:
+		if randf() < float(row[1]) * luck:
+			var n := int(row[2])
+			if has_perk("combat", "Champion"):
+				n *= 2
+			out[str(row[0])] = int(out.get(str(row[0]), 0)) + n
+	return out
+
+
+## Pick one forage item for a region: Array of [item, weight, (skill, level)].
+static func roll_forage(region: String) -> String:
+	var pool: Array = forage_data.get(region, forage_data.get("farm", []))
+	var total := 0.0
+	var ok: Array = []
+	for row in pool:
+		if row.size() >= 4 and skill_level(str(row[2])) < int(row[3]):
+			continue
+		ok.append(row)
+		total += float(row[1])
+	var r := randf() * total
+	for row in ok:
+		r -= float(row[1])
+		if r <= 0.0:
+			return str(row[0])
+	return str(ok[0][0]) if not ok.is_empty() else "berry"
+
+
+static func rarity_color(id: String) -> Color:
+	match str(items.get(id, {}).get("rarity", "common")):
+		"uncommon": return Color(0.5, 0.9, 0.5)
+		"rare": return Color(0.45, 0.65, 1.0)
+		"epic": return Color(0.8, 0.5, 1.0)
+		"legendary": return Color(1.0, 0.75, 0.3)
+	return Color(0.9, 0.9, 0.9)
 
 
 # ---- energy / hp -------------------------------------------------------------
@@ -257,8 +400,106 @@ static func complete_quest(id: String) -> bool:
 	for q in run["quests"]:
 		if q["id"] == id and not q["done"]:
 			q["done"] = true
+			_give_reward(_quest_def(id).get("reward", {}))
 			return true
 	return false
+
+
+static func has_quest(id: String) -> bool:
+	for q in run["quests"]:
+		if q["id"] == id:
+			return true
+	return false
+
+
+static func _quest_def(id: String) -> Dictionary:
+	for q in quests_data.get("main", []) + quests_data.get("side", []):
+		if str(q["id"]) == id and str(q.get("arc", "both")) in ["both", str(run["arc"])]:
+			return q
+	return {}
+
+
+static func _cond_ok(when: Dictionary) -> bool:
+	if when.has("day") and int(run["day"]) < int(when["day"]):
+		return false
+	if when.has("quest") and not quest_done(str(when["quest"])):
+		return false
+	if when.has("skill") and skill_level(str(when["skill"][0])) < int(when["skill"][1]):
+		return false
+	if when.has("flag") and not run["flags"].has(str(when["flag"])):
+		return false
+	if when.has("item"):
+		var it = when["item"]
+		if it is Array:
+			if count(str(it[0])) < int(it[1]):
+				return false
+		elif count(str(it)) < 1:
+			return false
+	if when.has("items"):
+		for pair in when["items"]:
+			if count(str(pair[0])) < int(pair[1]):
+				return false
+	return true
+
+
+static func _give_reward(rw: Dictionary) -> void:
+	if rw.has("crystals"):
+		run["crystals"] = int(run["crystals"]) + int(rw["crystals"])
+	if rw.has("item"):
+		add_item(str(rw["item"][0]), int(rw["item"][1]))
+	if rw.has("xp"):
+		add_xp(str(rw["xp"][0]), int(rw["xp"][1]))
+	if rw.has("friend"):
+		var fr: Dictionary = run["friendship"]
+		fr[str(rw["friend"][0])] = int(fr.get(str(rw["friend"][0]), 0)) + int(rw["friend"][1])
+
+
+## Main-story quests appear as the game progresses; side quests come from the
+## person who gives them (see town talk). Returns ids of quests just completed.
+static func tick_quests() -> Array:
+	var done: Array = []
+	for q in quests_data.get("main", []):
+		if str(q.get("arc", "both")) not in ["both", str(run["arc"])]:
+			continue
+		var id := str(q["id"])
+		if not has_quest(id) and _cond_ok(q.get("when", {})):
+			add_quest(id, str(q["text"]))
+	for q in run["quests"]:
+		if q["done"]:
+			continue
+		var d := _quest_def(str(q["id"]))
+		if d.has("done_when") and _cond_ok(d["done_when"]):
+			if bool(d.get("take", false)):
+				var dw: Dictionary = d["done_when"]
+				if dw.has("item"):
+					add_item(str(dw["item"][0]), -int(dw["item"][1]))
+				for pair in dw.get("items", []):
+					add_item(str(pair[0]), -int(pair[1]))
+			if complete_quest(str(q["id"])):
+				done.append(str(q["id"]))
+	return done
+
+
+## A side quest this NPC can offer right now (not yet taken, conditions met).
+static func side_quest_for(npc: String) -> Dictionary:
+	for q in quests_data.get("side", []):
+		if str(q.get("giver", "")) != npc or has_quest(str(q["id"])):
+			continue
+		if str(q.get("arc", "both")) not in ["both", str(run["arc"])]:
+			continue
+		if _cond_ok(q.get("when", {})):
+			return q
+	return {}
+
+
+static func side_quest_pending(npc: String) -> Dictionary:
+	for q in run["quests"]:
+		if q["done"]:
+			continue
+		var d := _quest_def(str(q["id"]))
+		if str(d.get("giver", "")) == npc:
+			return d
+	return {}
 
 
 static func quest_done(id: String) -> bool:
@@ -333,10 +574,12 @@ static func clock_text() -> String:
 ## Advance to the next morning: crops grow, sell box pays, energy restores.
 static func sleep(passed_out := false) -> Dictionary:
 	var report := {"earned": 0, "sold": [], "grown": 0}
+	if has_perk("bartering", "Crystal Baron"):
+		run["crystals"] = int(run["crystals"] * 1.01)
 	var total := 0
 	for id in run["sellbox"].keys():
 		var n: int = int(run["sellbox"][id])
-		var v := item_value(id) * n
+		var v := int(round(item_value(id) * n * sell_multiplier()))
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
 	if total > 0:

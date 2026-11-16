@@ -44,9 +44,7 @@ func build() -> void:
 			things[c] = {"type": "forage", "key": key, "item": "crystal_bloom", "hint": "A: pick crystal bloom"}
 	else:
 		set_thing(10, 6, {"type": "shack", "hint": "A: the old shack"})
-		block_rect(7, 2, 7, 5)
 		set_thing(24, 7, {"type": "market", "hint": "A: black market"})
-		block_rect(22, 4, 5, 4)
 	extend(14, 10)
 
 
@@ -72,13 +70,10 @@ func after_ready() -> void:
 		prop("props", "ccrystal_4" if Art.has("props", "ccrystal_4") else "moon_crystal_blue", Vector2i(17, 11))
 		for c: Vector2i in [Vector2i(5, 4), Vector2i(28, 5), Vector2i(6, 21), Vector2i(27, 21), Vector2i(30, 16)]:
 			prop("props", ["ccrystal_2", "ccrystal_3"][c.x % 2] if Art.has("props", "ccrystal_2") else "moon_crystal_blue", c)
-			blocked[c] = true
 		if Art.has("props", "crystal_tree"):
 			for c: Vector2i in [Vector2i(8, 7), Vector2i(26, 19)]:
 				prop("props", "crystal_tree", c, 2)
-				block_rect(c.x, c.y - 1, 3, 2)
 			prop("props", "crystal_arch_c", Vector2i(21, 11), 2)
-			block_rect(21, 10, 1, 2); block_rect(23, 10, 1, 2)
 			var a := AnimatedSprite2D.new()
 			a.sprite_frames = Art.frames("props", {"idle": "star_crater"}, {"idle": 3.0})
 			a.animation = "idle"
@@ -87,7 +82,6 @@ func after_ready() -> void:
 			a.offset = Vector2(0, -float(Art.info("props", "star_crater").get("cell_h", 200)) / 2.0)
 			add_child(a)
 			a.play("idle")
-			block_rect(26, 18, 6, 5)
 			set_thing(28, 23, {"type": "crater", "hint": "A: the fallen star"}, false)
 			var gp := AnimatedSprite2D.new()
 			gp.sprite_frames = Art.frames("props", {"idle": "glow_pond"}, {"idle": 3.0})
@@ -97,7 +91,6 @@ func after_ready() -> void:
 			gp.offset = Vector2(0, -float(Art.info("props", "glow_pond").get("cell_h", 72)) / 2.0)
 			gp.z_index = -1
 			add_child(gp)
-			block_rect(4, 15, 4, 2)
 		for y in range(STONES.position.y - 1, STONES.end.y + 1):
 			for x in range(STONES.position.x - 1, STONES.end.x + 1):
 				avoid[Vector2i(x, y)] = true
@@ -110,12 +103,9 @@ func after_ready() -> void:
 		prop("props", "shack", Vector2i(7, 6), 6)
 		prop("props", "black_market", Vector2i(22, 7), 4)
 		prop("props", "dumpster", Vector2i(16, 4), 1)
-		block_rect(16, 3, 2, 2)
 		for c: Vector2i in [Vector2i(4, 14), Vector2i(29, 15)]:
 			prop("props", "crates_a", c)
-			blocked[c] = true
 		prop("props", "crates_c", Vector2i(18, 20), 1)
-		block_rect(18, 19, 2, 2)
 		var fb := prop("props", "fire_barrel_0", Vector2i(12, 18))
 		if fb and Art.has("props", "fire_barrel"):
 			fb.queue_free()
@@ -127,12 +117,9 @@ func after_ready() -> void:
 			a.offset = Vector2(0, -float(Art.info("props", "fire_barrel").get("cell_h", 40)) / 2.0)
 			add_child(a)
 			a.play("idle")
-		blocked[Vector2i(12, 18)] = true
 		for x in range(2, 32, 2):
 			if x < 30 and x > 4:
 				prop("props", "chain_fence_h", Vector2i(x, 23), 1)
-				blocked[Vector2i(x, 23)] = true
-				blocked[Vector2i(x + 1, 23)] = true
 		for y in range(3, 24):
 			for x in range(5, 28):
 				avoid[Vector2i(x, y)] = true

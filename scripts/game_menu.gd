@@ -13,6 +13,7 @@ var _body: VBoxContainer
 var _tabs: HBoxContainer
 var _open := false
 var _tab := "Items"
+var _skill_open := ""
 var _tab_buttons := {}
 
 
@@ -183,36 +184,63 @@ func _refresh() -> void:
 				g2.add_child(_slot_button(id, false, func() -> void: _swap_into_toolbar(id)))
 			for i in maxi(0, 12 - pack.size()):
 				g2.add_child(_slot_button("", false, func() -> void: pass))
-			if sel != "" and GameState.items.get(sel, {}).has("heal"):
-				_button("Eat %s" % GameState.item_name(sel), func() -> void: _eat(sel))
+			if sel != "":
+				var itd: Dictionary = GameState.items.get(sel, {})
+				var rar := str(itd.get("rarity", "common"))
+				_line("%s  ·  %s  ·  tier %d  ·  ◆%d" % [GameState.item_name(sel), rar, int(itd.get("tier", 1)), GameState.item_value(sel)], 8, GameState.rarity_color(sel))
+				if itd.has("desc"):
+					_line(str(itd["desc"]), 7, Color(0.8, 0.8, 0.8))
+				if itd.has("heal") or itd.has("energy"):
+					_button("Eat %s" % GameState.item_name(sel), func() -> void: _eat(sel))
+				if str(itd.get("type", "")) == "equip":
+					var st: Dictionary = itd.get("stats", {})
+					_line("  " + ", ".join(st.keys().map(func(k: String) -> String: return "%s +%d" % [k, int(st[k])])), 7, Color(0.8, 0.9, 1.0))
+					_button("Equip (%s)" % str(itd.get("slot", "")), func() -> void: GameState.equip(sel); _refresh())
+			_line("Wearing", 8, Color(0.9, 0.85, 0.7))
+			for slot in GameState.SLOTS:
+				var eid := GameState.equipped(slot)
+				if eid == "":
+					_line("  %s: -" % slot, 7, Color(0.6, 0.6, 0.6))
+				else:
+					_button("  %s: %s  (take off)" % [slot, GameState.item_name(eid)], func() -> void: GameState.unequip(slot); _refresh())
+			var gs := "def %d  spd %d  luck %d  dmg %d  energy +%d" % [GameState.gear_stat("defense"), GameState.gear_stat("speed"), GameState.gear_stat("luck"), GameState.gear_stat("damage"), GameState.gear_stat("energy")]
+			_line("  " + gs, 7, Color(0.8, 0.9, 1.0))
 			_line("Tools: " + ", ".join(r["tools"].map(func(t: String) -> String: return GameState.item_name(t))), 7, Color(0.8, 0.8, 0.8))
 		"Skills":
-			for s in r["skills"]:
-				var d: Dictionary = r["skills"][s]
+			_line("Tap a skill to see its path. Perks unlock as you level.", 7, Color(0.8, 0.8, 0.8))
+			for sk in r["skills"]:
+				var d: Dictionary = r["skills"][sk]
 				var lvl := int(d["level"])
 				var need := GameState.xp_for_next(lvl)
 				var h := HBoxContainer.new()
 				_body.add_child(h)
-				var ic := Art.tex("ui", "skill2_" + str(s)) if Art.has("ui", "skill2_" + str(s)) else Art.tex("ui", "skill_" + str(s))
+				var ic := Art.tex("ui", "skill2_" + str(sk)) if Art.has("ui", "skill2_" + str(sk)) else Art.tex("ui", "skill_" + str(sk))
 				if ic:
 					var tr := TextureRect.new()
 					tr.texture = ic
 					tr.custom_minimum_size = Vector2(14, 14)
 					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 					h.add_child(tr)
-				var l := Label.new()
-				l.text = "  %s   Lv %d" % [str(s).capitalize(), lvl]
-				l.add_theme_font_size_override("font_size", 9)
-				h.add_child(l)
+				var sb := Button.new()
+				sb.text = "  %s   Lv %d   (%d / %d xp)" % [str(sk).capitalize(), lvl, int(d["xp"]), need]
+				sb.flat = true
+				sb.alignment = HORIZONTAL_ALIGNMENT_LEFT
+				sb.add_theme_font_size_override("font_size", 9)
+				var skid := str(sk)
+				sb.pressed.connect(func() -> void: _skill_open = "" if _skill_open == skid else skid; _refresh())
+				h.add_child(sb)
 				var bar := ProgressBar.new()
 				bar.max_value = need
 				bar.value = int(d["xp"])
-				bar.custom_minimum_size = Vector2(0, 8)
+				bar.custom_minimum_size = Vector2(0, 6)
 				bar.show_percentage = false
 				_body.add_child(bar)
+				if _skill_open == str(sk):
+					_line("  " + str(GameState.skills_data.get(sk, {}).get("desc", "")), 7, Color(0.85, 0.8, 0.7))
+					for pk in GameState.perks_of(str(sk)):
+						var got := lvl >= int(pk[0])
+						_line("  %s Lv%d  %s — %s" % ["★" if got else "·", int(pk[0]), str(pk[1]), str(pk[2])], 7, Color(1, 0.9, 0.5) if got else Color(0.55, 0.55, 0.55))
 			_line("")
-			_line("Sword damage: %d" % GameState.sword_damage(), 8)
-			_line("Enemies defeated: %d" % int(r.get("kills", 0)), 8)
 		"Social":
 			var fr: Dictionary = r["friendship"]
 			var full := Art.tex("ui", "pheart_full") if Art.has("ui", "pheart_full") else Art.tex("ui", "heart_full")
@@ -256,8 +284,20 @@ func _refresh() -> void:
 		"Quests":
 			if r["quests"].is_empty():
 				_line("No quests yet.")
+			var mains: Array = GameState.quests_data.get("main", []).map(func(q: Dictionary) -> String: return str(q["id"]))
+			_line("Story", 9, Color(1, 0.9, 0.5))
 			for q in r["quests"]:
-				_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
+				if str(q["id"]) in mains or not GameState._quest_def(str(q["id"])).has("giver"):
+					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
+			_line("Townsfolk", 9, Color(0.7, 0.9, 1.0))
+			var any := false
+			for q in r["quests"]:
+				var dq := GameState._quest_def(str(q["id"]))
+				if dq.has("giver"):
+					any = true
+					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
+			if not any:
+				_line("  Talk to people in town; they'll ask for help.", 7, Color(0.7, 0.7, 0.7))
 		"Options":
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])

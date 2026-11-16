@@ -158,8 +158,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to(str(thing["scene"]), Vector2(float(thing["spawn"][0]) * TILE, float(thing["spawn"][1]) * TILE), str(thing.get("facing", "down")))
 			return true
 		"mrock":
-			if not GameState.has_tool("pickaxe"):
-				return false
+			if GameState.held_tool() != "pickaxe":
+				return GameState.has_tool("pickaxe")
 			if not GameState.spend_energy(2):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
@@ -245,11 +245,11 @@ func draw_map() -> void:
 		draw_grass(hash(region_id) % 100)
 		WorldGen.draw_ground_detail(self, hash(region_id) % 100 + 1, float(R.get("detail", 0.1)))
 	elif Art.has("tiles", ground):
-		for y in rows:
-			for x in cols:
+		for y in range(-pad, rows + pad):
+			for x in range(-pad, cols + pad):
 				Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), 4)
 	else:
-		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(str(R.get("ground_color", "5a9e4b"))))
+		draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(str(R.get("ground_color", "5a9e4b"))))
 	for layer in R.get("layers", []):
 		var nm := str(layer["tile"])
 		var r: Array = layer["rect"]

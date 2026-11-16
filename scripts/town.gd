@@ -33,7 +33,7 @@ func build() -> void:
 	add_exit(BEACH_EXIT, "beach", Vector2(14 * TILE, 2 * TILE + 8), "down", "▼ beach")
 	add_exit(MOUNTAIN_EXIT, "mountain", Vector2(2 * TILE, 39 * TILE + 8), "right", "mountain ▶")
 	for b: Rect2i in [STORE, SMITH, POTIONS, HALL]:
-		block_rect(b.position.x, b.position.y, b.size.x, b.size.y)
+		pass
 	set_thing(6, 9, {"type": "door", "interior": "store", "hint": "A: General Store"})
 	set_thing(18, 9, {"type": "door", "interior": "smith", "hint": "A: Blacksmith"})
 	set_thing(5, 19, {"type": "door", "interior": "potions", "hint": "A: Potion Shop"})
@@ -48,16 +48,8 @@ func build() -> void:
 			things[Vector2i(x, y)] = {"type": "fountain", "hint": "A: toss a crystal"}
 	for p: Vector2i in [Vector2i(1, 7), Vector2i(18, 8), Vector2i(6, 26), Vector2i(12, 26), Vector2i(18, 22)]:
 		set_thing(p.x, p.y, {"type": "tree", "hint": ""})
-	block_rect(2, 22, 3, 3)    # cottage a
-	block_rect(15, 22, 3, 3)   # cottage b
-	block_rect(17, 13, 2, 2)   # well
-	block_rect(2, 19, 2, 2)    # market stall
-	blocked[Vector2i(7, 2)] = true
-	block_rect(12, 2, 2, 1)
-	blocked[Vector2i(4, 25)] = true
-	blocked[Vector2i(14, 25)] = true
 	for c: Vector2i in [Vector2i(6, 12), Vector2i(13, 12), Vector2i(6, 21), Vector2i(13, 21)]:
-		blocked[c] = true
+		pass
 	extend(22, 12)
 
 
@@ -164,6 +156,22 @@ func _talk(n: Npc) -> void:
 		fr[id] = int(fr.get(id, 0)) + gain
 		await say([{"who": name, "text": _gift_line(id, sel)}])
 		hud.toast("%s +%d" % [name, gain], Color(1, 0.8, 0.9))
+		player.frozen = false
+		return
+	# Side quests: offer one, or nudge about the pending one.
+	var offer := GameState.side_quest_for(id)
+	if not offer.is_empty():
+		var d := Dialogue.instance(get_tree())
+		d.say([{"who": name, "text": str(offer["text"]) + "  Will you?", "choice": ["Sure", "Not now"], "key": ""}])
+		await d.finished
+		if d.last_choice == 0:
+			GameState.add_quest(str(offer["id"]), str(offer["text"]))
+			hud.toast("New quest from %s." % name, Color(1, 0.9, 0.4))
+		player.frozen = false
+		return
+	var pend := GameState.side_quest_pending(id)
+	if not pend.is_empty():
+		await say([{"who": name, "text": "Still waiting on that: " + str(pend["text"]).to_lower()}])
 		player.frozen = false
 		return
 	var talked: Dictionary = r["talked_today"]
@@ -279,25 +287,17 @@ func _place_props() -> void:
 	prop("buildings", "library" if Art.has("buildings", "library") else "cottage_b", Vector2i(17, 36), 3)
 	if Art.has("buildings", "clock_tower"):
 		prop("buildings", "clock_tower", Vector2i(24, 10), 1)
-		block_rect(24, 6, 2, 5)
 	if Art.has("buildings", "bandstand"):
 		prop("buildings", "bandstand", Vector2i(2, 2), 3)
-		block_rect(2, 0, 4, 3)
 	if Art.has("buildings", "chapel"):
 		prop("buildings", "chapel", Vector2i(24, 36), 2)
-		block_rect(24, 32, 3, 5)
 	for c: Vector2i in [Vector2i(9, 20), Vector2i(16, 20)]:
 		prop("props", "flowerbed_red" if c.x < 12 else "flowerbed_blue", c, 1)
-		blocked[c] = true
-		blocked[c + Vector2i(1, 0)] = true
 	prop("props", "bench_wood", Vector2i(10, 28), 1)
 	prop("props", "bench_green", Vector2i(14, 28), 1)
-	block_rect(10, 28, 2, 1); block_rect(14, 28, 2, 1)
 	prop("props", "statue", Vector2i(12, 4), 1)
-	block_rect(12, 3, 2, 2)
 	prop("props", "well_stone", Vector2i(2, 14), 1)
 	prop("props", "stall_red", Vector2i(2, 8), 1); prop("props", "stall_green", Vector2i(24, 18), 1)
-	block_rect(2, 7, 2, 2); block_rect(24, 17, 2, 2)
 	prop("buildings", "well", Vector2i(23, 22), 1)
 	for c: Vector2i in [Vector2i(8, 13), Vector2i(17, 13), Vector2i(8, 23), Vector2i(17, 23), Vector2i(8, 31), Vector2i(17, 31)]:
 		prop("props", "lamp", c)

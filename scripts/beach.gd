@@ -42,7 +42,6 @@ func build() -> void:
 		var item: String = ["seashell", "seashell", "coconut", "fiber"][rng.randi_range(0, 3)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}
 	set_thing(5, 16, {"type": "wreck", "hint": "A: search the wreck"})
-	block_rect(3, 14, 5, 3)
 	extend(14, 6)
 
 
@@ -57,7 +56,6 @@ func after_ready() -> void:
 		cs.offset = Vector2(0, -32)
 		add_child(cs)
 		cs.play("idle")
-		block_rect(cols - 11, 8, 6, 3)
 		set_thing(cols - 8, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead into the sea and don't come back.", "hint": "A: the camp"}, false)
 	var dock := DockLayer.new()
 	dock.map = self
@@ -74,8 +72,6 @@ func after_ready() -> void:
 	_place_props()
 	prop("props", "lantern_lit", Vector2i(13, 19))
 	prop("props", "lantern_lit", Vector2i(16, 19))
-	blocked[Vector2i(13, 19)] = true
-	blocked[Vector2i(16, 19)] = true
 	if not GameState.run["flags"].has("beach_seen"):
 		GameState.run["flags"]["beach_seen"] = true
 		player.frozen = true
@@ -188,27 +184,19 @@ func _place_props() -> void:
 	if not Art.has("buildings", "galleon"):
 		return
 	prop("buildings", "galleon", Vector2i(2, 18), 13)
-	block_rect(3, 13, 12, 5)
 	things.erase(Vector2i(5, 16))
 	set_thing(8, 18, {"type": "wreck", "hint": "A: search the wreck"}, false)
 	prop("buildings", "beach_hut", Vector2i(21, 11), 3)
-	block_rect(21, 8, 4, 4)
 	set_thing(22, 12, {"type": "hut", "hint": "A: beach hut"}, false)
 	for c: Vector2i in [Vector2i(3, 9), Vector2i(26, 8), Vector2i(18, 7), Vector2i(8, 10)]:
 		prop("nature", "palm", c, 1)
-		block_rect(c.x, c.y, 2, 1)
 	prop("props", "beached_boat", Vector2i(17, 17), 2)
-	block_rect(17, 16, 3, 2)
 	prop("props", "umbrella_red", Vector2i(9, 14), 1); prop("props", "umbrella_blue", Vector2i(25, 15), 1)
-	block_rect(9, 13, 2, 2); block_rect(25, 14, 2, 2)
 	prop("props", "lifeguard", Vector2i(12, 16))
-	blocked[Vector2i(12, 16)] = true
 	_anim("props", "bonfire", Vector2i(20, 15), 0, 8.0)
-	blocked[Vector2i(20, 15)] = true
 	_anim("props", "buoy", Vector2i(6, 23), 0, 2.0)
 	_anim("props", "buoy", Vector2i(24, 25), 0, 2.0)
 	_anim("props", "tide_pool", Vector2i(27, 18), 1, 3.0)
-	block_rect(27, 17, 2, 2)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 87
 	for i in 10:
@@ -231,7 +219,7 @@ func _place_props() -> void:
 			sp.region_enabled = true
 			sp.region_rect = Rect2(32, 0, 32, 32)
 			sp.scale = Vector2(0.5, 0.5)
-			sp.position = Vector2(k * TILE) + Vector2(8, 8)
+			sp.position = cell_pos(k.x, k.y) + Vector2(8, 8)
 			sp.z_index = -1
 			add_child(sp)
 
@@ -243,10 +231,19 @@ func _anim(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -
 	a.sprite_frames = Art.frames(group, {"idle": name}, {"idle": fps})
 	a.animation = "idle"
 	a.scale = Vector2(0.5, 0.5)
-	a.position = Vector2((c.x + (extra_w + 1) / 2.0) * TILE, (c.y + 1) * TILE)
+	a.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1)
 	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
 	add_child(a)
 	a.play("idle")
+	# Footprint like prop(): base row, plus body rows for big structures.
+	var tw := float(Art.info(group, name).get("cell_w", 32)) / 2.0
+	var th := float(Art.info(group, name).get("cell_h", 48)) / 2.0
+	if group == "buildings" or tw >= 56.0:
+		var w_cells := maxi(extra_w + 1, int(round(tw / TILE)))
+		var x0 := c.x + (extra_w + 1) / 2 - w_cells / 2
+		for i in w_cells:
+			for j in clampi(int(round(th / TILE)) - 1, 1, 5):
+				blocked[Vector2i(x0 + i, c.y - j)] = true
 
 
 func _process(delta: float) -> void:

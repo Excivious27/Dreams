@@ -42,8 +42,9 @@ func build() -> void:
 		things.erase(Vector2i(18, y))
 		blocked.erase(Vector2i(18, y))
 		things[Vector2i(18, y)] = {"type": "dock"}
-	set_thing(27, 12, {"type": "fisher", "hint": "A: Finn's bait shop"})
-	block_rect(26, 10, 4, 3)
+	set_thing(27, 12, {"type": "door", "interior": "fishing_hut", "hint": "A: Finn's bait shop"})
+	set_thing(5, 4, {"type": "door", "interior": "water_mill", "hint": "A: the mill"})
+	set_thing(31, 24, {"type": "door", "interior": "lighthouse", "hint": "A: the lighthouse"})
 	extend(12, 10)
 
 
@@ -61,7 +62,6 @@ func after_ready() -> void:
 		wp.offset = Vector2(0, -48)
 		add_child(wp)
 		wp.play("idle")
-		block_rect(4, 2, 8, 5)
 	_pond = Scenery.Pond.new()
 	_pond.rect = Rect2(LAKE.position * TILE, LAKE.size * TILE)
 	_pond.z_index = -1
@@ -75,11 +75,8 @@ func after_ready() -> void:
 	else:
 		prop("props", "stall", Vector2i(26, 12), 1)
 	prop("props", "signpost", Vector2i(30, 14))
-	blocked[Vector2i(30, 14)] = true
 	_anim_prop("buildings", "water_mill", Vector2i(3, 4), 3, 4.0)
-	block_rect(2, 1, 5, 5)
 	_anim_prop("buildings", "lighthouse", Vector2i(30, 24), 2, 2.0)
-	block_rect(30, 20, 3, 5)
 	_anim_prop("props", "duck", Vector2i(8, 12), 0, 1.5)
 	_anim_prop("props", "heron", Vector2i(20, 10), 0, 1.5)
 	prop("props", "beaver_dam", Vector2i(4, 23), 2)
@@ -119,10 +116,19 @@ func _anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4
 	a.sprite_frames = Art.frames(group, {"idle": name}, {"idle": fps})
 	a.animation = "idle"
 	a.scale = Vector2(0.5, 0.5)
-	a.position = Vector2((c.x + (extra_w + 1) / 2.0) * TILE, (c.y + 1) * TILE)
+	a.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1)
 	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
 	add_child(a)
 	a.play("idle")
+	# Footprint like prop(): base row, plus body rows for big structures.
+	var tw := float(Art.info(group, name).get("cell_w", 32)) / 2.0
+	var th := float(Art.info(group, name).get("cell_h", 48)) / 2.0
+	if group == "buildings" or tw >= 56.0:
+		var w_cells := maxi(extra_w + 1, int(round(tw / TILE)))
+		var x0 := c.x + (extra_w + 1) / 2 - w_cells / 2
+		for i in w_cells:
+			for j in clampi(int(round(th / TILE)) - 1, 1, 5):
+				blocked[Vector2i(x0 + i, c.y - j)] = true
 
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
@@ -134,8 +140,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if GameState.has_tool("rod"):
 				_fish(c)
 			return true
-		"fisher":
-			_bait_shop()
+		"door":
+			GameMap.next_interior = str(thing["interior"])
+			go_to("interior", Vector2.ZERO, "up")
 			return true
 	return false
 

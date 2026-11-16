@@ -208,8 +208,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_sellbox(sel)
 			return true
 		"water":
-			if GameState.has_tool("rod") and not _fishing:
+			if GameState.held_tool() == "rod" and not _fishing:
 				_fish()
+			elif GameState.has_tool("rod"):
+				hud.toast("Hold the fishing rod.")
 			return true
 		"well":
 			if int(GameState.run["flags"].get("well_day", 0)) < int(GameState.run["day"]):
@@ -322,7 +324,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 	var farm: Dictionary = GameState.run["farm"]
 	var tile: Dictionary = farm.get(key, {})
 	if tile.is_empty():
-		if not GameState.has_tool("hoe"):
+		if GameState.held_tool() != "hoe":
 			return false
 		if not GameState.spend_energy(2):
 			hud.toast("Too tired.", Color(1, 0.7, 0.7))
@@ -336,7 +338,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 	var crop := str(tile.get("crop", ""))
 	if crop == "":
 		var it: Dictionary = GameState.items.get(sel, {})
-		if it.get("type", "") == "seed" and GameState.count(sel) > 0:
+		if it.get("type", "") == "seed" and GameState.count(sel) > 0 and GameState.held_tool() == "":
 			tile["crop"] = str(it["crop"])
 			tile["days"] = 0
 			GameState.add_item(sel, -1)
@@ -368,7 +370,9 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 
 
 func _water(tile: Dictionary) -> bool:
-	if not GameState.has_tool("can"):
+	if GameState.held_tool() != "can":
+		if GameState.has_tool("can") and str(GameState.run["selected"]) == "":
+			hud.toast("Hold the watering can.")
 		return false
 	if not GameState.spend_energy(1):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
@@ -459,45 +463,14 @@ func _talk_crystal() -> void:
 # ---- crafting ----------------------------------------------------------------
 
 func _workbench() -> void:
-	var recipes := [
-		{"name": "Sprinkler (4 copper bar, 1 iron bar)", "need": {"copper_bar": 4, "iron_bar": 1}, "give": "sprinkler"},
-		{"name": "Chest (10 wood)", "need": {"wood": 10}, "give": "chest"},
-		{"name": "Scarecrow (8 wood, 4 fiber)", "need": {"wood": 8, "fiber": 4}, "give": "scarecrow"},
-		{"name": "Berry Pie (3 berry, 1 wheat)", "need": {"berry": 3, "wheat": 1}, "give": "gift_pie"},
-	]
-	var opts: Array = []
-	for r in recipes:
-		opts.append(str(r["name"]))
-	opts.append("Leave")
-	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Workbench", "text": "Craft what? (Building skill speeds this up.)", "choice": opts, "key": ""}])
-	await d.finished
-	var i := d.last_choice
-	if i < 0 or i >= recipes.size():
-		return
-	var r: Dictionary = recipes[i]
-	for id in r["need"]:
-		if GameState.count(id) < int(r["need"][id]):
-			hud.toast("Need %d %s." % [int(r["need"][id]), GameState.item_name(id)], Color(1, 0.7, 0.7))
-			return
-	for id in r["need"]:
-		GameState.add_item(id, -int(r["need"][id]))
-	give(str(r["give"]))
-	xp("building", 6)
+	await Crafting.run(self, "workbench", "Workbench")
 
 
 func _furnace() -> void:
-	for ore in ["copper", "iron"]:
-		if GameState.count(ore) >= 5 and GameState.count("wood") >= 1:
-			GameState.add_item(ore, -5)
-			GameState.add_item("wood", -1)
-			give(ore + "_bar")
-			xp("building", 3)
-			var fc: Vector2i = BUILDS["furnace"]["cell"]
-			if props.has(fc) and Art.tex("props", "furnace2_on"):
-				(props[fc] as Sprite2D).texture = Art.tex("props", "furnace2_on")
-			return
-	hud.toast("Needs 5 copper or iron ore and 1 wood.")
+	await Crafting.run(self, "smith", "Furnace")
+	var fc: Vector2i = BUILDS["furnace"]["cell"]
+	if props.has(fc) and Art.tex("props", "furnace2_on"):
+		(props[fc] as Sprite2D).texture = Art.tex("props", "furnace2_on")
 
 
 func _sellbox_like_chest() -> void:

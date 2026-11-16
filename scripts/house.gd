@@ -25,6 +25,7 @@ func build() -> void:
 	set_thing(CHEST.x, CHEST.y, {"type": "chest", "hint": "A: dresser (journal)"})
 	block_rect(1, 1, cols - 2, 1)  # back wall
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go outside"})
+	set_thing(13, 9, {"type": "kitchen", "hint": "A: cook (campfire)"})
 
 
 func after_ready() -> void:
@@ -41,6 +42,9 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"chest":
 			_journal()
+			return true
+		"kitchen":
+			await Crafting.run(self, "kitchen", "Kitchen")
 			return true
 		"pet_bed":
 			hud.toast("%s curls up for a second, then follows you anyway." % GameState.names()["pet"])
@@ -131,3 +135,5 @@ func _place_props() -> void:
 	var kit := Art.has("furniture", "bed_blue")
 	prop("furniture", "bed_blue" if kit else "bed_single", Vector2i(BED.x, BED.y + 1), 1)
 	prop("furniture", "dresser" if kit else "chest_closed", CHEST)
+	if Art.has("furniture", "kitchen_stove"):
+		prop("furniture", "kitchen_stove", Vector2i(13, 9))

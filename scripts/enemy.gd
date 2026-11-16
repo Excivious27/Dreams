@@ -72,6 +72,9 @@ func setup(k: String) -> void:
 			hp = 24; speed = 20.0; damage = 3; reward = 45
 		"president":
 			hp = 120; speed = 26.0; damage = 4; reward = 1000
+	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(k, {})
+	if not ed.is_empty():
+		hp = int(ed.get("hp", hp)); damage = int(ed.get("dmg", damage)); speed = float(ed.get("speed", speed))
 	max_hp = hp
 	var art_kind := "grump" if k == "big_grump" else k
 	var group := "enemies/" + art_kind
@@ -201,7 +204,7 @@ func hit(n: int, from: Vector2) -> bool:
 	_stun = 0.32 if max_hp < 30 else 0.15
 	_windup = 0.0
 	var heavy := 1.0 if max_hp < 16 else (0.55 if max_hp < 40 else 0.3)
-	_knock = (position - from).normalized() * 230.0 * heavy
+	_knock = (position - from).normalized() * 230.0 * heavy * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
 	if hp <= 0:
 		_die()
 	return true

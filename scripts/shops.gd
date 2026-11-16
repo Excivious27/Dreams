@@ -6,21 +6,27 @@ extends RefCounted
 
 static func offers(shop: String) -> Array:
 	match shop:
+		"bait":
+			return ["bait", "energy_tea", "bread"]
 		"store":
-			return ["turnip_seed", "strawberry_seed", "corn_seed", "dream_seed", "gift_pie"]
+			var base: Array = ["turnip_seed", "potato_seed", "carrot_seed", "strawberry_seed", "corn_seed", "wheat_seed", "gift_pie"]
+			if GameState.has_perk("bartering", "Networker"):
+				base += ["tomato_seed", "pumpkin_seed", "melon_seed", "dream_seed"]
+			return base
 		"smith":
-			return ["iron_sword"]
+			return ["iron_sword", "coal", "copper_ring"]
 		"potions":
-			return ["potion", "energy_tea"]
+			return ["potion", "energy_tea", "herb_remedy"]
 	return []
 
 
 static func run(m: GameMap, shop: String) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren"}[shop]
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn"}[shop]
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
 		"potions": "Red for hurts. Tea for tired. Don't mix them, I'm not liable.",
+		"bait": "Bait's fresh. Fish aren't picky. People are.",
 	}[shop]
 	if shop == "store" and not GameState.run["flags"].has("store_first"):
 		GameState.run["flags"]["store_first"] = true
@@ -59,8 +65,7 @@ static func run(m: GameMap, shop: String) -> void:
 
 static func price(id: String) -> int:
 	var base := GameState.item_value(id)
-	var discount := 1.0 - 0.03 * (GameState.skill_level("bartering") - 1)
-	return maxi(1, int(ceil(base * 1.5 * discount)))
+	return maxi(1, int(ceil(base * 1.5 * GameState.buy_multiplier())))
 
 
 static func hall(m: GameMap) -> void:

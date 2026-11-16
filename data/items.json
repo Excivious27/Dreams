@@ -1,64 +1,1284 @@
 {
-  "hoe":        {"name": "Hoe", "type": "tool", "value": 0},
-  "can":        {"name": "Watering Can", "type": "tool", "value": 0},
-  "axe":        {"name": "Axe", "type": "tool", "value": 0},
-  "pickaxe":    {"name": "Pickaxe", "type": "tool", "value": 0},
-  "sword":      {"name": "Wooden Sword", "type": "tool", "value": 0, "damage": 1},
-  "iron_sword": {"name": "Iron Sword", "type": "tool", "value": 120, "damage": 2},
-  "rod":        {"name": "Fishing Rod", "type": "tool", "value": 0},
-
-  "turnip_seed":     {"name": "Turnip Seeds", "type": "seed", "value": 4, "crop": "turnip"},
-  "strawberry_seed": {"name": "Strawberry Seeds", "type": "seed", "value": 10, "crop": "strawberry"},
-  "corn_seed":       {"name": "Corn Seeds", "type": "seed", "value": 12, "crop": "corn"},
-  "dream_seed":      {"name": "Dream Flower Seeds", "type": "seed", "value": 40, "crop": "dreamflower"},
-
-  "turnip":      {"name": "Turnip", "type": "crop", "value": 9},
-  "strawberry":  {"name": "Strawberry", "type": "crop", "value": 22},
-  "corn":        {"name": "Corn", "type": "crop", "value": 28},
-  "dreamflower": {"name": "Dream Flower", "type": "crop", "value": 110},
-
-  "berry":    {"name": "Wild Berry", "type": "forage", "value": 6, "heal": 1},
-  "mushroom": {"name": "Mushroom", "type": "forage", "value": 8, "heal": 1},
-  "wild_leek": {"name": "Wild Leek", "type": "forage", "value": 14, "heal": 1},
-  "seashell": {"name": "Seashell", "type": "forage", "value": 10},
-  "coconut":  {"name": "Coconut", "type": "forage", "value": 22, "heal": 2},
-  "crystal_bloom": {"name": "Crystal Bloom", "type": "forage", "value": 70},
-  "fiber":    {"name": "Fiber", "type": "material", "value": 1},
-  "wood":     {"name": "Wood", "type": "material", "value": 2},
-  "stone":    {"name": "Stone", "type": "material", "value": 2},
-  "copper":   {"name": "Copper Ore", "type": "material", "value": 12},
-  "iron":     {"name": "Iron Ore", "type": "material", "value": 25},
-  "shard":    {"name": "Crystal Shard", "type": "material", "value": 45},
-  "gold":     {"name": "Gold Ore", "type": "material", "value": 60},
-  "dark":     {"name": "Dark Shard", "type": "material", "value": 90},
-
-  "minnow":  {"name": "Minnow", "type": "fish", "value": 7, "heal": 1},
-  "trout":   {"name": "Dream Trout", "type": "fish", "value": 30, "heal": 2},
-  "boot":    {"name": "Old Boot", "type": "junk", "value": 1},
-
-  "copper_bar": {"name": "Copper Bar", "type": "material", "value": 70},
-  "iron_bar":   {"name": "Iron Bar", "type": "material", "value": 140},
-  "sprinkler":  {"name": "Sprinkler", "type": "placeable", "value": 300},
-  "chest":      {"name": "Chest", "type": "placeable", "value": 30},
-  "scarecrow":  {"name": "Scarecrow", "type": "placeable", "value": 40},
-  "honey":      {"name": "Honey", "type": "crop", "value": 45, "heal": 1},
-  "wheat":      {"name": "Wheat", "type": "crop", "value": 12},
-  "strawberry_wine": {"name": "Strawberry Wine", "type": "crop", "value": 90, "energy": 30},
-  "corn_ale":   {"name": "Corn Ale", "type": "crop", "value": 80, "energy": 30},
-  "berry_juice": {"name": "Berry Juice", "type": "crop", "value": 40, "energy": 20},
-  "dream_tonic": {"name": "Dream Tonic", "type": "potion", "value": 260, "heal": 6, "energy": 60},
-  "crystal_refined": {"name": "Refined Crystal", "type": "material", "value": 200},
-  "sunfish":  {"name": "Sunfish", "type": "fish", "value": 12, "heal": 1},
-  "carp":     {"name": "Carp", "type": "fish", "value": 14, "heal": 1},
-  "bass":     {"name": "Bass", "type": "fish", "value": 24, "heal": 2},
-  "catfish":  {"name": "Catfish", "type": "fish", "value": 30, "heal": 2},
-  "salmon":   {"name": "Salmon", "type": "fish", "value": 38, "heal": 2},
-  "eel":      {"name": "Eel", "type": "fish", "value": 42, "heal": 2},
-  "puffer":   {"name": "Pufferfish", "type": "fish", "value": 60},
-  "goldfish": {"name": "Golden Fish", "type": "fish", "value": 120},
-  "starfin":  {"name": "Starfin", "type": "fish", "value": 180, "heal": 3},
-  "mooncarp": {"name": "Moon Carp", "type": "fish", "value": 160, "heal": 3},
-  "potion":     {"name": "Red Potion", "type": "potion", "value": 30, "heal": 4},
-  "energy_tea": {"name": "Energy Tea", "type": "potion", "value": 25, "energy": 40},
-  "gift_pie":   {"name": "Berry Pie", "type": "gift", "value": 35, "heal": 3, "friend": 25}
+ "hoe": {
+  "name": "Hoe",
+  "type": "tool",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1
+ },
+ "can": {
+  "name": "Watering Can",
+  "type": "tool",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1
+ },
+ "axe": {
+  "name": "Axe",
+  "type": "tool",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1
+ },
+ "pickaxe": {
+  "name": "Pickaxe",
+  "type": "tool",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1
+ },
+ "sword": {
+  "name": "Wooden Sword",
+  "type": "tool",
+  "value": 0,
+  "damage": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "iron_sword": {
+  "name": "Iron Sword",
+  "type": "tool",
+  "value": 120,
+  "damage": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "rod": {
+  "name": "Fishing Rod",
+  "type": "tool",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1
+ },
+ "turnip_seed": {
+  "name": "Turnip Seeds",
+  "type": "seed",
+  "value": 4,
+  "crop": "turnip",
+  "rarity": "common",
+  "tier": 1
+ },
+ "strawberry_seed": {
+  "name": "Strawberry Seeds",
+  "type": "seed",
+  "value": 10,
+  "crop": "strawberry",
+  "rarity": "common",
+  "tier": 1
+ },
+ "corn_seed": {
+  "name": "Corn Seeds",
+  "type": "seed",
+  "value": 12,
+  "crop": "corn",
+  "rarity": "common",
+  "tier": 1
+ },
+ "dream_seed": {
+  "name": "Dream Flower Seeds",
+  "type": "seed",
+  "value": 40,
+  "crop": "dreamflower",
+  "rarity": "common",
+  "tier": 1
+ },
+ "turnip": {
+  "name": "Turnip",
+  "type": "crop",
+  "value": 9,
+  "rarity": "common",
+  "tier": 1
+ },
+ "strawberry": {
+  "name": "Strawberry",
+  "type": "crop",
+  "value": 22,
+  "rarity": "common",
+  "tier": 1
+ },
+ "corn": {
+  "name": "Corn",
+  "type": "crop",
+  "value": 28,
+  "rarity": "common",
+  "tier": 1
+ },
+ "dreamflower": {
+  "name": "Dream Flower",
+  "type": "crop",
+  "value": 110,
+  "rarity": "common",
+  "tier": 1
+ },
+ "berry": {
+  "name": "Wild Berry",
+  "type": "forage",
+  "value": 6,
+  "heal": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "mushroom": {
+  "name": "Mushroom",
+  "type": "forage",
+  "value": 8,
+  "heal": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "wild_leek": {
+  "name": "Wild Leek",
+  "type": "forage",
+  "value": 14,
+  "heal": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "seashell": {
+  "name": "Seashell",
+  "type": "forage",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1
+ },
+ "coconut": {
+  "name": "Coconut",
+  "type": "fruit",
+  "value": 22,
+  "heal": 2,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "crystal_bloom": {
+  "name": "Crystal Bloom",
+  "type": "forage",
+  "value": 70,
+  "rarity": "common",
+  "tier": 1
+ },
+ "fiber": {
+  "name": "Fiber",
+  "type": "material",
+  "value": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "wood": {
+  "name": "Wood",
+  "type": "material",
+  "value": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "stone": {
+  "name": "Stone",
+  "type": "material",
+  "value": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "copper": {
+  "name": "Copper Ore",
+  "type": "material",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "iron": {
+  "name": "Iron Ore",
+  "type": "material",
+  "value": 25,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "shard": {
+  "name": "Crystal Shard",
+  "type": "material",
+  "value": 45,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "gold": {
+  "name": "Gold Ore",
+  "type": "material",
+  "value": 60,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "dark": {
+  "name": "Dark Shard",
+  "type": "material",
+  "value": 90,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "minnow": {
+  "name": "Minnow",
+  "type": "fish",
+  "value": 7,
+  "heal": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "trout": {
+  "name": "Dream Trout",
+  "type": "fish",
+  "value": 30,
+  "heal": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "boot": {
+  "name": "Old Boot",
+  "type": "junk",
+  "value": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "copper_bar": {
+  "name": "Copper Bar",
+  "type": "material",
+  "value": 70,
+  "rarity": "common",
+  "tier": 1
+ },
+ "iron_bar": {
+  "name": "Iron Bar",
+  "type": "material",
+  "value": 140,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "sprinkler": {
+  "name": "Sprinkler",
+  "type": "placeable",
+  "value": 300,
+  "rarity": "common",
+  "tier": 1
+ },
+ "chest": {
+  "name": "Chest",
+  "type": "placeable",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1
+ },
+ "scarecrow": {
+  "name": "Scarecrow",
+  "type": "placeable",
+  "value": 40,
+  "rarity": "common",
+  "tier": 1
+ },
+ "honey": {
+  "name": "Honey",
+  "type": "crop",
+  "value": 45,
+  "heal": 1,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "wheat": {
+  "name": "Wheat",
+  "type": "crop",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1
+ },
+ "strawberry_wine": {
+  "name": "Strawberry Wine",
+  "type": "crop",
+  "value": 90,
+  "energy": 30,
+  "rarity": "common",
+  "tier": 1
+ },
+ "corn_ale": {
+  "name": "Corn Ale",
+  "type": "crop",
+  "value": 80,
+  "energy": 30,
+  "rarity": "common",
+  "tier": 1
+ },
+ "berry_juice": {
+  "name": "Berry Juice",
+  "type": "crop",
+  "value": 40,
+  "energy": 20,
+  "rarity": "common",
+  "tier": 1
+ },
+ "dream_tonic": {
+  "name": "Dream Tonic",
+  "type": "potion",
+  "value": 260,
+  "heal": 6,
+  "energy": 60,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "crystal_refined": {
+  "name": "Refined Crystal",
+  "type": "material",
+  "value": 200,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "sunfish": {
+  "name": "Sunfish",
+  "type": "fish",
+  "value": 12,
+  "heal": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "carp": {
+  "name": "Carp",
+  "type": "fish",
+  "value": 14,
+  "heal": 1,
+  "rarity": "common",
+  "tier": 1
+ },
+ "bass": {
+  "name": "Bass",
+  "type": "fish",
+  "value": 24,
+  "heal": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "catfish": {
+  "name": "Catfish",
+  "type": "fish",
+  "value": 30,
+  "heal": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "salmon": {
+  "name": "Salmon",
+  "type": "fish",
+  "value": 38,
+  "heal": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "eel": {
+  "name": "Eel",
+  "type": "fish",
+  "value": 42,
+  "heal": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "puffer": {
+  "name": "Pufferfish",
+  "type": "fish",
+  "value": 60,
+  "rarity": "common",
+  "tier": 1
+ },
+ "goldfish": {
+  "name": "Golden Fish",
+  "type": "fish",
+  "value": 120,
+  "rarity": "common",
+  "tier": 1
+ },
+ "starfin": {
+  "name": "Starfin",
+  "type": "fish",
+  "value": 180,
+  "heal": 3,
+  "rarity": "common",
+  "tier": 1
+ },
+ "mooncarp": {
+  "name": "Moon Carp",
+  "type": "fish",
+  "value": 160,
+  "heal": 3,
+  "rarity": "common",
+  "tier": 1
+ },
+ "potion": {
+  "name": "Red Potion",
+  "type": "potion",
+  "value": 30,
+  "heal": 4,
+  "rarity": "common",
+  "tier": 1
+ },
+ "energy_tea": {
+  "name": "Energy Tea",
+  "type": "potion",
+  "value": 25,
+  "energy": 40,
+  "rarity": "common",
+  "tier": 1
+ },
+ "gift_pie": {
+  "name": "Berry Pie",
+  "type": "gift",
+  "value": 35,
+  "heal": 3,
+  "friend": 25,
+  "rarity": "common",
+  "tier": 1
+ },
+ "scythe": {
+  "name": "Scythe",
+  "type": "tool",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1
+ },
+ "hammer": {
+  "name": "Hammer",
+  "type": "tool",
+  "value": 0,
+  "rarity": "common",
+  "tier": 1
+ },
+ "steel_sword": {
+  "name": "Steel Sword",
+  "type": "tool",
+  "value": 420,
+  "rarity": "rare",
+  "tier": 3,
+  "damage": 4
+ },
+ "crystal_sword": {
+  "name": "Crystal Sword",
+  "type": "tool",
+  "value": 1500,
+  "rarity": "epic",
+  "tier": 4,
+  "damage": 6
+ },
+ "potato_seed": {
+  "name": "Potato Seeds",
+  "type": "seed",
+  "value": 6,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "potato"
+ },
+ "potato": {
+  "name": "Potato",
+  "type": "crop",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1
+ },
+ "carrot_seed": {
+  "name": "Carrot Seeds",
+  "type": "seed",
+  "value": 5,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "carrot"
+ },
+ "carrot": {
+  "name": "Carrot",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "tomato_seed": {
+  "name": "Tomato Seeds",
+  "type": "seed",
+  "value": 14,
+  "rarity": "common",
+  "tier": 2,
+  "crop": "tomato"
+ },
+ "tomato": {
+  "name": "Tomato",
+  "type": "crop",
+  "value": 30,
+  "rarity": "common",
+  "tier": 2
+ },
+ "pumpkin_seed": {
+  "name": "Pumpkin Seeds",
+  "type": "seed",
+  "value": 25,
+  "rarity": "common",
+  "tier": 2,
+  "crop": "pumpkin"
+ },
+ "pumpkin": {
+  "name": "Pumpkin",
+  "type": "crop",
+  "value": 70,
+  "rarity": "common",
+  "tier": 2
+ },
+ "melon_seed": {
+  "name": "Melon Seeds",
+  "type": "seed",
+  "value": 30,
+  "rarity": "common",
+  "tier": 2,
+  "crop": "melon"
+ },
+ "melon": {
+  "name": "Melon",
+  "type": "crop",
+  "value": 90,
+  "rarity": "common",
+  "tier": 2
+ },
+ "wheat_seed": {
+  "name": "Wheat Seeds",
+  "type": "seed",
+  "value": 6,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "wheat"
+ },
+ "apple": {
+  "name": "Apple",
+  "type": "fruit",
+  "value": 18,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "plum": {
+  "name": "Plum",
+  "type": "fruit",
+  "value": 22,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "orange": {
+  "name": "Orange",
+  "type": "fruit",
+  "value": 26,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 1
+ },
+ "cherry": {
+  "name": "Cherry",
+  "type": "fruit",
+  "value": 30,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 1
+ },
+ "moonberry": {
+  "name": "Moonberry",
+  "type": "fruit",
+  "value": 90,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 1
+ },
+ "starfruit": {
+  "name": "Starfruit",
+  "type": "fruit",
+  "value": 240,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 1
+ },
+ "wild_herb": {
+  "name": "Wild Herb",
+  "type": "forage",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1
+ },
+ "flower": {
+  "name": "Wildflower",
+  "type": "forage",
+  "value": 8,
+  "rarity": "common",
+  "tier": 1
+ },
+ "acorn": {
+  "name": "Acorn",
+  "type": "forage",
+  "value": 3,
+  "rarity": "common",
+  "tier": 1
+ },
+ "pinecone": {
+  "name": "Pine Cone",
+  "type": "forage",
+  "value": 3,
+  "rarity": "common",
+  "tier": 1
+ },
+ "sap": {
+  "name": "Tree Sap",
+  "type": "forage",
+  "value": 5,
+  "rarity": "common",
+  "tier": 1
+ },
+ "truffle": {
+  "name": "Truffle",
+  "type": "forage",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "glowcap": {
+  "name": "Glow-cap",
+  "type": "forage",
+  "value": 80,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "driftwood": {
+  "name": "Driftwood",
+  "type": "forage",
+  "value": 6,
+  "rarity": "common",
+  "tier": 1
+ },
+ "moss": {
+  "name": "Moss",
+  "type": "forage",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1
+ },
+ "clay": {
+  "name": "Clay",
+  "type": "forage",
+  "value": 6,
+  "rarity": "common",
+  "tier": 1
+ },
+ "dreamroot": {
+  "name": "Dream Root",
+  "type": "forage",
+  "value": 150,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "silver": {
+  "name": "Silver Ore",
+  "type": "ore",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "silver_bar": {
+  "name": "Silver Bar",
+  "type": "bar",
+  "value": 220,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "gold_bar": {
+  "name": "Gold Bar",
+  "type": "bar",
+  "value": 320,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "ruby": {
+  "name": "Ruby",
+  "type": "gem",
+  "value": 180,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "sapphire": {
+  "name": "Sapphire",
+  "type": "gem",
+  "value": 180,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "emerald": {
+  "name": "Emerald",
+  "type": "gem",
+  "value": 200,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "amethyst": {
+  "name": "Amethyst",
+  "type": "gem",
+  "value": 160,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "coal": {
+  "name": "Coal",
+  "type": "ore",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1
+ },
+ "grump_dust": {
+  "name": "Grump Dust",
+  "type": "drop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Grey, sulky, surprisingly useful."
+ },
+ "slime_gel": {
+  "name": "Slime Gel",
+  "type": "drop",
+  "value": 8,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Wobbles."
+ },
+ "bat_wing": {
+  "name": "Bat Wing",
+  "type": "drop",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Leathery."
+ },
+ "golem_core": {
+  "name": "Golem Core",
+  "type": "drop",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Still warm."
+ },
+ "shard_heart": {
+  "name": "Shard Heart",
+  "type": "drop",
+  "value": 110,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Hums when you hold it."
+ },
+ "soldier_badge": {
+  "name": "Grump Badge",
+  "type": "drop",
+  "value": 30,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Rank: miserable."
+ },
+ "wisp_light": {
+  "name": "Wisp Light",
+  "type": "drop",
+  "value": 60,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "A bottled flicker."
+ },
+ "commander_crest": {
+  "name": "Commander's Crest",
+  "type": "drop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Proof."
+ },
+ "thug_cash": {
+  "name": "Rolled Bills",
+  "type": "drop",
+  "value": 25,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Unmarked."
+ },
+ "brass_knuckles": {
+  "name": "Brass Knuckles",
+  "type": "drop",
+  "value": 45,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Dented."
+ },
+ "burner_phone": {
+  "name": "Burner Phone",
+  "type": "drop",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Three missed calls."
+ },
+ "flame_core": {
+  "name": "Flame Core",
+  "type": "drop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Hot to the touch."
+ },
+ "enforcer_plate": {
+  "name": "Riot Plate",
+  "type": "drop",
+  "value": 150,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Scratched."
+ },
+ "president_seal": {
+  "name": "The Seal",
+  "type": "drop",
+  "value": 2000,
+  "rarity": "legendary",
+  "tier": 5,
+  "desc": "His."
+ },
+ "light_mote": {
+  "name": "Light Mote",
+  "type": "magic",
+  "value": 80,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "dream_essence": {
+  "name": "Dream Essence",
+  "type": "magic",
+  "value": 200,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "star_dust": {
+  "name": "Star Dust",
+  "type": "magic",
+  "value": 150,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "moon_tear": {
+  "name": "Moon Tear",
+  "type": "magic",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "paw_charm_shard": {
+  "name": "Paw Charm Shard",
+  "type": "magic",
+  "value": 300,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "tuna": {
+  "name": "Tuna",
+  "type": "fish",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "bait": {
+  "name": "Bait",
+  "type": "misc",
+  "value": 2,
+  "rarity": "common",
+  "tier": 1
+ },
+ "crab": {
+  "name": "Crab",
+  "type": "fish",
+  "value": 30,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "legendary_koi": {
+  "name": "Legendary Koi",
+  "type": "fish",
+  "value": 900,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "bread": {
+  "name": "Bread",
+  "type": "food",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1,
+  "energy": 25
+ },
+ "salad": {
+  "name": "Garden Salad",
+  "type": "food",
+  "value": 40,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 2,
+  "energy": 40
+ },
+ "fish_stew": {
+  "name": "Fish Stew",
+  "type": "food",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 3,
+  "energy": 60
+ },
+ "berry_pie": {
+  "name": "Berry Pie",
+  "type": "food",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2,
+  "energy": 50
+ },
+ "pumpkin_soup": {
+  "name": "Pumpkin Soup",
+  "type": "food",
+  "value": 110,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 3,
+  "energy": 70
+ },
+ "truffle_pasta": {
+  "name": "Truffle Pasta",
+  "type": "food",
+  "value": 260,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 5,
+  "energy": 100
+ },
+ "moon_cake": {
+  "name": "Moon Cake",
+  "type": "food",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 6,
+  "energy": 120
+ },
+ "herb_remedy": {
+  "name": "Herb Remedy",
+  "type": "food",
+  "value": 45,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 3,
+  "energy": 10
+ },
+ "fertilizer": {
+  "name": "Fertilizer",
+  "type": "craft",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1
+ },
+ "sprinkler_quality": {
+  "name": "Quality Sprinkler",
+  "type": "craft",
+  "value": 450,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "sprinkler_iridium": {
+  "name": "Iridium Sprinkler",
+  "type": "craft",
+  "value": 1500,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "crab_pot": {
+  "name": "Crab Pot",
+  "type": "craft",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "torch": {
+  "name": "Torch",
+  "type": "craft",
+  "value": 8,
+  "rarity": "common",
+  "tier": 1
+ },
+ "rope": {
+  "name": "Rope",
+  "type": "craft",
+  "value": 15,
+  "rarity": "common",
+  "tier": 1
+ },
+ "cloth": {
+  "name": "Cloth",
+  "type": "craft",
+  "value": 25,
+  "rarity": "common",
+  "tier": 1
+ },
+ "leather": {
+  "name": "Leather",
+  "type": "craft",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "glass": {
+  "name": "Glass",
+  "type": "craft",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1
+ },
+ "crystal_lens": {
+  "name": "Crystal Lens",
+  "type": "craft",
+  "value": 260,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "gift_red": {
+  "name": "Wrapped Gift",
+  "type": "gift",
+  "value": 50,
+  "rarity": "common",
+  "tier": 1,
+  "friend": 8
+ },
+ "gift_gold": {
+  "name": "Gold Gift",
+  "type": "gift",
+  "value": 200,
+  "rarity": "rare",
+  "tier": 3,
+  "friend": 8
+ },
+ "straw_hat": {
+  "name": "Straw Hat",
+  "type": "equip",
+  "value": 60,
+  "rarity": "common",
+  "tier": 1,
+  "slot": "head",
+  "stats": {
+   "energy": 5
+  }
+ },
+ "leather_cap": {
+  "name": "Leather Cap",
+  "type": "equip",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "head",
+  "stats": {
+   "defense": 1
+  }
+ },
+ "iron_helm": {
+  "name": "Iron Helm",
+  "type": "equip",
+  "value": 400,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "head",
+  "stats": {
+   "defense": 2
+  }
+ },
+ "crystal_crown": {
+  "name": "Crystal Crown",
+  "type": "equip",
+  "value": 1600,
+  "rarity": "epic",
+  "tier": 4,
+  "slot": "head",
+  "stats": {
+   "defense": 3,
+   "luck": 2
+  }
+ },
+ "work_shirt": {
+  "name": "Work Shirt",
+  "type": "equip",
+  "value": 50,
+  "rarity": "common",
+  "tier": 1,
+  "slot": "body",
+  "stats": {
+   "energy": 5
+  }
+ },
+ "leather_vest": {
+  "name": "Leather Vest",
+  "type": "equip",
+  "value": 180,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "body",
+  "stats": {
+   "defense": 1
+  }
+ },
+ "iron_mail": {
+  "name": "Iron Mail",
+  "type": "equip",
+  "value": 600,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "body",
+  "stats": {
+   "defense": 3
+  }
+ },
+ "crystal_plate": {
+  "name": "Crystal Plate",
+  "type": "equip",
+  "value": 2200,
+  "rarity": "epic",
+  "tier": 4,
+  "slot": "body",
+  "stats": {
+   "defense": 5
+  }
+ },
+ "neon_jacket": {
+  "name": "Neon Jacket",
+  "type": "equip",
+  "value": 700,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "body",
+  "stats": {
+   "defense": 2,
+   "speed": 1
+  }
+ },
+ "boots": {
+  "name": "Work Boots",
+  "type": "equip",
+  "value": 40,
+  "rarity": "common",
+  "tier": 1,
+  "slot": "feet",
+  "stats": {}
+ },
+ "running_shoes": {
+  "name": "Running Shoes",
+  "type": "equip",
+  "value": 220,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "feet",
+  "stats": {
+   "speed": 1
+  }
+ },
+ "iron_greaves": {
+  "name": "Iron Greaves",
+  "type": "equip",
+  "value": 420,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "feet",
+  "stats": {
+   "defense": 1,
+   "speed": 1
+  }
+ },
+ "cloud_walkers": {
+  "name": "Cloud Walkers",
+  "type": "equip",
+  "value": 1500,
+  "rarity": "epic",
+  "tier": 4,
+  "slot": "feet",
+  "stats": {
+   "speed": 2,
+   "energy": 10
+  }
+ },
+ "copper_ring": {
+  "name": "Copper Ring",
+  "type": "equip",
+  "value": 90,
+  "rarity": "common",
+  "tier": 1,
+  "slot": "ring",
+  "stats": {
+   "luck": 1
+  }
+ },
+ "silver_ring": {
+  "name": "Silver Ring",
+  "type": "equip",
+  "value": 300,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "ring",
+  "stats": {
+   "luck": 2
+  }
+ },
+ "ruby_ring": {
+  "name": "Ruby Ring",
+  "type": "equip",
+  "value": 800,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "ring",
+  "stats": {
+   "damage": 1
+  }
+ },
+ "moon_ring": {
+  "name": "Moon Ring",
+  "type": "equip",
+  "value": 2500,
+  "rarity": "legendary",
+  "tier": 5,
+  "slot": "ring",
+  "stats": {
+   "damage": 2,
+   "luck": 3
+  }
+ },
+ "paw_charm": {
+  "name": "Paw Charm",
+  "type": "equip",
+  "value": 250,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "charm",
+  "stats": {
+   "energy": 15
+  }
+ },
+ "light_charm": {
+  "name": "Light Charm",
+  "type": "equip",
+  "value": 900,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "charm",
+  "stats": {
+   "defense": 1,
+   "luck": 2
+  }
+ },
+ "dream_charm": {
+  "name": "Dream Charm",
+  "type": "equip",
+  "value": 3000,
+  "rarity": "legendary",
+  "tier": 5,
+  "slot": "charm",
+  "stats": {
+   "energy": 30,
+   "damage": 1,
+   "luck": 3
+  }
+ }
 }

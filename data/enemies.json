@@ -1,0 +1,428 @@
+{
+ "drops": {
+  "grump": [
+   [
+    "grump_dust",
+    0.6,
+    1
+   ],
+   [
+    "fiber",
+    0.3,
+    1
+   ],
+   [
+    "berry",
+    0.15,
+    1
+   ]
+  ],
+  "big_grump": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "soldier_badge",
+    0.5,
+    1
+   ],
+   [
+    "light_mote",
+    0.2,
+    1
+   ]
+  ],
+  "slime": [
+   [
+    "slime_gel",
+    0.7,
+    1
+   ],
+   [
+    "clay",
+    0.2,
+    1
+   ]
+  ],
+  "bat": [
+   [
+    "bat_wing",
+    0.6,
+    1
+   ],
+   [
+    "coal",
+    0.2,
+    1
+   ]
+  ],
+  "golem": [
+   [
+    "stone",
+    1.0,
+    3
+   ],
+   [
+    "golem_core",
+    0.35,
+    1
+   ],
+   [
+    "iron",
+    0.3,
+    1
+   ],
+   [
+    "amethyst",
+    0.05,
+    1
+   ]
+  ],
+  "shard": [
+   [
+    "shard",
+    0.6,
+    1
+   ],
+   [
+    "shard_heart",
+    0.15,
+    1
+   ],
+   [
+    "star_dust",
+    0.1,
+    1
+   ]
+  ],
+  "soldier": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "soldier_badge",
+    0.3,
+    1
+   ],
+   [
+    "copper",
+    0.2,
+    1
+   ]
+  ],
+  "archer": [
+   [
+    "grump_dust",
+    0.6,
+    1
+   ],
+   [
+    "rope",
+    0.3,
+    1
+   ],
+   [
+    "soldier_badge",
+    0.25,
+    1
+   ]
+  ],
+  "knight": [
+   [
+    "soldier_badge",
+    0.8,
+    1
+   ],
+   [
+    "iron",
+    0.5,
+    2
+   ],
+   [
+    "light_mote",
+    0.25,
+    1
+   ],
+   [
+    "silver",
+    0.1,
+    1
+   ]
+  ],
+  "wisp": [
+   [
+    "wisp_light",
+    0.5,
+    1
+   ],
+   [
+    "light_mote",
+    0.15,
+    1
+   ]
+  ],
+  "commander": [
+   [
+    "commander_crest",
+    1.0,
+    1
+   ],
+   [
+    "light_mote",
+    1.0,
+    2
+   ],
+   [
+    "dream_essence",
+    0.5,
+    1
+   ]
+  ],
+  "dark_crystal": [
+   [
+    "moon_tear",
+    1.0,
+    1
+   ],
+   [
+    "dark",
+    1.0,
+    5
+   ]
+  ],
+  "thug_cyber": [
+   [
+    "thug_cash",
+    0.6,
+    1
+   ],
+   [
+    "burner_phone",
+    0.3,
+    1
+   ],
+   [
+    "glass",
+    0.2,
+    1
+   ]
+  ],
+  "thug_brute": [
+   [
+    "thug_cash",
+    0.7,
+    2
+   ],
+   [
+    "brass_knuckles",
+    0.4,
+    1
+   ],
+   [
+    "leather",
+    0.2,
+    1
+   ]
+  ],
+  "thug_flame": [
+   [
+    "flame_core",
+    0.5,
+    1
+   ],
+   [
+    "coal",
+    0.6,
+    2
+   ],
+   [
+    "thug_cash",
+    0.5,
+    1
+   ]
+  ],
+  "thug_speedster": [
+   [
+    "thug_cash",
+    0.5,
+    1
+   ],
+   [
+    "running_shoes",
+    0.03,
+    1
+   ],
+   [
+    "rope",
+    0.2,
+    1
+   ]
+  ],
+  "thug_gambler": [
+   [
+    "thug_cash",
+    0.9,
+    3
+   ],
+   [
+    "copper_ring",
+    0.08,
+    1
+   ],
+   [
+    "burner_phone",
+    0.2,
+    1
+   ]
+  ],
+  "thug_enforcer": [
+   [
+    "enforcer_plate",
+    0.4,
+    1
+   ],
+   [
+    "thug_cash",
+    0.8,
+    2
+   ],
+   [
+    "iron",
+    0.4,
+    2
+   ]
+  ],
+  "president": [
+   [
+    "president_seal",
+    1.0,
+    1
+   ],
+   [
+    "gold_bar",
+    1.0,
+    5
+   ]
+  ]
+ },
+ "enemies": {
+  "grump": {
+   "hp": 3,
+   "dmg": 1,
+   "speed": 34,
+   "xp": 2
+  },
+  "big_grump": {
+   "hp": 16,
+   "dmg": 2,
+   "speed": 26,
+   "xp": 20
+  },
+  "slime": {
+   "hp": 2,
+   "dmg": 1,
+   "speed": 22,
+   "xp": 1
+  },
+  "bat": {
+   "hp": 2,
+   "dmg": 1,
+   "speed": 48,
+   "xp": 2
+  },
+  "golem": {
+   "hp": 10,
+   "dmg": 2,
+   "speed": 18,
+   "xp": 8
+  },
+  "shard": {
+   "hp": 5,
+   "dmg": 1,
+   "speed": 30,
+   "xp": 6
+  },
+  "soldier": {
+   "hp": 6,
+   "dmg": 1,
+   "speed": 36,
+   "xp": 5
+  },
+  "archer": {
+   "hp": 5,
+   "dmg": 1,
+   "speed": 30,
+   "xp": 5
+  },
+  "knight": {
+   "hp": 14,
+   "dmg": 2,
+   "speed": 28,
+   "xp": 14
+  },
+  "wisp": {
+   "hp": 4,
+   "dmg": 1,
+   "speed": 44,
+   "xp": 4
+  },
+  "commander": {
+   "hp": 45,
+   "dmg": 3,
+   "speed": 24,
+   "xp": 60
+  },
+  "dark_crystal": {
+   "hp": 90,
+   "dmg": 3,
+   "speed": 20,
+   "xp": 200
+  },
+  "thug_cyber": {
+   "hp": 10,
+   "dmg": 2,
+   "speed": 34,
+   "xp": 8
+  },
+  "thug_brute": {
+   "hp": 20,
+   "dmg": 3,
+   "speed": 22,
+   "xp": 14
+  },
+  "thug_flame": {
+   "hp": 14,
+   "dmg": 2,
+   "speed": 30,
+   "xp": 12
+  },
+  "thug_speedster": {
+   "hp": 8,
+   "dmg": 1,
+   "speed": 60,
+   "xp": 8
+  },
+  "thug_gambler": {
+   "hp": 10,
+   "dmg": 2,
+   "speed": 32,
+   "xp": 9
+  },
+  "thug_enforcer": {
+   "hp": 26,
+   "dmg": 3,
+   "speed": 20,
+   "xp": 18
+  },
+  "president": {
+   "hp": 140,
+   "dmg": 4,
+   "speed": 26,
+   "xp": 400
+  }
+ }
+}

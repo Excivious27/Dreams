@@ -95,14 +95,33 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			var shop := str(thing.get("shop", ""))
 			if shop == "hall":
 				await Shops.hall(self)
+			elif shop in ["smith", "potions"]:
+				var d := Dialogue.instance(get_tree())
+				d.say([{"who": "Gideon" if shop == "smith" else "Wren", "text": "Buying, or making something?", "choice": ["Buy", "Craft" if shop == "smith" else "Brew", "Leave"], "key": ""}])
+				await d.finished
+				if d.last_choice == 0:
+					await Shops.run(self, shop)
+				elif d.last_choice == 1:
+					await Crafting.run(self, "smith" if shop == "smith" else "alchemy", "Forge" if shop == "smith" else "Cauldron")
 			elif shop != "":
 				await Shops.run(self, shop)
+			return true
+		"craft":
+			await Crafting.run(self, str(thing.get("station", "workbench")), str(thing.get("hint", "")).trim_prefix("A: "))
 			return true
 		"note":
 			await say([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
 		"bed":
 			hud.toast("Not your bed.")
+			return true
+		"loot":
+			var key := "loot_%s_%d_%d" % [interior_id, c.x, c.y]
+			if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]) - int(thing.get("every", 1)):
+				GameState.run["flags"][key] = int(GameState.run["day"])
+				give(str(thing.get("item", "stone")), int(thing.get("n", 1)))
+			else:
+				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
 		"heal":
 			if int(GameState.run["flags"].get("heal_" + interior_id, 0)) < int(GameState.run["day"]):
@@ -123,6 +142,16 @@ func _talk(n: Npc) -> void:
 	var lines: Array = data.get("inside", [])
 	var name := str(data.get("name", n.id.capitalize()))
 	player.frozen = true
+	var offer := GameState.side_quest_for(n.id)
+	if not offer.is_empty():
+		var d := Dialogue.instance(get_tree())
+		d.say([{"who": name, "text": str(offer["text"]) + "  Will you?", "choice": ["Sure", "Not now"], "key": ""}])
+		await d.finished
+		if d.last_choice == 0:
+			GameState.add_quest(str(offer["id"]), str(offer["text"]))
+			hud.toast("New quest from %s." % name, Color(1, 0.9, 0.4))
+		player.frozen = false
+		return
 	if lines.is_empty():
 		await say([{"who": name, "text": "Come in, come in. Mind the step."}])
 	else:

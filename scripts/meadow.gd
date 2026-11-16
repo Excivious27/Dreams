@@ -32,7 +32,6 @@ func build() -> void:
 	for p: Vector2i in [Vector2i(7, 5), Vector2i(19, 7), Vector2i(12, 10), Vector2i(27, 17), Vector2i(15, 20)]:
 		set_thing(p.x, p.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
 	set_thing(MINE_DOOR.x, MINE_DOOR.y, {"type": "mine", "hint": "A: enter the mine"})
-	block_rect(31, 3, 3, 5)
 	things[MINE_DOOR] = {"type": "mine", "hint": "A: enter the mine"}
 	for m: Vector2i in SHROOMS:
 		var key := "shroom_%d_%d" % [m.x, m.y]

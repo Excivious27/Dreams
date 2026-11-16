@@ -1359,5 +1359,253 @@
   ],
   "npcs": [],
   "intro": "Finn's place. It smells like the lake."
+ },
+ "fishing_hut": {
+  "cols": 11,
+  "rows": 9,
+  "floor": "fl_wood_dark",
+  "wall": "wl_wood",
+  "door": [
+   5,
+   8
+  ],
+  "back": [
+   "lake",
+   27,
+   13
+  ],
+  "music": "farm",
+  "props": [
+   {
+    "name": "counter2_l",
+    "cell": [
+     3,
+     4
+    ]
+   },
+   {
+    "name": "counter2_m",
+    "cell": [
+     4,
+     4
+    ]
+   },
+   {
+    "name": "counter2_r",
+    "cell": [
+     5,
+     4
+    ]
+   },
+   {
+    "name": "crate",
+    "cell": [
+     8,
+     3
+    ]
+   },
+   {
+    "name": "barrel",
+    "cell": [
+     8,
+     7
+    ]
+   },
+   {
+    "name": "shelf_jars",
+    "cell": [
+     2,
+     2
+    ]
+   },
+   {
+    "name": "painting2_b",
+    "cell": [
+     6,
+     2
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "counter",
+    "shop": "bait",
+    "cell": [
+     4,
+     5
+    ],
+    "hint": "A: buy bait",
+    "solid": false
+   }
+  ],
+  "npcs": [
+   {
+    "id": "finn",
+    "cell": [
+     4,
+     3
+    ]
+   }
+  ],
+  "intro": "Nets on the walls, a stove that smells of trout, and Finn, who has opinions about weather."
+ },
+ "water_mill": {
+  "cols": 12,
+  "rows": 10,
+  "floor": "fl_stone",
+  "wall": "wl_stone",
+  "door": [
+   5,
+   9
+  ],
+  "back": [
+   "lake",
+   5,
+   5
+  ],
+  "music": "farm",
+  "props": [
+   {
+    "name": "flour_sacks",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "flour_sacks",
+    "cell": [
+     8,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "prep_table",
+    "cell": [
+     4,
+     6
+    ],
+    "w": 2
+   },
+   {
+    "name": "barrel",
+    "cell": [
+     9,
+     7
+    ]
+   },
+   {
+    "name": "crate",
+    "cell": [
+     2,
+     7
+    ]
+   }
+  ],
+  "things": [
+   {
+    "type": "note",
+    "cell": [
+     5,
+     7
+    ],
+    "who": "",
+    "text": "The wheel turns, the stones grind, and nobody is here to mind them. Flour dust hangs in the light. (Tom: a mill recipe station later.)",
+    "hint": "A: the millstones",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     2,
+     4
+    ],
+    "item": "wheat",
+    "n": 2,
+    "every": 2,
+    "empty": "Empty sacks.",
+    "hint": "A: sacks",
+    "solid": false
+   }
+  ],
+  "npcs": [],
+  "intro": "Thump. Thump. The waterwheel shakes the whole building gently, like a heartbeat."
+ },
+ "lighthouse": {
+  "cols": 9,
+  "rows": 10,
+  "floor": "fl_stone",
+  "wall": "wl_brick",
+  "door": [
+   4,
+   9
+  ],
+  "back": [
+   "lake",
+   31,
+   25
+  ],
+  "music": "title",
+  "props": [
+   {
+    "name": "stairs3_up",
+    "cell": [
+     6,
+     3
+    ]
+   },
+   {
+    "name": "lamp_floor",
+    "cell": [
+     2,
+     3
+    ]
+   },
+   {
+    "name": "bed2_blue",
+    "cell": [
+     2,
+     6
+    ],
+    "w": 1
+   },
+   {
+    "name": "table2_round",
+    "cell": [
+     5,
+     6
+    ]
+   }
+  ],
+  "things": [
+   {
+    "type": "note",
+    "cell": [
+     6,
+     4
+    ],
+    "who": "",
+    "text": "Spiral stairs up to the lamp. From the top you can see the farm, the town, and something glittering far out past the lake.",
+    "hint": "A: climb",
+    "solid": false
+   },
+   {
+    "type": "heal",
+    "cell": [
+     2,
+     7
+    ],
+    "hp": 2,
+    "energy": 40,
+    "msg": "A nap in the keeper's bunk.",
+    "hint": "A: bunk",
+    "solid": false
+   }
+  ],
+  "npcs": [],
+  "intro": "Whitewashed stone, a lamp that still burns, and no keeper. Somebody keeps it lit."
  }
 }

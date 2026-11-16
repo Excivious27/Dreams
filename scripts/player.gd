@@ -231,7 +231,8 @@ func _physics_process(delta: float) -> void:
 			auto = true
 
 	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
-	var target := dir * (RUN_SPEED if running else WALK_SPEED)
+	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed")
+	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult
 	var rate := ACCEL if dir != Vector2.ZERO else DECEL
 	velocity = velocity.move_toward(target, rate * delta)
 	var before := position
@@ -314,12 +315,14 @@ func do_action(mode := "a") -> void:
 		return
 	if mode == "action":
 		return
-	if held in ["hoe", "can", "axe", "pickaxe", "rod"]:
+	if held in ["hoe", "can", "axe", "pickaxe", "rod", "scythe"]:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
-		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast"}[held]
+		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]
 		if play_tool(act):
 			return
-	_swing()
+		return
+	if held in ["sword", "iron_sword", ""]:
+		_swing()
 
 
 func _swing() -> void:
@@ -402,6 +405,12 @@ func _swing_arc(center: Vector2) -> void:
 func take_damage(n: int, from: Vector2) -> void:
 	if invuln > 0.0:
 		return
+	if GameState.has_perk("combat", "Defender") and randf() < 0.25:
+		invuln = 0.4
+		if map:
+			map.hud.toast("Blocked!", Color(0.8, 0.9, 1.0))
+		return
+	n = maxi(1, n - GameState.gear_stat("defense") / 2)
 	invuln = 1.0
 	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n
