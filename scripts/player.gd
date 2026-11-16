@@ -181,8 +181,48 @@ func facing_dir() -> Vector2:
 	return Vector2.DOWN
 
 
+## The cell a tool/check goes to: the mouse-aimed neighbour when a mouse is
+## pointing at one (any of the 8 around you, or your own), else the facing cell.
+var aim_cell := Vector2i(-1, -1)
+var mouse_held := false
+var _hold_t := 0.0
+
+
 func facing_cell() -> Vector2i:
+	if aim_cell != Vector2i(-1, -1):
+		return aim_cell
 	return cell() + Vector2i(facing_dir())
+
+
+func update_aim() -> void:
+	if map == null or TouchControls.visible_controls or DisplayServer.is_touchscreen_available():
+		aim_cell = Vector2i(-1, -1)
+		return
+	var mc := map.world_to_cell(get_global_mouse_position())
+	var me := cell()
+	var d := mc - me
+	if absi(d.x) <= 1 and absi(d.y) <= 1 and d != Vector2i.ZERO:
+		aim_cell = mc
+	elif d == Vector2i.ZERO:
+		aim_cell = me  # standing on a plot: hoe/water your own tile
+	else:
+		aim_cell = Vector2i(-1, -1)
+
+
+func _draw() -> void:
+	# Tool target highlight (Stardew's red/green cursor square).
+	if map == null or frozen or map.get_tree().paused:
+		return
+	var held := GameState.held_tool()
+	if held == "" or held in ["sword", "iron_sword"]:
+		return
+	var fc := facing_cell()
+	var thing: Dictionary = map.things.get(fc, {})
+	var usable: bool = map.hint_for(fc, thing) != "" or (held == "hoe" and map.can_till(fc)) or (held == "can" and str(thing.get("type", "")) == "plot") or (held == "scythe" and str(thing.get("type", "")) in ["grass", "weeds", "plot"])
+	var col := Color(0.4, 1.0, 0.5, 0.55) if usable else Color(1.0, 0.45, 0.4, 0.4)
+	var r := Rect2(map.cell_pos(fc.x, fc.y) - position, Vector2(GameMap.TILE, GameMap.TILE))
+	draw_rect(r.grow(-1), col, false, 1.5)
+	draw_rect(r.grow(-1), Color(col, 0.12))
 
 
 func cell() -> Vector2i:
@@ -255,6 +295,8 @@ func _physics_process(delta: float) -> void:
 	if dir != Vector2.ZERO:
 		auto_target = Vector2.INF
 		auto_cell = Vector2i(-1, -1)
+	update_aim()
+	queue_redraw()
 	if _busy:
 		_busy_t += delta
 		if _busy_t > 1.2:
@@ -284,6 +326,16 @@ func _physics_process(delta: float) -> void:
 			_buffered = ""
 			do_action(b)
 			return
+		elif not _busy and (Input.is_action_pressed("tool") or mouse_held) and _hold_t > 0.25 and GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe", "sword", "iron_sword"]:
+			# Holding the tool button keeps swinging (Stardew-style).
+			if mouse_held and map:
+				face_toward(map.get_global_mouse_position())
+			do_action("tool")
+			return
+	if Input.is_action_pressed("tool") or mouse_held:
+		_hold_t += delta
+	else:
+		_hold_t = 0.0
 	if Input.is_action_just_pressed("b") and dir == Vector2.ZERO and not _busy and has_anim("play") and not Dialogue.input_blocked():
 		_busy = true
 		_play_left = PLAY_TIME

@@ -252,6 +252,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 ## Any free grass cell inside the field can be tilled, Stardew-style.
+func can_till(c: Vector2i) -> bool:
+	return _tillable(c) and not things.has(c) and not blocked.has(c)
+
+
 func _tillable(c: Vector2i) -> bool:
 	if not in_content(c) or blocked.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
 		return false

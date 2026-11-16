@@ -80420,6 +80420,11 @@
    "h": 690,
    "w": 1536
   },
+  "title_portrait": {
+   "file": "ui/title_portrait.png",
+   "h": 690,
+   "w": 388
+  },
   "toast_banner": {
    "file": "ui/toast_banner.png",
    "h": 35,

@@ -1018,15 +1018,48 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		handle_tap(pos)
 		get_viewport().set_input_as_handled()
-	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).device != InputEvent.DEVICE_ID_EMULATION:
-		# Real mouse (not a touch emulated as a mouse): Stardew's left click uses the
-		# tool toward the cursor, right click checks/talks.
+	elif event is InputEventMouseButton and (event as InputEventMouseButton).device != InputEvent.DEVICE_ID_EMULATION:
 		var mb := event as InputEventMouseButton
-		if mb.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT] and mb.position.y >= Hud.TOOLBAR_BOTTOM:
-			var world := get_canvas_transform().affine_inverse() * mb.position
+		if mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
+			player.mouse_held = false
+			return
+		if not mb.pressed or mb.button_index not in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT] or mb.position.y < Hud.TOOLBAR_BOTTOM:
+			return
+		# Real mouse (not a touch emulated as a mouse). Left click: if you clicked a
+		# door, a person, an enemy or anything with a prompt, walk over and use it
+		# (like a tap on the phone); otherwise swing the tool toward the cursor, and
+		# keep swinging while the button is held. Right click: check/talk only.
+		var world := get_canvas_transform().affine_inverse() * mb.position
+		var c := world_to_cell(world)
+		var me := player.cell()
+		var near := absi(c.x - me.x) <= 1 and absi(c.y - me.y) <= 1
+		var target_thing: Dictionary = things.get(c, {})
+		var interactable := has_npc_at(c) or nearest_enemy_to(world, 14.0) != null or (not target_thing.is_empty() and hint_for(c, target_thing) != "") or _exit_at(c)
+		if mb.button_index == MOUSE_BUTTON_RIGHT:
+			if interactable and not near:
+				handle_tap(mb.position)
+			else:
+				player.face_toward(world)
+				player.do_action("action")
+		elif interactable and not near and GameState.held_tool() in ["", "sword", "iron_sword"] or (interactable and not near and str(target_thing.get("type", "")) in ["door", "idoor", "npc", "sign", "bed", "chest", "counter", "shop", "exit"]):
+			handle_tap(mb.position)
+		else:
 			player.face_toward(world)
-			player.do_action("tool" if mb.button_index == MOUSE_BUTTON_LEFT else "action")
-			get_viewport().set_input_as_handled()
+			player.mouse_held = true
+			player.do_action("a" if near and interactable else "tool")
+		get_viewport().set_input_as_handled()
+
+
+## Can the hoe open this cell? Farm overrides.
+func can_till(_c: Vector2i) -> bool:
+	return false
+
+
+func _exit_at(c: Vector2i) -> bool:
+	for e in exits:
+		if (e["rect"] as Rect2i).has_point(c):
+			return true
+	return false
 
 
 ## Stardew-mobile tap: walk there, or walk up to the thing and use it.
@@ -1043,7 +1076,7 @@ func handle_tap(pos: Vector2) -> void:
 			player.go_to_cell(c, true)
 		elif things.has(c) and (hint_for(c, things[c]) != "" or things[c].get("type") == "plot"):
 			player.go_to_cell(c, true)
-		elif not blocked.has(c):
+		elif not blocked.has(c) or _exit_at(c):
 			player.go_to_cell(c, false)
 
 

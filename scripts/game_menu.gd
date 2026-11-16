@@ -49,6 +49,7 @@ func _ready() -> void:
 			b.add_theme_font_size_override("font_size", 7)
 			b.custom_minimum_size = Vector2(0, 18)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 		b.pressed.connect(func() -> void: _tab = t; _refresh())
 		_tabs.add_child(b)
 		_tab_buttons[t] = b
@@ -132,6 +133,7 @@ func _button(text: String, cb: Callable) -> Button:
 	b.text = text
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", 9)
+	b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 	b.pressed.connect(cb)
 	_body.add_child(b)
 	return b
@@ -255,6 +257,7 @@ func _refresh() -> void:
 				var sb := Button.new()
 				sb.text = "  %s   Lv %d   (%d / %d xp)" % [str(sk).capitalize(), lvl, int(d["xp"]), need]
 				sb.flat = true
+				sb.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 				sb.alignment = HORIZONTAL_ALIGNMENT_LEFT
 				sb.add_theme_font_size_override("font_size", 9)
 				var skid := str(sk)

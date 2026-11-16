@@ -258,11 +258,14 @@ func _input(event: InputEvent) -> void:
 	# Tapping the box itself (not the controls) also advances.
 	if not active or _in_choice:
 		return
+	var pos := Vector2.INF
 	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
-		var pos := (event as InputEventScreenTouch).position
-		if pos.y < TouchControls.TOP_OF_CONTROLS:
-			_advance()
-			get_viewport().set_input_as_handled()
+		pos = (event as InputEventScreenTouch).position
+	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and event.device != InputEvent.DEVICE_ID_EMULATION:
+		pos = (event as InputEventMouseButton).position
+	if pos != Vector2.INF and pos.y < TouchControls.TOP_OF_CONTROLS:
+		_advance()
+		get_viewport().set_input_as_handled()
 
 
 func _advance() -> void:

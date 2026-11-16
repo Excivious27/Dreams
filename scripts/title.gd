@@ -21,12 +21,13 @@ func _ready() -> void:
 	InputSetup.ensure_actions()
 	_arcs = GameState.load_json("res://data/arcs.json")
 	_playables = GameState.load_json("res://data/playable.json")
-	var bg := Art.tex("ui", "title_keyart") if Art.has("ui", "title_keyart") else Art.tex("ui", "title_bg")
+	var bg := Art.tex("ui", "title_portrait") if Art.has("ui", "title_portrait") else (Art.tex("ui", "title_keyart") if Art.has("ui", "title_keyart") else Art.tex("ui", "title_bg"))
 	if bg:
 		var tr := TextureRect.new()
 		tr.texture = bg
 		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		tr.stretch_mode = TextureRect.STRETCH_SCALE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		tr.set_anchors_preset(PRESET_FULL_RECT)
 		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(tr)
@@ -87,13 +88,13 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 func _show_title() -> void:
 	_clear()
 	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 150 if not Art.has("ui", "wordmark_glow") else 120)
+	spacer.custom_minimum_size = Vector2(0, 150 if not Art.has("ui", "wordmark_glow") else 30)
 	_page.add_child(spacer)
 	if Art.has("ui", "wordmark_glow"):
 		# The key art already carries the wordmark in the sky; add the glowing one as a crisp overlay.
 		var wm := TextureRect.new()
 		wm.texture = Art.tex("ui", "wordmark_glow")
-		wm.custom_minimum_size = Vector2(0, 40)
+		wm.custom_minimum_size = Vector2(0, 56)
 		wm.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		wm.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		wm.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -103,7 +104,7 @@ func _show_title() -> void:
 	_page.add_child(_label("a mystical farming adventure", 9))
 	_page.add_child(_label("Two paths. One world. Every choice counts.", 8))
 	var spacer2 := Control.new()
-	spacer2.custom_minimum_size = Vector2(0, 150)
+	spacer2.custom_minimum_size = Vector2(0, 230)
 	_page.add_child(spacer2)
 	if GameState.has_run():
 		var n: String = GameState.run["names"]["character"]
