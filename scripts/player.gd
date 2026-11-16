@@ -62,6 +62,11 @@ func dismount() -> void:
 	GameState.run["flags"].erase("mounted")
 	if map:
 		map.hud.toast("%s waits here." % str(GameState.run.get("names", {}).get("horse", "Your horse")))
+		var c: Vector2i = cell() + Vector2i(1, 0)
+		if map.blocked.has(c) or map.things.has(c):
+			c = cell() + Vector2i(-1, 0)
+		GameState.run["flags"]["horse_at"] = [map.scene_id(), c.x, c.y]
+		map._place_waiting_horse()
 	_show_idle()
 
 

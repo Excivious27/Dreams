@@ -22,7 +22,28 @@ var _figure: PlaceholderSprite
 var _anim: AnimatedSprite2D
 var _place := ""
 var _stuck := 0.0
+var _base_sprite := ""
+var _pose := ""
+var _idle_t := 0.0
 var map: GameMap
+
+
+## Life poses (w156-158): a single-frame strip under characters/<base>/<pose>.
+func set_pose(pose: String) -> void:
+	if _anim == null or _base_sprite == "":
+		return
+	if pose == "":
+		if _pose != "":
+			_pose = ""
+			_anim.play("idle")
+		return
+	if not Art.has("characters/" + _base_sprite, pose):
+		return
+	if not _anim.sprite_frames.has_animation("pose_" + pose):
+		_anim.sprite_frames.add_animation("pose_" + pose)
+		_anim.sprite_frames.add_frame("pose_" + pose, Art.tex("characters/" + _base_sprite, pose))
+	_pose = pose
+	_anim.play("pose_" + pose)
 
 
 func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
@@ -31,6 +52,18 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 	position = at
 	_target = at
 	var sprite_id := str(data.get("sprite", ""))
+	# Seasonal outfit sheet when one exists for this villager (Prompts 09 w159/160).
+	var se := GameState.season()
+	var seasonal := "%s_%s" % [sprite_id, "fall" if se == "fall" else se]
+	if se == "winter" and CharacterLibrary.has_character(sprite_id + "_winter"):
+		sprite_id = sprite_id + "_winter"
+	elif se == "summer" and CharacterLibrary.has_character(sprite_id + "_summer"):
+		sprite_id = sprite_id + "_summer"
+	elif se == "fall" and CharacterLibrary.has_character(sprite_id + "_fall"):
+		sprite_id = sprite_id + "_fall"
+	elif int(GameState.run.get("day", 1)) % 28 in [13, 27] and CharacterLibrary.has_character(sprite_id + "_festival"):
+		sprite_id = sprite_id + "_festival"
+	_base_sprite = str(data.get("sprite", ""))
 	if sprite_id != "" and CharacterLibrary.has_character(sprite_id):
 		_anim = CharacterLibrary.make_sprite(sprite_id)
 		_anim.play("idle")
@@ -157,5 +190,28 @@ func _process(delta: float) -> void:
 			_anim.flip_h = a == "walk" and to.x < 0
 			if _anim.animation != a:
 				_anim.play(a)
+	elif _anim and _pose != "":
+		pass  # holding a life pose
 	elif _anim and _anim.animation != "idle":
 		_anim.play("idle")
+		_idle_t = 0.0
+	if _anim and to.length() <= 2.0:
+		_idle_t += delta
+		if _idle_t > 1.5 and _pose == "":
+			# Standing still outside: pick a pose that fits the place and weather.
+			var want := ""
+			if GameState.is_wet() and id in ["finn", "rook", "sal"]:
+				want = "umbrella"
+			elif GameState.weather_today() in ["snow", "blizzard"]:
+				want = "shiver"
+			elif _place in ["store_front", "smith_front", "bakery_front", "hall_front", "clinic_front", "library_front", "lodge_front", "market"]:
+				want = "work"
+			elif _place in ["river_n", "river_s", "pond", "bridge"] and id in ["finn", "sal", "marlowe"]:
+				want = "fish"
+			elif _place in ["plaza", "plaza_e", "fountain", "park", "inn_front"]:
+				want = ["sit", "talk", "wave", ""][randi() % 4]
+			set_pose(want)
+	else:
+		_idle_t = 0.0
+		if _pose != "":
+			set_pose("")

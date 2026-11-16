@@ -121,6 +121,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"stable":
 			later(_stable)
 			return true
+		"bank":
+			later(_bank)
+			return true
 		"note":
 			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
@@ -266,15 +269,16 @@ func _stable() -> void:
 	var d := Dialogue.instance(get_tree())
 	if not GameState.run["flags"].has("horse"):
 		var price := 1000 if GameState.has_friend_perk("benno", 2) else 2000
-		d.say([{"who": "Benno", "text": "She's a good one. Steady. ◆%d and she's yours, saddle included.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["Buy the horse", "Not yet"], "key": ""}])
+		d.say([{"who": "Benno", "text": "Four in the stalls. All steady. ◆%d, saddle included.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["The bay", "The grey", "The black", "The palomino", "Not yet"], "key": ""}])
 		await d.finished
-		if d.last_choice == 0:
+		if d.last_choice >= 0 and d.last_choice < 4:
 			if int(GameState.run["crystals"]) < price:
 				hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 				return
 			GameState.run["crystals"] = int(GameState.run["crystals"]) - price
 			GameState.run["flags"]["horse"] = true
 			GameState.run["names"]["horse"] = "Clover"
+			GameState.run["names"]["horse_coat"] = ["bay", "grey", "black", "palomino"][d.last_choice]
 			hud.toast("Clover is yours!", Color(1, 0.9, 0.4))
 			Music.instance(get_tree()).sfx("levelup")
 			GameState.run["friendship"]["benno"] = int(GameState.run["friendship"].get("benno", 0)) + 10
@@ -285,3 +289,28 @@ func _stable() -> void:
 		player.mount()
 		var back: Array = I.get("back", ["town", 32, 93])
 		go_to(str(back[0]), Vector2(float(back[1]) * TILE, float(back[2]) * TILE), "down")
+
+
+## Ivy's bank: deposit crystals for interest (1% a day, 2% at 6 hearts), withdraw any time.
+func _bank() -> void:
+	var d := Dialogue.instance(get_tree())
+	var bal := int(GameState.run.get("bank", 0))
+	var rate := 2 if GameState.has_friend_perk("ivy", 6) else 1
+	d.say([{"who": "Ivy", "text": "Balance ◆%d, %d%% a day.  You're carrying ◆%d." % [bal, rate, int(GameState.run["crystals"])], "choice": ["Deposit 100", "Deposit all", "Withdraw all", "Leave"], "key": ""}])
+	await d.finished
+	match d.last_choice:
+		0:
+			if int(GameState.run["crystals"]) >= 100:
+				GameState.run["crystals"] = int(GameState.run["crystals"]) - 100
+				GameState.run["bank"] = bal + 100
+				hud.toast("Deposited ◆100.")
+			else:
+				hud.toast("Not enough on you.", Color(1, 0.7, 0.7))
+		1:
+			GameState.run["bank"] = bal + int(GameState.run["crystals"])
+			GameState.run["crystals"] = 0
+			hud.toast("Deposited everything.")
+		2:
+			GameState.run["crystals"] = int(GameState.run["crystals"]) + bal
+			GameState.run["bank"] = 0
+			hud.toast("Withdrew ◆%d." % bal)

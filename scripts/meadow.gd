@@ -148,6 +148,7 @@ func _summon_boss() -> void:
 			{"who": "The President's Man", "text": "He said you'd be farming. He didn't say you'd be good at it."},
 		])
 	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(18 * TILE, 12 * TILE))
+	boss_card("big_grump" if GameState.is_penguins() else "thug_brute", "Big Grump" if GameState.is_penguins() else "The President's Man")
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false
 

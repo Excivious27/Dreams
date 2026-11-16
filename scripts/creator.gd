@@ -23,6 +23,7 @@ func _init(start_look: Dictionary = {}, playable_sprite := "", with_cancel := fa
 
 
 func _ready() -> void:
+	Hud.skin_buttons(self)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_build()
 

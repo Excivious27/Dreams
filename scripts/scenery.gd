@@ -106,6 +106,40 @@ func _process(delta: float) -> void:
 	_canvas.queue_redraw()
 
 
+var _flash_t := 0.0
+var _next_flash := 4.0
+
+
+func _draw_weather_extras() -> void:
+	var t := int(GameState.run.get("time", 0))
+	# Rainbow: the first clear hours after a wet day, morning only.
+	if weather in ["clear", "sun", "petals"] and GameState.weather_for(int(GameState.run["day"]) - 1) in ["rain", "storm"] and t < 11 * 60 and Art.has("fx", "rainbow"):
+		_canvas.draw_texture_rect(Art.tex("fx", "rainbow"), Rect2(Vector2(20, 40), Vector2(268, 84)), false, Color(1, 1, 1, 0.55))
+	# God rays on sunny mornings, drifting slowly.
+	if weather == "sun" and t >= 6 * 60 and t < 10 * 60 and Art.has("fx", "godrays_a"):
+		var gx := sin(_ov_t * 0.15) * 10.0
+		_canvas.draw_texture_rect(Art.tex("fx", "godrays_a"), Rect2(Vector2(140 + gx, -10), Vector2(140, 100)), false, Color(1, 1, 1, 0.35))
+	# Wind streaks race across on windy days.
+	if weather == "wind" and Art.has("fx", "wind_streak_0"):
+		for i in 4:
+			var x := fmod(_ov_t * (120.0 + i * 25.0) + i * 90.0, _w + 120.0) - 60.0
+			_canvas.draw_texture_rect(Art.tex("fx", "wind_streak_%d" % i), Rect2(Vector2(x, 60 + i * 95 + sin(_ov_t + i) * 6.0), Vector2(40, 24)), false, Color(1, 1, 1, 0.5))
+	# Lightning in storms: a quick 4-frame flash every few seconds.
+	if weather == "storm" and Art.has("fx", "lightning_flash"):
+		_next_flash -= get_process_delta_time()
+		if _next_flash <= 0.0:
+			_flash_t = 0.5
+			_next_flash = randf_range(3.0, 9.0)
+		if _flash_t > 0.0:
+			_flash_t -= get_process_delta_time()
+			var fr := clampi(int((0.5 - _flash_t) * 8.0), 0, 3)
+			var info := Art.info("fx", "lightning_flash")
+			var fw := float(info.get("cell_w", 188))
+			var fh := float(info.get("cell_h", 136))
+			_canvas.draw_texture_rect_region(Art.tex("fx", "lightning_flash"), Rect2(Vector2(randf_range(-20, 120), 0), Vector2(170, 120)), Rect2(fr * fw, 0, fw, fh), Color(1, 1, 1, 0.8))
+			_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(1, 1, 1, 0.12 if fr < 2 else 0.04))
+
+
 func _spawn_flock() -> void:
 	var going_right := randf() < 0.5
 	var y := randf_range(20, 120)
@@ -136,6 +170,8 @@ func _on_draw() -> void:
 		var at := Art.tex("fx", "aurora2") if Art.has("fx", "aurora2") else Art.tex("fx", "aurora")
 		var fr := int(_ov_t * 3.0) % 4
 		_canvas.draw_texture_rect_region(at, Rect2(Vector2(-10, 60), Vector2(290, 72)), Rect2(fr * 512, 0, 512, 128), Color(1, 1, 1, 0.55))
+	if overhead:
+		_draw_weather_extras()
 	var ov := _overlay()
 	if ov != null and overhead:
 		# Painted weather overlay: 4-frame 128x96 strip tiled across the screen, additive-ish.

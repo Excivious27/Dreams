@@ -26,6 +26,7 @@ func _ready() -> void:
 	_panel.visible = false
 	_panel.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_panel.add_theme_stylebox_override("panel", Hud.panel_stylebox("panel_wood"))
+	Hud.skin_buttons(_panel)
 	add_child(_panel)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 4)
@@ -35,10 +36,19 @@ func _ready() -> void:
 	v.add_child(_tabs)
 	for t: String in TABS:
 		var b := Button.new()
-		b.text = t
-		b.add_theme_font_size_override("font_size", 7)
+		var tab_icon := "tab_" + t.to_lower()
+		if Art.has("ui", tab_icon):
+			b.icon = Art.tex("ui", tab_icon)
+			b.expand_icon = true
+			b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			b.tooltip_text = t
+			b.custom_minimum_size = Vector2(0, 22)
+			b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		else:
+			b.text = t
+			b.add_theme_font_size_override("font_size", 7)
+			b.custom_minimum_size = Vector2(0, 18)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		b.custom_minimum_size = Vector2(0, 18)
 		b.pressed.connect(func() -> void: _tab = t; _refresh())
 		_tabs.add_child(b)
 		_tab_buttons[t] = b

@@ -32,6 +32,8 @@ func after_ready() -> void:
 	_place_props()
 	if int(GameState.run["time"]) <= GameState.DAY_START + 5:
 		hud.toast("%s today · %s tomorrow" % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()], Color(0.9, 0.95, 1.0))
+		if GameState.festival_today() != "":
+			hud.toast("It's the %s! Head to the town plaza." % GameState.festival_name(GameState.festival_today()), Color(1, 0.9, 0.5))
 	var note := str(GameState.run["flags"].get("wake_note", ""))
 	if note != "":
 		GameState.run["flags"].erase("wake_note")

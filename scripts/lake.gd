@@ -109,8 +109,8 @@ func after_ready() -> void:
 		var beam := Sprite2D.new()
 		beam.position = cell_center(Vector2i(5, 24)) + Vector2(0, -150)
 		add_child(beam)
-	_anim_prop("props", "duck", Vector2i(14, 14), 0, 1.5)
-	_anim_prop("props", "heron", Vector2i(26, 10), 0, 1.5)
+	anim_prop("props", "duck", Vector2i(14, 14), 0, 1.5)
+	anim_prop("props", "heron", Vector2i(26, 10), 0, 1.5)
 	prop("props", "beaver_dam", Vector2i(11, 29), 2)
 	prop("props", "signpost", Vector2i(36, 24))
 	for c: Vector2i in [Vector2i(36, 20), Vector2i(36, 28)]:
@@ -195,18 +195,6 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 					set_thing(wc.x, wc.y, {"type": "water", "hint": ""})
 	things[door] = {"type": "door", "interior": interior, "hint": hint}
 
-
-func _anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -> void:
-	if not Art.has(group, name):
-		return
-	var a := AnimatedSprite2D.new()
-	a.sprite_frames = Art.frames(group, {"idle": name}, {"idle": fps})
-	a.animation = "idle"
-	a.scale = Vector2(0.5, 0.5)
-	a.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1)
-	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
-	add_child(a)
-	a.play("idle")
 
 
 func has_npc_at(c: Vector2i) -> bool:

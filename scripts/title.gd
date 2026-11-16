@@ -17,10 +17,11 @@ var _pet_edit: LineEdit
 
 
 func _ready() -> void:
+	Hud.skin_buttons(self)
 	InputSetup.ensure_actions()
 	_arcs = GameState.load_json("res://data/arcs.json")
 	_playables = GameState.load_json("res://data/playable.json")
-	var bg := Art.tex("ui", "title_bg")
+	var bg := Art.tex("ui", "title_keyart") if Art.has("ui", "title_keyart") else Art.tex("ui", "title_bg")
 	if bg:
 		var tr := TextureRect.new()
 		tr.texture = bg
@@ -86,13 +87,23 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 func _show_title() -> void:
 	_clear()
 	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 150)
+	spacer.custom_minimum_size = Vector2(0, 150 if not Art.has("ui", "wordmark_glow") else 120)
 	_page.add_child(spacer)
-	_page.add_child(_label("DREAMS", 36))
+	if Art.has("ui", "wordmark_glow"):
+		# The key art already carries the wordmark in the sky; add the glowing one as a crisp overlay.
+		var wm := TextureRect.new()
+		wm.texture = Art.tex("ui", "wordmark_glow")
+		wm.custom_minimum_size = Vector2(0, 40)
+		wm.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		wm.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		wm.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		_page.add_child(wm)
+	else:
+		_page.add_child(_label("DREAMS", 36))
 	_page.add_child(_label("a mystical farming adventure", 9))
 	_page.add_child(_label("Two paths. One world. Every choice counts.", 8))
 	var spacer2 := Control.new()
-	spacer2.custom_minimum_size = Vector2(0, 120)
+	spacer2.custom_minimum_size = Vector2(0, 150)
 	_page.add_child(spacer2)
 	if GameState.has_run():
 		var n: String = GameState.run["names"]["character"]

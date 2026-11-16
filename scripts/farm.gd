@@ -787,6 +787,25 @@ func _place_props() -> void:
 		if b.is_empty():
 			continue
 		var c: Vector2i = b["cell"]
+		# Tiered station animations (Prompts 09 w177): the station's look follows the
+		# crafting tier you've unlocked there.
+		var station_anim := ""
+		match id:
+			"workbench": station_anim = "bench_%d" % clampi(Crafting.tier_unlocked("workbench"), 1, 4)
+			"furnace": station_anim = "forge_%d" % clampi(Crafting.tier_unlocked("smith"), 1, 4)
+			"keg": station_anim = "cider_press"
+			"beehive": station_anim = "honey_extractor"
+		if station_anim != "" and Art.has("stations", station_anim):
+			var st := AnimatedSprite2D.new()
+			st.sprite_frames = Art.frames("stations", {"idle": station_anim}, {"idle": 4.0})
+			st.animation = "idle"
+			st.scale = Vector2(0.5, 0.5)
+			st.position = cell_center(c)
+			st.offset = Vector2(0, -float(Art.info("stations", station_anim).get("cell_h", 64)) / 2.0)
+			add_child(st)
+			st.play("idle")
+			blocked[c] = true
+			continue
 		if b.has("anim") and Art.has("props", str(b["anim"])):
 			var sc := AnimatedSprite2D.new()
 			sc.sprite_frames = Art.frames("props", {"idle": str(b["anim"])}, {"idle": 5.0})

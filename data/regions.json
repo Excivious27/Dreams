@@ -3704,17 +3704,6 @@
   "forage": 10,
   "things": [
    {
-    "type": "note",
-    "cell": [
-     37,
-     7
-    ],
-    "who": "Tam",
-    "text": "Tam's hut. A crook by the door, wool on every surface, and the smell of cider.",
-    "hint": "A: Tam's hut",
-    "solid": false
-   },
-   {
     "type": "loot",
     "cell": [
      13,
@@ -3736,6 +3725,16 @@
     "n": 2,
     "hint": "A: windfall apples",
     "every": 1,
+    "solid": false
+   },
+   {
+    "type": "idoor",
+    "cell": [
+     37,
+     9
+    ],
+    "interior": "tam_hut",
+    "hint": "A: Tam's hut",
     "solid": false
    }
   ],
@@ -4488,6 +4487,17 @@
     "reward": "relic_blade",
     "max_hp": 20,
     "hint": "A: the guardian statue",
+    "solid": false,
+    "title": "The Ruin Warden"
+   },
+   {
+    "type": "idoor",
+    "cell": [
+     20,
+     11
+    ],
+    "interior": "sel_camp",
+    "hint": "A: Sel's tent",
     "solid": false
    }
   ],
@@ -4954,6 +4964,17 @@
     "reward": "relic_crown",
     "max_hp": 10,
     "hint": "A: the crowned stone",
+    "solid": false,
+    "title": "The Golem King"
+   },
+   {
+    "type": "idoor",
+    "cell": [
+     46,
+     10
+    ],
+    "interior": "quarry_office",
+    "hint": "A: Granite's office",
     "solid": false
    }
   ],
@@ -5328,17 +5349,6 @@
   "forage": 12,
   "things": [
    {
-    "type": "note",
-    "cell": [
-     41,
-     9
-    ],
-    "who": "Old Moss",
-    "text": "Old Moss's hut. Frogs on the step. A kettle that's never off. 'Don't drink the black water,' says a sign, 'unless you want to.'",
-    "hint": "A: Old Moss's hut",
-    "solid": false
-   },
-   {
     "type": "loot",
     "cell": [
      9,
@@ -5376,6 +5386,17 @@
     "reward": "relic_mask",
     "max_hp": 10,
     "hint": "A: the boiling pool",
+    "solid": false,
+    "title": "The Marsh Witch"
+   },
+   {
+    "type": "idoor",
+    "cell": [
+     41,
+     9
+    ],
+    "interior": "moss_hut",
+    "hint": "A: Old Moss's hut",
     "solid": false
    }
   ],
@@ -5681,17 +5702,6 @@
   "forage": 10,
   "things": [
    {
-    "type": "note",
-    "cell": [
-     7,
-     31
-    ],
-    "who": "",
-    "text": "A fisherman's hut with nets drying. 'GONE FISHING. BACK WHEN I'M BACK.'",
-    "hint": "A: the hut",
-    "solid": false
-   },
-   {
     "type": "loot",
     "cell": [
      23,
@@ -5713,6 +5723,16 @@
     "energy": 30,
     "msg": "Fish on the fire. Someone left it for whoever came by.",
     "hint": "A: the campfire",
+    "solid": false
+   },
+   {
+    "type": "idoor",
+    "cell": [
+     7,
+     31
+    ],
+    "interior": "river_hut",
+    "hint": "A: the fishing hut",
     "solid": false
    }
   ],

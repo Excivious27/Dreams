@@ -252,6 +252,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"door":
 			go_to(str(thing["scene"]), Vector2(float(thing["spawn"][0]) * TILE, float(thing["spawn"][1]) * TILE), str(thing.get("facing", "down")))
 			return true
+		"idoor":
+			GameMap.next_interior = str(thing["interior"])
+			go_to("interior", Vector2.ZERO, "up")
+			return true
 		"mrock":
 			if GameState.held_tool() != "pickaxe":
 				return GameState.has_tool("pickaxe")
@@ -306,6 +310,7 @@ func _boss(thing: Dictionary) -> void:
 	player.frozen = true
 	await say([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "..."))}])
 	var b := spawn_enemy(str(thing.get("kind", "commander")), player.position + Vector2(40, 0))
+	boss_card(str(thing.get("kind", "commander")), str(thing.get("title", "")))
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false
 	_boss_node = b

@@ -86,8 +86,8 @@ func _draw_hud() -> void:
 	var hp := int(r["hp"])
 	var max_hp := int(r["max_hp"])
 	var hearts := int(ceil(max_hp / float(GameState.HEART_HP)))
-	var heart_full := Art.tex("ui", "heart_full")
-	var heart_empty := Art.tex("ui", "heart_empty")
+	var heart_full := Art.tex("ui", "heart2_full") if Art.has("ui", "heart2_full") else Art.tex("ui", "heart_full")
+	var heart_empty := Art.tex("ui", "heart2_empty") if Art.has("ui", "heart2_empty") else Art.tex("ui", "heart_empty")
 	for i in hearts:
 		var p := Vector2(6 + i * 11, 4)
 		var f := clampf((hp - i * GameState.HEART_HP) / float(GameState.HEART_HP), 0.0, 1.0)
@@ -101,21 +101,28 @@ func _draw_hud() -> void:
 	# Mana (small blue bar under the hearts), only once you can cast.
 	if int(r.get("max_mana", 0)) > 0 and (GameState.skill_level("magic") > 1 or int(r.get("mana", 0)) > 0):
 		var mb := Rect2(6, 16, 50, 4)
-		c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
-		c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
+		if Art.has("ui", "bar_h_empty") and Art.has("ui", "bar_h_blue"):
+			_hbar(c, Rect2(4, 15, 54, 7), GameState.vital("mana"), "bar_h_blue")
+		else:
+			c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
+			c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
 		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), "%d/%d" % [int(r.get("mana", 0)), int(r.get("max_mana", 0))], HORIZONTAL_ALIGNMENT_LEFT, 50, 7, Color(0.8, 0.9, 1.0))
 	# Clock box (top right)
 	var box := Rect2(166, 2, 100, 28)
 	_panel(c, "panel_parchment", box)
 	var dark := Color(0.25, 0.15, 0.05)
-	var sicon := Art.tex("ui", "season_" + GameState.season())
+	var sicon := Art.tex("ui", "season2_" + GameState.season()) if Art.has("ui", "season2_" + GameState.season()) else Art.tex("ui", "season_" + GameState.season())
 	if sicon:
 		c.draw_texture_rect(sicon, Rect2(box.position.x + 4, box.position.y + 3, 9, 9), false)
 	c.draw_string(_font, Vector2(box.position.x + (15 if sicon else 6), box.position.y + 11), "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()], HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
 	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 22), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
 	var wx := GameState.weather_today()
 	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "〰", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
-	c.draw_string(_font, Vector2(box.position.x + 52, box.position.y + 22), str(wicon), HORIZONTAL_ALIGNMENT_LEFT, 20, 8, dark)
+	var wxa := "wx_" + (wx if wx != "petals" else "petals_a")
+	if Art.has("ui", wxa):
+		c.draw_texture_rect(Art.tex("ui", wxa), Rect2(box.position.x + 50, box.position.y + 14, 11, 11), false)
+	else:
+		c.draw_string(_font, Vector2(box.position.x + 52, box.position.y + 22), str(wicon), HORIZONTAL_ALIGNMENT_LEFT, 20, 8, dark)
 	var crystal := Art.tex("ui", "crystal")
 	var cx := box.end.x - 6
 	var ctext := str(int(r["crystals"]))
@@ -166,13 +173,27 @@ func _draw_hud() -> void:
 	# Energy bar (vertical, right side, Stardew style)
 	var e := float(r["energy"]) / float(r["max_energy"])
 	var bar := Rect2(256, 200, 9, 130)
-	c.draw_rect(bar.grow(1), Color(0.1, 0.07, 0.04, 0.8))
 	var fill_h := bar.size.y * e
 	var col := Color("7ad35a") if e > 0.5 else (Color("f2c84b") if e > 0.25 else Color("e86a3a"))
-	c.draw_rect(Rect2(bar.position.x, bar.end.y - fill_h, bar.size.x, fill_h), col)
-	var bolt := Art.tex("ui", "bolt_full")
-	if bolt:
-		c.draw_texture_rect(bolt, Rect2(bar.position.x - 2, bar.position.y - 14, 13, 13), false)
+	if Art.has("ui", "ebar_empty") and Art.has("ui", "ebar_green"):
+		# Painted vertical bar (Prompts 09 HUD sheet): empty frame, fill cropped from the bottom.
+		var fr := Rect2(250, 186, 20, 150)
+		var fill_name := "ebar_green" if e > 0.5 else ("ebar_amber" if e > 0.25 else "ebar_red")
+		var fe := Art.tex("ui", "ebar_empty")
+		var ff := Art.tex("ui", fill_name) if Art.has("ui", fill_name) else Art.tex("ui", "ebar_green")
+		c.draw_texture_rect(fe, fr, false)
+		# The tube inside the frame runs ~12%..95% of its height; crop the fill texture to that.
+		var top := 0.12
+		var bot := 0.95
+		var frac := clampf(e, 0.0, 1.0)
+		var y0 := bot - (bot - top) * frac
+		c.draw_texture_rect_region(ff, Rect2(fr.position.x, fr.position.y + fr.size.y * y0, fr.size.x, fr.size.y * (bot - y0)), Rect2(0, ff.get_height() * y0, ff.get_width(), ff.get_height() * (bot - y0)))
+	else:
+		c.draw_rect(bar.grow(1), Color(0.1, 0.07, 0.04, 0.8))
+		c.draw_rect(Rect2(bar.position.x, bar.end.y - fill_h, bar.size.x, fill_h), col)
+		var bolt := Art.tex("ui", "bolt_full")
+		if bolt:
+			c.draw_texture_rect(bolt, Rect2(bar.position.x - 2, bar.position.y - 14, 13, 13), false)
 	c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
 
 
@@ -221,6 +242,46 @@ func _panel(c: CanvasItem, name: String, rect: Rect2) -> void:
 
 
 ## Panels in the art's palette: parchment (light, dark ink) or wood (dark, light text).
+## Horizontal painted bar: bar_h_empty frame + fill cropped from the left.
+func _hbar(c: CanvasItem, r: Rect2, frac: float, fill: String) -> void:
+	c.draw_texture_rect(Art.tex("ui", "bar_h_empty"), r, false)
+	var ff := Art.tex("ui", fill)
+	var f := clampf(frac, 0.0, 1.0)
+	if f > 0.0:
+		c.draw_texture_rect_region(ff, Rect2(r.position, Vector2(r.size.x * f, r.size.y)), Rect2(0, 0, ff.get_width() * f, ff.get_height()))
+
+
+## Wooden button skin (Prompts 09 menu sheet) as a 9-slice on a Theme.
+static func skin_buttons(ctrl: Control) -> void:
+	if not Art.has("ui", "btn2_wood"):
+		return
+	var th := Theme.new()
+	for st: String in ["normal", "hover", "pressed", "disabled", "focus"]:
+		var sb := StyleBoxTexture.new()
+		sb.texture = Art.tex("ui", "btn2_wood" if st != "disabled" else "btn2_disabled")
+		var w := sb.texture.get_width()
+		var h := sb.texture.get_height()
+		sb.texture_margin_left = w * 0.12
+		sb.texture_margin_right = w * 0.12
+		sb.texture_margin_top = h * 0.25
+		sb.texture_margin_bottom = h * 0.3
+		sb.content_margin_left = 6
+		sb.content_margin_right = 6
+		sb.content_margin_top = 3
+		sb.content_margin_bottom = 3
+		if st == "pressed":
+			sb.modulate_color = Color(0.85, 0.8, 0.75)
+		elif st == "hover":
+			sb.modulate_color = Color(1.1, 1.05, 1.0)
+		th.set_stylebox(st, "Button", sb)
+	th.set_color("font_color", "Button", Color(1, 0.95, 0.85))
+	th.set_color("font_hover_color", "Button", Color(1, 1, 0.9))
+	th.set_color("font_pressed_color", "Button", Color(1, 0.9, 0.7))
+	th.set_constant("outline_size", "Button", 2)
+	th.set_color("font_outline_color", "Button", Color(0.2, 0.1, 0.05))
+	ctrl.theme = th
+
+
 static func panel_stylebox(name: String) -> StyleBox:
 	var sb := StyleBoxFlat.new()
 	if name == "panel_parchment":

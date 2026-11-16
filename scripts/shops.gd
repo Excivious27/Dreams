@@ -17,6 +17,18 @@ static func offers(shop: String) -> Array:
 			return ["iron_sword", "coal", "copper_ring"]
 		"potions":
 			return ["potion", "energy_tea", "herb_remedy"]
+		"orla":
+			return ["flour", "wheat_seed", "bread"]
+		"marlowe":
+			return ["lamp_oil", "bait", "coffee"]
+		"tam":
+			return ["sheep_wool", "cider", "apple"]
+		"old_moss":
+			return ["glow_cap", "slime_goo", "tea"]
+		"granite":
+			return ["coal", "copper", "iron", "dynamite"]
+		"sel":
+			return ["rune_tablet", "old_coin", "book"]
 		"lodge":
 			var base: Array = ["meat", "bait"]
 			if GameState.has_friend_perk("rook", 4):
@@ -26,13 +38,19 @@ static func offers(shop: String) -> Array:
 
 
 static func run(m: GameMap, shop: String) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook"}.get(shop, "Shop")
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
 		"potions": "Red for hurts. Tea for tired. Don't mix them, I'm not liable.",
 		"bait": "Bait's fresh. Fish aren't picky. People are.",
 		"lodge": "Meat's from the hills. Don't ask which hill.",
+		"orla": "Flour's fresh. Wheat seed if you want to grow your own.",
+		"marlowe": "Oil for lamps. Bait for fish. Coffee for me, but I'll share.",
+		"tam": "Wool, cider, apples. The sheep did most of the work.",
+		"old_moss": "Jars. Don't ask what's in the ones at the back.",
+		"granite": "Ore from the walls. Dynamite if you've got the nerve.",
+		"sel": "Relics. Real ones. Mostly.",
 	}[shop]
 	if shop == "store" and not GameState.run["flags"].has("store_first"):
 		GameState.run["flags"]["store_first"] = true

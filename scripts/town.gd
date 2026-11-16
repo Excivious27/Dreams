@@ -103,6 +103,8 @@ func after_ready() -> void:
 	if not GameState.run["flags"].has("town_seen"):
 		GameState.run["flags"]["town_seen"] = true
 		_arrival.call_deferred()
+	elif GameState.festival_today() != "":
+		hud.toast("%s today, on the plaza!" % GameState.festival_name(GameState.festival_today()), Color(1, 0.9, 0.5))
 
 
 func _place_buildings() -> void:
@@ -135,24 +137,174 @@ func _place_buildings() -> void:
 	building("warehouse_a", Vector2i(8, 5), "", "")
 	building("bank", Vector2i(26, 5), "bank", "A: Bank")
 	if Art.has("props", "town_gate"):
-		prop("props", "town_gate", Vector2i(FARM_EXIT.position.x - 4, 3), 12, 0.0, false, 0.8)
+		prop("props", "gate2" if Art.has("props", "gate2") else "town_gate", Vector2i(FARM_EXIT.position.x - 4, 3), 12, 0.0, false, 0.8 if not Art.has("props", "gate2") else 0.5)
 	# Bridges over the river (walk-under, drawn on the river).
 	for b: Rect2i in BRIDGES:
 		var nm := "bridge_stone2" if b.size.y > 3 else "bridge_wood2"
+		var big := "bridge3_ew_a" if b.size.y > 3 else "foot3_ew_a"
+		if Art.has("props", big):
+			# One wide bridge sprite spanning the river (Prompts 09 dock sheet).
+			prop("props", big, Vector2i(b.position.x - 1, b.end.y - 1), b.size.x + 1, 0.0, false)
+			continue
 		for y in range(b.position.y, b.end.y, 2):
 			prop("props", nm if Art.has("props", nm) else "bridge", Vector2i(b.position.x, y + 1), b.size.x - 1, 0.0, false)
+	# The fountain itself (animated, 4 frames) over its blocked cells.
+	if Art.has("props", "fountain2"):
+		anim_prop("props", "fountain2", Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 1), 4, 5.0)
+	elif Art.has("props", "fountain"):
+		prop("props", "fountain", Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 2), 4)
+
+
+## Festival day: the plaza fills with the season's decor, the fountain is the
+## stage, and a festival stall sells the day's treat. One event per festival.
+func _place_festival(fest: String) -> void:
+	var P := "props"
+	var pf := func(name: String, c: Vector2i, w := 0, solid := true) -> void:
+		if Art.has(P, name):
+			prop(P, name, c, w, 0.0, solid)
+	var af := func(name: String, c: Vector2i, fps := 5.0) -> void:
+		if Art.has(P, name):
+			anim_prop(P, name, c, 0, fps)
+	match fest:
+		"egg":
+			pf.call("fest_ss_02", Vector2i(40, 38), 1); pf.call("fest_ss_06", Vector2i(39, 58), 2); pf.call("fest_ss_07", Vector2i(44, 36), 3)
+			pf.call("fest_ss_09", Vector2i(33, 44)); pf.call("fest_ss_10", Vector2i(47, 44)); pf.call("fest_ss_11", Vector2i(33, 54))
+			for c: Vector2i in [Vector2i(34, 48), Vector2i(46, 48), Vector2i(36, 56), Vector2i(44, 56)]:
+				pf.call("fest_ss_18", c, 1, false)
+			_fest_hunt = true
+		"lantern":
+			for i in 4:
+				pf.call("fest_ss_%02d" % (31 + i % 3), Vector2i(32 + i * 5, 38), 2, false)
+			for c: Vector2i in [Vector2i(32, 44), Vector2i(48, 44), Vector2i(32, 54), Vector2i(48, 54)]:
+				pf.call("fest_ss_%02d" % (23 + (c.x + c.y) % 8), c)
+			af.call("fest_ss_80", Vector2i(40, 54), 6.0)
+			for c: Vector2i in [Vector2i(36, 60), Vector2i(44, 60)]:
+				pf.call("fest_ss_72", c, 1)
+		"harvest":
+			pf.call("fest_fw_00", Vector2i(33, 42)); pf.call("fest_fw_01", Vector2i(47, 42)); pf.call("fest_fw_02", Vector2i(40, 38), 1)
+			pf.call("fest_fw_05", Vector2i(34, 56)); pf.call("fest_fw_04", Vector2i(46, 56)); pf.call("fest_fw_13", Vector2i(39, 55), 2)
+			pf.call("fest_fw_09", Vector2i(31, 48)); pf.call("fest_fw_10", Vector2i(49, 48)); pf.call("fest_fw_11", Vector2i(31, 56)); pf.call("fest_fw_12", Vector2i(49, 56))
+			pf.call("fest_fw_15", Vector2i(44, 60)); pf.call("fest_fw_16", Vector2i(36, 60))
+			for c: Vector2i in [Vector2i(34, 36), Vector2i(46, 36)]:
+				pf.call("fest_fw_22", c, 1, false)
+		"star":
+			pf.call("fest_fw_62", Vector2i(40, 36), 1); pf.call("fest_fw_40", Vector2i(33, 44)); pf.call("fest_fw_39", Vector2i(47, 44))
+			pf.call("fest_fw_41", Vector2i(32, 54)); pf.call("fest_fw_42", Vector2i(48, 54)); pf.call("fest_fw_43", Vector2i(35, 60)); pf.call("fest_fw_44", Vector2i(45, 60))
+			pf.call("fest_fw_58", Vector2i(44, 58), 2); pf.call("fest_fw_57", Vector2i(36, 58), 1); pf.call("fest_fw_68", Vector2i(40, 60), 1, false)
+	set_thing(40, 50, {"type": "festival", "fest": fest, "hint": "A: " + GameState.festival_name(fest)}, false)
+
+
+var _fest_hunt := false
+
+
+
+func _festival_event(fest: String) -> void:
+	var key := "fest_%s_%d" % [fest, int(GameState.run["day"])]
+	player.frozen = true
+	if GameState.run["flags"].has(key):
+		await say([{"who": "Mayor Alder", "text": "You've had your turn. Enjoy the %s!" % GameState.festival_name(fest).to_lower()}])
+		player.frozen = false
+		return
+	match fest:
+		"egg":
+			var d := Dialogue.instance(get_tree())
+			d.say([{"who": "Mayor Alder", "text": "The egg hunt! Twelve eggs hidden round the plaza. Find them before the kids do.", "choice": ["Go!", "Not now"], "key": ""}])
+			await d.finished
+			if d.last_choice == 0:
+				var found := 0
+				var rng := RandomNumberGenerator.new()
+				rng.seed = int(GameState.run["day"])
+				for i in 12:
+					var c := Vector2i(rng.randi_range(30, 50), rng.randi_range(37, 59))
+					if blocked.has(c) or things.has(c) or not _plaza.has(c):
+						continue
+					found += 1
+					things[c] = {"type": "egg", "hint": "A: an egg!"}
+					if Art.has("props", "fest_ss_%02d" % (12 + i % 6)):
+						prop("props", "fest_ss_%02d" % (12 + i % 6), c, 0, 0.0, false)
+				GameState.run["flags"]["eggs_left"] = found
+				hud.toast("%d eggs hidden. Go!" % found, Color(1, 0.9, 0.4))
+				GameState.run["flags"][key] = true
+		"lantern":
+			await say([{"who": "Lumi", "text": "Write a wish, light a lantern, let it go on the river. I won't look."}, {"text": "Your lantern drifts out under the bridge with the others. The sky fills."}])
+			GameState.run["flags"][key] = true
+			GameState.grow_vital("mana", 5)
+			hud.toast("Max mana +5", Color(0.8, 0.9, 1.0))
+			fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.6)
+		"harvest":
+			var best := ""
+			var bv := 0
+			for id in GameState.run["inventory"].keys():
+				var it: Dictionary = GameState.items.get(id, {})
+				if str(it.get("type", "")) == "crop" and GameState.item_value(str(id)) > bv:
+					bv = GameState.item_value(str(id))
+					best = str(id)
+			if best == "":
+				await say([{"who": "Mayor Alder", "text": "Bring a crop to enter the fair! Biggest, brightest, rarest wins."}])
+			else:
+				GameState.add_item(best, -1)
+				var place := 1 if bv >= 100 else (2 if bv >= 40 else 3)
+				await say([{"who": "Mayor Alder", "text": "A %s! %s" % [GameState.item_name(best), ["First prize! The blue ribbon and three hundred crystals.", "Second prize! The red ribbon and a hundred and fifty.", "Third prize! The yellow ribbon and fifty."][place - 1]]}])
+				GameState.run["crystals"] = int(GameState.run["crystals"]) + [300, 150, 50][place - 1]
+				GameState.run["flags"][key] = true
+				xp("farming", 40)
+		"star":
+			await say([{"who": "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
+			var gift: String = ["heart_fruit", "stamina_root", "mana_berry", "cake", "wine", "gold_bar"][int(GameState.run["day"]) % 6]
+			give(gift)
+			GameState.run["flags"][key] = true
+			for id in GameState.npcs:
+				GameState.run["friendship"][id] = int(GameState.run["friendship"].get(id, 0)) + 10
+			hud.toast("Everyone +10 friendship", Color(1, 0.8, 0.9))
+	player.frozen = false
+
+
+## Tall iron lamps on the avenues (Prompts 09 plaza sheet), the old lamp otherwise.
+func _lamp_name(n: int) -> String:
+	var nm := "lamp2_tall_%d" % (n % 6)
+	return nm if Art.has("props", nm) else "lamp"
 
 
 func _place_props() -> void:
+	var fest := GameState.festival_today()
+	if fest != "":
+		_place_festival(fest)
 	# Market stalls on the plaza's north-west, a notice board, benches, flowers.
 	var i := 0
+	var open_hours := int(GameState.run["time"]) >= 8 * 60 and int(GameState.run["time"]) < 18 * 60
+	var stalls2 := Art.has("props", "stall2_red")
 	for c: Vector2i in [Vector2i(33, 24), Vector2i(33, 28), Vector2i(33, 32), Vector2i(35, 20)]:
-		prop("props", ["stall_red", "stall_green", "stall_blue", "stall_yellow"][i % 4], c, 1)
+		var col: String = ["red", "green", "blue", "yellow"][i % 4]
+		if stalls2:
+			prop("props", "stall2_" + col + ("" if open_hours else "_closed"), c, 1)
+		else:
+			prop("props", "stall_" + col, c, 1)
 		i += 1
-	prop("props", "notice_board" if Art.has("props", "notice_board") else "board", Vector2i(35, 42), 1)
-	prop("props", "statue", Vector2i(45, 42), 1)
+	prop("props", "board2" if Art.has("props", "board2") else ("notice_board" if Art.has("props", "notice_board") else "board"), Vector2i(35, 42), 1)
+	prop("props", "statue2_founder" if Art.has("props", "statue2_founder") else "statue", Vector2i(45, 42), 1)
+	if Art.has("props", "statue2_horse"):
+		prop("props", "statue2_horse", Vector2i(12, 36), 1)
+	if Art.has("props", "statue2_crystal"):
+		prop("props", "statue2_crystal", Vector2i(58, 60), 1)
 	for c: Vector2i in [Vector2i(31, 43), Vector2i(49, 43), Vector2i(31, 53), Vector2i(49, 53)]:
-		prop("props", ["bench_wood", "bench_green"][c.x % 2], c, 1)
+		var bn: String = ["bench2_wood_a", "bench2_green_a", "bench2_iron_a"][(c.x + c.y) % 3]
+		prop("props", bn if Art.has("props", bn) else ["bench_wood", "bench_green"][c.x % 2], c, 1)
+	# Planters and bunting around the plaza, a hedge arch into the park.
+	if Art.has("props", "planter2_0"):
+		i = 0
+		for c: Vector2i in [Vector2i(33, 38), Vector2i(47, 38), Vector2i(33, 58), Vector2i(47, 58)]:
+			prop("props", "planter2_%d" % (i % 4), c)
+			i += 1
+	if Art.has("props", "bunting_red"):
+		i = 0
+		for c: Vector2i in [Vector2i(34, 35), Vector2i(43, 35), Vector2i(34, 61), Vector2i(43, 61)]:
+			prop("props", "bunting_" + ["red", "green", "blue", "purple"][i % 4], c, 2, 0.0, false)
+			i += 1
+	if Art.has("props", "hedge2_arch"):
+		prop("props", "hedge2_arch", Vector2i(28, 44), 1, 0.0, false)
+	if Art.has("props", "bed2_long_0"):
+		for c: Vector2i in [Vector2i(14, 46), Vector2i(14, 49), Vector2i(26, 46), Vector2i(26, 49)]:
+			prop("props", "bed2_long_%d" % ((c.x + c.y) % 8), c, 1)
 	var fb := ["flowerbed_red", "flowerbed_blue", "flowerbed_pink", "flowerbed_yellow"]
 	i = 0
 	for c: Vector2i in [Vector2i(30, 40), Vector2i(50, 40), Vector2i(30, 56), Vector2i(50, 56), Vector2i(36, 36), Vector2i(44, 36), Vector2i(36, 59), Vector2i(44, 59)]:
@@ -164,13 +316,13 @@ func _place_props() -> void:
 	for y in range(6, 92, 8):
 		if y > 40 and y < 56:
 			continue
-		prop("props", "lamp", Vector2i(36, y))
-		prop("props", "lamp", Vector2i(45, y))
+		prop("props", _lamp_name(y), Vector2i(36, y))
+		prop("props", _lamp_name(y), Vector2i(45, y))
 	for x in range(6, 80, 8):
 		if (x > 28 and x < 54) or (x > 66 and x < 74):
 			continue
-		prop("props", "lamp", Vector2i(x, 43))
-		prop("props", "lamp", Vector2i(x, 52))
+		prop("props", _lamp_name(x), Vector2i(x, 43))
+		prop("props", _lamp_name(x), Vector2i(x, 52))
 	# Wells, carts, crates: the working edges of town.
 	prop("buildings", "well", Vector2i(30, 56), 2)
 	prop("props", "well_stone", Vector2i(60, 32), 1)
@@ -243,8 +395,18 @@ func _fence_rect(r: Rect2i, gate: Vector2i) -> void:
 func _hedge_row(r: Rect2i) -> void:
 	if not Art.has("props", "hedge_short"):
 		return
-	for c in cells_of([r]):
-		if not things.has(c) and not blocked.has(c):
+	var cells := cells_of([r])
+	var long := Art.has("props", "hedge2_h")
+	var k := 0
+	for c in cells:
+		if things.has(c) or blocked.has(c):
+			continue
+		if long and r.size.x > 2:
+			if k % 2 == 0:
+				var last: bool = k + 1 >= cells.size()
+				prop("props", "hedge2_end" if last else "hedge2_h", c, 0 if last else 1)
+			k += 1
+		else:
 			prop("props", "hedge_short", c)
 
 
@@ -310,6 +472,24 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			var id := str(thing.get("interior", thing.get("shop", "hall")))
 			GameMap.next_interior = id
 			go_to("interior", Vector2.ZERO, "up")
+			return true
+		"festival":
+			later(_festival_event.bind(str(thing.get("fest", ""))))
+			return true
+		"egg":
+			things.erase(c)
+			if props.has(c):
+				(props[c] as Node).queue_free()
+				props.erase(c)
+			var left := int(GameState.run["flags"].get("eggs_left", 1)) - 1
+			GameState.run["flags"]["eggs_left"] = left
+			give("candy", 1)
+			if left <= 0:
+				hud.toast("All the eggs! Alder gives you ◆200.", Color(1, 0.9, 0.4))
+				GameState.run["crystals"] = int(GameState.run["crystals"]) + 200
+				xp("foraging", 30)
+			else:
+				hud.toast("%d eggs left." % left)
 			return true
 		"fountain":
 			if int(GameState.run["crystals"]) >= 1:

@@ -135,8 +135,26 @@ func _ready() -> void:
 	after_ready()
 	_fill_extension()
 	_place_signposts()
+	_place_waiting_horse()
 	unstick_player()
 	_check_quests.call_deferred()
+
+
+## Your horse waits where you dismounted (flags.horse_at = [scene, x, y]);
+## drawn from animals/horse_<coat>, A to ride again.
+func _place_waiting_horse() -> void:
+	var at: Array = GameState.run["flags"].get("horse_at", [])
+	if at.size() < 3 or str(at[0]) != scene_id() or GameState.run["flags"].has("mounted"):
+		return
+	var coat := str(GameState.run.get("names", {}).get("horse_coat", "bay"))
+	var c := Vector2i(int(at[1]), int(at[2]))
+	if Art.has("animals/horse_" + coat, "idle"):
+		var a := anim_prop("animals/horse_" + coat, "idle", c, 0, 2.0)
+		if a:
+			a.flip_h = c.x % 2 == 0
+	elif Art.has("props", "horse3"):
+		anim_prop("props", "horse3", c, 0, 2.0)
+	set_thing(c.x, c.y, {"type": "horse", "hint": "A: ride %s" % str(GameState.run.get("names", {}).get("horse", "your horse"))}, false)
 
 
 ## Subclasses override these.
@@ -252,6 +270,17 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
 		return true
 	match t:
+		"horse":
+			things.erase(c)
+			if props.has(c):
+				(props[c] as Node).queue_free()
+				props.erase(c)
+			for ch in get_children():
+				if ch is AnimatedSprite2D and (ch as AnimatedSprite2D).position.distance_to(cell_center(c)) < 10.0:
+					ch.queue_free()
+			GameState.run["flags"].erase("horse_at")
+			player.mount()
+			return true
 		"sign":
 			tell([{"text": str(thing.get("text", "A signpost."))}])
 			return true
@@ -713,6 +742,24 @@ func draw_exits() -> void:
 
 ## Place a sprite from art/gen with its feet at the bottom-center of cell `c`
 ## (plus `extra_w` cells to the right for wide props). Returns null if missing.
+## Animated prop (strip in the manifest) placed like prop(); never solid unless asked.
+func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0, solid := false, scale := 0.5) -> AnimatedSprite2D:
+	if not Art.has(group, name):
+		return null
+	var a := AnimatedSprite2D.new()
+	a.sprite_frames = Art.frames(group, {"idle": name}, {"idle": fps})
+	a.animation = "idle"
+	a.scale = Vector2(scale, scale)
+	a.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1)
+	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
+	add_child(a)
+	a.play("idle")
+	if solid:
+		for i in extra_w + 1:
+			blocked[Vector2i(c.x + i, c.y)] = true
+	return a
+
+
 func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
 	var s := Art.sprite(group, name)
 	if s == null:
@@ -772,6 +819,42 @@ func clear_cell(c: Vector2i) -> void:
 	if props.has(c):
 		(props[c] as Node).queue_free()
 		props.erase(c)
+
+
+## Boss intro card (ui/card_<kind>): slides in over the screen for a couple of seconds.
+func boss_card(kind: String, title := "") -> void:
+	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_golem_king", "commander": "card_president"}.get(kind, "")
+	if nm == "" or not Art.has("ui", nm):
+		return
+	var layer := CanvasLayer.new()
+	layer.layer = 11
+	var tr := TextureRect.new()
+	tr.texture = Art.tex("ui", nm)
+	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tr.custom_minimum_size = Vector2(250, 84)
+	tr.size = Vector2(250, 84)
+	tr.position = Vector2(290, 180)
+	tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	layer.add_child(tr)
+	var lbl := Label.new()
+	lbl.text = title if title != "" else kind.replace("_", " ").capitalize()
+	lbl.add_theme_font_size_override("font_size", 12)
+	lbl.add_theme_color_override("font_color", Color(1, 0.95, 0.8))
+	lbl.add_theme_constant_override("outline_size", 3)
+	lbl.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.05))
+	lbl.position = Vector2(110, 30)
+	lbl.size = Vector2(130, 30)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tr.add_child(lbl)
+	add_child(layer)
+	Music.instance(get_tree()).sfx("levelup")
+	shake(4.0)
+	var tw := create_tween()
+	tw.tween_property(tr, "position:x", 10.0, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_interval(1.8)
+	tw.tween_property(tr, "position:x", -300.0, 0.3).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_callback(layer.queue_free)
 
 
 ## One-shot effect from art/gen/fx at a world position (bottom-center). Falls back to nothing.

@@ -2843,11 +2843,346 @@ def w174():
                 save(crop(rgba, bb), "crops", "%s_%s" % (crop_name, st))
 
 
+# ---- Prompts-09 batch 6: title, menus, boss cards, costume portraits ---------
+
+def w180():
+    rgba = load("w180_title.png")
+    # Key art occupies the top ~690 px; everything below is on magenta.
+    key = crop(rgba, (0, 0, rgba.shape[1], 690))
+    # The key art is not keyed (it has no magenta); restore alpha where the keyer bit.
+    key_full = Image.open(os.path.join(S.INC, "w180_title.png")).convert("RGBA").crop((0, 0, 1536, 690))
+    save(key_full, "ui", "title_keyart")
+    boxes = _row_sort(_components(rgba, (0, 695, rgba.shape[1], rgba.shape[0]), dilate=6, min_px=100), 60)
+    names = ["wordmark_plain", "wordmark_glow", "wordmark_moon", "start_gem_a", "start_gem_b", "twinkle_a", "twinkle_b"]
+    big = [b for b in boxes if (b[2] - b[0]) > 60]
+    small = [b for b in boxes if (b[2] - b[0]) <= 60]
+    for nm, b in zip(names[:5], big[:5]):
+        save(crop(rgba, b), "ui", nm)
+    for nm, b in zip(names[5:], small[:2]):
+        save(crop(rgba, b), "ui", nm)
+
+def w181(): _comp_sheet("w181_menus.png", "ui", "menu", dilate=4, min_px=80, row_h=90)
+
+def w182():
+    rgba = load("w182_boss_cards.png")
+    boxes = _row_sort(_components(rgba, (0, 0, rgba.shape[1], rgba.shape[0]), dilate=4, min_px=5000), 200)
+    for nm, b in zip(["card_big_grump", "card_thug_brute", "card_president", "card_marsh_witch", "card_golem_king", "card_dark_crystal"], boxes):
+        save(crop(rgba, b), "ui", nm)
+
+def w183():
+    rgba = load("w183_hero_portraits_costumes.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:8]
+    sets = [["armor_leather", "armor_copper"], ["armor_iron", "armor_steel"], ["armor_silver", "armor_gold"], ["armor_crystal", "armor_moon"],
+            ["outfit_farmer", "outfit_forester"], ["outfit_fisher", "outfit_miner"], ["outfit_merchant", "outfit_scholar"], ["outfit_neon", "outfit_penguin"]]
+    ex = ["neutral", "happy", "sad", "angry", "surprised", "determined"]
+    for pair, (y0, y1) in zip(sets, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 12)
+        for si, cs in enumerate(pair):
+            for ei, e in enumerate(ex):
+                bb = region_bbox(rgba, bs[si * 6 + ei])
+                if bb:
+                    im = crop(rgba, bb); im.thumbnail((96, 96))
+                    save(im, "portraits/hero_" + cs, e)
+
+
+# ---- named mapping of the numbered decor pieces -------------------------------
+
+def _alias(group, src, dst, group_out=None):
+    m = S.manifest.get(group, {})
+    if src in m:
+        im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
+        save(im, group_out or group, dst)
+
+def _split(group, src, n, names, horizontal=True):
+    m = S.manifest.get(group, {})
+    if src not in m:
+        return
+    im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
+    w, h = im.size
+    for i, nm in enumerate(names[:n]):
+        box = (int(i * w / n), 0, int((i + 1) * w / n), h) if horizontal else (0, int(i * h / n), w, int((i + 1) * h / n))
+        sub = im.crop(box)
+        bb = sub.getbbox()
+        if bb:
+            save(sub.crop(bb), group, nm)
+
+def _anim_from(group, src, n, name, group_out=None):
+    group_out = group_out or group
+    m = S.manifest.get(group, {})
+    if src not in m:
+        return
+    im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
+    w, h = im.size
+    frames = []
+    for i in range(n):
+        sub = im.crop((int(i * w / n), 0, int((i + 1) * w / n), h))
+        bb = sub.getbbox()
+        frames.append(sub.crop(bb) if bb else sub)
+    strip(frames, group_out, name)
+
+def w_names():
+    P = "props"
+    for i, c in enumerate(["red", "green", "blue", "yellow", "purple", "white"]):
+        _alias(P, "plaza_%02d" % i, "stall2_" + c)
+    for i, c in enumerate(["red", "green", "blue", "yellow", "purple", "white"]):
+        _alias(P, "plaza_%02d" % (7 + i), "stall2_%s_closed" % c)
+    _anim_from(P, "plaza_06", 4, "fountain2")
+    _split(P, "plaza_13", 2, ["bench2_wood_a", "bench2_wood_b"]); _split(P, "plaza_14", 2, ["bench2_green_a", "bench2_green_b"]); _split(P, "plaza_15", 2, ["bench2_iron_a", "bench2_iron_b"])
+    for i in range(16, 22):
+        _alias(P, "plaza_%02d" % i, "lamp2_tall_%d" % (i - 16))
+    for i in range(22, 28):
+        _alias(P, "plaza_%02d" % i, "lamp2_short_%d" % (i - 22))
+    _split(P, "plaza_28", 8, ["bed2_long_%d" % i for i in range(8)])
+    for i in range(29, 37):
+        _alias(P, "plaza_%02d" % i, "bed2_round_%d" % (i - 29))
+    for i, nm in enumerate(["hedge2_h", "hedge2_corner", "hedge2_corner_b", "hedge2_end", "hedge2_ball", "hedge2_pot", "hedge2_arch", "hedge2_tree", "hedge2_tree_s"]):
+        _alias(P, "plaza_%02d" % (36 + i), nm)
+    for i in range(45, 49):
+        _alias(P, "plaza_%02d" % i, "planter2_%d" % (i - 45))
+    for i, nm in enumerate(["statue2_founder", "statue2_horse", "statue2_crystal", "board2", "post2", "well3", "gate2"]):
+        _alias(P, "plaza_%02d" % (49 + i), nm)
+    for i, c in enumerate(["red", "green", "blue", "purple"]):
+        _alias(P, "plaza_%02d" % (56 + i), "bunting_" + c)
+    _split("tiles", "plaza_60", 6, ["plaza_ring_%d" % i for i in range(6)]) if False else None
+    m = S.manifest["props"]
+    if "plaza_60" in m:
+        im = Image.open(os.path.join(S.OUT, m["plaza_60"]["file"])).convert("RGBA")
+        for i in range(6):
+            sub = im.crop((int(i * im.width / 6), 0, int((i + 1) * im.width / 6), im.height))
+            save(scale_to(sub, width=TILE2, height=TILE2, cover=True), "tiles", "plaza_ring_%d" % i)
+    if "plaza_61" in m:
+        im = Image.open(os.path.join(S.OUT, m["plaza_61"]["file"])).convert("RGBA")
+        for i in range(4):
+            sub = im.crop((int(i * im.width / 4), 0, int((i + 1) * im.width / 4), im.height))
+            save(scale_to(sub, width=TILE2, height=TILE2, cover=True), "tiles", "brick2_%d" % i)
+    for i, nm in enumerate(["mailbox2_red", "mailbox2_blue", "mailbox2_green", "picket2_h", "picket2_gate", "cafe2_a", "cafe2_b", "flower_cart", "bread_cart", "barrel2_a", "crates2_a", "barrel2_b", "crates2_b"]):
+        _alias(P, "plaza_%02d" % (62 + i), nm)
+
+
+def w_names2():
+    P = "props"
+    for i, nm in enumerate(["bridge3_ns_3", "bridge3_ns_5", "bridge3_ns_7", "bridge3_ns_arch", "bridge3_ew_a", "bridge3_ew_b", "foot3_ns_a", "foot3_ns_b", "foot3_ns_c", "foot3_ns_d", "foot3_ew_a", "foot3_ew_b", "covered_bridge", "board3_straight", "board3_corner", "board3_t", "board3_end", "board3_post", "board3_steps", "board3_rail", "board3_rail_end", "rowboat2_idle", "rowboat2_a", "rowboat2_b", "rowboat2_c", "rowboat2_d", "boathouse", "canoe2"]):
+        _alias(P, "dock_%02d" % i, nm)
+    _anim_from(P, "dock_28", 4, "buoy2_red"); _anim_from(P, "dock_29", 4, "buoy2_yellow")
+    for i, nm in enumerate(["moor_a", "moor_b", "moor_rope", "dock_lantern", "fish_rack", "crab_pots2", "gangplank", "ferry_raft"]):
+        _alias(P, "dock_%02d" % (31 + i), nm)
+    # stable
+    for i, nm in enumerate(["stall_a", "stall_b", "stall_c", "stall_side_a", "stall_side_b", "stall_side_c", "stable3", "hay_feeder"]):
+        _alias(P, "stable_%02d" % i, nm)
+    frames = []
+    for i in range(8, 12):
+        m = S.manifest["props"]
+        if "stable_%02d" % i in m:
+            frames.append(Image.open(os.path.join(S.OUT, m["stable_%02d" % i]["file"])).convert("RGBA"))
+    if frames:
+        strip(frames, P, "trough2")
+    _alias(P, "stable_12", "tack_wall")
+    for ci, coat in enumerate(["bay", "grey", "black", "palomino"]):
+        base = 13 + ci * 12
+        m = S.manifest["props"]
+        def fr(i):
+            return Image.open(os.path.join(S.OUT, m["stable_%02d" % i]["file"])).convert("RGBA")
+        try:
+            strip([fr(base), fr(base + 1)], "animals/horse_" + coat, "idle")
+            strip([fr(base + 2), fr(base + 3), fr(base + 4), fr(base + 5)], "animals/horse_" + coat, "walk")
+            strip([fr(base + 6), fr(base + 7)], "animals/horse_" + coat, "run")
+            strip([fr(base + 8), fr(base + 9), fr(base + 10), fr(base + 11)], "animals/horse_" + coat, "eat")
+        except KeyError:
+            pass
+    m = S.manifest["props"]
+    def fr(i):
+        return Image.open(os.path.join(S.OUT, m["stable_%02d" % i]["file"])).convert("RGBA")
+    strip([fr(61), fr(62)], "animals/donkey_b", "idle"); strip([fr(63), fr(64)], "animals/donkey_b", "walk")
+    strip([fr(65), fr(66)], "animals/llama_b", "idle"); strip([fr(67), fr(68)], "animals/llama_b", "walk")
+    strip([fr(69), fr(70)], "animals/foal_b", "idle"); strip([fr(71), fr(72)], "animals/foal_b", "walk")
+    for i, nm in enumerate(["saddle_plain", "saddle_fine", "saddle_crystal", "hitch_post", "horseshoe_sign", "paddock_h", "paddock_corner", "paddock_gate", "carrot_bunch", "apple_bucket2", "riding_boots", "wheat_sheaf", "lavender_sprig"]):
+        _alias(P, "stable_%02d" % (73 + i), nm)
+
+
+def w_names3():
+    U = "ui"
+    for i, nm in enumerate(["heart2_full", "heart2_3q", "heart2_half", "heart2_q", "heart2_empty", "heart2_container", "heart2_gold", "heart2_gold_b", "heart2_winged", "plate_100"]):
+        _alias(U, "hud2_%02d" % i, nm)
+    for i, nm in enumerate(["buff_rain", "buff_heat", "buff_snow", "buff_haste", "buff_shield", "buff_glow"]):
+        _alias(U, "hud2_%02d" % (10 + i), nm)
+    for i, nm in enumerate(["ebar_empty", "ebar_green", "ebar_amber", "ebar_red", "ebar_cracked", "mbar_empty", "mbar_blue", "mbar_grey"]):
+        _alias(U, "hud2_%02d" % (16 + i), nm)
+    for i, nm in enumerate(["buff_tired", "buff_hungry", "buff_fed", "buff_lucky", "buff_cursed", "buff_wet", "wx_sun", "wx_rain", "wx_storm", "wx_fog", "wx_petals_a", "wx_petals_b", "wx_wind", "wx_clear", "wx_fireflies", "wx_leaves", "wx_snow", "wx_blizzard", "wx_rainbow", "clock2", "season2_spring", "season2_summer", "season2_fall", "season2_winter", "daynight_dial", "xp_bars", "cap_a", "cap_b", "cap_c", "cap_d", "bar_h_empty", "bar_h_green", "bar_h_blue", "bar_h_purple", "cap_e", "cap_f", "cap_g", "cap_h"]):
+        _alias(U, "hud2_%02d" % (24 + i), nm)
+    m = S.manifest["ui"]
+    def fr(i):
+        return Image.open(os.path.join(S.OUT, m["hud2_%02d" % i]["file"])).convert("RGBA")
+    try:
+        strip([fr(66), fr(72), fr(81), fr(85)], "fx", "levelup2")
+    except KeyError:
+        pass
+
+
+def w_names4():
+    U = "ui"
+    for i, nm in [(1, "badge_1"), (2, "crest_penguin"), (3, "badge_2"), (5, "badge_3"), (6, "crest_gangster"), (10, "btn2_wood"), (12, "btn2_disabled"), (13, "btn2_stone"), (14, "toggle_on"), (15, "toggle_off"), (16, "slider2"), (17, "check_off"), (18, "check_on"), (20, "scroll_a"), (21, "scroll_b"), (22, "scroll_c"), (23, "bubble2"), (26, "panel2_fill"), (29, "bar2"), (42, "cursor_arrow"), (43, "cursor_hand"), (44, "cursor_grab")]:
+        _alias(U, "menu_%02d" % i, nm)
+    _split(U, "menu_19", 6, ["tab_items", "tab_skills", "tab_social", "tab_map", "tab_quests", "tab_options"])
+    _split(U, "menu_28", 6, ["tab_items_sel", "tab_skills_sel", "tab_social_sel", "tab_map_sel", "tab_quests_sel", "tab_options_sel"])
+    _split(U, "menu_11", 3, ["btn2_a", "btn2_b", "btn2_c"], horizontal=True)
+
+
+# ---- interiors (Prompts-09 batch 4): floor/wall kits -> tiles, furniture names
+
+def _floor_kit(group, src, name, n=8):
+    m = S.manifest.get(group, {})
+    if src not in m:
+        return
+    im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
+    w, h = im.size
+    for i in range(n):
+        sub = im.crop((int(i * w / n), 0, int((i + 1) * w / n), h))
+        bb = sub.getbbox()
+        if bb:
+            tile = scale_to(sub.crop(bb), width=TILE2, height=TILE2, cover=True)
+            save(tile, "tiles", "%s_%d" % (name, i))
+    # main fl_<name> = variant 0 as a 3x3-compatible single tile set (tileset_rect uses index 4 = centre)
+    sub = im.crop((0, 0, int(w / n), h)); bb = sub.getbbox()
+    t = scale_to(sub.crop(bb), width=TILE2, height=TILE2, cover=True)
+    sheet = Image.new("RGBA", (TILE2 * 3, TILE2 * 3))
+    for i in range(9):
+        sheet.alpha_composite(t, ((i % 3) * TILE2, (i // 3) * TILE2))
+    save(sheet, "tiles", name)
+    S.manifest["tiles"][name].update({"cols": 3, "rows": 3})
+
+def _wall_kit(group, src, name, n=5, parts=("_l", "_m", "_m2", "_m3", "_r")):
+    m = S.manifest.get(group, {})
+    if src not in m:
+        return
+    im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
+    w, h = im.size
+    for i, part in enumerate(parts[:n]):
+        sub = im.crop((int(i * w / n), 0, int((i + 1) * w / n), h))
+        bb = sub.getbbox()
+        if bb:
+            save(scale_to(sub.crop(bb), width=TILE2, height=TILE2 * 2, cover=True), "tiles", name + part)
+
+def _wall_piece(group, src, name):
+    m = S.manifest.get(group, {})
+    if src in m:
+        im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
+        save(scale_to(im, width=TILE2, height=TILE2 * 2, cover=True), "tiles", name)
+
+def w_interiors():
+    F = "furniture"
+    # mansion / bank
+    _floor_kit(F, "int_mansion_00", "fl_parquet"); _wall_kit(F, "int_mansion_01", "wl_panel", 4, ("_l", "_m", "_m2", "_r"))
+    _wall_piece(F, "int_mansion_02", "wl_panel_corner"); _wall_piece(F, "int_mansion_03", "wl_panel_window"); _wall_piece(F, "int_mansion_04", "wl_panel_door")
+    for i in range(6):
+        _alias(F, "int_mansion_%02d" % (5 + i), "portrait_mayor_%d" % i)
+    for i, nm in enumerate(["grand_desk", "bookcase_a", "bookcase_b", "bookcase_c", "globe2"]):
+        _alias(F, "int_mansion_%02d" % (11 + i), nm)
+    _anim_from(F, "int_mansion_16", 4, "fireplace2")
+    for i, nm in enumerate(["armchair_a", "armchair_b", "chandelier", "rug_red", "kettle_stand", "filing_cabinet", "lectern"]):
+        _alias(F, "int_mansion_%02d" % (17 + i), nm)
+    _floor_kit(F, "int_mansion_24", "fl_marble"); _wall_kit(F, "int_mansion_25", "wl_marble", 4, ("_l", "_m", "_m2", "_r"))
+    _wall_piece(F, "int_mansion_26", "wl_marble_corner"); _wall_piece(F, "int_mansion_27", "wl_marble_m3"); _wall_piece(F, "int_mansion_28", "wl_marble_window"); _wall_piece(F, "int_mansion_29", "wl_marble_door")
+    for i, nm in enumerate(["teller_window", "vault_closed", "vault_open", "ledger_desk", "safe", "coins_a", "coins_b", "coins_c", "rope_posts", "clock_tall", "ivy_pot", "sofa_green"]):
+        _alias(F, "int_mansion_%02d" % (30 + i), nm)
+    # school / stable
+    _floor_kit(F, "int_school_00", "fl_plank"); _wall_kit(F, "int_school_01", "wl_chalk", 4, ("_l", "_m", "_m2", "_r"))
+    _wall_piece(F, "int_school_02", "wl_chalk_corner"); _wall_piece(F, "int_school_03", "wl_chalk_window"); _wall_piece(F, "int_school_04", "wl_chalk_door")
+    for i, nm in enumerate(["chalkboard", "teacher_desk", "globe3", "bookshelf_ivy", "coat_hooks", "easel2", "slates", "frog_jar", "school_bell", "desk_a", "desk_b", "desk_c", "desk_d", "alphabet_frieze"]):
+        _alias(F, "int_school_%02d" % (5 + i), nm)
+    _floor_kit(F, "int_school_19", "fl_dirt"); _wall_kit(F, "int_school_20", "wl_timber", 4, ("_l", "_m", "_m2", "_r"))
+    _wall_piece(F, "int_school_21", "wl_timber_corner"); _wall_piece(F, "int_school_22", "wl_timber_window"); _wall_piece(F, "int_school_23", "wl_timber_door")
+    for i, nm in enumerate(["stalls_open", "stalls_closed", "hay_loft", "tack_wall2", "saddle_stand", "feeder", "feed_bin_a", "feed_bin_b", "feed_bin_c"]):
+        _alias(F, "int_school_%02d" % (24 + i), nm)
+    m = S.manifest[F]
+    def fr(i):
+        return Image.open(os.path.join(S.OUT, m["int_school_%02d" % i]["file"])).convert("RGBA")
+    strip([fr(33), fr(34), fr(35), fr(36)], F, "trough3")
+    # lodge / mill
+    _floor_kit(F, "int_lodge_00", "fl_cobble"); _wall_kit(F, "int_lodge_01", "wl_log", 5, ("_l", "_m", "_m2", "_m3", "_r"))
+    _alias(F, "int_lodge_01", "wl_log_raw")
+    for i, nm in enumerate(["wl_log_l", "wl_log_m", "wl_log_m2", "wl_log_m3", "wl_log_r"]):
+        _wall_piece(F, "int_lodge_%02d" % (1 + i), nm)
+    _wall_piece(F, "int_lodge_06", "wl_log_window"); _wall_piece(F, "int_lodge_07", "wl_log_door")
+    _anim_from(F, "int_lodge_08", 4, "fire_pit2")
+    for i, nm in enumerate(["pelt_bear", "pelt_wolf", "pelt_leopard", "bow_rack", "trap_pile", "meat_rack", "bunk_bed", "antler_hooks", "map_table", "skin_bench"]):
+        _alias(F, "int_lodge_%02d" % (9 + i), nm)
+    _floor_kit(F, "int_lodge_19", "fl_flour"); 
+    for i, nm in enumerate(["wl_mill_m", "wl_mill_m2", "wl_mill_corner", "wl_mill_window", "wl_mill_door"]):
+        _wall_piece(F, "int_lodge_%02d" % (20 + i), nm)
+    _alias(F, "int_lodge_20", "wl_mill_raw")
+    strip([Image.open(os.path.join(S.OUT, m["int_lodge_%02d" % i]["file"])).convert("RGBA") for i in range(25, 29)], F, "millstones")
+    for i, nm in enumerate(["hopper", "grain_chute", "flour_sacks", "scales", "sieve", "bread_crate_a", "bread_crate_b", "mouse_hole", "wheel_axle"]):
+        _alias(F, "int_lodge_%02d" % (29 + i), nm)
+    # lighthouse / huts
+    _floor_kit(F, "int_light_00", "fl_round_stone")
+    for i, nm in enumerate(["wl_curve_l", "wl_curve_m", "wl_curve_m2", "wl_curve_m3", "wl_curve_r", "wl_curve_corner", "wl_curve_window", "wl_curve_door"]):
+        _wall_piece(F, "int_light_%02d" % (1 + i), nm)
+    _floor_kit(F, "int_light_09", "fl_hut_plank")
+    for i, nm in enumerate(["wl_hut_l", "wl_hut_m", "wl_hut_m2", "wl_hut_r", "wl_hut_r2", "wl_hut_corner", "wl_hut_window", "wl_hut_door"]):
+        _wall_piece(F, "int_light_%02d" % (10 + i), nm)
+    _floor_kit(F, "int_light_18", "fl_moss_plank")
+    for i, nm in enumerate(["wl_reed_l", "wl_reed_m", "wl_reed_m2", "wl_reed_m3", "wl_reed_r", "wl_reed_corner", "wl_reed_window", "wl_reed_door"]):
+        _wall_piece(F, "int_light_%02d" % (19 + i), nm)
+    _floor_kit(F, "int_light_27", "fl_grey_plank")
+    for i, nm in enumerate(["wl_fish_l", "wl_fish_m", "wl_fish_m2", "wl_fish_m3", "wl_fish_r", "wl_fish_corner", "wl_fish_window", "wl_fish_door"]):
+        _wall_piece(F, "int_light_%02d" % (28 + i), nm)
+    _alias(F, "int_light_39", "round_rug_stone"); _alias(F, "int_light_40", "spiral_stair")
+    strip([Image.open(os.path.join(S.OUT, m["int_light_41"]["file"])).convert("RGBA")], F, "lamp_mech_raw")
+    _anim_from(F, "int_light_41", 4, "lamp_mechanism")
+    for i, nm in enumerate(["oil_cans", "oil_still", "charts_hammock", "kettle_stove", "telescope2", "logbook_desk", "fog_bell", "wool_bales", "wool_bale", "wool_pile", "cider_press2", "apple_tub", "crook_rack", "cot_plaid", "stool2", "stool_fleece", "chest2", "blanket2", "lantern2", "reed_mat_a", "shelf_jars", "flower_jug", "frog_jars"]):
+        _alias(F, "int_light_%02d" % (42 + i), nm)
+    _anim_from(F, "int_light_64", 4, "bubbling_pot")
+    for i, nm in enumerate(["herb_bundles", "reed_mat_b", "reed_mat_round", "low_table", "jug", "lantern3", "cattail_pot", "net_a", "net_b", "net_c", "rod_a", "rod_b", "rod_c", "bait_bucket_a", "bait_bucket_b", "bait_bucket_c", "fish_ice", "barrels3", "crab_pots3", "life_ring", "floats", "fish_hang"]):
+        _alias(F, "int_light_%02d" % (69 + i), nm)
+    # quarry / ruins
+    _floor_kit(F, "int_quarry_00", "fl_quarry")
+    for i, nm in enumerate(["wl_quarry_m", "wl_quarry_window", "wl_quarry_door"]):
+        pass
+    _wall_kit(F, "int_quarry_01", "wl_quarry", 4, ("_l", "_m", "_m2", "_r"))
+    _floor_kit(F, "int_quarry_03", "fl_camp")
+    _wall_kit(F, "int_quarry_04", "wl_tent", 4, ("_l", "_m", "_m2", "_r"))
+    for i, nm in enumerate(["hard_hats", "blueprint_table", "dynamite_crate", "ore_case", "time_clock"]):
+        _alias(F, "int_quarry_%02d" % (6 + i), nm)
+    _anim_from(F, "int_quarry_11", 1, "coffee_pot_a")
+    strip([Image.open(os.path.join(S.OUT, m["int_quarry_%02d" % i]["file"])).convert("RGBA") for i in range(11, 15)], F, "coffee_pot")
+    for i, nm in enumerate(["cot_quarry", "poster_frame", "specimen_table", "lantern4"]):
+        _alias(F, "int_quarry_%02d" % (15 + i), nm)
+    strip([Image.open(os.path.join(S.OUT, m["int_quarry_%02d" % i]["file"])).convert("RGBA") for i in range(19, 23)], F, "crystal_cage")
+    _split(F, "int_quarry_23", 4, ["rubbing_sun", "rubbing_arch", "rubbing_tree", "rubbing_spiral"])
+    for i, nm in enumerate(["bedroll", "stacked_tablets", "ink_brushes", "books_scrolls"]):
+        _alias(F, "int_quarry_%02d" % (24 + i), nm)
+
+
+def w_names5():
+    F = "fx"
+    _anim_from(F, "wx_01", 4, "lightning_flash")
+    m = S.manifest[F]
+    def fr(i):
+        return Image.open(os.path.join(S.OUT, m["wx_%03d" % i if i >= 100 else "wx_%02d" % i]["file"])).convert("RGBA")
+    for j, base in enumerate([137, 138, 139, 140, 141, 142]):
+        _anim_from(F, "wx_%d" % base, 3, "puddle_%d" % j, group_out="props")
+    for j, base in enumerate([143, 144, 145, 146]):
+        _alias(F, "wx_%d" % base, "puddle_storm_%d" % j, group_out="props")
+    for j in range(6):
+        _alias(F, "wx_%d" % (147 + j), "snowdrift_%d" % j, group_out="props")
+    for j in range(3):
+        _alias(F, "wx_%d" % (153 + j), "icicles_%d" % j, group_out="props")
+    _alias(F, "wx_156", "rainbow")
+    _alias(F, "wx_157", "godrays_a"); _alias(F, "wx_159", "godrays_b")
+    for j in range(3):
+        _alias(F, "wx_%d" % (160 + j), "cloud_shadow_%d" % j)
+    for j in range(4):
+        _alias(F, "wx_%d" % (163 + j), "wind_streak_%d" % j)
+    for j, se in enumerate(["summer", "fall", "winter", "frost"]):
+        _alias(F, "wx_%d" % (167 + j), "grass_tuft_" + se, group_out="nature")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

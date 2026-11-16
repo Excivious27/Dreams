@@ -68,6 +68,34 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 			else:
 				if r < density * 0.5:
 					Art.draw_tile(m, "tiles", "deco_0", at)
+				elif Art.has("nature", "grass_tuft_winter") and rng.randf() < 0.5:
+					Art.draw_prop(m, "nature", "grass_tuft_winter" if rng.randf() < 0.7 else "grass_tuft_frost", at + Vector2(8, 16))
+	weather_dressing(m, seed_v + 99, avoid)
+
+
+## Weather on the ground (Prompts 09 wx sheet): puddles on wet days, snowdrifts
+## and icicles in winter. Decorative only; they never block.
+static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var wx := GameState.weather_today()
+	var winter := GameState.season() == "winter"
+	var wet := GameState.is_wet()
+	if not wet and not winter:
+		return
+	var n := int(m.cols * m.rows * (0.012 if wet else 0.008))
+	for i in n:
+		var c := Vector2i(rng.randi_range(2, m.cols - 3), rng.randi_range(2, m.rows - 3))
+		if m.blocked.has(c) or m.things.has(c) or avoid.has(c) or m.is_water_cell(c):
+			continue
+		if wet and Art.has("props", "puddle_0"):
+			var nm := "puddle_storm_%d" % rng.randi_range(0, 3) if wx == "storm" and Art.has("props", "puddle_storm_0") else "puddle_%d" % rng.randi_range(0, 5)
+			if nm.begins_with("puddle_storm"):
+				m.prop("props", nm, c, 0, 0.0, false)
+			else:
+				m.anim_prop("props", nm, c, 0, 3.0)
+		elif winter and Art.has("props", "snowdrift_0"):
+			m.prop("props", "snowdrift_%d" % rng.randi_range(0, 5), c, 0, 0.0, false)
 
 
 ## Place a tree line along a rectangle's edge (inside it), leaving gaps at `gaps`.

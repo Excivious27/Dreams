@@ -898,6 +898,24 @@ static func forecast() -> String:
 	return weather_for(int(run.get("day", 1)) + 1)
 
 
+## Festivals: one per season, on the 14th, held on the town plaza.
+const FESTIVALS := {"spring": ["egg", "Egg Festival"], "summer": ["lantern", "Lantern Festival"], "fall": ["harvest", "Harvest Fair"], "winter": ["star", "Star Festival"]}
+const FESTIVAL_DAY := 14
+
+
+static func festival_today() -> String:
+	if day_of_season() != FESTIVAL_DAY:
+		return ""
+	return str(FESTIVALS[season()][0])
+
+
+static func festival_name(id: String) -> String:
+	for se in FESTIVALS:
+		if str(FESTIVALS[se][0]) == id:
+			return str(FESTIVALS[se][1])
+	return id.capitalize()
+
+
 static func is_wet() -> bool:
 	return weather_today() in ["rain", "storm"]
 
@@ -954,6 +972,8 @@ static func sleep(passed_out := false) -> Dictionary:
 			tile["watered"] = false
 	if has_friend_perk("posy", 2):
 		add_item("bread", 1)
+	if int(run.get("bank", 0)) > 0:
+		run["bank"] = int(run["bank"] * (1.02 if has_friend_perk("ivy", 6) else 1.01))
 	run["day"] = int(run["day"]) + 1
 	run["time"] = DAY_START
 	run["energy"] = int(run["max_energy"]) if not passed_out else int(run["max_energy"]) / 2
