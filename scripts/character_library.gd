@@ -9,8 +9,10 @@ const DISPLAY_NAMES := {"man": "Man", "woman": "Woman", "son": "Son", "girl": "G
 const STRIP := "map_large"
 const SPRITE_SCALE := 0.5
 const VIEW_NAMES: Array[String] = ["view_front", "view_right", "view_back", "view_left"]
-const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0}
-const LOOPS := {"attack": false}
+const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0}
+const LOOPS := {"attack": false, "powerup": false}
+## Characters that exist only in art/gen (no pack folder).
+const GEN_ONLY := {"penguin": true}
 
 static var _data: Dictionary = {}
 static var _frames_cache: Dictionary = {}
@@ -38,9 +40,19 @@ static func strip_info(id: String) -> Dictionary:
 	return data()[id]["strips"][STRIP]
 
 
+static func has_character(id: String) -> bool:
+	return data().has(id) or GEN_ONLY.has(id)
+
+
 static func frames_for(id: String) -> SpriteFrames:
 	if _frames_cache.has(id):
 		return _frames_cache[id]
+	if GEN_ONLY.has(id):
+		var g := "characters/" + id
+		var gsf := Art.frames(g, {"idle": "idle", "walk": "walk", "run": "run", "attack": "attack", "powerup": "powerup",
+			"view_front": "view_front", "view_right": "view_right", "view_back": "view_back", "view_left": "view_left"}, FPS, LOOPS)
+		_frames_cache[id] = gsf
+		return gsf
 	var info := strip_info(id)
 	var tex: Texture2D = load(ROOT + id + "/" + str(info["file"]))
 	var w := int(info["cell_w"])
@@ -63,6 +75,8 @@ static func frames_for(id: String) -> SpriteFrames:
 		at.atlas = tex
 		at.region = Rect2(i * w, 0, w, h)
 		sf.add_frame(anim, at)
+	# New frames from Tom's uploads (walking toward/away, dog sit/dig).
+	Art.add_frames(sf, "characters/" + id, {"walk_down": "walk_down", "walk_up": "walk_up", "run_down": "run_down", "run_up": "run_up", "sit": "sit", "dig": "dig"}, FPS, LOOPS)
 	_frames_cache[id] = sf
 	return sf
 
@@ -71,8 +85,13 @@ static func frames_for(id: String) -> SpriteFrames:
 static func make_sprite(id: String) -> AnimatedSprite2D:
 	var s := AnimatedSprite2D.new()
 	s.sprite_frames = frames_for(id)
-	var h := int(strip_info(id)["cell_h"])
+	var h := int(strip_info(id)["cell_h"]) if data().has(id) else int(Art.info("characters/" + id, "idle").get("cell_h", 64))
 	s.centered = true
 	s.offset = Vector2(0, -h / 2.0)
 	s.scale = Vector2(SPRITE_SCALE, SPRITE_SCALE)
+	# Frames from different strips have different cell heights; keep feet planted.
+	s.frame_changed.connect(func() -> void:
+		var tex := s.sprite_frames.get_frame_texture(s.animation, s.frame)
+		if tex:
+			s.offset = Vector2(0, -tex.get_height() / 2.0))
 	return s

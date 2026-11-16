@@ -47,6 +47,8 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"talked_today": {},
 		"inventory": {},
 		"tools": ["hoe", "can", "axe", "pickaxe", "sword", "rod"],
+		"toolbar": ["hoe", "can", "axe", "pickaxe", "sword", "rod", "", "", "", "", "", ""],
+		"slot": 0,
 		"selected": "",
 		"farm": {},
 		"sellbox": {},
@@ -79,6 +81,7 @@ static func _migrate() -> void:
 		"talked_today": {}, "inventory": {}, "tools": ["hoe", "can", "axe", "pickaxe", "sword", "rod"],
 		"selected": "", "farm": {}, "sellbox": {}, "quests": [], "scene": "farm", "mine_floor": 1,
 		"kills": 0, "intro_done": false,
+		"toolbar": ["hoe", "can", "axe", "pickaxe", "sword", "rod", "", "", "", "", "", ""], "slot": 0,
 	}
 	for k in defaults:
 		if not run.has(k):
@@ -104,7 +107,10 @@ static func is_penguins() -> bool:
 
 static func sprite_for_playable(playable_id: String) -> String:
 	load_data()
-	return str(playables.get(playable_id, {}).get("sprite", ""))
+	var sprite := str(playables.get(playable_id, {}).get("sprite", ""))
+	if sprite != "" and not CharacterLibrary.has_character(sprite):
+		return ""
+	return sprite
 
 
 # ---- items -------------------------------------------------------------------
@@ -126,8 +132,50 @@ static func add_item(id: String, n: int = 1) -> void:
 	inv[id] = int(inv.get(id, 0)) + n
 	if inv[id] <= 0:
 		inv.erase(id)
-		if run["selected"] == id:
-			run["selected"] = ""
+		var tb: Array = run["toolbar"]
+		var i := tb.find(id)
+		if i >= 0:
+			tb[i] = ""
+	elif n > 0 and not run["toolbar"].has(id):
+		# New item: drop it into the first free toolbar slot, like Stardew's backpack.
+		var tb: Array = run["toolbar"]
+		var free := tb.find("")
+		if free >= 0:
+			tb[free] = id
+	sync_selected()
+
+
+## What's "in hand": the toolbar slot's item if it's a usable item with count > 0.
+static func sync_selected() -> void:
+	var tb: Array = run["toolbar"]
+	var slot := clampi(int(run["slot"]), 0, tb.size() - 1)
+	run["slot"] = slot
+	var id := str(tb[slot])
+	if id != "" and run["inventory"].has(id):
+		run["selected"] = id
+	else:
+		run["selected"] = ""
+
+
+static func held_tool() -> String:
+	var tb: Array = run["toolbar"]
+	var id := str(tb[int(run["slot"])])
+	return id if has_tool(id) else ""
+
+
+static func select_slot(i: int) -> void:
+	run["slot"] = clampi(i, 0, run["toolbar"].size() - 1)
+	sync_selected()
+
+
+## Items in the inventory that are not on the toolbar (the backpack).
+static func backpack() -> Array:
+	var out: Array = []
+	for id in run["inventory"].keys():
+		if not run["toolbar"].has(id):
+			out.append(id)
+	out.sort()
+	return out
 
 
 static func has_tool(id: String) -> bool:
@@ -137,6 +185,15 @@ static func has_tool(id: String) -> bool:
 static func add_tool(id: String) -> void:
 	if not has_tool(id):
 		run["tools"].append(id)
+		var tb: Array = run["toolbar"]
+		# Upgrades replace the older tool of the same kind on the toolbar.
+		var old := tb.find("sword") if id == "iron_sword" else -1
+		if old >= 0:
+			tb[old] = id
+		else:
+			var free := tb.find("")
+			if free >= 0:
+				tb[free] = id
 
 
 static func sword_damage() -> int:

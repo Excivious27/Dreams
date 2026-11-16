@@ -38,7 +38,7 @@ func build() -> void:
 func after_ready() -> void:
 	for y in range(9, 12):
 		blocked.erase(Vector2i(0, y))
-	add_child(GameMenu.new())
+	_place_props()
 	var n := 4 if not GameState.quest_done("clear_meadow") else 2
 	for i in n:
 		_spawn_one()
@@ -140,7 +140,7 @@ func _boss_down() -> void:
 	player.frozen = false
 
 
-func interact(_c: Vector2i, thing: Dictionary) -> bool:
+func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 	match str(thing.get("type", "")):
 		"mine":
 			go_to("mine", Vector2.ZERO)
@@ -167,38 +167,51 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 				GameState.run["flags"][thing["key"]] = int(GameState.run["day"])
 				give("mushroom", 1)
 				xp("foraging", 2)
+				if props.has(_c):
+					(props[_c] as Sprite2D).queue_free()
+					props.erase(_c)
 				queue_redraw()
 			return true
 	return false
 
 
 func _draw() -> void:
-	draw_grass()
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 5
-	for i in 50:
-		var p := Vector2(rng.randf_range(TILE, (cols - 1) * TILE), rng.randf_range(TILE, (rows - 1) * TILE))
-		var col: Color = [Color("f2e05c"), Color("f5f5f5"), Color("e36d8e"), Color("8ab4ff")][i % 4]
-		draw_rect(Rect2(p.floor(), Vector2(2, 2)), col)
+	draw_grass(5)
+	draw_tileset_rect("dirt", Rect2i(0, 9, 1, 3), Color("b8945a"))
+	if not Art.has("nature", "oak"):
+		for k in things:
+			var t: Dictionary = things[k]
+			match str(t.get("type", "")):
+				"tree":
+					draw_tree(cell_center(k))
+				"rock":
+					var p := cell_center(k)
+					draw_circle(p + Vector2(0, -5), 6.5, Color("7a7a86"))
+				"shroom":
+					if bool(t.get("has", false)):
+						var p := cell_center(k)
+						draw_rect(Rect2(p.x - 4, p.y - 8, 8, 3), Color("c9452f"))
+	# Mine entrance in a rocky hill.
+	draw_tileset_rect("stone", Rect2i(21, 3, 3, 5), Color("6a6a76"))
+	draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
+	draw_fence_border()
+	label("◀ farm", Vector2(1 * TILE, 9 * TILE - 2), 4 * TILE)
+	label("mine", Vector2(18 * TILE, 3 * TILE - 2), 3 * TILE)
+
+
+func _place_props() -> void:
+	if not Art.has("nature", "oak"):
+		return
 	for k in things:
 		var t: Dictionary = things[k]
 		match str(t.get("type", "")):
 			"tree":
-				draw_tree(cell_center(k))
+				prop("nature", ["oak", "pine", "oak_autumn"][(k.x * 7 + k.y) % 3], k)
 			"rock":
-				var p := cell_center(k)
-				draw_circle(p + Vector2(0, -5), 6.5, Color("7a7a86"))
-				draw_circle(p + Vector2(-2, -7), 3.0, Color("9a9aa6"))
+				prop("nature", "rock_m", k)
 			"shroom":
 				if bool(t.get("has", false)):
-					var p := cell_center(k)
-					draw_rect(Rect2(p.x - 1, p.y - 5, 2, 5), Color("f0e6d0"))
-					draw_rect(Rect2(p.x - 4, p.y - 8, 8, 3), Color("c9452f"))
-	# Mine entrance in a rocky hill.
-	draw_rect(Rect2(21 * TILE, 3 * TILE, 3 * TILE, 5 * TILE), Color("6a6a76"))
-	draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
-	draw_fence_border()
-	draw_rect(Rect2(0, 9 * TILE, TILE, 3 * TILE), Color("b8945a"))
-	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(1 * TILE, 9 * TILE - 2), "◀ farm", HORIZONTAL_ALIGNMENT_LEFT, 4 * TILE, 7, Color(1, 1, 0.85))
-	draw_string(font, Vector2(18 * TILE, 3 * TILE - 2), "mine", HORIZONTAL_ALIGNMENT_RIGHT, 3 * TILE, 7, Color(1, 1, 0.85))
+					prop("tiles", "deco_5", k, 0, 0.0)
+	for c: Vector2i in [Vector2i(21, 7), Vector2i(23, 4)]:
+		prop("nature", "rock_l", c)
+	prop("nature", "log", Vector2i(6, 13), 1)

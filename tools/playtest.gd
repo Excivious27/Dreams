@@ -117,6 +117,38 @@ func _run() -> void:
 	touch(0, Vector2(135, 300), false)
 	await frames(10)
 	check(not d.active, "tapping the dialogue box advances/closes it")
+	# Tap-to-move: tap a grass cell, the player walks there.
+	await frames(20)
+	p.position = farm.cell_center(Vector2i(5, 12))
+	await frames(45)  # let the camera settle on the new position
+	var cam_tf: Transform2D = farm.get_canvas_transform()
+	var dest: Vector2 = farm.cell_center(Vector2i(5, 15))
+	var screen: Vector2 = cam_tf * (dest - Vector2(0, 8))  # middle of the cell, not its bottom edge
+	touch(0, screen, true)
+	await frames(2)
+	touch(0, screen, false)
+	await frames(80)
+	check(p.position.distance_to(dest) < 6.0, "tap-to-move walks to the tapped cell (%.0f away)" % p.position.distance_to(dest))
+	# Toolbar: tapping slot 7 (turnip seeds) puts seeds in hand.
+	touch(0, Vector2(Hud.TOOLBAR_X + 6 * Hud.SLOT + 10, Hud.TOOLBAR_Y + 10), true)
+	await frames(2)
+	touch(0, Vector2(Hud.TOOLBAR_X + 6 * Hud.SLOT + 10, Hud.TOOLBAR_Y + 10), false)
+	await frames(2)
+	check(str(GameState.run["selected"]) == "turnip_seed", "tapping the toolbar selects seeds (%s)" % str(GameState.run["selected"]))
+	Input.action_press("slot_1")
+	await frames(2)
+	Input.action_release("slot_1")
+	await frames(2)
+	check(int(GameState.run["slot"]) == 0 and str(GameState.run["selected"]) == "", "number key selects the hoe")
+	# Menu opens, shows tabs, closes.
+	await press("menu", 2)
+	await frames(5)
+	check(paused, "MENU pauses and opens the menu")
+	await shot("05b_menu")
+	await press("menu", 2)
+	await frames(5)
+	check(not paused, "MENU closes the menu")
+	await frames(20)  # input is blocked briefly after a menu closes
 
 	# Enter the house via the door.
 	p.position = farm.cell_center(Vector2i(5, 8))

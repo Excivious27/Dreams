@@ -2,7 +2,8 @@ class_name GameMap
 extends Node2D
 ## Base for every playable area. Owns the grid (size, blocked cells, things you
 ## can interact with), the player, the pet, camera, HUD, touch controls, sky, the
-## clock, and scene transitions. Subclasses draw the map and fill the grid.
+## clock, tap-to-move, and scene transitions. Subclasses draw the ground and
+## place props. Children are y-sorted so the player walks behind tall things.
 
 const TILE := 16
 static var next_spawn := Vector2.ZERO
@@ -20,15 +21,21 @@ var pet: Node2D
 var hud: Hud
 var enemies: Array = []
 var sky: Scenery
+var props := {}          # Vector2i -> Sprite2D (so things can change their look)
 var _pet_anim: AnimatedSprite2D
 var _night: CanvasModulate
 var _changing := false
 var _time_acc := 0.0
-var _pet_dig := 0.0
+var _pet_idle := 0.0
+var _pet_busy := false
+var _deco_rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
 	InputSetup.ensure_actions()
+	y_sort_enabled = true
+	# Art is 2x detail drawn at half size; linear sampling keeps thin lines intact.
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	if not GameState.has_run():
 		GameState.new_run("penguins", "dad", "Hero", "Dreamhollow", "Pup")
 	GameState.run["scene"] = scene_id()
@@ -67,8 +74,8 @@ func _ready() -> void:
 	var cam := Camera2D.new()
 	cam.limit_left = 0
 	cam.limit_top = 0
-	cam.limit_right = cols * TILE
-	cam.limit_bottom = rows * TILE
+	cam.limit_right = maxi(cols * TILE, 270)
+	cam.limit_bottom = maxi(rows * TILE, 480)
 	cam.position_smoothing_enabled = true
 	cam.position_smoothing_speed = 7.0
 	player.add_child(cam)
@@ -77,6 +84,7 @@ func _ready() -> void:
 	hud = Hud.new()
 	add_child(hud)
 	add_child(TouchControls.new())
+	add_child(GameMenu.new())
 	Music.instance(get_tree()).play(music_track)
 	queue_redraw()
 	hud.fade_in(0.5)
@@ -133,6 +141,20 @@ func try_interact(c: Vector2i) -> bool:
 	return interact(c, thing)
 
 
+## Place a sprite from art/gen with its feet at the bottom-center of cell `c`
+## (plus `extra_w` cells to the right for wide props). Returns null if missing.
+func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0) -> Sprite2D:
+	var s := Art.sprite(group, name)
+	if s == null:
+		return null
+	s.position = Vector2((c.x + (extra_w + 1) / 2.0) * TILE, (c.y + 1) * TILE + dy)
+	add_child(s)
+	props[c] = s
+	return s
+
+
+# ---- enemies -----------------------------------------------------------------
+
 ## Swing at enemies inside the rect. Subclasses can extend (rocks, etc.).
 func attack_at(r: Rect2, damage: int) -> bool:
 	Music.instance(get_tree()).sfx("swing")
@@ -164,6 +186,15 @@ func on_enemy_died(e: Enemy) -> void:
 	Music.instance(get_tree()).sfx("die")
 
 
+func nearest_enemy_to(p: Vector2, within: float) -> Enemy:
+	var best: Enemy = null
+	for e in enemies:
+		if is_instance_valid(e) and e.position.distance_to(p) < within:
+			if best == null or e.position.distance_to(p) < best.position.distance_to(p):
+				best = e
+	return best
+
+
 func player_down() -> void:
 	if _changing:
 		return
@@ -175,6 +206,35 @@ func player_down() -> void:
 	GameState.sleep(true)
 	hud.toast("You lost 15 crystals.")
 	go_to("house", Vector2(5 * TILE + 8, 5 * TILE))
+
+
+# ---- tap to move -------------------------------------------------------------
+
+func _unhandled_input(event: InputEvent) -> void:
+	if get_tree().paused or player == null or player.frozen or _changing:
+		return
+	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
+		var pos: Vector2 = (event as InputEventScreenTouch).position
+		if pos.y >= TouchControls.TOP_OF_CONTROLS and TouchControls.visible_controls:
+			return
+		if pos.y < Hud.TOOLBAR_BOTTOM:
+			return
+		var world := get_canvas_transform().affine_inverse() * pos
+		var c := Vector2i(floori(world.x / TILE), floori(world.y / TILE))
+		var e := nearest_enemy_to(world, 14.0)
+		if e:
+			player.go_to_cell(Vector2i(floori(e.position.x / TILE), floori((e.position.y - 2) / TILE)), true)
+		elif has_npc_at(c):
+			player.go_to_cell(c, true)
+		elif things.has(c) and (hint_for(c, things[c]) != "" or things[c].get("type") == "plot"):
+			player.go_to_cell(c, true)
+		elif not blocked.has(c):
+			player.go_to_cell(c, false)
+		get_viewport().set_input_as_handled()
+
+
+func has_npc_at(_c: Vector2i) -> bool:
+	return false
 
 
 # ---- time --------------------------------------------------------------------
@@ -207,30 +267,49 @@ func update_enemies(_delta: float) -> void:
 
 
 func _follow_pet(delta: float) -> void:
+	if _pet_busy:
+		return
 	var to := player.position - pet.position
 	var dist := to.length()
 	if dist > 22.0:
 		var step := to.normalized() * minf(dist * 4.0, 95.0) * delta
 		pet.position += step
-		_pet_anim.flip_h = to.x < 0
-		var a := "run" if dist > 40.0 else "walk"
+		var running := dist > 40.0
+		var a: String
+		if absf(to.x) >= absf(to.y):
+			a = "run" if running else "walk"
+			_pet_anim.flip_h = to.x < 0
+		else:
+			var vert := ("run_" if running else "walk_") + ("up" if to.y < 0 else "down")
+			a = vert if _pet_anim.sprite_frames.has_animation(vert) else ("run" if running else "walk")
+			_pet_anim.flip_h = false
 		if _pet_anim.animation != a:
 			_pet_anim.play(a)
-		_pet_dig = 0.0
+		_pet_idle = 0.0
 	else:
-		if _pet_anim.animation != "idle" and _pet_anim.animation != "play":
-			_pet_anim.play("idle")
-		_pet_dig += delta
-		if _pet_dig > 14.0:
-			_pet_dig = randf_range(-6.0, 0.0)
-			_pet_anim.play("play")
-			await get_tree().create_timer(1.4).timeout
-			if is_instance_valid(_pet_anim) and _pet_anim.animation == "play":
-				_pet_anim.play("idle")
-				if randf() < 0.5:
-					var found: String = ["fiber", "berry", "stone", "mushroom"][randi() % 4]
-					GameState.add_item(found)
-					hud.toast("%s dug up a %s!" % [GameState.names()["pet"], GameState.item_name(found)], Color(0.8, 1, 0.8))
+		_pet_idle += delta
+		var want := "idle"
+		if _pet_idle > 3.0 and _pet_anim.sprite_frames.has_animation("sit"):
+			want = "sit"
+		if _pet_anim.animation != want and _pet_anim.animation != "dig":
+			_pet_anim.play(want)
+		if _pet_idle > 14.0:
+			_pet_idle = randf_range(-6.0, 0.0)
+			_pet_dig()
+
+
+func _pet_dig() -> void:
+	_pet_busy = true
+	_pet_anim.play("dig" if _pet_anim.sprite_frames.has_animation("dig") else "play")
+	await get_tree().create_timer(1.6).timeout
+	if not is_instance_valid(_pet_anim):
+		return
+	_pet_busy = false
+	_pet_anim.play("idle")
+	if randf() < 0.5:
+		var found: String = ["fiber", "berry", "stone", "mushroom"][randi() % 4]
+		GameState.add_item(found)
+		hud.toast("%s dug up a %s!" % [GameState.names()["pet"], GameState.item_name(found)], Color(0.8, 1, 0.8))
 
 
 # ---- transitions -------------------------------------------------------------
@@ -267,15 +346,46 @@ func xp(skill: String, n: int) -> void:
 
 # ---- shared drawing helpers --------------------------------------------------
 
-func draw_grass() -> void:
-	var g1 := Color("5a9e4b")
-	var g2 := Color("67ab55")
+## Grass everywhere with scattered decoration tiles (seeded so it's stable).
+func draw_grass(seed_v := 1) -> void:
+	_deco_rng.seed = seed_v
+	var has_tiles := Art.has("tiles", "grass")
 	for y in rows:
 		for x in cols:
-			draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), g1 if (x + y) % 2 == 0 else g2)
+			var at := Vector2(x * TILE, y * TILE)
+			if has_tiles:
+				Art.draw_tile(self, "tiles", "grass", at, 4)
+				if _deco_rng.randf() < 0.07:
+					Art.draw_tile(self, "tiles", "deco_%d" % _deco_rng.randi_range(0, 5), at)
+			else:
+				draw_rect(Rect2(at, Vector2(TILE, TILE)), Color("5a9e4b") if (x + y) % 2 == 0 else Color("67ab55"))
+
+
+## A rectangle of a 3x3 tile set (dirt, stone, dock...) with proper edges.
+func draw_tileset_rect(name: String, r: Rect2i, fallback: Color) -> void:
+	if not Art.has("tiles", name):
+		draw_rect(Rect2(r.position * TILE, r.size * TILE), fallback)
+		return
+	for y in range(r.position.y, r.end.y):
+		for x in range(r.position.x, r.end.x):
+			var ix := 1
+			var iy := 1
+			if r.size.x > 1:
+				ix = 0 if x == r.position.x else (2 if x == r.end.x - 1 else 1)
+			if r.size.y > 1:
+				iy = 0 if y == r.position.y else (2 if y == r.end.y - 1 else 1)
+			Art.draw_tile(self, "tiles", name, Vector2(x * TILE, y * TILE), iy * 3 + ix)
 
 
 func draw_fence_border(col := Color("6b4a2b")) -> void:
+	if Art.has("buildings", "fence_h"):
+		for x in cols:
+			Art.draw_prop(self, "buildings", "fence_h", Vector2(x * TILE + TILE / 2.0, TILE))
+			Art.draw_prop(self, "buildings", "fence_h", Vector2(x * TILE + TILE / 2.0, rows * TILE))
+		for y in range(1, rows - 1):
+			Art.draw_prop(self, "buildings", "fence_v", Vector2(TILE / 2.0, (y + 1) * TILE))
+			Art.draw_prop(self, "buildings", "fence_v", Vector2((cols - 0.5) * TILE, (y + 1) * TILE))
+		return
 	draw_rect(Rect2(Vector2.ZERO, Vector2(cols * TILE, TILE)), col)
 	draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), col)
 	draw_rect(Rect2(Vector2.ZERO, Vector2(TILE, rows * TILE)), col)
@@ -288,12 +398,15 @@ func draw_tree(p: Vector2) -> void:
 	draw_circle(Vector2(p.x - 3, p.y - 13), 5.0, Color("3f9a48"))
 
 
-func draw_building(x: int, y: int, w: int, h: int, wall: Color, roof: Color, label: String) -> void:
+func draw_building(x: int, y: int, w: int, h: int, wall: Color, roof: Color, label_text: String) -> void:
 	draw_rect(Rect2(x * TILE, (y + 1) * TILE, w * TILE, (h - 1) * TILE), wall)
 	draw_rect(Rect2(x * TILE - 4, y * TILE, w * TILE + 8, TILE * 1.5), roof)
 	var dx := (x + w / 2.0) * TILE - TILE / 2.0
 	draw_rect(Rect2(dx, (y + h - 1) * TILE, TILE, TILE), Color("3a2412"))
-	draw_rect(Rect2(x * TILE + 6, (y + 1.6) * TILE, 8, 8), Color("9fd8ff"))
-	draw_rect(Rect2((x + w) * TILE - 14, (y + 1.6) * TILE, 8, 8), Color("9fd8ff"))
 	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, 7, Color(1, 1, 0.85))
+	draw_string(font, Vector2(x * TILE, (y + 1.3) * TILE), label_text, HORIZONTAL_ALIGNMENT_CENTER, w * TILE, 7, Color(1, 1, 0.85))
+
+
+func label(text: String, at: Vector2, w := 64.0) -> void:
+	var font := ThemeDB.fallback_font
+	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, 7, Color(1, 1, 0.85))

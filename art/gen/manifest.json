@@ -1,0 +1,977 @@
+{
+ "buildings": {
+  "cottage_a": {
+   "file": "buildings/cottage_a.png",
+   "h": 96,
+   "w": 128
+  },
+  "cottage_b": {
+   "file": "buildings/cottage_b.png",
+   "h": 101,
+   "w": 128
+  },
+  "fence_h": {
+   "file": "buildings/fence_h.png",
+   "h": 23,
+   "w": 32
+  },
+  "fence_post": {
+   "file": "buildings/fence_post.png",
+   "h": 32,
+   "w": 16
+  },
+  "fence_v": {
+   "file": "buildings/fence_v.png",
+   "h": 25,
+   "w": 16
+  },
+  "fountain": {
+   "file": "buildings/fountain.png",
+   "h": 78,
+   "w": 96
+  },
+  "hall": {
+   "file": "buildings/hall.png",
+   "h": 216,
+   "w": 238
+  },
+  "house": {
+   "file": "buildings/house.png",
+   "h": 174,
+   "w": 192
+  },
+  "mailbox": {
+   "file": "buildings/mailbox.png",
+   "h": 40,
+   "w": 24
+  },
+  "potions": {
+   "file": "buildings/potions.png",
+   "h": 136,
+   "w": 160
+  },
+  "sellbox": {
+   "file": "buildings/sellbox.png",
+   "h": 40,
+   "w": 38
+  },
+  "sign": {
+   "file": "buildings/sign.png",
+   "h": 39,
+   "w": 28
+  },
+  "smith": {
+   "file": "buildings/smith.png",
+   "h": 162,
+   "w": 192
+  },
+  "store": {
+   "file": "buildings/store.png",
+   "h": 161,
+   "w": 192
+  },
+  "well": {
+   "file": "buildings/well.png",
+   "h": 72,
+   "w": 64
+  }
+ },
+ "characters/dog": {
+  "dig": {
+   "cell_h": 44,
+   "cell_w": 56,
+   "file": "characters/dog/dig.png",
+   "frames": 4,
+   "h": 44,
+   "w": 224
+  },
+  "sit": {
+   "cell_h": 40,
+   "cell_w": 40,
+   "file": "characters/dog/sit.png",
+   "frames": 4,
+   "h": 40,
+   "w": 160
+  },
+  "walk_down": {
+   "cell_h": 40,
+   "cell_w": 32,
+   "file": "characters/dog/walk_down.png",
+   "frames": 4,
+   "h": 40,
+   "w": 128
+  },
+  "walk_up": {
+   "cell_h": 40,
+   "cell_w": 30,
+   "file": "characters/dog/walk_up.png",
+   "frames": 4,
+   "h": 40,
+   "w": 120
+  }
+ },
+ "characters/girl": {
+  "run_down": {
+   "cell_h": 59,
+   "cell_w": 24,
+   "file": "characters/girl/run_down.png",
+   "frames": 4,
+   "h": 59,
+   "w": 96
+  },
+  "run_up": {
+   "cell_h": 59,
+   "cell_w": 24,
+   "file": "characters/girl/run_up.png",
+   "frames": 4,
+   "h": 59,
+   "w": 96
+  },
+  "walk_down": {
+   "cell_h": 59,
+   "cell_w": 23,
+   "file": "characters/girl/walk_down.png",
+   "frames": 4,
+   "h": 59,
+   "w": 92
+  },
+  "walk_up": {
+   "cell_h": 59,
+   "cell_w": 23,
+   "file": "characters/girl/walk_up.png",
+   "frames": 4,
+   "h": 59,
+   "w": 92
+  }
+ },
+ "characters/man": {
+  "run_down": {
+   "cell_h": 74,
+   "cell_w": 48,
+   "file": "characters/man/run_down.png",
+   "frames": 4,
+   "h": 74,
+   "w": 192
+  },
+  "run_up": {
+   "cell_h": 74,
+   "cell_w": 34,
+   "file": "characters/man/run_up.png",
+   "frames": 4,
+   "h": 74,
+   "w": 136
+  },
+  "walk_down": {
+   "cell_h": 74,
+   "cell_w": 33,
+   "file": "characters/man/walk_down.png",
+   "frames": 4,
+   "h": 74,
+   "w": 132
+  },
+  "walk_up": {
+   "cell_h": 74,
+   "cell_w": 33,
+   "file": "characters/man/walk_up.png",
+   "frames": 4,
+   "h": 74,
+   "w": 132
+  }
+ },
+ "characters/penguin": {
+  "attack": {
+   "cell_h": 64,
+   "cell_w": 112,
+   "file": "characters/penguin/attack.png",
+   "frames": 4,
+   "h": 64,
+   "w": 448
+  },
+  "idle": {
+   "cell_h": 64,
+   "cell_w": 67,
+   "file": "characters/penguin/idle.png",
+   "frames": 4,
+   "h": 64,
+   "w": 268
+  },
+  "powerup": {
+   "cell_h": 76,
+   "cell_w": 118,
+   "file": "characters/penguin/powerup.png",
+   "frames": 4,
+   "h": 76,
+   "w": 472
+  },
+  "run": {
+   "cell_h": 64,
+   "cell_w": 96,
+   "file": "characters/penguin/run.png",
+   "frames": 4,
+   "h": 64,
+   "w": 384
+  },
+  "view_back": {
+   "file": "characters/penguin/view_back.png",
+   "h": 64,
+   "w": 57
+  },
+  "view_front": {
+   "file": "characters/penguin/view_front.png",
+   "h": 64,
+   "w": 61
+  },
+  "view_left": {
+   "file": "characters/penguin/view_left.png",
+   "h": 64,
+   "w": 49
+  },
+  "view_right": {
+   "file": "characters/penguin/view_right.png",
+   "h": 64,
+   "w": 49
+  },
+  "walk": {
+   "cell_h": 64,
+   "cell_w": 64,
+   "file": "characters/penguin/walk.png",
+   "frames": 4,
+   "h": 64,
+   "w": 256
+  }
+ },
+ "characters/son": {
+  "run_down": {
+   "cell_h": 64,
+   "cell_w": 27,
+   "file": "characters/son/run_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 108
+  },
+  "run_up": {
+   "cell_h": 64,
+   "cell_w": 28,
+   "file": "characters/son/run_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 112
+  },
+  "walk_down": {
+   "cell_h": 64,
+   "cell_w": 28,
+   "file": "characters/son/walk_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 112
+  },
+  "walk_up": {
+   "cell_h": 64,
+   "cell_w": 27,
+   "file": "characters/son/walk_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 108
+  }
+ },
+ "characters/woman": {
+  "run_down": {
+   "cell_h": 78,
+   "cell_w": 52,
+   "file": "characters/woman/run_down.png",
+   "frames": 4,
+   "h": 78,
+   "w": 208
+  },
+  "run_up": {
+   "cell_h": 78,
+   "cell_w": 35,
+   "file": "characters/woman/run_up.png",
+   "frames": 4,
+   "h": 78,
+   "w": 140
+  },
+  "walk_down": {
+   "cell_h": 78,
+   "cell_w": 34,
+   "file": "characters/woman/walk_down.png",
+   "frames": 4,
+   "h": 78,
+   "w": 136
+  },
+  "walk_up": {
+   "cell_h": 78,
+   "cell_w": 33,
+   "file": "characters/woman/walk_up.png",
+   "frames": 4,
+   "h": 78,
+   "w": 132
+  }
+ },
+ "crops": {
+  "blueberry": {
+   "cell_h": 30,
+   "cell_w": 30,
+   "file": "crops/blueberry.png",
+   "frames": 5,
+   "h": 30,
+   "w": 150
+  },
+  "corn": {
+   "cell_h": 59,
+   "cell_w": 30,
+   "file": "crops/corn.png",
+   "frames": 5,
+   "h": 59,
+   "w": 150
+  },
+  "dreamflower": {
+   "cell_h": 30,
+   "cell_w": 29,
+   "file": "crops/dreamflower.png",
+   "frames": 5,
+   "h": 30,
+   "w": 145
+  },
+  "pumpkin": {
+   "cell_h": 26,
+   "cell_w": 30,
+   "file": "crops/pumpkin.png",
+   "frames": 5,
+   "h": 26,
+   "w": 150
+  },
+  "strawberry": {
+   "cell_h": 24,
+   "cell_w": 30,
+   "file": "crops/strawberry.png",
+   "frames": 5,
+   "h": 24,
+   "w": 150
+  },
+  "turnip": {
+   "cell_h": 30,
+   "cell_w": 30,
+   "file": "crops/turnip.png",
+   "frames": 5,
+   "h": 30,
+   "w": 150
+  }
+ },
+ "enemies/bat": {
+  "hurt": {
+   "cell_h": 34,
+   "cell_w": 34,
+   "file": "enemies/bat/hurt.png",
+   "frames": 2,
+   "h": 34,
+   "w": 68
+  },
+  "idle": {
+   "cell_h": 34,
+   "cell_w": 35,
+   "file": "enemies/bat/idle.png",
+   "frames": 4,
+   "h": 34,
+   "w": 140
+  },
+  "walk": {
+   "cell_h": 34,
+   "cell_w": 27,
+   "file": "enemies/bat/walk.png",
+   "frames": 4,
+   "h": 34,
+   "w": 108
+  }
+ },
+ "enemies/golem": {
+  "hurt": {
+   "cell_h": 70,
+   "cell_w": 87,
+   "file": "enemies/golem/hurt.png",
+   "frames": 2,
+   "h": 70,
+   "w": 174
+  },
+  "idle": {
+   "cell_h": 70,
+   "cell_w": 85,
+   "file": "enemies/golem/idle.png",
+   "frames": 4,
+   "h": 70,
+   "w": 340
+  },
+  "walk": {
+   "cell_h": 70,
+   "cell_w": 86,
+   "file": "enemies/golem/walk.png",
+   "frames": 4,
+   "h": 70,
+   "w": 344
+  }
+ },
+ "enemies/grump": {
+  "hurt": {
+   "cell_h": 40,
+   "cell_w": 51,
+   "file": "enemies/grump/hurt.png",
+   "frames": 2,
+   "h": 40,
+   "w": 102
+  },
+  "idle": {
+   "cell_h": 40,
+   "cell_w": 51,
+   "file": "enemies/grump/idle.png",
+   "frames": 4,
+   "h": 40,
+   "w": 204
+  },
+  "walk": {
+   "cell_h": 40,
+   "cell_w": 49,
+   "file": "enemies/grump/walk.png",
+   "frames": 4,
+   "h": 40,
+   "w": 196
+  }
+ },
+ "enemies/shard": {
+  "hurt": {
+   "cell_h": 56,
+   "cell_w": 57,
+   "file": "enemies/shard/hurt.png",
+   "frames": 2,
+   "h": 56,
+   "w": 114
+  },
+  "idle": {
+   "cell_h": 56,
+   "cell_w": 48,
+   "file": "enemies/shard/idle.png",
+   "frames": 4,
+   "h": 56,
+   "w": 192
+  },
+  "walk": {
+   "cell_h": 56,
+   "cell_w": 46,
+   "file": "enemies/shard/walk.png",
+   "frames": 4,
+   "h": 56,
+   "w": 184
+  }
+ },
+ "enemies/slime": {
+  "hurt": {
+   "cell_h": 30,
+   "cell_w": 37,
+   "file": "enemies/slime/hurt.png",
+   "frames": 2,
+   "h": 30,
+   "w": 74
+  },
+  "idle": {
+   "cell_h": 30,
+   "cell_w": 43,
+   "file": "enemies/slime/idle.png",
+   "frames": 4,
+   "h": 30,
+   "w": 172
+  },
+  "walk": {
+   "cell_h": 30,
+   "cell_w": 55,
+   "file": "enemies/slime/walk.png",
+   "frames": 4,
+   "h": 30,
+   "w": 220
+  }
+ },
+ "items": {
+  "apple": {
+   "file": "items/apple.png",
+   "h": 27,
+   "w": 32
+  },
+  "axe": {
+   "file": "items/axe.png",
+   "h": 28,
+   "w": 32
+  },
+  "blueberry": {
+   "file": "items/blueberry.png",
+   "h": 29,
+   "w": 32
+  },
+  "bow": {
+   "file": "items/bow.png",
+   "h": 32,
+   "w": 24
+  },
+  "bread": {
+   "file": "items/bread.png",
+   "h": 28,
+   "w": 32
+  },
+  "can": {
+   "file": "items/can.png",
+   "h": 27,
+   "w": 32
+  },
+  "copper": {
+   "file": "items/copper.png",
+   "h": 32,
+   "w": 25
+  },
+  "corn": {
+   "file": "items/corn.png",
+   "h": 32,
+   "w": 26
+  },
+  "crystal": {
+   "file": "items/crystal.png",
+   "h": 32,
+   "w": 22
+  },
+  "dreamflower": {
+   "file": "items/dreamflower.png",
+   "h": 32,
+   "w": 29
+  },
+  "energy_tea": {
+   "file": "items/energy_tea.png",
+   "h": 32,
+   "w": 22
+  },
+  "fiber": {
+   "file": "items/fiber.png",
+   "h": 26,
+   "w": 32
+  },
+  "fish": {
+   "file": "items/fish.png",
+   "h": 32,
+   "w": 24
+  },
+  "gift_pie": {
+   "file": "items/gift_pie.png",
+   "h": 32,
+   "w": 30
+  },
+  "gold": {
+   "file": "items/gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "green_potion": {
+   "file": "items/green_potion.png",
+   "h": 32,
+   "w": 27
+  },
+  "hoe": {
+   "file": "items/hoe.png",
+   "h": 32,
+   "w": 27
+  },
+  "iron": {
+   "file": "items/iron.png",
+   "h": 32,
+   "w": 25
+  },
+  "iron_sword": {
+   "file": "items/iron_sword.png",
+   "h": 32,
+   "w": 31
+  },
+  "key": {
+   "file": "items/key.png",
+   "h": 25,
+   "w": 32
+  },
+  "letter": {
+   "file": "items/letter.png",
+   "h": 30,
+   "w": 32
+  },
+  "map": {
+   "file": "items/map.png",
+   "h": 27,
+   "w": 32
+  },
+  "pickaxe": {
+   "file": "items/pickaxe.png",
+   "h": 32,
+   "w": 32
+  },
+  "potion": {
+   "file": "items/potion.png",
+   "h": 32,
+   "w": 19
+  },
+  "pumpkin": {
+   "file": "items/pumpkin.png",
+   "h": 29,
+   "w": 32
+  },
+  "rod": {
+   "file": "items/rod.png",
+   "h": 32,
+   "w": 32
+  },
+  "seeds": {
+   "file": "items/seeds.png",
+   "h": 32,
+   "w": 27
+  },
+  "shard": {
+   "file": "items/shard.png",
+   "h": 32,
+   "w": 18
+  },
+  "stone": {
+   "file": "items/stone.png",
+   "h": 32,
+   "w": 27
+  },
+  "strawberry": {
+   "file": "items/strawberry.png",
+   "h": 32,
+   "w": 29
+  },
+  "sword": {
+   "file": "items/sword.png",
+   "h": 32,
+   "w": 30
+  },
+  "turnip": {
+   "file": "items/turnip.png",
+   "h": 32,
+   "w": 27
+  },
+  "wood": {
+   "file": "items/wood.png",
+   "h": 32,
+   "w": 28
+  }
+ },
+ "nature": {
+  "berry_bush": {
+   "file": "nature/berry_bush.png",
+   "h": 34,
+   "w": 40
+  },
+  "bush": {
+   "file": "nature/bush.png",
+   "h": 34,
+   "w": 40
+  },
+  "flowers": {
+   "file": "nature/flowers.png",
+   "h": 36,
+   "w": 40
+  },
+  "log": {
+   "file": "nature/log.png",
+   "h": 36,
+   "w": 58
+  },
+  "oak": {
+   "file": "nature/oak.png",
+   "h": 128,
+   "w": 89
+  },
+  "oak_autumn": {
+   "file": "nature/oak_autumn.png",
+   "h": 128,
+   "w": 88
+  },
+  "pine": {
+   "file": "nature/pine.png",
+   "h": 130,
+   "w": 80
+  },
+  "rock_l": {
+   "file": "nature/rock_l.png",
+   "h": 50,
+   "w": 60
+  },
+  "rock_m": {
+   "file": "nature/rock_m.png",
+   "h": 39,
+   "w": 48
+  },
+  "rock_s": {
+   "file": "nature/rock_s.png",
+   "h": 22,
+   "w": 28
+  },
+  "stump": {
+   "file": "nature/stump.png",
+   "h": 31,
+   "w": 36
+  }
+ },
+ "props": {
+  "anvil": {
+   "file": "props/anvil.png",
+   "h": 32,
+   "w": 40
+  },
+  "arch": {
+   "file": "props/arch.png",
+   "h": 62,
+   "w": 72
+  },
+  "barn": {
+   "file": "props/barn.png",
+   "h": 192,
+   "w": 143
+  },
+  "beehive": {
+   "file": "props/beehive.png",
+   "h": 48,
+   "w": 36
+  },
+  "board": {
+   "file": "props/board.png",
+   "h": 56,
+   "w": 56
+  },
+  "coop": {
+   "file": "props/coop.png",
+   "h": 64,
+   "w": 64
+  },
+  "cow": {
+   "file": "props/cow.png",
+   "h": 42,
+   "w": 56
+  },
+  "crystal_rock": {
+   "file": "props/crystal_rock.png",
+   "h": 40,
+   "w": 39
+  },
+  "greenhouse": {
+   "file": "props/greenhouse.png",
+   "h": 192,
+   "w": 128
+  },
+  "lamp": {
+   "file": "props/lamp.png",
+   "h": 56,
+   "w": 18
+  },
+  "oven": {
+   "file": "props/oven.png",
+   "h": 64,
+   "w": 56
+  },
+  "pine2": {
+   "file": "props/pine2.png",
+   "h": 112,
+   "w": 72
+  },
+  "scarecrow": {
+   "file": "props/scarecrow.png",
+   "h": 41,
+   "w": 32
+  },
+  "sheep": {
+   "file": "props/sheep.png",
+   "h": 40,
+   "w": 45
+  },
+  "signpost": {
+   "file": "props/signpost.png",
+   "h": 56,
+   "w": 28
+  },
+  "stall": {
+   "file": "props/stall.png",
+   "h": 64,
+   "w": 76
+  },
+  "well2": {
+   "file": "props/well2.png",
+   "h": 55,
+   "w": 48
+  },
+  "windmill": {
+   "file": "props/windmill.png",
+   "h": 208,
+   "w": 128
+  },
+  "workbench": {
+   "file": "props/workbench.png",
+   "h": 46,
+   "w": 72
+  }
+ },
+ "tiles": {
+  "deco_0": {
+   "file": "tiles/deco_0.png",
+   "h": 32,
+   "w": 31
+  },
+  "deco_1": {
+   "file": "tiles/deco_1.png",
+   "h": 32,
+   "w": 31
+  },
+  "deco_2": {
+   "file": "tiles/deco_2.png",
+   "h": 32,
+   "w": 31
+  },
+  "deco_3": {
+   "file": "tiles/deco_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "deco_4": {
+   "file": "tiles/deco_4.png",
+   "h": 32,
+   "w": 31
+  },
+  "deco_5": {
+   "file": "tiles/deco_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "dirt": {
+   "file": "tiles/dirt.png",
+   "h": 96,
+   "w": 96
+  },
+  "dock": {
+   "file": "tiles/dock.png",
+   "h": 96,
+   "w": 96
+  },
+  "grass": {
+   "file": "tiles/grass.png",
+   "h": 96,
+   "w": 96
+  },
+  "shore": {
+   "cell_h": 31,
+   "cell_w": 32,
+   "file": "tiles/shore.png",
+   "frames": 4,
+   "h": 31,
+   "w": 128
+  },
+  "shore_set": {
+   "file": "tiles/shore_set.png",
+   "h": 96,
+   "w": 96
+  },
+  "stone": {
+   "file": "tiles/stone.png",
+   "h": 96,
+   "w": 96
+  },
+  "tilled_dry": {
+   "file": "tiles/tilled_dry.png",
+   "h": 96,
+   "w": 96
+  },
+  "tilled_wet": {
+   "file": "tiles/tilled_wet.png",
+   "h": 96,
+   "w": 96
+  },
+  "water": {
+   "cell_h": 31,
+   "cell_w": 32,
+   "file": "tiles/water.png",
+   "frames": 4,
+   "h": 31,
+   "w": 128
+  }
+ },
+ "ui": {
+  "arrow_down": {
+   "file": "ui/arrow_down.png",
+   "h": 32,
+   "w": 30
+  },
+  "arrow_left": {
+   "file": "ui/arrow_left.png",
+   "h": 32,
+   "w": 32
+  },
+  "arrow_right": {
+   "file": "ui/arrow_right.png",
+   "h": 32,
+   "w": 32
+  },
+  "arrow_up": {
+   "file": "ui/arrow_up.png",
+   "h": 32,
+   "w": 30
+  },
+  "bolt_empty": {
+   "file": "ui/bolt_empty.png",
+   "h": 32,
+   "w": 23
+  },
+  "bolt_full": {
+   "file": "ui/bolt_full.png",
+   "h": 32,
+   "w": 24
+  },
+  "bubble": {
+   "file": "ui/bubble.png",
+   "h": 30,
+   "w": 32
+  },
+  "button": {
+   "file": "ui/button.png",
+   "h": 63,
+   "w": 64
+  },
+  "button_pressed": {
+   "file": "ui/button_pressed.png",
+   "h": 63,
+   "w": 64
+  },
+  "crystal": {
+   "file": "ui/crystal.png",
+   "h": 32,
+   "w": 25
+  },
+  "heart_empty": {
+   "file": "ui/heart_empty.png",
+   "h": 29,
+   "w": 32
+  },
+  "heart_full": {
+   "file": "ui/heart_full.png",
+   "h": 29,
+   "w": 32
+  },
+  "heart_half": {
+   "file": "ui/heart_half.png",
+   "h": 29,
+   "w": 32
+  },
+  "panel_parchment": {
+   "file": "ui/panel_parchment.png",
+   "h": 72,
+   "w": 72
+  },
+  "panel_wood": {
+   "file": "ui/panel_wood.png",
+   "h": 72,
+   "w": 72
+  },
+  "title_bg": {
+   "file": "ui/title_bg.png",
+   "h": 960,
+   "w": 540
+  }
+ }
+}

@@ -44,15 +44,23 @@ func build() -> void:
 
 
 func after_ready() -> void:
-	add_child(GameMenu.new())
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 2000 + floor_no + int(GameState.run["day"])
+	_place_props()
 	var n := 3 + floor_no
 	for i in n:
 		var c := Vector2i(rng.randi_range(4, cols - 2), rng.randi_range(4, rows - 2))
 		if blocked.has(c):
 			continue
-		spawn_enemy("bat" if rng.randf() < 0.4 else "slime", cell_center(c))
+		var roll := rng.randf()
+		var kind := "slime"
+		if floor_no >= 3 and roll < 0.15:
+			kind = "golem"
+		elif floor_no >= 2 and roll < 0.3:
+			kind = "shard"
+		elif roll < 0.6:
+			kind = "bat"
+		spawn_enemy(kind, cell_center(c))
 	if not GameState.run["flags"].has("mine_seen"):
 		GameState.run["flags"]["mine_seen"] = true
 		player.frozen = true
@@ -86,6 +94,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)
+				if props.has(c):
+					(props[c] as Sprite2D).queue_free()
+					props.erase(c)
 				give(ore, 1 if ore != "stone" else 2)
 				xp("mining", 2 if ore == "stone" else 5)
 				queue_redraw()
@@ -94,26 +105,23 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _draw() -> void:
-	for y in rows:
-		for x in cols:
-			draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("3b3542") if (x + y) % 2 == 0 else Color("433c4b"))
+	if Art.has("tiles", "stone"):
+		for y in rows:
+			for x in cols:
+				Art.draw_tile(self, "tiles", "stone", Vector2(x * TILE, y * TILE), 4)
+		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.1, 0.05, 0.2, 0.45))
+	else:
+		for y in rows:
+			for x in cols:
+				draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("3b3542") if (x + y) % 2 == 0 else Color("433c4b"))
 	for k in things:
 		var t: Dictionary = things[k]
 		var p := cell_center(k)
 		match str(t.get("type", "")):
 			"rock":
-				var col := Color("7a7a86")
-				var fleck := Color.TRANSPARENT
-				match str(t["ore"]):
-					"copper": fleck = Color("d9823a")
-					"iron": fleck = Color("c9cfe0")
-					"shard": fleck = Color("8ae0ff")
-				draw_circle(p + Vector2(0, -6), 7.0, col)
-				draw_circle(p + Vector2(-2, -8), 3.0, Color("9a9aa6"))
-				if fleck != Color.TRANSPARENT:
-					draw_rect(Rect2(p.x - 3, p.y - 7, 2, 2), fleck)
-					draw_rect(Rect2(p.x + 1, p.y - 5, 2, 2), fleck)
-					draw_rect(Rect2(p.x - 1, p.y - 10, 2, 2), fleck)
+				if props.has(k):
+					continue
+				draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
 			"up", "down":
 				draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
 				for i in 4:
@@ -122,5 +130,26 @@ func _draw() -> void:
 	draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("221d28"))
 	draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("221d28"))
 	draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("221d28"))
-	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(2 * TILE, TILE - 3), "floor %d" % floor_no, HORIZONTAL_ALIGNMENT_LEFT, 6 * TILE, 7, Color(1, 1, 0.85))
+	label("floor %d" % floor_no, Vector2(2 * TILE, TILE - 3), 6 * TILE)
+
+
+func _place_props() -> void:
+	if not Art.has("nature", "rock_m"):
+		return
+	for k in things:
+		var t: Dictionary = things[k]
+		if str(t.get("type", "")) != "rock":
+			continue
+		var ore := str(t["ore"])
+		var sp := prop("nature", "rock_l" if ore != "stone" else ("rock_m" if (k.x + k.y) % 2 == 0 else "rock_s"), k)
+		if sp:
+			match ore:
+				"copper": sp.modulate = Color(1.0, 0.85, 0.7)
+				"iron": sp.modulate = Color(0.85, 0.9, 1.0)
+				"shard": sp.modulate = Color(0.8, 0.95, 1.2)
+	if Art.has("props", "crystal_rock"):
+		for k in things:
+			if str(things[k].get("type", "")) == "rock" and str(things[k]["ore"]) == "shard" and props.has(k):
+				(props[k] as Sprite2D).texture = Art.tex("props", "crystal_rock")
+				(props[k] as Sprite2D).offset = Vector2(0, -Art.tex("props", "crystal_rock").get_height() / 2.0)
+				(props[k] as Sprite2D).modulate = Color.WHITE

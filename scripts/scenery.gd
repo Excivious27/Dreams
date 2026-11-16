@@ -121,6 +121,23 @@ class Pond:
 		queue_redraw()
 
 	func _draw() -> void:
+		if Art.has("tiles", "shore_set") and Art.has("tiles", "water"):
+			var cols := int(rect.size.x / 16)
+			var rows := int(rect.size.y / 16)
+			var frame := int(_t * 4.0) % 4
+			for y in rows:
+				for x in cols:
+					var at := rect.position + Vector2(x * 16, y * 16)
+					var ix := 0 if x == 0 else (2 if x == cols - 1 else 1)
+					var iy := 0 if y == 0 else (2 if y == rows - 1 else 1)
+					if ix == 1 and iy == 1:
+						Art.draw_tile(self, "tiles", "water", at, frame)
+					else:
+						Art.draw_tile(self, "tiles", "shore_set", at, iy * 3 + ix)
+			for r: Dictionary in _rings:
+				var a: float = r["age"]
+				draw_arc(r["pos"], 2.0 + a * 5.0, 0, TAU, 20, Color(1, 1, 1, 0.45 * (1.0 - a / 2.2)), 1.0)
+			return
 		var deep := Color("2f6fb5")
 		var shallow := Color("4d93d6")
 		draw_rect(rect.grow(2), Color("c9a86b"))

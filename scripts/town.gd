@@ -35,14 +35,20 @@ func build() -> void:
 	for y in range(FOUNTAIN.position.y, FOUNTAIN.end.y):
 		for x in range(FOUNTAIN.position.x, FOUNTAIN.end.x):
 			things[Vector2i(x, y)] = {"type": "fountain", "hint": "A: toss a crystal"}
-	for p: Vector2i in [Vector2i(2, 24), Vector2i(17, 25), Vector2i(1, 9), Vector2i(18, 11), Vector2i(6, 26)]:
+	for p: Vector2i in [Vector2i(1, 7), Vector2i(18, 8), Vector2i(6, 26), Vector2i(12, 26), Vector2i(18, 22)]:
 		set_thing(p.x, p.y, {"type": "tree", "hint": ""})
+	block_rect(2, 22, 3, 3)    # cottage a
+	block_rect(15, 22, 3, 3)   # cottage b
+	block_rect(17, 13, 2, 2)   # well
+	block_rect(2, 19, 2, 2)    # market stall
+	for c: Vector2i in [Vector2i(6, 12), Vector2i(13, 12), Vector2i(6, 21), Vector2i(13, 21)]:
+		blocked[c] = true
 
 
 func after_ready() -> void:
 	for c in [Vector2i(9, 1), Vector2i(10, 1), Vector2i(9, 0), Vector2i(10, 0)]:
 		blocked.erase(c)
-	add_child(GameMenu.new())
+	_place_props()
 	for id in GameState.npcs:
 		var d: Dictionary = GameState.npcs[id]
 		if id == "sal" and GameState.is_penguins() and int(GameState.run["day"]) < 4:
@@ -78,6 +84,13 @@ func _process(delta: float) -> void:
 		return
 	if FARM_EXIT.has_point(player.cell()) or player.cell().y <= 0:
 		go_to("farm", Vector2(10 * TILE, 27 * TILE), "up")
+
+
+func has_npc_at(c: Vector2i) -> bool:
+	for n: Npc in npcs:
+		if n.cell() == c:
+			return true
+	return false
 
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
@@ -268,25 +281,38 @@ func _lines(id: String, friend: int) -> Array:
 # ---- drawing -----------------------------------------------------------------
 
 func _draw() -> void:
-	draw_grass()
-	draw_rect(Rect2(8 * TILE, 0, 4 * TILE, rows * TILE), Color("b8945a"))
-	draw_rect(Rect2(1 * TILE, 10 * TILE, 18 * TILE, 2 * TILE), Color("b8945a"))
-	draw_rect(Rect2(1 * TILE, 19 * TILE, 18 * TILE, 2 * TILE), Color("b8945a"))
-	draw_rect(Rect2(7 * TILE, 19 * TILE, 6 * TILE, 6 * TILE), Color("9a9aa6"))
-	draw_building(STORE.position.x, STORE.position.y, STORE.size.x, STORE.size.y, Color("c9a86b"), Color("4f8fd0"), "GENERAL STORE")
-	draw_building(SMITH.position.x, SMITH.position.y, SMITH.size.x, SMITH.size.y, Color("5a5a66"), Color("3a3a44"), "BLACKSMITH")
-	draw_rect(Rect2(13 * TILE + 4, 5.6 * TILE, 8, 8), Color("ff8a3a"))
-	draw_building(POTIONS.position.x, POTIONS.position.y, POTIONS.size.x, POTIONS.size.y, Color("7a5aa0"), Color("4a2e6b"), "POTIONS")
-	draw_building(HALL.position.x, HALL.position.y, HALL.size.x, HALL.size.y, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
-	# Fountain
-	draw_circle(Vector2(10 * TILE, 22 * TILE), 17.0, Color("7a7a86"))
-	draw_circle(Vector2(10 * TILE, 22 * TILE), 13.0, Color("4d93d6"))
-	draw_circle(Vector2(10 * TILE, 22 * TILE - 2), 4.0, Color("9fd8ff"))
+	draw_grass(3)
+	draw_tileset_rect("dirt", Rect2i(8, 0, 4, rows), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(1, 10, 18, 2), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(1, 19, 18, 2), Color("b8945a"))
+	draw_tileset_rect("stone", Rect2i(7, 19, 6, 6), Color("9a9aa6"))
+	if not Art.has("buildings", "store"):
+		draw_building(STORE.position.x, STORE.position.y, STORE.size.x, STORE.size.y, Color("c9a86b"), Color("4f8fd0"), "GENERAL STORE")
+		draw_building(SMITH.position.x, SMITH.position.y, SMITH.size.x, SMITH.size.y, Color("5a5a66"), Color("3a3a44"), "BLACKSMITH")
+		draw_building(POTIONS.position.x, POTIONS.position.y, POTIONS.size.x, POTIONS.size.y, Color("7a5aa0"), Color("4a2e6b"), "POTIONS")
+		draw_building(HALL.position.x, HALL.position.y, HALL.size.x, HALL.size.y, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
+		draw_circle(Vector2(10 * TILE, 22 * TILE), 13.0, Color("4d93d6"))
+		for k in things:
+			if things[k].get("type", "") == "tree":
+				draw_tree(cell_center(k))
+	draw_fence_border()
+	label("▲ farm", Vector2(6 * TILE, 2 * TILE - 2), 8 * TILE)
+
+
+func _place_props() -> void:
+	if not Art.has("buildings", "store"):
+		return
+	prop("buildings", "store", Vector2i(STORE.position.x, STORE.end.y - 1), STORE.size.x - 1)
+	prop("buildings", "smith", Vector2i(SMITH.position.x, SMITH.end.y - 1), SMITH.size.x - 1)
+	prop("buildings", "potions", Vector2i(POTIONS.position.x, POTIONS.end.y - 1), POTIONS.size.x - 1)
+	prop("buildings", "hall", Vector2i(HALL.position.x, HALL.end.y - 1), HALL.size.x - 1)
+	prop("buildings", "fountain", Vector2i(FOUNTAIN.position.x, FOUNTAIN.end.y - 1), 1, 4.0)
+	prop("buildings", "cottage_a", Vector2i(2, 24), 2)
+	prop("buildings", "cottage_b", Vector2i(15, 24), 2)
+	prop("buildings", "well", Vector2i(17, 14), 1)
+	for c: Vector2i in [Vector2i(6, 12), Vector2i(13, 12), Vector2i(6, 21), Vector2i(13, 21)]:
+		prop("props", "lamp", c)
+	prop("props", "stall", Vector2i(2, 20), 1)
 	for k in things:
 		if things[k].get("type", "") == "tree":
-			draw_tree(cell_center(k))
-	draw_fence_border()
-	draw_rect(Rect2(FARM_EXIT.position * TILE, Vector2i(2, 1) * TILE), Color("b8945a"))
-	draw_rect(Rect2(9 * TILE, 0, 2 * TILE, TILE), Color("b8945a"))
-	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(6 * TILE, 2 * TILE - 2), "▲ farm", HORIZONTAL_ALIGNMENT_CENTER, 8 * TILE, 7, Color(1, 1, 0.85))
+			prop("nature", "pine" if (k.x + k.y) % 2 == 0 else "oak", k)

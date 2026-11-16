@@ -8,6 +8,7 @@
 - `tools/playtest.gd` is a scripted playthrough with asserts and screenshots: `xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/playtest.gd -- /tmp/shots`. Run it after gameplay changes and look at the PNGs. Delete `~/.local/share/godot/app_userdata/Dreams/save.json` first.
 - Touch buttons press input *actions* (no InputEvents), so UI that reacts to A/B/MENU must poll `Input.is_action_just_pressed` in `_process` (see Dialogue, GameMenu), never rely on `_unhandled_input`.
 - After a dialogue/menu closes, `Dialogue.input_blocked()` is true for a moment; gameplay A/B checks respect it.
+- Art pipeline: Tom uploads ChatGPT sheets to `art/incoming/`; `python3 tools/slice_art.py` keys out magenta, slices, scales to 2x and writes `art/gen/` + `manifest.json`. `Art` (scripts/art.gd) loads from there; `GameMap.prop()` places y-sorted sprites; `Art.draw_tile()` draws 32px tiles into 16px cells. Maps use LINEAR filtering because the art is 2x detail.
 - Audio placeholders: `python3 tools/make_audio.py` regenerates `audio/music/*.ogg` and `audio/sfx/*.wav`.
 - Never delete Tom's uploads (`reference/`, `art/incoming/`). Original characters and art only.
 - Keep `docs/STATUS.md` current.

@@ -3,6 +3,18 @@
 **Play:** https://excivious27.github.io/Dreams/
 
 ## What's in the game now
+- **Tom's art is in**: title key art, UI kit (hearts, energy bolt, crystal, buttons),
+  ground/water/dock/stone tiles, farmhouse + mailbox + sell box + fences, town
+  buildings, barn, windmill, scarecrow, lamps, stall, trees/bushes/rocks, crops with
+  growth stages, item icons, enemies (Grump, slime, bat, golem, corrupted shard),
+  penguin hero, walk-toward/away frames for the family, dog sit/dig and toward/away.
+  Pipeline: `tools/slice_art.py` keys the magenta, slices sheets, scales to 2x
+  detail → `art/gen/` (+ `manifest.json`). Re-run after new uploads.
+- **Stardew-shaped controls and menus**: 12-slot toolbar (tap, number keys, mouse
+  wheel), inventory with backpack grid, skills with XP bars, Social tab with hearts,
+  Map tab, Quests, Options. Tap-to-move anywhere in the world (tap a thing to walk
+  up and use it; tap an enemy to attack it). Mouse click does the same on desktop,
+  where the on-screen pad hides itself. Sword swing arc, enemy hurt flash.
 - **Title → New game → choose a path** (Too Two Powerful Penguins / Gangster's Paradise)
   → choose a character → name yourself, your town, your pet → the story begins.
 - **Story opening per arc**, with a choice that is remembered and referenced later
@@ -49,9 +61,9 @@
 - Slice and wire in art from `art/incoming/` as it arrives
 
 ## Known gaps
-- All maps, buildings, NPCs, enemies are placeholder drawings until art arrives
-- Penguins, Big Jim, Light Crystal have no art (simple placeholder figure)
-- No walk-toward / walk-away frames for the family: front/back view with a bob
+- Townspeople, Big Jim, the Light Crystal are still placeholder figures (batch 2 prompts)
+- Interiors are flat drawings (batch 2); only one season of ground tiles
+- Female penguin uses the same sprite with a pink tint until her sheet arrives
 - Woman's last attack frame is missing part of the pink magic crescent
 - Typing names on the web build uses the browser's keyboard; report any trouble
 - Multiplayer not started (see Guide #1, G)

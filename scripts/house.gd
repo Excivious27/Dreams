@@ -30,7 +30,7 @@ func build() -> void:
 
 
 func after_ready() -> void:
-	add_child(GameMenu.new())
+	pass
 
 
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
@@ -90,9 +90,14 @@ func _journal() -> void:
 
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color("3a2a1c"))
-	for y in range(2, rows - 1):
-		for x in range(1, cols - 1):
-			draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("a07a4c") if (x + y) % 2 == 0 else Color("96724a"))
+	if Art.has("tiles", "dock"):
+		for y in range(2, rows - 1):
+			for x in range(1, cols - 1):
+				Art.draw_tile(self, "tiles", "dock", Vector2(x * TILE, y * TILE), 4)
+	else:
+		for y in range(2, rows - 1):
+			for x in range(1, cols - 1):
+				draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("a07a4c") if (x + y) % 2 == 0 else Color("96724a"))
 	draw_rect(Rect2(TILE, TILE, (cols - 2) * TILE, TILE), Color("c9b08a"))  # back wall
 	draw_rect(Rect2(4 * TILE, TILE + 3, 10, 10), Color("9fd8ff"))  # window
 	# Bed
@@ -100,11 +105,11 @@ func _draw() -> void:
 	draw_rect(Rect2(BED.x * TILE + 2, BED.y * TILE + 2, 2 * TILE - 4, TILE), Color("d8536a"))
 	draw_rect(Rect2(BED.x * TILE + 3, BED.y * TILE + 3, 10, 8), Color("f5f0e6"))
 	# Chest
-	draw_rect(Rect2(CHEST.x * TILE + 1, CHEST.y * TILE + 4, TILE - 2, TILE - 4), Color("8b5a2b"))
-	draw_rect(Rect2(CHEST.x * TILE + 1, CHEST.y * TILE + 2, TILE - 2, 4), Color("c9a86b"))
+	if not Art.draw_prop(self, "buildings", "sellbox", cell_center(CHEST)):
+		draw_rect(Rect2(CHEST.x * TILE + 1, CHEST.y * TILE + 4, TILE - 2, TILE - 4), Color("8b5a2b"))
 	# Table
-	draw_rect(Rect2(5 * TILE, 4 * TILE + 4, 2 * TILE, TILE - 4), Color("7a5230"))
-	draw_rect(Rect2(5 * TILE + 10, 4 * TILE + 6, 6, 4), Color("f2e05c"))
+	if not Art.draw_prop(self, "props", "workbench", cell_center(Vector2i(5, 4)) + Vector2(8, 0)):
+		draw_rect(Rect2(5 * TILE, 4 * TILE + 4, 2 * TILE, TILE - 4), Color("7a5230"))
 	# Rug and door
 	draw_rect(Rect2(4 * TILE, 6 * TILE, 3 * TILE, 2 * TILE), Color("b03a2e"))
 	draw_rect(Rect2(DOOR.x * TILE, DOOR.y * TILE, TILE, TILE), Color("3a2412"))

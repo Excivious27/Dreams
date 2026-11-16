@@ -29,6 +29,7 @@ var _choice_focus := 0
 var _in_choice := false
 var _typing := false
 var _hint: Label
+var _opened_frame := 0
 
 
 static func instance(tree: SceneTree) -> Dialogue:
@@ -48,23 +49,20 @@ func _ready() -> void:
 	_panel.size = Vector2(254, BOX_H)
 	_panel.visible = false
 	_panel.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.05, 0.05, 0.1, 0.92)
-	sb.border_color = Color(0.9, 0.85, 0.6, 0.9)
-	sb.set_border_width_all(1)
-	sb.set_corner_radius_all(3)
-	sb.set_content_margin_all(6)
-	_panel.add_theme_stylebox_override("panel", sb)
+	_panel.add_theme_stylebox_override("panel", Hud.panel_stylebox("panel_parchment"))
+	var ink := Art.has("ui", "panel_parchment")
 	add_child(_panel)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 2)
 	_panel.add_child(v)
 	_who = Label.new()
 	_who.add_theme_font_size_override("font_size", 8)
-	_who.add_theme_color_override("font_color", Color(0.95, 0.85, 0.5))
+	_who.add_theme_color_override("font_color", Color(0.5, 0.25, 0.05) if ink else Color(0.95, 0.85, 0.5))
 	v.add_child(_who)
 	_text = Label.new()
 	_text.add_theme_font_size_override("font_size", 9)
+	if ink:
+		_text.add_theme_color_override("font_color", Color(0.15, 0.1, 0.05))
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_text.custom_minimum_size = Vector2(240, 34)
 	v.add_child(_text)
@@ -75,7 +73,7 @@ func _ready() -> void:
 	_hint.text = "▼"
 	_hint.add_theme_font_size_override("font_size", 8)
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_hint.modulate = Color(1, 1, 1, 0.6)
+	_hint.modulate = Color(0.3, 0.2, 0.1, 0.8) if ink else Color(1, 1, 1, 0.6)
 	v.add_child(_hint)
 
 
@@ -83,6 +81,7 @@ func say(lines: Array) -> void:
 	_queue.append_array(lines)
 	if not active:
 		active = true
+		_opened_frame = Engine.get_process_frames()
 		get_tree().paused = true
 		_panel.visible = true
 		_next()
@@ -179,6 +178,9 @@ func _process(delta: float) -> void:
 
 
 func _process_input() -> void:
+	# The press that opened the box must not also advance it.
+	if Engine.get_process_frames() - _opened_frame < 2:
+		return
 	if _in_choice:
 		var n := _choices.get_child_count()
 		if n == 0:

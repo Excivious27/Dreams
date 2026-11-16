@@ -16,6 +16,8 @@ const BUTTONS := {
 const DIRS := {"left": Vector2.LEFT, "right": Vector2.RIGHT, "up": Vector2.UP, "down": Vector2.DOWN}
 
 static var run_toggle := false
+## False on desktop (a keyboard or mouse was used): the on-screen pad hides.
+static var visible_controls := true
 
 var _touches := {}  # touch index -> "dpad" or action name
 var _dpad_dir := Vector2.ZERO
@@ -43,6 +45,7 @@ func _notification(what: int) -> void:
 
 func _process(_delta: float) -> void:
 	# Keep the B button lit when run mode is toggled on.
+	_canvas.visible = visible_controls
 	_canvas.queue_redraw()
 
 
@@ -57,6 +60,15 @@ func release_all() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# Desktop detection: a real key or mouse motion hides the pad; a real touch shows it.
+	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
+		visible_controls = false
+	elif event is InputEventMouseMotion and (event as InputEventMouseMotion).relative != Vector2.ZERO and not DisplayServer.is_touchscreen_available():
+		visible_controls = false
+	elif event is InputEventScreenTouch and DisplayServer.is_touchscreen_available():
+		visible_controls = true
+	if not visible_controls:
+		return
 	if event is InputEventScreenTouch:
 		var t := event as InputEventScreenTouch
 		if t.pressed:
@@ -154,13 +166,18 @@ func _on_draw() -> void:
 	if _dpad_dir != Vector2.ZERO:
 		_canvas.draw_circle(DPAD_CENTER + _dpad_dir.normalized() * DPAD_RADIUS * 0.35, 9.0, lit)
 	# Buttons
+	var btn := Art.tex("ui", "button")
+	var btn_down := Art.tex("ui", "button_pressed")
 	for action: String in BUTTONS:
 		var b: Dictionary = BUTTONS[action]
 		var p: Vector2 = b["pos"]
 		var r := float(b["r"])
 		var on := _held.has(action) or (action == "b" and run_toggle)
-		_canvas.draw_circle(p, r, Color(1, 0.9, 0.5, 0.45) if (action == "b" and run_toggle) else (lit if on else base))
-		_canvas.draw_arc(p, r, 0, TAU, 40, edge, 1.5, true)
+		if btn and btn_down:
+			_canvas.draw_texture_rect(btn_down if on else btn, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), false, Color(1, 1, 1, 0.85))
+		else:
+			_canvas.draw_circle(p, r, Color(1, 0.9, 0.5, 0.45) if (action == "b" and run_toggle) else (lit if on else base))
+			_canvas.draw_arc(p, r, 0, TAU, 40, edge, 1.5, true)
 		var size := 14 if r > 15.0 else 7
 		var label := str(b["label"])
 		if action == "b" and run_toggle:

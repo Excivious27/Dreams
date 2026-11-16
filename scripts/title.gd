@@ -20,9 +20,19 @@ func _ready() -> void:
 	InputSetup.ensure_actions()
 	_arcs = GameState.load_json("res://data/arcs.json")
 	_playables = GameState.load_json("res://data/playable.json")
-	var sky := Scenery.new()
-	sky.overhead = false
-	add_child(sky)
+	var bg := Art.tex("ui", "title_bg")
+	if bg:
+		var tr := TextureRect.new()
+		tr.texture = bg
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_SCALE
+		tr.set_anchors_preset(PRESET_FULL_RECT)
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(tr)
+	else:
+		var sky := Scenery.new()
+		sky.overhead = false
+		add_child(sky)
 	Music.instance(get_tree()).play("title")
 	var scroll := ScrollContainer.new()
 	scroll.set_anchors_preset(PRESET_FULL_RECT)
@@ -50,6 +60,8 @@ func _label(text: String, size: int = 10, center := true) -> Label:
 	var l := Label.new()
 	l.text = text
 	l.add_theme_font_size_override("font_size", size)
+	l.add_theme_constant_override("outline_size", 4 if size > 14 else 2)
+	l.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.15, 0.9))
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER if center else HORIZONTAL_ALIGNMENT_LEFT
 	l.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -61,6 +73,9 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 	var b := Button.new()
 	b.text = text
 	b.add_theme_font_size_override("font_size", 11 if big else 9)
+	b.add_theme_stylebox_override("normal", Hud.panel_stylebox("panel_wood"))
+	b.add_theme_stylebox_override("hover", Hud.panel_stylebox("panel_wood"))
+	b.add_theme_stylebox_override("pressed", Hud.panel_stylebox("panel_parchment"))
 	b.custom_minimum_size = Vector2(0, 30 if big else 24)
 	b.size_flags_horizontal = SIZE_EXPAND_FILL
 	b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -71,13 +86,13 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 func _show_title() -> void:
 	_clear()
 	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 90)
+	spacer.custom_minimum_size = Vector2(0, 150)
 	_page.add_child(spacer)
 	_page.add_child(_label("DREAMS", 36))
 	_page.add_child(_label("a mystical farming adventure", 9))
 	_page.add_child(_label("Two paths. One world. Every choice counts.", 8))
 	var spacer2 := Control.new()
-	spacer2.custom_minimum_size = Vector2(0, 40)
+	spacer2.custom_minimum_size = Vector2(0, 120)
 	_page.add_child(spacer2)
 	if GameState.has_run():
 		var n: String = GameState.run["names"]["character"]

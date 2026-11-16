@@ -50,6 +50,9 @@ func build() -> void:
 	for y in range(PLOT.position.y, PLOT.end.y):
 		for x in range(PLOT.position.x, PLOT.end.x):
 			things[Vector2i(x, y)] = {"type": "plot"}
+	block_rect(13, 1, 5, 2)   # barn
+	block_rect(1, 24, 3, 3)   # windmill
+	blocked[Vector2i(10, 4)] = true  # scarecrow
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
 
@@ -61,9 +64,9 @@ func after_ready() -> void:
 				blocked.erase(Vector2i(x, y))
 	_pond = Scenery.Pond.new()
 	_pond.rect = Rect2(POND.position * TILE, POND.size * TILE)
+	_pond.z_index = -1
 	add_child(_pond)
-	move_child(_pond, 0)
-	add_child(GameMenu.new())
+	_place_props()
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		_make_crystal()
 	if not bool(GameState.run["intro_done"]):
@@ -135,6 +138,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				GameState.run["flags"][thing["key"]] = int(GameState.run["day"])
 				give("berry", 2)
 				xp("foraging", 2)
+				if props.has(c) and Art.tex("nature", "bush"):
+					(props[c] as Sprite2D).texture = Art.tex("nature", "bush")
 				queue_redraw()
 			return true
 		"crystal":
@@ -443,55 +448,67 @@ func _intro_gangsters(n: Dictionary) -> void:
 # ---- drawing -----------------------------------------------------------------
 
 func _draw() -> void:
-	draw_grass()
-	# House
-	draw_building(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y, Color("8b5a2b"), Color("b03a2e"), "")
-	draw_rect(Rect2((HOUSE.position.x + 6) * TILE + 5, (HOUSE.position.y + 4) * TILE + 2, 6, 10), Color("5a5a66"))
-	draw_rect(Rect2((HOUSE.position.x + 6) * TILE + 7, (HOUSE.position.y + 4) * TILE + 12, 2, 4), Color("333"))
-	# Plot
-	draw_rect(Rect2(PLOT.position * TILE, PLOT.size * TILE), Color("6f8f45"))
+	draw_grass(1)
+	# Paths
+	draw_tileset_rect("dirt", Rect2i(9, 8, 2, 22), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(10, 14, 10, 2), Color("b8945a"))
+	draw_tileset_rect("dirt", TOWN_EXIT, Color("b8945a"))
+	draw_tileset_rect("dirt", MEADOW_EXIT, Color("b8945a"))
+	# Plot: untouched soil shows as a faint patch; tilled tiles use the real tiles.
+	draw_rect(Rect2(PLOT.position * TILE, PLOT.size * TILE), Color(0.45, 0.35, 0.2, 0.25))
 	var farm: Dictionary = GameState.run["farm"]
 	for key in farm:
 		var parts: PackedStringArray = str(key).split(",")
 		var c := Vector2i(int(parts[0]), int(parts[1]))
 		var tile: Dictionary = farm[key]
-		var soil := Color("5c3d22") if bool(tile.get("watered", false)) else Color("8a5f38")
-		draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), soil)
+		var wet := bool(tile.get("watered", false))
+		if not Art.draw_tile(self, "tiles", "tilled_wet" if wet else "tilled_dry", Vector2(c * TILE), 4):
+			draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), Color("5c3d22") if wet else Color("8a5f38"))
 		var crop := str(tile.get("crop", ""))
 		if crop != "":
 			var cd: Dictionary = GameState.crops[crop]
 			var frac := clampf(float(tile["days"]) / float(cd["days"]), 0.0, 1.0)
-			var h := 3 + int(frac * 9)
-			var cx := c.x * TILE + TILE / 2.0
-			var base := (c.y + 1) * TILE - 2.0
-			draw_rect(Rect2(cx - 1, base - h, 2, h), Color(cd["color"]))
-			draw_rect(Rect2(cx - 3, base - h + 2, 2, 2), Color(cd["color"]))
-			draw_rect(Rect2(cx + 1, base - h + 4, 2, 2), Color(cd["color"]))
+			var stage := mini(4, int(frac * 5.0))
 			if frac >= 1.0:
-				draw_circle(Vector2(cx, base - h - 1), 3.0, Color(cd["top"]))
-	# Sell box
-	draw_rect(Rect2(SELLBOX.x * TILE + 1, SELLBOX.y * TILE + 4, TILE - 2, TILE - 4), Color("c9a86b"))
-	draw_rect(Rect2(SELLBOX.x * TILE + 1, SELLBOX.y * TILE + 2, TILE - 2, 3), Color("a8884f"))
-	draw_rect(Rect2(SELLBOX.x * TILE + 5, SELLBOX.y * TILE + 3, 6, 1), Color("333"))
-	# Paths
-	draw_rect(Rect2(9 * TILE, 8 * TILE, 2 * TILE, 22 * TILE), Color("b8945a"))
-	draw_rect(Rect2(10 * TILE, 14 * TILE, 10 * TILE, 2 * TILE), Color("b8945a"))
-	# Trees and bushes
-	for t: Vector2i in TREES:
-		draw_tree(cell_center(t))
-	for b: Vector2i in BUSHES:
-		var p := cell_center(b)
-		draw_circle(p + Vector2(0, -5), 6.0, Color("2f7a3a"))
-		if bool(things[b].get("berries", false)):
-			draw_rect(Rect2(p.x - 3, p.y - 7, 2, 2), Color("e23a3a"))
-			draw_rect(Rect2(p.x + 1, p.y - 5, 2, 2), Color("e23a3a"))
-			draw_rect(Rect2(p.x - 1, p.y - 3, 2, 2), Color("e23a3a"))
-	# Gates
-	draw_rect(Rect2(TOWN_EXIT.position * TILE, TOWN_EXIT.size * TILE), Color("b8945a"))
-	draw_rect(Rect2(MEADOW_EXIT.position * TILE, MEADOW_EXIT.size * TILE), Color("b8945a"))
+				stage = 4
+			var t := Art.tex("crops", crop)
+			if t:
+				var info := Art.info("crops", crop)
+				var cw := int(info.get("cell_w", 32))
+				var ch := int(info.get("cell_h", 32))
+				var w := cw / 2.0
+				var h := ch / 2.0
+				draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch))
+			else:
+				var hgt := 3 + int(frac * 9)
+				var cx := c.x * TILE + TILE / 2.0
+				var base := (c.y + 1) * TILE - 2.0
+				draw_rect(Rect2(cx - 1, base - hgt, 2, hgt), Color(cd["color"]))
+				if frac >= 1.0:
+					draw_circle(Vector2(cx, base - hgt - 1), 3.0, Color(cd["top"]))
+	if not Art.has("buildings", "house"):
+		draw_building(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y, Color("8b5a2b"), Color("b03a2e"), "")
+		draw_rect(Rect2(SELLBOX.x * TILE + 1, SELLBOX.y * TILE + 4, TILE - 2, TILE - 4), Color("c9a86b"))
+		for t: Vector2i in TREES:
+			draw_tree(cell_center(t))
 	draw_fence_border()
-	draw_rect(Rect2(TOWN_EXIT.position * TILE, TOWN_EXIT.size * TILE), Color("b8945a"))
-	draw_rect(Rect2(MEADOW_EXIT.position * TILE, MEADOW_EXIT.size * TILE), Color("b8945a"))
-	var font := ThemeDB.fallback_font
-	draw_string(font, Vector2(6 * TILE, 29 * TILE + 11), "▼ town", HORIZONTAL_ALIGNMENT_CENTER, 8 * TILE, 7, Color(1, 1, 0.85))
-	draw_string(font, Vector2(14 * TILE, 13 * TILE + 11), "meadow ▶", HORIZONTAL_ALIGNMENT_RIGHT, 5 * TILE, 7, Color(1, 1, 0.85))
+	label("▼ town", Vector2(6 * TILE, 29 * TILE + 11), 8 * TILE)
+	label("meadow ▶", Vector2(14 * TILE, 13 * TILE + 11), 5 * TILE)
+
+
+func _place_props() -> void:
+	if not Art.has("buildings", "house"):
+		return
+	prop("buildings", "house", Vector2i(HOUSE.position.x, HOUSE.end.y - 1), HOUSE.size.x - 1)
+	prop("buildings", "mailbox", Vector2i(HOUSE.end.x, HOUSE.end.y - 1))
+	prop("buildings", "sellbox", SELLBOX)
+	prop("props", "barn", Vector2i(13, 2), 4, -2.0)
+	prop("props", "scarecrow", Vector2i(10, 4))
+	prop("props", "windmill", Vector2i(1, 26), 2)
+	for t: Vector2i in TREES:
+		prop("nature", "oak" if (t.x + t.y) % 3 != 0 else "oak_autumn", t)
+	for b: Vector2i in BUSHES:
+		var has := bool(things[b].get("berries", false))
+		prop("nature", "berry_bush" if has else "bush", b)
+	for r: Vector2i in [Vector2i(2, 12), Vector2i(17, 25)]:
+		prop("nature", "rock_s", r)
