@@ -86,7 +86,14 @@ func _ready() -> void:
 
 	if has_pet:
 		pet = Node2D.new()
-		_pet_anim = CharacterLibrary.make_sprite("dog")
+		if Art.has("animals/dog_golden", "idle"):
+			_pet_anim = AnimatedSprite2D.new()
+			_pet_anim.sprite_frames = Art.frames("animals/dog_golden", {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "dig": "dig", "bark": "bark"}, {"idle": 4.0, "walk": 8.0, "run": 10.0, "sit": 2.0, "sleep": 1.5, "dig": 8.0, "bark": 6.0})
+			_pet_anim.scale = Vector2(0.5, 0.5)
+			_pet_anim.offset = Vector2(0, -float(Art.info("animals/dog_golden", "idle").get("cell_h", 32)) / 2.0 + 2.0)
+			_pet_anim.animation = "idle"
+		else:
+			_pet_anim = CharacterLibrary.make_sprite("dog")
 		pet.add_child(_pet_anim)
 		pet.position = player.position + Vector2(-14, 4)
 		_pet_anim.play("idle")
@@ -194,7 +201,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 					hud.toast("Already happy today.")
 				else:
 					GameState.run["flags"][key] = true
-					fx("heal" if not Art.has("fx", "heart") else "heart", a.position + Vector2(0, -14), 8.0, 0.5)
+					emote(a, "heart", 1.4, -18.0)
 					hud.toast("%s loves that." % str(a.kind).split("_")[0].capitalize(), Color(1, 0.8, 0.9))
 					xp("farming", 2)
 			return true
@@ -224,6 +231,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			player.play_tool("axe")
 			Music.instance(get_tree()).sfx("chop")
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
+			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
 			thing["hp"] = int(thing.get("hp", 3)) - 1
 			if int(thing["hp"]) <= 0:
 				var is_tree := str(thing["type"]) == "tree"
@@ -252,11 +260,13 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("chop")
 			wobble(c, 0.04)
+			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			thing["hp"] = int(thing.get("hp", 2)) - 1
 			if int(thing["hp"]) <= 0:
 				xp("mining", 2)
 				_mark_cleared(c)
-				break_rock(c, 2, "copper", 1 if randf() < 0.25 else 0)
+				var big := props.has(c) and (props[c] as Sprite2D).texture and str((props[c] as Sprite2D).texture.resource_path).contains("rock_m")
+				break_rock(c, 2, "copper", 1 if randf() < 0.25 else 0, "m" if big else "")
 			return true
 		"bush":
 			if bool(thing.get("berries", false)):
@@ -350,6 +360,23 @@ func _fill_extension() -> void:
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), seed_v + 7, int(cols * rows / 350.0))
 
 
+## Emote bubble over a node (W36): "heart", "surprise", "confused", "sleep", "music", "angry", "talk"...
+func emote(over: Node2D, name: String, secs := 1.2, dy := -22.0) -> void:
+	if over == null or not Art.has("emotes", name):
+		return
+	var a := AnimatedSprite2D.new()
+	a.sprite_frames = Art.frames("emotes", {"e": name}, {"e": 6.0})
+	a.animation = "e"
+	a.scale = Vector2(0.5, 0.5)
+	a.position = Vector2(0, dy)
+	a.z_index = 30
+	over.add_child(a)
+	a.play("e")
+	var tw := a.create_tween()
+	tw.tween_property(a, "position:y", dy - 4.0, secs)
+	tw.tween_callback(a.queue_free)
+
+
 # ---- action feedback (chop/mine cinematics) ----------------------------------
 
 ## Shake a prop when it's hit (trees sway, rocks jolt).
@@ -376,6 +403,11 @@ func fell_tree(c: Vector2i, wood := 5) -> void:
 		give("wood", wood)
 		return
 	var dir := 1.0 if player.position.x <= sp.position.x else -1.0
+	var pine := sp is Sprite2D and (sp as Sprite2D).texture and str((sp as Sprite2D).texture.resource_path).contains("pine")
+	var anim := ("pine_fall_r" if pine else ("oak_fall_r" if dir > 0 else "oak_fall_l"))
+	if Art.has("fx", anim):
+		_fell_tree_fx(sp, c, dir, anim, pine, wood)
+		return
 	var tw := sp.create_tween()
 	tw.tween_property(sp, "rotation", dir * 0.25, 0.25).set_ease(Tween.EASE_IN)
 	tw.tween_property(sp, "rotation", dir * PI / 2.0, 0.45).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
@@ -392,13 +424,68 @@ func fell_tree(c: Vector2i, wood := 5) -> void:
 		pop_items(cell_center(c) + Vector2(dir * 16.0, 0), "wood", wood))
 
 
+func _fell_tree_fx(sp: Node2D, c: Vector2i, dir: float, anim: String, pine: bool, wood: int) -> void:
+	# The painted fall: swap the prop for the W32 strip, then the trunk breaks into logs.
+	var a := AnimatedSprite2D.new()
+	a.sprite_frames = Art.frames("fx", {"fall": anim, "trunk": "trunk_break"}, {"fall": 12.0, "trunk": 10.0}, {"fall": false, "trunk": false})
+	a.animation = "fall"
+	a.scale = Vector2(0.5, 0.5)
+	a.position = sp.position
+	a.offset = Vector2(0, -float(Art.info("fx", anim).get("cell_h", 112)) / 2.0)
+	a.flip_h = pine and dir < 0
+	a.z_index = sp.z_index
+	add_child(a)
+	sp.queue_free()
+	a.play("fall")
+	var at := cell_center(c)
+	var leaves_at := at + Vector2(dir * 18.0, -14)
+	await a.animation_finished
+	shake(2.5)
+	Music.instance(get_tree()).sfx("hit")
+	fx("leaf_burst", leaves_at, 14.0, 0.6)
+	fx("dust_puff", at + Vector2(dir * 22.0, 0), 14.0, 0.5)
+	await get_tree().create_timer(0.25).timeout
+	if a.sprite_frames.has_animation("trunk"):
+		a.animation = "trunk"
+		a.offset = Vector2(0, -float(Art.info("fx", "trunk_break").get("cell_h", 56)) / 2.0)
+		a.flip_h = dir < 0
+		a.position = at + Vector2(dir * 10.0, 0)
+		a.play("trunk")
+		fx("wood_chips", at + Vector2(dir * 14.0, -8), 14.0, 0.6)
+		await a.animation_finished
+	a.queue_free()
+	pop_items(at + Vector2(dir * 16.0, 0), "wood", wood)
+
+
 ## Break a rock: jolt, crumble, stone pops out.
-func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0) -> void:
+func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0, kind := "") -> void:
 	var sp: Node2D = props.get(c, null)
 	things.erase(c)
 	blocked.erase(c)
 	props.erase(c)
 	var at := cell_center(c)
+	var anim: String = {"copper": "ore_copper_break", "iron": "ore_iron_break", "shard": "ore_crystal_break", "m": "rock_m_break"}.get(kind, "rock_s_break")
+	if Art.has("fx", anim):
+		if sp:
+			sp.queue_free()
+		# Frames 0-3 are the crack (already shown on hits); play the shatter.
+		var a := AnimatedSprite2D.new()
+		a.sprite_frames = Art.frames("fx", {"b": anim}, {"b": 16.0}, {"b": false})
+		a.animation = "b"
+		a.frame = 4
+		a.scale = Vector2(0.5, 0.5)
+		a.position = at
+		a.offset = Vector2(0, -float(Art.info("fx", anim).get("cell_h", 72)) / 2.0 + 4)
+		add_child(a)
+		a.play("b")
+		a.animation_finished.connect(a.queue_free)
+		fx("stone_chips", at + Vector2(0, -8), 14.0, 0.6)
+		fx("dust_puff", at, 14.0, 0.45)
+		shake(1.5)
+		pop_items(at, "stone", stone)
+		if extra != "" and extra_n > 0:
+			pop_items(at, extra, extra_n)
+		return
 	if sp:
 		var tw := sp.create_tween()
 		tw.tween_property(sp, "scale", sp.scale * Vector2(1.25, 0.7), 0.08)
@@ -414,7 +501,7 @@ func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0) -> void:
 ## Items burst out of a spot, bounce, then fly to you and land in the bag.
 func pop_items(at: Vector2, id: String, n: int) -> void:
 	give(id, n)
-	var icon := Art.tex("items", id)
+	var icon := Art.tex("items", "pop_" + id) if Art.has("items", "pop_" + id) else Art.tex("items", id)
 	for i in mini(n, 6):
 		var it := Sprite2D.new()
 		if icon:
@@ -854,6 +941,11 @@ func draw_ground(kind: String, cells: Dictionary) -> void:
 	var fill: String = {"dirt": "dirt", "sand": "sand", "stone": "g_gravel"}.get(kind, "dirt")
 	if Art.has("tiles", tset):
 		Art.draw_autotile(self, cells, "@", tset, Art.T_GROUND_IDX)
+		if kind == "dirt" and Art.has("tiles", "pdeco_pebbles"):
+			for c: Vector2i in cells:
+				var h := (c.x * 73856093) ^ (c.y * 19349663) ^ hash(scene_id())
+				if h % 23 == 0:
+					Art.draw_tile(self, "tiles", ["pdeco_pebbles", "pdeco_puddle", "pdeco_hoofprints", "pdeco_ruts", "pdeco_roots"][absi(h / 23) % 5], Vector2(c * TILE))
 		return
 	for c: Vector2i in cells:
 		if not Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), 4):
@@ -873,10 +965,11 @@ func cells_of(rects: Array) -> Dictionary:
 func draw_water(cells: Dictionary, shore := "grass") -> void:
 	var tset := "t_water_" + shore
 	var frame := int(Time.get_ticks_msec() / 250) % 4
+	var fill := "water2" if Art.has("tiles", "water2") else "water"
 	if Art.has("tiles", tset):
 		# fill first (animated), then edges on top
 		for c: Vector2i in cells:
-			Art.draw_tile(self, "tiles", "water", Vector2(c * TILE), frame)
+			Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), frame)
 		Art.draw_autotile(self, cells, "", tset, Art.T_WATER_IDX)
 		return
 	for c: Vector2i in cells:
@@ -933,6 +1026,60 @@ func draw_building(x: int, y: int, w: int, h: int, wall: Color, roof: Color, lab
 func label(text: String, at: Vector2, w := 64.0) -> void:
 	var font := ThemeDB.fallback_font
 	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_CENTER, w, 7, Color(1, 1, 0.85))
+
+
+## Raised ground with a real cliff face under its southern edge (W28/W29 sets).
+## `cells` are the walkable top cells; the row below the southern edge is the face
+## (block it yourself, except `stairs` cells). prefix: "cliffg" (grass) or "cliffs" (stone).
+func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}) -> void:
+	var tset := "t_" + prefix
+	if not Art.has("tiles", tset):
+		for c: Vector2i in cells:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6a6a74"))
+		return
+	# The sets are drawn as raised blocks: plain grass inside, a rock lip on the
+	# side that faces open ground. Pick the tile from which neighbours are missing.
+	var I := Art.T_CLIFF_IDX
+	for c: Vector2i in cells:
+		var n := cells.has(c + Vector2i(0, -1))
+		var so := cells.has(c + Vector2i(0, 1))
+		var w := cells.has(c + Vector2i(-1, 0))
+		var e := cells.has(c + Vector2i(1, 0))
+		var key := "mid"
+		if not so:
+			key = "bl" if not w else ("br" if not e else "bottom")
+		elif not n:
+			key = "tl" if not w else ("tr" if not e else "top")
+		elif not w:
+			key = "left"
+		elif not e:
+			key = "right"
+		Art.draw_tile(self, "tiles", tset, Vector2(c * TILE), int(I[key]))
+	if prefix != "cliffg":
+		return
+	var faces := []
+	for c: Vector2i in cells:
+		if not cells.has(c + Vector2i(0, 1)):
+			faces.append(c)
+	faces.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
+	for c: Vector2i in faces:
+		var below := c + Vector2i(0, 1)
+		var has_l := cells.has(c + Vector2i(-1, 0)) and not cells.has(c + Vector2i(-1, 1))
+		var has_r := cells.has(c + Vector2i(1, 0)) and not cells.has(c + Vector2i(1, 1))
+		var nm := ""
+		if stairs.has(below):
+			var sl := stairs.has(below + Vector2i(-1, 0))
+			var sr := stairs.has(below + Vector2i(1, 0))
+			nm = "stairs_m" if (sl and sr) or (not sl and not sr) else ("stairs_r" if sl else "stairs_l")
+		elif has_l and has_r:
+			nm = ["face_a", "face_b", "face_c"][(c.x * 7 + c.y) % 3]
+		elif not has_l and not has_r:
+			nm = "fcorner_l"
+		else:
+			nm = "face_l" if not has_l else "face_r"
+		var t := Art.tex("tiles", prefix + "_" + nm)
+		if t:
+			draw_texture_rect(t, Rect2(below.x * TILE, c.y * TILE + TILE * 0.5, TILE, TILE * 1.5), false)
 
 
 # ---- organic borders ---------------------------------------------------------
@@ -1023,7 +1170,14 @@ func _build_border() -> void:
 		if (c.x + c.y) % 2 != 0 and rng.randf() < 0.55:
 			continue
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
-		if depth >= 2 and rng.randf() < 0.25 and Art.has("nature", "big_pine"):
+		if Art.has("nature", "big_oak_a"):
+			var season := GameState.season()
+			var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry", "mid_oak_b"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow", "mid_oak_b"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
+			var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
+			nm = str(mids[rng.randi_range(0, mids.size() - 1)]) if depth <= 1 or rng.randf() < 0.45 else str(bigs[rng.randi_range(0, bigs.size() - 1)])
+			if nm.begins_with("big_") and (c.x + c.y) % 2 == 1:
+				continue
+		elif depth >= 2 and rng.randf() < 0.25 and Art.has("nature", "big_pine"):
 			nm = "big_oak" if rng.randf() < 0.5 and Art.has("nature", "big_oak") else "big_pine"
 		if depth == 1 and side == "s":
 			# Innermost southern row as real props so canopies overlap the player.
@@ -1039,7 +1193,7 @@ func draw_border() -> void:
 	var kinds := {}
 	for side in ["n", "s", "e", "w"]:
 		kinds[border_kind(side)] = true
-	if kinds.has("trees") or kinds.has("none"):
+	if true:
 		draw_grass(7, Rect2i(-pad, -pad, cols + 2 * pad, pad))
 		draw_grass(8, Rect2i(-pad, rows, cols + 2 * pad, pad))
 		draw_grass(9, Rect2i(-pad, 0, pad, rows))
@@ -1061,24 +1215,22 @@ func draw_border() -> void:
 	if not water.is_empty():
 		draw_water(water, "sand" if Art.has("tiles", "t_water_sand") and border_kind("s") == "water" and GameState.run["scene"] == "beach" else "grass")
 	if not cliff.is_empty():
+		if Art.has("tiles", "t_cliffs"):
+			draw_plateau(cliff, "cliffs")
+			# Faces toward the content along the north band's inner edge.
+			for c: Vector2i in cliff:
+				var below := c + Vector2i(0, 1)
+				if not cliff.has(below) and in_content(below) and Art.has("tiles", "cliffs_ledge_0"):
+					var t := Art.tex("tiles", "cliffs_ledge_%d" % ((c.x * 3) % 4))
+					if t:
+						draw_texture_rect(t, Rect2(c.x * TILE, c.y * TILE, TILE, TILE), false)
+		else:
+			for c: Vector2i in cliff:
+				if not Art.draw_tile(self, "tiles", "pale_stone" if Art.has("tiles", "pale_stone") else "g_gravel", Vector2(c * TILE), 4):
+					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6a6a74"))
 		for c: Vector2i in cliff:
-			if not Art.draw_tile(self, "tiles", "pale_stone" if Art.has("tiles", "pale_stone") else "g_gravel", Vector2(c * TILE), 4):
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6a6a74"))
-		# Cliff faces along the inner edge facing the content.
-		for c: Vector2i in cliff:
-			var below := c + Vector2i(0, 1)
-			var above := c + Vector2i(0, -1)
-			if not cliff.has(below) and not _border_cells.has(below):
-				var t := Art.tex("tiles", "cliff2_1")
-				if t:
-					draw_texture_rect(t, Rect2(c.x * TILE, c.y * TILE, TILE, TILE * 2), false)
-			elif not cliff.has(above) and not _border_cells.has(above):
-				var t := Art.tex("tiles", "cliff2_1")
-				if t:
-					draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
-		for c: Vector2i in cliff:
-			if (c.x * 7 + c.y * 13) % 5 == 0:
-				Art.draw_prop(self, "nature", "rock_m" if (c.x + c.y) % 2 == 0 else "rock_s", Vector2(c * TILE) + Vector2(8, 16))
+			if (c.x * 7 + c.y * 13) % 7 == 0:
+				Art.draw_prop(self, "props" if Art.has("props", "boulder2_m_a") else "nature", "boulder2_m_a" if Art.has("props", "boulder2_m_a") else "rock_m", Vector2(c * TILE) + Vector2(8, 16))
 	# Dark forest floor under the tree band.
 	for c: Vector2i in _border_cells:
 		if _border_cells[c] == "tree":

@@ -48,6 +48,17 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "sea")
+	if Art.has("props", "campsite"):
+		var cs := AnimatedSprite2D.new()
+		cs.sprite_frames = Art.frames("props", {"idle": "campsite"}, {"idle": 6.0})
+		cs.animation = "idle"
+		cs.scale = Vector2(0.5, 0.5)
+		cs.position = cell_center(Vector2i(cols - 10, 10)) + Vector2(16, 0)
+		cs.offset = Vector2(0, -32)
+		add_child(cs)
+		cs.play("idle")
+		block_rect(cols - 11, 8, 6, 3)
+		set_thing(cols - 8, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead into the sea and don't come back.", "hint": "A: the camp"}, false)
 	var dock := DockLayer.new()
 	dock.map = self
 	dock.z_index = -1
@@ -74,6 +85,9 @@ func after_ready() -> void:
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
+		"note":
+			await say([{"text": str(thing.get("text", "..."))}])
+			return true
 		"sea":
 			if GameState.has_tool("rod"):
 				_fish(c)
@@ -108,7 +122,8 @@ func _fish(c: Vector2i) -> void:
 	var bob: AnimatedSprite2D = null
 	if Art.has("fx", "bobber"):
 		bob = AnimatedSprite2D.new()
-		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber", "bite": "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
+		var b2 := Art.has("fx", "bobber2")
+		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber2" if b2 else "bobber", "bite": "bobber2_bite" if b2 else "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
 		bob.animation = "bobber"
 		bob.scale = Vector2(0.5, 0.5)
 		bob.position = cell_center(c) + Vector2(0, -6)
@@ -120,6 +135,7 @@ func _fish(c: Vector2i) -> void:
 		if not bite and t >= wait:
 			bite = true
 			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
+			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
 			Music.instance(get_tree()).sfx("bite")
 			if bob:
 				bob.play("bite")
@@ -128,7 +144,9 @@ func _fish(c: Vector2i) -> void:
 			break
 	player.frozen = false
 	if bob:
-		fx("splash", bob.position, 12.0, 0.5)
+		fx("reel_splash" if Art.has("fx", "reel_splash") else "splash", bob.position, 12.0, 0.5)
+		if caught and Art.has("fx", "fish_jump_a"):
+			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
 		bob.queue_free()
 	if caught:
 		var pool: Array = ["sunfish", "bass", "salmon", "eel", "puffer", "goldfish", "starfin"]

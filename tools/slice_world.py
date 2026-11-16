@@ -491,8 +491,12 @@ def row_sprites(rgba, reg, n, gap=4):
         g, i = min(gaps)
         a, b = merged[i], merged[i + 1]
         merged[i:i + 2] = [[min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])]]
-    while len(merged) < n:
-        merged.append(merged[-1])
+    if len(merged) < n:
+        # Sprites touch (dust trails, ground lines): fall back to equal cells across the content.
+        x0 = min(b[0] for b in merged); x1 = max(b[2] for b in merged)
+        y0 = min(b[1] for b in merged); y1 = max(b[3] for b in merged)
+        cw = (x1 - x0) / n
+        merged = [[int(x0 + i * cw), y0, int(x0 + (i + 1) * cw), y1] for i in range(n)]
     return [tuple(b) for b in merged]
 
 
@@ -834,11 +838,680 @@ def w27():
     save(img, "ui", "world_map")
 
 
+
+
+# ---------------------------------------------------------------- batch W28-W31 (terrain)
+
+def _cut(rgba, box, w=None, h=None, cover=False):
+    bb = region_bbox(rgba, box)
+    if not bb:
+        return Image.new("RGBA", (w or 8, h or 8))
+    im = crop(rgba, bb)
+    if w and h:
+        return scale_to(im, width=w, height=h, cover=cover)
+    if h:
+        return scale_to(im, height=h)
+    return scale_to(im, width=w)
+
+
+def _tile(rgba, cx, y0, y1, half=66, inset=5):
+    bb = region_bbox(rgba, (cx - half, y0, cx + half, y1))
+    if not bb:
+        return Image.new("RGBA", (TILE2, TILE2))
+    bb = (bb[0] + inset, bb[1] + inset, bb[2] - inset, bb[3] - inset)
+    return scale_to(crop(rgba, bb), width=TILE2, height=TILE2, cover=True)
+
+
+def w28():
+    rgba = load("w28_cliff_grass.png")
+    tiles = []
+    for cx in [182, 348, 515, 685, 850, 1013, 1185, 1355]:
+        tiles.append(_tile(rgba, cx, 118, 262))
+    for cx in [114, 281, 437, 601, 766, 931, 1100, 1266, 1433]:
+        tiles.append(_tile(rgba, cx, 312, 450))
+    # order on the sheet: tl, top, tr, left, mid, right, ibl, ibottom, ibr, ileft, iright, itl, itop, itr, bl, bottom, br
+    save_set("t_cliffg", tiles, 17)
+    names = ["face_l", "face_a", "face_b", "face_c", "face_r", "fcorner_l", "fcorner_r", "stairs_l", "stairs_m", "stairs_r", "ramp"]
+    for cx, nm in zip([70, 175, 283, 390, 498, 648, 785, 957, 1083, 1210, 1403], names):
+        save(_cut(rgba, (cx - 50, 548, cx + 50, 748), TILE2, TILE2 * 2, cover=True), "tiles", "cliffg_" + nm)
+    for cx, nm in zip([95, 235, 377], ["lip_l", "lip_m", "lip_r"]):
+        save(_cut(rgba, (cx - 65, 862, cx + 65, 940), TILE2 * 2, TILE2), "tiles", "cliffg_" + nm)
+    for cx, nm in zip([543, 693], ["gap_l", "gap_r"]):
+        save(_cut(rgba, (cx - 58, 858, cx + 58, 950), h=64), "props", "cliff_" + nm)
+    for cx, nm, h in zip([846, 940, 1060, 1178, 1322, 1458], ["s_a", "s_b", "m_a", "m_b", "l_a", "l_b"], [28, 24, 44, 44, 64, 64]):
+        save(_cut(rgba, (cx - 58, 858, cx + 58, 955), h=h), "props", "boulder2_" + nm)
+
+
+def w29():
+    rgba = load("w29_cliff_stone.png")
+    def band(y0, y1, n):
+        return row_sprites(rgba, (20, y0, 1525, y1), n, gap=5)
+    r1 = band(160, 243, 16)
+    r2 = band(297, 383, 13)
+    r3 = band(462, 528, 14)
+    snow = band(596, 680, 9)
+    def t(b):
+        bb = region_bbox(rgba, b)
+        if not bb:
+            return Image.new("RGBA", (TILE2, TILE2))
+        bb = (bb[0] + 4, bb[1] + 4, bb[2] - 4, bb[3] - 4)
+        return scale_to(crop(rgba, bb), width=TILE2, height=TILE2, cover=True)
+    # top4 bottom4 left4 right4 | outerTL TR BL BR, innerTL TR BL BR, T4, center
+    tiles = [t(b) for b in r1] + [t(b) for b in r2]
+    save_set("t_cliffs_raw", tiles, 16)
+    top, bottom, left, right = r1[0:4], r1[4:8], r1[8:12], r1[12:16]
+    outer, inner, tee, center = r2[0:4], r2[4:8], r2[8:12], r2[12]
+    # Autotile order used by Art.T_CLIFF_IDX: tl top tr left mid right ibl ibottom ibr ileft iright itl itop itr bl bottom br (same as t_cliffg)
+    ordered = [outer[0], top[0], outer[1], left[0], center, right[0], inner[2], bottom[1], inner[3], left[1], right[1], inner[0], top[1], inner[1], outer[2], bottom[0], outer[3]]
+    save_set("t_cliffs", [t(b) for b in ordered], 17)
+    for i, b in enumerate(r3[0:4]):
+        save(t(b), "tiles", "cliffs_ledge_%d" % i)
+    for i, b in enumerate(r3[4:8]):
+        save(t(b), "tiles", "cliffs_slope_%d" % i)
+    for i, b in enumerate(r3[8:12]):
+        save(t(b), "tiles", "cliffs_ramp_%d" % i)
+    for i, b in enumerate(r3[12:14]):
+        save(t(b), "tiles", "cliffs_stairs_%d" % i)
+    for i, b in enumerate(snow):
+        save(t(b), "tiles", "cliffs_snow_%d" % i)
+    save(_cut(rgba, (25, 770, 300, 1000), h=128), "props", "cave_mouth2")
+    save(_cut(rgba, (318, 770, 596, 1000), h=128), "props", "mine_entrance2")
+    strip([_cut(rgba, (x0, 780, x0 + 110, 1000), TILE2, TILE2 * 2, cover=True) for x0 in (608, 720, 828, 938)], "tiles", "waterfall2")
+    save(_cut(rgba, (1060, 770, 1525, 1000), h=64), "props", "rope_bridge2")
+
+
+def w30():
+    rgba = load("w30_water_edges.png")
+    cols = [18 + i * 115.5 for i in range(13)]
+    def row(y0, y1):
+        return [_cut(rgba, (int(x) + 2, y0, int(x) + 110, y1), TILE2, TILE2, cover=True) for x in cols]
+    g = row(15, 97) + row(105, 187) + row(195, 277)
+    save_set("water_grass_raw", g, 13)
+    sd = row(295, 377) + row(385, 467) + row(475, 557)
+    save_set("water_sand_raw", sd, 13)
+    strip([_cut(rgba, (x0, 578, x0 + 100, 660), TILE2, TILE2, cover=True) for x0 in (18, 128, 238, 348)], "tiles", "water2")
+    strip([_cut(rgba, (x0, 578, x0 + 100, 660), TILE2, TILE2, cover=True) for x0 in (480, 590, 700, 810)], "tiles", "water2_light")
+    strip([_cut(rgba, (x0, 596, x0 + 130, 636), TILE2 * 2, 12) for x0 in (955, 1095, 1235, 1375)], "fx", "foam_strip")
+    bends = [_cut(rgba, (int(x0), y0, int(x0) + 100, y1), TILE2, TILE2, cover=True) for (y0, y1) in [(690, 778), (790, 878)] for x0 in (18, 128, 238, 348)]
+    save_set("river_bends", bends, 4)
+    save(_cut(rgba, (500, 690, 945, 880), h=96), "props", "bridge_wood2")
+    save(_cut(rgba, (1020, 690, 1460, 880), h=96), "props", "bridge_stone2")
+    for x0, x1, nm in [(25, 160, "dock2_end"), (175, 300, "dock2_mid"), (315, 365, "dock2_post"), (390, 510, "dock2_corner"), (530, 665, "dock2_side")]:
+        save(_cut(rgba, (x0, 905, x1, 1005), h=48), "props", nm)
+    for i, x0 in enumerate((700, 795, 890, 985)):
+        save(_cut(rgba, (x0, 915, x0 + 90, 1000), h=20), "nature", "lily2_%d" % i)
+    for i, x0 in enumerate((1110, 1205, 1300, 1395)):
+        save(_cut(rgba, (x0, 905, x0 + 95, 1005), h=40), "nature", "reeds2_%d" % i)
+
+
+def w31():
+    rgba = load("w31_paths.png")
+    def block(x0, y0, name):
+        tiles = []
+        for r in range(4):
+            for c in range(8):
+                bx = x0 + c * 91.5
+                by = y0 + r * 99
+                tiles.append(_cut(rgba, (int(bx) + 2, int(by) + 2, int(bx) + 86, int(by) + 84), TILE2, TILE2, cover=True))
+        save_set(name, tiles, 8)
+    block(25, 25, "path_dirt_raw")
+    block(790, 25, "path_cobble_raw")
+    block(25, 425, "path_sand_raw")
+    block(790, 425, "path_worn_raw")
+    for i, nm in enumerate(["pebbles", "puddle", "hoofprints", "ruts", "leaves", "flower_edge", "mushroom_edge", "roots"]):
+        x0 = 10 + i * 108
+        save(_cut(rgba, (x0 + 2, 845, x0 + 104, 955), TILE2, TILE2), "tiles", "pdeco_" + nm)
+    for i, nm in enumerate(["tuft_a", "tuft_b", "tuft_c", "clover", "dandelion", "pebbles"]):
+        x0 = 905 + i * 100
+        save(_cut(rgba, (x0, 850, x0 + 100, 950), h=28), "nature", "gdeco_" + nm)
+
+
+
+
+# ---------------------------------------------------------------- batch W32-W35 (cinematics)
+
+def _row_strip(rgba, reg, n, group, name, h, pad_to=None, gap=6):
+    """n sprites in a labelled row -> strip with every frame scaled to height h.
+    pad_to: force each frame onto a fixed canvas (w,h) centred at the bottom."""
+    boxes = row_sprites(rgba, reg, n, gap=gap)
+    frames = []
+    for b in boxes:
+        bb = region_bbox(rgba, b)
+        fr = scale_to(crop(rgba, bb), height=h) if bb else Image.new("RGBA", (8, 8))
+        frames.append(fr)
+    if pad_to:
+        pw, ph = pad_to
+        out = []
+        for f in frames:
+            c = Image.new("RGBA", (pw, ph), (0, 0, 0, 0))
+            c.alpha_composite(f, ((pw - f.width) // 2, ph - f.height))
+            out.append(c)
+        frames = out
+    strip(frames, group, name)
+
+
+def _row_particles(rgba, reg, n, group, name, factor, canvas):
+    """Equal cells, each scaled by the same factor, centred on a fixed canvas."""
+    x0, y0, x1, y1 = reg
+    cw = (x1 - x0) / n
+    frames = []
+    for i in range(n):
+        box = (int(x0 + i * cw) + 2, y0, int(x0 + (i + 1) * cw) - 2, y1)
+        bb = region_bbox(rgba, box)
+        c = Image.new("RGBA", canvas, (0, 0, 0, 0))
+        if bb:
+            f = crop(rgba, bb)
+            f = scale_to(f, width=max(1, round(f.width * factor)), height=max(1, round(f.height * factor)))
+            c.alpha_composite(f, ((canvas[0] - f.width) // 2, (canvas[1] - f.height) // 2))
+        frames.append(c)
+    strip(frames, group, name)
+
+
+def _row_fixed(rgba, reg, n, group, name, h):
+    """Rows where frames keep the same ground line but very different widths
+    (falling trees): cut equal cells, trim each, keep a common frame box."""
+    x0, y0, x1, y1 = reg
+    cw = (x1 - x0) / n
+    frames = []
+    for i in range(n):
+        box = (int(x0 + i * cw) + 2, y0, int(x0 + (i + 1) * cw) - 2, y1)
+        bb = region_bbox(rgba, box)
+        frames.append(crop(rgba, bb) if bb else Image.new("RGBA", (8, 8)))
+    H = max(f.height for f in frames)
+    sc = h / H
+    frames = [scale_to(f, width=max(1, round(f.width * sc)), height=max(1, round(f.height * sc))) for f in frames]
+    strip(frames, group, name)
+
+
+def w32():
+    rgba = load("w32_tree_fall.png")
+    _row_fixed(rgba, (195, 62, 740, 188), 4, "fx", "oak_shake", 112)
+    _row_fixed(rgba, (185, 192, 1525, 318), 8, "fx", "oak_fall_r", 112)
+    _row_fixed(rgba, (185, 322, 1525, 448), 8, "fx", "oak_fall_l", 112)
+    _row_fixed(rgba, (210, 458, 1400, 538), 6, "fx", "trunk_break", 56)
+    for i, b in enumerate(row_sprites(rgba, (220, 540, 700, 612), 3)):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=40), "nature", "stump2_%d" % i)
+    _row_fixed(rgba, (195, 618, 740, 718), 4, "fx", "pine_shake", 112)
+    _row_fixed(rgba, (185, 722, 1525, 840), 8, "fx", "pine_fall_r", 112)
+    _row_particles(rgba, (215, 842, 1525, 910), 8, "fx", "leaf_burst", 0.6, (64, 64))
+    _row_particles(rgba, (215, 920, 1000, 1005), 6, "fx", "wood_chips", 0.6, (64, 64))
+
+
+def w33():
+    rgba = load("w33_rock_break.png")
+    rows = [("rock_s_break", 22, 125, 48), ("rock_m_break", 140, 252, 64), ("ore_copper_break", 272, 382, 56), ("ore_iron_break", 392, 502, 56), ("ore_crystal_break", 517, 628, 56)]
+    for nm, y0, y1, h in rows:
+        _row_strip(rgba, (290, y0, 1525, y1), 10, "fx", nm, h, (72, 72))
+    _row_strip(rgba, (300, 650, 1200, 740), 6, "fx", "dust_puff", 44, (72, 64))
+    _row_particles(rgba, (300, 760, 1100, 862), 6, "fx", "stone_chips", 0.6, (64, 64))
+    for b, nm in zip(row_sprites(rgba, (300, 895, 1525, 1005), 10), ["wood", "stone", "copper", "iron", "shard", "fiber", "sap", "acorn", "pinecone", "berry"]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), width=32, height=32), "items", "pop_" + nm)
+
+
+def w34():
+    rgba = load("w34_crop_cinematics.png")
+    _row_strip(rgba, (880, 338, 1260, 412), 4, "fx", "sprout_pop", 36, (48, 48))
+    _row_strip(rgba, (1025, 440, 1400, 532), 4, "fx", "crop_wilt", 44, (56, 56))
+    _row_strip(rgba, (1025, 525, 1400, 612), 4, "fx", "crop_revive", 44, (56, 56))
+    _row_strip(rgba, (1025, 600, 1470, 708), 4, "props", "scarecrow3", 80, (96, 96))
+    _row_strip(rgba, (1025, 712, 1515, 802), 6, "wildlife/crow", "land", 44, (56, 56))
+    _row_strip(rgba, (1025, 805, 1440, 895), 4, "wildlife/crow", "takeoff", 44, (56, 56))
+    _row_strip(rgba, (225, 845, 840, 1005), 4, "props", "sprinkler_spray", 96, (96, 96))
+    # the farmer rows are a generic hero (not our playables): keep as reference strips
+    _row_strip(rgba, (235, 65, 1010, 182), 6, "fx", "ref_hoe", 96)
+    _row_strip(rgba, (235, 185, 1010, 300), 6, "fx", "ref_water", 96)
+    for nm, y0, y1 in [("turnip", 425, 522), ("strawberry", 528, 620), ("corn", 628, 712), ("pumpkin", 715, 812)]:
+        _row_strip(rgba, (235, y0, 810, y1), 6, "fx", "ref_harvest_" + nm, 96)
+
+
+def w35():
+    rgba = load("w35_fishing_swim.png")
+    _row_strip(rgba, (195, 62, 770, 140), 6, "fx", "bobber_cast", 48, (72, 64))
+    _row_strip(rgba, (195, 145, 550, 208), 4, "fx", "bobber2", 40, (56, 48))
+    _row_strip(rgba, (755, 140, 1060, 210), 4, "fx", "bobber2_bite", 48, (56, 56))
+    for nm, y0, y1 in [("a", 222, 298), ("b", 300, 375), ("c", 378, 452)]:
+        _row_strip(rgba, (215, y0, 1020, y1), 8, "fx", "fish_jump_" + nm, 56, (72, 72))
+    _row_strip(rgba, (180, 515, 560, 585), 6, "fx", "reel_splash", 48, (72, 56))
+    _row_strip(rgba, (735, 510, 950, 580), 4, "fx", "alert", 44, (48, 56))
+    _row_strip(rgba, (975, 505, 1250, 625), 3, "fx", "ref_catch_large", 96)
+    _row_strip(rgba, (1275, 515, 1515, 625), 3, "fx", "ref_catch_small", 96)
+    for nm, reg, n in [("swim_down", (175, 640, 705, 712), 6), ("swim_up", (175, 720, 705, 795), 6), ("swim_side", (175, 805, 705, 880), 6), ("tread", (950, 645, 1330, 712), 4), ("dive", (950, 718, 1410, 795), 6), ("climb_out", (945, 805, 1300, 890), 4)]:
+        _row_strip(rgba, reg, n, "fx", "ref_" + nm, 56)
+    _row_particles(rgba, (195, 905, 760, 970), 6, "fx", "ripple_ring", 0.6, (72, 40))
+
+
+
+
+# ---------------------------------------------------------------- batch W36-W43 (emotes, portraits, interiors)
+
+def _pieces(rgba, reg, names, group, factor=0.5, gap=6):
+    """Labelled row of len(names) pieces, each scaled by `factor` (sheet 64px = 1 cell = 32px in art/gen)."""
+    boxes = row_sprites(rgba, reg, len(names), gap=gap)
+    for b, nm in zip(boxes, names):
+        bb = region_bbox(rgba, b)
+        if not bb:
+            continue
+        im = crop(rgba, bb)
+        save(scale_to(im, width=max(1, round(im.width * factor)), height=max(1, round(im.height * factor))), group, nm)
+
+
+def _anim(rgba, reg, n, group, name, factor=0.5, gap=6):
+    boxes = row_sprites(rgba, reg, n, gap=gap)
+    frames = []
+    for b in boxes:
+        bb = region_bbox(rgba, b)
+        im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+        frames.append(scale_to(im, width=max(1, round(im.width * factor)), height=max(1, round(im.height * factor))))
+    strip(frames, group, name)
+
+
+def w36():
+    rgba = load("w36_emotes.png")
+    names = [["surprise", "confused", "heart", "heart_broken"], ["sweat", "angry", "music", "sleep"], ["idea", "laugh", "cry", "think"], ["gift", "coin", "star", "skull"]]
+    xs = [(12, 380), (395, 765), (778, 1148), (1160, 1528)]
+    ys = [(178, 265), (362, 448), (547, 633), (732, 818)]
+    for r, (y0, y1) in enumerate(ys):
+        for k, (x0, x1) in enumerate(xs):
+            _anim(rgba, (x0, y0, x1, y1), 4, "emotes", names[r][k], 0.5)
+    _pieces(rgba, (135, 920, 645, 1005), ["bubble_a", "bubble_b", "bubble_c", "bubble_think"], "emotes", 0.5)
+    _anim(rgba, (915, 920, 1395, 1005), 4, "emotes", "talk", 0.5)
+
+
+def w39():
+    rgba = load("w39_portraits.png")
+    ids = ["shopkeeper", "blacksmith", "potion", "mayor", "drifter", "fisherman", "artist", "scholar", "young_farmer", "innkeeper", "baker", "nurse"]
+    moods = ["neutral", "happy", "sad", "angry", "surprised"]
+    rows = [(130, 270), (275, 415), (420, 560), (565, 705), (710, 850), (855, 995)]
+    lcols = [165, 285, 405, 525, 645]
+    rcols = [932, 1050, 1168, 1286, 1404]
+    for i, pid in enumerate(ids):
+        y0, y1 = rows[i % 6]
+        cols = lcols if i < 6 else rcols
+        for m, x0 in zip(moods, cols):
+            im = crop(rgba, (x0 + 3, y0 + 3, x0 + 108, y1 - 3))
+            save(scale_to(im, height=96), "portraits/" + pid, m)
+
+
+def w43():
+    rgba = load("w43_interior_floors_walls.png")
+    floors = ["fl_wood_light", "fl_wood", "fl_wood_dark", "fl_stone", "fl_tile", "fl_carpet_red", "fl_carpet_blue", "fl_carpet_green", "fl_carpet_purple", "fl_concrete", "fl_brick", "fl_bakery", "fl_clinic", "fl_inn"]
+    xs = [(25, 148), (180, 303), (335, 458)]
+    ys = [(140, 262), (305, 427), (470, 592), (635, 757), (800, 922)]
+    i = 0
+    for (y0, y1) in ys:
+        for (x0, x1) in xs:
+            if i >= len(floors):
+                break
+            save_set(floors[i], grid_tiles(rgba, (x0, y0, x1, y1), 3, 3, 3), 3)
+            i += 1
+    walls = ["wl_plaster", "wl_wood", "wl_striped", "wl_striped_red", "wl_striped_green", "wl_floral", "wl_floral_blue", "wl_stone", "wl_brick", "wl_bakery", "wl_clinic", "wl_library"]
+    wy = [150, 210, 268, 328, 386, 446, 504, 562, 616, 670, 726, 782]
+    wx = [(712, 802), (822, 920), (930, 1032), (1040, 1142), (1160, 1260), (1278, 1374), (1390, 1512)]
+    parts = ["_l", "_m", "_m2", "_m3", "_r", "_corner", "_window"]
+    for nm, y0 in zip(walls, wy):
+        for (x0, x1), part in zip(wx, parts):
+            save(_cut(rgba, (x0, y0, x1, y0 + 52), TILE2, TILE2 * 2, cover=True), "tiles", nm + part)
+    _pieces(rgba, (215, 925, 570, 965), ["baseboard_wood", "baseboard_white", "baseboard_stone"], "tiles", 0.5)
+    _pieces(rgba, (750, 905, 1090, 1000), ["doorway_wood", "doorway_stone", "doorway_ornate"], "furniture", 0.5)
+    _pieces(rgba, (1290, 905, 1510, 1000), ["stairs2_up", "stairs2_down"], "furniture", 0.5)
+
+
+def w40():
+    rgba = load("w40_shop_interiors.png")
+    _pieces(rgba, (35, 135, 895, 250), ["counter2_l", "counter2_m", "counter2_m2", "counter2_r", "counter2_corner", "counter2_glass"], "furniture")
+    _pieces(rgba, (950, 160, 1040, 250), ["register"], "furniture")
+    _pieces(rgba, (1120, 150, 1260, 260), ["scales"], "furniture")
+    _pieces(rgba, (1320, 140, 1500, 290), ["seed_rack"], "furniture")
+    _pieces(rgba, (35, 340, 800, 538), ["shelf_jars", "shelf_cans", "shelf_seeds", "shelf_dry", "shelf_house", "shelf_misc"], "furniture")
+    _pieces(rgba, (835, 360, 1075, 455), ["crate_carrots", "crate_tomatoes"], "furniture")
+    _pieces(rgba, (835, 465, 1075, 545), ["crate_cabbage", "crate_corn"], "furniture")
+    _anim(rgba, (1110, 365, 1515, 455), 4, "furniture", "anvil2")
+    _anim(rgba, (25, 635, 645, 825), 4, "furniture", "forge")
+    _pieces(rgba, (650, 635, 890, 825), ["weapon_rack", "tool_rack"], "furniture")
+    _pieces(rgba, (895, 680, 1100, 795), ["bellows", "quench_barrel"], "furniture")
+    _pieces(rgba, (1120, 630, 1520, 825), ["potion_shelf_a", "potion_shelf_b", "potion_shelf_c", "potion_shelf_d"], "furniture")
+    _anim(rgba, (30, 895, 450, 1000), 4, "furniture", "cauldron")
+    _pieces(rgba, (495, 895, 880, 1000), ["herbs_a", "herbs_b", "herbs_c", "herbs_d"], "furniture")
+    _pieces(rgba, (915, 905, 1040, 995), ["mortar"], "furniture")
+    _anim(rgba, (1100, 895, 1515, 1000), 4, "furniture", "crystal_ball")
+
+
+def w41():
+    rgba = load("w41_home_interiors.png")
+    _pieces(rgba, (15, 110, 280, 245), ["bed2_blue", "bed2_red", "bed2_green"], "furniture")
+    _pieces(rgba, (295, 110, 540, 245), ["bed2_double_blue", "bed2_double_red"], "furniture")
+    _pieces(rgba, (545, 110, 670, 245), ["bunk_bed"], "furniture")
+    _pieces(rgba, (680, 110, 840, 245), ["nightstand_a", "nightstand_b"], "furniture")
+    _pieces(rgba, (850, 110, 1045, 245), ["wardrobe2_a", "wardrobe2_b"], "furniture")
+    _pieces(rgba, (1055, 110, 1255, 245), ["dresser2_a", "dresser2_b"], "furniture")
+    _pieces(rgba, (1262, 110, 1528, 245), ["bookcase2_a", "bookcase2_b", "bookcase2_c"], "furniture")
+    _anim(rgba, (25, 285, 445, 395), 4, "furniture", "fireplace2")
+    _pieces(rgba, (455, 285, 625, 395), ["fireplace2_unlit"], "furniture")
+    _pieces(rgba, (635, 285, 1005, 395), ["armchair2_red", "armchair2_blue", "armchair2_green", "armchair2_yellow"], "furniture")
+    _pieces(rgba, (1030, 285, 1528, 395), ["sofa_red", "sofa_blue", "sofa_green"], "furniture")
+    _pieces(rgba, (15, 455, 150, 555), ["table2_round"], "furniture")
+    _pieces(rgba, (160, 455, 345, 555), ["table2_long8"], "furniture")
+    _pieces(rgba, (350, 455, 510, 555), ["table2_long4"], "furniture")
+    _pieces(rgba, (530, 470, 750, 555), ["chair2_a_down", "chair2_a_left", "chair2_a_right", "chair2_a_up"], "furniture")
+    _pieces(rgba, (760, 470, 975, 555), ["chair2_b_down", "chair2_b_left", "chair2_b_right", "chair2_b_up"], "furniture")
+    _pieces(rgba, (985, 455, 1528, 555), ["rug2_round_red", "rug2_round_blue", "rug2_red", "rug2_blue", "rug2_green", "rug2_runner"], "furniture")
+    _pieces(rgba, (15, 628, 625, 705), ["kitchen_sink", "kitchen_stove", "kitchen_counter_a", "kitchen_counter_b", "kitchen_fridge", "kitchen_corner"], "furniture")
+    _anim(rgba, (645, 600, 945, 705), 4, "furniture", "kettle")
+    _pieces(rgba, (960, 625, 1195, 705), ["cat_bed", "dog_bed"], "furniture")
+    _pieces(rgba, (1205, 610, 1335, 705), ["cradle"], "furniture")
+    _pieces(rgba, (1355, 610, 1510, 705), ["toy_chest"], "furniture")
+    _pieces(rgba, (15, 765, 175, 855), ["piano"], "furniture")
+    _anim(rgba, (190, 765, 445, 855), 4, "furniture", "clock_grand2")
+    _pieces(rgba, (460, 775, 550, 850), ["wall_clock"], "furniture")
+    _pieces(rgba, (555, 775, 1010, 850), ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting2_f"], "furniture")
+    _pieces(rgba, (1025, 765, 1115, 855), ["mirror2"], "furniture")
+    _pieces(rgba, (1120, 765, 1528, 855), ["plant2_a", "plant2_b", "plant2_c", "plant2_d", "plant2_e", "plant2_f"], "furniture")
+    _pieces(rgba, (15, 920, 665, 1012), ["curtain_red_closed", "curtain_red_open", "curtain_blue_closed", "curtain_blue_open", "curtain_green_closed", "curtain_green_open"], "furniture")
+    _pieces(rgba, (675, 920, 835, 1012), ["window2_day_a", "window2_day_b"], "furniture")
+    _pieces(rgba, (850, 920, 1015, 1012), ["window2_night_a", "window2_night_b"], "furniture")
+    _pieces(rgba, (1030, 920, 1205, 1012), ["stairs3_up", "stairs3_down"], "furniture")
+    _pieces(rgba, (1210, 920, 1528, 1012), ["door2_wood", "door2_wood_open", "door2_glass", "door2_metal"], "furniture")
+
+
+def w42():
+    rgba = load("w42_public_interiors.png")
+    _pieces(rgba, (140, 65, 395, 185), ["bar_counter"], "furniture")
+    _anim(rgba, (405, 85, 545, 185), 4, "furniture", "beer_taps")
+    _pieces(rgba, (600, 100, 745, 185), ["stool_red", "stool_blue", "stool_green"], "furniture")
+    _pieces(rgba, (760, 70, 930, 185), ["round_set_a"], "furniture")
+    _pieces(rgba, (935, 70, 1085, 185), ["round_set_b"], "furniture")
+    _pieces(rgba, (1095, 65, 1245, 185), ["keg_wall"], "furniture")
+    _pieces(rgba, (1250, 100, 1390, 185), ["hanging_mugs"], "furniture")
+    _pieces(rgba, (1395, 60, 1525, 185), ["hearth"], "furniture")
+    _anim(rgba, (225, 240, 495, 345), 4, "furniture", "bakery_oven")
+    _pieces(rgba, (510, 240, 850, 345), ["bread_rack_a", "bread_rack_b", "bread_rack_c"], "furniture")
+    _pieces(rgba, (865, 240, 1055, 345), ["cake_case"], "furniture")
+    _pieces(rgba, (1070, 240, 1250, 345), ["flour_sacks"], "furniture")
+    _pieces(rgba, (1260, 240, 1520, 345), ["prep_table"], "furniture")
+    _pieces(rgba, (170, 395, 385, 510), ["hospital_bed_a", "hospital_bed_b"], "furniture")
+    _pieces(rgba, (425, 395, 660, 510), ["curtain_open", "curtain_closed"], "furniture")
+    _pieces(rgba, (685, 395, 860, 510), ["medicine_cabinet"], "furniture")
+    _pieces(rgba, (890, 395, 1100, 510), ["doctor_desk"], "furniture")
+    _pieces(rgba, (1140, 395, 1240, 510), ["scale"], "furniture")
+    _pieces(rgba, (1270, 395, 1375, 510), ["skeleton_poster"], "furniture")
+    _pieces(rgba, (1410, 395, 1510, 510), ["eye_chart"], "furniture")
+    _pieces(rgba, (155, 555, 760, 680), ["bookcase3_a", "bookcase3_b", "bookcase3_c", "bookcase3_d", "bookcase3_e", "bookcase3_f"], "furniture")
+    _pieces(rgba, (765, 555, 965, 680), ["reading_table"], "furniture")
+    _pieces(rgba, (975, 555, 1070, 680), ["globe"], "furniture")
+    _pieces(rgba, (1075, 555, 1205, 680), ["card_catalogue"], "furniture")
+    _pieces(rgba, (1210, 555, 1325, 680), ["library_ladder"], "furniture")
+    _pieces(rgba, (1340, 555, 1520, 680), ["armchair_window"], "furniture")
+    _pieces(rgba, (155, 725, 505, 835), ["council_table"], "furniture")
+    _pieces(rgba, (520, 725, 725, 835), ["mayor_desk"], "furniture")
+    _pieces(rgba, (740, 725, 865, 835), ["flag_a", "flag_b"], "furniture")
+    _pieces(rgba, (895, 725, 1060, 835), ["notice_board2"], "furniture")
+    _pieces(rgba, (1085, 725, 1185, 835), ["podium"], "furniture")
+    _pieces(rgba, (1200, 725, 1520, 835), ["pew_a", "pew_b"], "furniture")
+    _pieces(rgba, (150, 865, 365, 990), ["altar"], "furniture")
+    _anim(rgba, (380, 880, 585, 990), 4, "furniture", "candle_stand")
+    _pieces(rgba, (605, 865, 1115, 990), ["stained_a_day", "stained_a_night", "stained_b_day", "stained_b_night", "stained_c_day", "stained_c_night"], "furniture")
+    _pieces(rgba, (1140, 880, 1350, 990), ["pew_c", "pew_d"], "furniture")
+    _pieces(rgba, (1355, 865, 1490, 990), ["organ"], "furniture")
+
+
+
+
+# ---------------------------------------------------------------- batch W44-W47 (UI, weather)
+
+def _icon(rgba, box, group, name, size=48):
+    save(_cut(rgba, box, size, size), group, name)
+
+
+def w45():
+    rgba = load("w45_ui_touch.png")
+    _pieces(rgba, (20, 100, 300, 235), ["joy_base_a", "joy_base_b"], "ui", 0.5)
+    _pieces(rgba, (335, 130, 505, 215), ["joy_knob_light", "joy_knob_dark"], "ui", 0.5)
+    _pieces(rgba, (540, 95, 1520, 235), ["btn_blue", "btn_blue_down", "btn_green", "btn_green_down", "btn_red", "btn_red_down", "btn_gold", "btn_gold_down"], "ui", 0.5)
+    _pieces(rgba, (15, 315, 625, 395), ["sbtn_blue", "sbtn_blue_down", "sbtn_green", "sbtn_green_down", "sbtn_red", "sbtn_red_down", "sbtn_gold", "sbtn_gold_down"], "ui", 0.5)
+    _pieces(rgba, (645, 315, 1045, 395), ["ic_run", "ic_menu", "ic_map", "ic_journal", "ic_inventory"], "ui", 0.5)
+    _pieces(rgba, (1070, 310, 1520, 420), ["slot_attack", "slot_tool", "slot_interact", "slot_custom"], "ui", 0.5)
+    tools = ["hoe", "can", "axe", "pickaxe", "scythe", "rod", "sword", "iron_sword", "hammer", "hand", "check"]
+    for b, nm in zip(row_sprites(rgba, (15, 495, 815, 565), 11), tools):
+        save(_cut(rgba, b, 48, 48), "items", nm)
+    cats = ["cat_crops", "cat_seeds", "cat_fish", "cat_forage", "cat_ore", "cat_bars", "cat_gems", "cat_potions", "cat_gifts"]
+    for b, nm in zip(row_sprites(rgba, (825, 495, 1525, 565), 9), cats):
+        save(_cut(rgba, b, 48, 48), "ui", nm)
+    rows = [
+        ((120, 645, 850, 705), ["potato", "turnip", "carrot", "corn", "tomato", "strawberry", "pumpkin", "melon"]),
+        ((120, 720, 600, 780), ["potato_seed", "turnip_seed", "carrot_seed", "corn_seed", "tomato_seed"]),
+        ((120, 795, 600, 855), ["trout", "bass", "salmon", "tuna", "catfish"]),
+        ((120, 865, 600, 925), ["berry", "mushroom", "wild_herb", "flower", "honey"]),
+        ((120, 945, 505, 1000), ["copper", "iron", "silver", "gold"]),
+        ((980, 645, 1315, 705), ["copper_bar", "iron_bar", "silver_bar", "gold_bar"]),
+        ((980, 725, 1315, 785), ["ruby", "sapphire", "emerald", "amethyst"]),
+        ((980, 810, 1360, 870), ["potion", "energy_tea", "luck_potion", "harvest_potion"]),
+        ((980, 905, 1430, 970), ["gift_red", "gift_blue", "gift_green", "gift_gold", "gift_purple"]),
+    ]
+    for reg, names in rows:
+        for b, nm in zip(row_sprites(rgba, reg, len(names)), names):
+            save(_cut(rgba, b, 48, 48), "items", nm)
+
+
+def w44():
+    rgba = load("w44_ui_frames.png")
+    _pieces(rgba, (15, 110, 800, 245), ["panel_wood2", "panel_parchment2", "panel_slate", "panel_crystal", "panel_neon"], "ui", 0.5)
+    _pieces(rgba, (815, 145, 1095, 205), ["tab_idle", "tab_active"], "ui", 0.5)
+    _pieces(rgba, (1115, 145, 1400, 205), ["tab2_idle", "tab2_active"], "ui", 0.5)
+    _pieces(rgba, (1430, 130, 1515, 215), ["close_x"], "ui", 0.5)
+    _pieces(rgba, (40, 355, 275, 435), ["scroll_track", "scroll_thumb", "scroll_up", "scroll_down"], "ui", 0.5)
+    _pieces(rgba, (320, 350, 650, 440), ["slot2", "slot2_selected", "slot2_locked"], "ui", 0.5)
+    _pieces(rgba, (670, 360, 925, 430), ["heart2_full", "heart2_half", "heart2_empty"], "ui", 0.5)
+    _pieces(rgba, (965, 370, 1150, 420), ["sheart_full", "sheart_half", "sheart_empty"], "ui", 0.5)
+    _pieces(rgba, (1190, 355, 1520, 430), ["energy_bar"], "ui", 0.5)
+    _pieces(rgba, (30, 535, 330, 625), ["crystal_l", "crystal_m", "crystal_s"], "ui", 0.5)
+    _pieces(rgba, (360, 530, 820, 635), ["clock_spring", "clock_summer", "clock_fall", "clock_winter"], "ui", 0.5)
+    _pieces(rgba, (875, 540, 1515, 615), ["wx_sunny", "wx_partly", "wx_cloudy", "wx_rain", "wx_storm", "wx_snow", "wx_windy", "wx_fog"], "ui", 0.5)
+    _pieces(rgba, (55, 725, 195, 840), ["daynight_dial"], "ui", 0.5)
+    _pieces(rgba, (285, 725, 385, 825), ["quest_marker"], "ui", 0.5)
+    _pieces(rgba, (420, 730, 860, 815), ["pin2_town", "pin2_forest", "pin2_farm", "pin2_docks", "pin2_mountain", "pin2_crystal"], "ui", 0.5)
+    _pieces(rgba, (885, 695, 1520, 850), ["speech_box"], "ui", 0.5)
+    _pieces(rgba, (95, 925, 465, 975), ["choice_idle"], "ui", 0.5)
+    _pieces(rgba, (95, 975, 465, 1020), ["choice_pressed"], "ui", 0.5)
+    _pieces(rgba, (620, 925, 1320, 995), ["toast_banner"], "ui", 0.5)
+
+
+def w46():
+    rgba = load("w46_skills_social.png")
+    skills = ["farming", "mining", "foraging", "fishing", "combat", "bartering", "building"]
+    ys = [(140, 225), (228, 312), (315, 400), (402, 488), (490, 575), (577, 662), (665, 750)]
+    for (y0, y1), nm in zip(ys, skills):
+        save(_cut(rgba, (20, y0, 115, y1), 48, 48), "ui", "skill2_" + nm)
+        for b, lv in zip(row_sprites(rgba, (235, y0, 600, y1), 5), range(1, 6)):
+            save(_cut(rgba, b, 32, 32), "ui", "badge_%s_%d" % (nm, lv))
+    _anim(rgba, (630, 140, 1080, 215), 6, "fx", "skill_up", 0.5)
+    _pieces(rgba, (1095, 140, 1520, 250), ["gift_love", "gift_like", "gift_neutral", "gift_hate"], "ui", 0.5)
+    _pieces(rgba, (1160, 370, 1480, 425), ["ribbon_friend"], "ui", 0.5)
+    _pieces(rgba, (1160, 430, 1480, 485), ["ribbon_close"], "ui", 0.5)
+    _pieces(rgba, (1160, 490, 1480, 548), ["ribbon_best"], "ui", 0.5)
+    _pieces(rgba, (1160, 625, 1520, 715), ["medal_explorer", "medal_collector", "medal_master"], "ui", 0.5)
+    _pieces(rgba, (1160, 765, 1520, 855), ["medal_green_thumb", "medal_champion", "medal_craftsman"], "ui", 0.5)
+    _pieces(rgba, (20, 815, 300, 890), ["banner_spring"], "ui", 0.5)
+    _pieces(rgba, (315, 815, 595, 890), ["banner_summer"], "ui", 0.5)
+    _pieces(rgba, (20, 900, 300, 975), ["banner_fall"], "ui", 0.5)
+    _pieces(rgba, (315, 900, 595, 975), ["banner_winter"], "ui", 0.5)
+    _pieces(rgba, (1030, 665, 1135, 800), ["marker_birthday"], "ui", 0.5)
+    _pieces(rgba, (1030, 805, 1135, 940), ["marker_festival"], "ui", 0.5)
+    _pieces(rgba, (600, 655, 1020, 975), ["calendar"], "ui", 0.5)
+    # hearts rows: one heart of each colour from the rows (empty, full, gold)
+    save(_cut(rgba, (722, 345, 760, 385), 24, 24), "ui", "fheart_empty")
+    save(_cut(rgba, (722, 468, 760, 508), 24, 24), "ui", "fheart_full")
+    save(_cut(rgba, (722, 530, 760, 570), 24, 24), "ui", "fheart_gold")
+
+
+def w47():
+    rgba_raw = np.array(Image.open(os.path.join(S.INC, "w47_weather_extra.png")).convert("RGBA")).astype(np.int32)
+    # Soft key (same as W25): translucent overlays on a magenta backdrop.
+    bgc = np.array([255, 0, 255], dtype=np.float64)
+    f = rgba_raw[..., :3].astype(np.float64)
+    dist = np.sqrt(((f - bgc) ** 2).sum(-1))
+    a = np.clip((dist - 20.0) / 170.0, 0.0, 1.0)
+    fg = np.where(a[..., None] > 0.02, (f - (1.0 - a[..., None]) * bgc) / np.maximum(a[..., None], 0.02), f)
+    rgba = np.zeros(rgba_raw.shape, dtype=np.uint8)
+    rgba[..., :3] = np.clip(fg, 0, 255).astype(np.uint8)
+    rgba[..., 3] = (a * 255).astype(np.uint8)
+    # Each panel holds 4 frames side by side inside a frame border; cut the interior.
+    def panel(x0, y0, x1, y1, name, fw=4, size=(128, 96)):
+        W = (x1 - x0) / fw
+        frames = [scale_to(crop(rgba, (int(x0 + i * W) + 3, y0 + 3, int(x0 + (i + 1) * W) - 3, y1 - 3)), width=size[0], height=size[1], cover=True) for i in range(fw)]
+        strip(frames, "fx", name)
+    row1 = [(40, "ov2_rain"), (295, "ov2_storm"), (545, "ov2_drizzle"), (785, "ov2_snow"), (1020, "ov2_blizzard"), (1265, "ov2_hail")]
+    for x0, nm in row1:
+        panel(x0, 125, x0 + 245, 230, nm)
+    row2 = [(40, "ov2_sandstorm"), (310, "ov2_ash"), (550, "ov2_petals"), (795, "ov2_leaves"), (1040, "ov2_fireflies"), (1265, "ov2_fog")]
+    for x0, nm in row2:
+        panel(x0, 295, x0 + 245, 400, nm)
+    panel(40, 465, 305, 575, "ov2_godrays")
+    panel(320, 465, 560, 575, "ov2_lightning")
+    panel(570, 465, 825, 575, "ov2_sunglare")
+    panel(835, 465, 1090, 575, "ov2_moonglow")
+    panel(1105, 465, 1495, 575, "shooting_star", 3, (96, 72))
+    save(scale_to(crop(rgba, (30, 655, 620, 775)), width=512, height=110), "fx", "rainbow")
+    panel(640, 650, 1515, 780, "aurora2", 4, (512, 128))
+    panel(350, 840, 1185, 1000, "cloud_shadow", 4, (256, 160))
+
+
+
+
+# ---------------------------------------------------------------- batch W48-W51 (trees, landmarks, farm buildings, animals)
+
+def _cells(rgba, reg, n, group, names_or_name, h, as_strip=False):
+    """Equal cells across reg (trees that touch each other), trimmed per cell."""
+    x0, y0, x1, y1 = reg
+    cw = (x1 - x0) / n
+    out = []
+    for i in range(n):
+        box = (int(x0 + i * cw) + 2, y0, int(x0 + (i + 1) * cw) - 2, y1)
+        bb = region_bbox(rgba, box)
+        im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+        out.append(scale_to(im, height=h))
+    if as_strip:
+        strip(out, group, names_or_name)
+    else:
+        for im, nm in zip(out, names_or_name):
+            save(im, group, nm)
+
+
+def w48():
+    rgba = load("w48_big_trees.png")
+    y0, y1 = 178, 348
+    _cells(rgba, (12, y0, 292, y1), 3, "nature", ["big_oak_a", "big_oak_b", "big_oak_c"], 128)
+    _cells(rgba, (292, y0, 532, y1), 3, "nature", ["big_pine_a", "big_pine_b", "big_pine_c"], 128)
+    _cells(rgba, (532, y0, 692, y1), 3, "nature", ["big_birch_a", "big_birch_b", "big_birch_c"], 128)
+    _cells(rgba, (695, y0, 822, y1), 1, "nature", ["big_willow"], 128)
+    _cells(rgba, (826, y0, 1012, y1), 2, "nature", ["big_cherry_a", "big_cherry_b"], 128)
+    _cells(rgba, (1016, y0, 1202, y1), 2, "nature", ["big_maple_a", "big_maple_b"], 128)
+    _cells(rgba, (1206, y0, 1362, y1), 2, "nature", ["big_dead_a", "big_dead_b"], 128)
+    _cells(rgba, (1366, y0, 1532, y1), 2, "nature", ["big_snowpine_a", "big_snowpine_b"], 128)
+    mid = ["mid_oak", "mid_pine", "mid_birch", "mid_willow", "mid_cherry", "mid_maple", "mid_dead", "mid_snowpine", "mid_oak_b", "mid_pine_b", "mid_birch_b", "mid_willow_b", "mid_cherry_b", "mid_maple_b", "mid_dead_b", "mid_snowpine_b"]
+    for b, nm in zip(row_sprites(rgba, (10, 462, 1535, 582), 16), mid):
+        save(_cut(rgba, b, h=96), "nature", nm)
+    _cells(rgba, (130, 648, 430, 822), 2, "nature", "oak_sway", 112, True)
+    _cells(rgba, (445, 648, 690, 822), 2, "nature", "pine_sway", 112, True)
+    save(_cut(rgba, (700, 640, 1530, 825), h=96), "nature", "treeline")
+    for b, nm in zip(row_sprites(rgba, (110, 915, 870, 1005), 6), ["bush2_green", "bush2_flower", "bush2_berry", "bush2_yellow", "bush2_red", "bush2_blue"]):
+        save(_cut(rgba, b, h=32), "nature", nm)
+
+
+def w49():
+    rgba = load("w49_landmarks.png")
+    _anim(rgba, (15, 140, 605, 362), 4, "props", "windmill3", 0.5)
+    save(_cut(rgba, (625, 140, 835, 362), h=128), "props", "watchtower")
+    save(_cut(rgba, (875, 155, 1215, 352), h=96), "props", "stone_circle")
+    save(_cut(rgba, (1235, 175, 1530, 335), h=48), "props", "hollow_log")
+    frames = [_cut(rgba, (x0, y0, x0 + 210, y0 + 120), 128, 96, cover=False) for (x0, y0) in [(20, 455), (230, 455), (20, 575), (230, 575)]]
+    strip(frames, "props", "waterfall_pool")
+    save(_cut(rgba, (455, 480, 605, 672), h=48), "props", "old_well")
+    save(_cut(rgba, (625, 500, 835, 672), h=48), "props", "abandoned_cart")
+    save(_cut(rgba, (855, 480, 975, 672), h=64), "props", "scarecrow_field")
+    save(_cut(rgba, (1015, 460, 1205, 682), h=96), "props", "lookout_platform")
+    save(_cut(rgba, (1225, 465, 1530, 692), h=80), "props", "hermit_hut")
+    frames = [_cut(rgba, (x0, y0, x0 + 195, y0 + 115), 96, 64, cover=False) for (x0, y0) in [(15, 780), (215, 780), (15, 895), (215, 895)]]
+    strip(frames, "props", "campsite")
+    save(_cut(rgba, (435, 780, 625, 1012), h=96), "props", "cat_statue")
+    save(_cut(rgba, (675, 785, 835, 985), h=64), "props", "signpost_cluster")
+    save(_cut(rgba, (865, 785, 1185, 995), h=64), "props", "bus_shelter")
+    save(_cut(rgba, (1205, 785, 1530, 1005), h=64), "props", "toll_house")
+
+
+def w50():
+    rgba = load("w50_farm_buildings.png")
+    _cells(rgba, (25, 100, 335, 262), 2, "props", ["coop_small", "coop_small_open"], 80)
+    _cells(rgba, (340, 100, 700, 262), 2, "props", ["coop_big", "coop_big_open"], 96)
+    _cells(rgba, (705, 100, 1060, 262), 2, "props", ["barn_small", "barn_small_open"], 96)
+    _cells(rgba, (1070, 100, 1525, 262), 2, "props", ["barn_big", "barn_big_open"], 112)
+    save(_cut(rgba, (25, 340, 145, 520), h=112), "props", "silo2")
+    _anim(rgba, (155, 340, 725, 520), 4, "props", "greenhouse2", 0.5)
+    save(_cut(rgba, (735, 345, 845, 520), h=64), "props", "well_roofed")
+    save(_cut(rgba, (865, 345, 1045, 520), h=72), "props", "shed")
+    save(_cut(rgba, (1055, 345, 1325, 520), h=96), "props", "stable2")
+    save(_cut(rgba, (1335, 345, 1525, 520), h=128), "props", "mill")
+    _anim(rgba, (10, 590, 565, 700), 4, "props", "fish_pond", 0.5)
+    for b, nm in zip(row_sprites(rgba, (565, 590, 1525, 700), 8), ["beehive3_a", "beehive3_b", "keg2", "preserves_jar", "furnace2_off", "furnace2_on", "workbench3", "anvil_stand"]):
+        save(_cut(rgba, b, h=40 if nm not in ("workbench3",) else 44), "props", nm)
+    _anim(rgba, (10, 760, 325, 840), 4, "props", "sprinkler_basic", 0.5)
+    _anim(rgba, (365, 760, 685, 840), 4, "props", "sprinkler_quality", 0.5)
+    _anim(rgba, (695, 760, 1015, 840), 4, "props", "sprinkler_iridium", 0.5)
+    for b, nm in zip(row_sprites(rgba, (1035, 755, 1525, 845), 3), ["scarecrow_classic", "scarecrow_knight", "scarecrow_pumpkin"]):
+        save(_cut(rgba, b, h=48), "props", nm)
+    for x0, x1, pre in [(10, 495, "fence2_wood"), (515, 1005, "fence2_stone"), (1015, 1525, "fence2_iron")]:
+        for b, part in zip(row_sprites(rgba, (x0, 912, x1, 992), 5), ["_h", "_corner", "_end", "_gate", "_gate_open"]):
+            save(_cut(rgba, b, h=32), "props", pre + part)
+
+
+def _box_anim(rgba, box, n, group, name, h):
+    x0, y0, x1, y1 = box
+    _row_strip(rgba, (x0 + 14, y0 + 13, x1 - 14, y1 - 12), n, group, name, h, None, 2)
+
+
+def w51():
+    rgba = load("w51_farm_animals_more.png")
+    # The animation boxes are opaque beige panels: key the panel colour too, then
+    # drop the thin box borders.
+    rgb = rgba[..., :3].astype(np.int32)
+    beige = np.abs(rgb - np.array([244, 213, 160])).sum(-1) < 60
+    rgba = rgba.copy()
+    rgba[..., 3] = np.where(beige, 0, rgba[..., 3])
+    rgba = S.remove_thin_lines(rgba, 2)
+    hx = [(178, 445, "idle", 4), (458, 855, "walk", 6), (870, 1290, "gallop", 6), (1305, 1495, "eat", 2)]
+    for (x0, x1, a, n) in hx:
+        _box_anim(rgba, (x0, 66, x1, 134), n, "animals/horse3", a, 48)
+        _box_anim(rgba, (x0, 150, x1, 220), n, "animals/horse3_saddle", a, 48)
+    for (x0, x1, a, n) in [(145, 340, "idle", 4), (355, 655, "walk", 6)]:
+        _box_anim(rgba, (x0, 240, x1, 318), n, "animals/donkey", a, 40)
+    for (x0, x1, a, n) in [(795, 980, "idle", 4), (995, 1290, "walk", 6), (1305, 1530, "spit", 4)]:
+        _box_anim(rgba, (x0, 240, x1, 318), n, "animals/llama", a, 44)
+    for (x0, x1, a, n) in [(130, 258, "idle", 4), (270, 420, "walk", 4)]:
+        _box_anim(rgba, (x0, 340, x1, 408), n, "animals/rabbit_brown", a, 24)
+    for (x0, x1, a, n) in [(555, 685, "idle", 4), (695, 830, "walk", 4)]:
+        _box_anim(rgba, (x0, 340, x1, 408), n, "animals/rabbit_white", a, 24)
+    for (x0, x1, a, n) in [(955, 1100, "idle", 4), (1115, 1340, "walk", 6)]:
+        _box_anim(rgba, (x0, 340, x1, 408), n, "animals/duck_water", a, 28)
+    _box_anim(rgba, (1400, 340, 1530, 408), 4, "animals/bee_swarm", "idle", 20)
+    for y0, nm in [(428, "cat2_orange"), (495, "cat2_black"), (562, "cat2_calico")]:
+        for (x0, x1, a, n) in [(210, 430, "idle", 4), (445, 800, "walk", 6), (815, 985, "sleep", 2), (1000, 1170, "sit", 2)]:
+            _box_anim(rgba, (x0, y0, x1, y0 + 56), n, "animals/" + nm, a, 28)
+    for y0, nm in [(638, "dog_golden"), (712, "dog_collie"), (787, "dog_husky")]:
+        for (x0, x1, a, n) in [(190, 340, "idle", 4), (355, 590, "walk", 6), (605, 840, "run", 6), (860, 955, "sit", 2), (970, 1080, "sleep", 2), (1090, 1330, "dig", 6), (1345, 1530, "bark", 4)]:
+            _box_anim(rgba, (x0, y0, x1, y0 + 60), n, "animals/" + nm, a, 32)
+    babies = [("chick", 10, 130, 140, 255), ("calf", 265, 385, 395, 510), ("lamb", 520, 640, 650, 765), ("piglet", 775, 895, 905, 1020), ("kid_goat", 1030, 1150, 1160, 1275), ("foal", 1285, 1405, 1415, 1530)]
+    for nm, i0, i1, w0, w1 in babies:
+        _box_anim(rgba, (i0, 905, i1, 978), 4, "animals/" + nm, "idle", 22)
+        _box_anim(rgba, (w0, 905, w1, 978), 4, "animals/" + nm, "walk", 22)
+
+
+
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

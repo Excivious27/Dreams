@@ -174,4 +174,6 @@ static func draw_autotile(ci: CanvasItem, inside: Dictionary, fill: String, tset
 ## Index maps for the W1 transition sheets (grass outside, ground inside).
 const T_GROUND_IDX := {"mid": 1, "top": 0, "bottom": 2, "left": 4, "right": 7, "tl": 8, "tr": 9, "bl": 10, "br": 11, "itl": 12, "itr": 13, "ibl": 14, "ibr": 15}
 ## Water-edge sheets (grass outside, water inside): 18 pieces, 6 columns.
+## W28/W29 cliff plateau sets (17 tiles in one row): tl top tr left mid right ibl ib ibr il ir itl it itr bl bottom br
+const T_CLIFF_IDX := {"mid": 4, "top": 1, "bottom": 15, "left": 3, "right": 5, "tl": 0, "tr": 2, "bl": 14, "br": 16, "itl": 11, "itr": 13, "ibl": 6, "ibr": 8}
 const T_WATER_IDX := {"top": 1, "bottom": 14, "left": 10, "right": 3, "tl": 5, "tr": 9, "bl": 13, "br": 16, "itl": 6, "itr": 2, "ibl": 0, "ibr": 4}

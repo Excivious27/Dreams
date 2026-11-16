@@ -43,6 +43,11 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "mountains")
+	if Art.has("props", "watchtower"):
+		prop("props", "watchtower", Vector2i(cols - 8, rows - 8), 2)
+		set_thing(cols - 7, rows - 7, {"type": "note", "text": "A watchtower with no watchers. From up top you could see the whole valley. The ladder's gone.", "hint": "A: the tower"}, false)
+	if Art.has("props", "scarecrow_field"):
+		prop("props", "scarecrow_field", Vector2i(8, rows - 6))
 	_place_props()
 	var avoid := {}
 	for y in range(3, 9):
@@ -174,6 +179,9 @@ func _boss_down() -> void:
 
 func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 	match str(thing.get("type", "")):
+		"note":
+			await say([{"text": str(thing.get("text", "..."))}])
+			return true
 		"mine":
 			go_to("mine", Vector2.ZERO)
 			return true

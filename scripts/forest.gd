@@ -42,6 +42,11 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "hills")
+	if Art.has("props", "stone_circle"):
+		prop("props", "stone_circle", Vector2i(cols - 12, rows - 10), 5)
+		set_thing(cols - 10, rows - 9, {"type": "note", "text": "Standing stones, older than the town, each carved with a spiral. Stand in the middle and the wind stops. (Tom: lore door.)", "hint": "A: the stones"}, false)
+	if Art.has("props", "hollow_log"):
+		prop("props", "hollow_log", Vector2i(6, rows - 6), 3)
 	var avoid := {}
 	# Winding path: keep it clear.
 	for c in _path_cells():
@@ -119,6 +124,9 @@ func _path_cells() -> Array[Vector2i]:
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
+		"note":
+			await say([{"text": str(thing.get("text", "..."))}])
+			return true
 		"shrine":
 			_shrine()
 			return true

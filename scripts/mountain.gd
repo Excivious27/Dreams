@@ -79,15 +79,18 @@ func after_ready() -> void:
 		a.play("idle")
 	prop("props", "lookout_tower", Vector2i(48, 42), 1)
 	block_rect(48, 39, 2, 4)
-	for l in LEDGES:
-		prop("props", "cliff_stairs_up", Vector2i(int(l[1]) + 1, int(l[0])), 0, 0.0, false)
+	if not Art.has("tiles", "t_cliffg"):
+		for l in LEDGES:
+			prop("props", "cliff_stairs_up", Vector2i(int(l[1]) + 1, int(l[0])), 0, 0.0, false)
+	if Art.has("props", "rope_bridge2"):
+		prop("props", "rope_bridge2", Vector2i(44, 12), 3, 0.0, false)
 	prop("props", "rockslide", Vector2i(6, 20), 2)
 	block_rect(6, 19, 3, 2)
 	prop("props", "goat", Vector2i(40, 8))
 	for c: Vector2i in [Vector2i(12, 34), Vector2i(36, 22), Vector2i(50, 32), Vector2i(8, 6)]:
 		prop("props", "boulder_l", c)
-	if Art.has("props", "cave_mouth"):
-		prop("props", "cave_mouth", Vector2i(4, 2), 2)
+	if Art.has("props", "cave_mouth2") or Art.has("props", "cave_mouth"):
+		prop("props", "cave_mouth2" if Art.has("props", "cave_mouth2") else "cave_mouth", Vector2i(4, 2), 2)
 		block_rect(4, 1, 3, 2)
 		set_thing(5, 3, {"type": "cave", "hint": "A: a dark cave"}, false)
 	if GameState.is_penguins():
@@ -206,17 +209,34 @@ func draw_map() -> void:
 	draw_grass(9)
 	WorldGen.draw_ground_detail(self, 95, 0.05)
 	# Top terrace is bare stone; the others grassy with a dirt switchback.
-	draw_ground("stone", cells_of([Rect2i(0, 0, cols, 9)]))
+	draw_ground("stone", cells_of([Rect2i(20, 1, 18, 8)]))
 	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 29, 3, 12), Rect2i(10, 29, 16, 2), Rect2i(25, 15, 3, 15), Rect2i(25, 15, 6, 2), Rect2i(28, 8, 3, 8)]))
-	for c: Vector2i in _ledge:
-		var left := not _ledge.has(c + Vector2i(-1, 0))
-		var right := not _ledge.has(c + Vector2i(1, 0))
-		var nm := "cliff2_0" if left else ("cliff2_12" if right and Art.has("tiles", "cliff2_12") else "cliff2_1")
-		var t := Art.tex("tiles", nm)
-		if t:
-			draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
-		else:
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6a6a74"))
+	if Art.has("tiles", "t_cliffg"):
+		var stairs := {}
+		for l in LEDGES:
+			for x in range(int(l[1]), int(l[2]) + 1):
+				stairs[Vector2i(x, int(l[0]))] = true
+		for l in LEDGES:
+			var top := {}
+			var y: int = int(l[0])
+			var y_from: int = 0
+			for l2 in LEDGES:
+				if int(l2[0]) < y:
+					y_from = maxi(y_from, int(l2[0]) + 1)
+			for yy in range(y_from, y):
+				for x in range(0, cols):
+					top[Vector2i(x, yy)] = true
+			draw_plateau(top, "cliffg", stairs)
+	else:
+		for c: Vector2i in _ledge:
+			var t := Art.tex("tiles", "cliff2_1")
+			if t:
+				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
+	if Art.has("tiles", "waterfall2"):
+		var fr := int(Time.get_ticks_msec() / 120) % 4
+		var wt := Art.tex("tiles", "waterfall2")
+		for yy in range(2, 10, 2):
+			draw_texture_rect_region(wt, Rect2(52 * TILE, yy * TILE, TILE, TILE * 2), Rect2(fr * 32, 0, 32, 64))
 	draw_exits()
 	if not Art.has("props", "hot_spring"):
 		var r := Rect2(SPRING.position * TILE, SPRING.size * TILE)
@@ -227,4 +247,6 @@ func draw_map() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+	if Art.has("tiles", "waterfall2"):
+		queue_redraw()
 	queue_redraw()

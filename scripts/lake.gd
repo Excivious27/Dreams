@@ -49,6 +49,19 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "mountains")
+	if Art.has("props", "hermit_hut"):
+		prop("props", "hermit_hut", Vector2i(cols - 8, 6), 4)
+		set_thing(cols - 6, 7, {"type": "note", "text": "A hut with smoke in the chimney and nobody home. A note on the door: GONE FISHING. BACK WHEN I'M BACK.", "hint": "A: the hut"}, false)
+	if Art.has("props", "waterfall_pool"):
+		var wp := AnimatedSprite2D.new()
+		wp.sprite_frames = Art.frames("props", {"idle": "waterfall_pool"}, {"idle": 6.0})
+		wp.animation = "idle"
+		wp.scale = Vector2(0.5, 0.5)
+		wp.position = cell_center(Vector2i(6, 6)) + Vector2(24, 0)
+		wp.offset = Vector2(0, -48)
+		add_child(wp)
+		wp.play("idle")
+		block_rect(4, 2, 8, 5)
 	_pond = Scenery.Pond.new()
 	_pond.rect = Rect2(LAKE.position * TILE, LAKE.size * TILE)
 	_pond.z_index = -1
@@ -114,6 +127,9 @@ func _anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
+		"note":
+			await say([{"text": str(thing.get("text", "..."))}])
+			return true
 		"water":
 			if GameState.has_tool("rod"):
 				_fish(c)
@@ -133,7 +149,8 @@ func _fish(c: Vector2i) -> void:
 	var bob: AnimatedSprite2D = null
 	if Art.has("fx", "bobber"):
 		bob = AnimatedSprite2D.new()
-		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber", "bite": "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
+		var b2 := Art.has("fx", "bobber2")
+		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber2" if b2 else "bobber", "bite": "bobber2_bite" if b2 else "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
 		bob.animation = "bobber"
 		bob.scale = Vector2(0.5, 0.5)
 		bob.position = cell_center(c) + Vector2(0, -6)
@@ -151,6 +168,7 @@ func _fish(c: Vector2i) -> void:
 		if not bite and t >= wait:
 			bite = true
 			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
+			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
 			Music.instance(get_tree()).sfx("bite")
 			if bob:
 				bob.play("bite")
@@ -159,7 +177,9 @@ func _fish(c: Vector2i) -> void:
 			break
 	player.frozen = false
 	if bob:
-		fx("splash", bob.position, 12.0, 0.5)
+		fx("reel_splash" if Art.has("fx", "reel_splash") else "splash", bob.position, 12.0, 0.5)
+		if caught and Art.has("fx", "fish_jump_a"):
+			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
 		bob.queue_free()
 	if caught:
 		var lvl := GameState.skill_level("fishing")

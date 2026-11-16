@@ -41,7 +41,23 @@ func build() -> void:
 func after_ready() -> void:
 	for p in I.get("props", []):
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
-		prop(str(p.get("group", "furniture")), str(p["name"]), c, int(p.get("w", 0)), 0.0, bool(p.get("solid", true)))
+		var g := str(p.get("group", "furniture"))
+		var nm := str(p["name"])
+		var w := int(p.get("w", 0))
+		if bool(p.get("anim", false)) and Art.has(g, nm) and int(Art.info(g, nm).get("frames", 1)) > 1:
+			var a := AnimatedSprite2D.new()
+			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": 5.0})
+			a.animation = "idle"
+			a.scale = Vector2(0.5, 0.5)
+			a.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
+			a.offset = Vector2(0, -float(Art.info(g, nm).get("cell_h", 48)) / 2.0)
+			add_child(a)
+			a.play("idle")
+			if bool(p.get("solid", true)):
+				for i in w + 1:
+					blocked[Vector2i(c.x + i, c.y)] = true
+			continue
+		prop(g, nm, c, w, 0.0, bool(p.get("solid", true)))
 	for n in I.get("npcs", []):
 		var id := str(n["id"])
 		var data: Dictionary = GameState.npcs.get(id, {"name": id.capitalize()})
@@ -67,7 +83,7 @@ func has_npc_at(c: Vector2i) -> bool:
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	for n: Npc in npcs:
-		if n.cell() == c or n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0:
+		if n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0):
 			_talk(n)
 			return true
 	match str(thing.get("type", "")):
@@ -101,6 +117,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _talk(n: Npc) -> void:
+	emote(n, "talk", 1.0, -30.0)
 	# Same lines as on the street: the town script owns the dialogue tables.
 	var data: Dictionary = GameState.npcs.get(n.id, {})
 	var lines: Array = data.get("inside", [])
@@ -122,17 +139,22 @@ func draw_map() -> void:
 		draw_rect(Rect2(TILE, 2 * TILE, (cols - 2) * TILE, (rows - 3) * TILE), Color("a07a4c"))
 	for r in I.get("rugs", []):
 		draw_tileset_rect(str(r["tile"]), Rect2i(int(r["rect"][0]), int(r["rect"][1]), int(r["rect"][2]), int(r["rect"][3])), Color("b03a2e"))
+	var windows: Array = I.get("windows", [4, cols - 5])
 	for x in range(1, cols - 1):
-		var idx := 0 if x == 1 else (2 if x == cols - 2 else 1)
-		var nm: String = wl + ["_l", "_m", "_r"][idx]
-		var t := Art.tex("tiles", nm)
+		var part: String = "_l" if x == 1 else ("_r" if x == cols - 2 else ["_m", "_m2", "_m3"][x % 3])
+		if x in windows and Art.has("tiles", wl + "_window"):
+			part = "_window"
+		elif part != "_l" and part != "_r" and not Art.has("tiles", wl + part):
+			part = "_m"
+		var t := Art.tex("tiles", wl + part)
 		if t:
 			draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
 		else:
 			draw_rect(Rect2(x * TILE, 0, TILE, TILE * 2), Color("c9b08a"))
 	var night := int(GameState.run["time"]) >= 19 * 60
-	for wx in I.get("windows", [4, cols - 5]):
-		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(int(wx) * TILE + 8, 2 * TILE))
+	if not Art.has("tiles", wl + "_window"):
+		for wx in windows:
+			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(int(wx) * TILE + 8, 2 * TILE))
 	for p in I.get("wall_props", []):
 		Art.draw_prop(self, "furniture", str(p["name"]), Vector2(int(p["x"]) * TILE + 8, 2 * TILE - 2))
 	var d: Array = I.get("door", [cols / 2, rows - 2])

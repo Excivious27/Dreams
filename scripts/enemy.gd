@@ -27,6 +27,7 @@ var _flash_mat: ShaderMaterial
 var _flash := 0.0
 var reach := 16.0
 var _squash := 0.0
+var _noticed := false
 
 
 func setup(k: String) -> void:
@@ -123,6 +124,9 @@ func _process(delta: float) -> void:
 	var stunned := _stun > 0.0
 	if not stunned and _windup <= 0.0:
 		if dist < 80.0 and dist > reach * 0.6:
+			if not _noticed:
+				_noticed = true
+				map.emote(self, "surprise", 0.8, -26.0)
 			_dir = to.normalized()
 		elif dist <= reach * 0.6:
 			_dir = Vector2.ZERO

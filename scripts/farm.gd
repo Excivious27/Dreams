@@ -21,18 +21,22 @@ const FOREST_EXIT := Rect2i(34, 0, 4, 2)
 const LAKE_EXIT := Rect2i(0, 28, 2, 4)
 ## Buildable things: name -> {cell, w, h, cost, group, sprite, thing}
 const BUILDS := {
-	"workbench": {"cell": Vector2i(6, 13), "w": 1, "h": 1, "cost": {"wood": 20}, "group": "props", "sprite": "workbench2", "thing": "workbench", "label": "Workbench (20 wood)"},
+	"workbench": {"cell": Vector2i(6, 13), "w": 1, "h": 1, "cost": {"wood": 20}, "group": "props", "sprite": "workbench3", "thing": "workbench", "label": "Workbench (20 wood)"},
 	"chest": {"cell": Vector2i(9, 13), "w": 0, "h": 1, "cost": {"wood": 10}, "group": "props", "sprite": "chest_closed", "thing": "chest", "label": "Storage chest (10 wood)"},
-	"furnace": {"cell": Vector2i(8, 13), "w": 0, "h": 1, "cost": {"stone": 20, "copper": 5}, "group": "props", "sprite": "furnace_off", "thing": "furnace", "label": "Furnace (20 stone, 5 copper ore)"},
-	"well": {"cell": Vector2i(19, 13), "w": 0, "h": 1, "cost": {"stone": 30}, "group": "props", "sprite": "well2", "thing": "well", "label": "Well (30 stone)"},
-	"keg": {"cell": Vector2i(6, 15), "w": 0, "h": 1, "cost": {"wood": 30, "copper_bar": 1}, "group": "props", "sprite": "keg", "thing": "keg", "label": "Keg (30 wood, 1 copper bar)"},
-	"beehive": {"cell": Vector2i(21, 15), "w": 0, "h": 1, "cost": {"wood": 15, "fiber": 10}, "group": "props", "sprite": "beehive2", "thing": "beehive", "label": "Beehive (15 wood, 10 fiber)"},
+	"furnace": {"cell": Vector2i(8, 13), "w": 0, "h": 1, "cost": {"stone": 20, "copper": 5}, "group": "props", "sprite": "furnace2_off", "thing": "furnace", "label": "Furnace (20 stone, 5 copper ore)"},
+	"well": {"cell": Vector2i(19, 13), "w": 0, "h": 1, "cost": {"stone": 30}, "group": "props", "sprite": "well_roofed", "thing": "well", "label": "Well (30 stone)"},
+	"keg": {"cell": Vector2i(6, 15), "w": 0, "h": 1, "cost": {"wood": 30, "copper_bar": 1}, "group": "props", "sprite": "keg2", "thing": "keg", "label": "Keg (30 wood, 1 copper bar)"},
+	"beehive": {"cell": Vector2i(21, 15), "w": 0, "h": 1, "cost": {"wood": 15, "fiber": 10}, "group": "props", "sprite": "beehive3_a", "thing": "beehive", "label": "Beehive (15 wood, 10 fiber)"},
 	"resonator": {"cell": Vector2i(16, 16), "w": 0, "h": 1, "cost": {"stone": 10, "shard": 1}, "group": "props", "sprite": "resonator", "thing": "resonator", "label": "Crystal resonator (10 stone, 1 shard)"},
-	"scarecrow": {"cell": Vector2i(22, 12), "w": 0, "h": 1, "cost": {"wood": 8, "fiber": 4}, "group": "props", "sprite": "scarecrow2", "thing": "", "label": "Scarecrow (8 wood, 4 fiber)"},
-	"coop": {"cell": Vector2i(26, 8), "w": 3, "h": 3, "cost": {"wood": 120, "stone": 40}, "group": "props", "sprite": "coop", "thing": "", "label": "Coop (120 wood, 40 stone) - chickens"},
-	"barn": {"cell": Vector2i(32, 5), "w": 4, "h": 3, "cost": {"wood": 200, "stone": 80}, "group": "props", "sprite": "barn", "thing": "", "label": "Barn (200 wood, 80 stone) - cows & sheep"},
-	"silo": {"cell": Vector2i(30, 4), "w": 1, "h": 3, "cost": {"stone": 60, "wood": 30}, "group": "buildings", "sprite": "silo", "thing": "", "label": "Silo (60 stone, 30 wood)"},
-	"greenhouse": {"cell": Vector2i(20, 4), "w": 3, "h": 3, "cost": {"wood": 150, "stone": 100, "iron_bar": 2}, "group": "props", "sprite": "greenhouse", "thing": "", "label": "Greenhouse (150 wood, 100 stone, 2 iron bars)"},
+	"scarecrow": {"cell": Vector2i(22, 12), "w": 0, "h": 1, "cost": {"wood": 8, "fiber": 4}, "group": "props", "sprite": "scarecrow_classic", "thing": "", "label": "Scarecrow (8 wood, 4 fiber)"},
+	"coop": {"cell": Vector2i(26, 8), "w": 3, "h": 3, "cost": {"wood": 120, "stone": 40}, "group": "props", "sprite": "coop_small", "thing": "", "label": "Coop (120 wood, 40 stone) - chickens"},
+	"barn": {"cell": Vector2i(32, 5), "w": 4, "h": 3, "cost": {"wood": 200, "stone": 80}, "group": "props", "sprite": "barn_small", "thing": "", "label": "Barn (200 wood, 80 stone) - cows & sheep"},
+	"silo": {"cell": Vector2i(30, 4), "w": 1, "h": 3, "cost": {"stone": 60, "wood": 30}, "group": "props", "sprite": "silo2", "thing": "", "label": "Silo (60 stone, 30 wood)"},
+	"fish_pond": {"cell": Vector2i(26, 16), "w": 2, "h": 2, "cost": {"stone": 80, "wood": 20}, "group": "props", "sprite": "fish_pond", "anim": "fish_pond", "thing": "water", "label": "Fish pond (80 stone, 20 wood) - fish at home"},
+	"shed": {"cell": Vector2i(6, 20), "w": 2, "h": 2, "cost": {"wood": 80, "stone": 20}, "group": "props", "sprite": "shed", "thing": "chest", "label": "Shed (80 wood, 20 stone) - big storage"},
+	"stable": {"cell": Vector2i(32, 11), "w": 3, "h": 3, "cost": {"wood": 150, "iron_bar": 2}, "group": "props", "sprite": "stable2", "thing": "", "label": "Stable (150 wood, 2 iron bars) - a horse, soon"},
+	"mill": {"cell": Vector2i(26, 2), "w": 2, "h": 4, "cost": {"wood": 120, "stone": 60}, "group": "props", "sprite": "windmill3", "anim": "windmill3", "thing": "", "label": "Mill (120 wood, 60 stone)"},
+	"greenhouse": {"cell": Vector2i(20, 4), "w": 3, "h": 3, "cost": {"wood": 150, "stone": 100, "iron_bar": 2}, "group": "props", "sprite": "greenhouse2", "anim": "greenhouse2", "thing": "", "label": "Greenhouse (150 wood, 100 stone, 2 iron bars)"},
 }
 
 var _pond_cells := {}
@@ -338,6 +342,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			GameState.add_item(sel, -1)
 			player.play_tool("hoe")
 			Music.instance(get_tree()).sfx("plant")
+			fx("sprout_pop", cell_center(c), 8.0, 0.5)
 			xp("farming", 2)
 			queue_redraw()
 			return true
@@ -489,8 +494,8 @@ func _furnace() -> void:
 			give(ore + "_bar")
 			xp("building", 3)
 			var fc: Vector2i = BUILDS["furnace"]["cell"]
-			if props.has(fc) and Art.tex("props", "furnace_on"):
-				(props[fc] as Sprite2D).texture = Art.tex("props", "furnace_on")
+			if props.has(fc) and Art.tex("props", "furnace2_on"):
+				(props[fc] as Sprite2D).texture = Art.tex("props", "furnace2_on")
 			return
 	hud.toast("Needs 5 copper or iron ore and 1 wood.")
 
@@ -570,7 +575,8 @@ func _fish() -> void:
 	var bob: AnimatedSprite2D = null
 	if Art.has("fx", "bobber"):
 		bob = AnimatedSprite2D.new()
-		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber", "bite": "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
+		var b2 := Art.has("fx", "bobber2")
+		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber2" if b2 else "bobber", "bite": "bobber2_bite" if b2 else "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
 		bob.animation = "bobber"
 		bob.scale = Vector2(0.5, 0.5)
 		bob.position = cell_center(player.facing_cell()) + Vector2(0, -6)
@@ -587,6 +593,7 @@ func _fish() -> void:
 		if not _fish_bite and t >= wait:
 			_fish_bite = true
 			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
+			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
 			Music.instance(get_tree()).sfx("bite")
 			if bob:
 				bob.play("bite")
@@ -597,7 +604,9 @@ func _fish() -> void:
 	player.frozen = false
 	_fishing = false
 	if bob:
-		fx("splash", bob.position, 12.0, 0.5)
+		fx("reel_splash" if Art.has("fx", "reel_splash") else "splash", bob.position, 12.0, 0.5)
+		if caught and Art.has("fx", "fish_jump_a"):
+			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
 		bob.queue_free()
 	if caught:
 		var roll := randf()
@@ -733,26 +742,21 @@ func draw_map() -> void:
 	# Terrace: a lighter, drier grass up top and a cliff lip along the ledge.
 	draw_ground("stone", cells_of([Rect2i(LEDGE_X0 + 1, 1, 6, 3)]))
 	draw_water(_pond_cells, "grass")
-	for c: Vector2i in _ledge_cells:
-		var horizontal := c.y == LEDGE_Y
-		var nm := "cliff2_1"
-		if horizontal:
-			if c.x == LEDGE_X0:
-				nm = "cliff2_0"
-			elif c.x == STAIRS_X - 1 or c.x == cols - 1:
-				nm = "cliff2_12" if Art.has("tiles", "cliff2_12") else "cliff2_1"
-			var t := Art.tex("tiles", nm)
+	if Art.has("tiles", "t_cliffg"):
+		var top := {}
+		for y in range(0, LEDGE_Y):
+			for x in range(LEDGE_X0 + 1, cols):
+				top[Vector2i(x, y)] = true
+		for y in range(0, 3):
+			top[Vector2i(LEDGE_X0, y)] = true
+		draw_plateau(top, "cliffg", {Vector2i(STAIRS_X, LEDGE_Y): true, Vector2i(STAIRS_X + 1, LEDGE_Y): true})
+	else:
+		for c: Vector2i in _ledge_cells:
+			var t := Art.tex("tiles", "cliff2_1")
 			if t:
 				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
-			else:
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6b4a2b"))
-		else:
-			var t := Art.tex("tiles", "cliff2_8" if Art.has("tiles", "cliff2_8") else "cliff2_1")
-			if t:
-				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
-			else:
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6b4a2b"))
-	Art.draw_prop(self, "props", "cliff_stairs_down", Vector2((STAIRS_X + 1) * TILE, (LEDGE_Y + 1) * TILE))
+	if not Art.has("tiles", "t_cliffg"):
+		Art.draw_prop(self, "props", "cliff_stairs_down", Vector2((STAIRS_X + 1) * TILE, (LEDGE_Y + 1) * TILE))
 	draw_exits()
 	var farm: Dictionary = GameState.run["farm"]
 	for key in farm:
@@ -801,7 +805,16 @@ func _place_props() -> void:
 		if b.is_empty():
 			continue
 		var c: Vector2i = b["cell"]
-		if id == "resonator" and Art.has("props", "resonator"):
+		if b.has("anim") and Art.has("props", str(b["anim"])):
+			var sc := AnimatedSprite2D.new()
+			sc.sprite_frames = Art.frames("props", {"idle": str(b["anim"])}, {"idle": 5.0})
+			sc.animation = "idle"
+			sc.scale = Vector2(0.5, 0.5)
+			sc.position = cell_center(c)
+			sc.offset = Vector2(0, -float(Art.info("props", str(b["anim"])).get("cell_h", 96)) / 2.0)
+			add_child(sc)
+			sc.play("idle")
+		elif id == "resonator" and Art.has("props", "resonator"):
 			var a := AnimatedSprite2D.new()
 			a.sprite_frames = Art.frames("props", {"idle": "resonator"}, {"idle": 4.0})
 			a.animation = "idle"
@@ -814,10 +827,10 @@ func _place_props() -> void:
 			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]))
 	if builds.has("coop"):
 		var pen := Rect2i(26, 9, 6, 3)
-		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chicken", Vector2i(28, 11), pen, true)
+		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick", Vector2i(28, 11), pen, true)
 	if builds.has("barn"):
 		var pen := Rect2i(32, 6, 8, 4)
-		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 9), pen); _animal("cow2", Vector2i(38, 9), pen, true)
+		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 9), pen); _animal("calf", Vector2i(38, 9), pen, true); _animal("lamb", Vector2i(36, 7), pen, true)
 	# Debris sprites for the things placed in build().
 	var season := GameState.season()
 	for c: Vector2i in things.keys():
@@ -847,10 +860,12 @@ func _place_props() -> void:
 	prop("nature", "rock_m", Vector2i(60, 7))
 	prop("nature", "tree_bare", Vector2i(66, 4))
 	prop("props", "signpost_1" if Art.has("props", "signpost_1") else "signpost", Vector2i(32, 56))
+	if Art.has("props", "abandoned_cart"):
+		prop("props", "abandoned_cart", Vector2i(60, 50), 2)
 
 
 func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false) -> void:
-	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse2"}.get(kind, kind)
+	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse3"}.get(kind, kind)
 	if Art.has("animals/" + full, "idle"):
 		var fa := FarmAnimal.new()
 		fa.setup(self, str(full), c, pen, is_baby)

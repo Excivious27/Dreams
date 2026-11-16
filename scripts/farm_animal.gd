@@ -21,9 +21,9 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	baby = is_baby
 	pen = p if p.size != Vector2i.ZERO else Rect2i(c.x - 1, c.y - 1, 3, 3)
 	var g := "animals/" + k
-	var anims := {"idle": "baby" if is_baby and Art.has(g, "baby") else "idle"}
+	var anims := {"idle": "baby" if is_baby and Art.has(g, "baby") and not Art.has(g, "idle") else "idle"}
 	var fps := {"idle": 3.0}
-	for a in ([] if is_baby else ["walk", "eat"]):
+	for a in (["walk"] if is_baby else ["walk", "eat"]):
 		if Art.has(g, a):
 			anims[a] = a
 			fps[a] = 6.0 if a == "walk" else 3.0

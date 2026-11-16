@@ -159,3 +159,11 @@
 - **Art fixes**: dark-magenta backdrop shade is now keyed everywhere (purple blobs under trees gone); wildlife/animal rows sliced by connected components (ghost frames gone); weather overlays soft-keyed.
 - **Mountain** redone: three terraces, two long ledges with stairs, sparse rocks.
 - Known gaps: cliff art is a placeholder strip until ART-PROMPTS-04 batch 1; NPC schedules; beach/lake/forest layouts still the older hand layouts (opened with extend + borders, not redesigned).
+
+## ART-PROMPTS-04 batches 1-6 integrated
+- W28/29 cliff sets: `GameMap.draw_plateau()` (raised blocks with real faces + stairs) used by the farm terrace, mountain ledges and cliff borders. W30 water: new animated fill, bridges/docks/lilies/reeds sliced (47-piece shore sets saved raw, not mapped). W31: path/ground decals in `draw_ground` and `WorldGen.draw_ground_detail`.
+- W32-35 cinematics: painted tree fall (`_fell_tree_fx`), trunk break, rock/ore shatter, dust/chips, item pop icons, bobber cast/idle/bite, fish jump, reel splash, alert, sprout pop, scarecrow flap, crow land/takeoff, sprinkler spray. Swim/player-action rows kept as `fx/ref_*` (generic hero, not our characters).
+- W36 emotes (`GameMap.emote`), W39 portraits for all townsfolk (+ new NPCs Bram/Posy/Juniper), W40-43 interiors (new fittings in `data/interiors.json`, wall kits with mid variants + window pieces).
+- W44-46 UI: touch joystick/buttons art, icons, skill icons; W47 overlays (`ov2_*`), aurora2, cloud shadows on clear days.
+- W48 big/mid trees in borders (seasonal), W49 landmarks placed per map, W50 farm buildings for the plans board (+ fish pond, shed, stable, mill), W51 pet dog strips, babies, horses (mount system not built yet).
+- Slicer: `load_hue`, `row_sprites` (component rows with equal-cell fallback), `_boxed` helpers; beige panels keyed for W51.

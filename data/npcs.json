@@ -1,11 +1,174 @@
 {
-  "maple":  {"name": "Maple", "role": "General store", "color": "c9622f", "spot": [8, 10], "sprite": "barnaby", "portrait": "barnaby"},
-  "gideon": {"name": "Gideon", "role": "Blacksmith", "color": "4a4a5a", "spot": [15, 10], "sprite": "greta", "portrait": "greta"},
-  "wren":   {"name": "Wren", "role": "Potion shop", "color": "7a4fb0", "spot": [3, 17], "sprite": "wren", "portrait": "wren"},
-  "alder":  {"name": "Mayor Alder", "role": "Mayor", "color": "2f6b4a", "spot": [11, 17], "sprite": "alder", "portrait": "alder"},
-  "sal":    {"name": "Sal", "role": "Drifter", "color": "6b5a3a", "spot": [16, 23], "sprite": "nico", "portrait": "nico"},
-  "finn":   {"name": "Finn", "role": "Fisherman", "color": "d9a520", "spot": [4, 22], "sprite": "finn", "portrait": "finn"},
-  "lumi":   {"name": "Lumi", "role": "Artist", "color": "2aa7a0", "spot": [16, 19], "sprite": "lumi", "portrait": "lumi"},
-  "theo":   {"name": "Theo", "role": "Scholar", "color": "7a3a3a", "spot": [12, 23], "sprite": "theo", "portrait": "theo"},
-  "hazel":  {"name": "Hazel", "role": "Farmer", "color": "c99a3a", "spot": [3, 7], "sprite": "hazel", "portrait": "hazel"}
+ "maple": {
+  "name": "Maple",
+  "role": "General store",
+  "color": "c9622f",
+  "spot": [
+   8,
+   10
+  ],
+  "sprite": "barnaby",
+  "portrait": "shopkeeper",
+  "inside": [
+   "Welcome in! Seeds are on the left, snacks on the right, gossip's free.",
+   "Gideon says my prices are robbery. Gideon charges forty crystals for a nail.",
+   "Don't lean on the glass case, dear."
+  ]
+ },
+ "gideon": {
+  "name": "Gideon",
+  "role": "Blacksmith",
+  "color": "4a4a5a",
+  "spot": [
+   15,
+   10
+  ],
+  "sprite": "greta",
+  "portrait": "blacksmith",
+  "inside": [
+   "Iron. Steel. Don't touch the forge.",
+   "Bring me ore and I'll make you something that doesn't bend.",
+   "Wooden sword. Hm. You'll want better before the mountain."
+  ]
+ },
+ "wren": {
+  "name": "Wren",
+  "role": "Potion shop",
+  "color": "7a4fb0",
+  "spot": [
+   3,
+   17
+  ],
+  "sprite": "wren",
+  "portrait": "potion",
+  "inside": [
+   "Careful, that one bites. The purple one. No, the OTHER purple one.",
+   "Red for hurts, tea for tired. Say it back to me.",
+   "The crystal talks to you? Interesting. Does it talk to anyone else?"
+  ]
+ },
+ "alder": {
+  "name": "Mayor Alder",
+  "role": "Mayor",
+  "color": "2f6b4a",
+  "spot": [
+   11,
+   17
+  ],
+  "sprite": "alder",
+  "portrait": "mayor",
+  "inside": [
+   "Have a seat, have a seat. Mind the papers. Those are important. Probably.",
+   "The town's doing well. The town is always doing well. That's my job.",
+   "If you need the board, the board meets when I say it meets."
+  ]
+ },
+ "sal": {
+  "name": "Sal",
+  "role": "Drifter",
+  "color": "6b5a3a",
+  "spot": [
+   16,
+   23
+  ],
+  "sprite": "nico",
+  "portrait": "drifter"
+ },
+ "finn": {
+  "name": "Finn",
+  "role": "Fisherman",
+  "color": "d9a520",
+  "spot": [
+   4,
+   22
+  ],
+  "sprite": "finn",
+  "portrait": "fisherman"
+ },
+ "lumi": {
+  "name": "Lumi",
+  "role": "Artist",
+  "color": "2aa7a0",
+  "spot": [
+   16,
+   19
+  ],
+  "sprite": "lumi",
+  "portrait": "artist"
+ },
+ "theo": {
+  "name": "Theo",
+  "role": "Scholar",
+  "color": "7a3a3a",
+  "spot": [
+   12,
+   23
+  ],
+  "sprite": "theo",
+  "portrait": "scholar",
+  "inside": [
+   "Shh. Well, not shh. But quietly.",
+   "There's a book here about the valley that nobody's finished. Chapter one is enough to keep you up.",
+   "Lumi draws in the margins. I pretend not to notice."
+  ]
+ },
+ "hazel": {
+  "name": "Hazel",
+  "role": "Farmer",
+  "color": "c99a3a",
+  "spot": [
+   3,
+   7
+  ],
+  "sprite": "hazel",
+  "portrait": "young_farmer"
+ },
+ "bram": {
+  "name": "Bram",
+  "role": "Innkeeper",
+  "color": "8a5a2a",
+  "spot": [
+   4,
+   28
+  ],
+  "sprite": "man",
+  "portrait": "innkeeper",
+  "inside": [
+   "Stew's on. Sit anywhere that isn't the mayor's chair.",
+   "Heard a story about a farmer and a crystal. Didn't believe it. Then you walked in.",
+   "Rooms upstairs if the walk home's too long. First night's free, second night's a pie."
+  ]
+ },
+ "posy": {
+  "name": "Posy",
+  "role": "Baker",
+  "color": "d9b26a",
+  "spot": [
+   22,
+   28
+  ],
+  "sprite": "woman",
+  "portrait": "baker",
+  "inside": [
+   "Fresh out of the oven! Mind your fingers.",
+   "Bring me wheat and I'll bring you bread. Bring me strawberries and I'll bring you cake.",
+   "Maple says you're clearing that old field. Good. Somebody should."
+  ]
+ },
+ "juniper": {
+  "name": "Juniper",
+  "role": "Nurse",
+  "color": "e08aa0",
+  "spot": [
+   8,
+   34
+  ],
+  "sprite": "girl",
+  "portrait": "nurse",
+  "inside": [
+   "Sit. Let me look at that.",
+   "You've been swinging a sword in the meadow, haven't you. I can always tell.",
+   "Eat something green once in a while. I mean it."
+  ]
+ }
 }

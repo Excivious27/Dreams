@@ -193,13 +193,21 @@ func _on_draw() -> void:
 	var lit := Color(1, 1, 1, 0.5)
 	# Joystick: faint resting ring bottom-left until you touch; then it floats under your thumb.
 	var origin := _stick_origin if _stick_active else Vector2(58, 412)
-	_canvas.draw_circle(origin, STICK_R, base if not _stick_active else Color(1, 1, 1, 0.22))
-	_canvas.draw_arc(origin, STICK_R, 0, TAU, 48, edge, 1.5, true)
+	var jb := Art.tex("ui", "joy_base_a")
+	var jk := Art.tex("ui", "joy_knob_light")
+	if jb:
+		_canvas.draw_texture_rect(jb, Rect2(origin - Vector2(STICK_R + 4, STICK_R + 4), Vector2(STICK_R + 4, STICK_R + 4) * 2), false, Color(1, 1, 1, 0.75 if _stick_active else 0.45))
+	else:
+		_canvas.draw_circle(origin, STICK_R, base if not _stick_active else Color(1, 1, 1, 0.22))
+		_canvas.draw_arc(origin, STICK_R, 0, TAU, 48, edge, 1.5, true)
 	if _stick_active:
 		var knob := origin + (_stick_pos - origin).limit_length(STICK_R)
-		_canvas.draw_circle(knob, 13.0, Color(1, 1, 1, 0.6 if _running else 0.45))
-		_canvas.draw_arc(knob, 13.0, 0, TAU, 32, Color(1, 1, 1, 0.8), 1.5, true)
-	else:
+		if jk:
+			_canvas.draw_texture_rect(jk, Rect2(knob - Vector2(14, 14), Vector2(28, 28)), false, Color(1, 1, 1, 0.95 if _running else 0.8))
+		else:
+			_canvas.draw_circle(knob, 13.0, Color(1, 1, 1, 0.6 if _running else 0.45))
+			_canvas.draw_arc(knob, 13.0, 0, TAU, 32, Color(1, 1, 1, 0.8), 1.5, true)
+	elif jb == null:
 		for action: String in DIRS:
 			var d: Vector2 = DIRS[action]
 			var c := origin + d * STICK_R * 0.62
@@ -209,11 +217,16 @@ func _on_draw() -> void:
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
+	var skins := {"a": ["btn_gold", "btn_gold_down"], "action": ["btn_green", "btn_green_down"], "menu": ["sbtn_blue", "sbtn_blue_down"]}
 	for action: String in BUTTONS:
 		var b: Dictionary = BUTTONS[action]
 		var p: Vector2 = b["pos"]
 		var r := float(b["r"])
 		var on := _held.has(action)
+		var sk: Array = skins.get(action, [])
+		if not sk.is_empty() and Art.has("ui", str(sk[0])):
+			btn = Art.tex("ui", str(sk[0]))
+			btn_down = Art.tex("ui", str(sk[1]))
 		if btn and btn_down:
 			_canvas.draw_texture_rect(btn_down if on else btn, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), false, Color(1, 1, 1, 0.85))
 		else:
@@ -226,7 +239,12 @@ func _on_draw() -> void:
 			var held := GameState.held_tool() if not GameState.run.is_empty() else ""
 			var icon := Art.tex("items", held if held != "" else "sword")
 			if icon:
-				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(10, 14), Vector2(20, 20)), false)
-				_canvas.draw_string(font, p + Vector2(-r, 15), label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 7, Color(1, 1, 1, 0.9))
+				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(12, 12), Vector2(24, 24)), false)
 				continue
+		if action == "menu" and Art.has("ui", "ic_menu"):
+			_canvas.draw_texture_rect(Art.tex("ui", "ic_menu"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
+			continue
+		if action == "action" and Art.has("items", "hand"):
+			_canvas.draw_texture_rect(Art.tex("items", "hand"), Rect2(p - Vector2(11, 11), Vector2(22, 22)), false)
+			continue
 		_canvas.draw_string(font, p + Vector2(-r, size * 0.36), label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, size, Color(1, 1, 1, 0.9))

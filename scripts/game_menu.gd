@@ -193,7 +193,7 @@ func _refresh() -> void:
 				var need := GameState.xp_for_next(lvl)
 				var h := HBoxContainer.new()
 				_body.add_child(h)
-				var ic := Art.tex("ui", "skill_" + str(s))
+				var ic := Art.tex("ui", "skill2_" + str(s)) if Art.has("ui", "skill2_" + str(s)) else Art.tex("ui", "skill_" + str(s))
 				if ic:
 					var tr := TextureRect.new()
 					tr.texture = ic

@@ -63,6 +63,8 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "hills")
+	if Art.has("props", "bus_shelter"):
+		prop("props", "bus_shelter", Vector2i(cols - 10, 4), 3)
 	if Art.has("props", "town_gate"):
 		prop("props", "town_gate", Vector2i(FARM_EXIT.position.x - 4, 3), 10, 0.0, false)
 	if Art.has("props", "balloon"):
@@ -123,7 +125,7 @@ func has_npc_at(c: Vector2i) -> bool:
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	for n: Npc in npcs:
-		if n.cell() == c or n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0:
+		if n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0):
 			_talk(n)
 			return true
 	match str(thing.get("type", "")):
@@ -145,6 +147,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 # ---- talking -----------------------------------------------------------------
 
 func _talk(n: Npc) -> void:
+	emote(n, "talk", 1.0, -30.0)
 	var r := GameState.run
 	var id := n.id
 	var name := str(GameState.npcs[id]["name"])

@@ -53,6 +53,9 @@ func build() -> void:
 func after_ready() -> void:
 	set_aurora(GameState.is_penguins())
 	WorldGen.add_backdrop(self, "hills" if GameState.is_penguins() else "gritty")
+	if Art.has("props", "cat_statue") and GameState.is_penguins():
+		prop("props", "cat_statue", Vector2i(cols - 10, 6), 1)
+		set_thing(cols - 9, 7, {"type": "note", "text": "A stone cat, smiling, holding a crystal to its chest. Moss on its ears. Somebody still leaves flowers here.", "hint": "A: the cat statue"}, false)
 	var avoid := {}
 	if GameState.is_penguins():
 		for c in things.keys():
@@ -149,6 +152,9 @@ func after_ready() -> void:
 
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
+		"note":
+			await say([{"text": str(thing.get("text", "..."))}])
+			return true
 		"altar":
 			_altar()
 			return true

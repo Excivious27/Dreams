@@ -31,7 +31,12 @@ const OVERLAYS := {"rain": "ov_rain", "storm": "ov_heavy_rain", "snow": "ov_snow
 
 func _overlay() -> Texture2D:
 	var nm := str(OVERLAYS.get(weather, ""))
-	if nm == "" or not Art.has("fx", nm):
+	if nm == "":
+		return null
+	var nm2 := nm.replace("ov_", "ov2_").replace("ov2_heavy_rain", "ov2_storm")
+	if Art.has("fx", nm2):
+		return Art.tex("fx", nm2)
+	if not Art.has("fx", nm):
 		return null
 	return Art.tex("fx", nm)
 
@@ -120,8 +125,15 @@ func _spawn_flock() -> void:
 
 
 func _on_draw() -> void:
-	if aurora and overhead and Art.has("fx", "aurora"):
-		var at := Art.tex("fx", "aurora")
+	if overhead and weather == "clear" and Art.has("fx", "cloud_shadow") and _canvas.visible:
+		# Soft cloud shadows drifting over the ground on clear days.
+		var cs := Art.tex("fx", "cloud_shadow")
+		var fr := int(_ov_t * 0.5) % 4
+		var ox := fmod(_ov_t * 6.0, 512.0)
+		for i in range(-1, 2):
+			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256, 0, 256, 160), Color(1, 1, 1, 0.18))
+	if aurora and overhead and (Art.has("fx", "aurora2") or Art.has("fx", "aurora")):
+		var at := Art.tex("fx", "aurora2") if Art.has("fx", "aurora2") else Art.tex("fx", "aurora")
 		var fr := int(_ov_t * 3.0) % 4
 		_canvas.draw_texture_rect_region(at, Rect2(Vector2(-10, 60), Vector2(290, 72)), Rect2(fr * 512, 0, 512, 128), Color(1, 1, 1, 0.55))
 	var ov := _overlay()
