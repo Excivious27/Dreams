@@ -1,0 +1,39 @@
+# Dreams — Art Prompts 08: costume bodies, mounts, swimming, creator UI
+
+WHY THIS BATCH: the layer sheets (Prompts 07) came back as detached icons, so gear can't be pinned to the body reliably. The fix is to draw the WHOLE HERO in each costume — body, face, hands and the clothes together, in the same 16 poses as the hero base (w56). The game then swaps the hero's sprite sheet when you equip a chest piece or outfit, and draws hair, hat and the tier-correct tool (w100–107, already sliced) on top. Skin: draw everything on the MEDIUM skin tone; the game tints exposed skin for the other tones. Hair: draw NONE (bald, like w56) so the hair layers fit.
+
+ChatGPT can make up to 6 images per request. Each batch below is one paste. Save every image under the exact file name in quotes and upload to `art/incoming/`.
+
+---
+
+## BATCH 1 — Full-body costumes: armor + outfits, locomotion + actions (4 images)
+
+> Make FOUR SEPARATE IMAGES, 1536×1024 each, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette, flat #FF00FF magenta background, no shading outside sprites, no grid lines, no text inside cells. GRID RULE: 64×96 cells at x = 24 + N×88, y = 24 + M×120 (16 columns, 8 rows), one sprite centred at the bottom of each cell. The hero is the medium-skin, slim-build, BALD, neutral-faced 64 px farmer from the body base sheet, drawn COMPLETE (head, face, hands, body) wearing the row's costume. Same silhouette and proportions in every cell so the sheets line up pixel-for-pixel with each other.
+>
+> LOCOMOTION ROW ORDER (16 cells, left to right): idle down, idle up, idle side (facing right), walk side 1-4, walk down 1-4, walk up 1-4, run side (1 key frame).
+> ACTION ROW ORDER (16 cells): swing down 1-3 (two-handed overhead swing facing down: raise, mid, strike), swing side 1-3 (facing right), swing up 1-3 (back to viewer), hold-item down (both hands at chest, item not drawn), hold-item up, hold-item side, hurt (knocked back, facing down), eat (hand to mouth, facing down), cast (fishing rod pose, rod NOT drawn, facing right), celebrate (arms up). Tools and weapons are NEVER drawn — only the empty hands in the right place; the game draws the tool.
+>
+> IMAGE 1 "w120_costume_armor_walk.png": LOCOMOTION rows, one armor set per row: row 0 Leather (brown hood, jerkin, trousers, boots), row 1 Copper, row 2 Iron, row 3 Steel, row 4 Silver (winged helm), row 5 Gold, row 6 Crystal (glowing blue facets), row 7 Moon (midnight blue, stars, crescent). Helmets are part of the costume here.
+> IMAGE 2 "w121_costume_armor_action.png": ACTION rows for the same 8 armor sets, same row order.
+> IMAGE 3 "w122_costume_outfit_walk.png": LOCOMOTION rows, one outfit per row: row 0 Farmer (overalls, work shorts, boots, red bandana), row 1 Forester (green hooded cloak, cargo trousers), row 2 Fisher (vest, waders, rubber boots), row 3 Miner (vest with lamp helmet, tool belt), row 4 Merchant (waistcoat, pinstripes, cravat), row 5 Scholar (long robe, round glasses, striped scarf), row 6 Neon Street (cropped jacket with glowing cyan trim, cargo pants, high-tops), row 7 Penguin Ceremony (black-and-white formal coat with tails, ice-blue sash, tiny bow tie). No hats except where the costume IS the hat (miner lamp helmet, scholar glasses).
+> IMAGE 4 "w123_costume_outfit_action.png": ACTION rows for the same 8 outfits, same row order.
+
+---
+
+## BATCH 2 — Base body actions, swimming, riding (3 images)
+
+> Make THREE SEPARATE IMAGES, 1536×1024 each, same style and GRID RULE as before (64×96 cells, 16 columns × 8 rows, magenta background, medium-skin bald hero drawn complete, tools never drawn).
+>
+> IMAGE 1 "w124_base_action.png": ACTION rows (swing down 1-3, swing side 1-3, swing up 1-3, hold down/up/side, hurt, eat, cast, celebrate) for the 6 body bases from w56 in the same order (light slim, light broad, medium slim, medium broad, dark slim, dark broad) in rows 0-5, each wearing the plain white undershirt and shorts. Row 6: 16 extra poses for the medium-slim base: sit, sleep (lying, side), faint, carry-overhead ×2, pet-animal ×2, wave ×2, dance ×4, pour-watering-can side, pour down, pour up. Row 7: 16 more: pickaxe-strike side ×2, axe-strike side ×2, scythe-sweep side ×3, hammer-hit down ×2, reel-in side ×2, dig side ×2, plant-crouch down ×2, fall-asleep-standing.
+> IMAGE 2 "w125_swim.png": 128×96 cells at x = 24 + N×152 (10 columns), y = 24 + M×120 (8 rows). The medium-slim bald hero SWIMMING, water drawn only as a small splash ring around the body (no water surface, no background — magenta). Row 0: swim side 1-6 (crawl stroke, facing right), float idle ×2, dive-in ×2. Row 1: swim down 1-6 (toward viewer), tread water ×2, climb out onto land ×2. Row 2: swim up 1-6 (away), gasp-tired ×2, splash-hit ×2. Rows 3-5: the same three rows for the medium-BROAD base. Row 6: 10 water FX only: splash ring 4 frames, ripple 3 frames, bubbles 3 frames. Row 7: 10 wet-footprint and drip decals.
+> IMAGE 3 "w126_riding.png": 128×128 cells at x = 24 + N×152 (10 columns), y = 24 + M×125 (8 rows). The hero drawn ON the mount as one complete sprite. Row 0: horse walk side 1-6, horse idle ×2, horse run side ×2 (hero riding, reins in hand). Row 1: horse walk down 1-4, walk up 1-4, idle down, idle up. Rows 2-3: the same for the donkey (smaller, grey). Rows 4-5: the same for the llama (cream, woven saddle blanket). Row 6: mount-up ×3, dismount ×3, horse rear ×2, horse eat ×2 (no rider). Row 7: 10 stable items: saddle, hay bale, water trough, brush, horseshoe, carrot bunch, saddle blanket, bridle, apple bucket, stable sign.
+
+---
+
+## BATCH 3 — Character creator UI and hero portraits (3 images)
+
+> Make THREE SEPARATE IMAGES, 1536×1024 each, same style, flat #FF00FF magenta background, no grid lines.
+>
+> IMAGE 1 "w127_creator_ui.png": UI pieces for a character creator screen, pixel art, warm wood-and-parchment Stardew menu style, each piece isolated on magenta with 24 px gaps: a 240×400 creator panel frame (parchment with wood edge), a 120×140 preview window frame, left/right arrow buttons (normal + pressed, 20×20), a dice "random" button (normal + pressed, 28×28), a 160×20 slider bar with knob, six colour swatch circles 16×16 (empty, filled, selected ring), category tabs 56×18 (body, hair, face, clothes, extras) in normal and selected states, a "Done" button 64×22 (normal, pressed), a small checkmark and an X, a name-plate box 140×24, 8 skin-tone swatch pills 24×12 (fair, warm, tan, olive, brown, deep, ash, moon-pale), 12 hair-colour swatch pills 24×12.
+> IMAGE 2 "w128_hero_portraits.png": 96×96 cells at x = 24 + N×120 (12 columns), y = 24 + M×120 (8 rows). Dialogue PORTRAITS (head and shoulders, facing slightly right, bald, no hat) of the hero for the character creator preview: rows 0-5 = the six bodies from w56 (light slim, light broad, medium slim, medium broad, dark slim, dark broad), 12 expressions each: neutral, happy, sad, angry, surprised, tired, laughing, worried, determined, sleepy, sick, in love. Row 6: 12 portrait HAIR overlays (same 96 cell, hair only, mid brown) for the first 12 w57 styles. Row 7: 12 more for styles 13-24.
+> IMAGE 3 "w129_hero_portraits_b.png": same grid. Rows 0-1: portrait HAT overlays for the 16 hats (straw, cap, beanie, wizard, flatcap, knight, crystal crown, cowboy, flower crown, hood, bandana, kerchief, top hat, goggles, earmuffs, halo) + 8 blanks. Rows 2-3: portrait GLASSES/FACE accessories: round glasses, square glasses, sunglasses, eyepatch, monocle, freckles, blush, scar, beard short, beard long, moustache, face paint ×2, earrings ×2, bandage. Rows 4-7: 48 EYE/MOUTH sets on the medium-slim neutral head: 8 eye shapes × 6 eye colours (brown, blue, green, grey, amber, violet).

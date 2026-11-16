@@ -175,3 +175,4 @@
 - Fixed Godot "called async function without await" in `try_interact`: `interact()` is sync again — `tell(lines)` fires dialogue, `later(callable)` starts coroutines (shops, crafting, alien stall, teleporter line).
 - Playtest: run/joystick/tap tests made robust (max speed over window, fresh runway, re-tap after dialogue fade); tool-upgrade test added. 0 failures.
 - Not yet: hair/hats/mounts/tool-anim layers drawn on the body (creator + paper-doll still pending; sheets are sliced and in the manifest). Swim needs a full-size sheet.
+- Added `docs/guides/GUIDE-03.md` and `docs/ART-PROMPTS-08.md` (+ `art-prompts-08.html`): full-body costume sheets (w120–123), base actions/swim/riding (w124–126), creator UI + portraits (w127–129).
