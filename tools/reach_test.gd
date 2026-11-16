@@ -5,7 +5,7 @@ extends SceneTree
 ## Prints "REACH DONE, failures: N". Run:
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 -s res://tools/reach_test.gd
 
-const MAPS := ["farm", "town", "meadow", "beach", "mountain", "forest", "lake", "crystal_meadow"]
+const MAPS := ["farm", "town", "meadow", "beach", "mountain", "forest", "lake", "crystal_meadow", "orchard_hills", "highlands", "ruins", "quarry", "marsh", "riverlands"]
 var fails := 0
 
 

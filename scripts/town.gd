@@ -55,7 +55,7 @@ func build() -> void:
 	music_track = "town"
 	resources_here = false  # the town's trees, rocks and hedges are scenery
 	add_exit(FARM_EXIT, "farm", Vector2(36 * TILE, 56 * TILE), "up", "▲ farm")
-	add_exit(BEACH_EXIT, "beach", Vector2(14 * TILE, 2 * TILE + 8), "down", "▼ beach")
+	add_exit(BEACH_EXIT, "beach", Vector2(32 * TILE, 3 * TILE), "down", "▼ beach")
 	add_exit(MOUNTAIN_EXIT, "mountain", Vector2(2 * TILE, 39 * TILE + 8), "right", "mountain ▶")
 	# Plaza and river cells (the river blocks except on the bridges).
 	for y in range(36, 60):

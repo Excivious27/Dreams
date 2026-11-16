@@ -8,6 +8,8 @@ extends GameMap
 @export var region_id := "wastes"
 var R: Dictionary = {}
 var _anim_nodes: Array = []
+var _water_cells := {}
+var _forage_n := 0
 
 
 func scene_id() -> String:
@@ -34,6 +36,61 @@ func build() -> void:
 		add_exit(Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])), str(e["scene"]), Vector2(float(e["spawn"][0]) * TILE, float(e["spawn"][1]) * TILE), str(e.get("facing", "down")), str(e.get("label", "")))
 	for b in R.get("blocks", []):
 		block_rect(int(b[0]), int(b[1]), int(b[2]), int(b[3]))
+	# Noise-shaped water bodies: {"c": [x, y], "r": radius, "seed": n, "shore": "grass"|"sand", "fish": [...]}
+	for wb in R.get("water_blobs", []):
+		var cx := float(wb["c"][0])
+		var cy := float(wb["c"][1])
+		var rad := float(wb.get("r", 5))
+		var sdv := int(wb.get("seed", 1))
+		var cells := {}
+		for y in range(int(cy - rad - 3), int(cy + rad + 4)):
+			for x in range(int(cx - rad - 3), int(cx + rad + 4)):
+				if x < 1 or y < 1 or x >= cols - 1 or y >= rows - 1:
+					continue
+				var n := WorldGen.fbm(float(x), float(y), sdv, 5.0)
+				if Vector2(x + 0.5, y + 0.5).distance_to(Vector2(cx, cy)) + n * rad * 0.35 <= rad:
+					cells[Vector2i(x, y)] = true
+		for pass_i in 2:
+			var add := {}
+			var drop := {}
+			for c: Vector2i in cells.keys():
+				pass
+			for y in range(int(cy - rad - 3), int(cy + rad + 4)):
+				for x in range(int(cx - rad - 3), int(cx + rad + 4)):
+					var c := Vector2i(x, y)
+					var wn := 0
+					for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+						if cells.has(c + d):
+							wn += 1
+					if not cells.has(c) and wn >= 3:
+						add[c] = true
+					elif cells.has(c) and wn <= 1:
+						drop[c] = true
+			for c: Vector2i in add:
+				cells[c] = true
+			for c: Vector2i in drop:
+				cells.erase(c)
+		for c: Vector2i in cells:
+			set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": wb.get("fish", []), "shore": str(wb.get("shore", "grass"))})
+			_water_cells[c] = true
+	# Forage spots from data/forage.json (respawn every 2 days, 1 with Tracker).
+	var fcount := int(R.get("forage", 0))
+	if fcount > 0:
+		var rng := RandomNumberGenerator.new()
+		rng.seed = hash(region_id) % 1000 + 9 + int(GameState.run["day"]) / 7
+		for i in fcount * 3:
+			if _forage_n >= fcount:
+				break
+			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
+			if things.has(c) or blocked.has(c):
+				continue
+			var key := "forage_%s_%d_%d" % [region_id, c.x, c.y]
+			var every := 1 if GameState.has_perk("foraging", "Tracker") else 2
+			if int(GameState.run["flags"].get(key, 0)) > int(GameState.run["day"]) - every:
+				continue
+			var item := GameState.roll_forage(region_id)
+			things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
+			_forage_n += 1
 	for t in R.get("things", []):
 		var c: Array = t["cell"]
 		var d := {"type": str(t["type"]), "hint": str(t.get("hint", ""))}
@@ -68,6 +125,11 @@ func after_ready() -> void:
 		if bool(p.get("solid", true)):
 			var h := int(p.get("h", 1))
 			block_rect(c.x, c.y - h + 1, w + 1, h)
+	for k in things.keys():
+		if str(things[k].get("type", "")) == "forage":
+			var it := str(things[k]["item"])
+			var nm := "mushrooms_fall" if it in ["mushroom", "glow_cap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
+			prop("nature", nm, k, 0, 0.0, false)
 	var gen: Dictionary = R.get("gen", {})
 	var inner := Rect2i(2, 2, cols - 4, rows - 4)
 	var avoid := {}
@@ -79,6 +141,10 @@ func after_ready() -> void:
 		for y in range(int(pr[1]), int(pr[1]) + int(pr[3])):
 			for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
 				avoid[Vector2i(x, y)] = true
+	for c: Vector2i in _water_cells:
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				avoid[c + Vector2i(dx, dy)] = true
 	if gen.has("tree_border"):
 		var gaps: Array = []
 		for e in exits:
@@ -129,6 +195,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"note":
 			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
+			return true
+		"water":
+			if GameState.has_tool("rod"):
+				var pool: Array = thing.get("pool", [])
+				if pool.is_empty():
+					pool = ["carp", "bass", "catfish", "salmon", "eel"]
+				fish_at(c, pool)
 			return true
 		"shop":
 			later(_shop.bind(thing))
@@ -272,6 +345,15 @@ func draw_map() -> void:
 	for wr in R.get("water", []):
 		var r: Array = wr["rect"]
 		draw_water(cells_of([Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))]), str(wr.get("shore", "grass")))
+	if not _water_cells.is_empty():
+		var by_shore := {}
+		for c: Vector2i in _water_cells:
+			var sh := str(things.get(c, {}).get("shore", "grass"))
+			if not by_shore.has(sh):
+				by_shore[sh] = {}
+			by_shore[sh][c] = true
+		for sh in by_shore:
+			draw_water(by_shore[sh], str(sh))
 	draw_exits()
 	if bool(R.get("fence", false)) and pad == 0:
 		draw_fence_border(Color(str(R.get("fence_color", "6b4a2b"))))

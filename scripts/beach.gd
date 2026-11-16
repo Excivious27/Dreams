@@ -2,8 +2,12 @@ extends GameMap
 ## The south beach: sand, the sea along the bottom, a pier, shells and coconuts
 ## to forage, and a wrecked boat. Exit: town (north).
 
-const TOWN_EXIT := Rect2i(13, 0, 3, 1)
-const SEA_Y := 20
+const TOWN_EXIT := Rect2i(30, 0, 4, 1)
+const MARSH_EXIT := Rect2i(0, 12, 1, 4)
+const QUARRY_EXIT := Rect2i(63, 12, 1, 4)
+const SEA_Y := 24
+var _sea := {}
+var _sand := {}
 
 
 func scene_id() -> String:
@@ -11,29 +15,49 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return Vector2(14 * TILE, 3 * TILE)
+	return Vector2(32 * TILE, 3 * TILE)
 
 
 func build() -> void:
-	cols = 30
-	rows = 28
-	pad = 6
-	border = {"n": "trees", "s": "water", "w": "water", "e": "cliff"}
+	cols = 64
+	rows = 36
+	pad = 7
+	border = {"n": "trees", "s": "water", "w": "trees", "e": "cliff"}
 	music_track = "town"
 	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 92 * TILE), "up", "▲ town")
-	for y in range(SEA_Y, rows):
+	add_exit(MARSH_EXIT, "marsh", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ marsh")
+	add_exit(QUARRY_EXIT, "quarry", Vector2(2 * TILE, 22 * TILE + 8), "right", "quarry ▶")
+	# The tide line wanders: sea cells start at SEA_Y ± noise, with a cove on the east.
+	for y in range(8, rows):
 		for x in cols:
-			set_thing(x, y, {"type": "sea", "hint": "A: fish" if GameState.has_tool("rod") else ""})
-	# Pier out into the sea.
-	for y in range(SEA_Y, SEA_Y + 6):
-		for x in range(14, 16):
-			things.erase(Vector2i(x, y))
-			blocked.erase(Vector2i(x, y))
-			things[Vector2i(x, y)] = {"type": "dock"}
+			var n := WorldGen.fbm(float(x), 3.0, 505, 9.0) * 3.0
+			var cove := 0.0
+			if x > 46:
+				cove = (x - 46) * 0.35
+			var edge := SEA_Y + n - cove
+			if y >= edge:
+				_sea[Vector2i(x, y)] = true
+				set_thing(x, y, {"type": "sea", "hint": "A: fish" if GameState.has_tool("rod") else ""})
+			else:
+				_sand[Vector2i(x, y)] = true
+	# Two piers out into the sea.
+	for px in [Vector2i(31, 0), Vector2i(12, 0)]:
+		var y0 := SEA_Y - 3
+		while not _sea.has(Vector2i(px.x, y0)) and y0 < rows - 1:
+			y0 += 1
+		for y in range(y0 - 1, y0 + 6):
+			for x in range(px.x, px.x + 2):
+				var c := Vector2i(x, y)
+				things.erase(c)
+				blocked.erase(c)
+				_sea.erase(c)
+				things[c] = {"type": "dock"}
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 81 + int(GameState.run["day"])
-	for i in 12:
-		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y - 1))
+	for i in 24:
+		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y + 2))
+		if not _sand.has(c):
+			continue
 		if things.has(c):
 			continue
 		var key := "forage_beach_%d_%d" % [c.x, c.y]
@@ -42,7 +66,6 @@ func build() -> void:
 		var item: String = ["seashell", "seashell", "coconut", "fiber"][rng.randi_range(0, 3)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}
 	set_thing(5, 16, {"type": "wreck", "hint": "A: search the wreck"})
-	extend(14, 6)
 
 
 func after_ready() -> void:
@@ -52,11 +75,11 @@ func after_ready() -> void:
 		cs.sprite_frames = Art.frames("props", {"idle": "campsite"}, {"idle": 6.0})
 		cs.animation = "idle"
 		cs.scale = Vector2(0.5, 0.5)
-		cs.position = cell_center(Vector2i(cols - 10, 10)) + Vector2(16, 0)
+		cs.position = cell_center(Vector2i(cols - 12, 10)) + Vector2(16, 0)
 		cs.offset = Vector2(0, -32)
 		add_child(cs)
 		cs.play("idle")
-		set_thing(cols - 8, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead into the sea and don't come back.", "hint": "A: the camp"}, false)
+		set_thing(cols - 10, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead into the sea and don't come back.", "hint": "A: the camp"}, false)
 	var dock := DockLayer.new()
 	dock.map = self
 	dock.z_index = -1
@@ -65,13 +88,14 @@ func after_ready() -> void:
 	for y in range(8, rows):
 		for x in cols:
 			avoid[Vector2i(x, y)] = true
-	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, 7), 82, [TOWN_EXIT.grow(2)], 2)
-	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, 6), 83, 4, avoid)
-	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, 6), 84, 8, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, 16), 85, 9, ["seagull", "seagull", "crab", "crab", "sparrow", "butterfly_yellow"])
+	for c in cells_of([Rect2i(28, 0, 8, 9), MARSH_EXIT.grow(3), QUARRY_EXIT.grow(3)]):
+		avoid[c] = true
+	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, 6), 83, 8, avoid)
+	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, 6), 84, 10, avoid)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, 20), 85, 16, ["seagull", "seagull", "crab", "crab", "sparrow", "butterfly_yellow", "crab"])
 	_place_props()
-	prop("props", "lantern_lit", Vector2i(13, 19))
-	prop("props", "lantern_lit", Vector2i(16, 19))
+	prop("props", "lantern_lit", Vector2i(30, SEA_Y - 5))
+	prop("props", "lantern_lit", Vector2i(33, SEA_Y - 5))
 	if not GameState.run["flags"].has("beach_seen"):
 		GameState.run["flags"]["beach_seen"] = true
 		player.frozen = true
@@ -105,6 +129,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _fish(c: Vector2i) -> void:
+	fish_at(c, ["sunfish", "bass", "salmon", "eel", "puffer", "goldfish", "starfin"])
+
+
+func _fish_old(c: Vector2i) -> void:
 	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return
@@ -157,24 +185,28 @@ func draw_map() -> void:
 	draw_grass(8)
 	WorldGen.draw_ground_detail(self, 86, 0.1)
 	# Sand (with grass transition), wet strip, then sea with foam.
-	var sand := cells_of([Rect2i(0, 8, cols, SEA_Y - 8)])
+	var sand := _sand.duplicate()
+	for k in things:
+		if str(things[k].get("type", "")) == "dock":
+			sand[k] = true
 	if Art.has("tiles", "sand"):
 		draw_ground("sand", sand)
-		for x in cols:
-			Art.draw_tile(self, "tiles", "sand_wet", Vector2(x * TILE, (SEA_Y - 1) * TILE), 4)
+		for c: Vector2i in sand:
+			if _sea.has(c + Vector2i(0, 1)):
+				Art.draw_tile(self, "tiles", "sand_wet", Vector2(c * TILE), 4)
 	else:
 		draw_tileset_rect("shore_set", Rect2i(0, 8, cols, SEA_Y - 8), Color("e3cf8f"))
 	_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 		var frame := int(Time.get_ticks_msec() / 250) % 4
-		for y in range(SEA_Y, rows):
-			for x in cols:
-				var nm := "sea" if Art.has("tiles", "sea") else "water"
-				if not Art.draw_tile(ci, "tiles", nm, Vector2(x * TILE, y * TILE), 4 if nm == "sea" else frame):
-					ci.draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("2f6fb5"))
-		for x in cols:
-			if not Art.draw_tile(ci, "tiles", "foam", Vector2(x * TILE, SEA_Y * TILE), (frame + x) % 4):
-				ci.draw_rect(Rect2(x * TILE, SEA_Y * TILE, TILE, 2), Color(1, 1, 1, 0.5)))
-	draw_ground("dirt", cells_of([Rect2i(13, 1, 3, 8), TOWN_EXIT]))
+		var nm := "sea" if Art.has("tiles", "sea") else "water"
+		for c: Vector2i in _sea:
+			if not Art.draw_tile(ci, "tiles", nm, Vector2(c * TILE), 4 if nm == "sea" else frame):
+				ci.draw_rect(Rect2(c.x * TILE, c.y * TILE, TILE, TILE), Color("2f6fb5"))
+		for c: Vector2i in _sea:
+			if not _sea.has(c + Vector2i(0, -1)) and not things.get(c + Vector2i(0, -1), {}).get("type", "") == "dock":
+				if not Art.draw_tile(ci, "tiles", "foam", Vector2(c * TILE), (frame + c.x) % 4):
+					ci.draw_rect(Rect2(c.x * TILE, c.y * TILE, TILE, 2), Color(1, 1, 1, 0.5)))
+	draw_ground("dirt", cells_of([Rect2i(30, 1, 4, 8), TOWN_EXIT, Rect2i(1, 13, 12, 2), Rect2i(52, 13, 11, 2), MARSH_EXIT, QUARRY_EXIT]))
 	draw_exits()
 	if not Art.has("buildings", "galleon"):
 		var p := cell_center(Vector2i(5, 16))
@@ -184,25 +216,29 @@ func draw_map() -> void:
 func _place_props() -> void:
 	if not Art.has("buildings", "galleon"):
 		return
-	prop("buildings", "galleon", Vector2i(2, 18), 13)
+	prop("buildings", "galleon", Vector2i(4, 20), 13)
 	things.erase(Vector2i(5, 16))
-	set_thing(8, 18, {"type": "wreck", "hint": "A: search the wreck"}, false)
-	prop("buildings", "beach_hut", Vector2i(21, 11), 3)
-	set_thing(22, 12, {"type": "hut", "hint": "A: beach hut"}, false)
-	for c: Vector2i in [Vector2i(3, 9), Vector2i(26, 8), Vector2i(18, 7), Vector2i(8, 10)]:
+	set_thing(10, 20, {"type": "wreck", "hint": "A: search the wreck"}, false)
+	prop("buildings", "beach_hut", Vector2i(40, 12), 3)
+	set_thing(41, 13, {"type": "hut", "hint": "A: beach hut"}, false)
+	for c: Vector2i in [Vector2i(3, 10), Vector2i(20, 9), Vector2i(44, 8), Vector2i(57, 10), Vector2i(8, 11), Vector2i(50, 9), Vector2i(26, 10)]:
 		prop("nature", "palm", c, 1)
-	prop("props", "beached_boat", Vector2i(17, 17), 2)
-	prop("props", "umbrella_red", Vector2i(9, 14), 1); prop("props", "umbrella_blue", Vector2i(25, 15), 1)
-	prop("props", "lifeguard", Vector2i(12, 16))
-	_anim("props", "bonfire", Vector2i(20, 15), 0, 8.0)
-	_anim("props", "buoy", Vector2i(6, 23), 0, 2.0)
-	_anim("props", "buoy", Vector2i(24, 25), 0, 2.0)
-	_anim("props", "tide_pool", Vector2i(27, 18), 1, 3.0)
+	prop("props", "beached_boat", Vector2i(22, 20), 2)
+	prop("props", "umbrella_red", Vector2i(16, 16), 1); prop("props", "umbrella_blue", Vector2i(37, 17), 1)
+	prop("props", "lifeguard", Vector2i(27, 18))
+	_anim("props", "bonfire", Vector2i(36, 15), 0, 8.0)
+	_anim("props", "buoy", Vector2i(8, 29), 0, 2.0)
+	_anim("props", "buoy", Vector2i(44, 30), 0, 2.0)
+	_anim("props", "buoy", Vector2i(58, 26), 0, 2.0)
+	_anim("props", "tide_pool", Vector2i(48, 17), 1, 3.0)
+	_anim("props", "tide_pool", Vector2i(56, 16), 1, 3.0)
+	for c: Vector2i in [Vector2i(53, 18), Vector2i(60, 19), Vector2i(2, 15)]:
+		prop("nature", "rock_l" if Art.has("nature", "rock_l") else "rock_m", c, 1)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 87
-	for i in 10:
+	for i in 22:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y - 2))
-		if things.has(c) or blocked.has(c):
+		if things.has(c) or blocked.has(c) or not _sand.has(c):
 			continue
 		prop("nature", "dune_%d" % rng.randi_range(0, 9), c)
 	for k in things.keys():

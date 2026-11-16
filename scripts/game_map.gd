@@ -1640,3 +1640,66 @@ func draw_border() -> void:
 	for item: Array in _border_draw:
 		var c: Vector2i = item[0]
 		Art.draw_prop(self, str(item[1]), str(item[2]), Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE))
+
+
+## Shared fishing minigame: cast, wait for the bite, press A. `pool` is the
+## water's fish from easiest to rarest; skill, night light, rain and perks
+## reach deeper into it.
+func fish_at(c: Vector2i, pool: Array) -> void:
+	if not GameState.spend_for("rod"):
+		hud.toast("Too tired.", Color(1, 0.7, 0.7))
+		return
+	player.play_tool("cast")
+	player.frozen = true
+	var bob: AnimatedSprite2D = null
+	if Art.has("fx", "bobber"):
+		bob = AnimatedSprite2D.new()
+		var b2 := Art.has("fx", "bobber2")
+		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber2" if b2 else "bobber", "bite": "bobber2_bite" if b2 else "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
+		bob.animation = "bobber"
+		bob.scale = Vector2(0.5, 0.5)
+		bob.position = cell_center(c) + Vector2(0, -6)
+		bob.z_index = 1
+		add_child(bob)
+		bob.play("bobber")
+	hud.toast("Casting...")
+	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0)
+	var night: bool = int(GameState.run["time"]) >= 19 * 60 and GameState.run["flags"].has("lighthouse_lit")
+	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
+	var t := 0.0
+	var bite := false
+	var caught := false
+	while t < wait + 1.0:
+		await get_tree().process_frame
+		t += get_process_delta_time()
+		if not bite and t >= wait:
+			bite = true
+			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
+			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
+			Music.instance(get_tree()).sfx("bite")
+			if bob:
+				bob.play("bite")
+		if (Input.is_action_just_pressed("a") or Input.is_action_just_pressed("tool") or Input.is_action_just_pressed("action")) and t > 0.2:
+			caught = bite
+			break
+	player.frozen = false
+	if bob:
+		fx("reel_splash" if Art.has("fx", "reel_splash") else "splash", bob.position, 12.0, 0.5)
+		if caught and Art.has("fx", "fish_jump_a"):
+			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
+		bob.queue_free()
+	if caught:
+		var lvl := GameState.skill_level("fishing")
+		var reach := mini(pool.size(), 2 + lvl * 2 + (2 if night else 0))
+		var fish: String = pool[randi() % reach] if randf() > 0.08 else "boot"
+		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
+			fish = pool[mini(pool.size() - 1, reach + 1)]
+		player.play_tool("reel")
+		give(fish)
+		if randf() < GameState.bonus("fishing", "double_fish"):
+			give(fish)
+		if randf() < GameState.bonus("fishing", "chest_chance"):
+			give(["old_coin", "pearl", "map_scrap"][randi() % 3])
+		xp("fishing", 6)
+	else:
+		hud.toast("It got away.")
