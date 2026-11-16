@@ -97,11 +97,13 @@ func _draw_hud() -> void:
 				c.draw_texture_rect_region(heart_full, Rect2(p + Vector2(0, 10 * (1.0 - f)), Vector2(10, 10 * f)), Rect2(0, heart_full.get_height() * (1.0 - f), heart_full.get_width(), heart_full.get_height() * f))
 		else:
 			c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if f >= 1.0 else Color(0, 0, 0, 0.4))
+	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), "%d/%d" % [hp, max_hp], HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 0.95, 0.9))
 	# Mana (small blue bar under the hearts), only once you can cast.
 	if int(r.get("max_mana", 0)) > 0 and (GameState.skill_level("magic") > 1 or int(r.get("mana", 0)) > 0):
 		var mb := Rect2(6, 16, 50, 4)
 		c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
 		c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
+		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), "%d/%d" % [int(r.get("mana", 0)), int(r.get("max_mana", 0))], HORIZONTAL_ALIGNMENT_LEFT, 50, 7, Color(0.8, 0.9, 1.0))
 	# Clock box (top right)
 	var box := Rect2(166, 2, 100, 28)
 	_panel(c, "panel_parchment", box)
@@ -111,6 +113,9 @@ func _draw_hud() -> void:
 		c.draw_texture_rect(sicon, Rect2(box.position.x + 4, box.position.y + 3, 9, 9), false)
 	c.draw_string(_font, Vector2(box.position.x + (15 if sicon else 6), box.position.y + 11), "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()], HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
 	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 22), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
+	var wx := GameState.weather_today()
+	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "〰", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
+	c.draw_string(_font, Vector2(box.position.x + 52, box.position.y + 22), str(wicon), HORIZONTAL_ALIGNMENT_LEFT, 20, 8, dark)
 	var crystal := Art.tex("ui", "crystal")
 	var cx := box.end.x - 6
 	var ctext := str(int(r["crystals"]))
@@ -168,6 +173,7 @@ func _draw_hud() -> void:
 	var bolt := Art.tex("ui", "bolt_full")
 	if bolt:
 		c.draw_texture_rect(bolt, Rect2(bar.position.x - 2, bar.position.y - 14, 13, 13), false)
+	c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
 
 
 static func icon_for(id: String) -> String:

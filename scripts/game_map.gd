@@ -37,6 +37,8 @@ var _ext_paths := {}          # dirt connecting moved exits
 var hitstop := 0.0
 var _last_mana_t := -1
 var _sign_labels := {}
+## False in places where trees and rocks are scenery (the town): they can't be chopped or broken.
+var resources_here := true
 var _anim_layer: AnimLayer
 var _pet_anim: AnimatedSprite2D
 var _night: CanvasModulate
@@ -145,6 +147,8 @@ func default_spawn() -> Vector2:
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
 func hint_for(_cell: Vector2i, thing: Dictionary) -> String:
+	if not resources_here and str(thing.get("type", "")) in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
+		return ""
 	return str(thing.get("hint", ""))
 
 
@@ -204,7 +208,11 @@ func try_interact(c: Vector2i) -> bool:
 
 ## Interactions every outdoor map shares (trees, rocks, logs, stumps, bushes).
 func interact_common(c: Vector2i, thing: Dictionary) -> bool:
-	match str(thing.get("type", "")):
+	var t := str(thing.get("type", ""))
+	if not resources_here and t in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
+		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
+		return true
+	match t:
 		"sign":
 			tell([{"text": str(thing.get("text", "A signpost."))}])
 			return true
@@ -260,14 +268,15 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var is_tree := str(thing["type"]) == "tree"
 				xp("foraging", 3)
 				var bonus := int(GameState.bonus("foraging", "wood_bonus"))
-				if is_tree and not bool(thing.get("fell", false)):
-					thing["hp"] = 3
-					pop_items(cell_center(c), "wood", 3 + bonus)
+				if is_tree:
+					# Every tree comes down: it falls, leaves a stump, and regrows
+					# after a few days (sooner with Old Growth). No infinite wood.
+					_mark_cleared(c)
 					if randf() < GameState.bonus("foraging", "sap_chance"):
 						pop_items(cell_center(c), "sap", 1)
-				elif is_tree:
-					_mark_cleared(c)
-					fell_tree(c, 6 + bonus)
+					if GameState.has_perk("foraging", "Old Growth") and randf() < 0.5:
+						pop_items(cell_center(c), "hardwood" if GameState.items.has("hardwood") else "wood", 1)
+					fell_tree(c, 5 + bonus)
 				else:
 					_mark_cleared(c)
 					var sp: Node2D = props.get(c, null)
@@ -602,19 +611,36 @@ func _leaf(at: Vector2) -> void:
 
 ## Debris that stays gone: scenes that generate rocks/logs/weeds from a seed skip
 ## cells recorded here (GameState.run["cleared"][scene] = ["x,y", ...]).
+## Remember a chopped tree / broken rock per map, with the day it happened, so
+## it stays gone for a while and then regrows (trees 6 days, 2 with Old Growth;
+## rocks 4). Older saves stored a plain list: treat those as day 0.
 func _mark_cleared(c: Vector2i) -> void:
 	var all: Dictionary = GameState.run.get("cleared", {})
-	var lst: Array = all.get(scene_id(), [])
-	var key := "%d,%d" % [c.x, c.y]
-	if not key in lst:
-		lst.append(key)
+	var lst = all.get(scene_id(), {})
+	if lst is Array:
+		var d := {}
+		for k in lst:
+			d[str(k)] = 0
+		lst = d
+	lst["%d,%d" % [c.x, c.y]] = int(GameState.run["day"])
 	all[scene_id()] = lst
 	GameState.run["cleared"] = all
 
 
-func is_cleared(c: Vector2i) -> bool:
+func is_cleared(c: Vector2i, regrow_days := 6) -> bool:
 	var all: Dictionary = GameState.run.get("cleared", {})
-	return ("%d,%d" % [c.x, c.y]) in all.get(scene_id(), [])
+	var lst = all.get(scene_id(), {})
+	var key := "%d,%d" % [c.x, c.y]
+	if lst is Array:
+		return key in lst
+	if not lst.has(key):
+		return false
+	if regrow_days <= 0:
+		return true
+	var days := regrow_days
+	if GameState.has_perk("foraging", "Old Growth"):
+		days = mini(days, 2)
+	return int(GameState.run["day"]) - int(lst[key]) < days
 
 
 ## Declare an exit strip: standing in `r` sends you to `scene` at `spawn`.

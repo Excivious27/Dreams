@@ -245,6 +245,8 @@ func _physics_process(delta: float) -> void:
 	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed")
 	if int(GameState.run["flags"].get("haste_until", -1)) > int(GameState.run["time"]):
 		spd_mult *= 1.3
+	if GameState.weather_today() in ["snow", "blizzard"] and map and map.has_sky:
+		spd_mult *= 0.9
 	elif int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
 		spd_mult *= 0.75  # running on empty
 	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult

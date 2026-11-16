@@ -74,7 +74,7 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 	var t := int(GameState.run["time"])
 	var hour := t / 60.0
 	var day := int(GameState.run["day"])
-	var raining := GameState.weather_today() == "rain"
+	var raining := GameState.is_wet() or GameState.weather_today() == "blizzard"
 	var place := str(routine_list[0][1])
 	for entry in routine_list:
 		if hour >= float(entry[0]):

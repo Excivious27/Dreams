@@ -480,7 +480,9 @@ static func gear_stat(stat: String) -> int:
 ##   8% per tool tier (a moon axe is nearly free to swing).
 ## Mana: 20 base, +12 per magic level, gear "mana"; regenerates slowly, fully
 ##   on sleep. Spells live in data/spells.json.
-const ENERGY_COST := {"hoe": 4, "can": 2, "axe": 5, "pickaxe": 5, "scythe": 2, "rod": 3, "hammer": 3, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
+## Stardew-tuned: a fresh 100-bar covers ~50 hoe strokes or ~35 axe swings
+## before food; tool tiers and perks stretch that further.
+const ENERGY_COST := {"hoe": 2, "can": 1, "axe": 3, "pickaxe": 3, "scythe": 1, "rod": 2, "hammer": 2, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
 const HEART_HP := 20
 
 static func _apply_max_stats() -> void:
@@ -490,9 +492,11 @@ static func _apply_max_stats() -> void:
 	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + gear_stat("hp")
 	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + gear_stat("energy")
 	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana")
-	run["max_hp"] = base_hp
-	run["max_energy"] = base_en
-	run["max_mana"] = base_mana
+	if has_friend_perk("juniper", 4):
+		base_hp += 20
+	run["max_hp"] = base_hp + int(run.get("bonus_hp", 0))
+	run["max_energy"] = base_en + int(run.get("bonus_energy", 0)) + (50 if has_friend_perk("bram", 10) else 0) + (20 if has_friend_perk("posy", 8) else 0)
+	run["max_mana"] = base_mana + int(run.get("bonus_mana", 0))
 	if int(run["max_hp"]) > 0 and int(run["hp"]) <= 10 and int(run.get("hp_scale", 6)) == 6:
 		run["hp"] = base_hp  # old 6-heart saves: refill on the new scale
 	run["hp_scale"] = 100
@@ -513,7 +517,11 @@ static func energy_cost(task: String) -> int:
 		mult *= 1.0 - bonus("mining", "mine_energy")
 	if int(run["energy"]) < int(run["max_energy"]) * 0.15:
 		mult *= 1.25  # exhausted: everything is harder
-	return maxi(1, int(ceil(base * mult)))
+	if weather_today() == "sun" and task != "can":
+		mult *= 1.2  # heat wave
+	# Fractional costs average out: a 1.6 cost is 1 most swings, 2 sometimes.
+	var v := base * mult
+	return maxi(0, int(v) + (1 if randf() < v - floorf(v) else 0))
 
 
 static func spend_for(task: String) -> bool:
@@ -535,6 +543,14 @@ static func restore_mana(n: int) -> void:
 ## 100 scale a grump (1) does 12, the president (4) does 48 before defense.
 static func enemy_damage(dmg_units: int) -> int:
 	return maxi(5, dmg_units * 12)
+
+
+## Permanent growth of a vital (tonics, quest rewards, heart containers).
+static func grow_vital(which: String, n: int) -> void:
+	var key := "bonus_" + which
+	run[key] = int(run.get(key, 0)) + n
+	_apply_max_stats()
+	run[which] = int(run["max_" + which])  # refill on growth
 
 
 ## Fraction of max, for bars.
@@ -719,6 +735,9 @@ static func _cond_ok(when: Dictionary) -> bool:
 static func _give_reward(rw: Dictionary) -> void:
 	if rw.has("crystals"):
 		run["crystals"] = int(run["crystals"]) + int(rw["crystals"])
+	for k in ["max_hp", "max_energy", "max_mana"]:
+		if rw.has(k):
+			grow_vital(k.trim_prefix("max_"), int(rw[k]))
 	if rw.has("flag"):
 		run["flags"][str(rw["flag"])] = true
 	if rw.has("item"):
@@ -795,6 +814,10 @@ static func season() -> String:
 	return SEASONS[((int(run.get("day", 1)) - 1) / DAYS_PER_SEASON) % 4]
 
 
+static func season_of(day: int) -> String:
+	return SEASONS[((day - 1) / DAYS_PER_SEASON) % 4]
+
+
 static func day_of_season() -> int:
 	return (int(run.get("day", 1)) - 1) % DAYS_PER_SEASON + 1
 
@@ -825,15 +848,62 @@ static func bush_sprite(berries: bool) -> String:
 
 
 ## Weather is rolled per day from the day number so it's stable across scenes.
+## Weather: rolled once per day (seeded by run + day so it's stable across
+## reloads) and kept in run["weather"][day]. Seasons shift the odds; a wet day
+## is likelier after a wet day; storms are rare. Tomorrow's roll is the forecast.
+## Effects: rain/storm water every crop and keep villagers in (fish bite more);
+## storm also grounds the balloon and blocks the mountain pass; fog halves
+## forage respawn visibility (critters hide); snow slows walking a touch;
+## heat (summer "sun") dries unwatered crops twice as fast and drains energy;
+## fireflies/petals/leaves are cosmetic.
+const WEATHER_ODDS := {
+	"spring": [["rain", 24], ["storm", 4], ["fog", 8], ["petals", 12], ["wind", 6], ["clear", 46]],
+	"summer": [["rain", 10], ["storm", 8], ["sun", 16], ["fireflies", 20], ["wind", 4], ["clear", 42]],
+	"fall": [["rain", 20], ["storm", 6], ["fog", 12], ["leaves", 26], ["wind", 10], ["clear", 26]],
+	"winter": [["snow", 36], ["blizzard", 6], ["fog", 10], ["wind", 8], ["clear", 40]],
+}
+
+static func weather_for(day: int) -> String:
+	var w: Dictionary = run.get("weather", {})
+	var key := str(day)
+	if w.has(key):
+		return str(w[key])
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(str(run.get("names", {}).get("town", "")) + ":" + key)
+	var se := season_of(day)
+	var table: Array = WEATHER_ODDS.get(se, WEATHER_ODDS["spring"])
+	var roll := rng.randi_range(0, 99)
+	var yesterday := str(w.get(str(day - 1), "clear"))
+	if yesterday in ["rain", "storm"] and rng.randf() < 0.35:
+		roll = rng.randi_range(0, 30)  # weather fronts linger
+	var acc := 0
+	var pick := "clear"
+	for pair in table:
+		acc += int(pair[1])
+		if roll < acc:
+			pick = str(pair[0])
+			break
+	if day <= 2 and pick in ["storm", "blizzard", "fog"]:
+		pick = "clear"  # gentle first days
+	w[key] = pick
+	run["weather"] = w
+	return pick
+
+
 static func weather_today() -> String:
-	var d := int(run.get("day", 1))
-	var r := (d * 7919) % 100
-	match season():
-		"spring": return "rain" if r < 22 else ("petals" if r < 32 else "clear")
-		"summer": return "rain" if r < 12 else ("fireflies" if r < 40 else "clear")
-		"fall": return "rain" if r < 20 else ("leaves" if r < 60 else "clear")
-		"winter": return "snow" if r < 45 else "clear"
-	return "clear"
+	return weather_for(int(run.get("day", 1)))
+
+
+static func forecast() -> String:
+	return weather_for(int(run.get("day", 1)) + 1)
+
+
+static func is_wet() -> bool:
+	return weather_today() in ["rain", "storm"]
+
+
+static func weather_name(w: String) -> String:
+	return {"rain": "Rain", "storm": "Storm", "fog": "Fog", "petals": "Petal breeze", "wind": "Windy", "sun": "Heat wave", "fireflies": "Warm night", "leaves": "Falling leaves", "snow": "Snow", "blizzard": "Blizzard", "clear": "Clear"}.get(w, w.capitalize())
 
 
 static func clock_text() -> String:
@@ -876,7 +946,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["crop"] = ""
 				tile["days"] = 0
 				continue
-			if tile.get("watered", false) or weather_today() == "rain" or hazel_waters:
+			if tile.get("watered", false) or is_wet() or hazel_waters:
 				tile["days"] = int(tile.get("days", 0)) + 1
 				report["grown"] += 1
 			tile["watered"] = false

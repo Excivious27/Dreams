@@ -6673,5 +6673,66 @@
   "rarity": "uncommon",
   "tier": 2,
   "desc": "A corner of something bigger."
+ },
+ "heart_fruit": {
+  "name": "Heart Fruit",
+  "type": "tonic",
+  "value": 300,
+  "rarity": "rare",
+  "tier": 3,
+  "grow": {
+   "hp": 10
+  },
+  "desc": "Grows on the oldest trees. +10 max health, forever."
+ },
+ "stamina_root": {
+  "name": "Stamina Root",
+  "type": "tonic",
+  "value": 250,
+  "rarity": "rare",
+  "tier": 3,
+  "grow": {
+   "energy": 10
+  },
+  "desc": "Dug from the hills. +10 max energy, forever."
+ },
+ "mana_berry": {
+  "name": "Mana Berry",
+  "type": "tonic",
+  "value": 350,
+  "rarity": "rare",
+  "tier": 3,
+  "grow": {
+   "mana": 5
+  },
+  "desc": "Glows faintly. +5 max mana, forever."
+ },
+ "juniper_tonic": {
+  "name": "Juniper's Tonic",
+  "type": "tonic",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "grow": {
+   "hp": 20
+  },
+  "desc": "Juniper's recipe. +20 max health."
+ },
+ "mana_potion": {
+  "name": "Mana Potion",
+  "type": "food",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2,
+  "mana": 20,
+  "desc": "Blue and fizzy. +20 mana."
+ },
+ "hardwood": {
+  "name": "Hardwood",
+  "type": "material",
+  "value": 30,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Dense old-growth timber."
  }
 }

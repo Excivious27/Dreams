@@ -53,6 +53,10 @@
    0.04,
    "foraging",
    9
+  ],
+  [
+   "heart_fruit",
+   0.02
   ]
  ],
  "meadow": [
@@ -77,6 +81,10 @@
    0.05,
    "foraging",
    9
+  ],
+  [
+   "stamina_root",
+   0.02
   ]
  ],
  "lake": [
@@ -95,6 +103,10 @@
   [
    "flower",
    0.15
+  ],
+  [
+   "mana_berry",
+   0.015
   ]
  ],
  "beach": [
@@ -131,6 +143,10 @@
   [
    "moss",
    0.15
+  ],
+  [
+   "stamina_root",
+   0.03
   ]
  ],
  "crystal_meadow": [
@@ -149,6 +165,10 @@
   [
    "wild_herb",
    0.4
+  ],
+  [
+   "mana_berry",
+   0.03
   ]
  ],
  "moon": [

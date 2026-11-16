@@ -283,7 +283,7 @@ func _fish(c: Vector2i) -> void:
 	hud.toast("Casting...")
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0)
 	var night: bool = int(GameState.run["time"]) >= 19 * 60 and GameState.run["flags"].has("lighthouse_lit")
-	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0)
+	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
 	var t := 0.0
 	var bite := false
 	var caught := false

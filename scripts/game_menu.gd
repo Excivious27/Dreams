@@ -210,8 +210,9 @@ func _refresh() -> void:
 				_line("%s  ·  %s  ·  tier %d  ·  ◆%d" % [GameState.item_name(sel), rar, int(itd.get("tier", 1)), GameState.item_value(sel)], 8, GameState.rarity_color(sel))
 				if itd.has("desc"):
 					_line(str(itd["desc"]), 7, Color(0.8, 0.8, 0.8))
-				if itd.has("heal") or itd.has("energy"):
-					_button("Eat %s" % GameState.item_name(sel), func() -> void: _eat(sel))
+				if itd.has("heal") or itd.has("energy") or itd.has("mana") or itd.has("grow"):
+					var what := "Drink" if str(itd.get("type", "")) == "tonic" else "Eat"
+					_button("%s %s" % [what, GameState.item_name(sel)], func() -> void: _eat(sel))
 				if str(itd.get("type", "")) == "equip":
 					var st: Dictionary = itd.get("stats", {})
 					_line("  " + ", ".join(st.keys().map(func(k: String) -> String: return "%s +%d" % [k, int(st[k])])), 7, Color(0.8, 0.9, 1.0))
@@ -418,6 +419,14 @@ func _eat(id: String) -> void:
 	GameState.add_item(id, -1)
 	GameState.heal(int(it.get("heal", 0)))
 	GameState.restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * 8)
+	GameState.restore_mana(int(it.get("mana", 0)))
+	# Tonics grow a bar for good: {"grow": {"hp": 10}} etc.
+	if it.has("grow"):
+		for k in it["grow"]:
+			GameState.grow_vital(str(k), int(it["grow"][k]))
+		var m := get_tree().current_scene
+		if m is GameMap:
+			(m as GameMap).hud.toast("Max %s +%d!" % [str(it["grow"].keys()[0]), int(it["grow"].values()[0])], Color(1, 0.9, 0.4))
 	Music.instance(get_tree()).sfx("pickup")
 	_refresh()
 
