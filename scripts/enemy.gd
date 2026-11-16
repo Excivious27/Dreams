@@ -161,7 +161,9 @@ func _process(delta: float) -> void:
 	_attacking = maxf(0.0, _attacking - delta)
 	if _sprite:
 		var want := "hurt" if _hit_flash > 0.0 else ("attack" if _attacking > 0.0 else ("walk" if _dir != Vector2.ZERO and not stunned else "idle"))
-		if _sprite.animation != want and (want != "hurt" or _sprite.sprite_frames.has_animation("hurt")):
+		if not _sprite.sprite_frames.has_animation(want):
+			want = "idle" if want != "attack" or not _sprite.sprite_frames.has_animation("walk") else "walk"
+		if _sprite.animation != want:
 			_sprite.play(want)
 		if _dir.x != 0.0:
 			_sprite.flip_h = _dir.x < 0

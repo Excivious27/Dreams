@@ -6453,5 +6453,225 @@
   "rarity": "legendary",
   "tier": 7,
   "desc": "A sliver of the moon's crystal. Found only up there."
+ },
+ "pelt": {
+  "name": "Pelt",
+  "type": "material",
+  "value": 28,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Soft fur. Rook buys these; tailors want them."
+ },
+ "meat": {
+  "name": "Game Meat",
+  "type": "food",
+  "value": 30,
+  "rarity": "common",
+  "tier": 2,
+  "heal": 2,
+  "energy": 25,
+  "desc": "From the hills. Cook it for more."
+ },
+ "arrow": {
+  "name": "Arrow",
+  "type": "material",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Rook's fletching. For the bow, when there is one."
+ },
+ "flour": {
+  "name": "Flour",
+  "type": "material",
+  "value": 18,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Milled at the lake. Posy pays well for it."
+ },
+ "egg": {
+  "name": "Egg",
+  "type": "food",
+  "value": 22,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 12,
+  "desc": "From the coop."
+ },
+ "milk": {
+  "name": "Milk",
+  "type": "food",
+  "value": 36,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 18,
+  "desc": "From the barn."
+ },
+ "cheese": {
+  "name": "Cheese",
+  "type": "food",
+  "value": 80,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 35,
+  "heal": 1,
+  "desc": "Aged in the cellar."
+ },
+ "wine": {
+  "name": "Wine",
+  "type": "food",
+  "value": 140,
+  "rarity": "uncommon",
+  "tier": 3,
+  "energy": 20,
+  "desc": "From the keg. Alder's weakness."
+ },
+ "candy": {
+  "name": "Candy",
+  "type": "food",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 8,
+  "desc": "The kids will do anything for this."
+ },
+ "shell": {
+  "name": "Shell",
+  "type": "forage",
+  "value": 9,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Found on the beach."
+ },
+ "book": {
+  "name": "Old Book",
+  "type": "treasure",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Theo would love this."
+ },
+ "old_coin": {
+  "name": "Old Coin",
+  "type": "treasure",
+  "value": 45,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Dug up somewhere it shouldn't have been."
+ },
+ "fossil": {
+  "name": "Fossil",
+  "type": "treasure",
+  "value": 90,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "A fish from before the lake."
+ },
+ "hay": {
+  "name": "Hay",
+  "type": "material",
+  "value": 5,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Scythe tall grass to get it."
+ },
+ "bone": {
+  "name": "Bone",
+  "type": "material",
+  "value": 6,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "From the mine. The dog approves."
+ },
+ "slime_goo": {
+  "name": "Slime Goo",
+  "type": "material",
+  "value": 8,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Sticky. Alchemy wants it."
+ },
+ "glow_cap": {
+  "name": "Glow Cap",
+  "type": "forage",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "A mushroom that lights the night."
+ },
+ "starflower": {
+  "name": "Starflower",
+  "type": "forage",
+  "value": 55,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Only grows where the crystal fell."
+ },
+ "paint": {
+  "name": "Paint",
+  "type": "material",
+  "value": 30,
+  "rarity": "common",
+  "tier": 2,
+  "desc": "Lumi's colours."
+ },
+ "coffee": {
+  "name": "Coffee",
+  "type": "food",
+  "value": 25,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 30,
+  "desc": "Sal's lifeblood."
+ },
+ "tea": {
+  "name": "Tea",
+  "type": "food",
+  "value": 15,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 15,
+  "desc": "Juniper's cure for most things."
+ },
+ "cake": {
+  "name": "Cake",
+  "type": "food",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 50,
+  "heal": 2,
+  "desc": "Posy's best."
+ },
+ "pearl": {
+  "name": "Pearl",
+  "type": "treasure",
+  "value": 220,
+  "rarity": "rare",
+  "tier": 4,
+  "desc": "From a stubborn oyster."
+ },
+ "toy": {
+  "name": "Wooden Toy",
+  "type": "material",
+  "value": 35,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Carved at the workbench."
+ },
+ "trap": {
+  "name": "Trap",
+  "type": "material",
+  "value": 40,
+  "rarity": "common",
+  "tier": 2,
+  "desc": "Rook's design. Catches critters for pelts."
+ },
+ "map_scrap": {
+  "name": "Map Scrap",
+  "type": "treasure",
+  "value": 30,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "A corner of something bigger."
  }
 }

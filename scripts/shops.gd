@@ -17,16 +17,22 @@ static func offers(shop: String) -> Array:
 			return ["iron_sword", "coal", "copper_ring"]
 		"potions":
 			return ["potion", "energy_tea", "herb_remedy"]
+		"lodge":
+			var base: Array = ["meat", "bait"]
+			if GameState.has_friend_perk("rook", 4):
+				base += ["arrow", "trap"]
+			return base
 	return []
 
 
 static func run(m: GameMap, shop: String) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn"}[shop]
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
 		"potions": "Red for hurts. Tea for tired. Don't mix them, I'm not liable.",
 		"bait": "Bait's fresh. Fish aren't picky. People are.",
+		"lodge": "Meat's from the hills. Don't ask which hill.",
 	}[shop]
 	if shop == "store" and not GameState.run["flags"].has("store_first"):
 		GameState.run["flags"]["store_first"] = true

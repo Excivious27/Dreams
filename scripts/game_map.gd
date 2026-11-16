@@ -648,18 +648,19 @@ func draw_exits() -> void:
 
 ## Place a sprite from art/gen with its feet at the bottom-center of cell `c`
 ## (plus `extra_w` cells to the right for wide props). Returns null if missing.
-func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true) -> Sprite2D:
+func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
 	var s := Art.sprite(group, name)
 	if s == null:
 		return null
+	s.scale = Vector2(scale, scale)
 	s.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1) + Vector2(0, dy)
 	add_child(s)
 	props[c] = s
 	if solid:
 		# Base row always; big structures (buildings, barns, huts) also block the
 		# rows their body covers so you can't walk "into" them. Trees stay 1 row.
-		var tex_w := s.texture.get_width() / 2.0
-		var tex_h := s.texture.get_height() / 2.0
+		var tex_w := s.texture.get_width() * scale
+		var tex_h := s.texture.get_height() * scale
 		var rows_up := 1
 		var w_cells := maxi(extra_w + 1, int(round(tex_w / TILE)))
 		if group == "nature" or group == "props":
@@ -675,6 +676,28 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 				if j == 0 or not things.has(bc):
 					blocked[bc] = true
 	return s
+
+
+## A building drawn large (scale 1.0 = full 2x art, "realistically" big next to a 26 px
+## hero): its footprint is blocked, the door cell (bottom-centre, one row below
+## the base) opens `interior`. Returns the door cell.
+func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.0) -> Vector2i:
+	var info := Art.info("buildings", name)
+	var w_cells := maxi(1, int(round(float(info.get("w", 64)) * scale / TILE)))
+	var h_cells := maxi(1, int(round(float(info.get("h", 64)) * scale / TILE)))
+	var base := Vector2i(c.x, c.y + h_cells - 1)
+	var s := prop("buildings", name, base, w_cells - 1, 0.0, false, scale)
+	if s == null:
+		return Vector2i(-1, -1)
+	# Block the body (leave the top ~1/3 open so you can walk "behind" the roof line).
+	var body_rows := maxi(1, int(ceil(h_cells * 0.62)))
+	for y in range(base.y - body_rows + 1, base.y + 1):
+		for x in range(c.x, c.x + w_cells):
+			blocked[Vector2i(x, y)] = true
+	var door := Vector2i(c.x + w_cells / 2, base.y + 1)
+	if interior != "":
+		things[door] = {"type": "door", "interior": interior, "hint": hint if hint != "" else "A: " + interior.capitalize()}
+	return door
 
 
 ## Remove a prop and its thing/block at a cell.
@@ -819,7 +842,13 @@ func player_down(reason := "hurt") -> void:
 	_changing = true
 	player.frozen = true
 	var cr := int(GameState.run["crystals"])
-	var fee := int(ceil(cr * (0.10 if reason == "hurt" else 0.05)))
+	var rate := 0.10 if reason == "hurt" else 0.05
+	if reason == "hurt":
+		if GameState.has_friend_perk("juniper", 6):
+			rate = 0.0
+		elif GameState.has_friend_perk("juniper", 2):
+			rate = 0.05
+	var fee := int(ceil(cr * rate))
 	hud.toast("You collapsed..." if reason == "hurt" else "You pass out...", Color(1, 0.6, 0.6))
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)

@@ -20,7 +20,7 @@ func build() -> void:
 	pad = 6
 	border = {"n": "trees", "s": "water", "w": "water", "e": "cliff"}
 	music_track = "town"
-	add_exit(TOWN_EXIT, "town", Vector2(13 * TILE, 37 * TILE), "up", "▲ town")
+	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 92 * TILE), "up", "▲ town")
 	for y in range(SEA_Y, rows):
 		for x in cols:
 			set_thing(x, y, {"type": "sea", "hint": "A: fish" if GameState.has_tool("rod") else ""})

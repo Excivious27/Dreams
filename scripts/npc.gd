@@ -1,15 +1,27 @@
 class_name Npc
 extends Node2D
-## A townsperson: placeholder figure with a name tag and an idle wander.
+## A townsperson with a name tag, a daily routine and an idle wander.
 ## Dialogue lives in town.gd so the two arcs can say different things.
+##
+## Routine (npcs.json "routine"): a list of [hour, place]. The place is a key
+## of the map's `spots` (an outdoor spot), or one of the indoor words
+## "home" / "work" / "inn" / "chapel" / "school" / "clinic", where the villager
+## is out of sight (and the matching interior shows them at the counter).
+## Rain keeps everyone but the fisherman and the hunter indoors; on the 7th
+## day of each week everyone who's not working is at the chapel in the morning.
 
 var id := ""
 var home := Vector2.ZERO
+var routine: Array = []
+var spots: Dictionary = {}
+var wander := 20.0
 var _t := 0.0
 var _target := Vector2.ZERO
 var _label: Label
 var _figure: PlaceholderSprite
 var _anim: AnimatedSprite2D
+var _place := ""
+var _stuck := 0.0
 var map: GameMap
 
 
@@ -34,12 +46,10 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 	_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_label.size = Vector2(60, 10)
-	_label.position = Vector2(-30, -42)
+	_label.position = Vector2(-30, -34)
 	_label.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	add_child(_label)
-
-
-var wander := 20.0
+	_apply_routine(true)
 
 
 func cell() -> Vector2i:
@@ -48,18 +58,94 @@ func cell() -> Vector2i:
 	return Vector2i(floori(position.x / GameMap.TILE), floori((position.y - 2) / GameMap.TILE))
 
 
+func face(toward: Vector2) -> void:
+	if _anim:
+		var to := toward - position
+		if absf(to.x) >= absf(to.y):
+			_anim.flip_h = to.x < 0
+	elif _figure:
+		_figure.scale.x = -1.0 if toward.x < position.x else 1.0
+
+
+## Where this villager should be right now ("" = no routine, stay home).
+static func place_now(routine_list: Array, npc_id: String) -> String:
+	if routine_list.is_empty():
+		return ""
+	var t := int(GameState.run["time"])
+	var hour := t / 60.0
+	var day := int(GameState.run["day"])
+	var raining := GameState.weather_today() == "rain"
+	var place := str(routine_list[0][1])
+	for entry in routine_list:
+		if hour >= float(entry[0]):
+			place = str(entry[1])
+	if day % 7 == 0 and hour >= 9.0 and hour < 12.0 and place != "work":
+		place = "chapel_front"
+	if raining and not npc_id in ["finn", "rook", "sal"] and not place in ["home", "work", "inn", "chapel", "school", "clinic"]:
+		place = "home"
+	return place
+
+
+static func is_indoors(place: String) -> bool:
+	return place in ["", "home", "work", "inn", "chapel", "school", "clinic", "library", "hall"]
+
+
+func _apply_routine(snap := false) -> void:
+	var place := place_now(routine, id)
+	if place == _place and not snap:
+		return
+	_place = place
+	if is_indoors(place) and not routine.is_empty():
+		visible = false
+		return
+	var spot: Vector2i = spots.get(place, Vector2i(-1, -1))
+	if spot == Vector2i(-1, -1) or map == null:
+		visible = true
+		return
+	var at := map.cell_center(spot)
+	home = at
+	_target = at
+	visible = true
+	if snap or (map.player and map.player.position.distance_to(position) > 200.0):
+		position = at  # out of sight: just be there
+
+
 func _process(delta: float) -> void:
 	_t -= delta
 	if _t <= 0.0:
 		_t = randf_range(2.0, 5.0)
-		if randf() < 0.5:
+		_apply_routine()
+		if visible and randf() < 0.5 and position.distance_to(home) < 40.0:
 			_target = home + Vector2(randf_range(-wander, wander), randf_range(-wander / 2.0, wander / 2.0))
+	if not visible:
+		return
 	var to := _target - position
 	if to.length() > 2.0:
-		var step := to.normalized() * 18.0 * delta
+		var speed := 18.0 if position.distance_to(home) < 48.0 else 34.0
+		var step := to.normalized() * speed * delta
 		var np := position + step
+		var moved := false
 		if map == null or not map.rect_blocked(Rect2(np + Vector2(-3, -3), Vector2(6, 3))):
 			position = np
+			moved = true
+		elif map:
+			# Slide along the wall on one axis.
+			for alt: Vector2 in [Vector2(step.x, 0), Vector2(0, step.y)]:
+				var p2 := position + alt
+				if alt != Vector2.ZERO and not map.rect_blocked(Rect2(p2 + Vector2(-3, -3), Vector2(6, 3))):
+					position = p2
+					moved = true
+					break
+		if not moved:
+			_stuck += delta
+			if _stuck > 2.0 and map and map.player and map.player.position.distance_to(position) > 160.0:
+				position = home  # nobody's looking: skip the walk
+				_stuck = 0.0
+			elif _stuck > 4.0:
+				_target = position
+				_stuck = 0.0
+		else:
+			_stuck = 0.0
 		if _figure:
 			_figure.scale.x = -1.0 if to.x < 0 else 1.0
 		elif _anim:

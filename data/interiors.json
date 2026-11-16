@@ -10,8 +10,8 @@
   ],
   "back": [
    "town",
-   6,
-   10
+   16,
+   29
   ],
   "music": "town",
   "props": [
@@ -197,8 +197,8 @@
   ],
   "back": [
    "town",
-   18,
-   10
+   30,
+   29
   ],
   "music": "town",
   "props": [
@@ -310,8 +310,8 @@
   ],
   "back": [
    "town",
-   5,
-   20
+   51,
+   63
   ],
   "music": "town",
   "props": [
@@ -456,8 +456,8 @@
   ],
   "back": [
    "town",
-   16,
-   20
+   53,
+   43
   ],
   "music": "town",
   "props": [
@@ -575,8 +575,8 @@
   ],
   "back": [
    "town",
-   4,
-   31
+   62,
+   62
   ],
   "music": "town",
   "props": [
@@ -715,8 +715,8 @@
   ],
   "back": [
    "town",
-   22,
-   31
+   49,
+   27
   ],
   "music": "town",
   "props": [
@@ -825,8 +825,8 @@
   ],
   "back": [
    "town",
-   8,
-   37
+   78,
+   40
   ],
   "music": "house",
   "props": [
@@ -937,8 +937,8 @@
   ],
   "back": [
    "town",
-   19,
-   37
+   49,
+   73
   ],
   "music": "house",
   "props": [
@@ -1070,8 +1070,8 @@
   ],
   "back": [
    "town",
-   25,
-   37
+   78,
+   64
   ],
   "music": "title",
   "props": [
@@ -1192,8 +1192,8 @@
   ],
   "back": [
    "town",
-   3,
-   25
+   13,
+   60
   ],
   "music": "house",
   "props": [
@@ -1285,8 +1285,8 @@
   ],
   "back": [
    "town",
-   16,
-   25
+   23,
+   67
   ],
   "music": "house",
   "props": [
@@ -1607,5 +1607,824 @@
   ],
   "npcs": [],
   "intro": "Whitewashed stone, a lamp that still burns, and no keeper. Somebody keeps it lit."
+ },
+ "mansion": {
+  "cols": 11,
+  "rows": 10,
+  "floor": "fl_wood",
+  "wall": "wl_floral",
+  "door": [
+   5,
+   9
+  ],
+  "back": [
+   "town",
+   60,
+   24
+  ],
+  "music": "house",
+  "props": [
+   {
+    "name": "bed2_green",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "dresser2_a",
+    "cell": [
+     8,
+     2
+    ]
+   },
+   {
+    "name": "table2_round",
+    "cell": [
+     5,
+     5
+    ]
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     4,
+     5
+    ]
+   },
+   {
+    "name": "plant2_d",
+    "cell": [
+     8,
+     7
+    ]
+   },
+   {
+    "name": "herbs_b",
+    "cell": [
+     5,
+     2
+    ],
+    "solid": false
+   },
+   {
+    "name": "rug2_round_blue",
+    "cell": [
+     5,
+     7
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "bed",
+    "cell": [
+     2,
+     3
+    ],
+    "hint": "A: bed"
+   },
+   {
+    "type": "note",
+    "cell": [
+     8,
+     2
+    ],
+    "who": "",
+    "text": "A dresser full of potion bottles and one very small sweater.",
+    "hint": "A: look",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     2,
+     3
+    ],
+    "who": "",
+    "text": "Portraits of six mayors named Alder. The newest one looks tired.",
+    "hint": "A: portraits",
+    "solid": false
+   }
+  ],
+  "npcs": [
+   {
+    "id": "alder",
+    "cell": [
+     5,
+     4
+    ]
+   }
+  ],
+  "intro": "Mayor Alder's house: more bookshelves than a mansion needs, and a kettle always on."
+ },
+ "school": {
+  "cols": 16,
+  "rows": 12,
+  "floor": "fl_carpet_green",
+  "wall": "wl_plaster",
+  "door": [
+   8,
+   11
+  ],
+  "back": [
+   "town",
+   60,
+   72
+  ],
+  "music": "house",
+  "props": [
+   {
+    "name": "bookcase3_a",
+    "cell": [
+     2,
+     2
+    ]
+   },
+   {
+    "name": "bookcase3_b",
+    "cell": [
+     3,
+     2
+    ]
+   },
+   {
+    "name": "bookcase3_c",
+    "cell": [
+     4,
+     2
+    ]
+   },
+   {
+    "name": "bookcase3_d",
+    "cell": [
+     11,
+     2
+    ]
+   },
+   {
+    "name": "bookcase3_e",
+    "cell": [
+     12,
+     2
+    ]
+   },
+   {
+    "name": "bookcase3_f",
+    "cell": [
+     13,
+     2
+    ]
+   },
+   {
+    "name": "reading_table",
+    "cell": [
+     6,
+     6
+    ],
+    "w": 2
+   },
+   {
+    "name": "globe",
+    "cell": [
+     9,
+     9
+    ]
+   },
+   {
+    "name": "card_catalogue",
+    "cell": [
+     7,
+     2
+    ],
+    "w": 1
+   },
+   {
+    "name": "library_ladder",
+    "cell": [
+     5,
+     2
+    ],
+    "solid": false
+   },
+   {
+    "name": "armchair_window",
+    "cell": [
+     12,
+     8
+    ],
+    "w": 1
+   }
+  ],
+  "things": [
+   {
+    "type": "note",
+    "cell": [
+     3,
+     3
+    ],
+    "who": "Book",
+    "text": "'A History of the Valley', chapter one: 'Before the town there was the light, and before the light there was the cat.' (Tom: lore hook.)",
+    "hint": "A: read",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     12,
+     3
+    ],
+    "who": "Book",
+    "text": "'Grumps and How to Cheer Them': mostly blank pages. Someone wrote 'you can't' on the last one.",
+    "hint": "A: read",
+    "solid": false
+   }
+  ],
+  "npcs": [
+   {
+    "id": "pip",
+    "cell": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "wren_jr",
+    "cell": [
+     7,
+     5
+    ]
+   },
+   {
+    "id": "tobin",
+    "cell": [
+     10,
+     5
+    ]
+   },
+   {
+    "id": "mabel",
+    "cell": [
+     13,
+     5
+    ]
+   }
+  ],
+  "intro": "The schoolroom. Four desks, one globe with the moon drawn in by hand."
+ },
+ "cottage_c": {
+  "cols": 11,
+  "rows": 10,
+  "floor": "fl_wood",
+  "wall": "wl_wood",
+  "door": [
+   5,
+   9
+  ],
+  "back": [
+   "town",
+   13,
+   74
+  ],
+  "music": "house",
+  "props": [
+   {
+    "name": "bed2_blue",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "crate",
+    "cell": [
+     8,
+     2
+    ]
+   },
+   {
+    "name": "barrel",
+    "cell": [
+     8,
+     7
+    ]
+   },
+   {
+    "name": "table2_long4",
+    "cell": [
+     5,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "stool_wood",
+    "cell": [
+     4,
+     5
+    ]
+   },
+   {
+    "name": "painting2_b",
+    "cell": [
+     5,
+     2
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "bed",
+    "cell": [
+     2,
+     3
+    ],
+    "hint": "A: bed"
+   },
+   {
+    "type": "note",
+    "cell": [
+     8,
+     2
+    ],
+    "who": "",
+    "text": "Fishing tackle, three broken rods, and a photo of a fish bigger than the man holding it.",
+    "hint": "A: look",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     8,
+     3
+    ],
+    "who": "",
+    "text": "Half the cottage is canvases, half is books. The line down the middle is chalk.",
+    "hint": "A: look",
+    "solid": false
+   }
+  ],
+  "npcs": [
+   {
+    "id": "lumi",
+    "cell": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "theo",
+    "cell": [
+     8,
+     4
+    ]
+   }
+  ],
+  "intro": "Lumi and Theo's cottage: paint on one side, paper on the other."
+ },
+ "hazel_house": {
+  "cols": 11,
+  "rows": 10,
+  "floor": "fl_wood",
+  "wall": "wl_floral",
+  "door": [
+   5,
+   9
+  ],
+  "back": [
+   "town",
+   24,
+   85
+  ],
+  "music": "house",
+  "props": [
+   {
+    "name": "bed2_green",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "dresser2_a",
+    "cell": [
+     8,
+     2
+    ]
+   },
+   {
+    "name": "table2_round",
+    "cell": [
+     5,
+     5
+    ]
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     4,
+     5
+    ]
+   },
+   {
+    "name": "plant2_d",
+    "cell": [
+     8,
+     7
+    ]
+   },
+   {
+    "name": "herbs_b",
+    "cell": [
+     5,
+     2
+    ],
+    "solid": false
+   },
+   {
+    "name": "rug2_round_blue",
+    "cell": [
+     5,
+     7
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "bed",
+    "cell": [
+     2,
+     3
+    ],
+    "hint": "A: bed"
+   },
+   {
+    "type": "note",
+    "cell": [
+     8,
+     2
+    ],
+    "who": "",
+    "text": "A dresser full of potion bottles and one very small sweater.",
+    "hint": "A: look",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     2,
+     4
+    ],
+    "who": "",
+    "text": "Seed packets sorted by month. A hoe worn to a crescent.",
+    "hint": "A: seed shelf",
+    "solid": false
+   }
+  ],
+  "npcs": [
+   {
+    "id": "hazel",
+    "cell": [
+     5,
+     4
+    ]
+   }
+  ],
+  "intro": "Hazel's farmhouse smells of soil and bread."
+ },
+ "stable": {
+  "cols": 11,
+  "rows": 10,
+  "floor": "fl_wood",
+  "wall": "wl_wood",
+  "door": [
+   5,
+   9
+  ],
+  "back": [
+   "town",
+   32,
+   93
+  ],
+  "music": "house",
+  "props": [
+   {
+    "name": "bed2_blue",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "crate",
+    "cell": [
+     8,
+     2
+    ]
+   },
+   {
+    "name": "barrel",
+    "cell": [
+     8,
+     7
+    ]
+   },
+   {
+    "name": "table2_long4",
+    "cell": [
+     5,
+     5
+    ],
+    "w": 1
+   },
+   {
+    "name": "stool_wood",
+    "cell": [
+     4,
+     5
+    ]
+   },
+   {
+    "name": "painting2_b",
+    "cell": [
+     5,
+     2
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "bed",
+    "cell": [
+     2,
+     3
+    ],
+    "hint": "A: bed"
+   },
+   {
+    "type": "note",
+    "cell": [
+     8,
+     2
+    ],
+    "who": "",
+    "text": "Fishing tackle, three broken rods, and a photo of a fish bigger than the man holding it.",
+    "hint": "A: look",
+    "solid": false
+   },
+   {
+    "type": "stable",
+    "cell": [
+     5,
+     4
+    ],
+    "hint": "A: the stable (horses soon)",
+    "solid": false
+   }
+  ],
+  "npcs": [],
+  "intro": "The stable. Hay, tack, and a stall waiting for a horse."
+ },
+ "lodge": {
+  "cols": 11,
+  "rows": 10,
+  "floor": "fl_wood",
+  "wall": "wl_floral",
+  "door": [
+   5,
+   9
+  ],
+  "back": [
+   "town",
+   78,
+   78
+  ],
+  "music": "house",
+  "props": [
+   {
+    "name": "bed2_green",
+    "cell": [
+     2,
+     3
+    ],
+    "w": 1
+   },
+   {
+    "name": "dresser2_a",
+    "cell": [
+     8,
+     2
+    ]
+   },
+   {
+    "name": "table2_round",
+    "cell": [
+     5,
+     5
+    ]
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     4,
+     5
+    ]
+   },
+   {
+    "name": "plant2_d",
+    "cell": [
+     8,
+     7
+    ]
+   },
+   {
+    "name": "herbs_b",
+    "cell": [
+     5,
+     2
+    ],
+    "solid": false
+   },
+   {
+    "name": "rug2_round_blue",
+    "cell": [
+     5,
+     7
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "bed",
+    "cell": [
+     2,
+     3
+    ],
+    "hint": "A: bed"
+   },
+   {
+    "type": "note",
+    "cell": [
+     8,
+     2
+    ],
+    "who": "",
+    "text": "A dresser full of potion bottles and one very small sweater.",
+    "hint": "A: look",
+    "solid": false
+   },
+   {
+    "type": "counter",
+    "cell": [
+     5,
+     4
+    ],
+    "shop": "lodge",
+    "hint": "A: Rook's goods",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     2,
+     3
+    ],
+    "who": "",
+    "text": "Pelts on the wall, a map of the hills with X's that aren't treasure.",
+    "hint": "A: map",
+    "solid": false
+   }
+  ],
+  "npcs": [
+   {
+    "id": "rook",
+    "cell": [
+     5,
+     4
+    ]
+   }
+  ],
+  "intro": "Rook's lodge: smoke, pelts, and a bow over the door."
+ },
+ "bank": {
+  "cols": 18,
+  "rows": 12,
+  "floor": "fl_carpet_blue",
+  "wall": "wl_plaster",
+  "door": [
+   9,
+   11
+  ],
+  "back": [
+   "town",
+   30,
+   13
+  ],
+  "music": "town",
+  "props": [
+   {
+    "name": "council_table",
+    "cell": [
+     6,
+     4
+    ],
+    "w": 5
+   },
+   {
+    "name": "mayor_desk",
+    "cell": [
+     12,
+     8
+    ],
+    "w": 2
+   },
+   {
+    "name": "flag_a",
+    "cell": [
+     2,
+     2
+    ]
+   },
+   {
+    "name": "flag_b",
+    "cell": [
+     15,
+     2
+    ]
+   },
+   {
+    "name": "notice_board2",
+    "cell": [
+     8,
+     2
+    ],
+    "w": 1,
+    "solid": false
+   },
+   {
+    "name": "podium",
+    "cell": [
+     4,
+     8
+    ]
+   },
+   {
+    "name": "pew_a",
+    "cell": [
+     5,
+     10
+    ],
+    "w": 1
+   },
+   {
+    "name": "pew_b",
+    "cell": [
+     10,
+     10
+    ],
+    "w": 1
+   },
+   {
+    "name": "clock_grand2",
+    "cell": [
+     13,
+     2
+    ],
+    "anim": true
+   },
+   {
+    "name": "rug2_red",
+    "cell": [
+     7,
+     7
+    ],
+    "w": 2,
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "note",
+    "cell": [
+     8,
+     4
+    ],
+    "who": "",
+    "text": "A brass grille, a ledger, and nobody behind the counter. A sign: 'Deposits soon. Loans never.' (Tom: the bank's savings/loan system goes here.)",
+    "hint": "A: counter",
+    "solid": false
+   }
+  ],
+  "npcs": [],
+  "intro": "The bank. Marble floor, one teller window, and the quietest room in town."
  }
 }

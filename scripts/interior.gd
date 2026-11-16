@@ -61,6 +61,13 @@ func after_ready() -> void:
 	for n in I.get("npcs", []):
 		var id := str(n["id"])
 		var data: Dictionary = GameState.npcs.get(id, {"name": id.capitalize()})
+		# Routine: a villager is only inside when their day says so (work hours
+		# for shops, evenings at home or the inn). Shopkeepers' counters still
+		# work without them: the shop is "self-serve" after hours.
+		var place := Npc.place_now(data.get("routine", []), id)
+		var here := _interior_matches(place)
+		if not data.get("routine", []).is_empty() and not here:
+			continue
 		var npc := Npc.new()
 		npc.map = self
 		npc.setup(id, data, cell_center(Vector2i(int(n["cell"][0]), int(n["cell"][1]))))
@@ -78,6 +85,20 @@ func has_npc_at(c: Vector2i) -> bool:
 	for n: Npc in npcs:
 		if n.cell() == c:
 			return true
+	return false
+
+
+## Does a routine place ("work", "home", "inn", ...) mean this interior?
+func _interior_matches(place: String) -> bool:
+	match place:
+		"work": return interior_id in ["store", "smith", "potions", "hall", "bakery", "clinic", "library", "fishing_hut", "lodge", "inn"]
+		"home": return interior_id in ["mansion", "cottage_a", "cottage_b", "cottage_c", "hazel_house", "lodge"]
+		"inn": return interior_id == "inn"
+		"chapel": return interior_id == "chapel"
+		"school": return interior_id == "school"
+		"clinic": return interior_id == "clinic"
+		"library": return interior_id == "library"
+		"hall": return interior_id == "hall"
 	return false
 
 
@@ -213,7 +234,7 @@ func _upgrade_tools() -> void:
 			if t + 1 >= GameState.TOOL_TIERS.size():
 				opts.append("%s: moon (max)" % GameState.item_name(k))
 			else:
-				var need: Dictionary = GameState.TOOL_UPGRADE_NEED[t + 1]
+				var need: Dictionary = GameState.upgrade_need(k)
 				var parts: Array = []
 				for id in need:
 					parts.append("%d %s" % [int(need[id]), "◆" if id == "crystals" else GameState.item_name(str(id))])

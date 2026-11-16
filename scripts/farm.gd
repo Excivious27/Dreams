@@ -63,7 +63,7 @@ func build() -> void:
 	pad = 6
 	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
 	music_track = "farm"
-	add_exit(TOWN_EXIT, "town", Vector2(10 * TILE, 2 * TILE + 8), "down", "▼ town")
+	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 3 * TILE), "down", "▼ town")
 	add_exit(MEADOW_EXIT, "meadow", Vector2(2 * TILE, 10 * TILE), "right", "meadow ▶")
 	add_exit(FOREST_EXIT, "forest", Vector2(36 * TILE, 46 * TILE + 8), "up", "▲ forest")
 	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 14 * TILE), "left", "◀ lake")

@@ -13,7 +13,57 @@
    "Welcome in! Seeds are on the left, snacks on the right, gossip's free.",
    "Gideon says my prices are robbery. Gideon charges forty crystals for a nail.",
    "Don't lean on the glass case, dear."
-  ]
+  ],
+  "spot_name": "store_front",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    7,
+    "store_front"
+   ],
+   [
+    8,
+    "work"
+   ],
+   [
+    12,
+    "plaza"
+   ],
+   [
+    13,
+    "work"
+   ],
+   [
+    18,
+    "fountain"
+   ],
+   [
+    20,
+    "home"
+   ]
+  ],
+  "likes": [
+   "strawberry",
+   "honey",
+   "gift_pie",
+   "sunflower",
+   "apple"
+  ],
+  "dislikes": [
+   "copper",
+   "stone",
+   "slime_goo"
+  ],
+  "perks": {
+   "2": "5% off at the General Store",
+   "4": "10% off; Maple stocks rare seeds",
+   "6": "Maple sends you a seed pack each season",
+   "8": "20% off at the General Store",
+   "10": "Store open late; Maple gifts a Golden Watering Can"
+  }
  },
  "gideon": {
   "name": "Gideon",
@@ -29,7 +79,53 @@
    "Iron. Steel. Don't touch the forge.",
    "Bring me ore and I'll make you something that doesn't bend.",
    "Wooden sword. Hm. You'll want better before the mountain."
-  ]
+  ],
+  "spot_name": "smith_front",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    7,
+    "work"
+   ],
+   [
+    12,
+    "smith_front"
+   ],
+   [
+    13,
+    "work"
+   ],
+   [
+    19,
+    "inn"
+   ],
+   [
+    22,
+    "home"
+   ]
+  ],
+  "likes": [
+   "copper_bar",
+   "iron_bar",
+   "coal",
+   "ruby",
+   "steel_bar"
+  ],
+  "dislikes": [
+   "flower",
+   "strawberry",
+   "cake"
+  ],
+  "perks": {
+   "2": "Tool upgrades 10% cheaper",
+   "4": "Free repairs; upgrades 20% cheaper",
+   "6": "Gideon forges a free Copper Ring",
+   "8": "Upgrades 30% cheaper",
+   "10": "Gideon teaches Whirlwind (combat)"
+  }
  },
  "wren": {
   "name": "Wren",
@@ -45,7 +141,48 @@
    "Careful, that one bites. The purple one. No, the OTHER purple one.",
    "Red for hurts, tea for tired. Say it back to me.",
    "The crystal talks to you? Interesting. Does it talk to anyone else?"
-  ]
+  ],
+  "spot_name": "wren_garden",
+  "routine": [
+   [
+    6,
+    "wren_garden"
+   ],
+   [
+    8,
+    "work"
+   ],
+   [
+    14,
+    "pond"
+   ],
+   [
+    16,
+    "work"
+   ],
+   [
+    19,
+    "home"
+   ]
+  ],
+  "likes": [
+   "wild_herb",
+   "mushroom",
+   "glow_cap",
+   "moon_shard",
+   "crystal"
+  ],
+  "dislikes": [
+   "fish",
+   "meat"
+  ],
+  "perks": {
+   "2": "Potions heal 25% more",
+   "4": "Wren sells Energy Tea at cost",
+   "6": "Wren brews you a free potion each week",
+   "8": "Potions heal 50% more",
+   "10": "Wren teaches Crystal Shield (magic)"
+  }
  },
  "alder": {
   "name": "Mayor Alder",
@@ -61,7 +198,52 @@
    "Have a seat, have a seat. Mind the papers. Those are important. Probably.",
    "The town's doing well. The town is always doing well. That's my job.",
    "If you need the board, the board meets when I say it meets."
-  ]
+  ],
+  "spot_name": "hall_front",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    8,
+    "work"
+   ],
+   [
+    12,
+    "hall_front"
+   ],
+   [
+    13,
+    "work"
+   ],
+   [
+    17,
+    "mansion_front"
+   ],
+   [
+    20,
+    "home"
+   ]
+  ],
+  "likes": [
+   "gold_bar",
+   "wine",
+   "pumpkin",
+   "book"
+  ],
+  "dislikes": [
+   "slime_goo",
+   "bone",
+   "trash"
+  ],
+  "perks": {
+   "2": "Town records: see crop prices in the Journal",
+   "4": "Alder waives the clinic fee once a season",
+   "6": "Building permits: tier-2 plans unlocked",
+   "8": "Alder lends you the town cart (sell box pays 10% more)",
+   "10": "Keys to the city: free room at the Inn"
+  }
  },
  "sal": {
   "name": "Sal",
@@ -72,7 +254,47 @@
    23
   ],
   "sprite": "npc_drifter",
-  "portrait": "drifter"
+  "portrait": "drifter",
+  "spot_name": "plaza",
+  "routine": [
+   [
+    6,
+    "river_s"
+   ],
+   [
+    10,
+    "plaza"
+   ],
+   [
+    16,
+    "bridge"
+   ],
+   [
+    20,
+    "inn"
+   ],
+   [
+    24,
+    "plaza"
+   ]
+  ],
+  "likes": [
+   "bread",
+   "energy_tea",
+   "fish",
+   "coffee"
+  ],
+  "dislikes": [
+   "gold_bar",
+   "flower"
+  ],
+  "perks": {
+   "2": "Sal tells you where the loot is (map pins)",
+   "4": "Sal watches your back: enemies notice you later",
+   "6": "Sal joins your crew",
+   "8": "Sal's contacts: black-market prices",
+   "10": "Sal fights beside you in the city"
+  }
  },
  "finn": {
   "name": "Finn",
@@ -83,7 +305,52 @@
    22
   ],
   "sprite": "npc_fisherman",
-  "portrait": "fisherman"
+  "portrait": "fisherman",
+  "spot_name": "finn_garden",
+  "routine": [
+   [
+    5,
+    "river_n"
+   ],
+   [
+    9,
+    "work"
+   ],
+   [
+    13,
+    "finn_garden"
+   ],
+   [
+    15,
+    "river_s"
+   ],
+   [
+    19,
+    "inn"
+   ],
+   [
+    21,
+    "home"
+   ]
+  ],
+  "likes": [
+   "trout",
+   "minnow",
+   "bait",
+   "crab",
+   "pearl"
+  ],
+  "dislikes": [
+   "flower",
+   "perfume"
+  ],
+  "perks": {
+   "2": "Fish bite 10% sooner",
+   "4": "Finn's bait is free",
+   "6": "Finn shows you the secret fishing spot",
+   "8": "Rare fish bite twice as often",
+   "10": "Finn gives you the Legendary Rod plans"
+  }
  },
  "lumi": {
   "name": "Lumi",
@@ -94,7 +361,48 @@
    19
   ],
   "sprite": "npc_artist",
-  "portrait": "artist"
+  "portrait": "artist",
+  "spot_name": "park",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    8,
+    "park"
+   ],
+   [
+    12,
+    "pond"
+   ],
+   [
+    15,
+    "plaza_e"
+   ],
+   [
+    18,
+    "home"
+   ]
+  ],
+  "likes": [
+   "flower",
+   "sunflower",
+   "starflower",
+   "paint",
+   "crystal"
+  ],
+  "dislikes": [
+   "bone",
+   "slime_goo"
+  ],
+  "perks": {
+   "2": "Lumi paints a sign for your farm",
+   "4": "Lumi sells paints (house colours)",
+   "6": "A portrait of you hangs in the hall",
+   "8": "Lumi teaches you to see hidden forage (glints)",
+   "10": "Lumi paints the Dream mural at your house"
+  }
  },
  "theo": {
   "name": "Theo",
@@ -110,7 +418,52 @@
    "Shh. Well, not shh. But quietly.",
    "There's a book here about the valley that nobody's finished. Chapter one is enough to keep you up.",
    "Lumi draws in the margins. I pretend not to notice."
-  ]
+  ],
+  "spot_name": "library_front",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    8,
+    "work"
+   ],
+   [
+    12,
+    "library_front"
+   ],
+   [
+    13,
+    "work"
+   ],
+   [
+    17,
+    "fountain"
+   ],
+   [
+    19,
+    "home"
+   ]
+  ],
+  "likes": [
+   "book",
+   "map",
+   "old_coin",
+   "fossil",
+   "crystal"
+  ],
+  "dislikes": [
+   "fish",
+   "meat"
+  ],
+  "perks": {
+   "2": "+5% skill XP",
+   "4": "Theo lends you books: +10% skill XP",
+   "6": "Theo translates the ruin stones",
+   "8": "+15% skill XP",
+   "10": "Theo's thesis: one free skill point in every tree"
+  }
  },
  "hazel": {
   "name": "Hazel",
@@ -121,7 +474,48 @@
    7
   ],
   "sprite": "npc_young_farmer",
-  "portrait": "young_farmer"
+  "portrait": "young_farmer",
+  "spot_name": "hazel_yard",
+  "routine": [
+   [
+    5,
+    "hazel_yard"
+   ],
+   [
+    9,
+    "market"
+   ],
+   [
+    12,
+    "hazel_yard"
+   ],
+   [
+    16,
+    "store_front"
+   ],
+   [
+    18,
+    "home"
+   ]
+  ],
+  "likes": [
+   "turnip",
+   "potato",
+   "corn",
+   "hay",
+   "milk"
+  ],
+  "dislikes": [
+   "gold_bar",
+   "perfume"
+  ],
+  "perks": {
+   "2": "Hazel sells seeds at her yard on market days",
+   "4": "Hazel waters your crops when it's sunny (every other day)",
+   "6": "Hazel waters your crops every day",
+   "8": "Hazel harvests ripe crops into your sell box",
+   "10": "Hazel's heirloom seeds (star quality)"
+  }
  },
  "bram": {
   "name": "Bram",
@@ -137,7 +531,46 @@
    "Stew's on. Sit anywhere that isn't the mayor's chair.",
    "Heard a story about a farmer and a crystal. Didn't believe it. Then you walked in.",
    "Rooms upstairs if the walk home's too long. First night's free, second night's a pie."
-  ]
+  ],
+  "spot_name": "inn_front",
+  "routine": [
+   [
+    6,
+    "inn_front"
+   ],
+   [
+    8,
+    "work"
+   ],
+   [
+    14,
+    "market"
+   ],
+   [
+    16,
+    "work"
+   ],
+   [
+    25,
+    "home"
+   ]
+  ],
+  "likes": [
+   "wine",
+   "cheese",
+   "meat",
+   "mushroom"
+  ],
+  "dislikes": [
+   "slime_goo"
+  ],
+  "perks": {
+   "2": "Inn room 50% off",
+   "4": "Free soup: +30 energy when you visit",
+   "6": "Inn room free",
+   "8": "Bram's stories: map of the hidden regions",
+   "10": "Bram names a dish after you (+50 max energy)"
+  }
  },
  "posy": {
   "name": "Posy",
@@ -153,7 +586,52 @@
    "Fresh out of the oven! Mind your fingers.",
    "Bring me wheat and I'll bring you bread. Bring me strawberries and I'll bring you cake.",
    "Maple says you're clearing that old field. Good. Somebody should."
-  ]
+  ],
+  "spot_name": "bakery_front",
+  "routine": [
+   [
+    4,
+    "work"
+   ],
+   [
+    7,
+    "bakery_front"
+   ],
+   [
+    9,
+    "work"
+   ],
+   [
+    14,
+    "fountain"
+   ],
+   [
+    16,
+    "work"
+   ],
+   [
+    18,
+    "home"
+   ]
+  ],
+  "likes": [
+   "flour",
+   "honey",
+   "egg",
+   "strawberry",
+   "milk"
+  ],
+  "dislikes": [
+   "fish",
+   "slime_goo"
+  ],
+  "perks": {
+   "2": "A free loaf every morning",
+   "4": "Posy buys your flour at double",
+   "6": "Posy's recipes: pies and cakes",
+   "8": "Festival cake: +20 max energy",
+   "10": "Posy opens a second oven at your farm"
+  }
  },
  "juniper": {
   "name": "Juniper",
@@ -169,7 +647,51 @@
    "Sit. Let me look at that.",
    "You've been swinging a sword in the meadow, haven't you. I can always tell.",
    "Eat something green once in a while. I mean it."
-  ]
+  ],
+  "spot_name": "clinic_front",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    7,
+    "work"
+   ],
+   [
+    12,
+    "clinic_front"
+   ],
+   [
+    13,
+    "work"
+   ],
+   [
+    18,
+    "bridge"
+   ],
+   [
+    20,
+    "home"
+   ]
+  ],
+  "likes": [
+   "wild_herb",
+   "honey",
+   "tea",
+   "glow_cap"
+  ],
+  "dislikes": [
+   "coffee",
+   "meat"
+  ],
+  "perks": {
+   "2": "Clinic fee halved",
+   "4": "Juniper's tonic: +20 max health",
+   "6": "Clinic fee waived",
+   "8": "Juniper visits: wake with full energy after a collapse",
+   "10": "Juniper teaches Second Wind (combat)"
+  }
  },
  "rook": {
   "name": "Rook",
@@ -184,7 +706,52 @@
   "inside": [
    "Tracks by the stream. Big ones.",
    "Don't go in the forest after dark without a lantern. Or do. I'll find what's left."
-  ]
+  ],
+  "spot_name": "lodge_front",
+  "routine": [
+   [
+    5,
+    "orchard"
+   ],
+   [
+    9,
+    "lodge_front"
+   ],
+   [
+    12,
+    "river_n"
+   ],
+   [
+    16,
+    "lodge_front"
+   ],
+   [
+    20,
+    "inn"
+   ],
+   [
+    23,
+    "home"
+   ]
+  ],
+  "likes": [
+   "meat",
+   "pelt",
+   "arrow",
+   "bone",
+   "mushroom"
+  ],
+  "dislikes": [
+   "flower",
+   "cake"
+  ],
+  "perks": {
+   "2": "Rook shows tracks: critters drop pelts",
+   "4": "Rook sells arrows and traps",
+   "6": "Rook's map: the quarry path",
+   "8": "Rook walks with you (fights beside you)",
+   "10": "Rook's bow"
+  }
  },
  "pip": {
   "name": "Pip",
@@ -200,7 +767,42 @@
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
    "Race you to the fountain!"
-  ]
+  ],
+  "spot_name": "fountain",
+  "routine": [
+   [
+    7,
+    "home"
+   ],
+   [
+    9,
+    "school"
+   ],
+   [
+    15,
+    "fountain"
+   ],
+   [
+    18,
+    "home"
+   ]
+  ],
+  "likes": [
+   "candy",
+   "apple",
+   "frog",
+   "toy"
+  ],
+  "dislikes": [
+   "turnip"
+  ],
+  "perks": {
+   "2": "Pip finds you a coin now and then",
+   "4": "Pip's treasure map",
+   "6": "Pip's secret: the fountain wish works",
+   "8": "Pip's gang",
+   "10": "Pip's lucky charm"
+  }
  },
  "wren_jr": {
   "name": "Wren jr",
@@ -216,7 +818,42 @@
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
    "Race you to the fountain!"
-  ]
+  ],
+  "spot_name": "plaza_e",
+  "routine": [
+   [
+    7,
+    "home"
+   ],
+   [
+    9,
+    "school"
+   ],
+   [
+    15,
+    "plaza_e"
+   ],
+   [
+    18,
+    "home"
+   ]
+  ],
+  "likes": [
+   "candy",
+   "flower",
+   "frog",
+   "butterfly"
+  ],
+  "dislikes": [
+   "bone"
+  ],
+  "perks": {
+   "2": "Wren jr shares forage spots",
+   "4": "A frog friend",
+   "6": "Wren jr's garden: free flower seeds",
+   "8": "Wren jr's potion lesson",
+   "10": "Wren jr's wish"
+  }
  },
  "tobin": {
   "name": "Tobin",
@@ -232,7 +869,42 @@
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
    "Race you to the fountain!"
-  ]
+  ],
+  "spot_name": "fountain",
+  "routine": [
+   [
+    7,
+    "home"
+   ],
+   [
+    9,
+    "school"
+   ],
+   [
+    15,
+    "beach_road"
+   ],
+   [
+    18,
+    "home"
+   ]
+  ],
+  "likes": [
+   "candy",
+   "shell",
+   "crab",
+   "toy"
+  ],
+  "dislikes": [
+   "turnip"
+  ],
+  "perks": {
+   "2": "Tobin trades shells",
+   "4": "Tobin's beach map",
+   "6": "Tobin's kite",
+   "8": "Tobin's crew",
+   "10": "Tobin's compass"
+  }
  },
  "mabel": {
   "name": "Mabel",
@@ -248,6 +920,41 @@
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
    "Race you to the fountain!"
-  ]
+  ],
+  "spot_name": "plaza_e",
+  "routine": [
+   [
+    7,
+    "home"
+   ],
+   [
+    9,
+    "school"
+   ],
+   [
+    15,
+    "park"
+   ],
+   [
+    18,
+    "home"
+   ]
+  ],
+  "likes": [
+   "candy",
+   "flower",
+   "strawberry",
+   "toy"
+  ],
+  "dislikes": [
+   "bone"
+  ],
+  "perks": {
+   "2": "Mabel shares a secret",
+   "4": "Mabel's flower crown",
+   "6": "Mabel's songs",
+   "8": "Mabel's diary",
+   "10": "Mabel's wish"
+  }
  }
 }

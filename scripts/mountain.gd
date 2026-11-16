@@ -24,7 +24,7 @@ func build() -> void:
 	pad = 6
 	border = "cliff"
 	music_track = "mine"
-	add_exit(TOWN_EXIT, "town", Vector2(25 * TILE, 13 * TILE + 8), "left", "◀ town")
+	add_exit(TOWN_EXIT, "town", Vector2(80 * TILE, 47 * TILE + 8), "left", "◀ town")
 	# Three wide terraces split by two long cliff ledges, each with one stair gap.
 	for l in LEDGES:
 		var y: int = l[0]

@@ -207,8 +207,13 @@ func _run() -> void:
 		await press("a", 2)
 		await frames(6)
 	await shot("08_town")
-	# Talk to Maple.
+	# Talk to Maple (noon: she's out on the plaza; routines keep her indoors at 6am).
+	GameState.run["time"] = 12 * 60 + 10
+	await frames(5)
 	var maple: Npc = town.npcs[0]
+	maple._apply_routine(true)
+	await frames(3)
+	check(maple.visible, "Maple is outside at noon (%s)" % maple._place)
 	town.player.position = maple.position + Vector2(0, 14)
 	town.player.facing = "up"
 	await frames(20)
@@ -223,7 +228,7 @@ func _run() -> void:
 		await frames(6)
 	check(GameState.quest_done("meet_town"), "meet_town quest completed")
 	# Shop: walk in the store door, then up to the counter and buy strawberry seeds.
-	town.player.position = town.cell_center(Vector2i(6, 10))
+	town.player.position = town.cell_center(Vector2i(16, 29))
 	town.player.facing = "up"
 	await frames(20)
 	await press("a", 3)

@@ -168,11 +168,23 @@ static func tool_icon(kind: String) -> String:
 	return "%s_%s" % [k, TOOL_TIERS[tool_tier(k)]]
 
 
+## Gideon's friendship knocks crystals off an upgrade (10/20/30%).
+static func upgrade_need(kind: String) -> Dictionary:
+	var t := tool_tier(kind)
+	if t + 1 >= TOOL_TIERS.size():
+		return {}
+	var need: Dictionary = (TOOL_UPGRADE_NEED[t + 1] as Dictionary).duplicate()
+	var off := 0.30 if has_friend_perk("gideon", 8) else (0.20 if has_friend_perk("gideon", 4) else (0.10 if has_friend_perk("gideon", 2) else 0.0))
+	if need.has("crystals"):
+		need["crystals"] = int(ceil(int(need["crystals"]) * (1.0 - off)))
+	return need
+
+
 static func can_upgrade_tool(kind: String) -> bool:
 	var t := tool_tier(kind)
 	if t + 1 >= TOOL_TIERS.size():
 		return false
-	var need: Dictionary = TOOL_UPGRADE_NEED[t + 1]
+	var need: Dictionary = upgrade_need(kind)
 	for id in need:
 		if id == "crystals":
 			if int(run["crystals"]) < int(need[id]):
@@ -186,7 +198,7 @@ static func upgrade_tool(kind: String) -> bool:
 	if not can_upgrade_tool(kind):
 		return false
 	var t := tool_tier(kind)
-	var need: Dictionary = TOOL_UPGRADE_NEED[t + 1]
+	var need: Dictionary = upgrade_need(kind)
 	for id in need:
 		if id == "crystals":
 			run["crystals"] = int(run["crystals"]) - int(need[id])
@@ -290,8 +302,9 @@ static func sword_damage() -> int:
 # ---- skills ------------------------------------------------------------------
 
 static func add_xp(skill: String, xp: int) -> bool:
-	var s: Dictionary = run["skills"].get(skill, {"level": 1, "xp": 0})
-	s["xp"] = int(s["xp"]) + xp
+	var s: Dictionary = run["skills"].get(skill, {"level": 1, "xp": 0, "nodes": {}})
+	var mult := 1.15 if has_friend_perk("theo", 8) else (1.10 if has_friend_perk("theo", 4) else (1.05 if has_friend_perk("theo", 2) else 1.0))
+	s["xp"] = int(s["xp"]) + int(ceil(xp * mult))
 	var leveled := false
 	while int(s["xp"]) >= xp_for_next(int(s["level"])):
 		s["xp"] = int(s["xp"]) - xp_for_next(int(s["level"]))
@@ -536,11 +549,15 @@ static func refresh_stats() -> void:
 # ---- economy modifiers ---------------------------------------------------------
 
 static func buy_multiplier() -> float:
-	return maxf(0.5, 1.0 - bonus("bartering", "buy_discount"))
+	var m := 1.0 - bonus("bartering", "buy_discount")
+	if has_friend_perk("maple", 8): m -= 0.20
+	elif has_friend_perk("maple", 4): m -= 0.10
+	elif has_friend_perk("maple", 2): m -= 0.05
+	return maxf(0.4, m)
 
 
 static func sell_multiplier() -> float:
-	return 1.0 + bonus("bartering", "sell_bonus")
+	return 1.0 + bonus("bartering", "sell_bonus") + (0.10 if has_friend_perk("alder", 8) else 0.0)
 
 
 ## Roll a drop table: Array of [item, chance, n]. Luck nudges the chance.
@@ -594,11 +611,48 @@ static func spend_energy(n: int) -> bool:
 
 static func heal(n: int) -> void:
 	# Items list "heal" in old heart units (1-3); scale to the 100-point bar.
-	run["hp"] = mini(int(run["hp"]) + n * HEART_HP, int(run["max_hp"]))
+	var mult := 1.5 if has_friend_perk("wren", 8) else (1.25 if has_friend_perk("wren", 2) else 1.0)
+	run["hp"] = mini(int(run["hp"]) + int(n * HEART_HP * mult), int(run["max_hp"]))
 
 
 static func restore_energy(n: int) -> void:
 	run["energy"] = mini(int(run["energy"]) + n, int(run["max_energy"]))
+
+
+# ---- friendship --------------------------------------------------------------
+# 25 points per heart, 10 hearts. Talking +5/day, gifts by taste (npcs.json
+# likes/dislikes), quests +10..20. Each heart level can unlock a perk
+# (npcs.json "perks"); `has_friend_perk(id, hearts)` is what systems check.
+
+const HEART_POINTS := 25
+
+
+static func friend_hearts(npc: String) -> int:
+	return clampi(int(run["friendship"].get(npc, 0)) / HEART_POINTS, 0, 10)
+
+
+static func has_friend_perk(npc: String, hearts: int) -> bool:
+	return friend_hearts(npc) >= hearts
+
+
+static func friend_perk_at(npc: String, hearts: int) -> String:
+	return str(npcs.get(npc, {}).get("perks", {}).get(str(hearts), ""))
+
+
+## Friendship a gift earns: loved +20 (+bonus), liked +8, neutral +3, hated -8.
+static func gift_value(npc: String, item: String) -> int:
+	var d: Dictionary = npcs.get(npc, {})
+	var it: Dictionary = items.get(item, {})
+	var base := 3
+	if item in d.get("likes", []):
+		base = 20 if int(it.get("tier", 1)) >= 3 or str(it.get("rarity", "common")) != "common" else 12
+	elif item in d.get("dislikes", []):
+		base = -8
+	elif str(it.get("rarity", "common")) in ["rare", "epic", "legendary"]:
+		base = 8
+	if base > 0:
+		base += int(bonus("bartering", "gift_bonus")) + int(it.get("friend", 0))
+	return base
 
 
 # ---- quests ------------------------------------------------------------------
@@ -641,6 +695,12 @@ static func _cond_ok(when: Dictionary) -> bool:
 	if when.has("skill") and skill_level(str(when["skill"][0])) < int(when["skill"][1]):
 		return false
 	if when.has("flag") and not run["flags"].has(str(when["flag"])):
+		return false
+	if when.has("season") and season() != str(when["season"]):
+		return false
+	if when.has("friend") and friend_hearts(str(when["friend"][0])) < int(when["friend"][1]):
+		return false
+	if when.has("arc") and str(when["arc"]) != str(run["arc"]):
 		return false
 	if when.has("item"):
 		var it = when["item"]
@@ -803,15 +863,25 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["crystals"] = int(run["crystals"]) + total
 	report["earned"] = total
 	run["sellbox"] = {}
+	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
+	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
 	for key in run["farm"].keys():
 		var tile: Dictionary = run["farm"][key]
 		if tile.get("crop", "") != "":
-			if tile.get("watered", false) or weather_today() == "rain":
+			if has_friend_perk("hazel", 8) and crops.has(str(tile["crop"])) and int(tile.get("days", 0)) >= int(crops[str(tile["crop"])]["days"]):
+				var yid := str(crops[str(tile["crop"])]["yield"])
+				run["sellbox"][yid] = int(run["sellbox"].get(yid, 0)) + 1
+				tile["crop"] = ""
+				tile["days"] = 0
+				continue
+			if tile.get("watered", false) or weather_today() == "rain" or hazel_waters:
 				tile["days"] = int(tile.get("days", 0)) + 1
 				report["grown"] += 1
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
+	if has_friend_perk("posy", 2):
+		add_item("bread", 1)
 	run["day"] = int(run["day"]) + 1
 	run["time"] = DAY_START
 	run["energy"] = int(run["max_energy"]) if not passed_out else int(run["max_energy"]) / 2
