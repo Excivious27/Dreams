@@ -146,3 +146,16 @@
 - Map tab shows the painted world map (`ui/world_map`) with pins for visited areas.
 - Farm animals: `scripts/farm_animal.gd` uses the full idle/walk/eat sets (cows, sheep, goat, chickens, rooster, duck, pig); they wander in pens and can be petted once a day (A).
 - Not yet wired: w26 travel pieces beyond pins (signposts/gates/warp pad/balloon/ferry/drawbridge), aurora, baby animals, w21 river_road. Next: ART-PROMPTS-03.
+
+## Open-world pass (after Tom's "constricted / buggy" feedback)
+
+- **Map size & borders**: `GameMap.pad` + `border` give every outdoor map an organic edge (tree mass, cliff band, water) instead of a fence; `extend(dx, dy)` opens scripted maps to the right/bottom and moves their exits. Regions in `data/regions.json` have `pad`/`border` and were enlarged. `tools/overview.gd` renders whole-map overviews for layout review (`-- /out farm town ...`).
+- **Farm rebuilt** (72×60 + pad): house, mailbox, shipping bin, plans board, pond, NE terrace with a ledge and stairs; field overrun with weeds/rocks/logs/stumps/trees (seeded; cleared cells persist in `run["cleared"]`). Any open grass tills. Buildings/stations are built from the plans board (`FARM.BUILDS`, saved in `run["builds"]`); animals appear only after coop/barn. House starts with bed + dresser.
+- **Controls**: Stardew keys (WASD/arrows, C/left-click tool, X/right-click check, Shift run, E/Esc menu, I/M/F tabs, Tab/wheel cycle, 1-0 slots). Mobile: floating joystick (push far = run), tap-to-move/interact, USE + CHECK + MENU buttons.
+- **Combat**: instant swing with cooldown, wider hitbox, aim assist, buffered presses, hit-stop, screen shake, damage numbers, white hit flash (shader), real knockback that slides along walls, stagger, enemies wind up before striking (no more touch damage), separation.
+- **Collision**: `prop()` now blocks its footprint by default (`solid` param).
+- **Interiors**: `scenes/interior.tscn` + `data/interiors.json`; every town building (store, smith, potions, hall, inn, bakery, clinic, library, chapel, two cottages) has a walk-in interior with fittings, an NPC and a counter. Shop logic moved to `scripts/shops.gd`.
+- **Cinematics**: trees sway when chopped and fall over; rocks crumble; items pop out and fly to the player (`wobble`, `fell_tree`, `break_rock`, `pop_items`).
+- **Art fixes**: dark-magenta backdrop shade is now keyed everywhere (purple blobs under trees gone); wildlife/animal rows sliced by connected components (ghost frames gone); weather overlays soft-keyed.
+- **Mountain** redone: three terraces, two long ledges with stairs, sparse rocks.
+- Known gaps: cliff art is a placeholder strip until ART-PROMPTS-04 batch 1; NPC schedules; beach/lake/forest layouts still the older hand layouts (opened with extend + borders, not redesigned).
