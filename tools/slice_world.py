@@ -2122,11 +2122,74 @@ def w88(): _wear("w88_wear_silver.png", "silver")
 def w89(): _wear("w89_wear_gold.png", "gold")
 
 
+# ---- Prompts-07 batch 3/4: tool anim layers, hair, hats, mounts -------------
+
+def _canvas(im, w=96, h=96, bottom=4):
+    c = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    c.alpha_composite(im, ((w - im.width) // 2, h - im.height - bottom))
+    return c
+
+
+def _rows16(file, group, names, n=16, canvas=(96, 96), icon_group=None, icon_frame=0):
+    """Sheet of 8 rows x n sprites (one row per variant). Saves each row as an
+    n-frame strip <group>/<name> on a fixed canvas, plus an optional icon."""
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:len(names)]
+    for name, (y0, y1) in zip(names, rows):
+        bs = row_sprites(rgba, (4, max(0, y0 - 6), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 6)), n, gap=3)
+        frames = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+            if im.width > canvas[0] or im.height > canvas[1]:
+                im.thumbnail(canvas)
+            frames.append(_canvas(im, canvas[0], canvas[1]))
+        strip(frames, group, name)
+        if icon_group:
+            bb = region_bbox(rgba, bs[min(icon_frame, len(bs) - 1)])
+            if bb:
+                ic = crop(rgba, bb)
+                ic.thumbnail((32, 32))
+                save(ic, icon_group, name)
+
+
+TOOL_TIERS = ["wood", "copper", "iron", "steel", "silver", "gold", "crystal", "moon"]
+
+def _toolanim(file, tool, icon_frame=0):
+    _rows16(file, "toolanim", ["%s_%s" % (tool, t) for t in TOOL_TIERS], icon_group="items", icon_frame=icon_frame)
+
+def w100(): _toolanim("w100_tool_hoe_anim.png", "hoe", 7)
+def w101(): _toolanim("w101_tool_sword_anim.png", "sword", 11)
+def w102(): _toolanim("w102_tool_axe_anim.png", "axe", 0)
+def w103(): _toolanim("w103_tool_rod_anim.png", "rod", 0)
+def w104(): _toolanim("w104_tool_can_anim.png", "can", 9)
+def w105(): _toolanim("w105_tool_pickaxe_anim.png", "pickaxe", 9)
+def w106(): _toolanim("w106_tool_hammer_anim.png", "hammer", 9)
+def w107(): _toolanim("w107_tool_scythe_anim.png", "scythe", 8)
+
+HAIR_A = ["spiky", "shaggy", "long_wavy", "ponytail", "buns", "braid", "layered", "headband"]
+HAIR_B = ["spiky_b", "shaggy_b", "ponytail_b", "bun_b", "wavy_b", "bob_b", "pigtails_b", "wild_b"]
+HAIR_C = ["spiky_c", "shaggy_c", "ponytail_c", "buns_c", "braid_c", "layered_c", "bow_c", "flower_braid_c"]
+HATS_A = ["straw", "cap", "beanie", "witch", "flatcap", "knight", "crystal_crown", "cowboy"]
+HATS_B = ["flower_crown", "hood", "bandana", "kerchief", "tophat", "goggles", "earmuffs", "halo"]
+
+def w108(): _rows16("w108_hair_set_a.png", "hair", HAIR_A, icon_group="icons_hair")
+def w110(): _rows16("w110_hair_set_b.png", "hair", HAIR_B, icon_group="icons_hair")
+def w111(): _rows16("w111_hair_set_c.png", "hair", HAIR_C, icon_group="icons_hair")
+def w112(): _rows16("w112_hats_set_b.png", "hats", HATS_B, icon_group="items")
+def w113(): _rows16("w113_hats_set_a.png", "hats", HATS_A, icon_group="items")
+
+def w109():
+    names = ["horse", "rider_horse", "saddle_horse", "donkey", "rider_donkey", "saddle_donkey", "llama", "llama_ridden"]
+    _rows16("w109_mounts_horse_donkey_llama.png", "mounts", names, n=17, canvas=(112, 112))
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

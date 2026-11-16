@@ -128,10 +128,10 @@ func after_ready() -> void:
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"note":
-			await say([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
+			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
 		"shop":
-			await _shop(thing)
+			later(_shop.bind(thing))
 			return true
 		"loot":
 			var key := "loot_%s_%d_%d" % [region_id, c.x, c.y]
@@ -152,7 +152,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast("Once a day.")
 			return true
 		"boss":
-			await _boss(thing)
+			later(_boss.bind(thing))
 			return true
 		"door":
 			go_to(str(thing["scene"]), Vector2(float(thing["spawn"][0]) * TILE, float(thing["spawn"][1]) * TILE), str(thing.get("facing", "down")))

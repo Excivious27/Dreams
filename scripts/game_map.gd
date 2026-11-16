@@ -245,7 +245,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				thing["hp"] = int(thing.get("hp", 3)) - 1
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
-			thing["hp"] = int(thing.get("hp", 3)) - 1
+			thing["hp"] = int(thing.get("hp", 3)) - (1 + GameState.tool_tier("axe") / 2)
 			if int(thing["hp"]) <= 0:
 				var is_tree := str(thing["type"]) == "tree"
 				xp("foraging", 3)
@@ -279,7 +279,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			Music.instance(get_tree()).sfx("chop")
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			thing["hp"] = int(thing.get("hp", 2)) - 1
+			thing["hp"] = int(thing.get("hp", 2)) - (1 + GameState.tool_tier("pickaxe") / 2)
 			if int(thing["hp"]) <= 0:
 				xp("mining", 2)
 				_mark_cleared(c)
@@ -932,6 +932,17 @@ func say(lines: Array) -> void:
 	var d := Dialogue.instance(get_tree())
 	d.say(lines)
 	await d.finished
+
+
+## Fire-and-forget dialogue for sync contexts (interact() must return a bool,
+## so it can't be a coroutine; Godot errors on un-awaited coroutine calls).
+func tell(lines: Array) -> void:
+	Dialogue.instance(get_tree()).say(lines)
+
+
+## Start a coroutine from a sync context without the "call without await" error.
+func later(cb: Callable) -> void:
+	cb.call_deferred()
 
 
 func give(id: String, n := 1) -> void:

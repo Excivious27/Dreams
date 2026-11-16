@@ -6445,5 +6445,13 @@
   "value": 160,
   "rarity": "uncommon",
   "tier": 2
+ },
+ "moon_shard": {
+  "name": "Moon Shard",
+  "type": "material",
+  "value": 900,
+  "rarity": "legendary",
+  "tier": 7,
+  "desc": "A sliver of the moon's crystal. Found only up there."
  }
 }

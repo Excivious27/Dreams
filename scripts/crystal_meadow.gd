@@ -140,7 +140,7 @@ func after_ready() -> void:
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"note":
-			await say([{"text": str(thing.get("text", "..."))}])
+			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"altar":
 			_altar()
@@ -148,9 +148,9 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 		"gate":
 			if not GameState.quest_done("clear_meadow"):
 				if GameState.is_penguins():
-					await say([{"who": "Light Crystal", "text": "Past here the colour drains out of everything. Clear the meadow first; I need you with the first spark lit."}])
+					tell([{"who": "Light Crystal", "text": "Past here the colour drains out of everything. Clear the meadow first; I need you with the first spark lit."}])
 				else:
-					await say([{"text": "A chain-link gate, and past it the road to the city. Deal with the President's man in the meadow first. He has the key."}])
+					tell([{"text": "A chain-link gate, and past it the road to the city. Deal with the President's man in the meadow first. He has the key."}])
 				return true
 			if GameState.is_penguins():
 				go_to("wastes", Vector2(2 * TILE, 13 * TILE + 8), "right")
@@ -158,10 +158,10 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 				go_to("hideout", Vector2(2 * TILE, 14 * TILE + 8), "right")
 			return true
 		"crater":
-			await say([{"who": "Light Crystal", "text": "This is where I landed first, before your field. The ground remembers. Stand here when the Meow Pow Wow is whole and... well. You'll see.", "mood": "happy"}])
+			tell([{"who": "Light Crystal", "text": "This is where I landed first, before your field. The ground remembers. Stand here when the Meow Pow Wow is whole and... well. You'll see.", "mood": "happy"}])
 			return true
 		"shack":
-			await say([{"text": "The old shack. Someone lived here before you and left in a hurry. A corkboard inside has photos with the faces cut out."}])
+			tell([{"text": "The old shack. Someone lived here before you and left in a hurry. A corkboard inside has photos with the faces cut out."}])
 			return true
 		"market":
 			_market()

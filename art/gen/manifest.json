@@ -7294,6 +7294,452 @@
    "w": 384
   }
  },
+ "hair": {
+  "bob_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/bob_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "bow_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/bow_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "braid": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/braid.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "braid_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/braid_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "bun_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/bun_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "buns": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/buns.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "buns_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/buns_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "flower_braid_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/flower_braid_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "headband": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/headband.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "layered": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/layered.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "layered_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/layered_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "long_wavy": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/long_wavy.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pigtails_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/pigtails_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "ponytail": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/ponytail.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "ponytail_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/ponytail_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "ponytail_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/ponytail_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "shaggy": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/shaggy.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "shaggy_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/shaggy_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "shaggy_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/shaggy_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "spiky": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/spiky.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "spiky_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/spiky_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "spiky_c": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/spiky_c.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "wavy_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/wavy_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "wild_b": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hair/wild_b.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  }
+ },
+ "hats": {
+  "bandana": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/bandana.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "beanie": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/beanie.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "cap": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/cap.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "cowboy": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/cowboy.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "crystal_crown": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/crystal_crown.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "earmuffs": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/earmuffs.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "flatcap": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/flatcap.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "flower_crown": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/flower_crown.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "goggles": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/goggles.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "halo": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/halo.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/hood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "kerchief": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/kerchief.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "knight": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/knight.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "straw": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/straw.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "tophat": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/tophat.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "witch": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "hats/witch.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  }
+ },
+ "icons_hair": {
+  "bob_b": {
+   "file": "icons_hair/bob_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "bow_c": {
+   "file": "icons_hair/bow_c.png",
+   "h": 32,
+   "w": 28
+  },
+  "braid": {
+   "file": "icons_hair/braid.png",
+   "h": 32,
+   "w": 31
+  },
+  "braid_c": {
+   "file": "icons_hair/braid_c.png",
+   "h": 32,
+   "w": 23
+  },
+  "bun_b": {
+   "file": "icons_hair/bun_b.png",
+   "h": 32,
+   "w": 25
+  },
+  "buns": {
+   "file": "icons_hair/buns.png",
+   "h": 26,
+   "w": 32
+  },
+  "buns_c": {
+   "file": "icons_hair/buns_c.png",
+   "h": 32,
+   "w": 31
+  },
+  "flower_braid_c": {
+   "file": "icons_hair/flower_braid_c.png",
+   "h": 32,
+   "w": 29
+  },
+  "headband": {
+   "file": "icons_hair/headband.png",
+   "h": 32,
+   "w": 31
+  },
+  "layered": {
+   "file": "icons_hair/layered.png",
+   "h": 32,
+   "w": 31
+  },
+  "layered_c": {
+   "file": "icons_hair/layered_c.png",
+   "h": 31,
+   "w": 32
+  },
+  "long_wavy": {
+   "file": "icons_hair/long_wavy.png",
+   "h": 31,
+   "w": 32
+  },
+  "pigtails_b": {
+   "file": "icons_hair/pigtails_b.png",
+   "h": 32,
+   "w": 22
+  },
+  "ponytail": {
+   "file": "icons_hair/ponytail.png",
+   "h": 32,
+   "w": 28
+  },
+  "ponytail_b": {
+   "file": "icons_hair/ponytail_b.png",
+   "h": 32,
+   "w": 24
+  },
+  "ponytail_c": {
+   "file": "icons_hair/ponytail_c.png",
+   "h": 32,
+   "w": 26
+  },
+  "shaggy": {
+   "file": "icons_hair/shaggy.png",
+   "h": 27,
+   "w": 32
+  },
+  "shaggy_b": {
+   "file": "icons_hair/shaggy_b.png",
+   "h": 30,
+   "w": 32
+  },
+  "shaggy_c": {
+   "file": "icons_hair/shaggy_c.png",
+   "h": 30,
+   "w": 32
+  },
+  "spiky": {
+   "file": "icons_hair/spiky.png",
+   "h": 26,
+   "w": 32
+  },
+  "spiky_b": {
+   "file": "icons_hair/spiky_b.png",
+   "h": 30,
+   "w": 32
+  },
+  "spiky_c": {
+   "file": "icons_hair/spiky_c.png",
+   "h": 30,
+   "w": 32
+  },
+  "wavy_b": {
+   "file": "icons_hair/wavy_b.png",
+   "h": 32,
+   "w": 28
+  },
+  "wild_b": {
+   "file": "icons_hair/wild_b.png",
+   "h": 32,
+   "w": 30
+  }
+ },
  "items": {
   "acorn": {
    "file": "items/acorn.png",
@@ -7482,43 +7928,43 @@
   },
   "axe_copper": {
    "file": "items/axe_copper.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 18
   },
   "axe_crystal": {
    "file": "items/axe_crystal.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 19
   },
   "axe_gold": {
    "file": "items/axe_gold.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 18
   },
   "axe_iron": {
    "file": "items/axe_iron.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 17
   },
   "axe_moon": {
    "file": "items/axe_moon.png",
    "h": 32,
-   "w": 30
+   "w": 18
   },
   "axe_silver": {
    "file": "items/axe_silver.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 18
   },
   "axe_steel": {
    "file": "items/axe_steel.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 18
   },
   "axe_wood": {
    "file": "items/axe_wood.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 17
   },
   "backpack": {
    "file": "items/backpack.png",
@@ -7587,7 +8033,7 @@
   },
   "bandana": {
    "file": "items/bandana.png",
-   "h": 28,
+   "h": 21,
    "w": 32
   },
   "bandana_drop": {
@@ -7662,7 +8108,7 @@
   },
   "beanie": {
    "file": "items/beanie.png",
-   "h": 28,
+   "h": 31,
    "w": 32
   },
   "bee_bug": {
@@ -8167,7 +8613,7 @@
   },
   "can_copper": {
    "file": "items/can_copper.png",
-   "h": 25,
+   "h": 26,
    "w": 32
   },
   "can_crystal": {
@@ -8177,27 +8623,27 @@
   },
   "can_gold": {
    "file": "items/can_gold.png",
-   "h": 24,
+   "h": 26,
    "w": 32
   },
   "can_iron": {
    "file": "items/can_iron.png",
-   "h": 25,
+   "h": 26,
    "w": 32
   },
   "can_moon": {
    "file": "items/can_moon.png",
-   "h": 27,
+   "h": 25,
    "w": 32
   },
   "can_silver": {
    "file": "items/can_silver.png",
-   "h": 24,
+   "h": 25,
    "w": 32
   },
   "can_steel": {
    "file": "items/can_steel.png",
-   "h": 24,
+   "h": 25,
    "w": 32
   },
   "can_wood": {
@@ -8227,7 +8673,7 @@
   },
   "cap": {
    "file": "items/cap.png",
-   "h": 27,
+   "h": 26,
    "w": 32
   },
   "cape": {
@@ -9055,6 +9501,11 @@
    "h": 32,
    "w": 29
   },
+  "cowboy": {
+   "file": "items/cowboy.png",
+   "h": 23,
+   "w": 32
+  },
   "cowboy_hat": {
    "file": "items/cowboy_hat.png",
    "h": 27,
@@ -9842,7 +10293,7 @@
   },
   "earmuffs": {
    "file": "items/earmuffs.png",
-   "h": 27,
+   "h": 23,
    "w": 32
   },
   "earpiece": {
@@ -10405,6 +10856,11 @@
    "h": 26,
    "w": 32
   },
+  "flatcap": {
+   "file": "items/flatcap.png",
+   "h": 23,
+   "w": 32
+  },
   "flax_seed": {
    "file": "items/flax_seed.png",
    "h": 32,
@@ -10437,7 +10893,7 @@
   },
   "flower_crown": {
    "file": "items/flower_crown.png",
-   "h": 23,
+   "h": 24,
    "w": 32
   },
   "flower_crown_a": {
@@ -11062,7 +11518,7 @@
   },
   "goggles": {
    "file": "items/goggles.png",
-   "h": 28,
+   "h": 22,
    "w": 32
   },
   "gold": {
@@ -11387,7 +11843,7 @@
   },
   "halo": {
    "file": "items/halo.png",
-   "h": 24,
+   "h": 23,
    "w": 32
   },
   "halo_bee": {
@@ -11422,43 +11878,43 @@
   },
   "hammer_copper": {
    "file": "items/hammer_copper.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 22
   },
   "hammer_crystal": {
    "file": "items/hammer_crystal.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 21
   },
   "hammer_gold": {
    "file": "items/hammer_gold.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 22
   },
   "hammer_iron": {
    "file": "items/hammer_iron.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 21
   },
   "hammer_moon": {
    "file": "items/hammer_moon.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 20
   },
   "hammer_silver": {
    "file": "items/hammer_silver.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 21
   },
   "hammer_steel": {
    "file": "items/hammer_steel.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 22
   },
   "hammer_wood": {
    "file": "items/hammer_wood.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 21
   },
   "hammerhead": {
    "file": "items/hammerhead.png",
@@ -11582,43 +12038,43 @@
   },
   "hoe_copper": {
    "file": "items/hoe_copper.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "hoe_crystal": {
    "file": "items/hoe_crystal.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 17
   },
   "hoe_gold": {
    "file": "items/hoe_gold.png",
-   "h": 24,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "hoe_iron": {
    "file": "items/hoe_iron.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "hoe_moon": {
    "file": "items/hoe_moon.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "hoe_silver": {
    "file": "items/hoe_silver.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "hoe_steel": {
    "file": "items/hoe_steel.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "hoe_wood": {
    "file": "items/hoe_wood.png",
-   "h": 27,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "honey": {
    "file": "items/honey.png",
@@ -11642,7 +12098,7 @@
   },
   "hood": {
    "file": "items/hood.png",
-   "h": 32,
+   "h": 31,
    "w": 32
   },
   "hoodie": {
@@ -11960,6 +12416,11 @@
    "h": 32,
    "w": 32
   },
+  "kerchief": {
+   "file": "items/kerchief.png",
+   "h": 24,
+   "w": 32
+  },
   "ketchup": {
    "file": "items/ketchup.png",
    "h": 32,
@@ -12029,6 +12490,11 @@
    "file": "items/kiwi_seed.png",
    "h": 27,
    "w": 32
+  },
+  "knight": {
+   "file": "items/knight.png",
+   "h": 32,
+   "w": 27
   },
   "knight_crystal": {
    "file": "items/knight_crystal.png",
@@ -14392,43 +14858,43 @@
   },
   "pickaxe_copper": {
    "file": "items/pickaxe_copper.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "pickaxe_crystal": {
    "file": "items/pickaxe_crystal.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "pickaxe_gold": {
    "file": "items/pickaxe_gold.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "pickaxe_iron": {
    "file": "items/pickaxe_iron.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "pickaxe_moon": {
    "file": "items/pickaxe_moon.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "pickaxe_silver": {
    "file": "items/pickaxe_silver.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "pickaxe_steel": {
    "file": "items/pickaxe_steel.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "pickaxe_wood": {
    "file": "items/pickaxe_wood.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "pickled_beet": {
    "file": "items/pickled_beet.png",
@@ -15172,43 +15638,43 @@
   },
   "rod_copper": {
    "file": "items/rod_copper.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 22
   },
   "rod_crystal": {
    "file": "items/rod_crystal.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 23
   },
   "rod_gold": {
    "file": "items/rod_gold.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 23
   },
   "rod_iron": {
    "file": "items/rod_iron.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 22
   },
   "rod_moon": {
    "file": "items/rod_moon.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 24
   },
   "rod_silver": {
    "file": "items/rod_silver.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 24
   },
   "rod_steel": {
    "file": "items/rod_steel.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 22
   },
   "rod_wood": {
    "file": "items/rod_wood.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 22
   },
   "roll": {
    "file": "items/roll.png",
@@ -15532,43 +15998,43 @@
   },
   "scythe_copper": {
    "file": "items/scythe_copper.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 18
   },
   "scythe_crystal": {
    "file": "items/scythe_crystal.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 19
   },
   "scythe_gold": {
    "file": "items/scythe_gold.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 18
   },
   "scythe_iron": {
    "file": "items/scythe_iron.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 19
   },
   "scythe_moon": {
    "file": "items/scythe_moon.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 20
   },
   "scythe_silver": {
    "file": "items/scythe_silver.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 19
   },
   "scythe_steel": {
    "file": "items/scythe_steel.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 19
   },
   "scythe_wood": {
    "file": "items/scythe_wood.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 18
   },
   "sea_grape": {
    "file": "items/sea_grape.png",
@@ -16660,6 +17126,11 @@
    "h": 27,
    "w": 32
   },
+  "straw": {
+   "file": "items/straw.png",
+   "h": 24,
+   "w": 32
+  },
   "straw_hat": {
    "file": "items/straw_hat.png",
    "h": 26,
@@ -16862,43 +17333,43 @@
   },
   "sword_copper": {
    "file": "items/sword_copper.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 13
   },
   "sword_crystal": {
    "file": "items/sword_crystal.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "sword_gold": {
    "file": "items/sword_gold.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 15
   },
   "sword_iron": {
    "file": "items/sword_iron.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 14
   },
   "sword_moon": {
    "file": "items/sword_moon.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "sword_silver": {
    "file": "items/sword_silver.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 15
   },
   "sword_steel": {
    "file": "items/sword_steel.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 15
   },
   "sword_wood": {
    "file": "items/sword_wood.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 13
   },
   "swordfish": {
    "file": "items/swordfish.png",
@@ -17164,6 +17635,11 @@
    "file": "items/topaz.png",
    "h": 32,
    "w": 30
+  },
+  "tophat": {
+   "file": "items/tophat.png",
+   "h": 29,
+   "w": 32
   },
   "torch": {
    "file": "items/torch.png",
@@ -17735,6 +18211,11 @@
    "h": 27,
    "w": 32
   },
+  "witch": {
+   "file": "items/witch.png",
+   "h": 30,
+   "w": 32
+  },
   "wizard_hat": {
    "file": "items/wizard_hat.png",
    "h": 29,
@@ -17809,6 +18290,72 @@
    "file": "items/zucchini_seed.png",
    "h": 32,
    "w": 32
+  }
+ },
+ "mounts": {
+  "donkey": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/donkey.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
+  },
+  "horse": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/horse.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
+  },
+  "llama": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/llama.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
+  },
+  "llama_ridden": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/llama_ridden.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
+  },
+  "rider_donkey": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/rider_donkey.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
+  },
+  "rider_horse": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/rider_horse.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
+  },
+  "saddle_donkey": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/saddle_donkey.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
+  },
+  "saddle_horse": {
+   "cell_h": 112,
+   "cell_w": 112,
+   "file": "mounts/saddle_horse.png",
+   "frames": 17,
+   "h": 112,
+   "w": 1904
   }
  },
  "nature": {
@@ -27718,6 +28265,520 @@
    "file": "tiles/wood_dock.png",
    "h": 96,
    "w": 96
+  }
+ },
+ "toolanim": {
+  "axe_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "axe_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "axe_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "axe_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "axe_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "axe_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "axe_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "axe_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/axe_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "can_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/can_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hammer_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hammer_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "hoe_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/hoe_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "pickaxe_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/pickaxe_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "rod_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/rod_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "scythe_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/scythe_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_copper": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_copper.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_crystal": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_crystal.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_gold": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_gold.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_iron": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_iron.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_moon": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_moon.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_silver": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_silver.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_steel": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_steel.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
+  },
+  "sword_wood": {
+   "cell_h": 96,
+   "cell_w": 96,
+   "file": "toolanim/sword_wood.png",
+   "frames": 16,
+   "h": 96,
+   "w": 1536
   }
  },
  "ui": {

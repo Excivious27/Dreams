@@ -127,21 +127,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to("mountain", Vector2(17 * TILE, 8 * TILE), "down")
 			return true
 		"alien_shop":
-			var d := Dialogue.instance(get_tree())
-			d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Dream Tonic  ◆200", "Energy Tea  ◆20", "Leave"], "key": ""}])
-			await d.finished
-			if d.last_choice == 0 and int(GameState.run["crystals"]) >= 200:
-				GameState.run["crystals"] = int(GameState.run["crystals"]) - 200
-				give("dream_tonic")
-			elif d.last_choice == 1 and int(GameState.run["crystals"]) >= 20:
-				GameState.run["crystals"] = int(GameState.run["crystals"]) - 20
-				give("energy_tea")
+			later(_alien_shop)
 			return true
 		"spire":
-			await say([{"who": "Light Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded. (Tom: the moon chapter's goal.)", "mood": "worried"}])
+			tell([{"who": "Light Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded. (Tom: the moon chapter's goal.)", "mood": "worried"}])
 			return true
 		"house":
-			await say([{"text": "A house built into a rocket, or a rocket built around a house. Round windows. A kettle. Somebody has been living here a long time, and left recently."}])
+			tell([{"text": "A house built into a rocket, or a rocket built around a house. Round windows. A kettle. Somebody has been living here a long time, and left recently."}])
 			return true
 		"tele":
 			if GameState.count("crystal_refined") >= 3 or GameState.run["flags"].has("tele_on"):
@@ -149,10 +141,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					GameState.add_item("crystal_refined", -3)
 					GameState.run["flags"]["tele_on"] = true
 					fx("levelup", cell_center(Vector2i(24, 20)), 10.0, 0.8)
-					await say([{"who": "Light Crystal", "text": "There. It remembers where it goes.", "mood": "happy"}])
+					later(_tele_first)
+					return true
 				go_to("station", Vector2(4 * TILE, 12 * TILE + 8), "right")
 			else:
-				await say([{"text": "The pad glows faintly and does nothing. A panel beside it wants Refined Crystals. Three. (You have %d.)" % GameState.count("crystal_refined")}])
+				tell([{"text": "The pad glows faintly and does nothing. A panel beside it wants Refined Crystals. Three. (You have %d.)" % GameState.count("crystal_refined")}])
 			return true
 		"mrock":
 			if not GameState.has_tool("pickaxe"):
@@ -162,7 +155,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				return true
 			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("chop")
-			thing["hp"] = int(thing["hp"]) - 1
+			thing["hp"] = int(thing["hp"]) - (1 + GameState.tool_tier("pickaxe") / 2)
 			if int(thing["hp"]) <= 0:
 				var ore := str(thing["ore"])
 				things.erase(c)
@@ -171,6 +164,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
 				give(ore, 2)
+				if ore == "shard" and randf() < 0.35:
+					give("moon_shard", 1)
 				xp("mining", 4)
 			return true
 	return false
@@ -183,3 +178,20 @@ func draw_map() -> void:
 	draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("2a1a44"))
 	draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("2a1a44"))
 	draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("2a1a44"))
+
+
+func _alien_shop() -> void:
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Dream Tonic  ◆200", "Energy Tea  ◆20", "Leave"], "key": ""}])
+	await d.finished
+	if d.last_choice == 0 and int(GameState.run["crystals"]) >= 200:
+		GameState.run["crystals"] = int(GameState.run["crystals"]) - 200
+		give("dream_tonic")
+	elif d.last_choice == 1 and int(GameState.run["crystals"]) >= 20:
+		GameState.run["crystals"] = int(GameState.run["crystals"]) - 20
+		give("energy_tea")
+
+
+func _tele_first() -> void:
+	await say([{"who": "Light Crystal", "text": "There. It remembers where it goes.", "mood": "happy"}])
+	go_to("station", Vector2(4 * TILE, 12 * TILE + 8), "right")

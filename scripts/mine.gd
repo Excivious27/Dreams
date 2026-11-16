@@ -94,7 +94,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if not GameState.run["flags"].has("skel_%d" % floor_no):
 				GameState.run["flags"]["skel_%d" % floor_no] = true
 				give("gold", 2)
-				await say([{"text": "Somebody didn't make it back up. Their pack still has something in it."}])
+				tell([{"text": "Somebody didn't make it back up. Their pack still has something in it."}])
 			return true
 		"rock":
 			if not GameState.has_tool("pickaxe"):

@@ -164,7 +164,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_pad()
 			return true
 		"cave":
-			await say([{"text": "Cold air breathes out of the dark. Something glitters far inside. (Tom: a second mine or a secret goes here.)"}])
+			tell([{"text": "Cold air breathes out of the dark. Something glitters far inside. (Tom: a second mine or a secret goes here.)"}])
 			return true
 		"camp":
 			_camp()

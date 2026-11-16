@@ -134,7 +134,7 @@ func _anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"note":
-			await say([{"text": str(thing.get("text", "..."))}])
+			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"water":
 			if GameState.has_tool("rod"):

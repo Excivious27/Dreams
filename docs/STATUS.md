@@ -167,3 +167,11 @@
 - W44-46 UI: touch joystick/buttons art, icons, skill icons; W47 overlays (`ov2_*`), aurora2, cloud shadows on clear days.
 - W48 big/mid trees in borders (seasonal), W49 landmarks placed per map, W50 farm buildings for the plans board (+ fish pond, shed, stable, mill), W51 pet dog strips, babies, horses (mount system not built yet).
 - Slicer: `load_hue`, `row_sprites` (component rows with equal-cell fallback), `_boxed` helpers; beige panels keyed for W51.
+
+## 2026-11-16 (later) — Prompts-07 batches 3–4, tool tiers, async fix
+- Saved w100–w107 (tool anim layers, 8 tiers × 16 frames each), w108/w110/w111 (hair sets A–C), w112/w113 (hats A–B), w109 (horse/donkey/llama + rider + saddle), composites `w100-107_composite_small.png`, `w108-115_composite_small.png` (swim sheet only in composite).
+- `tools/slice_world.py`: `_rows16` generic 8-row slicer → `art/gen/toolanim/<tool>_<tier>` (16f), `hair/<style>`, `hats/<hat>`, `mounts/<name>` (17f), plus per-tier tool icons in `items/` (`axe_copper`, `sword_moon`, …) and hat icons.
+- Tool tiers: `GameState.TOOL_TIERS` wood→copper→iron→steel→silver→gold→crystal→moon, `run["tool_tier"]`, `tool_tier/tool_power/upgrade_tool`. Gideon's counter has "Upgrade a tool" (bars + crystals). Axe/pickaxe hit harder per tier, sword adds damage, toolbar/inventory icon and name follow the tier. `moon_shard` item (moon crystal rocks, 35%).
+- Fixed Godot "called async function without await" in `try_interact`: `interact()` is sync again — `tell(lines)` fires dialogue, `later(callable)` starts coroutines (shops, crafting, alien stall, teleporter line).
+- Playtest: run/joystick/tap tests made robust (max speed over window, fresh runway, re-tap after dialogue fade); tool-upgrade test added. 0 failures.
+- Not yet: hair/hats/mounts/tool-anim layers drawn on the body (creator + paper-doll still pending; sheets are sliced and in the manifest). Swim needs a full-size sheet.

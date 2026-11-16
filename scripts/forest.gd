@@ -181,7 +181,7 @@ func _path_cells() -> Array[Vector2i]:
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"note":
-			await say([{"text": str(thing.get("text", "..."))}])
+			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"shrine":
 			_shrine()
@@ -193,7 +193,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if GameState.is_penguins() and GameState.quest_done("clear_meadow"):
 				go_to("sky", Vector2(16 * TILE, 26 * TILE), "up")
 			else:
-				await say([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight." + (" Something tells you it's not time yet." if GameState.is_penguins() else " The stair is roped off.")}])
+				tell([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight." + (" Something tells you it's not time yet." if GameState.is_penguins() else " The stair is roped off.")}])
 			return true
 	return false
 

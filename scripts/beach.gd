@@ -82,14 +82,14 @@ func after_ready() -> void:
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"note":
-			await say([{"text": str(thing.get("text", "..."))}])
+			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"sea":
 			if GameState.has_tool("rod"):
 				_fish(c)
 			return true
 		"hut":
-			await say([{"text": "A thatched hut with surfboards leaning on it. Closed. A sign says 'back when the fish are'. (Tom: a beach shop goes here.)"}])
+			tell([{"text": "A thatched hut with surfboards leaning on it. Closed. A sign says 'back when the fish are'. (Tom: a beach shop goes here.)"}])
 			return true
 		"wreck":
 			if int(GameState.run["flags"].get("wreck_day", 0)) < int(GameState.run["day"]) - 3:

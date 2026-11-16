@@ -44,7 +44,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			_journal()
 			return true
 		"kitchen":
-			await Crafting.run(self, "kitchen", "Kitchen")
+			later(Crafting.run.bind(self, "kitchen", "Kitchen"))
 			return true
 		"pet_bed":
 			hud.toast("%s curls up for a second, then follows you anyway." % GameState.names()["pet"])

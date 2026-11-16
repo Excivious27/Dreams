@@ -129,7 +129,71 @@ static func sprite_for_playable(playable_id: String) -> String:
 # ---- items -------------------------------------------------------------------
 
 static func item_name(id: String) -> String:
+	if TOOL_KINDS.has(id) and tool_tier(id) > 0:
+		return "%s %s" % [TOOL_TIERS[tool_tier(id)].capitalize(), str(items.get(id, {}).get("name", id.capitalize()))]
 	return str(items.get(id, {}).get("name", id.capitalize()))
+
+
+# ---- tool tiers --------------------------------------------------------------
+# Every tool upgrades through the same ladder at the smith (bars + crystals).
+# Tier raises the tool's power: axe/pickaxe hit harder, sword adds damage,
+# can/hoe spend less energy, rod bites sooner, scythe/hammer work wider.
+
+const TOOL_TIERS := ["wood", "copper", "iron", "steel", "silver", "gold", "crystal", "moon"]
+const TOOL_KINDS := ["hoe", "can", "axe", "pickaxe", "sword", "rod", "hammer", "scythe"]
+const TOOL_UPGRADE_NEED := [
+	{}, {"copper_bar": 3, "crystals": 300}, {"iron_bar": 3, "crystals": 900}, {"steel_bar": 3, "crystals": 2000},
+	{"silver_bar": 3, "crystals": 4500}, {"gold_bar": 3, "crystals": 9000}, {"crystal_refined": 3, "gold_bar": 2, "crystals": 18000},
+	{"moon_shard": 3, "crystal_refined": 3, "crystals": 40000},
+]
+
+static func tool_tier(kind: String) -> int:
+	var k := kind
+	if kind == "iron_sword":
+		k = "sword"
+	return int(run.get("tool_tier", {}).get(k, 0))
+
+
+static func tool_power(kind: String) -> int:
+	return 1 + tool_tier(kind)
+
+
+## Icon name for a tool at its current tier, if art exists for it.
+static func tool_icon(kind: String) -> String:
+	var k := "sword" if kind == "iron_sword" else kind
+	if not TOOL_KINDS.has(k):
+		return kind
+	return "%s_%s" % [k, TOOL_TIERS[tool_tier(k)]]
+
+
+static func can_upgrade_tool(kind: String) -> bool:
+	var t := tool_tier(kind)
+	if t + 1 >= TOOL_TIERS.size():
+		return false
+	var need: Dictionary = TOOL_UPGRADE_NEED[t + 1]
+	for id in need:
+		if id == "crystals":
+			if int(run["crystals"]) < int(need[id]):
+				return false
+		elif count(str(id)) < int(need[id]):
+			return false
+	return true
+
+
+static func upgrade_tool(kind: String) -> bool:
+	if not can_upgrade_tool(kind):
+		return false
+	var t := tool_tier(kind)
+	var need: Dictionary = TOOL_UPGRADE_NEED[t + 1]
+	for id in need:
+		if id == "crystals":
+			run["crystals"] = int(run["crystals"]) - int(need[id])
+		else:
+			add_item(str(id), -int(need[id]))
+	if not run.has("tool_tier"):
+		run["tool_tier"] = {}
+	run["tool_tier"][kind] = t + 1
+	return true
 
 
 static func item_value(id: String) -> int:
@@ -215,7 +279,7 @@ static func sword_damage() -> int:
 	if best == 0:
 		for t in run["tools"]:
 			best = maxi(best, int(items.get(t, {}).get("damage", 0)))
-	best += (1 if has_perk("combat", "Fighter") else 0) + (1 if has_perk("combat", "Berserker") else 0) + gear_stat("damage")
+	best += (1 if has_perk("combat", "Fighter") else 0) + (1 if has_perk("combat", "Berserker") else 0) + gear_stat("damage") + tool_tier("sword")
 	return maxi(best, 1)
 
 

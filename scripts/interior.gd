@@ -92,25 +92,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to(str(back[0]), Vector2(float(back[1]) * TILE + 8, float(back[2]) * TILE + 4), "down")
 			return true
 		"counter":
-			var shop := str(thing.get("shop", ""))
-			if shop == "hall":
-				await Shops.hall(self)
-			elif shop in ["smith", "potions"]:
-				var d := Dialogue.instance(get_tree())
-				d.say([{"who": "Gideon" if shop == "smith" else "Wren", "text": "Buying, or making something?", "choice": ["Buy", "Craft" if shop == "smith" else "Brew", "Leave"], "key": ""}])
-				await d.finished
-				if d.last_choice == 0:
-					await Shops.run(self, shop)
-				elif d.last_choice == 1:
-					await Crafting.run(self, "smith" if shop == "smith" else "alchemy", "Forge" if shop == "smith" else "Cauldron")
-			elif shop != "":
-				await Shops.run(self, shop)
+			later(_counter.bind(str(thing.get("shop", ""))))
 			return true
 		"craft":
-			await Crafting.run(self, str(thing.get("station", "workbench")), str(thing.get("hint", "")).trim_prefix("A: "))
+			later(Crafting.run.bind(self, str(thing.get("station", "workbench")), str(thing.get("hint", "")).trim_prefix("A: ")))
 			return true
 		"note":
-			await say([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
+			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
 		"bed":
 			hud.toast("Not your bed.")
@@ -189,3 +177,61 @@ func draw_map() -> void:
 	var d: Array = I.get("door", [cols / 2, rows - 2])
 	draw_rect(Rect2(int(d[0]) * TILE, int(d[1]) * TILE, TILE, TILE), Color("3a2412"))
 	Art.draw_prop(self, "furniture", "door_wood_open", Vector2(int(d[0]) * TILE + 8, (int(d[1]) + 1) * TILE))
+
+
+func _counter(shop: String) -> void:
+	if shop == "hall":
+		await Shops.hall(self)
+	elif shop in ["smith", "potions"]:
+		var d := Dialogue.instance(get_tree())
+		var ch: Array = ["Buy", "Craft" if shop == "smith" else "Brew"]
+		if shop == "smith":
+			ch.append("Upgrade a tool")
+		ch.append("Leave")
+		d.say([{"who": "Gideon" if shop == "smith" else "Wren", "text": "Buying, or making something?", "choice": ch, "key": ""}])
+		await d.finished
+		if d.last_choice == 0:
+			await Shops.run(self, shop)
+		elif d.last_choice == 1:
+			await Crafting.run(self, "smith" if shop == "smith" else "alchemy", "Forge" if shop == "smith" else "Cauldron")
+		elif d.last_choice == 2 and shop == "smith":
+			await _upgrade_tools()
+	elif shop != "":
+		await Shops.run(self, shop)
+
+
+## Gideon's upgrade bench: every tool climbs wood → copper → iron → steel →
+## silver → gold → crystal → moon. Needs bars of the next metal and crystals.
+func _upgrade_tools() -> void:
+	while true:
+		var opts: Array = []
+		var kinds: Array = []
+		for k in GameState.TOOL_KINDS:
+			if not GameState.has_tool(k) and not (k == "sword" and GameState.has_tool("iron_sword")):
+				continue
+			var t := GameState.tool_tier(k)
+			if t + 1 >= GameState.TOOL_TIERS.size():
+				opts.append("%s: moon (max)" % GameState.item_name(k))
+			else:
+				var need: Dictionary = GameState.TOOL_UPGRADE_NEED[t + 1]
+				var parts: Array = []
+				for id in need:
+					parts.append("%d %s" % [int(need[id]), "◆" if id == "crystals" else GameState.item_name(str(id))])
+				opts.append("%s%s → %s  [%s]" % ["" if GameState.can_upgrade_tool(k) else "✗ ", GameState.item_name(k), GameState.TOOL_TIERS[t + 1], ", ".join(parts)])
+			kinds.append(k)
+		opts.append("Leave")
+		var d := Dialogue.instance(get_tree())
+		d.say([{"who": "Gideon", "text": "Hand it over. Better metal, same handle.", "choice": opts, "key": ""}])
+		await d.finished
+		var i := d.last_choice
+		if i < 0 or i >= kinds.size():
+			return
+		var kind: String = kinds[i]
+		if GameState.upgrade_tool(kind):
+			hud.toast("%s upgraded!" % GameState.item_name(kind), Color(1, 0.9, 0.4))
+			Music.instance(get_tree()).sfx("levelup")
+			xp("mining", 6)
+			if player:
+				fx("levelup", player.position + Vector2(0, -12), 12.0, 0.8)
+		else:
+			hud.toast("Not enough for that yet.", Color(1, 0.7, 0.7))

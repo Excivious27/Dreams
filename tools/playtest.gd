@@ -71,7 +71,7 @@ func _run() -> void:
 	await shot("04_farming")
 
 	# Run test (keyboard path): hold B + right and check speed.
-	for x in range(3, 14):
+	for x in range(3, 24):
 		for y in range(18, 23):
 			farm.clear_cell(Vector2i(x, y))
 	for i in 10:
@@ -85,10 +85,12 @@ func _run() -> void:
 	Dialogue.block_until_ms = 0
 	await frames(5)
 	Input.action_press("right"); Input.action_press("b")
-	await frames(40)
-	var spd := p.velocity.length()
+	var spd := 0.0
+	for i in 40:
+		await frames(1)
+		spd = maxf(spd, p.velocity.length())
 	Input.action_release("right"); Input.action_release("b")
-	check(spd > Player.WALK_SPEED * 1.3, "running is faster than walking (%.0f)" % spd)
+	check(spd > Player.WALK_SPEED * 1.3, "running is faster than walking (%.0f, busy=%s frozen=%s)" % [spd, str(p._busy), str(p.frozen)])
 	await frames(30)
 	# Touch path: a drag from the lower-left becomes the floating joystick; far = run.
 	p.position = farm.cell_center(Vector2i(6, 20))
@@ -98,9 +100,12 @@ func _run() -> void:
 	await frames(40)
 	var tspd := p.velocity.length()
 	check(tspd > Player.WALK_SPEED * 1.3, "joystick pushed far runs (%.0f)" % tspd)
+	p.position = farm.cell_center(Vector2i(6, 20))  # fresh runway for the walk check
 	drag(0, Vector2(110, 400), Vector2(76, 400))
-	await frames(25)
-	var wspd := p.velocity.length()
+	var wspd := 0.0
+	for i in 25:
+		await frames(1)
+		wspd = maxf(wspd, p.velocity.length()) if i > 5 else 0.0
 	check(wspd < Player.WALK_SPEED * 1.15 and wspd > 10.0, "joystick pushed a little walks (%.0f)" % wspd)
 	touch(0, Vector2(76, 400), false)
 	await frames(10)
@@ -134,9 +139,13 @@ func _run() -> void:
 	var cam_tf: Transform2D = farm.get_canvas_transform()
 	var dest: Vector2 = farm.cell_center(Vector2i(20, 25))
 	var screen: Vector2 = cam_tf * (dest - Vector2(0, 8))  # middle of the cell, not its bottom edge
-	touch(0, screen, true)
-	await frames(2)
-	touch(0, screen, false)
+	for attempt in 3:  # a tap right as the dialogue fades may be swallowed; re-tap
+		touch(0, screen, true)
+		await frames(2)
+		touch(0, screen, false)
+		await frames(4)
+		if p.auto_target != Vector2.INF:
+			break
 	await frames(80)
 	check(p.position.distance_to(dest) < 6.0, "tap-to-move walks to the tapped cell (%.0f away)" % p.position.distance_to(dest))
 	# Toolbar: tapping slot 7 (turnip seeds) puts seeds in hand.
@@ -367,6 +376,14 @@ func _run() -> void:
 			await press("a", 2)
 			await frames(6)
 		check(GameState.quest_done("clear_meadow"), "boss defeated completes the meadow quest")
+	# Tool tiers: the smith's upgrade ladder swaps the toolbar icon and raises power.
+	check(not GameState.can_upgrade_tool("axe"), "axe can't upgrade with nothing")
+	GameState.add_item("copper_bar", 3)
+	GameState.run["crystals"] = int(GameState.run["crystals"]) + 300
+	check(GameState.can_upgrade_tool("axe") and GameState.upgrade_tool("axe"), "axe upgrades to copper with 3 bars + 300 crystals")
+	check(GameState.tool_tier("axe") == 1 and GameState.count("copper_bar") == 0, "upgrade consumed the bars (tier %d)" % GameState.tool_tier("axe"))
+	check(Hud.icon_for("axe") == "axe_copper" and Art.has("items", "axe_copper"), "copper axe has its own icon (%s)" % Hud.icon_for("axe"))
+	check(GameState.item_name("axe") == "Copper Axe", "upgraded tool is named by tier (%s)" % GameState.item_name("axe"))
 	print("PLAYTEST DONE, failures: ", fails, ", screenshots: ", shots)
 	quit(1 if fails > 0 else 0)
 

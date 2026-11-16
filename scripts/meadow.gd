@@ -179,7 +179,7 @@ func _boss_down() -> void:
 func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 	match str(thing.get("type", "")):
 		"note":
-			await say([{"text": str(thing.get("text", "..."))}])
+			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"mine":
 			go_to("mine", Vector2.ZERO)

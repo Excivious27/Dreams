@@ -156,6 +156,10 @@ func _draw_hud() -> void:
 
 
 static func icon_for(id: String) -> String:
+	if GameState.TOOL_KINDS.has(id) or id == "iron_sword":
+		var ti := GameState.tool_icon(id)
+		if Art.has("items", ti):
+			return ti
 	if Art.has("items", id):
 		return id
 	if id.ends_with("_seed"):
