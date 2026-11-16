@@ -64,8 +64,10 @@ func _run() -> void:
 	await act()
 	check(GameState.run["farm"][key].get("crop", "") == "turnip", "planted turnip")
 	GameState.run["selected"] = ""
+	GameState.select_slot(1)  # watering can
 	await act()
 	check(bool(GameState.run["farm"][key].get("watered", false)), "watered the tile")
+	GameState.select_slot(0)
 	await shot("04_farming")
 
 	# Run test (keyboard path): hold B + right and check speed.

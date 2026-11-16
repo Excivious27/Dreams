@@ -197,12 +197,12 @@ func _refresh() -> void:
 					_line("  " + ", ".join(st.keys().map(func(k: String) -> String: return "%s +%d" % [k, int(st[k])])), 7, Color(0.8, 0.9, 1.0))
 					_button("Equip (%s)" % str(itd.get("slot", "")), func() -> void: GameState.equip(sel); _refresh())
 			_line("Wearing", 8, Color(0.9, 0.85, 0.7))
-			for slot in GameState.SLOTS:
-				var eid := GameState.equipped(slot)
+			for eslot: String in GameState.SLOTS:
+				var eid := GameState.equipped(eslot)
 				if eid == "":
-					_line("  %s: -" % slot, 7, Color(0.6, 0.6, 0.6))
+					_line("  %s: -" % eslot, 7, Color(0.6, 0.6, 0.6))
 				else:
-					_button("  %s: %s  (take off)" % [slot, GameState.item_name(eid)], func() -> void: GameState.unequip(slot); _refresh())
+					_button("  %s: %s  (take off)" % [eslot, GameState.item_name(eid)], func() -> void: GameState.unequip(eslot); _refresh())
 			var gs := "def %d  spd %d  luck %d  dmg %d  energy +%d" % [GameState.gear_stat("defense"), GameState.gear_stat("speed"), GameState.gear_stat("luck"), GameState.gear_stat("damage"), GameState.gear_stat("energy")]
 			_line("  " + gs, 7, Color(0.8, 0.9, 1.0))
 			_line("Tools: " + ", ".join(r["tools"].map(func(t: String) -> String: return GameState.item_name(t))), 7, Color(0.8, 0.8, 0.8))

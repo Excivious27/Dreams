@@ -24,7 +24,7 @@ func build() -> void:
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}
 	music_track = "farm"
 	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 30 * TILE + 8), "right", "farm ▶")
-	add_exit(FOREST_EXIT, "forest", Vector2(2 * TILE, 21 * TILE + 8), "up", "▲ forest")
+	add_exit(FOREST_EXIT, "forest", Vector2(3 * TILE, 21 * TILE + 8), "right", "▲ forest")
 	for r: Rect2i in [LAKE, Rect2i(1, 9, 2, 12), Rect2i(5, 24, 10, 3), Rect2i(21, 4, 4, 4)]:
 		for y in range(r.position.y, r.end.y):
 			for x in range(r.position.x, r.end.x):

@@ -157,10 +157,67 @@ func _pick(pid: String) -> void:
 		_preview.add_child(ph)
 	var ok := _page.get_children().filter(func(c: Node) -> bool: return c.name == "NextBtn")
 	if ok.is_empty():
-		var b := _button("Next: names", _show_names, true)
+		var b := _button("Next: your look", _show_look, true)
 		b.name = "NextBtn"
 		_page.add_child(b)
 		_page.move_child(b, _page.get_child_count() - 2)
+
+
+const LOOKS := {
+	"skin": [["Fair", "ffffff"], ["Warm", "f3d9c0"], ["Tan", "e2b78f"], ["Deep", "b98a62"]],
+	"outfit": [["Blue", "ffffff"], ["Red", "ffb0a0"], ["Green", "b8ffb0"], ["Gold", "ffe9a0"], ["Violet", "e0c0ff"], ["Teal", "a0f0f0"]],
+	"hair": [["Brown", ""], ["Black", "c8c8d8"], ["Blonde", "ffe8b0"], ["Red", "ffc0a0"], ["Silver", "e8e8f8"], ["Pink", "ffc8e8"]],
+}
+var _look := {"skin": 0, "outfit": 0, "hair": 0}
+var _look_preview: Node2D
+
+
+func _show_look() -> void:
+	_clear()
+	_page.add_child(_label("Your look", 16))
+	_page.add_child(_label("(Full character creator with hair, clothes and skin layers arrives with the next art batch; for now pick a tint set or roll the dice.)", 7, false))
+	_look_preview = Node2D.new()
+	var holder := Control.new()
+	holder.custom_minimum_size = Vector2(0, 90)
+	_page.add_child(holder)
+	_look_preview.position = Vector2(123, 70)
+	holder.add_child(_look_preview)
+	_refresh_look()
+	for key: String in ["skin", "outfit", "hair"]:
+		var h := HBoxContainer.new()
+		h.alignment = BoxContainer.ALIGNMENT_CENTER
+		var l := _label(key.capitalize() + ": ", 9, false)
+		h.add_child(l)
+		var opts: Array = LOOKS[key]
+		var prev := _button("<", func() -> void: _look[key] = (int(_look[key]) - 1 + opts.size()) % opts.size(); _show_look())
+		var nm := _label(str(opts[int(_look[key])][0]), 9, false)
+		var next := _button(">", func() -> void: _look[key] = (int(_look[key]) + 1) % opts.size(); _show_look())
+		h.add_child(prev); h.add_child(nm); h.add_child(next)
+		_page.add_child(h)
+	_page.add_child(_button("Random", func() -> void:
+		for key: String in LOOKS:
+			_look[key] = randi() % (LOOKS[key] as Array).size()
+		_show_look()))
+	_page.add_child(_button("Next: names", _show_names, true))
+	_page.add_child(_button("Back", _show_characters))
+
+
+func _refresh_look() -> void:
+	for ch in _look_preview.get_children():
+		ch.queue_free()
+	var sprite_id := GameState.sprite_for_playable(_playable)
+	if sprite_id != "":
+		var sp := CharacterLibrary.make_sprite(sprite_id)
+		sp.scale *= 1.6
+		sp.modulate = _look_tint()
+		sp.play("idle")
+		_look_preview.add_child(sp)
+
+
+func _look_tint() -> Color:
+	var c := Color(str(LOOKS["skin"][int(_look["skin"])][1]))
+	var o := Color(str(LOOKS["outfit"][int(_look["outfit"])][1]))
+	return Color(c.r * o.r, c.g * o.g, c.b * o.b)
 
 
 func _show_names() -> void:
@@ -191,6 +248,7 @@ func _begin() -> void:
 	var town := _town_edit.text.strip_edges()
 	var pet := _pet_edit.text.strip_edges()
 	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup")
+	GameState.run["look"] = {"skin": int(_look["skin"]), "outfit": int(_look["outfit"]), "hair": int(_look["hair"]), "tint": _look_tint().to_html(false)}
 	_start_game()
 
 

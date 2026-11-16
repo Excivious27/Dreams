@@ -58,6 +58,8 @@ func set_character(id: String) -> void:
 		_anim.animation_finished.connect(_on_animation_finished)
 		if pdata.has("tint"):
 			_anim.modulate = Color(str(pdata["tint"]))
+		elif GameState.run.has("look"):
+			_anim.modulate = Color(str(GameState.run["look"].get("tint", "ffffff")))
 		_sprite = _anim
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
@@ -148,6 +150,8 @@ func _physics_process(delta: float) -> void:
 		var pdata: Dictionary = GameState.playables.get(pid, {})
 		if pdata.has("tint"):
 			base = Color(str(pdata["tint"]))
+		elif GameState.run.has("look"):
+			base = Color(str(GameState.run["look"].get("tint", "ffffff")))
 		_anim.modulate = Color(base, 0.5 if invuln > 0.0 and int(invuln * 20) % 2 == 0 else 1.0)
 	if frozen:
 		velocity = Vector2.ZERO

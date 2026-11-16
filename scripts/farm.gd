@@ -65,7 +65,7 @@ func build() -> void:
 	music_track = "farm"
 	add_exit(TOWN_EXIT, "town", Vector2(10 * TILE, 2 * TILE + 8), "down", "▼ town")
 	add_exit(MEADOW_EXIT, "meadow", Vector2(2 * TILE, 10 * TILE), "right", "meadow ▶")
-	add_exit(FOREST_EXIT, "forest", Vector2(16 * TILE, 38 * TILE), "up", "▲ forest")
+	add_exit(FOREST_EXIT, "forest", Vector2(36 * TILE, 46 * TILE + 8), "up", "▲ forest")
 	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 14 * TILE), "left", "◀ lake")
 	block_rect(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y)
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go inside"})
@@ -338,7 +338,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 	var crop := str(tile.get("crop", ""))
 	if crop == "":
 		var it: Dictionary = GameState.items.get(sel, {})
-		if it.get("type", "") == "seed" and GameState.count(sel) > 0 and GameState.held_tool() == "":
+		if it.get("type", "") == "seed" and GameState.count(sel) > 0:
 			tile["crop"] = str(it["crop"])
 			tile["days"] = 0
 			GameState.add_item(sel, -1)
