@@ -29,6 +29,9 @@ func _run() -> void:
 	await _shot("dialogue_portrait")
 	Input.action_press("a"); await frames(3); Input.action_release("a"); await frames(5)
 	Input.action_press("a"); await frames(3); Input.action_release("a"); await frames(5)
+	for sc in ["forest", "lake", "beach", "mountain", "crystal_meadow", "moon"]:
+		GameState.run["flags"]["moon_unlocked"] = true
+		await _scene(sc, sc, 45)
 	GameState.run["day"] = 60   # fall
 	await _scene("farm", "farm_fall", 40)
 	GameState.run["day"] = 95   # winter
@@ -54,6 +57,12 @@ func _scene(name: String, shot_name: String, n: int) -> void:
 	GameMap.next_spawn = Vector2.ZERO
 	change_scene_to_file("res://scenes/%s.tscn" % name)
 	await frames(n)
+	var d := Dialogue.instance(self)
+	for i in 12:
+		if not d.active:
+			break
+		Input.action_press("a"); await frames(3); Input.action_release("a"); await frames(6)
+	await frames(10)
 	await _shot(shot_name)
 func _shoot(scene: String, shot_name: String, n: int) -> void:
 	change_scene_to_file(scene)

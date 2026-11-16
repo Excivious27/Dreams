@@ -2,6 +2,27 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## The world (opened up)
+- **Nine outdoor areas**, all 2 to 4 times bigger than before and connected by
+  walk-off exits: **Farm** (32×44, with barn, greenhouse, coop, animals, well, all
+  crafting stations) → **Town** south (28×40, four cottages, square, arch, lamps,
+  nine villagers) → **Beach** south of town (sand, sea, pier, wreck, shells, surf
+  fishing) and **Mountain pass** east of town (terraces, ore rocks, hot spring, golems;
+  rocket pad in the penguin arc, smugglers' camp in the gangster arc) → **Moon**
+  (penguin arc, from the pad once the meadow is cleared). Farm → **Forest** north
+  (winding path, clearing, hidden pond, shrine with offerings, daily forage, wisps at
+  night) → **Lake** west (big water, dock, Finn's bait shop, best fishing) ↔ farm.
+  Farm → **Meadow** east (36×28) → **Crystal Meadow** (penguins: standing stones,
+  crystal blooms, altar that spends Refined Crystals for max hearts, Grumps pressing
+  in) or **Outskirts** (gangsters: shack, black market, fence to the city). The mine
+  is still off the meadow. The gates east of those are the story doors (Guide #2).
+- **Dense detail everywhere**: `WorldGen` scatters tufts, flowers, mushrooms, rocks,
+  logs, stumps, berry bushes and tree lines per map (seeded), plus wildlife (birds
+  that flush when you approach, butterflies, rabbits), and a **parallax backdrop**
+  behind every map (hills, mountains, sea, city, moon) that follows the time of day.
+- **World map tab** shows all areas, greyed until visited, with your position.
+- Rocks/logs/stumps/bushes/forage work on every map (shared interactions).
+
 ## What's in the game now (art batch 2: 29 sheets integrated)
 - **Tool-use animations** for all four family members and the dog: hoe, water, axe,
   pickaxe, cast, reel, hold-up, eat, in three directions. Farming, chopping, mining and
@@ -91,6 +112,8 @@
 - Slice and wire in art from `art/incoming/` as it arrives
 
 ## Known gaps
+- Beach shoreline and lake edges use the 9-piece pond set; W3/W5 prompts give proper edges
+- Villagers still only stand/walk-toward in town
 - Villagers only have front pose + walk-toward (ART-PROMPTS-03 #1); they face front when walking sideways
 - Big Jim and the female penguin still placeholders; shop interiors still flat
 - Water edges: only the 9-piece pond set; rivers/beaches need #11

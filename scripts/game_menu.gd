@@ -289,22 +289,29 @@ func _eat(id: String) -> void:
 func _draw_map(m: Control) -> void:
 	var font := ThemeDB.fallback_font
 	var boxes := {
-		"farm": Rect2(70, 60, 70, 60), "town": Rect2(70, 130, 70, 50), "meadow": Rect2(150, 70, 80, 40),
-		"mine": Rect2(190, 10, 45, 40), "house": Rect2(20, 20, 40, 30),
+		"forest": Rect2(60, 6, 70, 40), "lake": Rect2(4, 50, 50, 50), "farm": Rect2(70, 50, 60, 50), "meadow": Rect2(140, 55, 50, 40),
+		"crystal_meadow": Rect2(195, 55, 42, 40), "mine": Rect2(165, 10, 40, 36), "moon": Rect2(205, 2, 32, 28),
+		"town": Rect2(70, 110, 60, 45), "mountain": Rect2(140, 105, 60, 45), "beach": Rect2(60, 162, 80, 26), "house": Rect2(74, 54, 14, 10),
 	}
-	var cols := {"farm": Color(0.45, 0.7, 0.35), "town": Color(0.75, 0.65, 0.45), "meadow": Color(0.55, 0.75, 0.4), "mine": Color(0.4, 0.38, 0.45), "house": Color(0.7, 0.45, 0.3)}
+	var cols := {"forest": Color(0.25, 0.5, 0.3), "lake": Color(0.3, 0.55, 0.8), "farm": Color(0.45, 0.7, 0.35), "meadow": Color(0.55, 0.75, 0.4),
+		"crystal_meadow": Color(0.6, 0.7, 0.9), "mine": Color(0.4, 0.38, 0.45), "moon": Color(0.6, 0.55, 0.75), "town": Color(0.75, 0.65, 0.45),
+		"mountain": Color(0.55, 0.55, 0.6), "beach": Color(0.9, 0.8, 0.5), "house": Color(0.7, 0.45, 0.3)}
+	var names := {"crystal_meadow": "East" if GameState.is_penguins() else "Outskirts"}
 	m.draw_rect(Rect2(0, 0, 240, 190), Color(0.85, 0.78, 0.6))
 	var road := Color(0.4, 0.3, 0.2)
-	m.draw_line(Vector2(105, 120), Vector2(105, 130), road, 2)
-	m.draw_line(Vector2(140, 90), Vector2(150, 90), road, 2)
-	m.draw_line(Vector2(212, 70), Vector2(212, 50), road, 2)
-	m.draw_line(Vector2(60, 35), Vector2(70, 60), road, 2)
+	for pair in [["forest", "farm"], ["lake", "farm"], ["farm", "meadow"], ["meadow", "crystal_meadow"], ["meadow", "mine"], ["farm", "town"], ["town", "mountain"], ["town", "beach"], ["mountain", "moon"]]:
+		m.draw_line((boxes[pair[0]] as Rect2).get_center(), (boxes[pair[1]] as Rect2).get_center(), road, 2)
 	var here := str(GameState.run["scene"])
+	var seen: Dictionary = GameState.run["flags"]
 	for k: String in boxes:
 		var b: Rect2 = boxes[k]
-		m.draw_rect(b, cols[k])
+		var visited := k in ["farm", "house", "town", "meadow"] or seen.has(k + "_seen") or seen.has("cm_seen") and k == "crystal_meadow" or seen.has("moon_seen") and k == "moon" or seen.has("mine_seen") and k == "mine"
+		m.draw_rect(b, cols[k] if visited else Color(0.6, 0.58, 0.5))
 		m.draw_rect(b, Color(0.3, 0.2, 0.1), false, 1.5 if k != here else 3.0)
-		m.draw_string(font, Vector2(b.position.x, b.position.y + b.size.y / 2 + 3), k.capitalize(), HORIZONTAL_ALIGNMENT_CENTER, b.size.x, 8, Color(0.1, 0.1, 0.1))
+		var nm := str(names.get(k, k.capitalize()))
+		if not visited:
+			nm = "?"
+		m.draw_string(font, Vector2(b.position.x, b.position.y + b.size.y / 2 + 3), nm, HORIZONTAL_ALIGNMENT_CENTER, b.size.x, 7, Color(0.1, 0.1, 0.1))
 	if boxes.has(here):
 		var scene := get_tree().current_scene
 		var b: Rect2 = boxes[here]

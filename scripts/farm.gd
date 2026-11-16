@@ -3,16 +3,18 @@ extends GameMap
 ## berry bushes, trees for wood, the house door, exits to town (south) and the
 ## meadow (east). The story opening plays here on day 1.
 
-const PLOT := Rect2i(10, 5, 8, 8)
-const POND := Rect2i(12, 18, 6, 5)
-const HOUSE := Rect2i(3, 3, 6, 5)
-const DOOR := Vector2i(5, 7)
-const SELLBOX := Vector2i(3, 10)
-const CRYSTAL_SPOT := Vector2i(12, 15)
-const TOWN_EXIT := Rect2i(9, 28, 2, 2)
-const MEADOW_EXIT := Rect2i(18, 14, 2, 2)
-const TREES := [Vector2i(3, 14), Vector2i(5, 19), Vector2i(3, 24), Vector2i(8, 25), Vector2i(16, 26), Vector2i(2, 17), Vector2i(7, 21)]
-const BUSHES := [Vector2i(6, 16), Vector2i(15, 3), Vector2i(10, 24), Vector2i(17, 10)]
+const PLOT := Rect2i(12, 6, 12, 10)
+const POND := Rect2i(14, 22, 8, 6)
+const HOUSE := Rect2i(4, 4, 6, 5)
+const DOOR := Vector2i(6, 8)
+const SELLBOX := Vector2i(4, 11)
+const CRYSTAL_SPOT := Vector2i(12, 22)
+const TOWN_EXIT := Rect2i(15, 42, 2, 2)
+const MEADOW_EXIT := Rect2i(30, 18, 2, 3)
+const FOREST_EXIT := Rect2i(14, 0, 3, 2)
+const LAKE_EXIT := Rect2i(0, 24, 2, 3)
+const TREES := [Vector2i(3, 16), Vector2i(6, 21), Vector2i(3, 28), Vector2i(9, 31), Vector2i(24, 33), Vector2i(2, 19), Vector2i(8, 25), Vector2i(26, 9), Vector2i(28, 13), Vector2i(10, 36), Vector2i(20, 37), Vector2i(27, 27)]
+const BUSHES := [Vector2i(7, 18), Vector2i(26, 4), Vector2i(12, 30), Vector2i(28, 22), Vector2i(5, 34), Vector2i(22, 39)]
 
 var _pond: Scenery.Pond
 var _crystal: Node2D
@@ -26,13 +28,17 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return cell_center(Vector2i(7, 12))
+	return cell_center(Vector2i(8, 14))
 
 
 func build() -> void:
-	cols = 20
-	rows = 30
+	cols = 32
+	rows = 44
 	music_track = "farm"
+	add_exit(TOWN_EXIT, "town", Vector2(10 * TILE, 2 * TILE + 8), "down", "▼ town")
+	add_exit(MEADOW_EXIT, "meadow", Vector2(2 * TILE, 10 * TILE), "right", "meadow ▶")
+	add_exit(FOREST_EXIT, "forest", Vector2(16 * TILE, 38 * TILE), "up", "▲ forest")
+	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 14 * TILE), "left", "◀ lake")
 	block_rect(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y)
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go inside"})
 	set_thing(HOUSE.position.x + 6, HOUSE.position.y + 4, {"type": "mailbox", "hint": "A: check mailbox"})
@@ -50,25 +56,26 @@ func build() -> void:
 	for y in range(PLOT.position.y, PLOT.end.y):
 		for x in range(PLOT.position.x, PLOT.end.x):
 			things[Vector2i(x, y)] = {"type": "plot"}
-	block_rect(13, 1, 5, 2)   # barn
-	block_rect(1, 24, 3, 3)   # windmill
-	blocked[Vector2i(10, 4)] = true  # scarecrow
-	set_thing(1, 12, {"type": "workbench", "hint": "A: workbench"})
-	set_thing(2, 12, {"type": "workbench", "hint": "A: workbench"})
-	set_thing(5, 11, {"type": "furnace", "hint": "A: furnace (5 ore + 1 wood = bar)"})
-	set_thing(6, 11, {"type": "chest", "hint": "A: storage chest"})
-	set_thing(18, 24, {"type": "beehive", "hint": "A: beehive"})
-	set_thing(2, 20, {"type": "keg", "hint": "A: keg"})
-	set_thing(18, 4, {"type": "resonator", "hint": "A: crystal resonator"})
+	block_rect(19, 1, 5, 2)   # barn
+	block_rect(2, 36, 3, 3)   # windmill
+	block_rect(25, 2, 4, 3)   # greenhouse
+	block_rect(8, 38, 4, 3)   # coop
+	blocked[Vector2i(12, 5)] = true  # scarecrow
+	set_thing(2, 13, {"type": "workbench", "hint": "A: workbench"})
+	set_thing(3, 13, {"type": "workbench", "hint": "A: workbench"})
+	set_thing(6, 12, {"type": "furnace", "hint": "A: furnace (5 ore + 1 wood = bar)"})
+	set_thing(7, 12, {"type": "chest", "hint": "A: storage chest"})
+	set_thing(26, 30, {"type": "beehive", "hint": "A: beehive"})
+	set_thing(3, 22, {"type": "keg", "hint": "A: keg"})
+	set_thing(28, 6, {"type": "resonator", "hint": "A: crystal resonator"})
+	set_thing(10, 23, {"type": "well", "hint": "A: well (refill energy a little)"})
+	block_rect(10, 22, 1, 1)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
 
 
 func after_ready() -> void:
-	for r: Rect2i in [TOWN_EXIT, MEADOW_EXIT]:
-		for y in range(r.position.y, r.end.y):
-			for x in range(r.position.x, r.end.x):
-				blocked.erase(Vector2i(x, y))
+	WorldGen.add_backdrop(self, "hills")
 	_pond = Scenery.Pond.new()
 	_pond.rect = Rect2(POND.position * TILE, POND.size * TILE)
 	_pond.z_index = -1
@@ -102,11 +109,7 @@ func _process(delta: float) -> void:
 		_crystal.queue_redraw()
 	if player.frozen or _changing:
 		return
-	var c := player.cell()
-	if TOWN_EXIT.has_point(c):
-		go_to("town", Vector2(10 * TILE, 2 * TILE + 8), "down")
-	elif MEADOW_EXIT.has_point(c):
-		go_to("meadow", Vector2(2 * TILE, 10 * TILE), "right")
+	pass
 
 
 # ---- interaction -------------------------------------------------------------
@@ -127,28 +130,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if GameState.has_tool("rod") and not _fishing:
 				_fish()
 			return true
-		"tree":
-			if not GameState.spend_energy(2):
-				hud.toast("Too tired.", Color(1, 0.7, 0.7))
-				return true
-			player.play_tool("axe")
-			Music.instance(get_tree()).sfx("chop")
-			thing["hp"] = int(thing["hp"]) - 1
-			if int(thing["hp"]) <= 0:
-				thing["hp"] = 3
-				give("wood", 3)
-				xp("foraging", 3)
-			return true
-		"bush":
-			if bool(thing.get("berries", false)):
-				thing["berries"] = false
-				thing["hint"] = ""
-				GameState.run["flags"][thing["key"]] = int(GameState.run["day"])
-				give("berry", 2)
-				xp("foraging", 2)
-				if props.has(c) and Art.tex("nature", GameState.bush_sprite(false)):
-					(props[c] as Sprite2D).texture = Art.tex("nature", GameState.bush_sprite(false))
-				queue_redraw()
+		"well":
+			if int(GameState.run["flags"].get("well_day", 0)) < int(GameState.run["day"]):
+				GameState.run["flags"]["well_day"] = int(GameState.run["day"])
+				GameState.restore_energy(20)
+				hud.toast("Cold water. +20 energy.")
+			else:
+				hud.toast("You already drank today.")
 			return true
 		"crystal":
 			_talk_crystal()
@@ -518,7 +506,7 @@ func _intro_penguins(n: Dictionary) -> void:
 	await hud.fade_out(0.6)
 	_make_crystal()
 	set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
-	player.position = cell_center(Vector2i(12, 17))
+	player.position = cell_center(Vector2i(12, 24))
 	player.facing = "up"
 	if pet:
 		pet.position = player.position + Vector2(-14, 4)
@@ -571,7 +559,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 		{"text": "Somewhere a long way from here, the man who took the rest of it is probably sleeping very well."},
 	])
 	await hud.fade_out(0.6)
-	player.position = cell_center(Vector2i(10, 26))
+	player.position = cell_center(Vector2i(16, 38))
 	player.facing = "up"
 	if pet:
 		pet.position = player.position + Vector2(-14, 4)
@@ -606,11 +594,13 @@ func _intro_gangsters(n: Dictionary) -> void:
 
 func _draw() -> void:
 	draw_grass(1)
+	WorldGen.draw_ground_detail(self, 21, 0.14)
 	# Paths
-	draw_tileset_rect("dirt", Rect2i(9, 8, 2, 22), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(10, 14, 10, 2), Color("b8945a"))
-	draw_tileset_rect("dirt", TOWN_EXIT, Color("b8945a"))
-	draw_tileset_rect("dirt", MEADOW_EXIT, Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(15, 2, 2, 41), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(2, 18, 29, 3), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(6, 9, 1, 9), Color("b8945a"))
+	draw_tileset_rect("stone", Rect2i(10, 12, 2, 2), Color("9a9aa6"))
+	draw_exits()
 	# Plot: untouched soil shows as a faint patch; tilled tiles use the real tiles.
 	draw_rect(Rect2(PLOT.position * TILE, PLOT.size * TILE), Color(0.45, 0.35, 0.2, 0.25))
 	var farm: Dictionary = GameState.run["farm"]
@@ -645,12 +635,7 @@ func _draw() -> void:
 					draw_circle(Vector2(cx, base - hgt - 1), 3.0, Color(cd["top"]))
 	if not Art.has("buildings", "house"):
 		draw_building(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y, Color("8b5a2b"), Color("b03a2e"), "")
-		draw_rect(Rect2(SELLBOX.x * TILE + 1, SELLBOX.y * TILE + 4, TILE - 2, TILE - 4), Color("c9a86b"))
-		for t: Vector2i in TREES:
-			draw_tree(cell_center(t))
 	draw_fence_border()
-	label("▼ town", Vector2(6 * TILE, 29 * TILE + 11), 8 * TILE)
-	label("meadow ▶", Vector2(14 * TILE, 13 * TILE + 11), 5 * TILE)
 
 
 func _place_props() -> void:
@@ -659,22 +644,56 @@ func _place_props() -> void:
 	prop("buildings", "house", Vector2i(HOUSE.position.x, HOUSE.end.y - 1), HOUSE.size.x - 1)
 	prop("buildings", "mailbox", Vector2i(HOUSE.end.x, HOUSE.end.y - 1))
 	prop("buildings", "sellbox", SELLBOX)
-	prop("props", "barn", Vector2i(13, 2), 4, -2.0)
-	prop("props", "scarecrow2" if Art.has("props", "scarecrow2") else "scarecrow", Vector2i(10, 4))
-	prop("props", "windmill", Vector2i(1, 26), 2)
-	prop("props", "workbench2", Vector2i(1, 12), 2)
-	prop("props", "furnace_off", Vector2i(5, 11))
-	prop("props", "chest_closed", Vector2i(6, 11))
-	prop("props", "beehive2", Vector2i(18, 24))
-	prop("props", "keg", Vector2i(2, 20))
-	var res := prop("props", "resonator", Vector2i(19 - 1, 4))
+	prop("props", "barn", Vector2i(19, 2), 4, -2.0)
+	prop("props", "greenhouse", Vector2i(25, 4), 3)
+	prop("props", "coop", Vector2i(8, 40), 3)
+	prop("props", "scarecrow2" if Art.has("props", "scarecrow2") else "scarecrow", Vector2i(12, 5))
+	prop("props", "windmill", Vector2i(2, 38), 2)
+	prop("props", "workbench2", Vector2i(2, 13), 2)
+	prop("props", "furnace_off", Vector2i(6, 12))
+	prop("props", "chest_closed", Vector2i(7, 12))
+	prop("props", "beehive2", Vector2i(26, 30))
+	prop("props", "keg", Vector2i(3, 22))
+	prop("props", "well2", Vector2i(10, 23))
+	prop("props", "hay", Vector2i(23, 4))
+	prop("props", "haystack", Vector2i(21, 4))
+	prop("props", "trough", Vector2i(20, 5))
+	prop("props", "cow", Vector2i(22, 7))
+	prop("props", "sheep", Vector2i(24, 8))
+	prop("props", "birdbath", Vector2i(9, 14))
+	prop("props", "signpost", Vector2i(13, 41))
+	prop("props", "lamp", Vector2i(17, 41))
+	prop("props", "stall", Vector2i(5, 27), 1)
+	# Dense world detail: tree lines along the edges, clumps, scattered props, critters.
+	var avoid := {}
+	for y in range(PLOT.position.y - 1, PLOT.end.y + 1):
+		for x in range(PLOT.position.x - 1, PLOT.end.x + 1):
+			avoid[Vector2i(x, y)] = true
+	for y in range(POND.position.y - 1, POND.end.y + 1):
+		for x in range(POND.position.x - 1, POND.end.x + 1):
+			avoid[Vector2i(x, y)] = true
+	for y in range(HOUSE.position.y - 1, HOUSE.end.y + 1):
+		for x in range(HOUSE.position.x - 1, HOUSE.end.x + 2):
+			avoid[Vector2i(x, y)] = true
+	for x in range(14, 18):
+		for y in rows:
+			avoid[Vector2i(x, y)] = true
+	for y in range(18, 21):
+		for x in range(cols):
+			avoid[Vector2i(x, y)] = true
+	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 11, [TOWN_EXIT.grow(2), MEADOW_EXIT.grow(2), FOREST_EXIT.grow(2), LAKE_EXIT.grow(2), Rect2i(18, 0, 12, 4)], 2)
+	WorldGen.tree_clumps(self, Rect2i(2, 24, 10, 14), 12, 3, avoid)
+	WorldGen.tree_clumps(self, Rect2i(24, 24, 7, 16), 13, 3, avoid)
+	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 14, 26, avoid)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 15, 7)
+	var res := prop("props", "resonator", Vector2i(28, 6))
 	if res and Art.has("props", "resonator"):
 		res.queue_free()
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("props", {"idle": "resonator"}, {"idle": 4.0})
 		a.animation = "idle"
 		a.scale = Vector2(0.5, 0.5)
-		a.position = cell_center(Vector2i(18, 4))
+		a.position = cell_center(Vector2i(28, 6))
 		a.offset = Vector2(0, -float(Art.info("props", "resonator").get("cell_h", 80)) / 2.0)
 		add_child(a)
 		a.play("idle")

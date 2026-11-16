@@ -19,6 +19,10 @@
 
   "berry":    {"name": "Wild Berry", "type": "forage", "value": 6, "heal": 1},
   "mushroom": {"name": "Mushroom", "type": "forage", "value": 8, "heal": 1},
+  "wild_leek": {"name": "Wild Leek", "type": "forage", "value": 14, "heal": 1},
+  "seashell": {"name": "Seashell", "type": "forage", "value": 10},
+  "coconut":  {"name": "Coconut", "type": "forage", "value": 22, "heal": 2},
+  "crystal_bloom": {"name": "Crystal Bloom", "type": "forage", "value": 70},
   "fiber":    {"name": "Fiber", "type": "material", "value": 1},
   "wood":     {"name": "Wood", "type": "material", "value": 2},
   "stone":    {"name": "Stone", "type": "material", "value": 2},

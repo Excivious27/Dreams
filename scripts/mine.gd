@@ -83,7 +83,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"up":
 			GameState.run["mine_floor"] = 1
-			go_to("meadow", Vector2(21 * TILE, 8 * TILE + 8), "down")
+			go_to("meadow", Vector2(31 * TILE, 8 * TILE + 8), "down")
 			return true
 		"down":
 			GameState.run["mine_floor"] = floor_no + 1

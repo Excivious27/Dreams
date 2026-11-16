@@ -12,6 +12,8 @@
 - `tools/slice_art2.py` handles batch-2 sheets (tool anims, portraits, villagers, enemies, interiors, seasons...). Both slicers merge into one `manifest.json`; run slice_art.py then slice_art2.py after `rm -rf art/gen`. The keyer treats dark purples as foreground (outlines) and tiles use `cover=True`.
 - Characters only in art/gen are listed in `CharacterLibrary.GEN_ONLY` with their strips; missing anims get aliases so every character can idle/walk.
 - Player tool anims: `player.play_tool("hoe"|"water"|"axe"|"pickaxe"|"cast"|"reel"|"hold"|"eat")`. `GameMap.fx(name, pos)` plays a one-shot effect from art/gen/fx.
+- World: `WorldGen` (scripts/world_gen.gd) densifies maps (ground detail, tree borders/clumps, scatter props, critters, parallax Backdrop). Maps declare exits with `add_exit(rect, scene, spawn, facing, label)`; `GameMap.check_exits()` and `draw_exits()` handle them. Shared interactions for tree/rock/log/stump/bush/forage live in `GameMap.interact_common`.
+- Area graph: farm ↔ town ↔ beach/mountain; farm ↔ forest ↔ lake ↔ farm; farm ↔ meadow ↔ crystal_meadow (penguins) / outskirts (gangsters, same scene); meadow → mine; mountain pad → moon.
 - Audio placeholders: `python3 tools/make_audio.py` regenerates `audio/music/*.ogg` and `audio/sfx/*.wav`.
 - Never delete Tom's uploads (`reference/`, `art/incoming/`). Original characters and art only.
 - Keep `docs/STATUS.md` current.

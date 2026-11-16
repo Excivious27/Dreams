@@ -3,8 +3,9 @@ extends GameMap
 ## shows up. Mushrooms to forage. The mine entrance is at the far east end.
 
 const FARM_EXIT := Rect2i(0, 9, 1, 3)
-const MINE_DOOR := Vector2i(22, 5)
-const SHROOMS := [Vector2i(5, 3), Vector2i(12, 13), Vector2i(18, 11), Vector2i(8, 8)]
+const EAST_EXIT := Rect2i(35, 14, 1, 3)
+const MINE_DOOR := Vector2i(32, 5)
+const SHROOMS := [Vector2i(5, 3), Vector2i(12, 13), Vector2i(18, 11), Vector2i(8, 8), Vector2i(24, 20), Vector2i(29, 9), Vector2i(14, 24), Vector2i(20, 4)]
 
 var _boss: Enemy
 var _spawned := 0
@@ -19,15 +20,17 @@ func default_spawn() -> Vector2:
 
 
 func build() -> void:
-	cols = 24
-	rows = 16
+	cols = 36
+	rows = 28
 	music_track = "meadow"
-	for p: Vector2i in [Vector2i(4, 2), Vector2i(10, 2), Vector2i(16, 3), Vector2i(21, 12), Vector2i(3, 13), Vector2i(14, 8), Vector2i(9, 12)]:
-		set_thing(p.x, p.y, {"type": "tree", "hint": ""})
-	for p: Vector2i in [Vector2i(7, 5), Vector2i(19, 7), Vector2i(12, 10)]:
+	add_exit(FARM_EXIT, "farm", Vector2(29 * TILE, 19 * TILE + 8), "left", "◀ farm")
+	add_exit(EAST_EXIT, "crystal_meadow", Vector2(2 * TILE, 12 * TILE), "right", "east ▶")
+	for p: Vector2i in [Vector2i(4, 2), Vector2i(10, 2), Vector2i(16, 3), Vector2i(21, 12), Vector2i(3, 13), Vector2i(14, 8), Vector2i(9, 12), Vector2i(26, 22), Vector2i(8, 22), Vector2i(19, 25)]:
+		set_thing(p.x, p.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
+	for p: Vector2i in [Vector2i(7, 5), Vector2i(19, 7), Vector2i(12, 10), Vector2i(27, 17), Vector2i(15, 20)]:
 		set_thing(p.x, p.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
 	set_thing(MINE_DOOR.x, MINE_DOOR.y, {"type": "mine", "hint": "A: enter the mine"})
-	block_rect(21, 3, 3, 5)
+	block_rect(31, 3, 3, 5)
 	things[MINE_DOOR] = {"type": "mine", "hint": "A: enter the mine"}
 	for m: Vector2i in SHROOMS:
 		var key := "shroom_%d_%d" % [m.x, m.y]
@@ -36,9 +39,16 @@ func build() -> void:
 
 
 func after_ready() -> void:
-	for y in range(9, 12):
-		blocked.erase(Vector2i(0, y))
+	WorldGen.add_backdrop(self, "mountains")
 	_place_props()
+	var avoid := {}
+	for y in range(3, 9):
+		for x in range(30, 35):
+			avoid[Vector2i(x, y)] = true
+	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 41, [FARM_EXIT.grow(2), EAST_EXIT.grow(2), Rect2i(29, 0, 7, 10)], 2)
+	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 42, 6, avoid)
+	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 43, 20, avoid)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 44, 8)
 	var n := 4 if not GameState.quest_done("clear_meadow") else 2
 	for i in n:
 		_spawn_one()
@@ -65,7 +75,7 @@ func _first_visit() -> void:
 
 func _spawn_one() -> void:
 	_spawned += 1
-	var at := Vector2(randf_range(8, 19) * TILE, randf_range(3, 13) * TILE)
+	var at := Vector2(randf_range(8, 28) * TILE, randf_range(3, 24) * TILE)
 	spawn_enemy(_pick_kind(), at)
 
 
@@ -94,8 +104,7 @@ func _process(delta: float) -> void:
 	super(delta)
 	if player.frozen or _changing:
 		return
-	if player.cell().x <= 0:
-		go_to("farm", Vector2(17 * TILE + 8, 15 * TILE), "left")
+	pass
 
 
 func on_enemy_died(e: Enemy) -> void:
@@ -131,7 +140,7 @@ func _summon_boss() -> void:
 			{"text": "The small ones scatter. Something bigger stands up from behind the rocks. It has a face you've seen in a very bad photograph."},
 			{"who": "The President's Man", "text": "He said you'd be farming. He didn't say you'd be good at it."},
 		])
-	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(16 * TILE, 8 * TILE))
+	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(18 * TILE, 12 * TILE))
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false
 
@@ -166,22 +175,6 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 		"mine":
 			go_to("mine", Vector2.ZERO)
 			return true
-		"rock":
-			if not GameState.has_tool("pickaxe"):
-				return false
-			if not GameState.spend_energy(2):
-				hud.toast("Too tired.", Color(1, 0.7, 0.7))
-				return true
-			player.play_tool("pickaxe")
-			Music.instance(get_tree()).sfx("chop")
-			thing["hp"] = int(thing["hp"]) - 1
-			if int(thing["hp"]) <= 0:
-				thing["hp"] = 2
-				give("stone", 2)
-				if randf() < 0.3:
-					give("copper", 1)
-				xp("mining", 2)
-			return true
 		"shroom":
 			if bool(thing.get("has", false)):
 				thing["has"] = false
@@ -199,7 +192,11 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 
 func _draw() -> void:
 	draw_grass(5)
-	draw_tileset_rect("dirt", Rect2i(0, 9, 1, 3), Color("b8945a"))
+	WorldGen.draw_ground_detail(self, 51, 0.18)
+	draw_tileset_rect("dirt", Rect2i(1, 9, 30, 3), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(28, 9, 3, 6), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(28, 14, 7, 3), Color("b8945a"))
+	draw_exits()
 	if not Art.has("nature", "oak"):
 		for k in things:
 			var t: Dictionary = things[k]
@@ -214,11 +211,10 @@ func _draw() -> void:
 						var p := cell_center(k)
 						draw_rect(Rect2(p.x - 4, p.y - 8, 8, 3), Color("c9452f"))
 	# Mine entrance in a rocky hill.
-	draw_tileset_rect("stone", Rect2i(21, 3, 3, 5), Color("6a6a76"))
+	draw_tileset_rect("stone", Rect2i(31, 3, 3, 5), Color("6a6a76"))
 	draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
 	draw_fence_border()
-	label("◀ farm", Vector2(1 * TILE, 9 * TILE - 2), 4 * TILE)
-	label("mine", Vector2(18 * TILE, 3 * TILE - 2), 3 * TILE)
+	label("mine", Vector2(28 * TILE, 3 * TILE - 2), 3 * TILE)
 
 
 func _place_props() -> void:
@@ -234,6 +230,8 @@ func _place_props() -> void:
 			"shroom":
 				if bool(t.get("has", false)):
 					prop("tiles", "deco_5", k, 0, 0.0)
-	for c: Vector2i in [Vector2i(21, 7), Vector2i(23, 4)]:
+	for c: Vector2i in [Vector2i(31, 7), Vector2i(33, 4)]:
 		prop("nature", "rock_l", c)
 	prop("nature", "log", Vector2i(6, 13), 1)
+	if Art.has("props", "beam"):
+		prop("props", "beam", Vector2i(31, 6), 1)

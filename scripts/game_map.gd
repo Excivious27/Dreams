@@ -47,6 +47,11 @@ func _ready() -> void:
 	for y in rows:
 		blocked[Vector2i(0, y)] = true
 		blocked[Vector2i(cols - 1, y)] = true
+	for e in exits:
+		var r: Rect2i = e["rect"]
+		for y in range(r.position.y, r.end.y):
+			for x in range(r.position.x, r.end.x):
+				blocked.erase(Vector2i(x, y))
 
 	if has_sky:
 		sky = Scenery.new()
@@ -139,7 +144,105 @@ func cell_center(c: Vector2i) -> Vector2:
 
 func try_interact(c: Vector2i) -> bool:
 	var thing: Dictionary = things.get(c, {})
-	return interact(c, thing)
+	if interact(c, thing):
+		return true
+	return interact_common(c, thing)
+
+
+## Interactions every outdoor map shares (trees, rocks, logs, stumps, bushes).
+func interact_common(c: Vector2i, thing: Dictionary) -> bool:
+	match str(thing.get("type", "")):
+		"tree", "log", "stump":
+			if not GameState.has_tool("axe"):
+				return false
+			if not GameState.spend_energy(2):
+				hud.toast("Too tired.", Color(1, 0.7, 0.7))
+				return true
+			player.play_tool("axe")
+			Music.instance(get_tree()).sfx("chop")
+			thing["hp"] = int(thing.get("hp", 3)) - 1
+			if int(thing["hp"]) <= 0:
+				var is_tree := str(thing["type"]) == "tree"
+				give("wood", 3 if is_tree else 2)
+				xp("foraging", 3)
+				if is_tree:
+					thing["hp"] = 3
+				else:
+					things.erase(c)
+					blocked.erase(c)
+					if props.has(c):
+						(props[c] as Sprite2D).queue_free()
+						props.erase(c)
+			return true
+		"rock":
+			if not GameState.has_tool("pickaxe"):
+				return false
+			if not GameState.spend_energy(2):
+				hud.toast("Too tired.", Color(1, 0.7, 0.7))
+				return true
+			player.play_tool("pickaxe")
+			Music.instance(get_tree()).sfx("chop")
+			thing["hp"] = int(thing.get("hp", 2)) - 1
+			if int(thing["hp"]) <= 0:
+				give("stone", 2)
+				if randf() < 0.25:
+					give("copper", 1)
+				xp("mining", 2)
+				things.erase(c)
+				blocked.erase(c)
+				if props.has(c):
+					(props[c] as Sprite2D).queue_free()
+					props.erase(c)
+			return true
+		"bush":
+			if bool(thing.get("berries", false)):
+				thing["berries"] = false
+				thing["hint"] = ""
+				GameState.run["flags"][str(thing["key"])] = int(GameState.run["day"])
+				give("berry", 2)
+				xp("foraging", 2)
+				if props.has(c) and Art.tex("nature", GameState.bush_sprite(false)):
+					(props[c] as Sprite2D).texture = Art.tex("nature", GameState.bush_sprite(false))
+			return true
+		"forage":
+			var item := str(thing.get("item", "mushroom"))
+			GameState.run["flags"][str(thing["key"])] = int(GameState.run["day"])
+			things.erase(c)
+			give(item)
+			xp("foraging", 2)
+			if props.has(c):
+				(props[c] as Sprite2D).queue_free()
+				props.erase(c)
+			return true
+	return false
+
+
+## Declare an exit strip: standing in `r` sends you to `scene` at `spawn`.
+var exits: Array = []
+func add_exit(r: Rect2i, scene: String, spawn: Vector2, facing: String, label_text := "") -> void:
+	exits.append({"rect": r, "scene": scene, "spawn": spawn, "facing": facing, "label": label_text})
+	for y in range(r.position.y, r.end.y):
+		for x in range(r.position.x, r.end.x):
+			blocked.erase(Vector2i(x, y))
+
+
+func check_exits() -> void:
+	if player == null or player.frozen or _changing:
+		return
+	var c := player.cell()
+	for e in exits:
+		if (e["rect"] as Rect2i).has_point(c):
+			go_to(str(e["scene"]), e["spawn"], str(e["facing"]))
+			return
+
+
+func draw_exits() -> void:
+	for e in exits:
+		var r: Rect2i = e["rect"]
+		draw_tileset_rect("dirt", r, Color("b8945a"))
+		if str(e["label"]) != "":
+			var p := Vector2(r.position * TILE)
+			label(str(e["label"]), p + Vector2(-24, -3 if r.position.y > 2 else TILE + 12), r.size.x * TILE + 48)
 
 
 ## Place a sprite from art/gen with its feet at the bottom-center of cell `c`
@@ -286,6 +389,7 @@ func _process(delta: float) -> void:
 	if pet:
 		_follow_pet(delta)
 	update_enemies(delta)
+	check_exits()
 
 
 func update_enemies(_delta: float) -> void:

@@ -44,7 +44,7 @@ func after_ready() -> void:
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"door":
-			go_to("farm", Vector2(5 * TILE + 8, 8 * TILE + 4), "down")
+			go_to("farm", Vector2(6 * TILE + 8, 9 * TILE + 4), "down")
 			return true
 		"bed":
 			_sleep()

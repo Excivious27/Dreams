@@ -47,7 +47,7 @@ func _run() -> void:
 
 	# Walk to the plot and farm one tile.
 	var p: Player = farm.player
-	p.position = farm.cell_center(Vector2i(12, 9))
+	p.position = farm.cell_center(Vector2i(14, 10))
 	p.facing = "up"
 	await frames(5)
 	var fc := p.facing_cell()
@@ -64,7 +64,7 @@ func _run() -> void:
 	await shot("04_farming")
 
 	# Run test (keyboard path): hold B + right and check speed.
-	p.position = farm.cell_center(Vector2i(12, 16))
+	p.position = farm.cell_center(Vector2i(4, 19))
 	Input.action_press("right"); Input.action_press("b")
 	await frames(40)
 	var spd := p.velocity.length()
@@ -72,7 +72,7 @@ func _run() -> void:
 	check(spd > Player.WALK_SPEED * 1.3, "running is faster than walking (%.0f)" % spd)
 	await frames(30)
 	# Touch path: finger 0 on the D-pad (right), finger 1 holding B.
-	p.position = farm.cell_center(Vector2i(3, 13))
+	p.position = farm.cell_center(Vector2i(4, 19))
 	touch(0, TouchControls.DPAD_CENTER + Vector2(30, 0), true)
 	touch(1, TouchControls.BUTTONS["b"]["pos"], true)
 	await frames(40)
@@ -85,6 +85,7 @@ func _run() -> void:
 	touch(0, TouchControls.DPAD_CENTER + Vector2(30, 0), false)
 	await frames(10)
 	# Tap B while moving toggles run mode.
+	p.position = farm.cell_center(Vector2i(26, 19))
 	touch(0, TouchControls.DPAD_CENTER + Vector2(-30, 0), true)
 	await frames(5)
 	touch(1, TouchControls.BUTTONS["b"]["pos"], true)
@@ -97,7 +98,7 @@ func _run() -> void:
 	await frames(10)
 	await shot("05_running")
 	# Touch A on the sell box opens a dialogue, tapping the box advances it.
-	p.position = farm.cell_center(Vector2i(3, 11))
+	p.position = farm.cell_center(Vector2i(4, 12))
 	p.facing = "up"
 	await frames(3)
 	touch(1, TouchControls.BUTTONS["a"]["pos"], true)
@@ -116,10 +117,10 @@ func _run() -> void:
 	check(not d.active, "tapping the dialogue box advances/closes it")
 	# Tap-to-move: tap a grass cell, the player walks there.
 	await frames(20)
-	p.position = farm.cell_center(Vector2i(5, 12))
+	p.position = farm.cell_center(Vector2i(9, 26))
 	await frames(45)  # let the camera settle on the new position
 	var cam_tf: Transform2D = farm.get_canvas_transform()
-	var dest: Vector2 = farm.cell_center(Vector2i(5, 15))
+	var dest: Vector2 = farm.cell_center(Vector2i(9, 29))
 	var screen: Vector2 = cam_tf * (dest - Vector2(0, 8))  # middle of the cell, not its bottom edge
 	touch(0, screen, true)
 	await frames(2)
@@ -148,7 +149,7 @@ func _run() -> void:
 	await frames(20)  # input is blocked briefly after a menu closes
 
 	# Enter the house via the door.
-	p.position = farm.cell_center(Vector2i(5, 8))
+	p.position = farm.cell_center(Vector2i(6, 9))
 	p.facing = "up"
 	await frames(3)
 	check(farm.things.get(p.facing_cell(), {}).get("type", "") == "door", "facing the door")
@@ -201,7 +202,7 @@ func _run() -> void:
 		await frames(6)
 	check(GameState.quest_done("meet_town"), "meet_town quest completed")
 	# Shop: buy strawberry seeds.
-	town.player.position = town.cell_center(Vector2i(5, 9))
+	town.player.position = town.cell_center(Vector2i(6, 10))
 	town.player.facing = "up"
 	await frames(3)
 	var before := int(GameState.run["crystals"])
@@ -328,11 +329,13 @@ func _run() -> void:
 	await shot("15_boss")
 	if boss:
 		boss.hp = 1
-		m2.player.position = boss.position + Vector2(-12, 0)
-		m2.player.facing = "right"
-		m2.player.invuln = 2.0
-		await press("a", 2)
-		await frames(20)
+		for i in 6:
+			if not is_instance_valid(boss) or not boss._alive:
+				break
+			m2.player.position = boss.position + Vector2(-12, 0)
+			m2.player.facing = "right"
+			m2.player.invuln = 2.0
+			await act()
 		for i in 10:
 			if not d.active:
 				break

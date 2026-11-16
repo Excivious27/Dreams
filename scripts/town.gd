@@ -3,12 +3,14 @@ extends GameMap
 ## fountain, and five townspeople with their own lines per arc. Shops are
 ## dialogue menus. Talking once a day raises friendship; gifts raise it more.
 
-const STORE := Rect2i(3, 4, 6, 5)
-const SMITH := Rect2i(12, 4, 6, 5)
-const POTIONS := Rect2i(2, 13, 5, 5)
-const HALL := Rect2i(10, 13, 8, 5)
-const FOUNTAIN := Rect2i(9, 21, 2, 2)
-const FARM_EXIT := Rect2i(9, 1, 2, 1)
+const STORE := Rect2i(4, 5, 6, 5)
+const SMITH := Rect2i(16, 5, 6, 5)
+const POTIONS := Rect2i(3, 15, 5, 5)
+const HALL := Rect2i(13, 15, 8, 5)
+const FOUNTAIN := Rect2i(12, 24, 2, 2)
+const FARM_EXIT := Rect2i(12, 0, 2, 2)
+const BEACH_EXIT := Rect2i(12, 38, 2, 2)
+const MOUNTAIN_EXIT := Rect2i(26, 12, 2, 3)
 
 var npcs: Array = []
 
@@ -18,19 +20,22 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return Vector2(10 * TILE, 3 * TILE)
+	return Vector2(13 * TILE, 3 * TILE)
 
 
 func build() -> void:
-	cols = 20
-	rows = 28
+	cols = 28
+	rows = 40
 	music_track = "town"
+	add_exit(FARM_EXIT, "farm", Vector2(16 * TILE, 41 * TILE), "up", "▲ farm")
+	add_exit(BEACH_EXIT, "beach", Vector2(14 * TILE, 2 * TILE + 8), "down", "▼ beach")
+	add_exit(MOUNTAIN_EXIT, "mountain", Vector2(2 * TILE, 12 * TILE), "right", "mountain ▶")
 	for b: Rect2i in [STORE, SMITH, POTIONS, HALL]:
 		block_rect(b.position.x, b.position.y, b.size.x, b.size.y)
-	set_thing(5, 8, {"type": "shop", "shop": "store", "hint": "A: General Store"})
-	set_thing(14, 8, {"type": "shop", "shop": "smith", "hint": "A: Blacksmith"})
-	set_thing(4, 17, {"type": "shop", "shop": "potions", "hint": "A: Potion Shop"})
-	set_thing(13, 17, {"type": "hall", "hint": "A: Town Hall"})
+	set_thing(6, 9, {"type": "shop", "shop": "store", "hint": "A: General Store"})
+	set_thing(18, 9, {"type": "shop", "shop": "smith", "hint": "A: Blacksmith"})
+	set_thing(5, 19, {"type": "shop", "shop": "potions", "hint": "A: Potion Shop"})
+	set_thing(16, 19, {"type": "hall", "hint": "A: Town Hall"})
 	block_rect(FOUNTAIN.position.x, FOUNTAIN.position.y, 2, 2)
 	for y in range(FOUNTAIN.position.y, FOUNTAIN.end.y):
 		for x in range(FOUNTAIN.position.x, FOUNTAIN.end.x):
@@ -50,8 +55,7 @@ func build() -> void:
 
 
 func after_ready() -> void:
-	for c in [Vector2i(9, 1), Vector2i(10, 1), Vector2i(9, 0), Vector2i(10, 0)]:
-		blocked.erase(c)
+	WorldGen.add_backdrop(self, "hills")
 	_place_props()
 	for id in GameState.npcs:
 		var d: Dictionary = GameState.npcs[id]
@@ -61,7 +65,7 @@ func after_ready() -> void:
 			pass
 		var n := Npc.new()
 		n.map = self
-		n.setup(id, d, cell_center(Vector2i(int(d["spot"][0]), int(d["spot"][1]))))
+		n.setup(id, d, cell_center(Vector2i(int(d["spot"][0]) + 2, int(d["spot"][1]) + 3)))
 		add_child(n)
 		npcs.append(n)
 	if not GameState.run["flags"].has("town_seen"):
@@ -88,8 +92,7 @@ func _process(delta: float) -> void:
 	super(delta)
 	if player.frozen or _changing:
 		return
-	if FARM_EXIT.has_point(player.cell()) or player.cell().y <= 0:
-		go_to("farm", Vector2(10 * TILE, 27 * TILE), "up")
+	pass
 
 
 func has_npc_at(c: Vector2i) -> bool:
@@ -298,21 +301,20 @@ func _lines(id: String, friend: int) -> Array:
 
 func _draw() -> void:
 	draw_grass(3)
-	draw_tileset_rect("dirt", Rect2i(8, 0, 4, rows), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(1, 10, 18, 2), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(1, 19, 18, 2), Color("b8945a"))
-	draw_tileset_rect("stone", Rect2i(7, 19, 6, 6), Color("9a9aa6"))
+	WorldGen.draw_ground_detail(self, 31, 0.08)
+	draw_tileset_rect("dirt", Rect2i(11, 0, 4, rows), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(1, 11, 26, 2), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(1, 21, 26, 2), Color("b8945a"))
+	draw_tileset_rect("dirt", Rect2i(1, 31, 26, 2), Color("b8945a"))
+	draw_tileset_rect("stone", Rect2i(9, 22, 8, 7), Color("9a9aa6"))
+	draw_tileset_rect("stone", Rect2i(10, 3, 6, 3), Color("9a9aa6"))
+	draw_exits()
 	if not Art.has("buildings", "store"):
 		draw_building(STORE.position.x, STORE.position.y, STORE.size.x, STORE.size.y, Color("c9a86b"), Color("4f8fd0"), "GENERAL STORE")
 		draw_building(SMITH.position.x, SMITH.position.y, SMITH.size.x, SMITH.size.y, Color("5a5a66"), Color("3a3a44"), "BLACKSMITH")
 		draw_building(POTIONS.position.x, POTIONS.position.y, POTIONS.size.x, POTIONS.size.y, Color("7a5aa0"), Color("4a2e6b"), "POTIONS")
 		draw_building(HALL.position.x, HALL.position.y, HALL.size.x, HALL.size.y, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
-		draw_circle(Vector2(10 * TILE, 22 * TILE), 13.0, Color("4d93d6"))
-		for k in things:
-			if things[k].get("type", "") == "tree":
-				draw_tree(cell_center(k))
 	draw_fence_border()
-	label("▲ farm", Vector2(6 * TILE, 2 * TILE - 2), 8 * TILE)
 
 
 func _place_props() -> void:
@@ -323,16 +325,28 @@ func _place_props() -> void:
 	prop("buildings", "potions", Vector2i(POTIONS.position.x, POTIONS.end.y - 1), POTIONS.size.x - 1)
 	prop("buildings", "hall", Vector2i(HALL.position.x, HALL.end.y - 1), HALL.size.x - 1)
 	prop("buildings", "fountain", Vector2i(FOUNTAIN.position.x, FOUNTAIN.end.y - 1), 1, 4.0)
-	prop("buildings", "cottage_a", Vector2i(2, 24), 2)
-	prop("buildings", "cottage_b", Vector2i(15, 24), 2)
-	prop("buildings", "well", Vector2i(17, 14), 1)
-	for c: Vector2i in [Vector2i(6, 12), Vector2i(13, 12), Vector2i(6, 21), Vector2i(13, 21)]:
+	prop("buildings", "cottage_a", Vector2i(3, 30), 2)
+	prop("buildings", "cottage_b", Vector2i(21, 30), 2)
+	prop("buildings", "cottage_a", Vector2i(8, 35), 2)
+	prop("buildings", "cottage_b", Vector2i(17, 35), 2)
+	prop("buildings", "well", Vector2i(23, 22), 1)
+	for c: Vector2i in [Vector2i(8, 13), Vector2i(17, 13), Vector2i(8, 23), Vector2i(17, 23), Vector2i(8, 31), Vector2i(17, 31)]:
 		prop("props", "lamp", c)
-	prop("props", "stall", Vector2i(2, 20), 1)
-	prop("props", "signpost", Vector2i(7, 2))
-	prop("props", "board", Vector2i(12, 2), 1)
-	for c: Vector2i in [Vector2i(4, 25), Vector2i(14, 25)]:
+	prop("props", "stall", Vector2i(2, 24), 1)
+	prop("props", "signpost", Vector2i(9, 2))
+	prop("props", "board", Vector2i(15, 2), 1)
+	for c: Vector2i in [Vector2i(5, 36), Vector2i(21, 36)]:
 		prop("props", "lantern_lit", c)
-	for k in things:
-		if things[k].get("type", "") == "tree":
-			prop("nature", GameState.tree_sprite(1 if (k.x + k.y) % 2 == 0 else 0), k)
+	prop("props", "arch", Vector2i(12, 20), 1)
+	prop("props", "crates_a", Vector2i(24, 4))
+	prop("props", "crates_b", Vector2i(25, 4))
+	prop("props", "hay", Vector2i(2, 4))
+	var avoid := {}
+	for b: Rect2i in [STORE.grow(1), SMITH.grow(1), POTIONS.grow(1), HALL.grow(1), Rect2i(9, 21, 8, 9), Rect2i(10, 0, 6, 40), Rect2i(0, 10, 28, 4), Rect2i(0, 20, 28, 4), Rect2i(0, 30, 28, 4)]:
+		for y in range(b.position.y, b.end.y):
+			for x in range(b.position.x, b.end.x):
+				avoid[Vector2i(x, y)] = true
+	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 32, [FARM_EXIT.grow(2), BEACH_EXIT.grow(2), MOUNTAIN_EXIT.grow(2)], 2)
+	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 33, 5, avoid)
+	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 34, 14, avoid)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 35, 6)
