@@ -75,6 +75,8 @@ func _run() -> void:
 		for y in range(18, 23):
 			farm.clear_cell(Vector2i(x, y))
 	p.position = farm.cell_center(Vector2i(4, 19))
+	p.frozen = false
+	Dialogue.block_until_ms = 0
 	Input.action_press("right"); Input.action_press("b")
 	await frames(40)
 	var spd := p.velocity.length()

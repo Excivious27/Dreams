@@ -223,7 +223,7 @@ func draw_map() -> void:
 	for c: Vector2i in _grove:
 		var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
 		if Art.has("tiles", "ffloor_0"):
-			Art.draw_tile(self, "tiles", "ffloor_%d" % [[0, 1, 7, 8, 13, 14, 15, 0, 7, 8][hv % 10]], Vector2(c * TILE), 0)
+			Art.draw_tile(self, "tiles", "ffloor_%d" % [[7, 8, 7, 8, 13, 14, 15, 0, 7, 8][hv % 10]], Vector2(c * TILE), 0)
 		elif not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
 	for c: Vector2i in _grove:
