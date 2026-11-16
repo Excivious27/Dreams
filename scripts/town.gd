@@ -34,6 +34,7 @@ const SPOTS := {
 }
 
 var npcs: Array = []
+var _orchard_watch := false
 var _plaza := {}
 var _river := {}
 
@@ -93,6 +94,11 @@ func after_ready() -> void:
 	_place_buildings()
 	_place_props()
 	_place_people()
+	# Rook's quest: grumps (or thugs) have crossed into the orchard.
+	if GameState.has_quest("rook_tracks") and not GameState.quest_done("rook_tracks"):
+		for i in 3:
+			spawn_enemy("grump" if GameState.is_penguins() else "thug_speedster", cell_center(Vector2i(75 + i * 3, 10 + i * 6)))
+		_orchard_watch = true
 	if not GameState.run["flags"].has("town_seen"):
 		GameState.run["flags"]["town_seen"] = true
 		_arrival.call_deferred()
@@ -269,6 +275,19 @@ func _arrival() -> void:
 			{"text": "There's a man by the fountain who doesn't look up when you pass. That's the one to watch."},
 		])
 	player.frozen = false
+
+
+func update_enemies(delta: float) -> void:
+	super(delta)
+	if _orchard_watch:
+		var alive := 0
+		for e in enemies:
+			if is_instance_valid(e) and e._alive:
+				alive += 1
+		if alive == 0:
+			_orchard_watch = false
+			GameState.run["flags"]["rook_orchard_clear"] = true
+			hud.toast("The orchard is clear. Tell Rook.", Color(1, 0.9, 0.4))
 
 
 func has_npc_at(c: Vector2i) -> bool:

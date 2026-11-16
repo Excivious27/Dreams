@@ -1371,8 +1371,8 @@
   ],
   "back": [
    "lake",
-   27,
-   13
+   29,
+   21
   ],
   "music": "farm",
   "props": [
@@ -1461,8 +1461,8 @@
   ],
   "back": [
    "lake",
-   5,
-   5
+   35,
+   34
   ],
   "music": "farm",
   "props": [
@@ -1529,6 +1529,16 @@
     "empty": "Empty sacks.",
     "hint": "A: sacks",
     "solid": false
+   },
+   {
+    "type": "craft",
+    "cell": [
+     6,
+     4
+    ],
+    "station": "mill",
+    "hint": "A: grind grain",
+    "solid": false
    }
   ],
   "npcs": [],
@@ -1545,8 +1555,8 @@
   ],
   "back": [
    "lake",
-   31,
-   25
+   11,
+   34
   ],
   "music": "title",
   "props": [

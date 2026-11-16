@@ -956,5 +956,35 @@
    "8": "Mabel's diary",
    "10": "Mabel's wish"
   }
+ },
+ "marlowe": {
+  "name": "Marlowe",
+  "role": "Lighthouse keeper",
+  "sprite": "npc_fisherman",
+  "portrait": "npc_fisherman",
+  "spot": [
+   6,
+   32
+  ],
+  "spot_name": "lighthouse",
+  "routine": [],
+  "likes": [
+   "coal",
+   "fish",
+   "salmon",
+   "book",
+   "coffee"
+  ],
+  "dislikes": [
+   "flower",
+   "candy"
+  ],
+  "perks": {
+   "2": "Marlowe sells lamp oil (night fishing bonus)",
+   "4": "Marlowe's charts: rare fish spots marked",
+   "6": "Night fishing at the lighthouse doubles rare bites",
+   "8": "Marlowe tells the story of the crystal (lore)",
+   "10": "Marlowe's old rod"
+  }
  }
 }

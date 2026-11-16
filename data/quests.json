@@ -512,6 +512,1449 @@
      15
     ]
    }
+  },
+  {
+   "id": "maple_strawberries",
+   "giver": "maple",
+   "text": "Maple wants 8 strawberries for the spring display.",
+   "when": {
+    "season": "spring",
+    "quest": "maple_turnips"
+   },
+   "done_when": {
+    "item": [
+     "strawberry",
+     8
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 120,
+    "friend": [
+     "maple",
+     12
+    ]
+   }
+  },
+  {
+   "id": "maple_corn",
+   "giver": "maple",
+   "text": "Maple needs 10 corn for the summer stand.",
+   "when": {
+    "season": "summer",
+    "friend": [
+     "maple",
+     1
+    ]
+   },
+   "done_when": {
+    "item": [
+     "corn",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 180,
+    "item": [
+     "melon_seed",
+     4
+    ],
+    "friend": [
+     "maple",
+     12
+    ]
+   }
+  },
+  {
+   "id": "maple_pumpkins",
+   "giver": "maple",
+   "text": "Maple wants 3 pumpkins for the harvest window.",
+   "when": {
+    "season": "fall",
+    "friend": [
+     "maple",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "pumpkin",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 260,
+    "friend": [
+     "maple",
+     15
+    ]
+   }
+  },
+  {
+   "id": "maple_honey",
+   "giver": "maple",
+   "text": "Maple's out of honey. Bring 4 jars.",
+   "when": {
+    "friend": [
+     "maple",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "honey",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "item": [
+     "gift_pie",
+     2
+    ],
+    "friend": [
+     "maple",
+     15
+    ]
+   }
+  },
+  {
+   "id": "maple_supply_run",
+   "giver": "maple",
+   "text": "Maple needs 20 wood and 10 stone to fix the back shelves.",
+   "when": {
+    "friend": [
+     "maple",
+     4
+    ]
+   },
+   "done_when": {
+    "items": [
+     [
+      "wood",
+      20
+     ],
+     [
+      "stone",
+      10
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 150,
+    "friend": [
+     "maple",
+     18
+    ],
+    "xp": [
+     "building",
+     30
+    ]
+   }
+  },
+  {
+   "id": "gideon_iron",
+   "giver": "gideon",
+   "text": "Gideon wants 5 iron bars for a commission.",
+   "when": {
+    "quest": "gideon_copper",
+    "skill": [
+     "mining",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "iron_bar",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 400,
+    "item": [
+     "steel_bar",
+     1
+    ],
+    "friend": [
+     "gideon",
+     15
+    ]
+   }
+  },
+  {
+   "id": "gideon_coal",
+   "giver": "gideon",
+   "text": "The forge is cold. Gideon needs 15 coal.",
+   "when": {
+    "friend": [
+     "gideon",
+     1
+    ]
+   },
+   "done_when": {
+    "item": [
+     "coal",
+     15
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 150,
+    "friend": [
+     "gideon",
+     10
+    ]
+   }
+  },
+  {
+   "id": "gideon_ruby",
+   "giver": "gideon",
+   "text": "Gideon wants a ruby for a ring he won't talk about.",
+   "when": {
+    "friend": [
+     "gideon",
+     3
+    ],
+    "skill": [
+     "mining",
+     4
+    ]
+   },
+   "done_when": {
+    "item": [
+     "ruby",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "item": [
+     "copper_ring",
+     1
+    ],
+    "friend": [
+     "gideon",
+     20
+    ]
+   }
+  },
+  {
+   "id": "gideon_moon",
+   "giver": "gideon",
+   "text": "Gideon has heard of moon shards. Bring him one.",
+   "when": {
+    "friend": [
+     "gideon",
+     6
+    ],
+    "flag": "moon_seen"
+   },
+   "done_when": {
+    "item": [
+     "moon_shard",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 900,
+    "friend": [
+     "gideon",
+     25
+    ]
+   }
+  },
+  {
+   "id": "wren_mushrooms",
+   "giver": "wren",
+   "text": "Wren needs 8 mushrooms for a tonic.",
+   "when": {
+    "quest": "wren_herbs"
+   },
+   "done_when": {
+    "item": [
+     "mushroom",
+     8
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "potion",
+     2
+    ],
+    "friend": [
+     "wren",
+     12
+    ]
+   }
+  },
+  {
+   "id": "wren_glowcap",
+   "giver": "wren",
+   "text": "Wren wants a glow cap. They only show after dark in the forest.",
+   "when": {
+    "friend": [
+     "wren",
+     2
+    ],
+    "skill": [
+     "foraging",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "glow_cap",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 220,
+    "friend": [
+     "wren",
+     18
+    ],
+    "xp": [
+     "magic",
+     20
+    ]
+   }
+  },
+  {
+   "id": "wren_slime",
+   "giver": "wren",
+   "text": "Wren is studying slime goo. Bring 6.",
+   "when": {
+    "friend": [
+     "wren",
+     1
+    ],
+    "quest": "clear_meadow"
+   },
+   "done_when": {
+    "item": [
+     "slime_goo",
+     6
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "energy_tea",
+     3
+    ],
+    "friend": [
+     "wren",
+     12
+    ]
+   }
+  },
+  {
+   "id": "wren_starflower",
+   "giver": "wren",
+   "text": "Wren asks for a starflower from where the crystal fell.",
+   "when": {
+    "friend": [
+     "wren",
+     4
+    ],
+    "arc": "penguins"
+   },
+   "done_when": {
+    "item": [
+     "starflower",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 350,
+    "friend": [
+     "wren",
+     20
+    ],
+    "xp": [
+     "magic",
+     40
+    ]
+   }
+  },
+  {
+   "id": "alder_bridge",
+   "giver": "alder",
+   "text": "Alder wants 30 stone to repair the south bridge.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "stone",
+     30
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "friend": [
+     "alder",
+     15
+    ],
+    "xp": [
+     "building",
+     40
+    ]
+   }
+  },
+  {
+   "id": "alder_wood",
+   "giver": "alder",
+   "text": "The town hall roof leaks. Alder asks for 40 wood.",
+   "when": {
+    "friend": [
+     "alder",
+     1
+    ]
+   },
+   "done_when": {
+    "item": [
+     "wood",
+     40
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 260,
+    "friend": [
+     "alder",
+     15
+    ]
+   }
+  },
+  {
+   "id": "alder_fall_fair",
+   "giver": "alder",
+   "text": "Alder wants 5 pumpkins and 5 corn for the fall fair.",
+   "when": {
+    "season": "fall",
+    "friend": [
+     "alder",
+     2
+    ]
+   },
+   "done_when": {
+    "items": [
+     [
+      "pumpkin",
+      5
+     ],
+     [
+      "corn",
+      5
+     ]
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 500,
+    "friend": [
+     "alder",
+     25
+    ]
+   }
+  },
+  {
+   "id": "alder_wine",
+   "giver": "alder",
+   "text": "Alder would like a bottle of wine for the council. Discreetly.",
+   "when": {
+    "friend": [
+     "alder",
+     4
+    ]
+   },
+   "done_when": {
+    "item": [
+     "wine",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "friend": [
+     "alder",
+     20
+    ]
+   }
+  },
+  {
+   "id": "alder_gold",
+   "giver": "alder",
+   "text": "The town bell needs a gold bar for the clapper.",
+   "when": {
+    "friend": [
+     "alder",
+     6
+    ],
+    "skill": [
+     "mining",
+     6
+    ]
+   },
+   "done_when": {
+    "item": [
+     "gold_bar",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 1200,
+    "friend": [
+     "alder",
+     30
+    ]
+   }
+  },
+  {
+   "id": "finn_minnows",
+   "giver": "finn",
+   "text": "Finn wants 5 minnows for bait.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "minnow",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "bait",
+     10
+    ],
+    "friend": [
+     "finn",
+     12
+    ]
+   }
+  },
+  {
+   "id": "finn_trout",
+   "giver": "finn",
+   "text": "Finn bets you can't bring 3 trout by week's end.",
+   "when": {
+    "friend": [
+     "finn",
+     1
+    ],
+    "skill": [
+     "fishing",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "trout",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 150,
+    "friend": [
+     "finn",
+     15
+    ],
+    "xp": [
+     "fishing",
+     30
+    ]
+   }
+  },
+  {
+   "id": "finn_crab",
+   "giver": "finn",
+   "text": "Finn needs 4 crabs for the inn's stew.",
+   "when": {
+    "friend": [
+     "finn",
+     2
+    ],
+    "season": "summer"
+   },
+   "done_when": {
+    "item": [
+     "crab",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "friend": [
+     "finn",
+     15
+    ]
+   }
+  },
+  {
+   "id": "finn_pearl",
+   "giver": "finn",
+   "text": "Finn's heard of a pearl in the lake. Find it.",
+   "when": {
+    "friend": [
+     "finn",
+     5
+    ],
+    "skill": [
+     "fishing",
+     5
+    ]
+   },
+   "done_when": {
+    "item": [
+     "pearl",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 600,
+    "friend": [
+     "finn",
+     25
+    ],
+    "xp": [
+     "fishing",
+     80
+    ]
+   }
+  },
+  {
+   "id": "hazel_potatoes",
+   "giver": "hazel",
+   "text": "Hazel wants 10 potatoes for seed stock.",
+   "when": {
+    "quest": "first_harvest"
+   },
+   "done_when": {
+    "item": [
+     "potato",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "carrot_seed",
+     6
+    ],
+    "friend": [
+     "hazel",
+     12
+    ]
+   }
+  },
+  {
+   "id": "hazel_hay",
+   "giver": "hazel",
+   "text": "Hazel needs 15 hay for the winter. Scythe the tall grass.",
+   "when": {
+    "friend": [
+     "hazel",
+     1
+    ],
+    "season": "fall"
+   },
+   "done_when": {
+    "item": [
+     "hay",
+     15
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 180,
+    "friend": [
+     "hazel",
+     15
+    ]
+   }
+  },
+  {
+   "id": "hazel_eggs",
+   "giver": "hazel",
+   "text": "Hazel asks for 6 eggs. Build a coop if you haven't.",
+   "when": {
+    "friend": [
+     "hazel",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "egg",
+     6
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "item": [
+     "corn_seed",
+     8
+    ],
+    "friend": [
+     "hazel",
+     15
+    ]
+   }
+  },
+  {
+   "id": "hazel_milk",
+   "giver": "hazel",
+   "text": "Hazel wants 4 milk for the cheese cellar.",
+   "when": {
+    "friend": [
+     "hazel",
+     4
+    ]
+   },
+   "done_when": {
+    "item": [
+     "milk",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "cheese",
+     2
+    ],
+    "friend": [
+     "hazel",
+     20
+    ]
+   }
+  },
+  {
+   "id": "posy_flour",
+   "giver": "posy",
+   "text": "Posy needs 6 flour from the lake mill.",
+   "when": {
+    "friend": [
+     "posy",
+     1
+    ]
+   },
+   "done_when": {
+    "item": [
+     "flour",
+     6
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "bread",
+     4
+    ],
+    "friend": [
+     "posy",
+     12
+    ]
+   }
+  },
+  {
+   "id": "posy_honey",
+   "giver": "posy",
+   "text": "Posy wants 3 honey for the spiced loaf.",
+   "when": {
+    "friend": [
+     "posy",
+     2
+    ],
+    "season": "winter"
+   },
+   "done_when": {
+    "item": [
+     "honey",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "cake",
+     1
+    ],
+    "friend": [
+     "posy",
+     18
+    ]
+   }
+  },
+  {
+   "id": "posy_strawberries",
+   "giver": "posy",
+   "text": "Posy needs 12 strawberries for jam.",
+   "when": {
+    "friend": [
+     "posy",
+     2
+    ],
+    "season": "spring"
+   },
+   "done_when": {
+    "item": [
+     "strawberry",
+     12
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 220,
+    "friend": [
+     "posy",
+     15
+    ]
+   }
+  },
+  {
+   "id": "posy_eggs",
+   "giver": "posy",
+   "text": "Posy's out of eggs. Bring 8.",
+   "when": {
+    "friend": [
+     "posy",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "egg",
+     8
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 180,
+    "item": [
+     "cake",
+     1
+    ],
+    "friend": [
+     "posy",
+     15
+    ]
+   }
+  },
+  {
+   "id": "bram_mushrooms",
+   "giver": "bram",
+   "text": "Bram wants 10 mushrooms for the stew pot.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "mushroom",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 120,
+    "friend": [
+     "bram",
+     12
+    ]
+   }
+  },
+  {
+   "id": "bram_meat",
+   "giver": "bram",
+   "text": "Bram needs 5 game meat. Rook sells it, or hunt for it.",
+   "when": {
+    "friend": [
+     "bram",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "meat",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 260,
+    "friend": [
+     "bram",
+     15
+    ]
+   }
+  },
+  {
+   "id": "bram_wine",
+   "giver": "bram",
+   "text": "Bram wants 2 wine for the festival night.",
+   "when": {
+    "friend": [
+     "bram",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "wine",
+     2
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 350,
+    "friend": [
+     "bram",
+     20
+    ]
+   }
+  },
+  {
+   "id": "juniper_herbs",
+   "giver": "juniper",
+   "text": "Juniper needs 10 wild herbs for the clinic.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "wild_herb",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "herb_remedy",
+     2
+    ],
+    "friend": [
+     "juniper",
+     12
+    ]
+   }
+  },
+  {
+   "id": "juniper_glowcap",
+   "giver": "juniper",
+   "text": "Juniper is testing glow caps on fevers. Bring 2.",
+   "when": {
+    "friend": [
+     "juniper",
+     3
+    ],
+    "skill": [
+     "foraging",
+     4
+    ]
+   },
+   "done_when": {
+    "item": [
+     "glow_cap",
+     2
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 400,
+    "friend": [
+     "juniper",
+     20
+    ]
+   }
+  },
+  {
+   "id": "rook_pelts",
+   "giver": "rook",
+   "text": "Rook wants 3 pelts. Set traps or hunt.",
+   "when": {
+    "friend": [
+     "rook",
+     1
+    ]
+   },
+   "done_when": {
+    "item": [
+     "pelt",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "item": [
+     "trap",
+     2
+    ],
+    "friend": [
+     "rook",
+     15
+    ]
+   }
+  },
+  {
+   "id": "rook_bones",
+   "giver": "rook",
+   "text": "Rook needs 10 bones from the mine for arrowheads.",
+   "when": {
+    "friend": [
+     "rook",
+     2
+    ],
+    "skill": [
+     "mining",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "bone",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "arrow",
+     20
+    ],
+    "friend": [
+     "rook",
+     15
+    ]
+   }
+  },
+  {
+   "id": "rook_tracks",
+   "giver": "rook",
+   "text": "Rook asks you to clear the grumps from the orchard side of the river.",
+   "when": {
+    "friend": [
+     "rook",
+     3
+    ],
+    "quest": "clear_meadow"
+   },
+   "done_when": {
+    "flag": "rook_orchard_clear"
+   },
+   "take": false,
+   "reward": {
+    "crystals": 400,
+    "friend": [
+     "rook",
+     20
+    ]
+   }
+  },
+  {
+   "id": "theo_book",
+   "giver": "theo",
+   "text": "Theo heard of an old book in the mine. Find it.",
+   "when": {
+    "friend": [
+     "theo",
+     1
+    ],
+    "skill": [
+     "mining",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "book",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "friend": [
+     "theo",
+     18
+    ],
+    "xp": [
+     "magic",
+     20
+    ]
+   }
+  },
+  {
+   "id": "theo_coins",
+   "giver": "theo",
+   "text": "Theo collects old coins. Bring 3.",
+   "when": {
+    "friend": [
+     "theo",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "old_coin",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 250,
+    "friend": [
+     "theo",
+     15
+    ]
+   }
+  },
+  {
+   "id": "theo_fossil",
+   "giver": "theo",
+   "text": "Theo wants a fossil for the library case.",
+   "when": {
+    "friend": [
+     "theo",
+     4
+    ],
+    "skill": [
+     "mining",
+     4
+    ]
+   },
+   "done_when": {
+    "item": [
+     "fossil",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 500,
+    "friend": [
+     "theo",
+     25
+    ]
+   }
+  },
+  {
+   "id": "lumi_sunflowers",
+   "giver": "lumi",
+   "text": "Lumi asks for 4 sunflowers. Summer light, she says.",
+   "when": {
+    "friend": [
+     "lumi",
+     1
+    ],
+    "season": "summer"
+   },
+   "done_when": {
+    "item": [
+     "sunflower",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 180,
+    "friend": [
+     "lumi",
+     15
+    ]
+   }
+  },
+  {
+   "id": "lumi_starflower",
+   "giver": "lumi",
+   "text": "Lumi wants to paint a starflower. Bring one.",
+   "when": {
+    "friend": [
+     "lumi",
+     3
+    ],
+    "arc": "penguins"
+   },
+   "done_when": {
+    "item": [
+     "starflower",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "friend": [
+     "lumi",
+     20
+    ]
+   }
+  },
+  {
+   "id": "sal_coffee",
+   "giver": "sal",
+   "text": "Sal would kill for 3 coffees.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "coffee",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 60,
+    "friend": [
+     "sal",
+     15
+    ]
+   }
+  },
+  {
+   "id": "sal_bread",
+   "giver": "sal",
+   "text": "Sal hasn't eaten. Bring 4 bread.",
+   "when": {
+    "friend": [
+     "sal",
+     1
+    ]
+   },
+   "done_when": {
+    "item": [
+     "bread",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "friend": [
+     "sal",
+     15
+    ],
+    "xp": [
+     "bartering",
+     20
+    ]
+   }
+  },
+  {
+   "id": "sal_fish",
+   "giver": "sal",
+   "text": "Sal wants 5 fish, no questions.",
+   "when": {
+    "friend": [
+     "sal",
+     2
+    ],
+    "skill": [
+     "fishing",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "minnow",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 120,
+    "friend": [
+     "sal",
+     18
+    ]
+   }
+  },
+  {
+   "id": "pip_candy",
+   "giver": "pip",
+   "text": "Pip will trade a secret for 3 candy.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "candy",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "old_coin",
+     1
+    ],
+    "friend": [
+     "pip",
+     15
+    ]
+   }
+  },
+  {
+   "id": "tobin_shells",
+   "giver": "tobin",
+   "text": "Tobin wants 5 shells from the beach.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "shell",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 40,
+    "friend": [
+     "tobin",
+     15
+    ]
+   }
+  },
+  {
+   "id": "mabel_flowers",
+   "giver": "mabel",
+   "text": "Mabel wants 4 flowers for a crown.",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "flower",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 40,
+    "friend": [
+     "mabel",
+     15
+    ]
+   }
+  },
+  {
+   "id": "wrenjr_frog",
+   "giver": "wren_jr",
+   "text": "Wren jr wants a frog. A live one. (Bring 2 bugs instead.)",
+   "when": {
+    "quest": "meet_town"
+   },
+   "done_when": {
+    "item": [
+     "bait",
+     2
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 40,
+    "friend": [
+     "wren_jr",
+     15
+    ]
+   }
+  },
+  {
+   "id": "lighthouse_oil",
+   "giver": "marlowe",
+   "text": "Marlowe needs 10 coal to fire the lamp.",
+   "when": {},
+   "done_when": {
+    "item": [
+     "coal",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 150,
+    "friend": [
+     "marlowe",
+     15
+    ]
+   }
+  },
+  {
+   "id": "lighthouse_lens",
+   "giver": "marlowe",
+   "text": "Marlowe needs a refined crystal for the lens.",
+   "when": {
+    "quest": "lighthouse_oil"
+   },
+   "done_when": {
+    "item": [
+     "crystal_refined",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "friend": [
+     "marlowe",
+     25
+    ],
+    "flag": "lighthouse_lit",
+    "xp": [
+     "fishing",
+     60
+    ]
+   }
+  },
+  {
+   "id": "marlowe_salmon",
+   "giver": "marlowe",
+   "text": "Marlowe wants 2 salmon. He hasn't had one in years.",
+   "when": {
+    "friend": [
+     "marlowe",
+     2
+    ],
+    "skill": [
+     "fishing",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "salmon",
+     2
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 220,
+    "friend": [
+     "marlowe",
+     15
+    ]
+   }
   }
  ]
 }

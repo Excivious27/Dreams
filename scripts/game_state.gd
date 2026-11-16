@@ -719,6 +719,8 @@ static func _cond_ok(when: Dictionary) -> bool:
 static func _give_reward(rw: Dictionary) -> void:
 	if rw.has("crystals"):
 		run["crystals"] = int(run["crystals"]) + int(rw["crystals"])
+	if rw.has("flag"):
+		run["flags"][str(rw["flag"])] = true
 	if rw.has("item"):
 		add_item(str(rw["item"][0]), int(rw["item"][1]))
 	if rw.has("xp"):

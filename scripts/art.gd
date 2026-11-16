@@ -41,7 +41,7 @@ static func tex(group: String, name: String) -> Texture2D:
 
 ## SpriteFrames built from one or more strips: {"anim_name": "strip_name", ...}.
 static func frames(group: String, anims: Dictionary, fps: Dictionary = {}, loops: Dictionary = {}) -> SpriteFrames:
-	var key := group + ":" + str(anims.keys())
+	var key := group + ":" + str(anims)
 	if _frames.has(key):
 		return _frames[key]
 	var sf := SpriteFrames.new()

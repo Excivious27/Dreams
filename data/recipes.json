@@ -1147,5 +1147,37 @@
    "give": "dream_charm",
    "tier": 5
   }
+ ],
+ "mill": [
+  {
+   "id": "flour",
+   "name": "Flour",
+   "need": {
+    "wheat": 3
+   },
+   "give": "flour",
+   "tier": 1
+  },
+  {
+   "id": "hay_bale",
+   "name": "Hay (from fiber)",
+   "need": {
+    "fiber": 5
+   },
+   "give": "hay",
+   "n": 2,
+   "tier": 1
+  },
+  {
+   "id": "cornmeal_bread",
+   "name": "Corn Bread",
+   "need": {
+    "corn": 2,
+    "flour": 1
+   },
+   "give": "bread",
+   "n": 2,
+   "tier": 2
+  }
  ]
 }

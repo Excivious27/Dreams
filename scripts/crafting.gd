@@ -4,7 +4,7 @@ extends RefCounted
 ## Recipes show when their tier is reached (building/mining/farming/foraging level gates)
 ## and the skill gate (if any) is met. Craft gives items or tools.
 
-const STATION_SKILL := {"workbench": "building", "smith": "mining", "kitchen": "farming", "alchemy": "foraging"}
+const STATION_SKILL := {"workbench": "building", "smith": "mining", "kitchen": "farming", "alchemy": "foraging", "mill": "farming"}
 
 
 static func tier_unlocked(station: String) -> int:

@@ -1,12 +1,20 @@
 extends GameMap
-## The west lake: a wide water body with a dock, a water-mill style stall,
-## reeds, the best fishing in the valley. Exits: farm (east), forest (north).
+## The west lake: a big noise-shaped water body, the best fishing in the valley.
+## Three working buildings sit where they belong: Finn's bait hut on stilts at
+## the end of the east dock, the water mill on the south outlet where the lake
+## drains toward the border water (grinds wheat into flour for Posy), and the
+## lighthouse on a rock island off the south-west shore, reached by a plank
+## walk (Marlowe the keeper gives the lamp quests). Exits: farm (east), forest
+## (north).
 
-const FARM_EXIT := Rect2i(35, 13, 1, 3)
-const FOREST_EXIT := Rect2i(33, 0, 3, 1)
-const LAKE := Rect2i(3, 6, 20, 18)
+const FARM_EXIT := Rect2i(47, 21, 1, 3)
+const FOREST_EXIT := Rect2i(44, 0, 3, 1)
+const LAKE_C := Vector2(19.0, 19.0)
+const LAKE_R := 12.5
 
-var _pond: Scenery.Pond
+var _water := {}
+var _lake_rect := Rect2i(4, 5, 30, 28)
+var npcs: Array = []
 
 
 func scene_id() -> String:
@@ -14,99 +22,177 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return Vector2(33 * TILE, 14 * TILE)
+	return Vector2(45 * TILE, 22 * TILE)
 
 
 func build() -> void:
-	cols = 36
-	rows = 30
-	pad = 6
+	cols = 48
+	rows = 40
+	pad = 7
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}
 	music_track = "farm"
 	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 30 * TILE + 8), "right", "farm ▶")
 	add_exit(FOREST_EXIT, "forest", Vector2(3 * TILE, 21 * TILE + 8), "right", "▲ forest")
-	for r: Rect2i in [LAKE, Rect2i(1, 9, 2, 12), Rect2i(5, 24, 10, 3), Rect2i(21, 4, 4, 4)]:
-		for y in range(r.position.y, r.end.y):
-			for x in range(r.position.x, r.end.x):
-				set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
-	# Dock walking out into the lake.
-	for x in range(23, 27):
-		things.erase(Vector2i(x, 14))
-		blocked.erase(Vector2i(x, 14))
-		things[Vector2i(x, 14)] = {"type": "dock"}
-	for x in range(13, 19):
-		things.erase(Vector2i(x, 14))
-		blocked.erase(Vector2i(x, 14))
-		things[Vector2i(x, 14)] = {"type": "dock"}
-	for y in range(14, 19):
-		things.erase(Vector2i(18, y))
-		blocked.erase(Vector2i(18, y))
-		things[Vector2i(18, y)] = {"type": "dock"}
-	set_thing(27, 12, {"type": "door", "interior": "fishing_hut", "hint": "A: Finn's bait shop"})
-	set_thing(5, 4, {"type": "door", "interior": "water_mill", "hint": "A: the mill"})
-	set_thing(31, 24, {"type": "door", "interior": "lighthouse", "hint": "A: the lighthouse"})
-	extend(12, 10)
+	# The lake: a wobbly disc plus a northern inlet (the waterfall) and the
+	# southern outlet stream that runs to the border water past the mill.
+	for y in range(2, rows):
+		for x in range(1, cols - 8):
+			var p := Vector2(x + 0.5, y + 0.5)
+			var n := WorldGen.fbm(float(x), float(y), 909, 6.0)
+			var inside := p.distance_to(LAKE_C) + n * 3.5 <= LAKE_R
+			if not inside and y >= 2 and y <= 8 and absi(x - 9) <= 1 + int(n > 0.1):
+				inside = true  # inlet from the falls
+			if not inside and y >= 28 and y <= rows and absi(x - 27) <= 1 + int(n > 0.0):
+				inside = true  # outlet stream south
+			if inside:
+				_water[Vector2i(x, y)] = true
+	# No islands: fill holes and nibs so the shoreline reads as one body.
+	for pass_i in 3:
+		var add := {}
+		var drop := {}
+		for y in range(2, rows):
+			for x in range(1, cols - 8):
+				var c := Vector2i(x, y)
+				var wn := 0
+				for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+					if _water.has(c + d):
+						wn += 1
+				if not _water.has(c) and wn >= 3:
+					add[c] = true
+				elif _water.has(c) and wn <= 1:
+					drop[c] = true
+		for c: Vector2i in add:
+			_water[c] = true
+		for c: Vector2i in drop:
+			_water.erase(c)
+	for c: Vector2i in _water:
+		set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	# East dock: from the shore at row 21 out into the water.
+	var x := 30
+	while _water.has(Vector2i(x, 21)) and x > 24:
+		x -= 1
+	for dx in range(x + 1, x + 6):
+		_dock(Vector2i(dx, 21))
+	for dx in range(x + 1, x + 6):
+		_dock(Vector2i(dx, 22))
+	extend(10, 8)
+
+
+func _dock(c: Vector2i) -> void:
+	things[c] = {"type": "dock"}
+	blocked.erase(c)
+	_water.erase(c)
 
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "mountains")
-	if Art.has("props", "hermit_hut"):
-		prop("props", "hermit_hut", Vector2i(cols - 8, 6), 4)
-		set_thing(cols - 6, 7, {"type": "note", "text": "A hut with smoke in the chimney and nobody home. A note on the door: GONE FISHING. BACK WHEN I'M BACK.", "hint": "A: the hut"}, false)
 	if Art.has("props", "waterfall_pool"):
 		var wp := AnimatedSprite2D.new()
 		wp.sprite_frames = Art.frames("props", {"idle": "waterfall_pool"}, {"idle": 6.0})
 		wp.animation = "idle"
 		wp.scale = Vector2(0.5, 0.5)
-		wp.position = cell_center(Vector2i(6, 6)) + Vector2(24, 0)
+		wp.position = cell_center(Vector2i(9, 2)) + Vector2(0, -4)
 		wp.offset = Vector2(0, -48)
 		add_child(wp)
 		wp.play("idle")
-	_pond = Scenery.Pond.new()
-	_pond.rect = Rect2(LAKE.position * TILE, LAKE.size * TILE)
-	_pond.z_index = -1
-	add_child(_pond)
 	var dock := DockLayer.new()
 	dock.map = self
-	dock.z_index = -1
 	add_child(dock)
-	if Art.has("buildings", "fishing_hut"):
-		prop("buildings", "fishing_hut", Vector2i(26, 12), 2)
-	else:
-		prop("props", "stall", Vector2i(26, 12), 1)
-	prop("props", "signpost", Vector2i(30, 14))
-	_anim_prop("buildings", "water_mill", Vector2i(3, 4), 3, 4.0)
-	_anim_prop("buildings", "lighthouse", Vector2i(30, 24), 2, 2.0)
-	_anim_prop("props", "duck", Vector2i(8, 12), 0, 1.5)
-	_anim_prop("props", "heron", Vector2i(20, 10), 0, 1.5)
-	prop("props", "beaver_dam", Vector2i(4, 23), 2)
+	# Finn's hut: stilts in the water at the end of the dock (door opens onto the planks).
+	_shore_building("fishing_hut", Vector2i(26, 13), "fishing_hut", "A: Finn's bait shop", Vector2i(29, 20))
+	# The mill straddles the outlet stream on the south shore; its door is on the wheel side.
+	_shore_building("water_mill", Vector2i(24, 26), "water_mill", "A: the mill", Vector2i(34, 34), true)
+	# The lighthouse stands on its rock at the south-west point; the door faces the shore path.
+	_shore_building("lighthouse", Vector2i(1, 24), "lighthouse", "A: the lighthouse", Vector2i(10, 34), true)
+	if GameState.run["flags"].has("lighthouse_lit"):
+		var beam := Sprite2D.new()
+		beam.position = cell_center(Vector2i(5, 24)) + Vector2(0, -150)
+		add_child(beam)
+	_anim_prop("props", "duck", Vector2i(14, 14), 0, 1.5)
+	_anim_prop("props", "heron", Vector2i(26, 10), 0, 1.5)
+	prop("props", "beaver_dam", Vector2i(11, 29), 2)
+	prop("props", "signpost", Vector2i(36, 24))
+	for c: Vector2i in [Vector2i(36, 20), Vector2i(36, 28)]:
+		prop("props", "bench_wood", c, 1)
+	prop("props", "crab_pot_water" if Art.has("props", "crab_pot_water") else "barrel_a", Vector2i(33, 23))
+	# Reeds along the shore, lilies in the shallows.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 77
-	for i in 14:
-		var c := Vector2i(rng.randi_range(LAKE.position.x, LAKE.end.x - 1), rng.randi_range(LAKE.position.y, LAKE.end.y - 1))
-		var edge := c.x == LAKE.position.x or c.x == LAKE.end.x - 1 or c.y == LAKE.position.y or c.y == LAKE.end.y - 1
+	var n := 0
+	for c: Vector2i in _water:
+		if rng.randf() > 0.045 or n > 40:
+			continue
+		var edge := false
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if not _water.has(c + d):
+				edge = true
 		var nm := ("reeds_%d" % rng.randi_range(0, 3)) if edge else ("lily_%d" % rng.randi_range(0, 7))
 		var sp := Art.sprite("nature", nm)
 		if sp:
 			sp.position = cell_center(c)
-			sp.z_index = 0
 			add_child(sp)
+			n += 1
 	var avoid := {}
-	for y in range(LAKE.position.y - 2, LAKE.end.y + 2):
-		for x in range(LAKE.position.x - 2, LAKE.end.x + 2):
-			avoid[Vector2i(x, y)] = true
-	for y in range(10, 18):
-		for x in range(23, 36):
-			avoid[Vector2i(x, y)] = true
-	WorldGen.tree_clumps(self, Rect2i(24, 2, 10, 8), 72, 4, avoid)
-	WorldGen.tree_clumps(self, Rect2i(2, 25, 32, 4), 73, 5, avoid)
-	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 74, 18, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 75, 10, ["frog", "turtle", "dragonfly", "sparrow", "butterfly_blue", "heron", "fish_jump"])
+	for c: Vector2i in _water:
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				avoid[c + Vector2i(dx, dy)] = true
+	for r: Rect2i in [Rect2i(24, 12, 24, 14), Rect2i(22, 24, 14, 12), Rect2i(0, 22, 12, 14)]:
+		for c in cells_of([r]):
+			avoid[c] = true
+	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 72, 9, avoid)
+	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 74, 22, avoid)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 75, 12, ["frog", "turtle", "dragonfly", "sparrow", "butterfly_blue", "heron", "fish_jump"])
+	# Marlowe keeps the lighthouse; he's out on the rock most days.
+	var md: Dictionary = GameState.npcs.get("marlowe", {})
+	if not md.is_empty():
+		var m := Npc.new()
+		m.map = self
+		m.setup("marlowe", md, cell_center(Vector2i(11, 31)))
+		m.wander = 8.0
+		add_child(m)
+		npcs.append(m)
 	if not GameState.run["flags"].has("lake_seen"):
 		GameState.run["flags"]["lake_seen"] = true
 		player.frozen = true
-		await say([{"text": "The lake is bigger than the whole town. Wind combs the surface silver. Finn waves from a shack at the end of the dock."}])
+		await say([{"text": "The lake is bigger than the whole town. Wind combs the surface silver. Finn's hut sits on stilts at the end of the dock; the mill wheel turns on the far shore, and past it the lighthouse keeps its own counsel."}])
 		player.frozen = false
+
+
+## A building whose sprite has water in it: placed at full scale, the cells
+## under it stay water (it's "in" the lake), and the door cell is a dock plank.
+func _shore_building(name: String, c: Vector2i, interior: String, hint: String, door: Vector2i, animated := false) -> void:
+	if not Art.has("buildings", name):
+		return
+	var info := Art.info("buildings", name)
+	var fw := int(info.get("cell_w", info.get("w", 64)))
+	var fh := int(info.get("cell_h", info.get("h", 64)))
+	var w_cells := maxi(1, int(round(fw / float(TILE))))
+	var h_cells := maxi(1, int(round(fh / float(TILE))))
+	var base := Vector2i(c.x, c.y + h_cells - 1)
+	if animated and int(info.get("frames", 1)) > 1:
+		var a := AnimatedSprite2D.new()
+		a.sprite_frames = Art.frames("buildings", {"idle": name}, {"idle": 4.0})
+		a.animation = "idle"
+		a.position = cell_pos(c.x + w_cells / 2.0, base.y + 1)
+		a.offset = Vector2(0, -fh / 2.0)
+		add_child(a)
+		a.play("idle")
+	else:
+		prop("buildings", name, base, w_cells - 1, 0.0, false, 1.0)
+	for y in range(c.y + h_cells / 3, base.y + 1):
+		for x in range(c.x, c.x + w_cells):
+			blocked[Vector2i(x, y)] = true
+	_dock(door)
+	if name != "fishing_hut":
+		# The sprite's own water/rock skirt: make those cells water so the shore wraps it.
+		for y in range(base.y - 1, base.y + 1):
+			for x in range(c.x, c.x + w_cells):
+				var wc := Vector2i(x, y)
+				if wc != door and in_content(wc) and not things.has(wc):
+					_water[wc] = true
+					set_thing(wc.x, wc.y, {"type": "water", "hint": ""})
+	things[door] = {"type": "door", "interior": interior, "hint": hint}
 
 
 func _anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -> void:
@@ -120,18 +206,20 @@ func _anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4
 	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
 	add_child(a)
 	a.play("idle")
-	# Footprint like prop(): base row, plus body rows for big structures.
-	var tw := float(Art.info(group, name).get("cell_w", 32)) / 2.0
-	var th := float(Art.info(group, name).get("cell_h", 48)) / 2.0
-	if group == "buildings" or tw >= 56.0:
-		var w_cells := maxi(extra_w + 1, int(round(tw / TILE)))
-		var x0 := c.x + (extra_w + 1) / 2 - w_cells / 2
-		for i in w_cells:
-			for j in clampi(int(round(th / TILE)) - 1, 1, 5):
-				blocked[Vector2i(x0 + i, c.y - j)] = true
+
+
+func has_npc_at(c: Vector2i) -> bool:
+	for n: Npc in npcs:
+		if n.visible and n.cell() == c:
+			return true
+	return false
 
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
+	for n: Npc in npcs:
+		if n.visible and (n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0)):
+			later(_talk_marlowe)
+			return true
 	match str(thing.get("type", "")):
 		"note":
 			tell([{"text": str(thing.get("text", "..."))}])
@@ -145,6 +233,34 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to("interior", Vector2.ZERO, "up")
 			return true
 	return false
+
+
+func _talk_marlowe() -> void:
+	player.frozen = true
+	var fr: Dictionary = GameState.run["friendship"]
+	var offer := GameState.side_quest_for("marlowe")
+	if not offer.is_empty():
+		var d := Dialogue.instance(get_tree())
+		d.say([{"who": "Marlowe", "text": str(offer["text"]) + "  Will you?", "choice": ["Sure", "Not now"], "key": ""}])
+		await d.finished
+		if d.last_choice == 0:
+			GameState.add_quest(str(offer["id"]), str(offer["text"]))
+			hud.toast("New quest from Marlowe.", Color(1, 0.9, 0.4))
+		player.frozen = false
+		return
+	var pend := GameState.side_quest_pending("marlowe")
+	if not pend.is_empty():
+		await say([{"who": "Marlowe", "text": "Still waiting on that: " + str(pend["text"]).to_lower()}])
+		player.frozen = false
+		return
+	if not GameState.run["talked_today"].has("marlowe"):
+		GameState.run["talked_today"]["marlowe"] = true
+		fr["marlowe"] = int(fr.get("marlowe", 0)) + 5
+	if GameState.run["flags"].has("lighthouse_lit"):
+		await say([{"who": "Marlowe", "text": "Lamp's lit. Fish come up to look at it after dark, fools that they are. Best night fishing in the valley now, and you did that."}])
+	else:
+		await say([{"who": "Marlowe", "text": "Forty years I kept that lamp. Oil ran out the winter the crystal fell. Bring me coal and a proper lens and I'll light it again."}])
+	player.frozen = false
 
 
 func _fish(c: Vector2i) -> void:
@@ -165,7 +281,9 @@ func _fish(c: Vector2i) -> void:
 		add_child(bob)
 		bob.play("bobber")
 	hud.toast("Casting...")
-	var wait := randf_range(1.5, 4.5)
+	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0)
+	var night: bool = int(GameState.run["time"]) >= 19 * 60 and GameState.run["flags"].has("lighthouse_lit")
+	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0)
 	var t := 0.0
 	var bite := false
 	var caught := false
@@ -179,7 +297,7 @@ func _fish(c: Vector2i) -> void:
 			Music.instance(get_tree()).sfx("bite")
 			if bob:
 				bob.play("bite")
-		if Input.is_action_just_pressed("a") and t > 0.2:
+		if (Input.is_action_just_pressed("a") or Input.is_action_just_pressed("tool") or Input.is_action_just_pressed("action")) and t > 0.2:
 			caught = bite
 			break
 	player.frozen = false
@@ -191,45 +309,26 @@ func _fish(c: Vector2i) -> void:
 	if caught:
 		var lvl := GameState.skill_level("fishing")
 		var pool: Array = ["carp", "bass", "catfish", "salmon", "eel", "puffer", "goldfish", "starfin", "mooncarp"]
-		var fish: String = pool[randi() % mini(pool.size(), 2 + lvl * 2)] if randf() > 0.08 else "boot"
+		var reach := mini(pool.size(), 2 + lvl * 2 + (2 if night else 0))
+		var fish: String = pool[randi() % reach] if randf() > 0.08 else "boot"
+		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
+			fish = pool[mini(pool.size() - 1, reach + 1)]
 		player.play_tool("reel")
 		give(fish)
+		if randf() < GameState.bonus("fishing", "double_fish"):
+			give(fish)
+		if randf() < GameState.bonus("fishing", "chest_chance"):
+			give(["old_coin", "pearl", "map_scrap"][randi() % 3])
 		xp("fishing", 6)
 	else:
 		hud.toast("It got away.")
 
 
-func _bait_shop() -> void:
-	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Finn", "text": "Lake fish bite deeper than pond fish. Bigger too. Want something?  (◆%d)" % int(GameState.run["crystals"]), "choice": ["Energy Tea  ◆38", "Red Potion  ◆45", "Leave"], "key": ""}])
-	await d.finished
-	var picks := [["energy_tea", 38], ["potion", 45]]
-	if d.last_choice >= 0 and d.last_choice < picks.size():
-		var id: String = picks[d.last_choice][0]
-		var price: int = picks[d.last_choice][1]
-		if int(GameState.run["crystals"]) < price:
-			hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
-			return
-		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-		give(id)
-
-
 func draw_map() -> void:
 	draw_grass(7)
 	WorldGen.draw_ground_detail(self, 76, 0.12)
-	draw_ground("dirt", cells_of([Rect2i(23, 13, 13, 3), Rect2i(31, 1, 3, 13), FARM_EXIT, FOREST_EXIT]))
-	var water := cells_of([LAKE, Rect2i(1, 9, 2, 12), Rect2i(5, 24, 10, 3), Rect2i(21, 4, 4, 4)])
-	for k in things:
-		if str(things[k].get("type", "")) == "dock":
-			water.erase(k)
-	draw_water(water, "grass")
-	for k in things:
-		if str(things[k].get("type", "")) == "dock":
-			water[k] = true
+	draw_ground("dirt", cells_of([Rect2i(31, 21, 17, 3), Rect2i(44, 1, 3, 21), Rect2i(34, 23, 2, 12), Rect2i(10, 28, 2, 7), Rect2i(10, 30, 26, 2), FARM_EXIT, FOREST_EXIT]))
+	draw_water(_water, "grass")
 	draw_exits()
 	if pad == 0:
 		draw_fence_border()
-
-
-
-
