@@ -1,0 +1,625 @@
+{
+ "woman": {
+  "animations": {
+   "idle": [
+    "frames/idle_0.png",
+    "frames/idle_1.png",
+    "frames/idle_2.png",
+    "frames/idle_3.png"
+   ],
+   "walk": [
+    "frames/walk_0.png",
+    "frames/walk_1.png",
+    "frames/walk_2.png",
+    "frames/walk_3.png"
+   ],
+   "run": [
+    "frames/run_0.png",
+    "frames/run_1.png",
+    "frames/run_2.png",
+    "frames/run_3.png"
+   ],
+   "attack": [
+    "frames/attack_0.png",
+    "frames/attack_1.png",
+    "frames/attack_2.png",
+    "frames/attack_3.png"
+   ],
+   "views": [
+    "frames/view_front.png",
+    "frames/view_right.png",
+    "frames/view_back.png",
+    "frames/view_left.png"
+   ]
+  },
+  "notes": "walk/run/attack/play frames face RIGHT (flip horizontally for left). views = front, right, back, left. idle faces the camera.",
+  "strips": {
+   "map_small": {
+    "file": "strips/map_small.png",
+    "cell_w": 40,
+    "cell_h": 55,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "battle_medium": {
+    "file": "strips/battle_medium.png",
+    "cell_w": 80,
+    "cell_h": 109,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "map_large": {
+    "file": "strips/map_large.png",
+    "cell_w": 59,
+    "cell_h": 80,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   }
+  }
+ },
+ "man": {
+  "animations": {
+   "idle": [
+    "frames/idle_0.png",
+    "frames/idle_1.png",
+    "frames/idle_2.png",
+    "frames/idle_3.png"
+   ],
+   "walk": [
+    "frames/walk_0.png",
+    "frames/walk_1.png",
+    "frames/walk_2.png",
+    "frames/walk_3.png"
+   ],
+   "run": [
+    "frames/run_0.png",
+    "frames/run_1.png",
+    "frames/run_2.png",
+    "frames/run_3.png"
+   ],
+   "attack": [
+    "frames/attack_0.png",
+    "frames/attack_1.png",
+    "frames/attack_2.png",
+    "frames/attack_3.png"
+   ],
+   "views": [
+    "frames/view_front.png",
+    "frames/view_right.png",
+    "frames/view_back.png",
+    "frames/view_left.png"
+   ]
+  },
+  "notes": "walk/run/attack/play frames face RIGHT (flip horizontally for left). views = front, right, back, left. idle faces the camera.",
+  "strips": {
+   "map_small": {
+    "file": "strips/map_small.png",
+    "cell_w": 43,
+    "cell_h": 52,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "battle_medium": {
+    "file": "strips/battle_medium.png",
+    "cell_w": 86,
+    "cell_h": 104,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "map_large": {
+    "file": "strips/map_large.png",
+    "cell_w": 63,
+    "cell_h": 76,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   }
+  }
+ },
+ "dog": {
+  "animations": {
+   "idle": [
+    "frames/idle_0.png",
+    "frames/idle_1.png",
+    "frames/idle_2.png",
+    "frames/idle_3.png"
+   ],
+   "walk": [
+    "frames/walk_0.png",
+    "frames/walk_1.png",
+    "frames/walk_2.png",
+    "frames/walk_3.png"
+   ],
+   "run": [
+    "frames/run_0.png",
+    "frames/run_1.png",
+    "frames/run_2.png",
+    "frames/run_3.png"
+   ],
+   "play": [
+    "frames/play_0.png",
+    "frames/play_1.png",
+    "frames/play_2.png",
+    "frames/play_3.png"
+   ],
+   "attack": [
+    "frames/attack_0.png",
+    "frames/attack_1.png",
+    "frames/attack_2.png",
+    "frames/attack_3.png"
+   ],
+   "views": [
+    "frames/view_front.png",
+    "frames/view_right.png",
+    "frames/view_back.png",
+    "frames/view_left.png"
+   ]
+  },
+  "notes": "walk/run/attack/play frames face RIGHT (flip horizontally for left). views = front, right, back, left. idle faces the camera.",
+  "strips": {
+   "map_small": {
+    "file": "strips/map_small.png",
+    "cell_w": 36,
+    "cell_h": 30,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "play_0",
+     "play_1",
+     "play_2",
+     "play_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "battle_medium": {
+    "file": "strips/battle_medium.png",
+    "cell_w": 70,
+    "cell_h": 58,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "play_0",
+     "play_1",
+     "play_2",
+     "play_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "map_large": {
+    "file": "strips/map_large.png",
+    "cell_w": 48,
+    "cell_h": 40,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "play_0",
+     "play_1",
+     "play_2",
+     "play_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   }
+  }
+ },
+ "son": {
+  "animations": {
+   "idle": [
+    "frames/idle_0.png",
+    "frames/idle_1.png",
+    "frames/idle_2.png",
+    "frames/idle_3.png"
+   ],
+   "walk": [
+    "frames/walk_0.png",
+    "frames/walk_1.png",
+    "frames/walk_2.png",
+    "frames/walk_3.png"
+   ],
+   "run": [
+    "frames/run_0.png",
+    "frames/run_1.png",
+    "frames/run_2.png",
+    "frames/run_3.png"
+   ],
+   "attack": [
+    "frames/attack_0.png",
+    "frames/attack_1.png",
+    "frames/attack_2.png",
+    "frames/attack_3.png"
+   ],
+   "views": [
+    "frames/view_front.png",
+    "frames/view_right.png",
+    "frames/view_back.png",
+    "frames/view_left.png"
+   ]
+  },
+  "notes": "walk/run/attack/play frames face RIGHT (flip horizontally for left). views = front, right, back, left. idle faces the camera.",
+  "strips": {
+   "map_small": {
+    "file": "strips/map_small.png",
+    "cell_w": 38,
+    "cell_h": 46,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "battle_medium": {
+    "file": "strips/battle_medium.png",
+    "cell_w": 76,
+    "cell_h": 93,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "map_large": {
+    "file": "strips/map_large.png",
+    "cell_w": 53,
+    "cell_h": 65,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   }
+  }
+ },
+ "girl": {
+  "animations": {
+   "idle": [
+    "frames/idle_0.png",
+    "frames/idle_1.png",
+    "frames/idle_2.png",
+    "frames/idle_3.png"
+   ],
+   "walk": [
+    "frames/walk_0.png",
+    "frames/walk_1.png",
+    "frames/walk_2.png",
+    "frames/walk_3.png"
+   ],
+   "run": [
+    "frames/run_0.png",
+    "frames/run_1.png",
+    "frames/run_2.png",
+    "frames/run_3.png"
+   ],
+   "attack": [
+    "frames/attack_0.png",
+    "frames/attack_1.png",
+    "frames/attack_2.png",
+    "frames/attack_3.png"
+   ],
+   "views": [
+    "frames/view_front.png",
+    "frames/view_right.png",
+    "frames/view_back.png",
+    "frames/view_left.png"
+   ]
+  },
+  "notes": "walk/run/attack/play frames face RIGHT (flip horizontally for left). views = front, right, back, left. idle faces the camera.",
+  "strips": {
+   "map_small": {
+    "file": "strips/map_small.png",
+    "cell_w": 34,
+    "cell_h": 43,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "battle_medium": {
+    "file": "strips/battle_medium.png",
+    "cell_w": 68,
+    "cell_h": 87,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   },
+   "map_large": {
+    "file": "strips/map_large.png",
+    "cell_w": 47,
+    "cell_h": 60,
+    "frame_order": [
+     "idle_0",
+     "idle_1",
+     "idle_2",
+     "idle_3",
+     "walk_0",
+     "walk_1",
+     "walk_2",
+     "walk_3",
+     "run_0",
+     "run_1",
+     "run_2",
+     "run_3",
+     "attack_0",
+     "attack_1",
+     "attack_2",
+     "attack_3",
+     "views_0",
+     "views_1",
+     "views_2",
+     "views_3"
+    ],
+    "anchor": "bottom-center"
+   }
+  }
+ }
+}
