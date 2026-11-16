@@ -2087,11 +2087,46 @@ def w83():
         "egg_red,egg_blue,egg_green,egg_gold,flower_crown_a,flower_crown_b,kite,lantern_red,lantern_black,pumpkin_lantern,snowman,gift_star,firework_a,firework_b,festival_ribbon,festival_ticket"))
 
 
+
+
+# ---------------------------------------------------------------- W84-W91 worn armor layers (16 poses x 8 parts)
+
+WEAR_POSES = ["idle", "idle_up", "idle_side", "walk_s1", "walk_s2", "walk_s3", "walk_s4", "walk_d1", "walk_d2", "walk_d3", "walk_d4", "walk_u1", "walk_u2", "walk_u3", "walk_u4", "run_side"]
+WEAR_PARTS = ["helm", "chest", "legs", "boots", "gloves", "shield", "cape", "belt"]
+
+
+def _wear(file, setn):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.02, 30) if r[1] - r[0] >= 40][:8]
+    for part, (y0, y1) in zip(WEAR_PARTS, rows):
+        bs = row_sprites(rgba, (10, y0, 1526, y1), 16, gap=4)
+        frames = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+            # cell is 64x96 on the sheet (~96px cells at this render): normalise to a 64x96 canvas scaled 0.5 -> 32x48 later via SPRITE_SCALE; keep sheet px here
+            c = Image.new("RGBA", (96, 96), (0, 0, 0, 0))
+            c.alpha_composite(im, ((96 - im.width) // 2, 96 - im.height - 4))
+            frames.append(c)
+        g = "wear/%s_%s" % (setn, part)
+        strip([frames[0]], g, "idle"); strip([frames[1]], g, "view_back"); strip([frames[2]], g, "view_right")
+        strip(frames[3:7], g, "walk"); strip(frames[7:11], g, "walk_down"); strip(frames[11:15], g, "walk_up"); strip([frames[15]], g, "run")
+
+
+def w84(): _wear("w84_wear_leather.png", "leather")
+def w85(): _wear("w85_wear_copper.png", "copper")
+def w86(): _wear("w86_wear_iron.png", "iron")
+def w87(): _wear("w87_wear_steel.png", "steel")
+def w88(): _wear("w88_wear_silver.png", "silver")
+def w89(): _wear("w89_wear_gold.png", "gold")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

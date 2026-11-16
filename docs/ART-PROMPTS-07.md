@@ -1,5 +1,7 @@
 # Dreams — Art Prompts 07: worn-gear paper-doll layers (so equipment shows on the hero)
 
+IMPORTANT (after the first batch came back as floating icons): the pieces must NOT be drawn as standalone icons. Draw a faint grey silhouette of the 64px hero in every cell as a guide, put the gear ON that silhouette exactly where it is worn, then the silhouette is deleted (left magenta) and only the gear remains, so the helmet sits at head height, the chest at torso height, boots at the feet, in every pose. Each cell must contain the whole body-sized area (64×96) even if the piece is small.
+
 Every armor/outfit/hat/cape/tool from Prompts 06 Batch 3 needs an ON-BODY layer that lines up with the hero base (w56) in every pose. These prompts produce those layers. LAYER RULE (inside every prompt): 64×96 cells at x = 24 + N×88, y = 24 + M×120 (16 columns, 8 rows); each layer is drawn on the SAME cell position as the hero base pose, with the body itself left transparent (magenta) so it stacks over the base. Poses per item: the 16-cell pose row used by the body base: idle down, idle up, idle side, walk side ×4, walk down ×4, walk up ×4, run side. One item = one row.
 
 ---

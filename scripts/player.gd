@@ -39,6 +39,7 @@ var _buffered := ""
 var _flash_mat: ShaderMaterial
 var _flash := 0.0
 var _combo := 0
+var _wear: WearLayer
 
 
 func set_character(id: String) -> void:
@@ -72,6 +73,12 @@ func set_character(id: String) -> void:
 		_shadow.scale = Vector2(1.0, 0.45)
 		add_child(_shadow)
 	add_child(_sprite)
+	if _wear == null:
+		_wear = WearLayer.new()
+		_wear.player = self
+		add_child(_wear)
+	_wear._body_h = float(CharacterLibrary.strip_info(id).get("cell_h", 74)) if CharacterLibrary.data().has(id) else 74.0
+	_wear.refresh()
 	_busy = false
 	anim_name = ""
 	_show_idle()

@@ -42,7 +42,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 	for id in load_json("res://data/skills.json").keys():
 		skills[id] = {"level": 1, "xp": 0}
 	run = {
-		"equip": {"head": "", "body": "", "feet": "", "ring": "", "charm": ""},
+		"equip": {"head": "", "body": "", "legs": "", "feet": "", "hands": "", "offhand": "", "back": "", "belt": "", "ring": "", "charm": ""},
 		"arc": arc,
 		"playable": playable_id,
 		"names": {"character": character_name, "town": town_name, "pet": pet_name},
@@ -258,7 +258,7 @@ static func perks_of(skill: String) -> Array:
 
 # ---- equipment ----------------------------------------------------------------
 
-const SLOTS := ["head", "body", "feet", "ring", "charm"]
+const SLOTS := ["head", "body", "legs", "feet", "hands", "offhand", "back", "belt", "ring", "charm"]
 
 
 static func equipped(slot: String) -> String:
@@ -278,6 +278,7 @@ static func equip(id: String) -> void:
 	eq[slot] = id
 	run["equip"] = eq
 	_apply_max_stats()
+	_refresh_wear()
 
 
 static func unequip(slot: String) -> void:
@@ -289,6 +290,15 @@ static func unequip(slot: String) -> void:
 	eq[slot] = ""
 	run["equip"] = eq
 	_apply_max_stats()
+	_refresh_wear()
+
+
+static func _refresh_wear() -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree and tree.current_scene is GameMap:
+		var gm := tree.current_scene as GameMap
+		if gm.player and gm.player._wear:
+			gm.player._wear.refresh()
 
 
 ## Sum of a stat across worn gear: defense, speed, luck, damage, energy.

@@ -248,6 +248,16 @@
    "tier": 2
   },
   {
+   "id": "steel_bar",
+   "name": "Steel Bar",
+   "need": {
+    "iron_bar": 2,
+    "coal": 2
+   },
+   "give": "steel_bar",
+   "tier": 2
+  },
+  {
    "id": "silver_bar",
    "name": "Silver Bar",
    "need": {
@@ -397,6 +407,574 @@
    "tier": 4,
    "skill": [
     "combat",
+    7
+   ]
+  },
+  {
+   "id": "leather_helm",
+   "name": "Leather Helm",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_helm",
+   "tier": 1
+  },
+  {
+   "id": "leather_chest",
+   "name": "Leather Chest",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_chest",
+   "tier": 1
+  },
+  {
+   "id": "leather_legs",
+   "name": "Leather Legs",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_legs",
+   "tier": 1
+  },
+  {
+   "id": "leather_boots",
+   "name": "Leather Boots",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_boots",
+   "tier": 1
+  },
+  {
+   "id": "leather_gloves",
+   "name": "Leather Gloves",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_gloves",
+   "tier": 1
+  },
+  {
+   "id": "leather_shield",
+   "name": "Leather Shield",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_shield",
+   "tier": 1
+  },
+  {
+   "id": "leather_cape",
+   "name": "Leather Cape",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_cape",
+   "tier": 1
+  },
+  {
+   "id": "leather_belt",
+   "name": "Leather Belt",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_belt",
+   "tier": 1
+  },
+  {
+   "id": "copper_helm",
+   "name": "Copper Helm",
+   "need": {
+    "copper_bar": 2,
+    "leather": 1
+   },
+   "give": "copper_helm",
+   "tier": 1
+  },
+  {
+   "id": "copper_chest",
+   "name": "Copper Chest",
+   "need": {
+    "copper_bar": 4,
+    "leather": 1
+   },
+   "give": "copper_chest",
+   "tier": 1
+  },
+  {
+   "id": "copper_legs",
+   "name": "Copper Legs",
+   "need": {
+    "copper_bar": 3,
+    "leather": 1
+   },
+   "give": "copper_legs",
+   "tier": 1
+  },
+  {
+   "id": "copper_boots",
+   "name": "Copper Boots",
+   "need": {
+    "copper_bar": 2,
+    "leather": 1
+   },
+   "give": "copper_boots",
+   "tier": 1
+  },
+  {
+   "id": "copper_gloves",
+   "name": "Copper Gloves",
+   "need": {
+    "copper_bar": 1,
+    "leather": 1
+   },
+   "give": "copper_gloves",
+   "tier": 1
+  },
+  {
+   "id": "copper_shield",
+   "name": "Copper Shield",
+   "need": {
+    "copper_bar": 3,
+    "leather": 1
+   },
+   "give": "copper_shield",
+   "tier": 1
+  },
+  {
+   "id": "copper_cape",
+   "name": "Copper Cape",
+   "need": {
+    "copper_bar": 2,
+    "leather": 1
+   },
+   "give": "copper_cape",
+   "tier": 1
+  },
+  {
+   "id": "copper_belt",
+   "name": "Copper Belt",
+   "need": {
+    "copper_bar": 1,
+    "leather": 1
+   },
+   "give": "copper_belt",
+   "tier": 1
+  },
+  {
+   "id": "iron_helm",
+   "name": "Iron Helm",
+   "need": {
+    "iron_bar": 2,
+    "leather": 1
+   },
+   "give": "iron_helm",
+   "tier": 2
+  },
+  {
+   "id": "iron_chest",
+   "name": "Iron Chest",
+   "need": {
+    "iron_bar": 4,
+    "leather": 1
+   },
+   "give": "iron_chest",
+   "tier": 2
+  },
+  {
+   "id": "iron_legs",
+   "name": "Iron Legs",
+   "need": {
+    "iron_bar": 3,
+    "leather": 1
+   },
+   "give": "iron_legs",
+   "tier": 2
+  },
+  {
+   "id": "iron_boots",
+   "name": "Iron Boots",
+   "need": {
+    "iron_bar": 2,
+    "leather": 1
+   },
+   "give": "iron_boots",
+   "tier": 2
+  },
+  {
+   "id": "iron_gloves",
+   "name": "Iron Gloves",
+   "need": {
+    "iron_bar": 1,
+    "leather": 1
+   },
+   "give": "iron_gloves",
+   "tier": 2
+  },
+  {
+   "id": "iron_shield",
+   "name": "Iron Shield",
+   "need": {
+    "iron_bar": 3,
+    "leather": 1
+   },
+   "give": "iron_shield",
+   "tier": 2
+  },
+  {
+   "id": "iron_cape",
+   "name": "Iron Cape",
+   "need": {
+    "iron_bar": 2,
+    "leather": 1
+   },
+   "give": "iron_cape",
+   "tier": 2
+  },
+  {
+   "id": "iron_belt",
+   "name": "Iron Belt",
+   "need": {
+    "iron_bar": 1,
+    "leather": 1
+   },
+   "give": "iron_belt",
+   "tier": 2
+  },
+  {
+   "id": "steel_helm",
+   "name": "Steel Helm",
+   "need": {
+    "steel_bar": 2,
+    "leather": 1
+   },
+   "give": "steel_helm",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_chest",
+   "name": "Steel Chest",
+   "need": {
+    "steel_bar": 4,
+    "leather": 1
+   },
+   "give": "steel_chest",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_legs",
+   "name": "Steel Legs",
+   "need": {
+    "steel_bar": 3,
+    "leather": 1
+   },
+   "give": "steel_legs",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_boots",
+   "name": "Steel Boots",
+   "need": {
+    "steel_bar": 2,
+    "leather": 1
+   },
+   "give": "steel_boots",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_gloves",
+   "name": "Steel Gloves",
+   "need": {
+    "steel_bar": 1,
+    "leather": 1
+   },
+   "give": "steel_gloves",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_shield",
+   "name": "Steel Shield",
+   "need": {
+    "steel_bar": 3,
+    "leather": 1
+   },
+   "give": "steel_shield",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_cape",
+   "name": "Steel Cape",
+   "need": {
+    "steel_bar": 2,
+    "leather": 1
+   },
+   "give": "steel_cape",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_belt",
+   "name": "Steel Belt",
+   "need": {
+    "steel_bar": 1,
+    "leather": 1
+   },
+   "give": "steel_belt",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "silver_helm",
+   "name": "Silver Helm",
+   "need": {
+    "silver_bar": 2,
+    "leather": 1
+   },
+   "give": "silver_helm",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_chest",
+   "name": "Silver Chest",
+   "need": {
+    "silver_bar": 4,
+    "leather": 1
+   },
+   "give": "silver_chest",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_legs",
+   "name": "Silver Legs",
+   "need": {
+    "silver_bar": 3,
+    "leather": 1
+   },
+   "give": "silver_legs",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_boots",
+   "name": "Silver Boots",
+   "need": {
+    "silver_bar": 2,
+    "leather": 1
+   },
+   "give": "silver_boots",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_gloves",
+   "name": "Silver Gloves",
+   "need": {
+    "silver_bar": 1,
+    "leather": 1
+   },
+   "give": "silver_gloves",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_shield",
+   "name": "Silver Shield",
+   "need": {
+    "silver_bar": 3,
+    "leather": 1
+   },
+   "give": "silver_shield",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_cape",
+   "name": "Silver Cape",
+   "need": {
+    "silver_bar": 2,
+    "leather": 1
+   },
+   "give": "silver_cape",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_belt",
+   "name": "Silver Belt",
+   "need": {
+    "silver_bar": 1,
+    "leather": 1
+   },
+   "give": "silver_belt",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "gold_helm",
+   "name": "Gold Helm",
+   "need": {
+    "gold_bar": 2,
+    "leather": 1
+   },
+   "give": "gold_helm",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_chest",
+   "name": "Gold Chest",
+   "need": {
+    "gold_bar": 4,
+    "leather": 1
+   },
+   "give": "gold_chest",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_legs",
+   "name": "Gold Legs",
+   "need": {
+    "gold_bar": 3,
+    "leather": 1
+   },
+   "give": "gold_legs",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_boots",
+   "name": "Gold Boots",
+   "need": {
+    "gold_bar": 2,
+    "leather": 1
+   },
+   "give": "gold_boots",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_gloves",
+   "name": "Gold Gloves",
+   "need": {
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "gold_gloves",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_shield",
+   "name": "Gold Shield",
+   "need": {
+    "gold_bar": 3,
+    "leather": 1
+   },
+   "give": "gold_shield",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_cape",
+   "name": "Gold Cape",
+   "need": {
+    "gold_bar": 2,
+    "leather": 1
+   },
+   "give": "gold_cape",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_belt",
+   "name": "Gold Belt",
+   "need": {
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "gold_belt",
+   "tier": 4,
+   "skill": [
+    "mining",
     7
    ]
   }

@@ -1080,10 +1080,10 @@
  "iron_helm": {
   "name": "Iron Helm",
   "type": "equip",
-  "value": 400,
-  "rarity": "rare",
-  "tier": 3,
   "slot": "head",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
   "stats": {
    "defense": 2
   }
@@ -5041,5 +5041,1409 @@
   "rarity": "legendary",
   "tier": 5,
   "crop": "worldseed3"
+ },
+ "leather_helm": {
+  "name": "Leather Helm",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "leather_helm_plus": {
+  "name": "Leather Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "leather_chest": {
+  "name": "Leather Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "leather_chest_plus": {
+  "name": "Leather Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "leather_legs": {
+  "name": "Leather Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "leather_legs_plus": {
+  "name": "Leather Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "leather_boots": {
+  "name": "Leather Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "leather_boots_plus": {
+  "name": "Leather Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "leather_gloves": {
+  "name": "Leather Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "energy": 5
+  }
+ },
+ "leather_gloves_plus": {
+  "name": "Leather Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "energy": 5
+  }
+ },
+ "leather_shield": {
+  "name": "Leather Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "leather_shield_plus": {
+  "name": "Leather Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "leather_cape": {
+  "name": "Leather Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "leather_cape_plus": {
+  "name": "Leather Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "leather_belt": {
+  "name": "Leather Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "luck": 1
+  }
+ },
+ "leather_belt_plus": {
+  "name": "Leather Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "luck": 1
+  }
+ },
+ "copper_helm": {
+  "name": "Copper Helm",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "copper_helm_plus": {
+  "name": "Copper Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "copper_chest": {
+  "name": "Copper Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "copper_chest_plus": {
+  "name": "Copper Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "copper_legs": {
+  "name": "Copper Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "copper_legs_plus": {
+  "name": "Copper Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "copper_boots": {
+  "name": "Copper Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "copper_boots_plus": {
+  "name": "Copper Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "copper_gloves": {
+  "name": "Copper Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "energy": 5
+  }
+ },
+ "copper_gloves_plus": {
+  "name": "Copper Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "energy": 5
+  }
+ },
+ "copper_shield": {
+  "name": "Copper Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "defense": 1
+  }
+ },
+ "copper_shield_plus": {
+  "name": "Copper Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "copper_cape": {
+  "name": "Copper Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "copper_cape_plus": {
+  "name": "Copper Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "copper_belt": {
+  "name": "Copper Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "common",
+  "tier": 1,
+  "value": 40,
+  "stats": {
+   "luck": 1
+  }
+ },
+ "copper_belt_plus": {
+  "name": "Copper Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "common",
+  "tier": 1,
+  "value": 80,
+  "stats": {
+   "luck": 1
+  }
+ },
+ "iron_helm_plus": {
+  "name": "Iron Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "iron_chest": {
+  "name": "Iron Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "iron_chest_plus": {
+  "name": "Iron Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "iron_legs": {
+  "name": "Iron Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "iron_legs_plus": {
+  "name": "Iron Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "iron_boots": {
+  "name": "Iron Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "iron_boots_plus": {
+  "name": "Iron Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "iron_gloves": {
+  "name": "Iron Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "energy": 10
+  }
+ },
+ "iron_gloves_plus": {
+  "name": "Iron Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "energy": 10
+  }
+ },
+ "iron_shield": {
+  "name": "Iron Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 2
+  }
+ },
+ "iron_shield_plus": {
+  "name": "Iron Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "iron_cape": {
+  "name": "Iron Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "iron_cape_plus": {
+  "name": "Iron Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "iron_belt": {
+  "name": "Iron Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "luck": 2
+  }
+ },
+ "iron_belt_plus": {
+  "name": "Iron Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "luck": 2
+  }
+ },
+ "steel_helm": {
+  "name": "Steel Helm",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "steel_helm_plus": {
+  "name": "Steel Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "steel_chest": {
+  "name": "Steel Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "steel_chest_plus": {
+  "name": "Steel Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "steel_legs": {
+  "name": "Steel Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "steel_legs_plus": {
+  "name": "Steel Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "steel_boots": {
+  "name": "Steel Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "steel_boots_plus": {
+  "name": "Steel Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "steel_gloves": {
+  "name": "Steel Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "energy": 10
+  }
+ },
+ "steel_gloves_plus": {
+  "name": "Steel Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "energy": 10
+  }
+ },
+ "steel_shield": {
+  "name": "Steel Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "steel_shield_plus": {
+  "name": "Steel Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "steel_cape": {
+  "name": "Steel Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "steel_cape_plus": {
+  "name": "Steel Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "steel_belt": {
+  "name": "Steel Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 160,
+  "stats": {
+   "luck": 2
+  }
+ },
+ "steel_belt_plus": {
+  "name": "Steel Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "uncommon",
+  "tier": 2,
+  "value": 320,
+  "stats": {
+   "luck": 2
+  }
+ },
+ "silver_helm": {
+  "name": "Silver Helm",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "silver_helm_plus": {
+  "name": "Silver Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "silver_chest": {
+  "name": "Silver Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "silver_chest_plus": {
+  "name": "Silver Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "silver_legs": {
+  "name": "Silver Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "silver_legs_plus": {
+  "name": "Silver Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "silver_boots": {
+  "name": "Silver Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "silver_boots_plus": {
+  "name": "Silver Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "silver_gloves": {
+  "name": "Silver Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "energy": 15
+  }
+ },
+ "silver_gloves_plus": {
+  "name": "Silver Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "energy": 15
+  }
+ },
+ "silver_shield": {
+  "name": "Silver Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 3
+  }
+ },
+ "silver_shield_plus": {
+  "name": "Silver Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "silver_cape": {
+  "name": "Silver Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "silver_cape_plus": {
+  "name": "Silver Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "silver_belt": {
+  "name": "Silver Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "luck": 3
+  }
+ },
+ "silver_belt_plus": {
+  "name": "Silver Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "luck": 3
+  }
+ },
+ "gold_helm": {
+  "name": "Gold Helm",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "gold_helm_plus": {
+  "name": "Gold Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "gold_chest": {
+  "name": "Gold Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "gold_chest_plus": {
+  "name": "Gold Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "gold_legs": {
+  "name": "Gold Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "gold_legs_plus": {
+  "name": "Gold Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "gold_boots": {
+  "name": "Gold Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "gold_boots_plus": {
+  "name": "Gold Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "gold_gloves": {
+  "name": "Gold Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "energy": 15
+  }
+ },
+ "gold_gloves_plus": {
+  "name": "Gold Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "energy": 15
+  }
+ },
+ "gold_shield": {
+  "name": "Gold Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "defense": 4
+  }
+ },
+ "gold_shield_plus": {
+  "name": "Gold Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "gold_cape": {
+  "name": "Gold Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "gold_cape_plus": {
+  "name": "Gold Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "gold_belt": {
+  "name": "Gold Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 360,
+  "stats": {
+   "luck": 3
+  }
+ },
+ "gold_belt_plus": {
+  "name": "Gold Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "rare",
+  "tier": 3,
+  "value": 720,
+  "stats": {
+   "luck": 3
+  }
+ },
+ "crystal_helm": {
+  "name": "Crystal Helm",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "crystal_helm_plus": {
+  "name": "Crystal Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "crystal_chest": {
+  "name": "Crystal Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "crystal_chest_plus": {
+  "name": "Crystal Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "crystal_legs": {
+  "name": "Crystal Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "crystal_legs_plus": {
+  "name": "Crystal Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "crystal_boots": {
+  "name": "Crystal Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "crystal_boots_plus": {
+  "name": "Crystal Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "crystal_gloves": {
+  "name": "Crystal Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "energy": 20
+  }
+ },
+ "crystal_gloves_plus": {
+  "name": "Crystal Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "energy": 20
+  }
+ },
+ "crystal_shield": {
+  "name": "Crystal Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "defense": 5
+  }
+ },
+ "crystal_shield_plus": {
+  "name": "Crystal Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "crystal_cape": {
+  "name": "Crystal Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "crystal_cape_plus": {
+  "name": "Crystal Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "crystal_belt": {
+  "name": "Crystal Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 640,
+  "stats": {
+   "luck": 4
+  }
+ },
+ "crystal_belt_plus": {
+  "name": "Crystal Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "epic",
+  "tier": 4,
+  "value": 1280,
+  "stats": {
+   "luck": 4
+  }
+ },
+ "moon_helm": {
+  "name": "Moon Helm",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "moon_helm_plus": {
+  "name": "Moon Helm +1",
+  "type": "equip",
+  "slot": "head",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "defense": 7
+  }
+ },
+ "moon_chest": {
+  "name": "Moon Chest",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "moon_chest_plus": {
+  "name": "Moon Chest +1",
+  "type": "equip",
+  "slot": "body",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "defense": 7
+  }
+ },
+ "moon_legs": {
+  "name": "Moon Legs",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "moon_legs_plus": {
+  "name": "Moon Legs +1",
+  "type": "equip",
+  "slot": "legs",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "defense": 7
+  }
+ },
+ "moon_boots": {
+  "name": "Moon Boots",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "moon_boots_plus": {
+  "name": "Moon Boots +1",
+  "type": "equip",
+  "slot": "feet",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "defense": 7
+  }
+ },
+ "moon_gloves": {
+  "name": "Moon Gloves",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "energy": 25
+  }
+ },
+ "moon_gloves_plus": {
+  "name": "Moon Gloves +1",
+  "type": "equip",
+  "slot": "hands",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "energy": 25
+  }
+ },
+ "moon_shield": {
+  "name": "Moon Shield",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "defense": 6
+  }
+ },
+ "moon_shield_plus": {
+  "name": "Moon Shield +1",
+  "type": "equip",
+  "slot": "offhand",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "defense": 7
+  }
+ },
+ "moon_cape": {
+  "name": "Moon Cape",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "moon_cape_plus": {
+  "name": "Moon Cape +1",
+  "type": "equip",
+  "slot": "back",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "speed": 1
+  }
+ },
+ "moon_belt": {
+  "name": "Moon Belt",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 1000,
+  "stats": {
+   "luck": 5
+  }
+ },
+ "moon_belt_plus": {
+  "name": "Moon Belt +1",
+  "type": "equip",
+  "slot": "belt",
+  "rarity": "legendary",
+  "tier": 5,
+  "value": 2000,
+  "stats": {
+   "luck": 5
+  }
+ },
+ "steel_bar": {
+  "name": "Steel Bar",
+  "type": "bar",
+  "value": 160,
+  "rarity": "uncommon",
+  "tier": 2
  }
 }
