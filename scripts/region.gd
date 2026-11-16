@@ -386,6 +386,26 @@ func draw_map() -> void:
 	if ground == "grass":
 		draw_grass(hash(region_id) % 100)
 		WorldGen.draw_ground_detail(self, hash(region_id) % 100 + 1, float(R.get("detail", 0.1)))
+		# Region ground set (Prompts-08 batch 3): the region's own fill tiles in
+		# noise drifts over the grass, with its decals scattered on top.
+		var gs := str(R.get("ground_set", ""))
+		var gc := int(R.get("ground_count", 0))
+		if gs != "" and gc > 0 and Art.has("tiles", gs + "_0"):
+			var sd := hash(region_id) % 977
+			for y in range(-pad, rows + pad):
+				for x in range(-pad, cols + pad):
+					var n := WorldGen.fbm(float(x), float(y), sd, 8.0)
+					var h := absi((x * 73856093) ^ (y * 19349663))
+					if n > -0.05:
+						Art.draw_tile(self, "tiles", "%s_%d" % [gs, h % gc], Vector2(x * TILE, y * TILE), 0)
+			var ds := str(R.get("deco_set", ""))
+			var dc := int(R.get("deco_count", 0))
+			if ds != "" and dc > 0:
+				for y in range(0, rows):
+					for x in range(0, cols):
+						var h := absi((x * 73856093) ^ (y * 19349663) ^ 7)
+						if h % 17 == 0 and not blocked.has(Vector2i(x, y)):
+							Art.draw_tile(self, "tiles", "%s_%d" % [ds, h / 17 % dc], Vector2(x * TILE, y * TILE), 0)
 	elif Art.has("tiles", ground):
 		for y in range(-pad, rows + pad):
 			for x in range(-pad, cols + pad):

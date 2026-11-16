@@ -307,6 +307,163 @@
     1.0,
     5
    ]
+  ],
+  "bog_hag": [
+   [
+    "slime_goo",
+    0.6,
+    2
+   ],
+   [
+    "glow_cap",
+    0.25,
+    1
+   ],
+   [
+    "marsh_gas",
+    0.15,
+    1
+   ]
+  ],
+  "mud_slime": [
+   [
+    "slime_goo",
+    0.8,
+    1
+   ],
+   [
+    "bog_iron",
+    0.1,
+    1
+   ]
+  ],
+  "quarry_golem": [
+   [
+    "stone",
+    0.9,
+    3
+   ],
+   [
+    "coal",
+    0.4,
+    1
+   ],
+   [
+    "quarry_dust",
+    0.3,
+    1
+   ]
+  ],
+  "rock_crab": [
+   [
+    "stone",
+    0.6,
+    1
+   ],
+   [
+    "copper",
+    0.3,
+    1
+   ]
+  ],
+  "hill_wolf": [
+   [
+    "pelt",
+    0.6,
+    1
+   ],
+   [
+    "meat",
+    0.5,
+    1
+   ],
+   [
+    "bone",
+    0.3,
+    1
+   ]
+  ],
+  "ice_wisp": [
+   [
+    "spring_salt",
+    0.3,
+    1
+   ],
+   [
+    "mana_berry",
+    0.05,
+    1
+   ]
+  ],
+  "ruin_guardian": [
+   [
+    "rune_tablet",
+    0.3,
+    1
+   ],
+   [
+    "old_coin",
+    0.5,
+    2
+   ],
+   [
+    "relic_orb",
+    0.05,
+    1
+   ]
+  ],
+  "river_serpent": [
+   [
+    "river_pearl",
+    0.2,
+    1
+   ],
+   [
+    "eel",
+    0.6,
+    1
+   ],
+   [
+    "otter_whisker",
+    0.1,
+    1
+   ]
+  ],
+  "marsh_witch": [
+   [
+    "relic_mask",
+    1.0,
+    1
+   ],
+   [
+    "glow_cap",
+    1.0,
+    5
+   ]
+  ],
+  "golem_king": [
+   [
+    "relic_crown",
+    1.0,
+    1
+   ],
+   [
+    "gold_bar",
+    1.0,
+    2
+   ]
+  ],
+  "ruin_warden": [
+   [
+    "relic_blade",
+    1.0,
+    1
+   ],
+   [
+    "moon_shard",
+    1.0,
+    2
+   ]
   ]
  },
  "enemies": {
@@ -423,6 +580,72 @@
    "dmg": 4,
    "speed": 26,
    "xp": 400
+  },
+  "bog_hag": {
+   "hp": 14,
+   "dmg": 2,
+   "speed": 30,
+   "xp": 8
+  },
+  "mud_slime": {
+   "hp": 5,
+   "dmg": 1,
+   "speed": 26,
+   "xp": 3
+  },
+  "quarry_golem": {
+   "hp": 18,
+   "dmg": 2,
+   "speed": 22,
+   "xp": 9
+  },
+  "rock_crab": {
+   "hp": 9,
+   "dmg": 1,
+   "speed": 40,
+   "xp": 5
+  },
+  "hill_wolf": {
+   "hp": 12,
+   "dmg": 2,
+   "speed": 54,
+   "xp": 7
+  },
+  "ice_wisp": {
+   "hp": 6,
+   "dmg": 1,
+   "speed": 44,
+   "xp": 5
+  },
+  "ruin_guardian": {
+   "hp": 26,
+   "dmg": 3,
+   "speed": 24,
+   "xp": 14
+  },
+  "river_serpent": {
+   "hp": 16,
+   "dmg": 2,
+   "speed": 36,
+   "xp": 9
+  },
+  "marsh_witch": {
+   "hp": 120,
+   "dmg": 3,
+   "speed": 28,
+   "xp": 80
+  },
+  "golem_king": {
+   "hp": 180,
+   "dmg": 4,
+   "speed": 20,
+   "xp": 120
+  },
+  "ruin_warden": {
+   "hp": 220,
+   "dmg": 4,
+   "speed": 22,
+   "xp": 160
   }
  }
 }

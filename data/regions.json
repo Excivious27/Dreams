@@ -3632,6 +3632,33 @@
     ],
     "w": 1,
     "h": 2
+   },
+   {
+    "name": "r_orchard_17",
+    "cell": [
+     8,
+     8
+    ],
+    "w": 8,
+    "h": 12
+   },
+   {
+    "name": "r_orchard_23",
+    "cell": [
+     38,
+     10
+    ],
+    "w": 7,
+    "h": 6
+   },
+   {
+    "name": "r_orchard_48",
+    "cell": [
+     12,
+     32
+    ],
+    "w": 7,
+    "h": 6
    }
   ],
   "gen": {
@@ -3647,16 +3674,32 @@
    ],
    "critter_count": 12,
    "region_props": [
-    "apple_tree",
-    "plum_tree",
-    "orange_tree",
-    "apple_tree",
-    "sunflower_bush",
-    "wildflowers2",
-    "bush2_flower",
-    "oak"
+    "r_orchard_04",
+    "r_orchard_05",
+    "r_orchard_07",
+    "r_orchard_08",
+    "r_orchard_10",
+    "r_orchard_11",
+    "r_orchard_12",
+    "r_orchard_13",
+    "r_orchard_14",
+    "r_orchard_15",
+    "r_orchard_19",
+    "r_orchard_22",
+    "r_orchard_26",
+    "r_orchard_27",
+    "r_orchard_28",
+    "r_orchard_31",
+    "r_orchard_32",
+    "r_orchard_33",
+    "r_orchard_36",
+    "r_orchard_37",
+    "r_orchard_38",
+    "r_orchard_39",
+    "r_orchard_40",
+    "r_orchard_44"
    ],
-   "region_count": 34
+   "region_count": 48
   },
   "forage": 10,
   "things": [
@@ -3698,6 +3741,10 @@
   ],
   "enemies": [
    {
+    "kind": "hill_wolf",
+    "count": 1
+   },
+   {
     "kind": "grump",
     "count": 2
    }
@@ -3718,7 +3765,11 @@
      "The dog found something in the far orchard. Wouldn't let me see."
     ]
    }
-  ]
+  ],
+  "ground_set": "rg_orchard",
+  "ground_count": 18,
+  "deco_set": "rdeco_orchard",
+  "deco_count": 13
  },
  "highlands": {
   "cols": 52,
@@ -3941,6 +3992,33 @@
     "w": 1,
     "h": 2,
     "group": "nature"
+   },
+   {
+    "name": "r_highlands_30",
+    "cell": [
+     8,
+     8
+    ],
+    "w": 8,
+    "h": 11
+   },
+   {
+    "name": "r_highlands_08",
+    "cell": [
+     38,
+     10
+    ],
+    "w": 9,
+    "h": 5
+   },
+   {
+    "name": "r_highlands_01",
+    "cell": [
+     12,
+     32
+    ],
+    "w": 9,
+    "h": 5
    }
   ],
   "gen": {
@@ -3954,15 +4032,27 @@
    ],
    "critter_count": 8,
    "region_props": [
-    "rock_s",
-    "rock_m",
-    "mossy_rock2",
-    "pine_snow_s",
-    "dead_tree_s",
-    "bush_white",
-    "ferns"
+    "r_highlands_05",
+    "r_highlands_06",
+    "r_highlands_07",
+    "r_highlands_12",
+    "r_highlands_13",
+    "r_highlands_14",
+    "r_highlands_15",
+    "r_highlands_23",
+    "r_highlands_24",
+    "r_highlands_25",
+    "r_highlands_27",
+    "r_highlands_28",
+    "r_highlands_29",
+    "r_highlands_39",
+    "r_highlands_40",
+    "r_highlands_41",
+    "r_highlands_44",
+    "r_highlands_46",
+    "r_highlands_48"
    ],
-   "region_count": 36
+   "region_count": 38
   },
   "forage": 8,
   "things": [
@@ -4004,18 +4094,22 @@
   ],
   "enemies": [
    {
-    "kind": "golem",
-    "count": 2
+    "kind": "hill_wolf",
+    "count": 3
    },
    {
-    "kind": "wisp",
+    "kind": "ice_wisp",
     "count": 2
    }
   ],
   "intro": [
    "Thin air, pale grass, snow in the shadows even in summer. An eagle turns overhead. The valley is a green bowl far below."
   ],
-  "npcs": []
+  "npcs": [],
+  "ground_set": "rg_highlands",
+  "ground_count": 18,
+  "deco_set": "rdeco_highlands",
+  "deco_count": 10
  },
  "ruins": {
   "cols": 48,
@@ -4197,6 +4291,33 @@
     "h": 1,
     "group": "nature",
     "solid": false
+   },
+   {
+    "name": "r_ruins_13",
+    "cell": [
+     8,
+     8
+    ],
+    "w": 5,
+    "h": 11
+   },
+   {
+    "name": "r_ruins_33",
+    "cell": [
+     34,
+     10
+    ],
+    "w": 8,
+    "h": 7
+   },
+   {
+    "name": "r_ruins_45",
+    "cell": [
+     12,
+     32
+    ],
+    "w": 4,
+    "h": 8
    }
   ],
   "gen": {
@@ -4211,15 +4332,29 @@
    ],
    "critter_count": 8,
    "region_props": [
-    "mossy_rock2",
-    "rock_m",
-    "rock_s",
-    "ferns",
-    "bramble",
-    "dead_tree_m",
-    "dead_tree_s"
+    "r_ruins_03",
+    "r_ruins_04",
+    "r_ruins_05",
+    "r_ruins_06",
+    "r_ruins_08",
+    "r_ruins_16",
+    "r_ruins_22",
+    "r_ruins_25",
+    "r_ruins_27",
+    "r_ruins_29",
+    "r_ruins_38",
+    "r_ruins_39",
+    "r_ruins_40",
+    "r_ruins_47",
+    "r_ruins_48",
+    "r_ruins_49",
+    "r_ruins_50",
+    "r_ruins_51",
+    "r_ruins_52",
+    "r_ruins_58",
+    "r_ruins_59"
    ],
-   "region_count": 30
+   "region_count": 42
   },
   "forage": 8,
   "things": [
@@ -4268,20 +4403,32 @@
     "text": "An arch that leads nowhere. Walk through it and your ears pop.",
     "hint": "A: the arch",
     "solid": false
+   },
+   {
+    "type": "boss",
+    "cell": [
+     24,
+     8
+    ],
+    "kind": "ruin_warden",
+    "who": "",
+    "text": "The guardian statue's runes light one by one. Sel: 'I told you not to touch the\u2014' It steps off its plinth.",
+    "win": "The Warden kneels, runes dark, and becomes a statue again. In its hand: a blade older than the town.",
+    "after": "The Warden, kneeling. Sel sketches it from a safe distance.",
+    "reward": "relic_blade",
+    "max_hp": 20,
+    "hint": "A: the guardian statue",
+    "solid": false
    }
   ],
   "enemies": [
    {
-    "kind": "shard",
+    "kind": "ruin_guardian",
     "count": 2
    },
    {
-    "kind": "knight",
-    "count": 1,
-    "cell": [
-     24,
-     10
-    ]
+    "kind": "ice_wisp",
+    "count": 1
    }
   ],
   "intro": [
@@ -4300,7 +4447,11 @@
      "Theo thinks I'm making it up. Theo has never been here after dark."
     ]
    }
-  ]
+  ],
+  "ground_set": "rg_ruins",
+  "ground_count": 18,
+  "deco_set": "rdeco_ruins",
+  "deco_count": 18
  },
  "quarry": {
   "cols": 52,
@@ -4520,6 +4671,33 @@
      22
     ],
     "h": 1
+   },
+   {
+    "name": "r_quarry_04",
+    "cell": [
+     8,
+     8
+    ],
+    "w": 7,
+    "h": 12
+   },
+   {
+    "name": "r_quarry_50",
+    "cell": [
+     38,
+     10
+    ],
+    "w": 9,
+    "h": 10
+   },
+   {
+    "name": "r_quarry_71",
+    "cell": [
+     12,
+     32
+    ],
+    "w": 3,
+    "h": 5
    }
   ],
   "gen": {
@@ -4532,13 +4710,62 @@
    ],
    "critter_count": 6,
    "region_props": [
-    "rock_l",
-    "rock_m",
-    "rock_s",
-    "rock_m",
-    "rock_l"
+    "r_quarry_00",
+    "r_quarry_01",
+    "r_quarry_02",
+    "r_quarry_03",
+    "r_quarry_05",
+    "r_quarry_06",
+    "r_quarry_07",
+    "r_quarry_08",
+    "r_quarry_09",
+    "r_quarry_10",
+    "r_quarry_11",
+    "r_quarry_12",
+    "r_quarry_13",
+    "r_quarry_14",
+    "r_quarry_15",
+    "r_quarry_16",
+    "r_quarry_17",
+    "r_quarry_18",
+    "r_quarry_19",
+    "r_quarry_20",
+    "r_quarry_21",
+    "r_quarry_22",
+    "r_quarry_23",
+    "r_quarry_24",
+    "r_quarry_29",
+    "r_quarry_31",
+    "r_quarry_32",
+    "r_quarry_33",
+    "r_quarry_34",
+    "r_quarry_36",
+    "r_quarry_37",
+    "r_quarry_38",
+    "r_quarry_39",
+    "r_quarry_40",
+    "r_quarry_42",
+    "r_quarry_44",
+    "r_quarry_45",
+    "r_quarry_46",
+    "r_quarry_52",
+    "r_quarry_53",
+    "r_quarry_54",
+    "r_quarry_55",
+    "r_quarry_57",
+    "r_quarry_59",
+    "r_quarry_60",
+    "r_quarry_62",
+    "r_quarry_63",
+    "r_quarry_64",
+    "r_quarry_65",
+    "r_quarry_66",
+    "r_quarry_67",
+    "r_quarry_69",
+    "r_quarry_73",
+    "r_quarry_75"
    ],
-   "region_count": 40
+   "region_count": 108
   },
   "forage": 4,
   "things": [
@@ -4623,16 +4850,32 @@
     "text": "The foreman's tower. Someone still sweeps it.",
     "hint": "A: the tower",
     "solid": false
+   },
+   {
+    "type": "boss",
+    "cell": [
+     28,
+     14
+    ],
+    "kind": "golem_king",
+    "who": "",
+    "text": "The biggest stone in the quarry opens its eyes. Crystals crown it. It remembers being carved.",
+    "win": "The Golem King crumbles into ore. Granite watches from the tower and doesn't say anything for a long time.",
+    "after": "A ring of fresh ore where the king stood.",
+    "reward": "relic_crown",
+    "max_hp": 10,
+    "hint": "A: the crowned stone",
+    "solid": false
    }
   ],
   "enemies": [
    {
-    "kind": "golem",
+    "kind": "quarry_golem",
     "count": 3
    },
    {
-    "kind": "bat",
-    "count": 2
+    "kind": "rock_crab",
+    "count": 3
    }
   ],
   "intro": [
@@ -4651,7 +4894,11 @@
      "Golems were the crew's idea. Carve a stone man to lift stone. What could go wrong."
     ]
    }
-  ]
+  ],
+  "ground_set": "rg_quarry",
+  "ground_count": 18,
+  "deco_set": "rdeco_quarry",
+  "deco_count": 9
  },
  "marsh": {
   "cols": 52,
@@ -4857,6 +5104,33 @@
     ],
     "w": 1,
     "h": 1
+   },
+   {
+    "name": "r_marsh_14",
+    "cell": [
+     8,
+     8
+    ],
+    "w": 14,
+    "h": 9
+   },
+   {
+    "name": "r_marsh_03",
+    "cell": [
+     38,
+     10
+    ],
+    "w": 7,
+    "h": 6
+   },
+   {
+    "name": "r_marsh_01",
+    "cell": [
+     12,
+     32
+    ],
+    "w": 6,
+    "h": 6
    }
   ],
   "gen": {
@@ -4872,17 +5146,69 @@
    ],
    "critter_count": 14,
    "region_props": [
-    "cattail_0",
-    "cattail_1",
-    "cattail_2",
-    "cattail_3",
-    "reeds2_0",
-    "reeds2_1",
-    "mushrooms_fall",
-    "bramble",
-    "dead_tree_s"
+    "r_marsh_05",
+    "r_marsh_101",
+    "r_marsh_102",
+    "r_marsh_13",
+    "r_marsh_15",
+    "r_marsh_20",
+    "r_marsh_21",
+    "r_marsh_22",
+    "r_marsh_28",
+    "r_marsh_29",
+    "r_marsh_30",
+    "r_marsh_31",
+    "r_marsh_32",
+    "r_marsh_34",
+    "r_marsh_35",
+    "r_marsh_36",
+    "r_marsh_37",
+    "r_marsh_39",
+    "r_marsh_40",
+    "r_marsh_41",
+    "r_marsh_42",
+    "r_marsh_43",
+    "r_marsh_44",
+    "r_marsh_45",
+    "r_marsh_46",
+    "r_marsh_47",
+    "r_marsh_48",
+    "r_marsh_50",
+    "r_marsh_54",
+    "r_marsh_55",
+    "r_marsh_56",
+    "r_marsh_57",
+    "r_marsh_58",
+    "r_marsh_59",
+    "r_marsh_60",
+    "r_marsh_62",
+    "r_marsh_63",
+    "r_marsh_64",
+    "r_marsh_65",
+    "r_marsh_66",
+    "r_marsh_67",
+    "r_marsh_68",
+    "r_marsh_72",
+    "r_marsh_77",
+    "r_marsh_78",
+    "r_marsh_79",
+    "r_marsh_80",
+    "r_marsh_81",
+    "r_marsh_82",
+    "r_marsh_83",
+    "r_marsh_84",
+    "r_marsh_85",
+    "r_marsh_86",
+    "r_marsh_87",
+    "r_marsh_88",
+    "r_marsh_89",
+    "r_marsh_90",
+    "r_marsh_92",
+    "r_marsh_94",
+    "r_marsh_95",
+    "r_marsh_96"
    ],
-   "region_count": 48
+   "region_count": 122
   },
   "forage": 12,
   "things": [
@@ -4920,15 +5246,31 @@
     "hint": "A: something sticky in the log",
     "every": 2,
     "solid": false
+   },
+   {
+    "type": "boss",
+    "cell": [
+     14,
+     30
+    ],
+    "kind": "marsh_witch",
+    "who": "",
+    "text": "The black water boils. Something that was a woman once stands up out of it, reeds for hair, a lantern that isn't lit by fire.",
+    "win": "The witch sinks back into the bog, laughing. The water goes still. Old Moss will want to hear about this.",
+    "after": "The bog where the witch rose. Still.",
+    "reward": "relic_mask",
+    "max_hp": 10,
+    "hint": "A: the boiling pool",
+    "solid": false
    }
   ],
   "enemies": [
    {
-    "kind": "slime",
+    "kind": "mud_slime",
     "count": 4
    },
    {
-    "kind": "wisp",
+    "kind": "bog_hag",
     "count": 2
    }
   ],
@@ -4949,7 +5291,11 @@
      "Frogs know things. I listen."
     ]
    }
-  ]
+  ],
+  "ground_set": "rg_marsh",
+  "ground_count": 36,
+  "deco_set": "rdeco_marsh",
+  "deco_count": 25
  },
  "riverlands": {
   "cols": 52,
@@ -5150,6 +5496,33 @@
     ],
     "w": 1,
     "h": 1
+   },
+   {
+    "name": "r_riverlands_34",
+    "cell": [
+     8,
+     8
+    ],
+    "w": 9,
+    "h": 11
+   },
+   {
+    "name": "r_riverlands_35",
+    "cell": [
+     38,
+     10
+    ],
+    "w": 6,
+    "h": 5
+   },
+   {
+    "name": "r_riverlands_38",
+    "cell": [
+     12,
+     32
+    ],
+    "w": 4,
+    "h": 6
    }
   ],
   "gen": {
@@ -5166,17 +5539,27 @@
    ],
    "critter_count": 14,
    "region_props": [
-    "reeds_0",
-    "reeds_1",
-    "reeds_2",
-    "lily_0",
-    "lily_1",
-    "wildflowers2",
-    "bush2_blue",
-    "tree_birch",
-    "oak"
+    "r_riverlands_07",
+    "r_riverlands_08",
+    "r_riverlands_10",
+    "r_riverlands_11",
+    "r_riverlands_13",
+    "r_riverlands_14",
+    "r_riverlands_15",
+    "r_riverlands_16",
+    "r_riverlands_17",
+    "r_riverlands_18",
+    "r_riverlands_20",
+    "r_riverlands_22",
+    "r_riverlands_31",
+    "r_riverlands_33",
+    "r_riverlands_41",
+    "r_riverlands_44",
+    "r_riverlands_45",
+    "r_riverlands_49",
+    "r_riverlands_50"
    ],
-   "region_count": 36
+   "region_count": 38
   },
   "forage": 10,
   "things": [
@@ -5218,17 +5601,21 @@
   ],
   "enemies": [
    {
-    "kind": "slime",
+    "kind": "river_serpent",
     "count": 2
    },
    {
-    "kind": "grump",
+    "kind": "mud_slime",
     "count": 2
    }
   ],
   "intro": [
    "Three rivers braid through sand bars and willow. Otters. Herons standing like they've been there since the valley was made. The lake is downstream, the marsh up."
   ],
-  "npcs": []
+  "npcs": [],
+  "ground_set": "rg_riverlands",
+  "ground_count": 18,
+  "deco_set": "rdeco_riverlands",
+  "deco_count": 12
  }
 }

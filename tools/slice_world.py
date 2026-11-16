@@ -2447,11 +2447,201 @@ def w127():
             save(crop(rgba, bb), "ui_creator", nm)
 
 
+# ---- Prompts-08 batch 3: region sheets (tiles on top, props below) -----------
+
+REGION_SHEETS = {"marsh": "w132_marsh.png", "quarry": "w133_quarry.png", "orchard": "w134_orchard_hills.png",
+                 "highlands": "w135_highlands.png", "ruins": "w136_ruins.png", "riverlands": "w137_riverlands.png"}
+
+def _components(rgba, reg, dilate=4, min_px=60):
+    """Bounding boxes of connected foreground blobs in a region (dilated so a
+    sprite's loose pixels stay with it)."""
+    from scipy import ndimage
+    x0, y0, x1, y1 = reg
+    m = rgba[y0:y1, x0:x1, 3] > 40
+    if dilate:
+        m = ndimage.binary_dilation(m, iterations=dilate)
+    labels, n = ndimage.label(m)
+    out = []
+    for sl_i, sl in enumerate(ndimage.find_objects(labels)):
+        if sl is None:
+            continue
+        ys, xs = sl
+        if (labels[sl] == sl_i + 1).sum() < min_px:
+            continue
+        out.append((x0 + max(0, xs.start - dilate + 1), y0 + max(0, ys.start - dilate + 1), x0 + min(x1 - x0, xs.stop + dilate - 1), y0 + min(y1 - y0, ys.stop + dilate - 1)))
+    return out
+
+
+def _region_sheet(region, file):
+    rgba = load(file)
+    rgb = rgba[..., :3].astype(int)
+    black = (rgb.sum(2) < 60)
+    col_black = black.mean(0) > 0.98
+    xs = [i for i, v in enumerate(col_black) if not v]
+    x0, x1 = (xs[0], xs[-1] + 1) if xs else (0, rgba.shape[1])
+    rgba = rgba.copy()
+    rgba[:, col_black, 3] = 0           # letterbox bars
+    rgba[:3, :, 3] = 0; rgba[-3:, :, 3] = 0   # frame lines
+    rgba[:, x0:x0 + 6, 3] = 0; rgba[:, x1 - 6:x1, 3] = 0
+    # Dark-magenta gradient at the bars' edges reads as foreground: key it.
+    dm = (rgb[..., 1] < 40) & (rgb[..., 0] < 200) & (rgb[..., 0] > rgb[..., 1] + 10) & (abs(rgb[..., 0] - rgb[..., 2]) < 40)
+    rgba[dm, 3] = 0
+    a = rgba[..., 3] > 40
+    rowp = a[:, x0:x1].mean(1)
+    runs_ = _grid_runs(rowp, 0.3, 4)
+    runs_ = [r for r in runs_ if r[1] - r[0] >= 30]
+    if not runs_:
+        print("  ", region, "no tile band"); return
+    ty0 = runs_[0][0]
+    h0 = runs_[0][1] - runs_[0][0]
+    pitch = (runs_[1][0] - runs_[0][0]) if len(runs_) > 1 and runs_[1][0] - runs_[0][0] < h0 * 1.6 else int(h0 * 1.12)
+    ty1 = min(rgba.shape[0], ty0 + pitch * 4)
+    # Tile columns: content span of the band.
+    band = a[ty0:ty1, x0:x1]
+    cxs = [i for i, v in enumerate(band.mean(0)) if v > 0.2]
+    bx0, bx1 = x0 + cxs[0], x0 + cxs[-1] + 1
+    ncols = 36 if (bx1 - bx0) > 1300 else 18
+    cells = cells_by_grid(rgba, ncols, 4, region=(bx0, ty0, bx1, ty1), trim=False, inset=3)
+    ground, deco, edge = [], [], []
+    for ri, row in enumerate(cells):
+        for ci, b in enumerate(row):
+            sub = rgba[b[1]:b[3], b[0]:b[2]]
+            if (sub[..., 3] > 40).mean() < 0.5:
+                continue
+            im = scale_to(crop(rgba, b), width=TILE2, height=TILE2, cover=True)
+            if ri < 2:
+                (ground if ci < ncols // 2 else deco).append(im)
+            else:
+                edge.append(im)
+    for i, im in enumerate(ground):
+        save(im, "tiles", "rg_%s_%d" % (region, i))
+    for i, im in enumerate(deco):
+        save(im, "tiles", "rdeco_%s_%d" % (region, i))
+    for i, im in enumerate(edge):
+        save(im, "tiles", "redge_%s_%d" % (region, i))
+    py0 = ty1 + 4
+    boxes = _components(rgba, (x0, py0, x1, rgba.shape[0] - 3), dilate=4, min_px=60)
+    boxes.sort(key=lambda b: (b[1] // 90, b[0]))
+    k = 0
+    for b in boxes:
+        save(crop(rgba, b), "props", "r_%s_%02d" % (region, k))
+        k += 1
+    print("  ", region, "ground", len(ground), "deco", len(deco), "edge", len(edge), "props", k, "band", (bx0, ty0, bx1, ty1))
+
+
+def w132(): _region_sheet("marsh", REGION_SHEETS["marsh"])
+def w133(): _region_sheet("quarry", REGION_SHEETS["quarry"])
+def w134(): _region_sheet("orchard", REGION_SHEETS["orchard"])
+def w135(): _region_sheet("highlands", REGION_SHEETS["highlands"])
+def w136(): _region_sheet("ruins", REGION_SHEETS["ruins"])
+def w137(): _region_sheet("riverlands", REGION_SHEETS["riverlands"])
+
+
+# ---- Prompts-08 batches 4-5: decor, HUD, items, weather, enemies, bosses -----
+
+def _row_sort(boxes, gap):
+    """Row-major order by clustering on centre y (rows break at gaps > gap)."""
+    boxes = sorted(boxes, key=lambda b: (b[1] + b[3]) / 2.0)
+    rows, cur, last = [], [], None
+    for b in boxes:
+        cy = (b[1] + b[3]) / 2.0
+        if last is not None and cy - last > gap:
+            rows.append(cur); cur = []
+        cur.append(b); last = cy
+    if cur:
+        rows.append(cur)
+    out = []
+    for r in rows:
+        out += sorted(r, key=lambda b: b[0])
+    return out
+
+
+def _comp_sheet(file, group, prefix, dilate=4, min_px=60, row_h=90):
+    rgba = load(file)
+    boxes = _components(rgba, (0, 0, rgba.shape[1], rgba.shape[0]), dilate=dilate, min_px=min_px)
+    boxes = _row_sort(boxes, row_h // 2)
+    for i, b in enumerate(boxes):
+        save(crop(rgba, b), group, "%s_%02d" % (prefix, i))
+    print("  ", file, len(boxes))
+    return boxes
+
+def w138(): _comp_sheet("w138_town_plaza.png", "props", "plaza")
+def w139(): _comp_sheet("w139_bridges_docks.png", "props", "dock")
+def w140(): _comp_sheet("w140_stable_set.png", "props", "stable")
+def w141(): _comp_sheet("w141_weather_fx.png", "fx", "wx", dilate=6, min_px=200, row_h=110)
+def w142(): _comp_sheet("w142_hud_vitals.png", "ui", "hud2", dilate=3, min_px=40, row_h=100)
+
+ITEMS_C = ["heart_fruit", "stamina_root", "mana_berry", "juniper_tonic", "mana_potion", "hardwood", "pelt", "meat", "arrow", "trap", "flour", "egg", "milk", "cheese", "wine", "candy",
+ "shell", "book", "old_coin", "fossil", "hay", "bone", "slime_goo", "glow_cap", "starflower", "paint", "coffee", "tea", "cake", "pearl", "toy", "map_scrap",
+ "lamp_oil", "lens", "moon_shard", "cornmeal", "corn_bread", "spiced_loaf", "jam", "cider", "honeycomb", "wool", "goat_milk", "mushroom_stew", "fish_pie", "cranberry", "bog_iron", "marsh_gas",
+ "quarry_dust", "chisel", "dynamite", "rune_tablet", "ancient_urn", "relic_mask", "relic_blade", "relic_orb", "relic_crown", "otter_whisker", "river_pearl", "eagle_feather", "edelweiss", "spring_salt", "goat_horn", "sheep_wool",
+ "apple_cider", "plum_jam", "peach_pie", "marmalade", "apple_q1", "apple_q2", "apple_q3", "apple_q4", "gift_box", "love_letter", "bouquet", "ring_box", "wedding_ring", "baby_rattle", "kite", "compass",
+ "torch", "rope", "net", "bucket", "can_wood", "can_copper", "can_iron", "can_steel", "can_silver", "can_gold", "can_crystal", "can_moon", "cranberry_seed", "hops_seed",
+ "grape_seed", "tea_seed", "cotton_seed", "flax_seed", "sugar_beet_seed", "rice_seed", "lotus_seed", "snow_pea_seed", "ghost_pepper_seed", "moon_melon_seed", "telescope", "lantern"]
+
+def w143():
+    rgba = load("w143_items_c.png")
+    a = rgba[..., 3] > 40
+    rows_ = [r for r in _grid_runs(a.mean(1), 0.01, 20) if r[1] - r[0] >= 40]
+    k = 0
+    for (y0, y1) in rows_:
+        cells = cells_by_grid(rgba, 16, 1, region=(0, y0, rgba.shape[1], y1), trim=True, inset=4)
+        for b in cells[0]:
+            if b is None or k >= len(ITEMS_C):
+                k += 1
+                continue
+            sub = rgba[b[1]:b[3], b[0]:b[2]]
+            if (sub[..., 3] > 40).sum() < 80:
+                k += 1
+                continue
+            im = crop(rgba, b); im.thumbnail((32, 32))
+            save(im, "items", ITEMS_C[k])
+            k += 1
+    print("   items_c", k)
+
+ENEMIES_B = ["bog_hag", "mud_slime", "quarry_golem", "rock_crab", "hill_wolf", "ice_wisp", "ruin_guardian", "river_serpent"]
+
+def w144():
+    rgba = load("w144_enemies_b.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
+    for name, (y0, y1) in zip(ENEMIES_B, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        fr = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            fr.append(crop(rgba, bb) if bb else Image.new("RGBA", (8, 8)))
+        g = "enemies/" + name
+        strip(fr[0:2], g, "idle"); strip(fr[2:6], g, "walk"); strip(fr[6:10], g, "attack"); strip(fr[10:12], g, "hurt"); strip(fr[12:16], g, "die")
+
+BOSSES_B = ["marsh_witch", "golem_king", "ruin_warden"]
+
+def w145():
+    rgba = load("w145_bosses_b.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 60) if r[1] - r[0] >= 60][:4]
+    for name, (y0, y1) in zip(BOSSES_B, rows[:3]):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 8)
+        fr = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            fr.append(crop(rgba, bb) if bb else Image.new("RGBA", (8, 8)))
+        g = "enemies/" + name
+        strip(fr[0:2], g, "idle"); strip(fr[2:4], g, "walk"); strip(fr[4:6], g, "attack"); strip([fr[6]], g, "hurt"); strip([fr[7]], g, "die")
+    if len(rows) > 3:
+        y0, y1 = rows[3]
+        bs = _equal_cells(rgba, (4, y0 - 4, rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 8)
+        for nm, b in zip(["mud_splash", "rock_shards", "rune_blast", "poison_cloud", "shockwave", "frost_burst", "serpent_splash", "victory_burst"], bs):
+            bb = region_bbox(rgba, b)
+            if bb:
+                save(crop(rgba, bb), "fx", "boss_" + nm)
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

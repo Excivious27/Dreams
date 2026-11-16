@@ -6871,5 +6871,208 @@
   },
   "costume": "outfit_penguin",
   "desc": "An outfit. Shows on you."
+ },
+ "marsh_gas": {
+  "name": "Marsh Gas Jar",
+  "type": "material",
+  "value": 45,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "bog_iron": {
+  "name": "Bog Iron",
+  "type": "material",
+  "value": 30,
+  "rarity": "common",
+  "tier": 2
+ },
+ "quarry_dust": {
+  "name": "Quarry Dust",
+  "type": "material",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "spring_salt": {
+  "name": "Hot-spring Salt",
+  "type": "material",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "rune_tablet": {
+  "name": "Rune Tablet",
+  "type": "treasure",
+  "value": 150,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "relic_orb": {
+  "name": "Relic Orb",
+  "type": "treasure",
+  "value": 600,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "relic_mask": {
+  "name": "Relic Mask",
+  "type": "treasure",
+  "value": 500,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "relic_blade": {
+  "name": "Relic Blade",
+  "type": "treasure",
+  "value": 700,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "relic_crown": {
+  "name": "Relic Crown",
+  "type": "treasure",
+  "value": 800,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "river_pearl": {
+  "name": "River Pearl",
+  "type": "treasure",
+  "value": 180,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "otter_whisker": {
+  "name": "Otter Whisker",
+  "type": "material",
+  "value": 60,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "eagle_feather": {
+  "name": "Eagle Feather",
+  "type": "material",
+  "value": 70,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "goat_horn": {
+  "name": "Goat Horn",
+  "type": "material",
+  "value": 40,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "sheep_wool": {
+  "name": "Wool",
+  "type": "material",
+  "value": 25,
+  "rarity": "common",
+  "tier": 1
+ },
+ "lamp_oil": {
+  "name": "Lamp Oil",
+  "type": "material",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1
+ },
+ "lens": {
+  "name": "Glass Lens",
+  "type": "material",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "chisel": {
+  "name": "Chisel",
+  "type": "material",
+  "value": 60,
+  "rarity": "common",
+  "tier": 2
+ },
+ "dynamite": {
+  "name": "Dynamite",
+  "type": "material",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 3
+ },
+ "ancient_urn": {
+  "name": "Ancient Urn",
+  "type": "treasure",
+  "value": 200,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "cornmeal": {
+  "name": "Cornmeal",
+  "type": "material",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1
+ },
+ "honeycomb": {
+  "name": "Honeycomb",
+  "type": "food",
+  "value": 50,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1
+ },
+ "cider": {
+  "name": "Cider",
+  "type": "food",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1
+ },
+ "jam": {
+  "name": "Jam",
+  "type": "food",
+  "value": 60,
+  "rarity": "common",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1
+ },
+ "goat_milk": {
+  "name": "Goat Milk",
+  "type": "food",
+  "value": 40,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 30,
+  "heal": 0
+ },
+ "mushroom_stew": {
+  "name": "Mushroom Stew",
+  "type": "food",
+  "value": 70,
+  "rarity": "common",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1
+ },
+ "fish_pie": {
+  "name": "Fish Pie",
+  "type": "food",
+  "value": 110,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1
+ },
+ "spiced_loaf": {
+  "name": "Spiced Loaf",
+  "type": "food",
+  "value": 80,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1
  }
 }

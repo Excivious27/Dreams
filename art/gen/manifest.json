@@ -11764,6 +11764,48 @@
    "w": 108
   }
  },
+ "enemies/bog_hag": {
+  "attack": {
+   "cell_h": 102,
+   "cell_w": 88,
+   "file": "enemies/bog_hag/attack.png",
+   "frames": 4,
+   "h": 102,
+   "w": 352
+  },
+  "die": {
+   "cell_h": 91,
+   "cell_w": 91,
+   "file": "enemies/bog_hag/die.png",
+   "frames": 4,
+   "h": 91,
+   "w": 364
+  },
+  "hurt": {
+   "cell_h": 104,
+   "cell_w": 83,
+   "file": "enemies/bog_hag/hurt.png",
+   "frames": 2,
+   "h": 104,
+   "w": 166
+  },
+  "idle": {
+   "cell_h": 106,
+   "cell_w": 73,
+   "file": "enemies/bog_hag/idle.png",
+   "frames": 2,
+   "h": 106,
+   "w": 146
+  },
+  "walk": {
+   "cell_h": 94,
+   "cell_w": 79,
+   "file": "enemies/bog_hag/walk.png",
+   "frames": 4,
+   "h": 94,
+   "w": 316
+  }
+ },
  "enemies/commander": {
   "attack": {
    "cell_h": 171,
@@ -11850,6 +11892,48 @@
    "w": 340
   }
  },
+ "enemies/golem_king": {
+  "attack": {
+   "cell_h": 195,
+   "cell_w": 184,
+   "file": "enemies/golem_king/attack.png",
+   "frames": 2,
+   "h": 195,
+   "w": 368
+  },
+  "die": {
+   "cell_h": 117,
+   "cell_w": 186,
+   "file": "enemies/golem_king/die.png",
+   "frames": 1,
+   "h": 117,
+   "w": 186
+  },
+  "hurt": {
+   "cell_h": 181,
+   "cell_w": 167,
+   "file": "enemies/golem_king/hurt.png",
+   "frames": 1,
+   "h": 181,
+   "w": 167
+  },
+  "idle": {
+   "cell_h": 192,
+   "cell_w": 180,
+   "file": "enemies/golem_king/idle.png",
+   "frames": 2,
+   "h": 192,
+   "w": 360
+  },
+  "walk": {
+   "cell_h": 182,
+   "cell_w": 176,
+   "file": "enemies/golem_king/walk.png",
+   "frames": 2,
+   "h": 182,
+   "w": 352
+  }
+ },
  "enemies/grump": {
   "hurt": {
    "cell_h": 40,
@@ -11874,6 +11958,90 @@
    "frames": 4,
    "h": 40,
    "w": 196
+  }
+ },
+ "enemies/hill_wolf": {
+  "attack": {
+   "cell_h": 76,
+   "cell_w": 96,
+   "file": "enemies/hill_wolf/attack.png",
+   "frames": 4,
+   "h": 76,
+   "w": 384
+  },
+  "die": {
+   "cell_h": 60,
+   "cell_w": 89,
+   "file": "enemies/hill_wolf/die.png",
+   "frames": 4,
+   "h": 60,
+   "w": 356
+  },
+  "hurt": {
+   "cell_h": 71,
+   "cell_w": 74,
+   "file": "enemies/hill_wolf/hurt.png",
+   "frames": 2,
+   "h": 71,
+   "w": 148
+  },
+  "idle": {
+   "cell_h": 73,
+   "cell_w": 79,
+   "file": "enemies/hill_wolf/idle.png",
+   "frames": 2,
+   "h": 73,
+   "w": 158
+  },
+  "walk": {
+   "cell_h": 70,
+   "cell_w": 97,
+   "file": "enemies/hill_wolf/walk.png",
+   "frames": 4,
+   "h": 70,
+   "w": 388
+  }
+ },
+ "enemies/ice_wisp": {
+  "attack": {
+   "cell_h": 83,
+   "cell_w": 81,
+   "file": "enemies/ice_wisp/attack.png",
+   "frames": 4,
+   "h": 83,
+   "w": 324
+  },
+  "die": {
+   "cell_h": 57,
+   "cell_w": 82,
+   "file": "enemies/ice_wisp/die.png",
+   "frames": 4,
+   "h": 57,
+   "w": 328
+  },
+  "hurt": {
+   "cell_h": 70,
+   "cell_w": 71,
+   "file": "enemies/ice_wisp/hurt.png",
+   "frames": 2,
+   "h": 70,
+   "w": 142
+  },
+  "idle": {
+   "cell_h": 71,
+   "cell_w": 51,
+   "file": "enemies/ice_wisp/idle.png",
+   "frames": 2,
+   "h": 71,
+   "w": 102
+  },
+  "walk": {
+   "cell_h": 61,
+   "cell_w": 76,
+   "file": "enemies/ice_wisp/walk.png",
+   "frames": 4,
+   "h": 61,
+   "w": 304
   }
  },
  "enemies/knight": {
@@ -11908,6 +12076,300 @@
    "frames": 4,
    "h": 63,
    "w": 168
+  }
+ },
+ "enemies/marsh_witch": {
+  "attack": {
+   "cell_h": 178,
+   "cell_w": 169,
+   "file": "enemies/marsh_witch/attack.png",
+   "frames": 2,
+   "h": 178,
+   "w": 338
+  },
+  "die": {
+   "cell_h": 107,
+   "cell_w": 182,
+   "file": "enemies/marsh_witch/die.png",
+   "frames": 1,
+   "h": 107,
+   "w": 182
+  },
+  "hurt": {
+   "cell_h": 170,
+   "cell_w": 153,
+   "file": "enemies/marsh_witch/hurt.png",
+   "frames": 1,
+   "h": 170,
+   "w": 153
+  },
+  "idle": {
+   "cell_h": 178,
+   "cell_w": 158,
+   "file": "enemies/marsh_witch/idle.png",
+   "frames": 2,
+   "h": 178,
+   "w": 316
+  },
+  "walk": {
+   "cell_h": 176,
+   "cell_w": 164,
+   "file": "enemies/marsh_witch/walk.png",
+   "frames": 2,
+   "h": 176,
+   "w": 328
+  }
+ },
+ "enemies/mud_slime": {
+  "attack": {
+   "cell_h": 81,
+   "cell_w": 79,
+   "file": "enemies/mud_slime/attack.png",
+   "frames": 4,
+   "h": 81,
+   "w": 316
+  },
+  "die": {
+   "cell_h": 48,
+   "cell_w": 87,
+   "file": "enemies/mud_slime/die.png",
+   "frames": 4,
+   "h": 48,
+   "w": 348
+  },
+  "hurt": {
+   "cell_h": 65,
+   "cell_w": 77,
+   "file": "enemies/mud_slime/hurt.png",
+   "frames": 2,
+   "h": 65,
+   "w": 154
+  },
+  "idle": {
+   "cell_h": 66,
+   "cell_w": 81,
+   "file": "enemies/mud_slime/idle.png",
+   "frames": 2,
+   "h": 66,
+   "w": 162
+  },
+  "walk": {
+   "cell_h": 68,
+   "cell_w": 76,
+   "file": "enemies/mud_slime/walk.png",
+   "frames": 4,
+   "h": 68,
+   "w": 304
+  }
+ },
+ "enemies/quarry_golem": {
+  "attack": {
+   "cell_h": 97,
+   "cell_w": 91,
+   "file": "enemies/quarry_golem/attack.png",
+   "frames": 4,
+   "h": 97,
+   "w": 364
+  },
+  "die": {
+   "cell_h": 71,
+   "cell_w": 92,
+   "file": "enemies/quarry_golem/die.png",
+   "frames": 4,
+   "h": 71,
+   "w": 368
+  },
+  "hurt": {
+   "cell_h": 89,
+   "cell_w": 88,
+   "file": "enemies/quarry_golem/hurt.png",
+   "frames": 2,
+   "h": 89,
+   "w": 176
+  },
+  "idle": {
+   "cell_h": 87,
+   "cell_w": 88,
+   "file": "enemies/quarry_golem/idle.png",
+   "frames": 2,
+   "h": 87,
+   "w": 176
+  },
+  "walk": {
+   "cell_h": 85,
+   "cell_w": 85,
+   "file": "enemies/quarry_golem/walk.png",
+   "frames": 4,
+   "h": 85,
+   "w": 340
+  }
+ },
+ "enemies/river_serpent": {
+  "attack": {
+   "cell_h": 104,
+   "cell_w": 95,
+   "file": "enemies/river_serpent/attack.png",
+   "frames": 4,
+   "h": 104,
+   "w": 380
+  },
+  "die": {
+   "cell_h": 52,
+   "cell_w": 88,
+   "file": "enemies/river_serpent/die.png",
+   "frames": 4,
+   "h": 52,
+   "w": 352
+  },
+  "hurt": {
+   "cell_h": 86,
+   "cell_w": 88,
+   "file": "enemies/river_serpent/hurt.png",
+   "frames": 2,
+   "h": 86,
+   "w": 176
+  },
+  "idle": {
+   "cell_h": 103,
+   "cell_w": 88,
+   "file": "enemies/river_serpent/idle.png",
+   "frames": 2,
+   "h": 103,
+   "w": 176
+  },
+  "walk": {
+   "cell_h": 105,
+   "cell_w": 187,
+   "file": "enemies/river_serpent/walk.png",
+   "frames": 4,
+   "h": 105,
+   "w": 748
+  }
+ },
+ "enemies/rock_crab": {
+  "attack": {
+   "cell_h": 71,
+   "cell_w": 97,
+   "file": "enemies/rock_crab/attack.png",
+   "frames": 4,
+   "h": 71,
+   "w": 388
+  },
+  "die": {
+   "cell_h": 59,
+   "cell_w": 89,
+   "file": "enemies/rock_crab/die.png",
+   "frames": 4,
+   "h": 59,
+   "w": 356
+  },
+  "hurt": {
+   "cell_h": 65,
+   "cell_w": 81,
+   "file": "enemies/rock_crab/hurt.png",
+   "frames": 2,
+   "h": 65,
+   "w": 162
+  },
+  "idle": {
+   "cell_h": 69,
+   "cell_w": 83,
+   "file": "enemies/rock_crab/idle.png",
+   "frames": 2,
+   "h": 69,
+   "w": 166
+  },
+  "walk": {
+   "cell_h": 60,
+   "cell_w": 85,
+   "file": "enemies/rock_crab/walk.png",
+   "frames": 4,
+   "h": 60,
+   "w": 340
+  }
+ },
+ "enemies/ruin_guardian": {
+  "attack": {
+   "cell_h": 102,
+   "cell_w": 91,
+   "file": "enemies/ruin_guardian/attack.png",
+   "frames": 4,
+   "h": 102,
+   "w": 364
+  },
+  "die": {
+   "cell_h": 77,
+   "cell_w": 90,
+   "file": "enemies/ruin_guardian/die.png",
+   "frames": 4,
+   "h": 77,
+   "w": 360
+  },
+  "hurt": {
+   "cell_h": 96,
+   "cell_w": 83,
+   "file": "enemies/ruin_guardian/hurt.png",
+   "frames": 2,
+   "h": 96,
+   "w": 166
+  },
+  "idle": {
+   "cell_h": 99,
+   "cell_w": 85,
+   "file": "enemies/ruin_guardian/idle.png",
+   "frames": 2,
+   "h": 99,
+   "w": 170
+  },
+  "walk": {
+   "cell_h": 94,
+   "cell_w": 81,
+   "file": "enemies/ruin_guardian/walk.png",
+   "frames": 4,
+   "h": 94,
+   "w": 324
+  }
+ },
+ "enemies/ruin_warden": {
+  "attack": {
+   "cell_h": 209,
+   "cell_w": 186,
+   "file": "enemies/ruin_warden/attack.png",
+   "frames": 2,
+   "h": 209,
+   "w": 372
+  },
+  "die": {
+   "cell_h": 137,
+   "cell_w": 191,
+   "file": "enemies/ruin_warden/die.png",
+   "frames": 1,
+   "h": 137,
+   "w": 191
+  },
+  "hurt": {
+   "cell_h": 208,
+   "cell_w": 168,
+   "file": "enemies/ruin_warden/hurt.png",
+   "frames": 1,
+   "h": 208,
+   "w": 168
+  },
+  "idle": {
+   "cell_h": 214,
+   "cell_w": 165,
+   "file": "enemies/ruin_warden/idle.png",
+   "frames": 2,
+   "h": 214,
+   "w": 330
+  },
+  "walk": {
+   "cell_h": 209,
+   "cell_w": 155,
+   "file": "enemies/ruin_warden/walk.png",
+   "frames": 2,
+   "h": 209,
+   "w": 310
   }
  },
  "enemies/shard": {
@@ -13568,6 +14030,46 @@
    "h": 13,
    "w": 186
   },
+  "boss_frost_burst": {
+   "file": "fx/boss_frost_burst.png",
+   "h": 166,
+   "w": 171
+  },
+  "boss_mud_splash": {
+   "file": "fx/boss_mud_splash.png",
+   "h": 149,
+   "w": 168
+  },
+  "boss_poison_cloud": {
+   "file": "fx/boss_poison_cloud.png",
+   "h": 150,
+   "w": 169
+  },
+  "boss_rock_shards": {
+   "file": "fx/boss_rock_shards.png",
+   "h": 149,
+   "w": 166
+  },
+  "boss_rune_blast": {
+   "file": "fx/boss_rune_blast.png",
+   "h": 174,
+   "w": 172
+  },
+  "boss_serpent_splash": {
+   "file": "fx/boss_serpent_splash.png",
+   "h": 163,
+   "w": 168
+  },
+  "boss_shockwave": {
+   "file": "fx/boss_shockwave.png",
+   "h": 143,
+   "w": 180
+  },
+  "boss_victory_burst": {
+   "file": "fx/boss_victory_burst.png",
+   "h": 157,
+   "w": 170
+  },
   "chimney_smoke": {
    "cell_h": 24,
    "cell_w": 40,
@@ -14364,6 +14866,861 @@
    "frames": 6,
    "h": 64,
    "w": 384
+  },
+  "wx_00": {
+   "file": "fx/wx_00.png",
+   "h": 136,
+   "w": 755
+  },
+  "wx_01": {
+   "file": "fx/wx_01.png",
+   "h": 136,
+   "w": 755
+  },
+  "wx_02": {
+   "file": "fx/wx_02.png",
+   "h": 93,
+   "w": 746
+  },
+  "wx_03": {
+   "file": "fx/wx_03.png",
+   "h": 30,
+   "w": 46
+  },
+  "wx_04": {
+   "file": "fx/wx_04.png",
+   "h": 33,
+   "w": 38
+  },
+  "wx_05": {
+   "file": "fx/wx_05.png",
+   "h": 31,
+   "w": 42
+  },
+  "wx_06": {
+   "file": "fx/wx_06.png",
+   "h": 66,
+   "w": 76
+  },
+  "wx_07": {
+   "file": "fx/wx_07.png",
+   "h": 30,
+   "w": 35
+  },
+  "wx_08": {
+   "file": "fx/wx_08.png",
+   "h": 33,
+   "w": 43
+  },
+  "wx_09": {
+   "file": "fx/wx_09.png",
+   "h": 35,
+   "w": 48
+  },
+  "wx_10": {
+   "file": "fx/wx_10.png",
+   "h": 32,
+   "w": 41
+  },
+  "wx_100": {
+   "file": "fx/wx_100.png",
+   "h": 41,
+   "w": 49
+  },
+  "wx_101": {
+   "file": "fx/wx_101.png",
+   "h": 41,
+   "w": 52
+  },
+  "wx_102": {
+   "file": "fx/wx_102.png",
+   "h": 36,
+   "w": 33
+  },
+  "wx_103": {
+   "file": "fx/wx_103.png",
+   "h": 40,
+   "w": 31
+  },
+  "wx_104": {
+   "file": "fx/wx_104.png",
+   "h": 26,
+   "w": 38
+  },
+  "wx_105": {
+   "file": "fx/wx_105.png",
+   "h": 24,
+   "w": 34
+  },
+  "wx_106": {
+   "file": "fx/wx_106.png",
+   "h": 51,
+   "w": 50
+  },
+  "wx_107": {
+   "file": "fx/wx_107.png",
+   "h": 29,
+   "w": 29
+  },
+  "wx_108": {
+   "file": "fx/wx_108.png",
+   "h": 34,
+   "w": 29
+  },
+  "wx_109": {
+   "file": "fx/wx_109.png",
+   "h": 32,
+   "w": 36
+  },
+  "wx_11": {
+   "file": "fx/wx_11.png",
+   "h": 37,
+   "w": 38
+  },
+  "wx_110": {
+   "file": "fx/wx_110.png",
+   "h": 40,
+   "w": 39
+  },
+  "wx_111": {
+   "file": "fx/wx_111.png",
+   "h": 41,
+   "w": 28
+  },
+  "wx_112": {
+   "file": "fx/wx_112.png",
+   "h": 38,
+   "w": 41
+  },
+  "wx_113": {
+   "file": "fx/wx_113.png",
+   "h": 53,
+   "w": 70
+  },
+  "wx_114": {
+   "file": "fx/wx_114.png",
+   "h": 34,
+   "w": 42
+  },
+  "wx_115": {
+   "file": "fx/wx_115.png",
+   "h": 28,
+   "w": 34
+  },
+  "wx_116": {
+   "file": "fx/wx_116.png",
+   "h": 65,
+   "w": 70
+  },
+  "wx_117": {
+   "file": "fx/wx_117.png",
+   "h": 37,
+   "w": 36
+  },
+  "wx_118": {
+   "file": "fx/wx_118.png",
+   "h": 37,
+   "w": 27
+  },
+  "wx_119": {
+   "file": "fx/wx_119.png",
+   "h": 52,
+   "w": 49
+  },
+  "wx_12": {
+   "file": "fx/wx_12.png",
+   "h": 38,
+   "w": 43
+  },
+  "wx_120": {
+   "file": "fx/wx_120.png",
+   "h": 32,
+   "w": 33
+  },
+  "wx_121": {
+   "file": "fx/wx_121.png",
+   "h": 34,
+   "w": 40
+  },
+  "wx_122": {
+   "file": "fx/wx_122.png",
+   "h": 39,
+   "w": 32
+  },
+  "wx_123": {
+   "file": "fx/wx_123.png",
+   "h": 77,
+   "w": 378
+  },
+  "wx_124": {
+   "file": "fx/wx_124.png",
+   "h": 47,
+   "w": 76
+  },
+  "wx_125": {
+   "file": "fx/wx_125.png",
+   "h": 29,
+   "w": 35
+  },
+  "wx_126": {
+   "file": "fx/wx_126.png",
+   "h": 48,
+   "w": 59
+  },
+  "wx_127": {
+   "file": "fx/wx_127.png",
+   "h": 43,
+   "w": 65
+  },
+  "wx_128": {
+   "file": "fx/wx_128.png",
+   "h": 33,
+   "w": 36
+  },
+  "wx_129": {
+   "file": "fx/wx_129.png",
+   "h": 48,
+   "w": 37
+  },
+  "wx_13": {
+   "file": "fx/wx_13.png",
+   "h": 61,
+   "w": 96
+  },
+  "wx_130": {
+   "file": "fx/wx_130.png",
+   "h": 42,
+   "w": 39
+  },
+  "wx_131": {
+   "file": "fx/wx_131.png",
+   "h": 45,
+   "w": 46
+  },
+  "wx_132": {
+   "file": "fx/wx_132.png",
+   "h": 42,
+   "w": 53
+  },
+  "wx_133": {
+   "file": "fx/wx_133.png",
+   "h": 42,
+   "w": 48
+  },
+  "wx_134": {
+   "file": "fx/wx_134.png",
+   "h": 28,
+   "w": 34
+  },
+  "wx_135": {
+   "file": "fx/wx_135.png",
+   "h": 43,
+   "w": 48
+  },
+  "wx_136": {
+   "file": "fx/wx_136.png",
+   "h": 45,
+   "w": 47
+  },
+  "wx_137": {
+   "file": "fx/wx_137.png",
+   "h": 67,
+   "w": 243
+  },
+  "wx_138": {
+   "file": "fx/wx_138.png",
+   "h": 80,
+   "w": 257
+  },
+  "wx_139": {
+   "file": "fx/wx_139.png",
+   "h": 84,
+   "w": 244
+  },
+  "wx_14": {
+   "file": "fx/wx_14.png",
+   "h": 36,
+   "w": 44
+  },
+  "wx_140": {
+   "file": "fx/wx_140.png",
+   "h": 84,
+   "w": 255
+  },
+  "wx_141": {
+   "file": "fx/wx_141.png",
+   "h": 83,
+   "w": 267
+  },
+  "wx_142": {
+   "file": "fx/wx_142.png",
+   "h": 79,
+   "w": 225
+  },
+  "wx_143": {
+   "file": "fx/wx_143.png",
+   "h": 77,
+   "w": 137
+  },
+  "wx_144": {
+   "file": "fx/wx_144.png",
+   "h": 77,
+   "w": 145
+  },
+  "wx_145": {
+   "file": "fx/wx_145.png",
+   "h": 79,
+   "w": 141
+  },
+  "wx_146": {
+   "file": "fx/wx_146.png",
+   "h": 86,
+   "w": 150
+  },
+  "wx_147": {
+   "file": "fx/wx_147.png",
+   "h": 44,
+   "w": 72
+  },
+  "wx_148": {
+   "file": "fx/wx_148.png",
+   "h": 57,
+   "w": 103
+  },
+  "wx_149": {
+   "file": "fx/wx_149.png",
+   "h": 63,
+   "w": 118
+  },
+  "wx_15": {
+   "file": "fx/wx_15.png",
+   "h": 42,
+   "w": 47
+  },
+  "wx_150": {
+   "file": "fx/wx_150.png",
+   "h": 80,
+   "w": 156
+  },
+  "wx_151": {
+   "file": "fx/wx_151.png",
+   "h": 93,
+   "w": 177
+  },
+  "wx_152": {
+   "file": "fx/wx_152.png",
+   "h": 103,
+   "w": 220
+  },
+  "wx_153": {
+   "file": "fx/wx_153.png",
+   "h": 54,
+   "w": 129
+  },
+  "wx_154": {
+   "file": "fx/wx_154.png",
+   "h": 76,
+   "w": 151
+  },
+  "wx_155": {
+   "file": "fx/wx_155.png",
+   "h": 94,
+   "w": 166
+  },
+  "wx_156": {
+   "file": "fx/wx_156.png",
+   "h": 168,
+   "w": 535
+  },
+  "wx_157": {
+   "file": "fx/wx_157.png",
+   "h": 141,
+   "w": 201
+  },
+  "wx_158": {
+   "file": "fx/wx_158.png",
+   "h": 32,
+   "w": 30
+  },
+  "wx_159": {
+   "file": "fx/wx_159.png",
+   "h": 103,
+   "w": 169
+  },
+  "wx_16": {
+   "file": "fx/wx_16.png",
+   "h": 29,
+   "w": 36
+  },
+  "wx_160": {
+   "file": "fx/wx_160.png",
+   "h": 84,
+   "w": 150
+  },
+  "wx_161": {
+   "file": "fx/wx_161.png",
+   "h": 99,
+   "w": 200
+  },
+  "wx_162": {
+   "file": "fx/wx_162.png",
+   "h": 114,
+   "w": 315
+  },
+  "wx_163": {
+   "file": "fx/wx_163.png",
+   "h": 48,
+   "w": 81
+  },
+  "wx_164": {
+   "file": "fx/wx_164.png",
+   "h": 59,
+   "w": 97
+  },
+  "wx_165": {
+   "file": "fx/wx_165.png",
+   "h": 69,
+   "w": 126
+  },
+  "wx_166": {
+   "file": "fx/wx_166.png",
+   "h": 73,
+   "w": 104
+  },
+  "wx_167": {
+   "file": "fx/wx_167.png",
+   "h": 81,
+   "w": 105
+  },
+  "wx_168": {
+   "file": "fx/wx_168.png",
+   "h": 84,
+   "w": 108
+  },
+  "wx_169": {
+   "file": "fx/wx_169.png",
+   "h": 89,
+   "w": 116
+  },
+  "wx_17": {
+   "file": "fx/wx_17.png",
+   "h": 38,
+   "w": 46
+  },
+  "wx_170": {
+   "file": "fx/wx_170.png",
+   "h": 94,
+   "w": 120
+  },
+  "wx_18": {
+   "file": "fx/wx_18.png",
+   "h": 34,
+   "w": 41
+  },
+  "wx_19": {
+   "file": "fx/wx_19.png",
+   "h": 33,
+   "w": 36
+  },
+  "wx_20": {
+   "file": "fx/wx_20.png",
+   "h": 31,
+   "w": 45
+  },
+  "wx_21": {
+   "file": "fx/wx_21.png",
+   "h": 58,
+   "w": 52
+  },
+  "wx_22": {
+   "file": "fx/wx_22.png",
+   "h": 36,
+   "w": 46
+  },
+  "wx_23": {
+   "file": "fx/wx_23.png",
+   "h": 24,
+   "w": 35
+  },
+  "wx_24": {
+   "file": "fx/wx_24.png",
+   "h": 54,
+   "w": 54
+  },
+  "wx_25": {
+   "file": "fx/wx_25.png",
+   "h": 37,
+   "w": 53
+  },
+  "wx_26": {
+   "file": "fx/wx_26.png",
+   "h": 33,
+   "w": 39
+  },
+  "wx_27": {
+   "file": "fx/wx_27.png",
+   "h": 29,
+   "w": 33
+  },
+  "wx_28": {
+   "file": "fx/wx_28.png",
+   "h": 33,
+   "w": 32
+  },
+  "wx_29": {
+   "file": "fx/wx_29.png",
+   "h": 34,
+   "w": 41
+  },
+  "wx_30": {
+   "file": "fx/wx_30.png",
+   "h": 26,
+   "w": 33
+  },
+  "wx_31": {
+   "file": "fx/wx_31.png",
+   "h": 37,
+   "w": 34
+  },
+  "wx_32": {
+   "file": "fx/wx_32.png",
+   "h": 34,
+   "w": 42
+  },
+  "wx_33": {
+   "file": "fx/wx_33.png",
+   "h": 42,
+   "w": 66
+  },
+  "wx_34": {
+   "file": "fx/wx_34.png",
+   "h": 28,
+   "w": 39
+  },
+  "wx_35": {
+   "file": "fx/wx_35.png",
+   "h": 26,
+   "w": 35
+  },
+  "wx_36": {
+   "file": "fx/wx_36.png",
+   "h": 47,
+   "w": 54
+  },
+  "wx_37": {
+   "file": "fx/wx_37.png",
+   "h": 43,
+   "w": 33
+  },
+  "wx_38": {
+   "file": "fx/wx_38.png",
+   "h": 121,
+   "w": 753
+  },
+  "wx_39": {
+   "file": "fx/wx_39.png",
+   "h": 122,
+   "w": 754
+  },
+  "wx_40": {
+   "file": "fx/wx_40.png",
+   "h": 31,
+   "w": 33
+  },
+  "wx_41": {
+   "file": "fx/wx_41.png",
+   "h": 30,
+   "w": 29
+  },
+  "wx_42": {
+   "file": "fx/wx_42.png",
+   "h": 38,
+   "w": 39
+  },
+  "wx_43": {
+   "file": "fx/wx_43.png",
+   "h": 45,
+   "w": 46
+  },
+  "wx_44": {
+   "file": "fx/wx_44.png",
+   "h": 41,
+   "w": 42
+  },
+  "wx_45": {
+   "file": "fx/wx_45.png",
+   "h": 26,
+   "w": 35
+  },
+  "wx_46": {
+   "file": "fx/wx_46.png",
+   "h": 36,
+   "w": 36
+  },
+  "wx_47": {
+   "file": "fx/wx_47.png",
+   "h": 35,
+   "w": 36
+  },
+  "wx_48": {
+   "file": "fx/wx_48.png",
+   "h": 37,
+   "w": 44
+  },
+  "wx_49": {
+   "file": "fx/wx_49.png",
+   "h": 26,
+   "w": 32
+  },
+  "wx_50": {
+   "file": "fx/wx_50.png",
+   "h": 28,
+   "w": 28
+  },
+  "wx_51": {
+   "file": "fx/wx_51.png",
+   "h": 32,
+   "w": 32
+  },
+  "wx_52": {
+   "file": "fx/wx_52.png",
+   "h": 32,
+   "w": 39
+  },
+  "wx_53": {
+   "file": "fx/wx_53.png",
+   "h": 26,
+   "w": 33
+  },
+  "wx_54": {
+   "file": "fx/wx_54.png",
+   "h": 28,
+   "w": 34
+  },
+  "wx_55": {
+   "file": "fx/wx_55.png",
+   "h": 42,
+   "w": 43
+  },
+  "wx_56": {
+   "file": "fx/wx_56.png",
+   "h": 37,
+   "w": 37
+  },
+  "wx_57": {
+   "file": "fx/wx_57.png",
+   "h": 30,
+   "w": 35
+  },
+  "wx_58": {
+   "file": "fx/wx_58.png",
+   "h": 29,
+   "w": 33
+  },
+  "wx_59": {
+   "file": "fx/wx_59.png",
+   "h": 31,
+   "w": 32
+  },
+  "wx_60": {
+   "file": "fx/wx_60.png",
+   "h": 37,
+   "w": 39
+  },
+  "wx_61": {
+   "file": "fx/wx_61.png",
+   "h": 30,
+   "w": 36
+  },
+  "wx_62": {
+   "file": "fx/wx_62.png",
+   "h": 29,
+   "w": 29
+  },
+  "wx_63": {
+   "file": "fx/wx_63.png",
+   "h": 35,
+   "w": 36
+  },
+  "wx_64": {
+   "file": "fx/wx_64.png",
+   "h": 34,
+   "w": 35
+  },
+  "wx_65": {
+   "file": "fx/wx_65.png",
+   "h": 60,
+   "w": 86
+  },
+  "wx_66": {
+   "file": "fx/wx_66.png",
+   "h": 59,
+   "w": 62
+  },
+  "wx_67": {
+   "file": "fx/wx_67.png",
+   "h": 29,
+   "w": 29
+  },
+  "wx_68": {
+   "file": "fx/wx_68.png",
+   "h": 27,
+   "w": 34
+  },
+  "wx_69": {
+   "file": "fx/wx_69.png",
+   "h": 33,
+   "w": 32
+  },
+  "wx_70": {
+   "file": "fx/wx_70.png",
+   "h": 28,
+   "w": 36
+  },
+  "wx_71": {
+   "file": "fx/wx_71.png",
+   "h": 27,
+   "w": 34
+  },
+  "wx_72": {
+   "file": "fx/wx_72.png",
+   "h": 30,
+   "w": 30
+  },
+  "wx_73": {
+   "file": "fx/wx_73.png",
+   "h": 36,
+   "w": 35
+  },
+  "wx_74": {
+   "file": "fx/wx_74.png",
+   "h": 42,
+   "w": 43
+  },
+  "wx_75": {
+   "file": "fx/wx_75.png",
+   "h": 36,
+   "w": 43
+  },
+  "wx_76": {
+   "file": "fx/wx_76.png",
+   "h": 31,
+   "w": 32
+  },
+  "wx_77": {
+   "file": "fx/wx_77.png",
+   "h": 28,
+   "w": 29
+  },
+  "wx_78": {
+   "file": "fx/wx_78.png",
+   "h": 33,
+   "w": 33
+  },
+  "wx_79": {
+   "file": "fx/wx_79.png",
+   "h": 26,
+   "w": 34
+  },
+  "wx_80": {
+   "file": "fx/wx_80.png",
+   "h": 29,
+   "w": 38
+  },
+  "wx_81": {
+   "file": "fx/wx_81.png",
+   "h": 89,
+   "w": 376
+  },
+  "wx_82": {
+   "file": "fx/wx_82.png",
+   "h": 38,
+   "w": 43
+  },
+  "wx_83": {
+   "file": "fx/wx_83.png",
+   "h": 26,
+   "w": 34
+  },
+  "wx_84": {
+   "file": "fx/wx_84.png",
+   "h": 30,
+   "w": 36
+  },
+  "wx_85": {
+   "file": "fx/wx_85.png",
+   "h": 50,
+   "w": 41
+  },
+  "wx_86": {
+   "file": "fx/wx_86.png",
+   "h": 29,
+   "w": 35
+  },
+  "wx_87": {
+   "file": "fx/wx_87.png",
+   "h": 39,
+   "w": 43
+  },
+  "wx_88": {
+   "file": "fx/wx_88.png",
+   "h": 31,
+   "w": 34
+  },
+  "wx_89": {
+   "file": "fx/wx_89.png",
+   "h": 31,
+   "w": 37
+  },
+  "wx_90": {
+   "file": "fx/wx_90.png",
+   "h": 28,
+   "w": 32
+  },
+  "wx_91": {
+   "file": "fx/wx_91.png",
+   "h": 29,
+   "w": 37
+  },
+  "wx_92": {
+   "file": "fx/wx_92.png",
+   "h": 55,
+   "w": 128
+  },
+  "wx_93": {
+   "file": "fx/wx_93.png",
+   "h": 26,
+   "w": 32
+  },
+  "wx_94": {
+   "file": "fx/wx_94.png",
+   "h": 31,
+   "w": 37
+  },
+  "wx_95": {
+   "file": "fx/wx_95.png",
+   "h": 30,
+   "w": 34
+  },
+  "wx_96": {
+   "file": "fx/wx_96.png",
+   "h": 50,
+   "w": 57
+  },
+  "wx_97": {
+   "file": "fx/wx_97.png",
+   "h": 42,
+   "w": 29
+  },
+  "wx_98": {
+   "file": "fx/wx_98.png",
+   "h": 69,
+   "w": 96
+  },
+  "wx_99": {
+   "file": "fx/wx_99.png",
+   "h": 60,
+   "w": 55
   }
  },
  "hair": {
@@ -19423,6 +20780,11 @@
    "h": 32,
    "w": 26
   },
+  "ancient_urn": {
+   "file": "items/ancient_urn.png",
+   "h": 32,
+   "w": 30
+  },
   "angel_fish": {
    "file": "items/angel_fish.png",
    "h": 32,
@@ -19448,10 +20810,35 @@
    "h": 32,
    "w": 28
   },
+  "apple_cider": {
+   "file": "items/apple_cider.png",
+   "h": 32,
+   "w": 18
+  },
   "apple_pie": {
    "file": "items/apple_pie.png",
    "h": 26,
    "w": 32
+  },
+  "apple_q1": {
+   "file": "items/apple_q1.png",
+   "h": 27,
+   "w": 32
+  },
+  "apple_q2": {
+   "file": "items/apple_q2.png",
+   "h": 30,
+   "w": 32
+  },
+  "apple_q3": {
+   "file": "items/apple_q3.png",
+   "h": 31,
+   "w": 32
+  },
+  "apple_q4": {
+   "file": "items/apple_q4.png",
+   "h": 32,
+   "w": 26
   },
   "apple_seed": {
    "file": "items/apple_seed.png",
@@ -19477,6 +20864,11 @@
    "file": "items/armor_gold.png",
    "h": 32,
    "w": 32
+  },
+  "arrow": {
+   "file": "items/arrow.png",
+   "h": 32,
+   "w": 31
   },
   "artichoke": {
    "file": "items/artichoke.png",
@@ -19602,6 +20994,11 @@
    "file": "items/axe_wood.png",
    "h": 32,
    "w": 17
+  },
+  "baby_rattle": {
+   "file": "items/baby_rattle.png",
+   "h": 32,
+   "w": 28
   },
   "backpack": {
    "file": "items/backpack.png",
@@ -19973,6 +21370,11 @@
    "h": 28,
    "w": 32
   },
+  "bog_iron": {
+   "file": "items/bog_iron.png",
+   "h": 32,
+   "w": 32
+  },
   "boiled_egg": {
    "file": "items/boiled_egg.png",
    "h": 24,
@@ -19990,7 +21392,7 @@
   },
   "bone": {
    "file": "items/bone.png",
-   "h": 29,
+   "h": 27,
    "w": 32
   },
   "bone_flute": {
@@ -20002,6 +21404,11 @@
    "file": "items/bone_toy.png",
    "h": 23,
    "w": 32
+  },
+  "book": {
+   "file": "items/book.png",
+   "h": 32,
+   "w": 29
   },
   "boot": {
    "file": "items/boot.png",
@@ -20022,6 +21429,11 @@
    "file": "items/bottled_wind.png",
    "h": 32,
    "w": 29
+  },
+  "bouquet": {
+   "file": "items/bouquet.png",
+   "h": 32,
+   "w": 32
   },
   "bouquet_blue": {
    "file": "items/bouquet_blue.png",
@@ -20158,6 +21570,11 @@
    "h": 27,
    "w": 32
   },
+  "bucket": {
+   "file": "items/bucket.png",
+   "h": 32,
+   "w": 24
+  },
   "bumblebee_queen": {
    "file": "items/bumblebee_queen.png",
    "h": 32,
@@ -20238,6 +21655,11 @@
    "h": 28,
    "w": 32
   },
+  "cake": {
+   "file": "items/cake.png",
+   "h": 32,
+   "w": 29
+  },
   "calico_kale": {
    "file": "items/calico_kale.png",
    "h": 32,
@@ -20255,43 +21677,43 @@
   },
   "can_copper": {
    "file": "items/can_copper.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "can_crystal": {
    "file": "items/can_crystal.png",
-   "h": 25,
+   "h": 32,
    "w": 32
   },
   "can_gold": {
    "file": "items/can_gold.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "can_iron": {
    "file": "items/can_iron.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "can_moon": {
    "file": "items/can_moon.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "can_silver": {
    "file": "items/can_silver.png",
-   "h": 25,
+   "h": 30,
    "w": 32
   },
   "can_steel": {
    "file": "items/can_steel.png",
-   "h": 25,
+   "h": 30,
    "w": 32
   },
   "can_wood": {
    "file": "items/can_wood.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "candle": {
    "file": "items/candle.png",
@@ -20302,6 +21724,11 @@
    "file": "items/candle_tall.png",
    "h": 32,
    "w": 31
+  },
+  "candy": {
+   "file": "items/candy.png",
+   "h": 31,
+   "w": 32
   },
   "cantaloupe": {
    "file": "items/cantaloupe.png",
@@ -20665,7 +22092,7 @@
   },
   "cheese": {
    "file": "items/cheese.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "cheese_aged": {
@@ -20733,6 +22160,11 @@
    "h": 27,
    "w": 32
   },
+  "chisel": {
+   "file": "items/chisel.png",
+   "h": 32,
+   "w": 30
+  },
   "chives": {
    "file": "items/chives.png",
    "h": 32,
@@ -20775,8 +22207,8 @@
   },
   "cider": {
    "file": "items/cider.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 20
   },
   "cig_tin": {
    "file": "items/cig_tin.png",
@@ -20955,8 +22387,8 @@
   },
   "coffee": {
    "file": "items/coffee.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "coffee_bean": {
    "file": "items/coffee_bean.png",
@@ -21021,7 +22453,7 @@
   "compass": {
    "file": "items/compass.png",
    "h": 32,
-   "w": 28
+   "w": 18
   },
   "contract": {
    "file": "items/contract.png",
@@ -21138,15 +22570,25 @@
    "h": 32,
    "w": 32
   },
+  "corn_bread": {
+   "file": "items/corn_bread.png",
+   "h": 30,
+   "w": 32
+  },
   "corn_seed": {
    "file": "items/corn_seed.png",
    "h": 31,
    "w": 32
   },
+  "cornmeal": {
+   "file": "items/cornmeal.png",
+   "h": 29,
+   "w": 32
+  },
   "cotton_seed": {
    "file": "items/cotton_seed.png",
    "h": 32,
-   "w": 29
+   "w": 26
   },
   "cowboy": {
    "file": "items/cowboy.png",
@@ -21170,8 +22612,8 @@
   },
   "cranberry_seed": {
    "file": "items/cranberry_seed.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "crayfish": {
    "file": "items/crayfish.png",
@@ -21938,6 +23380,16 @@
    "h": 32,
    "w": 29
   },
+  "dynamite": {
+   "file": "items/dynamite.png",
+   "h": 32,
+   "w": 30
+  },
+  "eagle_feather": {
+   "file": "items/eagle_feather.png",
+   "h": 31,
+   "w": 32
+  },
   "earmuffs": {
    "file": "items/earmuffs.png",
    "h": 23,
@@ -22006,7 +23458,7 @@
   "edelweiss": {
    "file": "items/edelweiss.png",
    "h": 32,
-   "w": 32
+   "w": 31
   },
   "eel": {
    "file": "items/eel.png",
@@ -22016,7 +23468,7 @@
   "egg": {
    "file": "items/egg.png",
    "h": 32,
-   "w": 26
+   "w": 27
   },
   "egg_blue": {
    "file": "items/egg_blue.png",
@@ -22398,6 +23850,11 @@
    "h": 26,
    "w": 32
   },
+  "fish_pie": {
+   "file": "items/fish_pie.png",
+   "h": 30,
+   "w": 32
+  },
   "fish_stew": {
    "file": "items/fish_stew.png",
    "h": 27,
@@ -22530,8 +23987,8 @@
   },
   "flour": {
    "file": "items/flour.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "flower": {
    "file": "items/flower.png",
@@ -22662,6 +24119,11 @@
    "file": "items/forester_trinket_b.png",
    "h": 28,
    "w": 32
+  },
+  "fossil": {
+   "file": "items/fossil.png",
+   "h": 32,
+   "w": 31
   },
   "fossil_amber": {
    "file": "items/fossil_amber.png",
@@ -22918,6 +24380,11 @@
    "h": 22,
    "w": 32
   },
+  "ghost_pepper_seed": {
+   "file": "items/ghost_pepper_seed.png",
+   "h": 32,
+   "w": 29
+  },
   "giant_clam": {
    "file": "items/giant_clam.png",
    "h": 22,
@@ -22936,6 +24403,11 @@
   "gift_blue": {
    "file": "items/gift_blue.png",
    "h": 24,
+   "w": 32
+  },
+  "gift_box": {
+   "file": "items/gift_box.png",
+   "h": 26,
    "w": 32
   },
   "gift_gold": {
@@ -23113,6 +24585,11 @@
    "h": 24,
    "w": 32
   },
+  "glow_cap": {
+   "file": "items/glow_cap.png",
+   "h": 32,
+   "w": 31
+  },
   "glow_eel": {
    "file": "items/glow_eel.png",
    "h": 24,
@@ -23160,6 +24637,16 @@
   },
   "gnat": {
    "file": "items/gnat.png",
+   "h": 32,
+   "w": 29
+  },
+  "goat_horn": {
+   "file": "items/goat_horn.png",
+   "h": 31,
+   "w": 32
+  },
+  "goat_milk": {
+   "file": "items/goat_milk.png",
    "h": 32,
    "w": 29
   },
@@ -23370,8 +24857,8 @@
   },
   "grape_seed": {
    "file": "items/grape_seed.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "grapes": {
    "file": "items/grapes.png",
@@ -23583,10 +25070,20 @@
    "h": 28,
    "w": 32
   },
+  "hardwood": {
+   "file": "items/hardwood.png",
+   "h": 28,
+   "w": 32
+  },
   "harvest_potion": {
    "file": "items/harvest_potion.png",
    "h": 28,
    "w": 48
+  },
+  "hay": {
+   "file": "items/hay.png",
+   "h": 32,
+   "w": 32
   },
   "hay_bale": {
    "file": "items/hay_bale.png",
@@ -23607,6 +25104,11 @@
    "file": "items/heart_crystal.png",
    "h": 27,
    "w": 32
+  },
+  "heart_fruit": {
+   "file": "items/heart_fruit.png",
+   "h": 32,
+   "w": 25
   },
   "heart_ladybug": {
    "file": "items/heart_ladybug.png",
@@ -23748,6 +25250,11 @@
    "h": 32,
    "w": 29
   },
+  "honeycomb": {
+   "file": "items/honeycomb.png",
+   "h": 32,
+   "w": 31
+  },
   "hood": {
    "file": "items/hood.png",
    "h": 31,
@@ -23765,8 +25272,8 @@
   },
   "hops_seed": {
    "file": "items/hops_seed.png",
-   "h": 24,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "hornet": {
    "file": "items/hornet.png",
@@ -23995,8 +25502,8 @@
   },
   "jam": {
    "file": "items/jam.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "jam_apricot": {
    "file": "items/jam_apricot.png",
@@ -24052,6 +25559,11 @@
    "file": "items/jungle_idol.png",
    "h": 32,
    "w": 27
+  },
+  "juniper_tonic": {
+   "file": "items/juniper_tonic.png",
+   "h": 32,
+   "w": 21
   },
   "kale": {
    "file": "items/kale.png",
@@ -24135,8 +25647,8 @@
   },
   "kite": {
    "file": "items/kite.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 26
   },
   "kiwi": {
    "file": "items/kiwi.png",
@@ -24193,10 +25705,20 @@
    "h": 23,
    "w": 32
   },
+  "lamp_oil": {
+   "file": "items/lamp_oil.png",
+   "h": 32,
+   "w": 20
+  },
   "lamprey": {
    "file": "items/lamprey.png",
    "h": 32,
    "w": 29
+  },
+  "lantern": {
+   "file": "items/lantern.png",
+   "h": 31,
+   "w": 32
   },
   "lantern_black": {
    "file": "items/lantern_black.png",
@@ -24545,8 +26067,8 @@
   },
   "lens": {
    "file": "items/lens.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "letter": {
    "file": "items/letter.png",
@@ -24730,8 +26252,13 @@
   },
   "lotus_seed": {
    "file": "items/lotus_seed.png",
-   "h": 24,
-   "w": 32
+   "h": 32,
+   "w": 31
+  },
+  "love_letter": {
+   "file": "items/love_letter.png",
+   "h": 32,
+   "w": 25
   },
   "luck_potion": {
    "file": "items/luck_potion.png",
@@ -24818,6 +26345,16 @@
    "h": 32,
    "w": 29
   },
+  "mana_berry": {
+   "file": "items/mana_berry.png",
+   "h": 29,
+   "w": 32
+  },
+  "mana_potion": {
+   "file": "items/mana_potion.png",
+   "h": 32,
+   "w": 24
+  },
   "mango": {
    "file": "items/mango.png",
    "h": 32,
@@ -24858,6 +26395,11 @@
    "h": 30,
    "w": 32
   },
+  "map_scrap": {
+   "file": "items/map_scrap.png",
+   "h": 32,
+   "w": 32
+  },
   "marigold": {
    "file": "items/marigold.png",
    "h": 32,
@@ -24875,8 +26417,13 @@
   },
   "marmalade": {
    "file": "items/marmalade.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 31
+  },
+  "marsh_gas": {
+   "file": "items/marsh_gas.png",
+   "h": 32,
+   "w": 23
   },
   "mask": {
    "file": "items/mask.png",
@@ -24921,6 +26468,11 @@
   "meadow_strawberry": {
    "file": "items/meadow_strawberry.png",
    "h": 31,
+   "w": 32
+  },
+  "meat": {
+   "file": "items/meat.png",
+   "h": 28,
    "w": 32
   },
   "meat_pie": {
@@ -25096,7 +26648,7 @@
   "milk": {
    "file": "items/milk.png",
    "h": 32,
-   "w": 27
+   "w": 25
   },
   "milk_pail": {
    "file": "items/milk_pail.png",
@@ -25436,7 +26988,7 @@
   "moon_shard": {
    "file": "items/moon_shard.png",
    "h": 32,
-   "w": 27
+   "w": 28
   },
   "moon_shield": {
    "file": "items/moon_shield.png",
@@ -25668,6 +27220,11 @@
    "h": 24,
    "w": 32
   },
+  "mushroom_stew": {
+   "file": "items/mushroom_stew.png",
+   "h": 28,
+   "w": 32
+  },
   "music_box": {
    "file": "items/music_box.png",
    "h": 32,
@@ -25823,6 +27380,11 @@
    "h": 28,
    "w": 32
   },
+  "net": {
+   "file": "items/net.png",
+   "h": 32,
+   "w": 27
+  },
   "net_copper": {
    "file": "items/net_copper.png",
    "h": 26,
@@ -25963,6 +27525,11 @@
    "h": 32,
    "w": 30
   },
+  "old_coin": {
+   "file": "items/old_coin.png",
+   "h": 26,
+   "w": 32
+  },
   "old_key": {
    "file": "items/old_key.png",
    "h": 32,
@@ -26018,6 +27585,11 @@
    "h": 32,
    "w": 32
   },
+  "otter_whisker": {
+   "file": "items/otter_whisker.png",
+   "h": 23,
+   "w": 32
+  },
   "overalls": {
    "file": "items/overalls.png",
    "h": 28,
@@ -26042,6 +27614,11 @@
    "file": "items/pack_small.png",
    "h": 32,
    "w": 32
+  },
+  "paint": {
+   "file": "items/paint.png",
+   "h": 32,
+   "w": 27
   },
   "painting_abstract": {
    "file": "items/painting_abstract.png",
@@ -26173,6 +27750,11 @@
    "h": 32,
    "w": 32
   },
+  "peach_pie": {
+   "file": "items/peach_pie.png",
+   "h": 29,
+   "w": 32
+  },
   "peach_seed": {
    "file": "items/peach_seed.png",
    "h": 29,
@@ -26196,11 +27778,16 @@
   "pearl": {
    "file": "items/pearl.png",
    "h": 32,
-   "w": 31
+   "w": 30
   },
   "pearl_necklace": {
    "file": "items/pearl_necklace.png",
    "h": 31,
+   "w": 32
+  },
+  "pelt": {
+   "file": "items/pelt.png",
+   "h": 30,
    "w": 32
   },
   "pendant_amber": {
@@ -26638,6 +28225,11 @@
    "h": 30,
    "w": 32
   },
+  "plum_jam": {
+   "file": "items/plum_jam.png",
+   "h": 32,
+   "w": 29
+  },
   "pocket_mirror": {
    "file": "items/pocket_mirror.png",
    "h": 32,
@@ -26943,6 +28535,11 @@
    "h": 32,
    "w": 32
   },
+  "quarry_dust": {
+   "file": "items/quarry_dust.png",
+   "h": 26,
+   "w": 32
+  },
   "quartz": {
    "file": "items/quartz.png",
    "h": 32,
@@ -27033,10 +28630,30 @@
    "h": 32,
    "w": 30
   },
+  "relic_blade": {
+   "file": "items/relic_blade.png",
+   "h": 32,
+   "w": 29
+  },
+  "relic_crown": {
+   "file": "items/relic_crown.png",
+   "h": 26,
+   "w": 32
+  },
   "relic_head": {
    "file": "items/relic_head.png",
    "h": 28,
    "w": 32
+  },
+  "relic_mask": {
+   "file": "items/relic_mask.png",
+   "h": 32,
+   "w": 31
+  },
+  "relic_orb": {
+   "file": "items/relic_orb.png",
+   "h": 32,
+   "w": 24
   },
   "relish": {
    "file": "items/relish.png",
@@ -27076,7 +28693,12 @@
   "rice_seed": {
    "file": "items/rice_seed.png",
    "h": 32,
-   "w": 29
+   "w": 30
+  },
+  "ring_box": {
+   "file": "items/ring_box.png",
+   "h": 32,
+   "w": 30
   },
   "ring_bronze": {
    "file": "items/ring_bronze.png",
@@ -27263,6 +28885,11 @@
    "h": 32,
    "w": 30
   },
+  "river_pearl": {
+   "file": "items/river_pearl.png",
+   "h": 26,
+   "w": 32
+  },
   "river_rice": {
    "file": "items/river_rice.png",
    "h": 32,
@@ -27350,7 +28977,7 @@
   },
   "rope": {
    "file": "items/rope.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "rose_red": {
@@ -27391,7 +29018,7 @@
   "rune_tablet": {
    "file": "items/rune_tablet.png",
    "h": 32,
-   "w": 27
+   "w": 30
   },
   "running_shoes": {
    "file": "items/running_shoes.png",
@@ -27828,6 +29455,16 @@
    "h": 24,
    "w": 32
   },
+  "sheep_wool": {
+   "file": "items/sheep_wool.png",
+   "h": 31,
+   "w": 32
+  },
+  "shell": {
+   "file": "items/shell.png",
+   "h": 32,
+   "w": 32
+  },
   "shield_copper": {
    "file": "items/shield_copper.png",
    "h": 31,
@@ -28138,6 +29775,11 @@
    "h": 28,
    "w": 32
   },
+  "slime_goo": {
+   "file": "items/slime_goo.png",
+   "h": 27,
+   "w": 32
+  },
   "slime_king_gel": {
    "file": "items/slime_king_gel.png",
    "h": 28,
@@ -28192,6 +29834,11 @@
    "file": "items/snow_heart.png",
    "h": 27,
    "w": 32
+  },
+  "snow_pea_seed": {
+   "file": "items/snow_pea_seed.png",
+   "h": 32,
+   "w": 30
   },
   "snowflake_bug": {
    "file": "items/snowflake_bug.png",
@@ -28363,6 +30010,11 @@
    "h": 26,
    "w": 32
   },
+  "spiced_loaf": {
+   "file": "items/spiced_loaf.png",
+   "h": 32,
+   "w": 32
+  },
   "spider": {
    "file": "items/spider.png",
    "h": 32,
@@ -28418,6 +30070,11 @@
    "h": 30,
    "w": 32
   },
+  "spring_salt": {
+   "file": "items/spring_salt.png",
+   "h": 32,
+   "w": 28
+  },
   "squash": {
    "file": "items/squash.png",
    "h": 32,
@@ -28437,6 +30094,11 @@
    "file": "items/stag_beetle.png",
    "h": 32,
    "w": 28
+  },
+  "stamina_root": {
+   "file": "items/stamina_root.png",
+   "h": 32,
+   "w": 31
   },
   "star_apple": {
    "file": "items/star_apple.png",
@@ -28551,6 +30213,11 @@
   "starfish": {
    "file": "items/starfish.png",
    "h": 25,
+   "w": 32
+  },
+  "starflower": {
+   "file": "items/starflower.png",
+   "h": 32,
    "w": 32
   },
   "starflower_seed": {
@@ -28828,6 +30495,11 @@
    "h": 26,
    "w": 32
   },
+  "sugar_beet_seed": {
+   "file": "items/sugar_beet_seed.png",
+   "h": 32,
+   "w": 29
+  },
   "sugar_plum": {
    "file": "items/sugar_plum.png",
    "h": 32,
@@ -29095,7 +30767,7 @@
   },
   "tea": {
    "file": "items/tea.png",
-   "h": 26,
+   "h": 27,
    "w": 32
   },
   "tea_leaf": {
@@ -29105,13 +30777,18 @@
   },
   "tea_seed": {
    "file": "items/tea_seed.png",
-   "h": 24,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "teddy_bear": {
    "file": "items/teddy_bear.png",
    "h": 27,
    "w": 32
+  },
+  "telescope": {
+   "file": "items/telescope.png",
+   "h": 32,
+   "w": 15
   },
   "thread_blue": {
    "file": "items/thread_blue.png",
@@ -29310,8 +30987,8 @@
   },
   "torch": {
    "file": "items/torch.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 15
   },
   "tower_blueprint": {
    "file": "items/tower_blueprint.png",
@@ -29331,6 +31008,16 @@
   "tower_keycard": {
    "file": "items/tower_keycard.png",
    "h": 29,
+   "w": 32
+  },
+  "toy": {
+   "file": "items/toy.png",
+   "h": 32,
+   "w": 32
+  },
+  "trap": {
+   "file": "items/trap.png",
+   "h": 25,
    "w": 32
   },
   "trophy_bronze": {
@@ -29698,6 +31385,11 @@
    "h": 23,
    "w": 32
   },
+  "wedding_ring": {
+   "file": "items/wedding_ring.png",
+   "h": 32,
+   "w": 25
+  },
   "weevil": {
    "file": "items/weevil.png",
    "h": 32,
@@ -29770,8 +31462,8 @@
   },
   "wine": {
    "file": "items/wine.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 27
   },
   "winter_cabbage": {
    "file": "items/winter_cabbage.png",
@@ -29905,7 +31597,7 @@
   },
   "wool": {
    "file": "items/wool.png",
-   "h": 24,
+   "h": 31,
    "w": 32
   },
   "work_shirt": {
@@ -34027,6 +35719,201 @@
    "h": 48,
    "w": 59
   },
+  "dock_00": {
+   "file": "props/dock_00.png",
+   "h": 201,
+   "w": 151
+  },
+  "dock_01": {
+   "file": "props/dock_01.png",
+   "h": 202,
+   "w": 179
+  },
+  "dock_02": {
+   "file": "props/dock_02.png",
+   "h": 202,
+   "w": 247
+  },
+  "dock_03": {
+   "file": "props/dock_03.png",
+   "h": 152,
+   "w": 194
+  },
+  "dock_04": {
+   "file": "props/dock_04.png",
+   "h": 154,
+   "w": 282
+  },
+  "dock_05": {
+   "file": "props/dock_05.png",
+   "h": 159,
+   "w": 421
+  },
+  "dock_06": {
+   "file": "props/dock_06.png",
+   "h": 184,
+   "w": 154
+  },
+  "dock_07": {
+   "file": "props/dock_07.png",
+   "h": 188,
+   "w": 178
+  },
+  "dock_08": {
+   "file": "props/dock_08.png",
+   "h": 188,
+   "w": 241
+  },
+  "dock_09": {
+   "file": "props/dock_09.png",
+   "h": 147,
+   "w": 194
+  },
+  "dock_10": {
+   "file": "props/dock_10.png",
+   "h": 148,
+   "w": 284
+  },
+  "dock_11": {
+   "file": "props/dock_11.png",
+   "h": 157,
+   "w": 421
+  },
+  "dock_12": {
+   "file": "props/dock_12.png",
+   "h": 224,
+   "w": 512
+  },
+  "dock_13": {
+   "file": "props/dock_13.png",
+   "h": 150,
+   "w": 86
+  },
+  "dock_14": {
+   "file": "props/dock_14.png",
+   "h": 150,
+   "w": 118
+  },
+  "dock_15": {
+   "file": "props/dock_15.png",
+   "h": 145,
+   "w": 141
+  },
+  "dock_16": {
+   "file": "props/dock_16.png",
+   "h": 145,
+   "w": 91
+  },
+  "dock_17": {
+   "file": "props/dock_17.png",
+   "h": 139,
+   "w": 83
+  },
+  "dock_18": {
+   "file": "props/dock_18.png",
+   "h": 144,
+   "w": 153
+  },
+  "dock_19": {
+   "file": "props/dock_19.png",
+   "h": 83,
+   "w": 136
+  },
+  "dock_20": {
+   "file": "props/dock_20.png",
+   "h": 93,
+   "w": 93
+  },
+  "dock_21": {
+   "file": "props/dock_21.png",
+   "h": 81,
+   "w": 156
+  },
+  "dock_22": {
+   "file": "props/dock_22.png",
+   "h": 86,
+   "w": 162
+  },
+  "dock_23": {
+   "file": "props/dock_23.png",
+   "h": 88,
+   "w": 160
+  },
+  "dock_24": {
+   "file": "props/dock_24.png",
+   "h": 82,
+   "w": 162
+  },
+  "dock_25": {
+   "file": "props/dock_25.png",
+   "h": 86,
+   "w": 165
+  },
+  "dock_26": {
+   "file": "props/dock_26.png",
+   "h": 251,
+   "w": 456
+  },
+  "dock_27": {
+   "file": "props/dock_27.png",
+   "h": 87,
+   "w": 167
+  },
+  "dock_28": {
+   "file": "props/dock_28.png",
+   "h": 85,
+   "w": 208
+  },
+  "dock_29": {
+   "file": "props/dock_29.png",
+   "h": 83,
+   "w": 218
+  },
+  "dock_30": {
+   "file": "props/dock_30.png",
+   "h": 94,
+   "w": 385
+  },
+  "dock_31": {
+   "file": "props/dock_31.png",
+   "h": 103,
+   "w": 88
+  },
+  "dock_32": {
+   "file": "props/dock_32.png",
+   "h": 112,
+   "w": 86
+  },
+  "dock_33": {
+   "file": "props/dock_33.png",
+   "h": 103,
+   "w": 169
+  },
+  "dock_34": {
+   "file": "props/dock_34.png",
+   "h": 147,
+   "w": 103
+  },
+  "dock_35": {
+   "file": "props/dock_35.png",
+   "h": 127,
+   "w": 198
+  },
+  "dock_36": {
+   "file": "props/dock_36.png",
+   "h": 117,
+   "w": 195
+  },
+  "dock_37": {
+   "file": "props/dock_37.png",
+   "h": 161,
+   "w": 205
+  },
+  "dock_38": {
+   "file": "props/dock_38.png",
+   "h": 186,
+   "w": 383
+  },
   "dock_piece": {
    "file": "props/dock_piece.png",
    "h": 14,
@@ -35306,6 +37193,381 @@
    "h": 40,
    "w": 35
   },
+  "plaza_00": {
+   "file": "props/plaza_00.png",
+   "h": 142,
+   "w": 173
+  },
+  "plaza_01": {
+   "file": "props/plaza_01.png",
+   "h": 141,
+   "w": 165
+  },
+  "plaza_02": {
+   "file": "props/plaza_02.png",
+   "h": 142,
+   "w": 167
+  },
+  "plaza_03": {
+   "file": "props/plaza_03.png",
+   "h": 141,
+   "w": 169
+  },
+  "plaza_04": {
+   "file": "props/plaza_04.png",
+   "h": 142,
+   "w": 167
+  },
+  "plaza_05": {
+   "file": "props/plaza_05.png",
+   "h": 143,
+   "w": 164
+  },
+  "plaza_06": {
+   "file": "props/plaza_06.png",
+   "h": 134,
+   "w": 492
+  },
+  "plaza_07": {
+   "file": "props/plaza_07.png",
+   "h": 133,
+   "w": 172
+  },
+  "plaza_08": {
+   "file": "props/plaza_08.png",
+   "h": 129,
+   "w": 169
+  },
+  "plaza_09": {
+   "file": "props/plaza_09.png",
+   "h": 129,
+   "w": 168
+  },
+  "plaza_10": {
+   "file": "props/plaza_10.png",
+   "h": 129,
+   "w": 167
+  },
+  "plaza_11": {
+   "file": "props/plaza_11.png",
+   "h": 130,
+   "w": 168
+  },
+  "plaza_12": {
+   "file": "props/plaza_12.png",
+   "h": 128,
+   "w": 168
+  },
+  "plaza_13": {
+   "file": "props/plaza_13.png",
+   "h": 94,
+   "w": 176
+  },
+  "plaza_14": {
+   "file": "props/plaza_14.png",
+   "h": 96,
+   "w": 175
+  },
+  "plaza_15": {
+   "file": "props/plaza_15.png",
+   "h": 99,
+   "w": 139
+  },
+  "plaza_16": {
+   "file": "props/plaza_16.png",
+   "h": 154,
+   "w": 46
+  },
+  "plaza_17": {
+   "file": "props/plaza_17.png",
+   "h": 155,
+   "w": 48
+  },
+  "plaza_18": {
+   "file": "props/plaza_18.png",
+   "h": 155,
+   "w": 55
+  },
+  "plaza_19": {
+   "file": "props/plaza_19.png",
+   "h": 157,
+   "w": 55
+  },
+  "plaza_20": {
+   "file": "props/plaza_20.png",
+   "h": 157,
+   "w": 58
+  },
+  "plaza_21": {
+   "file": "props/plaza_21.png",
+   "h": 157,
+   "w": 58
+  },
+  "plaza_22": {
+   "file": "props/plaza_22.png",
+   "h": 110,
+   "w": 42
+  },
+  "plaza_23": {
+   "file": "props/plaza_23.png",
+   "h": 109,
+   "w": 43
+  },
+  "plaza_24": {
+   "file": "props/plaza_24.png",
+   "h": 109,
+   "w": 45
+  },
+  "plaza_25": {
+   "file": "props/plaza_25.png",
+   "h": 109,
+   "w": 47
+  },
+  "plaza_26": {
+   "file": "props/plaza_26.png",
+   "h": 108,
+   "w": 46
+  },
+  "plaza_27": {
+   "file": "props/plaza_27.png",
+   "h": 108,
+   "w": 46
+  },
+  "plaza_28": {
+   "file": "props/plaza_28.png",
+   "h": 73,
+   "w": 783
+  },
+  "plaza_29": {
+   "file": "props/plaza_29.png",
+   "h": 83,
+   "w": 103
+  },
+  "plaza_30": {
+   "file": "props/plaza_30.png",
+   "h": 82,
+   "w": 99
+  },
+  "plaza_31": {
+   "file": "props/plaza_31.png",
+   "h": 82,
+   "w": 100
+  },
+  "plaza_32": {
+   "file": "props/plaza_32.png",
+   "h": 82,
+   "w": 99
+  },
+  "plaza_33": {
+   "file": "props/plaza_33.png",
+   "h": 81,
+   "w": 98
+  },
+  "plaza_34": {
+   "file": "props/plaza_34.png",
+   "h": 82,
+   "w": 193
+  },
+  "plaza_35": {
+   "file": "props/plaza_35.png",
+   "h": 81,
+   "w": 99
+  },
+  "plaza_36": {
+   "file": "props/plaza_36.png",
+   "h": 79,
+   "w": 147
+  },
+  "plaza_37": {
+   "file": "props/plaza_37.png",
+   "h": 102,
+   "w": 102
+  },
+  "plaza_38": {
+   "file": "props/plaza_38.png",
+   "h": 101,
+   "w": 101
+  },
+  "plaza_39": {
+   "file": "props/plaza_39.png",
+   "h": 100,
+   "w": 63
+  },
+  "plaza_40": {
+   "file": "props/plaza_40.png",
+   "h": 85,
+   "w": 96
+  },
+  "plaza_41": {
+   "file": "props/plaza_41.png",
+   "h": 100,
+   "w": 76
+  },
+  "plaza_42": {
+   "file": "props/plaza_42.png",
+   "h": 120,
+   "w": 167
+  },
+  "plaza_43": {
+   "file": "props/plaza_43.png",
+   "h": 111,
+   "w": 83
+  },
+  "plaza_44": {
+   "file": "props/plaza_44.png",
+   "h": 93,
+   "w": 72
+  },
+  "plaza_45": {
+   "file": "props/plaza_45.png",
+   "h": 106,
+   "w": 95
+  },
+  "plaza_46": {
+   "file": "props/plaza_46.png",
+   "h": 106,
+   "w": 94
+  },
+  "plaza_47": {
+   "file": "props/plaza_47.png",
+   "h": 107,
+   "w": 98
+  },
+  "plaza_48": {
+   "file": "props/plaza_48.png",
+   "h": 106,
+   "w": 101
+  },
+  "plaza_49": {
+   "file": "props/plaza_49.png",
+   "h": 197,
+   "w": 146
+  },
+  "plaza_50": {
+   "file": "props/plaza_50.png",
+   "h": 195,
+   "w": 143
+  },
+  "plaza_51": {
+   "file": "props/plaza_51.png",
+   "h": 196,
+   "w": 159
+  },
+  "plaza_52": {
+   "file": "props/plaza_52.png",
+   "h": 180,
+   "w": 209
+  },
+  "plaza_53": {
+   "file": "props/plaza_53.png",
+   "h": 174,
+   "w": 91
+  },
+  "plaza_54": {
+   "file": "props/plaza_54.png",
+   "h": 196,
+   "w": 171
+  },
+  "plaza_55": {
+   "file": "props/plaza_55.png",
+   "h": 236,
+   "w": 543
+  },
+  "plaza_56": {
+   "file": "props/plaza_56.png",
+   "h": 99,
+   "w": 151
+  },
+  "plaza_57": {
+   "file": "props/plaza_57.png",
+   "h": 98,
+   "w": 150
+  },
+  "plaza_58": {
+   "file": "props/plaza_58.png",
+   "h": 98,
+   "w": 151
+  },
+  "plaza_59": {
+   "file": "props/plaza_59.png",
+   "h": 98,
+   "w": 154
+  },
+  "plaza_60": {
+   "file": "props/plaza_60.png",
+   "h": 87,
+   "w": 520
+  },
+  "plaza_61": {
+   "file": "props/plaza_61.png",
+   "h": 87,
+   "w": 360
+  },
+  "plaza_62": {
+   "file": "props/plaza_62.png",
+   "h": 114,
+   "w": 69
+  },
+  "plaza_63": {
+   "file": "props/plaza_63.png",
+   "h": 114,
+   "w": 67
+  },
+  "plaza_64": {
+   "file": "props/plaza_64.png",
+   "h": 121,
+   "w": 68
+  },
+  "plaza_65": {
+   "file": "props/plaza_65.png",
+   "h": 106,
+   "w": 198
+  },
+  "plaza_66": {
+   "file": "props/plaza_66.png",
+   "h": 101,
+   "w": 140
+  },
+  "plaza_67": {
+   "file": "props/plaza_67.png",
+   "h": 125,
+   "w": 151
+  },
+  "plaza_68": {
+   "file": "props/plaza_68.png",
+   "h": 147,
+   "w": 149
+  },
+  "plaza_69": {
+   "file": "props/plaza_69.png",
+   "h": 138,
+   "w": 142
+  },
+  "plaza_70": {
+   "file": "props/plaza_70.png",
+   "h": 139,
+   "w": 148
+  },
+  "plaza_71": {
+   "file": "props/plaza_71.png",
+   "h": 77,
+   "w": 67
+  },
+  "plaza_72": {
+   "file": "props/plaza_72.png",
+   "h": 69,
+   "w": 195
+  },
+  "plaza_73": {
+   "file": "props/plaza_73.png",
+   "h": 65,
+   "w": 61
+  },
+  "plaza_74": {
+   "file": "props/plaza_74.png",
+   "h": 130,
+   "w": 144
+  },
   "pole_a": {
    "file": "props/pole_a.png",
    "h": 54,
@@ -35353,6 +37615,1956 @@
    "file": "props/punching_bag.png",
    "h": 96,
    "w": 33
+  },
+  "r_highlands_00": {
+   "file": "props/r_highlands_00.png",
+   "h": 122,
+   "w": 172
+  },
+  "r_highlands_01": {
+   "file": "props/r_highlands_01.png",
+   "h": 164,
+   "w": 312
+  },
+  "r_highlands_02": {
+   "file": "props/r_highlands_02.png",
+   "h": 102,
+   "w": 130
+  },
+  "r_highlands_03": {
+   "file": "props/r_highlands_03.png",
+   "h": 84,
+   "w": 100
+  },
+  "r_highlands_04": {
+   "file": "props/r_highlands_04.png",
+   "h": 62,
+   "w": 144
+  },
+  "r_highlands_05": {
+   "file": "props/r_highlands_05.png",
+   "h": 64,
+   "w": 56
+  },
+  "r_highlands_06": {
+   "file": "props/r_highlands_06.png",
+   "h": 62,
+   "w": 50
+  },
+  "r_highlands_07": {
+   "file": "props/r_highlands_07.png",
+   "h": 74,
+   "w": 62
+  },
+  "r_highlands_08": {
+   "file": "props/r_highlands_08.png",
+   "h": 172,
+   "w": 328
+  },
+  "r_highlands_09": {
+   "file": "props/r_highlands_09.png",
+   "h": 106,
+   "w": 160
+  },
+  "r_highlands_10": {
+   "file": "props/r_highlands_10.png",
+   "h": 70,
+   "w": 94
+  },
+  "r_highlands_11": {
+   "file": "props/r_highlands_11.png",
+   "h": 72,
+   "w": 96
+  },
+  "r_highlands_12": {
+   "file": "props/r_highlands_12.png",
+   "h": 86,
+   "w": 90
+  },
+  "r_highlands_13": {
+   "file": "props/r_highlands_13.png",
+   "h": 72,
+   "w": 70
+  },
+  "r_highlands_14": {
+   "file": "props/r_highlands_14.png",
+   "h": 72,
+   "w": 72
+  },
+  "r_highlands_15": {
+   "file": "props/r_highlands_15.png",
+   "h": 90,
+   "w": 74
+  },
+  "r_highlands_16": {
+   "file": "props/r_highlands_16.png",
+   "h": 42,
+   "w": 16
+  },
+  "r_highlands_17": {
+   "file": "props/r_highlands_17.png",
+   "h": 88,
+   "w": 94
+  },
+  "r_highlands_18": {
+   "file": "props/r_highlands_18.png",
+   "h": 82,
+   "w": 96
+  },
+  "r_highlands_19": {
+   "file": "props/r_highlands_19.png",
+   "h": 110,
+   "w": 124
+  },
+  "r_highlands_20": {
+   "file": "props/r_highlands_20.png",
+   "h": 82,
+   "w": 124
+  },
+  "r_highlands_21": {
+   "file": "props/r_highlands_21.png",
+   "h": 64,
+   "w": 102
+  },
+  "r_highlands_22": {
+   "file": "props/r_highlands_22.png",
+   "h": 64,
+   "w": 122
+  },
+  "r_highlands_23": {
+   "file": "props/r_highlands_23.png",
+   "h": 38,
+   "w": 68
+  },
+  "r_highlands_24": {
+   "file": "props/r_highlands_24.png",
+   "h": 32,
+   "w": 56
+  },
+  "r_highlands_25": {
+   "file": "props/r_highlands_25.png",
+   "h": 24,
+   "w": 38
+  },
+  "r_highlands_26": {
+   "file": "props/r_highlands_26.png",
+   "h": 52,
+   "w": 112
+  },
+  "r_highlands_27": {
+   "file": "props/r_highlands_27.png",
+   "h": 34,
+   "w": 60
+  },
+  "r_highlands_28": {
+   "file": "props/r_highlands_28.png",
+   "h": 44,
+   "w": 86
+  },
+  "r_highlands_29": {
+   "file": "props/r_highlands_29.png",
+   "h": 28,
+   "w": 44
+  },
+  "r_highlands_30": {
+   "file": "props/r_highlands_30.png",
+   "h": 366,
+   "w": 282
+  },
+  "r_highlands_31": {
+   "file": "props/r_highlands_31.png",
+   "h": 86,
+   "w": 164
+  },
+  "r_highlands_32": {
+   "file": "props/r_highlands_32.png",
+   "h": 86,
+   "w": 138
+  },
+  "r_highlands_33": {
+   "file": "props/r_highlands_33.png",
+   "h": 84,
+   "w": 114
+  },
+  "r_highlands_34": {
+   "file": "props/r_highlands_34.png",
+   "h": 82,
+   "w": 122
+  },
+  "r_highlands_35": {
+   "file": "props/r_highlands_35.png",
+   "h": 88,
+   "w": 106
+  },
+  "r_highlands_36": {
+   "file": "props/r_highlands_36.png",
+   "h": 86,
+   "w": 118
+  },
+  "r_highlands_37": {
+   "file": "props/r_highlands_37.png",
+   "h": 194,
+   "w": 226
+  },
+  "r_highlands_38": {
+   "file": "props/r_highlands_38.png",
+   "h": 102,
+   "w": 252
+  },
+  "r_highlands_39": {
+   "file": "props/r_highlands_39.png",
+   "h": 62,
+   "w": 52
+  },
+  "r_highlands_40": {
+   "file": "props/r_highlands_40.png",
+   "h": 66,
+   "w": 48
+  },
+  "r_highlands_41": {
+   "file": "props/r_highlands_41.png",
+   "h": 68,
+   "w": 72
+  },
+  "r_highlands_42": {
+   "file": "props/r_highlands_42.png",
+   "h": 78,
+   "w": 112
+  },
+  "r_highlands_43": {
+   "file": "props/r_highlands_43.png",
+   "h": 94,
+   "w": 370
+  },
+  "r_highlands_44": {
+   "file": "props/r_highlands_44.png",
+   "h": 74,
+   "w": 70
+  },
+  "r_highlands_45": {
+   "file": "props/r_highlands_45.png",
+   "h": 70,
+   "w": 16
+  },
+  "r_highlands_46": {
+   "file": "props/r_highlands_46.png",
+   "h": 52,
+   "w": 56
+  },
+  "r_highlands_47": {
+   "file": "props/r_highlands_47.png",
+   "h": 12,
+   "w": 18
+  },
+  "r_highlands_48": {
+   "file": "props/r_highlands_48.png",
+   "h": 18,
+   "w": 22
+  },
+  "r_marsh_00": {
+   "file": "props/r_marsh_00.png",
+   "h": 11,
+   "w": 1530
+  },
+  "r_marsh_01": {
+   "file": "props/r_marsh_01.png",
+   "h": 177,
+   "w": 210
+  },
+  "r_marsh_02": {
+   "file": "props/r_marsh_02.png",
+   "h": 19,
+   "w": 17
+  },
+  "r_marsh_03": {
+   "file": "props/r_marsh_03.png",
+   "h": 180,
+   "w": 250
+  },
+  "r_marsh_04": {
+   "file": "props/r_marsh_04.png",
+   "h": 95,
+   "w": 58
+  },
+  "r_marsh_05": {
+   "file": "props/r_marsh_05.png",
+   "h": 80,
+   "w": 57
+  },
+  "r_marsh_06": {
+   "file": "props/r_marsh_06.png",
+   "h": 97,
+   "w": 61
+  },
+  "r_marsh_07": {
+   "file": "props/r_marsh_07.png",
+   "h": 97,
+   "w": 65
+  },
+  "r_marsh_08": {
+   "file": "props/r_marsh_08.png",
+   "h": 88,
+   "w": 217
+  },
+  "r_marsh_09": {
+   "file": "props/r_marsh_09.png",
+   "h": 73,
+   "w": 191
+  },
+  "r_marsh_10": {
+   "file": "props/r_marsh_10.png",
+   "h": 103,
+   "w": 70
+  },
+  "r_marsh_100": {
+   "file": "props/r_marsh_100.png",
+   "h": 76,
+   "w": 123
+  },
+  "r_marsh_101": {
+   "file": "props/r_marsh_101.png",
+   "h": 75,
+   "w": 45
+  },
+  "r_marsh_102": {
+   "file": "props/r_marsh_102.png",
+   "h": 88,
+   "w": 71
+  },
+  "r_marsh_11": {
+   "file": "props/r_marsh_11.png",
+   "h": 100,
+   "w": 80
+  },
+  "r_marsh_12": {
+   "file": "props/r_marsh_12.png",
+   "h": 133,
+   "w": 118
+  },
+  "r_marsh_13": {
+   "file": "props/r_marsh_13.png",
+   "h": 44,
+   "w": 71
+  },
+  "r_marsh_14": {
+   "file": "props/r_marsh_14.png",
+   "h": 294,
+   "w": 465
+  },
+  "r_marsh_15": {
+   "file": "props/r_marsh_15.png",
+   "h": 86,
+   "w": 79
+  },
+  "r_marsh_16": {
+   "file": "props/r_marsh_16.png",
+   "h": 79,
+   "w": 137
+  },
+  "r_marsh_17": {
+   "file": "props/r_marsh_17.png",
+   "h": 95,
+   "w": 94
+  },
+  "r_marsh_18": {
+   "file": "props/r_marsh_18.png",
+   "h": 92,
+   "w": 95
+  },
+  "r_marsh_19": {
+   "file": "props/r_marsh_19.png",
+   "h": 94,
+   "w": 86
+  },
+  "r_marsh_20": {
+   "file": "props/r_marsh_20.png",
+   "h": 88,
+   "w": 61
+  },
+  "r_marsh_21": {
+   "file": "props/r_marsh_21.png",
+   "h": 87,
+   "w": 57
+  },
+  "r_marsh_22": {
+   "file": "props/r_marsh_22.png",
+   "h": 82,
+   "w": 87
+  },
+  "r_marsh_23": {
+   "file": "props/r_marsh_23.png",
+   "h": 94,
+   "w": 110
+  },
+  "r_marsh_24": {
+   "file": "props/r_marsh_24.png",
+   "h": 63,
+   "w": 106
+  },
+  "r_marsh_25": {
+   "file": "props/r_marsh_25.png",
+   "h": 72,
+   "w": 119
+  },
+  "r_marsh_26": {
+   "file": "props/r_marsh_26.png",
+   "h": 105,
+   "w": 266
+  },
+  "r_marsh_27": {
+   "file": "props/r_marsh_27.png",
+   "h": 18,
+   "w": 18
+  },
+  "r_marsh_28": {
+   "file": "props/r_marsh_28.png",
+   "h": 63,
+   "w": 40
+  },
+  "r_marsh_29": {
+   "file": "props/r_marsh_29.png",
+   "h": 44,
+   "w": 64
+  },
+  "r_marsh_30": {
+   "file": "props/r_marsh_30.png",
+   "h": 50,
+   "w": 42
+  },
+  "r_marsh_31": {
+   "file": "props/r_marsh_31.png",
+   "h": 65,
+   "w": 44
+  },
+  "r_marsh_32": {
+   "file": "props/r_marsh_32.png",
+   "h": 70,
+   "w": 38
+  },
+  "r_marsh_33": {
+   "file": "props/r_marsh_33.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_marsh_34": {
+   "file": "props/r_marsh_34.png",
+   "h": 63,
+   "w": 41
+  },
+  "r_marsh_35": {
+   "file": "props/r_marsh_35.png",
+   "h": 53,
+   "w": 45
+  },
+  "r_marsh_36": {
+   "file": "props/r_marsh_36.png",
+   "h": 69,
+   "w": 43
+  },
+  "r_marsh_37": {
+   "file": "props/r_marsh_37.png",
+   "h": 63,
+   "w": 37
+  },
+  "r_marsh_38": {
+   "file": "props/r_marsh_38.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_marsh_39": {
+   "file": "props/r_marsh_39.png",
+   "h": 45,
+   "w": 52
+  },
+  "r_marsh_40": {
+   "file": "props/r_marsh_40.png",
+   "h": 49,
+   "w": 52
+  },
+  "r_marsh_41": {
+   "file": "props/r_marsh_41.png",
+   "h": 52,
+   "w": 62
+  },
+  "r_marsh_42": {
+   "file": "props/r_marsh_42.png",
+   "h": 45,
+   "w": 52
+  },
+  "r_marsh_43": {
+   "file": "props/r_marsh_43.png",
+   "h": 45,
+   "w": 51
+  },
+  "r_marsh_44": {
+   "file": "props/r_marsh_44.png",
+   "h": 50,
+   "w": 53
+  },
+  "r_marsh_45": {
+   "file": "props/r_marsh_45.png",
+   "h": 47,
+   "w": 57
+  },
+  "r_marsh_46": {
+   "file": "props/r_marsh_46.png",
+   "h": 45,
+   "w": 53
+  },
+  "r_marsh_47": {
+   "file": "props/r_marsh_47.png",
+   "h": 54,
+   "w": 59
+  },
+  "r_marsh_48": {
+   "file": "props/r_marsh_48.png",
+   "h": 49,
+   "w": 62
+  },
+  "r_marsh_49": {
+   "file": "props/r_marsh_49.png",
+   "h": 99,
+   "w": 84
+  },
+  "r_marsh_50": {
+   "file": "props/r_marsh_50.png",
+   "h": 79,
+   "w": 89
+  },
+  "r_marsh_51": {
+   "file": "props/r_marsh_51.png",
+   "h": 99,
+   "w": 84
+  },
+  "r_marsh_52": {
+   "file": "props/r_marsh_52.png",
+   "h": 107,
+   "w": 96
+  },
+  "r_marsh_53": {
+   "file": "props/r_marsh_53.png",
+   "h": 17,
+   "w": 17
+  },
+  "r_marsh_54": {
+   "file": "props/r_marsh_54.png",
+   "h": 20,
+   "w": 23
+  },
+  "r_marsh_55": {
+   "file": "props/r_marsh_55.png",
+   "h": 19,
+   "w": 22
+  },
+  "r_marsh_56": {
+   "file": "props/r_marsh_56.png",
+   "h": 20,
+   "w": 22
+  },
+  "r_marsh_57": {
+   "file": "props/r_marsh_57.png",
+   "h": 20,
+   "w": 23
+  },
+  "r_marsh_58": {
+   "file": "props/r_marsh_58.png",
+   "h": 21,
+   "w": 23
+  },
+  "r_marsh_59": {
+   "file": "props/r_marsh_59.png",
+   "h": 24,
+   "w": 22
+  },
+  "r_marsh_60": {
+   "file": "props/r_marsh_60.png",
+   "h": 21,
+   "w": 23
+  },
+  "r_marsh_61": {
+   "file": "props/r_marsh_61.png",
+   "h": 19,
+   "w": 19
+  },
+  "r_marsh_62": {
+   "file": "props/r_marsh_62.png",
+   "h": 43,
+   "w": 52
+  },
+  "r_marsh_63": {
+   "file": "props/r_marsh_63.png",
+   "h": 22,
+   "w": 23
+  },
+  "r_marsh_64": {
+   "file": "props/r_marsh_64.png",
+   "h": 20,
+   "w": 21
+  },
+  "r_marsh_65": {
+   "file": "props/r_marsh_65.png",
+   "h": 27,
+   "w": 28
+  },
+  "r_marsh_66": {
+   "file": "props/r_marsh_66.png",
+   "h": 19,
+   "w": 24
+  },
+  "r_marsh_67": {
+   "file": "props/r_marsh_67.png",
+   "h": 23,
+   "w": 27
+  },
+  "r_marsh_68": {
+   "file": "props/r_marsh_68.png",
+   "h": 18,
+   "w": 21
+  },
+  "r_marsh_69": {
+   "file": "props/r_marsh_69.png",
+   "h": 84,
+   "w": 159
+  },
+  "r_marsh_70": {
+   "file": "props/r_marsh_70.png",
+   "h": 81,
+   "w": 154
+  },
+  "r_marsh_71": {
+   "file": "props/r_marsh_71.png",
+   "h": 85,
+   "w": 155
+  },
+  "r_marsh_72": {
+   "file": "props/r_marsh_72.png",
+   "h": 43,
+   "w": 55
+  },
+  "r_marsh_73": {
+   "file": "props/r_marsh_73.png",
+   "h": 62,
+   "w": 96
+  },
+  "r_marsh_74": {
+   "file": "props/r_marsh_74.png",
+   "h": 81,
+   "w": 141
+  },
+  "r_marsh_75": {
+   "file": "props/r_marsh_75.png",
+   "h": 123,
+   "w": 291
+  },
+  "r_marsh_76": {
+   "file": "props/r_marsh_76.png",
+   "h": 18,
+   "w": 17
+  },
+  "r_marsh_77": {
+   "file": "props/r_marsh_77.png",
+   "h": 22,
+   "w": 25
+  },
+  "r_marsh_78": {
+   "file": "props/r_marsh_78.png",
+   "h": 21,
+   "w": 27
+  },
+  "r_marsh_79": {
+   "file": "props/r_marsh_79.png",
+   "h": 22,
+   "w": 25
+  },
+  "r_marsh_80": {
+   "file": "props/r_marsh_80.png",
+   "h": 18,
+   "w": 24
+  },
+  "r_marsh_81": {
+   "file": "props/r_marsh_81.png",
+   "h": 22,
+   "w": 24
+  },
+  "r_marsh_82": {
+   "file": "props/r_marsh_82.png",
+   "h": 21,
+   "w": 25
+  },
+  "r_marsh_83": {
+   "file": "props/r_marsh_83.png",
+   "h": 26,
+   "w": 27
+  },
+  "r_marsh_84": {
+   "file": "props/r_marsh_84.png",
+   "h": 23,
+   "w": 24
+  },
+  "r_marsh_85": {
+   "file": "props/r_marsh_85.png",
+   "h": 28,
+   "w": 23
+  },
+  "r_marsh_86": {
+   "file": "props/r_marsh_86.png",
+   "h": 35,
+   "w": 28
+  },
+  "r_marsh_87": {
+   "file": "props/r_marsh_87.png",
+   "h": 23,
+   "w": 25
+  },
+  "r_marsh_88": {
+   "file": "props/r_marsh_88.png",
+   "h": 23,
+   "w": 28
+  },
+  "r_marsh_89": {
+   "file": "props/r_marsh_89.png",
+   "h": 21,
+   "w": 24
+  },
+  "r_marsh_90": {
+   "file": "props/r_marsh_90.png",
+   "h": 22,
+   "w": 24
+  },
+  "r_marsh_91": {
+   "file": "props/r_marsh_91.png",
+   "h": 163,
+   "w": 121
+  },
+  "r_marsh_92": {
+   "file": "props/r_marsh_92.png",
+   "h": 44,
+   "w": 60
+  },
+  "r_marsh_93": {
+   "file": "props/r_marsh_93.png",
+   "h": 17,
+   "w": 19
+  },
+  "r_marsh_94": {
+   "file": "props/r_marsh_94.png",
+   "h": 42,
+   "w": 59
+  },
+  "r_marsh_95": {
+   "file": "props/r_marsh_95.png",
+   "h": 49,
+   "w": 83
+  },
+  "r_marsh_96": {
+   "file": "props/r_marsh_96.png",
+   "h": 61,
+   "w": 90
+  },
+  "r_marsh_97": {
+   "file": "props/r_marsh_97.png",
+   "h": 65,
+   "w": 129
+  },
+  "r_marsh_98": {
+   "file": "props/r_marsh_98.png",
+   "h": 76,
+   "w": 147
+  },
+  "r_marsh_99": {
+   "file": "props/r_marsh_99.png",
+   "h": 86,
+   "w": 150
+  },
+  "r_orchard_00": {
+   "file": "props/r_orchard_00.png",
+   "h": 103,
+   "w": 162
+  },
+  "r_orchard_01": {
+   "file": "props/r_orchard_01.png",
+   "h": 105,
+   "w": 152
+  },
+  "r_orchard_02": {
+   "file": "props/r_orchard_02.png",
+   "h": 102,
+   "w": 182
+  },
+  "r_orchard_03": {
+   "file": "props/r_orchard_03.png",
+   "h": 102,
+   "w": 198
+  },
+  "r_orchard_04": {
+   "file": "props/r_orchard_04.png",
+   "h": 60,
+   "w": 44
+  },
+  "r_orchard_05": {
+   "file": "props/r_orchard_05.png",
+   "h": 76,
+   "w": 54
+  },
+  "r_orchard_06": {
+   "file": "props/r_orchard_06.png",
+   "h": 106,
+   "w": 166
+  },
+  "r_orchard_07": {
+   "file": "props/r_orchard_07.png",
+   "h": 56,
+   "w": 44
+  },
+  "r_orchard_08": {
+   "file": "props/r_orchard_08.png",
+   "h": 74,
+   "w": 56
+  },
+  "r_orchard_09": {
+   "file": "props/r_orchard_09.png",
+   "h": 108,
+   "w": 200
+  },
+  "r_orchard_10": {
+   "file": "props/r_orchard_10.png",
+   "h": 52,
+   "w": 38
+  },
+  "r_orchard_11": {
+   "file": "props/r_orchard_11.png",
+   "h": 50,
+   "w": 36
+  },
+  "r_orchard_12": {
+   "file": "props/r_orchard_12.png",
+   "h": 56,
+   "w": 42
+  },
+  "r_orchard_13": {
+   "file": "props/r_orchard_13.png",
+   "h": 76,
+   "w": 56
+  },
+  "r_orchard_14": {
+   "file": "props/r_orchard_14.png",
+   "h": 56,
+   "w": 40
+  },
+  "r_orchard_15": {
+   "file": "props/r_orchard_15.png",
+   "h": 54,
+   "w": 38
+  },
+  "r_orchard_16": {
+   "file": "props/r_orchard_16.png",
+   "h": 100,
+   "w": 182
+  },
+  "r_orchard_17": {
+   "file": "props/r_orchard_17.png",
+   "h": 374,
+   "w": 294
+  },
+  "r_orchard_18": {
+   "file": "props/r_orchard_18.png",
+   "h": 64,
+   "w": 162
+  },
+  "r_orchard_19": {
+   "file": "props/r_orchard_19.png",
+   "h": 76,
+   "w": 80
+  },
+  "r_orchard_20": {
+   "file": "props/r_orchard_20.png",
+   "h": 66,
+   "w": 108
+  },
+  "r_orchard_21": {
+   "file": "props/r_orchard_21.png",
+   "h": 68,
+   "w": 212
+  },
+  "r_orchard_22": {
+   "file": "props/r_orchard_22.png",
+   "h": 68,
+   "w": 50
+  },
+  "r_orchard_23": {
+   "file": "props/r_orchard_23.png",
+   "h": 196,
+   "w": 242
+  },
+  "r_orchard_24": {
+   "file": "props/r_orchard_24.png",
+   "h": 60,
+   "w": 102
+  },
+  "r_orchard_25": {
+   "file": "props/r_orchard_25.png",
+   "h": 62,
+   "w": 142
+  },
+  "r_orchard_26": {
+   "file": "props/r_orchard_26.png",
+   "h": 60,
+   "w": 80
+  },
+  "r_orchard_27": {
+   "file": "props/r_orchard_27.png",
+   "h": 62,
+   "w": 76
+  },
+  "r_orchard_28": {
+   "file": "props/r_orchard_28.png",
+   "h": 60,
+   "w": 66
+  },
+  "r_orchard_29": {
+   "file": "props/r_orchard_29.png",
+   "h": 72,
+   "w": 216
+  },
+  "r_orchard_30": {
+   "file": "props/r_orchard_30.png",
+   "h": 158,
+   "w": 136
+  },
+  "r_orchard_31": {
+   "file": "props/r_orchard_31.png",
+   "h": 70,
+   "w": 88
+  },
+  "r_orchard_32": {
+   "file": "props/r_orchard_32.png",
+   "h": 70,
+   "w": 86
+  },
+  "r_orchard_33": {
+   "file": "props/r_orchard_33.png",
+   "h": 66,
+   "w": 84
+  },
+  "r_orchard_34": {
+   "file": "props/r_orchard_34.png",
+   "h": 132,
+   "w": 74
+  },
+  "r_orchard_35": {
+   "file": "props/r_orchard_35.png",
+   "h": 94,
+   "w": 262
+  },
+  "r_orchard_36": {
+   "file": "props/r_orchard_36.png",
+   "h": 38,
+   "w": 36
+  },
+  "r_orchard_37": {
+   "file": "props/r_orchard_37.png",
+   "h": 34,
+   "w": 42
+  },
+  "r_orchard_38": {
+   "file": "props/r_orchard_38.png",
+   "h": 40,
+   "w": 40
+  },
+  "r_orchard_39": {
+   "file": "props/r_orchard_39.png",
+   "h": 36,
+   "w": 34
+  },
+  "r_orchard_40": {
+   "file": "props/r_orchard_40.png",
+   "h": 88,
+   "w": 90
+  },
+  "r_orchard_41": {
+   "file": "props/r_orchard_41.png",
+   "h": 72,
+   "w": 134
+  },
+  "r_orchard_42": {
+   "file": "props/r_orchard_42.png",
+   "h": 104,
+   "w": 254
+  },
+  "r_orchard_43": {
+   "file": "props/r_orchard_43.png",
+   "h": 154,
+   "w": 116
+  },
+  "r_orchard_44": {
+   "file": "props/r_orchard_44.png",
+   "h": 88,
+   "w": 90
+  },
+  "r_orchard_45": {
+   "file": "props/r_orchard_45.png",
+   "h": 92,
+   "w": 88
+  },
+  "r_orchard_46": {
+   "file": "props/r_orchard_46.png",
+   "h": 94,
+   "w": 88
+  },
+  "r_orchard_47": {
+   "file": "props/r_orchard_47.png",
+   "h": 94,
+   "w": 84
+  },
+  "r_orchard_48": {
+   "file": "props/r_orchard_48.png",
+   "h": 176,
+   "w": 250
+  },
+  "r_orchard_49": {
+   "file": "props/r_orchard_49.png",
+   "h": 134,
+   "w": 212
+  },
+  "r_orchard_50": {
+   "file": "props/r_orchard_50.png",
+   "h": 12,
+   "w": 18
+  },
+  "r_quarry_00": {
+   "file": "props/r_quarry_00.png",
+   "h": 78,
+   "w": 84
+  },
+  "r_quarry_01": {
+   "file": "props/r_quarry_01.png",
+   "h": 76,
+   "w": 82
+  },
+  "r_quarry_02": {
+   "file": "props/r_quarry_02.png",
+   "h": 76,
+   "w": 80
+  },
+  "r_quarry_03": {
+   "file": "props/r_quarry_03.png",
+   "h": 72,
+   "w": 70
+  },
+  "r_quarry_04": {
+   "file": "props/r_quarry_04.png",
+   "h": 380,
+   "w": 266
+  },
+  "r_quarry_05": {
+   "file": "props/r_quarry_05.png",
+   "h": 72,
+   "w": 82
+  },
+  "r_quarry_06": {
+   "file": "props/r_quarry_06.png",
+   "h": 56,
+   "w": 58
+  },
+  "r_quarry_07": {
+   "file": "props/r_quarry_07.png",
+   "h": 56,
+   "w": 58
+  },
+  "r_quarry_08": {
+   "file": "props/r_quarry_08.png",
+   "h": 58,
+   "w": 60
+  },
+  "r_quarry_09": {
+   "file": "props/r_quarry_09.png",
+   "h": 56,
+   "w": 60
+  },
+  "r_quarry_10": {
+   "file": "props/r_quarry_10.png",
+   "h": 72,
+   "w": 78
+  },
+  "r_quarry_11": {
+   "file": "props/r_quarry_11.png",
+   "h": 56,
+   "w": 58
+  },
+  "r_quarry_12": {
+   "file": "props/r_quarry_12.png",
+   "h": 52,
+   "w": 56
+  },
+  "r_quarry_13": {
+   "file": "props/r_quarry_13.png",
+   "h": 64,
+   "w": 60
+  },
+  "r_quarry_14": {
+   "file": "props/r_quarry_14.png",
+   "h": 56,
+   "w": 56
+  },
+  "r_quarry_15": {
+   "file": "props/r_quarry_15.png",
+   "h": 74,
+   "w": 82
+  },
+  "r_quarry_16": {
+   "file": "props/r_quarry_16.png",
+   "h": 56,
+   "w": 58
+  },
+  "r_quarry_17": {
+   "file": "props/r_quarry_17.png",
+   "h": 58,
+   "w": 58
+  },
+  "r_quarry_18": {
+   "file": "props/r_quarry_18.png",
+   "h": 60,
+   "w": 56
+  },
+  "r_quarry_19": {
+   "file": "props/r_quarry_19.png",
+   "h": 66,
+   "w": 58
+  },
+  "r_quarry_20": {
+   "file": "props/r_quarry_20.png",
+   "h": 64,
+   "w": 66
+  },
+  "r_quarry_21": {
+   "file": "props/r_quarry_21.png",
+   "h": 56,
+   "w": 58
+  },
+  "r_quarry_22": {
+   "file": "props/r_quarry_22.png",
+   "h": 66,
+   "w": 60
+  },
+  "r_quarry_23": {
+   "file": "props/r_quarry_23.png",
+   "h": 66,
+   "w": 58
+  },
+  "r_quarry_24": {
+   "file": "props/r_quarry_24.png",
+   "h": 56,
+   "w": 60
+  },
+  "r_quarry_25": {
+   "file": "props/r_quarry_25.png",
+   "h": 104,
+   "w": 186
+  },
+  "r_quarry_26": {
+   "file": "props/r_quarry_26.png",
+   "h": 90,
+   "w": 138
+  },
+  "r_quarry_27": {
+   "file": "props/r_quarry_27.png",
+   "h": 96,
+   "w": 122
+  },
+  "r_quarry_28": {
+   "file": "props/r_quarry_28.png",
+   "h": 54,
+   "w": 108
+  },
+  "r_quarry_29": {
+   "file": "props/r_quarry_29.png",
+   "h": 80,
+   "w": 86
+  },
+  "r_quarry_30": {
+   "file": "props/r_quarry_30.png",
+   "h": 110,
+   "w": 96
+  },
+  "r_quarry_31": {
+   "file": "props/r_quarry_31.png",
+   "h": 66,
+   "w": 72
+  },
+  "r_quarry_32": {
+   "file": "props/r_quarry_32.png",
+   "h": 70,
+   "w": 74
+  },
+  "r_quarry_33": {
+   "file": "props/r_quarry_33.png",
+   "h": 68,
+   "w": 72
+  },
+  "r_quarry_34": {
+   "file": "props/r_quarry_34.png",
+   "h": 66,
+   "w": 74
+  },
+  "r_quarry_35": {
+   "file": "props/r_quarry_35.png",
+   "h": 50,
+   "w": 108
+  },
+  "r_quarry_36": {
+   "file": "props/r_quarry_36.png",
+   "h": 66,
+   "w": 72
+  },
+  "r_quarry_37": {
+   "file": "props/r_quarry_37.png",
+   "h": 68,
+   "w": 74
+  },
+  "r_quarry_38": {
+   "file": "props/r_quarry_38.png",
+   "h": 58,
+   "w": 66
+  },
+  "r_quarry_39": {
+   "file": "props/r_quarry_39.png",
+   "h": 58,
+   "w": 64
+  },
+  "r_quarry_40": {
+   "file": "props/r_quarry_40.png",
+   "h": 58,
+   "w": 64
+  },
+  "r_quarry_41": {
+   "file": "props/r_quarry_41.png",
+   "h": 152,
+   "w": 106
+  },
+  "r_quarry_42": {
+   "file": "props/r_quarry_42.png",
+   "h": 60,
+   "w": 66
+  },
+  "r_quarry_43": {
+   "file": "props/r_quarry_43.png",
+   "h": 104,
+   "w": 102
+  },
+  "r_quarry_44": {
+   "file": "props/r_quarry_44.png",
+   "h": 76,
+   "w": 44
+  },
+  "r_quarry_45": {
+   "file": "props/r_quarry_45.png",
+   "h": 76,
+   "w": 44
+  },
+  "r_quarry_46": {
+   "file": "props/r_quarry_46.png",
+   "h": 76,
+   "w": 44
+  },
+  "r_quarry_47": {
+   "file": "props/r_quarry_47.png",
+   "h": 124,
+   "w": 100
+  },
+  "r_quarry_48": {
+   "file": "props/r_quarry_48.png",
+   "h": 100,
+   "w": 98
+  },
+  "r_quarry_49": {
+   "file": "props/r_quarry_49.png",
+   "h": 94,
+   "w": 98
+  },
+  "r_quarry_50": {
+   "file": "props/r_quarry_50.png",
+   "h": 312,
+   "w": 310
+  },
+  "r_quarry_51": {
+   "file": "props/r_quarry_51.png",
+   "h": 82,
+   "w": 128
+  },
+  "r_quarry_52": {
+   "file": "props/r_quarry_52.png",
+   "h": 72,
+   "w": 88
+  },
+  "r_quarry_53": {
+   "file": "props/r_quarry_53.png",
+   "h": 64,
+   "w": 84
+  },
+  "r_quarry_54": {
+   "file": "props/r_quarry_54.png",
+   "h": 64,
+   "w": 80
+  },
+  "r_quarry_55": {
+   "file": "props/r_quarry_55.png",
+   "h": 66,
+   "w": 86
+  },
+  "r_quarry_56": {
+   "file": "props/r_quarry_56.png",
+   "h": 66,
+   "w": 94
+  },
+  "r_quarry_57": {
+   "file": "props/r_quarry_57.png",
+   "h": 62,
+   "w": 76
+  },
+  "r_quarry_58": {
+   "file": "props/r_quarry_58.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_quarry_59": {
+   "file": "props/r_quarry_59.png",
+   "h": 64,
+   "w": 80
+  },
+  "r_quarry_60": {
+   "file": "props/r_quarry_60.png",
+   "h": 74,
+   "w": 76
+  },
+  "r_quarry_61": {
+   "file": "props/r_quarry_61.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_quarry_62": {
+   "file": "props/r_quarry_62.png",
+   "h": 72,
+   "w": 54
+  },
+  "r_quarry_63": {
+   "file": "props/r_quarry_63.png",
+   "h": 74,
+   "w": 68
+  },
+  "r_quarry_64": {
+   "file": "props/r_quarry_64.png",
+   "h": 50,
+   "w": 60
+  },
+  "r_quarry_65": {
+   "file": "props/r_quarry_65.png",
+   "h": 42,
+   "w": 36
+  },
+  "r_quarry_66": {
+   "file": "props/r_quarry_66.png",
+   "h": 70,
+   "w": 66
+  },
+  "r_quarry_67": {
+   "file": "props/r_quarry_67.png",
+   "h": 66,
+   "w": 72
+  },
+  "r_quarry_68": {
+   "file": "props/r_quarry_68.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_quarry_69": {
+   "file": "props/r_quarry_69.png",
+   "h": 48,
+   "w": 44
+  },
+  "r_quarry_70": {
+   "file": "props/r_quarry_70.png",
+   "h": 136,
+   "w": 84
+  },
+  "r_quarry_71": {
+   "file": "props/r_quarry_71.png",
+   "h": 158,
+   "w": 124
+  },
+  "r_quarry_72": {
+   "file": "props/r_quarry_72.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_quarry_73": {
+   "file": "props/r_quarry_73.png",
+   "h": 50,
+   "w": 50
+  },
+  "r_quarry_74": {
+   "file": "props/r_quarry_74.png",
+   "h": 14,
+   "w": 18
+  },
+  "r_quarry_75": {
+   "file": "props/r_quarry_75.png",
+   "h": 12,
+   "w": 22
+  },
+  "r_riverlands_00": {
+   "file": "props/r_riverlands_00.png",
+   "h": 144,
+   "w": 206
+  },
+  "r_riverlands_01": {
+   "file": "props/r_riverlands_01.png",
+   "h": 56,
+   "w": 110
+  },
+  "r_riverlands_02": {
+   "file": "props/r_riverlands_02.png",
+   "h": 78,
+   "w": 154
+  },
+  "r_riverlands_03": {
+   "file": "props/r_riverlands_03.png",
+   "h": 88,
+   "w": 228
+  },
+  "r_riverlands_04": {
+   "file": "props/r_riverlands_04.png",
+   "h": 114,
+   "w": 230
+  },
+  "r_riverlands_05": {
+   "file": "props/r_riverlands_05.png",
+   "h": 56,
+   "w": 100
+  },
+  "r_riverlands_06": {
+   "file": "props/r_riverlands_06.png",
+   "h": 52,
+   "w": 94
+  },
+  "r_riverlands_07": {
+   "file": "props/r_riverlands_07.png",
+   "h": 56,
+   "w": 70
+  },
+  "r_riverlands_08": {
+   "file": "props/r_riverlands_08.png",
+   "h": 54,
+   "w": 58
+  },
+  "r_riverlands_09": {
+   "file": "props/r_riverlands_09.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_riverlands_10": {
+   "file": "props/r_riverlands_10.png",
+   "h": 56,
+   "w": 60
+  },
+  "r_riverlands_11": {
+   "file": "props/r_riverlands_11.png",
+   "h": 50,
+   "w": 60
+  },
+  "r_riverlands_12": {
+   "file": "props/r_riverlands_12.png",
+   "h": 66,
+   "w": 104
+  },
+  "r_riverlands_13": {
+   "file": "props/r_riverlands_13.png",
+   "h": 70,
+   "w": 76
+  },
+  "r_riverlands_14": {
+   "file": "props/r_riverlands_14.png",
+   "h": 56,
+   "w": 64
+  },
+  "r_riverlands_15": {
+   "file": "props/r_riverlands_15.png",
+   "h": 54,
+   "w": 64
+  },
+  "r_riverlands_16": {
+   "file": "props/r_riverlands_16.png",
+   "h": 36,
+   "w": 68
+  },
+  "r_riverlands_17": {
+   "file": "props/r_riverlands_17.png",
+   "h": 18,
+   "w": 22
+  },
+  "r_riverlands_18": {
+   "file": "props/r_riverlands_18.png",
+   "h": 20,
+   "w": 32
+  },
+  "r_riverlands_19": {
+   "file": "props/r_riverlands_19.png",
+   "h": 18,
+   "w": 18
+  },
+  "r_riverlands_20": {
+   "file": "props/r_riverlands_20.png",
+   "h": 50,
+   "w": 72
+  },
+  "r_riverlands_21": {
+   "file": "props/r_riverlands_21.png",
+   "h": 18,
+   "w": 18
+  },
+  "r_riverlands_22": {
+   "file": "props/r_riverlands_22.png",
+   "h": 42,
+   "w": 68
+  },
+  "r_riverlands_23": {
+   "file": "props/r_riverlands_23.png",
+   "h": 100,
+   "w": 142
+  },
+  "r_riverlands_24": {
+   "file": "props/r_riverlands_24.png",
+   "h": 66,
+   "w": 136
+  },
+  "r_riverlands_25": {
+   "file": "props/r_riverlands_25.png",
+   "h": 74,
+   "w": 206
+  },
+  "r_riverlands_26": {
+   "file": "props/r_riverlands_26.png",
+   "h": 86,
+   "w": 234
+  },
+  "r_riverlands_27": {
+   "file": "props/r_riverlands_27.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_riverlands_28": {
+   "file": "props/r_riverlands_28.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_riverlands_29": {
+   "file": "props/r_riverlands_29.png",
+   "h": 104,
+   "w": 96
+  },
+  "r_riverlands_30": {
+   "file": "props/r_riverlands_30.png",
+   "h": 116,
+   "w": 72
+  },
+  "r_riverlands_31": {
+   "file": "props/r_riverlands_31.png",
+   "h": 26,
+   "w": 48
+  },
+  "r_riverlands_32": {
+   "file": "props/r_riverlands_32.png",
+   "h": 112,
+   "w": 102
+  },
+  "r_riverlands_33": {
+   "file": "props/r_riverlands_33.png",
+   "h": 32,
+   "w": 56
+  },
+  "r_riverlands_34": {
+   "file": "props/r_riverlands_34.png",
+   "h": 344,
+   "w": 326
+  },
+  "r_riverlands_35": {
+   "file": "props/r_riverlands_35.png",
+   "h": 152,
+   "w": 230
+  },
+  "r_riverlands_36": {
+   "file": "props/r_riverlands_36.png",
+   "h": 140,
+   "w": 198
+  },
+  "r_riverlands_37": {
+   "file": "props/r_riverlands_37.png",
+   "h": 96,
+   "w": 126
+  },
+  "r_riverlands_38": {
+   "file": "props/r_riverlands_38.png",
+   "h": 192,
+   "w": 170
+  },
+  "r_riverlands_39": {
+   "file": "props/r_riverlands_39.png",
+   "h": 36,
+   "w": 16
+  },
+  "r_riverlands_40": {
+   "file": "props/r_riverlands_40.png",
+   "h": 104,
+   "w": 214
+  },
+  "r_riverlands_41": {
+   "file": "props/r_riverlands_41.png",
+   "h": 30,
+   "w": 44
+  },
+  "r_riverlands_42": {
+   "file": "props/r_riverlands_42.png",
+   "h": 84,
+   "w": 112
+  },
+  "r_riverlands_43": {
+   "file": "props/r_riverlands_43.png",
+   "h": 54,
+   "w": 104
+  },
+  "r_riverlands_44": {
+   "file": "props/r_riverlands_44.png",
+   "h": 36,
+   "w": 48
+  },
+  "r_riverlands_45": {
+   "file": "props/r_riverlands_45.png",
+   "h": 76,
+   "w": 84
+  },
+  "r_riverlands_46": {
+   "file": "props/r_riverlands_46.png",
+   "h": 82,
+   "w": 114
+  },
+  "r_riverlands_47": {
+   "file": "props/r_riverlands_47.png",
+   "h": 104,
+   "w": 144
+  },
+  "r_riverlands_48": {
+   "file": "props/r_riverlands_48.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_riverlands_49": {
+   "file": "props/r_riverlands_49.png",
+   "h": 12,
+   "w": 20
+  },
+  "r_riverlands_50": {
+   "file": "props/r_riverlands_50.png",
+   "h": 12,
+   "w": 20
+  },
+  "r_ruins_00": {
+   "file": "props/r_ruins_00.png",
+   "h": 123,
+   "w": 208
+  },
+  "r_ruins_01": {
+   "file": "props/r_ruins_01.png",
+   "h": 112,
+   "w": 64
+  },
+  "r_ruins_02": {
+   "file": "props/r_ruins_02.png",
+   "h": 120,
+   "w": 64
+  },
+  "r_ruins_03": {
+   "file": "props/r_ruins_03.png",
+   "h": 58,
+   "w": 86
+  },
+  "r_ruins_04": {
+   "file": "props/r_ruins_04.png",
+   "h": 80,
+   "w": 58
+  },
+  "r_ruins_05": {
+   "file": "props/r_ruins_05.png",
+   "h": 62,
+   "w": 60
+  },
+  "r_ruins_06": {
+   "file": "props/r_ruins_06.png",
+   "h": 42,
+   "w": 48
+  },
+  "r_ruins_07": {
+   "file": "props/r_ruins_07.png",
+   "h": 94,
+   "w": 102
+  },
+  "r_ruins_08": {
+   "file": "props/r_ruins_08.png",
+   "h": 80,
+   "w": 52
+  },
+  "r_ruins_09": {
+   "file": "props/r_ruins_09.png",
+   "h": 94,
+   "w": 66
+  },
+  "r_ruins_10": {
+   "file": "props/r_ruins_10.png",
+   "h": 92,
+   "w": 66
+  },
+  "r_ruins_11": {
+   "file": "props/r_ruins_11.png",
+   "h": 94,
+   "w": 66
+  },
+  "r_ruins_12": {
+   "file": "props/r_ruins_12.png",
+   "h": 92,
+   "w": 62
+  },
+  "r_ruins_13": {
+   "file": "props/r_ruins_13.png",
+   "h": 352,
+   "w": 192
+  },
+  "r_ruins_14": {
+   "file": "props/r_ruins_14.png",
+   "h": 158,
+   "w": 174
+  },
+  "r_ruins_15": {
+   "file": "props/r_ruins_15.png",
+   "h": 140,
+   "w": 114
+  },
+  "r_ruins_16": {
+   "file": "props/r_ruins_16.png",
+   "h": 86,
+   "w": 74
+  },
+  "r_ruins_17": {
+   "file": "props/r_ruins_17.png",
+   "h": 18,
+   "w": 16
+  },
+  "r_ruins_18": {
+   "file": "props/r_ruins_18.png",
+   "h": 140,
+   "w": 146
+  },
+  "r_ruins_19": {
+   "file": "props/r_ruins_19.png",
+   "h": 104,
+   "w": 76
+  },
+  "r_ruins_20": {
+   "file": "props/r_ruins_20.png",
+   "h": 18,
+   "w": 18
+  },
+  "r_ruins_21": {
+   "file": "props/r_ruins_21.png",
+   "h": 106,
+   "w": 78
+  },
+  "r_ruins_22": {
+   "file": "props/r_ruins_22.png",
+   "h": 20,
+   "w": 20
+  },
+  "r_ruins_23": {
+   "file": "props/r_ruins_23.png",
+   "h": 18,
+   "w": 18
+  },
+  "r_ruins_24": {
+   "file": "props/r_ruins_24.png",
+   "h": 92,
+   "w": 78
+  },
+  "r_ruins_25": {
+   "file": "props/r_ruins_25.png",
+   "h": 24,
+   "w": 22
+  },
+  "r_ruins_26": {
+   "file": "props/r_ruins_26.png",
+   "h": 20,
+   "w": 16
+  },
+  "r_ruins_27": {
+   "file": "props/r_ruins_27.png",
+   "h": 86,
+   "w": 78
+  },
+  "r_ruins_28": {
+   "file": "props/r_ruins_28.png",
+   "h": 16,
+   "w": 16
+  },
+  "r_ruins_29": {
+   "file": "props/r_ruins_29.png",
+   "h": 22,
+   "w": 20
+  },
+  "r_ruins_30": {
+   "file": "props/r_ruins_30.png",
+   "h": 20,
+   "w": 18
+  },
+  "r_ruins_31": {
+   "file": "props/r_ruins_31.png",
+   "h": 18,
+   "w": 18
+  },
+  "r_ruins_32": {
+   "file": "props/r_ruins_32.png",
+   "h": 184,
+   "w": 122
+  },
+  "r_ruins_33": {
+   "file": "props/r_ruins_33.png",
+   "h": 216,
+   "w": 278
+  },
+  "r_ruins_34": {
+   "file": "props/r_ruins_34.png",
+   "h": 188,
+   "w": 164
+  },
+  "r_ruins_35": {
+   "file": "props/r_ruins_35.png",
+   "h": 116,
+   "w": 266
+  },
+  "r_ruins_36": {
+   "file": "props/r_ruins_36.png",
+   "h": 188,
+   "w": 118
+  },
+  "r_ruins_37": {
+   "file": "props/r_ruins_37.png",
+   "h": 110,
+   "w": 64
+  },
+  "r_ruins_38": {
+   "file": "props/r_ruins_38.png",
+   "h": 82,
+   "w": 60
+  },
+  "r_ruins_39": {
+   "file": "props/r_ruins_39.png",
+   "h": 86,
+   "w": 62
+  },
+  "r_ruins_40": {
+   "file": "props/r_ruins_40.png",
+   "h": 78,
+   "w": 54
+  },
+  "r_ruins_41": {
+   "file": "props/r_ruins_41.png",
+   "h": 100,
+   "w": 70
+  },
+  "r_ruins_42": {
+   "file": "props/r_ruins_42.png",
+   "h": 102,
+   "w": 70
+  },
+  "r_ruins_43": {
+   "file": "props/r_ruins_43.png",
+   "h": 98,
+   "w": 72
+  },
+  "r_ruins_44": {
+   "file": "props/r_ruins_44.png",
+   "h": 104,
+   "w": 74
+  },
+  "r_ruins_45": {
+   "file": "props/r_ruins_45.png",
+   "h": 258,
+   "w": 154
+  },
+  "r_ruins_46": {
+   "file": "props/r_ruins_46.png",
+   "h": 256,
+   "w": 132
+  },
+  "r_ruins_47": {
+   "file": "props/r_ruins_47.png",
+   "h": 76,
+   "w": 78
+  },
+  "r_ruins_48": {
+   "file": "props/r_ruins_48.png",
+   "h": 86,
+   "w": 62
+  },
+  "r_ruins_49": {
+   "file": "props/r_ruins_49.png",
+   "h": 82,
+   "w": 54
+  },
+  "r_ruins_50": {
+   "file": "props/r_ruins_50.png",
+   "h": 78,
+   "w": 72
+  },
+  "r_ruins_51": {
+   "file": "props/r_ruins_51.png",
+   "h": 74,
+   "w": 58
+  },
+  "r_ruins_52": {
+   "file": "props/r_ruins_52.png",
+   "h": 54,
+   "w": 64
+  },
+  "r_ruins_53": {
+   "file": "props/r_ruins_53.png",
+   "h": 70,
+   "w": 132
+  },
+  "r_ruins_54": {
+   "file": "props/r_ruins_54.png",
+   "h": 72,
+   "w": 130
+  },
+  "r_ruins_55": {
+   "file": "props/r_ruins_55.png",
+   "h": 144,
+   "w": 134
+  },
+  "r_ruins_56": {
+   "file": "props/r_ruins_56.png",
+   "h": 76,
+   "w": 134
+  },
+  "r_ruins_57": {
+   "file": "props/r_ruins_57.png",
+   "h": 76,
+   "w": 132
+  },
+  "r_ruins_58": {
+   "file": "props/r_ruins_58.png",
+   "h": 12,
+   "w": 20
+  },
+  "r_ruins_59": {
+   "file": "props/r_ruins_59.png",
+   "h": 18,
+   "w": 22
   },
   "radio_dish": {
    "file": "props/radio_dish.png",
@@ -36155,6 +40367,436 @@
    "file": "props/stable2.png",
    "h": 96,
    "w": 144
+  },
+  "stable_00": {
+   "file": "props/stable_00.png",
+   "h": 170,
+   "w": 203
+  },
+  "stable_01": {
+   "file": "props/stable_01.png",
+   "h": 170,
+   "w": 192
+  },
+  "stable_02": {
+   "file": "props/stable_02.png",
+   "h": 170,
+   "w": 193
+  },
+  "stable_03": {
+   "file": "props/stable_03.png",
+   "h": 170,
+   "w": 140
+  },
+  "stable_04": {
+   "file": "props/stable_04.png",
+   "h": 170,
+   "w": 132
+  },
+  "stable_05": {
+   "file": "props/stable_05.png",
+   "h": 171,
+   "w": 147
+  },
+  "stable_06": {
+   "file": "props/stable_06.png",
+   "h": 361,
+   "w": 487
+  },
+  "stable_07": {
+   "file": "props/stable_07.png",
+   "h": 129,
+   "w": 172
+  },
+  "stable_08": {
+   "file": "props/stable_08.png",
+   "h": 72,
+   "w": 102
+  },
+  "stable_09": {
+   "file": "props/stable_09.png",
+   "h": 72,
+   "w": 102
+  },
+  "stable_10": {
+   "file": "props/stable_10.png",
+   "h": 72,
+   "w": 102
+  },
+  "stable_11": {
+   "file": "props/stable_11.png",
+   "h": 72,
+   "w": 102
+  },
+  "stable_12": {
+   "file": "props/stable_12.png",
+   "h": 142,
+   "w": 377
+  },
+  "stable_13": {
+   "file": "props/stable_13.png",
+   "h": 98,
+   "w": 110
+  },
+  "stable_14": {
+   "file": "props/stable_14.png",
+   "h": 98,
+   "w": 101
+  },
+  "stable_15": {
+   "file": "props/stable_15.png",
+   "h": 93,
+   "w": 109
+  },
+  "stable_16": {
+   "file": "props/stable_16.png",
+   "h": 95,
+   "w": 107
+  },
+  "stable_17": {
+   "file": "props/stable_17.png",
+   "h": 96,
+   "w": 123
+  },
+  "stable_18": {
+   "file": "props/stable_18.png",
+   "h": 96,
+   "w": 117
+  },
+  "stable_19": {
+   "file": "props/stable_19.png",
+   "h": 88,
+   "w": 115
+  },
+  "stable_20": {
+   "file": "props/stable_20.png",
+   "h": 96,
+   "w": 116
+  },
+  "stable_21": {
+   "file": "props/stable_21.png",
+   "h": 83,
+   "w": 133
+  },
+  "stable_22": {
+   "file": "props/stable_22.png",
+   "h": 78,
+   "w": 134
+  },
+  "stable_23": {
+   "file": "props/stable_23.png",
+   "h": 78,
+   "w": 130
+  },
+  "stable_24": {
+   "file": "props/stable_24.png",
+   "h": 78,
+   "w": 130
+  },
+  "stable_25": {
+   "file": "props/stable_25.png",
+   "h": 98,
+   "w": 111
+  },
+  "stable_26": {
+   "file": "props/stable_26.png",
+   "h": 97,
+   "w": 102
+  },
+  "stable_27": {
+   "file": "props/stable_27.png",
+   "h": 93,
+   "w": 110
+  },
+  "stable_28": {
+   "file": "props/stable_28.png",
+   "h": 94,
+   "w": 106
+  },
+  "stable_29": {
+   "file": "props/stable_29.png",
+   "h": 95,
+   "w": 123
+  },
+  "stable_30": {
+   "file": "props/stable_30.png",
+   "h": 96,
+   "w": 117
+  },
+  "stable_31": {
+   "file": "props/stable_31.png",
+   "h": 88,
+   "w": 114
+  },
+  "stable_32": {
+   "file": "props/stable_32.png",
+   "h": 95,
+   "w": 117
+  },
+  "stable_33": {
+   "file": "props/stable_33.png",
+   "h": 82,
+   "w": 131
+  },
+  "stable_34": {
+   "file": "props/stable_34.png",
+   "h": 78,
+   "w": 134
+  },
+  "stable_35": {
+   "file": "props/stable_35.png",
+   "h": 78,
+   "w": 130
+  },
+  "stable_36": {
+   "file": "props/stable_36.png",
+   "h": 78,
+   "w": 129
+  },
+  "stable_37": {
+   "file": "props/stable_37.png",
+   "h": 99,
+   "w": 111
+  },
+  "stable_38": {
+   "file": "props/stable_38.png",
+   "h": 98,
+   "w": 101
+  },
+  "stable_39": {
+   "file": "props/stable_39.png",
+   "h": 93,
+   "w": 108
+  },
+  "stable_40": {
+   "file": "props/stable_40.png",
+   "h": 96,
+   "w": 107
+  },
+  "stable_41": {
+   "file": "props/stable_41.png",
+   "h": 96,
+   "w": 123
+  },
+  "stable_42": {
+   "file": "props/stable_42.png",
+   "h": 96,
+   "w": 117
+  },
+  "stable_43": {
+   "file": "props/stable_43.png",
+   "h": 89,
+   "w": 114
+  },
+  "stable_44": {
+   "file": "props/stable_44.png",
+   "h": 95,
+   "w": 117
+  },
+  "stable_45": {
+   "file": "props/stable_45.png",
+   "h": 82,
+   "w": 133
+  },
+  "stable_46": {
+   "file": "props/stable_46.png",
+   "h": 79,
+   "w": 134
+  },
+  "stable_47": {
+   "file": "props/stable_47.png",
+   "h": 78,
+   "w": 130
+  },
+  "stable_48": {
+   "file": "props/stable_48.png",
+   "h": 79,
+   "w": 130
+  },
+  "stable_49": {
+   "file": "props/stable_49.png",
+   "h": 99,
+   "w": 112
+  },
+  "stable_50": {
+   "file": "props/stable_50.png",
+   "h": 98,
+   "w": 102
+  },
+  "stable_51": {
+   "file": "props/stable_51.png",
+   "h": 93,
+   "w": 109
+  },
+  "stable_52": {
+   "file": "props/stable_52.png",
+   "h": 95,
+   "w": 106
+  },
+  "stable_53": {
+   "file": "props/stable_53.png",
+   "h": 96,
+   "w": 123
+  },
+  "stable_54": {
+   "file": "props/stable_54.png",
+   "h": 96,
+   "w": 117
+  },
+  "stable_55": {
+   "file": "props/stable_55.png",
+   "h": 89,
+   "w": 115
+  },
+  "stable_56": {
+   "file": "props/stable_56.png",
+   "h": 95,
+   "w": 117
+  },
+  "stable_57": {
+   "file": "props/stable_57.png",
+   "h": 82,
+   "w": 131
+  },
+  "stable_58": {
+   "file": "props/stable_58.png",
+   "h": 80,
+   "w": 134
+  },
+  "stable_59": {
+   "file": "props/stable_59.png",
+   "h": 78,
+   "w": 130
+  },
+  "stable_60": {
+   "file": "props/stable_60.png",
+   "h": 80,
+   "w": 129
+  },
+  "stable_61": {
+   "file": "props/stable_61.png",
+   "h": 95,
+   "w": 98
+  },
+  "stable_62": {
+   "file": "props/stable_62.png",
+   "h": 95,
+   "w": 92
+  },
+  "stable_63": {
+   "file": "props/stable_63.png",
+   "h": 93,
+   "w": 85
+  },
+  "stable_64": {
+   "file": "props/stable_64.png",
+   "h": 95,
+   "w": 88
+  },
+  "stable_65": {
+   "file": "props/stable_65.png",
+   "h": 102,
+   "w": 91
+  },
+  "stable_66": {
+   "file": "props/stable_66.png",
+   "h": 98,
+   "w": 84
+  },
+  "stable_67": {
+   "file": "props/stable_67.png",
+   "h": 97,
+   "w": 82
+  },
+  "stable_68": {
+   "file": "props/stable_68.png",
+   "h": 98,
+   "w": 81
+  },
+  "stable_69": {
+   "file": "props/stable_69.png",
+   "h": 85,
+   "w": 87
+  },
+  "stable_70": {
+   "file": "props/stable_70.png",
+   "h": 85,
+   "w": 88
+  },
+  "stable_71": {
+   "file": "props/stable_71.png",
+   "h": 84,
+   "w": 86
+  },
+  "stable_72": {
+   "file": "props/stable_72.png",
+   "h": 83,
+   "w": 83
+  },
+  "stable_73": {
+   "file": "props/stable_73.png",
+   "h": 122,
+   "w": 123
+  },
+  "stable_74": {
+   "file": "props/stable_74.png",
+   "h": 126,
+   "w": 126
+  },
+  "stable_75": {
+   "file": "props/stable_75.png",
+   "h": 143,
+   "w": 125
+  },
+  "stable_76": {
+   "file": "props/stable_76.png",
+   "h": 105,
+   "w": 158
+  },
+  "stable_77": {
+   "file": "props/stable_77.png",
+   "h": 140,
+   "w": 107
+  },
+  "stable_78": {
+   "file": "props/stable_78.png",
+   "h": 97,
+   "w": 141
+  },
+  "stable_79": {
+   "file": "props/stable_79.png",
+   "h": 107,
+   "w": 92
+  },
+  "stable_80": {
+   "file": "props/stable_80.png",
+   "h": 99,
+   "w": 156
+  },
+  "stable_81": {
+   "file": "props/stable_81.png",
+   "h": 104,
+   "w": 93
+  },
+  "stable_82": {
+   "file": "props/stable_82.png",
+   "h": 98,
+   "w": 81
+  },
+  "stable_83": {
+   "file": "props/stable_83.png",
+   "h": 97,
+   "w": 82
+  },
+  "stable_84": {
+   "file": "props/stable_84.png",
+   "h": 109,
+   "w": 111
+  },
+  "stable_85": {
+   "file": "props/stable_85.png",
+   "h": 100,
+   "w": 83
   },
   "stalactite_a": {
    "file": "props/stalactite_a.png",
@@ -40068,6 +44710,2331 @@
    "frames": 4,
    "h": 32,
    "w": 128
+  },
+  "rdeco_highlands_0": {
+   "file": "tiles/rdeco_highlands_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_1": {
+   "file": "tiles/rdeco_highlands_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_2": {
+   "file": "tiles/rdeco_highlands_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_3": {
+   "file": "tiles/rdeco_highlands_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_4": {
+   "file": "tiles/rdeco_highlands_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_5": {
+   "file": "tiles/rdeco_highlands_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_6": {
+   "file": "tiles/rdeco_highlands_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_7": {
+   "file": "tiles/rdeco_highlands_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_8": {
+   "file": "tiles/rdeco_highlands_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_highlands_9": {
+   "file": "tiles/rdeco_highlands_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_0": {
+   "file": "tiles/rdeco_marsh_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_1": {
+   "file": "tiles/rdeco_marsh_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_10": {
+   "file": "tiles/rdeco_marsh_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_11": {
+   "file": "tiles/rdeco_marsh_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_12": {
+   "file": "tiles/rdeco_marsh_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_13": {
+   "file": "tiles/rdeco_marsh_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_14": {
+   "file": "tiles/rdeco_marsh_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_15": {
+   "file": "tiles/rdeco_marsh_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_16": {
+   "file": "tiles/rdeco_marsh_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_17": {
+   "file": "tiles/rdeco_marsh_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_18": {
+   "file": "tiles/rdeco_marsh_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_19": {
+   "file": "tiles/rdeco_marsh_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_2": {
+   "file": "tiles/rdeco_marsh_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_20": {
+   "file": "tiles/rdeco_marsh_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_21": {
+   "file": "tiles/rdeco_marsh_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_22": {
+   "file": "tiles/rdeco_marsh_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_23": {
+   "file": "tiles/rdeco_marsh_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_24": {
+   "file": "tiles/rdeco_marsh_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_3": {
+   "file": "tiles/rdeco_marsh_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_4": {
+   "file": "tiles/rdeco_marsh_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_5": {
+   "file": "tiles/rdeco_marsh_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_6": {
+   "file": "tiles/rdeco_marsh_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_7": {
+   "file": "tiles/rdeco_marsh_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_8": {
+   "file": "tiles/rdeco_marsh_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_marsh_9": {
+   "file": "tiles/rdeco_marsh_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_0": {
+   "file": "tiles/rdeco_orchard_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_1": {
+   "file": "tiles/rdeco_orchard_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_10": {
+   "file": "tiles/rdeco_orchard_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_11": {
+   "file": "tiles/rdeco_orchard_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_12": {
+   "file": "tiles/rdeco_orchard_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_2": {
+   "file": "tiles/rdeco_orchard_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_3": {
+   "file": "tiles/rdeco_orchard_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_4": {
+   "file": "tiles/rdeco_orchard_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_5": {
+   "file": "tiles/rdeco_orchard_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_6": {
+   "file": "tiles/rdeco_orchard_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_7": {
+   "file": "tiles/rdeco_orchard_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_8": {
+   "file": "tiles/rdeco_orchard_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_orchard_9": {
+   "file": "tiles/rdeco_orchard_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_0": {
+   "file": "tiles/rdeco_quarry_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_1": {
+   "file": "tiles/rdeco_quarry_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_2": {
+   "file": "tiles/rdeco_quarry_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_3": {
+   "file": "tiles/rdeco_quarry_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_4": {
+   "file": "tiles/rdeco_quarry_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_5": {
+   "file": "tiles/rdeco_quarry_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_6": {
+   "file": "tiles/rdeco_quarry_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_7": {
+   "file": "tiles/rdeco_quarry_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_quarry_8": {
+   "file": "tiles/rdeco_quarry_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_0": {
+   "file": "tiles/rdeco_riverlands_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_1": {
+   "file": "tiles/rdeco_riverlands_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_10": {
+   "file": "tiles/rdeco_riverlands_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_11": {
+   "file": "tiles/rdeco_riverlands_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_2": {
+   "file": "tiles/rdeco_riverlands_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_3": {
+   "file": "tiles/rdeco_riverlands_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_4": {
+   "file": "tiles/rdeco_riverlands_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_5": {
+   "file": "tiles/rdeco_riverlands_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_6": {
+   "file": "tiles/rdeco_riverlands_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_7": {
+   "file": "tiles/rdeco_riverlands_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_8": {
+   "file": "tiles/rdeco_riverlands_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_riverlands_9": {
+   "file": "tiles/rdeco_riverlands_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_0": {
+   "file": "tiles/rdeco_ruins_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_1": {
+   "file": "tiles/rdeco_ruins_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_10": {
+   "file": "tiles/rdeco_ruins_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_11": {
+   "file": "tiles/rdeco_ruins_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_12": {
+   "file": "tiles/rdeco_ruins_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_13": {
+   "file": "tiles/rdeco_ruins_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_14": {
+   "file": "tiles/rdeco_ruins_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_15": {
+   "file": "tiles/rdeco_ruins_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_16": {
+   "file": "tiles/rdeco_ruins_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_17": {
+   "file": "tiles/rdeco_ruins_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_2": {
+   "file": "tiles/rdeco_ruins_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_3": {
+   "file": "tiles/rdeco_ruins_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_4": {
+   "file": "tiles/rdeco_ruins_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_5": {
+   "file": "tiles/rdeco_ruins_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_6": {
+   "file": "tiles/rdeco_ruins_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_7": {
+   "file": "tiles/rdeco_ruins_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_8": {
+   "file": "tiles/rdeco_ruins_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rdeco_ruins_9": {
+   "file": "tiles/rdeco_ruins_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_0": {
+   "file": "tiles/redge_highlands_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_1": {
+   "file": "tiles/redge_highlands_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_10": {
+   "file": "tiles/redge_highlands_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_11": {
+   "file": "tiles/redge_highlands_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_12": {
+   "file": "tiles/redge_highlands_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_13": {
+   "file": "tiles/redge_highlands_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_14": {
+   "file": "tiles/redge_highlands_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_15": {
+   "file": "tiles/redge_highlands_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_16": {
+   "file": "tiles/redge_highlands_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_17": {
+   "file": "tiles/redge_highlands_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_18": {
+   "file": "tiles/redge_highlands_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_19": {
+   "file": "tiles/redge_highlands_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_2": {
+   "file": "tiles/redge_highlands_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_20": {
+   "file": "tiles/redge_highlands_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_21": {
+   "file": "tiles/redge_highlands_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_22": {
+   "file": "tiles/redge_highlands_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_23": {
+   "file": "tiles/redge_highlands_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_24": {
+   "file": "tiles/redge_highlands_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_25": {
+   "file": "tiles/redge_highlands_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_26": {
+   "file": "tiles/redge_highlands_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_27": {
+   "file": "tiles/redge_highlands_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_28": {
+   "file": "tiles/redge_highlands_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_29": {
+   "file": "tiles/redge_highlands_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_3": {
+   "file": "tiles/redge_highlands_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_30": {
+   "file": "tiles/redge_highlands_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_31": {
+   "file": "tiles/redge_highlands_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_32": {
+   "file": "tiles/redge_highlands_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_33": {
+   "file": "tiles/redge_highlands_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_34": {
+   "file": "tiles/redge_highlands_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_35": {
+   "file": "tiles/redge_highlands_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_4": {
+   "file": "tiles/redge_highlands_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_5": {
+   "file": "tiles/redge_highlands_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_6": {
+   "file": "tiles/redge_highlands_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_7": {
+   "file": "tiles/redge_highlands_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_8": {
+   "file": "tiles/redge_highlands_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_highlands_9": {
+   "file": "tiles/redge_highlands_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_0": {
+   "file": "tiles/redge_marsh_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_1": {
+   "file": "tiles/redge_marsh_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_10": {
+   "file": "tiles/redge_marsh_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_11": {
+   "file": "tiles/redge_marsh_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_12": {
+   "file": "tiles/redge_marsh_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_13": {
+   "file": "tiles/redge_marsh_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_14": {
+   "file": "tiles/redge_marsh_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_15": {
+   "file": "tiles/redge_marsh_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_16": {
+   "file": "tiles/redge_marsh_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_17": {
+   "file": "tiles/redge_marsh_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_18": {
+   "file": "tiles/redge_marsh_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_19": {
+   "file": "tiles/redge_marsh_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_2": {
+   "file": "tiles/redge_marsh_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_20": {
+   "file": "tiles/redge_marsh_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_21": {
+   "file": "tiles/redge_marsh_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_22": {
+   "file": "tiles/redge_marsh_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_23": {
+   "file": "tiles/redge_marsh_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_24": {
+   "file": "tiles/redge_marsh_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_25": {
+   "file": "tiles/redge_marsh_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_26": {
+   "file": "tiles/redge_marsh_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_27": {
+   "file": "tiles/redge_marsh_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_28": {
+   "file": "tiles/redge_marsh_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_29": {
+   "file": "tiles/redge_marsh_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_3": {
+   "file": "tiles/redge_marsh_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_30": {
+   "file": "tiles/redge_marsh_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_31": {
+   "file": "tiles/redge_marsh_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_32": {
+   "file": "tiles/redge_marsh_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_33": {
+   "file": "tiles/redge_marsh_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_34": {
+   "file": "tiles/redge_marsh_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_35": {
+   "file": "tiles/redge_marsh_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_36": {
+   "file": "tiles/redge_marsh_36.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_37": {
+   "file": "tiles/redge_marsh_37.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_38": {
+   "file": "tiles/redge_marsh_38.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_39": {
+   "file": "tiles/redge_marsh_39.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_4": {
+   "file": "tiles/redge_marsh_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_40": {
+   "file": "tiles/redge_marsh_40.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_41": {
+   "file": "tiles/redge_marsh_41.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_42": {
+   "file": "tiles/redge_marsh_42.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_43": {
+   "file": "tiles/redge_marsh_43.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_44": {
+   "file": "tiles/redge_marsh_44.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_45": {
+   "file": "tiles/redge_marsh_45.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_46": {
+   "file": "tiles/redge_marsh_46.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_47": {
+   "file": "tiles/redge_marsh_47.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_48": {
+   "file": "tiles/redge_marsh_48.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_49": {
+   "file": "tiles/redge_marsh_49.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_5": {
+   "file": "tiles/redge_marsh_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_50": {
+   "file": "tiles/redge_marsh_50.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_51": {
+   "file": "tiles/redge_marsh_51.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_52": {
+   "file": "tiles/redge_marsh_52.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_53": {
+   "file": "tiles/redge_marsh_53.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_54": {
+   "file": "tiles/redge_marsh_54.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_55": {
+   "file": "tiles/redge_marsh_55.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_56": {
+   "file": "tiles/redge_marsh_56.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_57": {
+   "file": "tiles/redge_marsh_57.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_58": {
+   "file": "tiles/redge_marsh_58.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_59": {
+   "file": "tiles/redge_marsh_59.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_6": {
+   "file": "tiles/redge_marsh_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_60": {
+   "file": "tiles/redge_marsh_60.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_61": {
+   "file": "tiles/redge_marsh_61.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_62": {
+   "file": "tiles/redge_marsh_62.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_63": {
+   "file": "tiles/redge_marsh_63.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_64": {
+   "file": "tiles/redge_marsh_64.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_65": {
+   "file": "tiles/redge_marsh_65.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_66": {
+   "file": "tiles/redge_marsh_66.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_67": {
+   "file": "tiles/redge_marsh_67.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_68": {
+   "file": "tiles/redge_marsh_68.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_69": {
+   "file": "tiles/redge_marsh_69.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_7": {
+   "file": "tiles/redge_marsh_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_70": {
+   "file": "tiles/redge_marsh_70.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_71": {
+   "file": "tiles/redge_marsh_71.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_8": {
+   "file": "tiles/redge_marsh_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_marsh_9": {
+   "file": "tiles/redge_marsh_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_0": {
+   "file": "tiles/redge_orchard_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_1": {
+   "file": "tiles/redge_orchard_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_10": {
+   "file": "tiles/redge_orchard_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_11": {
+   "file": "tiles/redge_orchard_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_12": {
+   "file": "tiles/redge_orchard_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_13": {
+   "file": "tiles/redge_orchard_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_14": {
+   "file": "tiles/redge_orchard_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_15": {
+   "file": "tiles/redge_orchard_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_16": {
+   "file": "tiles/redge_orchard_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_17": {
+   "file": "tiles/redge_orchard_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_18": {
+   "file": "tiles/redge_orchard_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_19": {
+   "file": "tiles/redge_orchard_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_2": {
+   "file": "tiles/redge_orchard_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_20": {
+   "file": "tiles/redge_orchard_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_21": {
+   "file": "tiles/redge_orchard_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_22": {
+   "file": "tiles/redge_orchard_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_23": {
+   "file": "tiles/redge_orchard_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_24": {
+   "file": "tiles/redge_orchard_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_25": {
+   "file": "tiles/redge_orchard_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_26": {
+   "file": "tiles/redge_orchard_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_27": {
+   "file": "tiles/redge_orchard_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_28": {
+   "file": "tiles/redge_orchard_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_29": {
+   "file": "tiles/redge_orchard_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_3": {
+   "file": "tiles/redge_orchard_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_30": {
+   "file": "tiles/redge_orchard_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_31": {
+   "file": "tiles/redge_orchard_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_32": {
+   "file": "tiles/redge_orchard_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_33": {
+   "file": "tiles/redge_orchard_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_34": {
+   "file": "tiles/redge_orchard_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_35": {
+   "file": "tiles/redge_orchard_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_4": {
+   "file": "tiles/redge_orchard_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_5": {
+   "file": "tiles/redge_orchard_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_6": {
+   "file": "tiles/redge_orchard_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_7": {
+   "file": "tiles/redge_orchard_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_8": {
+   "file": "tiles/redge_orchard_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_orchard_9": {
+   "file": "tiles/redge_orchard_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_0": {
+   "file": "tiles/redge_quarry_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_1": {
+   "file": "tiles/redge_quarry_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_10": {
+   "file": "tiles/redge_quarry_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_11": {
+   "file": "tiles/redge_quarry_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_12": {
+   "file": "tiles/redge_quarry_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_13": {
+   "file": "tiles/redge_quarry_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_14": {
+   "file": "tiles/redge_quarry_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_15": {
+   "file": "tiles/redge_quarry_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_16": {
+   "file": "tiles/redge_quarry_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_17": {
+   "file": "tiles/redge_quarry_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_18": {
+   "file": "tiles/redge_quarry_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_19": {
+   "file": "tiles/redge_quarry_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_2": {
+   "file": "tiles/redge_quarry_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_20": {
+   "file": "tiles/redge_quarry_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_21": {
+   "file": "tiles/redge_quarry_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_22": {
+   "file": "tiles/redge_quarry_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_23": {
+   "file": "tiles/redge_quarry_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_24": {
+   "file": "tiles/redge_quarry_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_25": {
+   "file": "tiles/redge_quarry_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_26": {
+   "file": "tiles/redge_quarry_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_27": {
+   "file": "tiles/redge_quarry_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_28": {
+   "file": "tiles/redge_quarry_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_29": {
+   "file": "tiles/redge_quarry_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_3": {
+   "file": "tiles/redge_quarry_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_30": {
+   "file": "tiles/redge_quarry_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_31": {
+   "file": "tiles/redge_quarry_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_32": {
+   "file": "tiles/redge_quarry_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_33": {
+   "file": "tiles/redge_quarry_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_34": {
+   "file": "tiles/redge_quarry_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_35": {
+   "file": "tiles/redge_quarry_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_4": {
+   "file": "tiles/redge_quarry_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_5": {
+   "file": "tiles/redge_quarry_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_6": {
+   "file": "tiles/redge_quarry_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_7": {
+   "file": "tiles/redge_quarry_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_8": {
+   "file": "tiles/redge_quarry_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_quarry_9": {
+   "file": "tiles/redge_quarry_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_0": {
+   "file": "tiles/redge_riverlands_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_1": {
+   "file": "tiles/redge_riverlands_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_10": {
+   "file": "tiles/redge_riverlands_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_11": {
+   "file": "tiles/redge_riverlands_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_12": {
+   "file": "tiles/redge_riverlands_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_13": {
+   "file": "tiles/redge_riverlands_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_14": {
+   "file": "tiles/redge_riverlands_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_15": {
+   "file": "tiles/redge_riverlands_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_16": {
+   "file": "tiles/redge_riverlands_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_17": {
+   "file": "tiles/redge_riverlands_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_18": {
+   "file": "tiles/redge_riverlands_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_19": {
+   "file": "tiles/redge_riverlands_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_2": {
+   "file": "tiles/redge_riverlands_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_20": {
+   "file": "tiles/redge_riverlands_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_21": {
+   "file": "tiles/redge_riverlands_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_22": {
+   "file": "tiles/redge_riverlands_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_23": {
+   "file": "tiles/redge_riverlands_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_24": {
+   "file": "tiles/redge_riverlands_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_25": {
+   "file": "tiles/redge_riverlands_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_26": {
+   "file": "tiles/redge_riverlands_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_27": {
+   "file": "tiles/redge_riverlands_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_28": {
+   "file": "tiles/redge_riverlands_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_29": {
+   "file": "tiles/redge_riverlands_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_3": {
+   "file": "tiles/redge_riverlands_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_30": {
+   "file": "tiles/redge_riverlands_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_31": {
+   "file": "tiles/redge_riverlands_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_32": {
+   "file": "tiles/redge_riverlands_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_33": {
+   "file": "tiles/redge_riverlands_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_34": {
+   "file": "tiles/redge_riverlands_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_35": {
+   "file": "tiles/redge_riverlands_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_4": {
+   "file": "tiles/redge_riverlands_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_5": {
+   "file": "tiles/redge_riverlands_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_6": {
+   "file": "tiles/redge_riverlands_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_7": {
+   "file": "tiles/redge_riverlands_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_8": {
+   "file": "tiles/redge_riverlands_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_riverlands_9": {
+   "file": "tiles/redge_riverlands_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_0": {
+   "file": "tiles/redge_ruins_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_1": {
+   "file": "tiles/redge_ruins_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_10": {
+   "file": "tiles/redge_ruins_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_11": {
+   "file": "tiles/redge_ruins_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_12": {
+   "file": "tiles/redge_ruins_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_13": {
+   "file": "tiles/redge_ruins_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_14": {
+   "file": "tiles/redge_ruins_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_15": {
+   "file": "tiles/redge_ruins_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_16": {
+   "file": "tiles/redge_ruins_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_17": {
+   "file": "tiles/redge_ruins_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_18": {
+   "file": "tiles/redge_ruins_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_19": {
+   "file": "tiles/redge_ruins_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_2": {
+   "file": "tiles/redge_ruins_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_20": {
+   "file": "tiles/redge_ruins_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_21": {
+   "file": "tiles/redge_ruins_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_22": {
+   "file": "tiles/redge_ruins_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_23": {
+   "file": "tiles/redge_ruins_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_24": {
+   "file": "tiles/redge_ruins_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_25": {
+   "file": "tiles/redge_ruins_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_26": {
+   "file": "tiles/redge_ruins_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_27": {
+   "file": "tiles/redge_ruins_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_28": {
+   "file": "tiles/redge_ruins_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_29": {
+   "file": "tiles/redge_ruins_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_3": {
+   "file": "tiles/redge_ruins_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_30": {
+   "file": "tiles/redge_ruins_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_31": {
+   "file": "tiles/redge_ruins_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_32": {
+   "file": "tiles/redge_ruins_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_33": {
+   "file": "tiles/redge_ruins_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_34": {
+   "file": "tiles/redge_ruins_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_35": {
+   "file": "tiles/redge_ruins_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_4": {
+   "file": "tiles/redge_ruins_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_5": {
+   "file": "tiles/redge_ruins_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_6": {
+   "file": "tiles/redge_ruins_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_7": {
+   "file": "tiles/redge_ruins_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_8": {
+   "file": "tiles/redge_ruins_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "redge_ruins_9": {
+   "file": "tiles/redge_ruins_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_0": {
+   "file": "tiles/rg_highlands_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_1": {
+   "file": "tiles/rg_highlands_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_10": {
+   "file": "tiles/rg_highlands_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_11": {
+   "file": "tiles/rg_highlands_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_12": {
+   "file": "tiles/rg_highlands_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_13": {
+   "file": "tiles/rg_highlands_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_14": {
+   "file": "tiles/rg_highlands_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_15": {
+   "file": "tiles/rg_highlands_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_16": {
+   "file": "tiles/rg_highlands_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_17": {
+   "file": "tiles/rg_highlands_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_2": {
+   "file": "tiles/rg_highlands_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_3": {
+   "file": "tiles/rg_highlands_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_4": {
+   "file": "tiles/rg_highlands_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_5": {
+   "file": "tiles/rg_highlands_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_6": {
+   "file": "tiles/rg_highlands_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_7": {
+   "file": "tiles/rg_highlands_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_8": {
+   "file": "tiles/rg_highlands_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_highlands_9": {
+   "file": "tiles/rg_highlands_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_0": {
+   "file": "tiles/rg_marsh_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_1": {
+   "file": "tiles/rg_marsh_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_10": {
+   "file": "tiles/rg_marsh_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_11": {
+   "file": "tiles/rg_marsh_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_12": {
+   "file": "tiles/rg_marsh_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_13": {
+   "file": "tiles/rg_marsh_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_14": {
+   "file": "tiles/rg_marsh_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_15": {
+   "file": "tiles/rg_marsh_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_16": {
+   "file": "tiles/rg_marsh_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_17": {
+   "file": "tiles/rg_marsh_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_18": {
+   "file": "tiles/rg_marsh_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_19": {
+   "file": "tiles/rg_marsh_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_2": {
+   "file": "tiles/rg_marsh_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_20": {
+   "file": "tiles/rg_marsh_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_21": {
+   "file": "tiles/rg_marsh_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_22": {
+   "file": "tiles/rg_marsh_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_23": {
+   "file": "tiles/rg_marsh_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_24": {
+   "file": "tiles/rg_marsh_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_25": {
+   "file": "tiles/rg_marsh_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_26": {
+   "file": "tiles/rg_marsh_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_27": {
+   "file": "tiles/rg_marsh_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_28": {
+   "file": "tiles/rg_marsh_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_29": {
+   "file": "tiles/rg_marsh_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_3": {
+   "file": "tiles/rg_marsh_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_30": {
+   "file": "tiles/rg_marsh_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_31": {
+   "file": "tiles/rg_marsh_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_32": {
+   "file": "tiles/rg_marsh_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_33": {
+   "file": "tiles/rg_marsh_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_34": {
+   "file": "tiles/rg_marsh_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_35": {
+   "file": "tiles/rg_marsh_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_4": {
+   "file": "tiles/rg_marsh_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_5": {
+   "file": "tiles/rg_marsh_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_6": {
+   "file": "tiles/rg_marsh_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_7": {
+   "file": "tiles/rg_marsh_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_8": {
+   "file": "tiles/rg_marsh_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_marsh_9": {
+   "file": "tiles/rg_marsh_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_0": {
+   "file": "tiles/rg_orchard_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_1": {
+   "file": "tiles/rg_orchard_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_10": {
+   "file": "tiles/rg_orchard_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_11": {
+   "file": "tiles/rg_orchard_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_12": {
+   "file": "tiles/rg_orchard_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_13": {
+   "file": "tiles/rg_orchard_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_14": {
+   "file": "tiles/rg_orchard_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_15": {
+   "file": "tiles/rg_orchard_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_16": {
+   "file": "tiles/rg_orchard_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_17": {
+   "file": "tiles/rg_orchard_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_2": {
+   "file": "tiles/rg_orchard_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_3": {
+   "file": "tiles/rg_orchard_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_4": {
+   "file": "tiles/rg_orchard_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_5": {
+   "file": "tiles/rg_orchard_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_6": {
+   "file": "tiles/rg_orchard_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_7": {
+   "file": "tiles/rg_orchard_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_8": {
+   "file": "tiles/rg_orchard_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_orchard_9": {
+   "file": "tiles/rg_orchard_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_0": {
+   "file": "tiles/rg_quarry_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_1": {
+   "file": "tiles/rg_quarry_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_10": {
+   "file": "tiles/rg_quarry_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_11": {
+   "file": "tiles/rg_quarry_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_12": {
+   "file": "tiles/rg_quarry_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_13": {
+   "file": "tiles/rg_quarry_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_14": {
+   "file": "tiles/rg_quarry_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_15": {
+   "file": "tiles/rg_quarry_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_16": {
+   "file": "tiles/rg_quarry_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_17": {
+   "file": "tiles/rg_quarry_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_2": {
+   "file": "tiles/rg_quarry_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_3": {
+   "file": "tiles/rg_quarry_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_4": {
+   "file": "tiles/rg_quarry_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_5": {
+   "file": "tiles/rg_quarry_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_6": {
+   "file": "tiles/rg_quarry_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_7": {
+   "file": "tiles/rg_quarry_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_8": {
+   "file": "tiles/rg_quarry_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_quarry_9": {
+   "file": "tiles/rg_quarry_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_0": {
+   "file": "tiles/rg_riverlands_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_1": {
+   "file": "tiles/rg_riverlands_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_10": {
+   "file": "tiles/rg_riverlands_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_11": {
+   "file": "tiles/rg_riverlands_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_12": {
+   "file": "tiles/rg_riverlands_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_13": {
+   "file": "tiles/rg_riverlands_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_14": {
+   "file": "tiles/rg_riverlands_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_15": {
+   "file": "tiles/rg_riverlands_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_16": {
+   "file": "tiles/rg_riverlands_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_17": {
+   "file": "tiles/rg_riverlands_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_2": {
+   "file": "tiles/rg_riverlands_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_3": {
+   "file": "tiles/rg_riverlands_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_4": {
+   "file": "tiles/rg_riverlands_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_5": {
+   "file": "tiles/rg_riverlands_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_6": {
+   "file": "tiles/rg_riverlands_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_7": {
+   "file": "tiles/rg_riverlands_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_8": {
+   "file": "tiles/rg_riverlands_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_riverlands_9": {
+   "file": "tiles/rg_riverlands_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_0": {
+   "file": "tiles/rg_ruins_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_1": {
+   "file": "tiles/rg_ruins_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_10": {
+   "file": "tiles/rg_ruins_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_11": {
+   "file": "tiles/rg_ruins_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_12": {
+   "file": "tiles/rg_ruins_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_13": {
+   "file": "tiles/rg_ruins_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_14": {
+   "file": "tiles/rg_ruins_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_15": {
+   "file": "tiles/rg_ruins_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_16": {
+   "file": "tiles/rg_ruins_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_17": {
+   "file": "tiles/rg_ruins_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_2": {
+   "file": "tiles/rg_ruins_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_3": {
+   "file": "tiles/rg_ruins_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_4": {
+   "file": "tiles/rg_ruins_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_5": {
+   "file": "tiles/rg_ruins_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_6": {
+   "file": "tiles/rg_ruins_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_7": {
+   "file": "tiles/rg_ruins_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_8": {
+   "file": "tiles/rg_ruins_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "rg_ruins_9": {
+   "file": "tiles/rg_ruins_9.png",
+   "h": 32,
+   "w": 32
   },
   "ri_ash_0": {
    "file": "tiles/ri_ash_0.png",
@@ -50523,6 +57490,471 @@
    "file": "ui/hourglass_4.png",
    "h": 24,
    "w": 21
+  },
+  "hud2_00": {
+   "file": "ui/hud2_00.png",
+   "h": 96,
+   "w": 107
+  },
+  "hud2_01": {
+   "file": "ui/hud2_01.png",
+   "h": 96,
+   "w": 108
+  },
+  "hud2_02": {
+   "file": "ui/hud2_02.png",
+   "h": 96,
+   "w": 107
+  },
+  "hud2_03": {
+   "file": "ui/hud2_03.png",
+   "h": 96,
+   "w": 107
+  },
+  "hud2_04": {
+   "file": "ui/hud2_04.png",
+   "h": 96,
+   "w": 107
+  },
+  "hud2_05": {
+   "file": "ui/hud2_05.png",
+   "h": 99,
+   "w": 111
+  },
+  "hud2_06": {
+   "file": "ui/hud2_06.png",
+   "h": 115,
+   "w": 126
+  },
+  "hud2_07": {
+   "file": "ui/hud2_07.png",
+   "h": 16,
+   "w": 14
+  },
+  "hud2_08": {
+   "file": "ui/hud2_08.png",
+   "h": 114,
+   "w": 192
+  },
+  "hud2_09": {
+   "file": "ui/hud2_09.png",
+   "h": 110,
+   "w": 359
+  },
+  "hud2_10": {
+   "file": "ui/hud2_10.png",
+   "h": 78,
+   "w": 59
+  },
+  "hud2_11": {
+   "file": "ui/hud2_11.png",
+   "h": 82,
+   "w": 66
+  },
+  "hud2_12": {
+   "file": "ui/hud2_12.png",
+   "h": 81,
+   "w": 73
+  },
+  "hud2_13": {
+   "file": "ui/hud2_13.png",
+   "h": 82,
+   "w": 79
+  },
+  "hud2_14": {
+   "file": "ui/hud2_14.png",
+   "h": 81,
+   "w": 72
+  },
+  "hud2_15": {
+   "file": "ui/hud2_15.png",
+   "h": 82,
+   "w": 78
+  },
+  "hud2_16": {
+   "file": "ui/hud2_16.png",
+   "h": 271,
+   "w": 99
+  },
+  "hud2_17": {
+   "file": "ui/hud2_17.png",
+   "h": 271,
+   "w": 98
+  },
+  "hud2_18": {
+   "file": "ui/hud2_18.png",
+   "h": 271,
+   "w": 97
+  },
+  "hud2_19": {
+   "file": "ui/hud2_19.png",
+   "h": 271,
+   "w": 97
+  },
+  "hud2_20": {
+   "file": "ui/hud2_20.png",
+   "h": 271,
+   "w": 98
+  },
+  "hud2_21": {
+   "file": "ui/hud2_21.png",
+   "h": 270,
+   "w": 91
+  },
+  "hud2_22": {
+   "file": "ui/hud2_22.png",
+   "h": 270,
+   "w": 91
+  },
+  "hud2_23": {
+   "file": "ui/hud2_23.png",
+   "h": 270,
+   "w": 91
+  },
+  "hud2_24": {
+   "file": "ui/hud2_24.png",
+   "h": 62,
+   "w": 68
+  },
+  "hud2_25": {
+   "file": "ui/hud2_25.png",
+   "h": 75,
+   "w": 76
+  },
+  "hud2_26": {
+   "file": "ui/hud2_26.png",
+   "h": 81,
+   "w": 84
+  },
+  "hud2_27": {
+   "file": "ui/hud2_27.png",
+   "h": 77,
+   "w": 74
+  },
+  "hud2_28": {
+   "file": "ui/hud2_28.png",
+   "h": 84,
+   "w": 79
+  },
+  "hud2_29": {
+   "file": "ui/hud2_29.png",
+   "h": 74,
+   "w": 68
+  },
+  "hud2_30": {
+   "file": "ui/hud2_30.png",
+   "h": 105,
+   "w": 101
+  },
+  "hud2_31": {
+   "file": "ui/hud2_31.png",
+   "h": 100,
+   "w": 114
+  },
+  "hud2_32": {
+   "file": "ui/hud2_32.png",
+   "h": 109,
+   "w": 121
+  },
+  "hud2_33": {
+   "file": "ui/hud2_33.png",
+   "h": 92,
+   "w": 112
+  },
+  "hud2_34": {
+   "file": "ui/hud2_34.png",
+   "h": 64,
+   "w": 47
+  },
+  "hud2_35": {
+   "file": "ui/hud2_35.png",
+   "h": 43,
+   "w": 47
+  },
+  "hud2_36": {
+   "file": "ui/hud2_36.png",
+   "h": 32,
+   "w": 38
+  },
+  "hud2_37": {
+   "file": "ui/hud2_37.png",
+   "h": 75,
+   "w": 95
+  },
+  "hud2_38": {
+   "file": "ui/hud2_38.png",
+   "h": 100,
+   "w": 104
+  },
+  "hud2_39": {
+   "file": "ui/hud2_39.png",
+   "h": 92,
+   "w": 108
+  },
+  "hud2_40": {
+   "file": "ui/hud2_40.png",
+   "h": 90,
+   "w": 104
+  },
+  "hud2_41": {
+   "file": "ui/hud2_41.png",
+   "h": 91,
+   "w": 86
+  },
+  "hud2_42": {
+   "file": "ui/hud2_42.png",
+   "h": 83,
+   "w": 111
+  },
+  "hud2_43": {
+   "file": "ui/hud2_43.png",
+   "h": 88,
+   "w": 140
+  },
+  "hud2_44": {
+   "file": "ui/hud2_44.png",
+   "h": 245,
+   "w": 281
+  },
+  "hud2_45": {
+   "file": "ui/hud2_45.png",
+   "h": 184,
+   "w": 151
+  },
+  "hud2_46": {
+   "file": "ui/hud2_46.png",
+   "h": 184,
+   "w": 152
+  },
+  "hud2_47": {
+   "file": "ui/hud2_47.png",
+   "h": 184,
+   "w": 152
+  },
+  "hud2_48": {
+   "file": "ui/hud2_48.png",
+   "h": 184,
+   "w": 152
+  },
+  "hud2_49": {
+   "file": "ui/hud2_49.png",
+   "h": 232,
+   "w": 311
+  },
+  "hud2_50": {
+   "file": "ui/hud2_50.png",
+   "h": 237,
+   "w": 479
+  },
+  "hud2_51": {
+   "file": "ui/hud2_51.png",
+   "h": 56,
+   "w": 56
+  },
+  "hud2_52": {
+   "file": "ui/hud2_52.png",
+   "h": 55,
+   "w": 56
+  },
+  "hud2_53": {
+   "file": "ui/hud2_53.png",
+   "h": 56,
+   "w": 56
+  },
+  "hud2_54": {
+   "file": "ui/hud2_54.png",
+   "h": 56,
+   "w": 56
+  },
+  "hud2_55": {
+   "file": "ui/hud2_55.png",
+   "h": 55,
+   "w": 108
+  },
+  "hud2_56": {
+   "file": "ui/hud2_56.png",
+   "h": 55,
+   "w": 108
+  },
+  "hud2_57": {
+   "file": "ui/hud2_57.png",
+   "h": 54,
+   "w": 108
+  },
+  "hud2_58": {
+   "file": "ui/hud2_58.png",
+   "h": 55,
+   "w": 108
+  },
+  "hud2_59": {
+   "file": "ui/hud2_59.png",
+   "h": 56,
+   "w": 57
+  },
+  "hud2_60": {
+   "file": "ui/hud2_60.png",
+   "h": 55,
+   "w": 57
+  },
+  "hud2_61": {
+   "file": "ui/hud2_61.png",
+   "h": 56,
+   "w": 57
+  },
+  "hud2_62": {
+   "file": "ui/hud2_62.png",
+   "h": 56,
+   "w": 57
+  },
+  "hud2_63": {
+   "file": "ui/hud2_63.png",
+   "h": 29,
+   "w": 29
+  },
+  "hud2_64": {
+   "file": "ui/hud2_64.png",
+   "h": 25,
+   "w": 23
+  },
+  "hud2_65": {
+   "file": "ui/hud2_65.png",
+   "h": 35,
+   "w": 33
+  },
+  "hud2_66": {
+   "file": "ui/hud2_66.png",
+   "h": 64,
+   "w": 56
+  },
+  "hud2_67": {
+   "file": "ui/hud2_67.png",
+   "h": 27,
+   "w": 24
+  },
+  "hud2_68": {
+   "file": "ui/hud2_68.png",
+   "h": 21,
+   "w": 18
+  },
+  "hud2_69": {
+   "file": "ui/hud2_69.png",
+   "h": 44,
+   "w": 39
+  },
+  "hud2_70": {
+   "file": "ui/hud2_70.png",
+   "h": 22,
+   "w": 21
+  },
+  "hud2_71": {
+   "file": "ui/hud2_71.png",
+   "h": 33,
+   "w": 32
+  },
+  "hud2_72": {
+   "file": "ui/hud2_72.png",
+   "h": 136,
+   "w": 134
+  },
+  "hud2_73": {
+   "file": "ui/hud2_73.png",
+   "h": 20,
+   "w": 29
+  },
+  "hud2_74": {
+   "file": "ui/hud2_74.png",
+   "h": 30,
+   "w": 28
+  },
+  "hud2_75": {
+   "file": "ui/hud2_75.png",
+   "h": 22,
+   "w": 15
+  },
+  "hud2_76": {
+   "file": "ui/hud2_76.png",
+   "h": 21,
+   "w": 17
+  },
+  "hud2_77": {
+   "file": "ui/hud2_77.png",
+   "h": 22,
+   "w": 18
+  },
+  "hud2_78": {
+   "file": "ui/hud2_78.png",
+   "h": 30,
+   "w": 28
+  },
+  "hud2_79": {
+   "file": "ui/hud2_79.png",
+   "h": 19,
+   "w": 31
+  },
+  "hud2_80": {
+   "file": "ui/hud2_80.png",
+   "h": 20,
+   "w": 27
+  },
+  "hud2_81": {
+   "file": "ui/hud2_81.png",
+   "h": 163,
+   "w": 161
+  },
+  "hud2_82": {
+   "file": "ui/hud2_82.png",
+   "h": 23,
+   "w": 32
+  },
+  "hud2_83": {
+   "file": "ui/hud2_83.png",
+   "h": 28,
+   "w": 20
+  },
+  "hud2_84": {
+   "file": "ui/hud2_84.png",
+   "h": 13,
+   "w": 13
+  },
+  "hud2_85": {
+   "file": "ui/hud2_85.png",
+   "h": 195,
+   "w": 186
+  },
+  "hud2_86": {
+   "file": "ui/hud2_86.png",
+   "h": 16,
+   "w": 17
+  },
+  "hud2_87": {
+   "file": "ui/hud2_87.png",
+   "h": 19,
+   "w": 17
+  },
+  "hud2_88": {
+   "file": "ui/hud2_88.png",
+   "h": 22,
+   "w": 24
+  },
+  "hud2_89": {
+   "file": "ui/hud2_89.png",
+   "h": 18,
+   "w": 19
+  },
+  "hud2_90": {
+   "file": "ui/hud2_90.png",
+   "h": 20,
+   "w": 21
+  },
+  "hud2_91": {
+   "file": "ui/hud2_91.png",
+   "h": 20,
+   "w": 18
+  },
+  "hud2_92": {
+   "file": "ui/hud2_92.png",
+   "h": 17,
+   "w": 17
   },
   "hungry": {
    "file": "ui/hungry.png",
