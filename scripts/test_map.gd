@@ -34,7 +34,6 @@ func _ready() -> void:
 		add_child(tag)
 
 	player = Player.new()
-	player.bounds = _map_rect.grow(-TILE * 1.5)
 	player.position = Vector2(_map_rect.size.x / 2.0, TILE * 14)
 	add_child(player)
 	var start_id := str(SaveGame.get_value("character", ids[0]))

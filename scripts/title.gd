@@ -23,6 +23,7 @@ func _ready() -> void:
 	var sky := Scenery.new()
 	sky.overhead = false
 	add_child(sky)
+	Music.instance(get_tree()).play("title")
 	var scroll := ScrollContainer.new()
 	scroll.set_anchors_preset(PRESET_FULL_RECT)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -74,6 +75,7 @@ func _show_title() -> void:
 	_page.add_child(spacer)
 	_page.add_child(_label("DREAMS", 36))
 	_page.add_child(_label("a mystical farming adventure", 9))
+	_page.add_child(_label("Two paths. One world. Every choice counts.", 8))
 	var spacer2 := Control.new()
 	spacer2.custom_minimum_size = Vector2(0, 40)
 	_page.add_child(spacer2)
@@ -178,4 +180,8 @@ func _begin() -> void:
 
 
 func _start_game() -> void:
-	get_tree().change_scene_to_file(FARM_SCENE)
+	var scene := str(GameState.run.get("scene", "farm"))
+	if not ResourceLoader.exists("res://scenes/%s.tscn" % scene):
+		scene = "farm"
+	GameMap.next_spawn = Vector2.ZERO
+	get_tree().change_scene_to_file("res://scenes/%s.tscn" % scene)

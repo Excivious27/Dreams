@@ -1,0 +1,6 @@
+{
+  "turnip":      {"name": "Turnip", "days": 3, "stages": 3, "yield": "turnip", "color": "e7d9ff", "top": "b56bd8"},
+  "strawberry":  {"name": "Strawberry", "days": 5, "stages": 4, "yield": "strawberry", "color": "3f9a48", "top": "e23a3a"},
+  "corn":        {"name": "Corn", "days": 7, "stages": 4, "yield": "corn", "color": "5fb04f", "top": "f2d14f"},
+  "dreamflower": {"name": "Dream Flower", "days": 9, "stages": 5, "yield": "dreamflower", "color": "4f8fd0", "top": "a8d8ff"}
+}

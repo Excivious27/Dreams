@@ -1,38 +1,46 @@
 class_name Player
 extends Node2D
-## The character you control. D-pad moves, B held runs, A attacks.
-## B tapped while standing plays the "play" animation if the character has one (dog).
-## Movement eases in and out, animation speed follows actual velocity, and
-## footstep dust puffs appear while running, so motion reads as fluid.
+## The character you control. D-pad moves (with collision against the map grid),
+## B runs (hold, or tap to toggle), A interacts with what's in front of you or
+## swings your sword. Movement eases in/out; animation speed follows real speed.
+
+signal interacted(cell: Vector2i)
 
 const WALK_SPEED := 58.0
-const RUN_SPEED := 110.0
-const ACCEL := 520.0
-const DECEL := 700.0
+const RUN_SPEED := 108.0
+const ACCEL := 560.0
+const DECEL := 760.0
 const PLAY_TIME := 1.5
+const FEET := Rect2(-4, -3, 8, 3)
 
-var bounds := Rect2(-100000, -100000, 200000, 200000)
 var char_id := ""
 var facing := "down"  # down, up, left, right
 var anim_name := ""
 var velocity := Vector2.ZERO
+var map: GameMap
+var frozen := false
+var invuln := 0.0
 
 var _sprite: Node2D
 var _anim: AnimatedSprite2D
 var _busy := false
+var _busy_t := 0.0
 var _play_left := 0.0
 var _bob := 0.0
 var _dust_timer := 0.0
 var _shadow: Node2D
+var _attack_hit_done := false
 
 
 func set_character(id: String) -> void:
+	GameState.load_data()
 	if _sprite:
 		_sprite.queue_free()
 	char_id = id
 	if id == "" or not CharacterLibrary.data().has(id):
 		var ph := PlaceholderSprite.new()
-		ph.tint = Color("2b3a67")
+		var pid := str(GameState.run.get("playable", ""))
+		ph.tint = Color(str(GameState.playables.get(pid, {}).get("color", "2b3a67")))
 		_sprite = ph
 		_anim = null
 	else:
@@ -54,18 +62,56 @@ func has_anim(a: String) -> bool:
 	return _anim != null and _anim.sprite_frames.has_animation(a)
 
 
+func facing_dir() -> Vector2:
+	match facing:
+		"up": return Vector2.UP
+		"left": return Vector2.LEFT
+		"right": return Vector2.RIGHT
+	return Vector2.DOWN
+
+
+func facing_cell() -> Vector2i:
+	return cell() + Vector2i(facing_dir())
+
+
+func cell() -> Vector2i:
+	return Vector2i(floori(position.x / GameMap.TILE), floori((position.y - 2) / GameMap.TILE))
+
+
 func _physics_process(delta: float) -> void:
 	if _sprite == null:
 		return
+	invuln = maxf(0.0, invuln - delta)
+	if _anim:
+		_anim.modulate = Color(1, 1, 1, 0.5 if invuln > 0.0 and int(invuln * 20) % 2 == 0 else 1.0)
+	if frozen:
+		velocity = Vector2.ZERO
+		_show_idle()
+		return
 	var dir := Input.get_vector("left", "right", "up", "down")
+	if _busy:
+		_busy_t += delta
+		if _busy_t > 1.2:
+			_busy = false  # watchdog: never stay stuck in an action
+	else:
+		_busy_t = 0.0
 
-	if Input.is_action_just_pressed("a") and not _busy:
+	if Input.is_action_just_pressed("a") and not _busy and not Dialogue.input_blocked():
+		if map and map.try_interact(facing_cell()):
+			velocity = Vector2.ZERO
+			_show_idle()
+			return
 		_busy = true
+		_attack_hit_done = false
 		velocity = Vector2.ZERO
 		_sprite.position.y = 0
 		_apply("attack", facing == "left", true)
+		if _anim == null:
+			# Placeholder sprites have no attack animation: resolve the hit now.
+			_attack_hit()
+			_busy = false
 		return
-	if Input.is_action_just_pressed("b") and dir == Vector2.ZERO and not _busy and has_anim("play"):
+	if Input.is_action_just_pressed("b") and dir == Vector2.ZERO and not _busy and has_anim("play") and not Dialogue.input_blocked():
 		_busy = true
 		_play_left = PLAY_TIME
 		_apply("play", facing == "left")
@@ -76,16 +122,20 @@ func _physics_process(delta: float) -> void:
 			if _play_left > 0.0 and dir == Vector2.ZERO:
 				return
 			_busy = false
-		elif _anim != null:
+		elif anim_name == "attack":
+			if _anim and _anim.frame >= 1 and not _attack_hit_done:
+				_attack_hit()
 			return
 		else:
 			_busy = false
 
-	var running := Input.is_action_pressed("b")
+	var running := Input.is_action_pressed("b") or TouchControls.run_toggle
+	if dir == Vector2.ZERO and not Input.is_action_pressed("b"):
+		pass
 	var target := dir * (RUN_SPEED if running else WALK_SPEED)
 	var rate := ACCEL if dir != Vector2.ZERO else DECEL
 	velocity = velocity.move_toward(target, rate * delta)
-	position = (position + velocity * delta).clamp(bounds.position, bounds.end)
+	_move(velocity * delta)
 
 	var speed := velocity.length()
 	if dir == Vector2.ZERO and speed < 4.0:
@@ -113,6 +163,40 @@ func _physics_process(delta: float) -> void:
 	if speed > WALK_SPEED * 1.15 and _dust_timer <= 0.0:
 		_dust_timer = 0.14
 		_puff(-move_dir)
+
+
+func _move(step: Vector2) -> void:
+	if map == null:
+		position += step
+		return
+	var nx := position + Vector2(step.x, 0)
+	if not map.rect_blocked(Rect2(nx + FEET.position, FEET.size)):
+		position = nx
+	else:
+		velocity.x = 0
+	var ny := position + Vector2(0, step.y)
+	if not map.rect_blocked(Rect2(ny + FEET.position, FEET.size)):
+		position = ny
+	else:
+		velocity.y = 0
+
+
+func _attack_hit() -> void:
+	_attack_hit_done = true
+	if map:
+		var center := position + facing_dir() * 10.0 + Vector2(0, -6)
+		map.attack_at(Rect2(center - Vector2(10, 10), Vector2(20, 20)), GameState.sword_damage())
+
+
+func take_damage(n: int, from: Vector2) -> void:
+	if invuln > 0.0:
+		return
+	invuln = 0.9
+	GameState.run["hp"] = int(GameState.run["hp"]) - n
+	velocity = (position - from).normalized() * 160.0
+	Music.instance(get_tree()).sfx("hurt")
+	if int(GameState.run["hp"]) <= 0 and map:
+		map.player_down()
 
 
 func _puff(back: Vector2) -> void:
@@ -157,3 +241,4 @@ func _apply(a: String, flip: bool, restart := false) -> void:
 func _on_animation_finished() -> void:
 	if anim_name == "attack":
 		_busy = false
+		_show_idle()

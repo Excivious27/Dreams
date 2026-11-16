@@ -42,6 +42,15 @@ func _run() -> void:
 		print("SMOKE OK ", path)
 
 	print("SMOKE DONE, failures: ", _fails)
+	# Release static caches and helper singletons so nothing leaks at exit.
+	for n in ["Dialogue", "Music"]:
+		var node := root.get_node_or_null(n)
+		if node:
+			node.free()
+	CharacterLibrary._frames_cache.clear()
+	CharacterLibrary._data.clear()
+	GameState.run = {}
+	await _frames(2)
 	quit(1 if _fails > 0 else 0)
 
 

@@ -3,24 +3,31 @@ extends CanvasLayer
 ## On-screen D-pad plus A, B and MENU buttons. Multi-touch; slide your thumb
 ## around the D-pad to change direction (8-way). Presses the same input actions
 ## as the keyboard, so game code only reads actions.
+## B: hold to run, or tap to toggle run on/off (shown on the button).
 
 const DPAD_CENTER := Vector2(58, 408)
 const DPAD_RADIUS := 40.0
+const TOP_OF_CONTROLS := 352.0
 const BUTTONS := {
-	"a": {"pos": Vector2(234, 392), "r": 21.0, "label": "A"},
-	"b": {"pos": Vector2(191, 430), "r": 21.0, "label": "B"},
-	"menu": {"pos": Vector2(135, 463), "r": 12.0, "label": "MENU"},
+	"a": {"pos": Vector2(234, 392), "r": 22.0, "label": "A"},
+	"b": {"pos": Vector2(189, 432), "r": 20.0, "label": "B"},
+	"menu": {"pos": Vector2(135, 463), "r": 13.0, "label": "MENU"},
 }
 const DIRS := {"left": Vector2.LEFT, "right": Vector2.RIGHT, "up": Vector2.UP, "down": Vector2.DOWN}
+
+static var run_toggle := false
 
 var _touches := {}  # touch index -> "dpad" or action name
 var _dpad_dir := Vector2.ZERO
 var _held := {}  # action -> true while held by touch
 var _canvas: Control
+var _b_down_at := 0.0
+var _b_moved := false
 
 
 func _ready() -> void:
 	layer = 10
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_canvas = Control.new()
 	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -32,6 +39,11 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_EXIT_TREE:
 		release_all()
+
+
+func _process(_delta: float) -> void:
+	# Keep the B button lit when run mode is toggled on.
+	_canvas.queue_redraw()
 
 
 func release_all() -> void:
@@ -55,6 +67,9 @@ func _input(event: InputEvent) -> void:
 			if hit == "dpad":
 				_update_dpad(t.position)
 			else:
+				if hit == "b":
+					_b_down_at = Time.get_ticks_msec() / 1000.0
+					_b_moved = _dpad_dir != Vector2.ZERO
 				_press(hit)
 			get_viewport().set_input_as_handled()
 		elif _touches.has(t.index):
@@ -63,6 +78,10 @@ func _input(event: InputEvent) -> void:
 			if what == "dpad":
 				_set_dpad(Vector2.ZERO)
 			else:
+				if what == "b":
+					var held_for := Time.get_ticks_msec() / 1000.0 - _b_down_at
+					if held_for < 0.3 and (_b_moved or _dpad_dir != Vector2.ZERO):
+						run_toggle = not run_toggle
 				_release(what)
 			get_viewport().set_input_as_handled()
 	elif event is InputEventScreenDrag:
@@ -139,9 +158,12 @@ func _on_draw() -> void:
 		var b: Dictionary = BUTTONS[action]
 		var p: Vector2 = b["pos"]
 		var r := float(b["r"])
-		_canvas.draw_circle(p, r, lit if _held.has(action) else base)
+		var on := _held.has(action) or (action == "b" and run_toggle)
+		_canvas.draw_circle(p, r, Color(1, 0.9, 0.5, 0.45) if (action == "b" and run_toggle) else (lit if on else base))
 		_canvas.draw_arc(p, r, 0, TAU, 40, edge, 1.5, true)
 		var size := 14 if r > 15.0 else 7
 		var label := str(b["label"])
-		var w := r * 2.0
-		_canvas.draw_string(font, p + Vector2(-r, size * 0.36), label, HORIZONTAL_ALIGNMENT_CENTER, w, size, Color(1, 1, 1, 0.85))
+		if action == "b" and run_toggle:
+			label = "RUN"
+			size = 9
+		_canvas.draw_string(font, p + Vector2(-r, size * 0.36), label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, size, Color(1, 1, 1, 0.9))

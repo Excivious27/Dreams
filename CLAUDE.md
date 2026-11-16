@@ -5,6 +5,9 @@
 - Input goes through actions `up/down/left/right/a/b/menu` (`InputSetup`); `TouchControls` presses the same actions.
 - Saves go to `user://` (`SaveGame`).
 - Before every push: `bash tools/check.sh` (needs `godot` on PATH or `GODOT=...`). Never push if it fails. CI runs it too.
-- `tools/screenshot.gd` renders PNGs for a visual check (needs a display, e.g. `xvfb-run ... --rendering-driver opengl3`).
+- `tools/playtest.gd` is a scripted playthrough with asserts and screenshots: `xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/playtest.gd -- /tmp/shots`. Run it after gameplay changes and look at the PNGs. Delete `~/.local/share/godot/app_userdata/Dreams/save.json` first.
+- Touch buttons press input *actions* (no InputEvents), so UI that reacts to A/B/MENU must poll `Input.is_action_just_pressed` in `_process` (see Dialogue, GameMenu), never rely on `_unhandled_input`.
+- After a dialogue/menu closes, `Dialogue.input_blocked()` is true for a moment; gameplay A/B checks respect it.
+- Audio placeholders: `python3 tools/make_audio.py` regenerates `audio/music/*.ogg` and `audio/sfx/*.wav`.
 - Never delete Tom's uploads (`reference/`, `art/incoming/`). Original characters and art only.
 - Keep `docs/STATUS.md` current.

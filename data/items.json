@@ -1,0 +1,36 @@
+{
+  "hoe":        {"name": "Hoe", "type": "tool", "value": 0},
+  "can":        {"name": "Watering Can", "type": "tool", "value": 0},
+  "axe":        {"name": "Axe", "type": "tool", "value": 0},
+  "pickaxe":    {"name": "Pickaxe", "type": "tool", "value": 0},
+  "sword":      {"name": "Wooden Sword", "type": "tool", "value": 0, "damage": 1},
+  "iron_sword": {"name": "Iron Sword", "type": "tool", "value": 120, "damage": 2},
+  "rod":        {"name": "Fishing Rod", "type": "tool", "value": 0},
+
+  "turnip_seed":     {"name": "Turnip Seeds", "type": "seed", "value": 4, "crop": "turnip"},
+  "strawberry_seed": {"name": "Strawberry Seeds", "type": "seed", "value": 10, "crop": "strawberry"},
+  "corn_seed":       {"name": "Corn Seeds", "type": "seed", "value": 12, "crop": "corn"},
+  "dream_seed":      {"name": "Dream Flower Seeds", "type": "seed", "value": 40, "crop": "dreamflower"},
+
+  "turnip":      {"name": "Turnip", "type": "crop", "value": 9},
+  "strawberry":  {"name": "Strawberry", "type": "crop", "value": 22},
+  "corn":        {"name": "Corn", "type": "crop", "value": 28},
+  "dreamflower": {"name": "Dream Flower", "type": "crop", "value": 110},
+
+  "berry":    {"name": "Wild Berry", "type": "forage", "value": 6, "heal": 1},
+  "mushroom": {"name": "Mushroom", "type": "forage", "value": 8, "heal": 1},
+  "fiber":    {"name": "Fiber", "type": "material", "value": 1},
+  "wood":     {"name": "Wood", "type": "material", "value": 2},
+  "stone":    {"name": "Stone", "type": "material", "value": 2},
+  "copper":   {"name": "Copper Ore", "type": "material", "value": 12},
+  "iron":     {"name": "Iron Ore", "type": "material", "value": 25},
+  "shard":    {"name": "Crystal Shard", "type": "material", "value": 45},
+
+  "minnow":  {"name": "Minnow", "type": "fish", "value": 7, "heal": 1},
+  "trout":   {"name": "Dream Trout", "type": "fish", "value": 30, "heal": 2},
+  "boot":    {"name": "Old Boot", "type": "junk", "value": 1},
+
+  "potion":     {"name": "Red Potion", "type": "potion", "value": 30, "heal": 4},
+  "energy_tea": {"name": "Energy Tea", "type": "potion", "value": 25, "energy": 40},
+  "gift_pie":   {"name": "Berry Pie", "type": "gift", "value": 35, "heal": 3, "friend": 25}
+}

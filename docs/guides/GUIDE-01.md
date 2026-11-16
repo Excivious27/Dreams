@@ -1,8 +1,11 @@
 # Guide #1: What I need next
 
-**Where the game is:** title screen, arc + character choice, naming, a first farm map
-with your pet following you, smooth movement, living sky. No town, NPCs, farming,
-combat, or music yet. Your notes are saved in `docs/DESIGN.md`.
+**Where the game is:** both story openings, farm with farming/fishing/sell box,
+house and sleep, a town with 5 people and 3 shops, the meadow fight and first boss,
+the mine, skills, day/night, placeholder music. Everything is drawn with placeholder
+shapes until your art arrives, and every name below (Maple, Gideon, Wren, Alder, Sal,
+"Dreamhollow", the crops) is a stand-in you can replace. Your notes are saved in
+`docs/DESIGN.md`; what exists is listed in `docs/STATUS.md`.
 
 Answer what you can, in any order, right in chat. Short answers are fine. Skip
 anything you haven't decided; I'll use a placeholder and flag it. The items are in

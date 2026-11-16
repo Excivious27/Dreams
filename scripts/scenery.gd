@@ -14,6 +14,9 @@ var _h := 480.0
 ## true: draws over the world (birds overhead, cloud shadows on the ground).
 ## false: draws behind everything (title screen sky).
 var overhead := true
+## Rain streaks over everything (gangster arc opening, storms later).
+var raining := false
+var _drops: Array = []
 
 
 func _ready() -> void:
@@ -39,13 +42,20 @@ func _process(delta: float) -> void:
 		if c["pos"].x > _w + 70:
 			c["pos"].x = -70
 	_next_flock -= delta
-	if _next_flock <= 0.0:
+	if _next_flock <= 0.0 and not raining:
 		_spawn_flock()
 		_next_flock = randf_range(7.0, 16.0)
 	for b: Dictionary in _birds:
 		b["pos"] += b["vel"] * delta
 		b["pos"].y += sin(_t * 2.0 + b["phase"]) * 6.0 * delta
 	_birds = _birds.filter(func(b: Dictionary) -> bool: return b["pos"].x > -40 and b["pos"].x < _w + 40)
+	if raining:
+		while _drops.size() < 90:
+			_drops.append(Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)))
+		for i in _drops.size():
+			_drops[i] += Vector2(-40, 260) * delta
+			if _drops[i].y > _h + 10:
+				_drops[i] = Vector2(randf_range(0, _w + 40), -10)
 	_canvas.queue_redraw()
 
 
@@ -68,6 +78,9 @@ func _spawn_flock() -> void:
 
 
 func _on_draw() -> void:
+	if raining:
+		for d: Vector2 in _drops:
+			_canvas.draw_line(d, d + Vector2(-2, 9), Color(0.75, 0.85, 1.0, 0.35), 1.0)
 	for c: Dictionary in _clouds:
 		var p: Vector2 = c["pos"]
 		var w: float = c["w"]
