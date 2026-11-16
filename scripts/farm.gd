@@ -53,6 +53,13 @@ func build() -> void:
 	block_rect(13, 1, 5, 2)   # barn
 	block_rect(1, 24, 3, 3)   # windmill
 	blocked[Vector2i(10, 4)] = true  # scarecrow
+	set_thing(1, 12, {"type": "workbench", "hint": "A: workbench"})
+	set_thing(2, 12, {"type": "workbench", "hint": "A: workbench"})
+	set_thing(5, 11, {"type": "furnace", "hint": "A: furnace (5 ore + 1 wood = bar)"})
+	set_thing(6, 11, {"type": "chest", "hint": "A: storage chest"})
+	set_thing(18, 24, {"type": "beehive", "hint": "A: beehive"})
+	set_thing(2, 20, {"type": "keg", "hint": "A: keg"})
+	set_thing(18, 4, {"type": "resonator", "hint": "A: crystal resonator"})
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
 
@@ -124,6 +131,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if not GameState.spend_energy(2):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
+			player.play_tool("axe")
 			Music.instance(get_tree()).sfx("chop")
 			thing["hp"] = int(thing["hp"]) - 1
 			if int(thing["hp"]) <= 0:
@@ -138,12 +146,30 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				GameState.run["flags"][thing["key"]] = int(GameState.run["day"])
 				give("berry", 2)
 				xp("foraging", 2)
-				if props.has(c) and Art.tex("nature", "bush"):
-					(props[c] as Sprite2D).texture = Art.tex("nature", "bush")
+				if props.has(c) and Art.tex("nature", GameState.bush_sprite(false)):
+					(props[c] as Sprite2D).texture = Art.tex("nature", GameState.bush_sprite(false))
 				queue_redraw()
 			return true
 		"crystal":
 			_talk_crystal()
+			return true
+		"workbench":
+			_workbench()
+			return true
+		"furnace":
+			_furnace()
+			return true
+		"chest":
+			_sellbox_like_chest()
+			return true
+		"beehive":
+			_daily_pickup("beehive", "honey", "The bees are still working.")
+			return true
+		"keg":
+			_keg(sel)
+			return true
+		"resonator":
+			_resonator(sel)
 			return true
 		"plot":
 			return _farm_tile(c, sel)
@@ -157,6 +183,7 @@ func _use_consumable(sel: String) -> bool:
 	var it: Dictionary = GameState.items.get(sel, {})
 	if it.has("heal") or it.has("energy"):
 		GameState.add_item(sel, -1)
+		player.play_tool("eat")
 		GameState.heal(int(it.get("heal", 0)))
 		GameState.restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * 8)
 		hud.toast("Ate %s." % GameState.item_name(sel))
@@ -176,6 +203,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			hud.toast("Too tired.", Color(1, 0.7, 0.7))
 			return true
 		farm[key] = {"watered": false, "crop": "", "days": 0}
+		player.play_tool("hoe")
 		Music.instance(get_tree()).sfx("dig")
 		xp("farming", 1)
 		queue_redraw()
@@ -187,6 +215,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			tile["crop"] = str(it["crop"])
 			tile["days"] = 0
 			GameState.add_item(sel, -1)
+			player.play_tool("hoe")
 			Music.instance(get_tree()).sfx("plant")
 			xp("farming", 2)
 			queue_redraw()
@@ -199,6 +228,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 	if int(tile["days"]) >= int(cd["days"]):
 		var n := 1 + (1 if randf() < 0.1 * GameState.skill_level("farming") else 0)
 		give(str(cd["yield"]), n)
+		player.play_tool("hold")
 		xp("farming", 6)
 		tile["crop"] = ""
 		tile["days"] = 0
@@ -218,6 +248,7 @@ func _water(tile: Dictionary) -> bool:
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return true
 	tile["watered"] = true
+	player.play_tool("water")
 	Music.instance(get_tree()).sfx("water")
 	queue_redraw()
 	return true
@@ -299,6 +330,110 @@ func _talk_crystal() -> void:
 		])
 
 
+# ---- crafting ----------------------------------------------------------------
+
+func _workbench() -> void:
+	var recipes := [
+		{"name": "Sprinkler (4 copper bar, 1 iron bar)", "need": {"copper_bar": 4, "iron_bar": 1}, "give": "sprinkler"},
+		{"name": "Chest (10 wood)", "need": {"wood": 10}, "give": "chest"},
+		{"name": "Scarecrow (8 wood, 4 fiber)", "need": {"wood": 8, "fiber": 4}, "give": "scarecrow"},
+		{"name": "Berry Pie (3 berry, 1 wheat)", "need": {"berry": 3, "wheat": 1}, "give": "gift_pie"},
+	]
+	var opts: Array = []
+	for r in recipes:
+		opts.append(str(r["name"]))
+	opts.append("Leave")
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "Workbench", "text": "Craft what? (Building skill speeds this up.)", "choice": opts, "key": ""}])
+	await d.finished
+	var i := d.last_choice
+	if i < 0 or i >= recipes.size():
+		return
+	var r: Dictionary = recipes[i]
+	for id in r["need"]:
+		if GameState.count(id) < int(r["need"][id]):
+			hud.toast("Need %d %s." % [int(r["need"][id]), GameState.item_name(id)], Color(1, 0.7, 0.7))
+			return
+	for id in r["need"]:
+		GameState.add_item(id, -int(r["need"][id]))
+	give(str(r["give"]))
+	xp("building", 6)
+
+
+func _furnace() -> void:
+	for ore in ["copper", "iron"]:
+		if GameState.count(ore) >= 5 and GameState.count("wood") >= 1:
+			GameState.add_item(ore, -5)
+			GameState.add_item("wood", -1)
+			give(ore + "_bar")
+			xp("building", 3)
+			if props.has(Vector2i(5, 11)) and Art.tex("props", "furnace_on"):
+				(props[Vector2i(5, 11)] as Sprite2D).texture = Art.tex("props", "furnace_on")
+			return
+	hud.toast("Needs 5 copper or iron ore and 1 wood.")
+
+
+func _sellbox_like_chest() -> void:
+	# A simple stash: moves everything that isn't a tool or seed into the chest, or takes it all back.
+	var chest: Dictionary = GameState.run["flags"].get("chest", {})
+	if chest.is_empty():
+		var moved := 0
+		for id in GameState.run["inventory"].keys():
+			var t := str(GameState.items.get(id, {}).get("type", ""))
+			if t in ["tool", "seed", "potion", "gift"]:
+				continue
+			chest[id] = GameState.count(id)
+			GameState.add_item(id, -GameState.count(id))
+			moved += 1
+		GameState.run["flags"]["chest"] = chest
+		hud.toast("Stored %d stacks in the chest." % moved if moved > 0 else "Nothing to store.")
+	else:
+		for id in chest:
+			GameState.add_item(id, int(chest[id]))
+		GameState.run["flags"]["chest"] = {}
+		hud.toast("Took everything back out.")
+
+
+func _daily_pickup(key: String, item: String, wait_msg: String) -> void:
+	var day := int(GameState.run["day"])
+	if int(GameState.run["flags"].get(key, 0)) < day - 2:
+		GameState.run["flags"][key] = day
+		give(item)
+		xp("farming", 2)
+	else:
+		hud.toast(wait_msg)
+
+
+func _keg(sel: String) -> void:
+	var keg: Dictionary = GameState.run["flags"].get("keg", {})
+	var day := int(GameState.run["day"])
+	if not keg.is_empty():
+		if day >= int(keg["ready"]):
+			GameState.run["flags"]["keg"] = {}
+			give(str(keg["out"]))
+			xp("farming", 5)
+		else:
+			hud.toast("Fermenting... %d more day(s)." % (int(keg["ready"]) - day))
+		return
+	var out := {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic"}
+	if out.has(sel) and GameState.count(sel) > 0:
+		GameState.add_item(sel, -1)
+		GameState.run["flags"]["keg"] = {"out": out[sel], "ready": day + 3}
+		hud.toast("The keg bubbles. Come back in 3 days.")
+	else:
+		hud.toast("Hold a fruit or crop and press A to start a brew.")
+
+
+func _resonator(sel: String) -> void:
+	if sel == "shard" and GameState.count("shard") >= 3:
+		GameState.add_item("shard", -3)
+		give("crystal_refined")
+		xp("mining", 8)
+		fx("pawring", cell_center(Vector2i(18, 4)) + Vector2(0, -12), 10.0, 0.6)
+	else:
+		hud.toast("Hold 3 Crystal Shards to refine one.")
+
+
 # ---- fishing -----------------------------------------------------------------
 
 func _fish() -> void:
@@ -307,8 +442,19 @@ func _fish() -> void:
 		return
 	_fishing = true
 	_fish_bite = false
+	player.play_tool("cast")
 	player.frozen = true
 	hud.toast("Casting... wait for the !")
+	var bob: AnimatedSprite2D = null
+	if Art.has("fx", "bobber"):
+		bob = AnimatedSprite2D.new()
+		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber", "bite": "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
+		bob.animation = "bobber"
+		bob.scale = Vector2(0.5, 0.5)
+		bob.position = cell_center(player.facing_cell()) + Vector2(0, -6)
+		bob.z_index = 1
+		add_child(bob)
+		bob.play("bobber")
 	var wait := randf_range(1.5, 4.0)
 	var t := 0.0
 	var caught := false
@@ -320,15 +466,26 @@ func _fish() -> void:
 			_fish_bite = true
 			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
 			Music.instance(get_tree()).sfx("bite")
+			if bob:
+				bob.play("bite")
 		if Input.is_action_just_pressed("a") and t > 0.2:
 			if _fish_bite:
 				caught = true
 			break
 	player.frozen = false
 	_fishing = false
+	if bob:
+		fx("splash", bob.position, 12.0, 0.5)
+		bob.queue_free()
 	if caught:
 		var roll := randf()
-		var fish := "boot" if roll < 0.12 else ("trout" if roll < 0.12 + 0.08 * GameState.skill_level("fishing") else "minnow")
+		var lvl := GameState.skill_level("fishing")
+		var fish := "boot"
+		if roll >= 0.12:
+			var pool: Array = ["sunfish", "carp", "minnow", "trout", "bass", "catfish", "salmon", "eel", "puffer", "goldfish", "starfin", "mooncarp"]
+			var reach := mini(pool.size(), 3 + lvl * 2)
+			fish = pool[randi() % reach]
+		player.play_tool("reel")
 		give(fish)
 		xp("fishing", 4)
 	else:
@@ -503,12 +660,28 @@ func _place_props() -> void:
 	prop("buildings", "mailbox", Vector2i(HOUSE.end.x, HOUSE.end.y - 1))
 	prop("buildings", "sellbox", SELLBOX)
 	prop("props", "barn", Vector2i(13, 2), 4, -2.0)
-	prop("props", "scarecrow", Vector2i(10, 4))
+	prop("props", "scarecrow2" if Art.has("props", "scarecrow2") else "scarecrow", Vector2i(10, 4))
 	prop("props", "windmill", Vector2i(1, 26), 2)
+	prop("props", "workbench2", Vector2i(1, 12), 2)
+	prop("props", "furnace_off", Vector2i(5, 11))
+	prop("props", "chest_closed", Vector2i(6, 11))
+	prop("props", "beehive2", Vector2i(18, 24))
+	prop("props", "keg", Vector2i(2, 20))
+	var res := prop("props", "resonator", Vector2i(19 - 1, 4))
+	if res and Art.has("props", "resonator"):
+		res.queue_free()
+		var a := AnimatedSprite2D.new()
+		a.sprite_frames = Art.frames("props", {"idle": "resonator"}, {"idle": 4.0})
+		a.animation = "idle"
+		a.scale = Vector2(0.5, 0.5)
+		a.position = cell_center(Vector2i(18, 4))
+		a.offset = Vector2(0, -float(Art.info("props", "resonator").get("cell_h", 80)) / 2.0)
+		add_child(a)
+		a.play("idle")
 	for t: Vector2i in TREES:
-		prop("nature", "oak" if (t.x + t.y) % 3 != 0 else "oak_autumn", t)
+		prop("nature", GameState.tree_sprite((t.x + t.y) % 3), t)
 	for b: Vector2i in BUSHES:
 		var has := bool(things[b].get("berries", false))
-		prop("nature", "berry_bush" if has else "bush", b)
+		prop("nature", GameState.bush_sprite(has), b)
 	for r: Vector2i in [Vector2i(2, 12), Vector2i(17, 25)]:
-		prop("nature", "rock_s", r)
+		prop("nature", "rock_snow_s" if GameState.season() == "winter" and Art.has("nature", "rock_snow_s") else "rock_s", r)

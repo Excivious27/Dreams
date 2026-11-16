@@ -27,10 +27,18 @@ func build() -> void:
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go outside"})
 	set_thing(5, 4, {"type": "table", "hint": ""})
 	set_thing(6, 4, {"type": "table", "hint": ""})
+	block_rect(4, 4, 1, 1)
+	block_rect(7, 4, 1, 1)
+	block_rect(6, 2, 2, 1)
+	block_rect(9, 2, 1, 2)
+	block_rect(1, 6, 3, 1)
+	blocked[Vector2i(9, 7)] = true
+	blocked[Vector2i(1, 3)] = true
+	set_thing(8, 7, {"type": "pet_bed", "hint": "A: pet bed"}, false)
 
 
 func after_ready() -> void:
-	pass
+	_place_props()
 
 
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
@@ -43,6 +51,9 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"chest":
 			_journal()
+			return true
+		"pet_bed":
+			hud.toast("%s curls up for a second, then follows you anyway." % GameState.names()["pet"])
 			return true
 	return false
 
@@ -89,27 +100,43 @@ func _journal() -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color("3a2a1c"))
-	if Art.has("tiles", "dock"):
-		for y in range(2, rows - 1):
-			for x in range(1, cols - 1):
-				Art.draw_tile(self, "tiles", "dock", Vector2(x * TILE, y * TILE), 4)
+	draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color("1a1410"))
+	if Art.has("tiles", "floor_wood"):
+		draw_tileset_rect("floor_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
+		draw_tileset_rect("rug_red", Rect2i(4, 5, 3, 3), Color("b03a2e"))
+		for x in range(1, cols - 1):
+			var idx := 0 if x == 1 else (2 if x == cols - 2 else 1)
+			var nm: String = ["int_wall_l", "int_wall_m", "int_wall_r"][idx]
+			var t := Art.tex("tiles", nm)
+			if t:
+				draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
+		Art.draw_prop(self, "furniture", "window", Vector2(4 * TILE + 8, 2 * TILE))
+		Art.draw_prop(self, "furniture", "window", Vector2(8 * TILE + 8, 2 * TILE))
 	else:
 		for y in range(2, rows - 1):
 			for x in range(1, cols - 1):
 				draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("a07a4c") if (x + y) % 2 == 0 else Color("96724a"))
-	draw_rect(Rect2(TILE, TILE, (cols - 2) * TILE, TILE), Color("c9b08a"))  # back wall
-	draw_rect(Rect2(4 * TILE, TILE + 3, 10, 10), Color("9fd8ff"))  # window
-	# Bed
-	draw_rect(Rect2(BED.x * TILE, BED.y * TILE, 2 * TILE, TILE + 4), Color("6b3b2a"))
-	draw_rect(Rect2(BED.x * TILE + 2, BED.y * TILE + 2, 2 * TILE - 4, TILE), Color("d8536a"))
-	draw_rect(Rect2(BED.x * TILE + 3, BED.y * TILE + 3, 10, 8), Color("f5f0e6"))
-	# Chest
-	if not Art.draw_prop(self, "buildings", "sellbox", cell_center(CHEST)):
-		draw_rect(Rect2(CHEST.x * TILE + 1, CHEST.y * TILE + 4, TILE - 2, TILE - 4), Color("8b5a2b"))
-	# Table
-	if not Art.draw_prop(self, "props", "workbench", cell_center(Vector2i(5, 4)) + Vector2(8, 0)):
-		draw_rect(Rect2(5 * TILE, 4 * TILE + 4, 2 * TILE, TILE - 4), Color("7a5230"))
-	# Rug and door
-	draw_rect(Rect2(4 * TILE, 6 * TILE, 3 * TILE, 2 * TILE), Color("b03a2e"))
+		draw_rect(Rect2(TILE, TILE, (cols - 2) * TILE, TILE), Color("c9b08a"))
+		draw_rect(Rect2(BED.x * TILE, BED.y * TILE, 2 * TILE, TILE + 4), Color("6b3b2a"))
+		draw_rect(Rect2(BED.x * TILE + 2, BED.y * TILE + 2, 2 * TILE - 4, TILE), Color("d8536a"))
 	draw_rect(Rect2(DOOR.x * TILE, DOOR.y * TILE, TILE, TILE), Color("3a2412"))
+
+
+func _place_props() -> void:
+	if not Art.has("furniture", "bed_single"):
+		return
+	prop("furniture", "bed_single", Vector2i(BED.x, BED.y + 1), 1)
+	prop("furniture", "chest_closed", CHEST)
+	prop("furniture", "table", Vector2i(5, 4), 1)
+	prop("furniture", "chair_down", Vector2i(4, 4))
+	prop("furniture", "chair_up", Vector2i(7, 4))
+	prop("furniture", "bookshelf", Vector2i(6, 2), 1)
+	prop("furniture", "fireplace", Vector2i(9, 2), 0, 2.0)
+	prop("furniture", "kitchen", Vector2i(1, 6), 2)
+	prop("furniture", "plant", Vector2i(9, 7))
+	prop("furniture", "lamp", Vector2i(1, 3))
+	prop("furniture", "pet_bed", Vector2i(8, 7))
+	var c := Art.sprite("furniture", "clock")
+	if c:
+		c.position = Vector2(2 * TILE + 8, TILE + 14)
+		add_child(c)

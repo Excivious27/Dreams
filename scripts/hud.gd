@@ -89,7 +89,10 @@ func _draw_hud() -> void:
 	var box := Rect2(166, 2, 100, 28)
 	_panel(c, "panel_parchment", box)
 	var dark := Color(0.25, 0.15, 0.05)
-	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 11), "Day %d" % int(r["day"]), HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
+	var sicon := Art.tex("ui", "season_" + GameState.season())
+	if sicon:
+		c.draw_texture_rect(sicon, Rect2(box.position.x + 4, box.position.y + 3, 9, 9), false)
+	c.draw_string(_font, Vector2(box.position.x + (15 if sicon else 6), box.position.y + 11), "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()], HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
 	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 22), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
 	var crystal := Art.tex("ui", "crystal")
 	var cx := box.end.x - 6
@@ -103,12 +106,21 @@ func _draw_hud() -> void:
 	# Toolbar
 	var tb: Array = r["toolbar"]
 	var slot := int(r["slot"])
-	c.draw_rect(Rect2(TOOLBAR_X - 2, TOOLBAR_Y - 2, 12 * SLOT + 4, SLOT + 4), Color(0.1, 0.07, 0.04, 0.75))
+	var frame := Art.tex("ui", "hotbar_frame")
+	if frame:
+		c.draw_texture_rect(frame, Rect2(TOOLBAR_X - 6, TOOLBAR_Y - 5, 12 * SLOT + 12, SLOT + 10), false)
+	else:
+		c.draw_rect(Rect2(TOOLBAR_X - 2, TOOLBAR_Y - 2, 12 * SLOT + 4, SLOT + 4), Color(0.1, 0.07, 0.04, 0.75))
+	var slot_tex := Art.tex("ui", "slot")
+	var slot_sel := Art.tex("ui", "slot_selected")
 	for i in 12:
 		var rect := Rect2(TOOLBAR_X + i * SLOT, TOOLBAR_Y, SLOT, SLOT)
-		c.draw_rect(rect.grow(-1), Color(0.35, 0.25, 0.15, 0.9) if i != slot else Color(0.55, 0.42, 0.2, 1.0))
-		if i == slot:
-			c.draw_rect(rect.grow(-0.5), Color(1, 0.9, 0.5), false, 1.5)
+		if slot_tex and slot_sel:
+			c.draw_texture_rect(slot_sel if i == slot else slot_tex, rect, false)
+		else:
+			c.draw_rect(rect.grow(-1), Color(0.35, 0.25, 0.15, 0.9) if i != slot else Color(0.55, 0.42, 0.2, 1.0))
+			if i == slot:
+				c.draw_rect(rect.grow(-0.5), Color(1, 0.9, 0.5), false, 1.5)
 		var id := str(tb[i])
 		if id == "":
 			continue

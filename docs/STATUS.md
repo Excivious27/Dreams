@@ -2,7 +2,37 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
-## What's in the game now
+## What's in the game now (art batch 2: 29 sheets integrated)
+- **Tool-use animations** for all four family members and the dog: hoe, water, axe,
+  pickaxe, cast, reel, hold-up, eat, in three directions. Farming, chopping, mining and
+  fishing all play them.
+- **Dialogue portraits** with moods (6 expressions for the family + dog; villagers,
+  crew, rivals, the President, the Light and Dark Crystals).
+- **Nine villagers** with real sprites (Barnaby, Greta, Wren, Alder, Finn, Lumi, Theo,
+  Hazel, Nico-as-Sal), walking around town with lines per arc.
+- **Grumps army**: soldier, archer, corrupted crystal knight, gloom wisp, commander;
+  **gangster roster**: cyber, brute, flame, speedster, gambler, enforcer; the
+  **President** and the **Dark Crystal** as boss-class enemies (sprites ready, boss
+  fights wired for the meadow; later fights wait on Guide #2 B).
+- **Gangster-arc heroes**: Dad and Pax get their jacket/hoodie variants and a punch.
+- **House interior** with wood floor, rug, wallpaper, window, bed, table, chairs,
+  bookshelf, fireplace, kitchen, plant, lamp, pet bed, clock, chest.
+- **Crafting stations on the farm**: workbench (recipes), furnace (ore → bars), storage
+  chest, keg (brews), beehive (honey), crystal resonator (3 shards → refined crystal),
+  sprinkler item.
+- **Fishing**: bobber and bite animation, splash, 12 fish from your sheet, better fish
+  with fishing level.
+- **Mine**: your floor and wall tiles, ore props (copper, iron, gold, crystal, dark),
+  ladders, support beams, mushrooms and moss; knights and wisps on deeper floors.
+- **Seasons**: spring/summer/fall/winter grass, trees and bushes swap per season (28
+  days each); season icon in the clock. **Weather**: rain, snow, petals, leaves,
+  fireflies, rolled per day; rain waters crops.
+- **Combat effects**: slash, hit spark, poof, sparkle on pickup, level-up burst,
+  Meow Pow Wow paw ring on the resonator.
+- **UI**: your hotbar frame and slots, season icons, skill icons, pink friendship
+  hearts, portraits in the Social tab.
+- **Hideout and moon tilesets** are sliced and ready (`art/gen/tiles`, `art/gen/props`);
+  no maps use them yet (waiting on story answers).
 - **Tom's art is in**: title key art, UI kit (hearts, energy bolt, crystal, buttons),
   ground/water/dock/stone tiles, farmhouse + mailbox + sell box + fences, town
   buildings, barn, windmill, scarecrow, lamps, stall, trees/bushes/rocks, crops with
@@ -61,9 +91,10 @@
 - Slice and wire in art from `art/incoming/` as it arrives
 
 ## Known gaps
-- Townspeople, Big Jim, the Light Crystal are still placeholder figures (batch 2 prompts)
-- Interiors are flat drawings (batch 2); only one season of ground tiles
-- Female penguin uses the same sprite with a pink tint until her sheet arrives
+- Villagers only have front pose + walk-toward (ART-PROMPTS-03 #1); they face front when walking sideways
+- Big Jim and the female penguin still placeholders; shop interiors still flat
+- Water edges: only the 9-piece pond set; rivers/beaches need #11
+- Hideout town, districts and moon maps not built (story first)
 - Woman's last attack frame is missing part of the pink magic crescent
 - Typing names on the web build uses the browser's keyboard; report any trouble
 - Multiplayer not started (see Guide #1, G)

@@ -179,7 +179,19 @@ func _refresh() -> void:
 				var d: Dictionary = r["skills"][s]
 				var lvl := int(d["level"])
 				var need := GameState.xp_for_next(lvl)
-				_line("%s   Lv %d" % [str(s).capitalize(), lvl], 9)
+				var h := HBoxContainer.new()
+				_body.add_child(h)
+				var ic := Art.tex("ui", "skill_" + str(s))
+				if ic:
+					var tr := TextureRect.new()
+					tr.texture = ic
+					tr.custom_minimum_size = Vector2(14, 14)
+					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					h.add_child(tr)
+				var l := Label.new()
+				l.text = "  %s   Lv %d" % [str(s).capitalize(), lvl]
+				l.add_theme_font_size_override("font_size", 9)
+				h.add_child(l)
 				var bar := ProgressBar.new()
 				bar.max_value = need
 				bar.value = int(d["xp"])
@@ -191,17 +203,24 @@ func _refresh() -> void:
 			_line("Enemies defeated: %d" % int(r.get("kills", 0)), 8)
 		"Social":
 			var fr: Dictionary = r["friendship"]
-			var full := Art.tex("ui", "heart_full")
-			var empty := Art.tex("ui", "heart_empty")
+			var full := Art.tex("ui", "pheart_full") if Art.has("ui", "pheart_full") else Art.tex("ui", "heart_full")
+			var empty := Art.tex("ui", "pheart_empty") if Art.has("ui", "pheart_empty") else Art.tex("ui", "heart_empty")
 			for id in GameState.npcs:
 				var d: Dictionary = GameState.npcs[id]
 				var pts := int(fr.get(id, 0))
 				var h := HBoxContainer.new()
 				_body.add_child(h)
+				var pt := Art.tex("portraits/" + str(d.get("portrait", id)), "neutral")
+				if pt:
+					var tr := TextureRect.new()
+					tr.texture = pt
+					tr.custom_minimum_size = Vector2(22, 22)
+					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					h.add_child(tr)
 				var l := Label.new()
 				l.text = "%s\n%s" % [d["name"], d["role"]]
 				l.add_theme_font_size_override("font_size", 8)
-				l.custom_minimum_size = Vector2(90, 0)
+				l.custom_minimum_size = Vector2(70, 0)
 				h.add_child(l)
 				var hearts := HBoxContainer.new()
 				hearts.add_theme_constant_override("separation", 0)

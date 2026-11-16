@@ -51,6 +51,7 @@ func _ready() -> void:
 	if has_sky:
 		sky = Scenery.new()
 		sky.raining = not GameState.is_penguins() and int(GameState.run["day"]) == 1
+		sky.weather = GameState.weather_today()
 		add_child(sky)
 	_night = CanvasModulate.new()
 	add_child(_night)
@@ -153,6 +154,29 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0) -> 
 	return s
 
 
+## One-shot effect from art/gen/fx at a world position (bottom-center). Falls back to nothing.
+func fx(name: String, at: Vector2, fps := 12.0, scale := 0.5, flip := false) -> void:
+	if not Art.has("fx", name):
+		return
+	var sp := AnimatedSprite2D.new()
+	sp.sprite_frames = Art.frames("fx", {name: name}, {name: fps}, {name: false})
+	sp.animation = name
+	sp.position = at
+	sp.scale = Vector2(scale, scale)
+	sp.flip_h = flip
+	sp.z_index = 3
+	sp.centered = true
+	add_child(sp)
+	sp.play(name)
+	sp.animation_finished.connect(sp.queue_free)
+
+
+## Rain/snow/leaves/fireflies overlay; set by season/weather.
+func set_weather(kind: String) -> void:
+	if sky:
+		sky.weather = kind
+
+
 # ---- enemies -----------------------------------------------------------------
 
 ## Swing at enemies inside the rect. Subclasses can extend (rocks, etc.).
@@ -163,6 +187,7 @@ func attack_at(r: Rect2, damage: int) -> bool:
 		if is_instance_valid(e) and r.has_point(e.position + Vector2(0, -6)):
 			if e.hit(damage, player.position):
 				hit = true
+				fx("spark", e.position + Vector2(0, -8), 18.0, 0.5)
 	if hit:
 		Music.instance(get_tree()).sfx("hit")
 	return hit
@@ -179,6 +204,7 @@ func spawn_enemy(kind: String, at: Vector2) -> Enemy:
 
 
 func on_enemy_died(e: Enemy) -> void:
+	fx("poof", e.position + Vector2(0, -8), 14.0, 0.6)
 	GameState.run["kills"] = int(GameState.run.get("kills", 0)) + 1
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
 	hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
@@ -336,12 +362,16 @@ func give(id: String, n := 1) -> void:
 	GameState.add_item(id, n)
 	hud.toast("+%d %s" % [n, GameState.item_name(id)], Color(0.85, 1, 0.85))
 	Music.instance(get_tree()).sfx("pickup")
+	if player:
+		fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.5)
 
 
 func xp(skill: String, n: int) -> void:
 	if GameState.add_xp(skill, n):
 		hud.toast("%s level %d!" % [skill.capitalize(), GameState.skill_level(skill)], Color(1, 0.9, 0.4))
 		Music.instance(get_tree()).sfx("levelup")
+		if player:
+			fx("levelup", player.position + Vector2(0, -4), 10.0, 0.6)
 
 
 # ---- shared drawing helpers --------------------------------------------------
@@ -349,13 +379,15 @@ func xp(skill: String, n: int) -> void:
 ## Grass everywhere with scattered decoration tiles (seeded so it's stable).
 func draw_grass(seed_v := 1) -> void:
 	_deco_rng.seed = seed_v
-	var has_tiles := Art.has("tiles", "grass")
+	var gname := GameState.grass_tile()
+	var has_tiles := Art.has("tiles", gname)
+	var season := GameState.season()
 	for y in rows:
 		for x in cols:
 			var at := Vector2(x * TILE, y * TILE)
 			if has_tiles:
-				Art.draw_tile(self, "tiles", "grass", at, 4)
-				if _deco_rng.randf() < 0.07:
+				Art.draw_tile(self, "tiles", gname, at, 4)
+				if season == "spring" and _deco_rng.randf() < 0.07:
 					Art.draw_tile(self, "tiles", "deco_%d" % _deco_rng.randi_range(0, 5), at)
 			else:
 				draw_rect(Rect2(at, Vector2(TILE, TILE)), Color("5a9e4b") if (x + y) % 2 == 0 else Color("67ab55"))

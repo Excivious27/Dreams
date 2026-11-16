@@ -9,10 +9,25 @@ const DISPLAY_NAMES := {"man": "Man", "woman": "Woman", "son": "Son", "girl": "G
 const STRIP := "map_large"
 const SPRITE_SCALE := 0.5
 const VIEW_NAMES: Array[String] = ["view_front", "view_right", "view_back", "view_left"]
-const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0}
-const LOOPS := {"attack": false, "powerup": false}
-## Characters that exist only in art/gen (no pack folder).
-const GEN_ONLY := {"penguin": true}
+const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0, "hurt": 6.0, "speak": 6.0, "charge": 6.0}
+const LOOPS := {"attack": false, "powerup": false, "hurt": false}
+## Tool-use actions (from Tom's tool sheets), each with _down/_right/_up strips.
+const TOOL_ACTIONS := ["hoe", "water", "axe", "pickaxe", "cast", "reel", "hold", "eat"]
+const TOOL_FPS := {"hoe": 10.0, "water": 8.0, "axe": 10.0, "pickaxe": 10.0, "cast": 8.0, "reel": 8.0, "hold": 8.0, "eat": 6.0}
+## Characters that exist only in art/gen (no pack folder). Value = the strips to load.
+const GEN_ONLY := {
+	"penguin": ["idle", "walk", "run", "attack", "powerup", "view_front", "view_right", "view_back", "view_left"],
+	"man_gang": ["walk", "walk_down", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"],
+	"son_gang": ["walk", "walk_down", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"],
+	"president": ["idle", "attack", "charge", "hurt", "view_front", "view_right", "view_back", "view_left"],
+	"light_crystal": ["idle", "speak"],
+	"barnaby": ["view_front", "walk_down"], "greta": ["view_front", "walk_down"], "wren": ["view_front", "walk_down"], "alder": ["view_front", "walk_down"],
+	"finn": ["view_front", "walk_down"], "lumi": ["view_front", "walk_down"], "theo": ["view_front", "walk_down"], "hazel": ["view_front", "walk_down"],
+	"riley": ["view_front", "walk_down"], "manny": ["view_front", "walk_down"], "eli": ["view_front", "walk_down"], "jax": ["view_front", "walk_down"], "vex": ["view_front", "walk_down"], "nico": ["view_front", "walk_down"],
+	"cyber": ["idle", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"], "brute": ["idle", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"],
+	"flame": ["idle", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"], "speedster": ["idle", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"],
+	"gambler": ["idle", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"], "enforcer": ["idle", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"],
+}
 
 static var _data: Dictionary = {}
 static var _frames_cache: Dictionary = {}
@@ -49,8 +64,22 @@ static func frames_for(id: String) -> SpriteFrames:
 		return _frames_cache[id]
 	if GEN_ONLY.has(id):
 		var g := "characters/" + id
-		var gsf := Art.frames(g, {"idle": "idle", "walk": "walk", "run": "run", "attack": "attack", "powerup": "powerup",
-			"view_front": "view_front", "view_right": "view_right", "view_back": "view_back", "view_left": "view_left"}, FPS, LOOPS)
+		var anims := {}
+		for a: String in GEN_ONLY[id]:
+			anims[a] = a
+		var gsf := Art.frames(g, anims, FPS, LOOPS)
+		# Fallbacks so every character can idle/walk even with a partial set.
+		if not gsf.has_animation("idle") and gsf.has_animation("view_front"):
+			_alias(gsf, "idle", "view_front")
+		if not gsf.has_animation("walk"):
+			_alias(gsf, "walk", "walk_down" if gsf.has_animation("walk_down") else "idle")
+		if not gsf.has_animation("run"):
+			_alias(gsf, "run", "walk")
+		if not gsf.has_animation("attack"):
+			_alias(gsf, "attack", "idle")
+		for v in ["view_right", "view_back", "view_left"]:
+			if not gsf.has_animation(v):
+				_alias(gsf, v, "view_front" if gsf.has_animation("view_front") else "idle")
 		_frames_cache[id] = gsf
 		return gsf
 	var info := strip_info(id)
@@ -75,16 +104,38 @@ static func frames_for(id: String) -> SpriteFrames:
 		at.atlas = tex
 		at.region = Rect2(i * w, 0, w, h)
 		sf.add_frame(anim, at)
-	# New frames from Tom's uploads (walking toward/away, dog sit/dig).
-	Art.add_frames(sf, "characters/" + id, {"walk_down": "walk_down", "walk_up": "walk_up", "run_down": "run_down", "run_up": "run_up", "sit": "sit", "dig": "dig"}, FPS, LOOPS)
+	# New frames from Tom's uploads (walking toward/away, dog sit/dig, tool use).
+	var extra := {"walk_down": "walk_down", "walk_up": "walk_up", "run_down": "run_down", "run_up": "run_up", "sit": "sit", "dig": "dig"}
+	var tfps := {}
+	var tloops := {}
+	for a: String in TOOL_ACTIONS:
+		for d: String in ["down", "right", "up"]:
+			extra[a + "_" + d] = a + "_" + d
+			tfps[a + "_" + d] = float(TOOL_FPS[a])
+			tloops[a + "_" + d] = false
+	tfps.merge(FPS)
+	tloops.merge(LOOPS)
+	Art.add_frames(sf, "characters/" + id, extra, tfps, tloops)
 	_frames_cache[id] = sf
 	return sf
 
 
 ## Sprite anchored at its feet (bottom-center), like the strips.
+static func _alias(sf: SpriteFrames, new_name: String, from: String) -> void:
+	if not sf.has_animation(from):
+		return
+	sf.add_animation(new_name)
+	sf.set_animation_speed(new_name, sf.get_animation_speed(from))
+	sf.set_animation_loop(new_name, sf.get_animation_loop(from))
+	for i in sf.get_frame_count(from):
+		sf.add_frame(new_name, sf.get_frame_texture(from, i))
+
+
 static func make_sprite(id: String) -> AnimatedSprite2D:
 	var s := AnimatedSprite2D.new()
 	s.sprite_frames = frames_for(id)
+	if s.sprite_frames.has_animation("idle"):
+		s.animation = "idle"
 	var h := int(strip_info(id)["cell_h"]) if data().has(id) else int(Art.info("characters/" + id, "idle").get("cell_h", 64))
 	s.centered = true
 	s.offset = Vector2(0, -h / 2.0)

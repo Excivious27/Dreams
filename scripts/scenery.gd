@@ -16,7 +16,13 @@ var _h := 480.0
 var overhead := true
 ## Rain streaks over everything (gangster arc opening, storms later).
 var raining := false
+## "clear", "rain", "snow", "leaves", "petals", "fireflies"
+var weather := "clear":
+	set(v):
+		weather = v
+		raining = v == "rain"
 var _drops: Array = []
+var _parts: Array = []
 
 
 func _ready() -> void:
@@ -49,6 +55,28 @@ func _process(delta: float) -> void:
 		b["pos"] += b["vel"] * delta
 		b["pos"].y += sin(_t * 2.0 + b["phase"]) * 6.0 * delta
 	_birds = _birds.filter(func(b: Dictionary) -> bool: return b["pos"].x > -40 and b["pos"].x < _w + 40)
+	var pkind := ""
+	match weather:
+		"snow": pkind = "snowflake"
+		"leaves": pkind = "leaf_orange"
+		"petals": pkind = "leaf_green"
+		"fireflies": pkind = "firefly"
+	if pkind != "" and Art.has("fx", pkind):
+		var want := 40 if weather != "fireflies" else 14
+		while _parts.size() < want:
+			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind})
+		for p: Dictionary in _parts:
+			if weather == "fireflies":
+				p["t"] += delta
+				p["pos"] += Vector2(sin(p["t"] * 1.3) * 12.0, cos(p["t"] * 0.9) * 8.0) * delta
+			else:
+				var fall := 18.0 if weather == "snow" else 26.0
+				p["pos"] += Vector2(sin(p["t"] + _t) * 8.0, fall) * delta
+				if p["pos"].y > _h + 10:
+					p["pos"] = Vector2(randf_range(0, _w + 40), -10)
+			p["f"] = int(_t * 4.0 + p["t"]) % 4
+	else:
+		_parts.clear()
 	if raining:
 		while _drops.size() < 90:
 			_drops.append(Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)))
@@ -79,8 +107,22 @@ func _spawn_flock() -> void:
 
 func _on_draw() -> void:
 	if raining:
+		var rd := Art.tex("fx", "raindrop")
 		for d: Vector2 in _drops:
-			_canvas.draw_line(d, d + Vector2(-2, 9), Color(0.75, 0.85, 1.0, 0.35), 1.0)
+			if rd:
+				_canvas.draw_texture_rect_region(rd, Rect2(d, Vector2(5, 12)), Rect2(0, 0, rd.get_width() / 3.0, rd.get_height()), Color(1, 1, 1, 0.7))
+			else:
+				_canvas.draw_line(d, d + Vector2(-2, 9), Color(0.75, 0.85, 1.0, 0.35), 1.0)
+	for p: Dictionary in _parts:
+		var t := Art.tex("fx", str(p["k"]))
+		if t == null:
+			continue
+		var info := Art.info("fx", str(p["k"]))
+		var cw := float(info.get("cell_w", t.get_width() / 4.0))
+		var ch := float(info.get("cell_h", t.get_height()))
+		var n := int(info.get("frames", 4))
+		var f: int = int(p["f"]) % n
+		_canvas.draw_texture_rect_region(t, Rect2(p["pos"], Vector2(cw, ch) * 0.5), Rect2(f * cw, 0, cw, ch))
 	for c: Dictionary in _clouds:
 		var p: Vector2 = c["pos"]
 		var w: float = c["w"]

@@ -52,17 +52,14 @@ func _run() -> void:
 	await frames(5)
 	var fc := p.facing_cell()
 	check(farm.things.get(fc, {}).get("type", "") == "plot", "facing a plot tile (%s)" % str(fc))
-	await press("a", 3)
-	await frames(5)
+	await act()
 	var key := "%d,%d" % [fc.x, fc.y]
 	check(GameState.run["farm"].has(key), "tilled a tile")
 	GameState.run["selected"] = "turnip_seed"
-	await press("a", 3)
-	await frames(5)
+	await act()
 	check(GameState.run["farm"][key].get("crop", "") == "turnip", "planted turnip")
 	GameState.run["selected"] = ""
-	await press("a", 3)
-	await frames(5)
+	await act()
 	check(bool(GameState.run["farm"][key].get("watered", false)), "watered the tile")
 	await shot("04_farming")
 
@@ -251,6 +248,7 @@ func _run() -> void:
 	check(meadow.enemies.size() >= 3, "grumps spawned (%d)" % meadow.enemies.size())
 	await shot("11_meadow")
 	var kills0 := int(GameState.run["kills"])
+	GameState.select_slot(4)  # sword
 	for i in 12:
 		if meadow.enemies.is_empty():
 			break
@@ -258,8 +256,7 @@ func _run() -> void:
 		meadow.player.position = e.position + Vector2(-12, 0)
 		meadow.player.facing = "right"
 		meadow.player.invuln = 1.0
-		await press("a", 2)
-		await frames(14)
+		await act()
 	check(int(GameState.run["kills"]) > kills0, "defeated a grump")
 	await shot("12_fight")
 
@@ -297,6 +294,7 @@ func _run() -> void:
 		await frames(6)
 	check(str(GameState.run["flags"].get("letter", "")) == "kept", "letter decision stored")
 	GameState.run["kills"] = 4
+	GameState.select_slot(4)
 	GameMap.next_spawn = Vector2.ZERO
 	change_scene_to_file("res://scenes/meadow.tscn")
 	await frames(40)
@@ -316,10 +314,15 @@ func _run() -> void:
 			break
 		await press("a", 2)
 		await frames(6)
+	for i in 10:
+		if not d.active:
+			break
+		await press("a", 2)
+		await frames(6)
 	await frames(10)
 	var boss: Enemy = null
 	for e in m2.enemies:
-		if e.kind == "big_grump":
+		if e.kind == "big_grump" or e.kind == "thug_brute":
 			boss = e
 	check(boss != null, "boss appeared after 5 kills")
 	await shot("15_boss")
@@ -353,6 +356,17 @@ func press(action: String, hold_frames: int) -> void:
 	await frames(hold_frames)
 	Input.action_release(action)
 	await frames(1)
+
+
+## Press A and wait until the player's action animation is done.
+func act() -> void:
+	await press("a", 3)
+	var scene := current_scene
+	for i in 60:
+		await frames(1)
+		if scene is GameMap and (scene as GameMap).player and not (scene as GameMap).player._busy:
+			break
+	await frames(3)
 
 
 func touch(index: int, pos: Vector2, pressed: bool) -> void:

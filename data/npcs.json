@@ -1,7 +1,11 @@
 {
-  "maple":  {"name": "Maple", "role": "General store", "color": "c9622f", "spot": [8, 10]},
-  "gideon": {"name": "Gideon", "role": "Blacksmith", "color": "4a4a5a", "spot": [15, 10]},
-  "wren":   {"name": "Wren", "role": "Potion shop", "color": "7a4fb0", "spot": [3, 17]},
-  "alder":  {"name": "Mayor Alder", "role": "Mayor", "color": "2f6b4a", "spot": [11, 17]},
-  "sal":    {"name": "Sal", "role": "Drifter", "color": "6b5a3a", "spot": [16, 23]}
+  "maple":  {"name": "Maple", "role": "General store", "color": "c9622f", "spot": [8, 10], "sprite": "barnaby", "portrait": "barnaby"},
+  "gideon": {"name": "Gideon", "role": "Blacksmith", "color": "4a4a5a", "spot": [15, 10], "sprite": "greta", "portrait": "greta"},
+  "wren":   {"name": "Wren", "role": "Potion shop", "color": "7a4fb0", "spot": [3, 17], "sprite": "wren", "portrait": "wren"},
+  "alder":  {"name": "Mayor Alder", "role": "Mayor", "color": "2f6b4a", "spot": [11, 17], "sprite": "alder", "portrait": "alder"},
+  "sal":    {"name": "Sal", "role": "Drifter", "color": "6b5a3a", "spot": [16, 23], "sprite": "nico", "portrait": "nico"},
+  "finn":   {"name": "Finn", "role": "Fisherman", "color": "d9a520", "spot": [4, 22], "sprite": "finn", "portrait": "finn"},
+  "lumi":   {"name": "Lumi", "role": "Artist", "color": "2aa7a0", "spot": [16, 19], "sprite": "lumi", "portrait": "lumi"},
+  "theo":   {"name": "Theo", "role": "Scholar", "color": "7a3a3a", "spot": [12, 23], "sprite": "theo", "portrait": "theo"},
+  "hazel":  {"name": "Hazel", "role": "Farmer", "color": "c99a3a", "spot": [3, 7], "sprite": "hazel", "portrait": "hazel"}
 }

@@ -41,6 +41,10 @@ func build() -> void:
 	block_rect(15, 22, 3, 3)   # cottage b
 	block_rect(17, 13, 2, 2)   # well
 	block_rect(2, 19, 2, 2)    # market stall
+	blocked[Vector2i(7, 2)] = true
+	block_rect(12, 2, 2, 1)
+	blocked[Vector2i(4, 25)] = true
+	blocked[Vector2i(14, 25)] = true
 	for c: Vector2i in [Vector2i(6, 12), Vector2i(13, 12), Vector2i(6, 21), Vector2i(13, 21)]:
 		blocked[c] = true
 
@@ -53,6 +57,8 @@ func after_ready() -> void:
 		var d: Dictionary = GameState.npcs[id]
 		if id == "sal" and GameState.is_penguins() and int(GameState.run["day"]) < 4:
 			continue
+		if id in ["finn", "lumi", "theo", "hazel"] and not GameState.run["flags"].has("town_seen"):
+			pass
 		var n := Npc.new()
 		n.map = self
 		n.setup(id, d, cell_center(Vector2i(int(d["spot"][0]), int(d["spot"][1]))))
@@ -262,6 +268,16 @@ func _lines(id: String, friend: int) -> Array:
 			if peng:
 				return [{"who": "Mayor Alder", "text": "A good year for turnips, I'm told. Odd year for the sky. We'll take the turnips."}]
 			return [{"who": "Mayor Alder", "text": "Taxes are low, questions are lower. Welcome to %s." % r["names"]["town"]}]
+		"finn":
+			if GameState.skill_level("fishing") >= 3:
+				return [{"who": "Finn", "text": "Level three already? Try the pond at dusk. The starfin only bites when the light goes blue."}]
+			return [{"who": "Finn", "text": "Cast with A, wait for the splash, press A again. Patience catches more than tackle."}]
+		"lumi":
+			return [{"who": "Lumi", "text": "The sky over your farm has the strangest colours lately. I've started painting it. Don't tell Alder, he thinks it's weather." if peng else "I paint what I see. Lately I see a lot of people looking over their shoulders."}]
+		"theo":
+			return [{"who": "Theo", "text": "There's a book in the hall about crystals that fall from the sky. Nobody's checked it out in forty years. Until this week." if peng else "Every town has a ledger of who owes what to whom. I keep ours. I don't keep names."}]
+		"hazel":
+			return [{"who": "Hazel", "text": "Water before nine, harvest after six. Turnips forgive, strawberries don't. Come borrow my hoe if yours breaks."}]
 		"sal":
 			if meadow_done and not peng:
 				if not r["flags"].has("sal_recruited"):
@@ -313,6 +329,10 @@ func _place_props() -> void:
 	for c: Vector2i in [Vector2i(6, 12), Vector2i(13, 12), Vector2i(6, 21), Vector2i(13, 21)]:
 		prop("props", "lamp", c)
 	prop("props", "stall", Vector2i(2, 20), 1)
+	prop("props", "signpost", Vector2i(7, 2))
+	prop("props", "board", Vector2i(12, 2), 1)
+	for c: Vector2i in [Vector2i(4, 25), Vector2i(14, 25)]:
+		prop("props", "lantern_lit", c)
 	for k in things:
 		if things[k].get("type", "") == "tree":
-			prop("nature", "pine" if (k.x + k.y) % 2 == 0 else "oak", k)
+			prop("nature", GameState.tree_sprite(1 if (k.x + k.y) % 2 == 0 else 0), k)

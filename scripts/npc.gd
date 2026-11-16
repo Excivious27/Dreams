@@ -9,6 +9,7 @@ var _t := 0.0
 var _target := Vector2.ZERO
 var _label: Label
 var _figure: PlaceholderSprite
+var _anim: AnimatedSprite2D
 var map: GameMap
 
 
@@ -17,9 +18,15 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 	home = at
 	position = at
 	_target = at
-	_figure = PlaceholderSprite.new()
-	_figure.tint = Color(str(data.get("color", "888888")))
-	add_child(_figure)
+	var sprite_id := str(data.get("sprite", ""))
+	if sprite_id != "" and CharacterLibrary.has_character(sprite_id):
+		_anim = CharacterLibrary.make_sprite(sprite_id)
+		_anim.play("idle")
+		add_child(_anim)
+	else:
+		_figure = PlaceholderSprite.new()
+		_figure.tint = Color(str(data.get("color", "888888")))
+		add_child(_figure)
 	_label = Label.new()
 	_label.text = str(data.get("name", id))
 	_label.add_theme_font_size_override("font_size", 7)
@@ -48,4 +55,11 @@ func _process(delta: float) -> void:
 		var np := position + step
 		if map == null or not map.rect_blocked(Rect2(np + Vector2(-3, -3), Vector2(6, 3))):
 			position = np
-		_figure.scale.x = -1.0 if to.x < 0 else 1.0
+		if _figure:
+			_figure.scale.x = -1.0 if to.x < 0 else 1.0
+		elif _anim:
+			_anim.flip_h = to.x < 0
+			if _anim.animation != "walk":
+				_anim.play("walk")
+	elif _anim and _anim.animation != "idle":
+		_anim.play("idle")

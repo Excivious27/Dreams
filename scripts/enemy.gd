@@ -17,6 +17,7 @@ var _hit_flash := 0.0
 var _anim_t := 0.0
 var _knock := Vector2.ZERO
 var _alive := true
+var _attacking := 0.0
 var _sprite: AnimatedSprite2D
 var _shadow_r := 5.0
 
@@ -36,11 +37,48 @@ func setup(k: String) -> void:
 			hp = 8; speed = 18.0; damage = 2; reward = 12
 		"shard":
 			hp = 4; speed = 30.0; damage = 1; reward = 8
+		"soldier":
+			hp = 5; speed = 36.0; damage = 1; reward = 6
+		"archer":
+			hp = 4; speed = 30.0; damage = 1; reward = 7
+		"knight":
+			hp = 12; speed = 28.0; damage = 2; reward = 25
+		"wisp":
+			hp = 3; speed = 44.0; damage = 1; reward = 5
+		"commander":
+			hp = 40; speed = 24.0; damage = 3; reward = 150
+		"dark_crystal":
+			hp = 80; speed = 20.0; damage = 3; reward = 500
+		# Gangster arc (sprites live in characters/, not enemies/)
+		"thug_cyber":
+			hp = 10; speed = 34.0; damage = 2; reward = 20
+		"thug_brute":
+			hp = 18; speed = 22.0; damage = 3; reward = 35
+		"thug_flame":
+			hp = 12; speed = 30.0; damage = 2; reward = 30
+		"thug_speedster":
+			hp = 8; speed = 60.0; damage = 1; reward = 25
+		"thug_gambler":
+			hp = 10; speed = 32.0; damage = 2; reward = 30
+		"thug_enforcer":
+			hp = 24; speed = 20.0; damage = 3; reward = 45
+		"president":
+			hp = 120; speed = 26.0; damage = 4; reward = 1000
 	max_hp = hp
 	var art_kind := "grump" if k == "big_grump" else k
-	if Art.has("enemies/" + art_kind, "idle"):
+	var group := "enemies/" + art_kind
+	if k.begins_with("thug_"):
+		group = "characters/" + k.trim_prefix("thug_")
+	elif k == "president":
+		group = "characters/president"
+	if Art.has(group, "idle"):
 		_sprite = AnimatedSprite2D.new()
-		_sprite.sprite_frames = Art.frames("enemies/" + art_kind, {"idle": "idle", "walk": "walk", "hurt": "hurt"}, {"idle": 5.0, "walk": 8.0, "hurt": 8.0})
+		var anims := {"idle": "idle", "hurt": "hurt"}
+		anims["walk"] = "walk" if Art.has(group, "walk") else "idle"
+		if Art.has(group, "attack"):
+			anims["attack"] = "attack"
+		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0}, {"attack": false, "hurt": false})
+		_sprite.animation = "idle"
 		var s := 0.5 if k != "big_grump" else 1.1
 		_sprite.scale = Vector2(s, s)
 		_sprite.frame_changed.connect(func() -> void:
@@ -75,8 +113,12 @@ func _process(delta: float) -> void:
 		_dir = -_dir
 	if dist < 9.0 and player.invuln <= 0.0:
 		player.take_damage(damage, position)
+		if _sprite and _sprite.sprite_frames.has_animation("attack"):
+			_attacking = 0.4
+			_sprite.play("attack")
+	_attacking = maxf(0.0, _attacking - delta)
 	if _sprite:
-		var want := "hurt" if _hit_flash > 0.0 else ("walk" if _dir != Vector2.ZERO else "idle")
+		var want := "hurt" if _hit_flash > 0.0 else ("attack" if _attacking > 0.0 else ("walk" if _dir != Vector2.ZERO else "idle"))
 		if _sprite.animation != want:
 			_sprite.play(want)
 		_sprite.flip_h = _dir.x < 0
@@ -107,8 +149,9 @@ func _die() -> void:
 func _draw() -> void:
 	draw_circle(Vector2(0, 0), _shadow_r, Color(0, 0, 0, 0.2))
 	if max_hp > 3:
-		draw_rect(Rect2(-10, -30, 20, 3), Color(0, 0, 0, 0.6))
-		draw_rect(Rect2(-10, -30, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2))
+		var top := -30.0 if max_hp < 30 else -60.0
+		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))
+		draw_rect(Rect2(-10, top, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2))
 	if _sprite:
 		return
 	# Procedural fallback: a stormy little cloud.

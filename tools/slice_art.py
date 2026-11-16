@@ -25,8 +25,10 @@ manifest = {}
 def key_magenta(img):
     a = np.asarray(img.convert("RGBA")).astype(np.int32)
     r, g, b = a[..., 0], a[..., 1], a[..., 2]
-    mag = np.minimum(r, b) - g  # how magenta a pixel is
+    mag = np.minimum(r, b) - g  # how magenta a pixel is (orange has low b, so it stays opaque)
     alpha = np.clip((100 - mag) * 255 / 45, 0, 255)   # mag<=55 opaque, >=100 clear
+    bright = np.minimum(r, b)
+    alpha = np.where(bright < 150, 255, alpha)         # dark purples/outlines are never background
     out = a.copy()
     # de-spill: pull magenta fringe toward neutral
     fringe = (alpha < 255) & (alpha > 0)
@@ -138,8 +140,18 @@ def crop(rgba, box):
     return Image.fromarray(rgba[y0:y1, x0:x1])
 
 
-def scale_to(img, width=None, height=None):
+def scale_to(img, width=None, height=None, cover=False):
+    """Fit inside width x height (keeps aspect). cover=True: fill it, cropping the overflow."""
     w, h = img.size
+    if cover and width and height:
+        f = max(width / w, height / h)
+        nw, nh = max(1, round(w * f)), max(1, round(h * f))
+        out = img.resize((nw, nh), Image.LANCZOS)
+        x0, y0 = (nw - width) // 2, (nh - height) // 2
+        out = out.crop((x0, y0, x0 + width, y0 + height))
+        a = np.asarray(out).copy()
+        a[..., 3] = np.where(a[..., 3] > 110, 255, 0)
+        return Image.fromarray(a)
     if width and not height:
         f = width / w
     elif height and not width:
@@ -263,9 +275,9 @@ def crops():
 def water():
     rgba = load("water_anim.png")
     rows = cells_by_projection(rgba, row_gap=4, col_gap=4, min_size=100)
-    frames = [scale_to(crop(rgba, (b[0] + 6, b[1] + 6, b[2] - 6, b[3] - 6)), width=TILE2, height=TILE2) for b in rows[0][:4]]
+    frames = [scale_to(crop(rgba, (b[0] + 6, b[1] + 6, b[2] - 6, b[3] - 6)), width=TILE2, height=TILE2, cover=True) for b in rows[0][:4]]
     strip(frames, "tiles", "water")
-    frames = [scale_to(crop(rgba, (b[0] + 6, b[1] + 6, b[2] - 6, b[3] - 6)), width=TILE2, height=TILE2) for b in rows[1][:4]]
+    frames = [scale_to(crop(rgba, (b[0] + 6, b[1] + 6, b[2] - 6, b[3] - 6)), width=TILE2, height=TILE2, cover=True) for b in rows[1][:4]]
     strip(frames, "tiles", "shore")
 
 
@@ -277,7 +289,7 @@ def ground():
     mid = [("shore_set", (18, 420, 380, 792)), ("stone", (398, 420, 758, 792)), ("dock", (778, 420, 1140, 792))]
     for nm, reg in top + mid:
         grid = cells_by_projection(rgba, region=reg, row_gap=3, col_gap=3, min_size=60)
-        tiles = [scale_to(crop(rgba, (b[0] + 4, b[1] + 4, b[2] - 4, b[3] - 4)), width=TILE2, height=TILE2) for row in grid[:3] for b in row[:3]]
+        tiles = [scale_to(crop(rgba, (b[0] + 4, b[1] + 4, b[2] - 4, b[3] - 4)), width=TILE2, height=TILE2, cover=True) for row in grid[:3] for b in row[:3]]
         sheet = Image.new("RGBA", (TILE2 * 3, TILE2 * 3))
         for i, t in enumerate(tiles):
             sheet.alpha_composite(t, ((i % 3) * TILE2, (i // 3) * TILE2))
@@ -380,6 +392,9 @@ def title():
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
+    mpath = os.path.join(OUT, "manifest.json")
+    if os.path.exists(mpath):
+        manifest.update(json.load(open(mpath)))
     steps = [
         ("dad", lambda: char_updown("dad_updown.png", "man", 74)),
         ("mom", lambda: char_updown("mom_updown.png", "woman", 78)),

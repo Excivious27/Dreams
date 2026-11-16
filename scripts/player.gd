@@ -166,6 +166,10 @@ func _physics_process(delta: float) -> void:
 			if _anim and _anim.frame >= 1 and not _attack_hit_done:
 				_attack_hit()
 			return
+		elif anim_name.begins_with("hoe_") or anim_name.begins_with("water_") or anim_name.begins_with("axe_") or anim_name.begins_with("pickaxe_") or anim_name.begins_with("cast_") or anim_name.begins_with("reel_") or anim_name.begins_with("hold_") or anim_name.begins_with("eat_"):
+			if _anim and _anim.is_playing():
+				return
+			_busy = false
 		else:
 			_busy = false
 
@@ -234,11 +238,32 @@ func _physics_process(delta: float) -> void:
 		_puff(-move_dir)
 
 
+## Play a tool-use animation (hoe/water/axe/pickaxe/cast/reel/hold/eat) in the
+## facing direction if the character has it. Returns true if it played.
+func play_tool(action: String, restart := true) -> bool:
+	var d := "right" if facing in ["left", "right"] else facing
+	var a := action + "_" + d
+	if not has_anim(a):
+		return false
+	_busy = true
+	_busy_t = 0.0
+	velocity = Vector2.ZERO
+	_sprite.position.y = 0
+	_apply(a, facing == "left", restart)
+	return true
+
+
 func _do_action() -> void:
 	if map and map.try_interact(facing_cell()):
 		velocity = Vector2.ZERO
-		_show_idle()
+		if not _busy:
+			_show_idle()
 		return
+	if GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "rod"]:
+		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
+		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast"}[GameState.held_tool()]
+		if play_tool(act):
+			return
 	_busy = true
 	_attack_hit_done = false
 	velocity = Vector2.ZERO
@@ -344,6 +369,6 @@ func _apply(a: String, flip: bool, restart := false) -> void:
 
 
 func _on_animation_finished() -> void:
-	if anim_name == "attack" or anim_name == "powerup":
+	if anim_name == "attack" or anim_name == "powerup" or not _anim.sprite_frames.get_animation_loop(anim_name):
 		_busy = false
 		_show_idle()

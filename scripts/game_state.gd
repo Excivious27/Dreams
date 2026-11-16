@@ -108,6 +108,8 @@ static func is_penguins() -> bool:
 static func sprite_for_playable(playable_id: String) -> String:
 	load_data()
 	var sprite := str(playables.get(playable_id, {}).get("sprite", ""))
+	if run.get("arc", "") == "gangsters" and CharacterLibrary.has_character(sprite + "_gang"):
+		sprite += "_gang"
 	if sprite != "" and not CharacterLibrary.has_character(sprite):
 		return ""
 	return sprite
@@ -268,6 +270,55 @@ static func quest_done(id: String) -> bool:
 
 # ---- time / days -------------------------------------------------------------
 
+const DAYS_PER_SEASON := 28
+const SEASONS := ["spring", "summer", "fall", "winter"]
+
+
+static func season() -> String:
+	return SEASONS[((int(run.get("day", 1)) - 1) / DAYS_PER_SEASON) % 4]
+
+
+static func day_of_season() -> int:
+	return (int(run.get("day", 1)) - 1) % DAYS_PER_SEASON + 1
+
+
+static func grass_tile() -> String:
+	match season():
+		"summer": return "grass_summer"
+		"fall": return "grass_fall"
+		"winter": return "grass_winter"
+	return "grass"
+
+
+## Tree/bush sprite names per season (variant 0..2).
+static func tree_sprite(v: int) -> String:
+	match season():
+		"summer": return ["apple_tree", "pine", "orange_tree"][v % 3] if Art.has("nature", "apple_tree") else ["oak", "pine", "oak"][v % 3]
+		"fall": return ["tree_red", "tree_orange", "tree_birch"][v % 3] if Art.has("nature", "tree_red") else ["oak_autumn", "pine", "oak_autumn"][v % 3]
+		"winter": return ["tree_bare", "pine_snow", "tree_bare_s"][v % 3] if Art.has("nature", "tree_bare") else ["oak", "pine", "oak"][v % 3]
+	return ["oak", "pine", "oak"][v % 3]
+
+
+static func bush_sprite(berries: bool) -> String:
+	match season():
+		"fall": return "berry_bush_fall" if berries else "bush_fall_orange"
+		"winter": return "berry_bush_snow" if berries else "bush_snow"
+		"summer": return "bush_red" if berries else "bush"
+	return "berry_bush" if berries else "bush"
+
+
+## Weather is rolled per day from the day number so it's stable across scenes.
+static func weather_today() -> String:
+	var d := int(run.get("day", 1))
+	var r := (d * 7919) % 100
+	match season():
+		"spring": return "rain" if r < 22 else ("petals" if r < 32 else "clear")
+		"summer": return "rain" if r < 12 else ("fireflies" if r < 40 else "clear")
+		"fall": return "rain" if r < 20 else ("leaves" if r < 60 else "clear")
+		"winter": return "snow" if r < 45 else "clear"
+	return "clear"
+
+
 static func clock_text() -> String:
 	var t := int(run["time"]) % (24 * 60)
 	var h := t / 60
@@ -298,7 +349,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	for key in run["farm"].keys():
 		var tile: Dictionary = run["farm"][key]
 		if tile.get("crop", "") != "":
-			if tile.get("watered", false):
+			if tile.get("watered", false) or weather_today() == "rain":
 				tile["days"] = int(tile.get("days", 0)) + 1
 				report["grown"] += 1
 			tile["watered"] = false

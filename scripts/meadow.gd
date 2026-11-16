@@ -66,7 +66,28 @@ func _first_visit() -> void:
 func _spawn_one() -> void:
 	_spawned += 1
 	var at := Vector2(randf_range(8, 19) * TILE, randf_range(3, 13) * TILE)
-	spawn_enemy("grump", at)
+	spawn_enemy(_pick_kind(), at)
+
+
+## What wanders the meadow depends on the arc and how far you've gotten.
+func _pick_kind() -> String:
+	var cleared := GameState.quest_done("clear_meadow")
+	var r := randf()
+	if GameState.is_penguins():
+		if not cleared:
+			return "grump"
+		if r < 0.45:
+			return "grump"
+		if r < 0.7:
+			return "soldier"
+		if r < 0.88:
+			return "archer"
+		return "wisp"
+	else:
+		if not cleared:
+			return "grump" if r < 0.6 else "thug_speedster"
+		var pool: Array = ["thug_cyber", "thug_speedster", "thug_gambler", "thug_flame"]
+		return pool[randi() % pool.size()]
 
 
 func _process(delta: float) -> void:
@@ -79,7 +100,7 @@ func _process(delta: float) -> void:
 
 func on_enemy_died(e: Enemy) -> void:
 	super(e)
-	if e.kind == "big_grump":
+	if e == _boss or e.kind == "big_grump" or (e.kind == "thug_brute" and _boss != null):
 		_boss_down()
 		return
 	if GameState.quest_done("clear_meadow"):
@@ -110,7 +131,7 @@ func _summon_boss() -> void:
 			{"text": "The small ones scatter. Something bigger stands up from behind the rocks. It has a face you've seen in a very bad photograph."},
 			{"who": "The President's Man", "text": "He said you'd be farming. He didn't say you'd be good at it."},
 		])
-	_boss = spawn_enemy("big_grump", Vector2(16 * TILE, 8 * TILE))
+	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(16 * TILE, 8 * TILE))
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false
 
@@ -151,6 +172,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 			if not GameState.spend_energy(2):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
+			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("chop")
 			thing["hp"] = int(thing["hp"]) - 1
 			if int(thing["hp"]) <= 0:
@@ -206,7 +228,7 @@ func _place_props() -> void:
 		var t: Dictionary = things[k]
 		match str(t.get("type", "")):
 			"tree":
-				prop("nature", ["oak", "pine", "oak_autumn"][(k.x * 7 + k.y) % 3], k)
+				prop("nature", GameState.tree_sprite((k.x * 7 + k.y) % 3), k)
 			"rock":
 				prop("nature", "rock_m", k)
 			"shroom":

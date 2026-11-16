@@ -34,8 +34,12 @@ func build() -> void:
 			continue
 		var roll := rng.randf()
 		var ore := "stone"
-		if roll < 0.04 + floor_no * 0.01:
+		if floor_no >= 4 and roll < 0.02:
+			ore = "dark"
+		elif roll < 0.04 + floor_no * 0.01:
 			ore = "shard"
+		elif floor_no >= 3 and roll < 0.08 + floor_no * 0.01:
+			ore = "gold"
 		elif roll < 0.12 + floor_no * 0.03:
 			ore = "iron"
 		elif roll < 0.35 + floor_no * 0.03:
@@ -54,11 +58,15 @@ func after_ready() -> void:
 			continue
 		var roll := rng.randf()
 		var kind := "slime"
-		if floor_no >= 3 and roll < 0.15:
+		if floor_no >= 5 and roll < 0.1:
+			kind = "knight"
+		elif floor_no >= 3 and roll < 0.2:
 			kind = "golem"
-		elif floor_no >= 2 and roll < 0.3:
-			kind = "shard"
-		elif roll < 0.6:
+		elif floor_no >= 2 and roll < 0.35:
+			kind = "shard" if GameState.is_penguins() else "thug_cyber"
+		elif floor_no >= 2 and roll < 0.45:
+			kind = "wisp"
+		elif roll < 0.7:
 			kind = "bat"
 		spawn_enemy(kind, cell_center(c))
 	if not GameState.run["flags"].has("mine_seen"):
@@ -88,6 +96,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if not GameState.spend_energy(2):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
+			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("chop")
 			thing["hp"] = int(thing["hp"]) - 1
 			if int(thing["hp"]) <= 0:
@@ -105,7 +114,20 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _draw() -> void:
-	if Art.has("tiles", "stone"):
+	if Art.has("tiles", "mine_floor"):
+		draw_tileset_rect("mine_floor", Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
+		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.3 + 0.05 * mini(floor_no, 6)))
+		for x in range(1, cols - 1):
+			Art.draw_tile(self, "tiles", "wall_t", Vector2(x * TILE, 0), 0)
+			Art.draw_tile(self, "tiles", "wall_b", Vector2(x * TILE, (rows - 1) * TILE), 0)
+		for y in range(1, rows - 1):
+			Art.draw_tile(self, "tiles", "wall_l", Vector2(0, y * TILE), 0)
+			Art.draw_tile(self, "tiles", "wall_r", Vector2((cols - 1) * TILE, y * TILE), 0)
+		Art.draw_tile(self, "tiles", "wall_tl", Vector2(0, 0), 0)
+		Art.draw_tile(self, "tiles", "wall_tr", Vector2((cols - 1) * TILE, 0), 0)
+		Art.draw_tile(self, "tiles", "wall_bl", Vector2(0, (rows - 1) * TILE), 0)
+		Art.draw_tile(self, "tiles", "wall_br", Vector2((cols - 1) * TILE, (rows - 1) * TILE), 0)
+	elif Art.has("tiles", "stone"):
 		for y in rows:
 			for x in cols:
 				Art.draw_tile(self, "tiles", "stone", Vector2(x * TILE, y * TILE), 4)
@@ -123,33 +145,39 @@ func _draw() -> void:
 					continue
 				draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
 			"up", "down":
-				draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
-				for i in 4:
-					draw_rect(Rect2(p.x - 5, p.y - 13 + i * 3.5, 10, 1), Color("a07a4c"))
-	draw_rect(Rect2(0, 0, cols * TILE, TILE), Color("221d28"))
-	draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("221d28"))
-	draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("221d28"))
-	draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("221d28"))
+				var nm := "ladder_up" if str(t["type"]) == "up" else "ladder_down"
+				if not Art.draw_prop(self, "props", nm, p):
+					draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
+	if not Art.has("tiles", "mine_floor"):
+		draw_rect(Rect2(0, 0, cols * TILE, TILE), Color("221d28"))
+		draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("221d28"))
+		draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("221d28"))
+		draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("221d28"))
 	label("floor %d" % floor_no, Vector2(2 * TILE, TILE - 3), 6 * TILE)
 
 
 func _place_props() -> void:
+	if Art.has("props", "ore_copper"):
+		for k in things:
+			var t: Dictionary = things[k]
+			if str(t.get("type", "")) != "rock":
+				continue
+			var ore := str(t["ore"])
+			var nm: String = {"stone": "mrock_a" if (k.x + k.y) % 3 != 0 else "mrock_b", "copper": "ore_copper", "iron": "ore_iron", "shard": "ore_crystal", "gold": "ore_gold", "dark": "ore_dark"}.get(ore, "mrock_a")
+			prop("props", nm, k)
+		var rng := RandomNumberGenerator.new()
+		rng.seed = 3000 + floor_no
+		for i in 4:
+			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
+			if not things.has(c) and not blocked.has(c):
+				prop("props", "cave_mushroom" if rng.randf() < 0.5 else "cave_moss", c)
+		if floor_no % 3 == 0:
+			prop("props", "beam", Vector2i(cols / 2 - 1, 1), 1)
+		return
 	if not Art.has("nature", "rock_m"):
 		return
 	for k in things:
 		var t: Dictionary = things[k]
 		if str(t.get("type", "")) != "rock":
 			continue
-		var ore := str(t["ore"])
-		var sp := prop("nature", "rock_l" if ore != "stone" else ("rock_m" if (k.x + k.y) % 2 == 0 else "rock_s"), k)
-		if sp:
-			match ore:
-				"copper": sp.modulate = Color(1.0, 0.85, 0.7)
-				"iron": sp.modulate = Color(0.85, 0.9, 1.0)
-				"shard": sp.modulate = Color(0.8, 0.95, 1.2)
-	if Art.has("props", "crystal_rock"):
-		for k in things:
-			if str(things[k].get("type", "")) == "rock" and str(things[k]["ore"]) == "shard" and props.has(k):
-				(props[k] as Sprite2D).texture = Art.tex("props", "crystal_rock")
-				(props[k] as Sprite2D).offset = Vector2(0, -Art.tex("props", "crystal_rock").get_height() / 2.0)
-				(props[k] as Sprite2D).modulate = Color.WHITE
+		prop("nature", "rock_m", k)
