@@ -12,14 +12,18 @@ var _state := "idle"
 var _rng := RandomNumberGenerator.new()
 
 
-func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i) -> void:
+var baby := false
+
+
+func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> void:
 	map = m
 	kind = k
+	baby = is_baby
 	pen = p if p.size != Vector2i.ZERO else Rect2i(c.x - 1, c.y - 1, 3, 3)
 	var g := "animals/" + k
-	var anims := {"idle": "idle"}
+	var anims := {"idle": "baby" if is_baby and Art.has(g, "baby") else "idle"}
 	var fps := {"idle": 3.0}
-	for a in ["walk", "eat"]:
+	for a in ([] if is_baby else ["walk", "eat"]):
 		if Art.has(g, a):
 			anims[a] = a
 			fps[a] = 6.0 if a == "walk" else 3.0

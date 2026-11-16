@@ -1,26 +1,48 @@
 extends GameMap
-## Your plot of land. Farming (hoe, plant, water, harvest), sell box, pond fishing,
-## berry bushes, trees for wood, the house door, exits to town (south) and the
-## meadow (east). The story opening plays here on day 1.
+## Your plot of land, Sun Haven scale: a big open field with a crooked house,
+## a mailbox, a shipping bin and nothing else. The rest is weeds, rocks, logs
+## and trees to clear (progress is saved). Buildings and crafting stations are
+## added later from the plans board. Farming works on any open grass cell.
+## Exits: forest (north), meadow (east), town (south), lake (west).
 
-const PLOT := Rect2i(12, 6, 12, 10)
-const POND := Rect2i(14, 22, 8, 6)
-const HOUSE := Rect2i(4, 4, 6, 5)
-const DOOR := Vector2i(6, 8)
-const SELLBOX := Vector2i(4, 11)
-const CRYSTAL_SPOT := Vector2i(12, 22)
-const TOWN_EXIT := Rect2i(15, 42, 2, 2)
-const MEADOW_EXIT := Rect2i(30, 18, 2, 3)
-const FOREST_EXIT := Rect2i(14, 0, 3, 2)
-const LAKE_EXIT := Rect2i(0, 24, 2, 3)
-const TREES := [Vector2i(3, 16), Vector2i(6, 21), Vector2i(3, 28), Vector2i(9, 31), Vector2i(24, 33), Vector2i(2, 19), Vector2i(8, 25), Vector2i(26, 9), Vector2i(28, 13), Vector2i(10, 36), Vector2i(20, 37), Vector2i(27, 27)]
-const BUSHES := [Vector2i(7, 18), Vector2i(26, 4), Vector2i(12, 30), Vector2i(28, 22), Vector2i(5, 34), Vector2i(22, 39)]
+const HOUSE := Rect2i(10, 6, 6, 5)
+const DOOR := Vector2i(13, 10)
+const MAILBOX := Vector2i(16, 10)
+const SELLBOX := Vector2i(8, 10)
+const PLANS := Vector2i(18, 10)
+const CRYSTAL_SPOT := Vector2i(12, 14)
+const POND_C := Vector2(48.0, 37.0)
+const LEDGE_Y := 11
+const LEDGE_X0 := 38
+const STAIRS_X := 52
+const TOWN_EXIT := Rect2i(34, 58, 4, 2)
+const MEADOW_EXIT := Rect2i(70, 28, 2, 4)
+const FOREST_EXIT := Rect2i(34, 0, 4, 2)
+const LAKE_EXIT := Rect2i(0, 28, 2, 4)
+## Buildable things: name -> {cell, w, h, cost, group, sprite, thing}
+const BUILDS := {
+	"workbench": {"cell": Vector2i(6, 13), "w": 1, "h": 1, "cost": {"wood": 20}, "group": "props", "sprite": "workbench2", "thing": "workbench", "label": "Workbench (20 wood)"},
+	"chest": {"cell": Vector2i(9, 13), "w": 0, "h": 1, "cost": {"wood": 10}, "group": "props", "sprite": "chest_closed", "thing": "chest", "label": "Storage chest (10 wood)"},
+	"furnace": {"cell": Vector2i(8, 13), "w": 0, "h": 1, "cost": {"stone": 20, "copper": 5}, "group": "props", "sprite": "furnace_off", "thing": "furnace", "label": "Furnace (20 stone, 5 copper ore)"},
+	"well": {"cell": Vector2i(19, 13), "w": 0, "h": 1, "cost": {"stone": 30}, "group": "props", "sprite": "well2", "thing": "well", "label": "Well (30 stone)"},
+	"keg": {"cell": Vector2i(6, 15), "w": 0, "h": 1, "cost": {"wood": 30, "copper_bar": 1}, "group": "props", "sprite": "keg", "thing": "keg", "label": "Keg (30 wood, 1 copper bar)"},
+	"beehive": {"cell": Vector2i(21, 15), "w": 0, "h": 1, "cost": {"wood": 15, "fiber": 10}, "group": "props", "sprite": "beehive2", "thing": "beehive", "label": "Beehive (15 wood, 10 fiber)"},
+	"resonator": {"cell": Vector2i(16, 16), "w": 0, "h": 1, "cost": {"stone": 10, "shard": 1}, "group": "props", "sprite": "resonator", "thing": "resonator", "label": "Crystal resonator (10 stone, 1 shard)"},
+	"scarecrow": {"cell": Vector2i(22, 12), "w": 0, "h": 1, "cost": {"wood": 8, "fiber": 4}, "group": "props", "sprite": "scarecrow2", "thing": "", "label": "Scarecrow (8 wood, 4 fiber)"},
+	"coop": {"cell": Vector2i(26, 8), "w": 3, "h": 3, "cost": {"wood": 120, "stone": 40}, "group": "props", "sprite": "coop", "thing": "", "label": "Coop (120 wood, 40 stone) - chickens"},
+	"barn": {"cell": Vector2i(32, 5), "w": 4, "h": 3, "cost": {"wood": 200, "stone": 80}, "group": "props", "sprite": "barn", "thing": "", "label": "Barn (200 wood, 80 stone) - cows & sheep"},
+	"silo": {"cell": Vector2i(30, 4), "w": 1, "h": 3, "cost": {"stone": 60, "wood": 30}, "group": "buildings", "sprite": "silo", "thing": "", "label": "Silo (60 stone, 30 wood)"},
+	"greenhouse": {"cell": Vector2i(20, 4), "w": 3, "h": 3, "cost": {"wood": 150, "stone": 100, "iron_bar": 2}, "group": "props", "sprite": "greenhouse", "thing": "", "label": "Greenhouse (150 wood, 100 stone, 2 iron bars)"},
+}
 
-var _pond: Scenery.Pond
+var _pond_cells := {}
+var _ledge_cells := {}
+var _path_cells := {}
 var _crystal: Node2D
 var _fishing := false
 var _fish_bite := false
 var _crystal_t := 0.0
+var _rng := RandomNumberGenerator.new()
 
 
 func scene_id() -> String:
@@ -28,12 +50,14 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return cell_center(Vector2i(8, 14))
+	return cell_center(Vector2i(13, 13))
 
 
 func build() -> void:
-	cols = 32
-	rows = 44
+	cols = 72
+	rows = 60
+	pad = 6
+	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
 	music_track = "farm"
 	add_exit(TOWN_EXIT, "town", Vector2(10 * TILE, 2 * TILE + 8), "down", "▼ town")
 	add_exit(MEADOW_EXIT, "meadow", Vector2(2 * TILE, 10 * TILE), "right", "meadow ▶")
@@ -41,45 +65,99 @@ func build() -> void:
 	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 14 * TILE), "left", "◀ lake")
 	block_rect(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y)
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go inside"})
-	set_thing(HOUSE.position.x + 6, HOUSE.position.y + 4, {"type": "mailbox", "hint": "A: check mailbox"})
-	set_thing(SELLBOX.x, SELLBOX.y, {"type": "sellbox", "hint": "A: sell what you're holding"})
-	for y in range(POND.position.y, POND.end.y):
-		for x in range(POND.position.x, POND.end.x):
-			set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
-	for t: Vector2i in TREES:
-		set_thing(t.x, t.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
-	for b: Vector2i in BUSHES:
-		var key := "bush_%d_%d" % [b.x, b.y]
-		var picked_day := int(GameState.run["flags"].get(key, 0))
-		var has := picked_day < int(GameState.run["day"])
-		set_thing(b.x, b.y, {"type": "bush", "key": key, "berries": has, "hint": "A: pick berries" if has else ""})
-	for y in range(PLOT.position.y, PLOT.end.y):
-		for x in range(PLOT.position.x, PLOT.end.x):
-			things[Vector2i(x, y)] = {"type": "plot"}
-	block_rect(19, 1, 5, 2)   # barn
-	block_rect(2, 36, 3, 3)   # windmill
-	block_rect(25, 2, 4, 3)   # greenhouse
-	block_rect(8, 38, 4, 3)   # coop
-	blocked[Vector2i(12, 5)] = true  # scarecrow
-	set_thing(2, 13, {"type": "workbench", "hint": "A: workbench"})
-	set_thing(3, 13, {"type": "workbench", "hint": "A: workbench"})
-	set_thing(6, 12, {"type": "furnace", "hint": "A: furnace (5 ore + 1 wood = bar)"})
-	set_thing(7, 12, {"type": "chest", "hint": "A: storage chest"})
-	set_thing(26, 30, {"type": "beehive", "hint": "A: beehive"})
-	set_thing(3, 22, {"type": "keg", "hint": "A: keg"})
-	set_thing(28, 6, {"type": "resonator", "hint": "A: crystal resonator"})
-	set_thing(10, 23, {"type": "well", "hint": "A: well (refill energy a little)"})
-	block_rect(10, 22, 1, 1)
+	set_thing(MAILBOX.x, MAILBOX.y, {"type": "mailbox", "hint": "A: check mailbox"})
+	set_thing(SELLBOX.x, SELLBOX.y, {"type": "sellbox", "hint": "A: shipping bin (sell what you hold)"})
+	set_thing(PLANS.x, PLANS.y, {"type": "plans", "hint": "A: building plans"})
+	# Pond: an organic blob.
+	_rng.seed = 404
+	for y in range(int(POND_C.y) - 6, int(POND_C.y) + 7):
+		for x in range(int(POND_C.x) - 8, int(POND_C.x) + 9):
+			var d := Vector2((x - POND_C.x) / 7.0, (y - POND_C.y) / 4.5).length()
+			if d + _rng.randf_range(-0.12, 0.12) < 1.0:
+				_pond_cells[Vector2i(x, y)] = true
+	# Pond cells need to be a solid shape with no 1-wide bits for the autotiler.
+	for c: Vector2i in _pond_cells.keys():
+		set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	# Raised terrace in the north-east with a cliff ledge and stairs down.
+	for x in range(LEDGE_X0, cols):
+		var c := Vector2i(x, LEDGE_Y)
+		if x == STAIRS_X or x == STAIRS_X + 1:
+			continue
+		_ledge_cells[c] = true
+		blocked[c] = true
+	for y in range(0, LEDGE_Y):
+		var c := Vector2i(LEDGE_X0, y)
+		if y < 3:
+			continue
+		_ledge_cells[c] = true
+		blocked[c] = true
+	# Paths (dirt): door to south exit, and the east-west track.
+	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(35, 2, 2, 28), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
+	for c: Vector2i in _pond_cells:
+		_path_cells.erase(c)
+	# Everything you've built so far.
+	var builds: Dictionary = GameState.run.get("builds", {})
+	for id: String in builds:
+		var b: Dictionary = BUILDS.get(id, {})
+		if b.is_empty():
+			continue
+		var c: Vector2i = b["cell"]
+		block_rect(c.x, c.y - int(b["h"]) + 1, int(b["w"]) + 1, int(b["h"]))
+		if str(b["thing"]) != "":
+			set_thing(c.x, c.y, {"type": str(b["thing"]), "hint": "A: " + str(id)})
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
+	_place_debris()
+
+
+## Weeds, rocks, logs, stumps and saplings all over the field, thicker away from
+## the house. Deterministic from a seed; cleared cells are remembered in the save.
+func _place_debris() -> void:
+	_rng.seed = 77
+	var home := Vector2(DOOR)
+	for y in range(1, rows - 1):
+		for x in range(1, cols - 1):
+			var c := Vector2i(x, y)
+			if blocked.has(c) or things.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
+				continue
+			if HOUSE.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3:
+				continue
+			var near_pond := false
+			for pc: Vector2i in _pond_cells:
+				if pc.distance_to(c) < 2.0:
+					near_pond = true
+					break
+			if near_pond:
+				continue
+			var dist := Vector2(c).distance_to(home)
+			var chance := clampf(0.025 + dist / 70.0 * 0.07, 0.025, 0.1)
+			var r := _rng.randf()
+			if r > chance:
+				continue
+			if is_cleared(c):
+				continue
+			var k := _rng.randf()
+			if k < 0.42:
+				things[c] = {"type": "weeds", "hint": "A: pull weeds"}
+				blocked[c] = true
+			elif k < 0.62:
+				things[c] = {"type": "rock", "hp": 2, "hint": "A: break rock"}
+				blocked[c] = true
+			elif k < 0.74:
+				things[c] = {"type": "log" if _rng.randf() < 0.6 else "stump", "hp": 2, "hint": "A: chop"}
+				blocked[c] = true
+			elif k < 0.94:
+				things[c] = {"type": "tree", "hp": 4, "fell": true, "hint": "A: chop down"}
+				blocked[c] = true
+			else:
+				var key := "bush_farm_%d_%d" % [c.x, c.y]
+				var has := int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
+				things[c] = {"type": "bush", "key": key, "berries": has, "hint": "A: pick berries" if has else ""}
+				blocked[c] = true
 
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "hills")
-	_pond = Scenery.Pond.new()
-	_pond.rect = Rect2(POND.position * TILE, POND.size * TILE)
-	_pond.z_index = -1
-	add_child(_pond)
 	_place_props()
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		_make_crystal()
@@ -107,9 +185,8 @@ func _process(delta: float) -> void:
 		_crystal_t += delta
 		_crystal.position.y = cell_center(CRYSTAL_SPOT).y - 3.0 - sin(_crystal_t * 1.5) * 2.0
 		_crystal.queue_redraw()
-	if player.frozen or _changing:
-		return
-	pass
+	if not _pond_cells.is_empty():
+		queue_redraw()
 
 
 # ---- interaction -------------------------------------------------------------
@@ -118,7 +195,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	var sel := str(GameState.run["selected"])
 	match str(thing.get("type", "")):
 		"door":
-			go_to("house", Vector2(5 * TILE + 8, 7 * TILE), "up")
+			go_to("house", Vector2(8 * TILE + 8, 10 * TILE), "up")
 			return true
 		"mailbox":
 			_mailbox()
@@ -159,10 +236,66 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"resonator":
 			_resonator(sel)
 			return true
-		"plot":
-			return _farm_tile(c, sel)
+		"plans":
+			_plans()
+			return true
+		"":
+			# Open grass in front of you: farm it (hoe / seeds / water / harvest).
+			if _tillable(c) and _farm_tile(c, sel):
+				return true
 	# Nothing in front of you: eat/drink what you hold.
 	return _use_consumable(sel)
+
+
+## Any free grass cell inside the field can be tilled, Stardew-style.
+func _tillable(c: Vector2i) -> bool:
+	if not in_content(c) or blocked.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
+		return false
+	if c.y <= LEDGE_Y and c.x >= LEDGE_X0:
+		return false  # the terrace is for later
+	for e in exits:
+		if (e["rect"] as Rect2i).has_point(c):
+			return false
+	return true
+
+
+func _plans() -> void:
+	var builds: Dictionary = GameState.run.get("builds", {})
+	var ids: Array = []
+	var opts: Array = []
+	for id: String in BUILDS:
+		if builds.has(id):
+			continue
+		ids.append(id)
+		opts.append(str(BUILDS[id]["label"]))
+	if ids.is_empty():
+		await say([{"text": "You've built everything on the plans. (Tom: more plans come with Guide #3.)"}])
+		return
+	opts.append("Leave")
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "Plans", "text": "Build what? Clearing the field gives you the wood and stone.", "choice": opts, "key": ""}])
+	await d.finished
+	var i := d.last_choice
+	if i < 0 or i >= ids.size():
+		return
+	var id := str(ids[i])
+	var b: Dictionary = BUILDS[id]
+	for need: String in b["cost"]:
+		if GameState.count(need) < int(b["cost"][need]):
+			hud.toast("Need %d %s." % [int(b["cost"][need]), GameState.item_name(need)], Color(1, 0.7, 0.7))
+			return
+	for need: String in b["cost"]:
+		GameState.add_item(need, -int(b["cost"][need]))
+	builds[id] = true
+	GameState.run["builds"] = builds
+	xp("building", 10)
+	hud.toast("Built the %s." % id, Color(1, 0.9, 0.4))
+	fx("levelup", cell_center(b["cell"]) + Vector2(0, -10), 10.0, 0.8)
+	GameState.save()
+	# Simplest reliable refresh: reload the scene in place.
+	GameMap.next_spawn = player.position - offset()
+	GameMap.next_facing = player.facing
+	get_tree().reload_current_scene()
 
 
 func _use_consumable(sel: String) -> bool:
@@ -355,8 +488,9 @@ func _furnace() -> void:
 			GameState.add_item("wood", -1)
 			give(ore + "_bar")
 			xp("building", 3)
-			if props.has(Vector2i(5, 11)) and Art.tex("props", "furnace_on"):
-				(props[Vector2i(5, 11)] as Sprite2D).texture = Art.tex("props", "furnace_on")
+			var fc: Vector2i = BUILDS["furnace"]["cell"]
+			if props.has(fc) and Art.tex("props", "furnace_on"):
+				(props[fc] as Sprite2D).texture = Art.tex("props", "furnace_on")
 			return
 	hud.toast("Needs 5 copper or iron ore and 1 wood.")
 
@@ -417,7 +551,7 @@ func _resonator(sel: String) -> void:
 		GameState.add_item("shard", -3)
 		give("crystal_refined")
 		xp("mining", 8)
-		fx("pawring", cell_center(Vector2i(18, 4)) + Vector2(0, -12), 10.0, 0.6)
+		fx("pawring", cell_center(BUILDS["resonator"]["cell"]) + Vector2(0, -12), 10.0, 0.6)
 	else:
 		hud.toast("Hold 3 Crystal Shards to refine one.")
 
@@ -506,7 +640,7 @@ func _intro_penguins(n: Dictionary) -> void:
 	await hud.fade_out(0.6)
 	_make_crystal()
 	set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
-	player.position = cell_center(Vector2i(12, 24))
+	player.position = cell_center(Vector2i(13, 15))
 	player.facing = "up"
 	if pet:
 		pet.position = player.position + Vector2(-14, 4)
@@ -559,7 +693,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 		{"text": "Somewhere a long way from here, the man who took the rest of it is probably sleeping very well."},
 	])
 	await hud.fade_out(0.6)
-	player.position = cell_center(Vector2i(16, 38))
+	player.position = cell_center(Vector2i(14, 13))
 	player.facing = "up"
 	if pet:
 		pet.position = player.position + Vector2(-14, 4)
@@ -592,19 +726,34 @@ func _intro_gangsters(n: Dictionary) -> void:
 
 # ---- drawing -----------------------------------------------------------------
 
-func _draw() -> void:
+func draw_map() -> void:
 	draw_grass(1)
-	WorldGen.draw_ground_detail(self, 21, 0.14)
-	# Paths with real grass transitions.
-	var path := cells_of([Rect2i(15, 1, 2, 42), Rect2i(2, 18, 29, 3), Rect2i(6, 9, 1, 9), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
-	draw_ground("dirt", path)
-	draw_ground("stone", cells_of([Rect2i(9, 12, 3, 3)]))
-	# Farmland feel: a hay field and wheat beyond the fence line, a stone wall by the barn.
-	draw_tileset_rect("hay_field", Rect2i(25, 9, 5, 4), Color("d8b24a"))
-	draw_tileset_rect("wheat_2", Rect2i(2, 30, 5, 4), Color("c9a86b"))
+	WorldGen.draw_ground_detail(self, 21, 0.05)
+	draw_ground("dirt", _path_cells)
+	# Terrace: a lighter, drier grass up top and a cliff lip along the ledge.
+	draw_ground("stone", cells_of([Rect2i(LEDGE_X0 + 1, 1, 6, 3)]))
+	draw_water(_pond_cells, "grass")
+	for c: Vector2i in _ledge_cells:
+		var horizontal := c.y == LEDGE_Y
+		var nm := "cliff2_1"
+		if horizontal:
+			if c.x == LEDGE_X0:
+				nm = "cliff2_0"
+			elif c.x == STAIRS_X - 1 or c.x == cols - 1:
+				nm = "cliff2_12" if Art.has("tiles", "cliff2_12") else "cliff2_1"
+			var t := Art.tex("tiles", nm)
+			if t:
+				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
+			else:
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6b4a2b"))
+		else:
+			var t := Art.tex("tiles", "cliff2_8" if Art.has("tiles", "cliff2_8") else "cliff2_1")
+			if t:
+				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
+			else:
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6b4a2b"))
+	Art.draw_prop(self, "props", "cliff_stairs_down", Vector2((STAIRS_X + 1) * TILE, (LEDGE_Y + 1) * TILE))
 	draw_exits()
-	# Plot: untouched soil shows as a faint patch; tilled tiles use the real tiles.
-	draw_rect(Rect2(PLOT.position * TILE, PLOT.size * TILE), Color(0.45, 0.35, 0.2, 0.25))
 	var farm: Dictionary = GameState.run["farm"]
 	for key in farm:
 		var parts: PackedStringArray = str(key).split(",")
@@ -637,14 +786,74 @@ func _draw() -> void:
 					draw_circle(Vector2(cx, base - hgt - 1), 3.0, Color(cd["top"]))
 	if not Art.has("buildings", "house"):
 		draw_building(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y, Color("8b5a2b"), Color("b03a2e"), "")
-	draw_fence_border()
 
 
-func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i()) -> void:
+func _place_props() -> void:
+	if Art.has("buildings", "house"):
+		prop("buildings", "house", Vector2i(HOUSE.position.x, HOUSE.end.y - 1), HOUSE.size.x - 1)
+		prop("buildings", "mailbox", MAILBOX)
+		prop("buildings", "sellbox", SELLBOX)
+	prop("props", "notice_board", PLANS)
+	# Built things.
+	var builds: Dictionary = GameState.run.get("builds", {})
+	for id: String in builds:
+		var b: Dictionary = BUILDS.get(id, {})
+		if b.is_empty():
+			continue
+		var c: Vector2i = b["cell"]
+		if id == "resonator" and Art.has("props", "resonator"):
+			var a := AnimatedSprite2D.new()
+			a.sprite_frames = Art.frames("props", {"idle": "resonator"}, {"idle": 4.0})
+			a.animation = "idle"
+			a.scale = Vector2(0.5, 0.5)
+			a.position = cell_center(c)
+			a.offset = Vector2(0, -float(Art.info("props", "resonator").get("cell_h", 80)) / 2.0)
+			add_child(a)
+			a.play("idle")
+		else:
+			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]))
+	if builds.has("coop"):
+		var pen := Rect2i(26, 9, 6, 3)
+		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chicken", Vector2i(28, 11), pen, true)
+	if builds.has("barn"):
+		var pen := Rect2i(32, 6, 8, 4)
+		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 9), pen); _animal("cow2", Vector2i(38, 9), pen, true)
+	# Debris sprites for the things placed in build().
+	var season := GameState.season()
+	for c: Vector2i in things.keys():
+		var t: Dictionary = things[c]
+		match str(t.get("type", "")):
+			"weeds":
+				prop("nature", "bush_bare_snow" if season == "winter" and Art.has("nature", "bush_bare_snow") else ("fdeco_%d" % ((c.x * 3 + c.y) % 4) if Art.has("nature", "fdeco_0") else "bush"), c)
+			"rock":
+				var nm := "rock_s" if (c.x + c.y) % 3 != 0 else "rock_m"
+				if season == "winter" and Art.has("nature", nm.replace("rock_", "rock_snow_")):
+					nm = nm.replace("rock_", "rock_snow_")
+				prop("nature", nm, c)
+			"log":
+				var nm: String = {"fall": "log_fall", "summer": "logs"}.get(season, "log")
+				prop("nature", nm if Art.has("nature", nm) else "log", c)
+			"stump":
+				var nm: String = {"fall": "stump_fall", "winter": "stump_snow"}.get(season, "stump")
+				prop("nature", nm if Art.has("nature", nm) else "stump", c)
+			"tree":
+				prop("nature", GameState.tree_sprite((c.x * 7 + c.y) % 3), c)
+			"bush":
+				prop("nature", GameState.bush_sprite(bool(t.get("berries", false))), c)
+	# Background life only: birds, butterflies, a rabbit. No livestock until you build for it.
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 15, 14, ["sparrow", "sparrow", "butterfly_orange", "butterfly_yellow", "bee", "rabbit", "squirrel", "pigeon"])
+	# Stray pieces of the old world: a few boulders and a dead tree on the terrace.
+	prop("nature", "rock_l", Vector2i(44, 5))
+	prop("nature", "rock_m", Vector2i(60, 7))
+	prop("nature", "tree_bare", Vector2i(66, 4))
+	prop("props", "signpost_1" if Art.has("props", "signpost_1") else "signpost", Vector2i(32, 56))
+
+
+func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false) -> void:
 	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse2"}.get(kind, kind)
 	if Art.has("animals/" + full, "idle"):
 		var fa := FarmAnimal.new()
-		fa.setup(self, str(full), c, pen)
+		fa.setup(self, str(full), c, pen, is_baby)
 		add_child(fa)
 		return
 	if not Art.has("props", kind):
@@ -660,82 +869,3 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i()) -> void:
 	blocked[c] = true
 
 
-func _place_props() -> void:
-	if not Art.has("buildings", "house"):
-		return
-	prop("buildings", "house", Vector2i(HOUSE.position.x, HOUSE.end.y - 1), HOUSE.size.x - 1)
-	prop("buildings", "mailbox", Vector2i(HOUSE.end.x, HOUSE.end.y - 1))
-	prop("buildings", "sellbox", SELLBOX)
-	prop("props", "barn", Vector2i(19, 2), 4, -2.0)
-	prop("props", "greenhouse", Vector2i(25, 4), 3)
-	prop("props", "coop", Vector2i(8, 40), 3)
-	prop("props", "scarecrow2" if Art.has("props", "scarecrow2") else "scarecrow", Vector2i(12, 5))
-	prop("props", "windmill", Vector2i(2, 38), 2)
-	prop("props", "workbench2", Vector2i(2, 13), 2)
-	prop("props", "furnace_off", Vector2i(6, 12))
-	prop("props", "chest_closed", Vector2i(7, 12))
-	prop("props", "beehive2", Vector2i(26, 30))
-	prop("props", "keg", Vector2i(3, 22))
-	prop("props", "well2", Vector2i(10, 23))
-	prop("props", "hay", Vector2i(23, 4))
-	prop("props", "haystack", Vector2i(21, 4))
-	prop("props", "trough2" if Art.has("props", "trough2") else "trough", Vector2i(20, 5))
-	var pen := Rect2i(20, 6, 8, 5)
-	_animal("cow2", Vector2i(22, 7), pen); _animal("cow_bw", Vector2i(25, 9), pen); _animal("sheep2", Vector2i(24, 8), pen); _animal("goat2", Vector2i(21, 9), pen)
-	_animal("chicken", Vector2i(9, 41), Rect2i(8, 40, 6, 3)); _animal("chicken", Vector2i(11, 41), Rect2i(8, 40, 6, 3)); _animal("rooster", Vector2i(12, 42), Rect2i(8, 40, 6, 3)); _animal("duck2", Vector2i(4, 20), Rect2i(3, 19, 4, 3))
-	if Art.has("animals/pig_a", "idle"):
-		_animal("pig", Vector2i(27, 11), Rect2i(26, 10, 3, 3))
-	else:
-		prop("props", "pig", Vector2i(27, 11))
-	prop("buildings", "silo", Vector2i(30, 2), 1)
-	block_rect(30, 1, 2, 3)
-	prop("props", "bale_round", Vector2i(26, 13)); prop("props", "bale_square", Vector2i(28, 13))
-	blocked[Vector2i(26, 13)] = true; blocked[Vector2i(28, 13)] = true
-	prop("props", "tractor", Vector2i(3, 29), 1)
-	block_rect(3, 28, 2, 2)
-	prop("props", "farm_cart", Vector2i(12, 2), 1)
-	block_rect(12, 1, 2, 2)
-	prop("props", "birdbath", Vector2i(9, 14))
-	prop("props", "signpost", Vector2i(13, 41))
-	prop("props", "lamp", Vector2i(17, 41))
-	prop("props", "stall", Vector2i(5, 27), 1)
-	# Dense world detail: tree lines along the edges, clumps, scattered props, critters.
-	var avoid := {}
-	for y in range(PLOT.position.y - 1, PLOT.end.y + 1):
-		for x in range(PLOT.position.x - 1, PLOT.end.x + 1):
-			avoid[Vector2i(x, y)] = true
-	for y in range(POND.position.y - 1, POND.end.y + 1):
-		for x in range(POND.position.x - 1, POND.end.x + 1):
-			avoid[Vector2i(x, y)] = true
-	for y in range(HOUSE.position.y - 1, HOUSE.end.y + 1):
-		for x in range(HOUSE.position.x - 1, HOUSE.end.x + 2):
-			avoid[Vector2i(x, y)] = true
-	for x in range(14, 18):
-		for y in rows:
-			avoid[Vector2i(x, y)] = true
-	for y in range(18, 21):
-		for x in range(cols):
-			avoid[Vector2i(x, y)] = true
-	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 11, [TOWN_EXIT.grow(2), MEADOW_EXIT.grow(2), FOREST_EXIT.grow(2), LAKE_EXIT.grow(2), Rect2i(18, 0, 12, 4)], 2)
-	WorldGen.tree_clumps(self, Rect2i(2, 24, 10, 14), 12, 3, avoid)
-	WorldGen.tree_clumps(self, Rect2i(24, 24, 7, 16), 13, 3, avoid)
-	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 14, 26, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 15, 9, ["sparrow", "sparrow", "butterfly_orange", "butterfly_yellow", "bee", "rabbit", "squirrel", "pigeon"])
-	var res := prop("props", "resonator", Vector2i(28, 6))
-	if res and Art.has("props", "resonator"):
-		res.queue_free()
-		var a := AnimatedSprite2D.new()
-		a.sprite_frames = Art.frames("props", {"idle": "resonator"}, {"idle": 4.0})
-		a.animation = "idle"
-		a.scale = Vector2(0.5, 0.5)
-		a.position = cell_center(Vector2i(28, 6))
-		a.offset = Vector2(0, -float(Art.info("props", "resonator").get("cell_h", 80)) / 2.0)
-		add_child(a)
-		a.play("idle")
-	for t: Vector2i in TREES:
-		prop("nature", GameState.tree_sprite((t.x + t.y) % 3), t)
-	for b: Vector2i in BUSHES:
-		var has := bool(things[b].get("berries", false))
-		prop("nature", GameState.bush_sprite(has), b)
-	for r: Vector2i in [Vector2i(2, 12), Vector2i(17, 25)]:
-		prop("nature", "rock_snow_s" if GameState.season() == "winter" and Art.has("nature", "rock_snow_s") else "rock_s", r)

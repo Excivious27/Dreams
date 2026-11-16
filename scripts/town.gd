@@ -26,16 +26,22 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	cols = 28
 	rows = 40
+	pad = 6
+	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
 	music_track = "town"
-	add_exit(FARM_EXIT, "farm", Vector2(16 * TILE, 41 * TILE), "up", "▲ farm")
+	add_exit(FARM_EXIT, "farm", Vector2(36 * TILE, 56 * TILE), "up", "▲ farm")
 	add_exit(BEACH_EXIT, "beach", Vector2(14 * TILE, 2 * TILE + 8), "down", "▼ beach")
-	add_exit(MOUNTAIN_EXIT, "mountain", Vector2(2 * TILE, 12 * TILE), "right", "mountain ▶")
+	add_exit(MOUNTAIN_EXIT, "mountain", Vector2(2 * TILE, 39 * TILE + 8), "right", "mountain ▶")
 	for b: Rect2i in [STORE, SMITH, POTIONS, HALL]:
 		block_rect(b.position.x, b.position.y, b.size.x, b.size.y)
-	set_thing(6, 9, {"type": "shop", "shop": "store", "hint": "A: General Store"})
-	set_thing(18, 9, {"type": "shop", "shop": "smith", "hint": "A: Blacksmith"})
-	set_thing(5, 19, {"type": "shop", "shop": "potions", "hint": "A: Potion Shop"})
-	set_thing(16, 19, {"type": "hall", "hint": "A: Town Hall"})
+	set_thing(6, 9, {"type": "door", "interior": "store", "hint": "A: General Store"})
+	set_thing(18, 9, {"type": "door", "interior": "smith", "hint": "A: Blacksmith"})
+	set_thing(5, 19, {"type": "door", "interior": "potions", "hint": "A: Potion Shop"})
+	set_thing(16, 19, {"type": "door", "interior": "hall", "hint": "A: Town Hall"})
+	# Homes and the rest of main street.
+	for d in [[4, 30, "inn", "A: the Inn", 2, 27, 5, 4], [22, 30, "bakery", "A: Bakery", 21, 27, 3, 4], [8, 36, "clinic", "A: Clinic", 7, 33, 3, 4], [19, 36, "library", "A: Library", 17, 33, 4, 4], [25, 36, "chapel", "A: Chapel", 24, 33, 3, 4], [3, 24, "cottage_a", "A: Wren's cottage", 2, 22, 3, 3], [16, 24, "cottage_b", "A: Finn's cottage", 15, 22, 3, 3]]:
+		block_rect(int(d[4]), int(d[5]), int(d[6]), int(d[7]))
+		set_thing(int(d[0]), int(d[1]), {"type": "door", "interior": str(d[2]), "hint": str(d[3])})
 	block_rect(FOUNTAIN.position.x, FOUNTAIN.position.y, 2, 2)
 	for y in range(FOUNTAIN.position.y, FOUNTAIN.end.y):
 		for x in range(FOUNTAIN.position.x, FOUNTAIN.end.x):
@@ -52,10 +58,23 @@ func build() -> void:
 	blocked[Vector2i(14, 25)] = true
 	for c: Vector2i in [Vector2i(6, 12), Vector2i(13, 12), Vector2i(6, 21), Vector2i(13, 21)]:
 		blocked[c] = true
+	extend(22, 12)
 
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "hills")
+	if Art.has("props", "town_gate"):
+		prop("props", "town_gate", Vector2i(FARM_EXIT.position.x - 4, 3), 10, 0.0, false)
+	if Art.has("props", "balloon"):
+		var bl := AnimatedSprite2D.new()
+		bl.sprite_frames = Art.frames("props", {"idle": "balloon"}, {"idle": 3.0})
+		bl.animation = "idle"
+		bl.scale = Vector2(0.5, 0.5)
+		bl.position = cell_center(Vector2i(cols - 8, 8))
+		bl.offset = Vector2(0, -48)
+		add_child(bl)
+		bl.play("idle")
+		set_thing(cols - 8, 8, {"type": "balloon", "hint": "A: balloon"})
 	_place_props()
 	for id in GameState.npcs:
 		var d: Dictionary = GameState.npcs[id]
@@ -108,11 +127,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_talk(n)
 			return true
 	match str(thing.get("type", "")):
-		"shop":
-			_shop(str(thing["shop"]))
-			return true
-		"hall":
-			_hall()
+		"shop", "hall", "door":
+			var id := str(thing.get("interior", thing.get("shop", "hall")))
+			GameMap.next_interior = id
+			go_to("interior", Vector2.ZERO, "up")
 			return true
 		"fountain":
 			if int(GameState.run["crystals"]) >= 1:
@@ -122,82 +140,6 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				Music.instance(get_tree()).sfx("pickup")
 			return true
 	return false
-
-
-# ---- shops -------------------------------------------------------------------
-
-func _offers(shop: String) -> Array:
-	match shop:
-		"store":
-			return ["turnip_seed", "strawberry_seed", "corn_seed", "dream_seed", "gift_pie"]
-		"smith":
-			return ["iron_sword"]
-		"potions":
-			return ["potion", "energy_tea"]
-	return []
-
-
-func _shop(shop: String) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren"}[shop]
-	var greet: String = {
-		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
-		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
-		"potions": "Red for hurts. Tea for tired. Don't mix them, I'm not liable.",
-	}[shop]
-	if shop == "store" and not GameState.run["flags"].has("store_first"):
-		GameState.run["flags"]["store_first"] = true
-		await say([{"who": keeper, "text": "You're the one who took the old plot! Here, first-timer's bundle. Don't tell Gideon I give things away."}])
-		give("turnip_seed", 4)
-		give("energy_tea", 1)
-	while true:
-		var offers := _offers(shop)
-		var opts: Array = []
-		for id in offers:
-			if GameState.has_tool(id):
-				continue
-			opts.append("%s  ◆%d" % [GameState.item_name(id), _price(id)])
-		opts.append("Leave")
-		var d := Dialogue.instance(get_tree())
-		d.say([{"who": keeper, "text": "%s  (you have ◆%d)" % [greet, int(GameState.run["crystals"])], "choice": opts, "key": ""}])
-		await d.finished
-		var pick := d.last_choice
-		var buyable := offers.filter(func(i: String) -> bool: return not GameState.has_tool(i))
-		if pick < 0 or pick >= buyable.size():
-			break
-		var id: String = buyable[pick]
-		var price := _price(id)
-		if int(GameState.run["crystals"]) < price:
-			hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
-			continue
-		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-		if GameState.items[id].get("type", "") == "tool":
-			GameState.add_tool(id)
-			hud.toast("Got the %s!" % GameState.item_name(id), Color(1, 0.9, 0.4))
-		else:
-			give(id, 1)
-		xp("bartering", 1)
-		greet = "Anything else?"
-
-
-func _price(id: String) -> int:
-	var base := GameState.item_value(id)
-	var discount := 1.0 - 0.03 * (GameState.skill_level("bartering") - 1)
-	return maxi(1, int(ceil(base * 1.5 * discount)))
-
-
-func _hall() -> void:
-	var r := GameState.run
-	var who: String = r["names"]["character"]
-	if GameState.is_penguins():
-		await say([
-			{"who": "Mayor Alder", "text": "Ah, %s. The farm's in good hands then. Odd lights over your field the other night, people said. Weather, I expect." % who},
-			{"who": "Mayor Alder", "text": "The town board is here if you want it: friendship, skills, quests. (Open the MENU anywhere.)"},
-		])
-	else:
-		await say([
-			{"who": "Mayor Alder", "text": "Deed's in order. Name's a little... unusual, but I don't ask questions. People who ask questions in this town tend to leave it."},
-			{"who": "Mayor Alder", "text": "If you've got crystals to spend, Gideon could use the business. If you've got trouble, I'd rather not know."},
-		])
 
 
 # ---- talking -----------------------------------------------------------------
@@ -299,7 +241,7 @@ func _lines(id: String, friend: int) -> Array:
 
 # ---- drawing -----------------------------------------------------------------
 
-func _draw() -> void:
+func draw_map() -> void:
 	draw_grass(3)
 	WorldGen.draw_ground_detail(self, 31, 0.08)
 	var roads := cells_of([Rect2i(11, 0, 4, rows), Rect2i(1, 11, 26, 2), Rect2i(1, 21, 26, 2), Rect2i(1, 31, 26, 2), FARM_EXIT, BEACH_EXIT, MOUNTAIN_EXIT])
@@ -316,7 +258,8 @@ func _draw() -> void:
 		draw_building(SMITH.position.x, SMITH.position.y, SMITH.size.x, SMITH.size.y, Color("5a5a66"), Color("3a3a44"), "BLACKSMITH")
 		draw_building(POTIONS.position.x, POTIONS.position.y, POTIONS.size.x, POTIONS.size.y, Color("7a5aa0"), Color("4a2e6b"), "POTIONS")
 		draw_building(HALL.position.x, HALL.position.y, HALL.size.x, HALL.size.y, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
-	draw_fence_border()
+	if pad == 0:
+		draw_fence_border()
 
 
 func _place_props() -> void:
@@ -369,7 +312,6 @@ func _place_props() -> void:
 		for y in range(b.position.y, b.end.y):
 			for x in range(b.position.x, b.end.x):
 				avoid[Vector2i(x, y)] = true
-	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 32, [FARM_EXIT.grow(2), BEACH_EXIT.grow(2), MOUNTAIN_EXIT.grow(2)], 2)
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 33, 5, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 34, 14, avoid)
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 35, 8, ["pigeon", "pigeon", "sparrow", "cat_orange", "cat_grey", "butterfly_blue"])

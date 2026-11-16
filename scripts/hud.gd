@@ -49,6 +49,8 @@ func _process(_delta: float) -> void:
 	for i in 12:
 		if Input.is_action_just_pressed("slot_%d" % (i + 1)):
 			GameState.select_slot(i)
+	if Input.is_action_just_pressed("cycle_tool") and not Dialogue.input_blocked():
+		GameState.select_slot((int(GameState.run["slot"]) + 1) % 12)
 	_canvas.queue_redraw()
 
 

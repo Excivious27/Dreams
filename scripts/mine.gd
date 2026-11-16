@@ -129,7 +129,7 @@ func _variant() -> String:
 	return "earth"
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	var v := _variant()
 	if Art.has("tiles", "mf_" + v) and Art.has("tiles", "mw_" + v):
 		draw_tileset_rect("mf_" + v, Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))

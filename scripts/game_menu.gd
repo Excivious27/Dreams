@@ -58,10 +58,22 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if Dialogue.instance(get_tree()).active:
+		return
 	if Input.is_action_just_pressed("menu"):
-		if Dialogue.instance(get_tree()).active:
-			return
 		toggle()
+		return
+	# Stardew hotkeys open straight to a tab (and close it again from that tab).
+	for pair in [["inventory", "Items"], ["map", "Map"], ["journal", "Quests"]]:
+		if Input.is_action_just_pressed(str(pair[0])):
+			if _open and _tab == str(pair[1]):
+				toggle()
+			elif _open:
+				_tab = str(pair[1])
+				_refresh()
+			else:
+				_tab = str(pair[1])
+				toggle()
 
 
 func toggle() -> void:

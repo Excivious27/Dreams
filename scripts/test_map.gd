@@ -84,7 +84,7 @@ func next_character() -> void:
 	SaveGame.set_value("character", ids[i])
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	var g1 := Color("5a9e4b")
 	var g2 := Color("67ab55")
 	for y in MAP_TILES.y:

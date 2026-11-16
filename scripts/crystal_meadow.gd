@@ -21,6 +21,8 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	cols = 34
 	rows = 26
+	pad = 6
+	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
 	music_track = "meadow" if GameState.is_penguins() else "rain"
 	add_exit(MEADOW_EXIT, "meadow", Vector2(33 * TILE, 15 * TILE + 8), "left", "◀ meadow")
 	set_thing(EAST_GATE.x, EAST_GATE.y, {"type": "gate", "hint": "A: the way east"})
@@ -45,9 +47,11 @@ func build() -> void:
 		block_rect(7, 2, 7, 5)
 		set_thing(24, 7, {"type": "market", "hint": "A: black market"})
 		block_rect(22, 4, 5, 4)
+	extend(14, 10)
 
 
 func after_ready() -> void:
+	set_aurora(GameState.is_penguins())
 	WorldGen.add_backdrop(self, "hills" if GameState.is_penguins() else "gritty")
 	var avoid := {}
 	if GameState.is_penguins():
@@ -94,7 +98,6 @@ func after_ready() -> void:
 		for y in range(STONES.position.y - 1, STONES.end.y + 1):
 			for x in range(STONES.position.x - 1, STONES.end.x + 1):
 				avoid[Vector2i(x, y)] = true
-		WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 102, [MEADOW_EXIT.grow(2), Rect2i(31, 10, 3, 5)], 2)
 		WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 103, 5, avoid)
 		WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 104, 14, avoid)
 		WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 105, 10, ["moon_rabbit", "crystal_fish", "butterfly_blue", "firefly", "rabbit"])
@@ -205,7 +208,7 @@ func _market() -> void:
 			give(id)
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	if GameState.is_penguins():
 		draw_grass(9)
 		WorldGen.draw_ground_detail(self, 108, 0.2)

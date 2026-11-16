@@ -27,6 +27,8 @@ func build() -> void:
 	music_track = str(R.get("music", "meadow"))
 	has_sky = bool(R.get("sky", true))
 	has_pet = bool(R.get("pet", true))
+	pad = int(R.get("pad", 5))
+	border = R.get("border", "trees")
 	for e in R.get("exits", []):
 		var r: Array = e["rect"]
 		add_exit(Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])), str(e["scene"]), Vector2(float(e["spawn"][0]) * TILE, float(e["spawn"][1]) * TILE), str(e.get("facing", "down")), str(e.get("label", "")))
@@ -60,7 +62,7 @@ func after_ready() -> void:
 			add_child(a)
 			a.play("idle")
 		else:
-			var sp := prop(g, nm, c, w)
+			var sp := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)))
 			if sp and bool(p.get("under", false)):
 				sp.z_index = -1
 		if bool(p.get("solid", true)):
@@ -98,13 +100,12 @@ func after_ready() -> void:
 			var nm := str(names[rng.randi_range(0, names.size() - 1)])
 			var g := "nature" if Art.has("nature", nm) else "props"
 			prop(g, nm, c)
-			blocked[c] = true
 	if gen.has("critters"):
 		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, int(gen.get("critter_count", 6)), gen["critters"])
 	for e in R.get("enemies", []):
 		var n := int(e.get("count", 1))
 		for i in n:
-			var at := Vector2(randf_range(4, cols - 4) * TILE, randf_range(4, rows - 4) * TILE)
+			var at := cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			if e.has("cell"):
 				at = cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
 			spawn_enemy(str(e["kind"]), at)
@@ -238,7 +239,7 @@ func on_enemy_died(e: Enemy) -> void:
 		player.frozen = false
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	var ground := str(R.get("ground", "grass"))
 	if ground == "grass":
 		draw_grass(hash(region_id) % 100)
@@ -272,7 +273,7 @@ func _draw() -> void:
 		var r: Array = wr["rect"]
 		draw_water(cells_of([Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))]), str(wr.get("shore", "grass")))
 	draw_exits()
-	if bool(R.get("fence", true)):
+	if bool(R.get("fence", false)) and pad == 0:
 		draw_fence_border(Color(str(R.get("fence_color", "6b4a2b"))))
 
 

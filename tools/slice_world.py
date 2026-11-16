@@ -378,7 +378,7 @@ def w22():
 
 
 def w23():
-    rgba = load("w23_wildlife.png")
+    rgba = load_hue("w23_wildlife.png")
     # Left block: 10 rows x 8 cells (4 idle + 4 walk), x 10..755. Right block same, x 770..1515.
     left = ["rabbit", "deer", "hedgehog", "turtle", "heron", "sparrow", "bee", "fish_jump", "seagull", "goat"]
     right = ["squirrel", "fox", "frog", "duck", "crow", "butterfly", "firefly", "crab", "bat", "owl"]
@@ -387,35 +387,37 @@ def w23():
         y0, y1 = int(10 + r * rh), int(10 + (r + 1) * rh)
         for names, (x0, x1) in [((left,), (10, 755)), ((right,), (770, 1515))]:
             nm = names[0][r]
-            boxes = cells_by_grid(rgba, 8, 1, region=(x0, y0, x1, y1), trim=False)[0]
+            boxes = row_sprites(rgba, (x0, y0 + 2, x1, y1 - 2), 8) if nm != "butterfly" else cells_by_grid(rgba, 8, 1, region=(x0, y0, x1, y1), trim=False)[0]
             h = {"deer": 56, "heron": 56, "goat": 48, "fox": 40, "owl": 44, "butterfly": 24, "bee": 20, "firefly": 20}.get(nm, 32)
             frames = []
             for b in boxes:
-                bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+                bb = region_bbox(rgba, (b[0], b[1], b[2], b[3])) if nm != "butterfly" else region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
                 frames.append(scale_to(crop(rgba, bb), height=h) if bb else Image.new("RGBA", (8, 8)))
+            if nm in ("seagull", "bat"):
+                frames[4:8] = frames[:4]  # the fly cells on the sheet are uneven; reuse idle
             strip(frames[:4], "wildlife/" + nm, "idle")
             strip(frames[4:8], "wildlife/" + nm, "walk")
             if nm == "butterfly":
                 # three colour variants, 4 frames each
-                boxes2 = cells_by_grid(rgba, 12, 1, region=(x0, y0, x1, y1), trim=False)[0]
+                boxes2 = row_sprites(rgba, (x0, y0 + 2, x1, y1 - 2), 12)
                 for k, col in enumerate(["orange", "blue", "yellow"]):
                     fr = [scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=24) for b in boxes2[k * 4:(k + 1) * 4]]
                     strip(fr, "wildlife/butterfly_" + col, "idle")
     # Row 11: cats (3 colours x 4), dog (4 idle + 4 walk)
     y0, y1 = 815, 905
-    boxes = cells_by_grid(rgba, 12, 1, region=(10, y0, 950, y1), trim=False)[0]
+    boxes = row_sprites(rgba, (10, y0, 950, y1), 12)
     for k, col in enumerate(["grey", "orange", "black"]):
         fr = [scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=36) for b in boxes[k * 4:(k + 1) * 4]]
         strip(fr, "wildlife/cat_" + col, "idle")
-    boxes = cells_by_grid(rgba, 7, 1, region=(960, y0, 1515, y1), trim=False)[0]
+    boxes = row_sprites(rgba, (960, y0, 1515, y1), 7)
     fr = [scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=40) for b in boxes]
     strip(fr[:4], "wildlife/stray_dog", "idle"); strip(fr[4:7], "wildlife/stray_dog", "walk")
     y0, y1 = 915, 1010
-    boxes = cells_by_grid(rgba, 5, 1, region=(10, y0, 460, y1), trim=False)[0]
+    boxes = row_sprites(rgba, (10, y0, 460, y1), 5)
     strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=28) for b in boxes], "wildlife/rat", "idle")
-    boxes = cells_by_grid(rgba, 5, 1, region=(490, y0, 950, y1), trim=False)[0]
+    boxes = row_sprites(rgba, (490, y0, 950, y1), 5)
     strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=32) for b in boxes], "wildlife/pigeon", "idle")
-    boxes = cells_by_grid(rgba, 5, 1, region=(960, y0, 1515, y1), trim=False)[0]
+    boxes = row_sprites(rgba, (960, y0, 1515, y1), 5)
     strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=28) for b in boxes], "wildlife/dragonfly", "idle")
 
 
@@ -455,6 +457,43 @@ def w10():
     strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=32) for b in row], "wildlife/moon_rabbit", "idle")
     row = cells_by_grid(rgba, 4, 1, region=(12, 700, 1520, 1010), trim=False)[0]
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=200) for b in row], "props", "star_crater")
+
+
+def load_hue(name, thresh=90):
+    """Like load() but keys out every magenta/purple-hued pixel regardless of
+    brightness, so dark grid lines between cells never count as sprite."""
+    img = np.array(Image.open(os.path.join(S.INC, name)).convert("RGBA")).astype(np.int32)
+    r, g, b = img[..., 0], img[..., 1], img[..., 2]
+    mag = np.minimum(r, b) - g
+    bg = (mag > thresh) & (np.abs(r - b) < 70)
+    out = img.astype(np.uint8)
+    out[..., 3] = np.where(bg, 0, 255).astype(np.uint8)
+    return out
+
+
+def row_sprites(rgba, reg, n, gap=4):
+    """Boxes of the n sprites in a row region, found by connected components so
+    uneven cells never cut a sprite in half. Close components are merged, then
+    the nearest pairs are merged until exactly n remain."""
+    boxes = comps(rgba, reg, gap=gap, min_size=6)
+    boxes = [list(b) for b in boxes]
+    # merge overlapping / near x-ranges
+    boxes.sort(key=lambda b: b[0])
+    merged = []
+    for b in boxes:
+        if merged and b[0] <= merged[-1][2] + 3:
+            m = merged[-1]
+            m[0] = min(m[0], b[0]); m[1] = min(m[1], b[1]); m[2] = max(m[2], b[2]); m[3] = max(m[3], b[3])
+        else:
+            merged.append(b)
+    while len(merged) > n:
+        gaps = [(merged[i + 1][0] - merged[i][2], i) for i in range(len(merged) - 1)]
+        g, i = min(gaps)
+        a, b = merged[i], merged[i + 1]
+        merged[i:i + 2] = [[min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])]]
+    while len(merged) < n:
+        merged.append(merged[-1])
+    return [tuple(b) for b in merged]
 
 
 # ---------------------------------------------------------------- batches 4-7
@@ -724,17 +763,17 @@ def w21():
 
 
 def w24():
-    rgba = load("w24_animals.png")
+    rgba = load_hue("w24_animals.png")
     names = ["chicken2", "rooster", "cow_brown", "cow_bw", "sheep_woolly", "pig_a", "pig_b", "goat2", "horse2", "duck2"]
     rh = 850 / 10
     for r, nm in enumerate(names):
         y0, y1 = int(8 + r * rh), int(8 + (r + 1) * rh)
         h = {"horse2": 56, "cow_brown": 48, "cow_bw": 48}.get(nm, 36)
         for anim, (x0, x1, n) in {"idle": (12, 455, 4), "walk": (465, 990, 5), "eat": (1000, 1220, 2), "baby": (1235, 1525, 4 if nm not in ("chicken2", "rooster", "duck2") else 5)}.items():
-            boxes = cells_by_grid(rgba, n, 1, region=(x0, y0, x1, y1), trim=False)[0]
+            boxes = row_sprites(rgba, (x0, y0 + 2, x1, y1 - 2), n)
             frames = []
             for b in boxes:
-                bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+                bb = region_bbox(rgba, b)
                 if bb: frames.append(scale_to(crop(rgba, bb), height=h if anim != "baby" else h * 0.6))
             if frames:
                 strip(frames, "animals/" + nm, anim)

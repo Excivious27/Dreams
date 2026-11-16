@@ -17,6 +17,8 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	cols = 30
 	rows = 28
+	pad = 6
+	border = {"n": "trees", "s": "water", "w": "water", "e": "cliff"}
 	music_track = "town"
 	add_exit(TOWN_EXIT, "town", Vector2(13 * TILE, 37 * TILE), "up", "▲ town")
 	for y in range(SEA_Y, rows):
@@ -41,6 +43,7 @@ func build() -> void:
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}
 	set_thing(5, 16, {"type": "wreck", "hint": "A: search the wreck"})
 	block_rect(3, 14, 5, 3)
+	extend(14, 6)
 
 
 func after_ready() -> void:
@@ -136,7 +139,7 @@ func _fish(c: Vector2i) -> void:
 		hud.toast("It got away.")
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	draw_grass(8)
 	WorldGen.draw_ground_detail(self, 86, 0.1)
 	# Sand (with grass transition), wet strip, then sea with foam.

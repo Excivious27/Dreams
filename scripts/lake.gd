@@ -20,8 +20,10 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	cols = 36
 	rows = 30
+	pad = 6
+	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}
 	music_track = "farm"
-	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 25 * TILE + 8), "right", "farm ▶")
+	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 30 * TILE + 8), "right", "farm ▶")
 	add_exit(FOREST_EXIT, "forest", Vector2(2 * TILE, 21 * TILE + 8), "up", "▲ forest")
 	for r: Rect2i in [LAKE, Rect2i(1, 9, 2, 12), Rect2i(5, 24, 10, 3), Rect2i(21, 4, 4, 4)]:
 		for y in range(r.position.y, r.end.y):
@@ -42,6 +44,7 @@ func build() -> void:
 		things[Vector2i(18, y)] = {"type": "dock"}
 	set_thing(27, 12, {"type": "fisher", "hint": "A: Finn's bait shop"})
 	block_rect(26, 10, 4, 3)
+	extend(12, 10)
 
 
 func after_ready() -> void:
@@ -85,7 +88,6 @@ func after_ready() -> void:
 	for y in range(10, 18):
 		for x in range(23, 36):
 			avoid[Vector2i(x, y)] = true
-	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 71, [FARM_EXIT.grow(2), FOREST_EXIT.grow(2)], 2)
 	WorldGen.tree_clumps(self, Rect2i(24, 2, 10, 8), 72, 4, avoid)
 	WorldGen.tree_clumps(self, Rect2i(2, 25, 32, 4), 73, 5, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 74, 18, avoid)
@@ -185,7 +187,7 @@ func _bait_shop() -> void:
 		give(id)
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	draw_grass(7)
 	WorldGen.draw_ground_detail(self, 76, 0.12)
 	draw_ground("dirt", cells_of([Rect2i(23, 13, 13, 3), Rect2i(31, 1, 3, 13), FARM_EXIT, FOREST_EXIT]))
@@ -198,7 +200,8 @@ func _draw() -> void:
 		if str(things[k].get("type", "")) == "dock":
 			water[k] = true
 	draw_exits()
-	draw_fence_border()
+	if pad == 0:
+		draw_fence_border()
 
 
 func _process(delta: float) -> void:

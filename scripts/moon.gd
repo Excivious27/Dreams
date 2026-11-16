@@ -18,6 +18,8 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	cols = 30
 	rows = 26
+	pad = 5
+	border = "cliff"
 	has_sky = false
 	music_track = "boss"
 	set_thing(PAD.x, PAD.y, {"type": "pad", "hint": "A: fly home"}, false)
@@ -40,11 +42,22 @@ func build() -> void:
 			var key := "forage_moon_%d_%d" % [c.x, c.y]
 			if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]):
 				things[c] = {"type": "forage", "key": key, "item": "crystal_bloom", "hint": "A: pick"}
+	extend(10, 8)
 
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "moon")
 	prop("props", "landing_pad", Vector2i(11, 21), 2)
+	if Art.has("props", "warp_pad"):
+		var wp := AnimatedSprite2D.new()
+		wp.sprite_frames = Art.frames("props", {"idle": "warp_pad"}, {"idle": 6.0})
+		wp.animation = "idle"
+		wp.scale = Vector2(0.5, 0.5)
+		wp.position = cell_center(Vector2i(24, 20)) + Vector2(0, 2)
+		wp.offset = Vector2(0, -float(Art.info("props", "warp_pad").get("cell_h", 64)) / 2.0 + 14)
+		wp.z_index = -1
+		add_child(wp)
+		wp.play("idle")
 	prop("props", "rocket_house", Vector2i(3, 6), 4)
 	if Art.has("buildings", "greenhouse_dome"):
 		prop("buildings", "greenhouse_dome", Vector2i(24, 5), 4)
@@ -174,7 +187,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	return false
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	draw_tileset_rect("moon_dust", Rect2i(0, 0, cols, rows), Color("b9a8d8"))
 	draw_tileset_rect("crater", CRATER, Color("8a7ab8"))
 	draw_rect(Rect2(0, 0, cols * TILE, TILE), Color("2a1a44"))

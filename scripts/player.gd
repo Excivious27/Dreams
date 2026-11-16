@@ -34,6 +34,11 @@ var _dust_timer := 0.0
 var _shadow: Node2D
 var _attack_hit_done := false
 var _stuck_t := 0.0
+var _attack_cd := 0.0
+var _buffered := ""
+var _flash_mat: ShaderMaterial
+var _flash := 0.0
+var _combo := 0
 
 
 func set_character(id: String) -> void:
@@ -54,6 +59,11 @@ func set_character(id: String) -> void:
 		if pdata.has("tint"):
 			_anim.modulate = Color(str(pdata["tint"]))
 		_sprite = _anim
+		var sh := load("res://shaders/flash.gdshader")
+		if sh:
+			_flash_mat = ShaderMaterial.new()
+			_flash_mat.shader = sh
+			_anim.material = _flash_mat
 	if _shadow == null:
 		_shadow = Node2D.new()
 		_shadow.draw.connect(func() -> void: _shadow.draw_circle(Vector2(0, -0.5), 5.0, Color(0, 0, 0, 0.22)))
@@ -82,6 +92,8 @@ func facing_cell() -> Vector2i:
 
 
 func cell() -> Vector2i:
+	if map:
+		return map.world_to_cell(position - Vector2(0, 2))
 	return Vector2i(floori(position.x / GameMap.TILE), floori((position.y - 2) / GameMap.TILE))
 
 
@@ -124,6 +136,12 @@ func _physics_process(delta: float) -> void:
 	if _sprite == null:
 		return
 	invuln = maxf(0.0, invuln - delta)
+	_attack_cd = maxf(0.0, _attack_cd - delta)
+	_flash = maxf(0.0, _flash - delta * 6.0)
+	if _flash_mat:
+		_flash_mat.set_shader_parameter("flash", _flash)
+	if map and map.hitstop > 0.0:
+		return
 	if _anim:
 		var base := Color.WHITE
 		var pid := str(GameState.run.get("playable", ""))
@@ -147,10 +165,28 @@ func _physics_process(delta: float) -> void:
 	else:
 		_busy_t = 0.0
 
-	if Input.is_action_just_pressed("a") and not _busy and not Dialogue.input_blocked():
-		auto_target = Vector2.INF
-		_do_action()
-		return
+	if not Dialogue.input_blocked():
+		# Stardew keys: C/left click = tool, X/right click = check. "a" is the generic
+		# touch button (check first, tool otherwise). A press during a swing is buffered.
+		var want := ""
+		if Input.is_action_just_pressed("tool"):
+			want = "tool"
+		elif Input.is_action_just_pressed("action"):
+			want = "action"
+		elif Input.is_action_just_pressed("a"):
+			want = "a"
+		if want != "":
+			if _busy:
+				_buffered = want
+			else:
+				auto_target = Vector2.INF
+				do_action(want)
+				return
+		elif not _busy and _buffered != "":
+			var b := _buffered
+			_buffered = ""
+			do_action(b)
+			return
 	if Input.is_action_just_pressed("b") and dir == Vector2.ZERO and not _busy and has_anim("play") and not Dialogue.input_blocked():
 		_busy = true
 		_play_left = PLAY_TIME
@@ -163,9 +199,14 @@ func _physics_process(delta: float) -> void:
 				return
 			_busy = false
 		elif anim_name == "attack":
-			if _anim and _anim.frame >= 1 and not _attack_hit_done:
+			if _anim and not _attack_hit_done:
 				_attack_hit()
-			return
+			# A swing never locks you for long: cancel into movement after the hit.
+			if _busy_t > 0.22 and dir != Vector2.ZERO:
+				_busy = false
+				_show_idle()
+			else:
+				return
 		elif anim_name.begins_with("hoe_") or anim_name.begins_with("water_") or anim_name.begins_with("axe_") or anim_name.begins_with("pickaxe_") or anim_name.begins_with("cast_") or anim_name.begins_with("reel_") or anim_name.begins_with("hold_") or anim_name.begins_with("eat_"):
 			if _anim and _anim.is_playing():
 				return
@@ -254,23 +295,61 @@ func play_tool(action: String, restart := true) -> bool:
 
 
 func _do_action() -> void:
+	do_action("a")
+
+
+## mode: "a" = check then tool (touch button), "tool" = tool/sword only (C),
+## "action" = check/talk/eat only (X).
+func do_action(mode := "a") -> void:
+	if _busy:
+		return
+	var held := GameState.held_tool()
+	if mode == "tool" and held in ["sword", ""]:
+		_swing()
+		return
 	if map and map.try_interact(facing_cell()):
 		velocity = Vector2.ZERO
 		if not _busy:
 			_show_idle()
 		return
-	if GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "rod"]:
+	if mode == "action":
+		return
+	if held in ["hoe", "can", "axe", "pickaxe", "rod"]:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
-		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast"}[GameState.held_tool()]
+		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast"}[held]
 		if play_tool(act):
 			return
+	_swing()
+
+
+func _swing() -> void:
+	if _attack_cd > 0.0:
+		return
+	# Aim assist: snap to an enemy that's close and roughly in front.
+	if map:
+		var best: Enemy = null
+		var bd := 26.0
+		for e in map.enemies:
+			if not is_instance_valid(e):
+				continue
+			var d: Vector2 = e.position - position
+			if d.length() < bd and d.normalized().dot(facing_dir()) > 0.3:
+				best = e
+				bd = d.length()
+		if best:
+			face_toward(best.position)
 	_busy = true
+	_busy_t = 0.0
+	_attack_cd = 0.3
 	_attack_hit_done = false
+	_combo = (_combo + 1) % 3
 	velocity = Vector2.ZERO
 	_sprite.position.y = 0
 	_apply("attack", facing == "left", true)
+	if _anim:
+		_anim.speed_scale = 1.6
+	_attack_hit()
 	if _anim == null:
-		_attack_hit()
 		_busy = false
 
 
@@ -293,9 +372,14 @@ func _move(step: Vector2) -> void:
 func _attack_hit() -> void:
 	_attack_hit_done = true
 	if map:
-		var center := position + facing_dir() * 10.0 + Vector2(0, -6)
-		map.attack_at(Rect2(center - Vector2(11, 11), Vector2(22, 22)), GameState.sword_damage())
+		var center := position + facing_dir() * 12.0 + Vector2(0, -6)
+		var side := facing_dir().orthogonal() * 16.0
+		var box := Rect2(center - Vector2(14, 14), Vector2(28, 28))
+		var hit := map.attack_at(box, GameState.sword_damage() + (1 if _combo == 0 else 0), position)
 		_swing_arc(center)
+		if hit:
+			map.hitstop = 0.05
+			map.shake(1.5)
 
 
 ## Stardew-style sword arc in the facing direction.
@@ -318,11 +402,17 @@ func _swing_arc(center: Vector2) -> void:
 func take_damage(n: int, from: Vector2) -> void:
 	if invuln > 0.0:
 		return
-	invuln = 0.9
+	invuln = 1.0
+	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n
-	velocity = (position - from).normalized() * 160.0
+	velocity = (position - from).normalized() * 190.0
 	auto_target = Vector2.INF
+	_busy = false
 	Music.instance(get_tree()).sfx("hurt")
+	if map:
+		map.hitstop = 0.06
+		map.shake(3.0)
+		map.damage_number(position + Vector2(0, -22), n, Color(1, 0.35, 0.3))
 	if int(GameState.run["hp"]) <= 0 and map:
 		map.player_down()
 

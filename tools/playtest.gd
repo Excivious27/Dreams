@@ -47,11 +47,16 @@ func _run() -> void:
 
 	# Walk to the plot and farm one tile.
 	var p: Player = farm.player
-	p.position = farm.cell_center(Vector2i(14, 10))
+	var stand := Vector2i(16, 14)
+	for dx in range(0, 8):
+		if farm._tillable(Vector2i(16 + dx, 13)) and not farm.blocked.has(Vector2i(16 + dx, 14)):
+			stand = Vector2i(16 + dx, 14)
+			break
+	p.position = farm.cell_center(stand)
 	p.facing = "up"
 	await frames(5)
 	var fc := p.facing_cell()
-	check(farm.things.get(fc, {}).get("type", "") == "plot", "facing a plot tile (%s)" % str(fc))
+	check(farm._tillable(fc), "facing open grass to till (%s)" % str(fc))
 	await act()
 	var key := "%d,%d" % [fc.x, fc.y]
 	check(GameState.run["farm"].has(key), "tilled a tile")
@@ -71,34 +76,24 @@ func _run() -> void:
 	Input.action_release("right"); Input.action_release("b")
 	check(spd > Player.WALK_SPEED * 1.3, "running is faster than walking (%.0f)" % spd)
 	await frames(30)
-	# Touch path: finger 0 on the D-pad (right), finger 1 holding B.
-	p.position = farm.cell_center(Vector2i(4, 19))
-	touch(0, TouchControls.DPAD_CENTER + Vector2(30, 0), true)
-	touch(1, TouchControls.BUTTONS["b"]["pos"], true)
+	# Touch path: a drag from the lower-left becomes the floating joystick; far = run.
+	p.position = farm.cell_center(Vector2i(6, 20))
+	touch(0, Vector2(60, 400), true)
+	await frames(2)
+	drag(0, Vector2(60, 400), Vector2(110, 400))
 	await frames(40)
 	var tspd := p.velocity.length()
-	check(tspd > Player.WALK_SPEED * 1.3, "touch D-pad + B runs (%.0f)" % tspd)
-	touch(1, TouchControls.BUTTONS["b"]["pos"], false)
+	check(tspd > Player.WALK_SPEED * 1.3, "joystick pushed far runs (%.0f)" % tspd)
+	drag(0, Vector2(110, 400), Vector2(76, 400))
 	await frames(25)
 	var wspd := p.velocity.length()
-	check(wspd < Player.WALK_SPEED * 1.15 and wspd > 10.0, "releasing B walks (%.0f)" % wspd)
-	touch(0, TouchControls.DPAD_CENTER + Vector2(30, 0), false)
+	check(wspd < Player.WALK_SPEED * 1.15 and wspd > 10.0, "joystick pushed a little walks (%.0f)" % wspd)
+	touch(0, Vector2(76, 400), false)
 	await frames(10)
-	# Tap B while moving toggles run mode.
-	p.position = farm.cell_center(Vector2i(26, 19))
-	touch(0, TouchControls.DPAD_CENTER + Vector2(-30, 0), true)
-	await frames(5)
-	touch(1, TouchControls.BUTTONS["b"]["pos"], true)
-	await frames(3)
-	touch(1, TouchControls.BUTTONS["b"]["pos"], false)
-	await frames(40)
-	check(TouchControls.run_toggle and p.velocity.length() > Player.WALK_SPEED * 1.3, "tapping B toggles run (%.0f)" % p.velocity.length())
-	touch(0, TouchControls.DPAD_CENTER + Vector2(-30, 0), false)
-	TouchControls.run_toggle = false
-	await frames(10)
+	check(p.velocity.length() < 1.0, "releasing the joystick stops")
 	await shot("05_running")
 	# Touch A on the sell box opens a dialogue, tapping the box advances it.
-	p.position = farm.cell_center(Vector2i(4, 12))
+	p.position = farm.cell_center(Vector2i(8, 11))
 	p.facing = "up"
 	await frames(3)
 	touch(1, TouchControls.BUTTONS["a"]["pos"], true)
@@ -117,10 +112,12 @@ func _run() -> void:
 	check(not d.active, "tapping the dialogue box advances/closes it")
 	# Tap-to-move: tap a grass cell, the player walks there.
 	await frames(20)
-	p.position = farm.cell_center(Vector2i(9, 26))
+	p.position = farm.cell_center(Vector2i(20, 22))
+	for c: Vector2i in [Vector2i(20, 23), Vector2i(20, 24), Vector2i(20, 25)]:
+		farm.clear_cell(c)
 	await frames(45)  # let the camera settle on the new position
 	var cam_tf: Transform2D = farm.get_canvas_transform()
-	var dest: Vector2 = farm.cell_center(Vector2i(9, 29))
+	var dest: Vector2 = farm.cell_center(Vector2i(20, 25))
 	var screen: Vector2 = cam_tf * (dest - Vector2(0, 8))  # middle of the cell, not its bottom edge
 	touch(0, screen, true)
 	await frames(2)
@@ -149,7 +146,7 @@ func _run() -> void:
 	await frames(20)  # input is blocked briefly after a menu closes
 
 	# Enter the house via the door.
-	p.position = farm.cell_center(Vector2i(6, 9))
+	p.position = farm.cell_center(Vector2i(13, 11))
 	p.facing = "up"
 	await frames(3)
 	check(farm.things.get(p.facing_cell(), {}).get("type", "") == "door", "facing the door")
@@ -159,7 +156,7 @@ func _run() -> void:
 	check(house != null and house.scene_id() == "house", "entered the house")
 	await shot("06_house")
 	# Sleep.
-	house.player.position = house.cell_center(Vector2i(2, 3))
+	house.player.position = house.cell_center(Vector2i(3, 3))
 	house.player.facing = "up"
 	await frames(3)
 	var day0 := int(GameState.run["day"])
@@ -201,10 +198,23 @@ func _run() -> void:
 		await press("a", 2)
 		await frames(6)
 	check(GameState.quest_done("meet_town"), "meet_town quest completed")
-	# Shop: buy strawberry seeds.
+	# Shop: walk in the store door, then up to the counter and buy strawberry seeds.
 	town.player.position = town.cell_center(Vector2i(6, 10))
 	town.player.facing = "up"
 	await frames(20)
+	await press("a", 3)
+	await frames(50)
+	var store := current_scene
+	check(store != null and store.scene_id() == "interior", "entered the general store")
+	for i in 10:
+		if not d.active:
+			break
+		await press("a", 2)
+		await frames(6)
+	await shot("10a_store")
+	store.player.position = store.cell_center(Vector2i(6, 7))
+	store.player.facing = "up"
+	await frames(10)
 	var before := int(GameState.run["crystals"])
 	await press("a", 3)
 	await frames(10)
@@ -370,6 +380,15 @@ func act() -> void:
 		if scene is GameMap and (scene as GameMap).player and not (scene as GameMap).player._busy:
 			break
 	await frames(3)
+
+
+func drag(index: int, from: Vector2, to: Vector2) -> void:
+	var scale := Vector2(root.size) / Vector2(270, 480)
+	var ev := InputEventScreenDrag.new()
+	ev.index = index
+	ev.position = to * scale
+	ev.relative = (to - from) * scale
+	Input.parse_input_event(ev)
 
 
 func touch(index: int, pos: Vector2, pressed: bool) -> void:

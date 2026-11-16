@@ -1,11 +1,13 @@
 extends GameMap
-## The mountain pass east of town: switchback path up rocky terrain, a lookout,
-## a hot spring, rock fields to mine, and the rocket pad (penguin arc) or a
-## smugglers' camp (gangster arc) at the top. Exits: town (west), moon (pad).
+## The mountain pass east of town: three wide terraces split by long cliff ledges,
+## a hot spring, rock fields to mine, a lookout, a cave, and the rocket pad
+## (penguin arc) or a smugglers' camp (gangster arc) up top. Exits: town, moon (pad).
 
-const TOWN_EXIT := Rect2i(0, 11, 1, 3)
-const PAD := Vector2i(16, 4)
-const SPRING := Rect2i(24, 20, 3, 2)
+const TOWN_EXIT := Rect2i(0, 38, 1, 4)
+const PAD := Vector2i(28, 5)
+const SPRING := Rect2i(44, 20, 3, 2)
+const LEDGES := [[14, 24, 27], [28, 10, 13]]   # [row, stair x0, stair x1]
+var _ledge := {}
 
 
 func scene_id() -> String:
@@ -13,41 +15,48 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return Vector2(2 * TILE, 12 * TILE)
+	return cell_center(Vector2i(3, 39))
 
 
 func build() -> void:
-	cols = 34
-	rows = 32
+	cols = 56
+	rows = 46
+	pad = 6
+	border = "cliff"
 	music_track = "mine"
 	add_exit(TOWN_EXIT, "town", Vector2(25 * TILE, 13 * TILE + 8), "left", "◀ town")
-	# Rock walls forming terraces.
-	for x in range(4, 30):
-		if x < 10 or x > 13:
-			block_rect(x, 8, 1, 1)
-		if x < 18 or x > 21:
-			block_rect(x, 16, 1, 1)
-		if x < 7 or x > 10:
-			block_rect(x, 24, 1, 1)
+	# Three wide terraces split by two long cliff ledges, each with one stair gap.
+	for l in LEDGES:
+		var y: int = l[0]
+		for x in range(0, cols):
+			if x >= int(l[1]) and x <= int(l[2]):
+				continue
+			_ledge[Vector2i(x, y)] = true
+			blocked[Vector2i(x, y)] = true
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 91
-	for i in 40:
+	var placed := 0
+	while placed < 22:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
-		if things.has(c) or blocked.has(c) or Rect2i(14, 2, 6, 5).has_point(c):
+		if things.has(c) or blocked.has(c) or Rect2i(22, 1, 14, 8).has_point(c) or SPRING.grow(2).has_point(c) or is_cleared(c):
+			continue
+		var near_stairs := false
+		for l in LEDGES:
+			if absi(c.y - int(l[0])) <= 2 and c.x >= int(l[1]) - 2 and c.x <= int(l[2]) + 2:
+				near_stairs = true
+		if near_stairs or TOWN_EXIT.grow(3).has_point(c):
 			continue
 		var roll := rng.randf()
-		var ore := "stone" if roll < 0.55 else ("copper" if roll < 0.8 else ("iron" if roll < 0.95 else "shard"))
+		var ore := "stone" if roll < 0.5 else ("copper" if roll < 0.78 else ("iron" if roll < 0.94 else "shard"))
 		set_thing(c.x, c.y, {"type": "mrock", "ore": ore, "hp": 2 if ore == "stone" else 3, "hint": "A: mine"})
+		placed += 1
 	for y in range(SPRING.position.y, SPRING.end.y):
 		for x in range(SPRING.position.x, SPRING.end.x):
 			set_thing(x, y, {"type": "spring", "hint": "A: soak in the hot spring"})
 	if GameState.is_penguins():
 		set_thing(PAD.x, PAD.y, {"type": "pad", "hint": "A: the landing pad"}, false)
-		block_rect(14, 2, 2, 5)
-		block_rect(19, 2, 2, 5)
 	else:
 		set_thing(PAD.x, PAD.y, {"type": "camp", "hint": "A: smugglers' camp"})
-		block_rect(14, 2, 6, 2)
 
 
 func after_ready() -> void:
@@ -58,56 +67,53 @@ func after_ready() -> void:
 			var nm: String = {"stone": "mrock_a", "copper": "ore_copper", "iron": "ore_iron", "shard": "ore_crystal"}[str(t["ore"])]
 			if not prop("props", nm, k):
 				prop("nature", "rock_m", k)
-	if not Art.has("tiles", "cliff2_0"):
-		for x in range(4, 30):
-			for yy in [8, 16, 24]:
-				if blocked.has(Vector2i(x, yy)) and not things.has(Vector2i(x, yy)):
-					prop("nature", "rock_l" if x % 3 == 0 else "rock_m", Vector2i(x, yy))
 	if Art.has("props", "hot_spring"):
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("props", {"idle": "hot_spring"}, {"idle": 3.0})
 		a.animation = "idle"
 		a.scale = Vector2(0.5, 0.5)
-		a.position = Vector2((SPRING.position.x + 1.5) * TILE, (SPRING.end.y) * TILE)
+		a.position = cell_pos(SPRING.position.x + 1.5, SPRING.end.y)
 		a.offset = Vector2(0, -float(Art.info("props", "hot_spring").get("cell_h", 96)) / 2.0)
 		a.z_index = -1
 		add_child(a)
 		a.play("idle")
-	prop("props", "lookout_tower", Vector2i(3, 29), 1)
-	block_rect(3, 26, 2, 4)
-	prop("props", "cliff_stairs_up", Vector2i(11, 8))
-	prop("props", "cliff_stairs_up", Vector2i(19, 16))
-	prop("props", "cliff_stairs_up", Vector2i(8, 24))
-	prop("props", "rockslide", Vector2i(26, 27), 2)
-	block_rect(26, 26, 3, 2)
-	prop("props", "goat", Vector2i(28, 10))
-	for c: Vector2i in [Vector2i(5, 20), Vector2i(23, 12)]:
+	prop("props", "lookout_tower", Vector2i(48, 42), 1)
+	block_rect(48, 39, 2, 4)
+	for l in LEDGES:
+		prop("props", "cliff_stairs_up", Vector2i(int(l[1]) + 1, int(l[0])), 0, 0.0, false)
+	prop("props", "rockslide", Vector2i(6, 20), 2)
+	block_rect(6, 19, 3, 2)
+	prop("props", "goat", Vector2i(40, 8))
+	for c: Vector2i in [Vector2i(12, 34), Vector2i(36, 22), Vector2i(50, 32), Vector2i(8, 6)]:
 		prop("props", "boulder_l", c)
-		blocked[c] = true
 	if Art.has("props", "cave_mouth"):
 		prop("props", "cave_mouth", Vector2i(4, 2), 2)
 		block_rect(4, 1, 3, 2)
 		set_thing(5, 3, {"type": "cave", "hint": "A: a dark cave"}, false)
 	if GameState.is_penguins():
-		prop("props", "landing_pad", Vector2i(15, 6), 2)
-		prop("props", "rocket_house", Vector2i(26, 6), 3)
-		block_rect(26, 2, 4, 5)
-		prop("props", "moon_crystal_blue", Vector2i(12, 4))
-		blocked[Vector2i(12, 4)] = true
+		prop("props", "landing_pad", Vector2i(27, 7), 2, 0.0, false)
+		prop("props", "rocket_house", Vector2i(32, 6), 3)
+		block_rect(32, 2, 4, 5)
+		prop("props", "moon_crystal_blue", Vector2i(24, 5))
 	else:
-		prop("props", "black_market", Vector2i(14, 3), 4)
-		prop("props", "fire_barrel_0", Vector2i(21, 4))
-		prop("props", "crates_c", Vector2i(23, 4), 1)
-		block_rect(21, 3, 4, 2)
+		prop("props", "black_market", Vector2i(26, 4), 4)
+		prop("props", "fire_barrel_0", Vector2i(33, 5))
+		prop("props", "crates_c", Vector2i(35, 5), 1)
 	var avoid := {}
-	for y in range(2, 8):
-		for x in range(11, 31):
+	for y in range(1, 9):
+		for x in range(22, 38):
 			avoid[Vector2i(x, y)] = true
-	WorldGen.tree_clumps(self, Rect2i(2, 26, 30, 4), 92, 4, avoid)
-	WorldGen.scatter_props(self, Rect2i(2, 9, 30, 20), 93, 12, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 94, 6, ["goat", "crow", "crow", "hedgehog", "sparrow"])
-	for i in 3:
-		spawn_enemy("golem" if GameState.is_penguins() else "thug_enforcer", Vector2(randf_range(6, 28) * TILE, randf_range(10, 23) * TILE))
+	for l in LEDGES:
+		for y in range(int(l[0]) - 2, int(l[0]) + 3):
+			for x in range(int(l[1]) - 3, int(l[2]) + 4):
+				avoid[Vector2i(x, y)] = true
+	WorldGen.tree_clumps(self, Rect2i(2, 30, cols - 4, 14), 92, 5, avoid)
+	WorldGen.tree_clumps(self, Rect2i(2, 16, 18, 10), 95, 2, avoid)
+	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 93, 16, avoid)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 94, 8, ["goat", "crow", "crow", "hedgehog", "sparrow"])
+	for i in 4:
+		var at := cell_center(Vector2i(randi_range(6, cols - 7), randi_range(16, rows - 6)))
+		spawn_enemy("golem" if GameState.is_penguins() else "thug_enforcer", at)
 	if not GameState.run["flags"].has("mountain_seen"):
 		GameState.run["flags"]["mountain_seen"] = true
 		player.frozen = true
@@ -196,26 +202,27 @@ func _camp() -> void:
 			give(id)
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	draw_grass(9)
-	WorldGen.draw_ground_detail(self, 95, 0.1)
-	draw_ground("stone", cells_of([Rect2i(0, 0, cols, 8), Rect2i(0, 15, cols, 2), Rect2i(0, 23, cols, 2)]))
-	draw_ground("dirt", cells_of([Rect2i(1, 11, 9, 3), Rect2i(7, 17, 4, 8), Rect2i(10, 8, 4, 6), Rect2i(18, 13, 4, 5), Rect2i(10, 17, 12, 2), Rect2i(14, 7, 6, 2), TOWN_EXIT]))
-	# Cliff faces along the terrace rows.
-	for yy in [8, 16, 24]:
-		for x in range(1, cols - 1):
-			if blocked.has(Vector2i(x, yy)) and not things.has(Vector2i(x, yy)):
-				var idx := 1 if (x > 1 and blocked.has(Vector2i(x - 1, yy))) and (x < cols - 2 and blocked.has(Vector2i(x + 1, yy))) else (0 if not blocked.has(Vector2i(x - 1, yy)) else 2)
-				var nm := "cliff2_%d" % idx
-				var t := Art.tex("tiles", nm)
-				if t:
-					draw_texture_rect(t, Rect2(x * TILE, (yy - 1) * TILE, TILE, TILE * 2), false)
+	WorldGen.draw_ground_detail(self, 95, 0.05)
+	# Top terrace is bare stone; the others grassy with a dirt switchback.
+	draw_ground("stone", cells_of([Rect2i(0, 0, cols, 9)]))
+	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 29, 3, 12), Rect2i(10, 29, 16, 2), Rect2i(25, 15, 3, 15), Rect2i(25, 15, 6, 2), Rect2i(28, 8, 3, 8)]))
+	for c: Vector2i in _ledge:
+		var left := not _ledge.has(c + Vector2i(-1, 0))
+		var right := not _ledge.has(c + Vector2i(1, 0))
+		var nm := "cliff2_0" if left else ("cliff2_12" if right and Art.has("tiles", "cliff2_12") else "cliff2_1")
+		var t := Art.tex("tiles", nm)
+		if t:
+			draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
+		else:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6a6a74"))
 	draw_exits()
 	if not Art.has("props", "hot_spring"):
 		var r := Rect2(SPRING.position * TILE, SPRING.size * TILE)
 		draw_rect(r.grow(3), Color("7a7a86"))
 		draw_rect(r, Color("6fc8d8"))
-	draw_fence_border(Color("5a5a66"))
+
 
 
 func _process(delta: float) -> void:

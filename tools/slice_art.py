@@ -29,6 +29,10 @@ def key_magenta(img):
     alpha = np.clip((100 - mag) * 255 / 45, 0, 255)   # mag<=55 opaque, >=100 clear
     bright = np.minimum(r, b)
     alpha = np.where(bright < 150, 255, alpha)         # dark purples/outlines are never background
+    # ...except the sheets' own darker magenta (shading of the backdrop, ~141,2,138):
+    # strongly magenta with r≈b and almost no green is still background at any brightness.
+    deep_bg = (mag > 100) & (np.abs(r - b) < 40) & (g < 40)
+    alpha = np.where(deep_bg, 0, alpha)
     out = a.copy()
     # de-spill: pull magenta fringe toward neutral
     fringe = (alpha < 255) & (alpha > 0)

@@ -24,6 +24,8 @@ var weather := "clear":
 var _drops: Array = []
 var _parts: Array = []
 var _ov_t := 0.0
+## Painted aurora band across the top of the sky (crystal meadow / moon nights).
+var aurora := false
 const OVERLAYS := {"rain": "ov_rain", "storm": "ov_heavy_rain", "snow": "ov_snow", "blizzard": "ov_blizzard", "petals": "ov_petals", "leaves": "ov_leaves", "fireflies": "ov_fireflies", "fog": "ov_fog", "dust": "ov_dust", "sandstorm": "ov_sandstorm", "ash": "ov_ash", "meteors": "ov_meteors"}
 
 
@@ -118,6 +120,10 @@ func _spawn_flock() -> void:
 
 
 func _on_draw() -> void:
+	if aurora and overhead and Art.has("fx", "aurora"):
+		var at := Art.tex("fx", "aurora")
+		var fr := int(_ov_t * 3.0) % 4
+		_canvas.draw_texture_rect_region(at, Rect2(Vector2(-10, 60), Vector2(290, 72)), Rect2(fr * 512, 0, 512, 128), Color(1, 1, 1, 0.55))
 	var ov := _overlay()
 	if ov != null and overhead:
 		# Painted weather overlay: 4-frame 128x96 strip tiled across the screen, additive-ish.

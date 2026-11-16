@@ -22,8 +22,10 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	cols = 36
 	rows = 28
+	pad = 6
+	border = {"n": "cliff", "s": "trees", "w": "trees", "e": "trees"}
 	music_track = "meadow"
-	add_exit(FARM_EXIT, "farm", Vector2(29 * TILE, 19 * TILE + 8), "left", "◀ farm")
+	add_exit(FARM_EXIT, "farm", Vector2(68 * TILE, 30 * TILE + 8), "left", "◀ farm")
 	add_exit(EAST_EXIT, "crystal_meadow", Vector2(2 * TILE, 12 * TILE), "right", "east ▶")
 	for p: Vector2i in [Vector2i(4, 2), Vector2i(10, 2), Vector2i(16, 3), Vector2i(21, 12), Vector2i(3, 13), Vector2i(14, 8), Vector2i(9, 12), Vector2i(26, 22), Vector2i(8, 22), Vector2i(19, 25)]:
 		set_thing(p.x, p.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
@@ -36,6 +38,7 @@ func build() -> void:
 		var key := "shroom_%d_%d" % [m.x, m.y]
 		var has := int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
 		things[m] = {"type": "shroom", "key": key, "has": has, "hint": "A: pick mushroom" if has else ""}
+	extend(18, 14)
 
 
 func after_ready() -> void:
@@ -45,7 +48,6 @@ func after_ready() -> void:
 	for y in range(3, 9):
 		for x in range(30, 35):
 			avoid[Vector2i(x, y)] = true
-	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 41, [FARM_EXIT.grow(2), EAST_EXIT.grow(2), Rect2i(29, 0, 7, 10)], 2)
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 42, 6, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 43, 20, avoid)
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 44, 12, ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "bee", "bee", "rabbit", "sparrow", "deer"])
@@ -190,7 +192,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 	return false
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	draw_grass(5)
 	WorldGen.draw_ground_detail(self, 51, 0.18)
 	if Art.has("tiles", "g_flower"):
@@ -219,7 +221,8 @@ func _draw() -> void:
 	draw_ground("stone", cells_of([Rect2i(30, 2, 5, 7)]))
 	if not Art.has("props", "mine_entrance"):
 		draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
-	draw_fence_border()
+	if pad == 0:
+		draw_fence_border()
 	label("mine", Vector2(28 * TILE, 3 * TILE - 2), 3 * TILE)
 
 

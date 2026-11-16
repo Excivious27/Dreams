@@ -18,8 +18,10 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	cols = 34
 	rows = 40
+	pad = 7
+	border = "trees"
 	music_track = "meadow"
-	add_exit(FARM_EXIT, "farm", Vector2(15 * TILE + 8, 2 * TILE + 8), "down", "▼ farm")
+	add_exit(FARM_EXIT, "farm", Vector2(36 * TILE, 3 * TILE + 8), "down", "▼ farm")
 	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 6 * TILE), "left", "◀ lake")
 	set_thing(SHRINE.x, SHRINE.y, {"type": "shrine", "hint": "A: forest shrine"})
 	block_rect(15, 5, 3, 2)
@@ -35,6 +37,7 @@ func build() -> void:
 			continue
 		var item: String = ["mushroom", "mushroom", "berry", "fiber", "wild_leek"][rng.randi_range(0, 4)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
+	extend(14, 10)
 
 
 func after_ready() -> void:
@@ -51,8 +54,6 @@ func after_ready() -> void:
 	for y in range(24, 31):
 		for x in range(22, 31):
 			avoid[Vector2i(x, y)] = true
-	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 62, [FARM_EXIT.grow(2), LAKE_EXIT.grow(2)], 1)
-	WorldGen.tree_border(self, Rect2i(2, 2, cols - 4, rows - 4), 63, [FARM_EXIT.grow(3), LAKE_EXIT.grow(3)], 2)
 	WorldGen.tree_clumps(self, Rect2i(3, 3, cols - 6, rows - 6), 64, 26, avoid)
 	WorldGen.scatter_props(self, Rect2i(3, 3, cols - 6, rows - 6), 65, 30, avoid)
 	WorldGen.add_critters(self, Rect2i(3, 3, cols - 6, rows - 6), 66, 12, ["deer", "fox", "rabbit", "squirrel", "hedgehog", "owl", "sparrow", "butterfly_yellow", "crow"])
@@ -151,7 +152,7 @@ func _shrine() -> void:
 	await say([{"who": "Shrine", "text": "An old stone altar with a pale crystal set in it. Hold something worth at least 20 crystals and press A to offer it." if GameState.is_penguins() else "An old altar. Someone left fresh flowers. Someone in this town still believes in something. Hold an item worth 20+ and press A to leave an offering."}])
 
 
-func _draw() -> void:
+func draw_map() -> void:
 	if Art.has("tiles", "forest_floor"):
 		for y in rows:
 			for x in cols:
@@ -177,4 +178,5 @@ func _draw() -> void:
 		var p := cell_center(SHRINE)
 		draw_rect(Rect2(p.x - 14, p.y - 14, 28, 12), Color("7a7a86"))
 		draw_colored_polygon(PackedVector2Array([Vector2(p.x, p.y - 30), Vector2(p.x + 4, p.y - 22), Vector2(p.x, p.y - 17), Vector2(p.x - 4, p.y - 22)]), Color("a8d8ff"))
-	draw_fence_border()
+	if pad == 0:
+		draw_fence_border()

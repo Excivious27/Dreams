@@ -39,7 +39,12 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 	add_child(_label)
 
 
+var wander := 20.0
+
+
 func cell() -> Vector2i:
+	if map:
+		return map.world_to_cell(position - Vector2(0, 2))
 	return Vector2i(floori(position.x / GameMap.TILE), floori((position.y - 2) / GameMap.TILE))
 
 
@@ -48,7 +53,7 @@ func _process(delta: float) -> void:
 	if _t <= 0.0:
 		_t = randf_range(2.0, 5.0)
 		if randf() < 0.5:
-			_target = home + Vector2(randf_range(-20, 20), randf_range(-10, 10))
+			_target = home + Vector2(randf_range(-wander, wander), randf_range(-wander / 2.0, wander / 2.0))
 	var to := _target - position
 	if to.length() > 2.0:
 		var step := to.normalized() * 18.0 * delta

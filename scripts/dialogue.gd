@@ -238,10 +238,10 @@ func _process_input() -> void:
 		elif Input.is_action_just_pressed("up"):
 			_choice_focus = (_choice_focus - 1 + n) % n
 			_refresh_focus()
-		elif Input.is_action_just_pressed("a"):
+		elif InputSetup.confirm_pressed():
 			(_choices.get_child(_choice_focus) as Button).pressed.emit()
 		return
-	if Input.is_action_just_pressed("a"):
+	if InputSetup.confirm_pressed():
 		_advance()
 
 

@@ -1,30 +1,38 @@
 class_name TouchControls
 extends CanvasLayer
-## On-screen D-pad plus A, B and MENU buttons. Multi-touch; slide your thumb
-## around the D-pad to change direction (8-way). Presses the same input actions
-## as the keyboard, so game code only reads actions.
-## B: hold to run, or tap to toggle run on/off (shown on the button).
+## Stardew-mobile style touch controls:
+##  - Floating joystick: touch and drag anywhere on the lower-left of the screen.
+##    Push further to run. Analog 8-way steering.
+##  - A quick tap (no drag) anywhere in the world walks there / uses what's there.
+##  - Right side: USE (tool / sword / check), CHECK (talk, pick up, eat), MENU.
+## Presses the same input actions as the keyboard, so game code only reads actions.
 
-const DPAD_CENTER := Vector2(58, 408)
-const DPAD_RADIUS := 40.0
 const TOP_OF_CONTROLS := 352.0
 const BUTTONS := {
-	"a": {"pos": Vector2(234, 392), "r": 22.0, "label": "A"},
-	"b": {"pos": Vector2(189, 432), "r": 20.0, "label": "B"},
-	"menu": {"pos": Vector2(135, 463), "r": 13.0, "label": "MENU"},
+	"a": {"pos": Vector2(232, 398), "r": 24.0, "label": "USE"},
+	"action": {"pos": Vector2(186, 438), "r": 18.0, "label": "CHECK"},
+	"menu": {"pos": Vector2(237, 460), "r": 13.0, "label": "MENU"},
 }
 const DIRS := {"left": Vector2.LEFT, "right": Vector2.RIGHT, "up": Vector2.UP, "down": Vector2.DOWN}
+const STICK_R := 34.0
+const RUN_AT := 0.72
+const TAP_MAX_T := 0.26
+const TAP_MAX_D := 10.0
 
 static var run_toggle := false
 ## False on desktop (a keyboard or mouse was used): the on-screen pad hides.
 static var visible_controls := true
 
-var _touches := {}  # touch index -> "dpad" or action name
-var _dpad_dir := Vector2.ZERO
+var _touches := {}  # touch index -> "stick" | "pending" | action name
+var _stick_origin := Vector2.ZERO
+var _stick_pos := Vector2.ZERO
+var _stick_active := false
+var _stick_vec := Vector2.ZERO
+var _pending_at := Vector2.ZERO
+var _pending_t := 0.0
 var _held := {}  # action -> true while held by touch
 var _canvas: Control
-var _b_down_at := 0.0
-var _b_moved := false
+var _running := false
 
 
 func _ready() -> void:
@@ -44,7 +52,6 @@ func _notification(what: int) -> void:
 
 
 func _process(_delta: float) -> void:
-	# Keep the B button lit when run mode is toggled on.
 	_canvas.visible = visible_controls
 	_canvas.queue_redraw()
 
@@ -54,7 +61,9 @@ func release_all() -> void:
 		Input.action_release(action)
 	_held.clear()
 	_touches.clear()
-	_dpad_dir = Vector2.ZERO
+	_stick_active = false
+	_stick_vec = Vector2.ZERO
+	_running = false
 	if _canvas:
 		_canvas.queue_redraw()
 
@@ -73,67 +82,96 @@ func _input(event: InputEvent) -> void:
 		var t := event as InputEventScreenTouch
 		if t.pressed:
 			var hit := _hit(t.position)
-			if hit == "":
-				return
-			_touches[t.index] = hit
-			if hit == "dpad":
-				_update_dpad(t.position)
-			else:
-				if hit == "b":
-					_b_down_at = Time.get_ticks_msec() / 1000.0
-					_b_moved = _dpad_dir != Vector2.ZERO
+			if hit != "":
+				_touches[t.index] = hit
 				_press(hit)
+				get_viewport().set_input_as_handled()
+				return
+			if t.position.y < Hud.TOOLBAR_BOTTOM:
+				return  # toolbar / clock: the HUD handles it
+			if get_tree().paused or Dialogue.instance(get_tree()).active:
+				return  # menus and dialogue take their own taps
+			if _stick_active:
+				return  # second finger while steering: let the world take it (tap on enemy etc.)
+			# Could become a joystick drag or a tap: decide on release/drag.
+			_touches[t.index] = "pending"
+			_pending_at = t.position
+			_pending_t = Time.get_ticks_msec() / 1000.0
 			get_viewport().set_input_as_handled()
 		elif _touches.has(t.index):
 			var what: String = _touches[t.index]
 			_touches.erase(t.index)
-			if what == "dpad":
-				_set_dpad(Vector2.ZERO)
+			if what == "stick":
+				_end_stick()
+			elif what == "pending":
+				var held_for := Time.get_ticks_msec() / 1000.0 - _pending_t
+				if held_for <= TAP_MAX_T:
+					var m := get_tree().current_scene
+					if m is GameMap:
+						(m as GameMap).handle_tap(t.position)
 			else:
-				if what == "b":
-					var held_for := Time.get_ticks_msec() / 1000.0 - _b_down_at
-					if held_for < 0.3 and (_b_moved or _dpad_dir != Vector2.ZERO):
-						run_toggle = not run_toggle
 				_release(what)
 			get_viewport().set_input_as_handled()
 	elif event is InputEventScreenDrag:
 		var d := event as InputEventScreenDrag
-		if _touches.get(d.index, "") == "dpad":
-			_update_dpad(d.position)
+		var what: String = _touches.get(d.index, "")
+		if what == "pending":
+			if d.position.distance_to(_pending_at) > TAP_MAX_D:
+				_touches[d.index] = "stick"
+				_stick_origin = _pending_at
+				_stick_active = true
+				_update_stick(d.position)
+			get_viewport().set_input_as_handled()
+		elif what == "stick":
+			_update_stick(d.position)
 			get_viewport().set_input_as_handled()
 
 
 func _hit(pos: Vector2) -> String:
-	if pos.distance_to(DPAD_CENTER) <= DPAD_RADIUS * 1.5:
-		return "dpad"
 	for action: String in BUTTONS:
 		var b: Dictionary = BUTTONS[action]
-		if pos.distance_to(b["pos"]) <= float(b["r"]) * 1.4:
+		if pos.distance_to(b["pos"]) <= float(b["r"]) * 1.35:
 			return action
 	return ""
 
 
-func _update_dpad(pos: Vector2) -> void:
-	var v := pos - DPAD_CENTER
-	if v.length() < 7.0:
-		_set_dpad(Vector2.ZERO)
+func _update_stick(pos: Vector2) -> void:
+	var v := pos - _stick_origin
+	# The stick base follows your thumb if you push well past its edge (floating).
+	if v.length() > STICK_R * 1.6:
+		_stick_origin = pos - v.normalized() * STICK_R * 1.6
+		v = pos - _stick_origin
+	_stick_pos = pos
+	var mag := clampf(v.length() / STICK_R, 0.0, 1.0)
+	if mag < 0.18:
+		_set_vec(Vector2.ZERO, false)
 		return
+	# 8-way like Stardew's pad, but keep the analog magnitude for walk/run.
 	var a := snappedf(v.angle(), PI / 4.0)
-	var dir := Vector2(cos(a), sin(a))
-	_set_dpad(Vector2(roundf(dir.x), roundf(dir.y)))
+	var dir := Vector2(cos(a), sin(a)).normalized()
+	_set_vec(dir, mag >= RUN_AT)
 
 
-func _set_dpad(dir: Vector2) -> void:
-	if dir == _dpad_dir:
-		return
-	_dpad_dir = dir
+func _set_vec(dir: Vector2, running: bool) -> void:
+	_stick_vec = dir
 	for action: String in DIRS:
 		var want := dir.dot(DIRS[action]) > 0.5
 		if want and not _held.has(action):
 			_press(action)
 		elif not want and _held.has(action):
 			_release(action)
+	if running != _running:
+		_running = running
+		if running:
+			_press("b")
+		else:
+			_release("b")
 	_canvas.queue_redraw()
+
+
+func _end_stick() -> void:
+	_stick_active = false
+	_set_vec(Vector2.ZERO, false)
 
 
 func _press(action: String) -> void:
@@ -153,18 +191,21 @@ func _on_draw() -> void:
 	var base := Color(1, 1, 1, 0.16)
 	var edge := Color(1, 1, 1, 0.45)
 	var lit := Color(1, 1, 1, 0.5)
-	# D-pad
-	_canvas.draw_circle(DPAD_CENTER, DPAD_RADIUS, base)
-	_canvas.draw_arc(DPAD_CENTER, DPAD_RADIUS, 0, TAU, 48, edge, 1.5, true)
-	for action: String in DIRS:
-		var d: Vector2 = DIRS[action]
-		var c := DPAD_CENTER + d * DPAD_RADIUS * 0.62
-		var tip := c + d * 7.0
-		var side := d.orthogonal() * 7.0
-		var col := lit if _held.has(action) else edge
-		_canvas.draw_colored_polygon(PackedVector2Array([tip, c - d * 4.0 + side, c - d * 4.0 - side]), col)
-	if _dpad_dir != Vector2.ZERO:
-		_canvas.draw_circle(DPAD_CENTER + _dpad_dir.normalized() * DPAD_RADIUS * 0.35, 9.0, lit)
+	# Joystick: faint resting ring bottom-left until you touch; then it floats under your thumb.
+	var origin := _stick_origin if _stick_active else Vector2(58, 412)
+	_canvas.draw_circle(origin, STICK_R, base if not _stick_active else Color(1, 1, 1, 0.22))
+	_canvas.draw_arc(origin, STICK_R, 0, TAU, 48, edge, 1.5, true)
+	if _stick_active:
+		var knob := origin + (_stick_pos - origin).limit_length(STICK_R)
+		_canvas.draw_circle(knob, 13.0, Color(1, 1, 1, 0.6 if _running else 0.45))
+		_canvas.draw_arc(knob, 13.0, 0, TAU, 32, Color(1, 1, 1, 0.8), 1.5, true)
+	else:
+		for action: String in DIRS:
+			var d: Vector2 = DIRS[action]
+			var c := origin + d * STICK_R * 0.62
+			var tip := c + d * 6.0
+			var side := d.orthogonal() * 6.0
+			_canvas.draw_colored_polygon(PackedVector2Array([tip, c - d * 4.0 + side, c - d * 4.0 - side]), edge)
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
@@ -172,15 +213,20 @@ func _on_draw() -> void:
 		var b: Dictionary = BUTTONS[action]
 		var p: Vector2 = b["pos"]
 		var r := float(b["r"])
-		var on := _held.has(action) or (action == "b" and run_toggle)
+		var on := _held.has(action)
 		if btn and btn_down:
 			_canvas.draw_texture_rect(btn_down if on else btn, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), false, Color(1, 1, 1, 0.85))
 		else:
-			_canvas.draw_circle(p, r, Color(1, 0.9, 0.5, 0.45) if (action == "b" and run_toggle) else (lit if on else base))
+			_canvas.draw_circle(p, r, lit if on else base)
 			_canvas.draw_arc(p, r, 0, TAU, 40, edge, 1.5, true)
-		var size := 14 if r > 15.0 else 7
 		var label := str(b["label"])
-		if action == "b" and run_toggle:
-			label = "RUN"
-			size = 9
+		var size := 9 if r > 20.0 else 7
+		if action == "a":
+			# Show what USE will do: the held tool's icon, or a sword.
+			var held := GameState.held_tool() if not GameState.run.is_empty() else ""
+			var icon := Art.tex("items", held if held != "" else "sword")
+			if icon:
+				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(10, 14), Vector2(20, 20)), false)
+				_canvas.draw_string(font, p + Vector2(-r, 15), label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 7, Color(1, 1, 1, 0.9))
+				continue
 		_canvas.draw_string(font, p + Vector2(-r, size * 0.36), label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, size, Color(1, 1, 1, 0.9))
