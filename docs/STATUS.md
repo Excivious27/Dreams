@@ -176,3 +176,14 @@
 - Playtest: run/joystick/tap tests made robust (max speed over window, fresh runway, re-tap after dialogue fade); tool-upgrade test added. 0 failures.
 - Not yet: hair/hats/mounts/tool-anim layers drawn on the body (creator + paper-doll still pending; sheets are sliced and in the manifest). Swim needs a full-size sheet.
 - Added `docs/guides/GUIDE-03.md` and `docs/ART-PROMPTS-08.md` (+ `art-prompts-08.html`): full-body costume sheets (w120–123), base actions/swim/riding (w124–126), creator UI + portraits (w127–129).
+
+## 2026-11-16 (evening) — play-feedback pass 1
+- Controls: Stardew PC defaults exactly (WASD/arrows, C tool, X action, Shift run, E/Esc menu, F journal, M map, Y emote, Tab toolbar, 1-0-=), rebindable in Options → Key bindings (saved under "keys"). Real mouse: left click = tool toward cursor, right click = check; emulated events are ignored on both sides (`emulate_touch_from_mouse` off) so desktop and phone never double-fire.
+- Performance: maps no longer redraw every frame. Water, sea, waterfall and lava draw on `GameMap.AnimLayer` (`_anim_layer.jobs`); everything else draws once.
+- Collisions: trees/rocks/bushes/crystals block only their base cell (`prop()` for "nature"/"props"); buildings keep their body. `tools/reach_test.gd` flood-fills every map from spawn and asserts exits/doors reachable.
+- Paths: `draw_ground` widens 1-wide strips to 2 (`widen_path`), paints plain fill (cobble_a / sand_fill / dirt fill 7-11) under blob edges, decals only inside. Tall-grass and flower patches thinned; crystal-meadow glow turf is a noise blob.
+- Sizes: `CharacterLibrary.make_sprite` normalises everyone to villager height (hero 26 px, villagers 24, penguin 14, dog 15). Pet is Tom's original pup again (W64 pup's 2-frame run "flew").
+- Vitals: health on a 100 scale (hearts = 20 HP, partial fill), enemy dmg ×12, defense ×3, energy costs per task × tool tier (`GameState.ENERGY_COST`, `spend_for`), mana + `Spells` (Spark, Glow, Haste, Rain Call, Growth, Crystal Shield, Warp Home) from the Magic tree. 2am → carried home, 5% crystals; health 0 → clinic, 10%; energy 0 → carried home.
+- Skills: Sun Haven-style trees in `data/skills.json` (8 skills × ~12 ranked nodes, tiers gated by points spent, branches via `requires`); `GameState.node_rank/bonus/buy_node`; menu Skills tab shows the tree with buy buttons and reset. Old level-gated perks are `data/skills_old.json`.
+- Signposts show "→ town" when you walk up and can be read; no painted labels. Mountain cave is a second mine entrance (returns you where you came from).
+- Still to do from Tom's list: town ×10 with big houses, NPC routines/friendship perks/quest lists, lake building purposes, more regions, bigger beach, creator fixes, squirrel anim.

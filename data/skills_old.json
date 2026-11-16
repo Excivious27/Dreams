@@ -1,0 +1,359 @@
+{
+ "farming": {
+  "name": "Farming",
+  "desc": "Grow, water, harvest. Every crop you raise feeds the land.",
+  "perks": [
+   [
+    2,
+    "Green Thumb",
+    "+10% chance of an extra crop per harvest"
+   ],
+   [
+    3,
+    "Sprinkler Plans",
+    "Craft basic sprinklers"
+   ],
+   [
+    4,
+    "Quick Hands",
+    "Hoeing and watering cost 1 less energy"
+   ],
+   [
+    5,
+    "Harvest Moon",
+    "Crops sell for 15% more"
+   ],
+   [
+    6,
+    "Fertilizer",
+    "Craft fertilizer (crops 1 day faster)"
+   ],
+   [
+    7,
+    "Rich Soil",
+    "Watered crops have a 25% chance to grow an extra day"
+   ],
+   [
+    8,
+    "Greenhouse Plans",
+    "Build the greenhouse"
+   ],
+   [
+    9,
+    "Golden Seeds",
+    "5% of harvests are star-quality (x2 value)"
+   ],
+   [
+    10,
+    "Harvest Lord",
+    "Double harvest 20% of the time"
+   ]
+  ]
+ },
+ "mining": {
+  "name": "Mining",
+  "desc": "Rocks, ore and what hides inside them.",
+  "perks": [
+   [
+    2,
+    "Rockbreaker",
+    "+1 stone from every rock"
+   ],
+   [
+    3,
+    "Copper Eye",
+    "+15% ore from nodes"
+   ],
+   [
+    4,
+    "Deep Breath",
+    "Mine cart goes 2 floors deeper per run"
+   ],
+   [
+    5,
+    "Gem Sense",
+    "Rocks can drop gems"
+   ],
+   [
+    6,
+    "Hot Furnace",
+    "Smelting needs 4 ore instead of 5"
+   ],
+   [
+    7,
+    "Iron Will",
+    "Mining costs 1 less energy"
+   ],
+   [
+    8,
+    "Crystal Resonance",
+    "+20% crystal shards"
+   ],
+   [
+    9,
+    "Geologist",
+    "Rare gems from mountain nodes"
+   ],
+   [
+    10,
+    "Core Diver",
+    "Dark ore drops from deep rocks"
+   ]
+  ]
+ },
+ "foraging": {
+  "name": "Foraging",
+  "desc": "Wood, berries, mushrooms, herbs. The valley provides.",
+  "perks": [
+   [
+    2,
+    "Forager",
+    "+1 from every forage pickup"
+   ],
+   [
+    3,
+    "Lumberjack",
+    "+2 wood per tree"
+   ],
+   [
+    4,
+    "Herbalist",
+    "Craft herb remedies"
+   ],
+   [
+    5,
+    "Tracker",
+    "Forage spots respawn every day instead of every 2"
+   ],
+   [
+    6,
+    "Woodcutter",
+    "Trees fall one hit sooner"
+   ],
+   [
+    7,
+    "Sap Tapper",
+    "Trees drop sap"
+   ],
+   [
+    8,
+    "Beekeeper",
+    "Beehives make double honey"
+   ],
+   [
+    9,
+    "Rare Finds",
+    "Truffles and glow-caps appear"
+   ],
+   [
+    10,
+    "Keeper of the Woods",
+    "Chopping costs no energy"
+   ]
+  ]
+ },
+ "fishing": {
+  "name": "Fishing",
+  "desc": "Patience, bait, and the one that got away.",
+  "perks": [
+   [
+    2,
+    "Patience",
+    "Fish bite sooner"
+   ],
+   [
+    3,
+    "Bait Maker",
+    "Craft bait from bugs and fiber"
+   ],
+   [
+    4,
+    "Trapper",
+    "Craft crab pots"
+   ],
+   [
+    5,
+    "Angler",
+    "Rare fish can bite"
+   ],
+   [
+    6,
+    "Pond Plans",
+    "Build a fish pond"
+   ],
+   [
+    7,
+    "Treasure Hunter",
+    "Chance of a chest on the line"
+   ],
+   [
+    8,
+    "Master Bait",
+    "Legendary fish can bite"
+   ],
+   [
+    9,
+    "Lucky Lure",
+    "Fish are bigger (x1.5 value)"
+   ],
+   [
+    10,
+    "Sea Legend",
+    "Never miss a bite"
+   ]
+  ]
+ },
+ "combat": {
+  "name": "Combat",
+  "desc": "Grumps, thugs, and worse. Swing true.",
+  "perks": [
+   [
+    2,
+    "Fighter",
+    "+1 sword damage"
+   ],
+   [
+    3,
+    "Stamina",
+    "+10 max energy"
+   ],
+   [
+    4,
+    "Tough",
+    "+1 heart"
+   ],
+   [
+    5,
+    "Defender",
+    "25% chance to shrug off a hit"
+   ],
+   [
+    6,
+    "Critical Eye",
+    "+10% crit chance"
+   ],
+   [
+    7,
+    "Acrobat",
+    "Longer knockback on enemies"
+   ],
+   [
+    8,
+    "Berserker",
+    "+1 sword damage"
+   ],
+   [
+    9,
+    "Warrior",
+    "+2 hearts"
+   ],
+   [
+    10,
+    "Champion",
+    "Enemies drop double loot"
+   ]
+  ]
+ },
+ "bartering": {
+  "name": "Bartering",
+  "desc": "Buy low, sell high, make friends doing it.",
+  "perks": [
+   [
+    2,
+    "Haggler",
+    "Shops 5% cheaper"
+   ],
+   [
+    3,
+    "Trader",
+    "Sell box pays 5% more"
+   ],
+   [
+    4,
+    "Stall Plans",
+    "Build a market stall on the farm"
+   ],
+   [
+    5,
+    "Networker",
+    "Shops stock extra items"
+   ],
+   [
+    6,
+    "Appraiser",
+    "Sell box pays 10% more"
+   ],
+   [
+    7,
+    "Smooth Talker",
+    "Gifts earn +2 friendship"
+   ],
+   [
+    8,
+    "Tycoon",
+    "Shops 15% cheaper"
+   ],
+   [
+    9,
+    "Monopolist",
+    "Sell box pays 20% more"
+   ],
+   [
+    10,
+    "Crystal Baron",
+    "Daily interest on crystals (1%)"
+   ]
+  ]
+ },
+ "building": {
+  "name": "Building",
+  "desc": "Plans, timber, stone, and a steady hand.",
+  "perks": [
+   [
+    2,
+    "Carpenter",
+    "Builds need 10% less wood"
+   ],
+   [
+    3,
+    "Mason",
+    "Builds need 10% less stone"
+   ],
+   [
+    4,
+    "Engineer",
+    "Quality sprinklers"
+   ],
+   [
+    5,
+    "Architect",
+    "Tier-2 plans (barn, coop, shed)"
+   ],
+   [
+    6,
+    "Tinkerer",
+    "Craft the preserves jar and keg"
+   ],
+   [
+    7,
+    "Decorator",
+    "Furniture recipes"
+   ],
+   [
+    8,
+    "Master Builder",
+    "Builds cost 25% less"
+   ],
+   [
+    9,
+    "Foreman",
+    "Tier-3 plans (stable, mill, greenhouse)"
+   ],
+   [
+    10,
+    "Grand Architect",
+    "Iridium sprinklers"
+   ]
+  ]
+ }
+}

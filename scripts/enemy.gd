@@ -151,7 +151,7 @@ func _process(delta: float) -> void:
 		_windup -= delta
 		if _windup <= 0.0:
 			if dist < reach + 4.0 and player.invuln <= 0.0:
-				player.take_damage(damage, position)
+				player.take_damage(GameState.enemy_damage(damage), position)
 			_cooldown = 1.1
 	elif not stunned and dist < reach and _cooldown <= 0.0:
 		_windup = 0.32

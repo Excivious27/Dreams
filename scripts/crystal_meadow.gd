@@ -206,8 +206,12 @@ func draw_map() -> void:
 		draw_grass(9)
 		WorldGen.draw_ground_detail(self, 108, 0.2)
 		if Art.has("tiles", "g_glow"):
-			for c: Vector2i in cells_of([Rect2i(10, 4, 15, 16), Rect2i(24, 2, 9, 22)]):
-				Art.draw_tile(self, "tiles", "g_glow" if (c.x * 3 + c.y) % 5 != 0 else "g_glow_b", Vector2(c * TILE), 4)
+			# Glowing turf spreads out from the crystals in soft noise blobs, not boxes.
+			for c: Vector2i in cells_of([Rect2i(6, 1, 28, 24)]):
+				var n := WorldGen.fbm(float(c.x), float(c.y), 77, 7.0)
+				var dist := Vector2(c).distance_to(Vector2(17, 11)) / 14.0
+				if n - dist * 0.5 > -0.15:
+					Art.draw_tile(self, "tiles", "g_glow" if (c.x * 3 + c.y) % 5 != 0 else "g_glow_b", Vector2(c * TILE), 4)
 			var rng := RandomNumberGenerator.new()
 			rng.seed = 109
 			for c: Vector2i in cells_of([Rect2i(10, 4, 23, 20)]):

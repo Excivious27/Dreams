@@ -150,7 +150,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"mrock":
 			if not GameState.has_tool("pickaxe"):
 				return false
-			if not GameState.spend_energy(2):
+			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")

@@ -29,7 +29,7 @@ static func load_data() -> void:
 	npcs = load_json("res://data/npcs.json")
 	arcs = load_json("res://data/arcs.json")
 	playables = load_json("res://data/playable.json")
-	skills_data = load_json("res://data/skills.json")
+	skills_data = load_json("res://data/skills.json").get("skills", {})
 	recipes = load_json("res://data/recipes.json")
 	enemy_data = load_json("res://data/enemies.json")
 	forage_data = load_json("res://data/forage.json")
@@ -39,8 +39,8 @@ static func load_data() -> void:
 static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String) -> void:
 	load_data()
 	var skills := {}
-	for id in load_json("res://data/skills.json").keys():
-		skills[id] = {"level": 1, "xp": 0}
+	for id in skills_data.keys():
+		skills[id] = {"level": 1, "xp": 0, "nodes": {}}
 	run = {
 		"equip": {"head": "", "body": "", "legs": "", "feet": "", "hands": "", "offhand": "", "back": "", "belt": "", "ring": "", "charm": ""},
 		"arc": arc,
@@ -50,7 +50,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"day": 1,
 		"time": DAY_START,
 		"energy": 100, "max_energy": 100,
-		"hp": 6, "max_hp": 6,
+		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100,
 		"skills": skills,
 		"flags": {},
 		"decisions": {},
@@ -88,7 +88,7 @@ static func has_run() -> bool:
 static func _migrate() -> void:
 	var defaults := {
 		"crystals": 20, "day": 1, "time": DAY_START, "energy": 100, "max_energy": 100,
-		"hp": 6, "max_hp": 6, "skills": {}, "flags": {}, "decisions": {}, "friendship": {},
+		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100, "skills": {}, "flags": {}, "decisions": {}, "friendship": {},
 		"talked_today": {}, "inventory": {}, "tools": ["hoe", "can", "axe", "pickaxe", "sword", "rod"],
 		"selected": "", "farm": {}, "sellbox": {}, "quests": [], "scene": "farm", "mine_floor": 1,
 		"kills": 0, "intro_done": false,
@@ -97,9 +97,11 @@ static func _migrate() -> void:
 	for k in defaults:
 		if not run.has(k):
 			run[k] = defaults[k]
-	for id in load_json("res://data/skills.json").keys():
+	for id in skills_data.keys():
 		if not run["skills"].has(id):
-			run["skills"][id] = {"level": 1, "xp": 0}
+			run["skills"][id] = {"level": 1, "xp": 0, "nodes": {}}
+		elif not run["skills"][id].has("nodes"):
+			run["skills"][id]["nodes"] = {}
 	if not run.has("names") or not run.has("arc") or not run.has("playable"):
 		run = {}
 
@@ -279,7 +281,9 @@ static func sword_damage() -> int:
 	if best == 0:
 		for t in run["tools"]:
 			best = maxi(best, int(items.get(t, {}).get("damage", 0)))
-	best += (1 if has_perk("combat", "Fighter") else 0) + (1 if has_perk("combat", "Berserker") else 0) + gear_stat("damage") + tool_tier("sword")
+	best += int(bonus("combat", "damage")) + gear_stat("damage") + tool_tier("sword")
+	if has_perk("combat", "Berserker") and int(run["hp"]) < int(run["max_hp"]) / 2:
+		best += 1
 	return maxi(best, 1)
 
 
@@ -308,16 +312,97 @@ static func skill_level(skill: String) -> int:
 	return int(run["skills"].get(skill, {}).get("level", 1))
 
 
-## Perk unlocked when the skill reaches the perk's level (see data/skills.json).
+# ---- skill trees (Sun Haven style) ------------------------------------------
+# Every level gives one skill point in that skill. Points buy ranks in nodes.
+# A node of tier t opens once t*TIER_POINTS points are spent in that tree and
+# any one of its `requires` parents has a rank.
+
+const TIER_POINTS := 3
+
+
+static func nodes_of(skill: String) -> Array:
+	return skills_data.get(skill, {}).get("nodes", [])
+
+
+static func node(skill: String, id: String) -> Dictionary:
+	for n in nodes_of(skill):
+		if str(n["id"]) == id:
+			return n
+	return {}
+
+
+static func node_rank(skill: String, id: String) -> int:
+	return int(run["skills"].get(skill, {}).get("nodes", {}).get(id, 0))
+
+
+static func points_spent(skill: String) -> int:
+	var t := 0
+	for v in run["skills"].get(skill, {}).get("nodes", {}).values():
+		t += int(v)
+	return t
+
+
+static func points_free(skill: String) -> int:
+	return maxi(0, skill_level(skill) - 1 - points_spent(skill))
+
+
+## Why a node can't be bought ("" = it can).
+static func node_locked(skill: String, id: String) -> String:
+	var n := node(skill, id)
+	if n.is_empty():
+		return "unknown"
+	if node_rank(skill, id) >= int(n.get("ranks", 1)):
+		return "maxed"
+	if points_free(skill) <= 0:
+		return "no points"
+	var tier := int(n.get("tier", 0))
+	if points_spent(skill) < tier * TIER_POINTS:
+		return "needs %d points in %s" % [tier * TIER_POINTS, str(skills_data[skill]["name"])]
+	var req: Array = n.get("requires", [])
+	if not req.is_empty():
+		var ok := false
+		for r in req:
+			if node_rank(skill, str(r)) > 0:
+				ok = true
+		if not ok:
+			var names: Array = []
+			for r in req:
+				names.append(str(node(skill, str(r)).get("name", r)))
+			return "needs " + " or ".join(names)
+	return ""
+
+
+static func buy_node(skill: String, id: String) -> bool:
+	if node_locked(skill, id) != "":
+		return false
+	run["skills"][skill]["nodes"][id] = node_rank(skill, id) + 1
+	_apply_max_stats()
+	return true
+
+
+static func reset_tree(skill: String) -> void:
+	run["skills"][skill]["nodes"] = {}
+	_apply_max_stats()
+
+
+## Perk by display name (legacy callers) or node id: true at rank 1+.
 static func has_perk(skill: String, perk_name: String) -> bool:
-	for pk in skills_data.get(skill, {}).get("perks", []):
-		if str(pk[1]) == perk_name:
-			return skill_level(skill) >= int(pk[0])
-	return false
+	var id := perk_name.to_lower().replace(" ", "_")
+	return node_rank(skill, id) > 0
+
+
+## Summed effect of ranks bought in a tree, e.g. bonus("combat", "damage").
+static func bonus(skill: String, key: String) -> float:
+	var t := 0.0
+	for n in nodes_of(skill):
+		var r := node_rank(skill, str(n["id"]))
+		if r > 0 and n.has("effect") and n["effect"].has(key):
+			t += float(n["effect"][key]) * r
+	return t
 
 
 static func perks_of(skill: String) -> Array:
-	return skills_data.get(skill, {}).get("perks", [])
+	return nodes_of(skill)
 
 
 # ---- equipment ----------------------------------------------------------------
@@ -375,12 +460,73 @@ static func gear_stat(stat: String) -> int:
 	return total
 
 
+## ---- Vitals: health 100-scale, energy weighted per task, mana for spells ----
+## Health: 100 base, +8 per combat level, Tough +20, Warrior +40, gear "hp".
+## Energy: 100 base, +3 per level in every skill (a seasoned farmer lasts
+##   longer), Stamina +25, gear "energy". Tasks cost by ENERGY_COST, reduced
+##   8% per tool tier (a moon axe is nearly free to swing).
+## Mana: 20 base, +12 per magic level, gear "mana"; regenerates slowly, fully
+##   on sleep. Spells live in data/spells.json.
+const ENERGY_COST := {"hoe": 4, "can": 2, "axe": 5, "pickaxe": 5, "scythe": 2, "rod": 3, "hammer": 3, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
+const HEART_HP := 20
+
 static func _apply_max_stats() -> void:
-	var base_hp := 6 + (1 if has_perk("combat", "Tough") else 0) + (2 if has_perk("combat", "Warrior") else 0)
-	var base_en := 100 + (10 if has_perk("combat", "Stamina") else 0) + gear_stat("energy")
+	var levels := 0
+	for sk in skills_data.keys():
+		levels += skill_level(str(sk)) - 1
+	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + gear_stat("hp")
+	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + gear_stat("energy")
+	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana")
 	run["max_hp"] = base_hp
 	run["max_energy"] = base_en
+	run["max_mana"] = base_mana
+	if int(run["max_hp"]) > 0 and int(run["hp"]) <= 10 and int(run.get("hp_scale", 6)) == 6:
+		run["hp"] = base_hp  # old 6-heart saves: refill on the new scale
+	run["hp_scale"] = 100
 	run["hp"] = mini(int(run["hp"]), base_hp)
+	run["mana"] = mini(int(run.get("mana", base_mana)), base_mana)
+
+
+## Energy a tool use costs right now (tier and perks applied).
+static func energy_cost(task: String) -> int:
+	var base := int(ENERGY_COST.get(task, 2))
+	if base == 0:
+		return 0
+	var tier := tool_tier(task) if TOOL_KINDS.has(task) else 0
+	var mult := 1.0 - 0.08 * tier
+	if task in ["hoe", "can", "plant"]:
+		mult *= 1.0 - bonus("farming", "farm_energy")
+	elif task == "pickaxe":
+		mult *= 1.0 - bonus("mining", "mine_energy")
+	if int(run["energy"]) < int(run["max_energy"]) * 0.15:
+		mult *= 1.25  # exhausted: everything is harder
+	return maxi(1, int(ceil(base * mult)))
+
+
+static func spend_for(task: String) -> bool:
+	return spend_energy(energy_cost(task))
+
+
+static func spend_mana(n: int) -> bool:
+	if int(run.get("mana", 0)) < n:
+		return false
+	run["mana"] = int(run["mana"]) - n
+	return true
+
+
+static func restore_mana(n: int) -> void:
+	run["mana"] = mini(int(run.get("mana", 0)) + n, int(run.get("max_mana", 20)))
+
+
+## Damage an enemy deals: enemies.json "dmg" is in hearts-ish units; on the
+## 100 scale a grump (1) does 12, the president (4) does 48 before defense.
+static func enemy_damage(dmg_units: int) -> int:
+	return maxi(5, dmg_units * 12)
+
+
+## Fraction of max, for bars.
+static func vital(name: String) -> float:
+	return clampf(float(run.get(name, 0)) / maxf(1.0, float(run.get("max_" + name, 1))), 0.0, 1.0)
 
 
 static func refresh_stats() -> void:
@@ -390,18 +536,11 @@ static func refresh_stats() -> void:
 # ---- economy modifiers ---------------------------------------------------------
 
 static func buy_multiplier() -> float:
-	var m := 1.0
-	if has_perk("bartering", "Haggler"): m -= 0.05
-	if has_perk("bartering", "Tycoon"): m -= 0.15
-	return maxf(0.5, m)
+	return maxf(0.5, 1.0 - bonus("bartering", "buy_discount"))
 
 
 static func sell_multiplier() -> float:
-	var m := 1.0
-	if has_perk("bartering", "Trader"): m += 0.05
-	if has_perk("bartering", "Appraiser"): m += 0.10
-	if has_perk("bartering", "Monopolist"): m += 0.20
-	return m
+	return 1.0 + bonus("bartering", "sell_bonus")
 
 
 ## Roll a drop table: Array of [item, chance, n]. Luck nudges the chance.
@@ -454,7 +593,8 @@ static func spend_energy(n: int) -> bool:
 
 
 static func heal(n: int) -> void:
-	run["hp"] = mini(int(run["hp"]) + n, int(run["max_hp"]))
+	# Items list "heal" in old heart units (1-3); scale to the 100-point bar.
+	run["hp"] = mini(int(run["hp"]) + n * HEART_HP, int(run["max_hp"]))
 
 
 static func restore_energy(n: int) -> void:
@@ -648,8 +788,8 @@ static func clock_text() -> String:
 ## Advance to the next morning: crops grow, sell box pays, energy restores.
 static func sleep(passed_out := false) -> Dictionary:
 	var report := {"earned": 0, "sold": [], "grown": 0}
-	if has_perk("bartering", "Crystal Baron"):
-		run["crystals"] = int(run["crystals"] * 1.01)
+	if bonus("bartering", "interest") > 0.0:
+		run["crystals"] = int(run["crystals"] * (1.0 + bonus("bartering", "interest")))
 	var total := 0
 	for id in run["sellbox"].keys():
 		var n: int = int(run["sellbox"][id])
@@ -657,8 +797,8 @@ static func sleep(passed_out := false) -> Dictionary:
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
 	if total > 0:
-		var bonus := 1.0 + 0.05 * (skill_level("bartering") - 1)
-		total = int(total * bonus)
+		var lv_bonus := 1.0 + 0.05 * (skill_level("bartering") - 1)
+		total = int(total * lv_bonus)
 		add_xp("bartering", total / 4)
 	run["crystals"] = int(run["crystals"]) + total
 	report["earned"] = total
@@ -676,6 +816,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["time"] = DAY_START
 	run["energy"] = int(run["max_energy"]) if not passed_out else int(run["max_energy"]) / 2
 	run["hp"] = int(run["max_hp"])
+	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
 	save()
 	return report

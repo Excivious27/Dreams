@@ -65,6 +65,11 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed:
 		var mb := event as InputEventMouseButton
+		if mb.button_index == MOUSE_BUTTON_LEFT and mb.device != InputEvent.DEVICE_ID_EMULATION:
+			var p := mb.position
+			if p.y >= TOOLBAR_Y - 2 and p.y <= TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
+				GameState.select_slot(int((p.x - TOOLBAR_X) / SLOT))
+				get_viewport().set_input_as_handled()
 		if mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			GameState.select_slot((int(GameState.run["slot"]) + 1) % 12)
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP:
@@ -77,16 +82,26 @@ func _draw_hud() -> void:
 		return
 	var c := _canvas
 	# Hearts
+	# Hearts: one per 20 HP; the last heart drains as a partial fill.
 	var hp := int(r["hp"])
 	var max_hp := int(r["max_hp"])
+	var hearts := int(ceil(max_hp / float(GameState.HEART_HP)))
 	var heart_full := Art.tex("ui", "heart_full")
 	var heart_empty := Art.tex("ui", "heart_empty")
-	for i in max_hp:
+	for i in hearts:
 		var p := Vector2(6 + i * 11, 4)
+		var f := clampf((hp - i * GameState.HEART_HP) / float(GameState.HEART_HP), 0.0, 1.0)
 		if heart_full and heart_empty:
-			c.draw_texture_rect(heart_full if i < hp else heart_empty, Rect2(p, Vector2(10, 10)), false)
+			c.draw_texture_rect(heart_empty, Rect2(p, Vector2(10, 10)), false)
+			if f > 0.0:
+				c.draw_texture_rect_region(heart_full, Rect2(p + Vector2(0, 10 * (1.0 - f)), Vector2(10, 10 * f)), Rect2(0, heart_full.get_height() * (1.0 - f), heart_full.get_width(), heart_full.get_height() * f))
 		else:
-			c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if i < hp else Color(0, 0, 0, 0.4))
+			c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if f >= 1.0 else Color(0, 0, 0, 0.4))
+	# Mana (small blue bar under the hearts), only once you can cast.
+	if int(r.get("max_mana", 0)) > 0 and (GameState.skill_level("magic") > 1 or int(r.get("mana", 0)) > 0):
+		var mb := Rect2(6, 16, 50, 4)
+		c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
+		c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
 	# Clock box (top right)
 	var box := Rect2(166, 2, 100, 28)
 	_panel(c, "panel_parchment", box)

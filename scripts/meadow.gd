@@ -182,6 +182,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"mine":
+			GameState.run["flags"]["mine_from"] = "meadow"
 			go_to("mine", Vector2.ZERO)
 			return true
 		"shroom":
@@ -230,7 +231,6 @@ func draw_map() -> void:
 		draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
 	if pad == 0:
 		draw_fence_border()
-	label("mine", Vector2(28 * TILE, 3 * TILE - 2), 3 * TILE)
 
 
 func _place_props() -> void:

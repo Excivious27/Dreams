@@ -8,6 +8,10 @@ const ORDER: Array[String] = ["man", "woman", "son", "girl", "dog"]
 const DISPLAY_NAMES := {"man": "Man", "woman": "Woman", "son": "Son", "girl": "Girl", "dog": "Dog"}
 const STRIP := "map_large"
 const SPRITE_SCALE := 0.5
+## World height (px) of an idle sprite: villagers from art/gen are 48 px cells at 0.5.
+const NPC_H := 24.0
+const HERO_H := 26.0
+const TARGET_H := {"penguin": 14.0, "dog": 15.0, "light_crystal": 16.0, "president": 30.0}
 const VIEW_NAMES: Array[String] = ["view_front", "view_right", "view_back", "view_left"]
 const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0, "hurt": 6.0, "speak": 6.0, "charge": 6.0}
 const LOOPS := {"attack": false, "powerup": false, "hurt": false}
@@ -147,7 +151,13 @@ static func make_sprite(id: String) -> AnimatedSprite2D:
 	var h := int(strip_info(id)["cell_h"]) if data().has(id) else int(Art.info("characters/" + id, "idle").get("cell_h", 64))
 	s.centered = true
 	s.offset = Vector2(0, -h / 2.0)
-	s.scale = Vector2(SPRITE_SCALE, SPRITE_SCALE)
+	# Everyone is drawn to the same world height as the villagers (24 px), so
+	# the hero doesn't tower over the town. The penguin hero is half a villager.
+	var sc := SPRITE_SCALE
+	var target := float(TARGET_H.get(id, NPC_H if not data().has(id) else HERO_H))
+	if h > 0:
+		sc = target / float(h)
+	s.scale = Vector2(sc, sc)
 	# Frames from different strips have different cell heights; keep feet planted.
 	s.frame_changed.connect(func() -> void:
 		var tex := s.sprite_frames.get_frame_texture(s.animation, s.frame)

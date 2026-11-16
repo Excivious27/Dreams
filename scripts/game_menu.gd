@@ -58,14 +58,34 @@ func _ready() -> void:
 	v.add_child(close)
 
 
+var _rebinding := ""
+
+
+func _input(event: InputEvent) -> void:
+	if _rebinding == "" or not _panel.visible:
+		return
+	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
+		var k := event as InputEventKey
+		if k.physical_keycode != KEY_ESCAPE:
+			InputSetup.rebind(_rebinding, k.physical_keycode)
+		_rebinding = ""
+		get_viewport().set_input_as_handled()
+		_refresh()
+
+
 func _process(_delta: float) -> void:
 	if Dialogue.instance(get_tree()).active:
 		return
+	if _rebinding != "":
+		return
+	# Stardew hotkeys: E/Esc toggles the menu (Items tab when opening), M opens
+	# straight to the Map, F to the Journal; pressing the same key again closes.
 	if Input.is_action_just_pressed("menu"):
+		if not _open:
+			_tab = "Items"
 		toggle()
 		return
-	# Stardew hotkeys open straight to a tab (and close it again from that tab).
-	for pair in [["inventory", "Items"], ["map", "Map"], ["journal", "Quests"]]:
+	for pair in [["map", "Map"], ["journal", "Quests"]]:
 		if Input.is_action_just_pressed(str(pair[0])):
 			if _open and _tab == str(pair[1]):
 				toggle()
@@ -165,7 +185,7 @@ func _refresh() -> void:
 	for c in _body.get_children():
 		c.queue_free()
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") else Color(0.85, 0.85, 0.85)
 	var r := GameState.run
 	match _tab:
 		"Items":
@@ -236,10 +256,7 @@ func _refresh() -> void:
 				bar.show_percentage = false
 				_body.add_child(bar)
 				if _skill_open == str(sk):
-					_line("  " + str(GameState.skills_data.get(sk, {}).get("desc", "")), 7, Color(0.85, 0.8, 0.7))
-					for pk in GameState.perks_of(str(sk)):
-						var got := lvl >= int(pk[0])
-						_line("  %s Lv%d  %s — %s" % ["★" if got else "·", int(pk[0]), str(pk[1]), str(pk[2])], 7, Color(1, 0.9, 0.5) if got else Color(0.55, 0.55, 0.55))
+					_skill_tree(str(sk))
 			_line("")
 		"Social":
 			var fr: Dictionary = r["friendship"]
@@ -303,11 +320,78 @@ func _refresh() -> void:
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])
 			_button("Music: %s" % ("off" if bool(SaveGame.get_value("muted", false)) else "on"), func() -> void: Music.instance(get_tree()).toggle_mute(); _refresh())
 			_button("On-screen controls: %s" % ("shown" if TouchControls.visible_controls else "hidden"), func() -> void: TouchControls.visible_controls = not TouchControls.visible_controls; _refresh())
+			_button("Key bindings…", func() -> void: _tab = "Keys"; _refresh())
 			_button("Save & back to title", func() -> void:
 				GameState.save()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
-			_line("Touch: D-pad or tap where to go · A use/attack · B run · tap the toolbar to pick an item\nKeyboard: WASD/arrows · click to use · Z/Space = A · Shift = run · 1-9 0 - = toolbar · E/Esc menu", 7, Color(0.8, 0.8, 0.8))
+			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = check/use · B = run · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 7, Color(0.8, 0.8, 0.8))
+		"Keys":
+			_line("Key bindings (Stardew defaults). Tap a row, then press the new key. Esc cancels.", 7, Color(0.8, 0.8, 0.8))
+			for pair in InputSetup.SHOWN:
+				var action: String = pair[0]
+				var label: String = pair[1]
+				var txt := "%-18s %s" % [label, InputSetup.key_label(action)]
+				if _rebinding == action:
+					txt = "%-18s [press a key]" % label
+				_button(txt, func() -> void: _rebinding = action; _refresh())
+			_button("Reset to defaults", func() -> void: InputSetup.reset_bindings(); _rebinding = ""; _refresh())
+			_button("← Back to Options", func() -> void: _tab = "Options"; _rebinding = ""; _refresh())
+
+
+## Sun Haven-style tree: tiers as rows, nodes as buttons you spend points on.
+## Tier t opens after 3t points in the tree; branches need a parent rank.
+func _skill_tree(sk: String) -> void:
+	var free := GameState.points_free(sk)
+	var spent := GameState.points_spent(sk)
+	_line("  " + str(GameState.skills_data.get(sk, {}).get("desc", "")), 7, Color(0.85, 0.8, 0.7))
+	_line("  Skill points: %d free · %d spent  (1 per level)" % [free, spent], 8, Color(1, 0.9, 0.5) if free > 0 else Color(0.8, 0.8, 0.8))
+	var by_tier := {}
+	for n in GameState.nodes_of(sk):
+		var t := int(n.get("tier", 0))
+		if not by_tier.has(t):
+			by_tier[t] = []
+		by_tier[t].append(n)
+	var tiers := by_tier.keys()
+	tiers.sort()
+	for t in tiers:
+		var open := spent >= int(t) * GameState.TIER_POINTS
+		_line("  — Tier %d %s —" % [int(t) + 1, "" if open else "(locked: %d points in tree)" % (int(t) * GameState.TIER_POINTS)], 7, Color(0.9, 0.8, 0.5) if open else Color(0.5, 0.5, 0.5))
+		for n in by_tier[t]:
+			var id := str(n["id"])
+			var rank := GameState.node_rank(sk, id)
+			var ranks := int(n.get("ranks", 1))
+			var why := GameState.node_locked(sk, id)
+			var mark := "★" if rank >= ranks else ("◆" if rank > 0 else ("+" if why == "" else "·"))
+			var req := ""
+			if n.has("requires"):
+				var names: Array = []
+				for r in n["requires"]:
+					names.append(str(GameState.node(sk, str(r)).get("name", r)))
+				req = "  ← " + " / ".join(names)
+			var txt := "%s %s  %d/%d%s\n     %s%s" % [mark, str(n["name"]), rank, ranks, req, str(n["desc"]), ("" if why == "" or why == "maxed" else "   [%s]" % why)]
+			var b := _button(txt, func() -> void:
+				if GameState.buy_node(sk, id):
+					Music.instance(get_tree()).sfx("levelup")
+				_refresh())
+			b.add_theme_font_size_override("font_size", 7)
+			b.modulate = Color(1, 0.92, 0.6) if rank > 0 else (Color(1, 1, 1) if why == "" else Color(0.6, 0.6, 0.6))
+	if sk == "magic":
+		var kn := Spells.known()
+		if kn.is_empty():
+			_line("  Learn Spark or Deep Well to start casting.", 7, Color(0.8, 0.8, 0.8))
+		else:
+			_line("  Cast  (mana %d / %d)" % [int(GameState.run.get("mana", 0)), int(GameState.run.get("max_mana", 0))], 8, Color(0.6, 0.8, 1.0))
+			for id in kn:
+				var sp: Dictionary = Spells.SPELLS[id]
+				var cb := _button("  ✦ %s  (%d mana) — %s" % [str(sp["name"]), int(sp["cost"]), str(sp["desc"])], func() -> void:
+					var m := get_tree().current_scene
+					if m is GameMap:
+						toggle()
+						Spells.cast(m as GameMap, id))
+				cb.add_theme_font_size_override("font_size", 7)
+	if spent > 0:
+		_button("Reset this tree (refund all points)", func() -> void: GameState.reset_tree(sk); _refresh())
 
 
 func _swap_into_toolbar(id: String) -> void:

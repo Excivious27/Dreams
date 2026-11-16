@@ -148,7 +148,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _fish(c: Vector2i) -> void:
-	if not GameState.spend_energy(2):
+	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return
 	player.play_tool("cast")
@@ -231,8 +231,5 @@ func draw_map() -> void:
 		draw_fence_border()
 
 
-func _process(delta: float) -> void:
-	super(delta)
-	queue_redraw()
 
 

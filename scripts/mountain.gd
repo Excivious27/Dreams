@@ -92,7 +92,7 @@ func after_ready() -> void:
 	if Art.has("props", "cave_mouth2") or Art.has("props", "cave_mouth"):
 		prop("props", "cave_mouth2" if Art.has("props", "cave_mouth2") else "cave_mouth", Vector2i(4, 2), 2)
 		block_rect(4, 1, 3, 2)
-		set_thing(5, 3, {"type": "cave", "hint": "A: a dark cave"}, false)
+		set_thing(5, 3, {"type": "cave", "hint": "A: enter the mine"}, false)
 	if GameState.is_penguins():
 		prop("props", "landing_pad", Vector2i(27, 7), 2, 0.0, false)
 		prop("props", "rocket_house", Vector2i(32, 6), 3)
@@ -134,7 +134,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if GameState.has_tool("pickaxe"):
 					hud.toast("Use the pickaxe.")
 				return GameState.has_tool("pickaxe")
-			if not GameState.spend_energy(2):
+			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
@@ -164,7 +164,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_pad()
 			return true
 		"cave":
-			tell([{"text": "Cold air breathes out of the dark. Something glitters far inside. (Tom: a second mine or a secret goes here.)"}])
+			# The mountain cave is the mine's upper entrance (the meadow has the other).
+			GameState.run["flags"]["mine_from"] = "mountain"
+			go_to("mine", Vector2.ZERO)
 			return true
 		"camp":
 			_camp()
@@ -234,11 +236,12 @@ func draw_map() -> void:
 			var t := Art.tex("tiles", "cliff2_1")
 			if t:
 				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
-	if Art.has("tiles", "waterfall2"):
-		var fr := int(Time.get_ticks_msec() / 120) % 4
-		var wt := Art.tex("tiles", "waterfall2")
-		for yy in range(2, 10, 2):
-			draw_texture_rect_region(wt, Rect2(52 * TILE, yy * TILE, TILE, TILE * 2), Rect2(fr * 32, 0, 32, 64))
+	if Art.has("tiles", "waterfall2") and _anim_layer:
+		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
+			var fr := int(Time.get_ticks_msec() / 120) % 4
+			var wt := Art.tex("tiles", "waterfall2")
+			for yy in range(2, 10, 2):
+				ci.draw_texture_rect_region(wt, Rect2(52 * TILE, yy * TILE, TILE, TILE * 2), Rect2(fr * 32, 0, 32, 64)))
 	draw_exits()
 	if not Art.has("props", "hot_spring"):
 		var r := Rect2(SPRING.position * TILE, SPRING.size * TILE)
@@ -247,8 +250,3 @@ func draw_map() -> void:
 
 
 
-func _process(delta: float) -> void:
-	super(delta)
-	if Art.has("tiles", "waterfall2"):
-		queue_redraw()
-	queue_redraw()

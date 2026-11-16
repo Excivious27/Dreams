@@ -160,7 +160,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"mrock":
 			if GameState.held_tool() != "pickaxe":
 				return GameState.has_tool("pickaxe")
-			if not GameState.spend_energy(2):
+			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
@@ -279,5 +279,3 @@ func draw_map() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
-	if not R.get("water", []).is_empty():
-		queue_redraw()

@@ -139,9 +139,9 @@ func _run() -> void:
 	var cam_tf: Transform2D = farm.get_canvas_transform()
 	var dest: Vector2 = farm.cell_center(Vector2i(20, 25))
 	var screen: Vector2 = cam_tf * (dest - Vector2(0, 8))  # middle of the cell, not its bottom edge
-	for attempt in 3:  # a tap right as the dialogue fades may be swallowed; re-tap
+	for attempt in 4:  # a slow headless frame can turn a tap into a "hold"; re-tap
 		touch(0, screen, true)
-		await frames(2)
+		await frames(1)
 		touch(0, screen, false)
 		await frames(4)
 		if p.auto_target != Vector2.INF:

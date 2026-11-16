@@ -1,359 +1,1131 @@
 {
- "farming": {
-  "name": "Farming",
-  "desc": "Grow, water, harvest. Every crop you raise feeds the land.",
-  "perks": [
-   [
-    2,
-    "Green Thumb",
-    "+10% chance of an extra crop per harvest"
-   ],
-   [
-    3,
-    "Sprinkler Plans",
-    "Craft basic sprinklers"
-   ],
-   [
-    4,
-    "Quick Hands",
-    "Hoeing and watering cost 1 less energy"
-   ],
-   [
-    5,
-    "Harvest Moon",
-    "Crops sell for 15% more"
-   ],
-   [
-    6,
-    "Fertilizer",
-    "Craft fertilizer (crops 1 day faster)"
-   ],
-   [
-    7,
-    "Rich Soil",
-    "Watered crops have a 25% chance to grow an extra day"
-   ],
-   [
-    8,
-    "Greenhouse Plans",
-    "Build the greenhouse"
-   ],
-   [
-    9,
-    "Golden Seeds",
-    "5% of harvests are star-quality (x2 value)"
-   ],
-   [
-    10,
-    "Harvest Lord",
-    "Double harvest 20% of the time"
+ "_format": "Sun Haven-style trees: 1 skill point per level; node tier t needs t*3 points spent in that tree; 'requires' lists parent nodes (any one rank).",
+ "tier_points": 3,
+ "skills": {
+  "farming": {
+   "name": "Farming",
+   "desc": "Soil, seed, water, patience.",
+   "nodes": [
+    {
+     "id": "green_thumb",
+     "name": "Green Thumb",
+     "desc": "+10% chance of an extra crop per harvest (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "extra_crop": 0.1
+     }
+    },
+    {
+     "id": "quick_hands",
+     "name": "Quick Hands",
+     "desc": "Hoeing and watering cost 15% less energy (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "farm_energy": 0.15
+     }
+    },
+    {
+     "id": "sprinkler_plans",
+     "name": "Sprinkler Plans",
+     "desc": "Craft basic sprinklers",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "quick_hands"
+     ]
+    },
+    {
+     "id": "harvest_moon",
+     "name": "Harvest Moon",
+     "desc": "Crops sell for 8% more (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "requires": [
+      "green_thumb"
+     ],
+     "effect": {
+      "crop_value": 0.08
+     }
+    },
+    {
+     "id": "fertilizer",
+     "name": "Fertilizer",
+     "desc": "Craft fertilizer (crops grow 1 day faster)",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "green_thumb"
+     ]
+    },
+    {
+     "id": "rich_soil",
+     "name": "Rich Soil",
+     "desc": "Watered crops have a 12% chance to grow an extra day (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "fertilizer"
+     ],
+     "effect": {
+      "extra_day": 0.12
+     }
+    },
+    {
+     "id": "greenhouse_plans",
+     "name": "Greenhouse Plans",
+     "desc": "Build the greenhouse: any season inside",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "sprinkler_plans"
+     ]
+    },
+    {
+     "id": "rancher",
+     "name": "Rancher",
+     "desc": "Animals give 20% more produce (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "harvest_moon"
+     ],
+     "effect": {
+      "animal_yield": 0.2
+     }
+    },
+    {
+     "id": "golden_seeds",
+     "name": "Golden Seeds",
+     "desc": "5% of harvests are star-quality, x2 value (per rank)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "rich_soil"
+     ],
+     "effect": {
+      "star_chance": 0.05
+     }
+    },
+    {
+     "id": "harvest_lord",
+     "name": "Harvest Lord",
+     "desc": "Double harvest 10% of the time (per rank)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "golden_seeds"
+     ],
+     "effect": {
+      "double_harvest": 0.1
+     }
+    },
+    {
+     "id": "seed_saver",
+     "name": "Seed Saver",
+     "desc": "Harvests return a seed 20% of the time (per rank)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "greenhouse_plans"
+     ],
+     "effect": {
+      "seed_back": 0.2
+     }
+    },
+    {
+     "id": "fields_of_gold",
+     "name": "Fields of Gold",
+     "desc": "Every crop sells for 25% more and grows a day faster",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "harvest_lord",
+      "seed_saver"
+     ]
+    }
    ]
-  ]
- },
- "mining": {
-  "name": "Mining",
-  "desc": "Rocks, ore and what hides inside them.",
-  "perks": [
-   [
-    2,
-    "Rockbreaker",
-    "+1 stone from every rock"
-   ],
-   [
-    3,
-    "Copper Eye",
-    "+15% ore from nodes"
-   ],
-   [
-    4,
-    "Deep Breath",
-    "Mine cart goes 2 floors deeper per run"
-   ],
-   [
-    5,
-    "Gem Sense",
-    "Rocks can drop gems"
-   ],
-   [
-    6,
-    "Hot Furnace",
-    "Smelting needs 4 ore instead of 5"
-   ],
-   [
-    7,
-    "Iron Will",
-    "Mining costs 1 less energy"
-   ],
-   [
-    8,
-    "Crystal Resonance",
-    "+20% crystal shards"
-   ],
-   [
-    9,
-    "Geologist",
-    "Rare gems from mountain nodes"
-   ],
-   [
-    10,
-    "Core Diver",
-    "Dark ore drops from deep rocks"
+  },
+  "mining": {
+   "name": "Mining",
+   "desc": "Stone, ore, and what glitters under both.",
+   "nodes": [
+    {
+     "id": "rockbreaker",
+     "name": "Rockbreaker",
+     "desc": "+1 stone from every rock (per rank)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "stone_bonus": 1
+     }
+    },
+    {
+     "id": "iron_will",
+     "name": "Iron Will",
+     "desc": "Mining costs 15% less energy (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "mine_energy": 0.15
+     }
+    },
+    {
+     "id": "copper_eye",
+     "name": "Copper Eye",
+     "desc": "+15% ore from nodes (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "requires": [
+      "rockbreaker"
+     ],
+     "effect": {
+      "ore_bonus": 0.15
+     }
+    },
+    {
+     "id": "deep_breath",
+     "name": "Deep Breath",
+     "desc": "The mine cart goes 2 floors deeper per run (per rank)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "iron_will"
+     ],
+     "effect": {
+      "deeper": 2
+     }
+    },
+    {
+     "id": "gem_sense",
+     "name": "Gem Sense",
+     "desc": "Rocks can drop gems (6% per rank)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "copper_eye"
+     ],
+     "effect": {
+      "gem_chance": 0.06
+     }
+    },
+    {
+     "id": "hot_furnace",
+     "name": "Hot Furnace",
+     "desc": "Smelting needs 1 less ore (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "copper_eye"
+     ],
+     "effect": {
+      "smelt_discount": 1
+     }
+    },
+    {
+     "id": "crystal_resonance",
+     "name": "Crystal Resonance",
+     "desc": "+20% crystal shards (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "gem_sense"
+     ],
+     "effect": {
+      "shard_bonus": 0.2
+     }
+    },
+    {
+     "id": "heavy_swing",
+     "name": "Heavy Swing",
+     "desc": "Pickaxe hits count double 15% of the time (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "deep_breath"
+     ],
+     "effect": {
+      "double_hit": 0.15
+     }
+    },
+    {
+     "id": "geologist",
+     "name": "Geologist",
+     "desc": "Rare gems from mountain nodes",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "crystal_resonance"
+     ]
+    },
+    {
+     "id": "core_diver",
+     "name": "Core Diver",
+     "desc": "Dark ore drops from deep rocks",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "heavy_swing"
+     ]
+    },
+    {
+     "id": "prospector",
+     "name": "Prospector",
+     "desc": "See ore through rock: nodes glint on the map",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "hot_furnace"
+     ]
+    },
+    {
+     "id": "mountain_heart",
+     "name": "Mountain Heart",
+     "desc": "Every rock drops double; the moon's crystals sing to you",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "geologist",
+      "core_diver"
+     ]
+    }
    ]
-  ]
- },
- "foraging": {
-  "name": "Foraging",
-  "desc": "Wood, berries, mushrooms, herbs. The valley provides.",
-  "perks": [
-   [
-    2,
-    "Forager",
-    "+1 from every forage pickup"
-   ],
-   [
-    3,
-    "Lumberjack",
-    "+2 wood per tree"
-   ],
-   [
-    4,
-    "Herbalist",
-    "Craft herb remedies"
-   ],
-   [
-    5,
-    "Tracker",
-    "Forage spots respawn every day instead of every 2"
-   ],
-   [
-    6,
-    "Woodcutter",
-    "Trees fall one hit sooner"
-   ],
-   [
-    7,
-    "Sap Tapper",
-    "Trees drop sap"
-   ],
-   [
-    8,
-    "Beekeeper",
-    "Beehives make double honey"
-   ],
-   [
-    9,
-    "Rare Finds",
-    "Truffles and glow-caps appear"
-   ],
-   [
-    10,
-    "Keeper of the Woods",
-    "Chopping costs no energy"
+  },
+  "foraging": {
+   "name": "Foraging",
+   "desc": "The woods give to those who look.",
+   "nodes": [
+    {
+     "id": "forager",
+     "name": "Forager",
+     "desc": "+1 from every forage pickup (per rank)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "forage_bonus": 1
+     }
+    },
+    {
+     "id": "lumberjack",
+     "name": "Lumberjack",
+     "desc": "+2 wood per tree (per rank)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "wood_bonus": 2
+     }
+    },
+    {
+     "id": "herbalist",
+     "name": "Herbalist",
+     "desc": "Craft herb remedies",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "forager"
+     ]
+    },
+    {
+     "id": "tracker",
+     "name": "Tracker",
+     "desc": "Forage spots respawn every day instead of every 2",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "forager"
+     ]
+    },
+    {
+     "id": "woodcutter",
+     "name": "Woodcutter",
+     "desc": "Trees fall one hit sooner (per rank)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "lumberjack"
+     ],
+     "effect": {
+      "chop_bonus": 1
+     }
+    },
+    {
+     "id": "sap_tapper",
+     "name": "Sap Tapper",
+     "desc": "Trees drop sap (25% per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "woodcutter"
+     ],
+     "effect": {
+      "sap_chance": 0.25
+     }
+    },
+    {
+     "id": "beekeeper",
+     "name": "Beekeeper",
+     "desc": "Beehives make double honey",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "herbalist"
+     ]
+    },
+    {
+     "id": "night_eyes",
+     "name": "Night Eyes",
+     "desc": "Glow-caps and fireflies: forage after dark",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "tracker"
+     ]
+    },
+    {
+     "id": "rare_finds",
+     "name": "Rare Finds",
+     "desc": "Truffles and glow-caps appear (per rank, more often)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "night_eyes"
+     ],
+     "effect": {
+      "rare_forage": 0.1
+     }
+    },
+    {
+     "id": "keeper_of_the_woods",
+     "name": "Keeper of the Woods",
+     "desc": "Chopping costs no energy",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "sap_tapper"
+     ]
+    },
+    {
+     "id": "wild_friend",
+     "name": "Wild Friend",
+     "desc": "Critters don't flee; deer and foxes can be petted",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "beekeeper"
+     ]
+    },
+    {
+     "id": "old_growth",
+     "name": "Old Growth",
+     "desc": "Trees regrow in 2 days and drop hardwood",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "keeper_of_the_woods",
+      "rare_finds"
+     ]
+    }
    ]
-  ]
- },
- "fishing": {
-  "name": "Fishing",
-  "desc": "Patience, bait, and the one that got away.",
-  "perks": [
-   [
-    2,
-    "Patience",
-    "Fish bite sooner"
-   ],
-   [
-    3,
-    "Bait Maker",
-    "Craft bait from bugs and fiber"
-   ],
-   [
-    4,
-    "Trapper",
-    "Craft crab pots"
-   ],
-   [
-    5,
-    "Angler",
-    "Rare fish can bite"
-   ],
-   [
-    6,
-    "Pond Plans",
-    "Build a fish pond"
-   ],
-   [
-    7,
-    "Treasure Hunter",
-    "Chance of a chest on the line"
-   ],
-   [
-    8,
-    "Master Bait",
-    "Legendary fish can bite"
-   ],
-   [
-    9,
-    "Lucky Lure",
-    "Fish are bigger (x1.5 value)"
-   ],
-   [
-    10,
-    "Sea Legend",
-    "Never miss a bite"
+  },
+  "fishing": {
+   "name": "Fishing",
+   "desc": "Patience with a hook on it.",
+   "nodes": [
+    {
+     "id": "patience",
+     "name": "Patience",
+     "desc": "Fish bite 15% sooner (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "bite_speed": 0.15
+     }
+    },
+    {
+     "id": "bait_maker",
+     "name": "Bait Maker",
+     "desc": "Craft bait from bugs and fiber",
+     "ranks": 1,
+     "tier": 0
+    },
+    {
+     "id": "trapper",
+     "name": "Trapper",
+     "desc": "Craft crab pots",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "bait_maker"
+     ]
+    },
+    {
+     "id": "angler",
+     "name": "Angler",
+     "desc": "Rare fish can bite (per rank, more often)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "patience"
+     ],
+     "effect": {
+      "rare_fish": 0.1
+     }
+    },
+    {
+     "id": "strong_line",
+     "name": "Strong Line",
+     "desc": "Fish escape 20% less (per rank)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "patience"
+     ],
+     "effect": {
+      "escape_less": 0.2
+     }
+    },
+    {
+     "id": "pond_plans",
+     "name": "Pond Plans",
+     "desc": "Build a fish pond",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "trapper"
+     ]
+    },
+    {
+     "id": "treasure_hunter",
+     "name": "Treasure Hunter",
+     "desc": "Chance of a chest on the line (5% per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "angler"
+     ],
+     "effect": {
+      "chest_chance": 0.05
+     }
+    },
+    {
+     "id": "master_bait",
+     "name": "Master Bait",
+     "desc": "Legendary fish can bite",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "angler"
+     ]
+    },
+    {
+     "id": "lucky_lure",
+     "name": "Lucky Lure",
+     "desc": "Fish are bigger (x1.25 value per rank)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "strong_line"
+     ],
+     "effect": {
+      "fish_value": 0.25
+     }
+    },
+    {
+     "id": "net_caster",
+     "name": "Net Caster",
+     "desc": "Sometimes two fish on one cast (15% per rank)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "treasure_hunter"
+     ],
+     "effect": {
+      "double_fish": 0.15
+     }
+    },
+    {
+     "id": "sea_legend",
+     "name": "Sea Legend",
+     "desc": "Never miss a bite",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "master_bait"
+     ]
+    },
+    {
+     "id": "tide_whisperer",
+     "name": "Tide Whisperer",
+     "desc": "The ocean's secret fish appear, and the lighthouse keeper trusts you",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "sea_legend",
+      "lucky_lure"
+     ]
+    }
    ]
-  ]
- },
- "combat": {
-  "name": "Combat",
-  "desc": "Grumps, thugs, and worse. Swing true.",
-  "perks": [
-   [
-    2,
-    "Fighter",
-    "+1 sword damage"
-   ],
-   [
-    3,
-    "Stamina",
-    "+10 max energy"
-   ],
-   [
-    4,
-    "Tough",
-    "+1 heart"
-   ],
-   [
-    5,
-    "Defender",
-    "25% chance to shrug off a hit"
-   ],
-   [
-    6,
-    "Critical Eye",
-    "+10% crit chance"
-   ],
-   [
-    7,
-    "Acrobat",
-    "Longer knockback on enemies"
-   ],
-   [
-    8,
-    "Berserker",
-    "+1 sword damage"
-   ],
-   [
-    9,
-    "Warrior",
-    "+2 hearts"
-   ],
-   [
-    10,
-    "Champion",
-    "Enemies drop double loot"
+  },
+  "combat": {
+   "name": "Combat",
+   "desc": "Grumps, thugs, and worse. Swing true.",
+   "nodes": [
+    {
+     "id": "fighter",
+     "name": "Fighter",
+     "desc": "+1 sword damage (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "damage": 1
+     }
+    },
+    {
+     "id": "stamina",
+     "name": "Stamina",
+     "desc": "+15 max energy (per rank)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "energy": 15
+     }
+    },
+    {
+     "id": "tough",
+     "name": "Tough",
+     "desc": "+20 max health (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "hp": 20
+     }
+    },
+    {
+     "id": "defender",
+     "name": "Defender",
+     "desc": "15% chance to shrug off a hit (per rank)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "tough"
+     ],
+     "effect": {
+      "block": 0.15
+     }
+    },
+    {
+     "id": "critical_eye",
+     "name": "Critical Eye",
+     "desc": "+10% crit chance (per rank)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "fighter"
+     ],
+     "effect": {
+      "crit": 0.1
+     }
+    },
+    {
+     "id": "acrobat",
+     "name": "Acrobat",
+     "desc": "Longer knockback on enemies; dodge-roll on double tap",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "stamina"
+     ]
+    },
+    {
+     "id": "berserker",
+     "name": "Berserker",
+     "desc": "+2 sword damage when under half health",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "critical_eye"
+     ],
+     "effect": {
+      "damage": 1
+     }
+    },
+    {
+     "id": "warrior",
+     "name": "Warrior",
+     "desc": "+40 max health",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "defender"
+     ],
+     "effect": {
+      "hp": 40
+     }
+    },
+    {
+     "id": "second_wind",
+     "name": "Second Wind",
+     "desc": "Killing an enemy restores 5 energy (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "acrobat"
+     ],
+     "effect": {
+      "kill_energy": 5
+     }
+    },
+    {
+     "id": "champion",
+     "name": "Champion",
+     "desc": "Enemies drop double loot",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "berserker"
+     ]
+    },
+    {
+     "id": "iron_skin",
+     "name": "Iron Skin",
+     "desc": "Take 20% less damage (per rank)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "warrior"
+     ],
+     "effect": {
+      "damage_reduction": 0.2
+     }
+    },
+    {
+     "id": "whirlwind",
+     "name": "Whirlwind",
+     "desc": "Third hit of a combo strikes all around you",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "second_wind"
+     ]
+    },
+    {
+     "id": "legend",
+     "name": "Legend",
+     "desc": "Bosses drop their relic; +1 heart container",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "champion",
+      "iron_skin"
+     ]
+    }
    ]
-  ]
- },
- "bartering": {
-  "name": "Bartering",
-  "desc": "Buy low, sell high, make friends doing it.",
-  "perks": [
-   [
-    2,
-    "Haggler",
-    "Shops 5% cheaper"
-   ],
-   [
-    3,
-    "Trader",
-    "Sell box pays 5% more"
-   ],
-   [
-    4,
-    "Stall Plans",
-    "Build a market stall on the farm"
-   ],
-   [
-    5,
-    "Networker",
-    "Shops stock extra items"
-   ],
-   [
-    6,
-    "Appraiser",
-    "Sell box pays 10% more"
-   ],
-   [
-    7,
-    "Smooth Talker",
-    "Gifts earn +2 friendship"
-   ],
-   [
-    8,
-    "Tycoon",
-    "Shops 15% cheaper"
-   ],
-   [
-    9,
-    "Monopolist",
-    "Sell box pays 20% more"
-   ],
-   [
-    10,
-    "Crystal Baron",
-    "Daily interest on crystals (1%)"
+  },
+  "bartering": {
+   "name": "Bartering",
+   "desc": "Coin follows a good word.",
+   "nodes": [
+    {
+     "id": "haggler",
+     "name": "Haggler",
+     "desc": "Shops 5% cheaper (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "buy_discount": 0.05
+     }
+    },
+    {
+     "id": "trader",
+     "name": "Trader",
+     "desc": "Sell box pays 5% more (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "sell_bonus": 0.05
+     }
+    },
+    {
+     "id": "stall_plans",
+     "name": "Stall Plans",
+     "desc": "Build a market stall on the farm",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "trader"
+     ]
+    },
+    {
+     "id": "networker",
+     "name": "Networker",
+     "desc": "Shops stock extra items",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "haggler"
+     ]
+    },
+    {
+     "id": "smooth_talker",
+     "name": "Smooth Talker",
+     "desc": "Gifts earn +1 friendship (per rank)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "haggler"
+     ],
+     "effect": {
+      "gift_bonus": 1
+     }
+    },
+    {
+     "id": "appraiser",
+     "name": "Appraiser",
+     "desc": "Sell box pays 10% more",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "trader"
+     ],
+     "effect": {
+      "sell_bonus": 0.1
+     }
+    },
+    {
+     "id": "tycoon",
+     "name": "Tycoon",
+     "desc": "Shops 15% cheaper",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "networker"
+     ],
+     "effect": {
+      "buy_discount": 0.15
+     }
+    },
+    {
+     "id": "festival_favorite",
+     "name": "Festival Favorite",
+     "desc": "Festival prizes doubled; villagers greet you by name",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "smooth_talker"
+     ]
+    },
+    {
+     "id": "monopolist",
+     "name": "Monopolist",
+     "desc": "Sell box pays 20% more",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "appraiser"
+     ],
+     "effect": {
+      "sell_bonus": 0.2
+     }
+    },
+    {
+     "id": "crystal_baron",
+     "name": "Crystal Baron",
+     "desc": "Daily interest on crystals (1% per rank)",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "tycoon"
+     ],
+     "effect": {
+      "interest": 0.01
+     }
+    },
+    {
+     "id": "patron",
+     "name": "Patron",
+     "desc": "Villagers at 6+ hearts send gifts in the mail",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "festival_favorite"
+     ]
+    },
+    {
+     "id": "magnate",
+     "name": "Magnate",
+     "desc": "Own the market: set the town's prices once a season",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "monopolist",
+      "crystal_baron"
+     ]
+    }
    ]
-  ]
- },
- "building": {
-  "name": "Building",
-  "desc": "Plans, timber, stone, and a steady hand.",
-  "perks": [
-   [
-    2,
-    "Carpenter",
-    "Builds need 10% less wood"
-   ],
-   [
-    3,
-    "Mason",
-    "Builds need 10% less stone"
-   ],
-   [
-    4,
-    "Engineer",
-    "Quality sprinklers"
-   ],
-   [
-    5,
-    "Architect",
-    "Tier-2 plans (barn, coop, shed)"
-   ],
-   [
-    6,
-    "Tinkerer",
-    "Craft the preserves jar and keg"
-   ],
-   [
-    7,
-    "Decorator",
-    "Furniture recipes"
-   ],
-   [
-    8,
-    "Master Builder",
-    "Builds cost 25% less"
-   ],
-   [
-    9,
-    "Foreman",
-    "Tier-3 plans (stable, mill, greenhouse)"
-   ],
-   [
-    10,
-    "Grand Architect",
-    "Iridium sprinklers"
+  },
+  "building": {
+   "name": "Building",
+   "desc": "Wood, stone, and a plan.",
+   "nodes": [
+    {
+     "id": "carpenter",
+     "name": "Carpenter",
+     "desc": "Builds need 10% less wood (per rank)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "wood_discount": 0.1
+     }
+    },
+    {
+     "id": "mason",
+     "name": "Mason",
+     "desc": "Builds need 10% less stone (per rank)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "stone_discount": 0.1
+     }
+    },
+    {
+     "id": "engineer",
+     "name": "Engineer",
+     "desc": "Quality sprinklers",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "carpenter"
+     ]
+    },
+    {
+     "id": "architect",
+     "name": "Architect",
+     "desc": "Tier-2 plans (barn, coop, shed)",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "mason"
+     ]
+    },
+    {
+     "id": "tinkerer",
+     "name": "Tinkerer",
+     "desc": "Craft the preserves jar and keg",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "carpenter"
+     ]
+    },
+    {
+     "id": "decorator",
+     "name": "Decorator",
+     "desc": "Furniture recipes",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "tinkerer"
+     ]
+    },
+    {
+     "id": "foreman",
+     "name": "Foreman",
+     "desc": "Tier-3 plans (stable, mill, greenhouse)",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "architect"
+     ]
+    },
+    {
+     "id": "master_builder",
+     "name": "Master Builder",
+     "desc": "Builds cost 25% less",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "engineer"
+     ],
+     "effect": {
+      "build_discount": 0.25
+     }
+    },
+    {
+     "id": "grand_architect",
+     "name": "Grand Architect",
+     "desc": "Iridium sprinklers",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "master_builder"
+     ]
+    },
+    {
+     "id": "bridgewright",
+     "name": "Bridgewright",
+     "desc": "Repair bridges and docks across the valley",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "foreman"
+     ]
+    },
+    {
+     "id": "homemaker",
+     "name": "Homemaker",
+     "desc": "House upgrades: second floor, cellar",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "decorator"
+     ]
+    },
+    {
+     "id": "city_planner",
+     "name": "City Planner",
+     "desc": "Build a second farmhouse on any region you own",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "grand_architect",
+      "bridgewright"
+     ]
+    }
    ]
-  ]
+  },
+  "magic": {
+   "name": "Magic",
+   "desc": "The Light Crystal's gift. Mana comes with practice.",
+   "nodes": [
+    {
+     "id": "spark",
+     "name": "Spark",
+     "desc": "Cast Spark: a bolt of light (3 dmg +1 per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "spark_damage": 1
+     }
+    },
+    {
+     "id": "deep_well",
+     "name": "Deep Well",
+     "desc": "+10 max mana (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "mana": 10
+     }
+    },
+    {
+     "id": "rain_call",
+     "name": "Rain Call",
+     "desc": "Cast Rain Call: waters every crop on the farm",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "deep_well"
+     ]
+    },
+    {
+     "id": "glow",
+     "name": "Glow",
+     "desc": "Cast Glow: light the mine and the night",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "spark"
+     ]
+    },
+    {
+     "id": "haste",
+     "name": "Haste",
+     "desc": "Cast Haste: run 30% faster for a minute",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "deep_well"
+     ]
+    },
+    {
+     "id": "growth",
+     "name": "Growth",
+     "desc": "Cast Growth: one crop grows a day",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "rain_call"
+     ]
+    },
+    {
+     "id": "ember",
+     "name": "Ember",
+     "desc": "Spark sets grass alight and cooks fish on the spot",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "spark"
+     ]
+    },
+    {
+     "id": "mana_flow",
+     "name": "Mana Flow",
+     "desc": "Mana regenerates twice as fast (per rank)",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "haste"
+     ],
+     "effect": {
+      "mana_regen": 1
+     }
+    },
+    {
+     "id": "warp_home",
+     "name": "Warp Home",
+     "desc": "Cast Warp Home from anywhere",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "haste"
+     ]
+    },
+    {
+     "id": "crystal_shield",
+     "name": "Crystal Shield",
+     "desc": "Cast Shield: absorb the next 3 hits",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "growth"
+     ]
+    },
+    {
+     "id": "moonbeam",
+     "name": "Moonbeam",
+     "desc": "Spark becomes a sweeping beam",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "ember"
+     ]
+    },
+    {
+     "id": "light_bearer",
+     "name": "Light Bearer",
+     "desc": "The Light Crystal fights beside you; +50 mana",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "warp_home",
+      "moonbeam"
+     ],
+     "effect": {
+      "mana": 50
+     }
+    }
+   ]
+  }
  }
 }

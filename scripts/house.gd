@@ -30,6 +30,12 @@ func build() -> void:
 
 func after_ready() -> void:
 	_place_props()
+	var note := str(GameState.run["flags"].get("wake_note", ""))
+	if note != "":
+		GameState.run["flags"].erase("wake_note")
+		player.frozen = true
+		await say([{"text": note}])
+		player.frozen = false
 
 
 func interact(_c: Vector2i, thing: Dictionary) -> bool:

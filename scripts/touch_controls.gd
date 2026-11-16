@@ -16,7 +16,7 @@ const BUTTONS := {
 const DIRS := {"left": Vector2.LEFT, "right": Vector2.RIGHT, "up": Vector2.UP, "down": Vector2.DOWN}
 const STICK_R := 34.0
 const RUN_AT := 0.72
-const TAP_MAX_T := 0.26
+const TAP_MAX_T := 0.35
 const TAP_MAX_D := 10.0
 
 static var run_toggle := false
@@ -72,12 +72,14 @@ func _input(event: InputEvent) -> void:
 	# Desktop detection: a real key or mouse motion hides the pad; a real touch shows it.
 	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
 		visible_controls = false
-	elif event is InputEventMouseMotion and (event as InputEventMouseMotion).relative != Vector2.ZERO and not DisplayServer.is_touchscreen_available():
+	elif event is InputEventMouseMotion and (event as InputEventMouseMotion).relative != Vector2.ZERO and event.device != InputEvent.DEVICE_ID_EMULATION and not DisplayServer.is_touchscreen_available():
 		visible_controls = false
 	elif event is InputEventScreenTouch and DisplayServer.is_touchscreen_available():
 		visible_controls = true
 	if not visible_controls:
 		return
+	if event.device == InputEvent.DEVICE_ID_EMULATION:
+		return  # a mouse pretending to be a finger: the mouse handlers take it
 	if event is InputEventScreenTouch:
 		var t := event as InputEventScreenTouch
 		if t.pressed:

@@ -35,6 +35,9 @@ var _border_open := {}
 var _ext := Rect2i()          # area added by extend()
 var _ext_paths := {}          # dirt connecting moved exits
 var hitstop := 0.0
+var _last_mana_t := -1
+var _sign_labels := {}
+var _anim_layer: AnimLayer
 var _pet_anim: AnimatedSprite2D
 var _night: CanvasModulate
 var _changing := false
@@ -49,6 +52,10 @@ func _ready() -> void:
 	y_sort_enabled = true
 	# Art is 2x detail drawn at half size; linear sampling keeps thin lines intact.
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_anim_layer = AnimLayer.new()
+	_anim_layer.position = offset()
+	_anim_layer.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	add_child(_anim_layer)
 	if not GameState.has_run():
 		GameState.new_run("penguins", "dad", "Hero", "Dreamhollow", "Pup")
 	GameState.run["scene"] = scene_id()
@@ -86,7 +93,7 @@ func _ready() -> void:
 
 	if has_pet:
 		pet = Node2D.new()
-		if Art.has("animals/pup", "idle"):
+		if false and Art.has("animals/pup", "idle"):  # Tom: keep the original pup (brown with blue eyes); the W64 pup "flies" when it runs
 			_pet_anim = AnimatedSprite2D.new()
 			_pet_anim.sprite_frames = Art.frames("animals/pup", {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "dig": "dig", "bark": "bark", "play": "play"}, {"idle": 2.0, "walk": 6.0, "run": 9.0, "sit": 1.0, "sleep": 1.0, "dig": 6.0, "bark": 4.0, "play": 4.0})
 			_pet_anim.scale = Vector2(0.5, 0.5)
@@ -198,6 +205,9 @@ func try_interact(c: Vector2i) -> bool:
 ## Interactions every outdoor map shares (trees, rocks, logs, stumps, bushes).
 func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
+		"sign":
+			tell([{"text": str(thing.get("text", "A signpost."))}])
+			return true
 		"pet_animal":
 			var a: Variant = thing.get("animal", null)
 			if a != null and is_instance_valid(a):
@@ -212,7 +222,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"weeds":
 			# Weeds come out by hand (or any tool): fiber, Stardew-style.
-			if not GameState.spend_energy(1):
+			if not GameState.spend_for("weed"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			var ht := GameState.held_tool()
@@ -236,24 +246,24 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				if GameState.has_tool("axe"):
 					hud.toast("Use the axe for that.")
 				return GameState.has_tool("axe")
-			if not GameState.has_perk("foraging", "Keeper of the Woods") and not GameState.spend_energy(2):
+			if not GameState.has_perk("foraging", "Keeper of the Woods") and not GameState.spend_for("axe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("axe")
 			Music.instance(get_tree()).sfx("chop")
-			if GameState.has_perk("foraging", "Woodcutter") and int(thing.get("hp", 3)) > 1:
-				thing["hp"] = int(thing.get("hp", 3)) - 1
+			if GameState.bonus("foraging", "chop_bonus") > 0.0 and int(thing.get("hp", 3)) > 1:
+				thing["hp"] = int(thing.get("hp", 3)) - int(GameState.bonus("foraging", "chop_bonus"))
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
 			thing["hp"] = int(thing.get("hp", 3)) - (1 + GameState.tool_tier("axe") / 2)
 			if int(thing["hp"]) <= 0:
 				var is_tree := str(thing["type"]) == "tree"
 				xp("foraging", 3)
-				var bonus := 2 if GameState.has_perk("foraging", "Lumberjack") else 0
+				var bonus := int(GameState.bonus("foraging", "wood_bonus"))
 				if is_tree and not bool(thing.get("fell", false)):
 					thing["hp"] = 3
 					pop_items(cell_center(c), "wood", 3 + bonus)
-					if GameState.has_perk("foraging", "Sap Tapper") and randf() < 0.5:
+					if randf() < GameState.bonus("foraging", "sap_chance"):
 						pop_items(cell_center(c), "sap", 1)
 				elif is_tree:
 					_mark_cleared(c)
@@ -272,7 +282,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				if GameState.has_tool("pickaxe"):
 					hud.toast("Use the pickaxe for that.")
 				return GameState.has_tool("pickaxe")
-			if not GameState.spend_energy(2):
+			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
@@ -286,10 +296,10 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var big := props.has(c) and (props[c] as Sprite2D).texture and str((props[c] as Sprite2D).texture.resource_path).contains("rock_m")
 				var extra := "copper"
 				var en := 1 if randf() < 0.25 else 0
-				if GameState.has_perk("mining", "Gem Sense") and randf() < 0.06:
+				if randf() < GameState.bonus("mining", "gem_chance"):
 					extra = ["amethyst", "ruby", "sapphire", "emerald"][randi() % 4]
 					en = 1
-				break_rock(c, 2 + (1 if GameState.has_perk("mining", "Rockbreaker") else 0), extra, en, "m" if big else "")
+				break_rock(c, 2 + int(GameState.bonus("mining", "stone_bonus")), extra, en, "m" if big else "")
 			return true
 		"bush":
 			if bool(thing.get("berries", false)):
@@ -309,7 +319,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			props.erase(c)
 			if fsp:
 				fsp.queue_free()
-			pop_items(cell_center(c), item, 1 + (1 if GameState.has_perk("foraging", "Forager") else 0))
+			pop_items(cell_center(c), item, 1 + int(GameState.bonus("foraging", "forage_bonus")))
 			xp("foraging", 2 + int(GameState.items.get(item, {}).get("tier", 1)))
 			return true
 	return false
@@ -366,7 +376,24 @@ func _place_signposts() -> void:
 			c = Vector2i(r.end.x, r.position.y - 1)
 		if not in_content(c) or blocked.has(c) or things.has(c) or props.has(c):
 			continue
-		prop("props", "signpost_%d" % (1 + i % 3), c)
+		var sp := prop("props", "signpost_%d" % (1 + i % 3), c)
+		if sp:
+			# The sign's text appears when you walk up to it (not painted on the map).
+			var txt := str(e["label"]).replace("▲", "").replace("▼", "").replace("◀", "").replace("▶", "").strip_edges()
+			things[c] = {"type": "sign", "text": "To the %s" % txt, "hint": "A: read the sign"}
+			var l := Label.new()
+			l.text = "→ " + txt
+			l.add_theme_font_size_override("font_size", 7)
+			l.add_theme_color_override("font_color", Color(1, 1, 0.85))
+			l.add_theme_color_override("font_outline_color", Color(0.1, 0.07, 0.03))
+			l.add_theme_constant_override("outline_size", 3)
+			l.position = Vector2(-28, -34)
+			l.custom_minimum_size = Vector2(56, 10)
+			l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			l.z_index = 30
+			l.visible = false
+			sp.add_child(l)
+			_sign_labels[c] = l
 		i += 1
 
 
@@ -610,6 +637,8 @@ func check_exits() -> void:
 
 
 func draw_exits() -> void:
+	if Art.has("props", "signpost_1"):
+		return  # signposts carry the text; nothing painted on the ground
 	for e in exits:
 		var r: Rect2i = e["rect"]
 		if str(e["label"]) != "":
@@ -632,9 +661,13 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 		var tex_w := s.texture.get_width() / 2.0
 		var tex_h := s.texture.get_height() / 2.0
 		var rows_up := 1
-		if tex_w >= 56.0 or group == "buildings":
-			rows_up = clampi(int(round(tex_h / TILE)) - 1, 1, 5)
 		var w_cells := maxi(extra_w + 1, int(round(tex_w / TILE)))
+		if group == "nature" or group == "props":
+			# Trees, rocks, bushes, crystals: only the trunk/base cell(s) are solid.
+			# The canopy is drawn over you; you walk behind it (y-sort handles it).
+			w_cells = extra_w + 1
+		elif tex_w >= 56.0 or group == "buildings":
+			rows_up = clampi(int(round(tex_h / TILE)) - 1, 1, 5)
 		var x0 := c.x + (extra_w + 1) / 2 - w_cells / 2
 		for i in w_cells:
 			for j in rows_up:
@@ -695,7 +728,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 		# Enemies have a body ~12px wide, 14 tall above their feet.
 		var body := Rect2(e.position + Vector2(-6, -14), Vector2(12, 14))
 		if r.intersects(body):
-			var crit := randf() < 0.03 * GameState.skill_level("combat") + (0.1 if GameState.has_perk("combat", "Critical Eye") else 0.0)
+			var crit := randf() < 0.03 * GameState.skill_level("combat") + GameState.bonus("combat", "crit")
 			var dmg := damage * (2 if crit else 1)
 			if e.hit(dmg, from):
 				hit = true
@@ -778,16 +811,20 @@ func nearest_enemy_to(p: Vector2, within: float) -> Enemy:
 	return best
 
 
-func player_down() -> void:
+## Out of health: you wake in the clinic, and the nurse keeps 10% of your crystals.
+## Out of time (2am) or energy: someone carries you home, and keeps 5% for the trouble.
+func player_down(reason := "hurt") -> void:
 	if _changing:
 		return
 	_changing = true
 	player.frozen = true
-	hud.toast("You collapsed...", Color(1, 0.6, 0.6))
+	var cr := int(GameState.run["crystals"])
+	var fee := int(ceil(cr * (0.10 if reason == "hurt" else 0.05)))
+	hud.toast("You collapsed..." if reason == "hurt" else "You pass out...", Color(1, 0.6, 0.6))
 	await hud.fade_out(1.0)
-	GameState.run["crystals"] = maxi(0, int(GameState.run["crystals"]) - 15)
+	GameState.run["crystals"] = maxi(0, cr - fee)
 	GameState.sleep(true)
-	hud.toast("You lost 15 crystals.")
+	GameState.run["flags"]["wake_note"] = ("Nurse Ada patched you up at the clinic. Fee: ◆%d (10%%)." % fee) if reason == "hurt" else ("Someone found you and carried you home. ◆%d (5%%) went missing on the way." % fee)
 	go_to("house", Vector2(5 * TILE + 8, 5 * TILE))
 
 
@@ -796,7 +833,7 @@ func player_down() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if get_tree().paused or player == null or player.frozen or _changing:
 		return
-	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
+	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed and (event as InputEventScreenTouch).device != InputEvent.DEVICE_ID_EMULATION:
 		var pos: Vector2 = (event as InputEventScreenTouch).position
 		if pos.y >= TouchControls.TOP_OF_CONTROLS and TouchControls.visible_controls:
 			return
@@ -804,8 +841,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		handle_tap(pos)
 		get_viewport().set_input_as_handled()
-	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and not DisplayServer.is_touchscreen_available():
-		# Desktop: left click uses the tool toward the cursor, right click checks/talks.
+	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).device != InputEvent.DEVICE_ID_EMULATION:
+		# Real mouse (not a touch emulated as a mouse): Stardew's left click uses the
+		# tool toward the cursor, right click checks/talks.
 		var mb := event as InputEventMouseButton
 		if mb.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT] and mb.position.y >= Hud.TOOLBAR_BOTTOM:
 			var world := get_canvas_transform().affine_inverse() * mb.position
@@ -850,16 +888,25 @@ func _process(delta: float) -> void:
 		GameState.run["time"] = int(GameState.run["time"]) + m
 	var t := int(GameState.run["time"])
 	if t >= GameState.DAY_END and not _changing:
-		hud.toast("It's 2am. You pass out.", Color(1, 0.7, 0.7))
-		player_down()
+		player_down("late")
+	elif int(GameState.run["energy"]) <= 0 and not _changing and not player.frozen:
+		player_down("tired")
+	# Mana trickles back: 1 point every 20 game minutes.
+	if t % 20 == 0 and t != _last_mana_t:
+		_last_mana_t = t
+		GameState.restore_mana(1)
 	# Evening tint from 6pm, darkest by midnight.
 	var dark := clampf((t - 18 * 60) / 360.0, 0.0, 1.0)
+	if int(GameState.run["flags"].get("glow_day", -1)) == int(GameState.run["day"]):
+		dark *= 0.3
 	_night.color = Color(1, 1, 1).lerp(Color(0.45, 0.5, 0.8), dark * 0.6)
 	if player and hud:
 		var fc := player.facing_cell()
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
 	if pet:
 		_follow_pet(delta)
+	for c: Vector2i in _sign_labels:
+		(_sign_labels[c] as Label).visible = player.position.distance_to(cell_center(c)) < 30.0
 	update_enemies(delta)
 	check_exits()
 
@@ -965,7 +1012,20 @@ func xp(skill: String, n: int) -> void:
 # ---- shared drawing helpers --------------------------------------------------
 
 ## Grass everywhere with scattered decoration tiles (seeded so it's stable).
+## Per-frame layer for the few things that animate on the ground (water, waterfalls).
+class AnimLayer extends Node2D:
+	var jobs: Array[Callable] = []
+	func _process(_d: float) -> void:
+		if not jobs.is_empty():
+			queue_redraw()
+	func _draw() -> void:
+		for j in jobs:
+			j.call(self)
+
+
 func _draw() -> void:
+	if _anim_layer:
+		_anim_layer.jobs.clear()
 	draw_set_transform(offset())
 	draw_map()
 	if not _ext_paths.is_empty():
@@ -1006,10 +1066,11 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 					var base: String = {"spring": "gv_short", "summer": "gv_short", "fall": "gv_autumn", "winter": "gv_snow"}.get(season, "gv_short")
 					Art.draw_tile(self, "tiles", "%s_%d" % [base, hv % 12 if hv % 7 == 0 else hv % 4], at, 0)
 					if patchy:
-						var n := WorldGen.fbm(float(x), float(y), sd, 11.0)
-						if n > 0.32:
+						var n := WorldGen.fbm(float(x), float(y), sd, 9.0)
+						if n > 0.42:
 							_tall[Vector2i(x, y)] = true
-						elif n < -0.38:
+						elif n < -0.36 and hv % 3 != 0:
+							# Flower drifts: thin them with the short tiles so they read as meadow, not carpet.
 							Art.draw_tile(self, "tiles", "%s_%d" % ["gv_dry" if season == "summer" else "gv_flower", hv % 12], at, 0)
 					continue
 				if patchy:
@@ -1032,28 +1093,75 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 
 ## Ground region with real grass transitions (W1 sets) when available.
 ## kind: "dirt" | "sand" | "stone". Falls back to draw_tileset_rect.
-func draw_ground(kind: String, cells: Dictionary) -> void:
+func draw_ground(kind: String, cells_in: Dictionary) -> void:
 	var tset := "t_" + kind
 	var fill: String = {"dirt": "dirt", "sand": "sand", "stone": "g_gravel"}.get(kind, "dirt")
 	var blob: String = {"dirt": "path_dirt", "sand": "path_sand", "stone": "path_cobble", "cobble": "path_cobble", "snow": "path_snow"}.get(kind, "")
 	if blob != "" and Art.has("tiles", blob + "_top_0"):
-		if kind != "dirt":
-			# simple sets have no fill variants: paint dirt fill underneath, edges on top
-			for c: Vector2i in cells:
-				Art.draw_tile(self, "tiles", "path_dirt_fill_%d" % (absi(c.x * 7 + c.y * 13) % 5 + 7), Vector2(c * TILE), 0)
-		Art.draw_blob(self, cells, blob, 16.0, 12)
+		# Paths are never one cell wide: a 1-wide strip is all edge tiles and reads
+		# as a chain of little boxes. Widen to 2 so there is a real middle.
+		var cells := widen_path(cells_in)
+		# Plain fill under everything (the blob set's fill variants are mostly
+		# decals: pebbles, puddles, ruts) with an occasional decal, then edges.
+		for c: Vector2i in cells:
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hash(blob))
+			var plain := ""
+			match kind:
+				"dirt": plain = "path_dirt_fill_%d" % (7 + h % 5)
+				"sand": plain = "sand_fill_%d" % (h % 12) if Art.has("tiles", "sand_fill_0") else "sand"
+				"stone", "cobble": plain = "cobble_a" if Art.has("tiles", "cobble_a") else "g_gravel"
+				_: plain = fill
+			Art.draw_tile(self, "tiles", plain, Vector2(c * TILE), 0)
+			if kind == "dirt" and h % 13 == 0 and _blob_interior(cells, c):
+				Art.draw_tile(self, "tiles", "path_dirt_fill_%d" % (h / 13 % 7), Vector2(c * TILE), 0)
+		Art.draw_blob(self, cells, blob, 16.0, 0)
 		return
 	if Art.has("tiles", tset):
-		Art.draw_autotile(self, cells, "@", tset, Art.T_GROUND_IDX)
+		Art.draw_autotile(self, cells_in, "@", tset, Art.T_GROUND_IDX)
 		if kind == "dirt" and Art.has("tiles", "pdeco_pebbles"):
-			for c: Vector2i in cells:
+			for c: Vector2i in cells_in:
 				var h := (c.x * 73856093) ^ (c.y * 19349663) ^ hash(scene_id())
 				if h % 23 == 0:
 					Art.draw_tile(self, "tiles", ["pdeco_pebbles", "pdeco_puddle", "pdeco_hoofprints", "pdeco_ruts", "pdeco_roots"][absi(h / 23) % 5], Vector2(c * TILE))
 		return
-	for c: Vector2i in cells:
+	for c: Vector2i in cells_in:
 		if not Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), 4):
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("b8945a"))
+
+
+## 1-wide runs become 2-wide (adds the right / lower neighbour), corners filled.
+static func widen_path(cells: Dictionary) -> Dictionary:
+	var out := {}
+	for c: Vector2i in cells:
+		out[c] = true
+	for c: Vector2i in cells:
+		var lr := cells.has(c + Vector2i(-1, 0)) or cells.has(c + Vector2i(1, 0))
+		var ud := cells.has(c + Vector2i(0, -1)) or cells.has(c + Vector2i(0, 1))
+		if ud and not lr:
+			out[c + Vector2i(1, 0)] = true
+		elif lr and not ud:
+			out[c + Vector2i(0, 1)] = true
+		elif not lr and not ud:
+			out[c + Vector2i(1, 0)] = true
+			out[c + Vector2i(0, 1)] = true
+			out[c + Vector2i(1, 1)] = true
+	# Fill single-cell notches so edges stay smooth.
+	var add := {}
+	for c: Vector2i in out:
+		for d: Vector2i in [Vector2i(1, 1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(-1, -1)]:
+			var k := c + d
+			if not out.has(k) and out.has(c + Vector2i(d.x, 0)) and out.has(c + Vector2i(0, d.y)):
+				add[k] = true
+	for k: Vector2i in add:
+		out[k] = true
+	return out
+
+
+static func _blob_interior(cells: Dictionary, c: Vector2i) -> bool:
+	for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+		if not cells.has(c + d):
+			return false
+	return true
 
 
 func cells_of(rects: Array) -> Dictionary:
@@ -1067,14 +1175,23 @@ func cells_of(rects: Array) -> Dictionary:
 
 ## Water body with proper shore edges (grass or sand outside) and animated fill.
 func draw_water(cells: Dictionary, shore := "grass") -> void:
+	# Water is the only thing that animates on the ground, so it lives on its own
+	# layer that redraws every frame; the rest of the map is drawn once.
+	if _anim_layer:
+		_anim_layer.jobs.append(func(ci: CanvasItem) -> void: _draw_water_on(ci, cells, shore))
+	else:
+		_draw_water_on(self, cells, shore)
+
+
+func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String) -> void:
 	# Animated fill, then a procedural bank that always lines up: a dark earth
 	# lip on the land side, a lighter wet rim and foam inside the water. Corners
 	# are rounded with quarter discs so blobs read as real shorelines.
 	var frame := int(Time.get_ticks_msec() / 250) % 4
 	var fill := "water2" if Art.has("tiles", "water2") else "water"
 	for c: Vector2i in cells:
-		if not Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), frame):
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("2f6fb5"))
+		if not Art.draw_tile(ci, "tiles", fill, Vector2(c * TILE), frame):
+			ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("2f6fb5"))
 	if Art.has("tiles", "shore_grass_top_0"):
 		# Painted 47-tile shore set (W52). Edges only: keep the animated fill underneath.
 		var edge_cells := {}
@@ -1086,7 +1203,7 @@ func draw_water(cells: Dictionary, shore := "grass") -> void:
 					break
 			if not all_in:
 				edge_cells[c] = true
-		_draw_blob_edges(cells, edge_cells, "shore_grass" if shore == "grass" else "shore_sand")
+		_draw_blob_edges(ci, cells, edge_cells, "shore_grass" if shore == "grass" else "shore_sand")
 		return
 	var earth := Color("6b4a2b") if shore == "grass" else Color("c9a86b")
 	var rim := Color("4f8fd0", 0.9)
@@ -1098,21 +1215,21 @@ func draw_water(cells: Dictionary, shore := "grass") -> void:
 		var w := cells.has(c + Vector2i(-1, 0))
 		var e := cells.has(c + Vector2i(1, 0))
 		if not n:
-			draw_rect(Rect2(r.position, Vector2(TILE, 3)), earth)
-			draw_rect(Rect2(r.position + Vector2(0, 3), Vector2(TILE, 2)), rim)
-			draw_rect(Rect2(r.position + Vector2(0, 5), Vector2(TILE, 1)), foam)
+			ci.draw_rect(Rect2(r.position, Vector2(TILE, 3)), earth)
+			ci.draw_rect(Rect2(r.position + Vector2(0, 3), Vector2(TILE, 2)), rim)
+			ci.draw_rect(Rect2(r.position + Vector2(0, 5), Vector2(TILE, 1)), foam)
 		if not so:
-			draw_rect(Rect2(r.position + Vector2(0, TILE - 2), Vector2(TILE, 2)), earth)
-			draw_rect(Rect2(r.position + Vector2(0, TILE - 4), Vector2(TILE, 2)), rim)
-			draw_rect(Rect2(r.position + Vector2(0, TILE - 5), Vector2(TILE, 1)), foam)
+			ci.draw_rect(Rect2(r.position + Vector2(0, TILE - 2), Vector2(TILE, 2)), earth)
+			ci.draw_rect(Rect2(r.position + Vector2(0, TILE - 4), Vector2(TILE, 2)), rim)
+			ci.draw_rect(Rect2(r.position + Vector2(0, TILE - 5), Vector2(TILE, 1)), foam)
 		if not w:
-			draw_rect(Rect2(r.position, Vector2(2, TILE)), earth)
-			draw_rect(Rect2(r.position + Vector2(2, 0), Vector2(2, TILE)), rim)
-			draw_rect(Rect2(r.position + Vector2(4, 0), Vector2(1, TILE)), foam)
+			ci.draw_rect(Rect2(r.position, Vector2(2, TILE)), earth)
+			ci.draw_rect(Rect2(r.position + Vector2(2, 0), Vector2(2, TILE)), rim)
+			ci.draw_rect(Rect2(r.position + Vector2(4, 0), Vector2(1, TILE)), foam)
 		if not e:
-			draw_rect(Rect2(r.position + Vector2(TILE - 2, 0), Vector2(2, TILE)), earth)
-			draw_rect(Rect2(r.position + Vector2(TILE - 4, 0), Vector2(2, TILE)), rim)
-			draw_rect(Rect2(r.position + Vector2(TILE - 5, 0), Vector2(1, TILE)), foam)
+			ci.draw_rect(Rect2(r.position + Vector2(TILE - 2, 0), Vector2(2, TILE)), earth)
+			ci.draw_rect(Rect2(r.position + Vector2(TILE - 4, 0), Vector2(2, TILE)), rim)
+			ci.draw_rect(Rect2(r.position + Vector2(TILE - 5, 0), Vector2(1, TILE)), foam)
 		# Outer corners: round them off with a land disc.
 		var land := Color(str(GameState.run.get("_land", "")), 1.0) if false else (Color("5a9e4b") if shore == "grass" else Color("e2cf96"))
 		if Art.has("tiles", GameState.grass_tile()) and shore == "grass":
@@ -1120,15 +1237,15 @@ func draw_water(cells: Dictionary, shore := "grass") -> void:
 		for corner: Array in [[not n and not w, Vector2(0, 0)], [not n and not e, Vector2(TILE, 0)], [not so and not w, Vector2(0, TILE)], [not so and not e, Vector2(TILE, TILE)]]:
 			if corner[0]:
 				var cp: Vector2 = r.position + corner[1]
-				draw_circle(cp, 6.0, land)
-				draw_arc(cp, 5.0, 0, TAU, 12, earth, 2.5)
-				draw_arc(cp, 7.5, 0, TAU, 12, rim, 1.5)
+				ci.draw_circle(cp, 6.0, land)
+				ci.draw_arc(cp, 5.0, 0, TAU, 12, earth, 2.5)
+				ci.draw_arc(cp, 7.5, 0, TAU, 12, rim, 1.5)
 		# Inner corners: a dab of earth where two banks meet diagonally.
 		for corner: Array in [[n and w and not cells.has(c + Vector2i(-1, -1)), Vector2(0, 0)], [n and e and not cells.has(c + Vector2i(1, -1)), Vector2(TILE, 0)], [so and w and not cells.has(c + Vector2i(-1, 1)), Vector2(0, TILE)], [so and e and not cells.has(c + Vector2i(1, 1)), Vector2(TILE, TILE)]]:
 			if corner[0]:
 				var cp: Vector2 = r.position + corner[1]
-				draw_circle(cp, 3.0, earth)
-				draw_circle(cp, 1.5, rim)
+				ci.draw_circle(cp, 3.0, earth)
+				ci.draw_circle(cp, 1.5, rim)
 
 
 ## A rectangle of a 3x3 tile set (dirt, stone, dock...) with proper edges.
@@ -1244,7 +1361,7 @@ func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}
 
 
 ## Draw blob tiles for `edge_cells` using neighbourhood from the full `cells` set.
-func _draw_blob_edges(cells: Dictionary, edge_cells: Dictionary, set_name: String) -> void:
+func _draw_blob_edges(ci: CanvasItem, cells: Dictionary, edge_cells: Dictionary, set_name: String) -> void:
 	for c: Vector2i in edge_cells:
 		var sub := {}
 		for dy in range(-1, 2):
@@ -1258,7 +1375,7 @@ func _draw_blob_edges(cells: Dictionary, edge_cells: Dictionary, set_name: Strin
 			if k != c:
 				one[k] = true
 		# cheap: call draw_blob with the window but mask drawing to c via a tiny trick:
-		Art.draw_blob_cell(self, sub, c, set_name)
+		Art.draw_blob_cell(ci, sub, c, set_name)
 
 
 ## A mass of raised rock (map edges, mountain walls): stone fill with a grassy

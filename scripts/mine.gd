@@ -83,7 +83,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"up":
 			GameState.run["mine_floor"] = 1
-			go_to("meadow", Vector2(31 * TILE, 8 * TILE + 8), "down")
+			if str(GameState.run["flags"].get("mine_from", "meadow")) == "mountain":
+				go_to("mountain", Vector2(6 * TILE, 5 * TILE), "down")
+			else:
+				go_to("meadow", Vector2(31 * TILE, 8 * TILE + 8), "down")
 			return true
 		"down":
 			GameState.run["mine_floor"] = floor_no + 1
@@ -99,7 +102,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"rock":
 			if not GameState.has_tool("pickaxe"):
 				return false
-			if not GameState.spend_energy(2):
+			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
@@ -146,9 +149,10 @@ func draw_map() -> void:
 		Art.draw_tile(self, "tiles", w, Vector2(0, (rows - 1) * TILE), 6)
 		Art.draw_tile(self, "tiles", w, Vector2((cols - 1) * TILE, (rows - 1) * TILE), 8)
 		if v == "lava" and Art.has("tiles", "lava"):
-			var frame := int(Time.get_ticks_msec() / 300) % 4
-			for c: Vector2i in cells_of([Rect2i(3, 12, 4, 3), Rect2i(12, 4, 3, 2)]):
-				Art.draw_tile(self, "tiles", "lava", Vector2(c * TILE), frame)
+			_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
+				var frame := int(Time.get_ticks_msec() / 300) % 4
+				for c: Vector2i in cells_of([Rect2i(3, 12, 4, 3), Rect2i(12, 4, 3, 2)]):
+					Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame))
 	elif Art.has("tiles", "mine_floor"):
 		draw_tileset_rect("mine_floor", Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
 		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.3 + 0.05 * mini(floor_no, 6)))
@@ -246,5 +250,3 @@ func _place_props() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
-	if _variant() == "lava":
-		queue_redraw()

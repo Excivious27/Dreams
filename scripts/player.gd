@@ -243,6 +243,10 @@ func _physics_process(delta: float) -> void:
 
 	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
 	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed")
+	if int(GameState.run["flags"].get("haste_until", -1)) > int(GameState.run["time"]):
+		spd_mult *= 1.3
+	elif int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
+		spd_mult *= 0.75  # running on empty
 	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult
 	var rate := ACCEL if dir != Vector2.ZERO else DECEL
 	velocity = velocity.move_toward(target, rate * delta)
@@ -416,12 +420,20 @@ func _swing_arc(center: Vector2) -> void:
 func take_damage(n: int, from: Vector2) -> void:
 	if invuln > 0.0:
 		return
-	if GameState.has_perk("combat", "Defender") and randf() < 0.25:
+	if randf() < GameState.bonus("combat", "block"):
 		invuln = 0.4
 		if map:
 			map.hud.toast("Blocked!", Color(0.8, 0.9, 1.0))
 		return
-	n = maxi(1, n - GameState.gear_stat("defense") / 2)
+	if int(GameState.run["flags"].get("shield", 0)) > 0:
+		GameState.run["flags"]["shield"] = int(GameState.run["flags"]["shield"]) - 1
+		invuln = 0.5
+		if map:
+			map.hud.toast("Shield!", Color(0.8, 0.9, 1.0))
+			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.5)
+		return
+	n = maxi(3, n - GameState.gear_stat("defense") * 3)
+	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
 	invuln = 1.0
 	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n

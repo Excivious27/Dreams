@@ -105,7 +105,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _fish(c: Vector2i) -> void:
-	if not GameState.spend_energy(2):
+	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return
 	player.play_tool("cast")
@@ -164,15 +164,16 @@ func draw_map() -> void:
 			Art.draw_tile(self, "tiles", "sand_wet", Vector2(x * TILE, (SEA_Y - 1) * TILE), 4)
 	else:
 		draw_tileset_rect("shore_set", Rect2i(0, 8, cols, SEA_Y - 8), Color("e3cf8f"))
-	var frame := int(Time.get_ticks_msec() / 250) % 4
-	for y in range(SEA_Y, rows):
+	_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
+		var frame := int(Time.get_ticks_msec() / 250) % 4
+		for y in range(SEA_Y, rows):
+			for x in cols:
+				var nm := "sea" if Art.has("tiles", "sea") else "water"
+				if not Art.draw_tile(ci, "tiles", nm, Vector2(x * TILE, y * TILE), 4 if nm == "sea" else frame):
+					ci.draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("2f6fb5"))
 		for x in cols:
-			var nm := "sea" if Art.has("tiles", "sea") else "water"
-			if not Art.draw_tile(self, "tiles", nm, Vector2(x * TILE, y * TILE), 4 if nm == "sea" else frame):
-				draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("2f6fb5"))
-	for x in cols:
-		if not Art.draw_tile(self, "tiles", "foam", Vector2(x * TILE, SEA_Y * TILE), (frame + x) % 4):
-			draw_rect(Rect2(x * TILE, SEA_Y * TILE, TILE, 2), Color(1, 1, 1, 0.5))
+			if not Art.draw_tile(ci, "tiles", "foam", Vector2(x * TILE, SEA_Y * TILE), (frame + x) % 4):
+				ci.draw_rect(Rect2(x * TILE, SEA_Y * TILE, TILE, 2), Color(1, 1, 1, 0.5)))
 	draw_ground("dirt", cells_of([Rect2i(13, 1, 3, 8), TOWN_EXIT]))
 	draw_exits()
 	if not Art.has("buildings", "galleon"):
@@ -246,6 +247,3 @@ func _anim(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -
 				blocked[Vector2i(x0 + i, c.y - j)] = true
 
 
-func _process(delta: float) -> void:
-	super(delta)
-	queue_redraw()

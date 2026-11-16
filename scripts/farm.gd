@@ -189,8 +189,6 @@ func _process(delta: float) -> void:
 		_crystal_t += delta
 		_crystal.position.y = cell_center(CRYSTAL_SPOT).y - 3.0 - sin(_crystal_t * 1.5) * 2.0
 		_crystal.queue_redraw()
-	if not _pond_cells.is_empty():
-		queue_redraw()
 
 
 # ---- interaction -------------------------------------------------------------
@@ -326,7 +324,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 	if tile.is_empty():
 		if GameState.held_tool() != "hoe":
 			return false
-		if not GameState.spend_energy(2):
+		if not GameState.spend_for("hoe"):
 			hud.toast("Too tired.", Color(1, 0.7, 0.7))
 			return true
 		farm[key] = {"watered": false, "crop": "", "days": 0}
@@ -354,8 +352,12 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		return true
 	var cd: Dictionary = GameState.crops[crop]
 	if int(tile["days"]) >= int(cd["days"]):
-		var n := 1 + (1 if randf() < 0.1 * GameState.skill_level("farming") else 0)
+		var n := 1 + (1 if randf() < 0.03 * GameState.skill_level("farming") + GameState.bonus("farming", "extra_crop") else 0)
+		if randf() < GameState.bonus("farming", "double_harvest"):
+			n *= 2
 		give(str(cd["yield"]), n)
+		if randf() < GameState.bonus("farming", "seed_back") and GameState.items.has(crop + "_seed"):
+			give(crop + "_seed", 1)
 		player.play_tool("hold")
 		xp("farming", 6)
 		tile["crop"] = ""
@@ -374,7 +376,7 @@ func _water(tile: Dictionary) -> bool:
 		if GameState.has_tool("can") and str(GameState.run["selected"]) == "":
 			hud.toast("Hold the watering can.")
 		return false
-	if not GameState.spend_energy(1):
+	if not GameState.spend_for("can"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return true
 	tile["watered"] = true
@@ -537,7 +539,7 @@ func _resonator(sel: String) -> void:
 # ---- fishing -----------------------------------------------------------------
 
 func _fish() -> void:
-	if not GameState.spend_energy(2):
+	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return
 	_fishing = true
