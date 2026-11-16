@@ -74,9 +74,16 @@ func _run() -> void:
 	for x in range(3, 14):
 		for y in range(18, 23):
 			farm.clear_cell(Vector2i(x, y))
+	for i in 10:
+		if not d.active:
+			break
+		await press("a", 2)
+		await frames(6)
 	p.position = farm.cell_center(Vector2i(4, 19))
 	p.frozen = false
+	p.auto_target = Vector2.INF
 	Dialogue.block_until_ms = 0
+	await frames(5)
 	Input.action_press("right"); Input.action_press("b")
 	await frames(40)
 	var spd := p.velocity.length()
@@ -120,8 +127,9 @@ func _run() -> void:
 	# Tap-to-move: tap a grass cell, the player walks there.
 	await frames(20)
 	p.position = farm.cell_center(Vector2i(20, 22))
-	for c: Vector2i in [Vector2i(20, 23), Vector2i(20, 24), Vector2i(20, 25)]:
-		farm.clear_cell(c)
+	for x in range(18, 23):
+		for y in range(21, 27):
+			farm.clear_cell(Vector2i(x, y))
 	await frames(45)  # let the camera settle on the new position
 	var cam_tf: Transform2D = farm.get_canvas_transform()
 	var dest: Vector2 = farm.cell_center(Vector2i(20, 25))
