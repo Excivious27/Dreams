@@ -7300,19 +7300,59 @@
    "h": 32,
    "w": 28
   },
+  "aether_bar": {
+   "file": "items/aether_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "aether_ore": {
+   "file": "items/aether_ore.png",
+   "h": 30,
+   "w": 32
+  },
+  "ale": {
+   "file": "items/ale.png",
+   "h": 30,
+   "w": 32
+  },
   "aloe_seed": {
    "file": "items/aloe_seed.png",
    "h": 24,
    "w": 32
   },
+  "amber": {
+   "file": "items/amber.png",
+   "h": 32,
+   "w": 30
+  },
   "amethyst": {
    "file": "items/amethyst.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "amethyst_ring": {
    "file": "items/amethyst_ring.png",
    "h": 31,
+   "w": 32
+  },
+  "anchovy": {
+   "file": "items/anchovy.png",
+   "h": 20,
+   "w": 32
+  },
+  "ancient_coin": {
+   "file": "items/ancient_coin.png",
+   "h": 32,
+   "w": 26
+  },
+  "angel_fish": {
+   "file": "items/angel_fish.png",
+   "h": 32,
+   "w": 29
+  },
+  "ant": {
+   "file": "items/ant.png",
+   "h": 26,
    "w": 32
   },
   "apple": {
@@ -7325,6 +7365,11 @@
    "h": 32,
    "w": 30
   },
+  "apple_pie": {
+   "file": "items/apple_pie.png",
+   "h": 26,
+   "w": 32
+  },
   "apple_seed": {
    "file": "items/apple_seed.png",
    "h": 29,
@@ -7334,6 +7379,16 @@
    "file": "items/apricot.png",
    "h": 32,
    "w": 29
+  },
+  "aquamarine": {
+   "file": "items/aquamarine.png",
+   "h": 32,
+   "w": 31
+  },
+  "archer_string": {
+   "file": "items/archer_string.png",
+   "h": 28,
+   "w": 32
   },
   "armor_gold": {
    "file": "items/armor_gold.png",
@@ -7350,6 +7405,11 @@
    "h": 28,
    "w": 32
   },
+  "artist_plate": {
+   "file": "items/artist_plate.png",
+   "h": 25,
+   "w": 32
+  },
   "asparagus": {
    "file": "items/asparagus.png",
    "h": 32,
@@ -7360,14 +7420,29 @@
    "h": 28,
    "w": 32
   },
+  "astral_risotto": {
+   "file": "items/astral_risotto.png",
+   "h": 25,
+   "w": 32
+  },
   "atlas_melon_seed": {
    "file": "items/atlas_melon_seed.png",
    "h": 27,
    "w": 32
   },
+  "atlas_moth": {
+   "file": "items/atlas_moth.png",
+   "h": 32,
+   "w": 29
+  },
   "aurora_corn_seed": {
    "file": "items/aurora_corn_seed.png",
    "h": 26,
+   "w": 32
+  },
+  "aurora_thread": {
+   "file": "items/aurora_thread.png",
+   "h": 29,
    "w": 32
   },
   "autumn_ember_leaf": {
@@ -7380,9 +7455,19 @@
    "h": 32,
    "w": 30
   },
+  "autumn_leaf_insect": {
+   "file": "items/autumn_leaf_insect.png",
+   "h": 26,
+   "w": 32
+  },
   "autumn_pumpkin": {
    "file": "items/autumn_pumpkin.png",
    "h": 31,
+   "w": 32
+  },
+  "autumn_roast": {
+   "file": "items/autumn_roast.png",
+   "h": 26,
    "w": 32
   },
   "avocado_seed": {
@@ -7397,22 +7482,42 @@
   },
   "axe_copper": {
    "file": "items/axe_copper.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "axe_crystal": {
    "file": "items/axe_crystal.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "axe_gold": {
    "file": "items/axe_gold.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "axe_iron": {
    "file": "items/axe_iron.png",
-   "h": 26,
+   "h": 30,
+   "w": 32
+  },
+  "axe_moon": {
+   "file": "items/axe_moon.png",
+   "h": 32,
+   "w": 30
+  },
+  "axe_silver": {
+   "file": "items/axe_silver.png",
+   "h": 30,
+   "w": 32
+  },
+  "axe_steel": {
+   "file": "items/axe_steel.png",
+   "h": 30,
+   "w": 32
+  },
+  "axe_wood": {
+   "file": "items/axe_wood.png",
+   "h": 30,
    "w": 32
   },
   "backpack": {
@@ -7420,9 +7525,49 @@
    "h": 30,
    "w": 32
   },
+  "badge_anchor": {
+   "file": "items/badge_anchor.png",
+   "h": 29,
+   "w": 32
+  },
+  "badge_flower": {
+   "file": "items/badge_flower.png",
+   "h": 29,
+   "w": 32
+  },
+  "badge_paw": {
+   "file": "items/badge_paw.png",
+   "h": 29,
+   "w": 32
+  },
+  "badge_star": {
+   "file": "items/badge_star.png",
+   "h": 29,
+   "w": 32
+  },
+  "bagel": {
+   "file": "items/bagel.png",
+   "h": 25,
+   "w": 32
+  },
   "bait": {
    "file": "items/bait.png",
-   "h": 28,
+   "h": 24,
+   "w": 32
+  },
+  "bait_pouch": {
+   "file": "items/bait_pouch.png",
+   "h": 32,
+   "w": 30
+  },
+  "baker_pride": {
+   "file": "items/baker_pride.png",
+   "h": 25,
+   "w": 32
+  },
+  "ball": {
+   "file": "items/ball.png",
+   "h": 24,
    "w": 32
   },
   "banana": {
@@ -7445,6 +7590,21 @@
    "h": 28,
    "w": 32
   },
+  "bandana_drop": {
+   "file": "items/bandana_drop.png",
+   "h": 27,
+   "w": 32
+  },
+  "bandolier": {
+   "file": "items/bandolier.png",
+   "h": 32,
+   "w": 30
+  },
+  "bank_token": {
+   "file": "items/bank_token.png",
+   "h": 27,
+   "w": 32
+  },
   "bare_feet": {
    "file": "items/bare_feet.png",
    "h": 28,
@@ -7454,6 +7614,11 @@
    "file": "items/barley.png",
    "h": 32,
    "w": 26
+  },
+  "barracuda": {
+   "file": "items/barracuda.png",
+   "h": 32,
+   "w": 29
   },
   "basil": {
    "file": "items/basil.png",
@@ -7467,17 +7632,42 @@
   },
   "bass": {
    "file": "items/bass.png",
-   "h": 22,
+   "h": 24,
    "w": 32
+  },
+  "bat_fang": {
+   "file": "items/bat_fang.png",
+   "h": 28,
+   "w": 32
+  },
+  "bat_fur": {
+   "file": "items/bat_fur.png",
+   "h": 26,
+   "w": 32
+  },
+  "bat_king_wing": {
+   "file": "items/bat_king_wing.png",
+   "h": 28,
+   "w": 32
+  },
+  "bat_lord_fang": {
+   "file": "items/bat_lord_fang.png",
+   "h": 32,
+   "w": 27
   },
   "bat_wing": {
    "file": "items/bat_wing.png",
-   "h": 28,
+   "h": 26,
    "w": 32
   },
   "beanie": {
    "file": "items/beanie.png",
    "h": 28,
+   "w": 32
+  },
+  "bee_bug": {
+   "file": "items/bee_bug.png",
+   "h": 25,
    "w": 32
   },
   "beet": {
@@ -7495,9 +7685,99 @@
    "h": 31,
    "w": 32
   },
+  "beetle": {
+   "file": "items/beetle.png",
+   "h": 27,
+   "w": 32
+  },
   "bell": {
    "file": "items/bell.png",
    "h": 28,
+   "w": 32
+  },
+  "belt_climbing": {
+   "file": "items/belt_climbing.png",
+   "h": 25,
+   "w": 32
+  },
+  "belt_crystal": {
+   "file": "items/belt_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "belt_farmer": {
+   "file": "items/belt_farmer.png",
+   "h": 25,
+   "w": 32
+  },
+  "belt_fighter": {
+   "file": "items/belt_fighter.png",
+   "h": 25,
+   "w": 32
+  },
+  "belt_fisher": {
+   "file": "items/belt_fisher.png",
+   "h": 25,
+   "w": 32
+  },
+  "belt_forester": {
+   "file": "items/belt_forester.png",
+   "h": 26,
+   "w": 32
+  },
+  "belt_gold": {
+   "file": "items/belt_gold.png",
+   "h": 26,
+   "w": 32
+  },
+  "belt_iron": {
+   "file": "items/belt_iron.png",
+   "h": 27,
+   "w": 32
+  },
+  "belt_leather": {
+   "file": "items/belt_leather.png",
+   "h": 25,
+   "w": 32
+  },
+  "belt_miner": {
+   "file": "items/belt_miner.png",
+   "h": 25,
+   "w": 32
+  },
+  "belt_moon": {
+   "file": "items/belt_moon.png",
+   "h": 26,
+   "w": 32
+  },
+  "belt_runner": {
+   "file": "items/belt_runner.png",
+   "h": 24,
+   "w": 32
+  },
+  "belt_silver": {
+   "file": "items/belt_silver.png",
+   "h": 26,
+   "w": 32
+  },
+  "belt_studded": {
+   "file": "items/belt_studded.png",
+   "h": 26,
+   "w": 32
+  },
+  "belt_swim": {
+   "file": "items/belt_swim.png",
+   "h": 25,
+   "w": 32
+  },
+  "belt_utility": {
+   "file": "items/belt_utility.png",
+   "h": 25,
+   "w": 32
+  },
+  "bent_knuckle": {
+   "file": "items/bent_knuckle.png",
+   "h": 27,
    "w": 32
   },
   "berry": {
@@ -7507,7 +7787,27 @@
   },
   "berry_pie": {
    "file": "items/berry_pie.png",
+   "h": 27,
+   "w": 32
+  },
+  "big_crystal": {
+   "file": "items/big_crystal.png",
    "h": 25,
+   "w": 32
+  },
+  "big_ledger": {
+   "file": "items/big_ledger.png",
+   "h": 32,
+   "w": 26
+  },
+  "birthday_cake": {
+   "file": "items/birthday_cake.png",
+   "h": 26,
+   "w": 32
+  },
+  "black_diamond": {
+   "file": "items/black_diamond.png",
+   "h": 32,
    "w": 32
   },
   "black_fig": {
@@ -7530,6 +7830,11 @@
    "h": 29,
    "w": 32
   },
+  "blacksmith_steak": {
+   "file": "items/blacksmith_steak.png",
+   "h": 29,
+   "w": 32
+  },
   "blood_orange": {
    "file": "items/blood_orange.png",
    "h": 32,
@@ -7538,6 +7843,16 @@
   "blue_potato": {
    "file": "items/blue_potato.png",
    "h": 32,
+   "w": 32
+  },
+  "blue_potion": {
+   "file": "items/blue_potion.png",
+   "h": 32,
+   "w": 31
+  },
+  "blue_shark": {
+   "file": "items/blue_shark.png",
+   "h": 23,
    "w": 32
   },
   "bluebell": {
@@ -7565,6 +7880,21 @@
    "h": 32,
    "w": 31
   },
+  "bluegill": {
+   "file": "items/bluegill.png",
+   "h": 24,
+   "w": 32
+  },
+  "blueprint": {
+   "file": "items/blueprint.png",
+   "h": 28,
+   "w": 32
+  },
+  "boiled_egg": {
+   "file": "items/boiled_egg.png",
+   "h": 24,
+   "w": 32
+  },
   "bok_choy": {
    "file": "items/bok_choy.png",
    "h": 32,
@@ -7580,6 +7910,16 @@
    "h": 29,
    "w": 32
   },
+  "bone_flute": {
+   "file": "items/bone_flute.png",
+   "h": 32,
+   "w": 27
+  },
+  "bone_toy": {
+   "file": "items/bone_toy.png",
+   "h": 23,
+   "w": 32
+  },
   "boot": {
    "file": "items/boot.png",
    "h": 22,
@@ -7590,15 +7930,85 @@
    "h": 31,
    "w": 32
   },
+  "bottle_cap": {
+   "file": "items/bottle_cap.png",
+   "h": 27,
+   "w": 32
+  },
   "bottled_wind": {
    "file": "items/bottled_wind.png",
    "h": 32,
-   "w": 28
+   "w": 29
+  },
+  "bouquet_blue": {
+   "file": "items/bouquet_blue.png",
+   "h": 27,
+   "w": 32
+  },
+  "bouquet_pink": {
+   "file": "items/bouquet_pink.png",
+   "h": 27,
+   "w": 32
+  },
+  "bouquet_red": {
+   "file": "items/bouquet_red.png",
+   "h": 27,
+   "w": 32
+  },
+  "bouquet_yellow": {
+   "file": "items/bouquet_yellow.png",
+   "h": 27,
+   "w": 32
   },
   "bow": {
    "file": "items/bow.png",
    "h": 32,
    "w": 24
+  },
+  "bow_copper": {
+   "file": "items/bow_copper.png",
+   "h": 32,
+   "w": 32
+  },
+  "bow_crystal": {
+   "file": "items/bow_crystal.png",
+   "h": 30,
+   "w": 32
+  },
+  "bow_gold": {
+   "file": "items/bow_gold.png",
+   "h": 30,
+   "w": 32
+  },
+  "bow_iron": {
+   "file": "items/bow_iron.png",
+   "h": 31,
+   "w": 32
+  },
+  "bow_moon": {
+   "file": "items/bow_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "bow_silver": {
+   "file": "items/bow_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "bow_steel": {
+   "file": "items/bow_steel.png",
+   "h": 30,
+   "w": 32
+  },
+  "bow_wood": {
+   "file": "items/bow_wood.png",
+   "h": 31,
+   "w": 32
+  },
+  "boxing_wrap": {
+   "file": "items/boxing_wrap.png",
+   "h": 28,
+   "w": 32
   },
   "bracelet": {
    "file": "items/bracelet.png",
@@ -7612,7 +8022,17 @@
   },
   "bread": {
    "file": "items/bread.png",
-   "h": 29,
+   "h": 27,
+   "w": 32
+  },
+  "bream": {
+   "file": "items/bream.png",
+   "h": 24,
+   "w": 32
+  },
+  "briefcase": {
+   "file": "items/briefcase.png",
+   "h": 27,
    "w": 32
   },
   "broccoli": {
@@ -7630,15 +8050,50 @@
    "h": 28,
    "w": 32
   },
+  "broken_blade": {
+   "file": "items/broken_blade.png",
+   "h": 27,
+   "w": 32
+  },
+  "bronze_bar": {
+   "file": "items/bronze_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "brownie": {
+   "file": "items/brownie.png",
+   "h": 30,
+   "w": 32
+  },
+  "brush": {
+   "file": "items/brush.png",
+   "h": 24,
+   "w": 32
+  },
+  "bumblebee_queen": {
+   "file": "items/bumblebee_queen.png",
+   "h": 32,
+   "w": 29
+  },
   "burdock": {
    "file": "items/burdock.png",
    "h": 32,
    "w": 31
   },
+  "burger": {
+   "file": "items/burger.png",
+   "h": 27,
+   "w": 32
+  },
   "burner_phone": {
    "file": "items/burner_phone.png",
-   "h": 32,
-   "w": 29
+   "h": 27,
+   "w": 32
+  },
+  "butter": {
+   "file": "items/butter.png",
+   "h": 25,
+   "w": 32
   },
   "buttercup": {
    "file": "items/buttercup.png",
@@ -7649,6 +8104,26 @@
    "file": "items/buttercup2.png",
    "h": 32,
    "w": 30
+  },
+  "butterfly_blue_bug": {
+   "file": "items/butterfly_blue_bug.png",
+   "h": 25,
+   "w": 32
+  },
+  "butterfly_orange_bug": {
+   "file": "items/butterfly_orange_bug.png",
+   "h": 24,
+   "w": 32
+  },
+  "butterfly_white": {
+   "file": "items/butterfly_white.png",
+   "h": 25,
+   "w": 32
+  },
+  "butterfly_yellow_bug": {
+   "file": "items/butterfly_yellow_bug.png",
+   "h": 24,
+   "w": 32
   },
   "cabbage": {
    "file": "items/cabbage.png",
@@ -7692,23 +8167,53 @@
   },
   "can_copper": {
    "file": "items/can_copper.png",
-   "h": 26,
+   "h": 25,
    "w": 32
   },
   "can_crystal": {
    "file": "items/can_crystal.png",
-   "h": 26,
+   "h": 25,
    "w": 32
   },
   "can_gold": {
    "file": "items/can_gold.png",
-   "h": 27,
+   "h": 24,
    "w": 32
   },
   "can_iron": {
    "file": "items/can_iron.png",
+   "h": 25,
+   "w": 32
+  },
+  "can_moon": {
+   "file": "items/can_moon.png",
    "h": 27,
    "w": 32
+  },
+  "can_silver": {
+   "file": "items/can_silver.png",
+   "h": 24,
+   "w": 32
+  },
+  "can_steel": {
+   "file": "items/can_steel.png",
+   "h": 24,
+   "w": 32
+  },
+  "can_wood": {
+   "file": "items/can_wood.png",
+   "h": 25,
+   "w": 32
+  },
+  "candle": {
+   "file": "items/candle.png",
+   "h": 28,
+   "w": 32
+  },
+  "candle_tall": {
+   "file": "items/candle_tall.png",
+   "h": 32,
+   "w": 31
   },
   "cantaloupe": {
    "file": "items/cantaloupe.png",
@@ -7730,9 +8235,94 @@
    "h": 32,
    "w": 32
   },
+  "cape_black": {
+   "file": "items/cape_black.png",
+   "h": 32,
+   "w": 31
+  },
+  "cape_blue": {
+   "file": "items/cape_blue.png",
+   "h": 32,
+   "w": 31
+  },
+  "cape_cloud": {
+   "file": "items/cape_cloud.png",
+   "h": 32,
+   "w": 31
+  },
+  "cape_crystal": {
+   "file": "items/cape_crystal.png",
+   "h": 32,
+   "w": 30
+  },
+  "cape_dream": {
+   "file": "items/cape_dream.png",
+   "h": 32,
+   "w": 32
+  },
+  "cape_ember": {
+   "file": "items/cape_ember.png",
+   "h": 32,
+   "w": 30
+  },
+  "cape_frost": {
+   "file": "items/cape_frost.png",
+   "h": 32,
+   "w": 30
+  },
+  "cape_gold": {
+   "file": "items/cape_gold.png",
+   "h": 32,
+   "w": 32
+  },
+  "cape_green": {
+   "file": "items/cape_green.png",
+   "h": 32,
+   "w": 32
+  },
+  "cape_moon": {
+   "file": "items/cape_moon.png",
+   "h": 32,
+   "w": 30
+  },
+  "cape_paw": {
+   "file": "items/cape_paw.png",
+   "h": 32,
+   "w": 30
+  },
+  "cape_penguin": {
+   "file": "items/cape_penguin.png",
+   "h": 32,
+   "w": 30
+  },
+  "cape_red": {
+   "file": "items/cape_red.png",
+   "h": 32,
+   "w": 32
+  },
+  "cape_star": {
+   "file": "items/cape_star.png",
+   "h": 32,
+   "w": 30
+  },
+  "cape_storm": {
+   "file": "items/cape_storm.png",
+   "h": 32,
+   "w": 31
+  },
+  "cape_white": {
+   "file": "items/cape_white.png",
+   "h": 32,
+   "w": 30
+  },
+  "car_key": {
+   "file": "items/car_key.png",
+   "h": 32,
+   "w": 31
+  },
   "carp": {
    "file": "items/carp.png",
-   "h": 21,
+   "h": 24,
    "w": 32
   },
   "carrot": {
@@ -7745,14 +8335,54 @@
    "h": 32,
    "w": 31
   },
+  "carrot_cake": {
+   "file": "items/carrot_cake.png",
+   "h": 26,
+   "w": 32
+  },
   "carrot_seed": {
    "file": "items/carrot_seed.png",
    "h": 32,
    "w": 26
   },
+  "cash_bundle": {
+   "file": "items/cash_bundle.png",
+   "h": 28,
+   "w": 32
+  },
+  "cat_bed_item": {
+   "file": "items/cat_bed_item.png",
+   "h": 24,
+   "w": 32
+  },
+  "cat_favourite": {
+   "file": "items/cat_favourite.png",
+   "h": 27,
+   "w": 32
+  },
+  "cat_figurine": {
+   "file": "items/cat_figurine.png",
+   "h": 32,
+   "w": 27
+  },
+  "cat_moth": {
+   "file": "items/cat_moth.png",
+   "h": 32,
+   "w": 29
+  },
+  "cat_rune": {
+   "file": "items/cat_rune.png",
+   "h": 27,
+   "w": 32
+  },
+  "caterpillar": {
+   "file": "items/caterpillar.png",
+   "h": 32,
+   "w": 29
+  },
   "catfish": {
    "file": "items/catfish.png",
-   "h": 21,
+   "h": 24,
    "w": 32
   },
   "catnip_cabbage": {
@@ -7785,10 +8415,25 @@
    "h": 31,
    "w": 32
   },
+  "cave_fish": {
+   "file": "items/cave_fish.png",
+   "h": 25,
+   "w": 32
+  },
   "cave_mushroom": {
    "file": "items/cave_mushroom.png",
    "h": 32,
    "w": 30
+  },
+  "cctv_lens": {
+   "file": "items/cctv_lens.png",
+   "h": 27,
+   "w": 32
+  },
+  "celebration_cake": {
+   "file": "items/celebration_cake.png",
+   "h": 26,
+   "w": 32
   },
   "celery": {
    "file": "items/celery.png",
@@ -7805,10 +8450,120 @@
    "h": 31,
    "w": 32
   },
+  "centipede": {
+   "file": "items/centipede.png",
+   "h": 32,
+   "w": 29
+  },
+  "chain_link": {
+   "file": "items/chain_link.png",
+   "h": 30,
+   "w": 32
+  },
   "chamomile": {
    "file": "items/chamomile.png",
    "h": 32,
    "w": 30
+  },
+  "champion_belt": {
+   "file": "items/champion_belt.png",
+   "h": 26,
+   "w": 32
+  },
+  "char": {
+   "file": "items/char.png",
+   "h": 32,
+   "w": 29
+  },
+  "charcoal": {
+   "file": "items/charcoal.png",
+   "h": 24,
+   "w": 32
+  },
+  "charm_cat": {
+   "file": "items/charm_cat.png",
+   "h": 32,
+   "w": 30
+  },
+  "charm_cloud": {
+   "file": "items/charm_cloud.png",
+   "h": 32,
+   "w": 32
+  },
+  "charm_dream": {
+   "file": "items/charm_dream.png",
+   "h": 32,
+   "w": 30
+  },
+  "charm_ember": {
+   "file": "items/charm_ember.png",
+   "h": 32,
+   "w": 29
+  },
+  "charm_frost": {
+   "file": "items/charm_frost.png",
+   "h": 32,
+   "w": 27
+  },
+  "charm_light": {
+   "file": "items/charm_light.png",
+   "h": 32,
+   "w": 28
+  },
+  "charm_moon": {
+   "file": "items/charm_moon.png",
+   "h": 32,
+   "w": 29
+  },
+  "charm_paw": {
+   "file": "items/charm_paw.png",
+   "h": 32,
+   "w": 32
+  },
+  "charm_penguin": {
+   "file": "items/charm_penguin.png",
+   "h": 32,
+   "w": 30
+  },
+  "charm_root": {
+   "file": "items/charm_root.png",
+   "h": 32,
+   "w": 32
+  },
+  "charm_sky": {
+   "file": "items/charm_sky.png",
+   "h": 32,
+   "w": 32
+  },
+  "charm_star": {
+   "file": "items/charm_star.png",
+   "h": 32,
+   "w": 29
+  },
+  "charm_stone": {
+   "file": "items/charm_stone.png",
+   "h": 32,
+   "w": 32
+  },
+  "charm_storm": {
+   "file": "items/charm_storm.png",
+   "h": 32,
+   "w": 29
+  },
+  "charm_sun": {
+   "file": "items/charm_sun.png",
+   "h": 32,
+   "w": 29
+  },
+  "charm_tide": {
+   "file": "items/charm_tide.png",
+   "h": 32,
+   "w": 30
+  },
+  "cheap_watch": {
+   "file": "items/cheap_watch.png",
+   "h": 27,
+   "w": 32
   },
   "check": {
    "file": "items/check.png",
@@ -7820,6 +8575,31 @@
    "h": 26,
    "w": 32
   },
+  "cheese_aged": {
+   "file": "items/cheese_aged.png",
+   "h": 30,
+   "w": 32
+  },
+  "cheese_blue": {
+   "file": "items/cheese_blue.png",
+   "h": 25,
+   "w": 32
+  },
+  "cheese_fresh": {
+   "file": "items/cheese_fresh.png",
+   "h": 27,
+   "w": 32
+  },
+  "cheese_goat": {
+   "file": "items/cheese_goat.png",
+   "h": 32,
+   "w": 32
+  },
+  "chef_masterwork": {
+   "file": "items/chef_masterwork.png",
+   "h": 24,
+   "w": 32
+  },
   "cherry": {
    "file": "items/cherry.png",
    "h": 32,
@@ -7828,6 +8608,11 @@
   "cherry2": {
    "file": "items/cherry2.png",
    "h": 29,
+   "w": 32
+  },
+  "cherry_pie": {
+   "file": "items/cherry_pie.png",
+   "h": 26,
    "w": 32
   },
   "cherry_tomato": {
@@ -7850,10 +8635,70 @@
    "h": 28,
    "w": 32
   },
+  "chipmunk": {
+   "file": "items/chipmunk.png",
+   "h": 27,
+   "w": 32
+  },
   "chives": {
    "file": "items/chives.png",
    "h": 32,
    "w": 31
+  },
+  "chocolate_box": {
+   "file": "items/chocolate_box.png",
+   "h": 26,
+   "w": 32
+  },
+  "chocolate_cake": {
+   "file": "items/chocolate_cake.png",
+   "h": 26,
+   "w": 32
+  },
+  "chowder": {
+   "file": "items/chowder.png",
+   "h": 27,
+   "w": 32
+  },
+  "chub": {
+   "file": "items/chub.png",
+   "h": 24,
+   "w": 32
+  },
+  "chutney": {
+   "file": "items/chutney.png",
+   "h": 31,
+   "w": 32
+  },
+  "cicada": {
+   "file": "items/cicada.png",
+   "h": 32,
+   "w": 30
+  },
+  "cicada_king": {
+   "file": "items/cicada_king.png",
+   "h": 26,
+   "w": 32
+  },
+  "cider": {
+   "file": "items/cider.png",
+   "h": 28,
+   "w": 32
+  },
+  "cig_tin": {
+   "file": "items/cig_tin.png",
+   "h": 27,
+   "w": 32
+  },
+  "city_deed": {
+   "file": "items/city_deed.png",
+   "h": 32,
+   "w": 26
+  },
+  "clam": {
+   "file": "items/clam.png",
+   "h": 32,
+   "w": 29
   },
   "clay": {
    "file": "items/clay.png",
@@ -7875,15 +8720,50 @@
    "h": 26,
    "w": 32
   },
+  "cloth_blue": {
+   "file": "items/cloth_blue.png",
+   "h": 28,
+   "w": 32
+  },
+  "cloth_gold": {
+   "file": "items/cloth_gold.png",
+   "h": 28,
+   "w": 32
+  },
+  "cloth_green": {
+   "file": "items/cloth_green.png",
+   "h": 28,
+   "w": 32
+  },
+  "cloth_red": {
+   "file": "items/cloth_red.png",
+   "h": 27,
+   "w": 32
+  },
   "cloud_bean": {
    "file": "items/cloud_bean.png",
    "h": 31,
    "w": 32
   },
+  "cloud_cotton": {
+   "file": "items/cloud_cotton.png",
+   "h": 27,
+   "w": 32
+  },
+  "cloud_fish": {
+   "file": "items/cloud_fish.png",
+   "h": 32,
+   "w": 28
+  },
   "cloud_lotus": {
    "file": "items/cloud_lotus.png",
    "h": 30,
    "w": 32
+  },
+  "cloud_mantis": {
+   "file": "items/cloud_mantis.png",
+   "h": 32,
+   "w": 29
   },
   "cloud_orchid": {
    "file": "items/cloud_orchid.png",
@@ -7898,6 +8778,16 @@
   "cloud_rice": {
    "file": "items/cloud_rice.png",
    "h": 29,
+   "w": 32
+  },
+  "cloud_souffle": {
+   "file": "items/cloud_souffle.png",
+   "h": 27,
+   "w": 32
+  },
+  "cloud_tempura": {
+   "file": "items/cloud_tempura.png",
+   "h": 24,
    "w": 32
   },
   "cloud_walkers": {
@@ -7920,10 +8810,30 @@
    "h": 32,
    "w": 26
   },
-  "coal": {
-   "file": "items/coal.png",
+  "cluster_blue": {
+   "file": "items/cluster_blue.png",
    "h": 28,
    "w": 32
+  },
+  "cluster_green": {
+   "file": "items/cluster_green.png",
+   "h": 28,
+   "w": 32
+  },
+  "cluster_pink": {
+   "file": "items/cluster_pink.png",
+   "h": 28,
+   "w": 32
+  },
+  "cluster_purple": {
+   "file": "items/cluster_purple.png",
+   "h": 28,
+   "w": 32
+  },
+  "coal": {
+   "file": "items/coal.png",
+   "h": 32,
+   "w": 30
   },
   "coconut": {
    "file": "items/coconut.png",
@@ -7940,6 +8850,21 @@
    "h": 27,
    "w": 32
   },
+  "cod": {
+   "file": "items/cod.png",
+   "h": 32,
+   "w": 29
+  },
+  "coelacanth": {
+   "file": "items/coelacanth.png",
+   "h": 23,
+   "w": 32
+  },
+  "coffee": {
+   "file": "items/coffee.png",
+   "h": 28,
+   "w": 32
+  },
   "coffee_bean": {
    "file": "items/coffee_bean.png",
    "h": 32,
@@ -7948,6 +8873,16 @@
   "coffee_seed": {
    "file": "items/coffee_seed.png",
    "h": 32,
+   "w": 32
+  },
+  "collar_a": {
+   "file": "items/collar_a.png",
+   "h": 25,
+   "w": 32
+  },
+  "collar_b": {
+   "file": "items/collar_b.png",
+   "h": 27,
    "w": 32
   },
   "comet_berry": {
@@ -7965,34 +8900,139 @@
    "h": 30,
    "w": 32
   },
+  "comet_tail": {
+   "file": "items/comet_tail.png",
+   "h": 29,
+   "w": 32
+  },
   "comfrey": {
    "file": "items/comfrey.png",
    "h": 32,
    "w": 32
   },
+  "commander_cape": {
+   "file": "items/commander_cape.png",
+   "h": 29,
+   "w": 32
+  },
   "commander_crest": {
    "file": "items/commander_crest.png",
-   "h": 31,
+   "h": 30,
    "w": 32
+  },
+  "commander_soul": {
+   "file": "items/commander_soul.png",
+   "h": 32,
+   "w": 27
   },
   "compass": {
    "file": "items/compass.png",
    "h": 32,
    "w": 28
   },
+  "contract": {
+   "file": "items/contract.png",
+   "h": 27,
+   "w": 32
+  },
+  "cookie": {
+   "file": "items/cookie.png",
+   "h": 26,
+   "w": 32
+  },
   "copper": {
    "file": "items/copper.png",
-   "h": 29,
+   "h": 27,
    "w": 32
   },
   "copper_bar": {
    "file": "items/copper_bar.png",
-   "h": 27,
+   "h": 28,
+   "w": 32
+  },
+  "copper_belt": {
+   "file": "items/copper_belt.png",
+   "h": 31,
+   "w": 32
+  },
+  "copper_belt_plus": {
+   "file": "items/copper_belt_plus.png",
+   "h": 28,
+   "w": 32
+  },
+  "copper_boots": {
+   "file": "items/copper_boots.png",
+   "h": 32,
+   "w": 26
+  },
+  "copper_boots_plus": {
+   "file": "items/copper_boots_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "copper_cape": {
+   "file": "items/copper_cape.png",
+   "h": 29,
+   "w": 32
+  },
+  "copper_cape_plus": {
+   "file": "items/copper_cape_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "copper_chest": {
+   "file": "items/copper_chest.png",
+   "h": 32,
+   "w": 32
+  },
+  "copper_chest_plus": {
+   "file": "items/copper_chest_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "copper_gloves": {
+   "file": "items/copper_gloves.png",
+   "h": 30,
+   "w": 32
+  },
+  "copper_gloves_plus": {
+   "file": "items/copper_gloves_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "copper_helm": {
+   "file": "items/copper_helm.png",
+   "h": 32,
+   "w": 30
+  },
+  "copper_helm_plus": {
+   "file": "items/copper_helm_plus.png",
+   "h": 32,
+   "w": 28
+  },
+  "copper_legs": {
+   "file": "items/copper_legs.png",
+   "h": 31,
+   "w": 32
+  },
+  "copper_legs_plus": {
+   "file": "items/copper_legs_plus.png",
+   "h": 29,
    "w": 32
   },
   "copper_ring": {
    "file": "items/copper_ring.png",
    "h": 27,
+   "w": 32
+  },
+  "copper_shield": {
+   "file": "items/copper_shield.png",
+   "h": 32,
+   "w": 30
+  },
+  "copper_shield_plus": {
+   "file": "items/copper_shield_plus.png",
+   "h": 29,
    "w": 32
   },
   "corn": {
@@ -8022,8 +9062,8 @@
   },
   "crab": {
    "file": "items/crab.png",
-   "h": 22,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "cranberry": {
    "file": "items/cranberry.png",
@@ -8035,14 +9075,64 @@
    "h": 29,
    "w": 32
   },
+  "crayfish": {
+   "file": "items/crayfish.png",
+   "h": 32,
+   "w": 29
+  },
+  "cream": {
+   "file": "items/cream.png",
+   "h": 26,
+   "w": 32
+  },
+  "cricket": {
+   "file": "items/cricket.png",
+   "h": 24,
+   "w": 32
+  },
   "crystal": {
    "file": "items/crystal.png",
    "h": 32,
    "w": 22
   },
+  "crystal_bar": {
+   "file": "items/crystal_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "crystal_beetle": {
+   "file": "items/crystal_beetle.png",
+   "h": 32,
+   "w": 28
+  },
+  "crystal_belt": {
+   "file": "items/crystal_belt.png",
+   "h": 28,
+   "w": 32
+  },
+  "crystal_belt_plus": {
+   "file": "items/crystal_belt_plus.png",
+   "h": 25,
+   "w": 32
+  },
   "crystal_boots": {
    "file": "items/crystal_boots.png",
-   "h": 29,
+   "h": 32,
+   "w": 31
+  },
+  "crystal_boots_plus": {
+   "file": "items/crystal_boots_plus.png",
+   "h": 26,
+   "w": 32
+  },
+  "crystal_cape": {
+   "file": "items/crystal_cape.png",
+   "h": 26,
+   "w": 32
+  },
+  "crystal_cape_plus": {
+   "file": "items/crystal_cape_plus.png",
+   "h": 26,
    "w": 32
   },
   "crystal_cherry": {
@@ -8050,14 +9140,49 @@
    "h": 30,
    "w": 32
   },
+  "crystal_chest": {
+   "file": "items/crystal_chest.png",
+   "h": 29,
+   "w": 32
+  },
+  "crystal_chest_plus": {
+   "file": "items/crystal_chest_plus.png",
+   "h": 26,
+   "w": 32
+  },
   "crystal_crown": {
    "file": "items/crystal_crown.png",
    "h": 27,
    "w": 32
   },
+  "crystal_dragonfly": {
+   "file": "items/crystal_dragonfly.png",
+   "h": 27,
+   "w": 32
+  },
+  "crystal_fish": {
+   "file": "items/crystal_fish.png",
+   "h": 32,
+   "w": 29
+  },
+  "crystal_gloves": {
+   "file": "items/crystal_gloves.png",
+   "h": 26,
+   "w": 32
+  },
+  "crystal_gloves_plus": {
+   "file": "items/crystal_gloves_plus.png",
+   "h": 25,
+   "w": 32
+  },
   "crystal_grape": {
    "file": "items/crystal_grape.png",
    "h": 32,
+   "w": 32
+  },
+  "crystal_heart_cake": {
+   "file": "items/crystal_heart_cake.png",
+   "h": 26,
    "w": 32
   },
   "crystal_heartbloom": {
@@ -8075,6 +9200,31 @@
    "h": 32,
    "w": 30
   },
+  "crystal_helm": {
+   "file": "items/crystal_helm.png",
+   "h": 29,
+   "w": 32
+  },
+  "crystal_helm_plus": {
+   "file": "items/crystal_helm_plus.png",
+   "h": 32,
+   "w": 32
+  },
+  "crystal_jelly": {
+   "file": "items/crystal_jelly.png",
+   "h": 26,
+   "w": 32
+  },
+  "crystal_legs": {
+   "file": "items/crystal_legs.png",
+   "h": 27,
+   "w": 32
+  },
+  "crystal_legs_plus": {
+   "file": "items/crystal_legs_plus.png",
+   "h": 25,
+   "w": 32
+  },
   "crystal_lens": {
    "file": "items/crystal_lens.png",
    "h": 30,
@@ -8083,6 +9233,11 @@
   "crystal_lettuce_seed": {
    "file": "items/crystal_lettuce_seed.png",
    "h": 31,
+   "w": 32
+  },
+  "crystal_leviathan": {
+   "file": "items/crystal_leviathan.png",
+   "h": 27,
    "w": 32
   },
   "crystal_melon_seed": {
@@ -8094,6 +9249,16 @@
    "file": "items/crystal_onion.png",
    "h": 32,
    "w": 26
+  },
+  "crystal_ore": {
+   "file": "items/crystal_ore.png",
+   "h": 27,
+   "w": 32
+  },
+  "crystal_paella": {
+   "file": "items/crystal_paella.png",
+   "h": 28,
+   "w": 32
   },
   "crystal_plate": {
    "file": "items/crystal_plate.png",
@@ -8112,8 +9277,18 @@
   },
   "crystal_seed": {
    "file": "items/crystal_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "crystal_shield": {
+   "file": "items/crystal_shield.png",
    "h": 32,
-   "w": 29
+   "w": 32
+  },
+  "crystal_shield_plus": {
+   "file": "items/crystal_shield_plus.png",
+   "h": 26,
+   "w": 32
   },
   "crystal_sword": {
    "file": "items/crystal_sword.png",
@@ -8140,6 +9315,36 @@
    "h": 30,
    "w": 32
   },
+  "cupcake": {
+   "file": "items/cupcake.png",
+   "h": 32,
+   "w": 32
+  },
+  "curry": {
+   "file": "items/curry.png",
+   "h": 27,
+   "w": 32
+  },
+  "cuttlefish": {
+   "file": "items/cuttlefish.png",
+   "h": 24,
+   "w": 32
+  },
+  "cyber_chip": {
+   "file": "items/cyber_chip.png",
+   "h": 26,
+   "w": 32
+  },
+  "cyber_eye": {
+   "file": "items/cyber_eye.png",
+   "h": 28,
+   "w": 32
+  },
+  "dace": {
+   "file": "items/dace.png",
+   "h": 24,
+   "w": 32
+  },
   "daffodil": {
    "file": "items/daffodil.png",
    "h": 32,
@@ -8150,6 +9355,46 @@
    "h": 32,
    "w": 29
   },
+  "dagger_copper": {
+   "file": "items/dagger_copper.png",
+   "h": 27,
+   "w": 32
+  },
+  "dagger_crystal": {
+   "file": "items/dagger_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "dagger_gold": {
+   "file": "items/dagger_gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "dagger_iron": {
+   "file": "items/dagger_iron.png",
+   "h": 26,
+   "w": 32
+  },
+  "dagger_moon": {
+   "file": "items/dagger_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "dagger_silver": {
+   "file": "items/dagger_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "dagger_steel": {
+   "file": "items/dagger_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "dagger_wood": {
+   "file": "items/dagger_wood.png",
+   "h": 26,
+   "w": 32
+  },
   "daisy": {
    "file": "items/daisy.png",
    "h": 32,
@@ -8159,6 +9404,11 @@
    "file": "items/daisy2.png",
    "h": 32,
    "w": 29
+  },
+  "damselfly": {
+   "file": "items/damselfly.png",
+   "h": 24,
+   "w": 32
   },
   "dancing_shoes": {
    "file": "items/dancing_shoes.png",
@@ -8177,12 +9427,47 @@
   },
   "dark": {
    "file": "items/dark.png",
-   "h": 28,
+   "h": 27,
    "w": 32
   },
   "dark2": {
    "file": "items/dark2.png",
    "h": 30,
+   "w": 32
+  },
+  "dark_bar": {
+   "file": "items/dark_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "dark_beetle": {
+   "file": "items/dark_beetle.png",
+   "h": 26,
+   "w": 32
+  },
+  "dark_crystal_fragment": {
+   "file": "items/dark_crystal_fragment.png",
+   "h": 32,
+   "w": 25
+  },
+  "dark_crystal_shard": {
+   "file": "items/dark_crystal_shard.png",
+   "h": 32,
+   "w": 25
+  },
+  "dark_crystal_shard2": {
+   "file": "items/dark_crystal_shard2.png",
+   "h": 28,
+   "w": 32
+  },
+  "dark_draught": {
+   "file": "items/dark_draught.png",
+   "h": 32,
+   "w": 31
+  },
+  "dark_fudge": {
+   "file": "items/dark_fudge.png",
+   "h": 25,
    "w": 32
   },
   "dark_garlic": {
@@ -8199,6 +9484,21 @@
    "file": "items/dark_rose.png",
    "h": 32,
    "w": 31
+  },
+  "dark_shard": {
+   "file": "items/dark_shard.png",
+   "h": 27,
+   "w": 32
+  },
+  "dark_torte": {
+   "file": "items/dark_torte.png",
+   "h": 27,
+   "w": 32
+  },
+  "dawn_dew": {
+   "file": "items/dawn_dew.png",
+   "h": 27,
+   "w": 32
   },
   "dawn_kiwi": {
    "file": "items/dawn_kiwi.png",
@@ -8225,8 +9525,23 @@
    "h": 30,
    "w": 32
   },
+  "deed": {
+   "file": "items/deed.png",
+   "h": 29,
+   "w": 32
+  },
   "diamond": {
    "file": "items/diamond.png",
+   "h": 31,
+   "w": 32
+  },
+  "diamond_item": {
+   "file": "items/diamond_item.png",
+   "h": 26,
+   "w": 32
+  },
+  "dice": {
+   "file": "items/dice.png",
    "h": 27,
    "w": 32
   },
@@ -8240,14 +9555,84 @@
    "h": 32,
    "w": 29
   },
+  "dino_egg": {
+   "file": "items/dino_egg.png",
+   "h": 32,
+   "w": 27
+  },
+  "diving_beetle": {
+   "file": "items/diving_beetle.png",
+   "h": 28,
+   "w": 32
+  },
   "dock": {
    "file": "items/dock.png",
    "h": 32,
    "w": 26
   },
+  "dock_bell": {
+   "file": "items/dock_bell.png",
+   "h": 32,
+   "w": 27
+  },
+  "dock_boss_ring": {
+   "file": "items/dock_boss_ring.png",
+   "h": 30,
+   "w": 32
+  },
+  "dock_chowder": {
+   "file": "items/dock_chowder.png",
+   "h": 25,
+   "w": 32
+  },
+  "dock_kraken": {
+   "file": "items/dock_kraken.png",
+   "h": 27,
+   "w": 32
+  },
+  "dock_manifest": {
+   "file": "items/dock_manifest.png",
+   "h": 28,
+   "w": 32
+  },
+  "dog_bed_item": {
+   "file": "items/dog_bed_item.png",
+   "h": 24,
+   "w": 32
+  },
+  "dolphin": {
+   "file": "items/dolphin.png",
+   "h": 23,
+   "w": 32
+  },
+  "donut": {
+   "file": "items/donut.png",
+   "h": 26,
+   "w": 32
+  },
+  "dragon_heart": {
+   "file": "items/dragon_heart.png",
+   "h": 32,
+   "w": 27
+  },
+  "dragon_noodles": {
+   "file": "items/dragon_noodles.png",
+   "h": 24,
+   "w": 32
+  },
+  "dragon_scale": {
+   "file": "items/dragon_scale.png",
+   "h": 27,
+   "w": 32
+  },
   "dragonberry_seed": {
    "file": "items/dragonberry_seed.png",
    "h": 27,
+   "w": 32
+  },
+  "dragonfly_bug": {
+   "file": "items/dragonfly_bug.png",
+   "h": 24,
    "w": 32
   },
   "dragonfruit": {
@@ -8265,14 +9650,34 @@
    "h": 27,
    "w": 32
   },
+  "dream_butterfly": {
+   "file": "items/dream_butterfly.png",
+   "h": 26,
+   "w": 32
+  },
+  "dream_cake": {
+   "file": "items/dream_cake.png",
+   "h": 25,
+   "w": 32
+  },
+  "dream_caterpillar": {
+   "file": "items/dream_caterpillar.png",
+   "h": 32,
+   "w": 30
+  },
   "dream_charm": {
    "file": "items/dream_charm.png",
    "h": 32,
    "w": 30
   },
+  "dream_crystal": {
+   "file": "items/dream_crystal.png",
+   "h": 28,
+   "w": 32
+  },
   "dream_essence": {
    "file": "items/dream_essence.png",
-   "h": 30,
+   "h": 28,
    "w": 32
   },
   "dream_essence2": {
@@ -8295,6 +9700,21 @@
    "h": 31,
    "w": 32
   },
+  "dream_fish": {
+   "file": "items/dream_fish.png",
+   "h": 25,
+   "w": 32
+  },
+  "dream_guppy": {
+   "file": "items/dream_guppy.png",
+   "h": 32,
+   "w": 29
+  },
+  "dream_heart": {
+   "file": "items/dream_heart.png",
+   "h": 32,
+   "w": 28
+  },
   "dream_melon": {
    "file": "items/dream_melon.png",
    "h": 29,
@@ -8304,6 +9724,11 @@
    "file": "items/dream_orchid.png",
    "h": 32,
    "w": 30
+  },
+  "dream_pudding": {
+   "file": "items/dream_pudding.png",
+   "h": 27,
+   "w": 32
   },
   "dream_ring": {
    "file": "items/dream_ring.png",
@@ -8318,7 +9743,7 @@
   "dream_tonic": {
    "file": "items/dream_tonic.png",
    "h": 32,
-   "w": 27
+   "w": 30
   },
   "dreamflower": {
    "file": "items/dreamflower.png",
@@ -8350,9 +9775,19 @@
    "h": 31,
    "w": 32
   },
+  "drifter_can": {
+   "file": "items/drifter_can.png",
+   "h": 26,
+   "w": 32
+  },
   "driftwood": {
    "file": "items/driftwood.png",
    "h": 30,
+   "w": 32
+  },
+  "dumpling": {
+   "file": "items/dumpling.png",
+   "h": 26,
    "w": 32
   },
   "dune_date": {
@@ -8373,6 +9808,11 @@
   "durian": {
    "file": "items/durian.png",
    "h": 32,
+   "w": 32
+  },
+  "dusk_ink": {
+   "file": "items/dusk_ink.png",
+   "h": 27,
    "w": 32
   },
   "dusk_iris": {
@@ -8405,6 +9845,16 @@
    "h": 27,
    "w": 32
   },
+  "earpiece": {
+   "file": "items/earpiece.png",
+   "h": 26,
+   "w": 32
+  },
+  "earwig": {
+   "file": "items/earwig.png",
+   "h": 32,
+   "w": 29
+  },
   "echo_artichoke": {
    "file": "items/echo_artichoke.png",
    "h": 32,
@@ -8415,14 +9865,34 @@
    "h": 30,
    "w": 32
   },
+  "echo_catfish": {
+   "file": "items/echo_catfish.png",
+   "h": 32,
+   "w": 29
+  },
+  "echo_cricket": {
+   "file": "items/echo_cricket.png",
+   "h": 32,
+   "w": 29
+  },
   "echo_leek": {
    "file": "items/echo_leek.png",
    "h": 32,
    "w": 32
   },
+  "echo_pudding": {
+   "file": "items/echo_pudding.png",
+   "h": 24,
+   "w": 32
+  },
   "echo_shell": {
    "file": "items/echo_shell.png",
-   "h": 29,
+   "h": 28,
+   "w": 32
+  },
+  "echo_squid": {
+   "file": "items/echo_squid.png",
+   "h": 24,
    "w": 32
   },
   "echo_tulip": {
@@ -8442,13 +9912,33 @@
   },
   "eel": {
    "file": "items/eel.png",
-   "h": 23,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "egg": {
    "file": "items/egg.png",
    "h": 32,
    "w": 26
+  },
+  "egg_blue": {
+   "file": "items/egg_blue.png",
+   "h": 31,
+   "w": 32
+  },
+  "egg_gold": {
+   "file": "items/egg_gold.png",
+   "h": 31,
+   "w": 32
+  },
+  "egg_green": {
+   "file": "items/egg_green.png",
+   "h": 31,
+   "w": 32
+  },
+  "egg_red": {
+   "file": "items/egg_red.png",
+   "h": 30,
+   "w": 32
   },
   "eggplant": {
    "file": "items/eggplant.png",
@@ -8483,7 +9973,17 @@
   "ember": {
    "file": "items/ember.png",
    "h": 32,
-   "w": 27
+   "w": 28
+  },
+  "ember_curry": {
+   "file": "items/ember_curry.png",
+   "h": 31,
+   "w": 32
+  },
+  "ember_koi": {
+   "file": "items/ember_koi.png",
+   "h": 32,
+   "w": 29
   },
   "ember_mango": {
    "file": "items/ember_mango.png",
@@ -8494,6 +9994,11 @@
    "file": "items/ember_rose.png",
    "h": 32,
    "w": 31
+  },
+  "ember_wasp": {
+   "file": "items/ember_wasp.png",
+   "h": 32,
+   "w": 29
   },
   "emberberry": {
    "file": "items/emberberry.png",
@@ -8508,12 +10013,17 @@
   "emerald": {
    "file": "items/emerald.png",
    "h": 32,
-   "w": 28
+   "w": 31
   },
   "emerald_ring": {
    "file": "items/emerald_ring.png",
    "h": 30,
    "w": 32
+  },
+  "emperor_dragonfly": {
+   "file": "items/emperor_dragonfly.png",
+   "h": 32,
+   "w": 29
   },
   "enchanted_berry_seed": {
    "file": "items/enchanted_berry_seed.png",
@@ -8522,7 +10032,17 @@
   },
   "energy_tea": {
    "file": "items/energy_tea.png",
-   "h": 31,
+   "h": 28,
+   "w": 32
+  },
+  "enforcer_badge": {
+   "file": "items/enforcer_badge.png",
+   "h": 28,
+   "w": 32
+  },
+  "enforcer_helm": {
+   "file": "items/enforcer_helm.png",
+   "h": 28,
    "w": 32
   },
   "enforcer_plate": {
@@ -8535,6 +10055,106 @@
    "h": 26,
    "w": 32
   },
+  "fake_id": {
+   "file": "items/fake_id.png",
+   "h": 27,
+   "w": 32
+  },
+  "fanny_pack": {
+   "file": "items/fanny_pack.png",
+   "h": 28,
+   "w": 32
+  },
+  "farmer_bag": {
+   "file": "items/farmer_bag.png",
+   "h": 32,
+   "w": 22
+  },
+  "farmer_bag_b": {
+   "file": "items/farmer_bag_b.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_bottom": {
+   "file": "items/farmer_bottom.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_bottom_b": {
+   "file": "items/farmer_bottom_b.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_gloves": {
+   "file": "items/farmer_gloves.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_gloves_b": {
+   "file": "items/farmer_gloves_b.png",
+   "h": 32,
+   "w": 22
+  },
+  "farmer_harvest": {
+   "file": "items/farmer_harvest.png",
+   "h": 26,
+   "w": 32
+  },
+  "farmer_hat": {
+   "file": "items/farmer_hat.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_hat_b": {
+   "file": "items/farmer_hat_b.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_scarf": {
+   "file": "items/farmer_scarf.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_scarf_b": {
+   "file": "items/farmer_scarf_b.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_shoes": {
+   "file": "items/farmer_shoes.png",
+   "h": 32,
+   "w": 22
+  },
+  "farmer_shoes_b": {
+   "file": "items/farmer_shoes_b.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_top": {
+   "file": "items/farmer_top.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_top_b": {
+   "file": "items/farmer_top_b.png",
+   "h": 32,
+   "w": 22
+  },
+  "farmer_trinket": {
+   "file": "items/farmer_trinket.png",
+   "h": 32,
+   "w": 21
+  },
+  "farmer_trinket_b": {
+   "file": "items/farmer_trinket_b.png",
+   "h": 32,
+   "w": 22
+  },
+  "feast_platter": {
+   "file": "items/feast_platter.png",
+   "h": 28,
+   "w": 32
+  },
   "feather": {
    "file": "items/feather.png",
    "h": 26,
@@ -8545,6 +10165,16 @@
    "h": 25,
    "w": 32
   },
+  "feed_bag_b": {
+   "file": "items/feed_bag_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "feed_bag_c": {
+   "file": "items/feed_bag_c.png",
+   "h": 25,
+   "w": 32
+  },
   "fennel": {
    "file": "items/fennel.png",
    "h": 32,
@@ -8552,7 +10182,22 @@
   },
   "fertilizer": {
    "file": "items/fertilizer.png",
-   "h": 31,
+   "h": 24,
+   "w": 32
+  },
+  "fertilizer_deluxe": {
+   "file": "items/fertilizer_deluxe.png",
+   "h": 24,
+   "w": 32
+  },
+  "festival_ribbon": {
+   "file": "items/festival_ribbon.png",
+   "h": 26,
+   "w": 32
+  },
+  "festival_ticket": {
+   "file": "items/festival_ticket.png",
+   "h": 23,
    "w": 32
   },
   "feverfew": {
@@ -8580,14 +10225,64 @@
    "h": 27,
    "w": 32
   },
+  "film_reel": {
+   "file": "items/film_reel.png",
+   "h": 29,
+   "w": 32
+  },
+  "finch_critter": {
+   "file": "items/finch_critter.png",
+   "h": 27,
+   "w": 32
+  },
+  "firefly_bug": {
+   "file": "items/firefly_bug.png",
+   "h": 32,
+   "w": 29
+  },
+  "firework_a": {
+   "file": "items/firework_a.png",
+   "h": 27,
+   "w": 32
+  },
+  "firework_b": {
+   "file": "items/firework_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "first_bee": {
+   "file": "items/first_bee.png",
+   "h": 26,
+   "w": 32
+  },
   "first_daisy": {
    "file": "items/first_daisy.png",
    "h": 32,
    "w": 31
   },
+  "first_dollar": {
+   "file": "items/first_dollar.png",
+   "h": 32,
+   "w": 26
+  },
+  "first_harvest_loaf": {
+   "file": "items/first_harvest_loaf.png",
+   "h": 25,
+   "w": 32
+  },
+  "first_seed": {
+   "file": "items/first_seed.png",
+   "h": 32,
+   "w": 27
+  },
   "first_strawberry": {
    "file": "items/first_strawberry.png",
    "h": 31,
+   "w": 32
+  },
+  "first_trout": {
+   "file": "items/first_trout.png",
+   "h": 27,
    "w": 32
   },
   "first_turnip": {
@@ -8600,15 +10295,110 @@
    "h": 32,
    "w": 24
   },
+  "fish_fry": {
+   "file": "items/fish_fry.png",
+   "h": 26,
+   "w": 32
+  },
   "fish_stew": {
    "file": "items/fish_stew.png",
    "h": 27,
    "w": 32
   },
-  "flame_core": {
-   "file": "items/flame_core.png",
+  "fisher_bag": {
+   "file": "items/fisher_bag.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_bag_b": {
+   "file": "items/fisher_bag_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_bottom": {
+   "file": "items/fisher_bottom.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_bottom_b": {
+   "file": "items/fisher_bottom_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_catch": {
+   "file": "items/fisher_catch.png",
+   "h": 25,
+   "w": 32
+  },
+  "fisher_gloves": {
+   "file": "items/fisher_gloves.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_gloves_b": {
+   "file": "items/fisher_gloves_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "fisher_hat": {
+   "file": "items/fisher_hat.png",
+   "h": 28,
+   "w": 32
+  },
+  "fisher_hat_b": {
+   "file": "items/fisher_hat_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_scarf": {
+   "file": "items/fisher_scarf.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_scarf_b": {
+   "file": "items/fisher_scarf_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_shoes": {
+   "file": "items/fisher_shoes.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_shoes_b": {
+   "file": "items/fisher_shoes_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_top": {
+   "file": "items/fisher_top.png",
    "h": 32,
    "w": 32
+  },
+  "fisher_top_b": {
+   "file": "items/fisher_top_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "fisher_trinket": {
+   "file": "items/fisher_trinket.png",
+   "h": 26,
+   "w": 32
+  },
+  "fisher_trinket_b": {
+   "file": "items/fisher_trinket_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "flame_core": {
+   "file": "items/flame_core.png",
+   "h": 28,
+   "w": 32
+  },
+  "flame_ember": {
+   "file": "items/flame_ember.png",
+   "h": 32,
+   "w": 31
   },
   "flameberry_seed": {
    "file": "items/flameberry_seed.png",
@@ -8620,9 +10410,24 @@
    "h": 32,
    "w": 32
   },
+  "flint": {
+   "file": "items/flint.png",
+   "h": 32,
+   "w": 32
+  },
   "flippers": {
    "file": "items/flippers.png",
    "h": 30,
+   "w": 32
+  },
+  "flounder": {
+   "file": "items/flounder.png",
+   "h": 32,
+   "w": 29
+  },
+  "flour": {
+   "file": "items/flour.png",
+   "h": 26,
    "w": 32
   },
   "flower": {
@@ -8634,6 +10439,26 @@
    "file": "items/flower_crown.png",
    "h": 23,
    "w": 32
+  },
+  "flower_crown_a": {
+   "file": "items/flower_crown_a.png",
+   "h": 28,
+   "w": 32
+  },
+  "flower_crown_b": {
+   "file": "items/flower_crown_b.png",
+   "h": 24,
+   "w": 32
+  },
+  "fly": {
+   "file": "items/fly.png",
+   "h": 25,
+   "w": 32
+  },
+  "flying_fish": {
+   "file": "items/flying_fish.png",
+   "h": 32,
+   "w": 29
   },
   "forest_bell": {
    "file": "items/forest_bell.png",
@@ -8650,10 +10475,235 @@
    "h": 32,
    "w": 32
   },
-  "frost": {
-   "file": "items/frost.png",
+  "forester_bag": {
+   "file": "items/forester_bag.png",
+   "h": 27,
+   "w": 32
+  },
+  "forester_bag_b": {
+   "file": "items/forester_bag_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "forester_bottom": {
+   "file": "items/forester_bottom.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_bottom_b": {
+   "file": "items/forester_bottom_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_gloves": {
+   "file": "items/forester_gloves.png",
+   "h": 27,
+   "w": 32
+  },
+  "forester_gloves_b": {
+   "file": "items/forester_gloves_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "forester_hat": {
+   "file": "items/forester_hat.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_hat_b": {
+   "file": "items/forester_hat_b.png",
+   "h": 32,
+   "w": 28
+  },
+  "forester_scarf": {
+   "file": "items/forester_scarf.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_scarf_b": {
+   "file": "items/forester_scarf_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_shoes": {
+   "file": "items/forester_shoes.png",
+   "h": 27,
+   "w": 32
+  },
+  "forester_shoes_b": {
+   "file": "items/forester_shoes_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_stew": {
+   "file": "items/forester_stew.png",
+   "h": 26,
+   "w": 32
+  },
+  "forester_top": {
+   "file": "items/forester_top.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_top_b": {
+   "file": "items/forester_top_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_trinket": {
+   "file": "items/forester_trinket.png",
+   "h": 28,
+   "w": 32
+  },
+  "forester_trinket_b": {
+   "file": "items/forester_trinket_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_amber": {
+   "file": "items/fossil_amber.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_ammonite": {
+   "file": "items/fossil_ammonite.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_bone": {
+   "file": "items/fossil_bone.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_claw": {
+   "file": "items/fossil_claw.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_dragonfly": {
+   "file": "items/fossil_dragonfly.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_egg_a": {
+   "file": "items/fossil_egg_a.png",
+   "h": 26,
+   "w": 32
+  },
+  "fossil_egg_b": {
+   "file": "items/fossil_egg_b.png",
    "h": 32,
    "w": 32
+  },
+  "fossil_egg_c": {
+   "file": "items/fossil_egg_c.png",
+   "h": 31,
+   "w": 32
+  },
+  "fossil_fern": {
+   "file": "items/fossil_fern.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_fish": {
+   "file": "items/fossil_fish.png",
+   "h": 32,
+   "w": 27
+  },
+  "fossil_fish2": {
+   "file": "items/fossil_fish2.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_horn": {
+   "file": "items/fossil_horn.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_jaw": {
+   "file": "items/fossil_jaw.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_leaf": {
+   "file": "items/fossil_leaf.png",
+   "h": 32,
+   "w": 27
+  },
+  "fossil_leaf2": {
+   "file": "items/fossil_leaf2.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_sand_dollar": {
+   "file": "items/fossil_sand_dollar.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_shell": {
+   "file": "items/fossil_shell.png",
+   "h": 32,
+   "w": 27
+  },
+  "fossil_shell_a": {
+   "file": "items/fossil_shell_a.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_shell_b": {
+   "file": "items/fossil_shell_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_skull": {
+   "file": "items/fossil_skull.png",
+   "h": 30,
+   "w": 32
+  },
+  "fossil_tooth_a": {
+   "file": "items/fossil_tooth_a.png",
+   "h": 23,
+   "w": 32
+  },
+  "fossil_tooth_b": {
+   "file": "items/fossil_tooth_b.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_tooth_c": {
+   "file": "items/fossil_tooth_c.png",
+   "h": 29,
+   "w": 32
+  },
+  "fossil_trilobite": {
+   "file": "items/fossil_trilobite.png",
+   "h": 28,
+   "w": 32
+  },
+  "fossil_vertebra": {
+   "file": "items/fossil_vertebra.png",
+   "h": 29,
+   "w": 32
+  },
+  "fried_egg": {
+   "file": "items/fried_egg.png",
+   "h": 25,
+   "w": 32
+  },
+  "frog_small": {
+   "file": "items/frog_small.png",
+   "h": 27,
+   "w": 32
+  },
+  "frost": {
+   "file": "items/frost.png",
+   "h": 28,
+   "w": 32
+  },
+  "frost_bee": {
+   "file": "items/frost_bee.png",
+   "h": 32,
+   "w": 29
   },
   "frost_dragonfruit": {
    "file": "items/frost_dragonfruit.png",
@@ -8668,6 +10718,16 @@
   "frost_lily": {
    "file": "items/frost_lily.png",
    "h": 32,
+   "w": 32
+  },
+  "frost_pike": {
+   "file": "items/frost_pike.png",
+   "h": 32,
+   "w": 29
+  },
+  "frost_sorbet": {
+   "file": "items/frost_sorbet.png",
+   "h": 29,
    "w": 32
   },
   "frost_squash": {
@@ -8690,6 +10750,11 @@
    "h": 32,
    "w": 30
   },
+  "gambler_chip": {
+   "file": "items/gambler_chip.png",
+   "h": 32,
+   "w": 32
+  },
   "garlic": {
    "file": "items/garlic.png",
    "h": 32,
@@ -8705,9 +10770,59 @@
    "h": 31,
    "w": 32
   },
+  "garnet": {
+   "file": "items/garnet.png",
+   "h": 32,
+   "w": 30
+  },
+  "gecko": {
+   "file": "items/gecko.png",
+   "h": 26,
+   "w": 32
+  },
+  "gem_pouch": {
+   "file": "items/gem_pouch.png",
+   "h": 32,
+   "w": 30
+  },
+  "general_hat": {
+   "file": "items/general_hat.png",
+   "h": 28,
+   "w": 32
+  },
   "geode": {
    "file": "items/geode.png",
    "h": 27,
+   "w": 32
+  },
+  "geode_large": {
+   "file": "items/geode_large.png",
+   "h": 27,
+   "w": 32
+  },
+  "geode_small": {
+   "file": "items/geode_small.png",
+   "h": 28,
+   "w": 32
+  },
+  "ghost_fish": {
+   "file": "items/ghost_fish.png",
+   "h": 32,
+   "w": 29
+  },
+  "ghost_moth": {
+   "file": "items/ghost_moth.png",
+   "h": 22,
+   "w": 32
+  },
+  "giant_clam": {
+   "file": "items/giant_clam.png",
+   "h": 22,
+   "w": 32
+  },
+  "giant_squid": {
+   "file": "items/giant_squid.png",
+   "h": 24,
    "w": 32
   },
   "giant_turnip": {
@@ -8717,18 +10832,18 @@
   },
   "gift_blue": {
    "file": "items/gift_blue.png",
-   "h": 34,
-   "w": 48
+   "h": 24,
+   "w": 32
   },
   "gift_gold": {
    "file": "items/gift_gold.png",
-   "h": 35,
-   "w": 48
+   "h": 27,
+   "w": 32
   },
   "gift_green": {
    "file": "items/gift_green.png",
-   "h": 34,
-   "w": 48
+   "h": 27,
+   "w": 32
   },
   "gift_pie": {
    "file": "items/gift_pie.png",
@@ -8737,13 +10852,23 @@
   },
   "gift_purple": {
    "file": "items/gift_purple.png",
-   "h": 35,
-   "w": 48
+   "h": 27,
+   "w": 32
   },
   "gift_red": {
    "file": "items/gift_red.png",
-   "h": 34,
-   "w": 48
+   "h": 24,
+   "w": 32
+  },
+  "gift_star": {
+   "file": "items/gift_star.png",
+   "h": 25,
+   "w": 32
+  },
+  "gift_white": {
+   "file": "items/gift_white.png",
+   "h": 27,
+   "w": 32
   },
   "ginger": {
    "file": "items/ginger.png",
@@ -8757,8 +10882,143 @@
   },
   "glass": {
    "file": "items/glass.png",
+   "h": 27,
+   "w": 32
+  },
+  "glass_frosted": {
+   "file": "items/glass_frosted.png",
    "h": 28,
    "w": 32
+  },
+  "gloves_crystal": {
+   "file": "items/gloves_crystal.png",
+   "h": 32,
+   "w": 32
+  },
+  "gloves_dark": {
+   "file": "items/gloves_dark.png",
+   "h": 32,
+   "w": 32
+  },
+  "gloves_gold": {
+   "file": "items/gloves_gold.png",
+   "h": 30,
+   "w": 32
+  },
+  "gloves_iron": {
+   "file": "items/gloves_iron.png",
+   "h": 32,
+   "w": 32
+  },
+  "gloves_leather": {
+   "file": "items/gloves_leather.png",
+   "h": 31,
+   "w": 32
+  },
+  "gloves_light": {
+   "file": "items/gloves_light.png",
+   "h": 30,
+   "w": 32
+  },
+  "gloves_moon": {
+   "file": "items/gloves_moon.png",
+   "h": 31,
+   "w": 32
+  },
+  "gloves_silver": {
+   "file": "items/gloves_silver.png",
+   "h": 32,
+   "w": 32
+  },
+  "glow_bug_0": {
+   "file": "items/glow_bug_0.png",
+   "h": 26,
+   "w": 32
+  },
+  "glow_bug_1": {
+   "file": "items/glow_bug_1.png",
+   "h": 27,
+   "w": 32
+  },
+  "glow_bug_10": {
+   "file": "items/glow_bug_10.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_11": {
+   "file": "items/glow_bug_11.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_12": {
+   "file": "items/glow_bug_12.png",
+   "h": 25,
+   "w": 32
+  },
+  "glow_bug_13": {
+   "file": "items/glow_bug_13.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_14": {
+   "file": "items/glow_bug_14.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_15": {
+   "file": "items/glow_bug_15.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_2": {
+   "file": "items/glow_bug_2.png",
+   "h": 27,
+   "w": 32
+  },
+  "glow_bug_3": {
+   "file": "items/glow_bug_3.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_4": {
+   "file": "items/glow_bug_4.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_5": {
+   "file": "items/glow_bug_5.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_6": {
+   "file": "items/glow_bug_6.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_7": {
+   "file": "items/glow_bug_7.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_bug_8": {
+   "file": "items/glow_bug_8.png",
+   "h": 25,
+   "w": 32
+  },
+  "glow_bug_9": {
+   "file": "items/glow_bug_9.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_eel": {
+   "file": "items/glow_eel.png",
+   "h": 24,
+   "w": 32
+  },
+  "glow_worm": {
+   "file": "items/glow_worm.png",
+   "h": 32,
+   "w": 29
   },
   "glowberry": {
    "file": "items/glowberry.png",
@@ -8795,6 +11055,11 @@
    "h": 32,
    "w": 30
   },
+  "gnat": {
+   "file": "items/gnat.png",
+   "h": 32,
+   "w": 29
+  },
   "goggles": {
    "file": "items/goggles.png",
    "h": 28,
@@ -8802,11 +11067,46 @@
   },
   "gold": {
    "file": "items/gold.png",
-   "h": 29,
+   "h": 27,
    "w": 32
   },
   "gold_bar": {
    "file": "items/gold_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "gold_belt": {
+   "file": "items/gold_belt.png",
+   "h": 29,
+   "w": 32
+  },
+  "gold_belt_plus": {
+   "file": "items/gold_belt_plus.png",
+   "h": 26,
+   "w": 32
+  },
+  "gold_boots": {
+   "file": "items/gold_boots.png",
+   "h": 32,
+   "w": 28
+  },
+  "gold_boots_plus": {
+   "file": "items/gold_boots_plus.png",
+   "h": 27,
+   "w": 32
+  },
+  "gold_bundle": {
+   "file": "items/gold_bundle.png",
+   "h": 27,
+   "w": 32
+  },
+  "gold_cape": {
+   "file": "items/gold_cape.png",
+   "h": 26,
+   "w": 32
+  },
+  "gold_cape_plus": {
+   "file": "items/gold_cape_plus.png",
    "h": 27,
    "w": 32
   },
@@ -8820,20 +11120,95 @@
    "h": 32,
    "w": 32
   },
+  "gold_chest": {
+   "file": "items/gold_chest.png",
+   "h": 30,
+   "w": 32
+  },
+  "gold_chest_plus": {
+   "file": "items/gold_chest_plus.png",
+   "h": 27,
+   "w": 32
+  },
+  "gold_gloves": {
+   "file": "items/gold_gloves.png",
+   "h": 27,
+   "w": 32
+  },
+  "gold_gloves_plus": {
+   "file": "items/gold_gloves_plus.png",
+   "h": 27,
+   "w": 32
+  },
+  "gold_helm": {
+   "file": "items/gold_helm.png",
+   "h": 30,
+   "w": 32
+  },
+  "gold_helm_plus": {
+   "file": "items/gold_helm_plus.png",
+   "h": 32,
+   "w": 32
+  },
+  "gold_legs": {
+   "file": "items/gold_legs.png",
+   "h": 29,
+   "w": 32
+  },
+  "gold_legs_plus": {
+   "file": "items/gold_legs_plus.png",
+   "h": 27,
+   "w": 32
+  },
   "gold_lemon": {
    "file": "items/gold_lemon.png",
    "h": 29,
    "w": 32
+  },
+  "gold_potion": {
+   "file": "items/gold_potion.png",
+   "h": 32,
+   "w": 30
   },
   "gold_ring": {
    "file": "items/gold_ring.png",
    "h": 27,
    "w": 32
   },
+  "gold_shield": {
+   "file": "items/gold_shield.png",
+   "h": 26,
+   "w": 32
+  },
+  "gold_shield_plus": {
+   "file": "items/gold_shield_plus.png",
+   "h": 27,
+   "w": 32
+  },
+  "gold_tooth": {
+   "file": "items/gold_tooth.png",
+   "h": 28,
+   "w": 32
+  },
   "golden_apple": {
    "file": "items/golden_apple.png",
    "h": 32,
    "w": 30
+  },
+  "golden_dice": {
+   "file": "items/golden_dice.png",
+   "h": 31,
+   "w": 32
+  },
+  "golden_ladybug": {
+   "file": "items/golden_ladybug.png",
+   "h": 25,
+   "w": 32
+  },
+  "golden_paw_pie": {
+   "file": "items/golden_paw_pie.png",
+   "h": 25,
+   "w": 32
   },
   "golden_pawflower": {
    "file": "items/golden_pawflower.png",
@@ -8845,6 +11220,11 @@
    "h": 30,
    "w": 32
   },
+  "golden_pawprint": {
+   "file": "items/golden_pawprint.png",
+   "h": 32,
+   "w": 27
+  },
   "golden_pawroot": {
    "file": "items/golden_pawroot.png",
    "h": 32,
@@ -8852,12 +11232,32 @@
   },
   "goldfish": {
    "file": "items/goldfish.png",
-   "h": 22,
+   "h": 24,
    "w": 32
   },
   "golem_core": {
    "file": "items/golem_core.png",
-   "h": 31,
+   "h": 30,
+   "w": 32
+  },
+  "golem_crown": {
+   "file": "items/golem_crown.png",
+   "h": 27,
+   "w": 32
+  },
+  "golem_elder_core": {
+   "file": "items/golem_elder_core.png",
+   "h": 32,
+   "w": 26
+  },
+  "golem_heart": {
+   "file": "items/golem_heart.png",
+   "h": 27,
+   "w": 32
+  },
+  "golem_moss": {
+   "file": "items/golem_moss.png",
+   "h": 30,
    "w": 32
   },
   "gooseberry": {
@@ -8885,6 +11285,21 @@
    "h": 32,
    "w": 29
   },
+  "grasshopper": {
+   "file": "items/grasshopper.png",
+   "h": 24,
+   "w": 32
+  },
+  "grayling": {
+   "file": "items/grayling.png",
+   "h": 32,
+   "w": 29
+  },
+  "great_tree_lantern": {
+   "file": "items/great_tree_lantern.png",
+   "h": 32,
+   "w": 27
+  },
   "green_apple": {
    "file": "items/green_apple.png",
    "h": 32,
@@ -8898,12 +11313,62 @@
   "green_potion": {
    "file": "items/green_potion.png",
    "h": 32,
-   "w": 27
+   "w": 31
+  },
+  "green_tea": {
+   "file": "items/green_tea.png",
+   "h": 26,
+   "w": 32
+  },
+  "grey_feather": {
+   "file": "items/grey_feather.png",
+   "h": 28,
+   "w": 32
+  },
+  "grouper": {
+   "file": "items/grouper.png",
+   "h": 32,
+   "w": 29
+  },
+  "grumble_seed": {
+   "file": "items/grumble_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "grump_button": {
+   "file": "items/grump_button.png",
+   "h": 27,
+   "w": 32
+  },
+  "grump_cloth": {
+   "file": "items/grump_cloth.png",
+   "h": 32,
+   "w": 30
   },
   "grump_dust": {
    "file": "items/grump_dust.png",
-   "h": 21,
+   "h": 30,
    "w": 32
+  },
+  "grump_king_crown": {
+   "file": "items/grump_king_crown.png",
+   "h": 32,
+   "w": 27
+  },
+  "grump_king_heart": {
+   "file": "items/grump_king_heart.png",
+   "h": 32,
+   "w": 26
+  },
+  "grump_medal": {
+   "file": "items/grump_medal.png",
+   "h": 28,
+   "w": 32
+  },
+  "grump_tooth": {
+   "file": "items/grump_tooth.png",
+   "h": 32,
+   "w": 28
   },
   "guava": {
    "file": "items/guava.png",
@@ -8915,9 +11380,19 @@
    "h": 31,
    "w": 32
   },
+  "haddock": {
+   "file": "items/haddock.png",
+   "h": 32,
+   "w": 29
+  },
   "halo": {
    "file": "items/halo.png",
    "h": 24,
+   "w": 32
+  },
+  "halo_bee": {
+   "file": "items/halo_bee.png",
+   "h": 23,
    "w": 32
   },
   "halo_corn": {
@@ -8935,15 +11410,75 @@
    "h": 30,
    "w": 32
   },
+  "halo_ray": {
+   "file": "items/halo_ray.png",
+   "h": 25,
+   "w": 32
+  },
   "hammer": {
    "file": "items/hammer.png",
    "h": 29,
+   "w": 32
+  },
+  "hammer_copper": {
+   "file": "items/hammer_copper.png",
+   "h": 26,
+   "w": 32
+  },
+  "hammer_crystal": {
+   "file": "items/hammer_crystal.png",
+   "h": 25,
+   "w": 32
+  },
+  "hammer_gold": {
+   "file": "items/hammer_gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "hammer_iron": {
+   "file": "items/hammer_iron.png",
+   "h": 25,
+   "w": 32
+  },
+  "hammer_moon": {
+   "file": "items/hammer_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "hammer_silver": {
+   "file": "items/hammer_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "hammer_steel": {
+   "file": "items/hammer_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "hammer_wood": {
+   "file": "items/hammer_wood.png",
+   "h": 25,
+   "w": 32
+  },
+  "hammerhead": {
+   "file": "items/hammerhead.png",
+   "h": 23,
+   "w": 32
+  },
+  "hamster": {
+   "file": "items/hamster.png",
+   "h": 28,
    "w": 32
   },
   "hand": {
    "file": "items/hand.png",
    "h": 48,
    "w": 36
+  },
+  "hard_drive": {
+   "file": "items/hard_drive.png",
+   "h": 28,
+   "w": 32
   },
   "harvest_potion": {
    "file": "items/harvest_potion.png",
@@ -8955,9 +11490,29 @@
    "h": 26,
    "w": 32
   },
+  "heart_bass": {
+   "file": "items/heart_bass.png",
+   "h": 25,
+   "w": 32
+  },
+  "heart_crystal": {
+   "file": "items/heart_crystal.png",
+   "h": 27,
+   "w": 32
+  },
+  "heart_ladybug": {
+   "file": "items/heart_ladybug.png",
+   "h": 24,
+   "w": 32
+  },
   "heart_rose": {
    "file": "items/heart_rose.png",
    "h": 32,
+   "w": 32
+  },
+  "heart_souffle": {
+   "file": "items/heart_souffle.png",
+   "h": 24,
    "w": 32
   },
   "heart_tomato": {
@@ -8980,10 +11535,40 @@
    "h": 32,
    "w": 31
   },
+  "heirloom": {
+   "file": "items/heirloom.png",
+   "h": 30,
+   "w": 32
+  },
+  "heirloom2": {
+   "file": "items/heirloom2.png",
+   "h": 26,
+   "w": 32
+  },
+  "heli_blade": {
+   "file": "items/heli_blade.png",
+   "h": 27,
+   "w": 32
+  },
   "herb_remedy": {
    "file": "items/herb_remedy.png",
    "h": 30,
    "w": 32
+  },
+  "herring": {
+   "file": "items/herring.png",
+   "h": 32,
+   "w": 29
+  },
+  "hideout_burger": {
+   "file": "items/hideout_burger.png",
+   "h": 25,
+   "w": 32
+  },
+  "hideout_radio": {
+   "file": "items/hideout_radio.png",
+   "h": 32,
+   "w": 27
   },
   "hiking_boots": {
    "file": "items/hiking_boots.png",
@@ -8997,21 +11582,41 @@
   },
   "hoe_copper": {
    "file": "items/hoe_copper.png",
-   "h": 27,
+   "h": 25,
    "w": 32
   },
   "hoe_crystal": {
    "file": "items/hoe_crystal.png",
-   "h": 27,
+   "h": 26,
    "w": 32
   },
   "hoe_gold": {
    "file": "items/hoe_gold.png",
-   "h": 28,
+   "h": 24,
    "w": 32
   },
   "hoe_iron": {
    "file": "items/hoe_iron.png",
+   "h": 26,
+   "w": 32
+  },
+  "hoe_moon": {
+   "file": "items/hoe_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "hoe_silver": {
+   "file": "items/hoe_silver.png",
+   "h": 26,
+   "w": 32
+  },
+  "hoe_steel": {
+   "file": "items/hoe_steel.png",
+   "h": 26,
+   "w": 32
+  },
+  "hoe_wood": {
+   "file": "items/hoe_wood.png",
    "h": 27,
    "w": 32
   },
@@ -9020,10 +11625,20 @@
    "h": 32,
    "w": 31
   },
+  "honey_jar": {
+   "file": "items/honey_jar.png",
+   "h": 32,
+   "w": 31
+  },
   "honey_pear": {
    "file": "items/honey_pear.png",
    "h": 32,
    "w": 27
+  },
+  "honeybee_queen": {
+   "file": "items/honeybee_queen.png",
+   "h": 32,
+   "w": 29
   },
   "hood": {
    "file": "items/hood.png",
@@ -9045,6 +11660,26 @@
    "h": 24,
    "w": 32
   },
+  "hornet": {
+   "file": "items/hornet.png",
+   "h": 32,
+   "w": 29
+  },
+  "hot_chocolate": {
+   "file": "items/hot_chocolate.png",
+   "h": 26,
+   "w": 32
+  },
+  "hot_sauce": {
+   "file": "items/hot_sauce.png",
+   "h": 32,
+   "w": 26
+  },
+  "hummingbird": {
+   "file": "items/hummingbird.png",
+   "h": 27,
+   "w": 32
+  },
   "hush_banana": {
    "file": "items/hush_banana.png",
    "h": 28,
@@ -9055,9 +11690,54 @@
    "h": 32,
    "w": 32
   },
+  "ice_bug": {
+   "file": "items/ice_bug.png",
+   "h": 32,
+   "w": 29
+  },
+  "ice_cricket": {
+   "file": "items/ice_cricket.png",
+   "h": 30,
+   "w": 32
+  },
+  "ice_crystal": {
+   "file": "items/ice_crystal.png",
+   "h": 31,
+   "w": 32
+  },
+  "ice_pike": {
+   "file": "items/ice_pike.png",
+   "h": 24,
+   "w": 32
+  },
+  "idol_cat": {
+   "file": "items/idol_cat.png",
+   "h": 28,
+   "w": 32
+  },
+  "idol_gold": {
+   "file": "items/idol_gold.png",
+   "h": 28,
+   "w": 32
+  },
+  "idol_green": {
+   "file": "items/idol_green.png",
+   "h": 28,
+   "w": 32
+  },
   "infinity_bean_seed": {
    "file": "items/infinity_bean_seed.png",
    "h": 27,
+   "w": 32
+  },
+  "ink": {
+   "file": "items/ink.png",
+   "h": 27,
+   "w": 32
+  },
+  "inn_special": {
+   "file": "items/inn_special.png",
+   "h": 26,
    "w": 32
   },
   "iris": {
@@ -9072,7 +11752,7 @@
   },
   "iron": {
    "file": "items/iron.png",
-   "h": 29,
+   "h": 27,
    "w": 32
   },
   "iron_band": {
@@ -9082,7 +11762,57 @@
   },
   "iron_bar": {
    "file": "items/iron_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "iron_belt": {
+   "file": "items/iron_belt.png",
+   "h": 31,
+   "w": 32
+  },
+  "iron_belt_plus": {
+   "file": "items/iron_belt_plus.png",
    "h": 28,
+   "w": 32
+  },
+  "iron_boots": {
+   "file": "items/iron_boots.png",
+   "h": 32,
+   "w": 26
+  },
+  "iron_boots_plus": {
+   "file": "items/iron_boots_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "iron_cape": {
+   "file": "items/iron_cape.png",
+   "h": 29,
+   "w": 32
+  },
+  "iron_cape_plus": {
+   "file": "items/iron_cape_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "iron_chest": {
+   "file": "items/iron_chest.png",
+   "h": 32,
+   "w": 31
+  },
+  "iron_chest_plus": {
+   "file": "items/iron_chest_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "iron_gloves": {
+   "file": "items/iron_gloves.png",
+   "h": 30,
+   "w": 32
+  },
+  "iron_gloves_plus": {
+   "file": "items/iron_gloves_plus.png",
+   "h": 29,
    "w": 32
   },
   "iron_greaves": {
@@ -9092,12 +11822,37 @@
   },
   "iron_helm": {
    "file": "items/iron_helm.png",
+   "h": 32,
+   "w": 29
+  },
+  "iron_helm_plus": {
+   "file": "items/iron_helm_plus.png",
+   "h": 32,
+   "w": 28
+  },
+  "iron_legs": {
+   "file": "items/iron_legs.png",
+   "h": 31,
+   "w": 32
+  },
+  "iron_legs_plus": {
+   "file": "items/iron_legs_plus.png",
    "h": 29,
    "w": 32
   },
   "iron_mail": {
    "file": "items/iron_mail.png",
    "h": 30,
+   "w": 32
+  },
+  "iron_shield": {
+   "file": "items/iron_shield.png",
+   "h": 32,
+   "w": 29
+  },
+  "iron_shield_plus": {
+   "file": "items/iron_shield_plus.png",
+   "h": 29,
    "w": 32
   },
   "iron_sword": {
@@ -9110,20 +11865,80 @@
    "h": 28,
    "w": 32
   },
+  "jacket_patch": {
+   "file": "items/jacket_patch.png",
+   "h": 28,
+   "w": 32
+  },
   "jackfruit": {
    "file": "items/jackfruit.png",
    "h": 32,
    "w": 29
+  },
+  "jade": {
+   "file": "items/jade.png",
+   "h": 32,
+   "w": 30
   },
   "jam": {
    "file": "items/jam.png",
    "h": 28,
    "w": 32
   },
+  "jam_apricot": {
+   "file": "items/jam_apricot.png",
+   "h": 30,
+   "w": 32
+  },
+  "jam_berry": {
+   "file": "items/jam_berry.png",
+   "h": 31,
+   "w": 32
+  },
+  "jam_plum": {
+   "file": "items/jam_plum.png",
+   "h": 31,
+   "w": 32
+  },
+  "jam_strawberry": {
+   "file": "items/jam_strawberry.png",
+   "h": 29,
+   "w": 32
+  },
+  "jellyfish": {
+   "file": "items/jellyfish.png",
+   "h": 24,
+   "w": 32
+  },
+  "jewel_beetle": {
+   "file": "items/jewel_beetle.png",
+   "h": 32,
+   "w": 29
+  },
   "juice": {
    "file": "items/juice.png",
    "h": 28,
    "w": 32
+  },
+  "juice_apple": {
+   "file": "items/juice_apple.png",
+   "h": 32,
+   "w": 30
+  },
+  "juice_berry": {
+   "file": "items/juice_berry.png",
+   "h": 32,
+   "w": 29
+  },
+  "juice_orange": {
+   "file": "items/juice_orange.png",
+   "h": 28,
+   "w": 32
+  },
+  "jungle_idol": {
+   "file": "items/jungle_idol.png",
+   "h": 32,
+   "w": 27
   },
   "kale": {
    "file": "items/kale.png",
@@ -9135,15 +11950,75 @@
    "h": 32,
    "w": 29
   },
+  "karaoke_mic": {
+   "file": "items/karaoke_mic.png",
+   "h": 28,
+   "w": 32
+  },
+  "keepsake": {
+   "file": "items/keepsake.png",
+   "h": 32,
+   "w": 32
+  },
+  "ketchup": {
+   "file": "items/ketchup.png",
+   "h": 32,
+   "w": 30
+  },
   "key": {
    "file": "items/key.png",
    "h": 28,
+   "w": 32
+  },
+  "key_brass": {
+   "file": "items/key_brass.png",
+   "h": 30,
+   "w": 32
+  },
+  "key_crystal": {
+   "file": "items/key_crystal.png",
+   "h": 29,
+   "w": 32
+  },
+  "key_gold": {
+   "file": "items/key_gold.png",
+   "h": 29,
+   "w": 32
+  },
+  "key_iron": {
+   "file": "items/key_iron.png",
+   "h": 30,
+   "w": 32
+  },
+  "key_moon": {
+   "file": "items/key_moon.png",
+   "h": 30,
+   "w": 32
+  },
+  "key_silver": {
+   "file": "items/key_silver.png",
+   "h": 30,
    "w": 32
   },
   "kilt_set": {
    "file": "items/kilt_set.png",
    "h": 32,
    "w": 30
+  },
+  "kimchi": {
+   "file": "items/kimchi.png",
+   "h": 30,
+   "w": 32
+  },
+  "king_crab": {
+   "file": "items/king_crab.png",
+   "h": 24,
+   "w": 32
+  },
+  "kite": {
+   "file": "items/kite.png",
+   "h": 26,
+   "w": 32
   },
   "kiwi": {
    "file": "items/kiwi.png",
@@ -9152,6 +12027,21 @@
   },
   "kiwi_seed": {
    "file": "items/kiwi_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "knight_crystal": {
+   "file": "items/knight_crystal.png",
+   "h": 28,
+   "w": 32
+  },
+  "knight_heart": {
+   "file": "items/knight_heart.png",
+   "h": 32,
+   "w": 26
+  },
+  "knight_rivet": {
+   "file": "items/knight_rivet.png",
    "h": 27,
    "w": 32
   },
@@ -9165,9 +12055,54 @@
    "h": 32,
    "w": 32
   },
+  "ladybug": {
+   "file": "items/ladybug.png",
+   "h": 28,
+   "w": 32
+  },
+  "lake_elder": {
+   "file": "items/lake_elder.png",
+   "h": 30,
+   "w": 32
+  },
+  "lake_queen": {
+   "file": "items/lake_queen.png",
+   "h": 23,
+   "w": 32
+  },
+  "lamprey": {
+   "file": "items/lamprey.png",
+   "h": 32,
+   "w": 29
+  },
+  "lantern_black": {
+   "file": "items/lantern_black.png",
+   "h": 26,
+   "w": 32
+  },
+  "lantern_copper": {
+   "file": "items/lantern_copper.png",
+   "h": 28,
+   "w": 32
+  },
+  "lantern_crystal": {
+   "file": "items/lantern_crystal.png",
+   "h": 28,
+   "w": 32
+  },
+  "lantern_fish": {
+   "file": "items/lantern_fish.png",
+   "h": 32,
+   "w": 29
+  },
   "lantern_fruit": {
    "file": "items/lantern_fruit.png",
    "h": 31,
+   "w": 32
+  },
+  "lantern_gold": {
+   "file": "items/lantern_gold.png",
+   "h": 27,
    "w": 32
   },
   "lantern_gourd": {
@@ -9175,9 +12110,19 @@
    "h": 32,
    "w": 29
   },
+  "lantern_iron": {
+   "file": "items/lantern_iron.png",
+   "h": 28,
+   "w": 32
+  },
   "lantern_item": {
    "file": "items/lantern_item.png",
    "h": 28,
+   "w": 32
+  },
+  "lantern_item2": {
+   "file": "items/lantern_item2.png",
+   "h": 32,
    "w": 32
   },
   "lantern_lychee": {
@@ -9185,19 +12130,64 @@
    "h": 31,
    "w": 32
   },
+  "lantern_moon": {
+   "file": "items/lantern_moon.png",
+   "h": 29,
+   "w": 32
+  },
   "lantern_onion": {
    "file": "items/lantern_onion.png",
    "h": 32,
    "w": 28
+  },
+  "lantern_red": {
+   "file": "items/lantern_red.png",
+   "h": 25,
+   "w": 32
   },
   "lantern_sage": {
    "file": "items/lantern_sage.png",
    "h": 32,
    "w": 31
   },
+  "lantern_silver": {
+   "file": "items/lantern_silver.png",
+   "h": 27,
+   "w": 32
+  },
+  "lantern_snail": {
+   "file": "items/lantern_snail.png",
+   "h": 32,
+   "w": 29
+  },
+  "lantern_steel": {
+   "file": "items/lantern_steel.png",
+   "h": 27,
+   "w": 32
+  },
+  "lantern_wood": {
+   "file": "items/lantern_wood.png",
+   "h": 27,
+   "w": 32
+  },
+  "lava_bead": {
+   "file": "items/lava_bead.png",
+   "h": 27,
+   "w": 32
+  },
+  "lava_beetle": {
+   "file": "items/lava_beetle.png",
+   "h": 24,
+   "w": 32
+  },
   "lava_chili": {
    "file": "items/lava_chili.png",
    "h": 30,
+   "w": 32
+  },
+  "lava_koi": {
+   "file": "items/lava_koi.png",
+   "h": 25,
    "w": 32
   },
   "lava_mango": {
@@ -9220,9 +12210,39 @@
    "h": 32,
    "w": 28
   },
+  "leaf_insect": {
+   "file": "items/leaf_insect.png",
+   "h": 32,
+   "w": 29
+  },
+  "leash": {
+   "file": "items/leash.png",
+   "h": 27,
+   "w": 32
+  },
   "leather": {
    "file": "items/leather.png",
-   "h": 26,
+   "h": 28,
+   "w": 32
+  },
+  "leather_belt": {
+   "file": "items/leather_belt.png",
+   "h": 32,
+   "w": 32
+  },
+  "leather_belt_plus": {
+   "file": "items/leather_belt_plus.png",
+   "h": 28,
+   "w": 32
+  },
+  "leather_boots": {
+   "file": "items/leather_boots.png",
+   "h": 32,
+   "w": 26
+  },
+  "leather_boots_plus": {
+   "file": "items/leather_boots_plus.png",
+   "h": 29,
    "w": 32
   },
   "leather_cap": {
@@ -9230,9 +12250,79 @@
    "h": 25,
    "w": 32
   },
+  "leather_cape": {
+   "file": "items/leather_cape.png",
+   "h": 28,
+   "w": 32
+  },
+  "leather_cape_plus": {
+   "file": "items/leather_cape_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "leather_chest": {
+   "file": "items/leather_chest.png",
+   "h": 32,
+   "w": 31
+  },
+  "leather_chest_plus": {
+   "file": "items/leather_chest_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "leather_dark": {
+   "file": "items/leather_dark.png",
+   "h": 28,
+   "w": 32
+  },
+  "leather_gloves": {
+   "file": "items/leather_gloves.png",
+   "h": 30,
+   "w": 32
+  },
+  "leather_gloves_plus": {
+   "file": "items/leather_gloves_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "leather_helm": {
+   "file": "items/leather_helm.png",
+   "h": 32,
+   "w": 32
+  },
+  "leather_helm_plus": {
+   "file": "items/leather_helm_plus.png",
+   "h": 32,
+   "w": 29
+  },
+  "leather_legs": {
+   "file": "items/leather_legs.png",
+   "h": 31,
+   "w": 32
+  },
+  "leather_legs_plus": {
+   "file": "items/leather_legs_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "leather_shield": {
+   "file": "items/leather_shield.png",
+   "h": 32,
+   "w": 29
+  },
+  "leather_shield_plus": {
+   "file": "items/leather_shield_plus.png",
+   "h": 29,
+   "w": 32
+  },
   "leather_vest": {
    "file": "items/leather_vest.png",
    "h": 30,
+   "w": 32
+  },
+  "ledger_page": {
+   "file": "items/ledger_page.png",
+   "h": 32,
    "w": 32
   },
   "leek": {
@@ -9245,9 +12335,64 @@
    "h": 30,
    "w": 32
   },
+  "legend_dish_a": {
+   "file": "items/legend_dish_a.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_b": {
+   "file": "items/legend_dish_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_c": {
+   "file": "items/legend_dish_c.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_d": {
+   "file": "items/legend_dish_d.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_e": {
+   "file": "items/legend_dish_e.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_f": {
+   "file": "items/legend_dish_f.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_g": {
+   "file": "items/legend_dish_g.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_h": {
+   "file": "items/legend_dish_h.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_i": {
+   "file": "items/legend_dish_i.png",
+   "h": 26,
+   "w": 32
+  },
+  "legend_dish_j": {
+   "file": "items/legend_dish_j.png",
+   "h": 26,
+   "w": 32
+  },
   "legendary_koi": {
    "file": "items/legendary_koi.png",
-   "h": 22,
+   "h": 28,
+   "w": 32
+  },
+  "legendary_signature": {
+   "file": "items/legendary_signature.png",
+   "h": 25,
    "w": 32
   },
   "lemon": {
@@ -9265,13 +12410,43 @@
    "h": 29,
    "w": 32
   },
+  "lemonade": {
+   "file": "items/lemonade.png",
+   "h": 30,
+   "w": 32
+  },
   "lemongrass": {
    "file": "items/lemongrass.png",
    "h": 31,
    "w": 32
   },
+  "lens": {
+   "file": "items/lens.png",
+   "h": 25,
+   "w": 32
+  },
   "letter": {
    "file": "items/letter.png",
+   "h": 30,
+   "w": 32
+  },
+  "letter_gold": {
+   "file": "items/letter_gold.png",
+   "h": 30,
+   "w": 32
+  },
+  "letter_open": {
+   "file": "items/letter_open.png",
+   "h": 30,
+   "w": 32
+  },
+  "letter_sealed": {
+   "file": "items/letter_sealed.png",
+   "h": 31,
+   "w": 32
+  },
+  "letter_torn": {
+   "file": "items/letter_torn.png",
    "h": 30,
    "w": 32
   },
@@ -9290,10 +12465,25 @@
    "h": 30,
    "w": 32
   },
+  "light_cake": {
+   "file": "items/light_cake.png",
+   "h": 26,
+   "w": 32
+  },
   "light_charm": {
    "file": "items/light_charm.png",
    "h": 32,
    "w": 25
+  },
+  "light_dark_duet": {
+   "file": "items/light_dark_duet.png",
+   "h": 26,
+   "w": 32
+  },
+  "light_elixir": {
+   "file": "items/light_elixir.png",
+   "h": 32,
+   "w": 30
   },
   "light_fig": {
    "file": "items/light_fig.png",
@@ -9305,6 +12495,11 @@
    "h": 32,
    "w": 30
   },
+  "light_ladybug": {
+   "file": "items/light_ladybug.png",
+   "h": 27,
+   "w": 32
+  },
   "light_leek": {
    "file": "items/light_leek.png",
    "h": 32,
@@ -9312,7 +12507,7 @@
   },
   "light_mote": {
    "file": "items/light_mote.png",
-   "h": 29,
+   "h": 31,
    "w": 32
   },
   "light_mote2": {
@@ -9325,10 +12520,35 @@
    "h": 28,
    "w": 32
   },
+  "light_shard": {
+   "file": "items/light_shard.png",
+   "h": 28,
+   "w": 32
+  },
   "light_squash": {
    "file": "items/light_squash.png",
    "h": 32,
    "w": 28
+  },
+  "light_tart": {
+   "file": "items/light_tart.png",
+   "h": 25,
+   "w": 32
+  },
+  "light_tear": {
+   "file": "items/light_tear.png",
+   "h": 32,
+   "w": 27
+  },
+  "lighthouse_fish": {
+   "file": "items/lighthouse_fish.png",
+   "h": 27,
+   "w": 32
+  },
+  "lighthouse_lens": {
+   "file": "items/lighthouse_lens.png",
+   "h": 32,
+   "w": 27
   },
   "lily": {
    "file": "items/lily.png",
@@ -9344,6 +12564,46 @@
    "file": "items/lime.png",
    "h": 32,
    "w": 30
+  },
+  "limo_key": {
+   "file": "items/limo_key.png",
+   "h": 27,
+   "w": 32
+  },
+  "lionfish": {
+   "file": "items/lionfish.png",
+   "h": 32,
+   "w": 29
+  },
+  "lizard": {
+   "file": "items/lizard.png",
+   "h": 29,
+   "w": 32
+  },
+  "lobster": {
+   "file": "items/lobster.png",
+   "h": 25,
+   "w": 32
+  },
+  "lobster_bisque": {
+   "file": "items/lobster_bisque.png",
+   "h": 27,
+   "w": 32
+  },
+  "lockbox": {
+   "file": "items/lockbox.png",
+   "h": 28,
+   "w": 32
+  },
+  "lockpick": {
+   "file": "items/lockpick.png",
+   "h": 28,
+   "w": 32
+  },
+  "loose_change": {
+   "file": "items/loose_change.png",
+   "h": 31,
+   "w": 32
   },
   "lotus_seed": {
    "file": "items/lotus_seed.png",
@@ -9365,6 +12625,11 @@
    "h": 27,
    "w": 32
   },
+  "lullaby_cicada": {
+   "file": "items/lullaby_cicada.png",
+   "h": 26,
+   "w": 32
+  },
   "lullaby_lavender": {
    "file": "items/lullaby_lavender.png",
    "h": 32,
@@ -9380,6 +12645,11 @@
    "h": 32,
    "w": 29
   },
+  "lullaby_seahorse": {
+   "file": "items/lullaby_seahorse.png",
+   "h": 24,
+   "w": 32
+  },
   "lumiflora_seed": {
    "file": "items/lumiflora_seed.png",
    "h": 26,
@@ -9390,9 +12660,19 @@
    "h": 30,
    "w": 32
   },
+  "luna_moth": {
+   "file": "items/luna_moth.png",
+   "h": 32,
+   "w": 29
+  },
   "lunar_petal": {
    "file": "items/lunar_petal.png",
-   "h": 30,
+   "h": 27,
+   "w": 32
+  },
+  "lure": {
+   "file": "items/lure.png",
+   "h": 24,
    "w": 32
   },
   "lychee": {
@@ -9404,6 +12684,11 @@
    "file": "items/lychee_seed.png",
    "h": 26,
    "w": 32
+  },
+  "mackerel": {
+   "file": "items/mackerel.png",
+   "h": 32,
+   "w": 29
   },
   "mallow": {
    "file": "items/mallow.png",
@@ -9420,9 +12705,34 @@
    "h": 27,
    "w": 32
   },
+  "manta": {
+   "file": "items/manta.png",
+   "h": 24,
+   "w": 32
+  },
+  "mantis": {
+   "file": "items/mantis.png",
+   "h": 32,
+   "w": 29
+  },
   "map": {
    "file": "items/map.png",
    "h": 27,
+   "w": 32
+  },
+  "map_a": {
+   "file": "items/map_a.png",
+   "h": 30,
+   "w": 32
+  },
+  "map_b": {
+   "file": "items/map_b.png",
+   "h": 30,
+   "w": 32
+  },
+  "map_c": {
+   "file": "items/map_c.png",
+   "h": 30,
    "w": 32
   },
   "marigold": {
@@ -9434,6 +12744,46 @@
    "file": "items/marigold2.png",
    "h": 32,
    "w": 30
+  },
+  "marlin": {
+   "file": "items/marlin.png",
+   "h": 24,
+   "w": 32
+  },
+  "marmalade": {
+   "file": "items/marmalade.png",
+   "h": 31,
+   "w": 32
+  },
+  "mask": {
+   "file": "items/mask.png",
+   "h": 28,
+   "w": 32
+  },
+  "matchbook": {
+   "file": "items/matchbook.png",
+   "h": 27,
+   "w": 32
+  },
+  "mayfly": {
+   "file": "items/mayfly.png",
+   "h": 32,
+   "w": 29
+  },
+  "mayonnaise": {
+   "file": "items/mayonnaise.png",
+   "h": 26,
+   "w": 32
+  },
+  "mayor_banquet": {
+   "file": "items/mayor_banquet.png",
+   "h": 29,
+   "w": 32
+  },
+  "mead": {
+   "file": "items/mead.png",
+   "h": 29,
+   "w": 32
   },
   "meadow_bean": {
    "file": "items/meadow_bean.png",
@@ -9448,6 +12798,26 @@
   "meadow_strawberry": {
    "file": "items/meadow_strawberry.png",
    "h": 31,
+   "w": 32
+  },
+  "meat_pie": {
+   "file": "items/meat_pie.png",
+   "h": 26,
+   "w": 32
+  },
+  "medal_bronze": {
+   "file": "items/medal_bronze.png",
+   "h": 32,
+   "w": 31
+  },
+  "medal_gold": {
+   "file": "items/medal_gold.png",
+   "h": 26,
+   "w": 32
+  },
+  "medal_silver": {
+   "file": "items/medal_silver.png",
+   "h": 26,
    "w": 32
   },
   "melon": {
@@ -9470,6 +12840,16 @@
    "h": 32,
    "w": 32
   },
+  "memory_carp": {
+   "file": "items/memory_carp.png",
+   "h": 24,
+   "w": 32
+  },
+  "memory_firefly": {
+   "file": "items/memory_firefly.png",
+   "h": 24,
+   "w": 32
+  },
   "memory_rice": {
    "file": "items/memory_rice.png",
    "h": 32,
@@ -9480,19 +12860,224 @@
    "h": 30,
    "w": 32
   },
+  "meow_feast": {
+   "file": "items/meow_feast.png",
+   "h": 25,
+   "w": 32
+  },
+  "meow_grand_feast": {
+   "file": "items/meow_grand_feast.png",
+   "h": 26,
+   "w": 32
+  },
+  "meow_spark": {
+   "file": "items/meow_spark.png",
+   "h": 32,
+   "w": 27
+  },
+  "merchant_bag": {
+   "file": "items/merchant_bag.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_bag_b": {
+   "file": "items/merchant_bag_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_bottom": {
+   "file": "items/merchant_bottom.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_bottom_b": {
+   "file": "items/merchant_bottom_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "merchant_gloves": {
+   "file": "items/merchant_gloves.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_gloves_b": {
+   "file": "items/merchant_gloves_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_hat": {
+   "file": "items/merchant_hat.png",
+   "h": 26,
+   "w": 32
+  },
+  "merchant_hat_b": {
+   "file": "items/merchant_hat_b.png",
+   "h": 32,
+   "w": 28
+  },
+  "merchant_scarf": {
+   "file": "items/merchant_scarf.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_scarf_b": {
+   "file": "items/merchant_scarf_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_shoes": {
+   "file": "items/merchant_shoes.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_shoes_b": {
+   "file": "items/merchant_shoes_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_top": {
+   "file": "items/merchant_top.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_top_b": {
+   "file": "items/merchant_top_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_trinket": {
+   "file": "items/merchant_trinket.png",
+   "h": 27,
+   "w": 32
+  },
+  "merchant_trinket_b": {
+   "file": "items/merchant_trinket_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "meteor_bar": {
+   "file": "items/meteor_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "meteor_ore": {
+   "file": "items/meteor_ore.png",
+   "h": 27,
+   "w": 32
+  },
   "meteorite": {
    "file": "items/meteorite.png",
    "h": 29,
    "w": 32
   },
+  "milk": {
+   "file": "items/milk.png",
+   "h": 32,
+   "w": 27
+  },
   "milk_pail": {
    "file": "items/milk_pail.png",
+   "h": 25,
+   "w": 32
+  },
+  "milkshake": {
+   "file": "items/milkshake.png",
+   "h": 28,
+   "w": 32
+  },
+  "mill_stone": {
+   "file": "items/mill_stone.png",
    "h": 32,
-   "w": 26
+   "w": 27
+  },
+  "miner_bag": {
+   "file": "items/miner_bag.png",
+   "h": 25,
+   "w": 32
+  },
+  "miner_bag_b": {
+   "file": "items/miner_bag_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "miner_bottom": {
+   "file": "items/miner_bottom.png",
+   "h": 27,
+   "w": 32
+  },
+  "miner_bottom_b": {
+   "file": "items/miner_bottom_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "miner_gloves": {
+   "file": "items/miner_gloves.png",
+   "h": 26,
+   "w": 32
+  },
+  "miner_gloves_b": {
+   "file": "items/miner_gloves_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "miner_hat": {
+   "file": "items/miner_hat.png",
+   "h": 27,
+   "w": 32
+  },
+  "miner_hat_b": {
+   "file": "items/miner_hat_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "miner_lunch": {
+   "file": "items/miner_lunch.png",
+   "h": 26,
+   "w": 32
+  },
+  "miner_scarf": {
+   "file": "items/miner_scarf.png",
+   "h": 27,
+   "w": 32
+  },
+  "miner_scarf_b": {
+   "file": "items/miner_scarf_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "miner_shoes": {
+   "file": "items/miner_shoes.png",
+   "h": 26,
+   "w": 32
+  },
+  "miner_shoes_b": {
+   "file": "items/miner_shoes_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "miner_top": {
+   "file": "items/miner_top.png",
+   "h": 26,
+   "w": 32
+  },
+  "miner_top_b": {
+   "file": "items/miner_top_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "miner_trinket": {
+   "file": "items/miner_trinket.png",
+   "h": 26,
+   "w": 32
+  },
+  "miner_trinket_b": {
+   "file": "items/miner_trinket_b.png",
+   "h": 26,
+   "w": 32
   },
   "minnow": {
    "file": "items/minnow.png",
-   "h": 14,
+   "h": 21,
    "w": 32
   },
   "mint": {
@@ -9504,6 +13089,16 @@
    "file": "items/mint_seed.png",
    "h": 32,
    "w": 30
+  },
+  "mirror_bass": {
+   "file": "items/mirror_bass.png",
+   "h": 32,
+   "w": 29
+  },
+  "mirror_beetle": {
+   "file": "items/mirror_beetle.png",
+   "h": 32,
+   "w": 29
   },
   "mirror_cabbage": {
    "file": "items/mirror_cabbage.png",
@@ -9530,6 +13125,16 @@
    "h": 30,
    "w": 32
   },
+  "mirror_mousse": {
+   "file": "items/mirror_mousse.png",
+   "h": 24,
+   "w": 32
+  },
+  "mirror_octopus": {
+   "file": "items/mirror_octopus.png",
+   "h": 25,
+   "w": 32
+  },
   "mittens_apple": {
    "file": "items/mittens_apple.png",
    "h": 32,
@@ -9540,9 +13145,114 @@
    "h": 31,
    "w": 32
   },
+  "mola": {
+   "file": "items/mola.png",
+   "h": 24,
+   "w": 32
+  },
+  "molasses": {
+   "file": "items/molasses.png",
+   "h": 26,
+   "w": 32
+  },
+  "monarch": {
+   "file": "items/monarch.png",
+   "h": 32,
+   "w": 29
+  },
+  "moon_bar": {
+   "file": "items/moon_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "moon_belt": {
+   "file": "items/moon_belt.png",
+   "h": 27,
+   "w": 32
+  },
+  "moon_belt_plus": {
+   "file": "items/moon_belt_plus.png",
+   "h": 25,
+   "w": 32
+  },
+  "moon_boots": {
+   "file": "items/moon_boots.png",
+   "h": 32,
+   "w": 31
+  },
+  "moon_boots_plus": {
+   "file": "items/moon_boots_plus.png",
+   "h": 26,
+   "w": 32
+  },
   "moon_cake": {
    "file": "items/moon_cake.png",
-   "h": 28,
+   "h": 26,
+   "w": 32
+  },
+  "moon_cape": {
+   "file": "items/moon_cape.png",
+   "h": 25,
+   "w": 32
+  },
+  "moon_cape_plus": {
+   "file": "items/moon_cape_plus.png",
+   "h": 26,
+   "w": 32
+  },
+  "moon_carp2": {
+   "file": "items/moon_carp2.png",
+   "h": 32,
+   "w": 29
+  },
+  "moon_chest": {
+   "file": "items/moon_chest.png",
+   "h": 29,
+   "w": 32
+  },
+  "moon_chest_plus": {
+   "file": "items/moon_chest_plus.png",
+   "h": 26,
+   "w": 32
+  },
+  "moon_crystal": {
+   "file": "items/moon_crystal.png",
+   "h": 27,
+   "w": 32
+  },
+  "moon_gloves": {
+   "file": "items/moon_gloves.png",
+   "h": 27,
+   "w": 32
+  },
+  "moon_gloves_plus": {
+   "file": "items/moon_gloves_plus.png",
+   "h": 25,
+   "w": 32
+  },
+  "moon_helm": {
+   "file": "items/moon_helm.png",
+   "h": 29,
+   "w": 32
+  },
+  "moon_helm_plus": {
+   "file": "items/moon_helm_plus.png",
+   "h": 31,
+   "w": 32
+  },
+  "moon_key": {
+   "file": "items/moon_key.png",
+   "h": 32,
+   "w": 27
+  },
+  "moon_legs": {
+   "file": "items/moon_legs.png",
+   "h": 27,
+   "w": 32
+  },
+  "moon_legs_plus": {
+   "file": "items/moon_legs_plus.png",
+   "h": 25,
    "w": 32
   },
   "moon_lotus": {
@@ -9550,15 +13260,45 @@
    "h": 32,
    "w": 32
   },
+  "moon_milk": {
+   "file": "items/moon_milk.png",
+   "h": 27,
+   "w": 32
+  },
+  "moon_mochi": {
+   "file": "items/moon_mochi.png",
+   "h": 25,
+   "w": 32
+  },
+  "moon_moth": {
+   "file": "items/moon_moth.png",
+   "h": 32,
+   "w": 29
+  },
+  "moon_moth_queen": {
+   "file": "items/moon_moth_queen.png",
+   "h": 29,
+   "w": 32
+  },
   "moon_mugwort": {
    "file": "items/moon_mugwort.png",
    "h": 32,
+   "w": 32
+  },
+  "moon_ore": {
+   "file": "items/moon_ore.png",
+   "h": 26,
    "w": 32
   },
   "moon_pear": {
    "file": "items/moon_pear.png",
    "h": 32,
    "w": 30
+  },
+  "moon_pie": {
+   "file": "items/moon_pie.png",
+   "h": 25,
+   "w": 32
   },
   "moon_pumpkin": {
    "file": "items/moon_pumpkin.png",
@@ -9568,6 +13308,21 @@
   "moon_ring": {
    "file": "items/moon_ring.png",
    "h": 31,
+   "w": 32
+  },
+  "moon_shard": {
+   "file": "items/moon_shard.png",
+   "h": 32,
+   "w": 27
+  },
+  "moon_shield": {
+   "file": "items/moon_shield.png",
+   "h": 24,
+   "w": 32
+  },
+  "moon_shield_plus": {
+   "file": "items/moon_shield_plus.png",
+   "h": 26,
    "w": 32
   },
   "moon_squash": {
@@ -9583,7 +13338,12 @@
   "moon_tear": {
    "file": "items/moon_tear.png",
    "h": 32,
-   "w": 22
+   "w": 32
+  },
+  "moon_whale": {
+   "file": "items/moon_whale.png",
+   "h": 27,
+   "w": 32
   },
   "moonberry": {
    "file": "items/moonberry.png",
@@ -9602,7 +13362,7 @@
   },
   "mooncarp": {
    "file": "items/mooncarp.png",
-   "h": 22,
+   "h": 24,
    "w": 32
   },
   "moonflower": {
@@ -9625,14 +13385,114 @@
    "h": 32,
    "w": 29
   },
+  "moonstone": {
+   "file": "items/moonstone.png",
+   "h": 32,
+   "w": 32
+  },
   "morel_spore": {
    "file": "items/morel_spore.png",
    "h": 29,
    "w": 32
   },
+  "mosquito": {
+   "file": "items/mosquito.png",
+   "h": 32,
+   "w": 29
+  },
   "moss": {
    "file": "items/moss.png",
    "h": 25,
+   "w": 32
+  },
+  "moth_brown": {
+   "file": "items/moth_brown.png",
+   "h": 24,
+   "w": 32
+  },
+  "moth_white": {
+   "file": "items/moth_white.png",
+   "h": 29,
+   "w": 32
+  },
+  "mount_bass": {
+   "file": "items/mount_bass.png",
+   "h": 27,
+   "w": 32
+  },
+  "mount_blue": {
+   "file": "items/mount_blue.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_catfish": {
+   "file": "items/mount_catfish.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_eel": {
+   "file": "items/mount_eel.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_flounder": {
+   "file": "items/mount_flounder.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_goldfish": {
+   "file": "items/mount_goldfish.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_koi": {
+   "file": "items/mount_koi.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_marlin": {
+   "file": "items/mount_marlin.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_pike": {
+   "file": "items/mount_pike.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_prism": {
+   "file": "items/mount_prism.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_purple": {
+   "file": "items/mount_purple.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_salmon": {
+   "file": "items/mount_salmon.png",
+   "h": 29,
+   "w": 32
+  },
+  "mount_shark": {
+   "file": "items/mount_shark.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_swordfish": {
+   "file": "items/mount_swordfish.png",
+   "h": 26,
+   "w": 32
+  },
+  "mount_trout": {
+   "file": "items/mount_trout.png",
+   "h": 27,
+   "w": 32
+  },
+  "mount_tuna": {
+   "file": "items/mount_tuna.png",
+   "h": 26,
    "w": 32
   },
   "mountain_barley": {
@@ -9643,6 +13503,16 @@
   "mountain_cherry": {
    "file": "items/mountain_cherry.png",
    "h": 30,
+   "w": 32
+  },
+  "mouse_critter": {
+   "file": "items/mouse_critter.png",
+   "h": 27,
+   "w": 32
+  },
+  "muffin": {
+   "file": "items/muffin.png",
+   "h": 26,
    "w": 32
   },
   "mugwort": {
@@ -9660,6 +13530,11 @@
    "h": 31,
    "w": 32
   },
+  "mullet": {
+   "file": "items/mullet.png",
+   "h": 32,
+   "w": 29
+  },
   "mushroom": {
    "file": "items/mushroom.png",
    "h": 30,
@@ -9670,10 +13545,40 @@
    "h": 24,
    "w": 32
   },
+  "music_box": {
+   "file": "items/music_box.png",
+   "h": 32,
+   "w": 27
+  },
+  "music_box2": {
+   "file": "items/music_box2.png",
+   "h": 27,
+   "w": 32
+  },
+  "mussel": {
+   "file": "items/mussel.png",
+   "h": 32,
+   "w": 29
+  },
+  "mustard": {
+   "file": "items/mustard.png",
+   "h": 32,
+   "w": 31
+  },
   "mustard_greens": {
    "file": "items/mustard_greens.png",
    "h": 32,
    "w": 30
+  },
+  "narwhal": {
+   "file": "items/narwhal.png",
+   "h": 22,
+   "w": 32
+  },
+  "nautilus": {
+   "file": "items/nautilus.png",
+   "h": 25,
+   "w": 32
   },
   "nebula_grape_seed": {
    "file": "items/nebula_grape_seed.png",
@@ -9690,6 +13595,51 @@
    "h": 32,
    "w": 32
   },
+  "neon_bag": {
+   "file": "items/neon_bag.png",
+   "h": 25,
+   "w": 32
+  },
+  "neon_bag_b": {
+   "file": "items/neon_bag_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "neon_bottom": {
+   "file": "items/neon_bottom.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_bottom_b": {
+   "file": "items/neon_bottom_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_dragon_eye": {
+   "file": "items/neon_dragon_eye.png",
+   "h": 32,
+   "w": 27
+  },
+  "neon_gloves": {
+   "file": "items/neon_gloves.png",
+   "h": 25,
+   "w": 32
+  },
+  "neon_gloves_b": {
+   "file": "items/neon_gloves_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "neon_hat": {
+   "file": "items/neon_hat.png",
+   "h": 20,
+   "w": 32
+  },
+  "neon_hat_b": {
+   "file": "items/neon_hat_b.png",
+   "h": 21,
+   "w": 32
+  },
   "neon_jacket": {
    "file": "items/neon_jacket.png",
    "h": 28,
@@ -9700,9 +13650,104 @@
    "h": 32,
    "w": 31
   },
+  "neon_ramen": {
+   "file": "items/neon_ramen.png",
+   "h": 25,
+   "w": 32
+  },
+  "neon_scarf": {
+   "file": "items/neon_scarf.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_scarf_b": {
+   "file": "items/neon_scarf_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_shoes": {
+   "file": "items/neon_shoes.png",
+   "h": 24,
+   "w": 32
+  },
+  "neon_shoes_b": {
+   "file": "items/neon_shoes_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_top": {
+   "file": "items/neon_top.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_top_b": {
+   "file": "items/neon_top_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_trinket": {
+   "file": "items/neon_trinket.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_trinket_b": {
+   "file": "items/neon_trinket_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "neon_tube": {
+   "file": "items/neon_tube.png",
+   "h": 28,
+   "w": 32
+  },
+  "net_copper": {
+   "file": "items/net_copper.png",
+   "h": 26,
+   "w": 32
+  },
+  "net_crystal": {
+   "file": "items/net_crystal.png",
+   "h": 29,
+   "w": 32
+  },
+  "net_gold": {
+   "file": "items/net_gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "net_iron": {
+   "file": "items/net_iron.png",
+   "h": 26,
+   "w": 32
+  },
+  "net_moon": {
+   "file": "items/net_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "net_silver": {
+   "file": "items/net_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "net_steel": {
+   "file": "items/net_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "net_wood": {
+   "file": "items/net_wood.png",
+   "h": 25,
+   "w": 32
+  },
   "nettle": {
    "file": "items/nettle.png",
    "h": 32,
+   "w": 32
+  },
+  "newt": {
+   "file": "items/newt.png",
+   "h": 25,
    "w": 32
   },
   "night_garlic": {
@@ -9715,6 +13760,11 @@
    "h": 30,
    "w": 32
   },
+  "nightmare_angler": {
+   "file": "items/nightmare_angler.png",
+   "h": 25,
+   "w": 32
+  },
   "nightmare_beet": {
    "file": "items/nightmare_beet.png",
    "h": 32,
@@ -9725,9 +13775,39 @@
    "h": 32,
    "w": 30
   },
+  "nightmare_moth": {
+   "file": "items/nightmare_moth.png",
+   "h": 24,
+   "w": 32
+  },
   "nightmare_plum": {
    "file": "items/nightmare_plum.png",
    "h": 29,
+   "w": 32
+  },
+  "noodle_bowl": {
+   "file": "items/noodle_bowl.png",
+   "h": 27,
+   "w": 32
+  },
+  "note_a": {
+   "file": "items/note_a.png",
+   "h": 29,
+   "w": 32
+  },
+  "note_b": {
+   "file": "items/note_b.png",
+   "h": 30,
+   "w": 32
+  },
+  "nurse_broth": {
+   "file": "items/nurse_broth.png",
+   "h": 25,
+   "w": 32
+  },
+  "oarfish": {
+   "file": "items/oarfish.png",
+   "h": 24,
    "w": 32
   },
   "oat": {
@@ -9740,14 +13820,39 @@
    "h": 32,
    "w": 28
   },
+  "observatory_lens": {
+   "file": "items/observatory_lens.png",
+   "h": 32,
+   "w": 27
+  },
+  "octopus": {
+   "file": "items/octopus.png",
+   "h": 27,
+   "w": 32
+  },
+  "oil": {
+   "file": "items/oil.png",
+   "h": 26,
+   "w": 32
+  },
   "okra": {
    "file": "items/okra.png",
    "h": 32,
    "w": 30
   },
+  "old_key": {
+   "file": "items/old_key.png",
+   "h": 32,
+   "w": 27
+  },
+  "old_photo": {
+   "file": "items/old_photo.png",
+   "h": 32,
+   "w": 27
+  },
   "omelette": {
    "file": "items/omelette.png",
-   "h": 23,
+   "h": 25,
    "w": 32
   },
   "onion": {
@@ -9767,8 +13872,8 @@
   },
   "opal": {
    "file": "items/opal.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "orange": {
    "file": "items/orange.png",
@@ -9795,10 +13900,55 @@
    "h": 28,
    "w": 32
   },
+  "oyster": {
+   "file": "items/oyster.png",
+   "h": 32,
+   "w": 29
+  },
+  "pack_large": {
+   "file": "items/pack_large.png",
+   "h": 31,
+   "w": 32
+  },
+  "pack_medium": {
+   "file": "items/pack_medium.png",
+   "h": 32,
+   "w": 32
+  },
+  "pack_small": {
+   "file": "items/pack_small.png",
+   "h": 32,
+   "w": 32
+  },
+  "painting_abstract": {
+   "file": "items/painting_abstract.png",
+   "h": 26,
+   "w": 32
+  },
+  "painting_landscape": {
+   "file": "items/painting_landscape.png",
+   "h": 27,
+   "w": 32
+  },
+  "painting_portrait": {
+   "file": "items/painting_portrait.png",
+   "h": 26,
+   "w": 32
+  },
+  "pancake": {
+   "file": "items/pancake.png",
+   "h": 25,
+   "w": 32
+  },
   "papaya": {
    "file": "items/papaya.png",
    "h": 32,
    "w": 29
+  },
+  "paper": {
+   "file": "items/paper.png",
+   "h": 29,
+   "w": 32
   },
   "parsley": {
    "file": "items/parsley.png",
@@ -9825,6 +13975,16 @@
    "h": 31,
    "w": 32
   },
+  "pasta": {
+   "file": "items/pasta.png",
+   "h": 27,
+   "w": 32
+  },
+  "paw_beetle": {
+   "file": "items/paw_beetle.png",
+   "h": 32,
+   "w": 29
+  },
   "paw_charm": {
    "file": "items/paw_charm.png",
    "h": 32,
@@ -9833,11 +13993,36 @@
   "paw_charm_shard": {
    "file": "items/paw_charm_shard.png",
    "h": 32,
-   "w": 27
+   "w": 32
+  },
+  "paw_cookies": {
+   "file": "items/paw_cookies.png",
+   "h": 25,
+   "w": 32
+  },
+  "paw_crystal": {
+   "file": "items/paw_crystal.png",
+   "h": 29,
+   "w": 32
+  },
+  "paw_latte": {
+   "file": "items/paw_latte.png",
+   "h": 26,
+   "w": 32
+  },
+  "paw_pendant": {
+   "file": "items/paw_pendant.png",
+   "h": 26,
+   "w": 32
   },
   "paw_potato": {
    "file": "items/paw_potato.png",
    "h": 31,
+   "w": 32
+  },
+  "paw_steel_bar": {
+   "file": "items/paw_steel_bar.png",
+   "h": 28,
    "w": 32
   },
   "pawberry": {
@@ -9888,6 +14073,151 @@
   "pearl": {
    "file": "items/pearl.png",
    "h": 32,
+   "w": 31
+  },
+  "pearl_necklace": {
+   "file": "items/pearl_necklace.png",
+   "h": 31,
+   "w": 32
+  },
+  "pendant_amber": {
+   "file": "items/pendant_amber.png",
+   "h": 32,
+   "w": 27
+  },
+  "pendant_amethyst": {
+   "file": "items/pendant_amethyst.png",
+   "h": 32,
+   "w": 28
+  },
+  "pendant_crystal": {
+   "file": "items/pendant_crystal.png",
+   "h": 32,
+   "w": 30
+  },
+  "pendant_dark": {
+   "file": "items/pendant_dark.png",
+   "h": 32,
+   "w": 30
+  },
+  "pendant_diamond": {
+   "file": "items/pendant_diamond.png",
+   "h": 32,
+   "w": 29
+  },
+  "pendant_emerald": {
+   "file": "items/pendant_emerald.png",
+   "h": 32,
+   "w": 28
+  },
+  "pendant_garnet": {
+   "file": "items/pendant_garnet.png",
+   "h": 32,
+   "w": 27
+  },
+  "pendant_jade": {
+   "file": "items/pendant_jade.png",
+   "h": 32,
+   "w": 28
+  },
+  "pendant_moonstone": {
+   "file": "items/pendant_moonstone.png",
+   "h": 32,
+   "w": 28
+  },
+  "pendant_opal": {
+   "file": "items/pendant_opal.png",
+   "h": 32,
+   "w": 28
+  },
+  "pendant_pearl": {
+   "file": "items/pendant_pearl.png",
+   "h": 32,
+   "w": 27
+  },
+  "pendant_quartz": {
+   "file": "items/pendant_quartz.png",
+   "h": 32,
+   "w": 28
+  },
+  "pendant_ruby": {
+   "file": "items/pendant_ruby.png",
+   "h": 32,
+   "w": 30
+  },
+  "pendant_sapphire": {
+   "file": "items/pendant_sapphire.png",
+   "h": 32,
+   "w": 27
+  },
+  "pendant_sunstone": {
+   "file": "items/pendant_sunstone.png",
+   "h": 32,
+   "w": 28
+  },
+  "pendant_topaz": {
+   "file": "items/pendant_topaz.png",
+   "h": 32,
+   "w": 27
+  },
+  "penguin_bag": {
+   "file": "items/penguin_bag.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_bag_b": {
+   "file": "items/penguin_bag_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_banquet": {
+   "file": "items/penguin_banquet.png",
+   "h": 26,
+   "w": 32
+  },
+  "penguin_bottom": {
+   "file": "items/penguin_bottom.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_bottom_b": {
+   "file": "items/penguin_bottom_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_figurine": {
+   "file": "items/penguin_figurine.png",
+   "h": 32,
+   "w": 27
+  },
+  "penguin_fish": {
+   "file": "items/penguin_fish.png",
+   "h": 27,
+   "w": 32
+  },
+  "penguin_gloves": {
+   "file": "items/penguin_gloves.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_gloves_b": {
+   "file": "items/penguin_gloves_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_hat": {
+   "file": "items/penguin_hat.png",
+   "h": 24,
+   "w": 32
+  },
+  "penguin_hat_b": {
+   "file": "items/penguin_hat_b.png",
+   "h": 24,
+   "w": 32
+  },
+  "penguin_ice_cream": {
+   "file": "items/penguin_ice_cream.png",
+   "h": 27,
    "w": 32
   },
   "penguin_ice_lily": {
@@ -9900,9 +14230,64 @@
    "h": 32,
    "w": 28
   },
+  "penguin_promise": {
+   "file": "items/penguin_promise.png",
+   "h": 32,
+   "w": 27
+  },
+  "penguin_rune": {
+   "file": "items/penguin_rune.png",
+   "h": 27,
+   "w": 32
+  },
+  "penguin_scarf": {
+   "file": "items/penguin_scarf.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_scarf_b": {
+   "file": "items/penguin_scarf_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_shoes": {
+   "file": "items/penguin_shoes.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_shoes_b": {
+   "file": "items/penguin_shoes_b.png",
+   "h": 25,
+   "w": 32
+  },
   "penguin_snowberry": {
    "file": "items/penguin_snowberry.png",
    "h": 31,
+   "w": 32
+  },
+  "penguin_top": {
+   "file": "items/penguin_top.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_top_b": {
+   "file": "items/penguin_top_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_trinket": {
+   "file": "items/penguin_trinket.png",
+   "h": 25,
+   "w": 32
+  },
+  "penguin_trinket_b": {
+   "file": "items/penguin_trinket_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "penthouse_key": {
+   "file": "items/penthouse_key.png",
+   "h": 27,
    "w": 32
   },
   "pepper": {
@@ -9925,6 +14310,16 @@
    "h": 30,
    "w": 32
   },
+  "perch": {
+   "file": "items/perch.png",
+   "h": 24,
+   "w": 32
+  },
+  "perfume": {
+   "file": "items/perfume.png",
+   "h": 24,
+   "w": 32
+  },
   "persimmon": {
    "file": "items/persimmon.png",
    "h": 32,
@@ -9938,6 +14333,16 @@
   "phoenix_chili": {
    "file": "items/phoenix_chili.png",
    "h": 29,
+   "w": 32
+  },
+  "phoenix_feast": {
+   "file": "items/phoenix_feast.png",
+   "h": 24,
+   "w": 32
+  },
+  "phoenix_moth": {
+   "file": "items/phoenix_moth.png",
+   "h": 26,
    "w": 32
   },
   "phoenix_peach": {
@@ -9955,6 +14360,31 @@
    "h": 32,
    "w": 30
   },
+  "phone_sim": {
+   "file": "items/phone_sim.png",
+   "h": 28,
+   "w": 32
+  },
+  "photo_a": {
+   "file": "items/photo_a.png",
+   "h": 28,
+   "w": 32
+  },
+  "photo_b": {
+   "file": "items/photo_b.png",
+   "h": 29,
+   "w": 32
+  },
+  "photo_c": {
+   "file": "items/photo_c.png",
+   "h": 29,
+   "w": 32
+  },
+  "photo_d": {
+   "file": "items/photo_d.png",
+   "h": 28,
+   "w": 32
+  },
   "pickaxe": {
    "file": "items/pickaxe.png",
    "h": 24,
@@ -9962,23 +14392,63 @@
   },
   "pickaxe_copper": {
    "file": "items/pickaxe_copper.png",
-   "h": 25,
+   "h": 26,
    "w": 32
   },
   "pickaxe_crystal": {
    "file": "items/pickaxe_crystal.png",
-   "h": 25,
+   "h": 26,
    "w": 32
   },
   "pickaxe_gold": {
    "file": "items/pickaxe_gold.png",
-   "h": 26,
+   "h": 25,
    "w": 32
   },
   "pickaxe_iron": {
    "file": "items/pickaxe_iron.png",
    "h": 25,
    "w": 32
+  },
+  "pickaxe_moon": {
+   "file": "items/pickaxe_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "pickaxe_silver": {
+   "file": "items/pickaxe_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "pickaxe_steel": {
+   "file": "items/pickaxe_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "pickaxe_wood": {
+   "file": "items/pickaxe_wood.png",
+   "h": 25,
+   "w": 32
+  },
+  "pickled_beet": {
+   "file": "items/pickled_beet.png",
+   "h": 32,
+   "w": 32
+  },
+  "pickles": {
+   "file": "items/pickles.png",
+   "h": 31,
+   "w": 32
+  },
+  "pike": {
+   "file": "items/pike.png",
+   "h": 32,
+   "w": 29
+  },
+  "pill_bug": {
+   "file": "items/pill_bug.png",
+   "h": 32,
+   "w": 29
   },
   "pineapple": {
    "file": "items/pineapple.png",
@@ -9995,9 +14465,44 @@
    "h": 32,
    "w": 29
   },
+  "pit_belt": {
+   "file": "items/pit_belt.png",
+   "h": 32,
+   "w": 27
+  },
+  "pit_legend_belt": {
+   "file": "items/pit_legend_belt.png",
+   "h": 32,
+   "w": 28
+  },
+  "pit_ticket": {
+   "file": "items/pit_ticket.png",
+   "h": 26,
+   "w": 32
+  },
+  "pit_wings": {
+   "file": "items/pit_wings.png",
+   "h": 25,
+   "w": 32
+  },
+  "pizza": {
+   "file": "items/pizza.png",
+   "h": 27,
+   "w": 32
+  },
   "plantain": {
    "file": "items/plantain.png",
    "h": 32,
+   "w": 32
+  },
+  "platinum": {
+   "file": "items/platinum.png",
+   "h": 27,
+   "w": 32
+  },
+  "platinum_bar": {
+   "file": "items/platinum_bar.png",
+   "h": 27,
    "w": 32
   },
   "plum": {
@@ -10010,9 +14515,19 @@
    "h": 30,
    "w": 32
   },
+  "pocket_mirror": {
+   "file": "items/pocket_mirror.png",
+   "h": 32,
+   "w": 27
+  },
   "pocket_watch": {
    "file": "items/pocket_watch.png",
    "h": 29,
+   "w": 32
+  },
+  "poker_chip": {
+   "file": "items/poker_chip.png",
+   "h": 27,
    "w": 32
   },
   "pomegranate": {
@@ -10095,6 +14610,26 @@
    "h": 32,
    "w": 32
   },
+  "porridge": {
+   "file": "items/porridge.png",
+   "h": 26,
+   "w": 32
+  },
+  "pot_a": {
+   "file": "items/pot_a.png",
+   "h": 28,
+   "w": 32
+  },
+  "pot_b": {
+   "file": "items/pot_b.png",
+   "h": 27,
+   "w": 32
+  },
+  "pot_c": {
+   "file": "items/pot_c.png",
+   "h": 25,
+   "w": 32
+  },
   "potato": {
    "file": "items/potato.png",
    "h": 32,
@@ -10112,12 +14647,32 @@
   },
   "potion": {
    "file": "items/potion.png",
-   "h": 29,
+   "h": 32,
+   "w": 31
+  },
+  "potion_pudding": {
+   "file": "items/potion_pudding.png",
+   "h": 26,
    "w": 32
+  },
+  "pottery_shard": {
+   "file": "items/pottery_shard.png",
+   "h": 32,
+   "w": 27
   },
   "president_boutonniere": {
    "file": "items/president_boutonniere.png",
    "h": 32,
+   "w": 32
+  },
+  "president_crown": {
+   "file": "items/president_crown.png",
+   "h": 32,
+   "w": 27
+  },
+  "president_cufflink": {
+   "file": "items/president_cufflink.png",
+   "h": 30,
    "w": 32
   },
   "president_grape": {
@@ -10135,6 +14690,36 @@
    "h": 31,
    "w": 32
   },
+  "president_shark": {
+   "file": "items/president_shark.png",
+   "h": 27,
+   "w": 32
+  },
+  "president_signet": {
+   "file": "items/president_signet.png",
+   "h": 32,
+   "w": 26
+  },
+  "president_spider": {
+   "file": "items/president_spider.png",
+   "h": 29,
+   "w": 32
+  },
+  "president_steak": {
+   "file": "items/president_steak.png",
+   "h": 26,
+   "w": 32
+  },
+  "president_supreme": {
+   "file": "items/president_supreme.png",
+   "h": 26,
+   "w": 32
+  },
+  "president_tie_pin": {
+   "file": "items/president_tie_pin.png",
+   "h": 32,
+   "w": 27
+  },
   "prism_basil": {
    "file": "items/prism_basil.png",
    "h": 31,
@@ -10145,9 +14730,19 @@
    "h": 32,
    "w": 30
   },
+  "prism_butterfly": {
+   "file": "items/prism_butterfly.png",
+   "h": 26,
+   "w": 32
+  },
   "prism_grape": {
    "file": "items/prism_grape.png",
    "h": 31,
+   "w": 32
+  },
+  "prism_shard": {
+   "file": "items/prism_shard.png",
+   "h": 27,
    "w": 32
   },
   "prism_tomato_seed": {
@@ -10155,14 +14750,29 @@
    "h": 27,
    "w": 32
   },
+  "prism_trout": {
+   "file": "items/prism_trout.png",
+   "h": 32,
+   "w": 29
+  },
   "puffer": {
    "file": "items/puffer.png",
-   "h": 22,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "pumpkin": {
    "file": "items/pumpkin.png",
    "h": 32,
+   "w": 32
+  },
+  "pumpkin_lantern": {
+   "file": "items/pumpkin_lantern.png",
+   "h": 32,
+   "w": 31
+  },
+  "pumpkin_pie": {
+   "file": "items/pumpkin_pie.png",
+   "h": 26,
    "w": 32
   },
   "pumpkin_seed": {
@@ -10172,11 +14782,16 @@
   },
   "pumpkin_soup": {
    "file": "items/pumpkin_soup.png",
-   "h": 29,
+   "h": 26,
    "w": 32
   },
   "purple_carrot": {
    "file": "items/purple_carrot.png",
+   "h": 32,
+   "w": 30
+  },
+  "purple_potion": {
+   "file": "items/purple_potion.png",
    "h": 32,
    "w": 30
   },
@@ -10189,6 +14804,26 @@
    "file": "items/purr_pumpkin.png",
    "h": 30,
    "w": 32
+  },
+  "purse_1": {
+   "file": "items/purse_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "purse_2": {
+   "file": "items/purse_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "purse_3": {
+   "file": "items/purse_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "quartz": {
+   "file": "items/quartz.png",
+   "h": 32,
+   "w": 31
   },
   "quince": {
    "file": "items/quince.png",
@@ -10220,6 +14855,11 @@
    "h": 31,
    "w": 32
   },
+  "rain_pearl": {
+   "file": "items/rain_pearl.png",
+   "h": 27,
+   "w": 32
+  },
   "rainbow_beet_seed": {
    "file": "items/rainbow_beet_seed.png",
    "h": 25,
@@ -10230,6 +14870,16 @@
    "h": 32,
    "w": 31
   },
+  "ramen": {
+   "file": "items/ramen.png",
+   "h": 27,
+   "w": 32
+  },
+  "ramen_token": {
+   "file": "items/ramen_token.png",
+   "h": 28,
+   "w": 32
+  },
   "raspberry": {
    "file": "items/raspberry.png",
    "h": 32,
@@ -10238,6 +14888,16 @@
   "raspberry_seed": {
    "file": "items/raspberry_seed.png",
    "h": 29,
+   "w": 32
+  },
+  "rat_tail": {
+   "file": "items/rat_tail.png",
+   "h": 28,
+   "w": 32
+  },
+  "ray": {
+   "file": "items/ray.png",
+   "h": 24,
    "w": 32
   },
   "red_apple": {
@@ -10250,15 +14910,225 @@
    "h": 32,
    "w": 30
   },
+  "relic_head": {
+   "file": "items/relic_head.png",
+   "h": 28,
+   "w": 32
+  },
+  "relish": {
+   "file": "items/relish.png",
+   "h": 31,
+   "w": 32
+  },
+  "resin": {
+   "file": "items/resin.png",
+   "h": 24,
+   "w": 32
+  },
+  "rhino_beetle": {
+   "file": "items/rhino_beetle.png",
+   "h": 32,
+   "w": 29
+  },
+  "ribbon_blue": {
+   "file": "items/ribbon_blue.png",
+   "h": 32,
+   "w": 32
+  },
+  "ribbon_red": {
+   "file": "items/ribbon_red.png",
+   "h": 27,
+   "w": 32
+  },
   "rice": {
    "file": "items/rice.png",
    "h": 32,
    "w": 25
   },
+  "rice_bowl": {
+   "file": "items/rice_bowl.png",
+   "h": 26,
+   "w": 32
+  },
   "rice_seed": {
    "file": "items/rice_seed.png",
    "h": 32,
    "w": 29
+  },
+  "ring_bronze": {
+   "file": "items/ring_bronze.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_charm": {
+   "file": "items/ring_charm.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_combat": {
+   "file": "items/ring_combat.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_cooling": {
+   "file": "items/ring_cooling.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_copper": {
+   "file": "items/ring_copper.png",
+   "h": 31,
+   "w": 32
+  },
+  "ring_crystal": {
+   "file": "items/ring_crystal.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_defense": {
+   "file": "items/ring_defense.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_dream": {
+   "file": "items/ring_dream.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_energy": {
+   "file": "items/ring_energy.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_farming": {
+   "file": "items/ring_farming.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_fishing": {
+   "file": "items/ring_fishing.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_foraging": {
+   "file": "items/ring_foraging.png",
+   "h": 31,
+   "w": 32
+  },
+  "ring_friendship": {
+   "file": "items/ring_friendship.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_glow": {
+   "file": "items/ring_glow.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_gold": {
+   "file": "items/ring_gold.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_iron": {
+   "file": "items/ring_iron.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_light": {
+   "file": "items/ring_light.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_luck": {
+   "file": "items/ring_luck.png",
+   "h": 29,
+   "w": 32
+  },
+  "ring_magnet": {
+   "file": "items/ring_magnet.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_mining": {
+   "file": "items/ring_mining.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_moon": {
+   "file": "items/ring_moon.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_paw": {
+   "file": "items/ring_paw.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_penguin": {
+   "file": "items/ring_penguin.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_platinum": {
+   "file": "items/ring_platinum.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_silver": {
+   "file": "items/ring_silver.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_speed": {
+   "file": "items/ring_speed.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_star": {
+   "file": "items/ring_star.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_steel": {
+   "file": "items/ring_steel.png",
+   "h": 32,
+   "w": 31
+  },
+  "ring_strength": {
+   "file": "items/ring_strength.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_tin": {
+   "file": "items/ring_tin.png",
+   "h": 32,
+   "w": 32
+  },
+  "ring_void": {
+   "file": "items/ring_void.png",
+   "h": 32,
+   "w": 29
+  },
+  "ring_warmth": {
+   "file": "items/ring_warmth.png",
+   "h": 32,
+   "w": 31
+  },
+  "riot_shard": {
+   "file": "items/riot_shard.png",
+   "h": 28,
+   "w": 32
+  },
+  "river_dragon": {
+   "file": "items/river_dragon.png",
+   "h": 27,
+   "w": 32
+  },
+  "river_king": {
+   "file": "items/river_king.png",
+   "h": 25,
+   "w": 32
   },
   "river_lily": {
    "file": "items/river_lily.png",
@@ -10275,9 +15145,24 @@
    "h": 32,
    "w": 29
   },
+  "roach": {
+   "file": "items/roach.png",
+   "h": 24,
+   "w": 32
+  },
+  "roast_chicken": {
+   "file": "items/roast_chicken.png",
+   "h": 27,
+   "w": 32
+  },
   "roast_fish": {
    "file": "items/roast_fish.png",
    "h": 31,
+   "w": 32
+  },
+  "roast_veg": {
+   "file": "items/roast_veg.png",
+   "h": 27,
    "w": 32
   },
   "rod": {
@@ -10287,27 +15172,62 @@
   },
   "rod_copper": {
    "file": "items/rod_copper.png",
-   "h": 30,
+   "h": 26,
    "w": 32
   },
   "rod_crystal": {
    "file": "items/rod_crystal.png",
-   "h": 28,
+   "h": 26,
    "w": 32
   },
   "rod_gold": {
    "file": "items/rod_gold.png",
-   "h": 31,
+   "h": 25,
    "w": 32
   },
   "rod_iron": {
    "file": "items/rod_iron.png",
-   "h": 30,
+   "h": 25,
+   "w": 32
+  },
+  "rod_moon": {
+   "file": "items/rod_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "rod_silver": {
+   "file": "items/rod_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "rod_steel": {
+   "file": "items/rod_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "rod_wood": {
+   "file": "items/rod_wood.png",
+   "h": 25,
+   "w": 32
+  },
+  "roll": {
+   "file": "items/roll.png",
+   "h": 25,
+   "w": 32
+  },
+  "root_beer": {
+   "file": "items/root_beer.png",
+   "h": 28,
+   "w": 32
+  },
+  "root_rune": {
+   "file": "items/root_rune.png",
+   "h": 27,
    "w": 32
   },
   "rope": {
    "file": "items/rope.png",
-   "h": 29,
+   "h": 27,
    "w": 32
   },
   "rose_red": {
@@ -10338,12 +15258,17 @@
   "ruby": {
    "file": "items/ruby.png",
    "h": 32,
-   "w": 31
+   "w": 30
   },
   "ruby_ring": {
    "file": "items/ruby_ring.png",
    "h": 30,
    "w": 32
+  },
+  "rune_tablet": {
+   "file": "items/rune_tablet.png",
+   "h": 32,
+   "w": 27
   },
   "running_shoes": {
    "file": "items/running_shoes.png",
@@ -10353,6 +15278,26 @@
   "saddle": {
    "file": "items/saddle.png",
    "h": 26,
+   "w": 32
+  },
+  "saddle_a": {
+   "file": "items/saddle_a.png",
+   "h": 24,
+   "w": 32
+  },
+  "saddle_b": {
+   "file": "items/saddle_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "saddle_bag": {
+   "file": "items/saddle_bag.png",
+   "h": 31,
+   "w": 32
+  },
+  "saddle_c": {
+   "file": "items/saddle_c.png",
+   "h": 25,
    "w": 32
   },
   "saffron": {
@@ -10370,19 +15315,44 @@
    "h": 32,
    "w": 32
   },
+  "sailfish": {
+   "file": "items/sailfish.png",
+   "h": 23,
+   "w": 32
+  },
+  "sake": {
+   "file": "items/sake.png",
+   "h": 27,
+   "w": 32
+  },
   "salad": {
    "file": "items/salad.png",
-   "h": 29,
+   "h": 26,
    "w": 32
   },
   "salmon": {
    "file": "items/salmon.png",
-   "h": 18,
+   "h": 32,
+   "w": 29
+  },
+  "salsa": {
+   "file": "items/salsa.png",
+   "h": 32,
+   "w": 32
+  },
+  "salt": {
+   "file": "items/salt.png",
+   "h": 26,
    "w": 32
   },
   "sandals": {
    "file": "items/sandals.png",
    "h": 30,
+   "w": 32
+  },
+  "sandwich": {
+   "file": "items/sandwich.png",
+   "h": 26,
    "w": 32
   },
   "sap": {
@@ -10392,12 +15362,27 @@
   },
   "sapphire": {
    "file": "items/sapphire.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "sapphire_ring": {
    "file": "items/sapphire_ring.png",
    "h": 30,
+   "w": 32
+  },
+  "sardine": {
+   "file": "items/sardine.png",
+   "h": 20,
+   "w": 32
+  },
+  "satchel": {
+   "file": "items/satchel.png",
+   "h": 31,
+   "w": 32
+  },
+  "sauerkraut": {
+   "file": "items/sauerkraut.png",
+   "h": 32,
    "w": 32
   },
   "scallion_seed": {
@@ -10405,14 +15390,184 @@
    "h": 30,
    "w": 32
   },
+  "scarab": {
+   "file": "items/scarab.png",
+   "h": 32,
+   "w": 29
+  },
   "scarf": {
    "file": "items/scarf.png",
    "h": 32,
    "w": 30
   },
+  "scarf_black": {
+   "file": "items/scarf_black.png",
+   "h": 30,
+   "w": 32
+  },
+  "scarf_blue": {
+   "file": "items/scarf_blue.png",
+   "h": 30,
+   "w": 32
+  },
+  "scarf_cyan": {
+   "file": "items/scarf_cyan.png",
+   "h": 30,
+   "w": 32
+  },
+  "scarf_green": {
+   "file": "items/scarf_green.png",
+   "h": 30,
+   "w": 32
+  },
+  "scarf_purple": {
+   "file": "items/scarf_purple.png",
+   "h": 30,
+   "w": 32
+  },
+  "scarf_red": {
+   "file": "items/scarf_red.png",
+   "h": 29,
+   "w": 32
+  },
+  "scarf_white": {
+   "file": "items/scarf_white.png",
+   "h": 30,
+   "w": 32
+  },
+  "scarf_yellow": {
+   "file": "items/scarf_yellow.png",
+   "h": 30,
+   "w": 32
+  },
+  "scholar_bag": {
+   "file": "items/scholar_bag.png",
+   "h": 25,
+   "w": 32
+  },
+  "scholar_bag_b": {
+   "file": "items/scholar_bag_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "scholar_bottom": {
+   "file": "items/scholar_bottom.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_bottom_b": {
+   "file": "items/scholar_bottom_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_gloves": {
+   "file": "items/scholar_gloves.png",
+   "h": 25,
+   "w": 32
+  },
+  "scholar_gloves_b": {
+   "file": "items/scholar_gloves_b.png",
+   "h": 25,
+   "w": 32
+  },
+  "scholar_hat": {
+   "file": "items/scholar_hat.png",
+   "h": 27,
+   "w": 32
+  },
+  "scholar_hat_b": {
+   "file": "items/scholar_hat_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_scarf": {
+   "file": "items/scholar_scarf.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_scarf_b": {
+   "file": "items/scholar_scarf_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_shoes": {
+   "file": "items/scholar_shoes.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_shoes_b": {
+   "file": "items/scholar_shoes_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_tea": {
+   "file": "items/scholar_tea.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_top": {
+   "file": "items/scholar_top.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_top_b": {
+   "file": "items/scholar_top_b.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_trinket": {
+   "file": "items/scholar_trinket.png",
+   "h": 26,
+   "w": 32
+  },
+  "scholar_trinket_b": {
+   "file": "items/scholar_trinket_b.png",
+   "h": 26,
+   "w": 32
+  },
   "scythe": {
    "file": "items/scythe.png",
    "h": 29,
+   "w": 32
+  },
+  "scythe_copper": {
+   "file": "items/scythe_copper.png",
+   "h": 26,
+   "w": 32
+  },
+  "scythe_crystal": {
+   "file": "items/scythe_crystal.png",
+   "h": 25,
+   "w": 32
+  },
+  "scythe_gold": {
+   "file": "items/scythe_gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "scythe_iron": {
+   "file": "items/scythe_iron.png",
+   "h": 25,
+   "w": 32
+  },
+  "scythe_moon": {
+   "file": "items/scythe_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "scythe_silver": {
+   "file": "items/scythe_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "scythe_steel": {
+   "file": "items/scythe_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "scythe_wood": {
+   "file": "items/scythe_wood.png",
+   "h": 25,
    "w": 32
   },
   "sea_grape": {
@@ -10420,15 +15575,60 @@
    "h": 32,
    "w": 31
   },
+  "sea_rune": {
+   "file": "items/sea_rune.png",
+   "h": 27,
+   "w": 32
+  },
+  "sea_snail": {
+   "file": "items/sea_snail.png",
+   "h": 32,
+   "w": 29
+  },
   "sea_thrift": {
    "file": "items/sea_thrift.png",
    "h": 32,
+   "w": 32
+  },
+  "sea_turtle": {
+   "file": "items/sea_turtle.png",
+   "h": 23,
+   "w": 32
+  },
+  "sea_urchin": {
+   "file": "items/sea_urchin.png",
+   "h": 25,
+   "w": 32
+  },
+  "sea_wolf": {
+   "file": "items/sea_wolf.png",
+   "h": 26,
+   "w": 32
+  },
+  "seahorse": {
+   "file": "items/seahorse.png",
+   "h": 25,
+   "w": 32
+  },
+  "sealed_envelope": {
+   "file": "items/sealed_envelope.png",
+   "h": 27,
    "w": 32
   },
   "seashell": {
    "file": "items/seashell.png",
    "h": 29,
    "w": 32
+  },
+  "seaweed": {
+   "file": "items/seaweed.png",
+   "h": 32,
+   "w": 29
+  },
+  "seed_pouch": {
+   "file": "items/seed_pouch.png",
+   "h": 32,
+   "w": 29
   },
   "seeds": {
    "file": "items/seeds.png",
@@ -10440,15 +15640,25 @@
    "h": 32,
    "w": 31
   },
+  "shadow_beetle": {
+   "file": "items/shadow_beetle.png",
+   "h": 24,
+   "w": 32
+  },
   "shadow_cherry": {
    "file": "items/shadow_cherry.png",
    "h": 30,
    "w": 32
   },
+  "shadow_eel": {
+   "file": "items/shadow_eel.png",
+   "h": 32,
+   "w": 29
+  },
   "shadow_ink": {
    "file": "items/shadow_ink.png",
-   "h": 32,
-   "w": 28
+   "h": 28,
+   "w": 32
   },
   "shadow_yam": {
    "file": "items/shadow_yam.png",
@@ -10477,16 +15687,206 @@
   },
   "shard_heart": {
    "file": "items/shard_heart.png",
+   "h": 28,
+   "w": 32
+  },
+  "shard_splinter": {
+   "file": "items/shard_splinter.png",
+   "h": 28,
+   "w": 32
+  },
+  "shears": {
+   "file": "items/shears.png",
+   "h": 24,
+   "w": 32
+  },
+  "shield_copper": {
+   "file": "items/shield_copper.png",
+   "h": 31,
+   "w": 32
+  },
+  "shield_crystal": {
+   "file": "items/shield_crystal.png",
+   "h": 29,
+   "w": 32
+  },
+  "shield_gold": {
+   "file": "items/shield_gold.png",
+   "h": 29,
+   "w": 32
+  },
+  "shield_iron": {
+   "file": "items/shield_iron.png",
+   "h": 30,
+   "w": 32
+  },
+  "shield_moon": {
+   "file": "items/shield_moon.png",
+   "h": 32,
+   "w": 31
+  },
+  "shield_silver": {
+   "file": "items/shield_silver.png",
+   "h": 31,
+   "w": 32
+  },
+  "shield_steel": {
+   "file": "items/shield_steel.png",
+   "h": 30,
+   "w": 32
+  },
+  "shield_wood": {
+   "file": "items/shield_wood.png",
+   "h": 30,
+   "w": 32
+  },
+  "shopkeeper_sampler": {
+   "file": "items/shopkeeper_sampler.png",
+   "h": 27,
+   "w": 32
+  },
+  "shovel_copper": {
+   "file": "items/shovel_copper.png",
+   "h": 31,
+   "w": 32
+  },
+  "shovel_crystal": {
+   "file": "items/shovel_crystal.png",
+   "h": 30,
+   "w": 32
+  },
+  "shovel_gold": {
+   "file": "items/shovel_gold.png",
+   "h": 30,
+   "w": 32
+  },
+  "shovel_iron": {
+   "file": "items/shovel_iron.png",
+   "h": 30,
+   "w": 32
+  },
+  "shovel_moon": {
+   "file": "items/shovel_moon.png",
+   "h": 32,
+   "w": 30
+  },
+  "shovel_silver": {
+   "file": "items/shovel_silver.png",
+   "h": 31,
+   "w": 32
+  },
+  "shovel_steel": {
+   "file": "items/shovel_steel.png",
+   "h": 30,
+   "w": 32
+  },
+  "shovel_wood": {
+   "file": "items/shovel_wood.png",
+   "h": 31,
+   "w": 32
+  },
+  "shrew": {
+   "file": "items/shrew.png",
+   "h": 27,
+   "w": 32
+  },
+  "shrimp": {
+   "file": "items/shrimp.png",
    "h": 32,
    "w": 29
   },
+  "shrine_bell": {
+   "file": "items/shrine_bell.png",
+   "h": 32,
+   "w": 27
+  },
+  "sickle_copper": {
+   "file": "items/sickle_copper.png",
+   "h": 26,
+   "w": 32
+  },
+  "sickle_crystal": {
+   "file": "items/sickle_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "sickle_gold": {
+   "file": "items/sickle_gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "sickle_iron": {
+   "file": "items/sickle_iron.png",
+   "h": 26,
+   "w": 32
+  },
+  "sickle_moon": {
+   "file": "items/sickle_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "sickle_silver": {
+   "file": "items/sickle_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "sickle_steel": {
+   "file": "items/sickle_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "sickle_wood": {
+   "file": "items/sickle_wood.png",
+   "h": 25,
+   "w": 32
+  },
   "silver": {
    "file": "items/silver.png",
-   "h": 30,
+   "h": 27,
    "w": 32
   },
   "silver_bar": {
    "file": "items/silver_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "silver_belt": {
+   "file": "items/silver_belt.png",
+   "h": 31,
+   "w": 32
+  },
+  "silver_belt_plus": {
+   "file": "items/silver_belt_plus.png",
+   "h": 27,
+   "w": 32
+  },
+  "silver_boots": {
+   "file": "items/silver_boots.png",
+   "h": 32,
+   "w": 27
+  },
+  "silver_boots_plus": {
+   "file": "items/silver_boots_plus.png",
+   "h": 28,
+   "w": 32
+  },
+  "silver_cape": {
+   "file": "items/silver_cape.png",
+   "h": 28,
+   "w": 32
+  },
+  "silver_cape_plus": {
+   "file": "items/silver_cape_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "silver_chest": {
+   "file": "items/silver_chest.png",
+   "h": 32,
+   "w": 32
+  },
+  "silver_chest_plus": {
+   "file": "items/silver_chest_plus.png",
    "h": 28,
    "w": 32
   },
@@ -10494,6 +15894,36 @@
    "file": "items/silver_garlic.png",
    "h": 32,
    "w": 28
+  },
+  "silver_gloves": {
+   "file": "items/silver_gloves.png",
+   "h": 30,
+   "w": 32
+  },
+  "silver_gloves_plus": {
+   "file": "items/silver_gloves_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "silver_helm": {
+   "file": "items/silver_helm.png",
+   "h": 31,
+   "w": 32
+  },
+  "silver_helm_plus": {
+   "file": "items/silver_helm_plus.png",
+   "h": 32,
+   "w": 28
+  },
+  "silver_legs": {
+   "file": "items/silver_legs.png",
+   "h": 31,
+   "w": 32
+  },
+  "silver_legs_plus": {
+   "file": "items/silver_legs_plus.png",
+   "h": 28,
+   "w": 32
   },
   "silver_orange": {
    "file": "items/silver_orange.png",
@@ -10510,6 +15940,21 @@
    "h": 32,
    "w": 31
   },
+  "silver_shield": {
+   "file": "items/silver_shield.png",
+   "h": 32,
+   "w": 29
+  },
+  "silver_shield_plus": {
+   "file": "items/silver_shield_plus.png",
+   "h": 28,
+   "w": 32
+  },
+  "silver_spider": {
+   "file": "items/silver_spider.png",
+   "h": 28,
+   "w": 32
+  },
   "singing_corn": {
    "file": "items/singing_corn.png",
    "h": 32,
@@ -10525,20 +15970,80 @@
    "h": 32,
    "w": 31
   },
+  "skink": {
+   "file": "items/skink.png",
+   "h": 25,
+   "w": 32
+  },
+  "sky_fish": {
+   "file": "items/sky_fish.png",
+   "h": 24,
+   "w": 32
+  },
   "sky_lettuce_seed": {
    "file": "items/sky_lettuce_seed.png",
    "h": 30,
    "w": 32
   },
+  "sky_rune": {
+   "file": "items/sky_rune.png",
+   "h": 27,
+   "w": 32
+  },
+  "slime_core": {
+   "file": "items/slime_core.png",
+   "h": 27,
+   "w": 32
+  },
+  "slime_emperor_gel": {
+   "file": "items/slime_emperor_gel.png",
+   "h": 32,
+   "w": 26
+  },
   "slime_gel": {
    "file": "items/slime_gel.png",
-   "h": 26,
+   "h": 28,
+   "w": 32
+  },
+  "slime_gel_blue": {
+   "file": "items/slime_gel_blue.png",
+   "h": 28,
+   "w": 32
+  },
+  "slime_king_gel": {
+   "file": "items/slime_king_gel.png",
+   "h": 28,
    "w": 32
   },
   "slippers": {
    "file": "items/slippers.png",
    "h": 32,
    "w": 32
+  },
+  "slug": {
+   "file": "items/slug.png",
+   "h": 32,
+   "w": 29
+  },
+  "smelt": {
+   "file": "items/smelt.png",
+   "h": 22,
+   "w": 32
+  },
+  "smoothie": {
+   "file": "items/smoothie.png",
+   "h": 28,
+   "w": 32
+  },
+  "snail_bug": {
+   "file": "items/snail_bug.png",
+   "h": 32,
+   "w": 29
+  },
+  "snapper": {
+   "file": "items/snapper.png",
+   "h": 32,
+   "w": 29
   },
   "sneakers": {
    "file": "items/sneakers.png",
@@ -10550,8 +16055,48 @@
    "h": 29,
    "w": 32
   },
+  "snow_globe": {
+   "file": "items/snow_globe.png",
+   "h": 27,
+   "w": 32
+  },
+  "snow_heart": {
+   "file": "items/snow_heart.png",
+   "h": 27,
+   "w": 32
+  },
+  "snowflake_bug": {
+   "file": "items/snowflake_bug.png",
+   "h": 26,
+   "w": 32
+  },
+  "snowman": {
+   "file": "items/snowman.png",
+   "h": 26,
+   "w": 32
+  },
+  "soap": {
+   "file": "items/soap.png",
+   "h": 29,
+   "w": 32
+  },
+  "soda": {
+   "file": "items/soda.png",
+   "h": 28,
+   "w": 32
+  },
   "soldier_badge": {
    "file": "items/soldier_badge.png",
+   "h": 28,
+   "w": 32
+  },
+  "soldier_buckle": {
+   "file": "items/soldier_buckle.png",
+   "h": 26,
+   "w": 32
+  },
+  "sole": {
+   "file": "items/sole.png",
    "h": 32,
    "w": 29
   },
@@ -10560,14 +16105,29 @@
    "h": 32,
    "w": 31
   },
+  "soul_butterfly": {
+   "file": "items/soul_butterfly.png",
+   "h": 24,
+   "w": 32
+  },
   "soul_clover": {
    "file": "items/soul_clover.png",
    "h": 32,
    "w": 28
   },
+  "soul_noodles": {
+   "file": "items/soul_noodles.png",
+   "h": 24,
+   "w": 32
+  },
   "soul_pumpkin": {
    "file": "items/soul_pumpkin.png",
    "h": 30,
+   "w": 32
+  },
+  "soul_salmon": {
+   "file": "items/soul_salmon.png",
+   "h": 25,
    "w": 32
   },
   "soulberry": {
@@ -10590,10 +16150,95 @@
    "h": 32,
    "w": 32
   },
+  "soup_mushroom": {
+   "file": "items/soup_mushroom.png",
+   "h": 26,
+   "w": 32
+  },
+  "soup_tomato": {
+   "file": "items/soup_tomato.png",
+   "h": 26,
+   "w": 32
+  },
+  "soup_vegetable": {
+   "file": "items/soup_vegetable.png",
+   "h": 26,
+   "w": 32
+  },
+  "space_fish": {
+   "file": "items/space_fish.png",
+   "h": 26,
+   "w": 32
+  },
+  "space_pearl": {
+   "file": "items/space_pearl.png",
+   "h": 32,
+   "w": 26
+  },
+  "spear_copper": {
+   "file": "items/spear_copper.png",
+   "h": 26,
+   "w": 32
+  },
+  "spear_crystal": {
+   "file": "items/spear_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "spear_gold": {
+   "file": "items/spear_gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "spear_iron": {
+   "file": "items/spear_iron.png",
+   "h": 26,
+   "w": 32
+  },
+  "spear_moon": {
+   "file": "items/spear_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "spear_silver": {
+   "file": "items/spear_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "spear_steel": {
+   "file": "items/spear_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "spear_wood": {
+   "file": "items/spear_wood.png",
+   "h": 25,
+   "w": 32
+  },
   "speed_ring": {
    "file": "items/speed_ring.png",
    "h": 31,
    "w": 32
+  },
+  "speedster_shoe": {
+   "file": "items/speedster_shoe.png",
+   "h": 25,
+   "w": 32
+  },
+  "speedster_sole": {
+   "file": "items/speedster_sole.png",
+   "h": 32,
+   "w": 31
+  },
+  "spice": {
+   "file": "items/spice.png",
+   "h": 26,
+   "w": 32
+  },
+  "spider": {
+   "file": "items/spider.png",
+   "h": 32,
+   "w": 29
   },
   "spinach": {
    "file": "items/spinach.png",
@@ -10605,15 +16250,35 @@
    "h": 30,
    "w": 32
   },
+  "spire_fragment": {
+   "file": "items/spire_fragment.png",
+   "h": 32,
+   "w": 27
+  },
   "spirit_leaf": {
    "file": "items/spirit_leaf.png",
-   "h": 30,
+   "h": 28,
    "w": 32
+  },
+  "sponge_cake": {
+   "file": "items/sponge_cake.png",
+   "h": 25,
+   "w": 32
+  },
+  "spray_can": {
+   "file": "items/spray_can.png",
+   "h": 32,
+   "w": 30
   },
   "spring_blossom": {
    "file": "items/spring_blossom.png",
    "h": 32,
    "w": 30
+  },
+  "spring_hummingbird": {
+   "file": "items/spring_hummingbird.png",
+   "h": 27,
+   "w": 32
   },
   "spring_pea": {
    "file": "items/spring_pea.png",
@@ -10630,24 +16295,69 @@
    "h": 32,
    "w": 31
   },
+  "squid": {
+   "file": "items/squid.png",
+   "h": 25,
+   "w": 32
+  },
+  "stag_beetle": {
+   "file": "items/stag_beetle.png",
+   "h": 32,
+   "w": 28
+  },
   "star_apple": {
    "file": "items/star_apple.png",
    "h": 32,
    "w": 29
+  },
+  "star_bar": {
+   "file": "items/star_bar.png",
+   "h": 27,
+   "w": 32
   },
   "star_cherry": {
    "file": "items/star_cherry.png",
    "h": 28,
    "w": 32
   },
+  "star_core": {
+   "file": "items/star_core.png",
+   "h": 32,
+   "w": 26
+  },
+  "star_crystal": {
+   "file": "items/star_crystal.png",
+   "h": 27,
+   "w": 32
+  },
   "star_dust": {
    "file": "items/star_dust.png",
-   "h": 32,
-   "w": 30
+   "h": 30,
+   "w": 32
   },
   "star_dust2": {
    "file": "items/star_dust2.png",
    "h": 31,
+   "w": 32
+  },
+  "star_eel": {
+   "file": "items/star_eel.png",
+   "h": 27,
+   "w": 32
+  },
+  "star_firefly": {
+   "file": "items/star_firefly.png",
+   "h": 32,
+   "w": 29
+  },
+  "star_firefly_legend": {
+   "file": "items/star_firefly_legend.png",
+   "h": 26,
+   "w": 32
+  },
+  "star_fizz": {
+   "file": "items/star_fizz.png",
+   "h": 27,
    "w": 32
   },
   "star_lavender": {
@@ -10659,6 +16369,16 @@
    "file": "items/star_lily.png",
    "h": 32,
    "w": 31
+  },
+  "star_map": {
+   "file": "items/star_map.png",
+   "h": 32,
+   "w": 27
+  },
+  "star_ore": {
+   "file": "items/star_ore.png",
+   "h": 27,
+   "w": 32
   },
   "star_pepper": {
    "file": "items/star_pepper.png",
@@ -10675,6 +16395,16 @@
    "h": 32,
    "w": 32
   },
+  "star_soup": {
+   "file": "items/star_soup.png",
+   "h": 31,
+   "w": 32
+  },
+  "star_soup2": {
+   "file": "items/star_soup2.png",
+   "h": 25,
+   "w": 32
+  },
   "stardust_pumpkin_seed": {
    "file": "items/stardust_pumpkin_seed.png",
    "h": 27,
@@ -10682,7 +16412,12 @@
   },
   "starfin": {
    "file": "items/starfin.png",
-   "h": 22,
+   "h": 32,
+   "w": 28
+  },
+  "starfish": {
+   "file": "items/starfish.png",
+   "h": 25,
    "w": 32
   },
   "starflower_seed": {
@@ -10705,14 +16440,124 @@
    "h": 31,
    "w": 32
   },
+  "starry_paella": {
+   "file": "items/starry_paella.png",
+   "h": 24,
+   "w": 32
+  },
+  "station_core": {
+   "file": "items/station_core.png",
+   "h": 32,
+   "w": 27
+  },
+  "statue_head": {
+   "file": "items/statue_head.png",
+   "h": 32,
+   "w": 27
+  },
+  "steel_bar": {
+   "file": "items/steel_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "steel_belt": {
+   "file": "items/steel_belt.png",
+   "h": 32,
+   "w": 32
+  },
+  "steel_belt_plus": {
+   "file": "items/steel_belt_plus.png",
+   "h": 28,
+   "w": 32
+  },
+  "steel_boots": {
+   "file": "items/steel_boots.png",
+   "h": 32,
+   "w": 27
+  },
+  "steel_boots_plus": {
+   "file": "items/steel_boots_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "steel_cape": {
+   "file": "items/steel_cape.png",
+   "h": 28,
+   "w": 32
+  },
+  "steel_cape_plus": {
+   "file": "items/steel_cape_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "steel_chest": {
+   "file": "items/steel_chest.png",
+   "h": 32,
+   "w": 32
+  },
+  "steel_chest_plus": {
+   "file": "items/steel_chest_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "steel_gloves": {
+   "file": "items/steel_gloves.png",
+   "h": 29,
+   "w": 32
+  },
+  "steel_gloves_plus": {
+   "file": "items/steel_gloves_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "steel_helm": {
+   "file": "items/steel_helm.png",
+   "h": 32,
+   "w": 31
+  },
+  "steel_helm_plus": {
+   "file": "items/steel_helm_plus.png",
+   "h": 32,
+   "w": 29
+  },
+  "steel_legs": {
+   "file": "items/steel_legs.png",
+   "h": 31,
+   "w": 32
+  },
+  "steel_legs_plus": {
+   "file": "items/steel_legs_plus.png",
+   "h": 29,
+   "w": 32
+  },
+  "steel_shield": {
+   "file": "items/steel_shield.png",
+   "h": 28,
+   "w": 32
+  },
+  "steel_shield_plus": {
+   "file": "items/steel_shield_plus.png",
+   "h": 29,
+   "w": 32
+  },
   "steel_sword": {
    "file": "items/steel_sword.png",
    "h": 32,
    "w": 29
   },
+  "stew_beef": {
+   "file": "items/stew_beef.png",
+   "h": 28,
+   "w": 32
+  },
+  "stink_bug": {
+   "file": "items/stink_bug.png",
+   "h": 32,
+   "w": 29
+  },
   "stone": {
    "file": "items/stone.png",
-   "h": 28,
+   "h": 30,
    "w": 32
   },
   "stone_bloom": {
@@ -10720,9 +16565,19 @@
    "h": 32,
    "w": 32
   },
+  "stone_bread": {
+   "file": "items/stone_bread.png",
+   "h": 29,
+   "w": 32
+  },
   "stone_fig": {
    "file": "items/stone_fig.png",
    "h": 30,
+   "w": 32
+  },
+  "stone_fish": {
+   "file": "items/stone_fish.png",
+   "h": 25,
    "w": 32
   },
   "stone_potato": {
@@ -10730,9 +16585,59 @@
    "h": 31,
    "w": 32
   },
+  "stone_snail": {
+   "file": "items/stone_snail.png",
+   "h": 27,
+   "w": 32
+  },
+  "stone_soup": {
+   "file": "items/stone_soup.png",
+   "h": 24,
+   "w": 32
+  },
   "storm_berry": {
    "file": "items/storm_berry.png",
    "h": 30,
+   "w": 32
+  },
+  "storm_chili": {
+   "file": "items/storm_chili.png",
+   "h": 30,
+   "w": 32
+  },
+  "storm_core": {
+   "file": "items/storm_core.png",
+   "h": 32,
+   "w": 27
+  },
+  "storm_eye": {
+   "file": "items/storm_eye.png",
+   "h": 32,
+   "w": 26
+  },
+  "storm_fluff": {
+   "file": "items/storm_fluff.png",
+   "h": 28,
+   "w": 32
+  },
+  "storm_fondue": {
+   "file": "items/storm_fondue.png",
+   "h": 24,
+   "w": 32
+  },
+  "storm_glass": {
+   "file": "items/storm_glass.png",
+   "h": 27,
+   "w": 32
+  },
+  "storm_heart": {
+   "file": "items/storm_heart.png",
+   "h": 28,
+   "w": 32
+  },
+  "storm_marlin": {
+   "file": "items/storm_marlin.png",
+   "h": 27,
    "w": 32
   },
   "storm_orchid": {
@@ -10744,6 +16649,16 @@
    "file": "items/storm_pepper.png",
    "h": 32,
    "w": 30
+  },
+  "storm_wasp": {
+   "file": "items/storm_wasp.png",
+   "h": 22,
+   "w": 32
+  },
+  "stout": {
+   "file": "items/stout.png",
+   "h": 27,
+   "w": 32
   },
   "straw_hat": {
    "file": "items/straw_hat.png",
@@ -10765,14 +16680,34 @@
    "h": 32,
    "w": 26
   },
+  "sturgeon": {
+   "file": "items/sturgeon.png",
+   "h": 32,
+   "w": 29
+  },
+  "sugar": {
+   "file": "items/sugar.png",
+   "h": 26,
+   "w": 32
+  },
   "sugar_plum": {
    "file": "items/sugar_plum.png",
    "h": 32,
    "w": 28
   },
+  "sulk_stone": {
+   "file": "items/sulk_stone.png",
+   "h": 27,
+   "w": 32
+  },
   "summer_fire_mango": {
    "file": "items/summer_fire_mango.png",
    "h": 28,
+   "w": 32
+  },
+  "summer_platter": {
+   "file": "items/summer_platter.png",
+   "h": 26,
    "w": 32
   },
   "summer_sunburst": {
@@ -10792,7 +16727,7 @@
   },
   "sun_bead": {
    "file": "items/sun_bead.png",
-   "h": 29,
+   "h": 28,
    "w": 32
   },
   "sun_bean": {
@@ -10800,9 +16735,34 @@
    "h": 32,
    "w": 31
   },
+  "sun_butterfly": {
+   "file": "items/sun_butterfly.png",
+   "h": 32,
+   "w": 29
+  },
   "sun_corn": {
    "file": "items/sun_corn.png",
    "h": 31,
+   "w": 32
+  },
+  "sun_crystal": {
+   "file": "items/sun_crystal.png",
+   "h": 28,
+   "w": 32
+  },
+  "sun_flan": {
+   "file": "items/sun_flan.png",
+   "h": 27,
+   "w": 32
+  },
+  "sun_loaf": {
+   "file": "items/sun_loaf.png",
+   "h": 25,
+   "w": 32
+  },
+  "sun_marlin": {
+   "file": "items/sun_marlin.png",
+   "h": 27,
    "w": 32
   },
   "sun_persimmon": {
@@ -10815,9 +16775,19 @@
    "h": 32,
    "w": 31
   },
+  "sun_scarab": {
+   "file": "items/sun_scarab.png",
+   "h": 26,
+   "w": 32
+  },
+  "sun_trout": {
+   "file": "items/sun_trout.png",
+   "h": 23,
+   "w": 32
+  },
   "sunfish": {
    "file": "items/sunfish.png",
-   "h": 23,
+   "h": 24,
    "w": 32
   },
   "sunflower": {
@@ -10855,6 +16825,21 @@
    "h": 32,
    "w": 27
   },
+  "sunstone": {
+   "file": "items/sunstone.png",
+   "h": 32,
+   "w": 32
+  },
+  "sushi": {
+   "file": "items/sushi.png",
+   "h": 26,
+   "w": 32
+  },
+  "swallowtail": {
+   "file": "items/swallowtail.png",
+   "h": 32,
+   "w": 29
+  },
   "sweater": {
    "file": "items/sweater.png",
    "h": 29,
@@ -10875,6 +16860,56 @@
    "h": 32,
    "w": 32
   },
+  "sword_copper": {
+   "file": "items/sword_copper.png",
+   "h": 26,
+   "w": 32
+  },
+  "sword_crystal": {
+   "file": "items/sword_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "sword_gold": {
+   "file": "items/sword_gold.png",
+   "h": 25,
+   "w": 32
+  },
+  "sword_iron": {
+   "file": "items/sword_iron.png",
+   "h": 26,
+   "w": 32
+  },
+  "sword_moon": {
+   "file": "items/sword_moon.png",
+   "h": 28,
+   "w": 32
+  },
+  "sword_silver": {
+   "file": "items/sword_silver.png",
+   "h": 25,
+   "w": 32
+  },
+  "sword_steel": {
+   "file": "items/sword_steel.png",
+   "h": 25,
+   "w": 32
+  },
+  "sword_wood": {
+   "file": "items/sword_wood.png",
+   "h": 25,
+   "w": 32
+  },
+  "swordfish": {
+   "file": "items/swordfish.png",
+   "h": 24,
+   "w": 32
+  },
+  "syrup": {
+   "file": "items/syrup.png",
+   "h": 26,
+   "w": 32
+  },
   "tabby_orange": {
    "file": "items/tabby_orange.png",
    "h": 30,
@@ -10885,6 +16920,26 @@
    "h": 32,
    "w": 30
   },
+  "tablet_a": {
+   "file": "items/tablet_a.png",
+   "h": 28,
+   "w": 32
+  },
+  "tablet_b": {
+   "file": "items/tablet_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "taco": {
+   "file": "items/taco.png",
+   "h": 27,
+   "w": 32
+  },
+  "tadpole": {
+   "file": "items/tadpole.png",
+   "h": 23,
+   "w": 32
+  },
   "tamarind": {
    "file": "items/tamarind.png",
    "h": 32,
@@ -10893,6 +16948,16 @@
   "tank_top": {
    "file": "items/tank_top.png",
    "h": 31,
+   "w": 32
+  },
+  "tape": {
+   "file": "items/tape.png",
+   "h": 25,
+   "w": 32
+  },
+  "tea": {
+   "file": "items/tea.png",
+   "h": 26,
    "w": 32
   },
   "tea_leaf": {
@@ -10905,10 +16970,40 @@
    "h": 24,
    "w": 32
   },
-  "thug_cash": {
-   "file": "items/thug_cash.png",
+  "teddy_bear": {
+   "file": "items/teddy_bear.png",
    "h": 27,
    "w": 32
+  },
+  "thread_blue": {
+   "file": "items/thread_blue.png",
+   "h": 32,
+   "w": 32
+  },
+  "thread_green": {
+   "file": "items/thread_green.png",
+   "h": 32,
+   "w": 32
+  },
+  "thread_purple": {
+   "file": "items/thread_purple.png",
+   "h": 30,
+   "w": 32
+  },
+  "thread_red": {
+   "file": "items/thread_red.png",
+   "h": 32,
+   "w": 32
+  },
+  "thug_cash": {
+   "file": "items/thug_cash.png",
+   "h": 29,
+   "w": 32
+  },
+  "thunder_cicada": {
+   "file": "items/thunder_cicada.png",
+   "h": 32,
+   "w": 30
   },
   "thunder_nettle": {
    "file": "items/thunder_nettle.png",
@@ -10925,8 +17020,23 @@
    "h": 32,
    "w": 32
   },
+  "thunder_seed": {
+   "file": "items/thunder_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "thunder_tuna": {
+   "file": "items/thunder_tuna.png",
+   "h": 32,
+   "w": 29
+  },
   "thyme": {
    "file": "items/thyme.png",
+   "h": 32,
+   "w": 29
+  },
+  "tick": {
+   "file": "items/tick.png",
    "h": 32,
    "w": 29
   },
@@ -10938,6 +17048,16 @@
   "tide_lettuce": {
    "file": "items/tide_lettuce.png",
    "h": 31,
+   "w": 32
+  },
+  "time_cake": {
+   "file": "items/time_cake.png",
+   "h": 24,
+   "w": 32
+  },
+  "time_cricket": {
+   "file": "items/time_cricket.png",
+   "h": 24,
    "w": 32
   },
   "time_flower": {
@@ -10952,12 +17072,57 @@
   },
   "time_sand": {
    "file": "items/time_sand.png",
-   "h": 32,
-   "w": 24
+   "h": 28,
+   "w": 32
+  },
+  "time_trout": {
+   "file": "items/time_trout.png",
+   "h": 25,
+   "w": 32
   },
   "time_turnip": {
    "file": "items/time_turnip.png",
    "h": 32,
+   "w": 32
+  },
+  "tin": {
+   "file": "items/tin.png",
+   "h": 27,
+   "w": 32
+  },
+  "tin_bar": {
+   "file": "items/tin_bar.png",
+   "h": 27,
+   "w": 32
+  },
+  "toad": {
+   "file": "items/toad.png",
+   "h": 27,
+   "w": 32
+  },
+  "toast": {
+   "file": "items/toast.png",
+   "h": 26,
+   "w": 32
+  },
+  "token_crown": {
+   "file": "items/token_crown.png",
+   "h": 29,
+   "w": 32
+  },
+  "token_leaf": {
+   "file": "items/token_leaf.png",
+   "h": 29,
+   "w": 32
+  },
+  "token_paw": {
+   "file": "items/token_paw.png",
+   "h": 30,
+   "w": 32
+  },
+  "token_star": {
+   "file": "items/token_star.png",
+   "h": 30,
    "w": 32
   },
   "tomato": {
@@ -10975,14 +17140,159 @@
    "h": 31,
    "w": 32
   },
+  "toolbelt_1": {
+   "file": "items/toolbelt_1.png",
+   "h": 32,
+   "w": 31
+  },
+  "toolbelt_2": {
+   "file": "items/toolbelt_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "toolbelt_3": {
+   "file": "items/toolbelt_3.png",
+   "h": 32,
+   "w": 32
+  },
   "top_hat": {
    "file": "items/top_hat.png",
    "h": 28,
    "w": 32
   },
+  "topaz": {
+   "file": "items/topaz.png",
+   "h": 32,
+   "w": 30
+  },
+  "torch": {
+   "file": "items/torch.png",
+   "h": 31,
+   "w": 32
+  },
+  "tower_blueprint": {
+   "file": "items/tower_blueprint.png",
+   "h": 32,
+   "w": 27
+  },
+  "tower_core": {
+   "file": "items/tower_core.png",
+   "h": 32,
+   "w": 26
+  },
+  "tower_key": {
+   "file": "items/tower_key.png",
+   "h": 32,
+   "w": 27
+  },
+  "tower_keycard": {
+   "file": "items/tower_keycard.png",
+   "h": 29,
+   "w": 32
+  },
+  "trophy_bronze": {
+   "file": "items/trophy_bronze.png",
+   "h": 29,
+   "w": 32
+  },
+  "trophy_combat_a": {
+   "file": "items/trophy_combat_a.png",
+   "h": 32,
+   "w": 29
+  },
+  "trophy_combat_b": {
+   "file": "items/trophy_combat_b.png",
+   "h": 32,
+   "w": 27
+  },
+  "trophy_craft_a": {
+   "file": "items/trophy_craft_a.png",
+   "h": 32,
+   "w": 32
+  },
+  "trophy_craft_b": {
+   "file": "items/trophy_craft_b.png",
+   "h": 32,
+   "w": 32
+  },
+  "trophy_craft_c": {
+   "file": "items/trophy_craft_c.png",
+   "h": 32,
+   "w": 32
+  },
+  "trophy_craft_d": {
+   "file": "items/trophy_craft_d.png",
+   "h": 32,
+   "w": 30
+  },
+  "trophy_crystal": {
+   "file": "items/trophy_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "trophy_farm_a": {
+   "file": "items/trophy_farm_a.png",
+   "h": 27,
+   "w": 32
+  },
+  "trophy_farm_b": {
+   "file": "items/trophy_farm_b.png",
+   "h": 28,
+   "w": 32
+  },
+  "trophy_farm_c": {
+   "file": "items/trophy_farm_c.png",
+   "h": 28,
+   "w": 32
+  },
+  "trophy_farm_d": {
+   "file": "items/trophy_farm_d.png",
+   "h": 32,
+   "w": 31
+  },
+  "trophy_fish_a": {
+   "file": "items/trophy_fish_a.png",
+   "h": 32,
+   "w": 32
+  },
+  "trophy_fish_b": {
+   "file": "items/trophy_fish_b.png",
+   "h": 32,
+   "w": 32
+  },
+  "trophy_fish_c": {
+   "file": "items/trophy_fish_c.png",
+   "h": 32,
+   "w": 31
+  },
+  "trophy_fish_d": {
+   "file": "items/trophy_fish_d.png",
+   "h": 32,
+   "w": 29
+  },
+  "trophy_forage": {
+   "file": "items/trophy_forage.png",
+   "h": 32,
+   "w": 30
+  },
+  "trophy_gold": {
+   "file": "items/trophy_gold.png",
+   "h": 32,
+   "w": 32
+  },
+  "trophy_master": {
+   "file": "items/trophy_master.png",
+   "h": 32,
+   "w": 29
+  },
+  "trophy_silver": {
+   "file": "items/trophy_silver.png",
+   "h": 29,
+   "w": 32
+  },
   "trout": {
    "file": "items/trout.png",
-   "h": 19,
+   "h": 23,
    "w": 32
   },
   "truffle": {
@@ -10992,7 +17302,7 @@
   },
   "truffle_pasta": {
    "file": "items/truffle_pasta.png",
-   "h": 26,
+   "h": 28,
    "w": 32
   },
   "truffle_spore": {
@@ -11012,8 +17322,8 @@
   },
   "tuna": {
    "file": "items/tuna.png",
-   "h": 21,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "tunic": {
    "file": "items/tunic.png",
@@ -11045,10 +17355,30 @@
    "h": 30,
    "w": 32
   },
+  "twine": {
+   "file": "items/twine.png",
+   "h": 28,
+   "w": 32
+  },
+  "uptown_caviar": {
+   "file": "items/uptown_caviar.png",
+   "h": 26,
+   "w": 32
+  },
   "valerian": {
    "file": "items/valerian.png",
    "h": 32,
    "w": 30
+  },
+  "valley_map": {
+   "file": "items/valley_map.png",
+   "h": 32,
+   "w": 26
+  },
+  "valley_monarch": {
+   "file": "items/valley_monarch.png",
+   "h": 28,
+   "w": 32
   },
   "vanilla_pod": {
    "file": "items/vanilla_pod.png",
@@ -11058,6 +17388,16 @@
   "vanilla_seed": {
    "file": "items/vanilla_seed.png",
    "h": 27,
+   "w": 32
+  },
+  "vase": {
+   "file": "items/vase.png",
+   "h": 27,
+   "w": 32
+  },
+  "vault_blueprint": {
+   "file": "items/vault_blueprint.png",
+   "h": 26,
    "w": 32
   },
   "velvet_beet": {
@@ -11070,6 +17410,11 @@
    "h": 30,
    "w": 32
   },
+  "vinegar": {
+   "file": "items/vinegar.png",
+   "h": 26,
+   "w": 32
+  },
   "violet": {
    "file": "items/violet.png",
    "h": 32,
@@ -11080,10 +17425,35 @@
    "h": 32,
    "w": 28
   },
+  "void_ant": {
+   "file": "items/void_ant.png",
+   "h": 23,
+   "w": 32
+  },
+  "void_bar": {
+   "file": "items/void_bar.png",
+   "h": 28,
+   "w": 32
+  },
+  "void_dust": {
+   "file": "items/void_dust.png",
+   "h": 32,
+   "w": 27
+  },
+  "void_eel": {
+   "file": "items/void_eel.png",
+   "h": 25,
+   "w": 32
+  },
   "void_grape": {
    "file": "items/void_grape.png",
    "h": 32,
    "w": 31
+  },
+  "void_ore": {
+   "file": "items/void_ore.png",
+   "h": 30,
+   "w": 32
   },
   "void_pepper_seed": {
    "file": "items/void_pepper_seed.png",
@@ -11105,14 +17475,59 @@
    "h": 32,
    "w": 31
   },
+  "void_stew": {
+   "file": "items/void_stew.png",
+   "h": 24,
+   "w": 32
+  },
+  "vole": {
+   "file": "items/vole.png",
+   "h": 26,
+   "w": 32
+  },
+  "waffle": {
+   "file": "items/waffle.png",
+   "h": 25,
+   "w": 32
+  },
+  "walking_stick": {
+   "file": "items/walking_stick.png",
+   "h": 32,
+   "w": 29
+  },
+  "walleye": {
+   "file": "items/walleye.png",
+   "h": 32,
+   "w": 29
+  },
+  "warehouse_key": {
+   "file": "items/warehouse_key.png",
+   "h": 27,
+   "w": 32
+  },
   "wasabi_seed": {
    "file": "items/wasabi_seed.png",
    "h": 28,
    "w": 32
   },
+  "wasp": {
+   "file": "items/wasp.png",
+   "h": 24,
+   "w": 32
+  },
+  "water": {
+   "file": "items/water.png",
+   "h": 32,
+   "w": 32
+  },
   "water_chestnut_seed": {
    "file": "items/water_chestnut_seed.png",
    "h": 24,
+   "w": 32
+  },
+  "water_strider": {
+   "file": "items/water_strider.png",
+   "h": 26,
    "w": 32
   },
   "watercress_seed": {
@@ -11129,6 +17544,21 @@
    "file": "items/watermelon_seed.png",
    "h": 32,
    "w": 31
+  },
+  "wax": {
+   "file": "items/wax.png",
+   "h": 23,
+   "w": 32
+  },
+  "weevil": {
+   "file": "items/weevil.png",
+   "h": 32,
+   "w": 29
+  },
+  "whale_shark": {
+   "file": "items/whale_shark.png",
+   "h": 22,
+   "w": 32
   },
   "wheat": {
    "file": "items/wheat.png",
@@ -11165,6 +17595,11 @@
    "h": 32,
    "w": 31
   },
+  "whiting": {
+   "file": "items/whiting.png",
+   "h": 32,
+   "w": 29
+  },
   "wild_garlic": {
    "file": "items/wild_garlic.png",
    "h": 32,
@@ -11185,6 +17620,11 @@
    "h": 31,
    "w": 32
   },
+  "wine": {
+   "file": "items/wine.png",
+   "h": 28,
+   "w": 32
+  },
   "winter_cabbage": {
    "file": "items/winter_cabbage.png",
    "h": 30,
@@ -11200,9 +17640,14 @@
    "h": 32,
    "w": 31
   },
+  "wiretap": {
+   "file": "items/wiretap.png",
+   "h": 25,
+   "w": 32
+  },
   "wish": {
    "file": "items/wish.png",
-   "h": 31,
+   "h": 28,
    "w": 32
   },
   "wish_daisy": {
@@ -11215,9 +17660,19 @@
    "h": 32,
    "w": 30
   },
+  "wish_guppy": {
+   "file": "items/wish_guppy.png",
+   "h": 25,
+   "w": 32
+  },
   "wish_melon": {
    "file": "items/wish_melon.png",
    "h": 29,
+   "w": 32
+  },
+  "wish_pie": {
+   "file": "items/wish_pie.png",
+   "h": 24,
    "w": 32
   },
   "wishfruit_seed": {
@@ -11230,8 +17685,28 @@
    "h": 32,
    "w": 31
   },
+  "wisp_bottle": {
+   "file": "items/wisp_bottle.png",
+   "h": 27,
+   "w": 32
+  },
+  "wisp_dragonfly": {
+   "file": "items/wisp_dragonfly.png",
+   "h": 32,
+   "w": 29
+  },
+  "wisp_lantern": {
+   "file": "items/wisp_lantern.png",
+   "h": 28,
+   "w": 32
+  },
   "wisp_light": {
    "file": "items/wisp_light.png",
+   "h": 28,
+   "w": 32
+  },
+  "wisp_minnow": {
+   "file": "items/wisp_minnow.png",
    "h": 32,
    "w": 29
   },
@@ -11240,9 +17715,24 @@
    "h": 32,
    "w": 27
   },
+  "wisp_queen_light": {
+   "file": "items/wisp_queen_light.png",
+   "h": 32,
+   "w": 26
+  },
   "wisp_rosemary": {
    "file": "items/wisp_rosemary.png",
    "h": 32,
+   "w": 32
+  },
+  "wisp_spark": {
+   "file": "items/wisp_spark.png",
+   "h": 32,
+   "w": 31
+  },
+  "wisp_thread": {
+   "file": "items/wisp_thread.png",
+   "h": 27,
    "w": 32
   },
   "wizard_hat": {
@@ -11285,6 +17775,11 @@
    "h": 30,
    "w": 32
   },
+  "worm": {
+   "file": "items/worm.png",
+   "h": 32,
+   "w": 29
+  },
   "yarrow": {
    "file": "items/yarrow.png",
    "h": 31,
@@ -11294,6 +17789,16 @@
    "file": "items/yellow_squash_seed.png",
    "h": 32,
    "w": 28
+  },
+  "yogurt": {
+   "file": "items/yogurt.png",
+   "h": 25,
+   "w": 32
+  },
+  "zander": {
+   "file": "items/zander.png",
+   "h": 32,
+   "w": 29
   },
   "zucchini": {
    "file": "items/zucchini.png",
@@ -21236,6 +27741,11 @@
    "h": 32,
    "w": 30
   },
+  "attack_up": {
+   "file": "ui/attack_up.png",
+   "h": 24,
+   "w": 23
+  },
   "badge_bartering_1": {
    "file": "ui/badge_bartering_1.png",
    "h": 29,
@@ -21431,6 +27941,26 @@
    "h": 34,
    "w": 135
   },
+  "bartering_up": {
+   "file": "ui/bartering_up.png",
+   "h": 20,
+   "w": 24
+  },
+  "blessed": {
+   "file": "ui/blessed.png",
+   "h": 20,
+   "w": 24
+  },
+  "blind": {
+   "file": "ui/blind.png",
+   "h": 24,
+   "w": 24
+  },
+  "block_up": {
+   "file": "ui/block_up.png",
+   "h": 20,
+   "w": 24
+  },
   "bolt_empty": {
    "file": "ui/bolt_empty.png",
    "h": 32,
@@ -21485,6 +28015,16 @@
    "file": "ui/bubble.png",
    "h": 30,
    "w": 32
+  },
+  "building_up": {
+   "file": "ui/building_up.png",
+   "h": 20,
+   "w": 24
+  },
+  "burn": {
+   "file": "ui/burn.png",
+   "h": 24,
+   "w": 22
   },
   "button": {
    "file": "ui/button.png",
@@ -21586,6 +28126,51 @@
    "h": 22,
    "w": 182
   },
+  "climb": {
+   "file": "ui/climb.png",
+   "h": 24,
+   "w": 21
+  },
+  "clock_0": {
+   "file": "ui/clock_0.png",
+   "h": 23,
+   "w": 24
+  },
+  "clock_1": {
+   "file": "ui/clock_1.png",
+   "h": 23,
+   "w": 24
+  },
+  "clock_2": {
+   "file": "ui/clock_2.png",
+   "h": 23,
+   "w": 24
+  },
+  "clock_3": {
+   "file": "ui/clock_3.png",
+   "h": 23,
+   "w": 24
+  },
+  "clock_4": {
+   "file": "ui/clock_4.png",
+   "h": 22,
+   "w": 24
+  },
+  "clock_5": {
+   "file": "ui/clock_5.png",
+   "h": 22,
+   "w": 24
+  },
+  "clock_6": {
+   "file": "ui/clock_6.png",
+   "h": 22,
+   "w": 24
+  },
+  "clock_7": {
+   "file": "ui/clock_7.png",
+   "h": 22,
+   "w": 24
+  },
   "clock_fall": {
    "file": "ui/clock_fall.png",
    "h": 52,
@@ -21616,6 +28201,26 @@
    "h": 42,
    "w": 38
   },
+  "cloud_walker": {
+   "file": "ui/cloud_walker.png",
+   "h": 21,
+   "w": 24
+  },
+  "cold": {
+   "file": "ui/cold.png",
+   "h": 24,
+   "w": 20
+  },
+  "combat_up": {
+   "file": "ui/combat_up.png",
+   "h": 21,
+   "w": 24
+  },
+  "crit_up": {
+   "file": "ui/crit_up.png",
+   "h": 20,
+   "w": 24
+  },
   "crystal": {
    "file": "ui/crystal.png",
    "h": 32,
@@ -21636,24 +28241,99 @@
    "h": 30,
    "w": 34
   },
+  "crystals_up": {
+   "file": "ui/crystals_up.png",
+   "h": 20,
+   "w": 24
+  },
+  "cursed": {
+   "file": "ui/cursed.png",
+   "h": 24,
+   "w": 24
+  },
+  "dark_touched": {
+   "file": "ui/dark_touched.png",
+   "h": 22,
+   "w": 24
+  },
   "daynight_dial": {
    "file": "ui/daynight_dial.png",
    "h": 58,
    "w": 70
+  },
+  "defense_up": {
+   "file": "ui/defense_up.png",
+   "h": 24,
+   "w": 24
   },
   "dialogue_box": {
    "file": "ui/dialogue_box.png",
    "h": 87,
    "w": 508
   },
+  "dodge_up": {
+   "file": "ui/dodge_up.png",
+   "h": 20,
+   "w": 24
+  },
+  "double_drop": {
+   "file": "ui/double_drop.png",
+   "h": 21,
+   "w": 24
+  },
+  "down_0": {
+   "file": "ui/down_0.png",
+   "h": 24,
+   "w": 24
+  },
+  "down_1": {
+   "file": "ui/down_1.png",
+   "h": 24,
+   "w": 22
+  },
+  "down_2": {
+   "file": "ui/down_2.png",
+   "h": 24,
+   "w": 22
+  },
+  "down_3": {
+   "file": "ui/down_3.png",
+   "h": 24,
+   "w": 23
+  },
+  "down_4": {
+   "file": "ui/down_4.png",
+   "h": 23,
+   "w": 24
+  },
+  "dream_touched": {
+   "file": "ui/dream_touched.png",
+   "h": 23,
+   "w": 24
+  },
+  "drop_up": {
+   "file": "ui/drop_up.png",
+   "h": 20,
+   "w": 24
+  },
   "energy_bar": {
    "file": "ui/energy_bar.png",
    "h": 36,
    "w": 162
   },
+  "energy_regen": {
+   "file": "ui/energy_regen.png",
+   "h": 24,
+   "w": 23
+  },
   "exclaim": {
    "file": "ui/exclaim.png",
    "h": 24,
+   "w": 24
+  },
+  "farming_up": {
+   "file": "ui/farming_up.png",
+   "h": 20,
    "w": 24
   },
   "fheart_empty": {
@@ -21670,6 +28350,21 @@
    "file": "ui/fheart_gold.png",
    "h": 24,
    "w": 23
+  },
+  "fishing_up": {
+   "file": "ui/fishing_up.png",
+   "h": 22,
+   "w": 24
+  },
+  "float": {
+   "file": "ui/float.png",
+   "h": 24,
+   "w": 22
+  },
+  "foraging_up": {
+   "file": "ui/foraging_up.png",
+   "h": 20,
+   "w": 24
   },
   "frame_common": {
    "file": "ui/frame_common.png",
@@ -21696,6 +28391,21 @@
    "h": 40,
    "w": 29
   },
+  "freeze": {
+   "file": "ui/freeze.png",
+   "h": 24,
+   "w": 22
+  },
+  "friendship_up": {
+   "file": "ui/friendship_up.png",
+   "h": 20,
+   "w": 24
+  },
+  "full": {
+   "file": "ui/full.png",
+   "h": 20,
+   "w": 24
+  },
   "gift_hate": {
    "file": "ui/gift_hate.png",
    "h": 55,
@@ -21715,6 +28425,31 @@
    "file": "ui/gift_neutral.png",
    "h": 55,
    "w": 51
+  },
+  "glowing": {
+   "file": "ui/glowing.png",
+   "h": 24,
+   "w": 24
+  },
+  "growth_up": {
+   "file": "ui/growth_up.png",
+   "h": 21,
+   "w": 24
+  },
+  "happy": {
+   "file": "ui/happy.png",
+   "h": 24,
+   "w": 24
+  },
+  "harvest_up": {
+   "file": "ui/harvest_up.png",
+   "h": 21,
+   "w": 24
+  },
+  "health_regen": {
+   "file": "ui/health_regen.png",
+   "h": 24,
+   "w": 23
   },
   "heart2_empty": {
    "file": "ui/heart2_empty.png",
@@ -21746,10 +28481,120 @@
    "h": 29,
    "w": 32
   },
+  "heartpip_0": {
+   "file": "ui/heartpip_0.png",
+   "h": 18,
+   "w": 24
+  },
+  "heartpip_1": {
+   "file": "ui/heartpip_1.png",
+   "h": 22,
+   "w": 24
+  },
+  "heartpip_10": {
+   "file": "ui/heartpip_10.png",
+   "h": 22,
+   "w": 24
+  },
+  "heartpip_11": {
+   "file": "ui/heartpip_11.png",
+   "h": 21,
+   "w": 24
+  },
+  "heartpip_12": {
+   "file": "ui/heartpip_12.png",
+   "h": 20,
+   "w": 24
+  },
+  "heartpip_13": {
+   "file": "ui/heartpip_13.png",
+   "h": 20,
+   "w": 24
+  },
+  "heartpip_14": {
+   "file": "ui/heartpip_14.png",
+   "h": 18,
+   "w": 24
+  },
+  "heartpip_15": {
+   "file": "ui/heartpip_15.png",
+   "h": 18,
+   "w": 24
+  },
+  "heartpip_2": {
+   "file": "ui/heartpip_2.png",
+   "h": 23,
+   "w": 24
+  },
+  "heartpip_3": {
+   "file": "ui/heartpip_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "heartpip_4": {
+   "file": "ui/heartpip_4.png",
+   "h": 21,
+   "w": 24
+  },
+  "heartpip_5": {
+   "file": "ui/heartpip_5.png",
+   "h": 21,
+   "w": 24
+  },
+  "heartpip_6": {
+   "file": "ui/heartpip_6.png",
+   "h": 20,
+   "w": 24
+  },
+  "heartpip_7": {
+   "file": "ui/heartpip_7.png",
+   "h": 19,
+   "w": 24
+  },
+  "heartpip_8": {
+   "file": "ui/heartpip_8.png",
+   "h": 22,
+   "w": 24
+  },
+  "heartpip_9": {
+   "file": "ui/heartpip_9.png",
+   "h": 22,
+   "w": 24
+  },
   "hotbar_frame": {
    "file": "ui/hotbar_frame.png",
    "h": 58,
    "w": 504
+  },
+  "hourglass_0": {
+   "file": "ui/hourglass_0.png",
+   "h": 23,
+   "w": 24
+  },
+  "hourglass_1": {
+   "file": "ui/hourglass_1.png",
+   "h": 23,
+   "w": 24
+  },
+  "hourglass_2": {
+   "file": "ui/hourglass_2.png",
+   "h": 24,
+   "w": 20
+  },
+  "hourglass_3": {
+   "file": "ui/hourglass_3.png",
+   "h": 8,
+   "w": 24
+  },
+  "hourglass_4": {
+   "file": "ui/hourglass_4.png",
+   "h": 24,
+   "w": 21
+  },
+  "hungry": {
+   "file": "ui/hungry.png",
+   "h": 22,
+   "w": 24
   },
   "ic_inventory": {
    "file": "ui/ic_inventory.png",
@@ -21781,6 +28626,16 @@
    "h": 40,
    "w": 46
   },
+  "inspired": {
+   "file": "ui/inspired.png",
+   "h": 23,
+   "w": 24
+  },
+  "invisible": {
+   "file": "ui/invisible.png",
+   "h": 23,
+   "w": 24
+  },
   "joy_base_a": {
    "file": "ui/joy_base_a.png",
    "h": 63,
@@ -21801,6 +28656,36 @@
    "h": 34,
    "w": 34
   },
+  "knockback_up": {
+   "file": "ui/knockback_up.png",
+   "h": 21,
+   "w": 24
+  },
+  "lava_walker": {
+   "file": "ui/lava_walker.png",
+   "h": 21,
+   "w": 24
+  },
+  "light_touched": {
+   "file": "ui/light_touched.png",
+   "h": 24,
+   "w": 22
+  },
+  "luck_up": {
+   "file": "ui/luck_up.png",
+   "h": 24,
+   "w": 22
+  },
+  "lucky": {
+   "file": "ui/lucky.png",
+   "h": 23,
+   "w": 24
+  },
+  "magnet": {
+   "file": "ui/magnet.png",
+   "h": 24,
+   "w": 24
+  },
   "marker_birthday": {
    "file": "ui/marker_birthday.png",
    "h": 64,
@@ -21810,6 +28695,16 @@
    "file": "ui/marker_festival.png",
    "h": 63,
    "w": 52
+  },
+  "maxenergy_up": {
+   "file": "ui/maxenergy_up.png",
+   "h": 22,
+   "w": 24
+  },
+  "maxhp_up": {
+   "file": "ui/maxhp_up.png",
+   "h": 20,
+   "w": 24
   },
   "medal_champion": {
    "file": "ui/medal_champion.png",
@@ -21840,6 +28735,26 @@
    "file": "ui/medal_master.png",
    "h": 45,
    "w": 56
+  },
+  "mining_up": {
+   "file": "ui/mining_up.png",
+   "h": 23,
+   "w": 24
+  },
+  "moon_touched": {
+   "file": "ui/moon_touched.png",
+   "h": 21,
+   "w": 24
+  },
+  "night_vision": {
+   "file": "ui/night_vision.png",
+   "h": 21,
+   "w": 24
+  },
+  "no_energy_cost": {
+   "file": "ui/no_energy_cost.png",
+   "h": 21,
+   "w": 24
   },
   "node_crown": {
    "file": "ui/node_crown.png",
@@ -21905,6 +28820,16 @@
    "file": "ui/panel_wood2.png",
    "h": 66,
    "w": 74
+  },
+  "paw_touched": {
+   "file": "ui/paw_touched.png",
+   "h": 19,
+   "w": 24
+  },
+  "penguin_touched": {
+   "file": "ui/penguin_touched.png",
+   "h": 23,
+   "w": 24
   },
   "perk_bartering_1": {
    "file": "ui/perk_bartering_1.png",
@@ -22411,6 +29336,36 @@
    "h": 48,
    "w": 37
   },
+  "plus1": {
+   "file": "ui/plus1.png",
+   "h": 24,
+   "w": 23
+  },
+  "plus2": {
+   "file": "ui/plus2.png",
+   "h": 24,
+   "w": 24
+  },
+  "plus3": {
+   "file": "ui/plus3.png",
+   "h": 24,
+   "w": 24
+  },
+  "plus4": {
+   "file": "ui/plus4.png",
+   "h": 24,
+   "w": 24
+  },
+  "plus5": {
+   "file": "ui/plus5.png",
+   "h": 24,
+   "w": 23
+  },
+  "poison": {
+   "file": "ui/poison.png",
+   "h": 22,
+   "w": 24
+  },
   "quest_marker": {
    "file": "ui/quest_marker.png",
    "h": 46,
@@ -22421,6 +29376,11 @@
    "h": 31,
    "w": 32
   },
+  "rare_find": {
+   "file": "ui/rare_find.png",
+   "h": 21,
+   "w": 24
+  },
   "recipe_card": {
    "file": "ui/recipe_card.png",
    "h": 40,
@@ -22430,6 +29390,11 @@
    "file": "ui/recipe_locked.png",
    "h": 40,
    "w": 36
+  },
+  "rested": {
+   "file": "ui/rested.png",
+   "h": 22,
+   "w": 24
   },
   "ribbon_best": {
    "file": "ui/ribbon_best.png",
@@ -22445,6 +29410,16 @@
    "file": "ui/ribbon_friend.png",
    "h": 25,
    "w": 158
+  },
+  "sad": {
+   "file": "ui/sad.png",
+   "h": 24,
+   "w": 24
+  },
+  "sand_walker": {
+   "file": "ui/sand_walker.png",
+   "h": 21,
+   "w": 24
   },
   "sbtn_blue": {
    "file": "ui/sbtn_blue.png",
@@ -22540,6 +29515,31 @@
    "file": "ui/sheart_half.png",
    "h": 23,
    "w": 22
+  },
+  "shieldpip_0": {
+   "file": "ui/shieldpip_0.png",
+   "h": 8,
+   "w": 24
+  },
+  "shieldpip_1": {
+   "file": "ui/shieldpip_1.png",
+   "h": 24,
+   "w": 23
+  },
+  "shieldpip_2": {
+   "file": "ui/shieldpip_2.png",
+   "h": 24,
+   "w": 22
+  },
+  "shieldpip_3": {
+   "file": "ui/shieldpip_3.png",
+   "h": 24,
+   "w": 22
+  },
+  "shieldpip_4": {
+   "file": "ui/shieldpip_4.png",
+   "h": 24,
+   "w": 24
   },
   "skill2_bartering": {
    "file": "ui/skill2_bartering.png",
@@ -22661,10 +29661,80 @@
    "h": 55,
    "w": 218
   },
+  "slow": {
+   "file": "ui/slow.png",
+   "h": 24,
+   "w": 21
+  },
   "speech_box": {
    "file": "ui/speech_box.png",
    "h": 78,
    "w": 311
+  },
+  "speed_down": {
+   "file": "ui/speed_down.png",
+   "h": 22,
+   "w": 24
+  },
+  "speed_up": {
+   "file": "ui/speed_up.png",
+   "h": 22,
+   "w": 24
+  },
+  "stack_0": {
+   "file": "ui/stack_0.png",
+   "h": 24,
+   "w": 21
+  },
+  "stack_1": {
+   "file": "ui/stack_1.png",
+   "h": 21,
+   "w": 24
+  },
+  "stack_2": {
+   "file": "ui/stack_2.png",
+   "h": 18,
+   "w": 24
+  },
+  "stack_3": {
+   "file": "ui/stack_3.png",
+   "h": 17,
+   "w": 24
+  },
+  "stack_4": {
+   "file": "ui/stack_4.png",
+   "h": 17,
+   "w": 24
+  },
+  "stack_5": {
+   "file": "ui/stack_5.png",
+   "h": 21,
+   "w": 24
+  },
+  "stack_6": {
+   "file": "ui/stack_6.png",
+   "h": 21,
+   "w": 24
+  },
+  "stack_7": {
+   "file": "ui/stack_7.png",
+   "h": 19,
+   "w": 24
+  },
+  "star_touched": {
+   "file": "ui/star_touched.png",
+   "h": 21,
+   "w": 24
+  },
+  "stun": {
+   "file": "ui/stun.png",
+   "h": 23,
+   "w": 24
+  },
+  "sun_touched": {
+   "file": "ui/sun_touched.png",
+   "h": 21,
+   "w": 24
   },
   "swatch_0": {
    "file": "ui/swatch_0.png",
@@ -22726,6 +29796,11 @@
    "h": 28,
    "w": 35
   },
+  "swim": {
+   "file": "ui/swim.png",
+   "h": 24,
+   "w": 24
+  },
   "tab2_active": {
    "file": "ui/tab2_active.png",
    "h": 30,
@@ -22771,6 +29846,11 @@
    "h": 40,
    "w": 29
   },
+  "tired": {
+   "file": "ui/tired.png",
+   "h": 21,
+   "w": 24
+  },
   "title_bg": {
    "file": "ui/title_bg.png",
    "h": 960,
@@ -22780,6 +29860,56 @@
    "file": "ui/toast_banner.png",
    "h": 35,
    "w": 344
+  },
+  "toolspeed_up": {
+   "file": "ui/toolspeed_up.png",
+   "h": 24,
+   "w": 24
+  },
+  "up_0": {
+   "file": "ui/up_0.png",
+   "h": 24,
+   "w": 24
+  },
+  "up_1": {
+   "file": "ui/up_1.png",
+   "h": 24,
+   "w": 24
+  },
+  "up_2": {
+   "file": "ui/up_2.png",
+   "h": 24,
+   "w": 24
+  },
+  "up_3": {
+   "file": "ui/up_3.png",
+   "h": 24,
+   "w": 22
+  },
+  "up_4": {
+   "file": "ui/up_4.png",
+   "h": 24,
+   "w": 23
+  },
+  "up_5": {
+   "file": "ui/up_5.png",
+   "h": 23,
+   "w": 24
+  },
+  "warm": {
+   "file": "ui/warm.png",
+   "h": 24,
+   "w": 22
+  },
+  "water_saver": {
+   "file": "ui/water_saver.png",
+   "h": 21,
+   "w": 24
+  },
+  "wet": {
+   "file": "ui/wet.png",
+   "h": 24,
+   "w": 18
   },
   "world_map": {
    "file": "ui/world_map.png",
@@ -22825,6 +29955,21 @@
    "file": "ui/wx_windy.png",
    "h": 36,
    "w": 32
+  },
+  "x2": {
+   "file": "ui/x2.png",
+   "h": 24,
+   "w": 24
+  },
+  "x3": {
+   "file": "ui/x3.png",
+   "h": 24,
+   "w": 24
+  },
+  "xp_up": {
+   "file": "ui/xp_up.png",
+   "h": 21,
+   "w": 24
   }
  },
  "wildlife/badger": {

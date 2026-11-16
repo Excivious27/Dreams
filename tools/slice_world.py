@@ -1648,7 +1648,15 @@ def _icon_sheet(file, names_by_row, group="items", size=32, rarity_strip=True):
     rgba = load(file)
     a = rgba[..., 3] > 40
     rows = _grid_runs(a.mean(1), 0.08, 40)
-    rows = [r for r in rows if r[1] - r[0] >= 50][:8]
+    # Drop banner rows (title / labels): mostly cream pixels.
+    rgb = rgba[..., :3].astype(int)
+    cream = (rgb[..., 0] > 215) & (rgb[..., 1] > 185) & (rgb[..., 2] > 130) & (rgb[..., 2] < 225) & a
+    keep = []
+    for r in rows:
+        band_cream = cream[r[0]:r[1]].sum() / max(1, a[r[0]:r[1]].sum())
+        if r[1] - r[0] >= 50 and band_cream < 0.5:
+            keep.append(r)
+    rows = keep[:8]
     for m, names in enumerate(names_by_row):
         if m >= len(rows):
             break
@@ -1938,11 +1946,152 @@ def w67():
         strip(fr[12:13], g, "sit"); strip(fr[13:14], g, "wave"); strip(fr[14:16], g, "work")
 
 
+
+
+# ---------------------------------------------------------------- W72-W83 catalogue sheets (generic: row N, col M -> name)
+
+def _catalogue(file, group, names_by_row, size=32, detect_th=0.08):
+    _icon_sheet(file, names_by_row, group, size)
+
+
+def w72():
+    _catalogue("w72_monster_drops.png", "items", _ids(
+        "grump_dust,grump_tooth,grump_cloth,grump_button,storm_fluff,grey_feather,sulk_stone,grumble_seed,slime_gel,slime_gel_blue,slime_core,bat_wing,bat_fang,bat_fur,wisp_spark,wisp_thread",
+        "thug_cash,loose_change,bottle_cap,cig_tin,bent_knuckle,broken_blade,bandana_drop,burner_phone,lockpick,dice,poker_chip,matchbook,cheap_watch,car_key,spray_can,chain_link",
+        "golem_core,golem_moss,golem_heart,shard_splinter,shard_heart,soldier_badge,grump_medal,archer_string,soldier_buckle,knight_rivet,wisp_light,enforcer_badge,cyber_chip,flame_ember,speedster_sole,gambler_chip",
+        "jacket_patch,riot_shard,dock_manifest,warehouse_key,neon_tube,karaoke_mic,ramen_token,rat_tail,pit_ticket,boxing_wrap,cash_bundle,phone_sim,hard_drive,gold_tooth,fake_id,vault_blueprint",
+        "commander_crest,commander_cape,knight_crystal,dark_shard,golem_crown,wisp_lantern,bat_king_wing,slime_king_gel,general_hat,storm_heart,enforcer_helm,flame_core,cyber_eye,speedster_shoe,golden_dice,dock_boss_ring",
+        "president_cufflink,tower_keycard,ledger_page,limo_key,heli_blade,bank_token,gold_bundle,penthouse_key,dragon_scale,champion_belt,cctv_lens,sealed_envelope,contract,briefcase,wiretap,earpiece",
+        "dark_crystal_shard,commander_soul,grump_king_crown,knight_heart,storm_core,wisp_queen_light,bat_lord_fang,golem_elder_core,slime_emperor_gel,void_dust,president_tie_pin,president_signet,tower_core,dragon_heart,pit_legend_belt,big_ledger",
+        "dark_crystal_fragment,meow_spark,light_tear,grump_king_heart,penguin_promise,storm_eye,moon_shard,star_core,president_seal,president_crown,tower_key,city_deed,first_dollar,golden_pawprint,dream_heart,space_pearl"))
+
+
+def w73():
+    _catalogue("w73_magic_minerals.png", "items", _ids(
+        "light_mote,star_dust,bottled_wind,ember,frost,spirit_leaf,crystal_seed,lunar_petal,sun_bead,shadow_ink,echo_shell,time_sand,wish,dream_essence,moon_tear,paw_charm_shard",
+        "aurora_thread,comet_tail,wisp_bottle,dusk_ink,dawn_dew,storm_glass,thunder_seed,cloud_cotton,rain_pearl,snow_heart,lava_bead,root_rune,sea_rune,sky_rune,cat_rune,penguin_rune",
+        "stone,flint,coal,copper,tin,iron,silver,gold,platinum,crystal_ore,dark,moon_ore,star_ore,meteor_ore,aether_ore,void_ore",
+        "copper_bar,tin_bar,bronze_bar,iron_bar,steel_bar,silver_bar,gold_bar,platinum_bar,crystal_bar,dark_bar,moon_bar,star_bar,meteor_bar,aether_bar,void_bar,paw_steel_bar",
+        "quartz,amethyst,topaz,jade,amber,garnet,ruby,sapphire,emerald,aquamarine,opal,pearl,diamond,black_diamond,moonstone,sunstone",
+        "geode_small,geode_large,cluster_blue,cluster_pink,cluster_green,cluster_purple,prism_shard,dream_crystal,light_shard,dark_crystal_shard2,heart_crystal,star_crystal,moon_crystal,sun_crystal,paw_crystal,ice_crystal",
+        "ancient_coin,old_key,statue_head,pottery_shard,rune_tablet,bone_flute,fossil_shell,fossil_fish,fossil_leaf,dino_egg,star_map,old_photo,music_box,pocket_mirror,penguin_figurine,cat_figurine",
+        "valley_map,first_seed,great_tree_lantern,lighthouse_lens,mill_stone,shrine_bell,observatory_lens,station_core,hideout_radio,dock_bell,neon_dragon_eye,pit_belt,tower_blueprint,moon_key,jungle_idol,spire_fragment"))
+
+
+def w74():
+    _catalogue("w74_fish.png", "items", _ids(
+        "minnow,sunfish,carp,perch,bluegill,chub,roach,dace,trout,bass,catfish,bream,goldfish,smelt,sardine,anchovy",
+        "herring,mackerel,cod,haddock,flounder,sole,mullet,whiting,crab,shrimp,clam,mussel,oyster,sea_snail,crayfish,seaweed",
+        "salmon,tuna,pike,walleye,zander,eel,lamprey,sturgeon,grayling,char,puffer,lionfish,flying_fish,barracuda,snapper,grouper",
+        "lobster,octopus,squid,jellyfish,sea_urchin,starfish,seahorse,ray,nautilus,cuttlefish,cave_fish,glow_eel,mooncarp,sun_trout,river_king,lake_queen",
+        "starfin,moon_carp2,crystal_fish,lantern_fish,ghost_fish,shadow_eel,ember_koi,frost_pike,cloud_fish,thunder_tuna,prism_trout,mirror_bass,echo_catfish,wisp_minnow,dream_guppy,angel_fish",
+        "swordfish,marlin,sailfish,hammerhead,blue_shark,giant_squid,manta,whale_shark,coelacanth,oarfish,mola,narwhal,dolphin,sea_turtle,giant_clam,king_crab",
+        "void_eel,storm_marlin,lava_koi,ice_pike,sky_fish,stone_fish,time_trout,memory_carp,heart_bass,soul_salmon,nightmare_angler,lullaby_seahorse,wish_guppy,halo_ray,mirror_octopus,echo_squid",
+        "legendary_koi,lake_elder,river_dragon,sea_wolf,moon_whale,sun_marlin,star_eel,crystal_leviathan,penguin_fish,cat_favourite,president_shark,dock_kraken,lighthouse_fish,first_trout,dream_fish,space_fish"))
+
+
+def w75():
+    _catalogue("w75_bugs_critters.png", "items", _ids(
+        "ant,beetle,ladybug,grasshopper,cricket,bee_bug,wasp,fly,moth_white,moth_brown,butterfly_white,butterfly_yellow_bug,butterfly_orange_bug,butterfly_blue_bug,dragonfly_bug,damselfly",
+        "snail_bug,slug,worm,caterpillar,spider,centipede,firefly_bug,cicada,stink_bug,weevil,pill_bug,earwig,tick,mosquito,gnat,mayfly",
+        "stag_beetle,rhino_beetle,jewel_beetle,scarab,monarch,swallowtail,luna_moth,atlas_moth,emperor_dragonfly,hornet,bumblebee_queen,honeybee_queen,mantis,walking_stick,leaf_insect,glow_worm",
+        "water_strider,diving_beetle,tadpole,frog_small,toad,newt,lizard,gecko,skink,mouse_critter,vole,shrew,hamster,chipmunk,hummingbird,finch_critter",
+        "crystal_beetle,moon_moth,sun_butterfly,star_firefly,wisp_dragonfly,ember_wasp,frost_bee,cloud_mantis,thunder_cicada,mirror_beetle,echo_cricket,dream_caterpillar,lantern_snail,paw_beetle,cat_moth,ice_bug",
+        "golden_ladybug,silver_spider,prism_butterfly,ghost_moth,shadow_beetle,time_cricket,memory_firefly,heart_ladybug,soul_butterfly,void_ant,halo_bee,storm_wasp,lava_beetle,stone_snail,nightmare_moth,lullaby_cicada",
+        "glow_bug_%d" % 0 + "," + ",".join("glow_bug_%d" % i for i in range(1, 16)),
+        "valley_monarch,moon_moth_queen,sun_scarab,first_bee,crystal_dragonfly,dream_butterfly,star_firefly_legend,phoenix_moth,light_ladybug,dark_beetle,snowflake_bug,cicada_king,spring_hummingbird,autumn_leaf_insect,ice_cricket,president_spider"))
+
+
+def w76():
+    rows = []
+    for setn in ["leather", "copper", "iron", "steel", "silver", "gold", "crystal", "moon"]:
+        parts = ["helm", "chest", "legs", "boots", "gloves", "shield", "cape", "belt"]
+        rows.append(",".join("%s_%s" % (setn, p) for p in parts) + "," + ",".join("%s_%s_plus" % (setn, p) for p in parts))
+    _catalogue("w76_armor_sets.png", "items", _ids(*rows))
+
+
+def w77():
+    rows = []
+    for setn in ["farmer", "forester", "fisher", "miner", "merchant", "scholar", "neon", "penguin"]:
+        parts = ["hat", "top", "bottom", "shoes", "gloves", "scarf", "bag", "trinket"]
+        rows.append(",".join("%s_%s" % (setn, p) for p in parts) + "," + ",".join("%s_%s_b" % (setn, p) for p in parts))
+    _catalogue("w77_outfits_sets.png", "items", _ids(*rows))
+
+
+def w78():
+    rows = []
+    tools = ["hoe", "axe", "pickaxe", "can", "rod", "scythe", "hammer", "sword", "dagger", "bow", "spear", "shield", "lantern", "shovel", "sickle", "net"]
+    for t in ["wood", "copper", "iron", "steel", "silver", "gold", "crystal", "moon"]:
+        rows.append(",".join("%s_%s" % (tl, t) for tl in tools))
+    _catalogue("w78_tools_tiers.png", "items", _ids(*rows))
+
+
+def w79():
+    _catalogue("w79_accessories_rings.png", "items", _ids(
+        "ring_copper,ring_tin,ring_bronze,ring_iron,ring_steel,ring_silver,ring_gold,ring_platinum,ring_crystal,ring_moon,ring_star,ring_paw,ring_penguin,ring_dream,ring_void,ring_light",
+        "ring_luck,ring_speed,ring_strength,ring_defense,ring_energy,ring_fishing,ring_mining,ring_farming,ring_foraging,ring_combat,ring_magnet,ring_glow,ring_warmth,ring_cooling,ring_charm,ring_friendship",
+        "charm_paw,charm_light,charm_dream,charm_star,charm_moon,charm_sun,charm_storm,charm_frost,charm_ember,charm_cloud,charm_stone,charm_root,charm_tide,charm_sky,charm_cat,charm_penguin",
+        "pendant_ruby,pendant_sapphire,pendant_emerald,pendant_amethyst,pendant_diamond,pendant_pearl,pendant_opal,pendant_jade,pendant_amber,pendant_garnet,pendant_topaz,pendant_quartz,pendant_moonstone,pendant_sunstone,pendant_crystal,pendant_dark",
+        "pack_small,pack_medium,pack_large,satchel,bandolier,toolbelt_1,toolbelt_2,toolbelt_3,bait_pouch,seed_pouch,gem_pouch,purse_1,purse_2,purse_3,fanny_pack,saddle_bag",
+        "belt_leather,belt_studded,belt_iron,belt_silver,belt_gold,belt_crystal,belt_moon,belt_utility,belt_climbing,belt_swim,belt_runner,belt_miner,belt_fisher,belt_farmer,belt_forester,belt_fighter",
+        "scarf_red,scarf_blue,scarf_green,scarf_yellow,scarf_purple,scarf_white,scarf_cyan,scarf_black,gloves_leather,gloves_iron,gloves_silver,gloves_gold,gloves_crystal,gloves_moon,gloves_dark,gloves_light",
+        "cape_red,cape_blue,cape_green,cape_gold,cape_black,cape_white,cape_crystal,cape_moon,cape_star,cape_paw,cape_penguin,cape_dream,cape_storm,cape_frost,cape_ember,cape_cloud"))
+
+
+def w80():
+    _catalogue("w80_dishes.png", "items", _ids(
+        "bread,toast,roll,bagel,pancake,waffle,omelette,fried_egg,boiled_egg,porridge,rice_bowl,salad,soup_vegetable,pumpkin_soup,soup_tomato,soup_mushroom",
+        "stew_beef,fish_stew,chowder,curry,pasta,pizza,sandwich,burger,taco,dumpling,noodle_bowl,ramen,sushi,fish_fry,roast_chicken,roast_veg",
+        "berry_pie,apple_pie,pumpkin_pie,cherry_pie,meat_pie,sponge_cake,chocolate_cake,carrot_cake,moon_cake,birthday_cake,cookie,muffin,brownie,donut,cupcake,truffle_pasta",
+        "lobster_bisque,crystal_jelly,star_soup,dream_pudding,light_cake,dark_torte,moon_mochi,sun_flan,paw_cookies,penguin_ice_cream,storm_chili,frost_sorbet,ember_curry,cloud_souffle,stone_bread,feast_platter",
+        "celebration_cake,mayor_banquet,inn_special,baker_pride,fisher_catch,miner_lunch,forester_stew,farmer_harvest,scholar_tea,nurse_broth,artist_plate,drifter_can,blacksmith_steak,potion_pudding,shopkeeper_sampler,meow_feast",
+        "penguin_banquet,light_tart,dark_fudge,golden_paw_pie,first_harvest_loaf,president_steak,hideout_burger,dock_chowder,neon_ramen,pit_wings,uptown_caviar,legendary_signature,dream_cake,moon_pie,sun_loaf,star_soup2",
+        "astral_risotto,crystal_paella,void_stew,storm_fondue,cloud_tempura,stone_soup,time_cake,wish_pie,heart_souffle,soul_noodles,mirror_mousse,echo_pudding,phoenix_feast,dragon_noodles,starry_paella,chef_masterwork",
+        "crystal_heart_cake,light_dark_duet,summer_platter,autumn_roast,meow_grand_feast,president_supreme,legend_dish_a,legend_dish_b,legend_dish_c,legend_dish_d,legend_dish_e,legend_dish_f,legend_dish_g,legend_dish_h,legend_dish_i,legend_dish_j"))
+
+
+def w81():
+    _catalogue("w81_drinks_preserves.png", "items", _ids(
+        "water,milk,juice_apple,juice_orange,juice_berry,lemonade,tea,green_tea,coffee,hot_chocolate,smoothie,milkshake,soda,root_beer,cider,wine",
+        "mead,ale,stout,sake,moon_milk,star_fizz,dream_tonic,energy_tea,potion,blue_potion,green_potion,purple_potion,gold_potion,light_elixir,dark_draught,paw_latte",
+        "jam_strawberry,jam_berry,jam_plum,jam_apricot,marmalade,honey_jar,pickles,pickled_beet,sauerkraut,kimchi,relish,chutney,salsa,hot_sauce,ketchup,mustard",
+        "cheese_fresh,cheese_aged,cheese_goat,cheese_blue,butter,cream,yogurt,mayonnaise,oil,vinegar,syrup,molasses,flour,sugar,salt,spice",
+        "cloth_red,cloth_blue,cloth_green,cloth_gold,thread_red,thread_blue,thread_green,thread_purple,leather,leather_dark,rope,twine,glass,glass_frosted,lens,paper",
+        "ink,candle,candle_tall,torch,lantern_item2,soap,perfume,wax,resin,charcoal,fertilizer,fertilizer_deluxe,bait,lure,gift_red,gift_blue",
+        "gift_green,gift_gold,gift_purple,gift_white,bouquet_red,bouquet_yellow,bouquet_blue,bouquet_pink,chocolate_box,teddy_bear,music_box2,snow_globe,painting_landscape,painting_portrait,painting_abstract,vase",
+        "trophy_bronze,trophy_silver,trophy_gold,trophy_crystal,medal_bronze,medal_silver,medal_gold,ribbon_red,ribbon_blue,pearl_necklace,diamond_item,big_crystal,paw_pendant,keepsake,heirloom,heirloom2"))
+
+
+def w82():
+    names = ["speed_up", "speed_down", "defense_up", "attack_up", "luck_up", "energy_regen", "health_regen", "poison", "burn", "freeze", "stun", "slow", "blind", "wet", "warm", "cold",
+             "hungry", "full", "tired", "rested", "happy", "sad", "inspired", "lucky", "cursed", "blessed", "glowing", "invisible", "magnet", "float", "swim", "climb",
+             "fishing_up", "mining_up", "farming_up", "foraging_up", "combat_up", "bartering_up", "building_up", "friendship_up", "xp_up", "crystals_up", "drop_up", "crit_up", "knockback_up", "block_up", "dodge_up", "maxhp_up",
+             "maxenergy_up", "toolspeed_up", "growth_up", "water_saver", "harvest_up", "double_drop", "rare_find", "no_energy_cost", "night_vision", "sand_walker", "lava_walker", "cloud_walker", "moon_touched", "sun_touched", "star_touched", "paw_touched",
+             "penguin_touched", "dream_touched", "light_touched", "dark_touched", "plus1", "plus2", "plus3", "plus4", "plus5", "x2", "x3", "hourglass_0", "hourglass_1", "hourglass_2", "hourglass_3", "hourglass_4"]
+    rows = [names[i * 16:(i + 1) * 16] for i in range(5)]
+    rows.append(["clock_%d" % i for i in range(8)] + ["stack_%d" % i for i in range(8)])
+    rows.append(["up_%d" % i for i in range(6)] + ["down_%d" % i for i in range(5)] + ["shieldpip_%d" % i for i in range(5)])
+    rows.append(["heartpip_%d" % i for i in range(16)])
+    _icon_sheet("w82_buffs_status.png", rows, "ui", 24, rarity_strip=True)
+
+
+def w83():
+    _catalogue("w83_quest_collection.png", "items", _ids(
+        "letter_sealed,letter_open,letter_torn,letter_gold,note_a,note_b,map_a,map_b,map_c,key_iron,key_brass,key_silver,key_gold,key_crystal,key_moon,token_paw",
+        "token_star,token_crown,token_leaf,badge_star,badge_paw,badge_anchor,badge_flower,photo_a,photo_b,photo_c,photo_d,lockbox,deed,blueprint,tape,film_reel",
+        "fossil_skull,fossil_jaw,fossil_claw,fossil_vertebra,fossil_bone,fossil_tooth_a,fossil_tooth_b,fossil_tooth_c,fossil_ammonite,fossil_shell_a,fossil_shell_b,fossil_sand_dollar,fossil_horn,fossil_egg_a,fossil_egg_b,fossil_egg_c",
+        "fossil_fish2,fossil_leaf2,fossil_fern,fossil_trilobite,fossil_dragonfly,fossil_amber,tablet_a,tablet_b,relic_head,idol_cat,idol_green,idol_gold,pot_a,pot_b,pot_c,mask",
+        "mount_trout,mount_bass,mount_salmon,mount_pike,mount_tuna,mount_flounder,mount_catfish,mount_eel,mount_goldfish,mount_blue,mount_purple,mount_shark,mount_prism,mount_swordfish,mount_marlin,mount_koi",
+        "trophy_farm_a,trophy_farm_b,trophy_farm_c,trophy_farm_d,trophy_craft_a,trophy_craft_b,trophy_craft_c,trophy_craft_d,trophy_fish_a,trophy_fish_b,trophy_fish_c,trophy_fish_d,trophy_forage,trophy_combat_a,trophy_combat_b,trophy_master",
+        "collar_a,collar_b,leash,ball,bone_toy,dog_bed_item,cat_bed_item,feed_bag,feed_bag_b,feed_bag_c,milk_pail,shears,saddle_a,saddle_b,saddle_c,brush",
+        "egg_red,egg_blue,egg_green,egg_gold,flower_crown_a,flower_crown_b,kite,lantern_red,lantern_black,pumpkin_lantern,snowman,gift_star,firework_a,firework_b,festival_ribbon,festival_ticket"))
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:
