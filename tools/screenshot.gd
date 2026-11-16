@@ -52,6 +52,20 @@ func _run() -> void:
 	GameState.run["flags"]["meadow_seen"] = true
 	GameState.run["quests"] = [{"id": "clear_meadow", "text": "x", "done": true}]
 	await _scene("meadow", "gang_meadow", 50)
+	for sc in ["hideout", "docks", "neon", "uptown", "underground", "countryside"]:
+		GameState.run["flags"][sc + "_seen"] = true
+		await _scene(sc, sc, 50)
+	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
+	GameState.run["intro_done"] = true
+	for sc in ["wastes", "sky", "station", "jungle"]:
+		GameState.run["flags"][sc + "_seen"] = true
+		await _scene(sc, sc, 50)
+	GameState.run["flags"]["town_seen"] = true
+	await _scene("farm", "farm_map_open", 30)
+	Input.action_press("menu"); await frames(3); Input.action_release("menu"); await frames(10)
+	var gm := Dialogue.instance(self).get_parent().get_node_or_null("GameMenu")
+	await frames(5)
+	await _shot("menu_items")
 	quit()
 func _scene(name: String, shot_name: String, n: int) -> void:
 	GameMap.next_spawn = Vector2.ZERO

@@ -14,7 +14,7 @@
 - **Crystal meadow**: glowing grass, standing stones, crystal trees and arches, glow pond, the fallen-star crater (animated), moon rabbits and crystal fish.
 - **Deep mine**: earth / stone / ice / lava floors and walls by depth, ore nodes, crystal clusters, glowing mushrooms, stalactites, beams, carts, a dead miner with loot.
 - **Wildlife** everywhere from the W23 sheet; **painted sky strips** (day/sunset/night/mountains/sea/forest) as parallax backdrops.
-- Batches 4–7 (hideout, docks, neon, uptown, wastes, sky islands, moon colony, station, jungle, underground, countryside, animals, weather, travel, world map) are saved in `art/incoming/` and are next.
+- Batches 4-7 (now integrated, see below) (hideout, docks, neon, uptown, wastes, sky islands, moon colony, station, jungle, underground, countryside, animals, weather, travel, world map) are saved in `art/incoming/` and are next.
 
 ## The world (opened up)
 - **Nine outdoor areas**, all 2 to 4 times bigger than before and connected by
@@ -135,3 +135,14 @@
 - Woman's last attack frame is missing part of the pink magic crescent
 - Typing names on the web build uses the browser's keyboard; report any trouble
 - Multiplayer not started (see Guide #1, G)
+
+
+## World art batches 4-7 integrated (regions pass)
+
+- `tools/slice_world.py` now slices w11 wastes, w12 sky islands, w13 moon colony, w14 station, w15 jungle, w16 hideout, w17 docks, w18 neon, w19 uptown, w20 underground, w21 countryside, w24 animals, w25 weather, w26 travel, w27 world map.
+- New data-driven region system: `scripts/region.gd` + `data/regions.json`. Each region declares size, ground/path tiles, layers, water, props (static or animated), generated scatter/critters, enemies, exits, intro, and things (`note`, `shop`, `loot`, `heal`, `boss`, `door`, `mrock`). Scenes are one-liners (`scenes/<id>.tscn` with `region_id`).
+- New areas: **Penguins**: Grump Wastes (meadow gate, Commander boss) → sky islands (great tree stair in the forest, Crystal Knight) → station (moon teleporter, needs 3 Refined Crystals) → alien jungle. Moon has a colony now (dome, dish, rover, alien stall shop, moon cow, spire). **Gangsters**: Outskirts gate → Hideout town (diner shop, motel) → Docks (fish market, dock boss) → Neon (noodles, ramen, Flame boss, manhole → Underground fight pit) → Uptown (President's tower, Enforcer boss). Hideout → Countryside highway (checkpoint, stone head).
+- Weather: painted overlay strips (`fx/ov_*`) replace particles for rain/snow/petals/leaves/fireflies/fog/dust/sandstorm/ash/meteors/storm/blizzard; regions can force one (`"weather"`).
+- Map tab shows the painted world map (`ui/world_map`) with pins for visited areas.
+- Farm animals: `scripts/farm_animal.gd` uses the full idle/walk/eat sets (cows, sheep, goat, chickens, rooster, duck, pig); they wander in pens and can be petted once a day (A).
+- Not yet wired: w26 travel pieces beyond pins (signposts/gates/warp pad/balloon/ferry/drawbridge), aurora, baby animals, w21 river_road. Next: ART-PROMPTS-03.

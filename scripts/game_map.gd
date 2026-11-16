@@ -152,6 +152,18 @@ func try_interact(c: Vector2i) -> bool:
 ## Interactions every outdoor map shares (trees, rocks, logs, stumps, bushes).
 func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
+		"pet_animal":
+			var a: Variant = thing.get("animal", null)
+			if a != null and is_instance_valid(a):
+				var key := "pet_%s_%d" % [str(a.kind), int(GameState.run["day"])]
+				if GameState.run["flags"].has(key):
+					hud.toast("Already happy today.")
+				else:
+					GameState.run["flags"][key] = true
+					fx("heal" if not Art.has("fx", "heart") else "heart", a.position + Vector2(0, -14), 8.0, 0.5)
+					hud.toast("%s loves that." % str(a.kind).split("_")[0].capitalize(), Color(1, 0.8, 0.9))
+					xp("farming", 2)
+			return true
 		"tree", "log", "stump":
 			if not GameState.has_tool("axe"):
 				return false

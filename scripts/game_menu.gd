@@ -237,7 +237,7 @@ func _refresh() -> void:
 				h.add_child(pl)
 		"Map":
 			var m := Control.new()
-			m.custom_minimum_size = Vector2(240, 190)
+			m.custom_minimum_size = Vector2(240, 300 if Art.has("ui", "world_map") else 190)
 			m.draw.connect(func() -> void: _draw_map(m))
 			_body.add_child(m)
 			_line("You are in: %s" % str(r["scene"]).capitalize(), 8)
@@ -286,8 +286,20 @@ func _eat(id: String) -> void:
 	_refresh()
 
 
+const PINS := {"farm": Vector2(0.44, 0.47), "house": Vector2(0.40, 0.44), "town": Vector2(0.52, 0.70), "forest": Vector2(0.30, 0.24), "lake": Vector2(0.14, 0.40),
+	"meadow": Vector2(0.66, 0.46), "crystal_meadow": Vector2(0.86, 0.40), "mine": Vector2(0.72, 0.20), "mountain": Vector2(0.74, 0.70), "beach": Vector2(0.40, 0.90), "moon": Vector2(0.90, 0.08),
+	"wastes": Vector2(0.95, 0.26), "hideout": Vector2(0.95, 0.52), "docks": Vector2(0.86, 0.84), "neon": Vector2(0.72, 0.92), "uptown": Vector2(0.58, 0.96), "underground": Vector2(0.70, 0.98), "countryside": Vector2(0.98, 0.66),
+	"sky": Vector2(0.28, 0.06), "station": Vector2(0.80, 0.03), "jungle": Vector2(0.66, 0.04)}
+const PIN_ICON := {"farm": "pin_farm", "house": "pin_farm", "town": "pin_town", "forest": "pin_forest", "lake": "pin_lake", "meadow": "pin_meadow", "crystal_meadow": "pin_meadow", "mine": "pin_mine", "mountain": "pin_mountain", "beach": "pin_beach", "moon": "pin_moon",
+	"wastes": "pin_wastes", "hideout": "pin_docks", "docks": "pin_docks", "neon": "pin_tower", "uptown": "pin_tower", "underground": "pin_mine", "countryside": "pin_farm", "sky": "pin_mountain", "station": "pin_moon", "jungle": "pin_forest"}
+const SEEN_FLAG := {"crystal_meadow": "cm_seen"}
+
+
 func _draw_map(m: Control) -> void:
 	var font := ThemeDB.fallback_font
+	if Art.has("ui", "world_map"):
+		_draw_painted_map(m, font)
+		return
 	var boxes := {
 		"forest": Rect2(60, 6, 70, 40), "lake": Rect2(4, 50, 50, 50), "farm": Rect2(70, 50, 60, 50), "meadow": Rect2(140, 55, 50, 40),
 		"crystal_meadow": Rect2(195, 55, 42, 40), "mine": Rect2(165, 10, 40, 36), "moon": Rect2(205, 2, 32, 28),
@@ -322,3 +334,35 @@ func _draw_map(m: Control) -> void:
 			p = b.position + Vector2(f.x * b.size.x, f.y * b.size.y)
 		m.draw_circle(p, 4.0, Color(0.9, 0.2, 0.2))
 		m.draw_arc(p, 4.0, 0, TAU, 16, Color.WHITE, 1.0)
+
+
+func _draw_painted_map(m: Control, font: Font) -> void:
+	var tex := Art.tex("ui", "world_map")
+	var area := Rect2(0, 0, 240, 300)
+	# Fit the portrait painting into the panel, centred.
+	var sc := minf(area.size.x / tex.get_width(), area.size.y / tex.get_height())
+	var sz := Vector2(tex.get_width(), tex.get_height()) * sc
+	var org := area.position + (area.size - sz) / 2.0
+	m.draw_rect(area, Color(0.12, 0.1, 0.08))
+	m.draw_texture_rect(tex, Rect2(org, sz), false)
+	var here := str(GameState.run["scene"])
+	var seen: Dictionary = GameState.run["flags"]
+	var names := {"crystal_meadow": "East" if GameState.is_penguins() else "Outskirts", "underground": "Pit", "countryside": "Highway"}
+	for k: String in PINS:
+		var visited := k in ["farm", "house", "town", "meadow"] or seen.has(k + "_seen") or seen.has(str(SEEN_FLAG.get(k, "-")))
+		if not visited:
+			continue
+		var p: Vector2 = org + (PINS[k] as Vector2) * sz
+		var icon := str(PIN_ICON.get(k, ""))
+		if icon != "" and Art.has("ui", icon):
+			var it := Art.tex("ui", icon)
+			var isz := Vector2(10, 12)
+			m.draw_texture_rect(it, Rect2(p - Vector2(isz.x / 2, isz.y), isz), false, Color(1, 1, 1, 1.0 if k == here else 0.85))
+		else:
+			m.draw_circle(p, 3.0, Color(0.9, 0.3, 0.2))
+		var nm := str(names.get(k, k.capitalize()))
+		m.draw_string(font, p + Vector2(-20, 7), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(0.1, 0.08, 0.05))
+	if PINS.has(here):
+		var p: Vector2 = org + (PINS[here] as Vector2) * sz
+		m.draw_circle(p + Vector2(0, -6), 3.0, Color(1, 0.2, 0.2))
+		m.draw_arc(p + Vector2(0, -6), 4.5, 0, TAU, 16, Color.WHITE, 1.0)

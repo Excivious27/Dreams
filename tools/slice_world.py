@@ -457,11 +457,349 @@ def w10():
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=200) for b in row], "props", "star_crater")
 
 
+# ---------------------------------------------------------------- batches 4-7
+
+def w11():
+    rgba = load("w11_wastes.png")
+    save_set("dead_grass", grid_tiles(rgba, (12, 10, 225, 215), 3, 3, 9), 3)
+    save_set("cracked_earth", grid_tiles(rgba, (235, 10, 445, 215), 3, 3, 9), 3)
+    save_set("purple_soil", grid_tiles(rgba, (455, 10, 665, 215), 3, 3, 9), 3)
+    save_set("t_dead", grid_tiles(rgba, (675, 10, 1110, 200), 5, 2, 4), 5)
+    row = cells_by_grid(rgba, 9, 1, region=(12, 230, 775, 305), trim=False)[0]
+    for i, b in enumerate(row):
+        bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+        if bb: save(scale_to(crop(rgba, bb), width=32, height=32), "props", "wdeco_%d" % i)
+    row = cells_by_grid(rgba, 4, 1, region=(785, 230, 1110, 305), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=20) for b in row], "fx", "fog_wisp")
+    props_from(rgba, "nature", {"dead_tree_s": ((20, 330, 130, 500), (36, 56)), "dead_tree_m": ((140, 330, 270, 500), (56, 72)), "dead_tree_l": ((280, 330, 450, 500), (80, 96)), "dead_giant": ((460, 320, 720, 520), (128, 160))})
+    props_from(rgba, "props", {"dspike_1": ((730, 400, 800, 470), (24, 28)), "dspike_2": ((810, 380, 900, 470), (40, 40)), "dspike_3": ((910, 360, 1010, 470), (48, 56)), "dspike_4": ((1020, 360, 1120, 470), (56, 64)),
+        "corrupt_well": ((20, 540, 190, 690), (72, 72)), "ruined_cottage": ((200, 510, 460, 690), (128, 96)), "toppled_statue": ((480, 560, 700, 690), (112, 64)),
+        "dark_spire": ((1130, 10, 1536, 690), (192, 320))})
+    row = cells_by_grid(rgba, 4, 1, region=(725, 500, 1110, 580), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=28) for b in row], "fx", "storm_shadow")
+    row = cells_by_grid(rgba, 4, 1, region=(725, 590, 1110, 690), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=44) for b in row], "props", "grump_fire")
+    row = cells_by_grid(rgba, 4, 1, region=(12, 700, 1536, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=260) for b in row], "props", "dark_spire_anim")
+
+
+def w16():
+    rgba = load("w16_hideout.png")
+    save_set("asphalt2", grid_tiles(rgba, (12, 10, 200, 195), 3, 3, 6), 3)
+    save_set("sidewalk2", grid_tiles(rgba, (210, 10, 395, 195), 3, 3, 6), 3)
+    save_set("weedy_lot", grid_tiles(rgba, (405, 10, 590, 195), 3, 3, 6), 3)
+    save_set("gravel2", grid_tiles(rgba, (600, 10, 775, 195), 3, 3, 6), 3)
+    save_set("t_curb", grid_tiles(rgba, (12, 200, 775, 260), 12, 1, 3), 12)
+    props_from(rgba, "props", {
+        "rail_s": ((790, 30, 860, 110), (32, 32)), "rail_cv": ((865, 30, 940, 110), (32, 32)), "rail_x": ((945, 30, 1015, 110), (32, 32)),
+        "chain_h": ((1030, 25, 1195, 115), (64, 36)), "chain_c": ((1210, 25, 1290, 115), (32, 36)), "chain_g": ((1300, 25, 1400, 115), (40, 36)), "chain_broken": ((1410, 25, 1520, 115), (48, 36)),
+        "wood_fence_a": ((790, 130, 1025, 200), (96, 32)), "wood_fence_b": ((1040, 130, 1310, 200), (96, 32)), "wood_fence_pile": ((1320, 150, 1410, 200), (40, 24)), "wood_fence_c": ((1420, 130, 1520, 200), (40, 32)),
+        "trailer": ((12, 290, 330, 460), (160, 80)), "gas_station": ((340, 280, 760, 460), (208, 96)), "diner_pink": ((770, 275, 1000, 460), (112, 96)), "diner_cyan": ((1010, 275, 1240, 460), (112, 96)),
+        "motel_pink": ((12, 480, 395, 660), (192, 96)), "motel_cyan": ((405, 480, 790, 660), (192, 96)), "water_tower": ((800, 480, 900, 660), (48, 96)), "billboard": ((930, 500, 1100, 660), (80, 80)),
+        "bus_stop": ((1110, 500, 1275, 660), (80, 72)), "payphone": ((1290, 520, 1350, 660), (24, 64)), "dumpster2": ((1360, 540, 1510, 660), (72, 56)),
+        "drums": ((12, 700, 130, 790), (56, 44)), "tyres": ((140, 710, 240, 790), (48, 40)), "rusted_car": ((250, 700, 450, 790), (96, 48)), "pickup": ((460, 700, 660, 790), (96, 48)),
+        "crow_a": ((900, 720, 960, 790), (24, 28)), "crow_b": ((970, 720, 1050, 790), (32, 28)),
+        "pole_a": ((20, 810, 110, 910), (36, 56)), "pole_wire": ((120, 810, 330, 910), (96, 56)), "pole_corner": ((340, 810, 500, 910), (72, 56)), "storm_drain": ((510, 830, 670, 910), (64, 36)),
+        "pole_b": ((20, 920, 180, 1010), (72, 48)), "pole_c": ((190, 920, 370, 1010), (80, 48)),
+        "drive_in": ((1020, 690, 1536, 1010), (256, 160)),
+    })
+    row = cells_by_grid(rgba, 2, 1, region=(680, 710, 890, 790), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=44) for b in row], "props", "chained_dog")
+    row = cells_by_grid(rgba, 4, 1, region=(690, 810, 940, 910), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=44) for b in row], "props", "fire_barrel2")
+    row = cells_by_grid(rgba, 6, 1, region=(380, 920, 1010, 1010), trim=False)[0]
+    for i, b in enumerate(row):
+        bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+        if bb: save(scale_to(crop(rgba, bb), width=36, height=36), "props", "graffiti_%d" % i)
+
+
+def w17():
+    rgba = load("w17_docks.png")
+    save_set("concrete_pier", grid_tiles(rgba, (12, 10, 180, 180), 3, 3, 6), 3)
+    save_set("wood_dock", grid_tiles(rgba, (190, 10, 360, 180), 3, 3, 6), 3)
+    save_set("t_dock_edge", grid_tiles(rgba, (370, 10, 1520, 180), 12, 2, 4), 12)
+    g = []
+    for x0, x1 in [(12, 185), (195, 365), (375, 560)]:
+        g += grid_tiles(rgba, (x0, 195, x1, 300), 3, 2, 4)
+    save_set("harbour", g[:9], 3)
+    props_from(rgba, "buildings", {"warehouse_a": ((12, 320, 290, 540), (144, 112)), "warehouse_b": ((300, 320, 665, 540), (176, 112)), "warehouse_c": ((700, 330, 930, 540), (112, 96)),
+        "lighthouse_rust": ((40, 740, 160, 1010), (56, 128)), "big_crane": ((1030, 690, 1536, 1010), (240, 160))})
+    props_from(rgba, "props", {"crane": ((940, 320, 1110, 540), (80, 112)),
+        "container_red": ((1150, 330, 1280, 390), (64, 32)), "container_blue": ((1320, 330, 1450, 390), (64, 32)), "container_orange": ((1150, 400, 1280, 450), (64, 32)), "container_green": ((1320, 400, 1450, 450), (64, 32)),
+        "container_red2": ((1110, 470, 1200, 550), (40, 40)), "container_blue2": ((1210, 470, 1300, 550), (40, 40)), "container_orange2": ((1310, 470, 1400, 550), (40, 40)), "container_green2": ((1410, 470, 1500, 550), (40, 40)),
+        "cargo_ship": ((12, 560, 625, 700), (320, 72)), "tugboat": ((640, 570, 870, 700), (112, 64)), "trawler": ((880, 560, 1140, 700), (128, 72)), "fish_market": ((1180, 570, 1390, 700), (112, 72)),
+        "bollard_a": ((180, 750, 240, 810), (24, 28)), "bollard_b": ((245, 760, 300, 810), (24, 24)), "bollard_c": ((305, 750, 370, 810), (28, 28)), "rope_coil": ((390, 760, 460, 810), (28, 24)), "rope_loose": ((470, 760, 540, 830), (36, 36)),
+        "oil_drums": ((575, 750, 680, 830), (48, 40)), "forklift": ((690, 750, 860, 830), (80, 40)), "crates_pallet": ((880, 760, 960, 830), (36, 36)), "crates_pallet_b": ((970, 760, 1090, 830), (56, 36)),
+        "guard_booth": ((180, 840, 400, 970), (104, 64)), "floodlight_off": ((420, 850, 490, 990), (28, 64)), "floodlight_on": ((510, 850, 580, 990), (28, 64))})
+    row = cells_by_grid(rgba, 2, 1, region=(640, 880, 790, 930), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=24) for b in row], "props", "gull_dock")
+    row = cells_by_grid(rgba, 2, 1, region=(830, 880, 1010, 930), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=20) for b in row], "props", "rat_dock")
+
+
+def w18():
+    rgba = load("w18_neon.png")
+    frames = [grid_tiles(rgba, (x0, 10, x0 + 160, 150), 2, 2, 4) for x0 in (12, 185, 355, 525)]
+    for i, fr in enumerate(frames):
+        save_set("wet_asphalt_%d" % i, fr[:1] * 9, 3)
+    save_set("neon_sidewalk", grid_tiles(rgba, (695, 10, 860, 150), 3, 3, 5), 3)
+    props_from(rgba, "props", {"crosswalk": ((870, 10, 1010, 150), (64, 64)), "storm_drain2": ((1020, 10, 1140, 150), (64, 64))})
+    row = cells_by_grid(rgba, 4, 1, region=(1155, 25, 1525, 140), trim=False)[0]
+    strip([scale_to(crop(rgba, (b[0] + 4, b[1] + 4, b[2] - 4, b[3] - 4)), width=48, height=40) for b in row], "props", "puddle")
+    row = cells_by_grid(rgba, 2, 1, region=(12, 165, 390, 320), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=96) for b in row], "buildings", "neon_bar")
+    row = cells_by_grid(rgba, 4, 1, region=(400, 165, 1090, 320), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=96) for b in row], "buildings", "arcade")
+    row = cells_by_grid(rgba, 4, 1, region=(1110, 170, 1525, 320), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=96) for b in row], "buildings", "noodle_stand")
+    props_from(rgba, "buildings", {"neon_hotel": ((12, 340, 340, 620), (176, 160)), "ramen_shop": ((350, 360, 550, 540), (112, 96)), "karaoke": ((570, 350, 790, 540), (112, 96))})
+    props_from(rgba, "props", {"vend_red": ((815, 365, 900, 480), (36, 56)), "vend_red2": ((915, 365, 1000, 480), (36, 56)), "vend_blue": ((1070, 365, 1160, 480), (36, 56)), "vend_blue2": ((1170, 365, 1260, 480), (36, 56)), "vend_purple": ((1320, 365, 1410, 480), (36, 56)), "vend_purple2": ((1420, 365, 1510, 480), (36, 56)),
+        "scooter": ((360, 550, 470, 620), (56, 40)), "taxi": ((500, 540, 650, 620), (72, 40)), "payphone2": ((690, 540, 760, 620), (28, 48)),
+        "rooftop": ((515, 640, 785, 790), (128, 80)), "fire_escape": ((810, 640, 975, 790), (72, 80)), "alley": ((1000, 640, 1275, 790), (128, 80)), "cat_wall": ((1300, 640, 1525, 760), (112, 56))})
+    row = cells_by_grid(rgba, 8, 1, region=(815, 530, 1525, 615), trim=False)[0]
+    for i, b in enumerate(row):
+        bb = region_bbox(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3))
+        if bb: save(scale_to(crop(rgba, bb), width=40, height=40), "props", "neon_sign_%d" % i)
+    row = cells_by_grid(rgba, 3, 1, region=(12, 640, 500, 760), trim=False)[0]
+    for b, nm in zip(row, ["lanterns_red", "lanterns_cyan", "lanterns_pink"]):
+        bb = region_bbox(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3))
+        if bb: save(scale_to(crop(rgba, bb), width=80, height=48), "props", nm)
+    row = cells_by_grid(rgba, 4, 1, region=(12, 800, 1525, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=112) for b in row], "buildings", "neon_dragon")
+
+
+def w19():
+    rgba = load("w19_uptown.png")
+    save_set("marble", grid_tiles(rgba, (12, 10, 195, 180), 3, 3, 6), 3)
+    save_set("polished_road", grid_tiles(rgba, (200, 10, 380, 180), 3, 3, 6), 3)
+    save_set("lawn", grid_tiles(rgba, (390, 10, 570, 180), 3, 3, 6), 3)
+    save_set("hedge_maze", grid_tiles(rgba, (580, 10, 940, 180), 4, 2, 3), 4)
+    props_from(rgba, "props", {"gold_fence_a": ((950, 20, 1075, 100), (64, 36)), "gold_fence_b": ((1085, 20, 1210, 100), (64, 36)), "gold_fence_c": ((950, 110, 1075, 190), (64, 36)), "gold_gate": ((1085, 110, 1210, 190), (64, 40)),
+        "lux_car_black": ((580, 200, 730, 280), (72, 40)), "lux_car_red": ((740, 200, 870, 280), (72, 40)), "limo": ((580, 290, 870, 350), (144, 36)), "guard_booth2": ((890, 200, 1010, 340), (56, 72)),
+        "cctv_a": ((1040, 210, 1110, 300), (32, 40)), "cctv_b": ((1120, 210, 1190, 300), (32, 40)),
+        "topiary_a": ((20, 630, 120, 740), (40, 56)), "topiary_b": ((130, 630, 210, 740), (36, 56)), "topiary_c": ((220, 630, 300, 740), (36, 56)), "statue_cane": ((320, 620, 420, 740), (44, 64)),
+        "red_carpet": ((440, 650, 600, 720), (80, 32)), "red_carpet_end": ((600, 650, 730, 720), (64, 32)), "spotlight_pink": ((760, 620, 850, 740), (40, 56)), "spotlight_cyan": ((870, 620, 960, 740), (40, 56)), "rope_barrier": ((990, 640, 1110, 740), (56, 48))})
+    row = cells_by_grid(rgba, 4, 1, region=(12, 200, 560, 345), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=72) for b in row], "props", "gold_fountain")
+    props_from(rgba, "buildings", {"bank": ((12, 370, 280, 600), (144, 112)), "mansion": ((300, 360, 700, 600), (208, 128)), "penthouse": ((710, 370, 940, 600), (120, 120)), "president_tower": ((1225, 10, 1536, 1010), (160, 512))})
+    row = cells_by_grid(rgba, 2, 2, region=(950, 360, 1215, 580), trim=False)
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=48) for rr in row for b in rr], "props", "helicopter")
+    row = cells_by_grid(rgba, 4, 1, region=(12, 760, 1200, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=128) for b in row], "buildings", "tower_top_anim")
+
+
+def w12():
+    rgba = load("w12_skyislands.png")
+    save_set("cloud", grid_tiles(rgba, (12, 10, 225, 215), 3, 3, 9), 3)
+    save_set("cloud_star", grid_tiles(rgba, (235, 10, 445, 215), 3, 3, 9), 3)
+    save_set("t_cloud_edge", grid_tiles(rgba, (455, 10, 1110, 215), 9, 2, 4), 9)
+    save_set("float_stone", grid_tiles(rgba, (1120, 70, 1200, 150), 1, 1, 4) * 9, 3)
+    row = cells_by_grid(rgba, 4, 1, region=(1215, 70, 1525, 150), trim=False)[0]
+    strip([scale_to(crop(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3)), width=TILE2, height=TILE2, cover=True) for b in row], "tiles", "wind")
+    row = cells_by_grid(rgba, 8, 1, region=(12, 235, 850, 335), trim=False)[0]
+    for i, b in enumerate(row):
+        bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+        if bb: save(scale_to(crop(rgba, bb), width=32, height=32), "props", "skydeco_%d" % i)
+    row = cells_by_grid(rgba, 4, 1, region=(860, 250, 1220, 330), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=20) for b in row], "fx", "mist_puff")
+    row = cells_by_grid(rgba, 2, 1, region=(1240, 240, 1525, 330), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=36) for b in row], "wildlife/eagle", "idle")
+    props_from(rgba, "nature", {"cloud_tree_a": ((20, 380, 160, 620), (64, 96)), "cloud_tree_b": ((170, 370, 330, 620), (80, 112)), "cloud_tree_c": ((340, 370, 500, 620), (80, 112))})
+    props_from(rgba, "props", {"sky_stairs": ((510, 370, 720, 640), (96, 128)), "sky_temple": ((740, 350, 1080, 640), (160, 144)), "sky_bridge": ((60, 650, 860, 850), (352, 96)), "observatory": ((1050, 350, 1536, 1010), (224, 320))})
+    row = cells_by_grid(rgba, 4, 1, region=(12, 860, 970, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3)), width=224, height=112) for b in row], "fx", "sky_whale")
+
+
+def w13():
+    rgba = load("w13_mooncolony.png")
+    save_set("moon_dust2", grid_tiles(rgba, (12, 10, 225, 215), 3, 3, 9), 3)
+    save_set("metal_walk", grid_tiles(rgba, (235, 10, 445, 215), 3, 3, 9), 3)
+    save_set("glass_floor", grid_tiles(rgba, (455, 10, 665, 215), 3, 3, 9), 3)
+    row = cells_by_grid(rgba, 4, 1, region=(675, 10, 1015, 100), trim=False)[0]
+    strip([scale_to(crop(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3)), width=TILE2, height=TILE2, cover=True) for b in row], "tiles", "glass_twinkle")
+    row = cells_by_grid(rgba, 3, 1, region=(680, 110, 1080, 240), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=64) for b in row], "props", "airlock")
+    save_set("dome_wall", grid_tiles(rgba, (12, 225, 665, 350), 9, 2, 4), 9)
+    props_from(rgba, "buildings", {"greenhouse_dome": ((12, 360, 300, 540), (160, 112)), "moon_mine": ((815, 620, 1050, 770), (112, 72)), "moon_spire_big": ((1080, 10, 1536, 770), (240, 400))})
+    props_from(rgba, "props", {"radio_dish": ((330, 360, 470, 540), (72, 96)), "solar_field": ((480, 370, 650, 520), (96, 80)), "rover": ((660, 380, 830, 480), (80, 48)), "crashed_probe": ((850, 370, 1060, 480), (96, 56)),
+        "moonrock_l": ((12, 550, 110, 620), (44, 36)), "moonrock_m": ((120, 560, 200, 620), (32, 28)), "moonrock_s": ((210, 570, 270, 620), (24, 20)),
+        "starflower_blue": ((300, 540, 370, 620), (32, 40)), "starflower_pink": ((380, 540, 450, 620), (32, 40)), "starflower_yellow": ((460, 540, 530, 620), (32, 40)),
+        "alien_stall": ((300, 620, 540, 770), (120, 80)), "alien_vend_a": ((575, 640, 680, 770), (48, 64)), "alien_vend_b": ((690, 640, 790, 770), (48, 64))})
+    row = cells_by_grid(rgba, 4, 1, region=(680, 530, 1080, 615), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=44) for b in row], "props", "glow_pool_moon")
+    row = cells_by_grid(rgba, 2, 1, region=(12, 640, 280, 760), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=44) for b in row], "props", "moon_cow")
+    row = cells_by_grid(rgba, 4, 1, region=(12, 780, 1536, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=160) for b in row], "props", "moon_spire_anim")
+
+
+def w14():
+    rgba = load("w14_station.png")
+    save_set("metal_a", grid_tiles(rgba, (12, 10, 220, 215), 3, 3, 9), 3)
+    save_set("metal_b", grid_tiles(rgba, (230, 10, 440, 215), 3, 3, 9), 3)
+    save_set("hazard", grid_tiles(rgba, (450, 10, 660, 215), 3, 3, 9), 3)
+    save_set("grating", grid_tiles(rgba, (670, 10, 880, 215), 3, 3, 9), 3)
+    save_set("metal_wall", grid_tiles(rgba, (890, 25, 1525, 215), 6, 2, 4), 6)
+    row = cells_by_grid(rgba, 3, 1, region=(12, 240, 540, 380), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=64) for b in row], "props", "sliding_door")
+    row = cells_by_grid(rgba, 2, 1, region=(560, 240, 950, 380), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=56) for b in row], "props", "console")
+    row = cells_by_grid(rgba, 4, 1, region=(960, 240, 1525, 380), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=64) for b in row], "props", "holo_table")
+    row = cells_by_grid(rgba, 2, 1, region=(12, 390, 300, 545), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=72) for b in row], "props", "cryo_pod")
+    row = cells_by_grid(rgba, 4, 1, region=(320, 390, 975, 545), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=72) for b in row], "props", "viewport")
+    props_from(rgba, "props", {"cargo_grey": ((985, 420, 1105, 530), (56, 56)), "cargo_red": ((1115, 420, 1235, 530), (56, 56)), "cargo_yellow": ((1245, 420, 1365, 530), (56, 56)), "robot_arm": ((1380, 390, 1525, 545), (72, 72)),
+        "vend_space": ((12, 570, 140, 720), (56, 72)), "bunk": ((150, 570, 310, 720), (72, 72)), "hydroponics": ((330, 570, 545, 720), (96, 72)), "escape_pod": ((1240, 570, 1525, 720), (128, 72)),
+        "bridge": ((555, 745, 1525, 1010), (480, 128))})
+    row = cells_by_grid(rgba, 4, 1, region=(560, 560, 1210, 740), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=96) for b in row], "props", "reactor")
+    row = cells_by_grid(rgba, 4, 1, region=(12, 770, 540, 880), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=48) for b in row], "props", "teleporter2")
+    row = cells_by_grid(rgba, 4, 1, region=(12, 890, 540, 1000), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=32) for b in row], "props", "drone")
+
+
+def w15():
+    rgba = load("w15_jungle.png")
+    save_set("teal_moss", grid_tiles(rgba, (12, 10, 200, 190), 3, 3, 9), 3)
+    save_set("violet_soil", grid_tiles(rgba, (210, 10, 400, 190), 3, 3, 9), 3)
+    bio = [grid_tiles(rgba, (x0, 10, x0 + 190, 190), 3, 3, 9) for x0 in (410, 605, 800)]
+    for i, fr in enumerate(bio):
+        save_set("bio_path_%d" % i, fr, 3)
+    save_set("t_pink_water", grid_tiles(rgba, (910, 10, 1525, 180), 10, 2, 4), 10)
+    row = cells_by_grid(rgba, 12, 1, region=(12, 210, 1170, 300), trim=False)[0]
+    for i, b in enumerate(row):
+        bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+        if bb: save(scale_to(crop(rgba, bb), width=32, height=36), "props", "jdeco_%d" % i)
+    props_from(rgba, "props", {"vines_a": ((1180, 195, 1300, 310), (56, 56)), "vines_b": ((1310, 195, 1420, 310), (56, 56)), "vines_c": ((1430, 195, 1525, 310), (48, 56)),
+        "mushroom_tree_a": ((12, 330, 230, 640), (96, 144)), "mushroom_tree_b": ((240, 320, 500, 640), (128, 160)), "crashed_ship": ((500, 410, 880, 640), (192, 112)), "alien_statue": ((880, 330, 1110, 640), (96, 160))})
+    row = cells_by_grid(rgba, 2, 1, region=(510, 330, 720, 440), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=56) for b in row], "props", "carnivore_plant")
+    row = cells_by_grid(rgba, 4, 1, region=(1110, 330, 1525, 480), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=56) for b in row], "wildlife/jelly", "idle")
+    row = cells_by_grid(rgba, 2, 1, region=(1130, 480, 1525, 640), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=72) for b in row], "wildlife/six_deer", "idle")
+    row = cells_by_grid(rgba, 4, 1, region=(12, 690, 1525, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=160) for b in row], "props", "giant_flower")
+
+
+def w20():
+    rgba = load("w20_underground.png")
+    save_set("sewer_brick", grid_tiles(rgba, (12, 10, 200, 160), 3, 3, 6), 3)
+    save_set("sewer_brick_b", grid_tiles(rgba, (210, 10, 395, 160), 3, 3, 6), 3)
+    save_set("sewer_mossy", grid_tiles(rgba, (405, 10, 595, 160), 3, 3, 6), 3)
+    row = cells_by_grid(rgba, 4, 1, region=(605, 25, 940, 140), trim=False)[0]
+    strip([scale_to(crop(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3)), width=TILE2, height=TILE2, cover=True) for b in row], "tiles", "sewer_water")
+    props_from(rgba, "props", {"grate_a": ((955, 30, 1050, 125), (36, 36)), "grate_b": ((1060, 30, 1155, 125), (36, 36)), "sewer_ladder": ((1180, 15, 1240, 150), (24, 64)), "manhole_closed": ((1270, 40, 1390, 130), (48, 40)), "manhole_open": ((1400, 40, 1520, 130), (48, 40)),
+        "pipe_s": ((12, 420, 190, 470), (80, 24)), "pipe_c": ((200, 410, 270, 480), (32, 36)), "pipe_t": ((280, 410, 345, 480), (32, 36)), "pipe_valve": ((355, 405, 430, 490), (36, 40)),
+        "boxing_ring": ((420, 400, 780, 620), (176, 112)), "bleachers": ((790, 400, 975, 580), (96, 96)), "cage": ((1010, 410, 1240, 580), (112, 88)), "weight_bench": ((1290, 420, 1420, 560), (64, 72)), "punching_bag": ((1440, 400, 1520, 580), (36, 96)),
+        "betting_booth": ((12, 500, 215, 720), (96, 112)), "bottle_crate_a": ((230, 500, 345, 580), (56, 40)), "bottle_crate_b": ((230, 600, 300, 720), (36, 56)), "bottle_crate_c": ((310, 610, 400, 720), (44, 56)),
+        "card_table": ((460, 630, 740, 730), (128, 56)), "jukebox_a": ((800, 600, 895, 720), (44, 60)), "jukebox_b": ((905, 600, 1000, 720), (44, 60)), "bulb_off": ((1045, 605, 1115, 715), (28, 56)), "bulb_on": ((1125, 605, 1195, 715), (28, 56)), "cockroach": ((1440, 640, 1510, 690), (28, 16)),
+        "ugraffiti_a": ((12, 750, 110, 850), (40, 40)), "ugraffiti_b": ((130, 750, 220, 850), (40, 40)), "ugraffiti_c": ((12, 850, 110, 940), (40, 40)), "ugraffiti_d": ((120, 850, 220, 940), (40, 40)), "ugraffiti_e": ((12, 940, 110, 1010), (40, 36)), "ugraffiti_f": ((120, 940, 220, 1010), (40, 36))})
+    g = grid_tiles(rgba, (12, 170, 1525, 400), 11, 2, 4)
+    save_set("sewer_wall", g, 11)
+    row = cells_by_grid(rgba, 2, 1, region=(1230, 650, 1430, 700), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=20) for b in row], "props", "sewer_rat")
+    row = cells_by_grid(rgba, 4, 1, region=(230, 750, 1525, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=128) for b in row], "props", "arena")
+
+
+def w21():
+    rgba = load("w21_countryside.png")
+    save_set("highway", grid_tiles(rgba, (12, 10, 225, 215), 3, 3, 9), 3)
+    save_set("highway_b", grid_tiles(rgba, (235, 10, 445, 215), 3, 3, 9), 3)
+    save_set("shoulder", grid_tiles(rgba, (455, 10, 665, 215), 3, 3, 9), 3)
+    save_set("t_road_edge", grid_tiles(rgba, (680, 10, 1195, 215), 5, 2, 4), 5)
+    props_from(rgba, "props", {"tunnel": ((1200, 10, 1536, 360), (160, 160)), "highway_bridge": ((12, 230, 760, 360), (352, 64)),
+        "motel_sign": ((12, 380, 185, 540), (80, 72)), "billboard2": ((210, 380, 440, 540), (112, 72)), "rest_stop": ((450, 380, 840, 540), (192, 80)), "payphone3": ((850, 400, 920, 540), (28, 64)), "broken_bus": ((930, 380, 1340, 540), (192, 80)), "hitchhiker": ((1380, 380, 1500, 540), (48, 64)),
+        "farm_silo_b": ((350, 560, 580, 760), (112, 96)), "radio_tower_a": ((590, 560, 650, 760), (28, 96)), "radio_tower_b": ((660, 560, 720, 760), (28, 96)),
+        "checkpoint_down": ((12, 790, 260, 1000), (120, 96)), "checkpoint_up": ((270, 790, 500, 1000), (112, 96)), "roadblock": ((510, 840, 1050, 1000), (256, 72)), "stone_head": ((1080, 580, 1536, 1000), (224, 208))})
+    row = cells_by_grid(rgba, 4, 1, region=(770, 240, 1195, 360), trim=False)[0]
+    strip([scale_to(crop(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3)), width=TILE2, height=TILE2 * 2, cover=True) for b in row], "tiles", "river_road")
+    save_set("cornfield_night", grid_tiles(rgba, (12, 580, 330, 760), 4, 2, 4)[:9] if len(grid_tiles(rgba, (12, 580, 330, 760), 4, 2, 4)) >= 9 else grid_tiles(rgba, (12, 580, 330, 760), 4, 2, 4) * 2, 3)
+    row = cells_by_grid(rgba, 4, 1, region=(740, 560, 1110, 760), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=96) for b in row], "props", "wind_turbine")
+
+
+def w24():
+    rgba = load("w24_animals.png")
+    names = ["chicken2", "rooster", "cow_brown", "cow_bw", "sheep_woolly", "pig_a", "pig_b", "goat2", "horse2", "duck2"]
+    rh = 850 / 10
+    for r, nm in enumerate(names):
+        y0, y1 = int(8 + r * rh), int(8 + (r + 1) * rh)
+        h = {"horse2": 56, "cow_brown": 48, "cow_bw": 48}.get(nm, 36)
+        for anim, (x0, x1, n) in {"idle": (12, 455, 4), "walk": (465, 990, 5), "eat": (1000, 1220, 2), "baby": (1235, 1525, 4 if nm not in ("chicken2", "rooster", "duck2") else 5)}.items():
+            boxes = cells_by_grid(rgba, n, 1, region=(x0, y0, x1, y1), trim=False)[0]
+            frames = []
+            for b in boxes:
+                bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+                if bb: frames.append(scale_to(crop(rgba, bb), height=h if anim != "baby" else h * 0.6))
+            if frames:
+                strip(frames, "animals/" + nm, anim)
+    row = cells_by_grid(rgba, 5, 1, region=(130, 870, 1250, 1010), trim=False)[0]
+    for b, nm in zip(row, ["egg", "milk_pail", "wool", "feed_bag", "saddle"]):
+        bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+        if bb: save(scale_to(crop(rgba, bb), width=32, height=32), "items", nm)
+
+
+def w25():
+    # This sheet uses a DARK magenta background (≈141,2,138), so key by hue not brightness.
+    img = np.array(Image.open(os.path.join(S.INC, "w25_weather.png")).convert("RGBA")).astype(np.int32)
+    r, g, b = img[..., 0], img[..., 1], img[..., 2]
+    # Soft key: alpha = distance from the background colour; un-mix the colour
+    # so translucent fog/dust/snow sheets become real alpha overlays.
+    bgc = np.array([141, 2, 138], dtype=np.float64)
+    f = img[..., :3].astype(np.float64)
+    dist = np.sqrt(((f - bgc) ** 2).sum(-1))
+    a = np.clip((dist - 12.0) / 150.0, 0.0, 1.0)
+    fg = np.where(a[..., None] > 0.02, (f - (1.0 - a[..., None]) * bgc) / np.maximum(a[..., None], 0.02), f)
+    rgba = np.zeros(img.shape, dtype=np.uint8)
+    rgba[..., :3] = np.clip(fg, 0, 255).astype(np.uint8)
+    rgba[..., 3] = (a * 255).astype(np.uint8)
+    # grid lines are pure bright magenta: force them out
+    rgba[..., 3] = np.where((np.minimum(r, b) - g > 200), 0, rgba[..., 3]).astype(np.uint8)
+    names = [["ov_rain", "ov_heavy_rain"], ["ov_snow", "ov_blizzard"], ["ov_petals", "ov_leaves"], ["ov_fireflies", "ov_fog"], ["ov_dust", "ov_sandstorm"], ["ov_ash", "ov_meteors"]]
+    for r in range(6):
+        y0, y1 = 10 + r * 133, 10 + (r + 1) * 133
+        for k in range(2):
+            x0 = 30 + k * 760
+            boxes = cells_by_grid(rgba, 4, 1, region=(x0, y0, x0 + 720, y1), trim=False)[0]
+            frames = [scale_to(crop(rgba, (b[0] + 6, b[1] + 6, b[2] - 6, b[3] - 6)), width=128, height=96, cover=True) for b in boxes]
+            strip(frames, "fx", names[r][k])
+    boxes = cells_by_grid(rgba, 4, 1, region=(12, 820, 1525, 1010), trim=False)[0]
+    strip([scale_to(crop(rgba, (b[0] + 4, b[1] + 4, b[2] - 4, b[3] - 4)), width=512, height=128) for b in boxes], "fx", "aurora")
+
+
+def w26():
+    rgba = load("w26_travel.png")
+    props_from(rgba, "props", {"signpost_1": ((12, 30, 130, 200), (36, 64)), "signpost_2": ((145, 30, 265, 200), (40, 64)), "signpost_3": ((280, 30, 400, 200), (40, 64)), "milestone": ((460, 50, 580, 200), (36, 48)),
+        "town_gate": ((590, 10, 960, 205), (176, 96)), "stone_arch": ((965, 10, 1225, 205), (112, 96)), "iron_gate2": ((1235, 10, 1525, 205), (128, 96)),
+        "toll_closed": ((12, 220, 240, 380), (112, 80)), "toll_open": ((250, 220, 450, 380), (96, 80)), "bus_side": ((470, 230, 830, 380), (176, 64)), "train_car": ((850, 230, 1230, 380), (176, 64)), "train_engine": ((1240, 230, 1525, 380), (144, 64)),
+        "ferry": ((12, 400, 390, 590), (176, 96)), "crystal_door_closed": ((12, 600, 240, 800), (112, 96)), "crystal_door_cracked": ((250, 600, 470, 800), (112, 96)), "crystal_door_open": ((480, 600, 700, 800), (112, 96)),
+        "drawbridge_closed": ((720, 600, 1110, 800), (176, 96)), "drawbridge_open": ((1130, 600, 1525, 800), (176, 96))})
+    row = cells_by_grid(rgba, 4, 1, region=(400, 400, 910, 590), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=96) for b in row], "props", "balloon")
+    row = cells_by_grid(rgba, 4, 1, region=(930, 420, 1525, 590), trim=False)[0]
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=64) for b in row], "props", "warp_pad")
+    row = cells_by_grid(rgba, 12, 1, region=(12, 830, 1525, 1010), trim=False)[0]
+    for b, nm in zip(row, ["pin_farm", "pin_town", "pin_forest", "pin_lake", "pin_beach", "pin_mine", "pin_mountain", "pin_meadow", "pin_wastes", "pin_moon", "pin_docks", "pin_tower"]):
+        bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
+        if bb: save(scale_to(crop(rgba, bb), width=40, height=48), "ui", nm)
+
+
+def w27():
+    img = Image.open(os.path.join(S.INC, "w27_worldmap.png")).convert("RGBA")
+    img = img.resize((540, 960), Image.LANCZOS)
+    save(img, "ui", "world_map")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:
@@ -472,6 +810,8 @@ if __name__ == "__main__":
             import traceback; traceback.print_exc(); print("FAIL", name, repr(e))
     with open(mpath, "w") as f:
         json.dump(S.manifest, f, indent=1, sort_keys=True)
+
+
 
 
 

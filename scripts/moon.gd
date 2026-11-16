@@ -46,6 +46,41 @@ func after_ready() -> void:
 	WorldGen.add_backdrop(self, "moon")
 	prop("props", "landing_pad", Vector2i(11, 21), 2)
 	prop("props", "rocket_house", Vector2i(3, 6), 4)
+	if Art.has("buildings", "greenhouse_dome"):
+		prop("buildings", "greenhouse_dome", Vector2i(24, 5), 4)
+		block_rect(24, 3, 5, 3)
+		prop("props", "radio_dish", Vector2i(15, 3), 1)
+		block_rect(15, 1, 2, 3)
+		prop("props", "solar_field", Vector2i(5, 14), 2)
+		block_rect(5, 13, 3, 2)
+		prop("props", "rover", Vector2i(18, 23), 2)
+		block_rect(18, 23, 3, 1)
+		prop("props", "crashed_probe", Vector2i(26, 14), 2)
+		block_rect(26, 13, 3, 2)
+		prop("props", "alien_stall", Vector2i(9, 6), 3)
+		block_rect(9, 5, 4, 2)
+		set_thing(10, 7, {"type": "alien_shop", "hint": "A: alien stall"}, false)
+		prop("props", "alien_vend_a", Vector2i(13, 7))
+		blocked[Vector2i(13, 7)] = true
+		var mc := AnimatedSprite2D.new()
+		mc.sprite_frames = Art.frames("props", {"idle": "moon_cow"}, {"idle": 2.0})
+		mc.animation = "idle"
+		mc.scale = Vector2(0.5, 0.5)
+		mc.position = cell_center(Vector2i(21, 16))
+		mc.offset = Vector2(0, -22)
+		add_child(mc)
+		mc.play("idle")
+		var sp := AnimatedSprite2D.new()
+		sp.sprite_frames = Art.frames("props", {"idle": "moon_spire_anim"}, {"idle": 3.0})
+		sp.animation = "idle"
+		sp.scale = Vector2(0.5, 0.5)
+		sp.position = cell_center(Vector2i(22, 11)) + Vector2(8, 0)
+		sp.offset = Vector2(0, -80)
+		add_child(sp)
+		sp.play("idle")
+		set_thing(22, 12, {"type": "spire", "hint": "A: the crystal spire"}, false)
+		for c: Vector2i in [Vector2i(3, 20), Vector2i(27, 8), Vector2i(10, 12)]:
+			prop("props", ["starflower_blue", "starflower_pink", "starflower_yellow"][c.x % 3], c)
 	var t := prop("props", "teleporter", Vector2i(23, 20), 2)
 	if t:
 		t.queue_free()
@@ -89,11 +124,33 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"pad":
 			go_to("mountain", Vector2(17 * TILE, 8 * TILE), "down")
 			return true
+		"alien_shop":
+			var d := Dialogue.instance(get_tree())
+			d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Dream Tonic  ◆200", "Energy Tea  ◆20", "Leave"], "key": ""}])
+			await d.finished
+			if d.last_choice == 0 and int(GameState.run["crystals"]) >= 200:
+				GameState.run["crystals"] = int(GameState.run["crystals"]) - 200
+				give("dream_tonic")
+			elif d.last_choice == 1 and int(GameState.run["crystals"]) >= 20:
+				GameState.run["crystals"] = int(GameState.run["crystals"]) - 20
+				give("energy_tea")
+			return true
+		"spire":
+			await say([{"who": "Light Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded. (Tom: the moon chapter's goal.)", "mood": "worried"}])
+			return true
 		"house":
 			await say([{"text": "A house built into a rocket, or a rocket built around a house. Round windows. A kettle. Somebody has been living here a long time, and left recently."}])
 			return true
 		"tele":
-			await say([{"text": "The pad glows faintly and does nothing. A panel beside it wants a Refined Crystal. Three, in fact."}])
+			if GameState.count("crystal_refined") >= 3 or GameState.run["flags"].has("tele_on"):
+				if not GameState.run["flags"].has("tele_on"):
+					GameState.add_item("crystal_refined", -3)
+					GameState.run["flags"]["tele_on"] = true
+					fx("levelup", cell_center(Vector2i(24, 20)), 10.0, 0.8)
+					await say([{"who": "Light Crystal", "text": "There. It remembers where it goes.", "mood": "happy"}])
+				go_to("station", Vector2(4 * TILE, 12 * TILE + 8), "right")
+			else:
+				await say([{"text": "The pad glows faintly and does nothing. A panel beside it wants Refined Crystals. Three. (You have %d.)" % GameState.count("crystal_refined")}])
 			return true
 		"mrock":
 			if not GameState.has_tool("pickaxe"):

@@ -150,10 +150,16 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			_altar()
 			return true
 		"gate":
+			if not GameState.quest_done("clear_meadow"):
+				if GameState.is_penguins():
+					await say([{"who": "Light Crystal", "text": "Past here the colour drains out of everything. Clear the meadow first; I need you with the first spark lit."}])
+				else:
+					await say([{"text": "A chain-link gate, and past it the road to the city. Deal with the President's man in the meadow first. He has the key."}])
+				return true
 			if GameState.is_penguins():
-				await say([{"who": "Light Crystal", "text": "Past here the colour drains out of everything. The Grump Wastes. We go in when you've got more than a wooden sword and a good heart. (Tom: this is where chapter 2 starts.)"}])
+				go_to("wastes", Vector2(2 * TILE, 13 * TILE + 8), "right")
 			else:
-				await say([{"text": "A chain-link gate, and past it the road to the city. The lock is new. Somebody doesn't want you leaving. (Tom: the districts start here.)"}])
+				go_to("hideout", Vector2(2 * TILE, 14 * TILE + 8), "right")
 			return true
 		"crater":
 			await say([{"who": "Light Crystal", "text": "This is where I landed first, before your field. The ground remembers. Stand here when the Meow Pow Wow is whole and... well. You'll see.", "mood": "happy"}])

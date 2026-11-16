@@ -23,6 +23,15 @@ var weather := "clear":
 		raining = v == "rain"
 var _drops: Array = []
 var _parts: Array = []
+var _ov_t := 0.0
+const OVERLAYS := {"rain": "ov_rain", "storm": "ov_heavy_rain", "snow": "ov_snow", "blizzard": "ov_blizzard", "petals": "ov_petals", "leaves": "ov_leaves", "fireflies": "ov_fireflies", "fog": "ov_fog", "dust": "ov_dust", "sandstorm": "ov_sandstorm", "ash": "ov_ash", "meteors": "ov_meteors"}
+
+
+func _overlay() -> Texture2D:
+	var nm := str(OVERLAYS.get(weather, ""))
+	if nm == "" or not Art.has("fx", nm):
+		return null
+	return Art.tex("fx", nm)
 
 
 func _ready() -> void:
@@ -43,6 +52,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	_ov_t += delta
 	for c: Dictionary in _clouds:
 		c["pos"].x += c["speed"] * delta
 		if c["pos"].x > _w + 70:
@@ -61,7 +71,9 @@ func _process(delta: float) -> void:
 		"leaves": pkind = "leaf_orange"
 		"petals": pkind = "leaf_green"
 		"fireflies": pkind = "firefly"
-	if pkind != "" and Art.has("fx", pkind):
+	if _overlay() != null:
+		_parts.clear()
+	elif pkind != "" and Art.has("fx", pkind):
 		var want := 40 if weather != "fireflies" else 14
 		while _parts.size() < want:
 			_parts.append({"pos": Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)), "f": randi() % 4, "t": randf() * TAU, "k": pkind})
@@ -77,7 +89,7 @@ func _process(delta: float) -> void:
 			p["f"] = int(_t * 4.0 + p["t"]) % 4
 	else:
 		_parts.clear()
-	if raining:
+	if raining and _overlay() == null:
 		while _drops.size() < 90:
 			_drops.append(Vector2(randf_range(-20, _w + 20), randf_range(-20, _h)))
 		for i in _drops.size():
@@ -106,7 +118,19 @@ func _spawn_flock() -> void:
 
 
 func _on_draw() -> void:
-	if raining:
+	var ov := _overlay()
+	if ov != null and overhead:
+		# Painted weather overlay: 4-frame 128x96 strip tiled across the screen, additive-ish.
+		var fw := 128
+		var fh := 96
+		var fr := int(_ov_t * 8.0) % 4
+		var src := Rect2(fr * fw, 0, fw, fh)
+		var alpha := 0.55 if weather in ["fog", "dust", "sandstorm"] else 0.8
+		var drift := Vector2(fmod(_ov_t * 10.0, fw), fmod(_ov_t * 30.0, fh)) if weather in ["fog", "dust", "sandstorm", "ash"] else Vector2.ZERO
+		for y in range(-1, int(_h / fh) + 2):
+			for x in range(-1, int(_w / fw) + 2):
+				_canvas.draw_texture_rect_region(ov, Rect2(Vector2(x * fw, y * fh) + drift, Vector2(fw, fh)), src, Color(1, 1, 1, alpha))
+	if raining and ov == null:
 		var rd := Art.tex("fx", "raindrop")
 		for d: Vector2 in _drops:
 			if rd:

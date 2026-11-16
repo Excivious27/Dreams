@@ -640,7 +640,13 @@ func _draw() -> void:
 	draw_fence_border()
 
 
-func _animal(kind: String, c: Vector2i) -> void:
+func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i()) -> void:
+	var full: String = {"cow2": "cow_brown", "sheep2": "sheep_woolly", "chicken": "chicken2", "pig": "pig_a", "horse": "horse2"}.get(kind, kind)
+	if Art.has("animals/" + full, "idle"):
+		var fa := FarmAnimal.new()
+		fa.setup(self, str(full), c, pen)
+		add_child(fa)
+		return
 	if not Art.has("props", kind):
 		return
 	var a := AnimatedSprite2D.new()
@@ -674,8 +680,13 @@ func _place_props() -> void:
 	prop("props", "hay", Vector2i(23, 4))
 	prop("props", "haystack", Vector2i(21, 4))
 	prop("props", "trough2" if Art.has("props", "trough2") else "trough", Vector2i(20, 5))
-	_animal("cow2", Vector2i(22, 7)); _animal("sheep2", Vector2i(24, 8)); _animal("chicken", Vector2i(9, 41)); _animal("chicken", Vector2i(11, 41))
-	prop("props", "pig", Vector2i(27, 11))
+	var pen := Rect2i(20, 6, 8, 5)
+	_animal("cow2", Vector2i(22, 7), pen); _animal("cow_bw", Vector2i(25, 9), pen); _animal("sheep2", Vector2i(24, 8), pen); _animal("goat2", Vector2i(21, 9), pen)
+	_animal("chicken", Vector2i(9, 41), Rect2i(8, 40, 6, 3)); _animal("chicken", Vector2i(11, 41), Rect2i(8, 40, 6, 3)); _animal("rooster", Vector2i(12, 42), Rect2i(8, 40, 6, 3)); _animal("duck2", Vector2i(4, 20), Rect2i(3, 19, 4, 3))
+	if Art.has("animals/pig_a", "idle"):
+		_animal("pig", Vector2i(27, 11), Rect2i(26, 10, 3, 3))
+	else:
+		prop("props", "pig", Vector2i(27, 11))
 	prop("buildings", "silo", Vector2i(30, 2), 1)
 	block_rect(30, 1, 2, 3)
 	prop("props", "bale_round", Vector2i(26, 13)); prop("props", "bale_square", Vector2i(28, 13))

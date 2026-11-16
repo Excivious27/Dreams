@@ -125,7 +125,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			hud.toast("Fishing here is coming with the next lake art.")
 			return true
 		"great_tree":
-			await say([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight. (Tom: this is a story door.)"}])
+			if GameState.is_penguins() and GameState.quest_done("clear_meadow"):
+				go_to("sky", Vector2(16 * TILE, 26 * TILE), "up")
+			else:
+				await say([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight." + (" Something tells you it's not time yet." if GameState.is_penguins() else " The stair is roped off.")}])
 			return true
 	return false
 

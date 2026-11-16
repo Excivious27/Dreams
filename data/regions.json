@@ -1,0 +1,285 @@
+{
+  "wastes": {
+    "cols": 36, "rows": 28, "music": "boss", "backdrop": "night", "ground": "dead_grass", "path": "cracked_earth", "fence_color": "3a2a44", "weather": "fog",
+    "spawn": [2, 13],
+    "exits": [{"rect": [0, 12, 1, 3], "scene": "crystal_meadow", "spawn": [32, 12.5], "facing": "left", "label": "◀ meadow"}],
+    "paths": [[1, 12, 34, 3], [17, 3, 3, 10]],
+    "layers": [{"tile": "purple_soil", "rect": [12, 2, 12, 9], "color": "4a2a5a"}],
+    "props": [
+      {"name": "dark_spire_anim", "cell": [15, 10], "w": 6, "h": 6, "anim": true, "fps": 3},
+      {"name": "dead_giant", "group": "nature", "cell": [5, 6], "w": 3, "h": 2},
+      {"name": "ruined_cottage", "cell": [27, 6], "w": 3, "h": 2},
+      {"name": "corrupt_well", "cell": [8, 21], "w": 1, "h": 1},
+      {"name": "toppled_statue", "cell": [24, 22], "w": 3, "h": 1},
+      {"name": "grump_fire", "cell": [12, 20], "anim": true, "fps": 8},
+      {"name": "grump_fire", "cell": [30, 18], "anim": true, "fps": 8},
+      {"name": "dspike_4", "cell": [3, 4]}, {"name": "dspike_3", "cell": [32, 3]}, {"name": "dspike_4", "cell": [33, 24]}, {"name": "dspike_3", "cell": [4, 25]}, {"name": "dspike_2", "cell": [20, 24]}
+    ],
+    "gen": {"region_props": ["dead_tree_s", "dead_tree_m", "dead_tree_l", "dspike_1", "dspike_2", "wdeco_0", "wdeco_1", "wdeco_2", "wdeco_5", "wdeco_6"], "region_count": 34, "critters": ["crow", "crow", "bat"], "critter_count": 6},
+    "things": [
+      {"type": "boss", "cell": [18, 11], "kind": "commander", "who": "Grump Commander", "text": "SO. The Light Crystal found a farmer. Joy is a weed. I pull weeds.", "win": "The Commander bursts into grey smoke that drifts up and is gone. For a moment the grass under your feet turns green. Then it fades, but you remember it.", "reward": "shard", "reward_n": 5, "max_hp": 2, "after": "The spire hums, waiting. The Dark Crystal is somewhere past it. (Tom: chapter 3.)", "hint": "A: the Commander", "solid": true},
+      {"type": "note", "cell": [27, 8], "who": "", "text": "Someone lived here when the grass was green. A child's drawing of a penguin is still pinned to the wall.", "hint": "A: look inside", "solid": true},
+      {"type": "loot", "cell": [8, 22], "item": "dark", "n": 1, "every": 2, "empty": "The well is dry today.", "hint": "A: the well", "solid": true}
+    ],
+    "enemies": [{"kind": "soldier", "count": 3}, {"kind": "archer", "count": 2}, {"kind": "wisp", "count": 3}, {"kind": "knight", "count": 1}],
+    "intro": ["Past the gate the colour drains out of the world like water out of a sink. Grey grass. Grey trees. In the middle of it a spire of black crystal, cracked with light the colour of a bruise.", {"who": "Light Crystal", "text": "Careful. Everything here wants you to stop caring.", "mood": "worried"}]
+  },
+
+  "hideout": {
+    "cols": 36, "rows": 30, "music": "rain", "backdrop": "gritty", "ground": "weedy_lot", "path": "asphalt2", "fence": false, "pet": true,
+    "spawn": [2, 14],
+    "exits": [
+      {"rect": [0, 13, 1, 3], "scene": "crystal_meadow", "spawn": [32, 12.5], "facing": "left", "label": "◀ outskirts"},
+      {"rect": [35, 20, 1, 3], "scene": "docks", "spawn": [2, 14], "facing": "right", "label": "docks ▶"},
+      {"rect": [17, 0, 3, 1], "scene": "countryside", "spawn": [16, 26], "facing": "up", "label": "▲ highway"}
+    ],
+    "paths": [[1, 13, 34, 3], [17, 1, 3, 13], [26, 15, 3, 7], [26, 20, 9, 3]],
+    "layers": [{"tile": "sidewalk2", "rect": [1, 12, 34, 1], "color": "8a8a90"}, {"tile": "sidewalk2", "rect": [1, 16, 34, 1], "color": "8a8a90"}, {"tile": "gravel2", "rect": [4, 20, 10, 7], "color": "777"}],
+    "props": [
+      {"name": "gas_station", "cell": [3, 10], "w": 6, "h": 3}, {"name": "diner_pink", "cell": [12, 10], "w": 3, "h": 3}, {"name": "motel_cyan", "cell": [22, 10], "w": 6, "h": 3},
+      {"name": "trailer", "cell": [4, 25], "w": 4, "h": 2}, {"name": "trailer", "cell": [10, 25], "w": 4, "h": 2},
+      {"name": "water_tower", "cell": [31, 6], "w": 1, "h": 3}, {"name": "billboard", "cell": [8, 4], "w": 2, "h": 2}, {"name": "bus_stop", "cell": [21, 18], "w": 2, "h": 2}, {"name": "payphone", "cell": [24, 18]},
+      {"name": "dumpster2", "cell": [14, 18], "w": 2}, {"name": "rusted_car", "cell": [29, 25], "w": 2}, {"name": "pickup", "cell": [16, 25], "w": 2}, {"name": "drums", "cell": [20, 26], "w": 1}, {"name": "tyres", "cell": [22, 26]},
+      {"name": "fire_barrel2", "cell": [13, 22], "anim": true, "fps": 8}, {"name": "chained_dog", "cell": [7, 22], "anim": true, "fps": 3},
+      {"name": "drive_in", "cell": [26, 8], "w": 7, "h": 4},
+      {"name": "pole_wire", "cell": [2, 18], "w": 2, "solid": false}, {"name": "pole_wire", "cell": [11, 18], "w": 2, "solid": false}, {"name": "pole_wire", "cell": [29, 18], "w": 2, "solid": false},
+      {"name": "wood_fence_a", "cell": [3, 28], "w": 2}, {"name": "wood_fence_b", "cell": [8, 28], "w": 2}, {"name": "chain_h", "cell": [26, 27], "w": 1}, {"name": "chain_h", "cell": [28, 27], "w": 1}, {"name": "chain_broken", "cell": [30, 27], "w": 1},
+      {"name": "graffiti_0", "cell": [16, 9], "solid": false}, {"name": "graffiti_3", "cell": [11, 9], "solid": false}
+    ],
+    "gen": {"region_props": ["wdeco_3", "tyres", "drums", "crow_a"], "region_count": 8, "critters": ["crow", "rat", "stray_dog", "pigeon"], "critter_count": 7},
+    "things": [
+      {"type": "shop", "cell": [13, 13], "who": "Diner", "greet": "Coffee's burnt, pie's fresh.", "items": [["gift_pie", 30], ["energy_tea", 18], ["potion", 26]], "hint": "A: the diner", "solid": false},
+      {"type": "note", "cell": [25, 13], "who": "Motel clerk", "text": "Rooms by the hour, week, or 'until it blows over'. You look like a 'blows over'. No names in the book.", "hint": "A: motel", "solid": false},
+      {"type": "note", "cell": [29, 12], "who": "", "text": "The drive-in screen is torn through. Somebody painted a crown on what's left. The President's crown. He owns the dark out here too.", "hint": "A: the screen", "solid": false},
+      {"type": "loot", "cell": [30, 25], "item": "iron", "n": 1, "every": 3, "empty": "Stripped.", "hint": "A: strip the car", "solid": false}
+    ],
+    "enemies": [{"kind": "thug_speedster", "count": 2}, {"kind": "thug_gambler", "count": 1}],
+    "intro": ["Hideout town. A gas station, a diner, a motel with half its sign lit, and a drive-in that stopped showing films before you were born. Everybody here is waiting for something to blow over."]
+  },
+
+  "docks": {
+    "cols": 38, "rows": 28, "music": "rain", "backdrop": "gritty", "ground": "concrete_pier", "path": "wood_dock", "fence": false,
+    "spawn": [2, 14],
+    "exits": [
+      {"rect": [0, 13, 1, 3], "scene": "hideout", "spawn": [33, 21.5], "facing": "left", "label": "◀ hideout"},
+      {"rect": [37, 6, 1, 3], "scene": "neon", "spawn": [2, 10], "facing": "right", "label": "neon ▶"}
+    ],
+    "paths": [[1, 13, 36, 3], [30, 6, 7, 3], [30, 8, 3, 6]],
+    "water": [{"rect": [0, 19, 38, 9], "shore": "grass"}],
+    "layers": [{"tile": "wood_dock", "rect": [8, 17, 22, 3], "color": "7a5230"}],
+    "props": [
+      {"name": "warehouse_b", "group": "buildings", "cell": [2, 10], "w": 5, "h": 3}, {"name": "warehouse_a", "group": "buildings", "cell": [10, 10], "w": 4, "h": 3}, {"name": "warehouse_c", "group": "buildings", "cell": [17, 10], "w": 3, "h": 3},
+      {"name": "big_crane", "group": "buildings", "cell": [24, 11], "w": 7, "h": 5},
+      {"name": "cargo_ship", "cell": [14, 25], "w": 9, "h": 2, "solid": false, "under": true}, {"name": "tugboat", "cell": [4, 24], "w": 3, "solid": false, "under": true}, {"name": "trawler", "cell": [28, 24], "w": 3, "solid": false, "under": true},
+      {"name": "fish_market", "cell": [31, 17], "w": 3, "h": 2}, {"name": "guard_booth", "cell": [33, 10], "w": 3, "h": 2},
+      {"name": "container_red", "cell": [3, 4], "w": 1}, {"name": "container_blue", "cell": [5, 4], "w": 1}, {"name": "container_orange", "cell": [3, 6], "w": 1}, {"name": "container_green", "cell": [5, 6], "w": 1},
+      {"name": "container_red2", "cell": [20, 4]}, {"name": "container_blue2", "cell": [21, 4]}, {"name": "container_green2", "cell": [22, 5]},
+      {"name": "forklift", "cell": [9, 18], "w": 2}, {"name": "oil_drums", "cell": [14, 6], "w": 1}, {"name": "crates_pallet_b", "cell": [12, 18], "w": 1}, {"name": "crates_pallet", "cell": [16, 6]},
+      {"name": "floodlight_on", "cell": [8, 17]}, {"name": "floodlight_on", "cell": [27, 17]}, {"name": "bollard_a", "cell": [10, 19]}, {"name": "bollard_b", "cell": [18, 19]}, {"name": "bollard_c", "cell": [26, 19]}, {"name": "rope_coil", "cell": [22, 18]},
+      {"name": "lighthouse_rust", "group": "buildings", "cell": [35, 24], "w": 1, "h": 3}
+    ],
+    "gen": {"critters": ["seagull", "seagull", "rat", "crab"], "critter_count": 8},
+    "things": [
+      {"type": "shop", "cell": [32, 18], "who": "Fish market", "greet": "Fresh-ish. No questions about the boat.", "items": [["salmon", 20], ["eel", 24], ["potion", 28]], "hint": "A: fish market", "solid": false},
+      {"type": "note", "cell": [34, 12], "who": "Guard", "text": "Warehouse three is off limits. Warehouse three has always been off limits. There is no warehouse three.", "hint": "A: guard", "solid": false},
+      {"type": "boss", "cell": [19, 13], "kind": "thug_enforcer", "who": "Dock boss", "text": "You're the farmer. The one he wants quiet. I run these docks and I like them quiet too.", "win": "He goes down between two containers. In his jacket: a shipping manifest. Every crate on it is marked with a small purple crystal.", "reward": "dark", "reward_n": 2, "after": "The docks are yours now. Riley says a mechanic could do a lot with a forklift.", "hint": "A: dock boss", "solid": false},
+      {"type": "loot", "cell": [21, 5], "item": "copper", "n": 3, "every": 2, "empty": "Already opened.", "hint": "A: open container", "solid": false}
+    ],
+    "enemies": [{"kind": "thug_cyber", "count": 2}, {"kind": "thug_brute", "count": 1}, {"kind": "thug_speedster", "count": 1}],
+    "intro": ["Salt, diesel, rust. Cranes like skeletons over the water. Everything that comes into the city comes through here, and somebody takes a cut of all of it."]
+  },
+
+  "neon": {
+    "cols": 34, "rows": 30, "music": "boss", "backdrop": "night", "ground": "wet_asphalt_0", "path": "neon_sidewalk", "fence": false, "weather": "rain",
+    "spawn": [2, 10],
+    "exits": [
+      {"rect": [0, 9, 1, 3], "scene": "docks", "spawn": [35, 7.5], "facing": "left", "label": "◀ docks"},
+      {"rect": [33, 20, 1, 3], "scene": "uptown", "spawn": [2, 14], "facing": "right", "label": "uptown ▶"}
+    ],
+    "paths": [[1, 8, 32, 1], [1, 12, 32, 1], [1, 18, 32, 1], [1, 23, 32, 1], [12, 1, 1, 28], [22, 1, 1, 28]],
+    "props": [
+      {"name": "neon_bar", "group": "buildings", "cell": [2, 7], "w": 3, "h": 3, "anim": true, "fps": 3}, {"name": "arcade", "group": "buildings", "cell": [7, 7], "w": 3, "h": 3, "anim": true, "fps": 6},
+      {"name": "noodle_stand", "group": "buildings", "cell": [14, 7], "w": 2, "h": 3, "anim": true, "fps": 4}, {"name": "neon_hotel", "group": "buildings", "cell": [24, 7], "w": 5, "h": 4},
+      {"name": "ramen_shop", "group": "buildings", "cell": [2, 17], "w": 3, "h": 3}, {"name": "karaoke", "group": "buildings", "cell": [7, 17], "w": 3, "h": 3},
+      {"name": "neon_dragon", "group": "buildings", "cell": [14, 17], "w": 7, "h": 3, "anim": true, "fps": 6},
+      {"name": "vend_red", "cell": [13, 10]}, {"name": "vend_blue", "cell": [21, 10]}, {"name": "vend_purple", "cell": [13, 20]},
+      {"name": "taxi", "cell": [16, 13], "w": 2}, {"name": "scooter", "cell": [4, 13], "w": 1}, {"name": "payphone2", "cell": [23, 13]},
+      {"name": "lanterns_red", "cell": [3, 15], "w": 2, "solid": false}, {"name": "lanterns_cyan", "cell": [15, 15], "w": 2, "solid": false}, {"name": "lanterns_pink", "cell": [25, 15], "w": 2, "solid": false},
+      {"name": "alley", "cell": [25, 20], "w": 3, "h": 2}, {"name": "fire_escape", "cell": [29, 17], "w": 1, "h": 2}, {"name": "cat_wall", "cell": [2, 26], "w": 3},
+      {"name": "neon_sign_0", "cell": [6, 25], "solid": false}, {"name": "neon_sign_2", "cell": [18, 25], "solid": false}, {"name": "neon_sign_5", "cell": [29, 25], "solid": false},
+      {"name": "puddle", "cell": [9, 14], "anim": true, "fps": 2, "solid": false, "under": true}, {"name": "puddle", "cell": [19, 21], "anim": true, "fps": 2, "solid": false, "under": true}
+    ],
+    "gen": {"critters": ["cat_black", "rat", "pigeon", "bat"], "critter_count": 6},
+    "things": [
+      {"type": "shop", "cell": [15, 10], "who": "Noodle stand", "greet": "Hot. Fast. Cash.", "items": [["gift_pie", 28], ["energy_tea", 14]], "hint": "A: noodles", "solid": false},
+      {"type": "shop", "cell": [3, 20], "who": "Ramen", "greet": "Sit. Eat. Nobody bothers you in here.", "items": [["potion", 24], ["dream_tonic", 240]], "hint": "A: ramen", "solid": false},
+      {"type": "note", "cell": [8, 20], "who": "Karaoke host", "text": "Manny sings here on Thursdays. Badly. Everyone comes anyway. That's what this street is: people who shouldn't, doing it anyway.", "hint": "A: karaoke", "solid": false},
+      {"type": "door", "cell": [26, 23], "scene": "underground", "spawn": [3, 3], "facing": "down", "hint": "A: manhole (down)", "solid": false},
+      {"type": "boss", "cell": [17, 21], "kind": "thug_flame", "who": "Flame", "text": "The dragon's mine. The street's mine. You walked under my sign without paying. That's a fire hazard.", "win": "The flames go out. Under the dragon sign, a crowd that was pretending not to watch starts, very quietly, to clap.", "reward": "crystal", "reward_n": 0, "after": "The neon district breathes easier. Vex says she can get word to the uptown crews now.", "hint": "A: Flame", "solid": false}
+    ],
+    "enemies": [{"kind": "thug_speedster", "count": 2}, {"kind": "thug_gambler", "count": 2}, {"kind": "thug_cyber", "count": 1}],
+    "intro": ["Rain on neon. Every puddle has a sign in it. Noodle steam, arcade noise, a dragon the length of a block burning pink and blue over everything."]
+  },
+
+  "uptown": {
+    "cols": 34, "rows": 32, "music": "boss", "backdrop": "gritty", "ground": "lawn", "path": "polished_road", "fence": false,
+    "spawn": [2, 14],
+    "exits": [{"rect": [0, 13, 1, 3], "scene": "neon", "spawn": [31, 21.5], "facing": "left", "label": "◀ neon"}],
+    "paths": [[1, 13, 32, 3], [16, 3, 3, 10], [16, 16, 3, 14]],
+    "layers": [{"tile": "marble", "rect": [10, 3, 15, 5], "color": "d8d8e0"}, {"tile": "marble", "rect": [12, 24, 11, 6], "color": "d8d8e0"}],
+    "props": [
+      {"name": "president_tower", "group": "buildings", "cell": [14, 9], "w": 5, "h": 8},
+      {"name": "bank", "group": "buildings", "cell": [2, 9], "w": 4, "h": 3}, {"name": "mansion", "group": "buildings", "cell": [25, 10], "w": 6, "h": 4}, {"name": "penthouse", "group": "buildings", "cell": [3, 27], "w": 3, "h": 3},
+      {"name": "gold_fountain", "cell": [16, 27], "w": 2, "h": 2, "anim": true, "fps": 4},
+      {"name": "limo", "cell": [21, 17], "w": 4}, {"name": "lux_car_black", "cell": [6, 17], "w": 2}, {"name": "lux_car_red", "cell": [9, 20], "w": 2},
+      {"name": "guard_booth2", "cell": [12, 10], "w": 1, "h": 2}, {"name": "guard_booth2", "cell": [21, 10], "w": 1, "h": 2},
+      {"name": "topiary_a", "cell": [10, 8]}, {"name": "topiary_c", "cell": [24, 8]}, {"name": "topiary_b", "cell": [13, 24]}, {"name": "topiary_b", "cell": [21, 24]},
+      {"name": "statue_cane", "cell": [17, 7], "w": 1, "h": 2}, {"name": "red_carpet", "cell": [16, 9], "w": 2, "solid": false, "under": true}, {"name": "red_carpet_end", "cell": [16, 11], "w": 2, "solid": false, "under": true},
+      {"name": "spotlight_pink", "cell": [13, 11]}, {"name": "spotlight_cyan", "cell": [20, 11]}, {"name": "rope_barrier", "cell": [15, 12], "w": 1, "solid": false}, {"name": "rope_barrier", "cell": [18, 12], "w": 1, "solid": false},
+      {"name": "gold_fence_a", "cell": [2, 22], "w": 1}, {"name": "gold_fence_a", "cell": [4, 22], "w": 1}, {"name": "gold_gate", "cell": [6, 22], "w": 1}, {"name": "gold_fence_a", "cell": [27, 22], "w": 1}, {"name": "gold_fence_a", "cell": [29, 22], "w": 1},
+      {"name": "cctv_a", "cell": [12, 13], "solid": false}, {"name": "cctv_b", "cell": [21, 13], "solid": false},
+      {"name": "helicopter", "cell": [27, 28], "w": 2, "anim": true, "fps": 12}
+    ],
+    "layers_extra": [],
+    "gen": {"critters": ["pigeon", "cat_grey"], "critter_count": 4},
+    "things": [
+      {"type": "note", "cell": [17, 12], "who": "Doorman", "text": "The President sees nobody without an appointment. The President has never once made an appointment. You can see where that leaves you.", "hint": "A: the tower doors", "solid": false},
+      {"type": "note", "cell": [4, 12], "who": "Bank", "text": "Closed to the public. Open to the President. There's a crystal the size of a car in the vault, Eli says. He hacked the inventory. He's nineteen.", "hint": "A: bank", "solid": false},
+      {"type": "boss", "cell": [27, 14], "kind": "thug_enforcer", "who": "Enforcer", "text": "He said you'd come. He said to let you get close enough to see the tower. Close enough.", "win": "The riot shield clatters down the marble steps. Behind it, for one second, the tower's doors open. Then they close. (Tom: the President fight waits on Guide #2.)", "reward": "gold", "reward_n": 3, "after": "The tower stays shut. For now.", "hint": "A: enforcer", "solid": false}
+    ],
+    "enemies": [{"kind": "thug_cyber", "count": 2}, {"kind": "thug_gambler", "count": 1}],
+    "intro": ["Marble, gold, trimmed hedges, and a tower that goes up until it stops being a building and becomes a threat. At the very top, something purple glows in a window."]
+  },
+
+  "underground": {
+    "cols": 30, "rows": 26, "music": "mine", "backdrop": "night", "sky": false, "ground": "sewer_brick", "path": "sewer_mossy", "fence_color": "2a1a14",
+    "spawn": [3, 3],
+    "exits": [],
+    "paths": [[2, 2, 2, 22], [2, 12, 26, 2]],
+    "layers": [{"tile": "sewer_brick_b", "rect": [10, 16, 14, 8], "color": "5a3a2a"}],
+    "water": [],
+    "props": [
+      {"name": "arena", "cell": [8, 23], "w": 7, "h": 4, "anim": true, "fps": 3},
+      {"name": "boxing_ring", "cell": [18, 8], "w": 4, "h": 3}, {"name": "bleachers", "cell": [24, 8], "w": 2, "h": 2}, {"name": "cage", "cell": [11, 8], "w": 3, "h": 2},
+      {"name": "weight_bench", "cell": [6, 8], "w": 1, "h": 1}, {"name": "punching_bag", "cell": [8, 8], "h": 2},
+      {"name": "betting_booth", "cell": [25, 20], "w": 2, "h": 3}, {"name": "card_table", "cell": [18, 21], "w": 3, "h": 1}, {"name": "jukebox_b", "cell": [16, 23]},
+      {"name": "bottle_crate_a", "cell": [5, 20], "w": 1}, {"name": "bottle_crate_c", "cell": [5, 22]}, {"name": "bulb_on", "cell": [12, 5], "solid": false}, {"name": "bulb_on", "cell": [22, 5], "solid": false},
+      {"name": "pipe_s", "cell": [20, 2], "w": 2, "solid": false}, {"name": "pipe_valve", "cell": [24, 2], "solid": false},
+      {"name": "ugraffiti_a", "cell": [14, 3], "solid": false}, {"name": "ugraffiti_d", "cell": [26, 14], "solid": false}
+    ],
+    "gen": {"critters": ["rat", "rat", "bat"], "critter_count": 6},
+    "things": [
+      {"type": "door", "cell": [3, 2], "scene": "neon", "spawn": [26, 24.5], "facing": "down", "hint": "A: ladder up", "solid": false},
+      {"type": "note", "cell": [26, 21], "who": "Bookie", "text": "Fights every night. Winner takes the pot. The President's boys fight here too, when they want to hurt somebody legally.", "hint": "A: bookie", "solid": false},
+      {"type": "boss", "cell": [19, 11], "kind": "thug_brute", "who": "Pit champion", "text": "Jax said you'd try the ring. Jax is old. I'm not.", "win": "The crowd roars. Jax, at the ropes, nods once. That's all he's ever going to give anyone, and it's enough.", "reward": "crystal", "reward_n": 0, "after": "The pit's yours. Fighters come to you now.", "hint": "A: the ring", "solid": false},
+      {"type": "heal", "cell": [16, 22], "hp": 3, "energy": 40, "msg": "The jukebox plays something old. You breathe.", "hint": "A: jukebox", "solid": false}
+    ],
+    "enemies": [{"kind": "thug_brute", "count": 1}, {"kind": "thug_speedster", "count": 2}],
+    "intro": ["Down the ladder: brick, drip, and the bass of a crowd somewhere ahead. The fight club. The only place in the city where the rules are posted."]
+  },
+
+  "countryside": {
+    "cols": 34, "rows": 28, "music": "rain", "backdrop": "mountains", "ground": "shoulder", "path": "highway", "fence": false,
+    "spawn": [16, 25],
+    "exits": [{"rect": [15, 27, 4, 1], "scene": "hideout", "spawn": [18, 2], "facing": "down", "label": "▼ hideout"}],
+    "paths": [[15, 1, 4, 26]],
+    "layers": [{"tile": "cornfield_night", "rect": [2, 3, 10, 8], "color": "2a3a2a"}, {"tile": "cornfield_night", "rect": [22, 14, 10, 8], "color": "2a3a2a"}],
+    "props": [
+      {"name": "tunnel", "cell": [14, 4], "w": 6, "h": 4}, {"name": "stone_head", "cell": [22, 7], "w": 7, "h": 6}, {"name": "highway_bridge", "cell": [13, 14], "w": 8, "h": 1, "solid": false, "under": true},
+      {"name": "rest_stop", "cell": [4, 16], "w": 5, "h": 2}, {"name": "motel_sign", "cell": [10, 17], "w": 1, "h": 2}, {"name": "billboard2", "cell": [25, 24], "w": 3, "h": 2},
+      {"name": "broken_bus", "cell": [3, 23], "w": 5, "h": 2}, {"name": "hitchhiker", "cell": [20, 20]},
+      {"name": "farm_silo_b", "cell": [24, 2], "w": 3, "h": 2}, {"name": "radio_tower_a", "cell": [30, 4], "h": 3}, {"name": "wind_turbine", "cell": [2, 12], "anim": true, "fps": 6, "h": 2}, {"name": "wind_turbine", "cell": [30, 11], "anim": true, "fps": 6, "h": 2},
+      {"name": "checkpoint_down", "cell": [12, 2], "w": 3, "h": 2}, {"name": "roadblock", "cell": [20, 9], "w": 5, "h": 1}
+    ],
+    "gen": {"critters": ["crow", "crow", "rabbit", "owl"], "critter_count": 6},
+    "things": [
+      {"type": "note", "cell": [20, 21], "who": "Hitchhiker", "text": "Going north? Nobody's going north. The checkpoint's been shut since the President's people put the big head on the mountain. Vanity, that.", "hint": "A: hitchhiker", "solid": false},
+      {"type": "note", "cell": [13, 4], "who": "", "text": "The checkpoint is dark. The barrier is down. The tunnel beyond it goes somewhere the map doesn't show. (Tom: this is the road to the next nation.)", "hint": "A: checkpoint", "solid": false},
+      {"type": "shop", "cell": [6, 18], "who": "Rest stop", "greet": "Vending machine's broke. I've got what I've got.", "items": [["energy_tea", 12], ["potion", 22], ["bread", 10]], "hint": "A: rest stop", "solid": false}
+    ],
+    "enemies": [{"kind": "thug_speedster", "count": 2}],
+    "intro": ["The highway out of town. Cornfields black under a purple sky, wind turbines turning, and the President's face carved into the mountain at the end of the road like he's watching you leave."]
+  },
+
+  "sky": {
+    "cols": 32, "rows": 30, "music": "title", "backdrop": "hills", "ground": "cloud", "path": "float_stone", "fence": false, "pet": false,
+    "spawn": [16, 26],
+    "exits": [],
+    "paths": [[15, 4, 2, 24], [6, 10, 20, 2], [6, 20, 20, 2]],
+    "layers": [{"tile": "cloud_star", "rect": [10, 3, 12, 6], "color": "e8f0ff"}],
+    "props": [
+      {"name": "observatory", "cell": [12, 9], "w": 7, "h": 6},
+      {"name": "sky_temple", "cell": [3, 15], "w": 5, "h": 4}, {"name": "sky_stairs", "cell": [25, 15], "w": 3, "h": 3},
+      {"name": "sky_bridge", "cell": [8, 22], "w": 10, "h": 2, "solid": false, "under": true},
+      {"name": "cloud_tree_a", "group": "nature", "cell": [4, 6], "w": 2, "h": 2}, {"name": "cloud_tree_b", "group": "nature", "cell": [26, 5], "w": 2, "h": 2}, {"name": "cloud_tree_c", "group": "nature", "cell": [24, 24], "w": 2, "h": 2}, {"name": "cloud_tree_a", "group": "nature", "cell": [5, 25], "w": 2, "h": 2},
+      {"name": "skydeco_5", "cell": [10, 13]}, {"name": "skydeco_6", "cell": [21, 13]}, {"name": "skydeco_7", "cell": [12, 26]},
+      {"name": "sky_whale", "group": "fx", "cell": [22, 29], "w": 6, "anim": true, "fps": 2, "solid": false, "under": true}
+    ],
+    "gen": {"region_props": ["skydeco_0", "skydeco_1", "skydeco_2", "skydeco_3", "skydeco_4"], "region_count": 18, "critters": ["eagle", "butterfly_blue"], "critter_count": 5},
+    "things": [
+      {"type": "door", "cell": [16, 28], "scene": "forest", "spawn": [18, 22.5], "facing": "down", "hint": "A: climb down the great tree", "solid": false},
+      {"type": "note", "cell": [15, 15], "who": "Light Crystal", "text": "An observatory. Whoever built it was looking for my kind. The telescope still points at the galaxy I fell from.", "mood": "happy", "hint": "A: observatory", "solid": false},
+      {"type": "note", "cell": [5, 19], "who": "", "text": "A temple with crystal columns and no roof. Carved on the floor: a paw print inside a ring of light. The Meow Pow Wow is older than penguins.", "hint": "A: temple", "solid": false},
+      {"type": "heal", "cell": [27, 18], "hp": 4, "energy": 50, "msg": "You sit on the broken stair and the wind does the rest.", "hint": "A: rest on the stairs", "solid": false},
+      {"type": "boss", "cell": [16, 12], "kind": "knight", "who": "Crystal Knight", "text": "...", "win": "The knight shatters into blue-white glass that melts into the clouds. Where it stood, a crystal the size of your fist. Warm.", "reward": "crystal_refined", "reward_n": 2, "max_hp": 1, "after": "The clouds are quiet.", "hint": "A: the knight", "solid": false}
+    ],
+    "enemies": [{"kind": "wisp", "count": 3}, {"kind": "archer", "count": 1}],
+    "intro": ["The stairs inside the great tree go up for a very long time, and then there is no tree, only cloud underfoot and sky in every direction. Islands float here. Something enormous swims beneath them."]
+  },
+
+  "station": {
+    "cols": 32, "rows": 24, "music": "mine", "backdrop": "space", "sky": false, "pet": false, "ground": "metal_a", "path": "metal_b", "fence_color": "2a2a3a",
+    "spawn": [4, 12],
+    "exits": [],
+    "paths": [[2, 11, 28, 2], [15, 2, 2, 20]],
+    "layers": [{"tile": "hazard", "rect": [24, 4, 6, 5], "color": "c9a000"}, {"tile": "grating", "rect": [3, 16, 8, 6], "color": "555"}],
+    "props": [
+      {"name": "bridge", "cell": [1, 4], "w": 14, "h": 4},
+      {"name": "reactor", "cell": [26, 8], "w": 2, "h": 3, "anim": true, "fps": 6}, {"name": "holo_table", "cell": [19, 7], "w": 1, "h": 2, "anim": true, "fps": 5},
+      {"name": "console", "cell": [9, 9], "w": 1, "anim": true, "fps": 3}, {"name": "console", "cell": [19, 15], "w": 1, "anim": true, "fps": 3},
+      {"name": "cryo_pod", "cell": [21, 15], "w": 1, "h": 2, "anim": true, "fps": 1}, {"name": "cryo_pod", "cell": [23, 15], "w": 1, "h": 2, "anim": true, "fps": 1},
+      {"name": "viewport", "cell": [20, 2], "w": 2, "solid": false, "anim": true, "fps": 2}, {"name": "viewport", "cell": [25, 2], "w": 2, "solid": false, "anim": true, "fps": 2},
+      {"name": "hydroponics", "cell": [4, 20], "w": 2, "h": 2}, {"name": "bunk", "cell": [8, 20], "w": 1, "h": 2}, {"name": "vend_space", "cell": [11, 20], "h": 2},
+      {"name": "cargo_grey", "cell": [26, 17]}, {"name": "cargo_red", "cell": [27, 18]}, {"name": "cargo_yellow", "cell": [28, 17]}, {"name": "robot_arm", "cell": [29, 20], "w": 1, "h": 2},
+      {"name": "escape_pod", "cell": [27, 21], "w": 3, "h": 2},
+      {"name": "sliding_door", "cell": [15, 1], "w": 1, "h": 2, "anim": true, "fps": 2, "solid": false},
+      {"name": "drone", "cell": [12, 14], "anim": true, "fps": 8, "solid": false}, {"name": "drone", "cell": [22, 20], "anim": true, "fps": 8, "solid": false}
+    ],
+    "gen": {},
+    "things": [
+      {"type": "door", "cell": [3, 12], "scene": "moon", "spawn": [24, 22], "facing": "down", "hint": "A: teleporter home", "solid": false},
+      {"type": "door", "cell": [28, 12], "scene": "jungle", "spawn": [3, 12], "facing": "right", "hint": "A: launch to the green planet", "solid": false},
+      {"type": "note", "cell": [8, 8], "who": "", "text": "The bridge. Every screen shows the same thing: a planet, green and violet, and a reading that says LIFE in letters somebody underlined by hand.", "hint": "A: the bridge", "solid": false},
+      {"type": "note", "cell": [22, 17], "who": "Light Crystal", "text": "Someone's asleep in these pods. Not people. Not Grumps. Something between. Don't wake them yet. (Tom: a story door.)", "mood": "worried", "hint": "A: cryo pods", "solid": false},
+      {"type": "heal", "cell": [5, 22], "hp": 6, "energy": 100, "msg": "Hydroponic strawberries. Real ones. You eat too many.", "hint": "A: hydroponics", "solid": false},
+      {"type": "loot", "cell": [27, 19], "item": "iron", "n": 2, "every": 2, "empty": "Empty crates.", "hint": "A: cargo", "solid": false}
+    ],
+    "enemies": [{"kind": "shard", "count": 3}, {"kind": "wisp", "count": 2}],
+    "intro": ["The teleporter lets go of you on a metal floor that hums. Windows the size of barn doors look down on a planet. Nobody is here. Somebody was."]
+  },
+
+  "jungle": {
+    "cols": 34, "rows": 30, "music": "meadow", "backdrop": "night", "ground": "teal_moss", "path": "bio_path_0", "fence_color": "2a1a44", "weather": "fireflies", "pet": false,
+    "spawn": [3, 12],
+    "exits": [],
+    "paths": [[2, 11, 30, 2], [16, 2, 2, 26]],
+    "layers": [{"tile": "violet_soil", "rect": [20, 18, 11, 9], "color": "5a3a7a"}],
+    "props": [
+      {"name": "giant_flower", "cell": [14, 24], "w": 6, "h": 5, "anim": true, "fps": 2},
+      {"name": "mushroom_tree_b", "cell": [4, 6], "w": 3, "h": 3}, {"name": "mushroom_tree_a", "cell": [24, 4], "w": 2, "h": 3}, {"name": "mushroom_tree_a", "cell": [6, 24], "w": 2, "h": 3}, {"name": "mushroom_tree_b", "cell": [27, 25], "w": 3, "h": 3},
+      {"name": "crashed_ship", "cell": [22, 10], "w": 5, "h": 2}, {"name": "alien_statue", "cell": [8, 17], "w": 2, "h": 4},
+      {"name": "carnivore_plant", "cell": [12, 6], "anim": true, "fps": 3}, {"name": "carnivore_plant", "cell": [20, 22], "anim": true, "fps": 3},
+      {"name": "vines_a", "cell": [3, 2], "w": 1, "solid": false}, {"name": "vines_b", "cell": [10, 2], "w": 1, "solid": false}, {"name": "vines_c", "cell": [28, 2], "w": 1, "solid": false}
+    ],
+    "gen": {"region_props": ["jdeco_0", "jdeco_1", "jdeco_2", "jdeco_3", "jdeco_4", "jdeco_5", "jdeco_6", "jdeco_7", "jdeco_8", "jdeco_9", "jdeco_10"], "region_count": 40, "critters": ["jelly", "jelly", "six_deer", "firefly", "butterfly_blue"], "critter_count": 8},
+    "things": [
+      {"type": "door", "cell": [2, 12], "scene": "station", "spawn": [28, 12.5], "facing": "left", "hint": "A: back to the station", "solid": false},
+      {"type": "note", "cell": [9, 21], "who": "", "text": "A statue of someone who is not a person and is not quite a penguin either, eyes closed, a crystal where the heart would be. The Light Crystal goes very quiet.", "hint": "A: the statue", "solid": false},
+      {"type": "note", "cell": [24, 12], "who": "", "text": "A crashed ship, old, overgrown. The markings on the hull are the same ones that are on the Light Crystal. (Tom: who sent it?)", "hint": "A: the wreck", "solid": false},
+      {"type": "heal", "cell": [17, 23], "hp": 6, "energy": 80, "msg": "The giant flower opens and closes once, slowly, and the air is sweet.", "hint": "A: the great flower", "solid": false},
+      {"type": "loot", "cell": [25, 11], "item": "shard", "n": 2, "every": 2, "empty": "Picked clean.", "hint": "A: search the wreck", "solid": false}
+    ],
+    "enemies": [{"kind": "shard", "count": 2}, {"kind": "slime", "count": 3}, {"kind": "golem", "count": 1}],
+    "intro": ["Teal moss, violet earth, mushrooms the size of houses glowing from the inside. Fireflies that are not fireflies. Everything here breathes."]
+  }
+}
