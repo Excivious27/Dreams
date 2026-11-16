@@ -960,8 +960,8 @@
  "marlowe": {
   "name": "Marlowe",
   "role": "Lighthouse keeper",
-  "sprite": "npc_fisherman",
-  "portrait": "npc_fisherman",
+  "sprite": "npc_marlowe",
+  "portrait": "npc_marlowe",
   "spot": [
    6,
    32
@@ -985,6 +985,244 @@
    "6": "Night fishing at the lighthouse doubles rare bites",
    "8": "Marlowe tells the story of the crystal (lore)",
    "10": "Marlowe's old rod"
+  }
+ },
+ "orla": {
+  "name": "Orla",
+  "role": "Miller",
+  "sprite": "npc_orla",
+  "portrait": "npc_orla",
+  "spot": [
+   0,
+   0
+  ],
+  "spot_name": "mill",
+  "routine": [],
+  "likes": [
+   "wheat",
+   "flour",
+   "bread",
+   "honey"
+  ],
+  "dislikes": [
+   "slime_goo"
+  ],
+  "perks": {
+   "2": "Milling costs 1 less wheat",
+   "4": "Orla sells wheat seed at cost",
+   "6": "Orla's cornmeal recipes",
+   "8": "Mill runs overnight: flour in the sell box",
+   "10": "Orla's heirloom grain"
+  }
+ },
+ "benno": {
+  "name": "Benno",
+  "role": "Stable hand",
+  "sprite": "npc_benno",
+  "portrait": "npc_benno",
+  "spot": [
+   0,
+   0
+  ],
+  "spot_name": "stable",
+  "routine": [
+   [
+    6,
+    "stable"
+   ],
+   [
+    12,
+    "inn"
+   ],
+   [
+    14,
+    "stable"
+   ],
+   [
+    20,
+    "home"
+   ]
+  ],
+  "likes": [
+   "carrots",
+   "apple",
+   "hay",
+   "horseshoe"
+  ],
+  "dislikes": [
+   "fish"
+  ],
+  "perks": {
+   "2": "Stable boarding 50% off",
+   "4": "Benno sells saddles",
+   "6": "Your horse runs 10% faster",
+   "8": "Benno breaks in a donkey for you",
+   "10": "Benno's llama"
+  }
+ },
+ "ivy": {
+  "name": "Ivy",
+  "role": "Bank teller",
+  "sprite": "npc_ivy",
+  "portrait": "npc_ivy",
+  "spot": [
+   0,
+   0
+  ],
+  "spot_name": "bank",
+  "routine": [
+   [
+    6,
+    "home"
+   ],
+   [
+    8,
+    "work"
+   ],
+   [
+    12,
+    "plaza"
+   ],
+   [
+    13,
+    "work"
+   ],
+   [
+    17,
+    "home"
+   ]
+  ],
+  "likes": [
+   "old_coin",
+   "gold_bar",
+   "book",
+   "tea"
+  ],
+  "dislikes": [
+   "slime_goo",
+   "bone"
+  ],
+  "perks": {
+   "2": "Savings account: 1% interest",
+   "4": "Small loans",
+   "6": "2% interest",
+   "8": "Ivy's insurance: no clinic fee",
+   "10": "Ivy's vault"
+  }
+ },
+ "tam": {
+  "name": "Tam",
+  "role": "Shepherd",
+  "sprite": "npc_tam",
+  "portrait": "npc_tam",
+  "spot": [
+   0,
+   0
+  ],
+  "spot_name": "hills",
+  "routine": [],
+  "likes": [
+   "apple",
+   "cheese",
+   "wool",
+   "sheep"
+  ],
+  "dislikes": [
+   "pelt"
+  ],
+  "perks": {
+   "2": "Tam sells wool",
+   "4": "Tam's sheepdog finds forage",
+   "6": "Tam gives you a lamb",
+   "8": "Tam's cider",
+   "10": "Tam's hills are yours to graze"
+  }
+ },
+ "old_moss": {
+  "name": "Old Moss",
+  "role": "Marsh hermit",
+  "sprite": "npc_old_moss",
+  "portrait": "npc_old_moss",
+  "spot": [
+   0,
+   0
+  ],
+  "spot_name": "marsh",
+  "routine": [],
+  "likes": [
+   "frog",
+   "mushroom",
+   "glow_cap",
+   "tea"
+  ],
+  "dislikes": [
+   "gold_bar",
+   "perfume"
+  ],
+  "perks": {
+   "2": "Moss shows safe paths (wisps don't hunt you)",
+   "4": "Bog iron recipe",
+   "6": "Moss's lantern (fog lifts near you)",
+   "8": "Marsh gas jars for alchemy",
+   "10": "Moss's secret: the drowned road"
+  }
+ },
+ "granite": {
+  "name": "Granite",
+  "role": "Quarry foreman",
+  "sprite": "npc_granite",
+  "portrait": "npc_granite",
+  "spot": [
+   0,
+   0
+  ],
+  "spot_name": "quarry",
+  "routine": [],
+  "likes": [
+   "coal",
+   "iron_bar",
+   "meat",
+   "coffee"
+  ],
+  "dislikes": [
+   "flower",
+   "candy"
+  ],
+  "perks": {
+   "2": "Quarry ore respawns faster",
+   "4": "Granite sells dynamite",
+   "6": "Mine cart ride to the mountain",
+   "8": "Granite's crew clears rockslides",
+   "10": "The deep quarry opens"
+  }
+ },
+ "sel": {
+  "name": "Sel",
+  "role": "Ruins scholar",
+  "sprite": "npc_sel",
+  "portrait": "npc_sel",
+  "spot": [
+   0,
+   0
+  ],
+  "spot_name": "ruins",
+  "routine": [],
+  "likes": [
+   "book",
+   "old_coin",
+   "fossil",
+   "moon_shard"
+  ],
+  "dislikes": [
+   "meat",
+   "slime_goo"
+  ],
+  "perks": {
+   "2": "Sel reads the first rune",
+   "4": "+10 max mana",
+   "6": "Sel opens the stone door",
+   "8": "Sel's translation: the crystal's origin",
+   "10": "Sel's staff"
   }
  }
 }

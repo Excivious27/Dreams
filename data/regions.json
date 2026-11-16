@@ -3704,6 +3704,20 @@
   ],
   "intro": [
    "Hills that roll like a shaken blanket, and every hill wears an orchard. Bees. A windmill turning slow against the sky. Someone is whistling to a dog."
+  ],
+  "npcs": [
+   {
+    "id": "tam",
+    "cell": [
+     38,
+     9
+    ],
+    "lines": [
+     "Sheep don't care what season it is. Neither do I, much.",
+     "Cider's in the hut. Help yourself, pay what you like.",
+     "The dog found something in the far orchard. Wouldn't let me see."
+    ]
+   }
   ]
  },
  "highlands": {
@@ -4000,7 +4014,8 @@
   ],
   "intro": [
    "Thin air, pale grass, snow in the shadows even in summer. An eagle turns overhead. The valley is a green bowl far below."
-  ]
+  ],
+  "npcs": []
  },
  "ruins": {
   "cols": 48,
@@ -4271,6 +4286,20 @@
   ],
   "intro": [
    "Nobody built this, the town says. Nobody remembers. Moss on the pillars, and something under the moss that still glows a little at night."
+  ],
+  "npcs": [
+   {
+    "id": "sel",
+    "cell": [
+     20,
+     10
+    ],
+    "lines": [
+     "The spiral is the same as the one the crystal dreams. I've checked.",
+     "Don't touch the fallen stone. I did. My ears haven't stopped.",
+     "Theo thinks I'm making it up. Theo has never been here after dark."
+    ]
+   }
   ]
  },
  "quarry": {
@@ -4608,6 +4637,20 @@
   ],
   "intro": [
    "The quarry: a bowl of cut stone, terraces like giant steps, rails that go nowhere now. The ore is still in the walls. Nobody has told the golems the work stopped."
+  ],
+  "npcs": [
+   {
+    "id": "granite",
+    "cell": [
+     46,
+     10
+    ],
+    "lines": [
+     "Work stopped. Ore didn't.",
+     "Bring me coal and I'll fire the old crane up. Maybe.",
+     "Golems were the crew's idea. Carve a stone man to lift stone. What could go wrong."
+    ]
+   }
   ]
  },
  "marsh": {
@@ -4892,6 +4935,20 @@
   "weather": "fog",
   "intro": [
    "Mud that sucks at your boots, black water, cattails taller than you. Frogs stop singing when you pass and start again behind you. Lights move out there that aren't lanterns."
+  ],
+  "npcs": [
+   {
+    "id": "old_moss",
+    "cell": [
+     42,
+     11
+    ],
+    "lines": [
+     "Don't drink the black water. Unless.",
+     "The wisps are only curious. Mostly.",
+     "Frogs know things. I listen."
+    ]
+   }
   ]
  },
  "riverlands": {
@@ -5171,6 +5228,7 @@
   ],
   "intro": [
    "Three rivers braid through sand bars and willow. Otters. Herons standing like they've been there since the valley was made. The lake is downstream, the marsh up."
-  ]
+  ],
+  "npcs": []
  }
 }

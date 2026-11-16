@@ -2130,14 +2130,56 @@ def _canvas(im, w=96, h=96, bottom=4):
     return c
 
 
-def _rows16(file, group, names, n=16, canvas=(96, 96), icon_group=None, icon_frame=0):
+def _equal_cells(rgba, reg, n):
+    """Column runs of content in the row, then split the widest runs at their
+    thinnest column until there are n (sprites that touch, like hair), or merge
+    the closest runs if there are too many (sprites that split into pieces)."""
+    x0, y0, x1, y1 = reg
+    a = rgba[y0:y1, x0:x1, 3] > 40
+    colp = a.mean(0)
+    runs = []
+    on = False
+    for i, v in enumerate(colp):
+        if v > 0 and not on:
+            on = True; st = i
+        elif v == 0 and on:
+            on = False; runs.append([st, i])
+    if on:
+        runs.append([st, len(colp)])
+    while len(runs) > n:
+        gaps = [(runs[i + 1][0] - runs[i][1], i) for i in range(len(runs) - 1)]
+        g, i = min(gaps)
+        runs[i][1] = runs[i + 1][1]
+        del runs[i + 1]
+    while len(runs) < n:
+        widths = sorted(r[1] - r[0] for r in runs)
+        med = widths[len(widths) // 2]
+        wi = max(range(len(runs)), key=lambda i: runs[i][1] - runs[i][0])
+        s0, s1 = runs[wi]
+        w = s1 - s0
+        if w < med * 1.4:
+            break  # nothing wide enough to be two sprites; leave it
+        lo, hi = s0 + int(w * 0.35), s1 - int(w * 0.35)
+        seg = colp[lo:hi]
+        cut = lo + int(seg.argmin())
+        runs[wi:wi + 1] = [[s0, cut], [cut, s1]]
+    # Pad to n with empty boxes so frame indices stay aligned.
+    while len(runs) < n:
+        runs.append([x1 - x0 - 1, x1 - x0])
+    return [(x0 + r[0], y0, x0 + r[1], y1) for r in runs]
+
+def _rows16(file, group, names, n=16, canvas=(96, 96), icon_group=None, icon_frame=0, equal=False):
     """Sheet of 8 rows x n sprites (one row per variant). Saves each row as an
     n-frame strip <group>/<name> on a fixed canvas, plus an optional icon."""
     rgba = load(file)
     a = rgba[..., 3] > 40
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:len(names)]
+    cols_prof = a.mean(0)
+    xs = [i for i, v in enumerate(cols_prof) if v > 0.002]
+    xl, xr = (xs[0], xs[-1] + 1) if xs else (0, rgba.shape[1])
     for name, (y0, y1) in zip(names, rows):
-        bs = row_sprites(rgba, (4, max(0, y0 - 6), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 6)), n, gap=3)
+        reg = (4, max(0, y0 - 6), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 6))
+        bs = _equal_cells(rgba, (xl - 4, reg[1], xr + 4, reg[3]), n) if equal else row_sprites(rgba, reg, n, gap=3)
         frames = []
         for b in bs:
             bb = region_bbox(rgba, b)
@@ -2174,22 +2216,242 @@ HAIR_C = ["spiky_c", "shaggy_c", "ponytail_c", "buns_c", "braid_c", "layered_c",
 HATS_A = ["straw", "cap", "beanie", "witch", "flatcap", "knight", "crystal_crown", "cowboy"]
 HATS_B = ["flower_crown", "hood", "bandana", "kerchief", "tophat", "goggles", "earmuffs", "halo"]
 
-def w108(): _rows16("w108_hair_set_a.png", "hair", HAIR_A, icon_group="icons_hair")
-def w110(): _rows16("w110_hair_set_b.png", "hair", HAIR_B, icon_group="icons_hair")
-def w111(): _rows16("w111_hair_set_c.png", "hair", HAIR_C, icon_group="icons_hair")
-def w112(): _rows16("w112_hats_set_b.png", "hats", HATS_B, icon_group="items")
-def w113(): _rows16("w113_hats_set_a.png", "hats", HATS_A, icon_group="items")
+def w108(): _rows16("w108_hair_set_a.png", "hair", HAIR_A, icon_group="icons_hair", equal=True)
+def w110(): _rows16("w110_hair_set_b.png", "hair", HAIR_B, icon_group="icons_hair", equal=True)
+def w111(): _rows16("w111_hair_set_c.png", "hair", HAIR_C, icon_group="icons_hair", equal=True)
+def w112(): _rows16("w112_hats_set_b.png", "hats", HATS_B, icon_group="items", equal=True)
+def w113(): _rows16("w113_hats_set_a.png", "hats", HATS_A, icon_group="items", equal=True)
 
 def w109():
     names = ["horse", "rider_horse", "saddle_horse", "donkey", "rider_donkey", "saddle_donkey", "llama", "llama_ridden"]
     _rows16("w109_mounts_horse_donkey_llama.png", "mounts", names, n=17, canvas=(112, 112))
 
 
+# ---- w56: the hero body bases (character creator) ------------------------------
+
+BODY_NAMES = ["light_slim", "light_broad", "medium_slim", "medium_broad", "dark_slim", "dark_broad"]
+BODY_ROWS = [(78, 164), (176, 264), (272, 357), (367, 454), (463, 546), (557, 644)]
+ACTION_NAMES = ["attack_1", "attack_2", "attack_3", "hurt", "faint", "sit", "sleep", "celebrate_1", "celebrate_2", "swim_1", "swim_2", "ride_1", "ride_2", "carry_1", "carry_2", "eat"]
+
+def _frames_with_anchor(rgba, reg, n, canvas=(96, 96)):
+    """Row sprites on a fixed canvas, bottom-aligned; returns frames + per-frame
+    anchors [cx, top, bottom, w, h] in canvas px so layers can be pinned."""
+    bs = row_sprites(rgba, reg, n, gap=3)
+    frames, anchors = [], []
+    for b in bs:
+        bb = region_bbox(rgba, b)
+        im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+        if im.width > canvas[0] or im.height > canvas[1]:
+            im.thumbnail(canvas)
+        c = Image.new("RGBA", canvas, (0, 0, 0, 0))
+        x0 = (canvas[0] - im.width) // 2
+        y0 = canvas[1] - im.height - 4
+        c.alpha_composite(im, (x0, y0))
+        frames.append(c)
+        anchors.append([x0 + im.width / 2.0, y0, y0 + im.height, im.width, im.height])
+    return frames, anchors
+
+def w56():
+    rgba = load("w56_body_bases.png")
+    for name, (y0, y1) in zip(BODY_NAMES, BODY_ROWS):
+        frames, anchors = _frames_with_anchor(rgba, (105, y0, 1530, y1), 16)
+        strip(frames, "body", name)
+        S.manifest["body"][name]["anchors"] = anchors
+    # Row 7: action poses (medium slim) as single-frame strips.
+    frames, anchors = _frames_with_anchor(rgba, (105, 798, 1530, 932), 16)
+    for nm, fr, an in zip(ACTION_NAMES, frames, anchors):
+        strip([fr], "body", "act_" + nm)
+        S.manifest["body"]["act_" + nm]["anchors"] = [an]
+    # Row 6: faces (heads only) as icons.
+    bs = row_sprites(rgba, (105, 665, 1530, 742), 16, gap=3)
+    for i, b in enumerate(bs):
+        bb = region_bbox(rgba, b)
+        if bb:
+            save(crop(rgba, bb), "faces", "face_%d" % i)
+
+
+def _layer_anchors(group):
+    """Add per-frame anchors to an already-sliced 16-frame layer strip (hair/hats)."""
+    for name, info in list(S.manifest.get(group, {}).items()):
+        path = os.path.join(S.OUT, info["file"])
+        im = Image.open(path).convert("RGBA")
+        cw, ch, n = info["cell_w"], info["cell_h"], info.get("frames", 1)
+        anchors = []
+        for i in range(n):
+            fr = im.crop((i * cw, 0, (i + 1) * cw, ch))
+            bb = fr.getbbox()
+            if bb:
+                anchors.append([(bb[0] + bb[2]) / 2.0, bb[1], bb[3], bb[2] - bb[0], bb[3] - bb[1]])
+            else:
+                anchors.append([cw / 2.0, ch, ch, 0, 0])
+        info["anchors"] = anchors
+
+def w_layer_anchors():
+    _layer_anchors("hair"); _layer_anchors("hats"); _layer_anchors("toolanim")
+
+
+# ---- Prompts-08 batch 1: full-body costumes, base actions, swimming --------
+
+ARMOR_SETS = ["leather", "copper", "iron", "steel", "silver", "gold", "crystal", "moon"]
+OUTFIT_SETS = ["farmer", "forester", "fisher", "miner", "merchant", "scholar", "neon", "penguin"]
+
+def _costume_rows(file, names, suffix):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:len(names)]
+    for name, (y0, y1) in zip(names, rows):
+        frames, anchors = _frames_with_anchor(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        strip(frames, "body", name + suffix)
+        S.manifest["body"][name + suffix]["anchors"] = anchors
+
+def w120(): _costume_rows("w120_costume_armor_walk.png", ["armor_" + n for n in ARMOR_SETS], "")
+def w121(): _costume_rows("w121_costume_armor_action.png", ["armor_" + n for n in ARMOR_SETS], "_act")
+def w122(): _costume_rows("w122_costume_outfit_walk.png", ["outfit_" + n for n in OUTFIT_SETS], "")
+def w123(): _costume_rows("w123_costume_outfit_action.png", ["outfit_" + n for n in OUTFIT_SETS], "_act")
+def w124(): _costume_rows("w124_base_action.png", BODY_NAMES + ["extra_a", "extra_b"], "_act")
+
+def w125():
+    rgba = load("w125_swim.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 24) if r[1] - r[0] >= 24][:8]
+    names = ["swim_slim_side", "swim_slim_down", "swim_slim_up", "swim_broad_side", "swim_broad_down", "swim_broad_up", "swim_fx", "swim_decals"]
+    for name, (y0, y1) in zip(names, rows):
+        frames, anchors = _frames_with_anchor(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 10, canvas=(128, 96))
+        strip(frames, "body", name)
+        S.manifest["body"][name]["anchors"] = anchors
+
+
+# ---- Prompts-08 batch 2: riding, creator UI, portraits, new villagers --------
+
+EXPR = ["neutral", "happy", "sad", "angry", "surprised", "tired", "laughing", "worried", "determined", "sleepy", "sick", "love"]
+VILLAGERS_B = ["marlowe", "orla", "benno", "ivy", "tam", "old_moss", "granite", "sel"]
+
+def _portrait_rows(file, group_names, rows_n=8, n=12):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:rows_n]
+    for gname, (y0, y1) in zip(group_names, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), n)
+        for i, b in enumerate(bs):
+            bb = region_bbox(rgba, b)
+            if not bb or i >= len(EXPR):
+                continue
+            im = crop(rgba, bb)
+            im.thumbnail((96, 96))
+            save(im, gname, EXPR[i])
+
+def w131():
+    _portrait_rows("w131_villager_portraits_b.png", ["portraits/npc_" + v for v in VILLAGERS_B])
+
+def w128():
+    rgba = load("w128_hero_portraits.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:8]
+    for name, (y0, y1) in zip(BODY_NAMES, rows[:6]):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 12)
+        for i, b in enumerate(bs):
+            bb = region_bbox(rgba, b)
+            if bb and i < 12:
+                im = crop(rgba, bb); im.thumbnail((96, 96))
+                save(im, "portraits/hero_" + name, EXPR[i])
+    # rows 6-7: portrait hair overlays (24)
+    k = 0
+    for (y0, y1) in rows[6:8]:
+        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 12)
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            if bb:
+                im = crop(rgba, bb); im.thumbnail((96, 96))
+                save(im, "portraits/hair", "hair_%d" % k)
+            k += 1
+
+HATS_ALL = ["straw", "cap", "beanie", "witch", "flatcap", "knight", "crystal_crown", "cowboy", "flower_crown", "hood", "bandana", "kerchief", "tophat", "goggles", "earmuffs", "halo"]
+FACE_ACC = ["glasses_round", "glasses_square", "sunglasses", "eyepatch", "monocle", "freckles", "blush", "scar", "beard_short", "beard_long", "moustache", "face_paint_a", "face_paint_b", "earrings_a", "earrings_b", "bandage"]
+
+def w129():
+    rgba = load("w129_hero_portraits_b.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:8]
+    # rows 0-1 hats (16), rows 2-3 face accessories (16), rows 4-7 eye sets (48)
+    def grab(rr, names, group):
+        k = 0
+        for (y0, y1) in rr:
+            bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 12)
+            for b in bs:
+                bb = region_bbox(rgba, b)
+                if bb and k < len(names):
+                    im = crop(rgba, bb); im.thumbnail((96, 96))
+                    save(im, group, names[k])
+                k += 1
+    grab(rows[0:2], HATS_ALL, "portraits/hats")
+    grab(rows[2:4], FACE_ACC, "portraits/face")
+    grab(rows[4:8], ["eyes_%d" % i for i in range(48)], "portraits/eyes")
+
+def w130():
+    rgba = load("w130_villagers_b.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
+    for name, (y0, y1) in zip(VILLAGERS_B, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        frames = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+            frames.append(im)
+        g = "characters/npc_" + name
+        # 16 cells: idle down, idle up, idle side, walk side x4, walk down x4, walk up x4, work
+        strip([frames[0]], g, "idle"); strip([frames[1]], g, "idle_up"); strip([frames[2]], g, "idle_side")
+        strip(frames[3:7], g, "walk"); strip(frames[7:11], g, "walk_down"); strip(frames[11:15], g, "walk_up"); strip([frames[15]], g, "work")
+
+def w126():
+    rgba = load("w126_riding.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
+    names = ["horse_side", "horse_updown", "donkey_side", "donkey_updown", "llama_side", "llama_updown", "mount_misc", "stable_items"]
+    for name, (y0, y1) in zip(names, rows):
+        frames, anchors = _frames_with_anchor(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 10, canvas=(128, 128))
+        strip(frames, "riding", name)
+        S.manifest["riding"][name]["anchors"] = anchors
+    # stable items as icons
+    bs = _equal_cells(rgba, (4, rows[7][0] - 4, rgba.shape[1] - 4, rows[7][1] + 4), 10)
+    for nm, b in zip(["saddle", "hay_bale", "trough", "brush", "horseshoe", "carrots", "saddle_blanket", "bridle", "apple_bucket", "stable_sign"], bs):
+        bb = region_bbox(rgba, b)
+        if bb:
+            im = crop(rgba, bb); im.thumbnail((32, 32)); save(im, "items", nm)
+
+def w127():
+    """Creator UI pieces (fixed layout boxes, tightened to content)."""
+    rgba = load("w127_creator_ui.png")
+    boxes = {"panel": (35, 30, 505, 805), "preview": (540, 55, 845, 385), "arrow_l": (900, 60, 980, 135), "arrow_r": (1000, 60, 1080, 135),
+             "arrow_l_down": (900, 140, 980, 215), "arrow_r_down": (1000, 140, 1080, 215), "dice": (1130, 55, 1235, 160), "dice_down": (1265, 55, 1370, 160),
+             "slider": (895, 240, 1345, 290), "done": (555, 720, 820, 805), "done_down": (845, 720, 1105, 805), "check": (1155, 730, 1245, 805), "x": (1275, 730, 1365, 805),
+             "nameplate": (945, 850, 1415, 940)}
+    for i in range(6):
+        x0 = 905 + i * 73
+        boxes["swatch_empty_%d" % i] = (x0, 315, x0 + 70, 375)
+        boxes["swatch_fill_%d" % i] = (x0, 380, x0 + 70, 440)
+        boxes["swatch_sel_%d" % i] = (x0, 445, x0 + 70, 505)
+    for i, nm in enumerate(["body", "hair", "face", "clothes", "extras"]):
+        x0 = 545 + i * 194
+        boxes["tab_%s" % nm] = (x0, 540, x0 + 190, 610)
+        boxes["tab_%s_sel" % nm] = (x0, 620, x0 + 190, 690)
+    for i in range(8):
+        x0 = 45 + i * 93
+        boxes["skin_%d" % i] = (x0, 860, x0 + 90, 910)
+    for i in range(12):
+        x0 = 45 + i * 69
+        boxes["haircol_%d" % i] = (x0, 925, x0 + 68, 975)
+    for nm, b in boxes.items():
+        bb = region_bbox(rgba, b)
+        if bb:
+            save(crop(rgba, bb), "ui_creator", nm)
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

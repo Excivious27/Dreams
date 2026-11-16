@@ -224,6 +224,92 @@
    },
    "give": "running_shoes",
    "tier": 2
+  },
+  {
+   "id": "outfit_farmer",
+   "name": "Farmer's Overalls",
+   "need": {
+    "fiber": 12,
+    "wood": 4
+   },
+   "give": "outfit_farmer",
+   "tier": 1
+  },
+  {
+   "id": "outfit_forester",
+   "name": "Forester's Cloak",
+   "need": {
+    "fiber": 15,
+    "pelt": 2
+   },
+   "give": "outfit_forester",
+   "tier": 2
+  },
+  {
+   "id": "outfit_fisher",
+   "name": "Fisher's Waders",
+   "need": {
+    "fiber": 10,
+    "pelt": 2,
+    "sap": 2
+   },
+   "give": "outfit_fisher",
+   "tier": 2
+  },
+  {
+   "id": "outfit_miner",
+   "name": "Miner's Vest",
+   "need": {
+    "fiber": 10,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "outfit_miner",
+   "tier": 2
+  },
+  {
+   "id": "outfit_merchant",
+   "name": "Merchant's Waistcoat",
+   "need": {
+    "fiber": 15,
+    "wine": 1,
+    "gold_bar": 1
+   },
+   "give": "outfit_merchant",
+   "tier": 3
+  },
+  {
+   "id": "outfit_scholar",
+   "name": "Scholar's Robe",
+   "need": {
+    "fiber": 15,
+    "book": 1,
+    "paint": 2
+   },
+   "give": "outfit_scholar",
+   "tier": 3
+  },
+  {
+   "id": "outfit_neon",
+   "name": "Neon Street Jacket",
+   "need": {
+    "fiber": 12,
+    "slime_goo": 4,
+    "crystal_refined": 1
+   },
+   "give": "outfit_neon",
+   "tier": 3
+  },
+  {
+   "id": "outfit_penguin",
+   "name": "Ceremony Coat",
+   "need": {
+    "fiber": 20,
+    "pearl": 1,
+    "crystal_refined": 2
+   },
+   "give": "outfit_penguin",
+   "tier": 4
   }
  ],
  "smith": [

@@ -40,6 +40,34 @@ var _flash_mat: ShaderMaterial
 var _flash := 0.0
 var _combo := 0
 var _wear: WearLayer
+var _doll := false
+var _doll_scale := 0.34
+var _doll_body := "medium_slim"
+var _hair: Sprite2D
+var _hat: Sprite2D
+
+
+## Rebuild the doll (after equipping a costume or restyling at the dresser).
+func refresh_doll() -> void:
+	if _doll or PaperDoll.available():
+		set_character(char_id)
+
+
+## Pin hair and hat to the current body frame (paper doll only).
+func _update_doll() -> void:
+	if not _doll or _anim == null or _hair == null:
+		return
+	var look: Dictionary = GameState.run.get("look", {})
+	var src := PaperDoll.frame_source(_anim.animation, _anim.frame, _doll_body)
+	var body: String = src[0]
+	var pose: int = src[1]
+	var flip := _anim.flip_h
+	PaperDoll.place_layer(_hair, "hair", str(look.get("hair", "")), body, pose, flip, _doll_scale)
+	var hat_id := GameState.equipped("head")
+	var hat_sprite := str(GameState.items.get(hat_id, {}).get("sprite", hat_id))
+	PaperDoll.place_layer(_hat, "hats", hat_sprite if Art.has("hats", hat_sprite) else str(look.get("hat", "")), body, pose, flip, _doll_scale)
+	if _hat.visible and _hair.visible:
+		_hair.modulate.a = 1.0
 
 
 func set_character(id: String) -> void:
@@ -49,7 +77,34 @@ func set_character(id: String) -> void:
 	char_id = id
 	var pid := str(GameState.run.get("playable", ""))
 	var pdata: Dictionary = GameState.playables.get(pid, {})
-	if id == "" or not CharacterLibrary.has_character(id):
+	var look: Dictionary = GameState.run.get("look", {})
+	_doll = PaperDoll.available() and look.has("body") and not str(pdata.get("sprite", "")) in ["penguin", "dog", ""]
+	if _doll:
+		# Paper doll: body base + hair + hat layers (see PaperDoll).
+		_anim = AnimatedSprite2D.new()
+		_doll_body = PaperDoll.body_for(look)
+		_anim.sprite_frames = PaperDoll.body_frames(look)
+		_anim.centered = true
+		_anim.offset = Vector2(0, -48)
+		var h := float(PaperDoll.anchor_of("body", _doll_body, 0)[4])
+		_doll_scale = CharacterLibrary.HERO_H / maxf(40.0, h)
+		_anim.scale = Vector2(_doll_scale, _doll_scale)
+		_anim.animation_finished.connect(_on_animation_finished)
+		_sprite = _anim
+		for l in [_hair, _hat]:
+			if l:
+				l.queue_free()
+		_hair = Sprite2D.new()
+		_hair.centered = true
+		_hair.modulate = Color(str(PaperDoll.HAIR_COLORS.get(str(look.get("hair_color", "brown")), "ffffff")))
+		_hat = Sprite2D.new()
+		_hat.centered = true
+		var sh := load("res://shaders/flash.gdshader")
+		if sh:
+			_flash_mat = ShaderMaterial.new()
+			_flash_mat.shader = sh
+			_anim.material = _flash_mat
+	elif id == "" or not CharacterLibrary.has_character(id):
 		var ph := PlaceholderSprite.new()
 		ph.tint = Color(str(pdata.get("color", "2b3a67")))
 		_sprite = ph
@@ -73,6 +128,12 @@ func set_character(id: String) -> void:
 		_shadow.scale = Vector2(1.0, 0.45)
 		add_child(_shadow)
 	add_child(_sprite)
+	if _doll:
+		add_child(_hair)
+		add_child(_hat)
+		_hair.z_index = 1
+		_hat.z_index = 2
+		_update_doll()
 	if _wear == null:
 		_wear = WearLayer.new()
 		_wear.player = self
@@ -149,6 +210,7 @@ func _physics_process(delta: float) -> void:
 	_flash = maxf(0.0, _flash - delta * 6.0)
 	if _flash_mat:
 		_flash_mat.set_shader_parameter("flash", _flash)
+	_update_doll()
 	if map and map.hitstop > 0.0:
 		return
 	if _anim:
@@ -484,6 +546,9 @@ func _apply(a: String, flip: bool, restart := false) -> void:
 		anim_name = a
 		_sprite.scale.x = -1.0 if flip else 1.0
 		return
+	if a == "view_left" and not _anim.sprite_frames.has_animation(a) and _anim.sprite_frames.has_animation("view_right"):
+		a = "view_right"
+		flip = true
 	if not _anim.sprite_frames.has_animation(a):
 		a = "idle"
 	_anim.flip_h = flip

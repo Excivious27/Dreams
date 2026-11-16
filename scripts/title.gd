@@ -172,52 +172,22 @@ var _look := {"skin": 0, "outfit": 0, "hair": 0}
 var _look_preview: Node2D
 
 
+var _look_full := {}
+
+
 func _show_look() -> void:
 	_clear()
-	_page.add_child(_label("Your look", 16))
-	_page.add_child(_label("(Full character creator with hair, clothes and skin layers arrives with the next art batch; for now pick a tint set or roll the dice.)", 7, false))
-	_look_preview = Node2D.new()
-	var holder := Control.new()
-	holder.custom_minimum_size = Vector2(0, 90)
-	_page.add_child(holder)
-	_look_preview.position = Vector2(123, 70)
-	holder.add_child(_look_preview)
-	_refresh_look()
-	for key: String in ["skin", "outfit", "hair"]:
-		var h := HBoxContainer.new()
-		h.alignment = BoxContainer.ALIGNMENT_CENTER
-		var l := _label(key.capitalize() + ": ", 9, false)
-		h.add_child(l)
-		var opts: Array = LOOKS[key]
-		var prev := _button("<", func() -> void: _look[key] = (int(_look[key]) - 1 + opts.size()) % opts.size(); _show_look())
-		var nm := _label(str(opts[int(_look[key])][0]), 9, false)
-		var next := _button(">", func() -> void: _look[key] = (int(_look[key]) + 1) % opts.size(); _show_look())
-		h.add_child(prev); h.add_child(nm); h.add_child(next)
-		_page.add_child(h)
-	_page.add_child(_button("Random", func() -> void:
-		for key: String in LOOKS:
-			_look[key] = randi() % (LOOKS[key] as Array).size()
-		_show_look()))
-	_page.add_child(_button("Next: names", _show_names, true))
-	_page.add_child(_button("Back", _show_characters))
-
-
-func _refresh_look() -> void:
-	for ch in _look_preview.get_children():
-		ch.queue_free()
 	var sprite_id := GameState.sprite_for_playable(_playable)
-	if sprite_id != "":
-		var sp := CharacterLibrary.make_sprite(sprite_id)
-		sp.scale *= 1.6
-		sp.modulate = _look_tint()
-		sp.play("idle")
-		_look_preview.add_child(sp)
-
-
-func _look_tint() -> Color:
-	var c := Color(str(LOOKS["skin"][int(_look["skin"])][1]))
-	var o := Color(str(LOOKS["outfit"][int(_look["outfit"])][1]))
-	return Color(c.r * o.r, c.g * o.g, c.b * o.b)
+	if not PaperDoll.available() or sprite_id in ["penguin", "dog", ""]:
+		# No paper doll for this hero (penguin / placeholder): straight to names.
+		_show_names()
+		return
+	if _look_full.is_empty():
+		_look_full = PaperDoll.random_look()
+	var cr := Creator.new(_look_full, sprite_id, false)
+	cr.done.connect(func(l: Dictionary) -> void: _look_full = l; _show_names())
+	_page.add_child(cr)
+	_page.add_child(_button("Back", _show_characters))
 
 
 func _show_names() -> void:
@@ -248,7 +218,7 @@ func _begin() -> void:
 	var town := _town_edit.text.strip_edges()
 	var pet := _pet_edit.text.strip_edges()
 	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup")
-	GameState.run["look"] = {"skin": int(_look["skin"]), "outfit": int(_look["outfit"]), "hair": int(_look["hair"]), "tint": _look_tint().to_html(false)}
+	GameState.run["look"] = _look_full.duplicate() if not _look_full.is_empty() else {"tint": "ffffff"}
 	_start_game()
 
 

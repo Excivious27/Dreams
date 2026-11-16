@@ -10,6 +10,7 @@ var R: Dictionary = {}
 var _anim_nodes: Array = []
 var _water_cells := {}
 var _forage_n := 0
+var npcs: Array = []
 
 
 func scene_id() -> String:
@@ -130,6 +131,16 @@ func after_ready() -> void:
 			var it := str(things[k]["item"])
 			var nm := "mushrooms_fall" if it in ["mushroom", "glow_cap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
 			prop("nature", nm, k, 0, 0.0, false)
+	# Villagers who live out here (regions.json "npcs": [{"id", "cell", "lines": [...]}]).
+	for n in R.get("npcs", []):
+		var id := str(n["id"])
+		var data: Dictionary = GameState.npcs.get(id, {"name": id.capitalize()})
+		var npc := Npc.new()
+		npc.map = self
+		npc.setup(id, data, cell_center(Vector2i(int(n["cell"][0]), int(n["cell"][1]))))
+		npc.wander = float(n.get("wander", 14.0))
+		add_child(npc)
+		npcs.append(npc)
 	var gen: Dictionary = R.get("gen", {})
 	var inner := Rect2i(2, 2, cols - 4, rows - 4)
 	var avoid := {}
@@ -191,7 +202,18 @@ func after_ready() -> void:
 		player.frozen = false
 
 
+func has_npc_at(c: Vector2i) -> bool:
+	for n: Npc in npcs:
+		if n.visible and n.cell() == c:
+			return true
+	return false
+
+
 func interact(c: Vector2i, thing: Dictionary) -> bool:
+	for n: Npc in npcs:
+		if n.visible and (n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0)):
+			later(_talk_npc.bind(n))
+			return true
 	match str(thing.get("type", "")):
 		"note":
 			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
@@ -310,6 +332,53 @@ func on_enemy_died(e: Enemy) -> void:
 			GameState.run["hp"] = int(GameState.run["max_hp"])
 		GameState.save()
 		player.frozen = false
+
+
+## Out-of-town villagers: gifts, quests (quests.json by giver), daily hello.
+func _talk_npc(n: Npc) -> void:
+	player.frozen = true
+	n.face(player.position)
+	var id := n.id
+	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
+	var fr: Dictionary = GameState.run["friendship"]
+	var sel := str(GameState.run["selected"])
+	var it: Dictionary = GameState.items.get(sel, {})
+	if sel != "" and GameState.count(sel) > 0 and it.get("type", "") != "tool" and it.get("type", "") != "seed":
+		GameState.add_item(sel, -1)
+		var gain := GameState.gift_value(id, sel)
+		fr[id] = int(fr.get(id, 0)) + gain
+		await say([{"who": name, "text": ("A %s! That's a kindness." if gain > 0 else "A %s. ...Hm.") % GameState.item_name(sel)}])
+		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
+		player.frozen = false
+		return
+	var offer := GameState.side_quest_for(id)
+	if not offer.is_empty():
+		var d := Dialogue.instance(get_tree())
+		d.say([{"who": name, "text": str(offer["text"]) + "  Will you?", "choice": ["Sure", "Not now"], "key": ""}])
+		await d.finished
+		if d.last_choice == 0:
+			GameState.add_quest(str(offer["id"]), str(offer["text"]))
+			hud.toast("New quest from %s." % name, Color(1, 0.9, 0.4))
+		player.frozen = false
+		return
+	var pend := GameState.side_quest_pending(id)
+	if not pend.is_empty():
+		await say([{"who": name, "text": "Still waiting on that: " + str(pend["text"]).to_lower()}])
+		player.frozen = false
+		return
+	if not GameState.run["talked_today"].has(id):
+		GameState.run["talked_today"][id] = true
+		fr[id] = int(fr.get(id, 0)) + 5
+	var lines: Array = []
+	for nd in R.get("npcs", []):
+		if str(nd["id"]) == id:
+			var ls: Array = nd.get("lines", [])
+			if not ls.is_empty():
+				lines.append({"who": name, "text": str(ls[(int(GameState.run["day"]) + GameState.friend_hearts(id)) % ls.size()])})
+	if lines.is_empty():
+		lines.append({"who": name, "text": "..."})
+	await say(lines)
+	player.frozen = false
 
 
 func draw_map() -> void:

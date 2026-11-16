@@ -1064,7 +1064,8 @@
   "slot": "head",
   "stats": {
    "energy": 5
-  }
+  },
+  "sprite": "straw"
  },
  "leather_cap": {
   "name": "Leather Cap",
@@ -1075,7 +1076,8 @@
   "slot": "head",
   "stats": {
    "defense": 1
-  }
+  },
+  "sprite": "flatcap"
  },
  "iron_helm": {
   "name": "Iron Helm",
@@ -1086,7 +1088,8 @@
   "value": 160,
   "stats": {
    "defense": 2
-  }
+  },
+  "sprite": "knight"
  },
  "crystal_crown": {
   "name": "Crystal Crown",
@@ -1098,7 +1101,8 @@
   "stats": {
    "defense": 3,
    "luck": 2
-  }
+  },
+  "sprite": "crystal_crown"
  },
  "work_shirt": {
   "name": "Work Shirt",
@@ -1109,7 +1113,8 @@
   "slot": "body",
   "stats": {
    "energy": 5
-  }
+  },
+  "costume": "outfit_farmer"
  },
  "leather_vest": {
   "name": "Leather Vest",
@@ -1120,7 +1125,8 @@
   "slot": "body",
   "stats": {
    "defense": 1
-  }
+  },
+  "costume": "armor_leather"
  },
  "iron_mail": {
   "name": "Iron Mail",
@@ -1131,7 +1137,8 @@
   "slot": "body",
   "stats": {
    "defense": 3
-  }
+  },
+  "costume": "armor_iron"
  },
  "crystal_plate": {
   "name": "Crystal Plate",
@@ -1142,7 +1149,8 @@
   "slot": "body",
   "stats": {
    "defense": 5
-  }
+  },
+  "costume": "armor_crystal"
  },
  "neon_jacket": {
   "name": "Neon Jacket",
@@ -1154,7 +1162,8 @@
   "stats": {
    "defense": 2,
    "speed": 1
-  }
+  },
+  "costume": "outfit_neon"
  },
  "boots": {
   "name": "Work Boots",
@@ -5051,7 +5060,8 @@
   "value": 40,
   "stats": {
    "defense": 1
-  }
+  },
+  "sprite": "hood"
  },
  "leather_helm_plus": {
   "name": "Leather Helm +1",
@@ -5073,7 +5083,8 @@
   "value": 40,
   "stats": {
    "defense": 1
-  }
+  },
+  "costume": "armor_leather"
  },
  "leather_chest_plus": {
   "name": "Leather Chest +1",
@@ -5084,7 +5095,8 @@
   "value": 80,
   "stats": {
    "defense": 2
-  }
+  },
+  "costume": "armor_leather"
  },
  "leather_legs": {
   "name": "Leather Legs",
@@ -5227,7 +5239,8 @@
   "value": 40,
   "stats": {
    "defense": 1
-  }
+  },
+  "sprite": "flatcap"
  },
  "copper_helm_plus": {
   "name": "Copper Helm +1",
@@ -5249,7 +5262,8 @@
   "value": 40,
   "stats": {
    "defense": 1
-  }
+  },
+  "costume": "armor_copper"
  },
  "copper_chest_plus": {
   "name": "Copper Chest +1",
@@ -5260,7 +5274,8 @@
   "value": 80,
   "stats": {
    "defense": 2
-  }
+  },
+  "costume": "armor_copper"
  },
  "copper_legs": {
   "name": "Copper Legs",
@@ -5403,7 +5418,8 @@
   "value": 320,
   "stats": {
    "defense": 3
-  }
+  },
+  "sprite": "knight"
  },
  "iron_chest": {
   "name": "Iron Chest",
@@ -5414,7 +5430,8 @@
   "value": 160,
   "stats": {
    "defense": 2
-  }
+  },
+  "costume": "armor_iron"
  },
  "iron_chest_plus": {
   "name": "Iron Chest +1",
@@ -5425,7 +5442,8 @@
   "value": 320,
   "stats": {
    "defense": 3
-  }
+  },
+  "costume": "armor_iron"
  },
  "iron_legs": {
   "name": "Iron Legs",
@@ -5568,7 +5586,8 @@
   "value": 160,
   "stats": {
    "defense": 3
-  }
+  },
+  "sprite": "knight"
  },
  "steel_helm_plus": {
   "name": "Steel Helm +1",
@@ -5579,7 +5598,8 @@
   "value": 320,
   "stats": {
    "defense": 4
-  }
+  },
+  "sprite": "knight"
  },
  "steel_chest": {
   "name": "Steel Chest",
@@ -5590,7 +5610,8 @@
   "value": 160,
   "stats": {
    "defense": 3
-  }
+  },
+  "costume": "armor_steel"
  },
  "steel_chest_plus": {
   "name": "Steel Chest +1",
@@ -5601,7 +5622,8 @@
   "value": 320,
   "stats": {
    "defense": 4
-  }
+  },
+  "costume": "armor_steel"
  },
  "steel_legs": {
   "name": "Steel Legs",
@@ -5744,7 +5766,8 @@
   "value": 360,
   "stats": {
    "defense": 3
-  }
+  },
+  "sprite": "knight"
  },
  "silver_helm_plus": {
   "name": "Silver Helm +1",
@@ -5766,7 +5789,8 @@
   "value": 360,
   "stats": {
    "defense": 3
-  }
+  },
+  "costume": "armor_silver"
  },
  "silver_chest_plus": {
   "name": "Silver Chest +1",
@@ -5777,7 +5801,8 @@
   "value": 720,
   "stats": {
    "defense": 4
-  }
+  },
+  "costume": "armor_silver"
  },
  "silver_legs": {
   "name": "Silver Legs",
@@ -5920,7 +5945,8 @@
   "value": 360,
   "stats": {
    "defense": 4
-  }
+  },
+  "sprite": "crystal_crown"
  },
  "gold_helm_plus": {
   "name": "Gold Helm +1",
@@ -5942,7 +5968,8 @@
   "value": 360,
   "stats": {
    "defense": 4
-  }
+  },
+  "costume": "armor_gold"
  },
  "gold_chest_plus": {
   "name": "Gold Chest +1",
@@ -5953,7 +5980,8 @@
   "value": 720,
   "stats": {
    "defense": 5
-  }
+  },
+  "costume": "armor_gold"
  },
  "gold_legs": {
   "name": "Gold Legs",
@@ -6118,7 +6146,8 @@
   "value": 640,
   "stats": {
    "defense": 5
-  }
+  },
+  "costume": "armor_crystal"
  },
  "crystal_chest_plus": {
   "name": "Crystal Chest +1",
@@ -6129,7 +6158,8 @@
   "value": 1280,
   "stats": {
    "defense": 6
-  }
+  },
+  "costume": "armor_crystal"
  },
  "crystal_legs": {
   "name": "Crystal Legs",
@@ -6294,7 +6324,8 @@
   "value": 1000,
   "stats": {
    "defense": 6
-  }
+  },
+  "costume": "armor_moon"
  },
  "moon_chest_plus": {
   "name": "Moon Chest +1",
@@ -6305,7 +6336,8 @@
   "value": 2000,
   "stats": {
    "defense": 7
-  }
+  },
+  "costume": "armor_moon"
  },
  "moon_legs": {
   "name": "Moon Legs",
@@ -6734,5 +6766,110 @@
   "rarity": "uncommon",
   "tier": 2,
   "desc": "Dense old-growth timber."
+ },
+ "outfit_farmer": {
+  "name": "Farmer's Overalls",
+  "type": "equip",
+  "slot": "body",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "energy": 5
+  },
+  "costume": "outfit_farmer",
+  "desc": "An outfit. Shows on you."
+ },
+ "outfit_forester": {
+  "name": "Forester's Cloak",
+  "type": "equip",
+  "slot": "body",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "speed": 1
+  },
+  "costume": "outfit_forester",
+  "desc": "An outfit. Shows on you."
+ },
+ "outfit_fisher": {
+  "name": "Fisher's Waders",
+  "type": "equip",
+  "slot": "body",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "luck": 1
+  },
+  "costume": "outfit_fisher",
+  "desc": "An outfit. Shows on you."
+ },
+ "outfit_miner": {
+  "name": "Miner's Vest",
+  "type": "equip",
+  "slot": "body",
+  "value": 150,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "defense": 1
+  },
+  "costume": "outfit_miner",
+  "desc": "An outfit. Shows on you."
+ },
+ "outfit_merchant": {
+  "name": "Merchant's Waistcoat",
+  "type": "equip",
+  "slot": "body",
+  "value": 200,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "luck": 2
+  },
+  "costume": "outfit_merchant",
+  "desc": "An outfit. Shows on you."
+ },
+ "outfit_scholar": {
+  "name": "Scholar's Robe",
+  "type": "equip",
+  "slot": "body",
+  "value": 200,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "mana": 10
+  },
+  "costume": "outfit_scholar",
+  "desc": "An outfit. Shows on you."
+ },
+ "outfit_neon": {
+  "name": "Neon Street Jacket",
+  "type": "equip",
+  "slot": "body",
+  "value": 260,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "speed": 2
+  },
+  "costume": "outfit_neon",
+  "desc": "An outfit. Shows on you."
+ },
+ "outfit_penguin": {
+  "name": "Ceremony Coat",
+  "type": "equip",
+  "slot": "body",
+  "value": 400,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "luck": 2,
+   "mana": 10
+  },
+  "costume": "outfit_penguin",
+  "desc": "An outfit. Shows on you."
  }
 }

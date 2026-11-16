@@ -49,7 +49,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			_sleep()
 			return true
 		"chest":
-			_journal()
+			later(_dresser)
 			return true
 		"kitchen":
 			later(Crafting.run.bind(self, "kitchen", "Kitchen"))
@@ -145,3 +145,35 @@ func _place_props() -> void:
 	prop("furniture", "dresser" if kit else "chest_closed", CHEST)
 	if Art.has("furniture", "kitchen_stove"):
 		prop("furniture", "kitchen_stove", Vector2i(13, 9))
+
+
+## The dresser: read the journal or change your look (hair, hat, body).
+func _dresser() -> void:
+	var d := Dialogue.instance(get_tree())
+	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": ["Journal", "Change my look", "Close"], "key": ""}])
+	await d.finished
+	if d.last_choice == 0:
+		_journal()
+	elif d.last_choice == 1 and PaperDoll.available():
+		player.frozen = true
+		var layer := CanvasLayer.new()
+		layer.layer = 12
+		var panel := PanelContainer.new()
+		panel.position = Vector2(8, 24)
+		panel.size = Vector2(254, 330)
+		panel.add_theme_stylebox_override("panel", Hud.panel_stylebox("panel_wood"))
+		layer.add_child(panel)
+		var cr := Creator.new(GameState.run.get("look", {}), "", true)
+		panel.add_child(cr)
+		add_child(layer)
+		get_tree().paused = true
+		var finish := func(l: Dictionary) -> void:
+			if not l.is_empty():
+				GameState.run["look"] = l
+			get_tree().paused = false
+			layer.queue_free()
+			player.frozen = false
+			player.refresh_doll()
+			Dialogue.block_input()
+		cr.done.connect(finish)
+		cr.cancelled.connect(func() -> void: finish.call({}))

@@ -216,7 +216,7 @@ func _refresh() -> void:
 				if str(itd.get("type", "")) == "equip":
 					var st: Dictionary = itd.get("stats", {})
 					_line("  " + ", ".join(st.keys().map(func(k: String) -> String: return "%s +%d" % [k, int(st[k])])), 7, Color(0.8, 0.9, 1.0))
-					_button("Equip (%s)" % str(itd.get("slot", "")), func() -> void: GameState.equip(sel); _refresh())
+					_button("Equip (%s)" % str(itd.get("slot", "")), func() -> void: GameState.equip(sel); _refresh_player(); _refresh())
 			_line("Wearing", 8, Color(0.9, 0.85, 0.7))
 			for eslot: String in GameState.SLOTS:
 				var eid := GameState.equipped(eslot)
@@ -393,6 +393,12 @@ func _skill_tree(sk: String) -> void:
 				cb.add_theme_font_size_override("font_size", 7)
 	if spent > 0:
 		_button("Reset this tree (refund all points)", func() -> void: GameState.reset_tree(sk); _refresh())
+
+
+func _refresh_player() -> void:
+	var m := get_tree().current_scene
+	if m is GameMap and (m as GameMap).player:
+		(m as GameMap).player.refresh_doll()
 
 
 func _swap_into_toolbar(id: String) -> void:
