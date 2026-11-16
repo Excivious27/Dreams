@@ -960,6 +960,9 @@ func draw_map() -> void:
 	pass
 
 
+var _tall := {}
+
+
 func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 	if r.size == Vector2i.ZERO:
 		r = Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad)
@@ -969,12 +972,25 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 	var season := GameState.season()
 	# Natural variation: patches of tall / flowery / dry grass from low-frequency noise.
 	var patchy := season in ["spring", "summer"] and Art.has("tiles", "g_tall") and Art.has("tiles", "g_dry")
+	_tall.clear()
 	var sd := hash(scene_id()) % 1000 + seed_v
 	for y in range(r.position.y, r.end.y):
 		for x in range(r.position.x, r.end.x):
 			var at := Vector2(x * TILE, y * TILE)
 			if has_tiles:
 				var tname := gname
+				var gv := Art.has("tiles", "gv_short_0")
+				var hv := absi((x * 73856093) ^ (y * 19349663))
+				if gv:
+					var base: String = {"spring": "gv_short", "summer": "gv_short", "fall": "gv_autumn", "winter": "gv_snow"}.get(season, "gv_short")
+					Art.draw_tile(self, "tiles", "%s_%d" % [base, hv % 12 if hv % 7 == 0 else hv % 4], at, 0)
+					if patchy:
+						var n := WorldGen.fbm(float(x), float(y), sd, 11.0)
+						if n > 0.32:
+							_tall[Vector2i(x, y)] = true
+						elif n < -0.38:
+							Art.draw_tile(self, "tiles", "%s_%d" % ["gv_dry" if season == "summer" else "gv_flower", hv % 12], at, 0)
+					continue
 				if patchy:
 					var n := WorldGen.fbm(float(x), float(y), sd, 11.0)
 					if n > 0.32:
@@ -986,6 +1002,11 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 					Art.draw_tile(self, "tiles", "deco_%d" % _deco_rng.randi_range(0, 5), at)
 			else:
 				draw_rect(Rect2(at, Vector2(TILE, TILE)), Color("5a9e4b") if (x + y) % 2 == 0 else Color("67ab55"))
+	if not _tall.is_empty() and Art.has("tiles", "tall_edge_top_0"):
+		for c: Vector2i in _tall:
+			var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
+			Art.draw_tile(self, "tiles", "gv_tall_%d" % (hv % 12), Vector2(c * TILE), 0)
+		Art.draw_blob(self, _tall, "tall_edge", 16.0, 0)
 
 
 ## Ground region with real grass transitions (W1 sets) when available.
@@ -993,6 +1014,14 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 func draw_ground(kind: String, cells: Dictionary) -> void:
 	var tset := "t_" + kind
 	var fill: String = {"dirt": "dirt", "sand": "sand", "stone": "g_gravel"}.get(kind, "dirt")
+	var blob: String = {"dirt": "path_dirt", "sand": "path_sand", "stone": "path_cobble", "cobble": "path_cobble", "snow": "path_snow"}.get(kind, "")
+	if blob != "" and Art.has("tiles", blob + "_top_0"):
+		if kind != "dirt":
+			# simple sets have no fill variants: paint dirt fill underneath, edges on top
+			for c: Vector2i in cells:
+				Art.draw_tile(self, "tiles", "path_dirt_fill_%d" % (absi(c.x * 7 + c.y * 13) % 5 + 7), Vector2(c * TILE), 0)
+		Art.draw_blob(self, cells, blob, 16.0, 12)
+		return
 	if Art.has("tiles", tset):
 		Art.draw_autotile(self, cells, "@", tset, Art.T_GROUND_IDX)
 		if kind == "dirt" and Art.has("tiles", "pdeco_pebbles"):
@@ -1025,6 +1054,19 @@ func draw_water(cells: Dictionary, shore := "grass") -> void:
 	for c: Vector2i in cells:
 		if not Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), frame):
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("2f6fb5"))
+	if Art.has("tiles", "shore_grass_top_0"):
+		# Painted 47-tile shore set (W52). Edges only: keep the animated fill underneath.
+		var edge_cells := {}
+		for c: Vector2i in cells:
+			var all_in := true
+			for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]:
+				if not cells.has(c + d):
+					all_in = false
+					break
+			if not all_in:
+				edge_cells[c] = true
+		_draw_blob_edges(cells, edge_cells, "shore_grass" if shore == "grass" else "shore_sand")
+		return
 	var earth := Color("6b4a2b") if shore == "grass" else Color("c9a86b")
 	var rim := Color("4f8fd0", 0.9)
 	var foam := Color(0.85, 0.95, 1.0, 0.55 + 0.2 * sin(Time.get_ticks_msec() / 400.0))
@@ -1124,6 +1166,13 @@ func label(text: String, at: Vector2, w := 64.0) -> void:
 ## (block it yourself, except `stairs` cells). prefix: "cliffg" (grass) or "cliffs" (stone).
 func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}) -> void:
 	var tset := "t_" + prefix
+	if Art.has("tiles", "cliff_top_0") and prefix == "cliffg":
+		Art.draw_blob(self, cells, "cliff", 16.0, 1)
+		for below: Vector2i in stairs:
+			var t := Art.tex("tiles", "cliff_stairs_m")
+			if t:
+				draw_texture_rect(t, Rect2(below.x * TILE, below.y * TILE - TILE, TILE, TILE), false)
+		return
 	if not Art.has("tiles", tset):
 		for c: Vector2i in cells:
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("6a6a74"))
@@ -1171,6 +1220,24 @@ func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}
 		var t := Art.tex("tiles", prefix + "_" + nm)
 		if t:
 			draw_texture_rect(t, Rect2(below.x * TILE, c.y * TILE + TILE * 0.5, TILE, TILE * 1.5), false)
+
+
+## Draw blob tiles for `edge_cells` using neighbourhood from the full `cells` set.
+func _draw_blob_edges(cells: Dictionary, edge_cells: Dictionary, set_name: String) -> void:
+	for c: Vector2i in edge_cells:
+		var sub := {}
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				var n := c + Vector2i(dx, dy)
+				if cells.has(n):
+					sub[n] = true
+		# draw_blob on a 3x3 window: only c itself is drawn (others are context)
+		var one := {c: true}
+		for k: Vector2i in sub:
+			if k != c:
+				one[k] = true
+		# cheap: call draw_blob with the window but mask drawing to c via a tiny trick:
+		Art.draw_blob_cell(self, sub, c, set_name)
 
 
 ## A mass of raised rock (map edges, mountain walls): stone fill with a grassy

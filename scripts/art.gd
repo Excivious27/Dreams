@@ -177,3 +177,125 @@ const T_GROUND_IDX := {"mid": 1, "top": 0, "bottom": 2, "left": 4, "right": 7, "
 ## W28/W29 cliff plateau sets (17 tiles in one row): tl top tr left mid right ibl ib ibr il ir itl it itr bl bottom br
 const T_CLIFF_IDX := {"mid": 4, "top": 1, "bottom": 15, "left": 3, "right": 5, "tl": 0, "tr": 2, "bl": 14, "br": 16, "itl": 11, "itr": 13, "ibl": 6, "ibr": 8}
 const T_WATER_IDX := {"top": 1, "bottom": 14, "left": 10, "right": 3, "tl": 5, "tr": 9, "bl": 13, "br": 16, "itl": 6, "itr": 2, "ibl": 0, "ibr": 4}
+
+
+## 47-tile blob autotile from the W52+ strict-grid sets: tiles are saved as
+## "<set>_<role>_<variant>" (roles: top bottom left right tl tr bl br itl itr ibl ibr
+## tb lr u_down u_up open_left open_right iso diag_a diag_b diag_c fill).
+## `inside` cells are the material; neighbours outside get the edge treatment.
+## Missing roles fall back sensibly, so 12-piece simple sets work too.
+static func draw_blob(ci: CanvasItem, inside: Dictionary, set_name: String, size := 16.0, fill_count := 12) -> void:
+	for c: Vector2i in inside:
+		var n := inside.has(c + Vector2i(0, -1))
+		var s := inside.has(c + Vector2i(0, 1))
+		var w := inside.has(c + Vector2i(-1, 0))
+		var e := inside.has(c + Vector2i(1, 0))
+		var missing := int(not n) + int(not s) + int(not w) + int(not e)
+		var role := "fill"
+		if missing == 4:
+			role = "iso"
+		elif missing == 3:
+			role = "u_down" if s else ("u_up" if n else ("open_left" if w else "open_right"))
+		elif missing == 2:
+			if not n and not s: role = "tb"
+			elif not w and not e: role = "lr"
+			elif not n and not w: role = "tl"
+			elif not n and not e: role = "tr"
+			elif not s and not w: role = "bl"
+			else: role = "br"
+		elif missing == 1:
+			role = "top" if not n else ("bottom" if not s else ("left" if not w else "right"))
+		else:
+			var dtl := not inside.has(c + Vector2i(-1, -1))
+			var dtr := not inside.has(c + Vector2i(1, -1))
+			var dbl := not inside.has(c + Vector2i(-1, 1))
+			var dbr := not inside.has(c + Vector2i(1, 1))
+			var dn := int(dtl) + int(dtr) + int(dbl) + int(dbr)
+			if dn == 1:
+				role = "itl" if dtl else ("itr" if dtr else ("ibl" if dbl else "ibr"))
+			elif dn == 2 and ((dtl and dbr) or (dtr and dbl)):
+				role = "diag_a" if dtl else "diag_b"
+			elif dn >= 2:
+				role = "itl" if dtl else ("itr" if dtr else ("ibl" if dbl else "ibr"))
+		if role == "fill" and fill_count == 0:
+			continue
+		var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hash(set_name))
+		var nm := _blob_name(set_name, role, maxi(1, h), maxi(1, fill_count))
+		if nm == "":
+			continue
+		draw_tile(ci, "tiles", nm, Vector2(c) * size, 0, size)
+
+
+## Same as draw_blob but draws only `c`, using `inside` for context.
+static func draw_blob_cell(ci: CanvasItem, inside: Dictionary, c: Vector2i, set_name: String, size := 16.0) -> void:
+	var one := {}
+	for k: Vector2i in inside:
+		one[k] = true
+	# Trick: temporarily drop everything except c from the draw loop by calling with a filtered dict
+	_draw_blob_one(ci, one, c, set_name, size)
+
+
+static func _draw_blob_one(ci: CanvasItem, inside: Dictionary, c: Vector2i, set_name: String, size: float) -> void:
+	var sub := {c: true}
+	var saved := inside
+	# reuse draw_blob logic on a single cell by building a dictionary whose iteration yields only c
+	# but whose lookups see the full context: emulate with a small wrapper
+	var n := saved.has(c + Vector2i(0, -1))
+	var s := saved.has(c + Vector2i(0, 1))
+	var w := saved.has(c + Vector2i(-1, 0))
+	var e := saved.has(c + Vector2i(1, 0))
+	var missing := int(not n) + int(not s) + int(not w) + int(not e)
+	var role := "fill"
+	if missing == 4:
+		role = "iso"
+	elif missing == 3:
+		role = "u_down" if s else ("u_up" if n else ("open_left" if w else "open_right"))
+	elif missing == 2:
+		if not n and not s: role = "tb"
+		elif not w and not e: role = "lr"
+		elif not n and not w: role = "tl"
+		elif not n and not e: role = "tr"
+		elif not s and not w: role = "bl"
+		else: role = "br"
+	elif missing == 1:
+		role = "top" if not n else ("bottom" if not s else ("left" if not w else "right"))
+	else:
+		var dtl := not saved.has(c + Vector2i(-1, -1))
+		var dtr := not saved.has(c + Vector2i(1, -1))
+		var dbl := not saved.has(c + Vector2i(-1, 1))
+		var dbr := not saved.has(c + Vector2i(1, 1))
+		var dn := int(dtl) + int(dtr) + int(dbl) + int(dbr)
+		if dn == 1:
+			role = "itl" if dtl else ("itr" if dtr else ("ibl" if dbl else "ibr"))
+		elif dn == 2 and ((dtl and dbr) or (dtr and dbl)):
+			role = "diag_a" if dtl else "diag_b"
+		elif dn >= 2:
+			role = "itl" if dtl else ("itr" if dtr else ("ibl" if dbl else "ibr"))
+		else:
+			return
+	var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hash(set_name))
+	var nm := _blob_name(set_name, role, maxi(1, h), 12)
+	if nm != "":
+		draw_tile(ci, "tiles", nm, Vector2(c) * size, 0, size)
+
+
+static func _blob_name(set_name: String, role: String, h: int, fill_count: int) -> String:
+	var vmax := fill_count if role == "fill" else 3
+	for tries in 3:
+		var v := (h / (tries + 1)) % vmax
+		var nm := "%s_%s_%d" % [set_name, role, v]
+		if has("tiles", nm):
+			return nm
+	# fallbacks for roles a simple set lacks
+	var fb := {"tb": "top", "lr": "left", "u_down": "tl", "u_up": "bl", "open_left": "tr", "open_right": "tl", "iso": "tl", "diag_a": "itl", "diag_b": "itr", "diag_c": "itl"}
+	if fb.has(role):
+		for v in 3:
+			var nm := "%s_%s_%d" % [set_name, str(fb[role]), v]
+			if has("tiles", nm):
+				return nm
+	if role != "fill":
+		for v in fill_count:
+			var nm := "%s_fill_%d" % [set_name, v]
+			if has("tiles", nm):
+				return nm
+	return ""

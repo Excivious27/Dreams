@@ -1507,11 +1507,139 @@ def w51():
 
 
 
+
+
+# ---------------------------------------------------------------- batch W52-W55 (strict-grid tile sets)
+
+def _grid_runs(v, th=0.3, minlen=60):
+    out = []; start = None
+    for i, x in enumerate(v):
+        if x > th and start is None: start = i
+        if x <= th and start is not None:
+            if i - start >= minlen: out.append((start, i))
+            start = None
+    return out
+
+
+def _grid_cells(rgba, min_w=60):
+    a = rgba[..., 3] > 40
+    cols = _grid_runs(a.mean(0), 0.3, min_w)
+    rows = _grid_runs(a.mean(1), 0.3, min_w)
+    return cols, rows
+
+
+def _gtile(rgba, cx, ry, inset=4):
+    box = (cx[0], ry[0], cx[1], ry[1])
+    bb = region_bbox(rgba, box)
+    if not bb:
+        return Image.new("RGBA", (TILE2, TILE2))
+    # Label banners (cream with dark text) sometimes overlap the tile bottom: cut them off.
+    sub = rgba[bb[1]:bb[3], bb[0]:bb[2]].astype(int)
+    cream = (sub[..., 0] > 215) & (sub[..., 1] > 185) & (sub[..., 2] > 130) & (sub[..., 2] < 215) & (sub[..., 3] > 40)
+    frac = cream.mean(1)
+    h = sub.shape[0]
+    cut = h
+    for y in range(int(h * 0.55), h):
+        if frac[y] > 0.35:
+            cut = y - 2
+            break
+    if cut < h:
+        bb = (bb[0], bb[1], bb[2], bb[1] + cut)
+    # keep the tile square
+    side = min(bb[2] - bb[0], bb[3] - bb[1])
+    bb = (bb[0], bb[1], bb[0] + side, bb[1] + side)
+    bb = (bb[0] + inset, bb[1] + inset, bb[2] - inset, bb[3] - inset)
+    return scale_to(crop(rgba, bb), width=TILE2, height=TILE2, cover=True)
+
+
+BLOB_ROLES = {
+    0: [("top", 3), ("bottom", 3), ("left", 3), ("right", 3)],
+    1: [("tl", 3), ("tr", 3), ("bl", 3), ("br", 3)],
+    2: [("itl", 3), ("itr", 3), ("ibl", 3), ("ibr", 3)],
+    3: [("tb", 1), ("lr", 1), ("u_down", 1), ("u_up", 1), ("open_left", 1), ("open_right", 1), ("iso", 2), ("diag_a", 1), ("diag_b", 1), ("diag_c", 2)],
+}
+
+
+def _save_blob_rows(rgba, cols, rows, name, row_idx=(0, 1, 2, 3), fill_row=4, fill_n=12):
+    for r_i, sheet_row in enumerate(row_idx):
+        ry = rows[sheet_row]
+        k = 0
+        for role, n in BLOB_ROLES[r_i]:
+            for v in range(n):
+                save(_gtile(rgba, cols[k], ry), "tiles", "%s_%s_%d" % (name, role, v))
+                k += 1
+    if fill_row is not None:
+        ry = rows[fill_row]
+        for v in range(min(fill_n, len(cols))):
+            save(_gtile(rgba, cols[v], ry), "tiles", "%s_fill_%d" % (name, v))
+
+
+def _save_simple_set(rgba, cols, ry, name):
+    """12 cells: top,bottom,left,right, tl,tr,bl,br, itl,itr,ibl,ibr (1 variant each)."""
+    roles = ["top", "bottom", "left", "right", "tl", "tr", "bl", "br", "itl", "itr", "ibl", "ibr"]
+    for k, role in enumerate(roles):
+        save(_gtile(rgba, cols[k], ry), "tiles", "%s_%s_0" % (name, role))
+
+
+def w52():
+    rgba = load("w52_shore_grass.png")
+    cols, rows = _grid_cells(rgba)
+    cols = [c for c in cols if c[0] > 140][:12]
+    rows = [(r[0], r[0] + 101) for r in rows]  # the label banners touch the tiles; keep the square only
+    _save_blob_rows(rgba, cols, rows, "shore_grass", (0, 1, 2, 3), 4, 12)
+    for v in range(12):
+        save(_gtile(rgba, cols[v], rows[5]), "tiles", "grass_fill_%d" % v)
+        save(_gtile(rgba, cols[v], rows[6]), "tiles", "sand_fill_%d" % v)
+    _save_simple_set(rgba, cols, rows[7], "shore_sand")
+
+
+def w53():
+    rgba = load("w53_cliff_grass.png")
+    cols, rows = _grid_cells(rgba)
+    cols = [c for c in cols if c[0] > 110][:12]
+    # rows detected: 0..4 then boulders row missed (sparse), then 6, 7
+    r = {0: rows[0], 1: rows[1], 2: rows[2], 3: rows[3], 4: rows[4], 6: rows[-2], 7: rows[-1]}
+    rows_full = [r[0], r[1], r[2], r[3], r[4], (660, 745), r[6], r[7]]
+    _save_blob_rows(rgba, cols, rows_full, "cliff", (0, 1, 2, 3), None)
+    stairs = ["stairs_l", "stairs_m", "stairs_r", "stairs_w", "ramp_l", "ramp_m", "ramp_r", "ramp_w", "ladder", "rope_ladder", "gap_a", "gap_b"]
+    for k, nm in enumerate(stairs):
+        save(_gtile(rgba, cols[k], rows_full[4]), "tiles", "cliff_" + nm)
+    for k in range(12):
+        bb = region_bbox(rgba, (cols[k][0], 650, cols[k][1], 750))
+        if bb:
+            save(scale_to(crop(rgba, bb), height=max(12, (bb[3] - bb[1]) // 2)), "props", "boulder3_%d" % k)
+    deco = ["ivy_a", "ivy_b", "roots", "cave", "mine", "fall_0", "fall_1", "fall_2", "fall_3", "moss", "nest", "crystal"]
+    for k, nm in enumerate(deco):
+        save(_gtile(rgba, cols[k], rows_full[6]), "tiles", "cliffdeco_" + nm)
+    _save_simple_set(rgba, cols, rows_full[7], "cliff_stone")
+
+
+def w54():
+    rgba = load("w54_paths.png")
+    cols, rows = _grid_cells(rgba)
+    cols = cols[:12]
+    _save_blob_rows(rgba, cols, rows, "path_dirt", (0, 1, 2, 3), 4, 12)
+    _save_simple_set(rgba, cols, rows[5], "path_cobble")
+    _save_simple_set(rgba, cols, rows[6], "path_sand")
+    _save_simple_set(rgba, cols, rows[7], "path_snow")
+
+
+def w55():
+    rgba = load("w55_ground_variety.png")
+    cols, rows = _grid_cells(rgba)
+    cols = cols[:12]
+    names = ["gv_short", "gv_tall", "gv_flower", "gv_dry", "gv_forest", "gv_autumn", "gv_snow"]
+    for r, nm in enumerate(names):
+        for v in range(12):
+            save(_gtile(rgba, cols[v], rows[r]), "tiles", "%s_%d" % (nm, v))
+    _save_simple_set(rgba, cols, rows[7], "tall_edge")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:
