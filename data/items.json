@@ -1280,5 +1280,3766 @@
    "damage": 1,
    "luck": 3
   }
+ },
+ "red_apple": {
+  "name": "Red Apple",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "green_apple": {
+  "name": "Green Apple",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "pear": {
+  "name": "Pear",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "apricot": {
+  "name": "Apricot",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "lemon": {
+  "name": "Lemon",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "lime": {
+  "name": "Lime",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "banana": {
+  "name": "Banana",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "grapes_green": {
+  "name": "Grapes Green",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "grapes_purple": {
+  "name": "Grapes Purple",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "blueberry": {
+  "name": "Blueberry",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "raspberry": {
+  "name": "Raspberry",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "blackberry": {
+  "name": "Blackberry",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "fig": {
+  "name": "Fig",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "watermelon": {
+  "name": "Watermelon",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "cantaloupe": {
+  "name": "Cantaloupe",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "pineapple": {
+  "name": "Pineapple",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "mango": {
+  "name": "Mango",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "papaya": {
+  "name": "Papaya",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "kiwi": {
+  "name": "Kiwi",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "pomegranate": {
+  "name": "Pomegranate",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "cranberry": {
+  "name": "Cranberry",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "gooseberry": {
+  "name": "Gooseberry",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "mulberry": {
+  "name": "Mulberry",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "quince": {
+  "name": "Quince",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "elderberry": {
+  "name": "Elderberry",
+  "type": "fruit",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "golden_apple": {
+  "name": "Golden Apple",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "blood_orange": {
+  "name": "Blood Orange",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "white_peach": {
+  "name": "White Peach",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "black_fig": {
+  "name": "Black Fig",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "honey_pear": {
+  "name": "Honey Pear",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "sugar_plum": {
+  "name": "Sugar Plum",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dragonfruit": {
+  "name": "Dragonfruit",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "passionfruit": {
+  "name": "Passionfruit",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "lychee": {
+  "name": "Lychee",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "persimmon": {
+  "name": "Persimmon",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "star_apple": {
+  "name": "Star Apple",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "durian": {
+  "name": "Durian",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "jackfruit": {
+  "name": "Jackfruit",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "guava": {
+  "name": "Guava",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "tamarind": {
+  "name": "Tamarind",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "elderberry2": {
+  "name": "Elderberry2",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "sunfruit": {
+  "name": "Sunfruit",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "glowberry": {
+  "name": "Glowberry",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "frostberry": {
+  "name": "Frostberry",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "emberberry": {
+  "name": "Emberberry",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "cloudmelon": {
+  "name": "Cloudmelon",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "crystal_grape": {
+  "name": "Crystal Grape",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dusk_plum": {
+  "name": "Dusk Plum",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dawn_peach": {
+  "name": "Dawn Peach",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "river_pear": {
+  "name": "River Pear",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "mountain_cherry": {
+  "name": "Mountain Cherry",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "sea_grape": {
+  "name": "Sea Grape",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "cave_fig": {
+  "name": "Cave Fig",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "meadow_strawberry": {
+  "name": "Meadow Strawberry",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "forest_raspberry": {
+  "name": "Forest Raspberry",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dune_date": {
+  "name": "Dune Date",
+  "type": "fruit",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dreamfruit": {
+  "name": "Dreamfruit",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "lantern_fruit": {
+  "name": "Lantern Fruit",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "wisp_apple": {
+  "name": "Wisp Apple",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "singing_pear": {
+  "name": "Singing Pear",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "mirror_melon": {
+  "name": "Mirror Melon",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "echo_berry": {
+  "name": "Echo Berry",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "thunder_plum": {
+  "name": "Thunder Plum",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "silver_orange": {
+  "name": "Silver Orange",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "gold_lemon": {
+  "name": "Gold Lemon",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "crystal_cherry": {
+  "name": "Crystal Cherry",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "prism_grape": {
+  "name": "Prism Grape",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "moonmelon": {
+  "name": "Moonmelon",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "comet_berry": {
+  "name": "Comet Berry",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "tide_fruit": {
+  "name": "Tide Fruit",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "ember_mango": {
+  "name": "Ember Mango",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "pawberry": {
+  "name": "Pawberry",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "catnip_melon": {
+  "name": "Catnip Melon",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "whisker_lime": {
+  "name": "Whisker Lime",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "purr_plum": {
+  "name": "Purr Plum",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "tabby_orange": {
+  "name": "Tabby Orange",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "calico_pear": {
+  "name": "Calico Pear",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "mittens_apple": {
+  "name": "Mittens Apple",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "velvet_fig": {
+  "name": "Velvet Fig",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "lantern_lychee": {
+  "name": "Lantern Lychee",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "night_grape": {
+  "name": "Night Grape",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "dawn_kiwi": {
+  "name": "Dawn Kiwi",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "sun_persimmon": {
+  "name": "Sun Persimmon",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "dusk_pomegranate": {
+  "name": "Dusk Pomegranate",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "shadow_cherry": {
+  "name": "Shadow Cherry",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "light_peach": {
+  "name": "Light Peach",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "hush_banana": {
+  "name": "Hush Banana",
+  "type": "fruit",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "dream_essence_fruit": {
+  "name": "Dream Essence Fruit",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "memory_apple": {
+  "name": "Memory Apple",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "lullaby_pear": {
+  "name": "Lullaby Pear",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "nightmare_plum": {
+  "name": "Nightmare Plum",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "heartfruit": {
+  "name": "Heartfruit",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "soulberry": {
+  "name": "Soulberry",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "time_pear": {
+  "name": "Time Pear",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "wish_melon": {
+  "name": "Wish Melon",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "void_grape": {
+  "name": "Void Grape",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "halo_orange": {
+  "name": "Halo Orange",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "twin_cherry": {
+  "name": "Twin Cherry",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "cloud_peach": {
+  "name": "Cloud Peach",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "stone_fig": {
+  "name": "Stone Fig",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "lava_mango": {
+  "name": "Lava Mango",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "frost_dragonfruit": {
+  "name": "Frost Dragonfruit",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "storm_berry": {
+  "name": "Storm Berry",
+  "type": "fruit",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "golden_pawfruit": {
+  "name": "Golden Pawfruit",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "moon_pear": {
+  "name": "Moon Pear",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "sun_apple": {
+  "name": "Sun Apple",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "first_strawberry": {
+  "name": "First Strawberry",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "crystal_heartfruit": {
+  "name": "Crystal Heartfruit",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "dream_melon": {
+  "name": "Dream Melon",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "star_cherry": {
+  "name": "Star Cherry",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "phoenix_peach": {
+  "name": "Phoenix Peach",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "light_fig": {
+  "name": "Light Fig",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "dark_plum": {
+  "name": "Dark Plum",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "winter_rose_apple": {
+  "name": "Winter Rose Apple",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "summer_fire_mango": {
+  "name": "Summer Fire Mango",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "spring_rain_grape": {
+  "name": "Spring Rain Grape",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "autumn_ember_pear": {
+  "name": "Autumn Ember Pear",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "penguin_snowberry": {
+  "name": "Penguin Snowberry",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "president_grape": {
+  "name": "President Grape",
+  "type": "fruit",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "sweet_potato": {
+  "name": "Sweet Potato",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "radish": {
+  "name": "Radish",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "parsnip": {
+  "name": "Parsnip",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "beet": {
+  "name": "Beet",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "onion": {
+  "name": "Onion",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "garlic": {
+  "name": "Garlic",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "leek": {
+  "name": "Leek",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "shallot": {
+  "name": "Shallot",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "barley": {
+  "name": "Barley",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "oat": {
+  "name": "Oat",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "rice": {
+  "name": "Rice",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "cherry_tomato": {
+  "name": "Cherry Tomato",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "pepper_red": {
+  "name": "Pepper Red",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "pepper_green": {
+  "name": "Pepper Green",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "chili": {
+  "name": "Chili",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "cucumber": {
+  "name": "Cucumber",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "zucchini": {
+  "name": "Zucchini",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "squash": {
+  "name": "Squash",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "cabbage": {
+  "name": "Cabbage",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "lettuce": {
+  "name": "Lettuce",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "kale": {
+  "name": "Kale",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "spinach": {
+  "name": "Spinach",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "broccoli": {
+  "name": "Broccoli",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "cauliflower": {
+  "name": "Cauliflower",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "pea_pod": {
+  "name": "Pea Pod",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "pea_pod2": {
+  "name": "Pea Pod2",
+  "type": "crop",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "heal": 1
+ },
+ "eggplant": {
+  "name": "Eggplant",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "artichoke": {
+  "name": "Artichoke",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "asparagus": {
+  "name": "Asparagus",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "celery": {
+  "name": "Celery",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "fennel": {
+  "name": "Fennel",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "okra": {
+  "name": "Okra",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "bok_choy": {
+  "name": "Bok Choy",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "mustard_greens": {
+  "name": "Mustard Greens",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "purple_carrot": {
+  "name": "Purple Carrot",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "black_radish": {
+  "name": "Black Radish",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "rainbow_chard": {
+  "name": "Rainbow Chard",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "blue_potato": {
+  "name": "Blue Potato",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "red_corn": {
+  "name": "Red Corn",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "white_pumpkin": {
+  "name": "White Pumpkin",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "giant_turnip": {
+  "name": "Giant Turnip",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "striped_squash": {
+  "name": "Striped Squash",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "moonroot": {
+  "name": "Moonroot",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "sunpepper": {
+  "name": "Sunpepper",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "frostkale": {
+  "name": "Frostkale",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "glowleek": {
+  "name": "Glowleek",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "embercorn": {
+  "name": "Embercorn",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "cloud_bean": {
+  "name": "Cloud Bean",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "river_rice": {
+  "name": "River Rice",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "crystal_onion": {
+  "name": "Crystal Onion",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dusk_tomato": {
+  "name": "Dusk Tomato",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dawn_pea": {
+  "name": "Dawn Pea",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "meadow_bean": {
+  "name": "Meadow Bean",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "forest_yam": {
+  "name": "Forest Yam",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "cave_mushroom": {
+  "name": "Cave Mushroom",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "dune_melon": {
+  "name": "Dune Melon",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "tide_lettuce": {
+  "name": "Tide Lettuce",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "mountain_barley": {
+  "name": "Mountain Barley",
+  "type": "crop",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 2
+ },
+ "lantern_gourd": {
+  "name": "Lantern Gourd",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "singing_corn": {
+  "name": "Singing Corn",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "mirror_cabbage": {
+  "name": "Mirror Cabbage",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "thunder_pepper": {
+  "name": "Thunder Pepper",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "silver_garlic": {
+  "name": "Silver Garlic",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "gold_carrot": {
+  "name": "Gold Carrot",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "prism_beet": {
+  "name": "Prism Beet",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "moon_squash": {
+  "name": "Moon Squash",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "comet_pea": {
+  "name": "Comet Pea",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "wisp_onion": {
+  "name": "Wisp Onion",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "echo_leek": {
+  "name": "Echo Leek",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "star_potato": {
+  "name": "Star Potato",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "heart_tomato": {
+  "name": "Heart Tomato",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "soul_pumpkin": {
+  "name": "Soul Pumpkin",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "memory_rice": {
+  "name": "Memory Rice",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "paw_potato": {
+  "name": "Paw Potato",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "whisker_corn": {
+  "name": "Whisker Corn",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "catnip_cabbage": {
+  "name": "Catnip Cabbage",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "purr_pumpkin": {
+  "name": "Purr Pumpkin",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "tabby_tomato": {
+  "name": "Tabby Tomato",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "velvet_beet": {
+  "name": "Velvet Beet",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "mittens_pea": {
+  "name": "Mittens Pea",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "night_garlic": {
+  "name": "Night Garlic",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "dawn_leek": {
+  "name": "Dawn Leek",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "dusk_pepper": {
+  "name": "Dusk Pepper",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "hush_carrot": {
+  "name": "Hush Carrot",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "lantern_onion": {
+  "name": "Lantern Onion",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "shadow_yam": {
+  "name": "Shadow Yam",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "light_squash": {
+  "name": "Light Squash",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "calico_kale": {
+  "name": "Calico Kale",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "sun_bean": {
+  "name": "Sun Bean",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 2
+ },
+ "dream_essence_root": {
+  "name": "Dream Essence Root",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "time_turnip": {
+  "name": "Time Turnip",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "void_pumpkin": {
+  "name": "Void Pumpkin",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "halo_corn": {
+  "name": "Halo Corn",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "storm_pepper": {
+  "name": "Storm Pepper",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "lava_chili": {
+  "name": "Lava Chili",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "frost_squash": {
+  "name": "Frost Squash",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "cloud_rice": {
+  "name": "Cloud Rice",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "stone_potato": {
+  "name": "Stone Potato",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "nightmare_beet": {
+  "name": "Nightmare Beet",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "lullaby_lettuce": {
+  "name": "Lullaby Lettuce",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "wish_garlic": {
+  "name": "Wish Garlic",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "heartroot": {
+  "name": "Heartroot",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "soulcorn": {
+  "name": "Soulcorn",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "mirror_gourd": {
+  "name": "Mirror Gourd",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "echo_artichoke": {
+  "name": "Echo Artichoke",
+  "type": "crop",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4,
+  "heal": 2
+ },
+ "golden_pawroot": {
+  "name": "Golden Pawroot",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "moon_pumpkin": {
+  "name": "Moon Pumpkin",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "sun_corn": {
+  "name": "Sun Corn",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "first_turnip": {
+  "name": "First Turnip",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "crystal_heartroot": {
+  "name": "Crystal Heartroot",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "dream_squash": {
+  "name": "Dream Squash",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "star_pepper": {
+  "name": "Star Pepper",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "phoenix_chili": {
+  "name": "Phoenix Chili",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "light_leek": {
+  "name": "Light Leek",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "dark_garlic": {
+  "name": "Dark Garlic",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "winter_cabbage": {
+  "name": "Winter Cabbage",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "summer_tomato": {
+  "name": "Summer Tomato",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "spring_pea": {
+  "name": "Spring Pea",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "autumn_pumpkin": {
+  "name": "Autumn Pumpkin",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "penguin_iceroot": {
+  "name": "Penguin Iceroot",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "president_potato": {
+  "name": "President Potato",
+  "type": "crop",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 2
+ },
+ "daisy": {
+  "name": "Daisy",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "dandelion": {
+  "name": "Dandelion",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "poppy": {
+  "name": "Poppy",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "tulip": {
+  "name": "Tulip",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "sunflower": {
+  "name": "Sunflower",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "lavender": {
+  "name": "Lavender",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "rose_red": {
+  "name": "Rose Red",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "rose_white": {
+  "name": "Rose White",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "bluebell": {
+  "name": "Bluebell",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "buttercup": {
+  "name": "Buttercup",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "clover": {
+  "name": "Clover",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "marigold": {
+  "name": "Marigold",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "violet": {
+  "name": "Violet",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "daffodil": {
+  "name": "Daffodil",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "iris": {
+  "name": "Iris",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "lily": {
+  "name": "Lily",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "daisy2": {
+  "name": "Daisy2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "dandelion2": {
+  "name": "Dandelion2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "poppy2": {
+  "name": "Poppy2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "tulip2": {
+  "name": "Tulip2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "sunflower2": {
+  "name": "Sunflower2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "lavender2": {
+  "name": "Lavender2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "rose_red2": {
+  "name": "Rose Red2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "rose_white2": {
+  "name": "Rose White2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "bluebell2": {
+  "name": "Bluebell2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "buttercup2": {
+  "name": "Buttercup2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "clover2": {
+  "name": "Clover2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "marigold2": {
+  "name": "Marigold2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "violet2": {
+  "name": "Violet2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "daffodil2": {
+  "name": "Daffodil2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "iris2": {
+  "name": "Iris2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "lily2": {
+  "name": "Lily2",
+  "type": "flower",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "mint": {
+  "name": "Mint",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "basil": {
+  "name": "Basil",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "thyme": {
+  "name": "Thyme",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "rosemary": {
+  "name": "Rosemary",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "sage": {
+  "name": "Sage",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "chamomile": {
+  "name": "Chamomile",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "dill": {
+  "name": "Dill",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "parsley": {
+  "name": "Parsley",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "chives": {
+  "name": "Chives",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "oregano": {
+  "name": "Oregano",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "lemongrass": {
+  "name": "Lemongrass",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "ginger": {
+  "name": "Ginger",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "nettle": {
+  "name": "Nettle",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "yarrow": {
+  "name": "Yarrow",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "comfrey": {
+  "name": "Comfrey",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "feverfew": {
+  "name": "Feverfew",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "valerian": {
+  "name": "Valerian",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "mugwort": {
+  "name": "Mugwort",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "elderflower": {
+  "name": "Elderflower",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "wild_garlic": {
+  "name": "Wild Garlic",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "sorrel": {
+  "name": "Sorrel",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "plantain": {
+  "name": "Plantain",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "burdock": {
+  "name": "Burdock",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "dock": {
+  "name": "Dock",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "mallow": {
+  "name": "Mallow",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "hops": {
+  "name": "Hops",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "tea_leaf": {
+  "name": "Tea Leaf",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "coffee_bean": {
+  "name": "Coffee Bean",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "cacao_pod": {
+  "name": "Cacao Pod",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "vanilla_pod": {
+  "name": "Vanilla Pod",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "saffron": {
+  "name": "Saffron",
+  "type": "herb",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "moonflower": {
+  "name": "Moonflower",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "sunflower_gold": {
+  "name": "Sunflower Gold",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "glowblossom": {
+  "name": "Glowblossom",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "frost_lily": {
+  "name": "Frost Lily",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "ember_rose": {
+  "name": "Ember Rose",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "cloud_orchid": {
+  "name": "Cloud Orchid",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "crystal_tulip": {
+  "name": "Crystal Tulip",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "dusk_iris": {
+  "name": "Dusk Iris",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "dawn_lotus": {
+  "name": "Dawn Lotus",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "river_lily": {
+  "name": "River Lily",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "edelweiss": {
+  "name": "Edelweiss",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "sea_thrift": {
+  "name": "Sea Thrift",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "cave_bloom": {
+  "name": "Cave Bloom",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "meadow_queen": {
+  "name": "Meadow Queen",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "forest_bell": {
+  "name": "Forest Bell",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "dune_star": {
+  "name": "Dune Star",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "dreamleaf": {
+  "name": "Dreamleaf",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "lantern_sage": {
+  "name": "Lantern Sage",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "singing_thyme": {
+  "name": "Singing Thyme",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "mirror_mint": {
+  "name": "Mirror Mint",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "thunder_nettle": {
+  "name": "Thunder Nettle",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "silver_sage": {
+  "name": "Silver Sage",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "gold_chamomile": {
+  "name": "Gold Chamomile",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "prism_basil": {
+  "name": "Prism Basil",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "moon_mugwort": {
+  "name": "Moon Mugwort",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "comet_dill": {
+  "name": "Comet Dill",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "wisp_rosemary": {
+  "name": "Wisp Rosemary",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "echo_yarrow": {
+  "name": "Echo Yarrow",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "star_lavender": {
+  "name": "Star Lavender",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "heart_rose": {
+  "name": "Heart Rose",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "soul_clover": {
+  "name": "Soul Clover",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "memory_tea": {
+  "name": "Memory Tea",
+  "type": "flower",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "dream_essence_bloom": {
+  "name": "Dream Essence Bloom",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "time_flower": {
+  "name": "Time Flower",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "void_rose": {
+  "name": "Void Rose",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "halo_lily": {
+  "name": "Halo Lily",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "storm_orchid": {
+  "name": "Storm Orchid",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "lava_poppy": {
+  "name": "Lava Poppy",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "frost_edelweiss": {
+  "name": "Frost Edelweiss",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "cloud_lotus": {
+  "name": "Cloud Lotus",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "stone_bloom": {
+  "name": "Stone Bloom",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "nightmare_iris": {
+  "name": "Nightmare Iris",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "lullaby_lavender": {
+  "name": "Lullaby Lavender",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "wish_daisy": {
+  "name": "Wish Daisy",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "heartbloom": {
+  "name": "Heartbloom",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "soulflower": {
+  "name": "Soulflower",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "mirror_lotus": {
+  "name": "Mirror Lotus",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "echo_tulip": {
+  "name": "Echo Tulip",
+  "type": "flower",
+  "value": 400,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "golden_pawflower": {
+  "name": "Golden Pawflower",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "moon_lotus": {
+  "name": "Moon Lotus",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "sun_rose": {
+  "name": "Sun Rose",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "first_daisy": {
+  "name": "First Daisy",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "crystal_heartbloom": {
+  "name": "Crystal Heartbloom",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "dream_orchid": {
+  "name": "Dream Orchid",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "star_lily": {
+  "name": "Star Lily",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "phoenix_poppy": {
+  "name": "Phoenix Poppy",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "light_iris": {
+  "name": "Light Iris",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "dark_rose": {
+  "name": "Dark Rose",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "winter_snowdrop": {
+  "name": "Winter Snowdrop",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "summer_sunburst": {
+  "name": "Summer Sunburst",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "spring_blossom": {
+  "name": "Spring Blossom",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "autumn_ember_leaf": {
+  "name": "Autumn Ember Leaf",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "penguin_ice_lily": {
+  "name": "Penguin Ice Lily",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "president_boutonniere": {
+  "name": "President Boutonniere",
+  "type": "flower",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "beet_seed": {
+  "name": "Beet Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "beet"
+ },
+ "onion_seed": {
+  "name": "Onion Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "onion"
+ },
+ "garlic_seed": {
+  "name": "Garlic Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "garlic"
+ },
+ "lettuce_seed": {
+  "name": "Lettuce Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "lettuce"
+ },
+ "radish_seed": {
+  "name": "Radish Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "radish"
+ },
+ "bok_choy_seed": {
+  "name": "Bok Choy Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "bok_choy"
+ },
+ "oat_seed": {
+  "name": "Oat Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "oat"
+ },
+ "rice_seed": {
+  "name": "Rice Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "rice"
+ },
+ "sunflower_seed": {
+  "name": "Sunflower Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "sunflower"
+ },
+ "cotton_seed": {
+  "name": "Cotton Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "cotton"
+ },
+ "cabbage_seed": {
+  "name": "Cabbage Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "cabbage"
+ },
+ "kale_seed": {
+  "name": "Kale Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "kale"
+ },
+ "spinach_seed": {
+  "name": "Spinach Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "spinach"
+ },
+ "green_bean_seed": {
+  "name": "Green Bean Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "green_bean"
+ },
+ "pea_seed": {
+  "name": "Pea Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "pea"
+ },
+ "cucumber_seed": {
+  "name": "Cucumber Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "cucumber"
+ },
+ "pepper_seed": {
+  "name": "Pepper Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "pepper"
+ },
+ "eggplant_seed": {
+  "name": "Eggplant Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "eggplant"
+ },
+ "leek_seed": {
+  "name": "Leek Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "leek"
+ },
+ "scallion_seed": {
+  "name": "Scallion Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "scallion"
+ },
+ "shallot_seed": {
+  "name": "Shallot Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "shallot"
+ },
+ "celery_seed": {
+  "name": "Celery Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "celery"
+ },
+ "dill_seed": {
+  "name": "Dill Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "dill"
+ },
+ "parsley_seed": {
+  "name": "Parsley Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "parsley"
+ },
+ "basil_seed": {
+  "name": "Basil Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "basil"
+ },
+ "mint_seed": {
+  "name": "Mint Seed",
+  "type": "seed",
+  "value": 4,
+  "rarity": "common",
+  "tier": 1,
+  "crop": "mint"
+ },
+ "blueberry_seed": {
+  "name": "Blueberry Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "blueberry"
+ },
+ "raspberry_seed": {
+  "name": "Raspberry Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "raspberry"
+ },
+ "blackberry_seed": {
+  "name": "Blackberry Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "blackberry"
+ },
+ "cranberry_seed": {
+  "name": "Cranberry Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "cranberry"
+ },
+ "grape_seed": {
+  "name": "Grape Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "grape"
+ },
+ "apple_seed": {
+  "name": "Apple Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "apple"
+ },
+ "pear_seed": {
+  "name": "Pear Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "pear"
+ },
+ "peach_seed": {
+  "name": "Peach Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "peach"
+ },
+ "orange_seed": {
+  "name": "Orange Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "orange"
+ },
+ "lemon_seed": {
+  "name": "Lemon Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "lemon"
+ },
+ "banana_seed": {
+  "name": "Banana Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "banana"
+ },
+ "pineapple_seed": {
+  "name": "Pineapple Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "pineapple"
+ },
+ "watermelon_seed": {
+  "name": "Watermelon Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "watermelon"
+ },
+ "cantaloupe_seed": {
+  "name": "Cantaloupe Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "cantaloupe"
+ },
+ "zucchini_seed": {
+  "name": "Zucchini Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "zucchini"
+ },
+ "yellow_squash_seed": {
+  "name": "Yellow Squash Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "yellow_squash"
+ },
+ "broccoli_seed": {
+  "name": "Broccoli Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "broccoli"
+ },
+ "cauliflower_seed": {
+  "name": "Cauliflower Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "cauliflower"
+ },
+ "artichoke_seed": {
+  "name": "Artichoke Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "artichoke"
+ },
+ "asparagus_seed": {
+  "name": "Asparagus Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "asparagus"
+ },
+ "sweet_potato_seed": {
+  "name": "Sweet Potato Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "sweet_potato"
+ },
+ "chili_seed": {
+  "name": "Chili Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "chili"
+ },
+ "ginger_seed": {
+  "name": "Ginger Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "ginger"
+ },
+ "turmeric_seed": {
+  "name": "Turmeric Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "turmeric"
+ },
+ "wasabi_seed": {
+  "name": "Wasabi Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "wasabi"
+ },
+ "sesame_seed": {
+  "name": "Sesame Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "sesame"
+ },
+ "poppy_seed": {
+  "name": "Poppy Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "poppy"
+ },
+ "flax_seed": {
+  "name": "Flax Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "flax"
+ },
+ "chia_seed": {
+  "name": "Chia Seed",
+  "type": "seed",
+  "value": 11,
+  "rarity": "uncommon",
+  "tier": 2,
+  "crop": "chia"
+ },
+ "moonberry_seed": {
+  "name": "Moonberry Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "moonberry"
+ },
+ "starfruit_seed": {
+  "name": "Starfruit Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "starfruit"
+ },
+ "pomegranate_seed": {
+  "name": "Pomegranate Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "pomegranate"
+ },
+ "fig_seed": {
+  "name": "Fig Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "fig"
+ },
+ "dragonfruit_seed": {
+  "name": "Dragonfruit Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "dragonfruit"
+ },
+ "coconut_seed": {
+  "name": "Coconut Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "coconut"
+ },
+ "kiwi_seed": {
+  "name": "Kiwi Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "kiwi"
+ },
+ "mango_seed": {
+  "name": "Mango Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "mango"
+ },
+ "avocado_seed": {
+  "name": "Avocado Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "avocado"
+ },
+ "lychee_seed": {
+  "name": "Lychee Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "lychee"
+ },
+ "persimmon_seed": {
+  "name": "Persimmon Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "persimmon"
+ },
+ "quince_seed": {
+  "name": "Quince Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "quince"
+ },
+ "kumquat_seed": {
+  "name": "Kumquat Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "kumquat"
+ },
+ "mulberry_seed": {
+  "name": "Mulberry Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "mulberry"
+ },
+ "passionfruit_seed": {
+  "name": "Passionfruit Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "passionfruit"
+ },
+ "guava_seed": {
+  "name": "Guava Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "guava"
+ },
+ "vanilla_seed": {
+  "name": "Vanilla Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "vanilla"
+ },
+ "cacao_seed": {
+  "name": "Cacao Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "cacao"
+ },
+ "coffee_seed": {
+  "name": "Coffee Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "coffee"
+ },
+ "tea_seed": {
+  "name": "Tea Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "tea"
+ },
+ "hops_seed": {
+  "name": "Hops Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "hops"
+ },
+ "aloe_seed": {
+  "name": "Aloe Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "aloe"
+ },
+ "saffron_seed": {
+  "name": "Saffron Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "saffron"
+ },
+ "lotus_seed": {
+  "name": "Lotus Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "lotus"
+ },
+ "watercress_seed": {
+  "name": "Watercress Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "watercress"
+ },
+ "water_chestnut_seed": {
+  "name": "Water Chestnut Seed",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "water_chestnut"
+ },
+ "mushroom_spore": {
+  "name": "Mushroom Spore",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "mushroom"
+ },
+ "truffle_spore": {
+  "name": "Truffle Spore",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "truffle"
+ },
+ "morel_spore": {
+  "name": "Morel Spore",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "morel"
+ },
+ "glowcap_spore": {
+  "name": "Glowcap Spore",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "glowcap"
+ },
+ "glowcap_spore2": {
+  "name": "Glowcap Spore2",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "glowcap2"
+ },
+ "glowcap_spore3": {
+  "name": "Glowcap Spore3",
+  "type": "seed",
+  "value": 40,
+  "rarity": "rare",
+  "tier": 3,
+  "crop": "glowcap3"
+ },
+ "enchanted_berry_seed": {
+  "name": "Enchanted Berry Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "enchanted_berry"
+ },
+ "frostberry_seed": {
+  "name": "Frostberry Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "frostberry"
+ },
+ "flameberry_seed": {
+  "name": "Flameberry Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "flameberry"
+ },
+ "shadowberry_seed": {
+  "name": "Shadowberry Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "shadowberry"
+ },
+ "dreamfruit_seed": {
+  "name": "Dreamfruit Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "dreamfruit"
+ },
+ "starflower_seed": {
+  "name": "Starflower Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "starflower"
+ },
+ "moonflower_seed": {
+  "name": "Moonflower Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "moonflower"
+ },
+ "sunfruit_seed": {
+  "name": "Sunfruit Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "sunfruit"
+ },
+ "crystal_melon_seed": {
+  "name": "Crystal Melon Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "crystal_melon"
+ },
+ "crystal_tomato_seed": {
+  "name": "Crystal Tomato Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "crystal_tomato"
+ },
+ "rainbow_beet_seed": {
+  "name": "Rainbow Beet Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "rainbow_beet"
+ },
+ "aurora_corn_seed": {
+  "name": "Aurora Corn Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "aurora_corn"
+ },
+ "crystal_lettuce_seed": {
+  "name": "Crystal Lettuce Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "crystal_lettuce"
+ },
+ "sky_lettuce_seed": {
+  "name": "Sky Lettuce Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "sky_lettuce"
+ },
+ "void_pepper_seed": {
+  "name": "Void Pepper Seed",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "void_pepper"
+ },
+ "void_pepper_seed2": {
+  "name": "Void Pepper Seed2",
+  "type": "seed",
+  "value": 133,
+  "rarity": "epic",
+  "tier": 4,
+  "crop": "void_pepper2"
+ },
+ "luminous_starfruit_seed": {
+  "name": "Luminous Starfruit Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "luminous_starfruit"
+ },
+ "celestial_apple_seed": {
+  "name": "Celestial Apple Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "celestial_apple"
+ },
+ "dragonberry_seed": {
+  "name": "Dragonberry Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "dragonberry"
+ },
+ "phoenix_pepper_seed": {
+  "name": "Phoenix Pepper Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "phoenix_pepper"
+ },
+ "atlas_melon_seed": {
+  "name": "Atlas Melon Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "atlas_melon"
+ },
+ "nebula_grape_seed": {
+  "name": "Nebula Grape Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "nebula_grape"
+ },
+ "wishfruit_seed": {
+  "name": "Wishfruit Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "wishfruit"
+ },
+ "infinity_bean_seed": {
+  "name": "Infinity Bean Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "infinity_bean"
+ },
+ "stardust_pumpkin_seed": {
+  "name": "Stardust Pumpkin Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "stardust_pumpkin"
+ },
+ "ethereal_corn_seed": {
+  "name": "Ethereal Corn Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "ethereal_corn"
+ },
+ "prism_tomato_seed": {
+  "name": "Prism Tomato Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "prism_tomato"
+ },
+ "lumiflora_seed": {
+  "name": "Lumiflora Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "lumiflora"
+ },
+ "soulleaf_seed": {
+  "name": "Soulleaf Seed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "soulleaf"
+ },
+ "worldseed": {
+  "name": "Worldseed",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "worldseed"
+ },
+ "worldseed2": {
+  "name": "Worldseed2",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "worldseed2"
+ },
+ "worldseed3": {
+  "name": "Worldseed3",
+  "type": "seed",
+  "value": 500,
+  "rarity": "legendary",
+  "tier": 5,
+  "crop": "worldseed3"
  }
 }

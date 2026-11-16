@@ -71,6 +71,9 @@ func _run() -> void:
 	await shot("04_farming")
 
 	# Run test (keyboard path): hold B + right and check speed.
+	for x in range(3, 14):
+		for y in range(18, 23):
+			farm.clear_cell(Vector2i(x, y))
 	p.position = farm.cell_center(Vector2i(4, 19))
 	Input.action_press("right"); Input.action_press("b")
 	await frames(40)

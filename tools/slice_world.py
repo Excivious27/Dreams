@@ -1635,11 +1635,314 @@ def w55():
     _save_simple_set(rgba, cols, rows[7], "tall_edge")
 
 
+
+
+# ---------------------------------------------------------------- icon catalogues (W60-W83): 16x8 grid of 64px icons
+
+ICON_GRID = [(24 + n * 88, 24 + m * 120) for m in range(8) for n in range(16)]
+
+
+def _icon_sheet(file, names_by_row, group="items", size=32, rarity_strip=True):
+    """names_by_row: list of 8 lists (<=16 names). Empty name = skip. Detects the row
+    bands by projection so label banners never shift the grid."""
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = _grid_runs(a.mean(1), 0.08, 40)
+    rows = [r for r in rows if r[1] - r[0] >= 50][:8]
+    for m, names in enumerate(names_by_row):
+        if m >= len(rows):
+            break
+        y0, y1 = rows[m]
+        # split the row into 16 columns by connected components, merged to 16
+        boxes = row_sprites(rgba, (10, y0, 1526, y1), 16, gap=6)
+        for n, nm in enumerate(names):
+            if not nm or n >= len(boxes):
+                continue
+            b = boxes[n]
+            bb = region_bbox(rgba, b)
+            if not bb:
+                continue
+            im = crop(rgba, bb)
+            if rarity_strip:
+                # drop the little rarity gem: it sits in the top-left ~14px square
+                arr = np.array(im)
+                h, w = arr.shape[:2]
+                arr[: int(h * 0.22), : int(w * 0.22), 3] = 0
+                im = Image.fromarray(arr)
+                bb2 = region_bbox(np.array(im), (0, 0, w, h))
+                if bb2:
+                    im = im.crop(bb2)
+            save(scale_to(im, width=size, height=size), group, nm)
+
+
+def _ids(*rows):
+    return [[x.strip().lower().replace("'", "").replace(" ", "_").replace("-", "_").replace("(", "").replace(")", "") if x else "" for x in r.split(",")] for r in rows]
+
+
+def w68():
+    _icon_sheet("w68_fruits.png", _ids(
+        "apple,red_apple,green_apple,pear,plum,apricot,orange,lemon,lime,banana,grapes_green,grapes_purple,strawberry,blueberry,raspberry,blackberry",
+        "cherry,fig,melon,watermelon,cantaloupe,pineapple,mango,papaya,kiwi,pomegranate,coconut,cranberry,gooseberry,mulberry,quince,elderberry",
+        "golden_apple,blood_orange,white_peach,black_fig,honey_pear,sugar_plum,dragonfruit,passionfruit,lychee,persimmon,star_apple,durian,jackfruit,guava,tamarind,elderberry2",
+        "moonberry,sunfruit,glowberry,frostberry,emberberry,cloudmelon,crystal_grape,dusk_plum,dawn_peach,river_pear,mountain_cherry,sea_grape,cave_fig,meadow_strawberry,forest_raspberry,dune_date",
+        "starfruit,dreamfruit,lantern_fruit,wisp_apple,singing_pear,mirror_melon,echo_berry,thunder_plum,silver_orange,gold_lemon,crystal_cherry,prism_grape,moonmelon,comet_berry,tide_fruit,ember_mango",
+        "pawberry,catnip_melon,whisker_lime,purr_plum,tabby_orange,calico_pear,mittens_apple,velvet_fig,lantern_lychee,night_grape,dawn_kiwi,sun_persimmon,dusk_pomegranate,shadow_cherry,light_peach,hush_banana",
+        "dream_essence_fruit,memory_apple,lullaby_pear,nightmare_plum,heartfruit,soulberry,time_pear,wish_melon,void_grape,halo_orange,twin_cherry,cloud_peach,stone_fig,lava_mango,frost_dragonfruit,storm_berry",
+        "golden_pawfruit,moon_pear,sun_apple,first_strawberry,crystal_heartfruit,dream_melon,star_cherry,phoenix_peach,light_fig,dark_plum,winter_rose_apple,summer_fire_mango,spring_rain_grape,autumn_ember_pear,penguin_snowberry,president_grape"))
+
+
+def w69():
+    _icon_sheet("w69_vegetables.png", _ids(
+        "potato,sweet_potato,turnip,radish,carrot,parsnip,beet,onion,garlic,leek,shallot,corn,wheat,barley,oat,rice",
+        "tomato,cherry_tomato,pepper_red,pepper_green,chili,cucumber,zucchini,squash,cabbage,lettuce,kale,spinach,broccoli,cauliflower,pea_pod,pea_pod2",
+        "eggplant,artichoke,asparagus,celery,fennel,okra,bok_choy,mustard_greens,purple_carrot,black_radish,rainbow_chard,blue_potato,red_corn,white_pumpkin,giant_turnip,striped_squash",
+        "moonroot,sunpepper,frostkale,glowleek,embercorn,cloud_bean,river_rice,crystal_onion,dusk_tomato,dawn_pea,meadow_bean,forest_yam,cave_mushroom,dune_melon,tide_lettuce,mountain_barley",
+        "dreamroot,lantern_gourd,singing_corn,mirror_cabbage,thunder_pepper,silver_garlic,gold_carrot,prism_beet,moon_squash,comet_pea,wisp_onion,echo_leek,star_potato,heart_tomato,soul_pumpkin,memory_rice",
+        "paw_potato,whisker_corn,catnip_cabbage,purr_pumpkin,tabby_tomato,velvet_beet,mittens_pea,night_garlic,dawn_leek,dusk_pepper,hush_carrot,lantern_onion,shadow_yam,light_squash,calico_kale,sun_bean",
+        "dream_essence_root,time_turnip,void_pumpkin,halo_corn,storm_pepper,lava_chili,frost_squash,cloud_rice,stone_potato,nightmare_beet,lullaby_lettuce,wish_garlic,heartroot,soulcorn,mirror_gourd,echo_artichoke",
+        "golden_pawroot,moon_pumpkin,sun_corn,first_turnip,crystal_heartroot,dream_squash,star_pepper,phoenix_chili,light_leek,dark_garlic,winter_cabbage,summer_tomato,spring_pea,autumn_pumpkin,penguin_iceroot,president_potato"))
+
+
+def w70():
+    _icon_sheet("w70_seeds.png", _ids(
+        "potato_seed,turnip_seed,carrot_seed,beet_seed,onion_seed,garlic_seed,lettuce_seed,corn_seed,tomato_seed,radish_seed,bok_choy_seed,wheat_seed,oat_seed,rice_seed,sunflower_seed,cotton_seed",
+        "cabbage_seed,kale_seed,spinach_seed,green_bean_seed,pea_seed,cucumber_seed,pepper_seed,eggplant_seed,leek_seed,scallion_seed,shallot_seed,celery_seed,dill_seed,parsley_seed,basil_seed,mint_seed",
+        "strawberry_seed,blueberry_seed,raspberry_seed,blackberry_seed,cranberry_seed,grape_seed,apple_seed,pear_seed,peach_seed,orange_seed,lemon_seed,banana_seed,pineapple_seed,melon_seed,watermelon_seed,cantaloupe_seed",
+        "pumpkin_seed,zucchini_seed,yellow_squash_seed,broccoli_seed,cauliflower_seed,artichoke_seed,asparagus_seed,sweet_potato_seed,chili_seed,ginger_seed,turmeric_seed,wasabi_seed,sesame_seed,poppy_seed,flax_seed,chia_seed",
+        "moonberry_seed,starfruit_seed,pomegranate_seed,fig_seed,dragonfruit_seed,coconut_seed,kiwi_seed,mango_seed,avocado_seed,lychee_seed,persimmon_seed,quince_seed,kumquat_seed,mulberry_seed,passionfruit_seed,guava_seed",
+        "vanilla_seed,cacao_seed,coffee_seed,tea_seed,hops_seed,aloe_seed,saffron_seed,lotus_seed,watercress_seed,water_chestnut_seed,mushroom_spore,truffle_spore,morel_spore,glowcap_spore,glowcap_spore2,glowcap_spore3",
+        "enchanted_berry_seed,frostberry_seed,flameberry_seed,shadowberry_seed,dreamfruit_seed,starflower_seed,moonflower_seed,sunfruit_seed,crystal_melon_seed,crystal_tomato_seed,rainbow_beet_seed,aurora_corn_seed,crystal_lettuce_seed,sky_lettuce_seed,void_pepper_seed,void_pepper_seed2",
+        "luminous_starfruit_seed,celestial_apple_seed,dragonberry_seed,phoenix_pepper_seed,atlas_melon_seed,nebula_grape_seed,wishfruit_seed,infinity_bean_seed,stardust_pumpkin_seed,ethereal_corn_seed,prism_tomato_seed,lumiflora_seed,soulleaf_seed,worldseed,worldseed2,worldseed3"))
+
+
+def w71():
+    _icon_sheet("w71_flowers_herbs.png", _ids(
+        "daisy,dandelion,poppy,tulip,sunflower,lavender,rose_red,rose_white,bluebell,buttercup,clover,marigold,violet,daffodil,iris,lily",
+        "daisy2,dandelion2,poppy2,tulip2,sunflower2,lavender2,rose_red2,rose_white2,bluebell2,buttercup2,clover2,marigold2,violet2,daffodil2,iris2,lily2",
+        "mint,basil,thyme,rosemary,sage,chamomile,dill,parsley,chives,oregano,lemongrass,ginger,wild_herb,nettle,yarrow,comfrey",
+        "feverfew,valerian,mugwort,elderflower,wild_garlic,sorrel,plantain,burdock,dock,mallow,hops,tea_leaf,coffee_bean,cacao_pod,vanilla_pod,saffron",
+        "moonflower,sunflower_gold,glowblossom,frost_lily,ember_rose,cloud_orchid,crystal_tulip,dusk_iris,dawn_lotus,river_lily,edelweiss,sea_thrift,cave_bloom,meadow_queen,forest_bell,dune_star",
+        "dreamleaf,lantern_sage,singing_thyme,mirror_mint,thunder_nettle,silver_sage,gold_chamomile,prism_basil,moon_mugwort,comet_dill,wisp_rosemary,echo_yarrow,star_lavender,heart_rose,soul_clover,memory_tea",
+        "dream_essence_bloom,time_flower,void_rose,halo_lily,storm_orchid,lava_poppy,frost_edelweiss,cloud_lotus,stone_bloom,nightmare_iris,lullaby_lavender,wish_daisy,heartbloom,soulflower,mirror_lotus,echo_tulip",
+        "golden_pawflower,moon_lotus,sun_rose,first_daisy,crystal_heartbloom,dream_orchid,star_lily,phoenix_poppy,light_iris,dark_rose,winter_snowdrop,summer_sunburst,spring_blossom,autumn_ember_leaf,penguin_ice_lily,president_boutonniere"))
+
+
+def w60():
+    _icon_sheet("w60_gear_icons.png", _ids(
+        "straw_hat,cap,leather_cap,iron_helm,crystal_crown,cowboy_hat,flower_crown,hood,wizard_hat,bandana,goggles,beanie,top_hat,halo,earmuffs,headband",
+        "work_shirt,overalls,tunic,leather_vest,iron_mail,crystal_plate,neon_jacket,hoodie,sweater,cloak,dress,lab_coat,jacket,tank_top,kilt_set,armor_gold",
+        "boots,sneakers,sandals,running_shoes,iron_greaves,cloud_walkers,rain_boots,slippers,crystal_boots,neon_kicks,hiking_boots,climbing_boots,flippers,snow_boots,dancing_shoes,bare_feet",
+        "copper_ring,silver_ring,gold_ring,ruby_ring,sapphire_ring,emerald_ring,amethyst_ring,moon_ring,iron_band,wood_ring,crystal_ring,dream_ring,luck_ring,speed_ring,life_ring,star_ring",
+        "paw_charm,light_charm,dream_charm,scarf,backpack,cape,necklace_a,necklace_b,bracelet,lantern_item,compass,pocket_watch,lucky_coin,feather,bell,key",
+        "hoe,hoe_copper,hoe_iron,hoe_gold,hoe_crystal,axe,axe_copper,axe_iron,axe_gold,axe_crystal,pickaxe,pickaxe_copper,pickaxe_iron,pickaxe_gold,pickaxe_crystal,hammer",
+        "can,can_copper,can_iron,can_gold,can_crystal,rod,rod_copper,rod_iron,rod_gold,rod_crystal,sword,iron_sword,steel_sword,crystal_sword,moon_sword,scythe",
+        "cloth,leather,rope,glass,coal,crystal_lens,fertilizer,bait,copper_bar,iron_bar,silver_bar,gold_bar,crystal_refined,light_mote,dream_essence,star_dust"))
+
+
+def w61():
+    _icon_sheet("w61_drops_magic_icons.png", _ids(
+        "grump_dust,slime_gel,bat_wing,golem_core,shard_heart,soldier_badge,wisp_light,commander_crest,thug_cash,brass_knuckles,burner_phone,flame_core,enforcer_plate,president_seal,dark,bone",
+        "light_mote2,dream_essence2,star_dust2,moon_tear,paw_charm_shard,bottled_wind,ember,frost,spirit_leaf,crystal_seed,lunar_petal,sun_bead,shadow_ink,echo_shell,time_sand,wish",
+        "apple2,plum2,orange2,cherry2,coconut2,moonberry2,starfruit2,peach,pear2,grapes,lemon2,banana2,blueberry2,fig2,pomegranate2,dragonfruit2",
+        "potato2,turnip2,carrot2,corn2,tomato2,pumpkin,melon2,wheat2,cabbage2,onion2,garlic2,pepper,eggplant2,beet2,broccoli2,radish2",
+        "berry,mushroom,wild_leek,wild_herb2,flower,acorn,pinecone,sap,fiber,honey,truffle,glowcap,seashell,driftwood,moss,clay",
+        "bread,salad,fish_stew,berry_pie,pumpkin_soup,truffle_pasta,moon_cake,herb_remedy,energy_tea,potion,dream_tonic,roast_fish,jam,cheese,omelette,juice",
+        "trout,bass,salmon,tuna,catfish,carp,minnow,sunfish,eel,puffer,goldfish,starfin,mooncarp,crab,legendary_koi,boot",
+        "stone,copper,iron,silver,gold,shard,dark2,ruby,sapphire,emerald,amethyst,diamond,opal,pearl,geode,meteorite"))
+
+
+def w63():
+    rgba = load("w63_ui_progress.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.08, 40) if r[1] - r[0] >= 50][:8]
+    def row(i, n, names, group, size, gap=6):
+        y0, y1 = rows[i]
+        for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), n, gap=gap), names):
+            bb = region_bbox(rgba, b)
+            if bb and nm:
+                save(scale_to(crop(rgba, bb), width=size, height=size) if size else scale_to(crop(rgba, bb), height=40), group, nm)
+    row(0, 13, ["recipe_card", "recipe_locked", "tier_1", "tier_2", "tier_3", "tier_4", "tier_5", "frame_common", "frame_uncommon", "frame_rare", "frame_epic", "frame_legendary", "ingredient_chip"], "ui", 0)
+    y0, y1 = rows[1]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 16, gap=4)
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=32) for b in bs[:6]], "fx", "new_recipe")
+    for b, nm in zip(bs[6:12], ["node_locked", "node_unlocked", "node_mastered", "node_lock2", "node_star", "node_crown"]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), width=24, height=24), "ui", nm)
+    perks = ["farming_1", "farming_2", "farming_3", "farming_4", "farming_5", "farming_6", "mining_1", "mining_2", "mining_3", "mining_4", "mining_5", "foraging_1", "foraging_2", "foraging_3", "foraging_4", "fishing_1",
+             "fishing_2", "fishing_3", "fishing_4", "combat_1", "combat_2", "combat_3", "combat_4", "combat_5", "combat_6", "bartering_1", "bartering_2", "bartering_3", "bartering_4", "building_1", "building_2", "building_3",
+             "building_4", "building_5", "building_6", "farming_7", "farming_8", "farming_9", "farming_10", "foraging_5", "foraging_6", "foraging_7", "foraging_8", "foraging_9", "foraging_10", "util_1", "util_2", "util_3",
+             "util_4", "util_5", "util_6", "util_7", "util_8", "util_9", "craft_1", "craft_2", "craft_3", "craft_4", "craft_5", "cook_1", "cook_2", "cook_3", "mastery_1", "mastery_2",
+             "perk_65", "perk_66", "perk_67", "perk_68", "perk_69", "perk_70", "extra_1", "extra_2", "extra_3", "extra_4", "extra_5", "extra_6", "quest_main", "quest_side", "quest_done", "quest_done2"]
+    k = 0
+    for i in (2, 3, 4, 5, 6):
+        y0, y1 = rows[i]
+        for b in row_sprites(rgba, (10, y0, 1526, y1), 16, gap=4):
+            if k < len(perks):
+                bb = region_bbox(rgba, b)
+                if bb:
+                    save(scale_to(crop(rgba, bb), width=24, height=24), "ui", "perk_" + perks[k])
+            k += 1
+    y0, y1 = rows[7]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 18, gap=4)
+    names = ["cc_dice"] + ["swatch_%d" % i for i in range(12)] + ["cc_prev", "cc_next", "cc_rotate", "cc_done", "cc_done_pressed"]
+    for b, nm in zip(bs, names):
+        bb = region_bbox(rgba, b)
+        if bb:
+            save(scale_to(crop(rgba, bb), height=28), "ui", nm)
+
+
+def w62():
+    rgba = load("w62_stations.png")
+    def one(box, nm, h):
+        bb = region_bbox(rgba, box)
+        if bb: save(scale_to(crop(rgba, bb), height=h), "props", nm)
+    def anim(box, n, nm, h):
+        _row_strip(rgba, box, n, "props", nm, h)
+    one((20, 20, 180, 135), "workbench_t1", 56); one((215, 20, 370, 135), "workbench_t2", 56); one((405, 20, 560, 135), "workbench_t3", 56)
+    one((615, 20, 740, 135), "furnace_t1_off", 60); one((760, 20, 890, 135), "furnace_t1_on", 60); one((950, 20, 1080, 135), "furnace_t2_off", 60); one((1100, 20, 1230, 135), "furnace_t2_on", 60)
+    one((1280, 20, 1400, 135), "forge_anvil", 48); one((1410, 20, 1525, 135), "forge_anvil_tools", 48)
+    one((20, 190, 150, 300), "kitchen_stove2", 56); one((165, 190, 285, 300), "kitchen_counter2", 56); one((300, 190, 560, 300), "kitchen_counter_long", 56)
+    anim((585, 190, 1050, 300), 4, "campfire_cook", 56); anim((1090, 190, 1525, 300), 4, "cauldron2", 56)
+    one((20, 360, 180, 480), "loom", 60); one((210, 360, 420, 480), "tanning_rack", 60); anim((450, 360, 920, 480), 4, "glass_kiln", 60); one((960, 360, 1200, 480), "sewing_table", 60); one((1260, 360, 1500, 480), "jeweller_bench", 60)
+    anim((30, 530, 590, 640), 4, "enchant_table", 56); one((610, 530, 730, 640), "preserves_jar2", 44); one((760, 530, 890, 640), "keg3", 48); one((920, 530, 1080, 640), "cheese_press", 52); one((1110, 530, 1300, 640), "mayo_machine", 52); one((1330, 530, 1500, 640), "oil_press", 52)
+    one((40, 690, 220, 810), "bee_house", 56); one((300, 690, 480, 810), "worm_bin", 44); one((560, 690, 850, 810), "crab_pot_water", 44); one((930, 690, 1150, 810), "recycler", 56); one((1250, 690, 1480, 810), "seed_maker", 56)
+    one((70, 850, 170, 985), "lightning_rod", 64); anim((260, 850, 830, 985), 4, "crystalarium", 64)
+
+
+def w66():
+    rgba = load("w66_region_identities.png")
+    rows = [(25, 121), (175, 257), (303, 394), (447, 523), (572, 680), (697, 761), (807, 876), (925, 1005)]
+    spec = [
+        (12, ["rich_soil_0", "rich_soil_1", "rich_soil_2", "farm_track_0", "farm_track_1", "hedgerow_0", "hedgerow_1", "hedgerow_2", "stone_wall_0", "stone_wall_1", "stone_wall_2", "well3", "cart3"]),
+        (12, ["meadow_poppy", "meadow_daisy", "meadow_lavender", "meadow_mixed", "tall_edge_a", "tall_edge_b", "tall_edge_c", "tall_edge_d", "hay_round", "hay_stack", "beehive4", "nest", "windmill_small"]),
+        (12, ["pebble_shore_0", "pebble_shore_1", "pebble_shore_2", "reed_bank_0", "reed_bank_1", "reed_bank_2", "wet_rock_0", "wet_rock_1", "jetty_end", "boat2", "fishing_net", "lantern_post", "heron_rock"]),
+        (12, ["wet_sand_0", "wet_sand_1", "dry_sand_0", "dry_sand_1", "dune_grass_0", "dune_grass_1", "dune_grass_2", "tide_line", "shells_0", "shells_1", "driftwood_0", "driftwood_1", "tidepool2", "crab_hole"]),
+        (12, ["scree_0", "scree_1", "scree_2", "snowline_0", "snowline_1", "snowline_2", "cairn", "mountain_flower", "eagle_nest", "hot_spring2", "pine_stump", "boulder4_0", "boulder4_1", "boulder4_2"]),
+        (16, ["mossy_%d" % i for i in range(16)]),
+        (12, ["glow_grass_0", "glow_grass_1", "glow_grass_2", "crystal_blue", "crystal_pink", "crystal_yellow", "crystal_green", "crystal_purple", "glow_pond_0", "glow_pond_1", "glow_pond_2", "crystal_arch2", "mote_0", "mote_1", "mote_2", "mote_3"]),
+        (12, ["ash_0", "ash_1", "ash_2", "cracked_0", "cracked_1", "cracked_2", "dead_grass_0", "dead_grass_1", "dead_grass_2", "bone_pile", "dead_bush_0", "dead_bush_1", "vent_0", "vent_1", "vent_2", "vent_3"]),
+    ]
+    for i, (n, names) in enumerate(spec):
+        y0, y1 = rows[i]
+        for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), len(names), gap=5), names):
+            bb = region_bbox(rgba, b)
+            if not bb:
+                continue
+            im = crop(rgba, bb)
+            tile_like = any(k in nm for k in ["soil", "track", "poppy", "daisy", "lavender", "mixed", "shore", "sand_", "scree", "snowline", "glow_grass", "ash_", "cracked", "reed_bank", "dune_grass", "dead_grass", "tide_line", "hedgerow", "stone_wall", "tall_edge", "glow_pond"])
+            if tile_like:
+                save(scale_to(im, width=TILE2, height=TILE2, cover=True), "tiles", "ri_" + nm)
+            else:
+                save(scale_to(im, height=max(16, (bb[3] - bb[1]) // 2)), "props", "ri_" + nm)
+
+
+def w65():
+    rgba = load("w65_forest_design.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.05, 40) if r[1] - r[0] >= 50]
+    y0, y1 = rows[0]
+    for i, b in enumerate(row_sprites(rgba, (10, y0, 1526, y1), 8, gap=8)):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=96), "nature", "grove_%d" % i)
+    y0, y1 = rows[1]
+    for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), 8, gap=8), ["treeline_straight", "treeline_concave", "treeline_convex", "treeline_end_l", "treeline_end_r", "treeline_gap", "treeline_stream", "treeline_rocks"]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=64), "nature", nm)
+    y0, y1 = rows[2]
+    for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), 16, gap=5), ["fallen_log2", "mossy_rock2", "fairy_ring", "campfire2", "shrine2", "wildflowers2", "ferns", "bramble", "hollow_stump_owl", "bird_bath", "berry_bush2", "log_bench", "hunter_hide", "wood_pile", "deer_bones", "stump_table"]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=40), "nature", nm)
+    y0, y1 = rows[3]
+    for i, b in enumerate(row_sprites(rgba, (10, y0, 1526, y1), 16, gap=5)):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), width=TILE2, height=TILE2, cover=True), "tiles", "ffloor_%d" % i)
+    y0, y1 = rows[4]
+    for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), 8, gap=8), ["path_s", "path_straight", "path_fork", "path_left", "path_right", "path_roots", "path_puddle", "path_end"]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), width=64, height=32, cover=True), "tiles", "fpath_" + nm)
+    y0, y1 = rows[5]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 16, gap=5)
+    save(scale_to(crop(rgba, region_bbox(rgba, bs[0])), height=96), "fx", "god_ray")
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=32) for b in bs[1:5]], "fx", "dust_motes")
+    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=32) for b in bs[5:9]], "fx", "firefly_cluster")
+    for i, b in enumerate(bs[9:12]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=32), "fx", "fog_patch_%d" % i)
+    for i, b in enumerate(bs[12:16]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=32), "fx", "dapple_%d" % i)
+    y0, y1 = rows[6]
+    for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), 16, gap=5), ["feather_a", "feather_b", "acorns", "pinecones", "snail_leaf", "mush_red", "mush_brown", "mush_purple", "mush_blue", "flw_white", "flw_yellow", "flw_pink", "flw_blue", "pebble_a", "pebble_b", "dew_grass"]):
+        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=20), "nature", "fd_" + nm)
+
+
+def w64():
+    rgba = load_hue("w64_wildlife_scaled.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.02, 30) if r[1] - r[0] >= 40]
+    # row0: hero + 11 birds idle; rows 1-2 flight frames
+    birds = ["sparrow", "robin", "finch", "blue_jay", "crow", "pigeon", "seagull", "owl", "hawk", "duck", "heron"]
+    def frames_of(ri, n):
+        y0, y1 = rows[ri]
+        return [crop(rgba, region_bbox(rgba, b)) for b in row_sprites(rgba, (10, y0, 1526, y1), n, gap=6)]
+    f0 = frames_of(0, 12); f1 = frames_of(1, 11); f2 = frames_of(2, 11)
+    hero_h = f0[0].height
+    for i, nm in enumerate(birds):
+        sc = 64.0 / hero_h  # hero = 64px in sheet units -> our hero sprite is 32px tall at 0.5 scale => keep 2x
+        idle = f0[i + 1]
+        fr = [idle, f1[i], f2[i]]
+        fr = [scale_to(f, width=max(1, round(f.width * sc)), height=max(1, round(f.height * sc))) for f in fr]
+        strip([fr[0]], "wildlife/" + nm, "idle")
+        strip(fr[1:], "wildlife/" + nm, "walk")
+    ground = ["rabbit", "squirrel", "hedgehog", "frog", "turtle", "mouse", "rat", "snake"]
+    y0, y1 = rows[3]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 24, gap=4)
+    sc = 64.0 / hero_h
+    for i, nm in enumerate(ground):
+        fr = [scale_to(crop(rgba, region_bbox(rgba, b)), height=max(6, round((region_bbox(rgba, b)[3] - region_bbox(rgba, b)[1]) * sc))) for b in bs[i * 3:(i + 1) * 3]]
+        strip(fr[:1], "wildlife/" + nm, "idle"); strip(fr[1:], "wildlife/" + nm, "walk")
+    bugs = ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly_purple", "bee", "firefly", "dragonfly", "ladybug", "grasshopper", "snail", "crab"]
+    y0, y1 = rows[4]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 22, gap=4)
+    for i, nm in enumerate(bugs):
+        fr = [scale_to(crop(rgba, region_bbox(rgba, b)), height=max(5, round((region_bbox(rgba, b)[3] - region_bbox(rgba, b)[1]) * sc))) for b in bs[i * 2:(i + 1) * 2]]
+        strip(fr, "wildlife/" + nm, "idle"); strip(fr, "wildlife/" + nm, "walk")
+    med = ["deer", "fox", "boar", "goat", "raccoon", "badger", "otter", "beaver"]
+    y0, y1 = rows[5]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 24, gap=4)
+    for i, nm in enumerate(med):
+        fr = [scale_to(crop(rgba, region_bbox(rgba, b)), height=max(8, round((region_bbox(rgba, b)[3] - region_bbox(rgba, b)[1]) * sc))) for b in bs[i * 3:(i + 1) * 3]]
+        strip(fr[:1], "wildlife/" + nm, "idle"); strip(fr[1:], "wildlife/" + nm, "walk")
+    # row 6: hero + dog 12 poses
+    y0, y1 = rows[6]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 13, gap=5)
+    dog = [scale_to(crop(rgba, region_bbox(rgba, b)), height=max(8, round((region_bbox(rgba, b)[3] - region_bbox(rgba, b)[1]) * sc))) for b in bs[1:]]
+    names = {"idle": dog[0:1], "walk": dog[1:3], "run": dog[3:5], "sit": dog[5:6], "sleep": dog[6:7], "dig": dog[7:9], "bark": dog[9:10], "play": dog[10:12]}
+    for k, v in names.items():
+        if v: strip(v, "animals/pup", k)
+    # row 7: farm animals true scale
+    y0, y1 = rows[7]
+    bs = row_sprites(rgba, (10, y0, 1526, y1), 15, gap=5)
+    farm = ["chicken", "rooster", "chick", "duck", "sheep", "lamb", "cow", "calf", "pig", "piglet", "goat", "kid", "horse", "foal"]
+    for b, nm in zip(bs[1:], farm):
+        bb = region_bbox(rgba, b)
+        save(scale_to(crop(rgba, bb), height=max(8, round((bb[3] - bb[1]) * sc))), "animals_ref", nm)
+
+
+def w67():
+    rgba = load_hue("w67_npc_schedules.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.02, 30) if r[1] - r[0] >= 30]
+    ids = ["shopkeeper", "blacksmith", "potion", "mayor", "drifter", "fisherman", "artist", "scholar", "young_farmer", "innkeeper", "baker", "nurse", "hunter", "child_boy_a", "child_girl_a", "child_boy_b", "child_girl_b"]
+    for i, nm in enumerate(ids):
+        if i >= len(rows):
+            break
+        y0, y1 = rows[i]
+        bs = row_sprites(rgba, (190, y0, 1526, y1), 16, gap=4)
+        fr = [scale_to(crop(rgba, region_bbox(rgba, b)), height=48) for b in bs]
+        g = "characters/npc_" + nm
+        strip(fr[0:1], g, "idle"); strip(fr[1:2], g, "idle_up"); strip(fr[2:3], g, "idle_side")
+        strip(fr[3:6], g, "walk_down"); strip(fr[6:9], g, "walk_up"); strip(fr[9:12], g, "walk")
+        strip(fr[12:13], g, "sit"); strip(fr[13:14], g, "wave"); strip(fr[14:16], g, "work")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

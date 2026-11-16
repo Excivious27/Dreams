@@ -7,7 +7,7 @@
    8,
    10
   ],
-  "sprite": "barnaby",
+  "sprite": "npc_shopkeeper",
   "portrait": "shopkeeper",
   "inside": [
    "Welcome in! Seeds are on the left, snacks on the right, gossip's free.",
@@ -23,7 +23,7 @@
    15,
    10
   ],
-  "sprite": "greta",
+  "sprite": "npc_blacksmith",
   "portrait": "blacksmith",
   "inside": [
    "Iron. Steel. Don't touch the forge.",
@@ -39,7 +39,7 @@
    3,
    17
   ],
-  "sprite": "wren",
+  "sprite": "npc_potion",
   "portrait": "potion",
   "inside": [
    "Careful, that one bites. The purple one. No, the OTHER purple one.",
@@ -55,7 +55,7 @@
    11,
    17
   ],
-  "sprite": "alder",
+  "sprite": "npc_mayor",
   "portrait": "mayor",
   "inside": [
    "Have a seat, have a seat. Mind the papers. Those are important. Probably.",
@@ -71,7 +71,7 @@
    16,
    23
   ],
-  "sprite": "nico",
+  "sprite": "npc_drifter",
   "portrait": "drifter"
  },
  "finn": {
@@ -82,7 +82,7 @@
    4,
    22
   ],
-  "sprite": "finn",
+  "sprite": "npc_fisherman",
   "portrait": "fisherman"
  },
  "lumi": {
@@ -93,7 +93,7 @@
    16,
    19
   ],
-  "sprite": "lumi",
+  "sprite": "npc_artist",
   "portrait": "artist"
  },
  "theo": {
@@ -104,7 +104,7 @@
    12,
    23
   ],
-  "sprite": "theo",
+  "sprite": "npc_scholar",
   "portrait": "scholar",
   "inside": [
    "Shh. Well, not shh. But quietly.",
@@ -120,7 +120,7 @@
    3,
    7
   ],
-  "sprite": "hazel",
+  "sprite": "npc_young_farmer",
   "portrait": "young_farmer"
  },
  "bram": {
@@ -131,7 +131,7 @@
    4,
    28
   ],
-  "sprite": "man",
+  "sprite": "npc_innkeeper",
   "portrait": "innkeeper",
   "inside": [
    "Stew's on. Sit anywhere that isn't the mayor's chair.",
@@ -147,7 +147,7 @@
    22,
    28
   ],
-  "sprite": "woman",
+  "sprite": "npc_baker",
   "portrait": "baker",
   "inside": [
    "Fresh out of the oven! Mind your fingers.",
@@ -163,12 +163,91 @@
    8,
    34
   ],
-  "sprite": "girl",
+  "sprite": "npc_nurse",
   "portrait": "nurse",
   "inside": [
    "Sit. Let me look at that.",
    "You've been swinging a sword in the meadow, haven't you. I can always tell.",
    "Eat something green once in a while. I mean it."
+  ]
+ },
+ "rook": {
+  "name": "Rook",
+  "role": "Hunter",
+  "color": "4a6a3a",
+  "spot": [
+   22,
+   6
+  ],
+  "sprite": "npc_hunter",
+  "portrait": "drifter",
+  "inside": [
+   "Tracks by the stream. Big ones.",
+   "Don't go in the forest after dark without a lantern. Or do. I'll find what's left."
+  ]
+ },
+ "pip": {
+  "name": "Pip",
+  "role": "Kid",
+  "color": "ccc",
+  "spot": [
+   13,
+   24
+  ],
+  "sprite": "npc_child_boy_a",
+  "portrait": "young_farmer",
+  "lines": [
+   "Wanna see a frog?",
+   "I'm not allowed in the forest. Are you?",
+   "Race you to the fountain!"
+  ]
+ },
+ "wren_jr": {
+  "name": "Wren jr",
+  "role": "Kid",
+  "color": "ccc",
+  "spot": [
+   17,
+   24
+  ],
+  "sprite": "npc_child_girl_a",
+  "portrait": "young_farmer",
+  "lines": [
+   "Wanna see a frog?",
+   "I'm not allowed in the forest. Are you?",
+   "Race you to the fountain!"
+  ]
+ },
+ "tobin": {
+  "name": "Tobin",
+  "role": "Kid",
+  "color": "ccc",
+  "spot": [
+   15,
+   24
+  ],
+  "sprite": "npc_child_boy_b",
+  "portrait": "young_farmer",
+  "lines": [
+   "Wanna see a frog?",
+   "I'm not allowed in the forest. Are you?",
+   "Race you to the fountain!"
+  ]
+ },
+ "mabel": {
+  "name": "Mabel",
+  "role": "Kid",
+  "color": "ccc",
+  "spot": [
+   15,
+   24
+  ],
+  "sprite": "npc_child_girl_b",
+  "portrait": "young_farmer",
+  "lines": [
+   "Wanna see a frog?",
+   "I'm not allowed in the forest. Are you?",
+   "Race you to the fountain!"
   ]
  }
 }

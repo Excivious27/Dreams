@@ -86,7 +86,17 @@ func _ready() -> void:
 
 	if has_pet:
 		pet = Node2D.new()
-		_pet_anim = CharacterLibrary.make_sprite("dog")
+		if Art.has("animals/pup", "idle"):
+			_pet_anim = AnimatedSprite2D.new()
+			_pet_anim.sprite_frames = Art.frames("animals/pup", {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "dig": "dig", "bark": "bark", "play": "play"}, {"idle": 2.0, "walk": 6.0, "run": 9.0, "sit": 1.0, "sleep": 1.0, "dig": 6.0, "bark": 4.0, "play": 4.0})
+			_pet_anim.scale = Vector2(0.5, 0.5)
+			_pet_anim.animation = "idle"
+			_pet_anim.frame_changed.connect(func() -> void:
+				var tex := _pet_anim.sprite_frames.get_frame_texture(_pet_anim.animation, _pet_anim.frame)
+				if tex:
+					_pet_anim.offset = Vector2(0, -tex.get_height() / 2.0))
+		else:
+			_pet_anim = CharacterLibrary.make_sprite("dog")
 		pet.add_child(_pet_anim)
 		pet.position = player.position + Vector2(-14, 4)
 		_pet_anim.play("idle")

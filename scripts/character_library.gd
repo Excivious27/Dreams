@@ -56,17 +56,19 @@ static func strip_info(id: String) -> Dictionary:
 
 
 static func has_character(id: String) -> bool:
-	return data().has(id) or GEN_ONLY.has(id)
+	return data().has(id) or GEN_ONLY.has(id) or Art.has("characters/" + id, "idle")
 
 
 static func frames_for(id: String) -> SpriteFrames:
 	if _frames_cache.has(id):
 		return _frames_cache[id]
-	if GEN_ONLY.has(id):
+	if GEN_ONLY.has(id) or (not data().has(id) and Art.has("characters/" + id, "idle")):
 		var g := "characters/" + id
 		var anims := {}
-		for a: String in GEN_ONLY[id]:
-			anims[a] = a
+		var list: Array = GEN_ONLY.get(id, ["idle", "idle_up", "idle_side", "walk", "walk_down", "walk_up", "sit", "wave", "work"])
+		for a: String in list:
+			if Art.has(g, a):
+				anims[a] = a
 		var gsf := Art.frames(g, anims, FPS, LOOPS)
 		# Fallbacks so every character can idle/walk even with a partial set.
 		if not gsf.has_animation("idle") and gsf.has_animation("view_front"):
@@ -77,9 +79,15 @@ static func frames_for(id: String) -> SpriteFrames:
 			_alias(gsf, "run", "walk")
 		if not gsf.has_animation("attack"):
 			_alias(gsf, "attack", "idle")
-		for v in ["view_right", "view_back", "view_left"]:
+		if not gsf.has_animation("view_front"):
+			_alias(gsf, "view_front", "idle")
+		if not gsf.has_animation("view_back"):
+			_alias(gsf, "view_back", "idle_up" if gsf.has_animation("idle_up") else "idle")
+		if not gsf.has_animation("view_right"):
+			_alias(gsf, "view_right", "idle_side" if gsf.has_animation("idle_side") else "idle")
+		for v in ["view_left"]:
 			if not gsf.has_animation(v):
-				_alias(gsf, v, "view_front" if gsf.has_animation("view_front") else "idle")
+				_alias(gsf, v, "view_right")
 		_frames_cache[id] = gsf
 		return gsf
 	var info := strip_info(id)

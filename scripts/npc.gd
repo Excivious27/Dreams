@@ -63,8 +63,13 @@ func _process(delta: float) -> void:
 		if _figure:
 			_figure.scale.x = -1.0 if to.x < 0 else 1.0
 		elif _anim:
-			_anim.flip_h = to.x < 0
-			if _anim.animation != "walk":
-				_anim.play("walk")
+			var a := "walk"
+			if absf(to.y) > absf(to.x):
+				var want := "walk_up" if to.y < 0 else "walk_down"
+				if _anim.sprite_frames.has_animation(want):
+					a = want
+			_anim.flip_h = a == "walk" and to.x < 0
+			if _anim.animation != a:
+				_anim.play(a)
 	elif _anim and _anim.animation != "idle":
 		_anim.play("idle")

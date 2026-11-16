@@ -795,6 +795,72 @@
    "w": 100
   }
  },
+ "animals/pup": {
+  "bark": {
+   "cell_h": 38,
+   "cell_w": 61,
+   "file": "animals/pup/bark.png",
+   "frames": 1,
+   "h": 38,
+   "w": 61
+  },
+  "dig": {
+   "cell_h": 49,
+   "cell_w": 54,
+   "file": "animals/pup/dig.png",
+   "frames": 2,
+   "h": 49,
+   "w": 108
+  },
+  "idle": {
+   "cell_h": 30,
+   "cell_w": 38,
+   "file": "animals/pup/idle.png",
+   "frames": 1,
+   "h": 30,
+   "w": 38
+  },
+  "play": {
+   "cell_h": 38,
+   "cell_w": 65,
+   "file": "animals/pup/play.png",
+   "frames": 2,
+   "h": 38,
+   "w": 130
+  },
+  "run": {
+   "cell_h": 32,
+   "cell_w": 52,
+   "file": "animals/pup/run.png",
+   "frames": 2,
+   "h": 32,
+   "w": 104
+  },
+  "sit": {
+   "cell_h": 39,
+   "cell_w": 35,
+   "file": "animals/pup/sit.png",
+   "frames": 1,
+   "h": 39,
+   "w": 35
+  },
+  "sleep": {
+   "cell_h": 35,
+   "cell_w": 39,
+   "file": "animals/pup/sleep.png",
+   "frames": 1,
+   "h": 35,
+   "w": 39
+  },
+  "walk": {
+   "cell_h": 30,
+   "cell_w": 44,
+   "file": "animals/pup/walk.png",
+   "frames": 2,
+   "h": 30,
+   "w": 88
+  }
+ },
  "animals/rabbit_brown": {
   "idle": {
    "cell_h": 24,
@@ -897,6 +963,78 @@
    "frames": 5,
    "h": 36,
    "w": 255
+  }
+ },
+ "animals_ref": {
+  "calf": {
+   "file": "animals_ref/calf.png",
+   "h": 40,
+   "w": 44
+  },
+  "chick": {
+   "file": "animals_ref/chick.png",
+   "h": 25,
+   "w": 28
+  },
+  "chicken": {
+   "file": "animals_ref/chicken.png",
+   "h": 46,
+   "w": 40
+  },
+  "cow": {
+   "file": "animals_ref/cow.png",
+   "h": 54,
+   "w": 72
+  },
+  "duck": {
+   "file": "animals_ref/duck.png",
+   "h": 41,
+   "w": 44
+  },
+  "foal": {
+   "file": "animals_ref/foal.png",
+   "h": 45,
+   "w": 46
+  },
+  "goat": {
+   "file": "animals_ref/goat.png",
+   "h": 52,
+   "w": 49
+  },
+  "horse": {
+   "file": "animals_ref/horse.png",
+   "h": 58,
+   "w": 90
+  },
+  "kid": {
+   "file": "animals_ref/kid.png",
+   "h": 37,
+   "w": 38
+  },
+  "lamb": {
+   "file": "animals_ref/lamb.png",
+   "h": 35,
+   "w": 38
+  },
+  "pig": {
+   "file": "animals_ref/pig.png",
+   "h": 42,
+   "w": 60
+  },
+  "piglet": {
+   "file": "animals_ref/piglet.png",
+   "h": 27,
+   "w": 35
+  },
+  "rooster": {
+   "file": "animals_ref/rooster.png",
+   "h": 52,
+   "w": 49
+  },
+  "sheep": {
+   "file": "animals_ref/sheep.png",
+   "h": 51,
+   "w": 60
   }
  },
  "backdrops": {
@@ -2380,6 +2518,1264 @@
    "frames": 4,
    "h": 72,
    "w": 148
+  }
+ },
+ "characters/npc_artist": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 43,
+   "file": "characters/npc_artist/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 43
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_artist/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_artist/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 48,
+   "file": "characters/npc_artist/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 48
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_artist/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 114
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_artist/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 117
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_artist/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 114
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_artist/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 37
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 61,
+   "file": "characters/npc_artist/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 122
+  }
+ },
+ "characters/npc_baker": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_baker/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 40
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_baker/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 34
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_baker/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 35
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_baker/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 40
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_baker/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_baker/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 108
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 33,
+   "file": "characters/npc_baker/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 99
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_baker/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 52,
+   "file": "characters/npc_baker/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 104
+  }
+ },
+ "characters/npc_blacksmith": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_blacksmith/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 28,
+   "file": "characters/npc_blacksmith/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 28
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_blacksmith/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 46,
+   "file": "characters/npc_blacksmith/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 46
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_blacksmith/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 108
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_blacksmith/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 114
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_blacksmith/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 43,
+   "file": "characters/npc_blacksmith/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 43
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 53,
+   "file": "characters/npc_blacksmith/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 106
+  }
+ },
+ "characters/npc_child_boy_a": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_child_boy_a/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_child_boy_a/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_child_boy_a/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 35
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_child_boy_a/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 40
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_child_boy_a/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_child_boy_a/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 108
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_child_boy_a/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_child_boy_a/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 35
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 50,
+   "file": "characters/npc_child_boy_a/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 100
+  }
+ },
+ "characters/npc_child_boy_b": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_child_boy_b/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 39
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_child_boy_b/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 37
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_child_boy_b/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 37
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_child_boy_b/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 33,
+   "file": "characters/npc_child_boy_b/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 99
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_child_boy_b/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 111
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_child_boy_b/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 105
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 43,
+   "file": "characters/npc_child_boy_b/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 43
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 55,
+   "file": "characters/npc_child_boy_b/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 110
+  }
+ },
+ "characters/npc_child_girl_a": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 47,
+   "file": "characters/npc_child_girl_a/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 47
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 42,
+   "file": "characters/npc_child_girl_a/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 42
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_child_girl_a/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 44,
+   "file": "characters/npc_child_girl_a/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 44
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_child_girl_a/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 111
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 43,
+   "file": "characters/npc_child_girl_a/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 129
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_child_girl_a/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 123
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_child_girl_a/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 50,
+   "file": "characters/npc_child_girl_a/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 100
+  }
+ },
+ "characters/npc_child_girl_b": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_child_girl_b/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 40
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_child_girl_b/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_child_girl_b/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 46,
+   "file": "characters/npc_child_girl_b/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 46
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_child_girl_b/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 105
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_child_girl_b/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 117
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_child_girl_b/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 108
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_child_girl_b/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 63,
+   "file": "characters/npc_child_girl_b/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 126
+  }
+ },
+ "characters/npc_drifter": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 44,
+   "file": "characters/npc_drifter/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 44
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_drifter/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 42,
+   "file": "characters/npc_drifter/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 42
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 52,
+   "file": "characters/npc_drifter/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 52
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_drifter/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 123
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_drifter/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 120
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_drifter/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 117
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 44,
+   "file": "characters/npc_drifter/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 44
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 57,
+   "file": "characters/npc_drifter/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 114
+  }
+ },
+ "characters/npc_fisherman": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 44,
+   "file": "characters/npc_fisherman/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 44
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_fisherman/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 39
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_fisherman/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 40
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 49,
+   "file": "characters/npc_fisherman/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 49
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_fisherman/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 117
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_fisherman/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 120
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_fisherman/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 114
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_fisherman/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 73,
+   "file": "characters/npc_fisherman/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 146
+  }
+ },
+ "characters/npc_hunter": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 44,
+   "file": "characters/npc_hunter/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 44
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_hunter/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 39
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 42,
+   "file": "characters/npc_hunter/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 42
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 47,
+   "file": "characters/npc_hunter/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 47
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_hunter/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 111
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_hunter/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 117
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_hunter/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 114
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 50,
+   "file": "characters/npc_hunter/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 50
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 58,
+   "file": "characters/npc_hunter/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 116
+  }
+ },
+ "characters/npc_innkeeper": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 42,
+   "file": "characters/npc_innkeeper/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 42
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 31,
+   "file": "characters/npc_innkeeper/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 31
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_innkeeper/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 46,
+   "file": "characters/npc_innkeeper/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 46
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 28,
+   "file": "characters/npc_innkeeper/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 84
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_innkeeper/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 108
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 33,
+   "file": "characters/npc_innkeeper/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 99
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_innkeeper/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 54,
+   "file": "characters/npc_innkeeper/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 108
+  }
+ },
+ "characters/npc_mayor": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_mayor/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 31,
+   "file": "characters/npc_mayor/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 31
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_mayor/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_mayor/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_mayor/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 105
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_mayor/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 117
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_mayor/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 40,
+   "file": "characters/npc_mayor/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 40
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_mayor/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 82
+  }
+ },
+ "characters/npc_nurse": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_nurse/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 39
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_nurse/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 34
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_nurse/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 47,
+   "file": "characters/npc_nurse/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 47
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 33,
+   "file": "characters/npc_nurse/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 99
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_nurse/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_nurse/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_nurse/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 39
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_nurse/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 74
+  }
+ },
+ "characters/npc_potion": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_potion/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 39
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_potion/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 34
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_potion/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 37
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 44,
+   "file": "characters/npc_potion/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 44
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 33,
+   "file": "characters/npc_potion/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 99
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_potion/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 105
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_potion/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_potion/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 52,
+   "file": "characters/npc_potion/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 104
+  }
+ },
+ "characters/npc_scholar": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_scholar/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 33,
+   "file": "characters/npc_scholar/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 33
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_scholar/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 50,
+   "file": "characters/npc_scholar/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 50
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 34,
+   "file": "characters/npc_scholar/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 102
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_scholar/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 108
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_scholar/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 105
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_scholar/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 58,
+   "file": "characters/npc_scholar/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 116
+  }
+ },
+ "characters/npc_shopkeeper": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_shopkeeper/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 31,
+   "file": "characters/npc_shopkeeper/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 31
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_shopkeeper/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 36
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 41,
+   "file": "characters/npc_shopkeeper/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 41
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 32,
+   "file": "characters/npc_shopkeeper/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 96
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 31,
+   "file": "characters/npc_shopkeeper/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 93
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 33,
+   "file": "characters/npc_shopkeeper/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 99
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 35,
+   "file": "characters/npc_shopkeeper/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 35
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 52,
+   "file": "characters/npc_shopkeeper/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 104
+  }
+ },
+ "characters/npc_young_farmer": {
+  "idle": {
+   "cell_h": 48,
+   "cell_w": 42,
+   "file": "characters/npc_young_farmer/idle.png",
+   "frames": 1,
+   "h": 48,
+   "w": 42
+  },
+  "idle_side": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_young_farmer/idle_side.png",
+   "frames": 1,
+   "h": 48,
+   "w": 37
+  },
+  "idle_up": {
+   "cell_h": 48,
+   "cell_w": 39,
+   "file": "characters/npc_young_farmer/idle_up.png",
+   "frames": 1,
+   "h": 48,
+   "w": 39
+  },
+  "sit": {
+   "cell_h": 48,
+   "cell_w": 46,
+   "file": "characters/npc_young_farmer/sit.png",
+   "frames": 1,
+   "h": 48,
+   "w": 46
+  },
+  "walk": {
+   "cell_h": 48,
+   "cell_w": 36,
+   "file": "characters/npc_young_farmer/walk.png",
+   "frames": 3,
+   "h": 48,
+   "w": 108
+  },
+  "walk_down": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_young_farmer/walk_down.png",
+   "frames": 3,
+   "h": 48,
+   "w": 111
+  },
+  "walk_up": {
+   "cell_h": 48,
+   "cell_w": 37,
+   "file": "characters/npc_young_farmer/walk_up.png",
+   "frames": 3,
+   "h": 48,
+   "w": 111
+  },
+  "wave": {
+   "cell_h": 48,
+   "cell_w": 38,
+   "file": "characters/npc_young_farmer/wave.png",
+   "frames": 1,
+   "h": 48,
+   "w": 38
+  },
+  "work": {
+   "cell_h": 48,
+   "cell_w": 61,
+   "file": "characters/npc_young_farmer/work.png",
+   "frames": 2,
+   "h": 48,
+   "w": 122
   }
  },
  "characters/penguin": {
@@ -5140,6 +6536,34 @@
    "h": 20,
    "w": 168
   },
+  "dapple_0": {
+   "file": "fx/dapple_0.png",
+   "h": 32,
+   "w": 38
+  },
+  "dapple_1": {
+   "file": "fx/dapple_1.png",
+   "h": 32,
+   "w": 54
+  },
+  "dapple_2": {
+   "file": "fx/dapple_2.png",
+   "h": 32,
+   "w": 49
+  },
+  "dapple_3": {
+   "file": "fx/dapple_3.png",
+   "h": 32,
+   "w": 94
+  },
+  "dust_motes": {
+   "cell_h": 32,
+   "cell_w": 47,
+   "file": "fx/dust_motes.png",
+   "frames": 4,
+   "h": 32,
+   "w": 188
+  },
   "dust_puff": {
    "cell_h": 64,
    "cell_w": 72,
@@ -5155,6 +6579,14 @@
    "frames": 4,
    "h": 20,
    "w": 100
+  },
+  "firefly_cluster": {
+   "cell_h": 32,
+   "cell_w": 36,
+   "file": "fx/firefly_cluster.png",
+   "frames": 4,
+   "h": 32,
+   "w": 144
   },
   "fish_jump_a": {
    "cell_h": 72,
@@ -5188,6 +6620,21 @@
    "h": 12,
    "w": 168
   },
+  "fog_patch_0": {
+   "file": "fx/fog_patch_0.png",
+   "h": 32,
+   "w": 38
+  },
+  "fog_patch_1": {
+   "file": "fx/fog_patch_1.png",
+   "h": 32,
+   "w": 38
+  },
+  "fog_patch_2": {
+   "file": "fx/fog_patch_2.png",
+   "h": 32,
+   "w": 38
+  },
   "fog_wisp": {
    "cell_h": 20,
    "cell_w": 34,
@@ -5195,6 +6642,11 @@
    "frames": 4,
    "h": 20,
    "w": 136
+  },
+  "god_ray": {
+   "file": "fx/god_ray.png",
+   "h": 96,
+   "w": 104
   },
   "hawk_shadow": {
    "cell_h": 16,
@@ -5251,6 +6703,14 @@
    "frames": 4,
    "h": 20,
    "w": 176
+  },
+  "new_recipe": {
+   "cell_h": 32,
+   "cell_w": 39,
+   "file": "fx/new_recipe.png",
+   "frames": 6,
+   "h": 32,
+   "w": 234
   },
   "oak_fall_l": {
    "cell_h": 112,
@@ -5835,114 +7295,1154 @@
   }
  },
  "items": {
+  "acorn": {
+   "file": "items/acorn.png",
+   "h": 32,
+   "w": 28
+  },
+  "aloe_seed": {
+   "file": "items/aloe_seed.png",
+   "h": 24,
+   "w": 32
+  },
   "amethyst": {
    "file": "items/amethyst.png",
-   "h": 34,
-   "w": 48
+   "h": 30,
+   "w": 32
+  },
+  "amethyst_ring": {
+   "file": "items/amethyst_ring.png",
+   "h": 31,
+   "w": 32
   },
   "apple": {
    "file": "items/apple.png",
+   "h": 32,
+   "w": 26
+  },
+  "apple2": {
+   "file": "items/apple2.png",
+   "h": 32,
+   "w": 30
+  },
+  "apple_seed": {
+   "file": "items/apple_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "apricot": {
+   "file": "items/apricot.png",
+   "h": 32,
+   "w": 29
+  },
+  "armor_gold": {
+   "file": "items/armor_gold.png",
+   "h": 32,
+   "w": 32
+  },
+  "artichoke": {
+   "file": "items/artichoke.png",
+   "h": 32,
+   "w": 26
+  },
+  "artichoke_seed": {
+   "file": "items/artichoke_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "asparagus": {
+   "file": "items/asparagus.png",
+   "h": 32,
+   "w": 27
+  },
+  "asparagus_seed": {
+   "file": "items/asparagus_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "atlas_melon_seed": {
+   "file": "items/atlas_melon_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "aurora_corn_seed": {
+   "file": "items/aurora_corn_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "autumn_ember_leaf": {
+   "file": "items/autumn_ember_leaf.png",
+   "h": 32,
+   "w": 30
+  },
+  "autumn_ember_pear": {
+   "file": "items/autumn_ember_pear.png",
+   "h": 32,
+   "w": 30
+  },
+  "autumn_pumpkin": {
+   "file": "items/autumn_pumpkin.png",
+   "h": 31,
+   "w": 32
+  },
+  "avocado_seed": {
+   "file": "items/avocado_seed.png",
    "h": 27,
    "w": 32
   },
   "axe": {
    "file": "items/axe.png",
-   "h": 48,
-   "w": 47
+   "h": 25,
+   "w": 32
+  },
+  "axe_copper": {
+   "file": "items/axe_copper.png",
+   "h": 27,
+   "w": 32
+  },
+  "axe_crystal": {
+   "file": "items/axe_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "axe_gold": {
+   "file": "items/axe_gold.png",
+   "h": 26,
+   "w": 32
+  },
+  "axe_iron": {
+   "file": "items/axe_iron.png",
+   "h": 26,
+   "w": 32
+  },
+  "backpack": {
+   "file": "items/backpack.png",
+   "h": 30,
+   "w": 32
+  },
+  "bait": {
+   "file": "items/bait.png",
+   "h": 28,
+   "w": 32
+  },
+  "banana": {
+   "file": "items/banana.png",
+   "h": 32,
+   "w": 30
+  },
+  "banana2": {
+   "file": "items/banana2.png",
+   "h": 30,
+   "w": 32
+  },
+  "banana_seed": {
+   "file": "items/banana_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "bandana": {
+   "file": "items/bandana.png",
+   "h": 28,
+   "w": 32
+  },
+  "bare_feet": {
+   "file": "items/bare_feet.png",
+   "h": 28,
+   "w": 32
+  },
+  "barley": {
+   "file": "items/barley.png",
+   "h": 32,
+   "w": 26
+  },
+  "basil": {
+   "file": "items/basil.png",
+   "h": 29,
+   "w": 32
+  },
+  "basil_seed": {
+   "file": "items/basil_seed.png",
+   "h": 32,
+   "w": 30
   },
   "bass": {
    "file": "items/bass.png",
+   "h": 22,
+   "w": 32
+  },
+  "bat_wing": {
+   "file": "items/bat_wing.png",
+   "h": 28,
+   "w": 32
+  },
+  "beanie": {
+   "file": "items/beanie.png",
+   "h": 28,
+   "w": 32
+  },
+  "beet": {
+   "file": "items/beet.png",
    "h": 32,
-   "w": 48
+   "w": 27
+  },
+  "beet2": {
+   "file": "items/beet2.png",
+   "h": 32,
+   "w": 32
+  },
+  "beet_seed": {
+   "file": "items/beet_seed.png",
+   "h": 31,
+   "w": 32
+  },
+  "bell": {
+   "file": "items/bell.png",
+   "h": 28,
+   "w": 32
   },
   "berry": {
    "file": "items/berry.png",
+   "h": 29,
+   "w": 32
+  },
+  "berry_pie": {
+   "file": "items/berry_pie.png",
+   "h": 25,
+   "w": 32
+  },
+  "black_fig": {
+   "file": "items/black_fig.png",
    "h": 32,
-   "w": 48
+   "w": 30
+  },
+  "black_radish": {
+   "file": "items/black_radish.png",
+   "h": 32,
+   "w": 29
+  },
+  "blackberry": {
+   "file": "items/blackberry.png",
+   "h": 32,
+   "w": 29
+  },
+  "blackberry_seed": {
+   "file": "items/blackberry_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "blood_orange": {
+   "file": "items/blood_orange.png",
+   "h": 32,
+   "w": 29
+  },
+  "blue_potato": {
+   "file": "items/blue_potato.png",
+   "h": 32,
+   "w": 32
+  },
+  "bluebell": {
+   "file": "items/bluebell.png",
+   "h": 32,
+   "w": 30
+  },
+  "bluebell2": {
+   "file": "items/bluebell2.png",
+   "h": 32,
+   "w": 30
   },
   "blueberry": {
    "file": "items/blueberry.png",
+   "h": 32,
+   "w": 29
+  },
+  "blueberry2": {
+   "file": "items/blueberry2.png",
+   "h": 27,
+   "w": 32
+  },
+  "blueberry_seed": {
+   "file": "items/blueberry_seed.png",
+   "h": 32,
+   "w": 31
+  },
+  "bok_choy": {
+   "file": "items/bok_choy.png",
+   "h": 32,
+   "w": 29
+  },
+  "bok_choy_seed": {
+   "file": "items/bok_choy_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "bone": {
+   "file": "items/bone.png",
    "h": 29,
    "w": 32
   },
   "boot": {
    "file": "items/boot.png",
+   "h": 22,
+   "w": 32
+  },
+  "boots": {
+   "file": "items/boots.png",
+   "h": 31,
+   "w": 32
+  },
+  "bottled_wind": {
+   "file": "items/bottled_wind.png",
    "h": 32,
-   "w": 30
+   "w": 28
   },
   "bow": {
    "file": "items/bow.png",
    "h": 32,
    "w": 24
   },
+  "bracelet": {
+   "file": "items/bracelet.png",
+   "h": 30,
+   "w": 32
+  },
+  "brass_knuckles": {
+   "file": "items/brass_knuckles.png",
+   "h": 23,
+   "w": 32
+  },
   "bread": {
    "file": "items/bread.png",
+   "h": 29,
+   "w": 32
+  },
+  "broccoli": {
+   "file": "items/broccoli.png",
+   "h": 32,
+   "w": 31
+  },
+  "broccoli2": {
+   "file": "items/broccoli2.png",
    "h": 28,
+   "w": 32
+  },
+  "broccoli_seed": {
+   "file": "items/broccoli_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "burdock": {
+   "file": "items/burdock.png",
+   "h": 32,
+   "w": 31
+  },
+  "burner_phone": {
+   "file": "items/burner_phone.png",
+   "h": 32,
+   "w": 29
+  },
+  "buttercup": {
+   "file": "items/buttercup.png",
+   "h": 32,
+   "w": 29
+  },
+  "buttercup2": {
+   "file": "items/buttercup2.png",
+   "h": 32,
+   "w": 30
+  },
+  "cabbage": {
+   "file": "items/cabbage.png",
+   "h": 32,
+   "w": 25
+  },
+  "cabbage2": {
+   "file": "items/cabbage2.png",
+   "h": 30,
+   "w": 32
+  },
+  "cabbage_seed": {
+   "file": "items/cabbage_seed.png",
+   "h": 32,
+   "w": 31
+  },
+  "cacao_pod": {
+   "file": "items/cacao_pod.png",
+   "h": 32,
+   "w": 29
+  },
+  "cacao_seed": {
+   "file": "items/cacao_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "calico_kale": {
+   "file": "items/calico_kale.png",
+   "h": 32,
+   "w": 32
+  },
+  "calico_pear": {
+   "file": "items/calico_pear.png",
+   "h": 31,
    "w": 32
   },
   "can": {
    "file": "items/can.png",
-   "h": 47,
-   "w": 48
+   "h": 26,
+   "w": 32
+  },
+  "can_copper": {
+   "file": "items/can_copper.png",
+   "h": 26,
+   "w": 32
+  },
+  "can_crystal": {
+   "file": "items/can_crystal.png",
+   "h": 26,
+   "w": 32
+  },
+  "can_gold": {
+   "file": "items/can_gold.png",
+   "h": 27,
+   "w": 32
+  },
+  "can_iron": {
+   "file": "items/can_iron.png",
+   "h": 27,
+   "w": 32
+  },
+  "cantaloupe": {
+   "file": "items/cantaloupe.png",
+   "h": 31,
+   "w": 32
+  },
+  "cantaloupe_seed": {
+   "file": "items/cantaloupe_seed.png",
+   "h": 32,
+   "w": 31
+  },
+  "cap": {
+   "file": "items/cap.png",
+   "h": 27,
+   "w": 32
+  },
+  "cape": {
+   "file": "items/cape.png",
+   "h": 32,
+   "w": 32
   },
   "carp": {
    "file": "items/carp.png",
-   "h": 20,
+   "h": 21,
    "w": 32
   },
   "carrot": {
    "file": "items/carrot.png",
-   "h": 34,
-   "w": 48
+   "h": 32,
+   "w": 29
+  },
+  "carrot2": {
+   "file": "items/carrot2.png",
+   "h": 32,
+   "w": 31
   },
   "carrot_seed": {
    "file": "items/carrot_seed.png",
-   "h": 31,
-   "w": 48
+   "h": 32,
+   "w": 26
   },
   "catfish": {
    "file": "items/catfish.png",
+   "h": 21,
+   "w": 32
+  },
+  "catnip_cabbage": {
+   "file": "items/catnip_cabbage.png",
+   "h": 30,
+   "w": 32
+  },
+  "catnip_melon": {
+   "file": "items/catnip_melon.png",
+   "h": 30,
+   "w": 32
+  },
+  "cauliflower": {
+   "file": "items/cauliflower.png",
    "h": 32,
-   "w": 48
+   "w": 31
+  },
+  "cauliflower_seed": {
+   "file": "items/cauliflower_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "cave_bloom": {
+   "file": "items/cave_bloom.png",
+   "h": 32,
+   "w": 32
+  },
+  "cave_fig": {
+   "file": "items/cave_fig.png",
+   "h": 31,
+   "w": 32
+  },
+  "cave_mushroom": {
+   "file": "items/cave_mushroom.png",
+   "h": 32,
+   "w": 30
+  },
+  "celery": {
+   "file": "items/celery.png",
+   "h": 32,
+   "w": 28
+  },
+  "celery_seed": {
+   "file": "items/celery_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "celestial_apple_seed": {
+   "file": "items/celestial_apple_seed.png",
+   "h": 31,
+   "w": 32
+  },
+  "chamomile": {
+   "file": "items/chamomile.png",
+   "h": 32,
+   "w": 30
   },
   "check": {
    "file": "items/check.png",
    "h": 48,
    "w": 39
   },
+  "cheese": {
+   "file": "items/cheese.png",
+   "h": 26,
+   "w": 32
+  },
+  "cherry": {
+   "file": "items/cherry.png",
+   "h": 32,
+   "w": 27
+  },
+  "cherry2": {
+   "file": "items/cherry2.png",
+   "h": 29,
+   "w": 32
+  },
+  "cherry_tomato": {
+   "file": "items/cherry_tomato.png",
+   "h": 32,
+   "w": 28
+  },
+  "chia_seed": {
+   "file": "items/chia_seed.png",
+   "h": 32,
+   "w": 32
+  },
+  "chili": {
+   "file": "items/chili.png",
+   "h": 32,
+   "w": 30
+  },
+  "chili_seed": {
+   "file": "items/chili_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "chives": {
+   "file": "items/chives.png",
+   "h": 32,
+   "w": 31
+  },
+  "clay": {
+   "file": "items/clay.png",
+   "h": 23,
+   "w": 32
+  },
+  "climbing_boots": {
+   "file": "items/climbing_boots.png",
+   "h": 29,
+   "w": 32
+  },
+  "cloak": {
+   "file": "items/cloak.png",
+   "h": 29,
+   "w": 32
+  },
+  "cloth": {
+   "file": "items/cloth.png",
+   "h": 26,
+   "w": 32
+  },
+  "cloud_bean": {
+   "file": "items/cloud_bean.png",
+   "h": 31,
+   "w": 32
+  },
+  "cloud_lotus": {
+   "file": "items/cloud_lotus.png",
+   "h": 30,
+   "w": 32
+  },
+  "cloud_orchid": {
+   "file": "items/cloud_orchid.png",
+   "h": 32,
+   "w": 31
+  },
+  "cloud_peach": {
+   "file": "items/cloud_peach.png",
+   "h": 29,
+   "w": 32
+  },
+  "cloud_rice": {
+   "file": "items/cloud_rice.png",
+   "h": 29,
+   "w": 32
+  },
+  "cloud_walkers": {
+   "file": "items/cloud_walkers.png",
+   "h": 32,
+   "w": 32
+  },
+  "cloudmelon": {
+   "file": "items/cloudmelon.png",
+   "h": 31,
+   "w": 32
+  },
+  "clover": {
+   "file": "items/clover.png",
+   "h": 32,
+   "w": 26
+  },
+  "clover2": {
+   "file": "items/clover2.png",
+   "h": 32,
+   "w": 26
+  },
+  "coal": {
+   "file": "items/coal.png",
+   "h": 28,
+   "w": 32
+  },
+  "coconut": {
+   "file": "items/coconut.png",
+   "h": 32,
+   "w": 31
+  },
+  "coconut2": {
+   "file": "items/coconut2.png",
+   "h": 27,
+   "w": 32
+  },
+  "coconut_seed": {
+   "file": "items/coconut_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "coffee_bean": {
+   "file": "items/coffee_bean.png",
+   "h": 32,
+   "w": 32
+  },
+  "coffee_seed": {
+   "file": "items/coffee_seed.png",
+   "h": 32,
+   "w": 32
+  },
+  "comet_berry": {
+   "file": "items/comet_berry.png",
+   "h": 29,
+   "w": 32
+  },
+  "comet_dill": {
+   "file": "items/comet_dill.png",
+   "h": 31,
+   "w": 32
+  },
+  "comet_pea": {
+   "file": "items/comet_pea.png",
+   "h": 30,
+   "w": 32
+  },
+  "comfrey": {
+   "file": "items/comfrey.png",
+   "h": 32,
+   "w": 32
+  },
+  "commander_crest": {
+   "file": "items/commander_crest.png",
+   "h": 31,
+   "w": 32
+  },
+  "compass": {
+   "file": "items/compass.png",
+   "h": 32,
+   "w": 28
+  },
   "copper": {
    "file": "items/copper.png",
-   "h": 30,
-   "w": 48
+   "h": 29,
+   "w": 32
   },
   "copper_bar": {
    "file": "items/copper_bar.png",
-   "h": 35,
-   "w": 48
+   "h": 27,
+   "w": 32
+  },
+  "copper_ring": {
+   "file": "items/copper_ring.png",
+   "h": 27,
+   "w": 32
   },
   "corn": {
    "file": "items/corn.png",
-   "h": 35,
-   "w": 48
+   "h": 32,
+   "w": 26
+  },
+  "corn2": {
+   "file": "items/corn2.png",
+   "h": 32,
+   "w": 32
   },
   "corn_seed": {
    "file": "items/corn_seed.png",
    "h": 31,
-   "w": 48
+   "w": 32
+  },
+  "cotton_seed": {
+   "file": "items/cotton_seed.png",
+   "h": 32,
+   "w": 29
+  },
+  "cowboy_hat": {
+   "file": "items/cowboy_hat.png",
+   "h": 27,
+   "w": 32
+  },
+  "crab": {
+   "file": "items/crab.png",
+   "h": 22,
+   "w": 32
+  },
+  "cranberry": {
+   "file": "items/cranberry.png",
+   "h": 32,
+   "w": 30
+  },
+  "cranberry_seed": {
+   "file": "items/cranberry_seed.png",
+   "h": 29,
+   "w": 32
   },
   "crystal": {
    "file": "items/crystal.png",
    "h": 32,
    "w": 22
   },
+  "crystal_boots": {
+   "file": "items/crystal_boots.png",
+   "h": 29,
+   "w": 32
+  },
+  "crystal_cherry": {
+   "file": "items/crystal_cherry.png",
+   "h": 30,
+   "w": 32
+  },
+  "crystal_crown": {
+   "file": "items/crystal_crown.png",
+   "h": 27,
+   "w": 32
+  },
+  "crystal_grape": {
+   "file": "items/crystal_grape.png",
+   "h": 32,
+   "w": 32
+  },
+  "crystal_heartbloom": {
+   "file": "items/crystal_heartbloom.png",
+   "h": 32,
+   "w": 30
+  },
+  "crystal_heartfruit": {
+   "file": "items/crystal_heartfruit.png",
+   "h": 28,
+   "w": 32
+  },
+  "crystal_heartroot": {
+   "file": "items/crystal_heartroot.png",
+   "h": 32,
+   "w": 30
+  },
+  "crystal_lens": {
+   "file": "items/crystal_lens.png",
+   "h": 30,
+   "w": 32
+  },
+  "crystal_lettuce_seed": {
+   "file": "items/crystal_lettuce_seed.png",
+   "h": 31,
+   "w": 32
+  },
+  "crystal_melon_seed": {
+   "file": "items/crystal_melon_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "crystal_onion": {
+   "file": "items/crystal_onion.png",
+   "h": 32,
+   "w": 26
+  },
+  "crystal_plate": {
+   "file": "items/crystal_plate.png",
+   "h": 28,
+   "w": 32
+  },
+  "crystal_refined": {
+   "file": "items/crystal_refined.png",
+   "h": 27,
+   "w": 32
+  },
+  "crystal_ring": {
+   "file": "items/crystal_ring.png",
+   "h": 31,
+   "w": 32
+  },
+  "crystal_seed": {
+   "file": "items/crystal_seed.png",
+   "h": 32,
+   "w": 29
+  },
+  "crystal_sword": {
+   "file": "items/crystal_sword.png",
+   "h": 32,
+   "w": 32
+  },
+  "crystal_tomato_seed": {
+   "file": "items/crystal_tomato_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "crystal_tulip": {
+   "file": "items/crystal_tulip.png",
+   "h": 32,
+   "w": 29
+  },
+  "cucumber": {
+   "file": "items/cucumber.png",
+   "h": 32,
+   "w": 30
+  },
+  "cucumber_seed": {
+   "file": "items/cucumber_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "daffodil": {
+   "file": "items/daffodil.png",
+   "h": 32,
+   "w": 29
+  },
+  "daffodil2": {
+   "file": "items/daffodil2.png",
+   "h": 32,
+   "w": 29
+  },
+  "daisy": {
+   "file": "items/daisy.png",
+   "h": 32,
+   "w": 29
+  },
+  "daisy2": {
+   "file": "items/daisy2.png",
+   "h": 32,
+   "w": 29
+  },
+  "dancing_shoes": {
+   "file": "items/dancing_shoes.png",
+   "h": 29,
+   "w": 32
+  },
+  "dandelion": {
+   "file": "items/dandelion.png",
+   "h": 32,
+   "w": 29
+  },
+  "dandelion2": {
+   "file": "items/dandelion2.png",
+   "h": 32,
+   "w": 29
+  },
+  "dark": {
+   "file": "items/dark.png",
+   "h": 28,
+   "w": 32
+  },
+  "dark2": {
+   "file": "items/dark2.png",
+   "h": 30,
+   "w": 32
+  },
+  "dark_garlic": {
+   "file": "items/dark_garlic.png",
+   "h": 32,
+   "w": 28
+  },
+  "dark_plum": {
+   "file": "items/dark_plum.png",
+   "h": 32,
+   "w": 32
+  },
+  "dark_rose": {
+   "file": "items/dark_rose.png",
+   "h": 32,
+   "w": 31
+  },
+  "dawn_kiwi": {
+   "file": "items/dawn_kiwi.png",
+   "h": 29,
+   "w": 32
+  },
+  "dawn_leek": {
+   "file": "items/dawn_leek.png",
+   "h": 32,
+   "w": 32
+  },
+  "dawn_lotus": {
+   "file": "items/dawn_lotus.png",
+   "h": 31,
+   "w": 32
+  },
+  "dawn_pea": {
+   "file": "items/dawn_pea.png",
+   "h": 32,
+   "w": 32
+  },
+  "dawn_peach": {
+   "file": "items/dawn_peach.png",
+   "h": 30,
+   "w": 32
+  },
+  "diamond": {
+   "file": "items/diamond.png",
+   "h": 27,
+   "w": 32
+  },
+  "dill": {
+   "file": "items/dill.png",
+   "h": 32,
+   "w": 31
+  },
+  "dill_seed": {
+   "file": "items/dill_seed.png",
+   "h": 32,
+   "w": 29
+  },
+  "dock": {
+   "file": "items/dock.png",
+   "h": 32,
+   "w": 26
+  },
+  "dragonberry_seed": {
+   "file": "items/dragonberry_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "dragonfruit": {
+   "file": "items/dragonfruit.png",
+   "h": 32,
+   "w": 30
+  },
+  "dragonfruit2": {
+   "file": "items/dragonfruit2.png",
+   "h": 29,
+   "w": 32
+  },
+  "dragonfruit_seed": {
+   "file": "items/dragonfruit_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "dream_charm": {
+   "file": "items/dream_charm.png",
+   "h": 32,
+   "w": 30
+  },
+  "dream_essence": {
+   "file": "items/dream_essence.png",
+   "h": 30,
+   "w": 32
+  },
+  "dream_essence2": {
+   "file": "items/dream_essence2.png",
+   "h": 26,
+   "w": 32
+  },
+  "dream_essence_bloom": {
+   "file": "items/dream_essence_bloom.png",
+   "h": 31,
+   "w": 32
+  },
+  "dream_essence_fruit": {
+   "file": "items/dream_essence_fruit.png",
+   "h": 32,
+   "w": 32
+  },
+  "dream_essence_root": {
+   "file": "items/dream_essence_root.png",
+   "h": 31,
+   "w": 32
+  },
+  "dream_melon": {
+   "file": "items/dream_melon.png",
+   "h": 29,
+   "w": 32
+  },
+  "dream_orchid": {
+   "file": "items/dream_orchid.png",
+   "h": 32,
+   "w": 30
+  },
+  "dream_ring": {
+   "file": "items/dream_ring.png",
+   "h": 31,
+   "w": 32
+  },
+  "dream_squash": {
+   "file": "items/dream_squash.png",
+   "h": 32,
+   "w": 31
+  },
+  "dream_tonic": {
+   "file": "items/dream_tonic.png",
+   "h": 32,
+   "w": 27
+  },
   "dreamflower": {
    "file": "items/dreamflower.png",
    "h": 32,
    "w": 30
   },
+  "dreamfruit": {
+   "file": "items/dreamfruit.png",
+   "h": 32,
+   "w": 32
+  },
+  "dreamfruit_seed": {
+   "file": "items/dreamfruit_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "dreamleaf": {
+   "file": "items/dreamleaf.png",
+   "h": 30,
+   "w": 32
+  },
+  "dreamroot": {
+   "file": "items/dreamroot.png",
+   "h": 32,
+   "w": 30
+  },
+  "dress": {
+   "file": "items/dress.png",
+   "h": 31,
+   "w": 32
+  },
+  "driftwood": {
+   "file": "items/driftwood.png",
+   "h": 30,
+   "w": 32
+  },
+  "dune_date": {
+   "file": "items/dune_date.png",
+   "h": 32,
+   "w": 32
+  },
+  "dune_melon": {
+   "file": "items/dune_melon.png",
+   "h": 32,
+   "w": 31
+  },
+  "dune_star": {
+   "file": "items/dune_star.png",
+   "h": 32,
+   "w": 29
+  },
+  "durian": {
+   "file": "items/durian.png",
+   "h": 32,
+   "w": 32
+  },
+  "dusk_iris": {
+   "file": "items/dusk_iris.png",
+   "h": 32,
+   "w": 30
+  },
+  "dusk_pepper": {
+   "file": "items/dusk_pepper.png",
+   "h": 32,
+   "w": 28
+  },
+  "dusk_plum": {
+   "file": "items/dusk_plum.png",
+   "h": 32,
+   "w": 32
+  },
+  "dusk_pomegranate": {
+   "file": "items/dusk_pomegranate.png",
+   "h": 28,
+   "w": 32
+  },
+  "dusk_tomato": {
+   "file": "items/dusk_tomato.png",
+   "h": 32,
+   "w": 29
+  },
+  "earmuffs": {
+   "file": "items/earmuffs.png",
+   "h": 27,
+   "w": 32
+  },
+  "echo_artichoke": {
+   "file": "items/echo_artichoke.png",
+   "h": 32,
+   "w": 28
+  },
+  "echo_berry": {
+   "file": "items/echo_berry.png",
+   "h": 30,
+   "w": 32
+  },
+  "echo_leek": {
+   "file": "items/echo_leek.png",
+   "h": 32,
+   "w": 32
+  },
+  "echo_shell": {
+   "file": "items/echo_shell.png",
+   "h": 29,
+   "w": 32
+  },
+  "echo_tulip": {
+   "file": "items/echo_tulip.png",
+   "h": 32,
+   "w": 26
+  },
+  "echo_yarrow": {
+   "file": "items/echo_yarrow.png",
+   "h": 30,
+   "w": 32
+  },
+  "edelweiss": {
+   "file": "items/edelweiss.png",
+   "h": 32,
+   "w": 32
+  },
   "eel": {
    "file": "items/eel.png",
-   "h": 24,
+   "h": 23,
    "w": 32
   },
   "egg": {
@@ -5950,24 +8450,149 @@
    "h": 32,
    "w": 26
   },
+  "eggplant": {
+   "file": "items/eggplant.png",
+   "h": 32,
+   "w": 27
+  },
+  "eggplant2": {
+   "file": "items/eggplant2.png",
+   "h": 32,
+   "w": 29
+  },
+  "eggplant_seed": {
+   "file": "items/eggplant_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "elderberry": {
+   "file": "items/elderberry.png",
+   "h": 32,
+   "w": 26
+  },
+  "elderberry2": {
+   "file": "items/elderberry2.png",
+   "h": 32,
+   "w": 32
+  },
+  "elderflower": {
+   "file": "items/elderflower.png",
+   "h": 32,
+   "w": 32
+  },
+  "ember": {
+   "file": "items/ember.png",
+   "h": 32,
+   "w": 27
+  },
+  "ember_mango": {
+   "file": "items/ember_mango.png",
+   "h": 30,
+   "w": 32
+  },
+  "ember_rose": {
+   "file": "items/ember_rose.png",
+   "h": 32,
+   "w": 31
+  },
+  "emberberry": {
+   "file": "items/emberberry.png",
+   "h": 32,
+   "w": 32
+  },
+  "embercorn": {
+   "file": "items/embercorn.png",
+   "h": 32,
+   "w": 29
+  },
   "emerald": {
    "file": "items/emerald.png",
-   "h": 35,
-   "w": 48
+   "h": 32,
+   "w": 28
+  },
+  "emerald_ring": {
+   "file": "items/emerald_ring.png",
+   "h": 30,
+   "w": 32
+  },
+  "enchanted_berry_seed": {
+   "file": "items/enchanted_berry_seed.png",
+   "h": 29,
+   "w": 32
   },
   "energy_tea": {
    "file": "items/energy_tea.png",
-   "h": 28,
-   "w": 48
+   "h": 31,
+   "w": 32
+  },
+  "enforcer_plate": {
+   "file": "items/enforcer_plate.png",
+   "h": 32,
+   "w": 29
+  },
+  "ethereal_corn_seed": {
+   "file": "items/ethereal_corn_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "feather": {
+   "file": "items/feather.png",
+   "h": 26,
+   "w": 32
   },
   "feed_bag": {
    "file": "items/feed_bag.png",
    "h": 25,
    "w": 32
   },
+  "fennel": {
+   "file": "items/fennel.png",
+   "h": 32,
+   "w": 28
+  },
+  "fertilizer": {
+   "file": "items/fertilizer.png",
+   "h": 31,
+   "w": 32
+  },
+  "feverfew": {
+   "file": "items/feverfew.png",
+   "h": 32,
+   "w": 29
+  },
   "fiber": {
    "file": "items/fiber.png",
-   "h": 26,
+   "h": 25,
+   "w": 32
+  },
+  "fig": {
+   "file": "items/fig.png",
+   "h": 32,
+   "w": 29
+  },
+  "fig2": {
+   "file": "items/fig2.png",
+   "h": 32,
+   "w": 32
+  },
+  "fig_seed": {
+   "file": "items/fig_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "first_daisy": {
+   "file": "items/first_daisy.png",
+   "h": 32,
+   "w": 31
+  },
+  "first_strawberry": {
+   "file": "items/first_strawberry.png",
+   "h": 31,
+   "w": 32
+  },
+  "first_turnip": {
+   "file": "items/first_turnip.png",
+   "h": 32,
    "w": 32
   },
   "fish": {
@@ -5975,10 +8600,120 @@
    "h": 32,
    "w": 24
   },
+  "fish_stew": {
+   "file": "items/fish_stew.png",
+   "h": 27,
+   "w": 32
+  },
+  "flame_core": {
+   "file": "items/flame_core.png",
+   "h": 32,
+   "w": 32
+  },
+  "flameberry_seed": {
+   "file": "items/flameberry_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "flax_seed": {
+   "file": "items/flax_seed.png",
+   "h": 32,
+   "w": 32
+  },
+  "flippers": {
+   "file": "items/flippers.png",
+   "h": 30,
+   "w": 32
+  },
   "flower": {
    "file": "items/flower.png",
+   "h": 28,
+   "w": 32
+  },
+  "flower_crown": {
+   "file": "items/flower_crown.png",
+   "h": 23,
+   "w": 32
+  },
+  "forest_bell": {
+   "file": "items/forest_bell.png",
+   "h": 32,
+   "w": 31
+  },
+  "forest_raspberry": {
+   "file": "items/forest_raspberry.png",
+   "h": 32,
+   "w": 32
+  },
+  "forest_yam": {
+   "file": "items/forest_yam.png",
+   "h": 32,
+   "w": 32
+  },
+  "frost": {
+   "file": "items/frost.png",
+   "h": 32,
+   "w": 32
+  },
+  "frost_dragonfruit": {
+   "file": "items/frost_dragonfruit.png",
+   "h": 29,
+   "w": 32
+  },
+  "frost_edelweiss": {
+   "file": "items/frost_edelweiss.png",
+   "h": 32,
+   "w": 32
+  },
+  "frost_lily": {
+   "file": "items/frost_lily.png",
+   "h": 32,
+   "w": 32
+  },
+  "frost_squash": {
+   "file": "items/frost_squash.png",
+   "h": 32,
+   "w": 31
+  },
+  "frostberry": {
+   "file": "items/frostberry.png",
    "h": 31,
-   "w": 48
+   "w": 32
+  },
+  "frostberry_seed": {
+   "file": "items/frostberry_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "frostkale": {
+   "file": "items/frostkale.png",
+   "h": 32,
+   "w": 30
+  },
+  "garlic": {
+   "file": "items/garlic.png",
+   "h": 32,
+   "w": 25
+  },
+  "garlic2": {
+   "file": "items/garlic2.png",
+   "h": 32,
+   "w": 30
+  },
+  "garlic_seed": {
+   "file": "items/garlic_seed.png",
+   "h": 31,
+   "w": 32
+  },
+  "geode": {
+   "file": "items/geode.png",
+   "h": 27,
+   "w": 32
+  },
+  "giant_turnip": {
+   "file": "items/giant_turnip.png",
+   "h": 32,
+   "w": 29
   },
   "gift_blue": {
    "file": "items/gift_blue.png",
@@ -6010,19 +8745,154 @@
    "h": 34,
    "w": 48
   },
+  "ginger": {
+   "file": "items/ginger.png",
+   "h": 28,
+   "w": 32
+  },
+  "ginger_seed": {
+   "file": "items/ginger_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "glass": {
+   "file": "items/glass.png",
+   "h": 28,
+   "w": 32
+  },
+  "glowberry": {
+   "file": "items/glowberry.png",
+   "h": 31,
+   "w": 32
+  },
+  "glowblossom": {
+   "file": "items/glowblossom.png",
+   "h": 32,
+   "w": 32
+  },
+  "glowcap": {
+   "file": "items/glowcap.png",
+   "h": 29,
+   "w": 32
+  },
+  "glowcap_spore": {
+   "file": "items/glowcap_spore.png",
+   "h": 28,
+   "w": 32
+  },
+  "glowcap_spore2": {
+   "file": "items/glowcap_spore2.png",
+   "h": 28,
+   "w": 32
+  },
+  "glowcap_spore3": {
+   "file": "items/glowcap_spore3.png",
+   "h": 28,
+   "w": 32
+  },
+  "glowleek": {
+   "file": "items/glowleek.png",
+   "h": 32,
+   "w": 30
+  },
+  "goggles": {
+   "file": "items/goggles.png",
+   "h": 28,
+   "w": 32
+  },
   "gold": {
    "file": "items/gold.png",
-   "h": 30,
-   "w": 48
+   "h": 29,
+   "w": 32
   },
   "gold_bar": {
    "file": "items/gold_bar.png",
-   "h": 34,
-   "w": 48
+   "h": 27,
+   "w": 32
+  },
+  "gold_carrot": {
+   "file": "items/gold_carrot.png",
+   "h": 31,
+   "w": 32
+  },
+  "gold_chamomile": {
+   "file": "items/gold_chamomile.png",
+   "h": 32,
+   "w": 32
+  },
+  "gold_lemon": {
+   "file": "items/gold_lemon.png",
+   "h": 29,
+   "w": 32
+  },
+  "gold_ring": {
+   "file": "items/gold_ring.png",
+   "h": 27,
+   "w": 32
+  },
+  "golden_apple": {
+   "file": "items/golden_apple.png",
+   "h": 32,
+   "w": 30
+  },
+  "golden_pawflower": {
+   "file": "items/golden_pawflower.png",
+   "h": 32,
+   "w": 30
+  },
+  "golden_pawfruit": {
+   "file": "items/golden_pawfruit.png",
+   "h": 30,
+   "w": 32
+  },
+  "golden_pawroot": {
+   "file": "items/golden_pawroot.png",
+   "h": 32,
+   "w": 31
   },
   "goldfish": {
    "file": "items/goldfish.png",
    "h": 22,
+   "w": 32
+  },
+  "golem_core": {
+   "file": "items/golem_core.png",
+   "h": 31,
+   "w": 32
+  },
+  "gooseberry": {
+   "file": "items/gooseberry.png",
+   "h": 32,
+   "w": 30
+  },
+  "grape_seed": {
+   "file": "items/grape_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "grapes": {
+   "file": "items/grapes.png",
+   "h": 32,
+   "w": 32
+  },
+  "grapes_green": {
+   "file": "items/grapes_green.png",
+   "h": 32,
+   "w": 32
+  },
+  "grapes_purple": {
+   "file": "items/grapes_purple.png",
+   "h": 32,
+   "w": 29
+  },
+  "green_apple": {
+   "file": "items/green_apple.png",
+   "h": 32,
+   "w": 27
+  },
+  "green_bean_seed": {
+   "file": "items/green_bean_seed.png",
+   "h": 30,
    "w": 32
   },
   "green_potion": {
@@ -6030,10 +8900,45 @@
    "h": 32,
    "w": 27
   },
+  "grump_dust": {
+   "file": "items/grump_dust.png",
+   "h": 21,
+   "w": 32
+  },
+  "guava": {
+   "file": "items/guava.png",
+   "h": 32,
+   "w": 32
+  },
+  "guava_seed": {
+   "file": "items/guava_seed.png",
+   "h": 31,
+   "w": 32
+  },
+  "halo": {
+   "file": "items/halo.png",
+   "h": 24,
+   "w": 32
+  },
+  "halo_corn": {
+   "file": "items/halo_corn.png",
+   "h": 32,
+   "w": 31
+  },
+  "halo_lily": {
+   "file": "items/halo_lily.png",
+   "h": 32,
+   "w": 32
+  },
+  "halo_orange": {
+   "file": "items/halo_orange.png",
+   "h": 30,
+   "w": 32
+  },
   "hammer": {
    "file": "items/hammer.png",
-   "h": 48,
-   "w": 48
+   "h": 29,
+   "w": 32
   },
   "hand": {
    "file": "items/hand.png",
@@ -6045,34 +8950,324 @@
    "h": 28,
    "w": 48
   },
+  "headband": {
+   "file": "items/headband.png",
+   "h": 26,
+   "w": 32
+  },
+  "heart_rose": {
+   "file": "items/heart_rose.png",
+   "h": 32,
+   "w": 32
+  },
+  "heart_tomato": {
+   "file": "items/heart_tomato.png",
+   "h": 32,
+   "w": 29
+  },
+  "heartbloom": {
+   "file": "items/heartbloom.png",
+   "h": 32,
+   "w": 32
+  },
+  "heartfruit": {
+   "file": "items/heartfruit.png",
+   "h": 32,
+   "w": 32
+  },
+  "heartroot": {
+   "file": "items/heartroot.png",
+   "h": 32,
+   "w": 31
+  },
+  "herb_remedy": {
+   "file": "items/herb_remedy.png",
+   "h": 30,
+   "w": 32
+  },
+  "hiking_boots": {
+   "file": "items/hiking_boots.png",
+   "h": 30,
+   "w": 32
+  },
   "hoe": {
    "file": "items/hoe.png",
-   "h": 47,
-   "w": 48
+   "h": 27,
+   "w": 32
+  },
+  "hoe_copper": {
+   "file": "items/hoe_copper.png",
+   "h": 27,
+   "w": 32
+  },
+  "hoe_crystal": {
+   "file": "items/hoe_crystal.png",
+   "h": 27,
+   "w": 32
+  },
+  "hoe_gold": {
+   "file": "items/hoe_gold.png",
+   "h": 28,
+   "w": 32
+  },
+  "hoe_iron": {
+   "file": "items/hoe_iron.png",
+   "h": 27,
+   "w": 32
   },
   "honey": {
    "file": "items/honey.png",
-   "h": 31,
-   "w": 48
+   "h": 32,
+   "w": 31
+  },
+  "honey_pear": {
+   "file": "items/honey_pear.png",
+   "h": 32,
+   "w": 27
+  },
+  "hood": {
+   "file": "items/hood.png",
+   "h": 32,
+   "w": 32
+  },
+  "hoodie": {
+   "file": "items/hoodie.png",
+   "h": 28,
+   "w": 32
+  },
+  "hops": {
+   "file": "items/hops.png",
+   "h": 32,
+   "w": 32
+  },
+  "hops_seed": {
+   "file": "items/hops_seed.png",
+   "h": 24,
+   "w": 32
+  },
+  "hush_banana": {
+   "file": "items/hush_banana.png",
+   "h": 28,
+   "w": 32
+  },
+  "hush_carrot": {
+   "file": "items/hush_carrot.png",
+   "h": 32,
+   "w": 32
+  },
+  "infinity_bean_seed": {
+   "file": "items/infinity_bean_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "iris": {
+   "file": "items/iris.png",
+   "h": 32,
+   "w": 28
+  },
+  "iris2": {
+   "file": "items/iris2.png",
+   "h": 32,
+   "w": 28
   },
   "iron": {
    "file": "items/iron.png",
-   "h": 30,
-   "w": 48
+   "h": 29,
+   "w": 32
+  },
+  "iron_band": {
+   "file": "items/iron_band.png",
+   "h": 27,
+   "w": 32
   },
   "iron_bar": {
    "file": "items/iron_bar.png",
-   "h": 35,
-   "w": 48
+   "h": 28,
+   "w": 32
+  },
+  "iron_greaves": {
+   "file": "items/iron_greaves.png",
+   "h": 31,
+   "w": 32
+  },
+  "iron_helm": {
+   "file": "items/iron_helm.png",
+   "h": 29,
+   "w": 32
+  },
+  "iron_mail": {
+   "file": "items/iron_mail.png",
+   "h": 30,
+   "w": 32
   },
   "iron_sword": {
    "file": "items/iron_sword.png",
-   "h": 48,
-   "w": 48
+   "h": 26,
+   "w": 32
+  },
+  "jacket": {
+   "file": "items/jacket.png",
+   "h": 28,
+   "w": 32
+  },
+  "jackfruit": {
+   "file": "items/jackfruit.png",
+   "h": 32,
+   "w": 29
+  },
+  "jam": {
+   "file": "items/jam.png",
+   "h": 28,
+   "w": 32
+  },
+  "juice": {
+   "file": "items/juice.png",
+   "h": 28,
+   "w": 32
+  },
+  "kale": {
+   "file": "items/kale.png",
+   "h": 32,
+   "w": 31
+  },
+  "kale_seed": {
+   "file": "items/kale_seed.png",
+   "h": 32,
+   "w": 29
   },
   "key": {
    "file": "items/key.png",
+   "h": 28,
+   "w": 32
+  },
+  "kilt_set": {
+   "file": "items/kilt_set.png",
+   "h": 32,
+   "w": 30
+  },
+  "kiwi": {
+   "file": "items/kiwi.png",
+   "h": 32,
+   "w": 29
+  },
+  "kiwi_seed": {
+   "file": "items/kiwi_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "kumquat_seed": {
+   "file": "items/kumquat_seed.png",
+   "h": 32,
+   "w": 31
+  },
+  "lab_coat": {
+   "file": "items/lab_coat.png",
+   "h": 32,
+   "w": 32
+  },
+  "lantern_fruit": {
+   "file": "items/lantern_fruit.png",
+   "h": 31,
+   "w": 32
+  },
+  "lantern_gourd": {
+   "file": "items/lantern_gourd.png",
+   "h": 32,
+   "w": 29
+  },
+  "lantern_item": {
+   "file": "items/lantern_item.png",
+   "h": 28,
+   "w": 32
+  },
+  "lantern_lychee": {
+   "file": "items/lantern_lychee.png",
+   "h": 31,
+   "w": 32
+  },
+  "lantern_onion": {
+   "file": "items/lantern_onion.png",
+   "h": 32,
+   "w": 28
+  },
+  "lantern_sage": {
+   "file": "items/lantern_sage.png",
+   "h": 32,
+   "w": 31
+  },
+  "lava_chili": {
+   "file": "items/lava_chili.png",
+   "h": 30,
+   "w": 32
+  },
+  "lava_mango": {
+   "file": "items/lava_mango.png",
+   "h": 28,
+   "w": 32
+  },
+  "lava_poppy": {
+   "file": "items/lava_poppy.png",
+   "h": 32,
+   "w": 30
+  },
+  "lavender": {
+   "file": "items/lavender.png",
+   "h": 32,
+   "w": 27
+  },
+  "lavender2": {
+   "file": "items/lavender2.png",
+   "h": 32,
+   "w": 28
+  },
+  "leather": {
+   "file": "items/leather.png",
+   "h": 26,
+   "w": 32
+  },
+  "leather_cap": {
+   "file": "items/leather_cap.png",
    "h": 25,
+   "w": 32
+  },
+  "leather_vest": {
+   "file": "items/leather_vest.png",
+   "h": 30,
+   "w": 32
+  },
+  "leek": {
+   "file": "items/leek.png",
+   "h": 32,
+   "w": 27
+  },
+  "leek_seed": {
+   "file": "items/leek_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "legendary_koi": {
+   "file": "items/legendary_koi.png",
+   "h": 22,
+   "w": 32
+  },
+  "lemon": {
+   "file": "items/lemon.png",
+   "h": 32,
+   "w": 29
+  },
+  "lemon2": {
+   "file": "items/lemon2.png",
+   "h": 30,
+   "w": 32
+  },
+  "lemon_seed": {
+   "file": "items/lemon_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "lemongrass": {
+   "file": "items/lemongrass.png",
+   "h": 31,
    "w": 32
   },
   "letter": {
@@ -6080,40 +9275,760 @@
    "h": 30,
    "w": 32
   },
+  "lettuce": {
+   "file": "items/lettuce.png",
+   "h": 32,
+   "w": 32
+  },
+  "lettuce_seed": {
+   "file": "items/lettuce_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "life_ring": {
+   "file": "items/life_ring.png",
+   "h": 30,
+   "w": 32
+  },
+  "light_charm": {
+   "file": "items/light_charm.png",
+   "h": 32,
+   "w": 25
+  },
+  "light_fig": {
+   "file": "items/light_fig.png",
+   "h": 32,
+   "w": 32
+  },
+  "light_iris": {
+   "file": "items/light_iris.png",
+   "h": 32,
+   "w": 30
+  },
+  "light_leek": {
+   "file": "items/light_leek.png",
+   "h": 32,
+   "w": 32
+  },
+  "light_mote": {
+   "file": "items/light_mote.png",
+   "h": 29,
+   "w": 32
+  },
+  "light_mote2": {
+   "file": "items/light_mote2.png",
+   "h": 32,
+   "w": 31
+  },
+  "light_peach": {
+   "file": "items/light_peach.png",
+   "h": 28,
+   "w": 32
+  },
+  "light_squash": {
+   "file": "items/light_squash.png",
+   "h": 32,
+   "w": 28
+  },
+  "lily": {
+   "file": "items/lily.png",
+   "h": 32,
+   "w": 30
+  },
+  "lily2": {
+   "file": "items/lily2.png",
+   "h": 32,
+   "w": 30
+  },
+  "lime": {
+   "file": "items/lime.png",
+   "h": 32,
+   "w": 30
+  },
+  "lotus_seed": {
+   "file": "items/lotus_seed.png",
+   "h": 24,
+   "w": 32
+  },
   "luck_potion": {
    "file": "items/luck_potion.png",
    "h": 28,
    "w": 48
+  },
+  "luck_ring": {
+   "file": "items/luck_ring.png",
+   "h": 32,
+   "w": 32
+  },
+  "lucky_coin": {
+   "file": "items/lucky_coin.png",
+   "h": 27,
+   "w": 32
+  },
+  "lullaby_lavender": {
+   "file": "items/lullaby_lavender.png",
+   "h": 32,
+   "w": 31
+  },
+  "lullaby_lettuce": {
+   "file": "items/lullaby_lettuce.png",
+   "h": 29,
+   "w": 32
+  },
+  "lullaby_pear": {
+   "file": "items/lullaby_pear.png",
+   "h": 32,
+   "w": 29
+  },
+  "lumiflora_seed": {
+   "file": "items/lumiflora_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "luminous_starfruit_seed": {
+   "file": "items/luminous_starfruit_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "lunar_petal": {
+   "file": "items/lunar_petal.png",
+   "h": 30,
+   "w": 32
+  },
+  "lychee": {
+   "file": "items/lychee.png",
+   "h": 32,
+   "w": 32
+  },
+  "lychee_seed": {
+   "file": "items/lychee_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "mallow": {
+   "file": "items/mallow.png",
+   "h": 32,
+   "w": 29
+  },
+  "mango": {
+   "file": "items/mango.png",
+   "h": 32,
+   "w": 26
+  },
+  "mango_seed": {
+   "file": "items/mango_seed.png",
+   "h": 27,
+   "w": 32
   },
   "map": {
    "file": "items/map.png",
    "h": 27,
    "w": 32
   },
+  "marigold": {
+   "file": "items/marigold.png",
+   "h": 32,
+   "w": 28
+  },
+  "marigold2": {
+   "file": "items/marigold2.png",
+   "h": 32,
+   "w": 30
+  },
+  "meadow_bean": {
+   "file": "items/meadow_bean.png",
+   "h": 32,
+   "w": 31
+  },
+  "meadow_queen": {
+   "file": "items/meadow_queen.png",
+   "h": 32,
+   "w": 31
+  },
+  "meadow_strawberry": {
+   "file": "items/meadow_strawberry.png",
+   "h": 31,
+   "w": 32
+  },
   "melon": {
    "file": "items/melon.png",
-   "h": 33,
-   "w": 48
+   "h": 32,
+   "w": 27
+  },
+  "melon2": {
+   "file": "items/melon2.png",
+   "h": 32,
+   "w": 32
+  },
+  "melon_seed": {
+   "file": "items/melon_seed.png",
+   "h": 32,
+   "w": 30
+  },
+  "memory_apple": {
+   "file": "items/memory_apple.png",
+   "h": 32,
+   "w": 32
+  },
+  "memory_rice": {
+   "file": "items/memory_rice.png",
+   "h": 32,
+   "w": 29
+  },
+  "memory_tea": {
+   "file": "items/memory_tea.png",
+   "h": 30,
+   "w": 32
+  },
+  "meteorite": {
+   "file": "items/meteorite.png",
+   "h": 29,
+   "w": 32
   },
   "milk_pail": {
    "file": "items/milk_pail.png",
    "h": 32,
    "w": 26
   },
+  "minnow": {
+   "file": "items/minnow.png",
+   "h": 14,
+   "w": 32
+  },
+  "mint": {
+   "file": "items/mint.png",
+   "h": 32,
+   "w": 32
+  },
+  "mint_seed": {
+   "file": "items/mint_seed.png",
+   "h": 32,
+   "w": 30
+  },
+  "mirror_cabbage": {
+   "file": "items/mirror_cabbage.png",
+   "h": 30,
+   "w": 32
+  },
+  "mirror_gourd": {
+   "file": "items/mirror_gourd.png",
+   "h": 30,
+   "w": 32
+  },
+  "mirror_lotus": {
+   "file": "items/mirror_lotus.png",
+   "h": 32,
+   "w": 32
+  },
+  "mirror_melon": {
+   "file": "items/mirror_melon.png",
+   "h": 30,
+   "w": 32
+  },
+  "mirror_mint": {
+   "file": "items/mirror_mint.png",
+   "h": 30,
+   "w": 32
+  },
+  "mittens_apple": {
+   "file": "items/mittens_apple.png",
+   "h": 32,
+   "w": 32
+  },
+  "mittens_pea": {
+   "file": "items/mittens_pea.png",
+   "h": 31,
+   "w": 32
+  },
+  "moon_cake": {
+   "file": "items/moon_cake.png",
+   "h": 28,
+   "w": 32
+  },
+  "moon_lotus": {
+   "file": "items/moon_lotus.png",
+   "h": 32,
+   "w": 32
+  },
+  "moon_mugwort": {
+   "file": "items/moon_mugwort.png",
+   "h": 32,
+   "w": 32
+  },
+  "moon_pear": {
+   "file": "items/moon_pear.png",
+   "h": 32,
+   "w": 30
+  },
+  "moon_pumpkin": {
+   "file": "items/moon_pumpkin.png",
+   "h": 32,
+   "w": 32
+  },
+  "moon_ring": {
+   "file": "items/moon_ring.png",
+   "h": 31,
+   "w": 32
+  },
+  "moon_squash": {
+   "file": "items/moon_squash.png",
+   "h": 32,
+   "w": 31
+  },
+  "moon_sword": {
+   "file": "items/moon_sword.png",
+   "h": 31,
+   "w": 32
+  },
+  "moon_tear": {
+   "file": "items/moon_tear.png",
+   "h": 32,
+   "w": 22
+  },
+  "moonberry": {
+   "file": "items/moonberry.png",
+   "h": 32,
+   "w": 32
+  },
+  "moonberry2": {
+   "file": "items/moonberry2.png",
+   "h": 29,
+   "w": 32
+  },
+  "moonberry_seed": {
+   "file": "items/moonberry_seed.png",
+   "h": 30,
+   "w": 32
+  },
   "mooncarp": {
    "file": "items/mooncarp.png",
-   "h": 23,
+   "h": 22,
+   "w": 32
+  },
+  "moonflower": {
+   "file": "items/moonflower.png",
+   "h": 31,
+   "w": 32
+  },
+  "moonflower_seed": {
+   "file": "items/moonflower_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "moonmelon": {
+   "file": "items/moonmelon.png",
+   "h": 28,
+   "w": 32
+  },
+  "moonroot": {
+   "file": "items/moonroot.png",
+   "h": 32,
+   "w": 29
+  },
+  "morel_spore": {
+   "file": "items/morel_spore.png",
+   "h": 29,
+   "w": 32
+  },
+  "moss": {
+   "file": "items/moss.png",
+   "h": 25,
+   "w": 32
+  },
+  "mountain_barley": {
+   "file": "items/mountain_barley.png",
+   "h": 32,
+   "w": 25
+  },
+  "mountain_cherry": {
+   "file": "items/mountain_cherry.png",
+   "h": 30,
+   "w": 32
+  },
+  "mugwort": {
+   "file": "items/mugwort.png",
+   "h": 32,
+   "w": 29
+  },
+  "mulberry": {
+   "file": "items/mulberry.png",
+   "h": 32,
+   "w": 29
+  },
+  "mulberry_seed": {
+   "file": "items/mulberry_seed.png",
+   "h": 31,
    "w": 32
   },
   "mushroom": {
    "file": "items/mushroom.png",
+   "h": 30,
+   "w": 32
+  },
+  "mushroom_spore": {
+   "file": "items/mushroom_spore.png",
+   "h": 24,
+   "w": 32
+  },
+  "mustard_greens": {
+   "file": "items/mustard_greens.png",
+   "h": 32,
+   "w": 30
+  },
+  "nebula_grape_seed": {
+   "file": "items/nebula_grape_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "necklace_a": {
+   "file": "items/necklace_a.png",
+   "h": 29,
+   "w": 32
+  },
+  "necklace_b": {
+   "file": "items/necklace_b.png",
+   "h": 32,
+   "w": 32
+  },
+  "neon_jacket": {
+   "file": "items/neon_jacket.png",
+   "h": 28,
+   "w": 32
+  },
+  "neon_kicks": {
+   "file": "items/neon_kicks.png",
+   "h": 32,
+   "w": 31
+  },
+  "nettle": {
+   "file": "items/nettle.png",
+   "h": 32,
+   "w": 32
+  },
+  "night_garlic": {
+   "file": "items/night_garlic.png",
+   "h": 32,
+   "w": 28
+  },
+  "night_grape": {
+   "file": "items/night_grape.png",
+   "h": 30,
+   "w": 32
+  },
+  "nightmare_beet": {
+   "file": "items/nightmare_beet.png",
+   "h": 32,
+   "w": 32
+  },
+  "nightmare_iris": {
+   "file": "items/nightmare_iris.png",
+   "h": 32,
+   "w": 30
+  },
+  "nightmare_plum": {
+   "file": "items/nightmare_plum.png",
+   "h": 29,
+   "w": 32
+  },
+  "oat": {
+   "file": "items/oat.png",
+   "h": 32,
+   "w": 26
+  },
+  "oat_seed": {
+   "file": "items/oat_seed.png",
+   "h": 32,
+   "w": 28
+  },
+  "okra": {
+   "file": "items/okra.png",
+   "h": 32,
+   "w": 30
+  },
+  "omelette": {
+   "file": "items/omelette.png",
+   "h": 23,
+   "w": 32
+  },
+  "onion": {
+   "file": "items/onion.png",
+   "h": 32,
+   "w": 25
+  },
+  "onion2": {
+   "file": "items/onion2.png",
+   "h": 32,
+   "w": 28
+  },
+  "onion_seed": {
+   "file": "items/onion_seed.png",
    "h": 31,
-   "w": 48
+   "w": 32
+  },
+  "opal": {
+   "file": "items/opal.png",
+   "h": 31,
+   "w": 32
+  },
+  "orange": {
+   "file": "items/orange.png",
+   "h": 32,
+   "w": 29
+  },
+  "orange2": {
+   "file": "items/orange2.png",
+   "h": 29,
+   "w": 32
+  },
+  "orange_seed": {
+   "file": "items/orange_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "oregano": {
+   "file": "items/oregano.png",
+   "h": 32,
+   "w": 32
+  },
+  "overalls": {
+   "file": "items/overalls.png",
+   "h": 28,
+   "w": 32
+  },
+  "papaya": {
+   "file": "items/papaya.png",
+   "h": 32,
+   "w": 29
+  },
+  "parsley": {
+   "file": "items/parsley.png",
+   "h": 32,
+   "w": 31
+  },
+  "parsley_seed": {
+   "file": "items/parsley_seed.png",
+   "h": 32,
+   "w": 29
+  },
+  "parsnip": {
+   "file": "items/parsnip.png",
+   "h": 32,
+   "w": 29
+  },
+  "passionfruit": {
+   "file": "items/passionfruit.png",
+   "h": 32,
+   "w": 29
+  },
+  "passionfruit_seed": {
+   "file": "items/passionfruit_seed.png",
+   "h": 31,
+   "w": 32
+  },
+  "paw_charm": {
+   "file": "items/paw_charm.png",
+   "h": 32,
+   "w": 29
+  },
+  "paw_charm_shard": {
+   "file": "items/paw_charm_shard.png",
+   "h": 32,
+   "w": 27
+  },
+  "paw_potato": {
+   "file": "items/paw_potato.png",
+   "h": 31,
+   "w": 32
+  },
+  "pawberry": {
+   "file": "items/pawberry.png",
+   "h": 31,
+   "w": 32
+  },
+  "pea_pod": {
+   "file": "items/pea_pod.png",
+   "h": 32,
+   "w": 32
+  },
+  "pea_pod2": {
+   "file": "items/pea_pod2.png",
+   "h": 32,
+   "w": 26
+  },
+  "pea_seed": {
+   "file": "items/pea_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "peach": {
+   "file": "items/peach.png",
+   "h": 32,
+   "w": 32
+  },
+  "peach_seed": {
+   "file": "items/peach_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "pear": {
+   "file": "items/pear.png",
+   "h": 32,
+   "w": 25
+  },
+  "pear2": {
+   "file": "items/pear2.png",
+   "h": 32,
+   "w": 27
+  },
+  "pear_seed": {
+   "file": "items/pear_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "pearl": {
+   "file": "items/pearl.png",
+   "h": 32,
+   "w": 32
+  },
+  "penguin_ice_lily": {
+   "file": "items/penguin_ice_lily.png",
+   "h": 32,
+   "w": 31
+  },
+  "penguin_iceroot": {
+   "file": "items/penguin_iceroot.png",
+   "h": 32,
+   "w": 28
+  },
+  "penguin_snowberry": {
+   "file": "items/penguin_snowberry.png",
+   "h": 31,
+   "w": 32
+  },
+  "pepper": {
+   "file": "items/pepper.png",
+   "h": 32,
+   "w": 29
+  },
+  "pepper_green": {
+   "file": "items/pepper_green.png",
+   "h": 32,
+   "w": 26
+  },
+  "pepper_red": {
+   "file": "items/pepper_red.png",
+   "h": 32,
+   "w": 26
+  },
+  "pepper_seed": {
+   "file": "items/pepper_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "persimmon": {
+   "file": "items/persimmon.png",
+   "h": 32,
+   "w": 30
+  },
+  "persimmon_seed": {
+   "file": "items/persimmon_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "phoenix_chili": {
+   "file": "items/phoenix_chili.png",
+   "h": 29,
+   "w": 32
+  },
+  "phoenix_peach": {
+   "file": "items/phoenix_peach.png",
+   "h": 29,
+   "w": 32
+  },
+  "phoenix_pepper_seed": {
+   "file": "items/phoenix_pepper_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "phoenix_poppy": {
+   "file": "items/phoenix_poppy.png",
+   "h": 32,
+   "w": 30
   },
   "pickaxe": {
    "file": "items/pickaxe.png",
-   "h": 48,
-   "w": 47
+   "h": 24,
+   "w": 32
+  },
+  "pickaxe_copper": {
+   "file": "items/pickaxe_copper.png",
+   "h": 25,
+   "w": 32
+  },
+  "pickaxe_crystal": {
+   "file": "items/pickaxe_crystal.png",
+   "h": 25,
+   "w": 32
+  },
+  "pickaxe_gold": {
+   "file": "items/pickaxe_gold.png",
+   "h": 26,
+   "w": 32
+  },
+  "pickaxe_iron": {
+   "file": "items/pickaxe_iron.png",
+   "h": 25,
+   "w": 32
+  },
+  "pineapple": {
+   "file": "items/pineapple.png",
+   "h": 32,
+   "w": 30
+  },
+  "pineapple_seed": {
+   "file": "items/pineapple_seed.png",
+   "h": 32,
+   "w": 29
+  },
+  "pinecone": {
+   "file": "items/pinecone.png",
+   "h": 32,
+   "w": 29
+  },
+  "plantain": {
+   "file": "items/plantain.png",
+   "h": 32,
+   "w": 32
+  },
+  "plum": {
+   "file": "items/plum.png",
+   "h": 32,
+   "w": 29
+  },
+  "plum2": {
+   "file": "items/plum2.png",
+   "h": 30,
+   "w": 32
+  },
+  "pocket_watch": {
+   "file": "items/pocket_watch.png",
+   "h": 29,
+   "w": 32
+  },
+  "pomegranate": {
+   "file": "items/pomegranate.png",
+   "h": 32,
+   "w": 29
+  },
+  "pomegranate2": {
+   "file": "items/pomegranate2.png",
+   "h": 29,
+   "w": 32
+  },
+  "pomegranate_seed": {
+   "file": "items/pomegranate_seed.png",
+   "h": 32,
+   "w": 30
   },
   "pop_acorn": {
    "file": "items/pop_acorn.png",
@@ -6165,149 +10080,1229 @@
    "h": 32,
    "w": 31
   },
+  "poppy": {
+   "file": "items/poppy.png",
+   "h": 32,
+   "w": 29
+  },
+  "poppy2": {
+   "file": "items/poppy2.png",
+   "h": 32,
+   "w": 29
+  },
+  "poppy_seed": {
+   "file": "items/poppy_seed.png",
+   "h": 32,
+   "w": 32
+  },
   "potato": {
    "file": "items/potato.png",
-   "h": 34,
-   "w": 48
+   "h": 32,
+   "w": 28
+  },
+  "potato2": {
+   "file": "items/potato2.png",
+   "h": 27,
+   "w": 32
   },
   "potato_seed": {
    "file": "items/potato_seed.png",
-   "h": 31,
-   "w": 48
+   "h": 32,
+   "w": 29
   },
   "potion": {
    "file": "items/potion.png",
    "h": 29,
-   "w": 48
+   "w": 32
+  },
+  "president_boutonniere": {
+   "file": "items/president_boutonniere.png",
+   "h": 32,
+   "w": 32
+  },
+  "president_grape": {
+   "file": "items/president_grape.png",
+   "h": 31,
+   "w": 32
+  },
+  "president_potato": {
+   "file": "items/president_potato.png",
+   "h": 29,
+   "w": 32
+  },
+  "president_seal": {
+   "file": "items/president_seal.png",
+   "h": 31,
+   "w": 32
+  },
+  "prism_basil": {
+   "file": "items/prism_basil.png",
+   "h": 31,
+   "w": 32
+  },
+  "prism_beet": {
+   "file": "items/prism_beet.png",
+   "h": 32,
+   "w": 30
+  },
+  "prism_grape": {
+   "file": "items/prism_grape.png",
+   "h": 31,
+   "w": 32
+  },
+  "prism_tomato_seed": {
+   "file": "items/prism_tomato_seed.png",
+   "h": 27,
+   "w": 32
   },
   "puffer": {
    "file": "items/puffer.png",
-   "h": 27,
+   "h": 22,
    "w": 32
   },
   "pumpkin": {
    "file": "items/pumpkin.png",
-   "h": 33,
-   "w": 48
+   "h": 32,
+   "w": 32
+  },
+  "pumpkin_seed": {
+   "file": "items/pumpkin_seed.png",
+   "h": 32,
+   "w": 32
+  },
+  "pumpkin_soup": {
+   "file": "items/pumpkin_soup.png",
+   "h": 29,
+   "w": 32
+  },
+  "purple_carrot": {
+   "file": "items/purple_carrot.png",
+   "h": 32,
+   "w": 30
+  },
+  "purr_plum": {
+   "file": "items/purr_plum.png",
+   "h": 30,
+   "w": 32
+  },
+  "purr_pumpkin": {
+   "file": "items/purr_pumpkin.png",
+   "h": 30,
+   "w": 32
+  },
+  "quince": {
+   "file": "items/quince.png",
+   "h": 32,
+   "w": 29
+  },
+  "quince_seed": {
+   "file": "items/quince_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "radish": {
+   "file": "items/radish.png",
+   "h": 32,
+   "w": 28
+  },
+  "radish2": {
+   "file": "items/radish2.png",
+   "h": 31,
+   "w": 32
+  },
+  "radish_seed": {
+   "file": "items/radish_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "rain_boots": {
+   "file": "items/rain_boots.png",
+   "h": 31,
+   "w": 32
+  },
+  "rainbow_beet_seed": {
+   "file": "items/rainbow_beet_seed.png",
+   "h": 25,
+   "w": 32
+  },
+  "rainbow_chard": {
+   "file": "items/rainbow_chard.png",
+   "h": 32,
+   "w": 31
+  },
+  "raspberry": {
+   "file": "items/raspberry.png",
+   "h": 32,
+   "w": 31
+  },
+  "raspberry_seed": {
+   "file": "items/raspberry_seed.png",
+   "h": 29,
+   "w": 32
+  },
+  "red_apple": {
+   "file": "items/red_apple.png",
+   "h": 32,
+   "w": 28
+  },
+  "red_corn": {
+   "file": "items/red_corn.png",
+   "h": 32,
+   "w": 30
+  },
+  "rice": {
+   "file": "items/rice.png",
+   "h": 32,
+   "w": 25
+  },
+  "rice_seed": {
+   "file": "items/rice_seed.png",
+   "h": 32,
+   "w": 29
+  },
+  "river_lily": {
+   "file": "items/river_lily.png",
+   "h": 31,
+   "w": 32
+  },
+  "river_pear": {
+   "file": "items/river_pear.png",
+   "h": 32,
+   "w": 30
+  },
+  "river_rice": {
+   "file": "items/river_rice.png",
+   "h": 32,
+   "w": 29
+  },
+  "roast_fish": {
+   "file": "items/roast_fish.png",
+   "h": 31,
+   "w": 32
   },
   "rod": {
    "file": "items/rod.png",
-   "h": 48,
-   "w": 47
+   "h": 28,
+   "w": 32
+  },
+  "rod_copper": {
+   "file": "items/rod_copper.png",
+   "h": 30,
+   "w": 32
+  },
+  "rod_crystal": {
+   "file": "items/rod_crystal.png",
+   "h": 28,
+   "w": 32
+  },
+  "rod_gold": {
+   "file": "items/rod_gold.png",
+   "h": 31,
+   "w": 32
+  },
+  "rod_iron": {
+   "file": "items/rod_iron.png",
+   "h": 30,
+   "w": 32
+  },
+  "rope": {
+   "file": "items/rope.png",
+   "h": 29,
+   "w": 32
+  },
+  "rose_red": {
+   "file": "items/rose_red.png",
+   "h": 32,
+   "w": 27
+  },
+  "rose_red2": {
+   "file": "items/rose_red2.png",
+   "h": 32,
+   "w": 29
+  },
+  "rose_white": {
+   "file": "items/rose_white.png",
+   "h": 32,
+   "w": 30
+  },
+  "rose_white2": {
+   "file": "items/rose_white2.png",
+   "h": 32,
+   "w": 28
+  },
+  "rosemary": {
+   "file": "items/rosemary.png",
+   "h": 32,
+   "w": 30
   },
   "ruby": {
    "file": "items/ruby.png",
-   "h": 34,
-   "w": 48
+   "h": 32,
+   "w": 31
+  },
+  "ruby_ring": {
+   "file": "items/ruby_ring.png",
+   "h": 30,
+   "w": 32
+  },
+  "running_shoes": {
+   "file": "items/running_shoes.png",
+   "h": 28,
+   "w": 32
   },
   "saddle": {
    "file": "items/saddle.png",
    "h": 26,
    "w": 32
   },
+  "saffron": {
+   "file": "items/saffron.png",
+   "h": 32,
+   "w": 31
+  },
+  "saffron_seed": {
+   "file": "items/saffron_seed.png",
+   "h": 24,
+   "w": 32
+  },
+  "sage": {
+   "file": "items/sage.png",
+   "h": 32,
+   "w": 32
+  },
+  "salad": {
+   "file": "items/salad.png",
+   "h": 29,
+   "w": 32
+  },
   "salmon": {
    "file": "items/salmon.png",
+   "h": 18,
+   "w": 32
+  },
+  "sandals": {
+   "file": "items/sandals.png",
+   "h": 30,
+   "w": 32
+  },
+  "sap": {
+   "file": "items/sap.png",
    "h": 32,
-   "w": 48
+   "w": 23
   },
   "sapphire": {
    "file": "items/sapphire.png",
-   "h": 35,
-   "w": 48
+   "h": 31,
+   "w": 32
+  },
+  "sapphire_ring": {
+   "file": "items/sapphire_ring.png",
+   "h": 30,
+   "w": 32
+  },
+  "scallion_seed": {
+   "file": "items/scallion_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "scarf": {
+   "file": "items/scarf.png",
+   "h": 32,
+   "w": 30
   },
   "scythe": {
    "file": "items/scythe.png",
-   "h": 48,
-   "w": 47
+   "h": 29,
+   "w": 32
+  },
+  "sea_grape": {
+   "file": "items/sea_grape.png",
+   "h": 32,
+   "w": 31
+  },
+  "sea_thrift": {
+   "file": "items/sea_thrift.png",
+   "h": 32,
+   "w": 32
+  },
+  "seashell": {
+   "file": "items/seashell.png",
+   "h": 29,
+   "w": 32
   },
   "seeds": {
    "file": "items/seeds.png",
    "h": 32,
    "w": 27
   },
+  "sesame_seed": {
+   "file": "items/sesame_seed.png",
+   "h": 32,
+   "w": 31
+  },
+  "shadow_cherry": {
+   "file": "items/shadow_cherry.png",
+   "h": 30,
+   "w": 32
+  },
+  "shadow_ink": {
+   "file": "items/shadow_ink.png",
+   "h": 32,
+   "w": 28
+  },
+  "shadow_yam": {
+   "file": "items/shadow_yam.png",
+   "h": 28,
+   "w": 32
+  },
+  "shadowberry_seed": {
+   "file": "items/shadowberry_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "shallot": {
+   "file": "items/shallot.png",
+   "h": 32,
+   "w": 27
+  },
+  "shallot_seed": {
+   "file": "items/shallot_seed.png",
+   "h": 30,
+   "w": 32
+  },
   "shard": {
    "file": "items/shard.png",
    "h": 32,
-   "w": 18
+   "w": 31
+  },
+  "shard_heart": {
+   "file": "items/shard_heart.png",
+   "h": 32,
+   "w": 29
   },
   "silver": {
    "file": "items/silver.png",
    "h": 30,
-   "w": 48
+   "w": 32
   },
   "silver_bar": {
    "file": "items/silver_bar.png",
-   "h": 35,
-   "w": 48
+   "h": 28,
+   "w": 32
+  },
+  "silver_garlic": {
+   "file": "items/silver_garlic.png",
+   "h": 32,
+   "w": 28
+  },
+  "silver_orange": {
+   "file": "items/silver_orange.png",
+   "h": 32,
+   "w": 32
+  },
+  "silver_ring": {
+   "file": "items/silver_ring.png",
+   "h": 28,
+   "w": 32
+  },
+  "silver_sage": {
+   "file": "items/silver_sage.png",
+   "h": 32,
+   "w": 31
+  },
+  "singing_corn": {
+   "file": "items/singing_corn.png",
+   "h": 32,
+   "w": 31
+  },
+  "singing_pear": {
+   "file": "items/singing_pear.png",
+   "h": 32,
+   "w": 32
+  },
+  "singing_thyme": {
+   "file": "items/singing_thyme.png",
+   "h": 32,
+   "w": 31
+  },
+  "sky_lettuce_seed": {
+   "file": "items/sky_lettuce_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "slime_gel": {
+   "file": "items/slime_gel.png",
+   "h": 26,
+   "w": 32
+  },
+  "slippers": {
+   "file": "items/slippers.png",
+   "h": 32,
+   "w": 32
+  },
+  "sneakers": {
+   "file": "items/sneakers.png",
+   "h": 30,
+   "w": 32
+  },
+  "snow_boots": {
+   "file": "items/snow_boots.png",
+   "h": 29,
+   "w": 32
+  },
+  "soldier_badge": {
+   "file": "items/soldier_badge.png",
+   "h": 32,
+   "w": 29
+  },
+  "sorrel": {
+   "file": "items/sorrel.png",
+   "h": 32,
+   "w": 31
+  },
+  "soul_clover": {
+   "file": "items/soul_clover.png",
+   "h": 32,
+   "w": 28
+  },
+  "soul_pumpkin": {
+   "file": "items/soul_pumpkin.png",
+   "h": 30,
+   "w": 32
+  },
+  "soulberry": {
+   "file": "items/soulberry.png",
+   "h": 31,
+   "w": 32
+  },
+  "soulcorn": {
+   "file": "items/soulcorn.png",
+   "h": 32,
+   "w": 31
+  },
+  "soulflower": {
+   "file": "items/soulflower.png",
+   "h": 32,
+   "w": 32
+  },
+  "soulleaf_seed": {
+   "file": "items/soulleaf_seed.png",
+   "h": 32,
+   "w": 32
+  },
+  "speed_ring": {
+   "file": "items/speed_ring.png",
+   "h": 31,
+   "w": 32
+  },
+  "spinach": {
+   "file": "items/spinach.png",
+   "h": 32,
+   "w": 30
+  },
+  "spinach_seed": {
+   "file": "items/spinach_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "spirit_leaf": {
+   "file": "items/spirit_leaf.png",
+   "h": 30,
+   "w": 32
+  },
+  "spring_blossom": {
+   "file": "items/spring_blossom.png",
+   "h": 32,
+   "w": 30
+  },
+  "spring_pea": {
+   "file": "items/spring_pea.png",
+   "h": 29,
+   "w": 32
+  },
+  "spring_rain_grape": {
+   "file": "items/spring_rain_grape.png",
+   "h": 30,
+   "w": 32
+  },
+  "squash": {
+   "file": "items/squash.png",
+   "h": 32,
+   "w": 31
+  },
+  "star_apple": {
+   "file": "items/star_apple.png",
+   "h": 32,
+   "w": 29
+  },
+  "star_cherry": {
+   "file": "items/star_cherry.png",
+   "h": 28,
+   "w": 32
+  },
+  "star_dust": {
+   "file": "items/star_dust.png",
+   "h": 32,
+   "w": 30
+  },
+  "star_dust2": {
+   "file": "items/star_dust2.png",
+   "h": 31,
+   "w": 32
+  },
+  "star_lavender": {
+   "file": "items/star_lavender.png",
+   "h": 32,
+   "w": 32
+  },
+  "star_lily": {
+   "file": "items/star_lily.png",
+   "h": 32,
+   "w": 31
+  },
+  "star_pepper": {
+   "file": "items/star_pepper.png",
+   "h": 32,
+   "w": 30
+  },
+  "star_potato": {
+   "file": "items/star_potato.png",
+   "h": 30,
+   "w": 32
+  },
+  "star_ring": {
+   "file": "items/star_ring.png",
+   "h": 32,
+   "w": 32
+  },
+  "stardust_pumpkin_seed": {
+   "file": "items/stardust_pumpkin_seed.png",
+   "h": 27,
+   "w": 32
   },
   "starfin": {
    "file": "items/starfin.png",
-   "h": 24,
+   "h": 22,
    "w": 32
+  },
+  "starflower_seed": {
+   "file": "items/starflower_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "starfruit": {
+   "file": "items/starfruit.png",
+   "h": 30,
+   "w": 32
+  },
+  "starfruit2": {
+   "file": "items/starfruit2.png",
+   "h": 30,
+   "w": 32
+  },
+  "starfruit_seed": {
+   "file": "items/starfruit_seed.png",
+   "h": 31,
+   "w": 32
+  },
+  "steel_sword": {
+   "file": "items/steel_sword.png",
+   "h": 32,
+   "w": 29
   },
   "stone": {
    "file": "items/stone.png",
+   "h": 28,
+   "w": 32
+  },
+  "stone_bloom": {
+   "file": "items/stone_bloom.png",
    "h": 32,
-   "w": 27
+   "w": 32
+  },
+  "stone_fig": {
+   "file": "items/stone_fig.png",
+   "h": 30,
+   "w": 32
+  },
+  "stone_potato": {
+   "file": "items/stone_potato.png",
+   "h": 31,
+   "w": 32
+  },
+  "storm_berry": {
+   "file": "items/storm_berry.png",
+   "h": 30,
+   "w": 32
+  },
+  "storm_orchid": {
+   "file": "items/storm_orchid.png",
+   "h": 32,
+   "w": 32
+  },
+  "storm_pepper": {
+   "file": "items/storm_pepper.png",
+   "h": 32,
+   "w": 30
+  },
+  "straw_hat": {
+   "file": "items/straw_hat.png",
+   "h": 26,
+   "w": 32
   },
   "strawberry": {
    "file": "items/strawberry.png",
-   "h": 34,
-   "w": 48
+   "h": 32,
+   "w": 29
+  },
+  "strawberry_seed": {
+   "file": "items/strawberry_seed.png",
+   "h": 32,
+   "w": 31
+  },
+  "striped_squash": {
+   "file": "items/striped_squash.png",
+   "h": 32,
+   "w": 26
+  },
+  "sugar_plum": {
+   "file": "items/sugar_plum.png",
+   "h": 32,
+   "w": 28
+  },
+  "summer_fire_mango": {
+   "file": "items/summer_fire_mango.png",
+   "h": 28,
+   "w": 32
+  },
+  "summer_sunburst": {
+   "file": "items/summer_sunburst.png",
+   "h": 32,
+   "w": 32
+  },
+  "summer_tomato": {
+   "file": "items/summer_tomato.png",
+   "h": 32,
+   "w": 32
+  },
+  "sun_apple": {
+   "file": "items/sun_apple.png",
+   "h": 32,
+   "w": 32
+  },
+  "sun_bead": {
+   "file": "items/sun_bead.png",
+   "h": 29,
+   "w": 32
+  },
+  "sun_bean": {
+   "file": "items/sun_bean.png",
+   "h": 32,
+   "w": 31
+  },
+  "sun_corn": {
+   "file": "items/sun_corn.png",
+   "h": 31,
+   "w": 32
+  },
+  "sun_persimmon": {
+   "file": "items/sun_persimmon.png",
+   "h": 29,
+   "w": 32
+  },
+  "sun_rose": {
+   "file": "items/sun_rose.png",
+   "h": 32,
+   "w": 31
   },
   "sunfish": {
    "file": "items/sunfish.png",
-   "h": 24,
+   "h": 23,
+   "w": 32
+  },
+  "sunflower": {
+   "file": "items/sunflower.png",
+   "h": 32,
+   "w": 28
+  },
+  "sunflower2": {
+   "file": "items/sunflower2.png",
+   "h": 32,
+   "w": 27
+  },
+  "sunflower_gold": {
+   "file": "items/sunflower_gold.png",
+   "h": 32,
+   "w": 31
+  },
+  "sunflower_seed": {
+   "file": "items/sunflower_seed.png",
+   "h": 32,
+   "w": 29
+  },
+  "sunfruit": {
+   "file": "items/sunfruit.png",
+   "h": 32,
+   "w": 32
+  },
+  "sunfruit_seed": {
+   "file": "items/sunfruit_seed.png",
+   "h": 26,
+   "w": 32
+  },
+  "sunpepper": {
+   "file": "items/sunpepper.png",
+   "h": 32,
+   "w": 27
+  },
+  "sweater": {
+   "file": "items/sweater.png",
+   "h": 29,
+   "w": 32
+  },
+  "sweet_potato": {
+   "file": "items/sweet_potato.png",
+   "h": 32,
+   "w": 30
+  },
+  "sweet_potato_seed": {
+   "file": "items/sweet_potato_seed.png",
+   "h": 28,
    "w": 32
   },
   "sword": {
    "file": "items/sword.png",
-   "h": 48,
-   "w": 48
+   "h": 32,
+   "w": 32
+  },
+  "tabby_orange": {
+   "file": "items/tabby_orange.png",
+   "h": 30,
+   "w": 32
+  },
+  "tabby_tomato": {
+   "file": "items/tabby_tomato.png",
+   "h": 32,
+   "w": 30
+  },
+  "tamarind": {
+   "file": "items/tamarind.png",
+   "h": 32,
+   "w": 28
+  },
+  "tank_top": {
+   "file": "items/tank_top.png",
+   "h": 31,
+   "w": 32
+  },
+  "tea_leaf": {
+   "file": "items/tea_leaf.png",
+   "h": 31,
+   "w": 32
+  },
+  "tea_seed": {
+   "file": "items/tea_seed.png",
+   "h": 24,
+   "w": 32
+  },
+  "thug_cash": {
+   "file": "items/thug_cash.png",
+   "h": 27,
+   "w": 32
+  },
+  "thunder_nettle": {
+   "file": "items/thunder_nettle.png",
+   "h": 32,
+   "w": 32
+  },
+  "thunder_pepper": {
+   "file": "items/thunder_pepper.png",
+   "h": 32,
+   "w": 29
+  },
+  "thunder_plum": {
+   "file": "items/thunder_plum.png",
+   "h": 32,
+   "w": 32
+  },
+  "thyme": {
+   "file": "items/thyme.png",
+   "h": 32,
+   "w": 29
+  },
+  "tide_fruit": {
+   "file": "items/tide_fruit.png",
+   "h": 30,
+   "w": 32
+  },
+  "tide_lettuce": {
+   "file": "items/tide_lettuce.png",
+   "h": 31,
+   "w": 32
+  },
+  "time_flower": {
+   "file": "items/time_flower.png",
+   "h": 32,
+   "w": 32
+  },
+  "time_pear": {
+   "file": "items/time_pear.png",
+   "h": 32,
+   "w": 31
+  },
+  "time_sand": {
+   "file": "items/time_sand.png",
+   "h": 32,
+   "w": 24
+  },
+  "time_turnip": {
+   "file": "items/time_turnip.png",
+   "h": 32,
+   "w": 32
   },
   "tomato": {
    "file": "items/tomato.png",
-   "h": 33,
-   "w": 48
+   "h": 32,
+   "w": 28
+  },
+  "tomato2": {
+   "file": "items/tomato2.png",
+   "h": 27,
+   "w": 32
   },
   "tomato_seed": {
    "file": "items/tomato_seed.png",
    "h": 31,
-   "w": 48
+   "w": 32
+  },
+  "top_hat": {
+   "file": "items/top_hat.png",
+   "h": 28,
+   "w": 32
   },
   "trout": {
    "file": "items/trout.png",
-   "h": 33,
-   "w": 48
+   "h": 19,
+   "w": 32
+  },
+  "truffle": {
+   "file": "items/truffle.png",
+   "h": 27,
+   "w": 32
+  },
+  "truffle_pasta": {
+   "file": "items/truffle_pasta.png",
+   "h": 26,
+   "w": 32
+  },
+  "truffle_spore": {
+   "file": "items/truffle_spore.png",
+   "h": 24,
+   "w": 32
+  },
+  "tulip": {
+   "file": "items/tulip.png",
+   "h": 32,
+   "w": 27
+  },
+  "tulip2": {
+   "file": "items/tulip2.png",
+   "h": 32,
+   "w": 26
   },
   "tuna": {
    "file": "items/tuna.png",
-   "h": 32,
-   "w": 48
+   "h": 21,
+   "w": 32
+  },
+  "tunic": {
+   "file": "items/tunic.png",
+   "h": 28,
+   "w": 32
+  },
+  "turmeric_seed": {
+   "file": "items/turmeric_seed.png",
+   "h": 28,
+   "w": 32
   },
   "turnip": {
    "file": "items/turnip.png",
-   "h": 34,
-   "w": 48
+   "h": 32,
+   "w": 26
+  },
+  "turnip2": {
+   "file": "items/turnip2.png",
+   "h": 32,
+   "w": 28
   },
   "turnip_seed": {
    "file": "items/turnip_seed.png",
-   "h": 31,
-   "w": 48
+   "h": 32,
+   "w": 29
+  },
+  "twin_cherry": {
+   "file": "items/twin_cherry.png",
+   "h": 30,
+   "w": 32
+  },
+  "valerian": {
+   "file": "items/valerian.png",
+   "h": 32,
+   "w": 30
+  },
+  "vanilla_pod": {
+   "file": "items/vanilla_pod.png",
+   "h": 28,
+   "w": 32
+  },
+  "vanilla_seed": {
+   "file": "items/vanilla_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "velvet_beet": {
+   "file": "items/velvet_beet.png",
+   "h": 32,
+   "w": 30
+  },
+  "velvet_fig": {
+   "file": "items/velvet_fig.png",
+   "h": 30,
+   "w": 32
+  },
+  "violet": {
+   "file": "items/violet.png",
+   "h": 32,
+   "w": 27
+  },
+  "violet2": {
+   "file": "items/violet2.png",
+   "h": 32,
+   "w": 28
+  },
+  "void_grape": {
+   "file": "items/void_grape.png",
+   "h": 32,
+   "w": 31
+  },
+  "void_pepper_seed": {
+   "file": "items/void_pepper_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "void_pepper_seed2": {
+   "file": "items/void_pepper_seed2.png",
+   "h": 30,
+   "w": 32
+  },
+  "void_pumpkin": {
+   "file": "items/void_pumpkin.png",
+   "h": 32,
+   "w": 32
+  },
+  "void_rose": {
+   "file": "items/void_rose.png",
+   "h": 32,
+   "w": 31
+  },
+  "wasabi_seed": {
+   "file": "items/wasabi_seed.png",
+   "h": 28,
+   "w": 32
+  },
+  "water_chestnut_seed": {
+   "file": "items/water_chestnut_seed.png",
+   "h": 24,
+   "w": 32
+  },
+  "watercress_seed": {
+   "file": "items/watercress_seed.png",
+   "h": 24,
+   "w": 32
+  },
+  "watermelon": {
+   "file": "items/watermelon.png",
+   "h": 32,
+   "w": 29
+  },
+  "watermelon_seed": {
+   "file": "items/watermelon_seed.png",
+   "h": 32,
+   "w": 31
+  },
+  "wheat": {
+   "file": "items/wheat.png",
+   "h": 32,
+   "w": 25
+  },
+  "wheat2": {
+   "file": "items/wheat2.png",
+   "h": 32,
+   "w": 29
+  },
+  "wheat_seed": {
+   "file": "items/wheat_seed.png",
+   "h": 30,
+   "w": 32
+  },
+  "whisker_corn": {
+   "file": "items/whisker_corn.png",
+   "h": 32,
+   "w": 30
+  },
+  "whisker_lime": {
+   "file": "items/whisker_lime.png",
+   "h": 32,
+   "w": 31
+  },
+  "white_peach": {
+   "file": "items/white_peach.png",
+   "h": 32,
+   "w": 29
+  },
+  "white_pumpkin": {
+   "file": "items/white_pumpkin.png",
+   "h": 32,
+   "w": 31
+  },
+  "wild_garlic": {
+   "file": "items/wild_garlic.png",
+   "h": 32,
+   "w": 32
   },
   "wild_herb": {
    "file": "items/wild_herb.png",
+   "h": 32,
+   "w": 28
+  },
+  "wild_herb2": {
+   "file": "items/wild_herb2.png",
    "h": 31,
-   "w": 48
+   "w": 32
+  },
+  "wild_leek": {
+   "file": "items/wild_leek.png",
+   "h": 31,
+   "w": 32
+  },
+  "winter_cabbage": {
+   "file": "items/winter_cabbage.png",
+   "h": 30,
+   "w": 32
+  },
+  "winter_rose_apple": {
+   "file": "items/winter_rose_apple.png",
+   "h": 30,
+   "w": 32
+  },
+  "winter_snowdrop": {
+   "file": "items/winter_snowdrop.png",
+   "h": 32,
+   "w": 31
+  },
+  "wish": {
+   "file": "items/wish.png",
+   "h": 31,
+   "w": 32
+  },
+  "wish_daisy": {
+   "file": "items/wish_daisy.png",
+   "h": 32,
+   "w": 32
+  },
+  "wish_garlic": {
+   "file": "items/wish_garlic.png",
+   "h": 32,
+   "w": 30
+  },
+  "wish_melon": {
+   "file": "items/wish_melon.png",
+   "h": 29,
+   "w": 32
+  },
+  "wishfruit_seed": {
+   "file": "items/wishfruit_seed.png",
+   "h": 27,
+   "w": 32
+  },
+  "wisp_apple": {
+   "file": "items/wisp_apple.png",
+   "h": 32,
+   "w": 31
+  },
+  "wisp_light": {
+   "file": "items/wisp_light.png",
+   "h": 32,
+   "w": 29
+  },
+  "wisp_onion": {
+   "file": "items/wisp_onion.png",
+   "h": 32,
+   "w": 27
+  },
+  "wisp_rosemary": {
+   "file": "items/wisp_rosemary.png",
+   "h": 32,
+   "w": 32
+  },
+  "wizard_hat": {
+   "file": "items/wizard_hat.png",
+   "h": 29,
+   "w": 32
   },
   "wood": {
    "file": "items/wood.png",
    "h": 32,
    "w": 28
   },
+  "wood_ring": {
+   "file": "items/wood_ring.png",
+   "h": 27,
+   "w": 32
+  },
   "wool": {
    "file": "items/wool.png",
    "h": 24,
+   "w": 32
+  },
+  "work_shirt": {
+   "file": "items/work_shirt.png",
+   "h": 27,
+   "w": 32
+  },
+  "worldseed": {
+   "file": "items/worldseed.png",
+   "h": 31,
+   "w": 32
+  },
+  "worldseed2": {
+   "file": "items/worldseed2.png",
+   "h": 31,
+   "w": 32
+  },
+  "worldseed3": {
+   "file": "items/worldseed3.png",
+   "h": 30,
+   "w": 32
+  },
+  "yarrow": {
+   "file": "items/yarrow.png",
+   "h": 31,
+   "w": 32
+  },
+  "yellow_squash_seed": {
+   "file": "items/yellow_squash_seed.png",
+   "h": 32,
+   "w": 28
+  },
+  "zucchini": {
+   "file": "items/zucchini.png",
+   "h": 32,
+   "w": 28
+  },
+  "zucchini_seed": {
+   "file": "items/zucchini_seed.png",
+   "h": 32,
    "w": 32
   }
  },
@@ -6321,6 +11316,11 @@
    "file": "nature/berry_bush.png",
    "h": 34,
    "w": 40
+  },
+  "berry_bush2": {
+   "file": "nature/berry_bush2.png",
+   "h": 40,
+   "w": 50
   },
   "berry_bush_fall": {
    "file": "nature/berry_bush_fall.png",
@@ -6437,6 +11437,16 @@
    "h": 128,
    "w": 94
   },
+  "bird_bath": {
+   "file": "nature/bird_bath.png",
+   "h": 40,
+   "w": 32
+  },
+  "bramble": {
+   "file": "nature/bramble.png",
+   "h": 40,
+   "w": 48
+  },
   "bush": {
    "file": "nature/bush.png",
    "h": 34,
@@ -6507,6 +11517,11 @@
    "h": 40,
    "w": 39
   },
+  "campfire2": {
+   "file": "nature/campfire2.png",
+   "h": 40,
+   "w": 45
+  },
   "cattail_0": {
    "file": "nature/cattail_0.png",
    "h": 32,
@@ -6567,6 +11582,11 @@
    "h": 64,
    "w": 47
   },
+  "deer_bones": {
+   "file": "nature/deer_bones.png",
+   "h": 40,
+   "w": 44
+  },
   "dune_0": {
    "file": "nature/dune_0.png",
    "h": 30,
@@ -6617,6 +11637,16 @@
    "h": 32,
    "w": 40
   },
+  "fairy_ring": {
+   "file": "nature/fairy_ring.png",
+   "h": 40,
+   "w": 49
+  },
+  "fallen_log2": {
+   "file": "nature/fallen_log2.png",
+   "h": 40,
+   "w": 50
+  },
   "fdeco_0": {
    "file": "nature/fdeco_0.png",
    "h": 32,
@@ -6666,6 +11696,11 @@
    "file": "nature/fdeco_9.png",
    "h": 33,
    "w": 36
+  },
+  "ferns": {
+   "file": "nature/ferns.png",
+   "h": 40,
+   "w": 50
   },
   "flowers": {
    "file": "nature/flowers.png",
@@ -6722,6 +11757,46 @@
    "h": 52,
    "w": 128
   },
+  "grove_0": {
+   "file": "nature/grove_0.png",
+   "h": 96,
+   "w": 108
+  },
+  "grove_1": {
+   "file": "nature/grove_1.png",
+   "h": 96,
+   "w": 98
+  },
+  "grove_2": {
+   "file": "nature/grove_2.png",
+   "h": 96,
+   "w": 101
+  },
+  "grove_3": {
+   "file": "nature/grove_3.png",
+   "h": 96,
+   "w": 101
+  },
+  "grove_4": {
+   "file": "nature/grove_4.png",
+   "h": 96,
+   "w": 102
+  },
+  "grove_5": {
+   "file": "nature/grove_5.png",
+   "h": 96,
+   "w": 103
+  },
+  "grove_6": {
+   "file": "nature/grove_6.png",
+   "h": 96,
+   "w": 104
+  },
+  "grove_7": {
+   "file": "nature/grove_7.png",
+   "h": 96,
+   "w": 102
+  },
   "hedge": {
    "file": "nature/hedge.png",
    "h": 35,
@@ -6732,10 +11807,20 @@
    "h": 79,
    "w": 144
   },
+  "hollow_stump_owl": {
+   "file": "nature/hollow_stump_owl.png",
+   "h": 40,
+   "w": 45
+  },
   "hollow_tree": {
    "file": "nature/hollow_tree.png",
    "h": 139,
    "w": 128
+  },
+  "hunter_hide": {
+   "file": "nature/hunter_hide.png",
+   "h": 40,
+   "w": 46
   },
   "lamp_snow": {
    "file": "nature/lamp_snow.png",
@@ -6806,6 +11891,11 @@
    "file": "nature/log.png",
    "h": 36,
    "w": 58
+  },
+  "log_bench": {
+   "file": "nature/log_bench.png",
+   "h": 40,
+   "w": 76
   },
   "log_fall": {
    "file": "nature/log_fall.png",
@@ -6896,6 +11986,11 @@
    "file": "nature/mid_willow_b.png",
    "h": 96,
    "w": 67
+  },
+  "mossy_rock2": {
+   "file": "nature/mossy_rock2.png",
+   "h": 40,
+   "w": 52
   },
   "mushrooms_fall": {
    "file": "nature/mushrooms_fall.png",
@@ -7043,6 +12138,11 @@
    "h": 24,
    "w": 28
   },
+  "shrine2": {
+   "file": "nature/shrine2.png",
+   "h": 40,
+   "w": 43
+  },
   "stump": {
    "file": "nature/stump.png",
    "h": 31,
@@ -7077,6 +12177,11 @@
    "file": "nature/stump_snow.png",
    "h": 34,
    "w": 36
+  },
+  "stump_table": {
+   "file": "nature/stump_table.png",
+   "h": 40,
+   "w": 48
   },
   "sunflower_bush": {
    "file": "nature/sunflower_bush.png",
@@ -7118,15 +12223,65 @@
    "h": 96,
    "w": 442
   },
+  "treeline_concave": {
+   "file": "nature/treeline_concave.png",
+   "h": 64,
+   "w": 126
+  },
+  "treeline_convex": {
+   "file": "nature/treeline_convex.png",
+   "h": 64,
+   "w": 127
+  },
+  "treeline_end_l": {
+   "file": "nature/treeline_end_l.png",
+   "h": 64,
+   "w": 100
+  },
+  "treeline_end_r": {
+   "file": "nature/treeline_end_r.png",
+   "h": 64,
+   "w": 100
+  },
+  "treeline_gap": {
+   "file": "nature/treeline_gap.png",
+   "h": 64,
+   "w": 128
+  },
+  "treeline_rocks": {
+   "file": "nature/treeline_rocks.png",
+   "h": 64,
+   "w": 123
+  },
+  "treeline_straight": {
+   "file": "nature/treeline_straight.png",
+   "h": 64,
+   "w": 130
+  },
+  "treeline_stream": {
+   "file": "nature/treeline_stream.png",
+   "h": 64,
+   "w": 122
+  },
   "wheat": {
    "file": "nature/wheat.png",
    "h": 32,
    "w": 32
   },
+  "wildflowers2": {
+   "file": "nature/wildflowers2.png",
+   "h": 40,
+   "w": 46
+  },
   "willow": {
    "file": "nature/willow.png",
    "h": 128,
    "w": 96
+  },
+  "wood_pile": {
+   "file": "nature/wood_pile.png",
+   "h": 40,
+   "w": 48
   }
  },
  "portraits/artist": {
@@ -7992,6 +13147,11 @@
    "h": 46,
    "w": 96
   },
+  "bee_house": {
+   "file": "props/bee_house.png",
+   "h": 56,
+   "w": 86
+  },
   "beehive": {
    "file": "props/beehive.png",
    "h": 48,
@@ -8293,6 +13453,14 @@
    "h": 83,
    "w": 112
   },
+  "campfire_cook": {
+   "cell_h": 56,
+   "cell_w": 61,
+   "file": "props/campfire_cook.png",
+   "frames": 4,
+   "h": 56,
+   "w": 244
+  },
   "campsite": {
    "cell_h": 59,
    "cell_w": 96,
@@ -8358,6 +13526,14 @@
    "file": "props/cat_wall.png",
    "h": 56,
    "w": 108
+  },
+  "cauldron2": {
+   "cell_h": 56,
+   "cell_w": 51,
+   "file": "props/cauldron2.png",
+   "frames": 4,
+   "h": 56,
+   "w": 204
   },
   "cave_moss": {
    "file": "props/cave_moss.png",
@@ -8521,6 +13697,11 @@
    "file": "props/checkpoint_up.png",
    "h": 96,
    "w": 110
+  },
+  "cheese_press": {
+   "file": "props/cheese_press.png",
+   "h": 52,
+   "w": 58
   },
   "chest_closed": {
    "file": "props/chest_closed.png",
@@ -8686,6 +13867,11 @@
    "h": 21,
    "w": 28
   },
+  "crab_pot_water": {
+   "file": "props/crab_pot_water.png",
+   "h": 44,
+   "w": 131
+  },
   "crane": {
    "file": "props/crane.png",
    "h": 104,
@@ -8793,6 +13979,14 @@
    "file": "props/crystal_tree.png",
    "h": 103,
    "w": 112
+  },
+  "crystalarium": {
+   "cell_h": 64,
+   "cell_w": 69,
+   "file": "props/crystalarium.png",
+   "frames": 4,
+   "h": 64,
+   "w": 276
   },
   "dark_spire": {
    "file": "props/dark_spire.png",
@@ -8932,6 +14126,14 @@
    "file": "props/elevator.png",
    "h": 85,
    "w": 72
+  },
+  "enchant_table": {
+   "cell_h": 56,
+   "cell_w": 72,
+   "file": "props/enchant_table.png",
+   "frames": 4,
+   "h": 56,
+   "w": 288
   },
   "escape_pod": {
    "file": "props/escape_pod.png",
@@ -9102,6 +14304,16 @@
    "h": 28,
    "w": 24
   },
+  "forge_anvil": {
+   "file": "props/forge_anvil.png",
+   "h": 48,
+   "w": 49
+  },
+  "forge_anvil_tools": {
+   "file": "props/forge_anvil_tools.png",
+   "h": 48,
+   "w": 49
+  },
   "forklift": {
    "file": "props/forklift.png",
    "h": 40,
@@ -9135,6 +14347,26 @@
    "h": 51,
    "w": 40
   },
+  "furnace_t1_off": {
+   "file": "props/furnace_t1_off.png",
+   "h": 60,
+   "w": 58
+  },
+  "furnace_t1_on": {
+   "file": "props/furnace_t1_on.png",
+   "h": 60,
+   "w": 60
+  },
+  "furnace_t2_off": {
+   "file": "props/furnace_t2_off.png",
+   "h": 60,
+   "w": 58
+  },
+  "furnace_t2_on": {
+   "file": "props/furnace_t2_on.png",
+   "h": 60,
+   "w": 59
+  },
   "gas_station": {
    "file": "props/gas_station.png",
    "h": 94,
@@ -9152,6 +14384,14 @@
    "frames": 4,
    "h": 160,
    "w": 796
+  },
+  "glass_kiln": {
+   "cell_h": 60,
+   "cell_w": 51,
+   "file": "props/glass_kiln.png",
+   "frames": 4,
+   "h": 60,
+   "w": 204
   },
   "glow_pond": {
    "cell_h": 72,
@@ -9488,6 +14728,11 @@
    "h": 30,
    "w": 32
   },
+  "jeweller_bench": {
+   "file": "props/jeweller_bench.png",
+   "h": 60,
+   "w": 114
+  },
   "jukebox_a": {
    "file": "props/jukebox_a.png",
    "h": 56,
@@ -9507,6 +14752,26 @@
    "file": "props/keg2.png",
    "h": 40,
    "w": 30
+  },
+  "keg3": {
+   "file": "props/keg3.png",
+   "h": 48,
+   "w": 42
+  },
+  "kitchen_counter2": {
+   "file": "props/kitchen_counter2.png",
+   "h": 56,
+   "w": 57
+  },
+  "kitchen_counter_long": {
+   "file": "props/kitchen_counter_long.png",
+   "h": 56,
+   "w": 120
+  },
+  "kitchen_stove2": {
+   "file": "props/kitchen_stove2.png",
+   "h": 56,
+   "w": 57
   },
   "ladder_a": {
    "file": "props/ladder_a.png",
@@ -9598,6 +14863,11 @@
    "h": 40,
    "w": 40
   },
+  "lightning_rod": {
+   "file": "props/lightning_rod.png",
+   "h": 64,
+   "w": 51
+  },
   "limo": {
    "file": "props/limo.png",
    "h": 27,
@@ -9612,6 +14882,11 @@
    "file": "props/lookout_tower.png",
    "h": 192,
    "w": 90
+  },
+  "loom": {
+   "file": "props/loom.png",
+   "h": 60,
+   "w": 72
   },
   "low_wall_a": {
    "file": "props/low_wall_a.png",
@@ -9647,6 +14922,11 @@
    "file": "props/manhole_open.png",
    "h": 37,
    "w": 48
+  },
+  "mayo_machine": {
+   "file": "props/mayo_machine.png",
+   "h": 52,
+   "w": 60
   },
   "milestone": {
    "file": "props/milestone.png",
@@ -9932,6 +15212,11 @@
    "h": 38,
    "w": 48
   },
+  "oil_press": {
+   "file": "props/oil_press.png",
+   "h": 52,
+   "w": 66
+  },
   "old_well": {
    "file": "props/old_well.png",
    "h": 48,
@@ -10065,6 +15350,11 @@
    "h": 40,
    "w": 31
   },
+  "preserves_jar2": {
+   "file": "props/preserves_jar2.png",
+   "h": 44,
+   "w": 35
+  },
   "puddle": {
    "cell_h": 40,
    "cell_w": 32,
@@ -10159,6 +15449,11 @@
    "h": 96,
    "w": 352
   },
+  "recycler": {
+   "file": "props/recycler.png",
+   "h": 56,
+   "w": 105
+  },
   "red_carpet": {
    "file": "props/red_carpet.png",
    "h": 32,
@@ -10181,6 +15476,311 @@
    "file": "props/rest_stop.png",
    "h": 76,
    "w": 192
+  },
+  "ri_beehive4": {
+   "file": "props/ri_beehive4.png",
+   "h": 40,
+   "w": 33
+  },
+  "ri_boat2": {
+   "file": "props/ri_boat2.png",
+   "h": 31,
+   "w": 54
+  },
+  "ri_bone_pile": {
+   "file": "props/ri_bone_pile.png",
+   "h": 36,
+   "w": 47
+  },
+  "ri_boulder4_0": {
+   "file": "props/ri_boulder4_0.png",
+   "h": 50,
+   "w": 53
+  },
+  "ri_boulder4_1": {
+   "file": "props/ri_boulder4_1.png",
+   "h": 53,
+   "w": 53
+  },
+  "ri_boulder4_2": {
+   "file": "props/ri_boulder4_2.png",
+   "h": 51,
+   "w": 54
+  },
+  "ri_cairn": {
+   "file": "props/ri_cairn.png",
+   "h": 52,
+   "w": 54
+  },
+  "ri_cart3": {
+   "file": "props/ri_cart3.png",
+   "h": 45,
+   "w": 55
+  },
+  "ri_crab_hole": {
+   "file": "props/ri_crab_hole.png",
+   "h": 31,
+   "w": 48
+  },
+  "ri_crystal_arch2": {
+   "file": "props/ri_crystal_arch2.png",
+   "h": 34,
+   "w": 58
+  },
+  "ri_crystal_blue": {
+   "file": "props/ri_crystal_blue.png",
+   "h": 33,
+   "w": 36
+  },
+  "ri_crystal_green": {
+   "file": "props/ri_crystal_green.png",
+   "h": 33,
+   "w": 34
+  },
+  "ri_crystal_pink": {
+   "file": "props/ri_crystal_pink.png",
+   "h": 32,
+   "w": 35
+  },
+  "ri_crystal_purple": {
+   "file": "props/ri_crystal_purple.png",
+   "h": 33,
+   "w": 34
+  },
+  "ri_crystal_yellow": {
+   "file": "props/ri_crystal_yellow.png",
+   "h": 32,
+   "w": 33
+  },
+  "ri_dead_bush_0": {
+   "file": "props/ri_dead_bush_0.png",
+   "h": 40,
+   "w": 48
+  },
+  "ri_dead_bush_1": {
+   "file": "props/ri_dead_bush_1.png",
+   "h": 40,
+   "w": 48
+  },
+  "ri_driftwood_0": {
+   "file": "props/ri_driftwood_0.png",
+   "h": 23,
+   "w": 51
+  },
+  "ri_driftwood_1": {
+   "file": "props/ri_driftwood_1.png",
+   "h": 34,
+   "w": 53
+  },
+  "ri_eagle_nest": {
+   "file": "props/ri_eagle_nest.png",
+   "h": 53,
+   "w": 53
+  },
+  "ri_fishing_net": {
+   "file": "props/ri_fishing_net.png",
+   "h": 40,
+   "w": 63
+  },
+  "ri_hay_round": {
+   "file": "props/ri_hay_round.png",
+   "h": 37,
+   "w": 43
+  },
+  "ri_hay_stack": {
+   "file": "props/ri_hay_stack.png",
+   "h": 40,
+   "w": 51
+  },
+  "ri_heron_rock": {
+   "file": "props/ri_heron_rock.png",
+   "h": 45,
+   "w": 39
+  },
+  "ri_hot_spring2": {
+   "file": "props/ri_hot_spring2.png",
+   "h": 54,
+   "w": 54
+  },
+  "ri_jetty_end": {
+   "file": "props/ri_jetty_end.png",
+   "h": 41,
+   "w": 39
+  },
+  "ri_lantern_post": {
+   "file": "props/ri_lantern_post.png",
+   "h": 45,
+   "w": 27
+  },
+  "ri_mossy_0": {
+   "file": "props/ri_mossy_0.png",
+   "h": 32,
+   "w": 42
+  },
+  "ri_mossy_1": {
+   "file": "props/ri_mossy_1.png",
+   "h": 26,
+   "w": 36
+  },
+  "ri_mossy_10": {
+   "file": "props/ri_mossy_10.png",
+   "h": 25,
+   "w": 45
+  },
+  "ri_mossy_11": {
+   "file": "props/ri_mossy_11.png",
+   "h": 26,
+   "w": 40
+  },
+  "ri_mossy_12": {
+   "file": "props/ri_mossy_12.png",
+   "h": 25,
+   "w": 36
+  },
+  "ri_mossy_13": {
+   "file": "props/ri_mossy_13.png",
+   "h": 29,
+   "w": 37
+  },
+  "ri_mossy_14": {
+   "file": "props/ri_mossy_14.png",
+   "h": 32,
+   "w": 55
+  },
+  "ri_mossy_15": {
+   "file": "props/ri_mossy_15.png",
+   "h": 29,
+   "w": 36
+  },
+  "ri_mossy_2": {
+   "file": "props/ri_mossy_2.png",
+   "h": 23,
+   "w": 35
+  },
+  "ri_mossy_3": {
+   "file": "props/ri_mossy_3.png",
+   "h": 27,
+   "w": 38
+  },
+  "ri_mossy_4": {
+   "file": "props/ri_mossy_4.png",
+   "h": 31,
+   "w": 54
+  },
+  "ri_mossy_5": {
+   "file": "props/ri_mossy_5.png",
+   "h": 29,
+   "w": 44
+  },
+  "ri_mossy_6": {
+   "file": "props/ri_mossy_6.png",
+   "h": 30,
+   "w": 37
+  },
+  "ri_mossy_7": {
+   "file": "props/ri_mossy_7.png",
+   "h": 32,
+   "w": 42
+  },
+  "ri_mossy_8": {
+   "file": "props/ri_mossy_8.png",
+   "h": 29,
+   "w": 39
+  },
+  "ri_mossy_9": {
+   "file": "props/ri_mossy_9.png",
+   "h": 25,
+   "w": 45
+  },
+  "ri_mote_0": {
+   "file": "props/ri_mote_0.png",
+   "h": 23,
+   "w": 13
+  },
+  "ri_mote_1": {
+   "file": "props/ri_mote_1.png",
+   "h": 25,
+   "w": 15
+  },
+  "ri_mote_2": {
+   "file": "props/ri_mote_2.png",
+   "h": 30,
+   "w": 31
+  },
+  "ri_mote_3": {
+   "file": "props/ri_mote_3.png",
+   "h": 31,
+   "w": 32
+  },
+  "ri_mountain_flower": {
+   "file": "props/ri_mountain_flower.png",
+   "h": 47,
+   "w": 53
+  },
+  "ri_nest": {
+   "file": "props/ri_nest.png",
+   "h": 40,
+   "w": 59
+  },
+  "ri_pine_stump": {
+   "file": "props/ri_pine_stump.png",
+   "h": 48,
+   "w": 54
+  },
+  "ri_shells_0": {
+   "file": "props/ri_shells_0.png",
+   "h": 24,
+   "w": 41
+  },
+  "ri_shells_1": {
+   "file": "props/ri_shells_1.png",
+   "h": 23,
+   "w": 38
+  },
+  "ri_tidepool2": {
+   "file": "props/ri_tidepool2.png",
+   "h": 38,
+   "w": 52
+  },
+  "ri_vent_0": {
+   "file": "props/ri_vent_0.png",
+   "h": 34,
+   "w": 46
+  },
+  "ri_vent_1": {
+   "file": "props/ri_vent_1.png",
+   "h": 40,
+   "w": 48
+  },
+  "ri_vent_2": {
+   "file": "props/ri_vent_2.png",
+   "h": 40,
+   "w": 48
+  },
+  "ri_vent_3": {
+   "file": "props/ri_vent_3.png",
+   "h": 40,
+   "w": 48
+  },
+  "ri_well3": {
+   "file": "props/ri_well3.png",
+   "h": 48,
+   "w": 48
+  },
+  "ri_wet_rock_0": {
+   "file": "props/ri_wet_rock_0.png",
+   "h": 26,
+   "w": 48
+  },
+  "ri_wet_rock_1": {
+   "file": "props/ri_wet_rock_1.png",
+   "h": 29,
+   "w": 44
+  },
+  "ri_windmill_small": {
+   "file": "props/ri_windmill_small.png",
+   "h": 40,
+   "w": 39
   },
   "roadblock": {
    "file": "props/roadblock.png",
@@ -10336,6 +15936,11 @@
    "h": 26,
    "w": 28
   },
+  "seed_maker": {
+   "file": "props/seed_maker.png",
+   "h": 56,
+   "w": 101
+  },
   "sewer_ladder": {
    "file": "props/sewer_ladder.png",
    "h": 62,
@@ -10348,6 +15953,11 @@
    "frames": 2,
    "h": 20,
    "w": 102
+  },
+  "sewing_table": {
+   "file": "props/sewing_table.png",
+   "h": 60,
+   "w": 115
   },
   "shack": {
    "file": "props/shack.png",
@@ -10682,6 +16292,11 @@
    "file": "props/storm_drain2.png",
    "h": 64,
    "w": 44
+  },
+  "tanning_rack": {
+   "file": "props/tanning_rack.png",
+   "h": 60,
+   "w": 94
   },
   "taxi": {
    "file": "props/taxi.png",
@@ -11066,6 +16681,26 @@
    "file": "props/workbench3.png",
    "h": 44,
    "w": 62
+  },
+  "workbench_t1": {
+   "file": "props/workbench_t1.png",
+   "h": 56,
+   "w": 73
+  },
+  "workbench_t2": {
+   "file": "props/workbench_t2.png",
+   "h": 56,
+   "w": 70
+  },
+  "workbench_t3": {
+   "file": "props/workbench_t3.png",
+   "h": 56,
+   "w": 74
+  },
+  "worm_bin": {
+   "file": "props/worm_bin.png",
+   "h": 44,
+   "w": 65
   }
  },
  "tiles": {
@@ -12039,6 +17674,86 @@
    "h": 96,
    "w": 96
   },
+  "ffloor_0": {
+   "file": "tiles/ffloor_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_1": {
+   "file": "tiles/ffloor_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_10": {
+   "file": "tiles/ffloor_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_11": {
+   "file": "tiles/ffloor_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_12": {
+   "file": "tiles/ffloor_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_13": {
+   "file": "tiles/ffloor_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_14": {
+   "file": "tiles/ffloor_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_15": {
+   "file": "tiles/ffloor_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_2": {
+   "file": "tiles/ffloor_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_3": {
+   "file": "tiles/ffloor_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_4": {
+   "file": "tiles/ffloor_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_5": {
+   "file": "tiles/ffloor_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_6": {
+   "file": "tiles/ffloor_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_7": {
+   "file": "tiles/ffloor_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_8": {
+   "file": "tiles/ffloor_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "ffloor_9": {
+   "file": "tiles/ffloor_9.png",
+   "h": 32,
+   "w": 32
+  },
   "field_rows": {
    "cell_h": 32,
    "cell_w": 32,
@@ -12235,6 +17950,46 @@
    "file": "tiles/forest_path.png",
    "h": 96,
    "w": 96
+  },
+  "fpath_path_end": {
+   "file": "tiles/fpath_path_end.png",
+   "h": 32,
+   "w": 64
+  },
+  "fpath_path_fork": {
+   "file": "tiles/fpath_path_fork.png",
+   "h": 32,
+   "w": 64
+  },
+  "fpath_path_left": {
+   "file": "tiles/fpath_path_left.png",
+   "h": 32,
+   "w": 64
+  },
+  "fpath_path_puddle": {
+   "file": "tiles/fpath_path_puddle.png",
+   "h": 32,
+   "w": 64
+  },
+  "fpath_path_right": {
+   "file": "tiles/fpath_path_right.png",
+   "h": 32,
+   "w": 64
+  },
+  "fpath_path_roots": {
+   "file": "tiles/fpath_path_roots.png",
+   "h": 32,
+   "w": 64
+  },
+  "fpath_path_s": {
+   "file": "tiles/fpath_path_s.png",
+   "h": 32,
+   "w": 64
+  },
+  "fpath_path_straight": {
+   "file": "tiles/fpath_path_straight.png",
+   "h": 32,
+   "w": 64
   },
   "g_dry": {
    "cell_h": 32,
@@ -13685,6 +19440,276 @@
    "frames": 4,
    "h": 32,
    "w": 128
+  },
+  "ri_ash_0": {
+   "file": "tiles/ri_ash_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_ash_1": {
+   "file": "tiles/ri_ash_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_ash_2": {
+   "file": "tiles/ri_ash_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_cracked_0": {
+   "file": "tiles/ri_cracked_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_cracked_1": {
+   "file": "tiles/ri_cracked_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_cracked_2": {
+   "file": "tiles/ri_cracked_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dead_grass_0": {
+   "file": "tiles/ri_dead_grass_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dead_grass_1": {
+   "file": "tiles/ri_dead_grass_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dead_grass_2": {
+   "file": "tiles/ri_dead_grass_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dry_sand_0": {
+   "file": "tiles/ri_dry_sand_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dry_sand_1": {
+   "file": "tiles/ri_dry_sand_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dune_grass_0": {
+   "file": "tiles/ri_dune_grass_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dune_grass_1": {
+   "file": "tiles/ri_dune_grass_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_dune_grass_2": {
+   "file": "tiles/ri_dune_grass_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_farm_track_0": {
+   "file": "tiles/ri_farm_track_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_farm_track_1": {
+   "file": "tiles/ri_farm_track_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_glow_grass_0": {
+   "file": "tiles/ri_glow_grass_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_glow_grass_1": {
+   "file": "tiles/ri_glow_grass_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_glow_grass_2": {
+   "file": "tiles/ri_glow_grass_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_glow_pond_0": {
+   "file": "tiles/ri_glow_pond_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_glow_pond_1": {
+   "file": "tiles/ri_glow_pond_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_glow_pond_2": {
+   "file": "tiles/ri_glow_pond_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_hedgerow_0": {
+   "file": "tiles/ri_hedgerow_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_hedgerow_1": {
+   "file": "tiles/ri_hedgerow_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_hedgerow_2": {
+   "file": "tiles/ri_hedgerow_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_meadow_daisy": {
+   "file": "tiles/ri_meadow_daisy.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_meadow_lavender": {
+   "file": "tiles/ri_meadow_lavender.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_meadow_mixed": {
+   "file": "tiles/ri_meadow_mixed.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_meadow_poppy": {
+   "file": "tiles/ri_meadow_poppy.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_pebble_shore_0": {
+   "file": "tiles/ri_pebble_shore_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_pebble_shore_1": {
+   "file": "tiles/ri_pebble_shore_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_pebble_shore_2": {
+   "file": "tiles/ri_pebble_shore_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_reed_bank_0": {
+   "file": "tiles/ri_reed_bank_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_reed_bank_1": {
+   "file": "tiles/ri_reed_bank_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_reed_bank_2": {
+   "file": "tiles/ri_reed_bank_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_rich_soil_0": {
+   "file": "tiles/ri_rich_soil_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_rich_soil_1": {
+   "file": "tiles/ri_rich_soil_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_rich_soil_2": {
+   "file": "tiles/ri_rich_soil_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_scree_0": {
+   "file": "tiles/ri_scree_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_scree_1": {
+   "file": "tiles/ri_scree_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_scree_2": {
+   "file": "tiles/ri_scree_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_snowline_0": {
+   "file": "tiles/ri_snowline_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_snowline_1": {
+   "file": "tiles/ri_snowline_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_snowline_2": {
+   "file": "tiles/ri_snowline_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_stone_wall_0": {
+   "file": "tiles/ri_stone_wall_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_stone_wall_1": {
+   "file": "tiles/ri_stone_wall_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_stone_wall_2": {
+   "file": "tiles/ri_stone_wall_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_tall_edge_a": {
+   "file": "tiles/ri_tall_edge_a.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_tall_edge_b": {
+   "file": "tiles/ri_tall_edge_b.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_tall_edge_c": {
+   "file": "tiles/ri_tall_edge_c.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_tall_edge_d": {
+   "file": "tiles/ri_tall_edge_d.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_tide_line": {
+   "file": "tiles/ri_tide_line.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_wet_sand_0": {
+   "file": "tiles/ri_wet_sand_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "ri_wet_sand_1": {
+   "file": "tiles/ri_wet_sand_1.png",
+   "h": 32,
+   "w": 32
   },
   "river_bend_0": {
    "cell_h": 32,
@@ -15521,6 +21546,36 @@
    "h": 45,
    "w": 48
   },
+  "cc_dice": {
+   "file": "ui/cc_dice.png",
+   "h": 28,
+   "w": 33
+  },
+  "cc_done": {
+   "file": "ui/cc_done.png",
+   "h": 28,
+   "w": 37
+  },
+  "cc_done_pressed": {
+   "file": "ui/cc_done_pressed.png",
+   "h": 28,
+   "w": 37
+  },
+  "cc_next": {
+   "file": "ui/cc_next.png",
+   "h": 28,
+   "w": 37
+  },
+  "cc_prev": {
+   "file": "ui/cc_prev.png",
+   "h": 28,
+   "w": 35
+  },
+  "cc_rotate": {
+   "file": "ui/cc_rotate.png",
+   "h": 28,
+   "w": 37
+  },
   "choice_idle": {
    "file": "ui/choice_idle.png",
    "h": 22,
@@ -15616,6 +21671,31 @@
    "h": 24,
    "w": 23
   },
+  "frame_common": {
+   "file": "ui/frame_common.png",
+   "h": 40,
+   "w": 31
+  },
+  "frame_epic": {
+   "file": "ui/frame_epic.png",
+   "h": 40,
+   "w": 31
+  },
+  "frame_legendary": {
+   "file": "ui/frame_legendary.png",
+   "h": 40,
+   "w": 41
+  },
+  "frame_rare": {
+   "file": "ui/frame_rare.png",
+   "h": 40,
+   "w": 29
+  },
+  "frame_uncommon": {
+   "file": "ui/frame_uncommon.png",
+   "h": 40,
+   "w": 29
+  },
   "gift_hate": {
    "file": "ui/gift_hate.png",
    "h": 55,
@@ -15696,6 +21776,11 @@
    "h": 34,
    "w": 35
   },
+  "ingredient_chip": {
+   "file": "ui/ingredient_chip.png",
+   "h": 40,
+   "w": 46
+  },
   "joy_base_a": {
    "file": "ui/joy_base_a.png",
    "h": 63,
@@ -15756,6 +21841,36 @@
    "h": 45,
    "w": 56
   },
+  "node_crown": {
+   "file": "ui/node_crown.png",
+   "h": 22,
+   "w": 24
+  },
+  "node_lock2": {
+   "file": "ui/node_lock2.png",
+   "h": 24,
+   "w": 24
+  },
+  "node_locked": {
+   "file": "ui/node_locked.png",
+   "h": 24,
+   "w": 24
+  },
+  "node_mastered": {
+   "file": "ui/node_mastered.png",
+   "h": 24,
+   "w": 24
+  },
+  "node_star": {
+   "file": "ui/node_star.png",
+   "h": 24,
+   "w": 24
+  },
+  "node_unlocked": {
+   "file": "ui/node_unlocked.png",
+   "h": 24,
+   "w": 24
+  },
   "panel_crystal": {
    "file": "ui/panel_crystal.png",
    "h": 68,
@@ -15790,6 +21905,406 @@
    "file": "ui/panel_wood2.png",
    "h": 66,
    "w": 74
+  },
+  "perk_bartering_1": {
+   "file": "ui/perk_bartering_1.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_bartering_2": {
+   "file": "ui/perk_bartering_2.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_bartering_3": {
+   "file": "ui/perk_bartering_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_bartering_4": {
+   "file": "ui/perk_bartering_4.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_building_1": {
+   "file": "ui/perk_building_1.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_building_2": {
+   "file": "ui/perk_building_2.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_building_3": {
+   "file": "ui/perk_building_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_building_4": {
+   "file": "ui/perk_building_4.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_building_5": {
+   "file": "ui/perk_building_5.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_building_6": {
+   "file": "ui/perk_building_6.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_combat_1": {
+   "file": "ui/perk_combat_1.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_combat_2": {
+   "file": "ui/perk_combat_2.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_combat_3": {
+   "file": "ui/perk_combat_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_combat_4": {
+   "file": "ui/perk_combat_4.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_combat_5": {
+   "file": "ui/perk_combat_5.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_combat_6": {
+   "file": "ui/perk_combat_6.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_cook_1": {
+   "file": "ui/perk_cook_1.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_cook_2": {
+   "file": "ui/perk_cook_2.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_cook_3": {
+   "file": "ui/perk_cook_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_craft_1": {
+   "file": "ui/perk_craft_1.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_craft_2": {
+   "file": "ui/perk_craft_2.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_craft_3": {
+   "file": "ui/perk_craft_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_craft_4": {
+   "file": "ui/perk_craft_4.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_craft_5": {
+   "file": "ui/perk_craft_5.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_extra_1": {
+   "file": "ui/perk_extra_1.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_extra_2": {
+   "file": "ui/perk_extra_2.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_extra_3": {
+   "file": "ui/perk_extra_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_extra_4": {
+   "file": "ui/perk_extra_4.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_extra_5": {
+   "file": "ui/perk_extra_5.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_extra_6": {
+   "file": "ui/perk_extra_6.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_farming_1": {
+   "file": "ui/perk_farming_1.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_farming_10": {
+   "file": "ui/perk_farming_10.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_farming_2": {
+   "file": "ui/perk_farming_2.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_farming_3": {
+   "file": "ui/perk_farming_3.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_farming_4": {
+   "file": "ui/perk_farming_4.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_farming_5": {
+   "file": "ui/perk_farming_5.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_farming_6": {
+   "file": "ui/perk_farming_6.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_farming_7": {
+   "file": "ui/perk_farming_7.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_farming_8": {
+   "file": "ui/perk_farming_8.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_farming_9": {
+   "file": "ui/perk_farming_9.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_fishing_1": {
+   "file": "ui/perk_fishing_1.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_fishing_2": {
+   "file": "ui/perk_fishing_2.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_fishing_3": {
+   "file": "ui/perk_fishing_3.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_fishing_4": {
+   "file": "ui/perk_fishing_4.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_foraging_1": {
+   "file": "ui/perk_foraging_1.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_foraging_10": {
+   "file": "ui/perk_foraging_10.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_foraging_2": {
+   "file": "ui/perk_foraging_2.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_foraging_3": {
+   "file": "ui/perk_foraging_3.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_foraging_4": {
+   "file": "ui/perk_foraging_4.png",
+   "h": 10,
+   "w": 24
+  },
+  "perk_foraging_5": {
+   "file": "ui/perk_foraging_5.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_foraging_6": {
+   "file": "ui/perk_foraging_6.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_foraging_7": {
+   "file": "ui/perk_foraging_7.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_foraging_8": {
+   "file": "ui/perk_foraging_8.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_foraging_9": {
+   "file": "ui/perk_foraging_9.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_mastery_1": {
+   "file": "ui/perk_mastery_1.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_mastery_2": {
+   "file": "ui/perk_mastery_2.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_mining_1": {
+   "file": "ui/perk_mining_1.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_mining_2": {
+   "file": "ui/perk_mining_2.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_mining_3": {
+   "file": "ui/perk_mining_3.png",
+   "h": 23,
+   "w": 24
+  },
+  "perk_mining_4": {
+   "file": "ui/perk_mining_4.png",
+   "h": 23,
+   "w": 24
+  },
+  "perk_mining_5": {
+   "file": "ui/perk_mining_5.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_perk_65": {
+   "file": "ui/perk_perk_65.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_perk_66": {
+   "file": "ui/perk_perk_66.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_perk_67": {
+   "file": "ui/perk_perk_67.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_perk_68": {
+   "file": "ui/perk_perk_68.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_perk_69": {
+   "file": "ui/perk_perk_69.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_perk_70": {
+   "file": "ui/perk_perk_70.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_quest_done": {
+   "file": "ui/perk_quest_done.png",
+   "h": 16,
+   "w": 24
+  },
+  "perk_quest_done2": {
+   "file": "ui/perk_quest_done2.png",
+   "h": 23,
+   "w": 24
+  },
+  "perk_quest_main": {
+   "file": "ui/perk_quest_main.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_quest_side": {
+   "file": "ui/perk_quest_side.png",
+   "h": 22,
+   "w": 24
+  },
+  "perk_util_1": {
+   "file": "ui/perk_util_1.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_util_2": {
+   "file": "ui/perk_util_2.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_util_3": {
+   "file": "ui/perk_util_3.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_util_4": {
+   "file": "ui/perk_util_4.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_util_5": {
+   "file": "ui/perk_util_5.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_util_6": {
+   "file": "ui/perk_util_6.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_util_7": {
+   "file": "ui/perk_util_7.png",
+   "h": 20,
+   "w": 24
+  },
+  "perk_util_8": {
+   "file": "ui/perk_util_8.png",
+   "h": 21,
+   "w": 24
+  },
+  "perk_util_9": {
+   "file": "ui/perk_util_9.png",
+   "h": 22,
+   "w": 24
   },
   "pheart_empty": {
    "file": "ui/pheart_empty.png",
@@ -15905,6 +22420,16 @@
    "file": "ui/quest_scroll.png",
    "h": 31,
    "w": 32
+  },
+  "recipe_card": {
+   "file": "ui/recipe_card.png",
+   "h": 40,
+   "w": 36
+  },
+  "recipe_locked": {
+   "file": "ui/recipe_locked.png",
+   "h": 40,
+   "w": 36
   },
   "ribbon_best": {
    "file": "ui/ribbon_best.png",
@@ -16141,6 +22666,66 @@
    "h": 78,
    "w": 311
   },
+  "swatch_0": {
+   "file": "ui/swatch_0.png",
+   "h": 28,
+   "w": 29
+  },
+  "swatch_1": {
+   "file": "ui/swatch_1.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_10": {
+   "file": "ui/swatch_10.png",
+   "h": 28,
+   "w": 26
+  },
+  "swatch_11": {
+   "file": "ui/swatch_11.png",
+   "h": 28,
+   "w": 26
+  },
+  "swatch_2": {
+   "file": "ui/swatch_2.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_3": {
+   "file": "ui/swatch_3.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_4": {
+   "file": "ui/swatch_4.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_5": {
+   "file": "ui/swatch_5.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_6": {
+   "file": "ui/swatch_6.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_7": {
+   "file": "ui/swatch_7.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_8": {
+   "file": "ui/swatch_8.png",
+   "h": 28,
+   "w": 38
+  },
+  "swatch_9": {
+   "file": "ui/swatch_9.png",
+   "h": 28,
+   "w": 35
+  },
   "tab2_active": {
    "file": "ui/tab2_active.png",
    "h": 30,
@@ -16160,6 +22745,31 @@
    "file": "ui/tab_idle.png",
    "h": 30,
    "w": 137
+  },
+  "tier_1": {
+   "file": "ui/tier_1.png",
+   "h": 40,
+   "w": 31
+  },
+  "tier_2": {
+   "file": "ui/tier_2.png",
+   "h": 40,
+   "w": 31
+  },
+  "tier_3": {
+   "file": "ui/tier_3.png",
+   "h": 40,
+   "w": 31
+  },
+  "tier_4": {
+   "file": "ui/tier_4.png",
+   "h": 40,
+   "w": 31
+  },
+  "tier_5": {
+   "file": "ui/tier_5.png",
+   "h": 40,
+   "w": 29
   },
   "title_bg": {
    "file": "ui/title_bg.png",
@@ -16217,6 +22827,24 @@
    "w": 32
   }
  },
+ "wildlife/badger": {
+  "idle": {
+   "cell_h": 29,
+   "cell_w": 43,
+   "file": "wildlife/badger/idle.png",
+   "frames": 1,
+   "h": 29,
+   "w": 43
+  },
+  "walk": {
+   "cell_h": 29,
+   "cell_w": 44,
+   "file": "wildlife/badger/walk.png",
+   "frames": 2,
+   "h": 29,
+   "w": 88
+  }
+ },
  "wildlife/bat": {
   "idle": {
    "cell_h": 32,
@@ -16235,22 +22863,76 @@
    "w": 160
   }
  },
- "wildlife/bee": {
+ "wildlife/beaver": {
   "idle": {
-   "cell_h": 20,
-   "cell_w": 21,
-   "file": "wildlife/bee/idle.png",
-   "frames": 4,
-   "h": 20,
-   "w": 84
+   "cell_h": 25,
+   "cell_w": 26,
+   "file": "wildlife/beaver/idle.png",
+   "frames": 1,
+   "h": 25,
+   "w": 26
   },
   "walk": {
-   "cell_h": 20,
-   "cell_w": 27,
+   "cell_h": 31,
+   "cell_w": 44,
+   "file": "wildlife/beaver/walk.png",
+   "frames": 2,
+   "h": 31,
+   "w": 88
+  }
+ },
+ "wildlife/bee": {
+  "idle": {
+   "cell_h": 27,
+   "cell_w": 25,
+   "file": "wildlife/bee/idle.png",
+   "frames": 2,
+   "h": 27,
+   "w": 50
+  },
+  "walk": {
+   "cell_h": 27,
+   "cell_w": 25,
    "file": "wildlife/bee/walk.png",
-   "frames": 4,
-   "h": 20,
-   "w": 108
+   "frames": 2,
+   "h": 27,
+   "w": 50
+  }
+ },
+ "wildlife/blue_jay": {
+  "idle": {
+   "cell_h": 39,
+   "cell_w": 40,
+   "file": "wildlife/blue_jay/idle.png",
+   "frames": 1,
+   "h": 39,
+   "w": 40
+  },
+  "walk": {
+   "cell_h": 42,
+   "cell_w": 47,
+   "file": "wildlife/blue_jay/walk.png",
+   "frames": 2,
+   "h": 42,
+   "w": 94
+  }
+ },
+ "wildlife/boar": {
+  "idle": {
+   "cell_h": 28,
+   "cell_w": 43,
+   "file": "wildlife/boar/idle.png",
+   "frames": 1,
+   "h": 28,
+   "w": 43
+  },
+  "walk": {
+   "cell_h": 29,
+   "cell_w": 44,
+   "file": "wildlife/boar/walk.png",
+   "frames": 2,
+   "h": 29,
+   "w": 88
   }
  },
  "wildlife/butterfly": {
@@ -16273,32 +22955,74 @@
  },
  "wildlife/butterfly_blue": {
   "idle": {
-   "cell_h": 24,
-   "cell_w": 38,
+   "cell_h": 20,
+   "cell_w": 26,
    "file": "wildlife/butterfly_blue/idle.png",
-   "frames": 4,
-   "h": 24,
-   "w": 152
+   "frames": 2,
+   "h": 20,
+   "w": 52
+  },
+  "walk": {
+   "cell_h": 20,
+   "cell_w": 26,
+   "file": "wildlife/butterfly_blue/walk.png",
+   "frames": 2,
+   "h": 20,
+   "w": 52
   }
  },
  "wildlife/butterfly_orange": {
   "idle": {
-   "cell_h": 24,
-   "cell_w": 35,
+   "cell_h": 19,
+   "cell_w": 24,
    "file": "wildlife/butterfly_orange/idle.png",
-   "frames": 4,
-   "h": 24,
-   "w": 140
+   "frames": 2,
+   "h": 19,
+   "w": 48
+  },
+  "walk": {
+   "cell_h": 19,
+   "cell_w": 24,
+   "file": "wildlife/butterfly_orange/walk.png",
+   "frames": 2,
+   "h": 19,
+   "w": 48
+  }
+ },
+ "wildlife/butterfly_purple": {
+  "idle": {
+   "cell_h": 20,
+   "cell_w": 26,
+   "file": "wildlife/butterfly_purple/idle.png",
+   "frames": 2,
+   "h": 20,
+   "w": 52
+  },
+  "walk": {
+   "cell_h": 20,
+   "cell_w": 26,
+   "file": "wildlife/butterfly_purple/walk.png",
+   "frames": 2,
+   "h": 20,
+   "w": 52
   }
  },
  "wildlife/butterfly_yellow": {
   "idle": {
-   "cell_h": 24,
-   "cell_w": 38,
+   "cell_h": 20,
+   "cell_w": 25,
    "file": "wildlife/butterfly_yellow/idle.png",
-   "frames": 4,
-   "h": 24,
-   "w": 152
+   "frames": 2,
+   "h": 20,
+   "w": 50
+  },
+  "walk": {
+   "cell_h": 20,
+   "cell_w": 25,
+   "file": "wildlife/butterfly_yellow/walk.png",
+   "frames": 2,
+   "h": 20,
+   "w": 50
   }
  },
  "wildlife/cat_black": {
@@ -16333,30 +23057,30 @@
  },
  "wildlife/crab": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 45,
+   "cell_h": 29,
+   "cell_w": 43,
    "file": "wildlife/crab/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 180
+   "frames": 2,
+   "h": 29,
+   "w": 86
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 44,
+   "cell_h": 29,
+   "cell_w": 43,
    "file": "wildlife/crab/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 176
+   "frames": 2,
+   "h": 29,
+   "w": 86
   }
  },
  "wildlife/crow": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 37,
+   "cell_h": 33,
+   "cell_w": 41,
    "file": "wildlife/crow/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 148
+   "frames": 1,
+   "h": 33,
+   "w": 41
   },
   "land": {
    "cell_h": 56,
@@ -16375,12 +23099,12 @@
    "w": 224
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 46,
+   "cell_h": 46,
+   "cell_w": 45,
    "file": "wildlife/crow/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 184
+   "frames": 2,
+   "h": 46,
+   "w": 90
   }
  },
  "wildlife/crystal_fish": {
@@ -16395,48 +23119,56 @@
  },
  "wildlife/deer": {
   "idle": {
-   "cell_h": 56,
-   "cell_w": 50,
+   "cell_h": 49,
+   "cell_w": 37,
    "file": "wildlife/deer/idle.png",
-   "frames": 4,
-   "h": 56,
-   "w": 200
+   "frames": 1,
+   "h": 49,
+   "w": 37
   },
   "walk": {
-   "cell_h": 56,
-   "cell_w": 57,
+   "cell_h": 49,
+   "cell_w": 43,
    "file": "wildlife/deer/walk.png",
-   "frames": 4,
-   "h": 56,
-   "w": 228
+   "frames": 2,
+   "h": 49,
+   "w": 86
   }
  },
  "wildlife/dragonfly": {
   "idle": {
-   "cell_h": 28,
-   "cell_w": 55,
+   "cell_h": 24,
+   "cell_w": 35,
    "file": "wildlife/dragonfly/idle.png",
-   "frames": 5,
-   "h": 28,
-   "w": 275
+   "frames": 2,
+   "h": 24,
+   "w": 70
+  },
+  "walk": {
+   "cell_h": 24,
+   "cell_w": 35,
+   "file": "wildlife/dragonfly/walk.png",
+   "frames": 2,
+   "h": 24,
+   "w": 70
   }
  },
  "wildlife/duck": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 36,
+   "cell_h": 46,
+   "cell_w": 51,
    "file": "wildlife/duck/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 144
+   "frames": 1,
+   "h": 46,
+   "w": 51
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 39,
+   "cell_h": 45,
+   "cell_w": 53,
    "file": "wildlife/duck/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 156
+   "frames": 2,
+   "h": 45,
+   "w": 106
   }
  },
  "wildlife/eagle": {
@@ -16449,22 +23181,40 @@
    "w": 112
   }
  },
- "wildlife/firefly": {
+ "wildlife/finch": {
   "idle": {
-   "cell_h": 20,
-   "cell_w": 20,
-   "file": "wildlife/firefly/idle.png",
-   "frames": 4,
-   "h": 20,
-   "w": 80
+   "cell_h": 26,
+   "cell_w": 25,
+   "file": "wildlife/finch/idle.png",
+   "frames": 1,
+   "h": 26,
+   "w": 25
   },
   "walk": {
-   "cell_h": 20,
-   "cell_w": 23,
+   "cell_h": 33,
+   "cell_w": 33,
+   "file": "wildlife/finch/walk.png",
+   "frames": 2,
+   "h": 33,
+   "w": 66
+  }
+ },
+ "wildlife/firefly": {
+  "idle": {
+   "cell_h": 25,
+   "cell_w": 27,
+   "file": "wildlife/firefly/idle.png",
+   "frames": 2,
+   "h": 25,
+   "w": 54
+  },
+  "walk": {
+   "cell_h": 25,
+   "cell_w": 27,
    "file": "wildlife/firefly/walk.png",
-   "frames": 4,
-   "h": 20,
-   "w": 92
+   "frames": 2,
+   "h": 25,
+   "w": 54
   }
  },
  "wildlife/fish_jump": {
@@ -16487,92 +23237,128 @@
  },
  "wildlife/fox": {
   "idle": {
-   "cell_h": 40,
-   "cell_w": 55,
+   "cell_h": 31,
+   "cell_w": 43,
    "file": "wildlife/fox/idle.png",
-   "frames": 4,
-   "h": 40,
-   "w": 220
+   "frames": 1,
+   "h": 31,
+   "w": 43
   },
   "walk": {
-   "cell_h": 40,
-   "cell_w": 69,
+   "cell_h": 31,
+   "cell_w": 43,
    "file": "wildlife/fox/walk.png",
-   "frames": 4,
-   "h": 40,
-   "w": 276
+   "frames": 2,
+   "h": 31,
+   "w": 86
   }
  },
  "wildlife/frog": {
   "idle": {
-   "cell_h": 32,
+   "cell_h": 26,
    "cell_w": 39,
    "file": "wildlife/frog/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 156
+   "frames": 1,
+   "h": 26,
+   "w": 39
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 46,
+   "cell_h": 27,
+   "cell_w": 35,
    "file": "wildlife/frog/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 184
+   "frames": 2,
+   "h": 27,
+   "w": 70
   }
  },
  "wildlife/goat": {
   "idle": {
-   "cell_h": 48,
-   "cell_w": 53,
+   "cell_h": 40,
+   "cell_w": 43,
    "file": "wildlife/goat/idle.png",
-   "frames": 4,
-   "h": 48,
-   "w": 212
+   "frames": 1,
+   "h": 40,
+   "w": 43
   },
   "walk": {
-   "cell_h": 48,
-   "cell_w": 53,
+   "cell_h": 41,
+   "cell_w": 43,
    "file": "wildlife/goat/walk.png",
-   "frames": 4,
-   "h": 48,
-   "w": 212
+   "frames": 2,
+   "h": 41,
+   "w": 86
+  }
+ },
+ "wildlife/grasshopper": {
+  "idle": {
+   "cell_h": 24,
+   "cell_w": 34,
+   "file": "wildlife/grasshopper/idle.png",
+   "frames": 2,
+   "h": 24,
+   "w": 68
+  },
+  "walk": {
+   "cell_h": 24,
+   "cell_w": 34,
+   "file": "wildlife/grasshopper/walk.png",
+   "frames": 2,
+   "h": 24,
+   "w": 68
+  }
+ },
+ "wildlife/hawk": {
+  "idle": {
+   "cell_h": 59,
+   "cell_w": 47,
+   "file": "wildlife/hawk/idle.png",
+   "frames": 1,
+   "h": 59,
+   "w": 47
+  },
+  "walk": {
+   "cell_h": 47,
+   "cell_w": 70,
+   "file": "wildlife/hawk/walk.png",
+   "frames": 2,
+   "h": 47,
+   "w": 140
   }
  },
  "wildlife/hedgehog": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 28,
+   "cell_h": 26,
+   "cell_w": 44,
    "file": "wildlife/hedgehog/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 112
+   "frames": 1,
+   "h": 26,
+   "w": 44
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 31,
+   "cell_h": 26,
+   "cell_w": 43,
    "file": "wildlife/hedgehog/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 124
+   "frames": 2,
+   "h": 26,
+   "w": 86
   }
  },
  "wildlife/heron": {
   "idle": {
-   "cell_h": 56,
-   "cell_w": 46,
+   "cell_h": 63,
+   "cell_w": 60,
    "file": "wildlife/heron/idle.png",
-   "frames": 4,
-   "h": 56,
-   "w": 184
+   "frames": 1,
+   "h": 63,
+   "w": 60
   },
   "walk": {
-   "cell_h": 56,
-   "cell_w": 55,
+   "cell_h": 45,
+   "cell_w": 81,
    "file": "wildlife/heron/walk.png",
-   "frames": 4,
-   "h": 56,
-   "w": 220
+   "frames": 2,
+   "h": 45,
+   "w": 162
   }
  },
  "wildlife/jelly": {
@@ -16585,6 +23371,24 @@
    "w": 176
   }
  },
+ "wildlife/ladybug": {
+  "idle": {
+   "cell_h": 18,
+   "cell_w": 28,
+   "file": "wildlife/ladybug/idle.png",
+   "frames": 2,
+   "h": 18,
+   "w": 56
+  },
+  "walk": {
+   "cell_h": 18,
+   "cell_w": 28,
+   "file": "wildlife/ladybug/walk.png",
+   "frames": 2,
+   "h": 18,
+   "w": 56
+  }
+ },
  "wildlife/moon_rabbit": {
   "idle": {
    "cell_h": 32,
@@ -16595,78 +23399,166 @@
    "w": 62
   }
  },
- "wildlife/owl": {
+ "wildlife/mouse": {
   "idle": {
-   "cell_h": 44,
+   "cell_h": 24,
    "cell_w": 38,
-   "file": "wildlife/owl/idle.png",
-   "frames": 4,
-   "h": 44,
-   "w": 152
+   "file": "wildlife/mouse/idle.png",
+   "frames": 1,
+   "h": 24,
+   "w": 38
   },
   "walk": {
-   "cell_h": 44,
-   "cell_w": 66,
+   "cell_h": 23,
+   "cell_w": 44,
+   "file": "wildlife/mouse/walk.png",
+   "frames": 2,
+   "h": 23,
+   "w": 88
+  }
+ },
+ "wildlife/otter": {
+  "idle": {
+   "cell_h": 29,
+   "cell_w": 43,
+   "file": "wildlife/otter/idle.png",
+   "frames": 1,
+   "h": 29,
+   "w": 43
+  },
+  "walk": {
+   "cell_h": 30,
+   "cell_w": 44,
+   "file": "wildlife/otter/walk.png",
+   "frames": 2,
+   "h": 30,
+   "w": 88
+  }
+ },
+ "wildlife/owl": {
+  "idle": {
+   "cell_h": 43,
+   "cell_w": 35,
+   "file": "wildlife/owl/idle.png",
+   "frames": 1,
+   "h": 43,
+   "w": 35
+  },
+  "walk": {
+   "cell_h": 40,
+   "cell_w": 51,
    "file": "wildlife/owl/walk.png",
-   "frames": 4,
-   "h": 44,
-   "w": 264
+   "frames": 2,
+   "h": 40,
+   "w": 102
   }
  },
  "wildlife/pigeon": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 38,
+   "cell_h": 34,
+   "cell_w": 42,
    "file": "wildlife/pigeon/idle.png",
-   "frames": 5,
-   "h": 32,
-   "w": 190
+   "frames": 1,
+   "h": 34,
+   "w": 42
+  },
+  "walk": {
+   "cell_h": 37,
+   "cell_w": 42,
+   "file": "wildlife/pigeon/walk.png",
+   "frames": 2,
+   "h": 37,
+   "w": 84
   }
  },
  "wildlife/rabbit": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 27,
+   "cell_h": 37,
+   "cell_w": 33,
    "file": "wildlife/rabbit/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 108
+   "frames": 1,
+   "h": 37,
+   "w": 33
+  },
+  "walk": {
+   "cell_h": 38,
+   "cell_w": 44,
+   "file": "wildlife/rabbit/walk.png",
+   "frames": 2,
+   "h": 38,
+   "w": 88
+  }
+ },
+ "wildlife/raccoon": {
+  "idle": {
+   "cell_h": 31,
+   "cell_w": 43,
+   "file": "wildlife/raccoon/idle.png",
+   "frames": 1,
+   "h": 31,
+   "w": 43
   },
   "walk": {
    "cell_h": 32,
-   "cell_w": 39,
-   "file": "wildlife/rabbit/walk.png",
-   "frames": 4,
+   "cell_w": 44,
+   "file": "wildlife/raccoon/walk.png",
+   "frames": 2,
    "h": 32,
-   "w": 156
+   "w": 88
   }
  },
  "wildlife/rat": {
   "idle": {
-   "cell_h": 28,
-   "cell_w": 48,
+   "cell_h": 25,
+   "cell_w": 26,
    "file": "wildlife/rat/idle.png",
-   "frames": 5,
+   "frames": 1,
+   "h": 25,
+   "w": 26
+  },
+  "walk": {
+   "cell_h": 25,
+   "cell_w": 42,
+   "file": "wildlife/rat/walk.png",
+   "frames": 2,
+   "h": 25,
+   "w": 84
+  }
+ },
+ "wildlife/robin": {
+  "idle": {
+   "cell_h": 28,
+   "cell_w": 33,
+   "file": "wildlife/robin/idle.png",
+   "frames": 1,
    "h": 28,
-   "w": 240
+   "w": 33
+  },
+  "walk": {
+   "cell_h": 35,
+   "cell_w": 37,
+   "file": "wildlife/robin/walk.png",
+   "frames": 2,
+   "h": 35,
+   "w": 74
   }
  },
  "wildlife/seagull": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 26,
+   "cell_h": 40,
+   "cell_w": 46,
    "file": "wildlife/seagull/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 104
+   "frames": 1,
+   "h": 40,
+   "w": 46
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 26,
+   "cell_h": 42,
+   "cell_w": 44,
    "file": "wildlife/seagull/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 104
+   "frames": 2,
+   "h": 42,
+   "w": 88
   }
  },
  "wildlife/six_deer": {
@@ -16679,40 +23571,76 @@
    "w": 144
   }
  },
- "wildlife/sparrow": {
+ "wildlife/snail": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 42,
-   "file": "wildlife/sparrow/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 168
+   "cell_h": 26,
+   "cell_w": 36,
+   "file": "wildlife/snail/idle.png",
+   "frames": 2,
+   "h": 26,
+   "w": 72
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 57,
+   "cell_h": 26,
+   "cell_w": 36,
+   "file": "wildlife/snail/walk.png",
+   "frames": 2,
+   "h": 26,
+   "w": 72
+  }
+ },
+ "wildlife/snake": {
+  "idle": {
+   "cell_h": 25,
+   "cell_w": 24,
+   "file": "wildlife/snake/idle.png",
+   "frames": 1,
+   "h": 25,
+   "w": 24
+  },
+  "walk": {
+   "cell_h": 26,
+   "cell_w": 44,
+   "file": "wildlife/snake/walk.png",
+   "frames": 2,
+   "h": 26,
+   "w": 88
+  }
+ },
+ "wildlife/sparrow": {
+  "idle": {
+   "cell_h": 20,
+   "cell_w": 29,
+   "file": "wildlife/sparrow/idle.png",
+   "frames": 1,
+   "h": 20,
+   "w": 29
+  },
+  "walk": {
+   "cell_h": 26,
+   "cell_w": 30,
    "file": "wildlife/sparrow/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 228
+   "frames": 2,
+   "h": 26,
+   "w": 60
   }
  },
  "wildlife/squirrel": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 35,
+   "cell_h": 37,
+   "cell_w": 43,
    "file": "wildlife/squirrel/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 140
+   "frames": 1,
+   "h": 37,
+   "w": 43
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 48,
+   "cell_h": 37,
+   "cell_w": 44,
    "file": "wildlife/squirrel/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 192
+   "frames": 2,
+   "h": 37,
+   "w": 88
   }
  },
  "wildlife/stray_dog": {
@@ -16735,20 +23663,20 @@
  },
  "wildlife/turtle": {
   "idle": {
-   "cell_h": 32,
-   "cell_w": 50,
+   "cell_h": 27,
+   "cell_w": 43,
    "file": "wildlife/turtle/idle.png",
-   "frames": 4,
-   "h": 32,
-   "w": 200
+   "frames": 1,
+   "h": 27,
+   "w": 43
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 51,
+   "cell_h": 24,
+   "cell_w": 36,
    "file": "wildlife/turtle/walk.png",
-   "frames": 4,
-   "h": 32,
-   "w": 204
+   "frames": 2,
+   "h": 24,
+   "w": 72
   }
  }
 }

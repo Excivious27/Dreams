@@ -70,8 +70,30 @@ func after_ready() -> void:
 	rng.seed = 64
 	# Grove trees: every other cell, mix of mid trees, bigger ones in the middle of a mass.
 	var placed := 0
+	var use_groves := Art.has("nature", "grove_0")
+	if use_groves:
+		# Composed canopy clusters every ~4 cells inside the grove mass; single trees fill the rest.
+		for c: Vector2i in _grove:
+			if c.x % 4 != 0 or c.y % 3 != 0:
+				continue
+			var ok := true
+			for dx in range(-1, 3):
+				for dy in range(-2, 1):
+					if not _grove.has(c + Vector2i(dx, dy)):
+						ok = false
+			if not ok:
+				continue
+			var sp := prop("nature", "grove_%d" % rng.randi_range(0, 7), c, 2, rng.randf_range(-2.0, 2.0), false)
+			if sp:
+				for dx in range(-1, 3):
+					for dy in range(-1, 1):
+						var cc := c + Vector2i(dx, dy)
+						blocked[cc] = true
+						things[cc] = {"type": "tree", "hp": 3, "hint": "A: chop", "grove": true}
 	for c: Vector2i in _grove:
-		if (c.x + c.y) % 2 == 1:
+		if (c.x + c.y) % 2 == 1 or things.has(c):
+			continue
+		if use_groves and rng.randf() < 0.45:
 			continue
 		var deep := _grove.has(c + Vector2i(2, 0)) and _grove.has(c + Vector2i(-2, 0)) and _grove.has(c + Vector2i(0, 2)) and _grove.has(c + Vector2i(0, -2))
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
@@ -199,7 +221,10 @@ func draw_map() -> void:
 	WorldGen.draw_ground_detail(self, 67, 0.06)
 	# Dark floor under the groves, soft-edged.
 	for c: Vector2i in _grove:
-		if not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
+		var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
+		if Art.has("tiles", "ffloor_0"):
+			Art.draw_tile(self, "tiles", "ffloor_%d" % [[0, 1, 7, 8, 13, 14, 15, 0, 7, 8][hv % 10]], Vector2(c * TILE), 0)
+		elif not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
 	for c: Vector2i in _grove:
 		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
