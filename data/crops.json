@@ -78,5 +78,113 @@
   "yield": "wheat",
   "color": "b9a04a",
   "top": "e8d26b"
+ },
+ "cranberry": {
+  "name": "Cranberry",
+  "days": 6,
+  "stages": 6,
+  "yield": "cranberry",
+  "season": "fall",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "hops": {
+  "name": "Hops",
+  "days": 8,
+  "stages": 6,
+  "yield": "hops",
+  "season": "summer",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "grape": {
+  "name": "Grape",
+  "days": 9,
+  "stages": 6,
+  "yield": "grape",
+  "season": "fall",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "tea_leaf": {
+  "name": "Tea Leaf",
+  "days": 7,
+  "stages": 6,
+  "yield": "tea",
+  "season": "spring",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "cotton": {
+  "name": "Cotton",
+  "days": 8,
+  "stages": 6,
+  "yield": "cotton",
+  "season": "summer",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "flax": {
+  "name": "Flax",
+  "days": 6,
+  "stages": 6,
+  "yield": "flax",
+  "season": "spring",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "sugar_beet": {
+  "name": "Sugar Beet",
+  "days": 7,
+  "stages": 6,
+  "yield": "sugar_beet",
+  "season": "fall",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "rice": {
+  "name": "Rice",
+  "days": 8,
+  "stages": 6,
+  "yield": "rice",
+  "season": "summer",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "lotus": {
+  "name": "Lotus",
+  "days": 10,
+  "stages": 6,
+  "yield": "lotus",
+  "season": "summer",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "snow_pea": {
+  "name": "Snow Pea",
+  "days": 5,
+  "stages": 6,
+  "yield": "snow_pea",
+  "season": "winter",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "ghost_pepper": {
+  "name": "Ghost Pepper",
+  "days": 9,
+  "stages": 6,
+  "yield": "ghost_pepper",
+  "season": "summer",
+  "color": "88aa66",
+  "top": "55aa33"
+ },
+ "moon_melon": {
+  "name": "Moon Melon",
+  "days": 12,
+  "stages": 6,
+  "yield": "moon_melon",
+  "season": "fall",
+  "color": "88aa66",
+  "top": "55aa33"
  }
 }

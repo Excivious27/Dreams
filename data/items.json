@@ -7074,5 +7074,109 @@
   "tier": 2,
   "energy": 40,
   "heal": 1
+ },
+ "grape": {
+  "name": "Grape",
+  "type": "crop",
+  "value": 40,
+  "rarity": "common",
+  "tier": 2,
+  "energy": 8
+ },
+ "tea_leaf_seed": {
+  "name": "Tea Leaf Seeds",
+  "type": "seed",
+  "crop": "tea_leaf",
+  "value": 16,
+  "rarity": "common",
+  "tier": 1
+ },
+ "cotton": {
+  "name": "Cotton",
+  "type": "crop",
+  "value": 45,
+  "rarity": "common",
+  "tier": 2,
+  "energy": 8
+ },
+ "flax": {
+  "name": "Flax",
+  "type": "crop",
+  "value": 30,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 8
+ },
+ "sugar_beet": {
+  "name": "Sugar Beet",
+  "type": "crop",
+  "value": 38,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 8
+ },
+ "sugar_beet_seed": {
+  "name": "Sugar Beet Seeds",
+  "type": "seed",
+  "crop": "sugar_beet",
+  "value": 17,
+  "rarity": "common",
+  "tier": 1
+ },
+ "lotus": {
+  "name": "Lotus",
+  "type": "crop",
+  "value": 120,
+  "rarity": "rare",
+  "tier": 4,
+  "energy": 8
+ },
+ "snow_pea": {
+  "name": "Snow Pea",
+  "type": "crop",
+  "value": 28,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 8
+ },
+ "snow_pea_seed": {
+  "name": "Snow Pea Seeds",
+  "type": "seed",
+  "crop": "snow_pea",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1
+ },
+ "ghost_pepper": {
+  "name": "Ghost Pepper",
+  "type": "crop",
+  "value": 90,
+  "rarity": "rare",
+  "tier": 3,
+  "energy": 8
+ },
+ "ghost_pepper_seed": {
+  "name": "Ghost Pepper Seeds",
+  "type": "seed",
+  "crop": "ghost_pepper",
+  "value": 35,
+  "rarity": "common",
+  "tier": 1
+ },
+ "moon_melon": {
+  "name": "Moon Melon",
+  "type": "crop",
+  "value": 400,
+  "rarity": "legendary",
+  "tier": 11,
+  "energy": 8
+ },
+ "moon_melon_seed": {
+  "name": "Moon Melon Seeds",
+  "type": "seed",
+  "crop": "moon_melon",
+  "value": 138,
+  "rarity": "common",
+  "tier": 1
  }
 }

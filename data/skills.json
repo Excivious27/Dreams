@@ -450,6 +450,16 @@
      "tier": 0
     },
     {
+     "id": "swimmer",
+     "name": "Swimmer",
+     "desc": "Swim out past the shallows (deep water)",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "patience"
+     ]
+    },
+    {
      "id": "trapper",
      "name": "Trapper",
      "desc": "Craft crab pots",

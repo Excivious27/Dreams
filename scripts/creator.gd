@@ -52,6 +52,12 @@ func _build() -> void:
 		var hats: Array = [""]
 		hats.append_array(PaperDoll.hat_styles())
 		_picker("Hat", hats, "hat", func(v: String) -> String: return "None" if v == "" else v.replace("_", " ").capitalize())
+		var pets: Array = [""]
+		for k in Art.manifest().keys():
+			if str(k).begins_with("animals/dog_") or str(k).begins_with("animals/cat_"):
+				pets.append(str(k).trim_prefix("animals/"))
+		pets.sort()
+		_picker("Pet", pets, "pet", func(v: String) -> String: return "Pup (classic)" if v == "" else v.replace("_", " ").capitalize())
 	else:
 		var l := Label.new()
 		l.text = "(Body sheets not sliced: tint picker only.)"

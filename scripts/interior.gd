@@ -118,6 +118,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"craft":
 			later(Crafting.run.bind(self, str(thing.get("station", "workbench")), str(thing.get("hint", "")).trim_prefix("A: ")))
 			return true
+		"stable":
+			later(_stable)
+			return true
 		"note":
 			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
@@ -256,3 +259,29 @@ func _upgrade_tools() -> void:
 				fx("levelup", player.position + Vector2(0, -12), 12.0, 0.8)
 		else:
 			hud.toast("Not enough for that yet.", Color(1, 0.7, 0.7))
+
+
+## Benno's stable: buy a horse, then ride out from here whenever you like.
+func _stable() -> void:
+	var d := Dialogue.instance(get_tree())
+	if not GameState.run["flags"].has("horse"):
+		var price := 1000 if GameState.has_friend_perk("benno", 2) else 2000
+		d.say([{"who": "Benno", "text": "She's a good one. Steady. ◆%d and she's yours, saddle included.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["Buy the horse", "Not yet"], "key": ""}])
+		await d.finished
+		if d.last_choice == 0:
+			if int(GameState.run["crystals"]) < price:
+				hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+				return
+			GameState.run["crystals"] = int(GameState.run["crystals"]) - price
+			GameState.run["flags"]["horse"] = true
+			GameState.run["names"]["horse"] = "Clover"
+			hud.toast("Clover is yours!", Color(1, 0.9, 0.4))
+			Music.instance(get_tree()).sfx("levelup")
+			GameState.run["friendship"]["benno"] = int(GameState.run["friendship"].get("benno", 0)) + 10
+		return
+	d.say([{"who": "Benno", "text": "Clover's saddled. Ride out?  (A/C with nothing in front of you dismounts; she waits where you leave her.)", "choice": ["Ride", "Not now"], "key": ""}])
+	await d.finished
+	if d.last_choice == 0:
+		player.mount()
+		var back: Array = I.get("back", ["town", 32, 93])
+		go_to(str(back[0]), Vector2(float(back[1]) * TILE, float(back[2]) * TILE), "down")

@@ -2637,11 +2637,217 @@ def w145():
                 save(crop(rgba, bb), "fx", "boss_" + nm)
 
 
+# ---- Prompts-09 batch 1: costume life / water / riding rows ------------------
+
+def _costume_rows_n(file, names, suffix, n=16, canvas=(96, 96)):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:len(names)]
+    for name, (y0, y1) in zip(names, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), n)
+        frames, anchors = [], []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+            if im.width > canvas[0] or im.height > canvas[1]:
+                im.thumbnail(canvas)
+            c = Image.new("RGBA", canvas, (0, 0, 0, 0))
+            x0 = (canvas[0] - im.width) // 2; y0c = canvas[1] - im.height - 4
+            c.alpha_composite(im, (x0, y0c)); frames.append(c)
+            anchors.append([x0 + im.width / 2.0, y0c, y0c + im.height, im.width, im.height])
+        strip(frames, "body", name + suffix)
+        S.manifest["body"][name + suffix]["anchors"] = anchors
+
+def w150(): _costume_rows_n("w150_costume_armor_life.png", ["armor_" + n for n in ARMOR_SETS], "_life")
+def w151(): _costume_rows_n("w151_costume_outfit_life.png", ["outfit_" + n for n in OUTFIT_SETS], "_life")
+def w152(): _costume_rows_n("w152_costume_armor_water.png", ["armor_" + n for n in ARMOR_SETS], "_water", canvas=(128, 96))
+def w153(): _costume_rows_n("w153_costume_outfit_water.png", ["outfit_" + n for n in OUTFIT_SETS], "_water", canvas=(128, 96))
+def w154(): _costume_rows_n("w154_costume_riding.png", ["armor_" + n for n in ARMOR_SETS], "_ride", n=10, canvas=(128, 128))
+def w155(): _costume_rows_n("w155_costume_riding_b.png", ["outfit_" + n for n in OUTFIT_SETS], "_ride", n=10, canvas=(128, 128))
+
+
+# ---- Prompts-09 batch 2: villager life sets, seasonal outfits, portraits -----
+
+LIFE_A = ["maple", "gideon", "wren", "alder", "finn", "lumi", "theo", "hazel"]
+LIFE_B = ["bram", "posy", "juniper", "rook", "sal", "marlowe", "orla", "benno"]
+LIFE_C = ["ivy", "tam", "old_moss", "granite", "sel", "pip", "wren_jr", "tobin"]
+LIFE_NAMES = ["work", "work_2", "sit", "talk", "talk_2", "laugh", "wave", "sleep", "carry", "eat", "dance", "dance_2", "umbrella", "shiver", "fish", "counter"]
+SEASON_A = [("maple", "winter"), ("gideon", "summer"), ("wren", "fall"), ("alder", "festival"), ("finn", "winter"), ("hazel", "summer"), ("posy", "winter"), ("mabel", "all")]
+SEASON_B = [("lumi", "winter"), ("theo", "summer"), ("bram", "festival"), ("juniper", "winter"), ("rook", "winter"), ("sal", "winter"), ("pip", "winter"), ("tobin", "summer")]
+
+def _npc_sprite_id(v):
+    d = json.load(open(os.path.join(os.path.dirname(S.OUT), "..", "data", "npcs.json"))) if False else None
+    return "npc_" + v
+
+def _life_sheet(file, villagers):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
+    for v, (y0, y1) in zip(villagers, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        for nm, b in zip(LIFE_NAMES, bs):
+            bb = region_bbox(rgba, b)
+            if bb:
+                strip([crop(rgba, bb)], "characters/npc_" + v, nm)
+
+def w156(): _life_sheet("w156_villagers_life_a.png", LIFE_A)
+def w157(): _life_sheet("w157_villagers_life_b.png", LIFE_B)
+def w158(): _life_sheet("w158_villagers_life_c.png", LIFE_C)
+
+def _seasonal_sheet(file, pairs):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
+    for (v, season), (y0, y1) in zip(pairs, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        fr = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            fr.append(crop(rgba, bb) if bb else Image.new("RGBA", (8, 8)))
+        g = "characters/npc_%s_%s" % (v, season)
+        strip([fr[0]], g, "idle"); strip([fr[1]], g, "idle_up"); strip([fr[2]], g, "idle_side")
+        strip(fr[3:7], g, "walk"); strip(fr[7:11], g, "walk_down"); strip(fr[11:15], g, "walk_up")
+
+def w159(): _seasonal_sheet("w159_villagers_seasonal.png", SEASON_A)
+def w160(): _seasonal_sheet("w160_villagers_seasonal_b.png", SEASON_B)
+
+def w161():
+    rgba = load("w161_villager_portraits_seasonal.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:8]
+    who = ["maple", "gideon", "wren", "alder", "finn", "hazel", "posy", "rook"]
+    for v, (y0, y1) in zip(who, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 16)
+        # 4 outfits x 4 expressions per the delivered sheet (normal, winter, festival, summer)
+        for oi, outfit in enumerate(["normal", "winter", "festival", "summer"]):
+            for ei, ex in enumerate(["neutral", "happy", "sad", "surprised"]):
+                b = bs[oi * 4 + ei]
+                bb = region_bbox(rgba, b)
+                if bb:
+                    im = crop(rgba, bb); im.thumbnail((96, 96))
+                    save(im, "portraits/npc_%s_%s" % (v, outfit), ex)
+
+
+# ---- Prompts-09 batch 3: labelled region edge sets (36 cols x 4 rows) --------
+# Row 0: top x3, bottom x3, left x3, right x3, tl x3, tr x3, bl x3, br x3, itl x3, itr x3, ibl x3, ibr x3.
+# Row 1: diag_a x2, diag_b x2, tb x2, lr x2, u_up x2, u_down x2, open_right(end left) x2, open_left x2,
+#        u_up x2, u_down x2, u_left x2, u_right x2, iso x2, t x4, fill x6.  Row 2: 36 fills.  Row 3: 36 decals.
+ROW0 = ["top"] * 3 + ["bottom"] * 3 + ["left"] * 3 + ["right"] * 3 + ["tl"] * 3 + ["tr"] * 3 + ["bl"] * 3 + ["br"] * 3 + ["itl"] * 3 + ["itr"] * 3 + ["ibl"] * 3 + ["ibr"] * 3
+ROW1 = ["diag_a"] * 2 + ["diag_b"] * 2 + ["tb"] * 2 + ["lr"] * 2 + ["u_up"] * 2 + ["u_down"] * 2 + ["open_right"] * 2 + ["open_left"] * 2 + ["u_up"] * 2 + ["u_down"] * 2 + ["open_right"] * 2 + ["open_left"] * 2 + ["iso"] * 2 + ["t"] * 4 + ["fill"] * 6
+
+def _edge_set(file, setname):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.02, 20) if r[1] - r[0] >= 24][:4]
+    counts = {}
+    def put(role, im):
+        i = counts.get(role, 0); counts[role] = i + 1
+        save(im, "tiles", "%s_%s_%d" % (setname, role, i))
+    for ri, (y0, y1) in enumerate(rows):
+        cols_prof = a[y0:y1].mean(0)
+        xs = [i for i, v in enumerate(cols_prof) if v > 0.05]
+        bx0, bx1 = xs[0], xs[-1] + 1
+        cells = cells_by_grid(rgba, 36, 1, region=(bx0, y0, bx1, y1), trim=False, inset=2)[0]
+        for ci, b in enumerate(cells):
+            sub = rgba[b[1]:b[3], b[0]:b[2]]
+            if (sub[..., 3] > 40).mean() < 0.3:
+                if ri == 3:
+                    counts["deco"] = counts.get("deco", 0) + 1
+                continue
+            im = scale_to(crop(rgba, b), width=TILE2, height=TILE2, cover=(ri < 3))
+            if ri == 0:
+                put(ROW0[ci], im)
+            elif ri == 1:
+                put(ROW1[ci], im)
+            elif ri == 2:
+                put("fill", im)
+            else:
+                put("deco", im)
+    print("  ", setname, {k: v for k, v in counts.items()})
+
+def w162(): _edge_set("w162_edge_marsh.png", "bog")
+def w163(): _edge_set("w163_edge_quarry.png", "terrace")
+def w164(): _edge_set("w164_edge_orchard.png", "track")
+def w165(): _edge_set("w165_edge_highlands.png", "snowpatch")
+def w166(): _edge_set("w166_edge_ruins.png", "ruinfloor")
+def w167(): _edge_set("w167_edge_river.png", "river")
+
+
+# ---- Prompts-09 batches 4-5: interiors, festivals, animals, pets, stations, crops
+
+def w168(): _comp_sheet("w168_int_mansion_bank.png", "furniture", "int_mansion", dilate=5, min_px=80, row_h=100)
+def w169(): _comp_sheet("w169_int_school_stable.png", "furniture", "int_school", dilate=5, min_px=80, row_h=100)
+def w170(): _comp_sheet("w170_int_lodge_mill.png", "furniture", "int_lodge", dilate=5, min_px=80, row_h=100)
+def w171(): _comp_sheet("w171_int_lighthouse_huts.png", "furniture", "int_light", dilate=5, min_px=80, row_h=100)
+def w172(): _comp_sheet("w172_int_quarry_ruins.png", "furniture", "int_quarry", dilate=5, min_px=80, row_h=100)
+def w173():
+    rgba = load("w173_int_shop_counters.png")
+    boxes = _row_sort(_components(rgba, (0, 0, rgba.shape[1], rgba.shape[0]), dilate=6, min_px=200), 60)
+    names = ["counter_marlowe", "counter_marlowe_closed", "counter_orla", "counter_orla_closed", "counter_benno", "counter_benno_closed", "counter_ivy", "counter_ivy_closed",
+             "counter_tam", "counter_tam_closed", "counter_moss", "counter_moss_closed", "counter_granite", "counter_granite_closed", "counter_sel", "counter_sel_closed",
+             "shop_bell", "coin_tray", "price_tag", "open_flag", "closed_flag", "counter_plain", "counter_shutter"]
+    for nm, b in zip(names, boxes):
+        save(crop(rgba, b), "furniture", nm)
+def w178(): _comp_sheet("w178_festival_spring_summer.png", "props", "fest_ss", dilate=5, min_px=60, row_h=90)
+def w179(): _comp_sheet("w179_festival_fall_winter.png", "props", "fest_fw", dilate=5, min_px=60, row_h=90)
+
+ANIMALS_C = ["goat", "goat_kid", "sheep", "lamb", "llama", "llama_cria", "donkey", "foal"]
+PETS = ["dog_brown", "dog_corgi", "dog_shepherd", "dog_hound", "dog_white", "cat_orange", "cat_grey", "cat_calico"]
+
+def _anim_rows(file, names, group_prefix, layout):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 24) if r[1] - r[0] >= 24][:8]
+    for name, (y0, y1) in zip(names, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        fr = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            fr.append(crop(rgba, bb) if bb else Image.new("RGBA", (8, 8)))
+        g = group_prefix + name
+        for anim, (i0, i1) in layout.items():
+            strip(fr[i0:i1], g, anim)
+
+def w175(): _anim_rows("w175_animals_c.png", ANIMALS_C, "animals/", {"idle": (0, 2), "walk": (2, 6), "eat": (6, 8), "sleep": (8, 10), "hurt": (10, 11), "happy": (11, 13), "idle_b": (13, 16)})
+def w176(): _anim_rows("w176_pets.png", PETS, "animals/", {"idle": (0, 2), "walk": (2, 6), "run": (6, 10), "sit": (10, 11), "sleep": (11, 12), "bark": (12, 14), "play": (14, 16)})
+
+STATION_ROWS = [["stove_1", "stove_2", "stove_3", "stove_4"], ["cauldron_1", "cauldron_2", "cauldron_3", "cauldron_4"], ["mill_1", "mill_2", "mill_3", "mill_4"],
+                ["forge_1", "forge_2", "forge_3", "forge_4"], ["bench_1", "bench_2", "bench_3", "bench_4"], ["loom_1", "loom_2", "wheel_1", "wheel_2"],
+                ["cider_press", "cheese_press", "honey_extractor", "kiln"], ["pop_gold", "pop_green", "pop_crystal", "pop_heart"]]
+
+def w177():
+    rgba = load("w177_stations_anim.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 24) if r[1] - r[0] >= 24][:8]
+    for names, (y0, y1) in zip(STATION_ROWS, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        fr = []
+        for b in bs:
+            bb = region_bbox(rgba, b)
+            fr.append(crop(rgba, bb) if bb else Image.new("RGBA", (8, 8)))
+        for i, nm in enumerate(names):
+            strip(fr[i * 4:i * 4 + 4], "stations", nm)
+
+CROPS_C = ["cranberry", "hops", "grape", "tea_leaf", "cotton", "flax", "sugar_beet", "rice", "lotus", "snow_pea", "ghost_pepper", "moon_melon"]
+CROP_STAGES = ["seed", "sprout", "young", "growing", "mature", "ready", "stub", "withered", "winter", "fall", "gold", "star"]
+
+def w174():
+    rgba = load("w174_crops_c.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 20) if r[1] - r[0] >= 20][:12]
+    for crop_name, (y0, y1) in zip(CROPS_C, rows):
+        bs = _equal_cells(rgba, (4, max(0, y0 - 3), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 3)), 12)
+        for st, b in zip(CROP_STAGES, bs):
+            bb = region_bbox(rgba, b)
+            if bb:
+                save(crop(rgba, bb), "crops", "%s_%s" % (crop_name, st))
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

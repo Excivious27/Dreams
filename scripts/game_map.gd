@@ -39,6 +39,8 @@ var _last_mana_t := -1
 var _sign_labels := {}
 ## False in places where trees and rocks are scenery (the town): they can't be chopped or broken.
 var resources_here := true
+## Maps where water is swimmable (lake, beach, riverlands...). Border water never is.
+var swim_ok := true
 var _anim_layer: AnimLayer
 var _pet_anim: AnimatedSprite2D
 var _night: CanvasModulate
@@ -95,9 +97,11 @@ func _ready() -> void:
 
 	if has_pet:
 		pet = Node2D.new()
-		if false and Art.has("animals/pup", "idle"):  # Tom: keep the original pup (brown with blue eyes); the W64 pup "flies" when it runs
+		var pet_kind := str(GameState.run.get("look", {}).get("pet", ""))
+		if pet_kind != "" and Art.has("animals/" + pet_kind, "idle"):
+			# Prompts-09 pets (corgi, shepherd, hound, white dog, cats); "" = Tom's original pup.
 			_pet_anim = AnimatedSprite2D.new()
-			_pet_anim.sprite_frames = Art.frames("animals/pup", {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "dig": "dig", "bark": "bark", "play": "play"}, {"idle": 2.0, "walk": 6.0, "run": 9.0, "sit": 1.0, "sleep": 1.0, "dig": 6.0, "bark": 4.0, "play": 4.0})
+			_pet_anim.sprite_frames = Art.frames("animals/" + pet_kind, {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "bark": "bark", "play": "play"}, {"idle": 2.0, "walk": 8.0, "run": 12.0, "sit": 1.0, "sleep": 1.0, "bark": 4.0, "play": 4.0})
 			_pet_anim.scale = Vector2(0.5, 0.5)
 			_pet_anim.animation = "idle"
 			_pet_anim.frame_changed.connect(func() -> void:
@@ -174,6 +178,41 @@ func rect_blocked(r: Rect2) -> bool:
 	for x in range(x0, x1 + 1):
 		for y in range(y0, y1 + 1):
 			if blocked.has(Vector2i(x, y)):
+				return true
+	return false
+
+
+## Water you can swim in: "water"/"sea" things. Deep water (no land within
+## 3 cells) needs the Swimmer perk (fishing tree).
+func is_water_cell(c: Vector2i) -> bool:
+	return str(things.get(c, {}).get("type", "")) in ["water", "sea"]
+
+
+func can_swim_cell(c: Vector2i) -> bool:
+	if not is_water_cell(c) or player == null or player.mounted:
+		return false
+	if not swim_ok:
+		return false
+	if GameState.has_perk("fishing", "Swimmer"):
+		return true
+	for dy in range(-3, 4):
+		for dx in range(-3, 4):
+			var n := c + Vector2i(dx, dy)
+			if not is_water_cell(n) and not blocked.has(n):
+				return true
+	return false
+
+
+## Like rect_blocked, but swimmable water counts as open for the player.
+func rect_blocked_player(r: Rect2, _p: Node) -> bool:
+	var x0 := floori(r.position.x / TILE) - pad
+	var y0 := floori(r.position.y / TILE) - pad
+	var x1 := floori((r.end.x - 0.01) / TILE) - pad
+	var y1 := floori((r.end.y - 0.01) / TILE) - pad
+	for x in range(x0, x1 + 1):
+		for y in range(y0, y1 + 1):
+			var c := Vector2i(x, y)
+			if blocked.has(c) and not can_swim_cell(c):
 				return true
 	return false
 
@@ -1247,8 +1286,20 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String) -> void:
 	for c: Vector2i in cells:
 		if not Art.draw_tile(ci, "tiles", fill, Vector2(c * TILE), frame):
 			ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("2f6fb5"))
-	if Art.has("tiles", "shore_grass_top_0"):
-		# Painted 47-tile shore set (W52). Edges only: keep the animated fill underneath.
+	var custom := shore in ["bog", "river"] and Art.has("tiles", shore + "_top_0")
+	if custom:
+		# Region water set (Prompts 09): its own fills (animated for the river) and edges.
+		var fc := 42
+		for c: Vector2i in cells:
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+			var idx := h % fc
+			if shore == "river":
+				idx = (h % 12) + (frame if h % 12 < 12 else 0)  # current tiles 12-15 animate
+				if h % 5 == 0:
+					idx = 12 + frame
+			Art.draw_tile(ci, "tiles", "%s_fill_%d" % [shore, idx], Vector2(c * TILE), 0)
+	if custom or Art.has("tiles", "shore_grass_top_0"):
+		# Painted 47-tile shore set. Edges only: keep the animated fill underneath.
 		var edge_cells := {}
 		for c: Vector2i in cells:
 			var all_in := true
@@ -1258,7 +1309,7 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String) -> void:
 					break
 			if not all_in:
 				edge_cells[c] = true
-		_draw_blob_edges(ci, cells, edge_cells, "shore_grass" if shore == "grass" else "shore_sand")
+		_draw_blob_edges(ci, cells, edge_cells, shore if custom else ("shore_grass" if shore == "grass" else "shore_sand"))
 		return
 	var earth := Color("6b4a2b") if shore == "grass" else Color("c9a86b")
 	var rim := Color("4f8fd0", 0.9)

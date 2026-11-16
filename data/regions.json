@@ -3769,7 +3769,38 @@
   "ground_set": "rg_orchard",
   "ground_count": 18,
   "deco_set": "rdeco_orchard",
-  "deco_count": 13
+  "deco_count": 13,
+  "feature_blobs": [
+   {
+    "set": "track",
+    "blobs": [
+     {
+      "c": [
+       20,
+       22
+      ],
+      "r": 4,
+      "seed": 41
+     },
+     {
+      "c": [
+       36,
+       16
+      ],
+      "r": 5,
+      "seed": 42
+     },
+     {
+      "c": [
+       14,
+       34
+      ],
+      "r": 5,
+      "seed": 43
+     }
+    ]
+   }
+  ]
  },
  "highlands": {
   "cols": 52,
@@ -4109,7 +4140,46 @@
   "ground_set": "rg_highlands",
   "ground_count": 18,
   "deco_set": "rdeco_highlands",
-  "deco_count": 10
+  "deco_count": 10,
+  "feature_blobs": [
+   {
+    "set": "snowpatch",
+    "blobs": [
+     {
+      "c": [
+       12,
+       10
+      ],
+      "r": 6,
+      "seed": 31
+     },
+     {
+      "c": [
+       40,
+       14
+      ],
+      "r": 5,
+      "seed": 32
+     },
+     {
+      "c": [
+       30,
+       36
+      ],
+      "r": 7,
+      "seed": 33
+     },
+     {
+      "c": [
+       8,
+       30
+      ],
+      "r": 4,
+      "seed": 34
+     }
+    ]
+   }
+  ]
  },
  "ruins": {
   "cols": 48,
@@ -4451,7 +4521,38 @@
   "ground_set": "rg_ruins",
   "ground_count": 18,
   "deco_set": "rdeco_ruins",
-  "deco_count": 18
+  "deco_count": 18,
+  "feature_blobs": [
+   {
+    "set": "ruinfloor",
+    "blobs": [
+     {
+      "c": [
+       24,
+       10
+      ],
+      "r": 9,
+      "seed": 51
+     },
+     {
+      "c": [
+       12,
+       26
+      ],
+      "r": 5,
+      "seed": 52
+     },
+     {
+      "c": [
+       36,
+       28
+      ],
+      "r": 6,
+      "seed": 53
+     }
+    ]
+   }
+  ]
  },
  "quarry": {
   "cols": 52,
@@ -4522,18 +4623,6 @@
     20,
     2
    ]
-  ],
-  "layers": [
-   {
-    "tile": "pale_stone",
-    "rect": [
-     14,
-     8,
-     26,
-     22
-    ],
-    "color": "9a9aa6"
-   }
   ],
   "props": [
    {
@@ -4898,7 +4987,30 @@
   "ground_set": "rg_quarry",
   "ground_count": 18,
   "deco_set": "rdeco_quarry",
-  "deco_count": 9
+  "deco_count": 9,
+  "feature_blobs": [
+   {
+    "set": "terrace",
+    "blobs": [
+     {
+      "c": [
+       27,
+       19
+      ],
+      "r": 11,
+      "seed": 21
+     },
+     {
+      "c": [
+       16,
+       30
+      ],
+      "r": 6,
+      "seed": 22
+     }
+    ]
+   }
+  ]
  },
  "marsh": {
   "cols": 52,
@@ -4983,7 +5095,8 @@
      "catfish",
      "carp",
      "mooncarp"
-    ]
+    ],
+    "shore": "bog"
    },
    {
     "c": [
@@ -4996,7 +5109,8 @@
      "eel",
      "catfish",
      "puffer"
-    ]
+    ],
+    "shore": "bog"
    },
    {
     "c": [
@@ -5008,7 +5122,8 @@
     "fish": [
      "eel",
      "carp"
-    ]
+    ],
+    "shore": "bog"
    }
   ],
   "props": [
@@ -5295,7 +5410,8 @@
   "ground_set": "rg_marsh",
   "ground_count": 36,
   "deco_set": "rdeco_marsh",
-  "deco_count": 25
+  "deco_count": 25,
+  "ground_threshold": 0.18
  },
  "riverlands": {
   "cols": 52,
@@ -5381,7 +5497,7 @@
     ],
     "r": 7,
     "seed": 71,
-    "shore": "sand",
+    "shore": "river",
     "fish": [
      "trout",
      "salmon",
@@ -5401,7 +5517,8 @@
      "trout",
      "minnow",
      "salmon"
-    ]
+    ],
+    "shore": "river"
    },
    {
     "c": [
@@ -5410,7 +5527,7 @@
     ],
     "r": 4,
     "seed": 73,
-    "shore": "sand",
+    "shore": "river",
     "fish": [
      "carp",
      "bass",

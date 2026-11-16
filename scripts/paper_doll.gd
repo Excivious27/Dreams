@@ -14,6 +14,9 @@ const POSES := {"idle": [0], "idle_up": [1], "idle_side": [2], "walk": [3, 4, 5,
 const FPS := {"idle": 1.0, "idle_up": 1.0, "idle_side": 1.0, "walk": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run": 12.0, "run_down": 12.0, "run_up": 12.0}
 ## Action poses from w56 row 7 used as single frames for tool/attack anims.
 const ACTIONS := {"attack": ["act_attack_1", "act_attack_2", "act_attack_3"], "hurt": ["act_hurt"], "sit": ["act_sit"], "sleep": ["act_sleep"], "eat_down": ["act_eat"], "celebrate": ["act_celebrate_1", "act_celebrate_2"], "swim": ["act_swim_1", "act_swim_2"], "ride": ["act_ride_1", "act_ride_2"], "hold_down": ["act_carry_1"], "hold_up": ["act_carry_1"], "hold_right": ["act_carry_2"], "faint": ["act_faint"]}
+const LIFE := {"sit": [0], "sleep": [1], "faint": [2], "carry": [3, 4], "pet": [5, 6], "wave": [7, 8], "dance": [9, 10, 11, 12], "eat_down": [13, 14], "eat_up": [13, 14], "eat_right": [13, 14], "drink": [15]}
+const WATER := {"swim": [0, 1, 2, 3], "swim_down": [4, 5, 6, 7], "swim_up": [8, 9, 10, 11], "float": [12], "dive": [13], "climb_out": [14, 15]}
+const RIDE := {"ride": [0, 1, 2, 3], "ride_run": [4, 5], "ride_down": [6, 7], "ride_up": [8, 9]}
 const TOOL_POSES := {"hoe": "attack", "water": "hold", "axe": "attack", "pickaxe": "attack", "cast": "attack", "reel": "hold", "eat": "eat"}
 
 
@@ -95,6 +98,60 @@ static func body_frames(look: Dictionary) -> SpriteFrames:
 				at.atlas = atex
 				at.region = Rect2(int(i) * acw, 0, acw, ach)
 				sf.add_frame(anim, at)
+	# Life row (Prompts 09): sit, sleep, faint, carry ×2, pet ×2, wave ×2, dance ×4, eat ×2, drink.
+	var life := body + "_life"
+	if Art.has("body", life):
+		var ltex := Art.tex("body", life)
+		var linfo := Art.info("body", life)
+		var lcw := int(linfo.get("cell_w", 96))
+		var lch := int(linfo.get("cell_h", 96))
+		for anim: String in LIFE:
+			if sf.has_animation(anim):
+				sf.remove_animation(anim)
+			sf.add_animation(anim)
+			sf.set_animation_speed(anim, 6.0)
+			sf.set_animation_loop(anim, anim in ["dance", "carry", "pet"])
+			for i in LIFE[anim]:
+				var at := AtlasTexture.new()
+				at.atlas = ltex
+				at.region = Rect2(int(i) * lcw, 0, lcw, lch)
+				sf.add_frame(anim, at)
+	# Water row: swim side 1-4, down 1-4, up 1-4, float, dive, climb out ×2.
+	var water := body + "_water"
+	if Art.has("body", water):
+		var wtex := Art.tex("body", water)
+		var winfo := Art.info("body", water)
+		var wcw := int(winfo.get("cell_w", 128))
+		var wch := int(winfo.get("cell_h", 96))
+		for anim: String in WATER:
+			if sf.has_animation(anim):
+				sf.remove_animation(anim)
+			sf.add_animation(anim)
+			sf.set_animation_speed(anim, 6.0)
+			sf.set_animation_loop(anim, not anim in ["dive", "climb_out"])
+			for i in WATER[anim]:
+				var at := AtlasTexture.new()
+				at.atlas = wtex
+				at.region = Rect2(int(i) * wcw, 0, wcw, wch)
+				sf.add_frame(anim, at)
+	# Ride row: walk side 1-4, run side 1-2, walk down 1-2, walk up 1-2.
+	var ride := body + "_ride"
+	if Art.has("body", ride):
+		var rtex := Art.tex("body", ride)
+		var rinfo := Art.info("body", ride)
+		var rcw := int(rinfo.get("cell_w", 128))
+		var rch := int(rinfo.get("cell_h", 128))
+		for anim: String in RIDE:
+			if sf.has_animation(anim):
+				sf.remove_animation(anim)
+			sf.add_animation(anim)
+			sf.set_animation_speed(anim, 8.0 if anim != "ride_run" else 12.0)
+			sf.set_animation_loop(anim, true)
+			for i in RIDE[anim]:
+				var at := AtlasTexture.new()
+				at.atlas = rtex
+				at.region = Rect2(int(i) * rcw, 0, rcw, rch)
+				sf.add_frame(anim, at)
 	for anim: String in ACTIONS:
 		if sf.has_animation(anim):
 			continue
@@ -117,6 +174,15 @@ static func frame_source(anim: String, frame: int, body: String) -> Array:
 	if ACT.has(anim) and Art.has("body", body + "_act"):
 		var arr2: Array = ACT[anim]
 		return [body + "_act", int(arr2[clampi(frame, 0, arr2.size() - 1)])]
+	if LIFE.has(anim) and Art.has("body", body + "_life"):
+		var arr3: Array = LIFE[anim]
+		return [body + "_life", int(arr3[clampi(frame, 0, arr3.size() - 1)])]
+	if WATER.has(anim) and Art.has("body", body + "_water"):
+		var arr4: Array = WATER[anim]
+		return [body + "_water", int(arr4[clampi(frame, 0, arr4.size() - 1)])]
+	if RIDE.has(anim) and Art.has("body", body + "_ride"):
+		var arr5: Array = RIDE[anim]
+		return [body + "_ride", int(arr5[clampi(frame, 0, arr5.size() - 1)])]
 	return [body, 0]
 
 
@@ -160,11 +226,20 @@ static func place_layer(layer: Sprite2D, group: String, name: String, body_name:
 		layer.visible = false
 		return
 	var act := body_name.ends_with("_act")
+	var life := body_name.ends_with("_life")
+	var water := body_name.ends_with("_water")
+	var ride := body_name.ends_with("_ride")
 	var tex := Art.tex(group, name)
 	var info := Art.info(group, name)
 	var cw := int(info.get("cell_w", 96))
 	var ch := int(info.get("cell_h", 96))
 	var lf := layer_frame(body_frame_pose, act)
+	if life:
+		lf = 2 if body_frame_pose in [1, 2] else 0
+	elif water:
+		lf = 2 if body_frame_pose <= 3 or body_frame_pose == 13 else (1 if body_frame_pose >= 8 and body_frame_pose <= 11 else 0)
+	elif ride:
+		lf = 1 if body_frame_pose >= 8 else (0 if body_frame_pose >= 6 else 2)
 	layer.texture = tex
 	layer.region_enabled = true
 	layer.region_rect = Rect2(lf * cw, 0, cw, ch)

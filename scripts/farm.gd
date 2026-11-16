@@ -749,7 +749,14 @@ func draw_map() -> void:
 			if frac >= 1.0:
 				stage = 4
 			var t := Art.tex("crops", crop)
-			if t:
+			if Art.has("crops", crop + "_seed"):
+				# Prompts-09 crops: one sprite per stage (seed, sprout, young, growing, mature, ready).
+				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(5, int(frac * 6.0)) if frac < 1.0 else 5]
+				var tex := Art.tex("crops", "%s_%s" % [crop, st])
+				var w2 := tex.get_width() / 2.0
+				var h2 := tex.get_height() / 2.0
+				draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false)
+			elif t:
 				var info := Art.info("crops", crop)
 				var cw := int(info.get("cell_w", 32))
 				var ch := int(info.get("cell_h", 32))

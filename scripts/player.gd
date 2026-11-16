@@ -41,10 +41,28 @@ var _flash := 0.0
 var _combo := 0
 var _wear: WearLayer
 var _doll := false
+## Swimming (in a water cell) and riding (on the horse) change speed, anims and what you can do.
+var swimming := false
+var mounted := false
+var _swim_t := 0.0
 var _doll_scale := 0.34
 var _doll_body := "medium_slim"
 var _hair: Sprite2D
 var _hat: Sprite2D
+
+
+func mount() -> void:
+	mounted = true
+	GameState.run["flags"]["mounted"] = true
+	_show_idle()
+
+
+func dismount() -> void:
+	mounted = false
+	GameState.run["flags"].erase("mounted")
+	if map:
+		map.hud.toast("%s waits here." % str(GameState.run.get("names", {}).get("horse", "Your horse")))
+	_show_idle()
 
 
 ## Rebuild the doll (after equipping a costume or restyling at the dresser).
@@ -142,6 +160,7 @@ func set_character(id: String) -> void:
 	_wear.refresh()
 	_busy = false
 	anim_name = ""
+	mounted = GameState.run.get("flags", {}).has("mounted") and has_anim("ride")
 	_show_idle()
 
 
@@ -311,6 +330,16 @@ func _physics_process(delta: float) -> void:
 		spd_mult *= 0.9
 	elif int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
 		spd_mult *= 0.75  # running on empty
+	if swimming:
+		spd_mult *= 0.55
+		running = false
+		_swim_t += delta
+		if _swim_t > 2.0:
+			_swim_t = 0.0
+			if not GameState.spend_energy(1):
+				map.player_down("tired")
+	elif mounted:
+		spd_mult *= 1.8 if running else 1.5
 	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult
 	var rate := ACCEL if dir != Vector2.ZERO else DECEL
 	velocity = velocity.move_toward(target, rate * delta)
@@ -335,6 +364,21 @@ func _physics_process(delta: float) -> void:
 
 	var move_dir := dir if dir != Vector2.ZERO else velocity.normalized()
 	var is_run := speed > WALK_SPEED * 1.15
+	var pre := ""
+	if swimming and has_anim("swim"):
+		pre = "swim"
+	elif mounted and has_anim("ride"):
+		pre = "ride"
+	if pre != "":
+		if absf(move_dir.x) >= absf(move_dir.y) * 0.9:
+			facing = "left" if move_dir.x < 0 else "right"
+			_apply("ride_run" if pre == "ride" and is_run and has_anim("ride_run") else pre, move_dir.x < 0)
+		else:
+			facing = "up" if move_dir.y < 0 else "down"
+			_apply(pre + "_" + facing, false)
+		if _anim:
+			_anim.speed_scale = 1.0
+		return
 	if absf(move_dir.x) >= absf(move_dir.y) * 0.9:
 		facing = "left" if move_dir.x < 0 else "right"
 		_sprite.position.y = 0
@@ -382,6 +426,13 @@ func _do_action() -> void:
 ## "action" = check/talk/eat only (X).
 func do_action(mode := "a") -> void:
 	if _busy:
+		return
+	if swimming:
+		return  # no tools in the water
+	if mounted and mode != "action":
+		if map and map.try_interact(facing_cell()):
+			return
+		dismount()
 		return
 	var held := GameState.held_tool()
 	if mode == "tool" and held in ["sword", ""]:
@@ -440,15 +491,22 @@ func _move(step: Vector2) -> void:
 		position += step
 		return
 	var nx := position + Vector2(step.x, 0)
-	if not map.rect_blocked(Rect2(nx + FEET.position, FEET.size)):
+	if not map.rect_blocked_player(Rect2(nx + FEET.position, FEET.size), self):
 		position = nx
 	else:
 		velocity.x = 0
 	var ny := position + Vector2(0, step.y)
-	if not map.rect_blocked(Rect2(ny + FEET.position, FEET.size)):
+	if not map.rect_blocked_player(Rect2(ny + FEET.position, FEET.size), self):
 		position = ny
 	else:
 		velocity.y = 0
+	var was := swimming
+	swimming = map.is_water_cell(cell())
+	if swimming and not was:
+		map.fx("splash", position, 12.0, 0.5)
+		Music.instance(get_tree()).sfx("bite")
+	elif was and not swimming:
+		map.fx("splash", position, 12.0, 0.4)
 
 
 func _attack_hit() -> void:
@@ -530,6 +588,12 @@ func _puff(back: Vector2) -> void:
 func _show_idle() -> void:
 	if _anim:
 		_anim.speed_scale = 1.0
+	if swimming and has_anim("float"):
+		_apply("float", facing == "left")
+		return
+	if mounted and has_anim("ride"):
+		_apply({"up": "ride_up", "down": "ride_down"}.get(facing, "ride"), facing == "left")
+		return
 	match facing:
 		"up":
 			_apply("view_back", false)

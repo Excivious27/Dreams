@@ -396,7 +396,7 @@ func draw_map() -> void:
 				for x in range(-pad, cols + pad):
 					var n := WorldGen.fbm(float(x), float(y), sd, 8.0)
 					var h := absi((x * 73856093) ^ (y * 19349663))
-					if n > -0.05:
+					if n > float(R.get("ground_threshold", -0.05)):
 						Art.draw_tile(self, "tiles", "%s_%d" % [gs, h % gc], Vector2(x * TILE, y * TILE), 0)
 			var ds := str(R.get("deco_set", ""))
 			var dc := int(R.get("deco_count", 0))
@@ -412,6 +412,27 @@ func draw_map() -> void:
 				Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), 4)
 	else:
 		draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(str(R.get("ground_color", "5a9e4b"))))
+	# Feature ground (Prompts 09 edge sets): noise blobs of e.g. terrace / snow / track / ruin floor.
+	for fb in R.get("feature_blobs", []):
+		var setn := str(fb["set"])
+		if not Art.has("tiles", setn + "_top_0"):
+			continue
+		var cells := {}
+		for bl in fb.get("blobs", []):
+			var cx := float(bl["c"][0]); var cy := float(bl["c"][1]); var rad := float(bl.get("r", 5)); var sdv := int(bl.get("seed", 3))
+			for y in range(int(cy - rad - 3), int(cy + rad + 4)):
+				for x in range(int(cx - rad - 3), int(cx + rad + 4)):
+					if x < 0 or y < 0 or x >= cols or y >= rows:
+						continue
+					var n := WorldGen.fbm(float(x), float(y), sdv, 5.0)
+					if Vector2(x + 0.5, y + 0.5).distance_to(Vector2(cx, cy)) + n * rad * 0.35 <= rad:
+						cells[Vector2i(x, y)] = true
+		for c: Vector2i in cells:
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+			Art.draw_tile(self, "tiles", "%s_fill_%d" % [setn, h % 42], Vector2(c * TILE), 0)
+			if h % 9 == 0 and Art.has("tiles", "%s_deco_%d" % [setn, h / 9 % 36]):
+				Art.draw_tile(self, "tiles", "%s_deco_%d" % [setn, h / 9 % 36], Vector2(c * TILE), 0)
+		Art.draw_blob(self, cells, setn, 16.0, 0)
 	for layer in R.get("layers", []):
 		var nm := str(layer["tile"])
 		var r: Array = layer["rect"]
