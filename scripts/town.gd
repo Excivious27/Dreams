@@ -302,12 +302,14 @@ func _lines(id: String, friend: int) -> Array:
 func _draw() -> void:
 	draw_grass(3)
 	WorldGen.draw_ground_detail(self, 31, 0.08)
-	draw_tileset_rect("dirt", Rect2i(11, 0, 4, rows), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(1, 11, 26, 2), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(1, 21, 26, 2), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(1, 31, 26, 2), Color("b8945a"))
-	draw_tileset_rect("stone", Rect2i(9, 22, 8, 7), Color("9a9aa6"))
-	draw_tileset_rect("stone", Rect2i(10, 3, 6, 3), Color("9a9aa6"))
+	var roads := cells_of([Rect2i(11, 0, 4, rows), Rect2i(1, 11, 26, 2), Rect2i(1, 21, 26, 2), Rect2i(1, 31, 26, 2), FARM_EXIT, BEACH_EXIT, MOUNTAIN_EXIT])
+	if Art.has("tiles", "cobble_a"):
+		for c: Vector2i in roads:
+			Art.draw_tile(self, "tiles", "cobble_a", Vector2(c * TILE), 4)
+	else:
+		draw_ground("dirt", roads)
+	draw_tileset_rect("flagstone" if Art.has("tiles", "flagstone") else "stone", Rect2i(9, 22, 8, 7), Color("9a9aa6"))
+	draw_tileset_rect("brick_road" if Art.has("tiles", "brick_road") else "stone", Rect2i(10, 3, 6, 3), Color("9a9aa6"))
 	draw_exits()
 	if not Art.has("buildings", "store"):
 		draw_building(STORE.position.x, STORE.position.y, STORE.size.x, STORE.size.y, Color("c9a86b"), Color("4f8fd0"), "GENERAL STORE")
@@ -325,10 +327,31 @@ func _place_props() -> void:
 	prop("buildings", "potions", Vector2i(POTIONS.position.x, POTIONS.end.y - 1), POTIONS.size.x - 1)
 	prop("buildings", "hall", Vector2i(HALL.position.x, HALL.end.y - 1), HALL.size.x - 1)
 	prop("buildings", "fountain", Vector2i(FOUNTAIN.position.x, FOUNTAIN.end.y - 1), 1, 4.0)
-	prop("buildings", "cottage_a", Vector2i(3, 30), 2)
-	prop("buildings", "cottage_b", Vector2i(21, 30), 2)
-	prop("buildings", "cottage_a", Vector2i(8, 35), 2)
-	prop("buildings", "cottage_b", Vector2i(17, 35), 2)
+	prop("buildings", "inn" if Art.has("buildings", "inn") else "cottage_a", Vector2i(2, 30), 4)
+	prop("buildings", "bakery" if Art.has("buildings", "bakery") else "cottage_b", Vector2i(21, 30), 2)
+	prop("buildings", "clinic" if Art.has("buildings", "clinic") else "cottage_a", Vector2i(7, 36), 2)
+	prop("buildings", "library" if Art.has("buildings", "library") else "cottage_b", Vector2i(17, 36), 3)
+	if Art.has("buildings", "clock_tower"):
+		prop("buildings", "clock_tower", Vector2i(24, 10), 1)
+		block_rect(24, 6, 2, 5)
+	if Art.has("buildings", "bandstand"):
+		prop("buildings", "bandstand", Vector2i(2, 2), 3)
+		block_rect(2, 0, 4, 3)
+	if Art.has("buildings", "chapel"):
+		prop("buildings", "chapel", Vector2i(24, 36), 2)
+		block_rect(24, 32, 3, 5)
+	for c: Vector2i in [Vector2i(9, 20), Vector2i(16, 20)]:
+		prop("props", "flowerbed_red" if c.x < 12 else "flowerbed_blue", c, 1)
+		blocked[c] = true
+		blocked[c + Vector2i(1, 0)] = true
+	prop("props", "bench_wood", Vector2i(10, 28), 1)
+	prop("props", "bench_green", Vector2i(14, 28), 1)
+	block_rect(10, 28, 2, 1); block_rect(14, 28, 2, 1)
+	prop("props", "statue", Vector2i(12, 4), 1)
+	block_rect(12, 3, 2, 2)
+	prop("props", "well_stone", Vector2i(2, 14), 1)
+	prop("props", "stall_red", Vector2i(2, 8), 1); prop("props", "stall_green", Vector2i(24, 18), 1)
+	block_rect(2, 7, 2, 2); block_rect(24, 17, 2, 2)
 	prop("buildings", "well", Vector2i(23, 22), 1)
 	for c: Vector2i in [Vector2i(8, 13), Vector2i(17, 13), Vector2i(8, 23), Vector2i(17, 23), Vector2i(8, 31), Vector2i(17, 31)]:
 		prop("props", "lamp", c)
@@ -349,4 +372,4 @@ func _place_props() -> void:
 	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 32, [FARM_EXIT.grow(2), BEACH_EXIT.grow(2), MOUNTAIN_EXIT.grow(2)], 2)
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 33, 5, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 34, 14, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 35, 6)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 35, 8, ["pigeon", "pigeon", "sparrow", "cat_orange", "cat_grey", "butterfly_blue"])

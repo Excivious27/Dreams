@@ -101,7 +101,21 @@ func _journal() -> void:
 
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color("1a1410"))
-	if Art.has("tiles", "floor_wood"):
+	if Art.has("tiles", "fl_wood"):
+		draw_tileset_rect("fl_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
+		draw_tileset_rect("fl_carpet_red", Rect2i(4, 5, 3, 3), Color("b03a2e"))
+		for x in range(1, cols - 1):
+			var idx := 0 if x == 1 else (2 if x == cols - 2 else 1)
+			var nm: String = ["wl_floral_l", "wl_floral_m", "wl_floral_r"][idx]
+			var t := Art.tex("tiles", nm)
+			if t:
+				draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
+		var night := int(GameState.run["time"]) >= 19 * 60
+		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(4 * TILE + 8, 2 * TILE))
+		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(8 * TILE + 8, 2 * TILE))
+		Art.draw_prop(self, "furniture", "painting_a", Vector2(2 * TILE + 8, 2 * TILE - 2))
+		Art.draw_prop(self, "furniture", "clock_grand", Vector2(6 * TILE + 8, 2 * TILE))
+	elif Art.has("tiles", "floor_wood"):
 		draw_tileset_rect("floor_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
 		draw_tileset_rect("rug_red", Rect2i(4, 5, 3, 3), Color("b03a2e"))
 		for x in range(1, cols - 1):
@@ -125,18 +139,40 @@ func _draw() -> void:
 func _place_props() -> void:
 	if not Art.has("furniture", "bed_single"):
 		return
-	prop("furniture", "bed_single", Vector2i(BED.x, BED.y + 1), 1)
+	var kit := Art.has("furniture", "bed_blue")
+	prop("furniture", "bed_blue" if kit else "bed_single", Vector2i(BED.x, BED.y + 1), 1)
 	prop("furniture", "chest_closed", CHEST)
-	prop("furniture", "table", Vector2i(5, 4), 1)
-	prop("furniture", "chair_down", Vector2i(4, 4))
-	prop("furniture", "chair_up", Vector2i(7, 4))
-	prop("furniture", "bookshelf", Vector2i(6, 2), 1)
-	prop("furniture", "fireplace", Vector2i(9, 2), 0, 2.0)
-	prop("furniture", "kitchen", Vector2i(1, 6), 2)
-	prop("furniture", "plant", Vector2i(9, 7))
-	prop("furniture", "lamp", Vector2i(1, 3))
+	prop("furniture", "table_square_cloth" if kit else "table", Vector2i(5, 4), 1)
+	prop("furniture", "chair_b" if kit else "chair_down", Vector2i(4, 4))
+	prop("furniture", "chair_c" if kit else "chair_up", Vector2i(7, 4))
+	prop("furniture", "bookshelf_b" if kit else "bookshelf", Vector2i(6, 2), 1)
+	if kit and Art.has("furniture", "fireplace_anim"):
+		var a := AnimatedSprite2D.new()
+		a.sprite_frames = Art.frames("furniture", {"idle": "fireplace_anim"}, {"idle": 6.0})
+		a.animation = "idle"
+		a.scale = Vector2(0.5, 0.5)
+		a.position = cell_center(Vector2i(9, 2)) + Vector2(0, 2)
+		a.offset = Vector2(0, -float(Art.info("furniture", "fireplace_anim").get("cell_h", 56)) / 2.0)
+		add_child(a)
+		a.play("idle")
+	else:
+		prop("furniture", "fireplace", Vector2i(9, 2), 0, 2.0)
+	if kit:
+		prop("furniture", "sink", Vector2i(1, 6))
+		prop("furniture", "stove_iron", Vector2i(2, 6))
+		prop("furniture", "fridge", Vector2i(3, 6))
+		prop("furniture", "plant_a", Vector2i(9, 7))
+		prop("furniture", "lamp_floor", Vector2i(1, 3))
+		prop("furniture", "wardrobe_a", Vector2i(4, 2))
+		block_rect(4, 2, 1, 1)
+		prop("furniture", "rug_round_blue", Vector2i(8, 5), 1)
+		prop("furniture", "radio", Vector2i(7, 2))
+	else:
+		prop("furniture", "kitchen", Vector2i(1, 6), 2)
+		prop("furniture", "plant", Vector2i(9, 7))
+		prop("furniture", "lamp", Vector2i(1, 3))
 	prop("furniture", "pet_bed", Vector2i(8, 7))
 	var c := Art.sprite("furniture", "clock")
-	if c:
+	if c and not kit:
 		c.position = Vector2(2 * TILE + 8, TILE + 14)
 		add_child(c)

@@ -48,7 +48,7 @@ func after_ready() -> void:
 	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 41, [FARM_EXIT.grow(2), EAST_EXIT.grow(2), Rect2i(29, 0, 7, 10)], 2)
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 42, 6, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 43, 20, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 44, 8)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 44, 12, ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "bee", "bee", "rabbit", "sparrow", "deer"])
 	var n := 4 if not GameState.quest_done("clear_meadow") else 2
 	for i in n:
 		_spawn_one()
@@ -193,9 +193,14 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 func _draw() -> void:
 	draw_grass(5)
 	WorldGen.draw_ground_detail(self, 51, 0.18)
-	draw_tileset_rect("dirt", Rect2i(1, 9, 30, 3), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(28, 9, 3, 6), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(28, 14, 7, 3), Color("b8945a"))
+	if Art.has("tiles", "g_flower"):
+		for c: Vector2i in cells_of([Rect2i(4, 18, 9, 6), Rect2i(20, 3, 7, 4)]):
+			if not blocked.has(c):
+				Art.draw_tile(self, "tiles", "g_flower", Vector2(c * TILE), 4)
+		for c: Vector2i in cells_of([Rect2i(14, 20, 8, 5)]):
+			if not blocked.has(c):
+				Art.draw_tile(self, "tiles", "g_tall", Vector2(c * TILE), 4)
+	draw_ground("dirt", cells_of([Rect2i(1, 9, 30, 3), Rect2i(28, 9, 3, 6), Rect2i(28, 14, 7, 3), FARM_EXIT, EAST_EXIT]))
 	draw_exits()
 	if not Art.has("nature", "oak"):
 		for k in things:
@@ -211,8 +216,9 @@ func _draw() -> void:
 						var p := cell_center(k)
 						draw_rect(Rect2(p.x - 4, p.y - 8, 8, 3), Color("c9452f"))
 	# Mine entrance in a rocky hill.
-	draw_tileset_rect("stone", Rect2i(31, 3, 3, 5), Color("6a6a76"))
-	draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
+	draw_ground("stone", cells_of([Rect2i(30, 2, 5, 7)]))
+	if not Art.has("props", "mine_entrance"):
+		draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
 	draw_fence_border()
 	label("mine", Vector2(28 * TILE, 3 * TILE - 2), 3 * TILE)
 
@@ -230,8 +236,9 @@ func _place_props() -> void:
 			"shroom":
 				if bool(t.get("has", false)):
 					prop("tiles", "deco_5", k, 0, 0.0)
-	for c: Vector2i in [Vector2i(31, 7), Vector2i(33, 4)]:
-		prop("nature", "rock_l", c)
+	if Art.has("props", "mine_entrance"):
+		prop("props", "mine_entrance", Vector2i(31, 6), 2)
+	else:
+		for c: Vector2i in [Vector2i(31, 7), Vector2i(33, 4)]:
+			prop("nature", "rock_l", c)
 	prop("nature", "log", Vector2i(6, 13), 1)
-	if Art.has("props", "beam"):
-		prop("props", "beam", Vector2i(31, 6), 1)

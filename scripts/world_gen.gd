@@ -115,7 +115,7 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 
 
 ## Wildlife: small critters that hop around and flee from the player.
-static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int) -> void:
+static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = []) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
 	for i in count:
@@ -124,7 +124,8 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int) -> v
 			continue
 		var cr := Critter.new()
 		cr.map = m
-		cr.kind = ["bird", "bird", "butterfly", "rabbit"][rng.randi_range(0, 3)]
+		var pool: Array = kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"]
+		cr.kind = pool[rng.randi_range(0, pool.size() - 1)]
 		cr.position = m.cell_center(c)
 		cr.home = cr.position
 		m.add_child(cr)
@@ -149,6 +150,25 @@ class Critter:
 	var _dir := Vector2.ZERO
 	var _timer := 0.0
 	var _flee := false
+	var _anim: AnimatedSprite2D
+	var _flyer := false
+
+	func _ready() -> void:
+		var g := "wildlife/" + kind
+		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "heron"]
+		if Art.has(g, "idle"):
+			_anim = AnimatedSprite2D.new()
+			var anims := {"idle": "idle"}
+			anims["walk"] = "walk" if Art.has(g, "walk") else "idle"
+			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0, "walk": 8.0})
+			_anim.animation = "idle"
+			_anim.scale = Vector2(0.5, 0.5)
+			_anim.frame_changed.connect(func() -> void:
+				var tex := _anim.sprite_frames.get_frame_texture(_anim.animation, _anim.frame)
+				if tex:
+					_anim.offset = Vector2(0, -tex.get_height() / 2.0))
+			add_child(_anim)
+			_anim.play("idle")
 
 	func _process(delta: float) -> void:
 		_t += delta
@@ -165,20 +185,31 @@ class Critter:
 			if position.distance_to(home) > 80.0:
 				_dir = (home - position).normalized()
 		var spd := 60.0 if _flee else 14.0
-		if kind == "bird" and _flee:
+		if _flyer and _flee:
 			spd = 110.0
-		if kind == "butterfly":
+		if kind.begins_with("butterfly") or kind == "bee":
 			spd = 18.0
 		var np := position + _dir * spd * delta
-		if kind == "bird" and _flee:
+		if _flyer and _flee:
 			position = np
 			if position.distance_to(home) > 400.0:
 				queue_free()
 		elif map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))):
 			position = np
+		if _anim:
+			var moving := _dir != Vector2.ZERO
+			var want := "walk" if moving else "idle"
+			if _anim.animation != want:
+				_anim.play(want)
+			if _dir.x != 0.0:
+				_anim.flip_h = _dir.x < 0
+			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if _flyer and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
 		queue_redraw()
 
 	func _draw() -> void:
+		if _anim:
+			draw_circle(Vector2(0, 0), 3.0, Color(0, 0, 0, 0.15))
+			return
 		var f := int(_t * 6.0) % 2
 		var bob := sin(_t * 8.0) * 1.0
 		match kind:
@@ -242,6 +273,29 @@ class Backdrop:
 		var H := 1200.0
 		var t := int(GameState.run.get("time", 480))
 		var dark := clampf((t - 18 * 60) / 360.0, 0.0, 1.0)
+		var strip_name: String = {"hills": "sky_day", "mountains": "sky_mountains", "sea": "sky_sea", "forest": "sky_forest", "night": "sky_night", "moon": "sky_night", "space": "sky_night"}.get(kind, "")
+		if t >= 17 * 60 and t < 20 * 60 and kind in ["hills", "forest"]:
+			strip_name = "sky_sunset"
+		elif dark > 0.5 and kind in ["hills", "forest", "mountains", "sea"]:
+			strip_name = "sky_night"
+		var st := Art.tex("backdrops", str(strip_name)) if strip_name != "" else null
+		if st:
+			# Tile the painted strip across the width; scale strip height to ~1/3 of the view, sitting above the map.
+			var sw := st.get_width() * 0.5
+			var sh := st.get_height() * 0.5
+			var y := 240.0 - sh
+			draw_rect(Rect2(-W / 2, -400, W, y + 400), Color(0.5, 0.75, 0.95).lerp(Color(0.05, 0.05, 0.15), dark))
+			var x := -W / 2 + fposmod(_t * 2.0, sw) - sw
+			while x < W / 2:
+				draw_texture_rect(st, Rect2(x, y, sw, sh), false)
+				x += sw
+			var ground := Color(0.36, 0.6, 0.3) if kind != "sea" else Color(0.2, 0.45, 0.7)
+			if kind == "mountains":
+				ground = Color(0.4, 0.45, 0.5)
+			draw_rect(Rect2(-W / 2, y + sh - 1, W, H), ground.lerp(Color(0.05, 0.08, 0.1), dark * 0.7))
+			if dark > 0.0:
+				draw_rect(Rect2(-W / 2, -400, W, H + 400), Color(0, 0, 0.1, dark * 0.5))
+			return
 		var top := Color("7ec8f0").lerp(Color("141a3a"), dark)
 		var bot := Color("c8ecff").lerp(Color("2a2f55"), dark)
 		if kind == "night" or kind == "space":

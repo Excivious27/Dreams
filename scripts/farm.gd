@@ -595,11 +595,13 @@ func _intro_gangsters(n: Dictionary) -> void:
 func _draw() -> void:
 	draw_grass(1)
 	WorldGen.draw_ground_detail(self, 21, 0.14)
-	# Paths
-	draw_tileset_rect("dirt", Rect2i(15, 2, 2, 41), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(2, 18, 29, 3), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(6, 9, 1, 9), Color("b8945a"))
-	draw_tileset_rect("stone", Rect2i(10, 12, 2, 2), Color("9a9aa6"))
+	# Paths with real grass transitions.
+	var path := cells_of([Rect2i(15, 1, 2, 42), Rect2i(2, 18, 29, 3), Rect2i(6, 9, 1, 9), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
+	draw_ground("dirt", path)
+	draw_ground("stone", cells_of([Rect2i(9, 12, 3, 3)]))
+	# Farmland feel: a hay field and wheat beyond the fence line, a stone wall by the barn.
+	draw_tileset_rect("hay_field", Rect2i(25, 9, 5, 4), Color("d8b24a"))
+	draw_tileset_rect("wheat_2", Rect2i(2, 30, 5, 4), Color("c9a86b"))
 	draw_exits()
 	# Plot: untouched soil shows as a faint patch; tilled tiles use the real tiles.
 	draw_rect(Rect2(PLOT.position * TILE, PLOT.size * TILE), Color(0.45, 0.35, 0.2, 0.25))
@@ -638,6 +640,20 @@ func _draw() -> void:
 	draw_fence_border()
 
 
+func _animal(kind: String, c: Vector2i) -> void:
+	if not Art.has("props", kind):
+		return
+	var a := AnimatedSprite2D.new()
+	a.sprite_frames = Art.frames("props", {"idle": kind}, {"idle": 2.0})
+	a.animation = "idle"
+	a.scale = Vector2(0.5, 0.5)
+	a.position = cell_center(c)
+	a.offset = Vector2(0, -float(Art.info("props", kind).get("cell_h", 48)) / 2.0)
+	add_child(a)
+	a.play("idle")
+	blocked[c] = true
+
+
 func _place_props() -> void:
 	if not Art.has("buildings", "house"):
 		return
@@ -657,9 +673,17 @@ func _place_props() -> void:
 	prop("props", "well2", Vector2i(10, 23))
 	prop("props", "hay", Vector2i(23, 4))
 	prop("props", "haystack", Vector2i(21, 4))
-	prop("props", "trough", Vector2i(20, 5))
-	prop("props", "cow", Vector2i(22, 7))
-	prop("props", "sheep", Vector2i(24, 8))
+	prop("props", "trough2" if Art.has("props", "trough2") else "trough", Vector2i(20, 5))
+	_animal("cow2", Vector2i(22, 7)); _animal("sheep2", Vector2i(24, 8)); _animal("chicken", Vector2i(9, 41)); _animal("chicken", Vector2i(11, 41))
+	prop("props", "pig", Vector2i(27, 11))
+	prop("buildings", "silo", Vector2i(30, 2), 1)
+	block_rect(30, 1, 2, 3)
+	prop("props", "bale_round", Vector2i(26, 13)); prop("props", "bale_square", Vector2i(28, 13))
+	blocked[Vector2i(26, 13)] = true; blocked[Vector2i(28, 13)] = true
+	prop("props", "tractor", Vector2i(3, 29), 1)
+	block_rect(3, 28, 2, 2)
+	prop("props", "farm_cart", Vector2i(12, 2), 1)
+	block_rect(12, 1, 2, 2)
 	prop("props", "birdbath", Vector2i(9, 14))
 	prop("props", "signpost", Vector2i(13, 41))
 	prop("props", "lamp", Vector2i(17, 41))
@@ -685,7 +709,7 @@ func _place_props() -> void:
 	WorldGen.tree_clumps(self, Rect2i(2, 24, 10, 14), 12, 3, avoid)
 	WorldGen.tree_clumps(self, Rect2i(24, 24, 7, 16), 13, 3, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 14, 26, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 15, 7)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 15, 9, ["sparrow", "sparrow", "butterfly_orange", "butterfly_yellow", "bee", "rabbit", "squirrel", "pigeon"])
 	var res := prop("props", "resonator", Vector2i(28, 6))
 	if res and Art.has("props", "resonator"):
 		res.queue_free()

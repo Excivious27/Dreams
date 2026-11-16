@@ -2,6 +2,20 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## World art batches 1–3 integrated (W1–W10, W22, W23, W9)
+- Real **grass↔dirt/sand/stone transitions** (autotiler) on every path; six grass variants.
+- **Forest**: forest floor, winding forest path, the great lantern tree (story door), hollow tree, willow, woodcutter's hut, giant log, shrine, berry thicket, deer/fox/rabbit/owl.
+- **Lake**: proper water edges, animated water mill, lighthouse beam, reeds, lily pads, ducks, heron, beaver dam, fishing hut.
+- **Beach**: sand set, sea, foam line, pier, the wrecked galleon (lootable), beach hut, palms, umbrellas, bonfire, buoys, tide pool, dunes, seagulls and crabs.
+- **Mountain**: cliff faces on terraces, cliff stairs, lookout tower, rockslide, cave mouth, animated hot spring, goats and crows; mine entrance in the meadow.
+- **Farm**: silo, hay field, wheat, animated cows/sheep/chickens, pig, bales, tractor, cart.
+- **Town**: cobbled roads, flagstone square, inn, bakery, clinic, library, chapel, clock tower, bandstand, statue, benches, flower beds, market stalls, pigeons and cats.
+- **House**: interiors kit (floral wallpaper, wood floor, carpet, animated fireplace, kitchen, wardrobe, radio, paintings, day/night windows).
+- **Crystal meadow**: glowing grass, standing stones, crystal trees and arches, glow pond, the fallen-star crater (animated), moon rabbits and crystal fish.
+- **Deep mine**: earth / stone / ice / lava floors and walls by depth, ore nodes, crystal clusters, glowing mushrooms, stalactites, beams, carts, a dead miner with loot.
+- **Wildlife** everywhere from the W23 sheet; **painted sky strips** (day/sunset/night/mountains/sea/forest) as parallax backdrops.
+- Batches 4–7 (hideout, docks, neon, uptown, wastes, sky islands, moon colony, station, jungle, underground, countryside, animals, weather, travel, world map) are saved in `art/incoming/` and are next.
+
 ## The world (opened up)
 - **Nine outdoor areas**, all 2 to 4 times bigger than before and connected by
   walk-off exits: **Farm** (32×44, with barn, greenhouse, coop, animals, well, all

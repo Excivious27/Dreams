@@ -128,3 +128,50 @@ static func draw_prop(ci: CanvasItem, group: String, name: String, feet: Vector2
 	var h := t.get_height() / 2.0
 	ci.draw_texture_rect(t, Rect2(feet.x - w / 2.0, feet.y - h, w, h), false)
 	return true
+
+
+## Draw a region of `inside` cells with a transition set. `inside` is a Dictionary of
+## Vector2i -> true. The set's index map says which cell of the sheet to use for
+## each edge/corner case. Fill is drawn with `fill` (a 3x3 ground, index 4) and
+## edges from `tset`. Cells outside `inside` are not drawn.
+## idx keys: top,bottom,left,right,tl,tr,bl,br (outer), itl,itr,ibl,ibr (inner), mid
+static func draw_autotile(ci: CanvasItem, inside: Dictionary, fill: String, tset: String, idx: Dictionary, size := 16.0) -> void:
+	var t := tex("tiles", tset)
+	var i := info("tiles", tset)
+	var cols := int(i.get("cols", 4))
+	for c: Vector2i in inside:
+		var at := Vector2(c) * size
+		var n := inside.has(c + Vector2i(0, -1))
+		var s := inside.has(c + Vector2i(0, 1))
+		var w := inside.has(c + Vector2i(-1, 0))
+		var e := inside.has(c + Vector2i(1, 0))
+		var key := "mid"
+		if not n and not w: key = "tl"
+		elif not n and not e: key = "tr"
+		elif not s and not w: key = "bl"
+		elif not s and not e: key = "br"
+		elif not n: key = "top"
+		elif not s: key = "bottom"
+		elif not w: key = "left"
+		elif not e: key = "right"
+		elif not inside.has(c + Vector2i(-1, -1)): key = "itl"
+		elif not inside.has(c + Vector2i(1, -1)): key = "itr"
+		elif not inside.has(c + Vector2i(-1, 1)): key = "ibl"
+		elif not inside.has(c + Vector2i(1, 1)): key = "ibr"
+		if key == "mid" or t == null or not idx.has(key):
+			if fill == "@":
+				# Use the transition sheet's own middle cell so colours match.
+				var k0 := int(idx.get("mid", 1))
+				ci.draw_texture_rect_region(t, Rect2(at, Vector2(size, size)), Rect2((k0 % cols) * 32 + 1.0, (k0 / cols) * 32 + 1.0, 30.0, 30.0))
+			elif fill != "":
+				draw_tile(ci, "tiles", fill, at, 4, size)
+			continue
+		var k := int(idx[key])
+		var src := Rect2((k % cols) * 32 + 1.0, (k / cols) * 32 + 1.0, 30.0, 30.0)
+		ci.draw_texture_rect_region(t, Rect2(at, Vector2(size, size)), src)
+
+
+## Index maps for the W1 transition sheets (grass outside, ground inside).
+const T_GROUND_IDX := {"mid": 1, "top": 0, "bottom": 2, "left": 4, "right": 7, "tl": 8, "tr": 9, "bl": 10, "br": 11, "itl": 12, "itr": 13, "ibl": 14, "ibr": 15}
+## Water-edge sheets (grass outside, water inside): 18 pieces, 6 columns.
+const T_WATER_IDX := {"top": 1, "bottom": 14, "left": 10, "right": 3, "tl": 5, "tr": 9, "bl": 13, "br": 16, "itl": 6, "itr": 2, "ibl": 0, "ibr": 4}

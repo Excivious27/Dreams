@@ -23,9 +23,10 @@ func build() -> void:
 	music_track = "farm"
 	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 25 * TILE + 8), "right", "farm ▶")
 	add_exit(FOREST_EXIT, "forest", Vector2(2 * TILE, 21 * TILE + 8), "up", "▲ forest")
-	for y in range(LAKE.position.y, LAKE.end.y):
-		for x in range(LAKE.position.x, LAKE.end.x):
-			set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	for r: Rect2i in [LAKE, Rect2i(1, 9, 2, 12), Rect2i(5, 24, 10, 3), Rect2i(21, 4, 4, 4)]:
+		for y in range(r.position.y, r.end.y):
+			for x in range(r.position.x, r.end.x):
+				set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
 	# Dock walking out into the lake.
 	for x in range(23, 27):
 		things.erase(Vector2i(x, 14))
@@ -53,9 +54,30 @@ func after_ready() -> void:
 	dock.map = self
 	dock.z_index = -1
 	add_child(dock)
-	prop("props", "stall", Vector2i(26, 12), 1)
+	if Art.has("buildings", "fishing_hut"):
+		prop("buildings", "fishing_hut", Vector2i(26, 12), 2)
+	else:
+		prop("props", "stall", Vector2i(26, 12), 1)
 	prop("props", "signpost", Vector2i(30, 14))
 	blocked[Vector2i(30, 14)] = true
+	_anim_prop("buildings", "water_mill", Vector2i(3, 4), 3, 4.0)
+	block_rect(2, 1, 5, 5)
+	_anim_prop("buildings", "lighthouse", Vector2i(30, 24), 2, 2.0)
+	block_rect(30, 20, 3, 5)
+	_anim_prop("props", "duck", Vector2i(8, 12), 0, 1.5)
+	_anim_prop("props", "heron", Vector2i(20, 10), 0, 1.5)
+	prop("props", "beaver_dam", Vector2i(4, 23), 2)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 77
+	for i in 14:
+		var c := Vector2i(rng.randi_range(LAKE.position.x, LAKE.end.x - 1), rng.randi_range(LAKE.position.y, LAKE.end.y - 1))
+		var edge := c.x == LAKE.position.x or c.x == LAKE.end.x - 1 or c.y == LAKE.position.y or c.y == LAKE.end.y - 1
+		var nm := ("reeds_%d" % rng.randi_range(0, 3)) if edge else ("lily_%d" % rng.randi_range(0, 7))
+		var sp := Art.sprite("nature", nm)
+		if sp:
+			sp.position = cell_center(c)
+			sp.z_index = 0
+			add_child(sp)
 	var avoid := {}
 	for y in range(LAKE.position.y - 2, LAKE.end.y + 2):
 		for x in range(LAKE.position.x - 2, LAKE.end.x + 2):
@@ -67,12 +89,25 @@ func after_ready() -> void:
 	WorldGen.tree_clumps(self, Rect2i(24, 2, 10, 8), 72, 4, avoid)
 	WorldGen.tree_clumps(self, Rect2i(2, 25, 32, 4), 73, 5, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 74, 18, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 75, 8)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 75, 10, ["frog", "turtle", "dragonfly", "sparrow", "butterfly_blue", "heron", "fish_jump"])
 	if not GameState.run["flags"].has("lake_seen"):
 		GameState.run["flags"]["lake_seen"] = true
 		player.frozen = true
 		await say([{"text": "The lake is bigger than the whole town. Wind combs the surface silver. Finn waves from a shack at the end of the dock."}])
 		player.frozen = false
+
+
+func _anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -> void:
+	if not Art.has(group, name):
+		return
+	var a := AnimatedSprite2D.new()
+	a.sprite_frames = Art.frames(group, {"idle": name}, {"idle": fps})
+	a.animation = "idle"
+	a.scale = Vector2(0.5, 0.5)
+	a.position = Vector2((c.x + (extra_w + 1) / 2.0) * TILE, (c.y + 1) * TILE)
+	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
+	add_child(a)
+	a.play("idle")
 
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:
@@ -153,11 +188,21 @@ func _bait_shop() -> void:
 func _draw() -> void:
 	draw_grass(7)
 	WorldGen.draw_ground_detail(self, 76, 0.12)
-	draw_tileset_rect("dirt", Rect2i(23, 13, 13, 3), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(31, 1, 3, 13), Color("b8945a"))
-	# Sand ring around the lake.
-	draw_tileset_rect("shore_set", LAKE.grow(1), Color("c9a86b"))
+	draw_ground("dirt", cells_of([Rect2i(23, 13, 13, 3), Rect2i(31, 1, 3, 13), FARM_EXIT, FOREST_EXIT]))
+	var water := cells_of([LAKE, Rect2i(1, 9, 2, 12), Rect2i(5, 24, 10, 3), Rect2i(21, 4, 4, 4)])
+	for k in things:
+		if str(things[k].get("type", "")) == "dock":
+			water.erase(k)
+	draw_water(water, "grass")
+	for k in things:
+		if str(things[k].get("type", "")) == "dock":
+			water[k] = true
 	draw_exits()
 	draw_fence_border()
+
+
+func _process(delta: float) -> void:
+	super(delta)
+	queue_redraw()
 
 

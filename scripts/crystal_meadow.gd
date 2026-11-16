@@ -56,17 +56,48 @@ func after_ready() -> void:
 				prop("props", "moon_crystal_blue_s" if (c.x + c.y) % 2 == 0 else "moon_crystal_pink_s", c)
 			elif str(things[c].get("type", "")) == "forage":
 				prop("props", "moon_grass_c", c)
-		prop("props", "moon_crystal_blue", Vector2i(17, 11))
+		if Art.has("props", "standing_stones"):
+			for c in things.keys():
+				if str(things[c].get("type", "")) == "stone" and props.has(c):
+					(props[c] as Node).queue_free()
+					props.erase(c)
+			prop("props", "standing_stones", Vector2i(14, 14), 6, -4.0)
+		prop("props", "ccrystal_4" if Art.has("props", "ccrystal_4") else "moon_crystal_blue", Vector2i(17, 11))
 		for c: Vector2i in [Vector2i(5, 4), Vector2i(28, 5), Vector2i(6, 21), Vector2i(27, 21), Vector2i(30, 16)]:
-			prop("props", "moon_crystal_pink" if c.x > 17 else "moon_crystal_blue", c)
+			prop("props", ["ccrystal_2", "ccrystal_3"][c.x % 2] if Art.has("props", "ccrystal_2") else "moon_crystal_blue", c)
 			blocked[c] = true
+		if Art.has("props", "crystal_tree"):
+			for c: Vector2i in [Vector2i(8, 7), Vector2i(26, 19)]:
+				prop("props", "crystal_tree", c, 2)
+				block_rect(c.x, c.y - 1, 3, 2)
+			prop("props", "crystal_arch_c", Vector2i(21, 11), 2)
+			block_rect(21, 10, 1, 2); block_rect(23, 10, 1, 2)
+			var a := AnimatedSprite2D.new()
+			a.sprite_frames = Art.frames("props", {"idle": "star_crater"}, {"idle": 3.0})
+			a.animation = "idle"
+			a.scale = Vector2(0.5, 0.5)
+			a.position = cell_center(Vector2i(28, 22)) + Vector2(8, 0)
+			a.offset = Vector2(0, -float(Art.info("props", "star_crater").get("cell_h", 200)) / 2.0)
+			add_child(a)
+			a.play("idle")
+			block_rect(26, 18, 6, 5)
+			set_thing(28, 23, {"type": "crater", "hint": "A: the fallen star"}, false)
+			var gp := AnimatedSprite2D.new()
+			gp.sprite_frames = Art.frames("props", {"idle": "glow_pond"}, {"idle": 3.0})
+			gp.animation = "idle"
+			gp.scale = Vector2(0.5, 0.5)
+			gp.position = cell_center(Vector2i(5, 16)) + Vector2(8, 0)
+			gp.offset = Vector2(0, -float(Art.info("props", "glow_pond").get("cell_h", 72)) / 2.0)
+			gp.z_index = -1
+			add_child(gp)
+			block_rect(4, 15, 4, 2)
 		for y in range(STONES.position.y - 1, STONES.end.y + 1):
 			for x in range(STONES.position.x - 1, STONES.end.x + 1):
 				avoid[Vector2i(x, y)] = true
 		WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, rows - 2), 102, [MEADOW_EXIT.grow(2), Rect2i(31, 10, 3, 5)], 2)
 		WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 103, 5, avoid)
 		WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 104, 14, avoid)
-		WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 105, 8)
+		WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 105, 10, ["moon_rabbit", "crystal_fish", "butterfly_blue", "firefly", "rabbit"])
 		for i in 4:
 			spawn_enemy(["soldier", "archer", "wisp", "grump"][i], Vector2(randf_range(22, 31) * TILE, randf_range(4, 22) * TILE))
 	else:
@@ -124,6 +155,9 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			else:
 				await say([{"text": "A chain-link gate, and past it the road to the city. The lock is new. Somebody doesn't want you leaving. (Tom: the districts start here.)"}])
 			return true
+		"crater":
+			await say([{"who": "Light Crystal", "text": "This is where I landed first, before your field. The ground remembers. Stand here when the Meow Pow Wow is whole and... well. You'll see.", "mood": "happy"}])
+			return true
 		"shack":
 			await say([{"text": "The old shack. Someone lived here before you and left in a hurry. A corkboard inside has photos with the faces cut out."}])
 			return true
@@ -169,9 +203,16 @@ func _draw() -> void:
 	if GameState.is_penguins():
 		draw_grass(9)
 		WorldGen.draw_ground_detail(self, 108, 0.2)
-		draw_tileset_rect("moon_dust", STONES, Color("c9c0e0"))
-		draw_tileset_rect("dirt", Rect2i(1, 11, 13, 3), Color("b8945a"))
-		draw_tileset_rect("dirt", Rect2i(21, 11, 13, 3), Color("b8945a"))
+		if Art.has("tiles", "g_glow"):
+			for c: Vector2i in cells_of([Rect2i(10, 4, 15, 16), Rect2i(24, 2, 9, 22)]):
+				Art.draw_tile(self, "tiles", "g_glow" if (c.x * 3 + c.y) % 5 != 0 else "g_glow_b", Vector2(c * TILE), 4)
+			var rng := RandomNumberGenerator.new()
+			rng.seed = 109
+			for c: Vector2i in cells_of([Rect2i(10, 4, 23, 20)]):
+				if rng.randf() < 0.08 and not blocked.has(c):
+					Art.draw_prop(self, "props", "cdeco_%d" % rng.randi_range(0, 6), Vector2(c * TILE) + Vector2(8, 16))
+		draw_tileset_rect("pale_stone" if Art.has("tiles", "pale_stone") else "moon_dust", STONES, Color("c9c0e0"))
+		draw_ground("dirt", cells_of([Rect2i(1, 11, 13, 3), Rect2i(21, 11, 13, 3), MEADOW_EXIT]))
 	else:
 		draw_tileset_rect("dirt_lot", Rect2i(0, 0, cols, rows), Color("6a5a40"))
 		draw_tileset_rect("asphalt", Rect2i(1, 11, 32, 3), Color("3a3a40"))

@@ -58,10 +58,36 @@ func after_ready() -> void:
 			var nm: String = {"stone": "mrock_a", "copper": "ore_copper", "iron": "ore_iron", "shard": "ore_crystal"}[str(t["ore"])]
 			if not prop("props", nm, k):
 				prop("nature", "rock_m", k)
-	for x in range(4, 30):
-		for yy in [8, 16, 24]:
-			if blocked.has(Vector2i(x, yy)) and not things.has(Vector2i(x, yy)):
-				prop("nature", "rock_l" if x % 3 == 0 else "rock_m", Vector2i(x, yy))
+	if not Art.has("tiles", "cliff2_0"):
+		for x in range(4, 30):
+			for yy in [8, 16, 24]:
+				if blocked.has(Vector2i(x, yy)) and not things.has(Vector2i(x, yy)):
+					prop("nature", "rock_l" if x % 3 == 0 else "rock_m", Vector2i(x, yy))
+	if Art.has("props", "hot_spring"):
+		var a := AnimatedSprite2D.new()
+		a.sprite_frames = Art.frames("props", {"idle": "hot_spring"}, {"idle": 3.0})
+		a.animation = "idle"
+		a.scale = Vector2(0.5, 0.5)
+		a.position = Vector2((SPRING.position.x + 1.5) * TILE, (SPRING.end.y) * TILE)
+		a.offset = Vector2(0, -float(Art.info("props", "hot_spring").get("cell_h", 96)) / 2.0)
+		a.z_index = -1
+		add_child(a)
+		a.play("idle")
+	prop("props", "lookout_tower", Vector2i(3, 29), 1)
+	block_rect(3, 26, 2, 4)
+	prop("props", "cliff_stairs_up", Vector2i(11, 8))
+	prop("props", "cliff_stairs_up", Vector2i(19, 16))
+	prop("props", "cliff_stairs_up", Vector2i(8, 24))
+	prop("props", "rockslide", Vector2i(26, 27), 2)
+	block_rect(26, 26, 3, 2)
+	prop("props", "goat", Vector2i(28, 10))
+	for c: Vector2i in [Vector2i(5, 20), Vector2i(23, 12)]:
+		prop("props", "boulder_l", c)
+		blocked[c] = true
+	if Art.has("props", "cave_mouth"):
+		prop("props", "cave_mouth", Vector2i(4, 2), 2)
+		block_rect(4, 1, 3, 2)
+		set_thing(5, 3, {"type": "cave", "hint": "A: a dark cave"}, false)
 	if GameState.is_penguins():
 		prop("props", "landing_pad", Vector2i(15, 6), 2)
 		prop("props", "rocket_house", Vector2i(26, 6), 3)
@@ -79,7 +105,7 @@ func after_ready() -> void:
 			avoid[Vector2i(x, y)] = true
 	WorldGen.tree_clumps(self, Rect2i(2, 26, 30, 4), 92, 4, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 9, 30, 20), 93, 12, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 94, 4)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 94, 6, ["goat", "crow", "crow", "hedgehog", "sparrow"])
 	for i in 3:
 		spawn_enemy("golem" if GameState.is_penguins() else "thug_enforcer", Vector2(randf_range(6, 28) * TILE, randf_range(10, 23) * TILE))
 	if not GameState.run["flags"].has("mountain_seen"):
@@ -126,6 +152,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"pad":
 			_pad()
 			return true
+		"cave":
+			await say([{"text": "Cold air breathes out of the dark. Something glitters far inside. (Tom: a second mine or a secret goes here.)"}])
+			return true
 		"camp":
 			_camp()
 			return true
@@ -168,25 +197,24 @@ func _camp() -> void:
 
 
 func _draw() -> void:
-	draw_tileset_rect("stone", Rect2i(0, 0, cols, rows), Color("8a8a96"))
-	# Grass patches on terraces, dirt switchback path.
-	draw_tileset_rect(GameState.grass_tile(), Rect2i(2, 9, 30, 6), Color("5a9e4b"))
-	draw_tileset_rect(GameState.grass_tile(), Rect2i(2, 25, 30, 6), Color("5a9e4b"))
-	WorldGen.draw_ground_detail(self, 95, 0.08)
-	draw_tileset_rect("dirt", Rect2i(1, 11, 9, 3), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(7, 17, 4, 8), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(10, 8, 4, 6), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(18, 13, 4, 5), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(10, 17, 12, 2), Color("b8945a"))
-	draw_tileset_rect("dirt", Rect2i(14, 7, 6, 2), Color("b8945a"))
+	draw_grass(9)
+	WorldGen.draw_ground_detail(self, 95, 0.1)
+	draw_ground("stone", cells_of([Rect2i(0, 0, cols, 8), Rect2i(0, 15, cols, 2), Rect2i(0, 23, cols, 2)]))
+	draw_ground("dirt", cells_of([Rect2i(1, 11, 9, 3), Rect2i(7, 17, 4, 8), Rect2i(10, 8, 4, 6), Rect2i(18, 13, 4, 5), Rect2i(10, 17, 12, 2), Rect2i(14, 7, 6, 2), TOWN_EXIT]))
+	# Cliff faces along the terrace rows.
+	for yy in [8, 16, 24]:
+		for x in range(1, cols - 1):
+			if blocked.has(Vector2i(x, yy)) and not things.has(Vector2i(x, yy)):
+				var idx := 1 if (x > 1 and blocked.has(Vector2i(x - 1, yy))) and (x < cols - 2 and blocked.has(Vector2i(x + 1, yy))) else (0 if not blocked.has(Vector2i(x - 1, yy)) else 2)
+				var nm := "cliff2_%d" % idx
+				var t := Art.tex("tiles", nm)
+				if t:
+					draw_texture_rect(t, Rect2(x * TILE, (yy - 1) * TILE, TILE, TILE * 2), false)
 	draw_exits()
-	# Hot spring.
-	var r := Rect2(SPRING.position * TILE, SPRING.size * TILE)
-	draw_rect(r.grow(3), Color("7a7a86"))
-	draw_rect(r, Color("6fc8d8"))
-	for i in 5:
-		var sx := r.position.x + 6 + i * 9 + sin(Time.get_ticks_msec() / 300.0 + i) * 2
-		draw_circle(Vector2(sx, r.position.y - 4 - fposmod(Time.get_ticks_msec() / 60.0 + i * 7, 20)), 2.5, Color(1, 1, 1, 0.35))
+	if not Art.has("props", "hot_spring"):
+		var r := Rect2(SPRING.position * TILE, SPRING.size * TILE)
+		draw_rect(r.grow(3), Color("7a7a86"))
+		draw_rect(r, Color("6fc8d8"))
 	draw_fence_border(Color("5a5a66"))
 
 

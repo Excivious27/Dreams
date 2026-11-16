@@ -204,7 +204,7 @@ func _run() -> void:
 	# Shop: buy strawberry seeds.
 	town.player.position = town.cell_center(Vector2i(6, 10))
 	town.player.facing = "up"
-	await frames(3)
+	await frames(20)
 	var before := int(GameState.run["crystals"])
 	await press("a", 3)
 	await frames(10)

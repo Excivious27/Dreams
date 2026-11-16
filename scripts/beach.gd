@@ -56,20 +56,8 @@ func after_ready() -> void:
 	WorldGen.tree_border(self, Rect2i(1, 1, cols - 2, 7), 82, [TOWN_EXIT.grow(2)], 2)
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, 6), 83, 4, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, 6), 84, 8, avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, 16), 85, 8)
-	for k in things:
-		if str(things[k].get("type", "")) == "forage":
-			var nm := "deco_4" if str(things[k]["item"]) == "seashell" else "deco_3"
-			var s := Art.sprite("tiles", nm)
-			if s:
-				s.position = cell_center(k)
-				s.offset = Vector2(0, -16)
-				add_child(s)
-				props[k] = s
-	prop("props", "crates_c", Vector2i(18, 12), 1)
-	block_rect(18, 11, 2, 2)
-	prop("props", "stall", Vector2i(22, 10), 1)
-	block_rect(22, 9, 2, 2)
+	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, 16), 85, 9, ["seagull", "seagull", "crab", "crab", "sparrow", "butterfly_yellow"])
+	_place_props()
 	prop("props", "lantern_lit", Vector2i(13, 19))
 	prop("props", "lantern_lit", Vector2i(16, 19))
 	blocked[Vector2i(13, 19)] = true
@@ -86,6 +74,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"sea":
 			if GameState.has_tool("rod"):
 				_fish(c)
+			return true
+		"hut":
+			await say([{"text": "A thatched hut with surfboards leaning on it. Closed. A sign says 'back when the fish are'. (Tom: a beach shop goes here.)"}])
 			return true
 		"wreck":
 			if int(GameState.run["flags"].get("wreck_day", 0)) < int(GameState.run["day"]) - 3:
@@ -148,27 +139,93 @@ func _fish(c: Vector2i) -> void:
 func _draw() -> void:
 	draw_grass(8)
 	WorldGen.draw_ground_detail(self, 86, 0.1)
-	# Sand from row 8 down, sea from SEA_Y.
-	draw_tileset_rect("shore_set", Rect2i(0, 8, cols, SEA_Y - 8), Color("e3cf8f"))
+	# Sand (with grass transition), wet strip, then sea with foam.
+	var sand := cells_of([Rect2i(0, 8, cols, SEA_Y - 8)])
+	if Art.has("tiles", "sand"):
+		draw_ground("sand", sand)
+		for x in cols:
+			Art.draw_tile(self, "tiles", "sand_wet", Vector2(x * TILE, (SEA_Y - 1) * TILE), 4)
+	else:
+		draw_tileset_rect("shore_set", Rect2i(0, 8, cols, SEA_Y - 8), Color("e3cf8f"))
 	var frame := int(Time.get_ticks_msec() / 250) % 4
 	for y in range(SEA_Y, rows):
 		for x in cols:
-			if not Art.draw_tile(self, "tiles", "water", Vector2(x * TILE, y * TILE), frame):
+			var nm := "sea" if Art.has("tiles", "sea") else "water"
+			if not Art.draw_tile(self, "tiles", nm, Vector2(x * TILE, y * TILE), 4 if nm == "sea" else frame):
 				draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("2f6fb5"))
-	# Foam line.
 	for x in cols:
-		draw_rect(Rect2(x * TILE, SEA_Y * TILE, TILE, 2), Color(1, 1, 1, 0.5 + 0.3 * sin(Time.get_ticks_msec() / 400.0 + x)))
-	draw_tileset_rect("dirt", Rect2i(13, 1, 3, 8), Color("b8945a"))
+		if not Art.draw_tile(self, "tiles", "foam", Vector2(x * TILE, SEA_Y * TILE), (frame + x) % 4):
+			draw_rect(Rect2(x * TILE, SEA_Y * TILE, TILE, 2), Color(1, 1, 1, 0.5))
+	draw_ground("dirt", cells_of([Rect2i(13, 1, 3, 8), TOWN_EXIT]))
 	draw_exits()
-	# Wreck: a broken hull.
-	var p := cell_center(Vector2i(5, 16))
-	draw_rect(Rect2(p.x - 36, p.y - 20, 72, 18), Color("5a3a1a"))
-	draw_rect(Rect2(p.x - 30, p.y - 28, 10, 10), Color("4a2e14"))
-	draw_rect(Rect2(p.x - 2, p.y - 44, 3, 26), Color("3a2412"))
-	draw_colored_polygon(PackedVector2Array([Vector2(p.x + 1, p.y - 44), Vector2(p.x + 22, p.y - 30), Vector2(p.x + 1, p.y - 24)]), Color("e8dcc2"))
-	for x in range(0, cols, 2):
-		if x < 11 or x > 17:
-			draw_rect(Rect2(x * TILE + 4, 8 * TILE - 2, 8, 2), Color("c9a86b"))
+	if not Art.has("buildings", "galleon"):
+		var p := cell_center(Vector2i(5, 16))
+		draw_rect(Rect2(p.x - 36, p.y - 20, 72, 18), Color("5a3a1a"))
+
+
+func _place_props() -> void:
+	if not Art.has("buildings", "galleon"):
+		return
+	prop("buildings", "galleon", Vector2i(2, 18), 13)
+	block_rect(3, 13, 12, 5)
+	things.erase(Vector2i(5, 16))
+	set_thing(8, 18, {"type": "wreck", "hint": "A: search the wreck"}, false)
+	prop("buildings", "beach_hut", Vector2i(21, 11), 3)
+	block_rect(21, 8, 4, 4)
+	set_thing(22, 12, {"type": "hut", "hint": "A: beach hut"}, false)
+	for c: Vector2i in [Vector2i(3, 9), Vector2i(26, 8), Vector2i(18, 7), Vector2i(8, 10)]:
+		prop("nature", "palm", c, 1)
+		block_rect(c.x, c.y, 2, 1)
+	prop("props", "beached_boat", Vector2i(17, 17), 2)
+	block_rect(17, 16, 3, 2)
+	prop("props", "umbrella_red", Vector2i(9, 14), 1); prop("props", "umbrella_blue", Vector2i(25, 15), 1)
+	block_rect(9, 13, 2, 2); block_rect(25, 14, 2, 2)
+	prop("props", "lifeguard", Vector2i(12, 16))
+	blocked[Vector2i(12, 16)] = true
+	_anim("props", "bonfire", Vector2i(20, 15), 0, 8.0)
+	blocked[Vector2i(20, 15)] = true
+	_anim("props", "buoy", Vector2i(6, 23), 0, 2.0)
+	_anim("props", "buoy", Vector2i(24, 25), 0, 2.0)
+	_anim("props", "tide_pool", Vector2i(27, 18), 1, 3.0)
+	block_rect(27, 17, 2, 2)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 87
+	for i in 10:
+		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y - 2))
+		if things.has(c) or blocked.has(c):
+			continue
+		prop("nature", "dune_%d" % rng.randi_range(0, 9), c)
+	for k in things.keys():
+		if str(things[k].get("type", "")) == "forage":
+			var item := str(things[k]["item"])
+			var nm: String = {"seashell": ["shell_a", "shell_b", "shell_c", "starfish"][(k.x + k.y) % 4], "coconut": "coconut_p", "fiber": "seaweed"}.get(item, "shell_a")
+			if props.has(k):
+				(props[k] as Node).queue_free()
+			prop("props", nm, k)
+	# Pier planks: replace dock tiles with the pier set.
+	for k in things.keys():
+		if str(things[k].get("type", "")) == "dock" and Art.has("tiles", "pier"):
+			var sp := Sprite2D.new()
+			sp.texture = Art.tex("tiles", "pier")
+			sp.region_enabled = true
+			sp.region_rect = Rect2(32, 0, 32, 32)
+			sp.scale = Vector2(0.5, 0.5)
+			sp.position = Vector2(k * TILE) + Vector2(8, 8)
+			sp.z_index = -1
+			add_child(sp)
+
+
+func _anim(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -> void:
+	if not Art.has(group, name):
+		return
+	var a := AnimatedSprite2D.new()
+	a.sprite_frames = Art.frames(group, {"idle": name}, {"idle": fps})
+	a.animation = "idle"
+	a.scale = Vector2(0.5, 0.5)
+	a.position = Vector2((c.x + (extra_w + 1) / 2.0) * TILE, (c.y + 1) * TILE)
+	a.offset = Vector2(0, -float(Art.info(group, name).get("cell_h", 48)) / 2.0)
+	add_child(a)
+	a.play("idle")
 
 
 func _process(delta: float) -> void:

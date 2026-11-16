@@ -55,18 +55,32 @@ func after_ready() -> void:
 	WorldGen.tree_border(self, Rect2i(2, 2, cols - 4, rows - 4), 63, [FARM_EXIT.grow(3), LAKE_EXIT.grow(3)], 2)
 	WorldGen.tree_clumps(self, Rect2i(3, 3, cols - 6, rows - 6), 64, 26, avoid)
 	WorldGen.scatter_props(self, Rect2i(3, 3, cols - 6, rows - 6), 65, 30, avoid)
-	WorldGen.add_critters(self, Rect2i(3, 3, cols - 6, rows - 6), 66, 10)
+	WorldGen.add_critters(self, Rect2i(3, 3, cols - 6, rows - 6), 66, 12, ["deer", "fox", "rabbit", "squirrel", "hedgehog", "owl", "sparrow", "butterfly_yellow", "crow"])
 	for k in things:
 		if str(things[k].get("type", "")) == "forage":
 			var nm := "mushrooms_fall" if str(things[k]["item"]) == "mushroom" and Art.has("nature", "mushrooms_fall") else "flowers"
 			prop("nature", nm, k)
 	# Woodcutter's clearing (NE) and the hidden pond (SE).
-	prop("props", "stall", Vector2i(24, 25), 1)
-	prop("props", "logs", Vector2i(27, 27))
-	prop("props", "haystack", Vector2i(23, 28))
-	block_rect(24, 24, 2, 2)
-	blocked[Vector2i(27, 27)] = true
-	blocked[Vector2i(23, 28)] = true
+	if Art.has("buildings", "woodcutter_hut"):
+		prop("buildings", "woodcutter_hut", Vector2i(23, 27), 4)
+		block_rect(23, 24, 5, 4)
+		prop("nature", "stump_axe", Vector2i(29, 27))
+		blocked[Vector2i(29, 27)] = true
+		prop("nature", "giant_log", Vector2i(4, 30), 3)
+		block_rect(4, 30, 4, 1)
+	else:
+		prop("props", "stall", Vector2i(24, 25), 1)
+		block_rect(24, 24, 2, 2)
+	prop("nature", "forest_shrine", SHRINE, 0, 2.0)
+	if Art.has("buildings", "great_tree"):
+		prop("buildings", "great_tree", Vector2i(16, 20), 6)
+		block_rect(15, 15, 7, 6)
+		set_thing(18, 21, {"type": "great_tree", "hint": "A: the great tree"}, false)
+	for c: Vector2i in [Vector2i(6, 12), Vector2i(28, 10), Vector2i(10, 33)]:
+		prop("nature", "hollow_tree" if c.x == 6 else ("willow" if c.x == 28 else "big_oak"), c, 1)
+		block_rect(c.x, c.y - 1, 2, 2)
+	prop("nature", "berry_thicket", Vector2i(21, 34), 1)
+	set_thing(21, 34, {"type": "bush", "key": "forest_thicket", "berries": int(GameState.run["flags"].get("forest_thicket", 0)) < int(GameState.run["day"]), "hint": "A: pick berries"})
 	var pond := Scenery.Pond.new()
 	pond.rect = Rect2(26 * TILE, 30 * TILE, 5 * TILE, 4 * TILE)
 	pond.z_index = -1
@@ -110,6 +124,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"water":
 			hud.toast("Fishing here is coming with the next lake art.")
 			return true
+		"great_tree":
+			await say([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight. (Tom: this is a story door.)"}])
+			return true
 	return false
 
 
@@ -132,16 +149,29 @@ func _shrine() -> void:
 
 
 func _draw() -> void:
-	draw_grass(6)
-	WorldGen.draw_ground_detail(self, 67, 0.22)
+	if Art.has("tiles", "forest_floor"):
+		for y in rows:
+			for x in cols:
+				Art.draw_tile(self, "tiles", "forest_floor", Vector2(x * TILE, y * TILE), 4)
+		var rng := RandomNumberGenerator.new()
+		rng.seed = 68
+		for y in range(1, rows - 1):
+			for x in range(1, cols - 1):
+				if rng.randf() < 0.1:
+					Art.draw_prop(self, "nature", "fdeco_%d" % rng.randi_range(0, 9), Vector2(x * TILE + 8, y * TILE + 16))
+	else:
+		draw_grass(6)
+		WorldGen.draw_ground_detail(self, 67, 0.22)
+	var pc := {}
 	for c in _path_cells():
-		if not Art.draw_tile(self, "tiles", "dirt", Vector2(c * TILE), 4):
+		pc[c] = true
+	for c: Vector2i in pc:
+		if not Art.draw_tile(self, "tiles", "forest_path" if Art.has("tiles", "forest_path") else "dirt", Vector2(c * TILE), 4):
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("8a6a40"))
 	draw_tileset_rect("stone", Rect2i(13, 4, 7, 5), Color("9a9aa6"))
 	draw_exits()
-	# Shrine: a stone altar with a crystal.
-	var p := cell_center(SHRINE)
-	draw_rect(Rect2(p.x - 14, p.y - 14, 28, 12), Color("7a7a86"))
-	draw_rect(Rect2(p.x - 10, p.y - 18, 20, 5), Color("9a9aa6"))
-	draw_colored_polygon(PackedVector2Array([Vector2(p.x, p.y - 30), Vector2(p.x + 4, p.y - 22), Vector2(p.x, p.y - 17), Vector2(p.x - 4, p.y - 22)]), Color("a8d8ff"))
+	if not Art.has("nature", "forest_shrine"):
+		var p := cell_center(SHRINE)
+		draw_rect(Rect2(p.x - 14, p.y - 14, 28, 12), Color("7a7a86"))
+		draw_colored_polygon(PackedVector2Array([Vector2(p.x, p.y - 30), Vector2(p.x + 4, p.y - 22), Vector2(p.x, p.y - 17), Vector2(p.x - 4, p.y - 22)]), Color("a8d8ff"))
 	draw_fence_border()

@@ -497,6 +497,43 @@ func draw_grass(seed_v := 1) -> void:
 				draw_rect(Rect2(at, Vector2(TILE, TILE)), Color("5a9e4b") if (x + y) % 2 == 0 else Color("67ab55"))
 
 
+## Ground region with real grass transitions (W1 sets) when available.
+## kind: "dirt" | "sand" | "stone". Falls back to draw_tileset_rect.
+func draw_ground(kind: String, cells: Dictionary) -> void:
+	var tset := "t_" + kind
+	var fill: String = {"dirt": "dirt", "sand": "sand", "stone": "g_gravel"}.get(kind, "dirt")
+	if Art.has("tiles", tset):
+		Art.draw_autotile(self, cells, "@", tset, Art.T_GROUND_IDX)
+		return
+	for c: Vector2i in cells:
+		if not Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), 4):
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("b8945a"))
+
+
+func cells_of(rects: Array) -> Dictionary:
+	var d := {}
+	for r: Rect2i in rects:
+		for y in range(r.position.y, r.end.y):
+			for x in range(r.position.x, r.end.x):
+				d[Vector2i(x, y)] = true
+	return d
+
+
+## Water body with proper shore edges (grass or sand outside) and animated fill.
+func draw_water(cells: Dictionary, shore := "grass") -> void:
+	var tset := "t_water_" + shore
+	var frame := int(Time.get_ticks_msec() / 250) % 4
+	if Art.has("tiles", tset):
+		# fill first (animated), then edges on top
+		for c: Vector2i in cells:
+			Art.draw_tile(self, "tiles", "water", Vector2(c * TILE), frame)
+		Art.draw_autotile(self, cells, "", tset, Art.T_WATER_IDX)
+		return
+	for c: Vector2i in cells:
+		if not Art.draw_tile(self, "tiles", "water", Vector2(c * TILE), frame):
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("2f6fb5"))
+
+
 ## A rectangle of a 3x3 tile set (dirt, stone, dock...) with proper edges.
 func draw_tileset_rect(name: String, r: Rect2i, fallback: Color) -> void:
 	if not Art.has("tiles", name):

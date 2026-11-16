@@ -90,6 +90,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			xp("mining", 4)
 			go_to("mine", Vector2.ZERO)
 			return true
+		"skeleton":
+			if not GameState.run["flags"].has("skel_%d" % floor_no):
+				GameState.run["flags"]["skel_%d" % floor_no] = true
+				give("gold", 2)
+				await say([{"text": "Somebody didn't make it back up. Their pack still has something in it."}])
+			return true
 		"rock":
 			if not GameState.has_tool("pickaxe"):
 				return false
@@ -113,8 +119,37 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	return false
 
 
+func _variant() -> String:
+	if floor_no >= 10:
+		return "lava"
+	if floor_no >= 7:
+		return "ice"
+	if floor_no >= 4:
+		return "stone"
+	return "earth"
+
+
 func _draw() -> void:
-	if Art.has("tiles", "mine_floor"):
+	var v := _variant()
+	if Art.has("tiles", "mf_" + v) and Art.has("tiles", "mw_" + v):
+		draw_tileset_rect("mf_" + v, Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
+		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.15 + 0.03 * mini(floor_no, 8)))
+		var w := "mw_" + v
+		for x in range(1, cols - 1):
+			Art.draw_tile(self, "tiles", w, Vector2(x * TILE, 0), 1)
+			Art.draw_tile(self, "tiles", w, Vector2(x * TILE, (rows - 1) * TILE), 7)
+		for y in range(1, rows - 1):
+			Art.draw_tile(self, "tiles", w, Vector2(0, y * TILE), 3)
+			Art.draw_tile(self, "tiles", w, Vector2((cols - 1) * TILE, y * TILE), 5)
+		Art.draw_tile(self, "tiles", w, Vector2(0, 0), 0)
+		Art.draw_tile(self, "tiles", w, Vector2((cols - 1) * TILE, 0), 2)
+		Art.draw_tile(self, "tiles", w, Vector2(0, (rows - 1) * TILE), 6)
+		Art.draw_tile(self, "tiles", w, Vector2((cols - 1) * TILE, (rows - 1) * TILE), 8)
+		if v == "lava" and Art.has("tiles", "lava"):
+			var frame := int(Time.get_ticks_msec() / 300) % 4
+			for c: Vector2i in cells_of([Rect2i(3, 12, 4, 3), Rect2i(12, 4, 3, 2)]):
+				Art.draw_tile(self, "tiles", "lava", Vector2(c * TILE), frame)
+	elif Art.has("tiles", "mine_floor"):
 		draw_tileset_rect("mine_floor", Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
 		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.3 + 0.05 * mini(floor_no, 6)))
 		for x in range(1, cols - 1):
@@ -146,6 +181,8 @@ func _draw() -> void:
 				draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
 			"up", "down":
 				var nm := "ladder_up" if str(t["type"]) == "up" else "ladder_down"
+				if Art.has("props", "ladder_a"):
+					nm = "ladder_a" if str(t["type"]) == "up" else "shaft"
 				if not Art.draw_prop(self, "props", nm, p):
 					draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
 	if not Art.has("tiles", "mine_floor"):
@@ -158,13 +195,37 @@ func _draw() -> void:
 
 func _place_props() -> void:
 	if Art.has("props", "ore_copper"):
+		var v := _variant()
+		var deep := Art.has("props", "node_copper")
 		for k in things:
 			var t: Dictionary = things[k]
 			if str(t.get("type", "")) != "rock":
 				continue
 			var ore := str(t["ore"])
 			var nm: String = {"stone": "mrock_a" if (k.x + k.y) % 3 != 0 else "mrock_b", "copper": "ore_copper", "iron": "ore_iron", "shard": "ore_crystal", "gold": "ore_gold", "dark": "ore_dark"}.get(ore, "mrock_a")
+			if deep:
+				nm = {"stone": "mrock_%s_%d" % [v, (k.x + k.y) % 2], "copper": "node_copper", "iron": "node_iron", "shard": "node_crystal", "gold": "node_gold", "dark": "node_dark"}.get(ore, nm)
 			prop("props", nm, k)
+		if deep:
+			var rng2 := RandomNumberGenerator.new()
+			rng2.seed = 4000 + floor_no
+			for i in 3:
+				var c := Vector2i(rng2.randi_range(2, cols - 3), rng2.randi_range(2, rows - 3))
+				if not things.has(c) and not blocked.has(c):
+					prop("props", ["cluster_blue", "cluster_purple", "gmush_blue", "gmush_red", "stalagmite_a"][rng2.randi_range(0, 4)], c)
+			for x in [3, cols - 4]:
+				var sp := Art.sprite("props", "stalactite_%s" % ["a", "b", "c"][x % 3])
+				if sp:
+					sp.position = Vector2(x * TILE + 8, TILE + 20)
+					add_child(sp)
+			prop("props", "beam_lamp", Vector2i(cols / 2 - 1, 1), 1)
+			if floor_no % 2 == 0:
+				prop("props", "cart_full", Vector2i(2, rows - 3))
+				blocked[Vector2i(2, rows - 3)] = true
+			if floor_no % 5 == 0:
+				prop("props", "skeleton", Vector2i(cols - 3, 2))
+				blocked[Vector2i(cols - 3, 2)] = true
+				set_thing(cols - 3, 2, {"type": "skeleton", "hint": "A: an old miner"})
 		var rng := RandomNumberGenerator.new()
 		rng.seed = 3000 + floor_no
 		for i in 4:
@@ -181,3 +242,9 @@ func _place_props() -> void:
 		if str(t.get("type", "")) != "rock":
 			continue
 		prop("nature", "rock_m", k)
+
+
+func _process(delta: float) -> void:
+	super(delta)
+	if _variant() == "lava":
+		queue_redraw()
