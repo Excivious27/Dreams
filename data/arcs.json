@@ -1,0 +1,14 @@
+{
+  "penguins": {
+    "title": "The Too Two Powerful Penguins",
+    "tagline": "Complete the Meow Pow Wow. Defeat the Dark Crystal.",
+    "tone": "wholesome",
+    "playable": ["big_jim", "penguin_m", "penguin_f", "light_crystal", "dad", "mom", "pax", "kairi"]
+  },
+  "gangsters": {
+    "title": "Gangster's Paradise",
+    "tagline": "Hide. Farm. Build a gang. Take back your life.",
+    "tone": "serious",
+    "playable": ["dad", "pax"]
+  }
+}

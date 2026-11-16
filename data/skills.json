@@ -1,0 +1,9 @@
+{
+  "combat": {"name": "Combat"},
+  "farming": {"name": "Farming"},
+  "mining": {"name": "Mining"},
+  "bartering": {"name": "Bartering"},
+  "building": {"name": "Building"},
+  "foraging": {"name": "Foraging"},
+  "fishing": {"name": "Fishing"}
+}

@@ -64,6 +64,7 @@ func _ready() -> void:
 	_hud.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	hud_layer.add_child(_hud)
 
+	add_child(Scenery.new())
 	add_child(TouchControls.new())
 	queue_redraw()
 

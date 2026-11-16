@@ -1,0 +1,10 @@
+{
+  "dad": {"name": "Dad", "sprite": "man", "placeholder": false},
+  "mom": {"name": "Mom", "sprite": "woman", "placeholder": false},
+  "pax": {"name": "Pax", "sprite": "son", "placeholder": false},
+  "kairi": {"name": "Kairi", "sprite": "girl", "placeholder": false},
+  "big_jim": {"name": "Big Jim", "sprite": "", "placeholder": true, "color": "2b3a67"},
+  "penguin_m": {"name": "Too Powerful Penguin", "sprite": "", "placeholder": true, "color": "1f2a44"},
+  "penguin_f": {"name": "Too Powerful Penguin (F)", "sprite": "", "placeholder": true, "color": "3b2a55"},
+  "light_crystal": {"name": "Light Crystal", "sprite": "", "placeholder": true, "color": "cfe8ff"}
+}

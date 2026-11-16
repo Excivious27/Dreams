@@ -1,0 +1,36 @@
+Here are the details of the game that I want you to do a build out for.  Keep in mind that all of these notes are not complete.  The game will continue to be developed in concept, story, art, mechanics,etc over time.  
+This game is to be designed as an open world RPG, with complex decision making mechanics that determine what parts of the game unfold for you.  At it's core, it will be a game that functions highly similar to Stardew Valley.  There will be an initial town that you start off in and have access to explore and you will be given your own plot of land to build/farm/etc, but as you progress in the game you will continue to get access to more towns/regions/etc to explore.  
+This game will be highly mystical in nature, there will be occasional sci fi elements, but there will be highly unique paths and arcs that the game can go down based upon opening decisions when you start the game and choose your character/type and then also in the gameplay as you make your decisions for good, bad, etc.  There will be two separate arcs within the game that will appear on the surface to have no overlap at first, but will it will increasingly come to light that the paths interconnect.  
+I want the game designed to be multiplayer, just like Stardew Valley type settings for cooperative play.  
+The first Arc is the arc of the Too Two Powerful Penguins.  You will be given the option to choose your character in the beginning if you desire this arc:  Big Jim, or male Too Powerful Penguins, or female Too Powerful Penguin, or Light Crystal, or any of the characters from the Pixel character pack (Mom, Dad, Pax, Kairi).  If you choose the second arc which is called Gangster's Paradise, you will have the option of choosing from Dad or Paxten (the dad or son character from the Pixel character pack) .  Whichever arc you choose you still get to name your character, town, and pet (pet is in Pixel character pack and will be a key assistant for you in either arc).  
+The general premise of the Too Powerful Penguin Arc is that the penguins have been granted powers by a crystal from a far of galaxy -the power is called the Meow Pow Wow.  The light crystal has bestowed this power upon the penguins in the hopes that they will continue to find all the missing abilities needed to complete the full Meow Pow Wow so that they can defeat the Dark Crystal, which is the leader of the Grumps Army (The Dark Crystal is a corrupted Crystal which corrupted other crystals into joining it in an effort to take all the joy out of the universe and rule it with an iron fist.  The crystal that found the penguins sensed that there was something special in these penguins and that they were the chosen ones, the last hope of the universe to try to defeat the dark crystal.  To do so in the game, the penguins will have to work together to craft, explore, unlock new areas, eventually go into space, complete complex quests, tasks, help build up the community they start in and make friends there (there will be a similar friend making mechanism like Stardew and there will be a unique experience leveling up mechanism for combat, farming, mining, bartering, building, foraging, etc that as they level up they get additional access to unlock new important abilities)   there will be mines in this game in the town and new unique mines to explore in other regions including space.  The game will include more combat than Stardew, but the style of combat will be the same.  There will be some bosses to fight in the game as well or find clever paths to defeat.  
+The path of the Too Two Powerful penguins is wholesome and good.  The penguins are doing their best to improve the universe.  Buying things in this is unique.  Anything can be traded for other items with a trade value.  The currency is in crystals.  There will be a sell box on the farm.  In town there will be a general store and other stores for goods like weapons, potions, etc.   That is enough to get you started on that.  there will be fishing.
+The path of the Gangster Paradise is much more serious and is more like the Jojo Cola version of Stardew valley, as a metaphor for it's difference.  This arc is much more like a combination of Stardew valley/joja cola meets one piece.  The main character is striving to get vengeance on the gangster who ruined his life and led him to have to hide out in this community that he is in.  Begrudgingly, he farms, builds, etc in order to gain access to new areas, which are inhabited with different abilitied gangsters (some will have cyber implants, some have forms of superpowers, some are just super strong, etc).  The main character will be striving to make their way though these regions and build up strength and money to recruit his/her own gang members so that he can one day take on the president of the the biggest gangster nation, the one who ruined his life.  As with the Too Two Powerful Penguins Arc, all decisions are complex and are consequential on the gameplay of the game going forward.  
+This is enough to get started on a scaffolding for the game.  In order to build this game out, I will want you to create a structured guide for me to move the game along that has specific inputs/details you need or recommend adding to fill in and progress the development of the game.  Make each one you give me based upon the most important needed info to continue the build of the game at the current state of the game's development.  
+Secondly, I want this to be a very beautiful game in design.  So I will want you to create a series of well crafted prompts for me to give to chatgpt so that it can generate the needed tiles/sprites/items/houses/characters/etc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
