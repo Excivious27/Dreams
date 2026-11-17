@@ -38,6 +38,9 @@ static func active_name() -> String:
 
 
 static func has_ability(ab: String) -> bool:
+	# The merkitties' gift: once sung over, anyone grows a tail in water.
+	if ab == "tail" and GameState.run["flags"].has("mermaid_gift"):
+		return true
 	var a := active_id()
 	if a == "":
 		return false
@@ -46,7 +49,7 @@ static func has_ability(ab: String) -> bool:
 
 ## Grumps were villagers' animals once. Meow Pow Wow turns them back; rank
 ## (from Nova's friendship hearts / 2, min 1) decides how big a grump it reaches.
-const REVERT := {"grump": ["rabbit", 1], "mud_slime": ["frog", 1], "slime": ["frog", 1], "bat": ["sparrow", 1], "wisp": ["firefly", 2], "ice_wisp": ["firefly", 2], "shard": ["crystal_fish", 2], "hill_wolf": ["fox", 3], "rock_crab": ["crab", 2], "golem": ["goat", 3], "quarry_golem": ["goat", 4], "big_grump": ["deer", 4], "bog_hag": ["heron", 4], "river_serpent": ["otter", 4]}
+const REVERT := {"crystal_baby": ["baby_free", 1], "finargle": ["finargle_free", 3], "grump": ["rabbit", 1], "mud_slime": ["frog", 1], "slime": ["frog", 1], "bat": ["sparrow", 1], "wisp": ["firefly", 2], "ice_wisp": ["firefly", 2], "shard": ["crystal_fish", 2], "hill_wolf": ["fox", 3], "rock_crab": ["crab", 2], "golem": ["goat", 3], "quarry_golem": ["goat", 4], "big_grump": ["deer", 4], "bog_hag": ["heron", 4], "river_serpent": ["otter", 4]}
 
 
 static func meow_rank() -> int:
@@ -55,6 +58,10 @@ static func meow_rank() -> int:
 
 static func use_ability(m: GameMap, p: Player) -> void:
 	var ab := str(defs().get(active_id(), {}).get("ability", ""))
+	# Prompts-12 partner art: cast pose + the partner's own effect strip.
+	var sprite_id := str(defs().get(active_id(), {}).get("sprite", active_id()))
+	if Art.has("fx", "ability_" + sprite_id):
+		m.fx("ability_" + sprite_id, p.position + Vector2(0, -10), 10.0, 0.6)
 	match ab:
 		"meow_pow_wow":
 			var rank := meow_rank()
@@ -104,6 +111,17 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			var gm := m.get_node_or_null("GameMenu")
 			if gm:
 				(gm as GameMenu).toggle()
+		"bee_bop":
+			# Coldy stamps: a ring that cracks the ground; grumps in it stagger.
+			m.fx("stomp" if Art.has("fx", "stomp") else "ripple_ring", p.position, 16.0, 0.8)
+			m.shake(3.0)
+			var hits := 0
+			for e in m.enemies:
+				if is_instance_valid(e) and e.position.distance_to(p.position) < 44.0:
+					e.hit(2 + meow_rank(), p.position)
+					e._stun = maxf(e._stun, 0.8)
+					hits += 1
+			m.hud.toast("Coldy: 'BEE BOP BOO BABY.'" if hits > 0 else "Coldy: 'Bee bop boo... nobody.'", Color(0.8, 0.9, 1.0))
 		"muscle":
 			var fc: Vector2i = p.facing_cell()
 			var th: Dictionary = m.things.get(fc, {})

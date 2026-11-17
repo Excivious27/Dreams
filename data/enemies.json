@@ -613,6 +613,42 @@
     0.1,
     1
    ]
+  ],
+  "finargle": [
+   [
+    "shard",
+    0.5,
+    1
+   ],
+   [
+    "finargle_fuzz",
+    0.6,
+    1
+   ]
+  ],
+  "finargle_elder": [
+   [
+    "shard",
+    0.9,
+    2
+   ],
+   [
+    "finargle_fuzz",
+    1.0,
+    2
+   ],
+   [
+    "dark",
+    0.4,
+    1
+   ]
+  ],
+  "crystal_baby": [
+   [
+    "shard",
+    0.3,
+    1
+   ]
   ]
  },
  "enemies": {
@@ -1088,6 +1124,45 @@
     "regen"
    ],
    "status": "blind"
+  },
+  "finargle": {
+   "hp": 18,
+   "dmg": 2,
+   "speed": 36,
+   "xp": 18,
+   "tier": 3,
+   "abilities": [
+    "blink",
+    "ranged"
+   ],
+   "status": "blind",
+   "art": "wisp"
+  },
+  "finargle_elder": {
+   "hp": 40,
+   "dmg": 3,
+   "speed": 32,
+   "xp": 40,
+   "tier": 4,
+   "abilities": [
+    "blink",
+    "ranged",
+    "shield",
+    "summon"
+   ],
+   "status": "blind",
+   "art": "wisp"
+  },
+  "crystal_baby": {
+   "hp": 14,
+   "dmg": 2,
+   "speed": 28,
+   "xp": 8,
+   "tier": 2,
+   "abilities": [
+    "stomp"
+   ],
+   "art": "shard"
   }
  }
 }

@@ -1,5 +1,5 @@
 extends GameMap
-## East of the meadow. Penguin arc: the Crystal Meadow, where the Light Crystal's
+## East of the meadow. Penguin arc: the Crystal Meadow, where the Star Crystal's
 ## power has soaked into the ground: glowing crystals, crystal blooms to forage,
 ## standing stones, and Grumps pushing in from the wastes (east). Gangster arc:
 ## the Outskirts, a run-down strip with the hideout shack, a black market and
@@ -51,6 +51,12 @@ func build() -> void:
 func after_ready() -> void:
 	set_aurora(GameState.is_penguins())
 	WorldGen.add_backdrop(self, "hills" if GameState.is_penguins() else "gritty")
+	if GameState.is_penguins():
+		_catkins = Npc.new()
+		_catkins.map = self
+		_catkins.setup("catkins", GameState.npcs["catkins"], cell_center(Vector2i(cols - 12, 8)))
+		_catkins.wander = 6.0
+		add_child(_catkins)
 	if Art.has("props", "cat_statue") and GameState.is_penguins():
 		prop("props", "cat_statue", Vector2i(cols - 10, 6), 1)
 		set_thing(cols - 9, 7, {"type": "note", "text": "A stone cat, smiling, holding a crystal to its chest. Moss on its ears. Somebody still leaves flowers here.", "hint": "A: the cat statue"}, false)
@@ -137,7 +143,27 @@ func after_ready() -> void:
 		player.frozen = false
 
 
+var _catkins: Npc = null
+
+
+func _talk_catkins() -> void:
+	player.frozen = true
+	_catkins.face(player.position)
+	if await Story.talk(self, "catkins"):
+		player.frozen = false
+		return
+	if await Hearts.talk(self, "catkins"):
+		player.frozen = false
+		return
+	var lines: Array = GameState.npcs["catkins"].get("lines", ["..."])
+	await say([{"who": "Catkins", "text": str(lines[int(GameState.run["day"]) % lines.size()])}])
+	player.frozen = false
+
+
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
+	if _catkins and _catkins.visible and (_catkins.cell() == _c or (thing.is_empty() and _catkins.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0)):
+		later(_talk_catkins)
+		return true
 	match str(thing.get("type", "")):
 		"note":
 			tell([{"text": str(thing.get("text", "..."))}])
@@ -148,7 +174,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 		"gate":
 			if not GameState.quest_done("clear_meadow"):
 				if GameState.is_penguins():
-					tell([{"who": "Light Crystal", "text": "Past here the colour drains out of everything. Clear the meadow first; I need you with the first spark lit."}])
+					tell([{"who": "Star Crystal", "text": "Past here the colour drains out of everything. Clear the meadow first; I need you with the first spark lit."}])
 				else:
 					tell([{"text": "A chain-link gate, and past it the road to the city. Deal with the President's man in the meadow first. He has the key."}])
 				return true
@@ -158,7 +184,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 				go_to("hideout", Vector2(2 * TILE, 14 * TILE + 8), "right")
 			return true
 		"crater":
-			tell([{"who": "Light Crystal", "text": "This is where I landed first, before your field. The ground remembers. Stand here when the Meow Pow Wow is whole and... well. You'll see.", "mood": "happy"}])
+			tell([{"who": "Star Crystal", "text": "This is where I landed first, before your field. The ground remembers. Stand here when the Meow Pow Wow is whole and... well. You'll see.", "mood": "happy"}])
 			return true
 		"shack":
 			tell([{"text": "The old shack. Someone lived here before you and left in a hurry. A corkboard inside has photos with the faces cut out."}])
@@ -177,9 +203,9 @@ func _altar() -> void:
 		fx("pawring", cell_center(Vector2i(17, 11)) + Vector2(0, -12), 10.0, 0.8)
 		GameState.run["max_hp"] = int(GameState.run["max_hp"]) + 1
 		GameState.run["hp"] = int(GameState.run["max_hp"])
-		await say([{"who": "Light Crystal", "text": "Yes. That's it. Every refined crystal you bring here grows the Meow Pow Wow a little. (+1 max heart)", "mood": "happy"}])
+		await say([{"who": "Star Crystal", "text": "Yes. That's it. Every refined crystal you bring here grows the Meow Pow Wow a little. (+1 max heart)", "mood": "happy"}])
 	else:
-		await say([{"who": "Light Crystal", "text": "Bring a Refined Crystal (3 shards in the resonator on your farm) and set it here."}])
+		await say([{"who": "Star Crystal", "text": "Bring a Refined Crystal (3 shards in the resonator on your farm) and set it here."}])
 
 
 func _market() -> void:

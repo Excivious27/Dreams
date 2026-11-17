@@ -48,7 +48,7 @@
  "beehive": {"label": "Beehive", "cell": [21, 15], "w": 0, "h": 1, "group": "props", "thing": "beehive",
   "tiers": [{"tier": 1, "name": "Beehive", "sprite": "beehive3_a", "cost": {"wood": 15, "fiber": 10}, "permit": 0, "days": 0, "desc": "Honey every few days; more with flowers nearby."}]},
  "resonator": {"label": "Crystal resonator", "cell": [16, 16], "w": 0, "h": 1, "group": "props", "thing": "resonator",
-  "tiers": [{"tier": 1, "name": "Crystal resonator", "sprite": "resonator", "cost": {"stone": 10, "shard": 1}, "permit": 0, "days": 0, "desc": "Charges from the Light Crystal; powers the story."}]},
+  "tiers": [{"tier": 1, "name": "Crystal resonator", "sprite": "resonator", "cost": {"stone": 10, "shard": 1}, "permit": 0, "days": 0, "desc": "Charges from the Star Crystal; powers the story."}]},
  "scarecrow": {"label": "Scarecrow", "cell": [22, 12], "w": 0, "h": 1, "group": "props",
   "tiers": [{"tier": 1, "name": "Scarecrow", "sprite": "scarecrow_classic", "cost": {"wood": 8, "fiber": 4}, "permit": 0, "days": 0, "desc": "Crows leave the crops alone."}]}
 }

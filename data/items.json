@@ -7277,5 +7277,38 @@
   "rarity": "rare",
   "tier": 2,
   "desc": "Every crate marked with a purple crystal. UPTOWN, TOWER, SUB-BASEMENT 3."
+ },
+ "litter_box": {
+  "name": "Litter Box",
+  "type": "consumable",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Cat-topia's secret weapon. Throw it: every Grump nearby stops to hold its nose.",
+  "effect": "stink"
+ },
+ "finargle_fuzz": {
+  "name": "Finargle Fuzz",
+  "type": "material",
+  "value": 30,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Black and warm and it hums faintly in your pack. Spies' leavings."
+ },
+ "sacred_key": {
+  "name": "Sacred Key",
+  "type": "key",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 4,
+  "desc": "Coldy's key to the heart of Mount Prismatica. It is warm, and it is humming."
+ },
+ "merkitty_necklace": {
+  "name": "Merkitty Necklace",
+  "type": "key",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 3,
+  "desc": "Glows blue-green in the dark. You grow a tail the moment you touch water."
  }
 }

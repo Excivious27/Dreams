@@ -1430,5 +1430,27 @@
   },
   "home": "sel_camp",
   "work": "sel_camp"
+ },
+ "catkins": {
+  "name": "Catkins",
+  "sprite": "merry",
+  "portrait": "merry",
+  "role": "leader of Cat-topia",
+  "home": "",
+  "work": "",
+  "routine": [],
+  "likes": [
+   "fish",
+   "cat_treat",
+   "tuna"
+  ],
+  "dislikes": [
+   "litter_box"
+  ],
+  "lines": [
+   "A-meow-zing. You came back.",
+   "Heart at the chest. Hearts and paws. Remember.",
+   "The cats say hello. Biscuit is not impressed; dogs never are."
+  ]
  }
 }

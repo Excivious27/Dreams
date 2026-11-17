@@ -307,11 +307,15 @@ func _draw() -> void:
 	if map == null or frozen or map.get_tree().paused:
 		return
 	var held := GameState.held_tool()
-	if held == "" or held in ["sword", "iron_sword"]:
+	var sel := str(GameState.run["selected"])
+	var seed_held: bool = held == "" and str((GameState.items.get(sel, {}) as Dictionary).get("type", "")) == "seed"
+	if (held == "" and not seed_held) or held in ["sword", "iron_sword"]:
 		return
 	var fc := facing_cell()
 	var thing: Dictionary = map.things.get(fc, {})
-	var usable: bool = map.hint_for(fc, thing) != "" or (held == "hoe" and map.can_till(fc)) or (held == "can" and str(thing.get("type", "")) == "plot") or (held == "scythe" and str(thing.get("type", "")) in ["grass", "weeds", "plot"])
+	var fkey := "%d,%d" % [fc.x, fc.y]
+	var ftile: Dictionary = (GameState.run["farm"] as Dictionary).get(fkey, {})
+	var usable: bool = map.hint_for(fc, thing) != "" or (held == "hoe" and map.can_till(fc)) or (held == "can" and not ftile.is_empty() and not bool(ftile.get("watered", false))) or (held == "scythe" and str(thing.get("type", "")) in ["grass", "weeds", "plot"]) or (seed_held and not ftile.is_empty() and str(ftile.get("crop", "")) == "")
 	var col := Color(0.4, 1.0, 0.5, 0.55) if usable else Color(1.0, 0.45, 0.4, 0.4)
 	var r := Rect2(map.cell_pos(fc.x, fc.y) - position, Vector2(GameMap.TILE, GameMap.TILE))
 	draw_rect(r.grow(-1), col, false, 1.5)
@@ -603,6 +607,8 @@ func play_tool(action: String, restart := true) -> bool:
 	var a := action + "_" + d
 	if not has_anim(a) and has_anim(action + "_right"):
 		a = action + "_right"
+	if not has_anim(a) and has_anim(action + "_down"):
+		a = action + "_down"
 	if not has_anim(a):
 		return false
 	_busy = true

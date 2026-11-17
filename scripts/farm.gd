@@ -110,7 +110,7 @@ func build() -> void:
 		if str(b["thing"]) != "":
 			set_thing(c.x, c.y, {"type": str(b["thing"]), "hint": "A: " + str(id)})
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
-		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
+		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
 	_place_debris()
 
 
@@ -447,7 +447,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		return true
 	if not bool(tile.get("watered", false)):
 		return _water(tile)
-	hud.toast("%s: %d more day%s." % [cd["name"], int(cd["days"]) - int(tile["days"]), "" if int(cd["days"]) - int(tile["days"]) == 1 else "s"])
+	var left := int(cd["days"]) - int(tile["days"])
+	hud.toast("%s%s: %d more day%s." % ["Already watered. " if GameState.held_tool() == "can" else "", cd["name"], left, "" if left == 1 else "s"])
 	return true
 
 
@@ -535,18 +536,18 @@ func _talk_crystal() -> void:
 		return
 	if not GameState.quest_done("first_harvest"):
 		await say([
-			{"who": "Light Crystal", "text": "Tend the soil, %s. Every living thing you raise feeds the Meow Pow Wow a little." % GameState.names()["character"]},
-			{"who": "Light Crystal", "text": "Till with A. Hold seeds from the MENU and press A to plant. Water each day. The sell box pays you in crystals overnight."},
+			{"who": "Star Crystal", "text": "Tend the soil, %s. Every living thing you raise feeds the Meow Pow Wow a little." % GameState.names()["character"]},
+			{"who": "Star Crystal", "text": "Till with A. Hold seeds from the MENU and press A to plant. Water each day. The sell box pays you in crystals overnight."},
 		])
 	elif not GameState.quest_done("clear_meadow"):
 		await say([
-			{"who": "Light Crystal", "text": "I feel Grumps gathering in the meadow to the east. They are small now. They will not stay small."},
-			{"who": "Light Crystal", "text": "Your sword is wood, but your heart is not. Go when you're ready."},
+			{"who": "Star Crystal", "text": "I feel Grumps gathering in the meadow to the east. They are small now. They will not stay small."},
+			{"who": "Star Crystal", "text": "Your sword is wood, but your heart is not. Go when you're ready."},
 		])
 	else:
 		await say([
-			{"who": "Light Crystal", "text": "The first spark of the Meow Pow Wow is yours. The rest is scattered across this world, and beyond it."},
-			{"who": "Light Crystal", "text": "There's a locket I keep thinking about, and a knight above the clouds, and a bell. One thing at a time. Turnips first."},
+			{"who": "Star Crystal", "text": "The first spark of the Meow Pow Wow is yours. The rest is scattered across this world, and beyond it."},
+			{"who": "Star Crystal", "text": "There's a locket I keep thinking about, and a knight above the clouds, and a bell. One thing at a time. Turnips first."},
 		])
 
 
@@ -711,7 +712,7 @@ func _intro_penguins(n: Dictionary) -> void:
 	])
 	await hud.fade_out(0.6)
 	_make_crystal()
-	set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Light Crystal"})
+	set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
 	player.position = cell_center(Vector2i(13, 15))
 	player.facing = "up"
 	if pet:
@@ -720,33 +721,33 @@ func _intro_penguins(n: Dictionary) -> void:
 	Music.instance(get_tree()).sfx("levelup")
 	await say([
 		{"who": "???", "text": "...you can hear me? Good. Good. I was starting to think I'd landed on a world of rocks."},
-		{"who": "Light Crystal", "text": "I am a Light Crystal. Where I come from, we are the memory of every kind thing anyone ever did. We are... fewer than we were."},
-		{"who": "Light Crystal", "text": "One of us went dark. It calls itself the Dark Crystal now. It turned others. It built an army of Grumps whose only job is to squeeze the joy out of everything, world by world."},
-		{"who": "Light Crystal", "text": "I carry the last piece of something that can stop it. A power called the Meow Pow Wow. Most of it is scattered. I can only give you the first spark."},
-		{"who": "Light Crystal", "text": "I need someone with their feet in the dirt and their heart in the right place. The question is whether that's you."},
-		{"who": "Light Crystal", "text": "So. %s. Will you help me?" % who, "choice": ["I'll help. Where do we start?", "I just want to farm in peace.", "Who said I'd trust a talking rock?"], "key": "crystal_answer"},
+		{"who": "Star Crystal", "text": "I am a Star Crystal. Where I come from, we are the memory of every kind thing anyone ever did. We are... fewer than we were."},
+		{"who": "Star Crystal", "text": "One of us went dark. It calls itself the Dark Crystal now. It turned others. It built an army of Grumps whose only job is to squeeze the joy out of everything, world by world."},
+		{"who": "Star Crystal", "text": "I carry the last piece of something that can stop it. A power called the Meow Pow Wow. Most of it is scattered. I can only give you the first spark."},
+		{"who": "Star Crystal", "text": "I need someone with their feet in the dirt and their heart in the right place. The question is whether that's you."},
+		{"who": "Star Crystal", "text": "So. %s. Will you help me?" % who, "choice": ["I'll help. Where do we start?", "I just want to farm in peace.", "Who said I'd trust a talking rock?"], "key": "crystal_answer"},
 	])
 	var ans := int(GameState.run["decisions"].get("crystal_answer", 0))
 	if ans == 0:
 		await say([
-			{"who": "Light Crystal", "text": "Then we start small. Here, in this soil. The Meow Pow Wow grows from living things, so grow living things."},
+			{"who": "Star Crystal", "text": "Then we start small. Here, in this soil. The Meow Pow Wow grows from living things, so grow living things."},
 		])
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + 10
 		GameState.run["flags"]["crystal_trust"] = 2
 	elif ans == 1:
 		await say([
-			{"who": "Light Crystal", "text": "...Peace. Yes. That's exactly what the Grumps will take first. Farm, then. I'll wait. I'm very good at waiting."},
+			{"who": "Star Crystal", "text": "...Peace. Yes. That's exactly what the Grumps will take first. Farm, then. I'll wait. I'm very good at waiting."},
 		])
 		GameState.run["flags"]["crystal_trust"] = 1
 	else:
 		await say([
-			{"who": "Light Crystal", "text": "Fair. I wouldn't either. I'll be here, glowing uselessly in your yard, until you change your mind."},
-			{"who": "Light Crystal", "text": "...I am not a rock."},
+			{"who": "Star Crystal", "text": "Fair. I wouldn't either. I'll be here, glowing uselessly in your yard, until you change your mind."},
+			{"who": "Star Crystal", "text": "...I am not a rock."},
 		])
 		GameState.run["flags"]["crystal_trust"] = 0
 	await say([
-		{"who": "Light Crystal", "text": "That little one by your feet - %s, is it? - has more Meow Pow Wow in one paw than this whole valley. Keep them close." % pet_name},
-		{"who": "Light Crystal", "text": "Till the ground with A. Plant seeds from your MENU. Water every morning. When your first crop comes in, we'll talk again."},
+		{"who": "Star Crystal", "text": "That little one by your feet - %s, is it? - has more Meow Pow Wow in one paw than this whole valley. Keep them close." % pet_name},
+		{"who": "Star Crystal", "text": "Till the ground with A. Plant seeds from your MENU. Water every morning. When your first crop comes in, we'll talk again."},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop.")
 	GameState.add_quest("meet_town", "Walk south and meet the people of %s." % town)
@@ -829,6 +830,9 @@ func draw_map() -> void:
 		var wet := bool(tile.get("watered", false))
 		if not Art.draw_tile(self, "tiles", "tilled_wet" if wet else "tilled_dry", Vector2(c * TILE), 4):
 			draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), Color("5c3d22") if wet else Color("8a5f38"))
+		if wet:
+			# Make watered soil read at phone size: a dark, slightly blue wash.
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.1, 0.15, 0.35, 0.32))
 		var crop := str(tile.get("crop", ""))
 		if crop != "":
 			var cd: Dictionary = GameState.crops[crop]

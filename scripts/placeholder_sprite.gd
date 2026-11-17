@@ -1,6 +1,6 @@
 class_name PlaceholderSprite
 extends Node2D
-## Stand-in for characters that have no art yet (penguins, Light Crystal).
+## Stand-in for characters that have no art yet (penguins, Star Crystal).
 ## A simple rounded figure, anchored at the feet, with a gentle breathing bob.
 
 var tint := Color("888888")

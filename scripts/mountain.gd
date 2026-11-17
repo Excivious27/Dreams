@@ -85,7 +85,7 @@ func after_ready() -> void:
 		for l in LEDGES:
 			prop("props", "cliff_stairs_up", Vector2i(int(l[1]) + 1, int(l[0])), 0, 0.0, false)
 	if Art.has("props", "rope_bridge2"):
-		prop("props", "rope_bridge2", Vector2i(44, 12), 3, 0.0, false)
+		walk_over(prop("props", "rope_bridge2", Vector2i(44, 12), 3, 0.0, false), 4)
 	prop("props", "rockslide", Vector2i(6, 20), 2)
 	block_rect(6, 19, 3, 2)
 	prop("props", "goat", Vector2i(40, 8))
@@ -183,10 +183,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 func _pad() -> void:
 	if not GameState.quest_done("clear_meadow"):
-		await say([{"who": "Light Crystal", "text": "(faintly) Not yet. The first spark has to be lit before we leave the ground."}])
+		await say([{"who": "Star Crystal", "text": "(faintly) Not yet. The first spark has to be lit before we leave the ground."}])
 		return
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Light Crystal", "text": "The pad hums under your feet. I can take us up. The moon is where the next piece of the Meow Pow Wow is hidden. Ready?", "choice": ["Launch", "Not yet"], "key": ""}])
+	d.say([{"who": "Star Crystal", "text": "The pad hums under your feet. I can take us up. The moon is where the next piece of the Meow Pow Wow is hidden. Ready?", "choice": ["Launch", "Not yet"], "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
 		GameState.run["flags"]["moon_unlocked"] = true

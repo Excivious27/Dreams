@@ -89,7 +89,7 @@ func _input(event: InputEvent) -> void:
 				_press(hit)
 				get_viewport().set_input_as_handled()
 				return
-			if t.position.y < Hud.TOOLBAR_BOTTOM:
+			if Hud.hud_rect_blocks(t.position):
 				return  # toolbar / clock: the HUD handles it
 			if get_tree().paused or Dialogue.instance(get_tree()).active:
 				return  # menus and dialogue take their own taps

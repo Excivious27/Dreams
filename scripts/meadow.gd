@@ -70,7 +70,7 @@ func _first_visit() -> void:
 	if GameState.is_penguins():
 		await say([
 			{"text": "The meadow should be quiet. It isn't. Small grey shapes grumble in the grass, and the flowers near them have gone the colour of old dishwater."},
-			{"text": "Grumps. The Light Crystal wasn't exaggerating. Press A to swing. Hold B to run if it goes badly."},
+			{"text": "Grumps. The Star Crystal wasn't exaggerating. Press A to swing. Hold B to run if it goes badly."},
 		])
 	else:
 		await say([
@@ -165,7 +165,7 @@ func _boss_down() -> void:
 		GameState.run["flags"]["spark"] = true
 		await say([
 			{"text": "The big Grump comes apart into grey smoke. Where it stood, the grass turns green again. Then greener than it was."},
-			{"who": "Light Crystal", "text": "(from very far away) ...there it is. The first spark. It was in you the whole time, I only lit it."},
+			{"who": "Star Crystal", "text": "(from very far away) ...there it is. The first spark. It was in you the whole time, I only lit it."},
 			{"text": "Your heart grows two sizes. Literally: +2 max hearts."},
 		])
 	else:

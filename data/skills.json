@@ -1006,7 +1006,7 @@
   },
   "magic": {
    "name": "Sorcery",
-   "desc": "The Light Crystal's gift. Three paths: Light (what you fight), Dream (what you tend), Crystal (what you dig). Cast spells to learn; every path meets at the Awakening.",
+   "desc": "The Star Crystal's gift. Three paths: Light (what you fight), Dream (what you tend), Crystal (what you dig). Cast spells to learn; every path meets at the Awakening.",
    "nodes": [
     {
      "id": "spark",
@@ -1268,7 +1268,7 @@
     {
      "id": "light_bearer",
      "name": "Light Bearer",
-     "desc": "Every spell +50% effect; Glow lasts through sleep; the Light Crystal speaks to you",
+     "desc": "Every spell +50% effect; Glow lasts through sleep; the Star Crystal speaks to you",
      "ranks": 1,
      "tier": 4,
      "requires": [

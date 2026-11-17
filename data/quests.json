@@ -61,7 +61,7 @@
   {
    "id": "wastes_gate",
    "arc": "penguins",
-   "text": "The Light Crystal wants you stronger before the Wastes: reach Combat 3.",
+   "text": "The Star Crystal wants you stronger before the Wastes: reach Combat 3.",
    "when": {
     "quest": "clear_meadow"
    },

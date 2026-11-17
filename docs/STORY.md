@@ -1,7 +1,7 @@
 # Dreams — story bible (Round 1 writing pass)
 
 Two arcs on one world. Both end at the same truth: the planet has a prismatic
-crystal at its heart; the Dark Crystal is a Light Crystal that went bitter; the
+crystal at its heart; the Dark Crystal is a Star Crystal that went bitter; the
 President of the river cities bargained with it. Joy is what it eats.
 
 Themes: **what you keep** (the letter, the locket, the bell), **who you take
@@ -14,46 +14,19 @@ stakes, never instead of them.
 
 ---
 
-## Arc A — The Too Two Powerful Penguins (wholesome)
+## Arc A — The Two Too Powerful Penguins (wholesome)
 
-**Chapter 1 — A Light in the Field.** The Light Crystal lands in your field
-(intro). Partner at the gate on day 3: Pip-Pip and Nova (one stays, one watches
-the mountain; the penguin arc always offers penguins). The howling in the east
-meadow is a Big Grump: it was Posy's dog, Biscuit's litter-mate. Decision
-**tell_town**: tell the town what grumps are, or keep it quiet. *Payoff:* told →
-Alder opens the bell question early (Ch4) and Posy's 6-heart scene changes;
-quiet → Maple keeps your secret (her 6-heart line) and Posy never learns until
-Ch5.
+Source: Tom and his daughter's book (`reference/PENGUIN-STORY-by-Tom-and-daughter.txt`); design map in `docs/PENGUIN-ARC.md`. The Star Crystal is *she*; the Dark Crystal is her brother; Pip-Pip and Nova are brother and sister.
 
-**Chapter 2 — The Spark.** Refine three shards at the resonator. The first
-mine keeper (sleep beat: you dream of a heart beating under the ground). The
-Wastes gate opens at combat 3. The Grump Commander falls and leaves a brass
-locket — Finn's brother, who went to the river cities and "came back wrong".
-Decision **locket**: give it to Finn / keep it. *Payoff:* give → Finn's 8-heart
-scene and he rows you to the sky-stair shortcut; keep → it hums in your pack and
-the Crystal Knight recognises it (Ch3 fight is shorter: the Knight hesitates).
+**Chapter 1 — The Day the Star Crystal Came Down.** She lands in your field and asks for help; the farm gets a bubble (safe after dark). Day 2+: red sky and a howl in the east meadow — the Grumps, the Dark Crystal's army. After the Big Grump: the collar (Grumps are loved things, squeezed). Decision **tell_town** (told → Alder/Theo warm; quiet → Maple keeps it). She points you to the purring past the big meadow: Cat-topia.
 
-**Chapter 3 — The Sky Stair.** The great tree, the sky islands, the Crystal
-Knight (a penguin elder the Dark Crystal froze; Nova knows him). Mer in the
-grotto on floor 5. The Knight's last words: "a man in a grey suit bargains with
-it" — the first thread to the President. Decision **knight_mercy**: shatter
-him / let Nova try the Meow Pow Wow (only if Nova is known and rank ≥ 2).
-*Payoff:* mercy → the elder appears at the moon as a ghost-ally; shatter → his
-crystal is a weapon (+1 sword damage), and Nova is quieter with you.
+**Chapter 2 — Cat-topia.** Catkins, leader of Cat-topia, walks out of the fog at the crystal meadow and teaches the **Meow Pow Wow** (`meow_taught`, +5 mana). The resonator wants three shards (quest `spark`). The second spark → the cave shakes → the **catship** and the **litter catapults**: the Grump ships crash into the Wastes; you get 5 Litter Boxes (throwable stink, stuns Grumps). The Commander (Combat 3 gate) leaves the brass locket → **locket** decision → Finn at the lake.
 
-**Chapter 4 — The Moon Road.** Power the teleporter. Bitter companions leave
-east after day 20. The bell: Alder and Theo (ev_bell) need a gold clapper.
-Decision **bell**: forge and ring it (calls the town) / leave it. The night
-before the moon: each companion says their piece at the farm gate.
+**Chapter 3 — Mount Prismatica.** The mountain is Prismatica: its top is in space (the moon pad). First night on it: **Big Jim's campfire** (heals, he camps with you). The pass: the **crystal babies** ("bee bop boo baby") — cursed, not evil; four spawn, the leader must be *turned back* with the Meow Pow Wow (flag `babies_calm`), and **Coldy** joins with the **sacred key**. Above the clouds: the **finargles** (purple eye-light dazes you) and the Crystal Knight — Grandfather Auk. Decision **knight_mercy** (Nova tries first → `auk_ally`; fight → Knight's Shard +1 damage).
 
-**Chapter 5 — The Heart.** The spire on the moon is the missing piece: the
-Dark Crystal grown into the moon. It speaks with the voice of the Light
-Crystal's lost sibling. Fight. If the bell rang, the town's voices halve its
-strength. If a bitter companion left, they stand beside it (spawned as a foe).
-Ending **revert** (Meow Pow Wow rank 3 known and used — the Dark Crystal turns
-back; the moon glows) or **shatter** (it breaks; the Light Crystal mourns; the
-grumps stop coming anyway). Epilogue at the farm: the Light Crystal plants
-itself in your field for good; Posy's dog comes home if the town was told.
+**Chapter 4 — The Finargles and the Merkitties.** After the Knight the finargles take you: **crystal prison**, Fennimore's telepathic question (decision **fennimore**: tell her the truth → `fennimore_doubt` → she can be turned at the finale; say nothing → `fennimore_sure`). Coldy drills the floor with the spell; the uphill stream; the waterfall; you wake at the lake. **Mer and the merkitties** hide you from the spies and share their magic: `mermaid_gift` (a tail in any water, swim and dive anywhere), Mer joins, and Big Jim screams. The teleporter wants three refined crystals; the bell (Alder's gold clapper, `bell_rung`); the night before: everyone at the gate.
+
+**Chapter 5 — The Heart of Mount Prismatica.** The spire is the Dark Crystal; **Fennimore** rises beside him (finargle_elder boss). If she doubted, she hesitates (`fennimore_turnable`). The bell halves his shell; Auk holds the shards off; a bitter companion stands with him. Ending **revert** (make the heart: two crystals, both crying; Fennimore's light goes out and she is just a fuzzy thing with no mouth to say sorry) or **shatter**. Epilogue: she plants herself in the field; the old dog comes home; two penguins on the fence. "Today there's turnips."
 
 ## Arc B — Gangster's Paradise (serious)
 

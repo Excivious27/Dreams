@@ -838,6 +838,16 @@ func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.
 	return a
 
 
+## Make a y-sorted prop draw under whoever stands on it (bridges, docks, rugs):
+## the sort point moves up `rows` cells while the picture stays where it is.
+func walk_over(sp: Sprite2D, rows: int) -> void:
+	if sp == null:
+		return
+	var delta := rows * TILE
+	sp.position.y -= delta
+	sp.offset.y += delta / sp.scale.y
+
+
 func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
 	var s := Art.sprite(group, name)
 	if s == null:
@@ -1120,6 +1130,20 @@ func use_consumable(sel: String) -> bool:
 	if sel == "" or GameState.count(sel) <= 0:
 		return false
 	var it: Dictionary = GameState.items.get(sel, {})
+	if str(it.get("effect", "")) == "stink":
+		# Cat-topia's secret weapon: everything nearby stops to hold its nose.
+		GameState.add_item(sel, -1)
+		player.play_tool("hold")
+		fx("poof", player.position + Vector2(0, -6), 12.0, 0.8)
+		var n := 0
+		for e in enemies:
+			if is_instance_valid(e) and e.position.distance_to(player.position) < 56.0:
+				e._stun = maxf(e._stun, 3.0)
+				e._knock = Vector2.ZERO
+				n += 1
+		hud.toast("Litter box! %d held their noses." % n if n > 0 else "Litter box. Nobody around to mind.", Color(0.9, 0.9, 0.7))
+		Music.instance(get_tree()).sfx("pickup")
+		return true
 	if it.has("heal") or it.has("energy") or it.has("mana") or it.has("buff"):
 		player.play_tool("eat")
 		var fx_out := GameState.consume(sel)
@@ -1269,7 +1293,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var pos: Vector2 = (event as InputEventScreenTouch).position
 		if pos.y >= TouchControls.TOP_OF_CONTROLS and TouchControls.visible_controls:
 			return
-		if pos.y < Hud.TOOLBAR_BOTTOM:
+		if Hud.hud_rect_blocks(pos):
 			return
 		handle_tap(pos)
 		get_viewport().set_input_as_handled()
@@ -1278,7 +1302,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_LEFT and not mb.pressed:
 			player.mouse_held = false
 			return
-		if not mb.pressed or mb.button_index not in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT] or mb.position.y < Hud.TOOLBAR_BOTTOM:
+		if not mb.pressed or mb.button_index not in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT] or Hud.hud_rect_blocks(mb.position):
 			return
 		# Real mouse (not a touch emulated as a mouse). Left click: if you clicked a
 		# door, a person, an enemy or anything with a prompt, walk over and use it

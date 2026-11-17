@@ -187,10 +187,10 @@ func _place_buildings() -> void:
 		var big := "bridge3_ew_a" if b.size.y > 3 else "foot3_ew_a"
 		if Art.has("props", big):
 			# One wide bridge sprite spanning the river (Prompts 09 dock sheet).
-			prop("props", big, Vector2i(b.position.x - 1, b.end.y - 1), b.size.x + 1, 0.0, false)
+			walk_over(prop("props", big, Vector2i(b.position.x - 1, b.end.y - 1), b.size.x + 1, 0.0, false), b.size.y + 1)
 			continue
 		for y in range(b.position.y, b.end.y, 2):
-			prop("props", nm if Art.has("props", nm) else "bridge", Vector2i(b.position.x, y + 1), b.size.x - 1, 0.0, false)
+			walk_over(prop("props", nm if Art.has("props", nm) else "bridge", Vector2i(b.position.x, y + 1), b.size.x - 1, 0.0, false), 3)
 	# The fountain itself (animated, 4 frames) over its blocked cells.
 	if Art.has("props", "fountain2"):
 		anim_prop("props", "fountain2", Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 1), 4, 5.0)

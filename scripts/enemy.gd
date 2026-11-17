@@ -31,6 +31,7 @@ var _noticed := false
 
 # ---- unified tier (data/tiers.json) -----------------------------------------
 var tier := 0                 # effective tier (native, or the floor's in the mine)
+var _boosted := false         # scaled above its native tier: shows the tier aura
 var abilities: Array = []     # lunge, enrage, ranged, shield, summon, stomp, blink, regen
 var inflicts := ""            # status put on the player when it lands a hit
 var armor := 0                # flat damage soaked per hit (spells soak half)
@@ -67,7 +68,8 @@ func _set_aura(name: String) -> void:
 	_aura.animation = "a"
 	_aura.scale = Vector2(0.5, 0.5)
 	_aura.position = Vector2(0, -12)
-	_aura.z_index = 1
+	# Tier auras are drawn behind the body (their centre is blank).
+	_aura.z_index = -1 if name.begins_with("tier_aura") else 1
 	_aura.modulate.a = 0.85
 	add_child(_aura)
 	_aura.play("a")
@@ -122,6 +124,7 @@ func setup(k: String, tier_override := -1) -> void:
 	# (deep mine floors run meadow kinds at Deep/Crystal weights).
 	var native := GameState.enemy_tier(k)
 	tier = native if tier_override < 0 else tier_override
+	_boosted = tier > native
 	var tw := GameState.tier(tier)
 	if tier != native:
 		hp = int(round(hp * GameState.tier_scale(k, tier, "hp")))
@@ -341,6 +344,8 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> 
 		_set_aura("aura_shield")
 	elif _enraged:
 		_set_aura("aura_enraged")
+	elif _boosted:
+		_set_aura("tier_aura_%d" % clampi(tier, 0, 5))
 	elif _aura:
 		_set_aura("")
 	if abilities.has("regen") and _since_hit > 3.0 and hp < max_hp:

@@ -81,6 +81,23 @@
    "ability_name": "Fence",
    "ability_desc": "Sells anything at 120% anywhere, no questions; thug drops double.",
    "join": "I know people. People who know people. Keep your head down."
+  },
+  "coldy": {
+   "name": "Coldy",
+   "sprite": "coldy",
+   "arc": "penguins",
+   "ability": "bee_bop",
+   "ability_name": "Bee Bop Boo Baby",
+   "desc": "Leader of the crystal babies and keeper of the sacred key. Stamps a ring that cracks the ground.",
+   "lines": {
+    "recruit": "Yes. I understand. We babies know you are good. I come with you, for I hold the sacred key.",
+    "idle": [
+     "Bee bop boo baby. That means: be careful.",
+     "Quiet. Finargles in these hills.",
+     "Mountain is tall. Top is in space. We walk."
+    ],
+    "gate": "I hold the key. Key goes where you go."
+   }
   }
  },
  "partner_scene": {

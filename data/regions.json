@@ -196,7 +196,7 @@
     ],
     "kind": "commander",
     "who": "Grump Commander",
-    "text": "SO. The Light Crystal found a farmer. Joy is a weed. I pull weeds.",
+    "text": "SO. The Star Crystal found a farmer. Joy is a weed. I pull weeds.",
     "win": "The Commander bursts into grey smoke that drifts up and is gone. For a moment the grass under your feet turns green. Then it fades, but you remember it.",
     "reward": "shard",
     "reward_n": 5,
@@ -251,7 +251,7 @@
   "intro": [
    "Past the gate the colour drains out of the world like water out of a sink. Grey grass. Grey trees. In the middle of it a spire of black crystal, cracked with light the colour of a bruise.",
    {
-    "who": "Light Crystal",
+    "who": "Star Crystal",
     "text": "Careful. Everything here wants you to stop caring.",
     "mood": "worried"
    }
@@ -2747,7 +2747,7 @@
      15,
      15
     ],
-    "who": "Light Crystal",
+    "who": "Star Crystal",
     "text": "An observatory. Whoever built it was looking for my kind. The telescope still points at the galaxy I fell from.",
     "mood": "happy",
     "hint": "A: observatory",
@@ -2796,8 +2796,12 @@
   ],
   "enemies": [
    {
-    "kind": "wisp",
+    "kind": "finargle",
     "count": 3
+   },
+   {
+    "kind": "wisp",
+    "count": 2
    },
    {
     "kind": "archer",
@@ -3103,7 +3107,7 @@
      22,
      17
     ],
-    "who": "Light Crystal",
+    "who": "Star Crystal",
     "text": "Someone's asleep in these pods. Not people. Not Grumps. Something between. Don't wake them yet.",
     "mood": "worried",
     "hint": "A: cryo pods",
@@ -3350,7 +3354,7 @@
      21
     ],
     "who": "",
-    "text": "A statue of someone who is not a person and is not quite a penguin either, eyes closed, a crystal where the heart would be. The Light Crystal goes very quiet.",
+    "text": "A statue of someone who is not a person and is not quite a penguin either, eyes closed, a crystal where the heart would be. The Star Crystal goes very quiet.",
     "hint": "A: the statue",
     "solid": false
    },
@@ -3361,7 +3365,7 @@
      12
     ],
     "who": "",
-    "text": "A crashed ship, old, overgrown. The markings on the hull are the same ones that are on the Light Crystal.",
+    "text": "A crashed ship, old, overgrown. The markings on the hull are the same ones that are on the Star Crystal.",
     "hint": "A: the wreck",
     "solid": false
    },

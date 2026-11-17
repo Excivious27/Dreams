@@ -284,6 +284,15 @@ func _refresh() -> void:
 				_line("  Nobody yet. Partners find you as the story goes; some wait at the farm gate.", 7, Color(0.7, 0.7, 0.7))
 			for cid in pt["known"]:
 				var cd: Dictionary = Companion.defs().get(cid, {})
+				var card := "party_card_" + str(cd.get("sprite", cid)) + ("_sel" if cid == act else "")
+				if Art.has("ui", card):
+					var tr := TextureRect.new()
+					tr.texture = Art.tex("ui", card)
+					tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+					tr.custom_minimum_size = Vector2(0, 30)
+					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+					_body.add_child(tr)
 				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))], func() -> void:
 					pt["active"] = "" if act == cid else cid
 					var m := get_tree().current_scene

@@ -8,6 +8,14 @@ const TOOLBAR_Y := 34.0
 const SLOT := 20.0
 const TOOLBAR_X := 15.0
 const TOOLBAR_BOTTOM := 70.0
+## Inside buildings the HUD block sits just above the touch controls so it never
+## covers the room (the whole block is drawn shifted by this much).
+const INTERIOR_SHIFT := 280.0
+static var y_offset := 0.0
+
+
+static func hud_rect_blocks(p: Vector2) -> bool:
+	return p.y >= y_offset and p.y < y_offset + TOOLBAR_BOTTOM
 
 var _canvas: Control
 var _toasts: VBoxContainer
@@ -45,6 +53,11 @@ func set_hint(text: String) -> void:
 func _process(_delta: float) -> void:
 	if GameState.run.is_empty():
 		return
+	var sc := get_tree().current_scene
+	var want := INTERIOR_SHIFT if sc is GameMap and (sc as GameMap).scene_id() in ["house", "interior"] else 0.0
+	if want != y_offset:
+		y_offset = want
+		_canvas.queue_redraw()
 	# Keyboard: number keys pick a toolbar slot (1-9, 0, -, =).
 	for i in 12:
 		if Input.is_action_just_pressed("slot_%d" % (i + 1)):
@@ -59,7 +72,7 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
 		var p: Vector2 = (event as InputEventScreenTouch).position
-		if p.y >= TOOLBAR_Y - 2 and p.y <= TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
+		if p.y >= y_offset + TOOLBAR_Y - 2 and p.y <= y_offset + TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
 			GameState.select_slot(int((p.x - TOOLBAR_X) / SLOT))
 			Music.instance(get_tree()).sfx("plant")
 			get_viewport().set_input_as_handled()
@@ -67,7 +80,7 @@ func _input(event: InputEvent) -> void:
 		var mb := event as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.device != InputEvent.DEVICE_ID_EMULATION:
 			var p := mb.position
-			if p.y >= TOOLBAR_Y - 2 and p.y <= TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
+			if p.y >= y_offset + TOOLBAR_Y - 2 and p.y <= y_offset + TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
 				GameState.select_slot(int((p.x - TOOLBAR_X) / SLOT))
 				get_viewport().set_input_as_handled()
 		if mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
@@ -81,6 +94,7 @@ func _draw_hud() -> void:
 	if r.is_empty():
 		return
 	var c := _canvas
+	c.draw_set_transform(Vector2(0, y_offset))
 	# Hearts
 	# Hearts: one per 20 HP; the last heart drains as a partial fill.
 	var hp := int(r["hp"])
@@ -194,6 +208,7 @@ func _draw_hud() -> void:
 		line = (line + "   " if line != "" else "") + _hint
 	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 240, 8, Color(1, 1, 0.9))
 	# Energy bar (vertical, right side, Stardew style)
+	c.draw_set_transform(Vector2.ZERO)  # the energy bar stays where it is
 	var e := float(r["energy"]) / float(r["max_energy"])
 	var bar := Rect2(256, 200, 9, 130)
 	var fill_h := bar.size.y * e
