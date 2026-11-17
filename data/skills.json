@@ -1331,6 +1331,231 @@
     "crystal": "Crystal",
     "core": "The Gift"
    }
+  },
+  "pup": {
+   "name": "Pup",
+   "desc": "Your dog. Levels from digging, fighting and fetching at your side. Commands live in the Pup tab.",
+   "nodes": [
+    {
+     "id": "tough_pup",
+     "name": "Tough Pup",
+     "desc": "+10 pup health per rank",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "pet_hp": 10
+     }
+    },
+    {
+     "id": "sniff",
+     "name": "Sniff",
+     "desc": "Digs find better things, and more often, per rank",
+     "ranks": 3,
+     "tier": 0,
+     "effect": {
+      "dig": 1
+     }
+    },
+    {
+     "id": "fetch",
+     "name": "Fetch",
+     "desc": "Picks up drops and brings them to you",
+     "ranks": 1,
+     "tier": 0,
+     "effect": {
+      "fetch": 1
+     }
+    },
+    {
+     "id": "bite",
+     "name": "Bite",
+     "desc": "+1 bite damage per rank",
+     "ranks": 3,
+     "tier": 1,
+     "requires": [
+      "tough_pup"
+     ],
+     "effect": {
+      "pet_dmg": 1
+     }
+    },
+    {
+     "id": "guard_dog",
+     "name": "Guard Dog",
+     "desc": "GUARD mode: holds a spot and drives off anything that comes near",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "tough_pup"
+     ],
+     "effect": {
+      "guard": 1
+     }
+    },
+    {
+     "id": "quick_paws",
+     "name": "Quick Paws",
+     "desc": "Pup runs 20% faster per rank; keeps up on the horse",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "sniff"
+     ],
+     "effect": {
+      "pet_speed": 0.2
+     }
+    },
+    {
+     "id": "pack_1",
+     "name": "Saddle Pack",
+     "desc": "Pup carries 6 items for you (needs a pack from the workbench)",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "fetch"
+     ],
+     "effect": {
+      "pack": 6
+     }
+    },
+    {
+     "id": "howl",
+     "name": "Howl",
+     "desc": "ATTACK mode: a howl stuns every enemy nearby when the fight starts",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "bite",
+      "guard_dog"
+     ],
+     "effect": {
+      "howl": 1
+     }
+    },
+    {
+     "id": "truffle_nose",
+     "name": "Truffle Nose",
+     "desc": "Digs can turn up truffles, gems and old coins",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "sniff"
+     ],
+     "effect": {
+      "dig_rare": 1
+     }
+    },
+    {
+     "id": "thick_coat",
+     "name": "Thick Coat",
+     "desc": "Pup takes 1 less damage per rank",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "tough_pup"
+     ],
+     "effect": {
+      "pet_def": 1
+     }
+    },
+    {
+     "id": "pack_2",
+     "name": "Big Pack",
+     "desc": "Pup carries 12 items",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "pack_1"
+     ],
+     "effect": {
+      "pack": 6
+     }
+    },
+    {
+     "id": "rescue",
+     "name": "Rescue",
+     "desc": "Once a day, when you would faint, the pup drags you up with 20 health",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "thick_coat",
+      "howl"
+     ],
+     "effect": {
+      "rescue": 1
+     }
+    },
+    {
+     "id": "hunter",
+     "name": "Hunter",
+     "desc": "Pup targets what you hit; bites crit for double on a wounded enemy",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "bite"
+     ],
+     "effect": {
+      "hunter": 1
+     }
+    },
+    {
+     "id": "tracker",
+     "name": "Tracker",
+     "desc": "Pup barks at ore and forage you haven't found yet (within 8 cells)",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "truffle_nose"
+     ],
+     "effect": {
+      "tracker": 1
+     }
+    },
+    {
+     "id": "pack_3",
+     "name": "Trail Pack",
+     "desc": "Pup carries 18 items and a bedroll: resting by the pup restores 20 energy once a day",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "pack_2"
+     ],
+     "effect": {
+      "pack": 6,
+      "bedroll": 1
+     }
+    },
+    {
+     "id": "dream_hound",
+     "name": "Dream Hound",
+     "desc": "The pup's bite carries light (+3 magic damage); a glow around it heals you 1 health every 10 s",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "rescue",
+      "hunter"
+     ],
+     "effect": {
+      "pet_magic": 3,
+      "aura": 1
+     }
+    },
+    {
+     "id": "best_friend",
+     "name": "Best Friend",
+     "desc": "Pup never rests more than half a day; +30 health; recall is instant from anywhere, always",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "tracker",
+      "pack_3"
+     ],
+     "effect": {
+      "pet_hp": 30,
+      "best": 1
+     }
+    }
+   ]
   }
  }
 }

@@ -722,6 +722,10 @@ static func spend_energy(n: int) -> bool:
 	return true
 
 
+static func heal_points(n: int) -> void:
+	run["hp"] = mini(int(run["hp"]) + n, int(run["max_hp"]))
+
+
 static func heal(n: int) -> void:
 	# Items list "heal" in old heart units (1-3); scale to the 100-point bar.
 	var mult := 1.5 if has_friend_perk("wren", 8) else (1.25 if has_friend_perk("wren", 2) else 1.0)
@@ -1251,6 +1255,10 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
+	# The pup heals overnight; a rest day ends with full health.
+	var pt: Dictionary = run.get("pet", {})
+	if not pt.is_empty():
+		pt["hp"] = Pet.max_hp() if int(pt.get("hp", 0)) <= 0 or int(pt.get("rest_until", 0)) <= int(run["day"]) else mini(Pet.max_hp(), int(pt["hp"]) + Pet.max_hp() / 2)
 	save()
 	return report
 

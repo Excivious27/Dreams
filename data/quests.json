@@ -1955,6 +1955,112 @@
      15
     ]
    }
+  },
+  {
+   "id": "benno_pup_stay",
+   "giver": "benno",
+   "text": "Benno: teach your pup to STAY (Pup tab in the menu).",
+   "when": {
+    "day": 2
+   },
+   "done_when": {
+    "flag": "pup_stay_used"
+   },
+   "reward": {
+    "item": [
+     "pup_treat",
+     4
+    ],
+    "friend": [
+     "benno",
+     10
+    ],
+    "xp": [
+     "pup",
+     30
+    ]
+   }
+  },
+  {
+   "id": "benno_pup_pack",
+   "giver": "benno",
+   "text": "Benno: make your pup a pack at the workbench (2 pelts, rope, 5 wood).",
+   "when": {
+    "quest": "benno_pup_stay"
+   },
+   "done_when": {
+    "item": [
+     "pup_pack_small",
+     1
+    ]
+   },
+   "reward": {
+    "crystals": 120,
+    "friend": [
+     "benno",
+     12
+    ],
+    "xp": [
+     "pup",
+     40
+    ]
+   }
+  },
+  {
+   "id": "rook_pup_hunt",
+   "giver": "rook",
+   "text": "Rook: get your pup to level 3 fighting at your side.",
+   "when": {
+    "day": 4
+   },
+   "done_when": {
+    "skill": [
+     "pup",
+     3
+    ]
+   },
+   "reward": {
+    "item": [
+     "pup_collar_leather",
+     1
+    ],
+    "friend": [
+     "rook",
+     12
+    ],
+    "xp": [
+     "pup",
+     50
+    ]
+   }
+  },
+  {
+   "id": "rook_pup_guard",
+   "giver": "rook",
+   "text": "Rook: a guard dog. Pup level 6, and Guard Dog learned.",
+   "when": {
+    "quest": "rook_pup_hunt"
+   },
+   "done_when": {
+    "skill": [
+     "pup",
+     6
+    ]
+   },
+   "reward": {
+    "item": [
+     "pup_collar_iron",
+     1
+    ],
+    "friend": [
+     "rook",
+     18
+    ],
+    "xp": [
+     "pup",
+     80
+    ]
+   }
   }
  ]
 }

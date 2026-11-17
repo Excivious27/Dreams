@@ -7178,5 +7178,71 @@
   "value": 138,
   "rarity": "common",
   "tier": 1
+ },
+ "pup_collar_leather": {
+  "name": "Leather Collar",
+  "value": 60,
+  "type": "petgear",
+  "slot": "collar",
+  "tier": 1,
+  "pet_hp": 10,
+  "icon": "collar_a"
+ },
+ "pup_collar_iron": {
+  "name": "Studded Collar",
+  "value": 220,
+  "type": "petgear",
+  "slot": "collar",
+  "tier": 2,
+  "pet_hp": 20,
+  "pet_def": 1,
+  "icon": "collar_b"
+ },
+ "pup_collar_crystal": {
+  "name": "Crystal Collar",
+  "value": 900,
+  "type": "petgear",
+  "slot": "collar",
+  "tier": 3,
+  "pet_hp": 40,
+  "pet_def": 2,
+  "pet_dmg": 2,
+  "icon": "collar_b"
+ },
+ "pup_pack_small": {
+  "name": "Small Pup Pack",
+  "value": 120,
+  "type": "petgear",
+  "slot": "pack",
+  "tier": 1,
+  "pack": 6,
+  "icon": "feed_bag"
+ },
+ "pup_pack_large": {
+  "name": "Large Pup Pack",
+  "value": 480,
+  "type": "petgear",
+  "slot": "pack",
+  "tier": 2,
+  "pack": 12,
+  "icon": "feed_bag_b"
+ },
+ "pup_boots": {
+  "name": "Pup Boots",
+  "value": 200,
+  "type": "petgear",
+  "slot": "boots",
+  "tier": 2,
+  "pet_speed": 0.15,
+  "icon": "riding_boots"
+ },
+ "pup_treat": {
+  "name": "Pup Treat",
+  "value": 15,
+  "type": "food",
+  "heal": 0,
+  "energy": 0,
+  "pet_heal": 20,
+  "icon": "bone_toy"
  }
 }

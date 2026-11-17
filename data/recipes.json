@@ -310,6 +310,49 @@
    },
    "give": "outfit_penguin",
    "tier": 4
+  },
+  {
+   "id": "pup_collar_leather",
+   "name": "Leather Collar (pup)",
+   "need": {
+    "pelt": 1,
+    "fiber": 4
+   },
+   "give": "pup_collar_leather",
+   "tier": 1
+  },
+  {
+   "id": "pup_pack_small",
+   "name": "Small Pup Pack",
+   "need": {
+    "pelt": 2,
+    "rope": 1,
+    "wood": 5
+   },
+   "give": "pup_pack_small",
+   "tier": 1
+  },
+  {
+   "id": "pup_pack_large",
+   "name": "Large Pup Pack",
+   "need": {
+    "pelt": 4,
+    "rope": 2,
+    "iron_bar": 1
+   },
+   "give": "pup_pack_large",
+   "tier": 2
+  },
+  {
+   "id": "pup_treat",
+   "name": "Pup Treats",
+   "need": {
+    "meat": 1,
+    "wheat": 1
+   },
+   "give": "pup_treat",
+   "n": 4,
+   "tier": 1
   }
  ],
  "smith": [
@@ -1063,6 +1106,37 @@
     "mining",
     7
    ]
+  },
+  {
+   "id": "pup_collar_iron",
+   "name": "Studded Collar (pup)",
+   "need": {
+    "iron_bar": 2,
+    "pelt": 1
+   },
+   "give": "pup_collar_iron",
+   "tier": 2
+  },
+  {
+   "id": "pup_collar_crystal",
+   "name": "Crystal Collar (pup)",
+   "need": {
+    "crystal_refined": 1,
+    "silver_bar": 1,
+    "pelt": 1
+   },
+   "give": "pup_collar_crystal",
+   "tier": 3
+  },
+  {
+   "id": "pup_boots",
+   "name": "Pup Boots",
+   "need": {
+    "pelt": 2,
+    "copper_bar": 1
+   },
+   "give": "pup_boots",
+   "tier": 2
   }
  ],
  "kitchen": [

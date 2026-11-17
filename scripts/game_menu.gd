@@ -5,7 +5,7 @@ extends CanvasLayer
 ## tap a backpack item to swap it into the selected toolbar slot.
 ## Pauses the game while open.
 
-const TABS := ["Items", "Skills", "Social", "Map", "Quests", "Options"]
+const TABS := ["Items", "Skills", "Pup", "Social", "Map", "Quests", "Options"]
 const SLOT := 34
 
 var _panel: PanelContainer
@@ -272,6 +272,8 @@ func _refresh() -> void:
 				if _skill_open == str(sk):
 					_skill_tree(str(sk))
 			_line("")
+		"Pup":
+			_pup_tab()
 		"Social":
 			var fr: Dictionary = r["friendship"]
 			var full := Art.tex("ui", "pheart_full") if Art.has("ui", "pheart_full") else Art.tex("ui", "heart_full")
@@ -440,6 +442,93 @@ func _swap_into_toolbar(id: String) -> void:
 		tb[slot] = id
 	GameState.sync_selected()
 	_refresh()
+
+
+## The pup: health, level, commands, gear, pack, treats.
+func _pup_tab() -> void:
+	var st := Pet.state()
+	var pname := Pet.name_of()
+	var lvl := GameState.skill_level("pup")
+	var sk: Dictionary = GameState.run["skills"].get("pup", {"level": 1, "xp": 0})
+	var m := get_tree().current_scene
+	var pt: Pet = (m as GameMap).pet as Pet if m is GameMap and (m as GameMap).pet is Pet else null
+	if Pet.resting():
+		_line("%s is resting at home after a rough day. Back %s." % [pname, "this afternoon" if GameState.bonus("pup", "best") > 0.0 else "tomorrow"], 9, Color(1, 0.85, 0.7))
+	_line("%s  ·  Lv %d  (%d / %d xp)" % [pname, lvl, int(sk["xp"]), GameState.xp_for_next(lvl)], 10, Color(1, 0.95, 0.8))
+	_line("Health %d / %d   ·   bite %d   ·   speed ×%.1f   ·   pack %d" % [int(st["hp"]), Pet.max_hp(), Pet.bite_damage(), Pet.speed_mult(), Pet.pack_size()], 8, Color(0.85, 1.0, 0.85))
+	_line("Mode: %s" % str(st.get("mode", "follow")).to_upper(), 9, Color(1, 0.9, 0.5))
+	var cmds := [["Heel (follow)", "follow"], ["Attack", "attack"], ["Guard here", "guard"], ["Stay", "wait"]]
+	for c in cmds:
+		var mode: String = c[1]
+		var locked := (mode == "guard" and GameState.bonus("pup", "guard") <= 0.0)
+		var b := _button(("  " if str(st.get("mode", "")) != mode else "▶ ") + str(c[0]) + ("   [needs Guard Dog]" if locked else ""), func() -> void:
+			if locked or pt == null:
+				return
+			toggle()
+			pt.set_mode(mode))
+		if locked or pt == null:
+			b.modulate = Color(0.6, 0.6, 0.6)
+	_button("  Recall %s (from anywhere)" % pname, func() -> void:
+		if pt == null:
+			return
+		toggle()
+		pt.recall())
+	_line("Gear", 9, Color(0.9, 0.85, 0.7))
+	for slot: String in ["collar", "pack", "boots"]:
+		var gid := str(st["gear"].get(slot, ""))
+		if gid == "":
+			_line("  %s: -" % slot, 7, Color(0.6, 0.6, 0.6))
+		else:
+			_button("  %s: %s  (take off)" % [slot, GameState.item_name(gid)], func() -> void:
+				st["gear"][slot] = ""
+				GameState.add_item(gid, 1)
+				_refresh())
+	var any_gear := false
+	for id in GameState.run["inventory"].keys():
+		var it: Dictionary = GameState.items.get(id, {})
+		if str(it.get("type", "")) == "petgear":
+			any_gear = true
+			var slot2 := str(it.get("slot", "collar"))
+			_button("  Put on %s (%s)" % [GameState.item_name(id), slot2], func() -> void:
+				var old := str(st["gear"].get(slot2, ""))
+				if old != "":
+					GameState.add_item(old, 1)
+				st["gear"][slot2] = id
+				GameState.add_item(id, -1)
+				_refresh())
+		elif it.has("pet_heal"):
+			_button("  Give %s (+%d health)" % [GameState.item_name(id), int(it["pet_heal"])], func() -> void:
+				GameState.add_item(id, -1)
+				st["hp"] = mini(Pet.max_hp(), int(st["hp"]) + int(it["pet_heal"]))
+				if pt:
+					pt._hp_bar.queue_redraw()
+				_refresh())
+	if not any_gear:
+		_line("  Collars and packs come from the workbench and the smithy (pelts, rope, bars).", 7, Color(0.7, 0.7, 0.7))
+	var cap := Pet.pack_size()
+	if cap > 0:
+		var pack: Dictionary = st["pack"]
+		var used := 0
+		for k in pack:
+			used += 1
+		_line("Pack  (%d / %d stacks)" % [used, cap], 9, Color(0.9, 0.85, 0.7))
+		for id in pack.keys():
+			_button("  Take %s x%d" % [GameState.item_name(id), int(pack[id])], func() -> void:
+				GameState.add_item(id, int(pack[id]))
+				pack.erase(id)
+				_refresh())
+		var sel := str(GameState.run["selected"])
+		if sel != "" and GameState.count(sel) > 0 and used < cap and str(GameState.items.get(sel, {}).get("type", "")) != "tool":
+			_button("  Give %s x%d to carry" % [GameState.item_name(sel), GameState.count(sel)], func() -> void:
+				pack[sel] = int(pack.get(sel, 0)) + GameState.count(sel)
+				GameState.add_item(sel, -GameState.count(sel))
+				_refresh())
+	if GameState.bonus("pup", "bedroll") > 0.0 and int(st.get("bedroll_day", 0)) != int(GameState.run["day"]) and pt and pt.visible:
+		_button("  Rest by %s's bedroll (+20 energy, once a day)" % pname, func() -> void:
+			st["bedroll_day"] = int(GameState.run["day"])
+			GameState.restore_energy(20)
+			_refresh())
+	_line("Skill tree: see Skills → Pup.", 7, Color(0.7, 0.7, 0.7))
 
 
 func _eat(id: String) -> void:

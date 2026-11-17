@@ -97,8 +97,10 @@ func _ready() -> void:
 	add_child(player)
 	player.set_character(GameState.sprite_for_playable(str(GameState.run["playable"])))
 
-	if has_pet:
-		pet = Node2D.new()
+	if has_pet and not Pet.resting():
+		var pt := Pet.new()
+		pt.map = self
+		pet = pt
 		var pet_kind := str(GameState.run.get("look", {}).get("pet", ""))
 		if pet_kind != "" and Art.has("animals/" + pet_kind, "idle"):
 			# Prompts-09 pets (corgi, shepherd, hound, white dog, cats); "" = Tom's original pup.
@@ -112,8 +114,16 @@ func _ready() -> void:
 					_pet_anim.offset = Vector2(0, -tex.get_height() / 2.0))
 		else:
 			_pet_anim = CharacterLibrary.make_sprite("dog")
+		pt.anim = _pet_anim
 		pet.add_child(_pet_anim)
-		pet.position = player.position + Vector2(-14, 4)
+		# Where the pup is: waiting/guarding on some map, or at your heel.
+		var w: Array = Pet.state().get("wait", [])
+		if w.size() >= 3 and str(w[0]) == scene_id():
+			pet.position = Vector2(float(w[1]), float(w[2]))
+		elif w.size() >= 3:
+			pet.visible = false  # it's on another map; Recall brings it
+		else:
+			pet.position = player.position + Vector2(-14, 4)
 		_pet_anim.play("idle")
 		add_child(pet)
 
@@ -662,6 +672,7 @@ func pop_items(at: Vector2, id: String, n: int) -> void:
 			it.texture = Art.tex("items", "wood")
 		it.position = at + Vector2(0, -6)
 		it.z_index = 5
+		it.add_to_group("drops")
 		add_child(it)
 		var land := at + Vector2(randf_range(-18, 18), randf_range(-4, 10))
 		var tw := it.create_tween()
@@ -1104,6 +1115,13 @@ func nearest_enemy_to(p: Vector2, within: float) -> Enemy:
 func player_down(reason := "hurt") -> void:
 	if _changing:
 		return
+	if reason == "hurt" and GameState.bonus("pup", "rescue") > 0.0 and pet and pet.visible and int(Pet.state().get("rescued_day", 0)) != int(GameState.run["day"]):
+		Pet.state()["rescued_day"] = int(GameState.run["day"])
+		GameState.run["hp"] = 20
+		player.invuln = 2.0
+		hud.toast("%s drags you back to your feet!" % Pet.name_of(), Color(1, 0.9, 0.6))
+		emote(pet, "heart", 1.5)
+		return
 	_changing = true
 	player.frozen = true
 	var cr := int(GameState.run["crystals"])
@@ -1231,8 +1249,6 @@ func _process(delta: float) -> void:
 	if player and hud:
 		var fc := player.facing_cell()
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
-	if pet:
-		_follow_pet(delta)
 	Events.tick(self, delta)
 	for c: Vector2i in _sign_labels:
 		(_sign_labels[c] as Label).visible = player.position.distance_to(cell_center(c)) < 30.0
@@ -1242,52 +1258,6 @@ func _process(delta: float) -> void:
 
 func update_enemies(_delta: float) -> void:
 	pass
-
-
-func _follow_pet(delta: float) -> void:
-	if _pet_busy:
-		return
-	var to := player.position - pet.position
-	var dist := to.length()
-	if dist > 22.0:
-		var step := to.normalized() * minf(dist * 4.0, 95.0) * delta
-		pet.position += step
-		var running := dist > (34.0 if _pet_anim.animation.begins_with("run") else 48.0)
-		var a: String
-		if absf(to.x) >= absf(to.y):
-			a = "run" if running else "walk"
-			_pet_anim.flip_h = to.x < 0
-		else:
-			var vert := ("run_" if running else "walk_") + ("up" if to.y < 0 else "down")
-			a = vert if _pet_anim.sprite_frames.has_animation(vert) else ("run" if running else "walk")
-			_pet_anim.flip_h = false
-		if _pet_anim.animation != a:
-			_pet_anim.play(a)
-		_pet_idle = 0.0
-	else:
-		_pet_idle += delta
-		var want := "idle"
-		if _pet_idle > 3.0 and _pet_anim.sprite_frames.has_animation("sit"):
-			want = "sit"
-		if _pet_anim.animation != want and _pet_anim.animation != "dig":
-			_pet_anim.play(want)
-		if _pet_idle > 14.0:
-			_pet_idle = randf_range(-6.0, 0.0)
-			_pet_dig()
-
-
-func _pet_dig() -> void:
-	_pet_busy = true
-	_pet_anim.play("dig" if _pet_anim.sprite_frames.has_animation("dig") else "play")
-	await get_tree().create_timer(1.6).timeout
-	if not is_instance_valid(_pet_anim):
-		return
-	_pet_busy = false
-	_pet_anim.play("idle")
-	if randf() < 0.5:
-		var found: String = ["fiber", "berry", "stone", "mushroom"][randi() % 4]
-		GameState.add_item(found)
-		hud.toast("%s dug up a %s!" % [GameState.names()["pet"], GameState.item_name(found)], Color(0.8, 1, 0.8))
 
 
 # ---- transitions -------------------------------------------------------------

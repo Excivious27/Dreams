@@ -230,6 +230,7 @@ func facing_dir() -> Vector2:
 ## The cell a tool/check goes to: the mouse-aimed neighbour when a mouse is
 ## pointing at one (any of the 8 around you, or your own), else the facing cell.
 var aim_cell := Vector2i(-1, -1)
+var _last_hit_enemy: Enemy = null
 var mouse_held := false
 var _hold_t := 0.0
 
@@ -547,6 +548,11 @@ func do_action(mode := "a") -> void:
 			_show_idle()
 		return
 	if mode == "action":
+		# Point the pup at an enemy.
+		var e := map.nearest_enemy_to(position + facing_dir() * 16.0, 24.0)
+		if e and map.pet is Pet and map.pet.visible:
+			(map.pet as Pet)._target = e
+			(map.pet as Pet).set_mode("attack")
 		return
 	if held in ["hoe", "can", "axe", "pickaxe", "rod", "scythe"]:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
@@ -619,6 +625,8 @@ func _attack_hit() -> void:
 		var side := facing_dir().orthogonal() * 16.0
 		var box := Rect2(center - Vector2(14, 14), Vector2(28, 28))
 		var hit := map.attack_at(box, GameState.sword_damage() + (1 if _combo == 0 else 0), position)
+		if hit:
+			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
 		_swing_arc(center)
 		if hit:
 			map.hitstop = 0.05
