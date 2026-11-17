@@ -9,10 +9,13 @@ static var _data: Dictionary = {}
 static func data() -> Dictionary:
 	if _data.is_empty():
 		_data = GameState.load_json("res://data/crew.json")
-		# Register members as NPCs so names, portraits and friendship work.
-		for id in members():
+	# Register members as NPCs (gangster arc only) so names, portraits and
+	# friendship work; a penguin run in the same session must not list them.
+	if not GameState.run.is_empty() and not GameState.is_penguins():
+		var mem: Dictionary = _data.get("members", {})
+		for id in mem:
 			if not GameState.npcs.has(id):
-				var mdef: Dictionary = members()[id]
+				var mdef: Dictionary = mem[id]
 				GameState.npcs[id] = {"name": str(mdef["name"]), "sprite": str(mdef.get("sprite", "")), "portrait": str(mdef.get("sprite", "")) if Art.has("portraits/" + str(mdef.get("sprite", "")), "neutral") else "gambler", "role": str(mdef.get("role", "")), "routine": [], "likes": ["thug_cash", "wine", "coffee"], "dislikes": ["turnip"]}
 	return _data
 

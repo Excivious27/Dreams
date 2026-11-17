@@ -40,6 +40,10 @@ static func load_data() -> void:
 
 static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String) -> void:
 	load_data()
+	if arc == "penguins":
+		# A gangster run earlier in the session registered the crew as villagers.
+		for cid in (load_json("res://data/crew.json").get("members", {}) as Dictionary):
+			npcs.erase(cid)
 	var skills := {}
 	for id in skills_data.keys():
 		skills[id] = {"level": 1, "xp": 0, "nodes": {}}
@@ -1409,12 +1413,12 @@ static func sleep(passed_out := false) -> Dictionary:
 	# Decisions that matter: a bitter companion leaves for the east after day 20.
 	var party_d: Dictionary = run.get("party", {})
 	for cid in party_d.get("bitter", []):
-		if int(run["day"]) >= 20 and not run["flags"].has("gone_east_" + str(cid)):
+		if int(run["day"]) >= 20 and not run["flags"].has("gone_east_" + str(cid)) and not (party_d.get("known", []) as Array).has(cid):
 			run["flags"]["gone_east_" + str(cid)] = true
 			run["flags"]["bitter_left"] = true
 			add_hint("%s was seen on the east road at night, heading for the dark." % str(Companion.defs().get(cid, {}).get("name", cid)))
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
-	run["energy"] = int(run["max_energy"]) if not passed_out else int(run["max_energy"]) / 2
+	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) / 2
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}

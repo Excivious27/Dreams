@@ -12,6 +12,8 @@ const BUTTONS := {
 	"a": {"pos": Vector2(232, 398), "r": 24.0, "label": "USE"},
 	"action": {"pos": Vector2(186, 438), "r": 18.0, "label": "CHECK"},
 	"menu": {"pos": Vector2(237, 460), "r": 13.0, "label": "MENU"},
+	# Partner ability / Meow Pow Wow (B-hold on a keyboard). Shown only when you have one.
+	"ability": {"pos": Vector2(146, 462), "r": 14.0, "label": "♥"},
 }
 const DIRS := {"left": Vector2.LEFT, "right": Vector2.RIGHT, "up": Vector2.UP, "down": Vector2.DOWN}
 const STICK_R := 34.0
@@ -20,6 +22,7 @@ const TAP_MAX_T := 0.35
 const TAP_MAX_D := 10.0
 
 static var run_toggle := false
+static var ability_pressed := false
 ## False on desktop (a keyboard or mouse was used): the on-screen pad hides.
 static var visible_controls := true
 
@@ -28,8 +31,8 @@ var _stick_origin := Vector2.ZERO
 var _stick_pos := Vector2.ZERO
 var _stick_active := false
 var _stick_vec := Vector2.ZERO
-var _pending_at := Vector2.ZERO
-var _pending_t := 0.0
+var _pending_at := {}  # touch index -> where it went down
+var _pending_t := {}   # touch index -> when
 var _held := {}  # action -> true while held by touch
 var _canvas: Control
 var _running := false
@@ -71,9 +74,12 @@ func release_all() -> void:
 func _input(event: InputEvent) -> void:
 	# Desktop detection: a real key or mouse motion hides the pad; a real touch shows it.
 	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
-		visible_controls = false
+		# Typing a name on the phone's on-screen keyboard isn't "desktop".
+		if not (get_viewport().gui_get_focus_owner() is LineEdit):
+			visible_controls = false
 	elif event is InputEventMouseMotion and (event as InputEventMouseMotion).relative != Vector2.ZERO and event.device != InputEvent.DEVICE_ID_EMULATION and not DisplayServer.is_touchscreen_available():
 		visible_controls = false
+		Player.last_mouse_motion_ms = Time.get_ticks_msec()
 	elif event is InputEventScreenTouch and DisplayServer.is_touchscreen_available():
 		visible_controls = true
 	if not visible_controls:
@@ -97,8 +103,8 @@ func _input(event: InputEvent) -> void:
 				return  # second finger while steering: let the world take it (tap on enemy etc.)
 			# Could become a joystick drag or a tap: decide on release/drag.
 			_touches[t.index] = "pending"
-			_pending_at = t.position
-			_pending_t = Time.get_ticks_msec() / 1000.0
+			_pending_at[t.index] = t.position
+			_pending_t[t.index] = Time.get_ticks_msec() / 1000.0
 			get_viewport().set_input_as_handled()
 		elif _touches.has(t.index):
 			var what: String = _touches[t.index]
@@ -106,8 +112,10 @@ func _input(event: InputEvent) -> void:
 			if what == "stick":
 				_end_stick()
 			elif what == "pending":
-				var held_for := Time.get_ticks_msec() / 1000.0 - _pending_t
-				if held_for <= TAP_MAX_T:
+				var held_for := Time.get_ticks_msec() / 1000.0 - float(_pending_t.get(t.index, 0.0))
+				_pending_at.erase(t.index)
+				_pending_t.erase(t.index)
+				if held_for <= TAP_MAX_T and t.position.y < TOP_OF_CONTROLS:
 					var m := get_tree().current_scene
 					if m is GameMap:
 						(m as GameMap).handle_tap(t.position)
@@ -118,9 +126,10 @@ func _input(event: InputEvent) -> void:
 		var d := event as InputEventScreenDrag
 		var what: String = _touches.get(d.index, "")
 		if what == "pending":
-			if d.position.distance_to(_pending_at) > TAP_MAX_D:
+			var at: Vector2 = _pending_at.get(d.index, d.position)
+			if d.position.distance_to(at) > TAP_MAX_D and not _stick_active:
 				_touches[d.index] = "stick"
-				_stick_origin = _pending_at
+				_stick_origin = at
 				_stick_active = true
 				_update_stick(d.position)
 			get_viewport().set_input_as_handled()
@@ -129,8 +138,16 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
+func _has_ability() -> bool:
+	if GameState.run.is_empty():
+		return false
+	return Companion.active_id() != "" or (GameState.is_penguins() and GameState.run.get("flags", {}).has("meow_taught"))
+
+
 func _hit(pos: Vector2) -> String:
 	for action: String in BUTTONS:
+		if action == "ability" and not _has_ability():
+			continue
 		var b: Dictionary = BUTTONS[action]
 		if pos.distance_to(b["pos"]) <= float(b["r"]) * 1.35:
 			return action
@@ -178,12 +195,19 @@ func _end_stick() -> void:
 
 func _press(action: String) -> void:
 	_held[action] = true
+	if action == "ability":
+		ability_pressed = true
+		_canvas.queue_redraw()
+		return
 	Input.action_press(action)
 	_canvas.queue_redraw()
 
 
 func _release(action: String) -> void:
 	_held.erase(action)
+	if action == "ability":
+		_canvas.queue_redraw()
+		return
 	Input.action_release(action)
 	_canvas.queue_redraw()
 
@@ -219,8 +243,10 @@ func _on_draw() -> void:
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
-	var skins := {"a": ["btn_gold", "btn_gold_down"], "action": ["btn_green", "btn_green_down"], "menu": ["sbtn_blue", "sbtn_blue_down"]}
+	var skins := {"a": ["btn_gold", "btn_gold_down"], "action": ["btn_green", "btn_green_down"], "menu": ["sbtn_blue", "sbtn_blue_down"], "ability": ["sbtn_blue", "sbtn_blue_down"]}
 	for action: String in BUTTONS:
+		if action == "ability" and not _has_ability():
+			continue
 		var b: Dictionary = BUTTONS[action]
 		var p: Vector2 = b["pos"]
 		var r := float(b["r"])
@@ -243,6 +269,9 @@ func _on_draw() -> void:
 			if icon:
 				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(12, 12), Vector2(24, 24)), false)
 				continue
+		if action == "ability" and Art.has("ui", "party_paw"):
+			_canvas.draw_texture_rect(Art.tex("ui", "party_paw"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
+			continue
 		if action == "menu" and Art.has("ui", "ic_menu"):
 			_canvas.draw_texture_rect(Art.tex("ui", "ic_menu"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
 			continue

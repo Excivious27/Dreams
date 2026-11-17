@@ -160,7 +160,8 @@ func after_ready() -> void:
 		add_child(npc)
 		npcs.append(npc)
 	Crew.place(self)
-	if Crew.perk_level("heal_hideout") >= 1 and region_id == "hideout":
+	if Crew.perk_level("heal_hideout") >= 1 and region_id == "hideout" and int(GameState.run["flags"].get("doc_heal_day", -1)) != int(GameState.run["day"]):
+		GameState.run["flags"]["doc_heal_day"] = int(GameState.run["day"])
 		GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + 20)
 	var gen: Dictionary = R.get("gen", {})
 	var inner := Rect2i(2, 2, cols - 4, rows - 4)

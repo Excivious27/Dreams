@@ -14,6 +14,7 @@ const PLAY_TIME := 1.5
 const FEET := Rect2(-4, -3, 8, 3)
 
 var char_id := ""
+static var last_mouse_motion_ms := -100000
 var facing := "down"  # down, up, left, right
 var anim_name := ""
 var velocity := Vector2.ZERO
@@ -45,6 +46,7 @@ var _doll := false
 var swimming := false
 var mounted := false
 var _swim_t := 0.0
+var _repeat_cd := 0.0
 var _doll_scale := 0.34
 var _doll_body := "medium_slim"
 var _hair: Sprite2D
@@ -52,6 +54,10 @@ var _hat: Sprite2D
 
 
 func mount() -> void:
+	if not has_anim("ride"):
+		if map:
+			map.hud.toast("The horse looks at you, then at your outfit. (This hero can't ride yet.)", Color(1, 0.9, 0.7))
+		return
 	mounted = true
 	GameState.run["flags"]["mounted"] = true
 	_show_idle()
@@ -62,9 +68,12 @@ func dismount() -> void:
 	GameState.run["flags"].erase("mounted")
 	if map:
 		map.hud.toast("%s waits here." % str(GameState.run.get("names", {}).get("horse", "Your horse")))
-		var c: Vector2i = cell() + Vector2i(1, 0)
-		if map.blocked.has(c) or map.things.has(c):
-			c = cell() + Vector2i(-1, 0)
+		var c: Vector2i = cell()
+		for off in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var cc: Vector2i = cell() + off
+			if cc.x >= 0 and cc.y >= 0 and cc.x < map.cols and cc.y < map.rows and not map.blocked.has(cc) and not map.things.has(cc):
+				c = cc
+				break
 		GameState.run["flags"]["horse_at"] = [map.scene_id(), c.x, c.y]
 		map._place_waiting_horse()
 	_show_idle()
@@ -291,6 +300,9 @@ func update_aim() -> void:
 	if map == null or TouchControls.visible_controls or DisplayServer.is_touchscreen_available():
 		aim_cell = Vector2i(-1, -1)
 		return
+	if Time.get_ticks_msec() - Player.last_mouse_motion_ms > 4000:
+		aim_cell = Vector2i(-1, -1)  # keyboard play: the parked cursor doesn't aim
+		return
 	var mc := map.world_to_cell(get_global_mouse_position())
 	var me := cell()
 	var d := mc - me
@@ -329,7 +341,17 @@ func cell() -> Vector2i:
 
 
 func face_toward(p: Vector2) -> void:
-	var d := p - (position + Vector2(0, -8))
+	# Face by cells when the target is another cell (cell centres sit at feet
+	# level, so a pixel offset picked the wrong side); by pixels otherwise.
+	var tc := map.world_to_cell(p) if map else Vector2i(-999, -999)
+	if map and tc != cell():
+		var dc := tc - cell()
+		if absi(dc.x) > absi(dc.y):
+			facing = "left" if dc.x < 0 else "right"
+		else:
+			facing = "up" if dc.y < 0 else "down"
+		return
+	var d := p - position
 	if absf(d.x) > absf(d.y):
 		facing = "left" if d.x < 0 else "right"
 	else:
@@ -341,8 +363,14 @@ func go_to_cell(c: Vector2i, interact_there: bool) -> void:
 	auto_cell = c if interact_there else Vector2i(-1, -1)
 	if interact_there:
 		var target := map.cell_center(c)
-		var d := target - position
-		if d.length() < GameMap.TILE * 1.2:
+		var dc := c - cell()
+		if dc == Vector2i.ZERO:
+			# Tapped the cell you're standing on (forage, a plot): act on it directly.
+			auto_target = Vector2.INF
+			auto_cell = Vector2i(-1, -1)
+			map.try_interact(c)
+			return
+		if absi(dc.x) + absi(dc.y) == 1:
 			auto_target = Vector2.INF
 			auto_cell = Vector2i(-1, -1)
 			face_toward(target)
@@ -413,13 +441,16 @@ func _physics_process(delta: float) -> void:
 		var pdata: Dictionary = GameState.playables.get(pid, {})
 		if pdata.has("tint"):
 			base = Color(str(pdata["tint"]))
-		else:
+		elif char_id == "penguin":
 			base = Color(str(GameState.look_d().get("tint", "ffffff")))
 		_anim.modulate = Color(base, 0.5 if invuln > 0.0 and int(invuln * 20) % 2 == 0 else 1.0)
 	if frozen:
 		velocity = Vector2.ZERO
 		auto_target = Vector2.INF
-		_show_idle()
+		_buffered = ""
+		# Let a one-shot tool pose (cast, reel, hold) finish instead of snapping to idle.
+		if not (_busy and _anim and _anim.is_playing() and not anim_name.begins_with("walk") and not anim_name.begins_with("run")):
+			_show_idle()
 		return
 	var dir := Input.get_vector("left", "right", "up", "down")
 	if dir != Vector2.ZERO:
@@ -456,25 +487,35 @@ func _physics_process(delta: float) -> void:
 			_buffered = ""
 			do_action(b)
 			return
-		elif not _busy and (Input.is_action_pressed("tool") or mouse_held) and _hold_t > 0.25 and (GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe"] or GameState.is_sword(GameState.held_tool())):
-			# Holding the tool button keeps swinging (Stardew-style).
+		elif not _busy and _repeat_cd <= 0.0 and (Input.is_action_pressed("tool") or mouse_held or (Input.is_action_pressed("a") and TouchControls.visible_controls)) and _hold_t > 0.25 and (GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe"] or GameState.is_sword(GameState.held_tool())):
+			# Holding the tool button (or USE on the phone) keeps swinging.
 			if mouse_held and map:
 				face_toward(map.get_global_mouse_position())
+			_repeat_cd = 0.3
 			do_action("tool")
 			return
-	if Input.is_action_pressed("tool") or mouse_held:
+	_repeat_cd = maxf(0.0, _repeat_cd - delta)
+	# A release missed while a menu/dialogue was up must not leave the mouse "held".
+	if mouse_held and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		mouse_held = false
+	if Input.is_action_pressed("tool") or mouse_held or (Input.is_action_pressed("a") and TouchControls.visible_controls):
 		_hold_t += delta
 	else:
 		_hold_t = 0.0
 	# Companion ability: hold B still for a second.
-	if Input.is_action_pressed("b") and dir == Vector2.ZERO and not _busy and Companion.active_id() != "" and not Dialogue.input_blocked():
+	var has_ab: bool = Companion.active_id() != "" or (GameState.is_penguins() and GameState.run["flags"].has("meow_taught"))
+	if TouchControls.ability_pressed and has_ab and not _busy and not Dialogue.input_blocked() and map:
+		# The phone's ♥ button: one tap, no hold.
+		TouchControls.ability_pressed = false
+		Companion.use_ability(map, self)
+	elif Input.is_action_pressed("b") and dir == Vector2.ZERO and not _busy and has_ab and not Dialogue.input_blocked():
 		_ability_hold += delta
 		if _ability_hold >= 1.0:
-			_ability_hold = -2.0  # cooldown until released
+			_ability_hold = -1000.0  # fires once per hold: release B to use it again
 			Companion.use_ability(map, self)
 	elif not Input.is_action_pressed("b"):
 		_ability_hold = 0.0
-	if Input.is_action_just_pressed("b") and dir == Vector2.ZERO and not _busy and has_anim("play") and not Dialogue.input_blocked():
+	if Input.is_action_just_pressed("b") and dir == Vector2.ZERO and not _busy and has_anim("play") and not swimming and not mounted and not has_ab and not Dialogue.input_blocked():
 		_busy = true
 		_play_left = PLAY_TIME
 		_apply("play", facing == "left")
@@ -525,7 +566,7 @@ func _physics_process(delta: float) -> void:
 		spd_mult *= 1.3
 	if GameState.weather_today() in ["snow", "blizzard"] and map and map.has_sky:
 		spd_mult *= 0.9
-	elif int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
+	if int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
 		spd_mult *= 0.75  # running on empty
 	if swimming:
 		spd_mult *= 1.0 if Companion.has_ability("tail") else 0.55
@@ -574,7 +615,7 @@ func _physics_process(delta: float) -> void:
 			_apply("ride_run" if pre == "ride" and is_run and has_anim("ride_run") else pre, move_dir.x < 0)
 		else:
 			facing = "up" if move_dir.y < 0 else "down"
-			_apply(pre + "_" + facing, false)
+			_apply(pre + "_" + facing if has_anim(pre + "_" + facing) else pre, false)
 		if _anim:
 			_anim.speed_scale = 1.0
 		return
@@ -812,11 +853,12 @@ func _puff(back: Vector2) -> void:
 func _show_idle() -> void:
 	if _anim:
 		_anim.speed_scale = 1.0
-	if swimming and has_anim("float"):
-		_apply("float", facing == "left")
+	if swimming and (has_anim("float") or has_anim("swim")):
+		_apply("float" if has_anim("float") else "swim", facing == "left")
 		return
 	if mounted and has_anim("ride"):
-		_apply({"up": "ride_up", "down": "ride_down"}.get(facing, "ride"), facing == "left")
+		var ra: String = {"up": "ride_up", "down": "ride_down"}.get(facing, "ride")
+		_apply(ra if has_anim(ra) else "ride", facing == "left")
 		return
 	match facing:
 		"up":

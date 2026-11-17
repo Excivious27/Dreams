@@ -120,7 +120,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				p._apply("powerup", false, true)
 			m.hud.toast("Power Pose! +5 mana, grumps stunned.", Color(0.85, 0.9, 1.0))
 		"haul":
-			m.hud.toast("Dad: 'Just point at the tree.'", Color(0.9, 0.9, 0.9))
+			m.hud.toast("Dad: 'Just point at the tree.' (Trees fall in one swing while he's with you.)", Color(0.9, 0.9, 0.9))
 		"scout":
 			var n := 0
 			var pc := p.cell()
@@ -131,7 +131,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 					n += 1
 			m.hud.toast("Pax: '%d things worth grabbing round here.'" % n, Color(0.9, 1.0, 0.9))
 		"tinker":
-			m.hud.toast("Kairi: 'Chest's open. Don't ask how.'", Color(0.9, 1.0, 0.9))
+			m.hud.toast("Kairi: 'Bag's open. Don't ask how.'", Color(0.9, 1.0, 0.9))
 			var gm := m.get_node_or_null("GameMenu")
 			if gm:
 				(gm as GameMenu).toggle()
@@ -150,9 +150,23 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		"muscle":
 			var fc: Vector2i = p.facing_cell()
 			var th: Dictionary = m.things.get(fc, {})
-			if str(th.get("type", "")) in ["rock", "mrock", "stump", "log"]:
-				th["hp"] = 0
-				m.interact_common(fc, th)
+			var tt := str(th.get("type", ""))
+			if tt in ["rock", "mrock", "stump", "log"]:
+				# He breaks it himself: no tool, no energy.
+				m.things.erase(fc)
+				m.blocked.erase(fc)
+				if m.props.has(fc):
+					(m.props[fc] as Node).queue_free()
+					m.props.erase(fc)
+				m._mark_cleared(fc)
+				if tt in ["rock", "mrock"]:
+					m.give("stone", 3)
+					var ore := str(th.get("ore", ""))
+					if ore != "" and ore != "stone":
+						m.give(ore, 1)
+				else:
+					m.give("wood", 3)
+				m.fx("stone_chips" if tt in ["rock", "mrock"] else "wood_chips", m.cell_center(fc) + Vector2(0, -8), 16.0, 0.5)
 				m.shake(3.0)
 				m.hud.toast("Big Jim: 'Next.'", Color(1, 0.9, 0.8))
 			else:
@@ -162,7 +176,8 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			var bv := 0
 			for id in GameState.run["inventory"].keys():
 				var v := GameState.item_value(str(id))
-				if v > bv and str(GameState.items.get(id, {}).get("type", "")) not in ["tool", "seed", "petgear"]:
+				# Only loot: enemy drops, junk, ore and treasure. Never gear, food or keys.
+				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore", "material"]:
 					bv = v
 					best = str(id)
 			if best != "":
@@ -171,6 +186,8 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				var pay := int(bv * n * 1.2)
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
 				m.hud.toast("Sal moved %d %s for ◆%d. No questions." % [n, GameState.item_name(best), pay], Color(1, 0.9, 0.6))
+			else:
+				m.hud.toast("Sal: 'Nothing worth moving. Bring me loot.'", Color(1, 0.9, 0.6))
 		"tail":
 			m.hud.toast("Mer: 'The water's right there.'", Color(0.8, 0.95, 1.0))
 		"mend":
@@ -178,20 +195,31 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.hud.toast("Mom: 'Hold still.' +10 health.", Color(1, 0.8, 0.8))
 
 
-static func recruit(cid: String) -> void:
+static func recruit(cid: String, make_active := true) -> void:
+	# You can't recruit yourself (playing as Coldy, Mer or Big Jim).
+	if cid == str(GameState.run.get("playable", "")):
+		return
 	var p := party()
 	if not cid in p["known"]:
 		p["known"].append(cid)
-	p["active"] = cid
+	p["bitter"].erase(cid)
+	p["refused"].erase(cid)
+	if make_active:
+		p["active"] = cid
 	GameState.run["flags"]["party_" + cid] = true
 
 
 static func refuse(cid: String) -> void:
 	var p := party()
+	if cid in p["known"]:
+		return
 	p["refused"][cid] = int(p["refused"].get(cid, 0)) + 1
 	if int(p["refused"][cid]) >= 2 and not cid in p["bitter"]:
 		p["bitter"].append(cid)
 		GameState.add_hint("%s took that hard. People who feel unwanted go looking for somewhere they're wanted." % str(defs()[cid]["name"]))
+
+
+var _mend_t := 0.0
 
 
 func setup(cid: String, m: GameMap) -> void:
@@ -252,6 +280,9 @@ func _process(delta: float) -> void:
 			want = "swim"
 		if anim.animation != want and anim.sprite_frames.has_animation(want):
 			anim.play(want)
-		# Mend (Mom): slow heal while near.
-		if Companion.has_ability("mend") and _idle > 0.0 and int(_idle * 10) % 100 == 0:
-			GameState.heal_points(1)
+		# Mend (Mom): 1 health every 10 s while she's close.
+		if Companion.has_ability("mend"):
+			_mend_t += delta
+			if _mend_t >= 10.0:
+				_mend_t -= 10.0
+				GameState.heal_points(1)

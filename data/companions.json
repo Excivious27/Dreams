@@ -25,7 +25,7 @@
    "arc": "both",
    "ability": "haul",
    "ability_name": "Haul",
-   "ability_desc": "Carries 12 extra stacks and chops a tree in one swing.",
+   "ability_desc": "Trees fall in one swing while he's with you.",
    "join": "Somebody has to carry the wood."
   },
   "mom": {
@@ -34,7 +34,7 @@
    "arc": "both",
    "ability": "mend",
    "ability_name": "Mend",
-   "ability_desc": "Heals 1 health every 10 s near you; cooking costs half.",
+   "ability_desc": "Heals 1 health every 10 s while she's close.",
    "join": "I'll come. Someone has to make sure you eat."
   },
   "pax": {
@@ -52,7 +52,7 @@
    "arc": "both",
    "ability": "tinker",
    "ability_name": "Tinker",
-   "ability_desc": "Crafting is 30% faster; chests can be opened from anywhere.",
+   "ability_desc": "Crafting is 30% faster; hold B to open your bag anywhere.",
    "join": "I can fix the resonator. Probably. Let's find out."
   },
   "big_jim": {
@@ -61,7 +61,7 @@
    "arc": "gangsters",
    "ability": "muscle",
    "ability_name": "Muscle",
-   "ability_desc": "Breaks any rock or door the pickaxe can't; thugs hesitate.",
+   "ability_desc": "Hold B facing a rock, log or stump: he breaks it himself, no tool needed.",
    "join": "You pay, I swing. You don't pay, I still swing, I just complain."
   },
   "mer": {
@@ -70,16 +70,16 @@
    "arc": "both",
    "ability": "tail",
    "ability_name": "Mercat's Gift",
-   "ability_desc": "With Mer beside you: a mermaid tail in water, breathe underwater, swim at full speed, dive for crystals.",
+   "ability_desc": "The merkitties' gift: a tail in any water. Swim and dive anywhere.",
    "join": "You came down the dark stair with a lantern and no fear. That's rarer than crystal. Come on, the water's warmer than it looks."
   },
   "sal": {
    "name": "Sal",
-   "sprite": "npc_sal",
+   "sprite": "npc_drifter",
    "arc": "gangsters",
    "ability": "fence",
    "ability_name": "Fence",
-   "ability_desc": "Sells anything at 120% anywhere, no questions; thug drops double.",
+   "ability_desc": "Hold B: he sells your most valuable stack of loot (drops, ore, treasure) at 120%.",
    "join": "I know people. People who know people. Keep your head down."
   },
   "coldy": {
@@ -97,7 +97,8 @@
      "Mountain is tall. Top is in space. We walk."
     ],
     "gate": "I hold the key. Key goes where you go."
-   }
+   },
+   "ability_desc": "Hold B: Coldy stamps a ring that cracks the ground and staggers everything close."
   }
  },
  "partner_scene": {

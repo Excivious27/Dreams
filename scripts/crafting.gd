@@ -48,6 +48,8 @@ static func minutes_for(station: String, rc: Dictionary) -> int:
 	if rc.has("minutes"):
 		m = float(rc["minutes"])
 	m *= 1.0 - GameState.bonus("building", "craft_speed")
+	if Companion.has_ability("tinker"):
+		m *= 0.7
 	if bool(rc.get("tool", false)):
 		m *= 1.5
 	return maxi(5, int(round(m / 5.0) * 5))

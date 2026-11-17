@@ -62,7 +62,11 @@ static func pack_size() -> int:
 
 
 static func resting() -> bool:
-	return int(state().get("rest_until", 0)) > int(GameState.run["day"]) or (int(state().get("rest_until", 0)) == int(GameState.run["day"]) and int(GameState.run["time"]) < 12 * 60 and GameState.bonus("pup", "best") > 0.0)
+	# rest_until_abs: absolute minutes (day*1440+time) when the pup is back.
+	var st := state()
+	if st.has("rest_until_abs"):
+		return GameState.now_abs() < int(st["rest_until_abs"])
+	return int(st.get("rest_until", 0)) > int(GameState.run["day"])
 
 
 static func name_of() -> String:
@@ -158,14 +162,19 @@ func set_mode(mode: String) -> void:
 ## otherwise it takes a game hour to find you if it was on another map).
 func recall() -> void:
 	var st := state()
+	if Pet.resting():
+		map.hud.toast("%s is resting at home." % name_of(), Color(1, 0.85, 0.75))
+		return
 	var far := not (st["wait"] as Array).is_empty() and str(st["wait"][0]) != map.scene_id()
+	var from_where := str(st["wait"][0]) if not (st["wait"] as Array).is_empty() else "far away"
 	st["mode"] = "follow"
 	st["wait"] = []
+	busy = false
 	_target = null
 	visible = true
 	if far and GameState.bonus("pup", "best") <= 0.0:
 		GameState.run["time"] = int(GameState.run["time"]) + 60
-		map.hud.toast("%s came running from %s. (an hour passed)" % [name_of(), str(st["wait"][0]) if not (st["wait"] as Array).is_empty() else "far away"], Color(0.85, 1.0, 0.85))
+		map.hud.toast("%s came running from %s. (an hour passed)" % [name_of(), from_where], Color(0.85, 1.0, 0.85))
 	else:
 		map.hud.toast("%s is here." % name_of(), Color(0.85, 1.0, 0.85))
 	position = map.player.position + Vector2(-14, 4)
@@ -194,10 +203,13 @@ func take_damage(n: int, from: Vector2) -> void:
 func _go_home() -> void:
 	var st := state()
 	st["hp"] = 0
+	# Back next morning; Best Friend: back in half a day.
+	var best := GameState.bonus("pup", "best") > 0.0
+	st["rest_until_abs"] = GameState.now_abs() + 720 if best else (int(GameState.run["day"]) + 1) * 1440 + GameState.DAY_START
 	st["rest_until"] = int(GameState.run["day"]) + 1
 	st["mode"] = "follow"
 	st["wait"] = []
-	map.hud.toast("%s is hurt and limps home to rest. Back tomorrow." % name_of(), Color(1, 0.8, 0.7))
+	map.hud.toast("%s is hurt and limps home to rest. Back %s." % [name_of(), "in a few hours" if best else "tomorrow"], Color(1, 0.8, 0.7))
 	map.emote(self, "sleep", 1.5)
 	visible = false
 	busy = true
@@ -340,11 +352,11 @@ func _bite(e: Enemy) -> void:
 		dmg *= 2
 	anim.play("bite" if anim.sprite_frames.has_animation("bite") else "bark")
 	anim.flip_h = e.position.x < position.x
-	e.hit(dmg, position)
+	var landed := e.hit(dmg, position)
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
 	GameState.add_xp("pup", 2)
-	# Enemies bite back.
-	if randf() < 0.35:
+	# Enemies bite back (not when the bite bounced off a shield).
+	if landed and randf() < 0.35:
 		take_damage(e.damage, e.position)
 
 

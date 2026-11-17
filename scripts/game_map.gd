@@ -413,6 +413,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
 			thing["hp"] = int(thing.get("hp", 3)) - (1 + GameState.tool_tier("axe") / 2)
+			if Companion.has_ability("haul"):
+				thing["hp"] = 0  # Dad: "Just point at the tree."
 			if int(thing["hp"]) <= 0:
 				var is_tree := str(thing["type"]) == "tree"
 				xp("foraging", 3)
