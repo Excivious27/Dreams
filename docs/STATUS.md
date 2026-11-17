@@ -311,3 +311,6 @@
 
 ## 2026-11-17 — Round 6 multiplayer hardening, pass 1
 - net_test (host + guest + local relay) green. Client: after an unexpected drop it rejoins the same room up to 3 times (2/4/6 s backoff); a deliberate leave never reconnects. Relay: ping/pong heartbeat drops dead sockets after 30 s, 64 KB frame cap, ~120 msgs/s per socket flood guard.
+
+## 2026-11-17 — Round 7 QA pass
+- Full harness run green: smoke, playtest (43 checks, screenshots reviewed), creator, mine, story (59 beats), hearts, reach, walls, net (host+guest). ui_test: 2 harness-only failures remain. Guide 07 written.
