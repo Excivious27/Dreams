@@ -189,7 +189,7 @@ func _refresh_preview() -> void:
 		body.sprite_frames = PaperDoll.body_frames(look)
 		body.centered = true
 		body.offset = Vector2(0, -48)
-		var h := float(PaperDoll.anchor_of("body", str(look.get("body", "medium_slim")), 0)[4])
+		var h := float(PaperDoll.anchor_of("body", PaperDoll.body_for(look), 0)[4])
 		var sc := 2.4 * CharacterLibrary.HERO_H / maxf(40.0, h)
 		body.scale = Vector2(sc, sc)
 		body.play("walk_down")

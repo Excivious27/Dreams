@@ -24,6 +24,7 @@ var _place := ""
 var _stuck := 0.0
 var _base_sprite := ""
 var _pose := ""
+var _base_scale := Vector2.ZERO
 var _idle_t := 0.0
 var map: GameMap
 
@@ -35,15 +36,35 @@ func set_pose(pose: String) -> void:
 	if pose == "":
 		if _pose != "":
 			_pose = ""
+			_anim.scale = _base_scale
 			_anim.play("idle")
 		return
-	if not Art.has("characters/" + _base_sprite, pose):
+	# Their own pose sheet (npc_<id>) first, then the job sprite's.
+	var g := ""
+	for cand in ["characters/npc_" + id, "characters/" + _base_sprite]:
+		if Art.has(cand, pose) and int(Art.info(cand, pose).get("h", 0)) >= 16:
+			g = cand
+			break
+	if g == "":
 		return
-	if not _anim.sprite_frames.has_animation("pose_" + pose):
-		_anim.sprite_frames.add_animation("pose_" + pose)
-		_anim.sprite_frames.add_frame("pose_" + pose, Art.tex("characters/" + _base_sprite, pose))
+	if _base_scale == Vector2.ZERO:
+		_base_scale = _anim.scale
+	var key := "pose_%s_%s" % [g.get_file(), pose]
+	if not _anim.sprite_frames.has_animation(key):
+		_anim.sprite_frames.add_animation(key)
+		_anim.sprite_frames.set_animation_loop(key, false)
+		_anim.sprite_frames.add_frame(key, Art.tex(g, pose))
+	# A pose sheet sliced at another scale than the walk strips is brought to
+	# the same size (a real height change, like sitting, stays).
+	var idle_tex := _anim.sprite_frames.get_frame_texture("idle", 0) if _anim.sprite_frames.has_animation("idle") else null
+	var ph := float(Art.info(g, pose).get("cell_h", Art.info(g, pose).get("h", 0)))
+	_anim.scale = _base_scale
+	if idle_tex and ph > 0:
+		var r := float(idle_tex.get_height()) / ph
+		if r > 1.6 or r < 0.6:
+			_anim.scale = _base_scale * r
 	_pose = pose
-	_anim.play("pose_" + pose)
+	_anim.play(key)
 
 
 func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
@@ -54,8 +75,11 @@ func setup(npc_id: String, data: Dictionary, at: Vector2) -> void:
 	var sprite_id := str(data.get("sprite", ""))
 	# Seasonal outfit sheet when one exists for this villager (Prompts 09 w159/160).
 	var se := GameState.season()
-	var seasonal := "%s_%s" % [sprite_id, "fall" if se == "fall" else se]
-	if se == "winter" and CharacterLibrary.has_character(sprite_id + "_winter"):
+	# Their own seasonal sheet is npc_<id>_<season>, whatever job sprite they wear.
+	var own := "npc_%s_%s" % [npc_id, se]
+	if CharacterLibrary.has_character(own):
+		sprite_id = own
+	elif se == "winter" and CharacterLibrary.has_character(sprite_id + "_winter"):
 		sprite_id = sprite_id + "_winter"
 	elif se == "summer" and CharacterLibrary.has_character(sprite_id + "_summer"):
 		sprite_id = sprite_id + "_summer"

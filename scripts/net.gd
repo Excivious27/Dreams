@@ -104,7 +104,7 @@ func leave() -> void:
 func _my_look() -> Dictionary:
 	var lk: Variant = GameState.run.get("look", {})
 	var eq: Variant = GameState.run.get("equip", {})
-	return {"playable": GameState.run.get("playable", ""), "look": lk if lk is Dictionary else {}, "equip": eq if eq is Dictionary else {}}
+	return {"playable": GameState.run.get("playable", ""), "arc": str(GameState.run.get("arc", "")), "look": lk if lk is Dictionary else {}, "equip": eq if eq is Dictionary else {}}
 
 
 func _send(o: Dictionary) -> void:

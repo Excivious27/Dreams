@@ -24,7 +24,7 @@ func build() -> void:
 	pad = 6
 	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
 	music_track = "cattopia" if GameState.is_penguins() else "rain"
-	add_exit(MEADOW_EXIT, "meadow", Vector2(33 * TILE, 15 * TILE + 8), "left", "◀ meadow")
+	add_exit(MEADOW_EXIT, "meadow", Vector2(51 * TILE, 15 * TILE + 8), "left", "◀ meadow")
 	set_thing(EAST_GATE.x, EAST_GATE.y, {"type": "gate", "hint": "A: the way east"})
 	set_thing(EAST_GATE.x, EAST_GATE.y + 1, {"type": "gate", "hint": "A: the way east"})
 	var rng := RandomNumberGenerator.new()
@@ -46,6 +46,22 @@ func build() -> void:
 		set_thing(10, 6, {"type": "shack", "hint": "A: the old shack"})
 		set_thing(24, 7, {"type": "market", "hint": "A: black market"})
 	extend(14, 10)
+	# The gate belongs on the east edge of the grown map, with the road running to it.
+	var g := Vector2i(cols - 1, EAST_GATE.y)
+	for k in 2:
+		var o := EAST_GATE + Vector2i(0, k)
+		var t: Dictionary = things.get(o, {})
+		things.erase(o)
+		blocked.erase(o)
+		set_thing(g.x, g.y + k, t)
+	for x in range(EAST_GATE.x, cols - 1):
+		for y in range(11, 14):
+			_ext_paths[Vector2i(x, y)] = true
+			blocked.erase(Vector2i(x, y))
+	_gate = g
+
+
+var _gate := EAST_GATE
 
 
 func after_ready() -> void:
@@ -251,7 +267,7 @@ func draw_map() -> void:
 		draw_tileset_rect("sidewalk", Rect2i(6, 8, 22, 1), Color("8a8a90"))
 		draw_tileset_rect("sidewalk", Rect2i(6, 15, 22, 1), Color("8a8a90"))
 	draw_exits()
-	var gp := cell_center(EAST_GATE)
+	var gp := cell_center(_gate)
 	draw_rect(Rect2(gp.x - 8, gp.y - 30, 16, 32), Color("3a2412") if GameState.is_penguins() else Color("5a5a66"))
 	label("east", Vector2(gp.x - 24, gp.y - 34), 48)
 	draw_fence_border(Color("6b4a2b") if GameState.is_penguins() else Color("5a5a66"))

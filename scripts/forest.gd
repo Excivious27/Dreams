@@ -22,7 +22,7 @@ func build() -> void:
 	border = "trees"
 	music_track = "meadow"
 	add_exit(FARM_EXIT, "farm", Vector2(36 * TILE, 3 * TILE + 8), "down", "▼ farm")
-	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 6 * TILE), "left", "◀ lake")
+	add_exit(LAKE_EXIT, "lake", Vector2(45 * TILE, 2 * TILE + 8), "down", "◀ lake")
 	add_exit(Rect2i(22, 0, 4, 1), "orchard_hills", Vector2(26 * TILE, 41 * TILE + 8), "up", "▲ orchard hills")
 	set_thing(SHRINE.x, SHRINE.y, {"type": "shrine", "hint": "A: forest shrine"})
 	# Groves: dense tree masses with dark floor; clearings between them stay open.

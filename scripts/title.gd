@@ -136,7 +136,9 @@ func _show_net() -> void:
 	_page.add_child(_button("Join with code", func() -> void:
 		_net_status.text = "Connecting..."
 		Net.join(_net_url.text, _net_code.text), true))
-	_page.add_child(_button("Back", _show_title))
+	_page.add_child(_button("Back", func() -> void:
+		Net.leave()  # a connect that lands after Back must not start a game
+		_show_title()))
 	if not Net.connected.is_connected(_on_net_connected):
 		Net.connected.connect(_on_net_connected)
 		Net.disconnected.connect(func(why: String) -> void:
@@ -145,10 +147,13 @@ func _show_net() -> void:
 
 
 func _on_net_connected(is_host: bool) -> void:
+	if not is_instance_valid(_net_status) or not _net_status.is_inside_tree():
+		return  # left the page
 	if is_instance_valid(_net_status):
 		_net_status.text = "Connected. Room %s. %s" % [Net.room, "You're hosting; share the code." if is_host else "Joined."]
 	await get_tree().create_timer(0.8).timeout
-	_start_game()
+	if Net.room != "":
+		_start_game()
 
 
 func _show_arcs() -> void:
@@ -200,10 +205,11 @@ func _show_characters() -> void:
 			grid.add_child(_button(name, func() -> void: _pick(pid)))
 	_page.add_child(_label("Pick a hero and play as them, or build your own.", 7, false))
 	_page.add_child(_button("Back", _show_arcs))
-	_pick(ids[0])
+	_pick(_playable if _playable in ids else ids[0])
 
 
 func _pick(pid: String) -> void:
+	var same := pid == _playable and not _look_full.is_empty()
 	_playable = pid
 	if _preview:
 		_preview.queue_free()
@@ -211,17 +217,18 @@ func _pick(pid: String) -> void:
 	_preview.position = Vector2(_preview_holder.size.x / 2.0 if _preview_holder.size.x > 0 else 123, 62)
 	_preview_holder.add_child(_preview)
 	var sprite_id := GameState.sprite_for_playable(pid, _arc)
-	_look_full = {}  # a new pick starts clean; the look is only for penguins and custom heroes
+	if not same:
+		_look_full = {}  # a new pick starts clean; the look is only for penguins and custom heroes
 	if bool(_playables[pid].get("custom", false)) and PaperDoll.available():
-		# Build-your-own: preview a paper doll.
-		var cr := Creator.new(PaperDoll.random_look(), "", false)
+		# Build-your-own: preview a paper doll (the look you made, coming back).
+		var cr := Creator.new(_look_full if _look_full.has("body") else PaperDoll.random_look(), "", false)
 		_preview.add_child(cr)
 		cr.visible = false
 		var body := AnimatedSprite2D.new()
 		body.sprite_frames = PaperDoll.body_frames(cr.look)
 		body.centered = true
 		body.offset = Vector2(0, -48)
-		var h := float(PaperDoll.anchor_of("body", str(cr.look.get("body", "medium_slim")), 0)[4])
+		var h := float(PaperDoll.anchor_of("body", PaperDoll.body_for(cr.look), 0)[4])
 		var sc := 1.6 * CharacterLibrary.HERO_H / maxf(40.0, h)
 		body.scale = Vector2(sc, sc)
 		body.play("walk_down")
@@ -282,7 +289,7 @@ func _show_look() -> void:
 func _show_names() -> void:
 	_clear()
 	_page.add_child(_label("Name things", 16))
-	var pname := str(_playables[_playable].get("name", "Hero"))
+	var pname := "Hero" if bool(_playables[_playable].get("custom", false)) else str(_playables[_playable].get("name", "Hero"))
 	_name_edit = _edit("Your name", pname)
 	_town_edit = _edit("Town name", "Dreamhollow")
 	_pet_edit = _edit("Pet name", "Pup")

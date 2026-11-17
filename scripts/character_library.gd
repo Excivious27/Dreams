@@ -98,7 +98,7 @@ static func frames_for(id: String) -> SpriteFrames:
 		var anims := {}
 		var list: Array = GEN_ONLY.get(id, ["idle", "idle_up", "idle_side", "walk", "walk_down", "walk_up", "sit", "wave", "work"])
 		for a: String in list:
-			if Art.has(g, a):
+			if Art.has(g, a) and int(Art.info(g, a).get("h", 99)) >= 16:  # tiny strips are empty slots
 				anims[a] = a
 		var gsf := Art.frames(g, anims, FPS, LOOPS)
 		# Fallbacks so every character can idle/walk even with a partial set.
@@ -122,6 +122,18 @@ static func frames_for(id: String) -> SpriteFrames:
 		for v in ["view_left"]:
 			if not gsf.has_animation(v):
 				_alias(gsf, v, "view_right")
+		# A gangster-arc outfit with no tool poses borrows the farm hero's.
+		if id.ends_with("_gang") and has_character(id.trim_suffix("_gang")):
+			var base := frames_for(id.trim_suffix("_gang"))
+			for a in base.get_animation_names():
+				var an := str(a)
+				if gsf.has_animation(an) or not (an.split("_")[0] in TOOL_ACTIONS or an.begins_with("swim") or an.begins_with("ride")):
+					continue
+				gsf.add_animation(an)
+				gsf.set_animation_loop(an, base.get_animation_loop(an))
+				gsf.set_animation_speed(an, base.get_animation_speed(an))
+				for i in base.get_frame_count(an):
+					gsf.add_frame(an, base.get_frame_texture(an, i), base.get_frame_duration(an, i))
 		_frames_cache[id] = gsf
 		return gsf
 	var info := strip_info(id)
@@ -184,7 +196,8 @@ static func make_sprite(id: String) -> AnimatedSprite2D:
 	# Everyone is drawn to the same world height as the villagers (24 px), so
 	# the hero doesn't tower over the town. The penguin hero is half a villager.
 	var sc := SPRITE_SCALE
-	var target := float(TARGET_H.get(id, NPC_H if not data().has(id) else HERO_H))
+	var hero := data().has(id) or (id.ends_with("_gang") and data().has(id.trim_suffix("_gang")))
+	var target := float(TARGET_H.get(id, HERO_H if hero else NPC_H))
 	if h > 0:
 		sc = target / float(h)
 	s.scale = Vector2(sc, sc)

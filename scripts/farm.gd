@@ -66,7 +66,7 @@ func build() -> void:
 	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 3 * TILE), "down", "▼ town")
 	add_exit(MEADOW_EXIT, "meadow", Vector2(2 * TILE, 10 * TILE), "right", "meadow ▶")
 	add_exit(FOREST_EXIT, "forest", Vector2(36 * TILE, 46 * TILE + 8), "up", "▲ forest")
-	add_exit(LAKE_EXIT, "lake", Vector2(34 * TILE, 14 * TILE), "left", "◀ lake")
+	add_exit(LAKE_EXIT, "lake", Vector2(55 * TILE, 22 * TILE + 8), "left", "◀ lake")
 	block_rect(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y)
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go inside"})
 	set_thing(MAILBOX.x, MAILBOX.y, {"type": "mailbox", "hint": "A: check mailbox"})

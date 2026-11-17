@@ -53,6 +53,7 @@ var _deco_rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
+	Art.trim_cache()
 	InputSetup.ensure_actions()
 	y_sort_enabled = true
 	# Art is 2x detail drawn at half size; linear sampling keeps thin lines intact.

@@ -56,12 +56,23 @@ static func portrait_for(who: String) -> String:
 		return "dog"
 	var lower := who.to_lower()
 	var map := {"star crystal": "light_crystal", "dark crystal": "dark_crystal", "the president": "president", "president": "president",
-		"maple": "barnaby", "gideon": "greta", "wren": "wren", "mayor alder": "alder", "sal": "nico",
+		"maple": "barnaby", "gideon": "greta", "wren": "wren", "mayor alder": "mayor", "sal": "nico",
 		"riley": "riley", "manny": "manny", "eli": "eli", "jax": "jax", "vex": "vex", "nico": "nico",
 		"barnaby": "barnaby", "greta": "greta", "finn": "finn", "lumi": "lumi", "theo": "theo", "hazel": "hazel"}
+	var se := GameState.season()
 	for k in GameState.npcs:
-		map[str(GameState.npcs[k].get("name", "")).to_lower()] = str(GameState.npcs[k].get("portrait", k))
-	return str(map.get(lower, ""))
+		var pid := str(GameState.npcs[k].get("portrait", k))
+		# Their own painted portrait (by season) beats the shared job portrait.
+		for g in ["npc_%s_%s" % [k, se], "npc_%s_normal" % k, "npc_" + str(k)]:
+			if Art.has("portraits/" + g, "neutral"):
+				pid = g
+				break
+		map[str(GameState.npcs[k].get("name", "")).to_lower()] = pid
+		map[str(k)] = pid
+	var out := str(map.get(lower, ""))
+	if out == "" and lower.begins_with("mayor "):
+		out = str(map.get(lower.trim_prefix("mayor "), ""))
+	return out if out == "" or Art.has("portraits/" + out, "neutral") else ""
 
 
 static func instance(tree: SceneTree) -> Dialogue:
