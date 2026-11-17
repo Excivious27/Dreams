@@ -4,6 +4,34 @@ extends RefCounted
 
 # ---- shops -------------------------------------------------------------------
 
+## Seeds whose crop passes `keep(crop_id, crop)`, in or near season, a few at a
+## time: the pick turns over every 3 days so a phone shop list stays short.
+static func _seeds(keep: Callable, n: int, salt: int) -> Array:
+	var se := GameState.season()
+	var pool: Array = []
+	for sid in GameState.items:
+		var it: Dictionary = GameState.items[sid]
+		if str(it.get("type", "")) != "seed":
+			continue
+		var cid := str(it.get("crop", ""))
+		if not GameState.crops.has(cid):
+			continue
+		var cd: Dictionary = GameState.crops[cid]
+		var cs := str(cd.get("season", "any"))
+		if cs != "any" and cs != se:
+			continue
+		if keep.call(cid, cd):
+			pool.append(str(sid))
+	pool.sort()
+	if pool.size() <= n:
+		return pool
+	var out: Array = []
+	var start := (int(GameState.run.get("day", 1)) / 3 + salt) * n
+	for i in n:
+		out.append(pool[(start + i) % pool.size()])
+	return out
+
+
 static func offers(shop: String) -> Array:
 	match shop:
 		"bait":
@@ -26,6 +54,8 @@ static func offers(shop: String) -> Array:
 			var base: Array = by_season[se].duplicate()
 			if GameState.day_of_season() >= 22:
 				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
+			# Plus a few of the season's other vegetables and herbs.
+			base += _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 2 and not bool(cd.get("tree", false)) and not ("berry" in cid) and not (cid + "_seed" in base), 4, 0)
 			base += ["wheat_seed", "gift_pie", "paint"]
 			if GameState.has_perk("bartering", "Networker"):
 				base += rare[se] + ["dream_seed"]
@@ -39,15 +69,17 @@ static func offers(shop: String) -> Array:
 		"marlowe":
 			return ["lamp_oil", "bait", "coffee"]
 		"tam":
-			return ["sheep_wool", "cider", "apple"]
+			# Orchard stock: saplings and berry canes for the season.
+			return ["sheep_wool", "cider", "apple"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)
 		"old_moss":
-			return ["glow_cap", "slime_goo", "tea"]
+			return ["glow_cap", "slime_goo", "tea"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid in ["mushroom", "truffle", "morel", "glowcap", "glowcap2", "glowcap3", "saffron", "aloe", "wasabi", "ginger", "turmeric", "vanilla", "tea", "coffee", "cacao", "watercress", "water_chestnut", "sesame", "chia"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 2)
 		"granite":
 			return ["coal", "copper", "iron", "dynamite"]
 		"sel":
-			return ["rune_tablet", "old_coin", "book"]
+			# Seeds from the old places: wonders once you've gone far enough to grow them.
+			return ["rune_tablet", "old_coin", "book"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) >= 4 and int(cd.get("tier", 1)) <= GameState.progress_tier() + 1 and not cid.begins_with("crystal"), 3, 3)
 		"catkins":
-			return ["litter_box", "crystal_bloom", "potion"]
+			return ["litter_box", "crystal_bloom", "potion"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid.begins_with("crystal") or cid in ["starflower", "moonflower", "moonberry", "starfruit"], 3, 4)
 		"lodge":
 			var base: Array = ["meat", "bait"]
 			if GameState.has_friend_perk("rook", 4):

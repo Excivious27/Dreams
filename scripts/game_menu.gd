@@ -216,7 +216,7 @@ func _refresh() -> void:
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab == "FieldLog") else Color(0.85, 0.85, 0.85)
 	var r := GameState.run
 	match _tab:
 		"Items":
@@ -407,6 +407,7 @@ func _refresh() -> void:
 					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
 			if not any:
 				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 7, Color(0.7, 0.7, 0.7))
+			_button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: _tab = "FieldLog"; _refresh())
 			var hints: Array = r.get("hints", [])
 			if not hints.is_empty():
 				_line("Things people said", 9, Color(0.95, 0.85, 1.0))
@@ -423,6 +424,35 @@ func _refresh() -> void:
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
 			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = check/use · B = run · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 7, Color(0.8, 0.8, 0.8))
+		"FieldLog":
+			# Every crop by family: grown ones with counts, in-season ones hinted, the rest as ???.
+			var grown: Dictionary = r.get("grown", {})
+			_line("Field log · %d / %d · in season now: %s" % [grown.size(), GameState.crops.size(), GameState.season().capitalize()], 9, Color(0.8, 1, 0.7))
+			var by_fam := {}
+			for cid in GameState.crops:
+				var f := str(GameState.crops[cid].get("family", "veg"))
+				if not by_fam.has(f):
+					by_fam[f] = []
+				by_fam[f].append(str(cid))
+			for f in GameState.FAMILY_NAMES:
+				if not by_fam.has(f):
+					continue
+				var ids: Array = by_fam[f]
+				var got := 0
+				var parts: Array = []
+				for cid: String in ids:
+					var cd: Dictionary = GameState.crops[cid]
+					if grown.has(cid):
+						got += 1
+						parts.append("%s ×%d" % [str(cd["name"]), int(grown[cid])])
+					elif str(cd.get("season", "any")) in [GameState.season(), "any"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 1:
+						parts.append("(%s)" % str(cd["name"]))
+					else:
+						parts.append("???")
+				_line("%s  %d/%d" % [GameState.family_name(f), got, ids.size()], 8, Color(1, 0.9, 0.6))
+				_line("  " + ", ".join(parts), 7, Color(0.85, 0.85, 0.8))
+			_line("(Names in brackets grow this season; look for their seeds at Maple's, Tam's, Old Moss's, Sel's%s.)" % (" and Catkins's" if GameState.is_penguins() else ""), 7, Color(0.7, 0.7, 0.7))
+			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"Keys":
 			_line("Key bindings (Stardew defaults). Tap a row, then press the new key. Esc cancels.", 7, Color(0.8, 0.8, 0.8))
 			for pair in InputSetup.SHOWN:

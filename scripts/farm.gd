@@ -460,6 +460,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		if randf() < GameState.bonus("farming", "double_harvest"):
 			n *= 2
 		give(str(cd["yield"]), n)
+		if GameState.log_grown(crop):
+			hud.toast("Field log: first %s! (%d of %d crops grown)" % [str(cd["name"]), (GameState.run["grown"] as Dictionary).size(), GameState.crops.size()], Color(0.8, 1, 0.7))
 		if randf() < GameState.bonus("farming", "seed_back"):
 			var seed_id := _seed_for(crop)
 			if seed_id != "":
@@ -510,6 +512,43 @@ func _water(tile: Dictionary, key := "") -> bool:
 	Music.instance(get_tree()).sfx("water")
 	queue_redraw()
 	return true
+
+
+## Crops with no painted sheet yet: a drawn plant that grows (a trunk and canopy
+## for trees), showing the produce's own icon when it's ready to pick.
+func _draw_plain_crop(c: Vector2i, cd: Dictionary, frac: float) -> void:
+	var cx := c.x * TILE + TILE / 2.0
+	var base := (c.y + 1) * TILE - 2.0
+	var leaf := Color(str(cd.get("color", "4f9a3a")))
+	var top := Color(str(cd.get("top", "e8c84a")))
+	if bool(cd.get("tree", false)):
+		var th := 2.0 + frac * 8.0
+		draw_rect(Rect2(cx - 1, base - th, 2, th), Color("6a4a2a"))
+		var r := 2.0 + frac * 4.5
+		draw_circle(Vector2(cx, base - th - r * 0.6), r, Color("3f8a3a"))
+		draw_circle(Vector2(cx - r * 0.5, base - th - r * 0.3), r * 0.7, Color("4f9a3a"))
+		if frac >= 1.0:
+			for p: Vector2 in [Vector2(-2.5, -1), Vector2(2, -3), Vector2(0.5, 1.5)]:
+				draw_circle(Vector2(cx, base - th - r * 0.6) + p, 1.4, top)
+	else:
+		var hgt := 2.0 + frac * 9.0
+		draw_rect(Rect2(cx - 0.5, base - hgt, 1.5, hgt), leaf.darkened(0.15))
+		var leaves := 1 + int(frac * 3.0)
+		for i in leaves:
+			var y := base - 2.0 - i * (hgt / float(leaves + 1))
+			var sgn := -1.0 if i % 2 == 0 else 1.0
+			draw_circle(Vector2(cx + sgn * 2.2, y), 1.6 + frac, leaf)
+		if frac >= 0.75 and frac < 1.0:
+			draw_circle(Vector2(cx, base - hgt - 0.5), 1.5, top.darkened(0.3))
+	if frac >= 1.0:
+		var y := str(cd.get("yield", ""))
+		var icon := Hud.icon_for(y)
+		if Art.has("items", icon) and icon != "seeds":
+			var t := Art.tex("items", icon)
+			draw_texture_rect(t, Rect2(cx - 5, base - 17, 10, 10), false)
+		elif not bool(cd.get("tree", false)):
+			draw_circle(Vector2(cx, base - 12.0), 3.0, top)
+			draw_circle(Vector2(cx - 1, base - 13.0), 1.0, top.lightened(0.4))
 
 
 func _check_first_harvest() -> void:
@@ -651,13 +690,18 @@ func _keg(sel: String) -> void:
 		else:
 			hud.toast("Fermenting... %d more day(s)." % (int(keg["ready"]) - day))
 		return
-	var out := {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic", "grape": "wine", "apple": "cider"}
-	if out.has(sel) and GameState.count(sel) > 0:
+	var brew := GameState.keg_brew(sel)
+	if brew != "" and GameState.count(sel) > 0:
 		GameState.add_item(sel, -1)
-		GameState.run["flags"]["keg"] = {"out": out[sel], "ready": day + 3}
-		hud.toast("The keg bubbles. Come back in 3 days.")
+		var t := int(GameState.items.get(sel, {}).get("tier", 1))
+		var days := 2 + mini(4, t)
+		GameState.run["flags"]["keg"] = {"out": brew, "ready": day + days}
+		hud.toast("%s → %s. Ready in %d days." % [GameState.item_name(sel), GameState.item_name(brew), days])
 	else:
-		hud.toast("Hold a fruit or crop and press A to start a brew.")
+		hud.toast("Hold produce (fruit, vegetables, herbs, grain, mushrooms, flowers) and press A to brew.")
+
+
+
 
 
 func _resonator(sel: String) -> void:
@@ -888,28 +932,24 @@ func draw_map() -> void:
 			var stage := mini(4, int(frac * 5.0))
 			if frac >= 1.0:
 				stage = 4
-			var t := Art.tex("crops", crop)
-			if Art.has("crops", crop + "_seed"):
+			var art := str(cd.get("art", crop))  # strain variants share their parent's sheet
+			var t := Art.tex("crops", art)
+			if Art.has("crops", art + "_seed"):
 				# Prompts-09 crops: one sprite per stage (seed, sprout, young, growing, mature, ready).
 				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(5, int(frac * 6.0)) if frac < 1.0 else 5]
-				var tex := Art.tex("crops", "%s_%s" % [crop, st])
+				var tex := Art.tex("crops", "%s_%s" % [art, st])
 				var w2 := tex.get_width() / 2.0
 				var h2 := tex.get_height() / 2.0
 				draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false)
 			elif t:
-				var info := Art.info("crops", crop)
+				var info := Art.info("crops", art)
 				var cw := int(info.get("cell_w", 32))
 				var ch := int(info.get("cell_h", 32))
 				var w := cw / 2.0
 				var h := ch / 2.0
 				draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch))
 			else:
-				var hgt := 3 + int(frac * 9)
-				var cx := c.x * TILE + TILE / 2.0
-				var base := (c.y + 1) * TILE - 2.0
-				draw_rect(Rect2(cx - 1, base - hgt, 2, hgt), Color(cd["color"]))
-				if frac >= 1.0:
-					draw_circle(Vector2(cx, base - hgt - 1), 3.0, Color(cd["top"]))
+				_draw_plain_crop(c, cd, frac)
 	if not Art.has("buildings", "house"):
 		draw_building(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y, Color("8b5a2b"), Color("b03a2e"), "")
 

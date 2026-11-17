@@ -2,6 +2,32 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-17 (evening) — 134 growable crops, wired into everything
+
+- **Crops:** all 120 catalogue seeds now grow, for 134 crops in total. Every crop and every piece of produce has a family: veg, herb, berry, fruit, tree, grain, mushroom, flower or magic (`crops.json` / `items.json` "family").
+  - Tiers set days and price. Profit per day climbs about 2.5 → 4 → 9 → 18 → 45 from tier 1 to tier 5.
+  - Bushes, vines and orchard trees regrow.
+  - Strain variants (Cave/Deep Glowcap, Deep Void Pepper, Dawn/Dusk World Bloom) share their parent's art via "art".
+- **Orchard trees** rest out of season instead of dying, including in winter.
+- **Where seeds come from:**
+  - Maple: the season's vegetables, with 4 extras that rotate every 3 days.
+  - Tam: orchard trees and berry canes.
+  - Old Moss: mushrooms and herbs.
+  - Sel: wonder crops, gated by progress.
+  - Catkins: crystal crops.
+  - Pulling weeds can drop a Wild Seed Packet, which opens into a random in-season seed.
+- **Using the produce:**
+  - Recipes can ask for a family (`"#veg": 3`) and take the cheapest first. There are 12 new kitchen dishes plus oat flour.
+  - The keg brews by family and tier (`GameState.keg_brew`): wines, pickles, herbal tea, ale, broth, mead, wonder elixir.
+  - Villagers like whole families (`"#berry"`) as well as specific dishes.
+  - The plaza board posts one in-season crop order a day.
+  - The Harvest Fair takes any produce and weighs your field log.
+  - Four new crop quests: Posy's blueberries, Theo's coffee, Tam's pears, Wren's saffron.
+- **Field log:** in the journal (Quests → Field log). It lists every crop by family, with counts, names for what grows this season, and ??? for the rest.
+- **Art until Prompts 14 lands:** crops with no art are drawn as a plant (a tree, or a leafy stem) and show the produce icon when ripe.
+- **Tests:** `tools/crop_test.gd` is in `check.sh`. It checks every crop has a seed that's sold somewhere, produce, a family and a keg brew, and ripens in season. It also checks that recipes resolve and that family gifts, dormancy, seed packets and the board work.
+- **Art Prompts 14:** 2 produce-icon sheets and 8 crop growth sheets. The slicing layout is in `tools/prompts14_layout.json`.
+
 ## 2026-11-17 (night) — full audit, 20-bot playtest, fixes 1–10
 
 - Findings and status are in `docs/AUDIT-2026-11-17.md`.

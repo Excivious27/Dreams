@@ -949,5 +949,53 @@
    "There. He'll have light tonight and never know who to thank.",
    "Take this. Don't argue with my knees."
   ]
+ },
+ "posy_blueberries": {
+  "offer": [
+   "Summer pies. Everybody asks. Nobody grows blueberries. Six, and I'll put your name on the chalkboard."
+  ],
+  "yes": "Tam has the canes, if you ask nicely. Or rudely; he doesn't notice.",
+  "no": "Then it's rhubarb again. Nobody likes rhubarb.",
+  "wait": "Six blueberries. For the pies.",
+  "done": [
+   "Oh, they're perfect. Look at that blue.",
+   "Here: the first tart out of the oven. Don't tell the mayor."
+  ]
+ },
+ "theo_coffee": {
+  "offer": [
+   "The library opens at eight. I open at nine, functionally. Old Moss says coffee grows here, if someone patient tried. Four beans?"
+  ],
+  "yes": "Patience. A shrub, then a bean. Like research.",
+  "no": "Then I'll keep reading the same page.",
+  "wait": "Four coffee beans. Home-grown.",
+  "done": [
+   "You grew these. Here, in this town.",
+   "Take this. It's a first edition. I have two."
+  ]
+ },
+ "tam_orchard": {
+  "offer": [
+   "My pear trees died the year of the frost. Plant one; they rest in winter but they don't die. Bring me five pears and I'll believe in orchards again."
+  ],
+  "yes": "Trees are slow. That's the point of trees.",
+  "no": "Fair. It's a long promise, a tree.",
+  "wait": "Five pears. From your trees.",
+  "done": [
+   "These are good pears. Better than mine were.",
+   "Here: apple saplings. Start the orchard properly."
+  ]
+ },
+ "wren_saffron": {
+  "offer": [
+   "There's a fever remedy that wants saffron. A thread of it. Old Moss sells the corms in autumn. Grow me one?"
+  ],
+  "yes": "Autumn. Keep it watered. It sulks.",
+  "no": "Then I'll do without, and so will someone.",
+  "wait": "One saffron. Autumn corm.",
+  "done": [
+   "That's it. That's the colour.",
+   "Two remedies, for your pack. You'll need them more than you think."
+  ]
  }
 }

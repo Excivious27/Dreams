@@ -280,14 +280,17 @@ func _festival_event(fest: String) -> void:
 			var bv := 0
 			for id in GameState.run["inventory"].keys():
 				var it: Dictionary = GameState.items.get(id, {})
-				if str(it.get("type", "")) == "crop" and GameState.item_value(str(id)) > bv:
+				if (str(it.get("type", "")) == "crop" or str(it.get("family", "")) != "") and GameState.item_value(str(id)) > bv:
 					bv = GameState.item_value(str(id))
 					best = str(id)
 			if best == "":
 				await say([{"who": "Mayor Alder", "text": "Bring a crop to enter the fair! Biggest, brightest, rarest wins."}])
 			else:
 				GameState.add_item(best, -1)
-				var place := 1 if bv >= 100 else (2 if bv >= 40 else 3)
+				# The judges also weigh how much you've grown this year.
+				var grown := (GameState.run.get("grown", {}) as Dictionary).size()
+				var score := bv + grown * 4
+				var place := 1 if score >= 100 else (2 if score >= 40 else 3)
 				await say([{"who": "Mayor Alder", "text": "A %s! %s" % [GameState.item_name(best), ["First prize! The blue ribbon and three hundred crystals.", "Second prize! The red ribbon and a hundred and fifty.", "Third prize! The yellow ribbon and fifty."][place - 1]]}])
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + [300, 150, 50][place - 1]
 				GameState.run["flags"][key] = true

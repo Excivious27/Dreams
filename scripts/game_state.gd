@@ -894,6 +894,107 @@ static func can_gift(npc: String, item: String) -> bool:
 
 
 ## Give a gift: takes the item, adds friendship, remembers today. Returns the gain.
+# ---- produce families ----------------------------------------------------------
+## Every crop (and what it yields) belongs to a family: veg, herb, berry, fruit,
+## tree, grain, mushroom, flower, magic. Recipes can ask for "#veg", villagers
+## can like "#berry", the keg brews by family, the fair and journal count them.
+const FAMILY_NAMES := {"veg": "Vegetable", "herb": "Herb", "berry": "Berry", "fruit": "Fruit", "tree": "Orchard Fruit", "grain": "Grain", "mushroom": "Mushroom", "flower": "Flower", "magic": "Wonder Crop"}
+
+static func family(id: String) -> String:
+	return str(items.get(id, {}).get("family", ""))
+
+
+static func family_name(f: String) -> String:
+	return str(FAMILY_NAMES.get(f.trim_prefix("#"), f.capitalize()))
+
+
+## How many you carry of an item, or of a whole family ("#veg").
+static func count_any(key: String) -> int:
+	if not key.begins_with("#"):
+		return count(key)
+	var f := key.substr(1)
+	var n := 0
+	for id in run["inventory"]:
+		if family(str(id)) == f or (f == "fruit" and family(str(id)) in ["tree", "berry"]):
+			n += int(run["inventory"][id])
+	return n
+
+
+## Takes n of an item or family, cheapest first (you keep your prize crops).
+static func take_any(key: String, n: int) -> void:
+	if not key.begins_with("#"):
+		add_item(key, -n)
+		return
+	var f := key.substr(1)
+	var ids: Array = []
+	for id in run["inventory"]:
+		if family(str(id)) == f or (f == "fruit" and family(str(id)) in ["tree", "berry"]):
+			ids.append(str(id))
+	ids.sort_custom(func(a: String, b: String) -> bool: return item_value(a) < item_value(b))
+	for id: String in ids:
+		if n <= 0:
+			break
+		var k := mini(n, count(id))
+		add_item(id, -k)
+		n -= k
+
+
+## A seed of something in season you could grow now (seed packets, weeds).
+static func random_season_seed(max_tier := -1) -> String:
+	if max_tier < 0:
+		max_tier = mini(5, progress_tier() + 1)
+	var se := season()
+	var pool: Array = []
+	for sid in items:
+		var it: Dictionary = items[sid]
+		if str(it.get("type", "")) != "seed" or not crops.has(str(it.get("crop", ""))):
+			continue
+		var cd: Dictionary = crops[str(it["crop"])]
+		var cs := str(cd.get("season", "any"))
+		if (cs == se or cs == "any") and int(cd.get("tier", 1)) <= max_tier:
+			# Commoner seeds turn up more often.
+			for w in maxi(1, 4 - int(cd.get("tier", 1))):
+				pool.append(str(sid))
+	return "" if pool.is_empty() else str(pool[randi() % pool.size()])
+
+
+## The field log: first harvests of every crop, for the journal and the fair.
+static func log_grown(crop: String) -> bool:
+	var g: Dictionary = run.get("grown", {})
+	var first := not g.has(crop)
+	g[crop] = int(g.get(crop, 0)) + 1
+	run["grown"] = g
+	return first
+
+
+## What the keg makes from an item: a few signature brews, then by family and tier.
+static func keg_brew(id: String) -> String:
+	var special := {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic", "grape": "wine", "apple": "cider", "tea": "herbal_tea"}
+	if special.has(id):
+		return special[id]
+	var t := int(items.get(id, {}).get("tier", 1))
+	match family(id):
+		"berry", "fruit", "tree":
+			return "fruit_wine" if t <= 2 else ("fine_wine" if t == 3 else "starlight_wine")
+		"veg":
+			return "pickles"
+		"herb":
+			return "herbal_tea"
+		"grain":
+			return "harvest_ale"
+		"mushroom":
+			return "mushroom_broth"
+		"flower":
+			return "flower_mead"
+		"magic":
+			return "wonder_elixir"
+	return ""
+
+
+static func need_name(key: String) -> String:
+	return ("any " + family_name(key)) if key.begins_with("#") else item_name(key)
+
+
 static func give_gift(npc: String, item: String) -> int:
 	add_item(item, -1)
 	var gain := gift_value(npc, item)
@@ -917,9 +1018,13 @@ static func gift_value(npc: String, item: String) -> int:
 	var dislikes: Array = d.get("dislikes", [])
 	# Likes can name an item or a whole kind ("fish", "crystal", "flower").
 	var kind := str(it.get("type", ""))
-	if item in likes or (kind != "" and kind in likes):
+	var fam := "#" + str(it.get("family", "-"))
+	if fam == "#tree" or fam == "#berry":
+		if "#fruit" in likes:
+			fam = "#fruit"
+	if item in likes or (kind != "" and kind in likes) or fam in likes:
 		base = 20 if int(it.get("tier", 1)) >= 3 or str(it.get("rarity", "common")) != "common" else 12
-	elif item in dislikes or (kind != "" and kind in dislikes):
+	elif item in dislikes or (kind != "" and kind in dislikes) or fam in dislikes:
 		base = -8
 	elif str(it.get("rarity", "common")) in ["rare", "epic", "legendary"]:
 		base = 8
@@ -1016,6 +1121,20 @@ static func board_today() -> Array:
 		var val := maxi(5, item_value(item))
 		var pay := int(val * n * 1.6) + 20 * tier
 		jobs.append({"id": "board_%d_%d" % [int(run["day"]), i], "npc": who, "item": item, "n": n, "crystals": pay, "friend": 8 + tier * 2})
+	# Plus one order for something growing this season (any farmer's crop counts).
+	var se := season()
+	var crop_pool: Array = []
+	for cid in crops:
+		var cd: Dictionary = crops[cid]
+		if str(cd.get("season", "any")) in [se, "any"] and int(cd.get("tier", 1)) <= tier + 1 and items.has(str(cd["yield"])):
+			crop_pool.append(str(cd["yield"]))
+	crop_pool.sort()
+	if not crop_pool.is_empty():
+		var who2: String = ["posy", "maple", "hazel", "wren", "lumi", "theo"][rng.randi_range(0, 5)]
+		if npcs.has(who2) and not used.has(who2):
+			var item2: String = crop_pool[rng.randi_range(0, crop_pool.size() - 1)]
+			var n2 := rng.randi_range(2, 3 + tier)
+			jobs.append({"id": "board_%d_c" % int(run["day"]), "npc": who2, "item": item2, "n": n2, "crystals": int(maxi(5, item_value(item2)) * n2 * 1.8) + 15 * tier, "friend": 10 + tier * 2})
 	run["board"] = {"day": int(run["day"]), "jobs": jobs}
 	return jobs
 
@@ -1388,7 +1507,8 @@ static func sleep(passed_out := false) -> Dictionary:
 			var se := season()
 			# Winter kills anything that isn't a winter crop, watered or not,
 			# unless it's in the greenhouse (built).
-			if se == "winter" and cs != "winter" and cs != "any" and not Builds.is_built("greenhouse"):
+			var is_tree := bool(cd.get("tree", false))
+			if se == "winter" and cs != "winter" and cs != "any" and not Builds.is_built("greenhouse") and not is_tree:
 				tile["crop"] = ""
 				tile["days"] = 0
 				tile["acc"] = 0.0
@@ -1398,6 +1518,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			if has_friend_perk("hazel", 8) and int(tile.get("days", 0)) >= int(cd["days"]):
 				var yid := str(cd["yield"])
 				run["sellbox"][yid] = int(run["sellbox"].get(yid, 0)) + 1
+				log_grown(crop_id)
 				if cd.has("regrow"):
 					tile["days"] = int(cd["days"]) - int(cd["regrow"])
 				else:
@@ -1412,6 +1533,9 @@ static func sleep(passed_out := false) -> Dictionary:
 				var rate := 1.0
 				if cs != "any" and cs != se and not Builds.is_built("greenhouse"):
 					rate = 0.5
+					if bool(cd.get("tree", false)):
+						rate = 0.0  # orchard trees rest out of season; they don't die
+						report["dormant"] = int(report.get("dormant", 0)) + 1
 				rate += bonus("farming", "growth")
 				if bool(tile.get("fert", false)):
 					rate += 0.5

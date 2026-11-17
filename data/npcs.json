@@ -54,7 +54,9 @@
    "honey",
    "gift_pie",
    "sunflower",
-   "apple"
+   "apple",
+   "#fruit",
+   "orchard_pie"
   ],
   "dislikes": [
    "copper",
@@ -122,7 +124,9 @@
    "iron_bar",
    "coal",
    "ruby",
-   "steel_bar"
+   "steel_bar",
+   "chili_pot",
+   "harvest_ale"
   ],
   "dislikes": [
    "flower",
@@ -190,7 +194,9 @@
    "mushroom",
    "glow_cap",
    "moon_shard",
-   "crystal_refined"
+   "crystal_refined",
+   "#herb",
+   "herbal_tea"
   ],
   "dislikes": [
    "fish",
@@ -264,7 +270,10 @@
    "gold_bar",
    "wine",
    "pumpkin",
-   "book"
+   "book",
+   "fine_wine",
+   "starlight_wine",
+   "saffron_rice"
   ],
   "dislikes": [
    "slime_goo",
@@ -330,7 +339,8 @@
    "bread",
    "energy_tea",
    "fish",
-   "coffee"
+   "coffee",
+   "chili_pot"
   ],
   "dislikes": [
    "gold_bar",
@@ -396,10 +406,10 @@
    "minnow",
    "bait",
    "crab",
-   "pearl"
+   "pearl",
+   "pickles"
   ],
   "dislikes": [
-   "flower",
    "flower"
   ],
   "perks": {
@@ -458,7 +468,10 @@
    "sunflower",
    "starflower",
    "paint",
-   "crystal_refined"
+   "crystal_refined",
+   "#flower",
+   "flower_mead",
+   "starlight_salad"
   ],
   "dislikes": [
    "bone",
@@ -525,7 +538,8 @@
    "map_scrap",
    "old_coin",
    "fossil",
-   "crystal_refined"
+   "crystal_refined",
+   "chocolate"
   ],
   "dislikes": [
    "fish",
@@ -591,7 +605,9 @@
    "potato",
    "corn",
    "hay",
-   "milk"
+   "milk",
+   "#veg",
+   "#grain"
   ],
   "dislikes": [
    "gold_bar",
@@ -653,7 +669,9 @@
    "wine",
    "cheese",
    "meat",
-   "mushroom"
+   "mushroom",
+   "mushroom_risotto",
+   "harvest_ale"
   ],
   "dislikes": [
    "slime_goo"
@@ -719,7 +737,9 @@
    "honey",
    "egg",
    "strawberry",
-   "milk"
+   "milk",
+   "#berry",
+   "fruit_tart"
   ],
   "dislikes": [
    "fish",
@@ -785,7 +805,9 @@
    "wild_herb",
    "honey",
    "tea",
-   "glow_cap"
+   "glow_cap",
+   "herbal_tea",
+   "#herb"
   ],
   "dislikes": [
    "coffee",
@@ -855,7 +877,9 @@
    "pelt",
    "arrow",
    "bone",
-   "mushroom"
+   "mushroom",
+   "chili_pot",
+   "#mushroom"
   ],
   "dislikes": [
    "flower",
@@ -921,7 +945,9 @@
    "candy",
    "apple",
    "bait",
-   "toy"
+   "toy",
+   "chocolate",
+   "#berry"
   ],
   "dislikes": [
    "turnip"
@@ -986,7 +1012,7 @@
    "candy",
    "flower",
    "bait",
-   "flower"
+   "#berry"
   ],
   "dislikes": [
    "bone"
@@ -1051,7 +1077,8 @@
    "candy",
    "shell",
    "crab",
-   "toy"
+   "toy",
+   "tropical_smoothie"
   ],
   "dislikes": [
    "turnip"
@@ -1116,7 +1143,8 @@
    "candy",
    "flower",
    "strawberry",
-   "toy"
+   "toy",
+   "berry_jam_toast"
   ],
   "dislikes": [
    "bone"
@@ -1147,7 +1175,9 @@
    "fish",
    "salmon",
    "book",
-   "coffee"
+   "coffee",
+   "pickles",
+   "mushroom_broth"
   ],
   "dislikes": [
    "flower",
@@ -1178,7 +1208,8 @@
    "wheat",
    "flour",
    "bread",
-   "honey"
+   "honey",
+   "#grain"
   ],
   "dislikes": [
    "slime_goo"
@@ -1237,7 +1268,8 @@
    "carrot",
    "apple",
    "hay",
-   "iron_bar"
+   "iron_bar",
+   "#veg"
   ],
   "dislikes": [
    "fish"
@@ -1292,7 +1324,9 @@
    "old_coin",
    "gold_bar",
    "book",
-   "tea"
+   "tea",
+   "fine_wine",
+   "chocolate"
   ],
   "dislikes": [
    "slime_goo",
@@ -1323,7 +1357,8 @@
    "apple",
    "cheese",
    "sheep_wool",
-   "sheep_wool"
+   "#tree",
+   "fruit_wine"
   ],
   "dislikes": [
    "pelt"
@@ -1353,7 +1388,9 @@
    "bait",
    "mushroom",
    "glow_cap",
-   "tea"
+   "tea",
+   "#mushroom",
+   "mushroom_broth"
   ],
   "dislikes": [
    "gold_bar",
@@ -1384,7 +1421,9 @@
    "coal",
    "iron_bar",
    "meat",
-   "coffee"
+   "coffee",
+   "stir_fry",
+   "harvest_ale"
   ],
   "dislikes": [
    "flower",
@@ -1415,7 +1454,9 @@
    "book",
    "old_coin",
    "fossil",
-   "moon_shard"
+   "moon_shard",
+   "#magic",
+   "wonder_elixir"
   ],
   "dislikes": [
    "meat",
@@ -1441,8 +1482,8 @@
   "routine": [],
   "likes": [
    "fish",
-   "fish",
-   "tuna"
+   "tuna",
+   "crystal_melon"
   ],
   "dislikes": [
    "litter_box"

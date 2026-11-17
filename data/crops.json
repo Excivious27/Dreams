@@ -7,7 +7,8 @@
   "color": "e7d9ff",
   "top": "b56bd8",
   "season": "spring",
-  "tier": 1
+  "tier": 1,
+  "family": "veg"
  },
  "strawberry": {
   "name": "Strawberry",
@@ -18,7 +19,8 @@
   "top": "e23a3a",
   "season": "spring",
   "regrow": 3,
-  "tier": 2
+  "tier": 2,
+  "family": "berry"
  },
  "corn": {
   "name": "Corn",
@@ -29,7 +31,8 @@
   "top": "f2d14f",
   "season": "summer",
   "regrow": 4,
-  "tier": 2
+  "tier": 2,
+  "family": "grain"
  },
  "dreamflower": {
   "name": "Dream Flower",
@@ -39,7 +42,8 @@
   "color": "4f8fd0",
   "top": "a8d8ff",
   "season": "any",
-  "tier": 4
+  "tier": 4,
+  "family": "flower"
  },
  "potato": {
   "name": "Potato",
@@ -49,7 +53,8 @@
   "color": "6e8f4a",
   "top": "c9a66b",
   "season": "spring",
-  "tier": 1
+  "tier": 1,
+  "family": "veg"
  },
  "carrot": {
   "name": "Carrot",
@@ -59,7 +64,8 @@
   "color": "4f9a3a",
   "top": "e8862a",
   "season": "spring",
-  "tier": 1
+  "tier": 1,
+  "family": "veg"
  },
  "tomato": {
   "name": "Tomato",
@@ -70,7 +76,8 @@
   "top": "e23a3a",
   "season": "summer",
   "regrow": 3,
-  "tier": 2
+  "tier": 2,
+  "family": "veg"
  },
  "pumpkin": {
   "name": "Pumpkin",
@@ -80,7 +87,8 @@
   "color": "4f8f3a",
   "top": "e68a2a",
   "season": "fall",
-  "tier": 2
+  "tier": 2,
+  "family": "veg"
  },
  "melon": {
   "name": "Melon",
@@ -90,7 +98,8 @@
   "color": "3f9a48",
   "top": "6fcf5a",
   "season": "summer",
-  "tier": 3
+  "tier": 3,
+  "family": "fruit"
  },
  "wheat": {
   "name": "Wheat",
@@ -100,7 +109,8 @@
   "color": "b9a04a",
   "top": "e8d26b",
   "season": "any",
-  "tier": 1
+  "tier": 1,
+  "family": "grain"
  },
  "cranberry": {
   "name": "Cranberry",
@@ -111,7 +121,8 @@
   "color": "88aa66",
   "top": "55aa33",
   "regrow": 4,
-  "tier": 2
+  "tier": 2,
+  "family": "berry"
  },
  "hops": {
   "name": "Hops",
@@ -122,7 +133,8 @@
   "color": "88aa66",
   "top": "55aa33",
   "regrow": 2,
-  "tier": 2
+  "tier": 2,
+  "family": "herb"
  },
  "grape": {
   "name": "Grape",
@@ -133,7 +145,8 @@
   "color": "88aa66",
   "top": "55aa33",
   "regrow": 3,
-  "tier": 3
+  "tier": 3,
+  "family": "berry"
  },
  "tea_leaf": {
   "name": "Tea Leaf",
@@ -144,7 +157,8 @@
   "color": "88aa66",
   "top": "55aa33",
   "regrow": 4,
-  "tier": 2
+  "tier": 2,
+  "family": "herb"
  },
  "cotton": {
   "name": "Cotton",
@@ -154,7 +168,8 @@
   "season": "summer",
   "color": "88aa66",
   "top": "55aa33",
-  "tier": 2
+  "tier": 2,
+  "family": "grain"
  },
  "flax": {
   "name": "Flax",
@@ -164,7 +179,8 @@
   "season": "spring",
   "color": "88aa66",
   "top": "55aa33",
-  "tier": 1
+  "tier": 1,
+  "family": "grain"
  },
  "sugar_beet": {
   "name": "Sugar Beet",
@@ -174,7 +190,8 @@
   "season": "fall",
   "color": "88aa66",
   "top": "55aa33",
-  "tier": 2
+  "tier": 2,
+  "family": "veg"
  },
  "rice": {
   "name": "Rice",
@@ -184,7 +201,8 @@
   "season": "summer",
   "color": "88aa66",
   "top": "55aa33",
-  "tier": 2
+  "tier": 2,
+  "family": "grain"
  },
  "lotus": {
   "name": "Lotus",
@@ -194,7 +212,8 @@
   "season": "summer",
   "color": "88aa66",
   "top": "55aa33",
-  "tier": 4
+  "tier": 4,
+  "family": "flower"
  },
  "snow_pea": {
   "name": "Snow Pea",
@@ -205,7 +224,8 @@
   "color": "88aa66",
   "top": "55aa33",
   "regrow": 3,
-  "tier": 2
+  "tier": 2,
+  "family": "veg"
  },
  "ghost_pepper": {
   "name": "Ghost Pepper",
@@ -216,7 +236,8 @@
   "color": "88aa66",
   "top": "55aa33",
   "regrow": 5,
-  "tier": 4
+  "tier": 4,
+  "family": "veg"
  },
  "moon_melon": {
   "name": "Moon Melon",
@@ -226,7 +247,8 @@
   "season": "fall",
   "color": "88aa66",
   "top": "55aa33",
-  "tier": 5
+  "tier": 5,
+  "family": "fruit"
  },
  "sunflower": {
   "name": "Sunflower",
@@ -236,6 +258,1305 @@
   "color": "6aa040",
   "top": "f2c84b",
   "season": "summer",
-  "tier": 1
+  "tier": 1,
+  "family": "flower"
+ },
+ "beet": {
+  "name": "Beet",
+  "days": 4,
+  "stages": 4,
+  "yield": "beet",
+  "color": "4f9a3a",
+  "top": "9a2a4a",
+  "season": "fall",
+  "tier": 1,
+  "family": "veg"
+ },
+ "onion": {
+  "name": "Onion",
+  "days": 5,
+  "stages": 4,
+  "yield": "onion",
+  "color": "4f9a3a",
+  "top": "e8d8c0",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "garlic": {
+  "name": "Garlic",
+  "days": 3,
+  "stages": 4,
+  "yield": "garlic",
+  "color": "4f9a3a",
+  "top": "f0ece0",
+  "season": "fall",
+  "tier": 1,
+  "family": "veg"
+ },
+ "lettuce": {
+  "name": "Lettuce",
+  "days": 2,
+  "stages": 4,
+  "yield": "lettuce",
+  "color": "4f9a3a",
+  "top": "8ad84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "radish": {
+  "name": "Radish",
+  "days": 2,
+  "stages": 4,
+  "yield": "radish",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "bok_choy": {
+  "name": "Bok Choy",
+  "days": 11,
+  "stages": 4,
+  "yield": "bok_choy",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "oat": {
+  "name": "Oat",
+  "days": 3,
+  "stages": 4,
+  "yield": "oat",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "grain"
+ },
+ "cabbage": {
+  "name": "Cabbage",
+  "days": 5,
+  "stages": 4,
+  "yield": "cabbage",
+  "color": "4f9a3a",
+  "top": "9ad870",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "kale": {
+  "name": "Kale",
+  "days": 5,
+  "stages": 4,
+  "yield": "kale",
+  "color": "4f9a3a",
+  "top": "3f8a3a",
+  "season": "spring",
+  "tier": 1,
+  "regrow": 3,
+  "family": "veg"
+ },
+ "spinach": {
+  "name": "Spinach",
+  "days": 2,
+  "stages": 4,
+  "yield": "spinach",
+  "color": "4f9a3a",
+  "top": "3f9a3a",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "green_bean": {
+  "name": "Green Bean",
+  "days": 4,
+  "stages": 4,
+  "yield": "green_bean",
+  "color": "4f9a3a",
+  "top": "5aa83a",
+  "season": "summer",
+  "tier": 1,
+  "regrow": 3,
+  "family": "veg"
+ },
+ "pea": {
+  "name": "Pea",
+  "days": 4,
+  "stages": 4,
+  "yield": "pea",
+  "color": "4f9a3a",
+  "top": "7ac84a",
+  "season": "spring",
+  "tier": 1,
+  "regrow": 2,
+  "family": "veg"
+ },
+ "cucumber": {
+  "name": "Cucumber",
+  "days": 3,
+  "stages": 4,
+  "yield": "cucumber",
+  "color": "4f9a3a",
+  "top": "3f8a3a",
+  "season": "summer",
+  "tier": 1,
+  "family": "veg"
+ },
+ "pepper": {
+  "name": "Pepper",
+  "days": 4,
+  "stages": 4,
+  "yield": "pepper",
+  "color": "4f9a3a",
+  "top": "d8342a",
+  "season": "summer",
+  "tier": 1,
+  "regrow": 3,
+  "family": "veg"
+ },
+ "eggplant": {
+  "name": "Eggplant",
+  "days": 11,
+  "stages": 4,
+  "yield": "eggplant",
+  "color": "4f9a3a",
+  "top": "5a2a7a",
+  "season": "summer",
+  "tier": 1,
+  "family": "veg"
+ },
+ "leek": {
+  "name": "Leek",
+  "days": 4,
+  "stages": 4,
+  "yield": "leek",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 1,
+  "family": "veg"
+ },
+ "scallion": {
+  "name": "Scallion",
+  "days": 2,
+  "stages": 4,
+  "yield": "scallion",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "shallot": {
+  "name": "Shallot",
+  "days": 5,
+  "stages": 4,
+  "yield": "shallot",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "veg"
+ },
+ "celery": {
+  "name": "Celery",
+  "days": 11,
+  "stages": 4,
+  "yield": "celery",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 1,
+  "family": "veg"
+ },
+ "dill": {
+  "name": "Dill",
+  "days": 11,
+  "stages": 4,
+  "yield": "dill",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "herb"
+ },
+ "parsley": {
+  "name": "Parsley",
+  "days": 11,
+  "stages": 4,
+  "yield": "parsley",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 1,
+  "family": "herb"
+ },
+ "basil": {
+  "name": "Basil",
+  "days": 11,
+  "stages": 4,
+  "yield": "basil",
+  "color": "4f9a3a",
+  "top": "4aa83a",
+  "season": "summer",
+  "tier": 1,
+  "family": "herb"
+ },
+ "mint": {
+  "name": "Mint",
+  "days": 11,
+  "stages": 4,
+  "yield": "mint",
+  "color": "4f9a3a",
+  "top": "6ad88a",
+  "season": "spring",
+  "tier": 1,
+  "family": "herb"
+ },
+ "blueberry": {
+  "name": "Blueberry",
+  "days": 8,
+  "stages": 6,
+  "yield": "blueberry",
+  "color": "4f9a3a",
+  "top": "3f55c8",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 5,
+  "family": "berry"
+ },
+ "raspberry": {
+  "name": "Raspberry",
+  "days": 6,
+  "stages": 6,
+  "yield": "raspberry",
+  "color": "4f9a3a",
+  "top": "d8345a",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 4,
+  "family": "berry"
+ },
+ "blackberry": {
+  "name": "Blackberry",
+  "days": 6,
+  "stages": 6,
+  "yield": "blackberry",
+  "color": "4f9a3a",
+  "top": "2a1f3a",
+  "season": "fall",
+  "tier": 2,
+  "regrow": 4,
+  "family": "berry"
+ },
+ "apple": {
+  "name": "Apple",
+  "days": 11,
+  "stages": 6,
+  "yield": "apple",
+  "color": "6a4a2a",
+  "top": "d83a2a",
+  "season": "fall",
+  "tier": 2,
+  "regrow": 4,
+  "tree": true,
+  "family": "tree"
+ },
+ "pear": {
+  "name": "Pear",
+  "days": 11,
+  "stages": 6,
+  "yield": "pear",
+  "color": "6a4a2a",
+  "top": "c8d84a",
+  "season": "fall",
+  "tier": 2,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "peach": {
+  "name": "Peach",
+  "days": 11,
+  "stages": 6,
+  "yield": "peach",
+  "color": "6a4a2a",
+  "top": "f2a070",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 4,
+  "tree": true,
+  "family": "tree"
+ },
+ "orange": {
+  "name": "Orange",
+  "days": 11,
+  "stages": 6,
+  "yield": "orange",
+  "color": "6a4a2a",
+  "top": "f28a2a",
+  "season": "winter",
+  "tier": 2,
+  "regrow": 4,
+  "tree": true,
+  "family": "tree"
+ },
+ "lemon": {
+  "name": "Lemon",
+  "days": 11,
+  "stages": 6,
+  "yield": "lemon",
+  "color": "6a4a2a",
+  "top": "f2e04a",
+  "season": "winter",
+  "tier": 2,
+  "regrow": 4,
+  "tree": true,
+  "family": "tree"
+ },
+ "banana": {
+  "name": "Banana",
+  "days": 11,
+  "stages": 6,
+  "yield": "banana",
+  "color": "6a4a2a",
+  "top": "f2d84a",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "pineapple": {
+  "name": "Pineapple",
+  "days": 8,
+  "stages": 6,
+  "yield": "pineapple",
+  "color": "4f9a3a",
+  "top": "e8b83a",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 5,
+  "family": "fruit"
+ },
+ "watermelon": {
+  "name": "Watermelon",
+  "days": 5,
+  "stages": 6,
+  "yield": "watermelon",
+  "color": "4f9a3a",
+  "top": "6fcf5a",
+  "season": "summer",
+  "tier": 2,
+  "family": "fruit"
+ },
+ "cantaloupe": {
+  "name": "Cantaloupe",
+  "days": 8,
+  "stages": 6,
+  "yield": "cantaloupe",
+  "color": "4f9a3a",
+  "top": "e8a860",
+  "season": "summer",
+  "tier": 2,
+  "family": "fruit"
+ },
+ "zucchini": {
+  "name": "Zucchini",
+  "days": 7,
+  "stages": 6,
+  "yield": "zucchini",
+  "color": "4f9a3a",
+  "top": "3f7a3a",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 3,
+  "family": "veg"
+ },
+ "yellow_squash": {
+  "name": "Yellow Squash",
+  "days": 8,
+  "stages": 6,
+  "yield": "yellow_squash",
+  "color": "4f9a3a",
+  "top": "e8c83a",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 5,
+  "family": "veg"
+ },
+ "broccoli": {
+  "name": "Broccoli",
+  "days": 5,
+  "stages": 6,
+  "yield": "broccoli",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 2,
+  "family": "veg"
+ },
+ "cauliflower": {
+  "name": "Cauliflower",
+  "days": 7,
+  "stages": 6,
+  "yield": "cauliflower",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 2,
+  "family": "veg"
+ },
+ "artichoke": {
+  "name": "Artichoke",
+  "days": 6,
+  "stages": 6,
+  "yield": "artichoke",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 2,
+  "family": "veg"
+ },
+ "asparagus": {
+  "name": "Asparagus",
+  "days": 8,
+  "stages": 6,
+  "yield": "asparagus",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 2,
+  "family": "veg"
+ },
+ "sweet_potato": {
+  "name": "Sweet Potato",
+  "days": 7,
+  "stages": 6,
+  "yield": "sweet_potato",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 2,
+  "family": "veg"
+ },
+ "chili": {
+  "name": "Chili",
+  "days": 5,
+  "stages": 6,
+  "yield": "chili",
+  "color": "4f9a3a",
+  "top": "e8342a",
+  "season": "summer",
+  "tier": 2,
+  "regrow": 2,
+  "family": "veg"
+ },
+ "ginger": {
+  "name": "Ginger",
+  "days": 7,
+  "stages": 6,
+  "yield": "ginger",
+  "color": "4f9a3a",
+  "top": "d8b07a",
+  "season": "fall",
+  "tier": 2,
+  "family": "herb"
+ },
+ "turmeric": {
+  "name": "Turmeric",
+  "days": 7,
+  "stages": 6,
+  "yield": "turmeric",
+  "color": "4f9a3a",
+  "top": "e8a02a",
+  "season": "fall",
+  "tier": 2,
+  "family": "herb"
+ },
+ "wasabi": {
+  "name": "Wasabi",
+  "days": 8,
+  "stages": 6,
+  "yield": "wasabi",
+  "color": "4f9a3a",
+  "top": "8ad87a",
+  "season": "spring",
+  "tier": 2,
+  "family": "herb"
+ },
+ "sesame": {
+  "name": "Sesame",
+  "days": 6,
+  "stages": 6,
+  "yield": "sesame",
+  "color": "4f9a3a",
+  "top": "f0e0c0",
+  "season": "summer",
+  "tier": 2,
+  "family": "herb"
+ },
+ "poppy": {
+  "name": "Poppy",
+  "days": 6,
+  "stages": 6,
+  "yield": "poppy",
+  "color": "4f9a3a",
+  "top": "e83a3a",
+  "season": "spring",
+  "tier": 2,
+  "family": "flower"
+ },
+ "chia": {
+  "name": "Chia",
+  "days": 6,
+  "stages": 6,
+  "yield": "chia",
+  "color": "4f9a3a",
+  "top": "5a5a5a",
+  "season": "summer",
+  "tier": 2,
+  "family": "herb"
+ },
+ "moonberry": {
+  "name": "Moonberry",
+  "days": 9,
+  "stages": 6,
+  "yield": "moonberry",
+  "color": "4f9a3a",
+  "top": "d8d8ff",
+  "season": "any",
+  "tier": 3,
+  "family": "berry"
+ },
+ "starfruit": {
+  "name": "Starfruit",
+  "days": 16,
+  "stages": 6,
+  "yield": "starfruit",
+  "color": "4f9a3a",
+  "top": "ffe87a",
+  "season": "any",
+  "tier": 3,
+  "family": "fruit"
+ },
+ "pomegranate": {
+  "name": "Pomegranate",
+  "days": 13,
+  "stages": 6,
+  "yield": "pomegranate",
+  "color": "6a4a2a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 3,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "fig": {
+  "name": "Fig",
+  "days": 13,
+  "stages": 6,
+  "yield": "fig",
+  "color": "6a4a2a",
+  "top": "6a3a5a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "dragonfruit": {
+  "name": "Dragonfruit",
+  "days": 9,
+  "stages": 6,
+  "yield": "dragonfruit",
+  "color": "4f9a3a",
+  "top": "e83a7a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 4,
+  "family": "fruit"
+ },
+ "coconut": {
+  "name": "Coconut",
+  "days": 13,
+  "stages": 6,
+  "yield": "coconut",
+  "color": "6a4a2a",
+  "top": "7a5a3a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "kiwi": {
+  "name": "Kiwi",
+  "days": 7,
+  "stages": 6,
+  "yield": "kiwi",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 3,
+  "family": "fruit"
+ },
+ "mango": {
+  "name": "Mango",
+  "days": 13,
+  "stages": 6,
+  "yield": "mango",
+  "color": "6a4a2a",
+  "top": "f2b83a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "avocado": {
+  "name": "Avocado",
+  "days": 13,
+  "stages": 6,
+  "yield": "avocado",
+  "color": "6a4a2a",
+  "top": "4a6a2a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "lychee": {
+  "name": "Lychee",
+  "days": 13,
+  "stages": 6,
+  "yield": "lychee",
+  "color": "6a4a2a",
+  "top": "e8c84a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "persimmon": {
+  "name": "Persimmon",
+  "days": 13,
+  "stages": 6,
+  "yield": "persimmon",
+  "color": "6a4a2a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 3,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "quince": {
+  "name": "Quince",
+  "days": 13,
+  "stages": 6,
+  "yield": "quince",
+  "color": "6a4a2a",
+  "top": "e8c84a",
+  "season": "fall",
+  "tier": 3,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "kumquat": {
+  "name": "Kumquat",
+  "days": 13,
+  "stages": 6,
+  "yield": "kumquat",
+  "color": "6a4a2a",
+  "top": "e8c84a",
+  "season": "winter",
+  "tier": 3,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "mulberry": {
+  "name": "Mulberry",
+  "days": 13,
+  "stages": 6,
+  "yield": "mulberry",
+  "color": "6a4a2a",
+  "top": "5a3fb0",
+  "season": "spring",
+  "tier": 3,
+  "regrow": 5,
+  "tree": true,
+  "family": "berry"
+ },
+ "passionfruit": {
+  "name": "Passionfruit",
+  "days": 7,
+  "stages": 6,
+  "yield": "passionfruit",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 3,
+  "family": "fruit"
+ },
+ "guava": {
+  "name": "Guava",
+  "days": 13,
+  "stages": 6,
+  "yield": "guava",
+  "color": "6a4a2a",
+  "top": "e8c84a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "vanilla": {
+  "name": "Vanilla",
+  "days": 7,
+  "stages": 6,
+  "yield": "vanilla",
+  "color": "4f9a3a",
+  "top": "f0e0b0",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 3,
+  "family": "herb"
+ },
+ "cacao": {
+  "name": "Cacao",
+  "days": 13,
+  "stages": 6,
+  "yield": "cacao",
+  "color": "6a4a2a",
+  "top": "7a4a2a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 5,
+  "tree": true,
+  "family": "tree"
+ },
+ "coffee": {
+  "name": "Coffee",
+  "days": 13,
+  "stages": 6,
+  "yield": "coffee",
+  "color": "6a4a2a",
+  "top": "7a2a1a",
+  "season": "summer",
+  "tier": 3,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "tea": {
+  "name": "Tea",
+  "days": 9,
+  "stages": 6,
+  "yield": "tea",
+  "color": "4f9a3a",
+  "top": "5a9a3a",
+  "season": "any",
+  "tier": 3,
+  "regrow": 4,
+  "family": "herb"
+ },
+ "aloe": {
+  "name": "Aloe",
+  "days": 8,
+  "stages": 6,
+  "yield": "aloe",
+  "color": "4f9a3a",
+  "top": "7ac87a",
+  "season": "any",
+  "tier": 3,
+  "family": "herb"
+ },
+ "saffron": {
+  "name": "Saffron",
+  "days": 7,
+  "stages": 6,
+  "yield": "saffron",
+  "color": "4f9a3a",
+  "top": "c84ab0",
+  "season": "fall",
+  "tier": 3,
+  "family": "herb"
+ },
+ "watercress": {
+  "name": "Watercress",
+  "days": 6,
+  "stages": 6,
+  "yield": "watercress",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "spring",
+  "tier": 3,
+  "family": "herb"
+ },
+ "water_chestnut": {
+  "name": "Water Chestnut",
+  "days": 8,
+  "stages": 6,
+  "yield": "water_chestnut",
+  "color": "4f9a3a",
+  "top": "e8c84a",
+  "season": "summer",
+  "tier": 3,
+  "family": "veg"
+ },
+ "mushroom": {
+  "name": "Mushroom",
+  "days": 10,
+  "stages": 6,
+  "yield": "mushroom",
+  "color": "4f9a3a",
+  "top": "c8a07a",
+  "season": "any",
+  "tier": 3,
+  "family": "mushroom"
+ },
+ "truffle": {
+  "name": "Truffle",
+  "days": 9,
+  "stages": 6,
+  "yield": "truffle",
+  "color": "4f9a3a",
+  "top": "4a3a2a",
+  "season": "any",
+  "tier": 3,
+  "family": "mushroom"
+ },
+ "morel": {
+  "name": "Morel",
+  "days": 10,
+  "stages": 6,
+  "yield": "morel",
+  "color": "4f9a3a",
+  "top": "a8805a",
+  "season": "spring",
+  "tier": 3,
+  "family": "mushroom"
+ },
+ "glowcap": {
+  "name": "Glowcap",
+  "days": 9,
+  "stages": 6,
+  "yield": "glowcap",
+  "color": "4f9a3a",
+  "top": "7ae8ff",
+  "season": "any",
+  "tier": 3,
+  "family": "mushroom"
+ },
+ "glowcap2": {
+  "name": "Cave Glowcap",
+  "days": 10,
+  "stages": 6,
+  "yield": "glowcap",
+  "color": "4f9a3a",
+  "top": "7ae8ff",
+  "season": "any",
+  "tier": 3,
+  "family": "mushroom",
+  "art": "glowcap"
+ },
+ "glowcap3": {
+  "name": "Deep Glowcap",
+  "days": 9,
+  "stages": 6,
+  "yield": "glowcap",
+  "color": "4f9a3a",
+  "top": "7ae8ff",
+  "season": "any",
+  "tier": 3,
+  "family": "mushroom",
+  "art": "glowcap"
+ },
+ "enchanted_berry": {
+  "name": "Enchanted Berry",
+  "days": 12,
+  "stages": 6,
+  "yield": "enchanted_berry",
+  "color": "4f9a3a",
+  "top": "5a3fb0",
+  "season": "any",
+  "tier": 4,
+  "regrow": 6,
+  "family": "berry"
+ },
+ "frostberry": {
+  "name": "Frostberry",
+  "days": 11,
+  "stages": 6,
+  "yield": "frostberry",
+  "color": "4f9a3a",
+  "top": "bfefff",
+  "season": "winter",
+  "tier": 4,
+  "regrow": 5,
+  "family": "berry"
+ },
+ "flameberry": {
+  "name": "Flameberry",
+  "days": 11,
+  "stages": 6,
+  "yield": "flameberry",
+  "color": "4f9a3a",
+  "top": "ff6a2a",
+  "season": "summer",
+  "tier": 4,
+  "regrow": 5,
+  "family": "berry"
+ },
+ "shadowberry": {
+  "name": "Shadowberry",
+  "days": 12,
+  "stages": 6,
+  "yield": "shadowberry",
+  "color": "4f9a3a",
+  "top": "4a3a6a",
+  "season": "fall",
+  "tier": 4,
+  "regrow": 6,
+  "family": "berry"
+ },
+ "dreamfruit": {
+  "name": "Dreamfruit",
+  "days": 12,
+  "stages": 6,
+  "yield": "dreamfruit",
+  "color": "4f9a3a",
+  "top": "a8d8ff",
+  "season": "any",
+  "tier": 4,
+  "regrow": 6,
+  "family": "fruit"
+ },
+ "starflower": {
+  "name": "Starflower",
+  "days": 11,
+  "stages": 6,
+  "yield": "starflower",
+  "color": "4f9a3a",
+  "top": "ffe87a",
+  "season": "any",
+  "tier": 4,
+  "family": "flower"
+ },
+ "moonflower": {
+  "name": "Moonflower",
+  "days": 10,
+  "stages": 6,
+  "yield": "moonflower",
+  "color": "4f9a3a",
+  "top": "d8d8ff",
+  "season": "fall",
+  "tier": 4,
+  "family": "flower"
+ },
+ "sunfruit": {
+  "name": "Sunfruit",
+  "days": 11,
+  "stages": 6,
+  "yield": "sunfruit",
+  "color": "4f9a3a",
+  "top": "ffc83a",
+  "season": "summer",
+  "tier": 4,
+  "family": "fruit"
+ },
+ "crystal_melon": {
+  "name": "Crystal Melon",
+  "days": 10,
+  "stages": 6,
+  "yield": "crystal_melon",
+  "color": "4f9a3a",
+  "top": "a8e8ff",
+  "season": "any",
+  "tier": 4,
+  "family": "magic"
+ },
+ "crystal_tomato": {
+  "name": "Crystal Tomato",
+  "days": 12,
+  "stages": 6,
+  "yield": "crystal_tomato",
+  "color": "4f9a3a",
+  "top": "a8e8ff",
+  "season": "any",
+  "tier": 4,
+  "regrow": 6,
+  "family": "magic"
+ },
+ "rainbow_beet": {
+  "name": "Rainbow Beet",
+  "days": 10,
+  "stages": 6,
+  "yield": "rainbow_beet",
+  "color": "4f9a3a",
+  "top": "ff7ad8",
+  "season": "any",
+  "tier": 4,
+  "family": "magic"
+ },
+ "aurora_corn": {
+  "name": "Aurora Corn",
+  "days": 9,
+  "stages": 6,
+  "yield": "aurora_corn",
+  "color": "4f9a3a",
+  "top": "7affc8",
+  "season": "winter",
+  "tier": 4,
+  "family": "grain"
+ },
+ "crystal_lettuce": {
+  "name": "Crystal Lettuce",
+  "days": 8,
+  "stages": 6,
+  "yield": "crystal_lettuce",
+  "color": "4f9a3a",
+  "top": "a8e8ff",
+  "season": "any",
+  "tier": 4,
+  "family": "magic"
+ },
+ "sky_lettuce": {
+  "name": "Sky Lettuce",
+  "days": 8,
+  "stages": 6,
+  "yield": "sky_lettuce",
+  "color": "4f9a3a",
+  "top": "8ad84a",
+  "season": "spring",
+  "tier": 4,
+  "family": "magic"
+ },
+ "void_pepper": {
+  "name": "Void Pepper",
+  "days": 12,
+  "stages": 6,
+  "yield": "void_pepper",
+  "color": "4f9a3a",
+  "top": "3a1a5a",
+  "season": "any",
+  "tier": 4,
+  "regrow": 6,
+  "family": "magic"
+ },
+ "void_pepper2": {
+  "name": "Deep Void Pepper",
+  "days": 13,
+  "stages": 6,
+  "yield": "void_pepper",
+  "color": "4f9a3a",
+  "top": "3a1a5a",
+  "season": "any",
+  "tier": 4,
+  "regrow": 6,
+  "family": "magic",
+  "art": "void_pepper"
+ },
+ "luminous_starfruit": {
+  "name": "Luminous Starfruit",
+  "days": 16,
+  "stages": 6,
+  "yield": "luminous_starfruit",
+  "color": "4f9a3a",
+  "top": "c8ffe8",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "family": "fruit"
+ },
+ "celestial_apple": {
+  "name": "Celestial Apple",
+  "days": 19,
+  "stages": 6,
+  "yield": "celestial_apple",
+  "color": "6a4a2a",
+  "top": "fff0a0",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "dragonberry": {
+  "name": "Dragonberry",
+  "days": 13,
+  "stages": 6,
+  "yield": "dragonberry",
+  "color": "4f9a3a",
+  "top": "e83a7a",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "family": "berry"
+ },
+ "phoenix_pepper": {
+  "name": "Phoenix Pepper",
+  "days": 15,
+  "stages": 6,
+  "yield": "phoenix_pepper",
+  "color": "4f9a3a",
+  "top": "ff5a2a",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "family": "magic"
+ },
+ "atlas_melon": {
+  "name": "Atlas Melon",
+  "days": 16,
+  "stages": 6,
+  "yield": "atlas_melon",
+  "color": "4f9a3a",
+  "top": "6ab0ff",
+  "season": "any",
+  "tier": 5,
+  "family": "fruit"
+ },
+ "nebula_grape": {
+  "name": "Nebula Grape",
+  "days": 14,
+  "stages": 6,
+  "yield": "nebula_grape",
+  "color": "4f9a3a",
+  "top": "b07aff",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "family": "berry"
+ },
+ "wishfruit": {
+  "name": "Wishfruit",
+  "days": 19,
+  "stages": 6,
+  "yield": "wishfruit",
+  "color": "6a4a2a",
+  "top": "ffd8f0",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "tree": true,
+  "family": "tree"
+ },
+ "infinity_bean": {
+  "name": "Infinity Bean",
+  "days": 14,
+  "stages": 6,
+  "yield": "infinity_bean",
+  "color": "4f9a3a",
+  "top": "7ae87a",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "family": "grain"
+ },
+ "stardust_pumpkin": {
+  "name": "Stardust Pumpkin",
+  "days": 12,
+  "stages": 6,
+  "yield": "stardust_pumpkin",
+  "color": "4f9a3a",
+  "top": "ffe87a",
+  "season": "any",
+  "tier": 5,
+  "family": "magic"
+ },
+ "ethereal_corn": {
+  "name": "Ethereal Corn",
+  "days": 12,
+  "stages": 6,
+  "yield": "ethereal_corn",
+  "color": "4f9a3a",
+  "top": "f0f0ff",
+  "season": "any",
+  "tier": 5,
+  "family": "grain"
+ },
+ "prism_tomato": {
+  "name": "Prism Tomato",
+  "days": 14,
+  "stages": 6,
+  "yield": "prism_tomato",
+  "color": "4f9a3a",
+  "top": "ff9aff",
+  "season": "any",
+  "tier": 5,
+  "regrow": 6,
+  "family": "magic"
+ },
+ "lumiflora": {
+  "name": "Lumiflora",
+  "days": 12,
+  "stages": 6,
+  "yield": "lumiflora",
+  "color": "4f9a3a",
+  "top": "c8ffe8",
+  "season": "any",
+  "tier": 5,
+  "family": "flower"
+ },
+ "soulleaf": {
+  "name": "Soulleaf",
+  "days": 13,
+  "stages": 6,
+  "yield": "soulleaf",
+  "color": "4f9a3a",
+  "top": "e8fff0",
+  "season": "any",
+  "tier": 5,
+  "family": "magic"
+ },
+ "worldseed": {
+  "name": "World Bloom",
+  "days": 13,
+  "stages": 6,
+  "yield": "world_bloom",
+  "color": "4f9a3a",
+  "top": "7ad87a",
+  "season": "any",
+  "tier": 5,
+  "family": "magic"
+ },
+ "worldseed2": {
+  "name": "Dawn World Bloom",
+  "days": 15,
+  "stages": 6,
+  "yield": "world_bloom_dawn",
+  "color": "4f9a3a",
+  "top": "7ad87a",
+  "season": "any",
+  "tier": 5,
+  "family": "magic",
+  "art": "worldseed"
+ },
+ "worldseed3": {
+  "name": "Dusk World Bloom",
+  "days": 16,
+  "stages": 6,
+  "yield": "world_bloom_dusk",
+  "color": "4f9a3a",
+  "top": "7ad87a",
+  "season": "any",
+  "tier": 5,
+  "family": "magic",
+  "art": "worldseed"
  }
 }

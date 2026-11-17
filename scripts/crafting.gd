@@ -27,7 +27,7 @@ static func available(station: String) -> Array:
 
 static func can_make(rc: Dictionary) -> bool:
 	for id in rc["need"]:
-		if GameState.count(str(id)) < int(rc["need"][id]):
+		if GameState.count_any(str(id)) < int(rc["need"][id]):
 			return false
 	return true
 
@@ -112,7 +112,7 @@ static func run(m: GameMap, station: String, title := "") -> void:
 		for rc in list:
 			var need: Array = []
 			for id in rc["need"]:
-				need.append("%d %s" % [int(rc["need"][id]), GameState.item_name(str(id))])
+				need.append("%d %s" % [int(rc["need"][id]), GameState.need_name(str(id))])
 			opts.append("%s%s  [%s]  ⏱%s" % ["" if can_make(rc) else "✗ ", str(rc["name"]), ", ".join(need), fmt_minutes(minutes_for(station, rc))])
 		var next_t := tier_unlocked(station) + 1
 		var locked := 0
@@ -135,7 +135,7 @@ static func run(m: GameMap, station: String, title := "") -> void:
 			m.hud.toast("Missing ingredients.", Color(1, 0.7, 0.7))
 			continue
 		for id in rc["need"]:
-			GameState.add_item(str(id), -int(rc["need"][id]))
+			GameState.take_any(str(id), int(rc["need"][id]))
 		var mins := minutes_for(station, rc)
 		# Never longer than tonight: whatever you start is ready when you wake.
 		var day_end_abs := int(GameState.run["day"]) * 1440 + GameState.DAY_END

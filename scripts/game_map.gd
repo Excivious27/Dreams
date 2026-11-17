@@ -393,6 +393,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				player.play_tool("hold")
 			Music.instance(get_tree()).sfx("chop")
 			xp("foraging", 1)
+			# Now and then a weed's roots hold a packet of wild seed.
+			if randf() < 0.06 + 0.01 * GameState.skill_level("foraging"):
+				pop_items(cell_center(c), "seed_packet", 1)
 			_mark_cleared(c)
 			var wsp: Node2D = props.get(c, null)
 			clear_cell(c)
@@ -1168,6 +1171,14 @@ func use_consumable(sel: String) -> bool:
 	if sel == "" or GameState.count(sel) <= 0:
 		return false
 	var it: Dictionary = GameState.items.get(sel, {})
+	if str(it.get("effect", "")) == "seed_packet":
+		GameState.add_item(sel, -1)
+		var sd := GameState.random_season_seed()
+		if sd != "":
+			player.play_tool("hold")
+			give(sd, 2)
+			hud.toast("The packet holds: %s!" % GameState.item_name(sd), Color(0.8, 1, 0.7))
+		return true
 	if str(it.get("effect", "")) == "stink":
 		Music.instance(get_tree()).sfx("stink")
 		# Cat-topia's secret weapon: everything nearby stops to hold its nose.

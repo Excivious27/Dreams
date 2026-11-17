@@ -214,6 +214,8 @@ func _run() -> void:
 	maple._apply_routine(true)
 	await frames(3)
 	check(maple.visible, "Maple is outside at noon (%s)" % maple._place)
+	maple.wander = 0.0  # hold still for the test (she drifts around her stall otherwise)
+	maple._target = maple.position
 	town.player.position = maple.position + Vector2(0, 14)
 	town.player.facing = "up"
 	await frames(20)

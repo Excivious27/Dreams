@@ -40,3 +40,10 @@ echo "$xout" | grep -E "FAIL|exit_check" || true
 if ! echo "$xout" | grep -q "exit_check: 0 failures"; then
   echo "Exit check failed"; exit 1
 fi
+
+echo "== crops wired in =="
+cout="$("$GODOT" --headless --path . -s res://tools/crop_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|crop_test" || true
+if ! echo "$cout" | grep -q "crop_test: 0 failures"; then
+  echo "Crop test failed"; exit 1
+fi

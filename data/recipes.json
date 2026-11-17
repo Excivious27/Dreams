@@ -1203,6 +1203,133 @@
    },
    "give": "moon_cake",
    "tier": 4
+  },
+  {
+   "id": "stir_fry",
+   "name": "Garden Stir-Fry",
+   "need": {
+    "#veg": 3
+   },
+   "give": "stir_fry",
+   "tier": 1
+  },
+  {
+   "id": "berry_jam_toast",
+   "name": "Jam on Toast",
+   "need": {
+    "#berry": 2,
+    "bread": 1
+   },
+   "give": "berry_jam_toast",
+   "tier": 1
+  },
+  {
+   "id": "herb_roast",
+   "name": "Herb-Roast Vegetables",
+   "need": {
+    "#veg": 2,
+    "#herb": 1
+   },
+   "give": "herb_roast",
+   "tier": 1
+  },
+  {
+   "id": "fruit_tart",
+   "name": "Fruit Tart",
+   "need": {
+    "#fruit": 2,
+    "flour": 1,
+    "egg": 1
+   },
+   "give": "fruit_tart",
+   "tier": 2
+  },
+  {
+   "id": "orchard_pie",
+   "name": "Orchard Pie",
+   "need": {
+    "#tree": 3,
+    "flour": 1
+   },
+   "give": "orchard_pie",
+   "tier": 2
+  },
+  {
+   "id": "mushroom_risotto",
+   "name": "Mushroom Risotto",
+   "need": {
+    "#mushroom": 2,
+    "rice": 2
+   },
+   "give": "mushroom_risotto",
+   "tier": 2
+  },
+  {
+   "id": "chili_pot",
+   "name": "Pot of Chili",
+   "need": {
+    "chili": 2,
+    "green_bean": 2,
+    "tomato": 1
+   },
+   "give": "chili_pot",
+   "tier": 2
+  },
+  {
+   "id": "tropical_smoothie",
+   "name": "Tropical Smoothie",
+   "need": {
+    "banana": 1,
+    "mango": 1,
+    "coconut": 1
+   },
+   "give": "tropical_smoothie",
+   "tier": 3
+  },
+  {
+   "id": "chocolate",
+   "name": "Chocolate",
+   "need": {
+    "cacao": 2,
+    "honey": 1
+   },
+   "give": "chocolate",
+   "n": 2,
+   "tier": 3
+  },
+  {
+   "id": "saffron_rice",
+   "name": "Saffron Rice",
+   "need": {
+    "saffron": 1,
+    "rice": 2,
+    "onion": 1
+   },
+   "give": "saffron_rice",
+   "tier": 3
+  },
+  {
+   "id": "starlight_salad",
+   "name": "Starlight Salad",
+   "need": {
+    "crystal_lettuce": 1,
+    "sky_lettuce": 1,
+    "starflower": 1
+   },
+   "give": "starlight_salad",
+   "tier": 4
+  },
+  {
+   "id": "wishfruit_cake",
+   "name": "Wishfruit Cake",
+   "need": {
+    "wishfruit": 2,
+    "flour": 2,
+    "honey": 2,
+    "#magic": 1
+   },
+   "give": "wishfruit_cake",
+   "tier": 5
   }
  ],
  "alchemy": [
@@ -1328,6 +1455,15 @@
    "give": "bread",
    "n": 2,
    "tier": 2
+  },
+  {
+   "id": "oat_flour",
+   "name": "Oat Flour",
+   "need": {
+    "oat": 3
+   },
+   "give": "flour",
+   "tier": 1
   }
  ]
 }

@@ -2211,6 +2211,116 @@
      15
     ]
    }
+  },
+  {
+   "id": "posy_blueberries",
+   "giver": "posy",
+   "text": "Posy wants 6 blueberries for the summer pies.",
+   "when": {
+    "day": 10
+   },
+   "done_when": {
+    "item": [
+     "blueberry",
+     6
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 180,
+    "friend": [
+     "posy",
+     15
+    ],
+    "item": [
+     "fruit_tart",
+     1
+    ]
+   }
+  },
+  {
+   "id": "theo_coffee",
+   "giver": "theo",
+   "text": "Theo wants 4 coffee beans you grew yourself.",
+   "when": {
+    "friend": [
+     "theo",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "coffee",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 260,
+    "friend": [
+     "theo",
+     15
+    ],
+    "item": [
+     "book",
+     1
+    ]
+   }
+  },
+  {
+   "id": "tam_orchard",
+   "giver": "tam",
+   "text": "Tam wants 5 pears from your own orchard.",
+   "when": {
+    "day": 15
+   },
+   "done_when": {
+    "item": [
+     "pear",
+     5
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 220,
+    "friend": [
+     "tam",
+     15
+    ],
+    "item": [
+     "apple_seed",
+     2
+    ]
+   }
+  },
+  {
+   "id": "wren_saffron",
+   "giver": "wren",
+   "text": "Wren needs one saffron for a remedy.",
+   "when": {
+    "friend": [
+     "wren",
+     4
+    ]
+   },
+   "done_when": {
+    "item": [
+     "saffron",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "friend": [
+     "wren",
+     20
+    ],
+    "item": [
+     "herb_remedy",
+     2
+    ]
+   }
   }
  ]
 }

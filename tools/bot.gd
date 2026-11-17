@@ -237,8 +237,12 @@ func _menu_crawl(m: GameMap) -> void:
 		return
 	await press("menu", 2)
 	await frames(4)
+	if not is_instance_valid(menu):
+		return
 	for t in menu._tab_buttons.keys():
-		if rng.randf() < 0.6:
+		if not is_instance_valid(menu):
+			return
+		if rng.randf() < 0.6 and is_instance_valid(menu._tab_buttons.get(t)):
 			(menu._tab_buttons[t] as Button).pressed.emit()
 			await frames(3)
 			# press a random button in the body
