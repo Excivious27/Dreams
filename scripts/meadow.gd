@@ -118,20 +118,26 @@ func _process(delta: float) -> void:
 
 func on_enemy_died(e: Enemy) -> void:
 	super(e)
-	if e == _boss or e.kind == "big_grump" or (e.kind == "thug_brute" and _boss != null):
+	if _boss != null and e == _boss:
 		_boss_down()
+		return
+	if _boss_pending:
 		return
 	if GameState.quest_done("clear_meadow"):
 		if enemies.size() < 2 and randf() < 0.5:
 			_spawn_one()
 		return
-	if int(GameState.run["kills"]) >= 5 and _boss == null:
+	if int(GameState.run["kills"]) >= 5 and _boss == null and not _boss_pending:
 		_summon_boss()
 	elif enemies.size() < 3:
 		_spawn_one()
 
 
+var _boss_pending := false
+
+
 func _summon_boss() -> void:
+	_boss_pending = true  # set before any await: one swing can kill two grumps
 	player.frozen = true
 	for e in enemies.duplicate():
 		if is_instance_valid(e):
@@ -153,6 +159,7 @@ func _summon_boss() -> void:
 	boss_card("big_grump" if GameState.is_penguins() else "thug_brute", "Big Grump" if GameState.is_penguins() else "The President's Man")
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false
+	_boss_pending = false
 
 
 func _boss_down() -> void:
@@ -162,7 +169,7 @@ func _boss_down() -> void:
 	GameState.add_quest("clear_meadow", "Deal with whatever is in the east meadow.")
 	GameState.complete_quest("clear_meadow")
 	if GameState.is_penguins():
-		GameState.run["max_hp"] = int(GameState.run["max_hp"]) + 2
+		GameState.grow_vital("hp", 20)
 		GameState.run["hp"] = int(GameState.run["max_hp"])
 		GameState.run["flags"]["spark"] = true
 		await say([

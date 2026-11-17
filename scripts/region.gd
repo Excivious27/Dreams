@@ -340,6 +340,8 @@ func _boss(thing: Dictionary) -> void:
 	if GameState.run["flags"].has(key):
 		await say([{"text": str(thing.get("after", "Quiet now."))}])
 		return
+	if _boss_node != null and is_instance_valid(_boss_node) and _boss_node._alive:
+		return  # already fighting it: A at the boss swings, it doesn't re-summon
 	player.frozen = true
 	await say([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "..."))}])
 	var b := spawn_enemy(str(thing.get("kind", "commander")), player.position + Vector2(40, 0))
@@ -366,8 +368,8 @@ func on_enemy_died(e: Enemy) -> void:
 		if reward != "":
 			give(reward, int(_boss_thing.get("reward_n", 1)))
 		if _boss_thing.has("max_hp"):
-			GameState.run["max_hp"] = int(GameState.run["max_hp"]) + int(_boss_thing["max_hp"])
-			GameState.run["hp"] = int(GameState.run["max_hp"])
+			# Data says hearts (old 6-heart scale); one heart is 20 health now.
+			GameState.grow_vital("hp", int(_boss_thing["max_hp"]) * GameState.HEART_HP)
 		GameState.save()
 		player.frozen = false
 

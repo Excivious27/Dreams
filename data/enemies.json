@@ -921,7 +921,8 @@
    "abilities": [
     "ranged"
    ],
-   "status": "poison"
+   "status": "poison",
+   "reward": 14
   },
   "mud_slime": {
    "hp": 5,
@@ -930,7 +931,8 @@
    "xp": 3,
    "tier": 1,
    "abilities": [],
-   "status": "slow"
+   "status": "slow",
+   "reward": 4
   },
   "quarry_golem": {
    "hp": 18,
@@ -941,7 +943,8 @@
    "abilities": [
     "stomp",
     "regen"
-   ]
+   ],
+   "reward": 16
   },
   "rock_crab": {
    "hp": 9,
@@ -951,7 +954,8 @@
    "tier": 1,
    "abilities": [
     "shield"
-   ]
+   ],
+   "reward": 6
   },
   "hill_wolf": {
    "hp": 12,
@@ -961,7 +965,8 @@
    "tier": 1,
    "abilities": [
     "lunge"
-   ]
+   ],
+   "reward": 9
   },
   "ice_wisp": {
    "hp": 6,
@@ -973,7 +978,8 @@
     "blink",
     "ranged"
    ],
-   "status": "chill"
+   "status": "chill",
+   "reward": 8
   },
   "ruin_guardian": {
    "hp": 26,
@@ -985,7 +991,8 @@
     "shield",
     "stomp",
     "regen"
-   ]
+   ],
+   "reward": 40
   },
   "river_serpent": {
    "hp": 16,
@@ -996,7 +1003,8 @@
    "abilities": [
     "lunge"
    ],
-   "status": "poison"
+   "status": "poison",
+   "reward": 18
   },
   "marsh_witch": {
    "hp": 120,
@@ -1009,7 +1017,8 @@
     "summon",
     "blink"
    ],
-   "status": "poison"
+   "status": "poison",
+   "reward": 120
   },
   "golem_king": {
    "hp": 120,
@@ -1022,7 +1031,8 @@
     "shield",
     "summon",
     "enrage"
-   ]
+   ],
+   "reward": 250
   },
   "ruin_warden": {
    "hp": 150,
@@ -1037,7 +1047,8 @@
     "regen",
     "enrage"
    ],
-   "status": "weak"
+   "status": "weak",
+   "reward": 300
   },
   "dark_crystal_shard": {
    "hp": 22,
@@ -1049,7 +1060,8 @@
     "blink",
     "ranged"
    ],
-   "status": "weak"
+   "status": "weak",
+   "reward": 30
   },
   "drip_crawler": {
    "hp": 16,
@@ -1060,7 +1072,8 @@
    "abilities": [
     "ranged"
    ],
-   "status": "poison"
+   "status": "poison",
+   "reward": 10
   },
   "lantern_moth": {
    "hp": 10,
@@ -1071,7 +1084,8 @@
    "abilities": [
     "blink"
    ],
-   "status": "blind"
+   "status": "blind",
+   "reward": 8
   },
   "rust_knight": {
    "hp": 24,
@@ -1082,7 +1096,8 @@
    "abilities": [
     "shield",
     "lunge"
-   ]
+   ],
+   "reward": 14
   },
   "shard_spider": {
    "hp": 22,
@@ -1093,7 +1108,8 @@
    "abilities": [
     "lunge"
    ],
-   "status": "poison"
+   "status": "poison",
+   "reward": 14
   },
   "prism_wisp": {
    "hp": 14,
@@ -1106,7 +1122,8 @@
     "blink",
     "ranged"
    ],
-   "status": "blind"
+   "status": "blind",
+   "reward": 12
   },
   "geode_golem": {
    "hp": 40,
@@ -1117,7 +1134,8 @@
    "abilities": [
     "stomp",
     "regen"
-   ]
+   ],
+   "reward": 30
   },
   "ash_hound": {
    "hp": 30,
@@ -1129,7 +1147,8 @@
     "enrage",
     "lunge"
    ],
-   "status": "burn"
+   "status": "burn",
+   "reward": 22
   },
   "void_eel": {
    "hp": 26,
@@ -1141,7 +1160,8 @@
     "ranged",
     "blink"
    ],
-   "status": "slow"
+   "status": "slow",
+   "reward": 20
   },
   "obsidian_sentinel": {
    "hp": 60,
@@ -1153,7 +1173,8 @@
     "regen",
     "shield",
     "stomp"
-   ]
+   ],
+   "reward": 40
   },
   "mirror": {
    "hp": 36,
@@ -1166,7 +1187,8 @@
     "blink",
     "enrage"
    ],
-   "status": "weak"
+   "status": "weak",
+   "reward": 35
   },
   "light_eater": {
    "hp": 70,
@@ -1178,7 +1200,8 @@
     "summon",
     "regen"
    ],
-   "status": "blind"
+   "status": "blind",
+   "reward": 60
   },
   "finargle": {
    "hp": 18,
@@ -1191,7 +1214,8 @@
     "ranged"
    ],
    "status": "blind",
-   "art": "wisp"
+   "art": "wisp",
+   "reward": 12
   },
   "finargle_elder": {
    "hp": 40,
@@ -1206,7 +1230,8 @@
     "summon"
    ],
    "status": "blind",
-   "art": "wisp"
+   "art": "wisp",
+   "reward": 40
   },
   "crystal_baby": {
    "hp": 14,
@@ -1217,7 +1242,8 @@
    "abilities": [
     "stomp"
    ],
-   "art": "shard"
+   "art": "shard",
+   "reward": 6
   }
  }
 }

@@ -1123,7 +1123,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 			if e.hit(dmg, from):
 				hit = true
 				fx("spark", e.position + Vector2(0, -8), 18.0, 0.5)
-				damage_number(e.position + Vector2(0, -20), dmg, Color(1, 0.95, 0.4) if crit else Color.WHITE)
+				damage_number(e.position + Vector2(0, -20), e.last_applied, Color(1, 0.95, 0.4) if crit else Color.WHITE)
 				# Weight: a short freeze and a nudge of the camera; more on a kill or a crit.
 				var killed: bool = (not is_instance_valid(e)) or (not e._alive)
 				hitstop = maxf(hitstop, 0.08 if (killed or crit) else 0.035)
@@ -1243,14 +1243,31 @@ func spawn_enemy(kind: String, at: Vector2, tier_override := -1) -> Enemy:
 	var e := Enemy.new()
 	e.map = self
 	e.setup(kind, tier_override)
-	e.position = at
+	e.position = free_spot_near(at)
 	add_child(e)
 	enemies.append(e)
 	return e
 
 
+## Nearest walkable spot to `at` (an enemy spawned inside a tree or wall can
+## never move). Spirals out a few cells; falls back to `at`.
+func free_spot_near(at: Vector2) -> Vector2:
+	var c0 := world_to_cell(at)
+	for r in range(0, 5):
+		for dy in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				if maxi(absi(dx), absi(dy)) != r:
+					continue
+				var c := c0 + Vector2i(dx, dy)
+				if c.x < 1 or c.y < 1 or c.x >= cols - 1 or c.y >= rows - 1:
+					continue
+				if blocked.has(c) or is_water_cell(c):
+					continue
+				return at if r == 0 else cell_center(c)
+	return at
+
+
 func on_enemy_died(e: Enemy) -> void:
-	fx("poof", e.position + Vector2(0, -8), 14.0, 0.6)
 	if e.has_meta("story_flag"):
 		GameState.run["flags"][str(e.get_meta("story_flag"))] = true
 		shake(3.0)

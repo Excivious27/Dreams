@@ -27,6 +27,8 @@ var _flash_mat: ShaderMaterial
 var _flash := 0.0
 var reach := 16.0
 var _squash := 0.0
+var _stomp_tele := 0.0
+var last_applied := 0   # damage the last hit really did (after armor), for the number
 var _noticed := false
 
 # ---- unified tier (data/tiers.json) -----------------------------------------
@@ -131,6 +133,8 @@ func setup(k: String, tier_override := -1) -> void:
 		damage = maxi(1, int(round(damage * GameState.tier_scale(k, tier, "dmg"))))
 		speed = speed * GameState.tier_scale(k, tier, "speed")
 		reward = int(round(reward * GameState.tier_scale(k, tier, "loot")))
+	if ed.has("reward"):
+		reward = int(round(int(ed["reward"]) * (GameState.tier_scale(k, tier, "loot") if tier != native else 1.0)))
 	abilities = (ed.get("abilities", []) as Array).duplicate()
 	for a in tw.get("abilities", []):
 		if tier > native and not abilities.has(a):
@@ -190,7 +194,9 @@ func _process(delta: float) -> void:
 		if _burn_t >= 1.0:
 			_burn_t = 0.0
 			set_meta("burn", int(get_meta("burn")) - 1)
-			hit(1, position + Vector2(0, 8))
+			hit(1, position, true)  # magic: no knockback/stun from a burn tick
+			if not _alive:
+				return
 			map.fx("sparkle", position + Vector2(0, -6), 14.0, 0.4)
 	_anim_t += delta
 	_hit_flash = maxf(0.0, _hit_flash - delta)
@@ -303,6 +309,7 @@ func hit(n: int, from: Vector2, magic := false) -> bool:
 		return false
 	var soak := armor / 2 if magic else armor
 	n = maxi(1, n - soak)
+	last_applied = n
 	hp -= n
 	_since_hit = 0.0
 	_hit_flash = 0.22
@@ -382,13 +389,21 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> 
 		_lunge_tele = 0.25
 		_lunge_cd = 3.0
 		map.fx("lunge_tele" if Art.has("fx", "lunge_tele") else "poof", position + Vector2(0, -4), 20.0, 0.5, to.x < 0)
+	if _stomp_tele > 0.0:
+		# Telegraphed: it rears up (tint) for a moment, then lands.
+		_stomp_tele -= get_process_delta_time()
+		modulate = Color(1.4, 1.1, 0.8)
+		if _stomp_tele <= 0.0:
+			modulate = Color.WHITE
+			map.fx("stomp" if Art.has("fx", "stomp") else "ripple_ring", position, 16.0, 0.7)
+			map.shake(2.0)
+			if player.invuln <= 0.0 and position.distance_to(player.position) < 30.0:
+				player.take_damage(GameState.enemy_damage(damage + 1), position)
+		return true
 	if abilities.has("stomp") and _stomp_cd <= 0.0 and dist < 26.0 and _stun <= 0.0:
 		_stomp_cd = 3.5
 		_windup = 0.0
-		map.fx("stomp" if Art.has("fx", "stomp") else "ripple_ring", position, 16.0, 0.7)
-		map.shake(2.0)
-		if player.invuln <= 0.0:
-			player.take_damage(GameState.enemy_damage(damage + 1), position)
+		_stomp_tele = 0.45
 		return true
 	if abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0:
 		_range_cd = 2.2 - 0.2 * tier
