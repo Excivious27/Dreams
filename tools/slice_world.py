@@ -3810,9 +3810,24 @@ def _hero_row_cells(rgba, row, ncols=16, nrows=8):
         c0 = max(0, min(ncols - 1, int((b[0] + 4) / cw)))
         c1 = max(0, min(ncols - 1, int((b[2] - 4) / cw)))
         for c in range(c0, c1 + 1):
-            if bycol[c] is None or (b[2] - b[0]) > (bycol[c][2] - bycol[c][0]):
-                bycol[c] = b
+            # A component that spans columns is two touching sprites: give each
+            # column its own slice instead of the whole blob twice.
+            part = b if c0 == c1 else (max(b[0], int(c * cw)), b[1], min(b[2], int((c + 1) * cw)), b[3])
+            if bycol[c] is None or (part[2] - part[0]) > (bycol[c][2] - bycol[c][0]):
+                bycol[c] = part
     return bycol
+
+def _split_wide(comps):
+    """Split blobs much wider than the row's typical sprite into even parts."""
+    ws = sorted(b[2] - b[0] for b in comps)
+    if not ws:
+        return comps
+    med = ws[len(ws) // 2]
+    out = []
+    for b in comps:
+        n = int(round((b[2] - b[0]) / float(med))) if (b[2] - b[0]) > 1.5 * med else 1
+        out.extend(_split_blob(b, max(1, n)))
+    return out
 
 def _hero_sheet(file, char_id):
     rgba = load_hue(file)
@@ -3900,6 +3915,7 @@ def _gang_sheet(file, char_id):
         if hs:
             med = hs[len(hs) // 2]
             comps = [b for b in comps if 0.6 * med <= (b[3] - b[1]) <= 1.35 * med]
+        comps = _split_wide(comps)
         n = len(comps)
         for name, a, b in spec:
             a2, b2 = _frac(n, a, b, ncols)

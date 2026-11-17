@@ -16,4 +16,5 @@
 - Area graph: farm ↔ town ↔ beach/mountain; farm ↔ forest ↔ lake ↔ farm; farm ↔ meadow ↔ crystal_meadow (penguins) / outskirts (gangsters, same scene); meadow → mine; mountain pad → moon.
 - Audio placeholders: `python3 tools/make_audio.py` regenerates `audio/music/*.ogg` and `audio/sfx/*.wav`.
 - Never delete Tom's uploads (`reference/`, `art/incoming/`). Original characters and art only.
+- After slicing art: `python3 tools/art_audit.py --fix` then `godot --headless --path . --import`.
 - Keep `docs/STATUS.md` current.
