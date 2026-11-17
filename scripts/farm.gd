@@ -164,7 +164,58 @@ func _place_debris() -> void:
 				blocked[c] = true
 
 
+## Chapter 1 partner scene: the characters you didn't pick turn up at the gate.
+func _partner_scene() -> void:
+	var cfg: Dictionary = Companion.data().get("partner_scene", {}).get(GameState.run["arc"], {})
+	if cfg.is_empty():
+		return
+	var pid := str(GameState.run["playable"])
+	var pool: Array = []
+	if GameState.is_penguins():
+		for c in ["penguin_m", "penguin_f"]:
+			if c != pid:
+				pool.append(c)
+		if pid in ["penguin_m", "penguin_f"]:
+			for c in ["dad", "mom", "pax", "kairi"]:
+				if c != pid:
+					pool.append(c)
+					break
+	else:
+		for c in ["big_jim", "sal"]:
+			if c != pid:
+				pool.append(c)
+		for c in ["dad", "mom", "pax", "kairi"]:
+			if c != pid and pool.size() < 3:
+				pool.append(c)
+	player.frozen = true
+	await say(cfg.get("lines", []))
+	var d := Dialogue.instance(get_tree())
+	var ch: Array = []
+	for c in pool:
+		var cd: Dictionary = Companion.defs()[c]
+		ch.append("%s — %s" % [str(cd["name"]), str(cd["ability_name"])])
+	ch.append("Nobody, for now")
+	d.say([{"who": "", "text": str(cfg.get("ask", "Who comes with you?")), "choice": ch, "key": "partner"}])
+	await d.finished
+	if d.last_choice >= 0 and d.last_choice < pool.size():
+		var cid: String = pool[d.last_choice]
+		Companion.recruit(cid)
+		for other in pool:
+			if other != cid:
+				Companion.party()["refused"][other] = int(Companion.party()["refused"].get(other, 0)) + 1
+		await say([{"who": str(Companion.defs()[cid]["name"]), "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party. Hold B while standing still to use %s. Change partners in the menu (Party)." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])]}])
+		GameState.add_hint("Partners: hold B to use %s's %s. Others who asked may take it badly if you keep saying no." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])])
+	else:
+		for other in pool:
+			Companion.refuse(other)
+		await say([{"text": "They look at each other. They go. The gate is quieter than before."}])
+	player.frozen = false
+
+
 func after_ready() -> void:
+	if int(GameState.run["day"]) >= 3 and not GameState.run["flags"].has("partner_scene") and bool(GameState.run["intro_done"]):
+		GameState.run["flags"]["partner_scene"] = true
+		_partner_scene.call_deferred()
 	WorldGen.add_backdrop(self, "hills")
 	_place_props()
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):

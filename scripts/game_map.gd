@@ -19,6 +19,7 @@ var blocked := {}        # Vector2i -> true
 var things := {}         # Vector2i -> Dictionary {type, ...}
 var player: Player
 var pet: Node2D
+var companion: Companion = null
 var hud: Hud
 var enemies: Array = []
 var sky: Scenery
@@ -131,6 +132,15 @@ func _ready() -> void:
 		_pet_anim.play("idle")
 		add_child(pet)
 
+	# Active companion walks with you (not in interiors/house/moon by default).
+	var cid := Companion.active_id()
+	if cid != "" and Companion.defs().has(cid) and scene_id() not in ["house", "interior", "moon"]:
+		var comp := Companion.new()
+		comp.setup(cid, self)
+		comp.position = player.position + Vector2(14, 6)
+		add_child(comp)
+		companion = comp
+
 	var cam := Camera2D.new()
 	cam.limit_left = 0
 	cam.limit_top = 0
@@ -227,7 +237,7 @@ func can_swim_cell(c: Vector2i) -> bool:
 		return false
 	if not swim_ok:
 		return false
-	if GameState.has_perk("fishing", "Swimmer"):
+	if GameState.has_perk("fishing", "Swimmer") or Companion.has_ability("tail"):
 		return true
 	for dy in range(-3, 4):
 		for dx in range(-3, 4):
@@ -873,6 +883,19 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 			for x in range(c.x, c.x + w_cells):
 				_building_doors[Vector2i(x, y)] = door
 	return door
+
+
+func _refresh_party() -> void:
+	if companion:
+		companion.queue_free()
+		companion = null
+	var cid := Companion.active_id()
+	if cid != "" and Companion.defs().has(cid) and scene_id() not in ["house", "interior", "moon"]:
+		var comp := Companion.new()
+		comp.setup(cid, self)
+		comp.position = player.position + Vector2(14, 6)
+		add_child(comp)
+		companion = comp
 
 
 ## A click/tap anywhere on a building means "go to its door".

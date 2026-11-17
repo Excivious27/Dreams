@@ -4,6 +4,7 @@ extends GameMap
 ## The layout is generated from the floor number so it's the same each visit.
 
 var floor_no := 1
+var _grotto := false
 var _ladder := Vector2i.ZERO
 
 
@@ -27,8 +28,31 @@ func build() -> void:
 	set_thing(1, 1, {"type": "up", "hint": "A: climb out"})
 	_ladder = Vector2i(rng.randi_range(12, 16), rng.randi_range(12, 16))
 	things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
+	# Floor 5: the flooded grotto. Half the floor is black water; crystals sit
+	# under it. Mer the mercat lives here; with her you can swim and dive.
+	_grotto = floor_no == 5
+	if _grotto:
+		for y in range(6, rows - 1):
+			for x in range(1, cols - 1):
+				var wc := Vector2i(x, y)
+				if WorldGen.fbm(float(x), float(y), 55, 6.0) > -0.1 and wc.distance_to(_ladder) > 2:
+					set_thing(x, y, {"type": "water", "hint": ""}, true)
+		swim_ok = true
+		set_thing(4, 4, {"type": "mer", "hint": "A: ...a cat?"}, false)
+		var rng2 := RandomNumberGenerator.new()
+		rng2.seed = 5555
+		var placed := 0
+		for i in 60:
+			var c := Vector2i(rng2.randi_range(2, cols - 3), rng2.randi_range(8, rows - 2))
+			if is_water_cell(c) and not things[c].has("crystal"):
+				things[c] = {"type": "water", "crystal": true, "key": "grotto_%d" % placed, "hint": "A: dive for the crystal"}
+				placed += 1
+				if placed >= 6:
+					break
 	var count := 40 + floor_no * 4
 	for i in count:
+		if _grotto and i > count / 2:
+			break
 		var c := Vector2i(rng.randi_range(1, cols - 2), rng.randi_range(1, rows - 2))
 		if c.distance_to(Vector2i(1, 1)) < 3 or c == _ladder or things.has(c):
 			continue
@@ -88,7 +112,37 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			else:
 				go_to("meadow", Vector2(31 * TILE, 8 * TILE + 8), "down")
 			return true
+		"mer":
+			later(_meet_mer)
+			return true
+		"water":
+			if bool(thing.get("crystal", false)):
+				if not Companion.has_ability("tail"):
+					hud.toast("Too deep. Something glints down there.", Color(0.8, 0.9, 1.0))
+					return true
+				if GameState.run["flags"].has(str(thing["key"])):
+					hud.toast("Already took that one.")
+					return true
+				GameState.run["flags"][str(thing["key"])] = true
+				thing.erase("crystal")
+				thing["hint"] = ""
+				player.play_tool("hold")
+				fx("splash", player.position, 12.0, 0.6)
+				pop_items(cell_center(c), "shard", 2)
+				xp("mining", 8)
+				var got := 0
+				for k in GameState.run["flags"]:
+					if str(k).begins_with("grotto_"):
+						got += 1
+				if got >= 6:
+					GameState.run["flags"]["grotto_done"] = true
+					hud.toast("That's all six. Mer hums.", Color(0.8, 0.9, 1.0))
+				return true
+			return false
 		"down":
+			if _grotto and not GameState.run["flags"].has("grotto_done"):
+				hud.toast("The ladder is under the water. You'd need to swim like she does.", Color(0.8, 0.9, 1.0))
+				return true
 			GameState.run["mine_floor"] = floor_no + 1
 			xp("mining", 4)
 			go_to("mine", Vector2.ZERO)
@@ -139,6 +193,12 @@ func _variant() -> String:
 
 func draw_map() -> void:
 	var v := _variant()
+	if _grotto:
+		var wc := {}
+		for c in things:
+			if str(things[c].get("type", "")) == "water":
+				wc[c] = true
+		draw_water(wc, "grass")
 	if Art.has("tiles", "mf_" + v) and Art.has("tiles", "mw_" + v):
 		draw_tileset_rect("mf_" + v, Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
 		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.15 + 0.03 * mini(floor_no, 8)))
@@ -255,3 +315,38 @@ func _place_props() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+
+
+## Mer, the mercat of the grotto. Join her and the water opens.
+func _meet_mer() -> void:
+	player.frozen = true
+	if Companion.party()["known"].has("mer"):
+		var d0 := Dialogue.instance(get_tree())
+		d0.say([{"who": "Mer", "text": "Swim with me?" if Companion.active_id() != "mer" else "I'm right here. The ladder's under the deep part, past the six stones.", "choice": ["Mer joins me", "Not now"] if Companion.active_id() != "mer" else ["OK"], "key": ""}])
+		await d0.finished
+		if d0.last_choice == 0 and Companion.active_id() != "mer":
+			Companion.recruit("mer")
+			hud.toast("Mer is with you. The water is yours.", Color(0.8, 0.95, 1.0))
+			_refresh_party()
+		player.frozen = false
+		return
+	await say([
+		{"who": "", "text": "On a dry rock at the water's edge: a cat. Grey, wet, entirely unbothered. Its tail is... not a cat's tail."},
+		{"who": "Mer", "text": "You came down the dark stair with a lantern and no fear. That's rarer than crystal."},
+		{"who": "Mer", "text": "I'm Mer. I was a cat once, before the water. Now I'm a mercat, which is better in every way but the fur."},
+		{"who": "Mer", "text": "The crystals you want are under the black water. Six of them. You can't reach them; your kind sinks."},
+		{"who": "Mer", "text": "But if I'm beside you, the water remembers me, and it'll let you borrow a tail. Breathe, dive, the lot. Only while I'm with you, mind."},
+	])
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "Mer", "text": "Come on, then. The water's warmer than it looks.", "choice": ["Swim with Mer", "Not yet"], "key": ""}])
+	await d.finished
+	if d.last_choice == 0:
+		Companion.recruit("mer")
+		GameState.add_quest("mer_crystals", "Dive with Mer for the six grotto crystals.")
+		hud.toast("Mer joined you! Walk into the water.", Color(0.8, 0.95, 1.0))
+		Music.instance(get_tree()).sfx("levelup")
+		_refresh_party()
+	else:
+		Companion.refuse("mer")
+		await say([{"who": "Mer", "text": "...Suit yourself. I'll be here. I'm always here."}])
+	player.frozen = false

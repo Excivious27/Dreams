@@ -77,6 +77,8 @@ func _sleep() -> void:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report["grown"]), "" if int(report["grown"]) == 1 else "s"]})
 	for nm in report.get("built", []):
 		lines.append({"who": "Hazel", "text": "Crew's done with the %s. Go have a look." % str(nm)})
+	for nm in report.get("gone", []):
+		lines.append({"who": "", "text": "A note under the door, in a hand you know: '%s went east. Didn't say why. You know why.'" % str(nm)})
 	await hud.fade_in(0.8)
 	await say(lines)
 	_morning_events()

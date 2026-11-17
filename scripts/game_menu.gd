@@ -5,7 +5,7 @@ extends CanvasLayer
 ## tap a backpack item to swap it into the selected toolbar slot.
 ## Pauses the game while open.
 
-const TABS := ["Items", "Skills", "Pup", "Social", "Map", "Quests", "Options"]
+const TABS := ["Items", "Skills", "Pup", "Party", "Social", "Map", "Quests", "Options"]
 const SLOT := 34
 
 var _panel: PanelContainer
@@ -274,6 +274,32 @@ func _refresh() -> void:
 			_line("")
 		"Pup":
 			_pup_tab()
+		"Party":
+			var pt := Companion.party()
+			var act := Companion.active_id()
+			_line("Party", 10, Color(1, 0.95, 0.8))
+			if (pt["known"] as Array).is_empty():
+				_line("  Nobody yet. Partners find you as the story goes; some wait at the farm gate.", 7, Color(0.7, 0.7, 0.7))
+			for cid in pt["known"]:
+				var cd: Dictionary = Companion.defs().get(cid, {})
+				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))], func() -> void:
+					pt["active"] = "" if act == cid else cid
+					var m := get_tree().current_scene
+					if m is GameMap and (m as GameMap).has_method("_refresh_party"):
+						(m as GameMap).call("_refresh_party")
+					elif m is GameMap:
+						toggle()
+						GameMap.next_spawn = (m as GameMap).player.position - (m as GameMap).offset()
+						get_tree().reload_current_scene()
+						return
+					_refresh())
+				b.add_theme_font_size_override("font_size", 7)
+			if act != "":
+				_line("  Hold B while standing still to use the active partner's ability.", 7, Color(0.8, 0.8, 0.8))
+			if not (pt["bitter"] as Array).is_empty():
+				_line("Bitter", 9, Color(1, 0.7, 0.7))
+				for cid in pt["bitter"]:
+					_line("  %s hasn't been seen since you turned them away." % str(Companion.defs().get(cid, {}).get("name", cid)), 7, Color(0.9, 0.7, 0.7))
 		"Social":
 			var fr: Dictionary = r["friendship"]
 			var full := Art.tex("ui", "pheart_full") if Art.has("ui", "pheart_full") else Art.tex("ui", "heart_full")

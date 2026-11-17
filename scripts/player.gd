@@ -273,6 +273,7 @@ func facing_dir() -> Vector2:
 ## pointing at one (any of the 8 around you, or your own), else the facing cell.
 var aim_cell := Vector2i(-1, -1)
 var _last_hit_enemy: Enemy = null
+var _ability_hold := 0.0
 var mouse_held := false
 var _hold_t := 0.0
 
@@ -425,6 +426,14 @@ func _physics_process(delta: float) -> void:
 		_hold_t += delta
 	else:
 		_hold_t = 0.0
+	# Companion ability: hold B still for a second.
+	if Input.is_action_pressed("b") and dir == Vector2.ZERO and not _busy and Companion.active_id() != "" and not Dialogue.input_blocked():
+		_ability_hold += delta
+		if _ability_hold >= 1.0:
+			_ability_hold = -2.0  # cooldown until released
+			Companion.use_ability(map, self)
+	elif not Input.is_action_pressed("b"):
+		_ability_hold = 0.0
 	if Input.is_action_just_pressed("b") and dir == Vector2.ZERO and not _busy and has_anim("play") and not Dialogue.input_blocked():
 		_busy = true
 		_play_left = PLAY_TIME
@@ -477,10 +486,10 @@ func _physics_process(delta: float) -> void:
 	elif int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
 		spd_mult *= 0.75  # running on empty
 	if swimming:
-		spd_mult *= 0.55
+		spd_mult *= 1.0 if Companion.has_ability("tail") else 0.55
 		running = false
 		_swim_t += delta
-		if _swim_t > 2.0:
+		if _swim_t > 2.0 and not Companion.has_ability("tail"):
 			_swim_t = 0.0
 			if not GameState.spend_energy(1):
 				map.player_down("tired")

@@ -2061,6 +2061,27 @@
      80
     ]
    }
+  },
+  {
+   "id": "mer_crystals",
+   "text": "Dive with Mer for the six grotto crystals (mine floor 5).",
+   "when": {
+    "flag": "party_mer"
+   },
+   "done_when": {
+    "flag": "grotto_done"
+   },
+   "reward": {
+    "crystals": 400,
+    "item": [
+     "crystal_refined",
+     1
+    ],
+    "xp": [
+     "magic",
+     60
+    ]
+   }
   }
  ]
 }

@@ -1262,6 +1262,13 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["time"] = DAY_START
 	for nm in Builds.tick_overnight():
 		report["built"] = report.get("built", []) + [nm]
+	# Decisions that matter: a bitter companion leaves for the east after day 20.
+	var party_d: Dictionary = run.get("party", {})
+	for cid in party_d.get("bitter", []):
+		if int(run["day"]) >= 20 and not run["flags"].has("gone_east_" + str(cid)):
+			run["flags"]["gone_east_" + str(cid)] = true
+			add_hint("%s was seen on the east road at night, heading for the dark." % str(Companion.defs().get(cid, {}).get("name", cid)))
+			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
 	run["energy"] = int(run["max_energy"]) if not passed_out else int(run["max_energy"]) / 2
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
