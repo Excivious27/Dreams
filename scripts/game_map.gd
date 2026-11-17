@@ -1326,6 +1326,12 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 			Art.draw_tile(self, "tiles", plain, Vector2(c * TILE), 0)
 			if kind == "dirt" and h % 13 == 0 and _blob_interior(cells, c):
 				Art.draw_tile(self, "tiles", "path_dirt_fill_%d" % (h / 13 % 7), Vector2(c * TILE), 0)
+		if kind == "dirt" or kind == "sand":
+			# Soft procedural rim instead of the scalloped edge tiles: a worn,
+			# slightly darker lip on the path side and a thin grass shadow outside,
+			# with rounded outer corners. Reads as a trodden path, no boxes.
+			_draw_soft_rim(cells, Color(0.25, 0.15, 0.06, 0.28), Color(0.1, 0.2, 0.05, 0.22))
+			return
 		Art.draw_blob(self, cells, blob, 16.0, 0)
 		return
 	if Art.has("tiles", tset):
@@ -1339,6 +1345,37 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 	for c: Vector2i in cells_in:
 		if not Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), 4):
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("b8945a"))
+
+
+func _draw_soft_rim(cells: Dictionary, inner: Color, outer: Color) -> void:
+	for c: Vector2i in cells:
+		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
+		var n := cells.has(c + Vector2i(0, -1))
+		var so := cells.has(c + Vector2i(0, 1))
+		var w := cells.has(c + Vector2i(-1, 0))
+		var e := cells.has(c + Vector2i(1, 0))
+		if not n:
+			draw_rect(Rect2(r.position, Vector2(TILE, 2)), inner)
+			draw_rect(Rect2(r.position + Vector2(0, -1), Vector2(TILE, 1)), outer)
+		if not so:
+			draw_rect(Rect2(r.position + Vector2(0, TILE - 2), Vector2(TILE, 2)), inner)
+			draw_rect(Rect2(r.position + Vector2(0, TILE), Vector2(TILE, 1)), outer)
+		if not w:
+			draw_rect(Rect2(r.position, Vector2(2, TILE)), inner)
+			draw_rect(Rect2(r.position + Vector2(-1, 0), Vector2(1, TILE)), outer)
+		if not e:
+			draw_rect(Rect2(r.position + Vector2(TILE - 2, 0), Vector2(2, TILE)), inner)
+			draw_rect(Rect2(r.position + Vector2(TILE, 0), Vector2(1, TILE)), outer)
+		# Outer corners: knock a little triangle of grass back in so corners round off.
+		var grass := Color(0.36, 0.62, 0.27, 0.9)
+		if not n and not w:
+			draw_colored_polygon(PackedVector2Array([r.position, r.position + Vector2(4, 0), r.position + Vector2(0, 4)]), grass)
+		if not n and not e:
+			draw_colored_polygon(PackedVector2Array([r.position + Vector2(TILE, 0), r.position + Vector2(TILE - 4, 0), r.position + Vector2(TILE, 4)]), grass)
+		if not so and not w:
+			draw_colored_polygon(PackedVector2Array([r.position + Vector2(0, TILE), r.position + Vector2(4, TILE), r.position + Vector2(0, TILE - 4)]), grass)
+		if not so and not e:
+			draw_colored_polygon(PackedVector2Array([r.position + Vector2(TILE, TILE), r.position + Vector2(TILE - 4, TILE), r.position + Vector2(TILE, TILE - 4)]), grass)
 
 
 ## 1-wide runs become 2-wide (adds the right / lower neighbour), corners filled.
@@ -1530,10 +1567,32 @@ func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}
 	var tset := "t_" + prefix
 	if Art.has("tiles", "cliff_top_0") and prefix == "cliffg":
 		Art.draw_blob(self, cells, "cliff", 16.0, 1)
+		# A real rock face under every southern edge (the blocked ledge row), and
+		# proper stair tiles cut into it where you can climb.
+		for c: Vector2i in cells:
+			var below := c + Vector2i(0, 1)
+			if cells.has(below) or stairs.has(below):
+				continue
+			var face := Art.tex("tiles", "cliffg_" + ["face_a", "face_b", "face_c"][absi(c.x * 7 + c.y) % 3])
+			if face:
+				draw_texture_rect(face, Rect2(below.x * TILE, below.y * TILE - TILE * 0.5, TILE, TILE * 1.5), false)
+			else:
+				draw_rect(Rect2(below.x * TILE, below.y * TILE, TILE, TILE), Color("5a4634"))
 		for below: Vector2i in stairs:
-			var t := Art.tex("tiles", "cliff_stairs_m")
+			var l := not stairs.has(below + Vector2i(-1, 0))
+			var r := not stairs.has(below + Vector2i(1, 0))
+			# Dirt ramps (they continue a path); stone steps if the set has no ramps.
+			var kind := "ramp" if Art.has("tiles", "cliff_ramp_m") else "stairs"
+			var nm := "cliff_%s_m" % kind
+			if l and r:
+				nm = "cliff_%s_w" % kind if Art.has("tiles", "cliff_%s_w" % kind) else "cliff_%s_m" % kind
+			elif l:
+				nm = "cliff_%s_l" % kind
+			elif r:
+				nm = "cliff_%s_r" % kind
+			var t := Art.tex("tiles", nm) if Art.has("tiles", nm) else Art.tex("tiles", "cliff_stairs_m")
 			if t:
-				draw_texture_rect(t, Rect2(below.x * TILE, below.y * TILE - TILE, TILE, TILE), false)
+				draw_texture_rect(t, Rect2(below.x * TILE, below.y * TILE - TILE * 0.5, TILE, TILE * 1.5), false)
 		return
 	if not Art.has("tiles", tset):
 		for c: Vector2i in cells:

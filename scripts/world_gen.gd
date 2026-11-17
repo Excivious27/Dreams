@@ -51,6 +51,17 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 			if r > density:
 				continue
 			var at := Vector2(x * TILE, y * TILE)
+			# Some of the ground life is real forage you can pick (respawns daily).
+			if r < density * 0.12 and m.resources_here and not m.things.has(c):
+				var key := "fg_%s_%d_%d" % [m.scene_id(), x, y]
+				if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]):
+					var item: String = {"spring": "flower", "summer": "wild_herb", "fall": "mushroom", "winter": "wild_leek"}.get(season, "mushroom")
+					if season == "fall" and rng.randf() < 0.2:
+						item = "truffle"
+					m.set_thing(x, y, {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}, false)
+					var nm: String = {"flower": "wildflowers2", "wild_herb": "gdeco_clover", "mushroom": "mushrooms_fall", "truffle": "mushrooms_fall", "wild_leek": "gdeco_tuft_a"}.get(item, "flowers")
+					m.prop("nature", nm if Art.has("nature", nm) else "flowers", c, 0, 0.0, false)
+				continue
 			if season == "spring" or season == "summer":
 				if r < density * 0.5:
 					Art.draw_tile(m, "tiles", "deco_%d" % rng.randi_range(0, 2), at)
@@ -221,8 +232,8 @@ class Critter:
 			anims["walk"] = "walk" if Art.has(g, "walk") else "idle"
 			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0, "walk": 8.0})
 			_anim.animation = "idle"
-			var scaled_sheet := Art.has("wildlife/robin", "idle")  # W64 set drawn at true scale
-			var sz: float = 0.5 if scaled_sheet and kind in ["sparrow", "robin", "finch", "blue_jay", "crow", "pigeon", "seagull", "owl", "hawk", "duck", "heron", "rabbit", "squirrel", "hedgehog", "frog", "turtle", "mouse", "rat", "snake", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly_purple", "bee", "firefly", "dragonfly", "ladybug", "grasshopper", "snail", "crab", "deer", "fox", "boar", "goat", "raccoon", "badger", "otter", "beaver"] else {"sparrow": 0.22, "crow": 0.3, "pigeon": 0.26, "seagull": 0.3, "bat": 0.28, "owl": 0.32, "bee": 0.16, "firefly": 0.16, "dragonfly": 0.2, "butterfly_orange": 0.2, "butterfly_blue": 0.2, "butterfly_yellow": 0.2, "butterfly": 0.2, "rabbit": 0.34, "squirrel": 0.3, "hedgehog": 0.3, "frog": 0.26, "turtle": 0.34, "crab": 0.26, "rat": 0.28, "duck": 0.36, "heron": 0.5, "deer": 0.55, "fox": 0.45, "goat": 0.5, "cat_grey": 0.4, "cat_orange": 0.4, "cat_black": 0.4, "stray_dog": 0.45, "jelly": 0.5, "six_deer": 0.55, "eagle": 0.4, "crystal_fish": 0.3, "fish_jump": 0.3}.get(kind, 0.4)
+			# True-to-world sizes: the hero is ~16px wide, so a duck is a third of that.
+			var sz: float = {"sparrow": 0.2, "robin": 0.2, "finch": 0.2, "blue_jay": 0.22, "crow": 0.26, "pigeon": 0.22, "seagull": 0.26, "owl": 0.3, "hawk": 0.32, "bat": 0.24, "duck": 0.26, "heron": 0.38, "rabbit": 0.26, "squirrel": 0.22, "hedgehog": 0.24, "frog": 0.18, "turtle": 0.26, "mouse": 0.16, "rat": 0.2, "snake": 0.26, "butterfly_orange": 0.16, "butterfly_blue": 0.16, "butterfly_yellow": 0.16, "butterfly_purple": 0.16, "butterfly": 0.16, "bee": 0.12, "firefly": 0.12, "dragonfly": 0.16, "ladybug": 0.12, "grasshopper": 0.14, "snail": 0.16, "crab": 0.22, "deer": 0.5, "fox": 0.4, "boar": 0.46, "goat": 0.44, "raccoon": 0.34, "badger": 0.36, "otter": 0.34, "beaver": 0.34, "cat_grey": 0.36, "cat_orange": 0.36, "cat_black": 0.36, "stray_dog": 0.42, "jelly": 0.4, "six_deer": 0.5, "eagle": 0.36, "crystal_fish": 0.26, "fish_jump": 0.26}.get(kind, 0.3)
 			_anim.scale = Vector2(sz, sz)
 			_anim.frame_changed.connect(func() -> void:
 				var tex := _anim.sprite_frames.get_frame_texture(_anim.animation, _anim.frame)

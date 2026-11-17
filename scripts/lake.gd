@@ -109,8 +109,8 @@ func after_ready() -> void:
 		var beam := Sprite2D.new()
 		beam.position = cell_center(Vector2i(5, 24)) + Vector2(0, -150)
 		add_child(beam)
-	anim_prop("props", "duck", Vector2i(14, 14), 0, 1.5)
-	anim_prop("props", "heron", Vector2i(26, 10), 0, 1.5)
+	anim_prop("props", "duck", Vector2i(14, 14), 0, 1.5, false, 0.3)
+	anim_prop("props", "heron", Vector2i(26, 10), 0, 1.5, false, 0.4)
 	prop("props", "beaver_dam", Vector2i(11, 29), 2)
 	prop("props", "signpost", Vector2i(36, 24))
 	for c: Vector2i in [Vector2i(36, 20), Vector2i(36, 28)]:

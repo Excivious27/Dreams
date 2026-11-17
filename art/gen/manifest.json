@@ -30,19 +30,19 @@
  "animals/cat2_black": {
   "idle": {
    "cell_h": 28,
-   "cell_w": 34,
+   "cell_w": 50,
    "file": "animals/cat2_black/idle.png",
    "frames": 4,
    "h": 28,
-   "w": 136
+   "w": 200
   },
   "sit": {
    "cell_h": 28,
-   "cell_w": 33,
+   "cell_w": 50,
    "file": "animals/cat2_black/sit.png",
    "frames": 2,
    "h": 28,
-   "w": 66
+   "w": 100
   },
   "sleep": {
    "cell_h": 28,
@@ -54,29 +54,29 @@
   },
   "walk": {
    "cell_h": 28,
-   "cell_w": 37,
+   "cell_w": 50,
    "file": "animals/cat2_black/walk.png",
    "frames": 6,
    "h": 28,
-   "w": 222
+   "w": 300
   }
  },
  "animals/cat2_calico": {
   "idle": {
    "cell_h": 28,
-   "cell_w": 33,
+   "cell_w": 50,
    "file": "animals/cat2_calico/idle.png",
    "frames": 4,
    "h": 28,
-   "w": 132
+   "w": 200
   },
   "sit": {
    "cell_h": 28,
-   "cell_w": 32,
+   "cell_w": 50,
    "file": "animals/cat2_calico/sit.png",
    "frames": 2,
    "h": 28,
-   "w": 64
+   "w": 100
   },
   "sleep": {
    "cell_h": 28,
@@ -88,29 +88,29 @@
   },
   "walk": {
    "cell_h": 28,
-   "cell_w": 36,
+   "cell_w": 50,
    "file": "animals/cat2_calico/walk.png",
    "frames": 6,
    "h": 28,
-   "w": 216
+   "w": 300
   }
  },
  "animals/cat2_orange": {
   "idle": {
    "cell_h": 28,
-   "cell_w": 34,
+   "cell_w": 49,
    "file": "animals/cat2_orange/idle.png",
    "frames": 4,
    "h": 28,
-   "w": 136
+   "w": 196
   },
   "sit": {
    "cell_h": 28,
-   "cell_w": 33,
+   "cell_w": 49,
    "file": "animals/cat2_orange/sit.png",
    "frames": 2,
    "h": 28,
-   "w": 66
+   "w": 98
   },
   "sleep": {
    "cell_h": 28,
@@ -122,195 +122,195 @@
   },
   "walk": {
    "cell_h": 28,
-   "cell_w": 37,
+   "cell_w": 49,
    "file": "animals/cat2_orange/walk.png",
    "frames": 6,
    "h": 28,
-   "w": 222
+   "w": 294
   }
  },
  "animals/cat_calico": {
   "bark": {
-   "cell_h": 77,
-   "cell_w": 86,
+   "cell_h": 88,
+   "cell_w": 100,
    "file": "animals/cat_calico/bark.png",
    "frames": 2,
-   "h": 77,
-   "w": 172
+   "h": 88,
+   "w": 200
   },
   "idle": {
-   "cell_h": 75,
-   "cell_w": 76,
+   "cell_h": 88,
+   "cell_w": 100,
    "file": "animals/cat_calico/idle.png",
    "frames": 2,
-   "h": 75,
-   "w": 152
+   "h": 88,
+   "w": 200
   },
   "play": {
    "cell_h": 88,
-   "cell_w": 87,
+   "cell_w": 100,
    "file": "animals/cat_calico/play.png",
    "frames": 2,
    "h": 88,
-   "w": 174
+   "w": 200
   },
   "run": {
-   "cell_h": 79,
+   "cell_h": 88,
    "cell_w": 100,
    "file": "animals/cat_calico/run.png",
    "frames": 4,
-   "h": 79,
+   "h": 88,
    "w": 400
   },
   "sit": {
-   "cell_h": 77,
-   "cell_w": 74,
+   "cell_h": 88,
+   "cell_w": 100,
    "file": "animals/cat_calico/sit.png",
    "frames": 1,
-   "h": 77,
-   "w": 74
+   "h": 88,
+   "w": 100
   },
   "sleep": {
-   "cell_h": 37,
-   "cell_w": 21,
+   "cell_h": 88,
+   "cell_w": 100,
    "file": "animals/cat_calico/sleep.png",
    "frames": 1,
-   "h": 37,
-   "w": 21
+   "h": 88,
+   "w": 100
   },
   "walk": {
-   "cell_h": 70,
-   "cell_w": 90,
+   "cell_h": 88,
+   "cell_w": 100,
    "file": "animals/cat_calico/walk.png",
    "frames": 4,
-   "h": 70,
-   "w": 360
+   "h": 88,
+   "w": 400
   }
  },
  "animals/cat_grey": {
   "bark": {
    "cell_h": 89,
-   "cell_w": 86,
+   "cell_w": 100,
    "file": "animals/cat_grey/bark.png",
    "frames": 2,
    "h": 89,
-   "w": 172
+   "w": 200
   },
   "idle": {
-   "cell_h": 74,
-   "cell_w": 76,
+   "cell_h": 89,
+   "cell_w": 100,
    "file": "animals/cat_grey/idle.png",
    "frames": 2,
-   "h": 74,
-   "w": 152
+   "h": 89,
+   "w": 200
   },
   "play": {
-   "cell_h": 8,
-   "cell_w": 8,
+   "cell_h": 89,
+   "cell_w": 100,
    "file": "animals/cat_grey/play.png",
    "frames": 2,
-   "h": 8,
-   "w": 16
+   "h": 89,
+   "w": 200
   },
   "run": {
-   "cell_h": 80,
+   "cell_h": 89,
    "cell_w": 100,
    "file": "animals/cat_grey/run.png",
    "frames": 4,
-   "h": 80,
+   "h": 89,
    "w": 400
   },
   "sit": {
-   "cell_h": 83,
-   "cell_w": 96,
+   "cell_h": 89,
+   "cell_w": 100,
    "file": "animals/cat_grey/sit.png",
    "frames": 1,
-   "h": 83,
-   "w": 96
+   "h": 89,
+   "w": 100
   },
   "sleep": {
-   "cell_h": 78,
-   "cell_w": 76,
+   "cell_h": 89,
+   "cell_w": 100,
    "file": "animals/cat_grey/sleep.png",
    "frames": 1,
-   "h": 78,
-   "w": 76
+   "h": 89,
+   "w": 100
   },
   "walk": {
-   "cell_h": 70,
-   "cell_w": 90,
+   "cell_h": 89,
+   "cell_w": 100,
    "file": "animals/cat_grey/walk.png",
    "frames": 4,
-   "h": 70,
-   "w": 360
+   "h": 89,
+   "w": 400
   }
  },
  "animals/cat_orange": {
   "bark": {
-   "cell_h": 74,
-   "cell_w": 86,
+   "cell_h": 85,
+   "cell_w": 98,
    "file": "animals/cat_orange/bark.png",
    "frames": 2,
-   "h": 74,
-   "w": 172
+   "h": 85,
+   "w": 196
   },
   "idle": {
-   "cell_h": 70,
-   "cell_w": 69,
+   "cell_h": 85,
+   "cell_w": 98,
    "file": "animals/cat_orange/idle.png",
    "frames": 2,
-   "h": 70,
-   "w": 138
+   "h": 85,
+   "w": 196
   },
   "play": {
    "cell_h": 85,
-   "cell_w": 85,
+   "cell_w": 98,
    "file": "animals/cat_orange/play.png",
    "frames": 2,
    "h": 85,
-   "w": 170
+   "w": 196
   },
   "run": {
-   "cell_h": 75,
+   "cell_h": 85,
    "cell_w": 98,
    "file": "animals/cat_orange/run.png",
    "frames": 4,
-   "h": 75,
+   "h": 85,
    "w": 392
   },
   "sit": {
-   "cell_h": 71,
-   "cell_w": 68,
+   "cell_h": 85,
+   "cell_w": 98,
    "file": "animals/cat_orange/sit.png",
    "frames": 1,
-   "h": 71,
-   "w": 68
+   "h": 85,
+   "w": 98
   },
   "sleep": {
-   "cell_h": 36,
-   "cell_w": 20,
+   "cell_h": 85,
+   "cell_w": 98,
    "file": "animals/cat_orange/sleep.png",
    "frames": 1,
-   "h": 36,
-   "w": 20
+   "h": 85,
+   "w": 98
   },
   "walk": {
-   "cell_h": 67,
-   "cell_w": 88,
+   "cell_h": 85,
+   "cell_w": 98,
    "file": "animals/cat_orange/walk.png",
    "frames": 4,
-   "h": 67,
-   "w": 352
+   "h": 85,
+   "w": 392
   }
  },
  "animals/chick": {
   "idle": {
    "cell_h": 22,
-   "cell_w": 17,
+   "cell_w": 21,
    "file": "animals/chick/idle.png",
    "frames": 4,
    "h": 22,
-   "w": 68
+   "w": 84
   },
   "walk": {
    "cell_h": 22,
@@ -323,12 +323,12 @@
  },
  "animals/chicken2": {
   "baby": {
-   "cell_h": 22,
-   "cell_w": 24,
+   "cell_h": 36,
+   "cell_w": 52,
    "file": "animals/chicken2/baby.png",
    "frames": 5,
-   "h": 22,
-   "w": 120
+   "h": 36,
+   "w": 260
   },
   "eat": {
    "cell_h": 36,
@@ -340,29 +340,29 @@
   },
   "idle": {
    "cell_h": 36,
-   "cell_w": 32,
+   "cell_w": 52,
    "file": "animals/chicken2/idle.png",
    "frames": 4,
    "h": 36,
-   "w": 128
+   "w": 208
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 33,
+   "cell_w": 52,
    "file": "animals/chicken2/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 165
+   "w": 260
   }
  },
  "animals/cow_brown": {
   "baby": {
-   "cell_h": 29,
-   "cell_w": 38,
+   "cell_h": 48,
+   "cell_w": 88,
    "file": "animals/cow_brown/baby.png",
    "frames": 4,
-   "h": 29,
-   "w": 152
+   "h": 48,
+   "w": 352
   },
   "eat": {
    "cell_h": 48,
@@ -374,29 +374,29 @@
   },
   "idle": {
    "cell_h": 48,
-   "cell_w": 74,
+   "cell_w": 88,
    "file": "animals/cow_brown/idle.png",
    "frames": 4,
    "h": 48,
-   "w": 296
+   "w": 352
   },
   "walk": {
    "cell_h": 48,
-   "cell_w": 68,
+   "cell_w": 88,
    "file": "animals/cow_brown/walk.png",
    "frames": 5,
    "h": 48,
-   "w": 340
+   "w": 440
   }
  },
  "animals/cow_bw": {
   "baby": {
-   "cell_h": 29,
-   "cell_w": 34,
+   "cell_h": 48,
+   "cell_w": 85,
    "file": "animals/cow_bw/baby.png",
    "frames": 4,
-   "h": 29,
-   "w": 136
+   "h": 48,
+   "w": 340
   },
   "eat": {
    "cell_h": 48,
@@ -408,119 +408,119 @@
   },
   "idle": {
    "cell_h": 48,
-   "cell_w": 68,
+   "cell_w": 85,
    "file": "animals/cow_bw/idle.png",
    "frames": 4,
    "h": 48,
-   "w": 272
+   "w": 340
   },
   "walk": {
    "cell_h": 48,
-   "cell_w": 66,
+   "cell_w": 85,
    "file": "animals/cow_bw/walk.png",
    "frames": 5,
    "h": 48,
-   "w": 330
+   "w": 425
   }
  },
  "animals/dog_brown": {
   "bark": {
-   "cell_h": 80,
-   "cell_w": 93,
+   "cell_h": 83,
+   "cell_w": 98,
    "file": "animals/dog_brown/bark.png",
    "frames": 2,
-   "h": 80,
-   "w": 186
+   "h": 83,
+   "w": 196
   },
   "idle": {
-   "cell_h": 74,
-   "cell_w": 75,
+   "cell_h": 83,
+   "cell_w": 98,
    "file": "animals/dog_brown/idle.png",
    "frames": 2,
-   "h": 74,
-   "w": 150
+   "h": 83,
+   "w": 196
   },
   "play": {
    "cell_h": 83,
-   "cell_w": 85,
+   "cell_w": 98,
    "file": "animals/dog_brown/play.png",
    "frames": 2,
    "h": 83,
-   "w": 170
+   "w": 196
   },
   "run": {
-   "cell_h": 71,
+   "cell_h": 83,
    "cell_w": 98,
    "file": "animals/dog_brown/run.png",
    "frames": 4,
-   "h": 71,
+   "h": 83,
    "w": 392
   },
   "sit": {
-   "cell_h": 70,
-   "cell_w": 71,
+   "cell_h": 83,
+   "cell_w": 98,
    "file": "animals/dog_brown/sit.png",
    "frames": 1,
-   "h": 70,
-   "w": 71
+   "h": 83,
+   "w": 98
   },
   "sleep": {
-   "cell_h": 36,
-   "cell_w": 21,
+   "cell_h": 83,
+   "cell_w": 98,
    "file": "animals/dog_brown/sleep.png",
    "frames": 1,
-   "h": 36,
-   "w": 21
+   "h": 83,
+   "w": 98
   },
   "walk": {
-   "cell_h": 67,
-   "cell_w": 89,
+   "cell_h": 83,
+   "cell_w": 98,
    "file": "animals/dog_brown/walk.png",
    "frames": 4,
-   "h": 67,
-   "w": 356
+   "h": 83,
+   "w": 392
   }
  },
  "animals/dog_collie": {
   "bark": {
    "cell_h": 32,
-   "cell_w": 38,
+   "cell_w": 47,
    "file": "animals/dog_collie/bark.png",
    "frames": 4,
    "h": 32,
-   "w": 152
+   "w": 188
   },
   "dig": {
    "cell_h": 32,
-   "cell_w": 40,
+   "cell_w": 47,
    "file": "animals/dog_collie/dig.png",
    "frames": 6,
    "h": 32,
-   "w": 240
+   "w": 282
   },
   "idle": {
    "cell_h": 32,
-   "cell_w": 31,
+   "cell_w": 47,
    "file": "animals/dog_collie/idle.png",
    "frames": 4,
    "h": 32,
-   "w": 124
+   "w": 188
   },
   "run": {
    "cell_h": 32,
-   "cell_w": 36,
+   "cell_w": 47,
    "file": "animals/dog_collie/run.png",
    "frames": 6,
    "h": 32,
-   "w": 216
+   "w": 282
   },
   "sit": {
    "cell_h": 32,
-   "cell_w": 26,
+   "cell_w": 47,
    "file": "animals/dog_collie/sit.png",
    "frames": 2,
    "h": 32,
-   "w": 52
+   "w": 94
   },
   "sleep": {
    "cell_h": 32,
@@ -532,111 +532,111 @@
   },
   "walk": {
    "cell_h": 32,
-   "cell_w": 35,
+   "cell_w": 47,
    "file": "animals/dog_collie/walk.png",
    "frames": 6,
    "h": 32,
-   "w": 210
+   "w": 282
   }
  },
  "animals/dog_corgi": {
   "bark": {
    "cell_h": 83,
-   "cell_w": 82,
+   "cell_w": 102,
    "file": "animals/dog_corgi/bark.png",
    "frames": 2,
    "h": 83,
-   "w": 164
+   "w": 204
   },
   "idle": {
-   "cell_h": 77,
-   "cell_w": 77,
+   "cell_h": 83,
+   "cell_w": 102,
    "file": "animals/dog_corgi/idle.png",
    "frames": 2,
-   "h": 77,
-   "w": 154
+   "h": 83,
+   "w": 204
   },
   "play": {
-   "cell_h": 8,
-   "cell_w": 8,
+   "cell_h": 83,
+   "cell_w": 102,
    "file": "animals/dog_corgi/play.png",
    "frames": 2,
-   "h": 8,
-   "w": 16
+   "h": 83,
+   "w": 204
   },
   "run": {
-   "cell_h": 80,
+   "cell_h": 83,
    "cell_w": 102,
    "file": "animals/dog_corgi/run.png",
    "frames": 4,
-   "h": 80,
+   "h": 83,
    "w": 408
   },
   "sit": {
-   "cell_h": 81,
-   "cell_w": 96,
+   "cell_h": 83,
+   "cell_w": 102,
    "file": "animals/dog_corgi/sit.png",
    "frames": 1,
-   "h": 81,
-   "w": 96
+   "h": 83,
+   "w": 102
   },
   "sleep": {
-   "cell_h": 76,
-   "cell_w": 77,
+   "cell_h": 83,
+   "cell_w": 102,
    "file": "animals/dog_corgi/sleep.png",
    "frames": 1,
-   "h": 76,
-   "w": 77
+   "h": 83,
+   "w": 102
   },
   "walk": {
-   "cell_h": 72,
-   "cell_w": 88,
+   "cell_h": 83,
+   "cell_w": 102,
    "file": "animals/dog_corgi/walk.png",
    "frames": 4,
-   "h": 72,
-   "w": 352
+   "h": 83,
+   "w": 408
   }
  },
  "animals/dog_golden": {
   "bark": {
    "cell_h": 32,
-   "cell_w": 38,
+   "cell_w": 49,
    "file": "animals/dog_golden/bark.png",
    "frames": 4,
    "h": 32,
-   "w": 152
+   "w": 196
   },
   "dig": {
    "cell_h": 32,
-   "cell_w": 46,
+   "cell_w": 49,
    "file": "animals/dog_golden/dig.png",
    "frames": 6,
    "h": 32,
-   "w": 276
+   "w": 294
   },
   "idle": {
    "cell_h": 32,
-   "cell_w": 32,
+   "cell_w": 49,
    "file": "animals/dog_golden/idle.png",
    "frames": 4,
    "h": 32,
-   "w": 128
+   "w": 196
   },
   "run": {
    "cell_h": 32,
-   "cell_w": 37,
+   "cell_w": 49,
    "file": "animals/dog_golden/run.png",
    "frames": 6,
    "h": 32,
-   "w": 222
+   "w": 294
   },
   "sit": {
    "cell_h": 32,
-   "cell_w": 25,
+   "cell_w": 49,
    "file": "animals/dog_golden/sit.png",
    "frames": 2,
    "h": 32,
-   "w": 50
+   "w": 98
   },
   "sleep": {
    "cell_h": 32,
@@ -648,111 +648,111 @@
   },
   "walk": {
    "cell_h": 32,
-   "cell_w": 35,
+   "cell_w": 49,
    "file": "animals/dog_golden/walk.png",
    "frames": 6,
    "h": 32,
-   "w": 210
+   "w": 294
   }
  },
  "animals/dog_hound": {
   "bark": {
-   "cell_h": 77,
-   "cell_w": 86,
+   "cell_h": 87,
+   "cell_w": 103,
    "file": "animals/dog_hound/bark.png",
    "frames": 2,
-   "h": 77,
-   "w": 172
+   "h": 87,
+   "w": 206
   },
   "idle": {
-   "cell_h": 78,
-   "cell_w": 81,
+   "cell_h": 87,
+   "cell_w": 103,
    "file": "animals/dog_hound/idle.png",
    "frames": 2,
-   "h": 78,
-   "w": 162
+   "h": 87,
+   "w": 206
   },
   "play": {
    "cell_h": 87,
-   "cell_w": 87,
+   "cell_w": 103,
    "file": "animals/dog_hound/play.png",
    "frames": 2,
    "h": 87,
-   "w": 174
+   "w": 206
   },
   "run": {
-   "cell_h": 80,
+   "cell_h": 87,
    "cell_w": 103,
    "file": "animals/dog_hound/run.png",
    "frames": 4,
-   "h": 80,
+   "h": 87,
    "w": 412
   },
   "sit": {
-   "cell_h": 75,
-   "cell_w": 76,
+   "cell_h": 87,
+   "cell_w": 103,
    "file": "animals/dog_hound/sit.png",
    "frames": 1,
-   "h": 75,
-   "w": 76
+   "h": 87,
+   "w": 103
   },
   "sleep": {
-   "cell_h": 36,
-   "cell_w": 21,
+   "cell_h": 87,
+   "cell_w": 103,
    "file": "animals/dog_hound/sleep.png",
    "frames": 1,
-   "h": 36,
-   "w": 21
+   "h": 87,
+   "w": 103
   },
   "walk": {
-   "cell_h": 73,
-   "cell_w": 94,
+   "cell_h": 87,
+   "cell_w": 103,
    "file": "animals/dog_hound/walk.png",
    "frames": 4,
-   "h": 73,
-   "w": 376
+   "h": 87,
+   "w": 412
   }
  },
  "animals/dog_husky": {
   "bark": {
    "cell_h": 32,
-   "cell_w": 37,
+   "cell_w": 47,
    "file": "animals/dog_husky/bark.png",
    "frames": 4,
    "h": 32,
-   "w": 148
+   "w": 188
   },
   "dig": {
    "cell_h": 32,
-   "cell_w": 35,
+   "cell_w": 47,
    "file": "animals/dog_husky/dig.png",
    "frames": 6,
    "h": 32,
-   "w": 210
+   "w": 282
   },
   "idle": {
    "cell_h": 32,
-   "cell_w": 30,
+   "cell_w": 47,
    "file": "animals/dog_husky/idle.png",
    "frames": 4,
    "h": 32,
-   "w": 120
+   "w": 188
   },
   "run": {
    "cell_h": 32,
-   "cell_w": 39,
+   "cell_w": 47,
    "file": "animals/dog_husky/run.png",
    "frames": 6,
    "h": 32,
-   "w": 234
+   "w": 282
   },
   "sit": {
    "cell_h": 32,
-   "cell_w": 24,
+   "cell_w": 47,
    "file": "animals/dog_husky/sit.png",
    "frames": 2,
    "h": 32,
-   "w": 48
+   "w": 94
   },
   "sleep": {
    "cell_h": 32,
@@ -764,213 +764,213 @@
   },
   "walk": {
    "cell_h": 32,
-   "cell_w": 34,
+   "cell_w": 47,
    "file": "animals/dog_husky/walk.png",
    "frames": 6,
    "h": 32,
-   "w": 204
+   "w": 282
   }
  },
  "animals/dog_shepherd": {
   "bark": {
    "cell_h": 92,
-   "cell_w": 94,
+   "cell_w": 109,
    "file": "animals/dog_shepherd/bark.png",
    "frames": 2,
    "h": 92,
-   "w": 188
+   "w": 218
   },
   "idle": {
-   "cell_h": 90,
-   "cell_w": 84,
+   "cell_h": 92,
+   "cell_w": 109,
    "file": "animals/dog_shepherd/idle.png",
    "frames": 2,
-   "h": 90,
-   "w": 168
+   "h": 92,
+   "w": 218
   },
   "play": {
-   "cell_h": 8,
-   "cell_w": 8,
+   "cell_h": 92,
+   "cell_w": 109,
    "file": "animals/dog_shepherd/play.png",
    "frames": 2,
-   "h": 8,
-   "w": 16
+   "h": 92,
+   "w": 218
   },
   "run": {
-   "cell_h": 88,
+   "cell_h": 92,
    "cell_w": 109,
    "file": "animals/dog_shepherd/run.png",
    "frames": 4,
-   "h": 88,
+   "h": 92,
    "w": 436
   },
   "sit": {
-   "cell_h": 90,
-   "cell_w": 105,
+   "cell_h": 92,
+   "cell_w": 109,
    "file": "animals/dog_shepherd/sit.png",
    "frames": 1,
-   "h": 90,
-   "w": 105
+   "h": 92,
+   "w": 109
   },
   "sleep": {
-   "cell_h": 88,
-   "cell_w": 85,
+   "cell_h": 92,
+   "cell_w": 109,
    "file": "animals/dog_shepherd/sleep.png",
    "frames": 1,
-   "h": 88,
-   "w": 85
+   "h": 92,
+   "w": 109
   },
   "walk": {
-   "cell_h": 89,
-   "cell_w": 102,
+   "cell_h": 92,
+   "cell_w": 109,
    "file": "animals/dog_shepherd/walk.png",
    "frames": 4,
-   "h": 89,
-   "w": 408
+   "h": 92,
+   "w": 436
   }
  },
  "animals/dog_white": {
   "bark": {
-   "cell_h": 84,
-   "cell_w": 93,
+   "cell_h": 87,
+   "cell_w": 108,
    "file": "animals/dog_white/bark.png",
    "frames": 2,
-   "h": 84,
-   "w": 186
+   "h": 87,
+   "w": 216
   },
   "idle": {
-   "cell_h": 84,
-   "cell_w": 87,
+   "cell_h": 87,
+   "cell_w": 108,
    "file": "animals/dog_white/idle.png",
    "frames": 2,
-   "h": 84,
-   "w": 174
+   "h": 87,
+   "w": 216
   },
   "play": {
-   "cell_h": 8,
-   "cell_w": 8,
+   "cell_h": 87,
+   "cell_w": 108,
    "file": "animals/dog_white/play.png",
    "frames": 2,
-   "h": 8,
-   "w": 16
+   "h": 87,
+   "w": 216
   },
   "run": {
-   "cell_h": 85,
+   "cell_h": 87,
    "cell_w": 108,
    "file": "animals/dog_white/run.png",
    "frames": 4,
-   "h": 85,
+   "h": 87,
    "w": 432
   },
   "sit": {
    "cell_h": 87,
-   "cell_w": 104,
+   "cell_w": 108,
    "file": "animals/dog_white/sit.png",
    "frames": 1,
    "h": 87,
-   "w": 104
+   "w": 108
   },
   "sleep": {
-   "cell_h": 85,
-   "cell_w": 84,
+   "cell_h": 87,
+   "cell_w": 108,
    "file": "animals/dog_white/sleep.png",
    "frames": 1,
-   "h": 85,
-   "w": 84
+   "h": 87,
+   "w": 108
   },
   "walk": {
-   "cell_h": 80,
-   "cell_w": 97,
+   "cell_h": 87,
+   "cell_w": 108,
    "file": "animals/dog_white/walk.png",
    "frames": 4,
-   "h": 80,
-   "w": 388
+   "h": 87,
+   "w": 432
   }
  },
  "animals/donkey": {
   "eat": {
-   "cell_h": 66,
-   "cell_w": 82,
+   "cell_h": 102,
+   "cell_w": 85,
    "file": "animals/donkey/eat.png",
    "frames": 2,
-   "h": 66,
-   "w": 164
+   "h": 102,
+   "w": 170
   },
   "happy": {
    "cell_h": 102,
-   "cell_w": 76,
+   "cell_w": 85,
    "file": "animals/donkey/happy.png",
    "frames": 2,
    "h": 102,
-   "w": 152
+   "w": 170
   },
   "hurt": {
-   "cell_h": 96,
+   "cell_h": 102,
    "cell_w": 85,
    "file": "animals/donkey/hurt.png",
    "frames": 1,
-   "h": 96,
+   "h": 102,
    "w": 85
   },
   "idle": {
-   "cell_h": 97,
-   "cell_w": 79,
+   "cell_h": 102,
+   "cell_w": 85,
    "file": "animals/donkey/idle.png",
    "frames": 2,
-   "h": 97,
-   "w": 158
+   "h": 102,
+   "w": 170
   },
   "idle_b": {
-   "cell_h": 95,
-   "cell_w": 77,
+   "cell_h": 102,
+   "cell_w": 85,
    "file": "animals/donkey/idle_b.png",
    "frames": 3,
-   "h": 95,
-   "w": 231
+   "h": 102,
+   "w": 255
   },
   "sleep": {
-   "cell_h": 55,
-   "cell_w": 76,
+   "cell_h": 102,
+   "cell_w": 85,
    "file": "animals/donkey/sleep.png",
    "frames": 2,
-   "h": 55,
-   "w": 152
+   "h": 102,
+   "w": 170
   },
   "walk": {
-   "cell_h": 97,
-   "cell_w": 82,
+   "cell_h": 102,
+   "cell_w": 85,
    "file": "animals/donkey/walk.png",
    "frames": 4,
-   "h": 97,
-   "w": 328
+   "h": 102,
+   "w": 340
   }
  },
  "animals/donkey_b": {
   "idle": {
-   "cell_h": 95,
-   "cell_w": 98,
+   "cell_h": 81,
+   "cell_w": 84,
    "file": "animals/donkey_b/idle.png",
    "frames": 2,
-   "h": 95,
-   "w": 196
+   "h": 81,
+   "w": 168
   },
   "walk": {
-   "cell_h": 95,
-   "cell_w": 88,
+   "cell_h": 81,
+   "cell_w": 84,
    "file": "animals/donkey_b/walk.png",
    "frames": 2,
-   "h": 95,
-   "w": 176
+   "h": 81,
+   "w": 168
   }
  },
  "animals/duck2": {
   "baby": {
-   "cell_h": 22,
-   "cell_w": 25,
+   "cell_h": 36,
+   "cell_w": 68,
    "file": "animals/duck2/baby.png",
    "frames": 5,
-   "h": 22,
-   "w": 125
+   "h": 36,
+   "w": 340
   },
   "eat": {
    "cell_h": 36,
@@ -982,29 +982,29 @@
   },
   "idle": {
    "cell_h": 36,
-   "cell_w": 40,
+   "cell_w": 68,
    "file": "animals/duck2/idle.png",
    "frames": 4,
    "h": 36,
-   "w": 160
+   "w": 272
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 44,
+   "cell_w": 68,
    "file": "animals/duck2/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 220
+   "w": 340
   }
  },
  "animals/duck_water": {
   "idle": {
    "cell_h": 28,
-   "cell_w": 31,
+   "cell_w": 34,
    "file": "animals/duck_water/idle.png",
    "frames": 4,
    "h": 28,
-   "w": 124
+   "w": 136
   },
   "walk": {
    "cell_h": 28,
@@ -1017,146 +1017,146 @@
  },
  "animals/foal": {
   "eat": {
-   "cell_h": 55,
-   "cell_w": 67,
+   "cell_h": 92,
+   "cell_w": 71,
    "file": "animals/foal/eat.png",
    "frames": 2,
-   "h": 55,
-   "w": 134
+   "h": 92,
+   "w": 142
   },
   "happy": {
    "cell_h": 92,
-   "cell_w": 64,
+   "cell_w": 71,
    "file": "animals/foal/happy.png",
    "frames": 2,
    "h": 92,
-   "w": 128
+   "w": 142
   },
   "hurt": {
-   "cell_h": 79,
+   "cell_h": 92,
    "cell_w": 71,
    "file": "animals/foal/hurt.png",
    "frames": 1,
-   "h": 79,
+   "h": 92,
    "w": 71
   },
   "idle": {
-   "cell_h": 71,
-   "cell_w": 58,
+   "cell_h": 92,
+   "cell_w": 71,
    "file": "animals/foal/idle.png",
    "frames": 2,
-   "h": 71,
-   "w": 116
+   "h": 92,
+   "w": 142
   },
   "idle_b": {
-   "cell_h": 74,
-   "cell_w": 60,
+   "cell_h": 92,
+   "cell_w": 71,
    "file": "animals/foal/idle_b.png",
    "frames": 3,
-   "h": 74,
-   "w": 180
+   "h": 92,
+   "w": 213
   },
   "sleep": {
-   "cell_h": 40,
-   "cell_w": 64,
+   "cell_h": 92,
+   "cell_w": 71,
    "file": "animals/foal/sleep.png",
    "frames": 2,
-   "h": 40,
-   "w": 128
+   "h": 92,
+   "w": 142
   },
   "walk": {
-   "cell_h": 77,
-   "cell_w": 65,
+   "cell_h": 92,
+   "cell_w": 71,
    "file": "animals/foal/walk.png",
    "frames": 4,
-   "h": 77,
-   "w": 260
+   "h": 92,
+   "w": 284
   }
  },
  "animals/foal_b": {
   "idle": {
-   "cell_h": 85,
+   "cell_h": 71,
    "cell_w": 88,
    "file": "animals/foal_b/idle.png",
    "frames": 2,
-   "h": 85,
+   "h": 71,
    "w": 176
   },
   "walk": {
-   "cell_h": 84,
-   "cell_w": 86,
+   "cell_h": 71,
+   "cell_w": 88,
    "file": "animals/foal_b/walk.png",
    "frames": 2,
-   "h": 84,
-   "w": 172
+   "h": 71,
+   "w": 176
   }
  },
  "animals/goat": {
   "eat": {
-   "cell_h": 70,
+   "cell_h": 105,
    "cell_w": 78,
    "file": "animals/goat/eat.png",
    "frames": 2,
-   "h": 70,
+   "h": 105,
    "w": 156
   },
   "happy": {
    "cell_h": 105,
-   "cell_w": 72,
+   "cell_w": 78,
    "file": "animals/goat/happy.png",
    "frames": 2,
    "h": 105,
-   "w": 144
+   "w": 156
   },
   "hurt": {
-   "cell_h": 92,
-   "cell_w": 77,
+   "cell_h": 105,
+   "cell_w": 78,
    "file": "animals/goat/hurt.png",
    "frames": 1,
-   "h": 92,
-   "w": 77
+   "h": 105,
+   "w": 78
   },
   "idle": {
-   "cell_h": 91,
-   "cell_w": 72,
+   "cell_h": 105,
+   "cell_w": 78,
    "file": "animals/goat/idle.png",
    "frames": 2,
-   "h": 91,
-   "w": 144
+   "h": 105,
+   "w": 156
   },
   "idle_b": {
-   "cell_h": 91,
-   "cell_w": 66,
+   "cell_h": 105,
+   "cell_w": 78,
    "file": "animals/goat/idle_b.png",
    "frames": 3,
-   "h": 91,
-   "w": 198
+   "h": 105,
+   "w": 234
   },
   "sleep": {
-   "cell_h": 43,
-   "cell_w": 77,
+   "cell_h": 105,
+   "cell_w": 78,
    "file": "animals/goat/sleep.png",
    "frames": 2,
-   "h": 43,
-   "w": 154
+   "h": 105,
+   "w": 156
   },
   "walk": {
-   "cell_h": 90,
-   "cell_w": 74,
+   "cell_h": 105,
+   "cell_w": 78,
    "file": "animals/goat/walk.png",
    "frames": 4,
-   "h": 90,
-   "w": 296
+   "h": 105,
+   "w": 312
   }
  },
  "animals/goat2": {
   "baby": {
-   "cell_h": 22,
-   "cell_w": 25,
+   "cell_h": 36,
+   "cell_w": 49,
    "file": "animals/goat2/baby.png",
    "frames": 4,
-   "h": 22,
-   "w": 100
+   "h": 36,
+   "w": 196
   },
   "eat": {
    "cell_h": 36,
@@ -1168,95 +1168,95 @@
   },
   "idle": {
    "cell_h": 36,
-   "cell_w": 37,
+   "cell_w": 49,
    "file": "animals/goat2/idle.png",
    "frames": 4,
    "h": 36,
-   "w": 148
+   "w": 196
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 37,
+   "cell_w": 49,
    "file": "animals/goat2/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 185
+   "w": 245
   }
  },
  "animals/goat_kid": {
   "eat": {
-   "cell_h": 49,
-   "cell_w": 64,
+   "cell_h": 82,
+   "cell_w": 69,
    "file": "animals/goat_kid/eat.png",
    "frames": 2,
-   "h": 49,
-   "w": 128
+   "h": 82,
+   "w": 138
   },
   "happy": {
    "cell_h": 82,
-   "cell_w": 62,
+   "cell_w": 69,
    "file": "animals/goat_kid/happy.png",
    "frames": 2,
    "h": 82,
-   "w": 124
+   "w": 138
   },
   "hurt": {
-   "cell_h": 70,
+   "cell_h": 82,
    "cell_w": 69,
    "file": "animals/goat_kid/hurt.png",
    "frames": 1,
-   "h": 70,
+   "h": 82,
    "w": 69
   },
   "idle": {
-   "cell_h": 59,
-   "cell_w": 52,
+   "cell_h": 82,
+   "cell_w": 69,
    "file": "animals/goat_kid/idle.png",
    "frames": 2,
-   "h": 59,
-   "w": 104
+   "h": 82,
+   "w": 138
   },
   "idle_b": {
-   "cell_h": 62,
-   "cell_w": 54,
+   "cell_h": 82,
+   "cell_w": 69,
    "file": "animals/goat_kid/idle_b.png",
    "frames": 3,
-   "h": 62,
-   "w": 162
+   "h": 82,
+   "w": 207
   },
   "sleep": {
-   "cell_h": 29,
-   "cell_w": 60,
+   "cell_h": 82,
+   "cell_w": 69,
    "file": "animals/goat_kid/sleep.png",
    "frames": 2,
-   "h": 29,
-   "w": 120
+   "h": 82,
+   "w": 138
   },
   "walk": {
-   "cell_h": 62,
-   "cell_w": 55,
+   "cell_h": 82,
+   "cell_w": 69,
    "file": "animals/goat_kid/walk.png",
    "frames": 4,
-   "h": 62,
-   "w": 220
+   "h": 82,
+   "w": 276
   }
  },
  "animals/horse2": {
   "baby": {
-   "cell_h": 34,
-   "cell_w": 39,
+   "cell_h": 56,
+   "cell_w": 78,
    "file": "animals/horse2/baby.png",
    "frames": 4,
-   "h": 34,
-   "w": 156
+   "h": 56,
+   "w": 312
   },
   "eat": {
    "cell_h": 56,
-   "cell_w": 70,
+   "cell_w": 78,
    "file": "animals/horse2/eat.png",
    "frames": 2,
    "h": 56,
-   "w": 140
+   "w": 156
   },
   "idle": {
    "cell_h": 56,
@@ -1268,11 +1268,11 @@
   },
   "walk": {
    "cell_h": 56,
-   "cell_w": 77,
+   "cell_w": 78,
    "file": "animals/horse2/walk.png",
    "frames": 5,
    "h": 56,
-   "w": 385
+   "w": 390
   }
  },
  "animals/horse3": {
@@ -1286,27 +1286,27 @@
   },
   "gallop": {
    "cell_h": 48,
-   "cell_w": 74,
+   "cell_w": 93,
    "file": "animals/horse3/gallop.png",
    "frames": 6,
    "h": 48,
-   "w": 444
+   "w": 558
   },
   "idle": {
    "cell_h": 48,
-   "cell_w": 66,
+   "cell_w": 93,
    "file": "animals/horse3/idle.png",
    "frames": 4,
    "h": 48,
-   "w": 264
+   "w": 372
   },
   "walk": {
    "cell_h": 48,
-   "cell_w": 69,
+   "cell_w": 93,
    "file": "animals/horse3/walk.png",
    "frames": 6,
    "h": 48,
-   "w": 414
+   "w": 558
   }
  },
  "animals/horse3_saddle": {
@@ -1320,163 +1320,163 @@
   },
   "gallop": {
    "cell_h": 48,
-   "cell_w": 70,
+   "cell_w": 76,
    "file": "animals/horse3_saddle/gallop.png",
    "frames": 6,
    "h": 48,
-   "w": 420
+   "w": 456
   },
   "idle": {
    "cell_h": 48,
-   "cell_w": 62,
+   "cell_w": 76,
    "file": "animals/horse3_saddle/idle.png",
    "frames": 4,
    "h": 48,
-   "w": 248
+   "w": 304
   },
   "walk": {
    "cell_h": 48,
-   "cell_w": 66,
+   "cell_w": 76,
    "file": "animals/horse3_saddle/walk.png",
    "frames": 6,
    "h": 48,
-   "w": 396
+   "w": 456
   }
  },
  "animals/horse_bay": {
   "eat": {
-   "cell_h": 83,
-   "cell_w": 134,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_bay/eat.png",
    "frames": 4,
-   "h": 83,
-   "w": 536
+   "h": 84,
+   "w": 480
   },
   "idle": {
-   "cell_h": 98,
-   "cell_w": 110,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_bay/idle.png",
    "frames": 2,
-   "h": 98,
-   "w": 220
+   "h": 84,
+   "w": 240
   },
   "run": {
-   "cell_h": 96,
-   "cell_w": 116,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_bay/run.png",
    "frames": 2,
-   "h": 96,
-   "w": 232
+   "h": 84,
+   "w": 240
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 123,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_bay/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 492
+   "h": 84,
+   "w": 480
   }
  },
  "animals/horse_black": {
   "eat": {
-   "cell_h": 82,
-   "cell_w": 134,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_black/eat.png",
    "frames": 4,
-   "h": 82,
-   "w": 536
+   "h": 85,
+   "w": 480
   },
   "idle": {
-   "cell_h": 99,
-   "cell_w": 111,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_black/idle.png",
    "frames": 2,
-   "h": 99,
-   "w": 222
+   "h": 85,
+   "w": 240
   },
   "run": {
-   "cell_h": 95,
-   "cell_w": 117,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_black/run.png",
    "frames": 2,
-   "h": 95,
-   "w": 234
+   "h": 85,
+   "w": 240
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 123,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_black/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 492
+   "h": 85,
+   "w": 480
   }
  },
  "animals/horse_grey": {
   "eat": {
-   "cell_h": 82,
-   "cell_w": 134,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_grey/eat.png",
    "frames": 4,
-   "h": 82,
-   "w": 536
+   "h": 84,
+   "w": 480
   },
   "idle": {
-   "cell_h": 98,
-   "cell_w": 111,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_grey/idle.png",
    "frames": 2,
-   "h": 98,
-   "w": 222
+   "h": 84,
+   "w": 240
   },
   "run": {
-   "cell_h": 95,
-   "cell_w": 117,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_grey/run.png",
    "frames": 2,
-   "h": 95,
-   "w": 234
+   "h": 84,
+   "w": 240
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 123,
+   "cell_h": 84,
+   "cell_w": 120,
    "file": "animals/horse_grey/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 492
+   "h": 84,
+   "w": 480
   }
  },
  "animals/horse_palomino": {
   "eat": {
-   "cell_h": 82,
-   "cell_w": 134,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_palomino/eat.png",
    "frames": 4,
-   "h": 82,
-   "w": 536
+   "h": 85,
+   "w": 480
   },
   "idle": {
-   "cell_h": 99,
-   "cell_w": 112,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_palomino/idle.png",
    "frames": 2,
-   "h": 99,
-   "w": 224
+   "h": 85,
+   "w": 240
   },
   "run": {
-   "cell_h": 95,
-   "cell_w": 117,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_palomino/run.png",
    "frames": 2,
-   "h": 95,
-   "w": 234
+   "h": 85,
+   "w": 240
   },
   "walk": {
-   "cell_h": 96,
-   "cell_w": 123,
+   "cell_h": 85,
+   "cell_w": 120,
    "file": "animals/horse_palomino/walk.png",
    "frames": 4,
-   "h": 96,
-   "w": 492
+   "h": 85,
+   "w": 480
   }
  },
  "animals/kid_goat": {
@@ -1490,221 +1490,221 @@
   },
   "walk": {
    "cell_h": 22,
-   "cell_w": 16,
+   "cell_w": 24,
    "file": "animals/kid_goat/walk.png",
    "frames": 4,
    "h": 22,
-   "w": 64
+   "w": 96
   }
  },
  "animals/lamb": {
   "eat": {
-   "cell_h": 40,
-   "cell_w": 64,
+   "cell_h": 58,
+   "cell_w": 73,
    "file": "animals/lamb/eat.png",
    "frames": 2,
-   "h": 40,
-   "w": 128
+   "h": 58,
+   "w": 146
   },
   "happy": {
    "cell_h": 58,
-   "cell_w": 59,
+   "cell_w": 73,
    "file": "animals/lamb/happy.png",
    "frames": 2,
    "h": 58,
-   "w": 118
+   "w": 146
   },
   "hurt": {
-   "cell_h": 56,
+   "cell_h": 58,
    "cell_w": 73,
    "file": "animals/lamb/hurt.png",
    "frames": 1,
-   "h": 56,
+   "h": 58,
    "w": 73
   },
   "idle": {
-   "cell_h": 52,
-   "cell_w": 59,
+   "cell_h": 58,
+   "cell_w": 73,
    "file": "animals/lamb/idle.png",
    "frames": 2,
-   "h": 52,
-   "w": 118
+   "h": 58,
+   "w": 146
   },
   "idle_b": {
-   "cell_h": 54,
-   "cell_w": 63,
+   "cell_h": 58,
+   "cell_w": 73,
    "file": "animals/lamb/idle_b.png",
    "frames": 3,
-   "h": 54,
-   "w": 189
+   "h": 58,
+   "w": 219
   },
   "sleep": {
-   "cell_h": 31,
-   "cell_w": 60,
+   "cell_h": 58,
+   "cell_w": 73,
    "file": "animals/lamb/sleep.png",
    "frames": 2,
-   "h": 31,
-   "w": 120
+   "h": 58,
+   "w": 146
   },
   "walk": {
-   "cell_h": 54,
-   "cell_w": 59,
+   "cell_h": 58,
+   "cell_w": 73,
    "file": "animals/lamb/walk.png",
    "frames": 4,
-   "h": 54,
-   "w": 236
+   "h": 58,
+   "w": 292
   }
  },
  "animals/llama": {
   "eat": {
-   "cell_h": 70,
+   "cell_h": 123,
    "cell_w": 81,
    "file": "animals/llama/eat.png",
    "frames": 2,
-   "h": 70,
+   "h": 123,
    "w": 162
   },
   "happy": {
    "cell_h": 123,
-   "cell_w": 76,
+   "cell_w": 81,
    "file": "animals/llama/happy.png",
    "frames": 2,
    "h": 123,
-   "w": 152
+   "w": 162
   },
   "hurt": {
-   "cell_h": 110,
+   "cell_h": 123,
    "cell_w": 81,
    "file": "animals/llama/hurt.png",
    "frames": 1,
-   "h": 110,
+   "h": 123,
    "w": 81
   },
   "idle": {
-   "cell_h": 108,
-   "cell_w": 74,
+   "cell_h": 123,
+   "cell_w": 81,
    "file": "animals/llama/idle.png",
    "frames": 2,
-   "h": 108,
-   "w": 148
+   "h": 123,
+   "w": 162
   },
   "idle_b": {
-   "cell_h": 107,
-   "cell_w": 67,
+   "cell_h": 123,
+   "cell_w": 81,
    "file": "animals/llama/idle_b.png",
    "frames": 3,
-   "h": 107,
-   "w": 201
+   "h": 123,
+   "w": 243
   },
   "sleep": {
-   "cell_h": 49,
-   "cell_w": 78,
+   "cell_h": 123,
+   "cell_w": 81,
    "file": "animals/llama/sleep.png",
    "frames": 2,
-   "h": 49,
-   "w": 156
+   "h": 123,
+   "w": 162
   },
   "spit": {
-   "cell_h": 44,
-   "cell_w": 62,
+   "cell_h": 123,
+   "cell_w": 81,
    "file": "animals/llama/spit.png",
    "frames": 4,
-   "h": 44,
-   "w": 248
+   "h": 123,
+   "w": 324
   },
   "walk": {
-   "cell_h": 110,
-   "cell_w": 74,
+   "cell_h": 123,
+   "cell_w": 81,
    "file": "animals/llama/walk.png",
    "frames": 4,
-   "h": 110,
-   "w": 296
+   "h": 123,
+   "w": 324
   }
  },
  "animals/llama_b": {
   "idle": {
-   "cell_h": 102,
-   "cell_w": 91,
+   "cell_h": 88,
+   "cell_w": 77,
    "file": "animals/llama_b/idle.png",
    "frames": 2,
-   "h": 102,
-   "w": 182
+   "h": 88,
+   "w": 154
   },
   "walk": {
-   "cell_h": 98,
-   "cell_w": 82,
+   "cell_h": 88,
+   "cell_w": 77,
    "file": "animals/llama_b/walk.png",
    "frames": 2,
-   "h": 98,
-   "w": 164
+   "h": 88,
+   "w": 154
   }
  },
  "animals/llama_cria": {
   "eat": {
-   "cell_h": 54,
+   "cell_h": 86,
    "cell_w": 67,
    "file": "animals/llama_cria/eat.png",
    "frames": 2,
-   "h": 54,
+   "h": 86,
    "w": 134
   },
   "happy": {
    "cell_h": 86,
-   "cell_w": 63,
+   "cell_w": 67,
    "file": "animals/llama_cria/happy.png",
    "frames": 2,
    "h": 86,
-   "w": 126
+   "w": 134
   },
   "hurt": {
-   "cell_h": 75,
-   "cell_w": 65,
+   "cell_h": 86,
+   "cell_w": 67,
    "file": "animals/llama_cria/hurt.png",
    "frames": 1,
-   "h": 75,
-   "w": 65
+   "h": 86,
+   "w": 67
   },
   "idle": {
-   "cell_h": 68,
-   "cell_w": 55,
+   "cell_h": 86,
+   "cell_w": 67,
    "file": "animals/llama_cria/idle.png",
    "frames": 2,
-   "h": 68,
-   "w": 110
+   "h": 86,
+   "w": 134
   },
   "idle_b": {
-   "cell_h": 69,
-   "cell_w": 54,
+   "cell_h": 86,
+   "cell_w": 67,
    "file": "animals/llama_cria/idle_b.png",
    "frames": 3,
-   "h": 69,
-   "w": 162
+   "h": 86,
+   "w": 201
   },
   "sleep": {
-   "cell_h": 34,
-   "cell_w": 61,
+   "cell_h": 86,
+   "cell_w": 67,
    "file": "animals/llama_cria/sleep.png",
    "frames": 2,
-   "h": 34,
-   "w": 122
+   "h": 86,
+   "w": 134
   },
   "walk": {
-   "cell_h": 73,
-   "cell_w": 57,
+   "cell_h": 86,
+   "cell_w": 67,
    "file": "animals/llama_cria/walk.png",
    "frames": 4,
-   "h": 73,
-   "w": 228
+   "h": 86,
+   "w": 268
   }
  },
  "animals/pig_a": {
   "baby": {
-   "cell_h": 22,
-   "cell_w": 27,
+   "cell_h": 36,
+   "cell_w": 38,
    "file": "animals/pig_a/baby.png",
    "frames": 4,
-   "h": 22,
-   "w": 108
+   "h": 36,
+   "w": 152
   },
   "eat": {
    "cell_h": 36,
@@ -1716,29 +1716,29 @@
   },
   "idle": {
    "cell_h": 36,
-   "cell_w": 36,
+   "cell_w": 38,
    "file": "animals/pig_a/idle.png",
    "frames": 4,
    "h": 36,
-   "w": 144
+   "w": 152
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 37,
+   "cell_w": 38,
    "file": "animals/pig_a/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 185
+   "w": 190
   }
  },
  "animals/pig_b": {
   "baby": {
-   "cell_h": 22,
-   "cell_w": 33,
+   "cell_h": 36,
+   "cell_w": 50,
    "file": "animals/pig_b/baby.png",
    "frames": 4,
-   "h": 22,
-   "w": 132
+   "h": 36,
+   "w": 200
   },
   "eat": {
    "cell_h": 36,
@@ -1750,29 +1750,29 @@
   },
   "idle": {
    "cell_h": 36,
-   "cell_w": 42,
+   "cell_w": 50,
    "file": "animals/pig_b/idle.png",
    "frames": 4,
    "h": 36,
-   "w": 168
+   "w": 200
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 42,
+   "cell_w": 50,
    "file": "animals/pig_b/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 210
+   "w": 250
   }
  },
  "animals/piglet": {
   "idle": {
    "cell_h": 22,
-   "cell_w": 22,
+   "cell_w": 25,
    "file": "animals/piglet/idle.png",
    "frames": 4,
    "h": 22,
-   "w": 88
+   "w": 100
   },
   "walk": {
    "cell_h": 22,
@@ -1785,68 +1785,68 @@
  },
  "animals/pup": {
   "bark": {
-   "cell_h": 38,
-   "cell_w": 61,
+   "cell_h": 49,
+   "cell_w": 65,
    "file": "animals/pup/bark.png",
    "frames": 1,
-   "h": 38,
-   "w": 61
+   "h": 49,
+   "w": 65
   },
   "dig": {
    "cell_h": 49,
-   "cell_w": 54,
+   "cell_w": 65,
    "file": "animals/pup/dig.png",
    "frames": 2,
    "h": 49,
-   "w": 108
+   "w": 130
   },
   "idle": {
-   "cell_h": 30,
-   "cell_w": 38,
+   "cell_h": 49,
+   "cell_w": 65,
    "file": "animals/pup/idle.png",
    "frames": 1,
-   "h": 30,
-   "w": 38
+   "h": 49,
+   "w": 65
   },
   "play": {
-   "cell_h": 38,
+   "cell_h": 49,
    "cell_w": 65,
    "file": "animals/pup/play.png",
    "frames": 2,
-   "h": 38,
+   "h": 49,
    "w": 130
   },
   "run": {
-   "cell_h": 32,
-   "cell_w": 52,
+   "cell_h": 49,
+   "cell_w": 65,
    "file": "animals/pup/run.png",
    "frames": 2,
-   "h": 32,
-   "w": 104
+   "h": 49,
+   "w": 130
   },
   "sit": {
-   "cell_h": 39,
-   "cell_w": 35,
+   "cell_h": 49,
+   "cell_w": 65,
    "file": "animals/pup/sit.png",
    "frames": 1,
-   "h": 39,
-   "w": 35
+   "h": 49,
+   "w": 65
   },
   "sleep": {
-   "cell_h": 35,
-   "cell_w": 39,
+   "cell_h": 49,
+   "cell_w": 65,
    "file": "animals/pup/sleep.png",
    "frames": 1,
-   "h": 35,
-   "w": 39
+   "h": 49,
+   "w": 65
   },
   "walk": {
-   "cell_h": 30,
-   "cell_w": 44,
+   "cell_h": 49,
+   "cell_w": 65,
    "file": "animals/pup/walk.png",
    "frames": 2,
-   "h": 30,
-   "w": 88
+   "h": 49,
+   "w": 130
   }
  },
  "animals/rabbit_brown": {
@@ -1860,21 +1860,21 @@
   },
   "walk": {
    "cell_h": 24,
-   "cell_w": 21,
+   "cell_w": 25,
    "file": "animals/rabbit_brown/walk.png",
    "frames": 4,
    "h": 24,
-   "w": 84
+   "w": 100
   }
  },
  "animals/rabbit_white": {
   "idle": {
    "cell_h": 24,
-   "cell_w": 23,
+   "cell_w": 25,
    "file": "animals/rabbit_white/idle.png",
    "frames": 4,
    "h": 24,
-   "w": 92
+   "w": 100
   },
   "walk": {
    "cell_h": 24,
@@ -1887,12 +1887,12 @@
  },
  "animals/rooster": {
   "baby": {
-   "cell_h": 22,
-   "cell_w": 24,
+   "cell_h": 36,
+   "cell_w": 44,
    "file": "animals/rooster/baby.png",
    "frames": 5,
-   "h": 22,
-   "w": 120
+   "h": 36,
+   "w": 220
   },
   "eat": {
    "cell_h": 36,
@@ -1904,87 +1904,87 @@
   },
   "idle": {
    "cell_h": 36,
-   "cell_w": 38,
+   "cell_w": 44,
    "file": "animals/rooster/idle.png",
    "frames": 4,
    "h": 36,
-   "w": 152
+   "w": 176
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 38,
+   "cell_w": 44,
    "file": "animals/rooster/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 190
+   "w": 220
   }
  },
  "animals/sheep": {
   "eat": {
-   "cell_h": 63,
-   "cell_w": 81,
+   "cell_h": 97,
+   "cell_w": 83,
    "file": "animals/sheep/eat.png",
    "frames": 2,
-   "h": 63,
-   "w": 162
+   "h": 97,
+   "w": 166
   },
   "happy": {
    "cell_h": 97,
-   "cell_w": 81,
+   "cell_w": 83,
    "file": "animals/sheep/happy.png",
    "frames": 2,
    "h": 97,
-   "w": 162
+   "w": 166
   },
   "hurt": {
-   "cell_h": 83,
+   "cell_h": 97,
    "cell_w": 83,
    "file": "animals/sheep/hurt.png",
    "frames": 1,
-   "h": 83,
+   "h": 97,
    "w": 83
   },
   "idle": {
-   "cell_h": 74,
-   "cell_w": 81,
+   "cell_h": 97,
+   "cell_w": 83,
    "file": "animals/sheep/idle.png",
    "frames": 2,
-   "h": 74,
-   "w": 162
+   "h": 97,
+   "w": 166
   },
   "idle_b": {
-   "cell_h": 79,
-   "cell_w": 74,
+   "cell_h": 97,
+   "cell_w": 83,
    "file": "animals/sheep/idle_b.png",
    "frames": 3,
-   "h": 79,
-   "w": 222
+   "h": 97,
+   "w": 249
   },
   "sleep": {
-   "cell_h": 52,
-   "cell_w": 80,
+   "cell_h": 97,
+   "cell_w": 83,
    "file": "animals/sheep/sleep.png",
    "frames": 2,
-   "h": 52,
-   "w": 160
+   "h": 97,
+   "w": 166
   },
   "walk": {
-   "cell_h": 75,
-   "cell_w": 81,
+   "cell_h": 97,
+   "cell_w": 83,
    "file": "animals/sheep/walk.png",
    "frames": 4,
-   "h": 75,
-   "w": 324
+   "h": 97,
+   "w": 332
   }
  },
  "animals/sheep_woolly": {
   "baby": {
-   "cell_h": 22,
-   "cell_w": 27,
+   "cell_h": 36,
+   "cell_w": 59,
    "file": "animals/sheep_woolly/baby.png",
    "frames": 4,
-   "h": 22,
-   "w": 108
+   "h": 36,
+   "w": 236
   },
   "eat": {
    "cell_h": 36,
@@ -1996,19 +1996,19 @@
   },
   "idle": {
    "cell_h": 36,
-   "cell_w": 50,
+   "cell_w": 59,
    "file": "animals/sheep_woolly/idle.png",
    "frames": 4,
    "h": 36,
-   "w": 200
+   "w": 236
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 51,
+   "cell_w": 59,
    "file": "animals/sheep_woolly/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 255
+   "w": 295
   }
  },
  "animals_ref": {
@@ -83745,11 +83745,11 @@
  "wildlife/badger": {
   "idle": {
    "cell_h": 29,
-   "cell_w": 43,
+   "cell_w": 44,
    "file": "wildlife/badger/idle.png",
    "frames": 1,
    "h": 29,
-   "w": 43
+   "w": 44
   },
   "walk": {
    "cell_h": 29,
@@ -83780,12 +83780,12 @@
  },
  "wildlife/beaver": {
   "idle": {
-   "cell_h": 25,
-   "cell_w": 26,
+   "cell_h": 31,
+   "cell_w": 44,
    "file": "wildlife/beaver/idle.png",
    "frames": 1,
-   "h": 25,
-   "w": 26
+   "h": 31,
+   "w": 44
   },
   "walk": {
    "cell_h": 31,
@@ -83816,12 +83816,12 @@
  },
  "wildlife/blue_jay": {
   "idle": {
-   "cell_h": 39,
-   "cell_w": 40,
+   "cell_h": 42,
+   "cell_w": 47,
    "file": "wildlife/blue_jay/idle.png",
    "frames": 1,
-   "h": 39,
-   "w": 40
+   "h": 42,
+   "w": 47
   },
   "walk": {
    "cell_h": 42,
@@ -83834,12 +83834,12 @@
  },
  "wildlife/boar": {
   "idle": {
-   "cell_h": 28,
-   "cell_w": 43,
+   "cell_h": 29,
+   "cell_w": 44,
    "file": "wildlife/boar/idle.png",
    "frames": 1,
-   "h": 28,
-   "w": 43
+   "h": 29,
+   "w": 44
   },
   "walk": {
    "cell_h": 29,
@@ -83990,56 +83990,56 @@
  },
  "wildlife/crow": {
   "idle": {
-   "cell_h": 33,
-   "cell_w": 41,
+   "cell_h": 46,
+   "cell_w": 56,
    "file": "wildlife/crow/idle.png",
    "frames": 1,
-   "h": 33,
-   "w": 41
+   "h": 46,
+   "w": 56
   },
   "land": {
-   "cell_h": 56,
+   "cell_h": 46,
    "cell_w": 56,
    "file": "wildlife/crow/land.png",
    "frames": 6,
-   "h": 56,
+   "h": 46,
    "w": 336
   },
   "takeoff": {
-   "cell_h": 56,
+   "cell_h": 46,
    "cell_w": 56,
    "file": "wildlife/crow/takeoff.png",
    "frames": 4,
-   "h": 56,
+   "h": 46,
    "w": 224
   },
   "walk": {
    "cell_h": 46,
-   "cell_w": 45,
+   "cell_w": 56,
    "file": "wildlife/crow/walk.png",
    "frames": 2,
    "h": 46,
-   "w": 90
+   "w": 112
   }
  },
  "wildlife/crystal_fish": {
   "idle": {
    "cell_h": 24,
-   "cell_w": 32,
+   "cell_w": 31,
    "file": "wildlife/crystal_fish/idle.png",
    "frames": 4,
    "h": 24,
-   "w": 128
+   "w": 124
   }
  },
  "wildlife/deer": {
   "idle": {
    "cell_h": 49,
-   "cell_w": 37,
+   "cell_w": 43,
    "file": "wildlife/deer/idle.png",
    "frames": 1,
    "h": 49,
-   "w": 37
+   "w": 43
   },
   "walk": {
    "cell_h": 49,
@@ -84071,18 +84071,18 @@
  "wildlife/duck": {
   "idle": {
    "cell_h": 46,
-   "cell_w": 51,
+   "cell_w": 53,
    "file": "wildlife/duck/idle.png",
    "frames": 1,
    "h": 46,
-   "w": 51
+   "w": 53
   },
   "walk": {
-   "cell_h": 45,
+   "cell_h": 46,
    "cell_w": 53,
    "file": "wildlife/duck/walk.png",
    "frames": 2,
-   "h": 45,
+   "h": 46,
    "w": 106
   }
  },
@@ -84098,12 +84098,12 @@
  },
  "wildlife/finch": {
   "idle": {
-   "cell_h": 26,
-   "cell_w": 25,
+   "cell_h": 33,
+   "cell_w": 33,
    "file": "wildlife/finch/idle.png",
    "frames": 1,
-   "h": 26,
-   "w": 25
+   "h": 33,
+   "w": 33
   },
   "walk": {
    "cell_h": 33,
@@ -84135,11 +84135,11 @@
  "wildlife/fish_jump": {
   "idle": {
    "cell_h": 32,
-   "cell_w": 41,
+   "cell_w": 53,
    "file": "wildlife/fish_jump/idle.png",
    "frames": 4,
    "h": 32,
-   "w": 164
+   "w": 212
   },
   "walk": {
    "cell_h": 32,
@@ -84170,29 +84170,29 @@
  },
  "wildlife/frog": {
   "idle": {
-   "cell_h": 26,
+   "cell_h": 27,
    "cell_w": 39,
    "file": "wildlife/frog/idle.png",
    "frames": 1,
-   "h": 26,
+   "h": 27,
    "w": 39
   },
   "walk": {
    "cell_h": 27,
-   "cell_w": 35,
+   "cell_w": 39,
    "file": "wildlife/frog/walk.png",
    "frames": 2,
    "h": 27,
-   "w": 70
+   "w": 78
   }
  },
  "wildlife/goat": {
   "idle": {
-   "cell_h": 40,
+   "cell_h": 41,
    "cell_w": 43,
    "file": "wildlife/goat/idle.png",
    "frames": 1,
-   "h": 40,
+   "h": 41,
    "w": 43
   },
   "walk": {
@@ -84225,18 +84225,18 @@
  "wildlife/hawk": {
   "idle": {
    "cell_h": 59,
-   "cell_w": 47,
+   "cell_w": 70,
    "file": "wildlife/hawk/idle.png",
    "frames": 1,
    "h": 59,
-   "w": 47
+   "w": 70
   },
   "walk": {
-   "cell_h": 47,
+   "cell_h": 59,
    "cell_w": 70,
    "file": "wildlife/hawk/walk.png",
    "frames": 2,
-   "h": 47,
+   "h": 59,
    "w": 140
   }
  },
@@ -84251,28 +84251,28 @@
   },
   "walk": {
    "cell_h": 26,
-   "cell_w": 43,
+   "cell_w": 44,
    "file": "wildlife/hedgehog/walk.png",
    "frames": 2,
    "h": 26,
-   "w": 86
+   "w": 88
   }
  },
  "wildlife/heron": {
   "idle": {
    "cell_h": 63,
-   "cell_w": 60,
+   "cell_w": 81,
    "file": "wildlife/heron/idle.png",
    "frames": 1,
    "h": 63,
-   "w": 60
+   "w": 81
   },
   "walk": {
-   "cell_h": 45,
+   "cell_h": 63,
    "cell_w": 81,
    "file": "wildlife/heron/walk.png",
    "frames": 2,
-   "h": 45,
+   "h": 63,
    "w": 162
   }
  },
@@ -84317,29 +84317,29 @@
  "wildlife/mouse": {
   "idle": {
    "cell_h": 24,
-   "cell_w": 38,
+   "cell_w": 44,
    "file": "wildlife/mouse/idle.png",
    "frames": 1,
    "h": 24,
-   "w": 38
+   "w": 44
   },
   "walk": {
-   "cell_h": 23,
+   "cell_h": 24,
    "cell_w": 44,
    "file": "wildlife/mouse/walk.png",
    "frames": 2,
-   "h": 23,
+   "h": 24,
    "w": 88
   }
  },
  "wildlife/otter": {
   "idle": {
-   "cell_h": 29,
-   "cell_w": 43,
+   "cell_h": 30,
+   "cell_w": 44,
    "file": "wildlife/otter/idle.png",
    "frames": 1,
-   "h": 29,
-   "w": 43
+   "h": 30,
+   "w": 44
   },
   "walk": {
    "cell_h": 30,
@@ -84353,28 +84353,28 @@
  "wildlife/owl": {
   "idle": {
    "cell_h": 43,
-   "cell_w": 35,
+   "cell_w": 51,
    "file": "wildlife/owl/idle.png",
    "frames": 1,
    "h": 43,
-   "w": 35
+   "w": 51
   },
   "walk": {
-   "cell_h": 40,
+   "cell_h": 43,
    "cell_w": 51,
    "file": "wildlife/owl/walk.png",
    "frames": 2,
-   "h": 40,
+   "h": 43,
    "w": 102
   }
  },
  "wildlife/pigeon": {
   "idle": {
-   "cell_h": 34,
+   "cell_h": 37,
    "cell_w": 42,
    "file": "wildlife/pigeon/idle.png",
    "frames": 1,
-   "h": 34,
+   "h": 37,
    "w": 42
   },
   "walk": {
@@ -84388,12 +84388,12 @@
  },
  "wildlife/rabbit": {
   "idle": {
-   "cell_h": 37,
-   "cell_w": 33,
+   "cell_h": 38,
+   "cell_w": 44,
    "file": "wildlife/rabbit/idle.png",
    "frames": 1,
-   "h": 37,
-   "w": 33
+   "h": 38,
+   "w": 44
   },
   "walk": {
    "cell_h": 38,
@@ -84406,12 +84406,12 @@
  },
  "wildlife/raccoon": {
   "idle": {
-   "cell_h": 31,
-   "cell_w": 43,
+   "cell_h": 32,
+   "cell_w": 44,
    "file": "wildlife/raccoon/idle.png",
    "frames": 1,
-   "h": 31,
-   "w": 43
+   "h": 32,
+   "w": 44
   },
   "walk": {
    "cell_h": 32,
@@ -84425,11 +84425,11 @@
  "wildlife/rat": {
   "idle": {
    "cell_h": 25,
-   "cell_w": 26,
+   "cell_w": 42,
    "file": "wildlife/rat/idle.png",
    "frames": 1,
    "h": 25,
-   "w": 26
+   "w": 42
   },
   "walk": {
    "cell_h": 25,
@@ -84442,12 +84442,12 @@
  },
  "wildlife/robin": {
   "idle": {
-   "cell_h": 28,
-   "cell_w": 33,
+   "cell_h": 35,
+   "cell_w": 37,
    "file": "wildlife/robin/idle.png",
    "frames": 1,
-   "h": 28,
-   "w": 33
+   "h": 35,
+   "w": 37
   },
   "walk": {
    "cell_h": 35,
@@ -84460,20 +84460,20 @@
  },
  "wildlife/seagull": {
   "idle": {
-   "cell_h": 40,
+   "cell_h": 42,
    "cell_w": 46,
    "file": "wildlife/seagull/idle.png",
    "frames": 1,
-   "h": 40,
+   "h": 42,
    "w": 46
   },
   "walk": {
    "cell_h": 42,
-   "cell_w": 44,
+   "cell_w": 46,
    "file": "wildlife/seagull/walk.png",
    "frames": 2,
    "h": 42,
-   "w": 88
+   "w": 92
   }
  },
  "wildlife/six_deer": {
@@ -84506,12 +84506,12 @@
  },
  "wildlife/snake": {
   "idle": {
-   "cell_h": 25,
-   "cell_w": 24,
+   "cell_h": 26,
+   "cell_w": 44,
    "file": "wildlife/snake/idle.png",
    "frames": 1,
-   "h": 25,
-   "w": 24
+   "h": 26,
+   "w": 44
   },
   "walk": {
    "cell_h": 26,
@@ -84524,12 +84524,12 @@
  },
  "wildlife/sparrow": {
   "idle": {
-   "cell_h": 20,
-   "cell_w": 29,
+   "cell_h": 26,
+   "cell_w": 30,
    "file": "wildlife/sparrow/idle.png",
    "frames": 1,
-   "h": 20,
-   "w": 29
+   "h": 26,
+   "w": 30
   },
   "walk": {
    "cell_h": 26,
@@ -84543,11 +84543,11 @@
  "wildlife/squirrel": {
   "idle": {
    "cell_h": 37,
-   "cell_w": 43,
+   "cell_w": 44,
    "file": "wildlife/squirrel/idle.png",
    "frames": 1,
    "h": 37,
-   "w": 43
+   "w": 44
   },
   "walk": {
    "cell_h": 37,
@@ -84561,11 +84561,11 @@
  "wildlife/stray_dog": {
   "idle": {
    "cell_h": 40,
-   "cell_w": 50,
+   "cell_w": 60,
    "file": "wildlife/stray_dog/idle.png",
    "frames": 4,
    "h": 40,
-   "w": 200
+   "w": 240
   },
   "walk": {
    "cell_h": 40,
@@ -84586,12 +84586,12 @@
    "w": 43
   },
   "walk": {
-   "cell_h": 24,
-   "cell_w": 36,
+   "cell_h": 27,
+   "cell_w": 43,
    "file": "wildlife/turtle/walk.png",
    "frames": 2,
-   "h": 24,
-   "w": 72
+   "h": 27,
+   "w": 86
   }
  }
 }

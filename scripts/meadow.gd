@@ -4,7 +4,7 @@ extends GameMap
 
 const FARM_EXIT := Rect2i(0, 9, 1, 3)
 const EAST_EXIT := Rect2i(35, 14, 1, 3)
-const MINE_DOOR := Vector2i(32, 5)
+const MINE_DOOR := Vector2i(32, 6)
 const SHROOMS := [Vector2i(5, 3), Vector2i(12, 13), Vector2i(18, 11), Vector2i(8, 8), Vector2i(24, 20), Vector2i(29, 9), Vector2i(14, 24), Vector2i(20, 4)]
 
 var _boss: Enemy

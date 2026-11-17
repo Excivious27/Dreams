@@ -216,7 +216,9 @@ func draw_map() -> void:
 	WorldGen.draw_ground_detail(self, 95, 0.05)
 	# Top terrace is bare stone; the others grassy with a dirt switchback.
 	draw_ground("stone", cells_of([Rect2i(20, 1, 18, 8)]))
-	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 29, 3, 12), Rect2i(10, 29, 16, 2), Rect2i(25, 15, 3, 15), Rect2i(25, 15, 6, 2), Rect2i(28, 8, 3, 8)]))
+	# One continuous switchback: west gate → up the left stairs → across → up the
+	# middle stairs → the top terrace. Every stair gap has the path running through it.
+	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 27, 3, 14), Rect2i(10, 29, 18, 2), Rect2i(25, 13, 3, 18), Rect2i(25, 8, 3, 6)]))
 	if Art.has("tiles", "t_cliffg"):
 		var stairs := {}
 		for l in LEDGES:

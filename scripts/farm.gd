@@ -134,20 +134,24 @@ func _place_debris() -> void:
 			if near_pond:
 				continue
 			var dist := Vector2(c).distance_to(home)
-			var chance := clampf(0.025 + dist / 70.0 * 0.07, 0.025, 0.1)
+			# Stardew/Sun Haven start: the farm is properly overrun. Thick near the
+			# edges, a cleared ring round the house and the first plot by the door.
+			var chance := clampf(0.12 + dist / 70.0 * 0.26, 0.12, 0.36)
+			if dist < 9.0:
+				chance = 0.03
 			var r := _rng.randf()
 			if r > chance:
 				continue
 			if is_cleared(c):
 				continue
 			var k := _rng.randf()
-			if k < 0.42:
+			if k < 0.40:
 				things[c] = {"type": "weeds", "hint": "A: pull weeds"}
 				blocked[c] = true
 			elif k < 0.62:
 				things[c] = {"type": "rock", "hp": 2, "hint": "A: break rock"}
 				blocked[c] = true
-			elif k < 0.74:
+			elif k < 0.76:
 				things[c] = {"type": "log" if _rng.randf() < 0.6 else "stump", "hp": 2, "hint": "A: chop"}
 				blocked[c] = true
 			elif k < 0.94:
@@ -863,7 +867,7 @@ func _place_props() -> void:
 	# Stray pieces of the old world: a few boulders and a dead tree on the terrace.
 	prop("nature", "rock_l", Vector2i(44, 5))
 	prop("nature", "rock_m", Vector2i(60, 7))
-	prop("nature", "tree_bare", Vector2i(66, 4))
+	prop("nature", "tree_bare" if GameState.season() == "winter" else "dead_tree_m", Vector2i(66, 4))
 	prop("props", "signpost_1" if Art.has("props", "signpost_1") else "signpost", Vector2i(32, 56))
 	if Art.has("props", "abandoned_cart"):
 		prop("props", "abandoned_cart", Vector2i(60, 50), 2)
