@@ -309,7 +309,7 @@ func _draw() -> void:
 	var held := GameState.held_tool()
 	var sel := str(GameState.run["selected"])
 	var seed_held: bool = held == "" and str((GameState.items.get(sel, {}) as Dictionary).get("type", "")) == "seed"
-	if (held == "" and not seed_held) or held in ["sword", "iron_sword"]:
+	if (held == "" and not seed_held) or GameState.is_sword(held):
 		return
 	var fc := facing_cell()
 	var thing: Dictionary = map.things.get(fc, {})
@@ -456,7 +456,7 @@ func _physics_process(delta: float) -> void:
 			_buffered = ""
 			do_action(b)
 			return
-		elif not _busy and (Input.is_action_pressed("tool") or mouse_held) and _hold_t > 0.25 and GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe", "sword", "iron_sword"]:
+		elif not _busy and (Input.is_action_pressed("tool") or mouse_held) and _hold_t > 0.25 and (GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe"] or GameState.is_sword(GameState.held_tool())):
 			# Holding the tool button keeps swinging (Stardew-style).
 			if mouse_held and map:
 				face_toward(map.get_global_mouse_position())
@@ -665,7 +665,7 @@ func do_action(mode := "a") -> void:
 		if play_tool(act):
 			return
 		return
-	if held in ["sword", "iron_sword", ""]:
+	if held == "" or GameState.is_sword(held):
 		_swing()
 
 

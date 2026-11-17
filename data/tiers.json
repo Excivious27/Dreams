@@ -150,9 +150,9 @@
    "golem",
    "quarry_golem",
    "ruin_guardian",
-   "golem_king",
-   "ruin_warden",
-   "dark_crystal"
+   "geode_golem",
+   "obsidian_sentinel",
+   "light_eater"
   ],
   "pools": [
    [

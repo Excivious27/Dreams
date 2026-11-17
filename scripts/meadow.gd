@@ -29,9 +29,11 @@ func build() -> void:
 	add_exit(EAST_EXIT, "crystal_meadow", Vector2(2 * TILE, 12 * TILE), "right", "east ▶")
 	add_exit(Rect2i(14, 0, 4, 1), "ruins", Vector2(24 * TILE, 41 * TILE + 8), "up", "▲ ruins")
 	for p: Vector2i in [Vector2i(4, 2), Vector2i(10, 2), Vector2i(16, 3), Vector2i(21, 12), Vector2i(3, 13), Vector2i(14, 8), Vector2i(9, 12), Vector2i(26, 22), Vector2i(8, 22), Vector2i(19, 25)]:
-		set_thing(p.x, p.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
+		if not is_cleared(p):
+			set_thing(p.x, p.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
 	for p: Vector2i in [Vector2i(7, 5), Vector2i(19, 7), Vector2i(12, 10), Vector2i(27, 17), Vector2i(15, 20)]:
-		set_thing(p.x, p.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
+		if not is_cleared(p, 4):
+			set_thing(p.x, p.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
 	set_thing(MINE_DOOR.x, MINE_DOOR.y, {"type": "mine", "hint": "A: enter the mine"})
 	things[MINE_DOOR] = {"type": "mine", "hint": "A: enter the mine"}
 	for m: Vector2i in SHROOMS:
@@ -185,6 +187,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 			return true
 		"mine":
 			GameState.run["flags"]["mine_from"] = "meadow"
+			GameState.run["mine_floor"] = 1  # the front door is floor 1; the lift skips floors
 			go_to("mine", Vector2.ZERO)
 			return true
 		"shroom":

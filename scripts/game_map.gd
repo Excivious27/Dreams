@@ -377,7 +377,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			var ht := GameState.held_tool()
-			if ht in ["sword", "iron_sword", "scythe"]:
+			if ht == "scythe" or GameState.is_sword(ht):
 				player.play_tool("axe")
 			else:
 				player.play_tool("hold")
@@ -621,8 +621,9 @@ func fell_tree(c: Vector2i, wood := 5) -> void:
 	things.erase(c)
 	blocked.erase(c)
 	props.erase(c)
+	# The wood is yours the moment it falls (leaving mid-animation used to lose it).
+	give("wood", wood)
 	if sp == null:
-		give("wood", wood)
 		return
 	var dir := 1.0 if player.position.x <= sp.position.x else -1.0
 	var pine := sp is Sprite2D and (sp as Sprite2D).texture and str((sp as Sprite2D).texture.resource_path).contains("pine")
@@ -643,7 +644,7 @@ func fell_tree(c: Vector2i, wood := 5) -> void:
 	tw.tween_property(sp, "modulate:a", 0.0, 0.3)
 	tw.tween_callback(func() -> void:
 		sp.queue_free()
-		pop_items(cell_center(c) + Vector2(dir * 16.0, 0), "wood", wood))
+		pop_items(cell_center(c) + Vector2(dir * 16.0, 0), "wood", wood, false))
 
 
 func _fell_tree_fx(sp: Node2D, c: Vector2i, dir: float, anim: String, pine: bool, wood: int) -> void:
@@ -676,7 +677,7 @@ func _fell_tree_fx(sp: Node2D, c: Vector2i, dir: float, anim: String, pine: bool
 		fx("wood_chips", at + Vector2(dir * 14.0, -8), 14.0, 0.6)
 		await a.animation_finished
 	a.queue_free()
-	pop_items(at + Vector2(dir * 16.0, 0), "wood", wood)
+	pop_items(at + Vector2(dir * 16.0, 0), "wood", wood, false)
 
 
 ## Break a rock: jolt, crumble, stone pops out.
@@ -721,16 +722,16 @@ func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0, kind := "") 
 
 
 ## Items burst out of a spot, bounce, then fly to you and land in the bag.
-func pop_items(at: Vector2, id: String, n: int) -> void:
-	give(id, n)
-	var icon := Art.tex("items", "pop_" + id) if Art.has("items", "pop_" + id) else Art.tex("items", id)
+func pop_items(at: Vector2, id: String, n: int, give_it := true) -> void:
+	if give_it:
+		give(id, n)
+	var icon := Art.tex("items", "pop_" + id) if Art.has("items", "pop_" + id) else Art.tex("items", Hud.icon_for(id))
+	if icon == null:
+		return  # no picture: the toast from give() says what you got (no flying logs)
 	for i in mini(n, 6):
 		var it := Sprite2D.new()
-		if icon:
-			it.texture = icon
-			it.scale = Vector2(0.5, 0.5)
-		else:
-			it.texture = Art.tex("items", "wood")
+		it.texture = icon
+		it.scale = Vector2(0.5, 0.5)
 		it.position = at + Vector2(0, -6)
 		it.z_index = 5
 		it.add_to_group("drops")
@@ -787,7 +788,8 @@ func is_cleared(c: Vector2i, regrow_days := 6) -> bool:
 	var lst = all.get(scene_id(), {})
 	var key := "%d,%d" % [c.x, c.y]
 	if lst is Array:
-		return key in lst
+		# Old saves: a plain list of cleared cells, treated as cleared on day 0.
+		return key in lst and (regrow_days <= 0 or int(GameState.run["day"]) < regrow_days)
 	if not lst.has(key):
 		return false
 	if regrow_days <= 0:
@@ -857,6 +859,11 @@ func walk_over(sp: Sprite2D, rows: int) -> void:
 	sp.offset.y += delta / sp.scale.y
 
 
+## Interiors lay furniture out by its declared width; big kit art must not wall
+## off the room (it once boxed in counters and the town hall door).
+var exact_footprints := false
+
+
 func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
 	var s := Art.sprite(group, name)
 	if s == null:
@@ -878,6 +885,9 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 			w_cells = extra_w + 1
 		elif tex_w >= 56.0 or group == "buildings":
 			rows_up = clampi(int(round(tex_h / TILE)) - 1, 1, 5)
+		if exact_footprints:
+			w_cells = extra_w + 1
+			rows_up = 1
 		var x0 := c.x + (extra_w + 1) / 2 - w_cells / 2
 		for i in w_cells:
 			for j in rows_up:
@@ -1340,7 +1350,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				player.face_toward(world)
 				player.do_action("action")
-		elif interactable and not near and GameState.held_tool() in ["", "sword", "iron_sword"] or (interactable and not near and str(target_thing.get("type", "")) in ["door", "idoor", "npc", "sign", "bed", "chest", "counter", "shop", "exit"]):
+		elif interactable and not near and (GameState.held_tool() == "" or GameState.is_sword(GameState.held_tool())) or (interactable and not near and str(target_thing.get("type", "")) in ["door", "idoor", "npc", "sign", "bed", "chest", "counter", "shop", "exit"]):
 			handle_tap(mb.position)
 		else:
 			player.face_toward(world)

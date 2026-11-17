@@ -136,8 +136,11 @@ func setup(k: String, tier_override := -1) -> void:
 		if tier > native and not abilities.has(a):
 			abilities.append(a)
 	inflicts = str(ed.get("status", ""))
-	armor = int(tw.get("armor", 0))
-	kb_resist = float(tw.get("kb_resist", 0.0))
+	# Armor and knockback resistance are what a tier adds ABOVE the enemy's own
+	# tier: a golem at home is a golem, not a golem in plate.
+	var nw := GameState.tier(native)
+	armor = maxi(0, int(tw.get("armor", 0)) - int(nw.get("armor", 0)))
+	kb_resist = maxf(0.0, float(tw.get("kb_resist", 0.0)) - float(nw.get("kb_resist", 0.0)))
 	max_hp = hp
 	var art_kind := str(ed.get("art", "grump" if k == "big_grump" else k))
 	var group := "enemies/" + art_kind
@@ -423,6 +426,8 @@ func _blink() -> void:
 
 func _summon() -> void:
 	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp", "prism_wisp": "shard", "light_eater": "dark_crystal_shard"}.get(kind, "slime")
+	if minion == "shard" and not GameState.is_penguins():
+		minion = "thug_cyber"
 	map.fx("summon" if Art.has("fx", "summon") else "poof", position, 12.0, 0.7)
 	for i in 2:
 		var at := position + Vector2(randf_range(-24, 24), randf_range(-16, 16))

@@ -142,7 +142,8 @@ func _place_debris() -> void:
 			var r := _rng.randf()
 			if r > chance:
 				continue
-			if is_cleared(c):
+			# Never on soil you've tilled; cleared ground stays clear for two weeks.
+			if GameState.run["farm"].has("%d,%d" % [c.x, c.y]) or is_cleared(c, 14):
 				continue
 			var k := _rng.randf()
 			if k < 0.40:

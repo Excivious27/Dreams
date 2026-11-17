@@ -160,8 +160,8 @@ const TOOL_UPGRADE_NEED := [
 # What a node needs before it gives anything. Tool tiers: 0 wood, 1 copper,
 # 2 iron, 3 steel, 4 silver, 5 gold, 6 crystal, 7 moon. Skill levels gate the
 # rare stuff a second time so a lucky upgrade alone doesn't skip the game.
-const ORE_TIER := {"stone": 0, "coal": 0, "copper": 0, "clay": 0, "iron": 1, "shard": 1, "silver": 2, "gold": 2, "ruby": 2, "fossil": 2, "crystal": 3, "mithril": 3, "amethyst": 3, "emerald": 3, "moon_shard": 4, "moon": 4}
-const ORE_SKILL := {"silver": 3, "gold": 4, "ruby": 4, "crystal": 5, "mithril": 6, "amethyst": 5, "emerald": 6, "moon_shard": 7}
+const ORE_TIER := {"stone": 0, "coal": 0, "copper": 0, "clay": 0, "iron": 1, "shard": 1, "dark": 3, "silver": 2, "gold": 2, "ruby": 2, "fossil": 2, "crystal": 3, "mithril": 3, "amethyst": 3, "emerald": 3, "moon_shard": 4, "moon": 4}
+const ORE_SKILL := {"dark": 5, "silver": 3, "gold": 4, "ruby": 4, "crystal": 5, "mithril": 6, "amethyst": 5, "emerald": 6, "moon_shard": 7}
 
 
 ## "" when you can gather this, else the reason (already phrased for a toast).
@@ -191,9 +191,14 @@ static func tree_block(thing: Dictionary) -> String:
 	return ""
 
 
+## Any blade counts as "the sword" for tiers, swinging and Gideon's bench.
+static func is_sword(id: String) -> bool:
+	return id == "sword" or (id.ends_with("_sword") and items.has(id))
+
+
 static func tool_tier(kind: String) -> int:
 	var k := kind
-	if kind == "iron_sword":
+	if is_sword(kind):
 		k = "sword"
 	return int(run.get("tool_tier", {}).get(k, 0))
 
@@ -204,7 +209,7 @@ static func tool_power(kind: String) -> int:
 
 ## Icon name for a tool at its current tier, if art exists for it.
 static func tool_icon(kind: String) -> String:
-	var k := "sword" if kind == "iron_sword" else kind
+	var k := "sword" if is_sword(kind) else kind
 	if not TOOL_KINDS.has(k):
 		return kind
 	return "%s_%s" % [k, TOOL_TIERS[tool_tier(k)]]
@@ -363,7 +368,7 @@ static func tool_away(kind: String) -> bool:
 static func held_tool() -> String:
 	var tb: Array = run["toolbar"]
 	var id := str(tb[int(run["slot"])])
-	if has_tool(id) and tool_away(id if id != "iron_sword" else "sword"):
+	if has_tool(id) and tool_away("sword" if is_sword(id) else id):
 		return ""  # it's on Gideon's bench
 	return id if has_tool(id) else ""
 
@@ -392,7 +397,13 @@ static func add_tool(id: String) -> void:
 		run["tools"].append(id)
 		var tb: Array = run["toolbar"]
 		# Upgrades replace the older tool of the same kind on the toolbar.
-		var old := tb.find("sword") if id == "iron_sword" else -1
+		var old := -1
+		if is_sword(id):
+			# Replace the weakest blade on the toolbar.
+			for sw in ["sword", "iron_sword", "steel_sword"]:
+				if sw != id and tb.has(sw) and int(items.get(sw, {}).get("damage", 0)) < int(items.get(id, {}).get("damage", 0)):
+					old = tb.find(sw)
+					break
 		if old >= 0:
 			tb[old] = id
 		else:

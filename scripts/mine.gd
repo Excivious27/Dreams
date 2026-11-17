@@ -71,6 +71,14 @@ func build() -> void:
 					set_thing(x, y, {"type": "water", "hint": ""}, true)
 		swim_ok = true
 		set_thing(4, 4, {"type": "mer", "hint": "A: ...a cat?"}, false)
+		# Mer has to be visible: she gates the grotto. Hidden while she follows you.
+		if Companion.active_id() != "mer" and str(GameState.run.get("playable", "")) != "mer":
+			var ms := CharacterLibrary.make_sprite("mer")
+			if ms:
+				ms.position = cell_center(Vector2i(4, 4))
+				ms.play("idle")
+				ms.flip_h = true
+				add_child(ms)
 		var rng2 := RandomNumberGenerator.new()
 		rng2.seed = 5555
 		var placed := 0
@@ -199,7 +207,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				tell([{"text": "Somebody didn't make it back up. Their pack still has something in it."}])
 			return true
 		"rock":
-			if not GameState.has_tool("pickaxe"):
+			if GameState.held_tool() != "pickaxe":
+				if GameState.has_tool("pickaxe"):
+					hud.toast("Hold the pickaxe.")
+					return true
 				return false
 			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
 			if ob != "":
@@ -221,6 +232,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					props.erase(c)
 				# Ore rocks give one lump, often two with a better pickaxe or the mining tree.
 				var lumps := 2 if ore == "stone" else 1 + (1 if randf() < 0.3 + 0.1 * GameState.tool_tier("pickaxe") + GameState.bonus("mining", "ore_bonus") else 0)
+				# Resonance (spell): +1 ore from every rock today.
+				if ore != "stone" and int(GameState.run["flags"].get("ore_bonus_day", -1)) == int(GameState.run["day"]):
+					lumps += 1
 				give(ore, lumps)
 				xp("mining", (2 if ore == "stone" else 5) + mine_tier)
 				queue_redraw()
@@ -400,11 +414,11 @@ func _place_props() -> void:
 			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
 			if not things.has(c) and not blocked.has(c) and Art.has("props", "mine_%s_stalag_0" % ts):
 				prop("props", "mine_%s_stalag_%d" % [ts, i], c)
-		if floor_no % 2 == 0 and Art.has("props", "mine_%s_cart" % ts):
+		if floor_no % 2 == 0 and Art.has("props", "mine_%s_cart" % ts) and not things.has(Vector2i(2, rows - 3)):
 			prop("props", "mine_%s_cart" % ts, Vector2i(2, rows - 3))
 			blocked[Vector2i(2, rows - 3)] = true
-		if floor_no % 5 == 0 and Art.has("props", "mine_%s_skeleton" % ts):
-			prop("props", "mine_%s_skeleton" % ts, Vector2i(cols - 3, 2))
+		if floor_no % 5 == 0 and not things.has(Vector2i(cols - 3, 2)):
+			prop("props", "mine_%s_skeleton" % ts if Art.has("props", "mine_%s_skeleton" % ts) else "skeleton", Vector2i(cols - 3, 2))
 			blocked[Vector2i(cols - 3, 2)] = true
 			set_thing(cols - 3, 2, {"type": "skeleton", "hint": "A: an old miner"})
 		if floor_no % 3 == 0 and Art.has("props", "mine_%s_crystal" % ts):
@@ -439,10 +453,10 @@ func _place_props() -> void:
 					sp.position = Vector2(x * TILE + 8, TILE + 20)
 					add_child(sp)
 			prop("props", "beam_lamp", Vector2i(cols / 2 - 1, 1), 1)
-			if floor_no % 2 == 0:
+			if floor_no % 2 == 0 and not things.has(Vector2i(2, rows - 3)):
 				prop("props", "cart_full", Vector2i(2, rows - 3))
 				blocked[Vector2i(2, rows - 3)] = true
-			if floor_no % 5 == 0:
+			if floor_no % 5 == 0 and not things.has(Vector2i(cols - 3, 2)):
 				prop("props", "skeleton", Vector2i(cols - 3, 2))
 				blocked[Vector2i(cols - 3, 2)] = true
 				set_thing(cols - 3, 2, {"type": "skeleton", "hint": "A: an old miner"})

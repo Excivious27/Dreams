@@ -125,7 +125,7 @@ static func tree_border(m: GameMap, rect: Rect2i, seed_v: int, gaps: Array = [],
 		for g: Rect2i in gaps:
 			if g.has_point(c):
 				skip = true
-		if skip or m.things.has(c):
+		if skip or m.things.has(c) or m.is_cleared(c):
 			continue
 		var jitter := Vector2i(rng.randi_range(0, 1), 0) if every > 1 else Vector2i.ZERO
 		var cc := c + jitter
@@ -145,7 +145,7 @@ static func tree_clumps(m: GameMap, rect: Rect2i, seed_v: int, clumps: int, avoi
 		var n := rng.randi_range(2, 5)
 		for k in n:
 			var c := Vector2i(cx + rng.randi_range(-2, 2), cy + rng.randi_range(-1, 1))
-			if not rect.has_point(c) or m.things.has(c) or m.blocked.has(c) or avoid.has(c):
+			if not rect.has_point(c) or m.things.has(c) or m.blocked.has(c) or avoid.has(c) or m.is_cleared(c):
 				continue
 			m.set_thing(c.x, c.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
 			m.prop("nature", GameState.tree_sprite(rng.randi_range(0, 2)), c)
@@ -158,9 +158,9 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 	var season := GameState.season()
 	for i in count:
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
-		if m.things.has(c) or m.blocked.has(c) or avoid.has(c):
+		var r := rng.randf()  # rolled first so the layout doesn't shift as things are cleared
+		if m.things.has(c) or m.blocked.has(c) or avoid.has(c) or (r < 0.62 and m.is_cleared(c, 4 if r < 0.35 else 6)):
 			continue
-		var r := rng.randf()
 		if r < 0.35:
 			var nm := "rock_s" if r < 0.2 else "rock_m"
 			if season == "winter" and Art.has("nature", nm.replace("rock_", "rock_snow_")):

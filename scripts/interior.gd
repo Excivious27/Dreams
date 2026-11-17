@@ -23,6 +23,7 @@ func build() -> void:
 	I = all.get(interior_id, all.get("store", {}))
 	cols = int(I.get("cols", 14))
 	rows = int(I.get("rows", 11))
+	exact_footprints = true
 	has_sky = false
 	has_pet = bool(I.get("pet", false))
 	music_track = str(I.get("music", "house"))
@@ -58,6 +59,16 @@ func after_ready() -> void:
 					blocked[Vector2i(c.x + i, c.y)] = true
 			continue
 		prop(g, nm, c, w, 0.0, bool(p.get("solid", true)))
+	# Keep the way in and the spot in front of every counter/thing walkable.
+	var dd: Array = I.get("door", [cols / 2, rows - 2])
+	blocked.erase(Vector2i(int(dd[0]), int(dd[1]) - 1))
+	for t in I.get("things", []):
+		var tc := Vector2i(int(t["cell"][0]), int(t["cell"][1]))
+		for off in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)]:
+			var fc: Vector2i = tc + off
+			if fc.x > 0 and fc.y > 1 and fc.x < cols - 1 and fc.y < rows - 1 and not things.has(fc):
+				blocked.erase(fc)
+				break
 	# Who is in here right now: anyone whose routine puts them in this interior
 	# (their work, their home, or a named place like the inn/school/chapel). The
 	# interior's own "npcs" list gives preferred standing cells; everyone else

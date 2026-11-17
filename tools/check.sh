@@ -26,3 +26,10 @@ if ! echo "$out" | grep -q "SMOKE DONE, failures: 0"; then
   echo "Smoke test did not finish"; exit 1
 fi
 echo "Smoke test passed"
+
+echo "== interior reachability =="
+rout="$("$GODOT" --headless --path . -s res://tools/interior_reach.gd 2>&1)"
+echo "$rout" | grep -E "FAIL|interior_reach" || true
+if ! echo "$rout" | grep -q "interior_reach: 0 failures"; then
+  echo "Interior reachability failed"; exit 1
+fi

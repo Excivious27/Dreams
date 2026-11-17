@@ -173,6 +173,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"cave":
 			# The mountain cave is the mine's upper entrance (the meadow has the other).
 			GameState.run["flags"]["mine_from"] = "mountain"
+			GameState.run["mine_floor"] = 1
 			go_to("mine", Vector2.ZERO)
 			return true
 		"camp":

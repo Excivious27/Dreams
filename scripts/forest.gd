@@ -90,9 +90,11 @@ func after_ready() -> void:
 					for dy in range(-1, 1):
 						var cc := c + Vector2i(dx, dy)
 						blocked[cc] = true
-						things[cc] = {"type": "tree", "hp": 3, "hint": "A: chop", "grove": true}
+						# A grove is a wall of old trees: scenery, not 8 choppable trees
+						# under one picture (that gave 8× wood and left invisible walls).
+						things[cc] = {"type": "grove", "hint": ""}
 	for c: Vector2i in _grove:
-		if (c.x + c.y) % 2 == 1 or things.has(c):
+		if (c.x + c.y) % 2 == 1 or things.has(c) or is_cleared(c):
 			continue
 		if use_groves and rng.randf() < 0.45:
 			continue
