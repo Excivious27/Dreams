@@ -4127,11 +4127,237 @@ def w221():
             save(scale_to(crop(rgba, bb), height=40), "ui", "crew_left")
 
 
+# ---- Prompts 11 batch 5: tiered mine floor sets, lift/shaft, keeper cards -----
+MINE_TIERS = {"w225_mine_deep.png": "deep", "w226_mine_crystal.png": "crystal", "w227_mine_dark.png": "dark", "w228_mine_heart.png": "heart"}
+
+def _split_run(rgba, b, tile_w, group, name, h=TILE2, cover=True):
+    """A merged run of tiles: cut evenly into round(width / tile_w) tiles."""
+    n = max(1, int(round((b[2] - b[0]) / float(tile_w))))
+    w = (b[2] - b[0]) / n
+    out = []
+    for i in range(n):
+        cb = (int(b[0] + i * w), b[1], int(b[0] + (i + 1) * w), b[3])
+        img = scale_to(crop(rgba, cb), width=TILE2, height=h, cover=cover)
+        save(img, group, "%s_%d" % (name, i))
+        out.append(img)
+    return len(out)
+
+def _mine_set(file, tier):
+    rgba = load_hue(file)
+    H, Wd = rgba.shape[:2]
+    rows = _rows_of(_comps_sorted(rgba, 150, 2), 60)
+    G = "tiles"
+    # Row 0: the fill strip (19 tiles of ~80 px).
+    fill = max(rows[0], key=lambda b: b[2] - b[0])
+    _split_run(rgba, fill, 80, G, "mine_%s_fill" % tier)
+    # Row 1: wall runs (two tiles tall). The widest run is the wall; the next
+    # wide run on the right is the wall-top caps; small pieces are ends/corners.
+    r1 = sorted(rows[1], key=lambda b: b[0])
+    wide = [b for b in r1 if (b[2] - b[0]) > 300]
+    if wide:
+        _split_run(rgba, wide[0], 80, G, "mine_%s_wall" % tier, h=TILE2 * 2)
+    if len(wide) > 1:
+        _split_run(rgba, wide[-1], 80, G, "mine_%s_walltop" % tier, h=TILE2 * 2)
+    ends = [b for b in r1 if (b[2] - b[0]) <= 300]
+    for i, b in enumerate(ends[:6]):
+        save(scale_to(crop(rgba, b), width=TILE2 * max(1, int(round((b[2] - b[0]) / 80.0))), height=TILE2 * 2, cover=True), G, "mine_%s_wallend_%d" % (tier, i))
+    # Row 2: decals.
+    for i, b in enumerate(rows[2]):
+        save(scale_to(crop(rgba, b), height=min(TILE2, int((b[3] - b[1]) * 0.5) + 4)), "props", "mine_%s_decal_%d" % (tier, i))
+    # Row 3: rocks (up to and including the largest), ore nodes (3 + 3), lamps,
+    # stalagmites, cart, skeleton, crystal cluster.
+    r3 = rows[3]
+    areas = [(b[2] - b[0]) * (b[3] - b[1]) for b in r3]
+    lamps = [i for i, b in enumerate(r3) if (b[3] - b[1]) > 1.3 * (b[2] - b[0]) and (b[3] - b[1]) > 60]
+    first_lamp = lamps[0] if lamps else len(r3)
+    pre = list(range(first_lamp))
+    big = max(pre, key=lambda i: areas[i]) if pre else 0
+    rocks = pre[:big + 1]
+    ores = pre[big + 1:]
+    for n, i in enumerate(rocks):
+        b = r3[i]
+        save(scale_to(crop(rgba, b), height=int(min(96, (b[3] - b[1]) * 0.7))), "props", "mine_%s_rock_%d" % (tier, n))
+    for n, i in enumerate(ores[:3]):
+        save(scale_to(crop(rgba, r3[i]), height=40), "props", "mine_%s_ore_a_%d" % (tier, n))
+    for n, i in enumerate(ores[3:6]):
+        save(scale_to(crop(rgba, r3[i]), height=40), "props", "mine_%s_ore_b_%d" % (tier, n))
+    post = list(range(first_lamp, len(r3)))
+    names = ["lamp_0", "lamp_1", "stalag_0", "stalag_1", "cart", "skeleton", "crystal"]
+    for n, i in enumerate(post[:7]):
+        b = r3[i]
+        save(scale_to(crop(rgba, b), height=int(min(110, (b[3] - b[1]) * 0.75))), "props", "mine_%s_%s" % (tier, names[n]))
+    # Rows 4+: bigger versions and break strips: keep the large rocks / nodes
+    # as hi-res props (first 4 of row 4 and row 5) for the keeper floors.
+    if len(rows) > 4:
+        for n, b in enumerate(sorted(rows[4], key=lambda b: b[0])[:4]):
+            save(scale_to(crop(rgba, b), height=int(min(128, (b[3] - b[1]) * 0.7))), "props", "mine_%s_bigrock_%d" % (tier, n))
+    if tier == "heart" and len(rows) > 6:
+        hearts = sorted([b for b in rows[-1] if (b[3] - b[1]) > 150], key=lambda b: b[0])
+        if hearts:
+            strip([scale_to(crop(rgba, b), height=200) for b in hearts], "props", "heart_crystal")
+
+def w225(): _mine_set("w225_mine_deep.png", "deep")
+def w226(): _mine_set("w226_mine_crystal.png", "crystal")
+def w227(): _mine_set("w227_mine_dark.png", "dark")
+def w228(): _mine_set("w228_mine_heart.png", "heart")
+
+def w229():
+    rgba = load_hue("w229_mine_lift_shaft.png")
+    rows = _rows_of(_comps_sorted(rgba, 300, 2), 70)
+    r0 = sorted(rows[0], key=lambda b: b[0])
+    # The big lift at left, then descend frames, arrive frames.
+    save(scale_to(crop(rgba, r0[0]), height=96), "props", "mine_lift")
+    rest = r0[1:]
+    half = len(rest) // 2
+    strip([scale_to(crop(rgba, b), height=96) for b in rest[:half]], "props", "mine_lift_descend")
+    strip([scale_to(crop(rgba, b), height=96) for b in rest[half:]], "props", "mine_lift_arrive")
+    r1 = sorted(rows[1], key=lambda b: b[0])
+    save(scale_to(crop(rgba, r1[0]), height=128), "buildings", "mine_winch_house")
+    for i, b in enumerate(r1[1:4]):
+        save(scale_to(crop(rgba, b), width=160), "props", "rope_bridge_%d" % i)
+    r2 = sorted(rows[2], key=lambda b: b[0])
+    strip([scale_to(crop(rgba, b), height=48) for b in r2[:8]], "fx", "shaft_reveal")
+    r3 = sorted(rows[3], key=lambda b: b[0])
+    for i, b in enumerate(r3[:4]):
+        save(scale_to(crop(rgba, b), height=64), "props", "shaft_open_%d" % i)
+    r4 = sorted(rows[4], key=lambda b: b[0])
+    cracks = [b for b in r4 if (b[2] - b[0]) > 120]
+    marks = [b for b in r4 if (b[2] - b[0]) <= 120]
+    for i, b in enumerate(cracks[:4]):
+        save(scale_to(crop(rgba, b), height=28), "props", "shaft_hint_%d" % i)
+    for i, b in enumerate(marks[:3]):
+        save(scale_to(crop(rgba, b), height=20), "ui", "map_" + ["lift", "shaft", "keeper"][i])
+
+def w230():
+    rgba = load_hue("w230_keeper_cards.png")
+    rows = _rows_of(_comps_sorted(rgba, 2000, 2), 60)
+    cards = [max(r, key=lambda b: b[2] - b[0]) for r in rows[:6]]
+    cards.sort(key=lambda b: b[1])
+    for i, b in enumerate(cards):
+        save(scale_to(crop(rgba, b), width=500), "ui", "card_keeper_%d" % i)
+    if len(rows) > 6:
+        for i, b in enumerate(sorted(rows[6], key=lambda b: b[0])[:6]):
+            save(scale_to(crop(rgba, b), height=96), "ui", "portrait_keeper_%d" % i)
+
+
+# ---- Prompts 11 batch 6: deep enemies, ability fx, tier overlays --------------
+ENEMY_SHEETS = {
+    "w232_enemy_deep_a.png": ("left", [("drip_crawler", [(40, 110), (140, 205), (245, 305)]), ("lantern_moth", [(370, 440), (470, 550), (575, 650)]), ("rust_knight", [(690, 770), (800, 880), (915, 995)])]),
+    "w233_enemy_crystal.png": ("right", [("shard_spider", [(60, 145), (205, 290)]), ("prism_wisp", [(380, 460), (500, 600)]), ("geode_golem", [(680, 760), (820, 920)])]),
+    "w234_enemy_dark.png": ("right", [("ash_hound", [(50, 150), (190, 300)]), ("void_eel", [(380, 480), (520, 640)]), ("obsidian_sentinel", [(700, 820), (850, 990)])]),
+    "w235_enemy_heart.png": ("left", [("dark_crystal_shard", [(40, 110), (140, 230)]), ("mirror", [(280, 370), (400, 490)]), ("light_eater", [(540, 620), (650, 740)]), ("dark_crystal2", [(780, 890), (900, 1010)])]),
+}
+ENEMY_ROW_NAMES = [[("idle", 4), ("walk", 4), ("attack", 99)], [("hurt", 2), ("die", 4), ("special", 99)], [("special2", 99)]]
+
+def _band_cells(rgba, y0, y1, x0, x1):
+    boxes = _components(rgba, (x0, y0, x1, y1), dilate=3, min_px=80)
+    boxes.sort(key=lambda b: b[0])
+    merged = []
+    for b in boxes:
+        b = tuple(b)
+        if merged and b[0] < merged[-1][2] - 4:
+            m0 = merged[-1]; merged[-1] = (min(m0[0], b[0]), min(m0[1], b[1]), max(m0[2], b[2]), max(m0[3], b[3]))
+        else:
+            merged.append(b)
+    hs = sorted(b[3] - b[1] for b in merged)
+    if hs:
+        med = hs[len(hs) // 2]
+        merged = [b for b in merged if (b[3] - b[1]) >= 0.45 * med]
+    return merged
+
+def _enemy_sheet(file):
+    rgba = load_hue(file)
+    H, Wd = rgba.shape[:2]
+    side, enemies = ENEMY_SHEETS[file]
+    fx0, fx1 = (235, Wd) if side == "left" else (0, 1335)
+    px0, px1 = (0, 235) if side == "left" else (1335, Wd)
+    for kind, bands in enemies:
+        G = "enemies/" + kind
+        for ri, (y0, y1) in enumerate(bands):
+            cells = _band_cells(rgba, y0 - 10, y1 + 10, fx0, fx1)
+            names = ENEMY_ROW_NAMES[min(ri, 2)]
+            i = 0
+            for name, n in names:
+                part = cells[i:i + n]
+                i += n
+                if part:
+                    strip([scale_to(crop(rgba, b), height=64) for b in part], G, name)
+        # Portrait: the biggest component on the portrait side within the block.
+        by0, by1 = bands[0][0] - 20, bands[-1][1] + 20
+        pb = _components(rgba, (px0, max(0, by0), px1, min(H, by1)), dilate=2, min_px=2000)
+        if pb:
+            pb = max(pb, key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))
+            save(scale_to(crop(rgba, pb), height=96), "portraits/" + kind, "neutral")
+            save(scale_to(crop(rgba, pb), height=96), "ui", "portrait_" + kind)
+
+def w232(): _enemy_sheet("w232_enemy_deep_a.png")
+def w233(): _enemy_sheet("w233_enemy_crystal.png")
+def w234(): _enemy_sheet("w234_enemy_dark.png")
+def w235(): _enemy_sheet("w235_enemy_heart.png")
+
+def w231():
+    rgba = load_hue("w231_fx_abilities.png")
+    H, Wd = rgba.shape[:2]
+    bands = [("lunge_tele", 10, 60), ("lunge_trail", 70, 125), ("shot_poison", 130, 175), ("shot_fire", 180, 225), ("shot_ice", 230, 275), ("shot_dark", 280, 325),
+             ("shield_up", 335, 395), ("shield_hold", 400, 450), ("shield_pop", 455, 505), ("summon", 510, 555), ("stomp", 560, 650), ("blink", 655, 705), ("enrage", 715, 770), ("regen", 775, 835), ("keeper_wake", 850, 1010)]
+    for name, y0, y1 in bands:
+        cells = _band_cells(rgba, y0, y1, 0, Wd)
+        if name.startswith("shot_"):
+            spin = [b for b in cells if (b[2] - b[0]) < 70]
+            imp = [b for b in cells if (b[2] - b[0]) >= 70]
+            if spin:
+                strip([scale_to(crop(rgba, b), height=24) for b in spin[:8]], "fx", name)
+            if imp:
+                strip([scale_to(crop(rgba, b), height=40) for b in imp[:1]], "fx", name + "_hit")
+            continue
+        h = {"stomp": 96, "keeper_wake": 128, "lunge_tele": 40, "lunge_trail": 40}.get(name, 48)
+        if cells:
+            strip([scale_to(crop(rgba, b), height=h) for b in cells[:12]], "fx", name)
+
+def w236():
+    rgba = load_hue("w236_tier_overlays.png")
+    H, Wd = rgba.shape[:2]
+    # Armour rows: figure + 3 pieces, four views per row.
+    for ti, (y0, y1, tier) in enumerate([(30, 140, "bronze"), (150, 260, "iron"), (270, 380, "crystal")]):
+        cells = _band_cells(rgba, y0, y1, 0, Wd)
+        figs = [b for b in cells if (b[3] - b[1]) > 80]
+        for vi, b in enumerate(figs[:4]):
+            save(scale_to(crop(rgba, b), height=64), "fx", "armor_%s_%s" % (tier, ["front", "side", "back", "side2"][vi]))
+        pieces = [b for b in cells if (b[3] - b[1]) <= 80]
+        for pi, b in enumerate(pieces[:3]):
+            save(scale_to(crop(rgba, b), height=24), "fx", "armor_%s_piece_%d" % (tier, pi))
+    for name, y0, y1 in [("aura_enraged", 390, 510), ("aura_shield", 515, 640)]:
+        cells = _band_cells(rgba, y0, y1, 0, Wd)
+        strip([scale_to(crop(rgba, b), height=64) for b in cells[:8]], "fx", name)
+    # Status strips: three per row, split by big x gaps.
+    def groups(cells, gap=60):
+        out = []
+        for b in cells:
+            if out and b[0] - out[-1][-1][2] < gap:
+                out[-1].append(b)
+            else:
+                out.append([b])
+        return out
+    r5 = groups(_band_cells(rgba, 650, 730, 0, Wd))
+    for gi, name in enumerate(["st_poison", "st_burn", "st_chill"]):
+        if gi < len(r5):
+            strip([scale_to(crop(rgba, b), height=48) for b in r5[gi][:6]], "fx", name)
+    r6 = groups(_band_cells(rgba, 755, 835, 0, Wd))
+    for gi, name in enumerate(["st_blind", "st_weak"]):
+        if gi < len(r6):
+            strip([scale_to(crop(rgba, b), height=48) for b in r6[gi][:6]], "fx", name)
+    if len(r6) > 2:
+        save(scale_to(crop(rgba, r6[2][0]), height=20), "ui", "guardian_crown")
+    r7 = groups(_band_cells(rgba, 850, 970, 0, Wd), 40)
+    for gi, g in enumerate(r7[:6]):
+        strip([scale_to(crop(rgba, b), height=48) for b in g[:4]], "fx", "tier_aura_%d" % gi)
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

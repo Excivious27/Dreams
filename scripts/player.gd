@@ -359,8 +359,33 @@ func go_to_cell(c: Vector2i, interact_there: bool) -> void:
 	_stuck_t = 0.0
 
 
+var _status_fx := {}  # status name -> AnimatedSprite2D overlay (fx/st_<name>)
+
+
+func _refresh_status_fx() -> void:
+	var active: Dictionary = GameState.run.get("status", {})
+	for k in _status_fx.keys():
+		if not active.has(k):
+			(_status_fx[k] as Node).queue_free()
+			_status_fx.erase(k)
+	for k in active:
+		if _status_fx.has(k) or not Art.has("fx", "st_" + str(k)):
+			continue
+		var a := AnimatedSprite2D.new()
+		a.sprite_frames = Art.frames("fx", {"a": "st_" + str(k)}, {"a": 8.0})
+		a.animation = "a"
+		a.scale = Vector2(0.5, 0.5)
+		a.position = Vector2(0, -13)
+		a.z_index = 2
+		a.modulate.a = 0.8
+		add_child(a)
+		a.play("a")
+		_status_fx[k] = a
+
+
 func _physics_process(delta: float) -> void:
 	if not is_puppet and map and not frozen:
+		_refresh_status_fx()
 		var sdmg := GameState.status_tick(delta)
 		if sdmg > 0:
 			GameState.run["hp"] = int(GameState.run["hp"]) - sdmg

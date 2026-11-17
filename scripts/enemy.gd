@@ -50,6 +50,27 @@ var _regen_t := 0.0
 var _since_hit := 0.0
 var _enraged := false
 var _summoned := {}
+var _aura: AnimatedSprite2D = null   # shield / enrage overlay from fx
+
+
+func _set_aura(name: String) -> void:
+	if _aura and _aura.name == name:
+		return
+	if _aura:
+		_aura.queue_free()
+		_aura = null
+	if name == "" or not Art.has("fx", name):
+		return
+	_aura = AnimatedSprite2D.new()
+	_aura.name = name
+	_aura.sprite_frames = Art.frames("fx", {"a": name}, {"a": 10.0})
+	_aura.animation = "a"
+	_aura.scale = Vector2(0.5, 0.5)
+	_aura.position = Vector2(0, -12)
+	_aura.z_index = 1
+	_aura.modulate.a = 0.85
+	add_child(_aura)
+	_aura.play("a")
 
 
 func setup(k: String, tier_override := -1) -> void:
@@ -315,21 +336,30 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> 
 		speed *= 1.35
 		damage += 1
 		map.emote(self, "angry", 1.0, -26.0)
+		map.fx("enrage", position + Vector2(0, -10), 12.0, 0.6)
+	if _shield > 0.0:
+		_set_aura("aura_shield")
+	elif _enraged:
+		_set_aura("aura_enraged")
+	elif _aura:
+		_set_aura("")
 	if abilities.has("regen") and _since_hit > 3.0 and hp < max_hp:
 		_regen_t += delta
 		if _regen_t >= 2.0:
 			_regen_t = 0.0
 			hp = mini(max_hp, hp + maxi(1, max_hp / 25))
+			map.fx("regen", position + Vector2(0, -8), 12.0, 0.5)
 	if abilities.has("shield") and _shield <= 0.0 and _shield_cd <= 0.0 and dist < 60.0:
 		_shield = 1.4
 		_shield_cd = 6.0
-		map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.6)
+		map.fx("shield_up" if Art.has("fx", "shield_up") else "sparkle", position + Vector2(0, -12), 14.0, 0.5)
 	if _lunge_tele > 0.0:
 		_lunge_tele -= delta
 		if _lunge_tele <= 0.0:
 			_lunge = 0.28
 			_lunge_dir = to.normalized()
 			_stun = 0.0
+			map.fx("lunge_trail" if Art.has("fx", "lunge_trail") else "poof", position, 16.0, 0.5, to.x < 0)
 		return true
 	if _lunge > 0.0:
 		_lunge -= delta
@@ -343,10 +373,11 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> 
 	if abilities.has("lunge") and _lunge_cd <= 0.0 and _stun <= 0.0 and dist > 28.0 and dist < 70.0 and randf() < 0.6 * delta:
 		_lunge_tele = 0.25
 		_lunge_cd = 3.0
+		map.fx("lunge_tele" if Art.has("fx", "lunge_tele") else "poof", position + Vector2(0, -4), 20.0, 0.5, to.x < 0)
 	if abilities.has("stomp") and _stomp_cd <= 0.0 and dist < 26.0 and _stun <= 0.0:
 		_stomp_cd = 3.5
 		_windup = 0.0
-		map.fx("ripple_ring", position, 16.0, 0.8)
+		map.fx("stomp" if Art.has("fx", "stomp") else "ripple_ring", position, 16.0, 0.7)
 		map.shake(2.0)
 		if player.invuln <= 0.0:
 			player.take_damage(GameState.enemy_damage(damage + 1), position)
@@ -366,6 +397,7 @@ func _shoot(dir: Vector2) -> void:
 	sh.inflicts = inflicts
 	sh.position = position + Vector2(0, -8)
 	sh.colour = Color("c8ff70") if inflicts == "poison" else (Color("ff9a40") if inflicts == "burn" else (Color("9fe0ff") if inflicts == "chill" else Color("e0c0ff")))
+	sh.flavour = {"poison": "poison", "burn": "fire", "chill": "ice", "slow": "ice"}.get(inflicts, "dark")
 	map.add_child(sh)
 	if _sprite and _sprite.sprite_frames.has_animation("attack"):
 		_sprite.play("attack")
@@ -377,15 +409,16 @@ func _blink() -> void:
 		var c := position + Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() * randf_range(36.0, 56.0)
 		var feet := Rect2(c + Vector2(-4, -3), Vector2(8, 3))
 		if map.in_content(map.world_to_cell(c)) and not map.rect_blocked(feet):
-			map.fx("poof", position + Vector2(0, -8), 14.0, 0.5)
+			map.fx("blink" if Art.has("fx", "blink") else "poof", position + Vector2(0, -8), 16.0, 0.5)
 			position = c
 			_knock = Vector2.ZERO
-			map.fx("poof", position + Vector2(0, -8), 14.0, 0.5)
+			map.fx("blink" if Art.has("fx", "blink") else "poof", position + Vector2(0, -8), 16.0, 0.5)
 			return
 
 
 func _summon() -> void:
-	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp"}.get(kind, "slime")
+	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp", "prism_wisp": "shard", "light_eater": "dark_crystal_shard"}.get(kind, "slime")
+	map.fx("summon" if Art.has("fx", "summon") else "poof", position, 12.0, 0.7)
 	for i in 2:
 		var at := position + Vector2(randf_range(-24, 24), randf_range(-16, 16))
 		var e := map.spawn_enemy(str(minion), at, maxi(0, tier - 1))
@@ -403,6 +436,17 @@ class Shot extends Node2D:
 	var inflicts := ""
 	var life := 1.6
 	var colour := Color.WHITE
+	var flavour := "dark"
+	var _spr: AnimatedSprite2D = null
+
+	func _ready() -> void:
+		if Art.has("fx", "shot_" + flavour):
+			_spr = AnimatedSprite2D.new()
+			_spr.sprite_frames = Art.frames("fx", {"a": "shot_" + flavour}, {"a": 14.0})
+			_spr.animation = "a"
+			_spr.scale = Vector2(0.5, 0.5)
+			add_child(_spr)
+			_spr.play("a")
 
 	func _process(delta: float) -> void:
 		life -= delta
@@ -414,11 +458,13 @@ class Shot extends Node2D:
 				GameState.status_apply(inflicts, tier)
 			life = 0.0
 		if life <= 0.0 or map.rect_blocked(Rect2(position + Vector2(-2, -1), Vector2(4, 2))):
-			map.fx("poof", position, 14.0, 0.35)
+			map.fx("shot_%s_hit" % flavour if Art.has("fx", "shot_%s_hit" % flavour) else "poof", position, 14.0, 0.4)
 			queue_free()
 		queue_redraw()
 
 	func _draw() -> void:
+		if _spr:
+			return
 		draw_circle(Vector2.ZERO, 3.0, colour)
 		draw_circle(Vector2.ZERO, 1.5, Color(1, 1, 1, 0.8))
 
@@ -459,6 +505,9 @@ func _draw() -> void:
 	if tele != "" and Art.has("ui", "tele_" + tele):
 		var tt := Art.tex("ui", "tele_" + tele)
 		draw_texture(tt, Vector2(-tt.get_width() / 2.0, (-34.0 if max_hp < 30 else -66.0) - tt.get_height()))
+	if is_guardian and Art.has("ui", "guardian_crown"):
+		var cr := Art.tex("ui", "guardian_crown")
+		draw_texture_rect(cr, Rect2(-6, (-30.0 if max_hp < 30 else -60.0) - 40, 12, 10), false)
 	if is_guardian and Art.has("ui", "keeper_crest_0"):
 		var kc := Art.tex("ui", "keeper_crest_%d" % clampi(tier, 0, 5))
 		draw_texture_rect(kc, Rect2(-8, (-30.0 if max_hp < 30 else -60.0) - 22, 16, 16), false)

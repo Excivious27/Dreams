@@ -167,28 +167,28 @@
     "hill_wolf"
    ],
    [
-    "golem",
-    "shard",
-    "rock_crab",
+    "drip_crawler",
+    "lantern_moth",
+    "rust_knight",
+    "golem"
+   ],
+   [
+    "shard_spider",
+    "prism_wisp",
+    "geode_golem",
     "knight"
    ],
    [
-    "golem",
-    "ice_wisp",
-    "knight",
-    "river_serpent"
-   ],
-   [
-    "quarry_golem",
-    "ruin_guardian",
-    "ice_wisp",
+    "ash_hound",
+    "void_eel",
+    "obsidian_sentinel",
     "bog_hag"
    ],
    [
-    "ruin_guardian",
     "dark_crystal_shard",
-    "bog_hag",
-    "knight"
+    "mirror",
+    "light_eater",
+    "obsidian_sentinel"
    ]
   ],
   "ores": [

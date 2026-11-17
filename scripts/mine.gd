@@ -227,6 +227,14 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	return false
 
 
+## Prompts-11 tiered floor set for this floor ("" = use the older variants).
+func _tier_set() -> String:
+	var ts: String = {2: "deep", 3: "crystal", 4: "dark", 5: "heart"}.get(mine_tier, "")
+	if ts != "" and Art.has("tiles", "mine_%s_fill_0" % ts):
+		return str(ts)
+	return ""
+
+
 func _variant() -> String:
 	if floor_no >= 10:
 		return "lava"
@@ -245,7 +253,41 @@ func draw_map() -> void:
 			if str(things[c].get("type", "")) == "water":
 				wc[c] = true
 		draw_water(wc, "grass")
-	if Art.has("tiles", "mf_" + v) and Art.has("tiles", "mw_" + v):
+	var ts := _tier_set()
+	if ts != "":
+		var nfill := 0
+		while Art.has("tiles", "mine_%s_fill_%d" % [ts, nfill]):
+			nfill += 1
+		var nwall := 0
+		while Art.has("tiles", "mine_%s_wall_%d" % [ts, nwall]):
+			nwall += 1
+		var ntop := 0
+		while Art.has("tiles", "mine_%s_walltop_%d" % [ts, ntop]):
+			ntop += 1
+		for y in range(1, rows - 1):
+			for x in range(1, cols - 1):
+				var h := absi((x * 73856093) ^ (y * 19349663) ^ floor_no)
+				Art.draw_tile(self, "tiles", "mine_%s_fill_%d" % [ts, h % maxi(1, nfill)], Vector2(x * TILE, y * TILE), 0)
+		# Top wall: two tiles tall, standing on row 0 and rising into the pad.
+		for x in range(0, cols):
+			var h := absi((x * 2654435761) ^ floor_no)
+			var t := Art.tex("tiles", "mine_%s_wall_%d" % [ts, h % maxi(1, nwall)])
+			if t:
+				draw_texture_rect(t, Rect2(x * TILE, -TILE, TILE, TILE * 2), false)
+		# Sides and bottom: the cap tiles.
+		for y in range(1, rows):
+			for x in [0, cols - 1]:
+				var h2 := absi((x * 83492791) ^ (y * 19349663))
+				var t2 := Art.tex("tiles", "mine_%s_walltop_%d" % [ts, h2 % maxi(1, ntop)])
+				if t2:
+					draw_texture_rect(t2, Rect2(x * TILE, (y - 1) * TILE, TILE, TILE * 2), false)
+		for x in range(1, cols - 1):
+			var h3 := absi((x * 97) ^ (rows * 19349663))
+			var t3 := Art.tex("tiles", "mine_%s_walltop_%d" % [ts, h3 % maxi(1, ntop)])
+			if t3:
+				draw_texture_rect(t3, Rect2(x * TILE, (rows - 2) * TILE, TILE, TILE * 2), false)
+		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.03, 0.02, 0.08, 0.1 + 0.02 * mini(floor_no, 10)))
+	elif Art.has("tiles", "mf_" + v) and Art.has("tiles", "mw_" + v):
 		draw_tileset_rect("mf_" + v, Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
 		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.15 + 0.03 * mini(floor_no, 8)))
 		var w := "mw_" + v
@@ -286,6 +328,8 @@ func draw_map() -> void:
 		for y in rows:
 			for x in cols:
 				draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("3b3542") if (x + y) % 2 == 0 else Color("433c4b"))
+	if not _way_open and Art.has("props", "shaft_hint_0") and not things.has(_ladder):
+		Art.draw_prop(self, "props", "shaft_hint_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3), cell_center(_ladder) + Vector2(0, 6))
 	for k in things:
 		var t: Dictionary = things[k]
 		var p := cell_center(k)
@@ -295,12 +339,14 @@ func draw_map() -> void:
 					continue
 				draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
 			"lift":
-				if not Art.draw_prop(self, "props", "cart_full", p):
+				if not Art.draw_prop(self, "props", "mine_lift", p + Vector2(0, 2)) and not Art.draw_prop(self, "props", "cart_full", p):
 					draw_rect(Rect2(p.x - 7, p.y - 12, 14, 12), Color("5a4a3a"))
 			"up", "down":
 				var nm := "ladder_up" if str(t["type"]) == "up" else "ladder_down"
 				if Art.has("props", "ladder_a"):
 					nm = "ladder_a" if str(t["type"]) == "up" else "shaft"
+				if str(t["type"]) == "down" and Art.has("props", "shaft_open_0"):
+					nm = "shaft_open_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3)
 				if not Art.draw_prop(self, "props", nm, p):
 					draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
 	if not Art.has("tiles", "mine_floor"):
@@ -312,6 +358,60 @@ func draw_map() -> void:
 
 
 func _place_props() -> void:
+	var ts := _tier_set()
+	if ts != "":
+		var nrock := 0
+		while Art.has("props", "mine_%s_rock_%d" % [ts, nrock]):
+			nrock += 1
+		var ore_sets := {"deep": {"iron": "a", "gold": "b"}, "crystal": {"shard": "a", "gold": "b"}, "dark": {"dark": "a", "shard": "b"}, "heart": {"shard": "a", "dark": "b"}}
+		for k in things:
+			var t: Dictionary = things[k]
+			if str(t.get("type", "")) != "rock":
+				continue
+			var ore := str(t["ore"])
+			var nm := ""
+			var oset: Dictionary = ore_sets.get(ts, {})
+			if oset.has(ore) and Art.has("props", "mine_%s_ore_%s_0" % [ts, oset[ore]]):
+				nm = "mine_%s_ore_%s_0" % [ts, oset[ore]]
+			elif ore != "stone" and Art.has("props", "node_" + ore):
+				nm = "node_" + ore
+			elif nrock > 0:
+				nm = "mine_%s_rock_%d" % [ts, absi((k.x * 7 + k.y * 13)) % maxi(1, mini(nrock, 5))]
+			if nm != "":
+				prop("props", nm, k)
+		var rng := RandomNumberGenerator.new()
+		rng.seed = 4100 + floor_no
+		var ndec := 0
+		while Art.has("props", "mine_%s_decal_%d" % [ts, ndec]):
+			ndec += 1
+		for i in 8:
+			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
+			if not things.has(c) and not blocked.has(c) and ndec > 0:
+				var sp := prop("props", "mine_%s_decal_%d" % [ts, rng.randi_range(0, ndec - 1)], c, 0, 0.0, false)
+				if sp:
+					sp.z_index = -1
+		for x in [2, cols - 3]:
+			var c := Vector2i(x, 1)
+			if not things.has(c) and Art.has("props", "mine_%s_lamp_0" % ts):
+				prop("props", "mine_%s_lamp_%d" % [ts, x % 2], c)
+		for i in 2:
+			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
+			if not things.has(c) and not blocked.has(c) and Art.has("props", "mine_%s_stalag_0" % ts):
+				prop("props", "mine_%s_stalag_%d" % [ts, i], c)
+		if floor_no % 2 == 0 and Art.has("props", "mine_%s_cart" % ts):
+			prop("props", "mine_%s_cart" % ts, Vector2i(2, rows - 3))
+			blocked[Vector2i(2, rows - 3)] = true
+		if floor_no % 5 == 0 and Art.has("props", "mine_%s_skeleton" % ts):
+			prop("props", "mine_%s_skeleton" % ts, Vector2i(cols - 3, 2))
+			blocked[Vector2i(cols - 3, 2)] = true
+			set_thing(cols - 3, 2, {"type": "skeleton", "hint": "A: an old miner"})
+		if floor_no % 3 == 0 and Art.has("props", "mine_%s_crystal" % ts):
+			var c := Vector2i(rng.randi_range(3, cols - 4), rng.randi_range(3, rows - 4))
+			if not things.has(c) and not blocked.has(c):
+				prop("props", "mine_%s_crystal" % ts, c)
+		if ts == "heart" and floor_no >= 21 and Art.has("props", "heart_crystal"):
+			anim_prop("props", "heart_crystal", Vector2i(cols / 2, 4), 2, 3.0, true, 0.5)
+		return
 	if Art.has("props", "ore_copper"):
 		var v := _variant()
 		var deep := Art.has("props", "node_copper")
@@ -390,8 +490,8 @@ func _summon_guardian() -> void:
 	if _grotto:
 		at = cell_center(Vector2i(cols / 2, 3))
 	shake(3.0)
-	fx("boss_shockwave", at, 14.0, 0.9)
-	await get_tree().create_timer(0.4).timeout
+	fx("keeper_wake" if Art.has("fx", "keeper_wake") else "boss_shockwave", at, 12.0, 0.8)
+	await get_tree().create_timer(0.9 if Art.has("fx", "keeper_wake") else 0.4).timeout
 	# Never weaker than its native tier; floor 1's golem is still a golem.
 	_guardian = spawn_enemy(kind, at, maxi(mine_tier, GameState.enemy_tier(kind)))
 	_guardian.is_guardian = true

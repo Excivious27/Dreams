@@ -53,7 +53,9 @@ func _run() -> void:
 		await frames(1)
 		if m.get("_guardian") != null:
 			break
-	await frames(10)
+	for w in 120:
+		if m.get("_guardian") != null: break
+		await frames(1)
 	var g: Enemy = m.get("_guardian")
 	check(g != null, "keeper woke after %d rocks (threshold %d)" % [broke, m.call("_threshold")])
 	if g:
