@@ -2199,7 +2199,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Knuckles, a fedora.",
+    "desc": "1 job at once, normal speed, recipes to tier 2. Knuckles, a fedora, rounds.",
     "price": 1080,
     "art_missing": false
    },
@@ -2215,7 +2215,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Crowbar, bat, suits.",
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Crowbar, bat, six-shooter, suits.",
     "price": 4190,
     "unlock": {
      "progress": 1,
@@ -2238,7 +2238,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Chrome, padding.",
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Chrome, tommy gun, scattergun.",
     "price": 7550,
     "unlock": {
      "progress": 2,

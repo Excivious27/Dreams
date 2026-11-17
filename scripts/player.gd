@@ -791,7 +791,7 @@ func _swing() -> void:
 			face_toward(best.position)
 	_busy = true
 	_busy_t = 0.0
-	_attack_cd = 0.3 * GameState.status_swing()
+	_attack_cd = 0.3 * GameState.status_swing() * float(GameState.items.get(GameState.held_tool(), {}).get("cd", 1.0))
 	_attack_hit_done = false
 	_combo = (_combo + 1) % 3
 	velocity = Vector2.ZERO
@@ -840,14 +840,76 @@ func _attack_hit() -> void:
 		var aim := GameState.status_aim()
 		if aim > 0.0:
 			center += facing_dir().orthogonal() * randf_range(-aim, aim)
+		var wd: Dictionary = GameState.items.get(GameState.held_tool(), {})
+		if wd.has("range"):
+			if GameState.count("rounds") > 0:
+				_fire(wd, aim)
+				return
+			if not _dry_told:
+				_dry_told = true
+				map.hud.toast("Click. Out of rounds: the Street Armory makes more.", Color(1, 0.85, 0.6))
 		var box := Rect2(center - Vector2(14, 14), Vector2(28, 28))
-		var hit := map.attack_at(box, maxi(1, GameState.sword_damage() + (1 if _combo == 0 else 0) + GameState.status_damage_mod()), position)
+		var dmg := GameState.sword_damage() + (1 if _combo == 0 else 0) + GameState.status_damage_mod()
+		if wd.has("range"):
+			dmg = int(dmg / 2)  # swung like a club
+		var hit := map.attack_at(box, maxi(1, dmg), position)
 		if hit:
 			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
 		_swing_arc(center)
 		if hit:
 			map.hitstop = 0.05
 			map.shake(1.5)
+
+
+var _dry_told := false
+
+
+## A shot: one round, the first enemy down the line (everyone close, for a
+## scattergun). A flash, a tracer and a puff of dust; nothing graphic.
+func _fire(wd: Dictionary, aim: float) -> void:
+	GameState.add_item("rounds", -1)
+	_dry_told = false
+	var dir := facing_dir()
+	var muzzle := position + dir * 10.0 + Vector2(0, -8)
+	var reach := float(wd.get("range", 100.0))
+	var dmg := maxi(1, GameState.sword_damage() + GameState.status_damage_mod())
+	var targets: Array = []
+	for e in map.enemies:
+		if not is_instance_valid(e):
+			continue
+		var to: Vector2 = e.position + Vector2(0, -6) - muzzle
+		var along := to.dot(dir)
+		var off := absf(to.dot(dir.orthogonal()))
+		if along < -4.0 or along > reach:
+			continue
+		if off <= (along * 0.6 + 12.0 if bool(wd.get("spread", false)) else 13.0 + aim):
+			targets.append([along, e])
+	targets.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
+	if not bool(wd.get("spread", false)) and targets.size() > 1:
+		targets = [targets[0]]
+	var end := muzzle + dir * reach
+	var hit := false
+	for t in targets:
+		var e: Node2D = t[1]
+		if not bool(wd.get("spread", false)):
+			end = e.position + Vector2(0, -6)
+		if map.attack_at(Rect2(e.position - Vector2(8, 14), Vector2(16, 18)), dmg, position):
+			hit = true
+			map.fx("poof", e.position + Vector2(0, -8), 8.0, 0.3)
+	var ln := Line2D.new()
+	ln.width = 1.0
+	ln.default_color = Color(1, 0.95, 0.6, 0.9)
+	ln.points = PackedVector2Array([muzzle, end])
+	ln.z_index = 4
+	map.add_child(ln)
+	var tw := ln.create_tween()
+	tw.tween_property(ln, "modulate:a", 0.0, 0.09)
+	tw.tween_callback(ln.queue_free)
+	map.fx("sparkle", muzzle, 6.0, 0.15)
+	Music.instance(get_tree()).sfx("thud")
+	if hit:
+		map.hitstop = 0.03
+	map.shake(1.0)
 
 
 ## Stardew-style sword arc in the facing direction.

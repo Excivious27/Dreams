@@ -141,11 +141,28 @@ func _run() -> void:
 		names.append(str(rc["id"]))
 	check("getaway_car" in names and "crystal_sled" not in names, "arc vehicles: getaway car yes, sled no (%s)" % str(names))
 	check(GameState.is_sword("crowbar") and int(GameState.items["neon_cleaver"]["damage"]) > int(GameState.items["crystal_sword"]["damage"]), "street weapons swing like swords")
+	check(GameState.is_sword("six_shooter") and GameState.items["six_shooter"].has("range") and GameState.items.has("rounds"), "guns are ranged weapons that use rounds")
 	check(Racket.risk("bills_crude") > Racket.risk("bills_perfect"), "better bills are safer")
 	GameState.run["heat"] = 4
 	check(Racket.risk("bills_crude") > 0.45, "heat makes every bill riskier")
 	m = await _farm()
 	GameState.run["builds"] = GameState.run.get("builds", {})
+	# A shot uses a round and hits down the line.
+	GameState.add_tool("six_shooter")
+	GameState.run["toolbar"][0] = "six_shooter"
+	GameState.select_slot(0)
+	GameState.add_item("rounds", 3)
+	m.player.facing = "right"
+	var foe := m.spawn_enemy("thug_brute", m.player.position + Vector2(70, 0))
+	for i in 3:
+		await process_frame
+	foe.position = m.player.position + Vector2(70, 0)
+	var hp0: int = foe.hp
+	m.player._attack_hit()
+	check(GameState.count("rounds") == 2 and foe.hp < hp0, "a shot spends a round and hits at range (%d → %d)" % [hp0, foe.hp])
+	GameState.add_item("rounds", -2)
+	m.player._attack_hit()
+	check(GameState.count("rounds") == 0, "no rounds: it's just a club")
 	GameState.add_item("bills_crude", 1)
 	m.use_consumable("bills_crude")
 	check(GameState.count("bills_crude") == 1, "bills can't be passed on your own farm")

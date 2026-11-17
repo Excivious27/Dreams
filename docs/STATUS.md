@@ -11,6 +11,7 @@
 - **Stations (both arcs):** workbench, sawmill, furnace, anvil, loom, tannery, kitchen, keg, press, kiln, jeweler, cauldron (magic potions), resonator, garage (vehicles), launchpad (rocket), mill.
 - **Gangster arc only (`"arc": "gangsters"`):** print_shop, armory, soda, laundromat, training. `scripts/racket.gd` holds heat, passing bills, forged permits, the wash and sparring.
 - **Penguin arc only (`"arc": "penguins"`):** shaper, litter, campfire (stations); pool, burrow, shrine (buildings). `scripts/sanctuary.gd` holds overnight gifts (`run["gifts"]`), the shrine's Meow Pow Wow ranks and daily practice. Litter boxes read `radius` and `stun` from the item.
+- **Guns (gangster arc):** weapons with `range` fire from `player._fire()`: one `rounds` a shot, first enemy down the line (`spread` hits everyone close), tracer and dust puff only. No rounds: half-damage club.
 - **Data is generated:** `python3 tools/gen_stations.py` rebuilds the station entries, recipe books and goods. Edit that file, not the JSON, for station changes.
 - **Jobs:** `run["jobs"][station]` is a list (old single-job saves migrate). Batches of 1 / 5 / max. Keg jobs take days; everything else is ready by morning.
 - **Town benches:** `Crafting.run(m, station, title, "town")`; tier from the keeper's hearts, fee per piece. `"smith"` and `"alchemy"` are aliases.

@@ -83,6 +83,11 @@ for id, name, slot, stats, val, tier in [
 # Gangster weapons (melee; "weapon" makes them swing like a sword) and street armor.
 for id, name, dmg, val, tier in [('brass_knuckles', 'Brass Knuckles', 3, 150, 1), ('crowbar', 'Crowbar', 4, 320, 2), ('lucky_bat', 'Lucky Bat', 6, 900, 2), ('chrome_blade', 'Chrome Blade', 8, 2200, 3), ('neon_cleaver', 'Neon Cleaver', 11, 5200, 4)]:
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters')
+# Guns (gangster arc): ranged, one round a shot; out of rounds they're a clumsy club. Cartoon puffs, no blood.
+item('rounds', 'Rounds', 'craft', 3, 1, arc='gangsters', desc='One per shot.')
+for id, name, dmg, val, tier, extra in [('six_shooter', 'Six-Shooter', 4, 700, 2, {'range': 110}), ('scattergun', 'Scattergun', 6, 2000, 3, {'range': 64, 'spread': True, 'cd': 1.6}),
+                                         ('tommy_gun', 'Tommy Gun', 5, 2600, 3, {'range': 120, 'cd': 0.45}), ('gold_revolver', 'Gold Revolver', 10, 5600, 4, {'range': 140})]:
+    item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters', **extra)
 for id, name, slot, stats, val, tier in [
  ('fedora', 'Fedora', 'head', {'defense': 1, 'luck': 1}, 140, 1), ('shades', 'Shades', 'head', {'luck': 2, 'speed': 1}, 520, 3),
  ('pinstripe_suit', 'Pinstripe Suit', 'body', {'defense': 2, 'luck': 1}, 380, 2), ('padded_vest', 'Padded Vest', 'body', {'defense': 4}, 900, 3), ('armored_suit', 'Armored Suit', 'body', {'defense': 6, 'luck': 1}, 3200, 4),
@@ -204,9 +209,9 @@ station('print_shop', 'Back-Room Press', 'operation', [3, 20], 'bartering', 'Pri
  ('Engraving Press', ['press_3'], {'plating': 4, 'spring': 6, 'fine_fabric': 4}, d(2, 'Fine bills.')),
  ('The Mint', ['press_4'], {'dark_bar': 4, 'gold_bar': 6, 'crystal_glass': 4}, d(3, 'Perfect bills.'))], arc='gangsters', book='print')
 station('armory', 'Street Armory', 'operation', [3, 22], 'combat', 'Fit', 'Vic', [
- ('Trunk of Tools', ['armory_1', 'forge_anvil_tools'], {'plank': 12, 'copper_bar': 4, 'leather': 2}, d(0, 'Knuckles, a fedora.')),
- ('Back-Alley Armory', ['armory_2', 'forge_anvil_tools'], {'iron_bar': 8, 'leather': 6, 'cotton_cloth': 4}, d(1, 'Crowbar, bat, suits.')),
- ("Fixer's Workshop", ['armory_3', 'forge_anvil_tools'], {'steel_bar': 10, 'fine_leather': 4, 'gear': 6}, d(2, 'Chrome, padding.')),
+ ('Trunk of Tools', ['armory_1', 'forge_anvil_tools'], {'plank': 12, 'copper_bar': 4, 'leather': 2}, d(0, 'Knuckles, a fedora, rounds.')),
+ ('Back-Alley Armory', ['armory_2', 'forge_anvil_tools'], {'iron_bar': 8, 'leather': 6, 'cotton_cloth': 4}, d(1, 'Crowbar, bat, six-shooter, suits.')),
+ ("Fixer's Workshop", ['armory_3', 'forge_anvil_tools'], {'steel_bar': 10, 'fine_leather': 4, 'gear': 6}, d(2, 'Chrome, tommy gun, scattergun.')),
  ('The Vault', ['armory_4', 'forge_anvil_tools'], {'dark_bar': 8, 'plating': 6, 'fine_fabric': 6}, d(3, 'Neon and armor.'))], arc='gangsters')
 station('soda', 'Soda Fountain', 'operation', [6, 23], 'bartering', 'Mix', 'Mama Rosa', [
  ('Soda Cart', ['soda_1'], {'plank': 14, 'glass': 6, 'copper_bar': 2}, d(0, 'Root beer. A front with a real queue.')),
@@ -316,7 +321,7 @@ books['rocket'] = [rc('fuel_cell', 'Fuel Cell', {'lamp_oil': 4, 'glass': 2, 'coa
 books['print'] = [rc('blank_stock', 'Blank Stock', {'fiber': 6, 'cloth': 1}, n=4), rc('ink', 'Printing Ink', {'coal': 1, 'sap': 1}, n=2), rc('bills_crude', 'Crude Bills', {'blank_stock': 2, 'ink': 1}, n=2),
  rc('bills_passable', 'Passable Bills', {'blank_stock': 2, 'ink': 2, 'linen': 1}, tier=2, n=2), rc('forged_permit', 'Forged Permit', {'blank_stock': 3, 'ink': 2, 'old_coin': 1}, tier=2),
  rc('bills_fine', 'Fine Bills', {'blank_stock': 2, 'ink': 2, 'fine_fabric': 1}, tier=3, n=2), rc('bills_perfect', 'Perfect Bills', {'blank_stock': 2, 'ink': 3, 'moonweave': 1, 'gold_bar': 1}, tier=5, n=4)]
-books['armory'] = [rc('brass_knuckles', 'Brass Knuckles', {'copper_bar': 3}, tool=True), rc('fedora', 'Fedora', {'cloth': 3, 'leather': 1}), rc('crowbar', 'Crowbar', {'iron_bar': 3}, tier=2, tool=True),
+books['armory'] = [rc('brass_knuckles', 'Brass Knuckles', {'copper_bar': 3}, tool=True), rc('rounds', 'Rounds', {'copper_bar': 1, 'coal': 1}, n=30), rc('six_shooter', 'Six-Shooter', {'iron_bar': 4, 'gear': 2, 'hardwood_plank': 1}, tier=2, tool=True), rc('scattergun', 'Scattergun', {'steel_bar': 4, 'spring': 3, 'hardwood_plank': 2}, tier=3, tool=True), rc('tommy_gun', 'Tommy Gun', {'steel_bar': 5, 'spring': 6, 'gear': 6}, tier=3, tool=True), rc('gold_revolver', 'Gold Revolver', {'gold_bar': 4, 'dark_bar': 2, 'spring': 4}, tier=4, tool=True), rc('fedora', 'Fedora', {'cloth': 3, 'leather': 1}), rc('crowbar', 'Crowbar', {'iron_bar': 3}, tier=2, tool=True),
  rc('lucky_bat', 'Lucky Bat', {'hardwood_plank': 3, 'nails': 10, 'horseshoe': 1}, tier=2, tool=True), rc('pinstripe_suit', 'Pinstripe Suit', {'cotton_cloth': 4, 'linen': 2}, tier=2),
  rc('steel_toes', 'Steel-Toe Shoes', {'leather': 2, 'iron_bar': 1}, tier=2), rc('knuckle_gloves', 'Knuckle Gloves', {'leather': 2, 'copper_bar': 2}, tier=2),
  rc('chrome_blade', 'Chrome Blade', {'steel_bar': 5, 'plating': 1, 'fine_leather': 1}, tier=3, tool=True), rc('padded_vest', 'Padded Vest', {'fine_leather': 3, 'cotton_cloth': 4, 'plating': 1}, tier=3),

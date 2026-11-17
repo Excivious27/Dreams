@@ -69,7 +69,7 @@
 
 ## Gangster arc only: the operation
 
-All-ages caper rules: no guns, nothing mature. The weapons are hand tools and the drinks are soda.
+All-ages caper rules: no blood, nothing graphic, nothing mature. Shots are a flash and a puff of dust, and the drinks are soda.
 
 | Station | Tiers | What it does |
 |---|---|---|
@@ -94,7 +94,7 @@ If a bill is noticed you lose it, pay half its value to smooth things over, a sh
 
 **Forged Permit:** stands in for a building permit from Alder. One in four is spotted, which costs you a point of Heat.
 
-**Street Armory:** Brass Knuckles, Crowbar, Lucky Bat, Chrome Blade, Neon Cleaver; Fedora, Shades, Pinstripe Suit, Padded Vest, Armored Suit, Steel-Toe Shoes, Knuckle Gloves, Trench Coat, Driver's Belt, Gold Chain.
+**Street Armory:** Brass Knuckles, Crowbar, Lucky Bat, Chrome Blade, Neon Cleaver; four guns (Six-Shooter, Scattergun, Tommy Gun, Gold Revolver) that hit at range and use one Round per shot (the armory makes Rounds 30 at a time; with none left the gun is just a weak club); Fedora, Shades, Pinstripe Suit, Padded Vest, Armored Suit, Steel-Toe Shoes, Knuckle Gloves, Trench Coat, Driver's Belt, Gold Chain.
 
 **Recruit Training Center:** spar once a day for combat experience. From tier 2, every recruited crew member's perk counts one loyalty step higher (two at tier 3), and building it raises your max health.
 
@@ -111,7 +111,7 @@ The penguins' own shelf on the Plans board, drawn from the book.
 | Merkitty Pool | Tide Pool → Singing Pool → Moon Grotto | The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you. |
 | Crystal Baby Burrow | Cosy Burrow → Baby Dig → Stomping Grounds | The babies you turned back dig for you overnight: stone, coal, copper, a shard. |
 
-- **Crystal Shaper:** Icicle Blade, Fish-Bone Sabre, Aurora Blade, Prism Lance, Starheart Blade; Snow Goggles, Aurora Hood, Puffy Parka, Crystal Parka, Starlight Mantle, Ice Cleats, Mitten Paws, Scarf of Courage, Flipper Belt, Bell Collar. They match the gangster gear step for step.
+- **Crystal Shaper:** Icicle Blade, Fish-Bone Sabre, Aurora Blade, Prism Lance, Starheart Blade; Snow Goggles, Aurora Hood, Puffy Parka, Crystal Parka, Starlight Mantle, Ice Cleats, Mitten Paws, Scarf of Courage, Flipper Belt, Bell Collar. They match the gangster melee gear step for step.
 - **Litter Works:** litter boxes in three sizes (each stuns Grumps over a wider area, for longer), Tuna Treats, Paw Lanterns (luck and mana) and Heart Sparks (mana and health).
 - **Big Jim's Campfire:** marshmallows, s'mores, hot cocoa (keeps you warm for hours), Big Jim's Stew and the Starlight S'more.
 - **Meow Pow Wow Shrine:** practise once a day for mana and experience. From tier 2 your Meow Pow Wow is one rank stronger, two at tier 3.

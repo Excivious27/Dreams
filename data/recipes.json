@@ -2197,6 +2197,65 @@
    "tool": true
   },
   {
+   "id": "rounds",
+   "name": "Rounds",
+   "need": {
+    "copper_bar": 1,
+    "coal": 1
+   },
+   "give": "rounds",
+   "tier": 1,
+   "n": 30
+  },
+  {
+   "id": "six_shooter",
+   "name": "Six-Shooter",
+   "need": {
+    "iron_bar": 4,
+    "gear": 2,
+    "hardwood_plank": 1
+   },
+   "give": "six_shooter",
+   "tier": 2,
+   "tool": true
+  },
+  {
+   "id": "scattergun",
+   "name": "Scattergun",
+   "need": {
+    "steel_bar": 4,
+    "spring": 3,
+    "hardwood_plank": 2
+   },
+   "give": "scattergun",
+   "tier": 3,
+   "tool": true
+  },
+  {
+   "id": "tommy_gun",
+   "name": "Tommy Gun",
+   "need": {
+    "steel_bar": 5,
+    "spring": 6,
+    "gear": 6
+   },
+   "give": "tommy_gun",
+   "tier": 3,
+   "tool": true
+  },
+  {
+   "id": "gold_revolver",
+   "name": "Gold Revolver",
+   "need": {
+    "gold_bar": 4,
+    "dark_bar": 2,
+    "spring": 4
+   },
+   "give": "gold_revolver",
+   "tier": 4,
+   "tool": true
+  },
+  {
    "id": "fedora",
    "name": "Fedora",
    "need": {

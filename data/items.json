@@ -8999,5 +8999,61 @@
    "luck": 2
   },
   "arc": "penguins"
+ },
+ "rounds": {
+  "name": "Rounds",
+  "type": "craft",
+  "value": 3,
+  "rarity": "common",
+  "tier": 1,
+  "arc": "gangsters",
+  "desc": "One per shot."
+ },
+ "six_shooter": {
+  "name": "Six-Shooter",
+  "type": "tool",
+  "value": 700,
+  "rarity": "uncommon",
+  "tier": 2,
+  "damage": 4,
+  "weapon": true,
+  "arc": "gangsters",
+  "range": 110
+ },
+ "scattergun": {
+  "name": "Scattergun",
+  "type": "tool",
+  "value": 2000,
+  "rarity": "rare",
+  "tier": 3,
+  "damage": 6,
+  "weapon": true,
+  "arc": "gangsters",
+  "range": 64,
+  "spread": true,
+  "cd": 1.6
+ },
+ "tommy_gun": {
+  "name": "Tommy Gun",
+  "type": "tool",
+  "value": 2600,
+  "rarity": "rare",
+  "tier": 3,
+  "damage": 5,
+  "weapon": true,
+  "arc": "gangsters",
+  "range": 120,
+  "cd": 0.45
+ },
+ "gold_revolver": {
+  "name": "Gold Revolver",
+  "type": "tool",
+  "value": 5600,
+  "rarity": "epic",
+  "tier": 4,
+  "damage": 10,
+  "weapon": true,
+  "arc": "gangsters",
+  "range": 140
  }
 }
