@@ -16,8 +16,11 @@ if [ $code -ne 0 ]; then
   echo "Smoke test exited with $code"; exit 1
 fi
 # Exit-time "still in use"/"leaked" notes come from coroutines cut off by quit(); not failures.
-if echo "$out" | grep -vE "still in use at exit|instances leaked at exit|were leaked at exit|_free_rids|resource.cpp|renderer_canvas_cull" | grep -qE "SCRIPT ERROR|Parse Error|SMOKE FAIL|Failed to load|ERROR:"; then
-  echo "Errors found in smoke test output"; exit 1
+# (no grep -q here: with pipefail an early exit from -q masks the match)
+nerr="$(echo "$out" | grep -vE "still in use at exit|instances leaked at exit|were leaked at exit|_free_rids|resource.cpp|renderer_canvas_cull" | grep -cE "SCRIPT ERROR|Parse Error|SMOKE FAIL|Failed to load|ERROR:" || true)"
+if [ "${nerr:-0}" -gt 0 ]; then
+  echo "$out" | grep -E "SCRIPT ERROR|Parse Error|SMOKE FAIL|Failed to load|ERROR:" | sort | uniq -c | sort -rn | head -n 20
+  echo "Errors found in smoke test output ($nerr lines)"; exit 1
 fi
 if ! echo "$out" | grep -q "SMOKE DONE, failures: 0"; then
   echo "Smoke test did not finish"; exit 1

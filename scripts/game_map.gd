@@ -1104,7 +1104,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 				fx("spark", e.position + Vector2(0, -8), 18.0, 0.5)
 				damage_number(e.position + Vector2(0, -20), dmg, Color(1, 0.95, 0.4) if crit else Color.WHITE)
 				# Weight: a short freeze and a nudge of the camera; more on a kill or a crit.
-				var killed := not is_instance_valid(e) or not e._alive
+				var killed: bool = (not is_instance_valid(e)) or (not e._alive)
 				hitstop = maxf(hitstop, 0.08 if (killed or crit) else 0.035)
 				shake(3.0 if killed else (2.0 if crit else 1.2))
 	if hit:
