@@ -58,6 +58,9 @@ func _process(_delta: float) -> void:
 	if want != y_offset:
 		y_offset = want
 		_canvas.queue_redraw()
+	if get_tree().paused:
+		_canvas.queue_redraw()
+		return
 	# Keyboard: number keys pick a toolbar slot (1-9, 0, -, =).
 	for i in 12:
 		if Input.is_action_just_pressed("slot_%d" % (i + 1)):
@@ -68,7 +71,8 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if GameState.run.is_empty():
+	# Menus, dialogue and shops sit on top: their taps are theirs.
+	if GameState.run.is_empty() or get_tree().paused or Dialogue.instance(get_tree()).active:
 		return
 	if event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed:
 		var p: Vector2 = (event as InputEventScreenTouch).position
@@ -208,7 +212,9 @@ func _draw_hud() -> void:
 		line = (line + "   " if line != "" else "") + _hint
 	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 240, 8, Color(1, 1, 0.9))
 	# Energy bar (vertical, right side, Stardew style)
-	c.draw_set_transform(Vector2.ZERO)  # the energy bar stays where it is
+	# The energy bar stays on the right edge; indoors (HUD at the bottom) it
+	# moves up so it doesn't sit on the clock box.
+	c.draw_set_transform(Vector2(0, -150.0 if y_offset > 0.0 else 0.0))
 	var e := float(r["energy"]) / float(r["max_energy"])
 	var bar := Rect2(256, 200, 9, 130)
 	var fill_h := bar.size.y * e
@@ -342,7 +348,11 @@ func toast(text: String, color := Color.WHITE) -> void:
 	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
 	l.add_theme_color_override("font_color", color)
 	l.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.custom_minimum_size = Vector2(258, 0)
 	_toasts.add_child(l)
+	# Indoors the HUD block is at the bottom; toasts go just above it.
+	_toasts.position.y = 76.0 if y_offset == 0.0 else 190.0
 	var tw := l.create_tween()
 	tw.tween_interval(1.6)
 	tw.tween_property(l, "modulate:a", 0.0, 0.5)

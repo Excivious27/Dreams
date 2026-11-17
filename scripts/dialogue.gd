@@ -111,13 +111,21 @@ func _ready() -> void:
 	v.add_child(_text)
 	_choices = VBoxContainer.new()
 	_choices.add_theme_constant_override("separation", 2)
-	v.add_child(_choices)
+	_choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# Long choice lists (Dreamwalk) scroll instead of running off the screen.
+	_choice_scroll = ScrollContainer.new()
+	_choice_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_choice_scroll.add_child(_choices)
+	v.add_child(_choice_scroll)
 	_hint = Label.new()
 	_hint.text = "▼"
 	_hint.add_theme_font_size_override("font_size", 8)
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_hint.modulate = Color(0.3, 0.2, 0.1, 0.8) if ink else Color(1, 1, 1, 0.6)
 	v.add_child(_hint)
+
+
+var _choice_scroll: ScrollContainer
 
 
 func say(lines: Array) -> void:
@@ -132,7 +140,9 @@ func say(lines: Array) -> void:
 
 func _next() -> void:
 	for c in _choices.get_children():
+		_choices.remove_child(c)
 		c.queue_free()
+	_choice_scroll.custom_minimum_size = Vector2.ZERO
 	_in_choice = false
 	if _queue.is_empty():
 		_close()
@@ -182,10 +192,12 @@ func _show_choice(line: Dictionary) -> void:
 		b.text = str(opts[i])
 		b.add_theme_font_size_override("font_size", 9)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		b.custom_minimum_size = Vector2(0, 20)
 		b.pressed.connect(func() -> void: _choose(key, i))
 		_choices.add_child(b)
-	_panel.size.y = BOX_H + opts.size() * 22
+	_choice_scroll.custom_minimum_size = Vector2(0, minf(opts.size() * 22.0, 7 * 22.0))
+	_panel.size.y = BOX_H + minf(opts.size(), 7) * 22
 	# Keep the choices above the touch controls.
 	_panel.position.y = minf(BOX_Y, TouchControls.TOP_OF_CONTROLS - _panel.size.y - 6)
 	_refresh_focus()
@@ -195,6 +207,8 @@ func _refresh_focus() -> void:
 	var i := 0
 	for c in _choices.get_children():
 		(c as Button).modulate = Color(1, 1, 0.7) if i == _choice_focus else Color(0.8, 0.8, 0.8)
+		if i == _choice_focus and _choice_scroll:
+			_choice_scroll.ensure_control_visible.call_deferred(c)
 		i += 1
 
 
@@ -225,6 +239,8 @@ func _close() -> void:
 func _process(delta: float) -> void:
 	if not active:
 		return
+	# The box grows upward as text wraps, so it never covers the touch buttons.
+	_panel.position.y = maxf(4.0, minf(BOX_Y, TouchControls.TOP_OF_CONTROLS - 6.0 - _panel.size.y))
 	_process_input()
 	if _typing:
 		_shown += delta * 45.0

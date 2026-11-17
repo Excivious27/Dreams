@@ -50,7 +50,7 @@ func _ready() -> void:
 			b.custom_minimum_size = Vector2(0, 18)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-		b.pressed.connect(func() -> void: _tab = t; _refresh())
+		b.pressed.connect(func() -> void: _tab = t; _rebinding = ""; _refresh())
 		_tabs.add_child(b)
 		_tab_buttons[t] = b
 	var scroll := ScrollContainer.new()
@@ -108,13 +108,23 @@ func _process(_delta: float) -> void:
 				toggle()
 
 
+var _was_paused := false
+
+
 func toggle() -> void:
+	# Don't open over another paused screen (wardrobe, shop); closing then
+	# would unpause the game under it.
+	if not _open and get_tree().paused:
+		return
 	_open = not _open
+	_rebinding = ""
 	_panel.visible = _open
-	get_tree().paused = _open
 	if _open:
+		_was_paused = get_tree().paused
+		get_tree().paused = true
 		_refresh()
 	else:
+		get_tree().paused = _was_paused
 		Dialogue.block_input()
 
 
@@ -133,7 +143,12 @@ func _button(text: String, cb: Callable) -> Button:
 	b.text = text
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", 9)
-	b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+	# Release mode: a finger that lands on a button to scroll the list must not
+	# fire it (press mode fired "Save & back to title" when you scrolled Options).
+	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
+	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.custom_minimum_size = Vector2(0, 18)
 	b.pressed.connect(cb)
 	_body.add_child(b)
 	return b
@@ -195,7 +210,11 @@ func _grid(cols: int) -> GridContainer:
 
 func _refresh() -> void:
 	for c in _body.get_children():
+		_body.remove_child(c)
 		c.queue_free()
+	# Long rows used to stretch the panel off the right edge; pin it.
+	_panel.size = Vector2(258, 320)
+	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
 		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") else Color(0.85, 0.85, 0.85)
 	var r := GameState.run
@@ -257,7 +276,7 @@ func _refresh() -> void:
 				var sb := Button.new()
 				sb.text = "  %s   Lv %d   (%d / %d xp)" % [str(sk).capitalize(), lvl, int(d["xp"]), need]
 				sb.flat = true
-				sb.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+				sb.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 				sb.alignment = HORIZONTAL_ALIGNMENT_LEFT
 				sb.add_theme_font_size_override("font_size", 9)
 				var skid := str(sk)
