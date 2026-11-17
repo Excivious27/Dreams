@@ -64,3 +64,10 @@ echo "$aout" | grep -E "FAIL|ally_test" || true
 if ! echo "$aout" | grep -q "ally_test: 0 failures"; then
   echo "Ally test failed"; exit 1
 fi
+
+echo "== gifts: the Marked and boss powers =="
+gout="$("$GODOT" --headless --path . -s res://tools/gift_test.gd 2>&1)"
+echo "$gout" | grep -E "FAIL|gift_test" || true
+if ! echo "$gout" | grep -q "gift_test: 0 failures"; then
+  echo "Gift test failed"; exit 1
+fi

@@ -78,6 +78,9 @@ static func use_ability(m: GameMap, p: Player) -> void:
 	var sprite_id := str(defs().get(active_id(), {}).get("sprite", active_id()))
 	if Art.has("fx", "ability_" + sprite_id):
 		m.fx("ability_" + sprite_id, p.position + Vector2(0, -10), 10.0, 0.6)
+	if ab.begins_with("gift:"):
+		Gift.cast(m, p, ab.trim_prefix("gift:"))
+		return
 	match ab:
 		"meow_pow_wow":
 			var rank := meow_rank()

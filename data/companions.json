@@ -99,6 +99,106 @@
     "gate": "I hold the key. Key goes where you go."
    },
    "ability_desc": "Hold B: Coldy stamps a ring that cracks the ground and staggers everything close."
+  },
+  "mk_kit": {
+   "name": "Kit",
+   "sprite": "the_kid",
+   "arc": "gangsters",
+   "ability": "gift:gale",
+   "ability_name": "Gale Gift",
+   "ability_desc": "Hold B standing still: Blows everything back and puts the wind at your heels. (6 mana)",
+   "join": "I got it the night a man in a grey suit gave me a little black stone and said I'd never be cold again. He lied about the cold.",
+   "desc": "\"Feather\", 15. Gale Gift"
+  },
+  "mk_ember": {
+   "name": "Ember",
+   "sprite": "flame",
+   "arc": "gangsters",
+   "ability": "gift:cinder",
+   "ability_name": "Cinder Gift",
+   "ability_desc": "Hold B standing still: A ring of fire: burns everything close. (8 mana)",
+   "join": "A man in a grey suit handed me a black stone at my mother's funeral. It was warm. I thought that meant something.",
+   "desc": "\"Matchstick\", 19. Cinder Gift"
+  },
+  "mk_dahlia": {
+   "name": "Dahlia",
+   "sprite": "gambler",
+   "arc": "gangsters",
+   "ability": "gift:bramble",
+   "ability_name": "Bramble Gift",
+   "ability_desc": "Hold B standing still: Roots hold everything near in place. (7 mana)",
+   "join": "I was a florist. A customer in a grey suit paid with a black stone. Things grew after that. Too many things.",
+   "desc": "\"Thorn\", 24. Bramble Gift"
+  },
+  "mk_juno": {
+   "name": "Juno",
+   "sprite": "cyber",
+   "arc": "gangsters",
+   "ability": "gift:volt",
+   "ability_name": "Volt Gift",
+   "ability_desc": "Hold B standing still: A bolt down the line you face. (8 mana)",
+   "join": "I fixed a neon sign for a man in a grey suit. He tipped with a black stone. I haven't needed a socket since.",
+   "desc": "\"Static\", 22. Volt Gift"
+  },
+  "mk_rio": {
+   "name": "Rio",
+   "sprite": "gambler",
+   "arc": "gangsters",
+   "ability": "gift:beat",
+   "ability_name": "Tempo Gift",
+   "ability_desc": "Hold B standing still: Two pulses, on the beat, through everything near. (7 mana)",
+   "join": "I was busking. A grey suit dropped a black stone in my hat. I could suddenly hear everyone's pulse.",
+   "desc": "\"Tempo\", 20. Tempo Gift"
+  },
+  "mk_mei": {
+   "name": "Mei",
+   "sprite": "gambler",
+   "arc": "gangsters",
+   "ability": "gift:fortune",
+   "ability_name": "Fortune Gift",
+   "ability_desc": "Hold B standing still: A roll of the dice: crystals, health, or a hard hit. (6 mana)",
+   "join": "I won a black stone off a man in a grey suit. Only time I think he let me win.",
+   "desc": "\"Lucky\", 23. Fortune Gift"
+  },
+  "mk_bruno": {
+   "name": "Bruno",
+   "sprite": "brute",
+   "arc": "gangsters",
+   "ability": "gift:iron",
+   "ability_name": "Iron Gift",
+   "ability_desc": "Hold B standing still: Iron skin: hits land much softer for a while. (8 mana)",
+   "join": "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. I'm the only one still standing.",
+   "desc": "\"Anvil\", 28. Iron Gift"
+  },
+  "mk_tomas": {
+   "name": "Tomas",
+   "sprite": "gambler",
+   "arc": "gangsters",
+   "ability": "gift:mirror",
+   "ability_name": "Mirror Gift",
+   "ability_desc": "Hold B standing still: A flash of mirrors: everything near is dazed. (7 mana)",
+   "join": "I cleaned windows uptown. Found a black stone on a sill, forty floors up. I looked into it and it looked back.",
+   "desc": "\"Glass\", 17. Mirror Gift"
+  },
+  "mk_sable": {
+   "name": "Sable",
+   "sprite": "speedster",
+   "arc": "gangsters",
+   "ability": "gift:shade",
+   "ability_name": "Shade Gift",
+   "ability_desc": "Hold B standing still: Step into shadow: nothing can touch you for three seconds. (9 mana)",
+   "join": "I was a getaway driver who wanted to disappear. A grey suit said he could arrange it. He gave me a black stone and I haven't cast a shadow at noon since.",
+   "desc": "\"Hush\", 26. Shade Gift"
+  },
+  "mk_atlas": {
+   "name": "Atlas",
+   "sprite": "enforcer",
+   "arc": "gangsters",
+   "ability": "gift:gravity",
+   "ability_name": "Gravity Gift",
+   "ability_desc": "Hold B standing still: Drags everything near to your feet and hits it. (8 mana)",
+   "join": "I carried crates for a man in a grey suit. One of them was full of black stones. I kept one. Now everything's heavy but me.",
+   "desc": "\"Tiny\", 30. Gravity Gift"
   }
  },
  "partner_scene": {

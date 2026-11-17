@@ -704,7 +704,17 @@
     0.3,
     1
    ]
-  ]
+  ],
+  "marked_kit": [],
+  "marked_ember": [],
+  "marked_dahlia": [],
+  "marked_juno": [],
+  "marked_rio": [],
+  "marked_mei": [],
+  "marked_bruno": [],
+  "marked_tomas": [],
+  "marked_sable": [],
+  "marked_atlas": []
  },
  "enemies": {
   "grump": {
@@ -724,7 +734,8 @@
    "abilities": [
     "lunge",
     "enrage"
-   ]
+   ],
+   "gift": "b_grudge"
   },
   "slime": {
    "hp": 2,
@@ -814,7 +825,8 @@
     "shield",
     "summon",
     "lunge"
-   ]
+   ],
+   "gift": "b_command"
   },
   "dark_crystal": {
    "hp": 90,
@@ -828,7 +840,8 @@
     "ranged",
     "stomp"
    ],
-   "status": "weak"
+   "status": "weak",
+   "gift": "b_dark"
   },
   "thug_cyber": {
    "hp": 10,
@@ -910,7 +923,8 @@
     "enrage",
     "stomp"
    ],
-   "status": "weak"
+   "status": "weak",
+   "gift": "b_president"
   },
   "bog_hag": {
    "hp": 14,
@@ -1018,7 +1032,8 @@
     "blink"
    ],
    "status": "poison",
-   "reward": 120
+   "reward": 120,
+   "gift": "b_witch"
   },
   "golem_king": {
    "hp": 120,
@@ -1032,7 +1047,8 @@
     "summon",
     "enrage"
    ],
-   "reward": 250
+   "reward": 250,
+   "gift": "b_king"
   },
   "ruin_warden": {
    "hp": 150,
@@ -1048,7 +1064,8 @@
     "enrage"
    ],
    "status": "weak",
-   "reward": 300
+   "reward": 300,
+   "gift": "b_warden"
   },
   "dark_crystal_shard": {
    "hp": 22,
@@ -1174,7 +1191,8 @@
     "shield",
     "stomp"
    ],
-   "reward": 40
+   "reward": 40,
+   "gift": "b_sentinel"
   },
   "mirror": {
    "hp": 36,
@@ -1188,7 +1206,8 @@
     "enrage"
    ],
    "status": "weak",
-   "reward": 35
+   "reward": 35,
+   "gift": "b_mirror"
   },
   "light_eater": {
    "hp": 70,
@@ -1201,7 +1220,8 @@
     "regen"
    ],
    "status": "blind",
-   "reward": 60
+   "reward": 60,
+   "gift": "b_eater"
   },
   "finargle": {
    "hp": 18,
@@ -1231,7 +1251,8 @@
    ],
    "status": "blind",
    "art": "wisp",
-   "reward": 40
+   "reward": 40,
+   "gift": "b_elder"
   },
   "crystal_baby": {
    "hp": 14,
@@ -1244,6 +1265,116 @@
    ],
    "art": "shard",
    "reward": 6
+  },
+  "marked_kit": {
+   "hp": 26,
+   "dmg": 2,
+   "speed": 62,
+   "xp": 70,
+   "tier": 2,
+   "abilities": [],
+   "gift": "gale",
+   "char": "the_kid",
+   "reward": 120
+  },
+  "marked_ember": {
+   "hp": 34,
+   "dmg": 2,
+   "speed": 44,
+   "xp": 70,
+   "tier": 2,
+   "abilities": [],
+   "gift": "cinder",
+   "char": "flame",
+   "reward": 120
+  },
+  "marked_dahlia": {
+   "hp": 44,
+   "dmg": 2,
+   "speed": 26,
+   "xp": 70,
+   "tier": 2,
+   "abilities": [],
+   "gift": "bramble",
+   "char": "gambler",
+   "reward": 120
+  },
+  "marked_juno": {
+   "hp": 40,
+   "dmg": 3,
+   "speed": 50,
+   "xp": 90,
+   "tier": 3,
+   "abilities": [],
+   "gift": "volt",
+   "char": "cyber",
+   "reward": 180
+  },
+  "marked_rio": {
+   "hp": 42,
+   "dmg": 3,
+   "speed": 40,
+   "xp": 90,
+   "tier": 3,
+   "abilities": [],
+   "gift": "beat",
+   "char": "gambler",
+   "reward": 180
+  },
+  "marked_mei": {
+   "hp": 46,
+   "dmg": 3,
+   "speed": 38,
+   "xp": 90,
+   "tier": 3,
+   "abilities": [],
+   "gift": "fortune",
+   "char": "gambler",
+   "reward": 180
+  },
+  "marked_bruno": {
+   "hp": 70,
+   "dmg": 3,
+   "speed": 22,
+   "xp": 90,
+   "tier": 3,
+   "abilities": [],
+   "gift": "iron",
+   "char": "brute",
+   "reward": 180
+  },
+  "marked_tomas": {
+   "hp": 44,
+   "dmg": 3,
+   "speed": 44,
+   "xp": 110,
+   "tier": 4,
+   "abilities": [],
+   "gift": "mirror",
+   "char": "gambler",
+   "reward": 240
+  },
+  "marked_sable": {
+   "hp": 50,
+   "dmg": 4,
+   "speed": 46,
+   "xp": 110,
+   "tier": 4,
+   "abilities": [],
+   "gift": "shade",
+   "char": "speedster",
+   "reward": 240
+  },
+  "marked_atlas": {
+   "hp": 80,
+   "dmg": 4,
+   "speed": 20,
+   "xp": 110,
+   "tier": 4,
+   "abilities": [],
+   "gift": "gravity",
+   "char": "enforcer",
+   "reward": 240
   }
  }
 }

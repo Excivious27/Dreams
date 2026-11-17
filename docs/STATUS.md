@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-17 (later still) — Gifts: ten Marked, boss powers, the Dark Crystal reveal; Nia and Ollie redrawn
+- `Gift` (scripts/gift.gd, data/gifts.json from `tools/gen_gifts.py`): a loop of telegraphed moves (ring, spiral, lines, zones, dash, pull, gust, veil, clones, roll) plus one rule for taking damage (window, wet, back, cycle, real, offbeat, range). Attached to any enemy whose data has `gift`.
+- `Marked` (scripts/marked.gd): ten gangsters aged 15 to 30, one per district, spawn on entering; yield at 0 hp; recruit (Companion `mk_<id>`, ability `gift:<id>`, cast with hold-B for mana) or send home. Flags `marked_<id>` = crew/free.
+- Eleven bosses carry a gift (penguin arc included). Story: President admits the Gifts are splinters of the Dark Crystal; both gangster endings and p5_win refer to it.
+- `tools/gift_test.gd` in check.sh. `tools/gift_shot.gd` for screenshots.
+- Art: Prompts 15 batch 5: Nia and Ollie gritty sheets in (compact 7-row sheets handled). Marisol and Bo only arrived four-to-an-image, too small to cut; still wanted one per image. Prompts 15 gains batch 7 (the Marked) and batch 8 (Gift effects); Marked use stand-in sprites until then.
+- Open: no dedicated Gifts journal page (tips go to the hint log); gift balance is untested by human hands.
+
 ## 2026-11-17 (late) — the workshop: tiered stations, vehicles, rocket, the operation; Prompts 14 art in
 
 - **Design:** every station is a building in `data/buildings.json` with `"station": {skill, verb, book}` and four tiers. `scripts/crafting.gd` runs all of them.

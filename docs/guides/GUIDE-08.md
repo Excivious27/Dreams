@@ -123,6 +123,45 @@ The penguins' own shelf on the Plans board, drawn from the book.
 - **Command buttons:** while the pup is with you, five round buttons run down the left edge of the screen: Heel, Attack, Stay, Guard and Recall. The current command has a gold ring. Guard needs the Guard Dog skill.
 - **Enemies fight back:** an enemy the pup bites now turns on the pup and hits it. Enemies also go for the pup when it is much closer than you. Hitting the enemy yourself pulls it back onto you. Teammates will use the same rules and get their own strip.
 
+## Gifts: the Marked and the bosses
+
+Ten young gangsters (15 to 30) each carry a **Gift**: a power with its own attack patterns and one rule for how to hurt them. Mashing A does not work on any of them. While their ring is in their colour they are **guarded** (hits bounce and say GUARD, and the first bounce shows a tip). When the ring flashes **white** they are **open** and take double or more. Everything they throw is drawn before it lands: thin lanes become bolts, hollow circles fill in, a dash shows its path.
+
+They never die. At zero they yield, tell you where the Gift came from, and you choose: **join the crew** (they go on your Party page; make them the active partner and hold B standing still to borrow their Gift for mana) or **go home** (double crystals and one heat off). Lose to one and they will not fight again until tomorrow. Gangster arc only; each waits in their own district.
+
+| Who | Age | Where | Gift | How to beat them | What they lend you |
+|---|---|---|---|---|---|
+| Kit Lindqvist "Feather" | 15 | hideout | Gale Gift | You can't hit the wind. She has to land after every dash: that second is the only time she's really there. | Blows everything back and puts the wind at your heels. |
+| Ember Reyes "Matchstick" | 19 | docks | Cinder Gift | Her fire hates water. Fight her beside the harbour, or in the rain, and every hit counts double. Dry, she barely feels it. Her dashes leave fire on the ground: cross behind her, not along the trail. | A ring of fire: burns everything close. |
+| Dahlia Okafor "Thorn" | 24 | countryside | Bramble Gift | Bark covers her front. She turns slowly: get behind her and hit her in the back. Her roots slow you, so move before the circles close. | Roots hold everything near in place. |
+| Juno Park "Static" | 22 | neon | Volt Gift | She blinks away from anything you swing while she is charged. Sidestep the three bolts: after the last one she is spent for two seconds. That is your whole fight. | A bolt down the line you face. |
+| Rio Santos "Tempo" | 20 | neon | Tempo Gift | Everything he does lands on the beat. Hit him on the beat and he parries. Hit him just after it, when the ring around him flashes white. | Two pulses, on the beat, through everything near. |
+| Mei Tanaka "Lucky" | 23 | docks | Fortune Gift | She rolls for everything, and her luck holds for exactly three rolls. On the third it runs out for four seconds. Count her rolls. | A roll of the dice: crystals, health, or a hard hit. |
+| Bruno Castellan "Anvil" | 28 | countryside | Iron Gift | While he is iron, nothing marks him. It lasts five seconds, then he has to breathe for three. Keep your distance while he is grey; go in when the ring around him turns white. | Iron skin: hits land much softer for a while. |
+| Tomas Vela "Glass" | 17 | uptown | Mirror Gift | He splits into three. Reflections cast no shadow: hit the one standing on a shadow. The copies break in one hit but each still throws glass. | A flash of mirrors: everything near is dazed. |
+| Sable Marchetti "Hush" | 26 | underground | Shade Gift | She vanishes and comes out behind you. Keep moving when she is gone, then turn: she is solid for a breath after every strike. | Step into shadow: nothing can touch you for three seconds. |
+| Atlas Novak "Tiny" | 30 | crystal meadow | Gravity Gift | Up close you are fighting the ground itself. Run out of the pull before the slam, or hit him from range. After every slam he is stuck for a moment. | Drags everything near to your feet and hits it. |
+
+Every one of them got it from "a man in a grey suit" and "a black stone". The President says why before his fight: each Gift is a splinter of the Dark Crystal. Break the stone at the end and the Gifts stay, quieter, and theirs. Take the city instead and the ten of them turn toward the tower. The penguin ending notices the missing splinters too.
+
+**Bosses** now fight the same way, in both arcs:
+
+| Boss | Power | How to beat it |
+|---|---|---|
+| Big Grump | The Grudge | It drags you in to slam. Get clear of the slam, then it is winded. |
+| The Commander | Marching Orders | The shield faces front. Step round it. |
+| Golem King | Heart of Stone | Stone for six seconds, then it has to rest. Hit it when the ring turns white. |
+| Ruin Warden | The Long Watch | Count the beams. After the last one the Warden is blind for a moment. At half health, only one of them has a shadow. |
+| Marsh Witch | Bog Song | She sinks into the bog and comes up behind you. That is when she can be hit hard. |
+| The President | Every Gift At Once | He uses the Gifts he handed out, one after another, and the stone can only hold three before it stutters. Count three. Then hit him. |
+| The Dark Crystal | The Source | Every Gift came from here, and it throws all of them. It dims every few seconds: that is the only time it can be hurt badly. |
+| Finargle Elder | Mind Fog | It goes out like a light and comes back behind you. Turn and hit it then. |
+| Obsidian Sentinel | Black Glass | Its face is armoured. Its back is not. |
+| The Mirror | Your Own Face | Only one of them casts a shadow. |
+| Light Eater | The Hunger | Stay out of its reach, or wait until it has swallowed and is slow. |
+
+Until Prompts 15 batch 7 arrives the Marked borrow existing gangster sprites, told apart by their coloured ring and the nickname over their heads.
+
 ## What to test (15 minutes)
 
 1. **Plans board:** open it by the house. Check the shelves read clearly on your phone, and that a locked tier says why.
@@ -133,6 +172,8 @@ The penguins' own shelf on the Plans board, drawn from the book.
 6. **Menu → Quests → Workshop** and **Field log**: both should be readable.
 7. **Penguin arc:** build Big Jim's Campfire and toast a marshmallow; build the Merkitty Pool, sleep, and collect the gift.
 8. **Gangster arc** (new game): build the Back-Room Press, print Crude Bills, pass a few in town, and watch Heat in the Workshop page.
+
+- **The Marked:** gangster arc, walk into the hideout or the docks. Someone with a coloured ring and a nickname comes at you. Let a hit bounce to read the tip, beat them by the rule, then pick join or go home. Recruit one and hold B to use their Gift.
 
 ## Your art job
 

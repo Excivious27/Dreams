@@ -1296,6 +1296,10 @@
        "text": "It stops. Not dead; stopped, the way a held breath is stopped. In the cracks, something flickers that isn't dark."
       },
       {
+       "who": "",
+       "text": "Pieces are missing from it. Clean breaks, like someone has been chipping splinters off and carrying them away, down toward the city."
+      },
+      {
        "who": "Star Crystal",
        "text": "Now. While it's quiet. Farmer: the Meow Pow Wow. The real one, the one Catkins meant. Hands at your chest. It's been in you since the cave."
       },
@@ -2602,6 +2606,14 @@
       },
       {
        "who": "The President",
+       "text": "You met my young people on the way up. The fire girl. The one who runs on the wind. The boy made of glass. They think they were born special."
+      },
+      {
+       "who": "The President",
+       "text": "I gave each of them a splinter of this. One black stone apiece, pressed into a cold hand on a bad day. Every Gift in this city is the same stone, and the stone is mine. Watch."
+      },
+      {
+       "who": "The President",
        "text": "It told me I could keep the city if I stopped minding what it cost. I've stopped minding. Come and see."
       }
      ],
@@ -2686,6 +2698,14 @@
          {
           "who": "",
           "text": "You put the stone on the marble and you break it with your heel, and the whisper stops, and somewhere above the city a very old bell that was never going to ring again rings once anyway."
+         },
+         {
+          "who": "",
+          "text": "All over the city the splinters go quiet. A girl on the docks watches the flame in her palm gutter, and then, slowly, come back smaller, and steadier, and hers."
+         },
+         {
+          "who": "",
+          "text": "The Gifts stay. They are only what they always were underneath: ten young people who were told a stone made them worth something, finding out it was the other way round."
          }
         ],
         "1": [
@@ -2696,6 +2716,10 @@
          {
           "who": "",
           "text": "Later, in the chair, you write a letter to someone who's gone to ground on a farm. You tell them the farm is a nice touch. You notice, as you seal it, the hard loops on the W."
+         },
+         {
+          "who": "",
+          "text": "Across the city, ten splinters warm in ten pockets, and ten young people turn toward the tower without knowing why. They work for you now. They always did work for the stone."
          }
         ]
        },

@@ -30,6 +30,7 @@ var _squash := 0.0
 var _stomp_tele := 0.0
 var last_applied := 0   # damage the last hit really did (after armor), for the number
 var _noticed := false
+var _gift: Gift            # the power a Marked or a boss fights with (scripts/gift.gd)
 
 # ---- unified tier (data/tiers.json) -----------------------------------------
 var tier := 0                 # effective tier (native, or the floor's in the mine)
@@ -148,7 +149,9 @@ func setup(k: String, tier_override := -1) -> void:
 	max_hp = hp
 	var art_kind := str(ed.get("art", "grump" if k == "big_grump" else k))
 	var group := "enemies/" + art_kind
-	if k.begins_with("thug_"):
+	if ed.has("char"):
+		group = "characters/" + str(ed["char"])
+	elif k.begins_with("thug_"):
 		group = "characters/" + k.trim_prefix("thug_")
 	elif k == "president":
 		group = "characters/president"
@@ -175,6 +178,10 @@ func setup(k: String, tier_override := -1) -> void:
 			_flash_mat.shader = sh
 			_sprite.material = _flash_mat
 	reach = 22.0 if hp >= 16 else 16.0
+	if ed.has("gift") and not Gift.def(str(ed["gift"])).is_empty():
+		_gift = Gift.new()
+		_gift.setup(self, str(ed["gift"]))
+		add_child(_gift)
 
 
 var _burn_t := 0.0
@@ -333,6 +340,13 @@ func hit(n: int, from: Vector2, magic := false) -> bool:
 		map.fx("sparkle", position + Vector2(0, -10), 14.0, 0.4)
 		map.damage_number(position + Vector2(0, -20), 0, Color(0.6, 0.8, 1.0))
 		return false
+	if _gift:
+		var mult := _gift.vuln(from, magic)
+		if mult <= 0.0:
+			_gift.on_blocked()
+			return false
+		n = maxi(1, int(round(n * mult)))
+		_gift.on_hit(mult)
 	var soak := armor / 2 if magic else armor
 	n = maxi(1, n - soak)
 	last_applied = n
@@ -363,6 +377,10 @@ func hit(n: int, from: Vector2, magic := false) -> bool:
 				_summoned[frac] = true
 				_summon()
 	if hp <= 0:
+		if has_meta("marked") and not has_meta("decoy"):
+			hp = 1
+			Marked.yield_to(map, self)
+			return true
 		_die()
 	return true
 
@@ -526,6 +544,14 @@ class Shot extends Node2D:
 func _die() -> void:
 	_alive = false
 	map.enemies.erase(self)
+	if has_meta("decoy"):
+		map.fx("blink" if Art.has("fx", "blink") else "poof", position + Vector2(0, -8), 14.0, 0.4)
+		queue_free()
+		return
+	if _gift and not _gift.d.get("clones", {}).is_empty():
+		for o in map.enemies.duplicate():
+			if is_instance_valid(o) and o.has_meta("decoy"):
+				o._die()
 	map.on_enemy_died(self)
 	# A puff where it stood and a thud; bosses get a bigger send-off.
 	var big := max_hp >= 60

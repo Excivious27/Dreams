@@ -180,6 +180,7 @@ func _ready() -> void:
 			vis[scene_id()] = [at.x, at.y]
 			GameState.run["visited"] = vis
 	Racket.on_enter(self)
+	Marked.on_enter(self)
 	_fill_extension()
 	_place_signposts()
 	_place_waiting_horse()

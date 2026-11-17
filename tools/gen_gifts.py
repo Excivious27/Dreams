@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""The Gifts: powers of the young Marked gangsters and of every boss.
+Writes data/gifts.json and adds the Marked to enemies.json and companions.json.
+Re-runnable.    python3 tools/gen_gifts.py
+"""
+import json, os
+D = os.path.join(os.path.dirname(__file__), '..', 'data') + '/'
+E = json.load(open(D + 'enemies.json')); C = json.load(open(D + 'companions.json'))
+M = json.load(open(D + '../art/gen/manifest.json'))
+
+GIFTS = {
+ 'cinder': {'name': 'Cinder Gift', 'colour': 'ff7a3a', 'gap': 3.0, 'trail': True,
+  'moves': [{'type': 'dash'}, {'type': 'ring', 'n': 12, 'gap_n': 3}, {'type': 'dash'}, {'type': 'zones', 'n': 4, 'fx': 'burn', 'linger': 2.4}],
+  'rule': {'type': 'wet', 'closed': 0.34, 'open': 2.0},
+  'tip': 'Her fire hates water. Fight her beside the harbour, or in the rain, and every hit counts double. Dry, she barely feels it. Her dashes leave fire on the ground: cross behind her, not along the trail.',
+  'lend': 'burn', 'reach': 60, 'mana': 8, 'lend_desc': 'A ring of fire: burns everything close.'},
+ 'volt': {'name': 'Volt Gift', 'colour': 'ffe85a', 'gap': 3.4,
+  'moves': [{'type': 'lines', 'n': 3}, {'type': 'dash'}, {'type': 'lines', 'n': 4, 'fan': True}],
+  'rule': {'type': 'window', 'after': 'lines', 'secs': 2.2, 'stagger': 1.2, 'closed': 0.0, 'open': 3.0, 'slip': True},
+  'tip': 'She blinks away from anything you swing while she is charged. Sidestep the three bolts: after the last one she is spent for two seconds. That is your whole fight.',
+  'lend': 'line', 'reach': 130, 'mana': 8, 'lend_desc': 'A bolt down the line you face.'},
+ 'mirror': {'name': 'Mirror Gift', 'colour': 'bfe9ff', 'gap': 3.6, 'clones': {'n': 2, 'at': [0.75, 0.4]},
+  'moves': [{'type': 'lines', 'n': 2, 'fan': True}, {'type': 'ring', 'n': 10, 'gap_n': 2}],
+  'rule': {'type': 'real', 'open': 1.0},
+  'tip': 'He splits into three. Reflections cast no shadow: hit the one standing on a shadow. The copies break in one hit but each still throws glass.',
+  'lend': 'dazzle', 'reach': 72, 'mana': 7, 'lend_desc': 'A flash of mirrors: everything near is dazed.'},
+ 'bramble': {'name': 'Bramble Gift', 'colour': '6fcf5a', 'gap': 3.2,
+  'moves': [{'type': 'zones', 'n': 4, 'fx': 'slow', 'r': 17, 'linger': 3.0}, {'type': 'ring', 'n': 14, 'speed': 46, 'gap_n': 4}, {'type': 'zones', 'n': 3, 'fx': 'dmg'}],
+  'rule': {'type': 'back', 'closed': 0.0, 'open': 1.5},
+  'tip': 'Bark covers her front. She turns slowly: get behind her and hit her in the back. Her roots slow you, so move before the circles close.',
+  'lend': 'root', 'reach': 56, 'mana': 7, 'lend_desc': 'Roots hold everything near in place.'},
+ 'gale': {'name': 'Gale Gift', 'colour': 'd8f6ff', 'gap': 2.4,
+  'moves': [{'type': 'gust'}, {'type': 'dash'}, {'type': 'dash'}, {'type': 'ring', 'n': 9, 'speed': 80, 'gap_n': 3}],
+  'rule': {'type': 'window', 'after': 'dash', 'secs': 1.1, 'stagger': 0.9, 'closed': 0.0, 'open': 2.0, 'slip': True},
+  'tip': "You can't hit the wind. She has to land after every dash: that second is the only time she's really there.",
+  'lend': 'gale', 'reach': 70, 'mana': 6, 'lend_desc': 'Blows everything back and puts the wind at your heels.'},
+ 'iron': {'name': 'Iron Gift', 'colour': 'a8b4c4', 'gap': 3.0,
+  'moves': [{'type': 'ring', 'n': 16, 'speed': 44, 'gap_n': 4}, {'type': 'zones', 'n': 3, 'r': 20}, {'type': 'pull', 'secs': 1.0}],
+  'rule': {'type': 'cycle', 'on': 5.0, 'off': 3.0, 'closed': 0.0, 'open': 2.0},
+  'tip': 'While he is iron, nothing marks him. It lasts five seconds, then he has to breathe for three. Keep your distance while he is grey; go in when the ring around him turns white.',
+  'lend': 'iron', 'reach': 0, 'mana': 8, 'lend_desc': 'Iron skin: hits land much softer for a while.'},
+ 'shade': {'name': 'Shade Gift', 'colour': '7a5ad8', 'gap': 3.0,
+  'moves': [{'type': 'veil'}, {'type': 'lines', 'n': 2, 'fan': True}, {'type': 'veil'}],
+  'rule': {'type': 'window', 'after': 'veil', 'secs': 1.6, 'stagger': 0.7, 'closed': 0.25, 'open': 2.5},
+  'tip': 'She vanishes and comes out behind you. Keep moving when she is gone, then turn: she is solid for a breath after every strike.',
+  'lend': 'shade', 'reach': 0, 'mana': 9, 'lend_desc': 'Step into shadow: nothing can touch you for three seconds.'},
+ 'beat': {'name': 'Tempo Gift', 'colour': 'ff5ad0', 'gap': 1.6,
+  'moves': [{'type': 'ring', 'n': 10, 'speed': 60, 'gap_n': 2}, {'type': 'ring', 'n': 10, 'speed': 60, 'gap_n': 2}, {'type': 'lines', 'n': 2, 'fan': True}],
+  'rule': {'type': 'offbeat', 'beat': 1.6, 'gap': 0.55, 'closed': 0.0, 'open': 2.0},
+  'tip': 'Everything he does lands on the beat. Hit him on the beat and he parries. Hit him just after it, when the ring around him flashes white.',
+  'lend': 'beat', 'reach': 60, 'mana': 7, 'lend_desc': 'Two pulses, on the beat, through everything near.'},
+ 'fortune': {'name': 'Fortune Gift', 'colour': 'ffd24a', 'gap': 2.8,
+  'moves': [{'type': 'roll', 'of': ['ring', 'zones', 'lines', 'heal']}],
+  'rule': {'type': 'window', 'after': 'never', 'rolls': 3, 'secs': 4.0, 'closed': 0.5, 'open': 2.5},
+  'tip': 'She rolls for everything, and her luck holds for exactly three rolls. On the third it runs out for four seconds. Count her rolls.',
+  'lend': 'luck', 'reach': 64, 'mana': 6, 'lend_desc': 'A roll of the dice: crystals, health, or a hard hit.'},
+ 'gravity': {'name': 'Gravity Gift', 'colour': '9a7aff', 'gap': 3.4, 'pull_force': 46.0,
+  'moves': [{'type': 'pull', 'secs': 1.7}, {'type': 'zones', 'n': 4, 'fx': 'slow', 'r': 18, 'linger': 2.6}, {'type': 'pull', 'secs': 1.7}],
+  'rule': {'type': 'range', 'closed': 0.4, 'open': 1.6, 'after': 'pull', 'secs': 1.6, 'stagger': 1.2},
+  'tip': 'Up close you are fighting the ground itself. Run out of the pull before the slam, or hit him from range. After every slam he is stuck for a moment.',
+  'lend': 'pull', 'reach': 80, 'mana': 8, 'lend_desc': 'Drags everything near to your feet and hits it.'},
+ # ---- bosses ------------------------------------------------------------------
+ 'b_grudge': {'name': 'The Grudge', 'colour': '8a6ad0', 'gap': 3.6, 'moves': [{'type': 'pull', 'secs': 1.4}, {'type': 'ring', 'n': 10, 'gap_n': 3}],
+  'rule': {'type': 'window', 'after': 'pull', 'secs': 2.0, 'stagger': 1.0, 'closed': 0.5, 'open': 2.0}, 'tip': 'It drags you in to slam. Get clear of the slam, then it is winded.'},
+ 'b_command': {'name': 'Marching Orders', 'colour': 'c8c0e0', 'gap': 3.4, 'moves': [{'type': 'lines', 'n': 3}, {'type': 'zones', 'n': 4}],
+  'rule': {'type': 'back', 'closed': 0.5, 'open': 1.6}, 'tip': 'The shield faces front. Step round it.'},
+ 'b_king': {'name': 'Heart of Stone', 'colour': 'a8b4c4', 'gap': 3.2, 'moves': [{'type': 'ring', 'n': 18, 'speed': 42, 'gap_n': 4}, {'type': 'zones', 'n': 5, 'r': 18}, {'type': 'pull', 'secs': 1.2}],
+  'rule': {'type': 'cycle', 'on': 6.0, 'off': 3.5, 'closed': 0.34, 'open': 2.0}, 'tip': 'Stone for six seconds, then it has to rest. Hit it when the ring turns white.'},
+ 'b_warden': {'name': 'The Long Watch', 'colour': '7ae8ff', 'gap': 3.2, 'clones': {'n': 2, 'at': [0.5]}, 'moves': [{'type': 'lines', 'n': 5}, {'type': 'spiral'}, {'type': 'lines', 'n': 4, 'fan': True}],
+  'rule': {'type': 'window', 'after': 'lines', 'secs': 2.4, 'stagger': 1.0, 'closed': 0.5, 'open': 2.2}, 'tip': 'Count the beams. After the last one the Warden is blind for a moment. At half health, only one of them has a shadow.'},
+ 'b_witch': {'name': 'Bog Song', 'colour': '7fd14a', 'gap': 3.0, 'moves': [{'type': 'zones', 'n': 5, 'fx': 'slow', 'linger': 3.0}, {'type': 'spiral'}, {'type': 'veil'}],
+  'rule': {'type': 'window', 'after': 'veil', 'secs': 2.0, 'closed': 0.5, 'open': 2.2}, 'tip': 'She sinks into the bog and comes up behind you. That is when she can be hit hard.'},
+ 'b_president': {'name': 'Every Gift At Once', 'colour': 'b060ff', 'gap': 2.6, 'moves': [{'type': 'roll', 'of': ['ring', 'lines', 'zones']}, {'type': 'dash'}, {'type': 'pull', 'secs': 1.3}],
+  'rule': {'type': 'window', 'after': 'never', 'rolls': 3, 'secs': 3.5, 'closed': 0.5, 'open': 2.2}, 'tip': "He uses the Gifts he handed out, one after another, and the stone can only hold three before it stutters. Count three. Then hit him."},
+ 'b_dark': {'name': 'The Source', 'colour': '5a2a9a', 'gap': 2.6, 'clones': {'n': 2, 'at': [0.3]}, 'trail': True,
+  'moves': [{'type': 'ring', 'n': 16, 'gap_n': 3}, {'type': 'lines', 'n': 4}, {'type': 'pull', 'secs': 1.5}, {'type': 'zones', 'n': 5, 'fx': 'burn'}, {'type': 'dash'}, {'type': 'spiral'}],
+  'rule': {'type': 'cycle', 'on': 7.0, 'off': 3.0, 'closed': 0.34, 'open': 2.0}, 'tip': 'Every Gift came from here, and it throws all of them. It dims every few seconds: that is the only time it can be hurt badly.'},
+ 'b_elder': {'name': 'Mind Fog', 'colour': '9a5ad8', 'gap': 3.0, 'moves': [{'type': 'veil'}, {'type': 'ring', 'n': 10, 'gap_n': 2}],
+  'rule': {'type': 'window', 'after': 'veil', 'secs': 1.8, 'closed': 0.5, 'open': 2.2}, 'tip': 'It goes out like a light and comes back behind you. Turn and hit it then.'},
+ 'b_sentinel': {'name': 'Black Glass', 'colour': '6a6a8a', 'gap': 3.4, 'moves': [{'type': 'lines', 'n': 4, 'fan': True}, {'type': 'zones', 'n': 4}],
+  'rule': {'type': 'back', 'closed': 0.4, 'open': 1.8}, 'tip': 'Its face is armoured. Its back is not.'},
+ 'b_mirror': {'name': 'Your Own Face', 'colour': 'bfe9ff', 'gap': 2.8, 'clones': {'n': 2, 'at': [0.8, 0.5, 0.25]}, 'moves': [{'type': 'dash'}, {'type': 'ring', 'n': 8, 'gap_n': 2}],
+  'rule': {'type': 'real', 'open': 1.0}, 'tip': 'Only one of them casts a shadow.'},
+ 'b_eater': {'name': 'The Hunger', 'colour': '3a1a5a', 'gap': 3.0, 'pull_force': 50.0, 'moves': [{'type': 'pull', 'secs': 2.0}, {'type': 'zones', 'n': 5, 'fx': 'slow'}],
+  'rule': {'type': 'range', 'closed': 0.4, 'open': 1.6, 'after': 'pull', 'secs': 1.8, 'stagger': 1.2}, 'tip': 'Stay out of its reach, or wait until it has swallowed and is slow.'},
+}
+BOSS = {'big_grump': 'b_grudge', 'commander': 'b_command', 'golem_king': 'b_king', 'ruin_warden': 'b_warden', 'marsh_witch': 'b_witch', 'president': 'b_president',
+        'dark_crystal': 'b_dark', 'finargle_elder': 'b_elder', 'obsidian_sentinel': 'b_sentinel', 'mirror': 'b_mirror', 'light_eater': 'b_eater'}
+
+# id, name, age, epithet, gift, scene, progress, hp, dmg, speed, tier, stand-in sprite, lines
+MARKED = [
+ ('kit', 'Kit Lindqvist', 15, 'Feather', 'gale', 'hideout', 1, 26, 2, 62, 2, ['the_kid', 'speedster'],
+  "You're the one everyone's whispering about? You're slow.", "Okay. OKAY. You caught the wind. Nobody catches the wind.", "I got it the night a man in a grey suit gave me a little black stone and said I'd never be cold again. He lied about the cold."),
+ ('ember', 'Ember Reyes', 19, 'Matchstick', 'cinder', 'docks', 1, 34, 2, 44, 2, ['flame', 'cyber'],
+  "The docks are mine. Everything here burns if I say so.", "...It's out. I've never had it go out before.", "A man in a grey suit handed me a black stone at my mother's funeral. It was warm. I thought that meant something."),
+ ('dahlia', 'Dahlia Okafor', 24, 'Thorn', 'bramble', 'countryside', 1, 44, 2, 26, 2, ['riley', 'gambler'],
+  "This road grows shut behind people I don't like.", "You went round. Nobody goes round. They all push.", "I was a florist. A customer in a grey suit paid with a black stone. Things grew after that. Too many things."),
+ ('juno', 'Juno Park', 22, 'Static', 'volt', 'neon', 2, 40, 3, 50, 3, ['cyber', 'speedster'],
+  "Every sign on this street is on because of me. Watch.", "Three. You counted to three. Ugh.", "I fixed a neon sign for a man in a grey suit. He tipped with a black stone. I haven't needed a socket since."),
+ ('rio', 'Rio Santos', 20, 'Tempo', 'beat', 'neon', 2, 42, 3, 40, 3, ['nico', 'gambler'],
+  "Hear that? That's your heartbeat. I'm about to borrow it.", "You came in on the off-beat. That's my move. That's MY move.", "I was busking. A grey suit dropped a black stone in my hat. I could suddenly hear everyone's pulse."),
+ ('mei', 'Mei Tanaka', 23, 'Lucky', 'fortune', 'docks', 2, 46, 3, 38, 3, ['eli', 'gambler'],
+  "Heads I win. Tails, also me. Want to see?", "Three rolls. It's always three. How did you know it was three?", "I won a black stone off a man in a grey suit. Only time I think he let me win."),
+ ('bruno', 'Bruno Castellan', 28, 'Anvil', 'iron', 'countryside', 2, 70, 3, 22, 3, ['brute', 'enforcer'],
+  "Hit me. Go on. Everyone gets one.", "...Fair. You waited. Nobody waits.", "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. I'm the only one still standing."),
+ ('tomas', 'Tomas Vela', 17, 'Glass', 'mirror', 'uptown', 3, 44, 3, 44, 4, ['jax', 'gambler'],
+  "Which one of us are you looking at? Wrong.", "You found me. People don't. Even I don't, some days.", "I cleaned windows uptown. Found a black stone on a sill, forty floors up. I looked into it and it looked back."),
+ ('sable', 'Sable Marchetti', 26, 'Hush', 'shade', 'underground', 3, 50, 4, 46, 4, ['vex', 'speedster'],
+  "You won't hear me. Nobody does. It's restful.", "You turned round. People never turn round.", "I was a getaway driver who wanted to disappear. A grey suit said he could arrange it. He gave me a black stone and I haven't cast a shadow at noon since."),
+ ('atlas', 'Atlas Novak', 30, 'Tiny', 'gravity', 'crystal_meadow', 2, 80, 4, 20, 4, ['enforcer', 'brute'],
+  "Everything comes to me in the end. Rocks. Coins. You.", "Huh. You stayed away. Lonely way to win.", "I carried crates for a man in a grey suit. One of them was full of black stones. I kept one. Now everything's heavy but me."),
+]
+def pick(cands):
+    for c in cands:
+        if 'idle' in M.get('characters/' + c, {}): return c
+    return 'cyber'
+marked = {}
+comp = C['companions']
+for (mid, name, age, epi, gift, scene, prog, hp, dmg, speed, tier, art, intro, yld, origin) in MARKED:
+    own = 'mk_' + mid
+    char = own if 'idle' in M.get('characters/' + own, {}) else pick(art)
+    marked[mid] = {'name': name, 'age': age, 'epithet': epi, 'gift': gift, 'scene': scene, 'progress': prog, 'intro': intro, 'yield': yld, 'origin': origin, 'char': char}
+    E['enemies']['marked_' + mid] = {'hp': hp, 'dmg': dmg, 'speed': speed, 'xp': 30 + 20 * tier, 'tier': tier, 'abilities': [], 'gift': gift, 'char': char, 'reward': 60 * tier}
+    E['drops']['marked_' + mid] = []
+    g = GIFTS[gift]
+    comp[own] = {'name': name.split(' ')[0], 'sprite': char, 'arc': 'gangsters', 'ability': 'gift:' + gift, 'ability_name': g['name'], 'ability_desc': 'Hold B standing still: ' + g['lend_desc'] + ' (%d mana)' % g['mana'],
+                 'join': origin, 'desc': '"%s", %d. %s' % (epi, age, g['name'])}
+for kind, gid in BOSS.items():
+    if kind in E['enemies']: E['enemies'][kind]['gift'] = gid
+json.dump({'_': 'Generated by tools/gen_gifts.py. gifts: powers (moves + rule). marked: the young gangsters who carry them. bosses: which boss has which.', 'gifts': GIFTS, 'marked': marked, 'bosses': BOSS}, open(D + 'gifts.json', 'w'), indent=1, ensure_ascii=False)
+json.dump(E, open(D + 'enemies.json', 'w'), indent=1, ensure_ascii=False)
+json.dump(C, open(D + 'companions.json', 'w'), indent=1, ensure_ascii=False)
+print('gifts', len(GIFTS), 'marked', len(marked), 'bosses', len(BOSS), 'stand-ins', {k: v['char'] for k, v in marked.items()})
