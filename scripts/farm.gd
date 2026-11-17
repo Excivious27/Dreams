@@ -410,6 +410,9 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 	if crop == "":
 		var it: Dictionary = GameState.items.get(sel, {})
 		if it.get("type", "") == "seed" and GameState.count(sel) > 0:
+			if not GameState.spend_for("plant"):
+				hud.toast("Too tired.", Color(1, 0.7, 0.7))
+				return true
 			tile["crop"] = str(it["crop"])
 			tile["days"] = 0
 			net_act({"a": "farm_tile", "key": key, "tile": tile})

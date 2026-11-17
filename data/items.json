@@ -85,21 +85,21 @@
  "turnip": {
   "name": "Turnip",
   "type": "crop",
-  "value": 9,
+  "value": 12,
   "rarity": "common",
   "tier": 1
  },
  "strawberry": {
   "name": "Strawberry",
   "type": "crop",
-  "value": 22,
+  "value": 20,
   "rarity": "common",
   "tier": 1
  },
  "corn": {
   "name": "Corn",
   "type": "crop",
-  "value": 28,
+  "value": 22,
   "rarity": "common",
   "tier": 1
  },
@@ -281,7 +281,7 @@
  "wheat": {
   "name": "Wheat",
   "type": "crop",
-  "value": 10,
+  "value": 14,
   "rarity": "common",
   "tier": 1
  },
@@ -469,7 +469,7 @@
  "potato": {
   "name": "Potato",
   "type": "crop",
-  "value": 14,
+  "value": 18,
   "rarity": "common",
   "tier": 1
  },
@@ -484,7 +484,7 @@
  "carrot": {
   "name": "Carrot",
   "type": "crop",
-  "value": 12,
+  "value": 16,
   "rarity": "common",
   "tier": 1
  },
@@ -499,7 +499,7 @@
  "tomato": {
   "name": "Tomato",
   "type": "crop",
-  "value": 30,
+  "value": 26,
   "rarity": "common",
   "tier": 2
  },
@@ -1453,7 +1453,7 @@
  "cranberry": {
   "name": "Cranberry",
   "type": "fruit",
-  "value": 12,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "heal": 1
@@ -2325,7 +2325,7 @@
  "rice": {
   "name": "Rice",
   "type": "crop",
-  "value": 12,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "heal": 1
@@ -7110,7 +7110,7 @@
  "sugar_beet": {
   "name": "Sugar Beet",
   "type": "crop",
-  "value": 38,
+  "value": 48,
   "rarity": "common",
   "tier": 1,
   "energy": 8
@@ -7134,7 +7134,7 @@
  "snow_pea": {
   "name": "Snow Pea",
   "type": "crop",
-  "value": 28,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "energy": 8

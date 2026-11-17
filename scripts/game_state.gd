@@ -48,7 +48,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"arc": arc,
 		"playable": playable_id,
 		"names": {"character": character_name, "town": town_name, "pet": pet_name},
-		"crystals": 20 if arc == "penguins" else 35,
+		"crystals": 50 if arc == "penguins" else 60,
 		"day": 1,
 		"time": DAY_START,
 		"energy": 100, "max_energy": 100,
@@ -289,7 +289,11 @@ static func demand(id: String) -> float:
 static func saturation(id: String, n_more := 0) -> float:
 	var sold: Dictionary = run.get("sold_today", {})
 	var already := int(sold.get(id, 0)) + n_more
-	return maxf(0.5, 1.0 - 0.08 * (already / 20))
+	# The first 20 of a thing sell at full price; after that the town has had
+	# enough of it: -10% per further 10, floor 40%. Grow a few things.
+	if already < 20:
+		return 1.0
+	return maxf(0.4, 1.0 - 0.10 * (1 + (already - 20) / 10))
 
 
 static func sell_price(id: String, n := 1) -> int:
@@ -595,7 +599,7 @@ static func gear_stat(stat: String) -> int:
 ##   on sleep. Spells live in data/spells.json.
 ## Stardew-tuned: a fresh 100-bar covers ~50 hoe strokes or ~35 axe swings
 ## before food; tool tiers and perks stretch that further.
-const ENERGY_COST := {"hoe": 2, "can": 1, "axe": 3, "pickaxe": 3, "scythe": 1, "rod": 2, "hammer": 2, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
+const ENERGY_COST := {"hoe": 3, "can": 2, "axe": 3, "pickaxe": 3, "scythe": 1, "rod": 2, "hammer": 2, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
 const HEART_HP := 20
 
 static func _apply_max_stats() -> void:

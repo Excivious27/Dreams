@@ -9,9 +9,26 @@ static func offers(shop: String) -> Array:
 		"bait":
 			return ["bait", "energy_tea", "bread"]
 		"store":
-			var base: Array = ["turnip_seed", "potato_seed", "carrot_seed", "strawberry_seed", "corn_seed", "wheat_seed", "gift_pie"]
+			# Maple stocks this season's seeds (and next season's in the last week).
+			var by_season := {
+				"spring": ["turnip_seed", "potato_seed", "carrot_seed", "strawberry_seed"],
+				"summer": ["corn_seed", "tomato_seed", "rice_seed"],
+				"fall": ["pumpkin_seed", "cranberry_seed", "sugar_beet_seed"],
+				"winter": ["snow_pea_seed"],
+			}
+			var rare := {
+				"spring": ["flax_seed", "tea_leaf_seed"],
+				"summer": ["melon_seed", "hops_seed", "cotton_seed", "lotus_seed", "ghost_pepper_seed"],
+				"fall": ["grape_seed", "moon_melon_seed"],
+				"winter": [],
+			}
+			var se := GameState.season()
+			var base: Array = by_season[se].duplicate()
+			if GameState.day_of_season() >= 22:
+				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
+			base += ["wheat_seed", "gift_pie"]
 			if GameState.has_perk("bartering", "Networker"):
-				base += ["tomato_seed", "pumpkin_seed", "melon_seed", "dream_seed"]
+				base += rare[se] + ["dream_seed"]
 			return base
 		"smith":
 			return ["iron_sword", "coal", "copper_ring"]
