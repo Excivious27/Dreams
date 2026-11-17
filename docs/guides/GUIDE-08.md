@@ -134,12 +134,20 @@ The penguins' own shelf on the Plans board, drawn from the book.
 7. **Penguin arc:** build Big Jim's Campfire and toast a marshmallow; build the Merkitty Pool, sleep, and collect the gift.
 8. **Gangster arc** (new game): build the Back-Room Press, print Crude Bills, pass a few in town, and watch Heat in the Workshop page.
 
-## Your art job: Art Prompts 15
+## Your art job
 
-26 images in six batches. The file is `docs/ART-PROMPTS-15.md`.
+**In the game now from Prompts 15:**
 
-- **Batches 1–3 (5, 3, 3 images): the workshop.** Goods icons, station tiers, vehicles and the rocket, Granite and Sel's portraits; the gangster stations, street-gear icons and UI; the penguin sanctuary stations, icons and extras. Until they arrive, new stations show as crates with the station's name, and new items have blank icons.
-- **Batches 4–6 (4, 4, 7 images): the gritty gangster redesign.** Every gangster-arc hero and all twelve crew redrawn in a dark underworld style: muted night colours, hat-brim shadows, serious faces, long coats. Plus dark select cards. Attach each character's current picture so they stay the same person.
+- Batch 1: workshop icons, every shared station's four tiers, the rocket, the vehicles, Granite and Sel's portraits.
+- Batch 2: the gangster stations (second take) and all the street-gear icons. The first take came back as labelled poster pages and was set aside.
+- Batch 3: the whole penguin sanctuary.
+- Batch 4: Dad, Pax, Grandma June and Uncle Rafe redrawn for the underworld. They walk, run, fight, swim and ride in the new look, and their faces show in dialogue and on the hero picker. Their hoe, axe and pickaxe swings use their attack pose for now; the tool poses on those sheets weren't regular enough to cut automatically.
+
+**Still to make:**
+
+- **Batch 5:** Nia, Ollie, Marisol and Bo redrawn.
+- **Batch 6:** the dark select cards and the twelve crew redrawn.
+- **Optional:** the UI sheet (heat meter, tier badges, job-slot icons). It only arrived as a small part of an all-in-one image. Art Prompts 15B has it as a single image on its own.
 
 **Done in the game already for the darker look:** the gangster hero picker is now a night scene, and the gangster arc's world is overcast by day and deeper at night. The characters themselves only change when the new art arrives.
 

@@ -39,12 +39,12 @@ G = [  # id, name, type, value, tier, extra
  ('mana_potion', 'Mana Potion', 'potion', 60, 2, {'mana': 20}),
  ('moonlight_elixir', 'Moonlight Elixir', 'potion', 2200, 5, {'heal': 99, 'energy': 200, 'mana': 99, 'buff': {'kind': 'luck', 'minutes': 600, 'amount': 3}, 'desc': 'Everything, all at once.'}),
  # vehicles (the vehicle workshop)
- ('scooter', 'Kick Scooter', 'vehicle', 600, 2, {'speed': 1.45, 'sprite': 'scooter', 'desc': 'Hold it and press USE to ride. Faster than walking; no tools while riding.'}),
- ('rowboat', 'Rowboat', 'vehicle', 900, 2, {'speed': 1.0, 'water': 1.5, 'sprite': 'rowboat', 'desc': 'Hold it and press USE at the water: row instead of swimming, fast and dry.'}),
- ('motor_scooter', 'Motor Scooter', 'vehicle', 2600, 3, {'speed': 1.9, 'sprite': 'scooter', 'desc': 'Twice as fast as your feet.'}),
- ('balloon', 'Hot-Air Balloon', 'vehicle', 9000, 4, {'fly': True, 'sprite': 'balloon', 'desc': 'Hold it and press USE outdoors: drift to any place you have already visited.'}),
- ('crystal_sled', 'Crystal Sled', 'vehicle', 2400, 3, {'speed': 1.7, 'snow': 2.3, 'sprite': 'farm_cart', 'arc': 'penguins', 'desc': 'Fast anywhere; faster in winter and on the mountain.'}),
- ('getaway_car', 'Getaway Car', 'vehicle', 5200, 3, {'speed': 2.3, 'sprite': 'lux_car_black', 'arc': 'gangsters', 'desc': 'Black, quiet, quick. Nobody saw you leave.'}),
+ ('scooter', 'Kick Scooter', 'vehicle', 600, 2, {'speed': 1.45, 'sprite': 'veh_scooter', 'size': 16, 'desc': 'Hold it and press USE to ride. Faster than walking; no tools while riding.'}),
+ ('rowboat', 'Rowboat', 'vehicle', 900, 2, {'speed': 1.0, 'water': 1.5, 'sprite': 'veh_rowboat', 'size': 30, 'desc': 'Hold it and press USE at the water: row instead of swimming, fast and dry.'}),
+ ('motor_scooter', 'Motor Scooter', 'vehicle', 2600, 3, {'speed': 1.9, 'sprite': 'veh_motor_scooter', 'size': 20, 'desc': 'Twice as fast as your feet.'}),
+ ('balloon', 'Hot-Air Balloon', 'vehicle', 9000, 4, {'fly': True, 'sprite': 'veh_balloon', 'desc': 'Hold it and press USE outdoors: drift to any place you have already visited.'}),
+ ('crystal_sled', 'Crystal Sled', 'vehicle', 2400, 3, {'speed': 1.7, 'snow': 2.3, 'sprite': 'veh_crystal_sled', 'size': 22, 'arc': 'penguins', 'desc': 'Fast anywhere; faster in winter and on the mountain.'}),
+ ('getaway_car', 'Getaway Car', 'vehicle', 5200, 3, {'speed': 2.3, 'sprite': 'veh_getaway_car', 'size': 40, 'arc': 'gangsters', 'desc': 'Black, quiet, quick. Nobody saw you leave.'}),
  # rocket parts
  ('hull_plate', 'Hull Plate', 'craft', 900, 3, {}), ('rocket_engine', 'Rocket Engine', 'craft', 2600, 4, {}), ('fuel_cell', 'Fuel Cell', 'craft', 320, 3, {'desc': 'One launch each.'}),
  ('nav_computer', 'Nav Computer', 'craft', 2200, 4, {}), ('heat_shield', 'Heat Shield', 'craft', 1500, 4, {}),
@@ -111,7 +111,7 @@ def station(id, label, cat, cell, skill, verb, seller, tiers, w=0, h=1, arc=None
     if arc: e['arc'] = arc
     e['tiers'] = []
     for i, (name, sprites, cost, desc) in enumerate(tiers):
-        g, s = art(*sprites)
+        g, s = art('st_%s_%d' % (id, i + 1), *sprites)
         t = {'tier': i + 1, 'name': name, 'sprite': s, 'group': g, 'cost': cost, 'permit': 0, 'days': 0 if i < 2 else i - 1, 'desc': desc,
              'price': int(round((val(cost) * 2.2 + 150 * (i + 1) ** 2) / 10.0) * 10), 'unlock': {}}
         if i > 0: t['unlock']['progress'] = i
@@ -125,62 +125,62 @@ P = 'Slots {s}, {v}% faster, recipes to tier {c}.'
 def d(i, extra=''):
     return ('%d job%s at once, %s recipes to tier %d. ' % (i + 1, '' if i == 0 else 's', ['normal speed,', '15% faster,', '30% faster,', '45% faster,'][i], min(5, i + 2)) + extra).strip()
 
-station('workbench', 'Workbench', 'workshop', [6, 13], 'building', 'Build', 'Hazel', [
+station('workbench', 'Workbench', 'workshop', [3, 15], 'building', 'Build', 'Hazel', [
  ('Workbench', ['workbench_t1', 'workbench3'], {'wood': 20}, d(0)),
  ("Carpenter's Bench", ['workbench_t2'], {'plank': 20, 'nails': 10, 'copper_bar': 2}, d(1)),
  ('Workshop', ['workbench_t3'], {'hardwood_plank': 15, 'gear': 4, 'iron_bar': 5}, d(2)),
  ('Master Workshop', ['workbench_t4', 'workbench_t3'], {'ironwood_beam': 4, 'plating': 4, 'crystal_glass': 2}, d(3))], w=1)
-station('sawmill', 'Lumberyard', 'workshop', [9, 15], 'building', 'Saw', 'Hazel', [
+station('sawmill', 'Lumberyard', 'workshop', [6, 15], 'building', 'Saw', 'Hazel', [
  ('Sawhorse', ['sawhorse'], {'wood': 30, 'stone': 10}, d(0, 'Planks from logs.')),
  ('Lumberyard', ['lumberyard'], {'plank': 30, 'copper_bar': 3, 'nails': 10}, d(1)),
  ('Sawmill', ['sawmill'], {'beam': 12, 'gear': 6, 'iron_bar': 6}, d(2)),
  ('Steam Sawmill', ['sawmill_steam'], {'ironwood_beam': 2, 'plating': 4, 'spring': 6, 'dark_bar': 2}, d(3))], w=1)
-station('furnace', 'Furnace', 'workshop', [8, 13], 'mining', 'Smelt', 'Gideon', [
+station('furnace', 'Furnace', 'workshop', [9, 15], 'mining', 'Smelt', 'Gideon', [
  ('Stone Furnace', ['furnace_t1_off', 'furnace2_off'], {'stone': 20, 'copper': 5}, d(0, 'Ore into bars.')),
  ('Brick Furnace', ['furnace_t2_off'], {'brick': 30, 'copper_bar': 5, 'coal': 10}, d(1)),
  ('Blast Furnace', ['furnace_t3_off', 'furnace2_off'], {'brick': 60, 'steel_bar': 8, 'tile': 10}, d(2)),
  ('Starfire Furnace', ['furnace_t4_off', 'furnace2_on'], {'dark_bar': 6, 'crystal_glass': 4, 'crystal_battery': 2}, d(3))])
-station('anvil', 'Anvil', 'workshop', [12, 15], 'mining', 'Forge', 'Gideon', [
+station('anvil', 'Anvil', 'workshop', [11, 15], 'mining', 'Forge', 'Gideon', [
  ('Field Anvil', ['anvil', 'forge_1'], {'copper_bar': 3, 'wood': 10}, d(0, 'Nails, tools, copper gear.')),
  ('Smithy', ['forge_2'], {'iron_bar': 8, 'brick': 20, 'plank': 10}, d(1)),
  ('Master Forge', ['forge_3'], {'steel_bar': 10, 'gear': 6, 'beam': 6}, d(2)),
  ('Starforge', ['forge_4'], {'dark_bar': 8, 'plating': 6, 'crystal_battery': 2}, d(3))])
-station('loom', 'Loom', 'workshop', [3, 15], 'farming', 'Weave', 'Lumi', [
+station('loom', 'Loom', 'workshop', [6, 18], 'farming', 'Weave', 'Lumi', [
  ('Hand Loom', ['loom_1', 'loom'], {'wood': 25, 'fiber': 20}, d(0, 'Cloth, yarn, rope.')),
  ('Floor Loom', ['loom_2'], {'plank': 20, 'nails': 8, 'yarn': 6}, d(1)),
  ('Weaving Frame', ['loom_3', 'loom_2'], {'hardwood_plank': 12, 'gear': 4, 'cotton_cloth': 8}, d(2)),
  ('Moon Loom', ['loom_4', 'loom_2'], {'ironwood_beam': 2, 'fine_fabric': 6, 'crystal_glass': 2}, d(3))])
-station('tannery', 'Tanning Rack', 'workshop', [3, 17], 'combat', 'Tan', 'Rook', [
+station('tannery', 'Tanning Rack', 'workshop', [9, 18], 'combat', 'Tan', 'Rook', [
  ('Tanning Rack', ['tanning_rack'], {'wood': 20, 'rope': 2}, d(0, 'Pelts into leather.')),
  ('Tannery', ['tannery_2', 'tanning_rack'], {'plank': 16, 'nails': 8, 'leather': 4}, d(1)),
  ("Leatherworker's Shop", ['tannery_3', 'tanning_rack'], {'beam': 8, 'gear': 2, 'cooking_oil': 6}, d(2)),
  ("Master Saddler's", ['tannery_4', 'tanning_rack'], {'ironwood_beam': 2, 'fine_leather': 8, 'plating': 2}, d(3))])
-station('kitchen', 'Cooking Pot', 'pantry', [6, 17], 'farming', 'Cook', 'Posy', [
+station('kitchen', 'Cooking Pot', 'pantry', [3, 21], 'farming', 'Cook', 'Posy', [
  ('Cooking Pot', ['stove_1'], {'stone': 10, 'wood': 5}, d(0, 'Also sets what the house kitchen can do.')),
  ('Iron Stove', ['stove_2'], {'iron_bar': 4, 'brick': 20, 'clay_pot': 4}, d(1)),
  ('Kitchen Range', ['stove_3'], {'steel_bar': 6, 'tile': 16, 'gear': 2}, d(2)),
  ('Grand Range', ['stove_4'], {'plating': 4, 'crystal_glass': 4, 'gold_bar': 2}, d(3))])
-station('keg', 'Keg', 'pantry', [6, 15], 'farming', 'Brew', 'Tam', [
+station('keg', 'Keg', 'pantry', [3, 24], 'farming', 'Brew', 'Tam', [
  ('Keg', ['keg2', 'keg'], {'wood': 30, 'copper_bar': 1}, d(0, 'Anything you grow, given time.')),
  ('Oak Barrel', ['keg3'], {'plank': 24, 'nails': 10, 'iron_bar': 2}, d(1)),
  ('Fermenting Vat', ['keg_4', 'keg3'], {'hardwood_plank': 16, 'steel_bar': 4, 'glass': 10}, d(2)),
  ('Cellar Vats', ['keg_5', 'keg3'], {'ironwood_beam': 2, 'plating': 4, 'crystal_glass': 4}, d(3))])
-station('press', 'Pantry Press', 'pantry', [9, 17], 'farming', 'Press', 'Tam', [
+station('press', 'Pantry Press', 'pantry', [6, 24], 'farming', 'Press', 'Tam', [
  ('Cheese Press', ['cheese_press'], {'wood': 20, 'stone': 10, 'cloth': 2}, d(0, 'Cheese, butter, jam, oil.')),
  ('Oil Press', ['oil_press'], {'plank': 16, 'iron_bar': 3, 'clay_pot': 6}, d(1)),
  ('Preserving Room', ['preserves_jar2', 'preserves_jar'], {'beam': 6, 'glass': 16, 'gear': 3}, d(2)),
  ('Creamery', ['creamery', 'cheese_press'], {'plating': 3, 'crystal_glass': 4, 'tile': 20}, d(3))])
-station('kiln', 'Kiln', 'workshop', [14, 15], 'mining', 'Fire', 'Granite', [
+station('kiln', 'Kiln', 'workshop', [3, 18], 'mining', 'Fire', 'Granite', [
  ('Clay Kiln', ['kiln', 'glass_kiln'], {'stone': 30, 'clay': 10}, d(0, 'Bricks, pots, glass.')),
  ('Brick Kiln', ['kiln_2', 'glass_kiln'], {'brick': 40, 'copper_bar': 3}, d(1)),
  ('Glassworks', ['glass_kiln'], {'brick': 60, 'steel_bar': 4, 'tile': 12}, d(2)),
  ('Crystal Kiln', ['kiln_4', 'glass_kiln'], {'dark_bar': 3, 'crystal_glass': 4, 'crystal_refined': 6}, d(3))])
-station('jeweler', "Jeweller's Bench", 'workshop', [12, 17], 'mining', 'Set', 'Ivy', [
+station('jeweler', "Jeweller's Bench", 'workshop', [11, 18], 'mining', 'Set', 'Ivy', [
  ("Tinker's Tray", ['jeweller_bench'], {'plank': 10, 'copper_bar': 2}, d(0, 'Rings and charms.')),
  ("Jeweller's Bench", ['jeweller_bench_2', 'jeweller_bench'], {'hardwood_plank': 6, 'glass': 6, 'silver_bar': 2}, d(1)),
  ("Gem-Cutter's Bench", ['jeweller_bench_3', 'jeweller_bench'], {'veneer': 4, 'crystal_glass': 2, 'gold_bar': 3}, d(2)),
  ('Star Setting Bench', ['jeweller_bench_4', 'jeweller_bench'], {'ironwood_beam': 1, 'moon_bar': 1, 'crystal_battery': 2}, d(3))])
-station('cauldron', 'Magic Potion Station', 'workshop', [14, 17], 'foraging', 'Brew', 'Wren', [
+station('cauldron', 'Magic Potion Station', 'workshop', [11, 21], 'foraging', 'Brew', 'Wren', [
  ('Bubbling Pot', ['cauldron_1', 'cauldron2'], {'stone': 15, 'copper_bar': 2, 'wild_herb': 5}, d(0, 'Remedies and red potions.')),
  ('Cauldron', ['cauldron_2'], {'iron_bar': 5, 'brick': 16, 'glass': 6}, d(1, 'Swift, luck and hearth brews.')),
  ('Arcane Cauldron', ['cauldron_3'], {'silver_bar': 4, 'crystal_glass': 3, 'crystal_refined': 4}, d(2, 'Growth elixir, stoneskin.')),
@@ -190,12 +190,12 @@ station('resonator', 'Crystal Resonator', 'workshop', [16, 16], 'mining', 'Tune'
  ('Twin Resonator', ['resonator_2', 'resonator'], {'crystal_refined': 4, 'copper_bar': 4, 'glass': 4}, d(1)),
  ('Prism Array', ['resonator_3', 'resonator'], {'crystal_glass': 4, 'silver_bar': 4, 'gear': 4}, d(2)),
  ('Star Array', ['resonator_4', 'resonator'], {'crystal_battery': 4, 'moon_bar': 1, 'plating': 4}, d(3))])
-station('garage', 'Vehicle Workshop', 'projects', [10, 21], 'building', 'Assemble', 'Benno', [
+station('garage', 'Vehicle Workshop', 'projects', [8, 27], 'building', 'Assemble', 'Benno', [
  ('Wheel Shed', ['garage_1', 'farm_cart'], {'plank': 30, 'nails': 16, 'wheel': 2}, d(0, 'A kick scooter.')),
  ('Boat & Cart Shop', ['garage_2', 'farm_cart'], {'beam': 12, 'gear': 6, 'sail': 2}, d(1, 'A rowboat.')),
  ('Motor Works', ['garage_3', 'farm_cart'], {'plating': 6, 'spring': 8, 'crystal_battery': 1}, d(2, 'Engines.')),
  ('Sky Dock', ['garage_4', 'balloon'], {'ironwood_beam': 4, 'moonweave': 4, 'crystal_battery': 3}, d(3, 'A hot-air balloon.'))], w=2, h=2)
-station('launchpad', 'Rocket Yard', 'projects', [15, 23], 'building', 'Assemble', 'Theo', [
+station('launchpad', 'Rocket Yard', 'projects', [15, 27], 'building', 'Assemble', 'Theo', [
  ('Launch Scaffold', ['rocket_1'], {'beam': 20, 'brick': 60, 'nails': 40}, d(0, 'Build rocket parts here.')),
  ('Rocket Frame', ['rocket_2'], {'hull_plate': 6, 'gear': 10, 'spring': 10}, d(1, 'A hull on the pad.')),
  ('Fuelled Rocket', ['rocket_3'], {'rocket_engine': 2, 'heat_shield': 2, 'hull_plate': 4}, d(2, 'LAUNCH: fly to the moon (1 fuel cell a trip).')),
@@ -203,54 +203,54 @@ station('launchpad', 'Rocket Yard', 'projects', [15, 23], 'building', 'Assemble'
 for t, pr in zip(B['launchpad']['tiers'], [1, 2, 3, 3]): t.setdefault('unlock', {})['progress'] = pr
 B['launchpad']['tiers'][0]['unlock']['skill'] = ['building', 4]
 # ---- gangster arc only ---------------------------------------------------------
-station('print_shop', 'Back-Room Press', 'operation', [3, 20], 'bartering', 'Print', 'Specs', [
+station('print_shop', 'Back-Room Press', 'operation', [9, 24], 'bartering', 'Print', 'Specs', [
  ('Back-Room Press', ['press_1'], {'plank': 16, 'nails': 8, 'copper_bar': 2}, d(0, 'Crude bills. Risky.')),
  ('Offset Press', ['press_2'], {'gear': 6, 'iron_bar': 6, 'linen': 10}, d(1, 'Passable bills, forged permits.')),
  ('Engraving Press', ['press_3'], {'plating': 4, 'spring': 6, 'fine_fabric': 4}, d(2, 'Fine bills.')),
  ('The Mint', ['press_4'], {'dark_bar': 4, 'gold_bar': 6, 'crystal_glass': 4}, d(3, 'Perfect bills.'))], arc='gangsters', book='print')
-station('armory', 'Street Armory', 'operation', [3, 22], 'combat', 'Fit', 'Vic', [
+station('armory', 'Street Armory', 'operation', [11, 24], 'combat', 'Fit', 'Vic', [
  ('Trunk of Tools', ['armory_1', 'forge_anvil_tools'], {'plank': 12, 'copper_bar': 4, 'leather': 2}, d(0, 'Knuckles, a fedora, rounds.')),
  ('Back-Alley Armory', ['armory_2', 'forge_anvil_tools'], {'iron_bar': 8, 'leather': 6, 'cotton_cloth': 4}, d(1, 'Crowbar, bat, six-shooter, suits.')),
  ("Fixer's Workshop", ['armory_3', 'forge_anvil_tools'], {'steel_bar': 10, 'fine_leather': 4, 'gear': 6}, d(2, 'Chrome, tommy gun, scattergun.')),
  ('The Vault', ['armory_4', 'forge_anvil_tools'], {'dark_bar': 8, 'plating': 6, 'fine_fabric': 6}, d(3, 'Neon and armor.'))], arc='gangsters')
-station('soda', 'Soda Fountain', 'operation', [6, 23], 'bartering', 'Mix', 'Mama Rosa', [
+station('soda', 'Soda Fountain', 'operation', [3, 27], 'bartering', 'Mix', 'Mama Rosa', [
  ('Soda Cart', ['soda_1'], {'plank': 14, 'glass': 6, 'copper_bar': 2}, d(0, 'Root beer. A front with a real queue.')),
  ('Soda Fountain', ['soda_2'], {'brick': 30, 'glass': 16, 'iron_bar': 4}, d(1)),
  ('Parlour', ['soda_3'], {'tile': 24, 'crystal_glass': 2, 'veneer': 4}, d(2)),
  ('The Gold Room', ['soda_4'], {'gold_bar': 6, 'crystal_glass': 6, 'moonweave': 2}, d(3))], arc='gangsters')
-station('laundromat', 'Laundromat', 'operation', [9, 24], 'bartering', '', 'Deuce', [
+station('laundromat', 'Laundromat', 'operation', [5, 27], 'bartering', '', 'Deuce', [
  ('Wash Tub', ['laundry_1'], {'plank': 20, 'copper_bar': 4, 'cloth': 6}, 'Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.'),
  ('Laundromat', ['laundry_2'], {'brick': 40, 'iron_bar': 8, 'gear': 4}, 'Washes 6 bills a night at 85%.'),
  ('Cleaners & Sons', ['laundry_3'], {'tile': 30, 'plating': 4, 'spring': 8}, 'Washes 10 bills a night at 90%.')], w=1, arc='gangsters', kind='building')
-station('training', 'Recruit Training Center', 'operation', [18, 22], 'combat', '', 'Val', [
+station('training', 'Recruit Training Center', 'operation', [18, 27], 'combat', '', 'Val', [
  ('Back-Lot Gym', ['gym_1'], {'plank': 30, 'rope': 8, 'leather': 6}, 'Spar once a day for combat XP. +10 max health.'),
  ('Training Hall', ['gym_2'], {'beam': 16, 'brick': 60, 'steel_bar': 6}, "Every crew member's perk counts one loyalty step higher. Sparring pays double."),
  ('The Academy', ['gym_3'], {'ironwood_beam': 4, 'plating': 8, 'fine_fabric': 8}, 'Crew perks count two loyalty steps higher. +20 max health.')], w=2, h=2, arc='gangsters', kind='building')
 # ---- penguin arc only ----------------------------------------------------------
-station('shaper', 'Crystal Shaper', 'sanctuary', [3, 20], 'combat', 'Shape', 'Catkins', [
+station('shaper', 'Crystal Shaper', 'sanctuary', [9, 24], 'combat', 'Shape', 'Catkins', [
  ('Shard Table', ['shaper_1'], {'plank': 12, 'shard': 4, 'copper_bar': 2}, d(0, 'An icicle blade, snow goggles.')),
  ('Crystal Shaper', ['shaper_2'], {'iron_bar': 8, 'crystal_refined': 4, 'cotton_cloth': 4}, d(1, 'Sabre, parka, cleats.')),
  ('Prism Workshop', ['shaper_3'], {'steel_bar': 10, 'crystal_glass': 4, 'gear': 6}, d(2, 'Prism lance, aurora gear.')),
  ('Heart of Light', ['shaper_4'], {'dark_bar': 8, 'crystal_battery': 4, 'fine_fabric': 6}, d(3, 'The Starheart Blade.'))], arc='penguins')
-station('litter', 'Litter Works', 'sanctuary', [3, 22], 'foraging', 'Pack', 'Catkins', [
+station('litter', 'Litter Works', 'sanctuary', [11, 24], 'foraging', 'Pack', 'Catkins', [
  ('Sand Tray', ['litter_1'], {'plank': 12, 'sand': 20, 'clay': 6}, d(0, "Litter boxes: Cat-topia's secret weapon.")),
  ('Litter Works', ['litter_2'], {'brick': 30, 'clay_pot': 8, 'iron_bar': 4}, d(1, 'Scented boxes, paw lanterns.')),
  ('Catapult Yard', ['litter_3'], {'beam': 12, 'gear': 6, 'rope': 12}, d(2, 'Mega boxes, heart sparks.')),
  ('Grand Catapult', ['litter_4'], {'ironwood_beam': 3, 'spring': 10, 'crystal_battery': 2}, d(3))], arc='penguins')
-station('campfire', "Big Jim's Campfire", 'sanctuary', [6, 23], 'foraging', 'Toast', 'Big Jim', [
+station('campfire', "Big Jim's Campfire", 'sanctuary', [3, 27], 'foraging', 'Toast', 'Big Jim', [
  ('Campfire', ['campfire_1'], {'stone': 12, 'wood': 20}, d(0, 'Marshmallows on a stick.')),
  ('Fire Ring', ['campfire_2'], {'brick': 24, 'iron_bar': 3, 'plank': 12}, d(1, "S'mores and cocoa.")),
  ('Cook Camp', ['campfire_3'], {'tile': 16, 'steel_bar': 4, 'sail': 2}, d(2, "Big Jim's stew.")),
  ('Aurora Camp', ['campfire_4'], {'crystal_glass': 4, 'moonweave': 2, 'gold_bar': 3}, d(3))], arc='penguins')
-station('pool', 'Merkitty Pool', 'sanctuary', [9, 24], 'fishing', '', 'Mer', [
+station('pool', 'Merkitty Pool', 'sanctuary', [5, 27], 'fishing', '', 'Mer', [
  ('Tide Pool', ['pool_1'], {'stone': 40, 'clay': 12, 'sand': 20}, 'The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you.'),
  ('Singing Pool', ['pool_2'], {'brick': 40, 'glass': 12, 'copper_bar': 6}, '2 gifts a morning, sometimes a pearl.'),
  ('Moon Grotto', ['pool_3'], {'tile': 30, 'crystal_glass': 4, 'silver_bar': 4}, '3 gifts a morning; rare fish and pearls.')], w=1, arc='penguins', kind='building')
-station('burrow', 'Crystal Baby Burrow', 'sanctuary', [18, 22], 'mining', '', 'Coldy', [
+station('burrow', 'Crystal Baby Burrow', 'sanctuary', [18, 27], 'mining', '', 'Coldy', [
  ('Cosy Burrow', ['burrow_1'], {'plank': 30, 'cloth': 8, 'stone': 40}, 'The babies you turned back dig for you overnight: stone, coal, copper, a shard.'),
  ('Baby Dig', ['burrow_2'], {'beam': 16, 'brick': 60, 'yarn': 10}, 'More diggers; iron and shards.'),
  ('Stomping Grounds', ['burrow_3'], {'ironwood_beam': 4, 'plating': 6, 'fine_fabric': 8}, 'Silver, gold and refined crystal turn up.')], w=2, h=2, arc='penguins', kind='building')
-station('shrine', 'Meow Pow Wow Shrine', 'sanctuary', [14, 20], 'foraging', '', 'Catkins', [
+station('shrine', 'Meow Pow Wow Shrine', 'sanctuary', [18, 23], 'foraging', '', 'Catkins', [
  ('Paw Stone', ['shrine_1'], {'stone': 30, 'crystal_bloom': 6, 'shard': 3}, 'Practise once a day: mana back and foraging XP. +5 max mana.'),
  ('Heart Shrine', ['shrine_2'], {'brick': 40, 'crystal_refined': 6, 'starflower': 3}, 'Your Meow Pow Wow counts one rank stronger. Practice pays double.'),
  ('Rainbow Shrine', ['shrine_3'], {'crystal_glass': 6, 'moonweave': 3, 'star_dust': 4}, 'Two ranks stronger. +15 max mana.')], arc='penguins', kind='building')

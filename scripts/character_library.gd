@@ -97,6 +97,8 @@ static func frames_for(id: String) -> SpriteFrames:
 		var g := "characters/" + id
 		var anims := {}
 		var list: Array = GEN_ONLY.get(id, ["idle", "idle_up", "idle_side", "walk", "walk_down", "walk_up", "sit", "wave", "work"])
+		if id.ends_with("_gang"):
+			list = (Art.manifest().get(g, {}) as Dictionary).keys()  # whatever the sheet gave us
 		for a: String in list:
 			if Art.has(g, a) and int(Art.info(g, a).get("h", 99)) >= 16:  # tiny strips are empty slots
 				anims[a] = a
@@ -122,8 +124,17 @@ static func frames_for(id: String) -> SpriteFrames:
 		for v in ["view_left"]:
 			if not gsf.has_animation(v):
 				_alias(gsf, v, "view_right")
+		# A redrawn (underworld) hero keeps their own look for every action: tool
+		# swings use their attack frames until tool poses are cut for them.
+		if id.ends_with("_gang") and Art.has(g, "swim") and Art.has(g, "ride"):
+			for tool: String in TOOL_ACTIONS:
+				for pair in [["_right", "attack"], ["_down", "attack_down"], ["_up", "attack_up"]]:
+					var an: String = tool + str(pair[0])
+					if not gsf.has_animation(an):
+						_alias(gsf, an, "celebrate" if tool in ["hold", "eat"] and gsf.has_animation("celebrate") else ("idle" if tool in ["cast", "reel"] else str(pair[1])))
+						gsf.set_animation_loop(an, false)
 		# A gangster-arc outfit with no tool poses borrows the farm hero's.
-		if id.ends_with("_gang") and has_character(id.trim_suffix("_gang")):
+		elif id.ends_with("_gang") and has_character(id.trim_suffix("_gang")):
 			var base := frames_for(id.trim_suffix("_gang"))
 			for a in base.get_animation_names():
 				var an := str(a)

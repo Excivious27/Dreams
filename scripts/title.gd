@@ -209,7 +209,12 @@ func _show_characters() -> void:
 		if bool(p.get("placeholder", false)):
 			name += " (art soon)"
 		var card_name := "card_hero_" + pid + ("_gang" if _arc == "gangsters" and Art.has("ui", "card_hero_" + pid + "_gang") else "")
-		if cards and Art.has("ui", card_name):
+		# A hero redrawn for the underworld shows the new art, not the old painted card.
+		var gsprite := GameState.sprite_for_playable(pid, _arc)
+		var redrawn := _arc == "gangsters" and gsprite.ends_with("_gang") and Art.has("characters/" + gsprite, "swim") and Art.has("characters/" + gsprite, "ride")
+		if redrawn:
+			grid.add_child(_sprite_card(pid, name))
+		elif cards and Art.has("ui", card_name):
 			var tb := TextureButton.new()
 			tb.texture_normal = Art.tex("ui", card_name)
 			tb.ignore_texture_size = true
@@ -233,7 +238,15 @@ func _sprite_card(pid: String, name: String) -> Control:
 	b.tooltip_text = name
 	b.clip_contents = true
 	for st in ["normal", "hover", "pressed", "focus"]:
-		b.add_theme_stylebox_override(st, Hud.panel_stylebox("panel_parchment"))
+		if _arc == "gangsters":
+			var sb := StyleBoxFlat.new()
+			sb.bg_color = Color(0.09, 0.09, 0.14)
+			sb.border_color = Color(0.62, 0.5, 0.26) if st != "pressed" else Color(0.9, 0.75, 0.4)
+			sb.set_border_width_all(2)
+			sb.set_corner_radius_all(3)
+			b.add_theme_stylebox_override(st, sb)
+		else:
+			b.add_theme_stylebox_override(st, Hud.panel_stylebox("panel_parchment"))
 	b.pressed.connect(func() -> void: _pick(pid))
 	var sprite_id := GameState.sprite_for_playable(pid, _arc)
 	var tex: Texture2D = null
@@ -243,6 +256,8 @@ func _sprite_card(pid: String, name: String) -> Control:
 			if sf.has_animation(a) and sf.get_frame_count(a) > 0:
 				tex = sf.get_frame_texture(a, 0)
 				break
+	if _arc == "gangsters" and Art.has("portraits/" + sprite_id, "neutral"):
+		tex = Art.tex("portraits/" + sprite_id, "neutral")
 	if tex:
 		var tr := TextureRect.new()
 		tr.texture = tex

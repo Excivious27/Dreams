@@ -412,8 +412,8 @@
  "workbench": {
   "label": "Workbench",
   "cell": [
-   6,
-   13
+   3,
+   15
   ],
   "w": 1,
   "h": 1,
@@ -430,7 +430,7 @@
    {
     "tier": 1,
     "name": "Workbench",
-    "sprite": "workbench_t1",
+    "sprite": "st_workbench_1",
     "group": "props",
     "cost": {
      "wood": 20
@@ -444,7 +444,7 @@
    {
     "tier": 2,
     "name": "Carpenter's Bench",
-    "sprite": "workbench_t2",
+    "sprite": "st_workbench_2",
     "group": "props",
     "cost": {
      "plank": 20,
@@ -467,7 +467,7 @@
    {
     "tier": 3,
     "name": "Workshop",
-    "sprite": "workbench_t3",
+    "sprite": "st_workbench_3",
     "group": "props",
     "cost": {
      "hardwood_plank": 15,
@@ -490,7 +490,7 @@
    {
     "tier": 4,
     "name": "Master Workshop",
-    "sprite": "workbench_t3",
+    "sprite": "st_workbench_4",
     "group": "props",
     "cost": {
      "ironwood_beam": 4,
@@ -542,8 +542,8 @@
  "furnace": {
   "label": "Furnace",
   "cell": [
-   8,
-   13
+   9,
+   15
   ],
   "w": 0,
   "h": 1,
@@ -560,7 +560,7 @@
    {
     "tier": 1,
     "name": "Stone Furnace",
-    "sprite": "furnace_t1_off",
+    "sprite": "st_furnace_1",
     "group": "props",
     "cost": {
      "stone": 20,
@@ -575,7 +575,7 @@
    {
     "tier": 2,
     "name": "Brick Furnace",
-    "sprite": "furnace_t2_off",
+    "sprite": "st_furnace_2",
     "group": "props",
     "cost": {
      "brick": 30,
@@ -598,7 +598,7 @@
    {
     "tier": 3,
     "name": "Blast Furnace",
-    "sprite": "furnace2_off",
+    "sprite": "st_furnace_3",
     "group": "props",
     "cost": {
      "brick": 60,
@@ -621,7 +621,7 @@
    {
     "tier": 4,
     "name": "Starfire Furnace",
-    "sprite": "furnace2_on",
+    "sprite": "st_furnace_4",
     "group": "props",
     "cost": {
      "dark_bar": 6,
@@ -646,8 +646,8 @@
  "keg": {
   "label": "Keg",
   "cell": [
-   6,
-   15
+   3,
+   24
   ],
   "w": 0,
   "h": 1,
@@ -664,7 +664,7 @@
    {
     "tier": 1,
     "name": "Keg",
-    "sprite": "keg2",
+    "sprite": "st_keg_1",
     "group": "props",
     "cost": {
      "wood": 30,
@@ -679,7 +679,7 @@
    {
     "tier": 2,
     "name": "Oak Barrel",
-    "sprite": "keg3",
+    "sprite": "st_keg_2",
     "group": "props",
     "cost": {
      "plank": 24,
@@ -702,7 +702,7 @@
    {
     "tier": 3,
     "name": "Fermenting Vat",
-    "sprite": "keg3",
+    "sprite": "st_keg_3",
     "group": "props",
     "cost": {
      "hardwood_plank": 16,
@@ -725,7 +725,7 @@
    {
     "tier": 4,
     "name": "Cellar Vats",
-    "sprite": "keg3",
+    "sprite": "st_keg_4",
     "group": "props",
     "cost": {
      "ironwood_beam": 2,
@@ -796,7 +796,7 @@
    {
     "tier": 1,
     "name": "Crystal Resonator",
-    "sprite": "resonator",
+    "sprite": "st_resonator_1",
     "group": "props",
     "cost": {
      "stone": 10,
@@ -811,7 +811,7 @@
    {
     "tier": 2,
     "name": "Twin Resonator",
-    "sprite": "resonator",
+    "sprite": "st_resonator_2",
     "group": "props",
     "cost": {
      "crystal_refined": 4,
@@ -834,7 +834,7 @@
    {
     "tier": 3,
     "name": "Prism Array",
-    "sprite": "resonator",
+    "sprite": "st_resonator_3",
     "group": "props",
     "cost": {
      "crystal_glass": 4,
@@ -857,7 +857,7 @@
    {
     "tier": 4,
     "name": "Star Array",
-    "sprite": "resonator",
+    "sprite": "st_resonator_4",
     "group": "props",
     "cost": {
      "crystal_battery": 4,
@@ -909,7 +909,7 @@
  "sawmill": {
   "label": "Lumberyard",
   "cell": [
-   9,
+   6,
    15
   ],
   "w": 1,
@@ -927,7 +927,7 @@
    {
     "tier": 1,
     "name": "Sawhorse",
-    "sprite": "sawhorse",
+    "sprite": "st_sawmill_1",
     "group": "props",
     "cost": {
      "wood": 30,
@@ -937,12 +937,12 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes to tier 2. Planks from logs.",
     "price": 330,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Lumberyard",
-    "sprite": "lumberyard",
+    "sprite": "st_sawmill_2",
     "group": "props",
     "cost": {
      "plank": 30,
@@ -960,12 +960,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Sawmill",
-    "sprite": "sawmill",
+    "sprite": "st_sawmill_3",
     "group": "props",
     "cost": {
      "beam": 12,
@@ -983,12 +983,12 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
     "name": "Steam Sawmill",
-    "sprite": "sawmill_steam",
+    "sprite": "st_sawmill_4",
     "group": "props",
     "cost": {
      "ironwood_beam": 2,
@@ -1007,14 +1007,14 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "anvil": {
   "label": "Anvil",
   "cell": [
-   12,
+   11,
    15
   ],
   "w": 0,
@@ -1118,8 +1118,8 @@
  "loom": {
   "label": "Loom",
   "cell": [
-   3,
-   15
+   6,
+   18
   ],
   "w": 0,
   "h": 1,
@@ -1136,8 +1136,8 @@
    {
     "tier": 1,
     "name": "Hand Loom",
-    "sprite": "loom_1",
-    "group": "stations",
+    "sprite": "st_loom_1",
+    "group": "props",
     "cost": {
      "wood": 25,
      "fiber": 20
@@ -1151,8 +1151,8 @@
    {
     "tier": 2,
     "name": "Floor Loom",
-    "sprite": "loom_2",
-    "group": "stations",
+    "sprite": "st_loom_2",
+    "group": "props",
     "cost": {
      "plank": 20,
      "nails": 8,
@@ -1174,8 +1174,8 @@
    {
     "tier": 3,
     "name": "Weaving Frame",
-    "sprite": "loom_2",
-    "group": "stations",
+    "sprite": "st_loom_3",
+    "group": "props",
     "cost": {
      "hardwood_plank": 12,
      "gear": 4,
@@ -1197,8 +1197,8 @@
    {
     "tier": 4,
     "name": "Moon Loom",
-    "sprite": "loom_2",
-    "group": "stations",
+    "sprite": "st_loom_4",
+    "group": "props",
     "cost": {
      "ironwood_beam": 2,
      "fine_fabric": 6,
@@ -1222,8 +1222,8 @@
  "tannery": {
   "label": "Tanning Rack",
   "cell": [
-   3,
-   17
+   9,
+   18
   ],
   "w": 0,
   "h": 1,
@@ -1240,7 +1240,7 @@
    {
     "tier": 1,
     "name": "Tanning Rack",
-    "sprite": "tanning_rack",
+    "sprite": "st_tannery_1",
     "group": "props",
     "cost": {
      "wood": 20,
@@ -1255,7 +1255,7 @@
    {
     "tier": 2,
     "name": "Tannery",
-    "sprite": "tanning_rack",
+    "sprite": "st_tannery_2",
     "group": "props",
     "cost": {
      "plank": 16,
@@ -1278,7 +1278,7 @@
    {
     "tier": 3,
     "name": "Leatherworker's Shop",
-    "sprite": "tanning_rack",
+    "sprite": "st_tannery_3",
     "group": "props",
     "cost": {
      "beam": 8,
@@ -1301,7 +1301,7 @@
    {
     "tier": 4,
     "name": "Master Saddler's",
-    "sprite": "tanning_rack",
+    "sprite": "st_tannery_4",
     "group": "props",
     "cost": {
      "ironwood_beam": 2,
@@ -1326,8 +1326,8 @@
  "kitchen": {
   "label": "Cooking Pot",
   "cell": [
-   6,
-   17
+   3,
+   21
   ],
   "w": 0,
   "h": 1,
@@ -1430,8 +1430,8 @@
  "press": {
   "label": "Pantry Press",
   "cell": [
-   9,
-   17
+   6,
+   24
   ],
   "w": 0,
   "h": 1,
@@ -1448,8 +1448,8 @@
    {
     "tier": 1,
     "name": "Cheese Press",
-    "sprite": "cheese_press",
-    "group": "stations",
+    "sprite": "st_press_1",
+    "group": "props",
     "cost": {
      "wood": 20,
      "stone": 10,
@@ -1464,7 +1464,7 @@
    {
     "tier": 2,
     "name": "Oil Press",
-    "sprite": "oil_press",
+    "sprite": "st_press_2",
     "group": "props",
     "cost": {
      "plank": 16,
@@ -1487,7 +1487,7 @@
    {
     "tier": 3,
     "name": "Preserving Room",
-    "sprite": "preserves_jar2",
+    "sprite": "st_press_3",
     "group": "props",
     "cost": {
      "beam": 6,
@@ -1510,8 +1510,8 @@
    {
     "tier": 4,
     "name": "Creamery",
-    "sprite": "cheese_press",
-    "group": "stations",
+    "sprite": "st_press_4",
+    "group": "props",
     "cost": {
      "plating": 3,
      "crystal_glass": 4,
@@ -1535,8 +1535,8 @@
  "kiln": {
   "label": "Kiln",
   "cell": [
-   14,
-   15
+   3,
+   18
   ],
   "w": 0,
   "h": 1,
@@ -1553,8 +1553,8 @@
    {
     "tier": 1,
     "name": "Clay Kiln",
-    "sprite": "kiln",
-    "group": "stations",
+    "sprite": "st_kiln_1",
+    "group": "props",
     "cost": {
      "stone": 30,
      "clay": 10
@@ -1568,7 +1568,7 @@
    {
     "tier": 2,
     "name": "Brick Kiln",
-    "sprite": "glass_kiln",
+    "sprite": "st_kiln_2",
     "group": "props",
     "cost": {
      "brick": 40,
@@ -1590,7 +1590,7 @@
    {
     "tier": 3,
     "name": "Glassworks",
-    "sprite": "glass_kiln",
+    "sprite": "st_kiln_3",
     "group": "props",
     "cost": {
      "brick": 60,
@@ -1613,7 +1613,7 @@
    {
     "tier": 4,
     "name": "Crystal Kiln",
-    "sprite": "glass_kiln",
+    "sprite": "st_kiln_4",
     "group": "props",
     "cost": {
      "dark_bar": 3,
@@ -1638,8 +1638,8 @@
  "jeweler": {
   "label": "Jeweller's Bench",
   "cell": [
-   12,
-   17
+   11,
+   18
   ],
   "w": 0,
   "h": 1,
@@ -1656,7 +1656,7 @@
    {
     "tier": 1,
     "name": "Tinker's Tray",
-    "sprite": "jeweller_bench",
+    "sprite": "st_jeweler_1",
     "group": "props",
     "cost": {
      "plank": 10,
@@ -1671,7 +1671,7 @@
    {
     "tier": 2,
     "name": "Jeweller's Bench",
-    "sprite": "jeweller_bench",
+    "sprite": "st_jeweler_2",
     "group": "props",
     "cost": {
      "hardwood_plank": 6,
@@ -1694,7 +1694,7 @@
    {
     "tier": 3,
     "name": "Gem-Cutter's Bench",
-    "sprite": "jeweller_bench",
+    "sprite": "st_jeweler_3",
     "group": "props",
     "cost": {
      "veneer": 4,
@@ -1717,7 +1717,7 @@
    {
     "tier": 4,
     "name": "Star Setting Bench",
-    "sprite": "jeweller_bench",
+    "sprite": "st_jeweler_4",
     "group": "props",
     "cost": {
      "ironwood_beam": 1,
@@ -1742,8 +1742,8 @@
  "cauldron": {
   "label": "Magic Potion Station",
   "cell": [
-   14,
-   17
+   11,
+   21
   ],
   "w": 0,
   "h": 1,
@@ -1847,8 +1847,8 @@
  "garage": {
   "label": "Vehicle Workshop",
   "cell": [
-   10,
-   21
+   8,
+   27
   ],
   "w": 2,
   "h": 2,
@@ -1865,7 +1865,7 @@
    {
     "tier": 1,
     "name": "Wheel Shed",
-    "sprite": "farm_cart",
+    "sprite": "st_garage_1",
     "group": "props",
     "cost": {
      "plank": 30,
@@ -1881,7 +1881,7 @@
    {
     "tier": 2,
     "name": "Boat & Cart Shop",
-    "sprite": "farm_cart",
+    "sprite": "st_garage_2",
     "group": "props",
     "cost": {
      "beam": 12,
@@ -1904,7 +1904,7 @@
    {
     "tier": 3,
     "name": "Motor Works",
-    "sprite": "farm_cart",
+    "sprite": "st_garage_3",
     "group": "props",
     "cost": {
      "plating": 6,
@@ -1927,7 +1927,7 @@
    {
     "tier": 4,
     "name": "Sky Dock",
-    "sprite": "balloon",
+    "sprite": "st_garage_4",
     "group": "props",
     "cost": {
      "ironwood_beam": 4,
@@ -1953,7 +1953,7 @@
   "label": "Rocket Yard",
   "cell": [
    15,
-   23
+   27
   ],
   "w": 1,
   "h": 3,
@@ -1970,7 +1970,7 @@
    {
     "tier": 1,
     "name": "Launch Scaffold",
-    "sprite": "rocket_1",
+    "sprite": "st_launchpad_1",
     "group": "props",
     "cost": {
      "beam": 20,
@@ -1981,7 +1981,7 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes to tier 2. Build rocket parts here.",
     "price": 5250,
-    "art_missing": true,
+    "art_missing": false,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1993,7 +1993,7 @@
    {
     "tier": 2,
     "name": "Rocket Frame",
-    "sprite": "rocket_2",
+    "sprite": "st_launchpad_2",
     "group": "props",
     "cost": {
      "hull_plate": 6,
@@ -2011,12 +2011,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Fuelled Rocket",
-    "sprite": "rocket_3",
+    "sprite": "st_launchpad_3",
     "group": "props",
     "cost": {
      "rocket_engine": 2,
@@ -2034,12 +2034,12 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
     "name": "Starship",
-    "sprite": "rocket_4",
+    "sprite": "st_launchpad_4",
     "group": "props",
     "cost": {
      "nav_computer": 1,
@@ -2058,15 +2058,15 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "print_shop": {
   "label": "Back-Room Press",
   "cell": [
-   3,
-   20
+   9,
+   24
   ],
   "w": 0,
   "h": 1,
@@ -2084,7 +2084,7 @@
    {
     "tier": 1,
     "name": "Back-Room Press",
-    "sprite": "press_1",
+    "sprite": "st_print_shop_1",
     "group": "props",
     "cost": {
      "plank": 16,
@@ -2095,12 +2095,12 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes to tier 2. Crude bills. Risky.",
     "price": 1020,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Offset Press",
-    "sprite": "press_2",
+    "sprite": "st_print_shop_2",
     "group": "props",
     "cost": {
      "gear": 6,
@@ -2118,12 +2118,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Engraving Press",
-    "sprite": "press_3",
+    "sprite": "st_print_shop_3",
     "group": "props",
     "cost": {
      "plating": 4,
@@ -2141,12 +2141,12 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
     "name": "The Mint",
-    "sprite": "press_4",
+    "sprite": "st_print_shop_4",
     "group": "props",
     "cost": {
      "dark_bar": 4,
@@ -2164,15 +2164,15 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "armory": {
   "label": "Street Armory",
   "cell": [
-   3,
-   22
+   11,
+   24
   ],
   "w": 0,
   "h": 1,
@@ -2190,7 +2190,7 @@
    {
     "tier": 1,
     "name": "Trunk of Tools",
-    "sprite": "forge_anvil_tools",
+    "sprite": "st_armory_1",
     "group": "props",
     "cost": {
      "plank": 12,
@@ -2206,7 +2206,7 @@
    {
     "tier": 2,
     "name": "Back-Alley Armory",
-    "sprite": "forge_anvil_tools",
+    "sprite": "st_armory_2",
     "group": "props",
     "cost": {
      "iron_bar": 8,
@@ -2229,7 +2229,7 @@
    {
     "tier": 3,
     "name": "Fixer's Workshop",
-    "sprite": "forge_anvil_tools",
+    "sprite": "st_armory_3",
     "group": "props",
     "cost": {
      "steel_bar": 10,
@@ -2252,7 +2252,7 @@
    {
     "tier": 4,
     "name": "The Vault",
-    "sprite": "forge_anvil_tools",
+    "sprite": "st_armory_4",
     "group": "props",
     "cost": {
      "dark_bar": 8,
@@ -2277,8 +2277,8 @@
  "soda": {
   "label": "Soda Fountain",
   "cell": [
-   6,
-   23
+   3,
+   27
   ],
   "w": 0,
   "h": 1,
@@ -2296,7 +2296,7 @@
    {
     "tier": 1,
     "name": "Soda Cart",
-    "sprite": "soda_1",
+    "sprite": "st_soda_1",
     "group": "props",
     "cost": {
      "plank": 14,
@@ -2307,12 +2307,12 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes to tier 2. Root beer. A front with a real queue.",
     "price": 1040,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Soda Fountain",
-    "sprite": "soda_2",
+    "sprite": "st_soda_2",
     "group": "props",
     "cost": {
      "brick": 30,
@@ -2330,12 +2330,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Parlour",
-    "sprite": "soda_3",
+    "sprite": "st_soda_3",
     "group": "props",
     "cost": {
      "tile": 24,
@@ -2353,12 +2353,12 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
     "name": "The Gold Room",
-    "sprite": "soda_4",
+    "sprite": "st_soda_4",
     "group": "props",
     "cost": {
      "gold_bar": 6,
@@ -2376,15 +2376,15 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "laundromat": {
   "label": "Laundromat",
   "cell": [
-   9,
-   24
+   5,
+   27
   ],
   "w": 1,
   "h": 1,
@@ -2397,7 +2397,7 @@
    {
     "tier": 1,
     "name": "Wash Tub",
-    "sprite": "laundry_1",
+    "sprite": "st_laundromat_1",
     "group": "props",
     "cost": {
      "plank": 20,
@@ -2408,12 +2408,12 @@
     "days": 0,
     "desc": "Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.",
     "price": 1360,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Laundromat",
-    "sprite": "laundry_2",
+    "sprite": "st_laundromat_2",
     "group": "props",
     "cost": {
      "brick": 40,
@@ -2431,12 +2431,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Cleaners & Sons",
-    "sprite": "laundry_3",
+    "sprite": "st_laundromat_3",
     "group": "props",
     "cost": {
      "tile": 30,
@@ -2454,7 +2454,7 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
@@ -2462,7 +2462,7 @@
   "label": "Recruit Training Center",
   "cell": [
    18,
-   22
+   27
   ],
   "w": 2,
   "h": 2,
@@ -2475,7 +2475,7 @@
    {
     "tier": 1,
     "name": "Back-Lot Gym",
-    "sprite": "gym_1",
+    "sprite": "st_training_1",
     "group": "props",
     "cost": {
      "plank": 30,
@@ -2486,12 +2486,12 @@
     "days": 0,
     "desc": "Spar once a day for combat XP. +10 max health.",
     "price": 1270,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Training Hall",
-    "sprite": "gym_2",
+    "sprite": "st_training_2",
     "group": "props",
     "cost": {
      "beam": 16,
@@ -2509,12 +2509,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "The Academy",
-    "sprite": "gym_3",
+    "sprite": "st_training_3",
     "group": "props",
     "cost": {
      "ironwood_beam": 4,
@@ -2532,15 +2532,15 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "shaper": {
   "label": "Crystal Shaper",
   "cell": [
-   3,
-   20
+   9,
+   24
   ],
   "w": 0,
   "h": 1,
@@ -2558,7 +2558,7 @@
    {
     "tier": 1,
     "name": "Shard Table",
-    "sprite": "shaper_1",
+    "sprite": "st_shaper_1",
     "group": "props",
     "cost": {
      "plank": 12,
@@ -2569,12 +2569,12 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes to tier 2. An icicle blade, snow goggles.",
     "price": 1010,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Crystal Shaper",
-    "sprite": "shaper_2",
+    "sprite": "st_shaper_2",
     "group": "props",
     "cost": {
      "iron_bar": 8,
@@ -2592,12 +2592,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Prism Workshop",
-    "sprite": "shaper_3",
+    "sprite": "st_shaper_3",
     "group": "props",
     "cost": {
      "steel_bar": 10,
@@ -2615,12 +2615,12 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
     "name": "Heart of Light",
-    "sprite": "shaper_4",
+    "sprite": "st_shaper_4",
     "group": "props",
     "cost": {
      "dark_bar": 8,
@@ -2638,15 +2638,15 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "litter": {
   "label": "Litter Works",
   "cell": [
-   3,
-   22
+   11,
+   24
   ],
   "w": 0,
   "h": 1,
@@ -2664,7 +2664,7 @@
    {
     "tier": 1,
     "name": "Sand Tray",
-    "sprite": "litter_1",
+    "sprite": "st_litter_1",
     "group": "props",
     "cost": {
      "plank": 12,
@@ -2675,12 +2675,12 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes to tier 2. Litter boxes: Cat-topia's secret weapon.",
     "price": 480,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Litter Works",
-    "sprite": "litter_2",
+    "sprite": "st_litter_2",
     "group": "props",
     "cost": {
      "brick": 30,
@@ -2698,12 +2698,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Catapult Yard",
-    "sprite": "litter_3",
+    "sprite": "st_litter_3",
     "group": "props",
     "cost": {
      "beam": 12,
@@ -2721,12 +2721,12 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
     "name": "Grand Catapult",
-    "sprite": "litter_4",
+    "sprite": "st_litter_4",
     "group": "props",
     "cost": {
      "ironwood_beam": 3,
@@ -2744,15 +2744,15 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "campfire": {
   "label": "Big Jim's Campfire",
   "cell": [
-   6,
-   23
+   3,
+   27
   ],
   "w": 0,
   "h": 1,
@@ -2770,7 +2770,7 @@
    {
     "tier": 1,
     "name": "Campfire",
-    "sprite": "campfire_1",
+    "sprite": "st_campfire_1",
     "group": "props",
     "cost": {
      "stone": 12,
@@ -2780,12 +2780,12 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes to tier 2. Marshmallows on a stick.",
     "price": 290,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
     "name": "Fire Ring",
-    "sprite": "campfire_2",
+    "sprite": "st_campfire_2",
     "group": "props",
     "cost": {
      "brick": 24,
@@ -2803,12 +2803,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Cook Camp",
-    "sprite": "campfire_3",
+    "sprite": "st_campfire_3",
     "group": "props",
     "cost": {
      "tile": 16,
@@ -2826,12 +2826,12 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
     "name": "Aurora Camp",
-    "sprite": "campfire_4",
+    "sprite": "st_campfire_4",
     "group": "props",
     "cost": {
      "crystal_glass": 4,
@@ -2849,15 +2849,15 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "pool": {
   "label": "Merkitty Pool",
   "cell": [
-   9,
-   24
+   5,
+   27
   ],
   "w": 1,
   "h": 1,
@@ -2870,7 +2870,7 @@
    {
     "tier": 1,
     "name": "Tide Pool",
-    "sprite": "pool_1",
+    "sprite": "st_pool_1",
     "group": "props",
     "cost": {
      "stone": 40,
@@ -2881,13 +2881,13 @@
     "days": 0,
     "desc": "The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you.",
     "price": 570,
-    "art_missing": true,
+    "art_missing": false,
     "unlock": {}
    },
    {
     "tier": 2,
     "name": "Singing Pool",
-    "sprite": "pool_2",
+    "sprite": "st_pool_2",
     "group": "props",
     "cost": {
      "brick": 40,
@@ -2905,12 +2905,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Moon Grotto",
-    "sprite": "pool_3",
+    "sprite": "st_pool_3",
     "group": "props",
     "cost": {
      "tile": 30,
@@ -2928,7 +2928,7 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
@@ -2936,7 +2936,7 @@
   "label": "Crystal Baby Burrow",
   "cell": [
    18,
-   22
+   27
   ],
   "w": 2,
   "h": 2,
@@ -2949,7 +2949,7 @@
    {
     "tier": 1,
     "name": "Cosy Burrow",
-    "sprite": "burrow_1",
+    "sprite": "st_burrow_1",
     "group": "props",
     "cost": {
      "plank": 30,
@@ -2960,7 +2960,7 @@
     "days": 0,
     "desc": "The babies you turned back dig for you overnight: stone, coal, copper, a shard.",
     "price": 1160,
-    "art_missing": true,
+    "art_missing": false,
     "unlock": {
      "progress": 2
     }
@@ -2968,7 +2968,7 @@
    {
     "tier": 2,
     "name": "Baby Dig",
-    "sprite": "burrow_2",
+    "sprite": "st_burrow_2",
     "group": "props",
     "cost": {
      "beam": 16,
@@ -2986,12 +2986,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Stomping Grounds",
-    "sprite": "burrow_3",
+    "sprite": "st_burrow_3",
     "group": "props",
     "cost": {
      "ironwood_beam": 4,
@@ -3009,15 +3009,15 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
  "shrine": {
   "label": "Meow Pow Wow Shrine",
   "cell": [
-   14,
-   20
+   18,
+   23
   ],
   "w": 0,
   "h": 1,
@@ -3030,7 +3030,7 @@
    {
     "tier": 1,
     "name": "Paw Stone",
-    "sprite": "shrine_1",
+    "sprite": "st_shrine_1",
     "group": "props",
     "cost": {
      "stone": 30,
@@ -3041,7 +3041,7 @@
     "days": 0,
     "desc": "Practise once a day: mana back and foraging XP. +5 max mana.",
     "price": 1500,
-    "art_missing": true,
+    "art_missing": false,
     "unlock": {
      "progress": 1
     }
@@ -3049,7 +3049,7 @@
    {
     "tier": 2,
     "name": "Heart Shrine",
-    "sprite": "shrine_2",
+    "sprite": "st_shrine_2",
     "group": "props",
     "cost": {
      "brick": 40,
@@ -3067,12 +3067,12 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
     "name": "Rainbow Shrine",
-    "sprite": "shrine_3",
+    "sprite": "st_shrine_3",
     "group": "props",
     "cost": {
      "crystal_glass": 6,
@@ -3090,7 +3090,7 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  }

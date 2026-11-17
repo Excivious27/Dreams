@@ -8310,8 +8310,9 @@
   "rarity": "uncommon",
   "tier": 2,
   "speed": 1.45,
-  "sprite": "scooter",
-  "desc": "Hold it and press USE to ride. Faster than walking; no tools while riding."
+  "sprite": "veh_scooter",
+  "desc": "Hold it and press USE to ride. Faster than walking; no tools while riding.",
+  "size": 16
  },
  "rowboat": {
   "name": "Rowboat",
@@ -8321,8 +8322,9 @@
   "tier": 2,
   "speed": 1.0,
   "water": 1.5,
-  "sprite": "rowboat",
-  "desc": "Hold it and press USE at the water: row instead of swimming, fast and dry."
+  "sprite": "veh_rowboat",
+  "desc": "Hold it and press USE at the water: row instead of swimming, fast and dry.",
+  "size": 30
  },
  "motor_scooter": {
   "name": "Motor Scooter",
@@ -8331,8 +8333,9 @@
   "rarity": "rare",
   "tier": 3,
   "speed": 1.9,
-  "sprite": "scooter",
-  "desc": "Twice as fast as your feet."
+  "sprite": "veh_motor_scooter",
+  "desc": "Twice as fast as your feet.",
+  "size": 20
  },
  "balloon": {
   "name": "Hot-Air Balloon",
@@ -8341,7 +8344,7 @@
   "rarity": "epic",
   "tier": 4,
   "fly": true,
-  "sprite": "balloon",
+  "sprite": "veh_balloon",
   "desc": "Hold it and press USE outdoors: drift to any place you have already visited."
  },
  "crystal_sled": {
@@ -8352,9 +8355,10 @@
   "tier": 3,
   "speed": 1.7,
   "snow": 2.3,
-  "sprite": "farm_cart",
+  "sprite": "veh_crystal_sled",
   "arc": "penguins",
-  "desc": "Fast anywhere; faster in winter and on the mountain."
+  "desc": "Fast anywhere; faster in winter and on the mountain.",
+  "size": 22
  },
  "getaway_car": {
   "name": "Getaway Car",
@@ -8363,9 +8367,10 @@
   "rarity": "rare",
   "tier": 3,
   "speed": 2.3,
-  "sprite": "lux_car_black",
+  "sprite": "veh_getaway_car",
   "arc": "gangsters",
-  "desc": "Black, quiet, quick. Nobody saw you leave."
+  "desc": "Black, quiet, quick. Nobody saw you leave.",
+  "size": 40
  },
  "hull_plate": {
   "name": "Hull Plate",

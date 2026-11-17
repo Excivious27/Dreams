@@ -58,10 +58,13 @@ static func collect(m: GameMap, kind: String) -> void:
 	var box: Dictionary = GameState.run.get("gifts", {}).get(kind, {})
 	var who := "The merkitties" if kind == "pool" else "The babies"
 	if box.is_empty():
+		if kind == "burrow":
+			m.fx("baby_sleep", m.player.position + m.player.facing_dir() * 14.0 + Vector2(0, -10), 3.0, 0.5)
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": "", "text": "The water is still. Something silver turns over, far down. They leave their gifts in the night." if kind == "pool" else "Small snores from the burrow. \"Bee bop... boo...\" They dig at night and sleep all day."}])
 		await d.finished
 		return
+	m.fx("merkitty_%s" % ["a", "b", "c"][randi() % 3] if kind == "pool" else "baby_carry", m.player.position + m.player.facing_dir() * 16.0 + Vector2(0, -10), 6.0, 0.5)
 	for id in box.keys():
 		m.give(str(id), int(box[id]))
 	box.clear()
@@ -83,7 +86,7 @@ static func shrine(m: GameMap) -> void:
 		return
 	GameState.run["flags"]["shrine_day"] = int(GameState.run["day"])
 	m.player.play_tool("hold")
-	m.fx("pawring", m.player.position + Vector2(0, -10), 12.0, 0.8)
+	m.fx("heart_burst" if Art.has("fx", "heart_burst") else "pawring", m.player.position + Vector2(0, -16), 9.0, 0.5)
 	GameState.restore_mana(20 * (2 if st >= 2 else 1))
 	m.xp("foraging", 12 * (2 if st >= 2 else 1))
 	m.hud.toast("Hands at your chest. A small heart of light, steadier than yesterday.", Color(1, 0.8, 0.95))

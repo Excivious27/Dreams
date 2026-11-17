@@ -247,6 +247,7 @@ static func collect(m: GameMap, station: String, key: String) -> int:
 			m.give(give_id, n + extra)
 			if extra > 0:
 				m.hud.toast("Masterwork! +%d %s" % [extra, GameState.item_name(give_id)], Color(0.8, 1, 0.9))
+				m.fx("masterwork", m.player.position + Vector2(0, -22), 10.0, 0.5)
 		m.xp(skill_of(station), int((4 + 3 * int(j.get("tier", 1))) * minf(4.0, 1.0 + 0.5 * (int(j.get("batches", 1)) - 1))))
 		GameState.run["made"] = int(GameState.run.get("made", 0)) + n
 		list.erase(j)

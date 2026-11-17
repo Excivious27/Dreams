@@ -1279,7 +1279,11 @@ func use_consumable(sel: String) -> bool:
 		# Cat-topia's secret weapon: everything nearby stops to hold its nose.
 		GameState.add_item(sel, -1)
 		player.play_tool("hold")
-		fx("poof", player.position + Vector2(0, -6), 12.0, 0.8)
+		var cloud: String = {"scented_litter": "stink_scented", "mega_litter": "stink_big"}.get(sel, "stink_small")
+		if Art.has("fx", cloud):
+			fx(cloud, player.position + Vector2(0, -8), 9.0, 0.5 * float(it.get("radius", 56.0)) / 56.0)
+		else:
+			fx("poof", player.position + Vector2(0, -6), 12.0, 0.8)
 		var n := 0
 		for e in enemies:
 			if is_instance_valid(e) and e.position.distance_to(player.position) < float(it.get("radius", 56.0)):

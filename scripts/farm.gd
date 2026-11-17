@@ -747,6 +747,7 @@ func _launchpad() -> void:
 	shake(4.0)
 	var c := Vector2i(int(Builds.data()["launchpad"]["cell"][0]), int(Builds.data()["launchpad"]["cell"][1]))
 	fx("poof", cell_center(c) + Vector2(8, 0), 16.0, 1.0)
+	fx("rocket_flame", cell_center(c) + Vector2(8, 4), 8.0, 0.6)
 	if dest == "moon":
 		go_to("moon", Vector2(12 * TILE, 18 * TILE), "down")
 	else:

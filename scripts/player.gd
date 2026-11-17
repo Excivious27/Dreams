@@ -56,6 +56,7 @@ var _hat: Sprite2D
 # ---- vehicles (built at the Vehicle Workshop) -----------------------------------
 var vehicle := ""
 var _veh: Sprite2D
+var _veh_puff := 0.0
 
 
 func vehicle_def() -> Dictionary:
@@ -72,14 +73,28 @@ func ride(id: String) -> void:
 		_veh.show_behind_parent = true
 		_veh.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		add_child(_veh)
-	var spr := str(vehicle_def().get("sprite", "farm_cart"))
-	var tex := Art.tex("props", spr if Art.has("props", spr) else "farm_cart")
+	_veh_face()
+
+
+## The vehicle's picture for the way you're facing (down / up / side views).
+func _veh_face() -> void:
+	if _veh == null or vehicle == "":
+		return
+	var vd := vehicle_def()
+	var base := str(vd.get("sprite", "farm_cart"))
+	var view: String = {"down": "_down", "up": "_up"}.get(facing, "_side")
+	var nm := base + view if Art.has("props", base + view) else (base if Art.has("props", base) else "farm_cart")
+	var tex := Art.tex("props", nm)
 	_veh.texture = tex
 	_veh.visible = tex != null
-	if tex:
-		var sc := minf(0.5, 30.0 / float(tex.get_width()))
-		_veh.scale = Vector2(sc, sc)
-		_veh.position = Vector2(0, -tex.get_height() * sc * 0.5 + 3)
+	if tex == null:
+		return
+	# Sized by its side view so all three views are the same vehicle.
+	var side := Art.tex("props", base + "_side") if Art.has("props", base + "_side") else tex
+	var sc := float(vd.get("size", 26)) / float(maxi(1, side.get_width()))
+	_veh.scale = Vector2(sc, sc)
+	_veh.flip_h = facing == "left"
+	_veh.position = Vector2(0, -tex.get_height() * sc * 0.5 + 4)
 
 
 func unride() -> void:
@@ -611,7 +626,12 @@ func _physics_process(delta: float) -> void:
 		spd_mult *= 0.75  # running on empty
 	var vd := vehicle_def()
 	if _veh and vehicle != "":
-		_veh.flip_h = facing == "left"
+		_veh_face()
+		if dir != Vector2.ZERO:
+			_veh_puff -= delta
+			if _veh_puff <= 0.0 and map:
+				_veh_puff = 0.28
+				map.fx("veh_wake" if swimming else "veh_dust", position - dir * 8.0 + Vector2(0, -2), 12.0, 0.5, dir.x > 0)
 	if swimming and float(vd.get("water", 0.0)) > 0.0:
 		spd_mult *= float(vd["water"])  # rowing: quick, dry, no effort
 		running = false

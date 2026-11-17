@@ -4909,11 +4909,255 @@ def w282(): _p14_crops("w282_crops_g.png", _p14_layout()["sheets"][6])
 def w283(): _p14_crops("w283_crops_h.png", _p14_layout()["sheets"][7], 120, 700, 0.5)
 
 
+# ---- Prompts 15 batch 1 (+ street icons): workshop icons, stations, rocket, vehicles, portraits
+
+def _p15_layout():
+    return json.load(open(os.path.join(os.path.dirname(__file__), "prompts15_layout.json")))
+
+
+def _icons_named(file, names, per_row=12, min_area=700):
+    rgba = load(file)
+    rows = _blob_rows(rgba, 0, rgba.shape[1], min_area, 90, per_row)
+    flat = [c for r in rows for c in r]
+    if len(flat) != len(names):
+        raise RuntimeError("%s: found %d icons, expected %d (rows %s)" % (file, len(flat), len(names), [len(r) for r in rows]))
+    for nm, im in zip(names, flat):
+        save(scale_to(im, width=32, height=32), "items", nm)
+
+
+def w284(): _icons_named("w284_workshop_icons_a.png", _p15_layout()["icons_a"])
+def w285(): _icons_named("w285_workshop_icons_b.png", _p15_layout()["icons_b"])
+def w290():
+    _icons_named("w290_street_icons.png", _p15_layout()["icons_street"])
+
+
+def _shrink(im, k):
+    return im.resize((max(1, int(im.width * k)), max(1, int(im.height * k))), Image.LANCZOS)
+
+
+def w286():
+    rgba = load("w286_stations.png")
+    half = 770
+    left = _blob_rows(rgba, 0, half, 2500, 70, 4)
+    right = _blob_rows(rgba, half, rgba.shape[1], 2500, 70, 4)
+    rows = _p15_layout()["station_rows"]
+    if len(left) != 6 or len(right) != 5 or any(len(r) != 4 for r in left + right):
+        raise RuntimeError("w286: left %s right %s" % ([len(r) for r in left], [len(r) for r in right]))
+    for i, (a, b) in enumerate(rows):
+        for sid, cells in ((a, left[i]), (b, right[i] if i < len(right) else None)):
+            if sid is None or cells is None: continue
+            for t, im in enumerate(cells):
+                save(_shrink(im, 0.6 if sid == "garage" else 0.44), "props", "st_%s_%d" % (sid, t + 1))
+
+
+def w287():
+    rgba = load("w287_rocket_vehicles.png")
+    def band(y0, y1, x0=0, x1=None, min_area=250, expect=0):
+        sub = rgba[y0:y1]
+        r = _blob_rows(sub, x0, x1 or rgba.shape[1], min_area, 400, expect)
+        return [c for row in r for c in row]
+    rockets = band(0, 450, 0, 900, 4000, 4)
+    for i, im in enumerate(rockets[:4]):
+        save(_shrink(im, 0.42), "props", "st_launchpad_%d" % (i + 1))
+    from scipy import ndimage
+    fl = rgba[0:450, 900:1075]
+    lab, n = ndimage.label(fl[..., 3] > 40, structure=np.ones((3, 3)))
+    ys = sorted([(sl[0].start, sl) for sl in ndimage.find_objects(lab) if (sl[0].stop - sl[0].start) * (sl[1].stop - sl[1].start) > 60], key=lambda t: t[0])
+    bands = []
+    for y, sl in ys:
+        if bands and sl[0].start - bands[-1][1] < 6: bands[-1][1] = max(bands[-1][1], sl[0].stop)
+        else: bands.append([sl[0].start, sl[0].stop])
+    frames = [scale_to(crop(rgba, region_bbox(rgba, (900, b0, 1075, b1))), height=96) for b0, b1 in bands[:4]]
+    if frames: strip(frames, "fx", "rocket_flame")
+    balloons = band(0, 450, 1075, None, 4000, 2)
+    for nm, im in zip(["veh_balloon", "veh_balloon_lit"], balloons):
+        save(_shrink(im, 0.4), "props", nm)
+    row_a = band(450, 660, 0, None, 300, 9)
+    for vid, cells in zip(["scooter", "motor_scooter", "rowboat"], [row_a[0:3], row_a[3:6], row_a[6:9]]):
+        for d, im in zip(["down", "up", "side"], cells):
+            save(_shrink(im, 0.5), "props", "veh_%s_%s" % (vid, d))
+    row_b = band(660, 870, 0, None, 300, 6)
+    for vid, cells in zip(["crystal_sled", "getaway_car"], [row_b[0:3], row_b[3:6]]):
+        for d, im in zip(["down", "up", "side"], cells):
+            save(_shrink(im, 0.5), "props", "veh_%s_%s" % (vid, d))
+    row_c = band(870, rgba.shape[0], 0, None, 40, 8)
+    if len(row_c) >= 8:
+        strip([scale_to(im, height=max(8, im.height)) for im in row_c[0:4]], "fx", "veh_dust")
+        strip([scale_to(im, height=max(8, im.height)) for im in row_c[4:8]], "fx", "veh_wake")
+
+
+def w288():
+    rgba = load("w288_portraits_granite_sel.png")
+    names = ["neutral", "happy", "sad", "angry", "surprised", "sly"]
+    for who, (y0, y1) in (("npc_granite", (0, 258)), ("npc_sel", (258, 575))):
+        cells = [c for r in _blob_rows(rgba[y0:y1], 0, rgba.shape[1], 6000, 400, 6) for c in r]
+        if len(cells) != 6: raise RuntimeError("w288 %s: %d portraits" % (who, len(cells)))
+        for nm, im in zip(names, cells):
+            save(scale_to(im, height=96), "portraits/" + who, nm)
+    fx_names = [["st_smoke", "st_sparks", "st_bubbles"], ["st_loom", "st_drip", "masterwork"]]
+    for (y0, y1), row in zip(((590, 790), (800, 1024)), fx_names):
+        cells = [c for r in _blob_rows(rgba[y0:y1], 0, rgba.shape[1], 60, 400, 12) for c in r]
+        if len(cells) != 12: raise RuntimeError("w288 fx row: %d cells" % len(cells))
+        for k, nm in enumerate(row):
+            strip([_shrink(im, 0.6) for im in cells[k * 4:k * 4 + 4]], "fx", nm)
+
+
+# ---- Prompts 15 batch 3: the sanctuary (penguin arc) ------------------------------
+
+def w293(): _icons_named("w293_sanctuary_icons.png", _p15_layout()["icons_sanctuary"])
+
+
+def _band_cells(rgba, y0, y1, x0, x1, min_area, expect):
+    return [c for r in _blob_rows(rgba[y0:y1], x0, x1, min_area, 600, expect) for c in r]
+
+
+def w292():
+    rgba = load("w292_sanctuary_stations.png")
+    # Title banners sit between the rows; the bands below skip them.
+    for sid, (y0, y1, x0, x1, n, k) in {"shaper": (62, 215, 0, 775, 4, 0.44), "litter": (62, 215, 775, 1536, 4, 0.44), "campfire": (278, 450, 0, 790, 4, 0.44),
+                                         "shrine": (278, 450, 790, 1536, 3, 0.44), "pool": (512, 735, 0, 1536, 3, 0.42), "burrow": (792, 1024, 0, 1536, 3, 0.42)}.items():
+        if sid == "campfire":
+            # Tiers 3 and 4 touch on the sheet: cut by column instead.
+            cells = [crop(rgba, region_bbox(rgba, (a, y0, b, y1))) for a, b in ((10, 140), (140, 356), (356, 546), (546, 780))]
+        else:
+            cells = _band_cells(rgba, y0, y1, x0, x1, 2500, n)
+        if len(cells) != n: raise RuntimeError("w292 %s: %d cells" % (sid, len(cells)))
+        for t, im in enumerate(cells):
+            save(_shrink(im, k), "props", "st_%s_%d" % (sid, t + 1))
+
+
+def _even_strip(rgba, box, n, group, name, k=0.5):
+    x0, y0, x1, y1 = box
+    bb = region_bbox(rgba, box)
+    if not bb: return
+    w = (bb[2] - bb[0]) / float(n)
+    frames = [_shrink(crop(rgba, (int(bb[0] + i * w), bb[1], int(bb[0] + (i + 1) * w), bb[3])), k) for i in range(n)]
+    strip(frames, group, name)
+
+
+def w294():
+    rgba = load("w294_sanctuary_extras.png")
+    for nm, x0, x1 in (("merkitty_a", 10, 480), ("merkitty_b", 510, 975), ("merkitty_c", 1015, 1505)):
+        _even_strip(rgba, (x0, 20, x1, 205), 5, "fx", nm)
+    for nm, x0, x1, n in (("baby_dig", 0, 480, 4), ("baby_carry", 480, 1010, 5), ("baby_sleep", 1010, 1536, 4)):
+        cells = _band_cells(rgba, 235, 405, x0, x1, 900, n)
+        if len(cells) == n: strip([_shrink(im, 0.5) for im in cells], "fx", nm)
+    _even_strip(rgba, (20, 440, 340, 545), 6, "fx", "stink_small")
+    _even_strip(rgba, (355, 440, 725, 545), 6, "fx", "stink_scented")
+    _even_strip(rgba, (740, 440, 1120, 545), 6, "fx", "stink_big")
+    lan = _band_cells(rgba, 555, 665, 0, 500, 300, 5)
+    if len(lan) == 5: strip([_shrink(im, 0.5) for im in lan], "fx", "paw_lantern_glow")
+    _even_strip(rgba, (515, 555, 1000, 665), 6, "fx", "heart_burst")
+    low = _band_cells(rgba, 715, 935, 0, 990, 500, 7)
+    if len(low) == 7:
+        for nm, im in zip(["gift_basket_empty", "gift_basket_full"], low[:2]): save(_shrink(im, 0.3), "props", nm)
+        save(scale_to(low[2], width=24, height=24), "ui", "ic_gift")
+        for i, im in enumerate(low[3:7]): save(scale_to(im, width=24, height=24), "ui", "meow_star_%d" % (i + 1))
+    save(Image.fromarray(rgba[614:960, 1008:1523]), "ui", "panel_sanctuary")
+
+
+# ---- Prompts 15 batch 2 (second take): the operation's stations -------------------
+
+def w289():
+    rgba = load("w289_operation_stations.png")
+    for sid, (y0, y1, x0, x1, n, k) in {"print_shop": (20, 250, 0, 770, 4, 0.44), "armory": (20, 250, 770, 1536, 4, 0.44), "soda": (255, 480, 0, 780, 4, 0.44),
+                                         "laundromat": (255, 480, 780, 1536, 3, 0.44), "training": (480, 830, 0, 1536, 3, 0.36)}.items():
+        cells = _band_cells(rgba, y0, y1, x0, x1, 2500, n)
+        if len(cells) != n: raise RuntimeError("w289 %s: %d cells" % (sid, len(cells)))
+        for t, im in enumerate(cells):
+            save(_shrink(im, k), "props", "st_%s_%d" % (sid, t + 1))
+    for nm, x0, x1 in (("st_paper", 20, 370), ("st_fizz", 390, 740), ("st_steam", 770, 1110), ("st_punch", 1130, 1520)):
+        _even_strip(rgba, (x0, 850, x1, 1000), 4, "fx", nm)
+
+
+# ---- Prompts 15 batches 4-5: gritty gangster heroes --------------------------------
+GRIT = {"w295_hero_dad_gang_full.png": "man_gang", "w296_hero_pax_gang_full.png": "son_gang", "w297_hero_june_gang_full.png": "june_gang", "w298_hero_rafe_gang_full.png": "rafe_gang",
+        "w299_hero_nia_gang_full.png": "nia_gang", "w300_hero_ollie_gang_full.png": "ollie_gang", "w301_hero_marisol_gang_full.png": "marisol_gang", "w302_hero_bo_gang_full.png": "bo_gang"}
+GRIT_ROWS = {0: [("idle_down", 0, 2), ("idle_up", 2, 4), ("idle", 4, 6), ("walk_down", 6, 10), ("walk_up", 10, 14), ("walk", 14, 16)],
+             1: [("run_down", 2, 6), ("run_up", 6, 10), ("run", 10, 14), ("hurt", 14, 16)],
+             2: [("attack_down", 0, 4), ("attack_up", 4, 8), ("attack", 8, 12), ("faint", 12, 14), ("celebrate", 14, 16)]}
+
+
+def _grit(file):
+    cid = GRIT[file]
+    G = "characters/" + cid
+    rgba = load_hue(file)
+    H = rgba.shape[0]
+    ch = H / 8.0
+    S.manifest[G] = {}                      # the old cheerful strips go
+    S.manifest["portraits/" + cid] = {}
+    # Row bands from the left columns (small sprites only; the big faces at the
+    # bottom right start higher than their row).
+    on = (rgba[:, :370, 3] > 40).any(axis=1)
+    runs = []; st = None
+    for y in range(H + 1):
+        v = y < H and on[y]
+        if v and st is None: st = y
+        if not v and st is not None:
+            if runs and st - runs[-1][1] < 7: runs[-1][1] = y
+            else: runs.append([st, y])
+            st = None
+    runs = [r for r in runs if r[1] - r[0] > 30]
+    if len(runs) != 8:
+        print("   %s: %d row bands found, using even rows" % (cid, len(runs)))
+        runs = [[int(r * ch) + 1, int((r + 1) * ch) - 1] for r in range(8)]
+    bands = [(max(0, a - 3), min(H, b + 3)) for a, b in runs]
+    def cells_of(r, min_area=450, x0=0, x1=None):
+        y0, y1 = bands[r]
+        if r == 6: x1 = x1 or rgba.shape[1]
+        return _band_cells(rgba, y0, y1, x0, x1 or rgba.shape[1], min_area, 0)
+    for r, names in GRIT_ROWS.items():
+        cells = cells_of(r)
+        if len(cells) > 20:
+            cells = cells_of(r, 1100)  # swing arcs drawn apart from the body
+        n = len(cells)
+        print("   %s row %d: %d cells" % (cid, r, n))
+        for name, c0, c1 in names:
+            a, b = int(round(c0 * n / 16.0)), int(round(c1 * n / 16.0))
+            part = cells[a:b]
+            if part: strip([scale_to(im, height=min(96, max(40, int(im.height * 96.0 / 100.0)))) for im in part], G, name)
+    # Walk (side) is split across rows 0 and 1: join them.
+    r1 = cells_of(1)
+    r0 = cells_of(0)
+    side = r0[int(round(14 * len(r0) / 16.0)):] + r1[:int(round(2 * len(r1) / 16.0))]
+    if side: strip([scale_to(im, height=min(96, max(40, int(im.height * 0.96)))) for im in side], G, "walk")
+    # Swim (right side of row 5), ride and power-up (row 6).
+    sw = cells_of(5, 300, 960)
+    if sw: strip([scale_to(im, height=max(20, int(im.height * 0.96))) for im in sw], G, "swim")
+    r6 = cells_of(6)
+    ride = [im for im in r6 if im.width >= 78][:6]
+    if ride: strip([scale_to(im, height=int(im.height * 0.96)) for im in ride], G, "ride")
+    pw = cells_of(6, 450, 1000)
+    if pw: strip([scale_to(im, height=min(110, int(im.height * 0.96))) for im in pw[-4:]], G, "powerup")
+    # Row 7: four small views, then the big faces.
+    r7 = _band_cells(rgba, bands[7][0], H, 0, 380, 700, 0)
+    small = r7[:4]
+    for nm, im in zip(["view_front", "view_right", "view_back", "view_left"], small):
+        strip([scale_to(im, height=int(im.height * 0.96))], G, nm)
+    # The faces: everything right of the views, from just under row 6 down.
+    fy0 = bands[6][1] + 1
+    face = rgba[fy0:, 372:]
+    big = [c for r_ in _blob_rows(face, 0, face.shape[1], 5000, 600, 0) for c in r_]
+    if len(big) != 8:
+        cols = np.where((face[..., 3] > 40).any(axis=0))[0]
+        if len(cols):
+            w = (cols[-1] - cols[0] + 1) / 8.0
+            big = [Image.fromarray(face[:, int(cols[0] + i * w):int(cols[0] + (i + 1) * w)]) for i in range(8)]
+    for nm, im in zip(["neutral", "happy", "sad", "angry", "surprised", "embarrassed", "sly", "worried"], big):
+        save(scale_to(im, height=96), "portraits/" + cid, nm)
+
+
+def w295(): _grit("w295_hero_dad_gang_full.png")
+def w296(): _grit("w296_hero_pax_gang_full.png")
+def w297(): _grit("w297_hero_june_gang_full.png")
+def w298(): _grit("w298_hero_rafe_gang_full.png")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w237", w237), ("w238", w238), ("w239", w239), ("w240", w240), ("w241", w241), ("w242", w242), ("w243", w243), ("w244", w244), ("w245", w245), ("w246", w246), ("w247", w247), ("w248", w248), ("w249", w249), ("w250", w250), ("w256", w256), ("w257", w257), ("w258", w258), ("w259", w259), ("w260", w260), ("w261", w261), ("w251a", w251a), ("w253a", w253a), ("w255a", w255a), ("w274", w274), ("w275", w275), ("w276", w276), ("w277", w277), ("w278", w278), ("w279", w279), ("w280", w280), ("w281", w281), ("w282", w282), ("w283", w283), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w237", w237), ("w238", w238), ("w239", w239), ("w240", w240), ("w241", w241), ("w242", w242), ("w243", w243), ("w244", w244), ("w245", w245), ("w246", w246), ("w247", w247), ("w248", w248), ("w249", w249), ("w250", w250), ("w256", w256), ("w257", w257), ("w258", w258), ("w259", w259), ("w260", w260), ("w261", w261), ("w251a", w251a), ("w253a", w253a), ("w255a", w255a), ("w274", w274), ("w275", w275), ("w276", w276), ("w277", w277), ("w278", w278), ("w279", w279), ("w280", w280), ("w281", w281), ("w282", w282), ("w283", w283), ("w284", w284), ("w285", w285), ("w286", w286), ("w287", w287), ("w288", w288), ("w290", w290), ("w292", w292), ("w293", w293), ("w294", w294), ("w289", w289), ("w295", w295), ("w296", w296), ("w297", w297), ("w298", w298), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:
