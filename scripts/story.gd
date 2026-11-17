@@ -239,6 +239,16 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		Companion.refuse(str(id))
 	if fx.has("toast"):
 		m.hud.toast(str(fx["toast"]), Color(1, 0.9, 0.6))
+		if str(fx["toast"]).find("joined the crew") >= 0 and Art.has("ui", "crew_joined"):
+			var sp := Art.sprite("ui", "crew_joined")
+			if sp:
+				sp.position = m.player.position + Vector2(0, -30)
+				sp.scale = Vector2(0.6, 0.6)
+				sp.z_index = 20
+				m.add_child(sp)
+				var tw := m.create_tween()
+				tw.tween_property(sp, "modulate:a", 0.0, 1.2)
+				tw.tween_callback(sp.queue_free)
 	if fx.has("sfx"):
 		Music.instance(m.get_tree()).sfx(str(fx["sfx"]))
 	if fx.has("heal"):

@@ -405,7 +405,10 @@ func _summon_guardian() -> void:
 				_guardian.abilities.append(a)
 				break
 	_guardian.reward *= 3
-	boss_card(kind, "Keeper of floor %d" % floor_no)
+	if Art.has("ui", "card_keeper_%d" % mine_tier):
+		boss_card("card:card_keeper_%d" % mine_tier, ["The Stone Fist", "The Quarrymaster", "The Cracked Helm", "The Crystal King", "The Dark Warden", "The Heart's Shadow"][mine_tier])
+	else:
+		boss_card(kind, "Keeper of floor %d" % floor_no)
 	hud.toast("The keeper of floor %d wakes!" % floor_no, Color(1, 0.7, 0.7))
 	Music.instance(get_tree()).sfx("levelup")
 

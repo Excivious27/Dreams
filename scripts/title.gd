@@ -172,17 +172,32 @@ func _show_characters() -> void:
 	_preview_holder = Control.new()
 	_preview_holder.custom_minimum_size = Vector2(0, 70)
 	_page.add_child(_preview_holder)
-	var grid := GridContainer.new()
-	grid.columns = 2
-	grid.size_flags_horizontal = SIZE_EXPAND_FILL
-	_page.add_child(grid)
 	var ids: Array = _arcs[_arc]["playable"]
+	var cards := Art.has("ui", "card_hero_dad")
+	var grid := GridContainer.new()
+	grid.columns = 4 if cards else 2
+	grid.size_flags_horizontal = SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", 4)
+	grid.add_theme_constant_override("v_separation", 4)
+	_page.add_child(grid)
 	for pid: String in ids:
 		var p: Dictionary = _playables.get(pid, {})
 		var name := str(p.get("name", pid))
 		if bool(p.get("placeholder", false)):
 			name += " (art soon)"
-		grid.add_child(_button(name, func() -> void: _pick(pid)))
+		var card_name := "card_hero_" + pid + ("_gang" if _arc == "gangsters" and Art.has("ui", "card_hero_" + pid + "_gang") else "")
+		if cards and Art.has("ui", card_name):
+			var tb := TextureButton.new()
+			tb.texture_normal = Art.tex("ui", card_name)
+			tb.ignore_texture_size = true
+			tb.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+			tb.custom_minimum_size = Vector2(56, 78)
+			tb.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			tb.tooltip_text = name
+			tb.pressed.connect(func() -> void: _pick(pid))
+			grid.add_child(tb)
+		else:
+			grid.add_child(_button(name, func() -> void: _pick(pid)))
 	_page.add_child(_label("Pick a hero and play as them, or build your own.", 7, false))
 	_page.add_child(_button("Back", _show_arcs))
 	_pick(ids[0])

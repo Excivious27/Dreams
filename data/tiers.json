@@ -107,38 +107,38 @@
  ],
  "statuses": {
   "poison": {
-   "icon": "buff2_poison",
+   "icon": "status_poison",
    "text": "Poisoned",
    "dps": 2.0,
    "colour": "7fd14a"
   },
   "burn": {
-   "icon": "buff2_burn",
+   "icon": "status_burn",
    "text": "Burning",
    "dps": 3.0,
    "colour": "ff8a3a"
   },
   "chill": {
-   "icon": "buff2_cool",
+   "icon": "status_chill",
    "text": "Chilled",
    "speed": 0.65,
    "swing": 1.5,
    "colour": "8fd8ff"
   },
   "slow": {
-   "icon": "buff2_wet",
+   "icon": "status_slow",
    "text": "Slowed",
    "speed": 0.55,
    "colour": "c8b070"
   },
   "weak": {
-   "icon": "buff2_stun",
+   "icon": "status_weak",
    "text": "Weakened",
    "damage": -1,
    "colour": "b080d0"
   },
   "blind": {
-   "icon": "buff2_asleep",
+   "icon": "status_blind",
    "text": "Dazed",
    "aim": 1,
    "colour": "777777"

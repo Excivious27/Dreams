@@ -277,6 +277,8 @@ func _refresh() -> void:
 		"Party":
 			var pt := Companion.party()
 			var act := Companion.active_id()
+			if not GameState.is_penguins():
+				_crew_tab()
 			_line("Party", 10, Color(1, 0.95, 0.8))
 			if (pt["known"] as Array).is_empty():
 				_line("  Nobody yet. Partners find you as the story goes; some wait at the farm gate.", 7, Color(0.7, 0.7, 0.7))
@@ -664,3 +666,59 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		var p: Vector2 = org + (PINS[here] as Vector2) * sz
 		m.draw_circle(p + Vector2(0, -6), 3.0, Color(1, 0.2, 0.2))
 		m.draw_arc(p + Vector2(0, -6), 4.5, 0, TAU, 16, Color.WHITE, 1.0)
+
+
+## The crew roster (Gangster's Paradise): everyone recruited, their loyalty
+## hearts, rank chevron, badge and perk, on the roster panel art.
+func _crew_tab() -> void:
+	_line("Crew", 10, Color(1, 0.85, 0.7))
+	var ids := Crew.all_recruited()
+	if ids.is_empty():
+		_line("  Nobody yet. People in the hideout and the districts want something before they'll join.", 7, Color(0.7, 0.7, 0.7))
+		return
+	for id in ids:
+		var mdef: Dictionary = Crew.members()[id]
+		var lv := Crew.loyalty(id)
+		var h := HBoxContainer.new()
+		h.add_theme_constant_override("separation", 4)
+		_body.add_child(h)
+		var pt := Art.tex("portraits/" + id, "neutral")
+		if pt:
+			var tr := TextureRect.new()
+			tr.texture = pt
+			tr.custom_minimum_size = Vector2(24, 24)
+			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			h.add_child(tr)
+		if Art.has("ui", "crew_badge_" + id):
+			var bd := TextureRect.new()
+			bd.texture = Art.tex("ui", "crew_badge_" + id)
+			bd.custom_minimum_size = Vector2(14, 14)
+			bd.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			bd.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			h.add_child(bd)
+		var l := Label.new()
+		var perks: Array = mdef.get("perks", [])
+		l.text = "%s — %s\n%s" % [str(mdef["name"]), str(mdef.get("role", "")), str(perks[lv - 1]) if lv > 0 and lv <= perks.size() else "no perk yet: talk at the hideout"]
+		l.add_theme_font_size_override("font_size", 7)
+		l.custom_minimum_size = Vector2(120, 0)
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		h.add_child(l)
+		var hearts := HBoxContainer.new()
+		hearts.add_theme_constant_override("separation", 0)
+		h.add_child(hearts)
+		for i in 3:
+			var nm := "loyalty_4" if i < lv else "loyalty_0"
+			if Art.has("ui", nm):
+				var hr := TextureRect.new()
+				hr.texture = Art.tex("ui", nm)
+				hr.custom_minimum_size = Vector2(11, 11)
+				hr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+				hearts.add_child(hr)
+		if Art.has("ui", "rank_%d" % (lv + 1)):
+			var rk := TextureRect.new()
+			rk.texture = Art.tex("ui", "rank_%d" % (lv + 1))
+			rk.custom_minimum_size = Vector2(14, 12)
+			rk.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			h.add_child(rk)
+	_line("")

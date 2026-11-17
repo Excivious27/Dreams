@@ -441,8 +441,27 @@ func _draw() -> void:
 		var top := -30.0 if max_hp < 30 else -60.0
 		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))
 		draw_rect(Rect2(-10, top, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2) if _shield <= 0.0 else Color(0.5, 0.7, 1.0))
-		for i in tier:
-			draw_rect(Rect2(-10 + i * 4, top - 4, 3, 2), Color(1.0, 0.85, 0.3))
+		if tier > 0 and Art.has("ui", "tier_pip_%d" % tier):
+			var pt := Art.tex("ui", "tier_pip_%d" % tier)
+			draw_texture(pt, Vector2(-pt.get_width() / 2.0, top - 4 - pt.get_height()))
+		else:
+			for i in tier:
+				draw_rect(Rect2(-10 + i * 4, top - 4, 3, 2), Color(1.0, 0.85, 0.3))
+	var tele := ""
+	if _lunge_tele > 0.0 or _lunge > 0.0:
+		tele = "lunge"
+	elif _shield > 0.0:
+		tele = "shield"
+	elif _windup > 0.0 and abilities.has("ranged") and _range_cd > 1.5:
+		tele = "ranged"
+	elif _enraged and _since_hit < 0.3:
+		tele = "enrage"
+	if tele != "" and Art.has("ui", "tele_" + tele):
+		var tt := Art.tex("ui", "tele_" + tele)
+		draw_texture(tt, Vector2(-tt.get_width() / 2.0, (-34.0 if max_hp < 30 else -66.0) - tt.get_height()))
+	if is_guardian and Art.has("ui", "keeper_crest_0"):
+		var kc := Art.tex("ui", "keeper_crest_%d" % clampi(tier, 0, 5))
+		draw_texture_rect(kc, Rect2(-8, (-30.0 if max_hp < 30 else -60.0) - 22, 16, 16), false)
 	if _sprite:
 		return
 	# Procedural fallback: a stormy little cloud.

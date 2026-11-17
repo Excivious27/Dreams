@@ -147,7 +147,10 @@ func _place_buildings() -> void:
 	# village size (10+ cells wide) so nothing looks like a shed next to the hero.
 	_door("store", Vector2i(10, 18), "store", "A: General Store")
 	_door("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
-	_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
+	if GameState.run["flags"].has("shop_1") and Art.has("buildings", "gang_shop_deuce"):
+		_door("gang_shop_deuce", Vector2i(45, 17), "bakery", "A: Deuce's card parlour", 0.6)
+	else:
+		_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
 	_door("mansion", Vector2i(55, 13), "mansion", "A: Mayor Alder's house", 1.15)
 	_door("hall", Vector2i(46, 28), "hall", "A: Town Hall")
 	building("clock_tower", Vector2i(28, 32))
@@ -159,12 +162,18 @@ func _place_buildings() -> void:
 	# South-west: cottages, Hazel's farmhouse, the stable.
 	_door("cottage_a", Vector2i(8, 52), "cottage_a", "A: Wren's cottage", 1.3)
 	_door("cottage_b", Vector2i(19, 59), "cottage_b", "A: Finn's cottage", 1.3)
-	_door("cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.3)
+	if GameState.run["flags"].has("shop_2") and Art.has("buildings", "gang_shop_specs"):
+		_door("gang_shop_specs", Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", 0.6)
+	else:
+		_door("cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.3)
 	_door("house", Vector2i(18, 72), "hazel_house", "A: Hazel's farmhouse")
 	_door("stable", Vector2i(27, 85), "stable", "A: Stable", 1.25)
 	building("bandstand", Vector2i(6, 33))
 	# Across the river: clinic, chapel, Rook's lodge.
-	_door("clinic", Vector2i(74, 32), "clinic", "A: Clinic", 1.35)
+	if GameState.run["flags"].has("shop_3") and Art.has("buildings", "gang_shop_doc"):
+		_door("gang_shop_doc", Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", 0.6)
+	else:
+		_door("clinic", Vector2i(74, 32), "clinic", "A: Clinic", 1.35)
 	_door("chapel", Vector2i(75, 53), "chapel", "A: Chapel", 1.4)
 	_door("woodcutter_hut", Vector2i(72, 70), "lodge", "A: Rook's lodge", 1.25)
 	# The working north end: a warehouse by the farm road, the bank by the smith.

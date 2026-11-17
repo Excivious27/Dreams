@@ -1010,6 +1010,8 @@ func clear_cell(c: Vector2i) -> void:
 ## Boss intro card (ui/card_<kind>): slides in over the screen for a couple of seconds.
 func boss_card(kind: String, title := "") -> void:
 	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president"}.get(kind, "")
+	if kind.begins_with("card:"):
+		nm = kind.trim_prefix("card:")
 	if nm == "" or not Art.has("ui", nm):
 		return
 	var layer := CanvasLayer.new()
