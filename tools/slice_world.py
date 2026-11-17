@@ -3769,11 +3769,158 @@ def w200():
         save(scale_to(crop(rgba, b), width=96, height=96), "portraits/boss", nm)
 
 
+
+# ---- Prompts 11 batch 1-2: new precreated heroes (w201-w212) ------------------
+HERO2_H = 112  # 2x detail of a 56 px hero; CharacterLibrary scales to HERO_H
+
+HERO_ROWS = {
+    0: [("idle_down", 0, 2), ("idle_up", 2, 4), ("idle", 4, 6), ("walk_down", 6, 10), ("walk_up", 10, 14), ("walk", 14, 16)],
+    1: [("walk+", 0, 2), ("run_down", 2, 6), ("run_up", 6, 10), ("run", 10, 14), ("hurt", 14, 16)],
+    2: [("attack", 0, 4), ("attack_down", 4, 7), ("faint", 8, 10), ("celebrate", 12, 16)],
+    3: [("hoe_down", 0, 3), ("hoe_right", 3, 6), ("hoe_up", 6, 9), ("axe_down", 9, 12), ("axe_right", 12, 15), ("axe_up", 15, 16)],
+    4: [("axe_up+", 0, 2), ("pickaxe_down", 2, 5), ("pickaxe_right", 5, 8), ("pickaxe_up", 8, 11), ("water_down", 11, 12), ("water_right", 12, 13), ("water_up", 13, 14), ("hold_down", 14, 15), ("eat_down", 15, 16)],
+    5: [("cast_right", 0, 3), ("reel_right", 3, 6), ("sit", 6, 7), ("sleep", 7, 8), ("wave", 8, 10), ("swim", 10, 13), ("swim_down", 13, 14), ("swim_up", 14, 15), ("float", 15, 16)],
+    6: [("ride", 0, 4), ("ride_run", 4, 6), ("ride_down", 6, 8), ("ride_up", 8, 10), ("powerup", 10, 14)],
+    7: [("view_front", 0, 1), ("view_right", 1, 2), ("view_back", 2, 3), ("view_left", 3, 4)],
+}
+HERO_EXPR = ["neutral", "happy", "sad", "angry", "surprised", "embarrassed", "sly", "worried"]
+
+def _hero_cell(rgba, col, row, ncols=16, nrows=8):
+    """Tight bbox of the sprite inside a fixed grid cell (cells 96x128)."""
+    H, W = rgba.shape[:2]
+    cw, ch = W / ncols, H / nrows
+    x0, y0 = int(col * cw), int(row * ch)
+    x1, y1 = int((col + 1) * cw), int((row + 1) * ch)
+    a = rgba[y0:y1, x0:x1, 3] > 40
+    if a.sum() < 40:
+        return None
+    ys, xs = np.where(a)
+    return (x0 + xs.min(), y0 + ys.min(), x0 + xs.max() + 1, y0 + ys.max() + 1)
+
+def _hero_row_cells(rgba, row, ncols=16, nrows=8):
+    """One sprite per grid column, found by connected components (sprites
+    drift off the grid; a component covering two columns fills both)."""
+    H, W = rgba.shape[:2]
+    cw, ch = W / ncols, H / nrows
+    comps = _peng_cells(rgba, int(row * ch) + 2, int((row + 1) * ch) - 2)
+    bycol = [None] * ncols
+    for b in comps:
+        if (b[2] - b[0]) * (b[3] - b[1]) < 300:
+            continue  # stray sparkle
+        c0 = max(0, min(ncols - 1, int((b[0] + 4) / cw)))
+        c1 = max(0, min(ncols - 1, int((b[2] - 4) / cw)))
+        for c in range(c0, c1 + 1):
+            if bycol[c] is None or (b[2] - b[0]) > (bycol[c][2] - bycol[c][0]):
+                bycol[c] = b
+    return bycol
+
+def _hero_sheet(file, char_id):
+    rgba = load_hue(file)
+    G = "characters/" + char_id
+    pending = {}
+    rows_cells = {row: _hero_row_cells(rgba, row) for row in HERO_ROWS}
+    for row, spec in HERO_ROWS.items():
+        for name, c0, c1 in spec:
+            cells = [rows_cells[row][c] for c in range(c0, c1)]
+            cells = [c for c in cells if c]
+            if not cells:
+                continue
+            base = name.rstrip("+")
+            pending.setdefault(base, []).extend(cells)
+    for name, cells in pending.items():
+        h = HERO2_H
+        if name.startswith("ride"):
+            h = int(HERO2_H * 1.35)
+        frames = [scale_to(crop(rgba, b), height=h) for b in cells]
+        strip(frames, G, name)
+    # Row 7: a 2-cell portrait at cols 4-5, then expressions.
+    H, W = rgba.shape[:2]
+    cw, ch = W / 16, H / 8
+    y0 = int(7 * ch)
+    boxes = _components(rgba, (int(4 * cw), y0, W, H), dilate=3, min_px=400)
+    boxes.sort(key=lambda b: b[0])
+    merged = []
+    for b in boxes:
+        if merged and b[0] < merged[-1][2] - 6:
+            m0 = merged[-1]; merged[-1] = (min(m0[0], b[0]), min(m0[1], b[1]), max(m0[2], b[2]), max(m0[3], b[3]))
+        else:
+            merged.append(tuple(b))
+    PG = "portraits/" + char_id
+    for i, b in enumerate(merged[:len(HERO_EXPR)]):
+        img = scale_to(crop(rgba, b), height=96)
+        save(img, PG, HERO_EXPR[i])
+
+def w201(): _hero_sheet("w201_hero_june.png", "june")
+def w202(): _hero_sheet("w202_hero_rafe.png", "rafe")
+def w203(): _hero_sheet("w203_hero_nia.png", "nia")
+def w204(): _hero_sheet("w204_hero_ollie.png", "ollie")
+def w205(): _hero_sheet("w205_hero_marisol.png", "marisol")
+def w206(): _hero_sheet("w206_hero_bo.png", "bo")
+
+# Gang versions (w207-w212): the sheets came back with their own row layouts;
+# cells are taken by connected component order within each row (ncols = the
+# sheet's own column count), named per sheet.
+def _frac(n, a, b, total):
+    return int(round(n * a / total)), int(round(n * b / total))
+
+GANG_ROWS = {
+    "june_gang": (15, {0: [("idle_down", 0, 4), ("idle", 4, 8), ("view_front", 0, 1)], 1: [("walk", 0, 8), ("run", 8, 15)], 2: [("walk_down", 0, 8), ("run_down", 8, 15)],
+        3: [("attack", 0, 10), ("attack_down", 10, 15)], 4: [("hoe_right", 0, 6), ("hoe_down", 6, 10), ("hoe_up", 10, 15)], 5: [("axe_right", 0, 6), ("axe_down", 6, 10), ("axe_up", 10, 15)],
+        6: [("pickaxe_right", 0, 6), ("pickaxe_down", 6, 10), ("pickaxe_up", 10, 15)], 7: [("wave", 0, 3), ("powerup", 3, 8), ("celebrate", 8, 12)]}),
+    "rafe_gang": (14, {0: [("idle_down", 0, 4), ("idle", 4, 8), ("view_front", 0, 1)], 1: [("walk", 0, 7), ("run", 7, 14)], 2: [("walk_down", 0, 7), ("run_down", 7, 14)],
+        3: [("attack", 0, 8), ("attack_down", 8, 14)], 4: [("hoe_right", 0, 6), ("hoe_down", 6, 10), ("hoe_up", 10, 14)], 5: [("axe_right", 0, 6), ("axe_down", 6, 10), ("axe_up", 10, 14)],
+        6: [("pickaxe_right", 0, 6), ("pickaxe_down", 6, 10), ("pickaxe_up", 10, 14)], 7: [("powerup", 0, 10), ("celebrate", 10, 14)]}),
+    "nia_gang": (14, {0: [("idle_down", 0, 4), ("idle", 4, 8), ("view_front", 0, 1)], 1: [("walk_down", 0, 7), ("run_down", 7, 14)], 2: [("walk", 0, 7), ("run", 7, 14)],
+        3: [("hurt", 0, 2), ("celebrate", 2, 6)], 4: [("walk_up", 0, 7), ("run_up", 7, 14), ("view_back", 0, 1)], 5: [("attack", 0, 8), ("attack_down", 8, 14)],
+        6: [("hoe_right", 0, 5), ("hoe_down", 5, 10), ("axe_right", 10, 14)], 7: [("axe_down", 0, 4), ("axe_up", 4, 7), ("pickaxe_right", 7, 11), ("pickaxe_down", 11, 14)]}),
+    "ollie_gang": (14, {0: [("idle_down", 0, 4), ("idle", 4, 8), ("view_front", 0, 1)], 1: [("walk", 0, 7), ("run", 7, 14)], 2: [("walk_down", 0, 7), ("run_down", 7, 14)],
+        3: [("attack", 0, 7), ("attack_down", 7, 10), ("hurt", 10, 14)], 4: [("hoe_right", 0, 5), ("hoe_down", 5, 10), ("hoe_up", 10, 14)], 5: [("axe_right", 0, 5), ("axe_down", 5, 10), ("axe_up", 10, 14)],
+        6: [("pickaxe_right", 0, 5), ("pickaxe_down", 5, 10), ("pickaxe_up", 10, 14)], 7: [("celebrate", 0, 4), ("sit", 4, 6), ("faint", 6, 14)]}),
+    "marisol_gang": (16, {0: [("idle_down", 0, 4), ("idle", 4, 8), ("idle_up", 8, 12), ("view_front", 0, 1), ("view_right", 4, 5), ("view_back", 8, 9)], 1: [("walk_down", 0, 4), ("walk", 4, 8), ("walk_up", 8, 12), ("run", 12, 16)],
+        2: [("attack_down", 0, 4), ("attack", 4, 8), ("attack_up", 8, 12)], 3: [("hoe_down", 0, 4), ("hoe_right", 4, 8), ("hoe_up", 8, 12)], 4: [("axe_down", 0, 4), ("axe_right", 4, 8), ("axe_up", 8, 12)],
+        5: [("pickaxe_down", 0, 4), ("pickaxe_right", 4, 8), ("pickaxe_up", 8, 12)], 6: [("hold_down", 0, 4), ("powerup", 4, 8), ("celebrate", 12, 16)], 7: [("hurt", 0, 4), ("faint", 4, 8), ("wave", 12, 16)]}),
+    "bo_gang": (16, {0: [("idle_down", 0, 4), ("idle", 4, 8), ("view_front", 0, 1)], 1: [("walk_down", 0, 8), ("run_down", 8, 16)], 2: [("attack", 0, 10), ("hurt", 10, 16)],
+        3: [("attack_down", 0, 9), ("celebrate", 9, 16)], 4: [("hoe_right", 0, 5), ("hoe_down", 5, 9), ("hoe_up", 9, 16)], 5: [("axe_right", 0, 5), ("axe_down", 5, 9), ("axe_up", 9, 16)],
+        6: [("pickaxe_right", 0, 5), ("pickaxe_down", 5, 9), ("pickaxe_up", 9, 16)], 7: [("wave", 0, 4), ("powerup", 4, 10), ("sit", 10, 16)]}),
+}
+
+def _gang_sheet(file, char_id):
+    rgba = load_hue(file)
+    ncols, rows = GANG_ROWS[char_id]
+    H, Wd = rgba.shape[:2]
+    ch = H / 8
+    G = "characters/" + char_id
+    for row, spec in rows.items():
+        y0, y1 = int(row * ch) + 2, int((row + 1) * ch) - 2
+        comps = _peng_cells(rgba, y0, y1)
+        comps = [(b[0], max(b[1], y0 - 2), b[2], min(b[3], y1 + 2)) for b in comps if (b[2] - b[0]) * (b[3] - b[1]) >= 300]
+        # Keep only cells about as tall as the row's typical sprite (strays and
+        # bleed from the next row are much shorter or taller).
+        hs = sorted(b[3] - b[1] for b in comps)
+        if hs:
+            med = hs[len(hs) // 2]
+            comps = [b for b in comps if 0.6 * med <= (b[3] - b[1]) <= 1.35 * med]
+        n = len(comps)
+        for name, a, b in spec:
+            a2, b2 = _frac(n, a, b, ncols)
+            cells = comps[a2:max(a2 + 1, b2)]
+            if cells:
+                strip([scale_to(crop(rgba, c), height=HERO2_H) for c in cells], G, name)
+    # Walking with no side strip: the whole character flips, so alias later in CharacterLibrary.
+
+def w207(): _gang_sheet("w207_hero_june_gang.png", "june_gang")
+def w208(): _gang_sheet("w208_hero_rafe_gang.png", "rafe_gang")
+def w209(): _gang_sheet("w209_hero_nia_gang.png", "nia_gang")
+def w210(): _gang_sheet("w210_hero_ollie_gang.png", "ollie_gang")
+def w211(): _gang_sheet("w211_hero_marisol_gang.png", "marisol_gang")
+def w212(): _gang_sheet("w212_hero_bo_gang.png", "bo_gang")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

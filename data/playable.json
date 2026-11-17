@@ -50,5 +50,41 @@
   "placeholder": false,
   "custom": true,
   "color": "8a6a4a"
+ },
+ "june": {
+  "name": "Grandma June",
+  "sprite": "june",
+  "placeholder": false,
+  "color": "c9a0d8"
+ },
+ "rafe": {
+  "name": "Uncle Rafe",
+  "sprite": "rafe",
+  "placeholder": false,
+  "color": "b03030"
+ },
+ "nia": {
+  "name": "Cousin Nia",
+  "sprite": "nia",
+  "placeholder": false,
+  "color": "e8c040"
+ },
+ "ollie": {
+  "name": "Little Ollie",
+  "sprite": "ollie",
+  "placeholder": false,
+  "color": "5a8a40"
+ },
+ "marisol": {
+  "name": "Aunt Marisol",
+  "sprite": "marisol",
+  "placeholder": false,
+  "color": "3a9a90"
+ },
+ "bo": {
+  "name": "Bo",
+  "sprite": "bo",
+  "placeholder": false,
+  "color": "a05030"
  }
 }

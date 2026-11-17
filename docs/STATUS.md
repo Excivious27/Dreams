@@ -264,3 +264,7 @@
 - Hearts: `data/hearts.json` (written by `tools/write_hearts.py`) + `scripts/hearts.gd` — 25 villagers × ♥2/4/6/8/10 scenes, ♥6 personal quest promotion, daily lines after milestones, ♥10 "fall" lines (journal hints).
 - Placeholder "(Tom: …)" notes stripped from all player-facing text.
 - Harnesses: `tools/story_test.gd` (50 beats both arcs), `tools/hearts_test.gd` (125 milestones). Both green.
+
+## 2026-11-16 — Prompts 11 batches 1–2: six new heroes
+- `tools/slice_world.py` w201–w206 (`_hero_sheet`: 16-col grid by components, HERO_ROWS map, portraits + 8 expressions) and w207–w212 (`_gang_sheet`: per-sheet GANG_ROWS maps, stray-cell filter). Characters `june/rafe/nia/ollie/marisol/bo` (+`_gang`) in `CharacterLibrary.GEN_ONLY` (HERO2_ANIMS) with new aliases (walk_down/up, run_down/up, idle_down/up, attack_down/up, hurt).
+- playable.json + arcs.json: the six are selectable in both arcs; gang versions used automatically in Gangster Paradise; gang portraits fall back to the farm portraits.

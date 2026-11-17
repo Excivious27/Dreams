@@ -10,7 +10,7 @@ func frames(n: int) -> void:
 	for i in n: await process_frame
 func _run() -> void:
 	InputSetup.ensure_actions()
-	for pick in [["gangsters", "dad", "man_gang", false], ["gangsters", "pax", "son_gang", false], ["penguins", "kairi", "girl", false], ["penguins", "custom", "", true], ["penguins", "penguin_m", "penguin", false]]:
+	for pick in [["gangsters", "dad", "man_gang", false], ["gangsters", "nia", "nia_gang", false], ["penguins", "bo", "bo", false], ["penguins", "june", "june", false], ["gangsters", "pax", "son_gang", false], ["penguins", "kairi", "girl", false], ["penguins", "custom", "", true], ["penguins", "penguin_m", "penguin", false]]:
 		var t: Node = (load("res://scenes/title.tscn") as PackedScene).instantiate()
 		root.add_child(t)
 		current_scene = t

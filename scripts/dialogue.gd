@@ -157,6 +157,8 @@ func _set_portrait(who: String, mood: String) -> void:
 	var pid := portrait_for(who)
 	var tex: Texture2D = null
 	if pid != "":
+		if pid.ends_with("_gang") and not Art.has("portraits/" + pid, "neutral"):
+			pid = pid.trim_suffix("_gang")
 		tex = Art.tex("portraits/" + pid, mood)
 		if tex == null:
 			tex = Art.tex("portraits/" + pid, "neutral")
