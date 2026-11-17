@@ -495,7 +495,9 @@ func _physics_process(delta: float) -> void:
 			else:
 				return
 		elif anim_name.begins_with("hoe_") or anim_name.begins_with("water_") or anim_name.begins_with("axe_") or anim_name.begins_with("pickaxe_") or anim_name.begins_with("cast_") or anim_name.begins_with("reel_") or anim_name.begins_with("hold_") or anim_name.begins_with("eat_"):
-			if _anim and _anim.is_playing():
+			# Tools: the work is done on the press; the swing can be walked out of
+			# after a third of a second so a row of tiles doesn't feel like treacle.
+			if _anim and _anim.is_playing() and not (_busy_t > 0.3 and dir != Vector2.ZERO and not anim_name.begins_with("cast_") and not anim_name.begins_with("reel_")):
 				return
 			_busy = false
 		else:
@@ -616,6 +618,8 @@ func play_tool(action: String, restart := true) -> bool:
 	velocity = Vector2.ZERO
 	_sprite.position.y = 0
 	_apply(a, facing == "left", restart)
+	if _anim:
+		_anim.speed_scale = 1.35
 	return true
 
 

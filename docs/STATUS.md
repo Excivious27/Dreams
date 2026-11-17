@@ -314,3 +314,7 @@
 
 ## 2026-11-17 — Round 7 QA pass
 - Full harness run green: smoke, playtest (43 checks, screenshots reviewed), creator, mine, story (59 beats), hearts, reach, walls, net (host+guest). ui_test: 2 harness-only failures remain. Guide 07 written.
+
+## 2026-11-17 — Round 3 pass 2 + Round 4 pass 2
+- Art: portrait/fragment frames dropped from bo celebrate, marisol axe_down, nia reel/pickaxe_up, ollie hoe_up, old_moss walk_up, merry wave (persisted as `KNOWN_DROPS` in art_audit so re-slices keep them). 27 → 20 audit lines, all cosmetic.
+- Feel: tool swings play at 1.35× and can be walked out of after 0.3 s (fishing excepted); the work still happens on the press. Playtest 43/43.
