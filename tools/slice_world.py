@@ -4353,11 +4353,106 @@ def w236():
         strip([scale_to(crop(rgba, b), height=48) for b in g[:4]], "fx", "tier_aura_%d" % gi)
 
 
+# ---- Penguin-arc extra heroes (w237-w241): per-sheet row maps -----------------
+PENG_HEROES = {
+    "w237_hero_merry.png": ("merry", 5, {0: [("idle_down", 0, 3), ("idle_up", 3, 7), ("walk", 11, 15)], 1: [("walk_down", 0, 3), ("walk_up", 3, 7), ("run", 7, 15)],
+        2: [("celebrate", 0, 4), ("attack", 4, 6), ("idle", 6, 8), ("hurt", 8, 10), ("faint", 10, 12)], 3: [("powerup", 0, 6), ("wave", 6, 9), ("cheer", 9, 12)],
+        4: [("view_front", 0, 1), ("view_right", 1, 2), ("view_back", 2, 3), ("view_left", 3, 4)]}, ["neutral", "happy", "angry", "surprised"]),
+    "w238_hero_big_jim.png": ("big_jim", 5, {0: [("idle_down", 0, 8)], 1: [("walk", 0, 8)], 2: [("attack", 0, 8)], 3: [("celebrate", 0, 2), ("hurt", 2, 4), ("idle", 4, 5), ("faint", 5, 8)],
+        4: []}, ["neutral", "happy", "angry", "surprised"]),
+    "w239_hero_coldy.png": ("coldy", 5, {0: [("idle_down", 0, 4), ("walk", 4, 8)], 1: [("run", 0, 4), ("walk_up", 4, 8)], 2: [("attack", 0, 6), ("idle", 6, 8)],
+        3: [("celebrate", 0, 2), ("hurt", 2, 3), ("faint", 3, 8)], 4: [("powerup", 0, 8)]}, []),
+    "w240_hero_mer.png": ("mer", 5, {0: [("idle_down", 0, 4), ("idle_up", 4, 6), ("idle", 6, 10)], 1: [("swim", 0, 5), ("attack", 5, 8)], 2: [("powerup", 0, 5), ("hurt", 5, 8), ("faint", 8, 10)],
+        3: [("sleep", 0, 2), ("sit", 2, 5), ("celebrate", 5, 9)], 4: []}, ["neutral", "happy", "sad", "angry", "surprised"]),
+    "w241_hero_coco.png": ("coco", 5, {0: [("idle_down", 0, 5), ("idle_up", 5, 7), ("idle", 7, 9)], 1: [("walk_down", 0, 9)], 2: [("attack", 0, 9)], 3: [("celebrate", 0, 4), ("faint", 4, 7), ("hurt", 7, 9)],
+        4: []}, ["neutral", "happy", "sad", "angry", "surprised", "embarrassed"]),
+}
+
+def _peng_hero_sheet(file):
+    rgba = load_hue(file)
+    H, Wd = rgba.shape[:2]
+    cid, nrows, rows, exprs = PENG_HEROES[file]
+    ch = H / float(nrows)
+    G = "characters/" + cid
+    for r, spec in rows.items():
+        y0, y1 = int(r * ch) + 2, int((r + 1) * ch) - 2
+        cells = _band_cells(rgba, y0, y1, 300 if (cid == "coldy" and r < 2) else 0, Wd)
+        if r == nrows - 1 and exprs:
+            # Last row: views (small) then portraits (big).
+            big = [b for b in cells if (b[3] - b[1]) > ch * 0.55]
+            small = [b for b in cells if (b[3] - b[1]) <= ch * 0.55]
+            for i, b in enumerate(big[:len(exprs)]):
+                save(scale_to(crop(rgba, b), height=96), "portraits/" + cid, exprs[i])
+            if cid == "merry":
+                for i, b in enumerate(small[:4]):
+                    strip([scale_to(crop(rgba, b), height=96)], G, ["view_front", "view_right", "view_back", "view_left"][i])
+            continue
+        for name, c0, c1 in spec:
+            part = cells[c0:c1]
+            if part:
+                strip([scale_to(crop(rgba, b), height=96) for b in part], G, name)
+    if cid == "coldy":
+        pb = _components(rgba, (0, 0, 300, 420), dilate=2, min_px=5000)
+        if pb:
+            pb = max(pb, key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))
+            save(scale_to(crop(rgba, pb), height=96), "portraits/coldy", "neutral")
+
+def w237(): _peng_hero_sheet("w237_hero_merry.png")
+def w238(): _peng_hero_sheet("w238_hero_big_jim.png")
+def w239(): _peng_hero_sheet("w239_hero_coldy.png")
+def w240(): _peng_hero_sheet("w240_hero_mer.png")
+def w241(): _peng_hero_sheet("w241_hero_coco.png")
+
+
+# ---- The two Too Powerful Penguins (w242 wizard = penguin_f, w243 king = penguin_m)
+def w242():
+    rgba = load_hue("w242_penguin_wizard.png")
+    H, Wd = rgba.shape[:2]
+    G = "characters/penguin_wizard"
+    ch = H / 4.0
+    r0 = _band_cells(rgba, 2, int(ch) - 2, 0, Wd)
+    strip([scale_to(crop(rgba, b), height=96) for b in r0[0:4]], G, "idle_down")
+    if len(r0) >= 9:
+        strip([scale_to(crop(rgba, r0[4]), height=96)], G, "view_right")
+        strip([scale_to(crop(rgba, b), height=96) for b in r0[5:7]], G, "idle_up")
+        strip([scale_to(crop(rgba, b), height=96) for b in r0[7:9]], G, "idle")
+    r1 = _band_cells(rgba, int(ch) + 2, int(2 * ch) - 2, 0, Wd)
+    strip([scale_to(crop(rgba, b), height=96) for b in r1], G, "walk")
+    r2 = _band_cells(rgba, int(2 * ch) + 2, int(3 * ch) - 2, 0, Wd)
+    strip([scale_to(crop(rgba, b), height=96) for b in r2], G, "attack")
+    r3 = _band_cells(rgba, int(3 * ch) + 2, H - 2, 0, int(Wd * 0.74))
+    strip([scale_to(crop(rgba, b), height=96) for b in r3[0:2]], G, "celebrate")
+    strip([scale_to(crop(rgba, b), height=96) for b in r3[2:6]], G, "faint")
+    pb = _components(rgba, (int(Wd * 0.74), int(3 * ch), Wd, H), dilate=2, min_px=5000)
+    if pb:
+        save(scale_to(crop(rgba, max(pb, key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))), height=96), "portraits/penguin_wizard", "neutral")
+
+def w243():
+    rgba = load_hue("w243_penguin_king.png")
+    H, Wd = rgba.shape[:2]
+    G = "characters/penguin_king"
+    ch = H / 4.0
+    pb = _components(rgba, (0, 0, 300, int(ch)), dilate=2, min_px=5000)
+    if pb:
+        save(scale_to(crop(rgba, max(pb, key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))), height=96), "portraits/penguin_king", "neutral")
+    r0 = _band_cells(rgba, 2, int(ch) - 2, 300, Wd)
+    strip([scale_to(crop(rgba, b), height=96) for b in r0[0:3]], G, "idle_down")
+    strip([scale_to(crop(rgba, b), height=96) for b in r0[3:7]], G, "idle")
+    r1 = _band_cells(rgba, int(ch) + 2, int(2 * ch) - 2, 0, Wd)
+    strip([scale_to(crop(rgba, b), height=96) for b in r1], G, "walk")
+    r2 = _band_cells(rgba, int(2 * ch) + 2, int(3 * ch) - 2, 0, Wd)
+    strip([scale_to(crop(rgba, b), height=96) for b in r2], G, "attack")
+    r3 = _band_cells(rgba, int(3 * ch) + 2, H - 2, 0, Wd)
+    strip([scale_to(crop(rgba, b), height=96) for b in r3[0:2]], G, "celebrate")
+    strip([scale_to(crop(rgba, b), height=96) for b in r3[2:4]], G, "hurt")
+    strip([scale_to(crop(rgba, b), height=96) for b in r3[4:8]], G, "faint")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w237", w237), ("w238", w238), ("w239", w239), ("w240", w240), ("w241", w241), ("w242", w242), ("w243", w243), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

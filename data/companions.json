@@ -1,34 +1,131 @@
 {
  "_": "Companions walk with you (one active + the pup). Each unlocks an ability only while they're in the party. Recruited through story beats; feelings matter: turning one down or picking another over them sets `bitter`, which can send them to the Dark Crystal later (see decisions).",
  "companions": {
-  "penguin_m": {"name": "Pip-Pip", "sprite": "penguin", "tint": "ffffff", "arc": "penguins", "ability": "powerup", "ability_name": "Power Pose", "ability_desc": "Hold B: a crystal aura that stuns grumps nearby and lifts your mana by 5.", "join": "I was going to find the crystal on my own. Together is faster. And warmer."},
-  "penguin_f": {"name": "Nova", "sprite": "penguin", "tint": "e8f4ff", "arc": "penguins", "ability": "meow_pow_wow", "ability_name": "Meow Pow Wow", "ability_desc": "A penguin-cat purr-wave: grumps caught in it turn back into what they were (rank 1: little ones; each rank reaches bigger ones).", "join": "Fine. But I'm the one who talks to the cats."},
-  "dad": {"name": "Dad", "sprite": "man", "arc": "both", "ability": "haul", "ability_name": "Haul", "ability_desc": "Carries 12 extra stacks and chops a tree in one swing.", "join": "Somebody has to carry the wood."},
-  "mom": {"name": "Mom", "sprite": "woman", "arc": "both", "ability": "mend", "ability_name": "Mend", "ability_desc": "Heals 1 health every 10 s near you; cooking costs half.", "join": "I'll come. Someone has to make sure you eat."},
-  "pax": {"name": "Pax", "sprite": "son", "arc": "both", "ability": "scout", "ability_name": "Scout", "ability_desc": "Runs ahead: hidden forage and ore within 10 cells are marked; +15% run speed.", "join": "I know every shortcut. Most of them are through fences."},
-  "kairi": {"name": "Kairi", "sprite": "girl", "arc": "both", "ability": "tinker", "ability_name": "Tinker", "ability_desc": "Crafting is 30% faster; chests can be opened from anywhere.", "join": "I can fix the resonator. Probably. Let's find out."},
-  "big_jim": {"name": "Big Jim", "sprite": "man_gang", "arc": "gangsters", "ability": "muscle", "ability_name": "Muscle", "ability_desc": "Breaks any rock or door the pickaxe can't; thugs hesitate.", "join": "You pay, I swing. You don't pay, I still swing, I just complain."},
-  "mer": {"name": "Mer", "sprite": "cat_grey", "tint": "9ad8e8", "arc": "both", "ability": "tail", "ability_name": "Mercat's Gift", "ability_desc": "With Mer beside you: a mermaid tail in water, breathe underwater, swim at full speed, dive for crystals.", "join": "You came down the dark stair with a lantern and no fear. That's rarer than crystal. Come on, the water's warmer than it looks."},
-  "sal": {"name": "Sal", "sprite": "npc_sal", "arc": "gangsters", "ability": "fence", "ability_name": "Fence", "ability_desc": "Sells anything at 120% anywhere, no questions; thug drops double.", "join": "I know people. People who know people. Keep your head down."}
+  "penguin_m": {
+   "name": "Pip-Pip",
+   "sprite": "penguin_king",
+   "arc": "penguins",
+   "ability": "powerup",
+   "ability_name": "Power Pose",
+   "ability_desc": "Hold B: a crystal aura that stuns grumps nearby and lifts your mana by 5.",
+   "join": "I was going to find the crystal on my own. Together is faster. And warmer."
+  },
+  "penguin_f": {
+   "name": "Nova",
+   "sprite": "penguin_wizard",
+   "arc": "penguins",
+   "ability": "meow_pow_wow",
+   "ability_name": "Meow Pow Wow",
+   "ability_desc": "A penguin-cat purr-wave: grumps caught in it turn back into what they were (rank 1: little ones; each rank reaches bigger ones).",
+   "join": "Fine. But I'm the one who talks to the cats."
+  },
+  "dad": {
+   "name": "Dad",
+   "sprite": "man",
+   "arc": "both",
+   "ability": "haul",
+   "ability_name": "Haul",
+   "ability_desc": "Carries 12 extra stacks and chops a tree in one swing.",
+   "join": "Somebody has to carry the wood."
+  },
+  "mom": {
+   "name": "Mom",
+   "sprite": "woman",
+   "arc": "both",
+   "ability": "mend",
+   "ability_name": "Mend",
+   "ability_desc": "Heals 1 health every 10 s near you; cooking costs half.",
+   "join": "I'll come. Someone has to make sure you eat."
+  },
+  "pax": {
+   "name": "Pax",
+   "sprite": "son",
+   "arc": "both",
+   "ability": "scout",
+   "ability_name": "Scout",
+   "ability_desc": "Runs ahead: hidden forage and ore within 10 cells are marked; +15% run speed.",
+   "join": "I know every shortcut. Most of them are through fences."
+  },
+  "kairi": {
+   "name": "Kairi",
+   "sprite": "girl",
+   "arc": "both",
+   "ability": "tinker",
+   "ability_name": "Tinker",
+   "ability_desc": "Crafting is 30% faster; chests can be opened from anywhere.",
+   "join": "I can fix the resonator. Probably. Let's find out."
+  },
+  "big_jim": {
+   "name": "Big Jim",
+   "sprite": "big_jim",
+   "arc": "gangsters",
+   "ability": "muscle",
+   "ability_name": "Muscle",
+   "ability_desc": "Breaks any rock or door the pickaxe can't; thugs hesitate.",
+   "join": "You pay, I swing. You don't pay, I still swing, I just complain."
+  },
+  "mer": {
+   "name": "Mer",
+   "sprite": "mer",
+   "arc": "both",
+   "ability": "tail",
+   "ability_name": "Mercat's Gift",
+   "ability_desc": "With Mer beside you: a mermaid tail in water, breathe underwater, swim at full speed, dive for crystals.",
+   "join": "You came down the dark stair with a lantern and no fear. That's rarer than crystal. Come on, the water's warmer than it looks."
+  },
+  "sal": {
+   "name": "Sal",
+   "sprite": "npc_sal",
+   "arc": "gangsters",
+   "ability": "fence",
+   "ability_name": "Fence",
+   "ability_desc": "Sells anything at 120% anywhere, no questions; thug drops double.",
+   "join": "I know people. People who know people. Keep your head down."
+  }
  },
  "partner_scene": {
   "_": "Chapter 1: by day 3 (penguins) / day 3 (gangsters) a scene at the farm gate offers a partner from the characters you didn't pick. Penguin arc: a penguin must be among the offers (both if you're not a penguin; the other if you are).",
   "penguins": {
-   "when": {"day": 3},
+   "when": {
+    "day": 3
+   },
    "lines": [
-    {"who": "", "text": "Two figures at the gate at dawn. Snow on their shoulders, though it isn't snowing."},
-    {"who": "Pip-Pip", "text": "We followed the light. From very far. It stopped over YOUR field, so."},
-    {"who": "Nova", "text": "He means: can we stay. One of us. The other one keeps watch on the mountain."},
-    {"who": "", "text": "They're penguins. Too powerful ones, by the look of the frost on the gate."}
+    {
+     "who": "",
+     "text": "Two figures at the gate at dawn. Snow on their shoulders, though it isn't snowing."
+    },
+    {
+     "who": "Pip-Pip",
+     "text": "We followed the light. From very far. It stopped over YOUR field, so."
+    },
+    {
+     "who": "Nova",
+     "text": "He means: can we stay. One of us. The other one keeps watch on the mountain."
+    },
+    {
+     "who": "",
+     "text": "They're penguins. Too powerful ones, by the look of the frost on the gate."
+    }
    ],
    "ask": "Who stays with you?"
   },
   "gangsters": {
-   "when": {"day": 3},
+   "when": {
+    "day": 3
+   },
    "lines": [
-    {"who": "", "text": "A truck at the gate, engine ticking. Two people lean on it like they've been waiting since before the sun."},
-    {"who": "Big Jim", "text": "Boss. Word is you're setting up out here. Word is also that the President's man was in the meadow."},
-    {"who": "Sal", "text": "One of us comes with you. The other watches the road. That's how we did it in the river cities."}
+    {
+     "who": "",
+     "text": "A truck at the gate, engine ticking. Two people lean on it like they've been waiting since before the sun."
+    },
+    {
+     "who": "Big Jim",
+     "text": "Boss. Word is you're setting up out here. Word is also that the President's man was in the meadow."
+    },
+    {
+     "who": "Sal",
+     "text": "One of us comes with you. The other watches the road. That's how we did it in the river cities."
+    }
    ],
    "ask": "Who rides with you?"
   }

@@ -21,22 +21,21 @@
  },
  "big_jim": {
   "name": "Big Jim",
-  "sprite": "",
-  "placeholder": true,
-  "color": "2b3a67"
+  "sprite": "big_jim",
+  "placeholder": false,
+  "color": "7a4aa0"
  },
  "penguin_m": {
   "name": "Too Powerful Penguin",
-  "sprite": "penguin",
+  "sprite": "penguin_king",
   "placeholder": false,
   "color": "1f2a44"
  },
  "penguin_f": {
   "name": "Too Powerful Penguin (F)",
-  "sprite": "penguin",
+  "sprite": "penguin_wizard",
   "placeholder": false,
-  "color": "3b2a55",
-  "tint": "ffd6f0"
+  "color": "3b2a55"
  },
  "light_crystal": {
   "name": "Light Crystal",
@@ -86,5 +85,29 @@
   "sprite": "bo",
   "placeholder": false,
   "color": "a05030"
+ },
+ "merry": {
+  "name": "Merry",
+  "sprite": "merry",
+  "placeholder": false,
+  "color": "c8a8e8"
+ },
+ "coco": {
+  "name": "Coco",
+  "sprite": "coco",
+  "placeholder": false,
+  "color": "6a9ad8"
+ },
+ "mer": {
+  "name": "Mer",
+  "sprite": "mer",
+  "placeholder": false,
+  "color": "9a7ab8"
+ },
+ "coldy": {
+  "name": "Coldy",
+  "sprite": "coldy",
+  "placeholder": false,
+  "color": "7ac8f0"
  }
 }

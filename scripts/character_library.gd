@@ -22,7 +22,15 @@ const TOOL_ACTIONS := ["hoe", "water", "axe", "pickaxe", "cast", "reel", "hold",
 const TOOL_FPS := {"hoe": 10.0, "water": 8.0, "axe": 10.0, "pickaxe": 10.0, "cast": 8.0, "reel": 8.0, "hold": 8.0, "eat": 6.0}
 ## Characters that exist only in art/gen (no pack folder). Value = the strips to load.
 const HERO2_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "run_down", "run_up", "hurt", "attack", "attack_down", "faint", "celebrate", "hoe_down", "hoe_right", "hoe_up", "axe_down", "axe_right", "axe_up", "pickaxe_down", "pickaxe_right", "pickaxe_up", "water_down", "water_right", "water_up", "hold_down", "eat_down", "cast_right", "reel_right", "sit", "sleep", "wave", "swim", "swim_down", "swim_up", "float", "ride", "ride_run", "ride_down", "ride_up", "powerup", "view_front", "view_right", "view_back", "view_left"]
+const HERO3_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "run_down", "run_up", "hurt", "attack", "attack_down", "faint", "celebrate", "powerup", "swim", "cheer", "sit", "sleep", "wave", "view_front", "view_right", "view_back", "view_left"]
 const GEN_ONLY := {
+	"penguin_king": HERO3_ANIMS,
+	"penguin_wizard": HERO3_ANIMS,
+	"merry": HERO3_ANIMS,
+	"big_jim": HERO3_ANIMS,
+	"coldy": HERO3_ANIMS,
+	"mer": HERO3_ANIMS,
+	"coco": HERO3_ANIMS,
 	"june": HERO2_ANIMS,
 	"rafe": HERO2_ANIMS,
 	"nia": HERO2_ANIMS,
