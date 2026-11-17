@@ -227,3 +227,16 @@
 - `GameMap.anim_prop()` shared (was duplicated in town/lake).
 - Playtest + reach test pass; overview of town checked.
 - Still open: lake docks from `board3_*`/`boathouse` (lake still uses old dock cells), stable_* paddock pieces on the farm stable, menu_ pieces with baked text not used (badges/crests used), audio pass.
+
+## 2026-11-17 — Tom's play-test round (controls, water offset, villagers, story, systems, pup)
+- Root cause fixed: the animated water layer was positioned before `pad` was set, so every river/pond/lake/sea was drawn 7 cells off its collision (trees "in" ponds, walking into the sea, blocked docks, floating bridges). `_anim_layer.position = offset()` now set after `build()`.
+- Mouse: left click on a door/person/thing walks over and uses it, otherwise swings the tool toward the cursor and keeps swinging while held; aim any of the 8 neighbouring tiles with a green/red highlight; dialogue advances on click; menu buttons fire on press.
+- Title: portrait crop of the key art + glowing wordmark (proper portrait art requested in Prompts 10).
+- World: cliff borders drawn as rock plateaus (were floor-looking invisible walls); coherent ground patches per region (blob sets) instead of per-cell tile lottery; magenta residue scrubbed from all tiles, blob fills de-guttered; soft-rim paths; mountain ledges have rock faces + dirt ramps and one continuous switchback path; town buildings scaled up with a lane to every door and props that fit each owner; river uses the river set; beach/lake/marsh/riverlands doors reachable; wildlife at true scale; cloud shadows/aurora feathered; overgrown farm start; seasonal dead tree.
+- Interaction: ground forage you can pick (respawns daily), fruit trees to shake by season, meadow mine door reachable, eat anywhere with +N readouts, penguin creator (feathers/scarf/hat/pet), shorter i-frames and knockback.
+- Villagers: BFS pathing between spots, staggered schedules, activity poses, pair chats with bubbles, home/work interiors with dynamic occupancy, region folk no longer appear in town.
+- Story: side quests spoken in each villager's voice with face-to-face turn-in (`data/quest_lines.json`, `Quests.talk`); scripted villager scenes with relationships (`data/events.json`, `Events.tick`) that leave journal hints; community board with 3 daily jobs (`GameState.board_today`); morning "Next:" guidance.
+- Systems: gathering tiers (ore/tree need tool tier + skill, with a message), economy (season demand, saturation, tiered buy prices), crop seasons/regrow/growth rates, forage respawn by rarity, enemy density by progress tier, Sorcery tree rebuilt (25 nodes, Light/Dream/Crystal paths, 13 spells).
+- Pup: `scripts/pet.gd`, own tree (17 nodes), commands heel/attack/guard/stay/recall (Pup tab), bites, takes hits, limps home at 0 hp, packs/collars/boots/treats (workbench + smithy recipes), dig/fetch/tracker/rescue/aura, training quests from Benno and Rook.
+- Tools: `tools/ui_test.gd` (menu/dialogue/door clicks), `tools/walls.gd` (invisible-wall audit), overview `OV_BLOCKED=1` / `OV_FOCUS=x,y`.
+- Art requested: `docs/ART-PROMPTS-10.md` (portrait key art, clean path sets, penguin poses + wearables, pup gear/fight poses, fruit trees, two-row cliff faces, region walls, Sorcery/Pup/buff/bubble icons, boss cards).
