@@ -12,8 +12,8 @@ THE SEVEN (keep each EXACTLY as already drawn):
 - MER: a grey cat-mermaid with purple hair, pink shell top, red tail with an orange fin; the mercat of the grotto.
 - COLDY: a small ice person: spiky pale-blue ice hair, blue skin, spiked ice collar, a diamond mark on the chest.
 - BIG JIM: a round purple cat in a red shirt, calm closed eyes, striped sleeves, big and heavy.
-- PENGUIN KING (the Too Powerful Penguin): a brown-and-cream penguin with a gold crown with red gems and a long red scarf; serious eyes.
-- PENGUIN WIZARD (the Too Powerful Penguin, F): a dark plum penguin with a purple wizard hat with a pink feather, a red scarf, closed happy eyes.
+- PENGUIN KING — PIP-PIP (one of the Two Too Powerful Penguins): a brown-and-cream penguin with a gold crown with red gems and a long red scarf; serious eyes.
+- PENGUIN WIZARD — NOVA (the other Too Powerful Penguin): a dark plum penguin with a purple wizard hat with a pink feather, a red scarf, closed happy eyes.
 
 HERO SHEET LAYOUT (same rows as Batch 1 of Prompts 11): row 0 IDLE down ×2, up ×2, side ×2, WALK down ×4, up ×4, side ×2; row 1 WALK side ×2 more, RUN down ×4, up ×4, side ×4, HURT ×2; row 2 ATTACK down ×4, up ×4, side ×4, FAINT ×2, CELEBRATE ×2; row 3 HOE down/side/up ×3 each, AXE down/side/up ×3 each (18 cells, the last 2 wrap to row 4); row 4 the 2 wrapped axe cells, PICKAXE down/side/up ×3 each, WATER down/side/up ×1 each, HOLD overhead ×1, EAT ×1; row 5 FISHING cast side ×3, reel side ×3, SIT ×1, SLEEP ×1, WAVE ×2, SWIM side ×3, swim down ×1, swim up ×1, float ×1; row 6 RIDE horse (walk side ×4, run side ×2, down ×2, up ×2) drawn 96 px tall, then POWER-UP glow ×4; row 7 VIEWS front/right/back/left ×1 each, then the 96×96 DIALOGUE PORTRAIT across two cells, then expressions at portrait size: happy, sad, angry, surprised, embarrassed, sly, worried. Ghost and mermaids "walk" by gliding (tail sway, no legs) and "run" by leaning forward with a speed streak inside the cell; they hold tools in their paws exactly like the others; in the swim cells the mermaids are finally in their element and the ghost floats on the surface.
 
