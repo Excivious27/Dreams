@@ -325,4 +325,11 @@ func _start_game() -> void:
 	if not ResourceLoader.exists("res://scenes/%s.tscn" % scene):
 		scene = "farm"
 	GameMap.next_spawn = Vector2.ZERO
+	# Resume where the last door was taken (saved by go_to); interiors excepted
+	# (their spawn comes from the interior data).
+	var sp: Variant = GameState.run.get("spawn", [])
+	if sp is Array and (sp as Array).size() >= 2 and scene not in ["interior"]:
+		GameMap.next_spawn = Vector2(float(sp[0]), float(sp[1]))
+		if (sp as Array).size() > 2:
+			GameMap.next_facing = str(sp[2])
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % scene)

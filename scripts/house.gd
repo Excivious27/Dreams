@@ -71,6 +71,9 @@ func _sleep() -> void:
 		Net.send_host({"k": "act", "a": "sleep"})
 		hud.toast("You're in bed. The day ends when everyone is.", Color(0.9, 0.95, 1.0))
 		return
+	if _changing:
+		return
+	_changing = true  # stops the 2am pass-out from firing during the fade
 	player.frozen = true
 	await hud.fade_out(0.8)
 	var report := GameState.sleep()
@@ -85,6 +88,7 @@ func _sleep() -> void:
 		lines.append({"who": "", "text": "A note under the door, in a hand you know: '%s went east. Didn't say why. You know why.'" % str(nm)})
 	await hud.fade_in(0.8)
 	await say(lines)
+	_changing = false
 	_morning_events()
 	Story.on_morning(self)
 	player.frozen = false

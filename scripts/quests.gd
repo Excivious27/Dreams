@@ -45,6 +45,11 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 				Music.instance(m.get_tree()).sfx("levelup")
 				m.emote(_npc_node(m, id), "heart", 1.4)
 			return true
+		# The reminder plays once a day; after that the villager chats normally.
+		var waited: Dictionary = GameState.run["talked_today"]
+		if waited.has("wait_" + id):
+			return false
+		waited["wait_" + id] = true
 		await m.say(_as_lines(name, ql.get("wait", "Still waiting on that: " + str(pend["text"]).to_lower())))
 		return true
 	# 2) Offer.

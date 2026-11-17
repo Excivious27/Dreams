@@ -636,18 +636,13 @@ func _talk(n: Npc) -> void:
 	n.face(player.position)
 	if GameState.complete_quest("meet_town"):
 		hud.toast("Quest done: met the town.", Color(1, 0.9, 0.4))
-	# Gift
-	if sel != "" and GameState.count(sel) > 0 and it.get("type", "") != "tool" and it.get("type", "") != "seed":
-		GameState.add_item(sel, -1)
-		var gain := GameState.gift_value(id, sel)
-		var before := GameState.friend_hearts(id)
-		fr[id] = int(fr.get(id, 0)) + gain
-		await say([{"who": name, "text": _gift_line(id, sel, gain)}])
-		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
-		_heart_unlock(id, before)
-		player.frozen = false
-		return
-	# Main story beats first, then side quests in their own words.
+	var talked0: Dictionary = r["talked_today"]
+	if not talked0.has(id):
+		talked0[id] = true
+		var before0 := GameState.friend_hearts(id)
+		GameState.add_friend(id, 5)
+		_heart_unlock(id, before0)
+	# Main story beats first, then hearts, side quests, and only then a gift.
 	if await Story.talk(self, id):
 		player.frozen = false
 		return
@@ -657,12 +652,14 @@ func _talk(n: Npc) -> void:
 	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return
-	var talked: Dictionary = r["talked_today"]
-	if not talked.has(id):
-		talked[id] = true
+	if GameState.can_gift(id, sel):
 		var before := GameState.friend_hearts(id)
-		fr[id] = int(fr.get(id, 0)) + 5
+		var gain := GameState.give_gift(id, sel)
+		await say([{"who": name, "text": _gift_line(id, sel, gain)}])
+		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		_heart_unlock(id, before)
+		player.frozen = false
+		return
 	var hl := Hearts.daily(id)
 	if hl != "" and (int(r["day"]) + GameState.friend_hearts(id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])

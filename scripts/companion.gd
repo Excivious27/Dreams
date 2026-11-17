@@ -49,15 +49,31 @@ static func has_ability(ab: String) -> bool:
 
 ## Grumps were villagers' animals once. Meow Pow Wow turns them back; rank
 ## (from Nova's friendship hearts / 2, min 1) decides how big a grump it reaches.
-const REVERT := {"crystal_baby": ["baby_free", 1], "finargle": ["finargle_free", 3], "grump": ["rabbit", 1], "mud_slime": ["frog", 1], "slime": ["frog", 1], "bat": ["sparrow", 1], "wisp": ["firefly", 2], "ice_wisp": ["firefly", 2], "shard": ["crystal_fish", 2], "hill_wolf": ["fox", 3], "rock_crab": ["crab", 2], "golem": ["goat", 3], "quarry_golem": ["goat", 4], "big_grump": ["deer", 4], "bog_hag": ["heron", 4], "river_serpent": ["otter", 4]}
+const REVERT := {"crystal_baby": ["moon_rabbit", 1], "finargle": ["owl", 3], "finargle_elder": ["owl", 4], "grump": ["rabbit", 1], "mud_slime": ["frog", 1], "slime": ["frog", 1], "bat": ["sparrow", 1], "wisp": ["firefly", 2], "ice_wisp": ["firefly", 2], "shard": ["crystal_fish", 2], "hill_wolf": ["fox", 3], "rock_crab": ["crab", 2], "golem": ["goat", 3], "quarry_golem": ["goat", 4], "big_grump": ["deer", 4], "bog_hag": ["heron", 4], "river_serpent": ["otter", 4]}
 
 
 static func meow_rank() -> int:
-	return maxi(1, GameState.friend_hearts("penguin_f") / 2 + 1 + int(GameState.bonus("magic", "spell_power") * 2))
+	# Grows with Nova's friendship and with how far the story has gone (each
+	# chapter's spark makes it reach bigger things).
+	var base := maxi(GameState.friend_hearts("penguin_f") / 2 + 1, GameState.progress_tier() + 1)
+	return maxi(1, base + int(GameState.bonus("magic", "spell_power") * 2))
+
+
+## Once Catkins has taught it, the Meow Pow Wow is the player's own: hold B near
+## something it can turn back. Otherwise B-hold uses the active partner's ability.
+static func ability_for(m: GameMap, p: Player) -> String:
+	var partner := str(defs().get(active_id(), {}).get("ability", ""))
+	if GameState.is_penguins() and (GameState.run["flags"].has("meow_taught") or partner == "meow_pow_wow"):
+		for e in m.enemies.duplicate():
+			if is_instance_valid(e) and e.position.distance_to(p.position) <= 70.0 and (REVERT.has(e.kind) or e.kind == "knight"):
+				return "meow_pow_wow"
+		if partner == "":
+			return "meow_pow_wow"
+	return partner
 
 
 static func use_ability(m: GameMap, p: Player) -> void:
-	var ab := str(defs().get(active_id(), {}).get("ability", ""))
+	var ab := ability_for(m, p)
 	# Prompts-12 partner art: cast pose + the partner's own effect strip.
 	var sprite_id := str(defs().get(active_id(), {}).get("sprite", active_id()))
 	if Art.has("fx", "ability_" + sprite_id):
@@ -66,8 +82,8 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		"meow_pow_wow":
 			var rank := meow_rank()
 			var n := 0
-			for e in m.enemies:
-				if not is_instance_valid(e) or e.position.distance_to(p.position) > 70.0:
+			for e in m.enemies.duplicate():
+				if not is_instance_valid(e) or not e._alive or e.position.distance_to(p.position) > 70.0:
 					continue
 				var rv: Array = REVERT.get(e.kind, [])
 				if e.kind == "knight" and GameState.run["flags"].has("knight_mercy_try") and float(e.hp) / e.max_hp < 0.34:
@@ -77,7 +93,15 @@ static func use_ability(m: GameMap, p: Player) -> void:
 					m.emote(e, "confused", 0.8)
 					continue
 				m.fx("sparkle", e.position + Vector2(0, -8), 14.0, 0.6)
-				WorldGen.add_critters(m, Rect2i(m.world_to_cell(e.position) - Vector2i(1, 1), Vector2i(3, 3)), int(Time.get_ticks_msec()), 1, [str(rv[0])])
+				if str(rv[0]) == "penguin":
+					# Grandfather Auk, himself again: a penguin where the Knight stood.
+					var pg := CharacterLibrary.make_sprite("penguin")
+					if pg:
+						pg.position = e.position
+						pg.play("idle")
+						m.add_child(pg)
+				else:
+					WorldGen.add_critters(m, Rect2i(m.world_to_cell(e.position) - Vector2i(2, 2), Vector2i(5, 5)), int(Time.get_ticks_msec()), 1, [str(rv[0])])
 				e.set_meta("reverted", true)
 				e._die()
 				n += 1
@@ -86,7 +110,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.shake(2.0)
 			m.xp("magic", 3 * n)
 		"powerup":
-			for e in m.enemies:
+			for e in m.enemies.duplicate():
 				if is_instance_valid(e) and e.position.distance_to(p.position) < 70.0:
 					e._stun = maxf(e._stun, 2.0)
 			GameState.restore_mana(5)
@@ -117,7 +141,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.fx("stomp" if Art.has("fx", "stomp") else "ripple_ring", p.position, 16.0, 0.8)
 			m.shake(3.0)
 			var hits := 0
-			for e in m.enemies:
+			for e in m.enemies.duplicate():
 				if is_instance_valid(e) and e.position.distance_to(p.position) < 44.0:
 					e.hit(2 + meow_rank(), p.position)
 					e._stun = maxf(e._stun, 0.8)

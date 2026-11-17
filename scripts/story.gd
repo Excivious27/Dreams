@@ -117,13 +117,24 @@ static func talk(m: GameMap, who: String) -> bool:
 static func on_quest_done(m: GameMap, qid: String) -> void:
 	if m == null:
 		return
-	for b in beats():
-		if str(b.get("trigger", {}).get("quest_done", "")) != qid:
-			continue
-		if not _ready_beat(b, m):
-			continue
-		m.later(func() -> void: await play(m, b))
-		return
+	# Every beat for this quest plays, in order: a follow-up whose `after` is the
+	# first beat becomes ready once that one has played, so re-check after each.
+	m.later(func() -> void:
+		var guard := 0
+		while guard < 8:
+			guard += 1
+			var next: Dictionary = {}
+			for b in beats():
+				if str(b.get("trigger", {}).get("quest_done", "")) == qid and _ready_beat(b, m):
+					next = b
+					break
+			if next.is_empty():
+				return
+			while Dialogue.instance(m.get_tree()).active or (m.player and m.player.frozen):
+				await m.get_tree().process_frame
+				if not is_instance_valid(m):
+					return
+			await play(m, next))
 
 
 ## Morning beats, at the bed (House calls after waking).
@@ -255,15 +266,16 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		GameState.run["hp"] = int(GameState.run["max_hp"])
 	if fx.has("grow"):
 		GameState.grow_vital(str(fx["grow"][0]), int(fx["grow"][1]))
-	for sp in fx.get("spawn", []):
-		# [kind, x, y, tier, story_flag]: a story enemy; its death sets the flag.
-		var e := m.spawn_enemy(str(sp[0]), m.cell_center(Vector2i(int(sp[1]), int(sp[2]))), int(sp[3]) if sp.size() > 3 else -1)
-		if sp.size() > 4:
-			e.set_meta("story_flag", str(sp[4]))
-			e.is_guardian = true
-		if sp.size() > 5:
-			e.max_hp = int(e.max_hp * float(sp[5]))
-			e.hp = e.max_hp
+	var spawns: Array = fx.get("spawn", [])
+	if not spawns.is_empty():
+		_spawn_list(m, spawns)
+		# Remember where story enemies stand, so a story boss that wasn't beaten
+		# (you died, left, or reloaded) is back when you return.
+		var keep: Array = spawns.filter(func(sp: Array) -> bool: return sp.size() > 4)
+		if not keep.is_empty():
+			var ss: Dictionary = GameState.run.get("story_spawns", {})
+			ss[m.scene_id() + "|" + str(Time.get_ticks_usec())] = keep
+			GameState.run["story_spawns"] = ss
 	if fx.has("boss_card"):
 		m.boss_card(str(fx["boss_card"]))
 	if fx.has("ending"):
@@ -280,6 +292,55 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 	if fx.has("scene_to"):
 		var s: Array = fx["scene_to"]
 		m.go_to(str(s[0]), Vector2(float(s[1]) * GameMap.TILE, float(s[2]) * GameMap.TILE), str(s[3]) if s.size() > 3 else "down")
+
+
+static func _spawn_list(m: GameMap, spawns: Array) -> void:
+	for sp in spawns:
+		# [kind, x, y, tier, story_flag, hp_mult]: a story enemy; its death sets the flag.
+		var e := m.spawn_enemy(str(sp[0]), m.cell_center(Vector2i(int(sp[1]), int(sp[2]))), int(sp[3]) if sp.size() > 3 else -1)
+		if e == null:
+			continue
+		if sp.size() > 4:
+			e.set_meta("story_flag", str(sp[4]))
+			e.is_guardian = true
+		if sp.size() > 5:
+			e.max_hp = int(e.max_hp * float(sp[5]))
+			e.hp = e.max_hp
+
+
+## Called when a map is ready: bring back story enemies whose flag isn't set yet.
+## Also covers saves from before story_spawns existed (beats already fired).
+static func restore_spawns(m: GameMap) -> void:
+	var flags: Dictionary = GameState.run["flags"]
+	var ss: Dictionary = GameState.run.get("story_spawns", {})
+	var done_keys: Array = []
+	var restored := {}
+	for k in ss.keys():
+		var parts := str(k).split("|")
+		var list: Array = ss[k]
+		var live: Array = list.filter(func(sp: Array) -> bool: return not flags.has(str(sp[4])))
+		if live.is_empty():
+			done_keys.append(k)
+			continue
+		if parts[0] != m.scene_id():
+			continue
+		_spawn_list(m, live)
+		for sp in live:
+			restored[str(sp[4])] = true
+	for k in done_keys:
+		ss.erase(k)
+	# Older saves: a fired spawn beat whose flag never got set.
+	for b in beats():
+		var fx: Dictionary = b.get("effects", {})
+		if not flags.has("st_" + str(b["id"])) or not fx.has("spawn"):
+			continue
+		var tr: Dictionary = b.get("trigger", {})
+		var sc := str(tr.get("scene", {"spire": "moon", "tower_doors": "uptown"}.get(str(tr.get("talk", "")), "")))
+		if sc != m.scene_id():
+			continue
+		var live2: Array = (fx["spawn"] as Array).filter(func(sp: Array) -> bool: return sp.size() > 4 and not flags.has(str(sp[4])) and not restored.has(str(sp[4])))
+		if not live2.is_empty():
+			_spawn_list(m, live2)
 
 
 ## For the journal: the current chapter title and the latest unfinished guidance.

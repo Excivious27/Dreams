@@ -816,13 +816,45 @@ static func friend_perk_at(npc: String, hearts: int) -> String:
 
 
 ## Friendship a gift earns: loved +20 (+bonus), liked +8, neutral +3, hated -8.
+## Gifts: one per villager per day, and never tools, seeds, story keys or gear.
+const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit"]
+
+
+static func can_gift(npc: String, item: String) -> bool:
+	if item == "" or count(item) <= 0 or not items.has(item):
+		return false
+	if str(items[item].get("type", "")) in NO_GIFT_TYPES:
+		return false
+	return not (run.get("gifted_today", {}) as Dictionary).has(npc)
+
+
+## Give a gift: takes the item, adds friendship, remembers today. Returns the gain.
+static func give_gift(npc: String, item: String) -> int:
+	add_item(item, -1)
+	var gain := gift_value(npc, item)
+	add_friend(npc, gain)
+	var g: Dictionary = run.get("gifted_today", {})
+	g[npc] = true
+	run["gifted_today"] = g
+	return gain
+
+
+static func add_friend(npc: String, n: int) -> void:
+	var fr: Dictionary = run["friendship"]
+	fr[npc] = clampi(int(fr.get(npc, 0)) + n, 0, 250)
+
+
 static func gift_value(npc: String, item: String) -> int:
 	var d: Dictionary = npcs.get(npc, {})
 	var it: Dictionary = items.get(item, {})
 	var base := 3
-	if item in d.get("likes", []):
+	var likes: Array = d.get("likes", [])
+	var dislikes: Array = d.get("dislikes", [])
+	# Likes can name an item or a whole kind ("fish", "crystal", "flower").
+	var kind := str(it.get("type", ""))
+	if item in likes or (kind != "" and kind in likes):
 		base = 20 if int(it.get("tier", 1)) >= 3 or str(it.get("rarity", "common")) != "common" else 12
-	elif item in d.get("dislikes", []):
+	elif item in dislikes or (kind != "" and kind in dislikes):
 		base = -8
 	elif str(it.get("rarity", "common")) in ["rare", "epic", "legendary"]:
 		base = 8
@@ -1325,6 +1357,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
+	run["gifted_today"] = {}
 	# The pup heals overnight; a rest day ends with full health.
 	var pt: Dictionary = run.get("pet", {})
 	if not pt.is_empty():

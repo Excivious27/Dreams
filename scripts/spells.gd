@@ -64,14 +64,14 @@ static func cast(m: GameMap, id: String) -> bool:
 			var pierce := int(GameState.bonus("magic", "spark_pierce"))
 			var burn := int(GameState.bonus("magic", "spark_burn"))
 			if GameState.has_perk("magic", "Moonbeam"):
-				for e2 in m.enemies:
+				for e2 in m.enemies.duplicate():
 					if is_instance_valid(e2) and e2.position.distance_to(p.position) < 72.0:
 						e2.hit(dmg, p.position, true)
 						m.fx("sparkle", e2.position + Vector2(0, -8), 14.0, 0.6)
 			elif pierce > 0:
 				# Light Lance: everything along the line to the target and beyond it.
 				var dir := (e.position - p.position).normalized()
-				for e2 in m.enemies:
+				for e2 in m.enemies.duplicate():
 					if not is_instance_valid(e2):
 						continue
 					var rel: Vector2 = e2.position - p.position
@@ -90,7 +90,7 @@ static func cast(m: GameMap, id: String) -> bool:
 		"radiance":
 			var hit_any := false
 			var rdmg := int(4 * power())
-			for e2 in m.enemies:
+			for e2 in m.enemies.duplicate():
 				if is_instance_valid(e2) and e2.position.distance_to(p.position) < 56.0:
 					e2.hit(rdmg, p.position, true)
 					hit_any = true
@@ -110,7 +110,7 @@ static func cast(m: GameMap, id: String) -> bool:
 				m.hud.toast("The light finds nothing.", Color(1, 0.8, 0.6))
 		"lull":
 			var n := 0
-			for e2 in m.enemies:
+			for e2 in m.enemies.duplicate():
 				if is_instance_valid(e2) and e2.position.distance_to(p.position) < 80.0:
 					e2.set_meta("asleep_until", Time.get_ticks_msec() + (2000 if e2.max_hp >= 10 else 6000))
 					m.emote(e2, "sleep", 1.5)

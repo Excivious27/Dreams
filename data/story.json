@@ -164,7 +164,7 @@
       "scene": "crystal_meadow"
      },
      "when": {
-      "flag": "crystal_meadow_seen",
+      "flag": "cm_seen",
       "quest": "clear_meadow"
      },
      "lines": [
@@ -247,7 +247,10 @@
       "sleep": true
      },
      "when": {
-      "flag": "mine_open_1"
+      "flags": [
+       "mine_open_1",
+       "meow_taught"
+      ]
      },
      "lines": [
       {

@@ -170,6 +170,7 @@ func _ready() -> void:
 	queue_redraw()
 	hud.fade_in(0.5)
 	after_ready()
+	Story.restore_spawns(self)
 	_fill_extension()
 	_place_signposts()
 	_place_waiting_horse()
@@ -192,6 +193,14 @@ func _place_waiting_horse() -> void:
 	elif Art.has("props", "horse3"):
 		anim_prop("props", "horse3", c, 0, 2.0)
 	set_thing(c.x, c.y, {"type": "horse", "hint": "A: ride %s" % str(GameState.run.get("names", {}).get("horse", "your horse"))}, false)
+
+
+## Save when the phone/browser backgrounds the game or the tab closes.
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_WM_GO_BACK_REQUEST]:
+		if not GameState.run.is_empty() and not _changing:
+			GameState.run["scene"] = scene_id()
+			GameState.save()
 
 
 ## Subclasses override these.
@@ -1288,7 +1297,7 @@ func player_down(reason := "hurt") -> void:
 	GameState.run["crystals"] = maxi(0, cr - fee)
 	GameState.sleep(true)
 	GameState.run["flags"]["wake_note"] = ("Nurse Ada patched you up at the clinic. Fee: ◆%d (10%%)." % fee) if reason == "hurt" else ("Someone found you and carried you home. ◆%d (5%%) went missing on the way." % fee)
-	go_to("house", Vector2(5 * TILE + 8, 5 * TILE))
+	go_to("house", Vector2(5 * TILE + 8, 5 * TILE), "down", true)
 
 
 # ---- tap to move -------------------------------------------------------------
@@ -1384,7 +1393,9 @@ func _process(delta: float) -> void:
 		hitstop -= delta
 	if get_tree().paused:
 		return
-	_time_acc += delta * GameState.MINUTES_PER_SECOND
+	# Clamp: a phone coming back from the background reports one huge frame;
+	# that must not fast-forward the clock by hours.
+	_time_acc += minf(delta, 0.25) * GameState.MINUTES_PER_SECOND
 	if _time_acc >= 1.0:
 		var m := int(_time_acc)
 		_time_acc -= m
@@ -1426,14 +1437,24 @@ func update_enemies(_delta: float) -> void:
 
 # ---- transitions -------------------------------------------------------------
 
-func go_to(scene: String, spawn: Vector2, facing := "down") -> void:
-	if _changing and not player.frozen:
+var _transitioning := false
+
+
+func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> void:
+	# One transition at a time. player_down passes force (it set _changing itself).
+	if _transitioning or (_changing and not force):
 		return
+	_transitioning = true
 	_changing = true
 	player.frozen = true
 	next_spawn = spawn
 	next_facing = facing
+	# Save as if already there, so closing the app mid-fade resumes on arrival.
+	var prev_scene: Variant = GameState.run.get("scene", "")
+	GameState.run["scene"] = scene
+	GameState.run["spawn"] = [spawn.x, spawn.y, facing]
 	GameState.save()
+	GameState.run["scene"] = prev_scene
 	await hud.fade_out(0.35)
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % scene)
 

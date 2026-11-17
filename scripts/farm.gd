@@ -477,17 +477,21 @@ func _water(tile: Dictionary) -> bool:
 func _check_first_harvest() -> void:
 	if GameState.complete_quest("first_harvest"):
 		hud.toast("Quest done: first harvest!", Color(1, 0.9, 0.4))
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + 25
 
 
 func _sellbox(sel: String) -> void:
 	var box: Dictionary = GameState.run["sellbox"]
-	if sel != "" and GameState.count(sel) > 0 and GameState.items.get(sel, {}).get("type", "") != "tool":
+	var stype := str(GameState.items.get(sel, {}).get("type", ""))
+	if sel != "" and GameState.count(sel) > 0 and stype == "key":
+		hud.toast("You can't sell the %s. It matters." % GameState.item_name(sel), Color(1, 0.85, 0.6))
+		return
+	if sel != "" and GameState.count(sel) > 0 and stype != "tool":
 		var n := GameState.count(sel)
-		box[sel] = int(box.get(sel, 0)) + n
+		var prev := int(box.get(sel, 0))
+		box[sel] = prev + n
 		GameState.add_item(sel, -n)
 		net_act({"a": "sellbox", "id": sel, "n": n})
-		var est := GameState.sell_price(sel, n)
+		var est := GameState.sell_price(sel, prev + n) - GameState.sell_price(sel, prev)
 		hud.toast("Put %d %s in the sell box (about ◆%d tonight%s)." % [n, GameState.item_name(sel), est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
 		Music.instance(get_tree()).sfx("pickup")
 		return

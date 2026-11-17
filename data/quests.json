@@ -45,7 +45,8 @@
    "arc": "penguins",
    "text": "Bring 3 Crystal Shards to the resonator and refine one.",
    "when": {
-    "quest": "clear_meadow"
+    "quest": "clear_meadow",
+    "flag": "meow_taught"
    },
    "done_when": {
     "item": "crystal_refined"

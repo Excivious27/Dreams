@@ -176,6 +176,9 @@ func _talk(n: Npc) -> void:
 	var lines: Array = data.get("inside", [])
 	var name := str(data.get("name", n.id.capitalize()))
 	player.frozen = true
+	if not GameState.run["talked_today"].has(n.id):
+		GameState.run["talked_today"][n.id] = true
+		GameState.add_friend(n.id, 5)
 	if await Story.talk(self, n.id):
 		player.frozen = false
 		return
@@ -188,17 +191,12 @@ func _talk(n: Npc) -> void:
 	# Gifts work indoors too.
 	var sel := str(GameState.run["selected"])
 	var it: Dictionary = GameState.items.get(sel, {})
-	if sel != "" and GameState.count(sel) > 0 and it.get("type", "") != "tool" and it.get("type", "") != "seed":
-		GameState.add_item(sel, -1)
-		var gain := GameState.gift_value(n.id, sel)
-		GameState.run["friendship"][n.id] = int(GameState.run["friendship"].get(n.id, 0)) + gain
+	if GameState.can_gift(n.id, sel):
+		var gain := GameState.give_gift(n.id, sel)
 		await say([{"who": name, "text": ("A %s! That's a kindness." if gain > 0 else "A %s. ...Hm.") % GameState.item_name(sel)}])
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
-	if not GameState.run["talked_today"].has(n.id):
-		GameState.run["talked_today"][n.id] = true
-		GameState.run["friendship"][n.id] = int(GameState.run["friendship"].get(n.id, 0)) + 5
 	if lines.is_empty():
 		await say([{"who": name, "text": "Come in, come in. Mind the step."}])
 	else:
