@@ -58,19 +58,37 @@ func after_ready() -> void:
 					blocked[Vector2i(c.x + i, c.y)] = true
 			continue
 		prop(g, nm, c, w, 0.0, bool(p.get("solid", true)))
+	# Who is in here right now: anyone whose routine puts them in this interior
+	# (their work, their home, or a named place like the inn/school/chapel). The
+	# interior's own "npcs" list gives preferred standing cells; everyone else
+	# takes a free floor cell.
+	var listed := {}
 	for n in I.get("npcs", []):
-		var id := str(n["id"])
-		var data: Dictionary = GameState.npcs.get(id, {"name": id.capitalize()})
-		# Routine: a villager is only inside when their day says so (work hours
-		# for shops, evenings at home or the inn). Shopkeepers' counters still
-		# work without them: the shop is "self-serve" after hours.
-		var place := Npc.place_now(data.get("routine", []), id)
-		var here := _interior_matches(place)
-		if not data.get("routine", []).is_empty() and not here:
+		listed[str(n["id"])] = Vector2i(int(n["cell"][0]), int(n["cell"][1]))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(interior_id) + int(GameState.run["day"])
+	var used := {}
+	for id in GameState.npcs:
+		var data: Dictionary = GameState.npcs.get(id, {"name": str(id).capitalize()})
+		var place := Npc.place_now(data.get("routine", []), str(id))
+		var here := _interior_matches(place, str(id))
+		if data.get("routine", []).is_empty():
+			here = listed.has(id)  # region folk with no routine: where the file says
+		if not here:
 			continue
+		var at: Vector2i = listed.get(id, Vector2i(-1, -1))
+		if at == Vector2i(-1, -1) or used.has(at):
+			for tries in 60:
+				var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(4, rows - 3))
+				if not blocked.has(c) and not things.has(c) and not used.has(c):
+					at = c
+					break
+		if at == Vector2i(-1, -1):
+			continue
+		used[at] = true
 		var npc := Npc.new()
 		npc.map = self
-		npc.setup(id, data, cell_center(Vector2i(int(n["cell"][0]), int(n["cell"][1]))))
+		npc.setup(str(id), data, cell_center(at))
 		npc.wander = 6.0
 		add_child(npc)
 		npcs.append(npc)
@@ -89,10 +107,11 @@ func has_npc_at(c: Vector2i) -> bool:
 
 
 ## Does a routine place ("work", "home", "inn", ...) mean this interior?
-func _interior_matches(place: String) -> bool:
+func _interior_matches(place: String, npc_id := "") -> bool:
+	var nd: Dictionary = GameState.npcs.get(npc_id, {})
 	match place:
-		"work": return interior_id in ["store", "smith", "potions", "hall", "bakery", "clinic", "library", "fishing_hut", "lodge", "inn"]
-		"home": return interior_id in ["mansion", "cottage_a", "cottage_b", "cottage_c", "hazel_house", "lodge"]
+		"work": return interior_id == str(nd.get("work", "")) or (nd.get("work", null) == null and interior_id in ["store", "smith", "potions", "hall", "bakery", "clinic", "library", "fishing_hut", "lodge", "inn"])
+		"home": return interior_id == str(nd.get("home", "")) or (nd.get("home", null) == null and interior_id in ["mansion", "cottage_a", "cottage_b", "cottage_c", "hazel_house", "lodge"])
 		"inn": return interior_id == "inn"
 		"chapel": return interior_id == "chapel"
 		"school": return interior_id == "school"
@@ -157,16 +176,23 @@ func _talk(n: Npc) -> void:
 	var lines: Array = data.get("inside", [])
 	var name := str(data.get("name", n.id.capitalize()))
 	player.frozen = true
-	var offer := GameState.side_quest_for(n.id)
-	if not offer.is_empty():
-		var d := Dialogue.instance(get_tree())
-		d.say([{"who": name, "text": str(offer["text"]) + "  Will you?", "choice": ["Sure", "Not now"], "key": ""}])
-		await d.finished
-		if d.last_choice == 0:
-			GameState.add_quest(str(offer["id"]), str(offer["text"]))
-			hud.toast("New quest from %s." % name, Color(1, 0.9, 0.4))
+	if await Quests.talk(self, n.id, name):
 		player.frozen = false
 		return
+	# Gifts work indoors too.
+	var sel := str(GameState.run["selected"])
+	var it: Dictionary = GameState.items.get(sel, {})
+	if sel != "" and GameState.count(sel) > 0 and it.get("type", "") != "tool" and it.get("type", "") != "seed":
+		GameState.add_item(sel, -1)
+		var gain := GameState.gift_value(n.id, sel)
+		GameState.run["friendship"][n.id] = int(GameState.run["friendship"].get(n.id, 0)) + gain
+		await say([{"who": name, "text": ("A %s! That's a kindness." if gain > 0 else "A %s. ...Hm.") % GameState.item_name(sel)}])
+		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
+		player.frozen = false
+		return
+	if not GameState.run["talked_today"].has(n.id):
+		GameState.run["talked_today"][n.id] = true
+		GameState.run["friendship"][n.id] = int(GameState.run["friendship"].get(n.id, 0)) + 5
 	if lines.is_empty():
 		await say([{"who": name, "text": "Come in, come in. Mind the step."}])
 	else:

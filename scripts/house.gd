@@ -34,6 +34,10 @@ func after_ready() -> void:
 		hud.toast("%s today · %s tomorrow" % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()], Color(0.9, 0.95, 1.0))
 		if GameState.festival_today() != "":
 			hud.toast("It's the %s! Head to the town plaza." % GameState.festival_name(GameState.festival_today()), Color(1, 0.9, 0.5))
+		for q in GameState.run["quests"]:
+			if not bool(q["done"]):
+				hud.toast("Next: " + str(q["text"]), Color(1, 0.95, 0.7))
+				break
 	var note := str(GameState.run["flags"].get("wake_note", ""))
 	if note != "":
 		GameState.run["flags"].erase("wake_note")

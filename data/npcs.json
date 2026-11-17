@@ -30,18 +30,22 @@
    ],
    [
     12,
-    "plaza"
+    "market"
    ],
    [
     13,
     "work"
    ],
    [
-    18,
+    17,
     "fountain"
    ],
    [
-    20,
+    19,
+    "inn"
+   ],
+   [
+    21,
     "home"
    ]
   ],
@@ -63,7 +67,9 @@
    "6": "Maple sends you a seed pack each season",
    "8": "20% off at the General Store",
    "10": "Store open late; Maple gifts a Golden Watering Can"
-  }
+  },
+  "home": "store",
+  "work": "store"
  },
  "gideon": {
   "name": "Gideon",
@@ -84,7 +90,7 @@
   "routine": [
    [
     6,
-    "home"
+    "smith_front"
    ],
    [
     7,
@@ -92,11 +98,15 @@
    ],
    [
     12,
-    "smith_front"
+    "well"
    ],
    [
     13,
     "work"
+   ],
+   [
+    18,
+    "bench_nw"
    ],
    [
     19,
@@ -125,7 +135,9 @@
    "6": "Gideon forges a free Copper Ring",
    "8": "Upgrades 30% cheaper",
    "10": "Gideon teaches Whirlwind (combat)"
-  }
+  },
+  "home": "smith",
+  "work": "smith"
  },
  "wren": {
   "name": "Wren",
@@ -153,12 +165,16 @@
     "work"
    ],
    [
-    14,
+    12,
     "pond"
    ],
    [
-    16,
+    13,
     "work"
+   ],
+   [
+    17,
+    "park"
    ],
    [
     19,
@@ -182,7 +198,9 @@
    "6": "Wren brews you a free potion each week",
    "8": "Potions heal 50% more",
    "10": "Wren teaches Crystal Shield (magic)"
-  }
+  },
+  "home": "cottage_a",
+  "work": "potions"
  },
  "alder": {
   "name": "Mayor Alder",
@@ -202,16 +220,20 @@
   "spot_name": "hall_front",
   "routine": [
    [
-    6,
-    "home"
+    7,
+    "mansion_front"
    ],
    [
     8,
     "work"
    ],
    [
-    12,
+    11,
     "hall_front"
+   ],
+   [
+    12,
+    "bench_ne"
    ],
    [
     13,
@@ -219,7 +241,11 @@
    ],
    [
     17,
-    "mansion_front"
+    "clock"
+   ],
+   [
+    18,
+    "inn"
    ],
    [
     20,
@@ -243,7 +269,9 @@
    "6": "Building permits: tier-2 plans unlocked",
    "8": "Alder lends you the town cart (sell box pays 10% more)",
    "10": "Keys to the city: free room at the Inn"
-  }
+  },
+  "home": "mansion",
+  "work": "hall"
  },
  "sal": {
   "name": "Sal",
@@ -262,19 +290,27 @@
     "river_s"
    ],
    [
-    10,
-    "plaza"
-   ],
-   [
-    16,
+    9,
     "bridge"
    ],
    [
-    20,
+    11,
+    "plaza"
+   ],
+   [
+    14,
+    "gate_s"
+   ],
+   [
+    16,
+    "bench_sw"
+   ],
+   [
+    19,
     "inn"
    ],
    [
-    24,
+    23,
     "plaza"
    ]
   ],
@@ -294,7 +330,9 @@
    "6": "Sal joins your crew",
    "8": "Sal's contacts: black-market prices",
    "10": "Sal fights beside you in the city"
-  }
+  },
+  "home": "inn",
+  "work": "inn"
  },
  "finn": {
   "name": "Finn",
@@ -313,8 +351,12 @@
     "river_n"
    ],
    [
-    9,
+    8,
     "work"
+   ],
+   [
+    11,
+    "bridge"
    ],
    [
     13,
@@ -325,7 +367,7 @@
     "river_s"
    ],
    [
-    19,
+    18,
     "inn"
    ],
    [
@@ -350,7 +392,9 @@
    "6": "Finn shows you the secret fishing spot",
    "8": "Rare fish bite twice as often",
    "10": "Finn gives you the Legendary Rod plans"
-  }
+  },
+  "home": "cottage_b",
+  "work": "fishing_hut"
  },
  "lumi": {
   "name": "Lumi",
@@ -365,11 +409,11 @@
   "spot_name": "park",
   "routine": [
    [
-    6,
-    "home"
+    7,
+    "lumi_garden"
    ],
    [
-    8,
+    9,
     "park"
    ],
    [
@@ -377,7 +421,11 @@
     "pond"
    ],
    [
-    15,
+    14,
+    "bandstand"
+   ],
+   [
+    16,
     "plaza_e"
    ],
    [
@@ -402,7 +450,9 @@
    "6": "A portrait of you hangs in the hall",
    "8": "Lumi teaches you to see hidden forage (glints)",
    "10": "Lumi paints the Dream mural at your house"
-  }
+  },
+  "home": "cottage_c",
+  "work": "cottage_c"
  },
  "theo": {
   "name": "Theo",
@@ -422,7 +472,7 @@
   "spot_name": "library_front",
   "routine": [
    [
-    6,
+    7,
     "home"
    ],
    [
@@ -436,6 +486,10 @@
    [
     13,
     "work"
+   ],
+   [
+    16,
+    "bench_se"
    ],
    [
     17,
@@ -463,7 +517,9 @@
    "6": "Theo translates the ruin stones",
    "8": "+15% skill XP",
    "10": "Theo's thesis: one free skill point in every tree"
-  }
+  },
+  "home": "cottage_c",
+  "work": "library"
  },
  "hazel": {
   "name": "Hazel",
@@ -482,19 +538,27 @@
     "hazel_yard"
    ],
    [
-    9,
+    8,
     "market"
+   ],
+   [
+    11,
+    "store_front"
    ],
    [
     12,
     "hazel_yard"
    ],
    [
-    16,
-    "store_front"
+    15,
+    "well"
    ],
    [
-    18,
+    17,
+    "hazel_yard"
+   ],
+   [
+    19,
     "home"
    ]
   ],
@@ -515,7 +579,9 @@
    "6": "Hazel waters your crops every day",
    "8": "Hazel harvests ripe crops into your sell box",
    "10": "Hazel's heirloom seeds (star quality)"
-  }
+  },
+  "home": "hazel_house",
+  "work": "hazel_house"
  },
  "bram": {
   "name": "Bram",
@@ -543,16 +609,20 @@
     "work"
    ],
    [
-    14,
+    11,
     "market"
    ],
    [
-    16,
+    13,
     "work"
    ],
    [
-    25,
-    "home"
+    20,
+    "inn_front"
+   ],
+   [
+    22,
+    "work"
    ]
   ],
   "likes": [
@@ -570,7 +640,9 @@
    "6": "Inn room free",
    "8": "Bram's stories: map of the hidden regions",
    "10": "Bram names a dish after you (+50 max energy)"
-  }
+  },
+  "home": "inn",
+  "work": "inn"
  },
  "posy": {
   "name": "Posy",
@@ -602,15 +674,19 @@
     "work"
    ],
    [
-    14,
+    13,
     "fountain"
    ],
    [
-    16,
+    14,
     "work"
    ],
    [
-    18,
+    17,
+    "bench_ne"
+   ],
+   [
+    19,
     "home"
    ]
   ],
@@ -631,7 +707,9 @@
    "6": "Posy's recipes: pies and cakes",
    "8": "Festival cake: +20 max energy",
    "10": "Posy opens a second oven at your farm"
-  }
+  },
+  "home": "bakery",
+  "work": "bakery"
  },
  "juniper": {
   "name": "Juniper",
@@ -656,22 +734,26 @@
    ],
    [
     7,
+    "clinic_front"
+   ],
+   [
+    8,
     "work"
    ],
    [
     12,
-    "clinic_front"
+    "bridge"
    ],
    [
     13,
     "work"
    ],
    [
-    18,
-    "bridge"
+    17,
+    "chapel_front"
    ],
    [
-    20,
+    19,
     "home"
    ]
   ],
@@ -691,7 +773,9 @@
    "6": "Clinic fee waived",
    "8": "Juniper visits: wake with full energy after a collapse",
    "10": "Juniper teaches Second Wind (combat)"
-  }
+  },
+  "home": "clinic",
+  "work": "clinic"
  },
  "rook": {
   "name": "Rook",
@@ -714,23 +798,27 @@
     "orchard"
    ],
    [
-    9,
+    8,
     "lodge_front"
    ],
    [
-    12,
+    10,
     "river_n"
    ],
    [
-    16,
+    13,
+    "gate_s"
+   ],
+   [
+    15,
     "lodge_front"
    ],
    [
-    20,
+    19,
     "inn"
    ],
    [
-    23,
+    22,
     "home"
    ]
   ],
@@ -751,7 +839,9 @@
    "6": "Rook's map: the quarry path",
    "8": "Rook walks with you (fights beside you)",
    "10": "Rook's bow"
-  }
+  },
+  "home": "lodge",
+  "work": "lodge"
  },
  "pip": {
   "name": "Pip",
@@ -775,12 +865,24 @@
     "home"
    ],
    [
+    8,
+    "school_yard"
+   ],
+   [
     9,
     "school"
    ],
    [
+    14,
+    "school_yard"
+   ],
+   [
     15,
     "fountain"
+   ],
+   [
+    17,
+    "park"
    ],
    [
     18,
@@ -802,7 +904,9 @@
    "6": "Pip's secret: the fountain wish works",
    "8": "Pip's gang",
    "10": "Pip's lucky charm"
-  }
+  },
+  "home": "store",
+  "work": "school"
  },
  "wren_jr": {
   "name": "Wren jr",
@@ -823,15 +927,23 @@
   "routine": [
    [
     7,
-    "home"
+    "wren_garden"
+   ],
+   [
+    8,
+    "school_yard"
    ],
    [
     9,
     "school"
    ],
    [
-    15,
+    14,
     "plaza_e"
+   ],
+   [
+    16,
+    "pond"
    ],
    [
     18,
@@ -853,7 +965,9 @@
    "6": "Wren jr's garden: free flower seeds",
    "8": "Wren jr's potion lesson",
    "10": "Wren jr's wish"
-  }
+  },
+  "home": "cottage_a",
+  "work": "school"
  },
  "tobin": {
   "name": "Tobin",
@@ -874,15 +988,23 @@
   "routine": [
    [
     7,
-    "home"
+    "inn_front"
+   ],
+   [
+    8,
+    "school_yard"
    ],
    [
     9,
     "school"
    ],
    [
-    15,
+    14,
     "beach_road"
+   ],
+   [
+    16,
+    "bridge"
    ],
    [
     18,
@@ -904,7 +1026,9 @@
    "6": "Tobin's kite",
    "8": "Tobin's crew",
    "10": "Tobin's compass"
-  }
+  },
+  "home": "inn",
+  "work": "school"
  },
  "mabel": {
   "name": "Mabel",
@@ -925,15 +1049,23 @@
   "routine": [
    [
     7,
-    "home"
+    "hazel_yard"
+   ],
+   [
+    8,
+    "school_yard"
    ],
    [
     9,
     "school"
    ],
    [
-    15,
+    14,
     "park"
+   ],
+   [
+    16,
+    "bandstand"
    ],
    [
     18,
@@ -955,7 +1087,9 @@
    "6": "Mabel's songs",
    "8": "Mabel's diary",
    "10": "Mabel's wish"
-  }
+  },
+  "home": "hazel_house",
+  "work": "school"
  },
  "marlowe": {
   "name": "Marlowe",
@@ -985,7 +1119,9 @@
    "6": "Night fishing at the lighthouse doubles rare bites",
    "8": "Marlowe tells the story of the crystal (lore)",
    "10": "Marlowe's old rod"
-  }
+  },
+  "home": "lighthouse",
+  "work": "lighthouse"
  },
  "orla": {
   "name": "Orla",
@@ -1013,7 +1149,9 @@
    "6": "Orla's cornmeal recipes",
    "8": "Mill runs overnight: flour in the sell box",
    "10": "Orla's heirloom grain"
-  }
+  },
+  "home": "water_mill",
+  "work": "water_mill"
  },
  "benno": {
   "name": "Benno",
@@ -1031,12 +1169,24 @@
     "stable"
    ],
    [
-    12,
+    9,
+    "market"
+   ],
+   [
+    11,
+    "stable"
+   ],
+   [
+    13,
     "inn"
    ],
    [
     14,
     "stable"
+   ],
+   [
+    18,
+    "well"
    ],
    [
     20,
@@ -1058,7 +1208,9 @@
    "6": "Your horse runs 10% faster",
    "8": "Benno breaks in a donkey for you",
    "10": "Benno's llama"
-  }
+  },
+  "home": "stable",
+  "work": "stable"
  },
  "ivy": {
   "name": "Ivy",
@@ -1072,7 +1224,7 @@
   "spot_name": "bank",
   "routine": [
    [
-    6,
+    7,
     "home"
    ],
    [
@@ -1081,7 +1233,7 @@
    ],
    [
     12,
-    "plaza"
+    "bench_nw"
    ],
    [
     13,
@@ -1089,6 +1241,10 @@
    ],
    [
     17,
+    "plaza"
+   ],
+   [
+    19,
     "home"
    ]
   ],
@@ -1108,7 +1264,9 @@
    "6": "2% interest",
    "8": "Ivy's insurance: no clinic fee",
    "10": "Ivy's vault"
-  }
+  },
+  "home": "bank",
+  "work": "bank"
  },
  "tam": {
   "name": "Tam",
@@ -1136,7 +1294,9 @@
    "6": "Tam gives you a lamb",
    "8": "Tam's cider",
    "10": "Tam's hills are yours to graze"
-  }
+  },
+  "home": "tam_hut",
+  "work": "tam_hut"
  },
  "old_moss": {
   "name": "Old Moss",
@@ -1165,7 +1325,9 @@
    "6": "Moss's lantern (fog lifts near you)",
    "8": "Marsh gas jars for alchemy",
    "10": "Moss's secret: the drowned road"
-  }
+  },
+  "home": "moss_hut",
+  "work": "moss_hut"
  },
  "granite": {
   "name": "Granite",
@@ -1194,7 +1356,9 @@
    "6": "Mine cart ride to the mountain",
    "8": "Granite's crew clears rockslides",
    "10": "The deep quarry opens"
-  }
+  },
+  "home": "quarry_office",
+  "work": "quarry_office"
  },
  "sel": {
   "name": "Sel",
@@ -1223,6 +1387,8 @@
    "6": "Sel opens the stone door",
    "8": "Sel's translation: the crystal's origin",
    "10": "Sel's staff"
-  }
+  },
+  "home": "sel_camp",
+  "work": "sel_camp"
  }
 }

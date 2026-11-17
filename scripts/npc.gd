@@ -123,24 +123,45 @@ static func is_indoors(place: String) -> bool:
 	return place in ["", "home", "work", "inn", "chapel", "school", "clinic", "library", "hall"]
 
 
+var _path: Array = []
+var _wander_t := 0.0
+var _chat_t := 0.0
+var _chat_partner: Npc = null
+var _bubble: Label = null
+var activity := ""  # what the current spot is for: "work" | "sit" | "fish" | "garden" | "talk" | ""
+
+## What people do at each kind of spot (drives poses and chatter).
+const SPOT_ACTIVITY := {"store_front": "work", "smith_front": "work", "bakery_front": "work", "hall_front": "work", "clinic_front": "work", "library_front": "work", "lodge_front": "work", "inn_front": "work", "market": "work", "stable": "work", "mansion_front": "garden", "wren_garden": "garden", "finn_garden": "garden", "lumi_garden": "garden", "hazel_yard": "garden", "orchard": "garden", "river_n": "fish", "river_s": "fish", "pond": "fish", "bridge": "look", "fountain": "sit", "plaza": "talk", "plaza_e": "talk", "park": "sit", "bench_nw": "sit", "bench_ne": "sit", "bench_sw": "sit", "bench_se": "sit", "well": "work", "school_yard": "play", "chapel_front": "talk", "beach_road": "look", "gate_n": "look", "gate_s": "look", "bandstand": "sit", "clock": "look"}
+
+
 func _apply_routine(snap := false) -> void:
 	var place := place_now(routine, id)
 	if place == _place and not snap:
 		return
 	_place = place
+	_pose = ""
 	if is_indoors(place) and not routine.is_empty():
 		visible = false
+		_path.clear()
 		return
 	var spot: Vector2i = spots.get(place, Vector2i(-1, -1))
 	if spot == Vector2i(-1, -1) or map == null:
 		visible = true
 		return
+	activity = str(SPOT_ACTIVITY.get(place, ""))
 	var at := map.cell_center(spot)
 	home = at
 	_target = at
+	var was_visible := visible
 	visible = true
-	if snap or (map.player and map.player.position.distance_to(position) > 200.0):
-		position = at  # out of sight: just be there
+	if snap or not was_visible or (map.player and map.player.position.distance_to(position) > 260.0):
+		# Out of sight (or just stepped outside a door): simply be there.
+		position = at
+		_path.clear()
+	else:
+		_path = map.find_path(cell(), spot)
+		if _path.is_empty():
+			position = at
 
 
 func _process(delta: float) -> void:
@@ -148,10 +169,24 @@ func _process(delta: float) -> void:
 	if _t <= 0.0:
 		_t = randf_range(2.0, 5.0)
 		_apply_routine()
-		if visible and randf() < 0.5 and position.distance_to(home) < 40.0:
-			_target = home + Vector2(randf_range(-wander, wander), randf_range(-wander / 2.0, wander / 2.0))
 	if not visible:
 		return
+	_wander_t -= delta
+	# Follow the planned path; when it's done, idle near the spot with small wanders.
+	if not _path.is_empty():
+		var wp: Vector2 = map.cell_center(_path[0])
+		_target = wp
+		if position.distance_to(wp) < 3.0:
+			_path.pop_front()
+			if _path.is_empty():
+				_target = home
+	elif _wander_t <= 0.0 and position.distance_to(home) < 48.0 and _chat_partner == null:
+		_wander_t = randf_range(4.0, 11.0)
+		if randf() < 0.6 and activity in ["talk", "garden", "work", "play", "look"]:
+			var wc := map.world_to_cell(home + Vector2(randf_range(-wander, wander), randf_range(-wander / 2.0, wander / 2.0)))
+			if map.in_content(wc) and not map.blocked.has(wc):
+				_target = map.cell_center(wc)
+				_pose = ""
 	var to := _target - position
 	if to.length() > 2.0:
 		var speed := 18.0 if position.distance_to(home) < 48.0 else 34.0
@@ -162,7 +197,6 @@ func _process(delta: float) -> void:
 			position = np
 			moved = true
 		elif map:
-			# Slide along the wall on one axis.
 			for alt: Vector2 in [Vector2(step.x, 0), Vector2(0, step.y)]:
 				var p2 := position + alt
 				if alt != Vector2.ZERO and not map.rect_blocked(Rect2(p2 + Vector2(-3, -3), Vector2(6, 3))):
@@ -171,8 +205,12 @@ func _process(delta: float) -> void:
 					break
 		if not moved:
 			_stuck += delta
-			if _stuck > 2.0 and map and map.player and map.player.position.distance_to(position) > 160.0:
-				position = home  # nobody's looking: skip the walk
+			if _stuck > 1.5 and not _path.is_empty():
+				_path = map.find_path(cell(), map.world_to_cell(home))
+				_stuck = 0.0
+			elif _stuck > 2.0 and map and map.player and map.player.position.distance_to(position) > 160.0:
+				position = home
+				_path.clear()
 				_stuck = 0.0
 			elif _stuck > 4.0:
 				_target = position
@@ -191,27 +229,88 @@ func _process(delta: float) -> void:
 			if _anim.animation != a:
 				_anim.play(a)
 	elif _anim and _pose != "":
-		pass  # holding a life pose
+		pass
 	elif _anim and _anim.animation != "idle":
 		_anim.play("idle")
 		_idle_t = 0.0
+	_chat(delta, to)
 	if _anim and to.length() <= 2.0:
 		_idle_t += delta
-		if _idle_t > 1.5 and _pose == "":
-			# Standing still outside: pick a pose that fits the place and weather.
+		if _idle_t > 1.2 and _pose == "":
 			var want := ""
 			if GameState.is_wet() and id in ["finn", "rook", "sal"]:
 				want = "umbrella"
 			elif GameState.weather_today() in ["snow", "blizzard"]:
 				want = "shiver"
-			elif _place in ["store_front", "smith_front", "bakery_front", "hall_front", "clinic_front", "library_front", "lodge_front", "market"]:
-				want = "work"
-			elif _place in ["river_n", "river_s", "pond", "bridge"] and id in ["finn", "sal", "marlowe"]:
-				want = "fish"
-			elif _place in ["plaza", "plaza_e", "fountain", "park", "inn_front"]:
-				want = ["sit", "talk", "wave", ""][randi() % 4]
+			elif _chat_partner != null:
+				want = "talk"
+			else:
+				match activity:
+					"work": want = "work"
+					"fish": want = "fish"
+					"garden": want = ["work", "work", "wave", ""][randi() % 4]
+					"sit": want = "sit"
+					"talk": want = ["talk", "wave", "", ""][randi() % 4]
+					"look": want = ["", "wave"][randi() % 2]
+					"play": want = ["wave", "dance", ""][randi() % 3]
 			set_pose(want)
 	else:
 		_idle_t = 0.0
 		if _pose != "":
 			set_pose("")
+
+
+## Two villagers who end up near each other stop, face one another and chat for
+## a bit (speech dots over their heads), then carry on. Keeps the plaza alive.
+func _chat(delta: float, to: Vector2) -> void:
+	if map == null or _anim == null:
+		return
+	if _chat_partner != null:
+		_chat_t -= delta
+		if not is_instance_valid(_chat_partner) or _chat_t <= 0.0 or not _chat_partner.visible:
+			_end_chat()
+		else:
+			_target = position
+			_anim.flip_h = _chat_partner.position.x < position.x
+			if _bubble:
+				_bubble.text = ["...", "..", ".", "!", "?", "..."][int(Time.get_ticks_msec() / 500) % 6]
+		return
+	if to.length() > 2.0 or _wander_t > 2.0:
+		return
+	for other in map.get_children():
+		if other == self or not other is Npc:
+			continue
+		var o := other as Npc
+		if not o.visible or o._chat_partner != null or o.position.distance_to(position) > 30.0 or o.position.distance_to(position) < 8.0:
+			continue
+		if randf() < 0.004:
+			_start_chat(o)
+			o._start_chat(self)
+			return
+
+
+func _start_chat(o: Npc) -> void:
+	_chat_partner = o
+	_chat_t = randf_range(4.0, 9.0)
+	_target = position
+	_path.clear()
+	set_pose("talk")
+	if _bubble == null:
+		_bubble = Label.new()
+		_bubble.add_theme_font_size_override("font_size", 8)
+		_bubble.add_theme_color_override("font_color", Color(1, 1, 0.9))
+		_bubble.add_theme_constant_override("outline_size", 2)
+		_bubble.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.05))
+		_bubble.position = Vector2(-10, -34)
+		_bubble.size = Vector2(20, 10)
+		_bubble.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		add_child(_bubble)
+	_bubble.visible = true
+
+
+func _end_chat() -> void:
+	_chat_partner = null
+	_wander_t = randf_range(3.0, 6.0)
+	set_pose("")
+	if _bubble:
+		_bubble.visible = false

@@ -328,7 +328,12 @@ func _refresh() -> void:
 					any = true
 					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
 			if not any:
-				_line("  Talk to people in town; they'll ask for help.", 7, Color(0.7, 0.7, 0.7))
+				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 7, Color(0.7, 0.7, 0.7))
+			var hints: Array = r.get("hints", [])
+			if not hints.is_empty():
+				_line("Things people said", 9, Color(0.95, 0.85, 1.0))
+				for hnt in hints:
+					_line("  ✎ " + str(hnt), 7, Color(0.9, 0.85, 0.95))
 		"Options":
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])

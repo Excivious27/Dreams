@@ -31,6 +31,8 @@ const SPOTS := {
 	"lodge_front": Vector2i(79, 79), "orchard": Vector2i(78, 16), "river_n": Vector2i(66, 20), "river_s": Vector2i(66, 84),
 	"market": Vector2i(34, 26), "stable": Vector2i(32, 93), "gate_n": Vector2i(41, 6), "gate_s": Vector2i(41, 90),
 	"mansion_front": Vector2i(60, 26), "bridge": Vector2i(70, 52), "beach_road": Vector2i(41, 88),
+	"bench_nw": Vector2i(32, 44), "bench_ne": Vector2i(48, 44), "bench_sw": Vector2i(32, 54), "bench_se": Vector2i(48, 54),
+	"clock": Vector2i(29, 36), "bandstand": Vector2i(10, 38),
 }
 
 var npcs: Array = []
@@ -297,6 +299,29 @@ func _lamp_name(n: int) -> String:
 	return nm if Art.has("props", nm) else "lamp"
 
 
+## The community board: today's three jobs, who posted them and what they pay.
+func _board() -> void:
+	player.frozen = true
+	var jobs := GameState.board_today()
+	var d := Dialogue.instance(get_tree())
+	var ch: Array = []
+	for j in jobs:
+		var taken := GameState.has_quest(str(j["id"]))
+		ch.append("%s%s: %d %s · ◆%d" % ["✓ " if taken else "", str(GameState.npcs[str(j["npc"])]["name"]), int(j["n"]), GameState.item_name(str(j["item"])), int(j["crystals"])])
+	ch.append("Close")
+	d.say([{"who": "Community Board", "text": "Pinned today (%s %d). Bring the goods to whoever posted it." % [GameState.season().capitalize(), GameState.day_of_season()], "choice": ch, "key": ""}])
+	await d.finished
+	if d.last_choice >= 0 and d.last_choice < jobs.size():
+		var j: Dictionary = jobs[d.last_choice]
+		if GameState.has_quest(str(j["id"])):
+			hud.toast("You already took that one.")
+		else:
+			GameState.board_accept(j)
+			hud.toast("Job taken: %d %s for %s." % [int(j["n"]), GameState.item_name(str(j["item"])), str(GameState.npcs[str(j["npc"])]["name"])], Color(1, 0.9, 0.4))
+			Music.instance(get_tree()).sfx("pickup")
+	player.frozen = false
+
+
 func _place_props() -> void:
 	var fest := GameState.festival_today()
 	if fest != "":
@@ -313,6 +338,8 @@ func _place_props() -> void:
 			prop("props", "stall_" + col, c, 1)
 		i += 1
 	prop("props", "board2" if Art.has("props", "board2") else ("notice_board" if Art.has("props", "notice_board") else "board"), Vector2i(35, 42), 1)
+	for bx in [35, 36]:
+		set_thing(bx, 43, {"type": "board", "hint": "A: community board"}, false)
 	prop("props", "statue2_founder" if Art.has("props", "statue2_founder") else "statue", Vector2i(45, 42), 1)
 	if Art.has("props", "statue2_horse"):
 		prop("props", "statue2_horse", Vector2i(12, 36), 1)
@@ -447,6 +474,8 @@ func _place_people() -> void:
 		var d: Dictionary = GameState.npcs[id]
 		if id == "sal" and GameState.is_penguins() and int(GameState.run["day"]) < 4:
 			continue
+		if (d.get("routine", []) as Array).is_empty():
+			continue  # lives out in a region (lighthouse, mill, quarry...), not in town
 		var n := Npc.new()
 		n.map = self
 		var spot := str(d.get("spot_name", "plaza"))
@@ -508,6 +537,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"festival":
 			later(_festival_event.bind(str(thing.get("fest", ""))))
 			return true
+		"board":
+			later(_board)
+			return true
 		"egg":
 			things.erase(c)
 			if props.has(c):
@@ -558,20 +590,8 @@ func _talk(n: Npc) -> void:
 		_heart_unlock(id, before)
 		player.frozen = false
 		return
-	# Side quests: offer one, or nudge about the pending one.
-	var offer := GameState.side_quest_for(id)
-	if not offer.is_empty():
-		var d := Dialogue.instance(get_tree())
-		d.say([{"who": name, "text": str(offer["text"]) + "  Will you?", "choice": ["Sure", "Not now"], "key": ""}])
-		await d.finished
-		if d.last_choice == 0:
-			GameState.add_quest(str(offer["id"]), str(offer["text"]))
-			hud.toast("New quest from %s." % name, Color(1, 0.9, 0.4))
-		player.frozen = false
-		return
-	var pend := GameState.side_quest_pending(id)
-	if not pend.is_empty():
-		await say([{"who": name, "text": "Still waiting on that: " + str(pend["text"]).to_lower()}])
+	# Side quests: turn in, nudge, or offer, in their own words.
+	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return
 	var talked: Dictionary = r["talked_today"]

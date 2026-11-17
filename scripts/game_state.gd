@@ -81,6 +81,7 @@ static func has_run() -> bool:
 		if saved is Dictionary and not saved.is_empty():
 			run = saved
 			_migrate()
+			board_restore()
 	return not run.is_empty()
 
 
@@ -742,6 +743,100 @@ static func _quest_def(id: String) -> Dictionary:
 	return {}
 
 
+## Journal hints: short directions picked up from scenes and villagers.
+static func add_hint(text: String) -> void:
+	var h: Array = run.get("hints", [])
+	if text in h:
+		return
+	h.append(text)
+	while h.size() > 12:
+		h.pop_front()
+	run["hints"] = h
+
+
+# ---- community board ---------------------------------------------------------
+# Three jobs a day pinned on the plaza board: a villager, a thing they need, a
+# fair price and some friendship. Jobs are rolled from the day number so they
+# are the same for everyone who reads the board that day; accepted ones become
+# ordinary side quests handed in to that villager.
+
+const BOARD_POOL := {
+	"maple": ["turnip", "strawberry", "corn", "honey", "apple", "wood"], "gideon": ["copper", "coal", "stone", "iron", "wood"],
+	"wren": ["wild_herb", "mushroom", "slime_goo", "flower"], "finn": ["minnow", "bass", "trout", "bait"],
+	"hazel": ["wood", "hay", "potato", "egg", "milk"], "posy": ["flour", "egg", "honey", "strawberry"],
+	"bram": ["mushroom", "meat", "trout", "pumpkin"], "juniper": ["wild_herb", "honey", "flower"],
+	"rook": ["pelt", "bone", "meat", "wood"], "theo": ["old_coin", "book", "fossil"], "lumi": ["flower", "sunflower", "shell"],
+	"alder": ["stone", "wood", "pumpkin"], "sal": ["coffee", "bread", "minnow"], "benno": ["hay", "carrot", "apple"], "ivy": ["old_coin", "honey", "cake"],
+}
+
+
+static func board_today() -> Array:
+	var b: Dictionary = run.get("board", {})
+	if int(b.get("day", -1)) == int(run["day"]):
+		return b["jobs"]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(run["day"]) * 7919 + 13
+	var npcs_ok: Array = []
+	for id in BOARD_POOL:
+		if npcs.has(id):
+			npcs_ok.append(id)
+	var jobs: Array = []
+	var used := {}
+	var tier := progress_tier()
+	for i in 3:
+		var who: String = npcs_ok[rng.randi_range(0, npcs_ok.size() - 1)]
+		if used.has(who):
+			continue
+		used[who] = true
+		var pool: Array = BOARD_POOL[who]
+		var item: String = pool[rng.randi_range(0, mini(pool.size(), 2 + tier) - 1)]
+		if not items.has(item):
+			continue
+		var n := rng.randi_range(2, 4 + tier * 2)
+		var val := maxi(5, item_value(item))
+		var pay := int(val * n * 1.6) + 20 * tier
+		jobs.append({"id": "board_%d_%d" % [int(run["day"]), i], "npc": who, "item": item, "n": n, "crystals": pay, "friend": 8 + tier * 2})
+	run["board"] = {"day": int(run["day"]), "jobs": jobs}
+	return jobs
+
+
+## Accept a board job: it becomes a side quest in that villager's name.
+static func board_accept(job: Dictionary) -> void:
+	var id := str(job["id"])
+	if has_quest(id):
+		return
+	var who := str(job["npc"])
+	var text := "%s needs %d %s (board job)." % [str(npcs[who]["name"]), int(job["n"]), item_name(str(job["item"]))]
+	quests_data["side"].append({"id": id, "giver": who, "text": text, "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(job["crystals"]), "friend": [who, int(job["friend"])]}, "board": true})
+	add_quest(id, text)
+
+
+## Re-register accepted board jobs after a load (quests_data is rebuilt from file).
+static func board_restore() -> void:
+	for q in run.get("quests", []):
+		var id := str(q["id"])
+		if id.begins_with("board_") and _quest_def(id).is_empty():
+			var b: Dictionary = run.get("board", {})
+			for job in b.get("jobs", []):
+				if str(job["id"]) == id:
+					var who := str(job["npc"])
+					quests_data["side"].append({"id": id, "giver": who, "text": str(q["text"]), "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(job["crystals"]), "friend": [who, int(job["friend"])]}, "board": true})
+
+
+## Rough "how far along" number 0..4 that scales board jobs, enemies, prices.
+static func progress_tier() -> int:
+	var t := 0
+	if quest_done("clear_meadow"):
+		t += 1
+	if quest_done("spark") or quest_done("wastes_gate"):
+		t += 1
+	if quest_done("sky_stair") or quest_done("hideout"):
+		t += 1
+	if quest_done("teleporter") or quest_done("uptown"):
+		t += 1
+	return t
+
+
 static func _cond_ok(when: Dictionary) -> bool:
 	if when.has("day") and int(run["day"]) < int(when["day"]):
 		return false
@@ -802,6 +897,8 @@ static func tick_quests() -> Array:
 		if q["done"]:
 			continue
 		var d := _quest_def(str(q["id"]))
+		if str(d.get("giver", "")) != "":
+			continue  # hand it in face to face (Quests.talk)
 		if d.has("done_when") and _cond_ok(d["done_when"]):
 			if bool(d.get("take", false)):
 				var dw: Dictionary = d["done_when"]

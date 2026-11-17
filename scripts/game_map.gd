@@ -816,6 +816,55 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 	return door
 
 
+## Grid path (BFS, 4-neighbour) between content cells, avoiding blocked cells and
+## water. Returns the cells to walk through (excluding `from`), or [] if none
+## within `max_cells` steps. Cheap enough for villagers to call on a schedule change.
+func find_path(from: Vector2i, to: Vector2i, max_cells := 6000) -> Array:
+	if from == to:
+		return []
+	var ok := func(c: Vector2i) -> bool:
+		return in_content(c) and not blocked.has(c) and not is_water_cell(c)
+	# Snap an unwalkable goal to its nearest walkable neighbour.
+	var goal := to
+	if not ok.call(goal):
+		var best := Vector2i(-1, -1)
+		for r in range(1, 4):
+			for dy in range(-r, r + 1):
+				for dx in range(-r, r + 1):
+					var c := to + Vector2i(dx, dy)
+					if ok.call(c) and (best == Vector2i(-1, -1) or c.distance_squared_to(to) < best.distance_squared_to(to)):
+						best = c
+			if best != Vector2i(-1, -1):
+				break
+		if best == Vector2i(-1, -1):
+			return []
+		goal = best
+	var prev := {from: from}
+	var q: Array[Vector2i] = [from]
+	var qi := 0
+	var found := false
+	while qi < q.size() and qi < max_cells:
+		var c: Vector2i = q[qi]
+		qi += 1
+		if c == goal:
+			found = true
+			break
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n := c + d
+			if prev.has(n) or not ok.call(n):
+				continue
+			prev[n] = c
+			q.append(n)
+	if not found:
+		return []
+	var out: Array = []
+	var c := goal
+	while c != from:
+		out.push_front(c)
+		c = prev[c]
+	return out
+
+
 ## Remove a prop and its thing/block at a cell.
 func clear_cell(c: Vector2i) -> void:
 	things.erase(c)
@@ -1172,6 +1221,7 @@ func _process(delta: float) -> void:
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
 	if pet:
 		_follow_pet(delta)
+	Events.tick(self, delta)
 	for c: Vector2i in _sign_labels:
 		(_sign_labels[c] as Label).visible = player.position.distance_to(cell_center(c)) < 30.0
 	update_enemies(delta)

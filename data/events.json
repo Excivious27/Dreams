@@ -1,0 +1,146 @@
+[
+ {
+  "id": "ev_prices", "scene": "town", "area": [28, 36, 26, 24], "when": {"day": 2, "hours": [9, 18]},
+  "actors": ["maple", "gideon"],
+  "lines": [
+   {"who": "Gideon", "text": "Forty for a bag of seed. Forty."},
+   {"who": "Maple", "text": "And you charge forty for a NAIL, Gideon. One nail. I've seen the nail."},
+   {"who": "Gideon", "text": "It was a good nail."},
+   {"who": "Maple", "text": "Oh, hello dear. Don't mind us. We've been having this argument since we were twelve."},
+   {"who": "Gideon", "text": "Eleven.", "mood": "neutral"},
+   {"who": "Maple", "text": "He's right, eleven. Listen, if you ever get your hands on copper, bring it to him. It's the only thing that shuts him up."}
+  ],
+  "after": {"friend": {"maple": 6, "gideon": 6}, "hint": "Gideon wants copper ore. The mountain rocks east of town have it."}
+ },
+ {
+  "id": "ev_bet", "scene": "town", "area": [60, 44, 16, 14], "when": {"day": 3, "hours": [10, 16]},
+  "actors": ["finn", "bram"],
+  "lines": [
+   {"who": "Bram", "text": "Three bass. Before the week's out. You can't."},
+   {"who": "Finn", "text": "I've pulled three bass out of this river before breakfast, Bram."},
+   {"who": "Bram", "text": "Not YOU. The new one. I'm betting on the new one."},
+   {"who": "Finn", "text": "...Huh. Alright. There's a pie on it. Come find me when you've got a rod in your hand."},
+   {"who": "Bram", "text": "Blueberry. The pie. In case you were wondering what you're fishing for."}
+  ],
+  "after": {"friend": {"finn": 5, "bram": 5}, "hint": "Finn and Bram have a bet on you. Talk to Finn by the river with a rod."}
+ },
+ {
+  "id": "ev_honey", "scene": "town", "area": [40, 22, 18, 12], "when": {"day": 4, "hours": [7, 10]},
+  "actors": ["posy", "juniper"],
+  "lines": [
+   {"who": "Juniper", "text": "I need honey. Two jars. Pip's coughing on the lectern again."},
+   {"who": "Posy", "text": "I'm OUT, Juniper. I'm always out. Hazel keeps saying so and she's right and I hate it."},
+   {"who": "Juniper", "text": "Then where does a person get honey in this town?"},
+   {"who": "Posy", "text": "A person builds a hive. A person with a farm. A person who is standing right there."},
+   {"who": "Juniper", "text": "...Morning. Sorry. We're both a bit short on sleep and honey."}
+  ],
+  "after": {"friend": {"posy": 5, "juniper": 5}, "hint": "Build a beehive on the farm (15 wood, 10 fiber) and the whole street will want honey."}
+ },
+ {
+  "id": "ev_painting", "scene": "town", "area": [6, 34, 24, 12], "when": {"day": 5, "hours": [9, 15]},
+  "actors": ["lumi", "theo"],
+  "lines": [
+   {"who": "Theo", "text": "It's the same field."},
+   {"who": "Lumi", "text": "It's a DIFFERENT field, Theo. It's the same field with different light."},
+   {"who": "Theo", "text": "It has no flowers. The field has flowers. I walk past it. I count them."},
+   {"who": "Lumi", "text": "Then bring me flowers and I'll paint them. You never bring me flowers."},
+   {"who": "Theo", "text": "I bring you books."},
+   {"who": "Lumi", "text": "...He does. He brings me books. Hello. If you've got wildflowers, I'd take them off your hands. Eight would do it."}
+  ],
+  "after": {"friend": {"lumi": 6, "theo": 4}, "hint": "Lumi wants wildflowers. They grow in the long grass round the farm and the meadow."}
+ },
+ {
+  "id": "ev_goat", "scene": "town", "area": [40, 36, 20, 14], "when": {"day": 6, "hours": [11, 14]},
+  "actors": ["alder", "hazel"],
+  "lines": [
+   {"who": "Alder", "text": "Hazel. Your goat was in the fountain."},
+   {"who": "Hazel", "text": "She likes the fountain."},
+   {"who": "Alder", "text": "She ATE the fountain. The flowers. The flowers in the fountain."},
+   {"who": "Hazel", "text": "Fence is down on the west side. Thirty wood and she stays home. You want to bring me thirty wood, Mayor?"},
+   {"who": "Alder", "text": "...I'm the mayor."},
+   {"who": "Hazel", "text": "Then find somebody who isn't. ...There's one."}
+  ],
+  "after": {"friend": {"hazel": 6, "alder": 3}, "hint": "Hazel needs 30 wood for her fence. Chop trees on the farm or in the forest."}
+ },
+ {
+  "id": "ev_orchard", "scene": "town", "area": [60, 12, 20, 14], "when": {"day": 8, "hours": [6, 12]},
+  "actors": ["rook", "finn"],
+  "lines": [
+   {"who": "Finn", "text": "You're up early."},
+   {"who": "Rook", "text": "Grumps. Orchard side. Pulling the apples down."},
+   {"who": "Finn", "text": "So go deal with them. You've got a bow."},
+   {"who": "Rook", "text": "I've got a bad shoulder and a bow. Somebody with a sword could do it in an hour."},
+   {"who": "Finn", "text": "...He means you. He won't say it. He means you."},
+   {"who": "Rook", "text": "...Clear the orchard. I pay."}
+  ],
+  "after": {"friend": {"rook": 6, "finn": 3}, "hint": "Rook will pay to have the orchard cleared of grumps. Cross the north bridge with a sword."}
+ },
+ {
+  "id": "ev_sal_past", "scene": "town", "area": [54, 58, 14, 10], "when": {"day": 10, "hours": [19, 23]},
+  "actors": ["sal", "bram"],
+  "lines": [
+   {"who": "Bram", "text": "You've not paid for a room in nine days, Sal."},
+   {"who": "Sal", "text": "I've not slept in one in nine days. Chair's fine."},
+   {"who": "Bram", "text": "You've not eaten either. I notice things. It's my inn."},
+   {"who": "Sal", "text": "...I'll sort it."},
+   {"who": "Bram", "text": "You won't. But maybe they will. Bread, if you're feeling kind. He won't ask."}
+  ],
+  "after": {"friend": {"sal": 6, "bram": 4}, "hint": "Sal hasn't eaten. Posy sells bread, or bake it from flour."}
+ },
+ {
+  "id": "ev_kids_secret", "scene": "town", "area": [50, 70, 16, 10], "when": {"day": 12, "hours": [14, 17]},
+  "actors": ["pip", "mabel", "tobin"],
+  "lines": [
+   {"who": "Pip", "text": "I'm not telling. It's a SECRET."},
+   {"who": "Mabel", "text": "It's not a secret if you keep SAYING it's a secret."},
+   {"who": "Tobin", "text": "Is it the clock tower? It's the clock tower."},
+   {"who": "Pip", "text": "IT'S NOT THE CLOCK TOWER. ...Hey. HEY. Do you have candy? I'd tell YOU for candy."},
+   {"who": "Mabel", "text": "Don't. He'll just say 'clock tower'."}
+  ],
+  "after": {"friend": {"pip": 5, "mabel": 5, "tobin": 5}, "hint": "Pip sells secrets for candy. Maple stocks candy."}
+ },
+ {
+  "id": "ev_seed_pack", "scene": "town", "area": [28, 22, 20, 12], "when": {"day": 14, "hours": [8, 12], "friend": ["maple", 2]},
+  "actors": ["maple", "posy"],
+  "lines": [
+   {"who": "Posy", "text": "You've gone soft on the new one."},
+   {"who": "Maple", "text": "I have NOT. I've gone... reasonable. There's a difference."},
+   {"who": "Posy", "text": "You put a seed pack aside. I saw the label. It had a heart on it."},
+   {"who": "Maple", "text": "It had a HEART because it's STRAWBERRY, Posy. ...Oh, there you are, dear. Come by the store. I've put something aside."}
+  ],
+  "after": {"friend": {"maple": 8, "posy": 3}, "item": ["strawberry_seed", 6], "hint": "Maple put a seed pack aside for you. Plant strawberries this spring."}
+ },
+ {
+  "id": "ev_bell", "scene": "town", "area": [26, 30, 12, 10], "when": {"day": 20, "hours": [16, 19], "quest": "clear_meadow"},
+  "actors": ["alder", "theo"],
+  "lines": [
+   {"who": "Theo", "text": "Twenty years since it rang."},
+   {"who": "Alder", "text": "Twenty-one. I was there. My father pulled the rope."},
+   {"who": "Theo", "text": "The clapper's gone. Sold, melted, who knows. Gold would do it. A bar."},
+   {"who": "Alder", "text": "Gold. In this town."},
+   {"who": "Theo", "text": "...Someone's been to the mountain. Someone's been past the meadow. I'd ask them, if I were mayor."},
+   {"who": "Alder", "text": "I AM mayor. ...Fine. I'll ask."}
+  ],
+  "after": {"friend": {"alder": 5, "theo": 5}, "hint": "The town bell needs a gold bar. Gold ore is deep in the mine; smelt it at a furnace."}
+ },
+ {
+  "id": "ev_marsh_moss", "scene": "marsh", "area": [34, 4, 16, 12], "when": {"day": 1, "hours": [6, 20]},
+  "actors": ["old_moss"],
+  "lines": [
+   {"who": "Old Moss", "text": "You walked straight through the bog. Nobody walks straight through the bog."},
+   {"who": "Old Moss", "text": "Hut's there. Kettle's on. Don't touch the green jars. The green jars touch back."},
+   {"who": "Old Moss", "text": "...Witch is east. Past the dead trees. She's not mine. Don't bring her here."}
+  ],
+  "after": {"friend": {"old_moss": 8}, "hint": "Old Moss trades jars and lore. The Marsh Witch waits east of the dead trees."}
+ },
+ {
+  "id": "ev_quarry_granite", "scene": "quarry", "area": [38, 4, 14, 12], "when": {"day": 1, "hours": [6, 20]},
+  "actors": ["granite"],
+  "lines": [
+   {"who": "Granite", "text": "Stop. You're standing on a seam."},
+   {"who": "Granite", "text": "Thirty years I've been foreman here and the only thing that ever came up out of that pit was trouble and copper. Mostly trouble."},
+   {"who": "Granite", "text": "You want ore, mine it. You want the big one, the crowned one... don't. Or do. I'll be in the office either way."}
+  ],
+  "after": {"friend": {"granite": 8}, "hint": "Granite sells ore and dynamite in the quarry office. The Golem King sleeps in the pit."}
+ }
+]

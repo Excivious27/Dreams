@@ -356,19 +356,7 @@ func _talk_npc(n: Npc) -> void:
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
-	var offer := GameState.side_quest_for(id)
-	if not offer.is_empty():
-		var d := Dialogue.instance(get_tree())
-		d.say([{"who": name, "text": str(offer["text"]) + "  Will you?", "choice": ["Sure", "Not now"], "key": ""}])
-		await d.finished
-		if d.last_choice == 0:
-			GameState.add_quest(str(offer["id"]), str(offer["text"]))
-			hud.toast("New quest from %s." % name, Color(1, 0.9, 0.4))
-		player.frozen = false
-		return
-	var pend := GameState.side_quest_pending(id)
-	if not pend.is_empty():
-		await say([{"who": name, "text": "Still waiting on that: " + str(pend["text"]).to_lower()}])
+	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return
 	if not GameState.run["talked_today"].has(id):

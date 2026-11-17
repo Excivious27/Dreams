@@ -1,0 +1,451 @@
+{
+ "_": "Per-quest dialogue in each villager's own voice. offer: lines before the choice. yes/no: reply to the choice. wait: nudge while pending. done: lines on turn-in.",
+ "maple_turnips": {
+  "offer": ["Five turnips. That's all I'm asking.", "The display bin's been empty since the frost and people keep touching the empty bin, like it'll help."],
+  "yes": "Bless you. Pull them when the tops are fat, not before.",
+  "no": "Mm. The bin will wait. It's good at that.",
+  "wait": "Turnips, dear. Fat ones. The bin's still empty.",
+  "done": ["Oh, look at them. Look at them!", "Right in the front, where Gideon has to see them when he walks past.", "Here. For your trouble, and a little for your patience."]
+ },
+ "gideon_copper": {
+  "offer": ["Copper. Ten ore.", "Not for anything fancy. Hinges. Half this town's doors hang crooked and it's mine to fix, apparently."],
+  "yes": "Good. Copper's in the mountain rock. Swing hard.",
+  "no": "Suit yourself. The doors can creak another month.",
+  "wait": "Ten copper. The hinges aren't getting any straighter.",
+  "done": ["That'll do.", "...That'll do fine, actually. Clean ore. You've a decent arm.", "Two bars off the top for you. Don't tell anyone I'm generous."]
+ },
+ "wren_herbs": {
+  "offer": ["I'm out of wild herb. Completely. I used the last of it on Bram's knee and he hasn't said thank you.", "Six bundles would set me right. They grow where the grass goes long."],
+  "yes": "Thank you. Pick the ones with the darker leaves, they keep.",
+  "no": "That's alright. I'll send Wren jr. She'll come back with frogs.",
+  "wait": "Six wild herb, when you can. The jar's still empty.",
+  "done": ["Oh, these are lovely. Dark leaves, you listened.", "Here, take some of the remedy, it's the first batch and you earned the first batch."]
+ },
+ "finn_fish": {
+  "offer": ["Bass. Three of them.", "I'll be honest, this isn't a job. It's a bet. Bram says you can't. I said you could. There's a pie on it."],
+  "yes": "Ha! Knew it. They sit under the north bridge in the mornings.",
+  "no": "Bram will be insufferable. Fine. Fine.",
+  "wait": "Three bass. Bram's already practising his gloating face.",
+  "done": ["THREE. Look at that. Look at Bram's face. Where's Bram? Somebody get Bram.", "Here's your cut of the pie money and a tin of bait. We'll do this again."]
+ },
+ "hazel_wood": {
+  "offer": ["Fence is down on the west side. Goat went through it like it was a suggestion.", "Thirty wood and I can have it up before she does it again."],
+  "yes": "Good. You're alright, you know that?",
+  "no": "Fair enough. I'll tie it with string and pray.",
+  "wait": "Still thirty wood short. The goat says hello.",
+  "done": ["Here, hold this end. ...Done. Look at that. Straight as a sermon.", "Wheat seed, for you. First of the season. Don't drown it."]
+ },
+ "lumi_flowers": {
+  "offer": ["I keep starting the same painting. A field. It needs more flowers than I have in my head.", "Eight wildflowers? Any colour. I'll mix the rest."],
+  "yes": "Thank you. Pick them in the morning, they hold their colour.",
+  "no": "That's alright. I'll paint the fog instead. Again.",
+  "wait": "Eight flowers, when you find them. The canvas is waiting. Patiently. Unlike me.",
+  "done": ["Oh. Oh, these. Look at the purple on that one.", "It's finished. You should have it. It's yours anyway, it's got your flowers in it."]
+ },
+ "theo_glowcap": {
+  "offer": ["There's a mushroom in the old herbals. Luminous. 'Glow-cap'. Every book says it's extinct and every book is wrong about something.", "If you find one, I'd like to see it before anyone eats it."],
+  "yes": "Excellent. The forest, after dark. Bring a lantern, and then put the lantern out.",
+  "no": "Understandable. Extinct things are poor company.",
+  "wait": "No glow-cap yet? The forest, after dark. The books insist.",
+  "done": ["It's real. It's REAL. Look, it's still... it's faintly... do you see it?", "I'm going to write a very smug letter to the capital. This is for you."]
+ },
+ "alder_stone": {
+  "offer": ["The fountain's cracked on the north rim. It leaks into the plaza and people blame me, personally.", "Forty stone and the mason will do the rest. The town will remember it. I'll make sure the town remembers it."],
+  "yes": "Splendid. Mountain stone, if you can. It takes the frost better.",
+  "no": "Of course. It's a lot of stone. The leak can wait. It's been waiting since before I was mayor.",
+  "wait": "The fountain, when you have the stone. Forty. I've got a man ready.",
+  "done": ["Forty. Exactly forty. You're a precise person. I like precise people.", "Payment from the town's purse, with my thanks, which are worth less but mean more."]
+ },
+ "bram_stew": {
+  "offer": ["Two trout and a pumpkin. That's the stew. That's the whole secret.", "Bring me those and I'll show you how it goes together. Nobody else gets to see that."],
+  "yes": "Good. Trout from the river, pumpkin from... wherever pumpkins come from. A farm. You've got a farm.",
+  "no": "Your loss. The stew is very good.",
+  "wait": "Two trout, one pumpkin. The pot's already on.",
+  "done": ["Right. Watch. No, watch. ...And that's it. That's the stew.", "Take two bowls. The recipe's in your head now, don't lose it."]
+ },
+ "juniper_honey": {
+  "offer": ["I need honey. Two jars. There's a cough going round the children and honey's kinder than anything in my cabinet.", "I'd ask Hazel but she's got her hands full with a goat."],
+  "yes": "Thank you. Hives if you have one; Maple sometimes stocks it.",
+  "no": "I understand. I'll manage with warm water and stern looks.",
+  "wait": "Honey, when you can. Two jars. The cough's still going round.",
+  "done": ["Perfect. Pip will stop coughing on the lectern now, thank goodness.", "Here. Two of the good potions. Keep them for when it's you coughing."]
+ },
+ "sal_cash": {
+  "offer": ["You're going to find rolled bills on those thugs. Don't spend them. They're marked.", "Bring me five rolls. I know who's marking them, and I know who to show."],
+  "yes": "Smart. Keep your head down and your pockets closed.",
+  "no": "Fine. But if you find them, don't spend them. I mean it.",
+  "wait": "Five rolls. Marked ones. You'll know them when you see them.",
+  "done": ["...Yeah. That's his mark. That's him.", "I owe you. Here. And now I owe you less."]
+ },
+ "maple_strawberries": {
+  "offer": ["Spring display! I do one every year and every year it's better than Gideon's, which is nothing, because he doesn't do one.", "Eight strawberries, the red ones, the really red ones."],
+  "yes": "Oh good. The window's going to look like a postcard.",
+  "no": "Mm. The window can be mostly ribbon then.",
+  "wait": "Strawberries for the window, dear. Eight. Really red.",
+  "done": ["Would you LOOK at that window. Posy's already jealous, I can tell by her walk.", "Here you are. Spring money."]
+ },
+ "maple_corn": {
+  "offer": ["Summer stand needs corn. Ten ears. The stand is a plank and two barrels but people love it.", "I'd grow it myself but then who'd stand behind the plank?"],
+  "yes": "You're a treasure. Big ears, please. People judge corn by the ear.",
+  "no": "The plank will be lonely. Fine.",
+  "wait": "Ten corn. The plank is ready. The barrels are ready.",
+  "done": ["Ten! And look at the size. Hazel's going to ask what you feed it.", "Here. And melon seed, since you clearly know what you're doing."]
+ },
+ "maple_pumpkins": {
+  "offer": ["Harvest window. Three pumpkins. Big ones go in the middle, I put a little hat on the biggest.", "Don't ask about the hat."],
+  "yes": "Wonderful. Big, round, no soft spots.",
+  "no": "The window will be... leaves, then. Leaves and a hat.",
+  "wait": "Three pumpkins, dear. The hat is waiting.",
+  "done": ["There he is. There's the one that gets the hat.", "Here. Harvest money. You've made my autumn."]
+ },
+ "maple_honey": {
+  "offer": ["Honey! I'm out, Posy's out, the whole street's out, and Juniper keeps buying it for coughs.", "Four jars and I'll have a shelf again."],
+  "yes": "Thank you. The bees like you, I can tell.",
+  "no": "I'll put up a little sign. 'NO HONEY'. People will sigh at it.",
+  "wait": "Four honey, when the hives give it up. The sign's still up.",
+  "done": ["Four! Down comes the sign. Up goes the honey.", "Two pies for you. Posy made them with the honey I don't have. Don't think about it too hard."]
+ },
+ "maple_supply_run": {
+  "offer": ["The back shelves came down. All of them. Forty years of shelf and they chose a Tuesday.", "Twenty wood, ten stone, and I can rebuild them properly this time."],
+  "yes": "You dear. I'll clear the floor.",
+  "no": "I'll stack things on the floor. It'll be a sort of... market.",
+  "wait": "Wood and stone for the shelves, when you can. Twenty and ten.",
+  "done": ["Oh, they're up. They're UP. Straight, too. Gideon's never built a straight shelf in his life.", "Here. And you've learned something about shelves, I can tell."]
+ },
+ "gideon_iron": {
+  "offer": ["Commission. Five iron bars. Somebody wants a gate with their name on it.", "I'll make the gate. I won't do the name."],
+  "yes": "Good. Smelt it clean.",
+  "no": "Then no gate. He'll live.",
+  "wait": "Five iron bars. The gate's still in my head.",
+  "done": ["...Good bars. Even. You've been practising.", "Steel, for you. One bar. Don't waste it on a hinge."]
+ },
+ "gideon_coal": {
+  "offer": ["Forge is cold. Fifteen coal.", "I can't work cold. Nobody can. Even the hammer complains."],
+  "yes": "Mountain, mine, either. Hurry.",
+  "no": "Then it stays cold. Good day.",
+  "wait": "Coal. Fifteen. The hammer's still complaining.",
+  "done": ["Right. ...Hear that? That's the forge waking up.", "Take this. Go on."]
+ },
+ "gideon_ruby": {
+  "offer": ["A ruby.", "...Don't ask what for. It's not for a gate."],
+  "yes": "...Thank you. Deep in the mine. Red, you'll know it.",
+  "no": "Forget I asked.",
+  "wait": "The ruby. If you find one.",
+  "done": ["...", "...That's the one. That's it exactly.", "Here. A ring. Copper. I made two. Don't say anything."]
+ },
+ "gideon_moon": {
+  "offer": ["People say there's metal up there. On the moon. I think they're lying.", "Prove me wrong. Bring me a shard."],
+  "yes": "Hm. We'll see.",
+  "no": "Then I'm right. Good.",
+  "wait": "Moon shard. If there's such a thing.",
+  "done": ["...", "...It's cold. It's cold to the touch and it rings when I... listen.", "I was wrong. Here. That's for being wrong."]
+ },
+ "wren_mushrooms": {
+  "offer": ["Eight mushrooms for a tonic. The ordinary kind, the brown ones. I'm not trying to see visions, I'm trying to help Bram sleep."],
+  "yes": "Thank you. The forest floor, or the meadow after rain.",
+  "no": "I'll tell Bram to count sheep. He'll count his customers instead.",
+  "wait": "Eight mushrooms. Brown ones. Bram's still not sleeping.",
+  "done": ["These are perfect. Firm caps.", "Two potions for you. And Bram sends his thanks, in advance, from his future nap."]
+ },
+ "wren_glowcap": {
+  "offer": ["There's a mushroom that glows. I know, Theo won't shut up about it either.", "I don't want to write about it. I want to brew it. One cap, from the forest after dark."],
+  "yes": "Careful. Things wake up when the sun goes down.",
+  "no": "Sensible. The dark's for owls.",
+  "wait": "A glow-cap. Forest. Night. Lantern off.",
+  "done": ["It's warm. Feel it, it's warm.", "I can do something with this. Here, for you, and a little of what I learned."]
+ },
+ "wren_slime": {
+  "offer": ["Slime goo. Six. The grumps leave it everywhere and I think there's something in it.", "Gloves. Please use gloves."],
+  "yes": "Thank you. Jar it quick, it crawls.",
+  "no": "I'll ask Rook. He'll bring it in a hat.",
+  "wait": "Six goo. In a jar. Not a hat.",
+  "done": ["Still moving. Good. Good!", "Energy tea, three. That's what the goo does, apparently. Don't tell anyone."]
+ },
+ "wren_starflower": {
+  "offer": ["Where the crystal came down, something grows. A flower with light in it.", "One. Just one. I want to know what it does before Alder puts a fence round it."],
+  "yes": "Thank you. Be gentle with it. It's gentle with you.",
+  "no": "Alright. Maybe it's better left.",
+  "wait": "The starflower. From the crater.",
+  "done": ["Oh. Oh, it hums.", "Here. And... I think I understand something now. Let me show you."]
+ },
+ "alder_bridge": {
+  "offer": ["The south bridge. Thirty stone. The boards are fine, it's the footings.", "Finn fishes off it. Juniper crosses it. I'd like them both to keep doing that."],
+  "yes": "Thank you. The town pays. The town always pays, eventually.",
+  "no": "Understood. I'll put up a sign. People love a sign.",
+  "wait": "Thirty stone for the south bridge. The sign is up.",
+  "done": ["Footings done. Finn's already back on it. He didn't wait for the mortar.", "Here. The town's thanks, and mine."]
+ },
+ "alder_wood": {
+  "offer": ["The hall roof leaks on the council table. Right on my chair, in fact.", "Forty wood. I'd ask Rook, but Rook and I have a history about a roof."],
+  "yes": "Wonderful. Dry wood, please. The roof's had enough wet.",
+  "no": "I'll move the chair. It's a start.",
+  "wait": "Forty wood for the roof. The chair's still wet.",
+  "done": ["Dry. The chair is dry. I sat in it for an hour just to be sure.", "Here. From a grateful, dry mayor."]
+ },
+ "alder_fall_fair": {
+  "offer": ["The fall fair. Five pumpkins, five corn, for the hall display. People come from the next valley for it.", "Last year's pumpkins were... modest. I'd like immodest."],
+  "yes": "Marvellous. Immodest pumpkins. Big corn.",
+  "no": "We'll have a modest fair. Again.",
+  "wait": "Five and five for the fair. Immodest, remember.",
+  "done": ["Look at the size of that. People will talk. People will TALK.", "Here. The fair's budget, most of it. You are the fair this year."]
+ },
+ "alder_wine": {
+  "offer": ["A bottle of wine. For the council. For morale.", "...Discreetly. Bram talks."],
+  "yes": "Thank you. Discreetly.",
+  "no": "Quite right. Morale can wait.",
+  "wait": "The wine. Quietly.",
+  "done": ["Excellent vintage. The council will be... productive.", "Here. This never happened."]
+ },
+ "alder_gold": {
+  "offer": ["The town bell has no clapper. It hasn't rung in twenty years.", "A gold bar, and it rings again. For weddings. For warnings. For the end of the thing in the east."],
+  "yes": "Then we'll hear it. All of us.",
+  "no": "I understand. Gold is gold.",
+  "wait": "The clapper. A gold bar, when you can bear to part with one.",
+  "done": ["...Listen.", "...", "That's the bell. That's the first time my son has heard it. Thank you."]
+ },
+ "finn_minnows": {
+  "offer": ["Minnows. Five. I'm out of bait and too proud to buy it from myself."],
+  "yes": "Shallows, by the reeds. Little fella won't fight you.",
+  "no": "Fine. I'll use bread. Fish laugh at bread.",
+  "wait": "Five minnows. The fish are still laughing.",
+  "done": ["Good bait. Lively.", "Here, ten of the good stuff. You're a fisherman now, whether you like it or not."]
+ },
+ "finn_trout": {
+  "offer": ["Three trout by week's end. Another bet. Bram again. He's got a short memory.", "Pie's bigger this time."],
+  "yes": "That's the spirit. Deep water, early morning.",
+  "no": "Bram wins twice in a row. I'll never hear the end.",
+  "wait": "Three trout. Week's end. Bram's smirking already.",
+  "done": ["THREE AGAIN. Bram's going to stop betting me and I'll have to find a hobby.", "Your share. And you've got the touch now, I can see it."]
+ },
+ "finn_crab": {
+  "offer": ["Four crabs. Bram's stew. He's got the pot on and no crab in it.", "Beach, under the rocks. Mind the claws."],
+  "yes": "Good. Quick, before the stew turns into soup.",
+  "no": "Soup it is, then.",
+  "wait": "Four crabs for the stew. Mind the claws.",
+  "done": ["Still snapping. Good.", "Bram says thanks. Here's what he paid me, which is now what I'm paying you."]
+ },
+ "finn_pearl": {
+  "offer": ["There's a pearl in the lake. Old story. My gran had one and said it came from down there.", "I've fished that lake for thirty years. Maybe it wants somebody new."],
+  "yes": "Deep water. The deepest. Patience.",
+  "no": "Maybe it's just a story. Most are.",
+  "wait": "The pearl. The lake's still keeping it.",
+  "done": ["...", "...That's hers. That's my gran's pearl. Same light.", "I don't have words. I have crystals. Take them."]
+ },
+ "hazel_potatoes": {
+  "offer": ["Ten potatoes for seed stock. Mine went soft. Everything went soft this year except the goat."],
+  "yes": "Good. Firm ones. Eyes, not sprouts.",
+  "no": "I'll beg Maple. She'll make a face.",
+  "wait": "Ten potatoes, firm. Maple's already making the face.",
+  "done": ["Firm. Good eyes. These'll do a whole row.", "Carrot seed, for you. Fair trade."]
+ },
+ "hazel_hay": {
+  "offer": ["Fifteen hay before the cold. Scythe the tall grass, it's everywhere, it's practically begging.", "The goat eats hay. The goat eats everything."],
+  "yes": "Good. Swing low and wide.",
+  "no": "The goat will eat the fence again, then.",
+  "wait": "Fifteen hay. Winter's coming whether the goat likes it or not.",
+  "done": ["That's a winter. That's a whole winter right there.", "Here. Hay money. Spend it on something that isn't hay."]
+ },
+ "hazel_eggs": {
+  "offer": ["Six eggs. Mine are laying like they're on strike.", "You'll want a coop for that. A coop's the best thing a person can build, after a fence."],
+  "yes": "Good. Brown or white, I don't care, the goat doesn't care.",
+  "no": "I'll ask Posy. She'll say she's out. She's always out.",
+  "wait": "Six eggs. Build the coop if you haven't. Trust me.",
+  "done": ["Six. Warm. You've got good hens.", "Corn seed for you. Hens like corn. So does the goat. Everyone likes corn."]
+ },
+ "hazel_milk": {
+  "offer": ["Four milk for the cheese cellar. I've got a wheel going and it's hungry.", "You'll need a barn and a cow that likes you."],
+  "yes": "Good. Morning milk's best.",
+  "no": "The wheel will be a small wheel.",
+  "wait": "Four milk. The wheel's waiting. Cheese is patient. I'm not.",
+  "done": ["Rich. That's a happy cow.", "Two wedges, aged. Don't eat them both at once. Or do."]
+ },
+ "posy_flour": {
+  "offer": ["Six flour from the lake mill. Orla grinds it finer than anyone.", "I'd go myself but the oven can't be left. It gets ideas."],
+  "yes": "Thank you! Tell Orla it's for the braids.",
+  "no": "I'll make do. Coarse bread. Honest bread.",
+  "wait": "Six flour, from Orla. The oven's getting ideas.",
+  "done": ["Oh, feel that. Like silk.", "Four loaves, still warm. Mind your fingers."]
+ },
+ "posy_honey": {
+  "offer": ["Three honey for the spiced loaf. It's a once-a-year loaf. People plan around it."],
+  "yes": "Wonderful. Dark honey if the bees have it.",
+  "no": "The loaf will be... unspiced. Just loaf.",
+  "wait": "Three honey. The spice is measured and waiting.",
+  "done": ["Smell that? That's the whole street turning its head.", "The first slice is always for the person who brought the honey. Here."]
+ },
+ "posy_strawberries": {
+  "offer": ["Twelve strawberries for jam. I know it's a lot. Jam is greedy."],
+  "yes": "Thank you! Ripe, please. Jam knows.",
+  "no": "I'll make less jam. The jars will be lonely.",
+  "wait": "Twelve strawberries. The jars are lined up like soldiers.",
+  "done": ["Look at the colour! That's a summer in a jar.", "Here. Jam money. And a jar's coming your way when it sets."]
+ },
+ "posy_eggs": {
+  "offer": ["Eight eggs. I'm out. I'm ALWAYS out, Hazel says, and she's right, and it's rude."],
+  "yes": "Thank you. Fresh. You can tell by the shine.",
+  "no": "Flat cakes, then. Sad, flat cakes.",
+  "wait": "Eight eggs. The cakes are waiting to rise.",
+  "done": ["Shiny! Fresh! Hazel can keep her remarks.", "Here, and a cake, because the cakes rose."]
+ },
+ "bram_mushrooms": {
+  "offer": ["Ten mushrooms for the pot. Brown ones. Not the glowing ones, I don't want the inn humming."],
+  "yes": "Good. Forest floor. Watch for the ones with spots, they're spiteful.",
+  "no": "Thin stew tonight, then.",
+  "wait": "Ten mushrooms. Brown. The pot's on.",
+  "done": ["Good caps. Into the pot.", "Here. And a bowl on the house, later."]
+ },
+ "bram_meat": {
+  "offer": ["Five game meat. Rook sells it, if he's in a selling mood. He usually isn't.", "Or you hunt. I don't judge how the meat arrives."],
+  "yes": "Good. Fresh. I'll know.",
+  "no": "Vegetable stew. People will notice.",
+  "wait": "Five meat. Rook or the hills.",
+  "done": ["Now THAT'S a stew.", "Here. Meat money. Worth every crystal."]
+ },
+ "bram_wine": {
+  "offer": ["Two wine for the festival night. The council drinks it. The council drinks all of it.", "I'd like to have some for the rest of us."],
+  "yes": "Good. Keg it yourself if you've got one, it's cheaper than buying.",
+  "no": "The council will be pleased. Nobody else will.",
+  "wait": "Two wine. The festival's coming.",
+  "done": ["Good year. Good year!", "Here. And a glass for you on the night, hidden from the council."]
+ },
+ "juniper_herbs": {
+  "offer": ["Ten wild herbs for the clinic. Cuts, scrapes, the usual. Children fall off everything."],
+  "yes": "Thank you. The long grass, by the water.",
+  "no": "I'll ration. Children will have to fall off less.",
+  "wait": "Ten herbs. The cabinet's getting low.",
+  "done": ["Fresh. Thank you.", "Two remedies for you. The children are grateful, in theory."]
+ },
+ "juniper_glowcap": {
+  "offer": ["Two glow-caps. I'm testing them on fever. The old books hint at it.", "Wren and Theo will fight you for them. Bring them to me first."],
+  "yes": "Thank you. Forest, after dark. Be careful, truly.",
+  "no": "Sensible. The fever can wait, I suppose.",
+  "wait": "Two glow-caps. Forest. Night.",
+  "done": ["Both intact. Thank you, this could matter.", "Here. If this works, you'll have helped more than me."]
+ },
+ "rook_pelts": {
+  "offer": ["Three pelts.", "Traps, or hunt. Don't bring me anything you didn't kill clean."],
+  "yes": "Good.",
+  "no": "...Fine.",
+  "wait": "Pelts. Three.",
+  "done": ["...Clean. Good.", "Traps. Two. You know how to use them now."]
+ },
+ "rook_bones": {
+  "offer": ["Ten bones from the mine. The deep ones.", "Arrowheads. Bone flies true."],
+  "yes": "Mine. Deep. Watch your back.",
+  "no": "Then I'll use stone. Stone's heavy.",
+  "wait": "Ten bones. Mine.",
+  "done": ["Good bone.", "Twenty arrows. Don't waste them."]
+ },
+ "rook_tracks": {
+  "offer": ["Grumps across the river. Orchard side. They're pulling the apples down.", "Clear them. All of them. I'll know."],
+  "yes": "Good. Go quiet. Hit hard.",
+  "no": "Then the apples go.",
+  "wait": "The orchard. Grumps. Still there.",
+  "done": ["...Quiet over there now.", "Here. You're a hunter. Don't let it go to your head."]
+ },
+ "theo_book": {
+  "offer": ["There's a book in the mine. An old one. A miner wrote it a hundred years ago and nobody's read it since.", "Bring it up. I'll read it to you. Slowly, I'm afraid. The hand is terrible."],
+  "yes": "Wonderful. Deeper than the copper. Look for the chest.",
+  "no": "It's kept this long. It'll keep.",
+  "wait": "The book. In the mine. Still waiting to be read.",
+  "done": ["Oh... oh, look at this. He drew the tunnels. He drew where the crystal is. Was. Is.", "Here. And... I think you should know what he knew. Let me teach you a little."]
+ },
+ "theo_coins": {
+  "offer": ["Old coins. Three. The ones with the tower on them, from before the river moved.", "Children find them. Children spend them on candy. It's a tragedy."],
+  "yes": "Thank you. The mine, the ruins, the beach after a storm.",
+  "no": "I'll keep bribing the children.",
+  "wait": "Three old coins. Tower side up.",
+  "done": ["The tower, the tower, and... the tower with the bell. That's a rare one.", "Here. The library's grateful. I'm grateful. The children are out three coins."]
+ },
+ "theo_fossil": {
+  "offer": ["A fossil. For the library case. The case has been empty for eleven years and it's become a sort of joke.", "I'd like to stop being a joke."],
+  "yes": "Marvellous. Quarry, or the deep mine. Look for the swirls.",
+  "no": "The joke continues.",
+  "wait": "A fossil. The case is still empty.",
+  "done": ["...", "...Into the case. Lock it. There. Eleven years.", "Here. You have no idea what you've done for me."]
+ },
+ "lumi_sunflowers": {
+  "offer": ["Four sunflowers. Summer light, in a vase, on a windowsill. That's the painting.", "I can see it. I just can't see it without them."],
+  "yes": "Thank you. Big faces. Turned to the sun.",
+  "no": "I'll paint the vase. Empty. Theo will say it's a statement.",
+  "wait": "Four sunflowers. The vase is waiting on the sill.",
+  "done": ["Yes. YES. That's the light.", "Here. Go and see it when it's dry, it's got you in it somewhere."]
+ },
+ "lumi_starflower": {
+  "offer": ["A starflower. From the crater. I want to paint something that's actually alight.", "Just one. I'll give it back to the ground after."],
+  "yes": "Thank you. Hold it like a candle.",
+  "no": "Alright. Some things shouldn't be painted.",
+  "wait": "The starflower. For the one painting I'm afraid of.",
+  "done": ["...It's lighting the canvas. It's lighting the whole room.", "Here. I'll never sell that one. Come and see it."]
+ },
+ "sal_coffee": {
+  "offer": ["Three coffees. I'd kill for them. Figure of speech. Mostly."],
+  "yes": "You're alright.",
+  "no": "Fine. I'll chew the beans.",
+  "wait": "Coffee. Three. My hands are shaking and it's not the cold.",
+  "done": ["...Oh. Oh, that's the stuff.", "Here. It's not much. It's what I've got."]
+ },
+ "sal_bread": {
+  "offer": ["Haven't eaten. Four bread would fix that.", "Don't make it a thing."],
+  "yes": "...Thanks.",
+  "no": "Right. Forget it.",
+  "wait": "Bread. Four. Still haven't eaten.",
+  "done": ["...", "...That's good bread. Posy's?", "I don't forget things like this. Remember that."]
+ },
+ "sal_fish": {
+  "offer": ["Five fish. Minnows'll do. No questions."],
+  "yes": "Good.",
+  "no": "Fine.",
+  "wait": "Fish. Five. No questions.",
+  "done": ["...There's a cat by the warehouse. Three legs. Don't tell anyone I feed it.", "Here."]
+ },
+ "pip_candy": {
+  "offer": ["I know a SECRET. A real one. Three candy and it's yours."],
+  "yes": "Deal! Deal deal deal.",
+  "no": "Your loss. It's a REALLY good secret.",
+  "wait": "Three candy. For the SECRET.",
+  "done": ["Okay. Okay okay. The clock tower. There's a loose stone. There's a coin in it. THERE. I said it.", "Here's the coin. Don't tell Theo I had it."]
+ },
+ "tobin_shells": {
+  "offer": ["Five shells from the beach. Big ones. I'm making a thing."],
+  "yes": "Yesss.",
+  "no": "Fine, I'll go myself. Dad says I can't. He's not here right now.",
+  "wait": "Shells! Five! Big!",
+  "done": ["These are PERFECT. The thing is going to be amazing.", "Here's my allowance. Don't tell Dad."]
+ },
+ "mabel_flowers": {
+  "offer": ["Four flowers for a crown. I'm going to be queen of the fountain."],
+  "yes": "Yay! Pink ones if you can!",
+  "no": "Then I'll be queen of nothing. That's fine. That's FINE.",
+  "wait": "Four flowers for the crown! The fountain is waiting for its queen!",
+  "done": ["It's PERFECT. Bow. You have to bow.", "Here's... um... here's forty crystals. From the royal treasury. It's a jar."]
+ },
+ "wrenjr_frog": {
+  "offer": ["I need a frog. A LIVE one. Mum says no. So maybe just bugs. Two bugs. For the frog I don't have."],
+  "yes": "Okay! Wiggly ones!",
+  "no": "Aw.",
+  "wait": "Bugs! Two! Wiggly!",
+  "done": ["Wiggly! The frog I don't have is going to love them.", "Here. I found these. Don't ask where."]
+ },
+ "lighthouse_oil": {
+  "offer": ["The lamp's been dark three winters. Ships still come. They just don't come back.", "Ten coal and I can fire the burner. It's a start. It's not the lens, but it's a start."],
+  "yes": "Thank you. The mountain, or the quarry. Hard black coal, not the soft stuff.",
+  "no": "Three winters. What's a fourth.",
+  "wait": "Ten coal, for the burner. The ships keep coming.",
+  "done": ["...Hear that? The burner. She's breathing.", "Here. It's not a lit lamp. But it's a warm one."]
+ },
+ "lighthouse_lens": {
+  "offer": ["The burner's warm but the lens is cracked. Light goes out of it like water through a basket.", "A refined crystal, cut right, would throw that light to the horizon. Gideon can cut it. I can't afford it."],
+  "yes": "Then there'll be a light. Thank you.",
+  "no": "I understand. It's a lot to ask of a stranger.",
+  "wait": "The lens. A refined crystal. The horizon's still dark.",
+  "done": ["...", "...Look. LOOK at that. Over the water. Every ship for twenty miles can see us.", "I don't know how to thank you. So I'll just keep it lit."]
+ },
+ "marlowe_salmon": {
+  "offer": ["Two salmon. I haven't had one since I took the post. They don't come up this far.", "If you know a river that has them..."],
+  "yes": "Thank you. Truly. The riverlands, maybe. Old Moss would know.",
+  "no": "That's alright. A man can live on crab.",
+  "wait": "Salmon. Two. The pan's been oiled for a year.",
+  "done": ["Oh. Oh, that's a fish.", "Here. And come back at dusk, there'll be a second one on the fire and I don't eat alone well."]
+ }
+}
