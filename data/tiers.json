@@ -1,0 +1,228 @@
+{
+ "tiers": [
+  {
+   "id": 0,
+   "name": "Meadow",
+   "hp": 1.0,
+   "dmg": 1.0,
+   "speed": 1.0,
+   "kb_resist": 0.0,
+   "armor": 0,
+   "status_power": 1.0,
+   "status_secs": 3.0,
+   "xp": 1.0,
+   "loot": 1.0,
+   "abilities": []
+  },
+  {
+   "id": 1,
+   "name": "Woodland",
+   "hp": 1.4,
+   "dmg": 1.25,
+   "speed": 1.05,
+   "kb_resist": 0.2,
+   "armor": 0,
+   "status_power": 1.2,
+   "status_secs": 3.5,
+   "xp": 1.4,
+   "loot": 1.2,
+   "abilities": [
+    "lunge"
+   ]
+  },
+  {
+   "id": 2,
+   "name": "Deep",
+   "hp": 2.0,
+   "dmg": 1.5,
+   "speed": 1.1,
+   "kb_resist": 0.4,
+   "armor": 1,
+   "status_power": 1.5,
+   "status_secs": 4.0,
+   "xp": 2.0,
+   "loot": 1.5,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ]
+  },
+  {
+   "id": 3,
+   "name": "Crystal",
+   "hp": 2.8,
+   "dmg": 1.9,
+   "speed": 1.15,
+   "kb_resist": 0.6,
+   "armor": 2,
+   "status_power": 1.8,
+   "status_secs": 4.5,
+   "xp": 2.8,
+   "loot": 1.9,
+   "abilities": [
+    "lunge",
+    "enrage",
+    "ranged"
+   ]
+  },
+  {
+   "id": 4,
+   "name": "Dark",
+   "hp": 3.8,
+   "dmg": 2.4,
+   "speed": 1.2,
+   "kb_resist": 0.8,
+   "armor": 3,
+   "status_power": 2.2,
+   "status_secs": 5.0,
+   "xp": 3.8,
+   "loot": 2.4,
+   "abilities": [
+    "lunge",
+    "enrage",
+    "ranged",
+    "shield"
+   ]
+  },
+  {
+   "id": 5,
+   "name": "Heart",
+   "hp": 5.0,
+   "dmg": 3.0,
+   "speed": 1.25,
+   "kb_resist": 0.95,
+   "armor": 4,
+   "status_power": 2.6,
+   "status_secs": 6.0,
+   "xp": 5.0,
+   "loot": 3.0,
+   "abilities": [
+    "lunge",
+    "enrage",
+    "ranged",
+    "shield",
+    "summon"
+   ]
+  }
+ ],
+ "statuses": {
+  "poison": {
+   "icon": "buff2_poison",
+   "text": "Poisoned",
+   "dps": 2.0,
+   "colour": "7fd14a"
+  },
+  "burn": {
+   "icon": "buff2_burn",
+   "text": "Burning",
+   "dps": 3.0,
+   "colour": "ff8a3a"
+  },
+  "chill": {
+   "icon": "buff2_cool",
+   "text": "Chilled",
+   "speed": 0.65,
+   "swing": 1.5,
+   "colour": "8fd8ff"
+  },
+  "slow": {
+   "icon": "buff2_wet",
+   "text": "Slowed",
+   "speed": 0.55,
+   "colour": "c8b070"
+  },
+  "weak": {
+   "icon": "buff2_stun",
+   "text": "Weakened",
+   "damage": -1,
+   "colour": "b080d0"
+  },
+  "blind": {
+   "icon": "buff2_asleep",
+   "text": "Dazed",
+   "aim": 1,
+   "colour": "777777"
+  }
+ },
+ "mine": {
+  "floors_per_tier": 4,
+  "guardians": [
+   "golem",
+   "quarry_golem",
+   "ruin_guardian",
+   "golem_king",
+   "ruin_warden",
+   "dark_crystal"
+  ],
+  "pools": [
+   [
+    "slime",
+    "bat",
+    "grump"
+   ],
+   [
+    "bat",
+    "wisp",
+    "shard",
+    "hill_wolf"
+   ],
+   [
+    "golem",
+    "shard",
+    "rock_crab",
+    "knight"
+   ],
+   [
+    "golem",
+    "ice_wisp",
+    "knight",
+    "river_serpent"
+   ],
+   [
+    "quarry_golem",
+    "ruin_guardian",
+    "ice_wisp",
+    "bog_hag"
+   ],
+   [
+    "ruin_guardian",
+    "dark_crystal_shard",
+    "bog_hag",
+    "knight"
+   ]
+  ],
+  "ores": [
+   [
+    "stone",
+    "copper"
+   ],
+   [
+    "stone",
+    "copper",
+    "iron"
+   ],
+   [
+    "stone",
+    "iron",
+    "gold"
+   ],
+   [
+    "stone",
+    "iron",
+    "gold",
+    "shard"
+   ],
+   [
+    "stone",
+    "gold",
+    "shard",
+    "dark"
+   ],
+   [
+    "stone",
+    "shard",
+    "dark"
+   ]
+  ]
+ }
+}

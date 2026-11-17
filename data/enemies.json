@@ -464,6 +464,18 @@
     1.0,
     2
    ]
+  ],
+  "dark_crystal_shard": [
+   [
+    "dark",
+    0.8,
+    2
+   ],
+   [
+    "shard_heart",
+    0.3,
+    1
+   ]
   ]
  },
  "enemies": {
@@ -471,181 +483,346 @@
    "hp": 3,
    "dmg": 1,
    "speed": 34,
-   "xp": 2
+   "xp": 2,
+   "tier": 0,
+   "abilities": []
   },
   "big_grump": {
    "hp": 16,
    "dmg": 2,
    "speed": 26,
-   "xp": 20
+   "xp": 20,
+   "tier": 1,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ]
   },
   "slime": {
    "hp": 2,
    "dmg": 1,
    "speed": 22,
-   "xp": 1
+   "xp": 1,
+   "tier": 0,
+   "abilities": []
   },
   "bat": {
    "hp": 2,
    "dmg": 1,
    "speed": 48,
-   "xp": 2
+   "xp": 2,
+   "tier": 0,
+   "abilities": []
   },
   "golem": {
    "hp": 10,
    "dmg": 2,
    "speed": 18,
-   "xp": 8
+   "xp": 8,
+   "tier": 2,
+   "abilities": [
+    "stomp"
+   ]
   },
   "shard": {
    "hp": 5,
    "dmg": 1,
    "speed": 30,
-   "xp": 6
+   "xp": 6,
+   "tier": 1,
+   "abilities": [
+    "blink"
+   ]
   },
   "soldier": {
    "hp": 6,
    "dmg": 1,
    "speed": 36,
-   "xp": 5
+   "xp": 5,
+   "tier": 1,
+   "abilities": [
+    "lunge"
+   ]
   },
   "archer": {
    "hp": 5,
    "dmg": 1,
    "speed": 30,
-   "xp": 5
+   "xp": 5,
+   "tier": 1,
+   "abilities": [
+    "ranged"
+   ]
   },
   "knight": {
    "hp": 14,
    "dmg": 2,
    "speed": 28,
-   "xp": 14
+   "xp": 14,
+   "tier": 2,
+   "abilities": [
+    "shield",
+    "lunge"
+   ]
   },
   "wisp": {
    "hp": 4,
    "dmg": 1,
    "speed": 44,
-   "xp": 4
+   "xp": 4,
+   "tier": 1,
+   "abilities": [
+    "blink"
+   ],
+   "status": "weak"
   },
   "commander": {
    "hp": 45,
    "dmg": 3,
    "speed": 24,
-   "xp": 60
+   "xp": 60,
+   "tier": 3,
+   "abilities": [
+    "shield",
+    "summon",
+    "lunge"
+   ]
   },
   "dark_crystal": {
    "hp": 90,
    "dmg": 3,
    "speed": 20,
-   "xp": 200
+   "xp": 200,
+   "tier": 5,
+   "abilities": [
+    "shield",
+    "summon",
+    "ranged",
+    "stomp"
+   ],
+   "status": "weak"
   },
   "thug_cyber": {
    "hp": 10,
    "dmg": 2,
    "speed": 34,
-   "xp": 8
+   "xp": 8,
+   "tier": 1,
+   "abilities": [
+    "ranged"
+   ],
+   "status": "blind"
   },
   "thug_brute": {
    "hp": 20,
    "dmg": 3,
    "speed": 22,
-   "xp": 14
+   "xp": 14,
+   "tier": 2,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ]
   },
   "thug_flame": {
    "hp": 14,
    "dmg": 2,
    "speed": 30,
-   "xp": 12
+   "xp": 12,
+   "tier": 2,
+   "abilities": [
+    "ranged"
+   ],
+   "status": "burn"
   },
   "thug_speedster": {
    "hp": 8,
    "dmg": 1,
    "speed": 60,
-   "xp": 8
+   "xp": 8,
+   "tier": 1,
+   "abilities": [
+    "lunge",
+    "blink"
+   ]
   },
   "thug_gambler": {
    "hp": 10,
    "dmg": 2,
    "speed": 32,
-   "xp": 9
+   "xp": 9,
+   "tier": 2,
+   "abilities": [
+    "ranged",
+    "blink"
+   ],
+   "status": "blind"
   },
   "thug_enforcer": {
    "hp": 26,
    "dmg": 3,
    "speed": 20,
-   "xp": 18
+   "xp": 18,
+   "tier": 3,
+   "abilities": [
+    "shield",
+    "stomp"
+   ]
   },
   "president": {
    "hp": 140,
    "dmg": 4,
    "speed": 26,
-   "xp": 400
+   "xp": 400,
+   "tier": 5,
+   "abilities": [
+    "shield",
+    "summon",
+    "ranged",
+    "enrage",
+    "stomp"
+   ],
+   "status": "weak"
   },
   "bog_hag": {
    "hp": 14,
    "dmg": 2,
    "speed": 30,
-   "xp": 8
+   "xp": 8,
+   "tier": 2,
+   "abilities": [
+    "ranged"
+   ],
+   "status": "poison"
   },
   "mud_slime": {
    "hp": 5,
    "dmg": 1,
    "speed": 26,
-   "xp": 3
+   "xp": 3,
+   "tier": 1,
+   "abilities": [],
+   "status": "slow"
   },
   "quarry_golem": {
    "hp": 18,
    "dmg": 2,
    "speed": 22,
-   "xp": 9
+   "xp": 9,
+   "tier": 2,
+   "abilities": [
+    "stomp",
+    "regen"
+   ]
   },
   "rock_crab": {
    "hp": 9,
    "dmg": 1,
    "speed": 40,
-   "xp": 5
+   "xp": 5,
+   "tier": 1,
+   "abilities": [
+    "shield"
+   ]
   },
   "hill_wolf": {
    "hp": 12,
    "dmg": 2,
    "speed": 54,
-   "xp": 7
+   "xp": 7,
+   "tier": 1,
+   "abilities": [
+    "lunge"
+   ]
   },
   "ice_wisp": {
    "hp": 6,
    "dmg": 1,
    "speed": 44,
-   "xp": 5
+   "xp": 5,
+   "tier": 2,
+   "abilities": [
+    "blink",
+    "ranged"
+   ],
+   "status": "chill"
   },
   "ruin_guardian": {
    "hp": 26,
    "dmg": 3,
    "speed": 24,
-   "xp": 14
+   "xp": 14,
+   "tier": 3,
+   "abilities": [
+    "shield",
+    "stomp",
+    "regen"
+   ]
   },
   "river_serpent": {
    "hp": 16,
    "dmg": 2,
    "speed": 36,
-   "xp": 9
+   "xp": 9,
+   "tier": 2,
+   "abilities": [
+    "lunge"
+   ],
+   "status": "poison"
   },
   "marsh_witch": {
    "hp": 120,
    "dmg": 3,
    "speed": 28,
-   "xp": 80
+   "xp": 80,
+   "tier": 3,
+   "abilities": [
+    "ranged",
+    "summon",
+    "blink"
+   ],
+   "status": "poison"
   },
   "golem_king": {
    "hp": 180,
    "dmg": 4,
    "speed": 20,
-   "xp": 120
+   "xp": 120,
+   "tier": 4,
+   "abilities": [
+    "stomp",
+    "shield",
+    "summon",
+    "enrage"
+   ]
   },
   "ruin_warden": {
    "hp": 220,
    "dmg": 4,
    "speed": 22,
-   "xp": 160
+   "xp": 160,
+   "tier": 4,
+   "abilities": [
+    "shield",
+    "ranged",
+    "stomp",
+    "regen",
+    "enrage"
+   ],
+   "status": "weak"
+  },
+  "dark_crystal_shard": {
+   "hp": 22,
+   "dmg": 3,
+   "speed": 34,
+   "xp": 30,
+   "tier": 5,
+   "abilities": [
+    "blink",
+    "ranged"
+   ],
+   "status": "weak",
+   "art": "shard"
   }
  }
 }

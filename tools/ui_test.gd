@@ -48,9 +48,6 @@ func _run() -> void:
 	Dialogue.instance(self).set_process_input(false)
 	await mouse_click(Vector2(130, 165))
 	check(hit[0] == 4, "... without Dialogue input")
-	var pa: Node = load("res://tools/_probe.gd").new(); pa.tag = "first"; pa.process_mode = Node.PROCESS_MODE_ALWAYS; root.add_child(pa); root.move_child(pa, 0)
-	var pb: Node = load("res://tools/_probe.gd").new(); pb.tag = "last"; pb.process_mode = Node.PROCESS_MODE_ALWAYS; root.add_child(pb)
-	var pc: Node = load("res://tools/_probe.gd").new(); pc.tag = "menuchild"; pc.process_mode = Node.PROCESS_MODE_ALWAYS; menu.add_child(pc)
 	# Open via action, then tap the Skills tab with a touch.
 	await press("menu", 2)
 	await frames(4)

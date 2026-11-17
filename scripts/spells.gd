@@ -25,7 +25,8 @@ static func cost_of(id: String) -> int:
 
 
 static func power() -> float:
-	return 1.0 + GameState.bonus("magic", "spell_power")
+	# Spell weight grows with the Sorcery skill on the same curve as the tier table.
+	return (1.0 + GameState.bonus("magic", "spell_power")) * (1.0 + 0.08 * GameState.skill_level("magic"))
 
 
 static func known() -> Array:
@@ -65,7 +66,7 @@ static func cast(m: GameMap, id: String) -> bool:
 			if GameState.has_perk("magic", "Moonbeam"):
 				for e2 in m.enemies:
 					if is_instance_valid(e2) and e2.position.distance_to(p.position) < 72.0:
-						e2.hit(dmg, p.position)
+						e2.hit(dmg, p.position, true)
 						m.fx("sparkle", e2.position + Vector2(0, -8), 14.0, 0.6)
 			elif pierce > 0:
 				# Light Lance: everything along the line to the target and beyond it.
@@ -76,12 +77,12 @@ static func cast(m: GameMap, id: String) -> bool:
 					var rel: Vector2 = e2.position - p.position
 					var along := rel.dot(dir)
 					if along > 0.0 and along < 72.0 + 32.0 * pierce and absf(rel.cross(dir)) < 14.0:
-						e2.hit(dmg, p.position)
+						e2.hit(dmg, p.position, true)
 						if burn > 0:
 							e2.set_meta("burn", burn * 3)
 						m.fx("sparkle", e2.position + Vector2(0, -8), 14.0, 0.6)
 			else:
-				e.hit(dmg, p.position)
+				e.hit(dmg, p.position, true)
 				if burn > 0:
 					e.set_meta("burn", burn * 3)
 				m.fx("sparkle", e.position + Vector2(0, -8), 14.0, 0.6)
@@ -91,7 +92,7 @@ static func cast(m: GameMap, id: String) -> bool:
 			var rdmg := int(4 * power())
 			for e2 in m.enemies:
 				if is_instance_valid(e2) and e2.position.distance_to(p.position) < 56.0:
-					e2.hit(rdmg, p.position)
+					e2.hit(rdmg, p.position, true)
 					hit_any = true
 			if GameState.bonus("magic", "sunder") > 0.0:
 				var pc := p.cell()

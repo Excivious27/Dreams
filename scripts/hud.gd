@@ -117,6 +117,13 @@ func _draw_hud() -> void:
 		if Art.has("ui", bi):
 			c.draw_texture_rect(Art.tex("ui", bi), Rect2(bx, 24, 9, 9), false)
 			bx += 11
+	for k in r.get("status", {}):
+		var sd := GameState.status_def(str(k))
+		var si := str(sd.get("icon", ""))
+		if si != "" and Art.has("ui", si):
+			c.draw_texture_rect(Art.tex("ui", si), Rect2(bx, 24, 9, 9), false)
+			c.draw_rect(Rect2(bx, 34, 9.0 * clampf(float(r["status"][k].get("secs", 0.0)) / 6.0, 0.0, 1.0), 1), Color(sd.get("colour", "ffffff")))
+			bx += 11
 	if int(r["flags"].get("shield", 0)) > 0 and Art.has("ui", "buff2_shield"):
 		c.draw_texture_rect(Art.tex("ui", "buff2_shield"), Rect2(bx, 24, 9, 9), false); bx += 11
 	if int(r["flags"].get("haste_until", 0)) > int(r["time"]) and Art.has("ui", "buff2_haste"):

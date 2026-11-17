@@ -369,4 +369,4 @@ func _dig() -> void:
 		GameState.add_item(found)
 		GameState.add_xp("pup", 3)
 		map.hud.toast("%s dug up a %s!" % [name_of(), GameState.item_name(found)], Color(0.8, 1, 0.8))
-		map.fx("dust", position, 12.0, 0.4)
+		map.fx("dust_puff", position, 12.0, 0.4)

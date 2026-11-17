@@ -124,12 +124,26 @@ func after_ready() -> void:
 			add_child(a)
 			a.play("idle")
 		else:
-			var sp := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)))
+			var sp := prop(g, nm, c, w, 0.0, false)  # footprint blocked below, sized to the art
 			if sp and bool(p.get("under", false)):
 				sp.z_index = -1
 		if bool(p.get("solid", true)):
 			var h := int(p.get("h", 1))
-			block_rect(c.x, c.y - h + 1, w + 1, h)
+			# Footprint = the art's real size (declared w/h are upper bounds), so
+			# a prop never blocks air beside it. Tall props block only their
+			# lower part; you walk behind the roof/canopy.
+			var bw := w + 1
+			var bh := h
+			if Art.has(g, nm):
+				var info := Art.info(g, nm)
+				var aw := int(floor(float(info.get("cell_w", info.get("w", bw * TILE * 2))) / (TILE * 2.0) + 0.4))
+				var ah := int(floor(float(info.get("cell_h", info.get("h", bh * TILE * 2))) / (TILE * 2.0) + 0.4))
+				bw = clampi(aw, 1, bw)
+				bh = clampi(ah, 1, bh)
+			if bh >= 3 and g != "nature":
+				bh = maxi(2, int(ceil(bh * 0.62)))
+			var x0 := c.x + (w + 1 - bw) / 2
+			block_rect(x0, c.y - bh + 1, bw, bh)
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
 			var it := str(things[k]["item"])

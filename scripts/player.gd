@@ -358,6 +358,14 @@ func go_to_cell(c: Vector2i, interact_there: bool) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if not is_puppet and map and not frozen:
+		var sdmg := GameState.status_tick(delta)
+		if sdmg > 0:
+			GameState.run["hp"] = int(GameState.run["hp"]) - sdmg
+			_flash = 0.6
+			map.damage_number(position + Vector2(0, -22), sdmg, Color(0.6, 0.9, 0.4))
+			if int(GameState.run["hp"]) <= 0:
+				map.player_down("hurt")
 	if _sprite == null or is_puppet:
 		return
 	invuln = maxf(0.0, invuln - delta)
@@ -496,6 +504,7 @@ func _physics_process(delta: float) -> void:
 				map.player_down("tired")
 	elif mounted:
 		spd_mult *= 1.8 if running else 1.5
+	spd_mult *= GameState.status_speed()
 	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult
 	var rate := ACCEL if dir != Vector2.ZERO else DECEL
 	velocity = velocity.move_toward(target, rate * delta)
@@ -688,7 +697,7 @@ func _attack_hit() -> void:
 		var center := position + facing_dir() * 12.0 + Vector2(0, -6)
 		var side := facing_dir().orthogonal() * 16.0
 		var box := Rect2(center - Vector2(14, 14), Vector2(28, 28))
-		var hit := map.attack_at(box, GameState.sword_damage() + (1 if _combo == 0 else 0), position)
+		var hit := map.attack_at(box, maxi(1, GameState.sword_damage() + (1 if _combo == 0 else 0) + GameState.status_damage_mod()), position)
 		if hit:
 			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
 		_swing_arc(center)

@@ -32,6 +32,19 @@ func _run() -> void:
 				for i in range(-w / 2 - 1, w / 2 + 2):
 					for j in range(0, h + 1):
 						prop_cells[Vector2i(c.x + i, c.y - j)] = true
+		# Animated props/buildings (AnimatedSprite2D children) also explain cells.
+		for ch in m.get_children():
+			if ch is AnimatedSprite2D and (ch as AnimatedSprite2D).sprite_frames:
+				var a := ch as AnimatedSprite2D
+				var t := a.sprite_frames.get_frame_texture(a.animation, 0)
+				if t == null:
+					continue
+				var w := int(ceil(t.get_width() * a.scale.x / GameMap.TILE))
+				var h := int(ceil(t.get_height() * a.scale.y / GameMap.TILE))
+				var bc := m.world_to_cell(a.position - m.offset())
+				for i in range(-w / 2 - 1, w / 2 + 2):
+					for j in range(-1, h + 1):
+						prop_cells[Vector2i(bc.x + i, bc.y - j)] = true
 		var walls: Array = []
 		for c: Vector2i in m.blocked:
 			if not m.in_content(c):

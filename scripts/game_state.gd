@@ -14,6 +14,7 @@ static var crops: Dictionary = {}
 static var skills_data: Dictionary = {}
 static var recipes: Dictionary = {}
 static var enemy_data: Dictionary = {}
+static var tier_data: Dictionary = {}
 static var forage_data: Dictionary = {}
 static var quests_data: Dictionary = {}
 static var npcs: Dictionary = {}
@@ -32,6 +33,7 @@ static func load_data() -> void:
 	skills_data = load_json("res://data/skills.json").get("skills", {})
 	recipes = load_json("res://data/recipes.json")
 	enemy_data = load_json("res://data/enemies.json")
+	tier_data = load_json("res://data/tiers.json")
 	forage_data = load_json("res://data/forage.json")
 	quests_data = load_json("res://data/quests.json")
 
@@ -1200,6 +1202,7 @@ static func clock_text() -> String:
 
 ## Advance to the next morning: crops grow, sell box pays, energy restores.
 static func sleep(passed_out := false) -> Dictionary:
+	status_clear()
 	var report := {"earned": 0, "sold": [], "grown": 0}
 	if bonus("bartering", "interest") > 0.0:
 		run["crystals"] = int(run["crystals"] * (1.0 + bonus("bartering", "interest")))
@@ -1295,3 +1298,126 @@ static func look_d() -> Dictionary:
 	if lk is Dictionary:
 		return lk
 	return {}
+
+
+# ---- unified tiers ------------------------------------------------------------
+## One weight table (data/tiers.json) drives enemy stats, armour, knockback
+## resistance, abilities, status strength, loot and xp. Everything that fights
+## or buffs asks here, so the whole ecosystem moves together.
+
+static func tier_count() -> int:
+	return (tier_data.get("tiers", []) as Array).size()
+
+
+static func tier(t: int) -> Dictionary:
+	var ts: Array = tier_data.get("tiers", [])
+	if ts.is_empty():
+		return {"hp": 1.0, "dmg": 1.0, "speed": 1.0, "kb_resist": 0.0, "armor": 0, "status_power": 1.0, "status_secs": 3.0, "xp": 1.0, "loot": 1.0, "abilities": []}
+	return ts[clampi(t, 0, ts.size() - 1)]
+
+
+static func tier_name(t: int) -> String:
+	return str(tier(t).get("name", "Tier %d" % t))
+
+
+## The kind's native tier from enemies.json.
+static func enemy_tier(kind: String) -> int:
+	return int(enemy_data.get("enemies", {}).get(kind, {}).get("tier", 0))
+
+
+## Multiplier to move a kind from its native tier to `t`.
+static func tier_scale(kind: String, t: int, stat: String) -> float:
+	var nt := enemy_tier(kind)
+	var a := float(tier(nt).get(stat, 1.0))
+	var b := float(tier(t).get(stat, 1.0))
+	return b / maxf(0.01, a)
+
+
+## The player's own tier: gear + combat skill + magic, 0..5. Used for the
+## area/mine difficulty hints and to weight status durations against you.
+static func player_tier() -> int:
+	var t := 0.0
+	t += tool_tier("sword") * 0.8
+	t += skill_level("combat") * 0.25
+	t += gear_stat("defense") * 0.4
+	t += skill_level("magic") * 0.15
+	return clampi(int(floor(t)), 0, tier_count() - 1)
+
+
+## Mine floor -> tier.
+static func mine_tier(floor_no: int) -> int:
+	var per := int(tier_data.get("mine", {}).get("floors_per_tier", 4))
+	return clampi((floor_no - 1) / per, 0, tier_count() - 1)
+
+
+# ---- player statuses ---------------------------------------------------------
+## Short combat statuses enemies inflict (poison, burn, chill, slow, weak, blind),
+## kept as remaining seconds in run["status"]. Strength comes from the enemy's tier.
+
+static func status_def(name: String) -> Dictionary:
+	return tier_data.get("statuses", {}).get(name, {})
+
+
+static func status_apply(name: String, t: int) -> void:
+	if status_def(name).is_empty():
+		return
+	if has_perk("combat", "Iron Gut") and name in ["poison", "burn"]:
+		return
+	var secs := float(tier(t).get("status_secs", 3.0)) * (0.7 if gear_stat("defense") >= 3 else 1.0)
+	run["status"] = run.get("status", {})
+	var cur: Dictionary = run["status"].get(name, {})
+	run["status"][name] = {"secs": maxf(float(cur.get("secs", 0.0)), secs), "power": float(tier(t).get("status_power", 1.0)), "tier": t}
+
+
+static func status_active(name: String) -> bool:
+	return float(run.get("status", {}).get(name, {}).get("secs", 0.0)) > 0.0
+
+
+static func status_power(name: String) -> float:
+	return float(run.get("status", {}).get(name, {}).get("power", 1.0))
+
+
+static func status_clear(name := "") -> void:
+	if name == "":
+		run["status"] = {}
+	elif run.has("status"):
+		run["status"].erase(name)
+
+
+## Called by the player every frame. Returns hp damage to apply this tick.
+static func status_tick(delta: float) -> int:
+	var st: Dictionary = run.get("status", {})
+	if st.is_empty():
+		return 0
+	var dmg := 0.0
+	for k in st.keys():
+		var d: Dictionary = st[k]
+		d["secs"] = float(d.get("secs", 0.0)) - delta
+		var def := status_def(str(k))
+		if def.has("dps"):
+			d["acc"] = float(d.get("acc", 0.0)) + float(def["dps"]) * float(d.get("power", 1.0)) * delta
+			if d["acc"] >= 1.0:
+				dmg += floor(d["acc"])
+				d["acc"] = fmod(float(d["acc"]), 1.0)
+		if d["secs"] <= 0.0:
+			st.erase(k)
+		else:
+			st[k] = d
+	return int(dmg)
+
+
+## Speed multiplier from statuses (chill/slow).
+static func status_speed() -> float:
+	var m := 1.0
+	for k in run.get("status", {}):
+		var def := status_def(str(k))
+		if def.has("speed"):
+			m *= float(def["speed"])
+	return m
+
+
+static func status_damage_mod() -> int:
+	var m := 0
+	for k in run.get("status", {}):
+		m += int(status_def(str(k)).get("damage", 0))
+	return m

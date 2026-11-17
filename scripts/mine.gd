@@ -6,6 +6,31 @@ extends GameMap
 var floor_no := 1
 var _grotto := false
 var _ladder := Vector2i.ZERO
+var mine_tier := 0           # unified tier for this floor (GameState.mine_tier)
+var _guardian: Enemy = null  # the floor's gatekeeper, once it has shown up
+var _summoning := false
+var _way_open := false       # shaft revealed (flag mine_open_<floor>)
+
+
+## How much you've "tried" this floor: rocks broken count 1, kills count 3.
+## Past the threshold the guardian shows up; beat it and the way down opens.
+func _tried() -> int:
+	return int(GameState.run.get("mine_tried", {}).get(str(floor_no), 0))
+
+
+func _try_more(n: int) -> void:
+	var d: Dictionary = GameState.run.get("mine_tried", {})
+	d[str(floor_no)] = int(d.get(str(floor_no), 0)) + n
+	GameState.run["mine_tried"] = d
+	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
+		_summoning = true
+		call_deferred("_summon_guardian")
+	elif not _way_open and _guardian == null and _tried() == _threshold() / 2:
+		hud.toast("Something below is listening.", Color(0.8, 0.75, 0.9))
+
+
+func _threshold() -> int:
+	return 8 + floor_no * 2
 
 
 func scene_id() -> String:
@@ -26,8 +51,15 @@ func build() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1000 + floor_no
 	set_thing(1, 1, {"type": "up", "hint": "A: climb out"})
+	mine_tier = GameState.mine_tier(floor_no)
 	_ladder = Vector2i(rng.randi_range(12, 16), rng.randi_range(12, 16))
-	things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
+	_way_open = GameState.run["flags"].has("mine_open_%d" % floor_no)
+	if _way_open:
+		things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
+	# The lift: once you've opened floor 5, Granite's cart takes you straight to
+	# any floor you've opened the way to (every 5th).
+	if floor_no == 1 and _deepest() >= 5:
+		set_thing(cols - 2, 1, {"type": "lift", "hint": "A: the mine lift"})
 	# Floor 5: the flooded grotto. Half the floor is black water; crystals sit
 	# under it. Mer the mercat lives here; with her you can swim and dive.
 	_grotto = floor_no == 5
@@ -58,47 +90,56 @@ func build() -> void:
 			continue
 		var roll := rng.randf()
 		var ore := "stone"
-		if floor_no >= 4 and roll < 0.02:
-			ore = "dark"
-		elif roll < 0.04 + floor_no * 0.01:
-			ore = "shard"
-		elif floor_no >= 3 and roll < 0.08 + floor_no * 0.01:
-			ore = "gold"
-		elif roll < 0.12 + floor_no * 0.03:
-			ore = "iron"
-		elif roll < 0.35 + floor_no * 0.03:
-			ore = "copper"
-		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": 2 if ore == "stone" else 3, "hint": "A: mine"})
+		var pool: Array = (GameState.tier_data.get("mine", {}).get("ores", []) as Array)
+		var ores: Array = pool[mini(mine_tier, pool.size() - 1)] if not pool.is_empty() else ["stone", "copper"]
+		# Half stone, the rest spread over the tier's ores (rarest last, least common).
+		if roll > 0.5 and ores.size() > 1:
+			var r2 := (roll - 0.5) * 2.0
+			var idx := 1
+			var acc := 0.0
+			var weights: Array = []
+			for oi in range(1, ores.size()):
+				weights.append(1.0 / (oi + 0.5))
+			var total := 0.0
+			for w in weights:
+				total += float(w)
+			for wi in weights.size():
+				acc += float(weights[wi]) / total
+				if r2 <= acc:
+					idx = wi + 1
+					break
+			ore = str(ores[idx])
+		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": (2 if ore == "stone" else 3) + mine_tier, "hint": "A: mine"})
 
 
 func after_ready() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 2000 + floor_no + int(GameState.run["day"])
 	_place_props()
-	var n := 3 + floor_no
+	var n := 3 + mini(floor_no, 12) / 2
+	var pools: Array = GameState.tier_data.get("mine", {}).get("pools", [])
+	var pool: Array = pools[mini(mine_tier, pools.size() - 1)] if not pools.is_empty() else ["slime", "bat"]
 	for i in n:
 		var c := Vector2i(rng.randi_range(4, cols - 2), rng.randi_range(4, rows - 2))
-		if blocked.has(c):
+		if blocked.has(c) or things.has(c) or (_grotto and is_water_cell(c)):
 			continue
-		var roll := rng.randf()
-		var kind := "slime"
-		if floor_no >= 5 and roll < 0.1:
-			kind = "knight"
-		elif floor_no >= 3 and roll < 0.2:
-			kind = "golem"
-		elif floor_no >= 2 and roll < 0.35:
-			kind = "shard" if GameState.is_penguins() else "thug_cyber"
-		elif floor_no >= 2 and roll < 0.45:
-			kind = "wisp"
-		elif roll < 0.7:
-			kind = "bat"
-		spawn_enemy(kind, cell_center(c))
+		var kind := str(pool[rng.randi_range(0, pool.size() - 1)])
+		if not GameState.is_penguins() and kind == "shard":
+			kind = "thug_cyber"
+		spawn_enemy(kind, cell_center(c), mine_tier)
+	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
+		_summoning = true
+		call_deferred("_summon_guardian")
+	if not GameState.run["flags"].has("mine_tier_seen_%d" % mine_tier) and floor_no > 1:
+		GameState.run["flags"]["mine_tier_seen_%d" % mine_tier] = true
+		hud.toast("%s depths. Everything down here hits harder." % GameState.tier_name(mine_tier), Color(0.9, 0.8, 1.0))
 	if not GameState.run["flags"].has("mine_seen"):
 		GameState.run["flags"]["mine_seen"] = true
 		player.frozen = true
 		await say([
 			{"text": "Cold air, and the smell of wet stone. Something drips. Something else squelches."},
-			{"text": "Swing your pickaxe at rocks with A: stone, copper, iron, and now and then a crystal shard. Ladders go down. Down is worse, and pays better."},
+			{"text": "Swing your pickaxe at rocks with A: stone, copper, iron, and now and then a crystal shard."},
+			{"text": "There's no ladder down. The old miners said the way opens for whoever digs long enough to wake what guards it. Down is worse, and pays better."},
 		])
 		player.frozen = false
 
@@ -139,11 +180,15 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					hud.toast("That's all six. Mer hums.", Color(0.8, 0.9, 1.0))
 				return true
 			return false
+		"lift":
+			later(_use_lift)
+			return true
 		"down":
 			if _grotto and not GameState.run["flags"].has("grotto_done"):
 				hud.toast("The ladder is under the water. You'd need to swim like she does.", Color(0.8, 0.9, 1.0))
 				return true
 			GameState.run["mine_floor"] = floor_no + 1
+			GameState.run["flags"]["mine_deepest"] = maxi(_deepest(), floor_no + 1)
 			xp("mining", 4)
 			go_to("mine", Vector2.ZERO)
 			return true
@@ -175,8 +220,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
 				give(ore, 1 if ore != "stone" else 2)
-				xp("mining", 2 if ore == "stone" else 5)
+				xp("mining", (2 if ore == "stone" else 5) + mine_tier)
 				queue_redraw()
+				_try_more(1)
 			return true
 	return false
 
@@ -248,6 +294,9 @@ func draw_map() -> void:
 				if props.has(k):
 					continue
 				draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
+			"lift":
+				if not Art.draw_prop(self, "props", "cart_full", p):
+					draw_rect(Rect2(p.x - 7, p.y - 12, 14, 12), Color("5a4a3a"))
 			"up", "down":
 				var nm := "ladder_up" if str(t["type"]) == "up" else "ladder_down"
 				if Art.has("props", "ladder_a"):
@@ -315,6 +364,91 @@ func _place_props() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+
+
+func _deepest() -> int:
+	return int(GameState.run["flags"].get("mine_deepest", 1))
+
+
+func on_enemy_died(e: Enemy) -> void:
+	super(e)
+	if e == _guardian:
+		_guardian = null
+		_open_way()
+	else:
+		_try_more(3)
+
+
+## The floor's gatekeeper: the tier's guardian kind, run at this floor's tier,
+## one more ability per floor into the tier, and more hp the deeper you are.
+func _summon_guardian() -> void:
+	if _guardian != null or _way_open:
+		return
+	var kinds: Array = GameState.tier_data.get("mine", {}).get("guardians", ["golem"])
+	var kind := str(kinds[mini(mine_tier, kinds.size() - 1)])
+	var at := cell_center(_ladder)
+	if _grotto:
+		at = cell_center(Vector2i(cols / 2, 3))
+	shake(3.0)
+	fx("boss_shockwave", at, 14.0, 0.9)
+	await get_tree().create_timer(0.4).timeout
+	# Never weaker than its native tier; floor 1's golem is still a golem.
+	_guardian = spawn_enemy(kind, at, maxi(mine_tier, GameState.enemy_tier(kind)))
+	_guardian.is_guardian = true
+	var into := (floor_no - 1) % int(GameState.tier_data.get("mine", {}).get("floors_per_tier", 4))
+	_guardian.max_hp = int(_guardian.max_hp * (1.5 + 0.12 * floor_no))
+	_guardian.hp = _guardian.max_hp
+	var extra: Array = ["lunge", "stomp", "ranged", "shield", "summon", "regen"]
+	for i in into:
+		for a in extra:
+			if not _guardian.abilities.has(a):
+				_guardian.abilities.append(a)
+				break
+	_guardian.reward *= 3
+	boss_card(kind, "Keeper of floor %d" % floor_no)
+	hud.toast("The keeper of floor %d wakes!" % floor_no, Color(1, 0.7, 0.7))
+	Music.instance(get_tree()).sfx("levelup")
+
+
+func _open_way() -> void:
+	GameState.run["flags"]["mine_open_%d" % floor_no] = true
+	_way_open = true
+	things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
+	blocked.erase(_ladder)
+	if props.has(_ladder):
+		(props[_ladder] as Node).queue_free()
+		props.erase(_ladder)
+	shake(4.0)
+	fx("rock_m_break", cell_center(_ladder), 14.0, 0.8)
+	queue_redraw()
+	queue_redraw()
+	hud.toast("The rock splits. A shaft leads down!", Color(0.8, 1.0, 0.8))
+	GameState.add_hint("The way down to floor %d is open." % (floor_no + 1))
+	if floor_no % 5 == 0:
+		hud.toast("The lift can reach floor %d now." % floor_no, Color(0.8, 0.9, 1.0))
+
+
+
+func _use_lift() -> void:
+	var floors: Array = []
+	var f := 5
+	while f <= _deepest():
+		floors.append(f)
+		f += 5
+	if floors.is_empty():
+		return
+	var labels: Array = []
+	for n in floors:
+		labels.append("Floor %d" % n)
+	labels.append("Stay")
+	player.frozen = true
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "", "text": "Granite's lift. Rope creaks, lamp swings.", "choice": labels, "key": ""}])
+	await d.finished
+	player.frozen = false
+	if d.last_choice >= 0 and d.last_choice < floors.size():
+		GameState.run["mine_floor"] = int(floors[d.last_choice])
+		go_to("mine", Vector2.ZERO)
 
 
 ## Mer, the mercat of the grotto. Join her and the water opens.

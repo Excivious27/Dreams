@@ -29,8 +29,30 @@ var reach := 16.0
 var _squash := 0.0
 var _noticed := false
 
+# ---- unified tier (data/tiers.json) -----------------------------------------
+var tier := 0                 # effective tier (native, or the floor's in the mine)
+var abilities: Array = []     # lunge, enrage, ranged, shield, summon, stomp, blink, regen
+var inflicts := ""            # status put on the player when it lands a hit
+var armor := 0                # flat damage soaked per hit (spells soak half)
+var kb_resist := 0.0          # 0..1, how little it slides when hit
+var is_guardian := false      # mine floor guardian: its death opens the way down
+var _kb_hits := 0             # knockbacks taken recently (anti-kiting)
+var _kb_t := 0.0
+var _lunge := 0.0             # >0: dashing at the player
+var _lunge_dir := Vector2.ZERO
+var _lunge_cd := 0.0
+var _lunge_tele := 0.0        # telegraph before a lunge
+var _shield := 0.0            # >0: invulnerable
+var _shield_cd := 0.0
+var _range_cd := 0.0
+var _stomp_cd := 0.0
+var _regen_t := 0.0
+var _since_hit := 0.0
+var _enraged := false
+var _summoned := {}
 
-func setup(k: String) -> void:
+
+func setup(k: String, tier_override := -1) -> void:
 	kind = k
 	match k:
 		"grump":
@@ -75,8 +97,25 @@ func setup(k: String) -> void:
 	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(k, {})
 	if not ed.is_empty():
 		hp = int(ed.get("hp", hp)); damage = int(ed.get("dmg", damage)); speed = float(ed.get("speed", speed))
+	# Tier weights: native tier from enemies.json, or the tier the map asked for
+	# (deep mine floors run meadow kinds at Deep/Crystal weights).
+	var native := GameState.enemy_tier(k)
+	tier = native if tier_override < 0 else tier_override
+	var tw := GameState.tier(tier)
+	if tier != native:
+		hp = int(round(hp * GameState.tier_scale(k, tier, "hp")))
+		damage = maxi(1, int(round(damage * GameState.tier_scale(k, tier, "dmg"))))
+		speed = speed * GameState.tier_scale(k, tier, "speed")
+		reward = int(round(reward * GameState.tier_scale(k, tier, "loot")))
+	abilities = (ed.get("abilities", []) as Array).duplicate()
+	for a in tw.get("abilities", []):
+		if tier > native and not abilities.has(a):
+			abilities.append(a)
+	inflicts = str(ed.get("status", ""))
+	armor = int(tw.get("armor", 0))
+	kb_resist = float(tw.get("kb_resist", 0.0))
 	max_hp = hp
-	var art_kind := "grump" if k == "big_grump" else k
+	var art_kind := str(ed.get("art", "grump" if k == "big_grump" else k))
 	var group := "enemies/" + art_kind
 	if k.begins_with("thug_"):
 		group = "characters/" + k.trim_prefix("thug_")
@@ -138,6 +177,17 @@ func _process(delta: float) -> void:
 	var to := player.position - position
 	var dist := to.length()
 	_t -= delta
+	_since_hit += delta
+	_kb_t = maxf(0.0, _kb_t - delta)
+	if _kb_t <= 0.0:
+		_kb_hits = 0
+	_lunge_cd = maxf(0.0, _lunge_cd - delta)
+	_shield_cd = maxf(0.0, _shield_cd - delta)
+	_range_cd = maxf(0.0, _range_cd - delta)
+	_stomp_cd = maxf(0.0, _stomp_cd - delta)
+	_shield = maxf(0.0, _shield - delta)
+	if _tick_abilities(delta, player, to, dist):
+		return
 	var stunned := _stun > 0.0
 	if not stunned and _windup <= 0.0:
 		if dist < 80.0 and dist > reach * 0.6:
@@ -166,6 +216,8 @@ func _process(delta: float) -> void:
 		if _windup <= 0.0:
 			if dist < reach + 4.0 and player.invuln <= 0.0:
 				player.take_damage(GameState.enemy_damage(damage), position)
+				if inflicts != "":
+					GameState.status_apply(inflicts, tier)
 			_cooldown = 1.1
 	elif not stunned and dist < reach and _cooldown <= 0.0:
 		_windup = 0.32
@@ -184,8 +236,12 @@ func _process(delta: float) -> void:
 		elif to.x != 0.0 and dist < 80.0:
 			_sprite.flip_h = to.x < 0
 		var tint := Color(1, 1, 1)
-		if _windup > 0.0:
+		if _windup > 0.0 or _lunge_tele > 0.0:
 			tint = Color(1.0, 0.75, 0.7)
+		if _shield > 0.0:
+			tint = Color(0.6, 0.8, 1.0)
+		elif _enraged:
+			tint = Color(1.0, 0.55, 0.5)
 		_sprite.modulate = tint
 		_sprite.scale = Vector2(0.5 * (1.0 + _squash * 0.25), 0.5 * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(1.1, 1.1)
 	queue_redraw()
@@ -210,20 +266,161 @@ func _slide(step: Vector2) -> void:
 			_dir.y = -_dir.y
 
 
-func hit(n: int, from: Vector2) -> bool:
+## `magic`: spells pierce half the armour and don't feed the anti-kite counter.
+func hit(n: int, from: Vector2, magic := false) -> bool:
 	if not _alive:
 		return false
+	if _shield > 0.0:
+		map.fx("sparkle", position + Vector2(0, -10), 14.0, 0.4)
+		map.damage_number(position + Vector2(0, -20), 0, Color(0.6, 0.8, 1.0))
+		return false
+	var soak := armor / 2 if magic else armor
+	n = maxi(1, n - soak)
 	hp -= n
+	_since_hit = 0.0
 	_hit_flash = 0.22
 	_flash = 1.0
 	_squash = 1.0
-	_stun = 0.32 if max_hp < 30 else 0.15
 	_windup = 0.0
+	# Knockback: lighter for heavy kinds, cut by the tier's resistance, and it
+	# decays with every quick repeat so you can't juggle something forever.
+	if not magic:
+		_kb_hits += 1
+		_kb_t = 1.6
+	var combo := maxf(0.25, 1.0 - 0.3 * maxi(0, _kb_hits - 1))
+	_stun = (0.32 if max_hp < 30 else 0.15) * combo * (1.0 - kb_resist * 0.6)
 	var heavy := 1.0 if max_hp < 16 else (0.55 if max_hp < 40 else 0.3)
-	_knock = (position - from).normalized() * 230.0 * heavy * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
+	_knock = (position - from).normalized() * 230.0 * heavy * combo * (1.0 - kb_resist) * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
+	# Juggled three times: answer with a lunge the moment the stun ends.
+	if _kb_hits >= 3 and abilities.has("lunge") and _lunge_cd <= 0.0:
+		_lunge_tele = 0.18
+		_lunge_cd = 2.5
+	if abilities.has("blink") and hp > 0 and randf() < 0.5:
+		_blink()
+	if abilities.has("summon") and hp > 0:
+		for frac in [0.6, 0.3]:
+			if float(hp) / max_hp <= frac and not _summoned.has(frac):
+				_summoned[frac] = true
+				_summon()
 	if hp <= 0:
 		_die()
 	return true
+
+
+# ---- abilities ---------------------------------------------------------------
+## Returns true when the ability took the whole frame (lunging / stomping).
+func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> bool:
+	if abilities.has("enrage") and not _enraged and float(hp) / max_hp < 0.35:
+		_enraged = true
+		speed *= 1.35
+		damage += 1
+		map.emote(self, "angry", 1.0, -26.0)
+	if abilities.has("regen") and _since_hit > 3.0 and hp < max_hp:
+		_regen_t += delta
+		if _regen_t >= 2.0:
+			_regen_t = 0.0
+			hp = mini(max_hp, hp + maxi(1, max_hp / 25))
+	if abilities.has("shield") and _shield <= 0.0 and _shield_cd <= 0.0 and dist < 60.0:
+		_shield = 1.4
+		_shield_cd = 6.0
+		map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.6)
+	if _lunge_tele > 0.0:
+		_lunge_tele -= delta
+		if _lunge_tele <= 0.0:
+			_lunge = 0.28
+			_lunge_dir = to.normalized()
+			_stun = 0.0
+		return true
+	if _lunge > 0.0:
+		_lunge -= delta
+		_slide(_lunge_dir * speed * 3.4 * delta)
+		if dist < reach + 2.0 and player.invuln <= 0.0:
+			player.take_damage(GameState.enemy_damage(damage), position)
+			if inflicts != "":
+				GameState.status_apply(inflicts, tier)
+			_lunge = 0.0
+		return true
+	if abilities.has("lunge") and _lunge_cd <= 0.0 and _stun <= 0.0 and dist > 28.0 and dist < 70.0 and randf() < 0.6 * delta:
+		_lunge_tele = 0.25
+		_lunge_cd = 3.0
+	if abilities.has("stomp") and _stomp_cd <= 0.0 and dist < 26.0 and _stun <= 0.0:
+		_stomp_cd = 3.5
+		_windup = 0.0
+		map.fx("ripple_ring", position, 16.0, 0.8)
+		map.shake(2.0)
+		if player.invuln <= 0.0:
+			player.take_damage(GameState.enemy_damage(damage + 1), position)
+		return true
+	if abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0:
+		_range_cd = 2.2 - 0.2 * tier
+		_shoot(to.normalized())
+	return false
+
+
+func _shoot(dir: Vector2) -> void:
+	var sh := Shot.new()
+	sh.map = map
+	sh.dir = dir
+	sh.damage = maxi(1, damage - 1)
+	sh.tier = tier
+	sh.inflicts = inflicts
+	sh.position = position + Vector2(0, -8)
+	sh.colour = Color("c8ff70") if inflicts == "poison" else (Color("ff9a40") if inflicts == "burn" else (Color("9fe0ff") if inflicts == "chill" else Color("e0c0ff")))
+	map.add_child(sh)
+	if _sprite and _sprite.sprite_frames.has_animation("attack"):
+		_sprite.play("attack")
+		_attacking = 0.4
+
+
+func _blink() -> void:
+	for tries in 8:
+		var c := position + Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() * randf_range(36.0, 56.0)
+		var feet := Rect2(c + Vector2(-4, -3), Vector2(8, 3))
+		if map.in_content(map.world_to_cell(c)) and not map.rect_blocked(feet):
+			map.fx("poof", position + Vector2(0, -8), 14.0, 0.5)
+			position = c
+			_knock = Vector2.ZERO
+			map.fx("poof", position + Vector2(0, -8), 14.0, 0.5)
+			return
+
+
+func _summon() -> void:
+	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp"}.get(kind, "slime")
+	for i in 2:
+		var at := position + Vector2(randf_range(-24, 24), randf_range(-16, 16))
+		var e := map.spawn_enemy(str(minion), at, maxi(0, tier - 1))
+		map.fx("poof", at + Vector2(0, -8), 14.0, 0.5)
+	map.hud.toast("It calls for help!", Color(1, 0.8, 0.7))
+
+
+## A slow spit/bolt from a ranged enemy. Hits the player on contact, dies on walls.
+class Shot extends Node2D:
+	var map: GameMap
+	var dir := Vector2.RIGHT
+	var speed := 95.0
+	var damage := 1
+	var tier := 0
+	var inflicts := ""
+	var life := 1.6
+	var colour := Color.WHITE
+
+	func _process(delta: float) -> void:
+		life -= delta
+		position += dir * speed * delta
+		var p := map.player
+		if p and p.position.distance_to(position + Vector2(0, 6)) < 10.0 and p.invuln <= 0.0:
+			p.take_damage(GameState.enemy_damage(damage), position)
+			if inflicts != "":
+				GameState.status_apply(inflicts, tier)
+			life = 0.0
+		if life <= 0.0 or map.rect_blocked(Rect2(position + Vector2(-2, -1), Vector2(4, 2))):
+			map.fx("poof", position, 14.0, 0.35)
+			queue_free()
+		queue_redraw()
+
+	func _draw() -> void:
+		draw_circle(Vector2.ZERO, 3.0, colour)
+		draw_circle(Vector2.ZERO, 1.5, Color(1, 1, 1, 0.8))
 
 
 func _die() -> void:
@@ -243,7 +440,9 @@ func _draw() -> void:
 	if max_hp > 3:
 		var top := -30.0 if max_hp < 30 else -60.0
 		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))
-		draw_rect(Rect2(-10, top, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2))
+		draw_rect(Rect2(-10, top, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2) if _shield <= 0.0 else Color(0.5, 0.7, 1.0))
+		for i in tier:
+			draw_rect(Rect2(-10 + i * 4, top - 4, 3, 2), Color(1.0, 0.85, 0.3))
 	if _sprite:
 		return
 	# Procedural fallback: a stormy little cloud.

@@ -1185,10 +1185,10 @@ func damage_number(at: Vector2, n: int, col := Color.WHITE) -> void:
 	tw.chain().tween_callback(l.queue_free)
 
 
-func spawn_enemy(kind: String, at: Vector2) -> Enemy:
+func spawn_enemy(kind: String, at: Vector2, tier_override := -1) -> Enemy:
 	var e := Enemy.new()
 	e.map = self
-	e.setup(kind)
+	e.setup(kind, tier_override)
 	e.position = at
 	add_child(e)
 	enemies.append(e)
@@ -1201,9 +1201,13 @@ func on_enemy_died(e: Enemy) -> void:
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
 	hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(e.kind, {})
-	xp("combat", int(ed.get("xp", 2)))
+	xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
 	var table: Array = GameState.enemy_data.get("drops", {}).get(e.kind, [])
 	var got := GameState.roll_drops(table)
+	if e.tier > GameState.enemy_tier(e.kind) and randf() < 0.5 * GameState.tier_scale(e.kind, e.tier, "loot"):
+		var extra := GameState.roll_drops(table)
+		for id: String in extra:
+			got[id] = int(got.get(id, 0)) + int(extra[id])
 	for id: String in got:
 		pop_items(e.position, id, int(got[id]))
 	var kc: Dictionary = GameState.run.get("kill_counts", {})
