@@ -15239,9 +15239,9 @@
    "cell_h": 112,
    "cell_w": 114,
    "file": "characters/bo/celebrate.png",
-   "frames": 4,
+   "frames": 3,
    "h": 112,
-   "w": 456
+   "w": 342
   },
   "eat_down": {
    "cell_h": 112,
@@ -19140,9 +19140,9 @@
    "cell_h": 112,
    "cell_w": 112,
    "file": "characters/marisol/axe_down.png",
-   "frames": 3,
+   "frames": 2,
    "h": 112,
-   "w": 336
+   "w": 224
   },
   "axe_right": {
    "cell_h": 112,
@@ -20500,9 +20500,9 @@
    "cell_h": 96,
    "cell_w": 116,
    "file": "characters/merry/wave.png",
-   "frames": 3,
+   "frames": 2,
    "h": 96,
-   "w": 348
+   "w": 232
   }
  },
  "characters/nia": {
@@ -20678,9 +20678,9 @@
    "cell_h": 112,
    "cell_w": 63,
    "file": "characters/nia/pickaxe_up.png",
-   "frames": 3,
+   "frames": 2,
    "h": 112,
-   "w": 189
+   "w": 126
   },
   "powerup": {
    "cell_h": 112,
@@ -20694,9 +20694,9 @@
    "cell_h": 112,
    "cell_w": 81,
    "file": "characters/nia/reel_right.png",
-   "frames": 3,
+   "frames": 1,
    "h": 112,
-   "w": 243
+   "w": 81
   },
   "ride": {
    "cell_h": 151,
@@ -24261,9 +24261,9 @@
    "cell_h": 108,
    "cell_w": 68,
    "file": "characters/npc_old_moss/walk_up.png",
-   "frames": 4,
+   "frames": 3,
    "h": 108,
-   "w": 272
+   "w": 204
   },
   "wave": {
    "cell_h": 98,
@@ -26619,9 +26619,9 @@
    "cell_h": 112,
    "cell_w": 88,
    "file": "characters/ollie/hoe_up.png",
-   "frames": 3,
+   "frames": 2,
    "h": 112,
-   "w": 264
+   "w": 176
   },
   "hold_down": {
    "cell_h": 112,

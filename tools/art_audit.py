@@ -15,6 +15,10 @@ fix = "--fix" in sys.argv
 only = [a for a in sys.argv[1:] if not a.startswith("--")]
 issues = []
 changed = False
+# Frames known to be wrong on the source sheets (a portrait, a fishing line, a
+# neighbour) — dropped by --fix after every re-slice.
+KNOWN_DROPS = {("bo", "celebrate"): [0], ("marisol", "axe_down"): [0], ("nia", "reel_right"): [0, 1], ("ollie", "hoe_up"): [2],
+               ("npc_old_moss", "walk_up"): [3], ("merry", "wave"): [2], ("nia", "pickaxe_up"): [0]}
 
 def frames_of(key, name):
     info = m.get(key, {}).get(name)
@@ -62,7 +66,8 @@ for key in sorted(k for k in m if k.startswith("characters/")):
         if fix:
             # Drop empty frames and tiny fragments (a stray sparkle caught as a
             # frame), then shift each frame so its feet sit on the strip's median.
-            keep = [i for i, b in enumerate(boxes) if b and (b[3] - b[1]) >= 0.3 * mh and (b[2] - b[0]) >= 0.2 * mw]
+            drop = KNOWN_DROPS.get((cid, name), [])
+            keep = [i for i, b in enumerate(boxes) if i not in drop and b and (b[3] - b[1]) >= 0.3 * mh and (b[2] - b[0]) >= 0.2 * mw]
             if not keep:
                 continue
             out = Image.new("RGBA", (cw * len(keep), ch), (0, 0, 0, 0))
