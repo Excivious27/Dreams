@@ -1288,3 +1288,10 @@ static func load_json(path: String) -> Dictionary:
 		return {}
 	var parsed: Variant = JSON.parse_string(f.get_as_text())
 	return parsed if parsed is Dictionary else {}
+
+
+static func look_d() -> Dictionary:
+	var lk: Variant = run.get("look", {})
+	if lk is Dictionary:
+		return lk
+	return {}

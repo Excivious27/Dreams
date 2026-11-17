@@ -67,6 +67,10 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _sleep() -> void:
+	if Net.online() and not Net.is_host():
+		Net.send_host({"k": "act", "a": "sleep"})
+		hud.toast("You're in bed. The day ends when everyone is.", Color(0.9, 0.95, 1.0))
+		return
 	player.frozen = true
 	await hud.fade_out(0.8)
 	var report := GameState.sleep()

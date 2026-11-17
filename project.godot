@@ -21,6 +21,10 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
 window/handheld/orientation=1
 
+[autoload]
+
+NetSvc="*res://scripts/net.gd"
+
 [input_devices]
 
 pointing/emulate_touch_from_mouse=false

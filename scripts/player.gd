@@ -221,8 +221,8 @@ func set_character(id: String) -> void:
 	else:
 		_anim = CharacterLibrary.make_sprite(id)
 		_anim.animation_finished.connect(_on_animation_finished)
-		if GameState.run.has("look") and str(GameState.run["look"].get("tint", "")) != "":
-			_anim.modulate = Color(str(GameState.run["look"].get("tint", "ffffff")))
+		if str(GameState.look_d().get("tint", "")) != "":
+			_anim.modulate = Color(str(GameState.look_d().get("tint", "ffffff")))
 		elif pdata.has("tint"):
 			_anim.modulate = Color(str(pdata["tint"]))
 		_sprite = _anim
@@ -274,6 +274,7 @@ func facing_dir() -> Vector2:
 var aim_cell := Vector2i(-1, -1)
 var _last_hit_enemy: Enemy = null
 var _ability_hold := 0.0
+var is_puppet := false
 var mouse_held := false
 var _hold_t := 0.0
 
@@ -357,7 +358,7 @@ func go_to_cell(c: Vector2i, interact_there: bool) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if _sprite == null:
+	if _sprite == null or is_puppet:
 		return
 	invuln = maxf(0.0, invuln - delta)
 	_attack_cd = maxf(0.0, _attack_cd - delta)
@@ -373,8 +374,8 @@ func _physics_process(delta: float) -> void:
 		var pdata: Dictionary = GameState.playables.get(pid, {})
 		if pdata.has("tint"):
 			base = Color(str(pdata["tint"]))
-		elif GameState.run.has("look"):
-			base = Color(str(GameState.run["look"].get("tint", "ffffff")))
+		else:
+			base = Color(str(GameState.look_d().get("tint", "ffffff")))
 		_anim.modulate = Color(base, 0.5 if invuln > 0.0 and int(invuln * 20) % 2 == 0 else 1.0)
 	if frozen:
 		velocity = Vector2.ZERO

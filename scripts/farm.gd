@@ -374,6 +374,7 @@ func _plans() -> void:
 		return
 	var id := str(ids[i])
 	var msg := Builds.start(id)
+	net_act({"a": "build", "id": id})
 	var ok := not msg.begins_with("Can't")
 	hud.toast(msg, Color(1, 0.9, 0.4) if ok else Color(1, 0.7, 0.7))
 	if not ok:
@@ -399,6 +400,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			hud.toast("Too tired.", Color(1, 0.7, 0.7))
 			return true
 		farm[key] = {"watered": false, "crop": "", "days": 0}
+		net_act({"a": "farm_tile", "key": key, "tile": farm[key]})
 		player.play_tool("hoe")
 		Music.instance(get_tree()).sfx("dig")
 		xp("farming", 1)
@@ -410,6 +412,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		if it.get("type", "") == "seed" and GameState.count(sel) > 0:
 			tile["crop"] = str(it["crop"])
 			tile["days"] = 0
+			net_act({"a": "farm_tile", "key": key, "tile": tile})
 			GameState.add_item(sel, -1)
 			player.play_tool("hoe")
 			Music.instance(get_tree()).sfx("plant")
@@ -438,6 +441,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		else:
 			tile["crop"] = ""
 			tile["days"] = 0
+		net_act({"a": "farm_tile", "key": key, "tile": tile})
 		_check_first_harvest()
 		queue_redraw()
 		return true
@@ -456,6 +460,10 @@ func _water(tile: Dictionary) -> bool:
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return true
 	tile["watered"] = true
+	for k in GameState.run["farm"]:
+		if GameState.run["farm"][k] == tile:
+			net_act({"a": "farm_tile", "key": str(k), "tile": tile})
+			break
 	player.play_tool("water")
 	Music.instance(get_tree()).sfx("water")
 	queue_redraw()
@@ -474,6 +482,7 @@ func _sellbox(sel: String) -> void:
 		var n := GameState.count(sel)
 		box[sel] = int(box.get(sel, 0)) + n
 		GameState.add_item(sel, -n)
+		net_act({"a": "sellbox", "id": sel, "n": n})
 		var est := GameState.sell_price(sel, n)
 		hud.toast("Put %d %s in the sell box (about ◆%d tonight%s)." % [n, GameState.item_name(sel), est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
 		Music.instance(get_tree()).sfx("pickup")

@@ -1,0 +1,9 @@
+{
+  "name": "dreams-relay",
+  "version": "0.1.0",
+  "description": "WebSocket relay for Dreams multiplayer rooms (up to 8 players). Host-authoritative: the host's save is the world; the relay only forwards.",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "ws": "^8.17.0" },
+  "engines": { "node": ">=18" }
+}

@@ -102,7 +102,7 @@ func _ready() -> void:
 		var pt := Pet.new()
 		pt.map = self
 		pet = pt
-		var pet_kind := str(GameState.run.get("look", {}).get("pet", ""))
+		var pet_kind := str(GameState.look_d().get("pet", ""))
 		if pet_kind != "" and Art.has("animals/" + pet_kind, "idle"):
 			# Prompts-09 pets (corgi, shepherd, hound, white dog, cats); "" = Tom's original pup.
 			_pet_anim = AnimatedSprite2D.new()
@@ -140,6 +140,17 @@ func _ready() -> void:
 		comp.position = player.position + Vector2(14, 6)
 		add_child(comp)
 		companion = comp
+
+	if Net.online():
+		Net.peers_changed.connect(_sync_puppets)
+		_sync_puppets()
+		Net._send({"t": "scene", "scene": scene_id()})
+	elif Net.i() != null:
+		# Still connecting when the scene loaded: hook up once we're online.
+		Net.connected.connect(func(_h: bool) -> void:
+			Net.peers_changed.connect(_sync_puppets)
+			_sync_puppets()
+			Net._send({"t": "scene", "scene": scene_id()}))
 
 	var cam := Camera2D.new()
 	cam.limit_left = 0
@@ -885,6 +896,41 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 	return door
 
 
+# ---- multiplayer ---------------------------------------------------------------
+var _puppets := {}
+var _puppet_t := 0.0
+
+
+func _sync_puppets() -> void:
+	for id in Net.peers:
+		var info: Dictionary = Net.peers[id]
+		var here := str(info.get("scene", "")) == scene_id()
+		if here and not _puppets.has(id):
+			var pp := Puppet.new()
+			pp.setup(int(id), self)
+			add_child(pp)
+			_puppets[id] = pp
+		elif not here and _puppets.has(id):
+			(_puppets[id] as Node).queue_free()
+			_puppets.erase(id)
+	for id in _puppets.keys():
+		if not Net.peers.has(id):
+			(_puppets[id] as Node).queue_free()
+			_puppets.erase(id)
+
+
+## The host changed the world: redraw what's visible. Guests only.
+func on_world_sync(_d: Dictionary) -> void:
+	queue_redraw()
+
+
+## Guests route world changes through the host.
+func net_act(d: Dictionary) -> void:
+	if Net.online() and not Net.is_host():
+		d["k"] = "act"
+		Net.send_host(d)
+
+
 func _refresh_party() -> void:
 	if companion:
 		companion.queue_free()
@@ -1322,6 +1368,11 @@ func _process(delta: float) -> void:
 		var fc := player.facing_cell()
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
 	Events.tick(self, delta)
+	if Net.online():
+		_puppet_t += delta
+		if _puppet_t > 1.0:
+			_puppet_t = 0.0
+			_sync_puppets()
 	for c: Vector2i in _sign_labels:
 		(_sign_labels[c] as Label).visible = player.position.distance_to(cell_center(c)) < 30.0
 	update_enemies(delta)

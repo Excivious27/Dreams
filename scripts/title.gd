@@ -110,7 +110,44 @@ func _show_title() -> void:
 		var n: String = GameState.run["names"]["character"]
 		_page.add_child(_button("Continue as %s" % n, _start_game, true))
 	_page.add_child(_button("New game", _show_arcs, true))
+	if GameState.has_run():
+		_page.add_child(_button("Play together", _show_net))
 	_page.add_child(_button("Character test map", func() -> void: get_tree().change_scene_to_file("res://scenes/test_map.tscn")))
+
+
+var _net_url: LineEdit
+var _net_code: LineEdit
+var _net_status: Label
+
+
+func _show_net() -> void:
+	_clear()
+	_page.add_child(_label("Play together", 16))
+	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 7, false))
+	_net_url = _edit("Server (wss://...)", str(SaveGame.get_value("net_url", "")))
+	_net_url.max_length = 120
+	_net_code = _edit("Room code (to join)", "")
+	_net_code.max_length = 4
+	_net_status = _label("", 8, false)
+	_page.add_child(_button("Host a room", func() -> void:
+		_net_status.text = "Connecting..."
+		Net.host(_net_url.text), true))
+	_page.add_child(_button("Join with code", func() -> void:
+		_net_status.text = "Connecting..."
+		Net.join(_net_url.text, _net_code.text), true))
+	_page.add_child(_button("Back", _show_title))
+	if not Net.connected.is_connected(_on_net_connected):
+		Net.connected.connect(_on_net_connected)
+		Net.disconnected.connect(func(why: String) -> void:
+			if is_instance_valid(_net_status):
+				_net_status.text = why)
+
+
+func _on_net_connected(is_host: bool) -> void:
+	if is_instance_valid(_net_status):
+		_net_status.text = "Connected. Room %s. %s" % [Net.room, "You're hosting; share the code." if is_host else "Joined."]
+	await get_tree().create_timer(0.8).timeout
+	_start_game()
 
 
 func _show_arcs() -> void:

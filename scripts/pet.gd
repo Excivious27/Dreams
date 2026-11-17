@@ -91,7 +91,7 @@ func refresh_gear() -> void:
 	for k in _gear_sprites:
 		(_gear_sprites[k] as Node).queue_free()
 	_gear_sprites.clear()
-	var who := "cat" if str(GameState.run.get("look", {}).get("pet", "")).begins_with("cat") else "dog"
+	var who := "cat" if str(GameState.look_d().get("pet", "")).begins_with("cat") else "dog"
 	var st := state()
 	var map_names := {"collar": {"pup_collar_leather": "collar_leather", "pup_collar_iron": "collar_iron", "pup_collar_crystal": "collar_crystal"}, "pack": {"pup_pack_small": "pack_small", "pup_pack_large": "pack_large"}, "boots": {"pup_boots": "boots"}}
 	if GameState.bonus("pup", "bedroll") > 0.0 and str(st["gear"].get("pack", "")) == "pup_pack_large":
