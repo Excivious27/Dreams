@@ -12,6 +12,8 @@
 - **Gangster arc only (`"arc": "gangsters"`):** print_shop, armory, soda, laundromat, training. `scripts/racket.gd` holds heat, passing bills, forged permits, the wash and sparring.
 - **Penguin arc only (`"arc": "penguins"`):** shaper, litter, campfire (stations); pool, burrow, shrine (buildings). `scripts/sanctuary.gd` holds overnight gifts (`run["gifts"]`), the shrine's Meow Pow Wow ranks and daily practice. Litter boxes read `radius` and `stun` from the item.
 - **Guns (gangster arc):** weapons with `range` fire from `player._fire()`: one `rounds` a shot, first enemy down the line (`spread` hits everyone close), tracer and dust puff only. No rounds: half-damage club.
+- **Hero picker:** a hero with no `card_hero_<id>` art gets a parchment card with its sprite (`title.gd _sprite_card`). The gangster picker dims the backdrop (`_mood`); the gangster arc's day/night tint is cooler and darker (`game_map.gd`).
+- **Gritty gangster redesign** is an art job: Prompts 15 batches 4–6 (w295–w302 hero sheets, w303 cards, w213–w218 crew redrawn).
 - **Data is generated:** `python3 tools/gen_stations.py` rebuilds the station entries, recipe books and goods. Edit that file, not the JSON, for station changes.
 - **Jobs:** `run["jobs"][station]` is a list (old single-job saves migrate). Batches of 1 / 5 / max. Keg jobs take days; everything else is ready by morning.
 - **Town benches:** `Crafting.run(m, station, title, "town")`; tier from the keeper's hearts, fee per piece. `"smith"` and `"alchemy"` are aliases.

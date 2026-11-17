@@ -88,6 +88,8 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 
 func _show_title() -> void:
 	_clear()
+	if is_inside_tree():
+		_mood(false)
 	var spacer := Control.new()
 	spacer.custom_minimum_size = Vector2(0, 150 if not Art.has("ui", "wordmark_glow") else 30)
 	_page.add_child(spacer)
@@ -158,6 +160,7 @@ func _on_net_connected(is_host: bool) -> void:
 
 func _show_arcs() -> void:
 	_clear()
+	_mood(false)
 	_page.add_child(_label("Choose your path", 16))
 	for arc_id: String in _arcs:
 		var arc: Dictionary = _arcs[arc_id]
@@ -171,8 +174,23 @@ func _show_arcs() -> void:
 	_page.add_child(_button("Back", _show_title))
 
 
+## The gangster path is told at night: the picker goes dark with it.
+func _mood(dark: bool) -> void:
+	if _shade == null:
+		_shade = ColorRect.new()
+		_shade.set_anchors_preset(PRESET_FULL_RECT)
+		_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(_shade)
+		move_child(_shade, 1)
+	_shade.color = Color(0.03, 0.03, 0.07, 0.72) if dark else Color(0, 0, 0, 0)
+
+
+var _shade: ColorRect
+
+
 func _show_characters() -> void:
 	_clear()
+	_mood(_arc == "gangsters")
 	_page.add_child(_label("Who are you?", 16))
 	_preview_holder = Control.new()
 	_preview_holder.custom_minimum_size = Vector2(0, 70)
@@ -202,10 +220,44 @@ func _show_characters() -> void:
 			tb.pressed.connect(func() -> void: _pick(pid))
 			grid.add_child(tb)
 		else:
-			grid.add_child(_button(name, func() -> void: _pick(pid)))
+			grid.add_child(_sprite_card(pid, name) if cards else _button(name, func() -> void: _pick(pid)))
 	_page.add_child(_label("Pick a hero and play as them, or build your own.", 7, false))
 	_page.add_child(_button("Back", _show_arcs))
 	_pick(_playable if _playable in ids else ids[0])
+
+
+## A hero with no painted card yet: a parchment card with their own sprite on it.
+func _sprite_card(pid: String, name: String) -> Control:
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(56, 78)
+	b.tooltip_text = name
+	b.clip_contents = true
+	for st in ["normal", "hover", "pressed", "focus"]:
+		b.add_theme_stylebox_override(st, Hud.panel_stylebox("panel_parchment"))
+	b.pressed.connect(func() -> void: _pick(pid))
+	var sprite_id := GameState.sprite_for_playable(pid, _arc)
+	var tex: Texture2D = null
+	if sprite_id != "":
+		var sf := CharacterLibrary.frames_for(sprite_id)
+		for a in ["view_front", "idle", "walk_down"]:
+			if sf.has_animation(a) and sf.get_frame_count(a) > 0:
+				tex = sf.get_frame_texture(a, 0)
+				break
+	if tex:
+		var tr := TextureRect.new()
+		tr.texture = tex
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		tr.set_anchors_preset(PRESET_FULL_RECT)
+		tr.offset_left = 7; tr.offset_right = -7; tr.offset_top = 9; tr.offset_bottom = -9
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(tr)
+	else:
+		b.text = name
+		b.add_theme_font_size_override("font_size", 7)
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	return b
 
 
 func _pick(pid: String) -> void:

@@ -1561,7 +1561,9 @@ func _process(delta: float) -> void:
 	var dark := clampf((t - 18 * 60) / 360.0, 0.0, 1.0)
 	if int(GameState.run["flags"].get("glow_day", -1)) == int(GameState.run["day"]):
 		dark *= 0.3
-	_night.color = Color(1, 1, 1).lerp(Color(0.45, 0.5, 0.8), dark * 0.6)
+	# The gangster arc is a darker world: overcast by day, deeper at night.
+	var day_col := Color(0.84, 0.86, 0.93) if Racket.on() and has_sky else Color(1, 1, 1)
+	_night.color = day_col.lerp(Color(0.38, 0.42, 0.7) if Racket.on() else Color(0.45, 0.5, 0.8), dark * (0.7 if Racket.on() else 0.6))
 	if player and hud:
 		var fc := player.facing_cell()
 		hud.set_hint(hint_for(fc, things.get(fc, {})))

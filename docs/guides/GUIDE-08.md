@@ -131,7 +131,14 @@ The penguins' own shelf on the Plans board, drawn from the book.
 
 ## Your art job: Art Prompts 15
 
-11 images in three batches (5, 3, 3): workshop goods icons, the station tiers, vehicles and the rocket, Granite and Sel's portraits; then the gangster stations, street-gear icons and UI; then the penguin sanctuary stations, icons and extras. Until they arrive, new stations show as crates with the station's name, and new items have blank icons. The file is `docs/ART-PROMPTS-15.md`.
+26 images in six batches. The file is `docs/ART-PROMPTS-15.md`.
+
+- **Batches 1–3 (5, 3, 3 images): the workshop.** Goods icons, station tiers, vehicles and the rocket, Granite and Sel's portraits; the gangster stations, street-gear icons and UI; the penguin sanctuary stations, icons and extras. Until they arrive, new stations show as crates with the station's name, and new items have blank icons.
+- **Batches 4–6 (4, 4, 7 images): the gritty gangster redesign.** Every gangster-arc hero and all twelve crew redrawn in a dark underworld style: muted night colours, hat-brim shadows, serious faces, long coats. Plus dark select cards. Attach each character's current picture so they stay the same person.
+
+**Done in the game already for the darker look:** the gangster hero picker is now a night scene, and the gangster arc's world is overcast by day and deeper at night. The characters themselves only change when the new art arrives.
+
+**Fixed:** Coldy and Big Jim had no card art on the hero picker, so they showed as text boxes. They now show their own sprite on a card. Their painted cards are still owed from Prompts 13.
 
 ## Still open
 
