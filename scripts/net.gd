@@ -27,6 +27,11 @@ var _pending_join := {}
 var _world_t := 0.0
 var _last_world := {}
 var _arc_mismatch := false
+# Reconnect: after an unexpected drop, try to rejoin the same room a few times.
+var _retries := 0
+var _retry_t := 0.0
+var _last_room := ""
+const MAX_RETRIES := 3
 
 
 func _ready() -> void:
@@ -68,6 +73,8 @@ func join(u: String, code: String) -> void:
 
 
 func leave() -> void:
+	_retries = MAX_RETRIES  # a deliberate leave never reconnects
+	_last_room = ""
 	if ws:
 		ws.close()
 	ws = null
@@ -102,6 +109,12 @@ func send_host(d: Dictionary) -> void:
 
 func _process(delta: float) -> void:
 	if ws == null:
+		if _retry_t > 0.0:
+			_retry_t -= delta
+			if _retry_t <= 0.0 and _last_room != "" and _retries < MAX_RETRIES:
+				_retries += 1
+				_pending_join = {"t": "join", "room": _last_room, "create": false, "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
+				_connect(url)
 		return
 	ws.poll()
 	var st := ws.get_ready_state()
@@ -130,6 +143,9 @@ func _process(delta: float) -> void:
 		my_id = -1
 		peers.clear()
 		peers_changed.emit()
+		if _last_room != "" and _retries < MAX_RETRIES:
+			_retry_t = 2.0 * (_retries + 1)
+			why += "; reconnecting (%d/%d)" % [_retries + 1, MAX_RETRIES]
 		disconnected.emit(why)
 
 
@@ -138,6 +154,8 @@ func _on_msg(m: Dictionary) -> void:
 		"joined":
 			my_id = int(m["id"])
 			room = str(m["room"])
+			_last_room = room
+			_retries = 0
 			_host = bool(m.get("host", false))
 			for p in m.get("peers", []):
 				peers[int(p["id"])] = p

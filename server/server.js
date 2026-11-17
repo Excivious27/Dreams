@@ -24,8 +24,11 @@ const wss = new WebSocketServer({ port: PORT });
 console.log("dreams relay on", PORT);
 
 wss.on("connection", (ws) => {
-  ws.id = nextId++; ws.room = null; ws.info = {};
+  ws.id = nextId++; ws.room = null; ws.info = {}; ws.isAlive = true; ws.budget = 120;
+  ws.on("pong", () => { ws.isAlive = true; });
   ws.on("message", (buf) => {
+    if (buf.length > 65536) return;                 // nothing in the protocol is this big
+    if (--ws.budget < 0) return;                     // flood guard: ~120 msgs/s (refilled below)
     let m; try { m = JSON.parse(buf.toString()); } catch { return; }
     if (m.t === "join") {
       let r = m.room ? String(m.room).toUpperCase() : "";
@@ -55,3 +58,6 @@ wss.on("connection", (ws) => {
   });
 });
 setInterval(() => { for (const [k, r] of rooms) if (!r.peers.size && r.emptySince && Date.now() - r.emptySince > TTL) rooms.delete(k); }, 60000);
+// Heartbeat: a socket that misses two pings (30 s) is dropped so its room frees up.
+setInterval(() => { for (const ws of wss.clients) { if (!ws.isAlive) { ws.terminate(); continue; } ws.isAlive = false; ws.ping(); } }, 15000);
+setInterval(() => { for (const ws of wss.clients) ws.budget = 120; }, 1000);

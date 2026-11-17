@@ -308,3 +308,6 @@
 
 ## 2026-11-17 — Round 5 audio, pass 1
 - Music crossfades (0.9 s) between areas on a spare player; SFX get ±7% pitch drift. Five new placeholder tracks: lake (lake, riverlands), mountain (mountain, highlands), beach, sky (sky, station), cattopia (crystal meadow in the penguin arc, jungle). Real tracks drop in under the same names.
+
+## 2026-11-17 — Round 6 multiplayer hardening, pass 1
+- net_test (host + guest + local relay) green. Client: after an unexpected drop it rejoins the same room up to 3 times (2/4/6 s backoff); a deliberate leave never reconnects. Relay: ping/pong heartbeat drops dead sockets after 30 s, 64 KB frame cap, ~120 msgs/s per socket flood guard.
