@@ -38,7 +38,8 @@ func _run() -> void:
 		if str(m.things[k].get("type", "")) == "down":
 			downs += 1
 	check(downs == 0, "no shaft on a fresh floor")
-	# Dig: break rocks via interact until the keeper wakes.
+	# Dig: break rocks via interact until the keeper wakes (pickaxe in hand).
+	GameState.select_slot((GameState.run["toolbar"] as Array).find("pickaxe"))
 	var broke := 0
 	for k in m.things.keys():
 		var t: Dictionary = m.things.get(k, {})
