@@ -98,7 +98,6 @@ func _run() -> void:
 		print("fresh mining rect ", row.get_global_rect())
 		await mouse_click(row.get_global_rect().get_center())
 		print("fresh click 1 frame later: skill_open=", menu._skill_open)
-		await mouse_click(row.get_global_rect().get_center())
 		check(menu._skill_open == "mining", "mouse click on Mining row opens tree (%s)" % menu._skill_open)
 	await shot("ui_skills")
 	await press("menu", 2)
@@ -109,14 +108,10 @@ func _run() -> void:
 	d.say([{"text": "one"}, {"text": "two"}])
 	await frames(6)
 	check(d.active, "dialogue open")
-	await mouse_click(Vector2(135, 240))
-	await frames(3)
-	await mouse_click(Vector2(135, 240))
-	await frames(3)
-	await mouse_click(Vector2(135, 240))
-	await frames(3)
-	await mouse_click(Vector2(135, 240))
-	await frames(3)
+	for i in 4:
+		await mouse_click(Vector2(135, 240))
+		await frames(3)
+		print("dialogue click %d: active=%s typing=%s paused=%s text=%s" % [i, d.active, d._typing, paused, d._text.text])
 	check(not d.active, "mouse clicks advance and close the dialogue")
 	# Left click on the house door walks there and enters.
 	var m := current_scene as GameMap

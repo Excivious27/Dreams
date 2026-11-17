@@ -28,16 +28,55 @@ func _ready() -> void:
 	_build()
 
 
+func _draw() -> void:
+	# Prompts-12C creator panel behind everything (drawn by the container itself).
+	if Art.has("ui_creator2", "panel"):
+		draw_texture_rect(Art.tex("ui_creator2", "panel"), Rect2(Vector2(-10, -12), size + Vector2(20, 46)), false)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_RESIZED:
+		queue_redraw()
+
+
+## A picture button from art/gen/ui_creator2 when the piece exists, else text.
+func _icon_btn(piece: String, text: String, cb: Callable, primary := false) -> Control:
+	if not Art.has("ui_creator2", piece):
+		return _btn(text, cb, primary)
+	var b := TextureButton.new()
+	b.texture_normal = Art.tex("ui_creator2", piece)
+	if Art.has("ui_creator2", piece + "_down"):
+		b.texture_pressed = Art.tex("ui_creator2", piece + "_down")
+	b.ignore_texture_size = true
+	b.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+	var t := b.texture_normal
+	var h := 22.0
+	b.custom_minimum_size = Vector2(t.get_width() * h / t.get_height(), h)
+	b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	b.pressed.connect(cb)
+	return b
+
+
 func _build() -> void:
 	for c in get_children():
 		c.queue_free()
 	var title := Label.new()
-	title.text = "Your look"
+	title.text = "" if Art.has("ui_creator2", "panel") else "Your look"
 	title.add_theme_font_size_override("font_size", 16)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.custom_minimum_size = Vector2(0, 26)  # clears the panel's crest
 	add_child(title)
-	_preview_holder = Control.new()
-	_preview_holder.custom_minimum_size = Vector2(0, 96)
+	if Art.has("ui_creator2", "preview"):
+		var fr := TextureRect.new()
+		fr.texture = Art.tex("ui_creator2", "preview")
+		fr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		fr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		fr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		fr.custom_minimum_size = Vector2(0, 104)
+		_preview_holder = fr
+	else:
+		_preview_holder = Control.new()
+		_preview_holder.custom_minimum_size = Vector2(0, 96)
 	add_child(_preview_holder)
 	_preview = Node2D.new()
 	_preview.position = Vector2(123, 86)
@@ -84,7 +123,7 @@ func _build() -> void:
 	h.alignment = BoxContainer.ALIGNMENT_CENTER
 	h.add_theme_constant_override("separation", 6)
 	add_child(h)
-	h.add_child(_btn("Random", func() -> void:
+	h.add_child(_icon_btn("dice", "Random", func() -> void:
 		if _playable_sprite == "penguin":
 			look["tint_name"] = PaperDoll.PENGUIN_TINTS.keys()[randi() % PaperDoll.PENGUIN_TINTS.size()]
 			look["scarf"] = PaperDoll.SCARF_COLORS.keys()[randi() % PaperDoll.SCARF_COLORS.size()]
@@ -93,9 +132,9 @@ func _build() -> void:
 		else:
 			look = PaperDoll.random_look()
 		_build()))
-	h.add_child(_btn("Done", func() -> void: done.emit(look), true))
+	h.add_child(_icon_btn("done", "Done", func() -> void: done.emit(look), true))
 	if _show_cancel:
-		h.add_child(_btn("Cancel", func() -> void: cancelled.emit()))
+		h.add_child(_icon_btn("x", "Cancel", func() -> void: cancelled.emit()))
 
 
 func _picker(label: String, options: Array, key: String, pretty: Callable) -> void:
@@ -113,14 +152,14 @@ func _picker(label: String, options: Array, key: String, pretty: Callable) -> vo
 	if idx < 0:
 		idx = 0
 		look[key] = options[0]
-	h.add_child(_btn("<", func() -> void: look[key] = options[(idx - 1 + options.size()) % options.size()]; _build()))
+	h.add_child(_icon_btn("arrow_l", "<", func() -> void: look[key] = options[(idx - 1 + options.size()) % options.size()]; _build()))
 	var nm := Label.new()
 	nm.text = str(pretty.call(str(options[idx])))
 	nm.add_theme_font_size_override("font_size", 9)
 	nm.custom_minimum_size = Vector2(84, 0)
 	nm.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	h.add_child(nm)
-	h.add_child(_btn(">", func() -> void: look[key] = options[(idx + 1) % options.size()]; _build()))
+	h.add_child(_icon_btn("arrow_r", ">", func() -> void: look[key] = options[(idx + 1) % options.size()]; _build()))
 	_rows.add_child(h)
 
 

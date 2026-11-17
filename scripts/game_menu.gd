@@ -285,15 +285,7 @@ func _refresh() -> void:
 			for cid in pt["known"]:
 				var cd: Dictionary = Companion.defs().get(cid, {})
 				var card := "party_card_" + str(cd.get("sprite", cid)) + ("_sel" if cid == act else "")
-				if Art.has("ui", card):
-					var tr := TextureRect.new()
-					tr.texture = Art.tex("ui", card)
-					tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-					tr.custom_minimum_size = Vector2(0, 30)
-					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-					tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-					_body.add_child(tr)
-				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))], func() -> void:
+				var pick := func() -> void:
 					pt["active"] = "" if act == cid else cid
 					var m := get_tree().current_scene
 					if m is GameMap and (m as GameMap).has_method("_refresh_party"):
@@ -303,7 +295,35 @@ func _refresh() -> void:
 						GameMap.next_spawn = (m as GameMap).player.position - (m as GameMap).offset()
 						get_tree().reload_current_scene()
 						return
-					_refresh())
+					_refresh()
+				if Art.has("ui", card):
+					# Prompts-12C partner card: the card is the button; name and ability beside it.
+					var h := HBoxContainer.new()
+					h.add_theme_constant_override("separation", 4)
+					_body.add_child(h)
+					var tb := TextureButton.new()
+					tb.texture_normal = Art.tex("ui", card)
+					tb.ignore_texture_size = true
+					tb.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
+					tb.custom_minimum_size = Vector2(104, 34)
+					tb.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+					tb.pressed.connect(pick)
+					h.add_child(tb)
+					var col := VBoxContainer.new()
+					col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+					h.add_child(col)
+					var nm := Label.new()
+					nm.text = ("▶ " if cid == act else "") + str(cd.get("name", cid))
+					nm.add_theme_font_size_override("font_size", 8)
+					col.add_child(nm)
+					var ab := Label.new()
+					ab.text = "%s: %s" % [str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))]
+					ab.add_theme_font_size_override("font_size", 6)
+					ab.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+					ab.modulate = Color(0.85, 0.85, 0.8)
+					col.add_child(ab)
+					continue
+				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))], pick)
 				b.add_theme_font_size_override("font_size", 7)
 			if act != "":
 				_line("  Hold B while standing still to use the active partner's ability.", 7, Color(0.8, 0.8, 0.8))
