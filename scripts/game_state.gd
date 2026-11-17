@@ -123,10 +123,12 @@ static func is_penguins() -> bool:
 	return run.get("arc", "") == "penguins"
 
 
-static func sprite_for_playable(playable_id: String) -> String:
+static func sprite_for_playable(playable_id: String, arc := "") -> String:
 	load_data()
 	var sprite := str(playables.get(playable_id, {}).get("sprite", ""))
-	if run.get("arc", "") == "gangsters" and CharacterLibrary.has_character(sprite + "_gang"):
+	if arc == "":
+		arc = str(run.get("arc", ""))
+	if arc == "gangsters" and CharacterLibrary.has_character(sprite + "_gang"):
 		sprite += "_gang"
 	if sprite != "" and not CharacterLibrary.has_character(sprite):
 		return ""

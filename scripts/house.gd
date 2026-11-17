@@ -164,11 +164,14 @@ func _place_props() -> void:
 ## The dresser: read the journal or change your look (hair, hat, body).
 func _dresser() -> void:
 	var d := Dialogue.instance(get_tree())
-	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": ["Journal", "Change my look", "Close"], "key": ""}])
+	var pdata: Dictionary = GameState.playables.get(str(GameState.run.get("playable", "")), {})
+	var sprite_id := GameState.sprite_for_playable(str(GameState.run.get("playable", "")))
+	var can_look := (bool(pdata.get("custom", false)) and PaperDoll.available()) or sprite_id == "penguin"
+	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": ["Journal", "Change my look", "Close"] if can_look else ["Journal", "Close"], "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
 		_journal()
-	elif d.last_choice == 1 and PaperDoll.available():
+	elif d.last_choice == 1 and can_look:
 		player.frozen = true
 		var layer := CanvasLayer.new()
 		layer.layer = 12
@@ -177,7 +180,7 @@ func _dresser() -> void:
 		panel.size = Vector2(254, 330)
 		panel.add_theme_stylebox_override("panel", Hud.panel_stylebox("panel_wood"))
 		layer.add_child(panel)
-		var cr := Creator.new(GameState.run.get("look", {}), "", true)
+		var cr := Creator.new(GameState.run.get("look", {}), sprite_id if sprite_id == "penguin" else "", true)
 		panel.add_child(cr)
 		add_child(layer)
 		get_tree().paused = true

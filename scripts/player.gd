@@ -187,7 +187,9 @@ func set_character(id: String) -> void:
 	var pid := str(GameState.run.get("playable", ""))
 	var pdata: Dictionary = GameState.playables.get(pid, {})
 	var look: Dictionary = GameState.run.get("look", {})
-	_doll = PaperDoll.available() and look.has("body") and not str(pdata.get("sprite", "")) in ["penguin", "dog", ""]
+	# The paper doll is only for "build your own" heroes (or old saves that
+	# dressed a drawn hero); precreated heroes are drawn as themselves.
+	_doll = PaperDoll.available() and look.has("body") and bool(pdata.get("custom", false))
 	if _doll:
 		# Paper doll: body base + hair + hat layers (see PaperDoll).
 		_anim = AnimatedSprite2D.new()

@@ -12,6 +12,7 @@ var _page: VBoxContainer
 var _preview_holder: Control
 var _preview: Node2D
 var _name_edit: LineEdit
+var _next_btn: Button
 var _town_edit: LineEdit
 var _pet_edit: LineEdit
 
@@ -182,6 +183,7 @@ func _show_characters() -> void:
 		if bool(p.get("placeholder", false)):
 			name += " (art soon)"
 		grid.add_child(_button(name, func() -> void: _pick(pid)))
+	_page.add_child(_label("Pick a hero and play as them, or build your own.", 7, false))
 	_page.add_child(_button("Back", _show_arcs))
 	_pick(ids[0])
 
@@ -193,8 +195,25 @@ func _pick(pid: String) -> void:
 	_preview = Node2D.new()
 	_preview.position = Vector2(_preview_holder.size.x / 2.0 if _preview_holder.size.x > 0 else 123, 62)
 	_preview_holder.add_child(_preview)
-	var sprite_id := GameState.sprite_for_playable(pid)
-	if sprite_id != "":
+	var sprite_id := GameState.sprite_for_playable(pid, _arc)
+	_look_full = {}  # a new pick starts clean; the look is only for penguins and custom heroes
+	if bool(_playables[pid].get("custom", false)) and PaperDoll.available():
+		# Build-your-own: preview a paper doll.
+		var cr := Creator.new(PaperDoll.random_look(), "", false)
+		_preview.add_child(cr)
+		cr.visible = false
+		var body := AnimatedSprite2D.new()
+		body.sprite_frames = PaperDoll.body_frames(cr.look)
+		body.centered = true
+		body.offset = Vector2(0, -48)
+		var h := float(PaperDoll.anchor_of("body", str(cr.look.get("body", "medium_slim")), 0)[4])
+		var sc := 1.6 * CharacterLibrary.HERO_H / maxf(40.0, h)
+		body.scale = Vector2(sc, sc)
+		body.play("walk_down")
+		body.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		_preview.add_child(body)
+		_look_full = cr.look.duplicate()
+	elif sprite_id != "":
 		var s := CharacterLibrary.make_sprite(sprite_id)
 		s.scale *= 1.6
 		s.play("idle")
@@ -204,12 +223,15 @@ func _pick(pid: String) -> void:
 		ph.tint = Color(str(_playables[pid].get("color", "888888")))
 		ph.scale = Vector2(1.6, 1.6)
 		_preview.add_child(ph)
-	var ok := _page.get_children().filter(func(c: Node) -> bool: return c.name == "NextBtn")
-	if ok.is_empty():
-		var b := _button("Next: your look", _show_look, true)
-		b.name = "NextBtn"
-		_page.add_child(b)
-		_page.move_child(b, _page.get_child_count() - 2)
+	if is_instance_valid(_next_btn):
+		_page.remove_child(_next_btn)
+		_next_btn.queue_free()
+	var is_custom := bool(_playables[pid].get("custom", false))
+	var is_penguin := sprite_id == "penguin"
+	_next_btn = _button("Next: your look" if (is_custom or is_penguin) else "Next: names", _show_look if (is_custom or is_penguin) else _show_names, true)
+	_next_btn.name = "NextBtn"
+	_page.add_child(_next_btn)
+	_page.move_child(_next_btn, _page.get_child_count() - 2)
 
 
 const LOOKS := {
@@ -226,15 +248,15 @@ var _look_full := {}
 
 func _show_look() -> void:
 	_clear()
-	var sprite_id := GameState.sprite_for_playable(_playable)
+	var sprite_id := GameState.sprite_for_playable(_playable, _arc)
 	if sprite_id == "penguin":
 		if _look_full.is_empty() or not _look_full.has("tint_name"):
 			_look_full = {"tint_name": "classic", "tint": "ffffff", "scarf": "red", "hat": "", "pet": ""}
-	elif not PaperDoll.available() or sprite_id in ["dog", ""]:
-		# No paper doll for this hero (placeholder): straight to names.
+	elif not bool(_playables[_playable].get("custom", false)) or not PaperDoll.available():
+		# Precreated heroes are played as drawn: straight to names.
 		_show_names()
 		return
-	elif _look_full.is_empty():
+	elif _look_full.is_empty() or not _look_full.has("body"):
 		_look_full = PaperDoll.random_look()
 	var cr := Creator.new(_look_full, sprite_id, false)
 	cr.done.connect(func(l: Dictionary) -> void: _look_full = l; _show_names())
@@ -270,8 +292,15 @@ func _begin() -> void:
 	var town := _town_edit.text.strip_edges()
 	var pet := _pet_edit.text.strip_edges()
 	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup")
-	GameState.run["look"] = _look_full.duplicate() if not _look_full.is_empty() else {"tint": "ffffff"}
-	if not GameState.run["look"].has("outfit"):
+	var is_custom := bool(_playables[_playable].get("custom", false))
+	var is_penguin := GameState.sprite_for_playable(_playable, _arc) == "penguin"
+	if is_custom or is_penguin:
+		GameState.run["look"] = _look_full.duplicate() if not _look_full.is_empty() else {"tint": "ffffff"}
+	else:
+		# Precreated hero: keep only the pet choice; no body/outfit so the drawn
+		# character is used, not the paper doll.
+		GameState.run["look"] = {"pet": str(_look_full.get("pet", ""))}
+	if is_custom and not GameState.run["look"].has("outfit"):
 		GameState.run["look"]["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"
 	_start_game()
 
