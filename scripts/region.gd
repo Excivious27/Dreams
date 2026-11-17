@@ -391,6 +391,9 @@ func _talk_npc(n: Npc) -> void:
 	if await Story.talk(self, id):
 		player.frozen = false
 		return
+	if await Hearts.talk(self, id):
+		player.frozen = false
+		return
 	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return
@@ -401,8 +404,11 @@ func _talk_npc(n: Npc) -> void:
 		GameState.run["talked_today"][id] = true
 		fr[id] = int(fr.get(id, 0)) + 5
 	var lines: Array = []
+	var hl := Hearts.daily(id)
+	if hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(id)) % 2 == 0:
+		lines.append({"who": name, "text": hl})
 	for nd in R.get("npcs", []):
-		if str(nd["id"]) == id:
+		if str(nd["id"]) == id and lines.is_empty():
 			var ls: Array = nd.get("lines", [])
 			if not ls.is_empty():
 				lines.append({"who": name, "text": str(ls[(int(GameState.run["day"]) + GameState.friend_hearts(id)) % ls.size()])})

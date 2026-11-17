@@ -256,3 +256,11 @@
 - Title: `custom` playable ("Build your own") in playable.json/arcs.json; precreated heroes skip the look step and never use the doll; `sprite_for_playable(id, arc)`; `_next_btn`. `tools/creator_test.gd`.
 - Docs: `docs/guides/GUIDE-04.md`, `docs/ART-PROMPTS-11.md` + `art-prompts-11.html` (6 images per batch; new heroes ×6 + gang versions, 12 recruitable gangsters, portraits/roster/shops/status icons, deep-mine tiers + keepers, ability fx + deep enemies).
 - Open: gangster chapters 2–5 + decisions, new heroes/gangsters once art lands, relay deploy, audio, Steam export.
+
+## 2026-11-16 (night) — Writing round 1
+- Main story data-driven: `data/story.json` + `scripts/story.gd` (triggers: scene/area, talk, quest_done, sleep; choices with branches/gates/effects_by_choice; effects incl. spawn story bosses, endings). Hooks: `GameMap._process` (Story.tick), town/interior/region/lake talk flows, Light Crystal, moon spire, uptown tower doors (`story` field on a region note), `House` morning. `GameState._cond_ok` gained flags/not_flags/decision/kills/companion/known/mine_floor/crystals/hearts_total/chapter/crops.
+- Both arcs have five chapters with real finales (Dark Crystal on the moon: revert/shatter; the President in the tower: free/take) and epilogues; decisions: tell_town, locket, knight_mercy, bell, letter, sell_letter, shop_1..3, ending. Bitter companions (`bitter_left`) stand with the Dark Crystal; bell_rung halves it; Knight's Shard +1 damage.
+- Crew: `data/crew.json` + `scripts/crew.gd` — 12 recruits, placed by `Crew.place` (before: districts; after: hideout), loyalty scenes every 3 days at the hideout (`Crew.talk`), perks via `Crew.perk_level` (sell bonus, sword, defence, status half, run speed, hideout heal, Halo rides). Placeholder thug sprites until Prompts 11 Batch 3.
+- Hearts: `data/hearts.json` (written by `tools/write_hearts.py`) + `scripts/hearts.gd` — 25 villagers × ♥2/4/6/8/10 scenes, ♥6 personal quest promotion, daily lines after milestones, ♥10 "fall" lines (journal hints).
+- Placeholder "(Tom: …)" notes stripped from all player-facing text.
+- Harnesses: `tools/story_test.gd` (50 beats both arcs), `tools/hearts_test.gd` (125 milestones). Both green.

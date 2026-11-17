@@ -227,6 +227,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 func _talk_marlowe() -> void:
 	player.frozen = true
 	var fr: Dictionary = GameState.run["friendship"]
+	if await Story.talk(self, "marlowe"):
+		player.frozen = false
+		return
+	if await Hearts.talk(self, "marlowe"):
+		player.frozen = false
+		return
 	if await Quests.talk(self, "marlowe", "Marlowe"):
 		player.frozen = false
 		return

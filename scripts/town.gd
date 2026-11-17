@@ -642,6 +642,9 @@ func _talk(n: Npc) -> void:
 	if await Story.talk(self, id):
 		player.frozen = false
 		return
+	if await Hearts.talk(self, id):
+		player.frozen = false
+		return
 	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return
@@ -651,7 +654,11 @@ func _talk(n: Npc) -> void:
 		var before := GameState.friend_hearts(id)
 		fr[id] = int(fr.get(id, 0)) + 5
 		_heart_unlock(id, before)
-	await say(_lines(id, int(fr.get(id, 0))))
+	var hl := Hearts.daily(id)
+	if hl != "" and (int(r["day"]) + GameState.friend_hearts(id)) % 2 == 0:
+		await say([{"who": name, "text": hl}])
+	else:
+		await say(_lines(id, int(fr.get(id, 0))))
 	player.frozen = false
 
 

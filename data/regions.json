@@ -25,7 +25,7 @@
      12.5
     ],
     "facing": "left",
-    "label": "\u25c0 meadow"
+    "label": "◀ meadow"
    }
   ],
   "paths": [
@@ -201,7 +201,7 @@
     "reward": "shard",
     "reward_n": 5,
     "max_hp": 2,
-    "after": "The spire hums, waiting. The Dark Crystal is somewhere past it. (Tom: chapter 3.)",
+    "after": "The spire hums, waiting. Something brass glints in the grey where he stood.",
     "hint": "A: the Commander",
     "solid": true
    },
@@ -290,7 +290,7 @@
      12.5
     ],
     "facing": "left",
-    "label": "\u25c0 outskirts"
+    "label": "◀ outskirts"
    },
    {
     "rect": [
@@ -305,7 +305,7 @@
      14
     ],
     "facing": "right",
-    "label": "docks \u25b6"
+    "label": "docks ▶"
    },
    {
     "rect": [
@@ -320,7 +320,7 @@
      26
     ],
     "facing": "up",
-    "label": "\u25b2 highway"
+    "label": "▲ highway"
    }
   ],
   "paths": [
@@ -755,7 +755,7 @@
      21.5
     ],
     "facing": "left",
-    "label": "\u25c0 hideout"
+    "label": "◀ hideout"
    },
    {
     "rect": [
@@ -770,7 +770,7 @@
      10
     ],
     "facing": "right",
-    "label": "neon \u25b6"
+    "label": "neon ▶"
    }
   ],
   "paths": [
@@ -1142,7 +1142,7 @@
      20
     ],
     "who": "Ferry",
-    "text": "The ferry to the islands. Out of service since the President bought the islands. (Tom: future chapter.)",
+    "text": "The ferry to the islands. Out of service since the President bought the islands.",
     "hint": "A: ferry",
     "solid": false
    }
@@ -1198,7 +1198,7 @@
      7.5
     ],
     "facing": "left",
-    "label": "\u25c0 docks"
+    "label": "◀ docks"
    },
    {
     "rect": [
@@ -1213,7 +1213,7 @@
      14
     ],
     "facing": "right",
-    "label": "uptown \u25b6"
+    "label": "uptown ▶"
    }
   ],
   "paths": [
@@ -1628,7 +1628,7 @@
      21.5
     ],
     "facing": "left",
-    "label": "\u25c0 neon"
+    "label": "◀ neon"
    }
   ],
   "paths": [
@@ -1975,10 +1975,10 @@
     "kind": "thug_enforcer",
     "who": "Enforcer",
     "text": "He said you'd come. He said to let you get close enough to see the tower. Close enough.",
-    "win": "The riot shield clatters down the marble steps. Behind it, for one second, the tower's doors open. Then they close. (Tom: the President fight waits on Guide #2.)",
+    "win": "The riot shield clatters down the marble steps. Behind it, for one second, the tower's doors open. Then they close. There's a slot in them like a mailbox.",
     "reward": "gold",
     "reward_n": 3,
-    "after": "The tower stays shut. For now.",
+    "after": "The tower doors. Whatever you kept, this is where it counts.",
     "hint": "A: enforcer",
     "solid": false
    }
@@ -2290,7 +2290,7 @@
      2
     ],
     "facing": "down",
-    "label": "\u25bc hideout"
+    "label": "▼ hideout"
    }
   ],
   "paths": [
@@ -2504,7 +2504,7 @@
      4
     ],
     "who": "",
-    "text": "The checkpoint is dark. The barrier is down. The tunnel beyond it goes somewhere the map doesn't show. (Tom: this is the road to the next nation.)",
+    "text": "The checkpoint is dark. The barrier is down. The tunnel beyond it goes somewhere the map doesn't show.",
     "hint": "A: checkpoint",
     "solid": false
    },
@@ -3104,7 +3104,7 @@
      17
     ],
     "who": "Light Crystal",
-    "text": "Someone's asleep in these pods. Not people. Not Grumps. Something between. Don't wake them yet. (Tom: a story door.)",
+    "text": "Someone's asleep in these pods. Not people. Not Grumps. Something between. Don't wake them yet.",
     "mood": "worried",
     "hint": "A: cryo pods",
     "solid": false
@@ -3361,7 +3361,7 @@
      12
     ],
     "who": "",
-    "text": "A crashed ship, old, overgrown. The markings on the hull are the same ones that are on the Light Crystal. (Tom: who sent it?)",
+    "text": "A crashed ship, old, overgrown. The markings on the hull are the same ones that are on the Light Crystal.",
     "hint": "A: the wreck",
     "solid": false
    },
@@ -3443,7 +3443,7 @@
      2
     ],
     "facing": "down",
-    "label": "\u25bc forest"
+    "label": "▼ forest"
    },
    {
     "rect": [
@@ -3458,7 +3458,7 @@
      22
     ],
     "facing": "right",
-    "label": "highlands \u25b6"
+    "label": "highlands ▶"
    }
   ],
   "paths": [
@@ -3836,7 +3836,7 @@
      22
     ],
     "facing": "left",
-    "label": "\u25c0 orchard hills"
+    "label": "◀ orchard hills"
    },
    {
     "rect": [
@@ -3851,7 +3851,7 @@
      2
     ],
     "facing": "down",
-    "label": "\u25bc mountain"
+    "label": "▼ mountain"
    }
   ],
   "paths": [
@@ -4217,7 +4217,7 @@
      2
     ],
     "facing": "down",
-    "label": "\u25bc meadow"
+    "label": "▼ meadow"
    }
   ],
   "paths": [
@@ -4439,7 +4439,7 @@
      7
     ],
     "who": "",
-    "text": "Six stones in a ring, one fallen. The carvings are the same spiral that the crystal makes when it dreams. (Tom: the ruins chapter \u2014 Sel the scholar reads these.)",
+    "text": "Six stones in a ring, one fallen. The carvings are the same spiral that the crystal makes when it dreams.",
     "hint": "A: the standing stones",
     "solid": false
    },
@@ -4486,7 +4486,7 @@
     ],
     "kind": "ruin_warden",
     "who": "",
-    "text": "The guardian statue's runes light one by one. Sel: 'I told you not to touch the\u2014' It steps off its plinth.",
+    "text": "The guardian statue's runes light one by one. Sel: 'I told you not to touch the—' It steps off its plinth.",
     "win": "The Warden kneels, runes dark, and becomes a statue again. In its hand: a blade older than the town.",
     "after": "The Warden, kneeling. Sel sketches it from a safe distance.",
     "reward": "relic_blade",
@@ -4603,7 +4603,7 @@
      14
     ],
     "facing": "left",
-    "label": "\u25c0 beach"
+    "label": "◀ beach"
    },
    {
     "rect": [
@@ -4618,7 +4618,7 @@
      43
     ],
     "facing": "up",
-    "label": "\u25b2 mountain"
+    "label": "▲ mountain"
    }
   ],
   "paths": [
@@ -4942,7 +4942,7 @@
      8
     ],
     "who": "",
-    "text": "The old crane. Chains rusted stiff. A sign: GRANITE & SONS \u2014 BACK AFTER LUNCH. The lunch was some years ago.",
+    "text": "The old crane. Chains rusted stiff. A sign: GRANITE & SONS — BACK AFTER LUNCH. The lunch was some years ago.",
     "hint": "A: the crane",
     "solid": false
    },
@@ -5074,7 +5074,7 @@
      14
     ],
     "facing": "right",
-    "label": "beach \u25b6"
+    "label": "beach ▶"
    },
    {
     "rect": [
@@ -5089,7 +5089,7 @@
      41
     ],
     "facing": "up",
-    "label": "\u25b2 riverlands"
+    "label": "▲ riverlands"
    }
   ],
   "paths": [
@@ -5476,7 +5476,7 @@
      2
     ],
     "facing": "down",
-    "label": "\u25bc marsh"
+    "label": "▼ marsh"
    },
    {
     "rect": [
@@ -5491,7 +5491,7 @@
      5
     ],
     "facing": "right",
-    "label": "lake \u25b6"
+    "label": "lake ▶"
    }
   ],
   "paths": [

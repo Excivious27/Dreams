@@ -116,7 +116,7 @@ func after_ready() -> void:
 		player.frozen = true
 		await say([
 			{"text": "Silence, and lavender dust that puffs up and falls slower than it should. The sky is black and full of stars, and the valley is a green coin far below."},
-			{"who": "Light Crystal", "text": "This is where I fell from. There's a teleporter here that goes further out. It needs power we don't have yet. (Tom: chapter 3 goes through here.)", "mood": "worried"},
+			{"who": "Light Crystal", "text": "This is where I fell from. There's a teleporter here that goes further out. It needs power we don't have yet.", "mood": "worried"},
 		])
 		player.frozen = false
 
@@ -136,7 +136,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				tell([{"who": "Light Crystal", "text": "Not yet. Light the teleporter first; the way to its heart is through the station.", "mood": "worried"}]))
 			return true
 		"spire_old":
-			tell([{"who": "Light Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded. (Tom: the moon chapter's goal.)", "mood": "worried"}])
+			tell([{"who": "Light Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded.", "mood": "worried"}])
 			return true
 		"house":
 			tell([{"text": "A house built into a rocket, or a rocket built around a house. Round windows. A kettle. Somebody has been living here a long time, and left recently."}])

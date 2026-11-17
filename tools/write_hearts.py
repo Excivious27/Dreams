@@ -1,0 +1,242 @@
+#!/usr/bin/env python3
+"""Writes data/hearts.json: five milestone scenes per villager (♥2/4/6/8/10),
+a personal quest promoted at ♥6, a daily line after each milestone, and the
+♥10 'if the town fell' line used by the endings. Edit here, then run."""
+import json
+
+H = {}
+
+def v(id, q6, m2, m4, m6, m8, m10, fall, after):
+    H[id] = {"quest6": q6, "milestones": {"2": m2, "4": m4, "6": m6, "8": m8, "10": m10}, "fall": fall, "after": after}
+
+def L(who, *texts):
+    return [{"who": who, "text": t} for t in texts]
+
+v("maple", "maple_supply_run",
+  L("Maple", "You keep coming back. Most people buy seeds once and then I see them at the sell box, counting.", "Here. A turnip seed packet with a bent corner. It's the first thing I ever sold in this shop; I kept it. Plant it or don't, but it should be in the ground somewhere."),
+  L("Maple", "My brother used to stock these shelves. Taller than me, could reach the top row. He ran from something, never said what, and now he's a baker in the capital.", "I write. He writes back, four lines, every month. Four lines is a lot, from him."),
+  L("Maple", "The back storeroom's falling in. I've been pretending it isn't since spring.", "I don't ask people for things. I'm asking. Twenty wood and ten stone and I'll stop pretending."),
+  L("Maple", "When that light came down in your field, I was closing up. I saw it from the step. I didn't run out. I didn't tell anyone.", "I thought: whoever's out there, they're going to need somebody who doesn't ask questions. So I didn't. I'm asking one now. Are you all right?"),
+  L("Maple", "Four lines came today. Five, actually. The fifth one says: 'Is it safe to come home?'", "I don't know what to write back. I think the answer's you. I think the answer's been you since the turnips."),
+  "Maple would lock the store and stand in the doorway with a broom, and nobody would get past the broom.",
+  {"2": "Plant the bent packet. I want to know what comes up.", "4": "Four lines this month. He asked about the weather. That's a lot, from him.", "6": "Storeroom's standing. I've stopped pretending. Mostly.", "8": "I still don't ask questions. I've just started noticing the answers.", "10": "I wrote back. One line. 'Yes.'"})
+
+v("gideon", "gideon_ruby",
+  L("Gideon", "You swing like a farmer. Shoulders. It's the wrists; the hammer does the work if you let it.", "...Here. Hold it like that. No. Like THAT. Hm. Better."),
+  L("Gideon", "My father's hammer. This one. Head's been replaced twice and the handle three times, so you tell me whose hammer it is.", "He'd have liked you. He didn't like anyone, so that's a guess."),
+  L("Gideon", "There's a ring I've been making for eleven years. It needs a ruby. I don't talk about who it's for.", "If you found one, in the mountain, I'd... I don't finish sentences well. Find one."),
+  L("Gideon", "The ring's for Juniper. There. Said it. Eleven years, I've said it to a farmer and a forge.", "She set my arm when I broke it on the anvil. Said I was an idiot. Nobody's ever been so right about me."),
+  L("Gideon", "I gave her the ring. She said I was an idiot. She's wearing it.", "You did that. Not the ruby. The... you came in every day and swung like a farmer until I had to talk to you. That's what you did."),
+  "Gideon would bar the smith's door and stand behind it with his father's hammer, and he would not say a single word, and nobody would try the door twice.",
+  {"2": "Wrists. Remember.", "4": "Father's hammer's holding up. You're holding up.", "6": "Eleven years. Don't look at me like that.", "8": "She said idiot again today. Twice. Good day.", "10": "She's wearing it. Still. I check."})
+
+v("wren", "wren_starflower",
+  L("Wren", "You pick herbs like you're apologising to them. Don't. They're herbs. Pull.", "...The mushroom you brought last time had a good smell. I kept the stem. For reasons."),
+  L("Wren", "My daughter thinks I talk to the plants. I do. They don't answer, which is restful, which is the point.", "You answer. That's... fine. That's also fine."),
+  L("Wren", "There's a flower that only grows where the crystal fell. Starflower. I had one once; I used it on a fever and it worked and I never found another.", "If you're going back out there. If."),
+  L("Wren", "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told her mother how close it was.", "Her mother's not here now. That's a different story, and it's not yours. But you should know what you brought me."),
+  L("Wren", "I've started talking to Wren junior instead of the plants. It's harder. She answers.", "You did that. Not with the flower. With the coming back. Here: the recipe for the fever tonic. Nobody has it but me. Now two people."),
+  "Wren would brew something foul and throw it at whatever came through the gate, and it would work, because Wren's things work.",
+  {"2": "Pull, don't pick.", "4": "The plants say hello. I'm interpreting.", "6": "A starflower. Just one. I'm not greedy.", "8": "She's seven now. She talks about frogs. Frogs are fine.", "10": "I answered her today before she asked. That's new."})
+
+v("alder", "alder_gold",
+  L("Alder", "The town records show you've paid every fee on time. I mention it because nobody else has, in my term.", "There's a seat on the council open. There has been for six years. I mention THAT because I'm tired."),
+  L("Alder", "My father was mayor. His father. The portraits in the hall; you've seen them. I'm the small one at the end.", "I never wanted it. I was going to be a... it doesn't matter. Somebody has to sign things."),
+  L("Alder", "The bell. Twenty-one years. I was there when it stopped: the clapper cracked in the middle of the harvest ring and fell and nearly took my father's foot.", "He said it was a sign. I said it was metal fatigue. We never settled it. A gold bar would."),
+  L("Alder", "I was going to be a painter. There. Lumi knows; nobody else. I had a place in the capital and my father got ill the week before I left.", "I still have the brushes. In the hall, bottom drawer, under the fee ledgers. That's where I keep the things I didn't do."),
+  L("Alder", "I painted this morning. Four a.m., before the fees. It's bad. It's wonderful; it's bad.", "The council seat's yours if you want it. You won't. That's why it's yours."),
+  "Alder would open the town hall doors and stand in them in his father's coat and read the town charter aloud, very slowly, until whatever it was went away or he finished.",
+  {"2": "Fees on time. Noted.", "4": "The small portrait at the end. Don't look too long.", "6": "Metal fatigue. I maintain it.", "8": "Bottom drawer. You didn't hear that from me.", "10": "Four a.m. It's getting less bad."})
+
+v("sal", "sal_fish",
+  L("Sal", "You walk like somebody who's been followed. Shoulders up. Relax them; it's a tell.", "I'd know. I had the same walk for ten years."),
+  L("Sal", "River cities. Ran with a crew. We weren't good people but we were good at it, and then the man with the stone came, and we weren't anything.", "I'm the one who left. The others stayed. I think about that at the gate, most nights."),
+  L("Sal", "I don't eat much. Bad knee, bad habits. If you brought me a fish I'd probably cook it. Probably.", "Not a favour. A test. I'm testing whether I can still accept things."),
+  L("Sal", "The knee was a door. Uptown. I put my shoulder to it so the others could get out, and I did, and they didn't.", "That's the whole story. There isn't a better version. I've looked."),
+  L("Sal", "I've decided something. If this town goes, I go with it. Not away from it. With it.", "First time I've picked a side since the door. Feels like the knee's going to hold."),
+  "Sal would sit on the bench by the south gate with a bad knee and a worse temper, and nothing would get past the bench.",
+  {"2": "Shoulders. Down.", "4": "Gate's quiet. Quiet's fine. I'll tell you when it isn't.", "6": "Cooked it. It was fine. Don't make it a thing.", "8": "Knee's holding.", "10": "With it, boss. Not away."})
+
+v("finn", "finn_pearl",
+  L("Finn", "You cast like you're angry at the water. Water doesn't care. Cast like you're asking.", "There. See? It's not about the fish. The fish is a bonus."),
+  L("Finn", "Had a brother. Tomas. Went to the river cities to make money for a boat we were going to build together.", "Boat's still half a boat. In the shed. I go in there sometimes and don't build it."),
+  L("Finn", "There's a pearl in the lake. Marlowe says so, and Marlowe doesn't say things.", "I don't want it to sell. I want it because Tomas always said there wasn't one."),
+  L("Finn", "I finished the boat. Last week. Just... did it, one morning, before I'd thought about it.", "She floats. I haven't named her. You name a boat, it's real. I'll get there."),
+  L("Finn", "Named the boat. 'Second Cast.' Because you don't catch anything on the first one; that's just asking the water.", "She's yours any time. Just say. I'll row."),
+  "Finn would push every boat on the lake into the water and float them all out of reach, and then sit on the dock and wait, with a rod, like it was Tuesday.",
+  {"2": "Asking, not angry. Remember.", "4": "Half a boat. Still.", "6": "Marlowe says pearl. Marlowe doesn't say things.", "8": "She floats. That's all she has to do.", "10": "Second Cast. Any time."})
+
+v("lumi", "lumi_starflower",
+  L("Lumi", "Hold still. No— don't hold still, that's worse. Just... exist near the window. Good.", "I'm painting the light, not you. You're what the light's doing."),
+  L("Lumi", "Alder bought my first painting. Paid too much. Hung it in the hall where nobody looks.", "He wanted to be a painter, you know. He's never said. I can tell by how he looks at the corners."),
+  L("Lumi", "There's a flower where the crystal fell. Starflower. The blue in it doesn't exist anywhere else; I've tried to mix it for a year.", "Bring me one and I'll stop trying, which would be a relief to everyone."),
+  L("Lumi", "I mixed the blue. From the starflower. It's not the same; it's better, because I had to work for it.", "The painting's of the gate. Your gate. The morning the penguins came. Don't ask how I knew; painters know."),
+  L("Lumi", "It's hanging in the hall. Next to Alder's portrait. He cried; he'll say he didn't.", "It's the gate, and the light, and someone in it who looks like they've decided to stay. I didn't give them a face. They have yours."),
+  "Lumi would paint the town as it was, very fast, on the hall wall, so that whatever came would have to look at it first.",
+  {"2": "Exist near the window.", "4": "He looks at the corners.", "6": "The blue. Just the blue.", "8": "The gate painting's drying.", "10": "Next to his portrait. He cried."})
+
+v("theo", "theo_book",
+  L("Theo", "You read the board notices. All of them. Nobody reads the small ones.", "I write the small ones. Hello."),
+  L("Theo", "The library has four hundred books and I've read three hundred and ninety-eight. The other two are in a language I'm inventing as I go.", "It's going slowly. The language, not the reading."),
+  L("Theo", "There's a book in the mine. Old. The miners' log, from before the bell stopped. It would explain... a great many small notices.", "I can't go down there. I'm a reader. You're a... whatever you are. Please."),
+  L("Theo", "The log says the bell cracked the same night something fell in the east. The same night. Twenty-one years ago.", "Your light isn't the first. Something came before. Something that didn't ask for help."),
+  L("Theo", "I've finished the two books. The language was mine after all; I just hadn't learned it yet.", "The last line of the last one says: 'They came back for the town.' I don't know if it's a record or a prediction. I'd like it to be both."),
+  "Theo would carry four hundred books into the chapel two at a time and read the last one aloud until whatever came was bored into leaving.",
+  {"2": "Small notices. Hello.", "4": "Three hundred and ninety-eight.", "6": "The miners' log. Please.", "8": "The same night. Twenty-one years.", "10": "They came back for the town."})
+
+v("hazel", "hazel_milk",
+  L("Hazel", "Your rows are crooked. I'm not criticising; mine were worse. Pull the string tight and walk it.", "Turnips don't mind crooked. Carrots do. Carrots are fussy."),
+  L("Hazel", "Mabel's mine. My girl. Her father went to the quarry for one season and the season's been nine years.", "She thinks he's coming back. I let her. Some things you let."),
+  L("Hazel", "The cheese cellar. I built it for two. Four milk would fill it. Nobody's filled it in nine years.", "I'd like to see it full. Just once. See if I still remember what to do with it."),
+  L("Hazel", "Granite told me. At the quarry. He didn't leave; the rockfall did. Nine years, Granite's been carrying that up the road and not quite knocking.", "I told Mabel. She cried, and then she asked if she could see the quarry, and I said yes. I don't know why I said yes. I'm glad I did."),
+  L("Hazel", "Cellar's full. Mabel named every wheel. One's called after you; it's the lumpy one.", "Granite comes by Sundays. Fixes the fence. Doesn't say much. The fence doesn't need fixing."),
+  "Hazel would put Mabel in the cheese cellar with the lumpy wheel and a lamp, and then she'd pick up the scythe, and she would not put it down.",
+  {"2": "Pull the string tight.", "4": "She thinks he's coming back.", "6": "Four milk. Just to see.", "8": "Granite knocked. Finally.", "10": "The lumpy one's yours."})
+
+v("bram", "bram_wine",
+  L("Bram", "You always sit in the corner. Back to the wall. I had a brother-in-law like that.", "He was a terrible man. You're not. But the corner's yours."),
+  L("Bram", "This inn was my wife's. Posy's mother. She ran it like a ship and I ran the kitchen like a man hiding in a kitchen.", "Still do. The kitchen part."),
+  L("Bram", "Festival night. Two wine. I want to raise one glass that isn't water, for once, for Posy's mother.", "I'll pay for the wine. I just can't walk to the lake for it. Every year I mean to."),
+  L("Bram", "I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way.", "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down."),
+  L("Bram", "Posy's running the front now. She's better than her mother was, and I said so, and she threw a tea towel at me.", "Corner's still yours. Always will be. I've put your name on it; don't look, it's under the table."),
+  "Bram would stand in the inn doorway with a cleaver, which he has never once used on anything but onions, and he would look like a man who has.",
+  {"2": "Corner's yours.", "4": "Still hiding in the kitchen.", "6": "Two wine. Festival night.", "8": "Two hours. Her glass was full.", "10": "Tea towel. Right in the face."})
+
+v("posy", "posy_strawberries",
+  L("Posy", "You smell the bread before you come in. Everyone does. You're the only one who waits for the second batch.", "Second batch is better. Oven's warm by then. Don't tell the first-batch people."),
+  L("Posy", "Mum made the bread. I made the cakes. Dad hid in the inn kitchen, which is where he's happiest, so that's fine.", "I do both now. I'm not as good at bread. I'll say that out loud once."),
+  L("Posy", "Twelve strawberries. Jam. Mum's jam, actually; I found the recipe in a drawer under the receipts.", "I'm scared to make it in case it's wrong. I'm more scared not to."),
+  L("Posy", "It was right. The jam. I cried into it, which Mum would say was the secret ingredient, which is disgusting, which is exactly what she'd say.", "Dad walked to the lake for wine. Did you hear? Two hours. He's insufferable about it."),
+  L("Posy", "I had a dog, when I was small. Biscuit. He ran off the week Mum— the week things went bad. I've never said that to anyone, because what's a dog, next to that.", "A dog's a lot. I know that now. I don't know why I know it. Something about the way you look at yours."),
+  "Posy would bake until the whole town smelled of bread, because nothing bad has ever happened in a town that smells like that, and she'd be right.",
+  {"2": "Second batch.", "4": "I'll say it once: not as good at bread.", "6": "Mum's jam. Twelve.", "8": "Secret ingredient. Disgusting.", "10": "A dog's a lot."})
+
+v("juniper", "juniper_glowcap",
+  L("Juniper", "Sit. No, you're not hurt; sit anyway. I like to see people sit who aren't hurt. It's rare.", "There's a crack in your left boot. Fix it before winter or I'll be seeing you in the other way."),
+  L("Juniper", "I trained in the capital. Twelve years. Came back because the capital had enough nurses and this town had none and a blacksmith who'd broken his arm on an anvil like an idiot.", "He's still an idiot. I've said so, professionally."),
+  L("Juniper", "Glow caps. Two. I've a theory about fevers and I need to be wrong about it in a controlled way.", "Theo says that's not how theories work. Theo has never set a bone."),
+  L("Juniper", "Gideon gave me a ring. Eleven years of forging, he said, like that's a normal amount of time. I called him an idiot.", "I'm wearing it. You've noticed. Say nothing; I've a reputation."),
+  L("Juniper", "I've started a ledger of who in this town would be hurt first, if something came. It's a nurse's habit.", "You're not on it. You're on the other list. The one of people who'd be standing in front."),
+  "Juniper would turn the clinic into a fort with the beds, and anyone who came through the door hurt would be treated, whatever side they'd come in on, and then sent back out, and she would keep count.",
+  {"2": "Left boot.", "4": "Still an idiot. Professionally.", "6": "Two glow caps. Controlled.", "8": "Say nothing.", "10": "The other list."})
+
+v("rook", "rook_tracks",
+  L("Rook", "You walk loud. Heel first. Toe first, roll, and the forest stops noticing you.", "Try it. No. Try it again. ...Better. Grumps won't hear that."),
+  L("Rook", "I came out of the river cities on foot. Took a season. Ate what I could catch, which taught me to catch things.", "The lodge was empty when I got here. Still is, mostly. I like mostly."),
+  L("Rook", "The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge.", "I can't hold it alone. I've tried, and I'm not a man who says that."),
+  L("Rook", "Your pup's got a nose. I've watched it. It tracks the way I did before I learned to, which means it'll be better than me.", "Bring it by. I'll show it the orchard the right way; the way you don't get seen."),
+  L("Rook", "I've a daughter in the river cities. Grown. She doesn't know I'm alive. I've decided she should.", "I'm writing it tonight. Toe first, roll. That's the only way I know to do hard things."),
+  "Rook would be on the lodge roof with a bow before anyone else knew anything was coming, and the first three of whatever it was would never reach the bridge.",
+  {"2": "Toe first. Roll.", "4": "Mostly empty. I like mostly.", "6": "The orchard. By harvest.", "8": "That pup's got a nose.", "10": "Wrote it. Sent it. Toe first."})
+
+v("pip", "pip_candy",
+  L("Pip", "You're the one with the light! Mabel says it's a crystal and Wren jr says it's frogs and I say it's BOTH.", "Don't tell them I said both. Both is cheating."),
+  L("Pip", "Mum runs the store. Maple. She doesn't know I know she cries at the letters. I know everything; I'm nine.", "Uncle writes four lines. I counted. I'm going to write him five."),
+  L("Pip", "If you throw a candy in the fountain and say a wish the fountain does it. It did it for Tobin's kite. It's SCIENCE.", "Bring candy. I'll show you. You have to say the wish out loud or it doesn't count and I'll know."),
+  L("Pip", "I wrote Uncle five lines. He wrote back six. SIX. Mum read it and went in the back for a while.", "I think I won. I don't know what I won. I think it was important."),
+  L("Pip", "When I'm mayor— I'm going to be mayor, Alder says I can have it— I'm making a law that the bell rings every day.", "And a law about frogs. Wren jr's writing that one."),
+  "Pip would ring the bell. If there was a bell. Pip would ring it with a rock if there wasn't.",
+  {"2": "Both. Don't tell.", "4": "Five lines. I'm nine.", "6": "Candy in the fountain. SCIENCE.", "8": "Six lines. I WON.", "10": "Bell every day. It's a law."})
+
+v("wren_jr", "wrenjr_frog",
+  L("Wren jr", "Mum talks to plants. I talk to frogs. Frogs talk BACK, so I think I'm winning.", "That one's Gerald. He's the mayor of the pond. Don't tell Alder."),
+  L("Wren jr", "I was sick once. Really sick. I don't remember it but Mum does; she gets a face.", "There was a flower. A blue one. I'm going to find one for her so she stops getting the face."),
+  L("Wren jr", "Gerald's gone. From the pond. Frogs go, Mum says, but Gerald wouldn't; he's the mayor.", "If you see a frog that looks important. That's him."),
+  L("Wren jr", "Gerald came back! He was at the LAKE. He went on a TRIP. Mum says that's not how frogs work and I say Gerald isn't how frogs work.", "I'm seven. I'm allowed to be right sometimes."),
+  L("Wren jr", "Mum answered me today before I asked. She's never done that. She looked surprised at herself.", "I think you did something to her. The good kind. The frog kind."),
+  "Wren jr would put every frog in the pond in a bucket and carry them somewhere safe, because somebody has to think of the frogs, and nobody else will.",
+  {"2": "Gerald. Mayor of the pond.", "4": "The blue flower. For the face.", "6": "If you see an important frog.", "8": "He went on a TRIP.", "10": "The frog kind."})
+
+v("tobin", "tobin_shells",
+  L("Tobin", "I live at the inn. Dad cooks. He says I'm the best thing in the kitchen, which is a joke, because I'm not allowed in the kitchen.", "Bram's not my dad. He says it's complicated. I say it's not."),
+  L("Tobin", "My real dad was a sailor. Mum said. Mum's not here. Bram is. That's the whole thing; it's not complicated.", "I want a kite. A real one. Sailors can fly kites, Bram says, it's practically the same as a sail."),
+  L("Tobin", "Shells. Six. The beach has them but you have to go past the dock and I'm not allowed past the dock.", "If you got them I'd build the kite. Bram says a kite needs shells for the tail. I think he made that up. I don't care."),
+  L("Tobin", "Kite flies. It FLIES. Bram cried. He says it was onions. There weren't any onions; I checked the whole kitchen.", "I'm allowed in the kitchen now. For checking."),
+  L("Tobin", "Bram asked if I wanted to call him Dad. I said I already did, in my head, and he said that counts, and I said I know.", "The kite's on the inn roof. You can see it from your farm. Look up sometime."),
+  "Tobin would climb onto the inn roof and fly the kite, because when the kite's up everyone looks up, and when everyone's looking up nobody's afraid.",
+  {"2": "Not allowed in the kitchen.", "4": "Practically the same as a sail.", "6": "Six shells. For the tail.", "8": "It FLIES. No onions.", "10": "Look up sometime."})
+
+v("mabel", "mabel_flowers",
+  L("Mabel", "I sing to the cows. They give more milk. Mum says it's the singing. It's definitely the singing.", "I'll sing one for your pup. Dogs are harder than cows. They have opinions."),
+  L("Mabel", "Dad's at the quarry. He's been at the quarry a long time. Mum does a thing with her mouth when I say it.", "I'm going to go see him. When I'm ten. Ten's old enough for the quarry road."),
+  L("Mabel", "Flowers. For the cellar. Mum built it for two and it's empty and I think flowers would make it less empty while we wait for cheese.", "I'm eight. I'm allowed to have plans."),
+  L("Mabel", "Granite told Mum. About Dad. I cried, and then I asked if I could see the quarry, and Mum said yes.", "There's a stone with his name. Granite cut it. It's a good stone. I sang to it; stones are easier than dogs."),
+  L("Mabel", "The cellar's full and every wheel has a name and Granite comes Sundays and fixes a fence that doesn't need it.", "I've started calling him Granite. Just Granite. Mum says that's enough for now. I think it's enough forever."),
+  "Mabel would sing. Loudly. From the cheese cellar. And the cows would come, and the cows have opinions.",
+  {"2": "Definitely the singing.", "4": "When I'm ten.", "6": "Flowers for the cellar. I have plans.", "8": "A good stone.", "10": "Just Granite."})
+
+v("marlowe", "lighthouse_lens",
+  L("Marlowe", "Lamp's lit every night for thirty years. Nobody's needed it for twenty. I light it anyway.", "You don't light a lamp for the boats. You light it so the dark knows somebody's counting."),
+  L("Marlowe", "There's a pearl in the lake. I've seen it, once, from the top, in the right moon. Finn doesn't believe me. Finn believes in fish.", "Tell him. He'll believe you; you've got the face for it."),
+  L("Marlowe", "The lens is cracked. Has been since the night the bell stopped. Same night, you know. I heard it from up here.", "Something fell in the east that night. I lit the lamp at it. It didn't come."),
+  L("Marlowe", "New lens. Thirty years I've looked through a crack and now I can't remember what I was looking at.", "I'll tell you: the east. Every night. Waiting for whatever it was to try again."),
+  L("Marlowe", "It tried again. The night your light came down. I saw it from the top, and I lit the lamp, and this time it wasn't the dark that landed.", "Thirty years of counting and the sum came out. I'm going to sleep tonight. First time in a while."),
+  "Marlowe would light the lamp, and turn it to the east, and keep it there, and the dark would know somebody was counting.",
+  {"2": "So the dark knows.", "4": "He believes in fish.", "6": "Same night. I heard it.", "8": "The east. Every night.", "10": "The sum came out."})
+
+v("orla", "lighthouse_oil",
+  L("Orla", "The wheel turns whether I'm here or not. That's the thing about mills. I just keep it honest.", "You bring good wheat. Not great. Good is enough; great is for people with something to prove."),
+  L("Orla", "My husband built the wheel. My son rebuilt it. I've only ever kept it turning, which is the longest job and the one nobody paints.", "Lumi tried. I wouldn't sit still."),
+  L("Orla", "Marlowe's lamp wants oil. He won't ask. He'd row the lake in a storm before he'd ask.", "I'd take it over myself if the knees allowed. They don't. You've got knees."),
+  L("Orla", "Marlowe came by. First time in nine years. Stood at the door, said the lamp was lit, left.", "That's a love letter, from him. I've had three. I keep them in the flour tin."),
+  L("Orla", "I sat still for Lumi. Finally. It's hanging in the mill; the wheel's behind me and I look like a woman who's kept something turning.", "Which I have. Four letters now. The fourth one said 'come up and see.' I'm going up."),
+  "Orla would stop the wheel. Just stop it. Thirty years of turning, and the silence would be so loud that the whole lake would hear it.",
+  {"2": "Good is enough.", "4": "The job nobody paints.", "6": "He'd row a storm first.", "8": "In the flour tin.", "10": "I'm going up."})
+
+v("benno", "benno_pup_pack",
+  L("Benno", "Horses know. Before you've decided to be cruel or kind, the horse knows. Yours knows you're all right.", "The pup too. Animals read the first page and skip the rest."),
+  L("Benno", "I was a jockey. Smaller then; I know. Fell at the capital track, three years ago, and the horse was fine and I wasn't.", "Came here because nobody here had seen the race. Still haven't told anyone. Now you."),
+  L("Benno", "That pup wants to carry things. I can see it in the shoulders. A pack, small, and it'd feel like a job.", "Everybody needs a job. Even the ones with four legs. ESPECIALLY those."),
+  L("Benno", "I got back on. Yesterday. Just round the paddock. The grey mare; she's patient with cowards.", "Didn't fall. Didn't do anything. Sat there and shook and it was the best ride of my life."),
+  L("Benno", "Race at the festival. I'm riding. Alder's put it on the notice; Theo wrote it small, bless him.", "I'll lose. I'll lose on purpose if I have to, so I can say I finished one. Come and watch me finish."),
+  "Benno would open every stall and ride out at the head of the whole stable, and horses know, and they'd follow him anywhere.",
+  {"2": "Horses know.", "4": "Nobody here saw the race.", "6": "A pack. Small. A job.", "8": "Sat there and shook.", "10": "Come watch me finish."})
+
+v("ivy", "theo_coins",
+  L("Ivy", "Your account is in order. I say that to everyone. It's true of almost nobody.", "A deposit on the same day each week. That's a person who intends to stay. The bank notices."),
+  L("Ivy", "I came from the capital with a letter of introduction and a reputation for honesty, which in the capital is a reason to leave.", "The vault here has never been robbed. It's never had anything in it either. Those may be connected."),
+  L("Ivy", "Old coins. Theo collects them; I value them. There's a set from before the bell that would settle a question of dates.", "I don't say 'please' in a professional capacity. Consider it said in a personal one."),
+  L("Ivy", "The coins settled it. The bell, the light, the mine log: one night, twenty-one years ago. Theo's writing a small notice.", "I've opened an account in your name you don't know about. Interest only. Call it the bank's opinion of you."),
+  L("Ivy", "Someone offered me a position in the capital. Twice my salary. A vault with something in it.", "I declined. In writing. I kept a copy. I'm keeping everything from here on; I've decided this is where the records are."),
+  "Ivy would lock the vault with the town's deeds inside it, swallow the key, and sit on the step with her ledger, writing down the name of everyone who tried.",
+  {"2": "The bank notices.", "4": "Those may be connected.", "6": "Said personally.", "8": "The bank's opinion of you.", "10": "This is where the records are."})
+
+v("tam", "mer_crystals",
+  L("Tam", "Sheep don't care who you are. That's why I keep sheep. Also the wool.", "That one's Dolly. All of them are Dolly. It saves time."),
+  L("Tam", "Grew up in the highlands. Came down when the ice wisps got bad; a flock can't outrun a wisp.", "I'd go back. Every spring I say I'll go back. The Dollys vote no."),
+  L("Tam", "A lamb's due. First of the year. If you're about when it comes, you can name it, and it won't be Dolly.", "I'll let you know. Sheep don't keep to a schedule but they do keep to a look."),
+  L("Tam", "The lamb's yours. I mean that. Take her up to the farm; she's got a look that says fences are a suggestion.", "First one I've given away. I'll pretend it's about the wool."),
+  L("Tam", "Going up. To the highlands. Spring. The Dollys voted and it was close and I overruled them, which I've never done.", "Watch the lamb while I'm gone. If I don't come back, she's the flock. You're the shepherd. Sheep don't care who you are."),
+  "Tam would drive the whole flock into the plaza, and nothing that ever walked could get through two hundred Dollys who've decided not to move.",
+  {"2": "All of them are Dolly.", "4": "The Dollys vote no.", "6": "She'll have a look.", "8": "Fences are a suggestion.", "10": "Sheep don't care who you are."})
+
+v("old_moss", "wren_glowcap",
+  L("Old Moss", "You stepped around the black water. Most don't. Most come out of it with something that wasn't theirs.", "Sit. The pot's always on. Don't ask what's in it; it's in it."),
+  L("Old Moss", "I was the town's doctor before Juniper. Before her mother. I came out here when I ran out of people I could lie to about what I couldn't fix.", "The frogs don't need fixing. I listen to them. It's restful."),
+  L("Old Moss", "Glow caps. The witch in the deep marsh uses them for the fog. I use them for the opposite.", "Bring me some and I'll show you a lantern the fog doesn't like. I made it for myself. I don't need it anymore; I've gotten to like the fog."),
+  L("Old Moss", "The marsh witch was my patient. Fifty years ago. The thing I couldn't fix. She went into the water and came out as what she is.", "I stayed out here to be near her. That's the whole reason. Juniper knows; she's the only one I told."),
+  L("Old Moss", "If you ever put her down— the witch— do it quick. Don't let her talk. She'll use my voice; she learned it from fifty years of me talking to her through the fog.", "And then come and tell me. I'd like to go into town after. I'd like to see the clinic. Just once."),
+  "Old Moss would walk into the black water, and talk to what's in it, and it would listen, because it always has.",
+  {"2": "The pot's always on.", "4": "I listen to the frogs.", "6": "The fog doesn't like it.", "8": "She was my patient.", "10": "Quick. Don't let her talk."})
+
+v("granite", "rook_bones",
+  L("Granite", "You swing a pick like you're mad at the rock. The rock's fine with that; the rock doesn't care. Your shoulder does.", "Short strokes. Let the weight do it. Coffee's on the stove; it's terrible."),
+  L("Granite", "Nine years foreman. Was a hand before that. There was a rockfall, first year, took a good man. Hazel's man.", "I've been meaning to walk up the road and say so. Nine years of meaning to."),
+  L("Granite", "Bones in the mine. Old ones. Rook wants them for arrowheads and I want them out of my quarry's reputation.", "Deep floors. Where the keeper is. You've been; I can tell by the dust."),
+  L("Granite", "I walked up the road. Knocked. Hazel opened it and I said it, all of it, nine years of it, in about a minute.", "She said: 'I know. I've always known. Come in and fix the fence.' So I'm fixing the fence."),
+  L("Granite", "The little one calls me Granite. Just Granite. Not Mr. Not sir. I cut her father's stone and she sang to it and now she calls me Granite.", "I'm going to be at that house every Sunday till I die. The fence will be the best fence in the valley."),
+  "Granite would bring every man from the quarry down the road with picks, in a line, not fast, the way rock moves, and nothing moves rock.",
+  {"2": "Short strokes.", "4": "Nine years of meaning to.", "6": "The keeper's floors.", "8": "Fixing the fence.", "10": "Every Sunday."})
+
+v("sel", "theo_fossil",
+  L("Sel", "Don't touch that. Or do; it's been here three thousand years, it can survive a farmer.", "I'm Sel. I read stones. The stones here are saying something rude about the sky, I think. My grammar's shaky."),
+  L("Sel", "The ruins were a town. Like yours. Same shape; same plaza, same well. Then one night, from the east, something came, and they wrote about it in the walls because the paper burned.", "I've been out here four years. The university thinks I'm dead. It's restful."),
+  L("Sel", "There's a fossil in the quarry that isn't a fossil. It's a stone with a record in it, same hand as the ruin walls, and I need it to finish the sentence.", "The sentence is about your field. I'm fairly sure. My grammar's shaky."),
+  L("Sel", "The sentence: 'The light came; the town was awake; the dark went home.' That's it. That's the whole wall. Three thousand years to say three things.", "Awake. The bell. They had a bell; it's in the plaza, cracked. They rang it."),
+  L("Sel", "I'm going back to the university. To tell them. Not that I'm alive; that there's a wall three thousand years old that says a town can beat the dark by being awake.", "They won't believe me. You will. That's why I waited to tell you first."),
+  "Sel would go to the ruins and ring the cracked bell with a rock, because that's what the wall says to do, and Sel believes the wall.",
+  {"2": "Rude about the sky.", "4": "They wrote it in the walls.", "6": "The sentence is about your field.", "8": "The town was awake.", "10": "A town can beat the dark by being awake."})
+
+out = {"_": "Villager heart arcs. milestones: lines at ♥2/4/6/8/10 (play when you next talk to them). quest6: side quest promoted at ♥6 (offered with its own lines). after: a daily line used once a milestone has passed. fall: what they'd do if the town fell (endings).", "villagers": H}
+json.dump(out, open("data/hearts.json", "w"), indent=1, ensure_ascii=False)
+print(len(H), "villagers,", sum(len(x["milestones"][k]) for x in H.values() for k in x["milestones"]), "milestone lines")

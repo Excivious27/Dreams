@@ -119,7 +119,7 @@ func after_ready() -> void:
 		set_thing(23, 27, {"type": "note", "text": "The woodcutter's hut. Axe in the stump, kettle on, nobody home. A list on the door: 'oak 40, pine 20, birch 10' with the first line crossed out.", "hint": "A: the hut"}, false)
 	if Art.has("props", "stone_circle"):
 		prop("props", "stone_circle", Vector2i(34, 13), 5)
-		set_thing(36, 14, {"type": "note", "text": "Standing stones, older than the town, each carved with a spiral. Stand in the middle and the wind stops. (Tom: lore door.)", "hint": "A: the stones"}, false)
+		set_thing(36, 14, {"type": "note", "text": "Standing stones, older than the town, each carved with a spiral. Stand in the middle and the wind stops.", "hint": "A: the stones"}, false)
 	# Hidden pond clearing.
 	for y in range(37, 42):
 		for x in range(35, 42):

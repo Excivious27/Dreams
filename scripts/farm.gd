@@ -546,7 +546,7 @@ func _talk_crystal() -> void:
 	else:
 		await say([
 			{"who": "Light Crystal", "text": "The first spark of the Meow Pow Wow is yours. The rest is scattered across this world, and beyond it."},
-			{"who": "Light Crystal", "text": "Tom hasn't written the next chapter yet. (Really. That's the next guide.)"},
+			{"who": "Light Crystal", "text": "There's a locket I keep thinking about, and a knight above the clouds, and a bell. One thing at a time. Turnips first."},
 		])
 
 
