@@ -242,6 +242,8 @@ func _menu_crawl(m: GameMap) -> void:
 			(menu._tab_buttons[t] as Button).pressed.emit()
 			await frames(3)
 			# press a random button in the body
+			if not is_instance_valid(menu):
+				return
 			var btns: Array = []
 			_collect_buttons(menu._body, btns)
 			if not btns.is_empty() and rng.randf() < 0.5:

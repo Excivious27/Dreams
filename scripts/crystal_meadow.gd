@@ -172,6 +172,15 @@ func _talk_catkins() -> void:
 		player.frozen = false
 		return
 	var lines: Array = GameState.npcs["catkins"].get("lines", ["..."])
+	if GameState.run["flags"].has("st_p2_spark"):
+		# After the cave shook, Cat-topia's stores are open to you.
+		var d := Dialogue.instance(get_tree())
+		d.say([{"who": "Catkins", "text": str(lines[int(GameState.run["day"]) % lines.size()]), "choice": ["Buy supplies", "Just visiting"], "key": ""}])
+		await d.finished
+		if d.last_choice == 0:
+			await Shops.run(self, "catkins")
+		player.frozen = false
+		return
 	await say([{"who": "Catkins", "text": str(lines[int(GameState.run["day"]) % lines.size()])}])
 	player.frozen = false
 

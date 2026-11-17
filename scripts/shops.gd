@@ -46,6 +46,8 @@ static func offers(shop: String) -> Array:
 			return ["coal", "copper", "iron", "dynamite"]
 		"sel":
 			return ["rune_tablet", "old_coin", "book"]
+		"catkins":
+			return ["litter_box", "crystal_bloom", "potion"]
 		"lodge":
 			var base: Array = ["meat", "bait"]
 			if GameState.has_friend_perk("rook", 4):
@@ -55,7 +57,7 @@ static func offers(shop: String) -> Array:
 
 
 static func run(m: GameMap, shop: String) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel"}.get(shop, "Shop")
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
@@ -68,6 +70,7 @@ static func run(m: GameMap, shop: String) -> void:
 		"old_moss": "Jars. Don't ask what's in the ones at the back.",
 		"granite": "Ore from the walls. Dynamite if you've got the nerve.",
 		"sel": "Relics. Real ones. Mostly.",
+		"catkins": "Litter boxes. Every Grump stops to hold its nose. Don't ask how we found out.",
 	}[shop]
 	if shop == "store" and not GameState.run["flags"].has("store_first"):
 		GameState.run["flags"]["store_first"] = true

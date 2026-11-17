@@ -2,6 +2,26 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-17 (night) — full audit, 20-bot playtest, fixes 1–10
+
+- Findings and status are in `docs/AUDIT-2026-11-17.md`.
+- New harnesses, both in `tools/check.sh`:
+  - `tools/interior_reach.gd`: every interior thing can be reached.
+  - `tools/exit_check.gd`: every exit and scripted jump lands on open ground, near the way back.
+- 20 bots: 0 fails. Playtest 43/43; story, mine, hearts, creator and net tests pass.
+- Main changes:
+  - Atomic saves with a backup.
+  - Host-only shared world in multiplayer.
+  - Story follow-ups queue, and boss spawns survive reloads.
+  - Rain counts as watering; fertilizer works.
+  - Arc-specific heart and event lines.
+  - Villager spots are resolved against the live map.
+  - Seasonal sheets and portraits are used.
+  - Water is culled to the screen.
+  - Catkins shop.
+  - Chill and Dazed statuses now apply.
+- Open: pack size (~205 MB), Granite/Sel portraits, 120 crop-less filler seeds.
+
 ## World art batches 1–3 integrated (W1–W10, W22, W23, W9)
 - Real **grass↔dirt/sand/stone transitions** (autotiler) on every path; six grass variants.
 - **Forest**: forest floor, winding forest path, the great lantern tree (story door), hollow tree, willow, woodcutter's hut, giant log, shrine, berry thicket, deer/fox/rabbit/owl.

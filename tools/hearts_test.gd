@@ -40,7 +40,11 @@ func _run() -> void:
 			check(Hearts.seen_level(id) == n, "%s: ♥%d played" % [id, n])
 			check(Hearts.daily(id) != "", "%s: daily line after ♥%d" % [id, n])
 		var q6 := str(Hearts.data()[id]["quest6"])
-		check(GameState.has_quest(q6), "%s: ♥6 quest %s offered" % [id, q6])
+		var qd := GameState._quest_def(q6)
+		if qd.is_empty() or GameState._cond_ok(qd.get("when", {})):
+			check(GameState.has_quest(q6), "%s: ♥6 quest %s offered" % [id, q6])
+		else:
+			check(not GameState.has_quest(q6), "%s: ♥6 quest %s waits for its own gate %s" % [id, q6, str(qd.get("when"))])
 	check(Hearts.standing_with_you().size() == 25, "all 25 standing with you at ♥10")
 	print("HEARTS DONE, failures: %d" % fails)
 	quit(1 if fails > 0 else 0)

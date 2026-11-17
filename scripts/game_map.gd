@@ -2322,8 +2322,11 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 	var t := 0.0
 	var bite := false
 	var caught := false
+	var tree := get_tree()
 	while t < wait + 1.0:
-		await get_tree().process_frame
+		await tree.process_frame
+		if not is_inside_tree():
+			return  # the map changed under the line (scene change, collapse)
 		t += get_process_delta_time()
 		if not bite and t >= wait:
 			bite = true
