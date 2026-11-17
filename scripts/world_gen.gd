@@ -448,7 +448,26 @@ static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
 	var key := "fruit_%s_%d_%d" % [m.scene_id(), c.x, c.y]
 	var ripe := str(info[0]) == season and int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
 	var sprite := str(info[1])
-	if season == "winter":
+	if Art.has("nature", "ftree_%s_fruit" % kind):
+		# Prompts 10 painted fruit trees: bare / blossom / fruit / late / snow.
+		var st := "bare"
+		var fs := str(info[0])
+		var order := ["spring", "summer", "fall", "winter"]
+		var di := (order.find(season) - order.find(fs) + 4) % 4  # seasons after the fruiting one
+		if season == "winter":
+			st = "snow" if kind != "cherry" else "bare"
+		elif di == 0:
+			st = "fruit" if ripe else "late"
+		elif di == 3:
+			st = "blossom"  # the season before fruiting
+		elif di == 1:
+			st = "late" if kind != "cherry" else "green"
+		else:
+			st = "bare" if kind != "cherry" else "fall"
+		if not Art.has("nature", "ftree_%s_%s" % [kind, st]):
+			st = "fruit"
+		sprite = "ftree_%s_%s" % [kind, st]
+	elif season == "winter":
 		sprite = "tree_bare"
 	elif str(info[0]) != season:
 		sprite = "oak" if Art.has("nature", "oak") else sprite

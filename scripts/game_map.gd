@@ -295,7 +295,21 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			thing["ripe"] = false
 			thing["hint"] = ""
 			GameState.run["flags"][str(thing["key"])] = int(GameState.run["day"])
-			wobble(c, 0.08)
+			var kind := str(thing.get("kind", ""))
+			if Art.has("nature", "ftree_%s_shake" % kind) and props.has(c):
+				var old: Node = props[c]
+				var sh := anim_prop("nature", "ftree_%s_shake" % kind, c, 0, 8.0)
+				if sh:
+					sh.sprite_frames.set_animation_loop("idle", false)
+					old.visible = false
+					sh.animation_finished.connect(func() -> void:
+						sh.queue_free()
+						if is_instance_valid(old):
+							old.visible = true
+							if old is Sprite2D and Art.has("nature", "ftree_%s_late" % kind):
+								(old as Sprite2D).texture = Art.tex("nature", "ftree_%s_late" % kind))
+			else:
+				wobble(c, 0.08)
 			var n := 1 + (1 if randf() < 0.3 + GameState.bonus("foraging", "forage_bonus") * 0.2 else 0)
 			pop_items(cell_center(c), str(thing["item"]), n)
 			xp("foraging", 4)
@@ -915,7 +929,7 @@ func clear_cell(c: Vector2i) -> void:
 
 ## Boss intro card (ui/card_<kind>): slides in over the screen for a couple of seconds.
 func boss_card(kind: String, title := "") -> void:
-	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_golem_king", "commander": "card_president"}.get(kind, "")
+	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president"}.get(kind, "")
 	if nm == "" or not Art.has("ui", nm):
 		return
 	var layer := CanvasLayer.new()
@@ -1684,9 +1698,19 @@ func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}
 		Art.draw_blob(self, cells, "cliff", 16.0, 1)
 		# A real rock face under every southern edge (the blocked ledge row), and
 		# proper stair tiles cut into it where you can climb.
+		var n_up := 0
+		while Art.has("tiles", "cliff2g_upper_%d" % n_up):
+			n_up += 1
 		for c: Vector2i in cells:
 			var below := c + Vector2i(0, 1)
 			if cells.has(below) or stairs.has(below):
+				continue
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+			if n_up > 0:
+				# Two-row painted face (Prompts 10): upper row over the ledge cell, lower row under it.
+				Art.draw_tile(self, "tiles", "cliff2g_upper_%d" % (h % n_up), Vector2(below * TILE), 0)
+				if Art.has("tiles", "cliff2g_lower_%d" % (h % n_up)) and not cells.has(below + Vector2i(0, 1)):
+					Art.draw_tile(self, "tiles", "cliff2g_lower_%d" % (h % n_up), Vector2((below + Vector2i(0, 1)) * TILE), 0)
 				continue
 			var face := Art.tex("tiles", "cliffg_" + ["face_a", "face_b", "face_c"][absi(c.x * 7 + c.y) % 3])
 			if face:
@@ -1698,6 +1722,19 @@ func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}
 			var r := not stairs.has(below + Vector2i(1, 0))
 			# Dirt ramps (they continue a path); stone steps if the set has no ramps.
 			var kind := "ramp" if Art.has("tiles", "cliff_ramp_m") else "stairs"
+			if Art.has("tiles", "cliff2_ramp_m"):
+				var nm2 := "cliff2_ramp_m"
+				if l and r:
+					nm2 = "cliff2_ramp_s"
+				elif l:
+					nm2 = "cliff2_ramp_l"
+				elif r:
+					nm2 = "cliff2_ramp_r"
+				var t2 := Art.tex("tiles", nm2)
+				if t2:
+					draw_texture_rect(t2, Rect2(below.x * TILE, below.y * TILE, TILE, TILE * 2), false)
+					# The lower face row under a ramp is the ramp's foot: keep it clear.
+					continue
 			var nm := "cliff_%s_m" % kind
 			if l and r:
 				nm = "cliff_%s_w" % kind if Art.has("tiles", "cliff_%s_w" % kind) else "cliff_%s_m" % kind
@@ -1779,6 +1816,33 @@ func _draw_blob_edges(ci: CanvasItem, cells: Dictionary, edge_cells: Dictionary,
 ## A mass of raised rock (map edges, mountain walls): stone fill with a grassy
 ## lip facing the open ground and painted cliff faces on the sides that face south.
 func draw_rock_mass(cells: Dictionary) -> void:
+	var wall: String = {"marsh": "wall_marsh", "highlands": "wall_highlands", "ruins": "wall_ruins", "riverlands": "wall_river"}.get(scene_id(), "")
+	if wall != "" and Art.has("tiles", wall + "_0"):
+		# Region-themed border wall (Prompts 10): the inner edge of the band is a
+		# two-tile-tall wall facing the player; deeper cells are plain dark fill.
+		var n := 0
+		while Art.has("tiles", "%s_%d" % [wall, n]):
+			n += 1
+		for c: Vector2i in cells:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.08, 0.07, 0.1))
+		for c: Vector2i in cells:
+			var below := c + Vector2i(0, 1)
+			if cells.has(below):
+				continue
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+			var t := Art.tex("tiles", "%s_%d" % [wall, h % n])
+			if t:
+				draw_texture_rect(t, Rect2(c.x * TILE, c.y * TILE - TILE, TILE, TILE * 2), false)
+		# side walls: cells with open land to the left/right get an end cap
+		for c: Vector2i in cells:
+			for side: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0)]:
+				var nb := c + side
+				if cells.has(nb) or not in_content(nb) or cells.has(c + Vector2i(0, 1)) == false:
+					continue
+				var cap := Art.tex("tiles", wall + ("_end_r" if side.x < 0 else "_end_l"))
+				if cap:
+					draw_texture_rect(cap, Rect2(c.x * TILE, c.y * TILE - TILE, TILE, TILE * 2), false)
+		return
 	if Art.has("tiles", "cliff_top_0"):
 		# Raised rock plateau with real edges on every side (W28 cliff set), so a
 		# blocked cliff band always reads as a wall, never as floor.

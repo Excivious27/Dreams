@@ -107,6 +107,22 @@ func _draw_hud() -> void:
 			c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
 			c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
 		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), "%d/%d" % [int(r.get("mana", 0)), int(r.get("max_mana", 0))], HORIZONTAL_ALIGNMENT_LEFT, 50, 7, Color(0.8, 0.9, 1.0))
+	# Active buffs (Prompts 10 icons) under the hearts.
+	var bx := 6.0
+	var buffs: Dictionary = r.get("buffs", {})
+	for k in buffs:
+		if GameState.buff(str(k)) <= 0.0:
+			continue
+		var bi := "buff2_" + str(k)
+		if Art.has("ui", bi):
+			c.draw_texture_rect(Art.tex("ui", bi), Rect2(bx, 24, 9, 9), false)
+			bx += 11
+	if int(r["flags"].get("shield", 0)) > 0 and Art.has("ui", "buff2_shield"):
+		c.draw_texture_rect(Art.tex("ui", "buff2_shield"), Rect2(bx, 24, 9, 9), false); bx += 11
+	if int(r["flags"].get("haste_until", 0)) > int(r["time"]) and Art.has("ui", "buff2_haste"):
+		c.draw_texture_rect(Art.tex("ui", "buff2_haste"), Rect2(bx, 24, 9, 9), false); bx += 11
+	if int(r["flags"].get("glow_day", -1)) == int(r["day"]) and Art.has("ui", "buff2_glow"):
+		c.draw_texture_rect(Art.tex("ui", "buff2_glow"), Rect2(bx, 24, 9, 9), false); bx += 11
 	# Clock box (top right)
 	var box := Rect2(166, 2, 100, 28)
 	_panel(c, "panel_parchment", box)

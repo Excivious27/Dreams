@@ -247,7 +247,7 @@ func _refresh() -> void:
 				var need := GameState.xp_for_next(lvl)
 				var h := HBoxContainer.new()
 				_body.add_child(h)
-				var ic := Art.tex("ui", "skill2_" + str(sk)) if Art.has("ui", "skill2_" + str(sk)) else Art.tex("ui", "skill_" + str(sk))
+				var ic := Art.tex("ui", "skill3_" + str(sk)) if Art.has("ui", "skill3_" + str(sk)) else (Art.tex("ui", "skill2_" + str(sk)) if Art.has("ui", "skill2_" + str(sk)) else Art.tex("ui", "skill_" + str(sk)))
 				if ic:
 					var tr := TextureRect.new()
 					tr.texture = ic
@@ -400,6 +400,11 @@ func _skill_tree(sk: String) -> void:
 					Music.instance(get_tree()).sfx("levelup")
 				_refresh())
 			b.add_theme_font_size_override("font_size", 7)
+			var nic := "node_%s_%s" % [sk, id]
+			if Art.has("ui", nic):
+				b.icon = Art.tex("ui", nic)
+				b.expand_icon = true
+				b.add_theme_constant_override("icon_max_width", 18)
 			b.modulate = Color(1, 0.92, 0.6) if rank > 0 else (Color(1, 1, 1) if why == "" else Color(0.6, 0.6, 0.6))
 	if sk == "magic":
 		var kn := Spells.known()
@@ -409,12 +414,16 @@ func _skill_tree(sk: String) -> void:
 			_line("  Cast  (mana %d / %d)" % [int(GameState.run.get("mana", 0)), int(GameState.run.get("max_mana", 0))], 8, Color(0.6, 0.8, 1.0))
 			for id in kn:
 				var sp: Dictionary = Spells.SPELLS[id]
-				var cb := _button("  ✦ %s  (%d mana) — %s" % [str(sp["name"]), int(sp["cost"]), str(sp["desc"])], func() -> void:
+				var cb := _button("  ✦ %s  (%d mana) — %s" % [str(sp["name"]), Spells.cost_of(id), str(sp["desc"])], func() -> void:
 					var m := get_tree().current_scene
 					if m is GameMap:
 						toggle()
 						Spells.cast(m as GameMap, id))
 				cb.add_theme_font_size_override("font_size", 7)
+				if Art.has("ui", "spell_" + id):
+					cb.icon = Art.tex("ui", "spell_" + id)
+					cb.expand_icon = true
+					cb.add_theme_constant_override("icon_max_width", 16)
 	if spent > 0:
 		_button("Reset this tree (refund all points)", func() -> void: GameState.reset_tree(sk); _refresh())
 

@@ -128,6 +128,8 @@ var _wander_t := 0.0
 var _chat_t := 0.0
 var _chat_partner: Npc = null
 var _bubble: Label = null
+var _bubble_sprite: Sprite2D = null
+var _bubble_i := 0
 var activity := ""  # what the current spot is for: "work" | "sit" | "fish" | "garden" | "talk" | ""
 
 ## What people do at each kind of spot (drives poses and chatter).
@@ -274,6 +276,11 @@ func _chat(delta: float, to: Vector2) -> void:
 			_anim.flip_h = _chat_partner.position.x < position.x
 			if _bubble:
 				_bubble.text = ["...", "..", ".", "!", "?", "..."][int(Time.get_ticks_msec() / 500) % 6]
+			if _bubble_sprite and int(Time.get_ticks_msec() / 1400) != _bubble_i:
+				_bubble_i = int(Time.get_ticks_msec() / 1400)
+				var pick: String = ["bubble_dots", "bubble_bang", "bubble_question", "bubble_laugh", "bubble_music", "bubble_idea", "bubble_heart", "bubble_dots"][(_bubble_i + hash(id)) % 8]
+				if Art.has("emotes", pick):
+					_bubble_sprite.texture = Art.tex("emotes", pick)
 		return
 	if to.length() > 2.0 or _wander_t > 2.0:
 		return
@@ -295,6 +302,16 @@ func _start_chat(o: Npc) -> void:
 	_target = position
 	_path.clear()
 	set_pose("talk")
+	if _bubble_sprite == null and Art.has("emotes", "bubble_dots"):
+		_bubble_sprite = Sprite2D.new()
+		_bubble_sprite.texture = Art.tex("emotes", "bubble_dots")
+		_bubble_sprite.scale = Vector2(0.5, 0.5)
+		_bubble_sprite.position = Vector2(0, -30)
+		_bubble_sprite.z_index = 30
+		_bubble_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		add_child(_bubble_sprite)
+	if _bubble_sprite:
+		_bubble_sprite.visible = true
 	if _bubble == null:
 		_bubble = Label.new()
 		_bubble.add_theme_font_size_override("font_size", 8)
@@ -305,10 +322,12 @@ func _start_chat(o: Npc) -> void:
 		_bubble.size = Vector2(20, 10)
 		_bubble.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		add_child(_bubble)
-	_bubble.visible = true
+	_bubble.visible = _bubble_sprite == null
 
 
 func _end_chat() -> void:
+	if _bubble_sprite:
+		_bubble_sprite.visible = false
 	_chat_partner = null
 	_wander_t = randf_range(3.0, 6.0)
 	set_pose("")
