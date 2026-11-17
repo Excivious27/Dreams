@@ -478,6 +478,12 @@ func _die() -> void:
 	_alive = false
 	map.enemies.erase(self)
 	map.on_enemy_died(self)
+	# A puff where it stood and a thud; bosses get a bigger send-off.
+	var big := max_hp >= 60
+	map.fx("poof" if Art.has("fx", "poof") else "spark", position + Vector2(0, -8), 32.0 if big else 20.0, 0.6)
+	Music.instance(get_tree()).sfx("boss_down" if big else "thud")
+	if big:
+		map.shake(5.0)
 	var tw := create_tween()
 	tw.set_parallel(true)
 	tw.tween_property(self, "position", position + _knock.normalized() * 10.0, 0.2)

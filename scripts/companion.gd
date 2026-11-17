@@ -112,6 +112,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			if gm:
 				(gm as GameMenu).toggle()
 		"bee_bop":
+			Music.instance(m.get_tree()).sfx("stun")
 			# Coldy stamps: a ring that cracks the ground; grumps in it stagger.
 			m.fx("stomp" if Art.has("fx", "stomp") else "ripple_ring", p.position, 16.0, 0.8)
 			m.shake(3.0)

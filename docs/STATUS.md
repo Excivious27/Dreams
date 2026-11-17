@@ -302,3 +302,6 @@
 - Slicers: `_hero_row_cells` splits a blob that spans two grid columns into per-column slices (it used to hand the whole blob to both columns: Marisol's swim, Nia's ride, Ladder/Sasha/Val/Mama Rosa/The Kid walk+attack were double sprites); `_split_wide` for the gang sheets. Re-sliced w201–w218.
 - Creator skinned with the 12C panel (`ui_creator2`: panel behind the container, preview frame, arrow/dice/done/x picture buttons; `tools/creator_shot.gd` screenshots both creators). Party tab: the 12C partner card is the button, name + ability beside it.
 - ui_test: fixed a stale-button crash; 2 remaining failures (dialogue mouse clicks, door click) don't reproduce in a standalone script — harness state, to revisit in Round 7.
+
+## 2026-11-17 — Round 4 feel, pass 1
+- Sword hits: hitstop (0.035 s, 0.08 on a kill or crit) + camera nudge (1.2 / 2 / 3 px); crit chime. Enemy deaths: poof + thud, bosses (≥60 hp) a long boss_down and a 5 px shake. New placeholder SFX: thud, boss_down, crit, stun (Coldy's stomp), stink (litter box). `make_audio.py` music is non-deterministic: `git checkout audio/music` after regenerating unless the music changed on purpose.

@@ -1103,8 +1103,14 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 				hit = true
 				fx("spark", e.position + Vector2(0, -8), 18.0, 0.5)
 				damage_number(e.position + Vector2(0, -20), dmg, Color(1, 0.95, 0.4) if crit else Color.WHITE)
+				# Weight: a short freeze and a nudge of the camera; more on a kill or a crit.
+				var killed := not is_instance_valid(e) or not e._alive
+				hitstop = maxf(hitstop, 0.08 if (killed or crit) else 0.035)
+				shake(3.0 if killed else (2.0 if crit else 1.2))
 	if hit:
 		Music.instance(get_tree()).sfx("hit")
+		if hitstop >= 0.08:
+			Music.instance(get_tree()).sfx("crit")
 	return hit
 
 
@@ -1131,6 +1137,7 @@ func use_consumable(sel: String) -> bool:
 		return false
 	var it: Dictionary = GameState.items.get(sel, {})
 	if str(it.get("effect", "")) == "stink":
+		Music.instance(get_tree()).sfx("stink")
 		# Cat-topia's secret weapon: everything nearby stops to hold its nose.
 		GameState.add_item(sel, -1)
 		player.play_tool("hold")
