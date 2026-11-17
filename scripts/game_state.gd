@@ -1548,6 +1548,7 @@ static func sleep(passed_out := false) -> Dictionary:
 		else:
 			tile["watered"] = false
 	Racket.overnight(report)
+	Sanctuary.overnight(report)
 	if has_friend_perk("posy", 2):
 		add_item("bread", 1)
 	if int(run.get("bank", 0)) > 0 and has_friend_perk("ivy", 2):

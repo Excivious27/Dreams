@@ -85,6 +85,8 @@ func _sleep() -> void:
 	var lines: Array = [{"text": "Day %d." % int(GameState.run["day"])}]
 	if int(report["earned"]) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report["sold"]), int(report["earned"])]})
+	if int(report.get("left", 0)) > 0:
+		lines.append({"text": "Something was left for you in the night. Check the pool and the burrow."})
 	if int(report.get("washed", 0)) > 0:
 		lines.append({"who": "Laundromat", "text": "Clean and folded: ◆%d." % int(report["washed"])})
 	if int(report["grown"]) > 0:

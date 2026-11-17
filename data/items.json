@@ -7374,7 +7374,9 @@
   "rarity": "common",
   "tier": 1,
   "desc": "Cat-topia's secret weapon. Throw it: every Grump nearby stops to hold its nose.",
-  "effect": "stink"
+  "effect": "stink",
+  "radius": 56,
+  "stun": 3.0
  },
  "finargle_fuzz": {
   "name": "Finargle Fuzz",
@@ -8691,5 +8693,311 @@
    "luck": 2
   },
   "arc": "gangsters"
+ },
+ "marshmallow": {
+  "name": "Marshmallow",
+  "type": "food",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 12,
+  "arc": "penguins"
+ },
+ "toasted_marshmallow": {
+  "name": "Toasted Marshmallow",
+  "type": "food",
+  "value": 45,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 30,
+  "arc": "penguins"
+ },
+ "smore": {
+  "name": "S'more",
+  "type": "food",
+  "value": 140,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 55,
+  "heal": 2,
+  "arc": "penguins"
+ },
+ "hot_cocoa": {
+  "name": "Hot Cocoa",
+  "type": "food",
+  "value": 160,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 45,
+  "buff": {
+   "kind": "warm",
+   "minutes": 480,
+   "amount": 1
+  },
+  "desc": "Big Jim makes it too sweet. Warm for hours.",
+  "arc": "penguins"
+ },
+ "campfire_stew": {
+  "name": "Big Jim's Stew",
+  "type": "food",
+  "value": 240,
+  "rarity": "rare",
+  "tier": 3,
+  "energy": 80,
+  "heal": 5,
+  "arc": "penguins"
+ },
+ "starlight_smore": {
+  "name": "Starlight S'more",
+  "type": "food",
+  "value": 520,
+  "rarity": "rare",
+  "tier": 3,
+  "energy": 100,
+  "heal": 4,
+  "buff": {
+   "kind": "luck",
+   "minutes": 300,
+   "amount": 2
+  },
+  "friend": 4,
+  "arc": "penguins"
+ },
+ "scented_litter": {
+  "name": "Scented Litter Box",
+  "type": "consumable",
+  "value": 40,
+  "rarity": "uncommon",
+  "tier": 2,
+  "effect": "stink",
+  "radius": 84,
+  "stun": 5.0,
+  "desc": "Lavender. Somehow worse. A wider cloud, a longer nose-hold.",
+  "arc": "penguins"
+ },
+ "mega_litter": {
+  "name": "Mega Litter Box",
+  "type": "consumable",
+  "value": 110,
+  "rarity": "rare",
+  "tier": 3,
+  "effect": "stink",
+  "radius": 120,
+  "stun": 7.0,
+  "desc": "The catapult-sized one. Clears a room.",
+  "arc": "penguins"
+ },
+ "tuna_treat": {
+  "name": "Tuna Treat",
+  "type": "food",
+  "value": 50,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 25,
+  "friend": 3,
+  "desc": "Every cat in Cat-topia wants one. So does your pup.",
+  "arc": "penguins"
+ },
+ "paw_lantern": {
+  "name": "Paw Lantern",
+  "type": "consumable",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "mana": 10,
+  "desc": "A little jar of Meow Pow Wow light. Open it for luck and mana.",
+  "arc": "penguins"
+ },
+ "heart_spark": {
+  "name": "Heart Spark",
+  "type": "consumable",
+  "value": 420,
+  "rarity": "rare",
+  "tier": 3,
+  "mana": 60,
+  "heal": 6,
+  "desc": "A rainbow heart in a bottle. Mana and health at once.",
+  "arc": "penguins"
+ },
+ "icicle_blade": {
+  "name": "Icicle Blade",
+  "type": "tool",
+  "value": 150,
+  "rarity": "common",
+  "tier": 1,
+  "damage": 3,
+  "weapon": true,
+  "arc": "penguins"
+ },
+ "fishbone_sabre": {
+  "name": "Fish-Bone Sabre",
+  "type": "tool",
+  "value": 320,
+  "rarity": "uncommon",
+  "tier": 2,
+  "damage": 4,
+  "weapon": true,
+  "arc": "penguins"
+ },
+ "aurora_blade": {
+  "name": "Aurora Blade",
+  "type": "tool",
+  "value": 900,
+  "rarity": "uncommon",
+  "tier": 2,
+  "damage": 6,
+  "weapon": true,
+  "arc": "penguins"
+ },
+ "prism_lance": {
+  "name": "Prism Lance",
+  "type": "tool",
+  "value": 2200,
+  "rarity": "rare",
+  "tier": 3,
+  "damage": 8,
+  "weapon": true,
+  "arc": "penguins"
+ },
+ "starheart_blade": {
+  "name": "Starheart Blade",
+  "type": "tool",
+  "value": 5200,
+  "rarity": "epic",
+  "tier": 4,
+  "damage": 11,
+  "weapon": true,
+  "arc": "penguins"
+ },
+ "snow_goggles": {
+  "name": "Snow Goggles",
+  "type": "equip",
+  "value": 140,
+  "rarity": "common",
+  "tier": 1,
+  "slot": "head",
+  "stats": {
+   "defense": 1,
+   "luck": 1
+  },
+  "arc": "penguins"
+ },
+ "aurora_hood": {
+  "name": "Aurora Hood",
+  "type": "equip",
+  "value": 520,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "head",
+  "stats": {
+   "luck": 2,
+   "speed": 1
+  },
+  "arc": "penguins"
+ },
+ "puffy_parka": {
+  "name": "Puffy Parka",
+  "type": "equip",
+  "value": 380,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "body",
+  "stats": {
+   "defense": 2,
+   "luck": 1
+  },
+  "arc": "penguins"
+ },
+ "crystal_parka": {
+  "name": "Crystal Parka",
+  "type": "equip",
+  "value": 900,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "body",
+  "stats": {
+   "defense": 4
+  },
+  "arc": "penguins"
+ },
+ "starlight_mantle": {
+  "name": "Starlight Mantle",
+  "type": "equip",
+  "value": 3200,
+  "rarity": "epic",
+  "tier": 4,
+  "slot": "body",
+  "stats": {
+   "defense": 6,
+   "luck": 1
+  },
+  "arc": "penguins"
+ },
+ "ice_cleats": {
+  "name": "Ice Cleats",
+  "type": "equip",
+  "value": 300,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "feet",
+  "stats": {
+   "defense": 2
+  },
+  "arc": "penguins"
+ },
+ "mitten_paws": {
+  "name": "Mitten Paws",
+  "type": "equip",
+  "value": 260,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "hands",
+  "stats": {
+   "damage": 1
+  },
+  "arc": "penguins"
+ },
+ "courage_scarf": {
+  "name": "Scarf of Courage",
+  "type": "equip",
+  "value": 700,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "back",
+  "stats": {
+   "defense": 2,
+   "speed": 1
+  },
+  "arc": "penguins"
+ },
+ "flipper_belt": {
+  "name": "Flipper Belt",
+  "type": "equip",
+  "value": 480,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "belt",
+  "stats": {
+   "speed": 1,
+   "damage": 1
+  },
+  "arc": "penguins"
+ },
+ "bell_collar": {
+  "name": "Bell Collar",
+  "type": "equip",
+  "value": 800,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "charm",
+  "stats": {
+   "luck": 2
+  },
+  "arc": "penguins"
  }
 }

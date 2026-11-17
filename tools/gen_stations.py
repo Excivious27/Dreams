@@ -60,6 +60,26 @@ G = [  # id, name, type, value, tier, extra
 ]
 for id, name, typ, val, tier, extra in G:
     item(id, name, typ, val, tier, **extra)
+# Penguin arc only: crystal-shaped gear, Cat-topia's litter works, the campfire.
+for id, name, typ, val, tier, extra in [
+ ('marshmallow', 'Marshmallow', 'food', 20, 1, {'energy': 12}), ('toasted_marshmallow', 'Toasted Marshmallow', 'food', 45, 1, {'energy': 30}),
+ ('smore', "S'more", 'food', 140, 2, {'energy': 55, 'heal': 2}), ('hot_cocoa', 'Hot Cocoa', 'food', 160, 2, {'energy': 45, 'buff': {'kind': 'warm', 'minutes': 480, 'amount': 1}, 'desc': 'Big Jim makes it too sweet. Warm for hours.'}),
+ ('campfire_stew', "Big Jim's Stew", 'food', 240, 3, {'energy': 80, 'heal': 5}), ('starlight_smore', "Starlight S'more", 'food', 520, 3, {'energy': 100, 'heal': 4, 'buff': {'kind': 'luck', 'minutes': 300, 'amount': 2}, 'friend': 4}),
+ ('scented_litter', 'Scented Litter Box', 'consumable', 40, 2, {'effect': 'stink', 'radius': 84, 'stun': 5.0, 'desc': 'Lavender. Somehow worse. A wider cloud, a longer nose-hold.'}),
+ ('mega_litter', 'Mega Litter Box', 'consumable', 110, 3, {'effect': 'stink', 'radius': 120, 'stun': 7.0, 'desc': 'The catapult-sized one. Clears a room.'}),
+ ('tuna_treat', 'Tuna Treat', 'food', 50, 1, {'energy': 25, 'friend': 3, 'desc': 'Every cat in Cat-topia wants one. So does your pup.'}),
+ ('paw_lantern', 'Paw Lantern', 'consumable', 90, 2, {'buff': {'kind': 'luck', 'minutes': 180, 'amount': 1}, 'mana': 10, 'desc': 'A little jar of Meow Pow Wow light. Open it for luck and mana.'}),
+ ('heart_spark', 'Heart Spark', 'consumable', 420, 3, {'mana': 60, 'heal': 6, 'desc': 'A rainbow heart in a bottle. Mana and health at once.'})]:
+    extra['arc'] = 'penguins'; item(id, name, typ, val, tier, **extra)
+I['litter_box'].update({'radius': 56, 'stun': 3.0})
+for id, name, dmg, val, tier in [('icicle_blade', 'Icicle Blade', 3, 150, 1), ('fishbone_sabre', 'Fish-Bone Sabre', 4, 320, 2), ('aurora_blade', 'Aurora Blade', 6, 900, 2), ('prism_lance', 'Prism Lance', 8, 2200, 3), ('starheart_blade', 'Starheart Blade', 11, 5200, 4)]:
+    item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='penguins')
+for id, name, slot, stats, val, tier in [
+ ('snow_goggles', 'Snow Goggles', 'head', {'defense': 1, 'luck': 1}, 140, 1), ('aurora_hood', 'Aurora Hood', 'head', {'luck': 2, 'speed': 1}, 520, 3),
+ ('puffy_parka', 'Puffy Parka', 'body', {'defense': 2, 'luck': 1}, 380, 2), ('crystal_parka', 'Crystal Parka', 'body', {'defense': 4}, 900, 3), ('starlight_mantle', 'Starlight Mantle', 'body', {'defense': 6, 'luck': 1}, 3200, 4),
+ ('ice_cleats', 'Ice Cleats', 'feet', {'defense': 2}, 300, 2), ('mitten_paws', 'Mitten Paws', 'hands', {'damage': 1}, 260, 2),
+ ('courage_scarf', 'Scarf of Courage', 'back', {'defense': 2, 'speed': 1}, 700, 3), ('flipper_belt', 'Flipper Belt', 'belt', {'speed': 1, 'damage': 1}, 480, 3), ('bell_collar', 'Bell Collar', 'charm', {'luck': 2}, 800, 3)]:
+    item(id, name, 'equip', val, tier, slot=slot, stats=stats, arc='penguins')
 # Gangster weapons (melee; "weapon" makes them swing like a sword) and street armor.
 for id, name, dmg, val, tier in [('brass_knuckles', 'Brass Knuckles', 3, 150, 1), ('crowbar', 'Crowbar', 4, 320, 2), ('lucky_bat', 'Lucky Bat', 6, 900, 2), ('chrome_blade', 'Chrome Blade', 8, 2200, 3), ('neon_cleaver', 'Neon Cleaver', 11, 5200, 4)]:
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters')
@@ -201,6 +221,38 @@ station('training', 'Recruit Training Center', 'operation', [18, 22], 'combat', 
  ('Back-Lot Gym', ['gym_1'], {'plank': 30, 'rope': 8, 'leather': 6}, 'Spar once a day for combat XP. +10 max health.'),
  ('Training Hall', ['gym_2'], {'beam': 16, 'brick': 60, 'steel_bar': 6}, "Every crew member's perk counts one loyalty step higher. Sparring pays double."),
  ('The Academy', ['gym_3'], {'ironwood_beam': 4, 'plating': 8, 'fine_fabric': 8}, 'Crew perks count two loyalty steps higher. +20 max health.')], w=2, h=2, arc='gangsters', kind='building')
+# ---- penguin arc only ----------------------------------------------------------
+station('shaper', 'Crystal Shaper', 'sanctuary', [3, 20], 'combat', 'Shape', 'Catkins', [
+ ('Shard Table', ['shaper_1'], {'plank': 12, 'shard': 4, 'copper_bar': 2}, d(0, 'An icicle blade, snow goggles.')),
+ ('Crystal Shaper', ['shaper_2'], {'iron_bar': 8, 'crystal_refined': 4, 'cotton_cloth': 4}, d(1, 'Sabre, parka, cleats.')),
+ ('Prism Workshop', ['shaper_3'], {'steel_bar': 10, 'crystal_glass': 4, 'gear': 6}, d(2, 'Prism lance, aurora gear.')),
+ ('Heart of Light', ['shaper_4'], {'dark_bar': 8, 'crystal_battery': 4, 'fine_fabric': 6}, d(3, 'The Starheart Blade.'))], arc='penguins')
+station('litter', 'Litter Works', 'sanctuary', [3, 22], 'foraging', 'Pack', 'Catkins', [
+ ('Sand Tray', ['litter_1'], {'plank': 12, 'sand': 20, 'clay': 6}, d(0, "Litter boxes: Cat-topia's secret weapon.")),
+ ('Litter Works', ['litter_2'], {'brick': 30, 'clay_pot': 8, 'iron_bar': 4}, d(1, 'Scented boxes, paw lanterns.')),
+ ('Catapult Yard', ['litter_3'], {'beam': 12, 'gear': 6, 'rope': 12}, d(2, 'Mega boxes, heart sparks.')),
+ ('Grand Catapult', ['litter_4'], {'ironwood_beam': 3, 'spring': 10, 'crystal_battery': 2}, d(3))], arc='penguins')
+station('campfire', "Big Jim's Campfire", 'sanctuary', [6, 23], 'foraging', 'Toast', 'Big Jim', [
+ ('Campfire', ['campfire_1'], {'stone': 12, 'wood': 20}, d(0, 'Marshmallows on a stick.')),
+ ('Fire Ring', ['campfire_2'], {'brick': 24, 'iron_bar': 3, 'plank': 12}, d(1, "S'mores and cocoa.")),
+ ('Cook Camp', ['campfire_3'], {'tile': 16, 'steel_bar': 4, 'sail': 2}, d(2, "Big Jim's stew.")),
+ ('Aurora Camp', ['campfire_4'], {'crystal_glass': 4, 'moonweave': 2, 'gold_bar': 3}, d(3))], arc='penguins')
+station('pool', 'Merkitty Pool', 'sanctuary', [9, 24], 'fishing', '', 'Mer', [
+ ('Tide Pool', ['pool_1'], {'stone': 40, 'clay': 12, 'sand': 20}, 'The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you.'),
+ ('Singing Pool', ['pool_2'], {'brick': 40, 'glass': 12, 'copper_bar': 6}, '2 gifts a morning, sometimes a pearl.'),
+ ('Moon Grotto', ['pool_3'], {'tile': 30, 'crystal_glass': 4, 'silver_bar': 4}, '3 gifts a morning; rare fish and pearls.')], w=1, arc='penguins', kind='building')
+station('burrow', 'Crystal Baby Burrow', 'sanctuary', [18, 22], 'mining', '', 'Coldy', [
+ ('Cosy Burrow', ['burrow_1'], {'plank': 30, 'cloth': 8, 'stone': 40}, 'The babies you turned back dig for you overnight: stone, coal, copper, a shard.'),
+ ('Baby Dig', ['burrow_2'], {'beam': 16, 'brick': 60, 'yarn': 10}, 'More diggers; iron and shards.'),
+ ('Stomping Grounds', ['burrow_3'], {'ironwood_beam': 4, 'plating': 6, 'fine_fabric': 8}, 'Silver, gold and refined crystal turn up.')], w=2, h=2, arc='penguins', kind='building')
+station('shrine', 'Meow Pow Wow Shrine', 'sanctuary', [14, 20], 'foraging', '', 'Catkins', [
+ ('Paw Stone', ['shrine_1'], {'stone': 30, 'crystal_bloom': 6, 'shard': 3}, 'Practise once a day: mana back and foraging XP. +5 max mana.'),
+ ('Heart Shrine', ['shrine_2'], {'brick': 40, 'crystal_refined': 6, 'starflower': 3}, 'Your Meow Pow Wow counts one rank stronger. Practice pays double.'),
+ ('Rainbow Shrine', ['shrine_3'], {'crystal_glass': 6, 'moonweave': 3, 'star_dust': 4}, 'Two ranks stronger. +15 max mana.')], arc='penguins', kind='building')
+B['burrow']['tiers'][0].setdefault('unlock', {})['progress'] = 2
+B['burrow']['tiers'][1]['unlock']['progress'] = 2
+B['shrine']['tiers'][0].setdefault('unlock', {})['progress'] = 1
+for t in B['pool']['tiers']: t.setdefault('unlock', {})
 B['mill']['thing'] = 'station'; B['mill']['station'] = {'skill': 'farming', 'verb': 'Mill', 'book': 'mill'}; B['mill']['cat'] = 'pantry'
 for k, v in B.items():
     if isinstance(v, dict) and 'cat' not in v: v['cat'] = 'farm'
@@ -271,6 +323,17 @@ books['armory'] = [rc('brass_knuckles', 'Brass Knuckles', {'copper_bar': 3}, too
  rc('trench_coat', 'Trench Coat', {'fine_fabric': 3, 'fine_leather': 1}, tier=3), rc('tool_belt', "Driver's Belt", {'fine_leather': 2, 'gear': 2}, tier=3), rc('shades', 'Shades', {'crystal_glass': 1, 'silver_bar': 1}, tier=3),
  rc('gold_chain', 'Gold Chain', {'gold_bar': 2}, tier=3), rc('neon_cleaver', 'Neon Cleaver', {'dark_bar': 4, 'crystal_battery': 1, 'plating': 2}, tier=4, tool=True),
  rc('armored_suit', 'Armored Suit', {'pinstripe_suit': 1, 'plating': 4, 'moonweave': 1}, tier=4)]
+books['shaper'] = [rc('icicle_blade', 'Icicle Blade', {'shard': 3, 'copper_bar': 1}, tool=True), rc('snow_goggles', 'Snow Goggles', {'glass': 2, 'leather': 1}), rc('fishbone_sabre', 'Fish-Bone Sabre', {'iron_bar': 2, 'bone': 6}, tier=2, tool=True),
+ rc('aurora_blade', 'Aurora Blade', {'iron_bar': 3, 'crystal_refined': 2, 'light_mote': 2}, tier=2, tool=True), rc('puffy_parka', 'Puffy Parka', {'cotton_cloth': 4, 'yarn': 3}, tier=2),
+ rc('ice_cleats', 'Ice Cleats', {'leather': 2, 'iron_bar': 1}, tier=2), rc('mitten_paws', 'Mitten Paws', {'yarn': 4, 'leather': 1}, tier=2),
+ rc('prism_lance', 'Prism Lance', {'steel_bar': 4, 'crystal_glass': 2, 'fine_leather': 1}, tier=3, tool=True), rc('crystal_parka', 'Crystal Parka', {'puffy_parka': 1, 'crystal_refined': 4, 'plating': 1}, tier=3),
+ rc('courage_scarf', 'Scarf of Courage', {'fine_fabric': 3, 'yarn': 4}, tier=3), rc('flipper_belt', 'Flipper Belt', {'fine_leather': 2, 'gear': 2}, tier=3), rc('aurora_hood', 'Aurora Hood', {'fine_fabric': 2, 'crystal_glass': 1}, tier=3),
+ rc('bell_collar', 'Bell Collar', {'gold_bar': 2}, tier=3), rc('starheart_blade', 'Starheart Blade', {'dark_bar': 3, 'crystal_battery': 2, 'star_dust': 2}, tier=4, tool=True),
+ rc('starlight_mantle', 'Starlight Mantle', {'crystal_parka': 1, 'moonweave': 2, 'crystal_battery': 1}, tier=4)]
+books['litter'] = [rc('litter_box', 'Litter Box', {'sand': 4, 'clay': 1}, n=2), rc('tuna_treat', 'Tuna Treat', {'minnow': 2}, n=2), rc('scented_litter', 'Scented Litter Box', {'litter_box': 1, '#herb': 1}, tier=2),
+ rc('paw_lantern', 'Paw Lantern', {'glass': 1, 'light_mote': 1, 'crystal_bloom': 1}, tier=2), rc('mega_litter', 'Mega Litter Box', {'scented_litter': 2, 'clay_pot': 1}, tier=3), rc('heart_spark', 'Heart Spark', {'paw_lantern': 1, 'crystal_refined': 1, 'starflower': 1}, tier=3)]
+books['campfire'] = [rc('marshmallow', 'Marshmallow', {'sugar_beet': 1, 'egg': 1}, n=4), rc('toasted_marshmallow', 'Toasted Marshmallow', {'marshmallow': 1}), rc('smore', "S'more", {'toasted_marshmallow': 1, 'chocolate': 1, 'bread': 1}, tier=2, n=2),
+ rc('hot_cocoa', 'Hot Cocoa', {'cacao': 1, 'milk': 1, 'marshmallow': 1}, tier=2), rc('campfire_stew', "Big Jim's Stew", {'#veg': 3, '#mushroom': 1, 'trout': 1}, tier=3), rc('starlight_smore', "Starlight S'more", {'smore': 1, 'starflower': 1, 'honey': 1}, tier=3)]
 books['soda'] = [rc('root_beer', 'Root Beer', {'#herb': 1, 'honey': 1}, n=2), rc('cream_soda', 'Cream Soda', {'milk': 1, 'honey': 1, 'vanilla': 1}, tier=2, n=2),
  rc('cherry_fizz', 'Cherry Fizz', {'#berry': 3, 'glass': 1}, tier=2, n=2), rc('golden_float', 'Golden Float', {'cream_soda': 1, 'butter': 1, '#magic': 1}, tier=3)]
 used = {r['id'] for b in books.values() for r in b}

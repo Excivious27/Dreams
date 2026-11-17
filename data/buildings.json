@@ -2535,5 +2535,563 @@
     "art_missing": true
    }
   ]
+ },
+ "shaper": {
+  "label": "Crystal Shaper",
+  "cell": [
+   3,
+   20
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "sanctuary",
+  "seller": "Catkins",
+  "station": {
+   "skill": "combat",
+   "verb": "Shape",
+   "book": "shaper"
+  },
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Shard Table",
+    "sprite": "shaper_1",
+    "group": "props",
+    "cost": {
+     "plank": 12,
+     "shard": 4,
+     "copper_bar": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. An icicle blade, snow goggles.",
+    "price": 1010,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Crystal Shaper",
+    "sprite": "shaper_2",
+    "group": "props",
+    "cost": {
+     "iron_bar": 8,
+     "crystal_refined": 4,
+     "cotton_cloth": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Sabre, parka, cleats.",
+    "price": 5480,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "combat",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Prism Workshop",
+    "sprite": "shaper_3",
+    "group": "props",
+    "cost": {
+     "steel_bar": 10,
+     "crystal_glass": 4,
+     "gear": 6
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Prism lance, aurora gear.",
+    "price": 9230,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "combat",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "Heart of Light",
+    "sprite": "shaper_4",
+    "group": "props",
+    "cost": {
+     "dark_bar": 8,
+     "crystal_battery": 4,
+     "fine_fabric": 6
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. The Starheart Blade.",
+    "price": 19380,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "combat",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "litter": {
+  "label": "Litter Works",
+  "cell": [
+   3,
+   22
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "sanctuary",
+  "seller": "Catkins",
+  "station": {
+   "skill": "foraging",
+   "verb": "Pack",
+   "book": "litter"
+  },
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Sand Tray",
+    "sprite": "litter_1",
+    "group": "props",
+    "cost": {
+     "plank": 12,
+     "sand": 20,
+     "clay": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Litter boxes: Cat-topia's secret weapon.",
+    "price": 480,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Litter Works",
+    "sprite": "litter_2",
+    "group": "props",
+    "cost": {
+     "brick": 30,
+     "clay_pot": 8,
+     "iron_bar": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Scented boxes, paw lanterns.",
+    "price": 3080,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "foraging",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Catapult Yard",
+    "sprite": "litter_3",
+    "group": "props",
+    "cost": {
+     "beam": 12,
+     "gear": 6,
+     "rope": 12
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Mega boxes, heart sparks.",
+    "price": 4250,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "foraging",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "Grand Catapult",
+    "sprite": "litter_4",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 3,
+     "spring": 10,
+     "crystal_battery": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 9730,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "foraging",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "campfire": {
+  "label": "Big Jim's Campfire",
+  "cell": [
+   6,
+   23
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "sanctuary",
+  "seller": "Big Jim",
+  "station": {
+   "skill": "foraging",
+   "verb": "Toast",
+   "book": "campfire"
+  },
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Campfire",
+    "sprite": "campfire_1",
+    "group": "props",
+    "cost": {
+     "stone": 12,
+     "wood": 20
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Marshmallows on a stick.",
+    "price": 290,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Fire Ring",
+    "sprite": "campfire_2",
+    "group": "props",
+    "cost": {
+     "brick": 24,
+     "iron_bar": 3,
+     "plank": 12
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. S'mores and cocoa.",
+    "price": 2320,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "foraging",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Cook Camp",
+    "sprite": "campfire_3",
+    "group": "props",
+    "cost": {
+     "tile": 16,
+     "steel_bar": 4,
+     "sail": 2
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Big Jim's stew.",
+    "price": 5530,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "foraging",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "Aurora Camp",
+    "sprite": "campfire_4",
+    "group": "props",
+    "cost": {
+     "crystal_glass": 4,
+     "moonweave": 2,
+     "gold_bar": 3
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 10500,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "foraging",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "pool": {
+  "label": "Merkitty Pool",
+  "cell": [
+   9,
+   24
+  ],
+  "w": 1,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "sanctuary",
+  "seller": "Mer",
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Tide Pool",
+    "sprite": "pool_1",
+    "group": "props",
+    "cost": {
+     "stone": 40,
+     "clay": 12,
+     "sand": 20
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you.",
+    "price": 570,
+    "art_missing": true,
+    "unlock": {}
+   },
+   {
+    "tier": 2,
+    "name": "Singing Pool",
+    "sprite": "pool_2",
+    "group": "props",
+    "cost": {
+     "brick": 40,
+     "glass": 12,
+     "copper_bar": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 gifts a morning, sometimes a pearl.",
+    "price": 3370,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "fishing",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Moon Grotto",
+    "sprite": "pool_3",
+    "group": "props",
+    "cost": {
+     "tile": 30,
+     "crystal_glass": 4,
+     "silver_bar": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 gifts a morning; rare fish and pearls.",
+    "price": 10150,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "fishing",
+      5
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "burrow": {
+  "label": "Crystal Baby Burrow",
+  "cell": [
+   18,
+   22
+  ],
+  "w": 2,
+  "h": 2,
+  "group": "props",
+  "thing": "station",
+  "cat": "sanctuary",
+  "seller": "Coldy",
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Cosy Burrow",
+    "sprite": "burrow_1",
+    "group": "props",
+    "cost": {
+     "plank": 30,
+     "cloth": 8,
+     "stone": 40
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "The babies you turned back dig for you overnight: stone, coal, copper, a shard.",
+    "price": 1160,
+    "art_missing": true,
+    "unlock": {
+     "progress": 2
+    }
+   },
+   {
+    "tier": 2,
+    "name": "Baby Dig",
+    "sprite": "burrow_2",
+    "group": "props",
+    "cost": {
+     "beam": 16,
+     "brick": 60,
+     "yarn": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "More diggers; iron and shards.",
+    "price": 4340,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "mining",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Stomping Grounds",
+    "sprite": "burrow_3",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 4,
+     "plating": 6,
+     "fine_fabric": 8
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "Silver, gold and refined crystal turn up.",
+    "price": 13930,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "mining",
+      5
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "shrine": {
+  "label": "Meow Pow Wow Shrine",
+  "cell": [
+   14,
+   20
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "sanctuary",
+  "seller": "Catkins",
+  "arc": "penguins",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Paw Stone",
+    "sprite": "shrine_1",
+    "group": "props",
+    "cost": {
+     "stone": 30,
+     "crystal_bloom": 6,
+     "shard": 3
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Practise once a day: mana back and foraging XP. +5 max mana.",
+    "price": 1500,
+    "art_missing": true,
+    "unlock": {
+     "progress": 1
+    }
+   },
+   {
+    "tier": 2,
+    "name": "Heart Shrine",
+    "sprite": "shrine_2",
+    "group": "props",
+    "cost": {
+     "brick": 40,
+     "crystal_refined": 6,
+     "starflower": 3
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Your Meow Pow Wow counts one rank stronger. Practice pays double.",
+    "price": 6920,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "foraging",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Rainbow Shrine",
+    "sprite": "shrine_3",
+    "group": "props",
+    "cost": {
+     "crystal_glass": 6,
+     "moonweave": 3,
+     "star_dust": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "Two ranks stronger. +15 max mana.",
+    "price": 11650,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "foraging",
+      5
+     ]
+    },
+    "art_missing": true
+   }
+  ]
  }
 }

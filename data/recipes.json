@@ -2390,5 +2390,298 @@
    "give": "golden_float",
    "tier": 3
   }
+ ],
+ "shaper": [
+  {
+   "id": "icicle_blade",
+   "name": "Icicle Blade",
+   "need": {
+    "shard": 3,
+    "copper_bar": 1
+   },
+   "give": "icicle_blade",
+   "tier": 1,
+   "tool": true
+  },
+  {
+   "id": "snow_goggles",
+   "name": "Snow Goggles",
+   "need": {
+    "glass": 2,
+    "leather": 1
+   },
+   "give": "snow_goggles",
+   "tier": 1
+  },
+  {
+   "id": "fishbone_sabre",
+   "name": "Fish-Bone Sabre",
+   "need": {
+    "iron_bar": 2,
+    "bone": 6
+   },
+   "give": "fishbone_sabre",
+   "tier": 2,
+   "tool": true
+  },
+  {
+   "id": "aurora_blade",
+   "name": "Aurora Blade",
+   "need": {
+    "iron_bar": 3,
+    "crystal_refined": 2,
+    "light_mote": 2
+   },
+   "give": "aurora_blade",
+   "tier": 2,
+   "tool": true
+  },
+  {
+   "id": "puffy_parka",
+   "name": "Puffy Parka",
+   "need": {
+    "cotton_cloth": 4,
+    "yarn": 3
+   },
+   "give": "puffy_parka",
+   "tier": 2
+  },
+  {
+   "id": "ice_cleats",
+   "name": "Ice Cleats",
+   "need": {
+    "leather": 2,
+    "iron_bar": 1
+   },
+   "give": "ice_cleats",
+   "tier": 2
+  },
+  {
+   "id": "mitten_paws",
+   "name": "Mitten Paws",
+   "need": {
+    "yarn": 4,
+    "leather": 1
+   },
+   "give": "mitten_paws",
+   "tier": 2
+  },
+  {
+   "id": "prism_lance",
+   "name": "Prism Lance",
+   "need": {
+    "steel_bar": 4,
+    "crystal_glass": 2,
+    "fine_leather": 1
+   },
+   "give": "prism_lance",
+   "tier": 3,
+   "tool": true
+  },
+  {
+   "id": "crystal_parka",
+   "name": "Crystal Parka",
+   "need": {
+    "puffy_parka": 1,
+    "crystal_refined": 4,
+    "plating": 1
+   },
+   "give": "crystal_parka",
+   "tier": 3
+  },
+  {
+   "id": "courage_scarf",
+   "name": "Scarf of Courage",
+   "need": {
+    "fine_fabric": 3,
+    "yarn": 4
+   },
+   "give": "courage_scarf",
+   "tier": 3
+  },
+  {
+   "id": "flipper_belt",
+   "name": "Flipper Belt",
+   "need": {
+    "fine_leather": 2,
+    "gear": 2
+   },
+   "give": "flipper_belt",
+   "tier": 3
+  },
+  {
+   "id": "aurora_hood",
+   "name": "Aurora Hood",
+   "need": {
+    "fine_fabric": 2,
+    "crystal_glass": 1
+   },
+   "give": "aurora_hood",
+   "tier": 3
+  },
+  {
+   "id": "bell_collar",
+   "name": "Bell Collar",
+   "need": {
+    "gold_bar": 2
+   },
+   "give": "bell_collar",
+   "tier": 3
+  },
+  {
+   "id": "starheart_blade",
+   "name": "Starheart Blade",
+   "need": {
+    "dark_bar": 3,
+    "crystal_battery": 2,
+    "star_dust": 2
+   },
+   "give": "starheart_blade",
+   "tier": 4,
+   "tool": true
+  },
+  {
+   "id": "starlight_mantle",
+   "name": "Starlight Mantle",
+   "need": {
+    "crystal_parka": 1,
+    "moonweave": 2,
+    "crystal_battery": 1
+   },
+   "give": "starlight_mantle",
+   "tier": 4
+  }
+ ],
+ "litter": [
+  {
+   "id": "litter_box",
+   "name": "Litter Box",
+   "need": {
+    "sand": 4,
+    "clay": 1
+   },
+   "give": "litter_box",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "tuna_treat",
+   "name": "Tuna Treat",
+   "need": {
+    "minnow": 2
+   },
+   "give": "tuna_treat",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "scented_litter",
+   "name": "Scented Litter Box",
+   "need": {
+    "litter_box": 1,
+    "#herb": 1
+   },
+   "give": "scented_litter",
+   "tier": 2
+  },
+  {
+   "id": "paw_lantern",
+   "name": "Paw Lantern",
+   "need": {
+    "glass": 1,
+    "light_mote": 1,
+    "crystal_bloom": 1
+   },
+   "give": "paw_lantern",
+   "tier": 2
+  },
+  {
+   "id": "mega_litter",
+   "name": "Mega Litter Box",
+   "need": {
+    "scented_litter": 2,
+    "clay_pot": 1
+   },
+   "give": "mega_litter",
+   "tier": 3
+  },
+  {
+   "id": "heart_spark",
+   "name": "Heart Spark",
+   "need": {
+    "paw_lantern": 1,
+    "crystal_refined": 1,
+    "starflower": 1
+   },
+   "give": "heart_spark",
+   "tier": 3
+  }
+ ],
+ "campfire": [
+  {
+   "id": "marshmallow",
+   "name": "Marshmallow",
+   "need": {
+    "sugar_beet": 1,
+    "egg": 1
+   },
+   "give": "marshmallow",
+   "tier": 1,
+   "n": 4
+  },
+  {
+   "id": "toasted_marshmallow",
+   "name": "Toasted Marshmallow",
+   "need": {
+    "marshmallow": 1
+   },
+   "give": "toasted_marshmallow",
+   "tier": 1
+  },
+  {
+   "id": "smore",
+   "name": "S'more",
+   "need": {
+    "toasted_marshmallow": 1,
+    "chocolate": 1,
+    "bread": 1
+   },
+   "give": "smore",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "hot_cocoa",
+   "name": "Hot Cocoa",
+   "need": {
+    "cacao": 1,
+    "milk": 1,
+    "marshmallow": 1
+   },
+   "give": "hot_cocoa",
+   "tier": 2
+  },
+  {
+   "id": "campfire_stew",
+   "name": "Big Jim's Stew",
+   "need": {
+    "#veg": 3,
+    "#mushroom": 1,
+    "trout": 1
+   },
+   "give": "campfire_stew",
+   "tier": 3
+  },
+  {
+   "id": "starlight_smore",
+   "name": "Starlight S'more",
+   "need": {
+    "smore": 1,
+    "starflower": 1,
+    "honey": 1
+   },
+   "give": "starlight_smore",
+   "tier": 3
+  }
  ]
 }

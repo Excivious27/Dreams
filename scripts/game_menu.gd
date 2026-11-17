@@ -434,6 +434,13 @@ func _refresh() -> void:
 			_line("Workshop · %d pieces made so far" % int(r.get("made", 0)), 9, Color(1, 0.9, 0.6))
 			if Racket.on():
 				_line("Heat %d/5 · %d bill%s passed%s" % [Racket.heat(), int(r.get("passed", 0)), "" if int(r.get("passed", 0)) == 1 else "s", " · collectors are looking" if Racket.heat() >= 3 else ""], 8, Color(1, 0.6, 0.45) if Racket.heat() >= 3 else Color(0.9, 0.85, 0.7))
+			if Sanctuary.on():
+				var waiting := 0
+				for gk in (r.get("gifts", {}) as Dictionary):
+					for gi in r["gifts"][gk]:
+						waiting += int(r["gifts"][gk][gi])
+				if Builds.is_built("pool") or Builds.is_built("burrow") or Builds.is_built("shrine"):
+					_line("Sanctuary · %d gift%s waiting · Meow Pow Wow +%d rank%s from the shrine" % [waiting, "" if waiting == 1 else "s", Sanctuary.meow_bonus(), "" if Sanctuary.meow_bonus() == 1 else "s"], 8, Color(0.8, 0.95, 1.0))
 			if ws2.is_empty():
 				_line("No stations yet. The Plans board by your house lists every station: build each from materials or buy it ready-made.", 7, Color(0.8, 0.8, 0.8))
 			for w in ws2:

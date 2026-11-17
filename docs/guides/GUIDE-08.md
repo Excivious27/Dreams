@@ -6,11 +6,11 @@
 
 1. **The full audit and 20-bot playtest**, with every fix (see `docs/AUDIT-2026-11-17.md`).
 2. **134 growable crops**, tied into shops, cooking, the keg, gifts, quests, the fair and a Field log. Your Prompts 14 art (all 10 images) is in: every crop now has its six painted growth stages and every new food has its icon.
-3. **The workshop** (this guide): craft stations in four tiers, a vehicle workshop, a rocket yard, a magic potion station, and a set of stations and buildings that only the gangster arc gets.
+3. **The workshop** (this guide): craft stations in four tiers, a vehicle workshop, a rocket yard, a magic potion station, and a set of stations and buildings unique to each arc: the operation for gangsters, the sanctuary for penguins.
 
 ## How the workshop works
 
-**Nothing is given.** Every station and building is either built from materials or bought ready-made for crystals, at the **Plans board** next to your house. The board is sorted into shelves: Farm buildings, Workshop stations, Kitchen & cellar, Big projects, and (gangsters only) The operation.
+**Nothing is given.** Every station and building is either built from materials or bought ready-made for crystals, at the **Plans board** next to your house. The board is sorted into shelves: Farm buildings, Workshop stations, Kitchen & cellar, Big projects, and one shelf of your arc's own: The operation (gangsters) or The sanctuary (penguins).
 
 **Every station has four tiers.** A tier opens when three things line up:
 
@@ -98,6 +98,26 @@ If a bill is noticed you lose it, pay half its value to smooth things over, a sh
 
 **Recruit Training Center:** spar once a day for combat experience. From tier 2, every recruited crew member's perk counts one loyalty step higher (two at tier 3), and building it raises your max health.
 
+## Penguin arc only: the sanctuary
+
+The penguins' own shelf on the Plans board, drawn from the book.
+
+| Station | Tiers | What it does |
+|---|---|---|
+| Crystal Shaper | Shard Table → Crystal Shaper → Prism Workshop → Heart of Light | An icicle blade, snow goggles. |
+| Litter Works | Sand Tray → Litter Works → Catapult Yard → Grand Catapult | Litter boxes: Cat-topia's secret weapon. |
+| Big Jim's Campfire | Campfire → Fire Ring → Cook Camp → Aurora Camp | Marshmallows on a stick. |
+| Meow Pow Wow Shrine | Paw Stone → Heart Shrine → Rainbow Shrine | Practise once a day: mana back and foraging XP. +5 max mana. |
+| Merkitty Pool | Tide Pool → Singing Pool → Moon Grotto | The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you. |
+| Crystal Baby Burrow | Cosy Burrow → Baby Dig → Stomping Grounds | The babies you turned back dig for you overnight: stone, coal, copper, a shard. |
+
+- **Crystal Shaper:** Icicle Blade, Fish-Bone Sabre, Aurora Blade, Prism Lance, Starheart Blade; Snow Goggles, Aurora Hood, Puffy Parka, Crystal Parka, Starlight Mantle, Ice Cleats, Mitten Paws, Scarf of Courage, Flipper Belt, Bell Collar. They match the gangster gear step for step.
+- **Litter Works:** litter boxes in three sizes (each stuns Grumps over a wider area, for longer), Tuna Treats, Paw Lanterns (luck and mana) and Heart Sparks (mana and health).
+- **Big Jim's Campfire:** marshmallows, s'mores, hot cocoa (keeps you warm for hours), Big Jim's Stew and the Starlight S'more.
+- **Meow Pow Wow Shrine:** practise once a day for mana and experience. From tier 2 your Meow Pow Wow is one rank stronger, two at tier 3.
+- **Merkitty Pool:** the merkitties leave fish, shells and sometimes pearls each morning, and fish bite faster for you.
+- **Crystal Baby Burrow:** opens after the mountain chapter. The babies dig overnight and leave stone, ore and shards; better tiers find silver, gold and refined crystal. Gifts wait in a basket (up to 30) until you collect them.
+
 ## What to test (15 minutes)
 
 1. **Plans board:** open it by the house. Check the shelves read clearly on your phone, and that a locked tier says why.
@@ -106,11 +126,12 @@ If a bill is noticed you lose it, pay half its value to smooth things over, a sh
 4. **Keg:** build one, hold any crop, start a brew. It should say how many days.
 5. **Crops:** plant a few different seeds and look at the new growth art as days pass.
 6. **Menu → Quests → Workshop** and **Field log**: both should be readable.
-7. **Gangster arc** (new game): build the Back-Room Press, print Crude Bills, pass a few in town, and watch Heat in the Workshop page.
+7. **Penguin arc:** build Big Jim's Campfire and toast a marshmallow; build the Merkitty Pool, sleep, and collect the gift.
+8. **Gangster arc** (new game): build the Back-Room Press, print Crude Bills, pass a few in town, and watch Heat in the Workshop page.
 
 ## Your art job: Art Prompts 15
 
-8 images in two batches (5, then 3): workshop goods icons, the station tiers, vehicles and the rocket, Granite and Sel's portraits, then the gangster stations, street-gear icons and UI. Until they arrive, new stations show as crates with the station's name, and new items have blank icons. The file is `docs/ART-PROMPTS-15.md`.
+11 images in three batches (5, 3, 3): workshop goods icons, the station tiers, vehicles and the rocket, Granite and Sel's portraits; then the gangster stations, street-gear icons and UI; then the penguin sanctuary stations, icons and extras. Until they arrive, new stations show as crates with the station's name, and new items have blank icons. The file is `docs/ART-PROMPTS-15.md`.
 
 ## Still open
 

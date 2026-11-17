@@ -20,7 +20,7 @@ const TOWN_KEEPER := {"furnace": "gideon", "anvil": "gideon", "tannery": "rook",
 const SPEED := [1.0, 0.85, 0.7, 0.55]
 const BONUS := [0.0, 0.05, 0.10, 0.20]
 const BASE_MINUTES := {1: 20, 2: 45, 3: 90, 4: 180, 5: 360}
-const STATION_SPEED := {"workbench": 1.0, "furnace": 1.2, "anvil": 1.4, "kitchen": 0.6, "cauldron": 1.2, "mill": 0.8, "loom": 1.2, "kiln": 1.5, "sawmill": 0.7, "tannery": 1.2, "press": 1.5, "jeweler": 1.6, "garage": 3.0, "launchpad": 3.0, "print_shop": 1.0, "armory": 1.6, "soda": 0.6, "resonator": 1.0}
+const STATION_SPEED := {"workbench": 1.0, "furnace": 1.2, "anvil": 1.4, "kitchen": 0.6, "cauldron": 1.2, "mill": 0.8, "loom": 1.2, "kiln": 1.5, "sawmill": 0.7, "tannery": 1.2, "press": 1.5, "jeweler": 1.6, "garage": 3.0, "launchpad": 3.0, "print_shop": 1.0, "armory": 1.6, "soda": 0.6, "resonator": 1.0, "shaper": 1.6, "litter": 0.8, "campfire": 0.5}
 
 
 # ---- station facts -------------------------------------------------------------

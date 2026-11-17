@@ -109,6 +109,25 @@ func _run() -> void:
 	# Rocket: tier 3 flies, with a beacon and fuel.
 	check(Builds.all()["launchpad"]["tiers"].size() == 4, "rocket yard has four stages")
 
+	# ---- penguin arc's own -----------------------------------------------------
+	check(Builds.data().has("shaper") and Builds.data().has("litter") and Builds.data().has("campfire") and Builds.data().has("pool") and Builds.data().has("burrow") and Builds.data().has("shrine"), "the sanctuary is on the penguin plans")
+	check(not Builds.data().has("armory"), "no street armory for penguins")
+	check(GameState.is_sword("icicle_blade") and int(GameState.items["starheart_blade"]["damage"]) == int(GameState.items["neon_cleaver"]["damage"]), "crystal weapons match the street ones")
+	var r0 := Companion.meow_rank()
+	GameState.run["builds"]["shrine"] = 3
+	check(Companion.meow_rank() == r0 + 2, "the shrine adds Meow Pow Wow ranks (%d → %d)" % [r0, Companion.meow_rank()])
+	GameState.run["builds"]["pool"] = 2
+	GameState.run["builds"]["burrow"] = 1
+	GameState.run["gifts"] = {}
+	var prep := GameState.sleep()
+	var gp: Dictionary = GameState.run["gifts"]
+	check(int(prep.get("left", 0)) >= 8 and not (gp.get("pool", {}) as Dictionary).is_empty() and not (gp.get("burrow", {}) as Dictionary).is_empty(), "pool and burrow leave gifts overnight (%d)" % int(prep.get("left", 0)))
+	m = await _farm()
+	GameState.run["inventory"] = {}
+	await Sanctuary.collect(m, "burrow")
+	check(not (GameState.run["inventory"] as Dictionary).is_empty() and (GameState.run["gifts"]["burrow"] as Dictionary).is_empty(), "collecting empties the burrow basket")
+	check(float(GameState.items["mega_litter"]["radius"]) > float(GameState.items["litter_box"]["radius"]), "bigger litter boxes reach further")
+
 	# ---- gangster arc --------------------------------------------------------
 	GameState.new_run("gangsters", "dad", "T", "Town", "Pup")
 	GameState.run["intro_done"] = true

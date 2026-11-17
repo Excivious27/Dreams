@@ -10,6 +10,7 @@
   - Nothing is pre-built. The house kitchen works at the tier of the Cooking Pot you own.
 - **Stations (both arcs):** workbench, sawmill, furnace, anvil, loom, tannery, kitchen, keg, press, kiln, jeweler, cauldron (magic potions), resonator, garage (vehicles), launchpad (rocket), mill.
 - **Gangster arc only (`"arc": "gangsters"`):** print_shop, armory, soda, laundromat, training. `scripts/racket.gd` holds heat, passing bills, forged permits, the wash and sparring.
+- **Penguin arc only (`"arc": "penguins"`):** shaper, litter, campfire (stations); pool, burrow, shrine (buildings). `scripts/sanctuary.gd` holds overnight gifts (`run["gifts"]`), the shrine's Meow Pow Wow ranks and daily practice. Litter boxes read `radius` and `stun` from the item.
 - **Data is generated:** `python3 tools/gen_stations.py` rebuilds the station entries, recipe books and goods. Edit that file, not the JSON, for station changes.
 - **Jobs:** `run["jobs"][station]` is a list (old single-job saves migrate). Batches of 1 / 5 / max. Keg jobs take days; everything else is ready by morning.
 - **Town benches:** `Crafting.run(m, station, title, "town")`; tier from the keeper's hearts, fee per piece. `"smith"` and `"alchemy"` are aliases.
@@ -17,7 +18,7 @@
 - **Farm upgrades** (house, coop, barn, shed tier 2+) now cost planks, bricks, nails, beams and tile.
 - **Tests in `check.sh`:** `tools/station_check.py` (no dead ends, both arcs) and `tools/station_test.gd` (build, buy, gates, jobs, masterwork, keg, vehicles, potions, heat, wash, training).
 - **Prompts 14 art integrated** (w274–w283): 71 icons and six growth stages for 117 crops. Crops in beds are sized by their ripe sprite.
-- **Prompts 15** written: station tiers, goods icons, vehicles, rocket, Granite/Sel portraits, gangster stations and UI. Layout in `tools/prompts15_layout.json`.
+- **Prompts 15** written: station tiers, goods icons, vehicles, rocket, Granite/Sel portraits, gangster stations and UI, penguin sanctuary stations, icons and extras (11 images). Layout in `tools/prompts15_layout.json`.
 - Open: wearable art for gangster suits; pack size.
 
 ## 2026-11-17 (evening) — 134 growable crops, wired into everything

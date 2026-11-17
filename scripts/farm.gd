@@ -357,7 +357,7 @@ func _tillable(c: Vector2i) -> bool:
 func _plans() -> void:
 	# The plans board. Everything on the farm is made from materials or bought
 	# ready-made, tier by tier; each tier has its own gate (story, skill, friend).
-	const CATS := [["farm", "Farm buildings"], ["workshop", "Workshop stations"], ["pantry", "Kitchen & cellar"], ["projects", "Big projects (vehicles, rocket)"], ["operation", "The operation"]]
+	const CATS := [["farm", "Farm buildings"], ["workshop", "Workshop stations"], ["pantry", "Kitchen & cellar"], ["projects", "Big projects (vehicles, rocket)"], ["operation", "The operation"], ["sanctuary", "The sanctuary"]]
 	var d := Dialogue.instance(get_tree())
 	while true:
 		var copts: Array = []
@@ -699,6 +699,12 @@ func _station(id: String) -> void:
 			await Racket.laundromat(self)
 		"training":
 			await Racket.training(self)
+		"pool":
+			await Sanctuary.collect(self, "pool")
+		"burrow":
+			await Sanctuary.collect(self, "burrow")
+		"shrine":
+			await Sanctuary.shrine(self)
 		_:
 			await Crafting.run(self, id)
 

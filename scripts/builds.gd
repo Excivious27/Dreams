@@ -141,6 +141,8 @@ static func _finish(id: String, tier: int) -> void:
 			var s: Dictionary = GameState.run["skills"].get("building", {"level": 1, "xp": 0, "nodes": {}})
 			s["level"] = int(s["level"]) + 1
 			GameState.run["skills"]["building"] = s
+	if id == "shrine":
+		GameState.grow_vital("mana", 5 if tier == 1 else (0 if tier == 2 else 15))
 	if id == "training":
 		GameState.grow_vital("hp", 10 if tier == 1 else (0 if tier == 2 else 20))
 	GameState.add_hint("%s finished: %s" % [str(nd.get("name", id)), str(nd.get("desc", ""))])

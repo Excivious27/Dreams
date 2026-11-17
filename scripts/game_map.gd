@@ -1269,11 +1269,11 @@ func use_consumable(sel: String) -> bool:
 		fx("poof", player.position + Vector2(0, -6), 12.0, 0.8)
 		var n := 0
 		for e in enemies:
-			if is_instance_valid(e) and e.position.distance_to(player.position) < 56.0:
-				e._stun = maxf(e._stun, 3.0)
+			if is_instance_valid(e) and e.position.distance_to(player.position) < float(it.get("radius", 56.0)):
+				e._stun = maxf(e._stun, float(it.get("stun", 3.0)))
 				e._knock = Vector2.ZERO
 				n += 1
-		hud.toast("Litter box! %d held their noses." % n if n > 0 else "Litter box. Nobody around to mind.", Color(0.9, 0.9, 0.7))
+		hud.toast("%s! %d held their noses." % [GameState.item_name(sel), n] if n > 0 else "%s. Nobody around to mind." % GameState.item_name(sel), Color(0.9, 0.9, 0.7))
 		Music.instance(get_tree()).sfx("pickup")
 		return true
 	if it.has("heal") or it.has("energy") or it.has("mana") or it.has("buff"):
@@ -2418,7 +2418,7 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		add_child(bob)
 		bob.play("bobber")
 	hud.toast("Casting...")
-	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0)
+	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
 	var night: bool = int(GameState.run["time"]) >= 19 * 60 and GameState.run["flags"].has("lighthouse_lit")
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
 	var t := 0.0

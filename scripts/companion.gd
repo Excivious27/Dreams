@@ -56,7 +56,7 @@ static func meow_rank() -> int:
 	# Grows with Nova's friendship and with how far the story has gone (each
 	# chapter's spark makes it reach bigger things).
 	var base := maxi(GameState.friend_hearts("penguin_f") / 2 + 1, GameState.progress_tier() + 1)
-	return maxi(1, base + int(GameState.bonus("magic", "spell_power") * 2))
+	return maxi(1, base + int(GameState.bonus("magic", "spell_power") * 2)) + Sanctuary.meow_bonus()
 
 
 ## Once Catkins has taught it, the Meow Pow Wow is the player's own: hold B near
