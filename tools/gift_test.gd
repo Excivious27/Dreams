@@ -117,5 +117,33 @@ func _run() -> void:
 	boss._gift.open_t = 5.0
 	boss.hit(99999, m.player.position)
 	check(not boss._alive, "and can be beaten in its window")
+	# The chrome: EMP opens a Gift, a bot fights for you, a scrambler cools heat.
+	for o in m.enemies.duplicate():
+		if is_instance_valid(o):
+			o.queue_free()
+	m.enemies.clear()
+	check(Crafting.is_station("terminal") and Crafting.is_station("clinic") and Crafting.is_station("robotics"), "three cyber stations exist")
+	check(Builds.data().has("terminal"), "and the gangster arc can build them")
+	var k := Marked.spawn(m, "bruno", m.player.position + Vector2(30, 0))
+	await process_frame
+	k._gift.open_t = 0.0
+	k._gift._closed_t = 0.0
+	GameState.add_item("emp_charge", 1)
+	check(m.use_consumable("emp_charge"), "an EMP charge can be used")
+	check(k._gift.open_t >= 2.5 and k._stun >= 3.0, "EMP stuns and forces a Gift open (%.1f)" % k._gift.open_t)
+	var kh := k.hp
+	GameState.add_item("scrap_bot", 1)
+	m.use_consumable("scrap_bot")
+	for i in 150:
+		await process_frame
+		k._gift.open_t = 1.0
+	check(k.hp < kh, "a deployed bot zaps what is near (hp %d → %d)" % [kh, k.hp])
+	GameState.run["heat"] = 3
+	GameState.add_item("scrambler", 1)
+	m.use_consumable("scrambler")
+	check(Racket.heat() == 1, "a scrambler takes two heat off")
+	GameState.add_item("spy_drone", 1)
+	m.use_consumable("spy_drone")
+	check(GameState.count("spy_drone") == 1 and k._gift._told, "the spy drone is kept and reads the Gift")
 	print("gift_test: %d failures" % fails)
 	quit(1 if fails else 0)

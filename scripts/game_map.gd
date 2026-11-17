@@ -1267,6 +1267,57 @@ func use_consumable(sel: String) -> bool:
 			hud.toast("%d crop%s leap a day ahead." % [grew, "" if grew == 1 else "s"], Color(0.7, 1, 0.7))
 			queue_redraw()
 			return true
+	match str(it.get("effect", "")):
+		"scrub":
+			if Racket.heat() <= 0:
+				hud.toast("Nobody is looking for you right now.")
+				return true
+			GameState.add_item(sel, -1)
+			player.play_tool("hold")
+			GameState.run["heat"] = maxi(0, Racket.heat() - int(it.get("amount", 2)))
+			fx("sparkle", player.position + Vector2(0, -14), 12.0, 0.6)
+			hud.toast("%s: heat down to %d." % [GameState.item_name(sel), Racket.heat()], Color(0.5, 1.0, 0.95))
+			return true
+		"emp":
+			GameState.add_item(sel, -1)
+			player.play_tool("hold")
+			fx("emp" if Art.has("fx", "emp") else "ripple_ring" if Art.has("fx", "ripple_ring") else "spark", player.position + Vector2(0, -8), 10.0, 0.5 * float(it.get("radius", 84.0)) / 40.0)
+			shake(2.0)
+			var hit_n := 0
+			var opened := 0
+			for e in enemies:
+				if is_instance_valid(e) and e.position.distance_to(player.position) < float(it.get("radius", 84.0)):
+					e._stun = maxf(e._stun, float(it.get("stun", 4.0)))
+					e._knock = Vector2.ZERO
+					hit_n += 1
+					if e._gift and not e._gift.decoy:
+						e._gift.open_t = maxf(e._gift.open_t, float(it.get("open", 3.0)))
+						opened += 1
+			hud.toast("%s: %d locked up%s." % [GameState.item_name(sel), hit_n, ", %d Gift%s stuttering OPEN" % [opened, "" if opened == 1 else "s"] if opened > 0 else ""], Color(0.5, 1.0, 0.95))
+			return true
+		"bot":
+			GameState.add_item(sel, -1)
+			player.play_tool("hold")
+			Bot.deploy(self, sel, it)
+			hud.toast("%s deployed: %d seconds of cover." % [GameState.item_name(sel), int(it.get("life", 30))], Color(0.5, 1.0, 0.95))
+			return true
+		"drone":
+			player.play_tool("hold")
+			fx("sparkle", player.position + Vector2(0, -26), 10.0, 0.6)
+			var seen := 0
+			var tips: Array = []
+			for e in enemies:
+				if is_instance_valid(e) and e._alive and not e.has_meta("decoy"):
+					seen += 1
+					if e._gift:
+						e._gift._told = true
+						tips.append("%s: %s" % [str(e._gift.d.get("name", "Gift")), str(e._gift.d.get("tip", ""))])
+			GameState.run["flags"]["raid_day"] = int(GameState.run["day"])
+			hud.toast("Drone: %d hostile%s here. No collectors will find you today." % [seen, "" if seen == 1 else "s"], Color(0.5, 1.0, 0.95))
+			for t: String in tips:
+				hud.toast(t, Color(1, 0.9, 0.6))
+				GameState.add_hint(t)
+			return true
 	if str(it.get("effect", "")) == "seed_packet":
 		GameState.add_item(sel, -1)
 		var sd := GameState.random_season_seed()

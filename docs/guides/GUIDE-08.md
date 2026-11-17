@@ -162,6 +162,16 @@ Every one of them got it from "a man in a grey suit" and "a black stone". The Pr
 
 Until Prompts 15 batch 7 arrives the Marked borrow existing gangster sprites, told apart by their coloured ring and the nickname over their heads.
 
+## The chrome: a touch of cyberpunk (gangster arc only)
+
+Three more stations on the operation shelf of the Plans board, built or bought in four tiers like the rest.
+
+- **Hacking Terminal** (Specs): circuit boards and data chips, then **Signal Scrambler** (heat -2), **EMP Charge** (everything near you locks up for 4 seconds and any Gift is forced OPEN for 3), **Blackout Charge** (bigger, 5 seconds open) and the **Ghost Ledger** (heat to zero).
+- **Chrome Clinic** (Doc): implants you wear in spare slots. Optic Implant (luck, damage), Reflex Wires (speed), Chrome Arm (damage, defense), Subdermal Plating (defense), then Mk II versions and the Neural Link (more mana for borrowed Gifts).
+- **Robotics Bench** (Ladder): servos, then a **Scrap Bot** you drop that zaps hostiles for 30 seconds, a **Guard Bot** (a minute), a **Drone Swarm**, and the **Spy Drone**: use it anywhere (it is not used up) and it counts the hostiles, tells you how to beat anyone with a Gift before you take a hit, and keeps collectors away for the day.
+
+The EMP and the drone are the planned answer to the Marked: scout the rule, then force the window. Until batch 9 art arrives the stations show as named crates and the bots as small tin boxes.
+
 ## What to test (15 minutes)
 
 1. **Plans board:** open it by the house. Check the shelves read clearly on your phone, and that a locked tier says why.
@@ -174,6 +184,7 @@ Until Prompts 15 batch 7 arrives the Marked borrow existing gangster sprites, to
 8. **Gangster arc** (new game): build the Back-Room Press, print Crude Bills, pass a few in town, and watch Heat in the Workshop page.
 
 - **The Marked:** gangster arc, walk into the hideout or the docks. Someone with a coloured ring and a nickname comes at you. Let a hit bounce to read the tip, beat them by the rule, then pick join or go home. Recruit one and hold B to use their Gift.
+- **The chrome:** Plans board, operation shelf: Hacking Terminal, Chrome Clinic, Robotics Bench. Make an EMP Charge and use it next to one of the Marked.
 
 ## Your art job
 

@@ -9060,5 +9060,219 @@
   "weapon": true,
   "arc": "gangsters",
   "range": 140
+ },
+ "circuit_board": {
+  "name": "Circuit Board",
+  "type": "craft",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters"
+ },
+ "data_chip": {
+  "name": "Data Chip",
+  "type": "craft",
+  "value": 160,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "desc": "Somebody else's secrets, very small."
+ },
+ "servo": {
+  "name": "Servo",
+  "type": "craft",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters"
+ },
+ "scrambler": {
+  "name": "Signal Scrambler",
+  "type": "consumable",
+  "value": 180,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "effect": "scrub",
+  "amount": 2,
+  "desc": "USE it: your face drops off two wanted lists. Heat -2."
+ },
+ "ghost_ledger": {
+  "name": "Ghost Ledger",
+  "type": "consumable",
+  "value": 900,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "effect": "scrub",
+  "amount": 5,
+  "desc": "USE it: you were never here. Heat to zero."
+ },
+ "emp_charge": {
+  "name": "EMP Charge",
+  "type": "consumable",
+  "value": 140,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "effect": "emp",
+  "radius": 84,
+  "stun": 4.0,
+  "desc": "USE it: everything near you locks up for 4 seconds, and any Gift stutters OPEN for 3."
+ },
+ "emp_heavy": {
+  "name": "Blackout Charge",
+  "type": "consumable",
+  "value": 420,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "effect": "emp",
+  "radius": 130,
+  "stun": 6.0,
+  "open": 5.0,
+  "desc": "A whole block goes dark. Gifts stutter open for 5 seconds."
+ },
+ "spy_drone": {
+  "name": "Spy Drone",
+  "type": "consumable",
+  "value": 1200,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "effect": "drone",
+  "desc": "USE it (not used up): it circles and reports who is here, how to beat anyone with a Gift, and keeps collectors off you for the day."
+ },
+ "scrap_bot": {
+  "name": "Scrap Bot",
+  "type": "consumable",
+  "value": 220,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "effect": "bot",
+  "life": 30,
+  "dmg": 2,
+  "desc": "USE it: a little bot plants itself and zaps anything hostile for 30 seconds."
+ },
+ "guard_bot": {
+  "name": "Guard Bot",
+  "type": "consumable",
+  "value": 600,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "effect": "bot",
+  "life": 60,
+  "dmg": 4,
+  "reach": 90,
+  "desc": "A bigger bot. A minute of cover."
+ },
+ "drone_swarm": {
+  "name": "Drone Swarm",
+  "type": "consumable",
+  "value": 1500,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "effect": "bot",
+  "life": 45,
+  "dmg": 6,
+  "reach": 120,
+  "rate": 0.5,
+  "desc": "Six drones, 45 seconds, no mercy for furniture."
+ },
+ "optic_implant": {
+  "name": "Optic Implant",
+  "type": "equip",
+  "value": 700,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "slot": "charm",
+  "stats": {
+   "luck": 2,
+   "damage": 1
+  },
+  "desc": "One eye glows a little. You see the tell before the swing."
+ },
+ "optic_mk2": {
+  "name": "Optic Implant Mk II",
+  "type": "equip",
+  "value": 2600,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "slot": "charm",
+  "stats": {
+   "luck": 4,
+   "damage": 2
+  }
+ },
+ "reflex_wires": {
+  "name": "Reflex Wires",
+  "type": "equip",
+  "value": 800,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "slot": "belt",
+  "stats": {
+   "speed": 2
+  },
+  "desc": "Your hands arrive before you decide."
+ },
+ "reflex_mk2": {
+  "name": "Reflex Wires Mk II",
+  "type": "equip",
+  "value": 2800,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "slot": "belt",
+  "stats": {
+   "speed": 3,
+   "defense": 2
+  }
+ },
+ "chrome_arm": {
+  "name": "Chrome Arm",
+  "type": "equip",
+  "value": 1600,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "slot": "offhand",
+  "stats": {
+   "damage": 2,
+   "defense": 2
+  },
+  "desc": "It hums. Handshakes are shorter now."
+ },
+ "subdermal_plating": {
+  "name": "Subdermal Plating",
+  "type": "equip",
+  "value": 1800,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "slot": "back",
+  "stats": {
+   "defense": 5
+  }
+ },
+ "neural_link": {
+  "name": "Neural Link",
+  "type": "equip",
+  "value": 3200,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "slot": "ring",
+  "stats": {
+   "mana": 20,
+   "luck": 3
+  },
+  "desc": "More room for borrowed Gifts."
  }
 }

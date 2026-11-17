@@ -3093,5 +3093,323 @@
     "art_missing": false
    }
   ]
+ },
+ "terminal": {
+  "label": "Hacking Terminal",
+  "cell": [
+   13,
+   24
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Specs",
+  "station": {
+   "skill": "bartering",
+   "verb": "Hack",
+   "book": "hack"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Salvaged Terminal",
+    "sprite": "st_terminal_1",
+    "group": "props",
+    "cost": {
+     "plank": 10,
+     "copper_bar": 4,
+     "glass": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Circuit boards, data chips.",
+    "price": 1160,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Hacking Terminal",
+    "sprite": "st_terminal_2",
+    "group": "props",
+    "cost": {
+     "iron_bar": 6,
+     "glass": 10,
+     "gear": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Scramblers, EMP charges.",
+    "price": 4080,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "bartering",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Server Rack",
+    "sprite": "st_terminal_3",
+    "group": "props",
+    "cost": {
+     "steel_bar": 8,
+     "crystal_glass": 2,
+     "spring": 6
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Blackout charges.",
+    "price": 6870,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "bartering",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "The Mainframe",
+    "sprite": "st_terminal_4",
+    "group": "props",
+    "cost": {
+     "dark_bar": 4,
+     "crystal_battery": 3,
+     "plating": 4
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. The Ghost Ledger.",
+    "price": 14020,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "bartering",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "clinic": {
+  "label": "Chrome Clinic",
+  "cell": [
+   15,
+   24
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Doc",
+  "station": {
+   "skill": "combat",
+   "verb": "Fit",
+   "book": "implant"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Back-Room Chair",
+    "sprite": "st_clinic_1",
+    "group": "props",
+    "cost": {
+     "plank": 14,
+     "iron_bar": 4,
+     "cloth": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Nothing yet: Doc wants better tools.",
+    "price": 1900,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Chrome Clinic",
+    "sprite": "st_clinic_2",
+    "group": "props",
+    "cost": {
+     "steel_bar": 4,
+     "glass": 12,
+     "cotton_cloth": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Optics and reflex wires.",
+    "price": 3790,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "combat",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Augment Lab",
+    "sprite": "st_clinic_3",
+    "group": "props",
+    "cost": {
+     "plating": 4,
+     "crystal_glass": 3,
+     "gear": 6
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. A chrome arm, plating under the skin.",
+    "price": 8320,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "combat",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "The Clean Room",
+    "sprite": "st_clinic_4",
+    "group": "props",
+    "cost": {
+     "dark_bar": 4,
+     "crystal_battery": 3,
+     "fine_fabric": 4
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Mk II implants, the neural link.",
+    "price": 12610,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "combat",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "robotics": {
+  "label": "Robotics Bench",
+  "cell": [
+   12,
+   27
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Ladder",
+  "station": {
+   "skill": "building",
+   "verb": "Assemble",
+   "book": "robot"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Tinker Bench",
+    "sprite": "st_robotics_1",
+    "group": "props",
+    "cost": {
+     "plank": 16,
+     "gear": 4,
+     "copper_bar": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Servos.",
+    "price": 1950,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Robotics Bench",
+    "sprite": "st_robotics_2",
+    "group": "props",
+    "cost": {
+     "iron_bar": 8,
+     "gear": 8,
+     "spring": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Scrap bots and the spy drone.",
+    "price": 5840,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "building",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Drone Bay",
+    "sprite": "st_robotics_3",
+    "group": "props",
+    "cost": {
+     "steel_bar": 8,
+     "plating": 3,
+     "crystal_battery": 1
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Guard bots.",
+    "price": 7910,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "building",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "The Hive",
+    "sprite": "st_robotics_4",
+    "group": "props",
+    "cost": {
+     "dark_bar": 4,
+     "crystal_battery": 4,
+     "plating": 6
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. A drone swarm.",
+    "price": 16920,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "building",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
  }
 }

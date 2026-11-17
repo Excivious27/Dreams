@@ -2742,5 +2742,208 @@
    "give": "starlight_smore",
    "tier": 3
   }
+ ],
+ "hack": [
+  {
+   "id": "circuit_board",
+   "name": "Circuit Board",
+   "need": {
+    "copper_bar": 1,
+    "glass": 1
+   },
+   "give": "circuit_board",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "data_chip",
+   "name": "Data Chip",
+   "need": {
+    "circuit_board": 1,
+    "crystal_refined": 1
+   },
+   "give": "data_chip",
+   "tier": 1
+  },
+  {
+   "id": "scrambler",
+   "name": "Signal Scrambler",
+   "need": {
+    "data_chip": 1,
+    "ink": 1
+   },
+   "give": "scrambler",
+   "tier": 2
+  },
+  {
+   "id": "emp_charge",
+   "name": "EMP Charge",
+   "need": {
+    "circuit_board": 2,
+    "spring": 1,
+    "coal": 2
+   },
+   "give": "emp_charge",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "emp_heavy",
+   "name": "Blackout Charge",
+   "need": {
+    "emp_charge": 2,
+    "crystal_battery": 1
+   },
+   "give": "emp_heavy",
+   "tier": 3
+  },
+  {
+   "id": "ghost_ledger",
+   "name": "Ghost Ledger",
+   "need": {
+    "data_chip": 4,
+    "bills_fine": 2,
+    "crystal_battery": 1
+   },
+   "give": "ghost_ledger",
+   "tier": 4
+  }
+ ],
+ "implant": [
+  {
+   "id": "optic_implant",
+   "name": "Optic Implant",
+   "need": {
+    "lens": 2,
+    "circuit_board": 2,
+    "silver_bar": 1
+   },
+   "give": "optic_implant",
+   "tier": 2
+  },
+  {
+   "id": "reflex_wires",
+   "name": "Reflex Wires",
+   "need": {
+    "spring": 4,
+    "circuit_board": 2,
+    "copper_bar": 3
+   },
+   "give": "reflex_wires",
+   "tier": 2
+  },
+  {
+   "id": "chrome_arm",
+   "name": "Chrome Arm",
+   "need": {
+    "plating": 3,
+    "servo": 4,
+    "data_chip": 1
+   },
+   "give": "chrome_arm",
+   "tier": 3
+  },
+  {
+   "id": "subdermal_plating",
+   "name": "Subdermal Plating",
+   "need": {
+    "plating": 4,
+    "fine_leather": 2
+   },
+   "give": "subdermal_plating",
+   "tier": 3
+  },
+  {
+   "id": "optic_mk2",
+   "name": "Optic Implant Mk II",
+   "need": {
+    "optic_implant": 1,
+    "crystal_lens": 1,
+    "data_chip": 2
+   },
+   "give": "optic_mk2",
+   "tier": 4
+  },
+  {
+   "id": "reflex_mk2",
+   "name": "Reflex Wires Mk II",
+   "need": {
+    "reflex_wires": 1,
+    "crystal_battery": 1,
+    "servo": 4
+   },
+   "give": "reflex_mk2",
+   "tier": 4
+  },
+  {
+   "id": "neural_link",
+   "name": "Neural Link",
+   "need": {
+    "data_chip": 4,
+    "gold_bar": 2,
+    "crystal_battery": 2
+   },
+   "give": "neural_link",
+   "tier": 4
+  }
+ ],
+ "robot": [
+  {
+   "id": "servo",
+   "name": "Servo",
+   "need": {
+    "gear": 2,
+    "spring": 1
+   },
+   "give": "servo",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "scrap_bot",
+   "name": "Scrap Bot",
+   "need": {
+    "servo": 2,
+    "circuit_board": 1,
+    "iron_bar": 2
+   },
+   "give": "scrap_bot",
+   "tier": 2
+  },
+  {
+   "id": "spy_drone",
+   "name": "Spy Drone",
+   "need": {
+    "servo": 4,
+    "lens": 2,
+    "circuit_board": 2,
+    "data_chip": 1
+   },
+   "give": "spy_drone",
+   "tier": 2
+  },
+  {
+   "id": "guard_bot",
+   "name": "Guard Bot",
+   "need": {
+    "servo": 4,
+    "plating": 2,
+    "data_chip": 1,
+    "crystal_battery": 1
+   },
+   "give": "guard_bot",
+   "tier": 3
+  },
+  {
+   "id": "drone_swarm",
+   "name": "Drone Swarm",
+   "need": {
+    "servo": 12,
+    "data_chip": 3,
+    "crystal_battery": 2
+   },
+   "give": "drone_swarm",
+   "tier": 4
+  }
  ]
 }

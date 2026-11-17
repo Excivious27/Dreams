@@ -55,6 +55,24 @@ G = [  # id, name, type, value, tier, extra
  ('bills_fine', 'Fine Bills', 'consumable', 60, 3, {'arc': 'gangsters', 'effect': 'counterfeit', 'face': 320, 'risk': 0.09, 'desc': 'Pass for ◆320. About 1 in 11 gets noticed.'}),
  ('bills_perfect', 'Perfect Bills', 'consumable', 120, 4, {'arc': 'gangsters', 'effect': 'counterfeit', 'face': 700, 'risk': 0.03, 'desc': 'Pass for ◆700. Even the bank blinks.'}),
  ('forged_permit', 'Forged Permit', 'consumable', 80, 2, {'arc': 'gangsters', 'effect': 'forged_permit', 'risk': 0.25, 'desc': 'USE it at home: your next building permit is "already stamped". 1 in 4 gets noticed.'}),
+ # gangster arc: the chrome (hacking terminal, chrome clinic, robotics bench)
+ ('circuit_board', 'Circuit Board', 'craft', 60, 2, {'arc': 'gangsters'}), ('data_chip', 'Data Chip', 'craft', 160, 2, {'arc': 'gangsters', 'desc': 'Somebody else\'s secrets, very small.'}),
+ ('servo', 'Servo', 'craft', 90, 2, {'arc': 'gangsters'}),
+ ('scrambler', 'Signal Scrambler', 'consumable', 180, 2, {'arc': 'gangsters', 'effect': 'scrub', 'amount': 2, 'desc': 'USE it: your face drops off two wanted lists. Heat -2.'}),
+ ('ghost_ledger', 'Ghost Ledger', 'consumable', 900, 4, {'arc': 'gangsters', 'effect': 'scrub', 'amount': 5, 'desc': 'USE it: you were never here. Heat to zero.'}),
+ ('emp_charge', 'EMP Charge', 'consumable', 140, 2, {'arc': 'gangsters', 'effect': 'emp', 'radius': 84, 'stun': 4.0, 'desc': 'USE it: everything near you locks up for 4 seconds, and any Gift stutters OPEN for 3.'}),
+ ('emp_heavy', 'Blackout Charge', 'consumable', 420, 3, {'arc': 'gangsters', 'effect': 'emp', 'radius': 130, 'stun': 6.0, 'open': 5.0, 'desc': 'A whole block goes dark. Gifts stutter open for 5 seconds.'}),
+ ('spy_drone', 'Spy Drone', 'consumable', 1200, 2, {'arc': 'gangsters', 'effect': 'drone', 'desc': 'USE it (not used up): it circles and reports who is here, how to beat anyone with a Gift, and keeps collectors off you for the day.'}),
+ ('scrap_bot', 'Scrap Bot', 'consumable', 220, 2, {'arc': 'gangsters', 'effect': 'bot', 'life': 30, 'dmg': 2, 'desc': 'USE it: a little bot plants itself and zaps anything hostile for 30 seconds.'}),
+ ('guard_bot', 'Guard Bot', 'consumable', 600, 3, {'arc': 'gangsters', 'effect': 'bot', 'life': 60, 'dmg': 4, 'reach': 90, 'desc': 'A bigger bot. A minute of cover.'}),
+ ('drone_swarm', 'Drone Swarm', 'consumable', 1500, 4, {'arc': 'gangsters', 'effect': 'bot', 'life': 45, 'dmg': 6, 'reach': 120, 'rate': 0.5, 'desc': 'Six drones, 45 seconds, no mercy for furniture.'}),
+ ('optic_implant', 'Optic Implant', 'equip', 700, 2, {'arc': 'gangsters', 'slot': 'charm', 'stats': {'luck': 2, 'damage': 1}, 'desc': 'One eye glows a little. You see the tell before the swing.'}),
+ ('optic_mk2', 'Optic Implant Mk II', 'equip', 2600, 4, {'arc': 'gangsters', 'slot': 'charm', 'stats': {'luck': 4, 'damage': 2}}),
+ ('reflex_wires', 'Reflex Wires', 'equip', 800, 2, {'arc': 'gangsters', 'slot': 'belt', 'stats': {'speed': 2}, 'desc': 'Your hands arrive before you decide.'}),
+ ('reflex_mk2', 'Reflex Wires Mk II', 'equip', 2800, 4, {'arc': 'gangsters', 'slot': 'belt', 'stats': {'speed': 3, 'defense': 2}}),
+ ('chrome_arm', 'Chrome Arm', 'equip', 1600, 3, {'arc': 'gangsters', 'slot': 'offhand', 'stats': {'damage': 2, 'defense': 2}, 'desc': 'It hums. Handshakes are shorter now.'}),
+ ('subdermal_plating', 'Subdermal Plating', 'equip', 1800, 3, {'arc': 'gangsters', 'slot': 'back', 'stats': {'defense': 5}}),
+ ('neural_link', 'Neural Link', 'equip', 3200, 4, {'arc': 'gangsters', 'slot': 'ring', 'stats': {'mana': 20, 'luck': 3}, 'desc': 'More room for borrowed Gifts.'}),
  ('root_beer', 'Root Beer', 'food', 60, 1, {'arc': 'gangsters', 'energy': 35}), ('cream_soda', 'Cream Soda', 'food', 95, 2, {'arc': 'gangsters', 'energy': 45, 'buff': {'kind': 'speed', 'minutes': 120, 'amount': 1}}),
  ('cherry_fizz', 'Cherry Fizz', 'food', 150, 2, {'arc': 'gangsters', 'energy': 55, 'heal': 3}), ('golden_float', 'Golden Float', 'food', 420, 3, {'arc': 'gangsters', 'energy': 90, 'heal': 5, 'buff': {'kind': 'luck', 'minutes': 240, 'amount': 2}, 'friend': 4}),
 ]
@@ -226,6 +244,21 @@ station('training', 'Recruit Training Center', 'operation', [18, 27], 'combat', 
  ('Back-Lot Gym', ['gym_1'], {'plank': 30, 'rope': 8, 'leather': 6}, 'Spar once a day for combat XP. +10 max health.'),
  ('Training Hall', ['gym_2'], {'beam': 16, 'brick': 60, 'steel_bar': 6}, "Every crew member's perk counts one loyalty step higher. Sparring pays double."),
  ('The Academy', ['gym_3'], {'ironwood_beam': 4, 'plating': 8, 'fine_fabric': 8}, 'Crew perks count two loyalty steps higher. +20 max health.')], w=2, h=2, arc='gangsters', kind='building')
+station('terminal', 'Hacking Terminal', 'operation', [13, 24], 'bartering', 'Hack', 'Specs', [
+ ('Salvaged Terminal', ['terminal_1'], {'plank': 10, 'copper_bar': 4, 'glass': 4}, d(0, 'Circuit boards, data chips.')),
+ ('Hacking Terminal', ['terminal_2'], {'iron_bar': 6, 'glass': 10, 'gear': 4}, d(1, 'Scramblers, EMP charges.')),
+ ('Server Rack', ['terminal_3'], {'steel_bar': 8, 'crystal_glass': 2, 'spring': 6}, d(2, 'Blackout charges.')),
+ ('The Mainframe', ['terminal_4'], {'dark_bar': 4, 'crystal_battery': 3, 'plating': 4}, d(3, 'The Ghost Ledger.'))], arc='gangsters', book='hack')
+station('clinic', 'Chrome Clinic', 'operation', [15, 24], 'combat', 'Fit', 'Doc', [
+ ('Back-Room Chair', ['clinic_1'], {'plank': 14, 'iron_bar': 4, 'cloth': 6}, d(0, 'Nothing yet: Doc wants better tools.')),
+ ('Chrome Clinic', ['clinic_2'], {'steel_bar': 4, 'glass': 12, 'cotton_cloth': 6}, d(1, 'Optics and reflex wires.')),
+ ('Augment Lab', ['clinic_3'], {'plating': 4, 'crystal_glass': 3, 'gear': 6}, d(2, 'A chrome arm, plating under the skin.')),
+ ('The Clean Room', ['clinic_4'], {'dark_bar': 4, 'crystal_battery': 3, 'fine_fabric': 4}, d(3, 'Mk II implants, the neural link.'))], arc='gangsters', book='implant')
+station('robotics', 'Robotics Bench', 'operation', [12, 27], 'building', 'Assemble', 'Ladder', [
+ ('Tinker Bench', ['robotics_1'], {'plank': 16, 'gear': 4, 'copper_bar': 4}, d(0, 'Servos.')),
+ ('Robotics Bench', ['robotics_2'], {'iron_bar': 8, 'gear': 8, 'spring': 4}, d(1, 'Scrap bots and the spy drone.')),
+ ('Drone Bay', ['robotics_3'], {'steel_bar': 8, 'plating': 3, 'crystal_battery': 1}, d(2, 'Guard bots.')),
+ ('The Hive', ['robotics_4'], {'dark_bar': 4, 'crystal_battery': 4, 'plating': 6}, d(3, 'A drone swarm.'))], arc='gangsters', book='robot')
 # ---- penguin arc only ----------------------------------------------------------
 station('shaper', 'Crystal Shaper', 'sanctuary', [9, 24], 'combat', 'Shape', 'Catkins', [
  ('Shard Table', ['shaper_1'], {'plank': 12, 'shard': 4, 'copper_bar': 2}, d(0, 'An icicle blade, snow goggles.')),
@@ -341,6 +374,14 @@ books['campfire'] = [rc('marshmallow', 'Marshmallow', {'sugar_beet': 1, 'egg': 1
  rc('hot_cocoa', 'Hot Cocoa', {'cacao': 1, 'milk': 1, 'marshmallow': 1}, tier=2), rc('campfire_stew', "Big Jim's Stew", {'#veg': 3, '#mushroom': 1, 'trout': 1}, tier=3), rc('starlight_smore', "Starlight S'more", {'smore': 1, 'starflower': 1, 'honey': 1}, tier=3)]
 books['soda'] = [rc('root_beer', 'Root Beer', {'#herb': 1, 'honey': 1}, n=2), rc('cream_soda', 'Cream Soda', {'milk': 1, 'honey': 1, 'vanilla': 1}, tier=2, n=2),
  rc('cherry_fizz', 'Cherry Fizz', {'#berry': 3, 'glass': 1}, tier=2, n=2), rc('golden_float', 'Golden Float', {'cream_soda': 1, 'butter': 1, '#magic': 1}, tier=3)]
+books['hack'] = [rc('circuit_board', 'Circuit Board', {'copper_bar': 1, 'glass': 1}, n=2), rc('data_chip', 'Data Chip', {'circuit_board': 1, 'crystal_refined': 1}), rc('scrambler', 'Signal Scrambler', {'data_chip': 1, 'ink': 1}, tier=2),
+ rc('emp_charge', 'EMP Charge', {'circuit_board': 2, 'spring': 1, 'coal': 2}, tier=2, n=2), rc('emp_heavy', 'Blackout Charge', {'emp_charge': 2, 'crystal_battery': 1}, tier=3), rc('ghost_ledger', 'Ghost Ledger', {'data_chip': 4, 'bills_fine': 2, 'crystal_battery': 1}, tier=4)]
+books['implant'] = [rc('optic_implant', 'Optic Implant', {'lens': 2, 'circuit_board': 2, 'silver_bar': 1}, tier=2), rc('reflex_wires', 'Reflex Wires', {'spring': 4, 'circuit_board': 2, 'copper_bar': 3}, tier=2),
+ rc('chrome_arm', 'Chrome Arm', {'plating': 3, 'servo': 4, 'data_chip': 1}, tier=3), rc('subdermal_plating', 'Subdermal Plating', {'plating': 4, 'fine_leather': 2}, tier=3),
+ rc('optic_mk2', 'Optic Implant Mk II', {'optic_implant': 1, 'crystal_lens': 1, 'data_chip': 2}, tier=4), rc('reflex_mk2', 'Reflex Wires Mk II', {'reflex_wires': 1, 'crystal_battery': 1, 'servo': 4}, tier=4),
+ rc('neural_link', 'Neural Link', {'data_chip': 4, 'gold_bar': 2, 'crystal_battery': 2}, tier=4)]
+books['robot'] = [rc('servo', 'Servo', {'gear': 2, 'spring': 1}, n=2), rc('scrap_bot', 'Scrap Bot', {'servo': 2, 'circuit_board': 1, 'iron_bar': 2}, tier=2), rc('spy_drone', 'Spy Drone', {'servo': 4, 'lens': 2, 'circuit_board': 2, 'data_chip': 1}, tier=2),
+ rc('guard_bot', 'Guard Bot', {'servo': 4, 'plating': 2, 'data_chip': 1, 'crystal_battery': 1}, tier=3), rc('drone_swarm', 'Drone Swarm', {'servo': 12, 'data_chip': 3, 'crystal_battery': 2}, tier=4)]
 used = {r['id'] for b in books.values() for r in b}
 lost = [i for i in old if i not in used and i not in ('glass', 'leather', 'fence_kit')]
 for i in lost: books['workbench'].append(old[i])

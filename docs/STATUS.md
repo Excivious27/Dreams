@@ -2,6 +2,11 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-17 (later still, 2) — The chrome (cyberpunk), crew redrawn
+- gen_stations: `terminal` (book hack), `clinic` (book implant), `robotics` (book robot), gangster arc only, cells [13,24] [15,24] [12,27]. 18 new items. Effects in `GameMap.use_consumable`: scrub (heat), emp (stun + forces Gift open), bot (`scripts/bot.gd`, a timed turret), drone (reusable scout; reads Gift tips; blocks the day's collectors).
+- Prompts 15 batch 6 in: twelve crew redrawn (old sheets kept as `*_v1_cheerful.png`); from w303 only Marisol, Bo and custom cards used. Batch 9 (cyber stations, icons, fx) added.
+- Open: cyber stations and bots have no art yet; implants do not show on the paper doll.
+
 ## 2026-11-17 (later still) — Gifts: ten Marked, boss powers, the Dark Crystal reveal; Nia and Ollie redrawn
 - `Gift` (scripts/gift.gd, data/gifts.json from `tools/gen_gifts.py`): a loop of telegraphed moves (ring, spiral, lines, zones, dash, pull, gust, veil, clones, roll) plus one rule for taking damage (window, wet, back, cycle, real, offbeat, range). Attached to any enemy whose data has `gift`.
 - `Marked` (scripts/marked.gd): ten gangsters aged 15 to 30, one per district, spawn on entering; yield at 0 hp; recruit (Companion `mk_<id>`, ability `gift:<id>`, cast with hold-B for mana) or send home. Flags `marked_<id>` = crew/free.
