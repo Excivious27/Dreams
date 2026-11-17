@@ -3261,7 +3261,7 @@ def w_cloudfeather():
     line travels with the shadows."""
     import numpy as np
     m = S.manifest["fx"]
-    for name in ["cloud_shadow", "cloud_shadow_0", "cloud_shadow_1", "cloud_shadow_2"]:
+    for name in ["cloud_shadow", "cloud_shadow_0", "cloud_shadow_1", "cloud_shadow_2", "aurora", "aurora2", "godrays_a", "godrays_b", "rainbow"]:
         if name not in m:
             continue
         path = os.path.join(S.OUT, m[name]["file"])

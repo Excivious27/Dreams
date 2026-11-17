@@ -252,7 +252,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if _tillable(c) and _farm_tile(c, sel):
 				return true
 	# Nothing in front of you: eat/drink what you hold.
-	return _use_consumable(sel)
+	return use_consumable(sel)
 
 
 ## Any free grass cell inside the field can be tilled, Stardew-style.
@@ -308,21 +308,6 @@ func _plans() -> void:
 	GameMap.next_spawn = player.position - offset()
 	GameMap.next_facing = player.facing
 	get_tree().reload_current_scene()
-
-
-func _use_consumable(sel: String) -> bool:
-	if sel == "" or GameState.count(sel) <= 0:
-		return false
-	var it: Dictionary = GameState.items.get(sel, {})
-	if it.has("heal") or it.has("energy"):
-		GameState.add_item(sel, -1)
-		player.play_tool("eat")
-		GameState.heal(int(it.get("heal", 0)))
-		GameState.restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * 8)
-		hud.toast("Ate %s." % GameState.item_name(sel))
-		Music.instance(get_tree()).sfx("pickup")
-		return true
-	return false
 
 
 func _farm_tile(c: Vector2i, sel: String) -> bool:

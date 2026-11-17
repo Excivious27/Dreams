@@ -631,6 +631,45 @@ static func heal(n: int) -> void:
 	run["hp"] = mini(int(run["hp"]) + int(n * HEART_HP * mult), int(run["max_hp"]))
 
 
+## Eat/drink one item. Returns what actually changed: {"hp": +n, "energy": +n,
+## "mana": +n, "grow_<bar>": +n, "buff": "name"} so the HUD can say it.
+static func consume(id: String) -> Dictionary:
+	var it: Dictionary = items.get(id, {})
+	var out := {}
+	if it.is_empty() or count(id) <= 0:
+		return out
+	add_item(id, -1)
+	var hp0 := int(run["hp"]); var en0 := int(run["energy"]); var ma0 := int(run.get("mana", 0))
+	heal(int(it.get("heal", 0)))
+	restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * 8)
+	restore_mana(int(it.get("mana", 0)))
+	if int(run["hp"]) != hp0:
+		out["hp"] = int(run["hp"]) - hp0
+	if int(run["energy"]) != en0:
+		out["energy"] = int(run["energy"]) - en0
+	if int(run.get("mana", 0)) != ma0:
+		out["mana"] = int(run.get("mana", 0)) - ma0
+	if it.has("grow"):
+		for k in it["grow"]:
+			grow_vital(str(k), int(it["grow"][k]))
+			out["grow_" + str(k)] = int(it["grow"][k])
+	if it.has("buff"):
+		# {"buff": {"kind": "speed"|"luck"|"defense"|"warm", "minutes": 120, "amount": 1}}
+		var b: Dictionary = it["buff"]
+		run["buffs"] = run.get("buffs", {})
+		run["buffs"][str(b.get("kind", "luck"))] = {"until": int(run["time"]) + int(b.get("minutes", 120)), "amount": float(b.get("amount", 1))}
+		out["buff"] = str(b.get("kind", "luck"))
+	return out
+
+
+## Active buff amount (0 when none / expired).
+static func buff(kind: String) -> float:
+	var b: Dictionary = run.get("buffs", {}).get(kind, {})
+	if b.is_empty() or int(run["time"]) > int(b.get("until", 0)):
+		return 0.0
+	return float(b.get("amount", 0))
+
+
 static func restore_energy(n: int) -> void:
 	run["energy"] = mini(int(run["energy"]) + n, int(run["max_energy"]))
 

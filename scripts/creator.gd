@@ -46,7 +46,20 @@ func _build() -> void:
 	_rows = VBoxContainer.new()
 	_rows.add_theme_constant_override("separation", 2)
 	add_child(_rows)
-	if PaperDoll.available():
+	if _playable_sprite == "penguin":
+		_picker("Feathers", PaperDoll.PENGUIN_TINTS.keys(), "tint_name", func(v: String) -> String: return v.capitalize())
+		look["tint"] = str(PaperDoll.PENGUIN_TINTS.get(str(look.get("tint_name", "classic")), "ffffff"))
+		_picker("Scarf", PaperDoll.SCARF_COLORS.keys(), "scarf", func(v: String) -> String: return "None" if v == "" else v.capitalize())
+		var phats: Array = [""]
+		phats.append_array(PaperDoll.hat_styles())
+		_picker("Hat", phats, "hat", func(v: String) -> String: return "None" if v == "" else v.replace("_", " ").capitalize())
+		var ppets: Array = [""]
+		for k in Art.manifest().keys():
+			if str(k).begins_with("animals/dog_") or str(k).begins_with("animals/cat_"):
+				ppets.append(str(k).trim_prefix("animals/"))
+		ppets.sort()
+		_picker("Pet", ppets, "pet", func(v: String) -> String: return "Pup (classic)" if v == "" else v.replace("_", " ").capitalize())
+	elif PaperDoll.available():
 		_picker("Body", PaperDoll.BODIES, "body", func(v: String) -> String: return v.replace("_", " ").capitalize())
 		_picker("Hair", PaperDoll.hair_styles(), "hair", func(v: String) -> String: return v.replace("_", " ").capitalize())
 		_picker("Hair colour", PaperDoll.HAIR_COLORS.keys(), "hair_color", func(v: String) -> String: return v.capitalize())
@@ -68,7 +81,15 @@ func _build() -> void:
 	h.alignment = BoxContainer.ALIGNMENT_CENTER
 	h.add_theme_constant_override("separation", 6)
 	add_child(h)
-	h.add_child(_btn("Random", func() -> void: look = PaperDoll.random_look(); _build()))
+	h.add_child(_btn("Random", func() -> void:
+		if _playable_sprite == "penguin":
+			look["tint_name"] = PaperDoll.PENGUIN_TINTS.keys()[randi() % PaperDoll.PENGUIN_TINTS.size()]
+			look["scarf"] = PaperDoll.SCARF_COLORS.keys()[randi() % PaperDoll.SCARF_COLORS.size()]
+			var hs := PaperDoll.hat_styles()
+			look["hat"] = "" if hs.is_empty() or randf() < 0.4 else hs[randi() % hs.size()]
+		else:
+			look = PaperDoll.random_look()
+		_build()))
 	h.add_child(_btn("Done", func() -> void: done.emit(look), true))
 	if _show_cancel:
 		h.add_child(_btn("Cancel", func() -> void: cancelled.emit()))
@@ -112,6 +133,15 @@ func _btn(text: String, cb: Callable, primary := false) -> Button:
 func _refresh_preview() -> void:
 	for ch in _preview.get_children():
 		ch.queue_free()
+	if _playable_sprite == "penguin":
+		var pg := CharacterLibrary.make_sprite("penguin")
+		pg.scale = pg.scale * 3.0
+		pg.modulate = Color(str(look.get("tint", "ffffff")))
+		pg.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		pg.play("idle")
+		_preview.add_child(pg)
+		Player.dress_penguin(_preview, pg, look, 3.0)
+		return
 	if PaperDoll.available():
 		var body := AnimatedSprite2D.new()
 		body.sprite_frames = PaperDoll.body_frames(look)

@@ -221,6 +221,34 @@ static func layer_frame(pose: int, act := false) -> int:
 
 
 ## A layer sprite (hair or hat) pinned over a body frame.
+## Penguin palettes (modulate over the painted sprite) and scarf colours.
+const PENGUIN_TINTS := {"classic": "ffffff", "snow": "e8f4ff", "midnight": "9aa4ff", "sunset": "ffc49a", "mint": "b8ffd8", "rose": "ffb8d0", "gold": "ffe08a", "ember": "ff9a7a"}
+const SCARF_COLORS := {"": "", "red": "d8403a", "blue": "3f6fd8", "green": "4aa84a", "yellow": "e8c23a", "purple": "8a5ad8", "white": "f4f4f4"}
+
+
+## A hat on a non-doll hero (the penguin): the hat's front frame, scaled to the
+## head width, pinned on top of the sprite. `head_w`/`top_y` are in sprite px.
+static func place_hat_simple(layer: Sprite2D, name: String, head_w: float, top_y: float, flip: bool, body_scale: float) -> void:
+	if name == "" or not Art.has("hats", name):
+		layer.visible = false
+		return
+	var tex := Art.tex("hats", name)
+	var info := Art.info("hats", name)
+	var cw := int(info.get("cell_w", 96))
+	var ch := int(info.get("cell_h", 96))
+	layer.texture = tex
+	layer.region_enabled = true
+	layer.region_rect = Rect2(0, 0, cw, ch)
+	layer.visible = true
+	layer.flip_h = flip
+	var l := anchor_of("hats", name, 0)
+	var sc := head_w * 1.2 / maxf(1.0, float(l[3]))
+	layer.scale = Vector2(sc, sc) * body_scale
+	var lcx := float(l[0]) - cw / 2.0
+	var lby := float(l[1]) + float(l[4]) - ch / 2.0
+	layer.position = Vector2(-lcx * sc * body_scale * (-1.0 if flip else 1.0), (top_y + head_w * 0.25) - lby * sc * body_scale)
+
+
 static func place_layer(layer: Sprite2D, group: String, name: String, body_name: String, body_frame_pose: int, flip: bool, body_scale: float) -> void:
 	if name == "" or not Art.has(group, name):
 		layer.visible = false

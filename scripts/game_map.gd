@@ -262,6 +262,8 @@ func try_interact(c: Vector2i) -> bool:
 	var thing: Dictionary = things.get(c, {})
 	if interact(c, thing):
 		return true
+	if thing.is_empty() and scene_id() != "farm" and use_consumable(str(GameState.run["selected"])):
+		return true
 	return interact_common(c, thing)
 
 
@@ -929,6 +931,59 @@ func shake(amount: float) -> void:
 
 
 ## Floating damage number.
+## Eat/drink what you hold (any map). Returns true if something was consumed.
+func use_consumable(sel: String) -> bool:
+	if sel == "" or GameState.count(sel) <= 0:
+		return false
+	var it: Dictionary = GameState.items.get(sel, {})
+	if it.has("heal") or it.has("energy") or it.has("mana") or it.has("buff"):
+		player.play_tool("eat")
+		var fx_out := GameState.consume(sel)
+		effect_text(player.position, fx_out)
+		hud.toast("Ate %s." % GameState.item_name(sel))
+		Music.instance(get_tree()).sfx("pickup")
+		return true
+	return false
+
+
+
+## Floating "+12 energy" style readouts for what an item just did.
+func effect_text(at: Vector2, fx_in: Dictionary) -> void:
+	var i := 0
+	var names := {"hp": ["health", Color(1, 0.45, 0.45)], "energy": ["energy", Color(0.6, 1, 0.5)], "mana": ["mana", Color(0.55, 0.75, 1)]}
+	for k in fx_in:
+		var txt := ""
+		var col := Color.WHITE
+		if names.has(k):
+			var v := int(fx_in[k])
+			txt = "%s%d %s" % ["+" if v >= 0 else "", v, str(names[k][0])]
+			col = names[k][1]
+		elif str(k).begins_with("grow_"):
+			txt = "max %s +%d" % [str(k).trim_prefix("grow_"), int(fx_in[k])]
+			col = Color(1, 0.9, 0.4)
+		elif k == "buff":
+			txt = "%s up" % str(fx_in[k])
+			col = Color(0.9, 0.7, 1)
+		if txt == "":
+			continue
+		var l := Label.new()
+		l.text = txt
+		l.add_theme_font_size_override("font_size", 7)
+		l.add_theme_color_override("font_color", col)
+		l.add_theme_constant_override("outline_size", 2)
+		l.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.05))
+		l.position = at + Vector2(-30, -26 - i * 9)
+		l.size = Vector2(60, 10)
+		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		l.z_index = 500
+		add_child(l)
+		var tw := create_tween()
+		tw.tween_property(l, "position:y", l.position.y - 14.0, 1.1).set_delay(0.1 * i)
+		tw.parallel().tween_property(l, "modulate:a", 0.0, 0.5).set_delay(0.7 + 0.1 * i)
+		tw.tween_callback(l.queue_free)
+		i += 1
+
+
 func damage_number(at: Vector2, n: int, col := Color.WHITE) -> void:
 	if n <= 0:
 		return

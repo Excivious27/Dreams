@@ -434,18 +434,10 @@ func _swap_into_toolbar(id: String) -> void:
 
 
 func _eat(id: String) -> void:
-	var it: Dictionary = GameState.items.get(id, {})
-	GameState.add_item(id, -1)
-	GameState.heal(int(it.get("heal", 0)))
-	GameState.restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * 8)
-	GameState.restore_mana(int(it.get("mana", 0)))
-	# Tonics grow a bar for good: {"grow": {"hp": 10}} etc.
-	if it.has("grow"):
-		for k in it["grow"]:
-			GameState.grow_vital(str(k), int(it["grow"][k]))
-		var m := get_tree().current_scene
-		if m is GameMap:
-			(m as GameMap).hud.toast("Max %s +%d!" % [str(it["grow"].keys()[0]), int(it["grow"].values()[0])], Color(1, 0.9, 0.4))
+	var fx_out := GameState.consume(id)
+	var m := get_tree().current_scene
+	if m is GameMap and (m as GameMap).player:
+		(m as GameMap).effect_text((m as GameMap).player.position, fx_out)
 	Music.instance(get_tree()).sfx("pickup")
 	_refresh()
 

@@ -190,11 +190,14 @@ var _look_full := {}
 func _show_look() -> void:
 	_clear()
 	var sprite_id := GameState.sprite_for_playable(_playable)
-	if not PaperDoll.available() or sprite_id in ["penguin", "dog", ""]:
-		# No paper doll for this hero (penguin / placeholder): straight to names.
+	if sprite_id == "penguin":
+		if _look_full.is_empty() or not _look_full.has("tint_name"):
+			_look_full = {"tint_name": "classic", "tint": "ffffff", "scarf": "red", "hat": "", "pet": ""}
+	elif not PaperDoll.available() or sprite_id in ["dog", ""]:
+		# No paper doll for this hero (placeholder): straight to names.
 		_show_names()
 		return
-	if _look_full.is_empty():
+	elif _look_full.is_empty():
 		_look_full = PaperDoll.random_look()
 	var cr := Creator.new(_look_full, sprite_id, false)
 	cr.done.connect(func(l: Dictionary) -> void: _look_full = l; _show_names())

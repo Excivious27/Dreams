@@ -107,35 +107,67 @@ func after_ready() -> void:
 		hud.toast("%s today, on the plaza!" % GameState.festival_name(GameState.festival_today()), Color(1, 0.9, 0.5))
 
 
+var _doors: Array[Vector2i] = []
+var _door_paths := {}
+
+
+## building() + remember the door so a lane gets carved to it.
+func _door(name: String, c: Vector2i, interior: String, hint: String, scale := 1.0) -> void:
+	var d := building(name, c, interior, hint, scale)
+	if d != Vector2i(-1, -1):
+		_doors.append(d)
+
+
+## Every door gets a 2-wide dirt lane straight down to the nearest road or lane.
+func _carve_door_paths(roads: Dictionary) -> void:
+	for d in _doors:
+		var y := d.y
+		var found := false
+		while y < d.y + 14 and y < rows - 1:
+			var c := Vector2i(d.x, y)
+			if roads.has(c) or roads.has(c + Vector2i(1, 0)) or roads.has(c + Vector2i(-1, 0)):
+				found = true
+				break
+			if blocked.has(c) and not things.has(c):
+				break
+			y += 1
+		if not found:
+			continue
+		for yy in range(d.y, y + 1):
+			_door_paths[Vector2i(d.x, yy)] = true
+			_door_paths[Vector2i(d.x - 1, yy)] = true
+
+
 func _place_buildings() -> void:
 	if not Art.has("buildings", "store"):
 		return
-	# North of the plaza: shops.
-	building("store", Vector2i(10, 18), "store", "A: General Store")
-	building("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
-	building("bakery", Vector2i(46, 19), "bakery", "A: Bakery")
-	building("mansion", Vector2i(54, 15), "mansion", "A: Mayor Alder's house")
-	building("hall", Vector2i(46, 28), "hall", "A: Town Hall")
+	# North of the plaza: shops. Scales bring the small painted buildings up to
+	# village size (10+ cells wide) so nothing looks like a shed next to the hero.
+	_door("store", Vector2i(10, 18), "store", "A: General Store")
+	_door("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
+	_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
+	_door("mansion", Vector2i(55, 13), "mansion", "A: Mayor Alder's house", 1.15)
+	_door("hall", Vector2i(46, 28), "hall", "A: Town Hall")
 	building("clock_tower", Vector2i(28, 32))
 	# South-east: potions, inn, library, school.
-	building("potions", Vector2i(46, 54), "potions", "A: Potion Shop")
-	building("inn", Vector2i(57, 53), "inn", "A: the Inn")
-	building("library", Vector2i(46, 65), "library", "A: Library")
-	building("school", Vector2i(55, 65), "school", "A: School")
+	_door("potions", Vector2i(45, 53), "potions", "A: Potion Shop", 1.15)
+	_door("inn", Vector2i(57, 52), "inn", "A: the Inn", 1.15)
+	_door("library", Vector2i(45, 64), "library", "A: Library", 1.35)
+	_door("school", Vector2i(56, 64), "school", "A: School", 1.25)
 	# South-west: cottages, Hazel's farmhouse, the stable.
-	building("cottage_a", Vector2i(9, 53), "cottage_a", "A: Wren's cottage")
-	building("cottage_b", Vector2i(19, 60), "cottage_b", "A: Finn's cottage")
-	building("cottage_a", Vector2i(9, 67), "cottage_c", "A: Lumi & Theo's cottage")
-	building("house", Vector2i(18, 73), "hazel_house", "A: Hazel's farmhouse")
-	building("stable", Vector2i(28, 86), "stable", "A: Stable")
+	_door("cottage_a", Vector2i(8, 52), "cottage_a", "A: Wren's cottage", 1.3)
+	_door("cottage_b", Vector2i(19, 59), "cottage_b", "A: Finn's cottage", 1.3)
+	_door("cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.3)
+	_door("house", Vector2i(18, 72), "hazel_house", "A: Hazel's farmhouse")
+	_door("stable", Vector2i(27, 85), "stable", "A: Stable", 1.25)
 	building("bandstand", Vector2i(6, 33))
 	# Across the river: clinic, chapel, Rook's lodge.
-	building("clinic", Vector2i(75, 33), "clinic", "A: Clinic")
-	building("chapel", Vector2i(75, 55), "chapel", "A: Chapel")
-	building("woodcutter_hut", Vector2i(73, 71), "lodge", "A: Rook's lodge")
+	_door("clinic", Vector2i(74, 32), "clinic", "A: Clinic", 1.35)
+	_door("chapel", Vector2i(75, 53), "chapel", "A: Chapel", 1.4)
+	_door("woodcutter_hut", Vector2i(72, 70), "lodge", "A: Rook's lodge", 1.25)
 	# The working north end: a warehouse by the farm road, the bank by the smith.
-	building("warehouse_a", Vector2i(8, 5), "", "")
-	building("bank", Vector2i(26, 5), "bank", "A: Bank")
+	building("warehouse_a", Vector2i(7, 4), "", "", 1.25)
+	_door("bank", Vector2i(26, 4), "bank", "A: Bank", 1.25)
 	if Art.has("props", "town_gate"):
 		prop("props", "gate2" if Art.has("props", "gate2") else "town_gate", Vector2i(FARM_EXIT.position.x - 4, 3), 12, 0.0, false, 0.8 if not Art.has("props", "gate2") else 0.5)
 	# Bridges over the river (walk-under, drawn on the river).
@@ -671,7 +703,12 @@ func draw_map() -> void:
 	for c in _plaza:
 		roads.erase(c)
 	draw_ground("cobble", roads)
-	var lanes := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 25), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)])
+	var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 25), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)])
+	var all_roads := roads.duplicate()
+	all_roads.merge(lanes_base)
+	_carve_door_paths(all_roads)
+	var lanes := lanes_base.duplicate()
+	lanes.merge(_door_paths)
 	draw_ground("dirt", lanes)
 	# The plaza: flagstones in a circle, a ring of brick at the edge.
 	if Art.has("tiles", "flagstone"):

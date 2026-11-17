@@ -70,6 +70,50 @@ func dismount() -> void:
 	_show_idle()
 
 
+## Scarf + hat on the penguin (no paper doll): a soft scarf band drawn under the
+## chin and a hat from the hats sheet pinned to the head. Follows the sprite's
+## scale/flip each frame through `_penguin_dress`.
+static func dress_penguin(parent: Node2D, anim: AnimatedSprite2D, look: Dictionary, extra_scale: float) -> void:
+	for ch in parent.get_children():
+		if ch.name.begins_with("PenguinDress"):
+			ch.queue_free()
+	var scarf := str(look.get("scarf", ""))
+	var hat := str(look.get("hat", ""))
+	if scarf == "" and hat == "":
+		return
+	var holder := Node2D.new()
+	holder.name = "PenguinDress"
+	holder.z_index = 1
+	parent.add_child(holder)
+	var sprite_h := 14.0 * extra_scale  # TARGET_H for the penguin
+	if scarf != "" and PaperDoll.SCARF_COLORS.has(scarf) and str(PaperDoll.SCARF_COLORS[scarf]) != "":
+		var col := Color(str(PaperDoll.SCARF_COLORS[scarf]))
+		var band := Node2D.new()
+		band.name = "PenguinDressScarf"
+		var sh := sprite_h
+		band.draw.connect(func() -> void:
+			var w := sh * 0.62
+			var y := -sh * 0.62
+			band.draw_rect(Rect2(-w / 2.0, y, w, sh * 0.13), col)
+			band.draw_rect(Rect2(-w / 2.0 + 1, y + sh * 0.13, w * 0.35, sh * 0.22), col.darkened(0.1))
+			band.draw_rect(Rect2(-w / 2.0, y - 1, w, 1), col.lightened(0.25)))
+		holder.add_child(band)
+	if hat != "":
+		var hs := Sprite2D.new()
+		hs.name = "PenguinDressHat"
+		hs.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		holder.add_child(hs)
+		PaperDoll.place_hat_simple(hs, hat, sprite_h * 0.8, -sprite_h, false, 1.0)
+	anim.frame_changed.connect(func() -> void:
+		if not is_instance_valid(holder):
+			return
+		holder.position = anim.position
+		var flip := anim.flip_h
+		for ch in holder.get_children():
+			if ch is Sprite2D:
+				(ch as Sprite2D).flip_h = flip)
+
+
 ## Rebuild the doll (after equipping a costume or restyling at the dresser).
 func refresh_doll() -> void:
 	if _doll or PaperDoll.available():
@@ -135,11 +179,13 @@ func set_character(id: String) -> void:
 	else:
 		_anim = CharacterLibrary.make_sprite(id)
 		_anim.animation_finished.connect(_on_animation_finished)
-		if pdata.has("tint"):
-			_anim.modulate = Color(str(pdata["tint"]))
-		elif GameState.run.has("look"):
+		if GameState.run.has("look") and str(GameState.run["look"].get("tint", "")) != "":
 			_anim.modulate = Color(str(GameState.run["look"].get("tint", "ffffff")))
+		elif pdata.has("tint"):
+			_anim.modulate = Color(str(pdata["tint"]))
 		_sprite = _anim
+		if id == "penguin":
+			Player.dress_penguin(self, _anim, GameState.run.get("look", {}), 1.0)
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
 			_flash_mat = ShaderMaterial.new()
@@ -611,12 +657,14 @@ func take_damage(n: int, from: Vector2) -> void:
 			map.hud.toast("Shield!", Color(0.8, 0.9, 1.0))
 			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.5)
 		return
-	n = maxi(3, n - GameState.gear_stat("defense") * 3)
+	n = maxi(2, n - GameState.gear_stat("defense") * 2)
 	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
-	invuln = 1.0
+	# Short mercy window: enough to not get chain-hit by one enemy, not enough to
+	# tank a crowd. The knockback is shorter too, so you can't bounce to safety.
+	invuln = 0.35
 	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n
-	velocity = (position - from).normalized() * 190.0
+	velocity = (position - from).normalized() * 120.0
 	auto_target = Vector2.INF
 	_busy = false
 	Music.instance(get_tree()).sfx("hurt")
