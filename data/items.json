@@ -31,15 +31,15 @@
   "name": "Wooden Sword",
   "type": "tool",
   "value": 0,
-  "damage": 1,
+  "damage": 2,
   "rarity": "common",
   "tier": 1
  },
  "iron_sword": {
   "name": "Iron Sword",
   "type": "tool",
-  "value": 120,
-  "damage": 2,
+  "value": 200,
+  "damage": 4,
   "rarity": "common",
   "tier": 1
  },
@@ -445,18 +445,18 @@
  "steel_sword": {
   "name": "Steel Sword",
   "type": "tool",
-  "value": 420,
+  "value": 800,
   "rarity": "rare",
   "tier": 3,
-  "damage": 4
+  "damage": 6
  },
  "crystal_sword": {
   "name": "Crystal Sword",
   "type": "tool",
-  "value": 1500,
+  "value": 2400,
   "rarity": "epic",
   "tier": 4,
-  "damage": 6
+  "damage": 9
  },
  "potato_seed": {
   "name": "Potato Seeds",
