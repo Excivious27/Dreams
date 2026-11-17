@@ -12,7 +12,8 @@ extends SceneTree
 
 const DAY_SECONDS := 23.0 * 60.0
 const SECONDS_PER_ACTION := 1.6   # walk a step, swing, next tile
-const MINE_DAY_EVERY := 0         # 0 = never go mining (farming only)
+var mine := true                  # spend leftover energy in the mine (ores sold)
+const ORE_VALUE := {"copper": 12, "iron": 25, "gold": 60, "shard": 45, "dark": 90, "stone": 2}
 
 var days := 100
 var arc := "penguins"
@@ -27,10 +28,11 @@ func _init() -> void:
 	if args.size() > 1: arc = args[1]
 	if args.size() > 2: strategy = args[2]
 	if args.size() > 3: csv_path = args[3]
+	if args.size() > 4: mine = args[4] != "0"
 	rng.seed = 7
 	GameState.new_run(arc, "penguin_f" if arc == "penguins" else "dad", "Bot", "Simtown", "Dot")
 	GameState.add_quest("first_harvest", "sim")
-	var lines := ["day,season,crystals,tiles,planted,watered,harvested,sold_value,energy_left,farming_lv,seed"]
+	var lines := ["day,season,crystals,tiles,planted,watered,harvested,sold_value,energy_left,farming_lv,seed,mined"]
 	for d in days:
 		var row := _play_day()
 		lines.append(row)
@@ -182,6 +184,26 @@ func _play_day() -> String:
 					farm[key]["watered"] = true
 					watered += 1
 					actions += 1
+	# 5. Mining with what is left: the mine tier follows progress (one tier per
+	# 4 weeks here, a stand-in for the story gates); a rock takes (3 + tier)
+	# hits of 3 energy, half the rocks are stone, the rest the tier's ores.
+	var mined := 0
+	if mine and actions < max_actions:
+		var mtier := mini(5, int(GameState.run["day"]) / 28)
+		var pools: Array = GameState.tier_data.get("mine", {}).get("ores", [])
+		var ores: Array = pools[mini(mtier, pools.size() - 1)]
+		var hits_per_rock := int(ceil(float(3 + mtier) / (1 + GameState.tool_tier("pickaxe") / 2)))
+		while actions < max_actions - hits_per_rock and int(GameState.run["energy"]) >= hits_per_rock * GameState.energy_cost("pickaxe"):
+			for h in hits_per_rock:
+				GameState.spend_for("pickaxe")
+			actions += hits_per_rock
+			var ore := "stone"
+			if rng.randf() > 0.5 and ores.size() > 1:
+				ore = str(ores[rng.randi_range(1, ores.size() - 1)])
+			var lumps := 2 if ore == "stone" else 1 + (1 if rng.randf() < 0.3 else 0)
+			GameState.run["sellbox"][ore] = int(GameState.run["sellbox"].get(ore, 0)) + lumps
+			GameState.add_xp("mining", (2 if ore == "stone" else 5) + mtier)
+			mined += lumps
 	var energy_left := int(GameState.run["energy"])
 	var sold_value := 0
 	for id in GameState.run["sellbox"].keys():
@@ -189,4 +211,4 @@ func _play_day() -> String:
 	var day := int(GameState.run["day"])
 	var season := GameState.season()
 	GameState.sleep()
-	return "%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%s" % [day, season, int(GameState.run["crystals"]), farm.size(), planted, watered, harvested, sold_value, energy_left, GameState.skill_level("farming"), seed]
+	return "%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%s,%d" % [day, season, int(GameState.run["crystals"]), farm.size(), planted, watered, harvested, sold_value, energy_left, GameState.skill_level("farming"), seed, mined]

@@ -211,7 +211,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				return true
 			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("chop")
-			thing["hp"] = int(thing["hp"]) - 1
+			thing["hp"] = int(thing["hp"]) - (1 + GameState.tool_tier("pickaxe") / 2)
 			if int(thing["hp"]) <= 0:
 				var ore := str(thing["ore"])
 				things.erase(c)
@@ -219,7 +219,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if props.has(c):
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
-				give(ore, 1 if ore != "stone" else 2)
+				# Ore rocks give one lump, often two with a better pickaxe or the mining tree.
+				var lumps := 2 if ore == "stone" else 1 + (1 if randf() < 0.3 + 0.1 * GameState.tool_tier("pickaxe") + GameState.bonus("mining", "ore_bonus") else 0)
+				give(ore, lumps)
 				xp("mining", (2 if ore == "stone" else 5) + mine_tier)
 				queue_redraw()
 				_try_more(1)

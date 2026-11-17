@@ -152,8 +152,8 @@ const TOOL_TIERS := ["wood", "copper", "iron", "steel", "silver", "gold", "cryst
 const TOOL_KINDS := ["hoe", "can", "axe", "pickaxe", "sword", "rod", "hammer", "scythe"]
 const TOOL_UPGRADE_NEED := [
 	{}, {"copper_bar": 3, "crystals": 300}, {"iron_bar": 3, "crystals": 900}, {"steel_bar": 3, "crystals": 2000},
-	{"silver_bar": 3, "crystals": 4500}, {"gold_bar": 3, "crystals": 9000}, {"crystal_refined": 3, "gold_bar": 2, "crystals": 18000},
-	{"moon_shard": 3, "crystal_refined": 3, "crystals": 40000},
+	{"silver_bar": 3, "crystals": 3500}, {"gold_bar": 3, "crystals": 7000}, {"crystal_refined": 3, "gold_bar": 2, "crystals": 14000},
+	{"moon_shard": 3, "crystal_refined": 3, "crystals": 30000},
 ]
 
 # ---- gathering tiers ---------------------------------------------------------
