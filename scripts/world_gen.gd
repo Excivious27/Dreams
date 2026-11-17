@@ -432,3 +432,42 @@ class Backdrop:
 				draw_circle(Vector2(200, -60), 70.0, Color("c9d7ff"))
 				draw_circle(Vector2(180, -80), 14.0, Color("a9b7e0"))
 				draw_rect(Rect2(-W / 2, 380, W, H), Color("1a1230"))
+
+
+## Fruit trees you can shake: cherry (spring), orange and plum (summer), apple
+## (fall). Each gives fruit once a day; in winter they're bare. Used by the town
+## orchard, the farm edge and the regions' tree lines.
+const FRUIT := {"cherry": ["spring", "mid_cherry", "cherry"], "orange": ["summer", "orange_tree", "orange"], "plum": ["summer", "plum_tree", "plum"], "apple": ["fall", "apple_tree", "apple"]}
+
+
+static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
+	if not FRUIT.has(kind) or m.things.has(c) or m.blocked.has(c):
+		return
+	var info: Array = FRUIT[kind]
+	var season := GameState.season()
+	var key := "fruit_%s_%d_%d" % [m.scene_id(), c.x, c.y]
+	var ripe := str(info[0]) == season and int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
+	var sprite := str(info[1])
+	if season == "winter":
+		sprite = "tree_bare"
+	elif str(info[0]) != season:
+		sprite = "oak" if Art.has("nature", "oak") else sprite
+	if not Art.has("nature", sprite):
+		sprite = "oak"
+	m.set_thing(c.x, c.y, {"type": "fruit", "kind": kind, "key": key, "item": str(info[2]), "ripe": ripe, "hint": "A: shake the %s tree" % kind if ripe else ""})
+	m.prop("nature", sprite, c)
+
+
+static func fruit_trees(m: GameMap, rect: Rect2i, seed_v: int, count: int, avoid: Dictionary = {}) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var kinds := FRUIT.keys()
+	var placed := 0
+	for i in count * 6:
+		if placed >= count:
+			break
+		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
+		if m.things.has(c) or m.blocked.has(c) or avoid.has(c) or m.is_water_cell(c):
+			continue
+		fruit_tree(m, c, str(kinds[rng.randi_range(0, kinds.size() - 1)]))
+		placed += 1

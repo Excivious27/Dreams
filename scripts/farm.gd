@@ -856,6 +856,7 @@ func _place_props() -> void:
 	# Background life only: birds, butterflies, a rabbit. No livestock until you build for it.
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 15, 14, ["sparrow", "sparrow", "butterfly_orange", "butterfly_yellow", "bee", "rabbit", "squirrel", "pigeon"])
 	# Stray pieces of the old world: a few boulders and a dead tree on the terrace.
+	WorldGen.fruit_trees(self, Rect2i(40, 3, 30, 6), 44, 4)
 	prop("nature", "rock_l", Vector2i(44, 5))
 	prop("nature", "rock_m", Vector2i(60, 7))
 	prop("nature", "tree_bare" if GameState.season() == "winter" else "dead_tree_m", Vector2i(66, 4))

@@ -322,7 +322,56 @@ func _board() -> void:
 	player.frozen = false
 
 
+## Each home and shop gets a few props that say who lives/works there, placed
+## just outside its door line (never on the lane). Names fall back if a sprite
+## is missing from the manifest.
+func _dress_buildings() -> void:
+	var pl := func(name: String, c: Vector2i, w := 0, solid := true) -> void:
+		if Art.has("props", name) and not things.has(c) and not _door_paths.has(c):
+			if int(Art.info("props", name).get("frames", 1)) > 1:
+				anim_prop("props", name, c, w, 4.0, solid)
+			else:
+				prop("props", name, c, w, 0.0, solid)
+	# General store (Maple): crates of stock, a flower cart, her red mailbox.
+	pl.call("crates2_a", Vector2i(9, 29)); pl.call("flower_cart", Vector2i(21, 28), 1); pl.call("mailbox2_red", Vector2i(23, 29))
+	# Smithy (Gideon): anvil, tools, a fire barrel, barrels of coal.
+	pl.call("forge_anvil_tools", Vector2i(35, 29), 1); pl.call("fire_barrel_0", Vector2i(24, 29)); pl.call("barrel2_b", Vector2i(36, 28))
+	# Bakery (Posy): bread cart and bottle crates.
+	pl.call("bread_cart", Vector2i(42, 27), 1); pl.call("bottle_crate_a", Vector2i(55, 27))
+	# Mansion (Alder): iron fence posts, planters, the founder statue is on the plaza.
+	pl.call("planter2_1", Vector2i(55, 25)); pl.call("planter2_2", Vector2i(68, 25)); pl.call("lamp2_short_0", Vector2i(57, 26)); pl.call("lamp2_short_1", Vector2i(66, 26))
+	# Town hall: lamps and benches either side of the steps.
+	pl.call("bench2_iron_a", Vector2i(44, 43), 1); pl.call("bench2_iron_b", Vector2i(60, 43), 1)
+	# Potions (Wren): cauldron, herb planters, preserves.
+	pl.call("cauldron2", Vector2i(44, 62)); pl.call("planter2_3", Vector2i(57, 62)); pl.call("preserves_jar", Vector2i(45, 63))
+	# Inn (Bram): barrels, a card table, umbrellas for the terrace.
+	pl.call("barrel2_a", Vector2i(56, 61)); pl.call("barrel_a", Vector2i(57, 62)); pl.call("umbrella_red", Vector2i(67, 61), 1); pl.call("card_table", Vector2i(68, 62), 1)
+	# Library (Theo): a bench under a lamp.
+	pl.call("bench2_wood_a", Vector2i(44, 73), 1); pl.call("lamp2_short_2", Vector2i(57, 73))
+	# School: a bell post and a planter; the yard is for the kids.
+	pl.call("horseshoe_sign", Vector2i(55, 73)); pl.call("planter2_0", Vector2i(66, 73))
+	# Cottages: flower beds and mailboxes in the right colours.
+	pl.call("flowerbed_blue", Vector2i(7, 60), 1); pl.call("mailbox2_blue", Vector2i(17, 60))
+	pl.call("flowerbed_yellow", Vector2i(18, 67), 1); pl.call("mailbox2_green", Vector2i(28, 67)); pl.call("fish_rack", Vector2i(27, 66), 1)
+	pl.call("flowerbed_pink", Vector2i(7, 74), 1); pl.call("mailbox2_red", Vector2i(17, 74))
+	# Hazel's farmhouse: crates, hay, a trough, apple buckets.
+	pl.call("haystack", Vector2i(17, 84), 1); pl.call("trough2", Vector2i(26, 84), 1); pl.call("apple_bucket2", Vector2i(28, 84)); pl.call("crates_c", Vector2i(16, 83))
+	# Stable: hay feeder, hitching post.
+	pl.call("hay_feeder", Vector2i(26, 93), 1); pl.call("hitch_post", Vector2i(36, 93))
+	# Clinic (Juniper): a bench and a planter of herbs.
+	pl.call("bench2_green_a", Vector2i(73, 41), 1); pl.call("planter2_3", Vector2i(80, 41))
+	# Chapel: flower beds and an iron bench.
+	pl.call("flowerbed_red", Vector2i(73, 66), 1); pl.call("flowerbed_red", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(72, 68), 1)
+	# Rook's lodge: pelts on a tanning rack, traps, a fire barrel.
+	pl.call("tanning_rack", Vector2i(71, 79), 1); pl.call("crab_pots2", Vector2i(80, 79)); pl.call("fire_barrel2", Vector2i(72, 80))
+	# Bank (Ivy): two short lamps and a hedge ball.
+	pl.call("lamp2_short_3", Vector2i(25, 11)); pl.call("lamp2_short_4", Vector2i(37, 11)); pl.call("hedge2_ball", Vector2i(24, 12))
+	# Warehouse: crates and a covered cart.
+	pl.call("crates2_b", Vector2i(7, 12)); pl.call("cart_covered", Vector2i(18, 12), 1)
+
+
 func _place_props() -> void:
+	_dress_buildings()
 	var fest := GameState.festival_today()
 	if fest != "":
 		_place_festival(fest)
@@ -402,11 +451,10 @@ func _place_props() -> void:
 	_hedge_row(Rect2i(44, 44, 1, 0))
 	_hedge_row(Rect2i(62, 28, 6, 1))
 	# Orchard across the river: fruit trees in rows.
+	var fk := ["apple", "cherry", "plum", "orange"]
 	for y in range(6, 30, 4):
 		for x in range(75, 83, 3):
-			var c := Vector2i(x, y)
-			set_thing(c.x, c.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
-			prop("nature", GameState.tree_sprite((x + y) % 3), c)
+			WorldGen.fruit_tree(self, Vector2i(x, y), fk[(x / 3 + y / 4) % 4])
 	# Allotment flowers south-west, beehive by the orchard.
 	i = 0
 	for y in range(86, 93, 3):

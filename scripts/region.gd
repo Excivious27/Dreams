@@ -94,6 +94,8 @@ func build() -> void:
 				continue
 			things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
 			_forage_n += 1
+	if int(R.get("fruit", 3)) > 0:
+		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)))
 	for t in R.get("things", []):
 		var c: Array = t["cell"]
 		var d := {"type": str(t["type"]), "hint": str(t.get("hint", ""))}

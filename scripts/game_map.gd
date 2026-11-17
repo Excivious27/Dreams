@@ -284,6 +284,19 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
 		return true
 	match t:
+		"fruit":
+			if not bool(thing.get("ripe", false)):
+				hud.toast("Nothing on it today." if GameState.season() != "winter" else "Bare till spring.", Color(0.9, 0.9, 0.9))
+				return true
+			thing["ripe"] = false
+			thing["hint"] = ""
+			GameState.run["flags"][str(thing["key"])] = int(GameState.run["day"])
+			wobble(c, 0.08)
+			var n := 1 + (1 if randf() < 0.3 + GameState.bonus("foraging", "forage_bonus") * 0.2 else 0)
+			pop_items(cell_center(c), str(thing["item"]), n)
+			xp("foraging", 4)
+			player.play_tool("hold")
+			return true
 		"horse":
 			things.erase(c)
 			if props.has(c):
