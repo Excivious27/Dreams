@@ -57,3 +57,10 @@ echo "$sout" | grep -E "FAIL|station_test" || true
 if ! echo "$sout" | grep -q "station_test: 0 failures"; then
   echo "Station test failed"; exit 1
 fi
+
+echo "== allies: enemies fight back, pup commands =="
+aout="$("$GODOT" --headless --path . -s res://tools/ally_test.gd 2>&1)"
+echo "$aout" | grep -E "FAIL|ally_test" || true
+if ! echo "$aout" | grep -q "ally_test: 0 failures"; then
+  echo "Ally test failed"; exit 1
+fi

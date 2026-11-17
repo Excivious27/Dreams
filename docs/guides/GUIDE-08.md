@@ -118,6 +118,11 @@ The penguins' own shelf on the Plans board, drawn from the book.
 - **Merkitty Pool:** the merkitties leave fish, shells and sometimes pearls each morning, and fish bite faster for you.
 - **Crystal Baby Burrow:** opens after the mountain chapter. The babies dig overnight and leave stone, ore and shards; better tiers find silver, gold and refined crystal. Gifts wait in a basket (up to 30) until you collect them.
 
+## Pup commands and enemies
+
+- **Command buttons:** while the pup is with you, five round buttons run down the left edge of the screen: Heel, Attack, Stay, Guard and Recall. The current command has a gold ring. Guard needs the Guard Dog skill.
+- **Enemies fight back:** an enemy the pup bites now turns on the pup and hits it. Enemies also go for the pup when it is much closer than you. Hitting the enemy yourself pulls it back onto you. Teammates will use the same rules and get their own strip.
+
 ## What to test (15 minutes)
 
 1. **Plans board:** open it by the house. Check the shelves read clearly on your phone, and that a locked tier says why.

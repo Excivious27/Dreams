@@ -352,12 +352,12 @@ func _bite(e: Enemy) -> void:
 		dmg *= 2
 	anim.play("bite" if anim.sprite_frames.has_animation("bite") else "bark")
 	anim.flip_h = e.position.x < position.x
+	e.provoke(self)  # it turns to fight back
 	var landed := e.hit(dmg, position)
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
 	GameState.add_xp("pup", 2)
-	# Enemies bite back (not when the bite bounced off a shield).
-	if landed and randf() < 0.35:
-		take_damage(e.damage, e.position)
+	if landed:
+		pass  # the enemy answers with its own swing now (Enemy.provoke)
 
 
 func _dig() -> void:

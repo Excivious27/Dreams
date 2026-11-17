@@ -1131,6 +1131,18 @@ func set_aurora(on: bool) -> void:
 # ---- enemies -----------------------------------------------------------------
 
 ## Swing at enemies inside the rect. Subclasses can extend (rocks, etc.).
+## Everyone fighting on your side that an enemy can turn on: the pup now,
+## teammates later (anything with a position and take_damage()).
+func allies() -> Array:
+	var out: Array = []
+	if pet != null and is_instance_valid(pet) and pet.visible and not Pet.resting() and int(Pet.state().get("hp", 0)) > 0:
+		out.append(pet)
+	for n in get_tree().get_nodes_in_group("allies"):
+		if n is Node2D and n != pet and is_instance_valid(n):
+			out.append(n)
+	return out
+
+
 func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 	Music.instance(get_tree()).sfx("swing")
 	var hit := false
@@ -1144,6 +1156,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 		if r.intersects(body):
 			var crit := randf() < 0.03 * GameState.skill_level("combat") + GameState.bonus("combat", "crit")
 			var dmg := damage * (2 if crit else 1)
+			e.provoke(player)
 			if e.hit(dmg, from):
 				hit = true
 				fx("spark", e.position + Vector2(0, -8), 18.0, 0.5)

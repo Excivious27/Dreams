@@ -207,7 +207,19 @@ func _process(delta: float) -> void:
 	if _flash_mat:
 		_flash_mat.set_shader_parameter("flash", _flash)
 	var player := map.player
-	var to := player.position - position
+	# Who am I fighting? Whoever hurt me last, or an ally of yours that is much
+	# closer than you are. Enemies defend themselves against the pup and friends.
+	_aggro_t = maxf(0.0, _aggro_t - delta)
+	var tgt: Node2D = player
+	var pd_player := position.distance_to(player.position)
+	for ally: Node2D in map.allies():
+		var ad := position.distance_to(ally.position)
+		if ad > 110.0:
+			continue
+		if (_aggro == ally and _aggro_t > 0.0) or (ad + 18.0 < pd_player and ad < 80.0 and not (_aggro == player and _aggro_t > 0.0)):
+			if tgt == player or ad < position.distance_to(tgt.position):
+				tgt = ally
+	var to := tgt.position - position
 	var dist := to.length()
 	_t -= delta
 	_since_hit += delta
@@ -247,7 +259,10 @@ func _process(delta: float) -> void:
 	if _windup > 0.0:
 		_windup -= delta
 		if _windup <= 0.0:
-			if dist < reach + 4.0 and player.invuln <= 0.0:
+			if tgt != player:
+				if dist < reach + 6.0 and tgt.has_method("take_damage"):
+					tgt.call("take_damage", maxi(1, damage + int(tier / 2)), position)
+			elif dist < reach + 4.0 and player.invuln <= 0.0:
 				player.take_damage(GameState.enemy_damage(damage), position)
 				if inflicts != "":
 					GameState.status_apply(inflicts, tier)
@@ -278,6 +293,17 @@ func _process(delta: float) -> void:
 		_sprite.modulate = tint
 		_sprite.scale = Vector2(0.5 * (1.0 + _squash * 0.25), 0.5 * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(1.1, 1.1)
 	queue_redraw()
+
+
+var _aggro: Node2D
+var _aggro_t := 0.0
+
+
+## Called by whoever just hit me: I turn on them for a few seconds.
+func provoke(by: Node2D) -> void:
+	_aggro = by
+	_aggro_t = 4.0
+	_noticed = true
 
 
 ## Move with wall sliding (x then y) so knockback never cancels outright.
@@ -399,6 +425,9 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> 
 			map.shake(2.0)
 			if player.invuln <= 0.0 and position.distance_to(player.position) < 30.0:
 				player.take_damage(GameState.enemy_damage(damage + 1), position)
+			for ally: Node2D in map.allies():
+				if position.distance_to(ally.position) < 30.0 and ally.has_method("take_damage"):
+					ally.call("take_damage", damage + 1, position)
 		return true
 	if abilities.has("stomp") and _stomp_cd <= 0.0 and dist < 26.0 and _stun <= 0.0:
 		_stomp_cd = 3.5

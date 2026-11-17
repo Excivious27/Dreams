@@ -15,6 +15,13 @@ const BUTTONS := {
 	# Partner ability / Meow Pow Wow (B-hold on a keyboard). Shown only when you have one.
 	"ability": {"pos": Vector2(146, 462), "r": 14.0, "label": "♥"},
 }
+## Pup commands: a strip down the left edge, shown while the pup is with you.
+## (Teammates will get a second strip the same way.)
+const PUP_CMDS := [["follow", "cmd_heel", "HEEL"], ["attack", "cmd_attack", "ATK"], ["wait", "cmd_stay", "STAY"], ["guard", "cmd_guard", "GUARD"], ["recall", "cmd_recall", "CALL"]]
+const PUP_X := 15.0
+const PUP_Y0 := 212.0
+const PUP_STEP := 27.0
+const PUP_R := 11.0
 const DIRS := {"left": Vector2.LEFT, "right": Vector2.RIGHT, "up": Vector2.UP, "down": Vector2.DOWN}
 const STICK_R := 34.0
 const RUN_AT := 0.72
@@ -61,7 +68,8 @@ func _process(_delta: float) -> void:
 
 func release_all() -> void:
 	for action: String in _held.keys():
-		Input.action_release(action)
+		if InputMap.has_action(action):
+			Input.action_release(action)
 	_held.clear()
 	_touches.clear()
 	_stick_active = false
@@ -144,7 +152,33 @@ func _has_ability() -> bool:
 	return Companion.active_id() != "" or (GameState.is_penguins() and GameState.run.get("flags", {}).has("meow_taught"))
 
 
+func _pet() -> Pet:
+	var m := get_tree().current_scene
+	if m is GameMap and (m as GameMap).pet != null and is_instance_valid((m as GameMap).pet) and (m as GameMap).pet.visible:
+		return (m as GameMap).pet as Pet
+	return null
+
+
+func _pup_cmd(cmd: String) -> void:
+	var pt := _pet()
+	if pt == null:
+		return
+	if cmd == "recall":
+		pt.recall()
+	elif cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
+		var m := get_tree().current_scene as GameMap
+		if m and m.hud:
+			m.hud.toast("Guard needs the Guard Dog skill (Pup tree).", Color(1, 0.85, 0.6))
+	else:
+		pt.set_mode(cmd)
+	Music.instance(get_tree()).sfx("pickup")
+
+
 func _hit(pos: Vector2) -> String:
+	if _pet() != null and not get_tree().paused and not Dialogue.instance(get_tree()).active:
+		for i in PUP_CMDS.size():
+			if pos.distance_to(Vector2(PUP_X, PUP_Y0 + PUP_STEP * i)) <= PUP_R * 1.25:
+				return "pup:" + str(PUP_CMDS[i][0])
 	for action: String in BUTTONS:
 		if action == "ability" and not _has_ability():
 			continue
@@ -195,6 +229,10 @@ func _end_stick() -> void:
 
 func _press(action: String) -> void:
 	_held[action] = true
+	if action.begins_with("pup:"):
+		_pup_cmd(action.trim_prefix("pup:"))
+		_canvas.queue_redraw()
+		return
 	if action == "ability":
 		ability_pressed = true
 		_canvas.queue_redraw()
@@ -205,6 +243,9 @@ func _press(action: String) -> void:
 
 func _release(action: String) -> void:
 	_held.erase(action)
+	if action.begins_with("pup:"):
+		_canvas.queue_redraw()
+		return
 	if action == "ability":
 		_canvas.queue_redraw()
 		return
@@ -240,6 +281,24 @@ func _on_draw() -> void:
 			var tip := c + d * 6.0
 			var side := d.orthogonal() * 6.0
 			_canvas.draw_colored_polygon(PackedVector2Array([tip, c - d * 4.0 + side, c - d * 4.0 - side]), edge)
+	# Pup command strip.
+	var pt := _pet()
+	if pt != null and not get_tree().paused:
+		var mode := str(Pet.state().get("mode", "follow"))
+		for i in PUP_CMDS.size():
+			var cmd := str(PUP_CMDS[i][0])
+			var cp := Vector2(PUP_X, PUP_Y0 + PUP_STEP * i)
+			var active := cmd == mode
+			var dim := cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0
+			_canvas.draw_circle(cp, PUP_R, Color(0.12, 0.09, 0.05, 0.62))
+			_canvas.draw_arc(cp, PUP_R, 0, TAU, 28, Color(1, 0.85, 0.35, 0.95) if active else Color(1, 1, 1, 0.35), 2.0 if active else 1.0, true)
+			var ic := str(PUP_CMDS[i][1])
+			if Art.has("ui", ic):
+				_canvas.draw_texture_rect(Art.tex("ui", ic), Rect2(cp - Vector2(8, 8), Vector2(16, 16)), false, Color(1, 1, 1, 0.4 if dim else (1.0 if active else 0.85)))
+			else:
+				_canvas.draw_string(font, cp + Vector2(-PUP_R, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0, 5, Color(1, 1, 1, 0.9))
+			if _held.has("pup:" + cmd):
+				_canvas.draw_circle(cp, PUP_R, Color(1, 1, 1, 0.25))
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
