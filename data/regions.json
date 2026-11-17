@@ -1175,7 +1175,7 @@
  "neon": {
   "cols": 50,
   "rows": 42,
-  "music": "boss",
+  "music": "town",
   "backdrop": "night",
   "ground": "wet_asphalt_0",
   "path": "neon_sidewalk",
@@ -2268,7 +2268,7 @@
  "countryside": {
   "cols": 50,
   "rows": 40,
-  "music": "rain",
+  "music": "farm",
   "backdrop": "mountains",
   "ground": "shoulder",
   "path": "highway",
@@ -2554,7 +2554,7 @@
  "sky": {
   "cols": 48,
   "rows": 42,
-  "music": "title",
+  "music": "sky",
   "backdrop": "hills",
   "ground": "cloud",
   "path": "float_stone",
@@ -2817,7 +2817,7 @@
  "station": {
   "cols": 42,
   "rows": 30,
-  "music": "mine",
+  "music": "sky",
   "backdrop": "space",
   "sky": false,
   "pet": false,
@@ -3158,7 +3158,7 @@
  "jungle": {
   "cols": 50,
   "rows": 42,
-  "music": "meadow",
+  "music": "cattopia",
   "backdrop": "night",
   "ground": "teal_moss",
   "path": "bio_path_0",
@@ -3811,7 +3811,7 @@
  "highlands": {
   "cols": 52,
   "rows": 44,
-  "music": "mine",
+  "music": "mountain",
   "backdrop": "mountains",
   "ground": "grass",
   "path": "stone",
@@ -5451,7 +5451,7 @@
  "riverlands": {
   "cols": 52,
   "rows": 44,
-  "music": "farm",
+  "music": "lake",
   "backdrop": "hills",
   "ground": "grass",
   "path": "dirt",

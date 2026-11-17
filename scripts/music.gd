@@ -6,7 +6,10 @@ extends Node
 
 static var _inst: Music
 var _player: AudioStreamPlayer
+var _fading: AudioStreamPlayer   # the outgoing track while a crossfade runs
 var _sfx: Array[AudioStreamPlayer] = []
+const MUSIC_DB := -8.0
+const FADE := 0.9
 var _current := ""
 var _muted := false
 
@@ -22,8 +25,11 @@ static func instance(tree: SceneTree) -> Music:
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_player = AudioStreamPlayer.new()
-	_player.volume_db = -8.0
+	_player.volume_db = MUSIC_DB
 	add_child(_player)
+	_fading = AudioStreamPlayer.new()
+	_fading.volume_db = MUSIC_DB
+	add_child(_fading)
 	for i in 4:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -4.0
@@ -43,9 +49,20 @@ func play(track: String) -> void:
 	var stream := load(path) as AudioStream
 	if stream is AudioStreamOggVorbis:
 		(stream as AudioStreamOggVorbis).loop = true
+	# Crossfade: the old track fades out on the spare player while the new one fades in.
+	if _player.playing:
+		var old := _player
+		_player = _fading
+		_fading = old
+		var tw := create_tween()
+		tw.tween_property(old, "volume_db", -40.0, FADE)
+		tw.tween_callback(old.stop)
 	_player.stream = stream
+	_player.volume_db = -30.0
 	if not _muted:
 		_player.play()
+		var tw2 := create_tween()
+		tw2.tween_property(_player, "volume_db", MUSIC_DB, FADE)
 
 
 func sfx(name: String) -> void:
@@ -57,6 +74,8 @@ func sfx(name: String) -> void:
 	for p in _sfx:
 		if not p.playing:
 			p.stream = load(path)
+			# A little pitch drift so repeated swings and steps don't sound stamped out.
+			p.pitch_scale = randf_range(0.93, 1.07)
 			p.play()
 			return
 
@@ -66,6 +85,8 @@ func toggle_mute() -> bool:
 	SaveGame.set_value("muted", _muted)
 	if _muted:
 		_player.stop()
+		_fading.stop()
 	elif _player.stream:
+		_player.volume_db = MUSIC_DB
 		_player.play()
 	return _muted

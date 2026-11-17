@@ -158,6 +158,11 @@ if __name__ == "__main__":
     compose("mine", 96, ["Cm", "Ab", "Fm", "G", "Cm", "Eb", "Fm", "G"], CMIN, 5, lead_wave="tri", dark=True, lead_vol=0.14)
     compose("boss", 150, ["Cm", "Cm", "Ab", "G", "Cm", "Fm", "Ab", "G"], CMIN, 6, lead_wave="saw", lead_vol=0.14, duty=0.5)
     compose("house", 80, ["C", "Am", "F", "G"], MAJ, 7, lead_wave="sine", drums=False, lead_vol=0.18, bars_per_chord=2)
+    compose("lake", 84, ["F", "Am", "Dm", "C", "F", "Gm", "Bb", "C"], MAJ, 9, lead_wave="sine", drums=False, lead_vol=0.16, bars_per_chord=2)
+    compose("mountain", 100, ["Am", "C", "G", "Em", "Am", "F", "G", "Em"], AMIN, 10, lead_wave="tri", lead_vol=0.14, duty=0.3)
+    compose("beach", 108, ["C", "G", "Am", "F", "C", "G", "F", "G"], MAJ, 11, lead_wave="tri", duty=0.25, lead_vol=0.16)
+    compose("sky", 72, ["Am", "Em", "F", "C", "Am", "Em", "Dm", "E" if "E" in CHORDS else "Em"], AMIN, 12, lead_wave="sine", drums=False, lead_vol=0.14, bars_per_chord=2, dark=True)
+    compose("cattopia", 104, ["F", "C", "Dm", "Bb", "F", "Am", "Bb", "C"], MAJ, 13, lead_wave="square", duty=0.5, lead_vol=0.15)
     compose("rain", 76, ["Am", "Em", "F", "Em", "Am", "Dm", "F", "E" if "E" in CHORDS else "Em"], AMIN, 8, lead_wave="tri", drums=False, dark=True, lead_vol=0.12)
 
     sfx("swing", sweep(900, 300, 0.12, "square", 0.25))

@@ -30,7 +30,7 @@ func build() -> void:
 	rows = 40
 	pad = 7
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}
-	music_track = "farm"
+	music_track = "lake"
 	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 30 * TILE + 8), "right", "farm ▶")
 	add_exit(FOREST_EXIT, "forest", Vector2(3 * TILE, 21 * TILE + 8), "right", "▲ forest")
 	add_exit(Rect2i(0, 4, 1, 3), "riverlands", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ riverlands")

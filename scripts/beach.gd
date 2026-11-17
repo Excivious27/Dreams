@@ -23,7 +23,7 @@ func build() -> void:
 	rows = 36
 	pad = 7
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "cliff"}
-	music_track = "town"
+	music_track = "beach"
 	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 92 * TILE), "up", "▲ town")
 	add_exit(MARSH_EXIT, "marsh", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ marsh")
 	add_exit(QUARRY_EXIT, "quarry", Vector2(2 * TILE, 22 * TILE + 8), "right", "quarry ▶")

@@ -23,7 +23,7 @@ func build() -> void:
 	rows = 46
 	pad = 6
 	border = "cliff"
-	music_track = "mine"
+	music_track = "mountain"
 	add_exit(TOWN_EXIT, "town", Vector2(80 * TILE, 47 * TILE + 8), "left", "◀ town")
 	add_exit(Rect2i(12, 0, 4, 1), "highlands", Vector2(26 * TILE, 41 * TILE + 8), "up", "▲ highlands")
 	add_exit(Rect2i(40, 45, 4, 1), "quarry", Vector2(26 * TILE, 2 * TILE + 8), "down", "▼ quarry")

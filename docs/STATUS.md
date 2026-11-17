@@ -305,3 +305,6 @@
 
 ## 2026-11-17 — Round 4 feel, pass 1
 - Sword hits: hitstop (0.035 s, 0.08 on a kill or crit) + camera nudge (1.2 / 2 / 3 px); crit chime. Enemy deaths: poof + thud, bosses (≥60 hp) a long boss_down and a 5 px shake. New placeholder SFX: thud, boss_down, crit, stun (Coldy's stomp), stink (litter box). `make_audio.py` music is non-deterministic: `git checkout audio/music` after regenerating unless the music changed on purpose.
+
+## 2026-11-17 — Round 5 audio, pass 1
+- Music crossfades (0.9 s) between areas on a spare player; SFX get ±7% pitch drift. Five new placeholder tracks: lake (lake, riverlands), mountain (mountain, highlands), beach, sky (sky, station), cattopia (crystal meadow in the penguin arc, jungle). Real tracks drop in under the same names.
