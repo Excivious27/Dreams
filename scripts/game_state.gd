@@ -87,6 +87,8 @@ static func has_run() -> bool:
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
 static func _migrate() -> void:
+	if run.has("look") and run["look"] is Dictionary and run["look"].has("body") and not run["look"].has("outfit"):
+		run["look"]["outfit"] = "outfit_neon" if str(run.get("arc", "")) == "gangsters" else "outfit_farmer"
 	var defaults := {
 		"crystals": 20, "day": 1, "time": DAY_START, "energy": 100, "max_energy": 100,
 		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100, "skills": {}, "flags": {}, "decisions": {}, "friendship": {},
@@ -345,9 +347,16 @@ static func sync_selected() -> void:
 		run["selected"] = ""
 
 
+## A tool at the smithy can't be used.
+static func tool_away(kind: String) -> bool:
+	return bool(run["flags"].get("tool_away_" + kind, false))
+
+
 static func held_tool() -> String:
 	var tb: Array = run["toolbar"]
 	var id := str(tb[int(run["slot"])])
+	if has_tool(id) and tool_away(id if id != "iron_sword" else "sword"):
+		return ""  # it's on Gideon's bench
 	return id if has_tool(id) else ""
 
 
@@ -1229,7 +1238,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				var rate := 1.0
 				if cs != "any" and cs != se:
 					rate = 0.5
-				if se == "winter" and cs != "winter" and cs != "any" and not run.get("builds", {}).has("greenhouse"):
+				if se == "winter" and cs != "winter" and cs != "any" and not Builds.is_built("greenhouse"):
 					tile["crop"] = ""
 					tile["days"] = 0
 					report["grown"] -= 1
@@ -1251,6 +1260,8 @@ static func sleep(passed_out := false) -> Dictionary:
 		run["bank"] = int(run["bank"] * (1.02 if has_friend_perk("ivy", 6) else 1.01))
 	run["day"] = int(run["day"]) + 1
 	run["time"] = DAY_START
+	for nm in Builds.tick_overnight():
+		report["built"] = report.get("built", []) + [nm]
 	run["energy"] = int(run["max_energy"]) if not passed_out else int(run["max_energy"]) / 2
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))

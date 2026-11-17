@@ -60,6 +60,12 @@ static func body_for(look: Dictionary) -> String:
 	var cs := str(GameState.items.get(chest, {}).get("costume", ""))
 	if cs != "" and Art.has("body", cs):
 		return cs
+	# Nothing equipped: you still wear clothes. The look's outfit (farmer by
+	# default) is the everyday costume; the bare base is only for the creator's
+	# skin/build picker.
+	var outfit := str(look.get("outfit", "outfit_farmer"))
+	if Art.has("body", outfit):
+		return outfit
 	var body := str(look.get("body", "medium_slim"))
 	return body if Art.has("body", body) else "medium_slim"
 

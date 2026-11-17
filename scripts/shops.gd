@@ -94,15 +94,39 @@ static func price(id: String) -> int:
 static func hall(m: GameMap) -> void:
 	var r := GameState.run
 	var who: String = r["names"]["character"]
-	if GameState.is_penguins():
-		await m.say([
-			{"who": "Mayor Alder", "text": "Ah, %s. The farm's in good hands then. Odd lights over your field the other night, people said. Weather, I expect." % who},
-			{"who": "Mayor Alder", "text": "The town board is here if you want it: friendship, skills, quests. (Open the MENU anywhere.)"},
-		])
-	else:
-		await m.say([
-			{"who": "Mayor Alder", "text": "Deed's in order. Name's a little... unusual, but I don't ask questions. People who ask questions in this town tend to leave it."},
-			{"who": "Mayor Alder", "text": "If you've got crystals to spend, Gideon could use the business. If you've got trouble, I'd rather not know."},
-		])
+	if not r["flags"].has("hall_intro"):
+		r["flags"]["hall_intro"] = true
+		if GameState.is_penguins():
+			await m.say([
+				{"who": "Mayor Alder", "text": "Ah, %s. The farm's in good hands then. Odd lights over your field the other night, people said. Weather, I expect." % who},
+				{"who": "Mayor Alder", "text": "Anything bigger than a shed on that land needs a permit. I stamp them here. It's mostly so I know what's going on."},
+			])
+		else:
+			await m.say([
+				{"who": "Mayor Alder", "text": "Deed's in order. Name's a little... unusual, but I don't ask questions. People who ask questions in this town tend to leave it."},
+				{"who": "Mayor Alder", "text": "Permits for building are stamped here. Pay the fee, keep it quiet, build what you like."},
+			])
+	# Permits counter.
+	while true:
+		var ids: Array = []
+		var opts: Array = []
+		for id in Builds.data():
+			var nd := Builds.next_def(id)
+			if nd.is_empty() or int(nd.get("permit", 0)) <= 0:
+				continue
+			var have := Builds.permitted(id) >= int(nd["tier"])
+			opts.append("%s%s permit  ◆%d%s" % ["✓ " if have else "", str(nd["name"]), Builds.permit_price(id), "" if not have else " (held)"])
+			ids.append(id)
+		opts.append("Leave")
+		var d := Dialogue.instance(m.get_tree())
+		d.say([{"who": "Mayor Alder", "text": "Permits. ◆%d on you.%s" % [int(r["crystals"]), "  (friends of the office pay 20% less)" if GameState.has_friend_perk("alder", 4) else ""], "choice": opts, "key": ""}])
+		await d.finished
+		var i := d.last_choice
+		if i < 0 or i >= ids.size():
+			return
+		var msg := Builds.buy_permit(str(ids[i]))
+		m.hud.toast(msg, Color(1, 0.9, 0.4) if msg.begins_with("Permit stamped") else Color(1, 0.7, 0.7))
+		if msg.begins_with("Permit stamped"):
+			Music.instance(m.get_tree()).sfx("pickup")
 
 

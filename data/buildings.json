@@ -1,0 +1,54 @@
+{
+ "_": "Farm buildings, Sun Haven style. Each has tiers; a tier needs a PERMIT bought at the Town Hall (Alder) plus materials, then takes `days` to construct (Hazel's crew works overnight). `upgrade_of` chains tiers. `unlock` gates: building skill level, a story quest, friendship.",
+ "house": {
+  "label": "Farmhouse", "cell": [11, 10], "w": 5, "h": 4, "group": "buildings", "thing": "door", "fixed": true,
+  "tiers": [
+   {"tier": 1, "name": "Cottage", "sprite": "house", "cost": {}, "permit": 0, "days": 0, "desc": "One room, one bed."},
+   {"tier": 2, "name": "Farmhouse", "sprite": "house", "cost": {"wood": 250, "stone": 100, "copper_bar": 5}, "permit": 500, "days": 2, "unlock": {"skill": ["building", 3]}, "desc": "A kitchen (cook recipes), a bigger bed (+10 max energy), room for a second player."},
+   {"tier": 3, "name": "Manor", "sprite": "house", "cost": {"wood": 500, "stone": 300, "iron_bar": 10, "glass": 20}, "permit": 2500, "days": 4, "unlock": {"skill": ["building", 6], "quest": "clear_meadow"}, "desc": "A cellar (kegs and jars age twice as fast), a study (+1 skill point), rooms for 8 players, a bath (+5 max health)."}
+  ]
+ },
+ "coop": {
+  "label": "Coop", "cell": [26, 8], "w": 3, "h": 3, "group": "props",
+  "tiers": [
+   {"tier": 1, "name": "Coop", "sprite": "coop_small", "cost": {"wood": 120, "stone": 40}, "permit": 100, "days": 1, "desc": "4 chickens."},
+   {"tier": 2, "name": "Big Coop", "sprite": "coop_big", "cost": {"wood": 200, "stone": 80, "copper_bar": 3}, "permit": 400, "days": 2, "unlock": {"skill": ["building", 3]}, "desc": "8 birds; ducks; an incubator."}
+  ]
+ },
+ "barn": {
+  "label": "Barn", "cell": [32, 5], "w": 4, "h": 3, "group": "props",
+  "tiers": [
+   {"tier": 1, "name": "Barn", "sprite": "barn_small", "cost": {"wood": 200, "stone": 80}, "permit": 200, "days": 2, "desc": "4 animals: cows, sheep."},
+   {"tier": 2, "name": "Big Barn", "sprite": "barn_big", "cost": {"wood": 350, "stone": 150, "iron_bar": 4}, "permit": 800, "days": 3, "unlock": {"skill": ["building", 5]}, "desc": "8 animals; goats, llamas; auto-feeder."}
+  ]
+ },
+ "silo": {"label": "Silo", "cell": [30, 4], "w": 1, "h": 3, "group": "props",
+  "tiers": [{"tier": 1, "name": "Silo", "sprite": "silo2", "cost": {"stone": 60, "wood": 30}, "permit": 50, "days": 1, "desc": "Stores 240 hay; scythed grass goes straight in."}]},
+ "shed": {"label": "Shed", "cell": [6, 20], "w": 2, "h": 2, "group": "props", "thing": "chest",
+  "tiers": [{"tier": 1, "name": "Shed", "sprite": "shed", "cost": {"wood": 80, "stone": 20}, "permit": 50, "days": 1, "desc": "Big storage; a place for crafting stations."},
+            {"tier": 2, "name": "Workshop", "sprite": "shed", "cost": {"wood": 160, "stone": 60, "copper_bar": 4}, "permit": 300, "days": 2, "unlock": {"skill": ["building", 4]}, "desc": "Crafting here is 25% faster."}]},
+ "stable": {"label": "Stable", "cell": [32, 11], "w": 3, "h": 3, "group": "props",
+  "tiers": [{"tier": 1, "name": "Stable", "sprite": "stable2", "cost": {"wood": 150, "iron_bar": 2}, "permit": 300, "days": 2, "unlock": {"friend": ["benno", 2]}, "desc": "Your horse sleeps here; it runs 10% faster rested."}]},
+ "mill": {"label": "Mill", "cell": [26, 2], "w": 2, "h": 4, "group": "props", "anim": "windmill3",
+  "tiers": [{"tier": 1, "name": "Windmill", "sprite": "windmill3", "cost": {"wood": 120, "stone": 60}, "permit": 200, "days": 2, "unlock": {"friend": ["orla", 2]}, "desc": "Grinds wheat to flour overnight; sugar beet to sugar."}]},
+ "greenhouse": {"label": "Greenhouse", "cell": [20, 4], "w": 3, "h": 3, "group": "props", "anim": "greenhouse2",
+  "tiers": [{"tier": 1, "name": "Greenhouse", "sprite": "greenhouse2", "cost": {"wood": 150, "stone": 100, "iron_bar": 2, "glass": 30}, "permit": 1000, "days": 3, "unlock": {"skill": ["building", 5], "quest": "clear_meadow"}, "desc": "Crops grow in any season inside; winter can't kill them."}]},
+ "fish_pond": {"label": "Fish pond", "cell": [26, 16], "w": 2, "h": 2, "group": "props", "anim": "fish_pond", "thing": "water",
+  "tiers": [{"tier": 1, "name": "Fish pond", "sprite": "fish_pond", "cost": {"stone": 80, "wood": 20}, "permit": 100, "days": 1, "unlock": {"skill": ["fishing", 2]}, "desc": "Fish at home. Drop a fish in and it breeds."}]},
+ "well": {"label": "Well", "cell": [19, 13], "w": 0, "h": 1, "group": "props", "thing": "well",
+  "tiers": [{"tier": 1, "name": "Well", "sprite": "well_roofed", "cost": {"stone": 30}, "permit": 0, "days": 0, "desc": "Refill the can here."}]},
+ "workbench": {"label": "Workbench", "cell": [6, 13], "w": 1, "h": 1, "group": "props", "thing": "workbench",
+  "tiers": [{"tier": 1, "name": "Workbench", "sprite": "workbench3", "cost": {"wood": 20}, "permit": 0, "days": 0, "desc": "Craft tools, packs, torches."}]},
+ "chest": {"label": "Chest", "cell": [9, 13], "w": 0, "h": 1, "group": "props", "thing": "chest",
+  "tiers": [{"tier": 1, "name": "Storage chest", "sprite": "chest_closed", "cost": {"wood": 10}, "permit": 0, "days": 0, "desc": "Keeps things."}]},
+ "furnace": {"label": "Furnace", "cell": [8, 13], "w": 0, "h": 1, "group": "props", "thing": "furnace",
+  "tiers": [{"tier": 1, "name": "Furnace", "sprite": "furnace2_off", "cost": {"stone": 20, "copper": 5}, "permit": 0, "days": 0, "desc": "Smelt ore into bars."}]},
+ "keg": {"label": "Keg", "cell": [6, 15], "w": 0, "h": 1, "group": "props", "thing": "keg",
+  "tiers": [{"tier": 1, "name": "Keg", "sprite": "keg2", "cost": {"wood": 30, "copper_bar": 1}, "permit": 0, "days": 0, "desc": "Fruit becomes wine, hops become beer (slowly)."}]},
+ "beehive": {"label": "Beehive", "cell": [21, 15], "w": 0, "h": 1, "group": "props", "thing": "beehive",
+  "tiers": [{"tier": 1, "name": "Beehive", "sprite": "beehive3_a", "cost": {"wood": 15, "fiber": 10}, "permit": 0, "days": 0, "desc": "Honey every few days; more with flowers nearby."}]},
+ "resonator": {"label": "Crystal resonator", "cell": [16, 16], "w": 0, "h": 1, "group": "props", "thing": "resonator",
+  "tiers": [{"tier": 1, "name": "Crystal resonator", "sprite": "resonator", "cost": {"stone": 10, "shard": 1}, "permit": 0, "days": 0, "desc": "Charges from the Light Crystal; powers the story."}]},
+ "scarecrow": {"label": "Scarecrow", "cell": [22, 12], "w": 0, "h": 1, "group": "props",
+  "tiers": [{"tier": 1, "name": "Scarecrow", "sprite": "scarecrow_classic", "cost": {"wood": 8, "fiber": 4}, "permit": 0, "days": 0, "desc": "Crows leave the crops alone."}]}
+}

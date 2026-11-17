@@ -256,6 +256,23 @@ func _counter(shop: String) -> void:
 ## Gideon's upgrade bench: every tool climbs wood → copper → iron → steel →
 ## silver → gold → crystal → moon. Needs bars of the next metal and crystals.
 func _upgrade_tools() -> void:
+	# A tool left with Gideon comes back the next morning (Sun Haven style).
+	var pend: Dictionary = GameState.run.get("jobs", {}).get("smith_upgrade", {})
+	if not pend.is_empty():
+		if Crafting.now_abs() >= int(pend["done_at"]):
+			var k0 := str(pend["kind"])
+			GameState.run["jobs"].erase("smith_upgrade")
+			GameState.run["flags"]["tool_away_" + k0] = false
+			GameState.run["flags"].erase("tool_away_" + k0)
+			hud.toast("%s upgraded!" % GameState.item_name(k0), Color(1, 0.9, 0.4))
+			Music.instance(get_tree()).sfx("levelup")
+			xp("mining", 6)
+			if player:
+				fx("levelup", player.position + Vector2(0, -12), 12.0, 0.8)
+			await say([{"who": "Gideon", "text": "There. Try not to break it before lunch."}])
+		else:
+			await say([{"who": "Gideon", "text": "Your %s is on the bench. %s. Come back then." % [GameState.item_name(str(pend["kind"])), Crafting.fmt_minutes(int(pend["done_at"]) - Crafting.now_abs())]}])
+			return
 	while true:
 		var opts: Array = []
 		var kinds: Array = []
@@ -281,11 +298,15 @@ func _upgrade_tools() -> void:
 			return
 		var kind: String = kinds[i]
 		if GameState.upgrade_tool(kind):
-			hud.toast("%s upgraded!" % GameState.item_name(kind), Color(1, 0.9, 0.4))
-			Music.instance(get_tree()).sfx("levelup")
-			xp("mining", 6)
-			if player:
-				fx("levelup", player.position + Vector2(0, -12), 12.0, 0.8)
+			# Paid and handed over: the tool is away until tomorrow morning.
+			var t := GameState.tool_tier(kind)
+			var hours := 6 + 4 * t
+			GameState.run["jobs"] = GameState.run.get("jobs", {})
+			GameState.run["jobs"]["smith_upgrade"] = {"kind": kind, "done_at": Crafting.now_abs() + hours * 60}
+			GameState.run["flags"]["tool_away_" + kind] = true
+			hud.toast("Gideon takes the %s. Ready in %dh." % [GameState.item_name(kind), hours], Color(1, 0.9, 0.4))
+			Music.instance(get_tree()).sfx("plant")
+			return
 		else:
 			hud.toast("Not enough for that yet.", Color(1, 0.7, 0.7))
 

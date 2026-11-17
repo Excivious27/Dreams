@@ -102,7 +102,7 @@ func build() -> void:
 	# Everything you've built so far.
 	var builds: Dictionary = GameState.run.get("builds", {})
 	for id: String in builds:
-		var b: Dictionary = BUILDS.get(id, {})
+		var b: Dictionary = _build_rec(id)
 		if b.is_empty():
 			continue
 		var c: Vector2i = b["cell"]
@@ -260,6 +260,20 @@ func can_till(c: Vector2i) -> bool:
 	return _tillable(c) and not things.has(c) and not blocked.has(c)
 
 
+## BUILDS-shaped record for what's actually built (tier-aware), from buildings.json.
+func _build_rec(id: String) -> Dictionary:
+	var bd: Dictionary = Builds.data().get(id, {})
+	if bd.is_empty() or id == "house":
+		return {}
+	var td := Builds.current_def(id)
+	if td.is_empty():
+		return {}
+	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(bd.get("group", "props")), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", "")), "label": str(bd.get("label", id))}
+	if bd.has("anim"):
+		rec["anim"] = str(bd["anim"])
+	return rec
+
+
 func _tillable(c: Vector2i) -> bool:
 	if not in_content(c) or blocked.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
 		return false
@@ -272,37 +286,50 @@ func _tillable(c: Vector2i) -> bool:
 
 
 func _plans() -> void:
-	var builds: Dictionary = GameState.run.get("builds", {})
+	# The plans board: every building with its tier, what the next tier needs,
+	# and what's under construction. Permits come from the Town Hall.
 	var ids: Array = []
 	var opts: Array = []
-	for id: String in BUILDS:
-		if builds.has(id):
+	for id: String in Builds.data():
+		var bt := Builds.built_tier(id)
+		var nd := Builds.next_def(id)
+		var uc := Builds.under_construction(id)
+		var label := str(Builds.data()[id]["label"])
+		if not uc.is_empty():
+			opts.append("⌛ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), int(uc["done_day"]) - int(GameState.run["day"]), "" if int(uc["done_day"]) - int(GameState.run["day"]) == 1 else "s"])
+			ids.append("")
 			continue
+		if nd.is_empty():
+			opts.append("✓ %s (%s, max)" % [label, str(Builds.current_def(id).get("name", ""))])
+			ids.append("")
+			continue
+		var parts: Array = []
+		for need in nd.get("cost", {}):
+			parts.append("%d %s" % [int(nd["cost"][need]), GameState.item_name(str(need))])
+		var why := Builds.blocker(id)
+		var tag := ""
+		if why == "permit":
+			tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
+		elif why != "" and not why.begins_with("need"):
+			tag = "  [%s]" % why
+		opts.append("%s%s%s: %s  [%s]%s%s" % ["" if why == "" else "✗ ", "Upgrade " if bt > 0 else "", str(nd["name"]), str(nd.get("desc", "")), ", ".join(parts), "  ⌛%dd" % int(nd.get("days", 0)) if int(nd.get("days", 0)) > 0 else "", tag])
 		ids.append(id)
-		opts.append(str(BUILDS[id]["label"]))
-	if ids.is_empty():
-		await say([{"text": "You've built everything on the plans. (Tom: more plans come with Guide #3.)"}])
-		return
 	opts.append("Leave")
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Plans", "text": "Build what? Clearing the field gives you the wood and stone.", "choice": opts, "key": ""}])
+	d.say([{"who": "Plans", "text": "Build or upgrade? Bigger buildings need a permit from Alder and take Hazel's crew a few days.", "choice": opts, "key": ""}])
 	await d.finished
 	var i := d.last_choice
-	if i < 0 or i >= ids.size():
+	if i < 0 or i >= ids.size() or str(ids[i]) == "":
 		return
 	var id := str(ids[i])
-	var b: Dictionary = BUILDS[id]
-	for need: String in b["cost"]:
-		if GameState.count(need) < int(b["cost"][need]):
-			hud.toast("Need %d %s." % [int(b["cost"][need]), GameState.item_name(need)], Color(1, 0.7, 0.7))
-			return
-	for need: String in b["cost"]:
-		GameState.add_item(need, -int(b["cost"][need]))
-	builds[id] = true
-	GameState.run["builds"] = builds
-	xp("building", 10)
-	hud.toast("Built the %s." % id, Color(1, 0.9, 0.4))
-	fx("levelup", cell_center(b["cell"]) + Vector2(0, -10), 10.0, 0.8)
+	var msg := Builds.start(id)
+	var ok := not msg.begins_with("Can't")
+	hud.toast(msg, Color(1, 0.9, 0.4) if ok else Color(1, 0.7, 0.7))
+	if not ok:
+		return
+	var nd2 := Builds.current_def(id)
+	if not nd2.is_empty():
+		fx("levelup", cell_center(Vector2i(int(Builds.data()[id]["cell"][0]), int(Builds.data()[id]["cell"][1]))) + Vector2(0, -10), 10.0, 0.8)
 	GameState.save()
 	# Simplest reliable refresh: reload the scene in place.
 	GameMap.next_spawn = player.position - offset()
@@ -469,7 +496,7 @@ func _workbench() -> void:
 
 func _furnace() -> void:
 	await Crafting.run(self, "smith", "Furnace")
-	var fc: Vector2i = BUILDS["furnace"]["cell"]
+	var fc := Vector2i(int(Builds.data()["furnace"]["cell"][0]), int(Builds.data()["furnace"]["cell"][1]))
 	if props.has(fc) and Art.tex("props", "furnace2_on"):
 		(props[fc] as Sprite2D).texture = Art.tex("props", "furnace2_on")
 
@@ -530,7 +557,7 @@ func _resonator(sel: String) -> void:
 		GameState.add_item("shard", -3)
 		give("crystal_refined")
 		xp("mining", 8)
-		fx("pawring", cell_center(BUILDS["resonator"]["cell"]) + Vector2(0, -12), 10.0, 0.6)
+		fx("pawring", cell_center(Vector2i(int(Builds.data()["resonator"]["cell"][0]), int(Builds.data()["resonator"]["cell"][1]))) + Vector2(0, -12), 10.0, 0.6)
 	else:
 		hud.toast("Hold 3 Crystal Shards to refine one.")
 
@@ -779,10 +806,18 @@ func _place_props() -> void:
 		prop("buildings", "mailbox", MAILBOX)
 		prop("buildings", "sellbox", SELLBOX)
 	prop("props", "notice_board", PLANS)
+	# Under construction: a scaffold/sign where the crew is working.
+	for cid in GameState.run.get("construction", {}):
+		var bd: Dictionary = Builds.data().get(cid, {})
+		if bd.is_empty():
+			continue
+		var cc := Vector2i(int(bd["cell"][0]), int(bd["cell"][1]))
+		prop("props", "crates2_b" if Art.has("props", "crates2_b") else "crates_a", cc, int(bd.get("w", 0)))
+		prop("props", "board2" if Art.has("props", "board2") else "signpost", cc + Vector2i(int(bd.get("w", 0)) + 1, 0))
 	# Built things.
 	var builds: Dictionary = GameState.run.get("builds", {})
 	for id: String in builds:
-		var b: Dictionary = BUILDS.get(id, {})
+		var b: Dictionary = _build_rec(id)
 		if b.is_empty():
 			continue
 		var c: Vector2i = b["cell"]

@@ -234,6 +234,8 @@ func _begin() -> void:
 	var pet := _pet_edit.text.strip_edges()
 	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup")
 	GameState.run["look"] = _look_full.duplicate() if not _look_full.is_empty() else {"tint": "ffffff"}
+	if not GameState.run["look"].has("outfit"):
+		GameState.run["look"]["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"
 	_start_game()
 
 

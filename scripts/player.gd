@@ -591,6 +591,10 @@ func do_action(mode := "a") -> void:
 		if not _busy:
 			_show_idle()
 		return
+	# Standing on a door/exit-type thing (you walked onto it): A uses it.
+	if map and map.things.has(cell()) and str(map.things[cell()].get("type", "")) in ["door", "idoor", "exit", "mine", "cave", "pad"] and map.try_interact(cell()):
+		velocity = Vector2.ZERO
+		return
 	if mode == "action":
 		# Point the pup at an enemy.
 		var e := map.nearest_enemy_to(position + facing_dir() * 16.0, 24.0)

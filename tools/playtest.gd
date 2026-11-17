@@ -295,8 +295,11 @@ func _run() -> void:
 		var e: Enemy = meadow.enemies[0]
 		meadow.player.position = e.position + Vector2(-12, 0)
 		meadow.player.facing = "right"
-		meadow.player.invuln = 1.0
+		meadow.player.invuln = 2.0
+		GameState.run["hp"] = int(GameState.run["max_hp"])
 		await act()
+		if not is_instance_valid(meadow) or current_scene != meadow:
+			break
 	check(int(GameState.run["kills"]) > kills0, "defeated a grump")
 	await shot("12_fight")
 

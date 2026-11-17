@@ -850,6 +850,9 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 ## A building drawn large (scale 1.0 = full 2x art, "realistically" big next to a 26 px
 ## hero): its footprint is blocked, the door cell (bottom-centre, one row below
 ## the base) opens `interior`. Returns the door cell.
+var _building_doors := {}  # every cell a building covers -> its door cell
+
+
 func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.0) -> Vector2i:
 	var info := Art.info("buildings", name)
 	var w_cells := maxi(1, int(round(float(info.get("w", 64)) * scale / TILE)))
@@ -866,7 +869,15 @@ func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.
 	var door := Vector2i(c.x + w_cells / 2, base.y + 1)
 	if interior != "":
 		things[door] = {"type": "door", "interior": interior, "hint": hint if hint != "" else "A: " + interior.capitalize()}
+		for y in range(c.y, base.y + 2):
+			for x in range(c.x, c.x + w_cells):
+				_building_doors[Vector2i(x, y)] = door
 	return door
+
+
+## A click/tap anywhere on a building means "go to its door".
+func door_for_cell(c: Vector2i) -> Vector2i:
+	return _building_doors.get(c, Vector2i(-1, -1))
 
 
 ## Grid path (BFS, 4-neighbour) between content cells, avoiding blocked cells and
@@ -1197,6 +1208,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		# keep swinging while the button is held. Right click: check/talk only.
 		var world := get_canvas_transform().affine_inverse() * mb.position
 		var c := world_to_cell(world)
+		var dc := door_for_cell(c)
+		if dc != Vector2i(-1, -1):
+			c = dc
+			world = cell_center(c)
 		var me := player.cell()
 		var near := absi(c.x - me.x) <= 1 and absi(c.y - me.y) <= 1
 		var target_thing: Dictionary = things.get(c, {})
@@ -1234,6 +1249,9 @@ func handle_tap(pos: Vector2) -> void:
 		return
 	var world := get_canvas_transform().affine_inverse() * pos
 	var c := world_to_cell(world)
+	var dc := door_for_cell(c)
+	if dc != Vector2i(-1, -1):
+		c = dc
 	var e := nearest_enemy_to(world, 14.0)
 	if true:
 		if e:
