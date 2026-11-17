@@ -88,8 +88,7 @@ static func run(m: GameMap, shop: String) -> void:
 
 
 static func price(id: String) -> int:
-	var base := GameState.item_value(id)
-	return maxi(1, int(ceil(base * 1.5 * GameState.buy_multiplier())))
+	return GameState.buy_price(id)
 
 
 static func hall(m: GameMap) -> void:

@@ -86,10 +86,12 @@ func build() -> void:
 			if things.has(c) or blocked.has(c):
 				continue
 			var key := "forage_%s_%d_%d" % [region_id, c.x, c.y]
-			var every := 1 if GameState.has_perk("foraging", "Tracker") else 2
-			if int(GameState.run["flags"].get(key, 0)) > int(GameState.run["day"]) - every:
-				continue
 			var item := GameState.roll_forage(region_id)
+			# Respawn: common forage every 1-2 days, rare finds take most of a week.
+			var tier := int(GameState.items.get(item, {}).get("tier", 1))
+			var every := (1 if GameState.has_perk("foraging", "Tracker") else 2) + maxi(0, tier - 1) * 2
+			if not GameState.respawned(key, every):
+				continue
 			things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
 			_forage_n += 1
 	for t in R.get("things", []):
@@ -180,7 +182,7 @@ func after_ready() -> void:
 	if gen.has("critters"):
 		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, int(gen.get("critter_count", 6)), gen["critters"])
 	for e in R.get("enemies", []):
-		var n := int(e.get("count", 1))
+		var n := GameState.enemy_count(int(e.get("count", 1)))
 		for i in n:
 			var at := cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			if e.has("cell"):
@@ -259,6 +261,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"mrock":
 			if GameState.held_tool() != "pickaxe":
 				return GameState.has_tool("pickaxe")
+			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
+			if ob != "":
+				player.play_tool("pickaxe")
+				hud.toast(ob, Color(1, 0.85, 0.6))
+				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true

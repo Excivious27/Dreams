@@ -107,11 +107,25 @@ func setup(k: String) -> void:
 	reach = 22.0 if hp >= 16 else 16.0
 
 
+var _burn_t := 0.0
+
+
 func _process(delta: float) -> void:
 	if not _alive:
 		return
 	if map.hitstop > 0.0:
 		return
+	# Sorcery status: asleep (Lull) holds the enemy still; burn (Ember) ticks damage.
+	if has_meta("asleep_until") and Time.get_ticks_msec() < int(get_meta("asleep_until")):
+		_stun = maxf(_stun, 0.2)
+		return
+	if has_meta("burn") and int(get_meta("burn")) > 0:
+		_burn_t += delta
+		if _burn_t >= 1.0:
+			_burn_t = 0.0
+			set_meta("burn", int(get_meta("burn")) - 1)
+			hit(1, position + Vector2(0, 8))
+			map.fx("sparkle", position + Vector2(0, -6), 14.0, 0.4)
 	_anim_t += delta
 	_hit_flash = maxf(0.0, _hit_flash - delta)
 	_flash = maxf(0.0, _flash - delta * 7.0)

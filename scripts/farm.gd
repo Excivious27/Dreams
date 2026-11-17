@@ -352,9 +352,14 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		if randf() < GameState.bonus("farming", "seed_back") and GameState.items.has(crop + "_seed"):
 			give(crop + "_seed", 1)
 		player.play_tool("hold")
-		xp("farming", 6)
-		tile["crop"] = ""
-		tile["days"] = 0
+		xp("farming", 4 + 2 * int(cd.get("tier", 1)))
+		if cd.has("regrow"):
+			# Bushes and vines keep producing: back to a few days before ripe.
+			tile["days"] = int(cd["days"]) - int(cd["regrow"])
+			hud.toast("%s will fruit again in %d days." % [str(cd["name"]), int(cd["regrow"])])
+		else:
+			tile["crop"] = ""
+			tile["days"] = 0
 		_check_first_harvest()
 		queue_redraw()
 		return true
@@ -391,7 +396,8 @@ func _sellbox(sel: String) -> void:
 		var n := GameState.count(sel)
 		box[sel] = int(box.get(sel, 0)) + n
 		GameState.add_item(sel, -n)
-		hud.toast("Put %d %s in the sell box (◆%d tonight)." % [n, GameState.item_name(sel), n * GameState.item_value(sel)])
+		var est := GameState.sell_price(sel, n)
+		hud.toast("Put %d %s in the sell box (about ◆%d tonight%s)." % [n, GameState.item_name(sel), est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
 		Music.instance(get_tree()).sfx("pickup")
 		return
 	if box.is_empty():
@@ -400,7 +406,7 @@ func _sellbox(sel: String) -> void:
 		var lines: Array = []
 		var total := 0
 		for id in box:
-			total += GameState.item_value(id) * int(box[id])
+			total += GameState.sell_price(id, int(box[id]))
 		await say([{"text": "In the box: %s. Worth ◆%d, paid tonight." % [", ".join(box.keys().map(func(k: String) -> String: return "%s x%d" % [GameState.item_name(k), int(box[k])])), total]}])
 
 

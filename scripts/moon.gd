@@ -150,6 +150,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"mrock":
 			if not GameState.has_tool("pickaxe"):
 				return false
+			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
+			if ob != "":
+				player.play_tool("pickaxe")
+				hud.toast(ob, Color(1, 0.85, 0.6))
+				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true

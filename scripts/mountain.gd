@@ -116,7 +116,7 @@ func after_ready() -> void:
 	WorldGen.tree_clumps(self, Rect2i(2, 16, 18, 10), 95, 2, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 93, 16, avoid)
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 94, 8, ["goat", "crow", "crow", "hedgehog", "sparrow"])
-	for i in 4:
+	for i in GameState.enemy_count(4):
 		var at := cell_center(Vector2i(randi_range(6, cols - 7), randi_range(16, rows - 6)))
 		spawn_enemy("golem" if GameState.is_penguins() else "thug_enforcer", at)
 	if not GameState.run["flags"].has("mountain_seen"):
@@ -136,6 +136,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if GameState.has_tool("pickaxe"):
 					hud.toast("Use the pickaxe.")
 				return GameState.has_tool("pickaxe")
+			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
+			if ob != "":
+				player.play_tool("pickaxe")
+				hud.toast(ob, Color(1, 0.85, 0.6))
+				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true

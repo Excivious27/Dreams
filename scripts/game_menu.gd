@@ -376,9 +376,13 @@ func _skill_tree(sk: String) -> void:
 	for t in tiers:
 		var open := spent >= int(t) * GameState.TIER_POINTS
 		_line("  — Tier %d %s —" % [int(t) + 1, "" if open else "(locked: %d points in tree)" % (int(t) * GameState.TIER_POINTS)], 7, Color(0.9, 0.8, 0.5) if open else Color(0.5, 0.5, 0.5))
+		var branches: Dictionary = GameState.skills_data.get(sk, {}).get("branches", {})
 		for n in by_tier[t]:
 			var id := str(n["id"])
 			var rank := GameState.node_rank(sk, id)
+			var br := str(branches.get(str(n.get("branch", "")), ""))
+			if br != "":
+				_line("    ◦ %s path" % br, 6, {"Light": Color(1, 0.95, 0.6), "Dream": Color(0.8, 0.85, 1.0), "Crystal": Color(0.7, 1.0, 0.9)}.get(br, Color(0.8, 0.8, 0.8)))
 			var ranks := int(n.get("ranks", 1))
 			var why := GameState.node_locked(sk, id)
 			var mark := "★" if rank >= ranks else ("◆" if rank > 0 else ("+" if why == "" else "·"))

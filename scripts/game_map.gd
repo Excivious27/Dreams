@@ -326,6 +326,12 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				if GameState.has_tool("axe"):
 					hud.toast("Use the axe for that.")
 				return GameState.has_tool("axe")
+			var tb := GameState.tree_block(thing)
+			if tb != "":
+				player.play_tool("axe")
+				wobble(c, 0.02)
+				hud.toast(tb, Color(1, 0.85, 0.6))
+				return true
 			if not GameState.has_perk("foraging", "Keeper of the Woods") and not GameState.spend_for("axe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
@@ -363,6 +369,11 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				if GameState.has_tool("pickaxe"):
 					hud.toast("Use the pickaxe for that.")
 				return GameState.has_tool("pickaxe")
+			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
+			if ob != "":
+				player.play_tool("pickaxe")
+				hud.toast(ob, Color(1, 0.85, 0.6))
+				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
@@ -1207,8 +1218,9 @@ func _process(delta: float) -> void:
 		player_down("late")
 	elif int(GameState.run["energy"]) <= 0 and not _changing and not player.frozen:
 		player_down("tired")
-	# Mana trickles back: 1 point every 20 game minutes.
-	if t % 20 == 0 and t != _last_mana_t:
+	# Mana trickles back: 1 point every 20 game minutes (Attunement: 15, 10).
+	var regen_every := maxi(5, 20 - 5 * int(GameState.bonus("magic", "mana_regen")))
+	if t % regen_every == 0 and t != _last_mana_t:
 		_last_mana_t = t
 		GameState.restore_mana(1)
 	# Evening tint from 6pm, darkest by midnight.

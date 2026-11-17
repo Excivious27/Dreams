@@ -146,7 +146,7 @@ func after_ready() -> void:
 	if Art.has("props", "lantern_lit"):
 		for c: Vector2i in [Vector2i(13, 11), Vector2i(19, 11)]:
 			prop("props", "lantern_lit", c)
-	var n := 2 + (2 if int(GameState.run["time"]) > 18 * 60 else 0)
+	var n := GameState.enemy_count(2 + (2 if int(GameState.run["time"]) > 18 * 60 else 0))
 	for i in n:
 		var at := cell_center(Vector2i(randi_range(6, cols - 7), randi_range(12, rows - 8)))
 		if not blocked.has(world_to_cell(at)):

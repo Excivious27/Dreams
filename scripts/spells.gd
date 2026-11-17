@@ -12,7 +12,20 @@ const SPELLS := {
 	"growth": {"name": "Growth", "cost": 12, "desc": "The crop in front of you grows a day."},
 	"crystal_shield": {"name": "Crystal Shield", "cost": 15, "desc": "Absorb the next 3 hits."},
 	"warp_home": {"name": "Warp Home", "cost": 20, "desc": "Blink back to your bed."},
+	"radiance": {"name": "Radiance", "cost": 14, "desc": "A ring of light hits everything near you."},
+	"lull": {"name": "Lull", "cost": 12, "desc": "Enemies nearby fall asleep for a few seconds."},
+	"bloom": {"name": "Bloom", "cost": 25, "desc": "Every ripe crop on the farm goes to the sell box."},
+	"resonance": {"name": "Resonance", "cost": 18, "desc": "Charge the resonator; +1 ore from rocks today."},
+	"dreamwalk": {"name": "Dreamwalk", "cost": 30, "desc": "Step through the Dream to a region you know."},
 }
+
+
+static func cost_of(id: String) -> int:
+	return maxi(1, int(ceil(int(SPELLS[id]["cost"]) * (1.0 - GameState.bonus("magic", "spell_discount")))))
+
+
+static func power() -> float:
+	return 1.0 + GameState.bonus("magic", "spell_power")
 
 
 static func known() -> Array:
@@ -26,7 +39,7 @@ static func known() -> Array:
 static func can_cast(id: String) -> String:
 	if GameState.node_rank("magic", id) <= 0:
 		return "not learned"
-	if int(GameState.run.get("mana", 0)) < int(SPELLS[id]["cost"]):
+	if int(GameState.run.get("mana", 0)) < cost_of(id):
 		return "not enough mana"
 	return ""
 
@@ -46,16 +59,106 @@ static func cast(m: GameMap, id: String) -> bool:
 			if e == null:
 				m.hud.toast("Nothing to hit.", Color(1, 0.8, 0.6))
 				return false
-			var dmg := 3 + int(GameState.bonus("magic", "spark_damage")) - 1
+			var dmg := int((3 + int(GameState.bonus("magic", "spark_damage")) - 1) * power())
+			var pierce := int(GameState.bonus("magic", "spark_pierce"))
+			var burn := int(GameState.bonus("magic", "spark_burn"))
 			if GameState.has_perk("magic", "Moonbeam"):
 				for e2 in m.enemies:
 					if is_instance_valid(e2) and e2.position.distance_to(p.position) < 72.0:
 						e2.hit(dmg, p.position)
 						m.fx("sparkle", e2.position + Vector2(0, -8), 14.0, 0.6)
+			elif pierce > 0:
+				# Light Lance: everything along the line to the target and beyond it.
+				var dir := (e.position - p.position).normalized()
+				for e2 in m.enemies:
+					if not is_instance_valid(e2):
+						continue
+					var rel: Vector2 = e2.position - p.position
+					var along := rel.dot(dir)
+					if along > 0.0 and along < 72.0 + 32.0 * pierce and absf(rel.cross(dir)) < 14.0:
+						e2.hit(dmg, p.position)
+						if burn > 0:
+							e2.set_meta("burn", burn * 3)
+						m.fx("sparkle", e2.position + Vector2(0, -8), 14.0, 0.6)
 			else:
 				e.hit(dmg, p.position)
+				if burn > 0:
+					e.set_meta("burn", burn * 3)
 				m.fx("sparkle", e.position + Vector2(0, -8), 14.0, 0.6)
 			m.fx("sparkle", p.position + Vector2(0, -14), 14.0, 0.5)
+		"radiance":
+			var hit_any := false
+			var rdmg := int(4 * power())
+			for e2 in m.enemies:
+				if is_instance_valid(e2) and e2.position.distance_to(p.position) < 56.0:
+					e2.hit(rdmg, p.position)
+					hit_any = true
+			if GameState.bonus("magic", "sunder") > 0.0:
+				var pc := p.cell()
+				for dy in range(-2, 3):
+					for dx in range(-2, 3):
+						var c := pc + Vector2i(dx, dy)
+						var th: Dictionary = m.things.get(c, {})
+						if str(th.get("type", "")) in ["rock", "stump", "log", "weeds"] and GameState.ore_block(str(th.get("ore", "stone"))) == "":
+							th["hp"] = 0
+							m.interact_common(c, th)
+							hit_any = true
+			m.fx("pawring", p.position + Vector2(0, -6), 12.0, 0.8)
+			m.shake(3.0)
+			if not hit_any:
+				m.hud.toast("The light finds nothing.", Color(1, 0.8, 0.6))
+		"lull":
+			var n := 0
+			for e2 in m.enemies:
+				if is_instance_valid(e2) and e2.position.distance_to(p.position) < 80.0:
+					e2.set_meta("asleep_until", Time.get_ticks_msec() + (2000 if e2.max_hp >= 10 else 6000))
+					m.emote(e2, "sleep", 1.5)
+					n += 1
+			m.hud.toast("%d fall asleep." % n if n > 0 else "Nothing here to lull.", Color(0.85, 0.8, 1.0))
+			if n == 0:
+				return false
+		"bloom":
+			if m.scene_id() != "farm":
+				m.hud.toast("Bloom only works on your farm.", Color(1, 0.8, 0.6))
+				return false
+			var n := 0
+			for key in GameState.run["farm"].keys():
+				var tile: Dictionary = GameState.run["farm"][key]
+				var cid := str(tile.get("crop", ""))
+				if cid != "" and GameState.crops.has(cid) and int(tile.get("days", 0)) >= int(GameState.crops[cid]["days"]):
+					var yid := str(GameState.crops[cid]["yield"])
+					GameState.run["sellbox"][yid] = int(GameState.run["sellbox"].get(yid, 0)) + 1
+					if GameState.crops[cid].has("regrow"):
+						tile["days"] = int(GameState.crops[cid]["days"]) - int(GameState.crops[cid]["regrow"])
+					else:
+						tile["crop"] = ""
+						tile["days"] = 0
+					n += 1
+			m.hud.toast("Bloom: %d crops to the sell box." % n, Color(1, 0.9, 0.6))
+			m.queue_redraw()
+			if n == 0:
+				return false
+		"resonance":
+			GameState.run["flags"]["resonator_charge"] = 100
+			GameState.run["flags"]["ore_bonus_day"] = int(GameState.run["day"])
+			m.hud.toast("The ground hums. +1 ore from every rock today.", Color(0.8, 0.9, 1.0))
+		"dreamwalk":
+			var seen: Array = []
+			for k in GameState.run["flags"]:
+				if str(k).ends_with("_seen") and ResourceLoader.exists("res://scenes/%s.tscn" % str(k).trim_suffix("_seen")):
+					seen.append(str(k).trim_suffix("_seen"))
+			if seen.is_empty():
+				m.hud.toast("You haven't seen anywhere to walk to.", Color(1, 0.8, 0.6))
+				return false
+			var d := Dialogue.instance(m.get_tree())
+			var ch: Array = seen.map(func(x: String) -> String: return x.replace("_", " ").capitalize())
+			ch.append("Stay")
+			d.say([{"who": "", "text": "The Dream opens. Where?", "choice": ch, "key": ""}])
+			await d.finished
+			if d.last_choice < 0 or d.last_choice >= seen.size():
+				return false
+			m.fx("sparkle", p.position + Vector2(0, -14), 14.0, 0.8)
+			m.go_to(seen[d.last_choice], Vector2.ZERO)
 		"glow":
 			GameState.run["flags"]["glow_day"] = int(GameState.run["day"])
 			m.hud.toast("The dark pulls back.", Color(0.9, 0.95, 1.0))
@@ -91,7 +194,7 @@ static func cast(m: GameMap, id: String) -> bool:
 		_:
 			fired = false
 	if fired:
-		GameState.spend_mana(int(SPELLS[id]["cost"]))
+		GameState.spend_mana(cost_of(id))
 		m.xp("magic", 2 + int(SPELLS[id]["cost"]) / 5)
 		Music.instance(m.get_tree()).sfx("levelup")
 	return fired

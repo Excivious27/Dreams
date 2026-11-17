@@ -150,6 +150,41 @@ const TOOL_UPGRADE_NEED := [
 	{"moon_shard": 3, "crystal_refined": 3, "crystals": 40000},
 ]
 
+# ---- gathering tiers ---------------------------------------------------------
+# What a node needs before it gives anything. Tool tiers: 0 wood, 1 copper,
+# 2 iron, 3 steel, 4 silver, 5 gold, 6 crystal, 7 moon. Skill levels gate the
+# rare stuff a second time so a lucky upgrade alone doesn't skip the game.
+const ORE_TIER := {"stone": 0, "coal": 0, "copper": 0, "clay": 0, "iron": 1, "shard": 1, "silver": 2, "gold": 2, "ruby": 2, "fossil": 2, "crystal": 3, "mithril": 3, "amethyst": 3, "emerald": 3, "moon_shard": 4, "moon": 4}
+const ORE_SKILL := {"silver": 3, "gold": 4, "ruby": 4, "crystal": 5, "mithril": 6, "amethyst": 5, "emerald": 6, "moon_shard": 7}
+
+
+## "" when you can gather this, else the reason (already phrased for a toast).
+static func gather_block(tool: String, need_tier: int, skill: String, need_level: int, what: String) -> String:
+	if tool_tier(tool) < need_tier:
+		return "%s is too hard for your %s. Gideon upgrades tools (%s)." % [what.capitalize(), item_name(tool).to_lower(), TOOL_TIERS[need_tier]]
+	if need_level > 0 and skill_level(skill) < need_level:
+		return "%s needs %s level %d (you're %d)." % [what.capitalize(), skill.capitalize(), need_level, skill_level(skill)]
+	return ""
+
+
+static func ore_block(ore: String) -> String:
+	return gather_block("pickaxe", int(ORE_TIER.get(ore, 0)), "mining", int(ORE_SKILL.get(ore, 0)), ore.replace("_", " "))
+
+
+## Trees: saplings/logs free; grown trees copper; big old trees iron + foraging 3;
+## crystal and moon trees further still.
+static func tree_block(thing: Dictionary) -> String:
+	var hp := int(thing.get("hp", 3))
+	var kind := str(thing.get("wood", "wood"))
+	if kind == "crystal_wood":
+		return gather_block("axe", 3, "foraging", 5, "the crystal tree")
+	if kind == "hardwood" or hp >= 6:
+		return gather_block("axe", 2, "foraging", 3, "this old tree")
+	if hp >= 4 and str(thing.get("type", "")) == "tree":
+		return gather_block("axe", 1, "foraging", 0, "this tree")
+	return ""
+
+
 static func tool_tier(kind: String) -> int:
 	var k := kind
 	if kind == "iron_sword":
@@ -213,6 +248,67 @@ static func upgrade_tool(kind: String) -> bool:
 
 static func item_value(id: String) -> int:
 	return int(items.get(id, {}).get("value", 0))
+
+
+# ---- economy -----------------------------------------------------------------
+# Selling: base value × season demand (crops sell for more out of their season,
+# fish/forage for more in winter) × today's saturation (every 20 of one thing
+# sold in a day knocks 8% off the rest) × bartering/friend bonuses. Buying:
+# 1.5× value with discounts, and tiered goods cost more until you've earned them.
+
+const DEMAND_OUT_OF_SEASON := 1.35
+
+
+static func demand(id: String) -> float:
+	var it: Dictionary = items.get(id, {})
+	var t := str(it.get("type", ""))
+	var se := season()
+	var m := 1.0
+	for cid in crops:
+		if str(crops[cid].get("yield", "")) == id:
+			var cs := str(crops[cid].get("season", "any"))
+			if cs != "any" and cs != se:
+				m *= DEMAND_OUT_OF_SEASON
+			break
+	if t in ["fish", "forage"] and se == "winter":
+		m *= 1.2
+	if t == "forage" and se == "spring":
+		m *= 0.9
+	# Festival week: the town buys everything a little dearer.
+	if absi(day_of_season() - FESTIVAL_DAY) <= 1:
+		m *= 1.1
+	return m
+
+
+static func saturation(id: String, n_more := 0) -> float:
+	var sold: Dictionary = run.get("sold_today", {})
+	var already := int(sold.get(id, 0)) + n_more
+	return maxf(0.5, 1.0 - 0.08 * (already / 20))
+
+
+static func sell_price(id: String, n := 1) -> int:
+	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1))
+	var total := 0.0
+	for i in n:
+		total += unit * saturation(id, i)
+	return int(round(total))
+
+
+static func buy_price(id: String) -> int:
+	var base := item_value(id)
+	var it: Dictionary = items.get(id, {})
+	var tier := int(it.get("tier", 1))
+	var m := 1.5 * buy_multiplier()
+	# Goods above your progress cost extra: the shops know what you can afford to break.
+	if tier > progress_tier() + 1:
+		m *= 1.0 + 0.25 * (tier - progress_tier() - 1)
+	if str(it.get("type", "")) == "seed":
+		for cid in crops:
+			if str(crops[cid].get("yield", "")) + "_seed" == id or cid + "_seed" == id:
+				var cs := str(crops[cid].get("season", "any"))
+				if cs != "any" and cs != season():
+					m *= 0.7  # off-season seed is cheap, and a gamble
+	return maxi(1, int(ceil(base * m)))
 
 
 static func count(id: String) -> int:
@@ -824,6 +920,24 @@ static func board_restore() -> void:
 
 
 ## Rough "how far along" number 0..4 that scales board jobs, enemies, prices.
+## Regional forage/ore respawn: a node cleared on day D comes back after its
+## respawn time (days) — common forage 1 day, ore 3, rare nodes 5+, scaled by
+## the foraging/mining "regrowth" bonuses.
+static func respawned(key: String, respawn_days: int) -> bool:
+	var cleared := int(run["flags"].get(key, 0))
+	if cleared <= 0:
+		return true
+	var wait := maxi(1, respawn_days - int(bonus("foraging", "regrowth")))
+	return int(run["day"]) >= cleared + wait
+
+
+## How many of a map's enemies actually show up: half early on, full once the
+## meadow is cleared, more once you're deep in the story.
+static func enemy_count(base: int) -> int:
+	var scale := 0.5 + 0.25 * progress_tier()
+	return maxi(1 if base > 0 else 0, int(round(base * minf(1.5, scale))))
+
+
 static func progress_tier() -> int:
 	var t := 0
 	if quest_done("clear_meadow"):
@@ -1077,15 +1191,16 @@ static func sleep(passed_out := false) -> Dictionary:
 	if bonus("bartering", "interest") > 0.0:
 		run["crystals"] = int(run["crystals"] * (1.0 + bonus("bartering", "interest")))
 	var total := 0
+	run["sold_today"] = {}
 	for id in run["sellbox"].keys():
 		var n: int = int(run["sellbox"][id])
-		var v := int(round(item_value(id) * n * sell_multiplier()))
+		var v := sell_price(id, n)
+		run["sold_today"][id] = n
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
 	if total > 0:
-		var lv_bonus := 1.0 + 0.05 * (skill_level("bartering") - 1)
-		total = int(total * lv_bonus)
 		add_xp("bartering", total / 4)
+	run["sold_today"] = {}
 	run["crystals"] = int(run["crystals"]) + total
 	report["earned"] = total
 	run["sellbox"] = {}
@@ -1101,7 +1216,27 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["days"] = 0
 				continue
 			if tile.get("watered", false) or is_wet() or hazel_waters:
-				tile["days"] = int(tile.get("days", 0)) + 1
+				# Growth: in its season a crop grows a full day; out of season half
+				# a day (it struggles); winter kills anything that isn't a winter crop
+				# unless it's in the greenhouse. Fertiliser and the farming tree speed it.
+				var cd: Dictionary = crops.get(str(tile["crop"]), {})
+				var cs := str(cd.get("season", "any"))
+				var se := season()
+				var rate := 1.0
+				if cs != "any" and cs != se:
+					rate = 0.5
+				if se == "winter" and cs != "winter" and cs != "any" and not run.get("builds", {}).has("greenhouse"):
+					tile["crop"] = ""
+					tile["days"] = 0
+					report["grown"] -= 1
+					continue
+				rate += bonus("farming", "growth")
+				if bool(tile.get("fert", false)):
+					rate += 0.5
+				tile["acc"] = float(tile.get("acc", 0.0)) + rate
+				while float(tile["acc"]) >= 1.0:
+					tile["acc"] = float(tile["acc"]) - 1.0
+					tile["days"] = int(tile.get("days", 0)) + 1
 				report["grown"] += 1
 			tile["watered"] = false
 		else:

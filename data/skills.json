@@ -1005,28 +1005,66 @@
    ]
   },
   "magic": {
-   "name": "Magic",
-   "desc": "The Light Crystal's gift. Mana comes with practice.",
+   "name": "Sorcery",
+   "desc": "The Light Crystal's gift. Three paths: Light (what you fight), Dream (what you tend), Crystal (what you dig). Cast spells to learn; every path meets at the Awakening.",
    "nodes": [
     {
      "id": "spark",
      "name": "Spark",
-     "desc": "Cast Spark: a bolt of light (3 dmg +1 per rank)",
+     "desc": "Cast Spark: a bolt of light (3 dmg, +1 per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
       "spark_damage": 1
-     }
+     },
+     "branch": "light"
     },
     {
      "id": "deep_well",
      "name": "Deep Well",
-     "desc": "+10 max mana (per rank)",
+     "desc": "+10 max mana per rank",
      "ranks": 3,
      "tier": 0,
      "effect": {
       "mana": 10
-     }
+     },
+     "branch": "core"
+    },
+    {
+     "id": "attune",
+     "name": "Attunement",
+     "desc": "Mana trickles back 1 faster per rank (every 20 \u2192 15 \u2192 10 min)",
+     "ranks": 2,
+     "tier": 0,
+     "effect": {
+      "mana_regen": 1
+     },
+     "branch": "core"
+    },
+    {
+     "id": "glow",
+     "name": "Glow",
+     "desc": "Cast Glow: light the night and the mine until you sleep",
+     "ranks": 1,
+     "tier": 1,
+     "requires": [
+      "spark"
+     ],
+     "branch": "light"
+    },
+    {
+     "id": "lance",
+     "name": "Light Lance",
+     "desc": "Spark pierces: hits every enemy in a line, +2 range per rank",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "spark"
+     ],
+     "effect": {
+      "spark_pierce": 1
+     },
+     "branch": "light"
     },
     {
      "id": "rain_call",
@@ -1036,106 +1074,263 @@
      "tier": 1,
      "requires": [
       "deep_well"
-     ]
-    },
-    {
-     "id": "glow",
-     "name": "Glow",
-     "desc": "Cast Glow: light the mine and the night",
-     "ranks": 1,
-     "tier": 1,
-     "requires": [
-      "spark"
-     ]
+     ],
+     "branch": "dream"
     },
     {
      "id": "haste",
      "name": "Haste",
-     "desc": "Cast Haste: run 30% faster for a minute",
+     "desc": "Cast Haste: run 30% faster for a game hour",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "deep_well"
-     ]
+     ],
+     "branch": "dream"
     },
     {
-     "id": "growth",
-     "name": "Growth",
-     "desc": "Cast Growth: one crop grows a day",
+     "id": "sense",
+     "name": "Crystal Sense",
+     "desc": "Ore and crystals glimmer through rock within 6 cells",
      "ranks": 1,
-     "tier": 2,
+     "tier": 1,
      "requires": [
-      "rain_call"
-     ]
+      "attune"
+     ],
+     "effect": {
+      "ore_sense": 1
+     },
+     "branch": "crystal"
+    },
+    {
+     "id": "shard_skin",
+     "name": "Shard Skin",
+     "desc": "-1 damage from every hit per rank (never below 1)",
+     "ranks": 2,
+     "tier": 1,
+     "requires": [
+      "attune"
+     ],
+     "effect": {
+      "damage_reduction": 0.08
+     },
+     "branch": "crystal"
     },
     {
      "id": "ember",
      "name": "Ember",
-     "desc": "Spark sets grass alight and cooks fish on the spot",
+     "desc": "Spark burns: +1 damage a second for 3 s per rank",
+     "ranks": 2,
+     "tier": 2,
+     "requires": [
+      "lance",
+      "glow"
+     ],
+     "effect": {
+      "spark_burn": 1
+     },
+     "branch": "light"
+    },
+    {
+     "id": "radiance",
+     "name": "Radiance",
+     "desc": "Cast Radiance: a ring of light that hits everything near you",
      "ranks": 1,
      "tier": 2,
      "requires": [
-      "spark"
-     ]
+      "lance"
+     ],
+     "branch": "light"
+    },
+    {
+     "id": "growth",
+     "name": "Growth",
+     "desc": "Cast Growth: the crop in front of you grows a day",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "rain_call"
+     ],
+     "branch": "dream"
+    },
+    {
+     "id": "lull",
+     "name": "Lull",
+     "desc": "Cast Lull: every enemy nearby sleeps for 6 s (bosses: 2 s)",
+     "ranks": 1,
+     "tier": 2,
+     "requires": [
+      "haste"
+     ],
+     "branch": "dream"
     },
     {
      "id": "mana_flow",
      "name": "Mana Flow",
-     "desc": "Mana regenerates twice as fast (per rank)",
-     "ranks": 2,
+     "desc": "Spells cost 10% less per rank",
+     "ranks": 3,
      "tier": 2,
      "requires": [
-      "haste"
+      "sense",
+      "shard_skin"
      ],
      "effect": {
-      "mana_regen": 1
-     }
-    },
-    {
-     "id": "warp_home",
-     "name": "Warp Home",
-     "desc": "Cast Warp Home from anywhere",
-     "ranks": 1,
-     "tier": 3,
-     "requires": [
-      "haste"
-     ]
+      "spell_discount": 0.1
+     },
+     "branch": "crystal"
     },
     {
      "id": "crystal_shield",
      "name": "Crystal Shield",
-     "desc": "Cast Shield: absorb the next 3 hits",
+     "desc": "Cast Crystal Shield: absorb the next 3 hits",
      "ranks": 1,
-     "tier": 3,
+     "tier": 2,
      "requires": [
-      "growth"
-     ]
+      "shard_skin"
+     ],
+     "branch": "crystal"
     },
     {
      "id": "moonbeam",
      "name": "Moonbeam",
-     "desc": "Spark becomes a sweeping beam",
+     "desc": "Spark falls on every enemy in range at once",
      "ranks": 1,
      "tier": 3,
      "requires": [
-      "ember"
-     ]
+      "ember",
+      "radiance"
+     ],
+     "branch": "light"
+    },
+    {
+     "id": "sunder",
+     "name": "Sunder",
+     "desc": "Radiance also breaks rocks and stumps round you (needs the tool tier)",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "radiance"
+     ],
+     "effect": {
+      "sunder": 1
+     },
+     "branch": "light"
+    },
+    {
+     "id": "warp_home",
+     "name": "Warp Home",
+     "desc": "Cast Warp Home: blink back to your bed",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "growth",
+      "lull"
+     ],
+     "branch": "dream"
+    },
+    {
+     "id": "bloom",
+     "name": "Bloom",
+     "desc": "Cast Bloom: every ripe crop on the farm is harvested into the sell box",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "growth"
+     ],
+     "branch": "dream"
+    },
+    {
+     "id": "resonance",
+     "name": "Resonance",
+     "desc": "Cast Resonance: the crystal resonator charges fully; ore drops +1 for a day",
+     "ranks": 1,
+     "tier": 3,
+     "requires": [
+      "crystal_shield",
+      "mana_flow"
+     ],
+     "branch": "crystal"
+    },
+    {
+     "id": "gem_eye",
+     "name": "Gem Eye",
+     "desc": "Gems drop twice as often from rocks per rank",
+     "ranks": 2,
+     "tier": 3,
+     "requires": [
+      "mana_flow"
+     ],
+     "effect": {
+      "gem_chance": 0.5
+     },
+     "branch": "crystal"
     },
     {
      "id": "light_bearer",
      "name": "Light Bearer",
-     "desc": "The Light Crystal fights beside you; +50 mana",
+     "desc": "Every spell +50% effect; Glow lasts through sleep; the Light Crystal speaks to you",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "moonbeam",
+      "sunder"
+     ],
+     "effect": {
+      "spell_power": 0.5
+     },
+     "branch": "light"
+    },
+    {
+     "id": "dreamwalk",
+     "name": "Dreamwalk",
+     "desc": "Cast Dreamwalk: step through the Dream to any region you've visited",
      "ranks": 1,
      "tier": 4,
      "requires": [
       "warp_home",
-      "moonbeam"
+      "bloom"
+     ],
+     "branch": "dream"
+    },
+    {
+     "id": "crystal_heart",
+     "name": "Crystal Heart",
+     "desc": "+30 max mana, +10 max health; mana refills on sleep even after passing out",
+     "ranks": 1,
+     "tier": 4,
+     "requires": [
+      "resonance",
+      "gem_eye"
      ],
      "effect": {
-      "mana": 50
-     }
+      "mana": 30,
+      "hp": 10
+     },
+     "branch": "crystal"
+    },
+    {
+     "id": "awakening",
+     "name": "Awakening",
+     "desc": "Mana never drops below 10; the Dark Crystal's pull can't move you",
+     "ranks": 1,
+     "tier": 5,
+     "requires": [
+      "light_bearer",
+      "dreamwalk",
+      "crystal_heart"
+     ],
+     "effect": {
+      "awakened": 1
+     },
+     "branch": "core"
     }
-   ]
+   ],
+   "branches": {
+    "light": "Light",
+    "dream": "Dream",
+    "crystal": "Crystal",
+    "core": "The Gift"
+   }
   }
  }
 }
