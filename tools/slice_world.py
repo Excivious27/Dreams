@@ -2771,6 +2771,148 @@ def w164(): _edge_set("w164_edge_orchard.png", "track")
 def w165(): _edge_set("w165_edge_highlands.png", "snowpatch")
 def w166(): _edge_set("w166_edge_ruins.png", "ruinfloor")
 def w167(): _edge_set("w167_edge_river.png", "river")
+# Prompts 10 batch 2: clean path sets (smooth rims) replace the scalloped path_* sets.
+
+
+def _edge_set_cc(file, setname):
+    """Like _edge_set but finds each tile as its own blob (the generator rarely
+    honours the 40 px grid). Tiles narrower than 60% of the row's median width
+    are padded, not stretched, so 'left/right' strips stay the right shape."""
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.02, 20) if r[1] - r[0] >= 24][:4]
+    counts = {}
+    def put(role, im):
+        i = counts.get(role, 0); counts[role] = i + 1
+        save(im, "tiles", "%s_%s_%d" % (setname, role, i))
+    for ri, (y0, y1) in enumerate(rows):
+        boxes = _components(rgba, (0, max(0, y0 - 2), rgba.shape[1], min(rgba.shape[0], y1 + 2)), dilate=1, min_px=40)
+        boxes.sort(key=lambda b: b[0])
+        if ri < 3:
+            # merge boxes that overlap horizontally (a tile split by a gap in its art)
+            merged = []
+            for b in boxes:
+                if merged and b[0] < merged[-1][2] - 4:
+                    m0 = merged[-1]; merged[-1] = (min(m0[0], b[0]), min(m0[1], b[1]), max(m0[2], b[2]), max(m0[3], b[3]))
+                else:
+                    merged.append(tuple(b))
+            boxes = merged
+        ws = sorted(b[2] - b[0] for b in boxes)
+        med = ws[len(ws) // 2] if ws else 32
+        for ci, b in enumerate(boxes):
+            if ri < 3 and (b[2] - b[0]) < med * 0.6:
+                # narrow strip: pad to a square on the tile's own fill colour side
+                sub = crop(rgba, b)
+                pad = Image.new("RGBA", (med, sub.height), (0, 0, 0, 0))
+                pad.alpha_composite(sub, (0, 0))
+                im = scale_to(pad, width=TILE2, height=TILE2, cover=True)
+            else:
+                im = scale_to(crop(rgba, b), width=TILE2, height=TILE2, cover=(ri < 3))
+            if ri == 0 and ci < len(ROW0):
+                put(ROW0[ci], im)
+            elif ri == 1 and ci < len(ROW1):
+                put(ROW1[ci], im)
+            elif ri == 2:
+                put("fill", im)
+            elif ri == 3:
+                put("deco", im)
+    print("  ", setname, {k: v for k, v in counts.items()})
+
+
+
+def _edge_set_runs(file, setname, tile_w=64):
+    """For sheets where tiles touch (no magenta gutter): split each row into
+    foreground runs, then cut every run into tile_w-wide tiles."""
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.02, 20) if r[1] - r[0] >= 24][:4]
+    counts = {}
+    def put(role, im):
+        i = counts.get(role, 0); counts[role] = i + 1
+        save(im, "tiles", "%s_%s_%d" % (setname, role, i))
+    for ri, (y0, y1) in enumerate(rows):
+        prof = a[y0:y1].mean(0) > 0.05
+        runs = []; st = None
+        for i, v in enumerate(list(prof) + [False]):
+            if v and st is None: st = i
+            elif not v and st is not None: runs.append((st, i)); st = None
+        tiles = []
+        if ri == 3:
+            tiles = [(x0, x1) for x0, x1 in runs if x1 - x0 >= 8]
+        else:
+            for x0, x1 in runs:
+                n = max(1, int(round((x1 - x0) / tile_w)))
+                w = (x1 - x0) / n
+                for k in range(n):
+                    tiles.append((int(x0 + k * w), int(x0 + (k + 1) * w)))
+        for ci, (tx0, tx1) in enumerate(tiles):
+            bb = region_bbox(rgba, (tx0, y0, tx1, y1))
+            if bb is None:
+                continue
+            if ri < 3:
+                im = scale_to(crop(rgba, (tx0, y0, tx1, y1)), width=TILE2, height=TILE2, cover=True)
+            else:
+                im = scale_to(crop(rgba, bb), width=TILE2, height=TILE2, cover=False)
+            if ri == 0 and ci < len(ROW0):
+                put(ROW0[ci], im)
+            elif ri == 1 and ci < len(ROW1):
+                put(ROW1[ci], im)
+            elif ri == 2:
+                put("fill", im)
+            elif ri == 3:
+                put("deco", im)
+    print("  ", setname, {k: v for k, v in counts.items()})
+
+def w186():
+    """The dirt sheet's edge rows came back fused and mis-ordered; only its fills
+    and decals are usable. Edge roles are taken from the sand set with the sand
+    hue shifted to the dirt fill colour (grass rims stay as they are)."""
+    import numpy as np
+    _edge_set_runs("w186_path_dirt.png", "path2_dirt", 62)
+    m = S.manifest["tiles"]
+    # drop the bad edge roles
+    for k in list(m.keys()):
+        if k.startswith("path2_dirt_") and not (k.startswith("path2_dirt_fill_") or k.startswith("path2_dirt_deco_")):
+            try: os.remove(os.path.join(S.OUT, m[k]["file"]))
+            except OSError: pass
+            del m[k]
+    if "path2_sand_top_0" not in m:
+        return
+    # dirt reference colour = mean of the dirt fills
+    fills = [k for k in m if k.startswith("path2_dirt_fill_")]
+    arr = np.concatenate([np.array(Image.open(os.path.join(S.OUT, m[k]["file"])).convert("RGB")).reshape(-1, 3) for k in fills[:8]])
+    dirt = arr.mean(0)
+    sarr = np.array(Image.open(os.path.join(S.OUT, m["path2_sand_fill_0"]["file"])).convert("RGB")).reshape(-1, 3)
+    sand = sarr.mean(0)
+    for k in list(m.keys()):
+        if not k.startswith("path2_sand_") or k.startswith("path2_sand_fill_") or k.startswith("path2_sand_deco_"):
+            continue
+        im = Image.open(os.path.join(S.OUT, m[k]["file"])).convert("RGBA")
+        a_ = np.array(im).astype(np.float32)
+        rgb = a_[..., :3]
+        # sand pixels: light, low saturation, warm. Shift those toward dirt; leave green.
+        r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
+        is_sand = (r > 150) & (g > 120) & (b > 70) & (g < r) & (b < g + 10) & ((r - b) < 110)
+        shade = (r + g + b) / 3.0 / max(1.0, sand.mean())  # keep the tile's own shading
+        shifted = np.clip(dirt[None, None, :] * shade[..., None], 0, 255)
+        a_[..., :3] = np.where(is_sand[..., None], shifted, rgb)
+        Image.fromarray(a_.astype(np.uint8), "RGBA").save(os.path.join(S.OUT, "tiles", k.replace("path2_sand_", "path2_dirt_") + ".png"))
+        m[k.replace("path2_sand_", "path2_dirt_")] = {"file": "tiles/" + k.replace("path2_sand_", "path2_dirt_") + ".png", "w": im.width, "h": im.height}
+
+def w187(): _edge_set("w187_path_sand.png", "path2_sand")
+def w188(): _edge_set("w188_path_cobble.png", "path2_cobble")
+
+def w184():
+    # Portrait key art (not keyed: no magenta) + the two wordmarks on magenta.
+    im = Image.open(os.path.join(S.INC, "w184_title_portrait.png")).convert("RGBA")
+    save(im, "ui", "title_portrait")
+    rgba = load("w185_wordmark.png")
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 20) if r[1] - r[0] >= 40][:2]
+    for (y0, y1), nm in zip(rows, ["wordmark_glow", "wordmark_small"]):
+        bb = region_bbox(rgba, (0, y0, rgba.shape[1], y1))
+        save(crop(rgba, bb), "ui", nm)
+
 
 
 # ---- Prompts-09 batches 4-5: interiors, festivals, animals, pets, stations, crops
@@ -3201,6 +3343,10 @@ def w_demagenta():
         a = np.array(im).astype(np.int16)
         r, g, b, al = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
         bad = (al > 0) & (r > 120) & (b > 110) & (g < 110) & (r - g > 50) & (b - g > 40)
+        # Alpha bleed: fully transparent pixels keep the key colour in RGB, and
+        # linear filtering smears it into the edges as a pink fringe. Give them
+        # the colour of the nearest opaque pixel instead.
+        bad = bad | (al < 40)
         if not bad.any():
             continue
         n += 1
@@ -3338,11 +3484,172 @@ def w_petfix():
     print("petfix groups:", n)
 
 
+# ---- Prompts 10 batch 3: penguin hero ----------------------------------------
+PENG_H = 64  # matches characters/penguin idle cell height
+
+def _peng_rows(file, nrows):
+    rgba = load(file)
+    a = rgba[..., 3] > 40
+    rows = [r for r in _grid_runs(a.mean(1), 0.01, 16) if r[1] - r[0] >= 40][:nrows]
+    return rgba, rows
+
+def _peng_cells(rgba, y0, y1, ncols=16):
+    """Cells by connected components in a row, merged when they overlap in x."""
+    boxes = _components(rgba, (0, max(0, y0 - 4), rgba.shape[1], min(rgba.shape[0], y1 + 4)), dilate=3, min_px=60)
+    boxes.sort(key=lambda b: b[0])
+    merged = []
+    for b in boxes:
+        if merged and b[0] < merged[-1][2] - 6:
+            m0 = merged[-1]; merged[-1] = (min(m0[0], b[0]), min(m0[1], b[1]), max(m0[2], b[2]), max(m0[3], b[3]))
+        else:
+            merged.append(tuple(b))
+    return merged
+
+def _peng_strip(rgba, cells, group, name, h=PENG_H):
+    fr = [scale_to(crop(rgba, b), height=h) for b in cells]
+    if fr:
+        strip(fr, group, name)
+
+def w189():
+    rgba, rows = _peng_rows("w189_penguin_actions.png", 8)
+    G = "characters/penguin"
+    r = [_peng_cells(rgba, y0, y1) for (y0, y1) in rows]
+    _peng_strip(rgba, r[0][0:4], G, "attack_down")
+    _peng_strip(rgba, r[1][0:4], G, "attack_up")
+    _peng_strip(rgba, r[2][0:4], G, "attack")   # side (right)
+    _peng_strip(rgba, r[2][4:6], G, "hurt")
+    _peng_strip(rgba, r[2][6:8], G, "faint")
+    for row, tool in [(3, "hoe"), (4, "water"), (5, "axe"), (6, "pickaxe")]:
+        c = r[row]
+        _peng_strip(rgba, c[0:4], G, tool + "_down")
+        _peng_strip(rgba, c[4:8], G, tool + "_right")
+        _peng_strip(rgba, c[8:12], G, tool + "_up")
+    c = r[7]
+    _peng_strip(rgba, c[0:4], G, "cast_right")
+    _peng_strip(rgba, c[4:8], G, "reel_right")
+    _peng_strip(rgba, c[8:10], G, "hold_down")
+    _peng_strip(rgba, c[10:12], G, "eat_down")
+    _peng_strip(rgba, c[12:13], G, "sit")
+    _peng_strip(rgba, c[13:14], G, "sleep")
+    _peng_strip(rgba, c[14:16], G, "wave")
+
+def w190():
+    rgba, rows = _peng_rows("w190_penguin_life.png", 8)
+    for base, G in [(0, "characters/penguin"), (4, "characters/penguin_ceremony")]:
+        r = [_peng_cells(rgba, y0, y1) for (y0, y1) in rows[base:base + 4]]
+        c = r[0]
+        _peng_strip(rgba, c[0:4], G, "swim")
+        _peng_strip(rgba, c[4:8], G, "swim_down")
+        _peng_strip(rgba, c[8:12], G, "swim_up")
+        _peng_strip(rgba, c[12:14], G, "float")
+        _peng_strip(rgba, c[14:16], G, "dive")
+        c = r[1]
+        _peng_strip(rgba, c[0:4], G, "ride", 96)
+        _peng_strip(rgba, c[4:6], G, "ride_run", 96)
+        _peng_strip(rgba, c[6:8], G, "ride_down", 96)
+        _peng_strip(rgba, c[8:10], G, "ride_up", 96)
+        c = r[2]
+        _peng_strip(rgba, c[0:2], G, "carry")
+        _peng_strip(rgba, c[2:4], G, "pet")
+        _peng_strip(rgba, c[4:8], G, "dance")
+        _peng_strip(rgba, c[8:10], G, "laugh")
+        _peng_strip(rgba, c[10:12], G, "umbrella")
+        _peng_strip(rgba, c[12:14], G, "shiver")
+        _peng_strip(rgba, c[14:16], G, "cheer")
+        c = r[3]
+        _peng_strip(rgba, c[0:8], G, "powerup", 76)
+        _peng_strip(rgba, c[8:10], G, "cast_down")
+        _peng_strip(rgba, c[10:12], G, "cast_side")
+        _peng_strip(rgba, c[12:14], G, "cast_up")
+        _peng_strip(rgba, c[14:16], G, "wings")
+
+def w191():
+    rgba, rows = _peng_rows("w191_penguin_wear.png", 7)
+    G = "characters/penguin_wear"
+    r = [_peng_cells(rgba, y0, y1) for (y0, y1) in rows]
+    # rows 0-1: scarves (front/side/back ×3 per colour, 3 colours per row)
+    scarves = ["red", "blue", "green", "yellow", "purple", "white"]
+    for i, col in enumerate(scarves):
+        row = r[i // 3]; k = (i % 3) * 3
+        for j, view in enumerate(["front", "side", "back"]):
+            if k + j < len(row):
+                save(scale_to(crop(rgba, row[k + j]), height=PENG_H), G, "scarf_%s_%s" % (col, view))
+    hats = ["straw", "beanie", "tophat", "wizard", "flower_crown", "miner", "sailor", "crown", "pumpkin", "santa", "bucket", "visor"]
+    for i, hat in enumerate(hats):
+        row = r[2 + i // 4]; k = (i % 4) * 3
+        for j, view in enumerate(["front", "side", "back"]):
+            if k + j < len(row):
+                save(scale_to(crop(rgba, row[k + j]), height=PENG_H), G, "hat_%s_%s" % (hat, view))
+    row = r[5]
+    extras = ["goggles_a", "goggles_b", "bowtie_red", "bowtie_blue", "bowtie_yellow", "pack_small", "pack_big"]
+    for i, nm in enumerate(extras):
+        k = i * 3
+        for j, view in enumerate(["front", "side", "back"]):
+            if k + j < len(row):
+                save(scale_to(crop(rgba, row[k + j]), height=PENG_H), G, "%s_%s" % (nm, view))
+    row = r[6]
+    for i, nm in enumerate(["classic", "snow", "midnight", "sunset", "mint", "rose"]):
+        if i < len(row):
+            save(scale_to(crop(rgba, row[i]), height=PENG_H), G, "swatch_" + nm)
+
+
+# ---- Prompts 10 batch 4: pup fight poses + gear -------------------------------
+PUP_FIGHT_ROWS = ["dog", "dog_brown", "dog_corgi", "dog_shepherd", "dog_hound", "dog_white", "dog_golden", "dog_collie"]
+PUP_FIGHT_B_ROWS = ["dog_husky", "cat_orange", "cat_grey", "cat_calico", "dog", "dog_brown", "dog_corgi", "dog_shepherd"]
+
+def _pup_group(nm):
+    return ("characters/" + nm) if nm == "dog" else ("animals/" + nm)
+
+def _pup_strips(rgba, cells, G, layout, h):
+    for anim, (i0, i1) in layout.items():
+        fr = [scale_to(crop(rgba, b), height=h) for b in cells[i0:i1]]
+        if fr:
+            strip(fr, G, anim)
+
+def w192():
+    rgba, rows = _peng_rows("w192_pup_fight.png", 8)
+    for nm, (y0, y1) in zip(PUP_FIGHT_ROWS, rows):
+        cells = _peng_cells(rgba, y0, y1)
+        G = _pup_group(nm)
+        h = 40 if nm == "dog" else 50
+        _pup_strips(rgba, cells, G, {"bite": (0, 4), "bark2": (4, 6), "hurt": (6, 8), "limp": (8, 12), "guard": (12, 14), "howl": (14, 16)}, h)
+
+def w193():
+    rgba, rows = _peng_rows("w193_pup_fight_b.png", 8)
+    for i, (nm, (y0, y1)) in enumerate(zip(PUP_FIGHT_B_ROWS, rows)):
+        cells = _peng_cells(rgba, y0, y1)
+        G = _pup_group(nm)
+        h = 40 if nm == "dog" else 50
+        if i < 4:
+            _pup_strips(rgba, cells, G, {"bite": (0, 4), "bark2": (4, 6), "hurt": (6, 8), "limp": (8, 12), "guard": (12, 14), "howl": (14, 16)}, h)
+        else:
+            _pup_strips(rgba, cells, G, {"dig": (0, 6), "fetch": (6, 10), "beg": (10, 12), "sleep": (12, 14), "roll": (14, 16)}, h)
+
+def w194():
+    rgba, rows = _peng_rows("w194_pup_gear.png", 6)
+    G = "animals/pet_gear"
+    gear = ["collar_leather", "collar_iron", "collar_crystal", "pack_small", "pack_large", "pack_trail", "boots", "bandana", "charm"]
+    for ri, who in [(0, "dog"), (2, "cat")]:
+        r0 = _peng_cells(rgba, rows[ri][0], rows[ri][1]); r1 = _peng_cells(rgba, rows[ri + 1][0], rows[ri + 1][1])
+        cells = r0 + r1
+        for gi, g in enumerate(gear):
+            for vi, view in enumerate(["side", "front", "back"]):
+                k = gi * 3 + vi
+                if k < len(cells):
+                    save(scale_to(crop(rgba, cells[k]), height=50), G, "%s_%s_%s" % (who, g, view))
+    icons = _peng_cells(rgba, rows[4][0], rows[4][1])
+    for nm, b in zip(["pup_collar_leather", "pup_collar_iron", "pup_collar_crystal", "pup_pack_small", "pup_pack_large", "pup_pack_trail", "pup_boots", "pup_bandana", "pup_charm", "pup_treat"], icons):
+        save(scale_to(crop(rgba, b), width=32, height=32), "items", nm)
+    cmds = _peng_cells(rgba, rows[5][0], rows[5][1])
+    for nm, b in zip(["cmd_heel", "cmd_attack", "cmd_guard", "cmd_stay", "cmd_recall", "cmd_pack", "tab_pup"], cmds):
+        save(scale_to(crop(rgba, b), width=48, height=48), "ui", nm)
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

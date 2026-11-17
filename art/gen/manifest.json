@@ -132,175 +132,279 @@
  "animals/cat_calico": {
   "bark": {
    "cell_h": 88,
-   "cell_w": 100,
+   "cell_w": 108,
    "file": "animals/cat_calico/bark.png",
    "frames": 2,
    "h": 88,
-   "w": 200
+   "w": 216
+  },
+  "bark2": {
+   "cell_h": 88,
+   "cell_w": 108,
+   "file": "animals/cat_calico/bark2.png",
+   "frames": 2,
+   "h": 88,
+   "w": 216
+  },
+  "bite": {
+   "cell_h": 88,
+   "cell_w": 108,
+   "file": "animals/cat_calico/bite.png",
+   "frames": 4,
+   "h": 88,
+   "w": 432
+  },
+  "guard": {
+   "cell_h": 88,
+   "cell_w": 108,
+   "file": "animals/cat_calico/guard.png",
+   "frames": 2,
+   "h": 88,
+   "w": 216
+  },
+  "hurt": {
+   "cell_h": 88,
+   "cell_w": 108,
+   "file": "animals/cat_calico/hurt.png",
+   "frames": 2,
+   "h": 88,
+   "w": 216
   },
   "idle": {
    "cell_h": 88,
-   "cell_w": 100,
+   "cell_w": 108,
    "file": "animals/cat_calico/idle.png",
    "frames": 2,
    "h": 88,
-   "w": 200
+   "w": 216
+  },
+  "limp": {
+   "cell_h": 88,
+   "cell_w": 108,
+   "file": "animals/cat_calico/limp.png",
+   "frames": 4,
+   "h": 88,
+   "w": 432
   },
   "play": {
    "cell_h": 88,
-   "cell_w": 100,
+   "cell_w": 108,
    "file": "animals/cat_calico/play.png",
    "frames": 2,
    "h": 88,
-   "w": 200
+   "w": 216
   },
   "run": {
    "cell_h": 88,
-   "cell_w": 100,
+   "cell_w": 108,
    "file": "animals/cat_calico/run.png",
    "frames": 4,
    "h": 88,
-   "w": 400
+   "w": 432
   },
   "sit": {
    "cell_h": 88,
-   "cell_w": 100,
+   "cell_w": 108,
    "file": "animals/cat_calico/sit.png",
    "frames": 1,
    "h": 88,
-   "w": 100
+   "w": 108
   },
   "sleep": {
    "cell_h": 88,
-   "cell_w": 100,
+   "cell_w": 108,
    "file": "animals/cat_calico/sleep.png",
    "frames": 1,
    "h": 88,
-   "w": 100
+   "w": 108
   },
   "walk": {
    "cell_h": 88,
-   "cell_w": 100,
+   "cell_w": 108,
    "file": "animals/cat_calico/walk.png",
    "frames": 4,
    "h": 88,
-   "w": 400
+   "w": 432
   }
  },
  "animals/cat_grey": {
   "bark": {
    "cell_h": 89,
-   "cell_w": 100,
+   "cell_w": 194,
    "file": "animals/cat_grey/bark.png",
    "frames": 2,
    "h": 89,
-   "w": 200
+   "w": 388
+  },
+  "bark2": {
+   "cell_h": 89,
+   "cell_w": 194,
+   "file": "animals/cat_grey/bark2.png",
+   "frames": 2,
+   "h": 89,
+   "w": 388
+  },
+  "bite": {
+   "cell_h": 89,
+   "cell_w": 194,
+   "file": "animals/cat_grey/bite.png",
+   "frames": 4,
+   "h": 89,
+   "w": 776
+  },
+  "hurt": {
+   "cell_h": 89,
+   "cell_w": 194,
+   "file": "animals/cat_grey/hurt.png",
+   "frames": 2,
+   "h": 89,
+   "w": 388
   },
   "idle": {
    "cell_h": 89,
-   "cell_w": 100,
+   "cell_w": 194,
    "file": "animals/cat_grey/idle.png",
    "frames": 2,
    "h": 89,
-   "w": 200
+   "w": 388
+  },
+  "limp": {
+   "cell_h": 89,
+   "cell_w": 194,
+   "file": "animals/cat_grey/limp.png",
+   "frames": 3,
+   "h": 89,
+   "w": 582
   },
   "play": {
    "cell_h": 89,
-   "cell_w": 100,
+   "cell_w": 194,
    "file": "animals/cat_grey/play.png",
    "frames": 2,
    "h": 89,
-   "w": 200
+   "w": 388
   },
   "run": {
    "cell_h": 89,
-   "cell_w": 100,
+   "cell_w": 194,
    "file": "animals/cat_grey/run.png",
    "frames": 4,
    "h": 89,
-   "w": 400
+   "w": 776
   },
   "sit": {
    "cell_h": 89,
-   "cell_w": 100,
+   "cell_w": 194,
    "file": "animals/cat_grey/sit.png",
    "frames": 1,
    "h": 89,
-   "w": 100
+   "w": 194
   },
   "sleep": {
    "cell_h": 89,
-   "cell_w": 100,
+   "cell_w": 194,
    "file": "animals/cat_grey/sleep.png",
    "frames": 1,
    "h": 89,
-   "w": 100
+   "w": 194
   },
   "walk": {
    "cell_h": 89,
-   "cell_w": 100,
+   "cell_w": 194,
    "file": "animals/cat_grey/walk.png",
    "frames": 4,
    "h": 89,
-   "w": 400
+   "w": 776
   }
  },
  "animals/cat_orange": {
   "bark": {
    "cell_h": 85,
-   "cell_w": 98,
+   "cell_w": 197,
    "file": "animals/cat_orange/bark.png",
    "frames": 2,
    "h": 85,
-   "w": 196
+   "w": 394
+  },
+  "bark2": {
+   "cell_h": 85,
+   "cell_w": 197,
+   "file": "animals/cat_orange/bark2.png",
+   "frames": 2,
+   "h": 85,
+   "w": 394
+  },
+  "bite": {
+   "cell_h": 85,
+   "cell_w": 197,
+   "file": "animals/cat_orange/bite.png",
+   "frames": 4,
+   "h": 85,
+   "w": 788
+  },
+  "hurt": {
+   "cell_h": 85,
+   "cell_w": 197,
+   "file": "animals/cat_orange/hurt.png",
+   "frames": 2,
+   "h": 85,
+   "w": 394
   },
   "idle": {
    "cell_h": 85,
-   "cell_w": 98,
+   "cell_w": 197,
    "file": "animals/cat_orange/idle.png",
    "frames": 2,
    "h": 85,
-   "w": 196
+   "w": 394
+  },
+  "limp": {
+   "cell_h": 85,
+   "cell_w": 197,
+   "file": "animals/cat_orange/limp.png",
+   "frames": 4,
+   "h": 85,
+   "w": 788
   },
   "play": {
    "cell_h": 85,
-   "cell_w": 98,
+   "cell_w": 197,
    "file": "animals/cat_orange/play.png",
    "frames": 2,
    "h": 85,
-   "w": 196
+   "w": 394
   },
   "run": {
    "cell_h": 85,
-   "cell_w": 98,
+   "cell_w": 197,
    "file": "animals/cat_orange/run.png",
    "frames": 4,
    "h": 85,
-   "w": 392
+   "w": 788
   },
   "sit": {
    "cell_h": 85,
-   "cell_w": 98,
+   "cell_w": 197,
    "file": "animals/cat_orange/sit.png",
    "frames": 1,
    "h": 85,
-   "w": 98
+   "w": 197
   },
   "sleep": {
    "cell_h": 85,
-   "cell_w": 98,
+   "cell_w": 197,
    "file": "animals/cat_orange/sleep.png",
    "frames": 1,
    "h": 85,
-   "w": 98
+   "w": 197
   },
   "walk": {
    "cell_h": 85,
-   "cell_w": 98,
+   "cell_w": 197,
    "file": "animals/cat_orange/walk.png",
    "frames": 4,
    "h": 85,
-   "w": 392
+   "w": 788
   }
  },
  "animals/chick": {
@@ -426,465 +530,841 @@
  "animals/dog_brown": {
   "bark": {
    "cell_h": 83,
-   "cell_w": 98,
+   "cell_w": 223,
    "file": "animals/dog_brown/bark.png",
    "frames": 2,
    "h": 83,
-   "w": 196
+   "w": 446
+  },
+  "bark2": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/bark2.png",
+   "frames": 2,
+   "h": 83,
+   "w": 446
+  },
+  "beg": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/beg.png",
+   "frames": 1,
+   "h": 83,
+   "w": 223
+  },
+  "bite": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/bite.png",
+   "frames": 4,
+   "h": 83,
+   "w": 892
+  },
+  "dig": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/dig.png",
+   "frames": 6,
+   "h": 83,
+   "w": 1338
+  },
+  "fetch": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/fetch.png",
+   "frames": 4,
+   "h": 83,
+   "w": 892
+  },
+  "guard": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/guard.png",
+   "frames": 2,
+   "h": 83,
+   "w": 446
+  },
+  "howl": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/howl.png",
+   "frames": 2,
+   "h": 83,
+   "w": 446
+  },
+  "hurt": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/hurt.png",
+   "frames": 2,
+   "h": 83,
+   "w": 446
   },
   "idle": {
    "cell_h": 83,
-   "cell_w": 98,
+   "cell_w": 223,
    "file": "animals/dog_brown/idle.png",
    "frames": 2,
    "h": 83,
-   "w": 196
+   "w": 446
+  },
+  "limp": {
+   "cell_h": 83,
+   "cell_w": 223,
+   "file": "animals/dog_brown/limp.png",
+   "frames": 4,
+   "h": 83,
+   "w": 892
   },
   "play": {
    "cell_h": 83,
-   "cell_w": 98,
+   "cell_w": 223,
    "file": "animals/dog_brown/play.png",
    "frames": 2,
    "h": 83,
-   "w": 196
+   "w": 446
   },
   "run": {
    "cell_h": 83,
-   "cell_w": 98,
+   "cell_w": 223,
    "file": "animals/dog_brown/run.png",
    "frames": 4,
    "h": 83,
-   "w": 392
+   "w": 892
   },
   "sit": {
    "cell_h": 83,
-   "cell_w": 98,
+   "cell_w": 223,
    "file": "animals/dog_brown/sit.png",
    "frames": 1,
    "h": 83,
-   "w": 98
+   "w": 223
   },
   "sleep": {
    "cell_h": 83,
-   "cell_w": 98,
+   "cell_w": 223,
    "file": "animals/dog_brown/sleep.png",
    "frames": 1,
    "h": 83,
-   "w": 98
+   "w": 223
   },
   "walk": {
    "cell_h": 83,
-   "cell_w": 98,
+   "cell_w": 223,
    "file": "animals/dog_brown/walk.png",
    "frames": 4,
    "h": 83,
-   "w": 392
+   "w": 892
   }
  },
  "animals/dog_collie": {
   "bark": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 184,
    "file": "animals/dog_collie/bark.png",
    "frames": 4,
-   "h": 32,
-   "w": 188
+   "h": 48,
+   "w": 736
+  },
+  "bark2": {
+   "cell_h": 48,
+   "cell_w": 184,
+   "file": "animals/dog_collie/bark2.png",
+   "frames": 2,
+   "h": 48,
+   "w": 368
+  },
+  "bite": {
+   "cell_h": 48,
+   "cell_w": 184,
+   "file": "animals/dog_collie/bite.png",
+   "frames": 4,
+   "h": 48,
+   "w": 736
   },
   "dig": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 184,
    "file": "animals/dog_collie/dig.png",
    "frames": 6,
-   "h": 32,
-   "w": 282
+   "h": 48,
+   "w": 1104
+  },
+  "hurt": {
+   "cell_h": 48,
+   "cell_w": 184,
+   "file": "animals/dog_collie/hurt.png",
+   "frames": 2,
+   "h": 48,
+   "w": 368
   },
   "idle": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 184,
    "file": "animals/dog_collie/idle.png",
    "frames": 4,
-   "h": 32,
-   "w": 188
+   "h": 48,
+   "w": 736
+  },
+  "limp": {
+   "cell_h": 48,
+   "cell_w": 184,
+   "file": "animals/dog_collie/limp.png",
+   "frames": 1,
+   "h": 48,
+   "w": 184
   },
   "run": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 184,
    "file": "animals/dog_collie/run.png",
    "frames": 6,
-   "h": 32,
-   "w": 282
+   "h": 48,
+   "w": 1104
   },
   "sit": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 184,
    "file": "animals/dog_collie/sit.png",
    "frames": 2,
-   "h": 32,
-   "w": 94
+   "h": 48,
+   "w": 368
   },
   "sleep": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 184,
    "file": "animals/dog_collie/sleep.png",
    "frames": 2,
-   "h": 32,
-   "w": 94
+   "h": 48,
+   "w": 368
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 184,
    "file": "animals/dog_collie/walk.png",
    "frames": 6,
-   "h": 32,
-   "w": 282
+   "h": 48,
+   "w": 1104
   }
  },
  "animals/dog_corgi": {
   "bark": {
    "cell_h": 83,
-   "cell_w": 102,
+   "cell_w": 231,
    "file": "animals/dog_corgi/bark.png",
    "frames": 2,
    "h": 83,
-   "w": 204
+   "w": 462
+  },
+  "bark2": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/bark2.png",
+   "frames": 2,
+   "h": 83,
+   "w": 462
+  },
+  "bite": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/bite.png",
+   "frames": 4,
+   "h": 83,
+   "w": 924
+  },
+  "dig": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/dig.png",
+   "frames": 6,
+   "h": 83,
+   "w": 1386
+  },
+  "fetch": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/fetch.png",
+   "frames": 4,
+   "h": 83,
+   "w": 924
+  },
+  "guard": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/guard.png",
+   "frames": 2,
+   "h": 83,
+   "w": 462
+  },
+  "howl": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/howl.png",
+   "frames": 2,
+   "h": 83,
+   "w": 462
+  },
+  "hurt": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/hurt.png",
+   "frames": 2,
+   "h": 83,
+   "w": 462
   },
   "idle": {
    "cell_h": 83,
-   "cell_w": 102,
+   "cell_w": 231,
    "file": "animals/dog_corgi/idle.png",
    "frames": 2,
    "h": 83,
-   "w": 204
+   "w": 462
+  },
+  "limp": {
+   "cell_h": 83,
+   "cell_w": 231,
+   "file": "animals/dog_corgi/limp.png",
+   "frames": 4,
+   "h": 83,
+   "w": 924
   },
   "play": {
    "cell_h": 83,
-   "cell_w": 102,
+   "cell_w": 231,
    "file": "animals/dog_corgi/play.png",
    "frames": 2,
    "h": 83,
-   "w": 204
+   "w": 462
   },
   "run": {
    "cell_h": 83,
-   "cell_w": 102,
+   "cell_w": 231,
    "file": "animals/dog_corgi/run.png",
    "frames": 4,
    "h": 83,
-   "w": 408
+   "w": 924
   },
   "sit": {
    "cell_h": 83,
-   "cell_w": 102,
+   "cell_w": 231,
    "file": "animals/dog_corgi/sit.png",
    "frames": 1,
    "h": 83,
-   "w": 102
+   "w": 231
   },
   "sleep": {
    "cell_h": 83,
-   "cell_w": 102,
+   "cell_w": 231,
    "file": "animals/dog_corgi/sleep.png",
    "frames": 1,
    "h": 83,
-   "w": 102
+   "w": 231
   },
   "walk": {
    "cell_h": 83,
-   "cell_w": 102,
+   "cell_w": 231,
    "file": "animals/dog_corgi/walk.png",
    "frames": 4,
    "h": 83,
-   "w": 408
+   "w": 924
   }
  },
  "animals/dog_golden": {
   "bark": {
-   "cell_h": 32,
-   "cell_w": 49,
+   "cell_h": 48,
+   "cell_w": 216,
    "file": "animals/dog_golden/bark.png",
    "frames": 4,
-   "h": 32,
-   "w": 196
+   "h": 48,
+   "w": 864
+  },
+  "bark2": {
+   "cell_h": 48,
+   "cell_w": 216,
+   "file": "animals/dog_golden/bark2.png",
+   "frames": 2,
+   "h": 48,
+   "w": 432
+  },
+  "bite": {
+   "cell_h": 48,
+   "cell_w": 216,
+   "file": "animals/dog_golden/bite.png",
+   "frames": 4,
+   "h": 48,
+   "w": 864
   },
   "dig": {
-   "cell_h": 32,
-   "cell_w": 49,
+   "cell_h": 48,
+   "cell_w": 216,
    "file": "animals/dog_golden/dig.png",
    "frames": 6,
-   "h": 32,
-   "w": 294
+   "h": 48,
+   "w": 1296
+  },
+  "guard": {
+   "cell_h": 48,
+   "cell_w": 216,
+   "file": "animals/dog_golden/guard.png",
+   "frames": 1,
+   "h": 48,
+   "w": 216
+  },
+  "hurt": {
+   "cell_h": 48,
+   "cell_w": 216,
+   "file": "animals/dog_golden/hurt.png",
+   "frames": 2,
+   "h": 48,
+   "w": 432
   },
   "idle": {
-   "cell_h": 32,
-   "cell_w": 49,
+   "cell_h": 48,
+   "cell_w": 216,
    "file": "animals/dog_golden/idle.png",
    "frames": 4,
-   "h": 32,
-   "w": 196
+   "h": 48,
+   "w": 864
+  },
+  "limp": {
+   "cell_h": 48,
+   "cell_w": 216,
+   "file": "animals/dog_golden/limp.png",
+   "frames": 4,
+   "h": 48,
+   "w": 864
   },
   "run": {
-   "cell_h": 32,
-   "cell_w": 49,
+   "cell_h": 48,
+   "cell_w": 216,
    "file": "animals/dog_golden/run.png",
    "frames": 6,
-   "h": 32,
-   "w": 294
+   "h": 48,
+   "w": 1296
   },
   "sit": {
-   "cell_h": 32,
-   "cell_w": 49,
+   "cell_h": 48,
+   "cell_w": 216,
    "file": "animals/dog_golden/sit.png",
    "frames": 2,
-   "h": 32,
-   "w": 98
+   "h": 48,
+   "w": 432
   },
   "sleep": {
-   "cell_h": 32,
-   "cell_w": 49,
+   "cell_h": 48,
+   "cell_w": 216,
    "file": "animals/dog_golden/sleep.png",
    "frames": 2,
-   "h": 32,
-   "w": 98
+   "h": 48,
+   "w": 432
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 49,
+   "cell_h": 48,
+   "cell_w": 216,
    "file": "animals/dog_golden/walk.png",
    "frames": 6,
-   "h": 32,
-   "w": 294
+   "h": 48,
+   "w": 1296
   }
  },
  "animals/dog_hound": {
   "bark": {
    "cell_h": 87,
-   "cell_w": 103,
+   "cell_w": 106,
    "file": "animals/dog_hound/bark.png",
    "frames": 2,
    "h": 87,
-   "w": 206
+   "w": 212
+  },
+  "bark2": {
+   "cell_h": 87,
+   "cell_w": 106,
+   "file": "animals/dog_hound/bark2.png",
+   "frames": 2,
+   "h": 87,
+   "w": 212
+  },
+  "bite": {
+   "cell_h": 87,
+   "cell_w": 106,
+   "file": "animals/dog_hound/bite.png",
+   "frames": 4,
+   "h": 87,
+   "w": 424
+  },
+  "guard": {
+   "cell_h": 87,
+   "cell_w": 106,
+   "file": "animals/dog_hound/guard.png",
+   "frames": 2,
+   "h": 87,
+   "w": 212
+  },
+  "howl": {
+   "cell_h": 87,
+   "cell_w": 106,
+   "file": "animals/dog_hound/howl.png",
+   "frames": 2,
+   "h": 87,
+   "w": 212
+  },
+  "hurt": {
+   "cell_h": 87,
+   "cell_w": 106,
+   "file": "animals/dog_hound/hurt.png",
+   "frames": 2,
+   "h": 87,
+   "w": 212
   },
   "idle": {
    "cell_h": 87,
-   "cell_w": 103,
+   "cell_w": 106,
    "file": "animals/dog_hound/idle.png",
    "frames": 2,
    "h": 87,
-   "w": 206
+   "w": 212
+  },
+  "limp": {
+   "cell_h": 87,
+   "cell_w": 106,
+   "file": "animals/dog_hound/limp.png",
+   "frames": 4,
+   "h": 87,
+   "w": 424
   },
   "play": {
    "cell_h": 87,
-   "cell_w": 103,
+   "cell_w": 106,
    "file": "animals/dog_hound/play.png",
    "frames": 2,
    "h": 87,
-   "w": 206
+   "w": 212
   },
   "run": {
    "cell_h": 87,
-   "cell_w": 103,
+   "cell_w": 106,
    "file": "animals/dog_hound/run.png",
    "frames": 4,
    "h": 87,
-   "w": 412
+   "w": 424
   },
   "sit": {
    "cell_h": 87,
-   "cell_w": 103,
+   "cell_w": 106,
    "file": "animals/dog_hound/sit.png",
    "frames": 1,
    "h": 87,
-   "w": 103
+   "w": 106
   },
   "sleep": {
    "cell_h": 87,
-   "cell_w": 103,
+   "cell_w": 106,
    "file": "animals/dog_hound/sleep.png",
    "frames": 1,
    "h": 87,
-   "w": 103
+   "w": 106
   },
   "walk": {
    "cell_h": 87,
-   "cell_w": 103,
+   "cell_w": 106,
    "file": "animals/dog_hound/walk.png",
    "frames": 4,
    "h": 87,
-   "w": 412
+   "w": 424
   }
  },
  "animals/dog_husky": {
   "bark": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 240,
    "file": "animals/dog_husky/bark.png",
    "frames": 4,
-   "h": 32,
-   "w": 188
+   "h": 48,
+   "w": 960
+  },
+  "bark2": {
+   "cell_h": 48,
+   "cell_w": 240,
+   "file": "animals/dog_husky/bark2.png",
+   "frames": 2,
+   "h": 48,
+   "w": 480
+  },
+  "bite": {
+   "cell_h": 48,
+   "cell_w": 240,
+   "file": "animals/dog_husky/bite.png",
+   "frames": 4,
+   "h": 48,
+   "w": 960
   },
   "dig": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 240,
    "file": "animals/dog_husky/dig.png",
    "frames": 6,
-   "h": 32,
-   "w": 282
+   "h": 48,
+   "w": 1440
+  },
+  "hurt": {
+   "cell_h": 48,
+   "cell_w": 240,
+   "file": "animals/dog_husky/hurt.png",
+   "frames": 2,
+   "h": 48,
+   "w": 480
   },
   "idle": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 240,
    "file": "animals/dog_husky/idle.png",
    "frames": 4,
-   "h": 32,
-   "w": 188
+   "h": 48,
+   "w": 960
+  },
+  "limp": {
+   "cell_h": 48,
+   "cell_w": 240,
+   "file": "animals/dog_husky/limp.png",
+   "frames": 3,
+   "h": 48,
+   "w": 720
   },
   "run": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 240,
    "file": "animals/dog_husky/run.png",
    "frames": 6,
-   "h": 32,
-   "w": 282
+   "h": 48,
+   "w": 1440
   },
   "sit": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 240,
    "file": "animals/dog_husky/sit.png",
    "frames": 2,
-   "h": 32,
-   "w": 94
+   "h": 48,
+   "w": 480
   },
   "sleep": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 240,
    "file": "animals/dog_husky/sleep.png",
    "frames": 2,
-   "h": 32,
-   "w": 94
+   "h": 48,
+   "w": 480
   },
   "walk": {
-   "cell_h": 32,
-   "cell_w": 47,
+   "cell_h": 48,
+   "cell_w": 240,
    "file": "animals/dog_husky/walk.png",
    "frames": 6,
-   "h": 32,
-   "w": 282
+   "h": 48,
+   "w": 1440
   }
  },
  "animals/dog_shepherd": {
   "bark": {
    "cell_h": 92,
-   "cell_w": 109,
+   "cell_w": 216,
    "file": "animals/dog_shepherd/bark.png",
    "frames": 2,
    "h": 92,
-   "w": 218
+   "w": 432
+  },
+  "bark2": {
+   "cell_h": 92,
+   "cell_w": 216,
+   "file": "animals/dog_shepherd/bark2.png",
+   "frames": 2,
+   "h": 92,
+   "w": 432
+  },
+  "bite": {
+   "cell_h": 92,
+   "cell_w": 216,
+   "file": "animals/dog_shepherd/bite.png",
+   "frames": 4,
+   "h": 92,
+   "w": 864
+  },
+  "dig": {
+   "cell_h": 92,
+   "cell_w": 216,
+   "file": "animals/dog_shepherd/dig.png",
+   "frames": 6,
+   "h": 92,
+   "w": 1296
+  },
+  "fetch": {
+   "cell_h": 92,
+   "cell_w": 216,
+   "file": "animals/dog_shepherd/fetch.png",
+   "frames": 2,
+   "h": 92,
+   "w": 432
+  },
+  "hurt": {
+   "cell_h": 92,
+   "cell_w": 216,
+   "file": "animals/dog_shepherd/hurt.png",
+   "frames": 2,
+   "h": 92,
+   "w": 432
   },
   "idle": {
    "cell_h": 92,
-   "cell_w": 109,
+   "cell_w": 216,
    "file": "animals/dog_shepherd/idle.png",
    "frames": 2,
    "h": 92,
-   "w": 218
+   "w": 432
+  },
+  "limp": {
+   "cell_h": 92,
+   "cell_w": 216,
+   "file": "animals/dog_shepherd/limp.png",
+   "frames": 3,
+   "h": 92,
+   "w": 648
   },
   "play": {
    "cell_h": 92,
-   "cell_w": 109,
+   "cell_w": 216,
    "file": "animals/dog_shepherd/play.png",
    "frames": 2,
    "h": 92,
-   "w": 218
+   "w": 432
   },
   "run": {
    "cell_h": 92,
-   "cell_w": 109,
+   "cell_w": 216,
    "file": "animals/dog_shepherd/run.png",
    "frames": 4,
    "h": 92,
-   "w": 436
+   "w": 864
   },
   "sit": {
    "cell_h": 92,
-   "cell_w": 109,
+   "cell_w": 216,
    "file": "animals/dog_shepherd/sit.png",
    "frames": 1,
    "h": 92,
-   "w": 109
+   "w": 216
   },
   "sleep": {
    "cell_h": 92,
-   "cell_w": 109,
+   "cell_w": 216,
    "file": "animals/dog_shepherd/sleep.png",
    "frames": 1,
    "h": 92,
-   "w": 109
+   "w": 216
   },
   "walk": {
    "cell_h": 92,
-   "cell_w": 109,
+   "cell_w": 216,
    "file": "animals/dog_shepherd/walk.png",
    "frames": 4,
    "h": 92,
-   "w": 436
+   "w": 864
   }
  },
  "animals/dog_white": {
   "bark": {
    "cell_h": 87,
-   "cell_w": 108,
+   "cell_w": 156,
    "file": "animals/dog_white/bark.png",
    "frames": 2,
    "h": 87,
-   "w": 216
+   "w": 312
+  },
+  "bark2": {
+   "cell_h": 87,
+   "cell_w": 156,
+   "file": "animals/dog_white/bark2.png",
+   "frames": 2,
+   "h": 87,
+   "w": 312
+  },
+  "bite": {
+   "cell_h": 87,
+   "cell_w": 156,
+   "file": "animals/dog_white/bite.png",
+   "frames": 4,
+   "h": 87,
+   "w": 624
+  },
+  "guard": {
+   "cell_h": 87,
+   "cell_w": 156,
+   "file": "animals/dog_white/guard.png",
+   "frames": 2,
+   "h": 87,
+   "w": 312
+  },
+  "hurt": {
+   "cell_h": 87,
+   "cell_w": 156,
+   "file": "animals/dog_white/hurt.png",
+   "frames": 2,
+   "h": 87,
+   "w": 312
   },
   "idle": {
    "cell_h": 87,
-   "cell_w": 108,
+   "cell_w": 156,
    "file": "animals/dog_white/idle.png",
    "frames": 2,
    "h": 87,
-   "w": 216
+   "w": 312
+  },
+  "limp": {
+   "cell_h": 87,
+   "cell_w": 156,
+   "file": "animals/dog_white/limp.png",
+   "frames": 4,
+   "h": 87,
+   "w": 624
   },
   "play": {
    "cell_h": 87,
-   "cell_w": 108,
+   "cell_w": 156,
    "file": "animals/dog_white/play.png",
    "frames": 2,
    "h": 87,
-   "w": 216
+   "w": 312
   },
   "run": {
    "cell_h": 87,
-   "cell_w": 108,
+   "cell_w": 156,
    "file": "animals/dog_white/run.png",
    "frames": 4,
    "h": 87,
-   "w": 432
+   "w": 624
   },
   "sit": {
    "cell_h": 87,
-   "cell_w": 108,
+   "cell_w": 156,
    "file": "animals/dog_white/sit.png",
    "frames": 1,
    "h": 87,
-   "w": 108
+   "w": 156
   },
   "sleep": {
    "cell_h": 87,
-   "cell_w": 108,
+   "cell_w": 156,
    "file": "animals/dog_white/sleep.png",
    "frames": 1,
    "h": 87,
-   "w": 108
+   "w": 156
   },
   "walk": {
    "cell_h": 87,
-   "cell_w": 108,
+   "cell_w": 156,
    "file": "animals/dog_white/walk.png",
    "frames": 4,
    "h": 87,
-   "w": 432
+   "w": 624
   }
  },
  "animals/donkey": {
@@ -1695,6 +2175,253 @@
    "frames": 4,
    "h": 86,
    "w": 268
+  }
+ },
+ "animals/pet_gear": {
+  "cat_bandana_back": {
+   "file": "animals/pet_gear/cat_bandana_back.png",
+   "h": 50,
+   "w": 31
+  },
+  "cat_bandana_front": {
+   "file": "animals/pet_gear/cat_bandana_front.png",
+   "h": 50,
+   "w": 31
+  },
+  "cat_bandana_side": {
+   "file": "animals/pet_gear/cat_bandana_side.png",
+   "h": 50,
+   "w": 55
+  },
+  "cat_boots_back": {
+   "file": "animals/pet_gear/cat_boots_back.png",
+   "h": 50,
+   "w": 30
+  },
+  "cat_boots_front": {
+   "file": "animals/pet_gear/cat_boots_front.png",
+   "h": 50,
+   "w": 31
+  },
+  "cat_boots_side": {
+   "file": "animals/pet_gear/cat_boots_side.png",
+   "h": 50,
+   "w": 55
+  },
+  "cat_charm_back": {
+   "file": "animals/pet_gear/cat_charm_back.png",
+   "h": 50,
+   "w": 31
+  },
+  "cat_charm_front": {
+   "file": "animals/pet_gear/cat_charm_front.png",
+   "h": 50,
+   "w": 31
+  },
+  "cat_charm_side": {
+   "file": "animals/pet_gear/cat_charm_side.png",
+   "h": 50,
+   "w": 54
+  },
+  "cat_collar_crystal_back": {
+   "file": "animals/pet_gear/cat_collar_crystal_back.png",
+   "h": 50,
+   "w": 29
+  },
+  "cat_collar_crystal_front": {
+   "file": "animals/pet_gear/cat_collar_crystal_front.png",
+   "h": 50,
+   "w": 29
+  },
+  "cat_collar_crystal_side": {
+   "file": "animals/pet_gear/cat_collar_crystal_side.png",
+   "h": 50,
+   "w": 52
+  },
+  "cat_collar_iron_back": {
+   "file": "animals/pet_gear/cat_collar_iron_back.png",
+   "h": 50,
+   "w": 30
+  },
+  "cat_collar_iron_front": {
+   "file": "animals/pet_gear/cat_collar_iron_front.png",
+   "h": 50,
+   "w": 30
+  },
+  "cat_collar_iron_side": {
+   "file": "animals/pet_gear/cat_collar_iron_side.png",
+   "h": 50,
+   "w": 52
+  },
+  "cat_collar_leather_back": {
+   "file": "animals/pet_gear/cat_collar_leather_back.png",
+   "h": 50,
+   "w": 30
+  },
+  "cat_collar_leather_front": {
+   "file": "animals/pet_gear/cat_collar_leather_front.png",
+   "h": 50,
+   "w": 29
+  },
+  "cat_collar_leather_side": {
+   "file": "animals/pet_gear/cat_collar_leather_side.png",
+   "h": 50,
+   "w": 53
+  },
+  "cat_pack_large_back": {
+   "file": "animals/pet_gear/cat_pack_large_back.png",
+   "h": 50,
+   "w": 36
+  },
+  "cat_pack_large_front": {
+   "file": "animals/pet_gear/cat_pack_large_front.png",
+   "h": 50,
+   "w": 28
+  },
+  "cat_pack_large_side": {
+   "file": "animals/pet_gear/cat_pack_large_side.png",
+   "h": 50,
+   "w": 52
+  },
+  "cat_pack_small_back": {
+   "file": "animals/pet_gear/cat_pack_small_back.png",
+   "h": 50,
+   "w": 30
+  },
+  "cat_pack_small_front": {
+   "file": "animals/pet_gear/cat_pack_small_front.png",
+   "h": 50,
+   "w": 30
+  },
+  "cat_pack_small_side": {
+   "file": "animals/pet_gear/cat_pack_small_side.png",
+   "h": 50,
+   "w": 52
+  },
+  "cat_pack_trail_back": {
+   "file": "animals/pet_gear/cat_pack_trail_back.png",
+   "h": 50,
+   "w": 35
+  },
+  "cat_pack_trail_front": {
+   "file": "animals/pet_gear/cat_pack_trail_front.png",
+   "h": 50,
+   "w": 31
+  },
+  "cat_pack_trail_side": {
+   "file": "animals/pet_gear/cat_pack_trail_side.png",
+   "h": 50,
+   "w": 55
+  },
+  "dog_bandana_side": {
+   "file": "animals/pet_gear/dog_bandana_side.png",
+   "h": 50,
+   "w": 31
+  },
+  "dog_boots_back": {
+   "file": "animals/pet_gear/dog_boots_back.png",
+   "h": 50,
+   "w": 35
+  },
+  "dog_boots_front": {
+   "file": "animals/pet_gear/dog_boots_front.png",
+   "h": 50,
+   "w": 55
+  },
+  "dog_boots_side": {
+   "file": "animals/pet_gear/dog_boots_side.png",
+   "h": 50,
+   "w": 32
+  },
+  "dog_collar_crystal_back": {
+   "file": "animals/pet_gear/dog_collar_crystal_back.png",
+   "h": 50,
+   "w": 55
+  },
+  "dog_collar_crystal_front": {
+   "file": "animals/pet_gear/dog_collar_crystal_front.png",
+   "h": 50,
+   "w": 63
+  },
+  "dog_collar_crystal_side": {
+   "file": "animals/pet_gear/dog_collar_crystal_side.png",
+   "h": 50,
+   "w": 54
+  },
+  "dog_collar_iron_back": {
+   "file": "animals/pet_gear/dog_collar_iron_back.png",
+   "h": 50,
+   "w": 66
+  },
+  "dog_collar_iron_front": {
+   "file": "animals/pet_gear/dog_collar_iron_front.png",
+   "h": 50,
+   "w": 58
+  },
+  "dog_collar_iron_side": {
+   "file": "animals/pet_gear/dog_collar_iron_side.png",
+   "h": 50,
+   "w": 65
+  },
+  "dog_collar_leather_back": {
+   "file": "animals/pet_gear/dog_collar_leather_back.png",
+   "h": 50,
+   "w": 57
+  },
+  "dog_collar_leather_front": {
+   "file": "animals/pet_gear/dog_collar_leather_front.png",
+   "h": 50,
+   "w": 66
+  },
+  "dog_collar_leather_side": {
+   "file": "animals/pet_gear/dog_collar_leather_side.png",
+   "h": 50,
+   "w": 59
+  },
+  "dog_pack_large_back": {
+   "file": "animals/pet_gear/dog_pack_large_back.png",
+   "h": 50,
+   "w": 32
+  },
+  "dog_pack_large_front": {
+   "file": "animals/pet_gear/dog_pack_large_front.png",
+   "h": 50,
+   "w": 56
+  },
+  "dog_pack_large_side": {
+   "file": "animals/pet_gear/dog_pack_large_side.png",
+   "h": 50,
+   "w": 33
+  },
+  "dog_pack_small_back": {
+   "file": "animals/pet_gear/dog_pack_small_back.png",
+   "h": 50,
+   "w": 36
+  },
+  "dog_pack_small_front": {
+   "file": "animals/pet_gear/dog_pack_small_front.png",
+   "h": 50,
+   "w": 55
+  },
+  "dog_pack_small_side": {
+   "file": "animals/pet_gear/dog_pack_small_side.png",
+   "h": 50,
+   "w": 63
+  },
+  "dog_pack_trail_back": {
+   "file": "animals/pet_gear/dog_pack_trail_back.png",
+   "h": 50,
+   "w": 35
+  },
+  "dog_pack_trail_front": {
+   "file": "animals/pet_gear/dog_pack_trail_front.png",
+   "h": 50,
+   "w": 56
+  },
+  "dog_pack_trail_side": {
+   "file": "animals/pet_gear/dog_pack_trail_side.png",
+   "h": 50,
+   "w": 31
   }
  },
  "animals/pig_a": {
@@ -14293,6 +15020,30 @@
    "h": 44,
    "w": 164
   },
+  "bark2": {
+   "cell_h": 40,
+   "cell_w": 44,
+   "file": "characters/dog/bark2.png",
+   "frames": 2,
+   "h": 40,
+   "w": 88
+  },
+  "beg": {
+   "cell_h": 40,
+   "cell_w": 56,
+   "file": "characters/dog/beg.png",
+   "frames": 2,
+   "h": 40,
+   "w": 112
+  },
+  "bite": {
+   "cell_h": 40,
+   "cell_w": 52,
+   "file": "characters/dog/bite.png",
+   "frames": 4,
+   "h": 40,
+   "w": 208
+  },
   "cast_down": {
    "cell_h": 46,
    "cell_w": 44,
@@ -14318,12 +15069,12 @@
    "w": 164
   },
   "dig": {
-   "cell_h": 44,
-   "cell_w": 56,
+   "cell_h": 40,
+   "cell_w": 90,
    "file": "characters/dog/dig.png",
-   "frames": 4,
-   "h": 44,
-   "w": 224
+   "frames": 6,
+   "h": 40,
+   "w": 540
   },
   "eat_down": {
    "cell_h": 43,
@@ -14348,6 +15099,22 @@
    "frames": 4,
    "h": 43,
    "w": 120
+  },
+  "fetch": {
+   "cell_h": 40,
+   "cell_w": 48,
+   "file": "characters/dog/fetch.png",
+   "frames": 4,
+   "h": 40,
+   "w": 192
+  },
+  "guard": {
+   "cell_h": 40,
+   "cell_w": 47,
+   "file": "characters/dog/guard.png",
+   "frames": 2,
+   "h": 40,
+   "w": 94
   },
   "hoe_down": {
    "cell_h": 40,
@@ -14396,6 +15163,30 @@
    "frames": 4,
    "h": 45,
    "w": 164
+  },
+  "howl": {
+   "cell_h": 40,
+   "cell_w": 42,
+   "file": "characters/dog/howl.png",
+   "frames": 2,
+   "h": 40,
+   "w": 84
+  },
+  "hurt": {
+   "cell_h": 40,
+   "cell_w": 45,
+   "file": "characters/dog/hurt.png",
+   "frames": 2,
+   "h": 40,
+   "w": 90
+  },
+  "limp": {
+   "cell_h": 40,
+   "cell_w": 52,
+   "file": "characters/dog/limp.png",
+   "frames": 4,
+   "h": 40,
+   "w": 208
   },
   "pickaxe_down": {
    "cell_h": 40,
@@ -14452,6 +15243,14 @@
    "frames": 4,
    "h": 40,
    "w": 160
+  },
+  "sleep": {
+   "cell_h": 40,
+   "cell_w": 94,
+   "file": "characters/dog/sleep.png",
+   "frames": 2,
+   "h": 40,
+   "w": 188
   },
   "walk_down": {
    "cell_h": 40,
@@ -20721,11 +21520,171 @@
  "characters/penguin": {
   "attack": {
    "cell_h": 64,
-   "cell_w": 112,
+   "cell_w": 70,
    "file": "characters/penguin/attack.png",
    "frames": 4,
    "h": 64,
-   "w": 448
+   "w": 280
+  },
+  "attack_down": {
+   "cell_h": 64,
+   "cell_w": 71,
+   "file": "characters/penguin/attack_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 284
+  },
+  "attack_up": {
+   "cell_h": 64,
+   "cell_w": 66,
+   "file": "characters/penguin/attack_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 264
+  },
+  "axe_down": {
+   "cell_h": 64,
+   "cell_w": 68,
+   "file": "characters/penguin/axe_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 272
+  },
+  "axe_right": {
+   "cell_h": 64,
+   "cell_w": 69,
+   "file": "characters/penguin/axe_right.png",
+   "frames": 4,
+   "h": 64,
+   "w": 276
+  },
+  "axe_up": {
+   "cell_h": 64,
+   "cell_w": 53,
+   "file": "characters/penguin/axe_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 212
+  },
+  "carry": {
+   "cell_h": 64,
+   "cell_w": 60,
+   "file": "characters/penguin/carry.png",
+   "frames": 2,
+   "h": 64,
+   "w": 120
+  },
+  "cast_down": {
+   "cell_h": 64,
+   "cell_w": 94,
+   "file": "characters/penguin/cast_down.png",
+   "frames": 2,
+   "h": 64,
+   "w": 188
+  },
+  "cast_right": {
+   "cell_h": 64,
+   "cell_w": 127,
+   "file": "characters/penguin/cast_right.png",
+   "frames": 4,
+   "h": 64,
+   "w": 508
+  },
+  "cast_side": {
+   "cell_h": 64,
+   "cell_w": 72,
+   "file": "characters/penguin/cast_side.png",
+   "frames": 2,
+   "h": 64,
+   "w": 144
+  },
+  "cast_up": {
+   "cell_h": 64,
+   "cell_w": 82,
+   "file": "characters/penguin/cast_up.png",
+   "frames": 2,
+   "h": 64,
+   "w": 164
+  },
+  "dance": {
+   "cell_h": 64,
+   "cell_w": 70,
+   "file": "characters/penguin/dance.png",
+   "frames": 4,
+   "h": 64,
+   "w": 280
+  },
+  "dive": {
+   "cell_h": 64,
+   "cell_w": 80,
+   "file": "characters/penguin/dive.png",
+   "frames": 2,
+   "h": 64,
+   "w": 160
+  },
+  "eat_down": {
+   "cell_h": 64,
+   "cell_w": 56,
+   "file": "characters/penguin/eat_down.png",
+   "frames": 2,
+   "h": 64,
+   "w": 112
+  },
+  "faint": {
+   "cell_h": 64,
+   "cell_w": 91,
+   "file": "characters/penguin/faint.png",
+   "frames": 2,
+   "h": 64,
+   "w": 182
+  },
+  "float": {
+   "cell_h": 64,
+   "cell_w": 82,
+   "file": "characters/penguin/float.png",
+   "frames": 2,
+   "h": 64,
+   "w": 164
+  },
+  "hoe_down": {
+   "cell_h": 64,
+   "cell_w": 57,
+   "file": "characters/penguin/hoe_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 228
+  },
+  "hoe_right": {
+   "cell_h": 64,
+   "cell_w": 71,
+   "file": "characters/penguin/hoe_right.png",
+   "frames": 4,
+   "h": 64,
+   "w": 284
+  },
+  "hoe_up": {
+   "cell_h": 64,
+   "cell_w": 57,
+   "file": "characters/penguin/hoe_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 228
+  },
+  "hold_down": {
+   "cell_h": 64,
+   "cell_w": 50,
+   "file": "characters/penguin/hold_down.png",
+   "frames": 2,
+   "h": 64,
+   "w": 100
+  },
+  "hurt": {
+   "cell_h": 64,
+   "cell_w": 70,
+   "file": "characters/penguin/hurt.png",
+   "frames": 2,
+   "h": 64,
+   "w": 140
   },
   "idle": {
    "cell_h": 64,
@@ -20735,13 +21694,93 @@
    "h": 64,
    "w": 268
   },
+  "laugh": {
+   "cell_h": 64,
+   "cell_w": 63,
+   "file": "characters/penguin/laugh.png",
+   "frames": 2,
+   "h": 64,
+   "w": 126
+  },
+  "pet": {
+   "cell_h": 64,
+   "cell_w": 141,
+   "file": "characters/penguin/pet.png",
+   "frames": 2,
+   "h": 64,
+   "w": 282
+  },
+  "pickaxe_down": {
+   "cell_h": 64,
+   "cell_w": 58,
+   "file": "characters/penguin/pickaxe_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 232
+  },
+  "pickaxe_right": {
+   "cell_h": 64,
+   "cell_w": 70,
+   "file": "characters/penguin/pickaxe_right.png",
+   "frames": 4,
+   "h": 64,
+   "w": 280
+  },
+  "pickaxe_up": {
+   "cell_h": 64,
+   "cell_w": 53,
+   "file": "characters/penguin/pickaxe_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 212
+  },
   "powerup": {
    "cell_h": 76,
-   "cell_w": 118,
+   "cell_w": 75,
    "file": "characters/penguin/powerup.png",
-   "frames": 4,
+   "frames": 8,
    "h": 76,
-   "w": 472
+   "w": 600
+  },
+  "reel_right": {
+   "cell_h": 64,
+   "cell_w": 80,
+   "file": "characters/penguin/reel_right.png",
+   "frames": 4,
+   "h": 64,
+   "w": 320
+  },
+  "ride": {
+   "cell_h": 96,
+   "cell_w": 119,
+   "file": "characters/penguin/ride.png",
+   "frames": 4,
+   "h": 96,
+   "w": 476
+  },
+  "ride_down": {
+   "cell_h": 96,
+   "cell_w": 54,
+   "file": "characters/penguin/ride_down.png",
+   "frames": 2,
+   "h": 96,
+   "w": 108
+  },
+  "ride_run": {
+   "cell_h": 96,
+   "cell_w": 117,
+   "file": "characters/penguin/ride_run.png",
+   "frames": 2,
+   "h": 96,
+   "w": 234
+  },
+  "ride_up": {
+   "cell_h": 96,
+   "cell_w": 53,
+   "file": "characters/penguin/ride_up.png",
+   "frames": 2,
+   "h": 96,
+   "w": 106
   },
   "run": {
    "cell_h": 64,
@@ -20750,6 +21789,62 @@
    "frames": 4,
    "h": 64,
    "w": 384
+  },
+  "shiver": {
+   "cell_h": 64,
+   "cell_w": 66,
+   "file": "characters/penguin/shiver.png",
+   "frames": 2,
+   "h": 64,
+   "w": 132
+  },
+  "sit": {
+   "cell_h": 64,
+   "cell_w": 54,
+   "file": "characters/penguin/sit.png",
+   "frames": 1,
+   "h": 64,
+   "w": 54
+  },
+  "sleep": {
+   "cell_h": 64,
+   "cell_w": 60,
+   "file": "characters/penguin/sleep.png",
+   "frames": 1,
+   "h": 64,
+   "w": 60
+  },
+  "swim": {
+   "cell_h": 64,
+   "cell_w": 101,
+   "file": "characters/penguin/swim.png",
+   "frames": 4,
+   "h": 64,
+   "w": 404
+  },
+  "swim_down": {
+   "cell_h": 64,
+   "cell_w": 89,
+   "file": "characters/penguin/swim_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 356
+  },
+  "swim_up": {
+   "cell_h": 64,
+   "cell_w": 82,
+   "file": "characters/penguin/swim_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 328
+  },
+  "umbrella": {
+   "cell_h": 64,
+   "cell_w": 83,
+   "file": "characters/penguin/umbrella.png",
+   "frames": 2,
+   "h": 64,
+   "w": 166
   },
   "view_back": {
    "file": "characters/penguin/view_back.png",
@@ -20778,6 +21873,536 @@
    "frames": 4,
    "h": 64,
    "w": 256
+  },
+  "water_down": {
+   "cell_h": 64,
+   "cell_w": 57,
+   "file": "characters/penguin/water_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 228
+  },
+  "water_right": {
+   "cell_h": 64,
+   "cell_w": 69,
+   "file": "characters/penguin/water_right.png",
+   "frames": 4,
+   "h": 64,
+   "w": 276
+  },
+  "water_up": {
+   "cell_h": 64,
+   "cell_w": 59,
+   "file": "characters/penguin/water_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 236
+  }
+ },
+ "characters/penguin_ceremony": {
+  "carry": {
+   "cell_h": 64,
+   "cell_w": 58,
+   "file": "characters/penguin_ceremony/carry.png",
+   "frames": 2,
+   "h": 64,
+   "w": 116
+  },
+  "cast_down": {
+   "cell_h": 64,
+   "cell_w": 91,
+   "file": "characters/penguin_ceremony/cast_down.png",
+   "frames": 2,
+   "h": 64,
+   "w": 182
+  },
+  "cast_side": {
+   "cell_h": 64,
+   "cell_w": 71,
+   "file": "characters/penguin_ceremony/cast_side.png",
+   "frames": 2,
+   "h": 64,
+   "w": 142
+  },
+  "cast_up": {
+   "cell_h": 64,
+   "cell_w": 79,
+   "file": "characters/penguin_ceremony/cast_up.png",
+   "frames": 2,
+   "h": 64,
+   "w": 158
+  },
+  "dance": {
+   "cell_h": 64,
+   "cell_w": 69,
+   "file": "characters/penguin_ceremony/dance.png",
+   "frames": 4,
+   "h": 64,
+   "w": 276
+  },
+  "dive": {
+   "cell_h": 64,
+   "cell_w": 79,
+   "file": "characters/penguin_ceremony/dive.png",
+   "frames": 2,
+   "h": 64,
+   "w": 158
+  },
+  "float": {
+   "cell_h": 64,
+   "cell_w": 82,
+   "file": "characters/penguin_ceremony/float.png",
+   "frames": 2,
+   "h": 64,
+   "w": 164
+  },
+  "laugh": {
+   "cell_h": 64,
+   "cell_w": 63,
+   "file": "characters/penguin_ceremony/laugh.png",
+   "frames": 2,
+   "h": 64,
+   "w": 126
+  },
+  "pet": {
+   "cell_h": 64,
+   "cell_w": 135,
+   "file": "characters/penguin_ceremony/pet.png",
+   "frames": 2,
+   "h": 64,
+   "w": 270
+  },
+  "powerup": {
+   "cell_h": 76,
+   "cell_w": 74,
+   "file": "characters/penguin_ceremony/powerup.png",
+   "frames": 8,
+   "h": 76,
+   "w": 592
+  },
+  "ride": {
+   "cell_h": 96,
+   "cell_w": 118,
+   "file": "characters/penguin_ceremony/ride.png",
+   "frames": 4,
+   "h": 96,
+   "w": 472
+  },
+  "ride_down": {
+   "cell_h": 96,
+   "cell_w": 53,
+   "file": "characters/penguin_ceremony/ride_down.png",
+   "frames": 2,
+   "h": 96,
+   "w": 106
+  },
+  "ride_run": {
+   "cell_h": 96,
+   "cell_w": 115,
+   "file": "characters/penguin_ceremony/ride_run.png",
+   "frames": 2,
+   "h": 96,
+   "w": 230
+  },
+  "ride_up": {
+   "cell_h": 96,
+   "cell_w": 52,
+   "file": "characters/penguin_ceremony/ride_up.png",
+   "frames": 2,
+   "h": 96,
+   "w": 104
+  },
+  "shiver": {
+   "cell_h": 64,
+   "cell_w": 65,
+   "file": "characters/penguin_ceremony/shiver.png",
+   "frames": 2,
+   "h": 64,
+   "w": 130
+  },
+  "swim": {
+   "cell_h": 64,
+   "cell_w": 96,
+   "file": "characters/penguin_ceremony/swim.png",
+   "frames": 4,
+   "h": 64,
+   "w": 384
+  },
+  "swim_down": {
+   "cell_h": 64,
+   "cell_w": 91,
+   "file": "characters/penguin_ceremony/swim_down.png",
+   "frames": 4,
+   "h": 64,
+   "w": 364
+  },
+  "swim_up": {
+   "cell_h": 64,
+   "cell_w": 82,
+   "file": "characters/penguin_ceremony/swim_up.png",
+   "frames": 4,
+   "h": 64,
+   "w": 328
+  },
+  "umbrella": {
+   "cell_h": 64,
+   "cell_w": 81,
+   "file": "characters/penguin_ceremony/umbrella.png",
+   "frames": 2,
+   "h": 64,
+   "w": 162
+  }
+ },
+ "characters/penguin_wear": {
+  "bowtie_blue_front": {
+   "file": "characters/penguin_wear/bowtie_blue_front.png",
+   "h": 64,
+   "w": 160
+  },
+  "bowtie_red_back": {
+   "file": "characters/penguin_wear/bowtie_red_back.png",
+   "h": 64,
+   "w": 54
+  },
+  "bowtie_red_front": {
+   "file": "characters/penguin_wear/bowtie_red_front.png",
+   "h": 64,
+   "w": 56
+  },
+  "bowtie_red_side": {
+   "file": "characters/penguin_wear/bowtie_red_side.png",
+   "h": 64,
+   "w": 48
+  },
+  "goggles_a_back": {
+   "file": "characters/penguin_wear/goggles_a_back.png",
+   "h": 64,
+   "w": 53
+  },
+  "goggles_a_front": {
+   "file": "characters/penguin_wear/goggles_a_front.png",
+   "h": 64,
+   "w": 151
+  },
+  "goggles_a_side": {
+   "file": "characters/penguin_wear/goggles_a_side.png",
+   "h": 64,
+   "w": 151
+  },
+  "goggles_b_back": {
+   "file": "characters/penguin_wear/goggles_b_back.png",
+   "h": 64,
+   "w": 95
+  },
+  "goggles_b_front": {
+   "file": "characters/penguin_wear/goggles_b_front.png",
+   "h": 64,
+   "w": 93
+  },
+  "goggles_b_side": {
+   "file": "characters/penguin_wear/goggles_b_side.png",
+   "h": 64,
+   "w": 53
+  },
+  "hat_beanie_back": {
+   "file": "characters/penguin_wear/hat_beanie_back.png",
+   "h": 64,
+   "w": 49
+  },
+  "hat_beanie_front": {
+   "file": "characters/penguin_wear/hat_beanie_front.png",
+   "h": 64,
+   "w": 50
+  },
+  "hat_beanie_side": {
+   "file": "characters/penguin_wear/hat_beanie_side.png",
+   "h": 64,
+   "w": 46
+  },
+  "hat_bucket_back": {
+   "file": "characters/penguin_wear/hat_bucket_back.png",
+   "h": 64,
+   "w": 64
+  },
+  "hat_bucket_front": {
+   "file": "characters/penguin_wear/hat_bucket_front.png",
+   "h": 64,
+   "w": 64
+  },
+  "hat_bucket_side": {
+   "file": "characters/penguin_wear/hat_bucket_side.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_crown_back": {
+   "file": "characters/penguin_wear/hat_crown_back.png",
+   "h": 64,
+   "w": 56
+  },
+  "hat_crown_front": {
+   "file": "characters/penguin_wear/hat_crown_front.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_crown_side": {
+   "file": "characters/penguin_wear/hat_crown_side.png",
+   "h": 64,
+   "w": 56
+  },
+  "hat_flower_crown_back": {
+   "file": "characters/penguin_wear/hat_flower_crown_back.png",
+   "h": 64,
+   "w": 63
+  },
+  "hat_flower_crown_front": {
+   "file": "characters/penguin_wear/hat_flower_crown_front.png",
+   "h": 64,
+   "w": 63
+  },
+  "hat_flower_crown_side": {
+   "file": "characters/penguin_wear/hat_flower_crown_side.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_miner_back": {
+   "file": "characters/penguin_wear/hat_miner_back.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_miner_front": {
+   "file": "characters/penguin_wear/hat_miner_front.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_miner_side": {
+   "file": "characters/penguin_wear/hat_miner_side.png",
+   "h": 64,
+   "w": 56
+  },
+  "hat_pumpkin_back": {
+   "file": "characters/penguin_wear/hat_pumpkin_back.png",
+   "h": 64,
+   "w": 55
+  },
+  "hat_pumpkin_front": {
+   "file": "characters/penguin_wear/hat_pumpkin_front.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_pumpkin_side": {
+   "file": "characters/penguin_wear/hat_pumpkin_side.png",
+   "h": 64,
+   "w": 52
+  },
+  "hat_sailor_back": {
+   "file": "characters/penguin_wear/hat_sailor_back.png",
+   "h": 64,
+   "w": 58
+  },
+  "hat_sailor_front": {
+   "file": "characters/penguin_wear/hat_sailor_front.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_sailor_side": {
+   "file": "characters/penguin_wear/hat_sailor_side.png",
+   "h": 64,
+   "w": 54
+  },
+  "hat_santa_back": {
+   "file": "characters/penguin_wear/hat_santa_back.png",
+   "h": 64,
+   "w": 57
+  },
+  "hat_santa_front": {
+   "file": "characters/penguin_wear/hat_santa_front.png",
+   "h": 64,
+   "w": 68
+  },
+  "hat_santa_side": {
+   "file": "characters/penguin_wear/hat_santa_side.png",
+   "h": 64,
+   "w": 61
+  },
+  "hat_straw_back": {
+   "file": "characters/penguin_wear/hat_straw_back.png",
+   "h": 64,
+   "w": 65
+  },
+  "hat_straw_front": {
+   "file": "characters/penguin_wear/hat_straw_front.png",
+   "h": 64,
+   "w": 66
+  },
+  "hat_straw_side": {
+   "file": "characters/penguin_wear/hat_straw_side.png",
+   "h": 64,
+   "w": 58
+  },
+  "hat_tophat_back": {
+   "file": "characters/penguin_wear/hat_tophat_back.png",
+   "h": 64,
+   "w": 52
+  },
+  "hat_tophat_front": {
+   "file": "characters/penguin_wear/hat_tophat_front.png",
+   "h": 64,
+   "w": 54
+  },
+  "hat_tophat_side": {
+   "file": "characters/penguin_wear/hat_tophat_side.png",
+   "h": 64,
+   "w": 51
+  },
+  "hat_visor_back": {
+   "file": "characters/penguin_wear/hat_visor_back.png",
+   "h": 64,
+   "w": 60
+  },
+  "hat_visor_front": {
+   "file": "characters/penguin_wear/hat_visor_front.png",
+   "h": 64,
+   "w": 60
+  },
+  "hat_visor_side": {
+   "file": "characters/penguin_wear/hat_visor_side.png",
+   "h": 64,
+   "w": 59
+  },
+  "hat_wizard_back": {
+   "file": "characters/penguin_wear/hat_wizard_back.png",
+   "h": 64,
+   "w": 56
+  },
+  "hat_wizard_front": {
+   "file": "characters/penguin_wear/hat_wizard_front.png",
+   "h": 64,
+   "w": 58
+  },
+  "hat_wizard_side": {
+   "file": "characters/penguin_wear/hat_wizard_side.png",
+   "h": 64,
+   "w": 52
+  },
+  "scarf_blue_back": {
+   "file": "characters/penguin_wear/scarf_blue_back.png",
+   "h": 64,
+   "w": 57
+  },
+  "scarf_blue_front": {
+   "file": "characters/penguin_wear/scarf_blue_front.png",
+   "h": 64,
+   "w": 59
+  },
+  "scarf_blue_side": {
+   "file": "characters/penguin_wear/scarf_blue_side.png",
+   "h": 64,
+   "w": 51
+  },
+  "scarf_green_back": {
+   "file": "characters/penguin_wear/scarf_green_back.png",
+   "h": 64,
+   "w": 56
+  },
+  "scarf_green_front": {
+   "file": "characters/penguin_wear/scarf_green_front.png",
+   "h": 64,
+   "w": 57
+  },
+  "scarf_green_side": {
+   "file": "characters/penguin_wear/scarf_green_side.png",
+   "h": 64,
+   "w": 51
+  },
+  "scarf_purple_back": {
+   "file": "characters/penguin_wear/scarf_purple_back.png",
+   "h": 64,
+   "w": 57
+  },
+  "scarf_purple_front": {
+   "file": "characters/penguin_wear/scarf_purple_front.png",
+   "h": 64,
+   "w": 58
+  },
+  "scarf_purple_side": {
+   "file": "characters/penguin_wear/scarf_purple_side.png",
+   "h": 64,
+   "w": 51
+  },
+  "scarf_red_back": {
+   "file": "characters/penguin_wear/scarf_red_back.png",
+   "h": 64,
+   "w": 56
+  },
+  "scarf_red_front": {
+   "file": "characters/penguin_wear/scarf_red_front.png",
+   "h": 64,
+   "w": 59
+  },
+  "scarf_red_side": {
+   "file": "characters/penguin_wear/scarf_red_side.png",
+   "h": 64,
+   "w": 51
+  },
+  "scarf_white_back": {
+   "file": "characters/penguin_wear/scarf_white_back.png",
+   "h": 64,
+   "w": 56
+  },
+  "scarf_white_front": {
+   "file": "characters/penguin_wear/scarf_white_front.png",
+   "h": 64,
+   "w": 58
+  },
+  "scarf_white_side": {
+   "file": "characters/penguin_wear/scarf_white_side.png",
+   "h": 64,
+   "w": 51
+  },
+  "scarf_yellow_back": {
+   "file": "characters/penguin_wear/scarf_yellow_back.png",
+   "h": 64,
+   "w": 57
+  },
+  "scarf_yellow_front": {
+   "file": "characters/penguin_wear/scarf_yellow_front.png",
+   "h": 64,
+   "w": 58
+  },
+  "scarf_yellow_side": {
+   "file": "characters/penguin_wear/scarf_yellow_side.png",
+   "h": 64,
+   "w": 51
+  },
+  "swatch_classic": {
+   "file": "characters/penguin_wear/swatch_classic.png",
+   "h": 64,
+   "w": 64
+  },
+  "swatch_midnight": {
+   "file": "characters/penguin_wear/swatch_midnight.png",
+   "h": 64,
+   "w": 64
+  },
+  "swatch_mint": {
+   "file": "characters/penguin_wear/swatch_mint.png",
+   "h": 64,
+   "w": 65
+  },
+  "swatch_rose": {
+   "file": "characters/penguin_wear/swatch_rose.png",
+   "h": 64,
+   "w": 65
+  },
+  "swatch_snow": {
+   "file": "characters/penguin_wear/swatch_snow.png",
+   "h": 64,
+   "w": 64
+  },
+  "swatch_sunset": {
+   "file": "characters/penguin_wear/swatch_sunset.png",
+   "h": 64,
+   "w": 64
   }
  },
  "characters/president": {
@@ -41228,6 +42853,56 @@
    "h": 26,
    "w": 32
   },
+  "pup_bandana": {
+   "file": "items/pup_bandana.png",
+   "h": 31,
+   "w": 32
+  },
+  "pup_boots": {
+   "file": "items/pup_boots.png",
+   "h": 32,
+   "w": 26
+  },
+  "pup_charm": {
+   "file": "items/pup_charm.png",
+   "h": 32,
+   "w": 17
+  },
+  "pup_collar_crystal": {
+   "file": "items/pup_collar_crystal.png",
+   "h": 30,
+   "w": 32
+  },
+  "pup_collar_iron": {
+   "file": "items/pup_collar_iron.png",
+   "h": 22,
+   "w": 32
+  },
+  "pup_collar_leather": {
+   "file": "items/pup_collar_leather.png",
+   "h": 24,
+   "w": 32
+  },
+  "pup_pack_large": {
+   "file": "items/pup_pack_large.png",
+   "h": 24,
+   "w": 32
+  },
+  "pup_pack_small": {
+   "file": "items/pup_pack_small.png",
+   "h": 26,
+   "w": 32
+  },
+  "pup_pack_trail": {
+   "file": "items/pup_pack_trail.png",
+   "h": 32,
+   "w": 31
+  },
+  "pup_treat": {
+   "file": "items/pup_treat.png",
+   "h": 22,
+   "w": 32
+  },
   "purple_carrot": {
    "file": "items/purple_carrot.png",
    "h": 32,
@@ -61081,6 +62756,1976 @@
    "h": 96,
    "w": 96
   },
+  "path2_cobble_bl_0": {
+   "file": "tiles/path2_cobble_bl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_bl_1": {
+   "file": "tiles/path2_cobble_bl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_bl_2": {
+   "file": "tiles/path2_cobble_bl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_bottom_0": {
+   "file": "tiles/path2_cobble_bottom_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_bottom_1": {
+   "file": "tiles/path2_cobble_bottom_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_bottom_2": {
+   "file": "tiles/path2_cobble_bottom_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_br_0": {
+   "file": "tiles/path2_cobble_br_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_br_1": {
+   "file": "tiles/path2_cobble_br_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_br_2": {
+   "file": "tiles/path2_cobble_br_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_deco_1": {
+   "file": "tiles/path2_cobble_deco_1.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_10": {
+   "file": "tiles/path2_cobble_deco_10.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_11": {
+   "file": "tiles/path2_cobble_deco_11.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_12": {
+   "file": "tiles/path2_cobble_deco_12.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_13": {
+   "file": "tiles/path2_cobble_deco_13.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_14": {
+   "file": "tiles/path2_cobble_deco_14.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_16": {
+   "file": "tiles/path2_cobble_deco_16.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_17": {
+   "file": "tiles/path2_cobble_deco_17.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_18": {
+   "file": "tiles/path2_cobble_deco_18.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_2": {
+   "file": "tiles/path2_cobble_deco_2.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_23": {
+   "file": "tiles/path2_cobble_deco_23.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_24": {
+   "file": "tiles/path2_cobble_deco_24.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_25": {
+   "file": "tiles/path2_cobble_deco_25.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_26": {
+   "file": "tiles/path2_cobble_deco_26.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_27": {
+   "file": "tiles/path2_cobble_deco_27.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_3": {
+   "file": "tiles/path2_cobble_deco_3.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_31": {
+   "file": "tiles/path2_cobble_deco_31.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_32": {
+   "file": "tiles/path2_cobble_deco_32.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_6": {
+   "file": "tiles/path2_cobble_deco_6.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_deco_7": {
+   "file": "tiles/path2_cobble_deco_7.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_cobble_diag_a_0": {
+   "file": "tiles/path2_cobble_diag_a_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_diag_a_1": {
+   "file": "tiles/path2_cobble_diag_a_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_diag_b_0": {
+   "file": "tiles/path2_cobble_diag_b_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_diag_b_1": {
+   "file": "tiles/path2_cobble_diag_b_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_0": {
+   "file": "tiles/path2_cobble_fill_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_1": {
+   "file": "tiles/path2_cobble_fill_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_10": {
+   "file": "tiles/path2_cobble_fill_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_11": {
+   "file": "tiles/path2_cobble_fill_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_12": {
+   "file": "tiles/path2_cobble_fill_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_13": {
+   "file": "tiles/path2_cobble_fill_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_14": {
+   "file": "tiles/path2_cobble_fill_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_15": {
+   "file": "tiles/path2_cobble_fill_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_16": {
+   "file": "tiles/path2_cobble_fill_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_17": {
+   "file": "tiles/path2_cobble_fill_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_18": {
+   "file": "tiles/path2_cobble_fill_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_19": {
+   "file": "tiles/path2_cobble_fill_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_2": {
+   "file": "tiles/path2_cobble_fill_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_20": {
+   "file": "tiles/path2_cobble_fill_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_21": {
+   "file": "tiles/path2_cobble_fill_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_22": {
+   "file": "tiles/path2_cobble_fill_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_23": {
+   "file": "tiles/path2_cobble_fill_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_24": {
+   "file": "tiles/path2_cobble_fill_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_25": {
+   "file": "tiles/path2_cobble_fill_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_26": {
+   "file": "tiles/path2_cobble_fill_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_27": {
+   "file": "tiles/path2_cobble_fill_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_28": {
+   "file": "tiles/path2_cobble_fill_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_29": {
+   "file": "tiles/path2_cobble_fill_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_3": {
+   "file": "tiles/path2_cobble_fill_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_30": {
+   "file": "tiles/path2_cobble_fill_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_31": {
+   "file": "tiles/path2_cobble_fill_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_32": {
+   "file": "tiles/path2_cobble_fill_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_33": {
+   "file": "tiles/path2_cobble_fill_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_34": {
+   "file": "tiles/path2_cobble_fill_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_35": {
+   "file": "tiles/path2_cobble_fill_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_36": {
+   "file": "tiles/path2_cobble_fill_36.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_37": {
+   "file": "tiles/path2_cobble_fill_37.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_38": {
+   "file": "tiles/path2_cobble_fill_38.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_39": {
+   "file": "tiles/path2_cobble_fill_39.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_4": {
+   "file": "tiles/path2_cobble_fill_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_40": {
+   "file": "tiles/path2_cobble_fill_40.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_41": {
+   "file": "tiles/path2_cobble_fill_41.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_5": {
+   "file": "tiles/path2_cobble_fill_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_6": {
+   "file": "tiles/path2_cobble_fill_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_7": {
+   "file": "tiles/path2_cobble_fill_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_8": {
+   "file": "tiles/path2_cobble_fill_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_fill_9": {
+   "file": "tiles/path2_cobble_fill_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_ibl_0": {
+   "file": "tiles/path2_cobble_ibl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_ibl_1": {
+   "file": "tiles/path2_cobble_ibl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_ibl_2": {
+   "file": "tiles/path2_cobble_ibl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_ibr_0": {
+   "file": "tiles/path2_cobble_ibr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_ibr_1": {
+   "file": "tiles/path2_cobble_ibr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_ibr_2": {
+   "file": "tiles/path2_cobble_ibr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_iso_0": {
+   "file": "tiles/path2_cobble_iso_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_iso_1": {
+   "file": "tiles/path2_cobble_iso_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_itl_0": {
+   "file": "tiles/path2_cobble_itl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_itl_1": {
+   "file": "tiles/path2_cobble_itl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_itl_2": {
+   "file": "tiles/path2_cobble_itl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_itr_0": {
+   "file": "tiles/path2_cobble_itr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_itr_1": {
+   "file": "tiles/path2_cobble_itr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_itr_2": {
+   "file": "tiles/path2_cobble_itr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_left_0": {
+   "file": "tiles/path2_cobble_left_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_left_1": {
+   "file": "tiles/path2_cobble_left_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_left_2": {
+   "file": "tiles/path2_cobble_left_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_lr_0": {
+   "file": "tiles/path2_cobble_lr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_lr_1": {
+   "file": "tiles/path2_cobble_lr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_left_0": {
+   "file": "tiles/path2_cobble_open_left_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_left_1": {
+   "file": "tiles/path2_cobble_open_left_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_left_2": {
+   "file": "tiles/path2_cobble_open_left_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_left_3": {
+   "file": "tiles/path2_cobble_open_left_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_right_0": {
+   "file": "tiles/path2_cobble_open_right_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_right_1": {
+   "file": "tiles/path2_cobble_open_right_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_right_2": {
+   "file": "tiles/path2_cobble_open_right_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_open_right_3": {
+   "file": "tiles/path2_cobble_open_right_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_right_0": {
+   "file": "tiles/path2_cobble_right_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_right_1": {
+   "file": "tiles/path2_cobble_right_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_right_2": {
+   "file": "tiles/path2_cobble_right_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_t_0": {
+   "file": "tiles/path2_cobble_t_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_t_1": {
+   "file": "tiles/path2_cobble_t_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_t_2": {
+   "file": "tiles/path2_cobble_t_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_t_3": {
+   "file": "tiles/path2_cobble_t_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tb_0": {
+   "file": "tiles/path2_cobble_tb_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tb_1": {
+   "file": "tiles/path2_cobble_tb_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tl_0": {
+   "file": "tiles/path2_cobble_tl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tl_1": {
+   "file": "tiles/path2_cobble_tl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tl_2": {
+   "file": "tiles/path2_cobble_tl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_top_0": {
+   "file": "tiles/path2_cobble_top_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_top_1": {
+   "file": "tiles/path2_cobble_top_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_top_2": {
+   "file": "tiles/path2_cobble_top_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tr_0": {
+   "file": "tiles/path2_cobble_tr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tr_1": {
+   "file": "tiles/path2_cobble_tr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_tr_2": {
+   "file": "tiles/path2_cobble_tr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_down_0": {
+   "file": "tiles/path2_cobble_u_down_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_down_1": {
+   "file": "tiles/path2_cobble_u_down_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_down_2": {
+   "file": "tiles/path2_cobble_u_down_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_down_3": {
+   "file": "tiles/path2_cobble_u_down_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_up_0": {
+   "file": "tiles/path2_cobble_u_up_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_up_1": {
+   "file": "tiles/path2_cobble_u_up_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_up_2": {
+   "file": "tiles/path2_cobble_u_up_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_cobble_u_up_3": {
+   "file": "tiles/path2_cobble_u_up_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_bl_0": {
+   "file": "tiles/path2_dirt_bl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_bl_1": {
+   "file": "tiles/path2_dirt_bl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_bl_2": {
+   "file": "tiles/path2_dirt_bl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_bottom_0": {
+   "file": "tiles/path2_dirt_bottom_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_bottom_1": {
+   "file": "tiles/path2_dirt_bottom_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_bottom_2": {
+   "file": "tiles/path2_dirt_bottom_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_br_0": {
+   "file": "tiles/path2_dirt_br_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_br_1": {
+   "file": "tiles/path2_dirt_br_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_br_2": {
+   "file": "tiles/path2_dirt_br_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_deco_0": {
+   "file": "tiles/path2_dirt_deco_0.png",
+   "h": 29,
+   "w": 32
+  },
+  "path2_dirt_deco_1": {
+   "file": "tiles/path2_dirt_deco_1.png",
+   "h": 32,
+   "w": 19
+  },
+  "path2_dirt_deco_10": {
+   "file": "tiles/path2_dirt_deco_10.png",
+   "h": 32,
+   "w": 9
+  },
+  "path2_dirt_deco_11": {
+   "file": "tiles/path2_dirt_deco_11.png",
+   "h": 19,
+   "w": 32
+  },
+  "path2_dirt_deco_12": {
+   "file": "tiles/path2_dirt_deco_12.png",
+   "h": 20,
+   "w": 32
+  },
+  "path2_dirt_deco_13": {
+   "file": "tiles/path2_dirt_deco_13.png",
+   "h": 20,
+   "w": 32
+  },
+  "path2_dirt_deco_14": {
+   "file": "tiles/path2_dirt_deco_14.png",
+   "h": 32,
+   "w": 22
+  },
+  "path2_dirt_deco_15": {
+   "file": "tiles/path2_dirt_deco_15.png",
+   "h": 32,
+   "w": 23
+  },
+  "path2_dirt_deco_16": {
+   "file": "tiles/path2_dirt_deco_16.png",
+   "h": 32,
+   "w": 29
+  },
+  "path2_dirt_deco_17": {
+   "file": "tiles/path2_dirt_deco_17.png",
+   "h": 32,
+   "w": 15
+  },
+  "path2_dirt_deco_18": {
+   "file": "tiles/path2_dirt_deco_18.png",
+   "h": 31,
+   "w": 32
+  },
+  "path2_dirt_deco_19": {
+   "file": "tiles/path2_dirt_deco_19.png",
+   "h": 32,
+   "w": 27
+  },
+  "path2_dirt_deco_2": {
+   "file": "tiles/path2_dirt_deco_2.png",
+   "h": 30,
+   "w": 32
+  },
+  "path2_dirt_deco_20": {
+   "file": "tiles/path2_dirt_deco_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_deco_21": {
+   "file": "tiles/path2_dirt_deco_21.png",
+   "h": 23,
+   "w": 32
+  },
+  "path2_dirt_deco_22": {
+   "file": "tiles/path2_dirt_deco_22.png",
+   "h": 18,
+   "w": 32
+  },
+  "path2_dirt_deco_23": {
+   "file": "tiles/path2_dirt_deco_23.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_dirt_deco_24": {
+   "file": "tiles/path2_dirt_deco_24.png",
+   "h": 32,
+   "w": 20
+  },
+  "path2_dirt_deco_25": {
+   "file": "tiles/path2_dirt_deco_25.png",
+   "h": 32,
+   "w": 31
+  },
+  "path2_dirt_deco_26": {
+   "file": "tiles/path2_dirt_deco_26.png",
+   "h": 32,
+   "w": 21
+  },
+  "path2_dirt_deco_27": {
+   "file": "tiles/path2_dirt_deco_27.png",
+   "h": 32,
+   "w": 20
+  },
+  "path2_dirt_deco_28": {
+   "file": "tiles/path2_dirt_deco_28.png",
+   "h": 32,
+   "w": 27
+  },
+  "path2_dirt_deco_29": {
+   "file": "tiles/path2_dirt_deco_29.png",
+   "h": 32,
+   "w": 21
+  },
+  "path2_dirt_deco_3": {
+   "file": "tiles/path2_dirt_deco_3.png",
+   "h": 32,
+   "w": 22
+  },
+  "path2_dirt_deco_30": {
+   "file": "tiles/path2_dirt_deco_30.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_dirt_deco_31": {
+   "file": "tiles/path2_dirt_deco_31.png",
+   "h": 32,
+   "w": 9
+  },
+  "path2_dirt_deco_32": {
+   "file": "tiles/path2_dirt_deco_32.png",
+   "h": 32,
+   "w": 15
+  },
+  "path2_dirt_deco_33": {
+   "file": "tiles/path2_dirt_deco_33.png",
+   "h": 30,
+   "w": 32
+  },
+  "path2_dirt_deco_34": {
+   "file": "tiles/path2_dirt_deco_34.png",
+   "h": 29,
+   "w": 32
+  },
+  "path2_dirt_deco_35": {
+   "file": "tiles/path2_dirt_deco_35.png",
+   "h": 25,
+   "w": 32
+  },
+  "path2_dirt_deco_36": {
+   "file": "tiles/path2_dirt_deco_36.png",
+   "h": 25,
+   "w": 32
+  },
+  "path2_dirt_deco_37": {
+   "file": "tiles/path2_dirt_deco_37.png",
+   "h": 26,
+   "w": 32
+  },
+  "path2_dirt_deco_4": {
+   "file": "tiles/path2_dirt_deco_4.png",
+   "h": 26,
+   "w": 32
+  },
+  "path2_dirt_deco_5": {
+   "file": "tiles/path2_dirt_deco_5.png",
+   "h": 26,
+   "w": 32
+  },
+  "path2_dirt_deco_6": {
+   "file": "tiles/path2_dirt_deco_6.png",
+   "h": 32,
+   "w": 15
+  },
+  "path2_dirt_deco_7": {
+   "file": "tiles/path2_dirt_deco_7.png",
+   "h": 26,
+   "w": 32
+  },
+  "path2_dirt_deco_8": {
+   "file": "tiles/path2_dirt_deco_8.png",
+   "h": 32,
+   "w": 14
+  },
+  "path2_dirt_deco_9": {
+   "file": "tiles/path2_dirt_deco_9.png",
+   "h": 32,
+   "w": 12
+  },
+  "path2_dirt_diag_a_0": {
+   "file": "tiles/path2_dirt_diag_a_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_diag_a_1": {
+   "file": "tiles/path2_dirt_diag_a_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_diag_b_0": {
+   "file": "tiles/path2_dirt_diag_b_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_diag_b_1": {
+   "file": "tiles/path2_dirt_diag_b_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_0": {
+   "file": "tiles/path2_dirt_fill_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_1": {
+   "file": "tiles/path2_dirt_fill_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_10": {
+   "file": "tiles/path2_dirt_fill_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_11": {
+   "file": "tiles/path2_dirt_fill_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_12": {
+   "file": "tiles/path2_dirt_fill_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_13": {
+   "file": "tiles/path2_dirt_fill_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_14": {
+   "file": "tiles/path2_dirt_fill_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_15": {
+   "file": "tiles/path2_dirt_fill_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_16": {
+   "file": "tiles/path2_dirt_fill_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_17": {
+   "file": "tiles/path2_dirt_fill_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_18": {
+   "file": "tiles/path2_dirt_fill_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_19": {
+   "file": "tiles/path2_dirt_fill_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_2": {
+   "file": "tiles/path2_dirt_fill_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_20": {
+   "file": "tiles/path2_dirt_fill_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_21": {
+   "file": "tiles/path2_dirt_fill_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_22": {
+   "file": "tiles/path2_dirt_fill_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_23": {
+   "file": "tiles/path2_dirt_fill_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_24": {
+   "file": "tiles/path2_dirt_fill_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_25": {
+   "file": "tiles/path2_dirt_fill_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_26": {
+   "file": "tiles/path2_dirt_fill_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_27": {
+   "file": "tiles/path2_dirt_fill_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_28": {
+   "file": "tiles/path2_dirt_fill_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_29": {
+   "file": "tiles/path2_dirt_fill_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_3": {
+   "file": "tiles/path2_dirt_fill_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_30": {
+   "file": "tiles/path2_dirt_fill_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_31": {
+   "file": "tiles/path2_dirt_fill_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_32": {
+   "file": "tiles/path2_dirt_fill_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_33": {
+   "file": "tiles/path2_dirt_fill_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_34": {
+   "file": "tiles/path2_dirt_fill_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_35": {
+   "file": "tiles/path2_dirt_fill_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_36": {
+   "file": "tiles/path2_dirt_fill_36.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_37": {
+   "file": "tiles/path2_dirt_fill_37.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_38": {
+   "file": "tiles/path2_dirt_fill_38.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_4": {
+   "file": "tiles/path2_dirt_fill_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_5": {
+   "file": "tiles/path2_dirt_fill_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_6": {
+   "file": "tiles/path2_dirt_fill_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_7": {
+   "file": "tiles/path2_dirt_fill_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_8": {
+   "file": "tiles/path2_dirt_fill_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_fill_9": {
+   "file": "tiles/path2_dirt_fill_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_ibl_0": {
+   "file": "tiles/path2_dirt_ibl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_ibl_1": {
+   "file": "tiles/path2_dirt_ibl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_ibl_2": {
+   "file": "tiles/path2_dirt_ibl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_ibr_0": {
+   "file": "tiles/path2_dirt_ibr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_ibr_1": {
+   "file": "tiles/path2_dirt_ibr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_ibr_2": {
+   "file": "tiles/path2_dirt_ibr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_iso_0": {
+   "file": "tiles/path2_dirt_iso_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_iso_1": {
+   "file": "tiles/path2_dirt_iso_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_itl_0": {
+   "file": "tiles/path2_dirt_itl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_itl_1": {
+   "file": "tiles/path2_dirt_itl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_itl_2": {
+   "file": "tiles/path2_dirt_itl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_itr_0": {
+   "file": "tiles/path2_dirt_itr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_itr_1": {
+   "file": "tiles/path2_dirt_itr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_itr_2": {
+   "file": "tiles/path2_dirt_itr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_left_0": {
+   "file": "tiles/path2_dirt_left_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_left_1": {
+   "file": "tiles/path2_dirt_left_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_left_2": {
+   "file": "tiles/path2_dirt_left_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_lr_0": {
+   "file": "tiles/path2_dirt_lr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_lr_1": {
+   "file": "tiles/path2_dirt_lr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_left_0": {
+   "file": "tiles/path2_dirt_open_left_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_left_1": {
+   "file": "tiles/path2_dirt_open_left_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_left_2": {
+   "file": "tiles/path2_dirt_open_left_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_left_3": {
+   "file": "tiles/path2_dirt_open_left_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_right_0": {
+   "file": "tiles/path2_dirt_open_right_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_right_1": {
+   "file": "tiles/path2_dirt_open_right_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_right_2": {
+   "file": "tiles/path2_dirt_open_right_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_open_right_3": {
+   "file": "tiles/path2_dirt_open_right_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_right_0": {
+   "file": "tiles/path2_dirt_right_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_right_1": {
+   "file": "tiles/path2_dirt_right_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_right_2": {
+   "file": "tiles/path2_dirt_right_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_t_0": {
+   "file": "tiles/path2_dirt_t_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_t_1": {
+   "file": "tiles/path2_dirt_t_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_t_2": {
+   "file": "tiles/path2_dirt_t_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_t_3": {
+   "file": "tiles/path2_dirt_t_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tb_0": {
+   "file": "tiles/path2_dirt_tb_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tb_1": {
+   "file": "tiles/path2_dirt_tb_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tl_0": {
+   "file": "tiles/path2_dirt_tl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tl_1": {
+   "file": "tiles/path2_dirt_tl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tl_2": {
+   "file": "tiles/path2_dirt_tl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_top_0": {
+   "file": "tiles/path2_dirt_top_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_top_1": {
+   "file": "tiles/path2_dirt_top_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_top_2": {
+   "file": "tiles/path2_dirt_top_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tr_0": {
+   "file": "tiles/path2_dirt_tr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tr_1": {
+   "file": "tiles/path2_dirt_tr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_tr_2": {
+   "file": "tiles/path2_dirt_tr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_down_0": {
+   "file": "tiles/path2_dirt_u_down_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_down_1": {
+   "file": "tiles/path2_dirt_u_down_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_down_2": {
+   "file": "tiles/path2_dirt_u_down_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_down_3": {
+   "file": "tiles/path2_dirt_u_down_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_up_0": {
+   "file": "tiles/path2_dirt_u_up_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_up_1": {
+   "file": "tiles/path2_dirt_u_up_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_up_2": {
+   "file": "tiles/path2_dirt_u_up_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_dirt_u_up_3": {
+   "file": "tiles/path2_dirt_u_up_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_bl_0": {
+   "file": "tiles/path2_sand_bl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_bl_1": {
+   "file": "tiles/path2_sand_bl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_bl_2": {
+   "file": "tiles/path2_sand_bl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_bottom_0": {
+   "file": "tiles/path2_sand_bottom_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_bottom_1": {
+   "file": "tiles/path2_sand_bottom_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_bottom_2": {
+   "file": "tiles/path2_sand_bottom_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_br_0": {
+   "file": "tiles/path2_sand_br_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_br_1": {
+   "file": "tiles/path2_sand_br_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_br_2": {
+   "file": "tiles/path2_sand_br_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_deco_0": {
+   "file": "tiles/path2_sand_deco_0.png",
+   "h": 32,
+   "w": 27
+  },
+  "path2_sand_deco_1": {
+   "file": "tiles/path2_sand_deco_1.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_10": {
+   "file": "tiles/path2_sand_deco_10.png",
+   "h": 32,
+   "w": 27
+  },
+  "path2_sand_deco_11": {
+   "file": "tiles/path2_sand_deco_11.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_14": {
+   "file": "tiles/path2_sand_deco_14.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_15": {
+   "file": "tiles/path2_sand_deco_15.png",
+   "h": 32,
+   "w": 27
+  },
+  "path2_sand_deco_19": {
+   "file": "tiles/path2_sand_deco_19.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_20": {
+   "file": "tiles/path2_sand_deco_20.png",
+   "h": 32,
+   "w": 27
+  },
+  "path2_sand_deco_21": {
+   "file": "tiles/path2_sand_deco_21.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_24": {
+   "file": "tiles/path2_sand_deco_24.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_35": {
+   "file": "tiles/path2_sand_deco_35.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_4": {
+   "file": "tiles/path2_sand_deco_4.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_5": {
+   "file": "tiles/path2_sand_deco_5.png",
+   "h": 32,
+   "w": 27
+  },
+  "path2_sand_deco_6": {
+   "file": "tiles/path2_sand_deco_6.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_deco_7": {
+   "file": "tiles/path2_sand_deco_7.png",
+   "h": 32,
+   "w": 28
+  },
+  "path2_sand_diag_a_0": {
+   "file": "tiles/path2_sand_diag_a_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_diag_a_1": {
+   "file": "tiles/path2_sand_diag_a_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_diag_b_0": {
+   "file": "tiles/path2_sand_diag_b_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_diag_b_1": {
+   "file": "tiles/path2_sand_diag_b_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_0": {
+   "file": "tiles/path2_sand_fill_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_1": {
+   "file": "tiles/path2_sand_fill_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_10": {
+   "file": "tiles/path2_sand_fill_10.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_11": {
+   "file": "tiles/path2_sand_fill_11.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_12": {
+   "file": "tiles/path2_sand_fill_12.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_13": {
+   "file": "tiles/path2_sand_fill_13.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_14": {
+   "file": "tiles/path2_sand_fill_14.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_15": {
+   "file": "tiles/path2_sand_fill_15.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_16": {
+   "file": "tiles/path2_sand_fill_16.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_17": {
+   "file": "tiles/path2_sand_fill_17.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_18": {
+   "file": "tiles/path2_sand_fill_18.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_19": {
+   "file": "tiles/path2_sand_fill_19.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_2": {
+   "file": "tiles/path2_sand_fill_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_20": {
+   "file": "tiles/path2_sand_fill_20.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_21": {
+   "file": "tiles/path2_sand_fill_21.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_22": {
+   "file": "tiles/path2_sand_fill_22.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_23": {
+   "file": "tiles/path2_sand_fill_23.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_24": {
+   "file": "tiles/path2_sand_fill_24.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_25": {
+   "file": "tiles/path2_sand_fill_25.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_26": {
+   "file": "tiles/path2_sand_fill_26.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_27": {
+   "file": "tiles/path2_sand_fill_27.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_28": {
+   "file": "tiles/path2_sand_fill_28.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_29": {
+   "file": "tiles/path2_sand_fill_29.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_3": {
+   "file": "tiles/path2_sand_fill_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_30": {
+   "file": "tiles/path2_sand_fill_30.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_31": {
+   "file": "tiles/path2_sand_fill_31.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_32": {
+   "file": "tiles/path2_sand_fill_32.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_33": {
+   "file": "tiles/path2_sand_fill_33.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_34": {
+   "file": "tiles/path2_sand_fill_34.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_35": {
+   "file": "tiles/path2_sand_fill_35.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_36": {
+   "file": "tiles/path2_sand_fill_36.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_37": {
+   "file": "tiles/path2_sand_fill_37.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_38": {
+   "file": "tiles/path2_sand_fill_38.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_39": {
+   "file": "tiles/path2_sand_fill_39.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_4": {
+   "file": "tiles/path2_sand_fill_4.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_40": {
+   "file": "tiles/path2_sand_fill_40.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_41": {
+   "file": "tiles/path2_sand_fill_41.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_5": {
+   "file": "tiles/path2_sand_fill_5.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_6": {
+   "file": "tiles/path2_sand_fill_6.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_7": {
+   "file": "tiles/path2_sand_fill_7.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_8": {
+   "file": "tiles/path2_sand_fill_8.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_fill_9": {
+   "file": "tiles/path2_sand_fill_9.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_ibl_0": {
+   "file": "tiles/path2_sand_ibl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_ibl_1": {
+   "file": "tiles/path2_sand_ibl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_ibl_2": {
+   "file": "tiles/path2_sand_ibl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_ibr_0": {
+   "file": "tiles/path2_sand_ibr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_ibr_1": {
+   "file": "tiles/path2_sand_ibr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_ibr_2": {
+   "file": "tiles/path2_sand_ibr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_iso_0": {
+   "file": "tiles/path2_sand_iso_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_iso_1": {
+   "file": "tiles/path2_sand_iso_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_itl_0": {
+   "file": "tiles/path2_sand_itl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_itl_1": {
+   "file": "tiles/path2_sand_itl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_itl_2": {
+   "file": "tiles/path2_sand_itl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_itr_0": {
+   "file": "tiles/path2_sand_itr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_itr_1": {
+   "file": "tiles/path2_sand_itr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_itr_2": {
+   "file": "tiles/path2_sand_itr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_left_0": {
+   "file": "tiles/path2_sand_left_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_left_1": {
+   "file": "tiles/path2_sand_left_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_left_2": {
+   "file": "tiles/path2_sand_left_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_lr_0": {
+   "file": "tiles/path2_sand_lr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_lr_1": {
+   "file": "tiles/path2_sand_lr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_left_0": {
+   "file": "tiles/path2_sand_open_left_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_left_1": {
+   "file": "tiles/path2_sand_open_left_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_left_2": {
+   "file": "tiles/path2_sand_open_left_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_left_3": {
+   "file": "tiles/path2_sand_open_left_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_right_0": {
+   "file": "tiles/path2_sand_open_right_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_right_1": {
+   "file": "tiles/path2_sand_open_right_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_right_2": {
+   "file": "tiles/path2_sand_open_right_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_open_right_3": {
+   "file": "tiles/path2_sand_open_right_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_right_0": {
+   "file": "tiles/path2_sand_right_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_right_1": {
+   "file": "tiles/path2_sand_right_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_right_2": {
+   "file": "tiles/path2_sand_right_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_t_0": {
+   "file": "tiles/path2_sand_t_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_t_1": {
+   "file": "tiles/path2_sand_t_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_t_2": {
+   "file": "tiles/path2_sand_t_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_t_3": {
+   "file": "tiles/path2_sand_t_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tb_0": {
+   "file": "tiles/path2_sand_tb_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tb_1": {
+   "file": "tiles/path2_sand_tb_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tl_0": {
+   "file": "tiles/path2_sand_tl_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tl_1": {
+   "file": "tiles/path2_sand_tl_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tl_2": {
+   "file": "tiles/path2_sand_tl_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_top_0": {
+   "file": "tiles/path2_sand_top_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_top_1": {
+   "file": "tiles/path2_sand_top_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_top_2": {
+   "file": "tiles/path2_sand_top_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tr_0": {
+   "file": "tiles/path2_sand_tr_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tr_1": {
+   "file": "tiles/path2_sand_tr_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_tr_2": {
+   "file": "tiles/path2_sand_tr_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_down_0": {
+   "file": "tiles/path2_sand_u_down_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_down_1": {
+   "file": "tiles/path2_sand_u_down_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_down_2": {
+   "file": "tiles/path2_sand_u_down_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_down_3": {
+   "file": "tiles/path2_sand_u_down_3.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_up_0": {
+   "file": "tiles/path2_sand_u_up_0.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_up_1": {
+   "file": "tiles/path2_sand_u_up_1.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_up_2": {
+   "file": "tiles/path2_sand_u_up_2.png",
+   "h": 32,
+   "w": 32
+  },
+  "path2_sand_u_up_3": {
+   "file": "tiles/path2_sand_u_up_3.png",
+   "h": 32,
+   "w": 32
+  },
   "path_cobble_bl_0": {
    "file": "tiles/path_cobble_bl_0.png",
    "h": 32,
@@ -77860,6 +81505,36 @@
    "h": 21,
    "w": 24
   },
+  "cmd_attack": {
+   "file": "ui/cmd_attack.png",
+   "h": 47,
+   "w": 48
+  },
+  "cmd_guard": {
+   "file": "ui/cmd_guard.png",
+   "h": 47,
+   "w": 48
+  },
+  "cmd_heel": {
+   "file": "ui/cmd_heel.png",
+   "h": 47,
+   "w": 48
+  },
+  "cmd_pack": {
+   "file": "ui/cmd_pack.png",
+   "h": 47,
+   "w": 48
+  },
+  "cmd_recall": {
+   "file": "ui/cmd_recall.png",
+   "h": 47,
+   "w": 48
+  },
+  "cmd_stay": {
+   "file": "ui/cmd_stay.png",
+   "h": 47,
+   "w": 48
+  },
   "cold": {
    "file": "ui/cold.png",
    "h": 24,
@@ -80350,6 +84025,11 @@
    "h": 75,
    "w": 101
   },
+  "tab_pup": {
+   "file": "ui/tab_pup.png",
+   "h": 45,
+   "w": 48
+  },
   "tab_quests": {
    "file": "ui/tab_quests.png",
    "h": 74,
@@ -80422,8 +84102,8 @@
   },
   "title_portrait": {
    "file": "ui/title_portrait.png",
-   "h": 690,
-   "w": 388
+   "h": 1672,
+   "w": 941
   },
   "toast_banner": {
    "file": "ui/toast_banner.png",
@@ -80502,8 +84182,8 @@
   },
   "wordmark_glow": {
    "file": "ui/wordmark_glow.png",
-   "h": 89,
-   "w": 346
+   "h": 414,
+   "w": 1495
   },
   "wordmark_moon": {
    "file": "ui/wordmark_moon.png",
@@ -80514,6 +84194,11 @@
    "file": "ui/wordmark_plain.png",
    "h": 82,
    "w": 336
+  },
+  "wordmark_small": {
+   "file": "ui/wordmark_small.png",
+   "h": 199,
+   "w": 751
   },
   "world_map": {
    "file": "ui/world_map.png",

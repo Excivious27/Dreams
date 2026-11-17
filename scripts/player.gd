@@ -86,6 +86,48 @@ static func dress_penguin(parent: Node2D, anim: AnimatedSprite2D, look: Dictiona
 	holder.z_index = 1
 	parent.add_child(holder)
 	var sprite_h := 14.0 * extra_scale  # TARGET_H for the penguin
+	var W := "characters/penguin_wear"
+	if Art.has(W, "scarf_red_front") and (scarf == "" or Art.has(W, "scarf_%s_front" % scarf)):
+		# Painted wearables (Prompts 10): a full penguin-sized overlay per view; the
+		# body shows through where the overlay is transparent... these sheets draw
+		# the whole penguin, so we show the overlay INSTEAD of the body when idle.
+		var ov := Sprite2D.new()
+		ov.name = "PenguinDressOverlay"
+		ov.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		ov.centered = true
+		holder.add_child(ov)
+		var pick := func(view: String) -> Texture2D:
+			var hat_name := "hat_%s_%s" % [hat, view]
+			if hat != "" and Art.has(W, hat_name):
+				return Art.tex(W, hat_name)
+			var sc_name := "scarf_%s_%s" % [scarf, view]
+			if scarf != "" and Art.has(W, sc_name):
+				return Art.tex(W, sc_name)
+			return null
+		var upd := func() -> void:
+			if not is_instance_valid(holder) or not is_instance_valid(anim):
+				return
+			var an := anim.animation
+			var idle := an in ["idle", "view_front", "view_right", "view_left", "view_back"]
+			var view := "front"
+			if an in ["view_right", "view_left"]:
+				view = "side"
+			elif an == "view_back":
+				view = "back"
+			var t: Texture2D = pick.call(view) if idle else null
+			ov.visible = t != null
+			anim.visible = t == null
+			if t:
+				ov.texture = t
+				ov.scale = anim.scale
+				ov.position = anim.position
+				ov.offset = Vector2(0, -t.get_height() / 2.0)
+				ov.flip_h = an == "view_left"
+				ov.modulate = anim.modulate
+		anim.frame_changed.connect(upd)
+		anim.animation_changed.connect(upd)
+		upd.call()
+		return
 	if scarf != "" and PaperDoll.SCARF_COLORS.has(scarf) and str(PaperDoll.SCARF_COLORS[scarf]) != "":
 		var col := Color(str(PaperDoll.SCARF_COLORS[scarf]))
 		var band := Node2D.new()
@@ -394,7 +436,7 @@ func _physics_process(delta: float) -> void:
 			if _play_left > 0.0 and dir == Vector2.ZERO:
 				return
 			_busy = false
-		elif anim_name == "attack":
+		elif anim_name.begins_with("attack"):
 			if _anim and not _attack_hit_done:
 				_attack_hit()
 			# A swing never locks you for long: cancel into movement after the hit.
@@ -512,6 +554,8 @@ func _physics_process(delta: float) -> void:
 func play_tool(action: String, restart := true) -> bool:
 	var d := "right" if facing in ["left", "right"] else facing
 	var a := action + "_" + d
+	if not has_anim(a) and has_anim(action + "_right"):
+		a = action + "_right"
 	if not has_anim(a):
 		return false
 	_busy = true
@@ -587,7 +631,13 @@ func _swing() -> void:
 	_combo = (_combo + 1) % 3
 	velocity = Vector2.ZERO
 	_sprite.position.y = 0
-	_apply("attack", facing == "left", true)
+	# Directional attack strips when the character has them (penguin); else the side one flipped.
+	var atk := "attack"
+	if facing == "down" and has_anim("attack_down"):
+		atk = "attack_down"
+	elif facing == "up" and has_anim("attack_up"):
+		atk = "attack_up"
+	_apply(atk, facing == "left" and atk == "attack", true)
 	if _anim:
 		_anim.speed_scale = 1.6
 	_attack_hit()
@@ -735,6 +785,6 @@ func _apply(a: String, flip: bool, restart := false) -> void:
 
 
 func _on_animation_finished() -> void:
-	if anim_name == "attack" or anim_name == "powerup" or not _anim.sprite_frames.get_animation_loop(anim_name):
+	if anim_name.begins_with("attack") or anim_name == "powerup" or not _anim.sprite_frames.get_animation_loop(anim_name):
 		_busy = false
 		_show_idle()

@@ -51,7 +51,10 @@ func _build() -> void:
 		look["tint"] = str(PaperDoll.PENGUIN_TINTS.get(str(look.get("tint_name", "classic")), "ffffff"))
 		_picker("Scarf", PaperDoll.SCARF_COLORS.keys(), "scarf", func(v: String) -> String: return "None" if v == "" else v.capitalize())
 		var phats: Array = [""]
-		phats.append_array(PaperDoll.hat_styles())
+		if Art.has("characters/penguin_wear", "hat_straw_front"):
+			phats.append_array(["straw", "beanie", "tophat", "wizard", "flower_crown", "miner", "sailor", "crown", "pumpkin", "santa", "bucket", "visor"])
+		else:
+			phats.append_array(PaperDoll.hat_styles())
 		_picker("Hat", phats, "hat", func(v: String) -> String: return "None" if v == "" else v.replace("_", " ").capitalize())
 		var ppets: Array = [""]
 		for k in Art.manifest().keys():

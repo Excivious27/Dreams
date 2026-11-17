@@ -14,13 +14,18 @@ const HERO_H := 26.0
 const TARGET_H := {"penguin": 14.0, "dog": 15.0, "light_crystal": 16.0, "president": 30.0}
 const VIEW_NAMES: Array[String] = ["view_front", "view_right", "view_back", "view_left"]
 const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0, "hurt": 6.0, "speak": 6.0, "charge": 6.0}
-const LOOPS := {"attack": false, "powerup": false, "hurt": false}
+const LOOPS := {"bite": false, "howl": false, "beg": false, "attack": false, "attack_down": false, "attack_up": false, "powerup": false, "hurt": false, "faint": false, "dive": false, "cast_down": false, "cast_side": false, "cast_up": false,
+	"hoe_down": false, "hoe_right": false, "hoe_up": false, "water_down": false, "water_right": false, "water_up": false, "axe_down": false, "axe_right": false, "axe_up": false,
+	"pickaxe_down": false, "pickaxe_right": false, "pickaxe_up": false, "cast_right": false, "reel_right": false, "hold_down": false, "eat_down": false}
 ## Tool-use actions (from Tom's tool sheets), each with _down/_right/_up strips.
 const TOOL_ACTIONS := ["hoe", "water", "axe", "pickaxe", "cast", "reel", "hold", "eat"]
 const TOOL_FPS := {"hoe": 10.0, "water": 8.0, "axe": 10.0, "pickaxe": 10.0, "cast": 8.0, "reel": 8.0, "hold": 8.0, "eat": 6.0}
 ## Characters that exist only in art/gen (no pack folder). Value = the strips to load.
 const GEN_ONLY := {
-	"penguin": ["idle", "walk", "run", "attack", "powerup", "view_front", "view_right", "view_back", "view_left"],
+	"penguin": ["idle", "walk", "run", "attack", "attack_down", "attack_up", "hurt", "faint", "powerup", "view_front", "view_right", "view_back", "view_left",
+		"hoe_down", "hoe_right", "hoe_up", "water_down", "water_right", "water_up", "axe_down", "axe_right", "axe_up", "pickaxe_down", "pickaxe_right", "pickaxe_up",
+		"cast_right", "reel_right", "hold_down", "eat_down", "sit", "sleep", "wave", "swim", "swim_down", "swim_up", "float", "dive",
+		"ride", "ride_run", "ride_down", "ride_up", "carry", "pet", "dance", "laugh", "umbrella", "shiver", "cheer", "cast_down", "cast_side", "cast_up", "wings"],
 	"man_gang": ["walk", "walk_down", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"],
 	"son_gang": ["walk", "walk_down", "attack", "hurt", "view_front", "view_right", "view_back", "view_left"],
 	"president": ["idle", "attack", "charge", "hurt", "view_front", "view_right", "view_back", "view_left"],
@@ -117,7 +122,7 @@ static func frames_for(id: String) -> SpriteFrames:
 		at.region = Rect2(i * w, 0, w, h)
 		sf.add_frame(anim, at)
 	# New frames from Tom's uploads (walking toward/away, dog sit/dig, tool use).
-	var extra := {"walk_down": "walk_down", "walk_up": "walk_up", "run_down": "run_down", "run_up": "run_up", "sit": "sit", "dig": "dig"}
+	var extra := {"walk_down": "walk_down", "walk_up": "walk_up", "run_down": "run_down", "run_up": "run_up", "sit": "sit", "dig": "dig", "bite": "bite", "bark": "bark2", "hurt": "hurt", "limp": "limp", "guard": "guard", "howl": "howl", "fetch": "fetch", "beg": "beg", "sleep": "sleep"}
 	var tfps := {}
 	var tloops := {}
 	for a: String in TOOL_ACTIONS:

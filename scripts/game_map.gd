@@ -105,7 +105,11 @@ func _ready() -> void:
 		if pet_kind != "" and Art.has("animals/" + pet_kind, "idle"):
 			# Prompts-09 pets (corgi, shepherd, hound, white dog, cats); "" = Tom's original pup.
 			_pet_anim = AnimatedSprite2D.new()
-			_pet_anim.sprite_frames = Art.frames("animals/" + pet_kind, {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "bark": "bark", "play": "play"}, {"idle": 2.0, "walk": 8.0, "run": 12.0, "sit": 1.0, "sleep": 1.0, "bark": 4.0, "play": 4.0})
+			var anims := {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "bark": "bark", "play": "play"}
+			for extra in ["bite", "hurt", "limp", "guard", "howl", "dig", "fetch", "beg"]:
+				if Art.has("animals/" + pet_kind, extra):
+					anims[extra] = extra
+			_pet_anim.sprite_frames = Art.frames("animals/" + pet_kind, anims, {"idle": 2.0, "walk": 8.0, "run": 12.0, "sit": 1.0, "sleep": 1.0, "bark": 4.0, "play": 4.0, "bite": 10.0, "hurt": 6.0, "limp": 5.0, "guard": 2.0, "howl": 4.0, "dig": 8.0, "fetch": 8.0, "beg": 2.0}, {"bite": false, "hurt": false, "howl": false})
 			_pet_anim.scale = Vector2(0.5, 0.5)
 			_pet_anim.animation = "idle"
 			_pet_anim.frame_changed.connect(func() -> void:
@@ -1409,6 +1413,17 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 	var tset := "t_" + kind
 	var fill: String = {"dirt": "dirt", "sand": "sand", "stone": "g_gravel"}.get(kind, "dirt")
 	var blob: String = {"dirt": "path_dirt", "sand": "path_sand", "stone": "path_cobble", "cobble": "path_cobble", "snow": "path_snow"}.get(kind, "")
+	# Prompts 10 clean path sets (smooth rims, seamless fills) when sliced.
+	var blob2: String = {"cobble": "path2_cobble", "stone": "path2_cobble"}.get(kind, "")
+	if blob2 != "" and Art.has("tiles", blob2 + "_top_0"):
+		var cells2 := widen_path(cells_in)
+		for c: Vector2i in cells2:
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hash(blob2))
+			Art.draw_tile(self, "tiles", "%s_fill_%d" % [blob2, h % 42], Vector2(c * TILE), 0)
+			if h % 17 == 0 and _blob_interior(cells2, c) and Art.has("tiles", "%s_deco_%d" % [blob2, h / 17 % 36]):
+				Art.draw_tile(self, "tiles", "%s_deco_%d" % [blob2, h / 17 % 36], Vector2(c * TILE), 0)
+		Art.draw_blob(self, cells2, blob2, 16.0, 0)
+		return
 	if blob != "" and Art.has("tiles", blob + "_top_0"):
 		# Paths are never one cell wide: a 1-wide strip is all edge tiles and reads
 		# as a chain of little boxes. Widen to 2 so there is a real middle.

@@ -78,6 +78,53 @@ func _ready() -> void:
 	_hp_bar.position = Vector2(0, -22)
 	_hp_bar.draw.connect(_draw_hp)
 	add_child(_hp_bar)
+	call_deferred("refresh_gear")
+
+
+## Gear drawn on the pup (Prompts 10 w194): collar / pack / boots / bandana as
+## overlays that follow the body's facing. Only the "side" view exists in
+## motion so the overlay hides when the body faces up/down.
+var _gear_sprites := {}
+
+
+func refresh_gear() -> void:
+	for k in _gear_sprites:
+		(_gear_sprites[k] as Node).queue_free()
+	_gear_sprites.clear()
+	var who := "cat" if str(GameState.run.get("look", {}).get("pet", "")).begins_with("cat") else "dog"
+	var st := state()
+	var map_names := {"collar": {"pup_collar_leather": "collar_leather", "pup_collar_iron": "collar_iron", "pup_collar_crystal": "collar_crystal"}, "pack": {"pup_pack_small": "pack_small", "pup_pack_large": "pack_large"}, "boots": {"pup_boots": "boots"}}
+	if GameState.bonus("pup", "bedroll") > 0.0 and str(st["gear"].get("pack", "")) == "pup_pack_large":
+		map_names["pack"]["pup_pack_large"] = "pack_trail"
+	for slot in map_names:
+		var gid := str(st["gear"].get(slot, ""))
+		var nm := str(map_names[slot].get(gid, ""))
+		if nm == "" or not Art.has("animals/pet_gear", "%s_%s_side" % [who, nm]):
+			continue
+		var sp := Sprite2D.new()
+		sp.texture = Art.tex("animals/pet_gear", "%s_%s_side" % [who, nm])
+		sp.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		sp.z_index = 1
+		add_child(sp)
+		_gear_sprites[slot] = sp
+
+
+func _sync_gear() -> void:
+	if _gear_sprites.is_empty() or anim == null:
+		return
+	var side := anim.animation in ["walk", "run", "idle", "bite", "limp", "guard", "sit", "fetch"]
+	var tex := anim.sprite_frames.get_frame_texture(anim.animation, anim.frame) if anim.sprite_frames.has_animation(anim.animation) else null
+	for k in _gear_sprites:
+		var sp := _gear_sprites[k] as Sprite2D
+		sp.visible = side and tex != null
+		if tex:
+			# The gear sheet draws the whole dog; scale it to the body's drawn height.
+			var body_h := tex.get_height() * anim.scale.y
+			var sc := body_h / float(sp.texture.get_height())
+			sp.scale = Vector2(sc, sc)
+			sp.position = anim.position
+			sp.offset = Vector2(0, -sp.texture.get_height() / 2.0)
+			sp.flip_h = anim.flip_h
 
 
 func _draw_hp() -> void:
@@ -135,6 +182,8 @@ func take_damage(n: int, from: Vector2) -> void:
 	n = maxi(1, n - reduce)
 	st["hp"] = int(st["hp"]) - n
 	_hurt_t = 0.5
+	if anim.sprite_frames.has_animation("hurt"):
+		anim.play("hurt")
 	position += (position - from).normalized() * 10.0
 	map.damage_number(position + Vector2(0, -16), n, Color(1, 0.6, 0.4))
 	_hp_bar.queue_redraw()
@@ -167,6 +216,7 @@ func _process(delta: float) -> void:
 		return
 	_hurt_t = maxf(0.0, _hurt_t - delta)
 	_bite_cd = maxf(0.0, _bite_cd - delta)
+	_sync_gear()
 	var st := state()
 	var mode := str(st.get("mode", "follow"))
 	var player := map.player
@@ -212,8 +262,7 @@ func _process(delta: float) -> void:
 					if is_instance_valid(e) and e.position.distance_to(position) < 90.0:
 						e._stun = maxf(e._stun, 1.2)
 				map.emote(self, "angry", 1.0)
-				if anim.sprite_frames.has_animation("bark"):
-					anim.play("bark")
+				anim.play("howl" if anim.sprite_frames.has_animation("howl") else "bark")
 				map.shake(2.0)
 	var goal := player.position + Vector2(-14, 4)
 	var stop := 22.0
@@ -259,6 +308,8 @@ func _process(delta: float) -> void:
 		_idle = 0.0
 		if _carry_item == "fetch" and dist < 10.0:
 			_carry_item = "bring"
+		if _carry_item == "bring" and anim.sprite_frames.has_animation("fetch") and a != "fetch":
+			anim.play("fetch")
 	else:
 		if _target != null:
 			_bite(_target)
@@ -267,11 +318,13 @@ func _process(delta: float) -> void:
 			map.emote(self, "heart", 0.8)
 		_idle += delta
 		var want := "idle"
-		if mode == "wait" and anim.sprite_frames.has_animation("sit"):
+		if mode == "guard" and anim.sprite_frames.has_animation("guard"):
+			want = "guard"
+		elif mode == "wait" and anim.sprite_frames.has_animation("sit"):
 			want = "sit"
 		elif _idle > 3.0 and anim.sprite_frames.has_animation("sit"):
 			want = "sit"
-		if anim.animation != want and anim.animation != "dig" and anim.animation != "bark":
+		if anim.animation != want and anim.animation != "dig" and anim.animation != "bark" and anim.animation != "bite" and anim.animation != "hurt" and anim.animation != "howl":
 			anim.play(want)
 		if _idle > 14.0 and mode != "wait":
 			_idle = randf_range(-6.0, 0.0)
@@ -285,8 +338,7 @@ func _bite(e: Enemy) -> void:
 	var dmg := bite_damage()
 	if GameState.bonus("pup", "hunter") > 0.0 and e.hp < e.max_hp:
 		dmg *= 2
-	if anim.sprite_frames.has_animation("bark"):
-		anim.play("bark")
+	anim.play("bite" if anim.sprite_frames.has_animation("bite") else "bark")
 	anim.flip_h = e.position.x < position.x
 	e.hit(dmg, position)
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)

@@ -466,6 +466,11 @@ func _pup_tab() -> void:
 				return
 			toggle()
 			pt.set_mode(mode))
+		var ic_name: String = {"follow": "cmd_heel", "attack": "cmd_attack", "guard": "cmd_guard", "wait": "cmd_stay"}.get(mode, "")
+		if Art.has("ui", ic_name):
+			b.icon = Art.tex("ui", ic_name)
+			b.expand_icon = true
+			b.add_theme_constant_override("icon_max_width", 16)
 		if locked or pt == null:
 			b.modulate = Color(0.6, 0.6, 0.6)
 	_button("  Recall %s (from anywhere)" % pname, func() -> void:
@@ -482,6 +487,8 @@ func _pup_tab() -> void:
 			_button("  %s: %s  (take off)" % [slot, GameState.item_name(gid)], func() -> void:
 				st["gear"][slot] = ""
 				GameState.add_item(gid, 1)
+				if pt:
+					pt.refresh_gear()
 				_refresh())
 	var any_gear := false
 	for id in GameState.run["inventory"].keys():
@@ -495,6 +502,8 @@ func _pup_tab() -> void:
 					GameState.add_item(old, 1)
 				st["gear"][slot2] = id
 				GameState.add_item(id, -1)
+				if pt:
+					pt.refresh_gear()
 				_refresh())
 		elif it.has("pet_heal"):
 			_button("  Give %s (+%d health)" % [GameState.item_name(id), int(it["pet_heal"])], func() -> void:
