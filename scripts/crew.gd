@@ -13,7 +13,7 @@ static func data() -> Dictionary:
 		for id in members():
 			if not GameState.npcs.has(id):
 				var mdef: Dictionary = members()[id]
-				GameState.npcs[id] = {"name": str(mdef["name"]), "sprite": str(mdef.get("sprite", "")), "portrait": str(mdef.get("sprite", "")), "role": str(mdef.get("role", "")), "routine": [], "likes": ["thug_cash", "wine", "coffee"], "dislikes": ["turnip"]}
+				GameState.npcs[id] = {"name": str(mdef["name"]), "sprite": str(mdef.get("sprite", "")), "portrait": str(mdef.get("sprite", "")) if Art.has("portraits/" + str(mdef.get("sprite", "")), "neutral") else "gambler", "role": str(mdef.get("role", "")), "routine": [], "likes": ["thug_cash", "wine", "coffee"], "dislikes": ["turnip"]}
 	return _data
 
 

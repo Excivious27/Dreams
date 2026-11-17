@@ -3916,11 +3916,69 @@ def w211(): _gang_sheet("w211_hero_marisol_gang.png", "marisol_gang")
 def w212(): _gang_sheet("w212_hero_bo_gang.png", "bo_gang")
 
 
+# ---- Prompts 11 batch 3: recruitable gangsters, two per sheet (w213-w218) -----
+CREW_ROWS = [
+    [("idle_down", 0, 2), ("idle_up", 2, 4), ("idle", 4, 6), ("walk_down", 6, 10), ("walk_up", 10, 14), ("walk", 14, 16)],
+    [("walk+", 0, 2), ("attack_down", 2, 5), ("attack_up", 5, 8), ("attack", 8, 11), ("hurt", 11, 13), ("down", 13, 15), ("join", 15, 16)],
+    [("special", 0, 6), ("loiter", 6, 8), ("bubble", 8, 10), ("sit", 10, 11), ("sleep", 11, 12), ("cheer", 12, 14), ("laugh", 14, 16)],
+    [("view_front", 0, 1), ("view_right", 1, 2), ("view_back", 2, 3), ("view_left", 3, 4)],
+]
+CREW_EXPR = ["neutral", "happy", "sly", "angry", "worried"]
+
+def _crew_half(rgba, base_row, char_id):
+    G = "characters/" + char_id
+    H, Wd = rgba.shape[:2]
+    cw, ch = Wd / 16, H / 8
+    pending = {}
+    for i, spec in enumerate(CREW_ROWS):
+        row = base_row + i
+        cells = _hero_row_cells(rgba, row)
+        for name, c0, c1 in spec:
+            cs = [cells[c] for c in range(c0, c1) if cells[c]]
+            if cs:
+                pending.setdefault(name.rstrip("+"), []).extend(cs)
+    for name, cells in pending.items():
+        strip([scale_to(crop(rgba, b), height=HERO2_H) for b in cells], G, name)
+    # Row D after the views: five portraits, a badge, a shop sign.
+    y0, y1 = int((base_row + 3) * ch), int((base_row + 4) * ch)
+    boxes = _components(rgba, (int(4 * cw), y0, Wd, y1), dilate=3, min_px=400)
+    boxes.sort(key=lambda b: b[0])
+    merged = []
+    for b in boxes:
+        if merged and b[0] < merged[-1][2] - 6:
+            m0 = merged[-1]; merged[-1] = (min(m0[0], b[0]), min(m0[1], b[1]), max(m0[2], b[2]), max(m0[3], b[3]))
+        else:
+            merged.append(tuple(b))
+    big = [b for b in merged if (b[3] - b[1]) > ch * 0.5]
+    for i, b in enumerate(big[:5]):
+        save(scale_to(crop(rgba, b), height=96), "portraits/" + char_id, CREW_EXPR[i])
+    small = [b for b in merged if (b[3] - b[1]) <= ch * 0.5 and b[0] > Wd * 0.8]
+    small.sort(key=lambda b: b[0])
+    if small:
+        save(scale_to(crop(rgba, small[0]), height=48), "ui", "crew_badge_" + char_id)
+    if len(small) > 1:
+        save(scale_to(crop(rgba, small[1]), height=96), "ui", "crew_sign_" + char_id)
+    elif len(big) > 5:
+        save(scale_to(crop(rgba, big[5]), height=96), "ui", "crew_sign_" + char_id)
+
+def _crew_sheet(file, id_a, id_b):
+    rgba = load_hue(file)
+    _crew_half(rgba, 0, id_a)
+    _crew_half(rgba, 4, id_b)
+
+def w213(): _crew_sheet("w213_gang_deuce_rosa.png", "deuce", "mama_rosa")
+def w214(): _crew_sheet("w214_gang_specs_ladder.png", "specs", "ladder")
+def w215(): _crew_sheet("w215_gang_twins.png", "vic", "val")
+def w216(): _crew_sheet("w216_gang_halo_dice.png", "halo", "dice")
+def w217(): _crew_sheet("w217_gang_marlene_kid.png", "marlene", "the_kid")
+def w218(): _crew_sheet("w218_gang_doc_sasha.png", "doc", "sasha")
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:
