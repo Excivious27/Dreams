@@ -30,6 +30,13 @@ static func active_id() -> String:
 	return str(party().get("active", ""))
 
 
+static func active_name() -> String:
+	var id := active_id()
+	if id == "":
+		return ""
+	return str(defs().get(id, {}).get("name", id.capitalize()))
+
+
 static func has_ability(ab: String) -> bool:
 	var a := active_id()
 	if a == "":
@@ -56,6 +63,9 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				if not is_instance_valid(e) or e.position.distance_to(p.position) > 70.0:
 					continue
 				var rv: Array = REVERT.get(e.kind, [])
+				if e.kind == "knight" and GameState.run["flags"].has("knight_mercy_try") and float(e.hp) / e.max_hp < 0.34:
+					rv = ["penguin", 1]
+					GameState.run["flags"]["knight_reverted"] = true
 				if rv.is_empty() or int(rv[1]) > rank:
 					m.emote(e, "confused", 0.8)
 					continue

@@ -1952,7 +1952,8 @@
     "who": "Doorman",
     "text": "The President sees nobody without an appointment. The President has never once made an appointment. You can see where that leaves you.",
     "hint": "A: the tower doors",
-    "solid": false
+    "solid": false,
+    "story": "tower_doors"
    },
    {
     "type": "note",

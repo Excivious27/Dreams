@@ -638,7 +638,10 @@ func _talk(n: Npc) -> void:
 		_heart_unlock(id, before)
 		player.frozen = false
 		return
-	# Side quests: turn in, nudge, or offer, in their own words.
+	# Main story beats first, then side quests in their own words.
+	if await Story.talk(self, id):
+		player.frozen = false
+		return
 	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return

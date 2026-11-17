@@ -159,6 +159,9 @@ func after_ready() -> void:
 		npc.wander = float(n.get("wander", 14.0))
 		add_child(npc)
 		npcs.append(npc)
+	Crew.place(self)
+	if Crew.perk_level("heal_hideout") >= 1 and region_id == "hideout":
+		GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + 20)
 	var gen: Dictionary = R.get("gen", {})
 	var inner := Rect2i(2, 2, cols - 4, rows - 4)
 	var avoid := {}
@@ -234,6 +237,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 	match str(thing.get("type", "")):
 		"note":
+			if thing.has("story"):
+				later(func() -> void:
+					if await Story.talk(self, str(thing["story"])):
+						return
+					tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}]))
+				return true
 			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
 		"water":
@@ -379,7 +388,13 @@ func _talk_npc(n: Npc) -> void:
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
+	if await Story.talk(self, id):
+		player.frozen = false
+		return
 	if await Quests.talk(self, id, name):
+		player.frozen = false
+		return
+	if await Crew.talk(self, id):
 		player.frozen = false
 		return
 	if not GameState.run["talked_today"].has(id):

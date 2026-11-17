@@ -1197,6 +1197,9 @@ func spawn_enemy(kind: String, at: Vector2, tier_override := -1) -> Enemy:
 
 func on_enemy_died(e: Enemy) -> void:
 	fx("poof", e.position + Vector2(0, -8), 14.0, 0.6)
+	if e.has_meta("story_flag"):
+		GameState.run["flags"][str(e.get_meta("story_flag"))] = true
+		shake(3.0)
 	GameState.run["kills"] = int(GameState.run.get("kills", 0)) + 1
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
 	hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
@@ -1372,6 +1375,7 @@ func _process(delta: float) -> void:
 		var fc := player.facing_cell()
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
 	Events.tick(self, delta)
+	Story.tick(self, delta)
 	if Net.online():
 		_puppet_t += delta
 		if _puppet_t > 1.0:

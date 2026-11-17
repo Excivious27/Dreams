@@ -86,6 +86,7 @@ func _sleep() -> void:
 	await hud.fade_in(0.8)
 	await say(lines)
 	_morning_events()
+	Story.on_morning(self)
 	player.frozen = false
 
 

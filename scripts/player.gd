@@ -507,6 +507,7 @@ func _physics_process(delta: float) -> void:
 	elif mounted:
 		spd_mult *= 1.8 if running else 1.5
 	spd_mult *= GameState.status_speed()
+	spd_mult *= 1.0 + 0.05 * mini(2, Crew.perk_level("run_speed"))
 	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult
 	var rate := ACCEL if dir != Vector2.ZERO else DECEL
 	velocity = velocity.move_toward(target, rate * delta)
@@ -740,7 +741,7 @@ func take_damage(n: int, from: Vector2) -> void:
 			map.hud.toast("Shield!", Color(0.8, 0.9, 1.0))
 			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.5)
 		return
-	n = maxi(2, n - GameState.gear_stat("defense") * 2)
+	n = maxi(2, n - (GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence"))) * 2)
 	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
 	# Short mercy window: enough to not get chain-hit by one enemy, not enough to
 	# tank a crowd. The knockback is shorter too, so you can't bounce to safety.

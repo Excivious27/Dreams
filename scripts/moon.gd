@@ -130,6 +130,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(_alien_shop)
 			return true
 		"spire":
+			later(func() -> void:
+				if await Story.talk(self, "spire"):
+					return
+				tell([{"who": "Light Crystal", "text": "Not yet. Light the teleporter first; the way to its heart is through the station.", "mood": "worried"}]))
+			return true
+		"spire_old":
 			tell([{"who": "Light Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded. (Tom: the moon chapter's goal.)", "mood": "worried"}])
 			return true
 		"house":

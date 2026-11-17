@@ -7244,5 +7244,38 @@
   "energy": 0,
   "pet_heal": 20,
   "icon": "bone_toy"
+ },
+ "old_collar": {
+  "name": "Old Collar",
+  "type": "key",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 1,
+  "desc": "Leather, chewed, a brass tag worn smooth. BISCUIT."
+ },
+ "brass_locket": {
+  "name": "Brass Locket",
+  "type": "key",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 2,
+  "desc": "Two boys on a dock. It hums near crystals."
+ },
+ "knight_shard": {
+  "name": "Knight's Shard",
+  "type": "key",
+  "value": 0,
+  "rarity": "epic",
+  "tier": 3,
+  "desc": "Warm, heavy. Your sword hand stops aching.",
+  "damage_bonus": 1
+ },
+ "manifest": {
+  "name": "Shipping Manifest",
+  "type": "key",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 2,
+  "desc": "Every crate marked with a purple crystal. UPTOWN, TOWER, SUB-BASEMENT 3."
  }
 }

@@ -1,0 +1,89 @@
+{
+"_": "Recruitable gangsters (Gangster's Paradise). `before`: where they stand until recruited (story beats in story.json recruit them, flag crew_<id>). `home`: where they hang at the hideout once in. Loyalty 0-3 rises one step per loyalty scene (talk to them at the hideout, one per 3 days). `perk` by loyalty level. Sprites are placeholders until Art Prompts 11 Batch 3 (w213-w218).",
+"members": {
+ "deuce": {"name": "Deuce", "sprite": "gambler", "role": "card sharp", "before": {"scene": "hideout", "cell": [12, 14]}, "home": [10, 16],
+  "perks": ["Sells at +5% at the sell box", "Sells at +10%", "Sells at +15% and finds a coin in every chest"],
+  "loyalty": [
+   [{"who": "Deuce", "text": "You want to know why I don't cheat? I did, once. Uptown. The man I cheated is the man you're after, and he didn't lose; he just took the table. And the building. And the street."}, {"who": "Deuce", "text": "So I deal straight now. It's the only thing he can't take."}],
+   [{"who": "Deuce", "text": "The boys like you. The boys don't like anyone; they liked HIM, once, and look. I keep telling them you're different. Don't make me a liar, boss."}],
+   [{"who": "Deuce", "text": "If this goes wrong uptown, I've got a table in a town three valleys over and a chair with your name on it. If it goes right... I've still got the table. Either way, you've got a chair."}]
+  ], "finale": "Deuce deals the lobby guards a hand they can't walk away from."},
+ "mama_rosa": {"name": "Mama Rosa", "sprite": "brute", "role": "cook", "before": {"scene": "hideout", "cell": [30, 12]}, "home": [26, 16],
+  "perks": ["Meals heal +10%", "Meals heal +25% and cost half energy to cook", "A hot meal waits at the hideout every morning (+full energy)"],
+  "loyalty": [
+   [{"who": "Mama Rosa", "text": "Forty men a night, and the fire wasn't an accident. Somebody wanted the block. You know who. Everybody who's anybody in this city is somebody he wanted the block from."}],
+   [{"who": "Mama Rosa", "text": "You eat like a farmer: fast, head down. Slow down. The food's not going anywhere. For once in this crew's life, the food's not going anywhere."}],
+   [{"who": "Mama Rosa", "text": "My boy ran with a crew like this. He'd have been about your age. ...Finish your plate. I'm not saying anything else about it, and you're not asking."}]
+  ], "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the lobby."},
+ "specs": {"name": "Specs", "sprite": "cyber", "role": "hacker", "before": {"scene": "docks", "cell": [20, 10]}, "home": [14, 10],
+  "perks": ["Shop prices -5%", "Shop prices -10% and the board shows reward values", "Every door in Uptown is already unlocked"],
+  "loyalty": [
+   [{"who": "Specs", "text": "The tower runs on a network older than me. I've been in it since I was eleven. Not deep. Sub-basement three is on its own wire. Its own WIRE, boss. Who does that?"}],
+   [{"who": "Specs", "text": "I found my mother's name on a manifest. Crate 311. I don't know what that means and I've decided not to find out until you're standing next to me."}],
+   [{"who": "Specs", "text": "When we're in the tower I'll go for the wire. Don't wait for me. I'll be faster than you think; I'm always faster than people think."}]
+  ], "finale": "Specs kills the tower's lights from sub-basement three."},
+ "ladder": {"name": "Ladder", "sprite": "speedster", "role": "lookout", "before": {"scene": "docks", "cell": [34, 8]}, "home": [40, 6],
+  "perks": ["A warning the morning before a thug raid", "Raids come half as often", "Enemies in gangster districts are marked on the map"],
+  "loyalty": [
+   [{"who": "Ladder", "text": "Four hundred and twelve trucks. Four hundred and nine went to the tower. The three that didn't went to a farm. Your farm. Before you got there. Think about that."}],
+   [{"who": "Ladder", "text": "I was a kid on a roof when the river cities fell to him. I saw the whole thing. Nobody asked me what I saw. You asked. That's the whole reason I'm here."}],
+   [{"who": "Ladder", "text": "From the tower roof you'd see the farm. I counted. On a clear day. I'd like to see that, after. Just once."}]
+  ], "finale": "Ladder calls every guard's position from the crane before you reach the steps."},
+ "vic": {"name": "Vic", "sprite": "brute", "role": "twin fist", "before": {"scene": "underground", "cell": [12, 8]}, "home": [20, 20],
+  "perks": ["+1 sword damage", "+2 sword damage", "Twin strike: every third hit lands twice"],
+  "loyalty": [
+   [{"who": "Vic", "text": "Val says you fight like you're apologising. Val's wrong. You fight like you're counting. We like counting."}],
+   [{"who": "Vic", "text": "We had a brother. Not a twin. Older. He went uptown to box for the man and came back with a stone where his heart was. We put him down ourselves. We don't talk about it."}, {"who": "Val", "text": "We're talking about it."}],
+   [{"who": "Vic", "text": "When we're in the lobby, you go left. We go right. Nobody goes middle. The middle is where he puts the ones who think they're brave."}]
+  ], "finale": "Vic and Val take the right side of the lobby and hold it."},
+ "val": {"name": "Val", "sprite": "brute", "role": "twin fist", "before": {"scene": "underground", "cell": [13, 8]}, "home": [21, 20],
+  "perks": ["+1 defence", "+2 defence", "Knockback on you is halved"],
+  "loyalty": [
+   [{"who": "Val", "text": "Vic says you fight like you're counting. Vic's wrong. You fight like you've already lost once and decided not to again. We know the look."}],
+   [{"who": "Val", "text": "The brother. Vic told you. I'm telling you the part Vic left out: the stone talked. In his voice. Said our names. That's what's in the tower, boss. Don't listen to it."}],
+   [{"who": "Val", "text": "Right side. We hold it. Don't look back for us; Vic hates that."}]
+  ], "finale": "Val holds the right side of the lobby with Vic."},
+ "halo": {"name": "Halo", "sprite": "speedster", "role": "driver", "before": {"scene": "docks", "cell": [40, 30]}, "home": [6, 30],
+  "perks": ["Ride between gangster districts (talk to Halo)", "Rides are instant", "The car is waiting at any district exit"],
+  "loyalty": [
+   [{"who": "Halo", "text": "I drove for him. Three years. Never asked who was in the back. One night nobody was in the back, and the seat was warm, and I drove to the sea and sat there until morning. Haven't been back."}],
+   [{"who": "Halo", "text": "You never quit at the containers. I keep thinking about that. Most people, there's a container. There's always a container."}],
+   [{"who": "Halo", "text": "Car's gassed. Engine's warm. When it's done up there, I'll be at the steps, and we'll go wherever you say, and I won't ask who's in the back."}]
+  ], "finale": "Halo's car is idling at the tower steps when the doors open."},
+ "dice": {"name": "Dice", "sprite": "cyber", "role": "runner", "before": {"scene": "neon", "cell": [8, 20]}, "home": [34, 14],
+  "perks": ["Board jobs pay +10%", "Messages: villagers' moods are shown", "A second board job each day"],
+  "loyalty": [
+   [{"who": "Dice", "text": "I run messages because I'm fast and because nobody looks at a kid with a satchel. Half the things I've carried I've read. All of the things I've read I've forgotten. Mostly."}],
+   [{"who": "Dice", "text": "Okay so one I didn't forget: a message from the tower to the docks that just said FARMER and a date. The date was two days before you got here. I'm just saying."}],
+   [{"who": "Dice", "text": "I'm going to be in the lobby. I'm going to be terrified. I'm going to be there anyway. That's— I think that's what you do? Is that what you do?"}]
+  ], "finale": "Dice carries the word down to the town: it's over."},
+ "the_kid": {"name": "The Kid", "sprite": "speedster", "role": "skater", "before": {"scene": "neon", "cell": [36, 30]}, "home": [44, 28],
+  "perks": ["Run speed +5%", "Run speed +10%", "Grinding rails: enemies ignore you for a second after a dodge"],
+  "loyalty": [
+   [{"who": "The Kid", "text": "..."}, {"who": "", "text": "A hand comes out of the hood and draws a square in the air. A window. Then a line down. Then the hand closes."}],
+   [{"who": "The Kid", "text": "...the cat sticker. Was my sister's. She's uptown. In the tower. Not a guard. Not anything. Just in there."}],
+   [{"who": "The Kid", "text": "You get her out, I'll never say another word to anyone, ever. That's a promise. It's not even hard."}]
+  ], "finale": "The Kid finds the stairwell nobody else could; it goes all the way up."},
+ "doc": {"name": "Doc", "sprite": "gambler", "role": "medic", "before": {"scene": "neon", "cell": [24, 8]}, "home": [18, 8],
+  "perks": ["Heal 1 heart at the hideout each visit", "Statuses on you last half as long", "Doc patches you mid-fight once per battle"],
+  "loyalty": [
+   [{"who": "Doc", "text": "I patched for him uptown. Two years. The ones who came down from sub-basement three didn't need patching. They needed something I don't have a word for."}],
+   [{"who": "Doc", "text": "He had a daughter. Seven. She got sick, the real kind, the kind I couldn't do anything about. He went up to the roof with her picture. He came down with a stone in his chest and no picture."}],
+   [{"who": "Doc", "text": "I'm telling you because when you get up there, you'll want to hit him. And you should. But there's a man in there, boss. I'd stake my hands on it."}]
+  ], "finale": "Doc keeps the crew breathing in the lobby."},
+ "marlene": {"name": "Marlene", "sprite": "gambler", "role": "fence", "before": {"scene": "docks", "cell": [10, 26]}, "home": [30, 24],
+  "perks": ["Sell gangster drops at +20%", "Buys any item at full value", "A relic from the tower every week"],
+  "loyalty": [
+   [{"who": "Marlene", "text": "I sold him his first building. A paper deal, a handshake, a man in a decent suit who said thank you. I've been trying to buy the handshake back for twenty years."}],
+   [{"who": "Marlene", "text": "Paper is only worth what someone fears it for. You, they fear. Don't ask me why; I only know prices, and yours is going up."}],
+   [{"who": "Marlene", "text": "When it's done, there's a deed in my safe with the right name on it. Your name. I've had it since the week you arrived. I wasn't sure I'd give it to you. I'm sure now."}]
+  ], "finale": "Marlene has the real deed waiting when you come home."},
+ "sasha": {"name": "Sasha", "sprite": "enforcer", "role": "muscle", "before": {"scene": "underground", "cell": [26, 14]}, "home": [36, 30],
+  "perks": ["Thugs hesitate before attacking", "Break doors and crates the pickaxe can't", "Sasha opens the tower doors without the letter"],
+  "loyalty": [
+   [{"who": "Sasha", "text": "I carried the champion out nine times. Nine different champions. I never once got in the ring. Nobody asked. You didn't ask either; you just walked, and I came. That's the difference."}],
+   [{"who": "Sasha", "text": "The chain's my mother's. Don't laugh. She worked the docks when they were docks. It's the only thing of hers that didn't go in a crate."}],
+   [{"who": "Sasha", "text": "Doors, boss. Any door. Say the word and there isn't a door."}]
+  ], "finale": "Sasha puts her shoulder to the brass."}
+}
+}

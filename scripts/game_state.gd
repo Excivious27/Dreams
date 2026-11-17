@@ -293,7 +293,7 @@ static func saturation(id: String, n_more := 0) -> float:
 
 
 static func sell_price(id: String, n := 1) -> int:
-	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1))
+	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1)) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
 	var total := 0.0
 	for i in n:
 		total += unit * saturation(id, i)
@@ -404,6 +404,9 @@ static func sword_damage() -> int:
 		for t in run["tools"]:
 			best = maxi(best, int(items.get(t, {}).get("damage", 0)))
 	best += int(bonus("combat", "damage")) + gear_stat("damage") + tool_tier("sword")
+	if count("knight_shard") > 0:
+		best += 1
+	best += mini(2, Crew.perk_level("sword"))
 	if has_perk("combat", "Berserker") and int(run["hp"]) < int(run["max_hp"]) / 2:
 		best += 1
 	return maxi(best, 1)
@@ -838,6 +841,9 @@ static func complete_quest(id: String) -> bool:
 		if q["id"] == id and not q["done"]:
 			q["done"] = true
 			_give_reward(_quest_def(id).get("reward", {}))
+			var m := Engine.get_main_loop().get("current_scene") as GameMap if Engine.get_main_loop() else null
+			if m:
+				Story.on_quest_done(m, id)
 			return true
 	return false
 
@@ -994,6 +1000,42 @@ static func _cond_ok(when: Dictionary) -> bool:
 		for pair in when["items"]:
 			if count(str(pair[0])) < int(pair[1]):
 				return false
+	if when.has("not_flag") and run["flags"].has(str(when["not_flag"])):
+		return false
+	for f in when.get("flags", []):
+		if not run["flags"].has(str(f)):
+			return false
+	for f in when.get("not_flags", []):
+		if run["flags"].has(str(f)):
+			return false
+	if when.has("crops") and crop_count() < int(when["crops"]):
+		return false
+	if when.has("not_quest") and quest_done(str(when["not_quest"])):
+		return false
+	if when.has("decision"):
+		var dc: Array = when["decision"]
+		if int(run.get("decisions", {}).get(str(dc[0]), -1)) != int(dc[1]):
+			return false
+	if when.has("kills"):
+		var kl: Array = when["kills"]
+		if int(run.get("kill_counts", {}).get(str(kl[0]), 0)) < int(kl[1]):
+			return false
+	if when.has("companion") and Companion.active_id() != str(when["companion"]):
+		return false
+	if when.has("known") and not (Companion.party().get("known", []) as Array).has(str(when["known"])):
+		return false
+	if when.has("mine_floor") and int(run["flags"].get("mine_deepest", 1)) < int(when["mine_floor"]):
+		return false
+	if when.has("crystals") and int(run.get("crystals", 0)) < int(when["crystals"]):
+		return false
+	if when.has("hearts_total"):
+		var tot := 0
+		for k in run["friendship"]:
+			tot += friend_hearts(str(k))
+		if tot < int(when["hearts_total"]):
+			return false
+	if when.has("chapter") and Story.chapter_no() < int(when["chapter"]):
+		return false
 	return true
 
 
@@ -1272,6 +1314,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	for cid in party_d.get("bitter", []):
 		if int(run["day"]) >= 20 and not run["flags"].has("gone_east_" + str(cid)):
 			run["flags"]["gone_east_" + str(cid)] = true
+			run["flags"]["bitter_left"] = true
 			add_hint("%s was seen on the east road at night, heading for the dark." % str(Companion.defs().get(cid, {}).get("name", cid)))
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
 	run["energy"] = int(run["max_energy"]) if not passed_out else int(run["max_energy"]) / 2
@@ -1365,7 +1408,7 @@ static func status_apply(name: String, t: int) -> void:
 		return
 	if has_perk("combat", "Iron Gut") and name in ["poison", "burn"]:
 		return
-	var secs := float(tier(t).get("status_secs", 3.0)) * (0.7 if gear_stat("defense") >= 3 else 1.0)
+	var secs := float(tier(t).get("status_secs", 3.0)) * (0.7 if gear_stat("defense") >= 3 else 1.0) * (0.5 if Crew.perk_level("status_half") >= 2 else 1.0)
 	run["status"] = run.get("status", {})
 	var cur: Dictionary = run["status"].get(name, {})
 	run["status"][name] = {"secs": maxf(float(cur.get("secs", 0.0)), secs), "power": float(tier(t).get("status_power", 1.0)), "tier": t}
@@ -1423,3 +1466,27 @@ static func status_damage_mod() -> int:
 	for k in run.get("status", {}):
 		m += int(status_def(str(k)).get("damage", 0))
 	return m
+
+
+## How many harvested crops (any kind) are in the pack.
+static func crop_count() -> int:
+	var n := 0
+	for id in run["inventory"]:
+		if str(items.get(id, {}).get("type", "")) == "crop":
+			n += int(run["inventory"][id])
+	return n
+
+
+## Remove n crops of any kind (most plentiful first).
+static func take_crops(n: int) -> void:
+	var ids: Array = []
+	for id in run["inventory"]:
+		if str(items.get(id, {}).get("type", "")) == "crop":
+			ids.append(id)
+	ids.sort_custom(func(a: String, b: String) -> bool: return int(run["inventory"][a]) > int(run["inventory"][b]))
+	for id in ids:
+		if n <= 0:
+			break
+		var take := mini(n, int(run["inventory"][id]))
+		add_item(str(id), -take)
+		n -= take

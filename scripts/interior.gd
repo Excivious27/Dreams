@@ -176,6 +176,9 @@ func _talk(n: Npc) -> void:
 	var lines: Array = data.get("inside", [])
 	var name := str(data.get("name", n.id.capitalize()))
 	player.frozen = true
+	if await Story.talk(self, n.id):
+		player.frozen = false
+		return
 	if await Quests.talk(self, n.id, name):
 		player.frozen = false
 		return

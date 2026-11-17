@@ -531,6 +531,8 @@ func _mailbox() -> void:
 func _talk_crystal() -> void:
 	var r := GameState.run
 	var d: Dictionary = r["decisions"]
+	if await Story.talk(self, "light_crystal"):
+		return
 	if not GameState.quest_done("first_harvest"):
 		await say([
 			{"who": "Light Crystal", "text": "Tend the soil, %s. Every living thing you raise feeds the Meow Pow Wow a little." % GameState.names()["character"]},
