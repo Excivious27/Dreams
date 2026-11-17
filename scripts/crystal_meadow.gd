@@ -222,25 +222,37 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 
 func _altar() -> void:
 	var refined := GameState.count("crystal_refined")
-	if refined > 0:
+	var charges := int(GameState.run["flags"].get("altar_charges", 0))
+	if charges >= 10:
+		await say([{"who": "Star Crystal", "text": "The altar is full. It has given you all it can.", "mood": "happy"}])
+	elif refined > 0:
+		if refined < 3 and not GameState.quest_done("teleporter"):
+			await say([{"who": "Star Crystal", "text": "Careful: the story still needs refined crystals (the teleporter). Keep a few before you spend them here."}])
 		GameState.add_item("crystal_refined", -1)
-		GameState.run["flags"]["altar_charges"] = int(GameState.run["flags"].get("altar_charges", 0)) + 1
+		GameState.run["flags"]["altar_charges"] = charges + 1
 		fx("pawring", cell_center(Vector2i(17, 11)) + Vector2(0, -12), 10.0, 0.8)
-		GameState.run["max_hp"] = int(GameState.run["max_hp"]) + 1
+		GameState.grow_vital("hp", 5)
 		GameState.run["hp"] = int(GameState.run["max_hp"])
-		await say([{"who": "Star Crystal", "text": "Yes. That's it. Every refined crystal you bring here grows the Meow Pow Wow a little. (+1 max heart)", "mood": "happy"}])
+		await say([{"who": "Star Crystal", "text": "Yes. That's it. Every refined crystal you bring here grows the Meow Pow Wow a little. (+5 max health, %d/10)" % (charges + 1), "mood": "happy"}])
 	else:
 		await say([{"who": "Star Crystal", "text": "Bring a Refined Crystal (3 shards in the resonator on your farm) and set it here."}])
 
 
 func _market() -> void:
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Black market", "text": "Cash only. No receipts. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Iron Sword  ◆100", "Red Potion  ◆22", "Dark Shard  ◆60", "Leave"], "key": ""}])
+	var picks := [["iron_sword", 100], ["potion", GameState.shop_price("potion", 22)], ["dark", GameState.shop_price("dark", 60)]]
+	var ch: Array = []
+	for pk in picks:
+		ch.append("%s  ◆%d%s" % [GameState.item_name(str(pk[0])), int(pk[1]), "  (owned)" if GameState.has_tool(str(pk[0])) else ""])
+	ch.append("Leave")
+	d.say([{"who": "Black market", "text": "Cash only. No receipts. (◆%d)" % int(GameState.run["crystals"]), "choice": ch, "key": ""}])
 	await d.finished
-	var picks := [["iron_sword", 100], ["potion", 22], ["dark", 60]]
 	if d.last_choice >= 0 and d.last_choice < picks.size():
 		var id: String = picks[d.last_choice][0]
 		var price: int = picks[d.last_choice][1]
+		if GameState.has_tool(id):
+			hud.toast("You already have one.")
+			return
 		if int(GameState.run["crystals"]) < price:
 			hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 			return

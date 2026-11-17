@@ -693,7 +693,7 @@ func _talk(n: Npc) -> void:
 	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return
-	if GameState.can_gift(id, sel):
+	if GameState.can_gift(id, sel) and await confirm_gift(name, sel):
 		var before := GameState.friend_hearts(id)
 		var gain := GameState.give_gift(id, sel)
 		await say([{"who": name, "text": _gift_line(id, sel, gain)}])

@@ -1065,7 +1065,7 @@ func clear_cell(c: Vector2i) -> void:
 
 ## Boss intro card (ui/card_<kind>): slides in over the screen for a couple of seconds.
 func boss_card(kind: String, title := "") -> void:
-	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president"}.get(kind, "")
+	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president" if not GameState.is_penguins() else ""}.get(kind, "")
 	if kind.begins_with("card:"):
 		nm = kind.trim_prefix("card:")
 	if nm == "" or not Art.has("ui", nm):
@@ -1144,6 +1144,32 @@ func allies() -> Array:
 	return out
 
 
+## Nothing solid between a and b (stepped every 4 px).
+func line_clear(a: Vector2, b: Vector2) -> bool:
+	var d := b - a
+	var steps := int(d.length() / 4.0)
+	var ca := world_to_cell(a)
+	var cb := world_to_cell(b)
+	for i in range(1, steps):
+		var c := world_to_cell(a + d * (float(i) / steps))
+		if c == ca or c == cb:
+			continue  # standing in (or against) a blocked cell yourself doesn't hide you
+		if blocked.has(c) and not is_water_cell(c):
+			return false
+	return true
+
+
+## Where a line from a toward b first hits something solid (or b).
+func line_end(a: Vector2, b: Vector2) -> Vector2:
+	var d := b - a
+	var steps := int(d.length() / 4.0)
+	for i in range(1, steps):
+		var p := a + d * (float(i) / steps)
+		if blocked.has(world_to_cell(p)) and not is_water_cell(world_to_cell(p)):
+			return p
+	return b
+
+
 func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 	Music.instance(get_tree()).sfx("swing")
 	var hit := false
@@ -1154,7 +1180,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 			continue
 		# Enemies have a body ~12px wide, 14 tall above their feet.
 		var body := Rect2(e.position + Vector2(-6, -14), Vector2(12, 14))
-		if r.intersects(body):
+		if r.intersects(body) and line_clear(from + Vector2(0, -4), e.position + Vector2(0, -4)):
 			var crit := randf() < 0.03 * GameState.skill_level("combat") + GameState.bonus("combat", "crit")
 			var dmg := damage * (2 if crit else 1)
 			e.provoke(player)
@@ -1274,11 +1300,18 @@ func use_consumable(sel: String) -> bool:
 				return true
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
-			GameState.run["heat"] = maxi(0, Racket.heat() - int(it.get("amount", 2)))
+			Racket.set_heat(Racket.heat() - int(it.get("amount", 2)))
 			fx("sparkle", player.position + Vector2(0, -14), 12.0, 0.6)
 			hud.toast("%s: heat down to %d." % [GameState.item_name(sel), Racket.heat()], Color(0.5, 1.0, 0.95))
 			return true
 		"emp":
+			var any_near := false
+			for e in enemies:
+				if is_instance_valid(e) and e._alive and e.position.distance_to(player.position) < float(it.get("radius", 84.0)):
+					any_near = true
+			if not any_near:
+				hud.toast("Nothing close enough to fry. Save it.", Color(0.7, 0.9, 1.0))
+				return true
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
 			fx("emp" if Art.has("fx", "emp") else "ripple_ring" if Art.has("fx", "ripple_ring") else "spark", player.position + Vector2(0, -8), 10.0, 0.5 * float(it.get("radius", 84.0)) / 40.0)
@@ -1302,6 +1335,11 @@ func use_consumable(sel: String) -> bool:
 			hud.toast("%s deployed: %d seconds of cover." % [GameState.item_name(sel), int(it.get("life", 30))], Color(0.5, 1.0, 0.95))
 			return true
 		"drone":
+			var ready_day := int(GameState.run["flags"].get("drone_ready", 0))
+			if int(GameState.run["day"]) < ready_day:
+				hud.toast("The drone is still charging. Ready on day %d." % ready_day, Color(0.7, 0.9, 1.0))
+				return true
+			GameState.run["flags"]["drone_ready"] = int(GameState.run["day"]) + 2
 			player.play_tool("hold")
 			fx("sparkle", player.position + Vector2(0, -26), 10.0, 0.6)
 			var seen := 0
@@ -1313,7 +1351,7 @@ func use_consumable(sel: String) -> bool:
 						e._gift._told = true
 						tips.append("%s: %s" % [str(e._gift.d.get("name", "Gift")), str(e._gift.d.get("tip", ""))])
 			GameState.run["flags"]["raid_day"] = int(GameState.run["day"])
-			hud.toast("Drone: %d hostile%s here. No collectors will find you today." % [seen, "" if seen == 1 else "s"], Color(0.5, 1.0, 0.95))
+			hud.toast("Drone: %d hostile%s here. No collectors will find you today. (Recharges in 2 days.)" % [seen, "" if seen == 1 else "s"], Color(0.5, 1.0, 0.95))
 			for t: String in tips:
 				hud.toast(t, Color(1, 0.9, 0.6))
 				GameState.add_hint(t)
@@ -1437,6 +1475,10 @@ func free_spot_near(at: Vector2) -> Vector2:
 				if blocked.has(c) or is_water_cell(c):
 					continue
 				return at if r == 0 else cell_center(c)
+	# Nothing free near `at` (or `at` is off the map): pull it inside the map.
+	var cc := Vector2i(clampi(c0.x, 2, cols - 3), clampi(c0.y, 2, rows - 3))
+	if cc != c0:
+		return free_spot_near(cell_center(cc))
 	return at
 
 
@@ -1457,6 +1499,8 @@ func on_enemy_died(e: Enemy) -> void:
 			got[id] = int(got.get(id, 0)) + int(extra[id])
 	for id: String in got:
 		pop_items(e.position, id, int(got[id]))
+	if e.has_meta("collector"):
+		Racket.on_collector_down(self)
 	var kc: Dictionary = GameState.run.get("kill_counts", {})
 	kc[e.kind] = int(kc.get(e.kind, 0)) + 1
 	GameState.run["kill_counts"] = kc
@@ -1494,6 +1538,10 @@ func player_down(reason := "hurt") -> void:
 		elif GameState.has_friend_perk("juniper", 2):
 			rate = 0.05
 	var fee := int(ceil(cr * rate))
+	# A Marked who beat you won't come at you again today.
+	for e in enemies:
+		if is_instance_valid(e) and e.has_meta("marked"):
+			Marked.mark_try(str(e.get_meta("marked")))
 	hud.toast("You collapsed..." if reason == "hurt" else "You pass out...", Color(1, 0.6, 0.6))
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)
@@ -2532,3 +2580,23 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		xp("fishing", 6)
 	else:
 		hud.toast("It got away.")
+
+
+## Ask before handing a villager the item you're holding.
+func confirm_gift(who_name: String, sel: String) -> bool:
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": who_name, "text": "Give them your %s?" % GameState.item_name(sel), "choice": ["Give it", "Just chat"], "key": ""}])
+	await d.finished
+	return d.last_choice == 0
+
+
+## A reaction that tells you how much they liked it.
+func gift_reaction(who_name: String, sel: String, gain: int) -> String:
+	var nm := GameState.item_name(sel)
+	if gain >= 20:
+		return "A %s! How did you know? This is my favourite thing." % nm
+	if gain >= 12:
+		return "A %s! That's a kindness. Thank you." % nm
+	if gain > 0:
+		return "A %s. That's nice of you." % nm
+	return "A %s? Oh. I really don't like these." % nm

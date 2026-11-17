@@ -71,7 +71,7 @@ GIFTS = {
  'b_witch': {'name': 'Bog Song', 'colour': '7fd14a', 'gap': 3.0, 'moves': [{'type': 'zones', 'n': 5, 'fx': 'slow', 'linger': 3.0}, {'type': 'spiral'}, {'type': 'veil'}],
   'rule': {'type': 'window', 'after': 'veil', 'secs': 2.0, 'closed': 0.5, 'open': 2.2}, 'tip': 'She sinks into the bog and comes up behind you. That is when she can be hit hard.'},
  'b_president': {'name': 'Every Gift At Once', 'colour': 'b060ff', 'gap': 2.6, 'moves': [{'type': 'roll', 'of': ['ring', 'lines', 'zones']}, {'type': 'dash'}, {'type': 'pull', 'secs': 1.3}],
-  'rule': {'type': 'window', 'after': 'never', 'rolls': 3, 'secs': 3.5, 'closed': 0.5, 'open': 2.2}, 'tip': "He uses the Gifts he handed out, one after another, and the stone can only hold three before it stutters. Count three. Then hit him."},
+  'rule': {'type': 'window', 'after': 'never', 'rolls': 1, 'secs': 3.0, 'closed': 0.5, 'open': 2.2}, 'tip': "He uses the Gifts he handed out, one after another. Every time he rolls the dice the stone stutters and he is open for three seconds. Watch for the dice."},
  'b_dark': {'name': 'The Source', 'colour': '5a2a9a', 'gap': 2.6, 'clones': {'n': 2, 'at': [0.3]}, 'trail': True,
   'moves': [{'type': 'ring', 'n': 16, 'gap_n': 3}, {'type': 'lines', 'n': 4}, {'type': 'pull', 'secs': 1.5}, {'type': 'zones', 'n': 5, 'fx': 'burn'}, {'type': 'dash'}, {'type': 'spiral'}],
   'rule': {'type': 'cycle', 'on': 7.0, 'off': 3.0, 'closed': 0.34, 'open': 2.0}, 'tip': 'Every Gift came from here, and it throws all of them. It dims every few seconds: that is the only time it can be hurt badly.'},
@@ -82,7 +82,7 @@ GIFTS = {
  'b_mirror': {'name': 'Your Own Face', 'colour': 'bfe9ff', 'gap': 2.8, 'clones': {'n': 2, 'at': [0.8, 0.5, 0.25]}, 'moves': [{'type': 'dash'}, {'type': 'ring', 'n': 8, 'gap_n': 2}],
   'rule': {'type': 'real', 'open': 1.0}, 'tip': 'Only one of them casts a shadow.'},
  'b_eater': {'name': 'The Hunger', 'colour': '3a1a5a', 'gap': 3.0, 'pull_force': 50.0, 'moves': [{'type': 'pull', 'secs': 2.0}, {'type': 'zones', 'n': 5, 'fx': 'slow'}],
-  'rule': {'type': 'range', 'closed': 0.4, 'open': 1.6, 'after': 'pull', 'secs': 1.8, 'stagger': 1.2}, 'tip': 'Stay out of its reach, or wait until it has swallowed and is slow.'},
+  'rule': {'type': 'range', 'far': 30, 'closed': 0.4, 'open': 1.6, 'after': 'pull', 'secs': 1.8, 'stagger': 1.2}, 'tip': 'Stay out of its reach, or hit it while it is pulling and just after it has swallowed.'},
 }
 BOSS = {'big_grump': 'b_grudge', 'commander': 'b_command', 'golem_king': 'b_king', 'ruin_warden': 'b_warden', 'marsh_witch': 'b_witch', 'president': 'b_president',
         'dark_crystal': 'b_dark', 'finargle_elder': 'b_elder', 'obsidian_sentinel': 'b_sentinel', 'mirror': 'b_mirror', 'light_eater': 'b_eater'}
@@ -123,7 +123,7 @@ for (mid, name, age, epi, gift, scene, prog, hp, dmg, speed, tier, art, intro, y
     E['enemies']['marked_' + mid] = {'hp': hp, 'dmg': dmg, 'speed': speed, 'xp': 30 + 20 * tier, 'tier': tier, 'abilities': [], 'gift': gift, 'char': char, 'reward': 60 * tier}
     E['drops']['marked_' + mid] = []
     g = GIFTS[gift]
-    comp[own] = {'name': name.split(' ')[0], 'sprite': char, 'arc': 'gangsters', 'ability': 'gift:' + gift, 'ability_name': g['name'], 'ability_desc': 'Hold B standing still: ' + g['lend_desc'] + ' (%d mana)' % g['mana'],
+    comp[own] = {'name': name.split(' ')[0], 'sprite': char, 'arc': 'gangsters', 'ability': 'gift:' + gift, 'ability_name': g['name'], 'ability_desc': 'Tap the ♥ partner button: ' + g['lend_desc'] + ' (%d mana)' % g['mana'],
                  'join': origin, 'desc': '"%s", %d. %s' % (epi, age, g['name'])}
 for kind, gid in BOSS.items():
     if kind in E['enemies']: E['enemies'][kind]['gift'] = gid

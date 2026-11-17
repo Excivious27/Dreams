@@ -62,7 +62,7 @@ G = [  # id, name, type, value, tier, extra
  ('ghost_ledger', 'Ghost Ledger', 'consumable', 900, 4, {'arc': 'gangsters', 'effect': 'scrub', 'amount': 5, 'desc': 'USE it: you were never here. Heat to zero.'}),
  ('emp_charge', 'EMP Charge', 'consumable', 140, 2, {'arc': 'gangsters', 'effect': 'emp', 'radius': 84, 'stun': 4.0, 'desc': 'USE it: everything near you locks up for 4 seconds, and any Gift stutters OPEN for 3.'}),
  ('emp_heavy', 'Blackout Charge', 'consumable', 420, 3, {'arc': 'gangsters', 'effect': 'emp', 'radius': 130, 'stun': 6.0, 'open': 5.0, 'desc': 'A whole block goes dark. Gifts stutter open for 5 seconds.'}),
- ('spy_drone', 'Spy Drone', 'consumable', 1200, 2, {'arc': 'gangsters', 'effect': 'drone', 'desc': 'USE it (not used up): it circles and reports who is here, how to beat anyone with a Gift, and keeps collectors off you for the day.'}),
+ ('spy_drone', 'Spy Drone', 'consumable', 1200, 2, {'arc': 'gangsters', 'effect': 'drone', 'desc': 'USE it (kept; recharges for 2 days): it circles and reports who is here, how to beat anyone with a Gift, and keeps collectors off you for the day.'}),
  ('scrap_bot', 'Scrap Bot', 'consumable', 220, 2, {'arc': 'gangsters', 'effect': 'bot', 'life': 30, 'dmg': 2, 'desc': 'USE it: a little bot plants itself and zaps anything hostile for 30 seconds.'}),
  ('guard_bot', 'Guard Bot', 'consumable', 600, 3, {'arc': 'gangsters', 'effect': 'bot', 'life': 60, 'dmg': 4, 'reach': 90, 'desc': 'A bigger bot. A minute of cover.'}),
  ('drone_swarm', 'Drone Swarm', 'consumable', 1500, 4, {'arc': 'gangsters', 'effect': 'bot', 'life': 45, 'dmg': 6, 'reach': 120, 'rate': 0.5, 'desc': 'Six drones, 45 seconds, no mercy for furniture.'}),
@@ -85,7 +85,7 @@ for id, name, typ, val, tier, extra in [
  ('campfire_stew', "Big Jim's Stew", 'food', 240, 3, {'energy': 80, 'heal': 5}), ('starlight_smore', "Starlight S'more", 'food', 520, 3, {'energy': 100, 'heal': 4, 'buff': {'kind': 'luck', 'minutes': 300, 'amount': 2}, 'friend': 4}),
  ('scented_litter', 'Scented Litter Box', 'consumable', 40, 2, {'effect': 'stink', 'radius': 84, 'stun': 5.0, 'desc': 'Lavender. Somehow worse. A wider cloud, a longer nose-hold.'}),
  ('mega_litter', 'Mega Litter Box', 'consumable', 110, 3, {'effect': 'stink', 'radius': 120, 'stun': 7.0, 'desc': 'The catapult-sized one. Clears a room.'}),
- ('tuna_treat', 'Tuna Treat', 'food', 50, 1, {'energy': 25, 'friend': 3, 'desc': 'Every cat in Cat-topia wants one. So does your pup.'}),
+ ('tuna_treat', 'Tuna Treat', 'food', 18, 1, {'energy': 25, 'friend': 3, 'desc': 'Every cat in Cat-topia wants one. So does your pup.'}),
  ('paw_lantern', 'Paw Lantern', 'consumable', 90, 2, {'buff': {'kind': 'luck', 'minutes': 180, 'amount': 1}, 'mana': 10, 'desc': 'A little jar of Meow Pow Wow light. Open it for luck and mana.'}),
  ('heart_spark', 'Heart Spark', 'consumable', 420, 3, {'mana': 60, 'heal': 6, 'desc': 'A rainbow heart in a bottle. Mana and health at once.'})]:
     extra['arc'] = 'penguins'; item(id, name, typ, val, tier, **extra)
@@ -141,7 +141,7 @@ def station(id, label, cat, cell, skill, verb, seller, tiers, w=0, h=1, arc=None
 
 P = 'Slots {s}, {v}% faster, recipes to tier {c}.'
 def d(i, extra=''):
-    return ('%d job%s at once, %s recipes to tier %d. ' % (i + 1, '' if i == 0 else 's', ['normal speed,', '15% faster,', '30% faster,', '45% faster,'][i], min(5, i + 2)) + extra).strip()
+    return ('%d job%s at once, %s recipes up to tier %d. ' % (i + 1, '' if i == 0 else 's', ['normal speed,', '15% faster,', '30% faster,', '45% faster,'][i], min(5, i + 2)) + extra).strip()
 
 station('workbench', 'Workbench', 'workshop', [3, 15], 'building', 'Build', 'Hazel', [
  ('Workbench', ['workbench_t1', 'workbench3'], {'wood': 20}, d(0)),
@@ -244,12 +244,12 @@ station('training', 'Recruit Training Center', 'operation', [18, 27], 'combat', 
  ('Back-Lot Gym', ['gym_1'], {'plank': 30, 'rope': 8, 'leather': 6}, 'Spar once a day for combat XP. +10 max health.'),
  ('Training Hall', ['gym_2'], {'beam': 16, 'brick': 60, 'steel_bar': 6}, "Every crew member's perk counts one loyalty step higher. Sparring pays double."),
  ('The Academy', ['gym_3'], {'ironwood_beam': 4, 'plating': 8, 'fine_fabric': 8}, 'Crew perks count two loyalty steps higher. +20 max health.')], w=2, h=2, arc='gangsters', kind='building')
-station('terminal', 'Hacking Terminal', 'operation', [13, 24], 'bartering', 'Hack', 'Specs', [
+station('terminal', 'Hacking Terminal', 'operation', [6, 21], 'bartering', 'Hack', 'Specs', [
  ('Salvaged Terminal', ['terminal_1'], {'plank': 10, 'copper_bar': 4, 'glass': 4}, d(0, 'Circuit boards, data chips.')),
  ('Hacking Terminal', ['terminal_2'], {'iron_bar': 6, 'glass': 10, 'gear': 4}, d(1, 'Scramblers, EMP charges.')),
  ('Server Rack', ['terminal_3'], {'steel_bar': 8, 'crystal_glass': 2, 'spring': 6}, d(2, 'Blackout charges.')),
  ('The Mainframe', ['terminal_4'], {'dark_bar': 4, 'crystal_battery': 3, 'plating': 4}, d(3, 'The Ghost Ledger.'))], arc='gangsters', book='hack')
-station('clinic', 'Chrome Clinic', 'operation', [15, 24], 'combat', 'Fit', 'Doc', [
+station('clinic', 'Chrome Clinic', 'operation', [9, 21], 'combat', 'Fit', 'Doc', [
  ('Back-Room Chair', ['clinic_1'], {'plank': 14, 'iron_bar': 4, 'cloth': 6}, d(0, 'Nothing yet: Doc wants better tools.')),
  ('Chrome Clinic', ['clinic_2'], {'steel_bar': 4, 'glass': 12, 'cotton_cloth': 6}, d(1, 'Optics and reflex wires.')),
  ('Augment Lab', ['clinic_3'], {'plating': 4, 'crystal_glass': 3, 'gear': 6}, d(2, 'A chrome arm, plating under the skin.')),

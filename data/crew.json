@@ -129,7 +129,7 @@
      }
     ]
    ],
-   "finale": "Specs kills the tower's lights from sub-basement three."
+   "finale": "Specs cuts the tower's lights from sub-basement three."
   },
   "ladder": {
    "name": "Ladder",
@@ -268,8 +268,8 @@
    "before": {
     "scene": "docks",
     "cell": [
-     40,
-     30
+     44,
+     16
     ]
    },
    "home": [

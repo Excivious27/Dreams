@@ -193,7 +193,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			hud.toast("Fishing here is coming with the next lake art.")
 			return true
 		"great_tree":
-			if GameState.is_penguins() and GameState.quest_done("clear_meadow"):
+			if GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")):
 				go_to("sky", Vector2(16 * TILE, 26 * TILE), "up")
 			else:
 				tell([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight." + (" Something tells you it's not time yet." if GameState.is_penguins() else " The stair is roped off.")}])
@@ -211,7 +211,7 @@ func _shrine() -> void:
 		fx("pawring" if GameState.is_penguins() else "sparkle", cell_center(SHRINE) + Vector2(0, -10), 10.0, 0.6)
 		var gifts := int(GameState.run["flags"]["shrine_gifts"])
 		if gifts == 3:
-			GameState.run["max_energy"] = int(GameState.run["max_energy"]) + 20
+			GameState.grow_vital("energy", 20)
 			await say([{"who": "Shrine", "text": "The stone warms under your hand. You feel steadier. (+20 max energy)"}])
 		else:
 			await say([{"who": "Shrine", "text": "The offering sinks into the stone. Something, somewhere, is pleased."}])

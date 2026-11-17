@@ -1397,7 +1397,13 @@
       },
       {
        "who": "Star Crystal",
-       "text": "I asked him where he wanted to be. He said: somewhere things grow. I said I knew a place."
+       "text": "I asked him where he wanted to be. He said: somewhere things grow. I said I knew a place.",
+       "if_flag": "dc_reverted"
+      },
+      {
+       "who": "Star Crystal",
+       "text": "There was nothing left of him to plant. So I planted something anyway, where he used to be, so that something would grow there.",
+       "if_flag": "dc_shattered"
       },
       {
        "who": "",
@@ -2057,7 +2063,7 @@
         "Win the fight pit under the neon street."
        ]
       ],
-      "hint": "The twins fight in the pit. Dice owes the gambler; the Kid lost his board; Doc wants herbs; Sasha is the ring's muscle."
+      "hint": "The twins fight in the pit. Dice owes the card shark for a busted scooter; the Kid lost his board; Doc wants herbs; Sasha is the ring's muscle."
      }
     },
     {
@@ -2107,14 +2113,14 @@
      "lines": [
       {
        "who": "Dice",
-       "text": "I'm not— look, I run things. Messages. Small things. I owe the gambler three hundred and he's started saying my name in a voice."
+       "text": "I'm not— look, I run things. Messages. Small things. I borrowed the card shark's scooter and I wrecked it. Three hundred to fix, and he's started saying my name in a voice."
       },
       {
        "who": "Dice",
        "text": "Clear it and I'm yours. I'm fast and I'm scared and both of those are useful.",
        "choice": [
-        "Pay the gambler (◆300).",
-        "Go have a word with the gambler.",
+        "Pay for the scooter (◆300).",
+        "Go have a word with the card shark.",
         "Not now."
        ],
        "key": "dice_join",
@@ -2128,7 +2134,7 @@
         "1": [
          {
           "who": "",
-          "text": "The gambler is a man at a table under a bare bulb. You don't say anything. You put your hand flat on the table, and you leave it there, and after a while he nods."
+          "text": "The card shark is a man at a table under a bare bulb, shuffling and reshuffling a deck he never deals. You don't say anything. You put your hand flat on the table, and you leave it there, and after a while he nods."
          },
          {
           "who": "Dice",
@@ -2506,7 +2512,8 @@
       "flags": [
        "boss_uptown",
        "letter_safe"
-      ]
+      ],
+      "quest": "pit"
      },
      "title_card": true,
      "lines": [
@@ -2538,7 +2545,8 @@
      },
      "when": {
       "flag": "boss_uptown",
-      "not_flag": "letter_safe"
+      "not_flag": "letter_safe",
+      "quest": "pit"
      },
      "title_card": true,
      "lines": [
@@ -2651,7 +2659,7 @@
      "lines": [
       {
        "who": "Doc",
-       "text": "I've got the bleeding, boss. You've got him. Remember what I said."
+       "text": "I've got the patching up, boss. You've got him. Remember what I said."
       }
      ],
      "effects": {

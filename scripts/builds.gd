@@ -58,7 +58,9 @@ static func gate(id: String) -> String:
 static func built_tier(id: String) -> int:
 	var v: Variant = GameState.run.get("builds", {}).get(id, 0)
 	if v is bool:
-		return 1 if v else 0
+		v = 1 if v else 0
+	if id == "house":
+		return maxi(1, int(v))   # you start in the Cottage
 	return int(v)
 
 

@@ -28,7 +28,8 @@ static func _leave(kind: String, pool: Array, rolls: int, each: int) -> int:
 		held += int(box[id])
 	var n := 0
 	for i in rolls:
-		if held >= 30:
+		if held + each > 30:
+			GameState.run["flags"]["basket_full_" + kind] = true
 			break  # the basket is full: come and empty it
 		var id := str(pool[randi() % pool.size()])
 		if not GameState.items.has(id):

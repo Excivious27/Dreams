@@ -8795,7 +8795,7 @@
  "tuna_treat": {
   "name": "Tuna Treat",
   "type": "food",
-  "value": 50,
+  "value": 18,
   "rarity": "common",
   "tier": 1,
   "energy": 25,
@@ -9141,7 +9141,7 @@
   "tier": 2,
   "arc": "gangsters",
   "effect": "drone",
-  "desc": "USE it (not used up): it circles and reports who is here, how to beat anyone with a Gift, and keeps collectors off you for the day."
+  "desc": "USE it (kept; recharges for 2 days): it circles and reports who is here, how to beat anyone with a Gift, and keeps collectors off you for the day."
  },
  "scrap_bot": {
   "name": "Scrap Bot",

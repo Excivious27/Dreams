@@ -193,14 +193,18 @@ func draw_map() -> void:
 
 func _alien_shop() -> void:
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Dream Tonic  ◆200", "Energy Tea  ◆20", "Leave"], "key": ""}])
+	var p1 := GameState.shop_price("dream_tonic", 200)
+	var p2 := GameState.shop_price("energy_tea", 20)
+	d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Dream Tonic  ◆%d" % p1, "Energy Tea  ◆%d" % p2, "Leave"], "key": ""}])
 	await d.finished
-	if d.last_choice == 0 and int(GameState.run["crystals"]) >= 200:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) - 200
+	if d.last_choice == 0 and int(GameState.run["crystals"]) >= p1:
+		GameState.run["crystals"] = int(GameState.run["crystals"]) - p1
 		give("dream_tonic")
-	elif d.last_choice == 1 and int(GameState.run["crystals"]) >= 20:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) - 20
+	elif d.last_choice == 1 and int(GameState.run["crystals"]) >= p2:
+		GameState.run["crystals"] = int(GameState.run["crystals"]) - p2
 		give("energy_tea")
+	elif d.last_choice in [0, 1]:
+		hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 
 
 func _tele_first() -> void:

@@ -74,6 +74,17 @@ func build() -> void:
 		for c: Vector2i in cells:
 			set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": wb.get("fish", []), "shore": str(wb.get("shore", "grass"))})
 			_water_cells[c] = true
+	# Painted water rects ("water": [{"rect": [x, y, w, h], "fish": [...]}]) are real
+	# water too: no walking on the sea, and you can fish off the dock.
+	for wr in R.get("water", []):
+		var rr: Array = wr.get("rect", [])
+		if rr.size() < 4:
+			continue
+		for y in range(int(rr[1]), int(rr[1]) + int(rr[3])):
+			for x in range(int(rr[0]), int(rr[0]) + int(rr[2])):
+				if x < 1 or y < 1 or x >= cols - 1 or y >= rows - 1 or things.has(Vector2i(x, y)):
+					continue
+				set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": wr.get("fish", R.get("fish", [])), "shore": str(wr.get("shore", "sand"))})
 	# Forage spots from data/forage.json (respawn every 2 days, 1 with Tracker).
 	var fcount := int(R.get("forage", 0))
 	if fcount > 0:
@@ -205,6 +216,12 @@ func after_ready() -> void:
 		var n := GameState.enemy_count(int(e.get("count", 1)))
 		for i in n:
 			var at := cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
+			# Never right on top of where you walked in.
+			for tries in 20:
+				var cc := world_to_cell(at)
+				if player == null or (cc - world_to_cell(player.position)).length() >= 8.0 and not is_water_cell(cc) and not blocked.has(cc):
+					break
+				at = cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			if e.has("cell"):
 				at = cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
 			spawn_enemy(str(e["kind"]), at)
@@ -258,7 +275,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"loot":
 			var key := "loot_%s_%d_%d" % [region_id, c.x, c.y]
-			if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]) - int(thing.get("every", 1)):
+			if not GameState.run["flags"].has(key) or int(GameState.run["day"]) >= int(GameState.run["flags"][key]) + int(thing.get("every", 1)):
 				GameState.run["flags"][key] = int(GameState.run["day"])
 				give(str(thing.get("item", "stone")), int(thing.get("n", 1)))
 			else:
@@ -314,7 +331,7 @@ func _shop(thing: Dictionary) -> void:
 	var items: Array = thing.get("items", [])
 	var opts: Array = []
 	for it in items:
-		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), int(it[1])])
+		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), GameState.shop_price(str(it[0]), int(it[1]))])
 	opts.append("Leave")
 	var d := Dialogue.instance(get_tree())
 	d.say([{"who": str(thing.get("who", "Shop")), "text": "%s  (◆%d)" % [str(thing.get("greet", "What'll it be?")), int(GameState.run["crystals"])], "choice": opts, "key": ""}])
@@ -323,7 +340,7 @@ func _shop(thing: Dictionary) -> void:
 	if i < 0 or i >= items.size():
 		return
 	var id := str(items[i][0])
-	var price := int(items[i][1])
+	var price := GameState.shop_price(id, int(items[i][1]))
 	if int(GameState.run["crystals"]) < price:
 		hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 		return
@@ -342,6 +359,9 @@ func _boss(thing: Dictionary) -> void:
 		return
 	if _boss_node != null and is_instance_valid(_boss_node) and _boss_node._alive:
 		return  # already fighting it: A at the boss swings, it doesn't re-summon
+	if thing.has("when") and not GameState._cond_ok(thing["when"]):
+		await say([{"text": str(thing.get("locked", "Not yet. There's business to finish elsewhere first."))}])
+		return
 	player.frozen = true
 	await say([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "..."))}])
 	var b := spawn_enemy(str(thing.get("kind", "commander")), player.position + Vector2(40, 0))
@@ -398,9 +418,9 @@ func _talk_npc(n: Npc) -> void:
 	if await Crew.talk(self, id):
 		player.frozen = false
 		return
-	if GameState.can_gift(id, sel):
+	if GameState.can_gift(id, sel) and await confirm_gift(name, sel):
 		var gain := GameState.give_gift(id, sel)
-		await say([{"who": name, "text": ("A %s! That's a kindness." if gain > 0 else "A %s. ...Hm.") % GameState.item_name(sel)}])
+		await say([{"who": name, "text": gift_reaction(name, sel, gain)}])
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return

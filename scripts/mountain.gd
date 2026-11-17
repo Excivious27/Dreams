@@ -183,8 +183,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _pad() -> void:
-	if not GameState.quest_done("clear_meadow"):
-		await say([{"who": "Star Crystal", "text": "(faintly) Not yet. The first spark has to be lit before we leave the ground."}])
+	if not GameState.quest_done("clear_meadow") or (GameState.is_penguins() and not GameState.run["flags"].has("merkitty_done")):
+		await say([{"who": "Star Crystal", "text": "(faintly) Not yet. The first spark has to be lit, and the merkitties freed, before we leave the ground."}])
 		return
 	var d := Dialogue.instance(get_tree())
 	d.say([{"who": "Star Crystal", "text": "The pad hums under your feet. I can take us up. The moon is where the next piece of the Meow Pow Wow is hidden. Ready?", "choice": ["Launch", "Not yet"], "key": ""}])
@@ -197,9 +197,13 @@ func _pad() -> void:
 
 func _camp() -> void:
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Smuggler", "text": "No names, no questions. Iron Sword ◆90, Red Potion ◆20, Energy Tea ◆15. You have ◆%d." % int(GameState.run["crystals"]), "choice": ["Iron Sword  ◆90", "Red Potion  ◆20", "Energy Tea  ◆15", "Leave"], "key": ""}])
+	var picks := [["iron_sword", 90], ["potion", GameState.shop_price("potion", 20)], ["energy_tea", GameState.shop_price("energy_tea", 15)]]
+	var ch: Array = []
+	for pk in picks:
+		ch.append("%s  ◆%d" % [GameState.item_name(str(pk[0])), int(pk[1])])
+	ch.append("Leave")
+	d.say([{"who": "Smuggler", "text": "No names, no questions. You have ◆%d." % int(GameState.run["crystals"]), "choice": ch, "key": ""}])
 	await d.finished
-	var picks := [["iron_sword", 90], ["potion", 20], ["energy_tea", 15]]
 	if d.last_choice >= 0 and d.last_choice < picks.size():
 		var id: String = picks[d.last_choice][0]
 		var price: int = picks[d.last_choice][1]

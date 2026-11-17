@@ -11,6 +11,8 @@ extends RefCounted
 const PEOPLED := ["town", "hideout", "docks", "neon", "uptown", "countryside", "interior", "beach", "riverlands", "quarry"]
 const WASH_CAP := [0, 3, 6, 10]
 const WASH_RATE := [0.0, 0.8, 0.85, 0.9]
+const WASH_FACE_CAP := [0, 300, 900, 2500]   # most face value the wash takes a night
+const WASH_TIER_CUT := [0.0, 0.0, 0.0, 0.1, 0.25]  # big notes are harder to clean
 
 
 static func on() -> bool:
@@ -21,8 +23,13 @@ static func heat() -> int:
 	return int(GameState.run.get("heat", 0))
 
 
+## The one place heat changes: always 0-5.
+static func set_heat(n: int) -> void:
+	GameState.run["heat"] = clampi(n, 0, 5)
+
+
 static func add_heat(m: GameMap, n: int) -> void:
-	GameState.run["heat"] = clampi(heat() + n, 0, 5)
+	set_heat(heat() + n)
 	if m and n > 0:
 		m.hud.toast("Heat %d/5. %s" % [heat(), "Lie low a while." if heat() < 3 else "The President's collectors will be looking."], Color(1, 0.6, 0.4))
 
@@ -30,8 +37,19 @@ static func add_heat(m: GameMap, n: int) -> void:
 ## Chance this bill gets noticed right now.
 static func risk(id: String) -> float:
 	var r := float(GameState.items.get(id, {}).get("risk", 0.3)) + 0.05 * heat()
+	r += 0.04 * passed_today()                     # every till you hit today talks to the next
 	r -= 0.03 * Crew.perk_level("shop_discount")  # Specs knows which tills to avoid
-	return clampf(r, 0.01, 0.9)
+	return clampf(r, 0.03, 0.9)
+
+
+## Bills passed today, and how many the streets will take in a day.
+static func passed_today() -> int:
+	var pd: Dictionary = GameState.run.get("passed_day", {})
+	return int(pd.get("n", 0)) if int(pd.get("day", -1)) == int(GameState.run["day"]) else 0
+
+
+static func pass_cap() -> int:
+	return 3 + 2 * GameState.progress_tier()
 
 
 static func pass_bills(m: GameMap, id: String) -> bool:
@@ -44,15 +62,26 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 	if int(GameState.run["flags"].get("burned_day", -1)) == int(GameState.run["day"]):
 		m.hud.toast("Word's out today. Every till in town is checking twice.", Color(1, 0.8, 0.6))
 		return true
+	if passed_today() >= pass_cap():
+		m.hud.toast("That's enough paper for one day. Try again tomorrow. (%d/%d)" % [passed_today(), pass_cap()], Color(1, 0.8, 0.6))
+		return true
 	var it: Dictionary = GameState.items[id]
 	var face := int(it.get("face", 50))
 	GameState.add_item(id, -1)
 	m.player.play_tool("hold")
-	if randf() >= risk(id):
+	var r_now := risk(id)
+	GameState.run["passed_day"] = {"day": int(GameState.run["day"]), "n": passed_today() + 1}
+	if randf() >= r_now:
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + face
+		# Big notes get remembered even when nobody says anything.
+		if int(it.get("tier", 1)) >= 3:
+			GameState.run["heat_shadow"] = float(GameState.run.get("heat_shadow", 0.0)) + 0.25
+			if float(GameState.run["heat_shadow"]) >= 1.0:
+				GameState.run["heat_shadow"] = 0.0
+				add_heat(m, 1)
 		GameState.run["passed"] = int(GameState.run.get("passed", 0)) + 1
 		GameState.add_xp("bartering", 2 + int(it.get("tier", 1)))
-		m.hud.toast("Passed. +◆%d  (risk was %d%%)" % [face, int(round(risk(id) * 100.0))], Color(0.7, 1, 0.7))
+		m.hud.toast("Passed. +◆%d  (risk was %d%%, %d/%d today)" % [face, int(round(r_now * 100.0)), passed_today(), pass_cap()], Color(0.7, 1, 0.7))
 		Music.instance(m.get_tree()).sfx("pickup")
 		return true
 	# Noticed: the bill is gone, you pay to make it go away, and people remember.
@@ -98,16 +127,27 @@ static func forged_permit(m: GameMap, id: String) -> bool:
 
 ## Walking into a street with heat on you.
 static func on_enter(m: GameMap) -> void:
-	if not on() or heat() < 3 or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine"]:
+	if not on() or heat() < 3 or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine", "hideout"]:
 		return
 	if int(GameState.run["flags"].get("raid_day", -1)) == int(GameState.run["day"]) or randf() > 0.5:
 		return
 	GameState.run["flags"]["raid_day"] = int(GameState.run["day"])
 	var n := 2 + (heat() - 3)
 	for i in n:
-		m.spawn_enemy("thug_brute" if i == 0 else "thug_cyber", m.player.position + Vector2(48 + 14 * i, -20 + 20 * i))
-	m.hud.toast("Collectors. Somebody remembered your face.", Color(1, 0.5, 0.4))
-	GameState.run["heat"] = heat() - 1
+		var c := m.spawn_enemy("thug_brute" if i == 0 else "thug_cyber", m.player.position + Vector2(48 + 14 * i, -20 + 20 * i))
+		if c:
+			c.reward = 0          # collectors carry no cash; beating them is the point
+			c.set_meta("collector", true)
+	m.hud.toast("Collectors. Somebody remembered your face. Beat them all and the heat drops.", Color(1, 0.5, 0.4))
+
+
+## A collector went down: when the last one in this street falls, heat drops one.
+static func on_collector_down(m: GameMap) -> void:
+	for e in m.enemies:
+		if is_instance_valid(e) and e._alive and e.has_meta("collector"):
+			return
+	set_heat(heat() - 1)
+	m.hud.toast("The collectors won't be reporting back. Heat %d/5." % heat(), Color(0.7, 1, 0.7))
 
 
 ## Called from sleep(): heat cools, the wash pays out.
@@ -115,11 +155,24 @@ static func overnight(report: Dictionary) -> void:
 	if not on():
 		return
 	var lt := Builds.built_tier("laundromat")
-	GameState.run["heat"] = maxi(0, heat() - (2 if lt > 0 else 1))
+	set_heat(heat() - (2 if lt > 0 else 1))
 	var wash: Dictionary = GameState.run.get("wash", {})
 	var paid := 0
+	var face_left := int(WASH_FACE_CAP[clampi(lt, 0, 3)])
+	var back := {}
 	for id in wash:
-		paid += int(int(GameState.items.get(str(id), {}).get("face", 0)) * int(wash[id]) * float(WASH_RATE[clampi(lt, 0, 3)]))
+		var it: Dictionary = GameState.items.get(str(id), {})
+		var face := int(it.get("face", 0))
+		var rate := float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(it.get("tier", 1)), 0, 4)])
+		for k in int(wash[id]):
+			if face > face_left:
+				back[id] = int(back.get(id, 0)) + 1
+				continue
+			face_left -= face
+			paid += int(face * rate)
+	for id in back:
+		GameState.add_item(str(id), int(back[id]))
+		report["wash_back"] = int(report.get("wash_back", 0)) + int(back[id])
 	if paid > 0:
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + paid
 		report["washed"] = paid

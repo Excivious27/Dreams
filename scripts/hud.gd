@@ -341,7 +341,32 @@ static func panel_stylebox(name: String) -> StyleBox:
 
 
 func toast(text: String, color := Color.WHITE) -> void:
+	# The same message again: bump a counter instead of stacking a copy.
+	for c in _toasts.get_children():
+		if c is Label and c.has_meta("base") and str(c.get_meta("base")) == text and not c.is_queued_for_deletion():
+			var k := int(c.get_meta("count", 1)) + 1
+			c.set_meta("count", k)
+			(c as Label).text = "%s  ×%d" % [text, k]
+			(c as Label).modulate.a = 1.0
+			return
+	# At most three on screen: the oldest goes.
+	var live: Array = []
+	for c in _toasts.get_children():
+		if not c.is_queued_for_deletion():
+			live.append(c)
+	while live.size() >= 3:
+		var old_l: Node = live.pop_front()
+		_toasts.remove_child(old_l)
+		old_l.queue_free()
+	# Keep a short history for the journal.
+	var hist: Array = GameState.run.get("toast_log", []) if not GameState.run.is_empty() else []
+	hist.append(text)
+	while hist.size() > 40:
+		hist.pop_front()
+	if not GameState.run.is_empty():
+		GameState.run["toast_log"] = hist
 	var l := Label.new()
+	l.set_meta("base", text)
 	l.text = text
 	l.add_theme_font_size_override("font_size", 9)
 	l.add_theme_constant_override("outline_size", 3)
@@ -354,7 +379,7 @@ func toast(text: String, color := Color.WHITE) -> void:
 	# Indoors the HUD block is at the bottom; toasts go just above it.
 	_toasts.position.y = 76.0 if y_offset == 0.0 else 190.0
 	var tw := l.create_tween()
-	tw.tween_interval(1.6)
+	tw.tween_interval(clampf(1.2 + text.length() * 0.03, 1.6, 4.0))  # long messages stay long enough to read
 	tw.tween_property(l, "modulate:a", 0.0, 0.5)
 	tw.tween_callback(l.queue_free)
 

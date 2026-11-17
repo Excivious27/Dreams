@@ -500,12 +500,12 @@
    "rule": {
     "type": "window",
     "after": "never",
-    "rolls": 3,
-    "secs": 3.5,
+    "rolls": 1,
+    "secs": 3.0,
     "closed": 0.5,
     "open": 2.2
    },
-   "tip": "He uses the Gifts he handed out, one after another, and the stone can only hold three before it stutters. Count three. Then hit him."
+   "tip": "He uses the Gifts he handed out, one after another. Every time he rolls the dice the stone stutters and he is open for three seconds. Watch for the dice."
   },
   "b_dark": {
    "name": "The Source",
@@ -644,13 +644,14 @@
    ],
    "rule": {
     "type": "range",
+    "far": 30,
     "closed": 0.4,
     "open": 1.6,
     "after": "pull",
     "secs": 1.8,
     "stagger": 1.2
    },
-   "tip": "Stay out of its reach, or wait until it has swallowed and is slow."
+   "tip": "Stay out of its reach, or hit it while it is pulling and just after it has swallowed."
   }
  },
  "marked": {

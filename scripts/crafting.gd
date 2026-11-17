@@ -66,7 +66,7 @@ static func slots(tier: int) -> int:
 
 
 static func skill_tier(station: String) -> int:
-	return 1 + int(GameState.skill_level(skill_of(station)) / 2)
+	return 1 + int((GameState.skill_level(skill_of(station)) - 1) / 2)
 
 
 ## Kept for older callers: the recipe tier you can reach at a station you own.
@@ -148,7 +148,14 @@ static func _owned(rc: Dictionary) -> bool:
 	var g := str(rc["give"])
 	var t := str(GameState.items.get(g, {}).get("type", ""))
 	if bool(rc.get("tool", false)) or t == "tool":
-		return GameState.has_tool(g)
+		if GameState.has_tool(g):
+			return true
+		for k in GameState.run.get("jobs", {}):
+			var js: Variant = GameState.run["jobs"][k]
+			for j in (js if js is Array else [js]):
+				if j is Dictionary and str(j.get("give", "")) == g:
+					return true
+		return false
 	if t == "vehicle":
 		return GameState.count(g) > 0
 	return false
@@ -218,7 +225,9 @@ static func start(station: String, key: String, rc: Dictionary, tier: int, qty: 
 	if not rc.has("days"):
 		# Whatever you start today is ready when you wake.
 		var day_end := int(GameState.run["day"]) * 1440 + GameState.DAY_END
-		mins = clampi(mins, 5, maxi(5, day_end - now_abs()))
+		mins = maxi(5, mins)
+		if now_abs() + mins > day_end:
+			mins = (int(GameState.run["day"]) + 1) * 1440 + GameState.DAY_START - now_abs()
 	var j := {"id": str(rc["id"]), "name": str(rc["name"]), "give": str(rc["give"]), "n": int(rc.get("n", 1)) * qty, "batches": qty, "tier": int(rc.get("tier", 1)), "tool": bool(rc.get("tool", false)), "st": tier, "station": station, "done_at": now_abs() + mins}
 	jobs(key).append(j)
 	return j

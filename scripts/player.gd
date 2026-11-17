@@ -617,7 +617,7 @@ func _physics_process(delta: float) -> void:
 			auto = true
 
 	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
-	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed")
+	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed") + 0.15 * GameState.buff("speed")
 	if int(GameState.run["flags"].get("haste_until", -1)) > int(GameState.run["time"]):
 		spd_mult *= 1.3
 	if GameState.weather_today() in ["snow", "blizzard"] and map and map.has_sky:
@@ -767,6 +767,10 @@ func do_action(mode := "a") -> void:
 	if mode == "tool" and held in ["sword", ""]:
 		_swing()
 		return
+	# A foe right in front: the fight comes first, not the weed under its feet.
+	if mode != "action" and held in ["sword", ""] and _enemy_in_front(26.0):
+		_swing()
+		return
 	if map and map.try_interact(facing_cell()):
 		velocity = Vector2.ZERO
 		if not _busy:
@@ -780,8 +784,8 @@ func do_action(mode := "a") -> void:
 		# Point the pup at an enemy.
 		var e := map.nearest_enemy_to(position + facing_dir() * 16.0, 24.0)
 		if e and map.pet is Pet and map.pet.visible:
-			(map.pet as Pet)._target = e
 			(map.pet as Pet).set_mode("attack")
+			(map.pet as Pet)._target = e
 		return
 	if held in ["hoe", "can", "axe", "pickaxe", "rod", "scythe"]:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
@@ -897,6 +901,8 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	for e in map.enemies:
 		if not is_instance_valid(e):
 			continue
+		if not map.line_clear(muzzle, e.position + Vector2(0, -6)):
+			continue  # no shooting through walls
 		var to: Vector2 = e.position + Vector2(0, -6) - muzzle
 		var along := to.dot(dir)
 		var off := absf(to.dot(dir.orthogonal()))
@@ -907,7 +913,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	targets.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
 	if not bool(wd.get("spread", false)) and targets.size() > 1:
 		targets = [targets[0]]
-	var end := muzzle + dir * reach
+	var end := map.line_end(muzzle, muzzle + dir * reach)
 	var hit := false
 	for t in targets:
 		var e: Node2D = t[1]
@@ -964,7 +970,9 @@ func take_damage(n: int, from: Vector2) -> void:
 			map.hud.toast("Shield!", Color(0.8, 0.9, 1.0))
 			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.5)
 		return
-	n = maxi(2, n - (GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence"))) * 2)
+	# Armour scales: every point helps, none makes you untouchable.
+	var defn := GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence")) + int(GameState.buff("defense"))
+	n = maxi(1, roundi(n * 60.0 / (60.0 + 4.0 * maxf(0.0, defn))))
 	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
 	# Short mercy window: enough to not get chain-hit by one enemy, not enough to
 	# tank a crowd. The knockback is shorter too, so you can't bounce to safety.
@@ -1038,3 +1046,16 @@ func _on_animation_finished() -> void:
 	if anim_name.begins_with("attack") or anim_name == "powerup" or not _anim.sprite_frames.get_animation_loop(anim_name):
 		_busy = false
 		_show_idle()
+
+
+## Is a live enemy within `dist` and roughly where you face?
+func _enemy_in_front(dist: float) -> bool:
+	if map == null:
+		return false
+	var fd := facing_dir()
+	for e in map.enemies:
+		if is_instance_valid(e) and e._alive:
+			var to: Vector2 = e.position - position
+			if to.length() <= dist and (to.length() < 6.0 or to.normalized().dot(fd) > 0.3):
+				return true
+	return false

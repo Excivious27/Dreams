@@ -35,7 +35,10 @@ static func on_enter(m: GameMap) -> void:
 			continue
 		if int(GameState.run["flags"].get("marked_try_" + id, -1)) == int(GameState.run["day"]):
 			continue  # beaten you once today already; come back tomorrow
-		var e := spawn(m, id, m.player.position + Vector2(96, -40))
+		# Come at you from the side of the map with room, never from off the edge.
+		var mid := Vector2(m.cols, m.rows) * 8.0 + m.offset()
+		var side := 1.0 if mid.x >= m.player.position.x else -1.0
+		var e := spawn(m, id, m.player.position + Vector2(96 * side, -40 if mid.y < m.player.position.y else 40))
 		if e:
 			m.hud.toast("%s, \"%s\": %s" % [str(d["name"]), str(d["epithet"]), str(d["intro"])], Color(str(Gift.def(str(d["gift"])).get("colour", "ffffff"))))
 		return
@@ -84,9 +87,7 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 		m.hud.toast("%s joins the crew. Pick them in Menu > Party to borrow the %s." % [who.split(" ")[0], str(Gift.def(str(d["gift"])).get("name", "Gift"))], Color(1, 0.9, 0.5))
 	else:
 		GameState.run["flags"]["marked_" + id] = "free"
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
-		if Racket.heat() > 0:
-			GameState.run["heat"] = Racket.heat() - 1
+		Racket.set_heat(Racket.heat() - 1)
 		m.hud.toast("%s walks. Word gets round that you let them: the streets ease off a little." % who.split(" ")[0], Color(0.7, 1, 0.8))
 	GameState.add_hint("%s (\"%s\", %d): %s" % [who, str(d["epithet"]), int(d["age"]), "crew" if dl.last_choice == 0 else "went home"])
 	if is_instance_valid(e):

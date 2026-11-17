@@ -134,7 +134,11 @@ func after_ready() -> void:
 		var kind := str(pool[rng.randi_range(0, pool.size() - 1)])
 		if not GameState.is_penguins() and kind == "shard":
 			kind = "thug_cyber"
-		spawn_enemy(kind, cell_center(c), mine_tier)
+		var me := spawn_enemy(kind, cell_center(c), mine_tier)
+		# Boss kinds wandering the deep floors fight plainly; only keepers have Gifts.
+		if me and me._gift:
+			me._gift.queue_free()
+			me._gift = null
 	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
 		_summoning = true
 		call_deferred("_summon_guardian")
@@ -512,7 +516,7 @@ func _summon_guardian() -> void:
 	_guardian = spawn_enemy(kind, at, maxi(mine_tier, GameState.enemy_tier(kind)))
 	_guardian.is_guardian = true
 	var into := (floor_no - 1) % int(GameState.tier_data.get("mine", {}).get("floors_per_tier", 4))
-	_guardian.max_hp = int(_guardian.max_hp * (1.5 + 0.12 * floor_no))
+	_guardian.max_hp = int(_guardian.max_hp * minf(2.0, 1.3 + 0.08 * into))
 	_guardian.hp = _guardian.max_hp
 	var extra: Array = ["lunge", "stomp", "ranged", "shield", "summon", "regen"]
 	for i in into:

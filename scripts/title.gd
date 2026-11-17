@@ -112,10 +112,39 @@ func _show_title() -> void:
 	if GameState.has_run():
 		var n: String = GameState.run["names"]["character"]
 		_page.add_child(_button("Continue as %s" % n, _start_game, true))
-	_page.add_child(_button("New game", _show_arcs, true))
+	_page.add_child(_button("New game", _confirm_new if GameState.has_run() else _show_arcs, true))
 	if GameState.has_run():
 		_page.add_child(_button("Play together", _show_net))
-	_page.add_child(_button("Character test map", func() -> void: get_tree().change_scene_to_file("res://scenes/test_map.tscn")))
+	var prev: Variant = SaveGame.get_value("run_prev", null)
+	if prev is Dictionary and not (prev as Dictionary).is_empty():
+		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
+		_page.add_child(_button("Restore %s (day %d)" % [pn, int((prev as Dictionary).get("day", 1))], _restore_prev))
+	if OS.is_debug_build():
+		_page.add_child(_button("Character test map", func() -> void: get_tree().change_scene_to_file("res://scenes/test_map.tscn")))
+
+
+## Starting over never loses a farm: the current one is kept to restore.
+func _confirm_new() -> void:
+	_clear()
+	_page.add_child(_label("Start a new game?", 16))
+	_page.add_child(_label("%s's farm (day %d) will be kept, and you can bring it back from the title screen with Restore. Only the most recent one is kept." % [str(GameState.run["names"]["character"]), int(GameState.run.get("day", 1))], 8, false))
+	_page.add_child(_button("Yes, start fresh", func() -> void:
+		SaveGame.set_value("run_prev", GameState.run.duplicate(true))
+		_show_arcs(), true))
+	_page.add_child(_button("Back", _show_title))
+
+
+func _restore_prev() -> void:
+	var prev: Variant = SaveGame.get_value("run_prev", null)
+	if not prev is Dictionary:
+		return
+	var cur: Dictionary = GameState.run.duplicate(true) if GameState.has_run() else {}
+	GameState.run = {}
+	SaveGame.set_value(GameState.SAVE_KEY, (prev as Dictionary).duplicate(true))
+	GameState.has_run()   # loads and migrates it
+	if not cur.is_empty():
+		SaveGame.set_value("run_prev", cur)  # swap, so nothing is ever lost
+	_show_title()
 
 
 var _net_url: LineEdit

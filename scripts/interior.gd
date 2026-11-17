@@ -202,9 +202,9 @@ func _talk(n: Npc) -> void:
 	# Gifts work indoors too.
 	var sel := str(GameState.run["selected"])
 	var it: Dictionary = GameState.items.get(sel, {})
-	if GameState.can_gift(n.id, sel):
+	if GameState.can_gift(n.id, sel) and await confirm_gift(name, sel):
 		var gain := GameState.give_gift(n.id, sel)
-		await say([{"who": name, "text": ("A %s! That's a kindness." if gain > 0 else "A %s. ...Hm.") % GameState.item_name(sel)}])
+		await say([{"who": name, "text": gift_reaction(name, sel, gain)}])
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return

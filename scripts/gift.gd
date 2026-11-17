@@ -81,7 +81,7 @@ func vuln(from: Vector2, magic: bool) -> float:
 			var behind := (from.x - e.position.x) * face < -2.0
 			return opened if (behind or open_t > 0.0) else closed
 		"range":
-			var far := from.distance_to(e.position) > 46.0 or magic
+			var far := from.distance_to(e.position) > float(r.get("far", 46.0)) or magic or _pull > 0.0
 			return opened if (far or open_t > 0.0) else closed
 		"real":
 			return opened
@@ -202,16 +202,18 @@ func _process(delta: float) -> void:
 			_open_after("gust")
 	if _veil > 0.0:
 		_veil -= delta
-		e.modulate.a = 0.07
+		if e._sprite:
+			e._sprite.modulate.a = 0.07
 		if _veil <= 0.0:
 			# Step out behind you and strike.
 			e.position = e.map.free_spot_near(p.position - p.facing_dir() * 18.0)
-			e.modulate.a = 1.0
+			if e._sprite:
+				e._sprite.modulate.a = 1.0
 			e.map.fx("blink" if Art.has("fx", "blink") else "poof", e.position + Vector2(0, -8), 14.0, 0.4)
 			_lines.append({"a": e.position, "b": e.position + (p.position - e.position).normalized() * 40.0, "t": 0.35, "w": 9.0, "fired": false})
 			_open_after("veil")
-	elif not decoy and e.modulate.a < 1.0:
-		e.modulate.a = 1.0
+	elif not decoy and e._sprite and e._sprite.modulate.a < 1.0:
+		e._sprite.modulate.a = 1.0
 	if _dash_t > 0.0:
 		_dash_t -= delta
 		if _dash_t <= 0.0 and _dash_to != Vector2.INF:
@@ -484,10 +486,10 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 				en._knock = (en.position - p.position).normalized() * 320.0
 				en._stun = maxf(en._stun, 0.8)
 			GameState.run["buffs"] = GameState.run.get("buffs", {})
-			GameState.run["buffs"]["speed"] = {"until": GameState.now_abs() + 30, "amount": 1.25}
+			GameState.run["buffs"]["speed"] = {"until": GameState.now_abs() + 30, "amount": 2.0}
 		"iron":
 			GameState.run["buffs"] = GameState.run.get("buffs", {})
-			GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 30, "amount": 4.0}
+			GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 30, "amount": 3.0}
 		"shade":
 			p.invuln = maxf(p.invuln, 3.0)
 		"beat":

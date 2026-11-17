@@ -190,6 +190,7 @@ func _set_portrait(who: String, mood: String) -> void:
 
 func _show_choice(line: Dictionary) -> void:
 	_in_choice = true
+	_choice_opened = Engine.get_process_frames()
 	_who.text = str(line.get("who", ""))
 	_who.visible = _who.text != ""
 	_text.text = str(line.get("text", ""))
@@ -207,8 +208,13 @@ func _show_choice(line: Dictionary) -> void:
 		b.custom_minimum_size = Vector2(0, 20)
 		b.pressed.connect(func() -> void: _choose(key, i))
 		_choices.add_child(b)
-	_choice_scroll.custom_minimum_size = Vector2(0, minf(opts.size() * 22.0, 7 * 22.0))
-	_panel.size.y = BOX_H + minf(opts.size(), 7) * 22
+	# Size the list by the rows' real (wrapped) heights, up to about half the screen.
+	var want := 0.0
+	for c in _choices.get_children():
+		want += maxf(20.0, (c as Button).get_combined_minimum_size().y) + 2.0
+	var cap := 7 * 22.0
+	_choice_scroll.custom_minimum_size = Vector2(0, minf(want, cap))
+	_panel.size.y = BOX_H + minf(want, cap)
 	# Keep the choices above the touch controls.
 	_panel.position.y = minf(BOX_Y, TouchControls.TOP_OF_CONTROLS - _panel.size.y - 6)
 	_refresh_focus()
@@ -262,6 +268,9 @@ func _process(delta: float) -> void:
 			_hint.visible = true
 
 
+var _choice_opened := 0
+
+
 func _process_input() -> void:
 	# The press that opened the box must not also advance it.
 	if Engine.get_process_frames() - _opened_frame < 2:
@@ -269,6 +278,9 @@ func _process_input() -> void:
 	if _in_choice:
 		var n := _choices.get_child_count()
 		if n == 0:
+			return
+		# A tap meant to skip text must not also pick the first answer.
+		if Engine.get_process_frames() - _choice_opened < 12:
 			return
 		if Input.is_action_just_pressed("down"):
 			_choice_focus = (_choice_focus + 1) % n
@@ -278,6 +290,14 @@ func _process_input() -> void:
 			_refresh_focus()
 		elif InputSetup.confirm_pressed():
 			(_choices.get_child(_choice_focus) as Button).pressed.emit()
+		elif Input.is_action_just_pressed("b"):
+			# B backs out when the last option is a way out.
+			var last := _choices.get_child(n - 1) as Button
+			var t := last.text.strip_edges().to_lower()
+			for w in ["leave", "back", "←", "cancel", "never mind", "nevermind", "not now", "no thanks", "close", "done"]:
+				if t.begins_with(w):
+					last.pressed.emit()
+					break
 		return
 	if InputSetup.confirm_pressed():
 		_advance()

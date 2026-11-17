@@ -154,9 +154,18 @@ func _has_ability() -> bool:
 
 func _pet() -> Pet:
 	var m := get_tree().current_scene
-	if m is GameMap and (m as GameMap).pet != null and is_instance_valid((m as GameMap).pet) and (m as GameMap).pet.visible:
+	if m is GameMap and (m as GameMap).pet != null and is_instance_valid((m as GameMap).pet):
+		# Indoors the HUD sits where the strip would be: no strip inside.
+		if (m as GameMap).scene_id() in ["house", "interior"]:
+			return null
 		return (m as GameMap).pet as Pet
 	return null
+
+
+## The pup is away (staying or guarding on another map): only CALL works.
+func _pet_away() -> bool:
+	var pt := _pet()
+	return pt != null and not pt.visible
 
 
 func _pup_cmd(cmd: String) -> void:
@@ -165,6 +174,11 @@ func _pup_cmd(cmd: String) -> void:
 		return
 	if cmd == "recall":
 		pt.recall()
+	elif not pt.visible:
+		var m0 := get_tree().current_scene as GameMap
+		if m0 and m0.hud:
+			m0.hud.toast("%s isn't here. Tap CALL first." % Pet.name_of(), Color(1, 0.85, 0.6))
+		return
 	elif cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
 		var m := get_tree().current_scene as GameMap
 		if m and m.hud:
@@ -289,7 +303,7 @@ func _on_draw() -> void:
 			var cmd := str(PUP_CMDS[i][0])
 			var cp := Vector2(PUP_X, PUP_Y0 + PUP_STEP * i)
 			var active := cmd == mode
-			var dim := cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0
+			var dim := (cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0) or (not pt.visible and cmd != "recall")
 			_canvas.draw_circle(cp, PUP_R, Color(0.12, 0.09, 0.05, 0.62))
 			_canvas.draw_arc(cp, PUP_R, 0, TAU, 28, Color(1, 0.85, 0.35, 0.95) if active else Color(1, 1, 1, 0.35), 2.0 if active else 1.0, true)
 			var ic := str(PUP_CMDS[i][1])

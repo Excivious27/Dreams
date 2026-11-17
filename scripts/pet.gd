@@ -169,6 +169,10 @@ func recall() -> void:
 	var from_where := str(st["wait"][0]) if not (st["wait"] as Array).is_empty() else "far away"
 	st["mode"] = "follow"
 	st["wait"] = []
+	if int(st.get("hp", 0)) <= 0:
+		st["hp"] = max_hp()
+	if not visible:
+		position = map.player.position + Vector2(-12, 6)
 	busy = false
 	_target = null
 	visible = true

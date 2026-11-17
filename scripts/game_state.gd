@@ -153,6 +153,8 @@ static func guest_morning() -> Dictionary:
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
 	run["gifted_today"] = {}
+	Racket.overnight(report)
+	Sanctuary.overnight(report)
 	save()
 	return report
 
@@ -349,6 +351,11 @@ static func sell_price(id: String, n := 1) -> int:
 	for i in n:
 		total += unit * saturation(id, i)
 	return int(round(total))
+
+
+## A hand-priced stall can be cheap, but never cheaper than what the item sells for.
+static func shop_price(id: String, listed: int) -> int:
+	return maxi(listed, int(ceil(sell_price(id, 1) * 1.15)))
 
 
 static func buy_price(id: String) -> int:
@@ -756,7 +763,7 @@ static func sell_multiplier() -> float:
 ## Roll a drop table: Array of [item, chance, n]. Luck nudges the chance.
 static func roll_drops(table: Array, luck_bonus := 0) -> Dictionary:
 	var out := {}
-	var luck := 1.0 + 0.05 * (gear_stat("luck") + luck_bonus)
+	var luck := 1.0 + 0.05 * (gear_stat("luck") + luck_bonus + int(buff("luck")))
 	for row in table:
 		if randf() < float(row[1]) * luck:
 			var n := int(row[2])
@@ -1193,9 +1200,9 @@ static func progress_tier() -> int:
 	var t := 0
 	if quest_done("clear_meadow"):
 		t += 1
-	if quest_done("spark") or quest_done("wastes_gate"):
+	if quest_done("spark") or quest_done("wastes_gate") or quest_done("docks"):
 		t += 1
-	if quest_done("sky_stair") or quest_done("hideout"):
+	if quest_done("sky_stair") or quest_done("neon"):
 		t += 1
 	if quest_done("teleporter") or quest_done("uptown"):
 		t += 1
@@ -1547,6 +1554,8 @@ static func sleep(passed_out := false) -> Dictionary:
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
+	for nm in Builds.tick_overnight():
+		report["built"] = report.get("built", []) + [nm]
 	Racket.overnight(report)
 	Sanctuary.overnight(report)
 	if has_friend_perk("posy", 2):
@@ -1557,8 +1566,6 @@ static func sleep(passed_out := false) -> Dictionary:
 		run["bank"] = int(run["bank"]) + mini(int(round(int(run["bank"]) * rate)), 40 + 40 * progress_tier())
 	run["day"] = int(run["day"]) + 1
 	run["time"] = DAY_START
-	for nm in Builds.tick_overnight():
-		report["built"] = report.get("built", []) + [nm]
 	# Decisions that matter: a bitter companion leaves for the east after day 20.
 	var party_d: Dictionary = run.get("party", {})
 	for cid in party_d.get("bitter", []):
@@ -1658,6 +1665,8 @@ static func status_apply(name: String, t: int) -> void:
 	if status_def(name).is_empty():
 		return
 	if has_perk("combat", "Iron Gut") and name in ["poison", "burn"]:
+		return
+	if buff("warm") > 0.0 and name in ["chill", "freeze", "cold"]:
 		return
 	var secs := float(tier(t).get("status_secs", 3.0)) * (0.7 if gear_stat("defense") >= 3 else 1.0) * (0.5 if Crew.perk_level("status_half") >= 2 else 1.0)
 	run["status"] = run.get("status", {})

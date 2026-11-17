@@ -72,8 +72,27 @@ static func ability_for(m: GameMap, p: Player) -> String:
 	return partner
 
 
+## Seconds between uses of each partner ability (gifts cost mana instead).
+const COOLDOWN := {"mend": 20.0, "powerup": 12.0, "bee_bop": 10.0, "meow_pow_wow": 6.0}
+const DEFAULT_COOLDOWN := 8.0
+static var _ready_at := {}
+
+
+## Seconds left before `ab` can be used again (0 when ready).
+static func cooldown_left(ab: String) -> float:
+	return maxf(0.0, float(_ready_at.get(ab, 0.0)) - Time.get_ticks_msec() / 1000.0)
+
+
 static func use_ability(m: GameMap, p: Player) -> void:
 	var ab := ability_for(m, p)
+	if ab == "":
+		return
+	if not ab.begins_with("gift:"):
+		var left := cooldown_left(ab)
+		if left > 0.0:
+			m.hud.toast("Ready in %ds." % int(ceil(left)), Color(0.8, 0.85, 1.0))
+			return
+		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + float(COOLDOWN.get(ab, DEFAULT_COOLDOWN))
 	# Prompts-12 partner art: cast pose + the partner's own effect strip.
 	var sprite_id := str(defs().get(active_id(), {}).get("sprite", active_id()))
 	if Art.has("fx", "ability_" + sprite_id):

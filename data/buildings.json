@@ -3097,8 +3097,8 @@
  "terminal": {
   "label": "Hacking Terminal",
   "cell": [
-   13,
-   24
+   6,
+   21
   ],
   "w": 0,
   "h": 1,
@@ -3203,8 +3203,8 @@
  "clinic": {
   "label": "Chrome Clinic",
   "cell": [
-   15,
-   24
+   9,
+   21
   ],
   "w": 0,
   "h": 1,
