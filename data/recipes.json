@@ -12,16 +12,6 @@
    "tier": 1
   },
   {
-   "id": "rope",
-   "name": "Rope",
-   "need": {
-    "fiber": 4
-   },
-   "give": "rope",
-   "n": 1,
-   "tier": 1
-  },
-  {
    "id": "chest",
    "name": "Chest",
    "need": {
@@ -54,25 +44,6 @@
     "farming",
     6
    ]
-  },
-  {
-   "id": "cloth",
-   "name": "Cloth",
-   "need": {
-    "fiber": 6
-   },
-   "give": "cloth",
-   "tier": 1
-  },
-  {
-   "id": "glass",
-   "name": "Glass",
-   "need": {
-    "sand": 3,
-    "coal": 1
-   },
-   "give": "glass",
-   "tier": 2
   },
   {
    "id": "sprinkler",
@@ -134,27 +105,6 @@
    ]
   },
   {
-   "id": "leather",
-   "name": "Leather",
-   "need": {
-    "bat_wing": 2,
-    "slime_gel": 1
-   },
-   "give": "leather",
-   "tier": 2
-  },
-  {
-   "id": "crystal_lens",
-   "name": "Crystal Lens",
-   "need": {
-    "glass": 2,
-    "crystal_refined": 1,
-    "light_mote": 1
-   },
-   "give": "crystal_lens",
-   "tier": 3
-  },
-  {
    "id": "straw_hat",
    "name": "Straw Hat",
    "need": {
@@ -163,185 +113,6 @@
    },
    "give": "straw_hat",
    "tier": 1
-  },
-  {
-   "id": "work_shirt",
-   "name": "Work Shirt",
-   "need": {
-    "cloth": 2
-   },
-   "give": "work_shirt",
-   "tier": 1
-  },
-  {
-   "id": "boots",
-   "name": "Work Boots",
-   "need": {
-    "leather": 1,
-    "cloth": 1
-   },
-   "give": "boots",
-   "tier": 1
-  },
-  {
-   "id": "leather_cap",
-   "name": "Leather Cap",
-   "need": {
-    "leather": 2,
-    "rope": 1
-   },
-   "give": "leather_cap",
-   "tier": 2
-  },
-  {
-   "id": "leather_vest",
-   "name": "Leather Vest",
-   "need": {
-    "leather": 4,
-    "cloth": 2
-   },
-   "give": "leather_vest",
-   "tier": 2
-  },
-  {
-   "id": "paw_charm",
-   "name": "Paw Charm",
-   "need": {
-    "light_mote": 2,
-    "copper_bar": 1,
-    "flower": 5
-   },
-   "give": "paw_charm",
-   "tier": 2
-  },
-  {
-   "id": "running_shoes",
-   "name": "Running Shoes",
-   "need": {
-    "leather": 2,
-    "cloth": 2,
-    "slime_gel": 3
-   },
-   "give": "running_shoes",
-   "tier": 2
-  },
-  {
-   "id": "outfit_farmer",
-   "name": "Farmer's Overalls",
-   "need": {
-    "fiber": 12,
-    "wood": 4
-   },
-   "give": "outfit_farmer",
-   "tier": 1
-  },
-  {
-   "id": "outfit_forester",
-   "name": "Forester's Cloak",
-   "need": {
-    "fiber": 15,
-    "pelt": 2
-   },
-   "give": "outfit_forester",
-   "tier": 2
-  },
-  {
-   "id": "outfit_fisher",
-   "name": "Fisher's Waders",
-   "need": {
-    "fiber": 10,
-    "pelt": 2,
-    "sap": 2
-   },
-   "give": "outfit_fisher",
-   "tier": 2
-  },
-  {
-   "id": "outfit_miner",
-   "name": "Miner's Vest",
-   "need": {
-    "fiber": 10,
-    "copper_bar": 1,
-    "coal": 2
-   },
-   "give": "outfit_miner",
-   "tier": 2
-  },
-  {
-   "id": "outfit_merchant",
-   "name": "Merchant's Waistcoat",
-   "need": {
-    "fiber": 15,
-    "wine": 1,
-    "gold_bar": 1
-   },
-   "give": "outfit_merchant",
-   "tier": 3
-  },
-  {
-   "id": "outfit_scholar",
-   "name": "Scholar's Robe",
-   "need": {
-    "fiber": 15,
-    "book": 1,
-    "paint": 2
-   },
-   "give": "outfit_scholar",
-   "tier": 3
-  },
-  {
-   "id": "outfit_neon",
-   "name": "Neon Street Jacket",
-   "need": {
-    "fiber": 12,
-    "slime_goo": 4,
-    "crystal_refined": 1
-   },
-   "give": "outfit_neon",
-   "tier": 3
-  },
-  {
-   "id": "outfit_penguin",
-   "name": "Ceremony Coat",
-   "need": {
-    "fiber": 20,
-    "pearl": 1,
-    "crystal_refined": 2
-   },
-   "give": "outfit_penguin",
-   "tier": 4
-  },
-  {
-   "id": "pup_collar_leather",
-   "name": "Leather Collar (pup)",
-   "need": {
-    "pelt": 1,
-    "fiber": 4
-   },
-   "give": "pup_collar_leather",
-   "tier": 1
-  },
-  {
-   "id": "pup_pack_small",
-   "name": "Small Pup Pack",
-   "need": {
-    "pelt": 2,
-    "rope": 1,
-    "wood": 5
-   },
-   "give": "pup_pack_small",
-   "tier": 1
-  },
-  {
-   "id": "pup_pack_large",
-   "name": "Large Pup Pack",
-   "need": {
-    "pelt": 4,
-    "rope": 2,
-    "iron_bar": 1
-   },
-   "give": "pup_pack_large",
-   "tier": 2
   },
   {
    "id": "pup_treat",
@@ -353,779 +124,27 @@
    "give": "pup_treat",
    "n": 4,
    "tier": 1
-  }
- ],
- "smith": [
-  {
-   "id": "copper_bar",
-   "name": "Copper Bar",
-   "need": {
-    "copper": 5,
-    "coal": 1
-   },
-   "give": "copper_bar",
-   "tier": 1
-  },
-  {
-   "id": "iron_bar",
-   "name": "Iron Bar",
-   "need": {
-    "iron": 5,
-    "coal": 1
-   },
-   "give": "iron_bar",
-   "tier": 2
-  },
-  {
-   "id": "steel_bar",
-   "name": "Steel Bar",
-   "need": {
-    "iron_bar": 2,
-    "coal": 2
-   },
-   "give": "steel_bar",
-   "tier": 2
-  },
-  {
-   "id": "silver_bar",
-   "name": "Silver Bar",
-   "need": {
-    "silver": 5,
-    "coal": 2
-   },
-   "give": "silver_bar",
-   "tier": 3
-  },
-  {
-   "id": "gold_bar",
-   "name": "Gold Bar",
-   "need": {
-    "gold": 5,
-    "coal": 2
-   },
-   "give": "gold_bar",
-   "tier": 3
-  },
-  {
-   "id": "iron_sword",
-   "name": "Iron Sword",
-   "need": {
-    "iron_bar": 3,
-    "wood": 5
-   },
-   "give": "iron_sword",
-   "tier": 2,
-   "tool": true
-  },
-  {
-   "id": "steel_sword",
-   "name": "Steel Sword",
-   "need": {
-    "iron_bar": 5,
-    "golem_core": 1,
-    "coal": 5
-   },
-   "give": "steel_sword",
-   "tier": 3,
-   "tool": true,
-   "skill": [
-    "combat",
-    5
-   ]
-  },
-  {
-   "id": "crystal_sword",
-   "name": "Crystal Sword",
-   "need": {
-    "silver_bar": 3,
-    "crystal_refined": 3,
-    "shard_heart": 1,
-    "light_mote": 2
-   },
-   "give": "crystal_sword",
-   "tier": 4,
-   "tool": true,
-   "skill": [
-    "combat",
-    8
-   ]
-  },
-  {
-   "id": "iron_helm",
-   "name": "Iron Helm",
-   "need": {
-    "iron_bar": 3,
-    "leather": 1
-   },
-   "give": "iron_helm",
-   "tier": 3
-  },
-  {
-   "id": "iron_mail",
-   "name": "Iron Mail",
-   "need": {
-    "iron_bar": 6,
-    "leather": 2
-   },
-   "give": "iron_mail",
-   "tier": 3
-  },
-  {
-   "id": "iron_greaves",
-   "name": "Iron Greaves",
-   "need": {
-    "iron_bar": 3,
-    "leather": 2
-   },
-   "give": "iron_greaves",
-   "tier": 3
-  },
-  {
-   "id": "copper_ring",
-   "name": "Copper Ring",
-   "need": {
-    "copper_bar": 2
-   },
-   "give": "copper_ring",
-   "tier": 1
-  },
-  {
-   "id": "silver_ring",
-   "name": "Silver Ring",
-   "need": {
-    "silver_bar": 1,
-    "amethyst": 1
-   },
-   "give": "silver_ring",
-   "tier": 3
-  },
-  {
-   "id": "ruby_ring",
-   "name": "Ruby Ring",
-   "need": {
-    "gold_bar": 1,
-    "ruby": 1
-   },
-   "give": "ruby_ring",
-   "tier": 3
-  },
-  {
-   "id": "crystal_crown",
-   "name": "Crystal Crown",
-   "need": {
-    "gold_bar": 2,
-    "crystal_refined": 2,
-    "sapphire": 1
-   },
-   "give": "crystal_crown",
-   "tier": 4,
-   "skill": [
-    "mining",
-    8
-   ]
-  },
-  {
-   "id": "crystal_plate",
-   "name": "Crystal Plate",
-   "need": {
-    "silver_bar": 4,
-    "crystal_refined": 4,
-    "golem_core": 2
-   },
-   "give": "crystal_plate",
-   "tier": 4,
-   "skill": [
-    "combat",
-    7
-   ]
-  },
-  {
-   "id": "leather_helm",
-   "name": "Leather Helm",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_helm",
-   "tier": 1
-  },
-  {
-   "id": "leather_chest",
-   "name": "Leather Chest",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_chest",
-   "tier": 1
-  },
-  {
-   "id": "leather_legs",
-   "name": "Leather Legs",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_legs",
-   "tier": 1
-  },
-  {
-   "id": "leather_boots",
-   "name": "Leather Boots",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_boots",
-   "tier": 1
-  },
-  {
-   "id": "leather_gloves",
-   "name": "Leather Gloves",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_gloves",
-   "tier": 1
-  },
-  {
-   "id": "leather_shield",
-   "name": "Leather Shield",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_shield",
-   "tier": 1
-  },
-  {
-   "id": "leather_cape",
-   "name": "Leather Cape",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_cape",
-   "tier": 1
-  },
-  {
-   "id": "leather_belt",
-   "name": "Leather Belt",
-   "need": {
-    "leather": 1
-   },
-   "give": "leather_belt",
-   "tier": 1
-  },
-  {
-   "id": "copper_helm",
-   "name": "Copper Helm",
-   "need": {
-    "copper_bar": 2,
-    "leather": 1
-   },
-   "give": "copper_helm",
-   "tier": 1
-  },
-  {
-   "id": "copper_chest",
-   "name": "Copper Chest",
-   "need": {
-    "copper_bar": 4,
-    "leather": 1
-   },
-   "give": "copper_chest",
-   "tier": 1
-  },
-  {
-   "id": "copper_legs",
-   "name": "Copper Legs",
-   "need": {
-    "copper_bar": 3,
-    "leather": 1
-   },
-   "give": "copper_legs",
-   "tier": 1
-  },
-  {
-   "id": "copper_boots",
-   "name": "Copper Boots",
-   "need": {
-    "copper_bar": 2,
-    "leather": 1
-   },
-   "give": "copper_boots",
-   "tier": 1
-  },
-  {
-   "id": "copper_gloves",
-   "name": "Copper Gloves",
-   "need": {
-    "copper_bar": 1,
-    "leather": 1
-   },
-   "give": "copper_gloves",
-   "tier": 1
-  },
-  {
-   "id": "copper_shield",
-   "name": "Copper Shield",
-   "need": {
-    "copper_bar": 3,
-    "leather": 1
-   },
-   "give": "copper_shield",
-   "tier": 1
-  },
-  {
-   "id": "copper_cape",
-   "name": "Copper Cape",
-   "need": {
-    "copper_bar": 2,
-    "leather": 1
-   },
-   "give": "copper_cape",
-   "tier": 1
-  },
-  {
-   "id": "copper_belt",
-   "name": "Copper Belt",
-   "need": {
-    "copper_bar": 1,
-    "leather": 1
-   },
-   "give": "copper_belt",
-   "tier": 1
-  },
-  {
-   "id": "iron_chest",
-   "name": "Iron Chest",
-   "need": {
-    "iron_bar": 4,
-    "leather": 1
-   },
-   "give": "iron_chest",
-   "tier": 2
-  },
-  {
-   "id": "iron_legs",
-   "name": "Iron Legs",
-   "need": {
-    "iron_bar": 3,
-    "leather": 1
-   },
-   "give": "iron_legs",
-   "tier": 2
-  },
-  {
-   "id": "iron_boots",
-   "name": "Iron Boots",
-   "need": {
-    "iron_bar": 2,
-    "leather": 1
-   },
-   "give": "iron_boots",
-   "tier": 2
-  },
-  {
-   "id": "iron_gloves",
-   "name": "Iron Gloves",
-   "need": {
-    "iron_bar": 1,
-    "leather": 1
-   },
-   "give": "iron_gloves",
-   "tier": 2
-  },
-  {
-   "id": "iron_shield",
-   "name": "Iron Shield",
-   "need": {
-    "iron_bar": 3,
-    "leather": 1
-   },
-   "give": "iron_shield",
-   "tier": 2
-  },
-  {
-   "id": "iron_cape",
-   "name": "Iron Cape",
-   "need": {
-    "iron_bar": 2,
-    "leather": 1
-   },
-   "give": "iron_cape",
-   "tier": 2
-  },
-  {
-   "id": "iron_belt",
-   "name": "Iron Belt",
-   "need": {
-    "iron_bar": 1,
-    "leather": 1
-   },
-   "give": "iron_belt",
-   "tier": 2
-  },
-  {
-   "id": "steel_helm",
-   "name": "Steel Helm",
-   "need": {
-    "steel_bar": 2,
-    "leather": 1
-   },
-   "give": "steel_helm",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "steel_chest",
-   "name": "Steel Chest",
-   "need": {
-    "steel_bar": 4,
-    "leather": 1
-   },
-   "give": "steel_chest",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "steel_legs",
-   "name": "Steel Legs",
-   "need": {
-    "steel_bar": 3,
-    "leather": 1
-   },
-   "give": "steel_legs",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "steel_boots",
-   "name": "Steel Boots",
-   "need": {
-    "steel_bar": 2,
-    "leather": 1
-   },
-   "give": "steel_boots",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "steel_gloves",
-   "name": "Steel Gloves",
-   "need": {
-    "steel_bar": 1,
-    "leather": 1
-   },
-   "give": "steel_gloves",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "steel_shield",
-   "name": "Steel Shield",
-   "need": {
-    "steel_bar": 3,
-    "leather": 1
-   },
-   "give": "steel_shield",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "steel_cape",
-   "name": "Steel Cape",
-   "need": {
-    "steel_bar": 2,
-    "leather": 1
-   },
-   "give": "steel_cape",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "steel_belt",
-   "name": "Steel Belt",
-   "need": {
-    "steel_bar": 1,
-    "leather": 1
-   },
-   "give": "steel_belt",
-   "tier": 3,
-   "skill": [
-    "combat",
-    4
-   ]
-  },
-  {
-   "id": "silver_helm",
-   "name": "Silver Helm",
-   "need": {
-    "silver_bar": 2,
-    "leather": 1
-   },
-   "give": "silver_helm",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "silver_chest",
-   "name": "Silver Chest",
-   "need": {
-    "silver_bar": 4,
-    "leather": 1
-   },
-   "give": "silver_chest",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "silver_legs",
-   "name": "Silver Legs",
-   "need": {
-    "silver_bar": 3,
-    "leather": 1
-   },
-   "give": "silver_legs",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "silver_boots",
-   "name": "Silver Boots",
-   "need": {
-    "silver_bar": 2,
-    "leather": 1
-   },
-   "give": "silver_boots",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "silver_gloves",
-   "name": "Silver Gloves",
-   "need": {
-    "silver_bar": 1,
-    "leather": 1
-   },
-   "give": "silver_gloves",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "silver_shield",
-   "name": "Silver Shield",
-   "need": {
-    "silver_bar": 3,
-    "leather": 1
-   },
-   "give": "silver_shield",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "silver_cape",
-   "name": "Silver Cape",
-   "need": {
-    "silver_bar": 2,
-    "leather": 1
-   },
-   "give": "silver_cape",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "silver_belt",
-   "name": "Silver Belt",
-   "need": {
-    "silver_bar": 1,
-    "leather": 1
-   },
-   "give": "silver_belt",
-   "tier": 3,
-   "skill": [
-    "mining",
-    5
-   ]
-  },
-  {
-   "id": "gold_helm",
-   "name": "Gold Helm",
-   "need": {
-    "gold_bar": 2,
-    "leather": 1
-   },
-   "give": "gold_helm",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "gold_chest",
-   "name": "Gold Chest",
-   "need": {
-    "gold_bar": 4,
-    "leather": 1
-   },
-   "give": "gold_chest",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "gold_legs",
-   "name": "Gold Legs",
-   "need": {
-    "gold_bar": 3,
-    "leather": 1
-   },
-   "give": "gold_legs",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "gold_boots",
-   "name": "Gold Boots",
-   "need": {
-    "gold_bar": 2,
-    "leather": 1
-   },
-   "give": "gold_boots",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "gold_gloves",
-   "name": "Gold Gloves",
-   "need": {
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "gold_gloves",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "gold_shield",
-   "name": "Gold Shield",
-   "need": {
-    "gold_bar": 3,
-    "leather": 1
-   },
-   "give": "gold_shield",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "gold_cape",
-   "name": "Gold Cape",
-   "need": {
-    "gold_bar": 2,
-    "leather": 1
-   },
-   "give": "gold_cape",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "gold_belt",
-   "name": "Gold Belt",
-   "need": {
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "gold_belt",
-   "tier": 4,
-   "skill": [
-    "mining",
-    7
-   ]
-  },
-  {
-   "id": "pup_collar_iron",
-   "name": "Studded Collar (pup)",
-   "need": {
-    "iron_bar": 2,
-    "pelt": 1
-   },
-   "give": "pup_collar_iron",
-   "tier": 2
   },
   {
-   "id": "pup_collar_crystal",
-   "name": "Crystal Collar (pup)",
+   "id": "fence_kit",
+   "name": "Shingle Bundle",
    "need": {
-    "crystal_refined": 1,
-    "silver_bar": 1,
-    "pelt": 1
+    "plank": 4,
+    "nails": 2
    },
-   "give": "pup_collar_crystal",
-   "tier": 3
+   "give": "shingles",
+   "tier": 1,
+   "n": 6
   },
   {
-   "id": "pup_boots",
-   "name": "Pup Boots",
+   "id": "wheel",
+   "name": "Cart Wheel",
    "need": {
-    "pelt": 2,
-    "copper_bar": 1
+    "plank": 6,
+    "nails": 4,
+    "iron_bar": 1
    },
-   "give": "pup_boots",
+   "give": "wheel",
    "tier": 2
   }
  ],
@@ -1332,7 +351,1446 @@
    "tier": 5
   }
  ],
- "alchemy": [
+ "mill": [
+  {
+   "id": "flour",
+   "name": "Flour",
+   "need": {
+    "wheat": 3
+   },
+   "give": "flour",
+   "tier": 1
+  },
+  {
+   "id": "hay_bale",
+   "name": "Hay (from fiber)",
+   "need": {
+    "fiber": 5
+   },
+   "give": "hay",
+   "n": 2,
+   "tier": 1
+  },
+  {
+   "id": "cornmeal_bread",
+   "name": "Corn Bread",
+   "need": {
+    "corn": 2,
+    "flour": 1
+   },
+   "give": "bread",
+   "n": 2,
+   "tier": 2
+  },
+  {
+   "id": "oat_flour",
+   "name": "Oat Flour",
+   "need": {
+    "oat": 3
+   },
+   "give": "flour",
+   "tier": 1
+  }
+ ],
+ "sawmill": [
+  {
+   "id": "plank",
+   "name": "Plank",
+   "need": {
+    "wood": 2
+   },
+   "give": "plank",
+   "tier": 1
+  },
+  {
+   "id": "charcoal",
+   "name": "Charcoal (burns as coal)",
+   "need": {
+    "wood": 6
+   },
+   "give": "coal",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "beam",
+   "name": "Timber Beam",
+   "need": {
+    "wood": 12
+   },
+   "give": "beam",
+   "tier": 2
+  },
+  {
+   "id": "hardwood_plank",
+   "name": "Hardwood Plank",
+   "need": {
+    "hardwood": 1
+   },
+   "give": "hardwood_plank",
+   "tier": 2
+  },
+  {
+   "id": "veneer",
+   "name": "Fine Veneer",
+   "need": {
+    "hardwood_plank": 3,
+    "sap": 2
+   },
+   "give": "veneer",
+   "tier": 3
+  },
+  {
+   "id": "ironwood_beam",
+   "name": "Ironwood Beam",
+   "need": {
+    "hardwood_plank": 6,
+    "beam": 2,
+    "dark": 1
+   },
+   "give": "ironwood_beam",
+   "tier": 4
+  }
+ ],
+ "furnace": [
+  {
+   "id": "copper_bar",
+   "name": "Copper Bar",
+   "need": {
+    "copper": 5,
+    "coal": 1
+   },
+   "give": "copper_bar",
+   "tier": 1
+  },
+  {
+   "id": "iron_bar",
+   "name": "Iron Bar",
+   "need": {
+    "iron": 5,
+    "coal": 1
+   },
+   "give": "iron_bar",
+   "tier": 2
+  },
+  {
+   "id": "steel_bar",
+   "name": "Steel Bar",
+   "need": {
+    "iron_bar": 2,
+    "coal": 2
+   },
+   "give": "steel_bar",
+   "tier": 2
+  },
+  {
+   "id": "silver_bar",
+   "name": "Silver Bar",
+   "need": {
+    "silver": 5,
+    "coal": 2
+   },
+   "give": "silver_bar",
+   "tier": 3
+  },
+  {
+   "id": "gold_bar",
+   "name": "Gold Bar",
+   "need": {
+    "gold": 5,
+    "coal": 2
+   },
+   "give": "gold_bar",
+   "tier": 3
+  },
+  {
+   "id": "dark_bar",
+   "name": "Shadowsteel Bar",
+   "need": {
+    "dark": 5,
+    "coal": 4
+   },
+   "give": "dark_bar",
+   "tier": 4
+  },
+  {
+   "id": "moon_bar",
+   "name": "Moonsilver Bar",
+   "need": {
+    "moon_shard": 2,
+    "silver_bar": 2
+   },
+   "give": "moon_bar",
+   "tier": 5
+  }
+ ],
+ "anvil": [
+  {
+   "id": "nails",
+   "name": "Nails",
+   "need": {
+    "copper_bar": 1
+   },
+   "give": "nails",
+   "tier": 1,
+   "n": 10
+  },
+  {
+   "id": "horseshoe",
+   "name": "Horseshoe",
+   "need": {
+    "copper_bar": 1
+   },
+   "give": "horseshoe",
+   "tier": 1
+  },
+  {
+   "id": "gear",
+   "name": "Gear",
+   "need": {
+    "iron_bar": 1
+   },
+   "give": "gear",
+   "tier": 2
+  },
+  {
+   "id": "spring",
+   "name": "Spring",
+   "need": {
+    "iron_bar": 1,
+    "coal": 1
+   },
+   "give": "spring",
+   "tier": 2
+  },
+  {
+   "id": "plating",
+   "name": "Steel Plating",
+   "need": {
+    "steel_bar": 2,
+    "coal": 2
+   },
+   "give": "plating",
+   "tier": 3
+  },
+  {
+   "id": "copper_belt",
+   "name": "Copper Belt",
+   "need": {
+    "copper_bar": 1,
+    "leather": 1
+   },
+   "give": "copper_belt",
+   "tier": 1
+  },
+  {
+   "id": "copper_boots",
+   "name": "Copper Boots",
+   "need": {
+    "copper_bar": 2,
+    "leather": 1
+   },
+   "give": "copper_boots",
+   "tier": 1
+  },
+  {
+   "id": "copper_cape",
+   "name": "Copper Cape",
+   "need": {
+    "copper_bar": 2,
+    "leather": 1
+   },
+   "give": "copper_cape",
+   "tier": 1
+  },
+  {
+   "id": "copper_chest",
+   "name": "Copper Chest",
+   "need": {
+    "copper_bar": 4,
+    "leather": 1
+   },
+   "give": "copper_chest",
+   "tier": 1
+  },
+  {
+   "id": "copper_gloves",
+   "name": "Copper Gloves",
+   "need": {
+    "copper_bar": 1,
+    "leather": 1
+   },
+   "give": "copper_gloves",
+   "tier": 1
+  },
+  {
+   "id": "copper_helm",
+   "name": "Copper Helm",
+   "need": {
+    "copper_bar": 2,
+    "leather": 1
+   },
+   "give": "copper_helm",
+   "tier": 1
+  },
+  {
+   "id": "copper_legs",
+   "name": "Copper Legs",
+   "need": {
+    "copper_bar": 3,
+    "leather": 1
+   },
+   "give": "copper_legs",
+   "tier": 1
+  },
+  {
+   "id": "copper_shield",
+   "name": "Copper Shield",
+   "need": {
+    "copper_bar": 3,
+    "leather": 1
+   },
+   "give": "copper_shield",
+   "tier": 1
+  },
+  {
+   "id": "iron_belt",
+   "name": "Iron Belt",
+   "need": {
+    "iron_bar": 1,
+    "leather": 1
+   },
+   "give": "iron_belt",
+   "tier": 2
+  },
+  {
+   "id": "iron_boots",
+   "name": "Iron Boots",
+   "need": {
+    "iron_bar": 2,
+    "leather": 1
+   },
+   "give": "iron_boots",
+   "tier": 2
+  },
+  {
+   "id": "iron_cape",
+   "name": "Iron Cape",
+   "need": {
+    "iron_bar": 2,
+    "leather": 1
+   },
+   "give": "iron_cape",
+   "tier": 2
+  },
+  {
+   "id": "iron_chest",
+   "name": "Iron Chest",
+   "need": {
+    "iron_bar": 4,
+    "leather": 1
+   },
+   "give": "iron_chest",
+   "tier": 2
+  },
+  {
+   "id": "iron_gloves",
+   "name": "Iron Gloves",
+   "need": {
+    "iron_bar": 1,
+    "leather": 1
+   },
+   "give": "iron_gloves",
+   "tier": 2
+  },
+  {
+   "id": "iron_legs",
+   "name": "Iron Legs",
+   "need": {
+    "iron_bar": 3,
+    "leather": 1
+   },
+   "give": "iron_legs",
+   "tier": 2
+  },
+  {
+   "id": "iron_shield",
+   "name": "Iron Shield",
+   "need": {
+    "iron_bar": 3,
+    "leather": 1
+   },
+   "give": "iron_shield",
+   "tier": 2
+  },
+  {
+   "id": "iron_sword",
+   "name": "Iron Sword",
+   "need": {
+    "iron_bar": 3,
+    "wood": 5
+   },
+   "give": "iron_sword",
+   "tier": 2,
+   "tool": true
+  },
+  {
+   "id": "iron_greaves",
+   "name": "Iron Greaves",
+   "need": {
+    "iron_bar": 3,
+    "leather": 2
+   },
+   "give": "iron_greaves",
+   "tier": 3
+  },
+  {
+   "id": "iron_helm",
+   "name": "Iron Helm",
+   "need": {
+    "iron_bar": 3,
+    "leather": 1
+   },
+   "give": "iron_helm",
+   "tier": 3
+  },
+  {
+   "id": "iron_mail",
+   "name": "Iron Mail",
+   "need": {
+    "iron_bar": 6,
+    "leather": 2
+   },
+   "give": "iron_mail",
+   "tier": 3
+  },
+  {
+   "id": "silver_belt",
+   "name": "Silver Belt",
+   "need": {
+    "silver_bar": 1,
+    "leather": 1
+   },
+   "give": "silver_belt",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_boots",
+   "name": "Silver Boots",
+   "need": {
+    "silver_bar": 2,
+    "leather": 1
+   },
+   "give": "silver_boots",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_cape",
+   "name": "Silver Cape",
+   "need": {
+    "silver_bar": 2,
+    "leather": 1
+   },
+   "give": "silver_cape",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_chest",
+   "name": "Silver Chest",
+   "need": {
+    "silver_bar": 4,
+    "leather": 1
+   },
+   "give": "silver_chest",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_gloves",
+   "name": "Silver Gloves",
+   "need": {
+    "silver_bar": 1,
+    "leather": 1
+   },
+   "give": "silver_gloves",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_helm",
+   "name": "Silver Helm",
+   "need": {
+    "silver_bar": 2,
+    "leather": 1
+   },
+   "give": "silver_helm",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_legs",
+   "name": "Silver Legs",
+   "need": {
+    "silver_bar": 3,
+    "leather": 1
+   },
+   "give": "silver_legs",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "silver_shield",
+   "name": "Silver Shield",
+   "need": {
+    "silver_bar": 3,
+    "leather": 1
+   },
+   "give": "silver_shield",
+   "tier": 3,
+   "skill": [
+    "mining",
+    5
+   ]
+  },
+  {
+   "id": "steel_belt",
+   "name": "Steel Belt",
+   "need": {
+    "steel_bar": 1,
+    "leather": 1
+   },
+   "give": "steel_belt",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_boots",
+   "name": "Steel Boots",
+   "need": {
+    "steel_bar": 2,
+    "leather": 1
+   },
+   "give": "steel_boots",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_cape",
+   "name": "Steel Cape",
+   "need": {
+    "steel_bar": 2,
+    "leather": 1
+   },
+   "give": "steel_cape",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_chest",
+   "name": "Steel Chest",
+   "need": {
+    "steel_bar": 4,
+    "leather": 1
+   },
+   "give": "steel_chest",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_gloves",
+   "name": "Steel Gloves",
+   "need": {
+    "steel_bar": 1,
+    "leather": 1
+   },
+   "give": "steel_gloves",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_helm",
+   "name": "Steel Helm",
+   "need": {
+    "steel_bar": 2,
+    "leather": 1
+   },
+   "give": "steel_helm",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_legs",
+   "name": "Steel Legs",
+   "need": {
+    "steel_bar": 3,
+    "leather": 1
+   },
+   "give": "steel_legs",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_shield",
+   "name": "Steel Shield",
+   "need": {
+    "steel_bar": 3,
+    "leather": 1
+   },
+   "give": "steel_shield",
+   "tier": 3,
+   "skill": [
+    "combat",
+    4
+   ]
+  },
+  {
+   "id": "steel_sword",
+   "name": "Steel Sword",
+   "need": {
+    "iron_bar": 5,
+    "golem_core": 1,
+    "coal": 5
+   },
+   "give": "steel_sword",
+   "tier": 3,
+   "tool": true,
+   "skill": [
+    "combat",
+    5
+   ]
+  },
+  {
+   "id": "crystal_plate",
+   "name": "Crystal Plate",
+   "need": {
+    "silver_bar": 4,
+    "crystal_refined": 4,
+    "golem_core": 2
+   },
+   "give": "crystal_plate",
+   "tier": 4,
+   "skill": [
+    "combat",
+    7
+   ]
+  },
+  {
+   "id": "crystal_sword",
+   "name": "Crystal Sword",
+   "need": {
+    "silver_bar": 3,
+    "crystal_refined": 3,
+    "shard_heart": 1,
+    "light_mote": 2
+   },
+   "give": "crystal_sword",
+   "tier": 4,
+   "tool": true,
+   "skill": [
+    "combat",
+    8
+   ]
+  },
+  {
+   "id": "gold_belt",
+   "name": "Gold Belt",
+   "need": {
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "gold_belt",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_boots",
+   "name": "Gold Boots",
+   "need": {
+    "gold_bar": 2,
+    "leather": 1
+   },
+   "give": "gold_boots",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_cape",
+   "name": "Gold Cape",
+   "need": {
+    "gold_bar": 2,
+    "leather": 1
+   },
+   "give": "gold_cape",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_chest",
+   "name": "Gold Chest",
+   "need": {
+    "gold_bar": 4,
+    "leather": 1
+   },
+   "give": "gold_chest",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_gloves",
+   "name": "Gold Gloves",
+   "need": {
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "gold_gloves",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_helm",
+   "name": "Gold Helm",
+   "need": {
+    "gold_bar": 2,
+    "leather": 1
+   },
+   "give": "gold_helm",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_legs",
+   "name": "Gold Legs",
+   "need": {
+    "gold_bar": 3,
+    "leather": 1
+   },
+   "give": "gold_legs",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "gold_shield",
+   "name": "Gold Shield",
+   "need": {
+    "gold_bar": 3,
+    "leather": 1
+   },
+   "give": "gold_shield",
+   "tier": 4,
+   "skill": [
+    "mining",
+    7
+   ]
+  },
+  {
+   "id": "pup_collar_iron",
+   "name": "Studded Collar (pup)",
+   "need": {
+    "iron_bar": 2,
+    "pelt": 1
+   },
+   "give": "pup_collar_iron",
+   "tier": 2
+  },
+  {
+   "id": "pup_boots",
+   "name": "Pup Boots",
+   "need": {
+    "pelt": 2,
+    "copper_bar": 1
+   },
+   "give": "pup_boots",
+   "tier": 2
+  }
+ ],
+ "loom": [
+  {
+   "id": "rope",
+   "name": "Rope",
+   "need": {
+    "fiber": 4
+   },
+   "give": "rope",
+   "n": 1,
+   "tier": 1
+  },
+  {
+   "id": "cloth",
+   "name": "Cloth",
+   "need": {
+    "fiber": 6
+   },
+   "give": "cloth",
+   "tier": 1
+  },
+  {
+   "id": "yarn",
+   "name": "Yarn",
+   "need": {
+    "sheep_wool": 1
+   },
+   "give": "yarn",
+   "tier": 1
+  },
+  {
+   "id": "linen",
+   "name": "Linen",
+   "need": {
+    "flax": 2
+   },
+   "give": "linen",
+   "tier": 1
+  },
+  {
+   "id": "cotton_cloth",
+   "name": "Cotton Cloth",
+   "need": {
+    "cotton": 2
+   },
+   "give": "cotton_cloth",
+   "tier": 2
+  },
+  {
+   "id": "sail",
+   "name": "Sailcloth",
+   "need": {
+    "linen": 3,
+    "rope": 2
+   },
+   "give": "sail",
+   "tier": 2
+  },
+  {
+   "id": "fine_fabric",
+   "name": "Fine Fabric",
+   "need": {
+    "cotton_cloth": 1,
+    "linen": 1,
+    "yarn": 1
+   },
+   "give": "fine_fabric",
+   "tier": 3
+  },
+  {
+   "id": "moonweave",
+   "name": "Moonweave",
+   "need": {
+    "fine_fabric": 2,
+    "star_dust": 1
+   },
+   "give": "moonweave",
+   "tier": 4
+  },
+  {
+   "id": "work_shirt",
+   "name": "Work Shirt",
+   "need": {
+    "cloth": 2
+   },
+   "give": "work_shirt",
+   "tier": 1
+  },
+  {
+   "id": "outfit_farmer",
+   "name": "Farmer's Overalls",
+   "need": {
+    "fiber": 12,
+    "wood": 4
+   },
+   "give": "outfit_farmer",
+   "tier": 1
+  },
+  {
+   "id": "outfit_forester",
+   "name": "Forester's Cloak",
+   "need": {
+    "fiber": 15,
+    "pelt": 2
+   },
+   "give": "outfit_forester",
+   "tier": 2
+  },
+  {
+   "id": "outfit_fisher",
+   "name": "Fisher's Waders",
+   "need": {
+    "fiber": 10,
+    "pelt": 2,
+    "sap": 2
+   },
+   "give": "outfit_fisher",
+   "tier": 2
+  },
+  {
+   "id": "outfit_miner",
+   "name": "Miner's Vest",
+   "need": {
+    "fiber": 10,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "outfit_miner",
+   "tier": 2
+  },
+  {
+   "id": "outfit_merchant",
+   "name": "Merchant's Waistcoat",
+   "need": {
+    "fiber": 15,
+    "wine": 1,
+    "gold_bar": 1
+   },
+   "give": "outfit_merchant",
+   "tier": 3
+  },
+  {
+   "id": "outfit_scholar",
+   "name": "Scholar's Robe",
+   "need": {
+    "fiber": 15,
+    "book": 1,
+    "paint": 2
+   },
+   "give": "outfit_scholar",
+   "tier": 3
+  },
+  {
+   "id": "outfit_neon",
+   "name": "Neon Street Jacket",
+   "need": {
+    "fiber": 12,
+    "slime_goo": 4,
+    "crystal_refined": 1
+   },
+   "give": "outfit_neon",
+   "tier": 3
+  },
+  {
+   "id": "outfit_penguin",
+   "name": "Ceremony Coat",
+   "need": {
+    "fiber": 20,
+    "pearl": 1,
+    "crystal_refined": 2
+   },
+   "give": "outfit_penguin",
+   "tier": 4
+  }
+ ],
+ "tannery": [
+  {
+   "id": "leather",
+   "name": "Leather",
+   "need": {
+    "pelt": 1
+   },
+   "give": "leather",
+   "tier": 1
+  },
+  {
+   "id": "leather_scrap",
+   "name": "Leather (from wings)",
+   "need": {
+    "bat_wing": 2,
+    "slime_gel": 1
+   },
+   "give": "leather",
+   "tier": 1
+  },
+  {
+   "id": "fine_leather",
+   "name": "Fine Leather",
+   "need": {
+    "leather": 2,
+    "cooking_oil": 1
+   },
+   "give": "fine_leather",
+   "tier": 3
+  },
+  {
+   "id": "leather_belt",
+   "name": "Leather Belt",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_belt",
+   "tier": 1
+  },
+  {
+   "id": "leather_boots",
+   "name": "Leather Boots",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_boots",
+   "tier": 1
+  },
+  {
+   "id": "leather_cap",
+   "name": "Leather Cap",
+   "need": {
+    "leather": 2,
+    "rope": 1
+   },
+   "give": "leather_cap",
+   "tier": 2
+  },
+  {
+   "id": "leather_cape",
+   "name": "Leather Cape",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_cape",
+   "tier": 1
+  },
+  {
+   "id": "leather_chest",
+   "name": "Leather Chest",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_chest",
+   "tier": 1
+  },
+  {
+   "id": "leather_gloves",
+   "name": "Leather Gloves",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_gloves",
+   "tier": 1
+  },
+  {
+   "id": "leather_helm",
+   "name": "Leather Helm",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_helm",
+   "tier": 1
+  },
+  {
+   "id": "leather_legs",
+   "name": "Leather Legs",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_legs",
+   "tier": 1
+  },
+  {
+   "id": "leather_scrap",
+   "name": "Leather (from wings)",
+   "need": {
+    "bat_wing": 2,
+    "slime_gel": 1
+   },
+   "give": "leather",
+   "tier": 1
+  },
+  {
+   "id": "leather_shield",
+   "name": "Leather Shield",
+   "need": {
+    "leather": 1
+   },
+   "give": "leather_shield",
+   "tier": 1
+  },
+  {
+   "id": "leather_vest",
+   "name": "Leather Vest",
+   "need": {
+    "leather": 4,
+    "cloth": 2
+   },
+   "give": "leather_vest",
+   "tier": 2
+  },
+  {
+   "id": "boots",
+   "name": "Work Boots",
+   "need": {
+    "leather": 1,
+    "cloth": 1
+   },
+   "give": "boots",
+   "tier": 1
+  },
+  {
+   "id": "running_shoes",
+   "name": "Running Shoes",
+   "need": {
+    "leather": 2,
+    "cloth": 2,
+    "slime_gel": 3
+   },
+   "give": "running_shoes",
+   "tier": 2
+  },
+  {
+   "id": "pup_collar_leather",
+   "name": "Leather Collar (pup)",
+   "need": {
+    "pelt": 1,
+    "fiber": 4
+   },
+   "give": "pup_collar_leather",
+   "tier": 1
+  },
+  {
+   "id": "pup_pack_small",
+   "name": "Small Pup Pack",
+   "need": {
+    "pelt": 2,
+    "rope": 1,
+    "wood": 5
+   },
+   "give": "pup_pack_small",
+   "tier": 1
+  },
+  {
+   "id": "pup_pack_large",
+   "name": "Large Pup Pack",
+   "need": {
+    "pelt": 4,
+    "rope": 2,
+    "iron_bar": 1
+   },
+   "give": "pup_pack_large",
+   "tier": 2
+  }
+ ],
+ "press": [
+  {
+   "id": "cheese",
+   "name": "Cheese",
+   "need": {
+    "milk": 1
+   },
+   "give": "cheese",
+   "tier": 1
+  },
+  {
+   "id": "butter",
+   "name": "Butter",
+   "need": {
+    "milk": 1
+   },
+   "give": "butter",
+   "tier": 1
+  },
+  {
+   "id": "jam",
+   "name": "Jam",
+   "need": {
+    "#berry": 3
+   },
+   "give": "jam",
+   "tier": 1
+  },
+  {
+   "id": "cooking_oil",
+   "name": "Cooking Oil",
+   "need": {
+    "sunflower": 2
+   },
+   "give": "cooking_oil",
+   "tier": 1
+  },
+  {
+   "id": "sesame_oil",
+   "name": "Cooking Oil (sesame)",
+   "need": {
+    "sesame": 2
+   },
+   "give": "cooking_oil",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "pickles",
+   "name": "Pickles",
+   "need": {
+    "#veg": 2,
+    "clay_pot": 1
+   },
+   "give": "pickles",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "dried_fruit",
+   "name": "Dried Fruit",
+   "need": {
+    "#tree": 2
+   },
+   "give": "dried_fruit",
+   "tier": 2
+  },
+  {
+   "id": "wine_reserve",
+   "name": "Fruit Wine Reserve",
+   "need": {
+    "fruit_wine": 2,
+    "#herb": 1
+   },
+   "give": "fine_wine",
+   "tier": 3
+  }
+ ],
+ "kiln": [
+  {
+   "id": "brick",
+   "name": "Brick",
+   "need": {
+    "clay": 1
+   },
+   "give": "brick",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "stone_brick",
+   "name": "Brick (from stone)",
+   "need": {
+    "stone": 4,
+    "coal": 1
+   },
+   "give": "brick",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "clay_pot",
+   "name": "Clay Pot",
+   "need": {
+    "clay": 2
+   },
+   "give": "clay_pot",
+   "tier": 1
+  },
+  {
+   "id": "glass",
+   "name": "Glass",
+   "need": {
+    "sand": 3,
+    "coal": 1
+   },
+   "give": "glass",
+   "tier": 1
+  },
+  {
+   "id": "tile",
+   "name": "Glazed Tile",
+   "need": {
+    "brick": 2,
+    "sand": 1
+   },
+   "give": "tile",
+   "tier": 2
+  },
+  {
+   "id": "lens",
+   "name": "Lens",
+   "need": {
+    "glass": 2
+   },
+   "give": "lens",
+   "tier": 2
+  },
+  {
+   "id": "crystal_glass",
+   "name": "Crystal Glass",
+   "need": {
+    "glass": 2,
+    "crystal_refined": 1
+   },
+   "give": "crystal_glass",
+   "tier": 3
+  }
+ ],
+ "jeweler": [
+  {
+   "id": "copper_ring",
+   "name": "Copper Ring",
+   "need": {
+    "copper_bar": 2
+   },
+   "give": "copper_ring",
+   "tier": 1
+  },
+  {
+   "id": "paw_charm",
+   "name": "Paw Charm",
+   "need": {
+    "light_mote": 2,
+    "copper_bar": 1,
+    "flower": 5
+   },
+   "give": "paw_charm",
+   "tier": 2
+  },
+  {
+   "id": "silver_ring",
+   "name": "Silver Ring",
+   "need": {
+    "silver_bar": 1,
+    "amethyst": 1
+   },
+   "give": "silver_ring",
+   "tier": 3
+  },
+  {
+   "id": "ruby_ring",
+   "name": "Ruby Ring",
+   "need": {
+    "gold_bar": 1,
+    "ruby": 1
+   },
+   "give": "ruby_ring",
+   "tier": 3
+  },
+  {
+   "id": "crystal_lens",
+   "name": "Crystal Lens",
+   "need": {
+    "glass": 2,
+    "crystal_refined": 1,
+    "light_mote": 1
+   },
+   "give": "crystal_lens",
+   "tier": 3
+  },
+  {
+   "id": "pup_collar_crystal",
+   "name": "Crystal Collar (pup)",
+   "need": {
+    "crystal_refined": 1,
+    "silver_bar": 1,
+    "pelt": 1
+   },
+   "give": "pup_collar_crystal",
+   "tier": 3
+  },
+  {
+   "id": "crystal_crown",
+   "name": "Crystal Crown",
+   "need": {
+    "gold_bar": 2,
+    "crystal_refined": 2,
+    "sapphire": 1
+   },
+   "give": "crystal_crown",
+   "tier": 4,
+   "skill": [
+    "mining",
+    8
+   ]
+  },
+  {
+   "id": "light_charm",
+   "name": "Light Charm",
+   "need": {
+    "wisp_light": 2,
+    "light_mote": 3,
+    "silver_bar": 1
+   },
+   "give": "light_charm",
+   "tier": 3
+  },
+  {
+   "id": "moon_ring",
+   "name": "Moon Ring",
+   "need": {
+    "moon_tear": 1,
+    "gold_bar": 2,
+    "dream_essence": 1
+   },
+   "give": "moon_ring",
+   "tier": 5
+  },
+  {
+   "id": "dream_charm",
+   "name": "Dream Charm",
+   "need": {
+    "paw_charm_shard": 3,
+    "moon_tear": 1,
+    "dream_essence": 2
+   },
+   "give": "dream_charm",
+   "tier": 5
+  }
+ ],
+ "cauldron": [
   {
    "id": "herb_remedy",
    "name": "Herb Remedy",
@@ -1381,17 +1839,6 @@
    "tier": 3
   },
   {
-   "id": "light_charm",
-   "name": "Light Charm",
-   "need": {
-    "wisp_light": 2,
-    "light_mote": 3,
-    "silver_bar": 1
-   },
-   "give": "light_charm",
-   "tier": 3
-  },
-  {
    "id": "cloud_walkers",
    "name": "Cloud Walkers",
    "need": {
@@ -1403,67 +1850,545 @@
    "tier": 4
   },
   {
-   "id": "moon_ring",
-   "name": "Moon Ring",
+   "id": "hearth_brew",
+   "name": "Hearth Brew",
    "need": {
-    "moon_tear": 1,
-    "gold_bar": 2,
-    "dream_essence": 1
+    "#herb": 1,
+    "honey": 1,
+    "clay_pot": 1
    },
-   "give": "moon_ring",
-   "tier": 5
-  },
-  {
-   "id": "dream_charm",
-   "name": "Dream Charm",
-   "need": {
-    "paw_charm_shard": 3,
-    "moon_tear": 1,
-    "dream_essence": 2
-   },
-   "give": "dream_charm",
-   "tier": 5
-  }
- ],
- "mill": [
-  {
-   "id": "flour",
-   "name": "Flour",
-   "need": {
-    "wheat": 3
-   },
-   "give": "flour",
+   "give": "hearth_brew",
    "tier": 1
   },
   {
-   "id": "hay_bale",
-   "name": "Hay (from fiber)",
+   "id": "mana_potion",
+   "name": "Mana Potion",
    "need": {
-    "fiber": 5
+    "flower": 2,
+    "glass": 1,
+    "light_mote": 1
    },
-   "give": "hay",
-   "n": 2,
-   "tier": 1
-  },
-  {
-   "id": "cornmeal_bread",
-   "name": "Corn Bread",
-   "need": {
-    "corn": 2,
-    "flour": 1
-   },
-   "give": "bread",
-   "n": 2,
+   "give": "mana_potion",
    "tier": 2
   },
   {
-   "id": "oat_flour",
-   "name": "Oat Flour",
+   "id": "swift_draught",
+   "name": "Swift Draught",
    "need": {
-    "oat": 3
+    "#herb": 2,
+    "glass": 1,
+    "slime_gel": 1
    },
-   "give": "flour",
+   "give": "swift_draught",
+   "tier": 2
+  },
+  {
+   "id": "luck_potion",
+   "name": "Luck Potion",
+   "need": {
+    "#flower": 2,
+    "glass": 1,
+    "old_coin": 1
+   },
+   "give": "luck_potion",
+   "tier": 2
+  },
+  {
+   "id": "greater_potion",
+   "name": "Greater Potion",
+   "need": {
+    "potion": 2,
+    "#mushroom": 1,
+    "glass": 1
+   },
+   "give": "greater_potion",
+   "tier": 3
+  },
+  {
+   "id": "stoneskin_tonic",
+   "name": "Stoneskin Tonic",
+   "need": {
+    "#mushroom": 2,
+    "crystal_glass": 1,
+    "quarry_dust": 2
+   },
+   "give": "stoneskin_tonic",
+   "tier": 3
+  },
+  {
+   "id": "growth_elixir",
+   "name": "Growth Elixir",
+   "need": {
+    "fertilizer": 3,
+    "#magic": 1,
+    "crystal_glass": 1
+   },
+   "give": "growth_elixir",
+   "tier": 3
+  },
+  {
+   "id": "moonlight_elixir",
+   "name": "Moonlight Elixir",
+   "need": {
+    "greater_potion": 1,
+    "moon_tear": 1,
+    "star_dust": 2,
+    "crystal_glass": 1
+   },
+   "give": "moonlight_elixir",
+   "tier": 5
+  }
+ ],
+ "resonator": [
+  {
+   "id": "crystal_refined",
+   "name": "Refined Crystal",
+   "need": {
+    "shard": 3
+   },
+   "give": "crystal_refined",
    "tier": 1
+  },
+  {
+   "id": "crystal_battery",
+   "name": "Crystal Battery",
+   "need": {
+    "crystal_refined": 2,
+    "copper_bar": 1,
+    "glass": 1
+   },
+   "give": "crystal_battery",
+   "tier": 3
+  }
+ ],
+ "garage": [
+  {
+   "id": "scooter",
+   "name": "Kick Scooter",
+   "need": {
+    "plank": 6,
+    "wheel": 2,
+    "nails": 10
+   },
+   "give": "scooter",
+   "tier": 1,
+   "vehicle": true
+  },
+  {
+   "id": "rowboat",
+   "name": "Rowboat",
+   "need": {
+    "plank": 30,
+    "beam": 4,
+    "nails": 30,
+    "rope": 4
+   },
+   "give": "rowboat",
+   "tier": 2,
+   "vehicle": true
+  },
+  {
+   "id": "motor_scooter",
+   "name": "Motor Scooter",
+   "need": {
+    "scooter": 1,
+    "gear": 8,
+    "spring": 4,
+    "crystal_battery": 1
+   },
+   "give": "motor_scooter",
+   "tier": 3,
+   "vehicle": true
+  },
+  {
+   "id": "crystal_sled",
+   "name": "Crystal Sled",
+   "need": {
+    "hardwood_plank": 10,
+    "plating": 2,
+    "crystal_refined": 4
+   },
+   "give": "crystal_sled",
+   "tier": 3,
+   "vehicle": true,
+   "arc": "penguins"
+  },
+  {
+   "id": "getaway_car",
+   "name": "Getaway Car",
+   "need": {
+    "plating": 8,
+    "wheel": 4,
+    "gear": 10,
+    "crystal_battery": 2,
+    "fine_leather": 2
+   },
+   "give": "getaway_car",
+   "tier": 3,
+   "vehicle": true,
+   "arc": "gangsters"
+  },
+  {
+   "id": "balloon",
+   "name": "Hot-Air Balloon",
+   "need": {
+    "moonweave": 6,
+    "sail": 6,
+    "rope": 12,
+    "hardwood_plank": 8,
+    "crystal_battery": 1
+   },
+   "give": "balloon",
+   "tier": 5,
+   "vehicle": true
+  }
+ ],
+ "rocket": [
+  {
+   "id": "fuel_cell",
+   "name": "Fuel Cell",
+   "need": {
+    "lamp_oil": 4,
+    "glass": 2,
+    "coal": 6
+   },
+   "give": "fuel_cell",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "hull_plate",
+   "name": "Hull Plate",
+   "need": {
+    "plating": 2,
+    "nails": 20
+   },
+   "give": "hull_plate",
+   "tier": 2
+  },
+  {
+   "id": "heat_shield",
+   "name": "Heat Shield",
+   "need": {
+    "tile": 12,
+    "moonweave": 1,
+    "plating": 1
+   },
+   "give": "heat_shield",
+   "tier": 3
+  },
+  {
+   "id": "rocket_engine",
+   "name": "Rocket Engine",
+   "need": {
+    "plating": 3,
+    "gear": 8,
+    "spring": 6,
+    "crystal_battery": 2
+   },
+   "give": "rocket_engine",
+   "tier": 3
+  },
+  {
+   "id": "nav_computer",
+   "name": "Nav Computer",
+   "need": {
+    "crystal_lens": 2,
+    "gear": 6,
+    "gold_bar": 2,
+    "crystal_battery": 2
+   },
+   "give": "nav_computer",
+   "tier": 4
+  }
+ ],
+ "print": [
+  {
+   "id": "blank_stock",
+   "name": "Blank Stock",
+   "need": {
+    "fiber": 6,
+    "cloth": 1
+   },
+   "give": "blank_stock",
+   "tier": 1,
+   "n": 4
+  },
+  {
+   "id": "ink",
+   "name": "Printing Ink",
+   "need": {
+    "coal": 1,
+    "sap": 1
+   },
+   "give": "ink",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "bills_crude",
+   "name": "Crude Bills",
+   "need": {
+    "blank_stock": 2,
+    "ink": 1
+   },
+   "give": "bills_crude",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "bills_passable",
+   "name": "Passable Bills",
+   "need": {
+    "blank_stock": 2,
+    "ink": 2,
+    "linen": 1
+   },
+   "give": "bills_passable",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "forged_permit",
+   "name": "Forged Permit",
+   "need": {
+    "blank_stock": 3,
+    "ink": 2,
+    "old_coin": 1
+   },
+   "give": "forged_permit",
+   "tier": 2
+  },
+  {
+   "id": "bills_fine",
+   "name": "Fine Bills",
+   "need": {
+    "blank_stock": 2,
+    "ink": 2,
+    "fine_fabric": 1
+   },
+   "give": "bills_fine",
+   "tier": 3,
+   "n": 2
+  },
+  {
+   "id": "bills_perfect",
+   "name": "Perfect Bills",
+   "need": {
+    "blank_stock": 2,
+    "ink": 3,
+    "moonweave": 1,
+    "gold_bar": 1
+   },
+   "give": "bills_perfect",
+   "tier": 5,
+   "n": 4
+  }
+ ],
+ "armory": [
+  {
+   "id": "brass_knuckles",
+   "name": "Brass Knuckles",
+   "need": {
+    "copper_bar": 3
+   },
+   "give": "brass_knuckles",
+   "tier": 1,
+   "tool": true
+  },
+  {
+   "id": "fedora",
+   "name": "Fedora",
+   "need": {
+    "cloth": 3,
+    "leather": 1
+   },
+   "give": "fedora",
+   "tier": 1
+  },
+  {
+   "id": "crowbar",
+   "name": "Crowbar",
+   "need": {
+    "iron_bar": 3
+   },
+   "give": "crowbar",
+   "tier": 2,
+   "tool": true
+  },
+  {
+   "id": "lucky_bat",
+   "name": "Lucky Bat",
+   "need": {
+    "hardwood_plank": 3,
+    "nails": 10,
+    "horseshoe": 1
+   },
+   "give": "lucky_bat",
+   "tier": 2,
+   "tool": true
+  },
+  {
+   "id": "pinstripe_suit",
+   "name": "Pinstripe Suit",
+   "need": {
+    "cotton_cloth": 4,
+    "linen": 2
+   },
+   "give": "pinstripe_suit",
+   "tier": 2
+  },
+  {
+   "id": "steel_toes",
+   "name": "Steel-Toe Shoes",
+   "need": {
+    "leather": 2,
+    "iron_bar": 1
+   },
+   "give": "steel_toes",
+   "tier": 2
+  },
+  {
+   "id": "knuckle_gloves",
+   "name": "Knuckle Gloves",
+   "need": {
+    "leather": 2,
+    "copper_bar": 2
+   },
+   "give": "knuckle_gloves",
+   "tier": 2
+  },
+  {
+   "id": "chrome_blade",
+   "name": "Chrome Blade",
+   "need": {
+    "steel_bar": 5,
+    "plating": 1,
+    "fine_leather": 1
+   },
+   "give": "chrome_blade",
+   "tier": 3,
+   "tool": true
+  },
+  {
+   "id": "padded_vest",
+   "name": "Padded Vest",
+   "need": {
+    "fine_leather": 3,
+    "cotton_cloth": 4,
+    "plating": 1
+   },
+   "give": "padded_vest",
+   "tier": 3
+  },
+  {
+   "id": "trench_coat",
+   "name": "Trench Coat",
+   "need": {
+    "fine_fabric": 3,
+    "fine_leather": 1
+   },
+   "give": "trench_coat",
+   "tier": 3
+  },
+  {
+   "id": "tool_belt",
+   "name": "Driver's Belt",
+   "need": {
+    "fine_leather": 2,
+    "gear": 2
+   },
+   "give": "tool_belt",
+   "tier": 3
+  },
+  {
+   "id": "shades",
+   "name": "Shades",
+   "need": {
+    "crystal_glass": 1,
+    "silver_bar": 1
+   },
+   "give": "shades",
+   "tier": 3
+  },
+  {
+   "id": "gold_chain",
+   "name": "Gold Chain",
+   "need": {
+    "gold_bar": 2
+   },
+   "give": "gold_chain",
+   "tier": 3
+  },
+  {
+   "id": "neon_cleaver",
+   "name": "Neon Cleaver",
+   "need": {
+    "dark_bar": 4,
+    "crystal_battery": 1,
+    "plating": 2
+   },
+   "give": "neon_cleaver",
+   "tier": 4,
+   "tool": true
+  },
+  {
+   "id": "armored_suit",
+   "name": "Armored Suit",
+   "need": {
+    "pinstripe_suit": 1,
+    "plating": 4,
+    "moonweave": 1
+   },
+   "give": "armored_suit",
+   "tier": 4
+  }
+ ],
+ "soda": [
+  {
+   "id": "root_beer",
+   "name": "Root Beer",
+   "need": {
+    "#herb": 1,
+    "honey": 1
+   },
+   "give": "root_beer",
+   "tier": 1,
+   "n": 2
+  },
+  {
+   "id": "cream_soda",
+   "name": "Cream Soda",
+   "need": {
+    "milk": 1,
+    "honey": 1,
+    "vanilla": 1
+   },
+   "give": "cream_soda",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "cherry_fizz",
+   "name": "Cherry Fizz",
+   "need": {
+    "#berry": 3,
+    "glass": 1
+   },
+   "give": "cherry_fizz",
+   "tier": 2,
+   "n": 2
+  },
+  {
+   "id": "golden_float",
+   "name": "Golden Float",
+   "need": {
+    "cream_soda": 1,
+    "butter": 1,
+    "#magic": 1
+   },
+   "give": "golden_float",
+   "tier": 3
   }
  ]
 }

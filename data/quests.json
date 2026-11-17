@@ -2321,6 +2321,90 @@
      2
     ]
    }
+  },
+  {
+   "id": "hazel_planks",
+   "giver": "hazel",
+   "text": "Hazel wants 20 planks to mend the footbridge.",
+   "when": {
+    "day": 5
+   },
+   "done_when": {
+    "item": [
+     "plank",
+     20
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "friend": [
+     "hazel",
+     15
+    ],
+    "item": [
+     "nails",
+     20
+    ]
+   }
+  },
+  {
+   "id": "gideon_gears",
+   "giver": "gideon",
+   "text": "Gideon wants 4 gears you forged yourself.",
+   "when": {
+    "friend": [
+     "gideon",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "gear",
+     4
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 320,
+    "friend": [
+     "gideon",
+     15
+    ],
+    "item": [
+     "horseshoe",
+     2
+    ]
+   }
+  },
+  {
+   "id": "lumi_linen",
+   "giver": "lumi",
+   "text": "Lumi wants 6 bolts of linen for canvases.",
+   "when": {
+    "friend": [
+     "lumi",
+     2
+    ]
+   },
+   "done_when": {
+    "item": [
+     "linen",
+     6
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 240,
+    "friend": [
+     "lumi",
+     15
+    ],
+    "item": [
+     "paint",
+     3
+    ]
+   }
   }
  ]
 }

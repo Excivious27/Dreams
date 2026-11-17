@@ -216,7 +216,7 @@ func _refresh() -> void:
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab == "FieldLog") else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop"]) else Color(0.85, 0.85, 0.85)
 	var r := GameState.run
 	match _tab:
 		"Items":
@@ -407,6 +407,11 @@ func _refresh() -> void:
 					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
 			if not any:
 				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 7, Color(0.7, 0.7, 0.7))
+			var ws := Crafting.summary()
+			var busy := 0
+			for w in ws:
+				busy += (w["jobs"] as Array).size()
+			_button("Workshop: %d station%s, %d job%s running ›" % [ws.size(), "" if ws.size() == 1 else "s", busy, "" if busy == 1 else "s"], func() -> void: _tab = "Workshop"; _refresh())
 			_button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: _tab = "FieldLog"; _refresh())
 			var hints: Array = r.get("hints", [])
 			if not hints.is_empty():
@@ -424,6 +429,25 @@ func _refresh() -> void:
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
 			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = check/use · B = run · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 7, Color(0.8, 0.8, 0.8))
+		"Workshop":
+			var ws2 := Crafting.summary()
+			_line("Workshop · %d pieces made so far" % int(r.get("made", 0)), 9, Color(1, 0.9, 0.6))
+			if Racket.on():
+				_line("Heat %d/5 · %d bill%s passed%s" % [Racket.heat(), int(r.get("passed", 0)), "" if int(r.get("passed", 0)) == 1 else "s", " · collectors are looking" if Racket.heat() >= 3 else ""], 8, Color(1, 0.6, 0.45) if Racket.heat() >= 3 else Color(0.9, 0.85, 0.7))
+			if ws2.is_empty():
+				_line("No stations yet. The Plans board by your house lists every station: build each from materials or buy it ready-made.", 7, Color(0.8, 0.8, 0.8))
+			for w in ws2:
+				_line(str(w["head"]), 8, Color(1, 0.96, 0.85))
+				for jl in w["jobs"]:
+					_line("   ⏱ " + str(jl), 7, Color(0.75, 0.95, 0.75) if str(jl).ends_with("READY") else Color(0.8, 0.85, 0.95))
+			var nxt: Array = []
+			for bid in Builds.data():
+				if Crafting.is_station(str(bid)) and not Builds.next_def(str(bid)).is_empty() and Builds.gate(str(bid)) == "" and nxt.size() < 4:
+					nxt.append(str(Builds.next_def(str(bid))["name"]))
+			if not nxt.is_empty():
+				_line("Open to build now: " + ", ".join(nxt), 7, Color(0.8, 1, 0.7))
+			_line("A better station runs more jobs at once, works faster, opens higher recipes, and sometimes turns out a bonus piece.", 7, Color(0.7, 0.7, 0.7))
+			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"FieldLog":
 			# Every crop by family: grown ones with counts, in-season ones hinted, the rest as ???.
 			var grown: Dictionary = r.get("grown", {})

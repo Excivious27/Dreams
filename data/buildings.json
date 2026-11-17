@@ -1,54 +1,2539 @@
 {
  "_": "Farm buildings, Sun Haven style. Each has tiers; a tier needs a PERMIT bought at the Town Hall (Alder) plus materials, then takes `days` to construct (Hazel's crew works overnight). `upgrade_of` chains tiers. `unlock` gates: building skill level, a story quest, friendship.",
  "house": {
-  "label": "Farmhouse", "cell": [11, 10], "w": 5, "h": 4, "group": "buildings", "thing": "door", "fixed": true,
+  "label": "Farmhouse",
+  "cell": [
+   11,
+   10
+  ],
+  "w": 5,
+  "h": 4,
+  "group": "buildings",
+  "thing": "door",
+  "fixed": true,
   "tiers": [
-   {"tier": 1, "name": "Cottage", "sprite": "house", "cost": {}, "permit": 0, "days": 0, "desc": "One room, one bed."},
-   {"tier": 2, "name": "Farmhouse", "sprite": "house", "cost": {"wood": 250, "stone": 100, "copper_bar": 5}, "permit": 500, "days": 2, "unlock": {"skill": ["building", 3]}, "desc": "A kitchen (cook recipes), a bigger bed (+10 max energy), room for a second player."},
-   {"tier": 3, "name": "Manor", "sprite": "house", "cost": {"wood": 500, "stone": 300, "iron_bar": 10, "glass": 20}, "permit": 2500, "days": 4, "unlock": {"skill": ["building", 6], "quest": "clear_meadow"}, "desc": "A cellar (kegs and jars age twice as fast), a study (+1 skill point), rooms for 8 players, a bath (+5 max health)."}
-  ]
+   {
+    "tier": 1,
+    "name": "Cottage",
+    "sprite": "house",
+    "cost": {},
+    "permit": 0,
+    "days": 0,
+    "desc": "One room, one bed."
+   },
+   {
+    "tier": 2,
+    "name": "Farmhouse",
+    "sprite": "house",
+    "cost": {
+     "plank": 80,
+     "brick": 60,
+     "nails": 30,
+     "copper_bar": 5
+    },
+    "permit": 500,
+    "days": 2,
+    "unlock": {
+     "skill": [
+      "building",
+      3
+     ]
+    },
+    "desc": "A kitchen (cook recipes), a bigger bed (+10 max energy), room for a second player.",
+    "price": 5330
+   },
+   {
+    "tier": 3,
+    "name": "Manor",
+    "sprite": "house",
+    "cost": {
+     "beam": 40,
+     "tile": 60,
+     "iron_bar": 10,
+     "glass": 20
+    },
+    "permit": 2500,
+    "days": 4,
+    "unlock": {
+     "skill": [
+      "building",
+      6
+     ],
+     "quest": "clear_meadow"
+    },
+    "desc": "A cellar (kegs and jars age twice as fast), a study (+1 skill point), rooms for 8 players, a bath (+5 max health).",
+    "price": 17190
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
  },
  "coop": {
-  "label": "Coop", "cell": [26, 8], "w": 3, "h": 3, "group": "props",
+  "label": "Coop",
+  "cell": [
+   26,
+   8
+  ],
+  "w": 3,
+  "h": 3,
+  "group": "props",
   "tiers": [
-   {"tier": 1, "name": "Coop", "sprite": "coop_small", "cost": {"wood": 120, "stone": 40}, "permit": 100, "days": 1, "desc": "4 chickens."},
-   {"tier": 2, "name": "Big Coop", "sprite": "coop_big", "cost": {"wood": 200, "stone": 80, "copper_bar": 3}, "permit": 400, "days": 2, "unlock": {"skill": ["building", 3]}, "desc": "8 birds; ducks; an incubator."}
-  ]
+   {
+    "tier": 1,
+    "name": "Coop",
+    "sprite": "coop_small",
+    "cost": {
+     "wood": 120,
+     "stone": 40
+    },
+    "permit": 100,
+    "days": 1,
+    "desc": "4 chickens.",
+    "price": 850
+   },
+   {
+    "tier": 2,
+    "name": "Big Coop",
+    "sprite": "coop_big",
+    "cost": {
+     "plank": 60,
+     "nails": 30,
+     "copper_bar": 3
+    },
+    "permit": 400,
+    "days": 2,
+    "unlock": {
+     "skill": [
+      "building",
+      3
+     ]
+    },
+    "desc": "8 birds; ducks; an incubator.",
+    "price": 3170
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
  },
  "barn": {
-  "label": "Barn", "cell": [32, 5], "w": 4, "h": 3, "group": "props",
+  "label": "Barn",
+  "cell": [
+   32,
+   5
+  ],
+  "w": 4,
+  "h": 3,
+  "group": "props",
   "tiers": [
-   {"tier": 1, "name": "Barn", "sprite": "barn_small", "cost": {"wood": 200, "stone": 80}, "permit": 200, "days": 2, "desc": "4 animals: cows, sheep."},
-   {"tier": 2, "name": "Big Barn", "sprite": "barn_big", "cost": {"wood": 350, "stone": 150, "iron_bar": 4}, "permit": 800, "days": 3, "unlock": {"skill": ["building", 5]}, "desc": "8 animals; goats, llamas; auto-feeder."}
+   {
+    "tier": 1,
+    "name": "Barn",
+    "sprite": "barn_small",
+    "cost": {
+     "wood": 200,
+     "stone": 80
+    },
+    "permit": 200,
+    "days": 2,
+    "desc": "4 animals: cows, sheep.",
+    "price": 1380
+   },
+   {
+    "tier": 2,
+    "name": "Big Barn",
+    "sprite": "barn_big",
+    "cost": {
+     "beam": 30,
+     "brick": 60,
+     "iron_bar": 4
+    },
+    "permit": 800,
+    "days": 3,
+    "unlock": {
+     "skill": [
+      "building",
+      5
+     ]
+    },
+    "desc": "8 animals; goats, llamas; auto-feeder.",
+    "price": 6060
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "silo": {
+  "label": "Silo",
+  "cell": [
+   30,
+   4
+  ],
+  "w": 1,
+  "h": 3,
+  "group": "props",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Silo",
+    "sprite": "silo2",
+    "cost": {
+     "stone": 60,
+     "wood": 30
+    },
+    "permit": 50,
+    "days": 1,
+    "desc": "Stores 240 hay; scythed grass goes straight in.",
+    "price": 550
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "shed": {
+  "label": "Shed",
+  "cell": [
+   6,
+   20
+  ],
+  "w": 2,
+  "h": 2,
+  "group": "props",
+  "thing": "chest",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Shed",
+    "sprite": "shed",
+    "cost": {
+     "wood": 80,
+     "stone": 20
+    },
+    "permit": 50,
+    "days": 1,
+    "desc": "Big storage; a place for crafting stations.",
+    "price": 590
+   },
+   {
+    "tier": 2,
+    "name": "Workshop",
+    "sprite": "shed",
+    "cost": {
+     "plank": 50,
+     "nails": 30,
+     "copper_bar": 4
+    },
+    "permit": 300,
+    "days": 2,
+    "unlock": {
+     "skill": [
+      "building",
+      4
+     ]
+    },
+    "desc": "Crafting here is 25% faster.",
+    "price": 3200
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "stable": {
+  "label": "Stable",
+  "cell": [
+   32,
+   11
+  ],
+  "w": 3,
+  "h": 3,
+  "group": "props",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Stable",
+    "sprite": "stable2",
+    "cost": {
+     "wood": 150,
+     "iron_bar": 2
+    },
+    "permit": 300,
+    "days": 2,
+    "unlock": {
+     "friend": [
+      "benno",
+      2
+     ]
+    },
+    "desc": "Your horse sleeps here; it runs 10% faster rested.",
+    "price": 1430
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "mill": {
+  "label": "Mill",
+  "cell": [
+   26,
+   2
+  ],
+  "w": 2,
+  "h": 4,
+  "group": "props",
+  "anim": "windmill3",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Windmill",
+    "sprite": "windmill3",
+    "cost": {
+     "wood": 120,
+     "stone": 60
+    },
+    "permit": 200,
+    "days": 2,
+    "unlock": {
+     "friend": [
+      "orla",
+      2
+     ]
+    },
+    "desc": "Grinds wheat to flour overnight; sugar beet to sugar.",
+    "price": 940
+   }
+  ],
+  "thing": "station",
+  "station": {
+   "skill": "farming",
+   "verb": "Mill",
+   "book": "mill"
+  },
+  "cat": "pantry",
+  "seller": "Hazel"
+ },
+ "greenhouse": {
+  "label": "Greenhouse",
+  "cell": [
+   20,
+   4
+  ],
+  "w": 3,
+  "h": 3,
+  "group": "props",
+  "anim": "greenhouse2",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Greenhouse",
+    "sprite": "greenhouse2",
+    "cost": {
+     "wood": 150,
+     "stone": 100,
+     "iron_bar": 2,
+     "glass": 30
+    },
+    "permit": 1000,
+    "days": 3,
+    "unlock": {
+     "skill": [
+      "building",
+      5
+     ],
+     "quest": "clear_meadow"
+    },
+    "desc": "Crops grow in any season inside; winter can't kill them.",
+    "price": 3850
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "fish_pond": {
+  "label": "Fish pond",
+  "cell": [
+   26,
+   16
+  ],
+  "w": 2,
+  "h": 2,
+  "group": "props",
+  "anim": "fish_pond",
+  "thing": "water",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Fish pond",
+    "sprite": "fish_pond",
+    "cost": {
+     "stone": 80,
+     "wood": 20
+    },
+    "permit": 100,
+    "days": 1,
+    "unlock": {
+     "skill": [
+      "fishing",
+      2
+     ]
+    },
+    "desc": "Fish at home. Drop a fish in and it breeds.",
+    "price": 590
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "well": {
+  "label": "Well",
+  "cell": [
+   19,
+   13
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "well",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Well",
+    "sprite": "well_roofed",
+    "cost": {
+     "stone": 30
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Refill the can here.",
+    "price": 280
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "workbench": {
+  "label": "Workbench",
+  "cell": [
+   6,
+   13
+  ],
+  "w": 1,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Hazel",
+  "station": {
+   "skill": "building",
+   "verb": "Build",
+   "book": "workbench"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Workbench",
+    "sprite": "workbench_t1",
+    "group": "props",
+    "cost": {
+     "wood": 20
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2.",
+    "price": 240,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Carpenter's Bench",
+    "sprite": "workbench_t2",
+    "group": "props",
+    "cost": {
+     "plank": 20,
+     "nails": 10,
+     "copper_bar": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 1610,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "building",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Workshop",
+    "sprite": "workbench_t3",
+    "group": "props",
+    "cost": {
+     "hardwood_plank": 15,
+     "gear": 4,
+     "iron_bar": 5
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 5340,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "building",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Master Workshop",
+    "sprite": "workbench_t3",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 4,
+     "plating": 4,
+     "crystal_glass": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 10890,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "building",
+      7
+     ]
+    },
+    "art_missing": false
+   }
   ]
  },
- "silo": {"label": "Silo", "cell": [30, 4], "w": 1, "h": 3, "group": "props",
-  "tiers": [{"tier": 1, "name": "Silo", "sprite": "silo2", "cost": {"stone": 60, "wood": 30}, "permit": 50, "days": 1, "desc": "Stores 240 hay; scythed grass goes straight in."}]},
- "shed": {"label": "Shed", "cell": [6, 20], "w": 2, "h": 2, "group": "props", "thing": "chest",
-  "tiers": [{"tier": 1, "name": "Shed", "sprite": "shed", "cost": {"wood": 80, "stone": 20}, "permit": 50, "days": 1, "desc": "Big storage; a place for crafting stations."},
-            {"tier": 2, "name": "Workshop", "sprite": "shed", "cost": {"wood": 160, "stone": 60, "copper_bar": 4}, "permit": 300, "days": 2, "unlock": {"skill": ["building", 4]}, "desc": "Crafting here is 25% faster."}]},
- "stable": {"label": "Stable", "cell": [32, 11], "w": 3, "h": 3, "group": "props",
-  "tiers": [{"tier": 1, "name": "Stable", "sprite": "stable2", "cost": {"wood": 150, "iron_bar": 2}, "permit": 300, "days": 2, "unlock": {"friend": ["benno", 2]}, "desc": "Your horse sleeps here; it runs 10% faster rested."}]},
- "mill": {"label": "Mill", "cell": [26, 2], "w": 2, "h": 4, "group": "props", "anim": "windmill3",
-  "tiers": [{"tier": 1, "name": "Windmill", "sprite": "windmill3", "cost": {"wood": 120, "stone": 60}, "permit": 200, "days": 2, "unlock": {"friend": ["orla", 2]}, "desc": "Grinds wheat to flour overnight; sugar beet to sugar."}]},
- "greenhouse": {"label": "Greenhouse", "cell": [20, 4], "w": 3, "h": 3, "group": "props", "anim": "greenhouse2",
-  "tiers": [{"tier": 1, "name": "Greenhouse", "sprite": "greenhouse2", "cost": {"wood": 150, "stone": 100, "iron_bar": 2, "glass": 30}, "permit": 1000, "days": 3, "unlock": {"skill": ["building", 5], "quest": "clear_meadow"}, "desc": "Crops grow in any season inside; winter can't kill them."}]},
- "fish_pond": {"label": "Fish pond", "cell": [26, 16], "w": 2, "h": 2, "group": "props", "anim": "fish_pond", "thing": "water",
-  "tiers": [{"tier": 1, "name": "Fish pond", "sprite": "fish_pond", "cost": {"stone": 80, "wood": 20}, "permit": 100, "days": 1, "unlock": {"skill": ["fishing", 2]}, "desc": "Fish at home. Drop a fish in and it breeds."}]},
- "well": {"label": "Well", "cell": [19, 13], "w": 0, "h": 1, "group": "props", "thing": "well",
-  "tiers": [{"tier": 1, "name": "Well", "sprite": "well_roofed", "cost": {"stone": 30}, "permit": 0, "days": 0, "desc": "Refill the can here."}]},
- "workbench": {"label": "Workbench", "cell": [6, 13], "w": 1, "h": 1, "group": "props", "thing": "workbench",
-  "tiers": [{"tier": 1, "name": "Workbench", "sprite": "workbench3", "cost": {"wood": 20}, "permit": 0, "days": 0, "desc": "Craft tools, packs, torches."}]},
- "chest": {"label": "Chest", "cell": [9, 13], "w": 0, "h": 1, "group": "props", "thing": "chest",
-  "tiers": [{"tier": 1, "name": "Storage chest", "sprite": "chest_closed", "cost": {"wood": 10}, "permit": 0, "days": 0, "desc": "Keeps things."}]},
- "furnace": {"label": "Furnace", "cell": [8, 13], "w": 0, "h": 1, "group": "props", "thing": "furnace",
-  "tiers": [{"tier": 1, "name": "Furnace", "sprite": "furnace2_off", "cost": {"stone": 20, "copper": 5}, "permit": 0, "days": 0, "desc": "Smelt ore into bars."}]},
- "keg": {"label": "Keg", "cell": [6, 15], "w": 0, "h": 1, "group": "props", "thing": "keg",
-  "tiers": [{"tier": 1, "name": "Keg", "sprite": "keg2", "cost": {"wood": 30, "copper_bar": 1}, "permit": 0, "days": 0, "desc": "Fruit becomes wine, hops become beer (slowly)."}]},
- "beehive": {"label": "Beehive", "cell": [21, 15], "w": 0, "h": 1, "group": "props", "thing": "beehive",
-  "tiers": [{"tier": 1, "name": "Beehive", "sprite": "beehive3_a", "cost": {"wood": 15, "fiber": 10}, "permit": 0, "days": 0, "desc": "Honey every few days; more with flowers nearby."}]},
- "resonator": {"label": "Crystal resonator", "cell": [16, 16], "w": 0, "h": 1, "group": "props", "thing": "resonator",
-  "tiers": [{"tier": 1, "name": "Crystal resonator", "sprite": "resonator", "cost": {"stone": 10, "shard": 1}, "permit": 0, "days": 0, "desc": "Charges from the Star Crystal; powers the story."}]},
- "scarecrow": {"label": "Scarecrow", "cell": [22, 12], "w": 0, "h": 1, "group": "props",
-  "tiers": [{"tier": 1, "name": "Scarecrow", "sprite": "scarecrow_classic", "cost": {"wood": 8, "fiber": 4}, "permit": 0, "days": 0, "desc": "Crows leave the crops alone."}]}
+ "chest": {
+  "label": "Chest",
+  "cell": [
+   9,
+   13
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "chest",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Storage chest",
+    "sprite": "chest_closed",
+    "cost": {
+     "wood": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Keeps things.",
+    "price": 190
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "furnace": {
+  "label": "Furnace",
+  "cell": [
+   8,
+   13
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Gideon",
+  "station": {
+   "skill": "mining",
+   "verb": "Smelt",
+   "book": "furnace"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Stone Furnace",
+    "sprite": "furnace_t1_off",
+    "group": "props",
+    "cost": {
+     "stone": 20,
+     "copper": 5
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Ore into bars.",
+    "price": 370,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Brick Furnace",
+    "sprite": "furnace_t2_off",
+    "group": "props",
+    "cost": {
+     "brick": 30,
+     "copper_bar": 5,
+     "coal": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 2380,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "mining",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Blast Furnace",
+    "sprite": "furnace2_off",
+    "group": "props",
+    "cost": {
+     "brick": 60,
+     "steel_bar": 8,
+     "tile": 10
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 7070,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "mining",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Starfire Furnace",
+    "sprite": "furnace2_on",
+    "group": "props",
+    "cost": {
+     "dark_bar": 6,
+     "crystal_glass": 4,
+     "crystal_battery": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 14630,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "mining",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "keg": {
+  "label": "Keg",
+  "cell": [
+   6,
+   15
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "pantry",
+  "seller": "Tam",
+  "station": {
+   "skill": "farming",
+   "verb": "Brew",
+   "book": "keg"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Keg",
+    "sprite": "keg2",
+    "group": "props",
+    "cost": {
+     "wood": 30,
+     "copper_bar": 1
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Anything you grow, given time.",
+    "price": 440,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Oak Barrel",
+    "sprite": "keg3",
+    "group": "props",
+    "cost": {
+     "plank": 24,
+     "nails": 10,
+     "iron_bar": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 1970,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "farming",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Fermenting Vat",
+    "sprite": "keg3",
+    "group": "props",
+    "cost": {
+     "hardwood_plank": 16,
+     "steel_bar": 4,
+     "glass": 10
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 5000,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "farming",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Cellar Vats",
+    "sprite": "keg3",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 2,
+     "plating": 4,
+     "crystal_glass": 4
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 10500,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "farming",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "beehive": {
+  "label": "Beehive",
+  "cell": [
+   21,
+   15
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "beehive",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Beehive",
+    "sprite": "beehive3_a",
+    "cost": {
+     "wood": 15,
+     "fiber": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Honey every few days; more with flowers nearby.",
+    "price": 240
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "resonator": {
+  "label": "Crystal Resonator",
+  "cell": [
+   16,
+   16
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Sel",
+  "station": {
+   "skill": "mining",
+   "verb": "Tune",
+   "book": "resonator"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Crystal Resonator",
+    "sprite": "resonator",
+    "group": "props",
+    "cost": {
+     "stone": 10,
+     "shard": 1
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Shards into refined crystal.",
+    "price": 290,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Twin Resonator",
+    "sprite": "resonator",
+    "group": "props",
+    "cost": {
+     "crystal_refined": 4,
+     "copper_bar": 4,
+     "glass": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 3240,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "mining",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Prism Array",
+    "sprite": "resonator",
+    "group": "props",
+    "cost": {
+     "crystal_glass": 4,
+     "silver_bar": 4,
+     "gear": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 7160,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "mining",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Star Array",
+    "sprite": "resonator",
+    "group": "props",
+    "cost": {
+     "crystal_battery": 4,
+     "moon_bar": 1,
+     "plating": 4
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 15950,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "mining",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "scarecrow": {
+  "label": "Scarecrow",
+  "cell": [
+   22,
+   12
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Scarecrow",
+    "sprite": "scarecrow_classic",
+    "cost": {
+     "wood": 8,
+     "fiber": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Crows leave the crops alone.",
+    "price": 190
+   }
+  ],
+  "cat": "farm",
+  "seller": "Hazel"
+ },
+ "sawmill": {
+  "label": "Lumberyard",
+  "cell": [
+   9,
+   15
+  ],
+  "w": 1,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Hazel",
+  "station": {
+   "skill": "building",
+   "verb": "Saw",
+   "book": "sawmill"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Sawhorse",
+    "sprite": "sawhorse",
+    "group": "props",
+    "cost": {
+     "wood": 30,
+     "stone": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Planks from logs.",
+    "price": 330,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Lumberyard",
+    "sprite": "lumberyard",
+    "group": "props",
+    "cost": {
+     "plank": 30,
+     "copper_bar": 3,
+     "nails": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 1900,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "building",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Sawmill",
+    "sprite": "sawmill",
+    "group": "props",
+    "cost": {
+     "beam": 12,
+     "gear": 6,
+     "iron_bar": 6
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 5710,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "building",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "Steam Sawmill",
+    "sprite": "sawmill_steam",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 2,
+     "plating": 4,
+     "spring": 6,
+     "dark_bar": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 11130,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "building",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "anvil": {
+  "label": "Anvil",
+  "cell": [
+   12,
+   15
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Gideon",
+  "station": {
+   "skill": "mining",
+   "verb": "Forge",
+   "book": "anvil"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Field Anvil",
+    "sprite": "anvil",
+    "group": "props",
+    "cost": {
+     "copper_bar": 3,
+     "wood": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Nails, tools, copper gear.",
+    "price": 660,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Smithy",
+    "sprite": "forge_2",
+    "group": "stations",
+    "cost": {
+     "iron_bar": 8,
+     "brick": 20,
+     "plank": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 3720,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "mining",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Master Forge",
+    "sprite": "forge_3",
+    "group": "stations",
+    "cost": {
+     "steel_bar": 10,
+     "gear": 6,
+     "beam": 6
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 6850,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "mining",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Starforge",
+    "sprite": "forge_4",
+    "group": "stations",
+    "cost": {
+     "dark_bar": 8,
+     "plating": 6,
+     "crystal_battery": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 19030,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "mining",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "loom": {
+  "label": "Loom",
+  "cell": [
+   3,
+   15
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Lumi",
+  "station": {
+   "skill": "farming",
+   "verb": "Weave",
+   "book": "loom"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Hand Loom",
+    "sprite": "loom_1",
+    "group": "stations",
+    "cost": {
+     "wood": 25,
+     "fiber": 20
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Cloth, yarn, rope.",
+    "price": 300,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Floor Loom",
+    "sprite": "loom_2",
+    "group": "stations",
+    "cost": {
+     "plank": 20,
+     "nails": 8,
+     "yarn": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 1660,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "farming",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Weaving Frame",
+    "sprite": "loom_2",
+    "group": "stations",
+    "cost": {
+     "hardwood_plank": 12,
+     "gear": 4,
+     "cotton_cloth": 8
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 4830,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "farming",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Moon Loom",
+    "sprite": "loom_2",
+    "group": "stations",
+    "cost": {
+     "ironwood_beam": 2,
+     "fine_fabric": 6,
+     "crystal_glass": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 8600,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "farming",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "tannery": {
+  "label": "Tanning Rack",
+  "cell": [
+   3,
+   17
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Rook",
+  "station": {
+   "skill": "combat",
+   "verb": "Tan",
+   "book": "tannery"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Tanning Rack",
+    "sprite": "tanning_rack",
+    "group": "props",
+    "cost": {
+     "wood": 20,
+     "rope": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Pelts into leather.",
+    "price": 300,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Tannery",
+    "sprite": "tanning_rack",
+    "group": "props",
+    "cost": {
+     "plank": 16,
+     "nails": 8,
+     "leather": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 1470,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "combat",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Leatherworker's Shop",
+    "sprite": "tanning_rack",
+    "group": "props",
+    "cost": {
+     "beam": 8,
+     "gear": 2,
+     "cooking_oil": 6
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 3200,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "combat",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Master Saddler's",
+    "sprite": "tanning_rack",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 2,
+     "fine_leather": 8,
+     "plating": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 8380,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "combat",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "kitchen": {
+  "label": "Cooking Pot",
+  "cell": [
+   6,
+   17
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "pantry",
+  "seller": "Posy",
+  "station": {
+   "skill": "farming",
+   "verb": "Cook",
+   "book": "kitchen"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Cooking Pot",
+    "sprite": "stove_1",
+    "group": "stations",
+    "cost": {
+     "stone": 10,
+     "wood": 5
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Also sets what the house kitchen can do.",
+    "price": 220,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Iron Stove",
+    "sprite": "stove_2",
+    "group": "stations",
+    "cost": {
+     "iron_bar": 4,
+     "brick": 20,
+     "clay_pot": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 2590,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "farming",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Kitchen Range",
+    "sprite": "stove_3",
+    "group": "stations",
+    "cost": {
+     "steel_bar": 6,
+     "tile": 16,
+     "gear": 2
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 6060,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "farming",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Grand Range",
+    "sprite": "stove_4",
+    "group": "stations",
+    "cost": {
+     "plating": 4,
+     "crystal_glass": 4,
+     "gold_bar": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 10060,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "farming",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "press": {
+  "label": "Pantry Press",
+  "cell": [
+   9,
+   17
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "pantry",
+  "seller": "Tam",
+  "station": {
+   "skill": "farming",
+   "verb": "Press",
+   "book": "press"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Cheese Press",
+    "sprite": "cheese_press",
+    "group": "stations",
+    "cost": {
+     "wood": 20,
+     "stone": 10,
+     "cloth": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Cheese, butter, jam, oil.",
+    "price": 390,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Oil Press",
+    "sprite": "oil_press",
+    "group": "props",
+    "cost": {
+     "plank": 16,
+     "iron_bar": 3,
+     "clay_pot": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 2080,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "farming",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Preserving Room",
+    "sprite": "preserves_jar2",
+    "group": "props",
+    "cost": {
+     "beam": 6,
+     "glass": 16,
+     "gear": 3
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 3660,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "farming",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Creamery",
+    "sprite": "cheese_press",
+    "group": "stations",
+    "cost": {
+     "plating": 3,
+     "crystal_glass": 4,
+     "tile": 20
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 10450,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "farming",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "kiln": {
+  "label": "Kiln",
+  "cell": [
+   14,
+   15
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Granite",
+  "station": {
+   "skill": "mining",
+   "verb": "Fire",
+   "book": "kiln"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Clay Kiln",
+    "sprite": "kiln",
+    "group": "stations",
+    "cost": {
+     "stone": 30,
+     "clay": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Bricks, pots, glass.",
+    "price": 410,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Brick Kiln",
+    "sprite": "glass_kiln",
+    "group": "props",
+    "cost": {
+     "brick": 40,
+     "copper_bar": 3
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 2120,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "mining",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Glassworks",
+    "sprite": "glass_kiln",
+    "group": "props",
+    "cost": {
+     "brick": 60,
+     "steel_bar": 4,
+     "tile": 12
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 5930,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "mining",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Crystal Kiln",
+    "sprite": "glass_kiln",
+    "group": "props",
+    "cost": {
+     "dark_bar": 3,
+     "crystal_glass": 4,
+     "crystal_refined": 6
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 11380,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "mining",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "jeweler": {
+  "label": "Jeweller's Bench",
+  "cell": [
+   12,
+   17
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Ivy",
+  "station": {
+   "skill": "mining",
+   "verb": "Set",
+   "book": "jeweler"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Tinker's Tray",
+    "sprite": "jeweller_bench",
+    "group": "props",
+    "cost": {
+     "plank": 10,
+     "copper_bar": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Rings and charms.",
+    "price": 590,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Jeweller's Bench",
+    "sprite": "jeweller_bench",
+    "group": "props",
+    "cost": {
+     "hardwood_plank": 6,
+     "glass": 6,
+     "silver_bar": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 2560,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "mining",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Gem-Cutter's Bench",
+    "sprite": "jeweller_bench",
+    "group": "props",
+    "cost": {
+     "veneer": 4,
+     "crystal_glass": 2,
+     "gold_bar": 3
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 6320,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "mining",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Star Setting Bench",
+    "sprite": "jeweller_bench",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 1,
+     "moon_bar": 1,
+     "crystal_battery": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 11070,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "mining",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "cauldron": {
+  "label": "Magic Potion Station",
+  "cell": [
+   14,
+   17
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "workshop",
+  "seller": "Wren",
+  "station": {
+   "skill": "foraging",
+   "verb": "Brew",
+   "book": "cauldron"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Bubbling Pot",
+    "sprite": "cauldron_1",
+    "group": "stations",
+    "cost": {
+     "stone": 15,
+     "copper_bar": 2,
+     "wild_herb": 5
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Remedies and red potions.",
+    "price": 630,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Cauldron",
+    "sprite": "cauldron_2",
+    "group": "stations",
+    "cost": {
+     "iron_bar": 5,
+     "brick": 16,
+     "glass": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Swift, luck and hearth brews.",
+    "price": 2960,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "foraging",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Arcane Cauldron",
+    "sprite": "cauldron_3",
+    "group": "stations",
+    "cost": {
+     "silver_bar": 4,
+     "crystal_glass": 3,
+     "crystal_refined": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Growth elixir, stoneskin.",
+    "price": 7220,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "foraging",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Starfire Cauldron",
+    "sprite": "cauldron_4",
+    "group": "stations",
+    "cost": {
+     "dark_bar": 4,
+     "moonweave": 2,
+     "crystal_battery": 3
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Moonlight elixir.",
+    "price": 13750,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "foraging",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "garage": {
+  "label": "Vehicle Workshop",
+  "cell": [
+   10,
+   21
+  ],
+  "w": 2,
+  "h": 2,
+  "group": "props",
+  "thing": "station",
+  "cat": "projects",
+  "seller": "Benno",
+  "station": {
+   "skill": "building",
+   "verb": "Assemble",
+   "book": "garage"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Wheel Shed",
+    "sprite": "farm_cart",
+    "group": "props",
+    "cost": {
+     "plank": 30,
+     "nails": 16,
+     "wheel": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. A kick scooter.",
+    "price": 1650,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Boat & Cart Shop",
+    "sprite": "farm_cart",
+    "group": "props",
+    "cost": {
+     "beam": 12,
+     "gear": 6,
+     "sail": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. A rowboat.",
+    "price": 3770,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "building",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Motor Works",
+    "sprite": "farm_cart",
+    "group": "props",
+    "cost": {
+     "plating": 6,
+     "spring": 8,
+     "crystal_battery": 1
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Engines.",
+    "price": 9270,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "building",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "Sky Dock",
+    "sprite": "balloon",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 4,
+     "moonweave": 4,
+     "crystal_battery": 3
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. A hot-air balloon.",
+    "price": 15950,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "building",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "launchpad": {
+  "label": "Rocket Yard",
+  "cell": [
+   15,
+   23
+  ],
+  "w": 1,
+  "h": 3,
+  "group": "props",
+  "thing": "station",
+  "cat": "projects",
+  "seller": "Theo",
+  "station": {
+   "skill": "building",
+   "verb": "Assemble",
+   "book": "rocket"
+  },
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Launch Scaffold",
+    "sprite": "rocket_1",
+    "group": "props",
+    "cost": {
+     "beam": 20,
+     "brick": 60,
+     "nails": 40
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Build rocket parts here.",
+    "price": 5250,
+    "art_missing": true,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "building",
+      4
+     ]
+    }
+   },
+   {
+    "tier": 2,
+    "name": "Rocket Frame",
+    "sprite": "rocket_2",
+    "group": "props",
+    "cost": {
+     "hull_plate": 6,
+     "gear": 10,
+     "spring": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. A hull on the pad.",
+    "price": 16990,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "building",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Fuelled Rocket",
+    "sprite": "rocket_3",
+    "group": "props",
+    "cost": {
+     "rocket_engine": 2,
+     "heat_shield": 2,
+     "hull_plate": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. LAUNCH: fly to the moon (1 fuel cell a trip).",
+    "price": 27310,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "building",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "Starship",
+    "sprite": "rocket_4",
+    "group": "props",
+    "cost": {
+     "nav_computer": 1,
+     "rocket_engine": 2,
+     "moon_bar": 2,
+     "moonweave": 4
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Also flies to the star station.",
+    "price": 35400,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "building",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "print_shop": {
+  "label": "Back-Room Press",
+  "cell": [
+   3,
+   20
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Specs",
+  "station": {
+   "skill": "bartering",
+   "verb": "Print",
+   "book": "print"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Back-Room Press",
+    "sprite": "press_1",
+    "group": "props",
+    "cost": {
+     "plank": 16,
+     "nails": 8,
+     "copper_bar": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Crude bills. Risky.",
+    "price": 1020,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Offset Press",
+    "sprite": "press_2",
+    "group": "props",
+    "cost": {
+     "gear": 6,
+     "iron_bar": 6,
+     "linen": 10
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Passable bills, forged permits.",
+    "price": 4960,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "bartering",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Engraving Press",
+    "sprite": "press_3",
+    "group": "props",
+    "cost": {
+     "plating": 4,
+     "spring": 6,
+     "fine_fabric": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Fine bills.",
+    "price": 7880,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "bartering",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "The Mint",
+    "sprite": "press_4",
+    "group": "props",
+    "cost": {
+     "dark_bar": 4,
+     "gold_bar": 6,
+     "crystal_glass": 4
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Perfect bills.",
+    "price": 14100,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "bartering",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "armory": {
+  "label": "Street Armory",
+  "cell": [
+   3,
+   22
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Vic",
+  "station": {
+   "skill": "combat",
+   "verb": "Fit",
+   "book": "armory"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Trunk of Tools",
+    "sprite": "forge_anvil_tools",
+    "group": "props",
+    "cost": {
+     "plank": 12,
+     "copper_bar": 4,
+     "leather": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Knuckles, a fedora.",
+    "price": 1080,
+    "art_missing": false
+   },
+   {
+    "tier": 2,
+    "name": "Back-Alley Armory",
+    "sprite": "forge_anvil_tools",
+    "group": "props",
+    "cost": {
+     "iron_bar": 8,
+     "leather": 6,
+     "cotton_cloth": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Crowbar, bat, suits.",
+    "price": 4190,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "combat",
+      3
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 3,
+    "name": "Fixer's Workshop",
+    "sprite": "forge_anvil_tools",
+    "group": "props",
+    "cost": {
+     "steel_bar": 10,
+     "fine_leather": 4,
+     "gear": 6
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Chrome, padding.",
+    "price": 7550,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "combat",
+      5
+     ]
+    },
+    "art_missing": false
+   },
+   {
+    "tier": 4,
+    "name": "The Vault",
+    "sprite": "forge_anvil_tools",
+    "group": "props",
+    "cost": {
+     "dark_bar": 8,
+     "plating": 6,
+     "fine_fabric": 6
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Neon and armor.",
+    "price": 19470,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "combat",
+      7
+     ]
+    },
+    "art_missing": false
+   }
+  ]
+ },
+ "soda": {
+  "label": "Soda Fountain",
+  "cell": [
+   6,
+   23
+  ],
+  "w": 0,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Mama Rosa",
+  "station": {
+   "skill": "bartering",
+   "verb": "Mix",
+   "book": "soda"
+  },
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Soda Cart",
+    "sprite": "soda_1",
+    "group": "props",
+    "cost": {
+     "plank": 14,
+     "glass": 6,
+     "copper_bar": 2
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "1 job at once, normal speed, recipes to tier 2. Root beer. A front with a real queue.",
+    "price": 1040,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Soda Fountain",
+    "sprite": "soda_2",
+    "group": "props",
+    "cost": {
+     "brick": 30,
+     "glass": 16,
+     "iron_bar": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "price": 3680,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "bartering",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Parlour",
+    "sprite": "soda_3",
+    "group": "props",
+    "cost": {
+     "tile": 24,
+     "crystal_glass": 2,
+     "veneer": 4
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "price": 7380,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "bartering",
+      5
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 4,
+    "name": "The Gold Room",
+    "sprite": "soda_4",
+    "group": "props",
+    "cost": {
+     "gold_bar": 6,
+     "crystal_glass": 6,
+     "moonweave": 2
+    },
+    "permit": 0,
+    "days": 2,
+    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "price": 14060,
+    "unlock": {
+     "progress": 3,
+     "skill": [
+      "bartering",
+      7
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "laundromat": {
+  "label": "Laundromat",
+  "cell": [
+   9,
+   24
+  ],
+  "w": 1,
+  "h": 1,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Deuce",
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Wash Tub",
+    "sprite": "laundry_1",
+    "group": "props",
+    "cost": {
+     "plank": 20,
+     "copper_bar": 4,
+     "cloth": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.",
+    "price": 1360,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Laundromat",
+    "sprite": "laundry_2",
+    "group": "props",
+    "cost": {
+     "brick": 40,
+     "iron_bar": 8,
+     "gear": 4
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Washes 6 bills a night at 85%.",
+    "price": 5090,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "bartering",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "Cleaners & Sons",
+    "sprite": "laundry_3",
+    "group": "props",
+    "cost": {
+     "tile": 30,
+     "plating": 4,
+     "spring": 8
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "Washes 10 bills a night at 90%.",
+    "price": 10330,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "bartering",
+      5
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ },
+ "training": {
+  "label": "Recruit Training Center",
+  "cell": [
+   18,
+   22
+  ],
+  "w": 2,
+  "h": 2,
+  "group": "props",
+  "thing": "station",
+  "cat": "operation",
+  "seller": "Val",
+  "arc": "gangsters",
+  "tiers": [
+   {
+    "tier": 1,
+    "name": "Back-Lot Gym",
+    "sprite": "gym_1",
+    "group": "props",
+    "cost": {
+     "plank": 30,
+     "rope": 8,
+     "leather": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Spar once a day for combat XP. +10 max health.",
+    "price": 1270,
+    "art_missing": true
+   },
+   {
+    "tier": 2,
+    "name": "Training Hall",
+    "sprite": "gym_2",
+    "group": "props",
+    "cost": {
+     "beam": 16,
+     "brick": 60,
+     "steel_bar": 6
+    },
+    "permit": 0,
+    "days": 0,
+    "desc": "Every crew member's perk counts one loyalty step higher. Sparring pays double.",
+    "price": 5700,
+    "unlock": {
+     "progress": 1,
+     "skill": [
+      "combat",
+      3
+     ]
+    },
+    "art_missing": true
+   },
+   {
+    "tier": 3,
+    "name": "The Academy",
+    "sprite": "gym_3",
+    "group": "props",
+    "cost": {
+     "ironwood_beam": 4,
+     "plating": 8,
+     "fine_fabric": 8
+    },
+    "permit": 0,
+    "days": 1,
+    "desc": "Crew perks count two loyalty steps higher. +20 max health.",
+    "price": 15610,
+    "unlock": {
+     "progress": 2,
+     "skill": [
+      "combat",
+      5
+     ]
+    },
+    "art_missing": true
+   }
+  ]
+ }
 }

@@ -4813,11 +4813,107 @@ def w243():
     strip([scale_to(crop(rgba, b), height=96) for b in r3[4:8]], G, "faint")
 
 
+# ---- Prompts 14: produce icons and crop growth sheets ---------------------------
+
+def _p14_layout():
+    return json.load(open(os.path.join(os.path.dirname(__file__), "prompts14_layout.json")))
+
+
+def _blob_rows(rgba, x0, x1, min_area, row_gap, expect=0):
+    """Sprites in rgba[:, x0:x1] as rows of union boxes, small bits (sparkles,
+    steam, crumbs) folded into the nearest big blob. Returns [[(mask_bbox, labels)]]."""
+    from scipy import ndimage
+    a = rgba[:, x0:x1, 3] > 40
+    lab, n = ndimage.label(a, structure=np.ones((3, 3)))
+    sl = ndimage.find_objects(lab)
+    area = ndimage.sum(a, lab, range(1, n + 1))
+    big = [i for i in range(n) if area[i] >= min_area]
+    groups = {i: [i] for i in big}
+    def box(i): return (sl[i][1].start, sl[i][0].start, sl[i][1].stop, sl[i][0].stop)
+    for i in range(n):
+        if i in groups or area[i] < 4: continue
+        bx = box(i); cx = (bx[0] + bx[2]) / 2; cy = (bx[1] + bx[3]) / 2
+        best = None; bd = 1e9
+        for j in big:
+            b = box(j)
+            dx = max(b[0] - cx, 0, cx - b[2]); dy = max(b[1] - cy, 0, cy - b[3])
+            d = dx + dy
+            if d < bd: bd = d; best = j
+        if best is not None and bd < (26 if min_area < 600 else 60): groups[best].append(i)
+    items = []
+    for j, ids in groups.items():
+        bs = [box(i) for i in ids]
+        ub = (min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs))
+        items.append((ub, ids, box(j)[3]))
+    items.sort(key=lambda t: t[2])
+    rows = []
+    for it in items:
+        if rows and abs(it[2] - np.mean([r[2] for r in rows[-1]])) < row_gap: rows[-1].append(it)
+        else: rows.append([it])
+    out = []
+    for r in rows:
+        r.sort(key=lambda t: t[0][0])
+        # An icon drawn in two pieces (a fruit and its slice): join the closest neighbours.
+        while expect and len(r) > expect:
+            k = min(range(len(r) - 1), key=lambda i: r[i + 1][0][0] - r[i][0][2])
+            a0, b0 = r[k], r[k + 1]
+            ub = (min(a0[0][0], b0[0][0]), min(a0[0][1], b0[0][1]), max(a0[0][2], b0[0][2]), max(a0[0][3], b0[0][3]))
+            r[k:k + 2] = [(ub, a0[1] + b0[1], max(a0[2], b0[2]))]
+        cells = []
+        for ub, ids, _ in r:
+            sub = rgba[ub[1]:ub[3], x0 + ub[0]:x0 + ub[2]].copy()
+            keep = np.isin(lab[ub[1]:ub[3], ub[0]:ub[2]], [i + 1 for i in ids])
+            sub[~keep] = 0
+            cells.append(Image.fromarray(sub))
+        out.append(cells)
+    return out
+
+
+def _p14_icons(file, names):
+    rgba = load(file)
+    rows = _blob_rows(rgba, 0, rgba.shape[1], 900, 90, 12)
+    flat = [c for r in rows for c in r]
+    if len(flat) != len(names):
+        raise RuntimeError("%s: found %d icons, expected %d (rows %s)" % (file, len(flat), len(names), [len(r) for r in rows]))
+    for nm, im in zip(names, flat):
+        save(scale_to(im, width=32, height=32), "items", nm)
+
+
+def _p14_crops(file, names, row_gap=50, min_area=150, shrink=1.0):
+    rgba = load(file)
+    half = rgba.shape[1] // 2
+    left = _blob_rows(rgba, 0, half, min_area, row_gap, 6)
+    right = _blob_rows(rgba, half, rgba.shape[1], min_area, row_gap, 6)
+    seq = []
+    for i in range(max(len(left), len(right))):
+        if i < len(left): seq.append(left[i])
+        if i < len(right): seq.append(right[i])
+    if len(seq) != len(names) or any(len(r) != 6 for r in seq):
+        raise RuntimeError("%s: rows %s, expected %d rows of 6" % (file, [len(r) for r in seq], len(names)))
+    for nm, r in zip(names, seq):
+        for st, im in zip(CROP_STAGES[:6], r):
+            if shrink != 1.0:  # a sheet drawn at double size
+                im = im.resize((max(1, int(im.width * shrink)), max(1, int(im.height * shrink))), Image.LANCZOS)
+            save(im, "crops", "%s_%s" % (nm, st))
+
+
+def w274(): _p14_icons("w274_produce_icons_a.png", _p14_layout()["icons_a"])
+def w275(): _p14_icons("w275_produce_icons_b.png", _p14_layout()["icons_b"])
+def w276(): _p14_crops("w276_crops_a.png", _p14_layout()["sheets"][0])
+def w277(): _p14_crops("w277_crops_b.png", _p14_layout()["sheets"][1])
+def w278(): _p14_crops("w278_crops_c.png", _p14_layout()["sheets"][2])
+def w279(): _p14_crops("w279_crops_d.png", _p14_layout()["sheets"][3])
+def w280(): _p14_crops("w280_crops_e.png", _p14_layout()["sheets"][4])
+def w281(): _p14_crops("w281_crops_f.png", _p14_layout()["sheets"][5])
+def w282(): _p14_crops("w282_crops_g.png", _p14_layout()["sheets"][6])
+def w283(): _p14_crops("w283_crops_h.png", _p14_layout()["sheets"][7], 120, 700, 0.5)
+
+
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w237", w237), ("w238", w238), ("w239", w239), ("w240", w240), ("w241", w241), ("w242", w242), ("w243", w243), ("w244", w244), ("w245", w245), ("w246", w246), ("w247", w247), ("w248", w248), ("w249", w249), ("w250", w250), ("w256", w256), ("w257", w257), ("w258", w258), ("w259", w259), ("w260", w260), ("w261", w261), ("w251a", w251a), ("w253a", w253a), ("w255a", w255a), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w237", w237), ("w238", w238), ("w239", w239), ("w240", w240), ("w241", w241), ("w242", w242), ("w243", w243), ("w244", w244), ("w245", w245), ("w246", w246), ("w247", w247), ("w248", w248), ("w249", w249), ("w250", w250), ("w256", w256), ("w257", w257), ("w258", w258), ("w259", w259), ("w260", w260), ("w261", w261), ("w251a", w251a), ("w253a", w253a), ("w255a", w255a), ("w274", w274), ("w275", w275), ("w276", w276), ("w277", w277), ("w278", w278), ("w279", w279), ("w280", w280), ("w281", w281), ("w282", w282), ("w283", w283), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

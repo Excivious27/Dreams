@@ -47,3 +47,13 @@ echo "$cout" | grep -E "FAIL|crop_test" || true
 if ! echo "$cout" | grep -q "crop_test: 0 failures"; then
   echo "Crop test failed"; exit 1
 fi
+
+echo "== workshop: no dead ends =="
+python3 tools/station_check.py || { echo "Station check failed"; exit 1; }
+
+echo "== workshop: stations at run time =="
+sout="$("$GODOT" --headless --path . -s res://tools/station_test.gd 2>&1)"
+echo "$sout" | grep -E "FAIL|station_test" || true
+if ! echo "$sout" | grep -q "station_test: 0 failures"; then
+  echo "Station test failed"; exit 1
+fi

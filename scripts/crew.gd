@@ -55,7 +55,9 @@ static func perk_level(key: String) -> int:
 	var who: String = {"sell_bonus": "deuce", "meal_heal": "mama_rosa", "shop_discount": "specs", "raid_warning": "ladder", "sword": "vic", "defence": "val", "rides": "halo", "board_bonus": "dice", "run_speed": "the_kid", "heal_hideout": "doc", "status_half": "doc", "fence": "marlene", "doors": "sasha"}.get(key, "")
 	if who == "" or not recruited(who):
 		return 0
-	return loyalty(who)
+	# The Recruit Training Center: drilled crew count a step (or two) higher.
+	var drill := maxi(0, Builds.built_tier("training") - 1)
+	return mini(3, loyalty(who) + drill)
 
 
 ## Place crew members in this map: unrecruited ones where the story expects

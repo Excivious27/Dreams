@@ -146,7 +146,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(_counter.bind(str(thing.get("shop", ""))))
 			return true
 		"craft":
-			later(Crafting.run.bind(self, str(thing.get("station", "workbench")), str(thing.get("hint", "")).trim_prefix("A: ")))
+			later(Crafting.run.bind(self, str(thing.get("station", "workbench")), str(thing.get("hint", "")).trim_prefix("A: "), "town"))
 			return true
 		"stable":
 			later(_stable)
@@ -261,7 +261,7 @@ func _counter(shop: String) -> void:
 		if d.last_choice == 0:
 			await Shops.run(self, shop)
 		elif d.last_choice == 1:
-			await Crafting.run(self, "smith" if shop == "smith" else "alchemy", "Forge" if shop == "smith" else "Cauldron")
+			await Crafting.run(self, "smith" if shop == "smith" else "alchemy", "Gideon's Forge" if shop == "smith" else "Wren's Cauldron", "town")
 		elif d.last_choice == 2 and shop == "smith":
 			await _upgrade_tools()
 	elif shop != "":

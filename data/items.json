@@ -814,11 +814,14 @@
  },
  "brass_knuckles": {
   "name": "Brass Knuckles",
-  "type": "drop",
-  "value": 45,
-  "rarity": "uncommon",
-  "tier": 2,
-  "desc": "Dented."
+  "type": "tool",
+  "value": 150,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Dented.",
+  "damage": 3,
+  "weapon": true,
+  "arc": "gangsters"
  },
  "burner_phone": {
   "name": "Burner Phone",
@@ -6830,7 +6833,7 @@
  },
  "mana_potion": {
   "name": "Mana Potion",
-  "type": "food",
+  "type": "potion",
   "value": 60,
   "rarity": "uncommon",
   "tier": 2,
@@ -8004,5 +8007,689 @@
   "tier": 1,
   "effect": "seed_packet",
   "desc": "Open it: a seed of something in season. You never know which."
+ },
+ "plank": {
+  "name": "Plank",
+  "type": "craft",
+  "value": 6,
+  "rarity": "common",
+  "tier": 1
+ },
+ "hardwood_plank": {
+  "name": "Hardwood Plank",
+  "type": "craft",
+  "value": 45,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "beam": {
+  "name": "Timber Beam",
+  "type": "craft",
+  "value": 40,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "shingles": {
+  "name": "Shingles",
+  "type": "craft",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1
+ },
+ "wheel": {
+  "name": "Cart Wheel",
+  "type": "craft",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "veneer": {
+  "name": "Fine Veneer",
+  "type": "craft",
+  "value": 160,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "ironwood_beam": {
+  "name": "Ironwood Beam",
+  "type": "craft",
+  "value": 420,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "dark_bar": {
+  "name": "Shadowsteel Bar",
+  "type": "bar",
+  "value": 520,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "moon_bar": {
+  "name": "Moonsilver Bar",
+  "type": "bar",
+  "value": 2400,
+  "rarity": "legendary",
+  "tier": 5
+ },
+ "nails": {
+  "name": "Nails",
+  "type": "craft",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1
+ },
+ "horseshoe": {
+  "name": "Horseshoe",
+  "type": "craft",
+  "value": 80,
+  "rarity": "common",
+  "tier": 1,
+  "stats": {},
+  "desc": "Lucky. Benno swears by them."
+ },
+ "gear": {
+  "name": "Gear",
+  "type": "craft",
+  "value": 110,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "spring": {
+  "name": "Spring",
+  "type": "craft",
+  "value": 95,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "plating": {
+  "name": "Steel Plating",
+  "type": "craft",
+  "value": 380,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "yarn": {
+  "name": "Yarn",
+  "type": "craft",
+  "value": 34,
+  "rarity": "common",
+  "tier": 1
+ },
+ "linen": {
+  "name": "Linen",
+  "type": "craft",
+  "value": 48,
+  "rarity": "common",
+  "tier": 1
+ },
+ "cotton_cloth": {
+  "name": "Cotton Cloth",
+  "type": "craft",
+  "value": 75,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "fine_fabric": {
+  "name": "Fine Fabric",
+  "type": "craft",
+  "value": 220,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "moonweave": {
+  "name": "Moonweave",
+  "type": "craft",
+  "value": 700,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "sail": {
+  "name": "Sailcloth",
+  "type": "craft",
+  "value": 150,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "fine_leather": {
+  "name": "Fine Leather",
+  "type": "craft",
+  "value": 140,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "brick": {
+  "name": "Brick",
+  "type": "craft",
+  "value": 12,
+  "rarity": "common",
+  "tier": 1
+ },
+ "clay_pot": {
+  "name": "Clay Pot",
+  "type": "craft",
+  "value": 26,
+  "rarity": "common",
+  "tier": 1
+ },
+ "tile": {
+  "name": "Glazed Tile",
+  "type": "craft",
+  "value": 60,
+  "rarity": "uncommon",
+  "tier": 2
+ },
+ "crystal_glass": {
+  "name": "Crystal Glass",
+  "type": "craft",
+  "value": 330,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "butter": {
+  "name": "Butter",
+  "type": "food",
+  "value": 55,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 20
+ },
+ "cooking_oil": {
+  "name": "Cooking Oil",
+  "type": "craft",
+  "value": 50,
+  "rarity": "common",
+  "tier": 1
+ },
+ "dried_fruit": {
+  "name": "Dried Fruit",
+  "type": "food",
+  "value": 70,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 35
+ },
+ "crystal_battery": {
+  "name": "Crystal Battery",
+  "type": "craft",
+  "value": 560,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "swift_draught": {
+  "name": "Swift Draught",
+  "type": "potion",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "buff": {
+   "kind": "speed",
+   "minutes": 180,
+   "amount": 1
+  },
+  "desc": "Quick feet for three hours."
+ },
+ "luck_potion": {
+  "name": "Luck Potion",
+  "type": "potion",
+  "value": 180,
+  "rarity": "uncommon",
+  "tier": 2,
+  "buff": {
+   "kind": "luck",
+   "minutes": 240,
+   "amount": 2
+  },
+  "desc": "Better finds, kinder dice."
+ },
+ "stoneskin_tonic": {
+  "name": "Stoneskin Tonic",
+  "type": "potion",
+  "value": 200,
+  "rarity": "rare",
+  "tier": 3,
+  "buff": {
+   "kind": "defense",
+   "minutes": 180,
+   "amount": 2
+  },
+  "desc": "Hits land softer."
+ },
+ "hearth_brew": {
+  "name": "Hearth Brew",
+  "type": "potion",
+  "value": 90,
+  "rarity": "common",
+  "tier": 1,
+  "buff": {
+   "kind": "warm",
+   "minutes": 360,
+   "amount": 1
+  },
+  "energy": 20,
+  "desc": "Warm to the toes. Snow and cold water bother you less."
+ },
+ "growth_elixir": {
+  "name": "Growth Elixir",
+  "type": "consumable",
+  "value": 300,
+  "rarity": "rare",
+  "tier": 3,
+  "effect": "growth",
+  "desc": "Pour it out: every crop on your farm grows a day."
+ },
+ "greater_potion": {
+  "name": "Greater Potion",
+  "type": "potion",
+  "value": 220,
+  "rarity": "rare",
+  "tier": 3,
+  "heal": 12
+ },
+ "moonlight_elixir": {
+  "name": "Moonlight Elixir",
+  "type": "potion",
+  "value": 2200,
+  "rarity": "legendary",
+  "tier": 5,
+  "heal": 99,
+  "energy": 200,
+  "mana": 99,
+  "buff": {
+   "kind": "luck",
+   "minutes": 600,
+   "amount": 3
+  },
+  "desc": "Everything, all at once."
+ },
+ "scooter": {
+  "name": "Kick Scooter",
+  "type": "vehicle",
+  "value": 600,
+  "rarity": "uncommon",
+  "tier": 2,
+  "speed": 1.45,
+  "sprite": "scooter",
+  "desc": "Hold it and press USE to ride. Faster than walking; no tools while riding."
+ },
+ "rowboat": {
+  "name": "Rowboat",
+  "type": "vehicle",
+  "value": 900,
+  "rarity": "uncommon",
+  "tier": 2,
+  "speed": 1.0,
+  "water": 1.5,
+  "sprite": "rowboat",
+  "desc": "Hold it and press USE at the water: row instead of swimming, fast and dry."
+ },
+ "motor_scooter": {
+  "name": "Motor Scooter",
+  "type": "vehicle",
+  "value": 2600,
+  "rarity": "rare",
+  "tier": 3,
+  "speed": 1.9,
+  "sprite": "scooter",
+  "desc": "Twice as fast as your feet."
+ },
+ "balloon": {
+  "name": "Hot-Air Balloon",
+  "type": "vehicle",
+  "value": 9000,
+  "rarity": "epic",
+  "tier": 4,
+  "fly": true,
+  "sprite": "balloon",
+  "desc": "Hold it and press USE outdoors: drift to any place you have already visited."
+ },
+ "crystal_sled": {
+  "name": "Crystal Sled",
+  "type": "vehicle",
+  "value": 2400,
+  "rarity": "rare",
+  "tier": 3,
+  "speed": 1.7,
+  "snow": 2.3,
+  "sprite": "farm_cart",
+  "arc": "penguins",
+  "desc": "Fast anywhere; faster in winter and on the mountain."
+ },
+ "getaway_car": {
+  "name": "Getaway Car",
+  "type": "vehicle",
+  "value": 5200,
+  "rarity": "rare",
+  "tier": 3,
+  "speed": 2.3,
+  "sprite": "lux_car_black",
+  "arc": "gangsters",
+  "desc": "Black, quiet, quick. Nobody saw you leave."
+ },
+ "hull_plate": {
+  "name": "Hull Plate",
+  "type": "craft",
+  "value": 900,
+  "rarity": "rare",
+  "tier": 3
+ },
+ "rocket_engine": {
+  "name": "Rocket Engine",
+  "type": "craft",
+  "value": 2600,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "fuel_cell": {
+  "name": "Fuel Cell",
+  "type": "craft",
+  "value": 320,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "One launch each."
+ },
+ "nav_computer": {
+  "name": "Nav Computer",
+  "type": "craft",
+  "value": 2200,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "heat_shield": {
+  "name": "Heat Shield",
+  "type": "craft",
+  "value": 1500,
+  "rarity": "epic",
+  "tier": 4
+ },
+ "blank_stock": {
+  "name": "Blank Stock",
+  "type": "craft",
+  "value": 8,
+  "rarity": "common",
+  "tier": 1,
+  "arc": "gangsters",
+  "desc": "Paper with the right feel."
+ },
+ "ink": {
+  "name": "Printing Ink",
+  "type": "craft",
+  "value": 14,
+  "rarity": "common",
+  "tier": 1,
+  "arc": "gangsters"
+ },
+ "bills_crude": {
+  "name": "Crude Bills",
+  "type": "consumable",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "arc": "gangsters",
+  "effect": "counterfeit",
+  "face": 70,
+  "risk": 0.3,
+  "desc": "Hold and USE in a town to pass them for ◆70. About 1 in 3 gets noticed."
+ },
+ "bills_passable": {
+  "name": "Passable Bills",
+  "type": "consumable",
+  "value": 35,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "effect": "counterfeit",
+  "face": 150,
+  "risk": 0.18,
+  "desc": "Pass for ◆150. About 1 in 6 gets noticed."
+ },
+ "bills_fine": {
+  "name": "Fine Bills",
+  "type": "consumable",
+  "value": 60,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "effect": "counterfeit",
+  "face": 320,
+  "risk": 0.09,
+  "desc": "Pass for ◆320. About 1 in 11 gets noticed."
+ },
+ "bills_perfect": {
+  "name": "Perfect Bills",
+  "type": "consumable",
+  "value": 120,
+  "rarity": "epic",
+  "tier": 4,
+  "arc": "gangsters",
+  "effect": "counterfeit",
+  "face": 700,
+  "risk": 0.03,
+  "desc": "Pass for ◆700. Even the bank blinks."
+ },
+ "forged_permit": {
+  "name": "Forged Permit",
+  "type": "consumable",
+  "value": 80,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "effect": "forged_permit",
+  "risk": 0.25,
+  "desc": "USE it at home: your next building permit is \"already stamped\". 1 in 4 gets noticed."
+ },
+ "root_beer": {
+  "name": "Root Beer",
+  "type": "food",
+  "value": 60,
+  "rarity": "common",
+  "tier": 1,
+  "arc": "gangsters",
+  "energy": 35
+ },
+ "cream_soda": {
+  "name": "Cream Soda",
+  "type": "food",
+  "value": 95,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "energy": 45,
+  "buff": {
+   "kind": "speed",
+   "minutes": 120,
+   "amount": 1
+  }
+ },
+ "cherry_fizz": {
+  "name": "Cherry Fizz",
+  "type": "food",
+  "value": 150,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "gangsters",
+  "energy": 55,
+  "heal": 3
+ },
+ "golden_float": {
+  "name": "Golden Float",
+  "type": "food",
+  "value": 420,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "gangsters",
+  "energy": 90,
+  "heal": 5,
+  "buff": {
+   "kind": "luck",
+   "minutes": 240,
+   "amount": 2
+  },
+  "friend": 4
+ },
+ "crowbar": {
+  "name": "Crowbar",
+  "type": "tool",
+  "value": 320,
+  "rarity": "uncommon",
+  "tier": 2,
+  "damage": 4,
+  "weapon": true,
+  "arc": "gangsters"
+ },
+ "lucky_bat": {
+  "name": "Lucky Bat",
+  "type": "tool",
+  "value": 900,
+  "rarity": "uncommon",
+  "tier": 2,
+  "damage": 6,
+  "weapon": true,
+  "arc": "gangsters"
+ },
+ "chrome_blade": {
+  "name": "Chrome Blade",
+  "type": "tool",
+  "value": 2200,
+  "rarity": "rare",
+  "tier": 3,
+  "damage": 8,
+  "weapon": true,
+  "arc": "gangsters"
+ },
+ "neon_cleaver": {
+  "name": "Neon Cleaver",
+  "type": "tool",
+  "value": 5200,
+  "rarity": "epic",
+  "tier": 4,
+  "damage": 11,
+  "weapon": true,
+  "arc": "gangsters"
+ },
+ "fedora": {
+  "name": "Fedora",
+  "type": "equip",
+  "value": 140,
+  "rarity": "common",
+  "tier": 1,
+  "slot": "head",
+  "stats": {
+   "defense": 1,
+   "luck": 1
+  },
+  "arc": "gangsters"
+ },
+ "shades": {
+  "name": "Shades",
+  "type": "equip",
+  "value": 520,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "head",
+  "stats": {
+   "luck": 2,
+   "speed": 1
+  },
+  "arc": "gangsters"
+ },
+ "pinstripe_suit": {
+  "name": "Pinstripe Suit",
+  "type": "equip",
+  "value": 380,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "body",
+  "stats": {
+   "defense": 2,
+   "luck": 1
+  },
+  "arc": "gangsters"
+ },
+ "padded_vest": {
+  "name": "Padded Vest",
+  "type": "equip",
+  "value": 900,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "body",
+  "stats": {
+   "defense": 4
+  },
+  "arc": "gangsters"
+ },
+ "armored_suit": {
+  "name": "Armored Suit",
+  "type": "equip",
+  "value": 3200,
+  "rarity": "epic",
+  "tier": 4,
+  "slot": "body",
+  "stats": {
+   "defense": 6,
+   "luck": 1
+  },
+  "arc": "gangsters"
+ },
+ "steel_toes": {
+  "name": "Steel-Toe Shoes",
+  "type": "equip",
+  "value": 300,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "feet",
+  "stats": {
+   "defense": 2
+  },
+  "arc": "gangsters"
+ },
+ "knuckle_gloves": {
+  "name": "Knuckle Gloves",
+  "type": "equip",
+  "value": 260,
+  "rarity": "uncommon",
+  "tier": 2,
+  "slot": "hands",
+  "stats": {
+   "damage": 1
+  },
+  "arc": "gangsters"
+ },
+ "trench_coat": {
+  "name": "Trench Coat",
+  "type": "equip",
+  "value": 700,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "back",
+  "stats": {
+   "defense": 2,
+   "speed": 1
+  },
+  "arc": "gangsters"
+ },
+ "tool_belt": {
+  "name": "Driver's Belt",
+  "type": "equip",
+  "value": 480,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "belt",
+  "stats": {
+   "speed": 1,
+   "damage": 1
+  },
+  "arc": "gangsters"
+ },
+ "gold_chain": {
+  "name": "Gold Chain",
+  "type": "equip",
+  "value": 800,
+  "rarity": "rare",
+  "tier": 3,
+  "slot": "charm",
+  "stats": {
+   "luck": 2
+  },
+  "arc": "gangsters"
  }
 }

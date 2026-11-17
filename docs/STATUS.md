@@ -2,6 +2,24 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-17 (late) — the workshop: tiered stations, vehicles, rocket, the operation; Prompts 14 art in
+
+- **Design:** every station is a building in `data/buildings.json` with `"station": {skill, verb, book}` and four tiers. `scripts/crafting.gd` runs all of them.
+  - A tier gives slots (= tier), speed (15% per tier), recipe cap (tier + 1) and a masterwork chance (0/5/10/20%).
+  - A tier's gate is `unlock`: `progress` (story), `skill`, `friend`, `quest`. Materials or the ready-made `price` pay for it (`Builds.start(id, buy)`).
+  - Nothing is pre-built. The house kitchen works at the tier of the Cooking Pot you own.
+- **Stations (both arcs):** workbench, sawmill, furnace, anvil, loom, tannery, kitchen, keg, press, kiln, jeweler, cauldron (magic potions), resonator, garage (vehicles), launchpad (rocket), mill.
+- **Gangster arc only (`"arc": "gangsters"`):** print_shop, armory, soda, laundromat, training. `scripts/racket.gd` holds heat, passing bills, forged permits, the wash and sparring.
+- **Data is generated:** `python3 tools/gen_stations.py` rebuilds the station entries, recipe books and goods. Edit that file, not the JSON, for station changes.
+- **Jobs:** `run["jobs"][station]` is a list (old single-job saves migrate). Batches of 1 / 5 / max. Keg jobs take days; everything else is ready by morning.
+- **Town benches:** `Crafting.run(m, station, title, "town")`; tier from the keeper's hearts, fee per piece. `"smith"` and `"alchemy"` are aliases.
+- **Vehicles:** items of type `vehicle`; `player.ride()` / `unride()`; the balloon uses `run["visited"]`.
+- **Farm upgrades** (house, coop, barn, shed tier 2+) now cost planks, bricks, nails, beams and tile.
+- **Tests in `check.sh`:** `tools/station_check.py` (no dead ends, both arcs) and `tools/station_test.gd` (build, buy, gates, jobs, masterwork, keg, vehicles, potions, heat, wash, training).
+- **Prompts 14 art integrated** (w274–w283): 71 icons and six growth stages for 117 crops. Crops in beds are sized by their ripe sprite.
+- **Prompts 15** written: station tiers, goods icons, vehicles, rocket, Granite/Sel portraits, gangster stations and UI. Layout in `tools/prompts15_layout.json`.
+- Open: wearable art for gangster suits; pack size.
+
 ## 2026-11-17 (evening) — 134 growable crops, wired into everything
 
 - **Crops:** all 120 catalogue seeds now grow, for 134 crops in total. Every crop and every piece of produce has a family: veg, herb, berry, fruit, tree, grain, mushroom, flower or magic (`crops.json` / `items.json` "family").

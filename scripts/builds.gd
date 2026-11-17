@@ -5,13 +5,54 @@ class_name Builds
 ##   run["construction"][id] = {"tier": n, "done_day": d}   (Hazel's crew, overnight)
 
 static var _data: Dictionary = {}
+static var _by_arc: Dictionary = {}
 
 
-static func data() -> Dictionary:
+## Every building and station in the file, whatever the arc.
+static func all() -> Dictionary:
 	if _data.is_empty():
 		_data = GameState.load_json("res://data/buildings.json")
 		_data.erase("_")
 	return _data
+
+
+## What this run can build: the shared ones plus its own arc's.
+static func data() -> Dictionary:
+	var arc := str(GameState.run.get("arc", ""))
+	if not _by_arc.has(arc):
+		var out := {}
+		for id in all():
+			var a := str(all()[id].get("arc", ""))
+			if a == "" or a == arc:
+				out[id] = all()[id]
+		_by_arc[arc] = out
+	return _by_arc[arc]
+
+
+## Ready-made price of the next tier (0 = can't be bought).
+static func price(id: String) -> int:
+	return int(next_def(id).get("price", 0))
+
+
+## The gates on the next tier, apart from materials ("" = open).
+static func gate(id: String) -> String:
+	var nd := next_def(id)
+	if nd.is_empty():
+		return "max"
+	if not under_construction(id).is_empty():
+		return "building"
+	var ul: Dictionary = nd.get("unlock", {})
+	if ul.has("progress") and GameState.progress_tier() < int(ul["progress"]):
+		return "story chapter %d first" % (int(ul["progress"]) + 1)
+	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
+		return "%s level %d" % [str(ul["skill"][0]).capitalize(), int(ul["skill"][1])]
+	if ul.has("quest") and not GameState.quest_done(str(ul["quest"])):
+		return "story first"
+	if ul.has("friend") and GameState.friend_hearts(str(ul["friend"][0])) < int(ul["friend"][1]):
+		return "%s ♥%d" % [str(GameState.npcs[str(ul["friend"][0])]["name"]), int(ul["friend"][1])]
+	if int(nd.get("permit", 0)) > 0 and permitted(id) < int(nd["tier"]):
+		return "permit"
+	return ""
 
 
 static func built_tier(id: String) -> int:
@@ -51,19 +92,9 @@ static func under_construction(id: String) -> Dictionary:
 ## Why the next tier can't start ("" = it can, "permit" = needs a permit).
 static func blocker(id: String) -> String:
 	var nd := next_def(id)
-	if nd.is_empty():
-		return "max"
-	if not under_construction(id).is_empty():
-		return "building"
-	var ul: Dictionary = nd.get("unlock", {})
-	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
-		return "%s level %d" % [str(ul["skill"][0]).capitalize(), int(ul["skill"][1])]
-	if ul.has("quest") and not GameState.quest_done(str(ul["quest"])):
-		return "story first"
-	if ul.has("friend") and GameState.friend_hearts(str(ul["friend"][0])) < int(ul["friend"][1]):
-		return "%s ♥%d" % [str(GameState.npcs[str(ul["friend"][0])]["name"]), int(ul["friend"][1])]
-	if int(nd.get("permit", 0)) > 0 and permitted(id) < int(nd["tier"]):
-		return "permit"
+	var g := gate(id)
+	if g != "":
+		return g
 	for need in nd.get("cost", {}):
 		if GameState.count(str(need)) < int(nd["cost"][need]):
 			return "need %d %s" % [int(nd["cost"][need]), GameState.item_name(str(need))]
@@ -71,13 +102,22 @@ static func blocker(id: String) -> String:
 
 
 ## Start construction (or finish instantly when days == 0). Returns a toast.
-static func start(id: String) -> String:
-	var why := blocker(id)
+static func start(id: String, buy := false) -> String:
+	var why := gate(id) if buy else blocker(id)
 	if why != "":
 		return "Can't build yet: %s." % why
 	var nd := next_def(id)
-	for need in nd.get("cost", {}):
-		GameState.add_item(str(need), -int(nd["cost"][need]))
+	if buy:
+		# Bought ready-made: crystals instead of materials, same gates.
+		var p := price(id)
+		if p <= 0:
+			return "Can't build yet: nobody sells that."
+		if int(GameState.run["crystals"]) < p:
+			return "Can't build yet: it costs ◆%d (you have ◆%d)." % [p, int(GameState.run["crystals"])]
+		GameState.run["crystals"] = int(GameState.run["crystals"]) - p
+	else:
+		for need in nd.get("cost", {}):
+			GameState.add_item(str(need), -int(nd["cost"][need]))
 	var days := int(nd.get("days", 0))
 	if days <= 0:
 		_finish(id, int(nd["tier"]))
@@ -101,6 +141,8 @@ static func _finish(id: String, tier: int) -> void:
 			var s: Dictionary = GameState.run["skills"].get("building", {"level": 1, "xp": 0, "nodes": {}})
 			s["level"] = int(s["level"]) + 1
 			GameState.run["skills"]["building"] = s
+	if id == "training":
+		GameState.grow_vital("hp", 10 if tier == 1 else (0 if tier == 2 else 20))
 	GameState.add_hint("%s finished: %s" % [str(nd.get("name", id)), str(nd.get("desc", ""))])
 
 

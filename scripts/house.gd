@@ -61,7 +61,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			later(_dresser)
 			return true
 		"kitchen":
-			later(Crafting.run.bind(self, "kitchen", "Kitchen"))
+			later(Crafting.run.bind(self, "kitchen", "Kitchen"))  # works at the tier of the Cooking Pot you own
 			return true
 		"pet_bed":
 			hud.toast("%s curls up for a second, then follows you anyway." % GameState.names()["pet"])
@@ -85,6 +85,8 @@ func _sleep() -> void:
 	var lines: Array = [{"text": "Day %d." % int(GameState.run["day"])}]
 	if int(report["earned"]) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report["sold"]), int(report["earned"])]})
+	if int(report.get("washed", 0)) > 0:
+		lines.append({"who": "Laundromat", "text": "Clean and folded: ◆%d." % int(report["washed"])})
 	if int(report["grown"]) > 0:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report["grown"]), "" if int(report["grown"]) == 1 else "s"]})
 	if int(report.get("died", 0)) > 0:

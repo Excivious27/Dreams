@@ -107,7 +107,14 @@ func build() -> void:
 			continue
 		var c: Vector2i = b["cell"]
 		block_rect(c.x, c.y - int(b["h"]) + 1, int(b["w"]) + 1, int(b["h"]))
-		if str(b["thing"]) != "":
+		# Nothing grows under a building.
+		for fy in range(c.y - int(b["h"]) + 1, c.y + 1):
+			for fx2 in range(c.x, c.x + int(b["w"]) + 1):
+				(GameState.run["farm"] as Dictionary).erase("%d,%d" % [fx2, fy])
+		if str(b["thing"]) == "station":
+			for fx3 in range(c.x, c.x + int(b["w"]) + 1):
+				set_thing(fx3, c.y, {"type": "station", "station": id, "hint": "A: %s" % str(Builds.current_def(id).get("name", id))})
+		elif str(b["thing"]) != "":
 			set_thing(c.x, c.y, {"type": str(b["thing"]), "hint": "A: " + str(id)})
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
@@ -285,6 +292,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"crystal":
 			_talk_crystal()
 			return true
+		"station":
+			later(_station.bind(str(thing.get("station", ""))))
+			return true
 		"workbench":
 			_workbench()
 			return true
@@ -327,7 +337,7 @@ func _build_rec(id: String) -> Dictionary:
 	var td := Builds.current_def(id)
 	if td.is_empty():
 		return {}
-	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(bd.get("group", "props")), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", "")), "label": str(bd.get("label", id))}
+	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", "")), "label": str(bd.get("label", id))}
 	if bd.has("anim"):
 		rec["anim"] = str(bd["anim"])
 	return rec
@@ -345,60 +355,104 @@ func _tillable(c: Vector2i) -> bool:
 
 
 func _plans() -> void:
-	# The plans board: every building with its tier, what the next tier needs,
-	# and what's under construction. Permits come from the Town Hall.
-	var ids: Array = []
-	var opts: Array = []
-	for id: String in Builds.data():
-		var bt := Builds.built_tier(id)
-		var nd := Builds.next_def(id)
-		var uc := Builds.under_construction(id)
-		var label := str(Builds.data()[id]["label"])
-		if not uc.is_empty():
-			opts.append("⌛ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), int(uc["done_day"]) - int(GameState.run["day"]), "" if int(uc["done_day"]) - int(GameState.run["day"]) == 1 else "s"])
-			ids.append("")
-			continue
-		if nd.is_empty():
-			opts.append("✓ %s (%s, max)" % [label, str(Builds.current_def(id).get("name", ""))])
-			ids.append("")
-			continue
-		var parts: Array = []
-		for need in nd.get("cost", {}):
-			parts.append("%d %s" % [int(nd["cost"][need]), GameState.item_name(str(need))])
-		var why := Builds.blocker(id)
-		var tag := ""
-		if why == "permit":
-			tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
-		elif why != "" and not why.begins_with("need"):
-			tag = "  [%s]" % why
-		opts.append("%s%s%s: %s  [%s]%s%s" % ["" if why == "" else "✗ ", "Upgrade " if bt > 0 else "", str(nd["name"]), str(nd.get("desc", "")), ", ".join(parts), "  ⌛%dd" % int(nd.get("days", 0)) if int(nd.get("days", 0)) > 0 else "", tag])
-		ids.append(id)
-	opts.append("Leave")
+	# The plans board. Everything on the farm is made from materials or bought
+	# ready-made, tier by tier; each tier has its own gate (story, skill, friend).
+	const CATS := [["farm", "Farm buildings"], ["workshop", "Workshop stations"], ["pantry", "Kitchen & cellar"], ["projects", "Big projects (vehicles, rocket)"], ["operation", "The operation"]]
 	var d := Dialogue.instance(get_tree())
-	d.say([{"who": "Plans", "text": "Build or upgrade? Bigger buildings need a permit from Alder and take Hazel's crew a few days.", "choice": opts, "key": ""}])
-	await d.finished
-	var i := d.last_choice
-	if i < 0 or i >= ids.size() or str(ids[i]) == "":
+	while true:
+		var copts: Array = []
+		var cids: Array = []
+		for pair in CATS:
+			var n := 0
+			var have := 0
+			for id: String in Builds.data():
+				if str(Builds.data()[id].get("cat", "farm")) == str(pair[0]):
+					n += 1
+					have += 1 if Builds.is_built(id) else 0
+			if n > 0:
+				copts.append("%s  (%d of %d built)" % [str(pair[1]), have, n])
+				cids.append(str(pair[0]))
+		copts.append("Leave")
+		d.say([{"who": "Plans", "text": "Build it from materials, or buy it ready-made. Each tier opens as your story, skills and friendships grow.", "choice": copts, "key": ""}])
+		await d.finished
+		if d.last_choice < 0 or d.last_choice >= cids.size():
+			return
+		var cat := str(cids[d.last_choice])
+		var ids: Array = []
+		var opts: Array = []
+		for id: String in Builds.data():
+			if str(Builds.data()[id].get("cat", "farm")) != cat:
+				continue
+			var bt := Builds.built_tier(id)
+			var nd := Builds.next_def(id)
+			var uc := Builds.under_construction(id)
+			var label := str(Builds.data()[id]["label"])
+			if not uc.is_empty():
+				var dl := int(uc["done_day"]) - int(GameState.run["day"])
+				opts.append("⌛ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
+				ids.append("")
+				continue
+			if nd.is_empty():
+				opts.append("✓ %s (%s, max)" % [label, str(Builds.current_def(id).get("name", ""))])
+				ids.append("")
+				continue
+			var g := Builds.gate(id)
+			var why := Builds.blocker(id)
+			var mark := "" if why == "" else ("🔒 " if g != "" else "✗ ")
+			var tag := ""
+			if g == "permit":
+				tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
+			elif g != "":
+				tag = "  [%s]" % g
+			opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
+			ids.append(id)
+		opts.append("← Back")
+		d.say([{"who": "Plans", "text": "🔒 = not open yet · ✗ = missing materials (you can still buy it)", "choice": opts, "key": ""}])
+		await d.finished
+		var i := d.last_choice
+		if i < 0 or i >= ids.size() or str(ids[i]) == "":
+			continue
+		var id := str(ids[i])
+		var nd2 := Builds.next_def(id)
+		var parts: Array = []
+		for need in nd2.get("cost", {}):
+			parts.append("%d/%d %s" % [mini(GameState.count(str(need)), int(nd2["cost"][need])), int(nd2["cost"][need]), GameState.item_name(str(need))])
+		var g2 := Builds.gate(id)
+		var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
+		if int(nd2.get("days", 0)) > 0:
+			text += "\nTakes %d day%s." % [int(nd2["days"]), "" if int(nd2["days"]) == 1 else "s"]
+		var ch: Array = []
+		var acts: Array = []
+		if g2 != "":
+			text += "\nNot yet: %s." % ("buy the permit from Alder (◆%d)" % Builds.permit_price(id) if g2 == "permit" else g2)
+		else:
+			ch.append("Build from materials  [%s]" % ", ".join(parts))
+			acts.append("build")
+			if Builds.price(id) > 0:
+				ch.append("Buy ready-made from %s  [◆%d]" % [str(Builds.data()[id].get("seller", "Hazel")), Builds.price(id)])
+				acts.append("buy")
+		ch.append("← Back")
+		d.say([{"who": "Plans", "text": text, "choice": ch, "key": ""}])
+		await d.finished
+		if d.last_choice < 0 or d.last_choice >= acts.size():
+			continue
+		var buy := str(acts[d.last_choice]) == "buy"
+		if Net.online() and not Net.is_host():
+			# On someone else's farm the host decides (and pays).
+			net_act({"a": "build", "id": id})
+			hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
+			return
+		var msg := Builds.start(id, buy)
+		var ok := not msg.begins_with("Can't")
+		hud.toast(msg, Color(1, 0.9, 0.4) if ok else Color(1, 0.7, 0.7))
+		if not ok:
+			continue
+		GameState.save()
+		# Simplest reliable refresh: reload the scene in place.
+		GameMap.next_spawn = player.position - offset()
+		GameMap.next_facing = player.facing
+		get_tree().reload_current_scene()
 		return
-	var id := str(ids[i])
-	if Net.online() and not Net.is_host():
-		# On someone else's farm the host decides (and pays).
-		net_act({"a": "build", "id": id})
-		hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
-		return
-	var msg := Builds.start(id)
-	var ok := not msg.begins_with("Can't")
-	hud.toast(msg, Color(1, 0.9, 0.4) if ok else Color(1, 0.7, 0.7))
-	if not ok:
-		return
-	var nd2 := Builds.current_def(id)
-	if not nd2.is_empty():
-		fx("levelup", cell_center(Vector2i(int(Builds.data()[id]["cell"][0]), int(Builds.data()[id]["cell"][1]))) + Vector2(0, -10), 10.0, 0.8)
-	GameState.save()
-	# Simplest reliable refresh: reload the scene in place.
-	GameMap.next_spawn = player.position - offset()
-	GameMap.next_facing = player.facing
-	get_tree().reload_current_scene()
 
 
 func _farm_tile(c: Vector2i, sel: String) -> bool:
@@ -559,7 +613,7 @@ func _check_first_harvest() -> void:
 func _sellbox(sel: String) -> void:
 	var box: Dictionary = GameState.run["sellbox"]
 	var stype := str(GameState.items.get(sel, {}).get("type", ""))
-	if sel != "" and GameState.count(sel) > 0 and stype == "key":
+	if sel != "" and GameState.count(sel) > 0 and stype in ["key", "vehicle"]:
 		hud.toast("You can't sell the %s. It matters." % GameState.item_name(sel), Color(1, 0.85, 0.6))
 		return
 	if sel != "" and GameState.count(sel) > 0 and stype != "tool":
@@ -637,12 +691,68 @@ func _talk_crystal() -> void:
 
 # ---- crafting ----------------------------------------------------------------
 
+func _station(id: String) -> void:
+	match id:
+		"launchpad":
+			await _launchpad()
+		"laundromat":
+			await Racket.laundromat(self)
+		"training":
+			await Racket.training(self)
+		_:
+			await Crafting.run(self, id)
+
+
+## The rocket yard: build parts here; from tier 3 it flies.
+func _launchpad() -> void:
+	var t := Builds.built_tier("launchpad")
+	var opts: Array = ["Build rocket parts"]
+	var dests: Array = []
+	if t >= 3:
+		opts.append("Launch: the moon (1 fuel cell)")
+		dests.append("moon")
+	if t >= 4:
+		opts.append("Launch: the star station (1 fuel cell)")
+		dests.append("station")
+	opts.append("Leave")
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": str(Builds.current_def("launchpad").get("name", "Rocket Yard")), "text": "The scaffold creaks in the wind." if t < 3 else "She's fuelled and pointed up.", "choice": opts, "key": ""}])
+	await d.finished
+	var i := d.last_choice
+	if i == 0:
+		await Crafting.run(self, "launchpad")
+		return
+	if i < 1 or i > dests.size():
+		return
+	var dest := str(dests[i - 1])
+	# The rocket needs a beacon to land by: you have to have stood there once.
+	var seen: bool = GameState.run["flags"].has("moon_seen") or GameState.run["flags"].has("moon_unlocked")
+	if dest == "station":
+		seen = GameState.run["flags"].has("station_seen") or GameState.quest_done("teleporter")
+	if not seen:
+		hud.toast("No landing beacon there yet. Reach it on foot once, and the rocket can follow.", Color(1, 0.85, 0.6))
+		return
+	if GameState.count("fuel_cell") < 1:
+		hud.toast("The tank is dry. Build a Fuel Cell at the scaffold.", Color(1, 0.7, 0.7))
+		return
+	GameState.add_item("fuel_cell", -1)
+	GameState.run["flags"]["rocket_flown"] = true
+	Music.instance(get_tree()).sfx("levelup")
+	shake(4.0)
+	var c := Vector2i(int(Builds.data()["launchpad"]["cell"][0]), int(Builds.data()["launchpad"]["cell"][1]))
+	fx("poof", cell_center(c) + Vector2(8, 0), 16.0, 1.0)
+	if dest == "moon":
+		go_to("moon", Vector2(12 * TILE, 18 * TILE), "down")
+	else:
+		go_to("station", Vector2(4 * TILE, 12 * TILE + 8), "right")
+
+
 func _workbench() -> void:
 	await Crafting.run(self, "workbench", "Workbench")
 
 
 func _furnace() -> void:
-	await Crafting.run(self, "smith", "Furnace")
+	await Crafting.run(self, "furnace")
 	var fc := Vector2i(int(Builds.data()["furnace"]["cell"][0]), int(Builds.data()["furnace"]["cell"][1]))
 	if props.has(fc) and Art.tex("props", "furnace2_on"):
 		(props[fc] as Sprite2D).texture = Art.tex("props", "furnace2_on")
@@ -938,8 +1048,11 @@ func draw_map() -> void:
 				# Prompts-09 crops: one sprite per stage (seed, sprout, young, growing, mature, ready).
 				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(5, int(frac * 6.0)) if frac < 1.0 else 5]
 				var tex := Art.tex("crops", "%s_%s" % [art, st])
-				var w2 := tex.get_width() / 2.0
-				var h2 := tex.get_height() / 2.0
+				# Sized by the ripe plant so a full bed reads as rows, not a hedge.
+				var rt := Art.tex("crops", art + "_ready")
+				var ks := minf(0.5, 30.0 / float(maxi(1, rt.get_width() if rt else tex.get_width())))
+				var w2 := tex.get_width() * ks
+				var h2 := tex.get_height() * ks
 				draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false)
 			elif t:
 				var info := Art.info("crops", art)
@@ -978,10 +1091,22 @@ func _place_props() -> void:
 		# Tiered station animations (Prompts 09 w177): the station's look follows the
 		# crafting tier you've unlocked there.
 		var station_anim := ""
+		if str(b["group"]) == "stations":
+			station_anim = str(b["sprite"])  # the look follows the tier you built
+		elif str(b["thing"]) == "station" and not Art.has(str(b["group"]), str(b["sprite"])):
+			# No painting yet: a stack of crates with the tier's name on it.
+			prop("props", "crates2_b" if Art.has("props", "crates2_b") else "crates_a", c, int(b["w"]))
+			var tag := Label.new()
+			tag.text = str(Builds.current_def(id).get("name", id))
+			tag.add_theme_font_size_override("font_size", 5)
+			tag.add_theme_color_override("font_color", Color(1, 0.95, 0.7))
+			tag.add_theme_color_override("font_outline_color", Color(0.1, 0.08, 0.05))
+			tag.add_theme_constant_override("outline_size", 3)
+			tag.position = cell_center(c) + Vector2(-20, -30)
+			tag.z_index = 5
+			add_child(tag)
+			continue
 		match id:
-			"workbench": station_anim = "bench_%d" % clampi(Crafting.tier_unlocked("workbench"), 1, 4)
-			"furnace": station_anim = "forge_%d" % clampi(Crafting.tier_unlocked("smith"), 1, 4)
-			"keg": station_anim = "cider_press"
 			"beehive": station_anim = "honey_extractor"
 		if station_anim != "" and Art.has("stations", station_anim):
 			var st := AnimatedSprite2D.new()

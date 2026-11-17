@@ -53,6 +53,42 @@ var _hair: Sprite2D
 var _hat: Sprite2D
 
 
+# ---- vehicles (built at the Vehicle Workshop) -----------------------------------
+var vehicle := ""
+var _veh: Sprite2D
+
+
+func vehicle_def() -> Dictionary:
+	return GameState.items.get(vehicle, {}) if vehicle != "" else {}
+
+
+func ride(id: String) -> void:
+	if mounted:
+		dismount()
+	vehicle = id
+	GameState.run["flags"]["vehicle"] = id
+	if _veh == null:
+		_veh = Sprite2D.new()
+		_veh.show_behind_parent = true
+		_veh.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		add_child(_veh)
+	var spr := str(vehicle_def().get("sprite", "farm_cart"))
+	var tex := Art.tex("props", spr if Art.has("props", spr) else "farm_cart")
+	_veh.texture = tex
+	_veh.visible = tex != null
+	if tex:
+		var sc := minf(0.5, 30.0 / float(tex.get_width()))
+		_veh.scale = Vector2(sc, sc)
+		_veh.position = Vector2(0, -tex.get_height() * sc * 0.5 + 3)
+
+
+func unride() -> void:
+	vehicle = ""
+	GameState.run["flags"].erase("vehicle")
+	if _veh:
+		_veh.visible = false
+
+
 func mount() -> void:
 	if not has_anim("ride"):
 		if map:
@@ -265,6 +301,11 @@ func set_character(id: String) -> void:
 	_busy = false
 	anim_name = ""
 	mounted = GameState.run.get("flags", {}).has("mounted") and has_anim("ride")
+	var vid := str(GameState.run.get("flags", {}).get("vehicle", ""))
+	if vid != "" and GameState.count(vid) > 0 and map and map.has_sky:
+		ride(vid)
+	elif vehicle != "":
+		unride()
 	_show_idle()
 
 
@@ -568,7 +609,17 @@ func _physics_process(delta: float) -> void:
 		spd_mult *= 0.9
 	if int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
 		spd_mult *= 0.75  # running on empty
-	if swimming:
+	var vd := vehicle_def()
+	if _veh and vehicle != "":
+		_veh.flip_h = facing == "left"
+	if swimming and float(vd.get("water", 0.0)) > 0.0:
+		spd_mult *= float(vd["water"])  # rowing: quick, dry, no effort
+		running = false
+	elif swimming:
+		if vehicle != "":
+			unride()  # wheels don't float
+			if map:
+				map.hud.toast("You hop off at the water's edge.")
 		spd_mult *= 1.0 if Companion.has_ability("tail") else 0.55
 		running = false
 		_swim_t += delta
@@ -578,6 +629,11 @@ func _physics_process(delta: float) -> void:
 				map.player_down("tired")
 	elif mounted:
 		spd_mult *= 1.8 if running else 1.5
+	elif vehicle != "":
+		var vs := float(vd.get("speed", 1.0))
+		if vd.has("snow") and (GameState.season() == "winter" or (map and map.scene_id() in ["mountain", "sky", "highlands"])):
+			vs = float(vd["snow"])
+		spd_mult *= vs
 	spd_mult *= GameState.status_speed()
 	spd_mult *= 1.0 + 0.05 * mini(2, Crew.perk_level("run_speed"))
 	var target := dir * (RUN_SPEED if running else WALK_SPEED) * spd_mult
@@ -605,7 +661,7 @@ func _physics_process(delta: float) -> void:
 	var move_dir := dir if dir != Vector2.ZERO else velocity.normalized()
 	var is_run := speed > WALK_SPEED * 1.15
 	var pre := ""
-	if swimming and has_anim("swim"):
+	if swimming and has_anim("swim") and float(vehicle_def().get("water", 0.0)) <= 0.0:
 		pre = "swim"
 	elif mounted and has_anim("ride"):
 		pre = "ride"
@@ -679,6 +735,13 @@ func do_action(mode := "a") -> void:
 		if map and map.try_interact(facing_cell()):
 			return
 		dismount()
+		return
+	if vehicle != "" and mode != "action":
+		if map and map.try_interact(facing_cell()):
+			return
+		unride()
+		if map:
+			map.hud.toast("You hop off.")
 		return
 	var held := GameState.held_tool()
 	if mode == "tool" and held in ["sword", ""]:

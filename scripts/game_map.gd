@@ -172,6 +172,14 @@ func _ready() -> void:
 	hud.fade_in(0.5)
 	after_ready()
 	Story.restore_spawns(self)
+	# Where you arrived here on foot: the balloon can bring you back to it.
+	if has_sky and scene_id() not in ["house", "interior", "mine", "moon", "station", "sky", "title", "test_map"]:
+		var vis: Dictionary = GameState.run.get("visited", {})
+		if not vis.has(scene_id()):
+			var at := player.position - offset()
+			vis[scene_id()] = [at.x, at.y]
+			GameState.run["visited"] = vis
+	Racket.on_enter(self)
 	_fill_extension()
 	_place_signposts()
 	_place_waiting_horse()
@@ -256,6 +264,8 @@ func is_water_cell(c: Vector2i) -> bool:
 func can_swim_cell(c: Vector2i) -> bool:
 	if not is_water_cell(c) or player == null or player.mounted:
 		return false
+	if float(player.vehicle_def().get("water", 0.0)) > 0.0:
+		return true  # a boat goes where a swimmer can't
 	if not swim_ok:
 		return false
 	if GameState.has_perk("fishing", "Swimmer") or Companion.has_ability("tail"):
@@ -1166,11 +1176,83 @@ func shake(amount: float) -> void:
 
 
 ## Floating damage number.
+## Ride, row or fly what you built at the Vehicle Workshop.
+func _use_vehicle(id: String, it: Dictionary) -> bool:
+	if not has_sky:
+		hud.toast("Not indoors.")
+		return true
+	if bool(it.get("fly", false)):
+		later(_balloon)
+		return true
+	if player.vehicle == id:
+		player.unride()
+		hud.toast("You hop off.")
+		return true
+	if player.swimming and float(it.get("water", 0.0)) <= 0.0:
+		hud.toast("Not in the water.")
+		return true
+	player.ride(id)
+	Music.instance(get_tree()).sfx("pickup")
+	hud.toast("%s: USE to hop off." % GameState.item_name(id), Color(0.9, 0.95, 1.0))
+	return true
+
+
+## The balloon drifts to anywhere you've arrived on foot before.
+func _balloon() -> void:
+	var seen: Dictionary = GameState.run.get("visited", {})
+	var ids: Array = []
+	var opts: Array = []
+	for k in seen:
+		if str(k) != scene_id() and ResourceLoader.exists("res://scenes/%s.tscn" % str(k)):
+			ids.append(str(k))
+			opts.append(str(k).capitalize().replace("_", " "))
+	if ids.is_empty():
+		hud.toast("Nowhere to drift to yet. Walk somewhere first.")
+		return
+	if not enemies.is_empty():
+		for e in enemies:
+			if is_instance_valid(e) and e.position.distance_to(player.position) < 90.0:
+				hud.toast("Not with trouble this close.")
+				return
+	opts.append("Stay")
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "Balloon", "text": "The burner roars. Where to?", "choice": opts, "key": ""}])
+	await d.finished
+	if d.last_choice < 0 or d.last_choice >= ids.size():
+		return
+	var sp: Array = seen[ids[d.last_choice]]
+	go_to(str(ids[d.last_choice]), Vector2(float(sp[0]), float(sp[1])), "down")
+
+
 ## Eat/drink what you hold (any map). Returns true if something was consumed.
 func use_consumable(sel: String) -> bool:
 	if sel == "" or GameState.count(sel) <= 0:
 		return false
 	var it: Dictionary = GameState.items.get(sel, {})
+	if str(it.get("type", "")) == "vehicle":
+		return _use_vehicle(sel, it)
+	match str(it.get("effect", "")):
+		"counterfeit":
+			return Racket.pass_bills(self, sel)
+		"forged_permit":
+			return Racket.forged_permit(self, sel)
+		"growth":
+			var grew := 0
+			for k in GameState.run["farm"]:
+				var tl: Dictionary = GameState.run["farm"][k]
+				var cid := str(tl.get("crop", ""))
+				if cid != "" and GameState.crops.has(cid) and int(tl.get("days", 0)) < int(GameState.crops[cid]["days"]):
+					tl["days"] = int(tl.get("days", 0)) + 1
+					grew += 1
+			if grew == 0:
+				hud.toast("Nothing is growing on your farm right now.")
+				return true
+			GameState.add_item(sel, -1)
+			player.play_tool("hold")
+			fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.8)
+			hud.toast("%d crop%s leap a day ahead." % [grew, "" if grew == 1 else "s"], Color(0.7, 1, 0.7))
+			queue_redraw()
+			return true
 	if str(it.get("effect", "")) == "seed_packet":
 		GameState.add_item(sel, -1)
 		var sd := GameState.random_season_seed()
@@ -1444,6 +1526,9 @@ func has_npc_at(_c: Vector2i) -> bool:
 
 # ---- time --------------------------------------------------------------------
 
+var _job_check := 0
+
+
 func _process(delta: float) -> void:
 	if hitstop > 0.0:
 		hitstop -= delta
@@ -1456,6 +1541,12 @@ func _process(delta: float) -> void:
 		var m := int(_time_acc)
 		_time_acc -= m
 		GameState.run["time"] = int(GameState.run["time"]) + m
+		# A station finished something: say so once, wherever you are.
+		_job_check += m
+		if _job_check >= 10:
+			_job_check = 0
+			for note in Crafting.newly_done():
+				hud.toast(str(note), Color(1, 0.9, 0.5))
 	var t := int(GameState.run["time"])
 	if t >= GameState.DAY_END and not _changing:
 		player_down("late")

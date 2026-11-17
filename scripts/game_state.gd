@@ -235,7 +235,7 @@ static func tree_block(thing: Dictionary) -> String:
 
 ## Any blade counts as "the sword" for tiers, swinging and Gideon's bench.
 static func is_sword(id: String) -> bool:
-	return id == "sword" or (id.ends_with("_sword") and items.has(id))
+	return id == "sword" or (id.ends_with("_sword") and items.has(id)) or bool(items.get(id, {}).get("weapon", false))
 
 
 static func tool_tier(kind: String) -> int:
@@ -882,7 +882,7 @@ static func friend_perk_at(npc: String, hearts: int) -> String:
 
 ## Friendship a gift earns: loved +20 (+bonus), liked +8, neutral +3, hated -8.
 ## Gifts: one per villager per day, and never tools, seeds, story keys or gear.
-const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit"]
+const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle"]
 
 
 static func can_gift(npc: String, item: String) -> bool:
@@ -1086,12 +1086,12 @@ static func add_hint(text: String) -> void:
 # ordinary side quests handed in to that villager.
 
 const BOARD_POOL := {
-	"maple": ["turnip", "strawberry", "corn", "honey", "apple", "wood"], "gideon": ["copper", "coal", "stone", "iron", "wood"],
+	"maple": ["turnip", "strawberry", "corn", "honey", "apple", "wood"], "gideon": ["copper", "coal", "stone", "iron", "nails", "gear", "plating"],
 	"wren": ["wild_herb", "mushroom", "slime_goo", "flower"], "finn": ["minnow", "bass", "trout", "bait"],
-	"hazel": ["wood", "hay", "potato", "egg", "milk"], "posy": ["flour", "egg", "honey", "strawberry"],
+	"hazel": ["wood", "hay", "plank", "egg", "milk", "beam"], "posy": ["flour", "egg", "honey", "butter", "jam"],
 	"bram": ["mushroom", "meat", "trout", "pumpkin"], "juniper": ["wild_herb", "honey", "flower"],
-	"rook": ["pelt", "bone", "meat", "wood"], "theo": ["old_coin", "book", "fossil"], "lumi": ["flower", "sunflower", "shell"],
-	"alder": ["stone", "wood", "pumpkin"], "sal": ["coffee", "bread", "minnow"], "benno": ["hay", "carrot", "apple"], "ivy": ["old_coin", "honey", "cake"],
+	"rook": ["pelt", "bone", "meat", "leather", "fine_leather"], "theo": ["old_coin", "book", "fossil"], "lumi": ["flower", "sunflower", "shell", "cloth", "linen", "fine_fabric"],
+	"alder": ["stone", "wood", "brick", "pumpkin", "tile"], "sal": ["coffee", "bread", "minnow"], "benno": ["hay", "carrot", "apple"], "ivy": ["old_coin", "honey", "cake"],
 }
 
 
@@ -1547,6 +1547,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
+	Racket.overnight(report)
 	if has_friend_perk("posy", 2):
 		add_item("bread", 1)
 	if int(run.get("bank", 0)) > 0 and has_friend_perk("ivy", 2):

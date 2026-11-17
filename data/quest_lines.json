@@ -997,5 +997,41 @@
    "That's it. That's the colour.",
    "Two remedies, for your pack. You'll need them more than you think."
   ]
+ },
+ "hazel_planks": {
+  "offer": [
+   "The footbridge is two bad boards from being a ford. Twenty planks. A sawhorse on your farm will do it: two logs a plank."
+  ],
+  "yes": "The Plans board by your house has the sawhorse. Build it or I'll sell you one.",
+  "no": "Then mind your step on the bridge.",
+  "wait": "Twenty planks. Sawn, not chewed.",
+  "done": [
+   "Straight and dry. You've a carpenter's eye.",
+   "Nails, for your own building. You'll want them: everything bigger than a bench eats nails."
+  ]
+ },
+ "gideon_gears": {
+  "offer": [
+   "The clock tower's stuck at ten past. Four gears. Not mine: yours. I want to see what your anvil can do."
+  ],
+  "yes": "A Smithy turns out gears. A field anvil won't. Build up.",
+  "no": "Then it stays ten past.",
+  "wait": "Four gears, off your own anvil.",
+  "done": [
+   "Teeth are even. Huh.",
+   "Horseshoes. Nail one over your door. The other's for when the first falls on your head."
+  ]
+ },
+ "lumi_linen": {
+  "offer": [
+   "I've run out of canvas and I refuse to paint on a door again. Six linen. Flax and a loom; it's practically meditation."
+  ],
+  "yes": "Spring flax. Two stalks a bolt.",
+  "no": "The door it is.",
+  "wait": "Six linen.",
+  "done": [
+   "Oh, the weave on these.",
+   "Paint. Colour something on your farm. It's very brown out there."
+  ]
  }
 }
