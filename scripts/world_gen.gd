@@ -81,7 +81,10 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 					Art.draw_tile(m, "tiles", "deco_0", at)
 				elif Art.has("nature", "grass_tuft_winter") and rng.randf() < 0.5:
 					Art.draw_prop(m, "nature", "grass_tuft_winter" if rng.randf() < 0.7 else "grass_tuft_frost", at + Vector2(8, 16))
-	weather_dressing(m, seed_v + 99, avoid)
+	# Placed once per map (this runs from _draw, which repeats on every redraw).
+	if not m.has_meta("wx_dressed"):
+		m.set_meta("wx_dressed", true)
+		weather_dressing(m, seed_v + 99, avoid)
 
 
 ## Weather on the ground (Prompts 09 wx sheet): puddles on wet days, snowdrifts

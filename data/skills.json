@@ -656,9 +656,7 @@
      "requires": [
       "critical_eye"
      ],
-     "effect": {
-      "damage": 1
-     }
+     "effect": {}
     },
     {
      "id": "warrior",
@@ -1033,7 +1031,7 @@
     {
      "id": "attune",
      "name": "Attunement",
-     "desc": "Mana trickles back 1 faster per rank (every 20 \u2192 15 \u2192 10 min)",
+     "desc": "Mana trickles back 1 faster per rank (every 20 → 15 → 10 min)",
      "ranks": 2,
      "tier": 0,
      "effect": {

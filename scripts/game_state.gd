@@ -52,7 +52,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"day": 1,
 		"time": DAY_START,
 		"energy": 100, "max_energy": 100,
-		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100,
+		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 6,
 		"skills": skills,
 		"flags": {},
 		"decisions": {},
@@ -93,7 +93,8 @@ static func _migrate() -> void:
 		run["look"]["outfit"] = "outfit_neon" if str(run.get("arc", "")) == "gangsters" else "outfit_farmer"
 	var defaults := {
 		"crystals": 20, "day": 1, "time": DAY_START, "energy": 100, "max_energy": 100,
-		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100, "skills": {}, "flags": {}, "decisions": {}, "friendship": {},
+		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 6, "skills": {}, "flags": {}, "decisions": {}, "friendship": {},
+		"gifted_today": {}, "equip": {"head": "", "body": "", "legs": "", "feet": "", "hands": "", "offhand": "", "back": "", "belt": "", "ring": "", "charm": ""},
 		"talked_today": {}, "inventory": {}, "tools": ["hoe", "can", "axe", "pickaxe", "sword", "rod"],
 		"selected": "", "farm": {}, "sellbox": {}, "quests": [], "scene": "farm", "mine_floor": 1,
 		"kills": 0, "intro_done": false,
@@ -108,7 +109,21 @@ static func _migrate() -> void:
 		elif not run["skills"][id].has("nodes"):
 			run["skills"][id]["nodes"] = {}
 	if not run.has("names") or not run.has("arc") or not run.has("playable"):
+		# Unreadable run: keep a copy in the save file instead of losing it.
+		SaveGame.set_value("run_unreadable", run)
 		run = {}
+		return
+	if not (run["names"] is Dictionary):
+		run["names"] = {}
+	for k in ["character", "town", "pet"]:
+		if not run["names"].has(k):
+			run["names"][k] = {"character": "Hero", "town": "Dreamhollow", "pet": "Pup"}[k]
+	if not (run["skills"] is Dictionary):
+		run["skills"] = {}
+	for id in skills_data.keys():
+		if not run["skills"].has(id):
+			run["skills"][id] = {"level": 1, "xp": 0, "nodes": {}}
+	_apply_max_stats()
 
 
 static func save() -> void:
@@ -322,8 +337,11 @@ static func buy_price(id: String) -> int:
 			if str(crops[cid].get("yield", "")) + "_seed" == id or cid + "_seed" == id:
 				var cs := str(crops[cid].get("season", "any"))
 				if cs != "any" and cs != season():
-					m *= 0.7  # off-season seed is cheap, and a gamble
-	return maxi(1, int(ceil(base * m)))
+					m *= 0.85  # off-season seed is a little cheaper, and a gamble
+	# Never cheaper than you could sell it back for (with every perk): shops are
+	# not a money machine.
+	var best_sell := base * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1)) * (1.0 + 0.05 * Crew.perk_level("sell_bonus")) * 1.1
+	return maxi(1, int(ceil(maxf(base * m, best_sell * 1.1))))
 
 
 static func count(id: String) -> int:
@@ -423,7 +441,7 @@ static func sword_damage() -> int:
 		best += 1
 	best += mini(2, Crew.perk_level("sword"))
 	if has_perk("combat", "Berserker") and int(run["hp"]) < int(run["max_hp"]) / 2:
-		best += 1
+		best += 2
 	return maxi(best, 1)
 
 
@@ -432,7 +450,10 @@ static func sword_damage() -> int:
 static func add_xp(skill: String, xp: int) -> bool:
 	var s: Dictionary = run["skills"].get(skill, {"level": 1, "xp": 0, "nodes": {}})
 	var mult := 1.15 if has_friend_perk("theo", 8) else (1.10 if has_friend_perk("theo", 4) else (1.05 if has_friend_perk("theo", 2) else 1.0))
-	s["xp"] = int(s["xp"]) + int(ceil(xp * mult))
+	# Carry the fraction so a +5% perk is +5%, not +50% on a 2-xp grant.
+	var exact := xp * mult + float(s.get("xp_frac", 0.0))
+	s["xp"] = int(s["xp"]) + int(exact)
+	s["xp_frac"] = exact - int(exact)
 	var leveled := false
 	while int(s["xp"]) >= xp_for_next(int(s["level"])):
 		s["xp"] = int(s["xp"]) - xp_for_next(int(s["level"]))
@@ -628,8 +649,9 @@ static func _apply_max_stats() -> void:
 	if int(run["max_hp"]) > 0 and int(run["hp"]) <= 10 and int(run.get("hp_scale", 6)) == 6:
 		run["hp"] = base_hp  # old 6-heart saves: refill on the new scale
 	run["hp_scale"] = 100
-	run["hp"] = mini(int(run["hp"]), base_hp)
-	run["mana"] = mini(int(run.get("mana", base_mana)), base_mana)
+	run["hp"] = mini(int(run["hp"]), int(run["max_hp"]))
+	run["mana"] = mini(int(run.get("mana", base_mana)), int(run["max_mana"]))
+	run["energy"] = mini(int(run.get("energy", base_en)), int(run["max_energy"]))
 
 
 ## Energy a tool use costs right now (tier and perks applied).
@@ -789,7 +811,7 @@ static func consume(id: String) -> Dictionary:
 		# {"buff": {"kind": "speed"|"luck"|"defense"|"warm", "minutes": 120, "amount": 1}}
 		var b: Dictionary = it["buff"]
 		run["buffs"] = run.get("buffs", {})
-		run["buffs"][str(b.get("kind", "luck"))] = {"until": int(run["time"]) + int(b.get("minutes", 120)), "amount": float(b.get("amount", 1))}
+		run["buffs"][str(b.get("kind", "luck"))] = {"until": now_abs() + int(b.get("minutes", 120)), "amount": float(b.get("amount", 1))}
 		out["buff"] = str(b.get("kind", "luck"))
 	return out
 
@@ -797,9 +819,14 @@ static func consume(id: String) -> Dictionary:
 ## Active buff amount (0 when none / expired).
 static func buff(kind: String) -> float:
 	var b: Dictionary = run.get("buffs", {}).get(kind, {})
-	if b.is_empty() or int(run["time"]) > int(b.get("until", 0)):
+	if b.is_empty() or now_abs() > int(b.get("until", 0)):
 		return 0.0
 	return float(b.get("amount", 0))
+
+
+## Minutes since the start of day 1: buffs and timers that cross midnight use this.
+static func now_abs() -> int:
+	return int(run.get("day", 1)) * 1440 + int(run.get("time", DAY_START))
 
 
 static func restore_energy(n: int) -> void:
@@ -975,6 +1002,10 @@ static func board_accept(job: Dictionary) -> void:
 	var text := "%s needs %d %s (board job)." % [str(npcs[who]["name"]), int(job["n"]), item_name(str(job["item"]))]
 	quests_data["side"].append({"id": id, "giver": who, "text": text, "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(job["crystals"]), "friend": [who, int(job["friend"])]}, "board": true})
 	add_quest(id, text)
+	# Keep the job itself: the board's list is replaced every day.
+	var acc: Dictionary = run.get("board_accepted", {})
+	acc[id] = job.duplicate()
+	run["board_accepted"] = acc
 
 
 ## Re-register accepted board jobs after a load (quests_data is rebuilt from file).
@@ -983,7 +1014,11 @@ static func board_restore() -> void:
 		var id := str(q["id"])
 		if id.begins_with("board_") and _quest_def(id).is_empty():
 			var b: Dictionary = run.get("board", {})
-			for job in b.get("jobs", []):
+			var jobs: Array = (b.get("jobs", []) as Array).duplicate()
+			var acc: Dictionary = run.get("board_accepted", {})
+			if acc.has(id):
+				jobs.push_front(acc[id])
+			for job in jobs:
 				if str(job["id"]) == id:
 					var who := str(job["npc"])
 					quests_data["side"].append({"id": id, "giver": who, "text": str(q["text"]), "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(job["crystals"]), "friend": [who, int(job["friend"])]}, "board": true})
@@ -1294,9 +1329,10 @@ static func clock_text() -> String:
 ## Advance to the next morning: crops grow, sell box pays, energy restores.
 static func sleep(passed_out := false) -> Dictionary:
 	status_clear()
+	_apply_max_stats()
 	var report := {"earned": 0, "sold": [], "grown": 0}
 	if bonus("bartering", "interest") > 0.0:
-		run["crystals"] = int(run["crystals"] * (1.0 + bonus("bartering", "interest")))
+		run["crystals"] = int(run["crystals"]) + mini(int(int(run["crystals"]) * bonus("bartering", "interest")), 50 + 50 * progress_tier())
 	var total := 0
 	run["sold_today"] = {}
 	for id in run["sellbox"].keys():
@@ -1315,28 +1351,40 @@ static func sleep(passed_out := false) -> Dictionary:
 	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
 	for key in run["farm"].keys():
 		var tile: Dictionary = run["farm"][key]
-		if tile.get("crop", "") != "":
-			if has_friend_perk("hazel", 8) and crops.has(str(tile["crop"])) and int(tile.get("days", 0)) >= int(crops[str(tile["crop"])]["days"]):
-				var yid := str(crops[str(tile["crop"])]["yield"])
-				run["sellbox"][yid] = int(run["sellbox"].get(yid, 0)) + 1
+		var crop_id := str(tile.get("crop", ""))
+		if crop_id != "" and not crops.has(crop_id):
+			tile["crop"] = ""  # a seed whose crop isn't defined: nothing to grow
+			crop_id = ""
+		if crop_id != "":
+			var cd: Dictionary = crops[crop_id]
+			var cs := str(cd.get("season", "any"))
+			var se := season()
+			# Winter kills anything that isn't a winter crop, watered or not,
+			# unless it's in the greenhouse (built).
+			if se == "winter" and cs != "winter" and cs != "any" and not Builds.is_built("greenhouse"):
 				tile["crop"] = ""
 				tile["days"] = 0
+				tile["acc"] = 0.0
+				tile["watered"] = false
+				report["died"] = int(report.get("died", 0)) + 1
+				continue
+			if has_friend_perk("hazel", 8) and int(tile.get("days", 0)) >= int(cd["days"]):
+				var yid := str(cd["yield"])
+				run["sellbox"][yid] = int(run["sellbox"].get(yid, 0)) + 1
+				if cd.has("regrow"):
+					tile["days"] = int(cd["days"]) - int(cd["regrow"])
+				else:
+					tile["crop"] = ""
+					tile["days"] = 0
+				tile["acc"] = 0.0
+				tile["watered"] = false
 				continue
 			if tile.get("watered", false) or is_wet() or hazel_waters:
 				# Growth: in its season a crop grows a full day; out of season half
-				# a day (it struggles); winter kills anything that isn't a winter crop
-				# unless it's in the greenhouse. Fertiliser and the farming tree speed it.
-				var cd: Dictionary = crops.get(str(tile["crop"]), {})
-				var cs := str(cd.get("season", "any"))
-				var se := season()
+				# a day (it struggles). Fertiliser and the farming tree speed it.
 				var rate := 1.0
-				if cs != "any" and cs != se:
+				if cs != "any" and cs != se and not Builds.is_built("greenhouse"):
 					rate = 0.5
-				if se == "winter" and cs != "winter" and cs != "any" and not Builds.is_built("greenhouse"):
-					tile["crop"] = ""
-					tile["days"] = 0
-					report["grown"] -= 1
-					continue
 				rate += bonus("farming", "growth")
 				if bool(tile.get("fert", false)):
 					rate += 0.5
@@ -1350,8 +1398,10 @@ static func sleep(passed_out := false) -> Dictionary:
 			tile["watered"] = false
 	if has_friend_perk("posy", 2):
 		add_item("bread", 1)
-	if int(run.get("bank", 0)) > 0:
-		run["bank"] = int(run["bank"] * (1.02 if has_friend_perk("ivy", 6) else 1.01))
+	if int(run.get("bank", 0)) > 0 and has_friend_perk("ivy", 2):
+		# Interest: 1% (2% with Ivy 6), capped so it's a nest egg, not a printer.
+		var rate := 0.02 if has_friend_perk("ivy", 6) else 0.01
+		run["bank"] = int(run["bank"]) + mini(int(round(int(run["bank"]) * rate)), 40 + 40 * progress_tier())
 	run["day"] = int(run["day"]) + 1
 	run["time"] = DAY_START
 	for nm in Builds.tick_overnight():

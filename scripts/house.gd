@@ -82,6 +82,8 @@ func _sleep() -> void:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report["sold"]), int(report["earned"])]})
 	if int(report["grown"]) > 0:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report["grown"]), "" if int(report["grown"]) == 1 else "s"]})
+	if int(report.get("died", 0)) > 0:
+		lines.append({"text": "The frost took %d crop%s. Only winter crops (or a greenhouse) survive the cold." % [int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
 	for nm in report.get("built", []):
 		lines.append({"who": "Hazel", "text": "Crew's done with the %s. Go have a look." % str(nm)})
 	for nm in report.get("gone", []):
