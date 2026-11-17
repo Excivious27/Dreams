@@ -162,7 +162,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"loot":
 			var key := "loot_%s_%d_%d" % [interior_id, c.x, c.y]
-			if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]) - int(thing.get("every", 1)):
+			if int(GameState.run["flags"].get(key, 0)) <= int(GameState.run["day"]) - int(thing.get("every", 1)):
 				GameState.run["flags"][key] = int(GameState.run["day"])
 				give(str(thing.get("item", "stone")), int(thing.get("n", 1)))
 			else:

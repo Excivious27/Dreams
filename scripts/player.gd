@@ -327,7 +327,7 @@ func _draw() -> void:
 	var thing: Dictionary = map.things.get(fc, {})
 	var fkey := "%d,%d" % [fc.x, fc.y]
 	var ftile: Dictionary = (GameState.run["farm"] as Dictionary).get(fkey, {})
-	var usable: bool = map.hint_for(fc, thing) != "" or (held == "hoe" and map.can_till(fc)) or (held == "can" and not ftile.is_empty() and not bool(ftile.get("watered", false))) or (held == "scythe" and str(thing.get("type", "")) in ["grass", "weeds", "plot"]) or (seed_held and not ftile.is_empty() and str(ftile.get("crop", "")) == "")
+	var usable: bool = map.hint_for(fc, thing) != "" or (held == "hoe" and map.can_till(fc)) or (held == "can" and not ftile.is_empty() and not bool(ftile.get("watered", false)) and not GameState.is_wet()) or (held == "scythe" and str(thing.get("type", "")) in ["grass", "weeds", "plot"]) or (seed_held and not ftile.is_empty() and str(ftile.get("crop", "")) == "") or (held == "" and sel == "fertilizer" and not ftile.is_empty() and not bool(ftile.get("fert", false)))
 	var col := Color(0.4, 1.0, 0.5, 0.55) if usable else Color(1.0, 0.45, 0.4, 0.4)
 	var r := Rect2(map.cell_pos(fc.x, fc.y) - position, Vector2(GameMap.TILE, GameMap.TILE))
 	draw_rect(r.grow(-1), col, false, 1.5)

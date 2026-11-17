@@ -375,8 +375,8 @@
    "take": true,
    "reward": {
     "item": [
-     "painting2_a",
-     1
+     "gift_pie",
+     2
     ],
     "friend": [
      "lumi",
@@ -812,7 +812,7 @@
    },
    "done_when": {
     "item": [
-     "glow_cap",
+     "glowcap",
      1
     ]
    },
@@ -1475,7 +1475,7 @@
    },
    "done_when": {
     "item": [
-     "glow_cap",
+     "glowcap",
      2
     ]
    },
@@ -1824,7 +1824,7 @@
    },
    "done_when": {
     "item": [
-     "shell",
+     "seashell",
      5
     ]
    },
@@ -2081,6 +2081,134 @@
     "xp": [
      "magic",
      60
+    ]
+   }
+  },
+  {
+   "id": "tam_lamb",
+   "giver": "tam",
+   "text": "Tam wants 10 fiber to bed the lambing pen.",
+   "when": {},
+   "done_when": {
+    "item": [
+     "fiber",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 120,
+    "friend": [
+     "tam",
+     15
+    ]
+   }
+  },
+  {
+   "id": "moss_glowcaps",
+   "giver": "old_moss",
+   "text": "Old Moss wants 3 glow caps from the forest after dark.",
+   "when": {},
+   "done_when": {
+    "item": [
+     "glowcap",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 200,
+    "item": [
+     "lamp_oil",
+     3
+    ],
+    "friend": [
+     "old_moss",
+     15
+    ]
+   }
+  },
+  {
+   "id": "granite_bones",
+   "giver": "granite",
+   "text": "Granite wants 10 bones out of the deep mine floors.",
+   "when": {},
+   "done_when": {
+    "item": [
+     "bone",
+     10
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 260,
+    "friend": [
+     "granite",
+     15
+    ]
+   }
+  },
+  {
+   "id": "ivy_coins",
+   "giver": "ivy",
+   "text": "Ivy wants 3 old coins to settle a question of dates.",
+   "when": {},
+   "done_when": {
+    "item": [
+     "old_coin",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "friend": [
+     "ivy",
+     15
+    ]
+   }
+  },
+  {
+   "id": "sel_fossil",
+   "giver": "sel",
+   "text": "Sel wants the fossil that isn't a fossil (mountain or quarry).",
+   "when": {},
+   "done_when": {
+    "item": [
+     "fossil",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 320,
+    "friend": [
+     "sel",
+     15
+    ],
+    "xp": [
+     "magic",
+     30
+    ]
+   }
+  },
+  {
+   "id": "orla_oil",
+   "giver": "orla",
+   "text": "Orla wants 3 lamp oil taken to Marlowe's lighthouse (give it to her; she'll send it).",
+   "when": {},
+   "done_when": {
+    "item": [
+     "lamp_oil",
+     3
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 140,
+    "friend": [
+     "orla",
+     15
     ]
    }
   }

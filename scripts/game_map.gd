@@ -346,6 +346,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			player.play_tool("hold")
 			return true
 		"horse":
+			if not player.has_anim("ride"):
+				player.mount()  # explains why, leaves the horse where it is
+				return true
 			things.erase(c)
 			if props.has(c):
 				(props[c] as Node).queue_free()
@@ -362,7 +365,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		"pet_animal":
 			var a: Variant = thing.get("animal", null)
 			if a != null and is_instance_valid(a):
-				var key := "pet_%s_%d" % [str(a.kind), int(GameState.run["day"])]
+				var key := "pet_%s_%d" % [str(a.name), int(GameState.run["day"])]
 				if GameState.run["flags"].has(key):
 					hud.toast("Already happy today.")
 				else:
@@ -370,6 +373,12 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 					emote(a, "heart", 1.4, -18.0)
 					hud.toast("%s loves that." % str(a.kind).split("_")[0].capitalize(), Color(1, 0.8, 0.9))
 					xp("farming", 2)
+					# A happy animal gives: eggs from hens, milk from cows and goats, wool from sheep.
+					var k := str(a.kind)
+					var prod := "egg" if k.begins_with("chicken") or k.begins_with("hen") or k.begins_with("duck") else ("milk" if k.begins_with("cow") or k.begins_with("goat") else ("sheep_wool" if k.begins_with("sheep") else ""))
+					if prod != "" and not bool(a.get("baby")):
+						var n := 1 + (1 if randf() < GameState.bonus("farming", "animal_yield") else 0)
+						pop_items(a.position, prod, n)
 			return true
 		"weeds":
 			# Weeds come out by hand (or any tool): fiber, Stardew-style.

@@ -692,16 +692,6 @@
    "tier": 1
   },
   {
-   "id": "iron_helm",
-   "name": "Iron Helm",
-   "need": {
-    "iron_bar": 2,
-    "leather": 1
-   },
-   "give": "iron_helm",
-   "tier": 2
-  },
-  {
    "id": "iron_chest",
    "name": "Iron Chest",
    "need": {

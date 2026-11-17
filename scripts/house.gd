@@ -22,6 +22,9 @@ func build() -> void:
 	music_track = "house"
 	set_thing(BED.x, BED.y, {"type": "bed", "hint": "A: sleep until morning"})
 	set_thing(BED.x + 1, BED.y, {"type": "bed", "hint": "A: sleep until morning"})
+	# The bed sprite covers two rows; its lower half answers A too.
+	set_thing(BED.x, BED.y + 1, {"type": "bed", "hint": "A: sleep until morning"})
+	set_thing(BED.x + 1, BED.y + 1, {"type": "bed", "hint": "A: sleep until morning"})
 	set_thing(CHEST.x, CHEST.y, {"type": "chest", "hint": "A: dresser (journal)"})
 	block_rect(1, 1, cols - 2, 1)  # back wall
 	set_thing(DOOR.x, DOOR.y, {"type": "door", "hint": "A: go outside"})

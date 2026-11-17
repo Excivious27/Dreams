@@ -127,12 +127,19 @@ static func run(m: GameMap, station: String, title := "") -> void:
 		if i < 0 or i >= list.size():
 			return
 		var rc: Dictionary = list[i]
+		var is_tool: bool = bool(rc.get("tool", false)) or GameState.items.get(str(rc["give"]), {}).get("type", "") == "tool"
+		if is_tool and GameState.has_tool(str(rc["give"])):
+			m.hud.toast("You already have the %s." % GameState.item_name(str(rc["give"])), Color(1, 0.8, 0.6))
+			continue
 		if not can_make(rc):
 			m.hud.toast("Missing ingredients.", Color(1, 0.7, 0.7))
 			continue
 		for id in rc["need"]:
 			GameState.add_item(str(id), -int(rc["need"][id]))
 		var mins := minutes_for(station, rc)
+		# Never longer than tonight: whatever you start is ready when you wake.
+		var day_end_abs := int(GameState.run["day"]) * 1440 + GameState.DAY_END
+		mins = clampi(mins, 5, maxi(5, day_end_abs - now_abs()))
 		GameState.run["jobs"] = GameState.run.get("jobs", {})
 		GameState.run["jobs"][station] = {"id": str(rc["id"]), "name": str(rc["name"]), "give": str(rc["give"]), "n": int(rc.get("n", 1)), "tier": int(rc.get("tier", 1)), "tool": bool(rc.get("tool", false)), "done_at": now_abs() + mins}
 		m.hud.toast("%s: ready in %s." % [str(rc["name"]), fmt_minutes(mins)], Color(1, 0.9, 0.4))

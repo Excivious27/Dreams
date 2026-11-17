@@ -125,6 +125,10 @@
   [
    "crab",
    0.05
+  ],
+  [
+   "sand",
+   0.35
   ]
  ],
  "mountain": [
@@ -147,6 +151,10 @@
   [
    "stamina_root",
    0.03
+  ],
+  [
+   "fossil",
+   0.05
   ]
  ],
  "crystal_meadow": [
@@ -169,6 +177,10 @@
   [
    "mana_berry",
    0.03
+  ],
+  [
+   "starflower",
+   0.12
   ]
  ],
  "moon": [
@@ -187,6 +199,14 @@
   [
    "stone",
    0.18
+  ],
+  [
+   "starflower",
+   0.25
+  ],
+  [
+   "paw_charm_shard",
+   0.03
   ]
  ],
  "jungle": [

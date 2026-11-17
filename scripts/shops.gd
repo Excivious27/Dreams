@@ -12,7 +12,7 @@ static func offers(shop: String) -> Array:
 			# Maple stocks this season's seeds (and next season's in the last week).
 			var by_season := {
 				"spring": ["turnip_seed", "potato_seed", "carrot_seed", "strawberry_seed"],
-				"summer": ["corn_seed", "tomato_seed", "rice_seed"],
+				"summer": ["corn_seed", "tomato_seed", "rice_seed", "sunflower_seed"],
 				"fall": ["pumpkin_seed", "cranberry_seed", "sugar_beet_seed"],
 				"winter": ["snow_pea_seed"],
 			}
@@ -26,7 +26,7 @@ static func offers(shop: String) -> Array:
 			var base: Array = by_season[se].duplicate()
 			if GameState.day_of_season() >= 22:
 				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
-			base += ["wheat_seed", "gift_pie"]
+			base += ["wheat_seed", "gift_pie", "paint"]
 			if GameState.has_perk("bartering", "Networker"):
 				base += rare[se] + ["dream_seed"]
 			return base

@@ -227,5 +227,15 @@
   "color": "88aa66",
   "top": "55aa33",
   "tier": 5
+ },
+ "sunflower": {
+  "name": "Sunflower",
+  "days": 7,
+  "stages": 4,
+  "yield": "sunflower",
+  "color": "6aa040",
+  "top": "f2c84b",
+  "season": "summer",
+  "tier": 1
  }
 }

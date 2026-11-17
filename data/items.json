@@ -3241,7 +3241,7 @@
  "sunflower": {
   "name": "Sunflower",
   "type": "flower",
-  "value": 12,
+  "value": 18,
   "rarity": "common",
   "tier": 1
  },
@@ -7310,5 +7310,12 @@
   "rarity": "epic",
   "tier": 3,
   "desc": "Glows blue-green in the dark. You grow a tail the moment you touch water."
+ },
+ "sand": {
+  "name": "Sand",
+  "type": "material",
+  "value": 2,
+  "rarity": "common",
+  "tier": 1
  }
 }

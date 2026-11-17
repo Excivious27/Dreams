@@ -30,7 +30,7 @@ const SPOTS := {
 	"school_yard": Vector2i(60, 74), "clinic_front": Vector2i(78, 41), "chapel_front": Vector2i(78, 65),
 	"lodge_front": Vector2i(79, 79), "orchard": Vector2i(78, 16), "river_n": Vector2i(66, 20), "river_s": Vector2i(66, 84),
 	"market": Vector2i(34, 26), "stable": Vector2i(32, 93), "gate_n": Vector2i(41, 6), "gate_s": Vector2i(41, 90),
-	"mansion_front": Vector2i(60, 26), "bridge": Vector2i(70, 52), "beach_road": Vector2i(41, 88),
+	"mansion_front": Vector2i(60, 26), "bridge": Vector2i(70, 48), "bank": Vector2i(26, 7), "beach_road": Vector2i(41, 88),
 	"bench_nw": Vector2i(32, 44), "bench_ne": Vector2i(48, 44), "bench_sw": Vector2i(32, 54), "bench_se": Vector2i(48, 54),
 	"clock": Vector2i(29, 36), "bandstand": Vector2i(10, 38),
 }
@@ -526,7 +526,44 @@ func _hedge_row(r: Rect2i) -> void:
 			prop("props", "hedge_short", c)
 
 
+## SPOTS as placed on today's map: a spot inside a building, in the river or on
+## a door (they stand in doorways otherwise) moves to the nearest open cell
+## at least two cells from any door.
+func _resolved_spots() -> Dictionary:
+	var doors: Array = []
+	for c in things.keys():
+		if str(things[c].get("type", "")) in ["door", "idoor", "exit"]:
+			doors.append(c)
+	var out := {}
+	for k in SPOTS:
+		var c0: Vector2i = SPOTS[k]
+		var best := c0
+		var found := false
+		for r in range(0, 7):
+			for dy in range(-r, r + 1):
+				for dx in range(-r, r + 1):
+					if found or maxi(absi(dx), absi(dy)) != r:
+						continue
+					var c := c0 + Vector2i(dx, dy)
+					if c.x < 1 or c.y < 1 or c.x >= cols - 1 or c.y >= rows - 1:
+						continue
+					if blocked.has(c) or things.has(c) or is_water_cell(c):
+						continue
+					var near_door := false
+					for dc: Vector2i in doors:
+						if absi(dc.x - c.x) + absi(dc.y - c.y) < 2:
+							near_door = true
+							break
+					if near_door:
+						continue
+					best = c
+					found = true
+		out[k] = best
+	return out
+
+
 func _place_people() -> void:
+	var spots := _resolved_spots()
 	for id in GameState.npcs:
 		var d: Dictionary = GameState.npcs[id]
 		if id == "sal" and GameState.is_penguins() and int(GameState.run["day"]) < 4:
@@ -536,9 +573,9 @@ func _place_people() -> void:
 		var n := Npc.new()
 		n.map = self
 		var spot := str(d.get("spot_name", "plaza"))
-		n.setup(id, d, cell_center(SPOTS.get(spot, SPOTS["plaza"])))
+		n.setup(id, d, cell_center(spots.get(spot, spots["plaza"])))
 		n.routine = d.get("routine", [])
-		n.spots = SPOTS
+		n.spots = spots
 		add_child(n)
 		npcs.append(n)
 

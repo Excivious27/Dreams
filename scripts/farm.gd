@@ -412,8 +412,23 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		queue_redraw()
 		return true
 	var crop := str(tile.get("crop", ""))
+	if sel == "fertilizer" and GameState.count(sel) > 0 and GameState.held_tool() == "":
+		if bool(tile.get("fert", false)):
+			hud.toast("Already fertilised.")
+			return true
+		tile["fert"] = true
+		GameState.add_item(sel, -1)
+		net_act({"a": "farm_tile", "key": key, "tile": tile})
+		player.play_tool("hold")
+		Music.instance(get_tree()).sfx("plant")
+		hud.toast("Fertilised: grows half again as fast.", Color(0.7, 1, 0.7))
+		queue_redraw()
+		return true
 	if crop == "":
 		var it: Dictionary = GameState.items.get(sel, {})
+		if it.get("type", "") == "seed" and GameState.count(sel) > 0 and not GameState.crops.has(str(it.get("crop", ""))):
+			hud.toast("%s won't take in this soil." % GameState.item_name(sel), Color(1, 0.8, 0.6))
+			return true
 		if it.get("type", "") == "seed" and GameState.count(sel) > 0:
 			if not GameState.spend_for("plant"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
@@ -428,7 +443,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			xp("farming", 2)
 			queue_redraw()
 			return true
-		if not bool(tile.get("watered", false)):
+		if not bool(tile.get("watered", false)) and not GameState.is_wet():
 			return _water(tile, key)
 		hud.toast("Hold seeds (MENU) to plant here.")
 		return true
@@ -438,8 +453,10 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		if randf() < GameState.bonus("farming", "double_harvest"):
 			n *= 2
 		give(str(cd["yield"]), n)
-		if randf() < GameState.bonus("farming", "seed_back") and GameState.items.has(crop + "_seed"):
-			give(crop + "_seed", 1)
+		if randf() < GameState.bonus("farming", "seed_back"):
+			var seed_id := _seed_for(crop)
+			if seed_id != "":
+				give(seed_id, 1)
 		player.play_tool("hold")
 		xp("farming", 4 + 2 * int(cd.get("tier", 1)))
 		if cd.has("regrow"):
@@ -449,15 +466,26 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		else:
 			tile["crop"] = ""
 			tile["days"] = 0
+			tile.erase("fert")
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 		_check_first_harvest()
 		queue_redraw()
 		return true
-	if not bool(tile.get("watered", false)):
+	if not bool(tile.get("watered", false)) and not GameState.is_wet():
 		return _water(tile, key)
 	var left := int(cd["days"]) - int(tile["days"])
-	hud.toast("%s%s: %d more day%s." % ["Already watered. " if GameState.held_tool() == "can" else "", cd["name"], left, "" if left == 1 else "s"])
+	hud.toast("%s%s: %d more day%s." % [("The rain has it. " if GameState.is_wet() else "Already watered. ") if GameState.held_tool() == "can" else "", cd["name"], left, "" if left == 1 else "s"])
 	return true
+
+
+func _seed_for(crop: String) -> String:
+	if GameState.items.has(crop + "_seed"):
+		return crop + "_seed"
+	for id in GameState.items:
+		var it: Dictionary = GameState.items[id]
+		if str(it.get("type", "")) == "seed" and str(it.get("crop", "")) == crop:
+			return str(id)
+	return ""
 
 
 func _water(tile: Dictionary, key := "") -> bool:
@@ -616,7 +644,7 @@ func _keg(sel: String) -> void:
 		else:
 			hud.toast("Fermenting... %d more day(s)." % (int(keg["ready"]) - day))
 		return
-	var out := {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic"}
+	var out := {"strawberry": "strawberry_wine", "corn": "corn_ale", "berry": "berry_juice", "dreamflower": "dream_tonic", "grape": "wine", "apple": "cider"}
 	if out.has(sel) and GameState.count(sel) > 0:
 		GameState.add_item(sel, -1)
 		GameState.run["flags"]["keg"] = {"out": out[sel], "ready": day + 3}
@@ -837,9 +865,12 @@ func draw_map() -> void:
 		var parts: PackedStringArray = str(key).split(",")
 		var c := Vector2i(int(parts[0]), int(parts[1]))
 		var tile: Dictionary = farm[key]
-		var wet := bool(tile.get("watered", false))
+		var wet := bool(tile.get("watered", false)) or GameState.is_wet()
 		if not Art.draw_tile(self, "tiles", "tilled_wet" if wet else "tilled_dry", Vector2(c * TILE), 4):
 			draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), Color("5c3d22") if wet else Color("8a5f38"))
+		if bool(tile.get("fert", false)):
+			for k in 3:
+				draw_rect(Rect2(Vector2(c * TILE) + Vector2(3 + 4 * k, 12 - (k % 2) * 7), Vector2(2, 2)), Color(0.95, 0.85, 0.5, 0.8))
 		if wet:
 			# Make watered soil read at phone size: a dark, slightly blue wash.
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.1, 0.15, 0.35, 0.32))

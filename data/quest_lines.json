@@ -878,5 +878,76 @@
    "...Mine was like that. Once.",
    "Studded collar. Iron. Don't let it rust."
   ]
+ },
+ "tam_lamb": {
+  "offer": [
+   "The lamb's coming any day. The pen wants fresh bedding: ten bundles of fiber. Weeds give it, if you pull them."
+  ],
+  "yes": "Good. She'll thank you. Sheep thank you by not dying.",
+  "no": "Then I'll pull weeds myself. Slowly.",
+  "wait": "Ten fiber. For the pen.",
+  "done": [
+   "That'll do her. Soft as anything.",
+   "Come by when she's born. You can name her. Not Dolly."
+  ]
+ },
+ "moss_glowcaps": {
+  "offer": [
+   "Three glow caps. Forest, after dark. They glow, so you can't miss them, so don't."
+  ],
+  "yes": "Mind the fog.",
+  "no": "The fog will wait. So will I.",
+  "wait": "Three. Glowing. After dark.",
+  "done": [
+   "Lovely. Here: lamp oil. Light it where the fog's thickest and watch it back off.",
+   "I made that for myself, once."
+  ]
+ },
+ "granite_bones": {
+  "offer": [
+   "Ten bones from the deep floors, where the keeper sleeps. I want them out of my quarry's reputation."
+  ],
+  "yes": "Bring them in a sack. Not your pockets.",
+  "no": "They'll keep. Bones do.",
+  "wait": "Ten bones. Deep floors.",
+  "done": [
+   "Good riddance. Rook can have them for arrowheads; I'll have my reputation back."
+  ]
+ },
+ "ivy_coins": {
+  "offer": [
+   "Three old coins, the ones from before the bell. They'd settle a question of dates."
+  ],
+  "yes": "Consider the 'please' said, personally.",
+  "no": "Professionally, I'm disappointed.",
+  "wait": "Three old coins.",
+  "done": [
+   "These settle it. The bell is older than the town hall says.",
+   "Don't tell Alder. Or do. I'd like to see his face."
+  ]
+ },
+ "sel_fossil": {
+  "offer": [
+   "There's a stone up the mountain, or in the quarry, with a record in it. Same hand as the ruin walls. I need it to finish the sentence."
+  ],
+  "yes": "It looks like a fossil. It isn't.",
+  "no": "The sentence can stay unfinished a little longer.",
+  "wait": "The stone with the record in it.",
+  "done": [
+   "...it is about your field. The sentence. I was right.",
+   "I'll read you the rest when I've worked out the grammar."
+  ]
+ },
+ "orla_oil": {
+  "offer": [
+   "Marlowe's lamp wants oil and he won't ask. Three lamp oil, from his own shop if you like; I'll send it over with the flour."
+  ],
+  "yes": "He'll pretend he didn't need it. Let him.",
+  "no": "Then he'll row in the dark. Stubborn man.",
+  "wait": "Three lamp oil, for the lighthouse.",
+  "done": [
+   "There. He'll have light tonight and never know who to thank.",
+   "Take this. Don't argue with my knees."
+  ]
  }
 }

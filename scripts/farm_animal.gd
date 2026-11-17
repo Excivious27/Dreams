@@ -19,6 +19,7 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	map = m
 	kind = k
 	baby = is_baby
+	name = "%s_%d_%d" % [k, c.x, c.y]  # stable: petting is once per animal per day
 	pen = p if p.size != Vector2i.ZERO else Rect2i(c.x - 1, c.y - 1, 3, 3)
 	var g := "animals/" + k
 	var anims := {"idle": "baby" if is_baby and Art.has(g, "baby") and not Art.has(g, "idle") else "idle"}
@@ -74,7 +75,9 @@ func _process(delta: float) -> void:
 			_wait = _rng.randf_range(1.0, 3.0)
 			_play("idle")
 	# Keep the interact thing under the animal.
-	var cell := Vector2i(int(position.x / GameMap.TILE), int(position.y / GameMap.TILE))
+	var cell := map.world_to_cell(position - Vector2(0, 2))
+	if map.things.has(cell) and map.things[cell].get("animal", null) != self:
+		return  # never sit on (or erase) a crop, rock or another animal's spot
 	for c: Vector2i in map.things.keys():
 		var t: Dictionary = map.things[c]
 		if t.get("animal", null) == self and c != cell:

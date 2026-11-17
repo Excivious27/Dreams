@@ -43,9 +43,14 @@ static func talk(m: GameMap, id: String) -> bool:
 	if n == 0:
 		return false
 	var v: Dictionary = data()[id]
-	var lines: Array = (v.get("milestones", {}) as Dictionary).get(str(n), [])
+	var lines: Array = ((v.get("milestones", {}) as Dictionary).get(str(n), []) as Array).duplicate(true)
 	if lines.is_empty():
 		return false
+	# Some lines are about the crystal and the penguins; the gangster arc has its own words.
+	if not GameState.is_penguins():
+		for l in lines:
+			if l.has("text_gangsters"):
+				l["text"] = l["text_gangsters"]
 	GameState.run["flags"][_flag(id, n)] = true
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
 	m.hud.toast("%s ♥%d" % [name, n], Color(1, 0.8, 0.9))
@@ -54,7 +59,10 @@ static func talk(m: GameMap, id: String) -> bool:
 		var q := str(v.get("quest6", ""))
 		if q != "" and not GameState.has_quest(q):
 			var d := GameState._quest_def(q)
-			if not d.is_empty():
+			# Respect the quest's own gates (arc, skill, earlier quest); if they
+			# aren't met yet, the villager offers it later through Quests.talk.
+			var arc_ok := not d.has("arc") or str(d["arc"]) == str(GameState.run.get("arc", ""))
+			if not d.is_empty() and arc_ok and GameState._cond_ok(d.get("when", {})):
 				GameState.add_quest(q, str(d.get("text", q)))
 				m.hud.toast("New quest: %s" % str(d.get("text", q)), Color(1, 0.9, 0.4))
 	if n == 10:

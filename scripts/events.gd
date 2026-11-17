@@ -80,7 +80,12 @@ static func play(m: GameMap, ev: Dictionary, actors: Array) -> void:
 		m.player.face_toward(first.position)
 		m.emote(first, "surprise", 1.0)
 		await m.get_tree().create_timer(0.6).timeout
-	await m.say(ev.get("lines", []))
+	var ls: Array = (ev.get("lines", []) as Array).duplicate(true)
+	if not GameState.is_penguins():
+		for l in ls:
+			if l.has("text_gangsters"):
+				l["text"] = l["text_gangsters"]
+	await m.say(ls)
 	var after: Dictionary = ev.get("after", {})
 	for id in after.get("friend", {}):
 		GameState.run["friendship"][str(id)] = int(GameState.run["friendship"].get(str(id), 0)) + int(after["friend"][id])
@@ -94,8 +99,11 @@ static func play(m: GameMap, ev: Dictionary, actors: Array) -> void:
 		if not qd.is_empty():
 			GameState.add_quest(str(after["quest"]), str(qd["text"]))
 	if after.has("hint"):
-		GameState.add_hint(str(after["hint"]))
-		m.hud.toast("Journal: " + str(after["hint"]), Color(0.9, 0.95, 1.0))
+		var hint := str(after["hint"])
+		if not GameState.is_penguins():
+			hint = hint.replace("Grumps", "thugs").replace("grumps", "thugs")
+		GameState.add_hint(hint)
+		m.hud.toast("Journal: " + hint, Color(0.9, 0.95, 1.0))
 	m.player.frozen = false
 	for n in actors:
 		(n as Npc)._apply_routine(true)

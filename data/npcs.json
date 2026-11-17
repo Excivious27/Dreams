@@ -190,7 +190,7 @@
    "mushroom",
    "glow_cap",
    "moon_shard",
-   "crystal"
+   "crystal_refined"
   ],
   "dislikes": [
    "fish",
@@ -269,7 +269,7 @@
   "dislikes": [
    "slime_goo",
    "bone",
-   "trash"
+   "junk"
   ],
   "perks": {
    "2": "Town records: see crop prices in the Journal",
@@ -400,7 +400,7 @@
   ],
   "dislikes": [
    "flower",
-   "perfume"
+   "flower"
   ],
   "perks": {
    "2": "Fish bite 10% sooner",
@@ -458,7 +458,7 @@
    "sunflower",
    "starflower",
    "paint",
-   "crystal"
+   "crystal_refined"
   ],
   "dislikes": [
    "bone",
@@ -522,10 +522,10 @@
   ],
   "likes": [
    "book",
-   "map",
+   "map_scrap",
    "old_coin",
    "fossil",
-   "crystal"
+   "crystal_refined"
   ],
   "dislikes": [
    "fish",
@@ -595,7 +595,7 @@
   ],
   "dislikes": [
    "gold_bar",
-   "perfume"
+   "flower"
   ],
   "perks": {
    "2": "Hazel sells seeds at her yard on market days",
@@ -920,7 +920,7 @@
   "likes": [
    "candy",
    "apple",
-   "frog",
+   "bait",
    "toy"
   ],
   "dislikes": [
@@ -985,8 +985,8 @@
   "likes": [
    "candy",
    "flower",
-   "frog",
-   "butterfly"
+   "bait",
+   "flower"
   ],
   "dislikes": [
    "bone"
@@ -1234,10 +1234,10 @@
    ]
   ],
   "likes": [
-   "carrots",
+   "carrot",
    "apple",
    "hay",
-   "horseshoe"
+   "iron_bar"
   ],
   "dislikes": [
    "fish"
@@ -1322,8 +1322,8 @@
   "likes": [
    "apple",
    "cheese",
-   "wool",
-   "sheep"
+   "sheep_wool",
+   "sheep_wool"
   ],
   "dislikes": [
    "pelt"
@@ -1350,14 +1350,14 @@
   "spot_name": "marsh",
   "routine": [],
   "likes": [
-   "frog",
+   "bait",
    "mushroom",
    "glow_cap",
    "tea"
   ],
   "dislikes": [
    "gold_bar",
-   "perfume"
+   "flower"
   ],
   "perks": {
    "2": "Moss shows safe paths (wisps don't hunt you)",
@@ -1441,7 +1441,7 @@
   "routine": [],
   "likes": [
    "fish",
-   "cat_treat",
+   "fish",
    "tuna"
   ],
   "dislikes": [
