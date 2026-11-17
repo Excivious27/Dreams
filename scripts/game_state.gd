@@ -131,7 +131,30 @@ static func _migrate() -> void:
 
 
 static func save() -> void:
-	SaveGame.set_value(SAVE_KEY, run)
+	SaveGame.set_value(SAVE_KEY, Net.save_view(run))
+
+
+## A guest's morning when the host's day rolls over: pay their own sell box,
+## refill, clear the day's talk/gift marks. (Farm growth is the host's job.)
+static func guest_morning() -> Dictionary:
+	status_clear()
+	_apply_max_stats()
+	var report := {"earned": 0}
+	var total := 0
+	run["sold_today"] = {}
+	for id in run["sellbox"].keys():
+		total += sell_price(id, int(run["sellbox"][id]))
+	run["sellbox"] = {}
+	run["sold_today"] = {}
+	run["crystals"] = int(run["crystals"]) + total
+	report["earned"] = total
+	run["energy"] = int(run["max_energy"])
+	run["hp"] = int(run["max_hp"])
+	run["mana"] = int(run.get("max_mana", 20))
+	run["talked_today"] = {}
+	run["gifted_today"] = {}
+	save()
+	return report
 
 
 static func names() -> Dictionary:

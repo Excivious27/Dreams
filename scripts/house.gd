@@ -77,6 +77,8 @@ func _sleep() -> void:
 	player.frozen = true
 	await hud.fade_out(0.8)
 	var report := GameState.sleep()
+	if Net.online():
+		Net.i().clear_beds()
 	var lines: Array = [{"text": "Day %d." % int(GameState.run["day"])}]
 	if int(report["earned"]) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report["sold"]), int(report["earned"])]})

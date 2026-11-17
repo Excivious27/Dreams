@@ -133,6 +133,10 @@ static func buy_permit(id: String) -> String:
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
 	GameState.run["permits"] = GameState.run.get("permits", {})
 	GameState.run["permits"][id] = int(nd["tier"])
+	if Net.online() and not Net.is_host():
+		var m := Engine.get_main_loop() as SceneTree
+		if m and m.current_scene is GameMap:
+			(m.current_scene as GameMap).net_act({"a": "permit", "id": id, "tier": int(nd["tier"])})
 	return "Permit stamped: %s (◆%d)." % [str(nd["name"]), price]
 
 

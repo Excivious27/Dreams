@@ -374,8 +374,12 @@ func _plans() -> void:
 	if i < 0 or i >= ids.size() or str(ids[i]) == "":
 		return
 	var id := str(ids[i])
+	if Net.online() and not Net.is_host():
+		# On someone else's farm the host decides (and pays).
+		net_act({"a": "build", "id": id})
+		hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
+		return
 	var msg := Builds.start(id)
-	net_act({"a": "build", "id": id})
 	var ok := not msg.begins_with("Can't")
 	hud.toast(msg, Color(1, 0.9, 0.4) if ok else Color(1, 0.7, 0.7))
 	if not ok:
@@ -425,7 +429,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			queue_redraw()
 			return true
 		if not bool(tile.get("watered", false)):
-			return _water(tile)
+			return _water(tile, key)
 		hud.toast("Hold seeds (MENU) to plant here.")
 		return true
 	var cd: Dictionary = GameState.crops[crop]
@@ -450,13 +454,13 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		queue_redraw()
 		return true
 	if not bool(tile.get("watered", false)):
-		return _water(tile)
+		return _water(tile, key)
 	var left := int(cd["days"]) - int(tile["days"])
 	hud.toast("%s%s: %d more day%s." % ["Already watered. " if GameState.held_tool() == "can" else "", cd["name"], left, "" if left == 1 else "s"])
 	return true
 
 
-func _water(tile: Dictionary) -> bool:
+func _water(tile: Dictionary, key := "") -> bool:
 	if GameState.held_tool() != "can":
 		if GameState.has_tool("can") and str(GameState.run["selected"]) == "":
 			hud.toast("Hold the watering can.")
@@ -465,10 +469,8 @@ func _water(tile: Dictionary) -> bool:
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return true
 	tile["watered"] = true
-	for k in GameState.run["farm"]:
-		if GameState.run["farm"][k] == tile:
-			net_act({"a": "farm_tile", "key": str(k), "tile": tile})
-			break
+	if key != "":
+		net_act({"a": "farm_tile", "key": key, "tile": tile})
 	player.play_tool("water")
 	Music.instance(get_tree()).sfx("water")
 	queue_redraw()

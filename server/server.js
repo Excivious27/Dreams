@@ -26,15 +26,34 @@ console.log("dreams relay on", PORT);
 wss.on("connection", (ws) => {
   ws.id = nextId++; ws.room = null; ws.info = {}; ws.isAlive = true; ws.budget = 120;
   ws.on("pong", () => { ws.isAlive = true; });
+  ws.on("error", () => {});  // a malformed frame must not take the relay down
   ws.on("message", (buf) => {
     if (buf.length > 65536) return;                 // nothing in the protocol is this big
     if (--ws.budget < 0) return;                     // flood guard: ~120 msgs/s (refilled below)
     let m; try { m = JSON.parse(buf.toString()); } catch { return; }
+    if (!m || typeof m !== "object") return;
     if (m.t === "join") {
-      let r = m.room ? String(m.room).toUpperCase() : "";
-      if (!r || !rooms.has(r)) { r = r && !rooms.has(r) && m.create !== false ? r : code(); rooms.set(r, { host: ws.id, peers: new Map(), world: null, emptySince: 0 }); }
+      let r = m.room ? String(m.room).toUpperCase().slice(0, 8) : "";
+      if (r && !rooms.has(r) && m.create === false) return send(ws, { t: "no_room" });
+      if (!r || !rooms.has(r)) { r = r && !rooms.has(r) ? r : code(); rooms.set(r, { host: ws.id, hostToken: String(m.token || ""), peers: new Map(), world: null, emptySince: 0 }); }
       const room = rooms.get(r);
+      const token = String(m.token || "");
+      // Reconnect: the same device replaces its old socket (no ghost) and keeps the host role.
+      if (token) {
+        for (const [pid, p] of room.peers) {
+          if (p !== ws && p.token === token) {
+            room.peers.delete(pid);
+            for (const q of room.peers.values()) send(q, { t: "peer_left", id: pid });
+            if (room.host === pid) room.host = ws.id;
+            try { p.terminate(); } catch {}
+          }
+        }
+        if (room.hostToken && room.hostToken === token) room.host = ws.id;
+      }
+      // A room whose host is gone (left alone, timed out) gets a new host: whoever comes in.
+      if (!room.peers.has(room.host) && room.host !== ws.id) { room.host = ws.id; room.hostToken = token; }
       if (room.peers.size >= MAX) return send(ws, { t: "full" });
+      ws.token = token;
       ws.room = r; ws.info = { id: ws.id, name: String(m.name || "Player").slice(0, 24), look: m.look || {}, arc: m.arc || "penguins", scene: "farm" };
       room.peers.set(ws.id, ws); room.emptySince = 0;
       const isHost = room.host === ws.id;
@@ -46,14 +65,14 @@ wss.on("connection", (ws) => {
     const room = ws.room && rooms.get(ws.room); if (!room) return;
     if (m.t === "host_save" && room.host === ws.id) { room.world = m.d; return; }
     if (m.t === "scene") { ws.info.scene = m.scene; for (const p of room.peers.values()) if (p !== ws) send(p, { t: "peer_scene", id: ws.id, scene: m.scene }); return; }
-    if (m.t === "to") { const p = room.peers.get(m.id); if (p) send(p, { t: "msg", from: ws.id, d: m.d }); return; }
+    if (m.t === "to") { const p = room.peers.get(Number(m.id)); if (p) send(p, { t: "msg", from: ws.id, d: m.d }); return; }
     if (m.t === "all") { for (const p of room.peers.values()) if (p !== ws) send(p, { t: "msg", from: ws.id, d: m.d }); return; }
   });
   ws.on("close", () => {
     const room = ws.room && rooms.get(ws.room); if (!room) return;
     room.peers.delete(ws.id);
     for (const p of room.peers.values()) send(p, { t: "peer_left", id: ws.id });
-    if (room.host === ws.id && room.peers.size) { room.host = [...room.peers.keys()][0]; send(room.peers.get(room.host), { t: "you_are_host" }); }
+    if (room.host === ws.id && room.peers.size) { room.host = [...room.peers.keys()][0]; room.hostToken = room.peers.get(room.host).token || ""; send(room.peers.get(room.host), { t: "you_are_host" }); }
     if (!room.peers.size) room.emptySince = Date.now();
   });
 });

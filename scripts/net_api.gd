@@ -78,3 +78,8 @@ static func send_host(d: Dictionary) -> void:
 static func _send(o: Dictionary) -> void:
 	var n := i()
 	if n: n._send(o)
+
+
+static func save_view(run: Dictionary) -> Dictionary:
+	var n := i()
+	return n.save_view(run) if n else run

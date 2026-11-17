@@ -32,6 +32,12 @@ var _retries := 0
 var _retry_t := 0.0
 var _last_room := ""
 const MAX_RETRIES := 3
+## A stable id for this device, so a reconnect replaces our old socket on the
+## relay instead of leaving a ghost (and keeps the host role).
+var _token := ""
+## A guest's own world (farm, day...) set aside while they visit someone else's,
+## put back when they leave, and what gets saved meanwhile.
+var _solo_backup: Dictionary = {}
 
 
 func _ready() -> void:
@@ -60,21 +66,31 @@ func _connect(u: String) -> bool:
 	return true
 
 
+func _tok() -> String:
+	if _token == "":
+		_token = str(SaveGame.get_value("net_token", ""))
+		if _token == "":
+			_token = "%x%x" % [randi(), Time.get_ticks_usec()]
+			SaveGame.set_value("net_token", _token)
+	return _token
+
+
 func host(u: String) -> void:
 	_host = true
-	_pending_join = {"t": "join", "room": "", "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
+	_pending_join = {"t": "join", "room": "", "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
 	_connect(u)
 
 
 func join(u: String, code: String) -> void:
 	_host = false
-	_pending_join = {"t": "join", "room": code.to_upper().strip_edges(), "create": false, "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
+	_pending_join = {"t": "join", "room": code.to_upper().strip_edges(), "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
 	_connect(u)
 
 
 func leave() -> void:
 	_retries = MAX_RETRIES  # a deliberate leave never reconnects
 	_last_room = ""
+	_restore_solo()
 	if ws:
 		ws.close()
 	ws = null
@@ -113,8 +129,9 @@ func _process(delta: float) -> void:
 			_retry_t -= delta
 			if _retry_t <= 0.0 and _last_room != "" and _retries < MAX_RETRIES:
 				_retries += 1
-				_pending_join = {"t": "join", "room": _last_room, "create": false, "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
-				_connect(url)
+				_pending_join = {"t": "join", "room": _last_room, "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
+				if not _connect(url):
+					_retry_t = 2.0 * (_retries + 1)
 		return
 	ws.poll()
 	var st := ws.get_ready_state()
@@ -146,6 +163,8 @@ func _process(delta: float) -> void:
 		if _last_room != "" and _retries < MAX_RETRIES:
 			_retry_t = 2.0 * (_retries + 1)
 			why += "; reconnecting (%d/%d)" % [_retries + 1, MAX_RETRIES]
+		else:
+			_restore_solo()
 		disconnected.emit(why)
 
 
@@ -157,6 +176,10 @@ func _on_msg(m: Dictionary) -> void:
 			_last_room = room
 			_retries = 0
 			_host = bool(m.get("host", false))
+			if not _host and _solo_backup.is_empty():
+				for k in WORLD_KEYS:
+					if GameState.run.has(k):
+						_solo_backup[k] = GameState.run[k].duplicate(true) if GameState.run[k] is Dictionary or GameState.run[k] is Array else GameState.run[k]
 			for p in m.get("peers", []):
 				peers[int(p["id"])] = p
 				if str(p.get("arc", "")) != str(GameState.run["arc"]):
@@ -165,6 +188,9 @@ func _on_msg(m: Dictionary) -> void:
 			peers_changed.emit()
 		"full":
 			disconnected.emit("That room is full (8 players).")
+			leave()
+		"no_room":
+			disconnected.emit("No game with that code. Check the code with your host.")
 			leave()
 		"peer_joined":
 			var p: Dictionary = m["peer"]
@@ -183,16 +209,22 @@ func _on_msg(m: Dictionary) -> void:
 			peers_changed.emit()
 		"you_are_host":
 			_host = true
+			# We now own the world: our copy of it is the one to keep.
+			_solo_backup = {}
 			connected.emit(true)
 		"world":
 			_apply_world(m["d"])
 		"msg":
 			var from := int(m.get("from", 0))
-			var d: Dictionary = m.get("d", {})
+			var dv: Variant = m.get("d", {})
+			if not (dv is Dictionary):
+				return
+			var d: Dictionary = dv
 			match str(d.get("k", "")):
 				"state":
-					if peers.has(from):
-						peers[from]["pos"] = d.get("pos", [0, 0])
+					var pv: Variant = d.get("pos", [0, 0])
+					if peers.has(from) and pv is Array and (pv as Array).size() >= 2:
+						peers[from]["pos"] = pv
 						peers[from]["scene"] = str(d.get("scene", ""))
 						peers[from]["anim"] = str(d.get("anim", "idle"))
 						peers[from]["flip"] = bool(d.get("flip", false))
@@ -201,8 +233,9 @@ func _on_msg(m: Dictionary) -> void:
 					if _host:
 						_handle_action(from, d)
 				"world":
-					if not _host:
-						_apply_world(d.get("d", {}))
+					var wd: Variant = d.get("d", {})
+					if not _host and wd is Dictionary:
+						_apply_world(wd)
 				"toast":
 					var m2 := get_tree().current_scene
 					if m2 is GameMap:
@@ -218,7 +251,10 @@ func _broadcast_state() -> void:
 
 
 # ---- world sync (host -> guests) ---------------------------------------------
-const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "sellbox", "flags", "quests", "board", "jobs", "friendship", "bank"]
+## Only what's truly shared: the host's clock, weather and farm. Each player
+## keeps their own money, bank, sell box, quests, story flags and friendships
+## (overwriting those from the host let guests copy crystals and replay story).
+const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared"]
 
 
 func _push_world(to_id := -1) -> void:
@@ -237,10 +273,21 @@ func _apply_world(d: Dictionary) -> void:
 	if d.is_empty():
 		return
 	var scene_changed := false
+	var old_day := int(GameState.run.get("day", 0))
 	for k in d:
+		if not (k in WORLD_KEYS):
+			continue
 		if k == "time" or k == "day":
 			scene_changed = scene_changed or int(GameState.run.get(k, -1)) != int(d[k])
+		if k == "farm" and not (d[k] is Dictionary):
+			continue
 		GameState.run[k] = d[k]
+	# The host slept: a new morning for us too (our sell box, energy, health).
+	if not _host and int(GameState.run.get("day", 0)) > old_day and old_day > 0:
+		var rep := GameState.guest_morning()
+		var m0 := get_tree().current_scene
+		if m0 is GameMap and int(rep.get("earned", 0)) > 0:
+			(m0 as GameMap).hud.toast("Morning! Your sell box paid ◆%d." % int(rep["earned"]), Color(1, 0.95, 0.6))
 	_last_world = d
 	var m := get_tree().current_scene
 	if m is GameMap and m.has_method("on_world_sync"):
@@ -251,28 +298,64 @@ func _apply_world(d: Dictionary) -> void:
 ## re-validates nothing fancy (friends only), just applies and re-broadcasts.
 func _handle_action(from: int, d: Dictionary) -> void:
 	var a := str(d.get("a", ""))
+	var m := get_tree().current_scene
 	match a:
 		"farm_tile":
-			GameState.run["farm"][str(d["key"])] = d["tile"]
+			var tv: Variant = d.get("tile", null)
+			if tv is Dictionary and str(d.get("key", "")).contains(","):
+				GameState.run["farm"][str(d["key"])] = tv
 		"farm_clear":
-			GameState.run["farm"].erase(str(d["key"]))
-		"flag":
-			GameState.run["flags"][str(d["key"])] = d["val"]
-		"sellbox":
-			GameState.run["sellbox"][str(d["id"])] = int(GameState.run["sellbox"].get(str(d["id"]), 0)) + int(d["n"])
+			GameState.run["farm"].erase(str(d.get("key", "")))
+		"cleared":
+			var all_c: Dictionary = GameState.run.get("cleared", {})
+			var lst: Variant = all_c.get(str(d.get("scene", "")), {})
+			if lst is Dictionary:
+				(lst as Dictionary)[str(d.get("key", ""))] = int(GameState.run["day"])
+				all_c[str(d.get("scene", ""))] = lst
+				GameState.run["cleared"] = all_c
 		"build":
-			Builds.start(str(d["id"]))
+			# The guest asked; the host decides and pays (it's the host's farm).
+			var msg := Builds.start(str(d.get("id", "")))
+			_send({"t": "to", "id": from, "d": {"k": "toast", "text": "Host: " + msg}})
+		"permit":
+			var pm: Dictionary = GameState.run.get("permits", {})
+			pm[str(d.get("id", ""))] = maxi(int(pm.get(str(d.get("id", "")), 0)), int(d.get("tier", 1)))
+			GameState.run["permits"] = pm
 		"sleep":
-			# A guest went to bed: the day ends when every player is in bed (or the host sleeps).
-			GameState.run["flags"]["bed_" + str(from)] = true
+			# Guests in bed wait for the host: the day ends when the host sleeps.
+			_beds[from] = true
 			var all := true
 			for pid in peers:
-				if not GameState.run["flags"].has("bed_" + str(pid)):
+				if not _beds.has(pid):
 					all = false
-			if all:
-				var m := get_tree().current_scene
-				if m is GameMap and m.has_method("_sleep"):
-					m.call("_sleep")
-				for pid in peers:
-					GameState.run["flags"].erase("bed_" + str(pid))
+			if all and m is GameMap:
+				(m as GameMap).hud.toast("Everyone else is in bed. Sleep when you're ready.", Color(0.9, 0.95, 1.0))
+	if m is GameMap:
+		(m as GameMap).queue_redraw()
 	_push_world()
+
+
+var _beds := {}  # guests in bed tonight (not saved)
+
+
+func clear_beds() -> void:
+	_beds.clear()
+
+
+func _restore_solo() -> void:
+	if _solo_backup.is_empty():
+		return
+	for k in _solo_backup:
+		GameState.run[k] = _solo_backup[k]
+	_solo_backup = {}
+	GameState.save()
+
+
+## What to write to the save file: while visiting as a guest, your own world.
+func save_view(run: Dictionary) -> Dictionary:
+	if _solo_backup.is_empty() or _host:
+		return run
+	var v := run.duplicate()
+	for k in _solo_backup:
+		v[k] = _solo_backup[k]
+	return v

@@ -783,6 +783,7 @@ func _mark_cleared(c: Vector2i) -> void:
 	lst["%d,%d" % [c.x, c.y]] = int(GameState.run["day"])
 	all[scene_id()] = lst
 	GameState.run["cleared"] = all
+	net_act({"a": "cleared", "scene": scene_id(), "key": "%d,%d" % [c.x, c.y]})
 
 
 func is_cleared(c: Vector2i, regrow_days := 6) -> bool:
@@ -1324,7 +1325,12 @@ func player_down(reason := "hurt") -> void:
 	hud.toast("You collapsed..." if reason == "hurt" else "You pass out...", Color(1, 0.6, 0.6))
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)
-	GameState.sleep(true)
+	if Net.online() and not Net.is_host():
+		# A guest's night is the host's: wake up when the host's day rolls over.
+		GameState.run["energy"] = int(GameState.run["max_energy"]) / 2
+		GameState.run["hp"] = maxi(int(GameState.run["hp"]), int(GameState.run["max_hp"]) / 2)
+	else:
+		GameState.sleep(true)
 	GameState.run["flags"]["wake_note"] = ("Nurse Ada patched you up at the clinic. Fee: ◆%d (10%%)." % fee) if reason == "hurt" else ("Someone found you and carried you home. ◆%d (5%%) went missing on the way." % fee)
 	go_to("house", Vector2(5 * TILE + 8, 5 * TILE), "down", true)
 
