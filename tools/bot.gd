@@ -158,7 +158,11 @@ func _play_scene(sc: String) -> void:
 				stuck_frames = 0
 			last_pos = m.player.position
 			if stuck_frames == 25:
-				_warn("player hasn't moved for 25 steps in %s at cell %s" % [sc, str(m.player.cell())])
+				var dl := Dialogue.instance(self)
+				var said := ""
+				if dl.active and dl._text:
+					said = " (dialogue up: \"%s\")" % dl._text.text.left(80)
+				_warn("player hasn't moved for 25 steps in %s at cell %s, frozen=%s%s" % [sc, str(m.player.cell()), str(m.player.frozen), said])
 		if current_scene != null and str(current_scene.scene_file_path).get_file().get_basename() != sc and not (current_scene is GameMap):
 			pass
 

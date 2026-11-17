@@ -209,14 +209,39 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
 static func _fill(lines: Array) -> Array:
 	var names := GameState.names()
 	var partner := Companion.active_name()
+	if partner == "":
+		# No partner out right now: the friend who's been with you longest.
+		for cid in Companion.party().get("known", []):
+			partner = str(Companion.defs().get(str(cid), {}).get("name", str(cid).capitalize()))
+			break
+	if partner == "":
+		partner = "a friend"
 	var out: Array = []
 	for ln in lines:
 		var l: Dictionary = (ln as Dictionary).duplicate(true)
+		# "if_flag": only said when that flag is set; "unless_flag": only when it isn't.
+		if l.has("if_flag") and not GameState.run["flags"].has(str(l["if_flag"])):
+			continue
+		if l.has("unless_flag") and GameState.run["flags"].has(str(l["unless_flag"])):
+			continue
+		if l.has("branches"):
+			var br: Dictionary = l["branches"]
+			for bk in br:
+				br[bk] = _fill(br[bk])
 		for k in ["text", "who"]:
 			if l.has(k):
 				var s := str(l[k])
 				s = s.replace("%hero", str(names.get("character", "you"))).replace("%pet", str(names.get("pet", "Pup"))).replace("%town", str(names.get("town", "town"))).replace("%partner", partner)
 				l[k] = s
+		# Very long lines are split at a sentence so they fit a phone screen;
+		# a choice stays on the last part.
+		var t := str(l.get("text", ""))
+		if t.length() > 280:
+			var cut := t.find(". ", t.length() / 2 - 40)
+			if cut > 0 and cut < t.length() - 20:
+				var first := {"who": l.get("who", ""), "text": t.substr(0, cut + 1)}
+				l["text"] = t.substr(cut + 2)
+				out.append(first)
 		out.append(l)
 	return out
 
@@ -224,6 +249,12 @@ static func _fill(lines: Array) -> Array:
 static func _apply(m: GameMap, fx: Dictionary) -> void:
 	for f in fx.get("flags", []):
 		GameState.run["flags"][str(f)] = true
+	# {"needs_flag": ["flag to set", ...]}: set only when the first is already set.
+	var fi: Dictionary = fx.get("flags_if", {})
+	for need in fi:
+		if GameState.run["flags"].has(str(need)):
+			for f in fi[need]:
+				GameState.run["flags"][str(f)] = true
 	for f in fx.get("unflag", []):
 		GameState.run["flags"].erase(str(f))
 	for q in fx.get("quest", []):

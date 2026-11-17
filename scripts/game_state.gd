@@ -1586,6 +1586,22 @@ static func status_speed() -> float:
 	return m
 
 
+## Swing cooldown multiplier (chill makes you slow to swing).
+static func status_swing() -> float:
+	var m := 1.0
+	for k in run.get("status", {}):
+		m *= float(status_def(str(k)).get("swing", 1.0))
+	return m
+
+
+## Dazed (blind): your swings land off-line by up to this many pixels.
+static func status_aim() -> float:
+	var a := 0.0
+	for k in run.get("status", {}):
+		a += float(status_def(str(k)).get("aim", 0)) * 12.0
+	return a
+
+
 static func status_damage_mod() -> int:
 	var m := 0
 	for k in run.get("status", {}):

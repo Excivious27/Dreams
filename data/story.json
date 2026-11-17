@@ -88,7 +88,7 @@
       },
       {
        "who": "Star Crystal",
-       "text": "They can be turned back. Not killed: turned back. There's a magic for it, the Meow Pow Wow, and I only carry the first spark of it. The ones who truly know it are the cats of Cat-topia, and I hear them purring in the crystal meadow past the big one. We go there next."
+       "text": "They can be turned back. Not beaten down: turned back. There's a magic for it, the Meow Pow Wow, and I only carry the first spark of it. The ones who truly know it are the cats of Cat-topia, and I hear them purring in the crystal meadow past the big one. We go there next."
       },
       {
        "who": "Star Crystal",
@@ -595,7 +595,7 @@
        "babies_fight"
       ],
       "toast": "Don't just fight them: hold B (Meow Pow Wow) when they're low.",
-      "hint": "The babies are cursed, not evil. Turn them back with the Meow Pow Wow (hold B with a partner who knows it)."
+      "hint": "The babies are cursed, not evil. Turn them back with the Meow Pow Wow (tap the ♥ button, or hold B)."
      }
     },
     {
@@ -629,7 +629,7 @@
        "text": "But I must come with you. I hold the sacred key to the heart of Mount Prismatica. And...",
        "choice": [
         "\"And?\"",
-        "\"Welcome aboard, Coldy.\""
+        "\"Welcome aboard.\""
        ],
        "key": "coldy_join",
        "branches": {
@@ -1304,7 +1304,7 @@
        "text": "...",
        "choice": [
         "Make the heart. Turn him back.",
-        "Shatter him. He's done enough."
+        "Break the dark. Let it end."
        ],
        "key": "ending",
        "branches": {
@@ -1327,13 +1327,14 @@
          },
          {
           "who": "",
-          "text": "*...Oh,* says a small voice in your head, and the purple light around Fennimore goes out, and she is just a fuzzy black thing the size of a pumpkin, blinking, with no mouth to say sorry."
+          "text": "*...Oh,* says a small voice in your head, and the purple light around Fennimore goes out, and she is just a fuzzy black thing the size of a pumpkin, blinking, with no mouth to say sorry.",
+          "if_flag": "fennimore_turnable"
          }
         ],
         "1": [
          {
           "who": "",
-          "text": "You swing. It breaks the way ice breaks on a pond in spring: all at once, and then quietly, for a long time."
+          "text": "You let the light go the other way. The dark comes apart the way ice goes on a pond in spring: all at once, and then quietly, for a long time."
          },
          {
           "who": "Star Crystal",
@@ -1350,9 +1351,13 @@
          "ending": "revert",
          "ending_title": "Two Crystals",
          "flags": [
-          "dc_reverted",
-          "fennimore_free"
-         ]
+          "dc_reverted"
+         ],
+         "flags_if": {
+          "fennimore_turnable": [
+           "fennimore_free"
+          ]
+         }
         },
         "1": {
          "ending": "shatter",
@@ -1458,11 +1463,11 @@
       },
       {
        "who": "",
-       "text": "Written on the back of the photograph, in a hand with hard loops on the W:",
+       "text": "Written on the back of the photograph, in a hand with hard loops on the W: \"THE FARM IS A NICE TOUCH.\"",
        "choice": [
-        "\"THE FARM IS A NICE TOUCH.\" — you burn this one too.",
-        "\"THE FARM IS A NICE TOUCH.\" — you keep it with the deed.",
-        "\"THE FARM IS A NICE TOUCH.\" — same hand. You were right."
+        "Burn it.",
+        "Keep it with the deed.",
+        "Hold it up to the other note."
        ],
        "key": "photo",
        "branches": {

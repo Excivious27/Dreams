@@ -33,3 +33,10 @@ echo "$rout" | grep -E "FAIL|interior_reach" || true
 if ! echo "$rout" | grep -q "interior_reach: 0 failures"; then
   echo "Interior reachability failed"; exit 1
 fi
+
+echo "== exits and spawns =="
+xout="$("$GODOT" --headless --path . -s res://tools/exit_check.gd 2>&1)"
+echo "$xout" | grep -E "FAIL|exit_check" || true
+if ! echo "$xout" | grep -q "exit_check: 0 failures"; then
+  echo "Exit check failed"; exit 1
+fi

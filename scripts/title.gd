@@ -289,7 +289,7 @@ func _show_look() -> void:
 func _show_names() -> void:
 	_clear()
 	_page.add_child(_label("Name things", 16))
-	var pname := "Hero" if bool(_playables[_playable].get("custom", false)) else str(_playables[_playable].get("name", "Hero"))
+	var pname := "Hero" if bool(_playables[_playable].get("custom", false)) else str(_playables[_playable].get("name", "Hero")).get_slice(" (", 0)
 	_name_edit = _edit("Your name", pname)
 	_town_edit = _edit("Town name", "Dreamhollow")
 	_pet_edit = _edit("Pet name", "Pup")

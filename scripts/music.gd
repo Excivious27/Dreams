@@ -12,6 +12,9 @@ const MUSIC_DB := -8.0
 const FADE := 0.9
 var _current := ""
 var _muted := false
+var _tw_out: Tween
+var _tw_in: Tween
+var _sfx_cache := {}
 
 
 static func instance(tree: SceneTree) -> Music:
@@ -50,19 +53,26 @@ func play(track: String) -> void:
 	if stream is AudioStreamOggVorbis:
 		(stream as AudioStreamOggVorbis).loop = true
 	# Crossfade: the old track fades out on the spare player while the new one fades in.
+	# A second change mid-fade must not let the first fade's stop() land on the
+	# new track: kill both tweens first.
+	if _tw_out and _tw_out.is_valid():
+		_tw_out.kill()
+	if _tw_in and _tw_in.is_valid():
+		_tw_in.kill()
 	if _player.playing:
+		_fading.stop()
 		var old := _player
 		_player = _fading
 		_fading = old
-		var tw := create_tween()
-		tw.tween_property(old, "volume_db", -40.0, FADE)
-		tw.tween_callback(old.stop)
+		_tw_out = create_tween()
+		_tw_out.tween_property(old, "volume_db", -40.0, FADE)
+		_tw_out.tween_callback(old.stop)
 	_player.stream = stream
 	_player.volume_db = -30.0
 	if not _muted:
 		_player.play()
-		var tw2 := create_tween()
-		tw2.tween_property(_player, "volume_db", MUSIC_DB, FADE)
+		_tw_in = create_tween()
+		_tw_in.tween_property(_player, "volume_db", MUSIC_DB, FADE)
 
 
 func sfx(name: String) -> void:
@@ -71,9 +81,11 @@ func sfx(name: String) -> void:
 	var path := "res://audio/sfx/%s.wav" % name
 	if not ResourceLoader.exists(path):
 		return
+	if not _sfx_cache.has(name):
+		_sfx_cache[name] = load(path)
 	for p in _sfx:
 		if not p.playing:
-			p.stream = load(path)
+			p.stream = _sfx_cache[name]
 			# A little pitch drift so repeated swings and steps don't sound stamped out.
 			p.pitch_scale = randf_range(0.93, 1.07)
 			p.play()

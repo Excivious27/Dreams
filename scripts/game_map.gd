@@ -1544,9 +1544,25 @@ func xp(skill: String, n: int) -> void:
 ## Per-frame layer for the few things that animate on the ground (water, waterfalls).
 class AnimLayer extends Node2D:
 	var jobs: Array[Callable] = []
+	## Cells on screen (plus a margin), so water off-screen isn't drawn.
+	var view := Rect2i(-9999, -9999, 99999, 99999)
+	var _tick := -1
+	var _cam := Vector2(INF, INF)
 	func _process(_d: float) -> void:
-		if not jobs.is_empty():
-			queue_redraw()
+		if jobs.is_empty():
+			return
+		# Redraw at 8 fps (the water frames change at 4) or when the camera has
+		# moved past the margin; not every frame.
+		var t := int(Time.get_ticks_msec() / 125)
+		var xf := get_viewport().get_canvas_transform() * get_global_transform()
+		var cam := xf.origin
+		if t == _tick and cam.distance_squared_to(_cam) < 256.0:
+			return
+		_tick = t
+		_cam = cam
+		var r := xf.affine_inverse() * get_viewport_rect()
+		view = Rect2i(int(floor(r.position.x / TILE)) - 3, int(floor(r.position.y / TILE)) - 3, int(ceil(r.size.x / TILE)) + 6, int(ceil(r.size.y / TILE)) + 6)
+		queue_redraw()
 	func _draw() -> void:
 		for j in jobs:
 			j.call(self)
@@ -1754,13 +1770,42 @@ func cells_of(rects: Array) -> Dictionary:
 func draw_water(cells: Dictionary, shore := "grass") -> void:
 	# Water is the only thing that animates on the ground, so it lives on its own
 	# layer that redraws every frame; the rest of the map is drawn once.
+	# Which cells are on the edge never changes: work it out once, not per frame.
+	var edges := {}
+	for c: Vector2i in cells:
+		for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]:
+			if not cells.has(c + d):
+				edges[c] = true
+				break
 	if _anim_layer:
-		_anim_layer.jobs.append(func(ci: CanvasItem) -> void: _draw_water_on(ci, cells, shore))
+		_anim_layer.jobs.append(func(ci: CanvasItem) -> void: _draw_water_on(ci, _on_screen(cells), shore, _on_screen(edges), cells))
 	else:
-		_draw_water_on(self, cells, shore)
+		_draw_water_on(self, cells, shore, edges, cells)
 
 
-func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String) -> void:
+## The part of a cell set inside the anim layer's view.
+func _on_screen(cells: Dictionary) -> Dictionary:
+	if _anim_layer == null:
+		return cells
+	var v := _anim_layer.view
+	if v.size.x * v.size.y >= cells.size():
+		var out := {}
+		for c: Vector2i in cells:
+			if v.has_point(c):
+				out[c] = true
+		return out
+	var out2 := {}
+	for y in range(v.position.y, v.end.y):
+		for x in range(v.position.x, v.end.x):
+			var c := Vector2i(x, y)
+			if cells.has(c):
+				out2[c] = true
+	return out2
+
+
+func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells: Dictionary = {}, all_cells: Dictionary = {}) -> void:
+	if all_cells.is_empty():
+		all_cells = cells
 	# Animated fill, then a procedural bank that always lines up: a dark earth
 	# lip on the land side, a lighter wet rim and foam inside the water. Corners
 	# are rounded with quarter discs so blobs read as real shorelines.
@@ -1783,26 +1828,17 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String) -> void:
 			Art.draw_tile(ci, "tiles", "%s_fill_%d" % [shore, idx], Vector2(c * TILE), 0)
 	if custom or Art.has("tiles", "shore_grass_top_0"):
 		# Painted 47-tile shore set. Edges only: keep the animated fill underneath.
-		var edge_cells := {}
-		for c: Vector2i in cells:
-			var all_in := true
-			for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]:
-				if not cells.has(c + d):
-					all_in = false
-					break
-			if not all_in:
-				edge_cells[c] = true
-		_draw_blob_edges(ci, cells, edge_cells, shore if custom else ("shore_grass" if shore == "grass" else "shore_sand"))
+		_draw_blob_edges(ci, all_cells, edge_cells, shore if custom else ("shore_grass" if shore == "grass" else "shore_sand"))
 		return
 	var earth := Color("6b4a2b") if shore == "grass" else Color("c9a86b")
 	var rim := Color("4f8fd0", 0.9)
 	var foam := Color(0.85, 0.95, 1.0, 0.55 + 0.2 * sin(Time.get_ticks_msec() / 400.0))
-	for c: Vector2i in cells:
+	for c: Vector2i in edge_cells if not edge_cells.is_empty() else cells:
 		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
-		var n := cells.has(c + Vector2i(0, -1))
-		var so := cells.has(c + Vector2i(0, 1))
-		var w := cells.has(c + Vector2i(-1, 0))
-		var e := cells.has(c + Vector2i(1, 0))
+		var n := all_cells.has(c + Vector2i(0, -1))
+		var so := all_cells.has(c + Vector2i(0, 1))
+		var w := all_cells.has(c + Vector2i(-1, 0))
+		var e := all_cells.has(c + Vector2i(1, 0))
 		if not n:
 			ci.draw_rect(Rect2(r.position, Vector2(TILE, 3)), earth)
 			ci.draw_rect(Rect2(r.position + Vector2(0, 3), Vector2(TILE, 2)), rim)

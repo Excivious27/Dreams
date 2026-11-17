@@ -110,19 +110,31 @@
    "lines": [
     {
      "who": "",
-     "text": "Two figures at the gate at dawn. Snow on their shoulders, though it isn't snowing."
+     "text": "Someone at the gate at dawn. Snow on their shoulders, though it isn't snowing."
     },
     {
      "who": "Pip-Pip",
-     "text": "We followed the light. From very far. It stopped over YOUR field, so."
+     "text": "We followed the light. From very far. It stopped over YOUR field, so.",
+     "not_hero": "penguin_m"
     },
     {
      "who": "Nova",
-     "text": "He means: can we stay. One of us. The other one keeps watch on the mountain."
+     "text": "He means: can we stay. One of us, anyway. The other keeps watch on the mountain.",
+     "not_hero": "penguin_f"
+    },
+    {
+     "who": "Nova",
+     "text": "Pip-Pip's on the mountain, keeping watch. Someone here needs a hand. Can I stay?",
+     "only_hero": "penguin_m"
+    },
+    {
+     "who": "Pip-Pip",
+     "text": "Nova's on the mountain, keeping watch. I'm the other one. I'm also the better one. Can I stay?",
+     "only_hero": "penguin_f"
     },
     {
      "who": "",
-     "text": "They're penguins. Too powerful ones, by the look of the frost on the gate."
+     "text": "Penguins. Too Powerful Penguins, by the look of the frost on the gate."
     }
    ],
    "ask": "Who stays with you?"
@@ -138,11 +150,13 @@
     },
     {
      "who": "Big Jim",
-     "text": "Boss. Word is you're setting up out here. Word is also that the President's man was in the meadow."
+     "text": "Boss. Word is you're setting up out here. Word is also that the President's man was in the meadow.",
+     "not_hero": "big_jim"
     },
     {
      "who": "Sal",
-     "text": "One of us comes with you. The other watches the road. That's how we did it in the river cities."
+     "text": "One of us comes with you. The other watches the road. That's how we did it in the river cities.",
+     "not_hero": "sal"
     }
    ],
    "ask": "Who rides with you?"

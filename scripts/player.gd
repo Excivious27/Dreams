@@ -728,7 +728,7 @@ func _swing() -> void:
 			face_toward(best.position)
 	_busy = true
 	_busy_t = 0.0
-	_attack_cd = 0.3
+	_attack_cd = 0.3 * GameState.status_swing()
 	_attack_hit_done = false
 	_combo = (_combo + 1) % 3
 	velocity = Vector2.ZERO
@@ -774,7 +774,9 @@ func _attack_hit() -> void:
 	_attack_hit_done = true
 	if map:
 		var center := position + facing_dir() * 12.0 + Vector2(0, -6)
-		var side := facing_dir().orthogonal() * 16.0
+		var aim := GameState.status_aim()
+		if aim > 0.0:
+			center += facing_dir().orthogonal() * randf_range(-aim, aim)
 		var box := Rect2(center - Vector2(14, 14), Vector2(28, 28))
 		var hit := map.attack_at(box, maxi(1, GameState.sword_damage() + (1 if _combo == 0 else 0) + GameState.status_damage_mod()), position)
 		if hit:

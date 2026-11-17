@@ -189,7 +189,14 @@ func _partner_scene() -> void:
 			if c != pid and pool.size() < 3:
 				pool.append(c)
 	player.frozen = true
-	await say(cfg.get("lines", []))
+	# A line can be for everyone but one hero ("not_hero"), or only one ("only_hero"):
+	# you don't hear yourself ask to stay.
+	var ls: Array = []
+	for l in cfg.get("lines", []):
+		if str(l.get("not_hero", "")) == pid or (l.has("only_hero") and str(l["only_hero"]) != pid):
+			continue
+		ls.append(l)
+	await say(ls)
 	var d := Dialogue.instance(get_tree())
 	var ch: Array = []
 	for c in pool:

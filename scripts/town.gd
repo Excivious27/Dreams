@@ -103,8 +103,9 @@ func after_ready() -> void:
 			spawn_enemy("grump" if GameState.is_penguins() else "thug_speedster", cell_center(Vector2i(75 + i * 3, 10 + i * 6)))
 		_orchard_watch = true
 	if not GameState.run["flags"].has("town_seen"):
+		# The arc's own town beat (p1_town / g1_town) is the arrival scene; this
+		# flag lets it play. (It used to play a second intro here too.)
 		GameState.run["flags"]["town_seen"] = true
-		_arrival.call_deferred()
 	elif GameState.festival_today() != "":
 		hud.toast("%s today, on the plaza!" % GameState.festival_name(GameState.festival_today()), Color(1, 0.9, 0.5))
 
