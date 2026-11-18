@@ -108,6 +108,7 @@ def build(raw, num, out_path, title, intro):
         for pi, (a, b) in enumerate(parts):
             n_prompt += 1
             group = todo[a:b]
+            assert 1 <= len(group) <= 3, f"prompt {num} would ask for {len(group)} images (max 3)"
             n_img += len(group)
             text = " ".join(shared) + " " + " ".join(t for _, t in group)
             label = f"{num}-{n_prompt}"
