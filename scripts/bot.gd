@@ -52,6 +52,8 @@ func _process(delta: float) -> void:
 			_zap_t = 0.12
 			e.provoke(map.player)
 			e.hit(dmg, position, true, true)
+			if Art.has("fx", "cy_bot_zap"):
+				map.fx("cy_bot_zap", e.position + Vector2(0, -8), 16.0, 0.35)
 			Music.instance(get_tree()).sfx("zap", "hit")
 	queue_redraw()
 

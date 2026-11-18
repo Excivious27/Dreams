@@ -35,7 +35,7 @@ const MISSIONS := {
 	"halo": ["fuel_cell", 2, "Car's thirsty. Two fuel cells and she'll go anywhere you say.", "Hear that? That's the sound of anywhere."],
 	"dice": ["data_chip", 2, "Two data chips and I can fix the arcade machines so they pay out prizes again. Tokens, not cash. For the kids.", "Every kid on the avenue just won something."],
 	"the_kid": ["berry_pie", 1, "...", "...Thanks. (He eats the whole pie standing up, and smiles for the first time you've seen.)"],
-	"doc": ["#herb", 10, "Ten wild herbs. The clinic's running out of the basics.", "Ten. That's ten people patched up. Try not to be one of them."],
+	"doc": ["wild_herb", 10, "Ten wild herbs. The clinic's running out of the basics.", "Ten. That's ten people patched up. Try not to be one of them."],
 	"marlene": ["sapphire", 1, "A sapphire. Not to sell. Mine was my mother's, and I sold it once, and I'd like to stop thinking about that.", "...It's not the same one. It doesn't need to be."],
 	"sasha": ["map_scrap", 2, "Two map scraps. The tower has doors nobody's drawn. I want to draw them.", "There. Now nobody gets lost in there. Including us."],
 }

@@ -193,16 +193,10 @@
    "1": "You kept the secret about the Grumps. Some nights it's heavy. The Star Crystal helps you carry it."
   },
   "locket": {
-   "0": "Finn wears the locket now. He smiles more.",
    "1": "The humming locket sits by your bed. Sometimes it glows when the moon is full."
   },
-  "knight_mercy": {
-   "0": "The knight above the clouds was given a chance, and took it.",
-   "1": "The knight above the clouds is gone. Nova still thinks about him."
-  },
   "fennimore": {
-   "0": "Fennimore heard the truth from you first. It mattered.",
-   "1": "Fennimore found her own way out."
+   "0": "Fennimore heard the truth from you first. It mattered."
   },
   "photo": {
    "0": "You burned the photo. The past stays burned.",
@@ -223,8 +217,7 @@
   },
   "sell_letter": {
    "0": "You sold the letter. The money built the crew. The President knew your face, and it didn't matter.",
-   "1": "You never sold the letter. It opened the tower doors, the way he meant it to.",
-   "2": "You burned the letter. Nothing to sell, nothing to fear."
+   "1": "You never sold the letter. It opened the tower doors, the way he meant it to."
   }
  },
  "endings": {
@@ -237,6 +230,11 @@
   "fennimore_free": "Fennimore's crown went out in your arms. The finargles have a queen again: a gentler one.",
   "final_town_help": "The whole town climbed the tower stairs to ring the bell, and the Dark Crystal's shell cracked at the sound.",
   "doors_sasha": "Sasha took the tower doors off their hinges without a sound. Nobody in the city has ever asked her how.",
+  "finn_told": "Finn wears the locket now. He smiles more.",
+  "knight_reverted": "The knight above the clouds was given a chance, and took it.",
+  "auk_shard": "The knight above the clouds is gone. Nova still thinks about him.",
+  "letter_burned": "You burned the letter. Nothing to sell, nothing to fear.",
+  "proj_star_beacon": "The Star Beacon still burns over the plaza. Ships steer by it now.",
   "journal_done": "You found every page of the Wayfarer's Journal. The last one had your name on it."
  }
 }

@@ -6,12 +6,12 @@ still work) and fills the rest of the grid with nodes that raise the stats the
 game already reads (GameState.bonus). Reads data/skills_base.json, writes
 data/skills.json.   Run: python3 tools/gen_skill_trees.py
 """
-import json, os
+import json, re, os
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 base = json.load(open(f"{R}/data/skills_base.json"))
 ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 # Per-rank amount for filler nodes, by effect key.
-AMT = {"extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day": 0.04, "animal_yield": 0.06, "star_chance": 0.02,
+AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day": 0.04, "animal_yield": 0.06, "star_chance": 0.02,
        "double_harvest": 0.03, "seed_back": 0.05, "stone_bonus": 1, "ore_bonus": 0.05, "mine_energy": 0.04, "gem_chance": 0.02,
        "shard_bonus": 0.06, "double_hit": 0.04, "forage_bonus": 1, "wood_bonus": 1, "chop_bonus": 1, "sap_chance": 0.06,
        "rare_forage": 0.03, "bite_speed": 0.05, "rare_fish": 0.03, "escape_less": 0.06, "chest_chance": 0.02, "fish_value": 0.06,
@@ -23,7 +23,7 @@ AMT = {"extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day":
        "ability_cooldown": 0.03, "colony_discount": 0.03,
        "capture_speed": 0.05, "start_supply": 3, "spawner_discount": 0.04, "helper_damage": 1, "ticket_bleed": 0.06, "ticket_guard": 0.05,
        "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04}
-DESC = {"extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
+DESC = {"growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
         "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock (3 = one more)",
         "ore_bonus": "extra ore", "mine_energy": "less energy to mine", "gem_chance": "gem chance", "shard_bonus": "crystal shards",
@@ -127,12 +127,18 @@ def fmt(k, v):
 
 # Same caps as GameState.BONUS_CAPS: once a row's ranks would pass a cap, the
 # filler switches to a key that still does something (no dead ranks).
-CAPS = {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
-        "stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.9,
-        "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6, "star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4,
-        "bite_speed": 0.8, "interest": 0.05, "sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3}
-FALLBACK = {"farming": "growth", "mining": "shard_bonus", "foraging": "rare_forage", "fishing": "rare_fish", "combat": "hp",
-            "bartering": "gift_bonus", "building": "energy", "magic": "mana", "pup": "pet_hp"}
+def _caps():
+    """GameState.BONUS_CAPS, read from the script so the two never drift."""
+    src = open(f"{R}/scripts/game_state.gd").read()
+    m = re.search(r"const BONUS_CAPS := \{(.*?)\}", src, re.S)
+    return {k: float(v) for k, v in re.findall(r'"(\w+)":\s*([0-9.]+)', m.group(1))}
+
+
+CAPS = _caps()
+FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
+            "fishing": ["fish_value", "double_fish"], "combat": ["hp", "energy"], "bartering": ["sell_bonus", "interest"],
+            "building": ["energy", "craft_speed"], "magic": ["mana", "spell_damage"], "pup": ["pet_hp", "pet_dmg"],
+            "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
 
 
 out = {"_format": "Sun Haven-style grids (tools/gen_skill_trees.py): 4 branches x 10 tiers. Column c opens after 2*c points spent in the skill. 1 point per level.",
@@ -169,9 +175,15 @@ for sk, sd in base["skills"].items():
                 k = keys[(c + r) % len(keys)]
                 ranks = 3 if c < 6 else (2 if c < 9 else 1)
                 a = AMT[k] * (2 if c == 9 else 1)
-                if k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9 and FALLBACK.get(sk) in AMT:
-                    k = FALLBACK[sk]
-                    a = AMT[k] * (2 if c == 9 else 1)
+                if k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9:
+                    for fk in FALLBACK.get(sk, []) + [x for x in keys if x != k]:
+                        fa = AMT.get(fk, 0) * (2 if c == 9 else 1)
+                        if fk in AMT and not (fk in CAPS and used.get(fk, 0) + fa * ranks > CAPS[fk] + 1e-9):
+                            k, a = fk, fa
+                            break
+                    else:
+                        ranks = 1  # everything here is capped: a single rank
+                    a = round(a, 3) if isinstance(a, float) else a
                 used[k] = used.get(k, 0) + a * ranks
                 a = round(a, 3) if isinstance(a, float) else a
                 nm = names[ni % len(names)]

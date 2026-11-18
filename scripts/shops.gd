@@ -55,8 +55,8 @@ static func offers(shop: String) -> Array:
 			if GameState.day_of_season() >= 22:
 				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
 			# Plus a few of the season's other vegetables and herbs.
-			base += _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 2 and not bool(cd.get("tree", false)) and not ("berry" in cid) and not (cid + "_seed" in base), 4, 0)
-			base += ["wheat_seed", "fertilizer", "bread", "hay", "gift_pie", "paint"]
+			base += _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 2 and not bool(cd.get("tree", false)) and not ("berry" in cid) and not (cid + "_seed" in base) and not (cid + "_seed" in rare[se]) and cid != "wheat", 4, 0)
+			base += ["wheat_seed", "fertilizer", "bread", "hay", "gift_pie", "paint", "sap", "candy", "toy"]
 			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):
 				base += rare[se] + ["dream_seed"]
 			return base
@@ -67,12 +67,12 @@ static func offers(shop: String) -> Array:
 		"orla":
 			return ["flour", "wheat_seed", "bread"]
 		"marlowe":
-			return ["lamp_oil", "bait", "coffee"]
+			return ["lamp_oil", "bait", "rope"]
 		"tam":
 			# Orchard stock: saplings and berry canes for the season.
-			return ["sheep_wool", "cider", "apple"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)
+			return ["sheep_wool", "hay"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)
 		"old_moss":
-			return ["glow_cap", "slime_goo", "tea"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid in ["mushroom", "truffle", "morel", "glowcap", "glowcap2", "glowcap3", "saffron", "aloe", "wasabi", "ginger", "turmeric", "vanilla", "tea", "coffee", "cacao", "watercress", "water_chestnut", "sesame", "chia"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 2)
+			return ["glowcap", "slime_goo", "herb_remedy"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid in ["mushroom", "truffle", "morel", "glowcap", "glowcap2", "glowcap3", "saffron", "aloe", "wasabi", "ginger", "turmeric", "vanilla", "tea", "coffee", "cacao", "watercress", "water_chestnut", "sesame", "chia"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 2)
 		"granite":
 			return ["stone", "brick", "coal", "copper", "iron", "dynamite"]
 		"sel":
@@ -128,8 +128,10 @@ static func run(m: GameMap, shop: String) -> void:
 		var price := price(id)
 		if int(GameState.run["crystals"]) < price:
 			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
 			continue
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
+		Music.instance(m.get_tree()).sfx("coin", "pickup")
 		if GameState.items[id].get("type", "") == "tool":
 			GameState.add_tool(id)
 			m.hud.toast("Got the %s!" % GameState.item_name(id), Color(1, 0.9, 0.4))

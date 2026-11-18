@@ -10,8 +10,13 @@ var anim: AnimatedSprite2D
 var _idle := 0.0
 
 
+static var _data := {}
+
+
 static func data() -> Dictionary:
-	return GameState.load_json("res://data/companions.json")
+	if _data.is_empty():
+		_data = GameState.load_json("res://data/companions.json")
+	return _data
 
 
 static func defs() -> Dictionary:
@@ -124,7 +129,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 						m.hud.toast("The purple light holds. She isn't ready to listen.", Color(0.9, 0.8, 1.0))
 						continue
 					GameState.run["flags"]["fennimore_free"] = true
-					m.fx("sparkle", e.position + Vector2(0, -8), 18.0, 0.8)
+					m.fx("meow_pow_wow" if Art.has("fx", "meow_pow_wow") else "sparkle", e.position + Vector2(0, -8), 12.0, 0.6)
 					m.hud.toast("Fennimore's crown goes out. She blinks, and she's herself.", Color(0.85, 0.95, 1.0))
 					e.set_meta("reverted", true)
 					e._die()
@@ -133,7 +138,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				if rv.is_empty() or int(rv[1]) > rank:
 					m.emote(e, "confused", 0.8)
 					continue
-				m.fx("sparkle", e.position + Vector2(0, -8), 14.0, 0.6)
+				m.fx("meow_pow_wow" if Art.has("fx", "meow_pow_wow") else "sparkle", e.position + Vector2(0, -8), 12.0, 0.6)
 				if str(rv[0]) == "penguin":
 					# Grandfather Auk, himself again: a penguin where the Knight stood.
 					var pg := CharacterLibrary.make_sprite("penguin")

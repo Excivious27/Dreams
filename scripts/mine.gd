@@ -26,15 +26,15 @@ const THEMES := [
 	{"cave": "stone", "name": "Flooded Galleries", "ores": ["copper", "iron"], "var": "stone", "ts": "deep", "rock": "1c2430", "fa": "3a4656", "fb": "40506a", "tint": [0.8, 0.9, 1.05], "feat": ["water"], "forage": ["cave_fig", "mushroom_spore"]},
 	{"cave": "earth", "name": "Fungal Caverns", "var": "earth", "ts": "", "rock": "241c2c", "fa": "3c3048", "fb": "42354e", "tint": [1.0, 0.85, 1.0], "feat": ["glow"], "forage": ["cave_bloom", "mushroom_spore", "cave_mushroom"]},
 	{"cave": "crystal", "name": "Crystal Veins", "ores": ["shard"], "var": "stone", "ts": "crystal", "rock": "1c1c34", "fa": "3c3c64", "fb": "42426c", "tint": [0.85, 0.9, 1.1], "feat": ["crystals"], "forage": ["shard", "cave_bloom"]},
-	{"cave": "ice", "name": "Frost Caves", "ores": ["iron", "shard"], "var": "ice", "ts": "", "rock": "1c2634", "fa": "4a5c6c", "fb": "52667a", "tint": [0.85, 0.95, 1.1], "feat": ["water"], "forage": ["cave_fig", "shard"]},
+	{"cave": "ice", "name": "Frost Caves", "ores": ["iron", "silver"], "var": "ice", "ts": "", "rock": "1c2634", "fa": "4a5c6c", "fb": "52667a", "tint": [0.85, 0.95, 1.1], "feat": ["water"], "forage": ["cave_fig", "shard"]},
 	{"cave": "crystal", "name": "Amethyst Grotto", "ores": ["amethyst", "shard"], "var": "ice", "ts": "crystal", "rock": "241434", "fa": "4a2e5c", "fb": "523466", "tint": [1.0, 0.8, 1.1], "feat": ["crystals"], "forage": ["amethyst", "shard", "cave_bloom"]},
 	{"cave": "earth", "name": "Sandstone Ruins", "ores": ["fossil", "gold"], "var": "earth", "ts": "", "rock": "3a2c1c", "fa": "6a5638", "fb": "72603e", "tint": [1.1, 1.0, 0.85], "feat": [], "forage": ["fossil", "cave_fig"]},
 	{"cave": "stone", "name": "Gold Seams", "ores": ["gold"], "var": "stone", "ts": "deep", "rock": "2c2418", "fa": "5a4a30", "fb": "62523a", "tint": [1.1, 1.0, 0.8], "feat": [], "forage": ["gold", "cave_bloom"]},
 	{"cave": "stone", "name": "Magma Rifts", "ores": ["dark", "gold"], "var": "lava", "ts": "", "rock": "2c1814", "fa": "4a2a22", "fb": "52302a", "tint": [1.1, 0.85, 0.8], "feat": ["lava"], "forage": ["dark", "cave_fig"]},
 	{"cave": "stone", "name": "Obsidian Halls", "ores": ["dark"], "var": "lava", "ts": "dark", "rock": "120e16", "fa": "2a2432", "fb": "302a3a", "tint": [0.8, 0.8, 0.95], "feat": ["lava"], "forage": ["dark", "shard"]},
 	{"cave": "stone", "name": "Drowned Dark", "ores": ["dark", "shard"], "var": "stone", "ts": "dark", "rock": "0e1620", "fa": "22303c", "fb": "283846", "tint": [0.8, 0.9, 1.0], "feat": ["water", "glow"], "forage": ["cave_bloom", "dark"]},
-	{"cave": "crystal", "name": "The Void Reach", "ores": ["dark", "crystal"], "var": "stone", "ts": "dark", "rock": "0c0a14", "fa": "1e1a2c", "fb": "241f34", "tint": [0.9, 0.8, 1.1], "feat": ["chasm"], "forage": ["dark", "crystal_refined"]},
-	{"cave": "stone", "name": "The Heart's Edge", "ores": ["crystal", "shard"], "var": "lava", "ts": "heart", "rock": "1a0c18", "fa": "3a1c34", "fb": "42223c", "tint": [1.1, 0.85, 1.0], "feat": ["crystals", "glow"], "forage": ["crystal_refined", "shard", "cave_bloom"]},
+	{"cave": "crystal", "name": "The Void Reach", "ores": ["dark", "emerald"], "var": "stone", "ts": "dark", "rock": "0c0a14", "fa": "1e1a2c", "fb": "241f34", "tint": [0.9, 0.8, 1.1], "feat": ["chasm"], "forage": ["dark", "crystal_refined"]},
+	{"cave": "stone", "name": "The Heart's Edge", "ores": ["emerald", "shard"], "var": "lava", "ts": "heart", "rock": "1a0c18", "fa": "3a1c34", "fb": "42223c", "tint": [1.1, 0.85, 1.0], "feat": ["crystals", "glow"], "forage": ["crystal_refined", "shard", "cave_bloom"]},
 ]
 
 

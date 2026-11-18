@@ -92,7 +92,7 @@ static func build() -> Array:
 	# Villagers, closest first, four to a slide.
 	var vs: Array = []
 	for id: String in d.get("villagers", {}):
-		if not GameState.npcs.has(id):
+		if not GameState.npcs.has(id) or GameState.run["flags"].has(id + "_gone"):
 			continue
 		vs.append([GameState.friend_hearts(id), _fill(str(d["villagers"][id][0 if GameState.friend_hearts(id) >= 6 else 1]))])
 	vs.sort_custom(func(a: Array, b: Array) -> bool: return int(a[0]) > int(b[0]))

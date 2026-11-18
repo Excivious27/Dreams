@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Rebuilds docs/ART-PROMPTS-16.md and -17.md from their sources in docs/src/
-so that every copy-paste prompt asks for at most 6 images, carries every rule
+so that every copy-paste prompt asks for at most 3 images, carries every rule
 it depends on (it works pasted into a fresh chat), and labels each image in its
 own clearly separated section. Images already uploaded (found in art/incoming/)
 are listed as received instead.   Run: python3 tools/build_prompt_files.py
@@ -72,7 +72,7 @@ def parse(raw):
 
 
 def chunks(n):
-    k = (n + 5) // 6
+    k = (n + 2) // 3  # Tom: ChatGPT copes with 2-3 images per prompt, no more
     base, extra = divmod(n, k)
     out, i = [], 0
     for j in range(k):
@@ -86,7 +86,7 @@ def build(raw, num, out_path, title, intro):
     rules = para(head, "RULES")
     skill_grid = para(head, "SKILL ICON GRID")
     L = [f"# Dreams — Art Prompts {num}: {title}\n", intro + "\n",
-         "HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at most 6 images and carries every rule it needs, so you can paste it into a fresh chat. Ask for the images one at a time if ChatGPT stops early (\"now image 2\"). Save each image under its exact file name and upload it here.\n"]
+         "HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at most 3 images and carries every rule it needs, so you can paste it into a fresh chat. Ask for the images one at a time if ChatGPT stops early (\"now image 2\"). Save each image under its exact file name and upload it here.\n"]
     received, n_prompt, n_img = [], 0, 0
     for title_b, notes, shared, images in batches:
         todo = [im for im in images if im[0].split(".")[0] not in have]

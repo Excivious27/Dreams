@@ -685,7 +685,11 @@ func _physics_process(delta: float) -> void:
 		_step_t -= delta
 		if _step_t <= 0.0:
 			_step_t = 0.22 if running else 0.3
-			Music.instance(get_tree()).step(_ground_word())
+			if swimming:
+				_step_t = 0.7
+				Music.instance(get_tree()).sfx("splash")
+			elif vehicle == "":
+				Music.instance(get_tree()).step(_ground_word())
 	if auto:
 		# Give up if a wall stops us.
 		if position.distance_to(before) < 0.2:
@@ -943,6 +947,7 @@ func _attack_hit() -> void:
 			if GameState.count("rounds") > 0:
 				_fire(wd, aim)
 				return
+			Music.instance(get_tree()).sfx("dry_click")
 			if not _dry_told:
 				_dry_told = true
 				map.hud.toast("Click. Out of rounds: the Street Armory makes more.", Color(1, 0.85, 0.6))

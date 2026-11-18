@@ -370,7 +370,7 @@
          "flags": [
           "locket_give"
          ],
-         "hint": "Take the locket to Finn at the lake."
+         "hint": "Take the locket to Finn in town."
         },
         "1": {
          "flags": [
@@ -802,7 +802,7 @@
       "quest_done": "knight"
      },
      "when": {
-      "flag": "knight_mercy_try"
+      "flag": "knight_reverted"
      },
      "after": "p3_knight_done",
      "lines": [
@@ -830,7 +830,7 @@
       "quest_done": "knight"
      },
      "when": {
-      "flag": "knight_fight"
+      "not_flag": "knight_reverted"
      },
      "after": "p3_knight_done",
      "lines": [
@@ -994,7 +994,7 @@
       ],
       "companion": "mer",
       "toast": "The merkitties' gift: you grow a tail in any water. Swim anywhere.",
-      "hint": "You can swim and dive anywhere now. The tunnels under the mountain (the grotto on mine floor 5) lead up to the top.",
+      "hint": "You can swim and dive anywhere now. The way to the top is the mountain pad now.",
       "sfx": "levelup"
      }
     },
@@ -1018,7 +1018,7 @@
       }
      ],
      "effects": {
-      "hint": "The bell needs a gold clapper (Alder). Sleep when you're ready: the moon road opens at the farm gate in the morning."
+      "hint": "The bell needs a gold clapper (Alder). Sleep when you're ready: the moon road opens at the mountain pad in the morning."
      }
     },
     {
@@ -1061,7 +1061,8 @@
       "sleep": true
      },
      "when": {
-      "quest": "teleporter"
+      "quest": "teleporter",
+      "not_flag": "final_started"
      },
      "lines": [
       {
@@ -1082,7 +1083,7 @@
       }
      ],
      "effects": {
-      "hint": "Mountain pad → moon → teleporter → station → the spire.",
+      "hint": "Mountain pad → moon → the teleporter → the spire.",
       "heal": true
      }
     }
@@ -1382,10 +1383,15 @@
      "effects": {
       "music": "meadow",
       "flags": [
-       "final_done"
+       "final_done",
+       "boss_fennimore"
       ],
       "hint": "Go home. Sleep. See what the morning says.",
-      "heal": true
+      "heal": true,
+      "clear_kind": [
+       "finargle_elder",
+       "shard"
+      ]
      }
     },
     {
@@ -1918,7 +1924,7 @@
       ],
       "toast": "Halo joined the crew.",
       "sfx": "levelup",
-      "hint": "Halo can drive you between the gangster districts (talk to him at the hideout)."
+      "hint": "Halo can drive you between the gangster districts (talk to her at the hideout)."
      }
     },
     {
@@ -2105,7 +2111,8 @@
      "effects": {
       "flags": [
        "crew_marlene",
-       "letter_decided"
+       "letter_decided",
+       "letter_burned"
       ],
       "toast": "Marlene joined the crew.",
       "sfx": "levelup"
@@ -2367,7 +2374,7 @@
       },
       {
        "who": "Doc",
-       "text": "I patched people for a man uptown, once. I stopped. Bring me five wild herbs from the forest and I'll patch for you instead, and I'll do it sober.",
+       "text": "I patched people for a man uptown, once. I stopped. Bring me five wild herbs from the forest and I'll patch for you instead, and I'll do it properly.",
        "choice": [
         "Hand over 5 wild herbs.",
         "I'll bring them."
@@ -2448,35 +2455,6 @@
       ],
       "toast": "Sasha follows the crew.",
       "sfx": "levelup"
-     }
-    },
-    {
-     "id": "g4_doc_man",
-     "trigger": {
-      "talk": "doc"
-     },
-     "when": {
-      "flags": [
-       "crew_doc",
-       "doc_loyal_3"
-      ],
-      "not_flag": "doc_truth"
-     },
-     "lines": [
-      {
-       "who": "Doc",
-       "text": "The man uptown. The one I patched for. He wasn't always— he had a daughter, you know. Had. He went to the tower with a photograph and came down without it, with a purple stone where his pocket should be."
-      },
-      {
-       "who": "Doc",
-       "text": "I'm telling you because when you get up there, you'll want to hit him. And you should. But there's a man in there, boss. I'd stake my hands on it."
-      }
-     ],
-     "effects": {
-      "flags": [
-       "doc_truth"
-      ],
-      "hint": "Doc says: there's a man in there."
      }
     },
     {
@@ -2650,14 +2628,50 @@
      }
     },
     {
+     "id": "g5_doors_sasha",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flags": [
+       "boss_uptown",
+       "doors_sasha"
+      ],
+      "not_flags": [
+       "letter_safe",
+       "tower_open"
+      ],
+      "quest": "pit"
+     },
+     "lines": [
+      {
+       "who": "Sasha",
+       "text": "Stand back. I used to clean these doors. The service lock still takes my old key."
+      },
+      {
+       "text": "A click, a sigh of brass, and the tower doors swing in without a sound."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet"
+      ],
+      "hint": "The lobby is quiet. Nobody knows you're in."
+     }
+    },
+    {
      "id": "g5_doors_force",
      "trigger": {
       "talk": "tower_doors"
      },
      "when": {
       "flag": "boss_uptown",
-      "not_flag": "letter_safe",
-      "quest": "pit"
+      "quest": "pit",
+      "not_flags": [
+       "letter_safe",
+       "tower_open"
+      ]
      },
      "title_card": true,
      "lines": [
@@ -2777,7 +2791,8 @@
        "final_started",
        "crew_doc"
       ],
-      "hp_below": 0.5
+      "hp_below": 0.5,
+      "not_flag": "boss_president"
      },
      "after": "g5_president",
      "lines": [
@@ -2821,7 +2836,7 @@
         "0": [
          {
           "who": "",
-          "text": "It comes out like a tooth. He cries out, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new."
+          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new."
          },
          {
           "who": "The President",

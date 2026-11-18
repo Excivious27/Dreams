@@ -82,6 +82,8 @@ func after_ready() -> void:
 	rng.seed = hash(interior_id) + int(GameState.run["day"])
 	var used := {}
 	for id in GameState.npcs:
+		if GameState.run["flags"].has(str(id) + "_gone"):
+			continue
 		var data: Dictionary = GameState.npcs.get(id, {"name": str(id).capitalize()})
 		var place := Npc.place_now(data.get("routine", []), str(id))
 		var here := _interior_matches(place, str(id))

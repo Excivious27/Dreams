@@ -276,7 +276,7 @@
   "value": 40,
   "rarity": "common",
   "tier": 1,
-  "desc": "Place it on the farm. Keeps crows off crops within 4 tiles."
+  "desc": "Place it on the farm. Keeps crows off crops within 8 tiles."
  },
  "honey": {
   "name": "Honey",
@@ -6712,7 +6712,8 @@
   "value": 40,
   "rarity": "rare",
   "tier": 3,
-  "desc": "A mushroom that lights the night."
+  "desc": "A mushroom that lights the night.",
+  "alias_of": "glowcap"
  },
  "starflower": {
   "name": "Starflower",
@@ -6739,7 +6740,7 @@
   "tier": 1,
   "energy": 30,
   "desc": "Sal's lifeblood.",
-  "family": "tree"
+  "family": "herb"
  },
  "tea": {
   "name": "Tea",
@@ -8082,7 +8083,7 @@
  "nails": {
   "name": "Nails",
   "type": "craft",
-  "value": 20,
+  "value": 7,
   "rarity": "common",
   "tier": 1
  },

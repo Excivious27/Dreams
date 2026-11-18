@@ -200,7 +200,7 @@
   "likes": [
    "wild_herb",
    "mushroom",
-   "glow_cap",
+   "glowcap",
    "moon_shard",
    "crystal_refined",
    "#herb",
@@ -849,7 +849,7 @@
    "wild_herb",
    "honey",
    "tea",
-   "glow_cap",
+   "glowcap",
    "herbal_tea",
    "#herb"
   ],
@@ -1475,7 +1475,7 @@
   "likes": [
    "bait",
    "mushroom",
-   "glow_cap",
+   "glowcap",
    "tea",
    "#mushroom",
    "mushroom_broth"

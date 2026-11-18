@@ -40,6 +40,7 @@ func build() -> void:
 			var key := "forage_moon_%d_%d" % [c.x, c.y]
 			if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]):
 				things[c] = {"type": "forage", "key": key, "item": "crystal_bloom", "hint": "A: pick"}
+	fill_ext = false
 	extend(10, 8)
 
 

@@ -383,7 +383,12 @@ func try_interact(c: Vector2i) -> bool:
 	if interact_common(c, thing):
 		return true
 	if thing.is_empty() and _building_doors.has(c) and _building_doors[c] != c and blocked.has(c):
-		hud.toast("The way in is the door at the front.", Color(0.95, 0.9, 0.8))
+		var door: Vector2i = _building_doors[c]
+		# Anywhere along the front wall counts as knocking on the door (painted
+		# doors aren't always dead centre).
+		if player and player.cell().y >= door.y - 1 and things.has(door):
+			return interact(door, things[door])
+		hud.toast("The way in is round the front (%s)." % ("below you" if player and player.cell().y < door.y else "this side"), Color(0.95, 0.9, 0.8))
 		return true
 	return false
 
@@ -425,7 +430,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 								(old as Sprite2D).texture = Art.tex("nature", "ftree_%s_late" % kind))
 			else:
 				wobble(c, 0.08)
-			var n := 1 + (1 if randf() < 0.3 + GameState.bonus("foraging", "forage_bonus") * 0.2 else 0)
+			var n := 1 + (1 if randf() < GameState.bonus("foraging", "forage_bonus") * 0.06 else 0)
 			pop_items(cell_center(c), str(thing["item"]), n)
 			xp("foraging", 4)
 			player.play_tool("hold")
@@ -454,35 +459,39 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var all: Dictionary = GameState.run.get("animals", {})
 				var st: Dictionary = all.get(nm, {"streak": 0, "last_pet": -9, "fed": -9})
 				var day := int(GameState.run["day"])
-				var species := str(a.kind).split("_")[0].capitalize()
-				# Holding hay: feed it (once a day). Fed and petted animals give each day.
+				var species := str(a.kind).split("_")[0].rstrip("0123456789").capitalize()
+				var fed_now := false
+				# Holding hay: feed it (once a day), then the same tap pets it.
 				if GameState.held_item() == "hay" and int(st["fed"]) != day:
 					GameState.add_item("hay", -1)
 					st["fed"] = day
-					all[nm] = st
-					GameState.run["animals"] = all
-					emote(a, "happy", 1.0, -18.0)
+					fed_now = true
 					Music.instance(get_tree()).sfx("eat", "pickup")
 					hud.toast("%s munches the hay." % species, Color(0.9, 1, 0.8))
-					return true
-				if int(st["last_pet"]) == day:
+				if int(st["last_pet"]) == day and not fed_now:
 					hud.toast("Already happy today." if int(st["fed"]) == day else "%s is hungry. Bring hay (hold it and tap)." % species)
 					return true
-				st["streak"] = int(st["streak"]) + 1 if int(st["last_pet"]) == day - 1 else 1
-				st["last_pet"] = day
+				if int(st["last_pet"]) != day:
+					st["streak"] = int(st["streak"]) + 1 if int(st["last_pet"]) == day - 1 else 1
+					st["last_pet"] = day
+					emote(a, "heart", 1.4, -18.0)
+					if not fed_now:
+						hud.toast("%s loves that." % species, Color(1, 0.8, 0.9))
+					xp("farming", 2)
+				else:
+					emote(a, "happy", 1.0, -18.0)
 				all[nm] = st
 				GameState.run["animals"] = all
-				emote(a, "heart", 1.4, -18.0)
-				hud.toast("%s loves that." % species, Color(1, 0.8, 0.9))
-				xp("farming", 2)
 				# A happy, fed animal gives: eggs from hens, milk from cows, goat milk, wool.
 				var k := str(a.kind)
-				var prod := "egg" if k.begins_with("chicken") or k.begins_with("hen") or k.begins_with("duck") else ("goat_milk" if k.begins_with("goat") else ("milk" if k.begins_with("cow") else ("sheep_wool" if k.begins_with("sheep") else "")))
-				if prod != "" and not bool(a.get("baby")):
+				var prod := "egg" if k.begins_with("chicken") or k.begins_with("hen") or k.begins_with("duck") else ("goat_milk" if k.begins_with("goat") else ("milk" if k.begins_with("cow") else ("sheep_wool" if k.begins_with("sheep") or k.begins_with("llama") else "")))
+				if prod != "" and not bool(a.get("baby")) and int(st.get("made", -9)) != day:
 					if int(st["fed"]) != day:
 						hud.toast("%s is too hungry to give anything today. Hay first." % species, Color(1, 0.85, 0.7))
 					else:
-						var n := 1 + (1 if randf() < GameState.bonus("farming", "animal_yield") else 0)
+						st["made"] = day
+						var ay := GameState.bonus("farming", "animal_yield")
+						var n := 1 + int(ay) + (1 if randf() < fmod(ay, 1.0) else 0)
 						pop_items(a.position, prod, n)
 						# Friendship shows in the goods: silver after 5 days running, gold after 14.
 						var q := "gold" if int(st["streak"]) >= 14 else ("silver" if int(st["streak"]) >= 5 else "")
@@ -549,9 +558,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 					# Every tree comes down: it falls, leaves a stump, and regrows
 					# after a few days (sooner with Old Growth). No infinite wood.
 					_mark_cleared(c)
-					if randf() < GameState.bonus("foraging", "sap_chance"):
+					if randf() < 0.10 + GameState.bonus("foraging", "sap_chance"):
 						pop_items(cell_center(c), "sap", 1)
-					if GameState.has_perk("foraging", "Old Growth") and randf() < 0.5:
+					if randf() < 0.2 + (0.5 if GameState.has_perk("foraging", "Old Growth") else 0.0):
 						pop_items(cell_center(c), "hardwood" if GameState.items.has("hardwood") else "wood", 1)
 					fell_tree(c, 3 + bonus)
 				else:
@@ -562,6 +571,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						sp.queue_free()
 					fx("poof", cell_center(c) + Vector2(0, -6), 16.0, 0.5)
 					pop_items(cell_center(c), "wood", 1 + (1 if randf() < 0.5 else 0) + bonus / 2)
+					if randf() < 0.35 and GameState.items.has("hardwood"):
+						pop_items(cell_center(c) + Vector2(4, 0), "hardwood", 1)
 			return true
 		"rock":
 			if GameState.held_tool() != "pickaxe":
@@ -613,6 +624,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			var item := str(thing.get("item", "mushroom"))
 			GameState.run["flags"][str(thing["key"])] = int(GameState.run["day"])
 			things.erase(c)
+			blocked.erase(c)
+			hard.erase(c)
 			var fsp: Node2D = props.get(c, null)
 			props.erase(c)
 			if fsp:
@@ -697,8 +710,11 @@ func _place_signposts() -> void:
 
 
 ## Light life for the added space: a few rocks, logs, bushes, clumps and critters.
+var fill_ext := true  # maps with their own look (the moon) turn the generic filler off
+
+
 func _fill_extension() -> void:
-	if _ext.size == Vector2i.ZERO:
+	if _ext.size == Vector2i.ZERO or not fill_ext:
 		return
 	var avoid := _ext_paths.duplicate()
 	for e in exits:
@@ -715,7 +731,7 @@ func _check_quests() -> void:
 		return
 	for id in GameState.tick_quests():
 		hud.toast("Quest complete: %s" % id.replace("_", " "), Color(1, 0.9, 0.4))
-		Music.instance(get_tree()).sfx("levelup")
+		Music.instance(get_tree()).sfx("quest_done", "levelup")
 
 
 ## Emote bubble over a node (W36): "heart", "surprise", "confused", "sleep", "music", "angry", "talk"...
@@ -864,8 +880,9 @@ func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0, kind := "") 
 
 ## Items burst out of a spot, bounce, then fly to you and land in the bag.
 func pop_items(at: Vector2, id: String, n: int, give_it := true) -> void:
-	if id in ["shard", "crystal_shard"] and randf() < GameState.bonus("mining", "shard_bonus") * n:
-		n += 1
+	if id in ["shard", "crystal_shard"]:
+		var ex := GameState.bonus("mining", "shard_bonus") * n
+		n += int(ex) + (1 if randf() < fmod(ex, 1.0) else 0)
 	if give_it:
 		give(id, n)
 	var icon := Art.tex("items", "pop_" + id) if Art.has("items", "pop_" + id) else Art.tex("items", Hud.icon_for(id))
@@ -1073,6 +1090,8 @@ func area_track() -> String:
 		return "festival"
 	if id in NIGHT_OK and GameState.is_night():
 		return "night"
+	if id in NIGHT_OK and GameState.is_wet() and ResourceLoader.exists("res://audio/music/rain.ogg"):
+		return "rain"
 	if id == "farm" and GameState.season() == "winter":
 		return "winter"
 	return t
@@ -1087,7 +1106,7 @@ func _boss_playing() -> bool:
 	if mu == null or not is_instance_valid(mu) or mu._current != "boss":
 		return false
 	for e in enemies:
-		if is_instance_valid(e) and (e.base_hp >= 60 or e._gift != null):
+		if is_instance_valid(e) and (e.base_hp >= 60 or e._gift != null or e.has_meta("boss_name")):
 			return true
 	return false
 
@@ -1334,6 +1353,8 @@ func boss_card(kind: String, title := "") -> void:
 	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president" if not GameState.is_penguins() else ""}.get(kind, "")
 	if kind.begins_with("card:"):
 		nm = kind.trim_prefix("card:")
+	if nm == "" and Art.has("ui", "card_" + kind):  # lieutenants and later bosses: ui/card_<kind>
+		nm = "card_" + kind
 	if nm == "" or not Art.has("ui", nm):
 		return
 	var layer := CanvasLayer.new()
@@ -1355,6 +1376,12 @@ func boss_card(kind: String, title := "") -> void:
 	lbl.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.05))
 	lbl.position = Vector2(110, 30)
 	lbl.size = Vector2(130, 30)
+	if tr.texture and tr.texture.get_height() > tr.texture.get_width() * 0.5:  # a framed portrait card, not a banner
+		tr.custom_minimum_size = Vector2(250, 150)
+		tr.size = Vector2(250, 150)
+		tr.position.y = 140
+		lbl.position = Vector2(60, 150)
+		lbl.size = Vector2(130, 24)
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tr.add_child(lbl)
 	add_child(layer)
@@ -1626,7 +1653,7 @@ func use_consumable(sel: String) -> bool:
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
 			Racket.set_heat(Racket.heat() - int(it.get("amount", 2)))
-			fx("sparkle", player.position + Vector2(0, -14), 12.0, 0.6)
+			fx("cy_scramble" if Art.has("fx", "cy_scramble") else "sparkle", player.position + Vector2(0, -14), 12.0, 0.6)
 			hud.toast("%s: heat down to %d." % [GameState.item_name(sel), Racket.heat()], Color(0.5, 1.0, 0.95))
 			return true
 		"emp":
@@ -1657,6 +1684,7 @@ func use_consumable(sel: String) -> bool:
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
 			Bot.deploy(self, sel, it)
+			fx("cy_bot_deploy" if Art.has("fx", "cy_bot_deploy") else "poof", player.position + Vector2(10, 0), 12.0, 0.5)
 			hud.toast("%s deployed: %d seconds of cover." % [GameState.item_name(sel), int(it.get("life", 30))], Color(0.5, 1.0, 0.95))
 			return true
 		"drone":
@@ -1666,7 +1694,7 @@ func use_consumable(sel: String) -> bool:
 				return true
 			GameState.run["flags"]["drone_ready"] = int(GameState.run["day"]) + 2
 			player.play_tool("hold")
-			fx("sparkle", player.position + Vector2(0, -26), 10.0, 0.6)
+			fx("cy_drone_scan" if Art.has("fx", "cy_drone_scan") else "sparkle", player.position + Vector2(0, -26), 10.0, 0.6)
 			var seen := 0
 			var tips: Array = []
 			for e in enemies:
@@ -1984,6 +2012,13 @@ func handle_tap(pos: Vector2) -> void:
 	var dc := door_for_cell(c)
 	if dc != Vector2i(-1, -1):
 		c = dc
+	# Tapping a tree's leaves means the tree: its trunk is a few cells below.
+	if not (things.has(c) and str(things[c].get("type", "")) in ["tree", "fruit_tree"]):
+		for dy in range(1, 4):
+			var tc := c + Vector2i(0, dy)
+			if things.has(tc) and str(things[tc].get("type", "")) in ["tree", "fruit_tree"]:
+				c = tc
+				break
 	var e := nearest_enemy_to(world, 14.0)
 	if pet != null and is_instance_valid(pet) and pet.visible and world.distance_to(pet.position + Vector2(0, -6)) < 12.0:
 		if player.position.distance_to(pet.position) < 40.0:
@@ -2185,7 +2220,11 @@ func _process(delta: float) -> void:
 	if _upd_t >= 3.0 and OS.has_feature("web") and not _other_told and bool(JavaScriptBridge.eval("window.dreamsOtherOpen === true", true)):
 		_other_told = true
 		GameState.save()
-		hud.toast("Dreams is open in another window too. Play in one at a time, or the two copies will overwrite each other's saves.", Color(1, 0.7, 0.5))
+		SaveGame._blocked = true  # the newer window owns the farm now; this one stops writing
+		say([{"text": "Dreams was opened in another window. This copy has stopped saving so it can't overwrite your farm. Close it, or reload the page to play here."}])
+	if _upd_t >= 3.0 and OS.has_feature("web") and not _other_told and bool(JavaScriptBridge.eval("window.dreamsOtherOlder === true", true)):
+		_other_told = true
+		hud.toast("Dreams is open in another window too. That one has stopped saving; keep playing here.", Color(1, 0.85, 0.6))
 	if _upd_t >= 3.0 and not _update_told and OS.has_feature("web"):
 		_upd_t = 0.0
 		if bool(JavaScriptBridge.eval("window.dreamsUpdateReady === true", true)):
@@ -3201,11 +3240,18 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
 	var night: bool = GameState.is_night() and GameState.run["flags"].has("lighthouse_lit")
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
+	var baited := false
+	if GameState.count("bait") > 0:  # bait: quicker bites and a shot at better fish
+		GameState.add_item("bait", -1)
+		wait *= 0.6
+		baited = true
+		hud.toast("Bait on the hook (%d left)" % GameState.count("bait"), Color(0.8, 0.95, 1))
+	var window := 1.0 + GameState.bonus("fishing", "escape_less")
 	var t := 0.0
 	var bite := false
 	var caught := false
 	var tree := get_tree()
-	while t < wait + 1.0:
+	while t < wait + window:
 		await tree.process_frame
 		if not is_inside_tree():
 			return  # the map changed under the line (scene change, collapse)
@@ -3219,6 +3265,8 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 				bob.play("bite")
 		if (Input.is_action_just_pressed("a") or Input.is_action_just_pressed("tool") or Input.is_action_just_pressed("action")) and t > 0.2:
 			caught = bite
+			if not bite:
+				hud.toast("Too soon! Wait for the !!!", Color(1, 0.8, 0.6))
 			break
 	player.frozen = false
 	if bob:
@@ -3228,10 +3276,10 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		bob.queue_free()
 	if caught:
 		var lvl := GameState.skill_level("fishing")
-		var reach := mini(pool.size(), 2 + lvl * 2 + (2 if night else 0))
-		var fish: String = pool[randi() % reach] if randf() > 0.08 * (1.0 - minf(1.0, GameState.bonus("fishing", "escape_less") * 2.0)) else "boot"
+		var reach := mini(pool.size(), 2 + lvl * 2 + (2 if night else 0) + (1 if baited else 0))
+		var fish: String = pool[randi() % reach] if randf() > 0.08 else "boot"
 		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
-			fish = pool[mini(pool.size() - 1, reach + 1)]
+			fish = pool[randi_range(mini(reach, pool.size() - 1), pool.size() - 1)]
 		Music.instance(get_tree()).sfx("reel")
 		player.play_tool("reel")
 		give(fish)
@@ -3351,6 +3399,10 @@ func place_project_site() -> void:
 			nm = "crystal_rock"
 	else:
 		nm = "warehouse_b" if stg >= 1 and Art.has("buildings", "warehouse_b") else "card_table"
+	# The real build stages (Prompt 16-2) once a stage is done.
+	var real := "%s_%d" % ["ward" if GameState.is_penguins() else "hq", clampi(stg, 1, 6)]
+	if stg >= 1 and Art.has("buildings", real):
+		nm = real
 	if Art.has("buildings", nm):
 		prop("buildings", nm, c, 1)
 	elif Art.has("props", nm):

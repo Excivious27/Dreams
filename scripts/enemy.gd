@@ -52,6 +52,8 @@ var _lunge := 0.0             # >0: dashing at the player
 var _lunge_dir := Vector2.ZERO
 var _lunge_cd := 0.0
 var _lunge_tele := 0.0        # telegraph before a lunge
+var _range_tele := 0.0        # telegraph before a shot
+var _range_aim := Vector2.ZERO
 var _shield := 0.0            # >0: invulnerable
 var _shield_cd := 0.0
 var _range_cd := 0.0
@@ -144,6 +146,8 @@ func setup(k: String, tier_override := -1) -> void:
 		reward = int(round(int(ed["reward"]) * (GameState.tier_scale(k, tier, "loot") if tier != native else 1.0)))
 	abilities = (ed.get("abilities", []) as Array).duplicate()
 	for a in tw.get("abilities", []):
+		if a == "ranged" and (abilities.has("lunge") or abilities.has("stomp") or PACK_KINDS.has(k)):
+			continue  # bruisers stay bruisers
 		if tier > native and not abilities.has(a):
 			abilities.append(a)
 	inflicts = str(ed.get("status", ""))
@@ -213,7 +217,7 @@ func _process(delta: float) -> void:
 		if _burn_t >= 1.0:
 			_burn_t = 0.0
 			set_meta("burn", int(get_meta("burn")) - 1)
-			hit(1, position, true)  # magic: no knockback/stun from a burn tick
+			hit(1, position, true, false, true)  # a tick: no knockback/stun
 			if not _alive:
 				return
 			map.fx("sparkle", position + Vector2(0, -6), 14.0, 0.4)
@@ -253,7 +257,8 @@ func _process(delta: float) -> void:
 	_range_cd = maxf(0.0, _range_cd - delta)
 	_stomp_cd = maxf(0.0, _stomp_cd - delta)
 	_shield = maxf(0.0, _shield - delta)
-	if _tick_abilities(delta, player, to, dist):
+	if _tick_abilities(delta, player, to, dist, tgt):
+		queue_redraw()
 		return
 	var stunned := _stun > 0.0
 	if not stunned and _windup <= 0.0:
@@ -310,7 +315,7 @@ func _process(delta: float) -> void:
 					GameState.status_apply(inflicts, tier)
 			_cooldown = 1.1
 	elif not stunned and dist < reach and _cooldown <= 0.0:
-		_windup = 0.32 * (1.35 if kind.begins_with("thug_") and Crew.perk_level("doors") >= 1 else 1.0)
+		_windup = (0.32 + 0.04 * clampi(damage - 2, 0, 10)) * (1.35 if kind.begins_with("thug_") and Crew.perk_level("doors") >= 1 else 1.0)
 		if _sprite and _sprite.sprite_frames.has_animation("attack"):
 			_sprite.play("attack")
 		_attacking = 0.45
@@ -368,7 +373,7 @@ func _slide(step: Vector2) -> void:
 
 
 ## `magic`: spells pierce half the armour and don't feed the anti-kite counter.
-func hit(n: int, from: Vector2, magic := false, ally := false) -> bool:
+func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) -> bool:
 	if not _alive:
 		return false
 	if _shield > 0.0:
@@ -394,7 +399,9 @@ func hit(n: int, from: Vector2, magic := false, ally := false) -> bool:
 	_squash = 1.0
 	# Only the weakest pests flinch out of an attack; anything tougher finishes
 	# its swing (the red wind-up tint tells you to step back).
-	if tier == 0 and _kb_hits < 1:
+	if tick:
+		pass  # a burn tick: no flinch, no knockback, no stun
+	elif tier == 0 and _kb_hits < 1:
 		_windup = 0.0
 	# Knockback: lighter for heavy kinds, cut by the tier's resistance, and it
 	# decays with every quick repeat so you can't juggle something forever.
@@ -402,7 +409,8 @@ func hit(n: int, from: Vector2, magic := false, ally := false) -> bool:
 		_kb_hits += 1
 		_kb_t = 1.6
 	var combo := maxf(0.25, 1.0 - 0.3 * maxi(0, _kb_hits - 1))
-	_stun = (0.32 if base_hp < 30 else 0.15) * combo * (1.0 - kb_resist * 0.6)
+	if not tick:
+		_stun = maxf(_stun, (0.32 if base_hp < 30 else 0.15) * combo * (1.0 - kb_resist * 0.6))
 	var heavy := 1.0 if base_hp < 16 else (0.55 if base_hp < 40 else 0.3)
 	_knock = (position - from).normalized() * (230.0 if tier == 0 else 150.0) * heavy * combo * (1.0 - kb_resist) * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
 	# Juggled three times: answer with a lunge the moment the stun ends.
@@ -433,7 +441,9 @@ func hit(n: int, from: Vector2, magic := false, ally := false) -> bool:
 
 # ---- abilities ---------------------------------------------------------------
 ## Returns true when the ability took the whole frame (lunging / stomping).
-func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> bool:
+func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt: Node2D = null) -> bool:
+	if tgt == null:
+		tgt = player
 	if abilities.has("enrage") and not _enraged and float(hp) / max_hp < 0.35:
 		_enraged = true
 		speed *= 1.35
@@ -469,7 +479,11 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> 
 	if _lunge > 0.0:
 		_lunge -= delta
 		_slide(_lunge_dir * speed * 3.4 * delta)
-		if dist < reach + 2.0 and player.invuln <= 0.0:
+		var pd := position.distance_to(player.position)
+		if tgt != player and is_instance_valid(tgt) and position.distance_to(tgt.position) < reach + 2.0 and tgt.has_method("take_damage"):
+			tgt.call("take_damage", maxi(1, damage + int(tier / 2)), position)
+			_lunge = 0.0
+		elif pd < reach + 2.0 and player.invuln <= 0.0:
 			player.take_damage(GameState.enemy_damage(damage), position)
 			if inflicts != "":
 				GameState.status_apply(inflicts, tier)
@@ -498,9 +512,14 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float) -> 
 		_windup = 0.0
 		_stomp_tele = 0.45
 		return true
-	if abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0:
+	if _range_tele > 0.0:
+		_range_tele -= delta
+		if _range_tele <= 0.0 and _stun <= 0.0:
+			_shoot(_range_aim)
+	elif abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0 and tgt == player:
 		_range_cd = 2.2 - 0.2 * tier
-		_shoot(to.normalized())
+		_range_tele = 0.35  # a beat to see it coming
+		_range_aim = to.normalized()
 	return false
 
 
@@ -630,8 +649,10 @@ func _draw() -> void:
 		tele = "lunge"
 	elif _shield > 0.0:
 		tele = "shield"
-	elif _windup > 0.0 and abilities.has("ranged") and _range_cd > 1.5:
+	elif _range_tele > 0.0:
 		tele = "ranged"
+	elif _stomp_tele > 0.0:
+		tele = "stomp"
 	elif _enraged and _since_hit < 0.3:
 		tele = "enrage"
 	if tele != "" and Art.has("ui", "tele_" + tele):

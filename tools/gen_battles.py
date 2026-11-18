@@ -12,14 +12,13 @@ def scene(rid):
 
 B = {}
 BOSSES = {"bf_rail_yards": "lt_pike", "bf_dockside": "lt_ostrova", "bf_shattered_vale": "knight", "bf_frostfield": "big_grump"}
-def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="boss"):
+def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="battle"):
     exits = [{"rect": [cols // 2 - 2, rows - 1, 4, 1], "scene": back[0], "spawn": back[1:], "facing": "down", "label": "▼ fall back"}]
     R[rid] = {"cols": cols, "rows": rows, "music": music, "backdrop": "mountains" if "snow" in patch or "frost" in rid else "hills", "ground": ground,
               "path": path, "spawn": [cols // 2, rows - 9], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
               "exits": exits, "paths": [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
               "water_blobs": water, "plateaus": plateaus, "props": props, "patch_set": patch, "ground_threshold": 0.15, "fruit": 0,
               "gen": {"clumps": 4, "scatter": 30, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
-              "intro": [brief],
               "battle": {"title": title, "who": who, "brief": brief, "win": win, "lose": lose, "points": points, "enemies": enemies,
                          "tickets": 150, "supply": 15, "wave_every": 7.0, "enemy_cap": 16, "tier_bonus": max(0, tier - 2), "reward": reward, "back": back}}
     if rid in BOSSES:
@@ -51,7 +50,7 @@ battle("bf_shattered_vale", "Shattered Vale", "penguins", 4, 118, 92, "grass", "
        [{"id": "a", "name": "Shard Crown", "cell": [30, 29], "owner": "enemy"}, {"id": "b", "name": "Prism Lake", "cell": [60, 42], "owner": "neutral"},
         {"id": "c", "name": "Broken Gate", "cell": [92, 32], "owner": "enemy"}, {"id": "d", "name": "Vale Steps", "cell": [60, 60], "owner": "neutral"},
         {"id": "e", "name": "Sunken Shrine", "cell": [20, 70], "owner": "neutral"}, {"id": "f", "name": "Spire Camp", "cell": [70, 84], "owner": "ally"}],
-       ["shard", "shard_spider", "prism_wisp", "geode_golem", "knight", "crystal_baby"],
+       ["shard", "shard_spider", "prism_wisp", "geode_golem", "crystal_baby"],
        [{"name": "stone_circle", "cell": [58, 58], "w": 4, "h": 2}],
        ["crow", "owl"],
        "The Vale broke when the Dark Crystal fell through it. Its shards still march. Hold the six points and the shards will stop answering it.",

@@ -152,7 +152,7 @@ func set_duck(db: float) -> void:
 		return
 	_duck = db
 	if _tw_in and _tw_in.is_valid():
-		return
+		_tw_in.kill()
 	create_tween().tween_property(_player, "volume_db", MUSIC_DB + _duck, 2.0)
 
 
@@ -175,6 +175,6 @@ func toggle_mute() -> bool:
 		_player.stop()
 		_fading.stop()
 	elif _player.stream:
-		_player.volume_db = MUSIC_DB
+		_player.volume_db = MUSIC_DB + _duck
 		_player.play()
 	return _muted

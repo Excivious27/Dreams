@@ -88,7 +88,7 @@ func _ready() -> void:
 	# keeps counting across doors); after it runs out it has gone home.
 	var until := float(state().get("down_until", -1.0))
 	if until > 0.0:
-		var left := until - Time.get_ticks_msec() / 1000.0
+		var left := minf(until - Time.get_ticks_msec() / 1000.0, DOWN_WINDOW)  # a restarted app resets the clock
 		if left > 0.0:
 			state()["hp"] = 0
 			_down_t = left
@@ -333,7 +333,7 @@ func _process(delta: float) -> void:
 			var pc := map.world_to_cell(position)
 			for c in map.things:
 				var t := str(map.things[c].get("type", ""))
-				if t in ["mrock", "forage", "rock"] and (c as Vector2i).distance_to(pc) <= 8.0 and str(map.things[c].get("ore", "")) in ["silver", "gold", "ruby", "crystal", "mithril", ""]:
+				if t in ["mrock", "forage", "rock"] and (c as Vector2i).distance_to(pc) <= 8.0 and (t == "forage" or str(map.things[c].get("ore", "")) in ["silver", "gold", "ruby", "crystal", "mithril"]):
 					map.emote(self, "surprise", 0.8)
 					if anim.sprite_frames.has_animation("bark"):
 						anim.play("bark")

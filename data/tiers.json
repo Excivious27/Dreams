@@ -196,21 +196,27 @@
   "ores": [
    [
     "stone",
+    "coal",
     "copper"
    ],
    [
     "stone",
+    "coal",
     "copper",
     "iron"
    ],
    [
     "stone",
+    "coal",
     "iron",
+    "silver",
     "gold"
    ],
    [
     "stone",
+    "coal",
     "iron",
+    "silver",
     "gold",
     "shard"
    ],

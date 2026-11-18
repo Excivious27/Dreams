@@ -218,6 +218,7 @@ static func _restore(m: GameMap, id: String) -> void:
 	if int(c.get("mana", 0)) > 0:
 		GameState.grow_vital("mana", int(c["mana"]))
 	m.fx("levelup", m.player.position + Vector2(0, -16), 12.0, 1.0)
+	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 	m.shake(3.0)
 	Music.instance(m.get_tree()).play(m.music_track)
 	var lines: Array = [{"text": str(c["crystal_restored"])}, {"who": str(c["elder"]), "text": str(c["thanks"])},
@@ -236,7 +237,7 @@ static func _shop(m: GameMap, id: String) -> void:
 	var items: Array = c["shop"]
 	var opts: Array = []
 	for it in items:
-		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), int(GameState.shop_price(str(it[0]), int(it[1])) * (1.0 - GameState.bonus("harmony", "colony_discount")))])
+		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), int(GameState.shop_price(str(it[0]), int(int(it[1]) * (1.0 - GameState.bonus("harmony", "colony_discount")))))])
 	opts.append("Leave")
 	var d := Dialogue.instance(m.get_tree())
 	d.say([{"who": str(c["shop_who"]), "text": "For a friend of the colony. (◆%d)" % int(GameState.run["crystals"]), "choice": opts, "key": ""}])
@@ -244,7 +245,7 @@ static func _shop(m: GameMap, id: String) -> void:
 	var i := d.last_choice
 	if i < 0 or i >= items.size():
 		return
-	var price := int(GameState.shop_price(str(items[i][0]), int(items[i][1])) * (1.0 - GameState.bonus("harmony", "colony_discount")))
+	var price := int(GameState.shop_price(str(items[i][0]), int(int(items[i][1]) * (1.0 - GameState.bonus("harmony", "colony_discount")))))
 	if int(GameState.run["crystals"]) < price:
 		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 		return

@@ -301,7 +301,7 @@ static func tree_block(thing: Dictionary) -> String:
 	# Ordinary trees always come down with any axe; only the special ones are gated.
 	if kind == "crystal_wood":
 		return gather_block("axe", 2, "foraging", 5, "the crystal tree")
-	if kind == "hardwood" or hp >= 8:
+	if kind == "hardwood":
 		return gather_block("axe", 1, "foraging", 3, "this old tree")
 	return ""
 
@@ -601,6 +601,10 @@ static func backpack() -> Array:
 	for id in run["inventory"].keys():
 		if not run["toolbar"].has(id):
 			out.append(id)
+	# Tools off the toolbar wait here too, so nothing you own can vanish.
+	for t in run.get("tools", []):
+		if not run["toolbar"].has(t) and not out.has(t):
+			out.append(t)
 	out.sort()
 	return out
 
@@ -625,6 +629,11 @@ static func add_tool(id: String) -> void:
 			tb[old] = id
 		else:
 			var free := tb.find("")
+			if free < 0:  # a full bar: the first non-tool slot makes room (that item stays in the bag)
+				for i in tb.size():
+					if not run["tools"].has(str(tb[i])):
+						free = i
+						break
 			if free >= 0:
 				tb[free] = id
 
@@ -671,9 +680,9 @@ static func add_xp(skill: String, xp: int) -> bool:
 	return leveled
 
 
-## Slow, steady curve: 40, 76, 136, 220, 328, 460, 616, 796, 1000...
+## Steady curve: 40, 70, 100 ... capped at 400 a level, so the last tiers stay reachable.
 static func xp_for_next(level: int) -> int:
-	return 40 + level * level * 12 - 12 * level + (level - 1) * 24
+	return mini(40 + 30 * (level - 1), 400)
 
 
 static func skill_level(skill: String) -> int:
@@ -766,10 +775,12 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 ## Ceilings for stacking effects (the big trees can't make costs negative or
 ## chances certain).
 const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
-	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.9, "pass_risk": 0.2,
+	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.5, "pass_risk": 0.2,
 	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
-	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.8, "interest": 0.05,
-	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0}
+	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.6, "interest": 0.05,
+	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0,
+	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.5, "extra_day": 0.25, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
+	"animal_yield": 1.0, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0}
 
 
 static var _bonus_cache := {}
@@ -1150,7 +1161,10 @@ static func can_gift(npc: String, item: String) -> bool:
 		return false
 	if str(items[item].get("type", "")) in NO_GIFT_TYPES:
 		return false
-	return not (run.get("gifted_today", {}) as Dictionary).has(npc)
+	if (run.get("gifted_today", {}) as Dictionary).has(npc):
+		return false
+	# Two gifts a week each, like Stardew; birthdays always count.
+	return is_birthday(npc) or int((run.get("gifts_week", {}) as Dictionary).get(npc, 0)) < 2
 
 
 ## Give a gift: takes the item, adds friendship, remembers today. Returns the gain.
@@ -1161,7 +1175,16 @@ static func can_gift(npc: String, item: String) -> bool:
 const FAMILY_NAMES := {"veg": "Vegetable", "herb": "Herb", "berry": "Berry", "fruit": "Fruit", "tree": "Orchard Fruit", "grain": "Grain", "mushroom": "Mushroom", "flower": "Flower", "magic": "Wonder Crop"}
 
 static func family(id: String) -> String:
-	return str(items.get(id, {}).get("family", ""))
+	var it: Dictionary = items.get(id, {})
+	var f := str(it.get("family", ""))
+	if f != "":
+		return f
+	# Plain forage counts toward its kind: wild herbs are herbs, berries berries.
+	var basic: String = {"wild_herb": "herb", "berry": "berry", "flower": "flower"}.get(id, "")
+	if basic != "":
+		return basic
+	var ty := str(it.get("type", ""))
+	return ty if ty in ["herb", "flower", "fruit"] else ""
 
 
 static func family_name(f: String) -> String:
@@ -1262,8 +1285,11 @@ static func give_gift(npc: String, item: String) -> int:
 	if not run.has("gift_seen"):
 		run["gift_seen"] = {}
 	var gs: Dictionary = run["gift_seen"].get(npc, {})
-	gs[item] = gain
+	gs[item] = gain / (3 if is_birthday(npc) else 1)
 	run["gift_seen"][npc] = gs
+	var gw: Dictionary = run.get("gifts_week", {})
+	gw[npc] = int(gw.get(npc, 0)) + 1
+	run["gifts_week"] = gw
 	add_friend(npc, gain)
 	var g: Dictionary = run.get("gifted_today", {})
 	g[npc] = true
@@ -1285,6 +1311,11 @@ static func add_friend(npc: String, n: int) -> void:
 			notify(str(line))
 		if int(fr[npc]) / 25 > before_h:
 			_apply_max_stats()
+			# Hand-coded heart perks (not in heart_perks.json) announce here, every level passed.
+			for h in range(before_h + 1, int(fr[npc]) / 25 + 1):
+				var pk := friend_perk_at(npc, h)
+				if pk != "" and not (Perks.data().get(npc, {}) as Dictionary).has(str(h)):
+					notify("%s ♥%d: %s" % [str(npcs.get(npc, {}).get("name", npc.capitalize())), h, pk])
 	# Bram's soup: the first chat with him each day tops you up.
 	if npc == "bram" and n > 0 and Perks.flag("soup") and int(run["flags"].get("soup_day", -1)) != int(run["day"]):
 		run["flags"]["soup_day"] = int(run["day"])
@@ -1982,6 +2013,9 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
 	run["gifted_today"] = {}
+	(run.get("pet", {}) as Dictionary).erase("down_until")  # a night's rest gets the pup up
+	if int(run["day"]) % 7 == 1:
+		run["gifts_week"] = {}
 	for line in Perks.morning():
 		notify(str(line))
 	var nm := Mail.morning()

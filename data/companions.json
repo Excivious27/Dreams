@@ -102,7 +102,7 @@
   },
   "mk_kit": {
    "name": "Kit",
-   "sprite": "the_kid",
+   "sprite": "mk_kit",
    "arc": "gangsters",
    "ability": "gift:gale",
    "ability_name": "Gale Gift",
@@ -112,7 +112,7 @@
   },
   "mk_ember": {
    "name": "Ember",
-   "sprite": "flame",
+   "sprite": "mk_ember",
    "arc": "gangsters",
    "ability": "gift:cinder",
    "ability_name": "Cinder Gift",
@@ -122,7 +122,7 @@
   },
   "mk_dahlia": {
    "name": "Dahlia",
-   "sprite": "gambler",
+   "sprite": "mk_dahlia",
    "arc": "gangsters",
    "ability": "gift:bramble",
    "ability_name": "Bramble Gift",
@@ -132,7 +132,7 @@
   },
   "mk_juno": {
    "name": "Juno",
-   "sprite": "cyber",
+   "sprite": "mk_juno",
    "arc": "gangsters",
    "ability": "gift:volt",
    "ability_name": "Volt Gift",
@@ -142,7 +142,7 @@
   },
   "mk_rio": {
    "name": "Rio",
-   "sprite": "gambler",
+   "sprite": "mk_rio",
    "arc": "gangsters",
    "ability": "gift:beat",
    "ability_name": "Tempo Gift",
@@ -152,7 +152,7 @@
   },
   "mk_mei": {
    "name": "Mei",
-   "sprite": "gambler",
+   "sprite": "mk_mei",
    "arc": "gangsters",
    "ability": "gift:fortune",
    "ability_name": "Fortune Gift",
@@ -162,7 +162,7 @@
   },
   "mk_bruno": {
    "name": "Bruno",
-   "sprite": "brute",
+   "sprite": "mk_bruno",
    "arc": "gangsters",
    "ability": "gift:iron",
    "ability_name": "Iron Gift",
@@ -172,7 +172,7 @@
   },
   "mk_tomas": {
    "name": "Tomas",
-   "sprite": "gambler",
+   "sprite": "mk_tomas",
    "arc": "gangsters",
    "ability": "gift:mirror",
    "ability_name": "Mirror Gift",
@@ -182,7 +182,7 @@
   },
   "mk_sable": {
    "name": "Sable",
-   "sprite": "speedster",
+   "sprite": "mk_sable",
    "arc": "gangsters",
    "ability": "gift:shade",
    "ability_name": "Shade Gift",
@@ -192,7 +192,7 @@
   },
   "mk_atlas": {
    "name": "Atlas",
-   "sprite": "enforcer",
+   "sprite": "mk_atlas",
    "arc": "gangsters",
    "ability": "gift:gravity",
    "ability_name": "Gravity Gift",

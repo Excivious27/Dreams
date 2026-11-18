@@ -454,7 +454,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1610,
+    "price": 1330,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -689,7 +689,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1970,
+    "price": 1690,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -952,7 +952,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1900,
+    "price": 1610,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1161,7 +1161,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1660,
+    "price": 1440,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1265,7 +1265,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1470,
+    "price": 1240,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1875,7 +1875,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. A kick scooter.",
-    "price": 1650,
+    "price": 1190,
     "art_missing": false
    },
    {
@@ -1980,7 +1980,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Build rocket parts here.",
-    "price": 5250,
+    "price": 4110,
     "art_missing": false,
     "unlock": {
      "progress": 1,
@@ -2094,7 +2094,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Crude bills. Risky.",
-    "price": 1020,
+    "price": 790,
     "art_missing": false
    },
    {
@@ -3127,7 +3127,7 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Circuit boards, data chips.",
     "price": 1160,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
@@ -3150,7 +3150,7 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
@@ -3173,7 +3173,7 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
@@ -3196,7 +3196,7 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
@@ -3233,7 +3233,7 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nothing yet: Doc wants better tools.",
     "price": 1900,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
@@ -3256,7 +3256,7 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
@@ -3279,7 +3279,7 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
@@ -3302,7 +3302,7 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  },
@@ -3339,7 +3339,7 @@
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Servos.",
     "price": 1950,
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 2,
@@ -3362,7 +3362,7 @@
       3
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 3,
@@ -3385,7 +3385,7 @@
       5
      ]
     },
-    "art_missing": true
+    "art_missing": false
    },
    {
     "tier": 4,
@@ -3408,7 +3408,7 @@
       7
      ]
     },
-    "art_missing": true
+    "art_missing": false
    }
   ]
  }

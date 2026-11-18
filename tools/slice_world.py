@@ -5158,6 +5158,25 @@ def _grit(file):
     r0 = cells_of(0)
     side = r0[int(round(14 * len(r0) / 16.0)):] + r1[:int(round(2 * len(r1) / 16.0))]
     if side: strip([scale_to(im, height=min(96, max(40, int(im.height * 0.96)))) for im in side], G, "walk")
+    if NR == 8:  # full sheets: tool rows 3-5
+        def sc2(im): return scale_to(im, height=min(110, max(40, int(im.height * 0.96))))
+        Wd0 = rgba.shape[1]
+        t3 = _col_cells(rgba, bands[3][0], bands[3][1], 0, Wd0, 16)
+        t4 = _col_cells(rgba, bands[4][0], bands[4][1], 0, Wd0, 16)
+        t5 = _col_cells(rgba, bands[5][0], bands[5][1], 0, int(Wd0 * 0.6), 10)
+        def put(cs, n, name, a, b):
+            a, b = int(round(a * len(cs) / float(n))), int(round(b * len(cs) / float(n)))
+            if cs[a:b]: strip([sc2(im) for im in cs[a:b]], G, name)
+        for nm, a, b in [("hoe_down", 0, 3), ("hoe_right", 3, 6), ("hoe_up", 6, 9), ("axe_down", 9, 12), ("axe_right", 12, 15)]:
+            put(t3, 16, nm, a, b)
+        up = t3[int(round(15 * len(t3) / 16.0)):] + t4[:int(round(2 * len(t4) / 16.0))]
+        if up: strip([sc2(im) for im in up], G, "axe_up")
+        for nm, a, b in [("pickaxe_down", 2, 5), ("pickaxe_right", 5, 8), ("pickaxe_up", 8, 11), ("water_down", 11, 12),
+                         ("water_right", 12, 13), ("water_up", 13, 14), ("hold_down", 14, 15), ("eat_down", 15, 16)]:
+            put(t4, 16, nm, a, b)
+        for nm, a, b in [("cast_right", 0, 3), ("reel_right", 3, 6), ("sit", 6, 7), ("sleep", 7, 8), ("wave", 8, 10)]:
+            put(t5, 10, nm, a, b)
+        print("   %s tool rows: %d %d %d cells" % (cid, len(t3), len(t4), len(t5)))
     # Swim (right side of row 5), ride and power-up (row 6).
     Wd = rgba.shape[1]
     sw = cells_of(R_SWIM, 300, int(Wd * 0.62)) if NR == 8 else cells_of(R_SWIM, 300, int(Wd * 0.69), int(Wd * 0.875))
@@ -5207,6 +5226,396 @@ def _grit(file):
         save(scale_to(im, height=96), "portraits/" + cid, nm)
 
 
+
+# Prompt 16-1: the President's eight lieutenants, two per sheet (rows 0-3, 4-7).
+LTS = {"w330_lt_vance_lucia.png": ("lt_vance", "lt_lucia"), "w331_lt_brock_silas.png": ("lt_brock", "lt_silas"),
+       "w332_lt_mags_surveyor.png": ("lt_mags", "lt_surveyor"), "w333_lt_pike_ostrova.png": ("lt_pike", "lt_ostrova")}
+LT_ROWS = {0: [("idle", 0, 2), ("idle_up", 2, 4), ("idle_side", 4, 6), ("walk_down", 6, 10), ("walk_up", 10, 14)],
+           1: [("attack_down", 2, 5), ("attack_up", 5, 8), ("attack", 8, 11), ("hurt", 11, 13), ("defeated", 13, 15), ("taunt", 15, 16)],
+           2: [("power", 0, 6), ("guard", 6, 8), ("tired", 8, 10)]}
+
+
+def _col_cells(rgba, y0, y1, x0, x1, expect):
+    """Cells in a band split at empty columns; wide runs (sprites touching) are
+    cut evenly by the typical width, extra runs merged across the smallest gaps."""
+    a = rgba[y0:y1, x0:x1, 3] > 40
+    col = a.sum(axis=0) > 2
+    runs = []; st = None
+    for x in range(len(col) + 1):
+        v = x < len(col) and col[x]
+        if v and st is None: st = x
+        if not v and st is not None:
+            runs.append([st, x]); st = None
+    runs = [r for r in runs if r[1] - r[0] >= 8]
+    if not runs: return []
+    ws = sorted(r[1] - r[0] for r in runs)
+    med = ws[len(ws) // 2]
+    out = []
+    for a0, b0 in runs:
+        k = max(1, int(round((b0 - a0) / float(med)))) if (b0 - a0) > 1.6 * med else 1
+        w = (b0 - a0) / float(k)
+        for i in range(k): out.append([int(a0 + i * w), int(a0 + (i + 1) * w)])
+    while len(out) > expect:
+        k = min(range(len(out) - 1), key=lambda i: out[i + 1][0] - out[i][1])
+        out[k:k + 2] = [[out[k][0], out[k + 1][1]]]
+    cells = []
+    for a0, b0 in out:
+        sub = rgba[y0:y1, x0 + a0:x0 + b0]
+        ys = np.where((sub[..., 3] > 40).any(axis=1))[0]
+        if len(ys): cells.append(Image.fromarray(sub[ys[0]:ys[-1] + 1].copy()))
+    return cells
+
+
+def _lt_sheet(file):
+    rgba = load_hue(file)
+    H, Wd = rgba.shape[:2]
+    # The boss cards sit at the right edge: everything else is left of them.
+    colr = (rgba[:, :, 3] > 40)
+    cx0 = Wd
+    for x in range(Wd - 1, 900, -1):
+        if colr[:, x].sum() > 150: cx0 = x
+    cx0 = min(cx0, 1240)
+    on = colr[:, :cx0 - 8].any(axis=1)
+    runs = []; st = None
+    for y in range(H + 1):
+        v = y < H and on[y]
+        if v and st is None: st = y
+        if not v and st is not None:
+            if runs and st - runs[-1][1] < 7: runs[-1][1] = y
+            else: runs.append([st, y])
+            st = None
+    runs = [r for r in runs if r[1] - r[0] > 30]
+    if len(runs) != 8:
+        print("   %s: %d row bands, using even rows" % (file, len(runs)))
+        runs = [[int(r * H / 8) + 2, int((r + 1) * H / 8) - 2] for r in range(8)]
+    for half, cid in enumerate(LTS[file]):
+        G = "characters/" + cid
+        S.manifest[G] = {}
+        S.manifest["portraits/" + cid] = {}
+        bands = [(max(0, a - 3), min(H, b + 3)) for a, b in runs[half * 4:half * 4 + 4]]
+        def cells(r, x1=cx0 - 8, min_area=450, expect=16):
+            if expect == 0:
+                return _band_cells(rgba, bands[r][0], bands[r][1], 0, x1, min_area, expect)
+            return _col_cells(rgba, bands[r][0], bands[r][1], 0, x1, expect)
+        rows = [cells(0, Wd), cells(1, Wd), cells(2)]
+        def sc(im): return scale_to(im, height=max(30, min(110, int(im.height * 0.96))))
+        n2 = len(rows[2]); pw = 6 if n2 >= 10 else max(1, n2 - 4)
+        LT_ROWS[2] = [("power", 0, pw), ("guard", pw, pw + 2), ("tired", pw + 2, pw + 4)]
+        for r, names in LT_ROWS.items():
+            cs = rows[r]; n = len(cs)
+            if r == 2: n = 16
+            print("   %s row %d: %d cells" % (cid, r, n))
+            for name, c0, c1 in names:
+                a, b = int(round(c0 * n / 16.0)), int(round(c1 * n / 16.0))
+                if cs[a:b]: strip([sc(im) for im in cs[a:b]], G, name)
+        r0, r1 = rows[0], rows[1]
+        side = r0[int(round(14 * len(r0) / 16.0)):] + r1[:int(round(2 * len(r1) / 16.0))]
+        if side: strip([sc(im) for im in side], G, "walk")
+        # Row D: four small views, then four faces.
+        d = cells(3, min_area=700, expect=0)
+        for nm, im in zip(["view_front", "view_right", "view_back", "view_left"], d[:4]):
+            strip([sc(im)], G, nm)
+        for nm, im in zip(["neutral", "angry", "sad", "worried"], d[4:8]):
+            save(scale_to(im, height=96), "portraits/" + cid, nm)
+        # The boss card in this half.
+        y0, y1 = half * H // 2, (half + 1) * H // 2
+        sub = rgba[y0:y1, cx0 - 8:]
+        ys = np.where((sub[..., 3] > 40).sum(axis=1) > 30)[0]
+        xs = np.where((sub[..., 3] > 40).sum(axis=0) > 30)[0]
+        if len(ys) and len(xs):
+            card = Image.fromarray(sub[ys[0]:ys[-1] + 1, xs[0]:xs[-1] + 1])
+            save(scale_to(card, height=200), "ui", "card_" + cid)
+
+
+def w330(): _lt_sheet("w330_lt_vance_lucia.png")
+def w331(): _lt_sheet("w331_lt_brock_silas.png")
+def w332(): _lt_sheet("w332_lt_mags_surveyor.png")
+def w333(): _lt_sheet("w333_lt_pike_ostrova.png")
+
+
+# Prompt 16-2: the town projects, six build stages each (3 x 2 grid).
+def _stages(file, prefix, width):
+    rgba = load(file)
+    H, Wd = rgba.shape[:2]
+    for i in range(6):
+        r, c = divmod(i, 3)
+        sub = rgba[r * H // 2:(r + 1) * H // 2, c * Wd // 3:(c + 1) * Wd // 3]
+        m = sub[..., 3] > 40
+        ys = np.where(m.sum(axis=1) > 3)[0]; xs = np.where(m.sum(axis=0) > 3)[0]
+        if not len(ys): continue
+        im = Image.fromarray(sub[ys[0]:ys[-1] + 1, xs[0]:xs[-1] + 1].copy())
+        save(im.resize((max(1, int(im.width * width)), max(1, int(im.height * width))), Image.LANCZOS), "buildings", "%s_%d" % (prefix, i + 1))
+
+
+def w334(): _stages("w334_crystal_ward.png", "ward", 0.42)
+def w335(): _stages("w335_hq.png", "hq", 0.42)
+
+
+# Prompt 16-4: the Marked, two per sheet. Bands are grouped per character:
+# each character ends with its faces band (the tallest).
+MKS = {"w304_marked_kit_ember.png": ("mk_kit", "mk_ember"), "w305_marked_dahlia_juno.png": ("mk_dahlia", "mk_juno"),
+       "w306_marked_rio_mei.png": ("mk_rio", "mk_mei"), "w307_marked_bruno_tomas.png": ("mk_bruno", "mk_tomas"),
+       "w308_marked_sable_atlas.png": ("mk_sable", "mk_atlas")}
+MK_ROWS = {0: [("idle", 0, 2), ("idle_up", 2, 4), ("idle_side", 4, 6), ("walk_down", 6, 10), ("walk_up", 10, 14)],
+           1: [("attack_down", 2, 5), ("attack_up", 5, 8), ("attack", 8, 11), ("hurt", 11, 13), ("yield", 13, 15), ("wave", 15, 16)],
+           2: [("power", 0, 6), ("guard", 6, 8), ("tired", 8, 10), ("sit", 10, 11), ("sleep", 11, 12), ("cheer", 12, 14), ("laugh", 14, 16)]}
+
+
+def _mk_sheet(file):
+    rgba = load_hue(file)
+    H, Wd = rgba.shape[:2]
+    on = (rgba[:, :, 3] > 40).any(axis=1)
+    runs = []; st = None
+    for y in range(H + 1):
+        v = y < H and on[y]
+        if v and st is None: st = y
+        if not v and st is not None:
+            if runs and st - runs[-1][1] < 6: runs[-1][1] = y
+            else: runs.append([st, y])
+            st = None
+    runs = [r for r in runs if r[1] - r[0] > 30]
+    hs = [b - a for a, b in runs]
+    tall = sorted(range(len(runs)), key=lambda i: -hs[i])[:2]
+    cut = 4 if len(runs) == 8 else min(tall) + 1   # first character's faces band ends it
+    groups = [runs[:cut], runs[cut:]]
+    for cid, bands in zip(MKS[file], groups):
+        if len(bands) < 4:
+            print("   %s: only %d bands" % (cid, len(bands))); continue
+        G = "characters/" + cid
+        S.manifest[G] = {}
+        S.manifest["portraits/" + cid] = {}
+        bands = [(max(0, a - 3), min(H, b + 3)) for a, b in bands]
+        def sc(im): return scale_to(im, height=max(30, min(110, int(im.height * 0.96))))
+        rows = [_col_cells(rgba, bands[r][0], bands[r][1], 0, Wd, 16) for r in range(3)]
+        for r, names in MK_ROWS.items():
+            cs = rows[r]; n = len(cs)
+            print("   %s row %d: %d cells" % (cid, r, n))
+            for name, c0, c1 in names:
+                a, b = int(round(c0 * n / 16.0)), int(round(c1 * n / 16.0))
+                if cs[a:b]: strip([sc(im) for im in cs[a:b]], G, name)
+        r0, r1 = rows[0], rows[1]
+        side = r0[int(round(14 * len(r0) / 16.0)):] + r1[:int(round(2 * len(r1) / 16.0))]
+        if side: strip([sc(im) for im in side], G, "walk")
+        d = _band_cells(rgba, bands[-1][0], bands[-1][1], 0, Wd, 700, 0)
+        for nm, im in zip(["view_front", "view_right", "view_back", "view_left"], d[:4]):
+            strip([sc(im)], G, nm)
+        faces = d[4:]
+        if faces:
+            top = max(im.height for im in faces)
+            faces = [im for im in faces if im.height >= 0.8 * top and im.width >= 0.6 * im.height]
+            split = []
+            for im in faces:  # faces drawn touching come out as one wide blob
+                k = int(round(im.width / float(im.height))) if im.width > 1.6 * im.height else 1
+                w = im.width / float(k)
+                split += [im.crop((int(i * w), 0, int((i + 1) * w), im.height)) for i in range(k)]
+            faces = split
+        for nm, im in zip(["neutral", "happy", "sly", "angry", "surprised", "embarrassed", "worried"], faces):
+            save(scale_to(im, height=96), "portraits/" + cid, nm)
+
+
+def w304(): _mk_sheet("w304_marked_kit_ember.png")
+def w305(): _mk_sheet("w305_marked_dahlia_juno.png")
+def w306(): _mk_sheet("w306_marked_rio_mei.png")
+def w307(): _mk_sheet("w307_marked_bruno_tomas.png")
+def w308(): _mk_sheet("w308_marked_sable_atlas.png")
+
+
+# Prompt 16-5: gift effects, 8 strips of 8 frames per sheet -> fx/gift_<name>.
+GFX = {"w309_gift_fx_a.png": ["cinder", "volt", "mirror", "bramble", "gale", "iron", "shade", "tempo"],
+       "w310_gift_fx_b.png": ["fortune", "gravity", "guard", "open", "stone", "splinter", "yield", "dark_burst"]}
+
+
+def _gfx(file):
+    rgba = load(file)
+    H, Wd = rgba.shape[:2]
+    for r, nm in enumerate(GFX[file]):
+        y0, y1 = r * H // 8, (r + 1) * H // 8
+        frames = []
+        for c in range(8):
+            sub = rgba[y0:y1, c * Wd // 8:(c + 1) * Wd // 8].copy()
+            frames.append(Image.fromarray(sub))
+        # one shared crop box so the effect stays centred frame to frame
+        boxes = [f.getbbox() for f in frames if f.getbbox()]
+        if not boxes: continue
+        bx = (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes))
+        frames = [f.crop(bx) for f in frames]
+        k = min(1.0, 96.0 / max(frames[0].width, frames[0].height))
+        frames = [f.resize((max(1, int(f.width * k)), max(1, int(f.height * k))), Image.LANCZOS) for f in frames]
+        strip(frames, "fx", "gift_" + nm)
+
+
+def w309(): _gfx("w309_gift_fx_a.png")
+def w310(): _gfx("w310_gift_fx_b.png")
+
+
+# Prompt 16-6: the chrome. Stations 4 tiers x 3 rows, bots row; 18 icons; 8 fx strips.
+def w311():
+    rgba = load("w311_cyber_stations.png")
+    H, Wd = rgba.shape[:2]
+    names = [["st_terminal_%d" % i for i in range(1, 5)], ["st_clinic_%d" % i for i in range(1, 5)], ["st_robotics_%d" % i for i in range(1, 5)]]
+    ybands = [(0, 275), (275, 535), (535, 790)]
+    for r, nms in enumerate(names):
+        cs = _col_cells(rgba, ybands[r][0], ybands[r][1], 0, Wd, 4)
+        for nm, im in zip(nms, cs):
+            save(im.resize((max(1, int(im.width * 0.42)), max(1, int(im.height * 0.42))), Image.LANCZOS), "props", nm)
+    # Bots: the last band; the swarm is six small pieces, so cut by thirds of the cell grid.
+    y0 = int(H * 0.78)
+    band = rgba[y0:, :]
+    cuts = [0, 290, 590, 900, 1220, Wd]
+    for i, nm in enumerate(["bot_scrap_bot", "bot_guard_bot", "bot_drone_swarm", "bot_spy_drone", "bot_spy_drone_landed"]):
+        sub = band[:, cuts[i]:cuts[i + 1]]
+        m = sub[..., 3] > 40
+        ys = np.where(m.any(axis=1))[0]; xs = np.where(m.any(axis=0))[0]
+        if len(ys):
+            im = Image.fromarray(sub[ys[0]:ys[-1] + 1, xs[0]:xs[-1] + 1].copy())
+            save(im.resize((max(1, int(im.width * 0.42)), max(1, int(im.height * 0.42))), Image.LANCZOS), "props", nm)
+
+
+def w312():
+    rgba = load("w312_cyber_icons.png")
+    ids = "circuit_board data_chip servo scrambler ghost_ledger emp_charge emp_heavy spy_drone scrap_bot guard_bot drone_swarm optic_implant optic_mk2 reflex_wires reflex_mk2 chrome_arm subdermal_plating neural_link".split()
+    rows = _blob_rows(rgba, 0, rgba.shape[1], 900, 90, 12)
+    cells = [c for r in rows for c in r]
+    for nm, im in zip(ids, cells):
+        save(scale_to(im, 32, 32), "items", nm)
+    print("   cyber icons:", len(cells))
+
+
+def w313():
+    rgba = load("w313_cyber_fx.png")
+    H, Wd = rgba.shape[:2]
+    for r, nm in enumerate(["emp", "blackout", "bot_zap", "drone_scan", "hack", "implant", "scramble", "bot_deploy"]):
+        y0, y1 = r * H // 8, (r + 1) * H // 8
+        frames = [Image.fromarray(rgba[y0:y1, c * Wd // 8:(c + 1) * Wd // 8].copy()) for c in range(8)]
+        boxes = [f.getbbox() for f in frames if f.getbbox()]
+        if not boxes: continue
+        bx = (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes))
+        frames = [f.crop(bx) for f in frames]
+        k = min(1.0, 96.0 / max(frames[0].width, frames[0].height))
+        strip([f.resize((max(1, int(f.width * k)), max(1, int(f.height * k))), Image.LANCZOS) for f in frames], "fx", nm if nm == "emp" else "cy_" + nm)
+
+
+# Prompt 16-7: portrait rows, 7 moods each -> portraits/npc_<id>.
+PORTRAIT_ROWS = {"w336_portraits_a.png": ["npc_old_moss", "npc_tam", "npc_benno", "npc_gideon_summer", "npc_sal", "npc_catkins"],
+                 "w337_portraits_kids.png": ["npc_pip", "npc_tobin", "npc_wren_jr", "npc_mabel", "npc_lumi", "npc_theo", "npc_bram", "npc_juniper"]}
+
+
+def _portrait_rows(file):
+    rgba = load(file)
+    H, Wd = rgba.shape[:2]
+    on = (rgba[:, :, 3] > 40).sum(axis=1) > 3
+    runs = []; st = None
+    for y in range(H + 1):
+        v = y < H and on[y]
+        if v and st is None: st = y
+        if not v and st is not None:
+            if runs and st - runs[-1][1] < 5: runs[-1][1] = y
+            else: runs.append([st, y])
+            st = None
+    runs = [r for r in runs if r[1] - r[0] > 40]
+    ids = PORTRAIT_ROWS[file]
+    if len(runs) != len(ids):
+        print("   %s: %d rows for %d ids, using even rows" % (file, len(runs), len(ids)))
+        runs = [[int(i * H / len(ids)), int((i + 1) * H / len(ids))] for i in range(len(ids))]
+    for pid, (y0, y1) in zip(ids, runs):
+        cells = _col_cells(rgba, y0, y1, 0, Wd, 7)
+        S.manifest["portraits/" + pid] = {}
+        for nm, im in zip(["neutral", "happy", "sad", "angry", "surprised", "sly", "worried"], cells):
+            save(scale_to(im, height=96), "portraits/" + pid, nm)
+        print("   %s: %d" % (pid, len(cells)))
+
+
+def w336(): _portrait_rows("w336_portraits_a.png")
+def w337(): _portrait_rows("w337_portraits_kids.png")
+
+
+def _bands(rgba, gap=6, minh=30, x1=None):
+    H = rgba.shape[0]
+    on = (rgba[:, :x1, 3] > 40).sum(axis=1) > 2
+    runs = []; st = None
+    for y in range(H + 1):
+        v = y < H and on[y]
+        if v and st is None: st = y
+        if not v and st is not None:
+            if runs and st - runs[-1][1] < gap: runs[-1][1] = y
+            else: runs.append([st, y])
+            st = None
+    return [(max(0, a - 3), min(H, b + 3)) for a, b in runs if b - a > minh]
+
+
+def _put(cs, n, G, name, a, b, hmax=110):
+    a, b = int(round(a * len(cs) / float(n))), int(round(b * len(cs) / float(n)))
+    if cs[a:b]: strip([scale_to(im, height=max(20, min(hmax, int(im.height * 0.96)))) for im in cs[a:b]], G, name)
+
+
+def _fx_strip(cells, name, size=96):
+    if not cells: return
+    w = max(c.width for c in cells); h = max(c.height for c in cells)
+    fr = []
+    for c in cells:
+        f = Image.new("RGBA", (w, h)); f.paste(c, ((w - c.width) // 2, (h - c.height) // 2)); fr.append(f)
+    k = min(1.0, float(size) / max(w, h))
+    strip([f.resize((max(1, int(f.width * k)), max(1, int(f.height * k))), Image.LANCZOS) for f in fr], "fx", name)
+
+
+# Prompt 17-1: Catkins of Cat-topia.
+def w262():
+    rgba = load_hue("w262_catkins.png")
+    H, Wd = rgba.shape[:2]
+    b = _bands(rgba)
+    G = "characters/catkins"
+    S.manifest[G] = {}
+    if len(b) < 4:
+        print("   catkins: %d bands" % len(b)); return
+    r0 = _col_cells(rgba, b[0][0], b[0][1], 0, Wd, 16)
+    r1 = _col_cells(rgba, b[1][0], b[1][1], 0, Wd, 16)
+    for nm, a, c in [("idle", 0, 2), ("idle_up", 2, 4), ("idle_side", 4, 6), ("walk_down", 6, 10), ("walk_up", 10, 14)]:
+        _put(r0, 16, G, nm, a, c)
+    side = r0[int(round(14 * len(r0) / 16.0)):] + r1[:int(round(2 * len(r1) / 16.0))]
+    if side: strip([scale_to(im, height=int(im.height * 0.96)) for im in side], G, "walk")
+    for nm, a, c in [("hood", 2, 6), ("talk", 6, 10), ("wave", 14, 16)]:
+        _put(r1, 16, G, nm, a, c)
+    r2 = _col_cells(rgba, b[2][0], b[2][1], 0, int(Wd * 0.66), 10)
+    for nm, a, c in [("sit", 0, 2), ("happy", 2, 4), ("sad", 4, 6), ("run", 6, 10)]:
+        _put(r2, 10, G, nm, a, c)
+    _fx_strip(_col_cells(rgba, b[2][0], b[2][1], int(Wd * 0.66), Wd, 6), "meow_pow_wow")
+    d = _band_cells(rgba, b[3][0], b[3][1], 0, Wd, 700, 0)
+    for nm, im in zip(["view_front", "view_right", "view_back", "view_left"], d[:4]):
+        strip([scale_to(im, height=int(im.height * 0.96))], G, nm)
+    S.manifest["portraits/catkins"] = {}
+    for nm, im in zip(["neutral", "happy", "sad", "angry", "surprised", "sly", "worried"], d[4:]):
+        save(scale_to(im, height=96), "portraits/catkins", nm)
+
+
+# Prompt 17-1: the finargles and Fennimore.
+def w263():
+    rgba = load_hue("w263_finargles.png")
+    H, Wd = rgba.shape[:2]
+    b = _bands(rgba, gap=10)
+    print("   finargle bands:", len(b))
+    if len(b) < 4: return
+    G = "enemies/finargle"; S.manifest[G] = {}
+    r0 = _col_cells(rgba, b[0][0], b[0][1], 0, Wd, 16)
+    for nm, a, c in [("idle", 0, 4), ("walk", 4, 8), ("walk_down", 8, 10), ("walk_up", 10, 12), ("hurt", 12, 14), ("faint", 14, 16)]:
+        _put(r0, 16, G, nm, a, c, 64)
+    r1 = _col_cells(rgba, b[1][0], b[1][1], 0, int(Wd * 0.79), 14)
+    _put(r1, 14, G, "attack", 0, 4, 64)
+    _put(r1, 14, G, "blink", 4, 10, 64)
+    _fx_strip(_col_cells(rgba, b[1][0], b[1][1], int(Wd * 0.79), Wd, 4), "daze", 48)
+    F = "enemies/fennimore"; S.manifest[F] = {}
+    r2 = _col_cells(rgba, b[2][0], b[2][1], 0, Wd, 19)
+    for nm, a, c in [("idle", 0, 4), ("walk", 4, 8), ("attack", 8, 12), ("hurt", 12, 14), ("turned", 14, 19)]:
+        _put(r2, 19, F, nm, a, c, 90)
+    d = _band_cells(rgba, b[3][0], b[3][1], 0, Wd, 700, 0)
+    if len(d) >= 3:
+        save(scale_to(d[0], height=96), "portraits/fennimore", "neutral")
+        save(scale_to(d[1], height=96), "portraits/finargle", "neutral")
+        save(scale_to(d[2], height=96), "portraits/finargle_elder", "neutral")
+        E = "enemies/finargle_old"; S.manifest[E] = {}
+        _put(d[3:7], 4, E, "idle", 0, 2, 64)
+        _put(d[3:7], 4, E, "walk", 2, 4, 64)
+        _put(d[3:7], 4, E, "hurt", 0, 1, 64)
+
 def w295(): _grit("w295_hero_dad_gang_full.png")
 def w296(): _grit("w296_hero_pax_gang_full.png")
 def w297(): _grit("w297_hero_june_gang_full.png")
@@ -5223,6 +5632,8 @@ def w303():
             save(crop(rgba, b), "ui", "card_hero_%s_gang" % nm)
     print("   w303: %d cards" % len(cards))
 def w299(): _grit("w299_hero_nia_gang_full.png")
+def w301(): _grit("w301_hero_marisol_gang_full.png")
+def w302(): _grit("w302_hero_bo_gang_full.png")
 def w300(): _grit("w300_hero_ollie_gang_full.png")
 
 
@@ -5230,7 +5641,7 @@ if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
     if os.path.exists(mpath):
         S.manifest.update(json.load(open(mpath)))
-    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w237", w237), ("w238", w238), ("w239", w239), ("w240", w240), ("w241", w241), ("w242", w242), ("w243", w243), ("w244", w244), ("w245", w245), ("w246", w246), ("w247", w247), ("w248", w248), ("w249", w249), ("w250", w250), ("w256", w256), ("w257", w257), ("w258", w258), ("w259", w259), ("w260", w260), ("w261", w261), ("w251a", w251a), ("w253a", w253a), ("w255a", w255a), ("w274", w274), ("w275", w275), ("w276", w276), ("w277", w277), ("w278", w278), ("w279", w279), ("w280", w280), ("w281", w281), ("w282", w282), ("w283", w283), ("w284", w284), ("w285", w285), ("w286", w286), ("w287", w287), ("w288", w288), ("w290", w290), ("w292", w292), ("w293", w293), ("w294", w294), ("w289", w289), ("w295", w295), ("w296", w296), ("w297", w297), ("w298", w298), ("w299", w299), ("w303", w303), ("w300", w300), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
+    steps = [("w1", w1), ("w2", w2), ("w3", w3), ("w4", w4), ("w5", w5), ("w6", w6), ("w7", w7), ("w8", w8), ("w22", w22), ("w23", w23), ("w9", w9), ("w10", w10), ("w11", w11), ("w16", w16), ("w17", w17), ("w18", w18), ("w19", w19), ("w12", w12), ("w13", w13), ("w14", w14), ("w15", w15), ("w20", w20), ("w21", w21), ("w24", w24), ("w25", w25), ("w26", w26), ("w27", w27), ("w28", w28), ("w29", w29), ("w30", w30), ("w31", w31), ("w32", w32), ("w33", w33), ("w34", w34), ("w35", w35), ("w36", w36), ("w39", w39), ("w43", w43), ("w40", w40), ("w41", w41), ("w42", w42), ("w44", w44), ("w45", w45), ("w46", w46), ("w47", w47), ("w48", w48), ("w49", w49), ("w50", w50), ("w51", w51), ("w52", w52), ("w53", w53), ("w54", w54), ("w55", w55), ("w60", w60), ("w61", w61), ("w62", w62), ("w63", w63), ("w64", w64), ("w65", w65), ("w66", w66), ("w67", w67), ("w68", w68), ("w69", w69), ("w70", w70), ("w71", w71), ("w72", w72), ("w73", w73), ("w74", w74), ("w75", w75), ("w76", w76), ("w77", w77), ("w78", w78), ("w79", w79), ("w80", w80), ("w81", w81), ("w82", w82), ("w83", w83), ("w84", w84), ("w85", w85), ("w86", w86), ("w87", w87), ("w88", w88), ("w89", w89), ("w100", w100), ("w101", w101), ("w102", w102), ("w103", w103), ("w104", w104), ("w105", w105), ("w106", w106), ("w107", w107), ("w108", w108), ("w109", w109), ("w110", w110), ("w111", w111), ("w112", w112), ("w113", w113), ("w56", w56), ("w120", w120), ("w121", w121), ("w122", w122), ("w123", w123), ("w124", w124), ("w125", w125), ("w126", w126), ("w127", w127), ("w128", w128), ("w129", w129), ("w130", w130), ("w131", w131), ("w132", w132), ("w133", w133), ("w134", w134), ("w135", w135), ("w136", w136), ("w137", w137), ("w138", w138), ("w139", w139), ("w140", w140), ("w141", w141), ("w142", w142), ("w143", w143), ("w144", w144), ("w145", w145), ("w150", w150), ("w151", w151), ("w152", w152), ("w153", w153), ("w154", w154), ("w155", w155), ("w156", w156), ("w157", w157), ("w158", w158), ("w159", w159), ("w160", w160), ("w161", w161), ("w162", w162), ("w163", w163), ("w164", w164), ("w165", w165), ("w166", w166), ("w167", w167), ("w168", w168), ("w169", w169), ("w170", w170), ("w171", w171), ("w172", w172), ("w173", w173), ("w174", w174), ("w175", w175), ("w176", w176), ("w177", w177), ("w178", w178), ("w179", w179), ("w180", w180), ("w181", w181), ("w182", w182), ("w183", w183), ("w_names", w_names), ("w_names2", w_names2), ("w_names3", w_names3), ("w_names4", w_names4), ("w_interiors", w_interiors), ("w_names5", w_names5), ("w_title_portrait", w_title_portrait), ("w184", w184), ("w189", w189), ("w192", w192), ("w195", w195), ("w196", w196), ("w197", w197), ("w198", w198), ("w199", w199), ("w200", w200), ("w201", w201), ("w202", w202), ("w203", w203), ("w204", w204), ("w205", w205), ("w206", w206), ("w207", w207), ("w208", w208), ("w209", w209), ("w210", w210), ("w211", w211), ("w212", w212), ("w213", w213), ("w214", w214), ("w215", w215), ("w216", w216), ("w217", w217), ("w218", w218), ("w219", w219), ("w220", w220), ("w221", w221), ("w222", w222), ("w223", w223), ("w224", w224), ("w225", w225), ("w226", w226), ("w227", w227), ("w228", w228), ("w229", w229), ("w230", w230), ("w231", w231), ("w232", w232), ("w233", w233), ("w234", w234), ("w235", w235), ("w236", w236), ("w237", w237), ("w238", w238), ("w239", w239), ("w240", w240), ("w241", w241), ("w242", w242), ("w243", w243), ("w244", w244), ("w245", w245), ("w246", w246), ("w247", w247), ("w248", w248), ("w249", w249), ("w250", w250), ("w256", w256), ("w257", w257), ("w258", w258), ("w259", w259), ("w260", w260), ("w261", w261), ("w251a", w251a), ("w253a", w253a), ("w255a", w255a), ("w274", w274), ("w275", w275), ("w276", w276), ("w277", w277), ("w278", w278), ("w279", w279), ("w280", w280), ("w281", w281), ("w282", w282), ("w283", w283), ("w284", w284), ("w285", w285), ("w286", w286), ("w287", w287), ("w288", w288), ("w290", w290), ("w292", w292), ("w293", w293), ("w294", w294), ("w289", w289), ("w295", w295), ("w296", w296), ("w297", w297), ("w298", w298), ("w299", w299), ("w303", w303), ("w300", w300), ("w301", w301), ("w302", w302), ("w304", w304), ("w305", w305), ("w306", w306), ("w307", w307), ("w308", w308), ("w309", w309), ("w310", w310), ("w311", w311), ("w312", w312), ("w313", w313), ("w336", w336), ("w337", w337), ("w262", w262), ("w263", w263), ("w330", w330), ("w334", w334), ("w335", w335), ("w331", w331), ("w332", w332), ("w333", w333), ("w193", w193), ("w194", w194), ("w190", w190), ("w191", w191), ("w186", w186), ("w187", w187), ("w188", w188), ("w_demagenta", w_demagenta), ("w_fillfix", w_fillfix), ("w_cloudfeather", w_cloudfeather), ("w_petfix", w_petfix), ("w_layer_anchors", w_layer_anchors)]
     only = sys.argv[1:]
     for name, fn in steps:
         if only and name not in only:

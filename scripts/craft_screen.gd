@@ -76,7 +76,7 @@ func _ready() -> void:
 	_cats = HFlowContainer.new()
 	v.add_child(_cats)
 	var sc := ScrollContainer.new()
-	sc.custom_minimum_size = Vector2(250, 250)
+	sc.custom_minimum_size = Vector2(250, 150)
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	v.add_child(sc)
@@ -204,15 +204,17 @@ func _card(rc: Dictionary, why: String, disc: bool) -> Control:
 	h.add_child(ic)
 	var l := Label.new()
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	l.add_theme_font_size_override("font_size", 7)
+	l.add_theme_font_size_override("font_size", 8)
 	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.custom_minimum_size = Vector2(200, 0)
 	if not disc:
 		l.text = "???\nFind: %s" % Crafting.discover_hint(rc)
 		l.add_theme_color_override("font_color", Color(0.65, 0.65, 0.65))
 	else:
 		var n := int(rc.get("n", 1))
 		var top := "%s%s%s" % ["✓ " if Crafting._owned(rc) else "", str(rc["name"]), " ×%d" % n if n > 1 else ""]
-		var bot := Crafting.have_text(rc)
+		var bot := Crafting.have_short(rc)
 		if why != "":
 			bot = "Locked: " + why
 		l.text = "%s   ⏱%s\n%s" % [top, Crafting.fmt_minutes(Crafting.minutes_for(station, rc, tier)), bot]

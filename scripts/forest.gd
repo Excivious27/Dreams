@@ -152,7 +152,7 @@ func after_ready() -> void:
 	for i in n:
 		var at := cell_center(Vector2i(randi_range(6, cols - 7), randi_range(12, rows - 8)))
 		if not blocked.has(world_to_cell(at)):
-			spawn_enemy("wisp" if GameState.is_penguins() else "thug_speedster", at)
+			spawn_enemy("wisp" if GameState.is_penguins() else ("thug_speedster" if GameState.progress_tier() >= 1 else "thug_lookout"), at)
 	if not GameState.run["flags"].has("forest_seen"):
 		GameState.run["flags"]["forest_seen"] = true
 		player.frozen = true
@@ -195,7 +195,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"great_tree":
 			if GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")) and not GameState.run["flags"].has("campfire_done"):
-				tell([{"who": "Star Crystal", "text": "Not yet, farmer. Somebody's waiting for you up the mountain pass first, by a campfire. Go and sit with them."}])
+				tell([{"who": "Star Crystal", "text": "Not yet, farmer. Walk the mountain pass, then sleep on it. Somebody up there wants a word first."}])
+			elif GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")) and not GameState.run["flags"].has("babies_done"):
+				tell([{"who": "Star Crystal", "text": "The babies still hold the mountain pass. The sky can wait until they're calm."}])
 			elif GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")):
 				go_to("sky", Vector2(16 * TILE, 26 * TILE), "up")
 			else:

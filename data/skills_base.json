@@ -42,14 +42,14 @@
     {
      "id": "harvest_moon",
      "name": "Harvest Moon",
-     "desc": "Crops sell for 8% more (per rank)",
+     "desc": "Crops sell for 3% more (per rank)",
      "ranks": 3,
      "tier": 1,
      "requires": [
       "green_thumb"
      ],
      "effect": {
-      "crop_value": 0.08
+      "crop_value": 0.03
      }
     },
     {
@@ -669,14 +669,14 @@
     {
      "id": "defender",
      "name": "Defender",
-     "desc": "15% chance to shrug off a hit (per rank)",
+     "desc": "12% chance to shrug off a hit (per rank)",
      "ranks": 2,
      "tier": 1,
      "requires": [
       "tough"
      ],
      "effect": {
-      "block": 0.15
+      "block": 0.12
      }
     },
     {
@@ -752,14 +752,14 @@
     {
      "id": "iron_skin",
      "name": "Iron Skin",
-     "desc": "Take 20% less damage (per rank)",
+     "desc": "Take 17% less damage (per rank)",
      "ranks": 2,
      "tier": 3,
      "requires": [
       "warrior"
      ],
      "effect": {
-      "damage_reduction": 0.2
+      "damage_reduction": 0.17
      }
     },
     {
@@ -893,14 +893,14 @@
     {
      "id": "monopolist",
      "name": "Monopolist",
-     "desc": "Sell box pays 20% more",
+     "desc": "Sell box pays 5% more",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "appraiser"
      ],
      "effect": {
-      "sell_bonus": 0.2
+      "sell_bonus": 0.05
      }
     },
     {
@@ -1352,14 +1352,14 @@
     {
      "id": "gem_eye",
      "name": "Gem Eye",
-     "desc": "Gems drop twice as often from rocks per rank",
+     "desc": "+4% gem chance (per rank)",
      "ranks": 2,
      "tier": 3,
      "requires": [
       "mana_flow"
      ],
      "effect": {
-      "gem_chance": 0.5
+      "gem_chance": 0.04
      },
      "branch": "crystal"
     },

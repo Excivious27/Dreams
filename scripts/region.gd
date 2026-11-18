@@ -284,7 +284,7 @@ func after_ready() -> void:
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
 			var it := str(things[k]["item"])
-			var nm := "mushrooms_fall" if it in ["mushroom", "glow_cap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
+			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
 			prop("nature", nm, k, 0, 0.0, false)
 	# Villagers who live out here (regions.json "npcs": [{"id", "cell", "lines": [...]}]).
 	for n in R.get("npcs", []):
@@ -525,7 +525,7 @@ func _boss(thing: Dictionary) -> void:
 	var bw := str(thing.get("who_gangsters", thing.get("who", ""))) if gang else str(thing.get("who", ""))
 	var bt := str(thing.get("text_gangsters", thing.get("text", "..."))) if gang else str(thing.get("text", "..."))
 	await say([{"who": bw, "text": bt}])
-	var b := spawn_enemy(bk, player.position + Vector2(40, 0))
+	var b := spawn_enemy(bk, player.position + Vector2(40, 0), int(thing.get("tier", -1)))
 	if b:
 		b.set_meta("boss_name", bw if bw != "" else str(thing.get("title", "")))
 	boss_card(bk, str(thing.get("title", bw)))
@@ -544,7 +544,7 @@ func on_enemy_died(e: Enemy) -> void:
 	if _boss_node != null and e == _boss_node:
 		_boss_node = null
 		GameState.run["flags"]["boss_%s" % region_id] = true
-		Music.instance(get_tree()).play(music_track)
+		Music.instance(get_tree()).play(area_track())
 		player.frozen = true
 		await say([{"text": str(_boss_thing.get("win", "It's over."))}])
 		var reward := str(_boss_thing.get("reward", ""))

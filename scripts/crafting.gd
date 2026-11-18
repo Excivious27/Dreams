@@ -397,6 +397,14 @@ static func discover_hint(rc: Dictionary) -> String:
 
 
 ## "2/3 Copper Ore, 0/1 Coal" for the card.
+## Compact needs for a narrow card: "Copper Bar 0/3, Coal 2/1".
+static func have_short(rc: Dictionary) -> String:
+	var parts: Array = []
+	for id in rc["need"]:
+		parts.append("%s %d/%d" % [GameState.need_name(str(id)), mini(GameState.count_any(str(id)), 999), int(rc["need"][id])])
+	return ", ".join(parts)
+
+
 static func have_text(rc: Dictionary, qty := 1) -> String:
 	var parts: Array = []
 	for id in rc["need"]:

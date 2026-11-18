@@ -101,7 +101,7 @@ func after_ready() -> void:
 	# Rook's quest: grumps (or thugs) have crossed into the orchard.
 	if GameState.has_quest("rook_tracks") and not GameState.quest_done("rook_tracks"):
 		for i in 3:
-			spawn_enemy("grump" if GameState.is_penguins() else "thug_speedster", cell_center(Vector2i(75 + i * 3, 10 + i * 6)))
+			spawn_enemy("grump" if GameState.is_penguins() else "thug_lookout", cell_center(Vector2i(75 + i * 3, 10 + i * 6)))
 		_orchard_watch = true
 	if not GameState.run["flags"].has("town_seen"):
 		# The arc's own town beat (p1_town / g1_town) is the arrival scene; this
@@ -735,6 +735,7 @@ func _talk(n: Npc) -> void:
 	if GameState.can_gift(id, sel) and await confirm_gift(name, sel):
 		var before := GameState.friend_hearts(id)
 		var gain := GameState.give_gift(id, sel)
+		Music.instance(get_tree()).sfx("harvest" if gain >= 12 else ("pickup" if gain > 0 else "nope"), "pickup")
 		await say([{"who": name, "text": _gift_line(id, sel, gain)}])
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		_heart_unlock(id, before)
@@ -753,12 +754,8 @@ func _talk(n: Npc) -> void:
 
 ## A new heart just opened: tell the player what it unlocks (npcs.json "perks").
 func _heart_unlock(id: String, before: int) -> void:
-	var now := GameState.friend_hearts(id)
-	if now <= before:
-		return
-	var perk := GameState.friend_perk_at(id, now)
-	if perk != "":
-		hud.toast("%s ♥%d: %s" % [str(GameState.npcs[id]["name"]), now, perk], Color(1, 0.85, 0.95))
+	# GameState.add_friend announces new heart perks now; just the jingle here.
+	if GameState.friend_hearts(id) > before:
 		Music.instance(get_tree()).sfx("levelup")
 
 

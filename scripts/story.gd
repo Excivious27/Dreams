@@ -316,7 +316,8 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 	if fx.has("clear_kind"):
 		# Every enemy of this kind on the map is driven off (an ally's help).
 		for e in m.enemies.duplicate():
-			if is_instance_valid(e) and e.kind == str(fx["clear_kind"]) and e._alive:
+			var kinds: Array = fx["clear_kind"] if fx["clear_kind"] is Array else [fx["clear_kind"]]
+			if is_instance_valid(e) and e.kind in kinds and e._alive:
 				e.hit(99999, e.position, true)
 	if fx.has("toast"):
 		m.hud.toast(str(fx["toast"]), Color(1, 0.9, 0.6))
@@ -377,7 +378,7 @@ static func _spawn_list(m: GameMap, spawns: Array) -> void:
 			e.max_hp = int(e.max_hp * float(sp[5]))
 			e.hp = e.max_hp
 		# The bell: the town's help cracks the Dark Crystal's shell (half health).
-		if sp.size() > 4 and str(sp[4]) == "boss_dark_crystal" and (GameState.run["flags"].has("final_town_help") or GameState.run["flags"].has("bell_rung")):
+		if sp.size() > 4 and str(sp[4]) == "boss_dark_crystal" and GameState.run["flags"].has("final_town_help"):
 			e.max_hp = maxi(1, e.max_hp / 2)
 			e.hp = e.max_hp
 

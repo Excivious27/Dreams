@@ -57,6 +57,8 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 	var d: Dictionary = all().get(id, {})
 	e._alive = false
 	m.enemies.erase(e)
+	if Art.has("fx", "gift_yield"):
+		m.fx("gift_yield", e.position + Vector2(0, -4), 10.0, 0.6)
 	for o in m.enemies.duplicate():
 		if is_instance_valid(o) and o.has_meta("decoy"):
 			o._die()

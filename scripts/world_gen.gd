@@ -209,6 +209,9 @@ static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kind
 
 ## A painted sky strip behind the map (parallax), plus distant hills.
 static func add_backdrop(m: GameMap, kind := "hills") -> void:
+	# A map that fills the whole screen never shows its backdrop: skip the overdraw.
+	if (m.cols + 2 * m.pad) * GameMap.TILE >= 300 and (m.rows + 2 * m.pad) * GameMap.TILE >= 520 and kind != "space":
+		return
 	var bd := Backdrop.new()
 	bd.kind = kind
 	bd.map = m

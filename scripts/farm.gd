@@ -568,6 +568,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			if seed_id != "":
 				give(seed_id, 1)
 		player.play_tool("hold")
+		Music.instance(get_tree()).sfx("harvest", "pickup")
 		xp("farming", 4 + 2 * int(cd.get("tier", 1)))
 		if cd.has("regrow"):
 			# Bushes and vines keep producing: back to a few days before ripe.

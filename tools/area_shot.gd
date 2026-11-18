@@ -21,6 +21,9 @@ func _run() -> void:
 	for i in range(1, args.size()):
 		var p: PackedStringArray = args[i].split(":")
 		var sc := p[0]
+		if sc.begins_with("in_"):  # in_<interior id>: an interior
+			GameMap.next_interior = sc.trim_prefix("in_")
+			sc = "interior"
 		GameState.run["flags"][sc + "_seen"] = true
 		GameMap.next_spawn = Vector2(int(p[1]) * 16 + 8, int(p[2]) * 16 + 8) if p.size() >= 3 else Vector2.ZERO
 		change_scene_to_file("res://scenes/%s.tscn" % sc)
@@ -38,5 +41,5 @@ func _run() -> void:
 		for k in 10:
 			await process_frame
 		await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png("%s/%s_%s.png" % [out, sc, "_".join(p.slice(1))])
+		root.get_texture().get_image().save_png("%s/%s_%s.png" % [out, p[0], "_".join(p.slice(1))])
 	quit()

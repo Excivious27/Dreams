@@ -37,12 +37,12 @@
     {
      "id": "farming_0_2",
      "name": "Tender Care",
-     "desc": "+4% chance of an extra crop (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
      "effect": {
-      "extra_crop": 0.04
+      "seed_back": 0.05
      }
     },
     {
@@ -59,12 +59,12 @@
     {
      "id": "farming_0_4",
      "name": "Heavy Stalks",
-     "desc": "+4% chance of an extra crop (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
      "effect": {
-      "extra_crop": 0.04
+      "seed_back": 0.05
      }
     },
     {
@@ -115,12 +115,12 @@
     {
      "id": "farming_0_9",
      "name": "Harvest Dance",
-     "desc": "+6% chance of a double harvest",
+     "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "double_harvest": 0.06
+      "seed_back": 0.1
      }
     },
     {
@@ -159,12 +159,12 @@
     {
      "id": "farming_1_3",
      "name": "Morning Dew",
-     "desc": "+4% less energy to hoe and water (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "farm_energy": 0.04
+      "seed_back": 0.05
      }
     },
     {
@@ -192,45 +192,45 @@
     {
      "id": "farming_1_6",
      "name": "Light Hoe",
-     "desc": "+4% chance a crop grows an extra day overnight (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 1,
      "effect": {
-      "extra_day": 0.04
+      "seed_back": 0.05
      }
     },
     {
      "id": "farming_1_7",
      "name": "Rain Reader",
-     "desc": "+4% less energy to hoe and water (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "farm_energy": 0.04
+      "seed_back": 0.05
      }
     },
     {
      "id": "farming_1_8",
      "name": "Loam Lore",
-     "desc": "+4% chance a crop grows an extra day overnight (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "extra_day": 0.04
+      "seed_back": 0.05
      }
     },
     {
      "id": "farming_1_9",
      "name": "Deep Watering",
-     "desc": "+8% less energy to hoe and water",
+     "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "farm_energy": 0.08
+      "seed_back": 0.1
      }
     },
     {
@@ -258,11 +258,11 @@
     {
      "id": "harvest_moon",
      "name": "Harvest Moon",
-     "desc": "Crops sell for 8% more (per rank)",
+     "desc": "Crops sell for 3% more (per rank)",
      "ranks": 3,
      "tier": 2,
      "effect": {
-      "crop_value": 0.08
+      "crop_value": 0.03
      },
      "row": 2
     },
@@ -291,67 +291,67 @@
     {
      "id": "farming_2_5",
      "name": "Happy Herd",
-     "desc": "+6% animal products (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "animal_yield": 0.06
+      "seed_back": 0.05
      }
     },
     {
      "id": "farming_2_6",
      "name": "Brushed Coats",
-     "desc": "+6% animal products (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "animal_yield": 0.06
+      "seed_back": 0.05
      }
     },
     {
      "id": "farming_2_7",
      "name": "Best in Show",
-     "desc": "+6% animal products (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "animal_yield": 0.06
+      "seed_back": 0.05
      }
     },
     {
      "id": "farming_2_8",
      "name": "Big Eggs",
-     "desc": "+6% animal products (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "animal_yield": 0.06
+      "seed_back": 0.05
      }
     },
     {
      "id": "farming_2_9",
      "name": "Full Pails",
-     "desc": "+12% animal products",
+     "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "animal_yield": 0.12
+      "seed_back": 0.1
      }
     },
     {
      "id": "farming_3_0",
      "name": "Market Eye",
-     "desc": "+3% crop sell value (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "crop_value": 0.03
+      "seed_back": 0.05
      }
     },
     {
@@ -379,12 +379,12 @@
     {
      "id": "farming_3_3",
      "name": "Polished Produce",
-     "desc": "+3% crop sell value (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "crop_value": 0.03
+      "seed_back": 0.05
      }
     },
     {
@@ -445,12 +445,12 @@
     {
      "id": "farming_3_9",
      "name": "Golden Glow",
-     "desc": "+6% crop sell value",
+     "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "crop_value": 0.06
+      "seed_back": 0.1
      }
     }
    ]
@@ -501,12 +501,12 @@
     {
      "id": "mining_0_3",
      "name": "Rubble Rouser",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -523,12 +523,12 @@
     {
      "id": "mining_0_5",
      "name": "Quarry Legs",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -545,12 +545,12 @@
     {
      "id": "mining_0_7",
      "name": "Boulder Breaker",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -567,12 +567,12 @@
     {
      "id": "mining_0_9",
      "name": "Tunnel Lungs",
-     "desc": "+12% crystal shards",
+     "desc": "+2 toward an extra stone per rock (3 = one more)",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "shard_bonus": 0.12
+      "stone_bonus": 2
      }
     },
     {
@@ -589,12 +589,12 @@
     {
      "id": "mining_1_1",
      "name": "Vein Finder",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -611,12 +611,12 @@
     {
      "id": "mining_1_3",
      "name": "Ore Song",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -633,12 +633,12 @@
     {
      "id": "mining_1_5",
      "name": "Twin Strike",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -655,12 +655,12 @@
     {
      "id": "mining_1_7",
      "name": "Iron Grip",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -677,12 +677,12 @@
     {
      "id": "mining_1_9",
      "name": "Deep Veins",
-     "desc": "+12% crystal shards",
+     "desc": "+2 toward an extra stone per rock (3 = one more)",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "shard_bonus": 0.12
+      "stone_bonus": 2
      }
     },
     {
@@ -809,12 +809,12 @@
     {
      "id": "mining_3_1",
      "name": "Lantern Light",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -831,34 +831,34 @@
     {
      "id": "mining_3_3",
      "name": "Cave Sense",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
      "id": "mining_3_4",
      "name": "Cool Head",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
      "id": "mining_3_5",
      "name": "Ladder Luck",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 3,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
@@ -875,34 +875,34 @@
     {
      "id": "mining_3_7",
      "name": "Dark Eyes",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 3,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
      "id": "mining_3_8",
      "name": "Deep Stamina",
-     "desc": "+6% crystal shards (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "shard_bonus": 0.06
+      "stone_bonus": 1
      }
     },
     {
      "id": "mining_3_9",
      "name": "Echo Map",
-     "desc": "+12% crystal shards",
+     "desc": "+2 toward an extra stone per rock (3 = one more)",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "shard_bonus": 0.12
+      "stone_bonus": 2
      }
     }
    ]
@@ -931,12 +931,12 @@
     {
      "id": "foraging_0_1",
      "name": "Keen Nose",
-     "desc": "+3% rare forage chance (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "rare_forage": 0.03
+      "wood_bonus": 1
      }
     },
     {
@@ -953,12 +953,12 @@
     {
      "id": "foraging_0_3",
      "name": "Basket Weaver",
-     "desc": "+3% rare forage chance (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "rare_forage": 0.03
+      "wood_bonus": 1
      }
     },
     {
@@ -975,12 +975,12 @@
     {
      "id": "foraging_0_5",
      "name": "Mushroom Eye",
-     "desc": "+3% rare forage chance (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "rare_forage": 0.03
+      "wood_bonus": 1
      }
     },
     {
@@ -997,12 +997,12 @@
     {
      "id": "foraging_0_7",
      "name": "Wild Bounty",
-     "desc": "+3% rare forage chance (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "rare_forage": 0.03
+      "wood_bonus": 1
      }
     },
     {
@@ -1019,12 +1019,12 @@
     {
      "id": "foraging_0_9",
      "name": "Forest Feast",
-     "desc": "+6% rare forage chance",
+     "desc": "+2 toward an extra log per tree (4 = one more)",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "rare_forage": 0.06
+      "wood_bonus": 2
      }
     },
     {
@@ -1159,23 +1159,23 @@
     {
      "id": "foraging_2_2",
      "name": "Sweet Wood",
-     "desc": "+6% chance of sap (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 2,
      "effect": {
-      "sap_chance": 0.06
+      "wood_bonus": 1
      }
     },
     {
      "id": "foraging_2_3",
      "name": "Honey Sense",
-     "desc": "+6% chance of sap (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "sap_chance": 0.06
+      "wood_bonus": 1
      }
     },
     {
@@ -1203,45 +1203,45 @@
     {
      "id": "foraging_2_6",
      "name": "Amber Drops",
-     "desc": "+6% chance of sap (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "sap_chance": 0.06
+      "wood_bonus": 1
      }
     },
     {
      "id": "foraging_2_7",
      "name": "Busy Bees",
-     "desc": "+6% chance of sap (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "sap_chance": 0.06
+      "wood_bonus": 1
      }
     },
     {
      "id": "foraging_2_8",
      "name": "Golden Sap",
-     "desc": "+6% chance of sap (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "sap_chance": 0.06
+      "wood_bonus": 1
      }
     },
     {
      "id": "foraging_2_9",
      "name": "Hive Mind",
-     "desc": "+12% chance of sap",
+     "desc": "+2 toward an extra log per tree (4 = one more)",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "sap_chance": 0.12
+      "wood_bonus": 2
      }
     },
     {
@@ -1258,12 +1258,12 @@
     {
      "id": "foraging_3_1",
      "name": "Trail Lore",
-     "desc": "+3% rare forage chance (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "rare_forage": 0.03
+      "wood_bonus": 1
      }
     },
     {
@@ -1277,12 +1277,12 @@
     {
      "id": "foraging_3_3",
      "name": "Moss Sense",
-     "desc": "+3% rare forage chance (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "rare_forage": 0.03
+      "wood_bonus": 1
      }
     },
     {
@@ -1299,12 +1299,12 @@
     {
      "id": "foraging_3_5",
      "name": "Night Walker",
-     "desc": "+3% rare forage chance (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 3,
      "effect": {
-      "rare_forage": 0.03
+      "wood_bonus": 1
      }
     },
     {
@@ -1329,23 +1329,23 @@
     {
      "id": "foraging_3_8",
      "name": "Glint Eye",
-     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "forage_bonus": 1
+      "wood_bonus": 1
      }
     },
     {
      "id": "foraging_3_9",
      "name": "Hollow Finder",
-     "desc": "+6% rare forage chance",
+     "desc": "+2 toward an extra log per tree (4 = one more)",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "rare_forage": 0.06
+      "wood_bonus": 2
      }
     }
    ]
@@ -1385,23 +1385,23 @@
     {
      "id": "fishing_0_2",
      "name": "Still Water",
-     "desc": "+5% faster bites (per rank)",
+     "desc": "+4% chance of a double catch (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
      "effect": {
-      "bite_speed": 0.05
+      "double_fish": 0.04
      }
     },
     {
      "id": "fishing_0_3",
      "name": "Calm Breath",
-     "desc": "+3% rare fish chance (per rank)",
+     "desc": "+4% chance of a double catch (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "rare_fish": 0.03
+      "double_fish": 0.04
      }
     },
     {
@@ -1418,19 +1418,19 @@
     {
      "id": "fishing_0_5",
      "name": "Quick Bobber",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 3,
+     "desc": "+5% faster bites",
+     "ranks": 1,
      "tier": 5,
      "row": 0,
      "effect": {
-      "rare_fish": 0.03
+      "bite_speed": 0.05
      }
     },
     {
      "id": "fishing_0_6",
      "name": "Tide Sense",
-     "desc": "+5% faster bites (per rank)",
-     "ranks": 2,
+     "desc": "+5% faster bites",
+     "ranks": 1,
      "tier": 6,
      "row": 0,
      "effect": {
@@ -1440,41 +1440,41 @@
     {
      "id": "fishing_0_7",
      "name": "Ripple Reader",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 2,
+     "desc": "+5% faster bites",
+     "ranks": 1,
      "tier": 7,
      "row": 0,
      "effect": {
-      "rare_fish": 0.03
+      "bite_speed": 0.05
      }
     },
     {
      "id": "fishing_0_8",
      "name": "Dawn Caster",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 2,
+     "desc": "+5% faster bites",
+     "ranks": 1,
      "tier": 8,
      "row": 0,
      "effect": {
-      "rare_fish": 0.03
+      "bite_speed": 0.05
      }
     },
     {
      "id": "fishing_0_9",
      "name": "Lazy River",
-     "desc": "+6% rare fish chance",
+     "desc": "+10% faster bites",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "rare_fish": 0.06
+      "bite_speed": 0.1
      }
     },
     {
      "id": "fishing_1_0",
      "name": "Firm Grip",
-     "desc": "+4% chance of a double catch (per rank)",
-     "ranks": 3,
+     "desc": "+4% chance of a double catch",
+     "ranks": 1,
      "tier": 0,
      "row": 1,
      "effect": {
@@ -1484,8 +1484,8 @@
     {
      "id": "fishing_1_1",
      "name": "Tight Knots",
-     "desc": "+6% fewer fish escape (per rank)",
-     "ranks": 3,
+     "desc": "+6% fewer fish escape",
+     "ranks": 1,
      "tier": 1,
      "row": 1,
      "effect": {
@@ -1514,8 +1514,8 @@
     {
      "id": "fishing_1_4",
      "name": "Steady Reel",
-     "desc": "+4% chance of a double catch (per rank)",
-     "ranks": 3,
+     "desc": "+4% chance of a double catch",
+     "ranks": 1,
      "tier": 4,
      "row": 1,
      "effect": {
@@ -1525,12 +1525,12 @@
     {
      "id": "fishing_1_5",
      "name": "Iron Line",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 3,
+     "desc": "+6% fewer fish escape",
+     "ranks": 1,
      "tier": 5,
      "row": 1,
      "effect": {
-      "rare_fish": 0.03
+      "escape_less": 0.06
      }
     },
     {
@@ -1547,8 +1547,8 @@
     {
      "id": "fishing_1_7",
      "name": "Double Hook",
-     "desc": "+6% fewer fish escape (per rank)",
-     "ranks": 2,
+     "desc": "+6% fewer fish escape",
+     "ranks": 1,
      "tier": 7,
      "row": 1,
      "effect": {
@@ -1558,23 +1558,23 @@
     {
      "id": "fishing_1_8",
      "name": "Fighting Spirit",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 2,
+     "desc": "+4% chance of a double catch",
+     "ranks": 1,
      "tier": 8,
      "row": 1,
      "effect": {
-      "rare_fish": 0.03
+      "double_fish": 0.04
      }
     },
     {
      "id": "fishing_1_9",
      "name": "No Escape",
-     "desc": "+6% rare fish chance",
+     "desc": "+12% fewer fish escape",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "rare_fish": 0.06
+      "escape_less": 0.12
      }
     },
     {
@@ -1591,12 +1591,12 @@
     {
      "id": "fishing_2_1",
      "name": "Shiny Scales",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 3,
+     "desc": "+6% fish sell value",
+     "ranks": 1,
      "tier": 1,
      "row": 2,
      "effect": {
-      "rare_fish": 0.03
+      "fish_value": 0.06
      }
     },
     {
@@ -1613,19 +1613,19 @@
     {
      "id": "fishing_2_3",
      "name": "Deep Water",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 3,
+     "desc": "+6% fish sell value",
+     "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
-      "rare_fish": 0.03
+      "fish_value": 0.06
      }
     },
     {
      "id": "fishing_2_4",
      "name": "Market Catch",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 3,
+     "desc": "+3% rare fish chance",
+     "ranks": 1,
      "tier": 4,
      "row": 2,
      "effect": {
@@ -1635,12 +1635,12 @@
     {
      "id": "fishing_2_5",
      "name": "Rare Lure",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 3,
+     "desc": "+6% fish sell value",
+     "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
-      "rare_fish": 0.03
+      "fish_value": 0.06
      }
     },
     {
@@ -1679,12 +1679,12 @@
     {
      "id": "fishing_2_9",
      "name": "Prize Fish",
-     "desc": "+6% rare fish chance",
+     "desc": "+12% fish sell value",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "rare_fish": 0.06
+      "fish_value": 0.12
      }
     },
     {
@@ -1767,34 +1767,34 @@
     {
      "id": "fishing_3_7",
      "name": "Pearl Eye",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 2,
+     "desc": "+2% treasure chest chance",
+     "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "rare_fish": 0.03
+      "chest_chance": 0.02
      }
     },
     {
      "id": "fishing_3_8",
      "name": "Old Maps",
-     "desc": "+3% rare fish chance (per rank)",
-     "ranks": 2,
+     "desc": "+2% treasure chest chance",
+     "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "rare_fish": 0.03
+      "chest_chance": 0.02
      }
     },
     {
      "id": "fishing_3_9",
      "name": "Pirate's Luck",
-     "desc": "+6% rare fish chance",
+     "desc": "+4% treasure chest chance",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "rare_fish": 0.06
+      "chest_chance": 0.04
      }
     }
    ]
@@ -1941,11 +1941,11 @@
     {
      "id": "defender",
      "name": "Defender",
-     "desc": "15% chance to shrug off a hit (per rank)",
+     "desc": "12% chance to shrug off a hit (per rank)",
      "ranks": 2,
      "tier": 2,
      "effect": {
-      "block": 0.15
+      "block": 0.12
      },
      "row": 1
     },
@@ -1982,11 +1982,11 @@
     {
      "id": "iron_skin",
      "name": "Iron Skin",
-     "desc": "Take 20% less damage (per rank)",
+     "desc": "Take 17% less damage (per rank)",
      "ranks": 2,
      "tier": 6,
      "effect": {
-      "damage_reduction": 0.2
+      "damage_reduction": 0.17
      },
      "row": 1
     },
@@ -2267,34 +2267,34 @@
     {
      "id": "bartering_0_1",
      "name": "Fair Price",
-     "desc": "+1 friendship per gift (per rank)",
+     "desc": "+0.3% daily interest on savings (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "gift_bonus": 1
+      "interest": 0.003
      }
     },
     {
      "id": "bartering_0_2",
      "name": "Good Pitch",
-     "desc": "+1 friendship per gift (per rank)",
+     "desc": "+0.3% daily interest on savings (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
      "effect": {
-      "gift_bonus": 1
+      "interest": 0.003
      }
     },
     {
      "id": "bartering_0_3",
      "name": "Bulk Deal",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 3,
      "row": 0,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
@@ -2311,56 +2311,56 @@
     {
      "id": "bartering_0_5",
      "name": "Display Skill",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 5,
      "row": 0,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
      "id": "monopolist",
      "name": "Monopolist",
-     "desc": "Sell box pays 20% more",
+     "desc": "Sell box pays 5% more",
      "ranks": 1,
      "tier": 6,
      "effect": {
-      "sell_bonus": 0.2
+      "sell_bonus": 0.05
      },
      "row": 0
     },
     {
      "id": "bartering_0_7",
      "name": "Sharp Ledger",
-     "desc": "+1 friendship per gift (per rank)",
+     "desc": "+0.3% daily interest on savings (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "gift_bonus": 1
+      "interest": 0.003
      }
     },
     {
      "id": "bartering_0_8",
      "name": "Hot Market",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 2,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 8,
      "row": 0,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
      "id": "bartering_0_9",
      "name": "Premium Goods",
-     "desc": "+2 friendship per gift",
+     "desc": "+6% sell prices",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "gift_bonus": 2
+      "sell_bonus": 0.06
      }
     },
     {
@@ -2377,12 +2377,12 @@
     {
      "id": "bartering_1_1",
      "name": "Thrifty",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 1,
      "row": 1,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
@@ -2399,12 +2399,12 @@
     {
      "id": "bartering_1_3",
      "name": "Coupon Clipper",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 3,
      "row": 1,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
@@ -2421,19 +2421,19 @@
     {
      "id": "bartering_1_5",
      "name": "Haggler's Grin",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 5,
      "row": 1,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
      "id": "bartering_1_6",
      "name": "Wholesale",
-     "desc": "+0.3% daily interest on savings (per rank)",
-     "ranks": 2,
+     "desc": "+0.3% daily interest on savings",
+     "ranks": 1,
      "tier": 6,
      "row": 1,
      "effect": {
@@ -2443,19 +2443,19 @@
     {
      "id": "bartering_1_7",
      "name": "Back Room Prices",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 2,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 7,
      "row": 1,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
      "id": "bartering_1_8",
      "name": "Insider",
-     "desc": "+0.3% daily interest on savings (per rank)",
-     "ranks": 2,
+     "desc": "+0.3% daily interest on savings",
+     "ranks": 1,
      "tier": 8,
      "row": 1,
      "effect": {
@@ -2465,12 +2465,12 @@
     {
      "id": "bartering_1_9",
      "name": "Bargain Sense",
-     "desc": "+2 friendship per gift",
+     "desc": "+6% sell prices",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "gift_bonus": 2
+      "sell_bonus": 0.06
      }
     },
     {
@@ -2487,8 +2487,8 @@
     {
      "id": "bartering_2_1",
      "name": "Remember Names",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+1 friendship per gift",
+     "ranks": 1,
      "tier": 1,
      "row": 2,
      "effect": {
@@ -2509,8 +2509,8 @@
     {
      "id": "bartering_2_3",
      "name": "Thoughtful Gifts",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+1 friendship per gift",
+     "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
@@ -2531,8 +2531,8 @@
     {
      "id": "bartering_2_5",
      "name": "Good Listener",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+1 friendship per gift",
+     "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
@@ -2553,8 +2553,8 @@
     {
      "id": "bartering_2_7",
      "name": "Town Favourite",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 2,
+     "desc": "+1 friendship per gift",
+     "ranks": 1,
      "tier": 7,
      "row": 2,
      "effect": {
@@ -2564,8 +2564,8 @@
     {
      "id": "bartering_2_8",
      "name": "Best Neighbour",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 2,
+     "desc": "+1 friendship per gift",
+     "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
@@ -2586,19 +2586,19 @@
     {
      "id": "bartering_3_0",
      "name": "Piggy Bank",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 0,
      "row": 3,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
      "id": "bartering_3_1",
      "name": "Rainy Day Fund",
-     "desc": "+0.3% daily interest on savings (per rank)",
-     "ranks": 3,
+     "desc": "+0.3% daily interest on savings",
+     "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
@@ -2616,34 +2616,34 @@
     {
      "id": "bartering_3_3",
      "name": "Coin Counter",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+0.3% daily interest on savings",
+     "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "gift_bonus": 1
+      "interest": 0.003
      }
     },
     {
      "id": "bartering_3_4",
      "name": "Compound",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+3% sell prices",
+     "ranks": 1,
      "tier": 4,
      "row": 3,
      "effect": {
-      "gift_bonus": 1
+      "sell_bonus": 0.03
      }
     },
     {
      "id": "bartering_3_5",
      "name": "Nest Egg",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 3,
+     "desc": "+0.3% daily interest on savings",
+     "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "gift_bonus": 1
+      "interest": 0.003
      }
     },
     {
@@ -2660,12 +2660,12 @@
     {
      "id": "bartering_3_7",
      "name": "Investor",
-     "desc": "+1 friendship per gift (per rank)",
-     "ranks": 2,
+     "desc": "+0.3% daily interest on savings",
+     "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "gift_bonus": 1
+      "interest": 0.003
      }
     },
     {
@@ -2682,12 +2682,12 @@
     {
      "id": "bartering_3_9",
      "name": "Vault Key",
-     "desc": "+2 friendship per gift",
+     "desc": "+0.6% daily interest on savings",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "gift_bonus": 2
+      "interest": 0.006
      }
     }
    ]
@@ -3266,12 +3266,12 @@
     {
      "id": "magic_1_0",
      "name": "Drowse",
-     "desc": "+1 mana regen (per rank)",
+     "desc": "+6 max mana (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 1,
      "effect": {
-      "mana_regen": 1
+      "mana": 6
      }
     },
     {
@@ -3438,11 +3438,11 @@
     {
      "id": "gem_eye",
      "name": "Gem Eye",
-     "desc": "Gems drop twice as often from rocks per rank",
+     "desc": "+4% gem chance (per rank)",
      "ranks": 2,
      "tier": 7,
      "effect": {
-      "gem_chance": 0.5
+      "gem_chance": 0.04
      },
      "branch": "crystal",
      "row": 2
@@ -3498,12 +3498,12 @@
     {
      "id": "magic_3_2",
      "name": "Spark of Self",
-     "desc": "+1 mana regen (per rank)",
+     "desc": "+6 max mana (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 3,
      "effect": {
-      "mana_regen": 1
+      "mana": 6
      }
     },
     {
@@ -3520,12 +3520,12 @@
     {
      "id": "magic_3_4",
      "name": "Inner Hum",
-     "desc": "+1 mana regen (per rank)",
+     "desc": "+6 max mana (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "mana_regen": 1
+      "mana": 6
      }
     },
     {
@@ -3542,12 +3542,12 @@
     {
      "id": "magic_3_6",
      "name": "Overflow",
-     "desc": "+1 mana regen (per rank)",
+     "desc": "+6 max mana (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "mana_regen": 1
+      "mana": 6
      }
     },
     {
@@ -3564,12 +3564,12 @@
     {
      "id": "magic_3_8",
      "name": "Star Blood",
-     "desc": "+1 mana regen (per rank)",
+     "desc": "+6 max mana (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "mana_regen": 1
+      "mana": 6
      }
     },
     {
@@ -3638,12 +3638,12 @@
     {
      "id": "pup_0_3",
      "name": "Healthy Coat",
-     "desc": "+1 pup defence (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "pet_def": 1
+      "pet_hp": 6
      }
     },
     {
@@ -3660,12 +3660,12 @@
     {
      "id": "pup_0_5",
      "name": "Big Heart",
-     "desc": "+1 pup defence (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "pet_def": 1
+      "pet_hp": 6
      }
     },
     {
@@ -3682,12 +3682,12 @@
     {
      "id": "pup_0_7",
      "name": "Shaggy Armour",
-     "desc": "+1 pup defence (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "pet_def": 1
+      "pet_hp": 6
      }
     },
     {
@@ -3705,12 +3705,12 @@
     {
      "id": "pup_0_9",
      "name": "Old Soldier",
-     "desc": "+2 pup defence",
+     "desc": "+12 pup health",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "pet_def": 2
+      "pet_hp": 12
      }
     },
     {
@@ -3837,12 +3837,12 @@
     {
      "id": "pup_2_1",
      "name": "Fast Feet",
-     "desc": "+5% pup speed (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "pet_speed": 0.05
+      "pet_hp": 6
      }
     },
     {
@@ -3881,34 +3881,34 @@
     {
      "id": "pup_2_5",
      "name": "Leap",
-     "desc": "+5% pup speed (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "pet_speed": 0.05
+      "pet_hp": 6
      }
     },
     {
      "id": "pup_2_6",
      "name": "Sprint",
-     "desc": "+5% pup speed (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "pet_speed": 0.05
+      "pet_hp": 6
      }
     },
     {
      "id": "pup_2_7",
      "name": "Sharp Turns",
-     "desc": "+5% pup speed (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "pet_speed": 0.05
+      "pet_hp": 6
      }
     },
     {
@@ -3926,12 +3926,12 @@
     {
      "id": "pup_2_9",
      "name": "Long Stride",
-     "desc": "+10% pup speed",
+     "desc": "+12 pup health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "pet_speed": 0.1
+      "pet_hp": 12
      }
     },
     {
@@ -4026,12 +4026,12 @@
     {
      "id": "pup_3_8",
      "name": "Good Nose",
-     "desc": "+5% pup speed (per rank)",
+     "desc": "+6 pup health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "pet_speed": 0.05
+      "pet_hp": 6
      }
     },
     {
@@ -4478,12 +4478,12 @@
     {
      "id": "strategist_3_8",
      "name": "Grand Victory",
-     "desc": "+5% slower ticket loss for your side (per rank)",
+     "desc": "+3 supply at the start of a battle (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "ticket_guard": 0.05
+      "start_supply": 3
      }
     },
     {

@@ -120,11 +120,15 @@ func _draw_hud() -> void:
 	var hp := int(r["hp"])
 	var max_hp := int(r["max_hp"])
 	var hearts := int(ceil(max_hp / float(GameState.HEART_HP)))
+	var per := float(GameState.HEART_HP)
+	if hearts > 10:  # big health pools: ten hearts, each worth a tenth
+		hearts = 10
+		per = max_hp / 10.0
 	var heart_full := Art.tex("ui", "heart2_full") if Art.has("ui", "heart2_full") else Art.tex("ui", "heart_full")
 	var heart_empty := Art.tex("ui", "heart2_empty") if Art.has("ui", "heart2_empty") else Art.tex("ui", "heart_empty")
 	for i in hearts:
 		var p := Vector2(6 + i * 11, 4)
-		var f := clampf((hp - i * GameState.HEART_HP) / float(GameState.HEART_HP), 0.0, 1.0)
+		var f := clampf((hp - i * per) / per, 0.0, 1.0)
 		if heart_full and heart_empty:
 			c.draw_texture_rect(heart_empty, Rect2(p, Vector2(10, 10)), false)
 			if f > 0.0:

@@ -20,6 +20,11 @@ var points: Array = []        # [{id, name, cell, pos, owner, prog, spawner, mad
 var tickets := {"ally": 150, "enemy": 150}
 var supply := 10
 var _upkeep := 0.0
+var _sup_f := 0.0
+var _caps := 0
+var _kills := 0
+var _mend_cd := 0.0
+var _barrage_cd := 0.0
 var _order_t := 0.0
 var _target_pt: Dictionary = {}
 var _sec := 0.0
@@ -186,7 +191,7 @@ func _capture(delta: float) -> void:
 				p["spawner"] = ""
 				# Whatever it built goes down with it (turrets included).
 				for mm in p["made"]:
-					if is_instance_valid(mm) and mm is Bot:
+					if is_instance_valid(mm):
 						(mm as Node).queue_free()
 				p["made"] = []
 				p["lvl"] = 1
@@ -195,16 +200,24 @@ func _capture(delta: float) -> void:
 		if str(p["owner"]) != was:
 			if str(p["owner"]) == "ally":
 				map.hud.toast("%s is ours." % str(p["name"]), Color(0.6, 1, 0.7))
+				_caps += 1
 				map.fx("levelup", p["pos"] + Vector2(0, -10), 10.0, 0.6)
 				Music.instance(get_tree()).sfx("levelup")
 			elif str(p["owner"]) == "enemy":
 				map.hud.toast("We lost %s." % str(p["name"]), Color(1, 0.6, 0.5))
+				Music.instance(get_tree()).sfx("alert", "thud")
 
 
 func _tick() -> void:
 	var a := _owned("ally")
 	var e := _owned("enemy")
-	supply += int(round(a * int(d.get("supply_per_point", 2)) * (1.0 + GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("leadership", "supply_rate") + GameState.bonus("strategist", "supply_rate"))))
+	# Supply trickles in (fractions carry over, so small skill bonuses count).
+	var rate := minf(1.0, GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("leadership", "supply_rate") + GameState.bonus("strategist", "supply_rate"))
+	_sup_f += a * int(d.get("supply_per_point", 2)) * 0.35 * (1.0 + rate)
+	supply += int(_sup_f)
+	_sup_f -= int(_sup_f)
+	_mend_cd = maxf(0.0, _mend_cd - 1.0)
+	_barrage_cd = maxf(0.0, _barrage_cd - 1.0)
 	# Bleed: whoever holds fewer points loses tickets every second, faster the worse it is.
 	if a > e:
 		_bleed_e += (a - e) * (1.0 + GameState.bonus("strategist", "ticket_bleed"))
@@ -219,12 +232,13 @@ func _tick() -> void:
 	for pp in points:
 		units += (pp["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x)).size()
 	_upkeep += units * 0.2
+	var broke := supply < int(_upkeep) and units > 0
 	supply = maxi(0, supply - int(_upkeep))
 	_upkeep -= int(_upkeep)
 	# Spawners turn out helpers.
 	for p in points:
-		if str(p["owner"]) != "ally" or str(p["spawner"]) == "":
-			continue
+		if broke or str(p["owner"]) != "ally" or str(p["spawner"]) == "":
+			continue  # (broke: can't pay the troops, no new ones this second)
 		p["made"] = (p["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x))
 		p["t"] = float(p["t"]) + 1.0
 		var plv := int(p.get("lvl", 1))
@@ -234,7 +248,7 @@ func _tick() -> void:
 				var it: Dictionary = GameState.items.get("guard_bot", {"life": 60, "dmg": 4, "reach": 90})
 				var b := Bot.deploy(map, "guard_bot", it)
 				b.position = p["pos"] + Vector2(randf_range(-20, 20), randf_range(-14, 14))
-				b.life = 90.0  # a turret runs a minute and a half, then the point builds a new one
+				b.life = 45.0  # a turret runs 45 seconds, then the point builds a new one
 				(p["made"] as Array).append(b)
 			else:
 				var h := HelperUnit.make(map, str(p["spawner"]), p["pos"] + Vector2(randf_range(-16, 16), 10), p["pos"])
@@ -251,7 +265,7 @@ func _tick() -> void:
 		if bb:
 			bb.set_meta("boss_name", bb.display_name())
 			# The commander is a real fight: half again as tough.
-			bb.max_hp = int(bb.max_hp * 1.5)
+			bb.max_hp = maxi(int(bb.max_hp * 1.5), 120 * (1 + GameState.progress_tier()))
 			bb.hp = bb.max_hp
 			map.hud.toast("%s takes the field!" % bb.display_name(), Color(1, 0.6, 0.4))
 			map.shake(3.0)
@@ -272,6 +286,9 @@ func _enemy_wave() -> void:
 		if alive >= cap:
 			break
 		if str(p["owner"]) != "enemy":
+			continue
+		# No spawn-camping: a point you're standing on (or taking) gets no fresh foes.
+		if map.player.position.distance_to(p["pos"]) < CAP_R * 1.5 or float(p.get("prog", -1.0)) > -0.99:
 			continue
 		var kind := str(kinds[randi() % kinds.size()])
 		var e := map.spawn_enemy(kind, p["pos"] + Vector2(randf_range(-24, 24), randf_range(-24, 24)), clampi(GameState.progress_tier() + int(d.get("tier_bonus", 0)), 0, 5))
@@ -333,9 +350,14 @@ func _count_kills() -> void:
 			_known.erase(k)
 			var was_boss: bool = is_instance_valid(e) and (e as Enemy).has_meta("boss_name")
 			tickets["enemy"] = int(tickets["enemy"]) - (30 if was_boss else 1)
+			_kills += 1
 			GameState.add_xp("strategist", 15 if was_boss else 1)
 			if was_boss:
 				map.hud.toast("Their commander is down! Rout!", Color(1, 0.9, 0.4))
+
+
+func _disc(n: int) -> int:
+	return maxi(1, int(round(n * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
 
 
 ## USE on a point's banner: build (or change) its spawner.
@@ -356,14 +378,14 @@ func interact(id: String) -> void:
 	keys.append("turret")
 	var lvl := int(p.get("lvl", 1))
 	if str(p["spawner"]) != "" and lvl < 3:
-		opts.append("Upgrade to level %d (◇%d): more units, faster" % [lvl + 1, 30 * lvl])
+		opts.append("Upgrade to level %d (◇%d): more units, faster" % [lvl + 1, _disc(30 * lvl)])
 		keys.append("upgrade")
 	if not bool(p.get("fort", false)):
-		opts.append("Fortify (◇40): they take it 50% slower")
+		opts.append("Fortify (◇%d): they take it 50%% slower" % _disc(40))
 		keys.append("fortify")
-	opts.append("Mend pulse (◇25): heal you and helpers near you")
+	opts.append("Mend pulse (◇%d): heal you and helpers near you%s" % [_disc(25), (" (ready in %ds)" % int(ceil(_mend_cd))) if _mend_cd > 0.0 else ""])
 	keys.append("mend")
-	opts.append("Barrage (◇35): stun every foe near this point")
+	opts.append("Barrage (◇%d): stun every foe near this point%s" % [_disc(35), (" (ready in %ds)" % int(ceil(_barrage_cd))) if _barrage_cd > 0.0 else ""])
 	keys.append("barrage")
 	opts.append("Leave")
 	var dl := Dialogue.instance(get_tree())
@@ -374,8 +396,11 @@ func interact(id: String) -> void:
 		return
 	var k: String = keys[i]
 	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40, "mend": 25, "barrage": 35}
+	if (k == "mend" and _mend_cd > 0.0) or (k == "barrage" and _barrage_cd > 0.0):
+		map.hud.toast("Not ready yet.", Color(1, 0.8, 0.6))
+		return
 	if extra.has(k):
-		var c := maxi(1, int(round(int(extra[k]) * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
+		var c := _disc(int(extra[k]))
 		if supply < c:
 			map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
 			return
@@ -395,6 +420,7 @@ func interact(id: String) -> void:
 						(h as HelperUnit).hp = (h as HelperUnit).max_hp
 				map.fx("heal", map.player.position + Vector2(0, -10), 10.0, 0.6)
 				map.hud.toast("Mend pulse!", Color(0.7, 1, 0.8))
+				_mend_cd = 20.0
 			"barrage":
 				var n := 0
 				for e in map.enemies:
@@ -403,6 +429,7 @@ func interact(id: String) -> void:
 						n += 1
 				map.shake(3.0)
 				map.hud.toast("Barrage! %d foes stunned." % n, Color(1, 0.9, 0.5))
+				_barrage_cd = 25.0
 		return
 	if supply < _cost(k):
 		map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
@@ -419,7 +446,8 @@ func interact(id: String) -> void:
 func _end(won: bool) -> void:
 	_over = true
 	# A full campaign is what trains a Strategist (more for a win, something for a loss).
-	GameState.add_xp("strategist", 400 if won else 120)
+	GameState.add_xp("strategist", 400 if won else mini(120, 20 * _caps + _kills))
+	Music.instance(get_tree()).sfx("quest_done" if won else "die", "levelup")
 	if won:
 		GameState.add_arc_xp(80)
 	for e in map.enemies.duplicate():

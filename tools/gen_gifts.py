@@ -165,8 +165,10 @@ for (lid, name, title, where, hp, dmg, speed, tier, art, gid, gdef, ) in LT:
     GIFTS[gid] = gdef
     kind = 'lt_' + lid
     char = art if 'idle' in M.get('characters/' + art, {}) else 'enforcer'
+    if 'idle' in M.get('characters/' + kind, {}):  # their own sheet (Prompt 16-1)
+        char = kind
     E['enemies'][kind] = {'hp': hp, 'dmg': dmg, 'speed': speed, 'xp': 60 + 15 * tier, 'tier': tier, 'abilities': ['shield'] if tier >= 4 else [], 'gift': gid, 'char': char, 'name': name, 'reward': 120 * tier}
-    E['drops'][kind] = [['crystal_refined', 0.8, 2]]
+    E['drops'][kind] = [['crystal_refined', 0.8, 2]] + ([['dream_essence', 1.0, 2]] if lid == 'surveyor' else [])
     LIEUTENANTS[lid] = {'name': name, 'title': title, 'where': where, 'kind': kind}
 
 try:

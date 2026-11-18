@@ -149,6 +149,7 @@ func _button(text: String, cb: Callable) -> Button:
 	# Release mode: a finger that lands on a button to scroll the list must not
 	# fire it (press mode fired "Save & back to title" when you scrolled Options).
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
+	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.custom_minimum_size = Vector2(0, 18)
@@ -223,6 +224,8 @@ func _grid(cols: int) -> GridContainer:
 
 
 func _refresh() -> void:
+	if not is_inside_tree():
+		return
 	for c in _body.get_children():
 		_body.remove_child(c)
 		c.queue_free()
@@ -920,7 +923,7 @@ func _pup_tab() -> void:
 	var pname := Pet.name_of()
 	var lvl := GameState.skill_level("pup")
 	var sk: Dictionary = GameState.run["skills"].get("pup", {"level": 1, "xp": 0})
-	var m := get_tree().current_scene
+	var m: Node = get_tree().current_scene if is_inside_tree() else null
 	var pt: Pet = (m as GameMap).pet as Pet if m is GameMap and (m as GameMap).pet is Pet else null
 	if Pet.resting():
 		_line("%s is resting at home after a rough day. Back %s." % [pname, "this afternoon" if GameState.bonus("pup", "best") > 0.0 else "tomorrow"], 9, Color(1, 0.85, 0.7))

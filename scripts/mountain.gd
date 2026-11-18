@@ -118,7 +118,7 @@ func after_ready() -> void:
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 94, 8, ["goat", "crow", "crow", "hedgehog", "sparrow"])
 	for i in GameState.enemy_count(4):
 		var at := cell_center(Vector2i(randi_range(6, cols - 7), randi_range(16, rows - 6)))
-		spawn_enemy("golem" if GameState.is_penguins() else "thug_enforcer", at)
+		spawn_enemy("golem" if GameState.is_penguins() else ("thug_enforcer" if GameState.progress_tier() >= 2 else "thug_brute"), at)
 	if not GameState.run["flags"].has("mountain_seen"):
 		GameState.run["flags"]["mountain_seen"] = true
 		player.frozen = true

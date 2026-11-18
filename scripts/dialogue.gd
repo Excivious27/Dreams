@@ -263,6 +263,8 @@ func _refresh_focus() -> void:
 
 func _choose(key: String, index: int) -> void:
 	last_choice = index
+	if is_inside_tree():
+		Music.instance(get_tree()).sfx("ui_tap")
 	if key != "":
 		GameState.run["decisions"][key] = index
 	choice_made.emit(key, index)

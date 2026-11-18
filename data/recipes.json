@@ -149,14 +149,14 @@
   },
   {
    "id": "sprinkler_iridium",
-   "name": "Crystal Sprinkler",
+   "name": "Iridium Sprinkler",
    "need": {
-    "gold_bar": 1,
+    "gold_bar": 2,
     "iron_bar": 2,
-    "crystal_refined": 1
+    "crystal_refined": 3
    },
    "give": "sprinkler_iridium",
-   "tier": 3
+   "tier": 4
   }
  ],
  "kitchen": [
@@ -1455,16 +1455,6 @@
     "leather": 1
    },
    "give": "leather_legs",
-   "tier": 1
-  },
-  {
-   "id": "leather_scrap",
-   "name": "Leather (from wings)",
-   "need": {
-    "bat_wing": 2,
-    "slime_gel": 1
-   },
-   "give": "leather",
    "tier": 1
   },
   {

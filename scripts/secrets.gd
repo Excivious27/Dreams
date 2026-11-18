@@ -5,6 +5,20 @@ extends RefCounted
 ## find with the hoe (once each), and one page of the Wayfarer's Journal.
 ## Find every page for the journal's last secret.
 
+const GANG_ONLY := ["hideout", "docks", "neon", "uptown", "underground", "countryside"]
+const PENG_ONLY := ["wastes", "sky", "station", "jungle"]
+
+
+## Pages this arc can actually reach: the journal is finishable in either arc.
+static func pages_total() -> int:
+	var n := 0
+	for rid: String in PAGES:
+		if (rid in GANG_ONLY and GameState.is_penguins()) or (rid in PENG_ONLY and not GameState.is_penguins()):
+			continue
+		n += 1
+	return n
+
+
 const PAGES := {
 	"orchard_hills": "Page: The orchards were planted by people who couldn't stay. Every tree is someone's goodbye, and the fruit is the sweetest in the valley.",
 	"countryside": "Page: The old road east was paved with stones from the star field. Walk it at night and your shadow looks a little too bright.",
@@ -123,7 +137,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 					m.hud.toast("+◆%d" % int(g[id]), Color(1, 0.9, 0.5))
 				else:
 					m.give(id, int(g[id]))
-			GameState.notify("Hidden chest found (%d/%d)." % [found("secret_chest_"), PAGES.size() + 4])
+			GameState.notify("Hidden chest found (%d/%d)." % [found("secret_chest_"), pages_total()])
 			return true
 		"secret_dig":
 			if GameState.held_tool() != "hoe":
@@ -145,8 +159,8 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 				(m.props[c] as Node).queue_free()
 				m.props.erase(c)
 			var n := found("page_")
-			m.tell([{"who": "", "text": str(thing["text"])}, {"who": "", "text": "The Wayfarer's Journal: %d of %d pages." % [n, PAGES.size()]}])
-			if n >= PAGES.size() and not GameState.run["flags"].has("journal_done"):
+			m.tell([{"who": "", "text": str(thing["text"])}, {"who": "", "text": "The Wayfarer's Journal: %d of %d pages." % [n, pages_total()]}])
+			if n >= pages_total() and not GameState.run["flags"].has("journal_done"):
 				GameState.run["flags"]["journal_done"] = true
 				m.give("relic_crown", 1)
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + 5000

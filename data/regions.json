@@ -21,11 +21,11 @@
     ],
     "scene": "crystal_meadow",
     "spawn": [
-     32,
+     45,
      12.5
     ],
     "facing": "left",
-    "label": "◀ meadow"
+    "label": "◀ crystal meadow"
    }
   ],
   "paths": [
@@ -206,7 +206,15 @@
     "solid": true,
     "kind_gangsters": "lt_surveyor",
     "who_gangsters": "The Surveyor",
-    "text_gangsters": "Every grid line out here is mine. I measured the President's tower from this dirt. I'll measure you."
+    "text_gangsters": "Every grid line out here is mine. I measured the President's tower from this dirt. I'll measure you.",
+    "when": {
+     "flag": "catship_done",
+     "skill": [
+      "combat",
+      3
+     ]
+    },
+    "locked": "The Commander's camp is ringed with soldiers. Not yet: find the cat ship first, and get stronger."
    },
    {
     "type": "note",
@@ -289,7 +297,7 @@
     ],
     "scene": "crystal_meadow",
     "spawn": [
-     32,
+     45,
      12.5
     ],
     "facing": "left",
@@ -2258,7 +2266,11 @@
     "after": "The pit's yours. Fighters come to you now.",
     "hint": "A: the ring",
     "solid": false,
-    "title": "Brock the Unbroken"
+    "title": "Brock the Unbroken",
+    "when": {
+     "quest": "neon"
+    },
+    "locked": "The pit crowd won't let you near the ring. Deal with Flame in Neon first."
    },
    {
     "type": "heal",
@@ -2775,8 +2787,8 @@
     ],
     "scene": "forest",
     "spawn": [
-     18,
-     22.5
+     16,
+     8.5
     ],
     "facing": "down",
     "hint": "A: climb down the great tree",
@@ -2832,7 +2844,8 @@
     "max_hp": 1,
     "after": "The clouds are quiet.",
     "hint": "A: the knight",
-    "solid": false
+    "solid": false,
+    "tier": 4
    }
   ],
   "enemies": [
@@ -5817,7 +5830,7 @@
  "bf_frostfield": {
   "cols": 110,
   "rows": 88,
-  "music": "boss",
+  "music": "battle",
   "backdrop": "mountains",
   "ground": "grass",
   "path": "stone",
@@ -5981,9 +5994,6 @@
   "things": [],
   "enemies": [],
   "npcs": [],
-  "intro": [
-   "The Dark Crystal's grumps hold the high ground over Frostfield. Take the ridges, raise crystal spires, and push them off the plateaus."
-  ],
   "battle": {
    "title": "Frostfield Front",
    "who": "Catkins",
@@ -6067,7 +6077,7 @@
  "bf_shattered_vale": {
   "cols": 118,
   "rows": 92,
-  "music": "boss",
+  "music": "battle",
   "backdrop": "hills",
   "ground": "grass",
   "path": "stone",
@@ -6211,9 +6221,6 @@
   "things": [],
   "enemies": [],
   "npcs": [],
-  "intro": [
-   "The Vale broke when the Dark Crystal fell through it. Its shards still march. Hold the six points and the shards will stop answering it."
-  ],
   "battle": {
    "title": "Shattered Vale",
    "who": "Catkins",
@@ -6281,7 +6288,6 @@
     "shard_spider",
     "prism_wisp",
     "geode_golem",
-    "knight",
     "crystal_baby"
    ],
    "tickets": 150,
@@ -6307,7 +6313,7 @@
  "bf_rail_yards": {
   "cols": 112,
   "rows": 86,
-  "music": "boss",
+  "music": "battle",
   "backdrop": "hills",
   "ground": "grass",
   "path": "stone",
@@ -6450,9 +6456,6 @@
   "things": [],
   "enemies": [],
   "npcs": [],
-  "intro": [
-   "The President's people run the freight through the rail yards. Take the towers, set up drone bays, and the trains run for you."
-  ],
   "battle": {
    "title": "The Rail Yards",
    "who": "Halo",
@@ -6536,7 +6539,7 @@
  "bf_dockside": {
   "cols": 116,
   "rows": 90,
-  "music": "boss",
+  "music": "battle",
   "backdrop": "hills",
   "ground": "grass",
   "path": "stone",
@@ -6679,9 +6682,6 @@
   "things": [],
   "enemies": [],
   "npcs": [],
-  "intro": [
-   "The docks are where the President's money comes in. Six points, four of his crews. Bring drones, bring the crew, and hold the water."
-  ],
   "battle": {
    "title": "Dockside War",
    "who": "Marlene",

@@ -280,6 +280,9 @@ static func overnight(report: Dictionary) -> void:
 		GameState.add_item("shard", 1)
 	if has("hq_safehouse"):
 		Racket.set_heat(Racket.heat() - 1)
+	if has("star_beacon"):  # the beacon gathers a little starlight every night
+		GameState.add_item("star_dust", 1)
+		report["star_beacon"] = true
 	var jobs: Dictionary = data().get("jobs", {})
 	var cj: Dictionary = GameState.run.get("crew_jobs", {})
 	var mult := (1.5 if has("hq_workshop") else 1.0) * (1.0 + GameState.bonus("hustle", "job_pay") + GameState.bonus("leadership", "job_pay"))

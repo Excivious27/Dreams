@@ -104,6 +104,8 @@ func _wet() -> bool:
 func on_blocked() -> void:
 	e.map.damage_number(e.position + Vector2(0, -24), 0)
 	_say("GUARD", Color(0.75, 0.85, 1.0))
+	if Art.has("fx", "gift_guard"):
+		e.map.fx("gift_guard", e.position + Vector2(0, -10), 16.0, 0.45)
 	if not _told:
 		_told = true
 		e.map.hud.toast(str(d.get("tip", "Read their moves. Wait for the opening.")), Color(1, 0.9, 0.6))
@@ -115,8 +117,10 @@ func on_blocked() -> void:
 
 
 func on_hit(mult: float) -> void:
-	if mult >= 1.5:
+	if mult >= 1.5 or open_t > 0.0:
 		_say("OPEN!", Color(1, 1, 0.6))
+		if Art.has("fx", "gift_open"):
+			e.map.fx("gift_open", e.position + Vector2(0, -10), 16.0, 0.5)
 		var known: Dictionary = GameState.run.get("gifts_known", {})
 		if not known.has(gid):
 			known[gid] = true
@@ -255,8 +259,20 @@ func _open_after(move: String) -> void:
 		e._stun = maxf(e._stun, minf(open_t, float(r.get("stagger", 0.0))))
 
 
+## Which Prompt 16-5 effect strip belongs to a gift ("" for none).
+static func fx_for(g: String) -> String:
+	var fam: String = {"beat": "tempo", "lt_tide": "gale", "lt_neonfire": "cinder", "lt_anvil": "iron", "lt_grid": "volt", "lt_thicket": "bramble",
+		"lt_gravity": "gravity", "lt_express": "gale", "lt_ledger": "fortune", "b_dark": "dark_burst", "b_president": "dark_burst",
+		"b_sentinel": "dark_burst", "b_mirror": "mirror", "b_witch": "shade", "b_elder": "shade", "c_ember": "cinder", "c_ice": "mirror",
+		"c_kelp": "gale", "c_coral": "bramble"}.get(g, g)
+	return "gift_" + fam if Art.has("fx", "gift_" + fam) else ""
+
+
 func _do(mv: Dictionary, p: Player) -> void:
 	var t := str(mv.get("type", "ring"))
+	var gf := fx_for(gid)
+	if gf != "" and t != "roll":
+		e.map.fx(gf, e.position + Vector2(0, -4), 14.0, 0.6)
 	if t == "roll":
 		_rolls += 1
 		var opts: Array = mv.get("of", ["ring", "zones", "lines"])
@@ -464,7 +480,11 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 	for en in m.enemies.duplicate():
 		if is_instance_valid(en) and en._alive and en.position.distance_to(p.position) < float(g.get("reach", 64.0)):
 			near.append(en)
-	m.fx("ripple_ring" if Art.has("fx", "ripple_ring") else "sparkle", p.position + Vector2(0, -8), 12.0, 0.9)
+	var lf := fx_for(id)
+	if lf != "":
+		m.fx(lf, p.position + Vector2(0, -4), 14.0, 0.7)
+	else:
+		m.fx("ripple_ring" if Art.has("fx", "ripple_ring") else "sparkle", p.position + Vector2(0, -8), 12.0, 0.9)
 	match str(g.get("lend", "burst")):
 		"burn":
 			for en: Enemy in near:

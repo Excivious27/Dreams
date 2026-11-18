@@ -37,7 +37,7 @@
 - Collisions: structures write `GameMap.hard` (blocks even swimmers); bog water isn't wadeable. Tall sprites fade when the player is behind them (`_canopies`).
 - Farm soil/crops draw on their own `_soil` layer: field actions call `_soil.queue_redraw()`.
 - `tools/fix_overlays.py` after slicing (weather strip border bars). `slice_world.py` `load_hue` keeps enclosed purples (hero fur/capes).
-- Art Prompts 18: `docs/src/ART-PROMPTS-18-raw.md` → `python3 tools/build_prompt_files.py` builds 16/17/18 (≤6 images per prompt). Guide 11 is docs/guides/GUIDE-11.md.
+- Art Prompts 18: `docs/src/ART-PROMPTS-18-raw.md` → `python3 tools/build_prompt_files.py` builds 16/17/18; new prompt files ask for 2–3 images per prompt (Tom: ChatGPT struggles with more). Guide 11 is docs/guides/GUIDE-11.md.
 - Pathing: `GameMap.flow_dir(from, goal)` (cached BFS flow fields) for battle units/enemies. Battles: rally modes -2 guard / -1 follow (`follow_me` meta) / points; point menu spends supply (upgrade, fortify, mend, barrage).
 - Region look: `R.season` sets `GameState.look_season`; tile/tree/bush pickers use `GameState.look_se()` (reset in `GameMap._ready`).
 - Gift reactions: `GameState.gift_line(id, item, gain)` from data/gift_lines.json. Animals: `run.animals` (streak/fed); hay feeds; crows in `GameState._crows` at sleep. Shop counters close outside hours (`interior._counter`).

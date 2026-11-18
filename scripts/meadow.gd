@@ -104,8 +104,10 @@ func _pick_kind() -> String:
 		return "wisp"
 	else:
 		if not cleared:
-			return "thug_lookout" if r < 0.6 else "thug_speedster"
-		var pool: Array = ["thug_cyber", "thug_speedster", "thug_gambler", "thug_flame"]
+			return "thug_lookout"
+		var pool: Array = ["thug_lookout", "thug_speedster", "thug_cyber"]
+		if GameState.progress_tier() >= 2:
+			pool += ["thug_gambler", "thug_flame"]
 		return pool[randi() % pool.size()]
 
 
@@ -155,7 +157,8 @@ func _summon_boss() -> void:
 			{"text": "The small ones scatter. Something bigger stands up from behind the rocks. It has a face you've seen in a very bad photograph."},
 			{"who": "The President's Man", "text": "He said you'd be farming. He didn't say you'd be good at it."},
 		])
-	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(18 * TILE, 12 * TILE))
+	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(18 * TILE, 12 * TILE), -1 if GameState.is_penguins() else 1)
+	_boss.set_meta("boss_name", "Big Grump" if GameState.is_penguins() else "The President's Man")
 	boss_card("big_grump" if GameState.is_penguins() else "thug_brute", "Big Grump" if GameState.is_penguins() else "The President's Man")
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false
@@ -257,7 +260,7 @@ func _place_props() -> void:
 				prop("nature", "rock_m", k)
 			"shroom":
 				if bool(t.get("has", false)):
-					prop("tiles", "deco_5", k, 0, 0.0)
+					prop("tiles", "deco_5", k, 0, 0.0, false)
 	if Art.has("props", "mine_entrance"):
 		prop("props", "mine_entrance", Vector2i(31, 6), 2)
 	else:

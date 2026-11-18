@@ -54,7 +54,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 		return true
 	# 2) Offer.
 	var offer := GameState.side_quest_for(id)
-	if offer.is_empty():
+	if offer.is_empty() or GameState.run["talked_today"].has("decline_" + id):
 		return false
 	var qid2 := str(offer["id"])
 	var ql2 := lines(qid2)
@@ -70,6 +70,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 		m.hud.toast("New quest: %s" % str(offer["text"]), Color(1, 0.9, 0.4))
 		await m.say(_as_lines(name, ql2.get("yes", "Thank you.")))
 	else:
+		GameState.run["talked_today"]["decline_" + id] = true  # asked again tomorrow, not every chat
 		await m.say(_as_lines(name, ql2.get("no", "Another time, then.")))
 	return true
 
