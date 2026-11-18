@@ -23,7 +23,9 @@ func _run() -> void:
 	Settings.set_v("btn_size", 1)
 	Settings.set_v("music_vol", 3)
 	check(AudioServer.get_bus_index("Music") >= 0 and AudioServer.get_bus_volume_db(AudioServer.get_bus_index("Music")) < -5.0, "music bus follows the volume setting")
-	# Slots
+	# Slots (clear 2 and 3 first: check.sh shares one user:// between runs)
+	SaveGame.set_value(GameState.slot_key(2), {})
+	SaveGame.set_value(GameState.slot_key(3), {})
 	GameState.use_slot(1)
 	GameState.new_run("penguins", "kairi", "Ann", "Town", "Pup")
 	GameState.save()
