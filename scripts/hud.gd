@@ -69,6 +69,9 @@ func set_hint(text: String) -> void:
 func _process(_delta: float) -> void:
 	if GameState.run.is_empty():
 		return
+	if GameState.overflow_note != "":
+		toast(GameState.overflow_note, Color(1, 0.8, 0.5))
+		GameState.overflow_note = ""
 	var sc := get_tree().current_scene
 	var want := INTERIOR_SHIFT if sc is GameMap and (sc as GameMap).scene_id() in ["house", "interior"] else 0.0
 	if want != y_offset:

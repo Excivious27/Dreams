@@ -49,6 +49,11 @@ if ! echo "$xout" | grep -q "exit_check: 0 failures"; then
 fi
 
 echo "== crops wired in =="
+cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|storage_test" || true
+if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
+  echo "storage_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/crop_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|crop_test" || true
 if ! echo "$cout" | grep -q "crop_test: 0 failures"; then

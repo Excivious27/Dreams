@@ -56,7 +56,9 @@ static func offers(shop: String) -> Array:
 				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
 			# Plus a few of the season's other vegetables and herbs.
 			base += _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 2 and not bool(cd.get("tree", false)) and not ("berry" in cid) and not (cid + "_seed" in base) and not (cid + "_seed" in rare[se]) and cid != "wheat", 4, 0)
-			base += ["wheat_seed", "fertilizer", "bread", "hay", "gift_pie", "paint", "sap", "candy", "toy"]
+			base += ["wheat_seed", "fertilizer", "bread", "hay", "gift_pie", "paint", "sap", "candy", "toy", "chest"]
+			if int(GameState.run.get("bag_up", 0)) < GameState.BAG_MAX_UP:
+				base.append("backpack_%d" % (int(GameState.run.get("bag_up", 0)) + 1))
 			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):
 				base += rare[se] + ["dream_seed"]
 			return base
@@ -132,7 +134,10 @@ static func run(m: GameMap, shop: String) -> void:
 			continue
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
 		Music.instance(m.get_tree()).sfx("coin", "pickup")
-		if GameState.items[id].get("type", "") == "tool":
+		if id.begins_with("backpack_"):
+			GameState.run["bag_up"] = int(GameState.run.get("bag_up", 0)) + 1
+			m.hud.toast("%s! Bag now holds %d kinds of item." % [GameState.item_name(id), GameState.bag_size()], Color(1, 0.9, 0.4))
+		elif GameState.items[id].get("type", "") == "tool":
 			GameState.add_tool(id)
 			m.hud.toast("Got the %s!" % GameState.item_name(id), Color(1, 0.9, 0.4))
 		else:

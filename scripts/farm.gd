@@ -115,7 +115,11 @@ func build() -> void:
 			for fx3 in range(c.x, c.x + int(b["w"]) + 1):
 				set_thing(fx3, c.y, {"type": "station", "station": id, "hint": "A: %s" % str(Builds.current_def(id).get("name", id))})
 		elif str(b["thing"]) != "":
-			set_thing(c.x, c.y, {"type": str(b["thing"]), "hint": "A: " + str(id)})
+			var td := {"type": str(b["thing"]), "hint": "A: " + str(id)}
+			if str(b["thing"]) == "chest":
+				td["build"] = id
+				td["hint"] = "A: open the %s" % ("shed" if id == "shed" else "chest")
+			set_thing(c.x, c.y, td)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
 	_place_debris()
@@ -306,7 +310,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_furnace()
 			return true
 		"chest":
-			_sellbox_like_chest()
+			later(ChestScreen.open.bind(self, str(thing.get("build", "chest")), "Shed" if str(thing.get("build", "")) == "shed" else "Chest"))
 			return true
 		"beehive":
 			_daily_pickup("beehive", "honey", "The bees are still working.")
@@ -321,18 +325,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_plans()
 			return true
 		"placed":
-			var pk := "%d,%d" % [c.x, c.y]
-			var kind := str(GameState.run.get("placed", {}).get(pk, ""))
-			(GameState.run["placed"] as Dictionary).erase(pk)
-			things.erase(c)
-			blocked.erase(c)
-			hard.erase(c)
-			if props.has(c):
-				(props[c] as Node).queue_free()
-				props.erase(c)
-			if kind != "":
-				give(kind, 1)
-			hud.toast("Picked up the %s." % GameState.item_name(kind))
+			if str(thing.get("kind", "")) == "chest":
+				later(ChestScreen.open.bind(self, "p:%d,%d" % [c.x, c.y], "Chest"))
+				return true
+			pickup_placed(c)
 			return true
 		"":
 			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and can_till(c) and not GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
@@ -823,25 +819,19 @@ func _furnace() -> void:
 		(props[fc] as Sprite2D).texture = Art.tex("props", "furnace2_on")
 
 
-func _sellbox_like_chest() -> void:
-	# A simple stash: moves everything that isn't a tool or seed into the chest, or takes it all back.
-	var chest: Dictionary = GameState.run["flags"].get("chest", {})
-	if chest.is_empty():
-		var moved := 0
-		for id in GameState.run["inventory"].keys():
-			var t := str(GameState.items.get(id, {}).get("type", ""))
-			if t in ["tool", "seed", "potion", "gift"]:
-				continue
-			chest[id] = GameState.count(id)
-			GameState.add_item(id, -GameState.count(id))
-			moved += 1
-		GameState.run["flags"]["chest"] = chest
-		hud.toast("Stored %d stacks in the chest." % moved if moved > 0 else "Nothing to store.")
-	else:
-		for id in chest:
-			GameState.add_item(id, int(chest[id]))
-		GameState.run["flags"]["chest"] = {}
-		hud.toast("Took everything back out.")
+func pickup_placed(c: Vector2i) -> void:
+	var pk := "%d,%d" % [c.x, c.y]
+	var kind := str(GameState.run.get("placed", {}).get(pk, ""))
+	(GameState.run["placed"] as Dictionary).erase(pk)
+	things.erase(c)
+	blocked.erase(c)
+	hard.erase(c)
+	if props.has(c):
+		(props[c] as Node).queue_free()
+		props.erase(c)
+	if kind != "":
+		give(kind, 1)
+	hud.toast("Picked up the %s." % GameState.item_name(kind))
 
 
 func _daily_pickup(key: String, item: String, wait_msg: String) -> void:

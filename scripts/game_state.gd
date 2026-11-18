@@ -462,8 +462,61 @@ static func count(id: String) -> int:
 	return int(run["inventory"].get(id, 0))
 
 
-static func add_item(id: String, n: int = 1) -> void:
+## Bag size (Sun Haven style): slots for different items; tools on their own.
+## Backpack upgrades (run["bag_up"], 0-3) add 12 slots each.
+const BAG_BASE := 30
+const BAG_STEP := 12
+const BAG_MAX_UP := 3
+
+
+static func bag_size() -> int:
+	return BAG_BASE + BAG_STEP * int(run.get("bag_up", 0))
+
+
+static func bag_used() -> int:
+	return (run["inventory"] as Dictionary).size()
+
+
+static func bag_free() -> int:
+	return bag_size() - bag_used()
+
+
+## Bag and chest order: by kind, then name (Sort button).
+const SORT_RANK := {"tool": 0, "weapon": 1, "equip": 2, "seed": 3, "crop": 4, "fruit": 5, "food": 6, "dish": 6, "tonic": 7, "potion": 7, "fish": 8, "forage": 9, "ore": 10, "bar": 11, "gem": 12, "material": 13, "placeable": 14, "gift": 15}
+
+
+static func item_order(a: String, b: String) -> bool:
+	var ra := int(SORT_RANK.get(str(items.get(a, {}).get("type", "")), 20))
+	var rb := int(SORT_RANK.get(str(items.get(b, {}).get("type", "")), 20))
+	if ra != rb:
+		return ra < rb
+	return item_name(a).naturalnocasecmp_to(item_name(b)) < 0
+
+
+static func sort_bag() -> void:
 	var inv: Dictionary = run["inventory"]
+	var ids: Array = inv.keys()
+	ids.sort_custom(item_order)
+	var d := {}
+	for id in ids:
+		d[id] = inv[id]
+	run["inventory"] = d
+	run["bag_sorted"] = true
+
+
+## Set when a new item didn't fit and went to the farm chest (Hud shows it).
+static var overflow_note := ""
+
+
+static func add_item(id: String, n: int = 1, force := false) -> void:
+	var inv: Dictionary = run["inventory"]
+	# Bag full: a new kind of item goes to the farm chest instead of vanishing.
+	if n > 0 and not force and not inv.has(id) and bag_free() <= 0 and not str(items.get(id, {}).get("type", "")) in ["tool", "key", "quest"] and run.has("toolbar"):
+		var b := Storage.box("chest")
+		b["items"][id] = int(b["items"].get(id, 0)) + n
+		_mark_seen(id)
+		overflow_note = "Bag full: %s sent to your farm chest." % item_name(id)
+		return
 	inv[id] = int(inv.get(id, 0)) + n
 	if n < 0:
 		_trim_quality(id)
@@ -605,7 +658,8 @@ static func backpack() -> Array:
 	for t in run.get("tools", []):
 		if not run["toolbar"].has(t) and not out.has(t):
 			out.append(t)
-	out.sort()
+	if not bool(run.get("bag_sorted", false)):
+		out.sort()
 	return out
 
 

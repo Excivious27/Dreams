@@ -214,6 +214,16 @@ func _slot_button(id: String, selected: bool, cb: Callable) -> Control:
 	return b
 
 
+func _stack_nearby() -> void:
+	var here := get_tree().current_scene as GameMap
+	if here == null:
+		return
+	var res := Storage.quick_stack_nearby(here)
+	if here.hud:
+		here.hud.toast("Stacked %d item%s into %d chest%s." % [res[0], "" if int(res[0]) == 1 else "s", res[1], "" if int(res[1]) == 1 else "s"] if int(res[0]) > 0 else "Nothing here matches what the chests hold.")
+	_refresh()
+
+
 func _grid(cols: int) -> GridContainer:
 	var g := GridContainer.new()
 	g.columns = cols
@@ -245,6 +255,22 @@ func _refresh() -> void:
 			for i in 12:
 				var id := str(tb[i])
 				g.add_child(_slot_button(id, i == slot, func() -> void: GameState.select_slot(i); _refresh()))
+			var bh := HBoxContainer.new()
+			bh.add_theme_constant_override("separation", 3)
+			_body.add_child(bh)
+			var bl := _line("Bag %d/%d" % [GameState.bag_used(), GameState.bag_size()], 8, Color(1, 0.6, 0.5) if GameState.bag_free() <= 0 else Color(0.9, 0.85, 0.7))
+			bl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			bl.reparent(bh)
+			var sb1 := _button("Sort", func() -> void: GameState.sort_bag(); _refresh())
+			sb1.reparent(bh)
+			sb1.size_flags_horizontal = Control.SIZE_SHRINK_END
+			sb1.autowrap_mode = TextServer.AUTOWRAP_OFF
+			var here := get_tree().current_scene as GameMap
+			if here and not Storage.nearby(here).is_empty():
+				var sb2 := _button("Stack to chests", _stack_nearby)
+				sb2.reparent(bh)
+				sb2.size_flags_horizontal = Control.SIZE_SHRINK_END
+				sb2.autowrap_mode = TextServer.AUTOWRAP_OFF
 			_line("Backpack (tap to put in the selected slot)", 8, Color(0.9, 0.85, 0.7))
 			var pack := GameState.backpack()
 			var g2 := _grid(6)

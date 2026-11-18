@@ -172,10 +172,16 @@ static func play(m: GameMap, b: Dictionary) -> void:
 		if not roll.is_empty():
 			lines = roll + lines
 	await _play_lines(m, lines, str(b["id"]))
+	if not is_instance_valid(m):
+		# The scene changed under the beat (a door, a faint): finish on the new map.
+		m = (Engine.get_main_loop() as SceneTree).current_scene as GameMap
+		if m == null:
+			return
 	_apply(m, b.get("effects", {}))
 	GameState.run.erase("story_pending")
 	GameState.save()
-	m.player.frozen = false
+	if is_instance_valid(m) and m.player:
+		m.player.frozen = false
 	Dialogue.block_input()
 
 

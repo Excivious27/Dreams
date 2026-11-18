@@ -46,3 +46,5 @@
 - `python3 tools/make_seamless.py` after slicing (makes art/gen/seamless wrap; `--check`). `tools/furnish.py` dresses interiors (auto props); interior props are fitted to their footprint in interior.gd. Farm soil layer sits at y=0.5 (y-sort with the map's own draw); beds are drawn in quarters (`farm._draw_bed`).
 - `tools/door_check.gd` (in check.sh) checks every outdoor door; front walls of buildings also enter.
 - Dialogue lines can carry `"pic": "cut_*"` (ui story panels, w267).
+- Bag & chests (Sun Haven style): `GameState.bag_size()/bag_free()/sort_bag()/item_order`; a full bag sends new kinds to the farm chest (`overflow_note`). `Storage` (scripts/storage.gd) keeps run["chests"] by key ("chest", "shed", "p:x,y" placed); `ChestScreen` is the two-grid UI; Items tab has Sort / Stack to chests. Backpack upgrades `backpack_1..3` in Maple's store (`run.bag_up`). Test: tools/storage_test.gd (in check.sh).
+- Skill-tree unlock nodes (`UNLOCKS` in gen_skill_trees.py): blueprint (Builds.gate via `GameState.blueprint_lock`), spell (`spell_from_tree`), move_speed (`move_bonus`), chop_power, mine_power, damage.

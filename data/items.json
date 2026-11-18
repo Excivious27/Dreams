@@ -268,7 +268,8 @@
   "type": "placeable",
   "value": 30,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "desc": "Place it on the farm (hold it, USE on open ground). Holds 24 stacks. Open it with A; pick it up from its screen once it's empty."
  },
  "scarecrow": {
   "name": "Scarecrow",
@@ -9364,5 +9365,29 @@
   "rarity": "uncommon",
   "tier": 2,
   "family": "herb"
+ },
+ "backpack_1": {
+  "name": "Bigger Backpack",
+  "type": "upgrade",
+  "value": 400,
+  "rarity": "common",
+  "tier": 1,
+  "desc": "Adds 12 bag slots for different items. Used the moment you buy it."
+ },
+ "backpack_2": {
+  "name": "Traveller's Pack",
+  "type": "upgrade",
+  "value": 1600,
+  "rarity": "uncommon",
+  "tier": 2,
+  "desc": "Adds 12 bag slots for different items. Used the moment you buy it."
+ },
+ "backpack_3": {
+  "name": "Bottomless Pack",
+  "type": "upgrade",
+  "value": 5000,
+  "rarity": "rare",
+  "tier": 3,
+  "desc": "Adds 12 bag slots for different items. Used the moment you buy it."
  }
 }
