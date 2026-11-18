@@ -2,6 +2,9 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 5 of 10
+- 20-agent audit (/tmp/audit_c5), 20 bots × 3 days twice (one GameMenu.toggle crash fixed, then 0 errors / 0 fails), playtest 0 fails. Fixes applied by file owner (A bag/saves, B combat/skills/economy, C world/water/mines, D story/text, E UI/interiors/map, F deferred). Prompts 24 (2 prompts / 5 images), Guide 17.
+
 ## 2026-11-18 — CONDUCT loop 5 of 10 (audit fixes, round F)
 - Economy: raw catch/crops/forage give heal×2 energy (cooked food and potions keep ×8); pond keeps 6 common fish; fishing reach 1+level, 4 xp a catch; trees give 4 wood; 1 berry a bush; ore rocks softer, mining xp up, full cave forage only on your deepest floor; better hoe/can save 15% a tier; bartering xp capped per night; 10 starter turnip seeds; quality bonus uses the saturated price; buy floor = sell price ×1.15 (demand and fence included); fence perk keeps saturation off only for loot.
 - Skills: Iron Gut is an unlock (`status_guard`; old combat_2_8 moves to it via NODE_RENAMES/NODE_RENAME_NAME); `GameState.SKILL_CAPS` per-tree caps (Combat hp 140 / energy 60), read by gen_skill_trees.py; Buying row gives buy_discount, Sap & Bees gives regrowth; new unlocks Wide Spout, Tremor, Domino Fall, Tidecall, Lucky Day, Quick Build (effect keys wide_water, timber, tremor, tidecall, jackpot, quick_build). Every level-up gets a note (`GameState._xp_loud` while GameMap.xp toasts).

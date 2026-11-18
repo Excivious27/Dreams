@@ -164,3 +164,7 @@ p23raw = open(f"{D}/src/ART-PROMPTS-23-raw.md").read()
 f23 = build(p23raw, "23", f"{D}/ART-PROMPTS-23.md", "what the loop-4 audit found",
             "WHAT THIS COVERS, most important first: boss banners for the seven bosses that show no card; the five boss Gifts with no effect strip; party cards for the fifteen partners who show a plain list row; the six new clothes; headgear that vanishes when worn; portraits for twelve speakers; small leftovers; Mabel's own walking sheet.")
 print("23:", f23)
+p24raw = open(f"{D}/src/ART-PROMPTS-24-raw.md").read()
+f24 = build(p24raw, "24", f"{D}/ART-PROMPTS-24.md", "what the loop-5 audit found",
+            "WHAT THIS COVERS, most important first: faces for Big Grump and the Grump Commander; the hero's dialogue face in the six new outfits; missing pet poses for five dog breeds and three cats; attack frames for the golem and the shard.")
+print("24:", f24)
