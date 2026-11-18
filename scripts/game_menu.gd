@@ -745,7 +745,12 @@ func _skills_tab() -> void:
 	var spent := GameState.points_spent(sk)
 	var head := HBoxContainer.new()
 	_body.add_child(head)
-	var ic := Art.tex("ui", "skillbig_" + sk) if Art.has("ui", "skillbig_" + sk) else Art.tex("items", str({"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")))
+	var big := ""
+	for cand in ["skillbig_", "skill2_", "skill3_", "skill_"]:
+		if Art.has("ui", cand + sk):
+			big = cand + sk
+			break
+	var ic := Art.tex("ui", big) if big != "" else Art.tex("items", str({"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")))
 	if ic:
 		var tr := TextureRect.new()
 		tr.texture = ic

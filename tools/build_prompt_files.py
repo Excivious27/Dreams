@@ -152,3 +152,7 @@ p20raw = open(f"{D}/src/ART-PROMPTS-20-raw.md").read()
 e = build(p20raw, "20", f"{D}/ART-PROMPTS-20.md", "what the loop-1 audit found",
           "WHAT THIS COVERS, most important first: farm fixes (clean sprinklers, tall orchard trees, incubator and silo); the ferry and Pip the ferry-cat; the lookout, the crystal pylon and crystal trees; small screen pieces (rally icons, keeper pointer, bite meter, quality stars, close button, glints); story panels for both arcs and Grandfather Auk's ghost; two hero cards; the villagers' own walking sheets and winter portraits.")
 print("20:", e)
+p21raw = open(f"{D}/src/ART-PROMPTS-21-raw.md").read()
+f21 = build(p21raw, "21", f"{D}/ART-PROMPTS-21.md", "what the loop-2 audit found",
+            "WHAT THIS COVERS, most important first: rooms that look finished (wall tops, night windows, props for each shop); water buildings without painted water; Biscuit the old dog, the gangster opening panel and an arcade ticket booth; withered plants and wind-up warning icons.")
+print("21:", f21)
