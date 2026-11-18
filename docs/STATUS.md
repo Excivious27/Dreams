@@ -2,6 +2,9 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 8 of 10
+- 20-agent audit (/tmp/audit_c8), bots clean before/after, check + playtest pass. Perf patch 2 (bake spikes, redraw cost, soil). Kill pay cap uses e.bossy/named kinds; capped kills drop only quest items; rest_energy() half bar; bait 0.8; blooms 4/day; gun_damage cap + SKILL_VER 8; co-op timer shift, placed sync; farm debris stable; mine barrels/lamps; region invisible walls; story quest timing; heart quests gated at ♥6; Catkins art; 623 re-cut art files (tools/edge_slivers.py new; fix_overlays softens cloud shadow). build_prompt_files keeps every rule. Prompts 27 (1 prompt / 2 images), Guide 20.
+
 ## 2026-11-18 — CONDUCT loop 7 of 10
 - 20-agent audit (/tmp/audit_c7), bots clean before/after (one bot.gd guard), check + playtest pass. Perf patch (soil draw calls, bake spikes, water shader, spell redraws, co-op sync hash, hidpi off); sell box new-game crash; shared daily energy allowance; kill crystals 12/day/map (bosses/battles/colonies exempt); SKILL_VER 7, pet_dmg cap; bounded flow_dir(max_r); greenhouse plot clear; mine lamps/reachability/size; story/quest fixes; one-face portraits (Dialogue.one_face + slicer _one_face); quest_done_text toasts; 173 re-cut art files. story_test.gd now passes (not in check.sh). Prompts 26 (1 prompt / 2 images), Guide 19.
 
