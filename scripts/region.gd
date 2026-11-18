@@ -74,6 +74,38 @@ func build() -> void:
 		for c: Vector2i in cells:
 			set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": wb.get("fish", []), "shore": str(wb.get("shore", "grass"))})
 			_water_cells[c] = true
+	# Islands: everything that isn't island is sea (colony maps).
+	if R.has("islands"):
+		var land := {}
+		for bl in R["islands"]:
+			var cx := float(bl["c"][0]); var cy := float(bl["c"][1]); var rad := float(bl.get("r", 8)); var sdv := int(bl.get("seed", 3))
+			for y in range(int(cy - rad - 4), int(cy + rad + 5)):
+				for x in range(int(cx - rad - 4), int(cx + rad + 5)):
+					var n := WorldGen.fbm(float(x), float(y), sdv, 7.0)
+					if Vector2(x + 0.5, y + 0.5).distance_to(Vector2(cx, cy)) + n * rad * 0.35 <= rad:
+						land[Vector2i(x, y)] = true
+		for pr in R.get("paths", []):
+			for y in range(int(pr[1]), int(pr[1]) + int(pr[3])):
+				for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
+					land[Vector2i(x, y)] = true  # sand bars along the paths
+		for t in R.get("things", []):
+			for dy in range(-1, 2):
+				for dx in range(-1, 2):
+					land[Vector2i(int(t["cell"][0]) + dx, int(t["cell"][1]) + dy)] = true
+		var sp: Array = R.get("spawn", [2, 2])
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				land[Vector2i(int(sp[0]) + dx, int(sp[1]) + dy)] = true
+		for e in exits:
+			for c in cells_of([e["rect"]]):
+				land[c] = true
+				land[c + Vector2i(0, -1)] = true
+		for y in range(1, rows - 1):
+			for x in range(1, cols - 1):
+				var c := Vector2i(x, y)
+				if not land.has(c) and not things.has(c):
+					set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": R.get("fish", ["minnow", "trout", "salmon"]), "shore": str(R.get("island_shore", "sand"))})
+					_water_cells[c] = true
 	# Painted water rects ("water": [{"rect": [x, y, w, h], "fish": [...]}]) are real
 	# water too: no walking on the sea, and you can fish off the dock.
 	for wr in R.get("water", []):
@@ -105,6 +137,30 @@ func build() -> void:
 				continue
 			things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
 			_forage_n += 1
+	# Elevation: plateaus (each a set of noise blobs), drawn as cliffs with ramps.
+	for pl in R.get("plateaus", []):
+		var pc := {}
+		for bl in pl.get("blobs", []):
+			var cx := float(bl["c"][0]); var cy := float(bl["c"][1]); var rad := float(bl.get("r", 6)); var sdv := int(bl.get("seed", 7))
+			for y in range(int(cy - rad - 3), int(cy + rad + 4)):
+				for x in range(int(cx - rad - 3), int(cx + rad + 4)):
+					if x < 2 or y < 2 or x >= cols - 2 or y >= rows - 3:
+						continue
+					var n := WorldGen.fbm(float(x), float(y), sdv, 6.0)
+					if Vector2(x + 0.5, y + 0.5).distance_to(Vector2(cx, cy)) + n * rad * 0.3 <= rad:
+						pc[Vector2i(x, y)] = true
+		# Smooth: no one-cell notches (they draw as broken cliff pieces).
+		for pass_i in 2:
+			var nx := pc.duplicate()
+			for c: Vector2i in pc:
+				var nb := 0
+				for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+					if pc.has(c + d):
+						nb += 1
+				if nb <= 1:
+					nx.erase(c)
+			pc = nx
+		add_plateau(pc, pl.get("ramps", []))
 	if int(R.get("fruit", 3)) > 0:
 		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)))
 	for t in R.get("things", []):
@@ -116,8 +172,16 @@ func build() -> void:
 		set_thing(int(c[0]), int(c[1]), d, bool(t.get("solid", true)))
 
 
+var battle: Battle = null
+
+
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, str(R.get("backdrop", "hills")))
+	if R.has("battle"):
+		battle = Battle.start(self, region_id, R["battle"])
+	place_project_site()
+	if R.has("colony"):
+		_place_colony()
 	for p in R.get("props", []):
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var g := str(p.get("group", "props"))
@@ -224,7 +288,9 @@ func after_ready() -> void:
 				at = cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			if e.has("cell"):
 				at = cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
-			spawn_enemy(str(e["kind"]), at)
+			var se := spawn_enemy(str(e["kind"]), at)
+			if se and bool(e.get("colony", false)):
+				se.set_meta("colony_foe", true)
 	if R.has("weather"):
 		set_weather(str(R["weather"]))
 	var flag := region_id + "_seen"
@@ -254,6 +320,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(_talk_npc.bind(n))
 			return true
 	match str(thing.get("type", "")):
+		"cpoint":
+			if battle:
+				later(battle.interact.bind(str(thing.get("id", ""))))
+			return true
 		"note":
 			if thing.has("story"):
 				later(func() -> void:
@@ -366,9 +436,15 @@ func _boss(thing: Dictionary) -> void:
 		await say([{"text": str(thing.get("locked", "Not yet. There's business to finish elsewhere first."))}])
 		return
 	player.frozen = true
-	await say([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "..."))}])
-	var b := spawn_enemy(str(thing.get("kind", "commander")), player.position + Vector2(40, 0))
-	boss_card(str(thing.get("kind", "commander")), str(thing.get("title", "")))
+	var gang := not GameState.is_penguins()
+	var bk := str(thing.get("kind_gangsters", thing.get("kind", "commander"))) if gang else str(thing.get("kind", "commander"))
+	var bw := str(thing.get("who_gangsters", thing.get("who", ""))) if gang else str(thing.get("who", ""))
+	var bt := str(thing.get("text_gangsters", thing.get("text", "..."))) if gang else str(thing.get("text", "..."))
+	await say([{"who": bw, "text": bt}])
+	var b := spawn_enemy(bk, player.position + Vector2(40, 0))
+	if b:
+		b.set_meta("boss_name", bw if bw != "" else str(thing.get("title", "")))
+	boss_card(bk, str(thing.get("title", bw)))
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false
 	_boss_node = b
@@ -518,6 +594,7 @@ func draw_map() -> void:
 			if h % 23 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [setn, h / 23 % 36]):
 				Art.draw_tile(self, "tiles", "%s_deco_%d" % [setn, h / 23 % 36], Vector2(c * TILE), 0)
 		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
+	draw_plateaus()
 	for layer in R.get("layers", []):
 		var nm := str(layer["tile"])
 		var r: Array = layer["rect"]
@@ -556,3 +633,28 @@ func draw_map() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+
+
+## Colony maps: the elder, the shop, the star crystal and the tide beacons.
+func _place_colony() -> void:
+	for t in R.get("things", []):
+		var c := Vector2i(int(t["cell"][0]), int(t["cell"][1]))
+		match str(t.get("type", "")):
+			"elder":
+				var sp := CharacterLibrary.make_sprite("mer")
+				if sp:
+					sp.position = cell_center(c)
+					sp.play("idle")
+					add_child(sp)
+			"colony_shop":
+				if Art.has("props", "stall2_blue"):
+					prop("props", "stall2_blue" if Colony.st(region_id)["done"] else "stall2_blue_closed", c, 1)
+			"star_crystal":
+				var nm := "ccrystal_%d" % (4 if Colony.st(region_id)["done"] else 2)
+				if Art.has("props", nm):
+					prop("props", nm, c)
+			"beacon":
+				var lit := (Colony.st(region_id)["beacons"] as Dictionary).has(str(t.get("key", "")))
+				var ln := "lantern_lit" if lit else "lantern_unlit"
+				if Art.has("props", ln):
+					prop("props", ln, c)

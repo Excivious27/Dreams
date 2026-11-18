@@ -3756,10 +3756,12 @@
  },
  "frost_lily": {
   "name": "Frost Lily",
-  "type": "flower",
-  "value": 120,
+  "type": "material",
+  "value": 160,
   "rarity": "rare",
-  "tier": 3
+  "tier": 3,
+  "arc": "penguins",
+  "desc": "Never melts."
  },
  "ember_rose": {
   "name": "Ember Rose",
@@ -9278,5 +9280,71 @@
    "luck": 3
   },
   "desc": "More room for borrowed Gifts."
+ },
+ "colony_light": {
+  "name": "Colony Light",
+  "type": "key",
+  "value": 0,
+  "rarity": "rare",
+  "tier": 4,
+  "arc": "penguins",
+  "desc": "The steady glow of a saved colony's star crystal. The Crystal Ward wants four."
+ },
+ "coral_charm": {
+  "name": "Coral Charm",
+  "type": "equip",
+  "value": 900,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "penguins",
+  "slot": "charm",
+  "stats": {
+   "defense": 2,
+   "luck": 1
+  },
+  "desc": "Grown, not carved. Warm in your hand."
+ },
+ "tide_pearl": {
+  "name": "Tide Pearl",
+  "type": "equip",
+  "value": 1400,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "penguins",
+  "slot": "ring",
+  "stats": {
+   "mana": 15,
+   "speed": 1
+  },
+  "desc": "You can hear the sea in it."
+ },
+ "kelp_wrap": {
+  "name": "Kelp Wrap",
+  "type": "food",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "penguins",
+  "energy": 40,
+  "heal": 2
+ },
+ "ember_glass": {
+  "name": "Ember Glass",
+  "type": "material",
+  "value": 220,
+  "rarity": "rare",
+  "tier": 3,
+  "arc": "penguins",
+  "desc": "Glass made in a volcano by a very patient cat."
+ },
+ "starfish_snack": {
+  "name": "Starfish Snack (biscuit)",
+  "type": "food",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "arc": "penguins",
+  "energy": 30,
+  "friend": 2
  }
 }

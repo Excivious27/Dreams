@@ -97,6 +97,7 @@ func after_ready() -> void:
 	_place_buildings()
 	_place_props()
 	_place_people()
+	place_project_site()
 	# Rook's quest: grumps (or thugs) have crossed into the orchard.
 	if GameState.has_quest("rook_tracks") and not GameState.quest_done("rook_tracks"):
 		for i in 3:

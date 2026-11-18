@@ -714,7 +714,91 @@
   "marked_bruno": [],
   "marked_tomas": [],
   "marked_sable": [],
-  "marked_atlas": []
+  "marked_atlas": [],
+  "lt_vance": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "lt_lucia": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "lt_brock": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "lt_silas": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "lt_mags": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "lt_surveyor": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "lt_pike": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "lt_ostrova": [
+   [
+    "crystal_refined",
+    0.8,
+    2
+   ]
+  ],
+  "cboss_coral": [
+   [
+    "crystal_refined",
+    1.0,
+    2
+   ]
+  ],
+  "cboss_kelp": [
+   [
+    "crystal_refined",
+    1.0,
+    2
+   ]
+  ],
+  "cboss_ice": [
+   [
+    "crystal_refined",
+    1.0,
+    2
+   ]
+  ],
+  "cboss_ember": [
+   [
+    "crystal_refined",
+    1.0,
+    2
+   ]
+  ]
  },
  "enemies": {
   "grump": {
@@ -1386,6 +1470,158 @@
    "gift": "gravity",
    "char": "enforcer",
    "reward": 240
+  },
+  "lt_vance": {
+   "hp": 90,
+   "dmg": 3,
+   "speed": 26,
+   "xp": 105,
+   "tier": 3,
+   "abilities": [],
+   "gift": "lt_tide",
+   "char": "enforcer",
+   "name": "Harbourmaster Vance",
+   "reward": 360
+  },
+  "lt_lucia": {
+   "hp": 80,
+   "dmg": 3,
+   "speed": 34,
+   "xp": 105,
+   "tier": 3,
+   "abilities": [],
+   "gift": "lt_neonfire",
+   "char": "flame",
+   "name": "Lucia \"Flame\" Ardent",
+   "reward": 360
+  },
+  "lt_brock": {
+   "hp": 110,
+   "dmg": 4,
+   "speed": 22,
+   "xp": 105,
+   "tier": 3,
+   "abilities": [],
+   "gift": "lt_anvil",
+   "char": "brute",
+   "name": "Brock the Unbroken",
+   "reward": 360
+  },
+  "lt_silas": {
+   "hp": 120,
+   "dmg": 4,
+   "speed": 26,
+   "xp": 120,
+   "tier": 4,
+   "abilities": [
+    "shield"
+   ],
+   "gift": "lt_grid",
+   "char": "enforcer",
+   "name": "Silas Crane",
+   "reward": 480
+  },
+  "lt_mags": {
+   "hp": 95,
+   "dmg": 3,
+   "speed": 24,
+   "xp": 105,
+   "tier": 3,
+   "abilities": [],
+   "gift": "lt_thicket",
+   "char": "gambler",
+   "name": "Old Mags",
+   "reward": 360
+  },
+  "lt_surveyor": {
+   "hp": 130,
+   "dmg": 4,
+   "speed": 20,
+   "xp": 120,
+   "tier": 4,
+   "abilities": [
+    "shield"
+   ],
+   "gift": "lt_gravity",
+   "char": "enforcer",
+   "name": "The Surveyor",
+   "reward": 480
+  },
+  "lt_pike": {
+   "hp": 140,
+   "dmg": 4,
+   "speed": 32,
+   "xp": 120,
+   "tier": 4,
+   "abilities": [
+    "shield"
+   ],
+   "gift": "lt_express",
+   "char": "speedster",
+   "name": "Conductor Pike",
+   "reward": 480
+  },
+  "lt_ostrova": {
+   "hp": 150,
+   "dmg": 5,
+   "speed": 28,
+   "xp": 135,
+   "tier": 5,
+   "abilities": [
+    "shield"
+   ],
+   "gift": "lt_ledger",
+   "char": "gambler",
+   "name": "Madame Ostrova",
+   "reward": 600
+  },
+  "cboss_coral": {
+   "hp": 100,
+   "dmg": 2,
+   "speed": 26,
+   "xp": 70,
+   "tier": 2,
+   "abilities": [],
+   "gift": "c_coral",
+   "art": "geode_golem",
+   "name": "The Grey Reef",
+   "reward": 100
+  },
+  "cboss_kelp": {
+   "hp": 130,
+   "dmg": 3,
+   "speed": 26,
+   "xp": 90,
+   "tier": 3,
+   "abilities": [],
+   "gift": "c_kelp",
+   "art": "void_eel",
+   "name": "The Drowning Tide",
+   "reward": 200
+  },
+  "cboss_ice": {
+   "hp": 160,
+   "dmg": 3,
+   "speed": 26,
+   "xp": 110,
+   "tier": 4,
+   "abilities": [],
+   "gift": "c_ice",
+   "art": "ice_wisp",
+   "name": "Hollow Winter",
+   "reward": 300
+  },
+  "cboss_ember": {
+   "hp": 190,
+   "dmg": 4,
+   "speed": 26,
+   "xp": 130,
+   "tier": 5,
+   "abilities": [],
+   "gift": "c_ember",
+   "art": "geode_golem",
+   "name": "The Smother",
+   "reward": 400
   }
  }
 }

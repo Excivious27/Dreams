@@ -152,6 +152,11 @@ static func play(m: GameMap, b: Dictionary) -> void:
 	GameState.run["flags"]["st_" + str(b["id"])] = true
 	# If the app is closed mid-scene, the beat plays again next time (see GameState.has_run).
 	GameState.run["story_pending"] = str(b["id"])
+	if str(b["id"]) == "g5_president" and Project.has("tower_plan"):
+		GameState.run["hp"] = int(GameState.run["max_hp"])
+		GameState.run["mana"] = int(GameState.run["max_mana"])
+		GameState.run["flags"]["shield"] = 3
+		m.hud.toast("The Tower Plan: the whole crew has your back. Full health, full mana, a shield.", Color(1, 0.9, 0.5))
 	m.player.frozen = true
 	m.player.velocity = Vector2.ZERO
 	if b.has("chapter_title") and str(b.get("chapter_title", "")) != "" and bool(b.get("title_card", false)):

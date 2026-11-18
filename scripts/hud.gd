@@ -213,6 +213,9 @@ func _draw_hud() -> void:
 	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 180 if Racket.on() else 240, 8, Color(1, 1, 0.9))
 	# The goal, always on screen (one line, small).
 	var nxt := GameState.next_step()
+	var sc0 := get_tree().current_scene
+	if sc0 and sc0.get("battle") != null:
+		nxt = ""  # the battle bar says what matters
 	if nxt != "" and y_offset == 0.0:
 		if nxt.length() > 54:
 			nxt = nxt.left(52) + "…"

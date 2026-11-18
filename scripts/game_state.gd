@@ -744,7 +744,10 @@ static func restore_mana(n: int) -> void:
 ## Damage an enemy deals: enemies.json "dmg" is in hearts-ish units; on the
 ## 100 scale a grump (1) does 12, the president (4) does 48 before defense.
 static func enemy_damage(dmg_units: int) -> int:
-	return maxi(5, dmg_units * 12)
+	var n := maxi(5, dmg_units * 12)
+	if run.get("flags", {}).has("proj_aurora_dome"):
+		n = int(n * 0.85)  # the Aurora Dome thins the dark: foes hit softer
+	return n
 
 
 ## Permanent growth of a vital (tonics, quest rewards, heart containers).
@@ -1531,6 +1534,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
 	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
 	_sprinklers_water()
+	Project.overnight(report)
 	for key in run["farm"].keys():
 		var tile: Dictionary = run["farm"][key]
 		var crop_id := str(tile.get("crop", ""))
@@ -1567,6 +1571,8 @@ static func sleep(passed_out := false) -> Dictionary:
 				# Growth: in its season a crop grows a full day; out of season half
 				# a day (it struggles). Fertiliser and the farming tree speed it.
 				var rate := 1.0
+				if Project.has("prism_array"):
+					rate += 0.25
 				if cs != "any" and cs != se and not Builds.is_built("greenhouse"):
 					rate = 0.5
 					if bool(cd.get("tree", false)):
@@ -1702,6 +1708,8 @@ static func status_apply(name: String, t: int) -> void:
 	if has_perk("combat", "Iron Gut") and name in ["poison", "burn"]:
 		return
 	if buff("warm") > 0.0 and name in ["chill", "freeze", "cold"]:
+		return
+	if run.get("flags", {}).has("colony_frost_step") and name in ["chill", "freeze", "cold", "slow"]:
 		return
 	var secs := float(tier(t).get("status_secs", 3.0)) * (0.7 if gear_stat("defense") >= 3 else 1.0) * (0.5 if Crew.perk_level("status_half") >= 2 else 1.0)
 	run["status"] = run.get("status", {})

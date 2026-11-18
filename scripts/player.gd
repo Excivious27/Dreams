@@ -993,7 +993,7 @@ func take_damage(n: int, from: Vector2) -> void:
 			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.5)
 		return
 	# Armour scales: every point helps, none makes you untouchable.
-	var defn := GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence")) + int(GameState.buff("defense"))
+	var defn := GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence")) + int(GameState.buff("defense")) + (2 if Colony.has_ability("coral_ward") else 0)
 	n = maxi(1, roundi(n * 60.0 / (60.0 + 4.0 * maxf(0.0, defn))))
 	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
 	# Short mercy window: enough to not get chain-hit by one enemy, not enough to

@@ -203,7 +203,10 @@
     "max_hp": 2,
     "after": "The spire hums, waiting. Something brass glints in the grey where he stood.",
     "hint": "A: the Commander",
-    "solid": true
+    "solid": true,
+    "kind_gangsters": "lt_surveyor",
+    "who_gangsters": "The Surveyor",
+    "text_gangsters": "Every grid line out here is mine. I measured the President's tower from this dirt. I'll measure you."
    },
    {
     "type": "note",
@@ -685,7 +688,7 @@
      13
     ],
     "who": "Motel clerk",
-    "text": "Rooms by the hour, week, or 'until it blows over'. You look like a 'blows over'. No names in the book.",
+    "text": "Rooms by the night, the week, or 'until it blows over'. You look like a 'blows over'. No names in the book.",
     "hint": "A: motel",
     "solid": false
    },
@@ -1113,15 +1116,16 @@
      19,
      13
     ],
-    "kind": "thug_enforcer",
-    "who": "Dock boss",
-    "text": "You're the farmer. The one he wants quiet. I run these docks and I like them quiet too.",
+    "kind": "lt_vance",
+    "who": "Harbourmaster Vance",
+    "text": "You're the farmer. The President said you'd come by water eventually. Everyone does.",
     "win": "He goes down between two containers. In his jacket: a shipping manifest. Every crate on it is marked with a small purple crystal.",
     "reward": "dark",
     "reward_n": 2,
     "after": "The docks are yours now. Riley says a mechanic could do a lot with a forklift.",
     "hint": "A: dock boss",
-    "solid": false
+    "solid": false,
+    "title": "Harbourmaster Vance"
    },
    {
     "type": "loot",
@@ -1574,9 +1578,9 @@
      17,
      21
     ],
-    "kind": "thug_flame",
-    "who": "Flame",
-    "text": "The dragon's mine. The street's mine. You walked under my sign without paying. That's a fire hazard.",
+    "kind": "lt_lucia",
+    "who": "Lucia \"Flame\" Ardent",
+    "text": "Every sign on this street answers to me. Let's see how you look lit up.",
     "win": "The flames go out. Under the dragon sign, a crowd that was pretending not to watch starts, very quietly, to clap.",
     "reward": "crystal_refined",
     "reward_n": 3,
@@ -1586,7 +1590,8 @@
     "when": {
      "quest": "docks"
     },
-    "locked": "The neon boss is not seeing anyone who has not settled the docks."
+    "locked": "The neon boss is not seeing anyone who has not settled the docks.",
+    "title": "Lucia \"Flame\" Ardent"
    }
   ],
   "enemies": [
@@ -1984,9 +1989,9 @@
      27,
      14
     ],
-    "kind": "thug_enforcer",
-    "who": "Enforcer",
-    "text": "He said you'd come. He said to let you get close enough to see the tower. Close enough.",
+    "kind": "lt_silas",
+    "who": "Silas Crane",
+    "text": "Uptown doesn't do visitors. Uptown does paperwork. You're about to be filed.",
     "win": "The riot shield clatters down the marble steps. Behind it, for one second, the tower's doors open. Then they close. There's a slot in them like a mailbox.",
     "reward": "gold",
     "reward_n": 3,
@@ -1996,7 +2001,8 @@
     "when": {
      "quest": "pit"
     },
-    "locked": "The tower guards look straight through you. Win the pit first; then they will take you seriously."
+    "locked": "The tower guards look straight through you. Win the pit first; then they will take you seriously.",
+    "title": "Silas Crane"
    }
   ],
   "enemies": [
@@ -2243,15 +2249,16 @@
      19,
      11
     ],
-    "kind": "thug_brute",
-    "who": "Pit champion",
-    "text": "Jax said you'd try the ring. Jax is old. I'm not.",
+    "kind": "lt_brock",
+    "who": "Brock the Unbroken",
+    "text": "Forty fights. Forty wins. Nobody's knocked me down since the stone. You want to try?",
     "win": "The crowd roars. Jax, at the ropes, nods once. That's all he's ever going to give anyone, and it's enough.",
     "reward": "crystal_refined",
     "reward_n": 3,
     "after": "The pit's yours. Fighters come to you now.",
     "hint": "A: the ring",
-    "solid": false
+    "solid": false,
+    "title": "Brock the Unbroken"
    },
    {
     "type": "heal",
@@ -2550,6 +2557,22 @@
     ],
     "hint": "A: rest stop",
     "solid": false
+   },
+   {
+    "type": "boss",
+    "cell": [
+     36,
+     10
+    ],
+    "kind": "lt_mags",
+    "who": "Old Mags",
+    "title": "Old Mags",
+    "text": "These roads are mine, sugar. The President pays me to keep them quiet. You're noisy.",
+    "after": "The hedges have stopped whispering.",
+    "win": "Mags sits down in the road and laughs until she cries. 'He gave me a black stone and told me I'd never be old. I'm old anyway. Go on, then.'",
+    "hint": "A: Old Mags",
+    "reward": "crystal_refined",
+    "reward_n": 3
    }
   ],
   "enemies": [
@@ -5790,5 +5813,2016 @@
   "deco_count": 12,
   "patch_set": "track",
   "ground_threshold": 0.12
+ },
+ "bf_frostfield": {
+  "cols": 110,
+  "rows": 88,
+  "music": "boss",
+  "backdrop": "mountains",
+  "ground": "grass",
+  "path": "stone",
+  "spawn": [
+   55,
+   85
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "trees",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     53,
+     87,
+     4,
+     1
+    ],
+    "scene": "town",
+    "spawn": [
+     40,
+     60
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    54,
+    44,
+    2,
+    43
+   ],
+   [
+    6,
+    44,
+    98,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     20,
+     62
+    ],
+    "r": 7,
+    "seed": 107,
+    "fish": [
+     "trout"
+    ]
+   },
+   {
+    "c": [
+     92,
+     66
+    ],
+    "r": 6,
+    "seed": 108,
+    "fish": [
+     "trout"
+    ]
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       24,
+       24
+      ],
+      "r": 11,
+      "seed": 101
+     },
+     {
+      "c": [
+       34,
+       18
+      ],
+      "r": 7,
+      "seed": 102
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       86,
+       26
+      ],
+      "r": 12,
+      "seed": 103
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       55,
+       52
+      ],
+      "r": 10,
+      "seed": 104
+     },
+     {
+      "c": [
+       64,
+       58
+      ],
+      "r": 6,
+      "seed": 105
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       86,
+       26
+      ],
+      "r": 5,
+      "seed": 106
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "stone_circle",
+    "cell": [
+     52,
+     28
+    ],
+    "w": 4,
+    "h": 2
+   }
+  ],
+  "patch_set": "snowpatch",
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 4,
+   "scatter": 30,
+   "critters": [
+    "crow",
+    "rabbit",
+    "sparrow"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "intro": [
+   "The Dark Crystal's grumps hold the high ground over Frostfield. Take the ridges, raise crystal spires, and push them off the plateaus."
+  ],
+  "battle": {
+   "title": "Frostfield Front",
+   "who": "Catkins",
+   "brief": "The Dark Crystal's grumps hold the high ground over Frostfield. Take the ridges, raise crystal spires, and push them off the plateaus.",
+   "win": "Frostfield breathes again. The spires hum like a choir that finally found its note.",
+   "lose": "Back to camp. The ridges will still be there tomorrow.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Aurora Rise",
+     "cell": [
+      24,
+      22
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Frozen Mill",
+     "cell": [
+      55,
+      30
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Glacier Shelf",
+     "cell": [
+      86,
+      24
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "Hollow Ridge",
+     "cell": [
+      56,
+      52
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Camp Catkins",
+     "cell": [
+      55,
+      78
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "grump",
+    "ice_wisp",
+    "crystal_baby",
+    "hill_wolf",
+    "shard"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 0,
+   "reward": {
+    "crystals": 400,
+    "items": {
+     "crystal_refined": 4,
+     "aurora_blade": 1
+    }
+   },
+   "back": [
+    "town",
+    40,
+    60
+   ],
+   "boss": "big_grump"
+  }
+ },
+ "bf_shattered_vale": {
+  "cols": 118,
+  "rows": 92,
+  "music": "boss",
+  "backdrop": "hills",
+  "ground": "grass",
+  "path": "stone",
+  "spawn": [
+   59,
+   89
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "trees",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     57,
+     91,
+     4,
+     1
+    ],
+    "scene": "town",
+    "spawn": [
+     40,
+     60
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    58,
+    46,
+    2,
+    45
+   ],
+   [
+    6,
+    46,
+    106,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     60,
+     30
+    ],
+    "r": 8,
+    "seed": 116,
+    "fish": [
+     "mooncarp"
+    ]
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       30,
+       30
+      ],
+      "r": 13,
+      "seed": 111
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       30,
+       30
+      ],
+      "r": 6,
+      "seed": 112
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       90,
+       34
+      ],
+      "r": 12,
+      "seed": 113
+     },
+     {
+      "c": [
+       98,
+       26
+      ],
+      "r": 6,
+      "seed": 114
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       60,
+       60
+      ],
+      "r": 9,
+      "seed": 115
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "stone_circle",
+    "cell": [
+     58,
+     58
+    ],
+    "w": 4,
+    "h": 2
+   }
+  ],
+  "patch_set": "ruinfloor",
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 4,
+   "scatter": 30,
+   "critters": [
+    "crow",
+    "owl"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "intro": [
+   "The Vale broke when the Dark Crystal fell through it. Its shards still march. Hold the six points and the shards will stop answering it."
+  ],
+  "battle": {
+   "title": "Shattered Vale",
+   "who": "Catkins",
+   "brief": "The Vale broke when the Dark Crystal fell through it. Its shards still march. Hold the six points and the shards will stop answering it.",
+   "win": "The shards in the Vale go quiet, then warm. Some of them follow your spires home.",
+   "lose": "The Vale is too loud today. Rest and come back.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Shard Crown",
+     "cell": [
+      30,
+      29
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Prism Lake",
+     "cell": [
+      60,
+      42
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Broken Gate",
+     "cell": [
+      92,
+      32
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "Vale Steps",
+     "cell": [
+      60,
+      60
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Sunken Shrine",
+     "cell": [
+      20,
+      70
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "f",
+     "name": "Spire Camp",
+     "cell": [
+      70,
+      84
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "shard",
+    "shard_spider",
+    "prism_wisp",
+    "geode_golem",
+    "knight",
+    "crystal_baby"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 2,
+   "reward": {
+    "crystals": 900,
+    "items": {
+     "crystal_battery": 2,
+     "prism_lance": 1
+    }
+   },
+   "back": [
+    "town",
+    40,
+    60
+   ],
+   "boss": "knight"
+  }
+ },
+ "bf_rail_yards": {
+  "cols": 112,
+  "rows": 86,
+  "music": "boss",
+  "backdrop": "hills",
+  "ground": "grass",
+  "path": "stone",
+  "spawn": [
+   56,
+   83
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "trees",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     54,
+     85,
+     4,
+     1
+    ],
+    "scene": "hideout",
+    "spawn": [
+     26,
+     38
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    55,
+    43,
+    2,
+    42
+   ],
+   [
+    6,
+    43,
+    100,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     90,
+     64
+    ],
+    "r": 6,
+    "seed": 204,
+    "fish": [
+     "catfish"
+    ]
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       22,
+       22
+      ],
+      "r": 10,
+      "seed": 201
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       90,
+       22
+      ],
+      "r": 10,
+      "seed": 202
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       56,
+       46
+      ],
+      "r": 8,
+      "seed": 203
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "big_crane",
+    "cell": [
+     60,
+     24
+    ],
+    "w": 3,
+    "h": 3
+   },
+   {
+    "name": "container_red",
+    "cell": [
+     40,
+     40
+    ],
+    "w": 2,
+    "h": 1
+   },
+   {
+    "name": "container_blue",
+    "cell": [
+     72,
+     40
+    ],
+    "w": 2,
+    "h": 1
+   }
+  ],
+  "patch_set": "track",
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 4,
+   "scatter": 30,
+   "critters": [
+    "crow",
+    "sparrow"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "intro": [
+   "The President's people run the freight through the rail yards. Take the towers, set up drone bays, and the trains run for you."
+  ],
+  "battle": {
+   "title": "The Rail Yards",
+   "who": "Halo",
+   "brief": "The President's people run the freight through the rail yards. Take the towers, set up drone bays, and the trains run for you.",
+   "win": "The yard's yours. The night freight blows its whistle twice as it passes your boxcar.",
+   "lose": "Pull back to the boxcar. We regroup.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Signal Tower",
+     "cell": [
+      22,
+      20
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Coal Depot",
+     "cell": [
+      56,
+      26
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Water Tower",
+     "cell": [
+      90,
+      20
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "Turntable",
+     "cell": [
+      56,
+      46
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Your Boxcar",
+     "cell": [
+      56,
+      76
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "thug_brute",
+    "thug_cyber",
+    "thug_speedster",
+    "soldier",
+    "archer"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 0,
+   "reward": {
+    "crystals": 450,
+    "items": {
+     "servo": 6,
+     "data_chip": 2
+    }
+   },
+   "back": [
+    "hideout",
+    26,
+    38
+   ],
+   "boss": "lt_pike"
+  }
+ },
+ "bf_dockside": {
+  "cols": 116,
+  "rows": 90,
+  "music": "boss",
+  "backdrop": "hills",
+  "ground": "grass",
+  "path": "stone",
+  "spawn": [
+   58,
+   87
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "trees",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     56,
+     89,
+     4,
+     1
+    ],
+    "scene": "hideout",
+    "spawn": [
+     26,
+     38
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    57,
+    45,
+    2,
+    44
+   ],
+   [
+    6,
+    45,
+    104,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     58,
+     60
+    ],
+    "r": 12,
+    "seed": 215,
+    "fish": [
+     "eel",
+     "salmon"
+    ]
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       28,
+       28
+      ],
+      "r": 11,
+      "seed": 211
+     },
+     {
+      "c": [
+       20,
+       20
+      ],
+      "r": 5,
+      "seed": 212
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       90,
+       30
+      ],
+      "r": 12,
+      "seed": 213
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       90,
+       30
+      ],
+      "r": 5,
+      "seed": 214
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "warehouse_a",
+    "cell": [
+     86,
+     22
+    ],
+    "w": 4,
+    "h": 3
+   },
+   {
+    "name": "big_crane",
+    "cell": [
+     54,
+     22
+    ],
+    "w": 3,
+    "h": 3
+   }
+  ],
+  "patch_set": "ruinfloor",
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 4,
+   "scatter": 30,
+   "critters": [
+    "crow"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "intro": [
+   "The docks are where the President's money comes in. Six points, four of his crews. Bring drones, bring the crew, and hold the water."
+  ],
+  "battle": {
+   "title": "Dockside War",
+   "who": "Marlene",
+   "brief": "The docks are where the President's money comes in. Six points, four of his crews. Bring drones, bring the crew, and hold the water.",
+   "win": "The harbour lights come on one by one, and every one of them is yours.",
+   "lose": "The tide's against us. Back to the trawler.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Customs House",
+     "cell": [
+      28,
+      26
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Crane Row",
+     "cell": [
+      58,
+      26
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Warehouse Nine",
+     "cell": [
+      90,
+      28
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "The Breakwater",
+     "cell": [
+      30,
+      62
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Ferry Slip",
+     "cell": [
+      92,
+      66
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "f",
+     "name": "Your Trawler",
+     "cell": [
+      58,
+      82
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "thug_enforcer",
+    "thug_cyber",
+    "thug_flame",
+    "thug_gambler",
+    "rust_knight",
+    "soldier"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 2,
+   "reward": {
+    "crystals": 1000,
+    "items": {
+     "crystal_battery": 2,
+     "tommy_gun": 1
+    }
+   },
+   "back": [
+    "hideout",
+    26,
+    38
+   ],
+   "boss": "lt_ostrova"
+  }
+ },
+ "colony_coral": {
+  "cols": 96,
+  "rows": 76,
+  "music": "beach",
+  "backdrop": "sea",
+  "ground": "grass",
+  "path": "sand",
+  "spawn": [
+   40,
+   60
+  ],
+  "pad": 6,
+  "border": {
+   "n": "water",
+   "s": "water",
+   "w": "water",
+   "e": "water"
+  },
+  "exits": [
+   {
+    "rect": [
+     38,
+     63,
+     4,
+     1
+    ],
+    "scene": "beach",
+    "spawn": [
+     12,
+     20
+    ],
+    "facing": "down",
+    "label": "▼ ferry home"
+   }
+  ],
+  "paths": [
+   [
+    39,
+    44,
+    2,
+    20
+   ],
+   [
+    40,
+    34,
+    32,
+    2
+   ]
+  ],
+  "islands": [
+   {
+    "c": [
+     40,
+     40
+    ],
+    "r": 22,
+    "seed": 748
+   },
+   {
+    "c": [
+     72,
+     26
+    ],
+    "r": 11,
+    "seed": 749
+   },
+   {
+    "c": [
+     70,
+     56
+    ],
+    "r": 10,
+    "seed": 750
+   },
+   {
+    "c": [
+     56,
+     33
+    ],
+    "r": 5,
+    "seed": 4
+   },
+   {
+    "c": [
+     57,
+     48
+    ],
+    "r": 5,
+    "seed": 5
+   },
+   {
+    "c": [
+     18,
+     16
+    ],
+    "r": 7,
+    "seed": 753
+   }
+  ],
+  "island_shore": "sand",
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       34,
+       32
+      ],
+      "r": 7,
+      "seed": 41
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       74,
+       22
+      ],
+      "r": 5,
+      "seed": 42
+     }
+    ]
+   }
+  ],
+  "patch_set": "sand",
+  "ground_threshold": -0.05,
+  "fruit": 0,
+  "forage": 6,
+  "gen": {
+   "clumps": 2,
+   "scatter": 18,
+   "critters": [
+    "seagull",
+    "crab",
+    "sparrow"
+   ],
+   "critter_count": 8
+  },
+  "things": [
+   {
+    "type": "elder",
+    "cell": [
+     40,
+     44
+    ],
+    "hint": "A: Grandmother Brine",
+    "solid": true
+   },
+   {
+    "type": "colony_shop",
+    "cell": [
+     44,
+     44
+    ],
+    "hint": "A: Reef trader",
+    "solid": true
+   },
+   {
+    "type": "star_crystal",
+    "cell": [
+     72,
+     24
+    ],
+    "hint": "A: the star crystal",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b0",
+    "cell": [
+     24,
+     30
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b1",
+    "cell": [
+     40,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b2",
+    "cell": [
+     70,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "loot",
+    "cell": [
+     20,
+     18
+    ],
+    "item": "pearl",
+    "n": 1,
+    "every": 7,
+    "empty": "Just sand and a crab, now.",
+    "hint": "A: dig",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     36,
+     30
+    ],
+    "who": "",
+    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
+    "hint": "A: carved stone",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     68,
+     60
+    ],
+    "item": "crystal_refined",
+    "n": 1,
+    "every": 5,
+    "empty": "The tide will bring more.",
+    "hint": "A: tide pool",
+    "solid": false
+   }
+  ],
+  "enemies": [
+   {
+    "kind": "rock_crab",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "mud_slime",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "river_serpent",
+    "count": 3,
+    "colony": true
+   }
+  ],
+  "npcs": [],
+  "intro": [
+   "You came by the ferry? Then the sea still lets some through. Good."
+  ],
+  "colony": "colony_coral"
+ },
+ "colony_kelp": {
+  "cols": 96,
+  "rows": 76,
+  "music": "beach",
+  "backdrop": "sea",
+  "ground": "grass",
+  "path": "sand",
+  "spawn": [
+   40,
+   60
+  ],
+  "pad": 6,
+  "border": {
+   "n": "water",
+   "s": "water",
+   "w": "water",
+   "e": "water"
+  },
+  "exits": [
+   {
+    "rect": [
+     38,
+     63,
+     4,
+     1
+    ],
+    "scene": "beach",
+    "spawn": [
+     12,
+     20
+    ],
+    "facing": "down",
+    "label": "▼ ferry home"
+   }
+  ],
+  "paths": [
+   [
+    39,
+    44,
+    2,
+    20
+   ],
+   [
+    40,
+    34,
+    32,
+    2
+   ]
+  ],
+  "islands": [
+   {
+    "c": [
+     40,
+     40
+    ],
+    "r": 22,
+    "seed": 186
+   },
+   {
+    "c": [
+     72,
+     26
+    ],
+    "r": 11,
+    "seed": 187
+   },
+   {
+    "c": [
+     70,
+     56
+    ],
+    "r": 10,
+    "seed": 188
+   },
+   {
+    "c": [
+     56,
+     33
+    ],
+    "r": 5,
+    "seed": 4
+   },
+   {
+    "c": [
+     57,
+     48
+    ],
+    "r": 5,
+    "seed": 5
+   },
+   {
+    "c": [
+     18,
+     16
+    ],
+    "r": 7,
+    "seed": 191
+   }
+  ],
+  "island_shore": "sand",
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       34,
+       32
+      ],
+      "r": 7,
+      "seed": 41
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       74,
+       22
+      ],
+      "r": 5,
+      "seed": 42
+     }
+    ]
+   }
+  ],
+  "patch_set": "sand",
+  "ground_threshold": -0.05,
+  "fruit": 0,
+  "forage": 6,
+  "gen": {
+   "clumps": 2,
+   "scatter": 18,
+   "critters": [
+    "seagull",
+    "crab",
+    "sparrow"
+   ],
+   "critter_count": 8
+  },
+  "things": [
+   {
+    "type": "elder",
+    "cell": [
+     40,
+     44
+    ],
+    "hint": "A: Old Tidewhisker",
+    "solid": true
+   },
+   {
+    "type": "colony_shop",
+    "cell": [
+     44,
+     44
+    ],
+    "hint": "A: Kelp weaver",
+    "solid": true
+   },
+   {
+    "type": "star_crystal",
+    "cell": [
+     72,
+     24
+    ],
+    "hint": "A: the star crystal",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b0",
+    "cell": [
+     24,
+     30
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b1",
+    "cell": [
+     40,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b2",
+    "cell": [
+     70,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "loot",
+    "cell": [
+     20,
+     18
+    ],
+    "item": "pearl",
+    "n": 1,
+    "every": 7,
+    "empty": "Just sand and a crab, now.",
+    "hint": "A: dig",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     36,
+     30
+    ],
+    "who": "",
+    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
+    "hint": "A: carved stone",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     68,
+     60
+    ],
+    "item": "crystal_refined",
+    "n": 1,
+    "every": 5,
+    "empty": "The tide will bring more.",
+    "hint": "A: tide pool",
+    "solid": false
+   }
+  ],
+  "enemies": [
+   {
+    "kind": "river_serpent",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "wisp",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "slime",
+    "count": 3,
+    "colony": true
+   }
+  ],
+  "npcs": [],
+  "intro": [
+   "The forest under the water is dying, and it was the only home we had."
+  ],
+  "colony": "colony_kelp"
+ },
+ "colony_ice": {
+  "cols": 96,
+  "rows": 76,
+  "music": "beach",
+  "backdrop": "sea",
+  "ground": "grass",
+  "path": "sand",
+  "spawn": [
+   40,
+   60
+  ],
+  "pad": 6,
+  "border": {
+   "n": "water",
+   "s": "water",
+   "w": "water",
+   "e": "water"
+  },
+  "exits": [
+   {
+    "rect": [
+     38,
+     63,
+     4,
+     1
+    ],
+    "scene": "beach",
+    "spawn": [
+     12,
+     20
+    ],
+    "facing": "down",
+    "label": "▼ ferry home"
+   }
+  ],
+  "paths": [
+   [
+    39,
+    44,
+    2,
+    20
+   ],
+   [
+    40,
+    34,
+    32,
+    2
+   ]
+  ],
+  "islands": [
+   {
+    "c": [
+     40,
+     40
+    ],
+    "r": 22,
+    "seed": 382
+   },
+   {
+    "c": [
+     72,
+     26
+    ],
+    "r": 11,
+    "seed": 383
+   },
+   {
+    "c": [
+     70,
+     56
+    ],
+    "r": 10,
+    "seed": 384
+   },
+   {
+    "c": [
+     56,
+     33
+    ],
+    "r": 5,
+    "seed": 4
+   },
+   {
+    "c": [
+     57,
+     48
+    ],
+    "r": 5,
+    "seed": 5
+   },
+   {
+    "c": [
+     18,
+     16
+    ],
+    "r": 7,
+    "seed": 387
+   }
+  ],
+  "island_shore": "sand",
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       34,
+       32
+      ],
+      "r": 7,
+      "seed": 41
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       74,
+       22
+      ],
+      "r": 5,
+      "seed": 42
+     }
+    ]
+   }
+  ],
+  "patch_set": "sand",
+  "ground_threshold": -0.05,
+  "fruit": 0,
+  "forage": 6,
+  "gen": {
+   "clumps": 2,
+   "scatter": 18,
+   "critters": [
+    "seagull",
+    "crab",
+    "sparrow"
+   ],
+   "critter_count": 8
+  },
+  "things": [
+   {
+    "type": "elder",
+    "cell": [
+     40,
+     44
+    ],
+    "hint": "A: Captain Icewhisker",
+    "solid": true
+   },
+   {
+    "type": "colony_shop",
+    "cell": [
+     44,
+     44
+    ],
+    "hint": "A: Ice fisher",
+    "solid": true
+   },
+   {
+    "type": "star_crystal",
+    "cell": [
+     72,
+     24
+    ],
+    "hint": "A: the star crystal",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b0",
+    "cell": [
+     24,
+     30
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b1",
+    "cell": [
+     40,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b2",
+    "cell": [
+     70,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b3",
+    "cell": [
+     18,
+     16
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "loot",
+    "cell": [
+     20,
+     18
+    ],
+    "item": "pearl",
+    "n": 1,
+    "every": 7,
+    "empty": "Just sand and a crab, now.",
+    "hint": "A: dig",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     36,
+     30
+    ],
+    "who": "",
+    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
+    "hint": "A: carved stone",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     68,
+     60
+    ],
+    "item": "crystal_refined",
+    "n": 1,
+    "every": 5,
+    "empty": "The tide will bring more.",
+    "hint": "A: tide pool",
+    "solid": false
+   }
+  ],
+  "enemies": [
+   {
+    "kind": "ice_wisp",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "hill_wolf",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "crystal_baby",
+    "count": 3,
+    "colony": true
+   }
+  ],
+  "npcs": [],
+  "intro": [
+   "You picked a cold day to visit. Every day is a cold day now."
+  ],
+  "colony": "colony_ice"
+ },
+ "colony_ember": {
+  "cols": 96,
+  "rows": 76,
+  "music": "beach",
+  "backdrop": "sea",
+  "ground": "grass",
+  "path": "sand",
+  "spawn": [
+   40,
+   60
+  ],
+  "pad": 6,
+  "border": {
+   "n": "water",
+   "s": "water",
+   "w": "water",
+   "e": "water"
+  },
+  "exits": [
+   {
+    "rect": [
+     38,
+     63,
+     4,
+     1
+    ],
+    "scene": "beach",
+    "spawn": [
+     12,
+     20
+    ],
+    "facing": "down",
+    "label": "▼ ferry home"
+   }
+  ],
+  "paths": [
+   [
+    39,
+    44,
+    2,
+    20
+   ],
+   [
+    40,
+    34,
+    32,
+    2
+   ]
+  ],
+  "islands": [
+   {
+    "c": [
+     40,
+     40
+    ],
+    "r": 22,
+    "seed": 141
+   },
+   {
+    "c": [
+     72,
+     26
+    ],
+    "r": 11,
+    "seed": 142
+   },
+   {
+    "c": [
+     70,
+     56
+    ],
+    "r": 10,
+    "seed": 143
+   },
+   {
+    "c": [
+     56,
+     33
+    ],
+    "r": 5,
+    "seed": 4
+   },
+   {
+    "c": [
+     57,
+     48
+    ],
+    "r": 5,
+    "seed": 5
+   },
+   {
+    "c": [
+     18,
+     16
+    ],
+    "r": 7,
+    "seed": 146
+   }
+  ],
+  "island_shore": "sand",
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       34,
+       32
+      ],
+      "r": 7,
+      "seed": 41
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       74,
+       22
+      ],
+      "r": 5,
+      "seed": 42
+     }
+    ]
+   }
+  ],
+  "patch_set": "sand",
+  "ground_threshold": -0.05,
+  "fruit": 0,
+  "forage": 6,
+  "gen": {
+   "clumps": 2,
+   "scatter": 18,
+   "critters": [
+    "seagull",
+    "crab",
+    "sparrow"
+   ],
+   "critter_count": 8
+  },
+  "things": [
+   {
+    "type": "elder",
+    "cell": [
+     40,
+     44
+    ],
+    "hint": "A: Lady Cinderpaw",
+    "solid": true
+   },
+   {
+    "type": "colony_shop",
+    "cell": [
+     44,
+     44
+    ],
+    "hint": "A: Glassblower",
+    "solid": true
+   },
+   {
+    "type": "star_crystal",
+    "cell": [
+     72,
+     24
+    ],
+    "hint": "A: the star crystal",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b0",
+    "cell": [
+     24,
+     30
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b1",
+    "cell": [
+     40,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b2",
+    "cell": [
+     70,
+     58
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "beacon",
+    "key": "b3",
+    "cell": [
+     18,
+     16
+    ],
+    "hint": "A: tide beacon",
+    "solid": true
+   },
+   {
+    "type": "loot",
+    "cell": [
+     20,
+     18
+    ],
+    "item": "pearl",
+    "n": 1,
+    "every": 7,
+    "empty": "Just sand and a crab, now.",
+    "hint": "A: dig",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     36,
+     30
+    ],
+    "who": "",
+    "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
+    "hint": "A: carved stone",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     68,
+     60
+    ],
+    "item": "crystal_refined",
+    "n": 1,
+    "every": 5,
+    "empty": "The tide will bring more.",
+    "hint": "A: tide pool",
+    "solid": false
+   }
+  ],
+  "enemies": [
+   {
+    "kind": "lantern_moth",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "geode_golem",
+    "count": 3,
+    "colony": true
+   },
+   {
+    "kind": "shard",
+    "count": 3,
+    "colony": true
+   }
+  ],
+  "npcs": [],
+  "intro": [
+   "Careful, the sand is hot. It's always been hot. Now it's angry."
+  ],
+  "colony": "colony_ember"
  }
 }

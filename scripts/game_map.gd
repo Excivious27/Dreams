@@ -267,6 +267,8 @@ func can_swim_cell(c: Vector2i) -> bool:
 		return false
 	if float(player.vehicle_def().get("water", 0.0)) > 0.0:
 		return true  # a boat goes where a swimmer can't
+	if Colony.has_ability("tideswim"):
+		return true
 	if not swim_ok:
 		return false
 	if GameState.has_perk("fishing", "Swimmer") or Companion.has_ability("tail"):
@@ -326,6 +328,14 @@ func try_interact(c: Vector2i) -> bool:
 ## Interactions every outdoor map shares (trees, rocks, logs, stumps, bushes).
 func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 	var t := str(thing.get("type", ""))
+	if t == "project":
+		later(Project.open.bind(self))
+		return true
+	if t == "ferry":
+		later(Colony.ferry.bind(self))
+		return true
+	if t in ["elder", "beacon", "star_crystal", "colony_shop"]:
+		return Colony.interact(self, scene_id(), thing)
 	if not resources_here and t in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
 		return true
@@ -1521,6 +1531,16 @@ func on_enemy_died(e: Enemy) -> void:
 		pop_items(e.position, id, int(got[id]))
 	if e.has_meta("collector"):
 		Racket.on_collector_down(self)
+	if (e.has_meta("colony_foe") or e.has_meta("colony_boss")) and not e.has_meta("decoy"):
+		Colony.on_kill(self, e)
+	if e.kind.begins_with("lt_") and not e.has_meta("decoy"):
+		GameState.run["flags"][e.kind] = true
+		var down := 0
+		for lid in Gift.data().get("lieutenants", {}):
+			if GameState.run["flags"].has("lt_" + str(lid)):
+				down += 1
+		hud.toast("The President's lieutenants: %d of 8 down." % down, Color(1, 0.85, 0.5))
+		GameState.add_hint("Lieutenant down: %s (%d/8)" % [e.display_name(), down])
 	var kc: Dictionary = GameState.run.get("kill_counts", {})
 	kc[e.kind] = int(kc.get(e.kind, 0)) + 1
 	GameState.run["kill_counts"] = kc
@@ -2630,3 +2650,85 @@ func gift_reaction(who_name: String, sel: String, gain: int) -> String:
 	if gain > 0:
 		return "A %s. That's nice of you." % nm
 	return "A %s? Oh. I really don't like these." % nm
+
+
+# ---- elevation: plateaus with cliff faces and ramps --------------------------
+
+var plateaus: Array = []   # [{cells, stairs}] drawn in draw_plateaus()
+
+
+## Raise `cells` into a plateau. `ramps` are cells on its south edge where a ramp
+## leads down (if empty, two are cut near the middle of the longest south edge).
+## The rim and the rock face below south edges are solid; ramps are the way up.
+func add_plateau(cells: Dictionary, ramps: Array = []) -> void:
+	if cells.is_empty():
+		return
+	var south: Array = []
+	for c: Vector2i in cells:
+		if not cells.has(c + Vector2i(0, 1)):
+			south.append(c)
+	if ramps.is_empty() and not south.is_empty():
+		south.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.x < b.x)
+		var mid: Vector2i = south[south.size() / 2]
+		ramps = [mid, mid + Vector2i(1, 0)]
+	var ramp_set := {}
+	for r in ramps:
+		var rc := Vector2i(int(r[0]), int(r[1])) if r is Array else r as Vector2i
+		ramp_set[rc] = true
+	var stairs := {}
+	for c: Vector2i in cells:
+		var edge := false
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if not cells.has(c + d):
+				edge = true
+		var below := c + Vector2i(0, 1)
+		if ramp_set.has(c):
+			stairs[below] = true
+			blocked.erase(c)
+			blocked.erase(below)
+			continue
+		if edge and not ramp_set.has(c + Vector2i(-1, 0)) and not ramp_set.has(c + Vector2i(1, 0)):
+			blocked[c] = true
+		if not cells.has(below) and in_content(below):
+			blocked[below] = true  # the rock face itself
+	plateaus.append({"cells": cells, "stairs": stairs})
+
+
+func draw_plateaus() -> void:
+	for p: Dictionary in plateaus:
+		draw_plateau(p["cells"], "cliffg", p["stairs"])
+
+
+## Place this arc's town project site (the Crystal Ward / Headquarters) if it lives here.
+func place_project_site() -> void:
+	var pd := Project.def()
+	if pd.is_empty() or str(pd.get("where", "")) != scene_id():
+		return
+	var want := Vector2i(int(pd["cell"][0]), int(pd["cell"][1]))
+	var c := want
+	for r in range(0, 8):
+		var found := false
+		for dy in range(-r, r + 1):
+			for dx in range(-r, r + 1):
+				var q := want + Vector2i(dx, dy)
+				if in_content(q) and not blocked.has(q) and not things.has(q) and not blocked.has(q + Vector2i(0, 1)):
+					c = q
+					found = true
+					break
+			if found:
+				break
+		if found:
+			break
+	set_thing(c.x, c.y, {"type": "project", "hint": "A: %s" % str(pd["name"])}, true)
+	var stg := Project.stage()
+	var nm := ""
+	if GameState.is_penguins():
+		nm = "ccrystal_%d" % clampi(stg, 1, 4)
+		if stg == 0:
+			nm = "crystal_rock"
+	else:
+		nm = "warehouse_b" if stg >= 1 and Art.has("buildings", "warehouse_b") else "card_table"
+	if Art.has("buildings", nm):
+		prop("buildings", nm, c, 1)
+	elif Art.has("props", nm):
+		prop("props", nm, c)

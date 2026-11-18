@@ -1,0 +1,193 @@
+{
+ "colony_coral": {
+  "name": "Coral Reach",
+  "tier": 1,
+  "elder": "Grandmother Brine",
+  "intro": [
+   "You came by the ferry? Then the sea still lets some through. Good.",
+   "Our star crystal sits in the reef shrine. It's fading, and the reef is turning grey and grabbing at us.",
+   "We need food for the little ones, the grey crabs chased off, and the three tide beacons lit so the shoals come home. Then wake the crystal."
+  ],
+  "need": {
+   "#fish": 6
+  },
+  "need_text": "The little ones haven't eaten properly in days.",
+  "need_thanks": "Oh, the kits will eat tonight. Bless you.",
+  "foe_word": "Grey crabs",
+  "kills": 8,
+  "beacons": 3,
+  "boss": "cboss_coral",
+  "boss_name": "The Grey Reef",
+  "crystal_dim": "A star crystal, pink as a shell, barely glowing. Something grey has grown over half of it.",
+  "crystal_wake": "You lay your hands on the crystal. The grey reef around it shudders, peels away from the stone, and stands up.",
+  "crystal_restored": "The crystal flares rose-gold. All across the reef, grey coral flushes back to colour, and the water fills with fish.",
+  "crystal_after": "The crystal hums with the sound of the tide.",
+  "thanks": "You gave us back the sea. Come and go as you please, friend of the reef.",
+  "ability": "coral_ward",
+  "ability_name": "Coral Ward",
+  "ability_desc": "Hits land softer (+2 defence, always).",
+  "spells": [],
+  "mana": 0,
+  "shop_who": "Reef trader",
+  "shop": [
+   [
+    "coral_charm",
+    900
+   ],
+   [
+    "kelp_wrap",
+    120
+   ],
+   [
+    "pearl",
+    300
+   ],
+   [
+    "starfish_snack",
+    90
+   ]
+  ]
+ },
+ "colony_kelp": {
+  "name": "Kelp Hollow",
+  "tier": 2,
+  "elder": "Old Tidewhisker",
+  "intro": [
+   "The forest under the water is dying, and it was the only home we had.",
+   "The crystal in the kelp temple feeds the kelp. The dark is feeding on the crystal.",
+   "Bring us plank and rope to shore up the stilt-houses, chase the drowned serpents out, light the beacons, and wake the crystal."
+  ],
+  "need": {
+   "plank": 30,
+   "rope": 6
+  },
+  "need_text": "The stilt-houses lean further every tide.",
+  "need_thanks": "That'll hold. That'll hold for years.",
+  "foe_word": "Drowned serpents",
+  "kills": 10,
+  "beacons": 3,
+  "boss": "cboss_kelp",
+  "boss_name": "The Drowning Tide",
+  "crystal_dim": "A green star crystal wrapped in black kelp. Its light pulses slower each time.",
+  "crystal_wake": "The black kelp unwinds from the crystal and gathers itself into a long, cold shape.",
+  "crystal_restored": "Green light floods the hollow. The kelp lifts toward it like it's breathing again.",
+  "crystal_after": "The crystal glows green and slow, like a heartbeat.",
+  "thanks": "Swim with us any time. The sea knows you now.",
+  "ability": "tideswim",
+  "ability_name": "Tideswim",
+  "ability_desc": "You can swim in any deep water, no partner needed.",
+  "spells": [],
+  "mana": 10,
+  "shop_who": "Kelp weaver",
+  "shop": [
+   [
+    "tide_pearl",
+    1400
+   ],
+   [
+    "kelp_wrap",
+    120
+   ],
+   [
+    "rope",
+    30
+   ]
+  ]
+ },
+ "colony_ice": {
+  "name": "Frostfin Isle",
+  "tier": 3,
+  "elder": "Captain Icewhisker",
+  "intro": [
+   "You picked a cold day to visit. Every day is a cold day now.",
+   "Our crystal used to keep the isle just warm enough. Now the winter has a mind of its own, and it copies us.",
+   "Firewood for the hearths, the wisps chased off, the beacons lit, and then we wake the crystal together."
+  ],
+  "need": {
+   "wood": 40,
+   "coal": 10
+  },
+  "need_text": "The hearths are down to embers.",
+  "need_thanks": "Warm hands. You don't know what that means up here.",
+  "foe_word": "Ice wisps",
+  "kills": 10,
+  "beacons": 4,
+  "boss": "cboss_ice",
+  "boss_name": "Hollow Winter",
+  "crystal_dim": "A pale blue crystal inside a block of ice that wasn't there last year.",
+  "crystal_wake": "The ice cracks. Something steps out of it wearing your shape, then two more.",
+  "crystal_restored": "The ice melts off the crystal in one long sigh. Snow keeps falling, but it's the gentle kind again.",
+  "crystal_after": "The crystal glitters like frost on a window.",
+  "thanks": "The isle is yours whenever you need a cold drink and a warm hearth.",
+  "ability": "frost_step",
+  "ability_name": "Frost Step",
+  "ability_desc": "Chill, freeze and slow can't touch you. You also learn the Lull spell.",
+  "spells": [
+   "lull"
+  ],
+  "mana": 10,
+  "shop_who": "Ice fisher",
+  "shop": [
+   [
+    "frost_lily",
+    160
+   ],
+   [
+    "hot_cocoa",
+    160
+   ],
+   [
+    "starfish_snack",
+    90
+   ]
+  ]
+ },
+ "colony_ember": {
+  "name": "Emberclaw Atoll",
+  "tier": 4,
+  "elder": "Lady Cinderpaw",
+  "intro": [
+   "Careful, the sand is hot. It's always been hot. Now it's angry.",
+   "Our crystal tamed the mountain. The dark has woken it.",
+   "Bring us glass and silver to rebuild the vents, put out the moths, light the beacons, and wake the crystal before the mountain wakes properly."
+  ],
+  "need": {
+   "glass": 10,
+   "silver_bar": 3
+  },
+  "need_text": "The vents are cracked. Glass and silver to patch them.",
+  "need_thanks": "There. Now the mountain breathes where we tell it.",
+  "foe_word": "Lantern moths",
+  "kills": 12,
+  "beacons": 4,
+  "boss": "cboss_ember",
+  "boss_name": "The Smother",
+  "crystal_dim": "A crystal like a coal, red at the centre, black at the edges. The black is spreading.",
+  "crystal_wake": "The black crust splits. What comes out is all heat and no light.",
+  "crystal_restored": "The crystal blazes gold, and the mountain settles down like a cat by a fire.",
+  "crystal_after": "The crystal glows like the last coal in a good fire.",
+  "thanks": "Our fires are yours. Take some of the light with you.",
+  "ability": "starfire",
+  "ability_name": "Starfire",
+  "ability_desc": "+20 max mana and the Radiance spell: a ring of starlight.",
+  "spells": [
+   "radiance"
+  ],
+  "mana": 20,
+  "shop_who": "Glassblower",
+  "shop": [
+   [
+    "ember_glass",
+    220
+   ],
+   [
+    "crystal_glass",
+    260
+   ],
+   [
+    "tide_pearl",
+    1400
+   ]
+  ]
+ }
+}

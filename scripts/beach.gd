@@ -52,6 +52,12 @@ func build() -> void:
 				blocked.erase(c)
 				_sea.erase(c)
 				things[c] = {"type": "dock"}
+	# The ferry to the merkitty colonies waits at the end of the west pier.
+	var tip := Vector2i(12, SEA_Y + 4)
+	for y in range(SEA_Y - 3, rows):
+		if things.get(Vector2i(12, y), {}).get("type", "") == "dock":
+			tip = Vector2i(12, y)
+	things[tip] = {"type": "ferry", "hint": "A: the ferry to the colonies"}
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 81 + int(GameState.run["day"])
 	for i in 24:

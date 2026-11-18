@@ -652,6 +652,372 @@
     "stagger": 1.2
    },
    "tip": "Stay out of its reach, or hit it while it is pulling and just after it has swallowed."
+  },
+  "lt_tide": {
+   "name": "Undertow",
+   "colour": "4aa8ff",
+   "gap": 2.8,
+   "pull_force": 40.0,
+   "moves": [
+    {
+     "type": "pull",
+     "secs": 1.4
+    },
+    {
+     "type": "ring",
+     "n": 14,
+     "gap_n": 3
+    },
+    {
+     "type": "zones",
+     "n": 4,
+     "fx": "slow",
+     "linger": 2.4
+    }
+   ],
+   "rule": {
+    "type": "wet",
+    "closed": 0.6,
+    "open": 0.6,
+    "after": "pull",
+    "secs": 2.0,
+    "stagger": 1.0
+   },
+   "tip": "He drags you toward the slam. Break out sideways; after each slam he stands in his own puddle, open, for two seconds."
+  },
+  "lt_neonfire": {
+   "name": "Neon Burn",
+   "colour": "ff5ad0",
+   "gap": 2.4,
+   "trail": true,
+   "moves": [
+    {
+     "type": "dash"
+    },
+    {
+     "type": "lines",
+     "n": 3,
+     "fan": true
+    },
+    {
+     "type": "dash"
+    },
+    {
+     "type": "spiral",
+     "secs": 1.4
+    }
+   ],
+   "rule": {
+    "type": "window",
+    "after": "spiral",
+    "secs": 2.2,
+    "stagger": 1.2,
+    "closed": 0.3,
+    "open": 2.2
+   },
+   "tip": "Her spiral burns her out. Stay outside it, then close in while the neon sputters."
+  },
+  "lt_anvil": {
+   "name": "Unbroken",
+   "colour": "b0a080",
+   "gap": 3.0,
+   "moves": [
+    {
+     "type": "zones",
+     "n": 3,
+     "r": 22
+    },
+    {
+     "type": "ring",
+     "n": 18,
+     "speed": 40,
+     "gap_n": 4
+    },
+    {
+     "type": "dash"
+    }
+   ],
+   "rule": {
+    "type": "cycle",
+    "on": 4.5,
+    "off": 2.5,
+    "closed": 0.2,
+    "open": 2.2
+   },
+   "tip": "Iron skin for a few seconds, then he gasps. Dodge while he is grey; punish the gasp."
+  },
+  "lt_grid": {
+   "name": "Power Grid",
+   "colour": "ffe85a",
+   "gap": 2.8,
+   "moves": [
+    {
+     "type": "lines",
+     "n": 4
+    },
+    {
+     "type": "zones",
+     "n": 4,
+     "r": 16
+    },
+    {
+     "type": "lines",
+     "n": 5,
+     "fan": true
+    }
+   ],
+   "rule": {
+    "type": "back",
+    "closed": 0.3,
+    "open": 1.8,
+    "turn": 1.2
+   },
+   "tip": "His shield faces you. Bait the bolts, roll past, and hit him from behind before he turns."
+  },
+  "lt_thicket": {
+   "name": "Thicket",
+   "colour": "6fcf5a",
+   "gap": 2.8,
+   "moves": [
+    {
+     "type": "zones",
+     "n": 5,
+     "fx": "slow",
+     "r": 16,
+     "linger": 3.0
+    },
+    {
+     "type": "veil",
+     "secs": 1.8
+    },
+    {
+     "type": "ring",
+     "n": 12,
+     "gap_n": 3
+    }
+   ],
+   "rule": {
+    "type": "window",
+    "after": "veil",
+    "secs": 2.0,
+    "stagger": 0.8,
+    "closed": 0.3,
+    "open": 2.4
+   },
+   "tip": "She vanishes into the hedges and steps out behind you. Turn the moment she reappears."
+  },
+  "lt_gravity": {
+   "name": "Survey Lines",
+   "colour": "9a7aff",
+   "gap": 3.0,
+   "pull_force": 48.0,
+   "moves": [
+    {
+     "type": "pull",
+     "secs": 1.6
+    },
+    {
+     "type": "lines",
+     "n": 4
+    },
+    {
+     "type": "zones",
+     "n": 4,
+     "fx": "slow"
+    }
+   ],
+   "rule": {
+    "type": "range",
+    "far": 40,
+    "closed": 0.4,
+    "open": 1.6,
+    "after": "pull",
+    "secs": 1.8,
+    "stagger": 1.2
+   },
+   "tip": "Up close the ground is his. Fight from range, or wait for the slam and rush in."
+  },
+  "lt_express": {
+   "name": "Express",
+   "colour": "ff9a3a",
+   "gap": 2.2,
+   "moves": [
+    {
+     "type": "dash"
+    },
+    {
+     "type": "dash"
+    },
+    {
+     "type": "dash"
+    },
+    {
+     "type": "ring",
+     "n": 10,
+     "speed": 80,
+     "gap_n": 3
+    }
+   ],
+   "rule": {
+    "type": "window",
+    "after": "dash",
+    "secs": 1.0,
+    "stagger": 0.9,
+    "closed": 0.0,
+    "open": 2.2
+   },
+   "tip": "He comes through like a train, three times. Step off the line; he skids to a stop after each run."
+  },
+  "lt_ledger": {
+   "name": "The Ledger",
+   "colour": "ffd24a",
+   "gap": 2.6,
+   "clones": {
+    "n": 2,
+    "at": [
+     0.6,
+     0.3
+    ]
+   },
+   "moves": [
+    {
+     "type": "roll",
+     "of": [
+      "ring",
+      "lines",
+      "zones",
+      "heal"
+     ]
+    },
+    {
+     "type": "veil",
+     "secs": 1.5
+    }
+   ],
+   "rule": {
+    "type": "window",
+    "after": "never",
+    "rolls": 3,
+    "secs": 3.5,
+    "closed": 0.4,
+    "open": 2.4
+   },
+   "tip": "Her luck lasts three rolls. Count them. At low health only one of her has a shadow."
+  },
+  "c_coral": {
+   "name": "Choking Reef",
+   "colour": "ff7aa0",
+   "gap": 2.8,
+   "moves": [
+    {
+     "type": "zones",
+     "n": 5,
+     "fx": "slow",
+     "linger": 3.0
+    },
+    {
+     "type": "ring",
+     "n": 14,
+     "gap_n": 3
+    },
+    {
+     "type": "pull",
+     "secs": 1.2
+    }
+   ],
+   "rule": {
+    "type": "back",
+    "closed": 0.3,
+    "open": 1.8,
+    "turn": 1.4
+   },
+   "tip": "Its front is armoured reef. Bait the circles, step round, and hit it from behind."
+  },
+  "c_kelp": {
+   "name": "Drowning Tide",
+   "colour": "4ad0a0",
+   "gap": 2.6,
+   "pull_force": 44.0,
+   "moves": [
+    {
+     "type": "pull",
+     "secs": 1.5
+    },
+    {
+     "type": "lines",
+     "n": 3
+    },
+    {
+     "type": "spiral",
+     "secs": 1.4
+    }
+   ],
+   "rule": {
+    "type": "window",
+    "after": "spiral",
+    "secs": 2.2,
+    "stagger": 1.0,
+    "closed": 0.3,
+    "open": 2.2
+   },
+   "tip": "Get out of the tide's pull, wait out the spiral, then hit it while it's spent."
+  },
+  "c_ice": {
+   "name": "Hollow Winter",
+   "colour": "bfe9ff",
+   "gap": 2.8,
+   "clones": {
+    "n": 2,
+    "at": [
+     0.6,
+     0.3
+    ]
+   },
+   "moves": [
+    {
+     "type": "ring",
+     "n": 12,
+     "gap_n": 2
+    },
+    {
+     "type": "zones",
+     "n": 4,
+     "fx": "slow"
+    }
+   ],
+   "rule": {
+    "type": "real",
+    "open": 1.0
+   },
+   "tip": "Its reflections cast no shadow. Hit the one with a shadow."
+  },
+  "c_ember": {
+   "name": "Smother",
+   "colour": "ff7a3a",
+   "gap": 2.6,
+   "trail": true,
+   "moves": [
+    {
+     "type": "dash"
+    },
+    {
+     "type": "zones",
+     "n": 5,
+     "fx": "burn",
+     "linger": 2.4
+    },
+    {
+     "type": "dash"
+    }
+   ],
+   "rule": {
+    "type": "cycle",
+    "on": 5.0,
+    "off": 3.0,
+    "closed": 0.25,
+    "open": 2.0
+   },
+   "tip": "It burns too hot to touch, then has to cool. Dodge the trails; strike when the ring goes white."
   }
  },
  "marked": {
@@ -788,5 +1154,55 @@
   "obsidian_sentinel": "b_sentinel",
   "mirror": "b_mirror",
   "light_eater": "b_eater"
+ },
+ "lieutenants": {
+  "vance": {
+   "name": "Harbourmaster Vance",
+   "title": "Lieutenant of the Docks",
+   "where": "docks",
+   "kind": "lt_vance"
+  },
+  "lucia": {
+   "name": "Lucia \"Flame\" Ardent",
+   "title": "Lieutenant of Neon",
+   "where": "neon",
+   "kind": "lt_lucia"
+  },
+  "brock": {
+   "name": "Brock the Unbroken",
+   "title": "Pit Champion",
+   "where": "underground",
+   "kind": "lt_brock"
+  },
+  "silas": {
+   "name": "Silas Crane",
+   "title": "The Enforcer of Uptown",
+   "where": "uptown",
+   "kind": "lt_silas"
+  },
+  "mags": {
+   "name": "Old Mags",
+   "title": "Queen of the Country Roads",
+   "where": "countryside",
+   "kind": "lt_mags"
+  },
+  "surveyor": {
+   "name": "The Surveyor",
+   "title": "Keeper of the Wastes",
+   "where": "wastes",
+   "kind": "lt_surveyor"
+  },
+  "pike": {
+   "name": "Conductor Pike",
+   "title": "Master of the Rail Yards",
+   "where": "bf_rail_yards",
+   "kind": "lt_pike"
+  },
+  "ostrova": {
+   "name": "Madame Ostrova",
+   "title": "The President's Banker",
+   "where": "bf_dockside",
+   "kind": "lt_ostrova"
+  }
  }
 }

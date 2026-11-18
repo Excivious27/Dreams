@@ -228,6 +228,9 @@ func _process(delta: float) -> void:
 				tgt = ally
 	var to := tgt.position - position
 	var dist := to.length()
+	# A veiled player (Shade crystal / stealth drone) can't be picked out.
+	if tgt == player and map.has_meta("stealth_until") and Time.get_ticks_msec() < int(map.get_meta("stealth_until")):
+		dist = 9999.0
 	_t -= delta
 	_since_hit += delta
 	_kb_t = maxf(0.0, _kb_t - delta)
@@ -249,6 +252,10 @@ func _process(delta: float) -> void:
 			_dir = to.normalized()
 		elif dist <= reach * 0.6:
 			_dir = Vector2.ZERO
+		elif has_meta("goal"):
+			# Battlefield orders: march on the objective.
+			var g: Vector2 = get_meta("goal")
+			_dir = (g - position).normalized() if position.distance_to(g) > 20.0 else Vector2.ZERO
 		elif _t <= 0.0:
 			_t = randf_range(1.0, 3.0)
 			_dir = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() if randf() < 0.7 else Vector2.ZERO

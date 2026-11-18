@@ -71,3 +71,17 @@ echo "$gout" | grep -E "FAIL|gift_test" || true
 if ! echo "$gout" | grep -q "gift_test: 0 failures"; then
   echo "Gift test failed"; exit 1
 fi
+
+echo "== every script compiles =="
+cout="$("$GODOT" --headless --path . -s res://tools/compile_all.gd 2>&1)"
+echo "$cout" | grep -E "BAD|compile_all" || true
+if ! echo "$cout" | grep -q "compile_all: 0 bad"; then
+  echo "Compile check failed"; exit 1
+fi
+
+echo "== campaign: battles, projects, colonies, big mines =="
+kout="$("$GODOT" --headless --path . -s res://tools/campaign_test.gd 2>&1)"
+echo "$kout" | grep -E "FAIL|campaign_test" || true
+if ! echo "$kout" | grep -q "campaign_test: 0 failures"; then
+  echo "Campaign test failed"; exit 1
+fi

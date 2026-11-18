@@ -1,0 +1,26 @@
+{
+ "bf_frostfield": {
+  "title": "Frostfield Front",
+  "arc": "penguins",
+  "tier": 2,
+  "blurb": "The Dark Crystal's grumps hold the high ground over Frostfield."
+ },
+ "bf_shattered_vale": {
+  "title": "Shattered Vale",
+  "arc": "penguins",
+  "tier": 4,
+  "blurb": "The Vale broke when the Dark Crystal fell through it."
+ },
+ "bf_rail_yards": {
+  "title": "The Rail Yards",
+  "arc": "gangsters",
+  "tier": 2,
+  "blurb": "The President's people run the freight through the rail yards."
+ },
+ "bf_dockside": {
+  "title": "Dockside War",
+  "arc": "gangsters",
+  "tier": 4,
+  "blurb": "The docks are where the President's money comes in."
+ }
+}
