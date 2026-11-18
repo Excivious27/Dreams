@@ -7,114 +7,9 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 
 ---
 
-## PROMPT 16-1 — Cliffs, ramps and big stair sets · 2 images
+## PROMPT 16-1 — The President's eight lieutenants · 4 images
 
-> PROMPT 16-1. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
->
-> RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
->
-> SEAMLESS RULE (batches 1–5): a seamless texture must tile with no visible edge when copied side by side in every direction: no border, no vignette, no lighter or darker rim, no shadow on one side, no single big feature that repeats obviously (small details only, spread evenly). Each texture square is drawn exactly where the batch says, nothing else touches it.
->
-> FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, same rules, magenta background. Raised ground ("plateaus") in the game is a grassy top with a rock face on its south side. The current stairs are patched together from small squares and look broken: these are BIG ONE-PIECE pieces instead.
->
-> ■■■ IMAGE 1 of 2 — FILE NAME: "w318_cliffs.png" ■■■
-> TOP HALF: a SEAMLESS CLIFF FACE strip 512×96 (grass lip along the top edge, layered rock face with roots and moss, a darker foot where it meets the ground, tiling left-to-right), the same face in a TALL version 512×160 (two levels high), and corner pieces 96×96 for where the face turns: outer-left, outer-right, inner-left, inner-right, plus a short side face 48×96 for the east and west edges. Do this twice: GRASSY ROCK (warm brown/grey) and SNOWY ROCK (blue-grey with snow on the lip). BOTTOM HALF: a SANDSTONE set (pale ochre, for the colonies and the wastes) the same way.
->
-> ■■■ IMAGE 2 of 2 — FILE NAME: "w319_ramps_stairs.png" ■■■
-> BIG RAMP AND STAIR SETS, each a single drawing that cuts into a cliff face: (1) a STONE STAIRCASE 96 wide × 128 tall (worn stone steps between two rock cheeks, lit from the top-left), (2) the same staircase 144 wide, (3) a DIRT RAMP 96×128 (a gentle earth slope with a few rocks at its sides), (4) a DIRT RAMP 144×128, (5) a WOODEN STAIR 96×128 (planks and rope rail, for the colonies), (6) a CARVED CRYSTAL STAIR 96×128 (pale blue steps for the penguin arc), (7) an IRON FIRE-ESCAPE STAIR 96×160 (for the gangster districts), (8) a SNOWY STONE STAIR 96×128. Each sits on magenta with its top edge matching the cliff lip height from image 1 so it drops straight into a gap in the face.
->
-> (End of PROMPT 16-1: 2 images.)
-
-
----
-
-## PROMPT 16-2 — The beach and the marsh, cleaned up · 2 images
-
-> PROMPT 16-2. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
->
-> RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
->
-> FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, same rules, magenta background.
->
-> ■■■ IMAGE 1 of 2 — FILE NAME: "w320_beach_kit.png" ■■■
-> a beach kit to place over plain sand (batch 1). Row 0: SEPARATE DECALS, each its own sprite 32–48 px: 4 seashells, 3 starfish, 2 sand dollars, a crab, 3 pebble clusters, 2 driftwood sticks, a footprint trail strip, seaweed clumps ×3. Row 1: BIGGER PIECES: 3 sand dunes with grass tufts (soft mounds, 96–128 wide), 2 tide pools (rock rings with water, 64–96 wide), a beach towel, a sandcastle, a rowing boat pulled up on the sand, a lifeguard chair, a beach umbrella in 2 colours. Row 2: a WOODEN PIER kit: a straight pier section 64×64 that tiles north-south, a pier end with a ladder, a pier corner, mooring posts ×2, a rope coil. Row 3: a 4-frame FOAM strip 128×32 for where waves meet sand (seamless left-to-right).
->
-> ■■■ IMAGE 2 of 2 — FILE NAME: "w321_marsh_kit.png" ■■■
-> Row 0: REEDS AND RUSHES in clumps (6 sizes, 32–80 px tall), CATTAILS ×3, LILY PADS ×4 with and without flowers, a rotting log, a boardwalk section 64×64 that tiles (and an end and a corner). Row 1: MARSH FOG done right: 3 large SOFT FOG PUFFS (256×128, 192×96, 128×64), white with soft fading alpha edges drawn as dithered pixels so they look soft, NOT blocky; these drift slowly over the map. Row 2: will-o'-the-wisp light ×3 (4-frame 32×32), frog ×2 (sitting, jumping 4 frames), heron (standing, wading 4 frames), dragonfly (4 frames).
->
-> (End of PROMPT 16-2: 2 images.)
-
-
----
-
-## PROMPT 16-3 — Organic mine caves · 2 images
-
-> PROMPT 16-3. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
->
-> RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
->
-> SEAMLESS RULE (batches 1–5): a seamless texture must tile with no visible edge when copied side by side in every direction: no border, no vignette, no lighter or darker rim, no shadow on one side, no single big feature that repeats obviously (small details only, spread evenly). Each texture square is drawn exactly where the batch says, nothing else touches it.
->
-> FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, same rules. The mine floors are now big caverns with natural wavy walls, carved by the game. They need ground that tiles seamlessly and rock that looks like it was dug, not boxed.
->
-> ■■■ IMAGE 1 of 2 — FILE NAME: "w322_cave_kit_a.png" ■■■
-> for each of three cave types, EARTH CAVE (warm brown earth), STONE CAVE (grey-purple stone), ICE CAVE (blue-white ice), draw one row: a SEAMLESS CAVE FLOOR square 256×256 (no grid, small pebbles and cracks spread evenly), a SEAMLESS ROCK MASS square 256×256 (the solid rock seen from above, darker, lumpy, for everything that isn't floor), a SEAMLESS WALL FACE strip 384×64 (the rock face where the floor meets a wall to the north: lumpy rock with a lighter top lip, tiling left-to-right), and 4 corner pieces 64×64 (outer and inner corners of that face).
->
-> ■■■ IMAGE 2 of 2 — FILE NAME: "w323_cave_kit_b.png" ■■■
-> the same for CRYSTAL CAVE (dark blue rock with glowing crystal veins) and LAVA CAVE (black basalt with orange cracks), then row 3: cave props, each its own sprite: 3 stalagmites, 2 stalactite shadows (dark shapes for the top of the screen), a mine cart on rails, a short straight rail piece and a bend, a support beam arch (96×96), a lantern on a post, mushroom clusters ×3 (glowing), a pick stuck in a rock, a crate of ore.
->
-> (End of PROMPT 16-3: 2 images.)
-
-
----
-
-## PROMPT 16-4 — Conquest battles: points, structures and helpers · 2 images
-
-> PROMPT 16-4. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
->
-> RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
->
-> FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, same rules, magenta background.
->
-> ■■■ IMAGE 1 of 2 — FILE NAME: "w324_battle_structures.png" ■■■
-> Row 0: a CONTROL POINT BANNER in 3 states, each 64×128 with a 4-frame wave (a tall pole on a round stone base with a cloth flag): NEUTRAL (grey cloth), OURS (sky blue with a white star), THEIRS (dark red with a black crown). Row 1, PENGUIN ARC (crystal style, cosy): a CRYSTAL SPIRE in 3 build stages (96×128: a ring of stones; a half-grown crystal; a full glowing blue spire that makes helpers), a CRYSTAL PYLON (64×96, a defensive crystal that shoots light). Row 2, GANGSTER ARC (dark underworld with a touch of cyberpunk): a DRONE BAY in 3 build stages (96×128: crates and cables; a steel frame with a landing pad; a finished bay with cyan lights and a roller door), a GUN TURRET (64×64, a small automated turret on a tripod, toy-like). Row 3: a "capture ring" effect strip, 8 frames 128×128 (a soft ring of light filling clockwise, once in blue and once in red).
->
-> ■■■ IMAGE 2 of 2 — FILE NAME: "w325_battle_helpers.png" ■■■
-> eight HELPER UNITS, each a row of 4 frames 48×48 (hover/idle loop), then 4 frames of their ACTION, then 2 frames of being hit. PENGUIN CRYSTALS (floating gem creatures with tiny eyes, cute but brave): SPARK CRYSTAL (orange, action: shoots a little bolt), MEND CRYSTAL (green, action: a healing glow), WARD CRYSTAL (blue, action: a shield bubble), VEIL CRYSTAL (violet, action: a puff that hides you). GANGSTER DRONES (small quad-rotor drones, dark metal, one coloured light): STRIKER DRONE (orange light, action: a zap), MEDIC DRONE (green cross light, action: a healing beam), SHIELD DRONE (blue light, action: a shield projector), GHOST DRONE (violet light, action: a smoke screen).
->
-> (End of PROMPT 16-4: 2 images.)
-
-
----
-
-## PROMPT 16-5 — The merkitty colonies · 4 images
-
-> PROMPT 16-5. Make FOUR SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
->
-> RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
->
-> FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, same rules, magenta background. Merkitties are small cat-mermaid creatures (cat head and front paws, fish tail), original designs, cosy. Each image is one colony.
->
-> ■■■ IMAGE 1 of 4 — FILE NAME: "w326_colony_coral.png" ■■■
-> (CORAL REACH, pink and gold reef): the ELDER "Grandmother Brine" (an old merkitty with a shell shawl and spectacles) as a sprite row (idle 4, talk 4, happy 2, sad 2) at 64×64 and 6 PORTRAITS 128×128 (neutral, happy, sad, worried, surprised, grateful); colony props: 3 coral houses (shell-roofed huts on stilts in the shallows), a reef trader stall (open and closed), the STAR CRYSTAL in 2 states 96×128 (dim, half covered in grey coral; restored, glowing rose-gold), a TIDE BEACON in 2 states 48×96 (cold stone lantern; lit, glowing pink), grey coral growths ×3 (the corruption), 3 merkitty villagers (idle 4 frames each), and the BOSS "The Grey Reef" 128×128 (a walking mass of grey coral, idle 4, attack 4, hurt 2).
->
-> ■■■ IMAGE 2 of 4 — FILE NAME: "w327_colony_kelp.png" ■■■
-> (KELP HOLLOW, deep green): the elder "Old Tidewhisker" (a long-whiskered merkitty with a kelp cloak) the same way; stilt houses ×3, a kelp weaver stall (open/closed), the star crystal (dim, wrapped in black kelp; restored, green), tide beacons (unlit/lit green), black kelp tangles ×3, 3 villagers, and the boss "The Drowning Tide" (a long eel-like shape made of black kelp and water).
->
-> ■■■ IMAGE 3 of 4 — FILE NAME: "w328_colony_ice.png" ■■■
-> (FROSTFIN ISLE, pale blue): the elder "Captain Icewhisker" (a sturdy merkitty in a fur coat and captain's hat); igloo houses ×3, an ice fisher's hut (open/closed), the star crystal (dim, sealed in ice; restored, glittering blue), beacons (unlit/lit pale blue), ice spikes ×3, 3 villagers, and the boss "Hollow Winter" (a frost creature, plus 2 see-through reflection copies of it with NO shadow).
->
-> ■■■ IMAGE 4 of 4 — FILE NAME: "w329_colony_ember.png" ■■■
-> (EMBERCLAW ATOLL, warm red and gold): the elder "Lady Cinderpaw" (an elegant merkitty with a glass-bead necklace and a fan); glassblower houses ×3 (domed, with chimneys), a glassblower stall (open/closed), the star crystal (dim, black crust; restored, blazing gold), beacons (unlit/lit orange), cooling lava rocks ×3, 3 villagers, and the boss "The Smother" (a smoky creature of black rock and heat, no flames that look scary, more like a grumpy furnace).
->
-> (End of PROMPT 16-5: 4 images.)
-
-
----
-
-## PROMPT 16-6 — The President's eight lieutenants · 4 images
-
-> PROMPT 16-6. Make FOUR SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 16-1. Make FOUR SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
 >
@@ -134,14 +29,14 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 > ■■■ IMAGE 4 of 4 — FILE NAME: "w333_lt_pike_ostrova.png" ■■■
 > CONDUCTOR PIKE (rail-yard boss, striped conductor's cap and coat, whistle; accent orange; power: charges three times like a train) and MADAME OSTROVA (the President's banker, fur stole, jewelled glasses, a ledger; accent gold; power: rolls dice that decide her move, splits into gold copies).
 >
-> (End of PROMPT 16-6: 4 images.)
+> (End of PROMPT 16-1: 4 images.)
 
 
 ---
 
-## PROMPT 16-7 — The town projects: the Crystal Ward and Headquarters · 2 images
+## PROMPT 16-2 — The town projects: the Crystal Ward and Headquarters · 2 images
 
-> PROMPT 16-7. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 16-2. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
 >
@@ -153,14 +48,14 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 > ■■■ IMAGE 2 of 2 — FILE NAME: "w335_hq.png" ■■■
 > (gangster arc, at the hideout, dark underworld with a touch of cyberpunk): (1) THE BACK ROOM: a lean-to with a table, a lamp and a map; (2) THE SAFEHOUSE: a two-storey brick building with bunks visible through a window; (3) THE OPS FLOOR: the same with a war table and screens glowing cyan; (4) THE WORKSHOP WING: an extra wing with machines and sparks; (5) ROOFTOP COMMS: antennas and a drone landing pad on the roof; (6) THE TOWER PLAN: the full headquarters, lit up, the crew's flag on top.
 >
-> (End of PROMPT 16-7: 2 images.)
+> (End of PROMPT 16-2: 2 images.)
 
 
 ---
 
-## PROMPT 16-8 — Still owed from Prompts 15: Marisol and Bo · 2 images
+## PROMPT 16-3 — Still owed from Prompts 15: Marisol and Bo · 2 images
 
-> PROMPT 16-8. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 16-3. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
 >
@@ -176,14 +71,14 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 > ■■■ IMAGE 2 of 2 — FILE NAME: "w302_hero_bo_gang_full.png" ■■■
 > BO, THE MUSCLE: huge, shaved head, grey undershirt, braces, bandaged fists, heavy boots. Attack is a two-handed slam; power-up is rolling his shoulders.
 >
-> (End of PROMPT 16-8: 2 images.)
+> (End of PROMPT 16-3: 2 images.)
 
 
 ---
 
-## PROMPT 16-9 — Still owed from Prompts 15: the Marked · 5 images
+## PROMPT 16-4 — Still owed from Prompts 15: the Marked · 5 images
 
-> PROMPT 16-9. Make FIVE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 16-4. Make FIVE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
 >
@@ -206,14 +101,14 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 > ■■■ IMAGE 5 of 5 — FILE NAME: "w308_marked_sable_atlas.png" ■■■
 > SABLE "HUSH" (age 26, getaway driver, long dark coat, driving gloves, hood up; accent violet; power move: she sinks into her own shadow and steps out of another) and ATLAS "TINY" (age 30, enormous dock porter, braces, flat cap far too small for him, gentle face; accent deep purple; power move: he raises a fist and pebbles, coins and leaves lift and spiral in toward him, then he slams the ground).
 >
-> (End of PROMPT 16-9: 5 images.)
+> (End of PROMPT 16-4: 5 images.)
 
 
 ---
 
-## PROMPT 16-10 — Still owed from Prompts 15: Gift effects · 2 images
+## PROMPT 16-5 — Still owed from Prompts 15: Gift effects · 2 images
 
-> PROMPT 16-10. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 16-5. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
 >
@@ -225,14 +120,14 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 > ■■■ IMAGE 2 of 2 — FILE NAME: "w310_gift_fx_b.png" ■■■
 > strips top to bottom: FORTUNE (a gold coin flipping, landing, and bursting into dice and cards), GRAVITY (purple rings collapsing inward with pebbles, then a ground slam shock ring), GUARD (a hit bouncing off a glowing shield with a small spark, no damage), OPEN (a white flash ring that says this enemy can be hurt now), BLACK STONE (a small black stone with a purple pulse, cracking and going dark on the last frames), SPLINTER (ten thin purple threads of light flying outward from a centre), YIELD (a coloured aura flickering and shrinking to a small steady flame), DARK CRYSTAL BURST (a large purple crystal shock wave for boss fights).
 >
-> (End of PROMPT 16-10: 2 images.)
+> (End of PROMPT 16-5: 2 images.)
 
 
 ---
 
-## PROMPT 16-11 — Still owed from Prompts 15: the chrome · 3 images
+## PROMPT 16-6 — Still owed from Prompts 15: the chrome · 3 images
 
-> PROMPT 16-11. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 16-6. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
 >
@@ -249,14 +144,14 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 > ■■■ IMAGE 3 of 3 — FILE NAME: "w313_cyber_fx.png" ■■■
 > effects only, each a horizontal strip of 8 frames, each frame 96×96, strips stacked top to bottom with 24 px gaps from x=24, y=24: EMP BURST (a cyan ring snapping outward with square pixel sparks), BLACKOUT (a wider dark-blue ring with lights flickering out), BOT ZAP (a thin cyan lightning line with a spark at the end), DRONE SCAN (a cone of pale cyan light sweeping, with small target brackets), HACK (green code glyph squares rising and fading), IMPLANT INSTALL (chrome glint and a small cyan pulse), SCRAMBLE (pink and cyan static dissolving a wanted poster shape), BOT DEPLOY (a small box unfolding into a robot with a puff of dust).
 >
-> (End of PROMPT 16-11: 3 images.)
+> (End of PROMPT 16-6: 3 images.)
 
 
 ---
 
-## PROMPT 16-12 — Missing and broken portraits · 2 images
+## PROMPT 16-7 — Missing and broken portraits · 2 images
 
-> PROMPT 16-12. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 16-7. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the gangster items use the dark underworld palette where the batch says so), flat #FF00FF magenta background except where a batch says "fill the whole image", NO GRID LINES, NO TEXT OR LABELS, no watermark, NO LETTERBOXING (fill the whole 1536×1024). Leave at least 16 px of clear magenta around every separate sprite. All ages: no blood, no gore.
 >
@@ -268,11 +163,11 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 > ■■■ IMAGE 2 of 2 — FILE NAME: "w337_portraits_kids.png" ■■■
 > rows: PIP (a small girl with pigtails and a slingshot), TOBIN (a boy with a big cap and scabbed knees), WREN JR (a toddler-aged little bird-watcher with binoculars), MABEL (a quiet girl with a book and round glasses), then LUMI (the weaver, long braid, a shawl), THEO (the librarian, thin, cardigan), and a second row each for BRAM (the innkeeper, big moustache, apron) and JUNIPER (the nurse, kind eyes, a stethoscope).
 >
-> (End of PROMPT 16-12: 2 images.)
+> (End of PROMPT 16-7: 2 images.)
 
 
 ---
 
 ## Already received (thank you)
 
-w314_ground_seamless_a.png, w315_water_seamless.png, w316_edges_a.png, w317_shores.png, w299_hero_nia_gang_full.png, w300_hero_ollie_gang_full.png
+w314_ground_seamless_a.png, w315_water_seamless.png, w316_edges_a.png, w317_shores.png, w318_cliffs.png, w319_ramps_stairs.png, w320_beach_kit.png, w321_marsh_kit.png, w322_cave_kit_a.png, w323_cave_kit_b.png, w324_battle_structures.png, w325_battle_helpers.png, w326_colony_coral.png, w327_colony_kelp.png, w328_colony_ice.png, w329_colony_ember.png, w299_hero_nia_gang_full.png, w300_hero_ollie_gang_full.png

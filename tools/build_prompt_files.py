@@ -138,3 +138,7 @@ p17raw = open(f"{D}/src/ART-PROMPTS-17-raw.md").read()
 b = build(p17raw, "17", f"{D}/ART-PROMPTS-17.md", "skill trees, the last stand-ins, and Prompts 13",
           "WHAT THIS COVERS, most important first: icons for all 520 skill-tree nodes and the Sun Haven-style skills screen; Prompts 13 again (the penguin book's creatures and places, never came back); the last item icons; the new screens; the four ending paintings; the President's new look; the app icon.")
 print("16:", a, "17:", b)
+p18raw = open(f"{D}/src/ART-PROMPTS-18-raw.md").read()
+c = build(p18raw, "18", f"{D}/ART-PROMPTS-18.md", "the pup, moving colony bosses, last icons, night lights, the Hollow Heart, fixes",
+          "WHAT THIS COVERS, most important first: one clean pup sheet and gear that sits on it; moving bosses for three colonies; the last icons (new items, spells, mail and goal-line marks); night glow for lamps and windows; the Hollow Heart's landmarks and people; small fixes; the hidden chests, caches and journal pages.")
+print("18:", c)

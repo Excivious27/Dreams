@@ -51,8 +51,11 @@ func _draw_glow() -> void:
 	var cam := map.get_viewport().get_camera_2d()
 	var cc := cam.get_screen_center_position() if cam else Vector2.ZERO
 	for l: Array in lights:
-		var n := l[0] as Node2D
-		if not is_instance_valid(n) or not n.visible:
+		var o: Variant = l[0]
+		if not is_instance_valid(o):
+			continue
+		var n := o as Node2D
+		if not n.visible:
 			continue
 		if cam and n.global_position.distance_to(cc) > 320.0:
 			continue

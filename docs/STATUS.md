@@ -2,6 +2,24 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-17 (night, round 3) — 20-agent audit, 20-bot playtest, fixes
+
+- Audit reports: /home/claude/audit2 (not in the repo). 20 bots × 3 days: 0 script errors after fixes (only bot navigation stalls at map edges).
+- Seasonal sunset/sunrise and real darkness, lamp glow, indoor lamplight, Night darkness option.
+- Ambience layer (birds, crickets, frogs, owls, wind, rain, thunder, waves, town, city, hearth, cave), Nature volume; 36 new sfx incl. footsteps; 15 new placeholder area songs + night/festival/winter.
+- Hero art re-keyed (Big Jim etc. had see-through holes); hero picker shows names and highlights.
+- Combat: home-tier HP scaling, no stun-lock, ranged spacing, area tiers + elites, crit/defence caps, boss guards, food cooldown in fights.
+- Economy: forage mushroom ◆10 (Shiitake crop), a third of the forage, slower regrowth, chance-based resource nodes, tighter selling, crates per day.
+- Farming: season-end crop death, greenhouse plot, out-of-season planting refused, morning-wet sprinkler soil.
+- Collisions: animated props aligned, structures block swimmers, no bog wading, multi-frame strips show one frame, canopy/roof fade.
+- Colony art (w326–w329) wired; Hollow Heart rebuilt; Secrets (chests, caches, journal) in every region; boss markers.
+- Pup re-sliced and fixed; partners stop flickering. Mines: reachable findables, mining perks, smoother curve.
+- Saves: localStorage mirror, save on hide/update, SW cache bypass in CI, phone copy/share/paste, per-slot restore.
+- Villagers: everyday talk for all, perk texts fixed, add_friend everywhere, moonwort quest; town greeter accurate.
+- Stories: bell and Auk effects real, W/K clue, twins all-ages, evicted shopkeepers gone, President tougher, no grumps for gangsters.
+- Battles: turrets expire, boss rout, more strategist XP; skills: 32 empty nodes given effects, Learn above grid.
+- Prompts 16/17 rebuilt (received marked), Prompts 18 written; Guide 11.
+
 ## 2026-11-17 (later still, 2) — The chrome (cyberpunk), crew redrawn
 - gen_stations: `terminal` (book hack), `clinic` (book implant), `robotics` (book robot), gangster arc only, cells [13,24] [15,24] [12,27]. 18 new items. Effects in `GameMap.use_consumable`: scrub (heat), emp (stun + forces Gift open), bot (`scripts/bot.gd`, a timed turret), drone (reusable scout; reads Gift tips; blocks the day's collectors).
 - Prompts 15 batch 6 in: twelve crew redrawn (old sheets kept as `*_v1_cheerful.png`); from w303 only Marisol, Bo and custom cards used. Batch 9 (cyber stations, icons, fx) added.
