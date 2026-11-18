@@ -102,8 +102,9 @@ func build() -> void:
 	# A fresh layout every day, different on every floor.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = floor_no * 7919 + int(GameState.run["day"]) * 104729
-	cols = 40 + mini(floor_no, 40) / 2 + rng.randi_range(0, 18)
-	rows = 32 + mini(floor_no, 40) / 3 + rng.randi_range(0, 12)
+	# Tom: levels should be quite a bit larger (was ~40-78 x 32-57).
+	cols = 64 + mini(floor_no, 40) / 2 + rng.randi_range(0, 22)
+	rows = 52 + mini(floor_no, 40) / 3 + rng.randi_range(0, 16)
 	mine_tier = GameState.mine_tier(floor_no)
 	_carve(rng)
 	# Some days the dice carve a cramped cave: re-carve fuller until it's roomy.
@@ -163,7 +164,7 @@ func build() -> void:
 					break
 	# Rock: about one open cell in seven, more on deeper floors.
 	var open_list: Array = _open.keys()
-	var count := int(open_list.size() * (0.08 + 0.0004 * mini(floor_no, 100)))
+	var count := int(open_list.size() * (0.06 + 0.0003 * mini(floor_no, 100)))
 	for i in count:
 		if _grotto and i > count / 2:
 			break
@@ -175,8 +176,9 @@ func build() -> void:
 		var pool: Array = (GameState.tier_data.get("mine", {}).get("ores", []) as Array)
 		var ores: Array = pool[mini(mine_tier, pool.size() - 1)] if not pool.is_empty() else ["stone", "copper"]
 		# Half stone, the rest spread over the tier's ores (rarest last, least common).
-		if roll > 0.62 and ores.size() > 1:
-			var r2 := (roll - 0.62) / 0.38
+		# Tom: ore was too plentiful; now about one rock in six carries ore.
+		if roll > 0.83 and ores.size() > 1:
+			var r2 := (roll - 0.83) / 0.17
 			var idx := 1
 			var acc := 0.0
 			var weights: Array = []
@@ -420,7 +422,12 @@ func after_ready() -> void:
 	rng.seed = 2000 + floor_no + int(GameState.run["day"])
 	_place_props()
 	_place_find_props()
-	var n := 5 + mini(floor_no, 60) / 4
+	# Fewer enemies, scaled to cave size (bigger caves no longer mean more crowds);
+	# the first floors are gentle.
+	var area_k := float(cols * rows) / 2000.0
+	var n := int(round((2.0 + mini(floor_no, 60) / 5.0) * area_k))
+	if floor_no <= 3:
+		n = mini(n, 4 + floor_no)
 	var pools: Array = GameState.tier_data.get("mine", {}).get("pools", [])
 	var pool: Array = pools[mini(mine_tier, pools.size() - 1)] if not pools.is_empty() else ["slime", "bat"]
 	var ol: Array = _open.keys()
@@ -429,6 +436,8 @@ func after_ready() -> void:
 		if blocked.has(c) or things.has(c) or (_grotto and is_water_cell(c)) or c.distance_to(_entry) < 8:
 			continue
 		var kind := str(pool[rng.randi_range(0, pool.size() - 1)])
+		if floor_no <= 2 and kind in ["grump", "rock_crab", "shard", "hill_wolf"]:
+			kind = "slime" if rng.randf() < 0.6 else "bat"
 		if not GameState.is_penguins() and kind == "shard":
 			kind = "thug_cyber"
 		if not GameState.is_penguins() and kind == "grump":
@@ -960,9 +969,13 @@ func _depth_scale(e: Enemy) -> void:
 	var into := (floor_no - 1) % 25
 	# Each tier starts about where the last one ended (no easier floor after a boundary).
 	var m := 1.0 + 0.045 * into + 0.35 * mine_tier
-	e.max_hp = int(round(e.max_hp * m))
+	if floor_no <= 4 and not e.is_guardian:
+		m *= 0.6 + 0.1 * floor_no   # floors 1-4 ease in: 70%, 80%, 90%, 100%
+	e.max_hp = maxi(1, int(round(e.max_hp * m)))
 	e.hp = e.max_hp
 	e.damage = e.damage + into / 10
+	if floor_no <= 2 and not e.is_guardian:
+		e.damage = maxi(1, e.damage - 1)
 
 
 func on_enemy_died(e: Enemy) -> void:

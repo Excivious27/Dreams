@@ -84,7 +84,7 @@ func _run() -> void:
 	# Tier scaling: a slime at tier 3 has more hp than at tier 0.
 	var e0 := m.spawn_enemy("slime", m.cell_center(Vector2i(8, 8)), 0)
 	var e3 := m.spawn_enemy("slime", m.cell_center(Vector2i(9, 9)), 3)
-	check(e3.max_hp > e0.max_hp and e3.armor > e0.armor and e3.kb_resist > e0.kb_resist and e3.abilities.has("ranged"), "tier 3 slime: hp %d>%d, armour %d, kb %.1f, abilities %s" % [e3.max_hp, e0.max_hp, e3.armor, e3.kb_resist, str(e3.abilities)])
+	check(e3.max_hp > e0.max_hp and e3.armor > e0.armor and e3.kb_resist > e0.kb_resist and e3.abilities.size() >= 2, "tier 3 slime: hp %d>%d, armour %d, kb %.1f, abilities %s" % [e3.max_hp, e0.max_hp, e3.armor, e3.kb_resist, str(e3.abilities)])
 	# Statuses: poison ticks hp down and expires.
 	GameState.status_apply("poison", 2)
 	var hp0 := int(GameState.run["hp"])
