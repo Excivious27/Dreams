@@ -25,6 +25,7 @@ var _bob := 0.0
 var _zap_to := Vector2.INF
 var _zap_t := 0.0
 var _hurt := 0.0
+var _act_t := 0.0   # the action pose plays for a moment after each zap / heal / shield
 
 
 static func make(m: GameMap, k: String, at: Vector2, home_at: Vector2) -> HelperUnit:
@@ -65,6 +66,7 @@ func _process(delta: float) -> void:
 	_cd -= delta
 	_zap_t = maxf(0.0, _zap_t - delta)
 	_hurt = maxf(0.0, _hurt - delta)
+	_act_t = maxf(0.0, _act_t - delta)
 	# Move: guard home; drift toward the player when no foe is near home.
 	var foe := map.nearest_enemy_to(position, 120.0)
 	var want := home
@@ -89,12 +91,14 @@ func _process(delta: float) -> void:
 		"striker":
 			if foe and foe._alive and foe.position.distance_to(position) < 90.0 and map.line_clear(position, foe.position):
 				_cd = 1.1
+				_act_t = 0.5
 				_zap_to = foe.position + Vector2(0, -8)
 				_zap_t = 0.12
 				foe.provoke(map.player)
 				foe.hit(2 + GameState.progress_tier() + int(GameState.bonus("strategist", "helper_damage")), position, true)
 		"healer":
 			_cd = 3.0
+			_act_t = 0.5
 			if map.player.position.distance_to(position) < 70.0 and int(GameState.run["hp"]) < int(GameState.run["max_hp"]):
 				GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + 4 + GameState.progress_tier())
 				map.fx("sparkle", map.player.position + Vector2(0, -12), 10.0, 0.4)
@@ -103,11 +107,13 @@ func _process(delta: float) -> void:
 					o.hp = mini(o.max_hp, o.hp + 4)
 		"warden":
 			_cd = 2.0
+			_act_t = 0.5
 			if map.player.position.distance_to(position) < 70.0:
 				GameState.run["buffs"] = GameState.run.get("buffs", {})
 				GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 3, "amount": 2.0}
 		"shade":
 			_cd = 6.0
+			_act_t = 0.5
 			if foe and map.player.position.distance_to(position) < 80.0:
 				map.set_meta("stealth_until", Time.get_ticks_msec() + 2500)
 				map.fx("poof", map.player.position + Vector2(0, -8), 12.0, 0.4)
@@ -120,7 +126,14 @@ func _draw() -> void:
 	draw_circle(Vector2(0, 0), 4.0, Color(0, 0, 0, 0.2))
 	if _hurt > 0.0:
 		c = Color.WHITE
-	if style == "crystal":
+	var anim := "hurt" if _hurt > 0.0 else ("act" if _act_t > 0.0 else "idle")
+	var nfr := 2 if anim == "hurt" else 4
+	var tex := Art.tex("helpers", "%s_%s_%s_%d" % [kind, style, anim, int(_bob * 8.0) % nfr])
+	if tex:
+		var hh := 18.0
+		var ww := hh * tex.get_width() / tex.get_height()
+		draw_texture_rect(tex, Rect2(Vector2(-ww / 2.0, y - hh + 6.0), Vector2(ww, hh)), false)
+	elif style == "crystal":
 		var pts := PackedVector2Array([Vector2(0, y - 8), Vector2(5, y), Vector2(0, y + 6), Vector2(-5, y)])
 		draw_colored_polygon(pts, Color(c.r, c.g, c.b, 0.9))
 		draw_polyline(pts + PackedVector2Array([pts[0]]), Color(1, 1, 1, 0.8), 1.0)

@@ -553,6 +553,9 @@ func draw_map() -> void:
 				cells = next
 			for c: Vector2i in cells:
 				var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+				var seam_ps: String = {"bog": "bog", "ruinfloor": "ruin_floor"}.get(ps, "")
+				if seam_ps != "" and seam_cell(self, seam_ps, c):
+					continue
 				Art.draw_tile(self, "tiles", Art.fill_name(ps, h), Vector2(c * TILE), 0)
 				if ps == "bog":
 					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.32, 0.45, 0.22, 0.3))  # mossier, less void
@@ -595,6 +598,20 @@ func draw_map() -> void:
 				Art.draw_tile(self, "tiles", "%s_deco_%d" % [setn, h / 23 % 36], Vector2(c * TILE), 0)
 		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
 	draw_plateaus()
+	if region_id == "marsh" and Art.has("props", "mk_fog_l") and _anim_layer:
+		# Low marsh mist (Prompts 16): a few soft puffs drifting slowly, faint.
+		var fogs := ["mk_fog_l", "mk_fog_m", "mk_fog_s", "mk_fog_m", "mk_fog_l", "mk_fog_s"]
+		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
+			var tt := Time.get_ticks_msec() / 1000.0
+			for i in fogs.size():
+				var ft := Art.tex("props", str(fogs[i]))
+				if ft == null:
+					continue
+				var w := ft.get_width() * 0.35
+				var span := float(cols * TILE) + w * 2.0
+				var fx := fposmod(i * 211.0 + tt * (3.0 + i), span) - w
+				var fy := 40.0 + fposmod(i * 157.0, float(rows * TILE) - 80.0) + sin(tt * 0.15 + i) * 10.0
+				ci.draw_texture_rect(ft, Rect2(fx, fy, w, ft.get_height() * 0.35), false, Color(1, 1, 1, 0.22)))
 	for layer in R.get("layers", []):
 		var nm := str(layer["tile"])
 		var r: Array = layer["rect"]

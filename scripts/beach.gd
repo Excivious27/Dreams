@@ -205,9 +205,21 @@ func draw_map() -> void:
 	_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 		var frame := int(Time.get_ticks_msec() / 250) % 4
 		var nm := "sea" if Art.has("tiles", "sea") else "water"
+		var tt := Time.get_ticks_msec() / 1000.0
 		for c: Vector2i in _sea:
-			if not Art.draw_tile(ci, "tiles", nm, Vector2(c * TILE), 4 if nm == "sea" else frame):
+			if Art.has("seamless", "sea"):
+				seam_cell(ci, "sea", c, Color.WHITE, Vector2(tt * 4.0, tt * 1.5))
+				seam_cell(ci, "sea", c, Color(1, 1, 1, 0.3), Vector2(-tt * 2.5 + 40.0, tt * 3.0 + 60.0))
+			elif not Art.draw_tile(ci, "tiles", nm, Vector2(c * TILE), 4 if nm == "sea" else frame):
 				ci.draw_rect(Rect2(c.x * TILE, c.y * TILE, TILE, TILE), Color("2f6fb5"))
+		var foam_t := Art.tex("props", "bk_foam_%d" % (int(tt * 3.0) % 4))
+		if foam_t:
+			# The painted wave line: sand on top, surf, then sea; one window per edge cell.
+			var fw := float(foam_t.get_width()) / 8.0
+			for c: Vector2i in _sea:
+				if not _sea.has(c + Vector2i(0, -1)) and not things.get(c + Vector2i(0, -1), {}).get("type", "") == "dock":
+					ci.draw_texture_rect_region(foam_t, Rect2(c.x * TILE, (c.y - 1) * TILE + 4, TILE, TILE * 1.5), Rect2(fw * posmod(c.x, 8), foam_t.get_height() * 0.25, fw, foam_t.get_height() * 0.6))
+			return
 		for c: Vector2i in _sea:
 			if not _sea.has(c + Vector2i(0, -1)) and not things.get(c + Vector2i(0, -1), {}).get("type", "") == "dock":
 				if not Art.draw_tile(ci, "tiles", "foam", Vector2(c * TILE), (frame + c.x) % 4):
@@ -231,8 +243,25 @@ func _place_props() -> void:
 	for c: Vector2i in [Vector2i(3, 10), Vector2i(20, 9), Vector2i(44, 8), Vector2i(57, 10), Vector2i(8, 11), Vector2i(50, 9), Vector2i(26, 10)]:
 		prop("nature", "palm", c, 1)
 	prop("props", "beached_boat", Vector2i(22, 20), 2)
-	prop("props", "umbrella_red", Vector2i(16, 16), 1); prop("props", "umbrella_blue", Vector2i(37, 17), 1)
-	prop("props", "lifeguard", Vector2i(27, 18))
+	var bk := Art.has("props", "bk_umbrella_red")
+	prop("props", "bk_umbrella_red" if bk else "umbrella_red", Vector2i(16, 16), 1, 0.0, true, 0.35 if bk else 0.5)
+	prop("props", "bk_umbrella_blue" if bk else "umbrella_blue", Vector2i(37, 17), 1, 0.0, true, 0.35 if bk else 0.5)
+	prop("props", "bk_lifeguard" if bk else "lifeguard", Vector2i(27, 18), 0, 0.0, true, 0.35 if bk else 0.5)
+	if bk:
+		prop("props", "bk_towel", Vector2i(18, 17), 0, 0.0, false, 0.3)
+		prop("props", "bk_sandcastle", Vector2i(31, 17), 0, 0.0, true, 0.3)
+		# Small decals scattered over the sand (no pickup; the shells you can
+		# take are the forage ones).
+		var drng := RandomNumberGenerator.new()
+		drng.seed = 4242
+		var decals := ["bk_pebbles_s", "bk_pebbles_m", "bk_footprints", "bk_driftwood_a", "bk_driftwood_b", "bk_seaweed_a", "bk_seaweed_b", "bk_pebbles_s"]
+		for i in 26:
+			var dc := Vector2i(drng.randi_range(2, cols - 3), drng.randi_range(10, SEA_Y - 1))
+			if things.has(dc) or blocked.has(dc) or props.has(dc) or not _sand.has(dc):
+				continue
+			var sp := prop("props", decals[drng.randi() % decals.size()], dc, 0, 0.0, false, 0.22)
+			if sp:
+				sp.z_index = -1
 	_anim("props", "bonfire", Vector2i(36, 15), 0, 8.0)
 	_anim("props", "buoy", Vector2i(8, 29), 0, 2.0)
 	_anim("props", "buoy", Vector2i(44, 30), 0, 2.0)
@@ -247,14 +276,21 @@ func _place_props() -> void:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y - 2))
 		if things.has(c) or blocked.has(c) or not _sand.has(c):
 			continue
-		prop("nature", "dune_%d" % rng.randi_range(0, 9), c)
+		if Art.has("props", "bk_dune_s"):
+			prop("props", ["bk_dune_s", "bk_dune_m", "bk_dune_l"][rng.randi_range(0, 2)], c, 1, 0.0, true, 0.3)
+		else:
+			prop("nature", "dune_%d" % rng.randi_range(0, 9), c)
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
 			var item := str(things[k]["item"])
 			var nm: String = {"seashell": ["shell_a", "shell_b", "shell_c", "starfish"][(k.x + k.y) % 4], "coconut": "coconut_p", "fiber": "seaweed"}.get(item, "shell_a")
+			var sc := 0.5
+			if Art.has("props", "bk_shell_conch") and item in ["seashell", "fiber"]:
+				nm = (["bk_shell_conch", "bk_shell_scallop", "bk_shell_clam", "bk_shell_cowrie", "bk_starfish_orange", "bk_starfish_pink", "bk_sand_dollar_a"][(k.x * 3 + k.y) % 7]) if item == "seashell" else "bk_seaweed_c"
+				sc = 0.22
 			if props.has(k):
 				(props[k] as Node).queue_free()
-			prop("props", nm, k)
+			prop("props", nm, k, 0, 0.0, true, sc)
 	# Pier planks: replace dock tiles with the pier set.
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "dock" and Art.has("tiles", "pier"):

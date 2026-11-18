@@ -20,21 +20,21 @@ var _chasm := {}
 ## 10th floor has a prize chest; floor 150's shaft opens the Hollow Heart.
 const MAX_FLOOR := 150
 const THEMES := [
-	{"name": "Earthen Tunnels", "var": "earth", "ts": "", "rock": "2a2018", "fa": "4a3a2c", "fb": "52412f", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_mushroom", "mushroom"]},
-	{"name": "Mossy Hollows", "var": "earth", "ts": "", "rock": "1f2a1c", "fa": "3e4a34", "fb": "44503a", "tint": [0.85, 1.0, 0.85], "feat": ["water"], "forage": ["cave_mushroom", "cave_fig", "mushroom_spore"]},
-	{"name": "Grey Stone Deeps", "var": "stone", "ts": "deep", "rock": "24222c", "fa": "4a4152", "fb": "50475a", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_fig", "cave_mushroom"]},
-	{"name": "Flooded Galleries", "var": "stone", "ts": "deep", "rock": "1c2430", "fa": "3a4656", "fb": "40506a", "tint": [0.8, 0.9, 1.05], "feat": ["water"], "forage": ["cave_fig", "mushroom_spore"]},
-	{"name": "Fungal Caverns", "var": "earth", "ts": "", "rock": "241c2c", "fa": "3c3048", "fb": "42354e", "tint": [1.0, 0.85, 1.0], "feat": ["glow"], "forage": ["cave_bloom", "mushroom_spore", "cave_mushroom"]},
-	{"name": "Crystal Veins", "var": "stone", "ts": "crystal", "rock": "1c1c34", "fa": "3c3c64", "fb": "42426c", "tint": [0.85, 0.9, 1.1], "feat": ["crystals"], "forage": ["shard", "cave_bloom"]},
-	{"name": "Frost Caves", "var": "ice", "ts": "", "rock": "1c2634", "fa": "4a5c6c", "fb": "52667a", "tint": [0.85, 0.95, 1.1], "feat": ["water"], "forage": ["cave_fig", "shard"]},
-	{"name": "Amethyst Grotto", "var": "ice", "ts": "crystal", "rock": "241434", "fa": "4a2e5c", "fb": "523466", "tint": [1.0, 0.8, 1.1], "feat": ["crystals"], "forage": ["amethyst", "shard", "cave_bloom"]},
-	{"name": "Sandstone Ruins", "var": "earth", "ts": "", "rock": "3a2c1c", "fa": "6a5638", "fb": "72603e", "tint": [1.1, 1.0, 0.85], "feat": [], "forage": ["fossil", "cave_fig"]},
-	{"name": "Gold Seams", "var": "stone", "ts": "deep", "rock": "2c2418", "fa": "5a4a30", "fb": "62523a", "tint": [1.1, 1.0, 0.8], "feat": [], "forage": ["gold", "cave_bloom"]},
-	{"name": "Magma Rifts", "var": "lava", "ts": "", "rock": "2c1814", "fa": "4a2a22", "fb": "52302a", "tint": [1.1, 0.85, 0.8], "feat": ["lava"], "forage": ["dark", "cave_fig"]},
-	{"name": "Obsidian Halls", "var": "lava", "ts": "dark", "rock": "120e16", "fa": "2a2432", "fb": "302a3a", "tint": [0.8, 0.8, 0.95], "feat": ["lava"], "forage": ["dark", "shard"]},
-	{"name": "Drowned Dark", "var": "stone", "ts": "dark", "rock": "0e1620", "fa": "22303c", "fb": "283846", "tint": [0.8, 0.9, 1.0], "feat": ["water", "glow"], "forage": ["cave_bloom", "dark"]},
-	{"name": "The Void Reach", "var": "stone", "ts": "dark", "rock": "0c0a14", "fa": "1e1a2c", "fb": "241f34", "tint": [0.9, 0.8, 1.1], "feat": ["chasm"], "forage": ["dark", "crystal_refined"]},
-	{"name": "The Heart's Edge", "var": "lava", "ts": "heart", "rock": "1a0c18", "fa": "3a1c34", "fb": "42223c", "tint": [1.1, 0.85, 1.0], "feat": ["crystals", "glow"], "forage": ["crystal_refined", "shard", "cave_bloom"]},
+	{"cave": "earth", "name": "Earthen Tunnels", "var": "earth", "ts": "", "rock": "2a2018", "fa": "4a3a2c", "fb": "52412f", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_mushroom", "mushroom"]},
+	{"cave": "earth", "name": "Mossy Hollows", "var": "earth", "ts": "", "rock": "1f2a1c", "fa": "3e4a34", "fb": "44503a", "tint": [0.85, 1.0, 0.85], "feat": ["water"], "forage": ["cave_mushroom", "cave_fig", "mushroom_spore"]},
+	{"cave": "stone", "name": "Grey Stone Deeps", "var": "stone", "ts": "deep", "rock": "24222c", "fa": "4a4152", "fb": "50475a", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_fig", "cave_mushroom"]},
+	{"cave": "stone", "name": "Flooded Galleries", "var": "stone", "ts": "deep", "rock": "1c2430", "fa": "3a4656", "fb": "40506a", "tint": [0.8, 0.9, 1.05], "feat": ["water"], "forage": ["cave_fig", "mushroom_spore"]},
+	{"cave": "earth", "name": "Fungal Caverns", "var": "earth", "ts": "", "rock": "241c2c", "fa": "3c3048", "fb": "42354e", "tint": [1.0, 0.85, 1.0], "feat": ["glow"], "forage": ["cave_bloom", "mushroom_spore", "cave_mushroom"]},
+	{"cave": "crystal", "name": "Crystal Veins", "var": "stone", "ts": "crystal", "rock": "1c1c34", "fa": "3c3c64", "fb": "42426c", "tint": [0.85, 0.9, 1.1], "feat": ["crystals"], "forage": ["shard", "cave_bloom"]},
+	{"cave": "ice", "name": "Frost Caves", "var": "ice", "ts": "", "rock": "1c2634", "fa": "4a5c6c", "fb": "52667a", "tint": [0.85, 0.95, 1.1], "feat": ["water"], "forage": ["cave_fig", "shard"]},
+	{"cave": "crystal", "name": "Amethyst Grotto", "var": "ice", "ts": "crystal", "rock": "241434", "fa": "4a2e5c", "fb": "523466", "tint": [1.0, 0.8, 1.1], "feat": ["crystals"], "forage": ["amethyst", "shard", "cave_bloom"]},
+	{"cave": "earth", "name": "Sandstone Ruins", "var": "earth", "ts": "", "rock": "3a2c1c", "fa": "6a5638", "fb": "72603e", "tint": [1.1, 1.0, 0.85], "feat": [], "forage": ["fossil", "cave_fig"]},
+	{"cave": "stone", "name": "Gold Seams", "var": "stone", "ts": "deep", "rock": "2c2418", "fa": "5a4a30", "fb": "62523a", "tint": [1.1, 1.0, 0.8], "feat": [], "forage": ["gold", "cave_bloom"]},
+	{"cave": "lava", "name": "Magma Rifts", "var": "lava", "ts": "", "rock": "2c1814", "fa": "4a2a22", "fb": "52302a", "tint": [1.1, 0.85, 0.8], "feat": ["lava"], "forage": ["dark", "cave_fig"]},
+	{"cave": "lava", "name": "Obsidian Halls", "var": "lava", "ts": "dark", "rock": "120e16", "fa": "2a2432", "fb": "302a3a", "tint": [0.8, 0.8, 0.95], "feat": ["lava"], "forage": ["dark", "shard"]},
+	{"cave": "stone", "name": "Drowned Dark", "var": "stone", "ts": "dark", "rock": "0e1620", "fa": "22303c", "fb": "283846", "tint": [0.8, 0.9, 1.0], "feat": ["water", "glow"], "forage": ["cave_bloom", "dark"]},
+	{"cave": "crystal", "name": "The Void Reach", "var": "stone", "ts": "dark", "rock": "0c0a14", "fa": "1e1a2c", "fb": "241f34", "tint": [0.9, 0.8, 1.1], "feat": ["chasm"], "forage": ["dark", "crystal_refined"]},
+	{"cave": "lava", "name": "The Heart's Edge", "var": "lava", "ts": "heart", "rock": "1a0c18", "fa": "3a1c34", "fb": "42223c", "tint": [1.1, 0.85, 1.0], "feat": ["crystals", "glow"], "forage": ["crystal_refined", "shard", "cave_bloom"]},
 ]
 
 
@@ -576,6 +576,43 @@ func _variant() -> String:
 	return str(theme.get("var", "earth"))
 
 
+## Prompts 16 cave kit: seamless floor and rock, and a painted wall face.
+func _draw_cave_kit() -> bool:
+	var k := str(theme.get("cave", "earth"))
+	if not Art.has("seamless", "cave_%s_floor" % k) or not Art.has("seamless", "cave_%s_rock" % k):
+		return false
+	var tint: Array = theme.get("tint", [1, 1, 1])
+	var tc := Color(float(tint[0]), float(tint[1]), float(tint[2]))
+	var dark := tc.darkened(0.38 + 0.002 * mini(floor_no, 100))
+	for y in range(-pad, rows + pad):
+		for x in range(-pad, cols + pad):
+			var c := Vector2i(x, y)
+			if _open.has(c):
+				seam_cell(self, "cave_%s_floor" % k, c, tc)
+			else:
+				seam_cell(self, "cave_%s_rock" % k, c, dark)
+	var wall := Art.tex("cliffs", "cave_%s_wall" % k)
+	if wall:
+		var face_h := TILE * 1.5
+		var src_w := float(wall.get_height()) * TILE / face_h
+		var period := maxi(1, int(wall.get_width() / src_w))
+		for c: Vector2i in _open:
+			var up := c + Vector2i(0, -1)
+			if not _open.has(up):
+				var sx := float(posmod(c.x, period)) * src_w
+				draw_texture_rect_region(wall, Rect2(up.x * TILE, up.y * TILE - TILE * 0.45, TILE, face_h), Rect2(sx, 0, src_w, wall.get_height()), dark.lightened(0.15))
+	# Soft shadow along side and bottom edges so the floor reads as dug out.
+	for c: Vector2i in _open:
+		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
+		if not _open.has(c + Vector2i(0, 1)):
+			draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), Color(0, 0, 0, 0.35))
+		if not _open.has(c + Vector2i(-1, 0)):
+			draw_rect(Rect2(r.position, Vector2(3, TILE)), Color(0, 0, 0, 0.3))
+		if not _open.has(c + Vector2i(1, 0)):
+			draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), Color(0, 0, 0, 0.3))
+	return true
+
+
 func draw_map() -> void:
 	var v := _variant()
 	if _grotto:
@@ -584,7 +621,8 @@ func draw_map() -> void:
 			if str(things[c].get("type", "")) == "water":
 				wc[c] = true
 		draw_water(wc, "grass")
-	var ts := _tier_set()
+	var kit := _draw_cave_kit()
+	var ts := "" if kit else _tier_set()
 	var nfill := 0
 	var nwall := 0
 	var ntop := 0
@@ -596,64 +634,65 @@ func draw_map() -> void:
 		while Art.has("tiles", "mine_%s_walltop_%d" % [ts, ntop]):
 			ntop += 1
 	var rock_col := Color(str(theme.get("rock", "24222c")))
-	# Solid rock everywhere first (with a little grain), padding included.
-	draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), rock_col)
-	for y in range(0, rows):
-		for x in range(0, cols):
-			var c := Vector2i(x, y)
-			if _open.has(c):
-				continue
-			var n := WorldGen.fbm(float(x), float(y), 900 + floor_no, 4.0)
-			if n > 0.15:
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.06))
-			elif n < -0.2:
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.darkened(0.25))
-	# Cave floor.
-	for c: Vector2i in _open:
-		var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ floor_no)
-		var drawn := false
-		if nfill > 0:
-			drawn = Art.draw_tile(self, "tiles", "mine_%s_fill_%d" % [ts, h % nfill], Vector2(c * TILE), 0)
-		elif Art.has("tiles", "mine_floor"):
-			drawn = Art.draw_tile(self, "tiles", "mine_floor", Vector2(c * TILE), h % 4)
-		if not drawn:
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(str(theme.get("fa", "4a4152"))) if (c.x + c.y) % 2 == 0 else Color(str(theme.get("fb", "50475a"))))
-	# Theme wash: the same tiles read differently every 10 floors.
-	if floor_no > 10:
-		var wash := Color(str(theme.get("fa", "4a4152")))
-		wash.a = 0.38
+	if not kit:
+		# Solid rock everywhere first (with a little grain), padding included.
+		draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), rock_col)
+		for y in range(0, rows):
+			for x in range(0, cols):
+				var c := Vector2i(x, y)
+				if _open.has(c):
+					continue
+				var n := WorldGen.fbm(float(x), float(y), 900 + floor_no, 4.0)
+				if n > 0.15:
+					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.06))
+				elif n < -0.2:
+					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.darkened(0.25))
+		# Cave floor.
 		for c: Vector2i in _open:
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), wash)
-	# Rock faces: where the floor meets rock to the north, the wall rises above it.
-	for c: Vector2i in _open:
-		var up := c + Vector2i(0, -1)
-		if not _open.has(up):
-			var h2 := absi((c.x * 2654435761) ^ floor_no)
-			var t := Art.tex("tiles", "mine_%s_wall_%d" % [ts, h2 % maxi(1, nwall)]) if nwall > 0 else null
-			if t:
-				draw_texture_rect(t, Rect2(up.x * TILE, (up.y - 1) * TILE, TILE, TILE * 2), false)
-			else:
-				draw_rect(Rect2(up * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.18))
-				draw_rect(Rect2(Vector2(up.x * TILE, up.y * TILE + TILE - 3), Vector2(TILE, 3)), rock_col.lightened(0.3))
-	# A soft dark lip along every floor edge so the cave reads as hollowed rock.
-	for c: Vector2i in _open:
-		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
-		for d: Vector2i in [Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
-			if not _open.has(c + d):
-				var lip := Color(0, 0, 0, 0.35)
-				if d == Vector2i(0, 1):
-					draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), lip)
-				elif d == Vector2i(-1, 0):
-					draw_rect(Rect2(r.position, Vector2(3, TILE)), lip)
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ floor_no)
+			var drawn := false
+			if nfill > 0:
+				drawn = Art.draw_tile(self, "tiles", "mine_%s_fill_%d" % [ts, h % nfill], Vector2(c * TILE), 0)
+			elif Art.has("tiles", "mine_floor"):
+				drawn = Art.draw_tile(self, "tiles", "mine_floor", Vector2(c * TILE), h % 4)
+			if not drawn:
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(str(theme.get("fa", "4a4152"))) if (c.x + c.y) % 2 == 0 else Color(str(theme.get("fb", "50475a"))))
+		# Theme wash: the same tiles read differently every 10 floors.
+		if floor_no > 10:
+			var wash := Color(str(theme.get("fa", "4a4152")))
+			wash.a = 0.38
+			for c: Vector2i in _open:
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), wash)
+		# Rock faces: where the floor meets rock to the north, the wall rises above it.
+		for c: Vector2i in _open:
+			var up := c + Vector2i(0, -1)
+			if not _open.has(up):
+				var h2 := absi((c.x * 2654435761) ^ floor_no)
+				var t := Art.tex("tiles", "mine_%s_wall_%d" % [ts, h2 % maxi(1, nwall)]) if nwall > 0 else null
+				if t:
+					draw_texture_rect(t, Rect2(up.x * TILE, (up.y - 1) * TILE, TILE, TILE * 2), false)
 				else:
-					draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), lip)
+					draw_rect(Rect2(up * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.18))
+					draw_rect(Rect2(Vector2(up.x * TILE, up.y * TILE + TILE - 3), Vector2(TILE, 3)), rock_col.lightened(0.3))
+		# A soft dark lip along every floor edge so the cave reads as hollowed rock.
+		for c: Vector2i in _open:
+			var r := Rect2(c * TILE, Vector2i(TILE, TILE))
+			for d: Vector2i in [Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
+				if not _open.has(c + d):
+					var lip := Color(0, 0, 0, 0.35)
+					if d == Vector2i(0, 1):
+						draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), lip)
+					elif d == Vector2i(-1, 0):
+						draw_rect(Rect2(r.position, Vector2(3, TILE)), lip)
+					else:
+						draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), lip)
 	draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(0.03, 0.02, 0.08, 0.08 + 0.02 * mini(floor_no, 10)))
 	var wc2 := {}
 	for c in things:
 		if str(things[c].get("type", "")) == "water" and not _grotto:
 			wc2[c] = true
 	if not wc2.is_empty():
-		draw_water(wc2, "grass")
+		draw_water(wc2, "cave")
 	for c: Vector2i in _chasm:
 		draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.01, 0.0, 0.03))
 		if not _chasm.has(c + Vector2i(0, -1)):
@@ -800,8 +839,8 @@ func _place_props() -> void:
 		prop("nature", "rock_m", k)
 
 
-const FORAGE_PROP := {"cave_mushroom": "gmush_red", "mushroom": "cave_mushroom", "mushroom_spore": "gmush_purple", "cave_fig": "cluster_green",
-	"cave_bloom": "gmush_blue", "shard": "cluster_purple", "amethyst": "cluster_purple", "fossil": "cave_moss", "gold": "cluster_red", "dark": "cluster_purple",
+const FORAGE_PROP := {"cave_mushroom": "cave_mush_orange", "mushroom": "cave_mushroom", "mushroom_spore": "cave_mush_purple", "cave_fig": "cluster_green",
+	"cave_bloom": "cave_mush_blue", "shard": "cluster_purple", "amethyst": "cluster_purple", "fossil": "cave_moss", "gold": "cluster_red", "dark": "cluster_purple",
 	"crystal_refined": "cluster_blue"}
 
 
@@ -813,7 +852,7 @@ func _place_find_props() -> void:
 			"forage":
 				var nm := str(FORAGE_PROP.get(str(t["item"]), "gmush_blue"))
 				if Art.has("props", nm):
-					prop("props", nm, c, 0, 0.0, false)
+					prop("props", nm, c, 0, 0.0, false, 0.3 if nm.begins_with("cave_mush") else 0.5)
 				elif Art.has("items", str(t["item"])):
 					var sp := Art.sprite("items", str(t["item"]))
 					if sp:
@@ -822,7 +861,7 @@ func _place_find_props() -> void:
 						add_child(sp)
 						props[c] = sp
 			"crate":
-				prop("props", str(t.get("kind", "crates_a")), c)
+				prop("props", "cave_ore_crate" if str(t.get("kind", "")) == "crates_a" and Art.has("props", "cave_ore_crate") else str(t.get("kind", "crates_a")), c, 0, 0.0, true, 0.32)
 			"mchest", "bigchest":
 				var sp2 := prop("props", "chest_closed", c)
 				if sp2 and str(t["type"]) == "bigchest":

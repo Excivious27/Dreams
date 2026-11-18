@@ -355,13 +355,28 @@ func _draw() -> void:
 		var pr := float(p["prog"])
 		if absf(pr) > 0.01:
 			draw_arc(pos, CAP_R - 3, -PI / 2, -PI / 2 + TAU * absf(pr), 48, Color(0.5, 0.9, 1.0) if pr > 0 else Color(1, 0.45, 0.4), 3.0, true)
-		# Banner pole and flag.
-		draw_line(pos + Vector2(0, 2), pos + Vector2(0, -26), Color(0.25, 0.2, 0.15), 2.0)
-		var wave := sin(t * 4.0 + pos.x) * 2.0
-		draw_colored_polygon(PackedVector2Array([pos + Vector2(1, -26), pos + Vector2(14, -22 + wave), pos + Vector2(1, -17)]), col)
-		if str(p["spawner"]) != "":
-			draw_circle(pos + Vector2(-10, -6), 4.0, Color(col.r, col.g, col.b, 0.8))
-			draw_circle(pos + Vector2(-10, -6), 2.0, Color(1, 1, 1, 0.9))
+		# The structure built here (spire / drone bay / pylon / turret), behind the flag.
+		var spn := str(p["spawner"])
+		if spn != "":
+			var crystal := GameState.is_penguins()
+			var nm := ("pylon" if crystal else "turret") if spn == "turret" else (("spire_%d" if crystal else "bay_%d") % (3 if float(p.get("t", 0.0)) < 6.0 else 2))
+			var st := Art.tex("battle", nm)
+			if st:
+				var w := 34.0 if spn != "turret" else 18.0
+				var h := w * st.get_height() / st.get_width()
+				draw_texture_rect(st, Rect2(pos + Vector2(-w - 2, 6 - h), Vector2(w, h)), false)
+			else:
+				draw_circle(pos + Vector2(-10, -6), 4.0, Color(col.r, col.g, col.b, 0.8))
+		# Banner: the painted flag in its side's colours, waving.
+		var side := str(p["owner"])
+		var ft := Art.tex("battle", "flag_%s_%d" % [side, int(t * 6.0 + pos.x) % 4])
+		if ft:
+			var fh := 30.0
+			draw_texture_rect(ft, Rect2(pos + Vector2(-fh * ft.get_width() / ft.get_height() * 0.3, 4 - fh), Vector2(fh * ft.get_width() / ft.get_height(), fh)), false)
+		else:
+			draw_line(pos + Vector2(0, 2), pos + Vector2(0, -26), Color(0.25, 0.2, 0.15), 2.0)
+			var wave := sin(t * 4.0 + pos.x) * 2.0
+			draw_colored_polygon(PackedVector2Array([pos + Vector2(1, -26), pos + Vector2(14, -22 + wave), pos + Vector2(1, -17)]), col)
 
 
 func _draw_hud() -> void:

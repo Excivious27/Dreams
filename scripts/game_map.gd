@@ -1939,6 +1939,31 @@ func draw_map() -> void:
 var _tall := {}
 
 
+## Seamless ground (Prompts 16): a 256px texture that tiles every 8 cells. Each
+## cell draws its own 32px window, so any set of cells joins up with no seams.
+const SEAM_PERIOD := 128.0   # world px per texture repeat (256 art px at 2x detail)
+
+
+func seam_cell(ci: CanvasItem, name: String, c: Vector2i, col := Color.WHITE, scroll := Vector2.ZERO) -> bool:
+	var t := Art.tex("seamless", name)
+	if t == null:
+		return false
+	var wx := fposmod(c.x * TILE + scroll.x, SEAM_PERIOD) * 2.0
+	var wy := fposmod(c.y * TILE + scroll.y, SEAM_PERIOD) * 2.0
+	var src := Rect2(wx, wy, TILE * 2, TILE * 2)
+	var dst := Rect2(c * TILE, Vector2i(TILE, TILE))
+	if wx + TILE * 2 > 256.0 or wy + TILE * 2 > 256.0:
+		# Window straddles the texture's edge: draw it in up to four pieces.
+		var w1 := minf(TILE * 2, 256.0 - wx)
+		var h1 := minf(TILE * 2, 256.0 - wy)
+		for part in [[wx, wy, w1, h1, 0.0, 0.0], [0.0, wy, TILE * 2 - w1, h1, w1, 0.0], [wx, 0.0, w1, TILE * 2 - h1, 0.0, h1], [0.0, 0.0, TILE * 2 - w1, TILE * 2 - h1, w1, h1]]:
+			if part[2] > 0.01 and part[3] > 0.01:
+				ci.draw_texture_rect_region(t, Rect2(dst.position + Vector2(part[4], part[5]) * 0.5, Vector2(part[2], part[3]) * 0.5), Rect2(part[0], part[1], part[2], part[3]), col)
+		return true
+	ci.draw_texture_rect_region(t, dst, src, col)
+	return true
+
+
 func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 	if r.size == Vector2i.ZERO:
 		r = Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad)
@@ -1953,6 +1978,18 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 	for y in range(r.position.y, r.end.y):
 		for x in range(r.position.x, r.end.x):
 			var at := Vector2(x * TILE, y * TILE)
+			var seam_name: String = {"spring": "meadow_grass", "summer": "meadow_grass", "fall": "dry_grass", "winter": "snow"}.get(season, "meadow_grass")
+			if Art.has("seamless", seam_name):
+				var hv0 := absi((x * 73856093) ^ (y * 19349663))
+				seam_cell(self, seam_name, Vector2i(x, y), Color(1, 0.93, 0.82) if season == "fall" else Color.WHITE)
+				var n0 := WorldGen.fbm(float(x), float(y), sd, 9.0)
+				if season == "summer" and n0 < -0.3:
+					seam_cell(self, "dry_grass", Vector2i(x, y), Color(1, 1, 1, clampf((-0.3 - n0) * 4.0, 0.0, 0.8)))
+				elif patchy and n0 > 0.42:
+					_tall[Vector2i(x, y)] = true
+				elif season == "spring" and n0 < -0.4 and hv0 % 3 == 0 and Art.has("tiles", "gv_flower_0"):
+					Art.draw_tile(self, "tiles", "gv_flower_%d" % (hv0 % 12), at, 0)
+				continue
 			if has_tiles:
 				var tname := gname
 				var gv := Art.has("tiles", "gv_short_0")
@@ -2012,6 +2049,9 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 		for c: Vector2i in cells:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hash(blob))
 			var plain := ""
+			var seam_p: String = {"dirt": "dirt_track", "sand": "sand"}.get(kind, "")
+			if seam_p != "" and seam_cell(self, seam_p, c):
+				continue
 			match kind:
 				"dirt": plain = "path_dirt_fill_%d" % (7 + h % 5)
 				"sand": plain = Art.fill_name("sand", h) if Art.has("tiles", "sand_fill_0") else "sand"
@@ -2161,9 +2201,27 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 	# are rounded with quarter discs so blobs read as real shorelines.
 	var frame := int(Time.get_ticks_msec() / 250) % 4
 	var fill := "water2" if Art.has("tiles", "water2") else "water"
-	for c: Vector2i in cells:
-		if not Art.draw_tile(ci, "tiles", fill, Vector2(c * TILE), frame):
-			ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("2f6fb5"))
+	var seam: String = {"bog": "bog_water", "river": "river", "sand": "sea", "lava": "lava"}.get(shore, "lake_shallow")
+	if Art.has("seamless", seam):
+		# Two copies of the seamless water drifting past each other read as moving water.
+		var tt := Time.get_ticks_msec() / 1000.0
+		var drift := Vector2(tt * 3.0, tt * 1.2) if seam != "river" else Vector2(tt * 9.0, 0.0)
+		for c: Vector2i in cells:
+			seam_cell(ci, seam, c, Color.WHITE, drift)
+			seam_cell(ci, seam, c, Color(1, 1, 1, 0.35), Vector2(-drift.y * 1.7 + 40.0, drift.x * 0.6 + 70.0))
+		if shore in ["bog", "river", "cave"]:
+			if shore == "cave":
+				for c: Vector2i in cells:
+					for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
+						if not all_cells.has(c + d):
+							var rr := Rect2(c * TILE, Vector2i(TILE, TILE))
+							var edge_r := {Vector2i(0, -1): Rect2(rr.position, Vector2(TILE, 2)), Vector2i(0, 1): Rect2(rr.position + Vector2(0, TILE - 2), Vector2(TILE, 2)), Vector2i(-1, 0): Rect2(rr.position, Vector2(2, TILE)), Vector2i(1, 0): Rect2(rr.position + Vector2(TILE - 2, 0), Vector2(2, TILE))}
+							ci.draw_rect(edge_r[d], Color(0.85, 0.95, 1.0, 0.45))
+			return  # the painted bog/river edge sets go on top below otherwise; seamless already reads as water
+	else:
+		for c: Vector2i in cells:
+			if not Art.draw_tile(ci, "tiles", fill, Vector2(c * TILE), frame):
+				ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("2f6fb5"))
 	var custom := shore in ["bog", "river"] and Art.has("tiles", shore + "_top_0")
 	if custom:
 		# Region water set (Prompts 09): its own fills (animated for the river) and edges.
@@ -2279,7 +2337,70 @@ func label(text: String, at: Vector2, w := 64.0) -> void:
 ## Raised ground with a real cliff face under its southern edge (W28/W29 sets).
 ## `cells` are the walkable top cells; the row below the southern edge is the face
 ## (block it yourself, except `stairs` cells). prefix: "cliffg" (grass) or "cliffs" (stone).
+## Which painted cliff and stair set this map uses (Prompts 16).
+func cliff_style() -> Array:
+	var sc := scene_id()
+	if sc in ["mountain", "highlands"] or sc == "colony_ice" or sc == "bf_frostfield":
+		return ["snow", "stair_snow"]
+	if sc.begins_with("colony_") or sc in ["wastes", "beach", "quarry"]:
+		return ["sand", "stair_wood"]
+	if sc in ["hideout", "docks", "neon", "uptown", "underground", "bf_rail_yards", "bf_dockside"]:
+		return ["grass", "stair_iron"]
+	if sc in ["crystal_meadow", "bf_shattered_vale", "hollow_heart"]:
+		return ["grass", "stair_crystal"]
+	return ["grass", "stair_stone"]
+
+
+## Big one-piece cliff faces and stair sets, when the art is in.
+func _draw_plateau_painted(cells: Dictionary, stairs: Dictionary) -> bool:
+	var st := cliff_style()
+	var strip := Art.tex("cliffs", str(st[0]) + "_strip")
+	if strip == null or not Art.has("stairs", str(st[1])):
+		return false
+	if Art.has("tiles", "cliff_top_0"):
+		Art.draw_blob(self, cells, "cliff", 16.0, 1)
+	# The face: a window of the painted strip under every southern edge cell.
+	var face_h := TILE * 1.6
+	var src_w := float(strip.get_height()) * TILE / face_h   # strip px per cell, keeping the strip's aspect
+	var period := maxi(1, int(strip.get_width() / src_w))
+	for c: Vector2i in cells:
+		var below := c + Vector2i(0, 1)
+		if cells.has(below) or stairs.has(below):
+			continue
+		var sx := float(posmod(c.x, period)) * src_w
+		draw_texture_rect_region(strip, Rect2(below.x * TILE, below.y * TILE - TILE * 0.35, TILE, face_h), Rect2(sx, 0, src_w, strip.get_height()))
+	# Stairs: one painted set per run of stair cells, not a patch of small tiles.
+	var done := {}
+	for b: Vector2i in stairs:
+		if done.has(b):
+			continue
+		var run := [b]
+		var x := b.x + 1
+		while stairs.has(Vector2i(x, b.y)):
+			run.append(Vector2i(x, b.y))
+			x += 1
+		x = b.x - 1
+		while stairs.has(Vector2i(x, b.y)):
+			run.push_front(Vector2i(x, b.y))
+			x -= 1
+		for rc in run:
+			done[rc] = true
+		var nm := str(st[1])
+		if run.size() >= 3 and Art.has("stairs", nm + "_wide"):
+			nm += "_wide"
+		elif run.size() >= 3 and nm == "stair_stone":
+			nm = "stair_stone_wide"
+		var t := Art.tex("stairs", nm)
+		var w := run.size() * TILE + 10.0
+		var h := w * float(t.get_height()) / float(t.get_width())
+		var left: Vector2i = run[0]
+		draw_texture_rect(t, Rect2(left.x * TILE - 5.0, (left.y + 1) * TILE + 2.0 - h, w, h), false)
+	return true
+
+
 func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}) -> void:
+	if prefix == "cliffg" and _draw_plateau_painted(cells, stairs):
+		return
 	var tset := "t_" + prefix
 	if Art.has("tiles", "cliff_top_0") and prefix == "cliffg":
 		Art.draw_blob(self, cells, "cliff", 16.0, 1)
