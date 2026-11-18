@@ -109,6 +109,36 @@ func after_ready() -> void:
 		GameState.run["flags"]["town_seen"] = true
 	elif GameState.festival_today() != "":
 		hud.toast("%s today, on the plaza!" % GameState.festival_name(GameState.festival_today()), Color(1, 0.9, 0.5))
+	if not GameState.run["flags"].has("town_tour"):
+		later(_town_tour)
+
+
+## The first time you're free in town, someone meets you and explains who's who.
+func _town_tour() -> void:
+	# Let the arrival scene finish first.
+	for i in 600:
+		if not Dialogue.instance(get_tree()).active and player and not player.frozen and not _changing:
+			break
+		await get_tree().process_frame
+	if GameState.run["flags"].has("town_tour") or _changing:
+		return
+	GameState.run["flags"]["town_tour"] = true
+	var pen := GameState.is_penguins()
+	var who := "Mayor Alder" if pen else "Sal"
+	player.frozen = true
+	await say([
+		{"who": who, "text": ("Welcome, welcome! I'm Alder, mayor of %s. Let me save you a week of wandering: here's who does what." if pen else "Before you go knocking on doors: here's who's who in %s. Remember it; nobody likes being asked twice.") % GameState.names()["town"]},
+		{"who": who, "text": "FARM SUPPLIES: Maple's General Store, north side of the plaza. Seeds for the season, fertiliser, snacks. Hazel, the farmer down the south-west lane, sells seeds from her yard on market days and knows everything about crops."},
+		{"who": who, "text": "TOOLS AND METAL: Gideon's forge, right next to Maple's. Bring him copper and iron and he'll upgrade your hoe, can, axe and pickaxe, smelt ore, and sell weapons."},
+		{"who": who, "text": "BUILDING SUPPLIES: wood and stone you cut yourself; the Plans board by your house lists every station and building and what each needs. Granite at the quarry sells stone and brick, Orla's mill by the lake turns wheat into flour, and Benno at the stable sells horses."},
+		{"who": who, "text": "STAYING ALIVE: Wren's potion shop and Juniper's clinic, both south and east of the plaza. Bram's inn for a hot meal, Posy's bakery for bread, Ivy at the bank up north if you're saving."},
+		{"who": who, "text": "WORK: the community board here on the plaza has three paid jobs every day. Folks also ask favours as you get to know them, and they send letters to your mailbox." + (" The town hall is where the Crystal Ward gets built." if pen else "")},
+		{"who": who, "text": "Shops keep daytime hours, roughly nine to five, and close on festival days. Any door that won't open will tell you why. That's the lot. Go on: say hello to people. It's how a town starts to trust you."},
+	])
+	player.frozen = false
+	for h in ["Maple's store (north of the plaza): seeds, fertiliser, snacks.", "Gideon's forge (next to Maple): tool upgrades, smelting, weapons.", "Building supplies: the Plans board by your house; Granite's quarry for stone and brick; Orla's mill for flour; Benno's stable for horses.", "Wren (potions) and Juniper (clinic) are south and east of the plaza; the board on the plaza has daily jobs."]:
+		GameState.add_hint(h)
+	GameState.notify("Town guide saved: MENU → Quests → Things people said.")
 
 
 var _doors: Array[Vector2i] = []
@@ -402,6 +432,9 @@ func _place_props() -> void:
 		i += 1
 	prop("props", "board2" if Art.has("props", "board2") else ("notice_board" if Art.has("props", "notice_board") else "board"), Vector2i(35, 42), 1)
 	for bx in [35, 36]:
+		# On the board itself (its cells are solid) and the row in front of it,
+		# so it answers whether you face it or stand right at it.
+		things[Vector2i(bx, 42)] = {"type": "board", "hint": "A: community board"}
 		set_thing(bx, 43, {"type": "board", "hint": "A: community board"}, false)
 	prop("props", "statue2_founder" if Art.has("props", "statue2_founder") else "statue", Vector2i(45, 42), 1)
 	if Art.has("props", "statue2_horse"):

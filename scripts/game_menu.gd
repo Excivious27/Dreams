@@ -227,7 +227,7 @@ func _refresh() -> void:
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages"]) else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) else Color(0.85, 0.85, 0.85)
 	var r := GameState.run
 	match _tab:
 		"Items":
@@ -411,6 +411,7 @@ func _refresh() -> void:
 			_button("Workshop: %d station%s, %d job%s running ›" % [ws.size(), "" if ws.size() == 1 else "s", busy, "" if busy == 1 else "s"], func() -> void: _tab = "Workshop"; _refresh())
 			_button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: _tab = "FieldLog"; _refresh())
 			_button("Foes & Gifts: %d kinds met ›" % (r.get("kill_counts", {}) as Dictionary).size(), func() -> void: _tab = "Foes"; _refresh())
+			_button("Mail: %d unread ›" % Mail.unread(), func() -> void: _tab = "Mail"; _refresh())
 			_button("Recent messages ›", func() -> void: _tab = "Messages"; _refresh())
 			var hints: Array = r.get("hints", [])
 			if not hints.is_empty():
@@ -502,6 +503,29 @@ func _refresh() -> void:
 				var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(str(k), {})
 				var nm := str(ed.get("name", str(k).replace("thug_", "").replace("marked_", "").replace("_", " ").capitalize()))
 				_line("  %s ×%d · tier %d%s" % [nm, int(kc[k]), int(ed.get("tier", 0)), ("  · " + str(Gift.def(str(ed["gift"])).get("name", ""))) if ed.has("gift") else ""], 7, Color(0.85, 0.85, 0.9))
+			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
+		"Mail":
+			_line("Letters (newest first)", 9, Color(1, 0.9, 0.7))
+			var ml: Array = Mail.list().duplicate()
+			ml.reverse()
+			if ml.is_empty():
+				_line("  No letters yet. Folks write once they know you.", 7, Color(0.7, 0.7, 0.7))
+			for m: Dictionary in ml:
+				m["read"] = true
+				_line("Day %d · %s" % [int(m.get("day", 0)), str(m["from"])], 8, Color(1, 0.95, 0.8))
+				_line("  " + str(m["text"]), 7, Color(0.9, 0.9, 0.85))
+				var mm := m
+				if str(m.get("kind", "")) == "gift" and not bool(m.get("got", false)):
+					_button("  Take the %s" % GameState.item_name(str(m["item"])), func() -> void:
+						Mail.act(mm)
+						_refresh())
+				elif str(m.get("kind", "")) == "favour" and not bool(m.get("done", false)):
+					_button("  Send %d %s for ◆%d (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), int(m["pay"]), GameState.count(str(m["item"]))], func() -> void:
+						var err := Mail.act(mm)
+						var mp := get_tree().current_scene as GameMap
+						if mp and err != "":
+							mp.hud.toast(err, Color(1, 0.8, 0.6))
+						_refresh())
 			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"Messages":
 			_line("Recent messages (newest first)", 9, Color(0.85, 0.9, 1.0))

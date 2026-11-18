@@ -115,6 +115,31 @@ func _run() -> void:
 		GameState.buy_node("leadership", "leadership_0_0" if i < 3 else "leadership_1_0")
 	check(GameState.node_locked("leadership", "leadership_0_2") == "", "tier III opens after 4 points")
 	check(GameState.bonus("combat", "block") <= 0.45, "stacking caps hold")
+	# Mail: letters arrive, gifts and favours work
+	GameState.new_run("penguins", "kairi", "Mo", "Town", "Pup")
+	GameState.add_friend("maple", 60)
+	var got := 0
+	for dd in range(2, 30):
+		GameState.run["day"] = dd
+		got += Mail.morning()
+	check(got >= 5, "mail arrives over a month (%d letters)" % got)
+	var fav := {}
+	var gif := {}
+	for m: Dictionary in Mail.list():
+		if str(m.get("kind", "")) == "favour" and fav.is_empty():
+			fav = m
+		if str(m.get("kind", "")) == "gift" and gif.is_empty():
+			gif = m
+	if not fav.is_empty():
+		fav["until"] = 99
+		fav["done"] = false
+		GameState.add_item(str(fav["item"]), int(fav["n"]))
+		var g1 := int(GameState.run["crystals"])
+		check(Mail.act(fav) == "" and int(GameState.run["crystals"]) > g1, "a favour pays when you send the items")
+	if not gif.is_empty():
+		var c0 := GameState.count(str(gif["item"]))
+		gif["got"] = false
+		check(Mail.act(gif) == "" and GameState.count(str(gif["item"])) == c0 + 1, "a gift letter gives its item")
 	Settings.set_v("music_vol", 8)
 	print("systems_test: %d failures" % fails)
 	quit()

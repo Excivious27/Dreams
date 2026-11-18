@@ -1844,6 +1844,9 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["gifted_today"] = {}
 	for line in Perks.morning():
 		notify(str(line))
+	var nm := Mail.morning()
+	if nm > 0:
+		notify("You have %d new letter%s. (Mailbox on the farm, or MENU → Quests → Mail)" % [nm, "" if nm == 1 else "s"])
 	var tp := Ops.morning()
 	if tp > 0:
 		notify("Your blocks paid ◆%d overnight." % tp)

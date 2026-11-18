@@ -22,6 +22,11 @@ var _carry_item := ""
 var _carry_from := Vector2.ZERO
 var _howled := false
 var _hp_bar: Node2D
+var _down_t := -1.0       # seconds left to revive a downed pup (-1: not down)
+var _moving := false
+var _axis_h := true       # facing sideways (vs up/down); kept until the other axis clearly wins
+var _vel := Vector2.ZERO
+const DOWN_WINDOW := 120.0
 
 
 static func state() -> Dictionary:
@@ -186,7 +191,7 @@ func recall() -> void:
 
 
 func take_damage(n: int, from: Vector2) -> void:
-	if _hurt_t > 0.0:
+	if _hurt_t > 0.0 or _down_t >= 0.0:
 		return
 	var st := state()
 	var reduce := int(GameState.bonus("pup", "pet_def"))
@@ -201,10 +206,43 @@ func take_damage(n: int, from: Vector2) -> void:
 	map.damage_number(position + Vector2(0, -16), n, Color(1, 0.6, 0.4))
 	_hp_bar.queue_redraw()
 	if int(st["hp"]) <= 0:
-		_go_home()
+		_knock_down()
+
+
+## Out of health: the pup lies down where it is. You have two minutes to feed it
+## or give it a potion (tap it, or face it and press CHECK); after that it goes
+## home to its dog house on the farm until tomorrow.
+func _knock_down() -> void:
+	state()["hp"] = 0
+	_down_t = DOWN_WINDOW
+	_target = null
+	if anim.sprite_frames.has_animation("sleep"):
+		anim.play("sleep")
+	elif anim.sprite_frames.has_animation("limp"):
+		anim.play("limp")
+	map.hud.toast("%s is down! Feed %s or give a potion within 2 minutes (tap the pup)." % [name_of(), "it"], Color(1, 0.6, 0.5))
+	map.emote(self, "sleep", 2.0)
+
+
+func is_down() -> bool:
+	return _down_t >= 0.0
+
+
+## Food or a potion brings a downed pup back up (or just heals it).
+func revive_with(n: int) -> void:
+	var st := state()
+	st["hp"] = mini(max_hp(), maxi(int(st["hp"]), 0) + n)
+	if _down_t >= 0.0:
+		_down_t = -1.0
+		st["hp"] = maxi(int(st["hp"]), max_hp() / 3)
+		map.hud.toast("%s is back on its feet!" % name_of(), Color(0.8, 1, 0.8))
+		map.emote(self, "heart", 1.2)
+		anim.play("idle")
+	_hp_bar.queue_redraw()
 
 
 func _go_home() -> void:
+	_down_t = -1.0
 	var st := state()
 	st["hp"] = 0
 	# Back next morning; Best Friend: back in half a day.
@@ -213,7 +251,8 @@ func _go_home() -> void:
 	st["rest_until"] = int(GameState.run["day"]) + 1
 	st["mode"] = "follow"
 	st["wait"] = []
-	map.hud.toast("%s is hurt and limps home to rest. Back %s." % [name_of(), "in a few hours" if best else "tomorrow"], Color(1, 0.8, 0.7))
+	map.hud.toast("%s has gone back to the dog house on your farm to rest%s." % [name_of(), " for a few hours" if best else " until tomorrow"], Color(1, 0.8, 0.7))
+	GameState.notify("%s is resting in the dog house on the farm. Back %s." % [name_of(), "in a few hours" if best else "tomorrow morning"])
 	map.emote(self, "sleep", 1.5)
 	visible = false
 	busy = true
@@ -230,6 +269,16 @@ func _process(delta: float) -> void:
 		return
 	if map.get_tree().paused:
 		return
+	if _down_t >= 0.0:
+		_down_t -= delta
+		modulate.a = 0.75 + 0.25 * sin(Time.get_ticks_msec() / 200.0)
+		if int(_down_t) % 30 == 0 and int(_down_t + delta) % 30 != 0 and _down_t > 1.0:
+			map.hud.toast("%s needs food or a potion: %d seconds left." % [name_of(), int(_down_t)], Color(1, 0.7, 0.6))
+		if _down_t <= 0.0:
+			modulate.a = 1.0
+			_go_home()
+		return
+	modulate.a = 1.0
 	_hurt_t = maxf(0.0, _hurt_t - delta)
 	_bite_cd = maxf(0.0, _bite_cd - delta)
 	_sync_gear()
@@ -297,11 +346,18 @@ func _process(delta: float) -> void:
 		stop = 6.0
 	var to := goal - position
 	var dist := to.length()
-	if dist > stop:
-		var sp := minf(dist * 4.0, 95.0 * speed_mult())
+	# Start moving a little past the stop distance, stop at it: no flicker
+	# between walking and standing when you take a small step.
+	if _moving:
+		_moving = dist > stop
+	else:
+		_moving = dist > stop + 10.0
+	if _moving:
+		var sp := minf(dist * 3.0, 95.0 * speed_mult())
 		if _target == null and mode == "follow" and player.mounted:
 			sp = 150.0 * speed_mult()
-		var step := to.normalized() * sp * delta
+		_vel = _vel.lerp(to.normalized() * sp, minf(1.0, delta * 8.0))
+		var step := _vel * delta
 		var np := position + step
 		if not map.rect_blocked_player(Rect2(np + Vector2(-3, -2), Vector2(6, 2)), self) or dist > 90.0:
 			position = np
@@ -312,11 +368,18 @@ func _process(delta: float) -> void:
 					break
 		var running := dist > (34.0 if anim.animation.begins_with("run") else 48.0) or _target != null
 		var a: String
-		if absf(to.x) >= absf(to.y):
+		# Keep the current facing axis until the other one clearly wins (1.4x),
+		# so a diagonal walk doesn't flip between side and up/down every frame.
+		if _axis_h and absf(_vel.y) > absf(_vel.x) * 1.4:
+			_axis_h = false
+		elif not _axis_h and absf(_vel.x) > absf(_vel.y) * 1.4:
+			_axis_h = true
+		if _axis_h:
 			a = "run" if running else "walk"
-			anim.flip_h = to.x < 0
+			if absf(_vel.x) > 6.0:
+				anim.flip_h = _vel.x < 0
 		else:
-			var vert := ("run_" if running else "walk_") + ("up" if to.y < 0 else "down")
+			var vert := ("run_" if running else "walk_") + ("up" if _vel.y < 0 else "down")
 			a = vert if anim.sprite_frames.has_animation(vert) else ("run" if running else "walk")
 			anim.flip_h = false
 		if anim.animation != a:
@@ -327,6 +390,7 @@ func _process(delta: float) -> void:
 		if _carry_item == "bring" and anim.sprite_frames.has_animation("fetch") and a != "fetch":
 			anim.play("fetch")
 	else:
+		_vel = Vector2.ZERO
 		if _target != null:
 			_bite(_target)
 		elif _carry_item == "bring":

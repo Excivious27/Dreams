@@ -707,7 +707,7 @@ func _mailbox() -> void:
 			await say([{"who": "Letter", "text": "A man came through town asking about a face like yours. He went east, toward the meadow. Be careful. - M."}])
 			GameState.add_quest("clear_meadow", "Someone is asking about you. Check the east meadow.")
 			return
-	await say([{"text": "No new mail."}])
+	await read_mail()
 
 
 func _talk_crystal() -> void:

@@ -171,6 +171,7 @@ func _ready() -> void:
 	queue_redraw()
 	hud.fade_in(0.5)
 	after_ready()
+	_lock_untouched_buildings()
 	Story.restore_spawns(self)
 	# Where you arrived here on foot: the balloon can bring you back to it.
 	if has_sky and scene_id() not in ["house", "interior", "mine", "moon", "station", "sky", "title", "test_map"]:
@@ -231,6 +232,8 @@ const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "
 func action_word(c: Vector2i) -> String:
 	if player == null:
 		return ""
+	if _pup_at(c):
+		return "Pup"
 	if has_npc_at(c):
 		return "Talk"
 	if nearest_enemy_to(player.position, 22.0) != null:
@@ -341,13 +344,25 @@ func in_content(c: Vector2i) -> bool:
 	return c.x >= 0 and c.y >= 0 and c.x < cols and c.y < rows
 
 
+func _pup_at(c: Vector2i) -> bool:
+	return pet != null and is_instance_valid(pet) and pet.visible and pet is Pet and (pet.position.distance_to(cell_center(c)) < 13.0 or (player and pet.position.distance_to(player.position) < 16.0 and world_to_cell(pet.position) == c))
+
+
 func try_interact(c: Vector2i) -> bool:
+	if _pup_at(c):
+		later(_pup_menu)
+		return true
 	var thing: Dictionary = things.get(c, {})
 	if interact(c, thing):
 		return true
 	if thing.is_empty() and scene_id() != "farm" and use_consumable(str(GameState.run["selected"])):
 		return true
-	return interact_common(c, thing)
+	if interact_common(c, thing):
+		return true
+	if thing.is_empty() and _building_doors.has(c) and _building_doors[c] != c and blocked.has(c):
+		hud.toast("The way in is the door at the front.", Color(0.95, 0.9, 0.8))
+		return true
+	return false
 
 
 ## Interactions every outdoor map shares (trees, rocks, logs, stumps, bushes).
@@ -537,6 +552,10 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				xp("foraging", 2)
 				if props.has(c) and Art.tex("nature", GameState.bush_sprite(false)):
 					(props[c] as Sprite2D).texture = Art.tex("nature", GameState.bush_sprite(false))
+			return true
+		"locked":
+			hud.toast(str(thing.get("text", "Locked.")), Color(1, 0.9, 0.75))
+			Music.instance(get_tree()).sfx("thud")
 			return true
 		"forage":
 			var item := str(thing.get("item", "mushroom"))
@@ -926,6 +945,43 @@ func walk_over(sp: Sprite2D, rows: int) -> void:
 	sp.offset.y += delta / sp.scale.y
 
 
+var _bprops: Array = []
+
+
+## Every building you can't go into says why, instead of ignoring you.
+const LOCK_REASONS := [
+	[["house", "cottage", "home", "hut", "cabin", "manor", "villa"], "Nobody answers. Whoever lives here is out, and folks round here keep their doors shut to strangers."],
+	[["shop", "store", "stall", "market", "cafe", "diner", "bar", "bakery"], "Closed. A card in the window says the keeper is away; come back once the town knows you better."],
+	[["warehouse", "factory", "garage", "depot", "container", "office"], "Locked tight. Some crew runs this place: it opens to whoever holds this block."],
+	[["tower", "lighthouse", "temple", "shrine", "ruin"], "The door is barred from the inside. Whatever's in there isn't ready for you yet."],
+	[["barn", "coop", "shed", "silo", "mill", "greenhouse", "stable"], "Empty and padlocked. Nothing in there needs you today."],
+]
+
+
+func _lock_untouched_buildings() -> void:
+	if scene_id() in ["farm", "house", "interior"]:
+		return
+	for bp in _bprops:
+		var nm := str(bp[0])
+		var base: Vector2i = bp[1]
+		var w := int(bp[2]) + 1
+		var door := Vector2i(base.x + w / 2, base.y + 1)
+		var has_door := false
+		for dy in range(-1, 3):
+			for dx in range(-w, w + 1):
+				var t := str(things.get(door + Vector2i(dx, dy), {}).get("type", ""))
+				if t in ["door", "idoor", "shop", "hall", "hut", "exit", "station", "ferry", "npc", "counter", "wreck", "project"]:
+					has_door = true
+		if has_door or things.has(door) or blocked.has(door) or not in_content(door):
+			continue
+		var reason := "Locked. It doesn't look like anyone's using it."
+		for rr in LOCK_REASONS:
+			for kw: String in rr[0]:
+				if nm.contains(kw):
+					reason = str(rr[1])
+		set_thing(door.x, door.y, {"type": "locked", "text": reason, "hint": "A: knock"}, false)
+
+
 ## Interiors lay furniture out by its declared width; big kit art must not wall
 ## off the room (it once boxed in counters and the town hall door).
 var exact_footprints := false
@@ -939,6 +995,8 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	s.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1) + Vector2(0, dy)
 	add_child(s)
 	props[c] = s
+	if group == "buildings":
+		_bprops.append([name, c, extra_w])
 	if solid:
 		# Base row always; big structures (buildings, barns, huts) also block the
 		# rows their body covers so you can't walk "into" them. Trees stay 1 row.
@@ -1698,6 +1756,12 @@ func handle_tap(pos: Vector2) -> void:
 	if dc != Vector2i(-1, -1):
 		c = dc
 	var e := nearest_enemy_to(world, 14.0)
+	if pet != null and is_instance_valid(pet) and pet.visible and world.distance_to(pet.position + Vector2(0, -6)) < 12.0:
+		if player.position.distance_to(pet.position) < 40.0:
+			later(_pup_menu)
+		else:
+			player.go_to_cell(world_to_cell(pet.position), false)
+		return
 	if true:
 		if e:
 			player.go_to_cell(world_to_cell(e.position - Vector2(0, 2)), true)
@@ -1707,6 +1771,109 @@ func handle_tap(pos: Vector2) -> void:
 			player.go_to_cell(c, true)
 		elif not blocked.has(c) or _exit_at(c):
 			player.go_to_cell(c, false)
+
+
+## Tap the pup (or face it and press CHECK): feed it, give a potion, pet it,
+## change its gear or pack, or give it an order.
+func _pup_menu() -> void:
+	var pt := pet as Pet
+	if pt == null:
+		return
+	var nm := Pet.name_of()
+	var st := Pet.state()
+	var down := pt.is_down()
+	var foods: Array = []
+	for id in GameState.run["inventory"].keys():
+		var it: Dictionary = GameState.items.get(str(id), {})
+		if it.has("pet_heal") or int(it.get("heal", 0)) > 0 or (int(it.get("energy", 0)) > 0 and str(it.get("type", "")) in ["food", "crop", "fish", "drink", "forage", "potion"]):
+			foods.append(str(id))
+	foods.sort_custom(func(a: String, b: String) -> bool: return _pet_heal_of(a) > _pet_heal_of(b))
+	var opts: Array = []
+	var acts: Array = []
+	for id in foods.slice(0, 4):
+		opts.append("Give %s (+%d health)" % [GameState.item_name(id), _pet_heal_of(id)])
+		acts.append(["feed", id])
+	if not down:
+		opts.append("Pet %s" % nm); acts.append(["pet", ""])
+		opts.append("Gear and pack…"); acts.append(["menu", ""])
+		opts.append("Heel" if str(st.get("mode", "")) != "follow" else "Stay here"); acts.append(["mode", "follow" if str(st.get("mode", "")) != "follow" else "wait"])
+	opts.append("Leave"); acts.append(["leave", ""])
+	var hp_line := "%s · health %d / %d" % [nm, int(st["hp"]), Pet.max_hp()]
+	if down:
+		hp_line = "%s is down. Food or a potion will get %s up." % [nm, "it"]
+		if foods.is_empty():
+			hp_line += " (You have nothing to give: find food fast, or %s goes home to rest.)" % nm
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": nm, "text": hp_line, "choice": opts, "key": ""}])
+	await d.finished
+	var i := d.last_choice
+	if i < 0 or i >= acts.size():
+		return
+	match str(acts[i][0]):
+		"feed":
+			var id := str(acts[i][1])
+			GameState.add_item(id, -1)
+			pt.revive_with(_pet_heal_of(id))
+			emote(pt, "heart", 0.8)
+			Music.instance(get_tree()).sfx("pickup")
+		"pet":
+			emote(pt, "heart", 1.0)
+			if pt.anim.sprite_frames.has_animation("play"):
+				pt.anim.play("play")
+			if int(st.get("petted_day", -1)) != int(GameState.run["day"]):
+				st["petted_day"] = int(GameState.run["day"])
+				GameState.add_xp("pup", 3)
+				GameState.add_xp("leadership", 2)
+		"menu":
+			for ch in get_children():
+				if ch is GameMenu:
+					(ch as GameMenu)._tab = "Pup"
+					(ch as GameMenu).toggle()
+		"mode":
+			pt.set_mode(str(acts[i][1]))
+
+
+func _pet_heal_of(id: String) -> int:
+	var it: Dictionary = GameState.items.get(id, {})
+	if it.has("pet_heal"):
+		return int(it["pet_heal"])
+	return clampi(int(it.get("heal", 0)) * 2 + int(it.get("energy", 0)) / 2, 5, 60)
+
+
+## Read letters one by one; gifts and favours are handled from the letter.
+func read_mail() -> void:
+	var unread: Array = []
+	for m: Dictionary in Mail.list():
+		if not bool(m.get("read", false)) or (str(m.get("kind", "")) == "favour" and not bool(m.get("done", false))) or (str(m.get("kind", "")) == "gift" and not bool(m.get("got", false))):
+			unread.append(m)
+	if unread.is_empty():
+		await say([{"text": "No new mail."}])
+		return
+	for m: Dictionary in unread:
+		m["read"] = true
+		var opts: Array = []
+		match str(m.get("kind", "")):
+			"gift":
+				if not bool(m.get("got", false)):
+					opts = ["Take the %s" % GameState.item_name(str(m["item"])), "Later"]
+			"favour":
+				if not bool(m.get("done", false)):
+					opts = ["Send %d %s (have %d)" % [int(m["n"]), GameState.item_name(str(m["item"])), GameState.count(str(m["item"]))], "Not now"]
+		var line := {"who": "Letter from " + str(m["from"]), "text": str(m["text"])}
+		if not opts.is_empty():
+			line["choice"] = opts
+			line["key"] = ""
+		var d := Dialogue.instance(get_tree())
+		d.say([line])
+		await d.finished
+		if not opts.is_empty() and d.last_choice == 0:
+			var err := Mail.act(m)
+			if err != "":
+				hud.toast(err, Color(1, 0.8, 0.6))
+			elif str(m["kind"]) == "gift":
+				hud.toast("+1 %s" % GameState.item_name(str(m["item"])), Color(0.85, 1, 0.85))
+			else:
+				hud.toast("Sent. +◆%d" % int(m["pay"]), Color(1, 0.9, 0.5))
 
 
 func has_npc_at(_c: Vector2i) -> bool:
