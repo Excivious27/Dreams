@@ -21,7 +21,10 @@ static func instance(tree: SceneTree) -> Music:
 	if _inst == null or not is_instance_valid(_inst):
 		_inst = Music.new()
 		_inst.name = "Music"
-		tree.root.add_child(_inst)
+		# At startup the root is still adding the first scene, and add_child()
+		# fails then (the web build lost all music to this). Defer it; play()
+		# remembers the track until the player exists.
+		tree.root.add_child.call_deferred(_inst)
 	return _inst
 
 
@@ -43,9 +46,19 @@ func _ready() -> void:
 		add_child(p)
 		_sfx.append(p)
 	_muted = bool(SaveGame.get_value("muted", false))
+	if _pending != "":
+		var t := _pending
+		_pending = ""
+		play(t)
+
+
+var _pending := ""
 
 
 func play(track: String) -> void:
+	if _player == null:
+		_pending = track
+		return
 	if track == _current:
 		return
 	_current = track
@@ -80,7 +93,7 @@ func play(track: String) -> void:
 
 
 func sfx(name: String) -> void:
-	if _muted:
+	if _muted or _sfx.is_empty():
 		return
 	var path := "res://audio/sfx/%s.wav" % name
 	if not ResourceLoader.exists(path):
@@ -98,6 +111,9 @@ func sfx(name: String) -> void:
 
 func toggle_mute() -> bool:
 	_muted = not _muted
+	if _player == null:
+		SaveGame.set_value("muted", _muted)
+		return _muted
 	SaveGame.set_value("muted", _muted)
 	if _muted:
 		_player.stop()
