@@ -73,6 +73,15 @@ static func portrait_for(who: String) -> String:
 		for cid in crew:
 			if crew[cid] is Dictionary:
 				map[str(crew[cid].get("name", cid)).to_lower()] = str(crew[cid].get("sprite", cid))
+	# Lieutenants: their painted portraits (full name, first name or nickname).
+	var edata: Dictionary = GameState.enemy_data.get("enemies", {})
+	for eid in edata:
+		if str(eid).begins_with("lt_") and edata[eid] is Dictionary:
+			var en := str(edata[eid].get("name", "")).to_lower()
+			map[en] = str(eid)
+			map[str(eid).trim_prefix("lt_")] = str(eid)
+	map["flame"] = "lt_lucia"
+	map["lucia"] = "lt_lucia"
 	var se := GameState.season()
 	for k in GameState.npcs:
 		var pid := str(GameState.npcs[k].get("portrait", k))

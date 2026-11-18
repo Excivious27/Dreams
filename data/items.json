@@ -5157,7 +5157,8 @@
   "value": 94,
   "stats": {
    "defense": 2
-  }
+  },
+  "sprite": "hood"
  },
  "leather_chest": {
   "name": "Leather Chest",
@@ -5336,7 +5337,8 @@
   "value": 104,
   "stats": {
    "defense": 2
-  }
+  },
+  "sprite": "flatcap"
  },
  "copper_chest": {
   "name": "Copper Chest",
@@ -5863,7 +5865,8 @@
   "value": 720,
   "stats": {
    "defense": 4
-  }
+  },
+  "sprite": "knight"
  },
  "silver_chest": {
   "name": "Silver Chest",
@@ -6042,7 +6045,8 @@
   "value": 720,
   "stats": {
    "defense": 5
-  }
+  },
+  "sprite": "crystal_crown"
  },
  "gold_chest": {
   "name": "Gold Chest",

@@ -160,3 +160,7 @@ p22raw = open(f"{D}/src/ART-PROMPTS-22-raw.md").read()
 f22 = build(p22raw, "22", f"{D}/ART-PROMPTS-22.md", "what the loop-3 audit found",
             "WHAT THIS COVERS: room pieces that came back with words painted on them (tables) or under the wrong name (the barrels that were a life ring), redrawn clean.")
 print("22:", f22)
+p23raw = open(f"{D}/src/ART-PROMPTS-23-raw.md").read()
+f23 = build(p23raw, "23", f"{D}/ART-PROMPTS-23.md", "what the loop-4 audit found",
+            "WHAT THIS COVERS, most important first: boss banners for the seven bosses that show no card; the five boss Gifts with no effect strip; party cards for the fifteen partners who show a plain list row; the six new clothes; headgear that vanishes when worn; portraits for twelve speakers; small leftovers; Mabel's own walking sheet.")
+print("23:", f23)

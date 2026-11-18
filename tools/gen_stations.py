@@ -403,6 +403,9 @@ for m, (bk, t, extra) in TEMPER.items():
     for s in SLOTS:
         base = '%s_%s' % (m, s)
         books[bk].append(rc('temper_' + base, 'Temper: ' + I[base]['name'], dict({base: 1}, **extra), base + '_plus', t))
+        # A tempered piece looks like its base piece (else it draws nothing when worn).
+        if base + '_plus' in I and I[base].get('sprite') and not I[base + '_plus'].get('sprite'):
+            I[base + '_plus']['sprite'] = I[base]['sprite']
 # 4) Neon Jacket (the Vault's "neon"): gangster armory, recipe tier 3
 books['armory'].append(rc('neon_jacket', 'Neon Jacket', {'outfit_neon': 1, 'fine_leather': 2, 'circuit_board': 2}, tier=3))
 # 5) Values that don't lose money and can't loop (below the 1.1 buy floor)

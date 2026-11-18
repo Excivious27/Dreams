@@ -37,7 +37,7 @@
 - Collisions: structures write `GameMap.hard` (blocks even swimmers); bog water isn't wadeable. Tall sprites fade when the player is behind them (`_canopies`).
 - Farm soil/crops draw on their own `_soil` layer: field actions call `_soil.queue_redraw()`.
 - `tools/fix_overlays.py` after slicing (weather strip border bars). `slice_world.py` `load_hue` keeps enclosed purples (hero fur/capes).
-- Art Prompts 18–20: `docs/src/ART-PROMPTS-NN-raw.md` → `python3 tools/build_prompt_files.py` builds 16–22 (19–22 use the BLOB RULE + their own SEAMLESS RULE); new prompt files ask for 2–3 images per prompt (Tom: ChatGPT struggles with more). Guide 11 is docs/guides/GUIDE-11.md.
+- Art Prompts 18–23: `docs/src/ART-PROMPTS-NN-raw.md` → `python3 tools/build_prompt_files.py` builds 16–23 (19–22 use the BLOB RULE + their own SEAMLESS RULE); new prompt files ask for 2–3 images per prompt (Tom: ChatGPT struggles with more). Guide 11 is docs/guides/GUIDE-11.md.
 - Pathing: `GameMap.flow_dir(from, goal)` (cached BFS flow fields) for battle units/enemies. Battles: rally modes -2 guard / -1 follow (`follow_me` meta) / points; point menu spends supply (upgrade, fortify, mend, barrage).
 - Region look: `R.season` sets `GameState.look_season`; tile/tree/bush pickers use `GameState.look_se()` (reset in `GameMap._ready`).
 - Gift reactions: `GameState.gift_line(id, item, gain)` from data/gift_lines.json. Animals: `run.animals` (streak/fed); hay feeds; crows in `GameState._crows` at sleep. Shop counters close outside hours (`interior._counter`).
@@ -50,3 +50,4 @@
 - Skill-tree unlock nodes (`UNLOCKS` in gen_skill_trees.py): blueprint (Builds.gate via `GameState.blueprint_lock`), spell (`spell_from_tree`), move_speed (`move_bonus`), chop_power, mine_power, damage.
 - Skill unlock ids are stable (`<skill>_u_<name slug>`); `GameState._migrate` drops node ids that no longer exist (refunds points). Skill icons are matched to nodes by name from docs/src/skill-icon-order.json (frozen draw order; `_prompt_names` in slice_world.py).
 - Ground-level props (decals, pools, pads): `GameMap.to_under(node)` / `under_layer()`; never z_index -1 (it hides them under the map drawing). `bash tools/bots.sh DAYS DIR` (first arg is days: use 3).
+- Under-map nodes have `under_rank` meta (0 ground patch, 1 water, 2 under layer); `_add_under` keeps that order. Guide 16 is docs/guides/GUIDE-16.md.
