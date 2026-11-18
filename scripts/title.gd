@@ -190,6 +190,7 @@ func _on_net_connected(is_host: bool) -> void:
 func _show_arcs() -> void:
 	_clear()
 	_mood(false)
+	Music.instance(get_tree()).play("title")
 	_page.add_child(_label("Choose your path", 16))
 	for arc_id: String in _arcs:
 		var arc: Dictionary = _arcs[arc_id]
@@ -220,6 +221,9 @@ var _shade: ColorRect
 func _show_characters() -> void:
 	_clear()
 	_mood(_arc == "gangsters")
+	# Choosing an arc switches to its theme (crossfades); Back returns to "title".
+	var arc_track := "arc_" + _arc
+	Music.instance(get_tree()).play(arc_track if ResourceLoader.exists("res://audio/music/%s.ogg" % arc_track) else "title")
 	_page.add_child(_label("Who are you?", 16))
 	_preview_holder = Control.new()
 	_preview_holder.custom_minimum_size = Vector2(0, 70)
