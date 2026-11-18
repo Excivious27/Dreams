@@ -75,6 +75,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"mine_floor": 1,
 		"kills": 0,
 		"intro_done": false,
+		"skill_ver": SKILL_VER,
 	}
 	add_item("turnip_seed", 6)
 	add_item("berry", 2)
@@ -102,10 +103,12 @@ static func has_run() -> bool:
 
 
 ## Unlock ids are name slugs: add an entry whenever an unlock is renamed.
-## (Starborn kept its positional id magic_3_8, so it needs none.)
+## (Dropped fillers such as Starborn magic_3_8 are simply refunded.)
 const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_8": "combat_u_iron_gut"}
 ## Renames that only apply when the old node was bought under this name.
 const NODE_RENAME_NAME := {"combat_2_8": "Iron Gut"}
+## Bump when gen_skill_trees.py changes what existing filler nodes do: old saves get those points back.
+const SKILL_VER := 6
 
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
@@ -132,7 +135,7 @@ static func _migrate() -> void:
 			for n in skills_data[sk].get("nodes", []):
 				ids[str(n["id"])] = int(n.get("ranks", 1))
 				nm[str(n["id"])] = str(n.get("name", ""))
-			var bought_nm: Dictionary = (run["skills"][sk] as Dictionary).get("nm", {})
+			var bought_nm: Dictionary = (run["skills"][sk] as Dictionary).get_or_add("nm", {})
 			for nid in have.keys():
 				var ren := str(NODE_RENAMES.get(str(nid), ""))
 				if ren != "" and NODE_RENAME_NAME.has(str(nid)) and str(bought_nm.get(str(nid), NODE_RENAME_NAME[str(nid)])) != str(NODE_RENAME_NAME[str(nid)]):
@@ -148,6 +151,21 @@ static func _migrate() -> void:
 					bought_nm.erase(nid)
 				elif int(have[nid]) > int(ids[str(nid)]):
 					have[nid] = ids[str(nid)]
+		# Filler nodes keep their positional id and name when the generator changes
+		# their effect, so the name check can't see it: refund every positional rank
+		# once per SKILL_VER (base and unlock nodes are kept).
+		if int(run.get("skill_ver", 0)) < SKILL_VER:
+			var rx := RegEx.create_from_string("^[a-z]+_\\d_\\d$")
+			for sk in run["skills"]:
+				if not run["skills"][sk] is Dictionary:
+					continue
+				var hv: Dictionary = (run["skills"][sk] as Dictionary).get("nodes", {})
+				var hn: Dictionary = (run["skills"][sk] as Dictionary).get("nm", {})
+				for nid in hv.keys():
+					if rx.search(str(nid)) != null:
+						hv.erase(nid)
+						hn.erase(nid)
+			run["skill_ver"] = SKILL_VER
 	if run.has("look") and run["look"] is Dictionary and run["look"].has("body") and not run["look"].has("outfit"):
 		run["look"]["outfit"] = "outfit_neon" if str(run.get("arc", "")) == "gangsters" else "outfit_farmer"
 	var defaults := {
@@ -244,6 +262,7 @@ static func import_code(code: String) -> String:
 	if not d is Dictionary or not (d as Dictionary).has("names") or not (d as Dictionary).has("arc") or not (d as Dictionary).has("playable"):
 		return "The code is cut off or has a typo."
 	var cur: Variant = SaveGame.get_value(save_key(), null)
+	var old_prev: Variant = SaveGame.get_value(prev_key(), null)
 	if cur is Dictionary and not (cur as Dictionary).is_empty():
 		SaveGame.set_value(prev_key(), cur)
 	run = {}
@@ -251,6 +270,7 @@ static func import_code(code: String) -> String:
 	if not has_run():
 		if cur is Dictionary and not (cur as Dictionary).is_empty():
 			SaveGame.set_value(save_key(), cur)
+			SaveGame.set_value(prev_key(), old_prev)  # the older Restore farm comes back too
 			run = {}
 			has_run()
 		return "That save couldn't be read."
@@ -264,7 +284,8 @@ static func guest_morning() -> Dictionary:
 	_apply_max_stats()
 	var report := {"earned": 0}
 	var total := 0
-	run["sold_today"] = {}
+	if not run.has("sold_today"):
+		run["sold_today"] = {}
 	for id in run["sellbox"].keys():
 		total += sell_price(id, int(run["sellbox"][id]))
 	total += quality_bonus_value(run.get("sellbox_q", {}))
@@ -274,6 +295,7 @@ static func guest_morning() -> Dictionary:
 	run["crystals"] = int(run["crystals"]) + total
 	report["earned"] = total
 	run["energy"] = int(run["max_energy"])
+	run["fed_en"] = 0
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
@@ -461,7 +483,7 @@ static func demand(id: String) -> float:
 
 static func saturation(id: String, n_more := 0) -> float:
 	var sold: Dictionary = run.get("sold_today", {})
-	if Crew.perk_level("fence") >= 2 and str(items.get(id, {}).get("type", "")) in ["drop", "loot", "treasure"]:
+	if Crew.perk_level("fence") >= 2 and str(items.get(id, {}).get("type", "")) in ["drop", "treasure", "junk", "ore", "gem"]:
 		return 1.0  # Marlene takes any amount of loot at full value
 	var already := int(sold.get(id, 0)) + n_more
 	# The first 12 of a thing sell at full price; after that the town has had
@@ -1149,12 +1171,12 @@ static func gear_stat(stat: String) -> int:
 ## Health: 100 base, +8 per combat level, Tough +20, Warrior +40, gear "hp".
 ## Energy: 100 base, +3 per level in every skill (a seasoned farmer lasts
 ##   longer), Stamina +25, gear "energy". Tasks cost by ENERGY_COST, reduced
-##   8% per tool tier (a moon axe is nearly free to swing).
+##   8% per tool tier (15% for hoe, can and planting), never below 30%.
 ## Mana: 20 base, +12 per magic level, gear "mana"; regenerates slowly, fully
 ##   on sleep. Spells live in data/spells.json.
 ## Stardew-tuned: a fresh 100-bar covers ~50 hoe strokes or ~35 axe swings
 ## before food; tool tiers and perks stretch that further.
-const ENERGY_COST := {"hoe": 3, "can": 2, "axe": 3, "pickaxe": 3, "scythe": 1, "rod": 2, "hammer": 2, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
+const ENERGY_COST := {"hoe": 3, "can": 2, "axe": 3, "pickaxe": 3, "scythe": 1, "rod": 3, "hammer": 2, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
 const HEART_HP := 20
 
 static func _apply_max_stats() -> void:
@@ -1193,7 +1215,7 @@ static func energy_cost(task: String) -> int:
 		return 0
 	var tier := tool_tier(task) if TOOL_KINDS.has(task) else 0
 	# Better hoes and cans save more (they are the everyday tools).
-	var mult := 1.0 - (0.15 if task in ["hoe", "can", "plant"] else 0.08) * tier
+	var mult := maxf(0.3, 1.0 - (0.15 if task in ["hoe", "can", "plant"] else 0.08) * tier)  # never free (Moon tier)
 	if task in ["hoe", "can", "plant"]:
 		mult *= 1.0 - bonus("farming", "farm_energy")
 	elif task == "pickaxe":
@@ -1346,11 +1368,20 @@ static func consume(id: String) -> Dictionary:
 	var hp0 := int(run["hp"]); var en0 := int(run["energy"]); var ma0 := int(run.get("mana", 0))
 	var mh := Crew.perk_level("meal_heal")
 	heal(int(round(int(it.get("heal", 0)) * (1.0 + (0.1 if mh == 1 else (0.25 if mh >= 2 else 0.0))))))
-	# Cooked food and potions refill energy from their heal (x8); raw catch,
-	# crops and forage only a little (x2), so eating the cheap catch isn't an
-	# endless energy loop (audit 12#1).
-	var en_mult := 8 if str(it.get("type", "")) in ["food", "potion", "consumable"] else 2
-	restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * en_mult)
+	# Cooked food refills energy from its heal (x8); raw catch, crops and forage
+	# only a little (x2), so eating the cheap catch isn't an endless energy loop
+	# (audit 12#1). Potions heal but give no energy from it (only an explicit
+	# "energy"), so a healing item isn't the cheapest energy drink.
+	var ty := str(it.get("type", ""))
+	var en_mult := 8 if ty in ["food", "consumable", "tonic", "gift"] else (0 if ty == "potion" else 2)
+	# Food energy is capped at one full bar a day (fed_en resets on sleep), so
+	# bought food can't turn the clock into the only limit on fishing.
+	var en_gain := int(it.get("energy", 0)) + int(it.get("heal", 0)) * en_mult
+	var room := maxi(0, int(run["max_energy"]) - int(run.get("fed_en", 0)))
+	restore_energy(mini(room, en_gain))
+	run["fed_en"] = int(run.get("fed_en", 0)) + int(run["energy"]) - en0
+	if room <= 0 and en_gain > 0:
+		out["full"] = true
 	restore_mana(int(it.get("mana", 0)))
 	if int(run["hp"]) != hp0:
 		out["hp"] = int(run["hp"]) - hp0
@@ -1635,6 +1666,8 @@ static func gift_line(id: String, item: String, gain: int) -> String:
 		return ""
 	var mult := 3 if is_birthday(id) else 1
 	var g := gain / mult
+	if g > 0:
+		g = maxi(0, g - int(bonus("bartering", "gift_bonus")) - int(items.get(item, {}).get("friend", 0)))  # react to the gift itself, not the bonuses
 	var idx := 3 if g < 0 else (0 if g >= 20 else (1 if g >= 12 else 2))
 	return str(ls[idx]).replace("{item}", n)
 
@@ -1675,6 +1708,7 @@ static func complete_quest(id: String) -> bool:
 			_give_reward(_quest_def(id).get("reward", {}))
 			var m := Engine.get_main_loop().get("current_scene") as GameMap if Engine.get_main_loop() else null
 			if m:
+				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 				Story.on_quest_done(m, id)
 			return true
 	return false
@@ -1716,7 +1750,7 @@ const BOARD_POOL := {
 	"wren": ["wild_herb", "mushroom", "slime_goo", "flower"], "finn": ["minnow", "bass", "trout", "bait"],
 	"hazel": ["wood", "hay", "plank", "egg", "milk", "beam"], "posy": ["flour", "egg", "honey", "butter", "jam"],
 	"bram": ["mushroom", "meat", "trout", "pumpkin"], "juniper": ["wild_herb", "honey", "flower"],
-	"rook": ["pelt", "bone", "meat", "leather", "fine_leather"], "theo": ["old_coin", "book", "fossil"], "lumi": ["flower", "sunflower", "shell", "cloth", "linen", "fine_fabric"],
+	"rook": ["pelt", "bone", "meat", "leather", "fine_leather"], "theo": ["old_coin", "book", "fossil"], "lumi": ["flower", "sunflower", "seashell", "cloth", "linen", "fine_fabric"],
 	"alder": ["stone", "wood", "brick", "pumpkin", "tile"], "sal": ["coffee", "bread", "minnow"], "benno": ["hay", "carrot", "apple"], "ivy": ["old_coin", "honey", "cake"],
 }
 
@@ -1744,7 +1778,7 @@ static func board_today() -> Array:
 		if not items.has(item):
 			continue
 		var n := rng.randi_range(2, 4 + tier * 2)
-		var val := maxi(5, item_value(item))
+		var val := maxi(2, item_value(item))
 		var pay := int(val * n * 1.6) + 20 * tier
 		jobs.append({"id": "board_%d_%d" % [int(run["day"]), i], "npc": who, "item": item, "n": n, "crystals": pay, "friend": 8 + tier * 2})
 	# Plus one order for something growing this season (any farmer's crop counts).
@@ -1760,7 +1794,7 @@ static func board_today() -> Array:
 		if npcs.has(who2) and npc_present(who2) and not used.has(who2):
 			var item2: String = crop_pool[rng.randi_range(0, crop_pool.size() - 1)]
 			var n2 := rng.randi_range(2, 3 + tier)
-			jobs.append({"id": "board_%d_c" % int(run["day"]), "npc": who2, "item": item2, "n": n2, "crystals": int(maxi(5, item_value(item2)) * n2 * 1.8) + 15 * tier, "friend": 10 + tier * 2})
+			jobs.append({"id": "board_%d_c" % int(run["day"]), "npc": who2, "item": item2, "n": n2, "crystals": int(maxi(2, item_value(item2)) * n2 * 1.8) + 15 * tier, "friend": 10 + tier * 2})
 	run["board"] = {"day": int(run["day"]), "jobs": jobs}
 	return jobs
 
@@ -1870,6 +1904,8 @@ static func _cond_ok(when: Dictionary) -> bool:
 		var dc: Array = when["decision"]
 		if int(run.get("decisions", {}).get(str(dc[0]), -1)) != int(dc[1]):
 			return false
+	if when.has("pup_gear") and count(str(when["pup_gear"])) < 1 and not ((run.get("pet", {}) as Dictionary).get("gear", {}) as Dictionary).values().has(str(when["pup_gear"])):
+		return false  # in the bag or worn by the pup both count
 	if when.has("kills"):
 		var kl: Array = when["kills"]
 		if int(run.get("kill_counts", {}).get(str(kl[0]), 0)) < int(kl[1]):
@@ -2171,11 +2207,11 @@ static func sleep(passed_out := false) -> Dictionary:
 	if bonus("bartering", "interest") > 0.0:
 		run["crystals"] = int(run["crystals"]) + mini(int(int(run["crystals"]) * bonus("bartering", "interest")), 50 + 50 * progress_tier())
 	var total := 0
-	run["sold_today"] = {}
+	# sold_today still holds the day's sales to Sal's fence, so the box saturates on top of them.
 	for id in run["sellbox"].keys():
 		var n: int = int(run["sellbox"][id])
 		var v := sell_price(id, n)
-		run["sold_today"][id] = n
+		run["sold_today"][id] = int(run["sold_today"].get(id, 0)) + n
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
 	var qb := quality_bonus_value(run.get("sellbox_q", {}))
@@ -2289,6 +2325,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			add_hint("%s was seen on the east road at night, heading for the dark." % str(Companion.defs().get(cid, {}).get("name", cid)))
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
 	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) / 2
+	run["fed_en"] = 0
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
@@ -2298,6 +2335,14 @@ static func sleep(passed_out := false) -> Dictionary:
 		run["gifts_week"] = {}
 	for line in Perks.morning():
 		notify(str(line))
+	# Traps in the bag catch something overnight (Rook's design): up to 3 work.
+	var caught := 0
+	for i in mini(count("trap"), 3):
+		if randf() < 0.4:
+			caught += 1
+	if caught > 0:
+		add_item("pelt", caught)
+		notify("Your traps caught something overnight: +%d Pelt." % caught)
 	var nm := Mail.morning()
 	if nm > 0:
 		notify("You have %d new letter%s. (Mailbox on the farm, or MENU → Quests → Mail)" % [nm, "" if nm == 1 else "s"])

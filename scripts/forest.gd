@@ -44,7 +44,7 @@ func build() -> void:
 			continue
 		var key := "forage_forest_%d_%d" % [c.x, c.y]
 		var every := 1 if GameState.has_perk("foraging", "Tracker") else 2
-		if int(GameState.run["flags"].get(key, 0)) > int(GameState.run["day"]) - every:
+		if not GameState.respawned(key, every):  # Honey Sense shortens it
 			continue
 		var item := GameState.roll_forage("forest")
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
@@ -133,7 +133,7 @@ func after_ready() -> void:
 	if Art.has("props", "hollow_log"):
 		prop("props", "hollow_log", Vector2i(14, 44), 3)
 	prop("nature", "berry_thicket", Vector2i(18, 40), 1)
-	set_thing(18, 40, {"type": "bush", "key": "forest_thicket", "berries": int(GameState.run["flags"].get("forest_thicket", 0)) < int(GameState.run["day"]), "hint": "A: pick berries"})
+	set_thing(18, 40, {"type": "bush", "key": "forest_thicket", "berries": GameState.respawned("forest_thicket", 3), "hint": "A: pick berries"})
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
 			var it := str(things[k]["item"])
@@ -227,18 +227,15 @@ func _shrine() -> void:
 func draw_map() -> void:
 	draw_grass(6)
 	WorldGen.draw_ground_detail(self, 67, 0.06)
-	# Dark floor under the groves, soft-edged.
-	for c: Vector2i in _grove:
-		var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
-		if Art.has("tiles", "ffloor_0"):
-			Art.draw_tile(self, "tiles", "ffloor_%d" % [[7, 8, 7, 8, 13, 14, 15, 0, 7, 8][hv % 10]], Vector2(c * TILE), 0)
-		elif not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
-	for c: Vector2i in _grove:
-		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-			var n := c + d
-			if not _grove.has(n) and (n.x * 3 + n.y * 5) % 3 != 0:
-				Art.draw_tile(self, "tiles", "forest_floor", Vector2(n * TILE), 4)
+	# Dark floor under the groves: one soft-edged shape (cell tiles left a ring of
+	# hard brown squares round every grove).
+	if not soft_ground(_grove, "forest_floor", Color(0.12, 0.09, 0.04, 0.22)):
+		for c: Vector2i in _grove:
+			var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
+			if Art.has("tiles", "ffloor_0"):
+				Art.draw_tile(self, "tiles", "ffloor_%d" % [[7, 8, 7, 8, 13, 14, 15, 0, 7, 8][hv % 10]], Vector2(c * TILE), 0)
+			elif not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
 	var pc := {}
 	for c in _path_cells():
 		pc[c] = true

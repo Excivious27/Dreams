@@ -143,7 +143,7 @@ def _caps():
 
 BASE_CAPS, SKILL_CAPS = _caps()
 FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
-            "fishing": ["fish_value", "double_fish"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "buy_discount"],
+            "fishing": ["fish_value", "double_fish"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
             "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
 
@@ -185,7 +185,7 @@ UNLOCKS = {
                (2, 9, "Not Today", "Once a day, a hit that would knock you out leaves you on 1 HP.", {"last_stand": 1})],
     "bartering": [(0, 2, "Jeweler's Blueprint", "Learn to build the Jeweler: rings and charms.", {"blueprint": "jeweler"}),
                   (2, 6, "Homeward", "Learn the Warp Home spell: blink back to your bed.", {"spell": "warp_home"}),
-                  (1, 9, "Lucky Day", "5% chance each night the sell box pays double.", {"jackpot": 0.05})],
+                  (1, 9, "Lucky Day", "5% chance each night the sell box pays double (big boxes: a capped bonus).", {"jackpot": 0.05})],
     "building": [(0, 2, "Garage Blueprint", "Learn to build the Garage: carts and vehicles.", {"blueprint": "garage"}),
                  (1, 3, "Cauldron Blueprint", "Learn to build the Cauldron: potions and tonics.", {"blueprint": "cauldron"}),
                  (2, 2, "Light Feet", "Move 5% faster.", {"move_speed": 0.05}),

@@ -26,7 +26,7 @@ func build() -> void:
 	set_thing(PAD.x + 1, PAD.y, {"type": "pad", "hint": "A: fly home"}, false)
 	block_rect(CRATER.position.x + 1, CRATER.position.y + 1, CRATER.size.x - 2, CRATER.size.y - 2)
 	set_thing(5, 6, {"type": "house", "hint": "A: the rocket house"})
-	set_thing(24, 20, {"type": "tele", "hint": "A: teleporter (unpowered)"})
+	set_thing(24, 20, {"type": "tele", "hint": "A: teleporter" if GameState.run["flags"].has("tele_on") else "A: teleporter (unpowered)"})
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 111
 	for i in 30:
@@ -147,6 +147,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if not GameState.run["flags"].has("tele_on"):
 					GameState.add_item("crystal_refined", -3)
 					GameState.run["flags"]["tele_on"] = true
+					things[Vector2i(24, 20)]["hint"] = "A: teleporter"
 					fx("levelup", cell_center(Vector2i(24, 20)), 10.0, 0.8)
 					later(_tele_first)
 					return true

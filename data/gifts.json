@@ -678,7 +678,7 @@
    "rule": {
     "type": "wet",
     "closed": 0.2,
-    "open": 0.6,
+    "open": 2.0,
     "after": "pull",
     "secs": 2.0,
     "stagger": 1.0

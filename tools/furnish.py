@@ -23,14 +23,17 @@ I = json.load(open(P))
 HOMES = {"cottage_a", "cottage_b", "cottage_c", "hazel_house", "mansion", "tam_hut", "moss_hut", "river_hut", "lodge"}
 WORKS = {"stable", "quarry_office", "water_mill", "lighthouse", "fishing_hut", "sel_camp"}
 PUBLIC = {"chapel", "bank", "library", "hall", "clinic", "school"}
-WALL = ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting_a", "painting_b", "window_day", "clock", "mirror2", "window_day"]
+# No window_day here: the walls draw their own windows (a prop one beside or on top looked doubled).
+WALL = ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting_a", "painting_b", "clock", "mirror2"]
 HOME_SIDE = ["bookcase3_a", "dresser2_a", "kitchen_stove", "wardrobe2_a", "lamp_floor", "bookcase3_c", "nightstand_a", "sofa_blue", "chest_closed", "piano", "lamp_floor_b", "toy_chest", "pet_bed"]
 SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrel", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e"]
-WORK_SIDE = ["barrel", "crate", "lamp_floor", "plant2_c", "barrels3", "crate", "plant_c", "bookcase3_d"]
+# "barrels3" / "low_table" are mis-aliased in slice_world (a life ring / a jug) until its int_light list is fixed.
+WORK_SIDE = ["barrel", "crate", "lamp_floor", "plant2_c", "barrel", "crate", "plant_c", "bookcase3_d"]
 PUBLIC_SIDE = ["bookcase3_d", "plant2_c", "lamp_floor", "bookcase3_e", "plant_c", "lamp_floor_b", "plant2_b", "globe2"]
 CORNER = ["plant2_a", "plant2_b", "plant2_c", "plant2_d", "plant_b", "plant_c"]
 RUGS = ["rug_rect_blue", "rug_rect_green", "rug_rect_red", "rug_round_blue", "rug_round_green", "rug2_blue", "rug2_green", "rug2_red", "rug2_round_red"]
-TABLES = ["table_square_cloth", "table_round_cloth", "table_square", "low_table"]
+TABLES = ["table_square_cloth", "table_round_cloth", "table_square"]
+HUTS = {"tam_hut", "moss_hut", "river_hut", "lodge"}
 
 
 def have(n):
@@ -51,6 +54,12 @@ for rid, R in I.items():
     rng = random.Random(rid)
     home = rid in HOMES
     kit_all = HOME_SIDE if home else (WORK_SIDE if rid in WORKS else (PUBLIC_SIDE if rid in PUBLIC else SHOP_SIDE))
+    # No pianos or kitchen stoves in reed huts, a lodge or the mansion's living room;
+    # no bookcases or cabbage crates in the forge, potion shop or bakery.
+    if rid in HUTS or rid == "mansion":
+        kit_all = [k for k in kit_all if k not in ("piano", "kitchen_stove", "toy_chest")]
+    if rid in ("smith", "potions", "bakery"):
+        kit_all = [k for k in kit_all if k not in ("bookcase3_d", "bookcase3_e", "crate_cabbage")] + ["barrel", "crate"]
     used = set()
     for p in R["props"]:
         used.update(cells_of(p))
@@ -98,9 +107,10 @@ for rid, R in I.items():
     rng.shuffle(wall)
     onwall = {tuple(p["cell"]) for p in R["props"] if p["cell"][1] <= 2 and not p.get("solid", True)}
     onwall |= {(int(w["x"]), 1) for w in R.get("wall_props", [])}
+    wins = {int(w) for w in R.get("windows", [4, cols - 5])}
     k = 0
     for x in range(2, cols - 2, 3):
-        if any(abs(x - c[0]) <= 1 for c in onwall) or (x, 2) in used:
+        if x in wins or any(abs(x - c[0]) <= 1 for c in onwall) or (x, 2) in used:
             continue
         nm = wall[k % len(wall)]
         if have(nm):

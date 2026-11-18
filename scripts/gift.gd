@@ -219,7 +219,7 @@ func _process(delta: float) -> void:
 			if e._sprite:
 				e._sprite.modulate.a = 1.0
 			e.map.fx("blink" if Art.has("fx", "blink") else "poof", e.position + Vector2(0, -8), 14.0, 0.4)
-			_lines.append({"a": e.position, "b": e.position + (p.position - e.position).normalized() * 40.0, "t": 0.35, "w": 9.0, "fired": false})
+			_lines.append({"a": e.position, "b": e.map.line_end(e.position, e.position + (p.position - e.position).normalized() * 40.0), "t": 0.35, "w": 9.0, "fired": false})
 			_open_after("veil")
 	elif not decoy and e._sprite and e._sprite.modulate.a < 1.0:
 		e._sprite.modulate.a = 1.0
@@ -303,7 +303,8 @@ func _do(mv: Dictionary, p: Player) -> void:
 				var aim := (p.position + p.velocity * 0.25 * k - e.position).normalized()
 				if bool(mv.get("fan", false)):
 					aim = (p.position - e.position).normalized().rotated((k - (n - 1) / 2.0) * 0.38)
-				_lines.append({"a": e.position + Vector2(0, -6), "b": e.position + aim * float(mv.get("len", 150.0)), "t": 0.55 + 0.32 * k, "w": float(mv.get("w", 6.0)), "fired": false, "last": k == n - 1})
+				var a0 := e.position + Vector2(0, -6)
+				_lines.append({"a": a0, "b": e.map.line_end(a0, a0 + aim * float(mv.get("len", 150.0))), "t": 0.55 + 0.32 * k, "w": float(mv.get("w", 6.0)), "fired": false, "last": k == n - 1})
 			_busy = 0.55 + 0.32 * n
 		"zones":
 			var n := int(mv.get("n", 3))
@@ -537,11 +538,11 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 					en.hit(maxi(1, dmg - 1), p.position, true, true)
 		"luck":
 			var roll := randi() % 3
-			if roll == 0:
+			if roll == 0 and not near.is_empty():
 				var n := 20 + 15 * GameState.progress_tier()
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + n
 				m.hud.toast("Lucky: +◆%d" % n, Color(1, 0.9, 0.4))
-			elif roll == 1:
+			elif roll == 1 or near.is_empty():
 				GameState.heal_points(12)
 				m.hud.toast("Lucky: +12 health", Color(1, 0.8, 0.8))
 			else:

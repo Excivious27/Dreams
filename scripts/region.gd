@@ -106,6 +106,13 @@ func build() -> void:
 		add_exit(Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])), str(e["scene"]), Vector2(float(e["spawn"][0]) * TILE, float(e["spawn"][1]) * TILE), str(e.get("facing", "down")), str(e.get("label", "")))
 	for b in R.get("blocks", []):
 		block_rect(int(b[0]), int(b[1]), int(b[2]), int(b[3]))
+	# Battle maps: lanes (paths) cross water as causeways and cut through high ground.
+	var lane_cells := {}
+	if R.has("battle"):
+		for pr in R.get("paths", []):
+			for y in range(int(pr[1]), int(pr[1]) + int(pr[3])):
+				for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
+					lane_cells[Vector2i(x, y)] = true
 	# Noise-shaped water bodies: {"c": [x, y], "r": radius, "seed": n, "shore": "grass"|"sand", "fish": [...]}
 	for wb in R.get("water_blobs", []):
 		var cx := float(wb["c"][0])
@@ -141,6 +148,8 @@ func build() -> void:
 			for c: Vector2i in drop:
 				cells.erase(c)
 		for c: Vector2i in cells:
+			if lane_cells.has(c):
+				continue
 			set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": wb.get("fish", []), "shore": str(wb.get("shore", "grass"))})
 			_water_cells[c] = true
 	# Islands: everything that isn't island is sea (colony maps).
@@ -169,8 +178,8 @@ func build() -> void:
 			for c in cells_of([e["rect"]]):
 				land[c] = true
 				land[c + Vector2i(0, -1)] = true
-		for y in range(1, rows - 1):
-			for x in range(1, cols - 1):
+		for y in range(0, rows):
+			for x in range(0, cols):  # to the edge: no grass rim between island sea and border sea
 				var c := Vector2i(x, y)
 				if not land.has(c) and not things.has(c):
 					set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": R.get("fish", ["minnow", "trout", "salmon"]), "shore": str(R.get("island_shore", "sand"))})
@@ -200,7 +209,9 @@ func build() -> void:
 	if water_border:
 		var bsh := str(R.get("border_water_shore", ""))
 		if bsh == "":
-			if _rect_water.has("sand"):
+			if R.has("islands"):
+				bsh = str(R.get("island_shore", "sand"))
+			elif _rect_water.has("sand"):
 				bsh = "sand"
 			elif str(R.get("patch_set", "")) == "bog":
 				bsh = "bog"
@@ -210,6 +221,8 @@ func build() -> void:
 		if _rect_water.has(bsh):
 			border_water_extra.merge(_rect_water[bsh])
 			_rect_water.erase(bsh)
+		if R.has("islands"):
+			border_water_extra.merge(_water_cells)  # one sea, one shore look
 	# Forage spots from data/forage.json (respawn every 2 days, 1 with Tracker).
 	var fcount := int(R.get("forage", 0))
 	if fcount > 0:
@@ -253,7 +266,15 @@ func build() -> void:
 				if nb <= 1:
 					nx.erase(c)
 			pc = nx
-		add_plateau(pc, pl.get("ramps", []))
+		if lane_cells.is_empty():
+			add_plateau(pc, pl.get("ramps", []))
+			continue
+		for c: Vector2i in lane_cells:
+			pc.erase(c)
+		# The lanes may cut it in pieces: each piece gets its own ramp; slivers go.
+		for part: Dictionary in _components(pc):
+			if part.size() >= 8:
+				add_plateau(part, pl.get("ramps", []).filter(func(r: Array) -> bool: return part.has(Vector2i(int(r[0]), int(r[1])))))
 	if int(R.get("fruit", 0 if region_id in NO_FRUIT else 3)) > 0:
 		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)))
 	for t in R.get("things", []):
@@ -263,6 +284,27 @@ func build() -> void:
 			if not k in ["cell", "solid"]:
 				d[k] = t[k]
 		set_thing(int(c[0]), int(c[1]), d, bool(t.get("solid", true)))
+
+
+## 4-connected pieces of a cell set.
+func _components(cells: Dictionary) -> Array:
+	var out: Array = []
+	var seen := {}
+	for c: Vector2i in cells:
+		if seen.has(c):
+			continue
+		var part := {}
+		var st: Array = [c]
+		while not st.is_empty():
+			var q: Vector2i = st.pop_back()
+			if seen.has(q) or not cells.has(q):
+				continue
+			seen[q] = true
+			part[q] = true
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				st.append(q + d)
+		out.append(part)
+	return out
 
 
 var battle: Battle = null
@@ -654,7 +696,48 @@ func _talk_npc(n: Npc) -> void:
 const VARIANT_SETS := ["dead_grass", "metal_a", "metal_b", "cloud", "cracked_earth", "wood_dock"]
 
 
+## Feature-blob cells drawn from tiles (no soft seam): the soft patch layer keeps off them.
+var _tile_feature := {}
+const FEATURE_SOFT := {"snowpatch": "snow", "ruinfloor": "ruin_floor", "bog": "bog", "track": "dirt_track", "sand": "sand"}
+
+
+## One feature blob entry's cells (noise blobs), with specks dropped and holes filled.
+func _feature_cells(fb: Dictionary) -> Dictionary:
+	var cells := {}
+	for bl in fb.get("blobs", []):
+		var cx := float(bl["c"][0]); var cy := float(bl["c"][1]); var rad := float(bl.get("r", 5)); var sdv := int(bl.get("seed", 3))
+		for y in range(int(cy - rad - 3), int(cy + rad + 4)):
+			for x in range(int(cx - rad - 3), int(cx + rad + 4)):
+				if x < 0 or y < 0 or x >= cols or y >= rows:
+					continue
+				var n := WorldGen.fbm(float(x), float(y), sdv, 5.0)
+				if Vector2(x + 0.5, y + 0.5).distance_to(Vector2(cx, cy)) + n * rad * 0.35 <= rad:
+					cells[Vector2i(x, y)] = true
+	for pass_i in 2:
+		var next := cells.duplicate()
+		var span := {}
+		for c: Vector2i in cells:
+			for off: Vector2i in [Vector2i.ZERO, Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				span[c + off] = true
+		for c: Vector2i in span:
+			var nb := 0
+			for off: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				if cells.has(c + off):
+					nb += 1
+			if cells.has(c) and nb <= 1:
+				next.erase(c)
+			elif not cells.has(c) and nb >= 3 and c.x >= 0 and c.y >= 0 and c.x < cols and c.y < rows:
+				next[c] = true
+		cells = next
+	return cells
+
+
 func draw_map() -> void:
+	_tile_feature = {}
+	for fb in R.get("feature_blobs", []):
+		var setn := str(fb["set"])
+		if Art.has("tiles", setn + "_top_0") and not FEATURE_SOFT.has(setn):
+			_tile_feature.merge(_feature_cells(fb))
 	var ground := str(R.get("ground", "grass"))
 	if ground == "grass":
 		draw_grass(hash(region_id) % 100)
@@ -698,6 +781,11 @@ func draw_map() -> void:
 					elif not cells.has(c) and nb >= 3:
 						next[c] = true
 			cells = next
+		# Never over the border band (cliff walls, void, deep trees draw on the map
+		# canvas, under the soft layer) nor under a feature blob drawn from tiles.
+		for c: Vector2i in cells.keys():
+			if not in_content(c) or _border_cells.has(c) or _tile_feature.has(c):
+				cells.erase(c)
 		var soft_seam: String = {"bog": "bog", "ruinfloor": "ruin_floor", "snowpatch": "snow", "track": "dirt_track", "sand": "sand"}.get(ps, "")
 		if ps == "snowpatch" and GameState.look_se() == "winter":
 			cells = {}  # snow on snow
@@ -716,28 +804,21 @@ func draw_map() -> void:
 		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
 		var ds := str(R.get("deco_set", ""))
 		var dc := int(R.get("deco_count", 0))
-		if ds != "" and dc > 0:
+		# Only the deco tiles with clear borders (deco_keep); the rest are opaque squares.
+		var keep: Array = R.get("deco_keep", range(dc))
+		if ds != "" and dc > 0 and not keep.is_empty():
 			for y in range(0, rows):
 				for x in range(0, cols):
 					var h := absi((x * 73856093) ^ (y * 19349663) ^ 7)
 					if h % 41 == 0 and not blocked.has(Vector2i(x, y)):
-						Art.draw_tile(self, "tiles", "%s_%d" % [ds, h / 17 % dc], Vector2(x * TILE, y * TILE), 0)
+						Art.draw_tile(self, "tiles", "%s_%d" % [ds, int(keep[h / 17 % keep.size()])], Vector2(x * TILE, y * TILE), 0)
 	# Feature ground (Prompts 09 edge sets): noise blobs of e.g. terrace / snow / track / ruin floor.
 	for fb in R.get("feature_blobs", []):
 		var setn := str(fb["set"])
 		if not Art.has("tiles", setn + "_top_0"):
 			continue
-		var cells := {}
-		for bl in fb.get("blobs", []):
-			var cx := float(bl["c"][0]); var cy := float(bl["c"][1]); var rad := float(bl.get("r", 5)); var sdv := int(bl.get("seed", 3))
-			for y in range(int(cy - rad - 3), int(cy + rad + 4)):
-				for x in range(int(cx - rad - 3), int(cx + rad + 4)):
-					if x < 0 or y < 0 or x >= cols or y >= rows:
-						continue
-					var n := WorldGen.fbm(float(x), float(y), sdv, 5.0)
-					if Vector2(x + 0.5, y + 0.5).distance_to(Vector2(cx, cy)) + n * rad * 0.35 <= rad:
-						cells[Vector2i(x, y)] = true
-		var fs: String = {"snowpatch": "snow", "ruinfloor": "ruin_floor", "bog": "bog", "track": "dirt_track", "sand": "sand"}.get(setn, "")
+		var cells := _feature_cells(fb)
+		var fs: String = FEATURE_SOFT.get(setn, "")
 		if setn == "snowpatch" and GameState.look_se() == "winter":
 			continue  # snow on snow
 		if fs != "" and soft_ground(cells, fs, Color(0.2, 0.14, 0.07, 0.12)):
@@ -747,6 +828,7 @@ func draw_map() -> void:
 			Art.draw_tile(self, "tiles", Art.fill_name(setn, h), Vector2(c * TILE), 0)
 			if h % 23 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [setn, h / 23 % 36]):
 				Art.draw_tile(self, "tiles", "%s_deco_%d" % [setn, h / 23 % 36], Vector2(c * TILE), 0)
+		Art.draw_blob(self, cells, setn, 16.0, 0)  # the set's rims and corners frame it
 		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
 	draw_plateaus()
 	if region_id == "marsh" and Art.has("props", "mk_fog_l") and _anim_layer:
@@ -779,15 +861,10 @@ func draw_map() -> void:
 	if path_kind in ["dirt", "sand", "stone"]:
 		draw_ground(path_kind, pcs)
 	else:
-		for c: Vector2i in pcs:
-			var pi := posmod(c.y, 3) * 3 + posmod(c.x, 3) if path_kind in VARIANT_SETS else 4
-			if path_kind == "asphalt2":
-				pi = 3 if (c.x + c.y) % 2 == 0 else 5  # not the lane-stripe column
-			if not Art.draw_tile(self, "tiles", path_kind, Vector2(c * TILE), pi):
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("8a8a90"))
+		_draw_path_tiles(pcs, path_kind)
 	for wsh in _rect_water:
 		draw_water(_rect_water[wsh], str(wsh))
-	if not _water_cells.is_empty():
+	if not _water_cells.is_empty() and not (R.has("islands") and not border_water_extra.is_empty()):
 		var by_shore := {}
 		for c: Vector2i in _water_cells:
 			var sh := str(things.get(c, {}).get("shore", "grass"))
@@ -803,6 +880,34 @@ func draw_map() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+
+
+## Tile-set paths (asphalt, neon sidewalk, polished road, docks...): the set's
+## plain cells, never its edge pieces.
+func _draw_path_tiles(pcs: Dictionary, path_kind: String) -> void:
+	for c: Vector2i in pcs:
+		var pi := posmod(c.y, 3) * 3 + posmod(c.x, 3) if path_kind in VARIANT_SETS else 4
+		if path_kind == "asphalt2":
+			pi = 3 if (c.x + c.y) % 2 == 0 else 5  # not the lane-stripe column
+		if not Art.draw_tile(self, "tiles", path_kind, Vector2(c * TILE), pi):
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("8a8a90"))
+
+
+## Exit corridors through the border band use the region's own path, tile sets too
+## (they used to turn into a dark cobble slab across the road).
+func draw_corridor(cells: Dictionary) -> void:
+	var k := str(R.get("path", "dirt"))
+	if k in ["dirt", "sand", "stone"]:
+		draw_ground(k, cells)
+	else:
+		_draw_path_tiles(cells, k)
+
+
+func draw_ground(kind: String, cells_in: Dictionary) -> void:
+	# Stone paths: one soft paved shape (the cobble blob set made every cell an edge box).
+	if kind == "stone" and soft_ground(widen_path(cells_in), "ruin_floor", Color(0.12, 0.1, 0.08, 0.35)):
+		return
+	super(kind, cells_in)
 
 
 ## Colony maps: the elder, the shop, the star crystal and the tide beacons.
@@ -872,5 +977,5 @@ func _colony_village(cid: String, at: Vector2i, done: bool) -> void:
 	for i in 10:
 		var bn := "%s_blight_%d" % [cid, 1 + (i % 3)]
 		var bc := Vector2i(rng.randi_range(4, cols - 5), rng.randi_range(4, rows - 5))
-		if Art.has("props", bn) and not blocked.has(bc) and bc.distance_to(at) > 5:
+		if Art.has("props", bn) and not blocked.has(bc) and not things.has(bc) and not props.has(bc) and not is_water_cell(bc) and bc.distance_to(at) > 9:
 			prop("props", bn, bc, 0, 0.0, true, 0.35)

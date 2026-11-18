@@ -118,7 +118,7 @@ func _place_toasts() -> void:
 		var h := 0.0
 		for c in _toasts.get_children():
 			h += (c as Control).size.y + 1.0
-		y = minf(y, d.panel_top() - h - 4.0)
+		y = maxf(TOOLBAR_Y + SLOT + 8.0, minf(y, d.panel_top() - h - 4.0))
 	_toasts.position.y = y
 
 
@@ -130,7 +130,7 @@ func _input(event: InputEvent) -> void:
 		var p: Vector2 = (event as InputEventScreenTouch).position
 		if p.y >= y_offset + TOOLBAR_Y - 2 and p.y <= y_offset + TOOLBAR_Y + SLOT + 2 and p.x >= TOOLBAR_X and p.x < TOOLBAR_X + 12 * SLOT:
 			GameState.select_slot(int((p.x - TOOLBAR_X) / SLOT))
-			Music.instance(get_tree()).sfx("plant")
+			Music.instance(get_tree()).sfx("ui_tap", "plant")
 			get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed:
 		var mb := event as InputEventMouseButton
@@ -143,6 +143,13 @@ func _input(event: InputEvent) -> void:
 			GameState.select_slot((int(GameState.run["slot"]) + 1) % 12)
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP:
 			GameState.select_slot((int(GameState.run["slot"]) + 11) % 12)
+
+
+## Mana matters once a spell is known or the partner casts a Gift with it.
+func _shows_mana() -> bool:
+	if GameState.skill_level("magic") > 1 or not Spells.known().is_empty():
+		return true
+	return str(Companion.defs().get(Companion.active_id(), {}).get("ability", "")).begins_with("gift:")
 
 
 func _draw_hud() -> void:
@@ -171,16 +178,22 @@ func _draw_hud() -> void:
 				c.draw_texture_rect_region(heart_full, Rect2(p + Vector2(0, 10 * (1.0 - f)), Vector2(10, 10 * f)), Rect2(0, heart_full.get_height() * (1.0 - f), heart_full.get_width(), heart_full.get_height() * f))
 		else:
 			c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if f >= 1.0 else Color(0, 0, 0, 0.4))
-	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), "%d/%d" % [hp, max_hp], HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 0.95, 0.9))
-	# Mana (small blue bar under the hearts), only once you can cast.
-	if int(r.get("max_mana", 0)) > 0 and (GameState.skill_level("magic") > 1 or int(r.get("mana", 0)) > 0):
+	var hp_txt := "%d/%d" % [hp, max_hp]
+	c.draw_string_outline(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 0.95, 0.9))
+	# Mana (small blue bar under the hearts), only once you can cast (a spell, or a partner's Gift).
+	if int(r.get("max_mana", 0)) > 0 and _shows_mana():
 		var mb := Rect2(6, 16, 50, 4)
-		if Art.has("ui", "bar_h_empty") and Art.has("ui", "bar_h_blue"):
-			_hbar(c, Rect2(4, 15, 54, 7), GameState.vital("mana"), "bar_h_blue")
+		# Art names are swapped: bar_h_purple is the blue one, bar_h_blue is green.
+		var mana_bar := "bar_h_purple" if Art.has("ui", "bar_h_purple") else "bar_h_blue"
+		if Art.has("ui", "bar_h_empty") and Art.has("ui", mana_bar):
+			_hbar(c, Rect2(4, 15, 54, 7), GameState.vital("mana"), mana_bar)
 		else:
 			c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
 			c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
-		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), "%d/%d" % [int(r.get("mana", 0)), int(r.get("max_mana", 0))], HORIZONTAL_ALIGNMENT_LEFT, 50, 7, Color(0.8, 0.9, 1.0))
+		var mana_txt := "%d/%d" % [int(r.get("mana", 0)), int(r.get("max_mana", 0))]
+		c.draw_string_outline(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 7, 3, Color(0, 0, 0, 0.7))
+		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 7, Color(0.8, 0.9, 1.0))
 	# Active buffs (Prompts 10 icons) under the hearts.
 	var bx := 6.0
 	var buffs: Dictionary = r.get("buffs", {})
@@ -266,13 +279,15 @@ func _draw_hud() -> void:
 		line = GameState.item_name(held)
 	if _hint != "":
 		line = (line + "   " if line != "" else "") + _hint
-	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 180 if Racket.on() or y_offset > 0.0 else 240, 8, Color(1, 1, 0.9))
+	var lw := 180 if Racket.on() or y_offset > 0.0 else 240
+	c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, 3, Color(0, 0, 0, 0.7))  # reads on white sky ground
+	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, Color(1, 1, 0.9))
 	# The goal, always on screen (one line, small).
 	var nxt := GameState.next_step()
 	var sc0 := get_tree().current_scene
 	if sc0 and sc0.get("battle") != null:
 		nxt = ""  # the battle bar says what matters
-	if nxt != "" and y_offset == 0.0 and not Dialogue.instance(get_tree()).active:
+	if nxt != "" and not Dialogue.instance(get_tree()).active:  # indoors too, under the held-item line
 		if nxt.length() > 54:
 			nxt = nxt.left(52) + "…"
 		c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 21), "▸ " + nxt, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, 3, Color(0, 0, 0, 0.7))
@@ -344,6 +359,9 @@ func _draw_energy_h(c: CanvasItem, e: float) -> void:
 	var bolt := Art.tex("ui", "bolt_full")
 	if bolt:
 		c.draw_texture_rect(bolt, Rect2(r.position.x - 10, r.position.y - 3, 9, 9), false)
+	var et := "%d/%d" % [int(GameState.run["energy"]), int(GameState.run["max_energy"])]
+	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.position.y - 2), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(r.end.x - 34, r.position.y - 2), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, Color(1, 1, 0.9))
 
 
 ## Close stand-ins from art we already have, until each item gets its own icon.
@@ -464,7 +482,16 @@ func toast(text: String, color := Color.WHITE) -> void:
 			c.set_meta("count", k)
 			(c as Label).text = "%s  ×%d" % [text, k]
 			(c as Label).custom_minimum_size.x = minf(258.0, _font.get_string_size((c as Label).text, HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x + 12.0)
+			# Restart its fade, so a pile of "+1 Wood ×5" stays up for the last copy.
+			var otw: Variant = c.get_meta("tw", null)
+			if otw is Tween and (otw as Tween).is_valid():
+				(otw as Tween).kill()
 			(c as Label).modulate.a = 1.0
+			var ntw := (c as Label).create_tween()
+			ntw.tween_interval(1.6)
+			ntw.tween_property(c, "modulate:a", 0.0, 0.5)
+			ntw.tween_callback(c.queue_free)
+			c.set_meta("tw", ntw)
 			return
 	# At most three on screen: the oldest goes.
 	var live: Array = []
@@ -505,6 +532,7 @@ func toast(text: String, color := Color.WHITE) -> void:
 	_toasts.add_child(l)
 	_place_toasts()
 	var tw := l.create_tween()
+	l.set_meta("tw", tw)
 	tw.tween_interval(clampf(1.2 + text.length() * 0.03, 1.6, 4.0))  # long messages stay long enough to read
 	tw.tween_property(l, "modulate:a", 0.0, 0.5)
 	tw.tween_callback(l.queue_free)
@@ -567,12 +595,14 @@ func _draw_boss_bar(c: CanvasItem) -> void:
 	var r := Rect2(40, 96, 190, 6)
 	c.draw_rect(r.grow(1.5), Color(0, 0, 0, 0.7))
 	c.draw_rect(Rect2(r.position, Vector2(r.size.x * clampf(float(boss.hp) / boss.max_hp, 0, 1), r.size.y)), Color(0.9, 0.25, 0.3))
-	if boss._gift and boss._gift.open_t > 0.0:
+	# Open = a timed window, or a standing rule that holds right now (wet, behind, range, real).
+	var opn: bool = boss._gift != null and (boss._gift.open_t > 0.0 or boss._gift.vuln(m.player.position, false) > float(boss._gift.d.get("rule", {}).get("closed", 0.0)) + 0.01)
+	if opn:
 		c.draw_rect(r.grow(1.5), Color(1, 1, 1, 0.9), false, 1.0)
 	c.draw_string_outline(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, 7, 3, Color(0, 0, 0, 0.85))
 	c.draw_string(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, 7, Color(1, 0.9, 0.85))
 	if boss._gift:
 		var gn := str(boss._gift.d.get("name", ""))
-		var st := "OPEN" if boss._gift.open_t > 0.0 else "guarded"
+		var st := "OPEN" if opn else "guarded"
 		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, 3, Color(0, 0, 0, 0.85))
 		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))

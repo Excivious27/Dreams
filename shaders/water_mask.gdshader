@@ -13,6 +13,9 @@ uniform vec4 bank : source_color = vec4(0.42, 0.29, 0.17, 0.85);
 uniform vec4 foam : source_color = vec4(0.88, 0.96, 1.0, 0.7);
 uniform float soft = 0.07;
 uniform float wobble = 0.3;
+// Deep water toward the middle of a big body (WATER_LOOK "deep": seamless/lake_deep).
+uniform sampler2D deep_tex : repeat_enable, filter_linear;
+uniform float deep_amt = 0.0;
 varying vec2 wpos;
 
 void vertex() {
@@ -64,6 +67,10 @@ void fragment() {
 	vec4 w = texture(water_tex, uv + drift * TIME / 128.0);
 	vec4 w2 = texture(water_tex, uv * 1.0 + vec2(-drift.y * 1.7, drift.x * 0.6) * TIME / 128.0 + vec2(0.31, 0.55));
 	vec3 col = mix(w.rgb, w2.rgb, 0.35) * tint.rgb;
+	if (deep_amt > 0.0) {
+		float md = (mask_at(cellf + vec2(2.5, 0.0)) + mask_at(cellf - vec2(2.5, 0.0)) + mask_at(cellf + vec2(0.0, 2.5)) + mask_at(cellf - vec2(0.0, 2.5))) * 0.25;
+		col = mix(col, texture(deep_tex, uv + drift * TIME / 160.0).rgb * tint.rgb, smoothstep(0.85, 1.0, md) * deep_amt);
+	}
 	float pulse = 0.65 + 0.35 * sin(TIME * 2.0 + n * 6.0);
 	float f = (smoothstep(0.46, 0.52, v) - smoothstep(0.55, 0.66, v)) * foam.a * pulse;
 	col = mix(col, foam.rgb, f);

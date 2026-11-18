@@ -6,10 +6,12 @@ import json
 
 H = {}
 
-def v(id, q6, m2, m4, m6, m8, m10, fall, after, q6g=None):
+def v(id, q6, m2, m4, m6, m8, m10, fall, after, q6g=None, ag=None):
     H[id] = {"quest6": q6, "milestones": {"2": m2, "4": m4, "6": m6, "8": m8, "10": m10}, "fall": fall, "after": after}
     if q6g:
         H[id]["quest6_gangsters"] = q6g
+    if ag:
+        H[id]["after_gangsters"] = ag  # daily lines that differ in the gangster arc
 
 # A tuple is (penguin text, gangster-arc text).
 def L(who, *texts):
@@ -41,7 +43,7 @@ v("wren", "wren_starflower",
   L("Wren", "I've started talking to Wren junior instead of the plants. It's harder. She answers.", "You did that. Not with the flower. With the coming back. Here: the recipe for the fever tonic. Nobody has it but me. Now two people."),
   "Wren would brew something foul and throw it at whatever came through the gate, and it would work, because Wren's things work.",
   {"2": "Pull, don't pick.", "4": "The plants say hello. I'm interpreting.", "6": "A starflower. Just one. I'm not greedy.", "8": "She's seven now. She talks about frogs. Frogs are fine.", "10": "I answered her today before she asked. That's new."},
-  q6g="wren_moonwort")
+  q6g="wren_moonwort", ag={"6": "Moonwort. Just a sprig. I'm not greedy."})
 
 v("alder", "alder_gold",
   L("Alder", "The town records show you've paid every fee on time. I mention it because nobody else has, in my term.", "There's a seat on the council open. There has been for six years. I mention THAT because I'm tired."),
@@ -101,11 +103,12 @@ v("hazel", "hazel_milk",
 v("bram", "bram_wine",
   L("Bram", "You always sit in the corner. Back to the wall. I had a brother-in-law like that.", "He was a terrible man. You're not. But the corner's yours."),
   L("Bram", "This inn was my wife's. Posy's mother. She ran it like a ship and I ran the kitchen like a man hiding in a kitchen.", "Still do. The kitchen part."),
-  L("Bram", "Festival night. Two wine. I want to raise one glass that isn't water, for once, for Posy's mother.", "I'll pay for the wine. I just can't walk to the lake for it. Every year I mean to."),
-  L("Bram", "I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way.", "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down."),
+  L("Bram", ("Festival night. Two wine. I want to raise one glass that isn't water, for once, for Posy's mother.", "Festival night. Two root beers. I want to raise one glass that isn't water, for once, for Posy's mother."), ("I'll pay for the wine. I just can't walk to the lake for it. Every year I mean to.", "I'll pay for them. I just can't get to the soda fountain on the avenue. Every year I mean to.")),
+  L("Bram", ("I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way.", "I walked to the avenue. Myself. Halfway, then I sat down, then the rest of the way."), "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down."),
   L("Bram", "Posy's running the front now. She's better than her mother was, and I said so, and she threw a tea towel at me.", "Corner's still yours. Always will be. I've put your name on it; don't look, it's under the table."),
   "Bram would stand in the inn doorway with a cleaver, which he has never once used on anything but onions, and nobody would argue with the doorway.",
-  {"2": "Corner's yours.", "4": "Still hiding in the kitchen.", "6": "Two wine. Festival night.", "8": "Two hours. Her glass was full.", "10": "Tea towel. Right in the face."})
+  {"2": "Corner's yours.", "4": "Still hiding in the kitchen.", "6": "Two wine. Festival night.", "8": "Two hours. Her glass was full.", "10": "Tea towel. Right in the face."},
+  q6g="bram_rootbeer", ag={"6": "Two root beers. Festival night."})
 
 v("posy", "posy_strawberries",
   L("Posy", "You smell the bread before you come in. Everyone does. You're the only one who waits for the second batch.", "Second batch is better. Oven's warm by then. Don't tell the first-batch people."),
@@ -155,7 +158,7 @@ v("wren_jr", "wrenjr_frog",
 v("tobin", "tobin_shells",
   L("Tobin", "I live at the inn. Dad cooks. He says I'm the best thing in the kitchen, which is a joke, because I'm not allowed in the kitchen.", "Bram's not my dad. He says it's complicated. I say it's not."),
   L("Tobin", "My real dad was a sailor. Mum said. Mum's not here. Bram is. That's the whole thing; it's not complicated.", "I want a kite. A real one. Sailors can fly kites, Bram says, it's practically the same as a sail."),
-  L("Tobin", "Shells. Six. The beach has them but you have to go past the dock and I'm not allowed past the dock.", "If you got them I'd build the kite. Bram says a kite needs shells for the tail. I think he made that up. I don't care."),
+  L("Tobin", "Shells. Five. The beach has them but you have to go past the dock and I'm not allowed past the dock.", "If you got them I'd build the kite. Bram says a kite needs shells for the tail. I think he made that up. I don't care."),
   L("Tobin", "Kite flies. It FLIES. Bram cried. He says it was onions. There weren't any onions; I checked the whole kitchen.", "I'm allowed in the kitchen now. For checking."),
   L("Tobin", "Bram asked if I wanted to call him Dad. I said I already did, in my head, and he said that counts, and I said I know.", "The kite's on the inn roof. You can see it from your farm. Look up sometime."),
   "Tobin would climb onto the inn roof and fly the kite, because when the kite's up everyone looks up, and when everyone's looking up nobody's afraid.",
@@ -241,6 +244,10 @@ v("sel", "sel_fossil",
   L("Sel", "I'm going back to the university. To tell them. Not that I'm alive; that there's a wall three thousand years old that says a town can beat the dark by being awake.", "They won't believe me. You will. That's why I waited to tell you first."),
   "Sel would go to the ruins and ring the cracked bell with a rock, because that's what the wall says to do, and Sel believes the wall.",
   {"2": "Rude about the sky.", "4": "They wrote it in the walls.", "6": "The sentence is about your field.", "8": "The town was awake.", "10": "A town can beat the dark by being awake."})
+
+# Lines that change when the story sent someone away (hearts.gd swaps them in).
+H["gideon"]["milestones"]["10"][0]["if_gone"] = {"juniper": "I gave her the ring the morning she left. She said I was an idiot. She took it with her."}
+H["bram"]["milestones"]["10"][0]["if_gone"] = {"posy": "Posy writes from the capital. There's a bakery there with her name over the door, and her mother's under it."}
 
 out = {"_": "Villager heart arcs. milestones: lines at ♥2/4/6/8/10 (play when you next talk to them). quest6: side quest promoted at ♥6 (offered with its own lines). after: a daily line used once a milestone has passed. fall: what they'd do if the town fell (endings).", "villagers": H}
 json.dump(out, open("data/hearts.json", "w"), indent=1, ensure_ascii=False)

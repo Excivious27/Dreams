@@ -134,23 +134,28 @@ static func talk(m: GameMap, id: String) -> bool:
 					m.fx("special_" + id, m.player.position + Vector2(0, -16), 10.0, 0.5)
 			return true
 	# Halo: rides between the gangster districts.
-	if id == "halo" and lv >= 1 and (m.scene_id() == "hideout" or perk_level("rides") >= 3):
+	if id == "halo" and perk_level("rides") >= 1 and (m.scene_id() == "hideout" or perk_level("rides") >= 3):
 		var d := Dialogue.instance(m.get_tree())
-		d.say([{"who": "Halo", "text": "Say where.", "choice": ["The docks", "Neon", "Uptown", "Stay"], "key": ""}])
-		await d.finished
+		var names := ["The docks", "Neon", "Uptown"]
 		var dest := ["docks", "neon", "uptown"]
-		if perk_level("rides") < 2 and d.last_choice >= 0 and d.last_choice < 3:
+		if m.scene_id() != "hideout":
+			names.append("The hideout")  # out in a district: the ride you want is home
+			dest.append("hideout")
+		d.say([{"who": "Halo", "text": "Say where.", "choice": names + ["Stay"], "key": ""}])
+		await d.finished
+		var n := dest.size()
+		if perk_level("rides") < 2 and d.last_choice >= 0 and d.last_choice < n:
 			GameState.run["time"] = int(GameState.run["time"]) + 30  # the drive takes a while
-		if d.last_choice >= 0 and d.last_choice < 3:
+		if d.last_choice >= 0 and d.last_choice < n:
 			var sc: String = dest[d.last_choice]
-			if GameState.run["flags"].has(sc + "_seen"):
+			if sc == "hideout" or GameState.run["flags"].has(sc + "_seen"):
 				m.go_to(sc, Vector2.ZERO, "right")
 				return true
 			await m.say([{"who": "Halo", "text": "Haven't been. You go first; I don't drive blind."}])
 		return true
 	# Everyday crew line.
 	var lines: Dictionary = {
-		"deuce": ["Table's open, boss.", "Counting. Always counting.", "The boys ask after you. I tell them you're busy being a farmer."],
+		"deuce": ["Deck's shuffled, boss.", "Counting. Always counting.", "The boys ask after you. I tell them you're busy being a farmer."],
 		"mama_rosa": ["Eat something.", "You look thin. Everyone looks thin. Eat.", "Stew's on. Sit."],
 		"specs": ["Don't talk, I'm in the wire.", "Sub-basement three. Its own wire. Who DOES that.", "...Yes? Oh. Hi."],
 		"ladder": ["Four hundred and twelve.", "Clear sky today. You can see the tower from the roof.", "Nothing on the road. Nothing's always something."],

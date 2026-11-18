@@ -54,9 +54,9 @@ COL = {
    "shop_who": "Reef trader", "shop": [["coral_charm", 900], ["kelp_wrap", 120], ["pearl", 300], ["starfish_snack", 90]]},
  "colony_kelp": {"name": "Kelp Hollow", "tier": 2, "elder": "Old Tidewhisker",
    "intro": ["The forest under the water is dying, and it was the only home we had.", "The crystal in the kelp temple feeds the kelp. The dark is feeding on the crystal.",
-             "Bring us plank and rope to shore up the stilt-houses, chase the drowned serpents out, light the beacons, and wake the crystal."],
+             "Bring us plank and rope to shore up the stilt-houses, chase the shadow serpents out, light the beacons, and wake the crystal."],
    "need": {"plank": 30, "rope": 6}, "need_text": "The stilt-houses lean further every tide.", "need_thanks": "That'll hold. That'll hold for years.",
-   "foe_word": "Drowned serpents", "kills": 10, "beacons": 3, "enemies": ["river_serpent", "wisp", "slime"],
+   "foe_word": "Shadow serpents", "kills": 10, "beacons": 3, "enemies": ["river_serpent", "wisp", "slime"],
    "boss": "cboss_kelp", "boss_name": "The Drowning Tide", "boss_art": "cboss_kelp", "gift": "c_kelp",
    "crystal_dim": "A green star crystal wrapped in black kelp. Its light pulses slower each time.",
    "crystal_wake": "The black kelp unwinds from the crystal and gathers itself into a long, cold shape.",
@@ -134,9 +134,9 @@ for rid, c in COL.items():
     LOOK = {"colony_coral": {"music": "colony_coral", "critters": ["seagull", "crab", "turtle"]},
             "colony_kelp": {"music": "colony_kelp", "ground": "teal_moss", "patch_set": "bog", "critters": ["frog", "heron", "dragonfly"], "weather": "fog"},
             "colony_ice": {"music": "colony_ice", "season": "winter", "patch_set": "snowpatch", "critters": ["seagull", "otter", "moon_rabbit"], "weather": "snow"},
-            "colony_ember": {"music": "colony_ember", "ground": "dead_grass", "patch_set": "sand", "critters": ["firefly", "crow", "snake"]}}
+            "colony_ember": {"music": "colony_ember", "ground": "dead_grass", "ground_seam": "ash", "patch_set": "sand", "critters": ["firefly", "crow", "snake"]}}
     lk = LOOK.get(rid, {})
-    for key in ("music", "ground", "patch_set", "weather", "season"):
+    for key in ("music", "ground", "ground_seam", "patch_set", "weather", "season"):
         if key in lk:
             R[rid][key] = lk[key]
     if "critters" in lk:

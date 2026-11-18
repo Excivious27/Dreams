@@ -59,6 +59,7 @@ func _ready() -> void:
 	scroll.custom_minimum_size = Vector2(0, 246)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.scroll_deadzone = 8  # a shaky tap stays a tap; a real drag scrolls
 	v.add_child(scroll)
 	_body = VBoxContainer.new()
 	_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -130,6 +131,10 @@ func toggle() -> void:
 	_panel.visible = _open
 	Music.instance(get_tree()).sfx("menu_open" if _open else "menu_close")
 	if _open:
+		_bag_pick = ""
+		_pick_bar = -1
+		_trash_arm = ""
+		_reset_arm = ""
 		_was_paused = get_tree().paused
 		get_tree().paused = true
 		_refresh()
@@ -184,7 +189,7 @@ func _slot_button(id: String, selected: bool, cb: Callable) -> Control:
 			var tr := TextureRect.new()
 			tr.texture = icon
 			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			tr.stretch_mode = TextureRect.STRETCH_SCALE
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			tr.set_anchors_preset(Control.PRESET_FULL_RECT)
 			tr.offset_left = 3
 			tr.offset_top = 3
@@ -202,7 +207,7 @@ func _slot_button(id: String, selected: bool, cb: Callable) -> Control:
 			n.add_theme_constant_override("outline_size", 2)
 			n.add_theme_color_override("font_outline_color", Color.BLACK)
 			n.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-			n.offset_left = -14
+			n.offset_left = -22
 			n.offset_top = -11
 			n.offset_right = -2
 			n.offset_bottom = -1
@@ -261,7 +266,7 @@ func _refresh() -> void:
 			var sel := str(tb[slot])
 			if _bag_pick != "" and GameState.count(_bag_pick) <= 0 and not GameState.has_tool(_bag_pick):
 				_bag_pick = ""
-			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("In hand: %s  (tap again to move it)" % GameState.item_name(sel) if sel != "" else "In hand: nothing"), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
+			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("Toolbar  ·  in hand: %s  (tap it again to move)" % GameState.item_name(sel) if sel != "" else "In hand: nothing"), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
 			var g := _grid(6)
 			for i in 12:
 				var id := str(tb[i])
@@ -668,75 +673,15 @@ func _refresh() -> void:
 				_button(txt, func() -> void: _rebinding = action; _refresh())
 			_button("Reset to defaults", func() -> void: InputSetup.reset_bindings(); _rebinding = ""; _refresh())
 			_button("← Back to Options", func() -> void: _tab = "Options"; _rebinding = ""; _refresh())
+	_pass_drags(_body)
 
 
-## Sun Haven-style tree: tiers as rows, nodes as buttons you spend points on.
-## Tier t opens after 3t points in the tree; branches need a parent rank.
-func _skill_tree(sk: String) -> void:
-	var free := GameState.points_free(sk)
-	var spent := GameState.points_spent(sk)
-	_line("  " + str(GameState.skills_data.get(sk, {}).get("desc", "")), 8, Color(0.85, 0.8, 0.7))
-	_line("  Skill points: %d free · %d spent  (1 per level)" % [free, spent], 8, Color(1, 0.9, 0.5) if free > 0 else Color(0.8, 0.8, 0.8))
-	var by_tier := {}
-	for n in GameState.nodes_of(sk):
-		var t := int(n.get("tier", 0))
-		if not by_tier.has(t):
-			by_tier[t] = []
-		by_tier[t].append(n)
-	var tiers := by_tier.keys()
-	tiers.sort()
-	for t in tiers:
-		var open := spent >= int(t) * GameState.TIER_POINTS
-		_line("  — Tier %d %s —" % [int(t) + 1, "" if open else "(locked: %d points in tree)" % (int(t) * GameState.TIER_POINTS)], 8, Color(0.9, 0.8, 0.5) if open else Color(0.5, 0.5, 0.5))
-		var branches: Dictionary = GameState.skills_data.get(sk, {}).get("branches", {})
-		for n in by_tier[t]:
-			var id := str(n["id"])
-			var rank := GameState.node_rank(sk, id)
-			var br := str(branches.get(str(n.get("branch", "")), ""))
-			if br != "":
-				_line("    ◦ %s path" % br, 6, {"Light": Color(1, 0.95, 0.6), "Dream": Color(0.8, 0.85, 1.0), "Crystal": Color(0.7, 1.0, 0.9)}.get(br, Color(0.8, 0.8, 0.8)))
-			var ranks := int(n.get("ranks", 1))
-			var why := GameState.node_locked(sk, id)
-			var mark := "★" if rank >= ranks else ("◆" if rank > 0 else ("+" if why == "" else "·"))
-			var req := ""
-			if n.has("requires"):
-				var names: Array = []
-				for r in n["requires"]:
-					names.append(str(GameState.node(sk, str(r)).get("name", r)))
-				req = "  ← " + " / ".join(names)
-			var txt := "%s %s  %d/%d%s\n     %s%s" % [mark, str(n["name"]), rank, ranks, req, str(n["desc"]), ("" if why == "" or why == "maxed" else "   [%s]" % why)]
-			var b := _button(txt, func() -> void:
-				if GameState.buy_node(sk, id):
-					Music.instance(get_tree()).sfx("craft_done", "levelup")
-					GameState.notify("Learned %s." % str(n["name"]))
-				_refresh())
-			b.add_theme_font_size_override("font_size", 7)
-			var nic := "node_%s_%s" % [sk, id]
-			if Art.has("ui", nic):
-				b.icon = Art.tex("ui", nic)
-				b.expand_icon = true
-				b.add_theme_constant_override("icon_max_width", 18)
-			b.modulate = Color(1, 0.92, 0.6) if rank > 0 else (Color(1, 1, 1) if why == "" else Color(0.6, 0.6, 0.6))
-	if sk == "magic":
-		var kn := Spells.known()
-		if kn.is_empty():
-			_line("  Learn Spark or Deep Well to start casting.", 8, Color(0.8, 0.8, 0.8))
-		else:
-			_line("  Cast  (mana %d / %d)" % [int(GameState.run.get("mana", 0)), int(GameState.run.get("max_mana", 0))], 8, Color(0.6, 0.8, 1.0))
-			for id in kn:
-				var sp: Dictionary = Spells.SPELLS[id]
-				var cb := _button("  ✦ %s  (%d mana) — %s" % [str(sp["name"]), Spells.cost_of(id), str(sp["desc"])], func() -> void:
-					var m := get_tree().current_scene
-					if m is GameMap:
-						toggle()
-						Spells.cast(m as GameMap, id))
-				cb.add_theme_font_size_override("font_size", 7)
-				if Art.has("ui", "spell_" + id):
-					cb.icon = Art.tex("ui", "spell_" + id)
-					cb.expand_icon = true
-					cb.add_theme_constant_override("icon_max_width", 16)
-	if spent > 0:
-		_button("Reset this tree (refund all points)", func() -> void: GameState.reset_tree(sk); _refresh())
+## Buttons hand drags on to the ScrollContainer, so a finger on a slot or a row still scrolls the tab.
+func _pass_drags(n: Node) -> void:
+	for c in n.get_children():
+		if c is BaseButton:
+			(c as Control).mouse_filter = Control.MOUSE_FILTER_PASS
+		_pass_drags(c)
 
 
 ## Sun Haven-style skills page: a tab per skill, the level / points / EXP panel,
@@ -745,6 +690,7 @@ func _skill_tree(sk: String) -> void:
 const SKILL_ORDER := ["farming", "mining", "foraging", "fishing", "combat", "magic", "pup", "bartering", "building", "leadership", "strategist", "harmony", "hustle"]
 const BRANCH_COL := [Color(0.32, 0.55, 0.25), Color(0.25, 0.42, 0.62), Color(0.6, 0.38, 0.22), Color(0.48, 0.3, 0.58)]
 var _node_sel := ""
+var _reset_arm := ""
 ## Item icons that stand in for node art until the node icon sheets arrive.
 const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_energy": "can", "extra_day": "hoe", "animal_yield": "egg", "crop_value": "gold",
 	"star_chance": "sunflower", "seed_back": "seeds", "growth": "sunflower", "stone_bonus": "stone", "mine_energy": "pickaxe", "ore_bonus": "copper",
@@ -784,7 +730,7 @@ func _skills_tab() -> void:
 		tb.focus_mode = Control.FOCUS_NONE
 		tb.modulate = Color(1, 0.88, 0.45) if k == sk else Color(0.78, 0.78, 0.78)
 		var kk := str(k)
-		tb.pressed.connect(func() -> void: _skill_open = kk; _node_sel = ""; _refresh())
+		tb.pressed.connect(func() -> void: _skill_open = kk; _node_sel = ""; _reset_arm = ""; _refresh())
 		tabs.add_child(tb)
 	# Level / points / EXP panel
 	var lvl := GameState.skill_level(sk)
@@ -891,7 +837,14 @@ func _skills_tab() -> void:
 	if sk == "magic":
 		_magic_casts()
 	if spent > 0:
-		_button("Reset this tree (refund all points)", func() -> void: GameState.reset_tree(sk); _node_sel = ""; _refresh())
+		var rb := _button("Sure? Tap again to reset %s" % str(sd["name"]) if _reset_arm == sk else "Reset this tree (refund all points)", func() -> void:
+			if _reset_arm == sk:
+				GameState.reset_tree(sk); _node_sel = ""; _reset_arm = ""
+			else:
+				_reset_arm = sk
+			_refresh())
+		if _reset_arm == sk:
+			rb.add_theme_color_override("font_color", Color(1, 0.45, 0.4))
 
 
 func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
@@ -1145,10 +1098,10 @@ func _pup_tab() -> void:
 			var slot2 := str(it.get("slot", "collar"))
 			_button("  Put on %s (%s)" % [GameState.item_name(id), slot2], func() -> void:
 				var old := str(st["gear"].get(slot2, ""))
+				GameState.add_item(id, -1)  # first, so the old piece can use the freed slot
 				if old != "":
 					GameState.add_item(old, 1)
 				st["gear"][slot2] = id
-				GameState.add_item(id, -1)
 				if pt:
 					pt.refresh_gear()
 				_refresh())
@@ -1173,12 +1126,25 @@ func _pup_tab() -> void:
 		for id in pack.keys():
 			_button("  Take %s x%d" % [GameState.item_name(id), int(pack[id])], func() -> void:
 				GameState.add_item(id, int(pack[id]))
+				var bq: Dictionary = (st.get("pack_q", {}) as Dictionary).get(id, {})
+				for g in ["g", "s"]:
+					if int(bq.get(g, 0)) > 0:
+						GameState.add_quality(str(id), g, int(bq[g]))
+				(st.get("pack_q", {}) as Dictionary).erase(id)
 				pack.erase(id)
 				_refresh())
 		var sel := str(GameState.run["selected"])
-		if sel != "" and GameState.count(sel) > 0 and used < cap and str(GameState.items.get(sel, {}).get("type", "")) != "tool":
+		# Keys, quest items and locked stacks stay in the bag (doors and quests look there).
+		if sel != "" and GameState.count(sel) > 0 and used < cap and not str(GameState.items.get(sel, {}).get("type", "")) in ["tool", "key", "quest", "vehicle"] and not GameState.is_locked(sel):
 			_button("  Give %s x%d to carry" % [GameState.item_name(sel), GameState.count(sel)], func() -> void:
 				pack[sel] = int(pack.get(sel, 0)) + GameState.count(sel)
+				var pq: Dictionary = st.get("pack_q", {})
+				var tq := GameState.take_quality(sel, GameState.count(sel))
+				var oq: Dictionary = pq.get(sel, {})
+				oq["g"] = int(oq.get("g", 0)) + int(tq["g"])
+				oq["s"] = int(oq.get("s", 0)) + int(tq["s"])
+				pq[sel] = oq
+				st["pack_q"] = pq
 				GameState.add_item(sel, -GameState.count(sel))
 				_refresh())
 	if GameState.bonus("pup", "bedroll") > 0.0 and int(st.get("bedroll_day", 0)) != int(GameState.run["day"]) and pt and pt.visible:

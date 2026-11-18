@@ -73,7 +73,8 @@ func _try_more(n: int) -> void:
 		_summoning = true
 		call_deferred("_summon_guardian")
 	elif not _way_open and _guardian == null and floor_no <= 2:
-		hud.toast("The rock shifts (%d/%d)" % [_tried(), _threshold()], Color(0.8, 0.75, 0.9))
+		if _tried() % 2 == 0:
+			hud.toast("The rock shifts (%d/%d)" % [_tried(), _threshold()], Color(0.8, 0.75, 0.9))
 	elif not _way_open and _guardian == null and _tried() >= _threshold() / 2 and _tried() - n < _threshold() / 2:
 		hud.toast("Something below is listening.", Color(0.8, 0.75, 0.9))
 
@@ -203,7 +204,7 @@ func build() -> void:
 		if _grotto and i > count / 2:
 			break
 		var c: Vector2i = open_list[rng.randi() % open_list.size()]
-		if c.distance_to(_entry) < 3 or c.distance_to(_ladder) < 2 or things.has(c):
+		if c.distance_to(_entry) < 3 or c.distance_to(_ladder) < 2 or things.has(c) or props.has(c):
 			continue
 		var roll := rng.randf()
 		var ore := "stone"
@@ -211,8 +212,8 @@ func build() -> void:
 		var ores: Array = pool[mini(mine_tier, pool.size() - 1)] if not pool.is_empty() else ["stone", "copper"]
 		# Half stone, the rest spread over the tier's ores (rarest last, least common).
 		# Tom: ore was too plentiful; now about one rock in six carries ore.
-		if roll > 0.88 and ores.size() > 1:
-			var r2 := (roll - 0.88) / 0.12
+		if roll > 0.92 and ores.size() > 1:
+			var r2 := (roll - 0.92) / 0.08
 			var idx := 1
 			var acc := 0.0
 			var weights: Array = []
@@ -237,7 +238,7 @@ func build() -> void:
 		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
 		if ore != "stone":
 			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-				if rng.randf() < 0.35 and _open.has(c + d) and not things.has(c + d) and (c + d).distance_to(_entry) >= 3 and (c + d).distance_to(_ladder) >= 2:
+				if rng.randf() < 0.35 and _open.has(c + d) and not things.has(c + d) and not props.has(c + d) and (c + d).distance_to(_entry) >= 3 and (c + d).distance_to(_ladder) >= 2:
 					set_thing(c.x + d.x, c.y + d.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
 	_features(rng)
 	_findables(rng)
@@ -314,7 +315,7 @@ func _features(rng: RandomNumberGenerator) -> void:
 	for c: Vector2i in _open:
 		if things.has(c) or c.distance_to(_entry) < 6 or c.distance_to(_ladder) < 4:
 			continue
-		var n := WorldGen.fbm(float(c.x), float(c.y), seed, 6.0)
+		var n := WorldGen.fbm(float(c.x), float(c.y), seed, 10.0 if "lava" in feat else 6.0)
 		if "water" in feat and not _grotto and n > 0.38:
 			set_thing(c.x, c.y, {"type": "water", "hint": ""}, true)
 		elif "lava" in feat and n > 0.42:
@@ -323,6 +324,25 @@ func _features(rng: RandomNumberGenerator) -> void:
 		elif "chasm" in feat and n > 0.4:
 			_chasm[c] = true
 			blocked[c] = true
+	# Lava: drop specks under 4 cells (they read as stray orange squares).
+	var lseen := {}
+	for c: Vector2i in _lava.keys():
+		if lseen.has(c):
+			continue
+		var comp: Array = []
+		var st: Array = [c]
+		while not st.is_empty():
+			var q2: Vector2i = st.pop_back()
+			if lseen.has(q2) or not _lava.has(q2):
+				continue
+			lseen[q2] = true
+			comp.append(q2)
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				st.append(q2 + d)
+		if comp.size() < 4:
+			for q2: Vector2i in comp:
+				_lava.erase(q2)
+				blocked.erase(q2)
 	if "water" in feat and not _grotto:
 		swim_ok = Colony.has_ability("tideswim") or Companion.has_ability("tail")
 	# Keep the way down reachable: clear any hazard that cuts entry from ladder.
@@ -520,9 +540,13 @@ func after_ready() -> void:
 	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
 		_summoning = true
 		call_deferred("_summon_guardian")
-	if not GameState.run["flags"].has("mine_tier_seen_%d" % mine_tier) and floor_no > 1:
+	if not GameState.run["flags"].has("mine_tier_seen_%d" % mine_tier) and mine_tier > 0:
 		GameState.run["flags"]["mine_tier_seen_%d" % mine_tier] = true
 		hud.toast("%s depths. Everything down here hits harder." % GameState.tier_name(mine_tier), Color(0.9, 0.8, 1.0))
+	# Arrive with the pickaxe in hand (the hoe only says "Hold the pickaxe").
+	var tbar: Array = GameState.run["toolbar"]
+	if GameState.held_tool() != "pickaxe" and tbar.has("pickaxe") and GameState.has_tool("pickaxe"):
+		GameState.select_slot(tbar.find("pickaxe"))
 	if not GameState.run["flags"].has("mine_seen"):
 		GameState.run["flags"]["mine_seen"] = true
 		player.frozen = true
@@ -635,7 +659,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if not GameState.run["flags"].has("skel_%d" % floor_no):
 				GameState.run["flags"]["skel_%d" % floor_no] = true
 				give("gold", 2)
-				tell([{"text": "Somebody didn't make it back up. Their pack still has something in it."}])
+				give("bone", 3)
+				if GameState.has_quest("theo_book") and not GameState.quest_done("theo_book") and GameState.count("book") == 0:
+					give("book", 1)
+					tell([{"text": "Somebody didn't make it back up. In their pack, wrapped in oilcloth: a miner's log. Theo's book."}])
+				else:
+					tell([{"text": "Somebody didn't make it back up. Their pack still has something in it."}])
 			return true
 		"rock":
 			if GameState.held_tool() != "pickaxe":
@@ -878,6 +907,12 @@ func _draw_ground() -> void:
 		var o := Vector2(c * TILE)
 		_ci.draw_rect(Rect2(o, Vector2(TILE, TILE)), Color(0.01, 0.0, 0.03))
 		if not _chasm.has(c + Vector2i(0, -1)):
+			# A dim back wall at the far lip gives the hole depth.
+			var cts := _tier_set()
+			if cts != "" and Art.has("tiles", "mine_%s_wall_0" % cts):
+				var wt := Art.tex("tiles", "mine_%s_wall_0" % cts)
+				_tex_cut(wt, Rect2(o, Vector2(TILE, TILE)), Rect2(0, wt.get_height() / 2.0, wt.get_width(), wt.get_height() / 2.0), Color(0.4, 0.36, 0.55))
+				_ci.draw_rect(Rect2(o + Vector2(0, TILE - 5), Vector2(TILE, 5)), Color(0, 0, 0, 0.6))
 			_ci.draw_rect(Rect2(o, Vector2(TILE, 3)), rock_col.lightened(0.2))
 			_ci.draw_rect(Rect2(o + Vector2(0, 3), Vector2(TILE, 5)), Color(0.15, 0.1, 0.25, 0.5))
 		if not _chasm.has(c + Vector2i(0, 1)):
@@ -993,8 +1028,9 @@ func _chunk_key(c: Vector2i) -> Vector2i:
 	return Vector2i(floori(float(c.x + pad) / CHUNK) * CHUNK - pad, floori(float(c.y + pad) / CHUNK) * CHUNK - pad)
 
 
-## Redraw both layers of every chunk that owns a cell in r.
-func redraw_cells(r: Rect2i) -> void:
+## Redraw every chunk that owns a cell in r: the things layer, and the ground
+## too only when the floor itself changed (rock breaks only touch things).
+func redraw_cells(r: Rect2i, ground := false) -> void:
 	if not CHUNKED or _chunks.is_empty():
 		queue_redraw()
 		return
@@ -1002,8 +1038,11 @@ func redraw_cells(r: Rect2i) -> void:
 	var k1 := _chunk_key(r.end - Vector2i.ONE)
 	for ky in range(k0.y, k1.y + 1, CHUNK):
 		for kx in range(k0.x, k1.x + 1, CHUNK):
-			for ch in _chunks.get(Vector2i(kx, ky), []):
-				(ch as CanvasItem).queue_redraw()
+			if not _chunks.has(Vector2i(kx, ky)):
+				continue
+			var pair: Array = _chunks[Vector2i(kx, ky)]
+			for li in (2 if ground else 1):
+				(pair[1 - li] as CanvasItem).queue_redraw()
 
 
 func redraw_cell(c: Vector2i) -> void:
@@ -1050,7 +1089,10 @@ func _place_props() -> void:
 			elif nrock > 0:
 				nm = "mine_%s_rock_%d" % [ts, absi((k.x * 7 + k.y * 13)) % maxi(1, mini(nrock, 5))]
 			if nm != "":
-				prop("props", nm, k)
+				var sp := prop("props", nm, k)
+				# Tier stone art runs 19-44 px: small ones looked like floor pebbles.
+				if sp and sp.texture and ore == "stone":
+					sp.scale = Vector2.ONE * clampf(20.0 / sp.texture.get_width(), 0.5, 0.9)
 		var rng := RandomNumberGenerator.new()
 		rng.seed = 4100 + floor_no
 		var ndec := 0
@@ -1235,13 +1277,15 @@ func _depth_scale(e: Enemy) -> void:
 		m *= 0.6 + 0.1 * floor_no   # floors 1-4 ease in: 70%, 80%, 90%, 100%
 	e.max_hp = maxi(1, int(round(e.max_hp * m)))
 	e.hp = e.max_hp
-	e.damage = e.damage + into / 10
+	e.damage = e.damage + mini(1, into / 12)  # no 3x drop at the tier boundary
 	if floor_no <= 2 and not e.is_guardian:
 		e.damage = maxi(1, e.damage - 1)
 
 
 func on_enemy_died(e: Enemy) -> void:
 	super(e)
+	if e.has_meta("minion"):
+		return  # summoned helpers don't count toward the guardian
 	if e == _guardian:
 		_guardian = null
 		_open_way()
@@ -1295,7 +1339,7 @@ func _summon_guardian() -> void:
 	else:
 		boss_card(kind, "Keeper of floor %d" % floor_no)
 	hud.toast("The keeper of floor %d wakes!" % floor_no, Color(1, 0.7, 0.7))
-	Music.instance(get_tree()).sfx("levelup")
+	Music.instance(get_tree()).sfx("alert", "thud")
 
 
 func _open_way() -> void:

@@ -183,6 +183,8 @@ static func minutes_for(station: String, rc: Dictionary, tier := 1, qty := 1) ->
 		m *= 1.5
 	if book(station) == "keg" and Builds.built_tier("house") >= 3:
 		m *= 0.5  # the manor's cellar
+	if Builds.built_tier("shed") >= 2:
+		m *= 0.75  # the Workshop
 	m *= pow(float(maxi(1, qty)), 0.85)
 	return maxi(5, int(round(m / 5.0) * 5))
 

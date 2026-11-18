@@ -16,6 +16,7 @@ func _initialize() -> void:
 func _run() -> void:
 	if OS.get_cmdline_user_args().size() > 0:
 		out = OS.get_cmdline_user_args()[0]
+	DirAccess.make_dir_recursive_absolute(out)  # else every save_png fails quietly
 	InputSetup.ensure_actions()
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameMap.next_spawn = Vector2.ZERO
@@ -476,5 +477,6 @@ func frames(n: int) -> void:
 
 func shot(name: String) -> void:
 	await frames(2)
-	root.get_texture().get_image().save_png("%s/%s.png" % [out, name])
+	var err := root.get_texture().get_image().save_png("%s/%s.png" % [out, name])
+	check(err == OK, "saved " + name)
 	shots += 1

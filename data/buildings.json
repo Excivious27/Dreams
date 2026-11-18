@@ -108,7 +108,7 @@
       3
      ]
     },
-    "desc": "8 birds; ducks; an incubator.",
+    "desc": "Two more hens, two ducks, and an incubator (hold an egg, tap the coop).",
     "price": 3170
    }
   ],
@@ -155,7 +155,7 @@
       5
      ]
     },
-    "desc": "8 animals; goats, llamas; auto-feeder.",
+    "desc": "Goats and a llama; an auto-feeder fills troughs from the silo.",
     "price": 6060
    }
   ],
@@ -182,7 +182,7 @@
     },
     "permit": 50,
     "days": 1,
-    "desc": "Stores 240 hay; scythed grass goes straight in.",
+    "desc": "Stores 240 hay. Scythed hay and wheat chaff go straight in; tap to store or take hay.",
     "price": 550
    }
   ],
@@ -263,7 +263,7 @@
       2
      ]
     },
-    "desc": "Your horse sleeps here; it runs 10% faster rested.",
+    "desc": "Your horse sleeps here; it rides 10% faster.",
     "price": 1430
    }
   ],
@@ -375,7 +375,7 @@
       2
      ]
     },
-    "desc": "Fish at home. Drop a fish in and it breeds.",
+    "desc": "Fish at home: the common pond fish.",
     "price": 590
    }
   ],
@@ -402,7 +402,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "Refill the can here.",
+    "desc": "Cold water: +20 energy once a day.",
     "price": 280
    }
   ],
@@ -768,7 +768,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "Honey every few days; more with flowers nearby.",
+    "desc": "Honey every three days.",
     "price": 240
    }
   ],

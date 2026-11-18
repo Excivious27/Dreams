@@ -131,7 +131,10 @@ func _process(delta: float) -> void:
 				_retries += 1
 				_pending_join = {"t": "join", "room": _last_room, "create": false, "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
 				if not _connect(url):
-					_retry_t = 2.0 * (_retries + 1)
+					if _retries >= MAX_RETRIES:
+						_restore_solo()  # gave up: back to our own world, not the host's offline
+					else:
+						_retry_t = 2.0 * (_retries + 1)
 		return
 	ws.poll()
 	var st := ws.get_ready_state()
@@ -176,10 +179,12 @@ func _on_msg(m: Dictionary) -> void:
 			_last_room = room
 			_retries = 0
 			_host = bool(m.get("host", false))
+			if _host and not _solo_backup.is_empty():
+				_became_host()  # rejoined into a room whose host left: we own the world now
 			if not _host and _solo_backup.is_empty():
 				for k in WORLD_KEYS:
-					if GameState.run.has(k):
-						_solo_backup[k] = GameState.run[k].duplicate(true) if GameState.run[k] is Dictionary or GameState.run[k] is Array else GameState.run[k]
+					# null = the guest had no such key: drop it again later, never keep the host's.
+					_solo_backup[k] = ((GameState.run[k].duplicate(true) if GameState.run[k] is Dictionary or GameState.run[k] is Array else GameState.run[k]) if GameState.run.has(k) else null)
 			for p in m.get("peers", []):
 				peers[int(p["id"])] = p
 				if str(p.get("arc", "")) != str(GameState.run["arc"]):
@@ -209,16 +214,7 @@ func _on_msg(m: Dictionary) -> void:
 			peers_changed.emit()
 		"you_are_host":
 			_host = true
-			# We now own the world, so saves write it from here on. Our own farm
-			# (kept aside while visiting) goes to Restore instead of being lost.
-			if not _solo_backup.is_empty():
-				var keep := GameState.run.duplicate(true)
-				keep.merge(_solo_backup, true)
-				SaveGame.set_value(GameState.prev_key(), keep)
-				var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
-				if gm and gm.hud:
-					gm.hud.toast("You're host now. Your own farm is kept under Restore.")
-			_solo_backup = {}
+			_became_host()
 			connected.emit(true)
 		"world":
 			_apply_world(m["d"])
@@ -339,7 +335,7 @@ func _handle_action(from: int, d: Dictionary) -> void:
 			if all and m is GameMap:
 				(m as GameMap).hud.toast("Everyone else is in bed. Sleep when you're ready.", Color(0.9, 0.95, 1.0))
 	if m is GameMap:
-		(m as GameMap).queue_redraw()
+		(m as GameMap).on_world_sync({})  # soil now, full redraw at most every 2 s
 	_push_world()
 
 
@@ -350,11 +346,35 @@ func clear_beds() -> void:
 	_beds.clear()
 
 
+## We now own the world, so saves write it from here on. Our own farm
+## (kept aside while visiting) goes to Restore instead of being lost.
+func _became_host() -> void:
+	if not _solo_backup.is_empty() and not GameState.run.is_empty():
+		var keep := GameState.run.duplicate(true)
+		for k in _solo_backup:
+			if _solo_backup[k] == null:
+				keep.erase(k)
+			else:
+				keep[k] = _solo_backup[k]
+		var had_prev := SaveGame.get_value(GameState.prev_key(), null) is Dictionary
+		SaveGame.set_value(GameState.prev_key(), keep)
+		var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
+		if gm and gm.hud:
+			gm.hud.toast("You're host now. Your own farm is kept under Restore%s." % (" (it replaced the older Restore farm)" if had_prev else ""))
+	_solo_backup = {}
+
+
 func _restore_solo() -> void:
 	if _solo_backup.is_empty():
 		return
+	if GameState.run.is_empty():
+		_solo_backup = {}
+		return
 	for k in _solo_backup:
-		GameState.run[k] = _solo_backup[k]
+		if _solo_backup[k] == null:
+			GameState.run.erase(k)
+		else:
+			GameState.run[k] = _solo_backup[k]
 	_solo_backup = {}
 	GameState.save()
 
@@ -365,5 +385,8 @@ func save_view(run: Dictionary) -> Dictionary:
 		return run
 	var v := run.duplicate()
 	for k in _solo_backup:
-		v[k] = _solo_backup[k]
+		if _solo_backup[k] == null:
+			v.erase(k)
+		else:
+			v[k] = _solo_backup[k]
 	return v

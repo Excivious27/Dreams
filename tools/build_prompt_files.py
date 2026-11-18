@@ -168,3 +168,7 @@ p24raw = open(f"{D}/src/ART-PROMPTS-24-raw.md").read()
 f24 = build(p24raw, "24", f"{D}/ART-PROMPTS-24.md", "what the loop-5 audit found",
             "WHAT THIS COVERS, most important first: faces for Big Grump and the Grump Commander; the hero's dialogue face in the six new outfits; missing pet poses for five dog breeds and three cats; attack frames for the golem and the shard.")
 print("24:", f24)
+p25raw = open(f"{D}/src/ART-PROMPTS-25-raw.md").read()
+f25 = build(p25raw, "25", f"{D}/ART-PROMPTS-25.md", "what the loop-6 audit found",
+            "WHAT THIS COVERS, most important first: the hero's face in the Neon Jacket and Ceremony Coat; a proper Big Grump boss sheet; ability button icons for 19 partners; icons for the 15 special skill unlocks.")
+print("25:", f25)

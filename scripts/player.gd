@@ -476,14 +476,22 @@ func _refresh_status_fx() -> void:
 		_status_fx[k] = a
 
 
+var _status_shield := 0.0   # secs; Not Today washes statuses off for this long
+
+
 func _physics_process(delta: float) -> void:
 	if not is_puppet and map and not frozen:
 		_refresh_status_fx()
+		# Not Today's grace: the knockout hit's own poison/burn can't stick.
+		if _status_shield > 0.0:
+			_status_shield -= delta
+			GameState.status_clear()
 		var sdmg := GameState.status_tick(delta)
 		if sdmg > 0:
 			GameState.run["hp"] = int(GameState.run["hp"]) - sdmg
 			_flash = 0.6
 			map.damage_number(position + Vector2(0, -22), sdmg, Color(0.6, 0.9, 0.4))
+			_last_stand()
 			if int(GameState.run["hp"]) <= 0:
 				map.player_down("hurt")
 	if _sprite == null or is_puppet:
@@ -671,7 +679,7 @@ func _physics_process(delta: float) -> void:
 			if not GameState.spend_energy(1):
 				map.player_down("tired")
 	elif mounted:
-		spd_mult *= (1.8 if running else 1.5) * (1.1 if Perks.flag("ride_fast") else 1.0)
+		spd_mult *= (1.8 if running else 1.5) * (1.1 if Perks.flag("ride_fast") else 1.0) * (1.1 if Builds.is_built("stable") else 1.0)
 	elif vehicle != "":
 		var vs := float(vd.get("speed", 1.0))
 		if vd.has("snow") and (GameState.season() == "winter" or (map and map.scene_id() in ["mountain", "sky", "highlands"])):
@@ -877,7 +885,7 @@ func _ground_word() -> String:
 	if map == null:
 		return "grass"
 	var id := map.scene_id()
-	if id in ["house", "interior"]:
+	if id in ["house", "interior", "docks", "bf_dockside"]:
 		return "wood"
 	if id in ["mine", "underground", "quarry", "hollow_heart", "moon", "station"]:
 		return "stone"
@@ -885,7 +893,10 @@ func _ground_word() -> String:
 		return "sand"
 	if GameState.season() == "winter" and map.has_sky:
 		return "snow"
-	if id in ["town", "neon", "uptown", "docks"]:
+	var gw := str(map.ground_word.get(map.world_to_cell(position), ""))
+	if gw != "":
+		return gw
+	if id in ["town", "neon", "uptown"]:
 		return "stone"
 	return "grass"
 
@@ -925,11 +936,14 @@ func _update_wade() -> void:
 		_wade = Node2D.new()
 		_wade.z_index = 1
 		_wade.draw.connect(func() -> void:
-			var col := Color(0.28, 0.55, 0.78, 0.92)
-			if map and str(map.things.get(cell(), {}).get("shore", "")) == "bog":
-				col = Color(0.33, 0.30, 0.2, 0.95)
+			# Tinted to the water you stand in (navy sea, green-grey river, brown bog).
+			var th: Dictionary = map.things.get(cell(), {}) if map else {}
+			var sh := "sand" if str(th.get("type", "")) == "sea" else str(th.get("shore", map.border_water_shore if map else ""))
+			var col: Color = {"sand": Color(0.10, 0.26, 0.48, 0.85), "quay": Color(0.10, 0.26, 0.48, 0.85), "river": Color(0.12, 0.30, 0.42, 0.85), "bog": Color(0.33, 0.30, 0.2, 0.95)}.get(sh, Color(0.13, 0.45, 0.50, 0.85))
 			var t := Time.get_ticks_msec() / 300.0
-			_wade.draw_rect(Rect2(-10, -9, 20, 9), col)
+			_wade.draw_rect(Rect2(-6, -9, 12, 9), col)
+			_wade.draw_circle(Vector2(-6, -4.5), 4.5, col)
+			_wade.draw_circle(Vector2(6, -4.5), 4.5, col)
 			for i in 5:
 				_wade.draw_circle(Vector2(-8 + i * 4, -9 + sin(t + i) * 0.8), 2.2, col)
 			_wade.draw_arc(Vector2(0, -8), 11.0, PI * 1.05, PI * 1.95, 12, Color(1, 1, 1, 0.5), 1.0))
@@ -1047,12 +1061,14 @@ func take_damage(n: int, from: Vector2) -> void:
 		invuln = 0.4
 		if map:
 			map.hud.toast("Blocked!", Color(0.8, 0.9, 1.0))
+			Music.instance(get_tree()).sfx("dry_click", "thud")
 		return
 	if int(GameState.run["flags"].get("shield", 0)) > 0:
 		GameState.run["flags"]["shield"] = int(GameState.run["flags"]["shield"]) - 1
 		invuln = 0.5
 		if map:
 			map.hud.toast("Shield!", Color(0.8, 0.9, 1.0))
+			Music.instance(get_tree()).sfx("zap", "thud")
 			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.5)
 		return
 	# Armour scales: every point helps, none makes you untouchable.
@@ -1068,14 +1084,7 @@ func take_damage(n: int, from: Vector2) -> void:
 	invuln = 0.35
 	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n
-	# Not Today (Combat): once a day a knockout hit leaves you on 1 HP.
-	if int(GameState.run["hp"]) <= 0 and GameState.bonus("combat", "last_stand") > 0 and int(GameState.run["flags"].get("last_stand_day", -1)) != int(GameState.run["day"]):
-		GameState.run["flags"]["last_stand_day"] = int(GameState.run["day"])
-		GameState.run["hp"] = 1
-		invuln = 1.0
-		if map:
-			map.hud.toast("Not today!", Color(1, 0.85, 0.4))
-			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.6)
+	_last_stand()
 	if int(GameState.run["hp"]) > 0 and int(GameState.run["hp"]) < int(GameState.run.get("max_hp", 100)) / 4:
 		Music.instance(get_tree()).sfx("heartbeat")
 	velocity = (position - from).normalized() * (60.0 if Crew.perk_level("defence") >= 3 else 120.0)
@@ -1093,6 +1102,21 @@ func take_damage(n: int, from: Vector2) -> void:
 		map.damage_number(position + Vector2(0, -22), n, Color(1, 0.35, 0.3))
 	if int(GameState.run["hp"]) <= 0 and map:
 		map.player_down()
+
+
+## Not Today (Combat): once a day a knockout (hit or status tick) leaves you on 1 HP,
+## with poison/burn washed off and a moment where the hit's own status can't stick.
+func _last_stand() -> void:
+	if int(GameState.run["hp"]) > 0 or GameState.bonus("combat", "last_stand") <= 0 or int(GameState.run["flags"].get("last_stand_day", -1)) == int(GameState.run["day"]):
+		return
+	GameState.run["flags"]["last_stand_day"] = int(GameState.run["day"])
+	GameState.run["hp"] = 1
+	invuln = 1.0
+	GameState.status_clear()
+	_status_shield = 1.5
+	if map:
+		map.hud.toast("Not today!", Color(1, 0.85, 0.4))
+		map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.6)
 
 
 func _puff(back: Vector2) -> void:

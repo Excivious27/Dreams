@@ -130,6 +130,8 @@ func on_enemy_died(e: Enemy) -> void:
 	if _boss != null and e == _boss:
 		_boss_down()
 		return
+	if e.has_meta("minion"):
+		return  # summoned helpers don't count as meadow kills
 	if _boss_pending:
 		return
 	if GameState.quest_done("clear_meadow"):
@@ -223,7 +225,8 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 				if props.has(_c):
 					(props[_c] as Sprite2D).queue_free()
 					props.erase(_c)
-				queue_redraw()
+				if not Art.has("nature", "oak"):
+					queue_redraw()  # only the no-art fallback paints shrooms
 			return true
 	return false
 
@@ -231,7 +234,24 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:  # _c is used for props
 func draw_map() -> void:
 	draw_grass(5)
 	WorldGen.draw_ground_detail(self, 51, 0.18)
-	if Art.has("tiles", "g_flower"):
+	if Art.has("nature", "gdeco_tuft_a") and Art.has("nature", "fdeco_0"):
+		# Flower beds and the tall-grass corner as cut-out decals on the grass
+		# (raw g_flower / g_tall tiles showed as hard-edged squares).
+		var fl: Array = ["gdeco_dandelion", "gdeco_clover", "fdeco_0", "fdeco_1", "fdeco_2", "fdeco_3", "fdeco_4", "fdeco_5"]
+		for c: Vector2i in cells_of([Rect2i(4, 18, 9, 6), Rect2i(20, 3, 7, 4)]):
+			var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
+			if not blocked.has(c) and hv % 20 < 9:
+				var nm: String = fl[hv % fl.size()]
+				if Art.has("nature", nm):
+					Art.draw_prop(self, "nature", nm, Vector2(c * TILE) + Vector2(8 + (hv >> 4) % 7 - 3, 14 + (hv >> 8) % 5 - 2))
+		var tufts := ["gdeco_tuft_a", "gdeco_tuft_b", "gdeco_tuft_c"]
+		for c: Vector2i in cells_of([Rect2i(14, 20, 8, 5)]):
+			if not blocked.has(c):
+				var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
+				Art.draw_prop(self, "nature", tufts[hv % 3], Vector2(c * TILE) + Vector2(5 + (hv >> 3) % 6, 9 + (hv >> 6) % 4))
+				if hv % 3 != 0:
+					Art.draw_prop(self, "nature", tufts[(hv >> 2) % 3], Vector2(c * TILE) + Vector2(10 + (hv >> 9) % 5, 15 + (hv >> 12) % 2))
+	elif Art.has("tiles", "g_flower"):
 		for c: Vector2i in cells_of([Rect2i(4, 18, 9, 6), Rect2i(20, 3, 7, 4)]):
 			if not blocked.has(c):
 				Art.draw_tile(self, "tiles", "g_flower", Vector2(c * TILE), 4)

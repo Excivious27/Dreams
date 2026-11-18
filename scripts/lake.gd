@@ -89,6 +89,15 @@ func build() -> void:
 			if not things.has(c):
 				_water[c] = true
 				set_thing(sx, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	# A cove from the lighthouse rock's water ring down to the south border water,
+	# so the lighthouse stands on a point, not by a lone puddle in the grass.
+	for y in range(39, rows):
+		var hw := 2 + int(WorldGen.fbm(4.0, float(y), 919, 4.0) > 0.0)
+		for x in range(5 - hw, 6 + hw):
+			var c := Vector2i(x, y)
+			if x >= 0 and not things.has(c):
+				_water[c] = true
+				set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
 	# The lake, its outlet stream and the water past the map edge: one body
 	# (drawn under the docks too, so the planks sit on water, not a hole).
 	if Art.has("seamless", "lake_shallow"):
@@ -133,7 +142,7 @@ func after_ready() -> void:
 	_shore_building("lighthouse", Vector2i(1, 24), "lighthouse", "A: the lighthouse", Vector2i(10, 34), true)
 	anim_prop("props", "duck", Vector2i(14, 14), 0, 1.5, false, 0.3)
 	anim_prop("props", "heron", Vector2i(26, 10), 0, 1.5, false, 0.4)
-	prop("props", "beaver_dam", Vector2i(11, 29), 2)
+	prop("props", "beaver_dam", Vector2i(26, 43), 2)  # on the outlet stream, damming it
 	prop("props", "signpost", Vector2i(36, 24))
 	for c: Vector2i in [Vector2i(36, 20), Vector2i(36, 28)]:
 		prop("props", "bench_wood", c, 1)
@@ -277,6 +286,18 @@ func _talk_marlowe() -> void:
 		player.frozen = false
 		return
 	if await Quests.talk(self, "marlowe", "Marlowe"):
+		player.frozen = false
+		return
+	var sel := str(GameState.run["selected"])
+	if GameState.can_gift("marlowe", sel) and await confirm_gift("Marlowe", sel):
+		var gain := GameState.give_gift("marlowe", sel)
+		await say([{"who": "Marlowe", "text": gift_reaction("Marlowe", sel, gain)}])
+		hud.toast("Marlowe %s%d" % ["+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
+		player.frozen = false
+		return
+	var hl := Hearts.daily("marlowe")
+	if hl != "" and int(GameState.run["day"]) % 2 == 0:
+		await say([{"who": "Marlowe", "text": hl}])
 		player.frozen = false
 		return
 	if GameState.run["flags"].has("lighthouse_lit"):

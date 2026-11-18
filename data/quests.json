@@ -60,11 +60,24 @@
    }
   },
   {
+   "id": "cattopia",
+   "arc": "penguins",
+   "text": "Find the purring in the crystal meadow: talk to Catkins at Cat-topia's cave.",
+   "when": {
+    "quest": "clear_meadow"
+   },
+   "done_when": {
+    "flag": "meow_taught"
+   },
+   "reward": {}
+  },
+  {
    "id": "wastes_gate",
    "arc": "penguins",
    "text": "Get to Combat 3 before you face the Grump Commander in the Wastes (the Star Crystal insists).",
    "when": {
-    "quest": "clear_meadow"
+    "quest": "clear_meadow",
+    "flag": "catship_done"
    },
    "done_when": {
     "skill": [
@@ -2066,7 +2079,7 @@
   {
    "id": "rook_pup_guard",
    "giver": "rook",
-   "text": "Rook: a guard dog. Pup level 6, and Guard Dog learned.",
+   "text": "Rook: a guard dog. Get your pup to level 6.",
    "when": {
     "quest": "rook_pup_hunt"
    },
@@ -2116,7 +2129,12 @@
    "id": "tam_lamb",
    "giver": "tam",
    "text": "Tam wants 10 fiber to bed the lambing pen.",
-   "when": {},
+   "when": {
+    "friend": [
+     "tam",
+     6
+    ]
+   },
    "done_when": {
     "item": [
      "fiber",
@@ -2136,7 +2154,12 @@
    "id": "moss_glowcaps",
    "giver": "old_moss",
    "text": "Old Moss wants 3 glow caps from the forest after dark.",
-   "when": {},
+   "when": {
+    "friend": [
+     "old_moss",
+     6
+    ]
+   },
    "done_when": {
     "item": [
      "glowcap",
@@ -2160,7 +2183,12 @@
    "id": "granite_bones",
    "giver": "granite",
    "text": "Granite wants 10 bones out of the deep mine floors.",
-   "when": {},
+   "when": {
+    "friend": [
+     "granite",
+     6
+    ]
+   },
    "done_when": {
     "item": [
      "bone",
@@ -2180,7 +2208,12 @@
    "id": "ivy_coins",
    "giver": "ivy",
    "text": "Ivy wants 3 old coins to settle a question of dates.",
-   "when": {},
+   "when": {
+    "friend": [
+     "ivy",
+     6
+    ]
+   },
    "done_when": {
     "item": [
      "old_coin",
@@ -2200,7 +2233,12 @@
    "id": "sel_fossil",
    "giver": "sel",
    "text": "Sel wants the fossil that isn't a fossil (mountain or quarry).",
-   "when": {},
+   "when": {
+    "friend": [
+     "sel",
+     6
+    ]
+   },
    "done_when": {
     "item": [
      "fossil",
@@ -2224,7 +2262,12 @@
    "id": "orla_oil",
    "giver": "orla",
    "text": "Orla wants 3 lamp oil taken to Marlowe's lighthouse (give it to her; she'll send it).",
-   "when": {},
+   "when": {
+    "friend": [
+     "orla",
+     6
+    ]
+   },
    "done_when": {
     "item": [
      "lamp_oil",
@@ -2489,6 +2532,32 @@
      20
     ]
    }
+  },
+  {
+   "id": "bram_rootbeer",
+   "giver": "bram",
+   "text": "Bram wants 2 root beer for festival night.",
+   "when": {
+    "friend": [
+     "bram",
+     3
+    ]
+   },
+   "done_when": {
+    "item": [
+     "root_beer",
+     2
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 350,
+    "friend": [
+     "bram",
+     20
+    ]
+   },
+   "arc": "gangsters"
   }
  ]
 }

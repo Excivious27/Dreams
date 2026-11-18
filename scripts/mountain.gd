@@ -257,11 +257,6 @@ func draw_map() -> void:
 				for x in range(-pad, cols + pad):  # on under the border band: no edge at the map side
 					top[Vector2i(x, yy)] = true
 			draw_plateau(top, "cliffg", stairs)
-	else:
-		for c: Vector2i in _ledge:
-			var t := Art.tex("tiles", "cliff2_1")
-			if t:
-				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
 	if not _falls_water.is_empty():
 		draw_water(_falls_water, "river")
 	if Art.has("tiles", "waterfall2") and _anim_layer:

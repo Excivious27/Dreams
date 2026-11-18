@@ -4,7 +4,7 @@
   "deuce": {
    "name": "Deuce",
    "sprite": "deuce",
-   "role": "card sharp",
+   "role": "card magician",
    "before": {
     "scene": "hideout",
     "cell": [
@@ -25,7 +25,7 @@
     [
      {
       "who": "Deuce",
-      "text": "You want to know why I don't cheat? I did, once. Uptown. The man I cheated is the man you're after, and he didn't lose; he just took the table. And the building. And the street."
+      "text": "You want to know why I don't cheat? I did, once. Uptown, a magic show, a rigged deck. The man I fooled is the man you're after, and he didn't laugh; he just took the stage. And the building. And the street."
      },
      {
       "who": "Deuce",
@@ -41,7 +41,7 @@
     [
      {
       "who": "Deuce",
-      "text": "If this goes wrong uptown, I've got a table in a town three valleys over and a chair with your name on it. If it goes right... I've still got the table. Either way, you've got a chair."
+      "text": "If this goes wrong uptown, I've got a little stage in a town three valleys over and a chair with your name on it. If it goes right... I've still got the stage. Either way, you've got a chair."
      }
     ]
    ],
@@ -149,7 +149,7 @@
    "perks": [
     "A warning the morning before a thug raid",
     "Raids come half as often",
-    "Enemies in gangster districts are marked on the map"
+    "Ladder radios how many hostiles are on each block you walk into"
    ],
    "loyalty": [
     [

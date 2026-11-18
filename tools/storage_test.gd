@@ -152,6 +152,17 @@ func _run() -> void:
 	GameState.run["skills"]["combat"]["nm"] = {"combat_2_8": "Toughness"}
 	GameState._migrate()
 	check(GameState.node_rank("combat", "combat_u_iron_gut") == 0, "other combat_2_8 is refunded")
+	# SKILL_VER: an old save's filler ranks are refunded once; a current one keeps them.
+	var fid := "combat_2_7"
+	GameState.run["skills"]["combat"]["nm"] = {fid: str(GameState.node("combat", fid).get("name", ""))}
+	GameState.run["skills"]["combat"]["nodes"] = {fid: 1}
+	GameState.run["skill_ver"] = GameState.SKILL_VER
+	GameState._migrate()
+	check(GameState.node_rank("combat", fid) == 1, "filler rank kept at current SKILL_VER")
+	GameState.run["skill_ver"] = 0
+	GameState._migrate()
+	check(GameState.node_rank("combat", fid) == 0, "filler rank refunded for an old SKILL_VER")
+	check(int(GameState.run.get("skill_ver", 0)) == GameState.SKILL_VER, "skill_ver stamped after the refund")
 	GameState.run["skills"]["combat"]["nm"] = {}
 	GameState.run["skills"]["combat"]["nodes"] = {}
 	print("storage_test: %d failures" % fails)

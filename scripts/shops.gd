@@ -90,7 +90,7 @@ static func offers(shop: String) -> Array:
 	return []
 
 
-static func run(m: GameMap, shop: String) -> void:
+static func run(m: GameMap, shop: String, absent := false) -> void:
 	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
@@ -106,7 +106,11 @@ static func run(m: GameMap, shop: String) -> void:
 		"sel": "Relics. Real ones. Mostly.",
 		"catkins": "Litter boxes. Every Grump stops to hold its nose. Don't ask how we found out.",
 	}[shop]
-	if shop == "store" and not GameState.run["flags"].has("store_first"):
+	if absent:
+		# Nobody at the counter: a note on the till, no keeper's voice.
+		greet = "A note on the till: \"Back soon. Prices on the tags. - %s\"" % keeper
+		keeper = ""
+	if shop == "store" and not absent and not GameState.run["flags"].has("store_first"):
 		GameState.run["flags"]["store_first"] = true
 		await m.say([{"who": keeper, "text": "You're the one who took the old plot! Here, first-timer's bundle. Don't tell Gideon I give things away."}])
 		m.give("turnip_seed", 10)
@@ -143,7 +147,7 @@ static func run(m: GameMap, shop: String) -> void:
 		else:
 			m.give(id, 1)
 		m.xp("bartering", 1)
-		greet = "Anything else?"
+		greet = "Anything else?" if not absent else "(The till's honesty jar clinks.)"
 
 
 static func price(id: String) -> int:

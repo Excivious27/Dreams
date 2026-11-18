@@ -50,7 +50,7 @@ func _ready() -> void:
 	sb.set_content_margin_all(5)
 	_root.add_theme_stylebox_override("panel", sb)
 	_root.position = Vector2(4, 22)
-	_root.size = Vector2(262, 440)
+	_root.size = Vector2(262, 452)
 	add_child(_root)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 3)
@@ -95,7 +95,7 @@ func _ready() -> void:
 	_acts.add_theme_constant_override("separation", 2)
 	_acts.custom_minimum_size = Vector2(0, 22)  # the row appearing never pushes the bag grid
 	v.add_child(_acts)
-	_bot = _scroll_grid(v, 205)
+	_bot = _scroll_grid(v, 180)  # keeps the panel and its tip line on the 480 screen
 	var tip := _label("Tap: move across.  Hold: pick up, lock, trash, move half.", 7, Color(0.8, 0.75, 0.65))
 	v.add_child(tip)
 	_refresh()
@@ -105,6 +105,7 @@ func _scroll_grid(v: VBoxContainer, h: float) -> GridContainer:
 	var sc := ScrollContainer.new()
 	sc.custom_minimum_size = Vector2(250, h)
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	sc.scroll_deadzone = 8  # a shaky tap stays a tap; a real drag scrolls
 	v.add_child(sc)
 	var g := GridContainer.new()
 	g.columns = 8
@@ -205,6 +206,7 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 	b.custom_minimum_size = Vector2(SLOT, SLOT)
 	b.focus_mode = Control.FOCUS_NONE
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE  # a drag to scroll never moves an item
+	b.mouse_filter = Control.MOUSE_FILTER_PASS  # a drag that starts on a slot scrolls the grid
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.25, 0.17, 0.1) if id != "" else Color(0.19, 0.13, 0.08)
 	var picked := not _pick.is_empty() and str(_pick["grid"]) == grid and int(_pick["i"]) == idx
@@ -354,7 +356,7 @@ func _tap(grid: String, i: int, cb: Callable) -> void:
 			var bs := GameState.bag_slots()
 			if not GameState.run["inventory"].has(pid) and i < bs.size() and str(bs[i]) == "":
 				bs[i] = pid
-			if Storage.withdraw(key, pid, Storage.amount(key, pid)) == 0:
+			if Storage.withdraw(key, pid, mini(Storage.amount(key, pid), Storage.STACK)) == 0:  # the picked slot's stack, like a tap
 				_fail("Your bag is full.")
 				_pick = {}
 				_refresh()

@@ -9,7 +9,27 @@ static var _lines: Dictionary = {}
 static func lines(id: String) -> Dictionary:
 	if _lines.is_empty():
 		_lines = GameState.load_json("res://data/quest_lines.json")
-	return _lines.get(id, {})
+	var d: Dictionary = _lines.get(id, {})
+	# Gangster-arc wording for a quest line: "<id>@gangsters" overrides some keys.
+	if not GameState.is_penguins() and _lines.has(id + "@gangsters"):
+		d = d.merged(_lines[id + "@gangsters"], true)
+	return d
+
+
+## Quest done? Like GameState._cond_ok, but an item the quest only needs to
+## exist (no "take") also counts when your pup is wearing it (benno_pup_pack).
+static func _done(d: Dictionary) -> bool:
+	if not d.has("done_when") or not (d["done_when"] is Dictionary):
+		return false
+	var dw: Dictionary = d["done_when"]
+	if GameState._cond_ok(dw):
+		return true
+	if bool(d.get("take", false)) or dw.size() != 1 or not dw.has("item"):
+		return false
+	var it = dw["item"]
+	var iid := str(it[0]) if it is Array else str(it)
+	var gear: Dictionary = (GameState.run.get("pet", {}) as Dictionary).get("gear", {})
+	return gear.values().has(iid)
 
 
 static func _as_lines(who: String, v: Variant) -> Array:
@@ -29,7 +49,7 @@ static func _ready_quest(npc: String) -> Dictionary:
 		if q["done"]:
 			continue
 		var d := GameState._quest_def(str(q["id"]))
-		if str(d.get("giver", "")) == npc and d.has("done_when") and GameState._cond_ok(d["done_when"]):
+		if str(d.get("giver", "")) == npc and _done(d):
 			return d
 	return {}
 
@@ -45,7 +65,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 		var qid := str(pend["id"])
 		var d := GameState._quest_def(qid)
 		var ql := lines(qid)
-		if d.has("done_when") and GameState._cond_ok(d["done_when"]):
+		if _done(d):
 			var seq := _as_lines(name, ql.get("done", ["That's it exactly. Thank you."]))
 			await m.say(seq)
 			if bool(d.get("take", false)):

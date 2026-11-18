@@ -27,6 +27,9 @@ const CITY_MAPS := ["neon", "uptown", "docks", "hideout"]
 const CAVE_MAPS := ["mine", "underground", "quarry", "hollow_heart"]
 const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake"]
 const BIRDY_MAPS := ["forest", "orchard_hills", "meadow"]
+## Outdoors but no birds, crickets or frogs: the underground country, dead or hot lands, space.
+const QUIET_MAPS := ["hollow_heart", "wastes", "colony_ember", "moon", "station", "sky"]
+var _quick_t := 0.0
 
 
 static func instance(tree: SceneTree) -> Ambience:
@@ -44,7 +47,7 @@ func _ready() -> void:
 ## Called by GameMap when a new map is ready: re-evaluate now with a quicker fade.
 func scene_changed() -> void:
 	_eval_t = 0.0
-	_fade = 1.2
+	_quick_t = 1.5  # _apply_targets uses the quicker fade while this runs
 
 
 ## Thunder a moment after a lightning flash.
@@ -53,6 +56,7 @@ func thunder() -> void:
 
 
 func _process(delta: float) -> void:
+	_quick_t -= delta
 	_eval_t -= delta
 	if _eval_t <= 0.0:
 		_eval_t = 0.5
@@ -117,16 +121,18 @@ func _evaluate() -> Dictionary:
 	var snowy := w in ["snow", "blizzard"]
 	var outdoors := m.has_sky and id not in ["house", "interior"]
 	var gang := Racket.on()
+	var wild := outdoors and id not in QUIET_MAPS
 	if outdoors:
-		if ph == "dawn" and se != "winter" and not wet and not snowy:
-			out["birds_dawn"] = -10.0 + (3.0 if id in BIRDY_MAPS else 0.0)
-		if ph == "day" and se in ["spring", "summer", "fall"] and not wet and not snowy and id not in CITY_MAPS:
-			out["birds_day"] = -16.0 - (4.0 if se == "fall" else 0.0)
-		if ph in ["dusk", "night"] and se in ["spring", "summer", "fall"] and not wet and id not in CITY_MAPS:
-			out["crickets"] = -14.0 - (4.0 if se == "spring" else 0.0)
 		var near := _water_near(m)
-		if ph == "night" and se in ["spring", "summer"] and (near > 0.3 or id == "marsh"):
-			out["frogs"] = -16.0 + 6.0 * (near - 1.0)
+		if wild:
+			if ph == "dawn" and se != "winter" and not wet and not snowy:
+				out["birds_dawn"] = -10.0 + (3.0 if id in BIRDY_MAPS else 0.0)
+			if ph == "day" and se in ["spring", "summer", "fall"] and not wet and not snowy and id not in CITY_MAPS:
+				out["birds_day"] = -16.0 - (4.0 if se == "fall" else 0.0)
+			if ph in ["dusk", "night"] and se in ["spring", "summer", "fall"] and not wet and id not in CITY_MAPS:
+				out["crickets"] = -14.0 - (4.0 if se == "spring" else 0.0)
+			if ph == "night" and se in ["spring", "summer"] and (near > 0.3 or id == "marsh"):
+				out["frogs"] = -16.0 + 6.0 * (near - 1.0)
 		if se == "winter" or id in WINDY_MAPS or w == "wind":
 			out["wind_soft"] = -10.0 if w == "wind" else -14.0
 		if w == "blizzard" or id == "colony_ice":
@@ -139,6 +145,10 @@ func _evaluate() -> Dictionary:
 			out["waves"] = -8.0
 		elif near > 0.05:
 			out["water_lap"] = -14.0 + 10.0 * (near - 1.0)
+		if id == "colony_ember":
+			out["lava"] = -18.0
+		if id == "wastes":
+			out["wind_soft"] = -12.0
 		if w == "leaves" or (se == "fall" and id == "forest"):
 			out["leaves"] = -18.0
 		if id == "town" and t >= 8 * 60 and t < 20 * 60 and not wet:
@@ -200,7 +210,7 @@ func _apply_targets() -> void:
 		add_child(p)
 		p.play(randf() * 8.0)
 		_beds[b] = p
-	_fade = 2.5 if _fade < 2.5 and _eval_t > 0.4 else _fade
+	_fade = 1.2 if _quick_t > 0.0 else 2.5
 
 
 func _stream(path: String) -> AudioStream:
@@ -215,8 +225,8 @@ func _water_near(m: GameMap) -> float:
 		return 0.0
 	var pc := m.world_to_cell(m.player.position)
 	var best := 99.0
-	for dy in range(-6, 7, 2):
-		for dx in range(-6, 7, 2):
+	for dy in range(-6, 7):
+		for dx in range(-6, 7):
 			if m.is_water_cell(pc + Vector2i(dx, dy)):
 				best = minf(best, Vector2(dx, dy).length())
 	return 0.0 if best > 8.0 else clampf(1.0 - best / 8.0, 0.0, 1.0)
@@ -233,7 +243,7 @@ func _spots(delta: float) -> void:
 	var rules := []  # [spot, min_s, max_s, dB]
 	if outdoors and ph == "night" and id in OWL_MAPS:
 		rules.append(["owl", 25.0, 60.0, -8.0])
-	if outdoors and GameState.season() == "winter" and ph == "day":
+	if outdoors and id not in QUIET_MAPS and GameState.season() == "winter" and ph == "day":
 		rules.append(["bird_chirp", 8.0, 20.0, -12.0])
 	if id == "crystal_meadow" and GameState.is_penguins():
 		rules.append(["penguin_chatter", 10.0, 25.0, -10.0])
@@ -247,7 +257,7 @@ func _spots(delta: float) -> void:
 			_spot(k, float(r[3]))
 	# The rooster crows once each morning on the farm.
 	var day := int(GameState.run.get("day", 1))
-	if id == "farm" and _rooster_day != day and t >= GameState.sunrise() and t < GameState.sunrise() + 20:
+	if id == "farm" and _rooster_day != day and t >= mini(GameState.sunrise(), GameState.DAY_START) and t < maxi(GameState.sunrise(), GameState.DAY_START) + 40:
 		_rooster_day = day
 		_spot("rooster", -6.0)
 

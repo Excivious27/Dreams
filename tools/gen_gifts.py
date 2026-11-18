@@ -137,7 +137,7 @@ LT = [
  # id, name, title, district, hp, dmg, speed, tier, sprite, gift id, gift def, intro
  ('vance', 'Harbourmaster Vance', 'Lieutenant of the Docks', 'docks', 90, 3, 26, 3, 'enforcer', 'lt_tide',
   {'name': 'Undertow', 'colour': '4aa8ff', 'gap': 2.8, 'pull_force': 40.0, 'moves': [{'type': 'pull', 'secs': 1.4}, {'type': 'ring', 'n': 14, 'gap_n': 3}, {'type': 'zones', 'n': 4, 'fx': 'slow', 'linger': 2.4}],
-   'rule': {'type': 'wet', 'closed': 0.2, 'open': 0.6, 'after': 'pull', 'secs': 2.0, 'stagger': 1.0}, 'tip': 'He drags you toward the slam. Break out sideways; after each slam he stands in his own puddle, open, for two seconds.'}),
+   'rule': {'type': 'wet', 'closed': 0.2, 'open': 2.0, 'after': 'pull', 'secs': 2.0, 'stagger': 1.0}, 'tip': 'He drags you toward the slam. Break out sideways; after each slam he stands in his own puddle, open, for two seconds.'}),
  ('lucia', 'Lucia "Flame" Ardent', 'Lieutenant of Neon', 'neon', 80, 3, 34, 3, 'flame', 'lt_neonfire',
   {'name': 'Neon Burn', 'colour': 'ff5ad0', 'gap': 2.4, 'trail': True, 'moves': [{'type': 'dash'}, {'type': 'lines', 'n': 3, 'fan': True}, {'type': 'dash'}, {'type': 'spiral', 'secs': 1.4}],
    'rule': {'type': 'window', 'after': 'spiral', 'secs': 2.2, 'stagger': 1.2, 'closed': 0.2, 'open': 2.2}, 'tip': 'Her spiral burns her out. Stay outside it, then close in while the neon sputters.'}),

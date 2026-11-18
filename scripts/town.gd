@@ -151,17 +151,15 @@ func _town_tour() -> void:
 	var who := "Mayor Alder" if pen else "Sal"
 	player.frozen = true
 	await say([
-		{"who": who, "text": ("Welcome! I'm Alder, mayor of %s. Here's who does what, the short version." if pen else "Before you go knocking on doors: here's who's who in %s. Remember it.") % GameState.names()["town"]},
-		{"who": who, "text": "FARMING: Maple's General Store, north of the plaza, has this season's seeds, fertiliser and bread. Hazel, down the south-west lane, knows everything about crops; ask her."},
-		{"who": who, "text": "TOOLS AND BUILDING: Gideon's forge next to Maple upgrades your tools and smelts ore. Wood and stone you cut yourself, or buy stone and brick from Granite at the quarry. The Plans board by your house lists what you can build."},
-		{"who": who, "text": "HEALTH AND WORK: Wren sells potions, Juniper runs the clinic, Bram's inn has hot meals. The board on the plaza posts paid jobs each day, and people write to your mailbox once they know you." + (" The town hall is where the Crystal Ward gets built." if pen else "")},
+		{"who": who, "text": ("Welcome! I'm Alder, mayor of %s. Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools." if pen else "Before you go knocking on doors in %s: Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools.") % GameState.names()["town"]},
+		{"who": who, "text": ("The rest of us you'll meet. Your journal keeps a list (MENU > Quests)." if pen else "The rest you'll meet. Your journal keeps a list (MENU > Quests).")},
 	])
 	if not is_inside_tree():
 		return
 	if GameState.complete_quest("meet_town"):
 		hud.toast("Quest done: met the town.", Color(1, 0.9, 0.4))
 	player.frozen = false
-	for h in ["Maple's store (north of the plaza): seeds, fertiliser, bread.", "Gideon's forge (next to Maple): tool upgrades, smelting, weapons.", "Building: the Plans board by your house; Granite's quarry sells stone and brick; Orla's mill for flour; Benno's stable for horses.", "Wren (potions) and Juniper (clinic) are south and east of the plaza; the plaza board has paid jobs."]:
+	for h in ["Maple's store (north of the plaza): seeds, fertiliser, bread.", "Gideon's forge (next to Maple): tool upgrades, smelting, weapons.", "Building: the Plans board by your house; Granite's quarry sells stone and brick; Orla's mill for flour; Benno's stable for horses.", "Wren (potions) and Juniper (clinic) are south and east of the plaza; the plaza board has paid jobs.", "Hazel (south-west lane) knows crops; Bram's inn has hot meals; people write to your mailbox once they know you."] + (["The town hall is where the Crystal Ward gets built."] if pen else []):
 		GameState.add_hint(h)
 	GameState.notify("Town guide saved: MENU → Quests → Things people said.")
 
@@ -205,7 +203,7 @@ func _place_buildings() -> void:
 	_door("store", Vector2i(10, 18), "store", "A: General Store")
 	_door("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
 	if GameState.run["flags"].has("shop_1") and Art.has("buildings", "gang_shop_deuce"):
-		_door(_gang("gang_shop_deuce"), Vector2i(45, 17), "bakery", "A: Deuce's card parlour", 0.6)
+		_door(_gang("gang_shop_deuce"), Vector2i(45, 17), "bakery", "A: Deuce's arcade", 0.6)
 	else:
 		_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
 	_door("mansion", Vector2i(55, 13), "mansion", "A: Mayor Alder's house", 1.15)
@@ -337,6 +335,7 @@ func _festival_event(fest: String) -> void:
 		"lantern":
 			await say([{"who": "Lumi", "text": "Write a wish, light a lantern, let it go on the river. I won't look."}, {"text": "Your lantern drifts out under the bridge with the others. The sky fills."}])
 			GameState.run["flags"][key] = true
+			Music.instance(get_tree()).sfx("fireworks", "levelup")
 			GameState.grow_vital("mana", 5)
 			hud.toast("Max mana +5", Color(0.8, 0.9, 1.0))
 			fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.6)
@@ -359,6 +358,8 @@ func _festival_event(fest: String) -> void:
 				await say([{"who": "Mayor Alder", "text": "A %s! %s" % [GameState.item_name(best), ["First prize! The blue ribbon and three hundred crystals.", "Second prize! The red ribbon and a hundred and fifty.", "Third prize! The yellow ribbon and fifty."][place - 1]]}])
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + [300, 150, 50][place - 1]
 				GameState.run["flags"][key] = true
+				Music.instance(get_tree()).sfx("quest_done", "coin")
+				hud.toast("+%d crystals" % [300, 150, 50][place - 1], Color(0.7, 0.9, 1))
 				xp("farming", 40)
 		"star":
 			await say([{"who": "Bram" if GameState.run["flags"].has("posy_gone") else "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])

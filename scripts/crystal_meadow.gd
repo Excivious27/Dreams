@@ -57,7 +57,8 @@ func build() -> void:
 		set_thing(g.x, g.y + k, t)
 	for x in range(EAST_GATE.x, cols - 1):
 		for y in range(11, 14):
-			_ext_paths[Vector2i(x, y)] = true
+			if GameState.is_penguins():
+				_ext_paths[Vector2i(x, y)] = true  # (gangsters: the asphalt already runs to the gate)
 			blocked.erase(Vector2i(x, y))
 			hard.erase(Vector2i(x, y))
 	_gate = g
@@ -111,7 +112,7 @@ func after_ready() -> void:
 			gp.sprite_frames = Art.frames("props", {"idle": "glow_pond"}, {"idle": 3.0})
 			gp.animation = "idle"
 			gp.scale = Vector2(0.5, 0.5)
-			gp.position = cell_center(Vector2i(5, 16)) + Vector2(8, 0)
+			gp.position = cell_center(Vector2i(5, 16)) + Vector2(8, -4)  # sits on its water cells (rows 14-15)
 			gp.offset = Vector2(0, -float(Art.info("props", "glow_pond").get("cell_h", 72)) / 2.0)
 			to_under(gp)
 			# The pond is real water: you can't stand in it, and you can fish it.
@@ -196,7 +197,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"water":
 			if GameState.has_tool("rod"):
-				fish_at(_c, ["minnow", "goldfish", "starfin", "mooncarp"])
+				fish_at(_c, ["minnow", "sunfish", "carp", "trout", "goldfish", "mooncarp"])
 			return true
 		"note":
 			tell([{"text": str(thing.get("text", "..."))}])
@@ -296,13 +297,18 @@ func draw_map() -> void:
 		draw_tileset_rect("pale_stone" if Art.has("tiles", "pale_stone") else "moon_dust", STONES, Color("c9c0e0"))
 		draw_ground("dirt", cells_of([Rect2i(1, 11, 13, 3), Rect2i(21, 11, 13, 3), MEADOW_EXIT]))
 	else:
-		draw_tileset_rect("dirt_lot", Rect2i(0, 0, cols, rows), Color("6a5a40"))
-		draw_tileset_rect("asphalt", Rect2i(1, 11, cols - 2, 3), Color("3a3a40"))
+		draw_tileset_rect("dirt_lot", Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), Color("6a5a40"))  # under the band too: no void column
+		draw_tileset_rect("asphalt", Rect2i(1, 11, cols - 1, 3), Color("3a3a40"))  # on to the gate column
 		draw_tileset_rect("sidewalk", Rect2i(6, 8, cols - 8, 1), Color("8a8a90"))
 		draw_tileset_rect("sidewalk", Rect2i(6, 15, cols - 8, 1), Color("8a8a90"))
 	draw_exits()
-	var gp := cell_center(_gate)
+	# The east fence leaves a gap at the gate rows; the gate is drawn over it.
+	var gap := {}
+	for yy in range(_gate.y - 1, _gate.y + 3):
+		gap[yy] = true
+	draw_fence_border(Color("6b4a2b") if GameState.is_penguins() else Color("5a5a66"), gap)
+	# Drawing space is content cells (no pad); cell_center() is world space.
+	var gp := Vector2(_gate.x * TILE + TILE / 2.0, (_gate.y + 1) * TILE)
 	if GameState.is_penguins() or not Art.draw_prop(self, "props", "chain_broken", gp + Vector2(0, 8)):
 		draw_rect(Rect2(gp.x - 8, gp.y - 30, 16, 32), Color("3a2412") if GameState.is_penguins() else Color("5a5a66"))
 	label("east" if GameState.is_penguins() else "hideout ▶", Vector2(gp.x - 24, gp.y - 34), 48)
-	draw_fence_border(Color("6b4a2b") if GameState.is_penguins() else Color("5a5a66"))

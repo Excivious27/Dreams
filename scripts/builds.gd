@@ -97,12 +97,12 @@ static func under_construction(id: String) -> Dictionary:
 	return GameState.run.get("construction", {}).get(id, {})
 
 
-## Why the next tier can't start ("" = it can, "permit" = needs a permit).
 ## How many of an item in the bag a build may use (locked items are kept).
 static func _bag_free(id: String) -> int:
 	return 0 if GameState.is_locked(id) else GameState.count(id)
 
 
+## Why the next tier can't start ("" = it can, "permit" = needs a permit).
 static func blocker(id: String) -> String:
 	var nd := next_def(id)
 	var g := gate(id)
@@ -227,3 +227,20 @@ static func cost_of(nd: Dictionary) -> Dictionary:
 			off += GameState.bonus("building", "stone_discount")
 		out[k] = maxi(1, int(ceil(int(nd["cost"][k]) * (1.0 - minf(0.6, off)))))
 	return out
+
+
+## Silo: hay kept outside the bag in run["silo"] (240 per tier).
+static func silo_cap() -> int:
+	return 240 * built_tier("silo")
+
+
+static func silo_hay() -> int:
+	return int(GameState.run.get("silo", 0))
+
+
+## Put n hay in the silo; false (nothing stored) when there's no room.
+static func silo_add(n: int) -> bool:
+	if silo_hay() + n > silo_cap():
+		return false
+	GameState.run["silo"] = silo_hay() + n
+	return true

@@ -55,7 +55,7 @@
   "intro": [
    "The forest under the water is dying, and it was the only home we had.",
    "The crystal in the kelp temple feeds the kelp. The dark is feeding on the crystal.",
-   "Bring us plank and rope to shore up the stilt-houses, chase the drowned serpents out, light the beacons, and wake the crystal."
+   "Bring us plank and rope to shore up the stilt-houses, chase the shadow serpents out, light the beacons, and wake the crystal."
   ],
   "need": {
    "plank": 30,
@@ -63,7 +63,7 @@
   },
   "need_text": "The stilt-houses lean further every tide.",
   "need_thanks": "That'll hold. That'll hold for years.",
-  "foe_word": "Drowned serpents",
+  "foe_word": "Shadow serpents",
   "kills": 10,
   "beacons": 3,
   "boss": "cboss_kelp",

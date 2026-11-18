@@ -52,10 +52,12 @@ func _run() -> void:
 		if not m.things.has(k):
 			broke += 1
 		await frames(1)
-		if m.get("_guardian") != null:
+		if m.get("_guardian") != null or bool(m.get("_summoning")):
 			break
-	for w in 120:
-		if m.get("_guardian") != null: break
+	# The keeper surfaces after a 0.4-0.9 s wake timer: wait on real time
+	# (headless frames can be very fast).
+	var tw0 := Time.get_ticks_msec()
+	while m.get("_guardian") == null and Time.get_ticks_msec() - tw0 < 3000:
 		await frames(1)
 	var g: Enemy = m.get("_guardian")
 	check(g != null, "keeper woke after %d rocks (threshold %d)" % [broke, m.call("_threshold")])
@@ -85,14 +87,19 @@ func _run() -> void:
 	var e0 := m.spawn_enemy("slime", m.cell_center(Vector2i(8, 8)), 0)
 	var e3 := m.spawn_enemy("slime", m.cell_center(Vector2i(9, 9)), 3)
 	check(e3.max_hp > e0.max_hp and e3.armor > e0.armor and e3.kb_resist > e0.kb_resist and e3.abilities.size() >= 2, "tier 3 slime: hp %d>%d, armour %d, kb %.1f, abilities %s" % [e3.max_hp, e0.max_hp, e3.armor, e3.kb_resist, str(e3.abilities)])
-	# Statuses: poison ticks hp down and expires.
+	# Statuses: poison ticks hp down and expires. Tick it directly on simulated
+	# time: the player's own tick can sit frozen (toasts, dialogue, a stale
+	# user dir's settings), which made the frame-based check flaky.
+	GameState.status_clear()
 	GameState.status_apply("poison", 2)
-	var hp0 := int(GameState.run["hp"])
-	# Poison ticks on game time: wait up to 3 s (headless frames can be very fast).
-	var t0 := Time.get_ticks_msec()
-	while int(GameState.run["hp"]) >= hp0 and Time.get_ticks_msec() - t0 < 3000:
-		await frames(1)
-	check(int(GameState.run["hp"]) < hp0, "poison ticked (%d -> %d)" % [hp0, int(GameState.run["hp"])])
+	check(GameState.status_active("poison"), "poison applied")
+	var pdmg := 0
+	var pt := 0.0
+	while pt < 20.0 and GameState.status_active("poison"):
+		pdmg += GameState.status_tick(0.1)
+		pt += 0.1
+	check(pdmg > 0 and not GameState.status_active("poison"), "poison ticked %d hp and wore off after %.1f s" % [pdmg, pt])
+	GameState.status_clear()
 	check(GameState.status_speed() == 1.0, "no speed status active")
 	GameState.status_apply("chill", 1)
 	check(GameState.status_speed() < 1.0, "chill slows")

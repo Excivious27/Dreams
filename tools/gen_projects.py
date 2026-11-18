@@ -39,7 +39,7 @@ P = {
    {"name": "The Workshop Wing", "bundles": [{"name": "Machines", "need": {"gear": 12, "spring": 8, "servo": 4}}, {"name": "Power", "need": {"crystal_battery": 2, "steel_bar": 6}}],
     "grant": "hq_workshop", "desc": "Six crew can work jobs, and every job pays half again."},
    {"name": "Rooftop Comms", "bundles": [{"name": "Antenna", "need": {"steel_bar": 8, "data_chip": 4}}, {"name": "Drones", "need": {"spy_drone": 1, "scrap_bot": 2}}],
-    "grant": "hq_comms", "desc": "Drones patrol the districts: collectors never raid you, and the map marks lieutenants you haven't beaten."},
+    "grant": "hq_comms", "desc": "Drones patrol the districts: the President's collectors never raid you."},
    {"name": "The Tower Plan", "bundles": [{"name": "Lieutenants", "need": {"lieutenant_marks": 6}}, {"name": "War Chest", "need": {"gold_bar": 6, "bills_fine": 6}}],
     "grant": "tower_plan", "desc": "The whole crew is ready. Against the President you start with full mana, a shield, and the crew's backup."}]},
 }

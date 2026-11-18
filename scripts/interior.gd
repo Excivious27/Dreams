@@ -23,12 +23,58 @@ const ART_CROP := {
 
 static func art_crop(g: String, nm: String) -> Rect2:
 	if not ART_CROP.has(nm):
-		return Rect2()
+		# Uncut sheets often carry a caption or rule line just under the art.
+		var tc := Art.tex(g, nm)
+		return caption_crop(tc) if tc and not Art.info(g, nm).has("cell_w") else Rect2()
 	var t := Art.tex(g, nm)
 	var a: Array = ART_CROP[nm]
 	if t == null or t.get_width() != int(a[0]) or t.get_height() != int(a[1]):
 		return Rect2()
 	return Rect2(float(a[2]), float(a[3]), float(a[4]), float(a[5]))
+
+
+## A thin band (caption text or a rule line, 1-6 rows) under the art with a gap
+## above it: the rect of the art without it, or an empty Rect2. Cached per texture.
+static var _cap := {}
+
+
+static func caption_crop(t: Texture2D) -> Rect2:
+	var key := t.resource_path if t.resource_path != "" else str(t.get_instance_id())
+	if _cap.has(key):
+		return _cap[key]
+	var out := Rect2()
+	var img := t.get_image()
+	if img:
+		if img.is_compressed():
+			img.decompress()
+		var w := img.get_width()
+		var h := img.get_height()
+		var rw := PackedInt32Array()
+		rw.resize(h)
+		var mx := 0
+		for y in h:
+			var n := 0
+			for x in w:
+				if img.get_pixel(x, y).a > 0.16:
+					n += 1
+			rw[y] = n
+			mx = maxi(mx, n)
+		var lim := mx * 0.15
+		var y2 := h - 1
+		while y2 >= 0 and rw[y2] == 0:
+			y2 -= 1
+		var band := 0
+		while y2 >= 0 and rw[y2] > lim:
+			band += 1
+			y2 -= 1
+		var gap := 0
+		while y2 >= 0 and rw[y2] <= lim:
+			gap += 1
+			y2 -= 1
+		if band >= 1 and band <= 6 and gap >= 1 and y2 > h / 2:
+			out = Rect2(0, 0, w, y2 + 1)
+	_cap[key] = out
+	return out
 
 
 func scene_id() -> String:
@@ -69,12 +115,19 @@ func after_ready() -> void:
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var g := str(p.get("group", "furniture"))
 		var nm := str(p["name"])
+		if nm == "window_day" and GameState.is_night() and Art.has(g, "window_night"):
+			nm = "window_night"
 		var w := int(p.get("w", 0))
 		if bool(p.get("anim", false)) and Art.has(g, nm) and int(Art.info(g, nm).get("frames", 1)) > 1:
 			var a := AnimatedSprite2D.new()
-			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": 5.0})
+			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": float(p.get("fps", 5.0))})
 			a.animation = "idle"
-			a.scale = Vector2(0.5, 0.5)
+			# Fitted like the still props: its footprint wide, never above the wall top.
+			var ai := Art.info(g, nm)
+			var amaxw := (w + 1) * TILE * 1.2 + 4.0
+			var amaxh := minf(TILE * 3.4, (c.y + 1) * TILE)
+			var asc := minf(0.5, minf(amaxw / maxf(1.0, float(ai.get("cell_w", 48))), amaxh / maxf(1.0, float(ai.get("cell_h", 48)))))
+			a.scale = Vector2(asc, asc)
 			a.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
 			a.offset = Vector2(0, -float(Art.info(g, nm).get("cell_h", 48)) / 2.0)
 			add_child(a)
@@ -94,6 +147,9 @@ func after_ready() -> void:
 			th = crop.size.y
 		var on_wall := c.y <= 1
 		var maxw := TILE * 1.6 if on_wall else (w + 1) * TILE * 1.2 + 4.0
+		# Pieces on the edge columns stop at the side walls.
+		var cxp := (c.x + (w + 1) / 2.0) * TILE
+		maxw = maxf(TILE, minf(maxw, 2.0 * minf(cxp - TILE, (cols - 1) * TILE - cxp)))
 		# Never taller than the room above it: big machines by the back wall stop at the wall top.
 		var maxh := TILE * 1.5 if on_wall else minf(TILE * 3.4, (c.y + 1) * TILE)
 		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
@@ -125,6 +181,7 @@ func after_ready() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(interior_id) + int(GameState.run["day"])
 	var used := {}
+	var dl: Array = I.get("door", [cols / 2, rows - 2])
 	for id in GameState.npcs:
 		if GameState.run["flags"].has(str(id) + "_gone"):
 			continue
@@ -144,7 +201,7 @@ func after_ready() -> void:
 		if at == Vector2i(-1, -1) or used.has(at):
 			for tries in 60:
 				var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(4, rows - 3))
-				if not blocked.has(c) and not things.has(c) and not used.has(c):
+				if not blocked.has(c) and not things.has(c) and not used.has(c) and not (absi(c.x - int(dl[0])) <= 1 and c.y >= int(dl[1]) - 2):
 					at = c
 					break
 		if at == Vector2i(-1, -1):
@@ -272,7 +329,10 @@ func _talk(n: Npc) -> void:
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
-	if lines.is_empty():
+	var hl := Hearts.daily(n.id)
+	if hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(n.id)) % 2 == 0:
+		await say([{"who": name, "text": hl}])
+	elif lines.is_empty():
 		await say(Talk.line(n.id))
 	else:
 		await say([{"who": name, "text": str(lines[int(GameState.run["day"]) % lines.size()])}])
@@ -358,8 +418,6 @@ func _floor_cell(fl: String, c: Vector2i) -> void:
 	draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2(sx, sy, 28.0 * k, 26))
 
 
-## Side walls and a front lip so the room is a room, not a floating rug: the
-## wall's own top moulding turned into thick rims, darker than the floor.
 ## First row of a wall tile that is mostly painted (tall walls like the mill's have a transparent top).
 static func first_opaque_row(t: Texture2D) -> int:
 	var key := "row:" + t.resource_path
@@ -381,6 +439,8 @@ static func first_opaque_row(t: Texture2D) -> int:
 	return row
 
 
+## Side walls and a front lip so the room is a room, not a floating rug: the
+## wall's own top moulding turned into thick rims, darker than the floor.
 func _draw_side_walls(wl: String) -> void:
 	var trim := Art.tex("tiles", wl + "_m")
 	var ty := float(first_opaque_row(trim)) if trim else 0.0
@@ -392,7 +452,8 @@ func _draw_side_walls(wl: String) -> void:
 		for y in range(2, rows):
 			var r := Rect2(x0, y * TILE, 8, TILE)
 			if trim:
-				draw_texture_rect_region(trim, r, Rect2(0, ty, 32, 12), Color(0.8, 0.75, 0.7))
+				# One small square of the moulding (the whole 32x12 squeezed to 8x16 reads as candy stripes).
+				draw_texture_rect_region(trim, r, Rect2(12, ty + 2, 8, 8), Color(0.8, 0.75, 0.7))
 			else:
 				draw_rect(r, rim)
 			# A soft shadow the wall throws onto the floor.
@@ -406,7 +467,7 @@ func _draw_side_walls(wl: String) -> void:
 		elif x == cols - 1:
 			r2 = Rect2((cols - 1) * TILE, (rows - 1) * TILE, 8, 8)
 		if trim:
-			draw_texture_rect_region(trim, r2, Rect2(0, ty, 32, 12), Color(0.8, 0.75, 0.7))
+			draw_texture_rect_region(trim, r2, Rect2(12, ty + 2, 8, 8), Color(0.8, 0.75, 0.7))
 		else:
 			draw_rect(r2, rim)
 	# Under the back wall: a shadow line where it meets the floor.
@@ -426,6 +487,8 @@ func draw_map() -> void:
 	for r in I.get("rugs", []):
 		draw_tileset_rect(str(r["tile"]), Rect2i(int(r["rect"][0]), int(r["rect"][1]), int(r["rect"][2]), int(r["rect"][3])), Color("b03a2e"))
 	var windows: Array = I.get("windows", [4, cols - 5])
+	var night := GameState.is_night()
+	var night_glass := night and Art.has("furniture", "window_night")
 	for x in range(1, cols - 1):
 		var part: String = "_l" if x == 1 else ("_r" if x == cols - 2 else ["_m", "_m2", "_m3"][x % 3])
 		if x in windows and Art.has("tiles", wl + "_window"):
@@ -435,13 +498,17 @@ func draw_map() -> void:
 			part = "_corner" if part in ["_l", "_r"] and Art.has("tiles", wl + "_corner") else "_m"
 		var t := Art.tex("tiles", wl + part)
 		if t and part == "_corner" and x == cols - 2:
-			draw_texture_rect(t, Rect2((x + 1) * TILE, 0, -TILE, TILE * 2), false)
+			# Mirror with a transform (a negative-width rect lands one cell to the right).
+			draw_set_transform(offset() + Vector2((x + 1) * TILE, 0), 0.0, Vector2(-1, 1))
+			draw_texture_rect(t, Rect2(0, 0, TILE, TILE * 2), false)
+			draw_set_transform(offset())
 		elif t:
 			draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
+			if night_glass and part == "_window":
+				Art.draw_prop(self, "furniture", "window_night", Vector2(x * TILE + 8, 2 * TILE - 4))  # dark glass after dark
 		else:
 			draw_rect(Rect2(x * TILE, 0, TILE, TILE * 2), Color("c9b08a"))
 	_draw_side_walls(wl)
-	var night := GameState.is_night()
 	if not Art.has("tiles", wl + "_window"):
 		for wx in windows:
 			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(int(wx) * TILE + 8, 2 * TILE))
@@ -471,12 +538,14 @@ func _counter(shop: String) -> void:
 		hud.toast("Closed today: everyone's at the %s on the plaza." % GameState.festival_name(GameState.festival_today()), Color(1, 0.85, 0.7))
 		return
 	# The keeper is out (Maple at her market stall...): say so, and serve yourself.
+	var keeper_out := false
 	if shop != "":
 		var keeper := ""
 		for n in I.get("npcs", []):
 			keeper = str(n["id"])
 			break
 		if keeper != "" and not npcs.any(func(x: Npc) -> bool: return x.id == keeper):
+			keeper_out = true
 			hud.toast("%s is out. Take what you need and leave the crystals by the till." % str(GameState.npcs.get(keeper, {}).get("name", keeper.capitalize())), Color(1, 0.9, 0.7))
 	if shop == "hall":
 		await Shops.hall(self)
@@ -486,16 +555,16 @@ func _counter(shop: String) -> void:
 		if shop == "smith":
 			ch.append("Upgrade a tool")
 		ch.append("Leave")
-		d.say([{"who": "Gideon" if shop == "smith" else "Wren", "text": "Buying, or making something?", "choice": ch, "key": ""}])
+		d.say([{"who": "" if keeper_out else ("Gideon" if shop == "smith" else "Wren"), "text": "The shop's empty. Buy off the tags, or use the bench?" if keeper_out else "Buying, or making something?", "choice": ch, "key": ""}])
 		await d.finished
 		if d.last_choice == 0:
-			await Shops.run(self, shop)
+			await Shops.run(self, shop, keeper_out)
 		elif d.last_choice == 1:
 			await Crafting.run(self, "smith" if shop == "smith" else "alchemy", "Gideon's Forge" if shop == "smith" else "Wren's Cauldron", "town")
 		elif d.last_choice == 2 and shop == "smith":
 			await _upgrade_tools()
 	elif shop != "":
-		await Shops.run(self, shop)
+		await Shops.run(self, shop, keeper_out)
 
 
 ## Gideon's upgrade bench: every tool climbs wood → copper → iron → steel →

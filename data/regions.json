@@ -820,7 +820,7 @@
      54,
      21
     ],
-    "shore": "sand"
+    "shore": "quay"
    }
   ],
   "layers": [
@@ -1074,6 +1074,15 @@
    }
   ],
   "gen": {
+   "region_props": [
+    "crates_a",
+    "crates_pallet",
+    "barrel_a",
+    "bollard_a",
+    "rope_coil",
+    "oil_drums"
+   ],
+   "region_count": 18,
    "critters": [
     "seagull",
     "seagull",
@@ -1191,7 +1200,8 @@
    "catfish"
   ],
   "fruit": 0,
-  "ground_seam": "pier_concrete"
+  "ground_seam": "pier_concrete",
+  "border_water_shore": "quay"
  },
  "neon": {
   "cols": 50,
@@ -1592,7 +1602,7 @@
     "win": "The flames go out. Under the dragon sign, a crowd that was pretending not to watch starts, very quietly, to clap.",
     "reward": "crystal_refined",
     "reward_n": 3,
-    "after": "The neon district breathes easier. Dice says word travels to the uptown crews now.",
+    "after": "The neon district breathes easier. Word travels to the uptown crews now.",
     "hint": "A: Flame",
     "solid": false,
     "when": {
@@ -2301,6 +2311,7 @@
   "music": "farm",
   "backdrop": "mountains",
   "ground": "shoulder",
+  "ground_seam": "dry_grass",
   "path": "highway",
   "spawn": [
    16,
@@ -2603,6 +2614,7 @@
   "music": "sky",
   "backdrop": "hills",
   "ground": "cloud",
+  "ground_seam": "cloud",
   "path": "float_stone",
   "pet": false,
   "spawn": [
@@ -2762,9 +2774,12 @@
     "skydeco_1",
     "skydeco_2",
     "skydeco_3",
-    "skydeco_4"
+    "skydeco_4",
+    "cloud_tree_a",
+    "cloud_tree_b",
+    "cloud_tree_c"
    ],
-   "region_count": 18,
+   "region_count": 32,
    "critters": [
     "eagle",
     "butterfly_blue"
@@ -2831,7 +2846,7 @@
     "kind": "knight",
     "who": "Crystal Knight",
     "text": "...",
-    "win": "The knight shatters into blue-white glass that melts into the clouds. Where it stood, a crystal the size of your fist. Warm.",
+    "win": "The knight's armour shatters into blue-white glass that melts into the clouds. For a moment a small grey shape stands in the frost, blinking; then it waddles off into the cloud and is gone. Where the knight stood, a crystal the size of your fist. Warm.",
     "win_reverted": "The glass falls away like frost off a window. An old penguin stands where the knight was, blinking at the sky. At his feet, a crystal the size of your fist. Warm.",
     "reward": "crystal_refined",
     "reward_n": 2,
@@ -3856,7 +3871,13 @@
    }
   ],
   "patch_set": "track",
-  "ground_threshold": 0.12
+  "ground_threshold": 0.12,
+  "deco_keep": [
+   0,
+   1,
+   2,
+   3
+  ]
  },
  "highlands": {
   "cols": 52,
@@ -4237,7 +4258,10 @@
    }
   ],
   "patch_set": "snowpatch",
-  "ground_threshold": 0.0
+  "ground_threshold": 0.0,
+  "deco_keep": [
+   0
+  ]
  },
  "ruins": {
   "cols": 48,
@@ -4623,7 +4647,8 @@
    }
   ],
   "patch_set": "ruinfloor",
-  "ground_threshold": 0.12
+  "ground_threshold": 0.12,
+  "deco_keep": []
  },
  "quarry": {
   "cols": 52,
@@ -5094,7 +5119,8 @@
    }
   ],
   "patch_set": "ruinfloor",
-  "ground_threshold": 0.12
+  "ground_threshold": 0.12,
+  "deco_keep": []
  },
  "marsh": {
   "cols": 52,
@@ -5496,7 +5522,13 @@
   "deco_set": "rdeco_marsh",
   "deco_count": 25,
   "ground_threshold": 0.12,
-  "patch_set": "bog"
+  "patch_set": "bog",
+  "deco_keep": [
+   12,
+   13,
+   14,
+   23
+  ]
  },
  "riverlands": {
   "cols": 52,
@@ -5568,9 +5600,9 @@
     16
    ],
    [
-    8,
+    20,
     6,
-    18,
+    6,
     2
    ]
   ],
@@ -5829,7 +5861,12 @@
   "deco_set": "rdeco_riverlands",
   "deco_count": 12,
   "patch_set": "track",
-  "ground_threshold": 0.12
+  "ground_threshold": 0.12,
+  "deco_keep": [
+   0,
+   1,
+   2
+  ]
  },
  "bf_frostfield": {
   "cols": 110,
@@ -7905,7 +7942,8 @@
   "intro": [
    "Careful, the sand is hot. It's always been hot. Now it's angry."
   ],
-  "colony": "colony_ember"
+  "colony": "colony_ember",
+  "ground_seam": "ash"
  },
  "hollow_heart": {
   "cols": 76,

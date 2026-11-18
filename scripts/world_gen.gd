@@ -57,7 +57,7 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 			# Some of the ground life is real forage you can pick (respawns daily).
 			if r < density * 0.05 and m.resources_here and not m.things.has(c):
 				var key := "fg_%s_%d_%d" % [m.scene_id(), x, y]
-				if int(GameState.run["flags"].get(key, -9)) < int(GameState.run["day"]) - 1:
+				if GameState.respawned(key, 2):  # Honey Sense shortens it
 					var item: String = {"spring": "flower", "summer": "wild_herb", "fall": "mushroom", "winter": "wild_leek"}.get(season, "mushroom")
 					if season == "fall" and rng.randf() < 0.03 and GameState.skill_level("foraging") >= 5:
 						item = "truffle"
@@ -96,7 +96,6 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var wx := GameState.weather_today()
 	var winter := GameState.season() == "winter"
 	var wet := GameState.is_wet()
 	if not wet and not winter:
@@ -107,11 +106,8 @@ static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) ->
 		if m.blocked.has(c) or m.things.has(c) or avoid.has(c) or m.is_water_cell(c):
 			continue
 		if wet and Art.has("props", "puddle_0"):
-			var nm := "puddle_storm_%d" % rng.randi_range(0, 3) if wx == "storm" and Art.has("props", "puddle_storm_0") else "puddle_%d" % rng.randi_range(0, 5)
-			if nm.begins_with("puddle_storm"):
-				m.prop("props", nm, c, 0, 0.0, false)
-			else:
-				m.anim_prop("props", nm, c, 0, 3.0)
+			# (puddle_storm_N art is a solid magenta blob: plain puddles until it's redone.)
+			m.anim_prop("props", "puddle_%d" % rng.randi_range(0, 5), c, 0, 3.0)
 		elif winter and Art.has("props", "snowdrift_0"):
 			m.prop("props", "snowdrift_%d" % rng.randi_range(0, 5), c, 0, 0.0, false)
 
@@ -186,7 +182,7 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 			m.prop("nature", nm if Art.has("nature", nm) else "stump", c)
 		else:
 			var key := "bush_%s_%d_%d" % [m.scene_id(), c.x, c.y]
-			var has := int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
+			var has := GameState.respawned(key, 3)  # berries come back every 3 days (was daily: a jam battery)
 			m.set_thing(c.x, c.y, {"type": "bush", "key": key, "berries": has, "hint": "A: pick berries" if has else ""})
 			m.prop("nature", GameState.bush_sprite(has), c)
 

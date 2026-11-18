@@ -84,6 +84,9 @@ static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 			if GameState.count("crystal_refined") < 1:
 				m.hud.toast("The beacon needs a Refined Crystal to catch.", Color(1, 0.85, 0.6))
 				return true
+			if GameState.count("crystal_refined") <= 3 and GameState.has_quest("teleporter") and not GameState.quest_done("teleporter"):
+				m.hud.toast("Keep 3 Refined Crystals for the moon teleporter. Bring a fourth.", Color(1, 0.85, 0.6))
+				return true
 			GameState.add_item("crystal_refined", -1)
 			s["beacons"][key] = true
 			GameState.add_arc_xp(15)
@@ -102,7 +105,6 @@ static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 				var sp := m.props[bc] as Sprite2D
 				if sp:
 					sp.texture = Art.tex("props", onn)
-			m.queue_redraw()
 			return true
 		"star_crystal":
 			m.later(func() -> void: await _crystal(m, region_id))

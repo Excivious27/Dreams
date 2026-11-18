@@ -27,6 +27,8 @@ static func met() -> int:
 static func on_enter(m: GameMap) -> void:
 	if not Racket.on() or m.player == null:
 		return
+	if m.scene_id() == "hideout" and not GameState.run["flags"].has("st_g2_arrive"):
+		return  # not during the first walk into town
 	for id: String in all():
 		var d: Dictionary = all()[id]
 		if str(d["scene"]) != m.scene_id() or state(id) != "":
@@ -66,6 +68,8 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 		e._gift.queue_free()
 		e._gift = null
 	e.modulate.a = 1.0
+	if e._sprite:
+		e._sprite.modulate.a = 1.0
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
 	m.xp("combat", int(GameState.enemy_data["enemies"]["marked_" + id].get("xp", 40)))
 	Music.instance(m.get_tree()).sfx("boss_down")

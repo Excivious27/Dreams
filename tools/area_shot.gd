@@ -34,6 +34,11 @@ func _run() -> void:
 			if d.active:
 				d._advance(); await process_frame; await process_frame
 		var m := current_scene as GameMap
+		GameState.run["hp"] = int(GameState.run["max_hp"])
+		GameState.run["energy"] = int(GameState.run["max_energy"])
+		if m.player and m.is_water_cell(m.world_to_cell(m.player.position)):
+			print("area_shot: %s is water, skipped" % args[i])
+			continue
 		for e in m.enemies:
 			if is_instance_valid(e):
 				e.queue_free()

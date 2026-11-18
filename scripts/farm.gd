@@ -19,6 +19,9 @@ const TOWN_EXIT := Rect2i(34, 58, 4, 2)
 const MEADOW_EXIT := Rect2i(70, 28, 2, 4)
 const FOREST_EXIT := Rect2i(34, 0, 4, 2)
 const LAKE_EXIT := Rect2i(0, 28, 2, 4)
+## Animal pens (kept clear of debris; the barn pen stops short of the cliff at x38).
+const COOP_PEN := Rect2i(26, 9, 6, 3)
+const BARN_PEN := Rect2i(32, 6, 5, 3)
 ## Buildable things: name -> {cell, w, h, cost, group, sprite, thing}
 const BUILDS := {
 	"workbench": {"cell": Vector2i(6, 13), "w": 1, "h": 1, "cost": {"wood": 20}, "group": "props", "sprite": "workbench3", "thing": "workbench", "label": "Workbench (20 wood)"},
@@ -95,7 +98,7 @@ func build() -> void:
 		_ledge_cells[c] = true
 		blocked[c] = true
 	# Paths (dirt): door to south exit, and the east-west track.
-	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(35, 2, 2, 28), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
+	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(37, 2, 1, 10), Rect2i(36, 12, 2, 18), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
 	for c: Vector2i in _pond_cells:
 		_path_cells.erase(c)
 	# Everything you've built so far.
@@ -146,6 +149,8 @@ func _place_debris() -> void:
 				continue
 			if HOUSE.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3:
 				continue
+			if (Builds.is_built("coop") and COOP_PEN.has_point(c)) or (Builds.is_built("barn") and BARN_PEN.has_point(c)) or (Builds.is_built("greenhouse") and GameState.GREENHOUSE_PLOT.has_point(c)):
+				continue
 			var near_pond := false
 			for pc: Vector2i in _pond_cells:
 				if pc.distance_to(c) < 2.0:
@@ -180,7 +185,7 @@ func _place_debris() -> void:
 				blocked[c] = true
 			else:
 				var key := "bush_farm_%d_%d" % [c.x, c.y]
-				var has := int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
+				var has := GameState.respawned(key, 3)  # every 3 days, like the wild bushes
 				things[c] = {"type": "bush", "key": key, "berries": has, "hint": "A: pick berries" if has else ""}
 				blocked[c] = true
 
@@ -331,6 +336,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"resonator":
 			_resonator(sel)
 			return true
+		"silo":
+			_silo(sel)
+			return true
+		"coop":
+			_coop(sel)
+			return true
 		"plans":
 			_plans()
 			return true
@@ -351,8 +362,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			# Open grass in front of you: farm it (hoe / seeds / water / harvest).
 			if _tillable(c) and _farm_tile(c, sel):
 				return true
-	# Nothing in front of you: eat/drink what you hold.
-	return use_consumable(sel)
+	# Nothing in front of you: eat/drink what you hold. Anything else (animals,
+	# weeds, rocks, trees...) goes on to interact_common instead of eating.
+	return thing.is_empty() and use_consumable(sel)
 
 
 ## Any free grass cell inside the field can be tilled, Stardew-style.
@@ -368,7 +380,7 @@ func _build_rec(id: String) -> Dictionary:
 	var td := Builds.current_def(id)
 	if td.is_empty():
 		return {}
-	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", "")), "label": str(bd.get("label", id))}
+	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo"}.get(id, ""))), "label": str(bd.get("label", id))}
 	if bd.has("anim"):
 		rec["anim"] = str(bd["anim"])
 	return rec
@@ -448,11 +460,12 @@ func _plans() -> void:
 		var parts: Array = []
 		for need in nd2.get("cost", {}):
 			var c2 := Builds.cost_of(nd2)
-			parts.append("%d/%d %s" % [mini(GameState.count(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
+			parts.append("%d/%d %s" % [mini(Builds._bag_free(str(need)) + Storage.total(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
 		var g2 := Builds.gate(id)
 		var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
 		if int(nd2.get("days", 0)) > 0:
-			text += "\nTakes %d day%s." % [int(nd2["days"]), "" if int(nd2["days"]) == 1 else "s"]
+			var dd := maxi(0, int(nd2.get("days", 0)) - int(GameState.bonus("building", "quick_build")))
+			text += ("\nTakes %d day%s." % [dd, "" if dd == 1 else "s"]) if dd > 0 else "\nReady at once (Quick Build)."
 		var ch: Array = []
 		var acts: Array = []
 		if g2 != "":
@@ -566,6 +579,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			n += 2
 			hud.toast("★ Star-quality harvest!", Color(1, 0.95, 0.5))
 		pop_items(cell_center(c), str(cd["yield"]), n)  # the crop hops out to you
+		if str(cd["yield"]) == "wheat" and (not Net.online() or Net.is_host()):
+			Builds.silo_add(1)  # chaff goes to the silo
 		# Quality: farming skill and fertiliser raise the odds of silver and gold.
 		var flv := GameState.skill_level("farming")
 		var fert := bool(tile.get("fert", false))
@@ -729,7 +744,7 @@ func _sellbox(sel: String) -> void:
 		for id in box:
 			total += GameState.sell_price(id, int(box[id]))
 		var txt := "In the box: %s. Worth ◆%d, paid tonight." % [", ".join(box.keys().map(func(k: String) -> String: return "%s x%d" % [GameState.item_name(k), int(box[k])])), total]
-		if Net.online():
+		if Net.online() and not Net.is_host():
 			await say([{"text": txt}])
 			return
 		# Changed your mind? Everything comes back out before the night's pickup.
@@ -904,6 +919,57 @@ func _daily_pickup(key: String, item: String, wait_msg: String) -> void:
 		hud.toast(wait_msg)
 
 
+## The Silo: store held hay, or take 20 out. Scythed hay and wheat chaff go in by themselves.
+func _silo(sel: String) -> void:
+	if Net.online() and not Net.is_host():
+		hud.toast("The host keeps the silo.")
+		return
+	var have := Builds.silo_hay()
+	var cap := Builds.silo_cap()
+	if sel == "hay" and GameState.count("hay") > 0 and not GameState.is_locked("hay"):
+		var n := mini(GameState.count("hay"), cap - have)
+		if n <= 0:
+			hud.toast("The silo is full (%d hay)." % cap)
+			return
+		GameState.add_item("hay", -n)
+		GameState.run["silo"] = have + n
+		hud.toast("Stored %d hay. Silo: %d/%d." % [n, have + n, cap], Color(0.9, 1, 0.8))
+		return
+	var take := mini(20, have)
+	if take <= 0:
+		hud.toast("The silo is empty. Scythe weeds or grow wheat to fill it.")
+		return
+	GameState.run["silo"] = have - take
+	give("hay", take)
+	hud.toast("Took %d hay. Silo: %d/%d." % [take, have - take, cap])
+
+
+## The Big Coop's incubator: hold an egg and tap the coop; a chick in 3 days.
+func _coop(sel: String) -> void:
+	if Builds.built_tier("coop") < 2:
+		hud.toast("The hens cluck at you. (The Big Coop has an incubator.)")
+		return
+	if Net.online() and not Net.is_host():
+		hud.toast("The host minds the incubator.")
+		return
+	var hatch: Array = GameState.run.get("coop_hatch", [])
+	var day := int(GameState.run["day"])
+	for hd in hatch:
+		if int(hd) > day:
+			hud.toast("An egg is warming: %d more day%s." % [int(hd) - day, "" if int(hd) - day == 1 else "s"])
+			return
+	if hatch.size() >= 4:
+		hud.toast("The coop is full.")
+		return
+	if sel != "egg" or GameState.count("egg") <= 0:
+		hud.toast("Hold an egg and tap the coop to hatch a chick (3 days).")
+		return
+	GameState.add_item("egg", -1)
+	hatch.append(day + 3)
+	GameState.run["coop_hatch"] = hatch
+	hud.toast("The egg is in the incubator. A chick in 3 days.", Color(0.9, 1, 0.8))
+
+
 func _keg(sel: String) -> void:
 	var keg: Dictionary = GameState.run["flags"].get("keg", {})
 	var day := int(GameState.run["day"])
@@ -1062,7 +1128,17 @@ func _intro_gangsters(n: Dictionary) -> void:
 
 func draw_map() -> void:
 	draw_grass(1)
-	WorldGen.draw_ground_detail(self, 21, 0.05)
+	# No decor, forage, puddles or drifts on tilled soil, paths or the greenhouse plot.
+	var av := {}
+	for k in GameState.run["farm"]:
+		var kp := str(k).split(",")
+		av[Vector2i(int(kp[0]), int(kp[1]))] = true
+	for pc: Vector2i in _path_cells:
+		av[pc] = true
+	if Builds.is_built("greenhouse"):
+		for gc: Vector2i in cells_of([GameState.GREENHOUSE_PLOT]):
+			av[gc] = true
+	WorldGen.draw_ground_detail(self, 21, 0.05, av)
 	draw_ground("dirt", _path_cells)
 	# Terrace: a lighter, drier grass up top and a cliff lip along the ledge.
 	draw_ground("stone", cells_of([Rect2i(LEDGE_X0 + 1, 1, 6, 3)]))
@@ -1075,11 +1151,6 @@ func draw_map() -> void:
 		for y in range(0, 3):
 			top[Vector2i(LEDGE_X0, y)] = true
 		draw_plateau(top, "cliffg", {Vector2i(STAIRS_X, LEDGE_Y): true, Vector2i(STAIRS_X + 1, LEDGE_Y): true})
-	else:
-		for c: Vector2i in _ledge_cells:
-			var t := Art.tex("tiles", "cliff2_1")
-			if t:
-				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
 	if not Art.has("tiles", "t_cliffg"):
 		Art.draw_prop(self, "props", "cliff_stairs_down", Vector2((STAIRS_X + 1) * TILE, (LEDGE_Y + 1) * TILE))
 	draw_exits()
@@ -1162,11 +1233,23 @@ func _place_props() -> void:
 		else:
 			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]))
 	if builds.has("coop"):
-		var pen := Rect2i(26, 9, 6, 3)
+		var pen := COOP_PEN
 		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick", Vector2i(28, 11), pen, true)
+		if Builds.built_tier("coop") >= 2:
+			# The Big Coop: two more hens, two ducks, and the incubator's chicks.
+			_animal("chicken", Vector2i(26, 10), pen); _animal("chicken", Vector2i(31, 10), pen); _animal("duck2", Vector2i(27, 11), pen); _animal("duck2", Vector2i(29, 11), pen)
+			var hatch: Array = GameState.run.get("coop_hatch", [])
+			for hi in hatch.size():
+				var hd := int(hatch[hi])
+				if int(GameState.run["day"]) >= hd:
+					var young := int(GameState.run["day"]) < hd + 7
+					_animal("chick" if young else "chicken", Vector2i(26 + hi, 9), pen, young)
 	if builds.has("barn"):
-		var pen := Rect2i(32, 6, 8, 3)
-		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf", Vector2i(38, 8), pen, true); _animal("lamb", Vector2i(36, 7), pen, true)
+		var pen := BARN_PEN
+		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf", Vector2i(35, 7), pen, true); _animal("lamb", Vector2i(36, 7), pen, true)
+		if Builds.built_tier("barn") >= 2:
+			# The Big Barn: goats and a llama.
+			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(35, 8), pen); _animal("goat_kid", Vector2i(33, 6), pen, true)
 	# Debris sprites for the things placed in build().
 	var season := GameState.season()
 	for c: Vector2i in things.keys():

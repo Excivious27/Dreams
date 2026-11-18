@@ -67,6 +67,9 @@ var _summoned := {}
 var _tele_flash := 0.0   # a short telegraph icon after blink / summon
 var _tele_name := ""
 var _aura: AnimatedSprite2D = null   # shield / enrage overlay from fx
+var _los_t := 0.0
+var _los_ok := true
+var _chase_t := 0.0    # still hunting you a moment after a detour round a wall
 
 
 func _set_aura(name: String) -> void:
@@ -150,7 +153,7 @@ func setup(k: String, tier_override := -1) -> void:
 		reward = int(round(int(ed["reward"]) * (GameState.tier_scale(k, tier, "loot") if tier != native else 1.0)))
 	abilities = (ed.get("abilities", []) as Array).duplicate()
 	for a in tw.get("abilities", []):
-		if a == "ranged" and (abilities.has("lunge") or abilities.has("stomp") or PACK_KINDS.has(k)):
+		if a == "ranged" and ((ed.get("abilities", []) as Array).has("lunge") or (ed.get("abilities", []) as Array).has("stomp") or PACK_KINDS.has(k)):
 			continue  # bruisers stay bruisers
 		if tier > native and not abilities.has(a):
 			abilities.append(a)
@@ -181,7 +184,11 @@ func setup(k: String, tier_override := -1) -> void:
 		anims["walk"] = "walk" if Art.has(group, "walk") else "idle"
 		if Art.has(group, "attack"):
 			anims["attack"] = "attack"
-		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0}, {"attack": false, "hurt": false})
+		elif Art.has(group, "special"):
+			anims["attack"] = "special"
+		if Art.has(group, "die"):
+			anims["die"] = "die"
+		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0, "die": 10.0}, {"attack": false, "hurt": false, "die": false})
 		_sprite.animation = "idle"
 		var s := 0.5 if k != "big_grump" else 1.1
 		_sprite.scale = Vector2(s, s)
@@ -269,6 +276,14 @@ func _process(delta: float) -> void:
 	var stunned := _stun > 0.0
 	if not stunned and _windup <= 0.0:
 		var sight := 80.0
+		# Something solid between us: path round it, and don't lose interest on the detour.
+		_los_t -= delta
+		if _los_t <= 0.0:
+			_los_t = 0.25
+			_los_ok = dist > 150.0 or _walk_clear(position, tgt.position)
+		if _noticed and (not _los_ok or _chase_t > 0.0):
+			sight = 140.0
+		_chase_t = 3.0 if (_noticed and not _los_ok) else maxf(0.0, _chase_t - delta)
 		if tgt == player and Perks.flag("quiet_steps"):
 			sight = 58.0
 		if tgt == player and kind.contains("wisp") and Perks.flag("wisp_safe") and hp >= max_hp:
@@ -286,6 +301,9 @@ func _process(delta: float) -> void:
 				map.emote(self, "surprise", 0.8, -26.0)
 				Music.instance(get_tree()).sfx("alert")
 			_dir = to.normalized()
+			# A wall between us: walk round it on the flow field instead of pressing into it.
+			if not _los_ok:
+				_dir = map.flow_dir(position, (tgt.position - map.offset()).snapped(Vector2(32, 32)) + map.offset())
 			# Wolves and hounds circle you before they lunge, instead of walking into your sword.
 			if kind in PACK_KINDS and dist < 48.0 and dist > reach and _lunge_cd > 0.0:
 				_dir = to.normalized().orthogonal() * (1.0 if get_instance_id() % 2 == 0 else -1.0)
@@ -549,6 +567,8 @@ func _shoot(dir: Vector2) -> void:
 	if _sprite and _sprite.sprite_frames.has_animation("attack"):
 		_sprite.play("attack")
 		_attacking = 0.4
+	if map.player and position.distance_to(map.player.position) < 170.0:
+		Music.instance(get_tree()).sfx("shot" if sh.flavour == "dark" and Racket.on() else "zap", "thud")
 
 
 func _blink() -> void:
@@ -566,10 +586,10 @@ func _blink() -> void:
 
 
 func _summon() -> void:
-	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp", "prism_wisp": "shard", "light_eater": "dark_crystal_shard"}.get(kind, "")
+	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp", "prism_wisp": "shard", "light_eater": "dark_crystal_shard", "finargle_elder": "finargle"}.get(kind, "")
 	if minion == "":
 		# Not in the table: ordinary foes call their own kind; big ones call arc grunts.
-		minion = kind if base_hp < 60 else ("slime" if GameState.is_penguins() else "thug_cyber")
+		minion = kind if base_hp < 60 and _gift == null and not has_meta("story_flag") and not has_meta("boss_name") and not is_guardian else ("slime" if GameState.is_penguins() else "thug_cyber")
 	if minion == "shard" and not GameState.is_penguins():
 		minion = "thug_cyber"
 	map.fx("summon" if Art.has("fx", "summon") else "poof", position, 12.0, 0.7)
@@ -654,12 +674,36 @@ func _die() -> void:
 	Music.instance(get_tree()).sfx("boss_down" if big else "thud")
 	if big:
 		map.shake(5.0)
+	# Sheets with a "die" strip play it, then fade; the rest get the squash.
+	if _sprite and _sprite.sprite_frames.has_animation("die"):
+		_sprite.play("die")
+		var sf := _sprite.sprite_frames
+		var dur := clampf(sf.get_frame_count("die") / maxf(1.0, sf.get_animation_speed("die")), 0.3, 1.2)
+		var tw2 := create_tween()
+		tw2.tween_property(self, "position", position + _knock.normalized() * 6.0, 0.15)
+		tw2.tween_interval(maxf(0.0, dur - 0.15))
+		tw2.tween_property(self, "modulate:a", 0.0, 0.25)
+		tw2.tween_callback(queue_free)
+		return
 	var tw := create_tween()
 	tw.set_parallel(true)
 	tw.tween_property(self, "position", position + _knock.normalized() * 10.0, 0.2)
 	tw.tween_property(self, "scale", Vector2(1.4, 0.1), 0.2)
 	tw.tween_property(self, "modulate:a", 0.0, 0.2)
 	tw.chain().tween_callback(queue_free)
+
+
+## Nothing a walker bumps into between a and b (water counts, unlike line_clear).
+func _walk_clear(a: Vector2, b: Vector2) -> bool:
+	var d := b - a
+	var steps := int(d.length() / 4.0)
+	var ca := map.world_to_cell(a)
+	var cb := map.world_to_cell(b)
+	for i in range(1, steps):
+		var c := map.world_to_cell(a + d * (float(i) / steps))
+		if c != ca and c != cb and map.blocked.has(c):
+			return false
+	return true
 
 
 func _draw() -> void:

@@ -33,7 +33,12 @@ static func _save_now_js(_args: Array) -> void:
 	var sc := (Engine.get_main_loop() as SceneTree).current_scene
 	if sc is GameMap and (sc as GameMap)._transitioning:
 		return  # mid door: the next map saves itself once it's in
-	if not GameState.run.is_empty():
+	if GameState.run.is_empty():
+		return
+	# Hide/update banner: record where you stand too, like the focus/close path.
+	if sc is GameMap and not (sc as GameMap)._changing:
+		(sc as GameMap).save_here()
+	else:
 		GameState.save()
 
 
@@ -70,6 +75,8 @@ static func load_all() -> Dictionary:
 	var lsd: Variant = _ls_read()
 	if lsd is Dictionary and (not parsed is Dictionary or int((lsd as Dictionary).get("_saved_at", 0)) > int((parsed as Dictionary).get("_saved_at", 0))):
 		# The browser copy is newer (the page closed before the file synced).
+		if not parsed is Dictionary and FileAccess.file_exists(PATH):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))  # never rotate a corrupt file onto the backup
 		parsed = lsd
 	if parsed is Dictionary:
 		_cache = parsed

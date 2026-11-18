@@ -51,6 +51,11 @@ static func talk(m: GameMap, id: String) -> bool:
 		for l in lines:
 			if l.has("text_gangsters"):
 				l["text"] = l["text_gangsters"]
+	# "if_gone": {who: text} when the story sent that villager away.
+	for l in lines:
+		for who in (l.get("if_gone", {}) as Dictionary):
+			if GameState.run["flags"].has(str(who) + "_gone"):
+				l["text"] = str(l["if_gone"][who])
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
 	m.hud.toast("%s ♥%d" % [name, n], Color(1, 0.8, 0.9))
 	await m.say(lines)
@@ -80,7 +85,10 @@ static func daily(id: String) -> String:
 	var lv := seen_level(id)
 	if lv == 0:
 		return ""
-	return str((data()[id].get("after", {}) as Dictionary).get(str(lv), ""))
+	var after: Dictionary = data()[id].get("after", {})
+	if not GameState.is_penguins():
+		after = after.merged(data()[id].get("after_gangsters", {}), true)
+	return str(after.get(str(lv), ""))
 
 
 ## For the endings: what each villager at ♥10 would do.

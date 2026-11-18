@@ -34,7 +34,9 @@ func _overlay() -> Texture2D:
 	if nm == "":
 		return null
 	var nm2 := nm.replace("ov_", "ov2_").replace("ov2_heavy_rain", "ov2_storm")
-	if Art.has("fx", nm2):
+	# These ov2 strips cut their shapes at the 128-px frame edges (a grid of half
+	# blobs once tiled): use the clean ov_ strip when there is one.
+	if Art.has("fx", nm2) and not (Art.has("fx", nm) and weather in ["fireflies", "leaves", "petals", "snow", "blizzard", "ash"]):
 		return Art.tex("fx", nm2)
 	if not Art.has("fx", nm):
 		return null
@@ -71,7 +73,10 @@ func _process(delta: float) -> void:
 	for b: Dictionary in _birds:
 		b["pos"] += b["vel"] * delta
 		b["pos"].y += sin(_t * 2.0 + b["phase"]) * 6.0 * delta
-	_birds = _birds.filter(func(b: Dictionary) -> bool: return b["pos"].x > -40 and b["pos"].x < _w + 40)
+	for i in range(_birds.size() - 1, -1, -1):
+		var bx: float = _birds[i]["pos"].x
+		if bx <= -40 or bx >= _w + 40:
+			_birds.remove_at(i)
 	var pkind := ""
 	match weather:
 		"snow": pkind = "snowflake"
@@ -103,9 +108,14 @@ func _process(delta: float) -> void:
 			_drops[i] += Vector2(-40, 260) * delta
 			if _drops[i].y > _h + 10:
 				_drops[i] = Vector2(randf_range(0, _w + 40), -10)
-	_canvas.queue_redraw()
+	# Clear calm sky: clouds drift a few px/s, so 20 redraws a second is plenty.
+	_redraw_acc += delta
+	if not _drops.is_empty() or not _parts.is_empty() or not _birds.is_empty() or _overlay() != null or aurora or weather in ["wind", "storm"] or _redraw_acc >= 0.05:
+		_redraw_acc = 0.0
+		_canvas.queue_redraw()
 
 
+var _redraw_acc := 0.0
 var _flash_t := 0.0
 var _next_flash := 4.0
 

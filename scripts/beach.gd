@@ -71,7 +71,7 @@ func build() -> void:
 		if things.has(c):
 			continue
 		var key := "forage_beach_%d_%d" % [c.x, c.y]
-		if int(GameState.run["flags"].get(key, -9)) > int(GameState.run["day"]) - 2:
+		if not GameState.respawned(key, 2):  # Honey Sense shortens it
 			continue
 		var item: String = ["seashell", "seashell", "coconut", "fiber"][rng.randi_range(0, 3)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}
@@ -152,6 +152,12 @@ func draw_map() -> void:
 	WorldGen.draw_ground_detail(self, 86, 0.1)
 	# Sand (with grass transition), wet strip, then sea with foam.
 	var sand := _sand.duplicate()
+	# The sand runs on under the side border bands (no straight grass strips down the edges).
+	for y in range(8, rows + pad):
+		for x in range(-pad, cols + pad):
+			var cc := Vector2i(x, y)
+			if not in_content(cc) and _sand.has(Vector2i(clampi(x, 0, cols - 1), clampi(y, 0, rows - 1))):
+				sand[cc] = true
 	for k in things:
 		if str(things[k].get("type", "")) in ["dock", "ferry"] and not _pier_sea.has(k):
 			sand[k] = true
@@ -176,6 +182,17 @@ func draw_map() -> void:
 
 
 ## No seamless sea art: the old per-cell sea with painted foam.
+## Exit corridors: the quarry and marsh exits leave over sand that draw_map already
+## runs under the band (a corridor shape on top drew a box outline); the town lane is dirt.
+func draw_corridor(cells: Dictionary) -> void:
+	var on_grass := {}
+	for c: Vector2i in cells:
+		if not _sand.has(Vector2i(clampi(c.x, 0, cols - 1), clampi(c.y, 0, rows - 1))):
+			on_grass[c] = true
+	if not on_grass.is_empty():
+		draw_ground("dirt", on_grass)
+
+
 func _draw_sea_cells() -> void:
 	_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 		var frame := int(Time.get_ticks_msec() / 250) % 4

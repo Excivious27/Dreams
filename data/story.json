@@ -676,7 +676,7 @@
         1
        ]
       ],
-      "hint": "Coldy joined with the sacred key. The babies picked a new leader. Up: the great tree, then above the clouds.",
+      "hint": "Coldy joined (the sacred key is a keepsake from the babies). Up: the great tree, then above the clouds.",
       "sfx": "levelup"
      }
     },
@@ -855,7 +855,7 @@
       },
       {
        "who": "",
-       "text": "If Nova is with you, she doesn't say anything. She doesn't say anything for a while."
+       "text": "If Nova is with you, she kneels by a line of small webbed footprints leading up into the cloud. 'He ran. He's still in there somewhere. I'll find him.'"
       }
      ],
      "effects": {
@@ -1071,7 +1071,7 @@
        "posy": 10,
        "gideon": 10
       },
-      "hint": "The bell rang. The town will remember that when it counts.",
+      "hint": "The bell rang, and the whole town came to the plaza. (If the fight on the moon is still ahead, they will remember it there.)",
       "sfx": "levelup"
      }
     },
@@ -1095,7 +1095,7 @@
       },
       {
        "who": "Star Crystal",
-       "text": "The pad on the mountain goes to the moon: that IS the top, farmer; the mountain reaches that far. The station, the teleporter, the spire. That's where he is. That's where he's always been."
+       "text": "The pad on the mountain goes to the moon: that IS the top, farmer; the mountain reaches that far. The crystal spire, right there on the moon. That's where he is. That's where he's always been."
       },
       {
        "who": "",
@@ -1103,7 +1103,7 @@
       }
      ],
      "effects": {
-      "hint": "Mountain pad → moon → the teleporter → the spire.",
+      "hint": "Mountain pad → moon → the crystal spire (just north of the teleporter).",
       "heal": true
      }
     }
@@ -1187,7 +1187,8 @@
       "flags": [
        "final_started",
        "fennimore_doubt"
-      ]
+      ],
+      "not_flag": "final_done"
      },
      "after": "p5_spire",
      "lines": [
@@ -1216,7 +1217,8 @@
       "flags": [
        "final_started",
        "bell_rung"
-      ]
+      ],
+      "not_flag": "final_done"
      },
      "after": "p5_spire",
      "lines": [
@@ -1255,7 +1257,8 @@
       "flags": [
        "final_started",
        "auk_ally"
-      ]
+      ],
+      "not_flag": "final_done"
      },
      "after": "p5_spire",
      "lines": [
@@ -1283,7 +1286,8 @@
       "flags": [
        "final_started",
        "bitter_left"
-      ]
+      ],
+      "not_flag": "final_done"
      },
      "after": "p5_spire",
      "lines": [
@@ -1359,7 +1363,8 @@
          {
           "who": "",
           "text": "*...Oh,* says a small voice in your head, and the purple light around Fennimore goes out, and she is just a fuzzy black thing the size of a pumpkin, blinking, with no mouth to say sorry.",
-          "if_flag": "fennimore_turnable"
+          "if_flag": "fennimore_turnable",
+          "unless_flag": "fennimore_free"
          }
         ],
         "1": [
@@ -1369,7 +1374,7 @@
          },
          {
           "who": "Star Crystal",
-          "text": "...It was my brother. It wasn't, at the end. But it was."
+          "text": "...That was my brother. He isn't, right now. But he was, and maybe one day he will be again."
          },
          {
           "who": "Star Crystal",
@@ -1384,6 +1389,10 @@
          "flags": [
           "dc_reverted"
          ],
+         "unflag": [
+          "dc_shattered",
+          "ending_shatter"
+         ],
          "flags_if": {
           "fennimore_turnable": [
            "fennimore_free"
@@ -1395,6 +1404,10 @@
          "ending_title": "The Quiet Mountain",
          "flags": [
           "dc_shattered"
+         ],
+         "unflag": [
+          "dc_reverted",
+          "ending_revert"
          ]
         }
        }
@@ -1509,7 +1522,7 @@
        "choice": [
         "Burn it.",
         "Keep it with the deed.",
-        "Hold it up to the other note."
+        "Hold it up to what you remember of the first note."
        ],
        "key": "photo",
        "branches": {
@@ -1649,7 +1662,7 @@
         "2": [
          {
           "who": "Deuce",
-          "text": "Table's always open."
+          "text": "The deck's always shuffled."
          }
         ]
        },
@@ -2675,7 +2688,8 @@
      "effects": {
       "flags": [
        "tower_open",
-       "tower_quiet"
+       "tower_quiet",
+       "doors_by_sasha"
       ],
       "hint": "The lobby is quiet. Nobody knows you're in."
      }
@@ -2703,6 +2717,44 @@
       {
        "who": "",
        "text": "The doors are brass and twelve feet tall and have a slot in them like a mailbox. The letter has been folded into the deed since the rain."
+      },
+      {
+       "who": "",
+       "text": "It goes in. Somewhere inside, a mechanism turns over once, and the doors open. Nobody fights you."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet",
+       "letter_safe"
+      ],
+      "hint": "The doors are open. The lobby."
+     }
+    },
+    {
+     "id": "g5_doors_kept_m",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flag": "boss_uptown",
+      "quest": "pit",
+      "decision": [
+       "letter",
+       2
+      ],
+      "not_flags": [
+       "letter_sold",
+       "letter_safe",
+       "tower_open"
+      ]
+     },
+     "title_card": true,
+     "lines": [
+      {
+       "who": "",
+       "text": "The doors are brass and twelve feet tall and have a slot in them like a mailbox. The letter is still in your coat, read so many times it's soft."
       },
       {
        "who": "",

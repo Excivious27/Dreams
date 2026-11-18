@@ -19,6 +19,9 @@ var _pet_edit: LineEdit
 
 
 func _ready() -> void:
+	var nn := Net.i()
+	if nn and (nn.online() or nn.room != "" or not nn._solo_backup.is_empty()):
+		nn.leave()  # back at the title: put our own world back before any slot/new/restore
 	Hud.skin_buttons(self)
 	InputSetup.ensure_actions()
 	_arcs = GameState.load_json("res://data/arcs.json")
@@ -38,6 +41,7 @@ func _ready() -> void:
 		sky.overhead = false
 		add_child(sky)
 	Music.instance(get_tree()).play("title")
+	Music.instance(get_tree()).set_duck(0.0)  # night/storm duck from the map
 	var scroll := ScrollContainer.new()
 	_scroll = scroll
 	scroll.set_anchors_preset(PRESET_FULL_RECT)
@@ -84,6 +88,7 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 	b.custom_minimum_size = Vector2(0, 30 if big else 24)
 	b.size_flags_horizontal = SIZE_EXPAND_FILL
 	b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
 	b.pressed.connect(on_press)
 	return b
 
@@ -249,6 +254,7 @@ func _show_arcs() -> void:
 	_clear()
 	_mood(false)
 	Music.instance(get_tree()).play("title")
+	Music.instance(get_tree()).set_duck(0.0)  # night/storm duck from the map
 	_page.add_child(_label("Choose your path", 16))
 	for arc_id: String in _arcs:
 		var arc: Dictionary = _arcs[arc_id]

@@ -373,8 +373,8 @@ func _count_kills() -> void:
 		var e: Variant = _known[k]
 		if not is_instance_valid(e) or not (e as Enemy)._alive:
 			_known.erase(k)
-			if is_instance_valid(e) and (e as Enemy).has_meta("decoy"):
-				continue  # a mirror's reflection is no real kill
+			if is_instance_valid(e) and ((e as Enemy).has_meta("decoy") or (e as Enemy).has_meta("minion")):
+				continue  # a mirror's reflection or a summoned minion is no real kill
 			var was_boss: bool = is_instance_valid(e) and (e as Enemy).has_meta("boss_name")
 			tickets["enemy"] = int(tickets["enemy"]) - (30 if was_boss else 1)
 			_kills += 1

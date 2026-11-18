@@ -196,7 +196,7 @@ func draw_map() -> void:
 
 
 func _place_props() -> void:
-	# Day one: a bed and a dresser. Everything else gets built or bought later.
+	# A bed, a dresser, a stove, and a few plain things so it reads as a home.
 	if not Art.has("furniture", "bed_single"):
 		return
 	var kit := Art.has("furniture", "bed_blue")
@@ -204,6 +204,11 @@ func _place_props() -> void:
 	prop("furniture", "dresser" if kit else "chest_closed", CHEST)
 	if Art.has("furniture", "kitchen_stove"):
 		prop("furniture", "kitchen_stove", Vector2i(13, 9))
+	# Cells kept clear of the bed (3-4,2-3), dresser (12,2), stove (13,9), rug, door (8,11) and windows.
+	for pr: Array in [["lamp_floor", Vector2i(1, 2), 0], ["bookshelf", Vector2i(14, 5), 0], ["table_round_cloth", Vector2i(3, 8), 1],
+			["chair_down", Vector2i(3, 7), 0], ["plant2_a", Vector2i(1, 11), 0], ["plant_a", Vector2i(14, 11), 0]]:
+		if Art.has("furniture", str(pr[0])):
+			prop("furniture", str(pr[0]), pr[1], int(pr[2]))
 
 
 ## The dresser: read the journal or change your look (hair, hat, body).

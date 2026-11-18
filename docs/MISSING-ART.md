@@ -38,8 +38,11 @@ Everything below shows a code-drawn stand-in today.
 
 - none
 
-## Named art the code asks for (3)
+## Named art the code asks for (1)
 
 - props/fountain
-- props/horse3
-- tiles/cliff2_1
+
+## Broken art to redraw (2)
+
+- props/puddle_storm_0..3 (sliced as a solid magenta blob; storms use the plain puddles until redrawn)
+- seamless/teal_moss (wrapping ground texture for colony_kelp)

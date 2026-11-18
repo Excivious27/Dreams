@@ -42,6 +42,8 @@ var _border_open := {}
 ## so no bank line runs across open water where they meet.
 var border_water_extra := {}
 var border_water_shore := ""
+## Footstep word per cell for soft ground patches (paths, sand, groves); player._ground_word reads it.
+var ground_word := {}
 var _ext := Rect2i()          # area added by extend()
 var _ext_paths := {}          # dirt connecting moved exits
 var hitstop := 0.0
@@ -62,6 +64,13 @@ var _deco_rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
+	if _painter_of != null:
+		# The baked-ground painter (see _bake_setup): a drawing-only twin, no game.
+		set_process(false)
+		set_physics_process(false)
+		set_process_input(false)
+		set_process_unhandled_input(false)
+		return
 	GameState.look_season = ""
 	Art.trim_cache()
 	InputSetup.ensure_actions()
@@ -234,6 +243,8 @@ func _place_waiting_horse() -> void:
 
 ## Save when the phone/browser backgrounds the game or the tab closes.
 func _notification(what: int) -> void:
+	if _painter_of != null:
+		return
 	if what in [NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT, NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_WM_GO_BACK_REQUEST]:
 		if not GameState.run.is_empty() and not _changing:
 			save_here()
@@ -496,6 +507,11 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var day := int(GameState.run["day"])
 				var species := str(a.kind).split("_")[0].rstrip("0123456789").capitalize()
 				var fed_now := false
+				# Big Barn auto-feeder: barn animals eat from the silo by themselves.
+				var bird := str(a.kind).begins_with("chicken") or str(a.kind).begins_with("hen") or str(a.kind).begins_with("duck") or str(a.kind) in ["rooster", "chick"]
+				if int(st["fed"]) != day and not bird and Builds.built_tier("barn") >= 2 and Builds.silo_hay() > 0:
+					GameState.run["silo"] = Builds.silo_hay() - 1
+					st["fed"] = day
 				# Holding hay: feed it (once a day), then the same tap pets it.
 				if GameState.held_item() == "hay" and int(st["fed"]) != day:
 					GameState.add_item("hay", -1)
@@ -547,7 +563,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			xp("foraging", 1)
 			# Cut with the scythe, weeds and tall grass make hay for the animals.
 			if ht == "scythe" and randf() < 0.5:
-				pop_items(cell_center(c), "hay", 1)
+				if not Builds.silo_add(1):  # a built silo takes it straight in
+					pop_items(cell_center(c), "hay", 1)
 			# Now and then a weed's roots hold a packet of wild seed.
 			if randf() < 0.06 + 0.01 * GameState.skill_level("foraging"):
 				pop_items(cell_center(c), "seed_packet", 1)
@@ -983,22 +1000,22 @@ func _leaf(at: Vector2) -> void:
 	tw.tween_callback(d.queue_free)
 
 
-## Debris that stays gone: scenes that generate rocks/logs/weeds from a seed skip
-## cells recorded here (GameState.run["cleared"][scene] = ["x,y", ...]).
-## Remember a chopped tree / broken rock per map, with the day it happened, so
-## it stays gone for a while and then regrows (trees 6 days, 2 with Old Growth;
-## rocks 4). Older saves stored a plain list: treat those as day 0.
 ## Tremor (Mining): breaking a rock cracks its 4 neighbours down to one last hit.
-func _tremor(c: Vector2i, swing: int) -> void:
+func _tremor(c: Vector2i, _swing: int) -> void:
 	if GameState.bonus("mining", "tremor") <= 0:
 		return
 	for dv: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
 		var nt: Dictionary = things.get(c + dv, {})
 		if str(nt.get("type", "")) == "rock" and GameState.ore_block(str(nt.get("ore", "stone"))) == "":
-			nt["hp"] = maxi(1, int(nt.get("hp", 2)) - swing)
+			nt["hp"] = mini(int(nt.get("hp", 2)), 1)  # down to one last hit (node text)
 			fx("stone_chips", cell_center(c + dv) + Vector2(0, -8), 16.0, 0.4)
 
 
+## Debris that stays gone: scenes that generate rocks/logs/weeds from a seed skip
+## cells recorded here (GameState.run["cleared"][scene] = ["x,y", ...]).
+## Remember a chopped tree / broken rock per map, with the day it happened, so
+## it stays gone for a while and then regrows (trees 6 days, 2 with Old Growth;
+## rocks 4). Older saves stored a plain list: treat those as day 0.
 func _mark_cleared(c: Vector2i) -> void:
 	var all: Dictionary = GameState.run.get("cleared", {})
 	var lst = all.get(scene_id(), {})
@@ -1062,6 +1079,8 @@ func draw_exits() -> void:
 ## (plus `extra_w` cells to the right for wide props). Returns null if missing.
 ## Animated prop (strip in the manifest) placed like prop(); never solid unless asked.
 func anim_prop(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0, solid := false, scale := 0.5) -> AnimatedSprite2D:
+	if _painter_of != null:  # drawing code that places nodes: they belong to the real map
+		return _painter_of.anim_prop(group, name, c, extra_w, fps, solid, scale)
 	if not Art.has(group, name):
 		return null
 	var a := AnimatedSprite2D.new()
@@ -1147,7 +1166,7 @@ const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "danger",
 	"jungle": "jungle", "marsh": "marsh", "bf_frostfield": "battle", "bf_shattered_vale": "battle", "bf_rail_yards": "battle",
 	"bf_dockside": "battle", "colony_coral": "colony_coral", "colony_kelp": "colony_kelp", "colony_ice": "colony_ice",
 	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart", "moon": "sky"}
-const NIGHT_OK := ["farm", "town", "meadow", "lake", "beach", "mountain", "forest", "orchard_hills", "countryside", "riverlands", "highlands", "crystal_meadow"]
+const NIGHT_OK := ["farm", "town", "meadow", "lake", "beach", "mountain", "forest", "orchard_hills", "countryside", "riverlands", "highlands"]  # not crystal_meadow: cattopia is its song day and night
 
 
 func area_track() -> String:
@@ -1225,6 +1244,8 @@ func sky_tint(t: int) -> Color:
 
 
 func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
+	if _painter_of != null:  # e.g. WorldGen.draw_ground_detail places forage from draw_map
+		return _painter_of.prop(group, name, c, extra_w, dy, solid, scale)
 	var s := Art.sprite(group, name)
 	if s == null:
 		return null
@@ -1284,6 +1305,8 @@ var _building_doors := {}  # every cell a building covers -> its door cell
 
 
 func building(name: String, c: Vector2i, interior := "", hint := "", scale := 1.0) -> Vector2i:
+	if _painter_of != null:
+		return _painter_of.building(name, c, interior, hint, scale)
 	var info := Art.info("buildings", name)
 	var w_cells := maxi(1, int(round(float(info.get("w", 64)) * scale / TILE)))
 	var h_cells := maxi(1, int(round(float(info.get("h", 64)) * scale / TILE)))
@@ -1437,6 +1460,7 @@ func clear_cell(c: Vector2i) -> void:
 
 ## Boss intro card (ui/card_<kind>): slides in over the screen for a couple of seconds.
 func boss_card(kind: String, title := "") -> void:
+	Music.instance(get_tree()).play("boss")  # every boss, mine keepers too (_boss_playing keeps it up)
 	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president" if not GameState.is_penguins() else ""}.get(kind, "")
 	if kind.begins_with("card:"):
 		nm = kind.trim_prefix("card:")
@@ -1457,12 +1481,15 @@ func boss_card(kind: String, title := "") -> void:
 	layer.add_child(tr)
 	var lbl := Label.new()
 	lbl.text = title if title != "" else kind.replace("_", " ").capitalize()
-	lbl.add_theme_font_size_override("font_size", 12)
+	lbl.add_theme_font_size_override("font_size", 11)
 	lbl.add_theme_color_override("font_color", Color(1, 0.95, 0.8))
 	lbl.add_theme_constant_override("outline_size", 3)
 	lbl.add_theme_color_override("font_outline_color", Color(0.1, 0.05, 0.05))
-	lbl.position = Vector2(110, 30)
-	lbl.size = Vector2(130, 30)
+	# The card art is drawn keep-aspect (about x 33-216 of the 250), so the title wraps inside it.
+	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.position = Vector2(112, 18)
+	lbl.size = Vector2(98, 48)
 	if tr.texture and tr.texture.get_height() > tr.texture.get_width() * 0.5:  # a framed portrait card, not a banner
 		tr.custom_minimum_size = Vector2(250, 150)
 		tr.size = Vector2(250, 150)
@@ -1596,6 +1623,19 @@ func line_clear(a: Vector2, b: Vector2) -> bool:
 	return true
 
 
+## Nothing a walker bumps into between a and b (water counts, unlike line_clear).
+func walk_clear(a: Vector2, b: Vector2) -> bool:
+	var d := b - a
+	var steps := int(d.length() / 4.0)
+	var ca := world_to_cell(a)
+	var cb := world_to_cell(b)
+	for i in range(1, steps):
+		var c := world_to_cell(a + d * (float(i) / steps))
+		if c != ca and c != cb and blocked.has(c):
+			return false
+	return true
+
+
 ## Where a line from a toward b first hits something solid (or b).
 func line_end(a: Vector2, b: Vector2) -> Vector2:
 	var d := b - a
@@ -1611,6 +1651,8 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 	Music.instance(get_tree()).sfx("swing")
 	var hit := false
 	var big := false
+	var crit_any := false
+	var blocked := false
 	if from == Vector2.INF:
 		from = player.position
 	for e in enemies.duplicate():
@@ -1632,16 +1674,23 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 				var killed: bool = (not is_instance_valid(e)) or (not e._alive)
 				hitstop = maxf(hitstop, 0.08 if (killed or crit) else 0.035)
 				big = big or killed or crit
+				crit_any = crit_any or crit
 				shake(3.0 if killed else (2.0 if crit else 1.2))
+			else:
+				blocked = true  # shield or GUARD: a 0 pops up, so it shouldn't sound like a whiff
 	if hit:
 		Music.instance(get_tree()).sfx("hit")
-		if big:  # not a leftover freeze from an earlier kill
+		if crit_any:  # a kill already gets Enemy._die's thud
 			Music.instance(get_tree()).sfx("crit")
+	elif blocked:
+		Music.instance(get_tree()).sfx("dry_click", "thud")
 	return hit
 
 
-## Short freeze on a solid hit (Stardew-style weight). Counted down in _process.
 var _shake_tw: Tween
+
+
+## Short freeze on a solid hit (Stardew-style weight). Counted down in _process.
 
 
 func shake(amount: float) -> void:
@@ -1841,7 +1890,7 @@ func use_consumable(sel: String) -> bool:
 		player.play_tool("eat")
 		var fx_out := GameState.consume(sel)
 		effect_text(player.position, fx_out)
-		hud.toast("Ate %s." % GameState.item_name(sel))
+		hud.toast("Ate %s.%s" % [GameState.item_name(sel), "  Too full for more energy today." if fx_out.has("full") else ""])
 		Music.instance(get_tree()).sfx("eat", "pickup")
 		return true
 	return false
@@ -1952,13 +2001,13 @@ func on_enemy_died(e: Enemy) -> void:
 		hud.toast("Don't break her: turn her back with ♥ (Meow Pow Wow).", Color(1, 0.85, 0.95))
 		var c := world_to_cell(e.position)
 		Story._spawn_list.call_deferred(self, [[e.kind, c.x, c.y, e.tier, str(e.get_meta("story_flag")), 2.0]])
+		return  # no pay for breaking her (else it's a repeatable farm)
 	elif e.has_meta("story_flag"):
 		GameState.run["flags"][str(e.get_meta("story_flag"))] = true
 		shake(3.0)
 	if e.has_meta("minion"):
 		# Summoned help pays nothing: no crystals, XP, drops or kill counts (no farming a summoner).
-		Music.instance(get_tree()).sfx("die")
-		return
+		return  # Enemy._die already plays the thud
 	GameState.run["kills"] = int(GameState.run.get("kills", 0)) + 1
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
 	hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
@@ -1982,11 +2031,16 @@ func on_enemy_died(e: Enemy) -> void:
 	if e.kind.begins_with("lt_") and not e.has_meta("decoy") and not GameState.run["flags"].has(e.kind):
 		GameState.run["flags"][e.kind] = true
 		var down := 0
-		for lid in Gift.data().get("lieutenants", {}):
+		var total := 0
+		var lts: Dictionary = Gift.data().get("lieutenants", {})
+		for lid in lts:
+			if str((lts[lid] as Dictionary).get("where", "")) == "wastes":
+				continue  # penguin-only map: never reachable in the gangster arc
+			total += 1
 			if GameState.run["flags"].has("lt_" + str(lid)):
 				down += 1
-		hud.toast("The President's lieutenants: %d of 8 down." % down, Color(1, 0.85, 0.5))
-		GameState.add_hint("Lieutenant down: %s (%d/8)" % [e.display_name(), down])
+		hud.toast("The President's lieutenants: %d of %d down." % [down, total], Color(1, 0.85, 0.5))
+		GameState.add_hint("Lieutenant down: %s (%d/%d)" % [e.display_name(), down, total])
 		later(_lieutenant_choice.bind(e.kind.trim_prefix("lt_"), e.display_name()))
 	Ops.on_kill(self)
 	GameState.add_arc_xp(2)
@@ -1995,7 +2049,6 @@ func on_enemy_died(e: Enemy) -> void:
 	var kc: Dictionary = GameState.run.get("kill_counts", {})
 	kc[e.kind] = int(kc.get(e.kind, 0)) + 1
 	GameState.run["kill_counts"] = kc
-	Music.instance(get_tree()).sfx("die")
 
 
 func nearest_enemy_to(p: Vector2, within: float) -> Enemy:
@@ -2040,6 +2093,7 @@ func player_down(reason := "hurt") -> void:
 		if is_instance_valid(e) and e.has_meta("marked"):
 			Marked.mark_try(str(e.get_meta("marked")))
 	hud.toast("You collapsed..." if reason == "hurt" else "You pass out...", Color(1, 0.6, 0.6))
+	Music.instance(get_tree()).sfx("die" if reason == "hurt" else "sleep")
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)
 	if Net.online() and not Net.is_host():
@@ -2413,7 +2467,9 @@ func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> v
 	if _transitioning or (_changing and not force):
 		return
 	_transitioning = true
-	Music.instance(get_tree()).sfx("door")
+	# A creak only for real doors (in or out of a building, a mine), not road edges or ferries.
+	if not force and (scene.contains("house") or scene.contains("interior") or scene.contains("mine") or scene_id() in ["house", "interior", "mine", "underground", "quarry"]):
+		Music.instance(get_tree()).sfx("door")
 	_changing = true
 	player.frozen = true
 	next_spawn = spawn
@@ -2501,6 +2557,9 @@ class AnimLayer extends Node2D:
 
 
 func _draw() -> void:
+	if _bake_on():
+		_bake_request()
+		return
 	if _anim_layer:
 		_anim_layer.jobs.clear()
 	draw_set_transform(offset())
@@ -2515,6 +2574,11 @@ func _draw() -> void:
 
 ## What the exit corridors through the border band are paved with. Regions use
 ## their own path kind (stone for asphalt, metal and the like) instead of dirt.
+## Exit corridors through the border band (region.gd draws its own road tiles).
+func draw_corridor(cells: Dictionary) -> void:
+	draw_ground(corridor_kind(), cells)
+
+
 func corridor_kind() -> String:
 	var rd = get("R")
 	if rd is Dictionary:
@@ -2926,10 +2990,11 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 
 
 const WATER_LOOK := {
-	"grass": {"seam": "lake_shallow", "bank": Color(0.40, 0.29, 0.17, 0.85)},
+	"grass": {"seam": "lake_shallow", "bank": Color(0.40, 0.29, 0.17, 0.85), "deep": "lake_deep"},
 	"river": {"seam": "river", "bank": Color(0.38, 0.28, 0.17, 0.9), "drift": Vector2(0.0, 9.0)},
 	"bog": {"seam": "bog_water", "bank": Color(0.22, 0.18, 0.11, 0.9), "foam": Color(0.55, 0.62, 0.4, 0.25)},
 	"sand": {"seam": "sea", "bank": Color(0.80, 0.70, 0.50, 0.75), "foam": Color(1.0, 1.0, 1.0, 0.95), "drift": Vector2(4.0, 1.5)},
+	"quay": {"seam": "sea", "bank": Color(0.10, 0.08, 0.06, 0.55), "foam": Color(1, 1, 1, 0.3), "drift": Vector2(4.0, 1.5)},
 	"cave": {"seam": "lake_shallow", "bank": Color(0.12, 0.1, 0.14, 0.75), "tint": Color(0.5, 0.62, 0.78), "foam": Color(0.8, 0.9, 1.0, 0.3)},
 	"lava": {"seam": "lava", "bank": Color(0.12, 0.08, 0.06, 0.9), "foam": Color(1.0, 0.75, 0.3, 0.6), "drift": Vector2(1.0, 0.5)},
 }
@@ -2951,28 +3016,45 @@ func _water_mask(cells: Dictionary, shore: String) -> bool:
 	for k in ["foam", "tint", "drift"]:
 		if look.has(k) and not opts.has(k):
 			opts[k] = look[k]
-	var wm := WaterMask.make(self, cells, str(look["seam"]), opts)
+	if look.has("deep") and Art.has("seamless", str(look["deep"])):
+		opts["deep_tex"] = Art.tex("seamless", str(look["deep"]))
+		opts["deep_amt"] = 0.55
+	var host: GameMap = _painter_of if _painter_of != null else self
+	var wm := WaterMask.make(host, cells, str(look["seam"]), opts)
 	if wm == null:
 		return false
 	_water_masks[key] = wm
-	_add_under.call_deferred(wm)
+	host._add_under.call_deferred(wm)
 	return true
 
 
 ## A patch of one ground drawn over another with a soft, noisy edge (same
 ## shader as the water, standing still, no foam, a faint worn lip outside).
 func soft_ground(cells: Dictionary, seam: String, lip := Color(0.2, 0.14, 0.07, 0.28), tint := Color.WHITE) -> bool:
-	if cells.is_empty() or not Art.has("seamless", seam):
+	if cells.is_empty():
+		return false
+	var gw_host: GameMap = _painter_of if _painter_of != null else self
+	var gw := "sand" if "sand" in seam else ("stone" if ("ruin" in seam or "stone" in seam or "cobble" in seam or "pave" in seam) else ("grass" if ("grass" in seam or "moss" in seam) else "dirt"))
+	for gc in cells:
+		gw_host.ground_word[gc] = gw
+	if not Art.has("seamless", seam):
 		return false
 	var key := "g:%s:%d:%d" % [seam, cells.size(), cells.hash()]
 	if _water_masks.has(key):
 		return true
-	var wm := WaterMask.make(self, cells, seam, {"drift": Vector2.ZERO, "foam": Color(1, 1, 1, 0.0), "bank": lip, "tint": tint, "wobble": 0.3, "soft": 0.09})
+	var host: GameMap = _painter_of if _painter_of != null else self
+	var wm := WaterMask.make(host, cells, seam, {"drift": Vector2.ZERO, "foam": Color(1, 1, 1, 0.0), "bank": lip, "tint": tint, "wobble": 0.3, "soft": 0.09})
 	if wm == null:
 		return false
 	wm.set_meta("under_rank", 0)
 	_water_masks[key] = wm
-	_add_under.call_deferred(wm)
+	if _painter_of != null and BAKE_SOFT_GROUND:
+		# Standing ground patches don't move: draw them into the baked chunks
+		# (the painter's own child, over its drawing) instead of shading a
+		# map-sized rect every frame.
+		add_child.call_deferred(wm)
+		return true
+	host._add_under.call_deferred(wm)
 	return true
 
 
@@ -2984,6 +3066,8 @@ var _under_layer: Node2D
 
 
 func under_layer() -> Node2D:
+	if _painter_of != null:
+		return _painter_of.under_layer()
 	if _under_layer == null or not is_instance_valid(_under_layer):
 		_under_layer = Node2D.new()
 		_under_layer.name = "UnderLayer"
@@ -3010,6 +3094,9 @@ var _under_nodes: Array = []
 ## Ground-level nodes go right above the anim layer: ground patches, then
 ## water bodies, then the under layer (decals); same rank keeps call order.
 func _add_under(n: Node) -> void:
+	if _painter_of != null:
+		_painter_of._add_under(n)
+		return
 	add_child(n)
 	if not (_anim_layer and _anim_layer.get_parent() == self):
 		return
@@ -3039,14 +3126,16 @@ func draw_tileset_rect(name: String, r: Rect2i, fallback: Color) -> void:
 			Art.draw_tile(self, "tiles", name, Vector2(x * TILE, y * TILE), iy * 3 + ix)
 
 
-func draw_fence_border(col := Color("6b4a2b")) -> void:
+## gap_e: rows (keyed by y + 1, the post's foot) where the east fence is left open for a road.
+func draw_fence_border(col := Color("6b4a2b"), gap_e := {}) -> void:
 	if Art.has("buildings", "fence_h"):
 		for x in cols:
 			Art.draw_prop(self, "buildings", "fence_h", Vector2(x * TILE + TILE / 2.0, TILE))
 			Art.draw_prop(self, "buildings", "fence_h", Vector2(x * TILE + TILE / 2.0, rows * TILE))
 		for y in range(1, rows - 1):
 			Art.draw_prop(self, "buildings", "fence_v", Vector2(TILE / 2.0, (y + 1) * TILE))
-			Art.draw_prop(self, "buildings", "fence_v", Vector2((cols - 0.5) * TILE, (y + 1) * TILE))
+			if not gap_e.has(y + 1):
+				Art.draw_prop(self, "buildings", "fence_v", Vector2((cols - 0.5) * TILE, (y + 1) * TILE))
 		return
 	draw_rect(Rect2(Vector2.ZERO, Vector2(cols * TILE, TILE)), col)
 	draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), col)
@@ -3271,8 +3360,12 @@ func draw_rock_mass(cells: Dictionary) -> void:
 		var n := 0
 		while Art.has("tiles", "%s_%d" % [wall, n]):
 			n += 1
+		var wfill := "mf_stone" if Art.has("tiles", "mf_stone") else "g_gravel"
 		for c: Vector2i in cells:
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.08, 0.07, 0.1))
+			# Dark rock mass behind the wall, not a black hole.
+			if not Art.draw_tile(self, "tiles", wfill, Vector2(c * TILE), 4):
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.3, 0.29, 0.32))
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.05, 0.04, 0.08, 0.45))
 		for c: Vector2i in cells:
 			var below := c + Vector2i(0, 1)
 			if cells.has(below):
@@ -3300,7 +3393,8 @@ func draw_rock_mass(cells: Dictionary) -> void:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
 			if h % 7 == 0 and Art.has("tiles", "rdeco_quarry_%d" % (h / 7 % 9)):
 				Art.draw_tile(self, "tiles", "rdeco_quarry_%d" % (h / 7 % 9), Vector2(c * TILE), 0)
-		Art.draw_blob(self, cells, "cliff", 16.0, 1)
+		var cset := "cliff_stone" if scene_id() in ["neon", "uptown", "docks", "hideout", "countryside"] and Art.has("tiles", "cliff_stone_top_0") else "cliff"
+		Art.draw_blob(self, cells, cset, 16.0, 1)
 		return
 	var fill := "mf_stone" if Art.has("tiles", "mf_stone") else "g_gravel"
 	for c: Vector2i in cells:
@@ -3415,8 +3509,8 @@ func _build_border() -> void:
 				continue
 			if in_content(c) and _near_exit(c, 3):
 				continue
-			if in_content(c) and depth + n < 2.0 and (c.x + c.y) % 3 == 0:
-				continue  # ragged inner edge
+			if in_content(c) and depth + n < 2.0 and (c.x + c.y) % 3 == 0 and kind != "cliff":
+				continue  # ragged inner edge (not on cliffs: the holes become stairs of grass caps)
 			blocked[c] = true
 			match kind:
 				"trees": _border_cells[c] = "tree"
@@ -3497,18 +3591,30 @@ func draw_border() -> void:
 		for c: Vector2i in _border_open:
 			if not blocked.has(c):
 				corridor[c] = true
-		draw_ground(corridor_kind(), corridor)
+		draw_corridor(corridor)
 	if not water.is_empty() or not border_water_extra.is_empty():
 		var body := water.duplicate()
 		body.merge(border_water_extra)
+		# Carry the water two cells past the outermost ring, so its soft bank
+		# never shows as a sand strip down the screen edge.
+		var outer := Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad)
+		for c: Vector2i in body.keys():
+			var on_x := c.x == outer.position.x or c.x == outer.end.x - 1
+			var on_y := c.y == outer.position.y or c.y == outer.end.y - 1
+			if not (on_x or on_y):
+				continue
+			for k in range(1, 3):
+				body[c + Vector2i(signi(c.x - cols / 2) * k if on_x else 0, signi(c.y - rows / 2) * k if on_y else 0)] = true
 		draw_water(body, border_water_shore if border_water_shore != "" else ("sand" if scene_id() == "beach" else "grass"))
 	if not cliff.is_empty():
 		draw_rock_mass(cliff)
 	# Forest floor only under the deep part of the tree mass, with a soft edge.
 	for c: Vector2i in treec:
-		if _band_depth(c) >= 3 or ((c.x * 5 + c.y * 3) % 4 == 0 and _band_depth(c) == 2):
-			if not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
+		if _band_depth(c) >= 3:
+			# Seamless window: joins across cells, so no lone brown boxes.
+			if not seam_cell(self, "forest_floor", c, Color(1, 1, 1, 0.9)):
+				if not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
+					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
 	for item: Array in _border_draw:
 		var c: Vector2i = item[0]
 		Art.draw_prop(self, str(item[1]), str(item[2]), Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE))
@@ -3520,6 +3626,9 @@ func draw_border() -> void:
 func fish_at(c: Vector2i, pool_in: Array) -> void:
 	# Pools run cheapest → priciest, so the weighted pick keeps valuable fish rare.
 	var pool := pool_in.duplicate()
+	for f: String in ["minnow", "sunfish"]:  # every water has its common fish
+		if not pool.has(f):
+			pool.append(f)
 	pool.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) < GameState.item_value(b))
 	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
@@ -3587,9 +3696,14 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		bob.queue_free()
 	if caught:
 		var lvl := GameState.skill_level("fishing")
-		var reach := mini(pool.size(), 1 + lvl + (2 if night else 0) + (1 if baited else 0))
+		# Fish above a value ceiling (skill, night light, bait) stay out of reach.
+		var cap_v := 25 + 15 * lvl + (40 if night else 0) + (10 if baited else 0)
+		var open := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= cap_v)
+		if open.is_empty():
+			open = [pool[0]]
+		var reach := mini(open.size(), 1 + lvl + (2 if night else 0) + (1 if baited else 0))
 		# Pools run easiest → rarest: weight the pick so rare fish stay rare.
-		var fish: String = pool[_weighted_index(0, reach)] if randf() > 0.08 else "boot"
+		var fish: String = open[_weighted_index(0, reach)] if randf() > 0.08 else "boot"
 		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
 			var lo := mini(reach, pool.size() - 1) if reach < pool.size() else pool.size() / 2
 			fish = pool[_weighted_index(lo, pool.size())]
@@ -3599,11 +3713,14 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		pop_items(bob_at, fish, 2 if randf() < GameState.bonus("fishing", "double_fish") else 1)
 		if fish == "boot":
 			Music.instance(get_tree()).sfx("thud", "nope")
-		elif pool.find(fish) >= reach - 1:
+		elif open.find(fish) >= maxi(3, reach - 1) or not open.has(fish):
 			Music.instance(get_tree()).sfx("quest_done", "levelup")
 			fx("sparkle", bob_at + Vector2(0, -8), 14.0, 0.7)
 		if randf() < GameState.bonus("fishing", "chest_chance"):
 			give(["old_coin", "pearl", "map_scrap"][randi() % 3])
+		elif scene_id() == "lake" and GameState.has_quest("finn_pearl") and not GameState.quest_done("finn_pearl") and GameState.count("pearl") == 0 and randf() < 0.05:
+			give("pearl")
+			hud.toast("Something pale rolls out of the net. Finn's pearl?", Color(1, 0.9, 0.6))
 		xp("fishing", 4)
 	else:
 		hud.toast("It got away.")
@@ -3737,3 +3854,189 @@ func place_project_site() -> void:
 		prop("buildings", nm, c, 1)
 	elif Art.has("props", nm):
 		prop("props", nm, c)
+
+
+# ---- baked ground (phone performance) -----------------------------------------
+## Everything _draw() paints on the map's own canvas used to be ONE canvas item
+## the size of the whole map: Godot can't cull part of an item, so all of its
+## 2000-4300 draw calls went out every frame. Now a drawing-only twin of this map
+## (the painter, same script, same variables) runs that drawing once inside a
+## hidden SubViewport, and the ground is shown as 256px chunk textures near the
+## camera: about 6-12 draw calls. Off-screen chunks are culled (and freed past
+## BAKE_MAX). queue_redraw() on the map still works: it re-runs the drawing on the
+## painter and re-bakes the chunks. Small maps (houses, interiors) skip this.
+const BAKE_GROUND := true
+const BAKE_SOFT_GROUND := true   # soft_ground() patches go into the bake too
+const BAKE_MIN_CELLS := 1200     # padded cols*rows below this draw the old way
+const BAKE_CHUNK := 256          # world px per chunk side
+const BAKE_SCALE := 2.0          # texels per world px (the art is 2x detail)
+const BAKE_MARGIN := 2           # texels around each chunk: linear filtering never seams
+const BAKE_MAX := 12             # chunks kept (a 516px render target measured ~2-2.6 MB of VRAM)
+const BAKE_PER_FRAME := 1        # margin chunks baked per frame (missing visible ones always)
+const BAKE_REDO_PER_FRAME := 3   # stale visible chunks re-baked per frame after a redraw
+static var bake_disabled := false   # tests/tools can turn it off
+static var _bake_mat: CanvasItemMaterial
+var _painter_of: GameMap = null  # on the painter: the real map
+var _painter: GameMap = null
+var _bake_holder: SubViewport
+var _bake_layer: BakeLayer
+var _bake := {}                  # Vector2i chunk -> [SubViewport, Sprite2D, dirty]
+var _bake_n := 0                 # chunk renders so far (perf probes)
+var _bake_last := Vector2(INF, INF)  # view centre at the last full check
+var _bake_busy := true           # chunks still to bake (or dirty)
+
+
+## Holds the chunk sprites; first child of the map, sorted above nothing.
+class BakeLayer extends Node2D:
+	var map: GameMap
+	func _process(_d: float) -> void:
+		map._bake_update()
+
+
+func _bake_on() -> bool:
+	return BAKE_GROUND and not bake_disabled and _painter_of == null and (cols + 2 * pad) * (rows + 2 * pad) >= BAKE_MIN_CELLS
+
+
+func _bake_setup() -> void:
+	if _bake_mat == null:
+		# The bake is drawn onto a clear target, so it holds premultiplied colour.
+		_bake_mat = CanvasItemMaterial.new()
+		_bake_mat.blend_mode = CanvasItemMaterial.BLEND_MODE_PREMULT_ALPHA
+	_bake_holder = SubViewport.new()
+	_bake_holder.name = "BakeHolder"
+	_bake_holder.size = Vector2i(2, 2)
+	_bake_holder.disable_3d = true
+	_bake_holder.transparent_bg = true
+	_bake_holder.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	add_child(_bake_holder)
+	_painter = get_script().new()
+	_painter.name = "Painter"
+	_painter._painter_of = self
+	_painter.texture_filter = texture_filter
+	_bake_holder.add_child(_painter)
+	_bake_layer = BakeLayer.new()
+	_bake_layer.name = "BakeLayer"
+	_bake_layer.map = self
+	_bake_layer.process_mode = Node.PROCESS_MODE_ALWAYS  # finish re-bakes under a paused menu
+	# y-sorted children draw in y order: put the ground before everything (even
+	# things above the map's top edge), exactly where the map's own drawing was.
+	_bake_layer.position = Vector2(0, -100000)
+	add_child(_bake_layer)
+	move_child(_bake_layer, 0)
+
+
+## Copy every script variable to the painter (containers are shared, so the
+## drawing sees live gameplay state; plain values are refreshed per redraw).
+func _sync_painter() -> void:
+	for p in get_property_list():
+		if not (int(p["usage"]) & PROPERTY_USAGE_SCRIPT_VARIABLE):
+			continue
+		var n: String = p["name"]
+		if n.begins_with("_bake") or n == "_painter" or n == "_painter_of":
+			continue
+		_painter.set(n, get(n))
+
+
+func _bake_request() -> void:
+	if _painter == null:
+		_bake_setup()
+	_sync_painter()
+	_painter.queue_redraw()
+	for ch in _bake.values():
+		ch[2] = true
+	_bake_busy = true
+	_bake_update.call_deferred()
+
+
+func _bake_update() -> void:
+	if _painter == null or not is_inside_tree():
+		return
+	var xf := get_viewport().get_canvas_transform() * get_global_transform()
+	var vis := xf.affine_inverse() * get_viewport_rect()
+	var bounds := Rect2(Vector2.ZERO, Vector2((cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE)).grow(TILE * 2)
+	var want := vis.grow(BAKE_CHUNK * 0.25).intersection(bounds)
+	if want.size.x <= 0.0 or want.size.y <= 0.0:
+		return
+	var k0 := Vector2i((want.position / BAKE_CHUNK).floor())
+	var k1 := Vector2i((want.end / BAKE_CHUNK).floor())
+	var center := vis.get_center()
+	if not _bake_busy and center.distance_squared_to(_bake_last) < 256.0:
+		return  # nothing to do until the view moves 16 px
+	_bake_last = center
+	_bake_busy = false
+	var keys: Array[Vector2i] = []
+	for ky in range(k0.y, k1.y + 1):
+		for kx in range(k0.x, k1.x + 1):
+			keys.append(Vector2i(kx, ky))
+	keys.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return (Vector2(a) + Vector2(0.5, 0.5)).distance_squared_to(center / BAKE_CHUNK) < (Vector2(b) + Vector2(0.5, 0.5)).distance_squared_to(center / BAKE_CHUNK))
+	# A chunk render costs what a whole frame used to (every ground draw call),
+	# so spread them: a missing on-screen chunk is made at once (else a hole),
+	# a stale on-screen one keeps its old picture for a frame or two.
+	var budget := BAKE_PER_FRAME
+	var redo := BAKE_REDO_PER_FRAME
+	for k in keys:
+		var on_screen := Rect2(Vector2(k * BAKE_CHUNK), Vector2(BAKE_CHUNK, BAKE_CHUNK)).intersects(vis)
+		var ch = _bake.get(k)
+		if ch != null and not ch[2]:
+			continue
+		if on_screen and ch != null:
+			if redo <= 0:
+				_bake_busy = true
+				continue
+			redo -= 1
+		elif not on_screen:
+			if budget <= 0:
+				_bake_busy = true
+				continue
+			budget -= 1
+		if ch == null:
+			_bake_make(k)
+		else:
+			(ch[0] as SubViewport).render_target_update_mode = SubViewport.UPDATE_ONCE
+			_bake_n += 1
+			ch[2] = false
+	if _bake.size() > BAKE_MAX:
+		var far: Array = _bake.keys().filter(func(k: Vector2i) -> bool: return not keys.has(k))
+		far.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+			return Vector2(a).distance_squared_to(center / BAKE_CHUNK) > Vector2(b).distance_squared_to(center / BAKE_CHUNK))
+		for k: Vector2i in far:
+			if _bake.size() <= BAKE_MAX:
+				break
+			_bake_free(k)
+	# Dirty chunks that left the wanted area: drop them (re-made when needed).
+	for k: Vector2i in _bake.keys():
+		if _bake[k][2] and not keys.has(k):
+			_bake_free(k)
+
+
+func _bake_make(k: Vector2i) -> void:
+	var origin := Vector2(k * BAKE_CHUNK)
+	var px := int(BAKE_CHUNK * BAKE_SCALE)
+	var sv := SubViewport.new()
+	sv.size = Vector2i(px + 2 * BAKE_MARGIN, px + 2 * BAKE_MARGIN)
+	sv.disable_3d = true
+	sv.transparent_bg = true
+	sv.world_2d = _bake_holder.world_2d
+	sv.render_target_update_mode = SubViewport.UPDATE_ONCE
+	_bake_layer.add_child(sv)
+	# (only after add_child: the shared canvas is attached on entering the tree)
+	sv.canvas_transform = Transform2D(0.0, Vector2(BAKE_SCALE, BAKE_SCALE), 0.0, -origin * BAKE_SCALE + Vector2(BAKE_MARGIN, BAKE_MARGIN))
+	var sp := Sprite2D.new()
+	sp.texture = sv.get_texture()
+	sp.centered = false
+	sp.region_enabled = true
+	sp.region_rect = Rect2(BAKE_MARGIN, BAKE_MARGIN, px, px)
+	sp.scale = Vector2.ONE / BAKE_SCALE
+	sp.position = origin - _bake_layer.position
+	sp.material = _bake_mat
+	_bake_layer.add_child(sp)
+	_bake[k] = [sv, sp, false]
+	_bake_n += 1
+
+
+func _bake_free(k: Vector2i) -> void:
+	var ch: Array = _bake[k]
+	(ch[1] as Node).queue_free()
+	(ch[0] as Node).queue_free()
+	_bake.erase(k)

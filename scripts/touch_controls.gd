@@ -429,7 +429,13 @@ func _on_draw() -> void:
 			var icon := Art.tex("items", held if held != "" else "sword")
 			# A context verb that isn't a tool's (Talk, Enter, Sleep, Shop...) shows a hand instead.
 			if context_word != "" and not get_tree().paused and not (context_word in TOOL_VERBS) and Art.has("items", "hand"):
-				icon = Art.tex("items", "hand")
+				# Sleep and Talk get their own picture, so USE never matches CHECK's hand.
+				if context_word == "Sleep" and Art.has("ui", "buff2_asleep"):
+					icon = Art.tex("ui", "buff2_asleep")
+				elif context_word in ["Talk", "Pet"] and Art.has("ui", "bubble"):
+					icon = Art.tex("ui", "bubble")
+				else:
+					icon = Art.tex("items", "hand")
 			if icon:
 				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(12, 12), Vector2(24, 24)), false)
 				continue
@@ -438,6 +444,17 @@ func _on_draw() -> void:
 			if Art.has("ui", "icon_ability_" + sid):
 				_canvas.draw_texture_rect(Art.tex("ui", "icon_ability_" + sid), Rect2(p - Vector2(10, 10), Vector2(20, 20)), false)
 				continue
+			# The Marked: show their Gift until their own button icon exists.
+			var ab := str(Companion.defs().get(Companion.active_id(), {}).get("ability", ""))
+			if ab.begins_with("gift:"):
+				var fam := ab.trim_prefix("gift:")
+				if fam == "beat":
+					fam = "tempo"
+				if Art.has("fx", "gift_" + fam):
+					var gsf := Art.frames("fx", {"a": "gift_" + fam})
+					if gsf and gsf.has_animation("a") and gsf.get_frame_count("a") > 0:
+						_canvas.draw_texture_rect(gsf.get_frame_texture("a", 0), Rect2(p - Vector2(10, 10), Vector2(20, 20)), false)
+						continue
 		if action == "ability" and Art.has("ui", "party_paw"):
 			_canvas.draw_texture_rect(Art.tex("ui", "party_paw"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
 			continue

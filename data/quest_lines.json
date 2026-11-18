@@ -361,7 +361,7 @@
   ],
   "yes": "Thank you. Discreetly.",
   "no": "Quite right. Morale can wait.",
-  "wait": "The wine. Quietly.",
+  "wait": "The wine. For the fair toast.",
   "done": [
    "Excellent vintage. The fair toast will be a proud one.",
    "Here. With the council's thanks."
@@ -568,7 +568,7 @@
   "wait": "Two wine. The festival's coming.",
   "done": [
    "Good year. Good year!",
-   "Here. And a glass for you on the night, hidden from the council."
+   "Here. And a slice of festival pie for you on the night, saved from the council."
   ]
  },
  "juniper_herbs": {
@@ -789,7 +789,7 @@
  },
  "lighthouse_oil": {
   "offer": [
-   "The lamp's been dark three winters. Ships still come. They just have to feel their way in.",
+   "The lamp's been dark twenty winters. Ships still come. They just have to feel their way in.",
    "Ten coal and I can fire the burner. It's a start. It's not the lens, but it's a start."
   ],
   "yes": "Thank you. The mountain, or the quarry. Hard black coal, not the soft stuff.",
@@ -869,7 +869,7 @@
  "rook_pup_guard": {
   "offer": [
    "A dog that fights is useful. A dog that guards is worth its weight.",
-   "Level six. Teach it Guard Dog. Then it can hold a door while you sleep."
+   "Level six. Then it can hold a door while you sleep."
   ],
   "yes": "Good.",
   "no": "Fine.",
@@ -1032,6 +1032,58 @@
   "done": [
    "Oh, the weave on these.",
    "Paint. Colour something on your farm. It's very brown out there."
+  ]
+ },
+ "rook_tracks@gangsters": {
+  "offer": [
+   "Strangers across the river. Orchard side. Coats too good for picking apples.",
+   "Clear them out. All of them. I'll know."
+  ],
+  "wait": "The orchard. Those coats. Still there."
+ },
+ "wren_slime@gangsters": {
+  "offer": [
+   "Slime goo. Six. The slimes leave it everywhere and I think there's something in it.",
+   "Gloves. Please use gloves."
+  ]
+ },
+ "wren_moonwort": {
+  "offer": [
+   "Moonwort. One sprig, from the orchard wall. The blue one.",
+   "If you're going out that way. If."
+  ],
+  "yes": "...Thank you. Don't bruise it.",
+  "no": "It'll keep. It's kept this long.",
+  "wait": "The blue herb. Orchard wall. Moonwort.",
+  "done": [
+   "That's it. That's the blue.",
+   "I'll make the fever draught before I lose my nerve."
+  ]
+ },
+ "lumi_moonwort": {
+  "offer": [
+   "Moonwort. The blue by the orchard wall. I've tried to mix it for a year.",
+   "Bring me a sprig and I'll stop trying."
+  ],
+  "yes": "You're a saint. A muddy one, soon.",
+  "no": "The blue can wait. I'm used to it.",
+  "wait": "Still no blue. The canvas is judging me.",
+  "done": [
+   "Oh. Oh, that's the colour.",
+   "Don't watch me cry into the turpentine."
+  ]
+ },
+ "bram_rootbeer": {
+  "offer": [
+   "Two root beers for festival night. One toast for the council, and one for the town.",
+   "The soda fountain on the avenue makes them. I never get there."
+  ],
+  "yes": "Good. Cold, if you can manage it.",
+  "no": "The council will be pleased. Nobody else will.",
+  "wait": "Two root beers. The festival's coming.",
+  "done": [
+   "Good fizz. Good fizz!",
+   "Here. And a slice of festival pie for you on the night, saved from the council."
   ]
  }
 }

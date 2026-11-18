@@ -928,7 +928,7 @@
   "rarity": "common",
   "tier": 1,
   "heal": 1,
-  "energy": 20
+  "energy": 15
  },
  "salad": {
   "name": "Garden Salad",
@@ -8824,7 +8824,7 @@
   "value": 18,
   "rarity": "common",
   "tier": 1,
-  "energy": 25,
+  "energy": 8,
   "friend": 3,
   "desc": "Every cat in Cat-topia wants one. So does your pup.",
   "arc": "penguins"

@@ -85,7 +85,7 @@ for id, name, typ, val, tier, extra in [
  ('campfire_stew', "Big Jim's Stew", 'food', 240, 3, {'energy': 80, 'heal': 5}), ('starlight_smore', "Starlight S'more", 'food', 520, 3, {'energy': 100, 'heal': 4, 'buff': {'kind': 'luck', 'minutes': 300, 'amount': 2}, 'friend': 4}),
  ('scented_litter', 'Scented Litter Box', 'consumable', 40, 2, {'effect': 'stink', 'radius': 84, 'stun': 5.0, 'desc': 'Lavender. Somehow worse. A wider cloud, a longer nose-hold.'}),
  ('mega_litter', 'Mega Litter Box', 'consumable', 110, 3, {'effect': 'stink', 'radius': 120, 'stun': 7.0, 'desc': 'The catapult-sized one. Clears a room.'}),
- ('tuna_treat', 'Tuna Treat', 'food', 18, 1, {'energy': 25, 'friend': 3, 'desc': 'Every cat in Cat-topia wants one. So does your pup.'}),
+ ('tuna_treat', 'Tuna Treat', 'food', 18, 1, {'energy': 8, 'friend': 3, 'desc': 'Every cat in Cat-topia wants one. So does your pup.'}),
  ('paw_lantern', 'Paw Lantern', 'consumable', 90, 2, {'buff': {'kind': 'luck', 'minutes': 180, 'amount': 1}, 'mana': 10, 'desc': 'A little jar of Meow Pow Wow light. Open it for luck and mana.'}),
  ('heart_spark', 'Heart Spark', 'consumable', 420, 3, {'mana': 60, 'heal': 6, 'desc': 'A rainbow heart in a bottle. Mana and health at once.'})]:
     extra['arc'] = 'penguins'; item(id, name, typ, val, tier, **extra)
@@ -326,7 +326,7 @@ CRYSTAL_SET = {'crystal_' + s for s in ('helm', 'chest', 'legs', 'boots', 'glove
 metal_gear = [r for r in old.values() if r['id'] not in CRYSTAL_SET and r['id'].split('_')[0] in ('copper', 'iron', 'steel', 'silver', 'gold', 'crystal') and r['id'].split('_')[-1] in ('helm', 'chest', 'legs', 'boots', 'gloves', 'shield', 'cape', 'belt', 'mail', 'greaves', 'plate', 'sword')]
 leather_gear = [r for r in old.values() if r['id'].startswith('leather_') and r['id'] not in ('leather', 'leather_scrap')]
 books = {}
-books['workbench'] = keep('torch', 'chest', 'scarecrow', 'fertilizer', 'sprinkler', 'sprinkler_quality', 'crab_pot', 'bait', 'straw_hat', 'pup_treat') + [
+books['workbench'] = keep('torch', 'chest', 'scarecrow', 'fertilizer', 'sprinkler', 'sprinkler_quality', 'bait', 'straw_hat', 'pup_treat') + [
  rc('fence_kit', 'Shingle Bundle', {'plank': 4, 'nails': 2}, 'shingles', 1, 6), rc('wheel', 'Cart Wheel', {'plank': 6, 'nails': 4, 'iron_bar': 1}, tier=2), rc('sprinkler_iridium', 'Iridium Sprinkler', {'gold_bar': 2, 'iron_bar': 2, 'crystal_refined': 3}, tier=4)]
 books['sawmill'] = [rc('plank', 'Plank', {'wood': 2}, n=1), rc('charcoal', 'Charcoal (burns as coal)', {'wood': 6}, 'coal', 1, 2), rc('beam', 'Timber Beam', {'wood': 12}, tier=2),
  rc('hardwood_plank', 'Hardwood Plank', {'hardwood': 1}, tier=2), rc('veneer', 'Fine Veneer', {'hardwood_plank': 3, 'sap': 2}, tier=3), rc('ironwood_beam', 'Ironwood Beam', {'hardwood_plank': 6, 'beam': 2, 'dark': 1}, tier=4)]
@@ -376,7 +376,7 @@ books['shaper'] = [rc('icicle_blade', 'Icicle Blade', {'shard': 3, 'copper_bar':
  rc('courage_scarf', 'Scarf of Courage', {'fine_fabric': 3, 'yarn': 4}, tier=3), rc('flipper_belt', 'Flipper Belt', {'fine_leather': 2, 'gear': 2}, tier=3), rc('aurora_hood', 'Aurora Hood', {'fine_fabric': 2, 'crystal_glass': 1}, tier=3),
  rc('bell_collar', 'Bell Collar', {'gold_bar': 2}, tier=3), rc('starheart_blade', 'Starheart Blade', {'dark_bar': 3, 'crystal_battery': 2, 'star_dust': 2}, tier=4, tool=True),
  rc('starlight_mantle', 'Starlight Mantle', {'crystal_parka': 1, 'moonweave': 2, 'crystal_battery': 1}, tier=4)]
-books['litter'] = [rc('litter_box', 'Litter Box', {'sand': 4, 'clay': 1}, n=2), rc('tuna_treat', 'Tuna Treat', {'minnow': 2}, n=2), rc('scented_litter', 'Scented Litter Box', {'litter_box': 1, '#herb': 1}, tier=2),
+books['litter'] = [rc('litter_box', 'Litter Box', {'sand': 4, 'clay': 1}, n=2), rc('tuna_treat', 'Tuna Treat', {'minnow': 2}), rc('scented_litter', 'Scented Litter Box', {'litter_box': 1, '#herb': 1}, tier=2),
  rc('paw_lantern', 'Paw Lantern', {'glass': 1, 'light_mote': 1, 'crystal_bloom': 1}, tier=2), rc('mega_litter', 'Mega Litter Box', {'scented_litter': 2, 'clay_pot': 1}, tier=3), rc('heart_spark', 'Heart Spark', {'paw_lantern': 1, 'crystal_refined': 1, 'starflower': 1}, tier=3)]
 books['campfire'] = [rc('marshmallow', 'Marshmallow', {'sugar_beet': 1, 'egg': 1}, n=4), rc('toasted_marshmallow', 'Toasted Marshmallow', {'marshmallow': 1}), rc('smore', "S'more", {'toasted_marshmallow': 1, 'chocolate': 1, 'bread': 1}, tier=2, n=2),
  rc('hot_cocoa', 'Hot Cocoa', {'cacao': 1, 'milk': 1, 'marshmallow': 1}, tier=2), rc('campfire_stew', "Big Jim's Stew", {'#veg': 3, '#mushroom': 1, 'trout': 1}, tier=3), rc('starlight_smore', "Starlight S'more", {'smore': 1, 'starflower': 1, 'honey': 1}, tier=3)]
@@ -427,7 +427,7 @@ for bk in ('anvil', 'tannery', 'armory'):
             I[r['give']]['value'] = max(int(I[r['give']].get('value', 0)), int(0.8 * val(r['need'])))
 
 used = {r['id'] for b in books.values() for r in b}
-lost = [i for i in old if i not in used and i not in ('glass', 'leather', 'fence_kit')]
+lost = [i for i in old if i not in used and i not in ('glass', 'leather', 'fence_kit', 'crab_pot')]
 for i in lost: books['workbench'].append(old[i])
 for k in ('smith', 'alchemy'): R.pop(k, None)
 R.update(books)

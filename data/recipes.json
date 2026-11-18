@@ -75,21 +75,6 @@
    ]
   },
   {
-   "id": "crab_pot",
-   "name": "Crab Pot",
-   "need": {
-    "wood": 20,
-    "iron_bar": 1,
-    "rope": 2
-   },
-   "give": "crab_pot",
-   "tier": 2,
-   "skill": [
-    "fishing",
-    4
-   ]
-  },
-  {
    "id": "bait",
    "name": "Bait",
    "need": {
@@ -3522,8 +3507,7 @@
     "minnow": 2
    },
    "give": "tuna_treat",
-   "tier": 1,
-   "n": 2
+   "tier": 1
   },
   {
    "id": "scented_litter",

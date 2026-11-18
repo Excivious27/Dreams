@@ -168,6 +168,7 @@ func _btn(text: String, cb: Callable, primary := false) -> Button:
 	b.text = text
 	b.add_theme_font_size_override("font_size", 10 if primary else 9)
 	b.custom_minimum_size = Vector2(26 if text.length() == 1 else 64, 22)
+	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
 	b.pressed.connect(cb)
 	return b
 

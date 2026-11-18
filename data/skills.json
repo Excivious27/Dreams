@@ -2340,12 +2340,12 @@
     {
      "id": "bartering_0_5",
      "name": "Bulk Deal",
-     "desc": "+2% off shop prices (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "buy_discount": 0.02
+      "xp_gain": 0.03
      }
     },
     {
@@ -2373,23 +2373,23 @@
     {
      "id": "bartering_0_8",
      "name": "Sharp Ledger",
-     "desc": "+2% off shop prices (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
      "effect": {
-      "buy_discount": 0.02
+      "xp_gain": 0.03
      }
     },
     {
      "id": "bartering_0_9",
      "name": "Hot Market",
-     "desc": "+4% off shop prices",
+     "desc": "+6% faster levelling in this skill",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "buy_discount": 0.04
+      "xp_gain": 0.06
      }
     },
     {
@@ -2428,12 +2428,12 @@
     {
      "id": "bartering_1_3",
      "name": "Coupon Clipper",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+2% off shop prices (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
+      "buy_discount": 0.02
      }
     },
     {
@@ -2450,12 +2450,12 @@
     {
      "id": "bartering_1_5",
      "name": "Haggler's Grin",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+2% off shop prices (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
+      "buy_discount": 0.02
      }
     },
     {
@@ -2494,7 +2494,7 @@
     {
      "id": "bartering_u_lucky_day",
      "name": "Lucky Day",
-     "desc": "5% chance each night the sell box pays double.",
+     "desc": "5% chance each night the sell box pays double (big boxes: a capped bonus).",
      "ranks": 1,
      "tier": 9,
      "row": 1,
@@ -2669,12 +2669,12 @@
     {
      "id": "bartering_3_5",
      "name": "Nest Egg",
-     "desc": "+3% faster levelling in this skill",
+     "desc": "+1 friendship per gift",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "xp_gain": 0.03
+      "gift_bonus": 1
      }
     },
     {

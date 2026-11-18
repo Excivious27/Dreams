@@ -110,7 +110,10 @@
     "10": [
      {
       "who": "Gideon",
-      "text": "I gave her the ring. She said I was an idiot. She's wearing it."
+      "text": "I gave her the ring. She said I was an idiot. She's wearing it.",
+      "if_gone": {
+       "juniper": "I gave her the ring the morning she left. She said I was an idiot. She took it with her."
+      }
      },
      {
       "who": "Gideon",
@@ -191,7 +194,10 @@
     "8": "She's seven now. She talks about frogs. Frogs are fine.",
     "10": "I answered her today before she asked. That's new."
    },
-   "quest6_gangsters": "wren_moonwort"
+   "quest6_gangsters": "wren_moonwort",
+   "after_gangsters": {
+    "6": "Moonwort. Just a sprig. I'm not greedy."
+   }
   },
   "alder": {
    "quest6": "alder_gold",
@@ -601,17 +607,20 @@
     "6": [
      {
       "who": "Bram",
-      "text": "Festival night. Two wine. I want to raise one glass that isn't water, for once, for Posy's mother."
+      "text": "Festival night. Two wine. I want to raise one glass that isn't water, for once, for Posy's mother.",
+      "text_gangsters": "Festival night. Two root beers. I want to raise one glass that isn't water, for once, for Posy's mother."
      },
      {
       "who": "Bram",
-      "text": "I'll pay for the wine. I just can't walk to the lake for it. Every year I mean to."
+      "text": "I'll pay for the wine. I just can't walk to the lake for it. Every year I mean to.",
+      "text_gangsters": "I'll pay for them. I just can't get to the soda fountain on the avenue. Every year I mean to."
      }
     ],
     "8": [
      {
       "who": "Bram",
-      "text": "I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way."
+      "text": "I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way.",
+      "text_gangsters": "I walked to the avenue. Myself. Halfway, then I sat down, then the rest of the way."
      },
      {
       "who": "Bram",
@@ -621,7 +630,10 @@
     "10": [
      {
       "who": "Bram",
-      "text": "Posy's running the front now. She's better than her mother was, and I said so, and she threw a tea towel at me."
+      "text": "Posy's running the front now. She's better than her mother was, and I said so, and she threw a tea towel at me.",
+      "if_gone": {
+       "posy": "Posy writes from the capital. There's a bakery there with her name over the door, and her mother's under it."
+      }
      },
      {
       "who": "Bram",
@@ -636,6 +648,10 @@
     "6": "Two wine. Festival night.",
     "8": "Two hours. Her glass was full.",
     "10": "Tea towel. Right in the face."
+   },
+   "quest6_gangsters": "bram_rootbeer",
+   "after_gangsters": {
+    "6": "Two root beers. Festival night."
    }
   },
   "posy": {
@@ -981,7 +997,7 @@
     "6": [
      {
       "who": "Tobin",
-      "text": "Shells. Six. The beach has them but you have to go past the dock and I'm not allowed past the dock."
+      "text": "Shells. Five. The beach has them but you have to go past the dock and I'm not allowed past the dock."
      },
      {
       "who": "Tobin",

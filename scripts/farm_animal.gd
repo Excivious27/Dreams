@@ -38,7 +38,7 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	_target = position
 	z_index = 0
 	play("idle")
-	m.set_thing(c.x, c.y, {"type": "pet_animal", "hint": "A: pet the %s" % k.split("_")[0], "animal": self}, false)
+	m.set_thing(c.x, c.y, {"type": "pet_animal", "hint": "A: pet the %s" % k.split("_")[0].rstrip("0123456789"), "animal": self}, false)
 
 
 func _process(delta: float) -> void:

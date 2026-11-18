@@ -206,7 +206,7 @@ static func cast(m: GameMap, id: String) -> bool:
 		_:
 			fired = false
 	if fired:
-		if randf() < GameState.bonus("magic", "free_cast"):
+		if int(GameState.run.get("mana", 0)) > (10 if GameState.bonus("magic", "awakened") > 0.0 else 0) and randf() < GameState.bonus("magic", "free_cast"):
 			# Twin Cast (Magic): now and then a spell costs nothing.
 			m.hud.toast("Twin Cast: free!", Color(0.85, 0.75, 1.0))
 			m.fx("sparkle", p.position + Vector2(0, -14), 12.0, 0.5)

@@ -231,17 +231,21 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			elif tt in ["rock", "mrock", "stump", "log"]:
 				# He breaks it himself: no tool, no energy.
 				m.clear_cell(fc)
-				m._mark_cleared(fc)
+				var in_mine: bool = m.scene_id() == "mine"
+				if not in_mine:
+					m._mark_cleared(fc)  # the mine rebuilds its floors and never reads this
 				if m.has_method("_try_more"):
 					m.call("_try_more", 1)  # mine: counts toward the way down
 				if m.has_method("redraw_cell"):
 					m.call("redraw_cell", fc)  # chunked mine: redraw the rock's chunk
 				m.queue_redraw()
 				if tt in ["rock", "mrock"]:
-					m.give("stone", 3)
+					m.give("stone", 2 if in_mine else 3)
 					var ore := str(th.get("ore", ""))
 					if ore != "" and ore != "stone":
 						m.give(ore, 1)
+					if in_mine:
+						m.xp("mining", 3 if ore in ["", "stone"] else 6)
 				else:
 					m.give("wood", 3)
 				m.fx("stone_chips" if tt in ["rock", "mrock"] else "wood_chips", m.cell_center(fc) + Vector2(0, -8), 16.0, 0.5)
