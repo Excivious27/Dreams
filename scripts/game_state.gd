@@ -618,6 +618,8 @@ static func sword_damage() -> int:
 		for t in run["tools"]:
 			best = maxi(best, int(items.get(t, {}).get("damage", 0)))
 	best += int(bonus("combat", "damage")) + gear_stat("damage") + tool_tier("sword")
+	if has_team():
+		best += int(bonus("leadership", "team_damage"))
 	if count("knight_shard") > 0:
 		best += 1
 	best += mini(2, Crew.perk_level("sword"))
@@ -631,6 +633,8 @@ static func sword_damage() -> int:
 static func add_xp(skill: String, xp: int) -> bool:
 	var s: Dictionary = run["skills"].get(skill, {"level": 1, "xp": 0, "nodes": {}})
 	var mult := 1.15 if has_friend_perk("theo", 8) else (1.10 if has_friend_perk("theo", 4) else (1.05 if has_friend_perk("theo", 2) else 1.0))
+	if skill != "leadership" and has_team():
+		mult *= 1.0 + bonus("leadership", "team_xp")
 	# Carry the fraction so a +5% perk is +5%, not +50% on a 2-xp grant.
 	var exact := xp * mult + float(s.get("xp_frac", 0.0))
 	s["xp"] = int(s["xp"]) + int(exact)
@@ -660,7 +664,7 @@ static func skill_level(skill: String) -> int:
 # A node of tier t opens once t*TIER_POINTS points are spent in that tree and
 # any one of its `requires` parents has a rank.
 
-const TIER_POINTS := 3
+const TIER_POINTS := 2
 
 
 static func nodes_of(skill: String) -> Array:
@@ -735,13 +739,45 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 
 
 ## Summed effect of ranks bought in a tree, e.g. bonus("combat", "damage").
+## Ceilings for stacking effects (the big trees can't make costs negative or
+## chances certain).
+const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.45, "crit": 0.6, "damage_reduction": 0.6, "wood_discount": 0.6,
+	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.9, "pass_risk": 0.2,
+	"heat_cool": 0.6, "ability_cooldown": 0.5, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
+	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.8, "interest": 0.05}
+
+
 static func bonus(skill: String, key: String) -> float:
 	var t := 0.0
 	for n in nodes_of(skill):
 		var r := node_rank(skill, str(n["id"]))
 		if r > 0 and n.has("effect") and n["effect"].has(key):
 			t += float(n["effect"][key]) * r
+	if BONUS_CAPS.has(key):
+		t = minf(t, float(BONUS_CAPS[key]))
 	return t
+
+
+## The arc's own tree: Harmony (penguins) or Hustle (gangsters).
+## A partner (companion) or the pup is with you right now.
+static func has_team() -> bool:
+	return not run.is_empty() and (Companion.active_id() != "" or not run.get("pet", {}).is_empty())
+
+
+static func arc_skill() -> String:
+	return "harmony" if is_penguins() else "hustle"
+
+
+## Is this skill shown in this run? (each arc hides the other's tree)
+static func skill_in_arc(sk: String) -> bool:
+	var a := str(skills_data.get(sk, {}).get("arc", ""))
+	return a == "" or a == str(run.get("arc", ""))
+
+
+static func add_arc_xp(n: int) -> bool:
+	if run.is_empty():
+		return false
+	return add_xp(arc_skill(), n)
 
 
 static func perks_of(skill: String) -> Array:
@@ -818,10 +854,12 @@ const HEART_HP := 20
 static func _apply_max_stats() -> void:
 	var levels := 0
 	for sk in skills_data.keys():
-		levels += skill_level(str(sk)) - 1
-	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + gear_stat("hp")
-	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + gear_stat("energy")
-	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana")
+		if skill_in_arc(str(sk)):
+			levels += skill_level(str(sk)) - 1
+	var arc_sk := arc_skill() if run.has("arc") else ""
+	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + gear_stat("hp") + (int(bonus(arc_sk, "hp")) if arc_sk != "" else 0)
+	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + gear_stat("energy") + (int(bonus(arc_sk, "energy")) if arc_sk != "" else 0)
+	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana") + (int(bonus(arc_sk, "mana")) if arc_sk != "" else 0)
 	if has_friend_perk("juniper", 4):
 		base_hp += 20
 	run["max_hp"] = base_hp + int(run.get("bonus_hp", 0))
@@ -1185,6 +1223,10 @@ static func give_gift(npc: String, item: String) -> int:
 
 static func add_friend(npc: String, n: int) -> void:
 	var fr: Dictionary = run["friendship"]
+	if n > 0:
+		n = int(round(n * (1.0 + bonus("leadership", "friend_gain"))))
+		if npc in Companion.party().get("known", []) or Crew.recruited(npc):
+			add_xp("leadership", 3)
 	fr[npc] = clampi(int(fr.get(npc, 0)) + n, 0, 250)
 	if n > 0:
 		for line in Perks.check(npc):

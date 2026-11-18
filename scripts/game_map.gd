@@ -1568,6 +1568,9 @@ func on_enemy_died(e: Enemy) -> void:
 		GameState.add_hint("Lieutenant down: %s (%d/8)" % [e.display_name(), down])
 		later(_lieutenant_choice.bind(e.kind.trim_prefix("lt_"), e.display_name()))
 	Ops.on_kill(self)
+	GameState.add_arc_xp(2)
+	if GameState.has_team():
+		GameState.add_xp("leadership", 2)
 	var kc: Dictionary = GameState.run.get("kill_counts", {})
 	kc[e.kind] = int(kc.get(e.kind, 0)) + 1
 	GameState.run["kill_counts"] = kc

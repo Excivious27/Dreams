@@ -86,6 +86,7 @@ static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 				return true
 			GameState.add_item("crystal_refined", -1)
 			s["beacons"][key] = true
+			GameState.add_arc_xp(15)
 			m.fx("levelup", m.cell_center(m.world_to_cell(m.player.position + m.player.facing_dir() * 16.0)) + Vector2(0, -12), 10.0, 0.6)
 			m.hud.toast("Beacon lit (%d/%d)." % [(s["beacons"] as Dictionary).size(), int(c.get("beacons", 3))], Color(0.7, 0.95, 1))
 			m.queue_redraw()
@@ -191,6 +192,7 @@ static func _restore(m: GameMap, id: String) -> void:
 	var c: Dictionary = data()[id]
 	var s := st(id)
 	s["done"] = true
+	GameState.add_arc_xp(120)
 	GameState.complete_quest("colony_" + id)
 	GameState.run["flags"]["colony_" + str(c["ability"])] = true
 	GameState.add_item("colony_light", 1)
@@ -218,7 +220,7 @@ static func _shop(m: GameMap, id: String) -> void:
 	var items: Array = c["shop"]
 	var opts: Array = []
 	for it in items:
-		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), GameState.shop_price(str(it[0]), int(it[1]))])
+		opts.append("%s  ◆%d" % [GameState.item_name(str(it[0])), int(GameState.shop_price(str(it[0]), int(it[1])) * (1.0 - GameState.bonus("harmony", "colony_discount")))])
 	opts.append("Leave")
 	var d := Dialogue.instance(m.get_tree())
 	d.say([{"who": str(c["shop_who"]), "text": "For a friend of the colony. (◆%d)" % int(GameState.run["crystals"]), "choice": opts, "key": ""}])
@@ -226,7 +228,7 @@ static func _shop(m: GameMap, id: String) -> void:
 	var i := d.last_choice
 	if i < 0 or i >= items.size():
 		return
-	var price := GameState.shop_price(str(items[i][0]), int(items[i][1]))
+	var price := int(GameState.shop_price(str(items[i][0]), int(items[i][1])) * (1.0 - GameState.bonus("harmony", "colony_discount")))
 	if int(GameState.run["crystals"]) < price:
 		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 		return

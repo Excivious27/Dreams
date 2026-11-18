@@ -39,6 +39,7 @@ static func risk(id: String) -> float:
 	var r := float(GameState.items.get(id, {}).get("risk", 0.3)) + 0.05 * heat()
 	r += 0.04 * passed_today()                     # every till you hit today talks to the next
 	r -= 0.03 * Crew.perk_level("shop_discount")  # Specs knows which tills to avoid
+	r -= GameState.bonus("hustle", "pass_risk")
 	r -= 0.02 if Crew.perk_level("board_bonus") >= 2 else 0.0  # Dice hears which shops are watching
 	return clampf(r, 0.03, 0.9)
 
@@ -82,6 +83,7 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 				add_heat(m, 1)
 		GameState.run["passed"] = int(GameState.run.get("passed", 0)) + 1
 		GameState.add_xp("bartering", 2 + int(it.get("tier", 1)))
+		GameState.add_arc_xp(5)
 		m.hud.toast("Passed. +◆%d  (risk was %d%%, %d/%d today)" % [face, int(round(r_now * 100.0)), passed_today(), pass_cap()], Color(0.7, 1, 0.7))
 		Music.instance(m.get_tree()).sfx("pickup")
 		return true
@@ -170,7 +172,7 @@ static func overnight(report: Dictionary) -> void:
 	if not on():
 		return
 	var lt := Builds.built_tier("laundromat")
-	set_heat(heat() - (2 if lt > 0 else 1))
+	set_heat(heat() - (2 if lt > 0 else 1) - (1 if randf() < GameState.bonus("hustle", "heat_cool") else 0))
 	var wash: Dictionary = GameState.run.get("wash", {})
 	var paid := 0
 	var face_left := int(WASH_FACE_CAP[clampi(lt, 0, 3)])
@@ -178,7 +180,7 @@ static func overnight(report: Dictionary) -> void:
 	for id in wash:
 		var it: Dictionary = GameState.items.get(str(id), {})
 		var face := int(it.get("face", 0))
-		var rate := float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(it.get("tier", 1)), 0, 4)])
+		var rate := float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(it.get("tier", 1)), 0, 4)]) + GameState.bonus("hustle", "wash_bonus")
 		for k in int(wash[id]):
 			if face > face_left:
 				back[id] = int(back.get(id, 0)) + 1

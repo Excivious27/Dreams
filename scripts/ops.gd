@@ -65,6 +65,7 @@ static func on_kill(m: GameMap) -> void:
 		if is_instance_valid(e) and e._alive:
 			return
 	turf()[m.scene_id()] = int(GameState.run["day"])
+	GameState.add_arc_xp(40)
 	m.hud.toast("This block is yours: %s. ◆%d every morning, and collectors stay away." % [str(TURF[m.scene_id()]), TURF_PAY], Color(1, 0.9, 0.5))
 	m.fx("sparkle", m.player.position + Vector2(0, -18), 16.0, 0.6)
 	Music.instance(m.get_tree()).sfx("levelup")
@@ -125,6 +126,7 @@ static func _run_heist(m: GameMap, id: String) -> void:
 	GameState.run["time"] = int(GameState.run["time"]) + 120
 	if randf() < odds:
 		GameState.run["flags"]["heist_" + id] = true
+		GameState.add_arc_xp(60)
 		Perks._give(h["reward"])
 		await m.say([{"who": "", "text": "It goes like a song you've all rehearsed. Nobody hurt, nobody seen, and the van is heavier on the way home."}, {"who": who, "text": "...We did it. We actually did it."}])
 		m.hud.toast("%s done: %s" % [str(h["name"]), Perks._list(h["reward"])], Color(1, 0.9, 0.4))

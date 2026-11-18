@@ -918,7 +918,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	var dir := facing_dir()
 	var muzzle := position + dir * 10.0 + Vector2(0, -8)
 	var reach := float(wd.get("range", 100.0))
-	var dmg := maxi(1, GameState.sword_damage() + GameState.status_damage_mod())
+	var dmg := maxi(1, GameState.sword_damage() + GameState.status_damage_mod() + int(GameState.bonus("hustle", "gun_damage")))
 	var targets: Array = []
 	for e in map.enemies:
 		if not is_instance_valid(e):
@@ -998,6 +998,8 @@ func take_damage(n: int, from: Vector2) -> void:
 	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
 	if Settings.easy():
 		n = maxi(1, roundi(n * 0.6))
+	if GameState.has_team():
+		n = maxi(1, roundi(n * (1.0 - minf(0.4, GameState.bonus("leadership", "team_defense")))))
 	# Short mercy window: enough to not get chain-hit by one enemy, not enough to
 	# tank a crowd. The knockback is shorter too, so you can't bounce to safety.
 	invuln = 0.35

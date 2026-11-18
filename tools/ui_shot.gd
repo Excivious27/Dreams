@@ -53,7 +53,13 @@ func _run() -> void:
 			menu = c
 	if menu:
 		menu.toggle()
-		for t in ["Items", "Options", "Social"]:
+		GameState.run["skills"]["farming"]["level"] = 9
+		GameState.buy_node("farming", "green_thumb")
+		GameState.buy_node("farming", "farming_1_0")
+		GameState.buy_node("farming", "farming_1_0")
+		GameState.buy_node("farming", "quick_hands")
+		menu._node_sel = "green_thumb"
+		for t in ["Skills", "Items", "Options", "Social"]:
 			menu._tab = t
 			menu._refresh()
 			await _shot(out, "menu_" + t.to_lower())

@@ -270,38 +270,7 @@ func _refresh() -> void:
 			_line("  " + gs, 7, Color(0.8, 0.9, 1.0))
 			_line("Tools: " + ", ".join(r["tools"].map(func(t: String) -> String: return GameState.item_name(t))), 7, Color(0.8, 0.8, 0.8))
 		"Skills":
-			_line("Tap a skill to see its path. Perks unlock as you level.", 7, Color(0.8, 0.8, 0.8))
-			for sk in r["skills"]:
-				var d: Dictionary = r["skills"][sk]
-				var lvl := int(d["level"])
-				var need := GameState.xp_for_next(lvl)
-				var h := HBoxContainer.new()
-				_body.add_child(h)
-				var ic := Art.tex("ui", "skill3_" + str(sk)) if Art.has("ui", "skill3_" + str(sk)) else (Art.tex("ui", "skill2_" + str(sk)) if Art.has("ui", "skill2_" + str(sk)) else Art.tex("ui", "skill_" + str(sk)))
-				if ic:
-					var tr := TextureRect.new()
-					tr.texture = ic
-					tr.custom_minimum_size = Vector2(14, 14)
-					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-					h.add_child(tr)
-				var sb := Button.new()
-				sb.text = "  %s   Lv %d   (%d / %d xp)" % [str(sk).capitalize(), lvl, int(d["xp"]), need]
-				sb.flat = true
-				sb.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
-				sb.alignment = HORIZONTAL_ALIGNMENT_LEFT
-				sb.add_theme_font_size_override("font_size", 9)
-				var skid := str(sk)
-				sb.pressed.connect(func() -> void: _skill_open = "" if _skill_open == skid else skid; _refresh())
-				h.add_child(sb)
-				var bar := ProgressBar.new()
-				bar.max_value = need
-				bar.value = int(d["xp"])
-				bar.custom_minimum_size = Vector2(0, 6)
-				bar.show_percentage = false
-				_body.add_child(bar)
-				if _skill_open == str(sk):
-					_skill_tree(str(sk))
-			_line("")
+			_skills_tab()
 		"Pup":
 			_pup_tab()
 		"Party":
@@ -649,6 +618,226 @@ func _skill_tree(sk: String) -> void:
 					cb.add_theme_constant_override("icon_max_width", 16)
 	if spent > 0:
 		_button("Reset this tree (refund all points)", func() -> void: GameState.reset_tree(sk); _refresh())
+
+
+## Sun Haven-style skills page: a tab per skill, the level / points / EXP panel,
+## and the tree as a grid of 4 branches x 10 tiers (I-X). Column N opens after
+## 2N points spent in that skill. Tap a node to read it, then Learn.
+const SKILL_ORDER := ["farming", "mining", "foraging", "fishing", "combat", "magic", "pup", "bartering", "building", "leadership", "harmony", "hustle"]
+const BRANCH_COL := [Color(0.32, 0.55, 0.25), Color(0.25, 0.42, 0.62), Color(0.6, 0.38, 0.22), Color(0.48, 0.3, 0.58)]
+var _node_sel := ""
+## Item icons that stand in for node art until the node icon sheets arrive.
+const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_energy": "can", "extra_day": "hoe", "animal_yield": "egg", "crop_value": "gold",
+	"star_chance": "sunflower", "seed_back": "seeds", "growth": "sunflower", "stone_bonus": "stone", "mine_energy": "pickaxe", "ore_bonus": "copper",
+	"double_hit": "iron", "gem_chance": "diamond", "shard_bonus": "shard", "deeper": "torch", "smelt_discount": "iron", "forage_bonus": "berry",
+	"rare_forage": "mushroom", "wood_bonus": "wood", "chop_bonus": "axe", "sap_chance": "sap", "bite_speed": "rod", "escape_less": "bait",
+	"double_fish": "fish", "rare_fish": "fish", "fish_value": "pearl", "chest_chance": "chest", "damage": "sword", "crit": "ruby", "block": "iron",
+	"damage_reduction": "iron", "hp": "potion", "energy": "energy_tea", "kill_energy": "energy_tea", "sell_bonus": "gold", "interest": "gold",
+	"gift_bonus": "gift_pie", "buy_discount": "gold", "wood_discount": "plank", "stone_discount": "brick", "craft_speed": "hammer", "build_discount": "hammer",
+	"spark_damage": "crystal", "spell_power": "big_crystal", "mana": "mana_potion", "mana_regen": "mana_potion", "spell_discount": "amethyst",
+	"pet_hp": "bone", "pet_dmg": "bone", "pet_speed": "bone", "pet_def": "bone", "pass_risk": "map", "heat_cool": "key", "wash_bonus": "gold",
+	"job_pay": "gold", "gun_damage": "six_shooter", "supply_rate": "chest", "helper_hp": "emerald", "ability_cooldown": "paw_charm",
+	"colony_discount": "pearl", "team_damage": "sword", "team_defense": "copper_ring", "team_heal": "greater_potion", "friend_gain": "cake",
+	"pet_bond": "bone", "team_xp": "luck_potion"}
+
+
+func _skills_tab() -> void:
+	var shown: Array = []
+	for sk in SKILL_ORDER:
+		if GameState.skills_data.has(sk) and GameState.skill_in_arc(sk):
+			shown.append(sk)
+	if _skill_open == "" or not _skill_open in shown:
+		_skill_open = str(shown[0])
+	var sk := _skill_open
+	var sd: Dictionary = GameState.skills_data[sk]
+	# Skill tabs
+	var tabs := HFlowContainer.new()
+	tabs.add_theme_constant_override("h_separation", 2)
+	tabs.add_theme_constant_override("v_separation", 2)
+	_body.add_child(tabs)
+	for k in shown:
+		var tb := Button.new()
+		tb.text = str(GameState.skills_data[k]["name"])
+		tb.add_theme_font_size_override("font_size", 7)
+		tb.custom_minimum_size = Vector2(0, 16)
+		tb.focus_mode = Control.FOCUS_NONE
+		tb.modulate = Color(1, 0.88, 0.45) if k == sk else Color(0.78, 0.78, 0.78)
+		var kk := str(k)
+		tb.pressed.connect(func() -> void: _skill_open = kk; _node_sel = ""; _refresh())
+		tabs.add_child(tb)
+	# Level / points / EXP panel
+	var lvl := GameState.skill_level(sk)
+	var xp := int(GameState.run["skills"].get(sk, {}).get("xp", 0))
+	var need := GameState.xp_for_next(lvl)
+	var free := GameState.points_free(sk)
+	var spent := GameState.points_spent(sk)
+	var head := HBoxContainer.new()
+	_body.add_child(head)
+	var ic := Art.tex("ui", "skillbig_" + sk) if Art.has("ui", "skillbig_" + sk) else Art.tex("items", str({"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")))
+	if ic:
+		var tr := TextureRect.new()
+		tr.texture = ic
+		tr.custom_minimum_size = Vector2(28, 28)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		head.add_child(tr)
+	var hv := VBoxContainer.new()
+	hv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hv.add_theme_constant_override("separation", 0)
+	head.add_child(hv)
+	var l1 := Label.new()
+	l1.text = "Level %d  %s" % [lvl, str(sd["name"])]
+	l1.add_theme_font_size_override("font_size", 10)
+	hv.add_child(l1)
+	var l2 := Label.new()
+	l2.text = "%d skill point%s · %d spent" % [free, "" if free == 1 else "s", spent]
+	l2.add_theme_font_size_override("font_size", 8)
+	l2.add_theme_color_override("font_color", Color(1, 0.9, 0.45) if free > 0 else Color(0.8, 0.8, 0.8))
+	hv.add_child(l2)
+	var bar := ProgressBar.new()
+	bar.max_value = need
+	bar.value = xp
+	bar.custom_minimum_size = Vector2(0, 6)
+	bar.show_percentage = false
+	hv.add_child(bar)
+	var l3 := Label.new()
+	l3.text = "%s EXP %d / %d" % [str(sd["name"]), xp, need]
+	l3.add_theme_font_size_override("font_size", 6)
+	hv.add_child(l3)
+	# The grid
+	var by_cell := {}
+	for n in GameState.nodes_of(sk):
+		by_cell[Vector2i(int(n.get("tier", 0)), int(n.get("row", 0)))] = n
+	var grid := GridContainer.new()
+	grid.columns = 10
+	grid.add_theme_constant_override("h_separation", 2)
+	grid.add_theme_constant_override("v_separation", 2)
+	_body.add_child(grid)
+	var romans := ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+	for c in 10:
+		var open := spent >= c * GameState.TIER_POINTS
+		var hp := PanelContainer.new()
+		var hs := StyleBoxFlat.new()
+		hs.bg_color = Color(0.36, 0.62, 0.28) if open else Color(0.25, 0.22, 0.2)
+		hs.set_corner_radius_all(2)
+		hp.add_theme_stylebox_override("panel", hs)
+		hp.custom_minimum_size = Vector2(22, 12)
+		var hl := Label.new()
+		hl.text = romans[c]
+		hl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		hl.add_theme_font_size_override("font_size", 7)
+		hp.add_child(hl)
+		grid.add_child(hp)
+	for r in 4:
+		for c in 10:
+			var n: Dictionary = by_cell.get(Vector2i(c, r), {})
+			grid.add_child(_node_cell(sk, n, r, spent >= c * GameState.TIER_POINTS))
+	# Branch names
+	var br: Dictionary = sd.get("branches", {})
+	var names: Array = []
+	for r in 4:
+		names.append(str(br.get(str(r), "")))
+	_line("Rows: " + " · ".join(names), 6, Color(0.8, 0.78, 0.7))
+	# The picked node
+	var sel := GameState.node(sk, _node_sel) if _node_sel != "" else {}
+	if sel.is_empty():
+		_line(str(sd.get("desc", "")), 7, Color(0.85, 0.8, 0.7))
+		_line("Tap a node. Each tier column opens after 2 more points in this skill. 1 point per level.", 7, Color(0.75, 0.75, 0.75))
+	else:
+		var rank := GameState.node_rank(sk, _node_sel)
+		var ranks := int(sel.get("ranks", 1))
+		var why := GameState.node_locked(sk, _node_sel)
+		_line("%s  ·  %s, tier %s  ·  %d/%d" % [str(sel["name"]), str(br.get(str(int(sel.get("row", 0))), "")), romans[int(sel.get("tier", 0))], rank, ranks], 9, Color(1, 0.92, 0.6))
+		_line(str(sel["desc"]), 8, Color(0.95, 0.95, 0.9))
+		var nid := _node_sel
+		var lb := _button("Learn (1 point)" if why == "" else ("Maxed" if why == "maxed" else "Locked: " + why), func() -> void:
+			if GameState.buy_node(sk, nid):
+				Music.instance(get_tree()).sfx("levelup")
+			_refresh())
+		lb.disabled = why != ""
+	if sk == "magic":
+		_magic_casts()
+	if spent > 0:
+		_button("Reset this tree (refund all points)", func() -> void: GameState.reset_tree(sk); _node_sel = ""; _refresh())
+
+
+func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(22, 22)
+	b.focus_mode = Control.FOCUS_NONE
+	var st := StyleBoxFlat.new()
+	var bc: Color = BRANCH_COL[r]
+	if n.is_empty():
+		st.bg_color = Color(0, 0, 0, 0.2)
+		for k in ["normal", "hover", "pressed", "disabled", "focus"]:
+			b.add_theme_stylebox_override(k, st)
+		b.disabled = true
+		return b
+	var id := str(n["id"])
+	var rank := GameState.node_rank(sk, id)
+	var ranks := int(n.get("ranks", 1))
+	st.bg_color = bc.darkened(0.25) if col_open else Color(0.18, 0.16, 0.15)
+	st.border_color = Color(1, 0.84, 0.35) if rank > 0 else (Color(0.95, 0.9, 0.75) if id == _node_sel else Color(0.08, 0.06, 0.04))
+	st.set_border_width_all(2 if (rank > 0 or id == _node_sel) else 1)
+	st.set_corner_radius_all(3)
+	for k in ["normal", "hover", "pressed", "focus"]:
+		b.add_theme_stylebox_override(k, st)
+	var nic := "node_%s_%s" % [sk, id]
+	var tex: Texture2D = Art.tex("ui", nic) if Art.has("ui", nic) else null
+	var tr := TextureRect.new()
+	tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+	tr.offset_left = 3
+	tr.offset_top = 2
+	tr.offset_right = -3
+	tr.offset_bottom = -5
+	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if tex:
+		tr.texture = tex
+	else:
+		var ik := ""
+		for ek in (n.get("effect", {}) as Dictionary):
+			ik = str(KEY_ICON.get(ek, ""))
+			break
+		if ik == "":
+			ik = {"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")
+		tr.texture = Art.tex("items", ik)
+	if not col_open:
+		tr.modulate = Color(0.4, 0.4, 0.4, 0.6)
+	b.add_child(tr)
+	var rl := Label.new()
+	rl.text = "%d/%d" % [rank, ranks]
+	rl.add_theme_font_size_override("font_size", 6)
+	rl.add_theme_color_override("font_color", Color(0.6, 1, 0.6) if rank >= ranks else Color(1, 1, 1))
+	rl.add_theme_constant_override("outline_size", 2)
+	rl.add_theme_color_override("font_outline_color", Color.BLACK)
+	rl.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	rl.offset_left = -16
+	rl.offset_top = -9
+	rl.offset_right = -1
+	rl.offset_bottom = 0
+	rl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	rl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	b.add_child(rl)
+	b.pressed.connect(func() -> void: _node_sel = id; _refresh())
+	return b
+
+
+func _magic_casts() -> void:
+	var kn := Spells.known()
+	if kn.is_empty():
+		_line("Learn Spark or Deep Well to start casting.", 7, Color(0.8, 0.8, 0.8))
+		return
+	_line("Cast  (mana %d / %d)" % [int(GameState.run.get("mana", 0)), int(GameState.run.get("max_mana", 0))], 8, Color(0.6, 0.8, 1.0))
+	for id in kn:
+		var sp: Dictionary = Spells.SPELLS[id]
+		var cb := _button("✦ %s  (%d mana) — %s" % [str(sp["name"]), Spells.cost_of(id), str(sp["desc"])], func() -> void:
+			var m := get_tree().current_scene
+			if m is GameMap:
+				toggle()
+				Spells.cast(m as GameMap, id))
+		cb.add_theme_font_size_override("font_size", 7)
 
 
 func _refresh_player() -> void:

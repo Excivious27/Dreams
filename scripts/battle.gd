@@ -153,6 +153,9 @@ func _capture(delta: float) -> void:
 			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * (1.0 + 0.25 * (foes - 1)))
 		var was := str(p["owner"])
 		if float(p["prog"]) >= 1.0:
+			if str(p["owner"]) != "ally":
+				GameState.add_arc_xp(10)
+				GameState.add_xp("leadership", 6)
 			p["owner"] = "ally"
 		elif float(p["prog"]) <= -1.0:
 			p["owner"] = "enemy"
@@ -173,7 +176,7 @@ func _capture(delta: float) -> void:
 func _tick() -> void:
 	var a := _owned("ally")
 	var e := _owned("enemy")
-	supply += a * int(d.get("supply_per_point", 2))
+	supply += int(round(a * int(d.get("supply_per_point", 2)) * (1.0 + GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("leadership", "supply_rate"))))
 	# Bleed: whoever holds fewer points loses tickets every second, faster the worse it is.
 	if a > e:
 		tickets["enemy"] = int(tickets["enemy"]) - (a - e)
@@ -290,6 +293,7 @@ func interact(id: String) -> void:
 		map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
 		return
 	supply -= int(SPAWNER_COST[k])
+	GameState.add_xp("leadership", 8)
 	p["spawner"] = k
 	p["t"] = 10.0
 	map.fx("sparkle", p["pos"] + Vector2(0, -12), 12.0, 0.6)
@@ -298,6 +302,8 @@ func interact(id: String) -> void:
 
 func _end(won: bool) -> void:
 	_over = true
+	if won:
+		GameState.add_arc_xp(80)
 	for e in map.enemies.duplicate():
 		if is_instance_valid(e):
 			e.queue_free()

@@ -92,7 +92,12 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		if left > 0.0:
 			m.hud.toast("Ready in %ds." % int(ceil(left)), Color(0.8, 0.85, 1.0))
 			return
-		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + float(COOLDOWN.get(ab, DEFAULT_COOLDOWN))
+		GameState.add_arc_xp(3)
+		GameState.add_xp("leadership", 4)
+		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + float(COOLDOWN.get(ab, DEFAULT_COOLDOWN)) * maxf(0.3, 1.0 - GameState.bonus("harmony", "ability_cooldown") - GameState.bonus("leadership", "ability_cooldown"))
+		var th := int(GameState.bonus("leadership", "team_heal"))
+		if th > 0:
+			GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + th)
 	# Prompts-12 partner art: cast pose + the partner's own effect strip.
 	var sprite_id := str(defs().get(active_id(), {}).get("sprite", active_id()))
 	if Art.has("fx", "ability_" + sprite_id):

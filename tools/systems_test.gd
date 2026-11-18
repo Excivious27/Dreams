@@ -105,6 +105,16 @@ func _run() -> void:
 	var g0 := int(GameState.run["crystals"])
 	check(Ops.morning() == 80 and int(GameState.run["crystals"]) == g0 + 80, "two blocks pay every morning")
 	check(Ops.holds("docks") and not Ops.holds("uptown"), "turf held per block")
+	# Sun Haven trees: 4 x 10 per skill, the arc's own tree, leadership
+	for sk in ["farming", "leadership", "hustle", "harmony"]:
+		check(GameState.nodes_of(sk).size() == 40, "%s has a 4x10 grid" % sk)
+	check(GameState.skill_in_arc("hustle") and not GameState.skill_in_arc("harmony"), "gangster run shows Hustle, not Harmony")
+	GameState.run["skills"]["leadership"]["level"] = 12
+	check(GameState.node_locked("leadership", "leadership_0_2") != "", "tier III waits for 4 points")
+	for i in 4:
+		GameState.buy_node("leadership", "leadership_0_0" if i < 3 else "leadership_1_0")
+	check(GameState.node_locked("leadership", "leadership_0_2") == "", "tier III opens after 4 points")
+	check(GameState.bonus("combat", "block") <= 0.45, "stacking caps hold")
 	Settings.set_v("music_vol", 8)
 	print("systems_test: %d failures" % fails)
 	quit()
