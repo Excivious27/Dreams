@@ -292,19 +292,23 @@
       },
       {
        "who": "",
-       "text": "A ship shaped like an enormous cat, ears and all. Everyone aboard. The Grump ships are on its tail before it clears the meadow."
+       "text": "A ship shaped like an enormous cat, ears and all. Everyone aboard. The Grump ships are on its tail before it clears the meadow.",
+       "pic": "props/catship_sail"
       },
       {
        "who": "Catkins",
-       "text": "Don't worry. We have prepared for this. We have a very powerful secret weapon. Prepare the catapults, kitties."
+       "text": "Don't worry. We have prepared for this. We have a very powerful secret weapon. Prepare the catapults, kitties.",
+       "pic": "props/grumpship_hunt"
       },
       {
        "who": "",
-       "text": "The cats load the catapults with LITTER BOXES. Big Jim, if he's with you, says a word you don't repeat. The stink hits the Grump ships; they can't see; they crash, one after another, into the dark wastes past the meadow."
+       "text": "The cats load the catapults with LITTER BOXES. Big Jim, if he's with you, says a word you don't repeat. The stink hits the Grump ships; they can't see; they crash, one after another, into the dark wastes past the meadow.",
+       "pic": "props/grumpship_crash"
       },
       {
        "who": "Catkins",
-       "text": "A-meow-zing! We've bought some time. Their Commander is down there in the Wastes. He was a person once. When you're ready, farmer: the Wastes gate opens for someone who can hold a sword like they mean it."
+       "text": "A-meow-zing! We've bought some time. Their Commander is down there in the Wastes. He was a person once. When you're ready, farmer: the Wastes gate opens for someone who can hold a sword like they mean it.",
+       "pic": "props/catship_win"
       }
      ],
      "effects": {

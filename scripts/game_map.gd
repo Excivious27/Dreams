@@ -2827,6 +2827,8 @@ func under_layer() -> Node2D:
 	if _under_layer == null or not is_instance_valid(_under_layer):
 		_under_layer = Node2D.new()
 		_under_layer.name = "UnderLayer"
+		# Sort just after the water and path layers (which sit at the content offset).
+		_under_layer.position = Vector2(0, offset().y + 0.5)
 		_add_under(_under_layer)
 	return _under_layer
 
@@ -2838,6 +2840,7 @@ func to_under(n: Node2D) -> void:
 	if n.get_parent():
 		n.reparent(under_layer())
 	else:
+		n.position -= under_layer().position  # given in map coordinates
 		under_layer().add_child(n)
 
 

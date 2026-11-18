@@ -61,6 +61,7 @@ static func portrait_for(who: String) -> String:
 		"grandmother brine": "elder_brine", "old tidewhisker": "elder_tidewhisker", "captain icewhisker": "elder_icewhisker", "lady cinderpaw": "elder_cinderpaw",
 		"barnaby": "barnaby", "greta": "greta", "finn": "finn", "lumi": "lumi", "theo": "theo", "hazel": "hazel"}
 	map["nova"] = "penguin_wizard"
+	map["mercat"] = "merkitty_b"
 	map["pip-pip"] = "penguin_king"
 	var comp := Companion.data()
 	for cid in comp:
@@ -288,7 +289,11 @@ var _pic: TextureRect
 func _set_pic(name: String) -> void:
 	if name == "":
 		return
-	if name == "none" or not Art.has("ui", name):
+	var grp := "ui"
+	if "/" in name:
+		grp = name.get_slice("/", 0)
+		name = name.get_slice("/", 1)
+	if name == "none" or not Art.has(grp, name):
 		if _pic:
 			_pic.visible = false
 		return
@@ -301,7 +306,7 @@ func _set_pic(name: String) -> void:
 		_pic.position = Vector2(8, 70)
 		_pic.size = Vector2(254, 156)
 		add_child(_pic)
-	_pic.texture = Art.tex("ui", name)
+	_pic.texture = Art.tex(grp, name)
 	_pic.visible = true
 
 

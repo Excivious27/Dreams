@@ -181,3 +181,33 @@ static func quick_stack_nearby(m: GameMap) -> Array:
 		moved += n
 		used += 1 if n > 0 else 0
 	return [moved, used]
+
+
+## How many of id sit in all your chests.
+static func total(id: String) -> int:
+	if not GameState.run.has("chests"):
+		return 0
+	var t := 0
+	for k in GameState.run["chests"]:
+		t += int((GameState.run["chests"][k] as Dictionary).get("items", {}).get(id, 0))
+	return t
+
+
+## Use n of id straight out of the chests (for builds): removed, not moved to the bag.
+static func take_from_chests(id: String, n: int) -> int:
+	if not GameState.run.has("chests"):
+		return 0
+	var took := 0
+	for k in GameState.run["chests"]:
+		if took >= n:
+			break
+		var b: Dictionary = GameState.run["chests"][k]
+		var have := int(b.get("items", {}).get(id, 0))
+		var k2 := mini(have, n - took)
+		if k2 > 0:
+			b["items"][id] = have - k2
+			if int(b["items"][id]) <= 0:
+				b["items"].erase(id)
+				(b.get("q", {}) as Dictionary).erase(id)
+			took += k2
+	return took

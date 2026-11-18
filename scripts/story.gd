@@ -328,6 +328,13 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		for e in m.enemies.duplicate():
 			var kinds: Array = fx["clear_kind"] if fx["clear_kind"] is Array else [fx["clear_kind"]]
 			if is_instance_valid(e) and e.kind in kinds and e._alive:
+				# Freed, not beaten: Fennimore walks away when she's been turned back.
+				if e.kind == "finargle_elder" and GameState.run["flags"].has("fennimore_free"):
+					m.enemies.erase(e)
+					e._alive = false
+					m.fx("blink" if Art.has("fx", "blink") else "poof", e.position + Vector2(0, -8), 14.0, 0.4)
+					e.queue_free()
+					continue
 				e.hit(99999, e.position, true)
 	if fx.has("toast"):
 		m.hud.toast(str(fx["toast"]), Color(1, 0.9, 0.6))

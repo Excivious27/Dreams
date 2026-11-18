@@ -1016,6 +1016,83 @@
    ]
   },
   {
+   "id": "crystal_belt",
+   "name": "Crystal Belt",
+   "need": {
+    "crystal_refined": 1,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_belt",
+   "tier": 4
+  },
+  {
+   "id": "crystal_boots",
+   "name": "Crystal Boots",
+   "need": {
+    "crystal_refined": 2,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_boots",
+   "tier": 4
+  },
+  {
+   "id": "crystal_cape",
+   "name": "Crystal Cape",
+   "need": {
+    "crystal_refined": 2,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_cape",
+   "tier": 4
+  },
+  {
+   "id": "crystal_chest",
+   "name": "Crystal Chest",
+   "need": {
+    "crystal_refined": 4,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_chest",
+   "tier": 4
+  },
+  {
+   "id": "crystal_gloves",
+   "name": "Crystal Gloves",
+   "need": {
+    "crystal_refined": 1,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_gloves",
+   "tier": 4
+  },
+  {
+   "id": "crystal_helm",
+   "name": "Crystal Helm",
+   "need": {
+    "crystal_refined": 2,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_helm",
+   "tier": 4
+  },
+  {
+   "id": "crystal_legs",
+   "name": "Crystal Legs",
+   "need": {
+    "crystal_refined": 3,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_legs",
+   "tier": 4
+  },
+  {
    "id": "crystal_plate",
    "name": "Crystal Plate",
    "need": {
@@ -1029,6 +1106,17 @@
     "combat",
     7
    ]
+  },
+  {
+   "id": "crystal_shield",
+   "name": "Crystal Shield",
+   "need": {
+    "crystal_refined": 3,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_shield",
+   "tier": 4
   },
   {
    "id": "crystal_sword",
@@ -1178,6 +1266,798 @@
    },
    "give": "pup_boots",
    "tier": 2
+  },
+  {
+   "id": "crystal_helm",
+   "name": "Crystal Helm",
+   "need": {
+    "crystal_refined": 2,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_helm",
+   "tier": 4
+  },
+  {
+   "id": "crystal_chest",
+   "name": "Crystal Chest",
+   "need": {
+    "crystal_refined": 4,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_chest",
+   "tier": 4
+  },
+  {
+   "id": "crystal_legs",
+   "name": "Crystal Legs",
+   "need": {
+    "crystal_refined": 3,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_legs",
+   "tier": 4
+  },
+  {
+   "id": "crystal_boots",
+   "name": "Crystal Boots",
+   "need": {
+    "crystal_refined": 2,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_boots",
+   "tier": 4
+  },
+  {
+   "id": "crystal_gloves",
+   "name": "Crystal Gloves",
+   "need": {
+    "crystal_refined": 1,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_gloves",
+   "tier": 4
+  },
+  {
+   "id": "crystal_shield",
+   "name": "Crystal Shield",
+   "need": {
+    "crystal_refined": 3,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_shield",
+   "tier": 4
+  },
+  {
+   "id": "crystal_cape",
+   "name": "Crystal Cape",
+   "need": {
+    "crystal_refined": 2,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_cape",
+   "tier": 4
+  },
+  {
+   "id": "crystal_belt",
+   "name": "Crystal Belt",
+   "need": {
+    "crystal_refined": 1,
+    "gold_bar": 1,
+    "leather": 1
+   },
+   "give": "crystal_belt",
+   "tier": 4
+  },
+  {
+   "id": "moon_helm",
+   "name": "Moon Helm",
+   "need": {
+    "moon_bar": 1,
+    "crystal_refined": 2,
+    "fine_leather": 1
+   },
+   "give": "moon_helm",
+   "tier": 5
+  },
+  {
+   "id": "moon_chest",
+   "name": "Moon Chest",
+   "need": {
+    "moon_bar": 2,
+    "crystal_refined": 4,
+    "fine_leather": 1
+   },
+   "give": "moon_chest",
+   "tier": 5
+  },
+  {
+   "id": "moon_legs",
+   "name": "Moon Legs",
+   "need": {
+    "moon_bar": 2,
+    "crystal_refined": 3,
+    "fine_leather": 1
+   },
+   "give": "moon_legs",
+   "tier": 5
+  },
+  {
+   "id": "moon_boots",
+   "name": "Moon Boots",
+   "need": {
+    "moon_bar": 1,
+    "crystal_refined": 2,
+    "fine_leather": 1
+   },
+   "give": "moon_boots",
+   "tier": 5
+  },
+  {
+   "id": "moon_gloves",
+   "name": "Moon Gloves",
+   "need": {
+    "moon_bar": 1,
+    "crystal_refined": 1,
+    "fine_leather": 1
+   },
+   "give": "moon_gloves",
+   "tier": 5
+  },
+  {
+   "id": "moon_shield",
+   "name": "Moon Shield",
+   "need": {
+    "moon_bar": 2,
+    "crystal_refined": 3,
+    "fine_leather": 1
+   },
+   "give": "moon_shield",
+   "tier": 5
+  },
+  {
+   "id": "moon_cape",
+   "name": "Moon Cape",
+   "need": {
+    "moon_bar": 1,
+    "crystal_refined": 2,
+    "fine_leather": 1
+   },
+   "give": "moon_cape",
+   "tier": 5
+  },
+  {
+   "id": "moon_belt",
+   "name": "Moon Belt",
+   "need": {
+    "moon_bar": 1,
+    "crystal_refined": 1,
+    "fine_leather": 1
+   },
+   "give": "moon_belt",
+   "tier": 5
+  },
+  {
+   "id": "temper_copper_helm",
+   "name": "Temper: Copper Helm",
+   "need": {
+    "copper_helm": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_helm_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_copper_chest",
+   "name": "Temper: Copper Chest",
+   "need": {
+    "copper_chest": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_chest_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_copper_legs",
+   "name": "Temper: Copper Legs",
+   "need": {
+    "copper_legs": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_legs_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_copper_boots",
+   "name": "Temper: Copper Boots",
+   "need": {
+    "copper_boots": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_boots_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_copper_gloves",
+   "name": "Temper: Copper Gloves",
+   "need": {
+    "copper_gloves": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_gloves_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_copper_shield",
+   "name": "Temper: Copper Shield",
+   "need": {
+    "copper_shield": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_shield_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_copper_cape",
+   "name": "Temper: Copper Cape",
+   "need": {
+    "copper_cape": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_cape_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_copper_belt",
+   "name": "Temper: Copper Belt",
+   "need": {
+    "copper_belt": 1,
+    "copper_bar": 1,
+    "coal": 2
+   },
+   "give": "copper_belt_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_iron_helm",
+   "name": "Temper: Iron Helm",
+   "need": {
+    "iron_helm": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_helm_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_iron_chest",
+   "name": "Temper: Iron Chest",
+   "need": {
+    "iron_chest": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_chest_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_iron_legs",
+   "name": "Temper: Iron Legs",
+   "need": {
+    "iron_legs": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_legs_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_iron_boots",
+   "name": "Temper: Iron Boots",
+   "need": {
+    "iron_boots": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_boots_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_iron_gloves",
+   "name": "Temper: Iron Gloves",
+   "need": {
+    "iron_gloves": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_gloves_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_iron_shield",
+   "name": "Temper: Iron Shield",
+   "need": {
+    "iron_shield": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_shield_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_iron_cape",
+   "name": "Temper: Iron Cape",
+   "need": {
+    "iron_cape": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_cape_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_iron_belt",
+   "name": "Temper: Iron Belt",
+   "need": {
+    "iron_belt": 1,
+    "iron_bar": 1,
+    "coal": 2
+   },
+   "give": "iron_belt_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_helm",
+   "name": "Temper: Steel Helm",
+   "need": {
+    "steel_helm": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_helm_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_chest",
+   "name": "Temper: Steel Chest",
+   "need": {
+    "steel_chest": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_chest_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_legs",
+   "name": "Temper: Steel Legs",
+   "need": {
+    "steel_legs": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_legs_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_boots",
+   "name": "Temper: Steel Boots",
+   "need": {
+    "steel_boots": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_boots_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_gloves",
+   "name": "Temper: Steel Gloves",
+   "need": {
+    "steel_gloves": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_gloves_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_shield",
+   "name": "Temper: Steel Shield",
+   "need": {
+    "steel_shield": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_shield_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_cape",
+   "name": "Temper: Steel Cape",
+   "need": {
+    "steel_cape": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_cape_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_steel_belt",
+   "name": "Temper: Steel Belt",
+   "need": {
+    "steel_belt": 1,
+    "steel_bar": 1,
+    "coal": 2
+   },
+   "give": "steel_belt_plus",
+   "tier": 3
+  },
+  {
+   "id": "temper_silver_helm",
+   "name": "Temper: Silver Helm",
+   "need": {
+    "silver_helm": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_helm_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_silver_chest",
+   "name": "Temper: Silver Chest",
+   "need": {
+    "silver_chest": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_chest_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_silver_legs",
+   "name": "Temper: Silver Legs",
+   "need": {
+    "silver_legs": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_legs_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_silver_boots",
+   "name": "Temper: Silver Boots",
+   "need": {
+    "silver_boots": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_boots_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_silver_gloves",
+   "name": "Temper: Silver Gloves",
+   "need": {
+    "silver_gloves": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_gloves_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_silver_shield",
+   "name": "Temper: Silver Shield",
+   "need": {
+    "silver_shield": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_shield_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_silver_cape",
+   "name": "Temper: Silver Cape",
+   "need": {
+    "silver_cape": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_cape_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_silver_belt",
+   "name": "Temper: Silver Belt",
+   "need": {
+    "silver_belt": 1,
+    "silver_bar": 1,
+    "coal": 2
+   },
+   "give": "silver_belt_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_helm",
+   "name": "Temper: Gold Helm",
+   "need": {
+    "gold_helm": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_helm_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_chest",
+   "name": "Temper: Gold Chest",
+   "need": {
+    "gold_chest": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_chest_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_legs",
+   "name": "Temper: Gold Legs",
+   "need": {
+    "gold_legs": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_legs_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_boots",
+   "name": "Temper: Gold Boots",
+   "need": {
+    "gold_boots": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_boots_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_gloves",
+   "name": "Temper: Gold Gloves",
+   "need": {
+    "gold_gloves": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_gloves_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_shield",
+   "name": "Temper: Gold Shield",
+   "need": {
+    "gold_shield": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_shield_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_cape",
+   "name": "Temper: Gold Cape",
+   "need": {
+    "gold_cape": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_cape_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_gold_belt",
+   "name": "Temper: Gold Belt",
+   "need": {
+    "gold_belt": 1,
+    "gold_bar": 1,
+    "coal": 2
+   },
+   "give": "gold_belt_plus",
+   "tier": 4
+  },
+  {
+   "id": "temper_crystal_helm",
+   "name": "Temper: Crystal Helm",
+   "need": {
+    "crystal_helm": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_helm_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_crystal_chest",
+   "name": "Temper: Crystal Chest",
+   "need": {
+    "crystal_chest": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_chest_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_crystal_legs",
+   "name": "Temper: Crystal Legs",
+   "need": {
+    "crystal_legs": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_legs_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_crystal_boots",
+   "name": "Temper: Crystal Boots",
+   "need": {
+    "crystal_boots": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_boots_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_crystal_gloves",
+   "name": "Temper: Crystal Gloves",
+   "need": {
+    "crystal_gloves": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_gloves_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_crystal_shield",
+   "name": "Temper: Crystal Shield",
+   "need": {
+    "crystal_shield": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_shield_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_crystal_cape",
+   "name": "Temper: Crystal Cape",
+   "need": {
+    "crystal_cape": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_cape_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_crystal_belt",
+   "name": "Temper: Crystal Belt",
+   "need": {
+    "crystal_belt": 1,
+    "crystal_refined": 2,
+    "light_mote": 1
+   },
+   "give": "crystal_belt_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_helm",
+   "name": "Temper: Moon Helm",
+   "need": {
+    "moon_helm": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_helm_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_chest",
+   "name": "Temper: Moon Chest",
+   "need": {
+    "moon_chest": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_chest_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_legs",
+   "name": "Temper: Moon Legs",
+   "need": {
+    "moon_legs": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_legs_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_boots",
+   "name": "Temper: Moon Boots",
+   "need": {
+    "moon_boots": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_boots_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_gloves",
+   "name": "Temper: Moon Gloves",
+   "need": {
+    "moon_gloves": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_gloves_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_shield",
+   "name": "Temper: Moon Shield",
+   "need": {
+    "moon_shield": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_shield_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_cape",
+   "name": "Temper: Moon Cape",
+   "need": {
+    "moon_cape": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_cape_plus",
+   "tier": 5
+  },
+  {
+   "id": "temper_moon_belt",
+   "name": "Temper: Moon Belt",
+   "need": {
+    "moon_belt": 1,
+    "crystal_refined": 2,
+    "star_dust": 2
+   },
+   "give": "moon_belt_plus",
+   "tier": 5
   }
  ],
  "loom": [
@@ -1528,6 +2408,94 @@
    },
    "give": "pup_pack_large",
    "tier": 2
+  },
+  {
+   "id": "temper_leather_helm",
+   "name": "Temper: Leather Helm",
+   "need": {
+    "leather_helm": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_helm_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_leather_chest",
+   "name": "Temper: Leather Chest",
+   "need": {
+    "leather_chest": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_chest_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_leather_legs",
+   "name": "Temper: Leather Legs",
+   "need": {
+    "leather_legs": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_legs_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_leather_boots",
+   "name": "Temper: Leather Boots",
+   "need": {
+    "leather_boots": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_boots_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_leather_gloves",
+   "name": "Temper: Leather Gloves",
+   "need": {
+    "leather_gloves": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_gloves_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_leather_shield",
+   "name": "Temper: Leather Shield",
+   "need": {
+    "leather_shield": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_shield_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_leather_cape",
+   "name": "Temper: Leather Cape",
+   "need": {
+    "leather_cape": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_cape_plus",
+   "tier": 2
+  },
+  {
+   "id": "temper_leather_belt",
+   "name": "Temper: Leather Belt",
+   "need": {
+    "leather_belt": 1,
+    "leather": 2,
+    "slime_gel": 1
+   },
+   "give": "leather_belt_plus",
+   "tier": 2
   }
  ],
  "press": [
@@ -1663,7 +2631,8 @@
    "id": "lens",
    "name": "Lens",
    "need": {
-    "glass": 2
+    "glass": 2,
+    "sand": 2
    },
    "give": "lens",
    "tier": 2
@@ -2402,6 +3371,17 @@
    },
    "give": "armored_suit",
    "tier": 4
+  },
+  {
+   "id": "neon_jacket",
+   "name": "Neon Jacket",
+   "need": {
+    "outfit_neon": 1,
+    "fine_leather": 2,
+    "circuit_board": 2
+   },
+   "give": "neon_jacket",
+   "tier": 3
   }
  ],
  "soda": [

@@ -103,7 +103,8 @@ static func blocker(id: String) -> String:
 		return g
 	var cst := cost_of(nd)
 	for need in cst:
-		if GameState.count(str(need)) < int(cst[need]):
+		# Materials in your chests count too (Sun Haven builds from storage).
+		if GameState.count(str(need)) + Storage.total(str(need)) < int(cst[need]):
 			return "need %d %s" % [int(cst[need]), GameState.item_name(str(need))]
 	return ""
 
@@ -125,7 +126,10 @@ static func start(id: String, buy := false) -> String:
 	else:
 		var cst := cost_of(nd)
 		for need in cst:
-			GameState.add_item(str(need), -int(cst[need]))
+			var short := int(cst[need]) - GameState.count(str(need))
+			if short > 0:
+				Storage.take_from_chests(str(need), short)
+			GameState.add_item(str(need), -mini(int(cst[need]), GameState.count(str(need))))
 	var days := int(nd.get("days", 0))
 	if days <= 0:
 		_finish(id, int(nd["tier"]))

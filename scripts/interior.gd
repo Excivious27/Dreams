@@ -238,11 +238,29 @@ func _talk(n: Npc) -> void:
 	player.frozen = false
 
 
+func _floor_cell(fl: String, c: Vector2i) -> void:
+	if Art.has("tiles", fl + "_0"):
+		Art.draw_tile(self, "tiles", fl + "_%d" % ((c.x * 3 + c.y * 5) % 8), Vector2(c * TILE), 0)
+		return
+	var t := Art.tex("tiles", fl)
+	if t == null:
+		return
+	# Stay inside the art's clean middle: its outer pixels carry a dark border.
+	var k := t.get_width() / 96.0
+	var band_h := minf(56.0, t.get_height() * 0.58)
+	var sx := (4.0 + float(c.x % 3) * 28.0) * k
+	var sy := 3.0 + float(c.y % 2) * (band_h - 30.0)
+	draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2(sx, sy, 28.0 * k, 26))
+
+
 func draw_map() -> void:
 	var fl := str(I.get("floor", "fl_wood"))
 	var wl := str(I.get("wall", "wl_plaster"))
-	if Art.has("tiles", fl):
-		draw_tileset_rect(fl, Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
+	if Art.has("tiles", fl + "_0") or Art.has("tiles", fl):
+		# Cell by cell from the clean part of the floor art (the 3x3 sheets have dark slicing gutters).
+		for y in range(2, rows - 1):
+			for x in range(1, cols - 1):
+				_floor_cell(fl, Vector2i(x, y))
 	else:
 		draw_rect(Rect2(TILE, 2 * TILE, (cols - 2) * TILE, (rows - 3) * TILE), Color("a07a4c"))
 	for r in I.get("rugs", []):

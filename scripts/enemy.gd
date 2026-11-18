@@ -415,7 +415,7 @@ func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) ->
 	var heavy := 1.0 if base_hp < 16 else (0.55 if base_hp < 40 else 0.3)
 	_knock = (position - from).normalized() * (230.0 if tier == 0 else 150.0) * heavy * combo * (1.0 - kb_resist) * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
 	# Juggled three times: answer with a lunge the moment the stun ends.
-	if _kb_hits >= 3 and abilities.has("lunge") and _lunge_cd <= 0.0:
+	if _kb_hits >= 3 and abilities.has("lunge") and _lunge_cd <= 0.0 and not (_gift and _gift.open_t > 0.0):
 		_lunge_tele = 0.18
 		_lunge_cd = 2.5
 	# Hit one of a pack and the rest come running.
@@ -471,10 +471,11 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 		map.fx("shield_up" if Art.has("fx", "shield_up") else "sparkle", position + Vector2(0, -12), 14.0, 0.5)
 	if _lunge_tele > 0.0:
 		_lunge_tele -= delta
-		if _lunge_tele <= 0.0:
+		if _lunge_tele <= 0.0 and _stun > 0.05:
+			_lunge_tele = 0.05  # still stunned: the lunge waits for the stun to end
+		elif _lunge_tele <= 0.0:
 			_lunge = 0.28
 			_lunge_dir = to.normalized()
-			_stun = 0.0
 			map.fx("lunge_trail" if Art.has("fx", "lunge_trail") else "poof", position, 16.0, 0.5, to.x < 0)
 		return true
 	if _lunge > 0.0:

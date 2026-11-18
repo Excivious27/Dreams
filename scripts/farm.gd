@@ -120,6 +120,16 @@ func build() -> void:
 				td["build"] = id
 				td["hint"] = "A: open the %s" % ("shed" if id == "shed" else "chest")
 			set_thing(c.x, c.y, td)
+	# The Merkitty Pool: its merkitties swim by day and sing at night.
+	if Sanctuary.on() and Builds.is_built("pool"):
+		var pc: Array = Builds.data().get("pool", {}).get("cell", [5, 27])
+		for i in mini(3, Builds.built_tier("pool")):
+			var mk := CharacterLibrary.make_sprite("merkitty_" + "abc"[i])
+			if mk:
+				mk.position = cell_center(Vector2i(int(pc[0]), int(pc[1]))) + Vector2(-10 + i * 10, 4)
+				mk.play("sing" if GameState.is_night() else "swim")
+				mk.flip_h = i == 1
+				add_child(mk)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
 	_place_debris()

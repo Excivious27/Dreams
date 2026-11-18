@@ -242,6 +242,11 @@ func _update_stick(pos: Vector2) -> void:
 
 
 func _set_vec(dir: Vector2, running: bool) -> void:
+	# Paused (a full-screen menu is open): the stick does nothing, and never presses B.
+	if get_tree().paused:
+		running = false  # never press B by pushing the stick far while something is open
+		if not Dialogue.instance(get_tree()).active:
+			dir = Vector2.ZERO  # dialogue choices still use the stick; full-screen menus don't
 	_stick_vec = dir
 	for action: String in DIRS:
 		var want := dir.dot(DIRS[action]) > 0.5

@@ -49,7 +49,7 @@ G = [  # id, name, type, value, tier, extra
  ('hull_plate', 'Hull Plate', 'craft', 900, 3, {}), ('rocket_engine', 'Rocket Engine', 'craft', 2600, 4, {}), ('fuel_cell', 'Fuel Cell', 'craft', 150, 3, {'desc': 'One launch each.'}),
  ('nav_computer', 'Nav Computer', 'craft', 2200, 4, {}), ('heat_shield', 'Heat Shield', 'craft', 1500, 4, {}),
  # gangster arc only
- ('blank_stock', 'Blank Stock', 'craft', 8, 1, {'arc': 'gangsters', 'desc': 'Paper with the right feel.'}), ('ink', 'Printing Ink', 'craft', 14, 1, {'arc': 'gangsters'}),
+ ('blank_stock', 'Blank Stock', 'craft', 8, 1, {'arc': 'gangsters', 'desc': 'Paper with the right feel.'}), ('ink', 'Printing Ink', 'craft', 10, 1, {'arc': 'gangsters'}),
  ('bills_crude', 'Crude Bills', 'consumable', 20, 1, {'arc': 'gangsters', 'effect': 'counterfeit', 'face': 70, 'risk': 0.30, 'desc': 'Hold and USE in a town to pass them for ◆70. About 1 in 3 gets noticed.'}),
  ('bills_passable', 'Passable Bills', 'consumable', 35, 2, {'arc': 'gangsters', 'effect': 'counterfeit', 'face': 150, 'risk': 0.18, 'desc': 'Pass for ◆150. About 1 in 6 gets noticed.'}),
  ('bills_fine', 'Fine Bills', 'consumable', 60, 3, {'arc': 'gangsters', 'effect': 'counterfeit', 'face': 320, 'risk': 0.09, 'desc': 'Pass for ◆320. About 1 in 11 gets noticed.'}),
@@ -335,7 +335,7 @@ books['mill'] = R['mill']
 books['press'] = [rc('cheese', 'Cheese', {'milk': 1}), rc('butter', 'Butter', {'milk': 1}), rc('jam', 'Jam', {'#berry': 3}), rc('cooking_oil', 'Cooking Oil', {'sunflower': 2}), rc('sesame_oil', 'Cooking Oil (sesame)', {'sesame': 2}, 'cooking_oil', 2, 2),
  rc('pickles', 'Pickles', {'#veg': 2, 'clay_pot': 1}, tier=2, n=2), rc('dried_fruit', 'Dried Fruit', {'#tree': 2}, tier=2), rc('wine_reserve', 'Fruit Wine Reserve', {'fruit_wine': 2, '#herb': 1}, 'fine_wine', 3)]
 books['kiln'] = [rc('brick', 'Brick', {'clay': 1}, n=2), rc('stone_brick', 'Brick (from stone)', {'stone': 4, 'coal': 1}, 'brick', 1, 2), rc('clay_pot', 'Clay Pot', {'clay': 2}), rc('glass', 'Glass', {'sand': 3, 'coal': 1}),
- rc('tile', 'Glazed Tile', {'brick': 2, 'sand': 1}, tier=2), rc('lens', 'Lens', {'glass': 2}, tier=2), rc('crystal_glass', 'Crystal Glass', {'glass': 2, 'crystal_refined': 1}, tier=3)]
+ rc('tile', 'Glazed Tile', {'brick': 2, 'sand': 1}, tier=2), rc('lens', 'Lens', {'glass': 2, 'sand': 2}, tier=2), rc('crystal_glass', 'Crystal Glass', {'glass': 2, 'crystal_refined': 1}, tier=3)]
 books['jeweler'] = keep('copper_ring', 'paw_charm', 'silver_ring', 'ruby_ring', 'crystal_lens', 'pup_collar_crystal', 'crystal_crown', 'light_charm', 'moon_ring', 'dream_charm')
 books['cauldron'] = keep('herb_remedy', 'energy_tea', 'potion', 'dream_tonic', 'cloud_walkers') + [
  rc('hearth_brew', 'Hearth Brew', {'#herb': 1, 'honey': 1, 'clay_pot': 1}), rc('mana_potion', 'Mana Potion', {'flower': 2, 'glass': 1, 'light_mote': 1}, tier=2),
@@ -382,6 +382,35 @@ books['implant'] = [rc('optic_implant', 'Optic Implant', {'lens': 2, 'circuit_bo
  rc('neural_link', 'Neural Link', {'data_chip': 4, 'gold_bar': 2, 'crystal_battery': 2}, tier=4)]
 books['robot'] = [rc('servo', 'Servo', {'gear': 2, 'spring': 1}, n=2), rc('scrap_bot', 'Scrap Bot', {'servo': 2, 'circuit_board': 1, 'iron_bar': 2}, tier=2), rc('spy_drone', 'Spy Drone', {'servo': 4, 'lens': 2, 'circuit_board': 2, 'data_chip': 1}, tier=2),
  rc('guard_bot', 'Guard Bot', {'servo': 4, 'plating': 2, 'data_chip': 1, 'crystal_battery': 1}, tier=3), rc('drone_swarm', 'Drone Swarm', {'servo': 12, 'data_chip': 3, 'crystal_battery': 2}, tier=4)]
+# The armour pieces nothing made before (audit loop 3): Crystal and Moon sets,
+# +1 tempering for every set, the Neon Jacket.
+SLOTS = {'helm': 2, 'chest': 4, 'legs': 3, 'boots': 2, 'gloves': 1, 'shield': 3, 'cape': 2, 'belt': 1}   # same bar counts as the copper..gold sets
+# 1) Crystal set: anvil recipe tier 4 (needs Smithy t3 + Mining Lv7), the step after gold
+books['anvil'] += [rc('crystal_' + s, I['crystal_' + s]['name'], {'crystal_refined': n, 'gold_bar': 1, 'leather': 1}, tier=4) for s, n in SLOTS.items()]
+# 2) Moon set: anvil recipe tier 5 (Starforge t4 + Mining Lv9): one or two moon bars, not four
+books['anvil'] += [rc('moon_' + s, I['moon_' + s]['name'], {'moon_bar': 1 if n <= 2 else 2, 'crystal_refined': n, 'fine_leather': 1}, tier=5) for s, n in SLOTS.items()]
+# 3) Temper: base piece + its metal (+ a catalyst) -> "+1". Anvil for metal, crystal and moon; tannery for leather.
+TEMPER = {  # set: (book, tier, extra need)
+ 'leather': ('tannery', 2, {'leather': 2, 'slime_gel': 1}),
+ 'copper':  ('anvil', 2, {'copper_bar': 1, 'coal': 2}),
+ 'iron':    ('anvil', 3, {'iron_bar': 1, 'coal': 2}),
+ 'steel':   ('anvil', 3, {'steel_bar': 1, 'coal': 2}),
+ 'silver':  ('anvil', 4, {'silver_bar': 1, 'coal': 2}),
+ 'gold':    ('anvil', 4, {'gold_bar': 1, 'coal': 2}),
+ 'crystal': ('anvil', 5, {'crystal_refined': 2, 'light_mote': 1}),
+ 'moon':    ('anvil', 5, {'crystal_refined': 2, 'star_dust': 2})}
+for m, (bk, t, extra) in TEMPER.items():
+    for s in SLOTS:
+        base = '%s_%s' % (m, s)
+        books[bk].append(rc('temper_' + base, 'Temper: ' + I[base]['name'], dict({base: 1}, **extra), base + '_plus', t))
+# 4) Neon Jacket (the Vault's "neon"): gangster armory, recipe tier 3
+books['armory'].append(rc('neon_jacket', 'Neon Jacket', {'outfit_neon': 1, 'fine_leather': 2, 'circuit_board': 2}, tier=3))
+# 5) Values that don't lose money and can't loop (below the 1.1 buy floor)
+for bk in ('anvil', 'tannery', 'armory'):
+    for r in books[bk]:
+        if r['id'].startswith(('crystal_', 'moon_', 'temper_', 'neon_')):
+            I[r['give']]['value'] = max(int(I[r['give']].get('value', 0)), int(0.8 * val(r['need'])))
+
 used = {r['id'] for b in books.values() for r in b}
 lost = [i for i in old if i not in used and i not in ('glass', 'leather', 'fence_kit')]
 for i in lost: books['workbench'].append(old[i])

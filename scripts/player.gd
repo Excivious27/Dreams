@@ -797,7 +797,8 @@ func do_action(mode := "a") -> void:
 		_swing()
 		return
 	# A foe right in front: the fight comes first, not the weed under its feet.
-	if mode != "action" and held in ["sword", ""] and _enemy_in_front(26.0):
+	# Any tool but the rod and the can still lands a blow on a foe right in front of you.
+	if mode != "action" and (held in ["sword", ""] or (held != "rod" and held != "can" and GameState.has_tool(held))) and _enemy_in_front(26.0):
 		_swing()
 		return
 	if map and map.try_interact(facing_cell()):

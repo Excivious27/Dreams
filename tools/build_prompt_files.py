@@ -156,3 +156,7 @@ p21raw = open(f"{D}/src/ART-PROMPTS-21-raw.md").read()
 f21 = build(p21raw, "21", f"{D}/ART-PROMPTS-21.md", "what the loop-2 audit found",
             "WHAT THIS COVERS, most important first: rooms that look finished (wall tops, night windows, props for each shop); water buildings without painted water; Biscuit the old dog, the gangster opening panel and an arcade ticket booth; withered plants and wind-up warning icons.")
 print("21:", f21)
+p22raw = open(f"{D}/src/ART-PROMPTS-22-raw.md").read()
+f22 = build(p22raw, "22", f"{D}/ART-PROMPTS-22.md", "what the loop-3 audit found",
+            "WHAT THIS COVERS: room pieces that came back with words painted on them (tables) or under the wrong name (the barrels that were a life ring), redrawn clean.")
+print("22:", f22)

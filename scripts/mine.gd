@@ -1033,7 +1033,7 @@ func _summon_guardian() -> void:
 		return
 	# Never weaker than its native tier; floor 1's golem is still a golem.
 	# The first floors' keeper meets you at the floor's own tier; deeper ones never go below their home tier.
-	_guardian = spawn_enemy(kind, at, mine_tier if floor_no <= 10 else maxi(mine_tier, GameState.enemy_tier(kind)))
+	_guardian = spawn_enemy(kind, at, mine_tier)
 	_guardian.is_guardian = true
 	_depth_scale(_guardian)
 	_guardian.set_meta("boss_name", "Keeper of floor %d" % floor_no)

@@ -999,7 +999,8 @@
     "ranged",
     "blink"
    ],
-   "status": "blind"
+   "status": "blind",
+   "name": "Trickster"
   },
   "thug_enforcer": {
    "hp": 26,

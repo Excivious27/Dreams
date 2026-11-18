@@ -5154,7 +5154,7 @@
   "slot": "head",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "defense": 2
   }
@@ -5177,7 +5177,7 @@
   "slot": "body",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "defense": 2
   },
@@ -5200,7 +5200,7 @@
   "slot": "legs",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "defense": 2
   }
@@ -5222,7 +5222,7 @@
   "slot": "feet",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "defense": 2
   }
@@ -5244,7 +5244,7 @@
   "slot": "hands",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "energy": 5
   }
@@ -5266,7 +5266,7 @@
   "slot": "offhand",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "defense": 2
   }
@@ -5288,7 +5288,7 @@
   "slot": "back",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "speed": 1
   }
@@ -5310,7 +5310,7 @@
   "slot": "belt",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 94,
   "stats": {
    "luck": 1
   }
@@ -5333,7 +5333,7 @@
   "slot": "head",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "defense": 2
   }
@@ -5356,7 +5356,7 @@
   "slot": "body",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "defense": 2
   },
@@ -5379,7 +5379,7 @@
   "slot": "legs",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "defense": 2
   }
@@ -5401,7 +5401,7 @@
   "slot": "feet",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "defense": 2
   }
@@ -5423,7 +5423,7 @@
   "slot": "hands",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "energy": 5
   }
@@ -5445,7 +5445,7 @@
   "slot": "offhand",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "defense": 2
   }
@@ -5467,7 +5467,7 @@
   "slot": "back",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "speed": 1
   }
@@ -5489,7 +5489,7 @@
   "slot": "belt",
   "rarity": "common",
   "tier": 1,
-  "value": 80,
+  "value": 104,
   "stats": {
    "luck": 1
   }
@@ -6228,7 +6228,7 @@
   "slot": "body",
   "rarity": "epic",
   "tier": 4,
-  "value": 640,
+  "value": 924,
   "stats": {
    "defense": 5
   },
@@ -6252,7 +6252,7 @@
   "slot": "legs",
   "rarity": "epic",
   "tier": 4,
-  "value": 640,
+  "value": 764,
   "stats": {
    "defense": 5
   }
@@ -6318,7 +6318,7 @@
   "slot": "offhand",
   "rarity": "epic",
   "tier": 4,
-  "value": 640,
+  "value": 764,
   "stats": {
    "defense": 5
   }
@@ -6384,7 +6384,7 @@
   "slot": "head",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 2352,
   "stats": {
    "defense": 6
   }
@@ -6395,7 +6395,7 @@
   "slot": "head",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 2441,
   "stats": {
    "defense": 7
   }
@@ -6406,7 +6406,7 @@
   "slot": "body",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 4592,
   "stats": {
    "defense": 6
   },
@@ -6418,7 +6418,7 @@
   "slot": "body",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 4233,
   "stats": {
    "defense": 7
   },
@@ -6430,7 +6430,7 @@
   "slot": "legs",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 4432,
   "stats": {
    "defense": 6
   }
@@ -6441,7 +6441,7 @@
   "slot": "legs",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 4105,
   "stats": {
    "defense": 7
   }
@@ -6452,7 +6452,7 @@
   "slot": "feet",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 2352,
   "stats": {
    "defense": 6
   }
@@ -6463,7 +6463,7 @@
   "slot": "feet",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 2441,
   "stats": {
    "defense": 7
   }
@@ -6474,7 +6474,7 @@
   "slot": "hands",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 2192,
   "stats": {
    "energy": 25
   }
@@ -6485,7 +6485,7 @@
   "slot": "hands",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 2313,
   "stats": {
    "energy": 25
   }
@@ -6496,7 +6496,7 @@
   "slot": "offhand",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 4432,
   "stats": {
    "defense": 6
   }
@@ -6507,7 +6507,7 @@
   "slot": "offhand",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 4105,
   "stats": {
    "defense": 7
   }
@@ -6518,7 +6518,7 @@
   "slot": "back",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 2352,
   "stats": {
    "speed": 1
   }
@@ -6529,7 +6529,7 @@
   "slot": "back",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 2441,
   "stats": {
    "speed": 1
   }
@@ -6540,7 +6540,7 @@
   "slot": "belt",
   "rarity": "legendary",
   "tier": 5,
-  "value": 1000,
+  "value": 2192,
   "stats": {
    "luck": 5
   }
@@ -6551,7 +6551,7 @@
   "slot": "belt",
   "rarity": "legendary",
   "tier": 5,
-  "value": 2000,
+  "value": 2313,
   "stats": {
    "luck": 5
   }
@@ -7069,7 +7069,7 @@
  "lens": {
   "name": "Glass Lens",
   "type": "material",
-  "value": 120,
+  "value": 80,
   "rarity": "uncommon",
   "tier": 2
  },
@@ -8428,7 +8428,7 @@
  "ink": {
   "name": "Printing Ink",
   "type": "craft",
-  "value": 14,
+  "value": 10,
   "rarity": "common",
   "tier": 1,
   "arc": "gangsters"

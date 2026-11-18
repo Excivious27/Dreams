@@ -104,7 +104,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.hud.toast("Ready in %ds." % int(ceil(gl)), Color(0.8, 0.85, 1.0))
 			return
 		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + 8.0
-	if not ab.begins_with("gift:"):
+	if not ab.begins_with("gift:") and ab != "fence":
 		var left := cooldown_left(ab)
 		if left > 0.0:
 			m.hud.toast("Ready in %ds." % int(ceil(left)), Color(0.8, 0.85, 1.0))
@@ -246,8 +246,11 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				_fence_pick = best
 				_fence_t = now
 				m.hud.toast("Sal: 'All %d %s for ◆%d? Ask again and it's done.'" % [GameState.count(best), GameState.item_name(best), GameState.sell_price(best, GameState.count(best))], Color(1, 0.9, 0.6))
+			elif best != "" and cooldown_left("fence") > 0.0:
+				m.hud.toast("Sal: 'Give me %ds to find a buyer.'" % int(ceil(cooldown_left("fence"))), Color(1, 0.9, 0.6))
 			elif best != "":
 				_fence_pick = ""
+				_ready_at["fence"] = Time.get_ticks_msec() / 1000.0 + float(COOLDOWN.get("fence", DEFAULT_COOLDOWN))
 				var n := GameState.count(best)
 				GameState.add_item(best, -n)
 				var pay := GameState.sell_price(best, n)

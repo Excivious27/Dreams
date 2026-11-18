@@ -25,6 +25,9 @@ const HERO2_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk
 const HERO3_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "run_down", "run_up", "hurt", "attack", "attack_down", "faint", "celebrate", "powerup", "swim", "cheer", "sit", "sleep", "wave", "view_front", "view_right", "view_back", "view_left"]
 const HERO12_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "hurt", "attack", "faint", "celebrate", "cheer", "powerup", "burst", "hoe_down", "axe_down", "pickaxe_down", "water_down", "hold_down", "eat_down", "cast_right", "reel_right", "sit", "sleep", "sleep_bed", "wave", "swim", "float", "ride", "ability", "view_front", "view_right", "view_back", "view_left"]
 const GEN_ONLY := {
+	"merkitty_a": ["idle", "walk", "walk_down", "walk_up", "swim", "dive", "surface", "sing"],
+	"merkitty_b": ["idle", "walk", "walk_down", "walk_up", "swim", "dive", "surface", "sing"],
+	"merkitty_c": ["idle", "walk", "walk_down", "walk_up", "swim", "dive", "surface", "sing"],
 	"elder_brine": ["idle", "walk", "talk", "happy", "sad"],
 	"elder_tidewhisker": ["idle", "walk", "talk", "happy", "sad"],
 	"elder_icewhisker": ["idle", "walk", "talk", "happy", "sad"],

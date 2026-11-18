@@ -21,7 +21,7 @@ HOMES = {"cottage_a", "cottage_b", "cottage_c", "hazel_house", "mansion", "tam_h
          "lodge", "lighthouse", "fishing_hut", "water_mill", "stable", "quarry_office"}
 WALL = ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting_a", "painting_b", "window_day", "clock", "mirror2", "window_day"]
 HOME_SIDE = ["bookcase3_a", "dresser2_a", "plant2_a", "wardrobe2_a", "lamp_floor", "bookcase3_c", "dresser", "plant_b", "chest_closed", "bookcase2_b", "lamp_floor_b", "wardrobe2_b"]
-SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrels3", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e", "flour_sacks"]
+SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrel", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e", "flour_sacks"]
 CORNER = ["plant2_a", "plant2_b", "plant2_c", "plant2_d", "plant_b", "plant_c"]
 RUGS = ["rug_rect_blue", "rug_rect_green", "rug_rect_red", "rug_round_blue", "rug_round_green"]
 

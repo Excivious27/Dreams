@@ -49,6 +49,14 @@ if ! echo "$xout" | grep -q "exit_check: 0 failures"; then
 fi
 
 echo "== crops wired in =="
+# Every interior's way back names its scene: ["scene", x, y].
+python3 - <<'PY' || { echo "interior back check failed"; exit 1; }
+import json, sys
+d = json.load(open("data/interiors.json")); I = d.get("interiors", d)
+bad = [k for k, v in I.items() if isinstance(v, dict) and "back" in v and not (isinstance(v["back"], list) and len(v["back"]) == 3 and isinstance(v["back"][0], str))]
+print("interior_back:", len(bad), "bad", bad[:5])
+sys.exit(1 if bad else 0)
+PY
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then

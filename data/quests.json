@@ -1008,7 +1008,8 @@
      "alder",
      20
     ]
-   }
+   },
+   "arc": "penguins"
   },
   {
    "id": "alder_gold",
@@ -1446,7 +1447,8 @@
      "bram",
      20
     ]
-   }
+   },
+   "arc": "penguins"
   },
   {
    "id": "juniper_herbs",
