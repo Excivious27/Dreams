@@ -156,6 +156,12 @@ def sweep(f0, f1, dur, wave_fn="square", vol=0.3):
     w = np.where(ph % 1.0 < 0.5, 1.0, -1.0) if wave_fn == "square" else np.sin(2 * math.pi * ph)
     return w * env(n, 0.005, 0.1, 0.6, 0.3) * vol
 
+def chest_open():
+    # Creak of the lid, then a bright two-note chime.
+    sfx("chest_open", np.concatenate([add(sweep(220, 330, 0.14, "tri", 0.18), noise(0.14, 0.08, 0.06)),
+                                      tone(freq("G", 5), 0.06, "square", 0.22, a=0.001, d=0.2, s=0.5, r=0.3),
+                                      tone(freq("D", 6), 0.14, "square", 0.22, a=0.001, d=0.2, s=0.5, r=0.5)]))
+
 if __name__ == "__main__":
     compose("title", 92, ["C", "Am", "F", "G", "C", "Em", "F", "G"], MAJ, 1, lead_wave="tri", lead_vol=0.2, drums=False)
     compose("farm", 112, ["C", "F", "Am", "G", "C", "F", "Dm", "G"], MAJ, 2, duty=0.25)
@@ -187,4 +193,5 @@ if __name__ == "__main__":
     sfx("crit", np.concatenate([tone(freq("G", 5), 0.05, "square", 0.3, a=0.001, d=0.2, s=0.5, r=0.2), tone(freq("D", 6), 0.1, "square", 0.3, a=0.001, d=0.2, s=0.5, r=0.5)]))
     sfx("stun", add(sweep(600, 900, 0.15, "tri", 0.2), noise(0.1, 0.15, 0.05)))
     sfx("stink", add(noise(0.4, 0.2, 0.2), sweep(300, 90, 0.4, "tri", 0.2)))
+    chest_open()
     print("done")

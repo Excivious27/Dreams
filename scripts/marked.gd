@@ -80,10 +80,18 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 		lines.append({"who": "", "text": "A black stone. You've seen that colour before, in the meadow, where nothing grows."})
 	elif met() == 4:
 		lines.append({"who": "", "text": "Five of them now, and it is the same story every time. The same grey suit. The same stone."})
-	lines.append({"who": who, "text": "So. What happens to me?", "choice": ["Come with us. We look after our own.", "Go home. Nobody's chasing you."], "key": ""})
+	var ask := {"who": who, "text": "So. What happens to me?", "choice": ["Come with us. We look after our own.", "Go home. Nobody's chasing you."], "key": ""}
+	lines.append(ask)
 	dl.say(lines)
 	await dl.finished
-	if dl.last_choice == 0:
+	# Closed without picking: ask again, so nothing is decided for you.
+	var tries := 0
+	while dl.last_choice < 0 and tries < 5:
+		tries += 1
+		dl.say([ask])
+		await dl.finished
+	var join := dl.last_choice == 0
+	if join:
 		GameState.run["flags"]["marked_" + id] = "crew"
 		Companion.recruit("mk_" + id, false)
 		m.hud.toast("%s joins the crew. Pick them in Menu > Party to borrow the %s." % [who.split(" ")[0], str(Gift.def(str(d["gift"])).get("name", "Gift"))], Color(1, 0.9, 0.5))
@@ -91,7 +99,8 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 		GameState.run["flags"]["marked_" + id] = "free"
 		Racket.set_heat(Racket.heat() - 1)
 		m.hud.toast("%s walks. Word gets round that you let them: the streets ease off a little." % who.split(" ")[0], Color(0.7, 1, 0.8))
-	GameState.add_hint("%s (\"%s\", %d): %s" % [who, str(d["epithet"]), int(d["age"]), "crew" if dl.last_choice == 0 else "went home"])
+	GameState.add_hint("%s (\"%s\", %d): %s" % [who, str(d["epithet"]), int(d["age"]), "crew" if join else "went home"])
+	Ops.on_kill(m)  # the last hostile on a block yielding still claims it
 	if is_instance_valid(e):
 		var tw := e.create_tween()
 		tw.tween_property(e, "modulate:a", 0.0, 0.6)

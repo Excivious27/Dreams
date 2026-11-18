@@ -109,7 +109,7 @@ static func run(m: GameMap, shop: String) -> void:
 	if shop == "store" and not GameState.run["flags"].has("store_first"):
 		GameState.run["flags"]["store_first"] = true
 		await m.say([{"who": keeper, "text": "You're the one who took the old plot! Here, first-timer's bundle. Don't tell Gideon I give things away."}])
-		m.give("turnip_seed", 4)
+		m.give("turnip_seed", 10)
 		m.give("energy_tea", 1)
 	while true:
 		var offers := offers(shop)

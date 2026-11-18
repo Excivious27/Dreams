@@ -31,7 +31,7 @@ static func web_hook() -> void:
 
 static func _save_now_js(_args: Array) -> void:
 	var sc := (Engine.get_main_loop() as SceneTree).current_scene
-	if sc is GameMap and (sc as GameMap)._changing:
+	if sc is GameMap and (sc as GameMap)._transitioning:
 		return  # mid door: the next map saves itself once it's in
 	if not GameState.run.is_empty():
 		GameState.save()
@@ -86,7 +86,9 @@ static func load_all() -> Dictionary:
 				return _cache
 	if FileAccess.file_exists(PATH):
 		# Corrupt or truncated: keep a copy, fall back to the backup.
-		DirAccess.copy_absolute(ProjectSettings.globalize_path(PATH), ProjectSettings.globalize_path(BAD))
+		# Keep the first bad copy (the one worth recovering by hand); later ones get a timestamp.
+		var bad := BAD if not FileAccess.file_exists(BAD) else "user://save.bad.%d.json" % int(Time.get_unix_time_from_system())
+		DirAccess.copy_absolute(ProjectSettings.globalize_path(PATH), ProjectSettings.globalize_path(bad))
 		var bak: Variant = _read(BAK)
 		if bak is Dictionary:
 			_cache = bak
@@ -117,9 +119,10 @@ static func flush() -> void:
 	_cache["_saved_at"] = int(_cache.get("_saved_at", 0)) + 1
 	var txt := JSON.stringify(_cache, "", false)  # keep key order (sorted bags and chests)
 	if OS.has_feature("web"):
-		var ls: Variant = JavaScriptBridge.get_interface("localStorage")
-		if ls:
-			ls.setItem(LS_KEY, txt)
+		# Through eval so a full or blocked localStorage is noticed (the wrapper drops the error).
+		var ok: Variant = JavaScriptBridge.eval("(function(t){try{localStorage.setItem(%s,t);return true}catch(e){return false}})(%s)" % [JSON.stringify(LS_KEY), JSON.stringify(txt)], true)
+		if not bool(ok):
+			push_warning("localStorage mirror failed (storage full?)")
 	var f := FileAccess.open(TMP, FileAccess.WRITE)
 	if f == null:
 		return

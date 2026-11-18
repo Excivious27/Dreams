@@ -286,7 +286,8 @@ class Critter:
 			if _dir.x != 0.0:
 				_anim.flip_h = _dir.x < 0
 			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if _flyer and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
-		queue_redraw()
+		else:
+			queue_redraw()  # the sprite animates itself; its shadow follows position
 
 	func _draw() -> void:
 		if _anim:
@@ -328,6 +329,7 @@ class Backdrop:
 	var kind := "hills"
 	var map: GameMap
 	var _t := 0.0
+	var _redraw_t := 0.0
 	var _clouds: Array = []
 
 	func _ready() -> void:
@@ -348,7 +350,11 @@ class Backdrop:
 		if cam:
 			var center := cam.get_screen_center_position()
 			position = center * 0.7 - Vector2(135, 240) * 0.7 - Vector2(0, 40)
-		queue_redraw()
+		# Moving position needs no redraw; the slow cloud drift is fine at 10 Hz.
+		_redraw_t -= delta
+		if _redraw_t <= 0.0:
+			_redraw_t = 0.1
+			queue_redraw()
 
 	func _draw() -> void:
 		var W := 900.0

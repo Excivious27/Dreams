@@ -6,6 +6,30 @@ var I: Dictionary = {}
 var interior_id := ""
 var npcs: Array = []
 
+## Furniture art whose slice holds a whole row, a rule line or a baked caption:
+## the one piece to show, as [sheet w, sheet h, x, y, w, h] in texture px. Only
+## used while the file still has that exact size (a clean re-slice skips it).
+const ART_CROP := {
+	"stool_red": [67, 36, 0, 0, 20, 24], "stool_blue": [67, 36, 23, 0, 21, 24], "stool_green": [67, 36, 47, 0, 20, 24],
+	"flour_sacks": [426, 117, 9, 9, 100, 98],
+	"pew_a": [139, 46, 0, 0, 66, 40], "pew_b": [139, 46, 75, 0, 64, 40],
+	"stained_a_day": [255, 61, 5, 6, 32, 46], "stained_b_day": [255, 61, 98, 6, 31, 46], "stained_c_day": [255, 61, 185, 6, 32, 46],
+	"crate_carrots": [52, 47, 0, 0, 52, 38], "crate_tomatoes": [50, 46, 0, 0, 50, 37],
+	"shelf_cans": [50, 95, 0, 0, 50, 90], "shelf_dry": [50, 96, 0, 0, 50, 90], "shelf_house": [50, 96, 0, 0, 50, 90],
+	"shelf_misc": [50, 96, 0, 0, 50, 90], "shelf_seeds": [190, 99, 8, 6, 52, 88],
+	"chair2_a_left": [98, 35, 81, 7, 17, 28], "chair2_a_right": [98, 35, 0, 7, 17, 28],
+}
+
+
+static func art_crop(g: String, nm: String) -> Rect2:
+	if not ART_CROP.has(nm):
+		return Rect2()
+	var t := Art.tex(g, nm)
+	var a: Array = ART_CROP[nm]
+	if t == null or t.get_width() != int(a[0]) or t.get_height() != int(a[1]):
+		return Rect2()
+	return Rect2(float(a[2]), float(a[3]), float(a[4]), float(a[5]))
+
 
 func scene_id() -> String:
 	return "interior"
@@ -64,11 +88,20 @@ func after_ready() -> void:
 		var info := Art.info(g, nm)
 		var tw := float(info.get("cell_w", info.get("w", 32)))
 		var th := float(info.get("cell_h", info.get("h", 32)))
+		var crop := art_crop(g, nm)
+		if crop.has_area():
+			tw = crop.size.x
+			th = crop.size.y
 		var on_wall := c.y <= 1
 		var maxw := TILE * 1.6 if on_wall else (w + 1) * TILE * 1.2 + 4.0
-		var maxh := TILE * 1.5 if on_wall else TILE * 3.4
+		# Never taller than the room above it: big machines by the back wall stop at the wall top.
+		var maxh := TILE * 1.5 if on_wall else minf(TILE * 3.4, (c.y + 1) * TILE)
 		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
 		var ps := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
+		if ps and crop.has_area():
+			ps.region_enabled = true
+			ps.region_rect = crop
+			ps.offset = Vector2(0, -crop.size.y / 2.0)
 		if ps and (nm.begins_with("rug") or nm.begins_with("reed_mat") or nm == "round_rug_stone"):
 			to_under(ps)  # rugs lie flat: you walk over them, not behind them
 	# Keep the way in and the spot in front of every counter/thing walkable.
@@ -103,6 +136,11 @@ func after_ready() -> void:
 		if not here:
 			continue
 		var at: Vector2i = listed.get(id, Vector2i(-1, -1))
+		var posted := at != Vector2i(-1, -1)
+		# A listed cell under furniture (or a thing) isn't a place to stand.
+		if posted and (blocked.has(at) or things.has(at)):
+			at = Vector2i(-1, -1)
+			posted = false
 		if at == Vector2i(-1, -1) or used.has(at):
 			for tries in 60:
 				var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(4, rows - 3))
@@ -115,7 +153,8 @@ func after_ready() -> void:
 		var npc := Npc.new()
 		npc.map = self
 		npc.setup(str(id), data, cell_center(at))
-		npc.wander = 6.0
+		# Keepers hold their post behind the counter; visitors drift a little.
+		npc.wander = 0.0 if posted else 6.0
 		add_child(npc)
 		npcs.append(npc)
 	if I.has("intro") and not GameState.run["flags"].has("int_" + interior_id):
@@ -240,12 +279,76 @@ func _talk(n: Npc) -> void:
 	player.frozen = false
 
 
+## The biggest fully painted window of a floor variant: the 8-variant floors were
+## cut at equal widths, so a 2-3 px transparent gutter (with a dark outline) sits
+## at a different x in each. Cached per texture.
+static var _clean := {}
+
+
+static func clean_src(t: Texture2D) -> Rect2:
+	var key := t.resource_path if t.resource_path != "" else str(t.get_instance_id())
+	if _clean.has(key):
+		return _clean[key]
+	var r := Rect2(Vector2.ZERO, t.get_size())
+	var img := t.get_image()
+	if img:
+		if img.is_compressed():
+			img.decompress()
+		var w := img.get_width()
+		var h := img.get_height()
+		var b0 := 0
+		var b1 := 0
+		var run0 := -1
+		for x in w + 1:
+			var ok := false
+			if x < w:
+				var sum := 0.0
+				var n := 0
+				for y in range(0, h, 2):
+					sum += img.get_pixel(x, y).a
+					n += 1
+				ok = sum / float(n) > 0.9
+			if ok and run0 < 0:
+				run0 = x
+			elif not ok and run0 >= 0:
+				if x - run0 > b1 - b0:
+					b0 = run0
+					b1 = x
+				run0 = -1
+		if b1 - b0 > 0:
+			# One more px off at a gutter side: the painted tiles have a dark rim there.
+			var x0 := b0 + (1 if b0 > 0 else 0)
+			var x1 := b1 - (1 if b1 < w else 0)
+			r = Rect2(x0, 1, maxi(1, x1 - x0), h - 2)
+	_clean[key] = r
+	return r
+
+
+var _floor_vars: Array = []
+
+
 func _floor_cell(fl: String, c: Vector2i) -> void:
 	if Art.has("tiles", fl + "_0"):
-		Art.draw_tile(self, "tiles", fl + "_%d" % ((c.x * 3 + c.y * 5) % 8), Vector2(c * TILE), 0)
+		if _floor_vars.is_empty():
+			# Variants whose clean window is most of the tile (others would stretch too far).
+			for i in 8:
+				var tv := Art.tex("tiles", fl + "_%d" % i)
+				if tv and clean_src(tv).size.x >= tv.get_width() * 0.72:
+					_floor_vars.append(i)
+			if _floor_vars.is_empty():
+				_floor_vars = [0]
+		var vi: int = _floor_vars[(c.x * 3 + c.y * 5) % _floor_vars.size()]
+		var tt := Art.tex("tiles", fl + "_%d" % vi)
+		if tt:
+			draw_texture_rect_region(tt, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), clean_src(tt))
 		return
 	var t := Art.tex("tiles", fl)
 	if t == null:
+		return
+	if fl.begins_with("fl_carpet"):
+		# One bordered rug image: sample only inside its gold border.
+		var kc := t.get_width() / 96.0
+		draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2((22.0 + float(c.x % 2) * 26.0) * kc, (22.0 + float(c.y % 2) * 26.0) * kc, 26.0 * kc, 26.0 * kc))
 		return
 	# Stay inside the art's clean middle: its outer pixels carry a dark border.
 	var k := t.get_width() / 96.0
@@ -257,8 +360,30 @@ func _floor_cell(fl: String, c: Vector2i) -> void:
 
 ## Side walls and a front lip so the room is a room, not a floating rug: the
 ## wall's own top moulding turned into thick rims, darker than the floor.
+## First row of a wall tile that is mostly painted (tall walls like the mill's have a transparent top).
+static func first_opaque_row(t: Texture2D) -> int:
+	var key := "row:" + t.resource_path
+	if _clean.has(key):
+		return int(_clean[key])
+	var row := 0
+	var img := t.get_image()
+	if img:
+		if img.is_compressed():
+			img.decompress()
+		for y in img.get_height():
+			var sum := 0.0
+			for x in img.get_width():
+				sum += img.get_pixel(x, y).a
+			if sum / img.get_width() > 0.5:
+				row = y
+				break
+	_clean[key] = row
+	return row
+
+
 func _draw_side_walls(wl: String) -> void:
 	var trim := Art.tex("tiles", wl + "_m")
+	var ty := float(first_opaque_row(trim)) if trim else 0.0
 	var d: Array = I.get("door", [cols / 2, rows - 2])
 	var rim := Color("3a2a1c")
 	var lip := Color(0, 0, 0, 0.28)
@@ -267,7 +392,7 @@ func _draw_side_walls(wl: String) -> void:
 		for y in range(2, rows):
 			var r := Rect2(x0, y * TILE, 8, TILE)
 			if trim:
-				draw_texture_rect_region(trim, r, Rect2(0, 0, 32, 12), Color(0.8, 0.75, 0.7))
+				draw_texture_rect_region(trim, r, Rect2(0, ty, 32, 12), Color(0.8, 0.75, 0.7))
 			else:
 				draw_rect(r, rim)
 			# A soft shadow the wall throws onto the floor.
@@ -281,7 +406,7 @@ func _draw_side_walls(wl: String) -> void:
 		elif x == cols - 1:
 			r2 = Rect2((cols - 1) * TILE, (rows - 1) * TILE, 8, 8)
 		if trim:
-			draw_texture_rect_region(trim, r2, Rect2(0, 0, 32, 12), Color(0.8, 0.75, 0.7))
+			draw_texture_rect_region(trim, r2, Rect2(0, ty, 32, 12), Color(0.8, 0.75, 0.7))
 		else:
 			draw_rect(r2, rim)
 	# Under the back wall: a shadow line where it meets the floor.
@@ -305,10 +430,13 @@ func draw_map() -> void:
 		var part: String = "_l" if x == 1 else ("_r" if x == cols - 2 else ["_m", "_m2", "_m3"][x % 3])
 		if x in windows and Art.has("tiles", wl + "_window"):
 			part = "_window"
-		elif part != "_l" and part != "_r" and not Art.has("tiles", wl + part):
-			part = "_m"
+		elif not Art.has("tiles", wl + part):
+			# No end pieces (the mill): use the corner, mirrored on the right; else the plain middle.
+			part = "_corner" if part in ["_l", "_r"] and Art.has("tiles", wl + "_corner") else "_m"
 		var t := Art.tex("tiles", wl + part)
-		if t:
+		if t and part == "_corner" and x == cols - 2:
+			draw_texture_rect(t, Rect2((x + 1) * TILE, 0, -TILE, TILE * 2), false)
+		elif t:
 			draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
 		else:
 			draw_rect(Rect2(x * TILE, 0, TILE, TILE * 2), Color("c9b08a"))
@@ -318,7 +446,16 @@ func draw_map() -> void:
 		for wx in windows:
 			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(int(wx) * TILE + 8, 2 * TILE))
 	for p in I.get("wall_props", []):
-		Art.draw_prop(self, "furniture", str(p["name"]), Vector2(int(p["x"]) * TILE + 8, 2 * TILE - 2))
+		# Fit to the wall (portraits and rubbings are drawn far taller than the 32 px wall).
+		var wt := Art.tex("furniture", str(p["name"]))
+		if wt == null:
+			continue
+		var src := art_crop("furniture", str(p["name"]))
+		if not src.has_area():
+			src = Rect2(Vector2.ZERO, wt.get_size())
+		var ws := minf(0.5, 26.0 / maxf(1.0, src.size.y))
+		var sz := src.size * ws
+		draw_texture_rect_region(wt, Rect2(int(p["x"]) * TILE + 8 - sz.x / 2.0, 2 * TILE - 3 - sz.y, sz.x, sz.y), src)
 	var d: Array = I.get("door", [cols / 2, rows - 2])
 	draw_rect(Rect2(int(d[0]) * TILE, int(d[1]) * TILE, TILE, TILE), Color("3a2412"))
 	Art.draw_prop(self, "furniture", "door_wood_open", Vector2(int(d[0]) * TILE + 8, (int(d[1]) + 1) * TILE))
@@ -333,6 +470,14 @@ func _counter(shop: String) -> void:
 	if shop != "" and shop != "hall" and GameState.festival_today() != "" and t >= 9 * 60 and t < 18 * 60:
 		hud.toast("Closed today: everyone's at the %s on the plaza." % GameState.festival_name(GameState.festival_today()), Color(1, 0.85, 0.7))
 		return
+	# The keeper is out (Maple at her market stall...): say so, and serve yourself.
+	if shop != "":
+		var keeper := ""
+		for n in I.get("npcs", []):
+			keeper = str(n["id"])
+			break
+		if keeper != "" and not npcs.any(func(x: Npc) -> bool: return x.id == keeper):
+			hud.toast("%s is out. Take what you need and leave the crystals by the till." % str(GameState.npcs.get(keeper, {}).get("name", keeper.capitalize())), Color(1, 0.9, 0.7))
 	if shop == "hall":
 		await Shops.hall(self)
 	elif shop in ["smith", "potions"]:
@@ -435,7 +580,7 @@ func _stable() -> void:
 	if d.last_choice == 0:
 		player.mount()
 		var back: Array = I.get("back", ["town", 32, 93])
-		go_to(str(back[0]), Vector2(float(back[1]) * TILE, float(back[2]) * TILE), "down")
+		go_to(str(back[0]), Vector2(float(back[1]) * TILE + 8, float(back[2]) * TILE + 4), "down")
 
 
 ## Ivy's bank: deposit crystals for interest (1% a day, 2% at 6 hearts), withdraw any time.

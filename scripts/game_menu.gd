@@ -119,6 +119,8 @@ var _was_paused := false
 
 
 func toggle() -> void:
+	if not is_inside_tree():
+		return  # mid scene change
 	# Don't open over another paused screen (wardrobe, shop); closing then
 	# would unpause the game under it.
 	if not _open and get_tree().paused:
@@ -166,6 +168,8 @@ func _button(text: String, cb: Callable) -> Button:
 func _slot_button(id: String, selected: bool, cb: Callable) -> Control:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(SLOT, SLOT)
+	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE  # scrolling the tab never picks or places
+	b.focus_mode = Control.FOCUS_NONE
 	b.pressed.connect(cb)
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.55, 0.42, 0.2) if selected else Color(0.25, 0.17, 0.1)
@@ -257,7 +261,7 @@ func _refresh() -> void:
 			var sel := str(tb[slot])
 			if _bag_pick != "" and GameState.count(_bag_pick) <= 0 and not GameState.has_tool(_bag_pick):
 				_bag_pick = ""
-			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("In hand: %s" % (GameState.item_name(sel) if sel != "" else "nothing")), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
+			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("In hand: %s  (tap again to move it)" % GameState.item_name(sel) if sel != "" else "In hand: nothing"), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
 			var g := _grid(6)
 			for i in 12:
 				var id := str(tb[i])
@@ -284,6 +288,8 @@ func _refresh() -> void:
 			for i in bs.size():
 				var bid := str(bs[i])
 				var bb := _slot_button(bid, bid != "" and bid == _bag_pick, _bag_tap.bind(i))
+				if bid != "" and bid != _bag_pick and tb.has(bid):
+					bb.modulate = Color(1, 1, 1, 0.55)  # also on the toolbar above
 				if bid != "" and GameState.is_locked(bid):
 					var lk := Label.new()
 					lk.text = "•"
@@ -522,6 +528,7 @@ func _refresh() -> void:
 					row.add_child(bt)
 			_button("Night darkness: %s" % Settings.NIGHT_NAMES[clampi(int(Settings.get_v("night")), 0, 2)], func() -> void: Settings.set_v("night", (int(Settings.get_v("night")) + 1) % 3); _refresh())
 			_button("Button size: %s" % Settings.BTN_NAMES[clampi(int(Settings.get_v("btn_size")), 0, 2)], func() -> void: Settings.set_v("btn_size", (int(Settings.get_v("btn_size")) + 1) % 3); _refresh())
+			_button("Screen shake: %s" % ("on" if bool(Settings.get_v("shake")) else "off"), func() -> void: Settings.set_v("shake", not bool(Settings.get_v("shake"))); _refresh())
 			_button("Controls: %s-handed" % ("left" if Settings.left_handed() else "right"), func() -> void: Settings.set_v("left_handed", not Settings.left_handed()); _refresh())
 			_button("Easy mode: %s" % ("on (foes hit softer, no fee when you faint)" if Settings.easy() else "off"), func() -> void: Settings.set_v("easy", not Settings.easy()); _refresh())
 			_button("On-screen controls: %s" % ("shown" if TouchControls.visible_controls else "hidden"), func() -> void: TouchControls.visible_controls = not TouchControls.visible_controls; _refresh())
@@ -533,7 +540,11 @@ func _refresh() -> void:
 					if mp:
 						Epilogue.play(mp))
 			_button("Save & back to title", func() -> void:
-				GameState.save()
+				var gm := get_tree().current_scene as GameMap
+				if gm and not gm._changing:
+					gm.save_here()
+				else:
+					GameState.save()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
 			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = use your tool · CHECK = talk/pick up · ♥ = partner power · ROLL = dodge (near enemies) · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 8, Color(0.8, 0.8, 0.8))
@@ -696,7 +707,8 @@ func _skill_tree(sk: String) -> void:
 			var txt := "%s %s  %d/%d%s\n     %s%s" % [mark, str(n["name"]), rank, ranks, req, str(n["desc"]), ("" if why == "" or why == "maxed" else "   [%s]" % why)]
 			var b := _button(txt, func() -> void:
 				if GameState.buy_node(sk, id):
-					Music.instance(get_tree()).sfx("levelup")
+					Music.instance(get_tree()).sfx("craft_done", "levelup")
+					GameState.notify("Learned %s." % str(n["name"]))
 				_refresh())
 			b.add_theme_font_size_override("font_size", 7)
 			var nic := "node_%s_%s" % [sk, id]
@@ -745,7 +757,8 @@ const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_ener
 	"pet_hp": "bone", "pet_dmg": "bone", "pet_speed": "bone", "pet_def": "bone", "pass_risk": "map", "heat_cool": "key", "wash_bonus": "gold",
 	"job_pay": "gold", "capture_speed": "map", "start_supply": "chest", "spawner_discount": "brick", "helper_damage": "crystal", "ticket_bleed": "ruby", "ticket_guard": "copper_ring", "gun_damage": "six_shooter", "supply_rate": "chest", "helper_hp": "emerald", "ability_cooldown": "paw_charm",
 	"colony_discount": "pearl", "team_damage": "sword", "team_defense": "copper_ring", "team_heal": "greater_potion", "friend_gain": "cake",
-	"pet_bond": "bone", "team_xp": "luck_potion"}
+	"pet_bond": "bone", "team_xp": "luck_potion", "status_guard": "potion", "last_stand": "greater_potion", "free_cast": "mana_potion", "regrowth": "seeds",
+	"wide_water": "can", "timber": "axe", "tremor": "pickaxe", "tidecall": "rod", "jackpot": "gold", "quick_build": "hammer"}
 
 
 func _skills_tab() -> void:
@@ -867,7 +880,8 @@ func _skills_tab() -> void:
 		var nid := _node_sel
 		var lb := _button("Learn (1 point)" if why == "" else ("Maxed" if why == "maxed" else "Locked: " + why), func() -> void:
 			if GameState.buy_node(sk, nid):
-				Music.instance(get_tree()).sfx("levelup")
+				Music.instance(get_tree()).sfx("craft_done", "levelup")
+				GameState.notify("Learned %s." % str(sel["name"]))
 			_refresh())
 		lb.disabled = why != ""
 	var moved := 0
@@ -990,6 +1004,7 @@ func _refresh_player() -> void:
 
 
 var _bag_pick := ""
+var _pick_bar := -1  # toolbar slot the picked item came from (-1: bag / Tools row)
 var _trash_arm := ""
 
 
@@ -1000,9 +1015,18 @@ func _bag_tap(i: int) -> void:
 	if _bag_pick == "":
 		if id != "":
 			_bag_pick = id
+			_pick_bar = -1
 			_trash_arm = ""
 		_refresh()
 		return
+	if _pick_bar >= 0:
+		# Picked off the toolbar and placed in the bag: it leaves the bar
+		# (a tool goes back to the Tools row; nothing is lost).
+		var tb: Array = GameState.run["toolbar"]
+		if _pick_bar < tb.size() and str(tb[_pick_bar]) == _bag_pick:
+			tb[_pick_bar] = ""
+			GameState.sync_selected()
+		_pick_bar = -1
 	var from := bs.find(_bag_pick)
 	if from >= 0:
 		GameState.bag_move(from, i)
@@ -1012,10 +1036,19 @@ func _bag_tap(i: int) -> void:
 	_refresh()
 
 
-## Toolbar slot tapped: select it, or put the picked item on it.
+## Toolbar slot tapped: select it, or put the picked item on it. A second tap
+## on the selected slot picks its item up (place it on another slot to swap,
+## or on a bag slot to take it off the bar).
 func _toolbar_tap(i: int) -> void:
 	if _bag_pick != "":
 		_assign_toolbar(_bag_pick, i)
+		return
+	var tb: Array = GameState.run["toolbar"]
+	if i == int(GameState.run["slot"]) and str(tb[i]) != "":
+		_bag_pick = str(tb[i])
+		_pick_bar = i
+		_trash_arm = ""
+		_refresh()
 		return
 	GameState.select_slot(i)
 	_refresh()
@@ -1023,6 +1056,7 @@ func _toolbar_tap(i: int) -> void:
 
 func _tool_tap(t: String) -> void:
 	_bag_pick = "" if _bag_pick == t else t
+	_pick_bar = -1
 	_refresh()
 
 
@@ -1053,25 +1087,7 @@ func _assign_toolbar(id: String, i: int) -> void:
 	GameState.run["slot"] = i
 	GameState.sync_selected()
 	_bag_pick = ""
-	_refresh()
-
-
-func _swap_into_toolbar(id: String) -> void:
-	var r := GameState.run
-	var tb: Array = r["toolbar"]
-	var slot := int(r["slot"])
-	var was := str(tb[slot])
-	if GameState.has_tool(was):
-		# Don't bump a tool; use the first free slot instead.
-		var free := tb.find("")
-		if free >= 0:
-			tb[free] = id
-			r["slot"] = free
-		else:
-			tb[slot] = id
-	else:
-		tb[slot] = id
-	GameState.sync_selected()
+	_pick_bar = -1
 	_refresh()
 
 

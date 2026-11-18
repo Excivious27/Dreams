@@ -22,11 +22,25 @@ static func _as_lines(who: String, v: Variant) -> Array:
 	return out
 
 
+## An open quest from this NPC that can be handed in right now ({} if none), so
+## a finished second quest isn't stuck behind an unfinished first one.
+static func _ready_quest(npc: String) -> Dictionary:
+	for q in GameState.run["quests"]:
+		if q["done"]:
+			continue
+		var d := GameState._quest_def(str(q["id"]))
+		if str(d.get("giver", "")) == npc and d.has("done_when") and GameState._cond_ok(d["done_when"]):
+			return d
+	return {}
+
+
 ## Try the quest conversation for this NPC. Returns true if one happened
 ## (so the caller skips the daily chat).
 static func talk(m: GameMap, id: String, name: String) -> bool:
 	# 1) Turn-in: a pending quest whose condition is met.
-	var pend := GameState.side_quest_pending(id)
+	var pend := _ready_quest(id)
+	if pend.is_empty():
+		pend = GameState.side_quest_pending(id)
 	if not pend.is_empty():
 		var qid := str(pend["id"])
 		var d := GameState._quest_def(qid)
@@ -41,7 +55,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 				for pair in dw.get("items", []):
 					GameState.add_item(str(pair[0]), -int(pair[1]))
 			if GameState.complete_quest(qid):
-				m.hud.toast("Quest complete: %s" % qid.replace("_", " "), Color(1, 0.9, 0.4))
+				m.hud.toast("Quest complete for %s." % name, Color(1, 0.9, 0.4))
 				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 				m.emote(_npc_node(m, id), "heart", 1.4)
 			return true

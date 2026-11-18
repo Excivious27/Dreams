@@ -64,6 +64,13 @@ func build() -> void:
 		for x in range(29, 53):
 			if Vector2(x + 0.5, y + 0.5).distance_to(PLAZA_C) <= PLAZA_R:
 				_plaza[Vector2i(x, y)] = true
+	# The river is one body, under the bridges too (they draw on top), and it runs
+	# on out through the north and south tree bands.
+	var rv := {}
+	for c: Vector2i in cells_of([RIVER_X]):
+		rv[c] = true
+	border_water_extra = rv
+	border_water_shore = "river" if Art.has("tiles", "river_top_0") else "grass"
 	for c: Vector2i in cells_of([RIVER_X]):
 		var on_bridge := false
 		for b: Rect2i in BRIDGES:
@@ -113,17 +120,32 @@ func after_ready() -> void:
 		later(_town_tour)
 
 
+## Story's arrival beat in town: the tour never runs before it (Sal can't talk before he's met).
+func _arrival_beat() -> String:
+	return "p1_town" if GameState.is_penguins() else "g1_town"
+
+
+## A crew shop's sign-off look outside opening hours (7am to 9pm), when it has one.
+func _gang(n: String) -> String:
+	var t := int(GameState.run["time"]) % (24 * 60)
+	if (t < 7 * 60 or t >= 21 * 60) and Art.has("buildings", n + "_closed"):
+		return n + "_closed"
+	return n
+
+
 ## The first time you're free in town, someone meets you and explains who's who.
 func _town_tour() -> void:
 	# Let the arrival scene finish first.
 	for i in 600:
 		if not is_inside_tree():
 			return
-		if not Dialogue.instance(get_tree()).active and player and not player.frozen and not _changing:
+		if not Dialogue.instance(get_tree()).active and player and not player.frozen and not _changing and Story.fired(_arrival_beat()):
 			break
 		await get_tree().process_frame
 	if not is_inside_tree() or GameState.run["flags"].has("town_tour") or _changing:
 		return
+	if not Story.fired(_arrival_beat()):
+		return  # nobody's been introduced yet: the tour waits for a later visit
 	GameState.run["flags"]["town_tour"] = true
 	var pen := GameState.is_penguins()
 	var who := "Mayor Alder" if pen else "Sal"
@@ -183,7 +205,7 @@ func _place_buildings() -> void:
 	_door("store", Vector2i(10, 18), "store", "A: General Store")
 	_door("smith", Vector2i(24, 18), "smith", "A: Blacksmith")
 	if GameState.run["flags"].has("shop_1") and Art.has("buildings", "gang_shop_deuce"):
-		_door("gang_shop_deuce", Vector2i(45, 17), "bakery", "A: Deuce's card parlour", 0.6)
+		_door(_gang("gang_shop_deuce"), Vector2i(45, 17), "bakery", "A: Deuce's card parlour", 0.6)
 	else:
 		_door("bakery", Vector2i(45, 17), "bakery", "A: Bakery", 1.35)
 	_door("mansion", Vector2i(55, 13), "mansion", "A: Mayor Alder's house", 1.15)
@@ -191,25 +213,34 @@ func _place_buildings() -> void:
 	building("clock_tower", Vector2i(28, 32))
 	# South-east: potions, inn, library, school.
 	_door("potions", Vector2i(45, 53), "potions", "A: Potion Shop", 1.15)
-	_door("inn", Vector2i(57, 52), "inn", "A: the Inn", 1.15)
+	if GameState.run["flags"].has("crew_mama_rosa") and Art.has("buildings", "gang_shop_mama_rosa"):
+		_door(_gang("gang_shop_mama_rosa"), Vector2i(57, 52), "inn", "A: Mama Rosa's kitchen", 0.6)
+	else:
+		_door("inn", Vector2i(57, 52), "inn", "A: the Inn", 1.15)
 	_door("library", Vector2i(45, 64), "library", "A: Library", 1.35)
 	_door("school", Vector2i(56, 64), "school", "A: School", 1.25)
 	# South-west: cottages, Hazel's farmhouse, the stable.
 	_door("cottage_a", Vector2i(8, 52), "cottage_a", "A: Wren's cottage", 1.3)
 	_door("cottage_b", Vector2i(19, 59), "cottage_b", "A: Finn's cottage", 1.3)
 	if GameState.run["flags"].has("shop_2") and Art.has("buildings", "gang_shop_specs"):
-		_door("gang_shop_specs", Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", 0.6)
+		_door(_gang("gang_shop_specs"), Vector2i(8, 66), "cottage_c", "A: Specs' net cafe", 0.6)
 	else:
 		_door("cottage_a", Vector2i(8, 66), "cottage_c", "A: Lumi & Theo's cottage", 1.3)
 	_door("house", Vector2i(18, 72), "hazel_house", "A: Hazel's farmhouse")
-	_door("stable", Vector2i(27, 85), "stable", "A: Stable", 1.25)
+	if GameState.run["flags"].has("crew_halo") and Art.has("buildings", "gang_shop_halo"):
+		_door(_gang("gang_shop_halo"), Vector2i(27, 85), "stable", "A: Halo's garage", 0.6)
+	else:
+		_door("stable", Vector2i(27, 85), "stable", "A: Stable", 1.25)
 	building("bandstand", Vector2i(6, 33))
 	# Across the river: clinic, chapel, Rook's lodge.
 	if GameState.run["flags"].has("shop_3") and Art.has("buildings", "gang_shop_doc"):
-		_door("gang_shop_doc", Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", 0.6)
+		_door(_gang("gang_shop_doc"), Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", 0.6)
 	else:
 		_door("clinic", Vector2i(74, 32), "clinic", "A: Clinic", 1.35)
-	_door("chapel", Vector2i(75, 53), "chapel", "A: Chapel", 1.4)
+	if GameState.run["flags"].has("crew_marlene") and Art.has("buildings", "gang_shop_marlene"):
+		_door(_gang("gang_shop_marlene"), Vector2i(75, 53), "chapel", "A: Marlene's trading post", 0.6)
+	else:
+		_door("chapel", Vector2i(75, 53), "chapel", "A: Chapel", 1.4)
 	_door("woodcutter_hut", Vector2i(72, 70), "lodge", "A: Rook's lodge", 1.25)
 	# The working north end: a warehouse by the farm road, the bank by the smith.
 	building("warehouse_a", Vector2i(7, 4), "", "", 1.25)
@@ -376,7 +407,7 @@ func _board() -> void:
 ## is missing from the manifest.
 func _dress_buildings() -> void:
 	var pl := func(name: String, c: Vector2i, w := 0, solid := true) -> void:
-		if Art.has("props", name) and not things.has(c) and not _door_paths.has(c):
+		if Art.has("props", name) and not things.has(c) and not _door_paths.has(c) and not _river.has(c) and not _river.has(c + Vector2i(w, 0)):
 			if int(Art.info("props", name).get("frames", 1)) > 1:
 				anim_prop("props", name, c, w, 4.0, solid)
 			else:
@@ -394,7 +425,7 @@ func _dress_buildings() -> void:
 	# Potions (Wren): cauldron, herb planters, preserves.
 	pl.call("cauldron2", Vector2i(44, 62)); pl.call("planter2_3", Vector2i(57, 62)); pl.call("preserves_jar", Vector2i(45, 63))
 	# Inn (Bram): barrels, a card table, umbrellas for the terrace.
-	pl.call("barrel2_a", Vector2i(56, 61)); pl.call("barrel_a", Vector2i(57, 62)); pl.call("umbrella_red", Vector2i(67, 61), 1); pl.call("card_table", Vector2i(68, 62), 1)
+	pl.call("barrel2_a", Vector2i(56, 61)); pl.call("barrel_a", Vector2i(57, 62)); pl.call("umbrella_red", Vector2i(64, 61), 1); pl.call("card_table", Vector2i(65, 62), 1)
 	# Library (Theo): a bench under a lamp.
 	pl.call("bench2_wood_a", Vector2i(44, 73), 1); pl.call("lamp2_short_2", Vector2i(57, 73))
 	# School: a bell post and a planter; the yard is for the kids.
@@ -410,9 +441,9 @@ func _dress_buildings() -> void:
 	# Clinic (Juniper): a bench and a planter of herbs.
 	pl.call("bench2_green_a", Vector2i(73, 41), 1); pl.call("planter2_3", Vector2i(80, 41))
 	# Chapel: flower beds and an iron bench.
-	pl.call("flowerbed_red", Vector2i(73, 66), 1); pl.call("flowerbed_red", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(72, 68), 1)
+	pl.call("flowerbed_red", Vector2i(73, 66), 1); pl.call("flowerbed_red", Vector2i(82, 66), 1); pl.call("bench2_iron_a", Vector2i(74, 68), 1)
 	# Rook's lodge: pelts on a tanning rack, traps, a fire barrel.
-	pl.call("tanning_rack", Vector2i(71, 79), 1); pl.call("crab_pots2", Vector2i(80, 79)); pl.call("fire_barrel2", Vector2i(72, 80))
+	pl.call("tanning_rack", Vector2i(75, 79), 1); pl.call("crab_pots2", Vector2i(80, 79)); pl.call("fire_barrel2", Vector2i(76, 80))
 	# Bank (Ivy): two short lamps and a hedge ball.
 	pl.call("lamp2_short_3", Vector2i(25, 11)); pl.call("lamp2_short_4", Vector2i(37, 11)); pl.call("hedge2_ball", Vector2i(24, 12))
 	# Warehouse: crates and a covered cart.
@@ -618,9 +649,10 @@ func _place_people() -> void:
 		var n := Npc.new()
 		n.map = self
 		var spot := str(d.get("spot_name", "plaza"))
-		n.setup(id, d, cell_center(spots.get(spot, spots["plaza"])))
+		# Routine and spots first: setup() snaps the villager to where the routine says.
 		n.routine = d.get("routine", [])
 		n.spots = spots
+		n.setup(id, d, cell_center(spots.get(spot, spots["plaza"])))
 		add_child(n)
 		npcs.append(n)
 
@@ -890,7 +922,8 @@ func draw_map() -> void:
 	else:
 		draw_ground("stone", _plaza)
 	# The river and the pond.
-	draw_water(_river, "river" if Art.has("tiles", "river_top_0") else "grass")
+	if border_water_extra.is_empty():
+		draw_water(_river, "river" if Art.has("tiles", "river_top_0") else "grass")
 	draw_water(_pond, "grass")
 	draw_exits()
 	if not Art.has("buildings", "store"):

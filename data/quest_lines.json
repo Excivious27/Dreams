@@ -363,8 +363,8 @@
   "no": "Quite right. Morale can wait.",
   "wait": "The wine. Quietly.",
   "done": [
-   "Excellent vintage. The council will be... productive.",
-   "Here. This never happened."
+   "Excellent vintage. The fair toast will be a proud one.",
+   "Here. With the council's thanks."
   ]
  },
  "alder_gold": {
@@ -707,7 +707,7 @@
   ],
   "yes": "You're alright.",
   "no": "Fine. I'll chew the beans.",
-  "wait": "Coffee. Three. My hands are shaking and it's not the cold.",
+  "wait": "Coffee. Three. I'm running on fumes.",
   "done": [
    "...Oh. Oh, that's the stuff.",
    "Here. It's not much. It's what I've got."
@@ -789,7 +789,7 @@
  },
  "lighthouse_oil": {
   "offer": [
-   "The lamp's been dark three winters. Ships still come. They just don't come back.",
+   "The lamp's been dark three winters. Ships still come. They just have to feel their way in.",
    "Ten coal and I can fire the burner. It's a start. It's not the lens, but it's a start."
   ],
   "yes": "Thank you. The mountain, or the quarry. Hard black coal, not the soft stuff.",

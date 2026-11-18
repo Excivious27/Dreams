@@ -84,15 +84,21 @@ func _process(delta: float) -> void:
 	if step.length() > 4.0:
 		# Walk around cliffs and water toward fixed spots (home, rally point).
 		var dir := step.normalized()
-		if step.length() > 24.0 and (want == home or map.has_meta("rally_pos")):
-			dir = map.flow_dir(position, want)
+		# One shared goal per rally point / per your cell, so the flow-field cache stays small.
+		if step.length() > 24.0:
+			if want == home:
+				dir = map.flow_dir(position, home)
+			elif map.has_meta("rally_pos"):
+				dir = map.flow_dir(position, map.get_meta("rally_pos"))
+			elif map.has_meta("follow_me") and not map.line_clear(position, want):
+				dir = map.flow_dir(position, map.cell_center(map.world_to_cell(map.player.position)))
 		var np := position + dir * minf(step.length(), 52.0 * delta)
-		if not map.blocked.has(map.world_to_cell(np)):
+		if _can_step(np):
 			position = np
 		else:
 			for alt: Vector2 in [Vector2(dir.x, 0), Vector2(0, dir.y)]:
 				var ap := position + alt * 52.0 * delta
-				if alt != Vector2.ZERO and not map.blocked.has(map.world_to_cell(ap)):
+				if alt != Vector2.ZERO and _can_step(ap):
 					position = ap
 					break
 	if _cd > 0.0:
@@ -127,10 +133,20 @@ func _process(delta: float) -> void:
 		"shade":
 			_cd = 6.0
 			_act_t = 0.5
-			if foe and map.player.position.distance_to(position) < 80.0:
+			# One veil at a time for the whole team: 2.5 s on, then at least 3.5 s off.
+			if foe and map.player.position.distance_to(position) < 80.0 and Time.get_ticks_msec() >= int(map.get_meta("shade_next", 0)):
+				map.set_meta("shade_next", Time.get_ticks_msec() + 6000)
 				map.set_meta("stealth_until", Time.get_ticks_msec() + 2500)
 				map.fx("poof", map.player.position + Vector2(0, -8), 12.0, 0.4)
 	queue_redraw()
+
+
+func _can_step(at: Vector2) -> bool:
+	var c := map.world_to_cell(at)
+	if map.blocked.has(c):
+		return false
+	# Keep off water, unless already standing in it (then any way out is fine).
+	return not map.is_water_cell(c) or map.is_water_cell(map.world_to_cell(position))
 
 
 func _draw() -> void:

@@ -41,7 +41,7 @@ static func have_of(key: String) -> int:
 		"#fish":
 			var n := 0
 			for id in GameState.run["inventory"]:
-				if str(GameState.items.get(id, {}).get("type", "")) == "fish":
+				if str(GameState.items.get(id, {}).get("type", "")) == "fish" and not GameState.is_locked(str(id)):
 					n += int(GameState.run["inventory"][id])
 			return n
 		"lieutenant_marks":
@@ -106,7 +106,10 @@ static func contribute(s: int, b: int) -> int:
 			continue
 		if k == "#fish":
 			var rest := put
-			for id in GameState.run["inventory"].keys():
+			# Cheapest first, locked fish never.
+			var ids: Array = GameState.run["inventory"].keys().filter(func(x: Variant) -> bool: return not GameState.is_locked(str(x)))
+			ids.sort_custom(func(a: Variant, b: Variant) -> bool: return GameState.item_value(str(a)) < GameState.item_value(str(b)))
+			for id in ids:
 				if rest <= 0:
 					break
 				if str(GameState.items.get(id, {}).get("type", "")) == "fish":
@@ -168,7 +171,7 @@ static func open(m: GameMap) -> void:
 			"give":
 				var put := contribute(s, int(a[1]))
 				m.hud.toast("Added %d item%s." % [put, "" if put == 1 else "s"] if put > 0 else "You have nothing this bundle still needs.", Color(0.8, 1, 0.8) if put > 0 else Color(1, 0.85, 0.7))
-				_check_stage(m)
+				await _check_stage(m)
 			"war":
 				await war_table(m)
 				return
@@ -285,7 +288,7 @@ static func overnight(report: Dictionary) -> void:
 		report["star_beacon"] = true
 	var jobs: Dictionary = data().get("jobs", {})
 	var cj: Dictionary = GameState.run.get("crew_jobs", {})
-	var mult := (1.5 if has("hq_workshop") else 1.0) * (1.0 + GameState.bonus("hustle", "job_pay") + GameState.bonus("leadership", "job_pay"))
+	var mult := (1.5 if has("hq_workshop") else 1.0) * (1.0 + minf(0.5, GameState.bonus("hustle", "job_pay") + GameState.bonus("leadership", "job_pay")))
 	var lines: Array = []
 	var taken := {}
 	for cid in cj:
@@ -301,7 +304,7 @@ static func overnight(report: Dictionary) -> void:
 		# Goods: alternate nights bring the alternate haul; pay bonuses grow money, not goods.
 		var give: Dictionary = j.get("give_alt", {}) if j.has("give_alt") and int(GameState.run["day"]) % 2 == 1 else j.get("give", {})
 		for it in give:
-			GameState.add_item(str(it), int(give[it]) + (1 if mult >= 2.0 and str(it).begins_with("bills") else 0))
+			GameState.add_item(str(it), int(give[it]))
 		if j.has("crystals"):
 			GameState.run["crystals"] = int(GameState.run["crystals"]) + int(int(j["crystals"]) * mult)
 		if j.has("heat"):

@@ -30,7 +30,7 @@ static func box(key: String) -> Dictionary:
 
 
 static func cap(key: String) -> int:
-	return int(box(key).get("cap", PLACED_CAP))
+	return int(box(key).get("cap", CAPS.get(key, PLACED_CAP)))
 
 
 static func slots_used(key: String) -> int:
@@ -58,6 +58,9 @@ static func room_for(key: String, id: String) -> int:
 ## Bag → chest. Returns how many moved. Tools never go in.
 static func deposit(key: String, id: String, n: int) -> int:
 	if GameState.has_tool(id) and not GameState.run["inventory"].has(id):
+		return 0
+	# Keys and quest items stay in the bag: doors and quests only look there.
+	if str(GameState.items.get(id, {}).get("type", "")) in ["key", "quest"]:
 		return 0
 	n = mini(n, mini(GameState.count(id), room_for(key, id)))
 	if n <= 0:
@@ -108,9 +111,13 @@ static func withdraw(key: String, id: String, n: int) -> int:
 
 
 static func _keep(id: String) -> bool:
-	# Deposit All leaves these in the bag: tools, seeds, food you carry, and whatever's on the toolbar.
+	# Deposit All leaves these in the bag: tools, keys, locked items, the selected item and
+	# usable things on the toolbar (seeds, food, potions...). Materials that merely landed on
+	# the bar when first picked up still go in.
 	var t := str(GameState.items.get(id, {}).get("type", ""))
-	return GameState.has_tool(id) or t in ["tool", "key", "quest", "vehicle"] or (GameState.run["toolbar"] as Array).has(id) or GameState.is_locked(id)
+	var usable := t in ["seed", "food", "tonic", "potion", "consumable", "placeable", "magic", "equip", "petgear"]
+	return GameState.has_tool(id) or t in ["tool", "key", "quest", "vehicle"] or ((GameState.run["toolbar"] as Array).has(id) and usable) \
+		or id == str(GameState.run.get("selected", "")) or GameState.is_locked(id)
 
 
 static func deposit_all(key: String) -> int:
@@ -222,5 +229,13 @@ static func take_from_chests(id: String, n: int) -> int:
 			if int(b["items"][id]) <= 0:
 				b["items"].erase(id)
 				(b.get("q", {}) as Dictionary).erase(id)
+			else:
+				# Plain ones are used first; stars never outnumber what's left.
+				var bq: Dictionary = (b.get("q", {}) as Dictionary).get(id, {})
+				var over := int(bq.get("g", 0)) + int(bq.get("s", 0)) - int(b["items"][id])
+				if over > 0:
+					var cs := mini(over, int(bq.get("s", 0)))
+					bq["s"] = int(bq.get("s", 0)) - cs
+					bq["g"] = maxi(0, int(bq.get("g", 0)) - (over - cs))
 			took += k2
 	return took

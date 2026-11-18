@@ -347,6 +347,7 @@ func _clones_check() -> void:
 			_clone_marks[frac] = true
 			e.map.fx("blink" if Art.has("fx", "blink") else "poof", e.position + Vector2(0, -8), 14.0, 0.5)
 			var spots: Array = [e.position]
+			var made: Array = []
 			for k in int(cl.get("n", 2)):
 				var c: Enemy = e.map.spawn_enemy(e.kind, e.position + Vector2(40, 0).rotated(TAU * k / 3.0 + 1.0))
 				if c == null:
@@ -359,9 +360,12 @@ func _clones_check() -> void:
 				c.set_meta("decoy", true)
 				if c._gift:
 					c._gift.decoy = true
-				spots.append(c.position)
-			# Shuffle who stands where so you can't just track the real one.
-			e.position = spots[randi() % spots.size()]
+				spots.append(c.position); made.append(c)
+			# Shuffle who stands where so you can't just track the real one (swap with a decoy).
+			var pick := randi() % spots.size()
+			if pick > 0 and is_instance_valid(made[pick - 1]):
+				(made[pick - 1] as Enemy).position = e.position
+				e.position = spots[pick]
 
 
 # ---- shots, lanes, circles ---------------------------------------------------------
@@ -377,6 +381,11 @@ func _shove(p: Player, step: Vector2) -> void:
 		p.position = np
 
 
+func _bullet_blocked(at: Vector2) -> bool:
+	var bc := e.map.world_to_cell(at + Vector2(0, 6))
+	return e.map.blocked.has(bc) and not e.map.is_water_cell(bc)
+
+
 static func _seg_dist(pt: Vector2, a: Vector2, b: Vector2) -> float:
 	var ab := b - a
 	var t := clampf((pt - a).dot(ab) / maxf(0.001, ab.length_squared()), 0.0, 1.0)
@@ -390,6 +399,8 @@ func _tick_shots(delta: float, p: Player) -> void:
 		b["life"] = float(b["life"]) - delta
 		if float(b["life"]) <= 0.0:
 			_bul.erase(b)
+		elif _bullet_blocked(b["p"] as Vector2):
+			_bul.erase(b)  # cover stops shots
 		elif (b["p"] as Vector2).distance_to(feet) < float(b["r"]) + 5.0:
 			_hurt(p, e.damage)
 			_bul.erase(b)
@@ -475,7 +486,7 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 	var g := def(id)
 	if g.is_empty():
 		return
-	if int(GameState.run.get("mana", 0)) < int(g.get("mana", 8)) or not GameState.spend_mana(int(g.get("mana", 8))):
+	if not GameState.spend_mana(int(g.get("mana", 8))):
 		m.hud.toast("Not enough mana.", Color(0.7, 0.8, 1.0))
 		return
 	var c := Color(str(g.get("colour", "c080ff")))
@@ -497,24 +508,26 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 		"line":
 			var dir := p.facing_dir()
 			for en in m.enemies.duplicate():
-				if is_instance_valid(en) and en._alive and _seg_dist(en.position, p.position, p.position + dir * 130.0) < 12.0:
+				if is_instance_valid(en) and en._alive and _seg_dist(en.position, p.position, p.position + dir * 130.0) < 12.0 and m.line_clear(p.position, en.position):
 					en.hit(dmg + 3, p.position, true, true)
 		"dazzle":
 			for en: Enemy in near:
-				en._stun = maxf(en._stun, 2.8)
+				en._stun = maxf(en._stun, 1.0 if en._gift else 2.8)
 		"root":
 			for en: Enemy in near:
-				en._stun = maxf(en._stun, 3.2)
+				en._stun = maxf(en._stun, 1.2 if en._gift else 3.2)
 				en.hit(maxi(1, dmg - 2), p.position, true, true)
 		"gale":
 			for en: Enemy in near:
 				en._knock = (en.position - p.position).normalized() * 320.0
 				en._stun = maxf(en._stun, 0.8)
 			GameState.run["buffs"] = GameState.run.get("buffs", {})
-			GameState.run["buffs"]["speed"] = {"until": GameState.now_abs() + 30, "amount": 2.0}
+			if GameState.buff("speed") <= 2.0:
+				GameState.run["buffs"]["speed"] = {"until": GameState.now_abs() + 30, "amount": 2.0}
 		"iron":
 			GameState.run["buffs"] = GameState.run.get("buffs", {})
-			GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 30, "amount": 3.0}
+			if GameState.buff("defense") <= 3.0:
+				GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 30, "amount": 3.0}
 		"shade":
 			p.invuln = maxf(p.invuln, 3.0)
 		"beat":
@@ -529,13 +542,20 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + n
 				m.hud.toast("Lucky: +◆%d" % n, Color(1, 0.9, 0.4))
 			elif roll == 1:
-				GameState.heal(12)
+				GameState.heal_points(12)
+				m.hud.toast("Lucky: +12 health", Color(1, 0.8, 0.8))
 			else:
 				for en: Enemy in near:
 					en.hit(dmg + 4, p.position, true, true)
 		"pull":
 			for en: Enemy in near:
-				en.position = en.position.lerp(p.position + (en.position - p.position).normalized() * 18.0, 0.8)
+				var np: Vector2 = en.position.lerp(p.position + (en.position - p.position).normalized() * 18.0, 0.8)
+				if m.line_clear(p.position, en.position) and not m.rect_blocked(Rect2(np + Vector2(-4, -3), Vector2(8, 3))):
+					en.position = np
 				en.hit(dmg, p.position, true, true)
 				en._stun = maxf(en._stun, 1.0)
+		_:
+			# "burst" (and any gift without a lend arm): a plain hit on everything near.
+			for en: Enemy in near:
+				en.hit(dmg, p.position, true, true)
 	m.hud.toast("%s!" % str(g.get("name", "Gift")), c)

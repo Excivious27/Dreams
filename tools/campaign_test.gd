@@ -77,8 +77,17 @@ func _run() -> void:
 		Colony.interact(m, "colony_coral", m.things.get(Vector2i(int(bc[0]), int(bc[1])), {}))
 	check((s["beacons"] as Dictionary).size() == 3, "three beacons lit (%d)" % (s["beacons"] as Dictionary).size())
 	check(Colony.ready_to_wake("colony_coral"), "ready to wake the crystal")
+	var old_m := m
 	Colony._restore(m, "colony_coral")
 	await _drain()
+	# Restoring reloads the region (lit crystal, open stall): wait for the new map.
+	var t0 := Time.get_ticks_msec()
+	while (current_scene == old_m or not (current_scene is GameMap)) and Time.get_ticks_msec() - t0 < 4000:
+		await process_frame
+	for i in 12:
+		await process_frame
+	await _drain()
+	m = current_scene as GameMap
 	check(bool(s["done"]) and Colony.has_ability("coral_ward") and GameState.count("colony_light") == 1, "saving the colony grants its ability and light")
 	# --- project: the Crystal Ward
 	var pd := Project.def()

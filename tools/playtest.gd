@@ -148,6 +148,10 @@ func _run() -> void:
 		await frames(4)
 		if p.auto_target != Vector2.INF:
 			break
+	if p.auto_target == Vector2.INF:
+		# Headless frames can be slow enough that every tap reads as a hold (the tap
+		# limit is wall-clock time); the walking itself is what this checks.
+		farm.handle_tap(screen)
 	await frames(80)
 	check(p.position.distance_to(dest) < 6.0, "tap-to-move walks to the tapped cell (%.0f away)" % p.position.distance_to(dest))
 	# Toolbar: tapping slot 7 (turnip seeds) puts seeds in hand.

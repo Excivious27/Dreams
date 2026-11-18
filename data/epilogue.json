@@ -108,7 +108,7 @@
  },
  "crew": {
   "deuce": [
-   "Deuce deals straight at a table uptown with your name on the chair beside his.",
+   "Deuce runs a card-trick show uptown, tokens only, with your name on the chair beside his.",
    "Deuce takes his table three valleys over. He sends a postcard."
   ],
   "mama_rosa": [
@@ -165,6 +165,12 @@
   "pax": "Pax stays on as a farmhand and is secretly better at it than you.",
   "kairi": "Kairi plants a row of flowers by the gate, one for every friend you made.",
   "sal": "Sal keeps the porch light on."
+ },
+ "companions_if": {
+  "penguin_f": [
+   "knight_reverted",
+   "Nova and Grandfather Auk fish off the end of the pier every morning. He still won't talk about the glass."
+  ]
  },
  "colonies": {
   "colony_coral": "Coral Reach glows rose-gold again, and Grandmother Brine tells the story of the farmer who came by ferry.",
@@ -227,12 +233,14 @@
   "take": "The Chair"
  },
  "flag_lines": {
+  "town_lost": "%town never quite forgave the clinic. People still lower their voices when you pass the plaza.",
+  "tower_loud": "Every light in the tower came on the night you went in. The city still calls it the Loud Night.",
   "fennimore_free": "Fennimore's crown went out in your arms. The finargles have a queen again: a gentler one.",
   "final_town_help": "The whole town climbed the tower stairs to ring the bell, and the Dark Crystal's shell cracked at the sound.",
   "doors_sasha": "Sasha took the tower doors off their hinges without a sound. Nobody in the city has ever asked her how.",
   "finn_told": "Finn wears the locket now. He smiles more.",
   "knight_reverted": "The knight above the clouds was given a chance, and took it.",
-  "auk_shard": "The knight above the clouds is gone. Nova still thinks about him.",
+  "auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk wandered off into the stars. Nova still goes looking for him.",
   "letter_burned": "You burned the letter. Nothing to sell, nothing to fear.",
   "proj_star_beacon": "The Star Beacon still burns over the plaza. Ships steer by it now.",
   "journal_done": "You found every page of the Wayfarer's Journal. The last one had your name on it."

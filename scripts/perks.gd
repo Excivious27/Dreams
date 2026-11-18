@@ -105,6 +105,9 @@ static func morning() -> Array:
 	var weekly := day % 7 == 1
 	var first_of_season := (day - 1) % GameState.DAYS_PER_SEASON == 0
 	for npc: String in data():
+		# Villagers the story sent away (posy_gone, lumi_gone...) don't send gifts.
+		if GameState.run["flags"].has(npc + "_gone"):
+			continue
 		# Only the best weekly gift from each friend arrives, not one per heart level.
 		var best_weekly: Dictionary = {}
 		var best_h := -1

@@ -6,7 +6,7 @@ extends RefCounted
 const SAVE_KEY := "run"
 const DAY_START := 6 * 60      # 6:00
 const DAY_END := 26 * 60       # 2:00 next day: pass out
-const MINUTES_PER_SECOND := 1.0 / 0.7  # one game minute every 0.7s (about 23 min per day)
+const MINUTES_PER_SECOND := 1.0 / 0.7  # one game minute every 0.7s (about 14 min per day)
 
 static var run: Dictionary = {}
 static var items: Dictionary = {}
@@ -40,6 +40,7 @@ static func load_data() -> void:
 
 static func new_run(arc: String, playable_id: String, character_name: String, town_name: String, pet_name: String) -> void:
 	load_data()
+	quests_data = load_json("res://data/quests.json")
 	if arc == "penguins":
 		# A gangster run earlier in the session registered the crew as villagers.
 		for cid in (load_json("res://data/crew.json").get("members", {}) as Dictionary):
@@ -56,7 +57,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"day": 1,
 		"time": DAY_START,
 		"energy": 100, "max_energy": 100,
-		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 6,
+		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100,
 		"skills": skills,
 		"flags": {},
 		"decisions": {},
@@ -89,6 +90,7 @@ static func has_run() -> bool:
 			# Villagers fresh from data: a gangster slot loaded earlier this session
 			# must not leave its crew in a penguin save's town.
 			npcs = load_json("res://data/npcs.json")
+			quests_data = load_json("res://data/quests.json")  # board defs belong to one run
 			Companion._ready_at = {}
 			_migrate()
 			# A story scene that was cut off (app closed) plays again from the start.
@@ -99,8 +101,20 @@ static func has_run() -> bool:
 	return not run.is_empty()
 
 
+## Unlock ids are name slugs: add an entry whenever an unlock is renamed.
+## (Starborn kept its positional id magic_3_8, so it needs none.)
+const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_8": "combat_u_iron_gut"}
+## Renames that only apply when the old node was bought under this name.
+const NODE_RENAME_NAME := {"combat_2_8": "Iron Gut"}
+
+
 ## Older saves (or saves from before a new field existed) get the missing keys.
 static func _migrate() -> void:
+	if not (run.get("skills") is Dictionary):
+		run["skills"] = {}
+	for sk in (run["skills"] as Dictionary).keys():
+		if not (run["skills"][sk] is Dictionary):
+			run["skills"][sk] = {"level": 1, "xp": 0, "nodes": {}}
 	# The toolbar always has 12 slots.
 	if run.has("toolbar") and run["toolbar"] is Array:
 		while (run["toolbar"] as Array).size() < 12:
@@ -114,11 +128,24 @@ static func _migrate() -> void:
 			if have.is_empty() or not skills_data.has(sk):
 				continue
 			var ids := {}
+			var nm := {}
 			for n in skills_data[sk].get("nodes", []):
 				ids[str(n["id"])] = int(n.get("ranks", 1))
+				nm[str(n["id"])] = str(n.get("name", ""))
+			var bought_nm: Dictionary = (run["skills"][sk] as Dictionary).get("nm", {})
 			for nid in have.keys():
-				if not ids.has(str(nid)):
+				var ren := str(NODE_RENAMES.get(str(nid), ""))
+				if ren != "" and NODE_RENAME_NAME.has(str(nid)) and str(bought_nm.get(str(nid), NODE_RENAME_NAME[str(nid)])) != str(NODE_RENAME_NAME[str(nid)]):
+					ren = ""
+				if ren != "" and ids.has(ren) and not have.has(ren):
+					have[ren] = mini(int(have[nid]), int(ids[ren]))
+					bought_nm[ren] = str(nm[ren])
+				# Positional ids can be reused by a different node when a tree is rebuilt:
+				# ranks bought under another name are refunded, not moved to the new perk.
+				var was := str(bought_nm.get(str(nid), nm.get(str(nid), "")))
+				if not ids.has(str(nid)) or was != str(nm.get(str(nid), "")):
 					have.erase(nid)
+					bought_nm.erase(nid)
 				elif int(have[nid]) > int(ids[str(nid)]):
 					have[nid] = ids[str(nid)]
 	if run.has("look") and run["look"] is Dictionary and run["look"].has("body") and not run["look"].has("outfit"):
@@ -142,7 +169,7 @@ static func _migrate() -> void:
 			run["skills"][id]["nodes"] = {}
 	if not run.has("names") or not run.has("arc") or not run.has("playable"):
 		# Unreadable run: keep a copy in the save file instead of losing it.
-		SaveGame.set_value("run_unreadable", run)
+		SaveGame.set_value(save_key() + "_unreadable", run)
 		run = {}
 		return
 	if not (run["names"] is Dictionary):
@@ -155,6 +182,7 @@ static func _migrate() -> void:
 	for id in skills_data.keys():
 		if not run["skills"].has(id):
 			run["skills"][id] = {"level": 1, "xp": 0, "nodes": {}}
+	Storage._all()  # moves an old flags.chest stash into the farm chest now
 	_apply_max_stats()
 
 
@@ -211,16 +239,21 @@ static func import_code(code: String) -> String:
 	var buf := Marshalls.base64_to_raw(c.substr(5))
 	if buf.is_empty():
 		return "The code is cut off or has a typo."
-	var txt := buf.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP).get_string_from_utf8()
+	var txt := buf.decompress_dynamic(8 * 1024 * 1024, FileAccess.COMPRESSION_GZIP).get_string_from_utf8()
 	var d: Variant = JSON.parse_string(txt)
-	if not d is Dictionary or not (d as Dictionary).has("names") or not (d as Dictionary).has("arc"):
+	if not d is Dictionary or not (d as Dictionary).has("names") or not (d as Dictionary).has("arc") or not (d as Dictionary).has("playable"):
 		return "The code is cut off or has a typo."
 	var cur: Variant = SaveGame.get_value(save_key(), null)
 	if cur is Dictionary and not (cur as Dictionary).is_empty():
 		SaveGame.set_value(prev_key(), cur)
 	run = {}
 	SaveGame.set_value(save_key(), d)
-	has_run()
+	if not has_run():
+		if cur is Dictionary and not (cur as Dictionary).is_empty():
+			SaveGame.set_value(save_key(), cur)
+			run = {}
+			has_run()
+		return "That save couldn't be read."
 	return ""
 
 
@@ -398,8 +431,8 @@ static func item_value(id: String) -> int:
 
 # ---- economy -----------------------------------------------------------------
 # Selling: base value × season demand (crops sell for more out of their season,
-# fish/forage for more in winter) × today's saturation (every 20 of one thing
-# sold in a day knocks 8% off the rest) × bartering/friend bonuses. Buying:
+# fish/forage for more in winter) × today's saturation (first 12 of a thing at
+# full price, then -10% per further 6, floor 30%) × bartering/friend bonuses. Buying:
 # 1.5× value with discounts, and tiered goods cost more until you've earned them.
 
 const DEMAND_OUT_OF_SEASON := 1.35
@@ -428,8 +461,8 @@ static func demand(id: String) -> float:
 
 static func saturation(id: String, n_more := 0) -> float:
 	var sold: Dictionary = run.get("sold_today", {})
-	if Crew.perk_level("fence") >= 2:
-		return 1.0  # Marlene takes any amount at full value
+	if Crew.perk_level("fence") >= 2 and str(items.get(id, {}).get("type", "")) in ["drop", "loot", "treasure"]:
+		return 1.0  # Marlene takes any amount of loot at full value
 	var already := int(sold.get(id, 0)) + n_more
 	# The first 12 of a thing sell at full price; after that the town has had
 	# enough of it: -10% per further 6, floor 30%. Grow and gather a mix.
@@ -471,12 +504,10 @@ static func buy_price(id: String) -> int:
 				var cs := str(crops[cid].get("season", "any"))
 				if cs != "any" and cs != season():
 					m *= 0.85  # off-season seed is a little cheaper, and a gamble
-	# Never cheaper than you could sell it back for (with every perk): shops are
-	# not a money machine.
-	var best_sell := base * sell_multiplier() * (1.0 + minf(0.20, 0.02 * (skill_level("bartering") - 1))) * (1.0 + 0.05 * Crew.perk_level("sell_bonus")) \
-		* (1.0 + (bonus("farming", "crop_value") if family(id) != "" else 0.0)) * (1.0 + (bonus("fishing", "fish_value") if str(it.get("type", "")) == "fish" else 0.0))
-	m *= 1.0 - 0.05 * Crew.perk_level("shop_discount") if Crew.perk_level("shop_discount") < 3 else 0.9  # Specs knows the till codes
-	return maxi(1, int(ceil(maxf(base * m, best_sell * 1.1))))
+	m *= [1.0, 0.95, 0.9, 0.85][clampi(Crew.perk_level("shop_discount"), 0, 3)]  # Specs knows the till codes
+	# Never cheaper than you could sell it back for (demand, fence and every perk
+	# included): shops are not a money machine.
+	return maxi(1, int(ceil(maxf(base * m, sell_price(id, 1) * 1.15))))
 
 
 static func count(id: String) -> int:
@@ -589,6 +620,7 @@ static func add_item(id: String, n: int = 1, force := false) -> void:
 		b["items"][id] = int(b["items"].get(id, 0)) + n
 		_mark_seen(id)
 		overflow_note = "Bag full: %s sent to your farm chest." % item_name(id)
+		_overflow_id = id
 		return
 	inv[id] = int(inv.get(id, 0)) + n
 	if n < 0:
@@ -597,7 +629,7 @@ static func add_item(id: String, n: int = 1, force := false) -> void:
 		_mark_seen(id)
 	if inv[id] <= 0:
 		inv.erase(id)
-		(run.get("bag_lock", {}) as Dictionary).erase(id)
+		# The lock stays with the item kind (a chest round trip keeps it).
 		var tb: Array = run["toolbar"]
 		var i := tb.find(id)
 		if i >= 0:
@@ -642,7 +674,19 @@ static func quality_of(id: String) -> Dictionary:
 	return (run.get("quality", {}) as Dictionary).get(id, {})
 
 
+static var _overflow_id := ""
+
+
 static func add_quality(id: String, q: String, n: int) -> void:
+	# A starred harvest that just overflowed to the farm chest keeps its star there.
+	if n > 0 and id == _overflow_id and count(id) == 0:
+		_overflow_id = ""
+		var cq: Dictionary = Storage.box("chest")["q"]
+		var d2: Dictionary = cq.get(id, {})
+		var other := int(d2.get("s" if q == "g" else "g", 0))
+		d2[q] = clampi(int(d2.get(q, 0)) + n, 0, maxi(0, Storage.amount("chest", id) - other))
+		cq[id] = d2
+		return
 	if not run.has("quality"):
 		run["quality"] = {}
 	var d: Dictionary = run["quality"].get(id, {})
@@ -685,7 +729,9 @@ static func quality_bonus_value(box_q: Dictionary) -> int:
 	var t := 0.0
 	for id: String in box_q:
 		var q: Dictionary = box_q[id]
-		var unit := float(sell_price(id, 1))
+		# Per-piece price of the whole box of it (saturation included).
+		var nb := maxi(1, int(run.get("sellbox", {}).get(id, 1)))
+		var unit := float(sell_price(id, nb)) / nb
 		t += unit * (QUALITY_BONUS["g"] * int(q.get("g", 0)) + QUALITY_BONUS["s"] * int(q.get("s", 0)))
 	return int(round(t))
 
@@ -792,6 +838,10 @@ static func sword_damage() -> int:
 
 # ---- skills ------------------------------------------------------------------
 
+## True while GameMap.xp grants XP (it shows its own level-up toast).
+static var _xp_loud := false
+
+
 static func add_xp(skill: String, xp: int) -> bool:
 	var s: Dictionary = run["skills"].get(skill, {"level": 1, "xp": 0, "nodes": {}})
 	var mult := 1.15 if has_friend_perk("theo", 8) else (1.10 if has_friend_perk("theo", 4) else (1.05 if has_friend_perk("theo", 2) else 1.0))
@@ -808,8 +858,8 @@ static func add_xp(skill: String, xp: int) -> bool:
 		s["level"] = int(s["level"]) + 1
 		leveled = true
 	run["skills"][skill] = s
-	# These skills level up away from the usual XP popups: say so.
-	if leveled and skill in ["leadership", "strategist", "harmony", "hustle", "pup"]:
+	# Every level-up gets a note, unless GameMap.xp is already showing its own popup.
+	if leveled and not _xp_loud:
 		notify("%s level %d! A skill point to spend (MENU → Skills)." % [str(skills_data.get(skill, {}).get("name", skill.capitalize())), int(s["level"])])
 	if leveled:
 		_apply_max_stats()
@@ -934,19 +984,28 @@ static func buy_node(skill: String, id: String) -> bool:
 	if node_locked(skill, id) != "":
 		return false
 	run["skills"][skill]["nodes"][id] = node_rank(skill, id) + 1
+	# Remember what was bought under this id, so a rebuilt tree can't turn it into another perk.
+	(run["skills"][skill] as Dictionary).get_or_add("nm", {})[id] = str(node(skill, id).get("name", ""))
 	_apply_max_stats()
 	return true
 
 
 static func reset_tree(skill: String) -> void:
 	run["skills"][skill]["nodes"] = {}
+	(run["skills"][skill] as Dictionary).erase("nm")
 	_apply_max_stats()
 
 
 ## Perk by display name (legacy callers) or node id: true at rank 1+.
 static func has_perk(skill: String, perk_name: String) -> bool:
 	var id := perk_name.to_lower().replace(" ", "_")
-	return node_rank(skill, id) > 0
+	if node_rank(skill, id) > 0:
+		return true
+	# Perks that live on a positional or unlock node: match by name.
+	for n in nodes_of(skill):
+		if str(n.get("name", "")) == perk_name and node_rank(skill, str(n["id"])) > 0:
+			return true
+	return false
 
 
 ## Summed effect of ranks bought in a tree, e.g. bonus("combat", "damage").
@@ -955,12 +1014,17 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
 	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.5, "pass_risk": 0.2,
 	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
-	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.6, "interest": 0.05,
+	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.5,
 	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0,
 	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.5, "extra_day": 0.25, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
 	"animal_yield": 1.0, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
 	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.5, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
-	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1}
+	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
+	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
+	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05}
+## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
+## Warrior, Legend). tools/gen_skill_trees.py reads this too.
+const SKILL_CAPS := {"combat": {"hp": 140.0, "energy": 60.0}}
 
 
 static var _bonus_cache := {}
@@ -987,8 +1051,9 @@ static func _bonus_raw(skill: String, key: String) -> float:
 		var r := node_rank(skill, str(n["id"]))
 		if r > 0 and n.has("effect") and n["effect"].has(key):
 			t += float(n["effect"][key]) * r
-	if BONUS_CAPS.has(key):
-		t = minf(t, float(BONUS_CAPS[key]))
+	var cap: Variant = (SKILL_CAPS.get(skill, {}) as Dictionary).get(key, BONUS_CAPS.get(key))
+	if cap != null:
+		t = minf(t, float(cap))
 	return t
 
 
@@ -1041,9 +1106,9 @@ static func equip(id: String) -> void:
 	var slot := str(it.get("slot", ""))
 	var eq: Dictionary = run.get("equip", {})
 	var old := str(eq.get(slot, ""))
+	add_item(id, -1)  # first, so the old piece can use the freed bag slot
 	if old != "":
 		add_item(old, 1)
-	add_item(id, -1)
 	eq[slot] = id
 	run["equip"] = eq
 	_apply_max_stats()
@@ -1127,7 +1192,8 @@ static func energy_cost(task: String) -> int:
 	if base == 0:
 		return 0
 	var tier := tool_tier(task) if TOOL_KINDS.has(task) else 0
-	var mult := 1.0 - 0.08 * tier
+	# Better hoes and cans save more (they are the everyday tools).
+	var mult := 1.0 - (0.15 if task in ["hoe", "can", "plant"] else 0.08) * tier
 	if task in ["hoe", "can", "plant"]:
 		mult *= 1.0 - bonus("farming", "farm_energy")
 	elif task == "pickaxe":
@@ -1280,7 +1346,11 @@ static func consume(id: String) -> Dictionary:
 	var hp0 := int(run["hp"]); var en0 := int(run["energy"]); var ma0 := int(run.get("mana", 0))
 	var mh := Crew.perk_level("meal_heal")
 	heal(int(round(int(it.get("heal", 0)) * (1.0 + (0.1 if mh == 1 else (0.25 if mh >= 2 else 0.0))))))
-	restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * 8)
+	# Cooked food and potions refill energy from their heal (x8); raw catch,
+	# crops and forage only a little (x2), so eating the cheap catch isn't an
+	# endless energy loop (audit 12#1).
+	var en_mult := 8 if str(it.get("type", "")) in ["food", "potion", "consumable"] else 2
+	restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * en_mult)
 	restore_mana(int(it.get("mana", 0)))
 	if int(run["hp"]) != hp0:
 		out["hp"] = int(run["hp"]) - hp0
@@ -1385,7 +1455,7 @@ static func count_any(key: String) -> int:
 	var f := key.substr(1)
 	var n := 0
 	for id in run["inventory"]:
-		if family(str(id)) == f or (f == "fruit" and family(str(id)) in ["tree", "berry"]):
+		if (family(str(id)) == f or (f == "fruit" and family(str(id)) in ["tree", "berry"])) and not is_locked(str(id)):
 			n += int(run["inventory"][id])
 	return n
 
@@ -1398,7 +1468,7 @@ static func take_any(key: String, n: int) -> void:
 	var f := key.substr(1)
 	var ids: Array = []
 	for id in run["inventory"]:
-		if family(str(id)) == f or (f == "fruit" and family(str(id)) in ["tree", "berry"]):
+		if (family(str(id)) == f or (f == "fruit" and family(str(id)) in ["tree", "berry"])) and not is_locked(str(id)):
 			ids.append(str(id))
 	ids.sort_custom(func(a: String, b: String) -> bool: return item_value(a) < item_value(b))
 	for id: String in ids:
@@ -1574,10 +1644,19 @@ static var _gift_lines := {}
 
 static func birthday_today() -> String:
 	for id: String in npcs:
-		# Only people you can give gifts to (Catkins has no heart arc).
-		if is_birthday(id) and id != "catkins":
+		# Only people you can give gifts to (Catkins has no heart arc) who are still around.
+		if is_birthday(id) and npc_present(id):
 			return id
 	return ""
+
+
+## A villager who is in the valley today: not sent away by the story
+## (posy_gone, lumi_gone...), not Catkins (no heart arc), and Sal only from
+## day 4 in the penguin arc (as in town.gd).
+static func npc_present(id: String) -> bool:
+	if run.is_empty():
+		return false
+	return not run["flags"].has(id + "_gone") and id != "catkins" and not (id == "sal" and is_penguins() and int(run["day"]) < 4)
 
 
 # ---- quests ------------------------------------------------------------------
@@ -1650,12 +1729,12 @@ static func board_today() -> Array:
 	rng.seed = int(run["day"]) * 7919 + 13
 	var npcs_ok: Array = []
 	for id in BOARD_POOL:
-		if npcs.has(id):
+		if npcs.has(id) and npc_present(str(id)):
 			npcs_ok.append(id)
 	var jobs: Array = []
 	var used := {}
 	var tier := progress_tier()
-	for i in 3:
+	for i in (3 if not npcs_ok.is_empty() else 0):
 		var who: String = npcs_ok[rng.randi_range(0, npcs_ok.size() - 1)]
 		if used.has(who):
 			continue
@@ -1678,7 +1757,7 @@ static func board_today() -> Array:
 	crop_pool.sort()
 	if not crop_pool.is_empty():
 		var who2: String = ["posy", "maple", "hazel", "wren", "lumi", "theo"][rng.randi_range(0, 5)]
-		if npcs.has(who2) and not used.has(who2):
+		if npcs.has(who2) and npc_present(who2) and not used.has(who2):
 			var item2: String = crop_pool[rng.randi_range(0, crop_pool.size() - 1)]
 			var n2 := rng.randi_range(2, 3 + tier)
 			jobs.append({"id": "board_%d_c" % int(run["day"]), "npc": who2, "item": item2, "n": n2, "crystals": int(maxi(5, item_value(item2)) * n2 * 1.8) + 15 * tier, "friend": 10 + tier * 2})
@@ -1832,7 +1911,10 @@ static func _give_reward(rw: Dictionary) -> void:
 	if rw.has("flag"):
 		run["flags"][str(rw["flag"])] = true
 	if rw.has("item"):
-		add_item(str(rw["item"][0]), int(rw["item"][1]))
+		if str(items.get(str(rw["item"][0]), {}).get("type", "")) == "tool":
+			add_tool(str(rw["item"][0]))  # weapons/tools go to the tool list, so they can be held
+		else:
+			add_item(str(rw["item"][0]), int(rw["item"][1]))
 	if rw.has("xp"):
 		add_xp(str(rw["xp"][0]), int(rw["xp"][1]))
 	if rw.has("friend"):
@@ -1881,13 +1963,19 @@ static func side_quest_for(npc: String) -> Dictionary:
 
 
 static func side_quest_pending(npc: String) -> Dictionary:
+	# A quest that is ready to turn in comes first, then the oldest open one.
+	var first := {}
 	for q in run["quests"]:
 		if q["done"]:
 			continue
 		var d := _quest_def(str(q["id"]))
-		if str(d.get("giver", "")) == npc:
+		if str(d.get("giver", "")) != npc:
+			continue
+		if d.has("done_when") and d["done_when"] is Dictionary and _cond_ok(d["done_when"]):
 			return d
-	return {}
+		if first.is_empty():
+			first = d
+	return first
 
 
 static func quest_done(id: String) -> bool:
@@ -2094,9 +2182,14 @@ static func sleep(passed_out := false) -> Dictionary:
 	if qb > 0:
 		total += qb
 		report["sold"].append("quality bonus = %d" % qb)
+	# Lucky Day (Bartering): now and then the whole box pays double (extra capped by progress).
+	if total > 0 and randf() < bonus("bartering", "jackpot"):
+		var lucky := mini(total, 300 + 300 * progress_tier())
+		total += lucky
+		report["sold"].append("Lucky Day! +%d" % lucky)
 	run["sellbox_q"] = {}
 	if total > 0:
-		add_xp("bartering", total / 15)
+		add_xp("bartering", mini(total / 15, 20 + 5 * skill_level("bartering")))
 	run["sold_today"] = {}
 	run["crystals"] = int(run["crystals"]) + total
 	report["earned"] = total
@@ -2299,7 +2392,7 @@ static func status_def(name: String) -> Dictionary:
 static func status_apply(name: String, t: int) -> void:
 	if status_def(name).is_empty():
 		return
-	if (has_perk("combat", "Iron Gut") or node_rank("combat", "combat_2_4") > 0) and name in ["poison", "burn"]:
+	if bonus("combat", "status_guard") > 0 and name in ["poison", "burn"]:
 		return
 	if buff("warm") > 0.0 and name in ["chill", "freeze", "cold"]:
 		return

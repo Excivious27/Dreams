@@ -18,6 +18,9 @@ static var y_offset := 0.0
 static var extra_rects: Array = []
 ## Set by full-screen panels while open; touch buttons ignore taps inside it.
 static var modal_rect := Rect2()
+## A paused full-screen UI that reads directions (HackGame) sets this while open,
+## so the touch stick still works under the pause.
+static var stick_ok := false
 
 
 static func hud_rect_blocks(p: Vector2) -> bool:
@@ -63,12 +66,23 @@ func _ready() -> void:
 
 
 func set_hint(text: String) -> void:
-	_hint = text
+	# The phone has no A/B buttons: name the ones it has.
+	if TouchControls.visible_controls:
+		text = text.replace("A: ", "USE: ").replace("B: ", "CHECK: ")
+	if text != _hint:
+		_hint = text
+		if _canvas:
+			_canvas.queue_redraw()
 
 
-func _process(_delta: float) -> void:
+var _redraw_t := 0.0
+var _sig := ""
+
+
+func _process(delta: float) -> void:
 	if GameState.run.is_empty():
 		return
+	_place_toasts()
 	if GameState.overflow_note != "":
 		toast(GameState.overflow_note, Color(1, 0.8, 0.5))
 		GameState.overflow_note = ""
@@ -86,7 +100,26 @@ func _process(_delta: float) -> void:
 			GameState.select_slot(i)
 	if Input.is_action_just_pressed("cycle_tool") and not Dialogue.input_blocked():
 		GameState.select_slot((int(GameState.run["slot"]) + 1) % 12)
-	_canvas.queue_redraw()
+	# Redraw when what's shown changes, and at 10 Hz for the rest (boss bar, buffs, pointer).
+	var r := GameState.run
+	var sig := "%d|%d|%d|%d|%d|%d|%s|%s" % [int(r["hp"]), int(r["energy"]), int(r.get("mana", 0)), int(r["crystals"]), int(r["slot"]), int(r["time"]), str(r["toolbar"][int(r["slot"])]), Dialogue.instance(get_tree()).active]
+	_redraw_t += delta
+	if sig != _sig or _redraw_t >= 0.1:
+		_sig = sig
+		_redraw_t = 0.0
+		_canvas.queue_redraw()
+
+
+## Toasts: under the goal line outdoors, above the HUD block indoors, above the dialogue box while one is open.
+func _place_toasts() -> void:
+	var y := 80.0 if y_offset == 0.0 else 190.0
+	var d := Dialogue.instance(get_tree())
+	if d.active:
+		var h := 0.0
+		for c in _toasts.get_children():
+			h += (c as Control).size.y + 1.0
+		y = minf(y, d.panel_top() - h - 4.0)
+	_toasts.position.y = y
 
 
 func _input(event: InputEvent) -> void:
@@ -167,7 +200,7 @@ func _draw_hud() -> void:
 			bx += 11
 	if int(r["flags"].get("shield", 0)) > 0 and Art.has("ui", "buff2_shield"):
 		c.draw_texture_rect(Art.tex("ui", "buff2_shield"), Rect2(bx, 24, 9, 9), false); bx += 11
-	if int(r["flags"].get("haste_until", 0)) > int(r["time"]) and Art.has("ui", "buff2_haste"):
+	if int(r["flags"].get("haste_abs", -1)) > GameState.now_abs() and Art.has("ui", "buff2_haste"):
 		c.draw_texture_rect(Art.tex("ui", "buff2_haste"), Rect2(bx, 24, 9, 9), false); bx += 11
 	if int(r["flags"].get("glow_day", -1)) == int(r["day"]) and Art.has("ui", "buff2_glow"):
 		c.draw_texture_rect(Art.tex("ui", "buff2_glow"), Rect2(bx, 24, 9, 9), false); bx += 11
@@ -233,19 +266,23 @@ func _draw_hud() -> void:
 		line = GameState.item_name(held)
 	if _hint != "":
 		line = (line + "   " if line != "" else "") + _hint
-	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 180 if Racket.on() else 240, 8, Color(1, 1, 0.9))
+	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 180 if Racket.on() or y_offset > 0.0 else 240, 8, Color(1, 1, 0.9))
 	# The goal, always on screen (one line, small).
 	var nxt := GameState.next_step()
 	var sc0 := get_tree().current_scene
 	if sc0 and sc0.get("battle") != null:
 		nxt = ""  # the battle bar says what matters
-	if nxt != "" and y_offset == 0.0:
+	if nxt != "" and y_offset == 0.0 and not Dialogue.instance(get_tree()).active:
 		if nxt.length() > 54:
 			nxt = nxt.left(52) + "…"
 		c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 21), "▸ " + nxt, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, 3, Color(0, 0, 0, 0.7))
 		c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 21), "▸ " + nxt, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, Color(1, 0.92, 0.6))
 	# Heat (gangster arc): five pips under the clock.
-	if Racket.on():
+	# Hidden until there is some heat (first time: a toast says what it means).
+	if Racket.on() and (Racket.heat() > 0 or r["flags"].has("heat_told")):
+		if not r["flags"].has("heat_told"):
+			r["flags"]["heat_told"] = true
+			toast.call_deferred("Heat: how closely the cops are watching you.", Color(1, 0.75, 0.6))
 		var hx := 196.0
 		var hy := TOOLBAR_Y + SLOT + 5.0
 		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 2, Color(0, 0, 0, 0.8))
@@ -263,8 +300,14 @@ func _draw_hud() -> void:
 	# Left-handed play mirrors the buttons to the left, so the bar moves left too
 	# (the pup commands take the right edge).
 	var lh := Settings.left_handed()
-	c.draw_set_transform(Vector2(-248.0 if lh else 0.0, -150.0 if y_offset > 0.0 else 0.0))
 	var e := float(r["energy"]) / float(r["max_energy"])
+	if y_offset > 0.0:
+		# Indoors: a short horizontal bar in the HUD block, off the room.
+		_draw_energy_h(c, e)
+		return
+	if Dialogue.instance(get_tree()).active:
+		return  # it would poke out past the dialogue box
+	c.draw_set_transform(Vector2(-248.0 if lh else 0.0, 0.0))
 	var bar := Rect2(256, 200, 9, 130)
 	var fill_h := bar.size.y * e
 	var col := Color("7ad35a") if e > 0.5 else (Color("f2c84b") if e > 0.25 else Color("e86a3a"))
@@ -291,6 +334,16 @@ func _draw_hud() -> void:
 		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 7, Color(1, 1, 0.9))
 	else:
 		c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
+
+
+func _draw_energy_h(c: CanvasItem, e: float) -> void:
+	var r := Rect2(206, 59, 58, 5)
+	var col := Color("7ad35a") if e > 0.5 else (Color("f2c84b") if e > 0.25 else Color("e86a3a"))
+	c.draw_rect(r.grow(1), Color(0.1, 0.07, 0.04, 0.85))
+	c.draw_rect(Rect2(r.position, Vector2(r.size.x * clampf(e, 0.0, 1.0), r.size.y)), col)
+	var bolt := Art.tex("ui", "bolt_full")
+	if bolt:
+		c.draw_texture_rect(bolt, Rect2(r.position.x - 10, r.position.y - 3, 9, 9), false)
 
 
 ## Close stand-ins from art we already have, until each item gets its own icon.
@@ -410,6 +463,7 @@ func toast(text: String, color := Color.WHITE) -> void:
 			var k := int(c.get_meta("count", 1)) + 1
 			c.set_meta("count", k)
 			(c as Label).text = "%s  ×%d" % [text, k]
+			(c as Label).custom_minimum_size.x = minf(258.0, _font.get_string_size((c as Label).text, HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x + 12.0)
 			(c as Label).modulate.a = 1.0
 			return
 	# At most three on screen: the oldest goes.
@@ -437,10 +491,19 @@ func toast(text: String, color := Color.WHITE) -> void:
 	l.add_theme_color_override("font_color", color)
 	l.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	l.custom_minimum_size = Vector2(258, 0)
+	# A dark rounded backing sized to the text, so toasts read over grass and portraits.
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0, 0, 0, 0.55)
+	sb.set_corner_radius_all(3)
+	sb.content_margin_left = 4
+	sb.content_margin_right = 4
+	sb.content_margin_top = 1
+	sb.content_margin_bottom = 1
+	l.add_theme_stylebox_override("normal", sb)
+	l.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	l.custom_minimum_size = Vector2(minf(258.0, _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x + 12.0), 0)
 	_toasts.add_child(l)
-	# Indoors the HUD block is at the bottom; toasts go just above it.
-	_toasts.position.y = 76.0 if y_offset == 0.0 else 190.0
+	_place_toasts()
 	var tw := l.create_tween()
 	tw.tween_interval(clampf(1.2 + text.length() * 0.03, 1.6, 4.0))  # long messages stay long enough to read
 	tw.tween_property(l, "modulate:a", 0.0, 0.5)
@@ -468,7 +531,7 @@ func _draw_pointer(c: CanvasItem) -> void:
 	if tgt == Vector2.ZERO:
 		return
 	var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt
-	var view := Rect2(14, 110, 242, 250)
+	var view := Rect2(18, 112, 222, 244)
 	if view.has_point(sp):
 		return
 	var ctr := view.get_center()
@@ -477,10 +540,15 @@ func _draw_pointer(c: CanvasItem) -> void:
 	var at := ctr + d * k
 	var dir := d.normalized()
 	var col: Color = Color(1, 0.4, 0.35) if bool(m.get("_guardian") != null) else Color(0.5, 1, 0.6)
-	var pts := PackedVector2Array([at + dir * 7.0, at - dir * 4.0 + dir.orthogonal() * 5.0, at - dir * 4.0 - dir.orthogonal() * 5.0])
+	var pts := PackedVector2Array([at + dir * 10.0, at - dir * 6.0 + dir.orthogonal() * 7.0, at - dir * 6.0 - dir.orthogonal() * 7.0])
 	c.draw_colored_polygon(pts, Color(0, 0, 0, 0.6))
-	var pts2 := PackedVector2Array([at + dir * 5.5, at - dir * 3.0 + dir.orthogonal() * 3.8, at - dir * 3.0 - dir.orthogonal() * 3.8])
+	var pts2 := PackedVector2Array([at + dir * 8.0, at - dir * 4.5 + dir.orthogonal() * 5.3, at - dir * 4.5 - dir.orthogonal() * 5.3])
 	c.draw_colored_polygon(pts2, col)
+	# How far, in cells, so 10 and 80 don't look the same.
+	var dist := str(int(m.player.position.distance_to(tgt) / 16.0))
+	var tp := at - dir * 14.0 + Vector2(-10, 3)
+	c.draw_string_outline(_font, tp, dist, HORIZONTAL_ALIGNMENT_CENTER, 20, 6, 2, Color(0, 0, 0, 0.8))
+	c.draw_string(_font, tp, dist, HORIZONTAL_ALIGNMENT_CENTER, 20, 6, col)
 
 
 ## The nearest boss in view: name and a health bar across the top of the field.
@@ -490,7 +558,7 @@ func _draw_boss_bar(c: CanvasItem) -> void:
 		return
 	var boss: Enemy = null
 	for e in m.enemies:
-		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and (e.max_hp >= 60 or e.is_guardian or e.has_meta("marked") or e._gift != null) and e.position.distance_to(m.player.position) < 170.0:
+		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and (e.base_hp >= 60 or e.is_guardian or e.has_meta("marked") or e._gift != null or e.has_meta("boss_name")) and (e.has_meta("boss_name") or e.position.distance_to(m.player.position) < 170.0):
 			if boss == null or e.max_hp > boss.max_hp:
 				boss = e
 	if boss == null:

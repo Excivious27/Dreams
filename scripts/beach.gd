@@ -94,7 +94,7 @@ func after_ready() -> void:
 		cs.offset = Vector2(0, -32)
 		add_child(cs)
 		cs.play("idle")
-		set_thing(cols - 10, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead into the sea and don't come back.", "hint": "A: the camp"}, false)
+		set_thing(cols - 10, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead down to the water, and a little way off, a rowing boat's keel-mark in the sand.", "hint": "A: the camp"}, false)
 	var dock := DockLayer.new()
 	dock.map = self
 	dock.position = offset()
@@ -145,55 +145,6 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 func _fish(c: Vector2i) -> void:
 	fish_at(c, ["sunfish", "bass", "salmon", "eel", "puffer", "goldfish", "starfin"])
-
-
-func _fish_old(c: Vector2i) -> void:
-	if not GameState.spend_for("rod"):
-		hud.toast("Too tired.", Color(1, 0.7, 0.7))
-		return
-	player.play_tool("cast")
-	player.frozen = true
-	hud.toast("Casting into the surf...")
-	var wait := randf_range(2.0, 5.0)
-	var t := 0.0
-	var bite := false
-	var caught := false
-	var bob: AnimatedSprite2D = null
-	if Art.has("fx", "bobber"):
-		bob = AnimatedSprite2D.new()
-		var b2 := Art.has("fx", "bobber2")
-		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber2" if b2 else "bobber", "bite": "bobber2_bite" if b2 else "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
-		bob.animation = "bobber"
-		bob.scale = Vector2(0.5, 0.5)
-		bob.position = cell_center(c) + Vector2(0, -6)
-		add_child(bob)
-		bob.play("bobber")
-	while t < wait + 1.0:
-		await get_tree().process_frame
-		t += get_process_delta_time()
-		if not bite and t >= wait:
-			bite = true
-			hud.toast("!!!  Tap USE!", Color(1, 1, 0.4))
-			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
-			Music.instance(get_tree()).sfx("bite")
-			if bob:
-				bob.play("bite")
-		if Input.is_action_just_pressed("a") and t > 0.2:
-			caught = bite
-			break
-	player.frozen = false
-	if bob:
-		fx("reel_splash" if Art.has("fx", "reel_splash") else "splash", bob.position, 12.0, 0.5)
-		if caught and Art.has("fx", "fish_jump_a"):
-			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
-		bob.queue_free()
-	if caught:
-		var pool: Array = ["sunfish", "bass", "salmon", "eel", "puffer", "goldfish", "starfin"]
-		give(pool[randi() % mini(pool.size(), 2 + GameState.skill_level("fishing") * 2)])
-		player.play_tool("reel")
-		xp("fishing", 6)
-	else:
-		hud.toast("It got away.")
 
 
 func draw_map() -> void:

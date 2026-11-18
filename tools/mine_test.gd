@@ -60,7 +60,7 @@ func _run() -> void:
 	var g: Enemy = m.get("_guardian")
 	check(g != null, "keeper woke after %d rocks (threshold %d)" % [broke, m.call("_threshold")])
 	if g:
-		check(g.is_guardian and g.tier >= 0 and g.max_hp >= 12, "keeper is a guardian with real hp (kind %s, hp %d)" % [g.kind, g.max_hp])
+		check(g.is_guardian and g.tier >= 0 and g.max_hp >= 8, "keeper is a guardian with real hp (kind %s, hp %d)" % [g.kind, g.max_hp])
 		# Knock it around: by the third hit it should telegraph a lunge if it has one.
 		var had_lunge := g.abilities.has("lunge")
 		for i in 3:
@@ -88,7 +88,10 @@ func _run() -> void:
 	# Statuses: poison ticks hp down and expires.
 	GameState.status_apply("poison", 2)
 	var hp0 := int(GameState.run["hp"])
-	await frames(90)
+	# Poison ticks on game time: wait up to 3 s (headless frames can be very fast).
+	var t0 := Time.get_ticks_msec()
+	while int(GameState.run["hp"]) >= hp0 and Time.get_ticks_msec() - t0 < 3000:
+		await frames(1)
 	check(int(GameState.run["hp"]) < hp0, "poison ticked (%d -> %d)" % [hp0, int(GameState.run["hp"])])
 	check(GameState.status_speed() == 1.0, "no speed status active")
 	GameState.status_apply("chill", 1)

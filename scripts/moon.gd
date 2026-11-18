@@ -82,9 +82,10 @@ func after_ready() -> void:
 		sp.offset = Vector2(0, -80)
 		add_child(sp)
 		sp.play("idle")
-		set_thing(22, 12, {"type": "spire", "hint": "A: the crystal spire"}, false)
 		for c: Vector2i in [Vector2i(3, 20), Vector2i(27, 8), Vector2i(10, 12)]:
 			prop("props", ["starflower_blue", "starflower_pink", "starflower_yellow"][c.x % 3], c)
+	# The finale's only trigger: placed even if the moon art is missing.
+	set_thing(22, 12, {"type": "spire", "hint": "A: the crystal spire"}, false)
 	var t := prop("props", "teleporter", Vector2i(23, 20), 2)
 	if t:
 		t.queue_free()
@@ -133,7 +134,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(func() -> void:
 				if await Story.talk(self, "spire"):
 					return
-				tell([{"who": "Star Crystal", "text": "Not yet. Light the teleporter first; the way to its heart is through the station.", "mood": "worried"}]))
+				tell([{"who": "Star Crystal", "text": ("It's quiet now. Whatever lived in it has somewhere better to be." if GameState.run["flags"].has("final_done") else ("It's still in there. Steady, and finish it." if GameState.run["flags"].has("final_started") else "Not yet. Light the teleporter first. The spire won't listen until it's lit.")), "mood": "worried"}]))
 			return true
 		"spire_old":
 			tell([{"who": "Star Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded.", "mood": "worried"}])

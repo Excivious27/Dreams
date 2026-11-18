@@ -40,7 +40,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
-	Music.instance(get_tree()).sfx("chest_open", "door")
+	Music.instance(get_tree()).sfx("chest_open", "pickup")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.16, 0.11, 0.07, 0.97)
@@ -70,7 +70,16 @@ func _ready() -> void:
 	row.add_child(_btn("Sort", func() -> void: Storage.sort_box(key); _pick = {}; _refresh()))
 	row.add_child(_btn("Quick stack", func() -> void: _note(Storage.quick_stack(key), "stacked")))
 	row.add_child(_btn("Deposit all", func() -> void: _note(Storage.deposit_all(key), "stored")))
-	row.add_child(_btn("Take all", func() -> void: _note(Storage.take_all(key), "taken")))
+	row.add_child(_btn("Take all", func() -> void:
+		var n := Storage.take_all(key)
+		if n == 0 and not Storage.is_empty(key):
+			_fail("Your bag is full.")
+			_pick = {}
+			_refresh()
+		else:
+			_note(n, "taken")
+			if not Storage.is_empty(key) and m and m.hud:
+				m.hud.toast("Bag full: some stacks stay in the chest.")))
 	var row2 := HBoxContainer.new()
 	row2.add_theme_constant_override("separation", 2)
 	v.add_child(row2)
@@ -84,6 +93,7 @@ func _ready() -> void:
 	# Long-press an item: pick it up to place it, or lock / trash / move half.
 	_acts = HBoxContainer.new()
 	_acts.add_theme_constant_override("separation", 2)
+	_acts.custom_minimum_size = Vector2(0, 22)  # the row appearing never pushes the bag grid
 	v.add_child(_acts)
 	_bot = _scroll_grid(v, 205)
 	var tip := _label("Tap: move across.  Hold: pick up, lock, trash, move half.", 7, Color(0.8, 0.75, 0.65))
@@ -114,7 +124,7 @@ func _process(_d: float) -> void:
 		_press = {}
 		# The refresh frees the button under the finger, so its release never
 		# arrives: swallow only a tap that comes within the next moment.
-		_swallow_until = Time.get_ticks_msec() + 350
+		_swallow_until = Time.get_ticks_msec() + 120
 		_hold(str(pr["grid"]), int(pr["i"]))
 	if _arm < 8:
 		return
@@ -155,7 +165,21 @@ func _btn(text: String, cb: Callable) -> Button:
 	return b
 
 
+func _full_msg(id: String) -> String:
+	if str(GameState.items.get(id, {}).get("type", "")) in ["key", "quest"]:
+		return "Keys and quest items stay in your bag."
+	return "The chest is full."
+
+
+func _fail(t: String) -> void:
+	Music.instance(get_tree()).sfx("nope", "thud")
+	if m and m.hud:
+		m.hud.toast(t)
+
+
 func _note(n: int, verb: String) -> void:
+	_pick = {}
+	_trash_arm = ""
 	Music.instance(get_tree()).sfx("pickup" if n > 0 else "nope", "thud")
 	if m and m.hud:
 		m.hud.toast("%d stack%s %s." % [n, "" if n == 1 else "s", verb] if n > 0 else "Nothing to move.")
@@ -253,7 +277,7 @@ func _refresh() -> void:
 			left[id] = int(b["items"].get(id, 0))
 		var stack := mini(int(left[id]), Storage.STACK)
 		left[id] = int(left[id]) - stack
-		_top.add_child(_slot(id, stack, _take.bind(id), b["q"].get(id, {}), "c", i))
+		_top.add_child(_slot(id, stack, _take.bind(id, stack), b["q"].get(id, {}), "c", i))
 	_draw_acts()
 	_btl.text = "Bag %d/%d" % [GameState.bag_used(), GameState.bag_size()] + ("  · %s" % _last if _last != "" else "")
 	var bs := GameState.bag_slots()
@@ -268,9 +292,10 @@ func _refresh() -> void:
 var _last := ""
 
 
-func _take(id: String) -> void:
+func _take(id: String, have := 0) -> void:
 	_last = GameState.item_name(id)
-	if Storage.withdraw(key, id, _n(Storage.amount(key, id))) == 0:
+	# One slot's stack (up to 999), not every stack of that item in the chest.
+	if Storage.withdraw(key, id, _n(have if have > 0 else Storage.amount(key, id))) == 0:
 		Music.instance(get_tree()).sfx("nope", "thud")
 		if m and m.hud:
 			m.hud.toast("Your bag is full.")
@@ -284,7 +309,7 @@ func _put(id: String) -> void:
 	if Storage.deposit(key, id, _n(GameState.count(id))) == 0:
 		Music.instance(get_tree()).sfx("nope", "thud")
 		if m and m.hud:
-			m.hud.toast("The chest is full.")
+			m.hud.toast(_full_msg(id))
 	else:
 		Music.instance(get_tree()).sfx("ui_tap", "pickup")
 	_refresh()
@@ -320,12 +345,20 @@ func _tap(grid: String, i: int, cb: Callable) -> void:
 			var sl := Storage.slots(key)
 			if i < sl.size() and str(sl[i]) == "":
 				sl[i] = pid
-			Storage.deposit(key, pid, GameState.count(pid))
+			if Storage.deposit(key, pid, GameState.count(pid)) == 0:
+				_fail(_full_msg(pid))
+				_pick = {}
+				_refresh()
+				return
 		else:
 			var bs := GameState.bag_slots()
 			if not GameState.run["inventory"].has(pid) and i < bs.size() and str(bs[i]) == "":
 				bs[i] = pid
-			Storage.withdraw(key, pid, Storage.amount(key, pid))
+			if Storage.withdraw(key, pid, Storage.amount(key, pid)) == 0:
+				_fail("Your bag is full.")
+				_pick = {}
+				_refresh()
+				return
 		Music.instance(get_tree()).sfx("ui_tap", "pickup")
 		_pick = {}
 		_refresh()
@@ -353,12 +386,14 @@ func _draw_acts() -> void:
 		return
 	var id := str(_pick["id"])
 	var in_bag := str(_pick["grid"]) == "b"
-	_acts.add_child(_label("Tap a slot to place", 7, Color(1, 0.85, 0.3)))
+	_acts.add_child(_label("Place:", 7, Color(1, 0.85, 0.3)))
 	_acts.add_child(_btn("Half →" if in_bag else "Half ←", func() -> void:
 		if in_bag:
-			Storage.deposit(key, id, int(ceil(GameState.count(id) / 2.0)))
+			if Storage.deposit(key, id, int(ceil(GameState.count(id) / 2.0))) == 0:
+				_fail(_full_msg(id))
 		else:
-			Storage.withdraw(key, id, int(ceil(Storage.amount(key, id) / 2.0)))
+			if Storage.withdraw(key, id, int(ceil(Storage.amount(key, id) / 2.0))) == 0:
+				_fail("Your bag is full.")
 		_pick = {}
 		_refresh()))
 	if in_bag:

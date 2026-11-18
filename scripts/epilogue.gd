@@ -53,6 +53,10 @@ static func build() -> Array:
 	var comps: Array = []
 	for cid in Companion.party().get("known", []):
 		var line := str(d.get("companions", {}).get(str(cid), ""))
+		# e.g. Nova's line when Grandfather Auk was saved (knight_reverted).
+		var alt: Array = d.get("companions_if", {}).get(str(cid), [])
+		if alt.size() == 2 and r["flags"].has(str(alt[0])):
+			line = str(alt[1])
 		if line != "" and str(cid) not in (Companion.party().get("bitter", []) as Array):
 			comps.append(line)
 	if not comps.is_empty():

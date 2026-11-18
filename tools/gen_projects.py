@@ -44,7 +44,7 @@ P = {
     "grant": "tower_plan", "desc": "The whole crew is ready. Against the President you start with full mana, a shield, and the crew's backup."}]},
 }
 JOBS = {
- "press": {"name": "Run the press", "desc": "Prints 4 passable bills overnight.", "give": {"bills_passable": 4}},
+ "press": {"name": "Run the press", "desc": "Prints 3 crude bills overnight.", "give": {"bills_crude": 3}},
  "farm": {"name": "Mind the farm", "desc": "Waters every crop overnight.", "water": True},
  "scout": {"name": "Watch the streets", "desc": "Heat cools one more each night.", "heat": -1},
  "fence": {"name": "Fence goods", "desc": "Earns ◆120 a night from contacts.", "crystals": 120},

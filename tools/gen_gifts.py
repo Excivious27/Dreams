@@ -100,7 +100,7 @@ MARKED = [
  ('rio', 'Rio Santos', 20, 'Tempo', 'beat', 'neon', 2, 42, 3, 40, 3, ['nico', 'gambler'],
   "Hear that? That's your heartbeat. I'm about to borrow it.", "You came in on the off-beat. That's my move. That's MY move.", "I was busking. A grey suit dropped a black stone in my hat. I could suddenly hear everyone's pulse."),
  ('mei', 'Mei Tanaka', 23, 'Lucky', 'fortune', 'docks', 2, 46, 3, 38, 3, ['eli', 'gambler'],
-  "Heads I win. Tails, also me. Want to see?", "Three rolls. It's always three. How did you know it was three?", "I won a black stone off a man in a grey suit. Only time I think he let me win."),
+  "Heads I win. Tails, also me. Want to see?", "Three rolls. It's always three. How did you know it was three?", "A man in a grey suit flipped me a black stone for calling heads. Only time I think he let me be right."),
  ('bruno', 'Bruno Castellan', 28, 'Anvil', 'iron', 'countryside', 2, 70, 3, 22, 3, ['brute', 'enforcer'],
   "Hit me. Go on. Everyone gets one.", "...Fair. You waited. Nobody waits.", "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. The rest threw theirs in the furnace. I kept mine."),
  ('tomas', 'Tomas Vela', 17, 'Glass', 'mirror', 'uptown', 3, 44, 3, 44, 4, ['jax', 'gambler'],

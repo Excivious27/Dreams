@@ -46,6 +46,16 @@ static func theme_for(f: int) -> Dictionary:
 ## Past the threshold the guardian shows up; beat it and the way down opens.
 var _slam_redraw := false
 
+const MineChunk := preload("res://scripts/mine_chunk.gd")
+## The floor is drawn by 16x16-cell MineChunk nodes (off-screen ones are culled;
+## a broken rock redraws one chunk). false = the old single-canvas drawing.
+const CHUNKED := true
+const CHUNK := 16
+var _chunks := {}            # Vector2i chunk origin (cells) -> [ground, top]
+var _ci: CanvasItem = null   # canvas the floor is being drawn on right now
+var _clip := Rect2i()        # cells being drawn
+var _clip_px := Rect2()      # the same, in content pixels
+
 func _tried() -> int:
 	return int(GameState.run.get("mine_tried", {}).get("%d_%d" % [floor_no, int(GameState.run["day"])], 0))
 
@@ -62,7 +72,9 @@ func _try_more(n: int) -> void:
 	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
 		_summoning = true
 		call_deferred("_summon_guardian")
-	elif not _way_open and _guardian == null and _tried() == _threshold() / 2:
+	elif not _way_open and _guardian == null and floor_no <= 2:
+		hud.toast("The rock shifts (%d/%d)" % [_tried(), _threshold()], Color(0.8, 0.75, 0.9))
+	elif not _way_open and _guardian == null and _tried() >= _threshold() / 2 and _tried() - n < _threshold() / 2:
 		hud.toast("Something below is listening.", Color(0.8, 0.75, 0.9))
 
 
@@ -82,7 +94,7 @@ func _threshold() -> int:
 				d[k] = old[k]
 		GameState.run["mine_thresh"] = d
 		old = d
-	return maxi(4, int(old[key]))
+	return 8 if floor_no <= 2 else maxi(4, int(old[key]))
 
 
 func scene_id() -> String:
@@ -148,6 +160,12 @@ func build() -> void:
 				ms.play("idle")
 				ms.flip_h = true
 				add_child(ms)
+		var thr := _roomy_open(mc + Vector2i(2, -1))
+		if thr != mc:
+			prop("props", "shell_throne", thr, 1)
+		var lan := _roomy_open(_entry + Vector2i(-2, 1))
+		if lan != mc:
+			prop("props", "sunken_lantern", lan, 0)
 		var rng2 := RandomNumberGenerator.new()
 		rng2.seed = 5555
 		var placed := 0
@@ -172,6 +190,12 @@ func build() -> void:
 				placed += 1
 				if placed >= 6:
 					break
+		for pi in 2:
+			if wl.size() > 8:
+				# Stone-ringed spring pools: they stand on the dry floor beside the lake.
+				var pc := _roomy_open(wl[(pi * 7 + 3) % wl.size()])
+				if pc != mc and not props.has(pc) and not is_water_cell(pc):
+					prop("props", "grotto_pool_" + "ab"[pi], pc, 0, 0.0, true, 0.35)
 	# Rock: about one open cell in seven, more on deeper floors.
 	var open_list: Array = _open.keys()
 	var count := int(open_list.size() * (0.06 + 0.0003 * mini(floor_no, 100)))
@@ -187,8 +211,8 @@ func build() -> void:
 		var ores: Array = pool[mini(mine_tier, pool.size() - 1)] if not pool.is_empty() else ["stone", "copper"]
 		# Half stone, the rest spread over the tier's ores (rarest last, least common).
 		# Tom: ore was too plentiful; now about one rock in six carries ore.
-		if roll > 0.83 and ores.size() > 1:
-			var r2 := (roll - 0.83) / 0.17
+		if roll > 0.88 and ores.size() > 1:
+			var r2 := (roll - 0.88) / 0.12
 			var idx := 1
 			var acc := 0.0
 			var weights: Array = []
@@ -208,11 +232,19 @@ func build() -> void:
 			if not tb.is_empty() and rng.randf() < 0.4:
 				ore = str(tb[rng.randi() % tb.size()])
 		# Ore gathers in veins: rich rocks pull neighbours toward the same ore.
-		var hard := (3 if ore == "stone" else 4 + ores.find(ore)) + floor_no / 15
+		var oi := ores.find(ore)
+		var hard := (2 if ore == "stone" and floor_no < 15 else (3 if ore == "stone" else 3 + (oi if oi >= 0 else ores.size()) / 2)) + floor_no / 15
 		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
+		if ore != "stone":
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				if rng.randf() < 0.35 and _open.has(c + d) and not things.has(c + d) and (c + d).distance_to(_entry) >= 3 and (c + d).distance_to(_ladder) >= 2:
+					set_thing(c.x + d.x, c.y + d.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
 	_features(rng)
 	_findables(rng)
 
+
+## Ores with no node_<ore> sprite borrow a look-alike, so ore never reads as plain stone.
+const NODE_ALIAS := {"shard": "node_crystal", "amethyst": "node_crystal", "fossil": "node_coal", "coal": "node_coal", "silver": "node_silver", "emerald": "node_emerald"}
 
 var _open := {}          # walkable cave floor
 var _entry := Vector2i(2, 2)
@@ -321,13 +353,14 @@ func _features(rng: RandomNumberGenerator) -> void:
 func _findables(rng: RandomNumberGenerator) -> void:
 	var free: Array = []
 	for c: Vector2i in _open:
-		if _reach.has(c) and not things.has(c) and not blocked.has(c) and c.distance_to(_entry) > 3:
+		if _reach.has(c) and not things.has(c) and not blocked.has(c) and c.distance_to(_entry) > 3 and c.distance_to(_ladder) >= 2:
 			free.append(c)
 	if free.is_empty():
 		return
 	var day := int(GameState.run["day"])
 	var forage: Array = theme.get("forage", ["cave_mushroom"])
-	var nf := 4 + rng.randi_range(0, 4) + (3 if "glow" in theme.get("feat", []) else 0)
+	# Full forage only on the deepest floor you have reached; old floors refill a little.
+	var nf := ((4 + rng.randi_range(0, 4)) if floor_no >= _deepest() else rng.randi_range(1, 3)) + (3 if "glow" in theme.get("feat", []) else 0)
 	for i in nf:
 		var c: Vector2i = free[rng.randi() % free.size()]
 		if things.has(c):
@@ -403,6 +436,26 @@ func _nearest_open(c: Vector2i) -> Vector2i:
 	return bestc
 
 
+## An open cell near c with open floor all round, so a prop there never plugs a tunnel.
+func _roomy_open(c: Vector2i) -> Vector2i:
+	var bestc := Vector2i(-1, -1)
+	var bd := 1e9
+	for o: Vector2i in _open:
+		var d := float((o - c).length_squared())
+		if d >= bd or things.has(o) or blocked.has(o) or o.distance_to(_entry) < 4 or o.distance_to(_ladder) < 3:
+			continue
+		var ok := true
+		for dy in range(-1, 2):
+			for dx in range(-1, 2):
+				var q := o + Vector2i(dx, dy)
+				if not _open.has(q) or blocked.has(q) or (q != o and things.has(q)):
+					ok = false
+		if ok:
+			bd = d
+			bestc = o
+	return bestc if bestc.x >= 0 else _nearest_open(c)
+
+
 ## Walk distance (BFS) to the farthest open cell: the way down is a real trek.
 func _farthest_open(from: Vector2i) -> Vector2i:
 	var dist := {from: 0}
@@ -421,6 +474,9 @@ func _farthest_open(from: Vector2i) -> Vector2i:
 
 
 func after_ready() -> void:
+	if CHUNKED:
+		_make_chunks()
+	hud.toast("Floor %d · %s" % [floor_no, str(theme.get("name", ""))], Color(0.9, 0.85, 1.0))
 	# Ore Sense (magic): ore and crystals glimmer through rock within 6 cells.
 	if GameState.bonus("magic", "ore_sense") > 0.0:
 		var t := Timer.new()
@@ -436,18 +492,20 @@ func after_ready() -> void:
 	# the first floors are gentle.
 	var area_k := float(cols * rows) / 2000.0
 	var n := int(round((2.0 + mini(floor_no, 60) / 5.0) * area_k))
-	if floor_no <= 3:
-		n = mini(n, 4 + floor_no)
-	n = mini(n, 7 + mini(floor_no, 100) / 12)  # deep floors: bigger caves, not swarms
+	if floor_no <= 4:
+		n = mini(n, 3 + floor_no)
+	n = mini(n, 7 + mini(floor_no, 100) / 20)  # deep floors: bigger caves, not swarms (every roll lands now)
 	var pools: Array = GameState.tier_data.get("mine", {}).get("pools", [])
 	var pool: Array = pools[mini(mine_tier, pools.size() - 1)] if not pools.is_empty() else ["slime", "bat"]
-	var ol: Array = _open.keys()
-	for i in n:
-		var c: Vector2i = ol[rng.randi() % ol.size()]
-		if blocked.has(c) or things.has(c) or (_grotto and is_water_cell(c)) or c.distance_to(_entry) < 8:
-			continue
+	# Only cells you can walk to, far enough from the ladder that nothing waits on arrival.
+	var ol: Array = _reach.keys().filter(func(q: Vector2i) -> bool: return not blocked.has(q) and not things.has(q) and not (_grotto and is_water_cell(q)) and q.distance_to(_entry) >= 12)
+	var guards: Array = GameState.tier_data.get("mine", {}).get("guardians", [])
+	for i in mini(n, ol.size()):
+		var c: Vector2i = ol.pop_at(rng.randi() % ol.size())
 		var kind := str(pool[rng.randi_range(0, pool.size() - 1)])
-		if floor_no <= 2 and kind in ["grump", "rock_crab", "shard", "hill_wolf"]:
+		if kind in guards and rng.randf() < 0.7:
+			kind = str(pool[0])  # keepers are rare as wanderers
+		if (floor_no <= 5 and kind in ["rock_crab", "hill_wolf", "shard"]) or (floor_no <= 2 and kind == "grump"):
 			kind = "slime" if rng.randf() < 0.6 else "bat"
 		if not GameState.is_penguins() and kind == "shard":
 			kind = "thug_cyber"
@@ -470,7 +528,7 @@ func after_ready() -> void:
 		player.frozen = true
 		await say([
 			{"text": "Cold air, and the smell of wet stone. Something drips. Something else squelches."},
-			{"text": "Swing your pickaxe at rocks with A: stone, copper, iron, and now and then a crystal shard."},
+			{"text": "Swing your pickaxe at rocks (tap USE): stone, copper, iron, and now and then a crystal shard."},
 			{"text": "There's no ladder down. The old miners said the way opens for whoever digs long enough to wake what guards it. Down is worse, and pays better."},
 		])
 		player.frozen = false
@@ -603,6 +661,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			swing += int(GameState.bonus("mining", "mine_power"))
 			thing["hp"] = int(thing["hp"]) - swing
 			if int(thing["hp"]) <= 0:
+				_tremor(c, swing)
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)
@@ -621,9 +680,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if randf() < GameState.bonus("mining", "gem_chance") + GameState.bonus("magic", "gem_chance"):
 					var gems: Array = [["amethyst"], ["amethyst", "ruby"], ["ruby", "emerald"], ["emerald", "sapphire"], ["sapphire", "ruby"], ["sapphire", "emerald"]][clampi(mine_tier, 0, 5)]
 					pop_items(cell_center(c), str(gems[randi() % gems.size()]), 1)
-				xp("mining", (2 if ore == "stone" else 5) + mine_tier)
+				xp("mining", (3 if ore == "stone" else 6) + mine_tier)
 				if drawn:
-					queue_redraw()
+					redraw_cell(c)
 				_try_more(1)
 			return true
 	return false
@@ -642,50 +701,110 @@ func _variant() -> String:
 
 
 ## Prompts 16 cave kit: seamless floor and rock, and a painted wall face.
+## Draws only the cells in _clip (all of them on the legacy path).
 func _draw_cave_kit() -> bool:
 	var k := str(theme.get("cave", "earth"))
-	if not Art.has("seamless", "cave_%s_floor" % k) or not Art.has("seamless", "cave_%s_rock" % k):
+	var floor_nm := "cave_%s_floor" % k
+	var rock_nm := "cave_%s_rock" % k
+	if not Art.has("seamless", floor_nm) or not Art.has("seamless", rock_nm):
 		return false
 	var tint: Array = theme.get("tint", [1, 1, 1])
 	var tc := Color(float(tint[0]), float(tint[1]), float(tint[2]))
 	var dark := tc.darkened(0.38 + 0.002 * mini(floor_no, 100))
-	for y in range(-pad, rows + pad):
-		for x in range(-pad, cols + pad):
+	var area := _clip.intersection(Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad))
+	for y in range(area.position.y, area.end.y):
+		for x in range(area.position.x, area.end.x):
 			var c := Vector2i(x, y)
 			if _open.has(c):
-				seam_cell(self, "cave_%s_floor" % k, c, tc)
+				seam_cell(_ci, floor_nm, c, tc)
 			else:
-				seam_cell(self, "cave_%s_rock" % k, c, dark)
+				seam_cell(_ci, rock_nm, c, dark)
 	var wall := Art.tex("cliffs", "cave_%s_wall" % k)
 	if wall:
 		var face_h := TILE * 1.5
 		var src_w := float(wall.get_height()) * TILE / face_h
 		var period := maxi(1, int(wall.get_width() / src_w))
-		for c: Vector2i in _open:
+		for c: Vector2i in _cells_in(_open, _face_rows()):
 			var up := c + Vector2i(0, -1)
 			if not _open.has(up):
 				var sx := float(posmod(c.x, period)) * src_w
-				draw_texture_rect_region(wall, Rect2(up.x * TILE, up.y * TILE - TILE * 0.45, TILE, face_h), Rect2(sx, 0, src_w, wall.get_height()), dark.lightened(0.15))
+				_tex_cut(wall, Rect2(up.x * TILE, up.y * TILE - TILE * 0.45, TILE, face_h), Rect2(sx, 0, src_w, wall.get_height()), dark.lightened(0.15))
 	# Soft shadow along side and bottom edges so the floor reads as dug out.
-	for c: Vector2i in _open:
+	for c: Vector2i in _cells_in(_open, _clip):
 		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
 		if not _open.has(c + Vector2i(0, 1)):
-			draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), Color(0, 0, 0, 0.35))
+			_ci.draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), Color(0, 0, 0, 0.35))
 		if not _open.has(c + Vector2i(-1, 0)):
-			draw_rect(Rect2(r.position, Vector2(3, TILE)), Color(0, 0, 0, 0.3))
+			_ci.draw_rect(Rect2(r.position, Vector2(3, TILE)), Color(0, 0, 0, 0.3))
 		if not _open.has(c + Vector2i(1, 0)):
-			draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), Color(0, 0, 0, 0.3))
+			_ci.draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), Color(0, 0, 0, 0.3))
 	return true
 
 
+## Legacy single-canvas path (CHUNKED = false): GameMap._draw cleared the jobs.
 func draw_map() -> void:
-	var v := _variant()
-	if _grotto:
-		var wc := {}
-		for c in things:
-			if str(things[c].get("type", "")) == "water":
-				wc[c] = true
+	_build_layers()
+	_draw_part(self, Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), -1)
+
+
+## The floor lives in MineChunk nodes; the map's own canvas draws nothing.
+func _draw() -> void:
+	if CHUNKED:
+		return
+	super()
+
+
+## MineChunk._draw lands here.
+func draw_chunk(ci: CanvasItem, r: Rect2i, layer: int) -> void:
+	ci.draw_set_transform(offset())
+	_draw_part(ci, r, layer)
+	ci.draw_set_transform(Vector2.ZERO)
+
+
+## layer 0 = ground, 1 = things + label, -1 = both (legacy).
+func _draw_part(ci: CanvasItem, r: Rect2i, layer: int) -> void:
+	_ci = ci
+	_clip = r
+	_clip_px = Rect2(Vector2(r.position * TILE), Vector2(r.size * TILE))
+	if layer != 1:
+		_draw_ground()
+	if layer != 0:
+		_draw_things()
+	_ci = null
+
+
+## Water and lava live on their own layers (WaterMask nodes / AnimLayer jobs).
+## Chunked: set up once in _make_chunks. Legacy: on every draw, as before.
+func _build_layers() -> void:
+	var wc := {}
+	for c in things:
+		if str(things[c].get("type", "")) == "water":
+			wc[c] = true
+	if not wc.is_empty():
 		draw_water(wc, "cave")
+	var lava := _lava
+	if not lava.is_empty() and Art.has("tiles", "lava") and _anim_layer:
+		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
+			var frame := int(Time.get_ticks_msec() / 300) % 4
+			var vis := _on_screen(lava)
+			for c: Vector2i in vis:
+				Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame)
+			# A dark rocky lip and a hot glow where lava meets floor, so it reads as a pit.
+			var glow := 0.35 + 0.15 * sin(Time.get_ticks_msec() / 400.0)
+			for c: Vector2i in vis:
+				var o := Vector2(c * TILE)
+				if not lava.has(c + Vector2i(0, -1)):
+					ci.draw_rect(Rect2(o, Vector2(TILE, 3)), Color(0.12, 0.06, 0.05))
+					ci.draw_rect(Rect2(o + Vector2(0, -3), Vector2(TILE, 3)), Color(1, 0.5, 0.15, glow * 0.6))
+				if not lava.has(c + Vector2i(0, 1)):
+					ci.draw_rect(Rect2(o + Vector2(0, TILE - 2), Vector2(TILE, 2)), Color(0.12, 0.06, 0.05))
+				if not lava.has(c + Vector2i(-1, 0)):
+					ci.draw_rect(Rect2(o, Vector2(2, TILE)), Color(0.12, 0.06, 0.05))
+				if not lava.has(c + Vector2i(1, 0)):
+					ci.draw_rect(Rect2(o + Vector2(TILE - 2, 0), Vector2(2, TILE)), Color(0.12, 0.06, 0.05)))
+
+
+func _draw_ground() -> void:
 	var kit := _draw_cave_kit()
 	var ts := "" if kit else _tier_set()
 	var nfill := 0
@@ -699,113 +818,213 @@ func draw_map() -> void:
 		while Art.has("tiles", "mine_%s_walltop_%d" % [ts, ntop]):
 			ntop += 1
 	var rock_col := Color(str(theme.get("rock", "24222c")))
+	var full_px := Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE)
 	if not kit:
 		# Solid rock everywhere first (with a little grain), padding included.
-		draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), rock_col)
-		for y in range(0, rows):
-			for x in range(0, cols):
+		_rect_cut(full_px, rock_col)
+		var grain := _clip.intersection(Rect2i(0, 0, cols, rows))
+		for y in range(grain.position.y, grain.end.y):
+			for x in range(grain.position.x, grain.end.x):
 				var c := Vector2i(x, y)
 				if _open.has(c):
 					continue
 				var n := WorldGen.fbm(float(x), float(y), 900 + floor_no, 4.0)
 				if n > 0.15:
-					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.06))
+					_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.06))
 				elif n < -0.2:
-					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.darkened(0.25))
+					_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.darkened(0.25))
+		var open_here := _cells_in(_open, _clip)
 		# Cave floor.
-		for c: Vector2i in _open:
+		for c: Vector2i in open_here:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ floor_no)
 			var drawn := false
 			if nfill > 0:
-				drawn = Art.draw_tile(self, "tiles", "mine_%s_fill_%d" % [ts, h % nfill], Vector2(c * TILE), 0)
+				drawn = Art.draw_tile(_ci, "tiles", "mine_%s_fill_%d" % [ts, h % nfill], Vector2(c * TILE), 0)
 			elif Art.has("tiles", "mine_floor"):
-				drawn = Art.draw_tile(self, "tiles", "mine_floor", Vector2(c * TILE), h % 4)
+				drawn = Art.draw_tile(_ci, "tiles", "mine_floor", Vector2(c * TILE), h % 4)
 			if not drawn:
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(str(theme.get("fa", "4a4152"))) if (c.x + c.y) % 2 == 0 else Color(str(theme.get("fb", "50475a"))))
+				_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(str(theme.get("fa", "4a4152"))) if (c.x + c.y) % 2 == 0 else Color(str(theme.get("fb", "50475a"))))
 		# Theme wash: the same tiles read differently every 10 floors.
 		if floor_no > 10:
 			var wash := Color(str(theme.get("fa", "4a4152")))
 			wash.a = 0.38
-			for c: Vector2i in _open:
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), wash)
+			for c: Vector2i in open_here:
+				_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), wash)
 		# Rock faces: where the floor meets rock to the north, the wall rises above it.
-		for c: Vector2i in _open:
+		for c: Vector2i in _cells_in(_open, _face_rows()):
 			var up := c + Vector2i(0, -1)
 			if not _open.has(up):
 				var h2 := absi((c.x * 2654435761) ^ floor_no)
 				var t := Art.tex("tiles", "mine_%s_wall_%d" % [ts, h2 % maxi(1, nwall)]) if nwall > 0 else null
 				if t:
-					draw_texture_rect(t, Rect2(up.x * TILE, (up.y - 1) * TILE, TILE, TILE * 2), false)
+					_tex_cut(t, Rect2(up.x * TILE, (up.y - 1) * TILE, TILE, TILE * 2), Rect2())
 				else:
-					draw_rect(Rect2(up * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.18))
-					draw_rect(Rect2(Vector2(up.x * TILE, up.y * TILE + TILE - 3), Vector2(TILE, 3)), rock_col.lightened(0.3))
+					_rect_cut(Rect2(up * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.18))
+					_rect_cut(Rect2(Vector2(up.x * TILE, up.y * TILE + TILE - 3), Vector2(TILE, 3)), rock_col.lightened(0.3))
 		# A soft dark lip along every floor edge so the cave reads as hollowed rock.
-		for c: Vector2i in _open:
+		for c: Vector2i in open_here:
 			var r := Rect2(c * TILE, Vector2i(TILE, TILE))
 			for d: Vector2i in [Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
 				if not _open.has(c + d):
 					var lip := Color(0, 0, 0, 0.35)
 					if d == Vector2i(0, 1):
-						draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), lip)
+						_ci.draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), lip)
 					elif d == Vector2i(-1, 0):
-						draw_rect(Rect2(r.position, Vector2(3, TILE)), lip)
+						_ci.draw_rect(Rect2(r.position, Vector2(3, TILE)), lip)
 					else:
-						draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), lip)
-	draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(0.03, 0.02, 0.08, 0.08 + 0.02 * mini(floor_no, 10)))
-	var wc2 := {}
-	for c in things:
-		if str(things[c].get("type", "")) == "water" and not _grotto:
-			wc2[c] = true
-	if not wc2.is_empty():
-		draw_water(wc2, "cave")
-	for c: Vector2i in _chasm:
-		draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.01, 0.0, 0.03))
+						_ci.draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), lip)
+	_rect_cut(full_px, Color(0.03, 0.02, 0.08, 0.08 + 0.02 * mini(floor_no, 10)))
+	for c: Vector2i in _cells_in(_chasm, _clip):
+		var o := Vector2(c * TILE)
+		_ci.draw_rect(Rect2(o, Vector2(TILE, TILE)), Color(0.01, 0.0, 0.03))
 		if not _chasm.has(c + Vector2i(0, -1)):
-			draw_rect(Rect2(Vector2(c * TILE), Vector2(TILE, 3)), rock_col.lightened(0.2))
-	var lava := _lava
-	if not lava.is_empty() and not Art.has("tiles", "lava"):
-		for c: Vector2i in lava:
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.9, 0.35, 0.1))
-	if not lava.is_empty() and Art.has("tiles", "lava"):
-		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
-			var frame := int(Time.get_ticks_msec() / 300) % 4
-			for c: Vector2i in lava:
-				Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame)
-			# A dark rocky lip and a hot glow where lava meets floor, so it reads as a pit.
-			var glow := 0.35 + 0.15 * sin(Time.get_ticks_msec() / 400.0)
-			for c: Vector2i in lava:
-				var o := Vector2(c * TILE)
-				if not lava.has(c + Vector2i(0, -1)):
-					ci.draw_rect(Rect2(o, Vector2(TILE, 3)), Color(0.12, 0.06, 0.05))
-					ci.draw_rect(Rect2(o + Vector2(0, -3), Vector2(TILE, 3)), Color(1, 0.5, 0.15, glow * 0.6))
-				if not lava.has(c + Vector2i(0, 1)):
-					ci.draw_rect(Rect2(o + Vector2(0, TILE - 2), Vector2(TILE, 2)), Color(0.12, 0.06, 0.05))
-				if not lava.has(c + Vector2i(-1, 0)):
-					ci.draw_rect(Rect2(o, Vector2(2, TILE)), Color(0.12, 0.06, 0.05))
-				if not lava.has(c + Vector2i(1, 0)):
-					ci.draw_rect(Rect2(o + Vector2(TILE - 2, 0), Vector2(2, TILE)), Color(0.12, 0.06, 0.05)))
-	if not _way_open and Art.has("props", "shaft_hint_0") and not things.has(_ladder):
-		Art.draw_prop(self, "props", "shaft_hint_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3), cell_center(_ladder) + Vector2(0, 6))
-	for k in things:
+			_ci.draw_rect(Rect2(o, Vector2(TILE, 3)), rock_col.lightened(0.2))
+			_ci.draw_rect(Rect2(o + Vector2(0, 3), Vector2(TILE, 5)), Color(0.15, 0.1, 0.25, 0.5))
+		if not _chasm.has(c + Vector2i(0, 1)):
+			_ci.draw_rect(Rect2(o + Vector2(0, TILE - 3), Vector2(TILE, 3)), rock_col.darkened(0.3))
+		if not _chasm.has(c + Vector2i(-1, 0)):
+			_ci.draw_rect(Rect2(o, Vector2(3, TILE)), rock_col.darkened(0.3))
+		if not _chasm.has(c + Vector2i(1, 0)):
+			_ci.draw_rect(Rect2(o + Vector2(TILE - 3, 0), Vector2(3, TILE)), rock_col.darkened(0.3))
+	if not _lava.is_empty() and not Art.has("tiles", "lava"):
+		for c: Vector2i in _cells_in(_lava, _clip):
+			_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.9, 0.35, 0.1))
+
+
+func _draw_things() -> void:
+	if not _way_open and Art.has("props", "shaft_hint_0") and not things.has(_ladder) and _clip.has_point(_ladder):
+		Art.draw_prop(_ci, "props", "shaft_hint_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3), cell_center(_ladder) + Vector2(0, 6))
+	for k: Vector2i in _cells_in(things, _clip):
 		var t: Dictionary = things[k]
 		var p := cell_center(k)
 		match str(t.get("type", "")):
 			"rock":
 				if props.has(k):
 					continue
-				draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
+				_ci.draw_circle(p + Vector2(0, -6), 7.0, Color("7a7a86"))
 			"lift":
-				if not Art.draw_prop(self, "props", "mine_lift", p + Vector2(0, 2)) and not Art.draw_prop(self, "props", "cart_full", p):
-					draw_rect(Rect2(p.x - 7, p.y - 12, 14, 12), Color("5a4a3a"))
+				if not Art.draw_prop(_ci, "props", "mine_lift", p + Vector2(0, 2)) and not Art.draw_prop(_ci, "props", "cart_full", p):
+					_ci.draw_rect(Rect2(p.x - 7, p.y - 12, 14, 12), Color("5a4a3a"))
 			"up", "down":
 				var nm := "ladder_up" if str(t["type"]) == "up" else "ladder_down"
 				if Art.has("props", "ladder_a"):
 					nm = "ladder_a" if str(t["type"]) == "up" else "shaft"
 				if str(t["type"]) == "down" and Art.has("props", "shaft_open_0"):
 					nm = "shaft_open_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3)
-				if not Art.draw_prop(self, "props", nm, p):
-					draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
-	label("floor %d · %s" % [floor_no, str(theme.get("name", ""))], Vector2(2 * TILE, TILE * 2 + 6), 10 * TILE)
+				if not Art.draw_prop(_ci, "props", nm, p):
+					_ci.draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
+
+
+## The cells of `cells` inside r. A big r keeps dictionary order, so the legacy
+## path draws in exactly the old order.
+func _cells_in(cells: Dictionary, r: Rect2i) -> Array:
+	var out: Array = []
+	if r.get_area() >= cells.size():
+		for c: Vector2i in cells:
+			if r.has_point(c):
+				out.append(c)
+	else:
+		for y in range(r.position.y, r.end.y):
+			for x in range(r.position.x, r.end.x):
+				var c := Vector2i(x, y)
+				if cells.has(c):
+					out.append(c)
+	return out
+
+
+## Wall faces hang up to 2 cells above their floor cell: a chunk also looks at
+## the 2 rows below it for faces that reach into it.
+func _face_rows() -> Rect2i:
+	return Rect2i(_clip.position, _clip.size + Vector2i(0, 2))
+
+
+## A rect cut to the cells being drawn.
+func _rect_cut(r: Rect2, col: Color) -> void:
+	var d := r.intersection(_clip_px)
+	if d.has_area():
+		_ci.draw_rect(d, col)
+
+
+## A texture (src = Rect2() for the whole texture) cut to the cells being drawn,
+## so a face that crosses a chunk edge is drawn half by each chunk and joins.
+func _tex_cut(t: Texture2D, dst: Rect2, src: Rect2, col := Color.WHITE) -> void:
+	var d := dst.intersection(_clip_px)
+	if not d.has_area():
+		return
+	if d == dst:
+		if src.has_area():
+			_ci.draw_texture_rect_region(t, dst, src, col)
+		else:
+			_ci.draw_texture_rect(t, dst, false, col)
+		return
+	if not src.has_area():
+		src = Rect2(Vector2.ZERO, t.get_size())
+	var k := src.size / dst.size
+	_ci.draw_texture_rect_region(t, d, Rect2(src.position + (d.position - dst.position) * k, d.size * k), col)
+
+
+## Builds the chunk nodes once (from after_ready, once props are placed).
+func _make_chunks() -> void:
+	var root := Node2D.new()
+	root.name = "MineFloor"
+	add_child(root)
+	move_child(root, 0)  # first child at y = 0: draws where the map's own _draw did
+	var full := Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad)
+	var tops: Array = []
+	for cy in range(-pad, rows + pad, CHUNK):
+		for cx in range(-pad, cols + pad, CHUNK):
+			var r := Rect2i(cx, cy, CHUNK, CHUNK).intersection(full)
+			var pair: Array = []
+			for layer in [0, 1]:
+				var ch := MineChunk.new()
+				ch.map = self
+				ch.cells = r
+				ch.layer = layer
+				pair.append(ch)
+			root.add_child(pair[0])
+			tops.append(pair[1])
+			_chunks[Vector2i(cx, cy)] = pair
+	for t in tops:
+		root.add_child(t)  # every ground chunk first, then every top chunk
+	_build_layers()
+
+
+func _chunk_key(c: Vector2i) -> Vector2i:
+	return Vector2i(floori(float(c.x + pad) / CHUNK) * CHUNK - pad, floori(float(c.y + pad) / CHUNK) * CHUNK - pad)
+
+
+## Redraw both layers of every chunk that owns a cell in r.
+func redraw_cells(r: Rect2i) -> void:
+	if not CHUNKED or _chunks.is_empty():
+		queue_redraw()
+		return
+	var k0 := _chunk_key(r.position)
+	var k1 := _chunk_key(r.end - Vector2i.ONE)
+	for ky in range(k0.y, k1.y + 1, CHUNK):
+		for kx in range(k0.x, k1.x + 1, CHUNK):
+			for ch in _chunks.get(Vector2i(kx, ky), []):
+				(ch as CanvasItem).queue_redraw()
+
+
+func redraw_cell(c: Vector2i) -> void:
+	redraw_cells(Rect2i(c, Vector2i.ONE))
+
+
+func redraw_all() -> void:
+	if not CHUNKED or _chunks.is_empty():
+		queue_redraw()
+		return
+	for pair in _chunks.values():
+		for ch in pair:
+			(ch as CanvasItem).queue_redraw()
+
+
+## Guests: the host changed the world.
+func on_world_sync(d: Dictionary) -> void:
+	if CHUNKED:
+		redraw_all()
+	else:
+		super(d)
 
 
 func _place_props() -> void:
@@ -826,6 +1045,8 @@ func _place_props() -> void:
 				nm = "mine_%s_ore_%s_0" % [ts, oset[ore]]
 			elif ore != "stone" and Art.has("props", "node_" + ore):
 				nm = "node_" + ore
+			elif ore != "stone" and Art.has("props", str(NODE_ALIAS.get(ore, ""))):
+				nm = str(NODE_ALIAS[ore])
 			elif nrock > 0:
 				nm = "mine_%s_rock_%d" % [ts, absi((k.x * 7 + k.y * 13)) % maxi(1, mini(nrock, 5))]
 			if nm != "":
@@ -835,8 +1056,9 @@ func _place_props() -> void:
 		var ndec := 0
 		while Art.has("props", "mine_%s_decal_%d" % [ts, ndec]):
 			ndec += 1
-		for i in 8:
-			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
+		var okeys: Array = _open.keys()
+		for i in maxi(8, _open.size() / 45):
+			var c: Vector2i = okeys[rng.randi() % okeys.size()]
 			if not things.has(c) and not blocked.has(c) and ndec > 0:
 				var sp := prop("props", "mine_%s_decal_%d" % [ts, rng.randi_range(0, ndec - 1)], c, 0, 0.0, false)
 				if sp:
@@ -845,17 +1067,20 @@ func _place_props() -> void:
 			var c := Vector2i(x, 1)
 			if not things.has(c) and Art.has("props", "mine_%s_lamp_0" % ts):
 				prop("props", "mine_%s_lamp_%d" % [ts, x % 2], c)
-		for i in 2:
-			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
+		for i in maxi(2, _open.size() / 400):
+			var c := _roomy_open(okeys[rng.randi() % okeys.size()])
 			if not things.has(c) and not blocked.has(c) and Art.has("props", "mine_%s_stalag_0" % ts):
-				prop("props", "mine_%s_stalag_%d" % [ts, i], c)
-		if floor_no % 2 == 0 and Art.has("props", "mine_%s_cart" % ts) and not things.has(Vector2i(2, rows - 3)):
-			prop("props", "mine_%s_cart" % ts, Vector2i(2, rows - 3))
-			blocked[Vector2i(2, rows - 3)] = true
-		if floor_no % 5 == 0 and not things.has(Vector2i(cols - 3, 2)):
-			prop("props", "mine_%s_skeleton" % ts if Art.has("props", "mine_%s_skeleton" % ts) else "skeleton", Vector2i(cols - 3, 2))
-			blocked[Vector2i(cols - 3, 2)] = true
-			set_thing(cols - 3, 2, {"type": "skeleton", "hint": "A: an old miner"})
+				prop("props", "mine_%s_stalag_%d" % [ts, i % 2], c)
+				blocked[c] = true
+		if floor_no % 2 == 0 and Art.has("props", "mine_%s_cart" % ts):
+			var cc := _roomy_open(Vector2i(2, rows - 3))
+			prop("props", "mine_%s_cart" % ts, cc)
+			blocked[cc] = true
+		if floor_no % 5 == 0:
+			var sc := _roomy_open(Vector2i(cols - 3, 2))
+			prop("props", "mine_%s_skeleton" % ts if Art.has("props", "mine_%s_skeleton" % ts) else "skeleton", sc)
+			blocked[sc] = true
+			set_thing(sc.x, sc.y, {"type": "skeleton", "hint": "A: an old miner"})
 		if floor_no % 3 == 0 and Art.has("props", "mine_%s_crystal" % ts):
 			var c := Vector2i(rng.randi_range(3, cols - 4), rng.randi_range(3, rows - 4))
 			if not things.has(c) and not blocked.has(c):
@@ -871,30 +1096,38 @@ func _place_props() -> void:
 			if str(t.get("type", "")) != "rock":
 				continue
 			var ore := str(t["ore"])
-			var nm: String = {"stone": "mrock_a" if (k.x + k.y) % 3 != 0 else "mrock_b", "copper": "ore_copper", "iron": "ore_iron", "shard": "ore_crystal", "gold": "ore_gold", "dark": "ore_dark"}.get(ore, "mrock_a")
+			var nm: String = {"stone": "mrock_a" if (k.x + k.y) % 3 != 0 else "mrock_b", "copper": "ore_copper", "iron": "ore_iron", "shard": "ore_crystal", "gold": "ore_gold", "dark": "ore_dark", "coal": "ore_iron"}.get(ore, "mrock_a")
 			if deep:
 				nm = {"stone": "mrock_%s_%d" % [v, (k.x + k.y) % 2], "copper": "node_copper", "iron": "node_iron", "shard": "node_crystal", "gold": "node_gold", "dark": "node_dark"}.get(ore, nm)
+				if ore != "stone" and Art.has("props", "node_" + ore):
+					nm = "node_" + ore
+				elif ore != "stone" and Art.has("props", str(NODE_ALIAS.get(ore, ""))):
+					nm = str(NODE_ALIAS[ore])
 			prop("props", nm, k)
 		if deep:
 			var rng2 := RandomNumberGenerator.new()
 			rng2.seed = 4000 + floor_no
-			for i in 3:
-				var c := Vector2i(rng2.randi_range(2, cols - 3), rng2.randi_range(2, rows - 3))
+			var okeys2: Array = _open.keys()
+			for i in maxi(3, _open.size() / 400):
+				var c := _roomy_open(okeys2[rng2.randi() % okeys2.size()])
 				if not things.has(c) and not blocked.has(c):
 					prop("props", "stalagmite_a", c)
+					blocked[c] = true
 			for x in [3, cols - 4]:
 				var sp := Art.sprite("props", "stalactite_%s" % ["a", "b", "c"][x % 3])
 				if sp:
 					sp.position = Vector2(x * TILE + 8, TILE + 20)
 					add_child(sp)
 			prop("props", "beam_lamp", Vector2i(cols / 2 - 1, 1), 1)
-			if floor_no % 2 == 0 and not things.has(Vector2i(2, rows - 3)):
-				prop("props", "cart_full", Vector2i(2, rows - 3))
-				blocked[Vector2i(2, rows - 3)] = true
-			if floor_no % 5 == 0 and not things.has(Vector2i(cols - 3, 2)):
-				prop("props", "skeleton", Vector2i(cols - 3, 2))
-				blocked[Vector2i(cols - 3, 2)] = true
-				set_thing(cols - 3, 2, {"type": "skeleton", "hint": "A: an old miner"})
+			if floor_no % 2 == 0:
+				var cc := _roomy_open(Vector2i(2, rows - 3))
+				prop("props", "cart_full", cc)
+				blocked[cc] = true
+			if floor_no % 5 == 0:
+				var sc := _roomy_open(Vector2i(cols - 3, 2))
+				prop("props", "skeleton", sc)
+				blocked[sc] = true
+				set_thing(sc.x, sc.y, {"type": "skeleton", "hint": "A: an old miner"})
 		var rng := RandomNumberGenerator.new()
 		rng.seed = 3000 + floor_no
 		for i in 4:
@@ -944,7 +1177,7 @@ func _place_find_props() -> void:
 	# before each theme has its own art.
 	for c in props:
 		var n: Node = props[c]
-		if n is CanvasItem and str(things.get(c, {}).get("type", "")) == "rock":
+		if n is CanvasItem and str(things.get(c, {}).get("type", "")) == "rock" and str(things[c].get("ore", "stone")) == "stone":
 			(n as CanvasItem).modulate = Color(float(tint[0]), float(tint[1]), float(tint[2]))
 
 
@@ -960,7 +1193,7 @@ func _process(delta: float) -> void:
 			for dy in range(-2, 3):
 				for dx in range(-2, 3):
 					var cc := gc + Vector2i(dx, dy)
-					if things.has(cc) and str(things[cc].get("type", "")) in ["rock", "crate"]:
+					if things.has(cc) and str(things[cc].get("type", "")) == "rock":  # crates keep their loot
 						things.erase(cc)
 						blocked.erase(cc)
 						hard.erase(cc)
@@ -975,12 +1208,12 @@ func _process(delta: float) -> void:
 				fx("boss_shockwave" if Art.has("fx", "boss_shockwave") else "poof", _guardian.position, 12.0, 0.5)
 				if _slam_redraw:
 					_slam_redraw = false
-					queue_redraw()
+					redraw_cells(Rect2i(gc - Vector2i(2, 2), Vector2i(5, 5)))
 
 
 ## The HUD points here: the awake keeper first, then the open way down.
 func pointer_target() -> Vector2:
-	if _guardian != null and is_instance_valid(_guardian):
+	if _guardian != null and is_instance_valid(_guardian) and _guardian._alive:
 		return _guardian.position
 	if _way_open:
 		return cell_center(_ladder)
@@ -1026,6 +1259,16 @@ func _summon_guardian() -> void:
 	var at := cell_center(_ladder)
 	if _grotto:
 		at = cell_center(_nearest_open(Vector2i(cols / 2, rows / 2)))
+	elif player and player.position.distance_to(at) > 20 * TILE:
+		# Don't make the player cross the whole cave: it surfaces a few cells away.
+		var pc := world_to_cell(player.position)
+		var aim := pc + Vector2i(randi_range(-6, 6), randi_range(-6, 6))
+		var bd := 1e9
+		for q: Vector2i in _reach:
+			var dd := float((q - aim).length_squared())
+			if dd < bd and not things.has(q) and not blocked.has(q) and q.distance_to(pc) >= 4.0:
+				bd = dd
+				at = cell_center(q)
 	shake(3.0)
 	fx("keeper_wake" if Art.has("fx", "keeper_wake") else "boss_shockwave", at, 12.0, 0.8)
 	await get_tree().create_timer(0.9 if Art.has("fx", "keeper_wake") else 0.4, false).timeout
@@ -1066,7 +1309,7 @@ func _open_way() -> void:
 		props.erase(_ladder)
 	shake(4.0)
 	fx("rock_m_break", cell_center(_ladder), 14.0, 0.8)
-	queue_redraw()
+	redraw_cell(_ladder)
 	hud.toast("The rock splits. A shaft leads down!", Color(0.8, 1.0, 0.8))
 	GameState.add_hint("The way down to floor %d is open." % (floor_no + 1))
 	if floor_no % 5 == 0:

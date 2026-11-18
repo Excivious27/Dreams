@@ -85,7 +85,7 @@
  "turnip": {
   "name": "Turnip",
   "type": "crop",
-  "value": 12,
+  "value": 16,
   "rarity": "common",
   "tier": 1,
   "family": "veg"
@@ -244,7 +244,7 @@
  "copper_bar": {
   "name": "Copper Bar",
   "type": "material",
-  "value": 70,
+  "value": 85,
   "rarity": "common",
   "tier": 1
  },
@@ -424,7 +424,7 @@
  "energy_tea": {
   "name": "Energy Tea",
   "type": "potion",
-  "value": 25,
+  "value": 50,
   "energy": 40,
   "rarity": "common",
   "tier": 1
@@ -479,7 +479,7 @@
  "potato": {
   "name": "Potato",
   "type": "crop",
-  "value": 18,
+  "value": 24,
   "rarity": "common",
   "tier": 1,
   "family": "veg"
@@ -495,7 +495,7 @@
  "carrot": {
   "name": "Carrot",
   "type": "crop",
-  "value": 16,
+  "value": 19,
   "rarity": "common",
   "tier": 1,
   "family": "veg"
@@ -551,7 +551,7 @@
  "wheat_seed": {
   "name": "Wheat Seeds",
   "type": "seed",
-  "value": 6,
+  "value": 4,
   "rarity": "common",
   "tier": 1,
   "crop": "wheat"
@@ -924,11 +924,11 @@
  "bread": {
   "name": "Bread",
   "type": "food",
-  "value": 20,
+  "value": 30,
   "rarity": "common",
   "tier": 1,
   "heal": 1,
-  "energy": 25
+  "energy": 20
  },
  "salad": {
   "name": "Garden Salad",
@@ -2750,7 +2750,7 @@
  "cave_mushroom": {
   "name": "Cave Mushroom",
   "type": "crop",
-  "value": 35,
+  "value": 20,
   "rarity": "uncommon",
   "tier": 2,
   "heal": 2
@@ -4185,7 +4185,7 @@
   "tier": 5
  },
  "beet_seed": {
-  "name": "Beet Seed",
+  "name": "Beet Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4193,7 +4193,7 @@
   "crop": "beet"
  },
  "onion_seed": {
-  "name": "Onion Seed",
+  "name": "Onion Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4201,7 +4201,7 @@
   "crop": "onion"
  },
  "garlic_seed": {
-  "name": "Garlic Seed",
+  "name": "Garlic Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4209,7 +4209,7 @@
   "crop": "garlic"
  },
  "lettuce_seed": {
-  "name": "Lettuce Seed",
+  "name": "Lettuce Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4217,7 +4217,7 @@
   "crop": "lettuce"
  },
  "radish_seed": {
-  "name": "Radish Seed",
+  "name": "Radish Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4225,7 +4225,7 @@
   "crop": "radish"
  },
  "bok_choy_seed": {
-  "name": "Bok Choy Seed",
+  "name": "Bok Choy Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4233,7 +4233,7 @@
   "crop": "bok_choy"
  },
  "oat_seed": {
-  "name": "Oat Seed",
+  "name": "Oat Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4241,7 +4241,7 @@
   "crop": "oat"
  },
  "rice_seed": {
-  "name": "Rice Seed",
+  "name": "Rice Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4249,7 +4249,7 @@
   "crop": "rice"
  },
  "sunflower_seed": {
-  "name": "Sunflower Seed",
+  "name": "Sunflower Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4257,7 +4257,7 @@
   "crop": "sunflower"
  },
  "cotton_seed": {
-  "name": "Cotton Seed",
+  "name": "Cotton Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4265,7 +4265,7 @@
   "crop": "cotton"
  },
  "cabbage_seed": {
-  "name": "Cabbage Seed",
+  "name": "Cabbage Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4273,7 +4273,7 @@
   "crop": "cabbage"
  },
  "kale_seed": {
-  "name": "Kale Seed",
+  "name": "Kale Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4281,7 +4281,7 @@
   "crop": "kale"
  },
  "spinach_seed": {
-  "name": "Spinach Seed",
+  "name": "Spinach Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4289,7 +4289,7 @@
   "crop": "spinach"
  },
  "green_bean_seed": {
-  "name": "Green Bean Seed",
+  "name": "Green Bean Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4297,7 +4297,7 @@
   "crop": "green_bean"
  },
  "pea_seed": {
-  "name": "Pea Seed",
+  "name": "Pea Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4305,7 +4305,7 @@
   "crop": "pea"
  },
  "cucumber_seed": {
-  "name": "Cucumber Seed",
+  "name": "Cucumber Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4313,7 +4313,7 @@
   "crop": "cucumber"
  },
  "pepper_seed": {
-  "name": "Pepper Seed",
+  "name": "Pepper Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4321,7 +4321,7 @@
   "crop": "pepper"
  },
  "eggplant_seed": {
-  "name": "Eggplant Seed",
+  "name": "Eggplant Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4329,7 +4329,7 @@
   "crop": "eggplant"
  },
  "leek_seed": {
-  "name": "Leek Seed",
+  "name": "Leek Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4337,7 +4337,7 @@
   "crop": "leek"
  },
  "scallion_seed": {
-  "name": "Scallion Seed",
+  "name": "Scallion Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4345,7 +4345,7 @@
   "crop": "scallion"
  },
  "shallot_seed": {
-  "name": "Shallot Seed",
+  "name": "Shallot Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4353,7 +4353,7 @@
   "crop": "shallot"
  },
  "celery_seed": {
-  "name": "Celery Seed",
+  "name": "Celery Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4361,7 +4361,7 @@
   "crop": "celery"
  },
  "dill_seed": {
-  "name": "Dill Seed",
+  "name": "Dill Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4369,7 +4369,7 @@
   "crop": "dill"
  },
  "parsley_seed": {
-  "name": "Parsley Seed",
+  "name": "Parsley Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4377,7 +4377,7 @@
   "crop": "parsley"
  },
  "basil_seed": {
-  "name": "Basil Seed",
+  "name": "Basil Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4385,7 +4385,7 @@
   "crop": "basil"
  },
  "mint_seed": {
-  "name": "Mint Seed",
+  "name": "Mint Seeds",
   "type": "seed",
   "value": 4,
   "rarity": "common",
@@ -4393,7 +4393,7 @@
   "crop": "mint"
  },
  "blueberry_seed": {
-  "name": "Blueberry Seed",
+  "name": "Blueberry Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4401,7 +4401,7 @@
   "crop": "blueberry"
  },
  "raspberry_seed": {
-  "name": "Raspberry Seed",
+  "name": "Raspberry Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4409,7 +4409,7 @@
   "crop": "raspberry"
  },
  "blackberry_seed": {
-  "name": "Blackberry Seed",
+  "name": "Blackberry Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4417,7 +4417,7 @@
   "crop": "blackberry"
  },
  "cranberry_seed": {
-  "name": "Cranberry Seed",
+  "name": "Cranberry Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4425,7 +4425,7 @@
   "crop": "cranberry"
  },
  "grape_seed": {
-  "name": "Grape Seed",
+  "name": "Grape Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4433,7 +4433,7 @@
   "crop": "grape"
  },
  "apple_seed": {
-  "name": "Apple Seed",
+  "name": "Apple Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4441,7 +4441,7 @@
   "crop": "apple"
  },
  "pear_seed": {
-  "name": "Pear Seed",
+  "name": "Pear Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4449,7 +4449,7 @@
   "crop": "pear"
  },
  "peach_seed": {
-  "name": "Peach Seed",
+  "name": "Peach Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4457,7 +4457,7 @@
   "crop": "peach"
  },
  "orange_seed": {
-  "name": "Orange Seed",
+  "name": "Orange Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4465,7 +4465,7 @@
   "crop": "orange"
  },
  "lemon_seed": {
-  "name": "Lemon Seed",
+  "name": "Lemon Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4473,7 +4473,7 @@
   "crop": "lemon"
  },
  "banana_seed": {
-  "name": "Banana Seed",
+  "name": "Banana Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4481,7 +4481,7 @@
   "crop": "banana"
  },
  "pineapple_seed": {
-  "name": "Pineapple Seed",
+  "name": "Pineapple Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4489,7 +4489,7 @@
   "crop": "pineapple"
  },
  "watermelon_seed": {
-  "name": "Watermelon Seed",
+  "name": "Watermelon Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4497,7 +4497,7 @@
   "crop": "watermelon"
  },
  "cantaloupe_seed": {
-  "name": "Cantaloupe Seed",
+  "name": "Cantaloupe Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4505,7 +4505,7 @@
   "crop": "cantaloupe"
  },
  "zucchini_seed": {
-  "name": "Zucchini Seed",
+  "name": "Zucchini Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4513,7 +4513,7 @@
   "crop": "zucchini"
  },
  "yellow_squash_seed": {
-  "name": "Yellow Squash Seed",
+  "name": "Yellow Squash Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4521,7 +4521,7 @@
   "crop": "yellow_squash"
  },
  "broccoli_seed": {
-  "name": "Broccoli Seed",
+  "name": "Broccoli Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4529,7 +4529,7 @@
   "crop": "broccoli"
  },
  "cauliflower_seed": {
-  "name": "Cauliflower Seed",
+  "name": "Cauliflower Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4537,7 +4537,7 @@
   "crop": "cauliflower"
  },
  "artichoke_seed": {
-  "name": "Artichoke Seed",
+  "name": "Artichoke Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4545,7 +4545,7 @@
   "crop": "artichoke"
  },
  "asparagus_seed": {
-  "name": "Asparagus Seed",
+  "name": "Asparagus Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4553,7 +4553,7 @@
   "crop": "asparagus"
  },
  "sweet_potato_seed": {
-  "name": "Sweet Potato Seed",
+  "name": "Sweet Potato Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4561,7 +4561,7 @@
   "crop": "sweet_potato"
  },
  "chili_seed": {
-  "name": "Chili Seed",
+  "name": "Chili Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4569,7 +4569,7 @@
   "crop": "chili"
  },
  "ginger_seed": {
-  "name": "Ginger Seed",
+  "name": "Ginger Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4577,7 +4577,7 @@
   "crop": "ginger"
  },
  "turmeric_seed": {
-  "name": "Turmeric Seed",
+  "name": "Turmeric Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4585,7 +4585,7 @@
   "crop": "turmeric"
  },
  "wasabi_seed": {
-  "name": "Wasabi Seed",
+  "name": "Wasabi Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4593,7 +4593,7 @@
   "crop": "wasabi"
  },
  "sesame_seed": {
-  "name": "Sesame Seed",
+  "name": "Sesame Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4601,7 +4601,7 @@
   "crop": "sesame"
  },
  "poppy_seed": {
-  "name": "Poppy Seed",
+  "name": "Poppy Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4609,7 +4609,7 @@
   "crop": "poppy"
  },
  "flax_seed": {
-  "name": "Flax Seed",
+  "name": "Flax Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4617,7 +4617,7 @@
   "crop": "flax"
  },
  "chia_seed": {
-  "name": "Chia Seed",
+  "name": "Chia Seeds",
   "type": "seed",
   "value": 11,
   "rarity": "uncommon",
@@ -4625,7 +4625,7 @@
   "crop": "chia"
  },
  "moonberry_seed": {
-  "name": "Moonberry Seed",
+  "name": "Moonberry Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4633,7 +4633,7 @@
   "crop": "moonberry"
  },
  "starfruit_seed": {
-  "name": "Starfruit Seed",
+  "name": "Starfruit Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4641,7 +4641,7 @@
   "crop": "starfruit"
  },
  "pomegranate_seed": {
-  "name": "Pomegranate Seed",
+  "name": "Pomegranate Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4649,7 +4649,7 @@
   "crop": "pomegranate"
  },
  "fig_seed": {
-  "name": "Fig Seed",
+  "name": "Fig Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4657,7 +4657,7 @@
   "crop": "fig"
  },
  "dragonfruit_seed": {
-  "name": "Dragonfruit Seed",
+  "name": "Dragonfruit Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4665,7 +4665,7 @@
   "crop": "dragonfruit"
  },
  "coconut_seed": {
-  "name": "Coconut Seed",
+  "name": "Coconut Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4673,7 +4673,7 @@
   "crop": "coconut"
  },
  "kiwi_seed": {
-  "name": "Kiwi Seed",
+  "name": "Kiwi Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4681,7 +4681,7 @@
   "crop": "kiwi"
  },
  "mango_seed": {
-  "name": "Mango Seed",
+  "name": "Mango Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4689,7 +4689,7 @@
   "crop": "mango"
  },
  "avocado_seed": {
-  "name": "Avocado Seed",
+  "name": "Avocado Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4697,7 +4697,7 @@
   "crop": "avocado"
  },
  "lychee_seed": {
-  "name": "Lychee Seed",
+  "name": "Lychee Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4705,7 +4705,7 @@
   "crop": "lychee"
  },
  "persimmon_seed": {
-  "name": "Persimmon Seed",
+  "name": "Persimmon Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4713,7 +4713,7 @@
   "crop": "persimmon"
  },
  "quince_seed": {
-  "name": "Quince Seed",
+  "name": "Quince Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4721,7 +4721,7 @@
   "crop": "quince"
  },
  "kumquat_seed": {
-  "name": "Kumquat Seed",
+  "name": "Kumquat Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4729,7 +4729,7 @@
   "crop": "kumquat"
  },
  "mulberry_seed": {
-  "name": "Mulberry Seed",
+  "name": "Mulberry Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4737,7 +4737,7 @@
   "crop": "mulberry"
  },
  "passionfruit_seed": {
-  "name": "Passionfruit Seed",
+  "name": "Passionfruit Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4745,7 +4745,7 @@
   "crop": "passionfruit"
  },
  "guava_seed": {
-  "name": "Guava Seed",
+  "name": "Guava Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4753,7 +4753,7 @@
   "crop": "guava"
  },
  "vanilla_seed": {
-  "name": "Vanilla Seed",
+  "name": "Vanilla Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4761,7 +4761,7 @@
   "crop": "vanilla"
  },
  "cacao_seed": {
-  "name": "Cacao Seed",
+  "name": "Cacao Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4769,7 +4769,7 @@
   "crop": "cacao"
  },
  "coffee_seed": {
-  "name": "Coffee Seed",
+  "name": "Coffee Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4777,7 +4777,7 @@
   "crop": "coffee"
  },
  "tea_seed": {
-  "name": "Tea Seed",
+  "name": "Tea Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4785,7 +4785,7 @@
   "crop": "tea"
  },
  "hops_seed": {
-  "name": "Hops Seed",
+  "name": "Hops Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4793,7 +4793,7 @@
   "crop": "hops"
  },
  "aloe_seed": {
-  "name": "Aloe Seed",
+  "name": "Aloe Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4801,7 +4801,7 @@
   "crop": "aloe"
  },
  "saffron_seed": {
-  "name": "Saffron Seed",
+  "name": "Saffron Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4809,7 +4809,7 @@
   "crop": "saffron"
  },
  "lotus_seed": {
-  "name": "Lotus Seed",
+  "name": "Lotus Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4817,7 +4817,7 @@
   "crop": "lotus"
  },
  "watercress_seed": {
-  "name": "Watercress Seed",
+  "name": "Watercress Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4825,7 +4825,7 @@
   "crop": "watercress"
  },
  "water_chestnut_seed": {
-  "name": "Water Chestnut Seed",
+  "name": "Water Chestnut Seeds",
   "type": "seed",
   "value": 40,
   "rarity": "rare",
@@ -4881,7 +4881,7 @@
   "crop": "glowcap3"
  },
  "enchanted_berry_seed": {
-  "name": "Enchanted Berry Seed",
+  "name": "Enchanted Berry Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4889,7 +4889,7 @@
   "crop": "enchanted_berry"
  },
  "frostberry_seed": {
-  "name": "Frostberry Seed",
+  "name": "Frostberry Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4897,7 +4897,7 @@
   "crop": "frostberry"
  },
  "flameberry_seed": {
-  "name": "Flameberry Seed",
+  "name": "Flameberry Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4905,7 +4905,7 @@
   "crop": "flameberry"
  },
  "shadowberry_seed": {
-  "name": "Shadowberry Seed",
+  "name": "Shadowberry Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4913,7 +4913,7 @@
   "crop": "shadowberry"
  },
  "dreamfruit_seed": {
-  "name": "Dreamfruit Seed",
+  "name": "Dreamfruit Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4921,7 +4921,7 @@
   "crop": "dreamfruit"
  },
  "starflower_seed": {
-  "name": "Starflower Seed",
+  "name": "Starflower Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4929,7 +4929,7 @@
   "crop": "starflower"
  },
  "moonflower_seed": {
-  "name": "Moonflower Seed",
+  "name": "Moonflower Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4937,7 +4937,7 @@
   "crop": "moonflower"
  },
  "sunfruit_seed": {
-  "name": "Sunfruit Seed",
+  "name": "Sunfruit Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4945,7 +4945,7 @@
   "crop": "sunfruit"
  },
  "crystal_melon_seed": {
-  "name": "Crystal Melon Seed",
+  "name": "Crystal Melon Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4953,7 +4953,7 @@
   "crop": "crystal_melon"
  },
  "crystal_tomato_seed": {
-  "name": "Crystal Tomato Seed",
+  "name": "Crystal Tomato Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4961,7 +4961,7 @@
   "crop": "crystal_tomato"
  },
  "rainbow_beet_seed": {
-  "name": "Rainbow Beet Seed",
+  "name": "Rainbow Beet Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4969,7 +4969,7 @@
   "crop": "rainbow_beet"
  },
  "aurora_corn_seed": {
-  "name": "Aurora Corn Seed",
+  "name": "Aurora Corn Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4977,7 +4977,7 @@
   "crop": "aurora_corn"
  },
  "crystal_lettuce_seed": {
-  "name": "Crystal Lettuce Seed",
+  "name": "Crystal Lettuce Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4985,7 +4985,7 @@
   "crop": "crystal_lettuce"
  },
  "sky_lettuce_seed": {
-  "name": "Sky Lettuce Seed",
+  "name": "Sky Lettuce Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -4993,7 +4993,7 @@
   "crop": "sky_lettuce"
  },
  "void_pepper_seed": {
-  "name": "Void Pepper Seed",
+  "name": "Void Pepper Seeds",
   "type": "seed",
   "value": 133,
   "rarity": "epic",
@@ -5009,7 +5009,7 @@
   "crop": "void_pepper2"
  },
  "luminous_starfruit_seed": {
-  "name": "Luminous Starfruit Seed",
+  "name": "Luminous Starfruit Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5017,7 +5017,7 @@
   "crop": "luminous_starfruit"
  },
  "celestial_apple_seed": {
-  "name": "Celestial Apple Seed",
+  "name": "Celestial Apple Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5025,7 +5025,7 @@
   "crop": "celestial_apple"
  },
  "dragonberry_seed": {
-  "name": "Dragonberry Seed",
+  "name": "Dragonberry Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5033,7 +5033,7 @@
   "crop": "dragonberry"
  },
  "phoenix_pepper_seed": {
-  "name": "Phoenix Pepper Seed",
+  "name": "Phoenix Pepper Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5041,7 +5041,7 @@
   "crop": "phoenix_pepper"
  },
  "atlas_melon_seed": {
-  "name": "Atlas Melon Seed",
+  "name": "Atlas Melon Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5049,7 +5049,7 @@
   "crop": "atlas_melon"
  },
  "nebula_grape_seed": {
-  "name": "Nebula Grape Seed",
+  "name": "Nebula Grape Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5057,7 +5057,7 @@
   "crop": "nebula_grape"
  },
  "wishfruit_seed": {
-  "name": "Wishfruit Seed",
+  "name": "Wishfruit Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5065,7 +5065,7 @@
   "crop": "wishfruit"
  },
  "infinity_bean_seed": {
-  "name": "Infinity Bean Seed",
+  "name": "Infinity Bean Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5073,7 +5073,7 @@
   "crop": "infinity_bean"
  },
  "stardust_pumpkin_seed": {
-  "name": "Stardust Pumpkin Seed",
+  "name": "Stardust Pumpkin Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5081,7 +5081,7 @@
   "crop": "stardust_pumpkin"
  },
  "ethereal_corn_seed": {
-  "name": "Ethereal Corn Seed",
+  "name": "Ethereal Corn Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5089,7 +5089,7 @@
   "crop": "ethereal_corn"
  },
  "prism_tomato_seed": {
-  "name": "Prism Tomato Seed",
+  "name": "Prism Tomato Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5097,7 +5097,7 @@
   "crop": "prism_tomato"
  },
  "lumiflora_seed": {
-  "name": "Lumiflora Seed",
+  "name": "Lumiflora Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5105,7 +5105,7 @@
   "crop": "lumiflora"
  },
  "soulleaf_seed": {
-  "name": "Soulleaf Seed",
+  "name": "Soulleaf Seeds",
   "type": "seed",
   "value": 500,
   "rarity": "legendary",
@@ -5247,7 +5247,7 @@
   "tier": 1,
   "value": 94,
   "stats": {
-   "energy": 5
+   "energy": 10
   }
  },
  "leather_shield": {
@@ -5291,7 +5291,8 @@
   "tier": 1,
   "value": 94,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "leather_belt": {
@@ -5313,7 +5314,7 @@
   "tier": 1,
   "value": 94,
   "stats": {
-   "luck": 1
+   "luck": 2
   }
  },
  "copper_helm": {
@@ -5334,7 +5335,7 @@
   "slot": "head",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
    "defense": 2
   },
@@ -5358,7 +5359,7 @@
   "slot": "body",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
    "defense": 2
   },
@@ -5381,7 +5382,7 @@
   "slot": "legs",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
    "defense": 2
   }
@@ -5403,7 +5404,7 @@
   "slot": "feet",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
    "defense": 2
   }
@@ -5425,9 +5426,9 @@
   "slot": "hands",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
-   "energy": 5
+   "energy": 10
   }
  },
  "copper_shield": {
@@ -5447,7 +5448,7 @@
   "slot": "offhand",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
    "defense": 2
   }
@@ -5469,9 +5470,10 @@
   "slot": "back",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "copper_belt": {
@@ -5491,9 +5493,9 @@
   "slot": "belt",
   "rarity": "common",
   "tier": 1,
-  "value": 104,
+  "value": 116,
   "stats": {
-   "luck": 1
+   "luck": 2
   }
  },
  "iron_helm_plus": {
@@ -5595,7 +5597,7 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "energy": 10
+   "energy": 15
   }
  },
  "iron_shield": {
@@ -5639,7 +5641,8 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "iron_belt": {
@@ -5661,7 +5664,7 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "luck": 2
+   "luck": 3
   }
  },
  "steel_helm": {
@@ -5775,7 +5778,7 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "energy": 10
+   "energy": 15
   }
  },
  "steel_shield": {
@@ -5819,7 +5822,8 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "steel_belt": {
@@ -5841,7 +5845,7 @@
   "tier": 2,
   "value": 320,
   "stats": {
-   "luck": 2
+   "luck": 3
   }
  },
  "silver_helm": {
@@ -5955,7 +5959,7 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "energy": 15
+   "energy": 20
   }
  },
  "silver_shield": {
@@ -5999,7 +6003,8 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "silver_belt": {
@@ -6021,7 +6026,7 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "luck": 3
+   "luck": 4
   }
  },
  "gold_helm": {
@@ -6135,7 +6140,7 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "energy": 15
+   "energy": 20
   }
  },
  "gold_shield": {
@@ -6179,7 +6184,8 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "gold_belt": {
@@ -6201,7 +6207,7 @@
   "tier": 3,
   "value": 720,
   "stats": {
-   "luck": 3
+   "luck": 4
   }
  },
  "crystal_helm": {
@@ -6213,7 +6219,8 @@
   "value": 640,
   "stats": {
    "defense": 5
-  }
+  },
+  "sprite": "crystal_crown"
  },
  "crystal_helm_plus": {
   "name": "Crystal Helm +1",
@@ -6224,7 +6231,8 @@
   "value": 1280,
   "stats": {
    "defense": 6
-  }
+  },
+  "sprite": "crystal_crown"
  },
  "crystal_chest": {
   "name": "Crystal Chest",
@@ -6313,7 +6321,7 @@
   "tier": 4,
   "value": 1280,
   "stats": {
-   "energy": 20
+   "energy": 25
   }
  },
  "crystal_shield": {
@@ -6357,7 +6365,8 @@
   "tier": 4,
   "value": 1280,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "crystal_belt": {
@@ -6379,7 +6388,7 @@
   "tier": 4,
   "value": 1280,
   "stats": {
-   "luck": 4
+   "luck": 5
   }
  },
  "moon_helm": {
@@ -6391,7 +6400,8 @@
   "value": 2352,
   "stats": {
    "defense": 6
-  }
+  },
+  "sprite": "knight"
  },
  "moon_helm_plus": {
   "name": "Moon Helm +1",
@@ -6402,7 +6412,8 @@
   "value": 2441,
   "stats": {
    "defense": 7
-  }
+  },
+  "sprite": "knight"
  },
  "moon_chest": {
   "name": "Moon Chest",
@@ -6491,7 +6502,7 @@
   "tier": 5,
   "value": 2313,
   "stats": {
-   "energy": 25
+   "energy": 30
   }
  },
  "moon_shield": {
@@ -6535,7 +6546,8 @@
   "tier": 5,
   "value": 2441,
   "stats": {
-   "speed": 1
+   "speed": 1,
+   "defense": 1
   }
  },
  "moon_belt": {
@@ -6557,7 +6569,7 @@
   "tier": 5,
   "value": 2313,
   "stats": {
-   "luck": 5
+   "luck": 6
   }
  },
  "steel_bar": {
@@ -6586,11 +6598,11 @@
  "meat": {
   "name": "Game Meat",
   "type": "food",
-  "value": 30,
+  "value": 45,
   "rarity": "common",
   "tier": 2,
   "heal": 2,
-  "energy": 25,
+  "energy": 15,
   "desc": "From the hills. Cook it for more."
  },
  "arrow": {
@@ -6644,7 +6656,7 @@
   "rarity": "uncommon",
   "tier": 3,
   "energy": 20,
-  "desc": "From the keg. Alder's weakness."
+  "desc": "From the keg. Saved for toasts at the fair."
  },
  "candy": {
   "name": "Candy",
@@ -7833,7 +7845,7 @@
   "rarity": "uncommon",
   "tier": 3,
   "energy": 35,
-  "desc": "Alder would trade the bell tower for a case."
+  "desc": "Alder keeps one bottle back for the fair toast."
  },
  "starlight_wine": {
   "name": "Starlight Wine",
@@ -8596,7 +8608,8 @@
    "defense": 1,
    "luck": 1
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "sprite": "cowboy"
  },
  "shades": {
   "name": "Shades",
@@ -8609,7 +8622,8 @@
    "luck": 2,
    "speed": 1
   },
-  "arc": "gangsters"
+  "arc": "gangsters",
+  "sprite": "goggles"
  },
  "pinstripe_suit": {
   "name": "Pinstripe Suit",
@@ -8902,7 +8916,8 @@
    "defense": 1,
    "luck": 1
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "sprite": "goggles"
  },
  "aurora_hood": {
   "name": "Aurora Hood",
@@ -8915,7 +8930,8 @@
    "luck": 2,
    "speed": 1
   },
-  "arc": "penguins"
+  "arc": "penguins",
+  "sprite": "hood"
  },
  "puffy_parka": {
   "name": "Puffy Parka",

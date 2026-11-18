@@ -74,6 +74,10 @@ static func place(m: GameMap) -> void:
 		if recruited(id):
 			if m.scene_id() == "hideout":
 				at = Vector2i(int(mdef["home"][0]), int(mdef["home"][1]))
+			elif id == "halo" and perk_level("rides") >= 3 and m.scene_id() in ["docks", "neon", "uptown"]:
+				# Loyalty 3: Halo waits by wherever you arrive (the player isn't spawned yet).
+				var wp := (GameMap.next_spawn + m.offset()) if GameMap.next_spawn != Vector2.ZERO else m.default_spawn()
+				at = m.world_to_cell(wp) + Vector2i(3, 1)
 		else:
 			var b: Dictionary = mdef.get("before", {})
 			if str(b.get("scene", "")) == m.scene_id():
@@ -126,6 +130,8 @@ static func talk(m: GameMap, id: String) -> bool:
 			if lv < perks.size():
 				m.hud.toast("%s loyalty %d: %s" % [str(mdef["name"]), lv + 1, str(perks[lv])], Color(1, 0.85, 0.7))
 				Music.instance(m.get_tree()).sfx("levelup")
+				if m.player and Art.has("fx", "special_" + id):
+					m.fx("special_" + id, m.player.position + Vector2(0, -16), 10.0, 0.5)
 			return true
 	# Halo: rides between the gangster districts.
 	if id == "halo" and lv >= 1 and (m.scene_id() == "hideout" or perk_level("rides") >= 3):

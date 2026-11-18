@@ -33,6 +33,11 @@ static func party() -> Dictionary:
 	if p.is_empty():
 		p = {"active": "", "known": [], "bitter": [], "refused": {}}
 		GameState.run["party"] = p
+	for k in ["known", "bitter"]:
+		if not p.has(k):
+			p[k] = []
+	if not p.has("refused"):
+		p["refused"] = {}
 	return p
 
 
@@ -103,7 +108,18 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		if gl > 0.0:
 			m.hud.toast("Ready in %ds." % int(ceil(gl)), Color(0.8, 0.85, 1.0))
 			return
+		# Check mana first (same rule as GameState.spend_mana), so a short cast costs no cooldown.
+		var cost := int(Gift.def(ab.trim_prefix("gift:")).get("mana", 8))
+		var mana := int(GameState.run.get("mana", 0))
+		var floor_m := 10 if GameState.bonus("magic", "awakened") > 0.0 else 0
+		if mana < cost and not (floor_m > 0 and mana <= floor_m and cost <= floor_m):
+			m.hud.toast("Not enough mana.", Color(0.7, 0.8, 1.0))
+			return
 		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + 8.0
+	if ab in ["haul", "tail"]:
+		# Passive helpers: the button only reminds you (no XP, no heal, no cooldown).
+		m.hud.toast("Dad: 'Just point at the tree.' (Trees fall in one swing while he's with you.)" if ab == "haul" else "Mer: 'The water's right there.'", Color(0.9, 0.95, 1.0))
+		return
 	if not ab.begins_with("gift:") and ab != "fence":
 		var left := cooldown_left(ab)
 		if left > 0.0:
@@ -169,7 +185,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.xp("magic", 3 * n)
 		"powerup":
 			for e in m.enemies.duplicate():
-				if is_instance_valid(e) and e.position.distance_to(p.position) < 70.0:
+				if is_instance_valid(e) and e._alive and e.position.distance_to(p.position) < 70.0:
 					e._stun = maxf(e._stun, 2.0)
 			GameState.restore_mana(5)
 			m.fx("pawring", p.position + Vector2(0, -6), 12.0, 0.8)
@@ -190,9 +206,10 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.hud.toast("Pax: '%d things worth grabbing round here.'" % n, Color(0.9, 1.0, 0.9))
 		"tinker":
 			m.hud.toast("Kairi: 'Bag's open. Don't ask how.'", Color(0.9, 1.0, 0.9))
-			var gm := m.get_node_or_null("GameMenu")
-			if gm:
-				(gm as GameMenu).toggle()
+			for ch in m.get_children():
+				if ch is GameMenu:
+					(ch as GameMenu).toggle()
+					break
 		"bee_bop":
 			Music.instance(m.get_tree()).sfx("stun")
 			# Coldy stamps: a ring that cracks the ground; grumps in it stagger.
@@ -200,7 +217,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			m.shake(3.0)
 			var hits := 0
 			for e in m.enemies.duplicate():
-				if is_instance_valid(e) and e.position.distance_to(p.position) < 44.0:
+				if is_instance_valid(e) and e._alive and e.position.distance_to(p.position) < 44.0:
 					e.hit(2 + meow_rank(), p.position, false, true)
 					e._stun = maxf(e._stun, 0.8)
 					hits += 1
@@ -213,12 +230,13 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				m.hud.toast("Big Jim: 'That one's too tough even for me. Get a better pickaxe.'", Color(1, 0.9, 0.8))
 			elif tt in ["rock", "mrock", "stump", "log"]:
 				# He breaks it himself: no tool, no energy.
-				m.things.erase(fc)
-				m.blocked.erase(fc)
-				if m.props.has(fc):
-					(m.props[fc] as Node).queue_free()
-					m.props.erase(fc)
+				m.clear_cell(fc)
 				m._mark_cleared(fc)
+				if m.has_method("_try_more"):
+					m.call("_try_more", 1)  # mine: counts toward the way down
+				if m.has_method("redraw_cell"):
+					m.call("redraw_cell", fc)  # chunked mine: redraw the rock's chunk
+				m.queue_redraw()
 				if tt in ["rock", "mrock"]:
 					m.give("stone", 3)
 					var ore := str(th.get("ore", ""))
@@ -237,7 +255,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			for id in GameState.run["inventory"].keys():
 				var v := GameState.item_value(str(id))
 				# Only loot: enemy drops, junk, ore and treasure. Never gear, food or keys.
-				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore"] and not str(id) in FENCE_KEEP:
+				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore"] and not str(id) in FENCE_KEEP and not GameState.is_locked(str(id)):
 					bv = v
 					best = str(id)
 			# One tap names the deal, a second tap within 5 seconds makes it.
@@ -276,6 +294,11 @@ static func recruit(cid: String, make_active := true) -> void:
 	if not cid in p["known"]:
 		p["known"].append(cid)
 	p["bitter"].erase(cid)
+	# Back with you: nobody is bitter about leaving any more.
+	if GameState.run["flags"].has("gone_east_" + cid):
+		GameState.run["flags"].erase("gone_east_" + cid)
+		if not GameState.run["flags"].keys().any(func(k: Variant) -> bool: return str(k).begins_with("gone_east_")):
+			GameState.run["flags"].erase("bitter_left")
 	p["refused"].erase(cid)
 	if make_active:
 		p["active"] = cid
@@ -289,7 +312,7 @@ static func refuse(cid: String) -> void:
 	p["refused"][cid] = int(p["refused"].get(cid, 0)) + 1
 	if int(p["refused"][cid]) >= 2 and not cid in p["bitter"]:
 		p["bitter"].append(cid)
-		GameState.add_hint("%s took that hard. People who feel unwanted go looking for somewhere they're wanted." % str(defs()[cid]["name"]))
+		GameState.add_hint("%s took that hard. People who feel unwanted go looking for somewhere they're wanted." % str(defs().get(cid, {}).get("name", cid)))
 
 
 var _mend_t := 0.0
@@ -304,10 +327,7 @@ func setup(cid: String, m: GameMap) -> void:
 		anim = AnimatedSprite2D.new()
 		anim.sprite_frames = Art.frames("animals/" + sprite, {"idle": "idle", "walk": "walk", "run": "run"}, {"idle": 2.0, "walk": 8.0, "run": 12.0})
 		anim.scale = Vector2(0.5, 0.5)
-		anim.frame_changed.connect(func() -> void:
-			var tex := anim.sprite_frames.get_frame_texture(anim.animation, anim.frame)
-			if tex:
-				anim.offset = Vector2(0, -tex.get_height() / 2.0))
+		anim.frame_changed.connect(_fit_offset)
 	elif CharacterLibrary.has_character(sprite):
 		anim = CharacterLibrary.make_sprite(sprite)
 	else:
@@ -316,7 +336,18 @@ func setup(cid: String, m: GameMap) -> void:
 		anim.modulate = Color(str(d["tint"]))
 	add_child(anim)
 	anim.play("idle")
+	if sprite.begins_with("cat_") or sprite.begins_with("dog_"):
+		_fit_offset()  # the first frame too, not only from the next frame change
 	y_sort_enabled = true
+
+
+## Cat/dog partner strips are bottom-anchored by hand: lift by half the frame height.
+func _fit_offset() -> void:
+	if anim == null or anim.sprite_frames == null:
+		return
+	var tex := anim.sprite_frames.get_frame_texture(anim.animation, anim.frame)
+	if tex:
+		anim.offset = Vector2(0, -tex.get_height() / 2.0)
 
 
 var _moving := false

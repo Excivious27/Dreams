@@ -188,8 +188,7 @@ func _confirm_new() -> void:
 	_page.add_child(_label("Start a new game?", 16))
 	_page.add_child(_label("%s's farm (day %d) will be kept, and you can bring it back from the title screen with Restore. Only the most recent one is kept." % [str(GameState.run["names"]["character"]), int(GameState.run.get("day", 1))], 8, false))
 	_page.add_child(_button("Yes, start fresh", func() -> void:
-		SaveGame.set_value(GameState.prev_key(), GameState.run.duplicate(true))
-		_show_arcs(), true))
+		_show_arcs(), true))  # the old farm goes to Restore only once the new one really starts (_begin)
 	_page.add_child(_button("Back", _show_title))
 
 
@@ -506,6 +505,8 @@ func _begin() -> void:
 	var cname := _name_edit.text.strip_edges()
 	var town := _town_edit.text.strip_edges()
 	var pet := _pet_edit.text.strip_edges()
+	if GameState.has_run():
+		SaveGame.set_value(GameState.prev_key(), GameState.run.duplicate(true))
 	GameState.new_run(_arc, _playable, cname if cname != "" else "Hero", town if town != "" else "Town", pet if pet != "" else "Pup")
 	var is_custom := bool(_playables[_playable].get("custom", false))
 	var is_penguin := GameState.sprite_for_playable(_playable, _arc) == "penguin"
@@ -517,6 +518,7 @@ func _begin() -> void:
 		GameState.run["look"] = {"pet": str(_look_full.get("pet", ""))}
 	if is_custom and not GameState.run["look"].has("outfit"):
 		GameState.run["look"]["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"
+	GameState.save()  # the look is part of the first save (closing before the first autosave kept none)
 	_start_game()
 
 

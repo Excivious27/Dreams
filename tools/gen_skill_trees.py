@@ -22,7 +22,7 @@ AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.
        "pass_risk": 0.01, "heat_cool": 0.04, "wash_bonus": 0.02, "job_pay": 0.04, "gun_damage": 1, "supply_rate": 0.05, "helper_hp": 4,
        "ability_cooldown": 0.03, "colony_discount": 0.03,
        "capture_speed": 0.05, "start_supply": 3, "spawner_discount": 0.04, "helper_damage": 1, "ticket_bleed": 0.06, "ticket_guard": 0.05,
-       "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04, "xp_gain": 0.03}
+       "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04, "xp_gain": 0.03, "buy_discount": 0.02, "regrowth": 1}
 DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
         "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock (3 = one more)",
@@ -42,7 +42,8 @@ DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop grow
         "helper_damage": "helper zap damage", "ticket_bleed": "faster enemy ticket loss", "ticket_guard": "slower ticket loss for your side",
         "team_damage": "damage while a partner is with you", "team_defense": "less damage taken while a partner is with you",
         "team_heal": "health healed each time you use a partner power", "friend_gain": "friendship from talking and gifts",
-        "pet_bond": "pup health", "team_xp": "skill XP while a partner is with you"}
+        "pet_bond": "pup health", "team_xp": "skill XP while a partner is with you", "buy_discount": "off shop prices",
+        "regrowth": "day sooner for picked spots to regrow"}
 # skill: [(row title, [keys], [filler names...]), x4], {original node id: row}
 T = {
  "farming": ([("Crops", ["extra_crop", "double_harvest"], ["Sprout Song", "Tender Care", "Full Rows", "Heavy Stalks", "Plenty", "Overflowing Baskets", "Harvest Dance", "Bumper Crop", "Endless Fields"]),
@@ -57,7 +58,7 @@ T = {
             {"rockbreaker": 0, "iron_will": 3, "copper_eye": 1, "heavy_swing": 1, "deep_breath": 3, "gem_sense": 2, "crystal_resonance": 2, "hot_furnace": 0, "geologist": 2, "core_diver": 3, "prospector": 1, "mountain_heart": 0}),
  "foraging": ([("Forage", ["forage_bonus", "rare_forage"], ["Keen Nose", "Basket Weaver", "Berry Picker", "Mushroom Eye", "Wild Bounty", "Hidden Patches", "Forest Feast", "Rare Herbs", "Wild Heart"]),
                ("Timber", ["wood_bonus", "chop_bonus"], ["Sharp Axe", "Clean Cut", "Timber!", "Heartwood", "Log Roller", "Forest Giant", "Grain Reader", "Splitting Maul", "Ancient Oak"]),
-               ("Sap & Bees", ["sap_chance"], ["Sticky Fingers", "Tap Lore", "Sweet Wood", "Honey Sense", "Amber Drops", "Busy Bees", "Golden Sap", "Hive Mind", "Queen's Favour"]),
+               ("Sap & Bees", ["sap_chance", "regrowth"], ["Sticky Fingers", "Tap Lore", "Sweet Wood", "Honey Sense", "Amber Drops", "Busy Bees", "Golden Sap", "Hive Mind", "Queen's Favour"]),
                ("Wilds", ["rare_forage", "forage_bonus"], ["Quiet Steps", "Trail Lore", "Moss Sense", "Night Walker", "Glint Eye", "Hollow Finder", "Old Paths", "Spirit of the Wood", "Green King"])],
               {"forager": 0, "herbalist": 0, "rare_finds": 0, "lumberjack": 1, "woodcutter": 1, "sap_tapper": 2, "beekeeper": 2, "tracker": 3, "night_eyes": 3, "keeper_of_the_woods": 3, "wild_friend": 3, "old_growth": 1}),
  "fishing": ([("Patience", ["bite_speed"], ["Still Water", "Calm Breath", "Quick Bobber", "Tide Sense", "Ripple Reader", "Dawn Caster", "Lazy River", "Zen Line", "One with the Lake"]),
@@ -67,11 +68,11 @@ T = {
              {"patience": 0, "bait_maker": 0, "master_bait": 0, "strong_line": 1, "net_caster": 1, "swimmer": 1, "angler": 2, "lucky_lure": 2, "sea_legend": 2, "trapper": 3, "pond_plans": 3, "treasure_hunter": 3, "tide_whisperer": 2}),
  "combat": ([("Blade", ["damage", "crit"], ["Sharp Edge", "Quick Draw", "Weak Spot", "Clean Strike", "Flurry", "Keen Blade", "Finishing Blow", "Blade Dance", "Master Sword"]),
              ("Guard", ["block", "damage_reduction"], ["Brace", "Parry", "Thick Hide", "Shield Arm", "Iron Stance", "Deflect", "Unshaken", "Bulwark", "Fortress"]),
-             ("Vigour", ["hp", "energy"], ["Deep Breaths", "Hearty", "Runner", "Big Lungs", "Iron Gut", "Toughness", "Second Breath", "Endless", "Giant's Heart"]),
+             ("Vigour", ["hp", "energy"], ["Deep Breaths", "Hearty", "Runner", "Big Lungs", "Hardy", "Toughness", "Second Breath", "Endless", "Giant's Heart"]),
              ("Momentum", ["kill_energy", "crit"], ["Rush", "Battle Cry", "Hunter's Eye", "Chain Fighter", "Adrenaline", "Fury", "Unstoppable", "War Song", "Hero's Will"])],
             {"fighter": 0, "critical_eye": 0, "champion": 0, "defender": 1, "iron_skin": 1, "acrobat": 1, "tough": 2, "stamina": 2, "warrior": 2, "second_wind": 3, "berserker": 3, "whirlwind": 3, "legend": 0}),
  "bartering": ([("Selling", ["sell_bonus"], ["Fair Price", "Good Pitch", "Bulk Deal", "Display Skill", "Sharp Ledger", "Hot Market", "Premium Goods", "Top Dollar", "Market King"]),
-                ("Buying", ["sell_bonus", "interest"], ["Thrifty", "Coupon Clipper", "Haggler's Grin", "Wholesale", "Back Room Prices", "Insider", "Bargain Sense", "Favourite Customer", "Owns the Shop"]),
+                ("Buying", ["buy_discount", "sell_bonus"], ["Thrifty", "Coupon Clipper", "Haggler's Grin", "Wholesale", "Back Room Prices", "Insider", "Bargain Sense", "Favourite Customer", "Owns the Shop"]),
                 ("Friends", ["gift_bonus"], ["Warm Smile", "Remember Names", "Thoughtful Gifts", "Good Listener", "Town Favourite", "Best Neighbour", "Party Guest", "Heart of Town", "Beloved"]),
                 ("Savings", ["interest", "sell_bonus"], ["Piggy Bank", "Rainy Day Fund", "Coin Counter", "Compound", "Nest Egg", "Investor", "Vault Key", "Fortune", "Crystal Hoard"])],
                {"trader": 0, "appraiser": 0, "monopolist": 0, "haggler": 1, "tycoon": 1, "stall_plans": 1, "smooth_talker": 2, "festival_favorite": 2, "patron": 2, "networker": 3, "crystal_baron": 3, "magnate": 3}),
@@ -131,13 +132,19 @@ def _caps():
     """GameState.BONUS_CAPS, read from the script so the two never drift."""
     src = open(f"{R}/scripts/game_state.gd").read()
     m = re.search(r"const BONUS_CAPS := \{(.*?)\}", src, re.S)
-    return {k: float(v) for k, v in re.findall(r'"(\w+)":\s*([0-9.]+)', m.group(1))}
+    caps = {k: float(v) for k, v in re.findall(r'"(\w+)":\s*([0-9.]+)', m.group(1))}
+    m2 = re.search(r"const SKILL_CAPS := \{(.*?)\}\n", src)
+    per = {}
+    if m2:
+        for sk, body in re.findall(r'"(\w+)":\s*\{([^}]*)\}', m2.group(1) + "}"):
+            per[sk] = {k: float(v) for k, v in re.findall(r'"(\w+)":\s*([0-9.]+)', body)}
+    return caps, per
 
 
-CAPS = _caps()
+BASE_CAPS, SKILL_CAPS = _caps()
 FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
-            "fishing": ["fish_value", "double_fish"], "combat": ["hp", "energy"], "bartering": ["sell_bonus", "interest"],
-            "building": ["energy", "craft_speed"], "magic": ["mana", "spell_damage"], "pup": ["pet_hp", "pet_dmg"],
+            "fishing": ["fish_value", "double_fish"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "buy_discount"],
+            "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
             "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
 
 
@@ -152,31 +159,40 @@ UNLOCKS = {
                 (2, 2, "Press Blueprint", "Learn to build the Press: jams, oils and juices.", {"blueprint": "press"}),
                 (1, 6, "Rain Dance", "Learn the Rain Call spell: water every crop at once.", {"spell": "rain_call"}),
                 (3, 8, "Bountiful Touch", "Learn the Growth spell: the crop in front of you grows a day.", {"spell": "growth"}),
-                (3, 3, "Field Runner", "Move 5% faster.", {"move_speed": 0.05})],
+                (3, 3, "Field Runner", "Move 5% faster.", {"move_speed": 0.05}),
+                (0, 9, "Wide Spout", "Your watering can also soaks the tilled tiles to either side.", {"wide_water": 1})],
     "mining": [(0, 2, "Heavy Swing", "Your pickaxe breaks rock with one more hit per swing.", {"mine_power": 1}),
                (1, 2, "Kiln Blueprint", "Learn to build the Kiln: glass, brick and pottery.", {"blueprint": "kiln"}),
                (0, 7, "Seismic Swing", "Another extra hit per pickaxe swing.", {"mine_power": 1}),
-               (2, 6, "Tunnel Legs", "Move 5% faster.", {"move_speed": 0.05})],
+               (2, 6, "Tunnel Legs", "Move 5% faster.", {"move_speed": 0.05}),
+               (3, 9, "Tremor", "Breaking a rock cracks the rocks around it down to one last hit.", {"tremor": 1})],
     "foraging": [(0, 1, "Sharp Edge", "Your axe fells trees with one more hit per swing.", {"chop_power": 1}),
                  (0, 6, "Lumberjack's Might", "Another extra hit per axe swing.", {"chop_power": 1}),
                  (2, 3, "Trailblazer", "Move 5% faster.", {"move_speed": 0.05}),
                  (2, 7, "Wind at Your Back", "Learn the Haste spell: run 30% faster for an hour.", {"spell": "haste"}),
-                 (1, 2, "Loom Blueprint", "Learn to build the Loom: cloth, rope and sacks.", {"blueprint": "loom"})],
+                 (1, 2, "Loom Blueprint", "Learn to build the Loom: cloth, rope and sacks.", {"blueprint": "loom"}),
+                 (3, 9, "Domino Fall", "A tree you fell knocks down the tree behind it too.", {"timber": 1})],
     "fishing": [(1, 2, "Pond Blueprint", "Learn to build the Fish Pond on your farm.", {"blueprint": "fish_pond"}),
                 (2, 6, "Still Waters", "Learn the Lull spell: nearby enemies fall asleep.", {"spell": "lull"}),
-                (3, 4, "Strong Strokes", "Move 5% faster.", {"move_speed": 0.05})],
+                (3, 4, "Strong Strokes", "Move 5% faster.", {"move_speed": 0.05}),
+                (0, 9, "Tidecall", "Your first cast each day bites at once.", {"tidecall": 1})],
     "combat": [(0, 2, "Honed Blade", "+2 damage on every hit.", {"damage": 2}),
                (0, 6, "Keen Edge", "+3 damage on every hit.", {"damage": 3}),
                (1, 3, "Fleet Foot", "Move 5% faster.", {"move_speed": 0.05}),
                (1, 7, "Crystal Ward", "Learn the Crystal Shield spell: block the next blows.", {"spell": "crystal_shield"}),
-               (2, 2, "Tanner's Blueprint", "Learn to build the Tannery: leather and armour.", {"blueprint": "tannery"})],
+               (2, 2, "Tanner's Blueprint", "Learn to build the Tannery: leather and armour.", {"blueprint": "tannery"}),
+               (2, 8, "Iron Gut", "Poison and burns can't touch you.", {"status_guard": 1}),
+               (2, 9, "Not Today", "Once a day, a hit that would knock you out leaves you on 1 HP.", {"last_stand": 1})],
     "bartering": [(0, 2, "Jeweler's Blueprint", "Learn to build the Jeweler: rings and charms.", {"blueprint": "jeweler"}),
-                  (2, 6, "Homeward", "Learn the Warp Home spell: blink back to your bed.", {"spell": "warp_home"})],
+                  (2, 6, "Homeward", "Learn the Warp Home spell: blink back to your bed.", {"spell": "warp_home"}),
+                  (1, 9, "Lucky Day", "5% chance each night the sell box pays double.", {"jackpot": 0.05})],
     "building": [(0, 2, "Garage Blueprint", "Learn to build the Garage: carts and vehicles.", {"blueprint": "garage"}),
                  (1, 3, "Cauldron Blueprint", "Learn to build the Cauldron: potions and tonics.", {"blueprint": "cauldron"}),
-                 (2, 2, "Light Feet", "Move 5% faster.", {"move_speed": 0.05})],
+                 (2, 2, "Light Feet", "Move 5% faster.", {"move_speed": 0.05}),
+                 (3, 9, "Quick Build", "Hazel's crew finishes every build a day sooner.", {"quick_build": 1})],
     "pup": [(1, 4, "Pack Run", "Move 5% faster while your pup is out.", {"move_speed": 0.05})],
-    "magic": [(2, 3, "Blink Step", "Move 5% faster.", {"move_speed": 0.05})],
+    "magic": [(2, 3, "Blink Step", "Move 5% faster.", {"move_speed": 0.05}),
+              (3, 9, "Twin Cast", "15% chance a spell costs no mana.", {"free_cast": 0.15})],
     "hustle": [(0, 1, "Terminal Blueprint", "Learn to build the Hacking Terminal.", {"blueprint": "terminal"}),
                (1, 3, "Clinic Blueprint", "Learn to build the Chrome Clinic.", {"blueprint": "clinic"}),
                (2, 4, "Robotics Blueprint", "Learn to build the Robotics Bench: bots and drones.", {"blueprint": "robotics"}),
@@ -200,6 +216,7 @@ out = {"_format": "Sun Haven-style grids (tools/gen_skill_trees.py): 4 branches 
 total = 0
 for sk, sd in base["skills"].items():
     rows, rowmap = T[sk]
+    CAPS = {**BASE_CAPS, **SKILL_CAPS.get(sk, {})}
     grid = [[None] * 10 for _ in range(4)]
     for n in sd["nodes"]:
         r = MAGIC_ROW[n.get("branch", "core")] if sk == "magic" else rowmap[n["id"]]
@@ -230,7 +247,7 @@ for sk, sd in base["skills"].items():
                 break
     nodes = []
     used = {}
-    for n in sd["nodes"]:
+    for n in [g for row in grid for g in row if g]:  # base nodes and the unlocks already placed
         for ek, ev in (n.get("effect") or {}).items():
             if isinstance(ev, (int, float)):
                 used[ek] = used.get(ek, 0) + ev * int(n.get("ranks", 1))
@@ -243,13 +260,23 @@ for sk, sd in base["skills"].items():
                 ranks = 3 if c < 6 else (2 if c < 9 else 1)
                 a = AMT[k] * (2 if c == 9 else 1)
                 if k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9:
-                    for fk in FALLBACK.get(sk, []) + [x for x in keys if x != k] + ["xp_gain", "energy", "hp"]:
+                    for fk in ([x for x in keys if x != k] + FALLBACK.get(sk, []) if sk == "combat" else FALLBACK.get(sk, []) + [x for x in keys if x != k]) + ["xp_gain", "energy", "hp"]:
                         fa = AMT.get(fk, 0) * (2 if c == 9 else 1)
                         if fk in AMT and not (fk in CAPS and used.get(fk, 0) + fa * ranks > CAPS[fk] + 1e-9):
                             k, a = fk, fa
                             break
                     else:
-                        ranks = 1  # everything here is capped: a single rank
+                        # Everything here is capped: one rank of whatever still has room.
+                        ranks = 1
+                        cands = [x for x in FALLBACK.get(sk, []) + keys + ["xp_gain", "energy", "hp"] if x in AMT and x in CAPS]
+                        room = {x: CAPS[x] - used.get(x, 0) for x in cands}
+                        best = max(room, key=room.get) if room else None
+                        if best is not None and room[best] > 1e-9:
+                            k, a = best, min(AMT[best] * (2 if c == 9 else 1), room[best])
+                            if isinstance(AMT[best], int) and float(a).is_integer():
+                                a = int(a)
+                        else:
+                            print("WARN", sk, r, c, "no room under any cap")  # keeps the old (dead) rank
                     a = round(a, 3) if isinstance(a, float) else a
                 used[k] = used.get(k, 0) + a * ranks
                 a = round(a, 3) if isinstance(a, float) else a

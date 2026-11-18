@@ -96,7 +96,7 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 	GameState.run["flags"]["burned_day"] = int(GameState.run["day"])
 	var shopkeepers: Array = []
 	for k in ["maple", "gideon", "posy", "wren", "ivy"]:
-		if GameState.npcs.has(k):
+		if GameState.npcs.has(k) and not GameState.run["flags"].has(k + "_gone"):
 			shopkeepers.append(k)
 	var who := str(shopkeepers[randi() % shopkeepers.size()]) if not shopkeepers.is_empty() else ""
 	if who != "":

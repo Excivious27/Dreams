@@ -69,17 +69,22 @@ func build() -> void:
 	for c: Vector2i in _water:
 		set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
 	# East dock: from the shore at row 21 out into the water.
-	var x := 30
-	while _water.has(Vector2i(x, 21)) and x > 24:
-		x -= 1
-	for dx in range(x + 1, x + 6):
+	# It starts on the first land cell east of the water, so it touches the shore.
+	var e := 30
+	while _water.has(Vector2i(e, 21)) and e < cols - 1:
+		e += 1
+	for dx in range(e - 6, e):
 		_dock(Vector2i(dx, 21))
-	for dx in range(x + 1, x + 6):
 		_dock(Vector2i(dx, 22))
 	extend(10, 8)
 	# The outlet stream runs on through the added rows to the border water.
+	# It tapers out of the mill pond and wanders a little, not a ruler-straight ditch.
 	for y in range(40, rows):
-		for sx in range(26, 29):
+		var xs := range(25, 30)
+		if y >= 42:
+			var w := 1 + int(WorldGen.fbm(26.0, float(y), 909, 4.0) > 0.0)
+			xs = range(27 - w, 28 + w)
+		for sx in xs:
 			var c := Vector2i(sx, y)
 			if not things.has(c):
 				_water[c] = true
@@ -126,10 +131,6 @@ func after_ready() -> void:
 	_shore_building("water_mill", Vector2i(24, 26), "water_mill", "A: the mill", Vector2i(34, 34), true)
 	# The lighthouse stands on its rock at the south-west point; the door faces the shore path.
 	_shore_building("lighthouse", Vector2i(1, 24), "lighthouse", "A: the lighthouse", Vector2i(10, 34), true)
-	if GameState.run["flags"].has("lighthouse_lit"):
-		var beam := Sprite2D.new()
-		beam.position = cell_center(Vector2i(5, 24)) + Vector2(0, -150)
-		add_child(beam)
 	anim_prop("props", "duck", Vector2i(14, 14), 0, 1.5, false, 0.3)
 	anim_prop("props", "heron", Vector2i(26, 10), 0, 1.5, false, 0.4)
 	prop("props", "beaver_dam", Vector2i(11, 29), 2)
@@ -219,10 +220,12 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		# The sprite's own water/rock skirt: make those cells water so the shore wraps it.
 		# The mill's water is keyed out of its sprite (tools/key_water.py): fill the
 		# whole lower half with real water, one cell wider each side, so it reads as a pond.
+		# The lighthouse's painted sea is keyed out too: its rock gets a ring of real water.
+		var wide := name in ["water_mill", "lighthouse"]
 		var y0 := base.y - (h_cells / 2 if name == "water_mill" else 1)
-		var x0 := c.x - (1 if name == "water_mill" else 0)
-		var x1 := c.x + w_cells + (1 if name == "water_mill" else 0)
-		for y in range(y0, base.y + (2 if name == "water_mill" else 1)):
+		var x0 := c.x - (1 if wide else 0)
+		var x1 := c.x + w_cells + (1 if wide else 0)
+		for y in range(y0, base.y + (2 if wide else 1)):
 			for x in range(x0, x1):
 				var wc := Vector2i(x, y)
 				if wc != door and in_content(wc) and not things.has(wc):

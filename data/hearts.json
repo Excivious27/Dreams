@@ -153,7 +153,8 @@
     "6": [
      {
       "who": "Wren",
-      "text": "There's a flower that only grows where the crystal fell. Starflower. I had one once; I used it on a fever and it worked and I never found another."
+      "text": "There's a flower that only grows where the crystal fell. Starflower. I had one once; I used it on a fever and it worked and I never found another.",
+      "text_gangsters": "There's a blue herb by the orchard wall. Moonwort. I had some once; I used it on a fever and it worked and I never found more."
      },
      {
       "who": "Wren",
@@ -163,7 +164,8 @@
     "8": [
      {
       "who": "Wren",
-      "text": "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told her mother how close it was."
+      "text": "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told her mother how close it was.",
+      "text_gangsters": "The fever was Wren junior's. She was three. The moonwort was the only thing in this town that was going to work, and it did, and I never told her mother how close it was."
      },
      {
       "who": "Wren",
@@ -188,7 +190,8 @@
     "6": "A starflower. Just one. I'm not greedy.",
     "8": "She's seven now. She talks about frogs. Frogs are fine.",
     "10": "I answered her today before she asked. That's new."
-   }
+   },
+   "quest6_gangsters": "wren_moonwort"
   },
   "alder": {
    "quest6": "alder_gold",
@@ -289,7 +292,7 @@
     "8": [
      {
       "who": "Sal",
-      "text": "The knee was a door. Uptown. I put my shoulder to it so the others could get out, and I did, and they didn't."
+      "text": "The knee was a door. Uptown. I held it so the others could get out, and they wouldn't come. They stayed with him. I went."
      },
      {
       "who": "Sal",
@@ -405,7 +408,8 @@
     "6": [
      {
       "who": "Lumi",
-      "text": "There's a flower where the crystal fell. Starflower. The blue in it doesn't exist anywhere else; I've tried to mix it for a year."
+      "text": "There's a flower where the crystal fell. Starflower. The blue in it doesn't exist anywhere else; I've tried to mix it for a year.",
+      "text_gangsters": "There's a blue in the moonwort by the orchard wall that doesn't exist anywhere else; I've tried to mix it for a year."
      },
      {
       "who": "Lumi",
@@ -415,11 +419,13 @@
     "8": [
      {
       "who": "Lumi",
-      "text": "I mixed the blue. From the starflower. It's not the same; it's better, because I had to work for it."
+      "text": "I mixed the blue. From the starflower. It's not the same; it's better, because I had to work for it.",
+      "text_gangsters": "I mixed the blue. From the moonwort. It's not the same; it's better, because I had to work for it."
      },
      {
       "who": "Lumi",
-      "text": "The painting's of the gate. Your gate. The morning the penguins came. Don't ask how I knew; painters know."
+      "text": "The painting's of the gate. Your gate. The morning the penguins came. Don't ask how I knew; painters know.",
+      "text_gangsters": "The painting's of the gate. Your gate. The morning you came to town. Don't ask how I knew; painters know."
      }
     ],
     "10": [
@@ -440,7 +446,8 @@
     "6": "The blue. Just the blue.",
     "8": "The gate painting's drying.",
     "10": "Next to his portrait. He cried."
-   }
+   },
+   "quest6_gangsters": "lumi_moonwort"
   },
   "theo": {
    "quest6": "theo_book",
@@ -541,7 +548,7 @@
     "8": [
      {
       "who": "Hazel",
-      "text": "Granite told me. At the quarry. He didn't leave; the rockfall did. Nine years, Granite's been carrying that up the road and not quite knocking."
+      "text": "Granite told me. At the quarry. He didn't leave us. There was a rockfall; he got the whole crew out and hurt his back so badly he went to the coast to mend, too proud to write. Nine years, Granite's been carrying that up the road and not quite knocking."
      },
      {
       "who": "Hazel",
@@ -767,7 +774,8 @@
      },
      {
       "who": "Rook",
-      "text": "Try it. No. Try it again. ...Better. Grumps won't hear that."
+      "text": "Try it. No. Try it again. ...Better. Grumps won't hear that.",
+      "text_gangsters": "Try it. No. Try it again. ...Better. Nobody on the avenue will hear that."
      }
     ],
     "4": [
@@ -783,7 +791,8 @@
     "6": [
      {
       "who": "Rook",
-      "text": "The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge."
+      "text": "The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge.",
+      "text_gangsters": "The orchard. Strangers in it, at night. They'll reach the north bridge by harvest, and the clinic's past the bridge."
      },
      {
       "who": "Rook",
@@ -1049,7 +1058,7 @@
      },
      {
       "who": "Mabel",
-      "text": "There's a stone with his name. Granite cut it. It's a good stone. I sang to it; stones are easier than dogs."
+      "text": "There's a stone at the quarry with his name on it, for getting everyone out. Granite cut it. I sang to it; stones are easier than dogs."
      }
     ],
     "10": [
@@ -1136,7 +1145,7 @@
    }
   },
   "orla": {
-   "quest6": "lighthouse_oil",
+   "quest6": "orla_oil",
    "milestones": {
     "2": [
      {
@@ -1262,7 +1271,7 @@
    }
   },
   "ivy": {
-   "quest6": "theo_coins",
+   "quest6": "ivy_coins",
    "milestones": {
     "2": [
      {
@@ -1325,7 +1334,7 @@
    }
   },
   "tam": {
-   "quest6": "mer_crystals",
+   "quest6": "tam_lamb",
    "milestones": {
     "2": [
      {
@@ -1388,7 +1397,7 @@
    }
   },
   "old_moss": {
-   "quest6": "wren_glowcap",
+   "quest6": "moss_glowcaps",
    "milestones": {
     "2": [
      {
@@ -1423,7 +1432,7 @@
     "8": [
      {
       "who": "Old Moss",
-      "text": "The marsh witch was my patient. Fifty years ago. The thing I couldn't fix. She went into the water and came out as what she is."
+      "text": "The marsh witch was my patient. Fifty years ago. The thing I couldn't fix. She got lost in the marsh fog one night and came out of it as what she is."
      },
      {
       "who": "Old Moss",
@@ -1433,7 +1442,7 @@
     "10": [
      {
       "who": "Old Moss",
-      "text": "If you ever put her down— the witch— do it quick. Don't let her talk. She'll use my voice; she learned it from fifty years of me talking to her through the fog."
+      "text": "If you ever face her— the witch— don't stay to listen. Don't let her talk. She'll use my voice; she learned it from fifty years of me talking to her through the fog."
      },
      {
       "who": "Old Moss",
@@ -1447,11 +1456,11 @@
     "4": "I listen to the frogs.",
     "6": "The fog doesn't like it.",
     "8": "She was my patient.",
-    "10": "Quick. Don't let her talk."
+    "10": "Don't stay to listen."
    }
   },
   "granite": {
-   "quest6": "rook_bones",
+   "quest6": "granite_bones",
    "milestones": {
     "2": [
      {
@@ -1466,7 +1475,7 @@
     "4": [
      {
       "who": "Granite",
-      "text": "Nine years foreman. Was a hand before that. There was a rockfall, first year, took a good man. Hazel's man."
+      "text": "Nine years foreman. Was a hand before that. There was a rockfall, first year. A good man got us all out and paid for it with his back. Hazel's man."
      },
      {
       "who": "Granite",
@@ -1496,7 +1505,7 @@
     "10": [
      {
       "who": "Granite",
-      "text": "The little one calls me Granite. Just Granite. Not Mr. Not sir. I cut her father's stone and she sang to it and now she calls me Granite."
+      "text": "The little one calls me Granite. Just Granite. Not Mr. Not sir. I cut the stone with her father's name on it and she sang to it and now she calls me Granite."
      },
      {
       "who": "Granite",
@@ -1514,7 +1523,7 @@
    }
   },
   "sel": {
-   "quest6": "theo_fossil",
+   "quest6": "sel_fossil",
    "milestones": {
     "2": [
      {

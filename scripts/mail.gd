@@ -42,7 +42,7 @@ static func _name(id: String) -> String:
 static func _known() -> Array:
 	var out: Array = []
 	for id: String in GameState.npcs:
-		if int(GameState.run["friendship"].get(id, 0)) > 0 and not Crew.members().has(id):
+		if int(GameState.run["friendship"].get(id, 0)) > 0 and not Crew.members().has(id) and GameState.npc_present(id):
 			out.append(id)
 	return out
 

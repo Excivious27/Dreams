@@ -85,8 +85,8 @@ static func _all(station: String) -> Array:
 		if book(station) == "furnace" and sd > 0:
 			rc = rc.duplicate(true)
 			for k in rc["need"]:
-				if str(k) in ["copper", "iron", "silver", "gold", "dark", "moon_shard"]:
-					rc["need"][k] = maxi(1, int(rc["need"][k]) - sd)
+				if str(k) in ["copper", "iron", "silver", "gold", "dark"] and int(rc["need"][k]) >= 5:
+					rc["need"][k] = maxi(4, int(rc["need"][k]) - sd)
 		out.append(rc)
 	if book(station) == "keg":
 		out += _keg_recipes()
@@ -232,7 +232,7 @@ static func start(station: String, key: String, rc: Dictionary, tier: int, qty: 
 		# Whatever you start today is ready when you wake.
 		var day_end := int(GameState.run["day"]) * 1440 + GameState.DAY_END
 		mins = maxi(5, mins)
-		if now_abs() + mins > day_end:
+		if now_abs() + mins > day_end and now_abs() + mins <= day_end + 480:  # a huge batch still takes its time
 			mins = (int(GameState.run["day"]) + 1) * 1440 + GameState.DAY_START - now_abs()
 	var j := {"id": str(rc["id"]), "name": str(rc["name"]), "give": str(rc["give"]), "n": int(rc.get("n", 1)) * qty, "batches": qty, "tier": int(rc.get("tier", 1)), "tool": bool(rc.get("tool", false)), "st": tier, "station": station, "done_at": now_abs() + mins}
 	jobs(key).append(j)

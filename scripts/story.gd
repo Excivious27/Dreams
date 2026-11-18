@@ -234,7 +234,16 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
 
 
 ## Substitute %hero, %pet, %town, %partner in texts.
+## Fennimore beaten with a sword (not turned back) can't be turned any more:
+## drop fennimore_turnable so the "Make the heart" ending doesn't free her.
+static func _fennimore_check() -> void:
+	var fl: Dictionary = GameState.run["flags"]
+	if fl.has("boss_fennimore") and not fl.has("fennimore_free"):
+		fl.erase("fennimore_turnable")
+
+
 static func _fill(lines: Array) -> Array:
+	_fennimore_check()
 	var names := GameState.names()
 	var partner := Companion.active_name()
 	if partner == "":
@@ -282,8 +291,14 @@ static func _fill(lines: Array) -> Array:
 static func _apply(m: GameMap, fx: Dictionary) -> void:
 	for f in fx.get("flags", []):
 		GameState.run["flags"][str(f)] = true
+		# A villager the story sends away: drop their open quests (they can't be turned in).
+		if str(f).ends_with("_gone"):
+			var who := str(f).trim_suffix("_gone")
+			GameState.run["quests"] = (GameState.run["quests"] as Array).filter(func(q: Dictionary) -> bool: return q["done"] or str(GameState._quest_def(str(q["id"])).get("giver", "")) != who)
 	# {"needs_flag": ["flag to set", ...]}: set only when the first is already set.
 	var fi: Dictionary = fx.get("flags_if", {})
+	if not fi.is_empty():
+		_fennimore_check()
 	for need in fi:
 		if GameState.run["flags"].has(str(need)):
 			for f in fi[need]:
@@ -291,6 +306,9 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 	for f in fx.get("unflag", []):
 		GameState.run["flags"].erase(str(f))
 	for q in fx.get("quest", []):
+		# Many of these are also added by tick_quests: only announce new ones.
+		if GameState.has_quest(str(q[0])):
+			continue
 		GameState.add_quest(str(q[0]), str(q[1]))
 		m.hud.toast("New quest: %s" % str(q[1]), Color(1, 0.9, 0.4))
 	for q in fx.get("complete", []):
@@ -301,7 +319,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		GameState.add_friend(str(id), int(fx["friend"][id]))
 	for pair in fx.get("items", []):
 		GameState.add_item(str(pair[0]), int(pair[1]))
-		m.hud.toast("+%d %s" % [int(pair[1]), GameState.item_name(str(pair[0]))], Color(0.8, 1, 0.8))
+		m.hud.toast("%+d %s" % [int(pair[1]), GameState.item_name(str(pair[0]))], Color(0.8, 1, 0.8) if int(pair[1]) > 0 else Color(1, 0.85, 0.7))
 	if fx.has("crystals"):
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + int(fx["crystals"])
 	if fx.has("hint"):

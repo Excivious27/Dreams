@@ -7,7 +7,10 @@ const TOWN_EXIT := Rect2i(0, 38, 1, 4)
 const PAD := Vector2i(28, 5)
 const SPRING := Rect2i(44, 20, 3, 2)
 const LEDGES := [[14, 24, 27], [28, 10, 13]]   # [row, stair x0, stair x1]
+const FALLS_X := 52   # the stream runs down the top terrace and pours over the first ledge
+const FALLS_BRIDGE := Vector2i(FALLS_X, 9)
 var _ledge := {}
+var _falls_water := {}
 
 
 func scene_id() -> String:
@@ -35,6 +38,15 @@ func build() -> void:
 				continue
 			_ledge[Vector2i(x, y)] = true
 			blocked[Vector2i(x, y)] = true
+	# Stream (1 wide) down the top terrace, the falls over the ledge, a pool at the foot.
+	for y in range(2, 14):
+		var c := Vector2i(FALLS_X, y)
+		_falls_water[c] = true
+		if c != FALLS_BRIDGE:  # the rope bridge crosses here
+			set_thing(c.x, c.y, {"type": "water", "hint": ""})
+	for c: Vector2i in cells_of([Rect2i(FALLS_X - 1, 15, 3, 2)]):
+		_falls_water[c] = true
+		set_thing(c.x, c.y, {"type": "water", "hint": ""})
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 91
 	var placed := 0
@@ -84,7 +96,7 @@ func after_ready() -> void:
 		for l in LEDGES:
 			prop("props", "cliff_stairs_up", Vector2i(int(l[1]) + 1, int(l[0])), 0, 0.0, false)
 	if Art.has("props", "rope_bridge2"):
-		walk_over(prop("props", "rope_bridge2", Vector2i(44, 12), 3, 0.0, false), 4)
+		walk_over(prop("props", "rope_bridge2", FALLS_BRIDGE - Vector2i(1, 0), 2, 0.0, false), 4)
 	prop("props", "rockslide", Vector2i(6, 20), 2)
 	block_rect(6, 19, 3, 2)
 	prop("props", "goat", Vector2i(40, 8))
@@ -242,7 +254,7 @@ func draw_map() -> void:
 				if int(l2[0]) < y:
 					y_from = maxi(y_from, int(l2[0]) + 1)
 			for yy in range(y_from, y):
-				for x in range(0, cols):
+				for x in range(-pad, cols + pad):  # on under the border band: no edge at the map side
 					top[Vector2i(x, yy)] = true
 			draw_plateau(top, "cliffg", stairs)
 	else:
@@ -250,12 +262,20 @@ func draw_map() -> void:
 			var t := Art.tex("tiles", "cliff2_1")
 			if t:
 				draw_texture_rect(t, Rect2(c.x * TILE, (c.y - 1) * TILE, TILE, TILE * 2), false)
+	if not _falls_water.is_empty():
+		draw_water(_falls_water, "river")
 	if Art.has("tiles", "waterfall2") and _anim_layer:
+		# One fall over the ledge: cap once, a run of middle pieces, foam foot at the pool.
 		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 			var fr := int(Time.get_ticks_msec() / 120) % 4
 			var wt := Art.tex("tiles", "waterfall2")
-			for yy in range(2, 10, 2):
-				ci.draw_texture_rect_region(wt, Rect2(52 * TILE, yy * TILE, TILE, TILE * 2), Rect2(fr * 32, 0, 32, 64)))
+			var fx0 := FALLS_X * TILE
+			ci.draw_texture_rect_region(wt, Rect2(fx0, 13 * TILE, TILE, 10), Rect2(fr * 32, 0, 32, 20))
+			var yy := 13 * TILE + 10
+			while yy < 15 * TILE - 2:
+				ci.draw_texture_rect_region(wt, Rect2(fx0, yy, TILE, 12), Rect2(fr * 32, 20, 32, 24))
+				yy += 12
+			ci.draw_texture_rect_region(wt, Rect2(fx0, 15 * TILE - 2, TILE, 10), Rect2(fr * 32, 44, 32, 20)))
 	draw_exits()
 	if not Art.has("props", "hot_spring"):
 		var r := Rect2(SPRING.position * TILE, SPRING.size * TILE)

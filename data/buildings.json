@@ -454,7 +454,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1330,
+    "price": 1390,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -585,7 +585,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 2380,
+    "price": 2550,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -673,7 +673,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Anything you grow, given time.",
-    "price": 440,
+    "price": 470,
     "art_missing": false
    },
    {
@@ -821,7 +821,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 3240,
+    "price": 3370,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -952,7 +952,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 1610,
+    "price": 1710,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1041,7 +1041,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nails, tools, copper gear.",
-    "price": 660,
+    "price": 760,
     "art_missing": false
    },
    {
@@ -1453,12 +1453,12 @@
     "cost": {
      "wood": 20,
      "stone": 10,
-     "cloth": 2
+     "fiber": 6
     },
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Cheese, butter, jam, oil.",
-    "price": 390,
+    "price": 300,
     "art_missing": false
    },
    {
@@ -1577,7 +1577,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
-    "price": 2120,
+    "price": 2220,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -1665,7 +1665,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Rings and charms.",
-    "price": 590,
+    "price": 660,
     "art_missing": false
    },
    {
@@ -1770,7 +1770,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Remedies and red potions.",
-    "price": 630,
+    "price": 700,
     "art_missing": false
    },
    {
@@ -2094,7 +2094,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Crude bills. Risky.",
-    "price": 790,
+    "price": 860,
     "art_missing": false
    },
    {
@@ -2200,7 +2200,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Knuckles, a fedora, rounds.",
-    "price": 1080,
+    "price": 1210,
     "art_missing": false
    },
    {
@@ -2306,7 +2306,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Root beer. A front with a real queue.",
-    "price": 1040,
+    "price": 1100,
     "art_missing": false
    },
    {
@@ -2402,12 +2402,12 @@
     "cost": {
      "plank": 20,
      "copper_bar": 4,
-     "cloth": 6
+     "fiber": 18
     },
     "permit": 0,
     "days": 0,
     "desc": "Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.",
-    "price": 1360,
+    "price": 1200,
     "art_missing": false
    },
    {
@@ -2568,7 +2568,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. An icicle blade, snow goggles.",
-    "price": 1010,
+    "price": 1080,
     "art_missing": false
    },
    {
@@ -2882,7 +2882,9 @@
     "desc": "The merkitties leave 1 gift from the lake each morning. Fish bite a little faster for you.",
     "price": 570,
     "art_missing": false,
-    "unlock": {}
+    "unlock": {
+     "flag": "merkitty_done"
+    }
    },
    {
     "tier": 2,
@@ -2897,7 +2899,7 @@
     "permit": 0,
     "days": 0,
     "desc": "2 gifts a morning, sometimes a pearl.",
-    "price": 3370,
+    "price": 3570,
     "unlock": {
      "progress": 1,
      "skill": [
@@ -2962,7 +2964,8 @@
     "price": 1160,
     "art_missing": false,
     "unlock": {
-     "progress": 2
+     "progress": 2,
+     "flag": "babies_done"
     }
    },
    {
@@ -3043,7 +3046,8 @@
     "price": 1500,
     "art_missing": false,
     "unlock": {
-     "progress": 1
+     "progress": 1,
+     "flag": "meow_taught"
     }
    },
    {
@@ -3126,7 +3130,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Circuit boards, data chips.",
-    "price": 1160,
+    "price": 1290,
     "art_missing": false
    },
    {
@@ -3227,12 +3231,12 @@
     "cost": {
      "plank": 14,
      "iron_bar": 4,
-     "cloth": 6
+     "fiber": 18
     },
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Nothing yet: Doc wants better tools.",
-    "price": 1900,
+    "price": 1610,
     "art_missing": false
    },
    {
@@ -3338,7 +3342,7 @@
     "permit": 0,
     "days": 0,
     "desc": "1 job at once, normal speed, recipes up to tier 2. Servos.",
-    "price": 1950,
+    "price": 2080,
     "art_missing": false
    },
    {

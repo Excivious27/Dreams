@@ -134,9 +134,10 @@ static func cast(m: GameMap, id: String) -> bool:
 					else:
 						tile["crop"] = ""
 						tile["days"] = 0
+					m.net_act({"a": "farm_tile", "key": key, "tile": tile})
 					n += 1
 			m.hud.toast("Bloom: %d crops to the sell box." % n, Color(1, 0.9, 0.6))
-			m.queue_redraw()
+			_redraw_soil(m)
 			if n == 0:
 				return false
 		"resonance":
@@ -158,13 +159,15 @@ static func cast(m: GameMap, id: String) -> bool:
 			await d.finished
 			if d.last_choice < 0 or d.last_choice >= seen.size():
 				return false
+			if m._transitioning or m._changing:
+				return false
 			m.fx("sparkle", p.position + Vector2(0, -14), 14.0, 0.8)
 			m.go_to(seen[d.last_choice], Vector2.ZERO)
 		"glow":
 			GameState.run["flags"]["glow_day"] = int(GameState.run["day"])
 			m.hud.toast("The dark pulls back.", Color(0.9, 0.95, 1.0))
 		"haste":
-			GameState.run["flags"]["haste_until"] = int(GameState.run["time"]) + 60
+			GameState.run["flags"]["haste_abs"] = GameState.now_abs() + 60  # the real timer (survives sleep)
 			m.hud.toast("Haste!", Color(0.8, 1.0, 0.8))
 		"rain_call":
 			var n := 0
@@ -172,17 +175,23 @@ static func cast(m: GameMap, id: String) -> bool:
 				var tile: Dictionary = GameState.run["farm"][key]
 				if tile.get("crop", "") != "" and not bool(tile.get("watered", false)):
 					tile["watered"] = true
+					m.net_act({"a": "farm_tile", "key": key, "tile": tile})
 					n += 1
 			m.hud.toast("Rain falls on %d crops." % n, Color(0.7, 0.85, 1.0))
-			if m.has_method("queue_redraw"):
-				m.queue_redraw()
+			_redraw_soil(m)
 		"growth":
 			var fc: Vector2i = p.facing_cell()
 			var key := "%d,%d" % [fc.x, fc.y]
 			if m.scene_id() == "farm" and GameState.run["farm"].has(key) and GameState.run["farm"][key].get("crop", "") != "":
-				GameState.run["farm"][key]["days"] = int(GameState.run["farm"][key].get("days", 0)) + 1
+				var gt: Dictionary = GameState.run["farm"][key]
+				var cdays := int(GameState.crops.get(str(gt["crop"]), {}).get("days", 99))
+				if int(gt.get("days", 0)) >= cdays:
+					m.hud.toast("Already ripe.", Color(1, 0.9, 0.6))
+					return false
+				gt["days"] = int(gt.get("days", 0)) + 1
+				m.net_act({"a": "farm_tile", "key": key, "tile": gt})
 				m.fx("sparkle", m.cell_center(fc) + Vector2(0, -6), 14.0, 0.5)
-				m.queue_redraw()
+				_redraw_soil(m)
 			else:
 				m.hud.toast("Face a planted crop.", Color(1, 0.8, 0.6))
 				return false
@@ -190,12 +199,27 @@ static func cast(m: GameMap, id: String) -> bool:
 			GameState.run["flags"]["shield"] = 3
 			m.hud.toast("Crystal Shield: 3 hits.", Color(0.8, 0.9, 1.0))
 		"warp_home":
+			if m._transitioning or m._changing:
+				return false
 			m.fx("sparkle", p.position + Vector2(0, -14), 14.0, 0.6)
 			m.go_to("house", Vector2(5 * GameMap.TILE + 8, 5 * GameMap.TILE))
 		_:
 			fired = false
 	if fired:
-		GameState.spend_mana(cost_of(id))
+		if randf() < GameState.bonus("magic", "free_cast"):
+			# Twin Cast (Magic): now and then a spell costs nothing.
+			m.hud.toast("Twin Cast: free!", Color(0.85, 0.75, 1.0))
+			m.fx("sparkle", p.position + Vector2(0, -14), 12.0, 0.5)
+		else:
+			GameState.spend_mana(cost_of(id))
 		m.xp("magic", 2 + int(SPELLS[id]["cost"]) / 5)
 		Music.instance(m.get_tree()).sfx("spell", "levelup")
 	return fired
+
+
+## Farm soil and crops draw on their own layer (farm.gd _soil); the map itself too.
+static func _redraw_soil(m: GameMap) -> void:
+	m.queue_redraw()
+	var soil = m.get("_soil")
+	if soil is CanvasItem:
+		(soil as CanvasItem).queue_redraw()

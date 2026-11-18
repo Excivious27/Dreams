@@ -59,10 +59,10 @@ static func talk(m: GameMap, id: String) -> bool:
 		var q := str(v.get("quest6_gangsters", v.get("quest6", ""))) if not GameState.is_penguins() else str(v.get("quest6", ""))
 		if q != "" and not GameState.has_quest(q):
 			var d := GameState._quest_def(q)
-			# Respect the quest's own gates (arc, skill, earlier quest); if they
-			# aren't met yet, the villager offers it later through Quests.talk.
-			var arc_ok := not d.has("arc") or str(d["arc"]) == str(GameState.run.get("arc", ""))
-			if not d.is_empty() and arc_ok and GameState._cond_ok(d.get("when", {})):
+			# Respect the quest's own gates (skill, earlier quest; _quest_def already
+			# drops other-arc quests); if they aren't met yet, the villager offers
+			# it later through Quests.talk.
+			if not d.is_empty() and GameState._cond_ok(d.get("when", {})):
 				GameState.add_quest(q, str(d.get("text", q)))
 				m.hud.toast("New quest: %s" % str(d.get("text", q)), Color(1, 0.9, 0.4))
 	if n == 10:

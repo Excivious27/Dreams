@@ -44,7 +44,6 @@ var _ledge_cells := {}
 var _path_cells := {}
 var _crystal: Node2D
 var _fishing := false
-var _fish_bite := false
 var _crystal_t := 0.0
 var _rng := RandomNumberGenerator.new()
 
@@ -339,6 +338,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if str(thing.get("kind", "")) == "chest":
 				later(ChestScreen.open.bind(self, "p:%d,%d" % [c.x, c.y], "Chest"))
 				return true
+			# Hold-to-repeat with a field tool must never pull a sprinkler out of the row.
+			if GameState.held_tool() in ["hoe", "can", "axe", "pickaxe", "scythe"]:
+				hud.toast("Put the tool away to pick it up.")
+				return true
 			pickup_placed(c)
 			return true
 		"":
@@ -473,9 +476,12 @@ func _plans() -> void:
 			return
 		var msg := Builds.start(id, buy)
 		var ok := not msg.begins_with("Can't")
-		hud.toast(msg, Color(1, 0.9, 0.4) if ok else Color(1, 0.7, 0.7))
 		if not ok:
+			hud.toast(msg, Color(1, 0.7, 0.7))
 			continue
+		# The scene reloads below (a new HUD): a note survives it and is announced after.
+		GameState.notify(msg)
+		Music.instance(get_tree()).sfx("craft_done", "levelup")
 		GameState.save()
 		# Simplest reliable refresh: reload the scene in place.
 		GameMap.next_spawn = player.position - offset()
@@ -559,7 +565,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		if randf() < GameState.bonus("farming", "star_chance"):
 			n += 2
 			hud.toast("★ Star-quality harvest!", Color(1, 0.95, 0.5))
-		give(str(cd["yield"]), n)
+		pop_items(cell_center(c), str(cd["yield"]), n)  # the crop hops out to you
 		# Quality: farming skill and fertiliser raise the odds of silver and gold.
 		var flv := GameState.skill_level("farming")
 		var fert := bool(tile.get("fert", false))
@@ -584,7 +590,10 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		if cd.has("regrow"):
 			# Bushes and vines keep producing: back to a few days before ripe.
 			tile["days"] = int(cd["days"]) - int(cd["regrow"])
-			hud.toast("%s will fruit again in %d days." % [str(cd["name"]), int(cd["regrow"])])
+			var rk := "regrow_told_" + crop
+			if not GameState.run["flags"].has(rk):  # say it once per crop, not every pick
+				GameState.run["flags"][rk] = true
+				hud.toast("%s will fruit again in %d days." % [str(cd["name"]), int(cd["regrow"])])
 		else:
 			tile["crop"] = ""
 			tile["days"] = 0
@@ -621,6 +630,21 @@ func _water(tile: Dictionary, key := "") -> bool:
 	tile["watered"] = true
 	if key != "":
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
+	# Wide Spout (Farming): the pour also soaks the tilled tiles either side (no extra energy).
+	if key != "" and GameState.bonus("farming", "wide_water") > 0:
+		var kp := key.split(",")
+		var tc := Vector2i(int(kp[0]), int(kp[1]))
+		var d := tc - player.cell()
+		d = Vector2i(signi(d.x), signi(d.y))
+		if d == Vector2i.ZERO or (d.x != 0 and d.y != 0):
+			d = Vector2i(player.facing_dir())
+		var side := Vector2i(d.y, d.x)
+		for s: int in [-1, 1]:
+			var k2 := "%d,%d" % [tc.x + side.x * s, tc.y + side.y * s]
+			var t2: Dictionary = GameState.run["farm"].get(k2, {})
+			if not t2.is_empty() and not bool(t2.get("watered", false)):
+				t2["watered"] = true
+				net_act({"a": "farm_tile", "key": k2, "tile": t2})
 	player.play_tool("water")
 	Music.instance(get_tree()).sfx("water")
 	_soil.queue_redraw() if _soil else queue_redraw()
@@ -701,11 +725,29 @@ func _sellbox(sel: String) -> void:
 	if box.is_empty():
 		await say([{"text": "The sell box is empty. Pick an item on the toolbar and tap USE here to sell it. You get paid in crystals overnight."}])
 	else:
-		var lines: Array = []
-		var total := 0
+		var total := GameState.quality_bonus_value(GameState.run.get("sellbox_q", {}))
 		for id in box:
 			total += GameState.sell_price(id, int(box[id]))
-		await say([{"text": "In the box: %s. Worth ◆%d, paid tonight." % [", ".join(box.keys().map(func(k: String) -> String: return "%s x%d" % [GameState.item_name(k), int(box[k])])), total]}])
+		var txt := "In the box: %s. Worth ◆%d, paid tonight." % [", ".join(box.keys().map(func(k: String) -> String: return "%s x%d" % [GameState.item_name(k), int(box[k])])), total]
+		if Net.online():
+			await say([{"text": txt}])
+			return
+		# Changed your mind? Everything comes back out before the night's pickup.
+		var dl := Dialogue.instance(get_tree())
+		dl.say([{"text": txt, "choice": ["Leave it", "Take it all back"], "key": ""}])
+		await dl.finished
+		if dl.last_choice != 1:
+			return
+		var bq: Dictionary = GameState.run.get("sellbox_q", {})
+		for id: String in box.keys():
+			GameState.add_item(id, int(box[id]))
+			var q: Dictionary = bq.get(id, {})
+			for k in ["g", "s"]:
+				if int(q.get(k, 0)) > 0:
+					GameState.add_quality(id, k, int(q[k]))
+		GameState.run["sellbox"] = {}
+		GameState.run["sellbox_q"] = {}
+		hud.toast("Took everything back out of the sell box.", Color(0.8, 1, 0.8))
 
 
 func _mailbox() -> void:
@@ -901,68 +943,9 @@ func _resonator(sel: String) -> void:
 
 func _pond_fish(c: Vector2i) -> void:
 	_fishing = true
-	await fish_at(c, ["sunfish", "minnow", "carp", "trout", "bass", "catfish", "salmon", "eel", "puffer", "goldfish", "starfin", "mooncarp"])
+	# The pond keeps the common fish; the rare ones live in the lake, the sea and at night.
+	await fish_at(c, ["minnow", "sunfish", "carp", "bass", "trout", "catfish"])
 	_fishing = false
-
-
-func _fish() -> void:
-	if not GameState.spend_for("rod"):
-		hud.toast("Too tired.", Color(1, 0.7, 0.7))
-		return
-	_fishing = true
-	_fish_bite = false
-	player.play_tool("cast")
-	player.frozen = true
-	hud.toast("Casting... wait for the !")
-	var bob: AnimatedSprite2D = null
-	if Art.has("fx", "bobber"):
-		bob = AnimatedSprite2D.new()
-		var b2 := Art.has("fx", "bobber2")
-		bob.sprite_frames = Art.frames("fx", {"bobber": "bobber2" if b2 else "bobber", "bite": "bobber2_bite" if b2 else "bobber_bite"}, {"bobber": 4.0, "bite": 8.0})
-		bob.animation = "bobber"
-		bob.scale = Vector2(0.5, 0.5)
-		bob.position = cell_center(player.facing_cell()) + Vector2(0, -6)
-		bob.z_index = 1
-		add_child(bob)
-		bob.play("bobber")
-	var wait := randf_range(1.5, 4.0)
-	var t := 0.0
-	var caught := false
-	while t < wait + 1.0:
-		await get_tree().process_frame
-		var dt := get_process_delta_time()
-		t += dt
-		if not _fish_bite and t >= wait:
-			_fish_bite = true
-			hud.toast("!!!  Tap USE!", Color(1, 1, 0.4))
-			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
-			Music.instance(get_tree()).sfx("bite")
-			if bob:
-				bob.play("bite")
-		if Input.is_action_just_pressed("a") and t > 0.2:
-			if _fish_bite:
-				caught = true
-			break
-	player.frozen = false
-	_fishing = false
-	if bob:
-		fx("reel_splash" if Art.has("fx", "reel_splash") else "splash", bob.position, 12.0, 0.5)
-		if caught and Art.has("fx", "fish_jump_a"):
-			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
-		bob.queue_free()
-	if caught:
-		var roll := randf()
-		var lvl := GameState.skill_level("fishing")
-		var fish := "boot"
-		if roll >= 0.12:
-			var pool: Array = ["sunfish", "carp", "minnow", "trout", "bass", "catfish", "salmon", "eel", "puffer", "goldfish", "starfin", "mooncarp"]
-			var reach := mini(pool.size(), 3 + lvl * 2)
-			fish = pool[randi() % reach]
-		player.play_tool("reel")
-		give(fish)
-		xp("fishing", 4)
-	else:
-		hud.toast("It got away.")
 
 
 # ---- story -------------------------------------------------------------------
@@ -1060,7 +1043,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 		await say([{"text": "You burn it in the sink. The handwriting goes with it. Whoever they are, they'll have to find you the hard way."}])
 		GameState.run["flags"]["letter"] = "burned"
 	elif ans == 1:
-		await say([{"text": "You fold it into the deed. If this goes to court someday, or to a grave, it goes with you."}])
+		await say([{"text": "You fold it into the deed. If this ever goes to court, it goes with you."}])
 		GameState.run["flags"]["letter"] = "kept"
 	else:
 		await say([{"text": "The loops on the W. The hard press on the K. You'll know it when you see it again. You're sure you will."}])

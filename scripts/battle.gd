@@ -10,7 +10,7 @@ extends Node2D
 
 const CAP_R := 44.0          # capture radius (px)
 const CAP_TIME := 7.0        # seconds for one person to take a neutral point
-const SPAWNER_COST := {"striker": 20, "healer": 25, "warden": 25, "shade": 30, "turret": 15}
+const SPAWNER_COST := {"striker": 20, "healer": 25, "warden": 25, "shade": 30, "turret": 30}
 const MAX_PER_SPAWNER := 3
 
 var map: GameMap
@@ -46,6 +46,13 @@ static func start(m: GameMap, region_id: String, data: Dictionary) -> Battle:
 	return b
 
 
+
+## Who speaks the brief / win / lose lines: a crew member only once recruited.
+func _who() -> String:
+	var w := str(d.get("who", ""))
+	var id := w.to_lower().replace(" ", "_")
+	return w if not Crew.members().has(id) or Crew.recruited(id) else ""
+
 func _setup() -> void:
 	var t := int(d.get("tickets", 150))
 	tickets = {"ally": t, "enemy": t}
@@ -68,15 +75,15 @@ func _setup() -> void:
 	_rally_btn = Button.new()
 	_rally_btn.position = RALLY_RECT.position
 	_rally_btn.size = RALLY_RECT.size
-	_rally_btn.add_theme_font_size_override("font_size", 7)
+	_rally_btn.add_theme_font_size_override("font_size", 8)
 	_rally_btn.focus_mode = Control.FOCUS_NONE
-	_rally_btn.pressed.connect(_cycle_rally)
+	_rally_btn.pressed.connect(func() -> void: map.later(_pick_rally))
 	layer.add_child(_rally_btn)
 	Hud.extra_rects.append(RALLY_RECT)
 	_set_rally(-2)
 	map.hud.toast("%s. Take the points. Hold more than they do." % str(d.get("title", "Battle")), Color(1, 0.9, 0.6))
 	map.later(func() -> void:
-		await map.say([{"who": str(d.get("who", "")), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
+		await map.say([{"who": _who(), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
 
 
 const RALLY_RECT := Rect2(8, 128, 86, 18)
@@ -91,6 +98,19 @@ func _cycle_rally() -> void:
 		i = -2
 	_set_rally(i)
 	Music.instance(map.get_tree()).sfx("pickup")
+
+
+## One tap: pick where the helpers go from a list (instead of cycling through every point).
+func _pick_rally() -> void:
+	var o: Array = ["Guard posts", "Follow me"]
+	for p in points:
+		o.append("%s %s" % [str(p["id"]).to_upper(), str(p["name"])])
+	var dl := Dialogue.instance(get_tree())
+	dl.say([{"who": "", "text": "Helpers:", "choice": o, "key": ""}])
+	await dl.finished
+	if dl.last_choice >= 0 and not _over:
+		_set_rally(dl.last_choice - 2)
+		Music.instance(map.get_tree()).sfx("pickup")
 
 
 func _set_rally(i: int) -> void:
@@ -109,7 +129,7 @@ func _set_rally(i: int) -> void:
 		_rally_btn.text = "RALLY: guard posts"
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
-		_rally_btn.text = "RALLY ▸ %s" % str(points[i]["name"])
+		_rally_btn.text = "RALLY ▸ %s %s" % [str(points[i]["id"]).to_upper(), str(points[i]["name"])]
 		map.hud.toast("Helpers: everyone to %s!" % str(points[i]["name"]), Color(0.7, 0.95, 1.0))
 
 
@@ -120,6 +140,7 @@ func _exit_tree() -> void:
 
 
 var _bleed_e := 0.0
+var _rate := 0.0   # supply per second after upkeep (HUD)
 var _bleed_a := 0.0
 
 
@@ -185,7 +206,7 @@ func _capture(delta: float) -> void:
 			p["owner"] = "ally"
 		elif float(p["prog"]) <= -1.0:
 			p["owner"] = "enemy"
-		elif absf(float(p["prog"])) < 0.05 and was != "neutral":
+		elif (absf(float(p["prog"])) < 0.05 or (was == "ally" and float(p["prog"]) < 0.0)) and was != "neutral":
 			p["owner"] = "neutral"
 			if str(p["spawner"]) != "":
 				p["spawner"] = ""
@@ -232,6 +253,7 @@ func _tick() -> void:
 	for pp in points:
 		units += (pp["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x)).size()
 	_upkeep += units * 0.2
+	_rate = a * int(d.get("supply_per_point", 2)) * 0.35 * (1.0 + rate) - units * 0.2
 	var broke := supply < int(_upkeep) and units > 0
 	supply = maxi(0, supply - int(_upkeep))
 	_upkeep -= int(_upkeep)
@@ -242,7 +264,7 @@ func _tick() -> void:
 		p["made"] = (p["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x))
 		p["t"] = float(p["t"]) + 1.0
 		var plv := int(p.get("lvl", 1))
-		if float(p["t"]) >= 12.0 - 3.0 * (plv - 1) and (p["made"] as Array).size() < MAX_PER_SPAWNER + plv - 1:
+		if float(p["t"]) >= 12.0 - 3.0 * (plv - 1) and (p["made"] as Array).size() < (mini(2, plv) if str(p["spawner"]) == "turret" else MAX_PER_SPAWNER + plv - 1):
 			p["t"] = 0.0
 			if str(p["spawner"]) == "turret":
 				var it: Dictionary = GameState.items.get("guard_bot", {"life": 60, "dmg": 4, "reach": 90})
@@ -261,7 +283,10 @@ func _tick() -> void:
 			if str(p["owner"]) == "enemy":
 				at = p["pos"]
 				break
-		var bb := map.spawn_enemy(str(d["boss"]), at, clampi(GameState.progress_tier() + 1, 0, 5))
+		var bk := str(d["boss"])
+		if GameState.run["flags"].has(bk):
+			bk = "thug_enforcer"  # a beaten lieutenant doesn't come back for the rematch
+		var bb := map.spawn_enemy(bk, at, clampi(GameState.progress_tier() + 1, 0, 5))
 		if bb:
 			bb.set_meta("boss_name", bb.display_name())
 			# The commander is a real fight: half again as tough.
@@ -348,6 +373,8 @@ func _count_kills() -> void:
 		var e: Variant = _known[k]
 		if not is_instance_valid(e) or not (e as Enemy)._alive:
 			_known.erase(k)
+			if is_instance_valid(e) and (e as Enemy).has_meta("decoy"):
+				continue  # a mirror's reflection is no real kill
 			var was_boss: bool = is_instance_valid(e) and (e as Enemy).has_meta("boss_name")
 			tickets["enemy"] = int(tickets["enemy"]) - (30 if was_boss else 1)
 			_kills += 1
@@ -371,11 +398,6 @@ func interact(id: String) -> void:
 	var crystal := GameState.is_penguins()
 	var opts: Array = []
 	var keys: Array = []
-	for k in ["striker", "healer", "warden", "shade"]:
-		opts.append("%s (◇%d): %s" % [str(HelperUnit.KINDS[k]["crystal" if crystal else "drone"]), _cost(k), {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}[k]])
-		keys.append(k)
-	opts.append("%s (◇%d): holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", int(SPAWNER_COST["turret"])])
-	keys.append("turret")
 	var lvl := int(p.get("lvl", 1))
 	if str(p["spawner"]) != "" and lvl < 3:
 		opts.append("Upgrade to level %d (◇%d): more units, faster" % [lvl + 1, _disc(30 * lvl)])
@@ -387,9 +409,26 @@ func interact(id: String) -> void:
 	keys.append("mend")
 	opts.append("Barrage (◇%d): stun every foe near this point%s" % [_disc(35), (" (ready in %ds)" % int(ceil(_barrage_cd))) if _barrage_cd > 0.0 else ""])
 	keys.append("barrage")
-	opts.append("Leave")
+	# Spawners after the point actions (the list scrolls; B leaves).
+	for k in ["striker", "healer", "warden", "shade"]:
+		opts.append("%s (◇%d): %s" % [str(HelperUnit.KINDS[k]["crystal" if crystal else "drone"]), _cost(k), {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}[k]])
+		keys.append(k)
+	opts.append("%s (◇%d): holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
+	keys.append("turret")
+	var extra_cost := {"upgrade": 30 * lvl, "fortify": 40, "mend": 25, "barrage": 35}
+	for oi in opts.size():
+		var kk: String = keys[oi]
+		var cc := _cost(kk) if SPAWNER_COST.has(kk) else (_disc(int(extra_cost[kk])) if extra_cost.has(kk) else 0)
+		if cc > supply:
+			opts[oi] = "✕ " + str(opts[oi])
+	var sp := str(p["spawner"])
+	var now_nm := ""
+	if sp == "turret":
+		now_nm = "Crystal Pylon" if crystal else "Gun Turret"
+	elif sp != "":
+		now_nm = str(HelperUnit.KINDS[sp]["crystal" if crystal else "drone"])
 	var dl := Dialogue.instance(get_tree())
-	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s Build a %s here:" % [supply, (" Now: %s." % str(p["spawner"])) if str(p["spawner"]) != "" else "", "crystal spire" if crystal else "drone bay"], "choice": opts, "key": ""}])
+	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s %s:" % [supply, (" Now: %s." % now_nm) if now_nm != "" else "", ("Change the %s" if sp != "" else "Build a %s here") % ("crystal spire" if crystal else "drone bay")], "choice": opts, "key": ""}])
 	await dl.finished
 	var i := dl.last_choice
 	if i < 0 or i >= keys.size():
@@ -431,12 +470,20 @@ func interact(id: String) -> void:
 				map.hud.toast("Barrage! %d foes stunned." % n, Color(1, 0.9, 0.5))
 				_barrage_cd = 25.0
 		return
+	if k == str(p["spawner"]):
+		map.hud.toast("%s already builds that." % str(p["name"]), Color(1, 0.85, 0.6))
+		return
 	if supply < _cost(k):
 		map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
 		return
 	supply -= _cost(k)
 	GameState.add_xp("strategist", 5)
 	GameState.add_xp("leadership", 8)
+	# Switching type: the old units stand down, so the new spawner can start at once.
+	for mm in p["made"]:
+		if is_instance_valid(mm):
+			(mm as Node).queue_free()
+	p["made"] = []
 	p["spawner"] = k
 	p["t"] = 10.0
 	map.fx("sparkle", p["pos"] + Vector2(0, -12), 12.0, 0.6)
@@ -446,10 +493,11 @@ func interact(id: String) -> void:
 func _end(won: bool, travel := true) -> void:
 	_over = true
 	# A full campaign is what trains a Strategist (more for a win, something for a loss).
-	GameState.add_xp("strategist", 400 if won else mini(120, 20 * _caps + _kills))
+	var rematch: bool = GameState.run["flags"].has("battle_" + bid)
+	GameState.add_xp("strategist", (120 if rematch else 400) if won else mini(120, 20 * _caps + _kills))
 	Music.instance(get_tree()).sfx("quest_done" if won else "die", "levelup")
 	if won:
-		GameState.add_arc_xp(80)
+		GameState.add_arc_xp(25 if rematch else 80)
 	for e in map.enemies.duplicate():
 		if is_instance_valid(e):
 			e.queue_free()
@@ -468,11 +516,14 @@ func _end(won: bool, travel := true) -> void:
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + cr
 		for it in rw.get("items", {}):
 			if first:
-				GameState.add_item(str(it), int(rw["items"][it]))
+				if str(GameState.items.get(str(it), {}).get("type", "")) == "tool":
+					GameState.add_tool(str(it))
+				else:
+					GameState.add_item(str(it), int(rw["items"][it]))
 		map.xp("combat", 60 if first else 20)
-		await map.say([{"who": str(d.get("who", "")), "text": str(d.get("win", "The field is ours.")) + ("" if first else " (A rematch pays less.)")}, {"text": "+◆%d%s" % [cr, (", " + ", ".join((rw.get("items", {}) as Dictionary).keys().map(func(x: Variant) -> String: return GameState.item_name(str(x))))) if first and not (rw.get("items", {}) as Dictionary).is_empty() else ""]}])
+		await map.say([{"who": _who(), "text": str(d.get("win", "The field is ours.")) + ("" if first else " (A rematch pays less.)")}, {"text": "+◆%d%s" % [cr, (", " + ", ".join((rw.get("items", {}) as Dictionary).keys().map(func(x: Variant) -> String: return GameState.item_name(str(x))))) if first and not (rw.get("items", {}) as Dictionary).is_empty() else ""]}])
 	else:
-		await map.say([{"who": str(d.get("who", "")), "text": str(d.get("lose", "Fall back. We'll come back stronger."))}])
+		await map.say([{"who": _who(), "text": str(d.get("lose", "Fall back. We'll come back stronger."))}])
 	GameState.save()
 	var back: Array = d.get("back", ["town", 0, 0])
 	map.go_to(str(back[0]), Vector2(float(back[1]) * GameMap.TILE, float(back[2]) * GameMap.TILE) if int(back[1]) > 0 else Vector2.ZERO, "down")
@@ -535,8 +586,18 @@ func _draw_hud() -> void:
 		_hud.draw_circle(Vector2(x0 + i * 14 + 7, y + 3), 5.0, Color(0, 0, 0, 0.6))
 		_hud.draw_circle(Vector2(x0 + i * 14 + 7, y + 3), 4.0, col)
 		_hud.draw_string(f, Vector2(x0 + i * 14 + 4, y + 6), str(p["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(0.1, 0.1, 0.1))
-	_hud.draw_string_outline(f, Vector2(105, y + 20), "Supply ◇%d" % supply, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
-	_hud.draw_string(f, Vector2(105, y + 20), "Supply ◇%d" % supply, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.95, 0.7))
+	# Who is bleeding tickets (the side holding fewer points), and supply income.
+	var oa := _owned("ally")
+	var oe := _owned("enemy")
+	if oe > oa:
+		_hud.draw_string_outline(f, Vector2(42, y + 13), "-%d/s" % (oe - oa), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
+		_hud.draw_string(f, Vector2(42, y + 13), "-%d/s" % (oe - oa), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.5, 0.4))
+	elif oa > oe:
+		_hud.draw_string_outline(f, Vector2(196, y + 13), "-%d/s" % (oa - oe), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
+		_hud.draw_string(f, Vector2(196, y + 13), "-%d/s" % (oa - oe), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.6, 1, 0.7))
+	var stxt := "Supply ◇%d (%+.1f/s)" % [supply, _rate]
+	_hud.draw_string_outline(f, Vector2(92, y + 20), stxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
+	_hud.draw_string(f, Vector2(92, y + 20), stxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.95, 0.7))
 	# Off-screen pointer to the nearest point you don't hold.
 	var cam := map.get_viewport().get_camera_2d()
 	if cam == null:

@@ -165,7 +165,10 @@ func _summon_boss() -> void:
 			{"text": "The small ones scatter. Something bigger stands up from behind the rocks. It has a face you've seen in a very bad photograph."},
 			{"who": "The President's Man", "text": "He said you'd be farming. He didn't say you'd be good at it."},
 		])
-	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(18 * TILE, 12 * TILE), -1 if GameState.is_penguins() else 1)
+	# Near the player (on screen), on the side toward the middle of the map.
+	var side := -1.0 if player.position.x > cols * TILE * 0.5 else 1.0
+	var bat := free_spot_near(player.position + Vector2(48 * side, -32))
+	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", bat, -1 if GameState.is_penguins() else 1)
 	_boss.set_meta("boss_name", "Big Grump" if GameState.is_penguins() else "The President's Man")
 	if not GameState.is_penguins():
 		_boss.damage = mini(_boss.damage, 2)  # the first boss of the arc hits like the penguin one

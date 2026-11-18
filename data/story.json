@@ -347,7 +347,7 @@
       },
       {
        "who": "Star Crystal",
-       "text": "...Oh. He went to the river cities, didn't he. Everyone who goes there comes back wrong, or doesn't come back. The Dark Crystal has a man there in a grey suit. I've felt him. I don't know his name."
+       "text": "...Oh. He went to the river cities, didn't he. Everyone who goes there comes back changed. The Dark Crystal has a man there in a grey suit. I've felt him. I don't know his name."
       },
       {
        "who": "",
@@ -422,7 +422,7 @@
       },
       {
        "who": "Finn",
-       "text": "No. Don't. I know where. I knew when he stopped writing. I just wanted to be wrong a while longer."
+       "text": "No. Don't. I know where. I knew when he stopped writing. ...He ran, you said? Then he's still out there. Then he can still come home."
       },
       {
        "who": "Finn",
@@ -465,7 +465,8 @@
      "when": {
       "flags": [
        "mountain_seen",
-       "meow_taught"
+       "meow_taught",
+       "catship_done"
       ]
      },
      "lines": [
@@ -490,7 +491,8 @@
      "when": {
       "flags": [
        "mountain_seen",
-       "meow_taught"
+       "meow_taught",
+       "catship_done"
       ],
       "not_flag": "campfire_done"
      },
@@ -537,7 +539,10 @@
       ]
      },
      "when": {
-      "flag": "meow_taught",
+      "flags": [
+       "meow_taught",
+       "catship_done"
+      ],
       "not_flag": "babies_done"
      },
      "lines": [
@@ -756,7 +761,7 @@
         "1": [
          {
           "who": "Nova",
-          "text": "...Right. Shatter him clean, then. Don't let him suffer in there."
+          "text": "...Right. Crack that armour open, then, and get him out of there."
          }
         ]
        },
@@ -800,7 +805,7 @@
       "quest": [
        [
         "teleporter",
-        "The top of the mountain is in space. The station on the moon is the way in: power its teleporter with 3 Refined Crystals."
+        "The top of the mountain is in space. Power the moon teleporter with 3 Refined Crystals, then face the spire."
        ]
       ],
       "hint": "The moon station's teleporter needs 3 Refined Crystals. The resonator makes them."
@@ -1033,7 +1038,7 @@
       }
      ],
      "effects": {
-      "hint": "The bell needs a gold clapper (Alder). Sleep when you're ready: the moon road opens at the mountain pad in the morning."
+      "hint": "The bell needs a gold clapper (Alder). When you're ready: the moon (mountain pad), then touch the crystal spire."
      }
     },
     {
@@ -1429,7 +1434,7 @@
       },
       {
        "who": "Star Crystal",
-       "text": "There was nothing left of him to plant. So I planted something anyway, where he used to be, so that something would grow there.",
+       "text": "He wouldn't come home. He's gone somewhere far off to think about what he did. So I planted something anyway, where he used to stand, so that something would grow there.",
        "if_flag": "dc_shattered"
       },
       {
@@ -1557,7 +1562,7 @@
      "lines": [
       {
        "who": "Sal",
-       "text": "Hideout town. Past the outskirts, through a gate that doesn't look like a gate. Riley runs the garage, Manny runs the bar, nobody runs the street. That's the opening."
+       "text": "Hideout town. Past the outskirts, through a gate that doesn't look like a gate. Deuce deals cards there, Mama Rosa feeds whoever's left, nobody runs the street. That's the opening."
       },
       {
        "who": "Sal",
@@ -1569,7 +1574,7 @@
       }
      ],
      "effects": {
-      "hint": "Hideout town: Riley (garage), Manny (bar). Recruit people, not thugs."
+      "hint": "Hideout town: Deuce (card table), Mama Rosa (kitchen door). Recruit people, not thugs."
      }
     }
    ]
@@ -1590,7 +1595,7 @@
      "lines": [
       {
        "who": "",
-       "text": "Hideout town. Motel, bus shelter, a diner that's been closed since the sign was new. Everybody here came from somewhere they can't go back to, which makes you a local."
+       "text": "Up close: the motel's half-lit sign, the diner's burnt coffee smell, the drive-in screen with a crown painted on it. Everybody here came from somewhere they can't go back to, which makes you a local."
       },
       {
        "who": "",
@@ -1628,7 +1633,7 @@
         "0": [
          {
           "who": "Deuce",
-          "text": "Cash. Boring. Effective. Welcome to the crew, boss; I'll find us a table."
+          "text": "Cash. Boring. Effective. Welcome to the crew, boss; I'll keep the books."
          }
         ],
         "1": [
@@ -2196,7 +2201,7 @@
         "Win the fight pit under the neon street."
        ]
       ],
-      "hint": "The twins fight in the pit. Dice owes the card shark for a busted scooter; the Kid lost his board; Doc wants herbs; Sasha is the ring's muscle."
+      "hint": "The twins fight in the pit. Dice owes the pawnbroker for a busted scooter; the Kid lost his board; Doc wants herbs; Sasha is the ring's muscle."
      }
     },
     {
@@ -2246,14 +2251,14 @@
      "lines": [
       {
        "who": "Dice",
-       "text": "I'm not— look, I run things. Messages. Small things. I borrowed the card shark's scooter and I wrecked it. Three hundred to fix, and he's started saying my name in a voice."
+       "text": "I'm not— look, I run things. Messages. Small things. I borrowed the pawnbroker's scooter and I wrecked it. Three hundred to fix, and he's started saying my name in a voice."
       },
       {
        "who": "Dice",
        "text": "Clear it and I'm yours. I'm fast and I'm scared and both of those are useful.",
        "choice": [
         "Pay for the scooter (◆300).",
-        "Go have a word with the card shark.",
+        "Go have a word with the pawnbroker.",
         "Not now."
        ],
        "key": "dice_join",
@@ -2267,7 +2272,7 @@
         "1": [
          {
           "who": "",
-          "text": "The card shark is a man at a table under a bare bulb, shuffling and reshuffling a deck he never deals. You don't say anything. You put your hand flat on the table, and you leave it there, and after a while he nods."
+          "text": "The pawnbroker is a man at a counter under a bare bulb, winding and rewinding a watch he never sells. You don't say anything. You put your hand flat on the counter, and you leave it there, and after a while he nods."
          },
          {
           "who": "Dice",
@@ -2487,7 +2492,7 @@
      "lines": [
       {
        "who": "Deuce",
-       "text": "The parlour's printing money, boss. The painter's studio next door — Lumi? — has the light for a second table. She'd land on her feet. Painters do.",
+       "text": "The arcade's doing great, boss. The painter's studio next door — Lumi? — has room for a second floor of games. She'd land on her feet. Painters do.",
        "choice": [
         "Take it.",
         "Leave her be."
@@ -2497,7 +2502,7 @@
         "0": [
          {
           "who": "",
-          "text": "Lumi leaves on the morning bus with a canvas under each arm and doesn't look at the parlour. Two men in good coats on the avenue now."
+          "text": "Lumi leaves on the morning bus with a canvas under each arm and doesn't look at the arcade. Two men in good coats on the avenue now."
          }
         ],
         "1": [
@@ -2548,7 +2553,7 @@
      "lines": [
       {
        "who": "Deuce",
-       "text": "Last one. The clinic. I know. I KNOW. But Doc could run it, and the woman there — Juniper — she's been sending letters to the capital about us, boss. Ladder read them.",
+       "text": "Last one. The clinic. I know. I KNOW. But we could run it, and the woman there — Juniper — she's been sending letters to the capital about us, boss. I read them.",
        "choice": [
         "Take the clinic.",
         "No. That's the line."
@@ -2673,6 +2678,44 @@
        "tower_quiet"
       ],
       "hint": "The lobby is quiet. Nobody knows you're in."
+     }
+    },
+    {
+     "id": "g5_doors_kept",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flag": "boss_uptown",
+      "quest": "pit",
+      "decision": [
+       "letter",
+       1
+      ],
+      "not_flags": [
+       "letter_sold",
+       "letter_safe",
+       "tower_open"
+      ]
+     },
+     "title_card": true,
+     "lines": [
+      {
+       "who": "",
+       "text": "The doors are brass and twelve feet tall and have a slot in them like a mailbox. The letter has been folded into the deed since the rain."
+      },
+      {
+       "who": "",
+       "text": "It goes in. Somewhere inside, a mechanism turns over once, and the doors open. Nobody fights you."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet",
+       "letter_safe"
+      ],
+      "hint": "The doors are open. The lobby."
      }
     },
     {

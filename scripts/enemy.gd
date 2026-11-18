@@ -64,6 +64,8 @@ var _regen_t := 0.0
 var _since_hit := 0.0
 var _enraged := false
 var _summoned := {}
+var _tele_flash := 0.0   # a short telegraph icon after blink / summon
+var _tele_name := ""
 var _aura: AnimatedSprite2D = null   # shield / enrage overlay from fx
 
 
@@ -222,9 +224,10 @@ func _process(delta: float) -> void:
 			hit(maxi(1, int(round(hp_scale))), position, true, false, true)  # a tick: no knockback/stun; scales like a hit
 			if not _alive:
 				return
-			map.fx("sparkle", position + Vector2(0, -6), 14.0, 0.4)
+			map.fx("impact_fire" if Art.has("fx", "impact_fire") else "sparkle", position + Vector2(0, -6), 14.0, 0.4)
 	_anim_t += delta
 	_hit_flash = maxf(0.0, _hit_flash - delta)
+	_tele_flash = maxf(0.0, _tele_flash - delta)
 	_flash = maxf(0.0, _flash - delta * 7.0)
 	_stun = maxf(0.0, _stun - delta)
 	_cooldown = maxf(0.0, _cooldown - delta)
@@ -343,7 +346,7 @@ func _process(delta: float) -> void:
 		_sprite.modulate = tint
 		_sprite.scale = Vector2(0.5 * (1.0 + _squash * 0.25), 0.5 * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(1.1, 1.1)
 	# Redraw (hp bar, shadow, telegraph icon) only when what it shows changes.
-	var sig := "%d/%d/%d/%d/%d/%d/%d/%d/%d" % [hp, max_hp, int(_shield > 0.0), int(_lunge_tele > 0.0 or _lunge > 0.0), int(_range_tele > 0.0), int(_stomp_tele > 0.0), int(_enraged), int(_hit_flash > 0.0), int(_since_hit < 0.3)]
+	var sig := "%d/%d/%d/%d/%d/%d/%d/%d/%d/%d/%d/%.1f/%d" % [hp, max_hp, int(_shield > 0.0), int(_lunge_tele > 0.0 or _lunge > 0.0), int(_range_tele > 0.0), int(_stomp_tele > 0.0), int(_enraged), int(_hit_flash > 0.0), int(_since_hit < 0.3), tier, int(is_guardian), _shadow_r, int(_tele_flash > 0.0) * 2 + int(abilities.has("regen") and _since_hit > 3.0 and hp < max_hp)]
 	if _sprite == null or sig != _draw_sig:
 		_draw_sig = sig
 		queue_redraw()
@@ -498,7 +501,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 				GameState.status_apply(inflicts, tier)
 			_lunge = 0.0
 		return true
-	if abilities.has("lunge") and _lunge_cd <= 0.0 and _stun <= 0.0 and dist > 28.0 and dist < 70.0 and randf() < 0.6 * delta:
+	if abilities.has("lunge") and _lunge_cd <= 0.0 and _stun <= 0.0 and dist > 28.0 and dist < 70.0 and randf() < 0.6 * delta and map.line_clear(position, position + to):
 		_lunge_tele = 0.25
 		_lunge_cd = 3.0
 		map.fx("lunge_tele" if Art.has("fx", "lunge_tele") else "poof", position + Vector2(0, -4), 20.0, 0.5, to.x < 0)
@@ -525,7 +528,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 		_range_tele -= delta
 		if _range_tele <= 0.0 and _stun <= 0.0:
 			_shoot(_range_aim)
-	elif abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0 and tgt == player:
+	elif abilities.has("ranged") and _range_cd <= 0.0 and _stun <= 0.0 and dist > 34.0 and dist < 110.0 and tgt == player and map.line_clear(position, position + to):
 		_range_cd = 2.2 - 0.2 * tier
 		_range_tele = 0.35  # a beat to see it coming
 		_range_aim = to.normalized()
@@ -557,18 +560,33 @@ func _blink() -> void:
 			position = c
 			_knock = Vector2.ZERO
 			map.fx("blink" if Art.has("fx", "blink") else "poof", position + Vector2(0, -8), 16.0, 0.5)
+			_tele_flash = 0.5
+			_tele_name = "blink"
 			return
 
 
 func _summon() -> void:
-	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp", "prism_wisp": "shard", "light_eater": "dark_crystal_shard"}.get(kind, "slime")
+	var minion: String = {"commander": "soldier", "dark_crystal": "shard", "president": "thug_cyber", "marsh_witch": "mud_slime", "golem_king": "golem", "ruin_warden": "wisp", "prism_wisp": "shard", "light_eater": "dark_crystal_shard"}.get(kind, "")
+	if minion == "":
+		# Not in the table: ordinary foes call their own kind; big ones call arc grunts.
+		minion = kind if base_hp < 60 else ("slime" if GameState.is_penguins() else "thug_cyber")
 	if minion == "shard" and not GameState.is_penguins():
 		minion = "thug_cyber"
 	map.fx("summon" if Art.has("fx", "summon") else "poof", position, 12.0, 0.7)
 	for i in 2:
 		var at := position + Vector2(randf_range(-24, 24), randf_range(-16, 16))
 		var e := map.spawn_enemy(str(minion), at, maxi(0, tier - 1))
+		if e:
+			# Summoned help pays nothing, can't summon again and never carries a Gift.
+			e.reward = 0
+			e.abilities.erase("summon")
+			e.set_meta("minion", true)
+			if e._gift:
+				e._gift.queue_free()
+				e._gift = null
 		map.fx("poof", at + Vector2(0, -8), 14.0, 0.5)
+	_tele_flash = 0.6
+	_tele_name = "summon"
 	map.hud.toast("It calls for help!", Color(1, 0.8, 0.7))
 
 
@@ -604,7 +622,10 @@ class Shot extends Node2D:
 				GameState.status_apply(inflicts, tier)
 			life = 0.0
 		if life <= 0.0 or map.rect_blocked(Rect2(position + Vector2(-2, -1), Vector2(4, 2))):
-			map.fx("shot_%s_hit" % flavour if Art.has("fx", "shot_%s_hit" % flavour) else "poof", position, 14.0, 0.4)
+			var hn := "shot_%s_hit" % flavour
+			if not Art.has("fx", hn):
+				hn = ("impact_" + flavour) if Art.has("fx", "impact_" + flavour) else "poof"
+			map.fx(hn, position, 14.0, 0.4)
 			queue_free()
 		queue_redraw()
 
@@ -662,6 +683,10 @@ func _draw() -> void:
 		tele = "ranged"
 	elif _stomp_tele > 0.0:
 		tele = "stomp"
+	elif _tele_flash > 0.0:
+		tele = _tele_name
+	elif abilities.has("regen") and _since_hit > 3.0 and hp < max_hp:
+		tele = "regen"
 	elif _enraged and _since_hit < 0.3:
 		tele = "enrage"
 	if tele != "" and Art.has("ui", "tele_" + tele):

@@ -304,9 +304,9 @@
  "jobs": {
   "press": {
    "name": "Run the press",
-   "desc": "Prints 4 passable bills overnight.",
+   "desc": "Prints 3 crude bills overnight.",
    "give": {
-    "bills_passable": 4
+    "bills_crude": 3
    }
   },
   "farm": {

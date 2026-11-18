@@ -17,11 +17,17 @@ M = json.load(open(os.path.join(ROOT, "art/gen/manifest.json")))
 F = M.get("furniture", {})
 I = json.load(open(P))
 
-HOMES = {"cottage_a", "cottage_b", "cottage_c", "hazel_house", "mansion", "tam_hut", "moss_hut", "river_hut", "sel_camp",
-         "lodge", "lighthouse", "fishing_hut", "water_mill", "stable", "quarry_office"}
+# Where people live (home kit + a living set), where they work (crates, barrels,
+# lamps: no pianos or stoves in a stable), and public rooms (books, plants, lamps:
+# no cabbage crates in the chapel or the bank). Everything else is a shop.
+HOMES = {"cottage_a", "cottage_b", "cottage_c", "hazel_house", "mansion", "tam_hut", "moss_hut", "river_hut", "lodge"}
+WORKS = {"stable", "quarry_office", "water_mill", "lighthouse", "fishing_hut", "sel_camp"}
+PUBLIC = {"chapel", "bank", "library", "hall", "clinic", "school"}
 WALL = ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting_a", "painting_b", "window_day", "clock", "mirror2", "window_day"]
 HOME_SIDE = ["bookcase3_a", "dresser2_a", "kitchen_stove", "wardrobe2_a", "lamp_floor", "bookcase3_c", "nightstand_a", "sofa_blue", "chest_closed", "piano", "lamp_floor_b", "toy_chest", "pet_bed"]
-SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrel", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e", "flour_sacks"]
+SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrel", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e"]
+WORK_SIDE = ["barrel", "crate", "lamp_floor", "plant2_c", "barrels3", "crate", "plant_c", "bookcase3_d"]
+PUBLIC_SIDE = ["bookcase3_d", "plant2_c", "lamp_floor", "bookcase3_e", "plant_c", "lamp_floor_b", "plant2_b", "globe2"]
 CORNER = ["plant2_a", "plant2_b", "plant2_c", "plant2_d", "plant_b", "plant_c"]
 RUGS = ["rug_rect_blue", "rug_rect_green", "rug_rect_red", "rug_round_blue", "rug_round_green", "rug2_blue", "rug2_green", "rug2_red", "rug2_round_red"]
 TABLES = ["table_square_cloth", "table_round_cloth", "table_square", "low_table"]
@@ -44,6 +50,7 @@ for rid, R in I.items():
     cols, rows = int(R.get("cols", 14)), int(R.get("rows", 11))
     rng = random.Random(rid)
     home = rid in HOMES
+    kit_all = HOME_SIDE if home else (WORK_SIDE if rid in WORKS else (PUBLIC_SIDE if rid in PUBLIC else SHOP_SIDE))
     used = set()
     for p in R["props"]:
         used.update(cells_of(p))
@@ -90,6 +97,7 @@ for rid, R in I.items():
     wall = WALL[:]
     rng.shuffle(wall)
     onwall = {tuple(p["cell"]) for p in R["props"] if p["cell"][1] <= 2 and not p.get("solid", True)}
+    onwall |= {(int(w["x"]), 1) for w in R.get("wall_props", [])}
     k = 0
     for x in range(2, cols - 2, 3):
         if any(abs(x - c[0]) <= 1 for c in onwall) or (x, 2) in used:
@@ -100,19 +108,21 @@ for rid, R in I.items():
             added += 1
             k += 1
     # Corners: one plant at most, the rest from the room's own kit.
-    kit = (HOME_SIDE if home else SHOP_SIDE)[:]
+    kit = kit_all[:]
     for i, c in enumerate([(1, 2), (cols - 2, 2), (1, rows - 2), (cols - 2, rows - 2)]):
         put(rng.choice(CORNER) if i == 0 else rng.choice(kit), c)
-    # Homes: a living set in the middle (a rug under a table and two chairs).
-    if home and cols >= 8 and rows >= 7:
+    # Homes: a living set in the middle (a rug under a table and two chairs), unless
+    # the room already has its own table.
+    has_table = any(p["name"].startswith(("table", "low_table", "round_set", "dining")) for p in R["props"])
+    if home and not has_table and cols >= 8 and rows >= 7:
         cx = cols // 2 + (2 if dx <= cols // 2 else -2)
         cy = rows // 2
         if put(rng.choice(TABLES), (cx, cy)):
-            put("chair2_a_right", (cx - 1, cy))
-            put("chair2_a_left", (cx + 1, cy))
+            put("chair_d", (cx - 1, cy))  # faces right, toward the table
+            put("chair_c", (cx + 1, cy))  # faces left
             put(rng.choice(RUGS), (cx, cy + 1), solid=False)
     # Side walls, every other cell.
-    side = (HOME_SIDE if home else SHOP_SIDE)[:]
+    side = kit_all[:]
     rng.shuffle(side)
     k = 0
     for y in range(3, rows - 2, 2):

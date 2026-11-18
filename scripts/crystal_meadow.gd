@@ -114,6 +114,9 @@ func after_ready() -> void:
 			gp.position = cell_center(Vector2i(5, 16)) + Vector2(8, 0)
 			gp.offset = Vector2(0, -float(Art.info("props", "glow_pond").get("cell_h", 72)) / 2.0)
 			to_under(gp)
+			# The pond is real water: you can't stand in it, and you can fish it.
+			for c: Vector2i in cells_of([Rect2i(5, 14, 2, 2)]):
+				set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
 		for y in range(STONES.position.y - 1, STONES.end.y + 1):
 			for x in range(STONES.position.x - 1, STONES.end.x + 1):
 				avoid[Vector2i(x, y)] = true
@@ -191,6 +194,10 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 		later(_talk_catkins)
 		return true
 	match str(thing.get("type", "")):
+		"water":
+			if GameState.has_tool("rod"):
+				fish_at(_c, ["minnow", "goldfish", "starfin", "mooncarp"])
+			return true
 		"note":
 			tell([{"text": str(thing.get("text", "..."))}])
 			return true
@@ -210,7 +217,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 				go_to("hideout", Vector2(2 * TILE, 14 * TILE + 8), "right")
 			return true
 		"crater":
-			tell([{"who": "Star Crystal", "text": "This is where I landed first, before your field. The ground remembers. Stand here when the Meow Pow Wow is whole and... well. You'll see.", "mood": "happy"}])
+			tell([{"who": "Star Crystal", "text": ("This is where I landed first. The ground remembers, and now it's glad." if GameState.run["flags"].has("final_done") else "This is where I landed first, before your field. The ground remembers."), "mood": "happy"}])
 			return true
 		"shack":
 			tell([{"text": "The old shack. Someone lived here before you and left in a hurry. A corkboard inside has photos with the faces cut out."}])
@@ -227,14 +234,15 @@ func _altar() -> void:
 	if charges >= 10:
 		await say([{"who": "Star Crystal", "text": "The altar is full. It has given you all it can.", "mood": "happy"}])
 	elif refined > 0:
-		if refined < 3 and not GameState.quest_done("teleporter"):
-			await say([{"who": "Star Crystal", "text": "Careful: the story still needs refined crystals (the teleporter). Keep a few before you spend them here."}])
+		if refined <= 3 and not GameState.quest_done("teleporter"):
+			await say([{"who": "Star Crystal", "text": "Careful: the teleporter on the moon needs 3 refined crystals. Bring me a fourth and I'll take that one."}])
+			return
 		GameState.add_item("crystal_refined", -1)
 		GameState.run["flags"]["altar_charges"] = charges + 1
 		fx("pawring", cell_center(Vector2i(17, 11)) + Vector2(0, -12), 10.0, 0.8)
 		GameState.grow_vital("hp", 5)
 		GameState.run["hp"] = int(GameState.run["max_hp"])
-		await say([{"who": "Star Crystal", "text": "Yes. That's it. Every refined crystal you bring here grows the Meow Pow Wow a little. (+5 max health, %d/10)" % (charges + 1), "mood": "happy"}])
+		await say([{"who": "Star Crystal", "text": "Yes. That's it. Every refined crystal you bring here makes you a little sturdier. (+5 max health, %d/10)" % (charges + 1), "mood": "happy"}])
 	else:
 		await say([{"who": "Star Crystal", "text": "Bring a Refined Crystal (3 shards in the resonator on your farm) and set it here."}])
 
@@ -271,10 +279,14 @@ func draw_map() -> void:
 		WorldGen.draw_ground_detail(self, 108, 0.2)
 		if Art.has("tiles", "g_glow"):
 			# Glowing turf spreads out from the crystals in soft noise blobs, not boxes.
+			var glow := {}
 			for c: Vector2i in cells_of([Rect2i(6, 1, 28, 24)]):
 				var n := WorldGen.fbm(float(c.x), float(c.y), 77, 7.0)
 				var dist := Vector2(c).distance_to(Vector2(17, 11)) / 14.0
 				if n - dist * 0.5 > -0.15:
+					glow[c] = true
+			if not soft_ground(glow, "meadow_grass", Color(0, 0, 0, 0), Color(0.8, 1.3, 1.3)):
+				for c: Vector2i in glow:
 					Art.draw_tile(self, "tiles", "g_glow" if (c.x * 3 + c.y) % 5 != 0 else "g_glow_b", Vector2(c * TILE), 4)
 			var rng := RandomNumberGenerator.new()
 			rng.seed = 109
@@ -285,11 +297,12 @@ func draw_map() -> void:
 		draw_ground("dirt", cells_of([Rect2i(1, 11, 13, 3), Rect2i(21, 11, 13, 3), MEADOW_EXIT]))
 	else:
 		draw_tileset_rect("dirt_lot", Rect2i(0, 0, cols, rows), Color("6a5a40"))
-		draw_tileset_rect("asphalt", Rect2i(1, 11, 32, 3), Color("3a3a40"))
-		draw_tileset_rect("sidewalk", Rect2i(6, 8, 22, 1), Color("8a8a90"))
-		draw_tileset_rect("sidewalk", Rect2i(6, 15, 22, 1), Color("8a8a90"))
+		draw_tileset_rect("asphalt", Rect2i(1, 11, cols - 2, 3), Color("3a3a40"))
+		draw_tileset_rect("sidewalk", Rect2i(6, 8, cols - 8, 1), Color("8a8a90"))
+		draw_tileset_rect("sidewalk", Rect2i(6, 15, cols - 8, 1), Color("8a8a90"))
 	draw_exits()
 	var gp := cell_center(_gate)
-	draw_rect(Rect2(gp.x - 8, gp.y - 30, 16, 32), Color("3a2412") if GameState.is_penguins() else Color("5a5a66"))
-	label("east", Vector2(gp.x - 24, gp.y - 34), 48)
+	if GameState.is_penguins() or not Art.draw_prop(self, "props", "chain_broken", gp + Vector2(0, 8)):
+		draw_rect(Rect2(gp.x - 8, gp.y - 30, 16, 32), Color("3a2412") if GameState.is_penguins() else Color("5a5a66"))
+	label("east" if GameState.is_penguins() else "hideout ▶", Vector2(gp.x - 24, gp.y - 34), 48)
 	draw_fence_border(Color("6b4a2b") if GameState.is_penguins() else Color("5a5a66"))

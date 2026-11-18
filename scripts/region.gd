@@ -28,6 +28,12 @@ var _rect_water := {}  # shore -> cells of painted water rects
 func _place_secrets() -> void:
 	Secrets.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
 	_boss_markers()
+	# Doors that are a hole or a ladder in the ground show it (manhole, sewer ladder).
+	for c: Vector2i in things.keys():
+		if str(things[c].get("type", "")) == "door" and things[c].has("sprite") and not props.has(c):
+			var ds := prop("props", str(things[c]["sprite"]), c, 0, 0.0, false)
+			if ds and str(things[c]["sprite"]).begins_with("manhole"):
+				to_under(ds)
 
 
 ## Show who's waiting at a boss spot (a dim, still figure) until they're beaten,
@@ -356,12 +362,25 @@ func after_ready() -> void:
 		var rng := RandomNumberGenerator.new()
 		rng.seed = hash(region_id) % 1000 + 3
 		var names: Array = gen["region_props"]
+		var wprops: Array = gen.get("water_props", [])
+		var wkeys: Array = _water_cells.keys()
 		for i in int(gen.get("region_count", 20)):
+			var nm := str(names[rng.randi_range(0, names.size() - 1)])
+			var g := "nature" if Art.has("nature", nm) else "props"
+			if nm in wprops:
+				# Lily pads, leaping fish and splashes belong on the water.
+				if wkeys.is_empty():
+					continue
+				var wc: Vector2i = wkeys[rng.randi() % wkeys.size()]
+				if props.has(wc):
+					continue
+				var ws := prop(g, nm, wc, 0, 0.0, false)
+				if ws:
+					to_under(ws)
+				continue
 			var c := Vector2i(rng.randi_range(inner.position.x, inner.end.x - 1), rng.randi_range(inner.position.y, inner.end.y - 1))
 			if things.has(c) or blocked.has(c) or avoid.has(c):
 				continue
-			var nm := str(names[rng.randi_range(0, names.size() - 1)])
-			var g := "nature" if Art.has("nature", nm) else "props"
 			prop(g, nm, c)
 	if gen.has("critters"):
 		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, int(gen.get("critter_count", 6)), gen["critters"])
@@ -478,7 +497,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(_boss.bind(thing))
 			return true
 		"door":
-			go_to(str(thing["scene"]), Vector2(float(thing["spawn"][0]) * TILE, float(thing["spawn"][1]) * TILE), str(thing.get("facing", "down")))
+			go_to(str(thing["scene"]), Vector2(float(thing["spawn"][0]) * TILE + 8, float(thing["spawn"][1]) * TILE + 4), str(thing.get("facing", "down")))
 			return true
 		"idoor":
 			GameMap.next_interior = str(thing["interior"])
@@ -573,7 +592,8 @@ func on_enemy_died(e: Enemy) -> void:
 		GameState.run["flags"]["boss_%s" % region_id] = true
 		Music.instance(get_tree()).play(area_track())
 		player.frozen = true
-		await say([{"text": str(_boss_thing.get("win", "It's over."))}])
+		var win: Variant = _boss_thing.get("win_reverted", _boss_thing.get("win", "It's over.")) if e.has_meta("reverted") else _boss_thing.get("win", "It's over.")
+		await say([{"text": str(win)}])
 		var reward := str(_boss_thing.get("reward", ""))
 		if reward != "":
 			give(reward, int(_boss_thing.get("reward_n", 1)))
@@ -629,69 +649,79 @@ func _talk_npc(n: Npc) -> void:
 	player.frozen = false
 
 
+## 96px tile sets that are nine plain variants (no edges or corners baked in), so
+## they can be drawn in turn instead of the centre cell everywhere.
+const VARIANT_SETS := ["dead_grass", "metal_a", "metal_b", "cloud", "cracked_earth", "wood_dock"]
+
+
 func draw_map() -> void:
 	var ground := str(R.get("ground", "grass"))
 	if ground == "grass":
 		draw_grass(hash(region_id) % 100)
 		WorldGen.draw_ground_detail(self, hash(region_id) % 100 + 1, float(R.get("detail", 0.1)))
-		# Region ground set (Prompts-08 batch 3): the region's own fill tiles in
-		# noise drifts over the grass, with its decals scattered on top.
-		var ps := str(R.get("patch_set", ""))
-		if ps != "" and Art.has("tiles", ps + "_top_0"):
-			# Coherent ground patches (noise blobs with real edges from the region's
-			# blob set) instead of a per-cell tile lottery.
-			var sd := hash(region_id) % 977
-			var cells := {}
-			for y in range(-pad + 1, rows + pad - 1):
-				for x in range(-pad + 1, cols + pad - 1):
-					var n := WorldGen.fbm(float(x), float(y), sd, float(R.get("patch_scale", 10.0)))
-					if n > float(R.get("ground_threshold", 0.08)):
-						cells[Vector2i(x, y)] = true
-			# Drop single-cell specks and fill single-cell holes so edges read cleanly.
-			for pass_i in 2:
-				var next := cells.duplicate()
-				for y in range(-pad + 1, rows + pad - 1):
-					for x in range(-pad + 1, cols + pad - 1):
-						var c := Vector2i(x, y)
-						var nb := 0
-						for off: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-							if cells.has(c + off):
-								nb += 1
-						if cells.has(c) and nb <= 1:
-							next.erase(c)
-						elif not cells.has(c) and nb >= 3:
-							next[c] = true
-				cells = next
-			var soft_seam: String = {"bog": "bog", "ruinfloor": "ruin_floor", "snowpatch": "snow", "track": "dirt_track", "sand": "sand"}.get(ps, "")
-			if ps == "snowpatch" and GameState.look_se() == "winter":
-				cells = {}  # snow on snow
-			if soft_seam != "" and soft_ground(cells, soft_seam):
-				cells = {}  # drawn by the soft-edge layer
-			for c: Vector2i in cells:
-				var h := absi((c.x * 73856093) ^ (c.y * 19349663))
-				var seam_ps: String = {"bog": "bog", "ruinfloor": "ruin_floor"}.get(ps, "")
-				if seam_ps != "" and seam_cell(self, seam_ps, c):
-					continue
-				Art.draw_tile(self, "tiles", Art.fill_name(ps, h), Vector2(c * TILE), 0)
-				if ps == "bog":
-					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.32, 0.45, 0.22, 0.3))  # mossier, less void
-				if h % 29 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [ps, h / 29 % 36]):
-					Art.draw_tile(self, "tiles", "%s_deco_%d" % [ps, h / 29 % 36], Vector2(c * TILE), 0)
-			_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
-			var ds := str(R.get("deco_set", ""))
-			var dc := int(R.get("deco_count", 0))
-			if ds != "" and dc > 0:
-				for y in range(0, rows):
-					for x in range(0, cols):
-						var h := absi((x * 73856093) ^ (y * 19349663) ^ 7)
-						if h % 41 == 0 and not blocked.has(Vector2i(x, y)):
-							Art.draw_tile(self, "tiles", "%s_%d" % [ds, h / 17 % dc], Vector2(x * TILE, y * TILE), 0)
 	elif Art.has("tiles", ground):
+		# A seamless ground where the region names one; otherwise the set's variants
+		# in turn, so the 16px grid doesn't show.
+		var gseam := str(R.get("ground_seam", ""))
 		for y in range(-pad, rows + pad):
 			for x in range(-pad, cols + pad):
-				Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), 4)
+				if gseam != "" and seam_cell(self, gseam, Vector2i(x, y)):
+					continue
+				Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), posmod(y, 3) * 3 + posmod(x, 3) if ground in VARIANT_SETS else 4)
 	else:
 		draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(str(R.get("ground_color", "5a9e4b"))))
+	# Region ground set (Prompts-08 batch 3): the region's own fill tiles in
+	# noise drifts over the grass, with its decals scattered on top.
+	var ps := str(R.get("patch_set", ""))
+	if ps != "" and Art.has("tiles", ps + "_top_0"):
+		# Coherent ground patches (noise blobs with real edges from the region's
+		# blob set) instead of a per-cell tile lottery.
+		var sd := hash(region_id) % 977
+		var cells := {}
+		for y in range(-pad + 1, rows + pad - 1):
+			for x in range(-pad + 1, cols + pad - 1):
+				var n := WorldGen.fbm(float(x), float(y), sd, float(R.get("patch_scale", 10.0)))
+				if n > float(R.get("ground_threshold", 0.08)):
+					cells[Vector2i(x, y)] = true
+		# Drop single-cell specks and fill single-cell holes so edges read cleanly.
+		for pass_i in 2:
+			var next := cells.duplicate()
+			for y in range(-pad + 1, rows + pad - 1):
+				for x in range(-pad + 1, cols + pad - 1):
+					var c := Vector2i(x, y)
+					var nb := 0
+					for off: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+						if cells.has(c + off):
+							nb += 1
+					if cells.has(c) and nb <= 1:
+						next.erase(c)
+					elif not cells.has(c) and nb >= 3:
+						next[c] = true
+			cells = next
+		var soft_seam: String = {"bog": "bog", "ruinfloor": "ruin_floor", "snowpatch": "snow", "track": "dirt_track", "sand": "sand"}.get(ps, "")
+		if ps == "snowpatch" and GameState.look_se() == "winter":
+			cells = {}  # snow on snow
+		if soft_seam != "" and soft_ground(cells, soft_seam):
+			cells = {}  # drawn by the soft-edge layer
+		for c: Vector2i in cells:
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
+			var seam_ps: String = {"bog": "bog", "ruinfloor": "ruin_floor"}.get(ps, "")
+			if seam_ps != "" and seam_cell(self, seam_ps, c):
+				continue
+			Art.draw_tile(self, "tiles", Art.fill_name(ps, h), Vector2(c * TILE), 0)
+			if ps == "bog":
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.32, 0.45, 0.22, 0.3))  # mossier, less void
+			if h % 29 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [ps, h / 29 % 36]):
+				Art.draw_tile(self, "tiles", "%s_deco_%d" % [ps, h / 29 % 36], Vector2(c * TILE), 0)
+		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
+		var ds := str(R.get("deco_set", ""))
+		var dc := int(R.get("deco_count", 0))
+		if ds != "" and dc > 0:
+			for y in range(0, rows):
+				for x in range(0, cols):
+					var h := absi((x * 73856093) ^ (y * 19349663) ^ 7)
+					if h % 41 == 0 and not blocked.has(Vector2i(x, y)):
+						Art.draw_tile(self, "tiles", "%s_%d" % [ds, h / 17 % dc], Vector2(x * TILE, y * TILE), 0)
 	# Feature ground (Prompts 09 edge sets): noise blobs of e.g. terrace / snow / track / ruin floor.
 	for fb in R.get("feature_blobs", []):
 		var setn := str(fb["set"])
@@ -707,6 +737,11 @@ func draw_map() -> void:
 					var n := WorldGen.fbm(float(x), float(y), sdv, 5.0)
 					if Vector2(x + 0.5, y + 0.5).distance_to(Vector2(cx, cy)) + n * rad * 0.35 <= rad:
 						cells[Vector2i(x, y)] = true
+		var fs: String = {"snowpatch": "snow", "ruinfloor": "ruin_floor", "bog": "bog", "track": "dirt_track", "sand": "sand"}.get(setn, "")
+		if setn == "snowpatch" and GameState.look_se() == "winter":
+			continue  # snow on snow
+		if fs != "" and soft_ground(cells, fs, Color(0.2, 0.14, 0.07, 0.12)):
+			continue  # soft edges, like the patch set
 		for c: Vector2i in cells:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
 			Art.draw_tile(self, "tiles", Art.fill_name(setn, h), Vector2(c * TILE), 0)
@@ -741,11 +776,14 @@ func draw_map() -> void:
 	for e in exits:
 		for c in cells_of([e["rect"]]):
 			pcs[c] = true
-	if path_kind in ["dirt", "sand", "stone"] and ground == "grass":
+	if path_kind in ["dirt", "sand", "stone"]:
 		draw_ground(path_kind, pcs)
 	else:
 		for c: Vector2i in pcs:
-			if not Art.draw_tile(self, "tiles", path_kind, Vector2(c * TILE), 4):
+			var pi := posmod(c.y, 3) * 3 + posmod(c.x, 3) if path_kind in VARIANT_SETS else 4
+			if path_kind == "asphalt2":
+				pi = 3 if (c.x + c.y) % 2 == 0 else 5  # not the lane-stripe column
+			if not Art.draw_tile(self, "tiles", path_kind, Vector2(c * TILE), pi):
 				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("8a8a90"))
 	for wsh in _rect_water:
 		draw_water(_rect_water[wsh], str(wsh))

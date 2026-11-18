@@ -209,7 +209,15 @@ func _on_msg(m: Dictionary) -> void:
 			peers_changed.emit()
 		"you_are_host":
 			_host = true
-			# We now own the world: our copy of it is the one to keep.
+			# We now own the world, so saves write it from here on. Our own farm
+			# (kept aside while visiting) goes to Restore instead of being lost.
+			if not _solo_backup.is_empty():
+				var keep := GameState.run.duplicate(true)
+				keep.merge(_solo_backup, true)
+				SaveGame.set_value(GameState.prev_key(), keep)
+				var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
+				if gm and gm.hud:
+					gm.hud.toast("You're host now. Your own farm is kept under Restore.")
 			_solo_backup = {}
 			connected.emit(true)
 		"world":

@@ -141,6 +141,18 @@
    }
   },
   {
+   "id": "finale",
+   "arc": "penguins",
+   "text": "Touch the crystal spire on the moon and face what's inside.",
+   "when": {
+    "quest": "teleporter"
+   },
+   "done_when": {
+    "flag": "final_done"
+   },
+   "reward": {}
+  },
+  {
    "id": "hideout",
    "arc": "gangsters",
    "text": "Get through the gate to Hideout town and find a place to lie low.",
@@ -1568,7 +1580,7 @@
   {
    "id": "rook_tracks",
    "giver": "rook",
-   "text": "Rook asks you to clear the grumps from the orchard side of the river.",
+   "text": "Rook asks you to clear the orchard side of the river.",
    "when": {
     "friend": [
      "rook",

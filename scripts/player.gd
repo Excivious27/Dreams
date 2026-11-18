@@ -41,6 +41,7 @@ var _buffered := ""
 var _flash_mat: ShaderMaterial
 var _flash := 0.0
 var _combo := 0
+var _last_swing_ms := 0   # the 3-hit combo resets after a pause
 var _dodge_t := 0.0
 var _dodge_cd := 0.0
 var _dodge_dir := Vector2.ZERO
@@ -640,7 +641,7 @@ func _physics_process(delta: float) -> void:
 
 	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
 	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed") + 0.15 * GameState.buff("speed") + GameState.move_bonus()
-	if int(GameState.run["flags"].get("haste_until", -1)) > int(GameState.run["time"]):
+	if int(GameState.run["flags"].get("haste_abs", -1)) > GameState.now_abs():
 		spd_mult *= 1.3
 	if GameState.weather_today() in ["snow", "blizzard"] and map and map.has_sky:
 		spd_mult *= 0.9
@@ -795,7 +796,7 @@ func do_action(mode := "a") -> void:
 			map.hud.toast("You hop off.")
 		return
 	var held := GameState.held_tool()
-	if mode == "tool" and held in ["sword", ""]:
+	if mode == "tool" and (held in ["sword", ""] or GameState.items.get(held, {}).has("range")):
 		_swing()
 		return
 	# A foe right in front: the fight comes first, not the weed under its feet.
@@ -849,7 +850,8 @@ func _swing() -> void:
 	_busy_t = 0.0
 	_attack_cd = 0.3 * GameState.status_swing() * float(GameState.items.get(GameState.held_tool(), {}).get("cd", 1.0))
 	_attack_hit_done = false
-	_combo = (_combo + 1) % 3
+	_combo = 1 if Time.get_ticks_msec() - _last_swing_ms > 1200 else (_combo + 1) % 3
+	_last_swing_ms = Time.get_ticks_msec()
 	velocity = Vector2.ZERO
 	_sprite.position.y = 0
 	# Directional attack strips when the character has them (penguin); else the side one flipped.
@@ -965,8 +967,7 @@ func _attack_hit() -> void:
 			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
 		_swing_arc(center)
 		if hit:
-			map.hitstop = 0.05
-			map.shake(1.5)
+			map.hitstop = maxf(map.hitstop, 0.05)  # attack_at already shook the camera
 
 
 var _dry_told := false
@@ -1003,7 +1004,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 		var e: Node2D = t[1]
 		if not bool(wd.get("spread", false)):
 			end = e.position + Vector2(0, -6)
-		if map.attack_at(Rect2(e.position - Vector2(8, 14), Vector2(16, 18)), dmg, position):
+		if map.attack_at(Rect2(e.position + Vector2(-1, -8), Vector2(2, 2)), dmg, position):  # just this foe, not its neighbours
 			hit = true
 			map.fx("poof", e.position + Vector2(0, -8), 8.0, 0.3)
 	var ln := Line2D.new()
@@ -1018,7 +1019,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	map.fx("sparkle", muzzle, 6.0, 0.15)
 	Music.instance(get_tree()).sfx("shot", "thud")
 	if hit:
-		map.hitstop = 0.03
+		map.hitstop = maxf(map.hitstop, 0.03)
 	map.shake(1.0)
 
 
@@ -1067,6 +1068,14 @@ func take_damage(n: int, from: Vector2) -> void:
 	invuln = 0.35
 	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n
+	# Not Today (Combat): once a day a knockout hit leaves you on 1 HP.
+	if int(GameState.run["hp"]) <= 0 and GameState.bonus("combat", "last_stand") > 0 and int(GameState.run["flags"].get("last_stand_day", -1)) != int(GameState.run["day"]):
+		GameState.run["flags"]["last_stand_day"] = int(GameState.run["day"])
+		GameState.run["hp"] = 1
+		invuln = 1.0
+		if map:
+			map.hud.toast("Not today!", Color(1, 0.85, 0.4))
+			map.fx("sparkle", position + Vector2(0, -12), 14.0, 0.6)
 	if int(GameState.run["hp"]) > 0 and int(GameState.run["hp"]) < int(GameState.run.get("max_hp", 100)) / 4:
 		Music.instance(get_tree()).sfx("heartbeat")
 	velocity = (position - from).normalized() * (60.0 if Crew.perk_level("defence") >= 3 else 120.0)
@@ -1079,7 +1088,7 @@ func take_damage(n: int, from: Vector2) -> void:
 	_busy = false
 	Music.instance(get_tree()).sfx("hurt")
 	if map:
-		map.hitstop = 0.06
+		map.hitstop = maxf(map.hitstop, 0.06)
 		map.shake(3.0)
 		map.damage_number(position + Vector2(0, -22), n, Color(1, 0.35, 0.3))
 	if int(GameState.run["hp"]) <= 0 and map:

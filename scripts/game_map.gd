@@ -198,19 +198,20 @@ func _ready() -> void:
 	after_ready()
 	_lock_untouched_buildings()
 	Story.restore_spawns(self)
-	# Where you arrived here on foot: the balloon can bring you back to it.
-	if has_sky and scene_id() not in ["house", "interior", "mine", "moon", "station", "sky", "title", "test_map"]:
-		var vis: Dictionary = GameState.run.get("visited", {})
-		if not vis.has(scene_id()):
-			var at := player.position - offset()
-			vis[scene_id()] = [at.x, at.y]
-			GameState.run["visited"] = vis
 	Racket.on_enter(self)
 	Marked.on_enter(self)
 	_fill_extension()
 	_place_signposts()
 	_place_waiting_horse()
 	unstick_player()
+	# Where you arrived here on foot (after unsticking): the balloon can bring you back.
+	# Never a battlefield or the Hollow Heart: landing there would start a fight unasked.
+	if has_sky and scene_id() not in ["house", "interior", "mine", "moon", "station", "sky", "title", "test_map", "hollow_heart"] and not scene_id().begins_with("bf_"):
+		var vis: Dictionary = GameState.run.get("visited", {})
+		if not vis.has(scene_id()):
+			var at := player.position - offset()
+			vis[scene_id()] = [at.x, at.y]
+			GameState.run["visited"] = vis
 	_check_quests.call_deferred()
 
 
@@ -226,8 +227,8 @@ func _place_waiting_horse() -> void:
 		var a := anim_prop("animals/horse_" + coat, "idle", c, 0, 2.0)
 		if a:
 			a.flip_h = c.x % 2 == 0
-	elif Art.has("props", "horse3"):
-		anim_prop("props", "horse3", c, 0, 2.0)
+	elif Art.has("animals/horse3", "idle"):
+		anim_prop("animals/horse3", "idle", c, 0, 2.0)
 	set_thing(c.x, c.y, {"type": "horse", "hint": "A: ride %s" % str(GameState.run.get("names", {}).get("horse", "your horse"))}, false)
 
 
@@ -235,8 +236,18 @@ func _place_waiting_horse() -> void:
 func _notification(what: int) -> void:
 	if what in [NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT, NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_WM_GO_BACK_REQUEST]:
 		if not GameState.run.is_empty() and not _changing:
-			GameState.run["scene"] = scene_id()
-			GameState.save()
+			save_here()
+
+
+## Save with the player's current spot, so reopening the app resumes right here
+## (not at the last door). Battles and interiors keep their own entry points.
+func save_here() -> void:
+	GameState.run["scene"] = scene_id()
+	var sid := scene_id()
+	if player and is_instance_valid(player) and not sid.begins_with("bf_") and sid != "interior":
+		var p := player.position - offset()
+		GameState.run["spawn"] = [p.x, p.y, player.facing]
+	GameState.save()
 
 
 ## Subclasses override these.
@@ -380,11 +391,13 @@ func in_content(c: Vector2i) -> bool:
 
 ## A villager on (or right by) this cell: talking wins over the pup at your feet.
 func _npc_near(c: Vector2i) -> bool:
-	var list = get("npcs")
-	if not (list is Array):
-		return false
+	# Every villager child counts, not only a map's `npcs` list (Catkins, crew on farm/meadow...).
+	var list: Array = get_children()
+	var extra = get("npcs")
+	if extra is Array:
+		list.append_array(extra)
 	for n in list:
-		if n is Node2D and is_instance_valid(n) and (n as Node2D).visible and (n as Node2D).position.distance_to(cell_center(c)) < 14.0:
+		if n is Npc and is_instance_valid(n) and (n as Node2D).visible and (n as Node2D).position.distance_to(cell_center(c)) < 14.0:
 			return true
 	return false
 
@@ -568,6 +581,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				thing["hp"] = int(thing.get("hp", 3)) - 1
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
+			hitstop = maxf(hitstop, 0.025)  # a little weight on each swing
 			thing["hp"] = int(thing.get("hp", 3)) - (1 + (GameState.tool_tier("axe") + 1) / 2 + int(GameState.bonus("foraging", "chop_power")))
 			if Companion.has_ability("haul"):
 				thing["hp"] = 0  # Dad: "Just point at the tree."
@@ -585,7 +599,19 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						pop_items(cell_center(c), "sap", 1)
 					if randf() < 0.2 + (0.5 if GameState.has_perk("foraging", "Old Growth") else 0.0):
 						pop_items(cell_center(c), "hardwood" if GameState.items.has("hardwood") else "wood", 1)
-					fell_tree(c, 3 + bonus)
+					fell_tree(c, 4 + bonus)
+					# Domino Fall (Foraging): the trunk knocks down the next tree in line.
+					if GameState.bonus("foraging", "timber") > 0:
+						var dd := c - player.cell()
+						dd = Vector2i(signi(dd.x), signi(dd.y))
+						if dd == Vector2i.ZERO:
+							dd = Vector2i(player.facing_dir())
+						var nx := c + dd
+						var nt: Dictionary = things.get(nx, {})
+						if str(nt.get("type", "")) == "tree" and GameState.tree_block(nt) == "":
+							_mark_cleared(nx)
+							xp("foraging", 3)
+							fell_tree(nx, 4)
 				else:
 					_mark_cleared(c)
 					var sp: Node2D = props.get(c, null)
@@ -614,13 +640,16 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			Music.instance(get_tree()).sfx("pick", "chop")
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
+			hitstop = maxf(hitstop, 0.025)
 			var swing := 1 + (GameState.tool_tier("pickaxe") + 1) / 2
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
 			swing += int(GameState.bonus("mining", "mine_power"))
 			thing["hp"] = int(thing.get("hp", 2)) - swing
 			if int(thing["hp"]) <= 0:
+				hitstop = maxf(hitstop, 0.05)
 				xp("mining", 2)
+				_tremor(c, swing)
 				_mark_cleared(c)
 				var big := props.has(c) and (props[c] as Sprite2D).texture and str((props[c] as Sprite2D).texture.resource_path).contains("rock_m")
 				var extra := "copper"
@@ -635,7 +664,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				thing["berries"] = false
 				thing["hint"] = ""
 				GameState.run["flags"][str(thing["key"])] = int(GameState.run["day"])
-				give("berry", 2)
+				give("berry", 1)
 				xp("foraging", 2)
 				if props.has(c) and Art.tex("nature", GameState.bush_sprite(false)):
 					(props[c] as Sprite2D).texture = Art.tex("nature", GameState.bush_sprite(false))
@@ -814,7 +843,7 @@ func fell_tree(c: Vector2i, wood := 5) -> void:
 	tw.tween_property(sp, "rotation", dir * PI / 2.0, 0.45).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
 	tw.tween_callback(func() -> void:
 		shake(2.5)
-		Music.instance(get_tree()).sfx("hit")
+		Music.instance(get_tree()).sfx("thud", "hit")
 		fx("poof", sp.position + Vector2(dir * 20.0, -4), 14.0, 0.7)
 		for i in 5:
 			_leaf(sp.position + Vector2(dir * randf_range(6, 30), randf_range(-10, 0))))
@@ -842,7 +871,7 @@ func _fell_tree_fx(sp: Node2D, c: Vector2i, dir: float, anim: String, pine: bool
 	var leaves_at := at + Vector2(dir * 18.0, -14)
 	await a.animation_finished
 	shake(2.5)
-	Music.instance(get_tree()).sfx("hit")
+	Music.instance(get_tree()).sfx("thud", "hit")
 	fx("leaf_burst", leaves_at, 14.0, 0.6)
 	fx("dust_puff", at + Vector2(dir * 22.0, 0), 14.0, 0.5)
 	await get_tree().create_timer(0.25, false).timeout
@@ -907,11 +936,12 @@ func pop_items(at: Vector2, id: String, n: int, give_it := true) -> void:
 	if id in ["shard", "crystal_shard"]:
 		var ex := GameState.bonus("mining", "shard_bonus") * n
 		n += int(ex) + (1 if randf() < fmod(ex, 1.0) else 0)
-	if give_it:
-		give(id, n)
 	var icon := Art.tex("items", "pop_" + id) if Art.has("items", "pop_" + id) else Art.tex("items", Hud.icon_for(id))
+	if give_it:
+		give(id, n, icon != null)  # flying icons make their own sound on arrival
 	if icon == null:
 		return  # no picture: the toast from give() says what you got (no flying logs)
+	var last := mini(n, 6) - 1
 	for i in mini(n, 6):
 		var it := Sprite2D.new()
 		it.texture = icon
@@ -930,7 +960,11 @@ func pop_items(at: Vector2, id: String, n: int, give_it := true) -> void:
 				it.position = it.position.lerp(player.position + Vector2(0, -10), f), 0.0, 1.0, 0.3).set_ease(Tween.EASE_IN)
 		tw.tween_callback(func() -> void:
 			it.queue_free()
-			Music.instance(get_tree()).sfx("pickup"))
+			# One pickup sound (and sparkle) when the last one lands, not a chatter per icon.
+			if i == last:
+				Music.instance(get_tree()).sfx("pickup")
+				if is_instance_valid(player):
+					fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.5))
 
 
 func _leaf(at: Vector2) -> void:
@@ -954,6 +988,17 @@ func _leaf(at: Vector2) -> void:
 ## Remember a chopped tree / broken rock per map, with the day it happened, so
 ## it stays gone for a while and then regrows (trees 6 days, 2 with Old Growth;
 ## rocks 4). Older saves stored a plain list: treat those as day 0.
+## Tremor (Mining): breaking a rock cracks its 4 neighbours down to one last hit.
+func _tremor(c: Vector2i, swing: int) -> void:
+	if GameState.bonus("mining", "tremor") <= 0:
+		return
+	for dv: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
+		var nt: Dictionary = things.get(c + dv, {})
+		if str(nt.get("type", "")) == "rock" and GameState.ore_block(str(nt.get("ore", "stone"))) == "":
+			nt["hp"] = maxi(1, int(nt.get("hp", 2)) - swing)
+			fx("stone_chips", cell_center(c + dv) + Vector2(0, -8), 16.0, 0.4)
+
+
 func _mark_cleared(c: Vector2i) -> void:
 	var all: Dictionary = GameState.run.get("cleared", {})
 	var lst = all.get(scene_id(), {})
@@ -1285,7 +1330,25 @@ func _sync_puppets() -> void:
 
 ## The host changed the world: redraw what's visible. Guests only.
 func on_world_sync(_d: Dictionary) -> void:
-	queue_redraw()
+	# The soil layer is cheap; a full map redraw costs 150-350 ms, so at most one per 2 s.
+	var soil = get("_soil")
+	if soil is CanvasItem:
+		(soil as CanvasItem).queue_redraw()
+	var now := Time.get_ticks_msec()
+	if now - _last_sync_redraw >= 2000:
+		_last_sync_redraw = now
+		queue_redraw()
+	elif not _sync_redraw_queued:
+		_sync_redraw_queued = true
+		get_tree().create_timer(2.0).timeout.connect(func() -> void:
+			_sync_redraw_queued = false
+			if is_inside_tree():
+				_last_sync_redraw = Time.get_ticks_msec()
+				queue_redraw())
+
+
+var _last_sync_redraw := -10000
+var _sync_redraw_queued := false
 
 
 ## Guests route world changes through the host.
@@ -1547,6 +1610,7 @@ func line_end(a: Vector2, b: Vector2) -> Vector2:
 func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 	Music.instance(get_tree()).sfx("swing")
 	var hit := false
+	var big := false
 	if from == Vector2.INF:
 		from = player.position
 	for e in enemies.duplicate():
@@ -1567,17 +1631,23 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 				# Weight: a short freeze and a nudge of the camera; more on a kill or a crit.
 				var killed: bool = (not is_instance_valid(e)) or (not e._alive)
 				hitstop = maxf(hitstop, 0.08 if (killed or crit) else 0.035)
+				big = big or killed or crit
 				shake(3.0 if killed else (2.0 if crit else 1.2))
 	if hit:
 		Music.instance(get_tree()).sfx("hit")
-		if hitstop >= 0.08:
+		if big:  # not a leftover freeze from an earlier kill
 			Music.instance(get_tree()).sfx("crit")
 	return hit
 
 
 ## Short freeze on a solid hit (Stardew-style weight). Counted down in _process.
+var _shake_tw: Tween
+
+
 func shake(amount: float) -> void:
-	var cam := player.get_node_or_null("Camera2D") if player else null
+	if player == null or not bool(Settings.get_v("shake")):
+		return
+	var cam := player.get_node_or_null("Camera2D")
 	if cam == null:
 		for ch in player.get_children():
 			if ch is Camera2D:
@@ -1585,10 +1655,14 @@ func shake(amount: float) -> void:
 	if cam == null:
 		return
 	var c := cam as Camera2D
-	var tw := c.create_tween()
+	# One shake at a time: a new one takes over (at least as strong) and always ends at zero.
+	if _shake_tw and _shake_tw.is_valid():
+		_shake_tw.kill()
+		amount = maxf(amount, c.offset.length())
+	_shake_tw = c.create_tween()
 	for i in 3:
-		tw.tween_property(c, "offset", Vector2(randf_range(-amount, amount), randf_range(-amount, amount)), 0.03)
-	tw.tween_property(c, "offset", Vector2.ZERO, 0.04)
+		_shake_tw.tween_property(c, "offset", Vector2(randf_range(-amount, amount), randf_range(-amount, amount)), 0.03)
+	_shake_tw.tween_property(c, "offset", Vector2.ZERO, 0.04)
 
 
 ## Floating damage number.
@@ -1667,7 +1741,10 @@ func use_consumable(sel: String) -> bool:
 			player.play_tool("hold")
 			fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.8)
 			hud.toast("%d crop%s leap a day ahead." % [grew, "" if grew == 1 else "s"], Color(0.7, 1, 0.7))
-			queue_redraw()
+			# Crops live on the farm's soil layer: never redraw the whole map for them.
+			var soil = get("_soil")
+			if soil is CanvasItem:
+				(soil as CanvasItem).queue_redraw()
 			return true
 	match str(it.get("effect", "")):
 		"scrub":
@@ -1870,9 +1947,18 @@ func free_spot_near(at: Vector2) -> Vector2:
 
 
 func on_enemy_died(e: Enemy) -> void:
-	if e.has_meta("story_flag"):
+	if e.has_meta("story_flag") and e.kind == "crystal_baby" and not e.get_meta("reverted", false):
+		# Broken with a blade, not turned back: she comes back, and the flag waits for ♥.
+		hud.toast("Don't break her: turn her back with ♥ (Meow Pow Wow).", Color(1, 0.85, 0.95))
+		var c := world_to_cell(e.position)
+		Story._spawn_list.call_deferred(self, [[e.kind, c.x, c.y, e.tier, str(e.get_meta("story_flag")), 2.0]])
+	elif e.has_meta("story_flag"):
 		GameState.run["flags"][str(e.get_meta("story_flag"))] = true
 		shake(3.0)
+	if e.has_meta("minion"):
+		# Summoned help pays nothing: no crystals, XP, drops or kill counts (no farming a summoner).
+		Music.instance(get_tree()).sfx("die")
+		return
 	GameState.run["kills"] = int(GameState.run.get("kills", 0)) + 1
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
 	hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
@@ -1893,7 +1979,7 @@ func on_enemy_died(e: Enemy) -> void:
 		Racket.on_collector_down(self)
 	if (e.has_meta("colony_foe") or e.has_meta("colony_boss")) and not e.has_meta("decoy"):
 		Colony.on_kill(self, e)
-	if e.kind.begins_with("lt_") and not e.has_meta("decoy"):
+	if e.kind.begins_with("lt_") and not e.has_meta("decoy") and not GameState.run["flags"].has(e.kind):
 		GameState.run["flags"][e.kind] = true
 		var down := 0
 		for lid in Gift.data().get("lieutenants", {}):
@@ -2238,8 +2324,13 @@ func _process(delta: float) -> void:
 	if hud and not (GameState.run.get("notes", []) as Array).is_empty():
 		for nt in GameState.run["notes"]:
 			hud.toast(str(nt), Color(1, 0.85, 0.9))
-			if "letter" in str(nt):
+			var low := str(nt).to_lower()
+			if "letter" in low:
 				Music.instance(get_tree()).sfx("mail")
+			elif "level" in low or "heart" in low or low.begins_with("built") or low.begins_with("learned"):
+				Music.instance(get_tree()).sfx("levelup")
+				if player:
+					fx("skill_up" if Art.has("fx", "skill_up") else "levelup", player.position + Vector2(0, -4), 10.0, 0.6)
 		GameState.run["notes"] = []
 	if not GameState.run.is_empty() and GameState.run["flags"].has("epilogue_done") and not GameState.run["flags"].has("epilogue_shown") and not _changing and not Dialogue.instance(get_tree()).active and player and not player.frozen:
 		GameState.run["flags"]["epilogue_shown"] = true
@@ -2331,6 +2422,8 @@ func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> v
 	var prev_scene: Variant = GameState.run.get("scene", "")
 	GameState.run["scene"] = scene
 	GameState.run["spawn"] = [spawn.x, spawn.y, facing]
+	if scene == "interior" and next_interior != "":
+		GameState.run["interior"] = next_interior  # a kill mid-fade reopens the right building
 	GameState.save()
 	GameState.run["scene"] = prev_scene
 	await hud.fade_out(0.35)
@@ -2354,21 +2447,27 @@ func later(cb: Callable) -> void:
 	cb.call_deferred()
 
 
-func give(id: String, n := 1) -> void:
+func give(id: String, n := 1, quiet := false) -> void:
 	_check_quests.call_deferred()
 	GameState.add_item(id, n)
 	hud.toast("+%d %s" % [n, GameState.item_name(id)], Color(0.85, 1, 0.85))
-	Music.instance(get_tree()).sfx("pickup")
-	if player:
-		fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.5)
+	if not quiet:
+		Music.instance(get_tree()).sfx("pickup")
+		if player:
+			fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.5)
 
 
 func xp(skill: String, n: int) -> void:
-	if GameState.add_xp(skill, n):
-		hud.toast("%s level %d!" % [skill.capitalize(), GameState.skill_level(skill)], Color(1, 0.9, 0.4))
+	GameState._xp_loud = true
+	var up := GameState.add_xp(skill, n)
+	GameState._xp_loud = false
+	if up:
+		hud.toast("%s level %d! A skill point to spend." % [str(GameState.skills_data.get(skill, {}).get("name", skill.capitalize())), GameState.skill_level(skill)], Color(1, 0.9, 0.4))
 		Music.instance(get_tree()).sfx("levelup")
 		if player:
-			fx("levelup", player.position + Vector2(0, -4), 10.0, 0.6)
+			fx("skill_up" if Art.has("fx", "skill_up") else "levelup", player.position + Vector2(0, -4), 10.0, 0.6)
+			if GameState.skill_level(skill) % 5 == 0 and Art.has("fx", "levelup2"):
+				fx("levelup2", player.position + Vector2(0, -20), 12.0, 0.4)
 
 
 # ---- shared drawing helpers --------------------------------------------------
@@ -2412,6 +2511,16 @@ func _draw() -> void:
 	if pad > 0:
 		draw_border()
 	draw_set_transform(Vector2.ZERO)
+
+
+## What the exit corridors through the border band are paved with. Regions use
+## their own path kind (stone for asphalt, metal and the like) instead of dirt.
+func corridor_kind() -> String:
+	var rd = get("R")
+	if rd is Dictionary:
+		var k := str((rd as Dictionary).get("path", "dirt"))
+		return k if k in ["dirt", "sand", "stone"] else "stone"
+	return "dirt"
 
 
 ## Subclasses draw their ground here (content coordinates; the pad offset is applied).
@@ -2458,14 +2567,22 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 	var patchy := season in ["spring", "summer"] and Art.has("tiles", "g_tall") and Art.has("tiles", "g_dry")
 	_tall.clear()
 	var sd := hash(scene_id()) % 1000 + seed_v
+	# Loop constants hoisted out of the per-cell loop (this runs over ~10k cells per redraw).
+	var seam_name: String = {"spring": "meadow_grass", "summer": "meadow_grass", "fall": "dry_grass", "winter": "snow"}.get(season, "meadow_grass")
+	var has_seam := Art.has("seamless", seam_name)
+	var seam_col := Color(1, 0.93, 0.82) if season == "fall" else Color.WHITE
+	var fl: Array = ["gdeco_dandelion", "gdeco_clover", "fdeco_0", "fdeco_1", "fdeco_2", "fdeco_3", "fdeco_4", "fdeco_5"]
+	var noise9 := _fbm_grid(sd, 9.0)
+	var nw := cols + 2 * pad
 	for y in range(r.position.y, r.end.y):
 		for x in range(r.position.x, r.end.x):
 			var at := Vector2(x * TILE, y * TILE)
-			var seam_name: String = {"spring": "meadow_grass", "summer": "meadow_grass", "fall": "dry_grass", "winter": "snow"}.get(season, "meadow_grass")
-			if Art.has("seamless", seam_name):
+			var ni := (y + pad) * nw + (x + pad)
+			var n9: float = noise9[ni] if x >= -pad and y >= -pad and x < cols + pad and y < rows + pad else WorldGen.fbm(float(x), float(y), sd, 9.0)
+			if has_seam:
 				var hv0 := absi((x * 73856093) ^ (y * 19349663))
-				seam_cell(self, seam_name, Vector2i(x, y), Color(1, 0.93, 0.82) if season == "fall" else Color.WHITE)
-				var n0 := WorldGen.fbm(float(x), float(y), sd, 9.0)
+				seam_cell(self, seam_name, Vector2i(x, y), seam_col)
+				var n0 := n9
 				if season == "summer" and n0 < -0.3:
 					seam_cell(self, "dry_grass", Vector2i(x, y), Color(1, 1, 1, clampf((-0.3 - n0) * 4.0, 0.0, 0.8)))
 				elif patchy and n0 > 0.42:
@@ -2473,7 +2590,6 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 				elif season == "spring" and n0 < -0.4 and hv0 % 3 == 0:
 					# Flower drifts as cut-out decals with a little jitter (the old
 					# gv_flower tiles were opaque squares on the grass).
-					var fl: Array = ["gdeco_dandelion", "gdeco_clover", "fdeco_0", "fdeco_1", "fdeco_2", "fdeco_3", "fdeco_4", "fdeco_5"]
 					var nm: String = fl[hv0 % fl.size()]
 					if Art.has("nature", nm):
 						Art.draw_prop(self, "nature", nm, at + Vector2(8 + (hv0 >> 4) % 7 - 3, 14 + (hv0 >> 8) % 5 - 2))
@@ -2484,9 +2600,10 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 				var hv := absi((x * 73856093) ^ (y * 19349663))
 				if gv:
 					var base: String = {"spring": "gv_short", "summer": "gv_short", "fall": "gv_autumn", "winter": "gv_snow"}.get(season, "gv_short")
-					Art.draw_tile(self, "tiles", "%s_%d" % [base, hv % 12 if hv % 7 == 0 else hv % 4], at, 0)
+					# Only the first four short variants: 4..11 are brighter opaque squares that grid the field.
+					Art.draw_tile(self, "tiles", "%s_%d" % [base, hv % 4], at, 0)
 					if patchy:
-						var n := WorldGen.fbm(float(x), float(y), sd, 9.0)
+						var n := n9
 						if n > 0.42:
 							_tall[Vector2i(x, y)] = true
 						elif n < -0.36 and hv % 3 != 0:
@@ -2504,11 +2621,35 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 					Art.draw_prop(self, "nature", "gdeco_dandelion" if _deco_rng.randf() < 0.5 else "gdeco_clover", at + Vector2(8, 14))
 			else:
 				draw_rect(Rect2(at, Vector2(TILE, TILE)), Color("5a9e4b") if (x + y) % 2 == 0 else Color("67ab55"))
-	if not _tall.is_empty() and Art.has("tiles", "tall_edge_top_0"):
+	# Tall grass as cut-out tufts on top of the base grass (the gv_tall tiles were
+	# opaque squares that showed as a grid of light patches).
+	if not _tall.is_empty() and Art.has("nature", "gdeco_tuft_a"):
+		var tufts := ["gdeco_tuft_a", "gdeco_tuft_b", "gdeco_tuft_c"]
 		for c: Vector2i in _tall:
 			var hv := absi((c.x * 73856093) ^ (c.y * 19349663))
-			Art.draw_tile(self, "tiles", "gv_tall_%d" % (hv % 12), Vector2(c * TILE), 0)
-		Art.draw_blob(self, _tall, "tall_edge", 16.0, 0)
+			var base_p := Vector2(c * TILE)
+			Art.draw_prop(self, "nature", tufts[hv % 3], base_p + Vector2(5 + (hv >> 3) % 6, 9 + (hv >> 6) % 4))
+			if hv % 3 != 0:
+				Art.draw_prop(self, "nature", tufts[(hv >> 2) % 3], base_p + Vector2(10 + (hv >> 9) % 5, 15 + (hv >> 12) % 2))
+
+
+## WorldGen.fbm over the whole padded map, computed once per (seed, scale) and kept.
+var _fbm_cache := {}
+
+
+func _fbm_grid(sd: int, scale: float) -> PackedFloat32Array:
+	var key := "%d:%.1f:%d:%d:%d" % [sd, scale, cols, rows, pad]
+	if _fbm_cache.has(key):
+		return _fbm_cache[key]
+	var w := cols + 2 * pad
+	var h := rows + 2 * pad
+	var a := PackedFloat32Array()
+	a.resize(w * h)
+	for y in h:
+		for x in w:
+			a[y * w + x] = WorldGen.fbm(float(x - pad), float(y - pad), sd, scale)
+	_fbm_cache[key] = a
+	return a
 
 
 ## Ground region with real grass transitions (W1 sets) when available.
@@ -2521,9 +2662,12 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 	var blob2: String = {"cobble": "path2_cobble", "stone": "path2_cobble"}.get(kind, "")
 	if blob2 != "" and Art.has("tiles", blob2 + "_top_0"):
 		var cells2 := widen_path(cells_in)
+		var hb := hash(blob2)
 		for c: Vector2i in cells2:
-			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hash(blob2))
-			Art.draw_tile(self, "tiles", Art.fill_name(blob2, h), Vector2(c * TILE), 0)
+			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hb)
+			# One seamless paving texture inside (per-cell fill variants didn't line up at the seams).
+			if not seam_cell(self, "pavement", c):
+				Art.draw_tile(self, "tiles", Art.fill_name(blob2, h), Vector2(c * TILE), 0)
 			if h % 17 == 0 and _blob_interior(cells2, c) and Art.has("tiles", "%s_deco_%d" % [blob2, h / 17 % 36]):
 				Art.draw_tile(self, "tiles", "%s_deco_%d" % [blob2, h / 17 % 36], Vector2(c * TILE), 0)
 		Art.draw_blob(self, cells2, blob2, 16.0, 0)
@@ -3347,13 +3491,13 @@ func draw_border() -> void:
 			"cliff": cliff[c] = true
 			"tree": treec[c] = true
 			"void": draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.05, 0.05, 0.08))
-	# Exit corridors through the band are dirt track.
+	# Exit corridors through the band match the map's own paths (dirt on grass maps).
 	if not _border_open.is_empty():
 		var corridor := {}
 		for c: Vector2i in _border_open:
 			if not blocked.has(c):
 				corridor[c] = true
-		draw_ground("dirt", corridor)
+		draw_ground(corridor_kind(), corridor)
 	if not water.is_empty() or not border_water_extra.is_empty():
 		var body := water.duplicate()
 		body.merge(border_water_extra)
@@ -3398,6 +3542,11 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
 	var night: bool = GameState.is_night() and GameState.run["flags"].has("lighthouse_lit")
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
+	# Tidecall (Fishing): the first cast of the day bites at once.
+	if GameState.bonus("fishing", "tidecall") > 0 and int(GameState.run["flags"].get("tide_day", -1)) != int(GameState.run["day"]):
+		GameState.run["flags"]["tide_day"] = int(GameState.run["day"])
+		wait = 0.3
+		hud.toast("Tidecall!", Color(0.6, 0.9, 1))
 	var baited := false
 	if GameState.count("bait") > 0:  # bait: quicker bites and a shot at better fish
 		GameState.add_item("bait", -1)
@@ -3429,14 +3578,16 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 				hud.toast("Too soon! Wait for the !!!", Color(1, 0.8, 0.6))
 			break
 	player.frozen = false
+	var bob_at := player.position
 	if bob:
+		bob_at = bob.position
 		fx("reel_splash" if Art.has("fx", "reel_splash") else "splash", bob.position, 12.0, 0.5)
 		if caught and Art.has("fx", "fish_jump_a"):
 			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
 		bob.queue_free()
 	if caught:
 		var lvl := GameState.skill_level("fishing")
-		var reach := mini(pool.size(), 2 + lvl * 2 + (2 if night else 0) + (1 if baited else 0))
+		var reach := mini(pool.size(), 1 + lvl + (2 if night else 0) + (1 if baited else 0))
 		# Pools run easiest → rarest: weight the pick so rare fish stay rare.
 		var fish: String = pool[_weighted_index(0, reach)] if randf() > 0.08 else "boot"
 		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
@@ -3444,12 +3595,16 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 			fish = pool[_weighted_index(lo, pool.size())]
 		Music.instance(get_tree()).sfx("reel")
 		player.play_tool("reel")
-		give(fish)
-		if randf() < GameState.bonus("fishing", "double_fish"):
-			give(fish)
+		# The fish flies out of the water to you; a boot thuds, a rare one sparkles.
+		pop_items(bob_at, fish, 2 if randf() < GameState.bonus("fishing", "double_fish") else 1)
+		if fish == "boot":
+			Music.instance(get_tree()).sfx("thud", "nope")
+		elif pool.find(fish) >= reach - 1:
+			Music.instance(get_tree()).sfx("quest_done", "levelup")
+			fx("sparkle", bob_at + Vector2(0, -8), 14.0, 0.7)
 		if randf() < GameState.bonus("fishing", "chest_chance"):
 			give(["old_coin", "pearl", "map_scrap"][randi() % 3])
-		xp("fishing", 6)
+		xp("fishing", 4)
 	else:
 		hud.toast("It got away.")
 		Music.instance(get_tree()).sfx("fish_escape")

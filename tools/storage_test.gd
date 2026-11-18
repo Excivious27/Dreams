@@ -108,5 +108,51 @@ func _run() -> void:
 	check(Storage.slots("chest").count("stone") == 2, "1500 stone takes two chest stacks")
 	var j: Variant = JSON.parse_string(JSON.stringify(GameState.run, "", false))
 	check(j is Dictionary and (j["bag_slots"] as Array).size() == GameState.bag_slots().size(), "slots survive a save round trip")
+	# A build that uses chest items never leaves more stars than items.
+	Storage.box("chest")["items"]["turnip"] = 10
+	Storage.box("chest")["q"]["turnip"] = {"g": 10}
+	Storage.take_from_chests("turnip", 8)
+	check(int(Storage.box("chest")["q"]["turnip"].get("g", 0)) <= 2, "take_from_chests trims stars")
+	# Keys and quest items stay in the bag.
+	var kid := ""
+	for iid: String in GameState.items:
+		if str(GameState.items[iid].get("type", "")) == "key":
+			kid = iid
+			break
+	if kid != "":
+		GameState.add_item(kid, 1)
+		check(Storage.deposit("chest", kid, 1) == 0 and GameState.count(kid) == 1, "keys never go into a chest")
+	# A lock survives a chest round trip.
+	GameState.add_item("potato", 3)
+	GameState.toggle_lock("potato")
+	Storage.deposit("chest", "potato", 3)
+	Storage.withdraw("chest", "potato", 3)
+	check(GameState.is_locked("potato"), "lock kept through deposit + withdraw")
+	# Locked items are skipped by family takes.
+	check(GameState.count_any("#" + GameState.family("potato")) < GameState.count("potato") or GameState.family("potato") == "", "family count skips locked")
+	GameState.toggle_lock("potato")
+	# Old saves: the renamed Killing Edge moves to Keen Edge.
+	GameState.run["skills"]["combat"]["nodes"] = {"combat_u_killing_edge": 1}
+	GameState._migrate()
+	check(GameState.node_rank("combat", "combat_u_keen_edge") == 1, "Killing Edge migrates to Keen Edge")
+	# A positional id that now holds a different node is refunded.
+	GameState.run["skills"]["combat"]["nodes"] = {"combat_2_7": 1}
+	GameState.run["skills"]["combat"]["nm"] = {"combat_2_7": "Something Else"}
+	GameState._migrate()
+	check(GameState.node_rank("combat", "combat_2_7") == 0, "renamed positional node is refunded")
+	# Old Iron Gut (positional combat_2_8) moves to the Iron Gut unlock.
+	GameState.run["skills"]["combat"]["nm"] = {}
+	GameState.run["skills"]["combat"]["nodes"] = {"combat_2_8": 1}
+	GameState._migrate()
+	check(GameState.node_rank("combat", "combat_u_iron_gut") == 1, "Iron Gut migrates to its unlock")
+	check(GameState.has_perk("combat", "Iron Gut"), "Iron Gut found by name")
+	check(GameState.bonus("combat", "status_guard") > 0, "Iron Gut guards against poison")
+	# Under another old name it is refunded, not moved.
+	GameState.run["skills"]["combat"]["nodes"] = {"combat_2_8": 1}
+	GameState.run["skills"]["combat"]["nm"] = {"combat_2_8": "Toughness"}
+	GameState._migrate()
+	check(GameState.node_rank("combat", "combat_u_iron_gut") == 0, "other combat_2_8 is refunded")
+	GameState.run["skills"]["combat"]["nm"] = {}
+	GameState.run["skills"]["combat"]["nodes"] = {}
 	print("storage_test: %d failures" % fails)
 	quit()

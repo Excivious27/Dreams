@@ -123,6 +123,10 @@ func _sleep() -> void:
 	for nm in report.get("gone", []):
 		lines.append({"who": "", "text": "A note under the door, in a hand you know: '%s went east. Didn't say why. You know why.'" % str(nm)})
 	await hud.fade_in(0.8)
+	if int(report.get("earned", 0)) > 0:
+		Music.instance(get_tree()).sfx("coin", "pickup")
+	if not (report.get("built", []) as Array).is_empty():
+		Music.instance(get_tree()).sfx("craft_done", "levelup")
 	await say(lines)
 	_changing = false
 	_morning_events()
@@ -160,7 +164,7 @@ func draw_map() -> void:
 	draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color("1a1410"))
 	if Art.has("tiles", "fl_wood"):
 		draw_tileset_rect("fl_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
-		draw_tileset_rect("fl_carpet_red", Rect2i(6, 6, 4, 3), Color("b03a2e"))
+		_draw_rug("fl_carpet_red", Rect2i(6, 6, 4, 3), Color("b03a2e"))
 		for x in range(1, cols - 1):
 			var idx := 0 if x == 1 else (2 if x == cols - 2 else 1)
 			var nm: String = ["wl_floral_l", "wl_floral_m", "wl_floral_r"][idx]
@@ -237,3 +241,16 @@ func _dresser() -> void:
 			Dialogue.block_input()
 		cr.done.connect(finish)
 		cr.cancelled.connect(func() -> void: finish.call({}))
+
+
+## One bordered rug image: sample only inside its gold border, like the
+## interiors' carpets (the 3x3 tileset cut shows the art's gutters).
+func _draw_rug(nm: String, r: Rect2i, fallback: Color) -> void:
+	var t := Art.tex("tiles", nm) if Art.has("tiles", nm) else null
+	if t == null:
+		draw_rect(Rect2(r.position * TILE, r.size * TILE), fallback)
+		return
+	var kc := t.get_width() / 96.0
+	for y in range(r.position.y, r.end.y):
+		for x in range(r.position.x, r.end.x):
+			draw_texture_rect_region(t, Rect2(Vector2(x * TILE, y * TILE), Vector2(TILE, TILE)), Rect2((22.0 + float(x % 2) * 26.0) * kc, (22.0 + float(y % 2) * 26.0) * kc, 26.0 * kc, 26.0 * kc))

@@ -114,15 +114,16 @@
      "row": 0
     },
     {
-     "id": "farming_0_9",
-     "name": "Overflowing Baskets",
-     "desc": "+10% chance to get a seed back",
+     "id": "farming_u_wide_spout",
+     "name": "Wide Spout",
+     "desc": "Your watering can also soaks the tilled tiles to either side.",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "seed_back": 0.1
-     }
+      "wide_water": 1
+     },
+     "unlock": true
     },
     {
      "id": "quick_hands",
@@ -205,12 +206,12 @@
     {
      "id": "farming_1_7",
      "name": "Light Hoe",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
+      "seed_back": 0.05
      }
     },
     {
@@ -338,12 +339,12 @@
     {
      "id": "farming_2_9",
      "name": "Big Eggs",
-     "desc": "+12 max energy",
+     "desc": "+6% faster levelling in this skill",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
+      "xp_gain": 0.06
      }
     },
     {
@@ -518,8 +519,8 @@
     {
      "id": "hot_furnace",
      "name": "Hot Furnace",
-     "desc": "Smelting needs 1 less ore (per rank)",
-     "ranks": 2,
+     "desc": "Smelting needs 1 less ore",
+     "ranks": 1,
      "tier": 4,
      "effect": {
       "smelt_discount": 1
@@ -862,12 +863,12 @@
     {
      "id": "mining_3_5",
      "name": "Ladder Luck",
-     "desc": "+4% less energy to mine",
+     "desc": "+8 max health",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "mine_energy": 0.04
+      "hp": 8
      }
     },
     {
@@ -884,35 +885,36 @@
     {
      "id": "mining_3_7",
      "name": "Dark Eyes",
-     "desc": "+4% less energy to mine",
+     "desc": "+6 max energy",
      "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "mine_energy": 0.04
+      "energy": 6
      }
     },
     {
      "id": "mining_3_8",
      "name": "Deep Stamina",
-     "desc": "+5% extra ore",
+     "desc": "+4 max energy",
      "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "ore_bonus": 0.05
+      "energy": 4
      }
     },
     {
-     "id": "mining_3_9",
-     "name": "Echo Map",
-     "desc": "+8% less energy to mine",
+     "id": "mining_u_tremor",
+     "name": "Tremor",
+     "desc": "Breaking a rock cracks the rocks around it down to one last hit.",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "mine_energy": 0.08
-     }
+      "tremor": 1
+     },
+     "unlock": true
     }
    ]
   },
@@ -1216,12 +1218,12 @@
     {
      "id": "foraging_2_6",
      "name": "Honey Sense",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+1 day sooner for picked spots to regrow (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "energy": 6
+      "regrowth": 1
      }
     },
     {
@@ -1239,12 +1241,12 @@
     {
      "id": "foraging_2_8",
      "name": "Amber Drops",
-     "desc": "+8 max health (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "hp": 8
+      "energy": 6
      }
     },
     {
@@ -1272,12 +1274,12 @@
     {
      "id": "foraging_3_1",
      "name": "Trail Lore",
-     "desc": "+3% rare forage chance",
+     "desc": "+8 max health",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "rare_forage": 0.03
+      "hp": 8
      }
     },
     {
@@ -1291,12 +1293,12 @@
     {
      "id": "foraging_3_3",
      "name": "Moss Sense",
-     "desc": "+3% rare forage chance",
+     "desc": "+8 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "rare_forage": 0.03
+      "hp": 8
      }
     },
     {
@@ -1313,12 +1315,12 @@
     {
      "id": "foraging_3_5",
      "name": "Night Walker",
-     "desc": "+3% rare forage chance",
+     "desc": "+6 max energy",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "rare_forage": 0.03
+      "energy": 6
      }
     },
     {
@@ -1343,24 +1345,25 @@
     {
      "id": "foraging_3_8",
      "name": "Glint Eye",
-     "desc": "+1 (each = +6% chance of a double pick)",
+     "desc": "+4 max energy",
      "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "forage_bonus": 1
+      "energy": 4
      }
     },
     {
-     "id": "foraging_3_9",
-     "name": "Hollow Finder",
-     "desc": "+6% rare forage chance",
+     "id": "foraging_u_domino_fall",
+     "name": "Domino Fall",
+     "desc": "A tree you fell knocks down the tree behind it too.",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "rare_forage": 0.06
-     }
+      "timber": 1
+     },
+     "unlock": true
     }
    ]
   },
@@ -1474,15 +1477,16 @@
      }
     },
     {
-     "id": "fishing_0_9",
-     "name": "Lazy River",
-     "desc": "+6% faster levelling in this skill",
+     "id": "fishing_u_tidecall",
+     "name": "Tidecall",
+     "desc": "Your first cast each day bites at once.",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "xp_gain": 0.06
-     }
+      "tidecall": 1
+     },
+     "unlock": true
     },
     {
      "id": "fishing_1_0",
@@ -1529,12 +1533,12 @@
     {
      "id": "fishing_1_4",
      "name": "Tight Knots",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 1,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      }
     },
     {
@@ -1562,12 +1566,12 @@
     {
      "id": "fishing_1_7",
      "name": "Iron Line",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
+      "energy": 6
      }
     },
     {
@@ -1628,23 +1632,23 @@
     {
      "id": "fishing_2_3",
      "name": "Deep Water",
-     "desc": "+6% fish sell value",
+     "desc": "+6 max energy",
      "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
-      "fish_value": 0.06
+      "energy": 6
      }
     },
     {
      "id": "fishing_2_4",
      "name": "Market Catch",
-     "desc": "+3% rare fish chance",
+     "desc": "+4 max energy",
      "ranks": 1,
      "tier": 4,
      "row": 2,
      "effect": {
-      "rare_fish": 0.03
+      "energy": 4
      }
     },
     {
@@ -1695,12 +1699,12 @@
     {
      "id": "fishing_2_9",
      "name": "Rare Lure",
-     "desc": "+12% fish sell value",
+     "desc": "+6% rare fish chance",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "fish_value": 0.12
+      "rare_fish": 0.06
      }
     },
     {
@@ -1806,12 +1810,12 @@
     {
      "id": "fishing_3_9",
      "name": "Old Maps",
-     "desc": "+4% treasure chest chance",
+     "desc": "+4 max health",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "chest_chance": 0.04
+      "hp": 4
      }
     }
    ]
@@ -2081,12 +2085,12 @@
     {
      "id": "combat_2_3",
      "name": "Deep Breaths",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "xp_gain": 0.03
+      "energy": 6
      }
     },
     {
@@ -2103,19 +2107,19 @@
     {
      "id": "combat_2_5",
      "name": "Hearty",
-     "desc": "+6 max energy",
-     "ranks": 1,
+     "desc": "+3% faster levelling in this skill (per rank)",
+     "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      }
     },
     {
      "id": "combat_2_6",
      "name": "Runner",
-     "desc": "+8 max health",
-     "ranks": 1,
+     "desc": "+8 max health (per rank)",
+     "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
@@ -2125,8 +2129,8 @@
     {
      "id": "combat_2_7",
      "name": "Big Lungs",
-     "desc": "+6 max energy",
-     "ranks": 1,
+     "desc": "+6 max energy (per rank)",
+     "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
@@ -2134,26 +2138,28 @@
      }
     },
     {
-     "id": "combat_2_8",
+     "id": "combat_u_iron_gut",
      "name": "Iron Gut",
-     "desc": "+8 max health",
+     "desc": "Poison and burns can't touch you.",
      "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "hp": 8
-     }
+      "status_guard": 1
+     },
+     "unlock": true
     },
     {
-     "id": "combat_2_9",
-     "name": "Toughness",
-     "desc": "+12 max energy",
+     "id": "combat_u_not_today",
+     "name": "Not Today",
+     "desc": "Once a day, a hit that would knock you out leaves you on 1 HP.",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
-     }
+      "last_stand": 1
+     },
+     "unlock": true
     },
     {
      "id": "combat_3_0",
@@ -2334,12 +2340,12 @@
     {
      "id": "bartering_0_5",
      "name": "Bulk Deal",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+2% off shop prices (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "xp_gain": 0.03
+      "buy_discount": 0.02
      }
     },
     {
@@ -2367,23 +2373,23 @@
     {
      "id": "bartering_0_8",
      "name": "Sharp Ledger",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+2% off shop prices (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
      "effect": {
-      "xp_gain": 0.03
+      "buy_discount": 0.02
      }
     },
     {
      "id": "bartering_0_9",
      "name": "Hot Market",
-     "desc": "+6% faster levelling in this skill",
+     "desc": "+4% off shop prices",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "xp_gain": 0.06
+      "buy_discount": 0.04
      }
     },
     {
@@ -2400,12 +2406,12 @@
     {
      "id": "bartering_1_1",
      "name": "Thrifty",
-     "desc": "+3% faster levelling in this skill (per rank)",
+     "desc": "+2% off shop prices (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
      "effect": {
-      "xp_gain": 0.03
+      "buy_discount": 0.02
      }
     },
     {
@@ -2455,46 +2461,47 @@
     {
      "id": "bartering_1_6",
      "name": "Wholesale",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 1,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      }
     },
     {
      "id": "bartering_1_7",
      "name": "Back Room Prices",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      }
     },
     {
      "id": "bartering_1_8",
      "name": "Insider",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "energy": 6
+      "xp_gain": 0.03
      }
     },
     {
-     "id": "bartering_1_9",
-     "name": "Bargain Sense",
-     "desc": "+16 max health",
+     "id": "bartering_u_lucky_day",
+     "name": "Lucky Day",
+     "desc": "5% chance each night the sell box pays double.",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "hp": 16
-     }
+      "jackpot": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "bartering_2_0",
@@ -2510,12 +2517,12 @@
     {
      "id": "bartering_2_1",
      "name": "Remember Names",
-     "desc": "+8 max health (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "hp": 8
+      "xp_gain": 0.03
      }
     },
     {
@@ -2532,12 +2539,12 @@
     {
      "id": "bartering_2_3",
      "name": "Thoughtful Gifts",
-     "desc": "+1 friendship per gift",
-     "ranks": 1,
+     "desc": "+6 max energy (per rank)",
+     "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "gift_bonus": 1
+      "energy": 6
      }
     },
     {
@@ -2577,56 +2584,56 @@
     {
      "id": "bartering_2_7",
      "name": "Good Listener",
-     "desc": "+8 max health (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
+     "row": 2,
+     "effect": {
+      "energy": 6
+     }
+    },
+    {
+     "id": "bartering_2_8",
+     "name": "Town Favourite",
+     "desc": "+8 max health (per rank)",
+     "ranks": 2,
+     "tier": 8,
      "row": 2,
      "effect": {
       "hp": 8
      }
     },
     {
-     "id": "bartering_2_8",
-     "name": "Town Favourite",
-     "desc": "+1 friendship per gift",
-     "ranks": 1,
-     "tier": 8,
-     "row": 2,
-     "effect": {
-      "gift_bonus": 1
-     }
-    },
-    {
      "id": "bartering_2_9",
      "name": "Best Neighbour",
-     "desc": "+2 friendship per gift",
+     "desc": "+16 max health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "gift_bonus": 2
+      "hp": 16
      }
     },
     {
      "id": "bartering_3_0",
      "name": "Piggy Bank",
-     "desc": "+3% sell prices",
-     "ranks": 1,
+     "desc": "+8 max health (per rank)",
+     "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "sell_bonus": 0.03
+      "hp": 8
      }
     },
     {
      "id": "bartering_3_1",
      "name": "Rainy Day Fund",
-     "desc": "+0.3% daily interest on savings",
+     "desc": "+6 max energy",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "energy": 6
      }
     },
     {
@@ -2640,34 +2647,34 @@
     {
      "id": "bartering_3_3",
      "name": "Coin Counter",
-     "desc": "+0.3% daily interest on savings",
+     "desc": "+4 max energy",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "energy": 4
      }
     },
     {
      "id": "bartering_3_4",
      "name": "Compound",
-     "desc": "+3% sell prices",
+     "desc": "+4 max health",
      "ranks": 1,
      "tier": 4,
      "row": 3,
      "effect": {
-      "sell_bonus": 0.03
+      "hp": 4
      }
     },
     {
      "id": "bartering_3_5",
      "name": "Nest Egg",
-     "desc": "+0.3% daily interest on savings",
+     "desc": "+3% faster levelling in this skill",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "xp_gain": 0.03
      }
     },
     {
@@ -2684,12 +2691,12 @@
     {
      "id": "bartering_3_7",
      "name": "Investor",
-     "desc": "+0.3% daily interest on savings",
+     "desc": "+2% faster levelling in this skill",
      "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "xp_gain": 0.02
      }
     },
     {
@@ -2706,12 +2713,12 @@
     {
      "id": "bartering_3_9",
      "name": "Vault Key",
-     "desc": "+0.6% daily interest on savings",
+     "desc": "+0.1% daily interest on savings",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "interest": 0.006
+      "interest": 0.001
      }
     }
    ]
@@ -3073,34 +3080,34 @@
     {
      "id": "building_3_1",
      "name": "Permit Pal",
-     "desc": "+4% cheaper buildings",
+     "desc": "+6 max energy",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "build_discount": 0.04
+      "energy": 6
      }
     },
     {
      "id": "building_3_2",
      "name": "Site Boss",
-     "desc": "+5% faster crafting",
+     "desc": "+4 max energy",
      "ranks": 1,
      "tier": 2,
      "row": 3,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 4
      }
     },
     {
      "id": "building_3_3",
      "name": "Crew Chief",
-     "desc": "+4% cheaper buildings",
+     "desc": "+4 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "build_discount": 0.04
+      "hp": 4
      }
     },
     {
@@ -3128,23 +3135,23 @@
     {
      "id": "building_3_6",
      "name": "Efficient Plans",
-     "desc": "+5% faster crafting",
-     "ranks": 1,
+     "desc": "+4% cheaper buildings (per rank)",
+     "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "craft_speed": 0.05
+      "build_discount": 0.04
      }
     },
     {
      "id": "building_3_7",
      "name": "Big Thinker",
-     "desc": "+4% cheaper buildings",
+     "desc": "+3% faster levelling in this skill",
      "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "build_discount": 0.04
+      "xp_gain": 0.03
      }
     },
     {
@@ -3159,15 +3166,16 @@
      "row": 3
     },
     {
-     "id": "building_3_9",
-     "name": "Skyline",
-     "desc": "+8% cheaper buildings",
+     "id": "building_u_quick_build",
+     "name": "Quick Build",
+     "desc": "Hazel's crew finishes every build a day sooner.",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "build_discount": 0.08
-     }
+      "quick_build": 1
+     },
+     "unlock": true
     }
    ]
   },
@@ -3590,15 +3598,16 @@
      }
     },
     {
-     "id": "magic_3_8",
-     "name": "Starborn",
-     "desc": "+8 max health (per rank)",
-     "ranks": 2,
+     "id": "magic_u_twin_cast",
+     "name": "Twin Cast",
+     "desc": "15% chance a spell costs no mana.",
+     "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "hp": 8
-     }
+      "free_cast": 0.15
+     },
+     "unlock": true
     },
     {
      "id": "awakening",
@@ -4145,12 +4154,12 @@
     {
      "id": "strategist_0_5",
      "name": "Fast Flags",
-     "desc": "+3 supply at the start of a battle (per rank)",
+     "desc": "+5% faster point capture (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "start_supply": 3
+      "capture_speed": 0.05
      }
     },
     {
@@ -4189,12 +4198,12 @@
     {
      "id": "strategist_0_9",
      "name": "Field Marshal",
-     "desc": "+10% faster point capture",
+     "desc": "+6% faster levelling in this skill",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "capture_speed": 0.1
+      "xp_gain": 0.06
      }
     },
     {
@@ -5735,12 +5744,12 @@
     {
      "id": "harmony_2_5",
      "name": "Ice Friend",
-     "desc": "+6 max mana",
+     "desc": "+8 max health",
      "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
-      "mana": 6
+      "hp": 8
      }
     },
     {
@@ -5769,23 +5778,23 @@
     {
      "id": "harmony_2_8",
      "name": "Colony Hero",
-     "desc": "+3% cheaper colony shops",
+     "desc": "+4 max energy",
      "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "colony_discount": 0.03
+      "energy": 4
      }
     },
     {
      "id": "harmony_2_9",
      "name": "Star of the Sea",
-     "desc": "+12 max mana",
+     "desc": "+4 max health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "mana": 12
+      "hp": 4
      }
     },
     {

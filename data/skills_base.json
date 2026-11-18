@@ -226,8 +226,8 @@
     {
      "id": "hot_furnace",
      "name": "Hot Furnace",
-     "desc": "Smelting needs 1 less ore (per rank)",
-     "ranks": 2,
+     "desc": "Smelting needs 1 less ore",
+     "ranks": 1,
      "tier": 2,
      "requires": [
       "copper_eye"

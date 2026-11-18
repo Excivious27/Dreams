@@ -51,6 +51,10 @@ var _running := false
 
 
 const BTN_ROW := ["btn_blue", "btn_blue_down", "btn_green", "btn_green_down", "btn_red", "btn_red_down", "btn_gold", "btn_gold_down"]
+## Left edge of each circle in that 490x70 row (they touch in pairs, so equal cells would show slivers).
+const BTN_SRC_X := [0, 59, 123, 182, 247, 306, 372, 431]
+const TOOL_VERBS := ["Chop", "Mine", "Fish", "Cut", "Farm", "Fight"]
+const SKINS := {"a": ["btn_gold", "btn_gold_down"], "action": ["btn_green", "btn_green_down"], "menu": ["sbtn_blue", "sbtn_blue_down"], "ability": ["sbtn_blue", "sbtn_blue_down"]}
 
 func _ready() -> void:
 	layer = 10
@@ -68,9 +72,22 @@ func _notification(what: int) -> void:
 		release_all()
 
 
-func _process(_delta: float) -> void:
+var _redraw_t := 0.0
+var _last_sig := ""
+
+
+func _process(delta: float) -> void:
 	_canvas.visible = visible_controls
-	_canvas.queue_redraw()
+	if not visible_controls:
+		return
+	# Touches redraw at once (_press/_release/_set_vec); the rest (cooldown arc,
+	# dodge/ability appearing, context word) is fine at 10 Hz or on change.
+	_redraw_t += delta
+	var sig := "%s|%s|%s" % [context_word, get_tree().paused, Dialogue.instance(get_tree()).active]
+	if _redraw_t >= 0.1 or sig != _last_sig:
+		_redraw_t = 0.0
+		_last_sig = sig
+		_canvas.queue_redraw()
 
 
 func release_all() -> void:
@@ -201,8 +218,12 @@ func _pup_cmd(cmd: String) -> void:
 		var m := get_tree().current_scene as GameMap
 		if m and m.hud:
 			m.hud.toast("Guard needs the Guard Dog skill (Pup tree).", Color(1, 0.85, 0.6))
+		return
 	else:
 		pt.set_mode(cmd)
+		var mh := get_tree().current_scene as GameMap
+		if mh and mh.hud:
+			mh.hud.toast("%s: %s" % [Pet.name_of(), str({"follow": "heel", "attack": "attack", "wait": "stay", "guard": "guard"}.get(cmd, cmd)).capitalize()], Color(1, 0.95, 0.75))
 	Music.instance(get_tree()).sfx("bark", "pickup")
 
 
@@ -247,8 +268,8 @@ func _set_vec(dir: Vector2, running: bool) -> void:
 	# Paused (a full-screen menu is open): the stick does nothing, and never presses B.
 	if get_tree().paused:
 		running = false  # never press B by pushing the stick far while something is open
-		if not Dialogue.instance(get_tree()).active:
-			dir = Vector2.ZERO  # dialogue choices still use the stick; full-screen menus don't
+		if not Dialogue.instance(get_tree()).active and not Hud.stick_ok:
+			dir = Vector2.ZERO  # dialogue choices (and HackGame) still use the stick; other menus don't
 	_stick_vec = dir
 	for action: String in DIRS:
 		var want := dir.dot(DIRS[action]) > 0.5
@@ -346,10 +367,14 @@ func _on_draw() -> void:
 				_canvas.draw_string(font, cp + Vector2(-PUP_R, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0, 5, Color(1, 1, 1, 0.9))
 			if _held.has("pup:" + cmd):
 				_canvas.draw_circle(cp, PUP_R, Color(1, 1, 1, 0.25))
+			if Art.has("ui", ic) and int(GameState.run.get("day", 1)) <= 3:
+				# Early days: name each command under its icon.
+				var lp := cp + Vector2(-PUP_R - 4, PUP_R + 5)
+				_canvas.draw_string_outline(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 5, 2, Color(0, 0, 0, 0.8))
+				_canvas.draw_string(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 5, Color(1, 1, 1, 0.95))
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
-	var skins := {"a": ["btn_gold", "btn_gold_down"], "action": ["btn_green", "btn_green_down"], "menu": ["sbtn_blue", "sbtn_blue_down"], "ability": ["sbtn_blue", "sbtn_blue_down"]}
 	for action: String in BUTTONS:
 		if action == "ability" and not _has_ability():
 			continue
@@ -360,7 +385,7 @@ func _on_draw() -> void:
 		var p: Vector2 = br[0]
 		var r := float(br[1])
 		var on := _held.has(action)
-		var sk: Array = skins.get(action, [])
+		var sk: Array = SKINS.get(action, [])
 		var bname := ""
 		if not sk.is_empty() and Art.has("ui", str(sk[0])):
 			btn = Art.tex("ui", str(sk[0]))
@@ -372,9 +397,12 @@ func _on_draw() -> void:
 			var src := Rect2(0, 0, cell, cell)
 			if bt.get_width() > cell * 4:
 				# The slicer left the whole row (8 buttons side by side): pick ours.
-				var idx := BTN_ROW.find(bname)
-				var cw := float(bt.get_width()) / BTN_ROW.size()
-				src = Rect2(cw * maxi(idx, 0) + (cw - cell) / 2.0, 0, cell, cell)
+				var idx := maxi(BTN_ROW.find(bname), 0)
+				if bt.get_width() == 490:
+					src = Rect2(float(BTN_SRC_X[idx]), 3, 59, 62)  # skip the frame bar (y0-2) and label bars (y65+)
+				else:
+					var cw := float(bt.get_width()) / BTN_ROW.size()
+					src = Rect2(cw * idx + (cw - cell) / 2.0, 0, cell, cell)
 			_canvas.draw_texture_rect_region(bt, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), src, Color(1, 1, 1, 0.85))
 		else:
 			_canvas.draw_circle(p, r, lit if on else base)
@@ -399,8 +427,16 @@ func _on_draw() -> void:
 			# Show what USE will do: the held tool's icon, or a sword.
 			var held := GameState.held_tool() if not GameState.run.is_empty() else ""
 			var icon := Art.tex("items", held if held != "" else "sword")
+			# A context verb that isn't a tool's (Talk, Enter, Sleep, Shop...) shows a hand instead.
+			if context_word != "" and not get_tree().paused and not (context_word in TOOL_VERBS) and Art.has("items", "hand"):
+				icon = Art.tex("items", "hand")
 			if icon:
 				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(12, 12), Vector2(24, 24)), false)
+				continue
+		if action == "ability" and not GameState.run.is_empty():
+			var sid := str(Companion.defs().get(Companion.active_id(), {}).get("sprite", Companion.active_id()))
+			if Art.has("ui", "icon_ability_" + sid):
+				_canvas.draw_texture_rect(Art.tex("ui", "icon_ability_" + sid), Rect2(p - Vector2(10, 10), Vector2(20, 20)), false)
 				continue
 		if action == "ability" and Art.has("ui", "party_paw"):
 			_canvas.draw_texture_rect(Art.tex("ui", "party_paw"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)

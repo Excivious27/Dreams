@@ -71,7 +71,7 @@ func _process(delta: float) -> void:
 			p.stop()
 			p.queue_free()
 			_beds.erase(b)
-	if _thunder_in >= 0.0:
+	if _thunder_in >= 0.0 and not get_tree().paused:
 		_thunder_in -= delta
 		if _thunder_in < 0.0:
 			_spot("thunder", -2.0)
@@ -224,7 +224,7 @@ func _water_near(m: GameMap) -> float:
 
 func _spots(delta: float) -> void:
 	var m := _map()
-	if m == null or _muted() or m.player == null:
+	if m == null or _muted() or m.player == null or get_tree().paused:
 		return
 	var id := m.scene_id()
 	var t := int(GameState.run.get("time", 480))

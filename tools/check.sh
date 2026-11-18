@@ -92,6 +92,13 @@ if ! echo "$gout" | grep -q "gift_test: 0 failures"; then
   echo "Gift test failed"; exit 1
 fi
 
+echo "== mine: keeper, shaft, tiers =="
+mout="$("$GODOT" --headless --path . -s res://tools/mine_test.gd 2>&1)"
+echo "$mout" | grep -E "FAIL|MINE DONE" || true
+if ! echo "$mout" | grep -q "MINE DONE, failures: 0"; then
+  echo "Mine test failed"; exit 1
+fi
+
 echo "== every script compiles =="
 cout="$("$GODOT" --headless --path . -s res://tools/compile_all.gd 2>&1)"
 echo "$cout" | grep -E "BAD|compile_all" || true

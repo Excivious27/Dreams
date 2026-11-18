@@ -139,8 +139,8 @@
    {
     "name": "scales",
     "cell": [
-     10,
-     2
+     8,
+     4
     ],
     "solid": false
    },
@@ -202,10 +202,26 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "crate_cabbage",
     "cell": [
      1,
      5
+    ],
+    "auto": true
+   },
+   {
+    "name": "plant_c",
+    "cell": [
+     14,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor",
+    "cell": [
+     1,
+     7
     ],
     "auto": true
    },
@@ -213,28 +229,12 @@
     "name": "bookcase3_e",
     "cell": [
      14,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "crate_cabbage",
-    "cell": [
-     1,
      7
     ],
     "auto": true
    },
    {
-    "name": "lamp_floor",
-    "cell": [
-     14,
-     7
-    ],
-    "auto": true
-   },
-   {
-    "name": "flour_sacks",
+    "name": "plant2_c",
     "cell": [
      1,
      9
@@ -242,7 +242,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "crate",
     "cell": [
      14,
      9
@@ -370,6 +370,13 @@
     "name": "crate",
     "cell": [
      11,
+     8
+    ]
+   },
+   {
+    "name": "barrels3",
+    "cell": [
+     3,
      8
     ]
    },
@@ -649,17 +656,9 @@
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "plant2_c",
     "cell": [
      1,
-     3
-    ],
-    "auto": true
-   },
-   {
-    "name": "lamp_floor",
-    "cell": [
-     11,
      3
     ],
     "auto": true
@@ -667,16 +666,8 @@
    {
     "name": "crate",
     "cell": [
-     1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant2_c",
-    "cell": [
      11,
-     5
+     3
     ],
     "auto": true
    },
@@ -684,12 +675,28 @@
     "name": "bookcase3_d",
     "cell": [
      1,
-     7
+     5
     ],
     "auto": true
    },
    {
     "name": "crate_cabbage",
+    "cell": [
+     11,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor",
+    "cell": [
+     1,
+     7
+    ],
+    "auto": true
+   },
+   {
+    "name": "barrel",
     "cell": [
      11,
      7
@@ -732,7 +739,7 @@
   "intro": "It smells like rain and burnt sugar. Wren's shop. Don't touch the purple ones."
  },
  "hall": {
-  "cols": 18,
+  "cols": 16,
   "rows": 12,
   "floor": "fl_carpet_blue",
   "wall": "wl_plaster",
@@ -773,7 +780,7 @@
    {
     "name": "flag_b",
     "cell": [
-     15,
+     14,
      2
     ]
    },
@@ -845,15 +852,6 @@
     "auto": true
    },
    {
-    "name": "mirror2",
-    "cell": [
-     14,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
     "name": "plant2_d",
     "cell": [
      1,
@@ -862,42 +860,66 @@
     "auto": true
    },
    {
-    "name": "crate",
+    "name": "plant2_b",
     "cell": [
-     16,
-     2
+     1,
+     10
     ],
     "auto": true
    },
    {
-    "name": "crate_cabbage",
+    "name": "lamp_floor_b",
+    "cell": [
+     14,
+     10
+    ],
+    "auto": true
+   },
+   {
+    "name": "bookcase3_d",
     "cell": [
      1,
-     10
+     3
+    ],
+    "auto": true
+   },
+   {
+    "name": "plant_c",
+    "cell": [
+     14,
+     3
+    ],
+    "auto": true
+   },
+   {
+    "name": "globe2",
+    "cell": [
+     1,
+     5
     ],
     "auto": true
    },
    {
     "name": "lamp_floor",
     "cell": [
-     16,
-     10
+     14,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor_b",
+    "cell": [
+     1,
+     7
     ],
     "auto": true
    },
    {
     "name": "plant2_c",
     "cell": [
-     1,
-     3
-    ],
-    "auto": true
-   },
-   {
-    "name": "barrel",
-    "cell": [
-     16,
-     3
+     14,
+     7
     ],
     "auto": true
    },
@@ -905,46 +927,6 @@
     "name": "bookcase3_e",
     "cell": [
      1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "lamp_floor",
-    "cell": [
-     16,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "barrel",
-    "cell": [
-     1,
-     7
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant_c",
-    "cell": [
-     16,
-     7
-    ],
-    "auto": true
-   },
-   {
-    "name": "crate",
-    "cell": [
-     1,
-     9
-    ],
-    "auto": true
-   },
-   {
-    "name": "bookcase3_d",
-    "cell": [
-     16,
      9
     ],
     "auto": true
@@ -974,7 +956,7 @@
   "intro": "The town hall: a long table, a long clock, and a mayor who is very good at long meetings."
  },
  "inn": {
-  "cols": 18,
+  "cols": 16,
   "rows": 13,
   "floor": "fl_wood",
   "wall": "wl_wood",
@@ -1009,7 +991,7 @@
    {
     "name": "keg_wall",
     "cell": [
-     15,
+     13,
      3
     ],
     "w": 1
@@ -1072,7 +1054,7 @@
    {
     "name": "bed2_red",
     "cell": [
-     15,
+     13,
      10
     ]
    },
@@ -1104,15 +1086,6 @@
     "auto": true
    },
    {
-    "name": "mirror2",
-    "cell": [
-     14,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
     "name": "plant2_a",
     "cell": [
      1,
@@ -1123,7 +1096,7 @@
    {
     "name": "bookcase3_d",
     "cell": [
-     16,
+     14,
      2
     ],
     "auto": true
@@ -1139,13 +1112,13 @@
    {
     "name": "bookcase3_e",
     "cell": [
-     16,
+     14,
      11
     ],
     "auto": true
    },
    {
-    "name": "bookcase3_e",
+    "name": "barrel",
     "cell": [
      1,
      3
@@ -1163,13 +1136,13 @@
    {
     "name": "barrel",
     "cell": [
-     16,
+     14,
      5
     ],
     "auto": true
    },
    {
-    "name": "crate_cabbage",
+    "name": "plant_c",
     "cell": [
      1,
      7
@@ -1177,15 +1150,15 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "crate_cabbage",
     "cell": [
-     16,
+     14,
      7
     ],
     "auto": true
    },
    {
-    "name": "flour_sacks",
+    "name": "crate",
     "cell": [
      1,
      9
@@ -1193,9 +1166,9 @@
     "auto": true
    },
    {
-    "name": "crate",
+    "name": "bookcase3_e",
     "cell": [
-     16,
+     14,
      9
     ],
     "auto": true
@@ -1217,7 +1190,7 @@
    {
     "type": "note",
     "cell": [
-     15,
+     13,
      10
     ],
     "who": "",
@@ -1549,7 +1522,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "lamp_floor",
     "cell": [
      1,
      9
@@ -1557,7 +1530,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_d",
+    "name": "plant2_b",
     "cell": [
      11,
      9
@@ -1565,7 +1538,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "plant_c",
     "cell": [
      1,
      3
@@ -1573,7 +1546,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "globe2",
     "cell": [
      11,
      3
@@ -1589,7 +1562,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "plant2_c",
     "cell": [
      11,
      5
@@ -1605,7 +1578,7 @@
     "auto": true
    },
    {
-    "name": "crate",
+    "name": "lamp_floor",
     "cell": [
      11,
      7
@@ -1744,7 +1717,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "globe2",
     "cell": [
      14,
      2
@@ -1752,7 +1725,7 @@
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "plant_c",
     "cell": [
      1,
      10
@@ -1760,7 +1733,7 @@
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "plant_c",
     "cell": [
      14,
      10
@@ -1768,39 +1741,39 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "bookcase3_e",
     "cell": [
      1,
      3
+    ],
+    "auto": true
+   },
+   {
+    "name": "bookcase3_d",
+    "cell": [
+     14,
+     3
+    ],
+    "auto": true
+   },
+   {
+    "name": "globe2",
+    "cell": [
+     1,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor_b",
+    "cell": [
+     14,
+     5
     ],
     "auto": true
    },
    {
     "name": "lamp_floor",
-    "cell": [
-     14,
-     3
-    ],
-    "auto": true
-   },
-   {
-    "name": "barrel",
-    "cell": [
-     1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "crate_cabbage",
-    "cell": [
-     14,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "flour_sacks",
     "cell": [
      1,
      7
@@ -1816,7 +1789,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_d",
+    "name": "plant2_b",
     "cell": [
      1,
      9
@@ -1824,7 +1797,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_e",
+    "name": "plant2_c",
     "cell": [
      14,
      9
@@ -1908,66 +1881,58 @@
     "anim": true
    },
    {
-    "name": "stained_a_day",
-    "cell": [
-     3,
-     2
-    ],
-    "solid": false
-   },
-   {
-    "name": "stained_b_day",
-    "cell": [
-     5,
-     2
-    ],
-    "solid": false
-   },
-   {
-    "name": "stained_c_day",
-    "cell": [
-     7,
-     2
-    ],
-    "solid": false
-   },
-   {
-    "name": "pew_c",
-    "cell": [
-     2,
-     7
-    ],
-    "w": 1
-   },
-   {
-    "name": "pew_d",
-    "cell": [
-     6,
-     7
-    ],
-    "w": 1
-   },
-   {
-    "name": "pew_c",
-    "cell": [
-     2,
-     9
-    ],
-    "w": 1
-   },
-   {
-    "name": "pew_d",
-    "cell": [
-     6,
-     9
-    ],
-    "w": 1
-   },
-   {
     "name": "organ",
     "cell": [
      9,
      3
+    ],
+    "w": 1
+   },
+   {
+    "name": "pew_a",
+    "cell": [
+     2,
+     6
+    ],
+    "w": 1
+   },
+   {
+    "name": "pew_b",
+    "cell": [
+     7,
+     6
+    ],
+    "w": 1
+   },
+   {
+    "name": "pew_a",
+    "cell": [
+     2,
+     8
+    ],
+    "w": 1
+   },
+   {
+    "name": "pew_b",
+    "cell": [
+     7,
+     8
+    ],
+    "w": 1
+   },
+   {
+    "name": "pew_a",
+    "cell": [
+     2,
+     10
+    ],
+    "w": 1
+   },
+   {
+    "name": "pew_b",
+    "cell": [
+     7,
+     10
     ],
     "w": 1
    },
@@ -1980,7 +1945,7 @@
     "auto": true
    },
    {
-    "name": "crate_cabbage",
+    "name": "plant2_b",
     "cell": [
      10,
      2
@@ -1988,7 +1953,7 @@
     "auto": true
    },
    {
-    "name": "crate",
+    "name": "plant2_c",
     "cell": [
      1,
      11
@@ -1996,18 +1961,10 @@
     "auto": true
    },
    {
-    "name": "crate",
+    "name": "plant2_c",
     "cell": [
      10,
      11
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant_c",
-    "cell": [
-     1,
-     3
     ],
     "auto": true
    },
@@ -2015,14 +1972,14 @@
     "name": "plant2_c",
     "cell": [
      1,
-     5
+     3
     ],
     "auto": true
    },
    {
-    "name": "bookcase3_d",
+    "name": "plant2_b",
     "cell": [
-     10,
+     1,
      5
     ],
     "auto": true
@@ -2030,13 +1987,21 @@
    {
     "name": "bookcase3_e",
     "cell": [
+     10,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "globe2",
+    "cell": [
      1,
      7
     ],
     "auto": true
    },
    {
-    "name": "crate_cabbage",
+    "name": "bookcase3_d",
     "cell": [
      10,
      7
@@ -2044,7 +2009,7 @@
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "lamp_floor",
     "cell": [
      1,
      9
@@ -2052,7 +2017,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "lamp_floor_b",
     "cell": [
      10,
      9
@@ -2075,7 +2040,22 @@
    }
   ],
   "npcs": [],
-  "intro": "Candles and cold stone. Nobody here but the quiet."
+  "intro": "Candles and cold stone. Nobody here but the quiet.",
+  "windows": [],
+  "wall_props": [
+   {
+    "name": "stained_a_day",
+    "x": 2
+   },
+   {
+    "name": "stained_b_day",
+    "x": 5
+   },
+   {
+    "name": "stained_c_day",
+    "x": 8
+   }
+  ]
  },
  "cottage_a": {
   "cols": 11,
@@ -2116,7 +2096,7 @@
     ]
    },
    {
-    "name": "chair2_a_left",
+    "name": "chair_d",
     "cell": [
      4,
      5
@@ -2144,6 +2124,13 @@
      7
     ],
     "solid": false
+   },
+   {
+    "name": "chair_c",
+    "cell": [
+     6,
+     5
+    ]
    },
    {
     "name": "painting2_c",
@@ -2179,40 +2166,7 @@
     "auto": true
    },
    {
-    "name": "low_table",
-    "cell": [
-     7,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_right",
-    "cell": [
-     6,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     8,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug_rect_green",
-    "cell": [
-     7,
-     6
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "dresser2_a",
+    "name": "pet_bed",
     "cell": [
      9,
      3
@@ -2220,7 +2174,7 @@
     "auto": true
    },
    {
-    "name": "kitchen_stove",
+    "name": "lamp_floor",
     "cell": [
      1,
      5
@@ -2228,7 +2182,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "chest_closed",
     "cell": [
      9,
      5
@@ -2236,7 +2190,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "bookcase3_a",
     "cell": [
      1,
      7
@@ -2244,7 +2198,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "bookcase3_c",
     "cell": [
      9,
      7
@@ -2371,32 +2325,7 @@
     "auto": true
    },
    {
-    "name": "table_square",
-    "cell": [
-     7,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     8,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug_rect_green",
-    "cell": [
-     7,
-     6
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "piano",
+    "name": "lamp_floor",
     "cell": [
      9,
      3
@@ -2404,7 +2333,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "lamp_floor_b",
     "cell": [
      1,
      5
@@ -2420,7 +2349,7 @@
     "auto": true
    },
    {
-    "name": "pet_bed",
+    "name": "nightstand_a",
     "cell": [
      1,
      7
@@ -2428,7 +2357,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "pet_bed",
     "cell": [
      9,
      7
@@ -2544,7 +2473,7 @@
     "auto": true
    },
    {
-    "name": "wardrobe2_a",
+    "name": "plant2_c",
     "cell": [
      9,
      2
@@ -2552,7 +2481,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "barrel",
     "cell": [
      1,
      7
@@ -2560,7 +2489,7 @@
     "auto": true
    },
    {
-    "name": "sofa_blue",
+    "name": "bookcase3_d",
     "cell": [
      9,
      7
@@ -2568,40 +2497,7 @@
     "auto": true
    },
    {
-    "name": "table_square_cloth",
-    "cell": [
-     7,
-     4
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_right",
-    "cell": [
-     6,
-     4
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     8,
-     4
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug2_red",
-    "cell": [
-     7,
-     5
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "bookcase3_c",
+    "name": "barrels3",
     "cell": [
      1,
      3
@@ -2609,7 +2505,7 @@
     "auto": true
    },
    {
-    "name": "pet_bed",
+    "name": "crate",
     "cell": [
      9,
      3
@@ -2625,7 +2521,7 @@
     "auto": true
    },
    {
-    "name": "kitchen_stove",
+    "name": "barrel",
     "cell": [
      9,
      5
@@ -2789,7 +2685,7 @@
     "auto": true
    },
    {
-    "name": "wardrobe2_a",
+    "name": "plant2_c",
     "cell": [
      12,
      9
@@ -2797,40 +2693,7 @@
     "auto": true
    },
    {
-    "name": "low_table",
-    "cell": [
-     9,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_right",
-    "cell": [
-     8,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     10,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug_round_blue",
-    "cell": [
-     9,
-     6
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "lamp_floor_b",
+    "name": "crate",
     "cell": [
      1,
      3
@@ -2838,7 +2701,7 @@
     "auto": true
    },
    {
-    "name": "pet_bed",
+    "name": "barrels3",
     "cell": [
      12,
      3
@@ -2846,7 +2709,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "barrel",
     "cell": [
      1,
      5
@@ -3012,7 +2875,7 @@
     "auto": true
    },
    {
-    "name": "piano",
+    "name": "barrel",
     "cell": [
      9,
      2
@@ -3020,7 +2883,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "crate",
     "cell": [
      1,
      9
@@ -3028,31 +2891,7 @@
     "auto": true
    },
    {
-    "name": "table_square_cloth",
-    "cell": [
-     7,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_right",
-    "cell": [
-     6,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     8,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "lamp_floor",
+    "name": "bookcase3_d",
     "cell": [
      1,
      3
@@ -3060,7 +2899,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "barrels3",
     "cell": [
      1,
      5
@@ -3068,7 +2907,7 @@
     "auto": true
    },
    {
-    "name": "pet_bed",
+    "name": "barrel",
     "cell": [
      9,
      5
@@ -3076,7 +2915,7 @@
     "auto": true
    },
    {
-    "name": "chest_closed",
+    "name": "plant_c",
     "cell": [
      1,
      7
@@ -3245,42 +3084,6 @@
     "w": 2
    },
    {
-    "name": "painting2_a",
-    "cell": [
-     2,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
-    "name": "mirror2",
-    "cell": [
-     5,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
-    "name": "painting2_e",
-    "cell": [
-     8,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
-    "name": "window_day",
-    "cell": [
-     11,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
     "name": "plant2_a",
     "cell": [
      1,
@@ -3321,7 +3124,7 @@
     "auto": true
    },
    {
-    "name": "chair2_a_right",
+    "name": "chair_d",
     "cell": [
      9,
      6
@@ -3329,7 +3132,7 @@
     "auto": true
    },
    {
-    "name": "chair2_a_left",
+    "name": "chair_c",
     "cell": [
      11,
      6
@@ -3541,6 +3344,29 @@
     ]
    },
    {
+    "name": "rug2_blue",
+    "cell": [
+     3,
+     9
+    ],
+    "w": 2,
+    "solid": false
+   },
+   {
+    "name": "bookshelf_a",
+    "cell": [
+     11,
+     9
+    ]
+   },
+   {
+    "name": "bookshelf_b",
+    "cell": [
+     12,
+     9
+    ]
+   },
+   {
     "name": "painting2_b",
     "cell": [
      2,
@@ -3585,7 +3411,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_e",
+    "name": "globe2",
     "cell": [
      14,
      2
@@ -3593,49 +3419,41 @@
     "auto": true
    },
    {
-    "name": "bookcase3_e",
-    "cell": [
-     1,
-     10
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant_c",
-    "cell": [
-     14,
-     10
-    ],
-    "auto": true
-   },
-   {
-    "name": "barrel",
-    "cell": [
-     1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant_c",
-    "cell": [
-     14,
-     5
-    ],
-    "auto": true
-   },
-   {
     "name": "lamp_floor",
     "cell": [
      1,
-     7
+     10
     ],
     "auto": true
    },
    {
-    "name": "bookcase3_e",
+    "name": "plant2_c",
     "cell": [
      14,
+     10
+    ],
+    "auto": true
+   },
+   {
+    "name": "bookcase3_d",
+    "cell": [
+     1,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "globe2",
+    "cell": [
+     14,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor_b",
+    "cell": [
+     1,
      7
     ],
     "auto": true
@@ -3643,13 +3461,21 @@
    {
     "name": "plant2_c",
     "cell": [
+     14,
+     7
+    ],
+    "auto": true
+   },
+   {
+    "name": "bookcase3_e",
+    "cell": [
      1,
      9
     ],
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "plant_c",
     "cell": [
      14,
      9
@@ -3808,32 +3634,7 @@
     "auto": true
    },
    {
-    "name": "table_round_cloth",
-    "cell": [
-     7,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     8,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug2_red",
-    "cell": [
-     7,
-     6
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "wardrobe2_a",
+    "name": "lamp_floor_b",
     "cell": [
      1,
      5
@@ -3841,7 +3642,7 @@
     "auto": true
    },
    {
-    "name": "piano",
+    "name": "pet_bed",
     "cell": [
      9,
      5
@@ -3849,7 +3650,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "lamp_floor",
     "cell": [
      1,
      7
@@ -3857,7 +3658,7 @@
     "auto": true
    },
    {
-    "name": "toy_chest",
+    "name": "chest_closed",
     "cell": [
      9,
      7
@@ -3954,7 +3755,7 @@
     ]
    },
    {
-    "name": "chair2_a_left",
+    "name": "chair_d",
     "cell": [
      4,
      5
@@ -3982,6 +3783,13 @@
      7
     ],
     "solid": false
+   },
+   {
+    "name": "chair_c",
+    "cell": [
+     6,
+     5
+    ]
    },
    {
     "name": "painting2_a",
@@ -4017,40 +3825,7 @@
     "auto": true
    },
    {
-    "name": "table_round_cloth",
-    "cell": [
-     7,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_right",
-    "cell": [
-     6,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     8,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug_rect_green",
-    "cell": [
-     7,
-     6
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "sofa_blue",
+    "name": "bookcase3_a",
     "cell": [
      9,
      3
@@ -4058,7 +3833,7 @@
     "auto": true
    },
    {
-    "name": "nightstand_a",
+    "name": "lamp_floor_b",
     "cell": [
      1,
      5
@@ -4066,7 +3841,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "nightstand_a",
     "cell": [
      9,
      5
@@ -4074,7 +3849,7 @@
     "auto": true
    },
    {
-    "name": "pet_bed",
+    "name": "toy_chest",
     "cell": [
      1,
      7
@@ -4082,7 +3857,7 @@
     "auto": true
    },
    {
-    "name": "dresser2_a",
+    "name": "bookcase3_c",
     "cell": [
      9,
      7
@@ -4265,7 +4040,7 @@
     "auto": true
    },
    {
-    "name": "dresser2_a",
+    "name": "crate",
     "cell": [
      14,
      2
@@ -4273,7 +4048,7 @@
     "auto": true
    },
    {
-    "name": "kitchen_stove",
+    "name": "lamp_floor",
     "cell": [
      1,
      10
@@ -4281,7 +4056,7 @@
     "auto": true
    },
    {
-    "name": "pet_bed",
+    "name": "barrel",
     "cell": [
      14,
      10
@@ -4289,72 +4064,39 @@
     "auto": true
    },
    {
-    "name": "table_square_cloth",
-    "cell": [
-     10,
-     6
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_right",
-    "cell": [
-     9,
-     6
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_left",
-    "cell": [
-     11,
-     6
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug_rect_blue",
-    "cell": [
-     10,
-     7
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "chest_closed",
+    "name": "crate",
     "cell": [
      1,
      5
-    ],
-    "auto": true
-   },
-   {
-    "name": "kitchen_stove",
-    "cell": [
-     14,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "piano",
-    "cell": [
-     1,
-     7
-    ],
-    "auto": true
-   },
-   {
-    "name": "dresser2_a",
-    "cell": [
-     14,
-     7
     ],
     "auto": true
    },
    {
     "name": "lamp_floor",
+    "cell": [
+     14,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "crate",
+    "cell": [
+     1,
+     7
+    ],
+    "auto": true
+   },
+   {
+    "name": "barrels3",
+    "cell": [
+     14,
+     7
+    ],
+    "auto": true
+   },
+   {
+    "name": "bookcase3_d",
     "cell": [
      1,
      9
@@ -4362,7 +4104,7 @@
     "auto": true
    },
    {
-    "name": "wardrobe2_a",
+    "name": "plant_c",
     "cell": [
      14,
      9
@@ -4570,7 +4312,7 @@
     "auto": true
    },
    {
-    "name": "chair2_a_right",
+    "name": "chair_d",
     "cell": [
      8,
      5
@@ -4578,7 +4320,7 @@
     "auto": true
    },
    {
-    "name": "chair2_a_left",
+    "name": "chair_c",
     "cell": [
      10,
      5
@@ -4774,7 +4516,7 @@
     "auto": true
    },
    {
-    "name": "crate_cabbage",
+    "name": "plant2_b",
     "cell": [
      14,
      2
@@ -4782,7 +4524,7 @@
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "bookcase3_d",
     "cell": [
      1,
      10
@@ -4790,7 +4532,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_e",
+    "name": "plant_c",
     "cell": [
      14,
      10
@@ -4798,7 +4540,7 @@
     "auto": true
    },
    {
-    "name": "crate",
+    "name": "plant2_b",
     "cell": [
      1,
      3
@@ -4806,7 +4548,7 @@
     "auto": true
    },
    {
-    "name": "flour_sacks",
+    "name": "bookcase3_d",
     "cell": [
      1,
      5
@@ -4814,7 +4556,7 @@
     "auto": true
    },
    {
-    "name": "crate_cabbage",
+    "name": "plant2_c",
     "cell": [
      14,
      5
@@ -4822,23 +4564,23 @@
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "globe2",
     "cell": [
      1,
+     7
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor",
+    "cell": [
+     14,
      7
     ],
     "auto": true
    },
    {
     "name": "bookcase3_e",
-    "cell": [
-     14,
-     7
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant2_c",
     "cell": [
      1,
      9
@@ -4987,7 +4729,7 @@
     "auto": true
    },
    {
-    "name": "piano",
+    "name": "lamp_floor",
     "cell": [
      11,
      2
@@ -4995,7 +4737,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "crate",
     "cell": [
      1,
      8
@@ -5003,7 +4745,7 @@
     "auto": true
    },
    {
-    "name": "kitchen_stove",
+    "name": "plant2_c",
     "cell": [
      11,
      8
@@ -5011,32 +4753,7 @@
     "auto": true
    },
    {
-    "name": "table_square_cloth",
-    "cell": [
-     8,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "chair2_a_right",
-    "cell": [
-     7,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "rug_round_blue",
-    "cell": [
-     8,
-     6
-    ],
-    "auto": true,
-    "solid": false
-   },
-   {
-    "name": "lamp_floor_b",
+    "name": "lamp_floor",
     "cell": [
      1,
      7
@@ -5044,7 +4761,7 @@
     "auto": true
    },
    {
-    "name": "nightstand_a",
+    "name": "crate",
     "cell": [
      11,
      7
@@ -5150,33 +4867,6 @@
     ]
    },
    {
-    "name": "window_day",
-    "cell": [
-     2,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
-    "name": "window_day",
-    "cell": [
-     5,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
-    "name": "painting2_e",
-    "cell": [
-     8,
-     1
-    ],
-    "solid": false,
-    "auto": true
-   },
-   {
     "name": "plant2_a",
     "cell": [
      1,
@@ -5185,7 +4875,7 @@
     "auto": true
    },
    {
-    "name": "kitchen_stove",
+    "name": "lamp_floor",
     "cell": [
      9,
      2
@@ -5193,7 +4883,7 @@
     "auto": true
    },
    {
-    "name": "toy_chest",
+    "name": "crate",
     "cell": [
      1,
      7
@@ -5201,7 +4891,7 @@
     "auto": true
    },
    {
-    "name": "toy_chest",
+    "name": "crate",
     "cell": [
      9,
      7
@@ -5209,7 +4899,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "plant_c",
     "cell": [
      9,
      3
@@ -5217,7 +4907,7 @@
     "auto": true
    },
    {
-    "name": "kitchen_stove",
+    "name": "barrel",
     "cell": [
      1,
      5
@@ -5225,7 +4915,7 @@
     "auto": true
    },
    {
-    "name": "chest_closed",
+    "name": "crate",
     "cell": [
      9,
      5
@@ -5422,7 +5112,7 @@
     "auto": true
    },
    {
-    "name": "chair2_a_left",
+    "name": "chair_c",
     "cell": [
      8,
      4
@@ -5605,7 +5295,7 @@
     "auto": true
    },
    {
-    "name": "pet_bed",
+    "name": "toy_chest",
     "cell": [
      9,
      3
@@ -5613,7 +5303,7 @@
     "auto": true
    },
    {
-    "name": "nightstand_a",
+    "name": "bookcase3_a",
     "cell": [
      9,
      5

@@ -87,15 +87,21 @@ static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 			GameState.add_item("crystal_refined", -1)
 			s["beacons"][key] = true
 			GameState.add_arc_xp(15)
-			m.fx("levelup", m.cell_center(m.world_to_cell(m.player.position + m.player.facing_dir() * 16.0)) + Vector2(0, -12), 10.0, 0.6)
+			# The beacon's own cell (tap, mouse aim or a cell edge can face another one).
+			var bc := m.player.facing_cell()
+			for tc: Vector2i in m.things:
+				if str(m.things[tc].get("type", "")) == "beacon" and str(m.things[tc].get("key", "")) == key:
+					bc = tc
+					break
+			m.fx("levelup", m.cell_center(bc) + Vector2(0, -12), 10.0, 0.6)
 			m.hud.toast("Beacon lit (%d/%d)." % [(s["beacons"] as Dictionary).size(), int(c.get("beacons", 3))], Color(0.7, 0.95, 1))
 			# Swap the lantern for its lit picture now, not on the next visit.
-			var bc := m.world_to_cell(m.player.position + m.player.facing_dir() * 16.0)
 			var on := "%s_beacon_on" % str(region_id).trim_prefix("colony_")
-			if m.props.has(bc) and Art.has("props", on):
+			var onn := on if Art.has("props", on) else "lantern_lit"
+			if m.props.has(bc) and Art.has("props", onn):
 				var sp := m.props[bc] as Sprite2D
 				if sp:
-					sp.texture = Art.tex("props", on)
+					sp.texture = Art.tex("props", onn)
 			m.queue_redraw()
 			return true
 		"star_crystal":
@@ -168,7 +174,9 @@ static func _crystal(m: GameMap, id: String) -> void:
 		await m.say([{"text": str(c["crystal_dim"]) + "\n" + _status(id)}])
 		return
 	if m.has_meta("colony_boss"):
-		return
+		if m.enemies.any(func(e: Variant) -> bool: return is_instance_valid(e) and (e as Node).has_meta("colony_boss")):
+			return
+		m.remove_meta("colony_boss")  # the boss left without dying: let the crystal work again
 	await m.say([{"text": str(c["crystal_wake"])}])
 	var spot := m.player.position + Vector2(0, -40)
 	for r in [40.0, 56.0, 28.0, 72.0]:
@@ -234,6 +242,9 @@ static func _restore(m: GameMap, id: String) -> void:
 		lines.append({"who": "Star Crystal", "text": "Four colonies, four lights. I can feel them all the way from your field. The Dark Crystal can feel them too, and it's afraid."})
 	await m.say(lines)
 	GameState.save()
+	# Reload the region so the lit crystal, open stall and cleared blight show now.
+	if m.player:
+		m.go_to(m.scene_id(), m.player.position - m.offset(), "down")
 
 
 static func _shop(m: GameMap, id: String) -> void:
@@ -262,7 +273,10 @@ static func _shop(m: GameMap, id: String) -> void:
 
 static func _take(k: String, n: int) -> void:
 	if k == "#fish":
-		for id in GameState.run["inventory"].keys():
+		# Cheapest first, locked fish never.
+		var ids: Array = GameState.run["inventory"].keys().filter(func(x: Variant) -> bool: return not GameState.is_locked(str(x)))
+		ids.sort_custom(func(a: Variant, b: Variant) -> bool: return GameState.item_value(str(a)) < GameState.item_value(str(b)))
+		for id in ids:
 			if n <= 0:
 				return
 			if str(GameState.items.get(id, {}).get("type", "")) == "fish":

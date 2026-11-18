@@ -107,6 +107,11 @@ static func instance(tree: SceneTree) -> Dialogue:
 	return d
 
 
+## Top edge of the open dialogue box (toasts sit just above it).
+func panel_top() -> float:
+	return _panel.position.y if _panel else BOX_Y
+
+
 func _ready() -> void:
 	layer = 8
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -248,7 +253,8 @@ func _show_choice(line: Dictionary) -> void:
 		_choices.add_child(b)
 	# Size the list by the rows' real (wrapped) heights, up to about half the screen.
 	var want := 0.0
-	var lw := maxf(60.0, _panel.size.x - 24.0)
+	# Text width inside a button: panel padding (14), portrait + gap (54), button margins (12).
+	var lw := maxf(60.0, _panel.size.x - 14.0 - (54.0 if _portrait.visible else 0.0) - 12.0)
 	for c in _choices.get_children():
 		var bb := c as Button
 		# Autowrap buttons have no width yet: count the wrapped lines ourselves.
@@ -256,10 +262,11 @@ func _show_choice(line: Dictionary) -> void:
 		var fs := bb.get_theme_font_size("font_size")
 		var lines := 1
 		if f:
-			lines = maxi(1, ceili(f.get_string_size(bb.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x / lw))
+			lines = maxi(1, ceili(f.get_string_size(bb.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x / (lw * 0.88)))  # word wrap breaks early
 		var lh := f.get_height(fs) if f else 9.0
 		want += maxf(20.0, maxf(bb.get_combined_minimum_size().y, lines * lh + 8.0)) + 2.0
-	var cap := 7 * 22.0
+	# Up to the space between the toolbar block and the touch controls (about 8 rows).
+	var cap := maxf(7 * 22.0, TouchControls.TOP_OF_CONTROLS - 6.0 - 84.0 - BOX_H)
 	_choice_scroll.custom_minimum_size = Vector2(0, minf(want, cap))
 	_panel.size.y = BOX_H + minf(want, cap)
 	# Keep the choices above the touch controls.

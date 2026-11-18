@@ -184,7 +184,7 @@ station('keg', 'Keg', 'pantry', [3, 24], 'farming', 'Brew', 'Tam', [
  ('Fermenting Vat', ['keg_4', 'keg3'], {'hardwood_plank': 16, 'steel_bar': 4, 'glass': 10}, d(2)),
  ('Cellar Vats', ['keg_5', 'keg3'], {'ironwood_beam': 2, 'plating': 4, 'crystal_glass': 4}, d(3))])
 station('press', 'Pantry Press', 'pantry', [6, 24], 'farming', 'Press', 'Tam', [
- ('Cheese Press', ['cheese_press'], {'wood': 20, 'stone': 10, 'cloth': 2}, d(0, 'Cheese, butter, jam, oil.')),
+ ('Cheese Press', ['cheese_press'], {'wood': 20, 'stone': 10, 'fiber': 6}, d(0, 'Cheese, butter, jam, oil.')),
  ('Oil Press', ['oil_press'], {'plank': 16, 'iron_bar': 3, 'clay_pot': 6}, d(1)),
  ('Preserving Room', ['preserves_jar2', 'preserves_jar'], {'beam': 6, 'glass': 16, 'gear': 3}, d(2)),
  ('Creamery', ['creamery', 'cheese_press'], {'plating': 3, 'crystal_glass': 4, 'tile': 20}, d(3))])
@@ -237,7 +237,7 @@ station('soda', 'Soda Fountain', 'operation', [3, 27], 'bartering', 'Mix', 'Mama
  ('Parlour', ['soda_3'], {'tile': 24, 'crystal_glass': 2, 'veneer': 4}, d(2)),
  ('The Gold Room', ['soda_4'], {'gold_bar': 6, 'crystal_glass': 6, 'moonweave': 2}, d(3))], arc='gangsters')
 station('laundromat', 'Laundromat', 'operation', [5, 27], 'bartering', '', 'Deuce', [
- ('Wash Tub', ['laundry_1'], {'plank': 20, 'copper_bar': 4, 'cloth': 6}, 'Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.'),
+ ('Wash Tub', ['laundry_1'], {'plank': 20, 'copper_bar': 4, 'fiber': 18}, 'Leave up to 3 bills overnight: paid at 80% with no risk. Heat cools 1 extra a night.'),
  ('Laundromat', ['laundry_2'], {'brick': 40, 'iron_bar': 8, 'gear': 4}, 'Washes 6 bills a night at 85%.'),
  ('Cleaners & Sons', ['laundry_3'], {'tile': 30, 'plating': 4, 'spring': 8}, 'Washes 10 bills a night at 90%.')], w=1, arc='gangsters', kind='building')
 station('training', 'Recruit Training Center', 'operation', [18, 27], 'combat', '', 'Val', [
@@ -250,7 +250,7 @@ station('terminal', 'Hacking Terminal', 'operation', [6, 21], 'bartering', 'Hack
  ('Server Rack', ['terminal_3'], {'steel_bar': 8, 'crystal_glass': 2, 'spring': 6}, d(2, 'Blackout charges.')),
  ('The Mainframe', ['terminal_4'], {'dark_bar': 4, 'crystal_battery': 3, 'plating': 4}, d(3, 'The Ghost Ledger.'))], arc='gangsters', book='hack')
 station('clinic', 'Chrome Clinic', 'operation', [9, 21], 'combat', 'Fit', 'Doc', [
- ('Back-Room Chair', ['clinic_1'], {'plank': 14, 'iron_bar': 4, 'cloth': 6}, d(0, 'Nothing yet: Doc wants better tools.')),
+ ('Back-Room Chair', ['clinic_1'], {'plank': 14, 'iron_bar': 4, 'fiber': 18}, d(0, 'Nothing yet: Doc wants better tools.')),
  ('Chrome Clinic', ['clinic_2'], {'steel_bar': 4, 'glass': 12, 'cotton_cloth': 6}, d(1, 'Optics and reflex wires.')),
  ('Augment Lab', ['clinic_3'], {'plating': 4, 'crystal_glass': 3, 'gear': 6}, d(2, 'A chrome arm, plating under the skin.')),
  ('The Clean Room', ['clinic_4'], {'dark_bar': 4, 'crystal_battery': 3, 'fine_fabric': 4}, d(3, 'Mk II implants, the neural link.'))], arc='gangsters', book='implant')
@@ -291,6 +291,10 @@ B['burrow']['tiers'][0].setdefault('unlock', {})['progress'] = 2
 B['burrow']['tiers'][1]['unlock']['progress'] = 2
 B['shrine']['tiers'][0].setdefault('unlock', {})['progress'] = 1
 for t in B['pool']['tiers']: t.setdefault('unlock', {})
+# Story order: the sanctuary opens as you meet who it is for.
+B['pool']['tiers'][0]['unlock']['flag'] = 'merkitty_done'
+B['burrow']['tiers'][0]['unlock']['flag'] = 'babies_done'
+B['shrine']['tiers'][0]['unlock']['flag'] = 'meow_taught'
 B['mill']['thing'] = 'station'; B['mill']['station'] = {'skill': 'farming', 'verb': 'Mill', 'book': 'mill'}; B['mill']['cat'] = 'pantry'
 for k, v in B.items():
     if isinstance(v, dict) and 'cat' not in v: v['cat'] = 'farm'
@@ -315,7 +319,11 @@ def rc(id, name, need, give=None, tier=1, n=1, **kw):
     r.update(kw); return r
 old = {r['id']: r for st in ('workbench', 'smith', 'kitchen', 'alchemy', 'mill', 'furnace', 'anvil', 'loom', 'tannery', 'jeweler', 'cauldron') for r in R.get(st, [])}
 def keep(*ids): return [old[i] for i in ids if i in old]
-metal_gear = [r for r in old.values() if r['id'].split('_')[0] in ('copper', 'iron', 'steel', 'silver', 'gold', 'crystal') and r['id'].split('_')[-1] in ('helm', 'chest', 'legs', 'boots', 'gloves', 'shield', 'cape', 'belt', 'mail', 'greaves', 'plate', 'sword')]
+for r in old.values():
+    if r['id'] == 'iron_helm': r['tier'] = 2  # same tier as the rest of the iron set
+# (the Crystal armour set is appended below, so those 8 aren't kept from the old book: no duplicates)
+CRYSTAL_SET = {'crystal_' + s for s in ('helm', 'chest', 'legs', 'boots', 'gloves', 'shield', 'cape', 'belt')}
+metal_gear = [r for r in old.values() if r['id'] not in CRYSTAL_SET and r['id'].split('_')[0] in ('copper', 'iron', 'steel', 'silver', 'gold', 'crystal') and r['id'].split('_')[-1] in ('helm', 'chest', 'legs', 'boots', 'gloves', 'shield', 'cape', 'belt', 'mail', 'greaves', 'plate', 'sword')]
 leather_gear = [r for r in old.values() if r['id'].startswith('leather_') and r['id'] not in ('leather', 'leather_scrap')]
 books = {}
 books['workbench'] = keep('torch', 'chest', 'scarecrow', 'fertilizer', 'sprinkler', 'sprinkler_quality', 'crab_pot', 'bait', 'straw_hat', 'pup_treat') + [
@@ -351,10 +359,10 @@ books['garage'] = [rc('scooter', 'Kick Scooter', {'plank': 6, 'wheel': 2, 'nails
 books['rocket'] = [rc('fuel_cell', 'Fuel Cell', {'lamp_oil': 4, 'glass': 2, 'coal': 6}, tier=2, n=2), rc('hull_plate', 'Hull Plate', {'plating': 2, 'nails': 20}, tier=2),
  rc('heat_shield', 'Heat Shield', {'tile': 12, 'moonweave': 1, 'plating': 1}, tier=3), rc('rocket_engine', 'Rocket Engine', {'plating': 3, 'gear': 8, 'spring': 6, 'crystal_battery': 2}, tier=3),
  rc('nav_computer', 'Nav Computer', {'crystal_lens': 2, 'gear': 6, 'gold_bar': 2, 'crystal_battery': 2}, tier=4)]
-books['print'] = [rc('blank_stock', 'Blank Stock', {'fiber': 6, 'cloth': 1}, n=4), rc('ink', 'Printing Ink', {'coal': 1, 'sap': 1}, n=2), rc('bills_crude', 'Crude Bills', {'blank_stock': 2, 'ink': 1}, n=2),
+books['print'] = [rc('blank_stock', 'Blank Stock', {'fiber': 8}, n=4), rc('ink', 'Printing Ink', {'coal': 1, 'sap': 1}, n=2), rc('bills_crude', 'Crude Bills', {'blank_stock': 2, 'ink': 1}, n=2),
  rc('bills_passable', 'Passable Bills', {'blank_stock': 2, 'ink': 2, 'linen': 1}, tier=2, n=2), rc('forged_permit', 'Forged Permit', {'blank_stock': 3, 'ink': 2, 'old_coin': 1}, tier=2),
  rc('bills_fine', 'Fine Bills', {'blank_stock': 2, 'ink': 2, 'fine_fabric': 1}, tier=3, n=2), rc('bills_perfect', 'Perfect Bills', {'blank_stock': 2, 'ink': 3, 'moonweave': 1, 'gold_bar': 1}, tier=5, n=4)]
-books['armory'] = [rc('brass_knuckles', 'Brass Knuckles', {'copper_bar': 3}, tool=True), rc('rounds', 'Rounds', {'copper_bar': 1, 'coal': 1}, n=30), rc('six_shooter', 'Six-Shooter', {'iron_bar': 4, 'gear': 2, 'hardwood_plank': 1}, tier=2, tool=True), rc('scattergun', 'Scattergun', {'steel_bar': 4, 'spring': 3, 'hardwood_plank': 2}, tier=3, tool=True), rc('tommy_gun', 'Tommy Gun', {'steel_bar': 5, 'spring': 6, 'gear': 6}, tier=3, tool=True), rc('gold_revolver', 'Gold Revolver', {'gold_bar': 4, 'dark_bar': 2, 'spring': 4}, tier=4, tool=True), rc('fedora', 'Fedora', {'cloth': 3, 'leather': 1}), rc('crowbar', 'Crowbar', {'iron_bar': 3}, tier=2, tool=True),
+books['armory'] = [rc('brass_knuckles', 'Brass Knuckles', {'copper_bar': 3}, tool=True), rc('rounds', 'Rounds', {'copper_bar': 1, 'coal': 1}, n=30), rc('six_shooter', 'Six-Shooter', {'iron_bar': 4, 'gear': 2, 'hardwood_plank': 1}, tier=2, tool=True), rc('scattergun', 'Scattergun', {'steel_bar': 4, 'spring': 3, 'hardwood_plank': 2}, tier=3, tool=True), rc('tommy_gun', 'Tommy Gun', {'steel_bar': 5, 'spring': 6, 'gear': 6}, tier=3, tool=True), rc('gold_revolver', 'Gold Revolver', {'gold_bar': 4, 'dark_bar': 2, 'spring': 4}, tier=4, tool=True), rc('fedora', 'Fedora', {'fiber': 6, 'leather': 1}), rc('crowbar', 'Crowbar', {'iron_bar': 3}, tier=2, tool=True),
  rc('lucky_bat', 'Lucky Bat', {'hardwood_plank': 3, 'nails': 10, 'horseshoe': 1}, tier=2, tool=True), rc('pinstripe_suit', 'Pinstripe Suit', {'cotton_cloth': 4, 'linen': 2}, tier=2),
  rc('steel_toes', 'Steel-Toe Shoes', {'leather': 2, 'iron_bar': 1}, tier=2), rc('knuckle_gloves', 'Knuckle Gloves', {'leather': 2, 'copper_bar': 2}, tier=2),
  rc('chrome_blade', 'Chrome Blade', {'steel_bar': 5, 'plating': 1, 'fine_leather': 1}, tier=3, tool=True), rc('padded_vest', 'Padded Vest', {'fine_leather': 3, 'cotton_cloth': 4, 'plating': 1}, tier=3),
@@ -406,6 +414,10 @@ for m, (bk, t, extra) in TEMPER.items():
         # A tempered piece looks like its base piece (else it draws nothing when worn).
         if base + '_plus' in I and I[base].get('sprite') and not I[base + '_plus'].get('sprite'):
             I[base + '_plus']['sprite'] = I[base]['sprite']
+        # A tempered piece must be better than its base (gloves +5 energy, cape +1 defence, belts +1 to each stat).
+        if base + '_plus' in I and I[base + '_plus'].get('stats') == I[base].get('stats'):
+            st = dict(I[base].get('stats', {}))
+            I[base + '_plus']['stats'] = {k: v + 5 for k, v in st.items()} if 'energy' in st else (dict(st, defense=st.get('defense', 0) + 1) if 'speed' in st else {k: v + 1 for k, v in st.items()})
 # 4) Neon Jacket (the Vault's "neon"): gangster armory, recipe tier 3
 books['armory'].append(rc('neon_jacket', 'Neon Jacket', {'outfit_neon': 1, 'fine_leather': 2, 'circuit_board': 2}, tier=3))
 # 5) Values that don't lose money and can't loop (below the 1.1 buy floor)

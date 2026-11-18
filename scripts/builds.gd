@@ -50,6 +50,8 @@ static func gate(id: String) -> String:
 		return "story chapter %d first" % (int(ul["progress"]) + 1)
 	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
 		return "%s level %d" % [str(ul["skill"][0]).capitalize(), int(ul["skill"][1])]
+	if ul.has("flag") and not GameState.run["flags"].has(str(ul["flag"])):
+		return "story first"
 	if ul.has("quest") and not GameState.quest_done(str(ul["quest"])):
 		return "story first"
 	if ul.has("friend") and GameState.friend_hearts(str(ul["friend"][0])) < int(ul["friend"][1]):
@@ -96,6 +98,11 @@ static func under_construction(id: String) -> Dictionary:
 
 
 ## Why the next tier can't start ("" = it can, "permit" = needs a permit).
+## How many of an item in the bag a build may use (locked items are kept).
+static func _bag_free(id: String) -> int:
+	return 0 if GameState.is_locked(id) else GameState.count(id)
+
+
 static func blocker(id: String) -> String:
 	var nd := next_def(id)
 	var g := gate(id)
@@ -104,7 +111,7 @@ static func blocker(id: String) -> String:
 	var cst := cost_of(nd)
 	for need in cst:
 		# Materials in your chests count too (Sun Haven builds from storage).
-		if GameState.count(str(need)) + Storage.total(str(need)) < int(cst[need]):
+		if _bag_free(str(need)) + Storage.total(str(need)) < int(cst[need]):
 			return "need %d %s" % [int(cst[need]), GameState.item_name(str(need))]
 	return ""
 
@@ -126,11 +133,15 @@ static func start(id: String, buy := false) -> String:
 	else:
 		var cst := cost_of(nd)
 		for need in cst:
-			var short := int(cst[need]) - GameState.count(str(need))
-			if short > 0:
-				Storage.take_from_chests(str(need), short)
-			GameState.add_item(str(need), -mini(int(cst[need]), GameState.count(str(need))))
+			# Bag first (locked items stay put), then the chests.
+			var need_n := int(cst[need])
+			var from_bag := mini(need_n, _bag_free(str(need)))
+			var got := Storage.take_from_chests(str(need), need_n - from_bag)
+			GameState.add_item(str(need), -mini(need_n - got, GameState.count(str(need))))
 	var days := int(nd.get("days", 0))
+	# Quick Build (Building): Hazel's crew is a day faster; a 1-day job is done on the spot.
+	if days > 0:
+		days = maxi(0, days - int(GameState.bonus("building", "quick_build")))
 	if days <= 0:
 		_finish(id, int(nd["tier"]))
 		return "Built the %s." % str(nd["name"])

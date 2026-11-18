@@ -715,6 +715,16 @@
    "tier": 2
   },
   {
+   "id": "iron_helm",
+   "name": "Iron Helm",
+   "need": {
+    "iron_bar": 3,
+    "leather": 1
+   },
+   "give": "iron_helm",
+   "tier": 2
+  },
+  {
    "id": "iron_legs",
    "name": "Iron Legs",
    "need": {
@@ -753,16 +763,6 @@
     "leather": 2
    },
    "give": "iron_greaves",
-   "tier": 3
-  },
-  {
-   "id": "iron_helm",
-   "name": "Iron Helm",
-   "need": {
-    "iron_bar": 3,
-    "leather": 1
-   },
-   "give": "iron_helm",
    "tier": 3
   },
   {
@@ -1016,83 +1016,6 @@
    ]
   },
   {
-   "id": "crystal_belt",
-   "name": "Crystal Belt",
-   "need": {
-    "crystal_refined": 1,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_belt",
-   "tier": 4
-  },
-  {
-   "id": "crystal_boots",
-   "name": "Crystal Boots",
-   "need": {
-    "crystal_refined": 2,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_boots",
-   "tier": 4
-  },
-  {
-   "id": "crystal_cape",
-   "name": "Crystal Cape",
-   "need": {
-    "crystal_refined": 2,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_cape",
-   "tier": 4
-  },
-  {
-   "id": "crystal_chest",
-   "name": "Crystal Chest",
-   "need": {
-    "crystal_refined": 4,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_chest",
-   "tier": 4
-  },
-  {
-   "id": "crystal_gloves",
-   "name": "Crystal Gloves",
-   "need": {
-    "crystal_refined": 1,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_gloves",
-   "tier": 4
-  },
-  {
-   "id": "crystal_helm",
-   "name": "Crystal Helm",
-   "need": {
-    "crystal_refined": 2,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_helm",
-   "tier": 4
-  },
-  {
-   "id": "crystal_legs",
-   "name": "Crystal Legs",
-   "need": {
-    "crystal_refined": 3,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_legs",
-   "tier": 4
-  },
-  {
    "id": "crystal_plate",
    "name": "Crystal Plate",
    "need": {
@@ -1106,17 +1029,6 @@
     "combat",
     7
    ]
-  },
-  {
-   "id": "crystal_shield",
-   "name": "Crystal Shield",
-   "need": {
-    "crystal_refined": 3,
-    "gold_bar": 1,
-    "leather": 1
-   },
-   "give": "crystal_shield",
-   "tier": 4
   },
   {
    "id": "crystal_sword",
@@ -3077,8 +2989,7 @@
    "id": "blank_stock",
    "name": "Blank Stock",
    "need": {
-    "fiber": 6,
-    "cloth": 1
+    "fiber": 8
    },
    "give": "blank_stock",
    "tier": 1,
@@ -3229,7 +3140,7 @@
    "id": "fedora",
    "name": "Fedora",
    "need": {
-    "cloth": 3,
+    "fiber": 6,
     "leather": 1
    },
    "give": "fedora",

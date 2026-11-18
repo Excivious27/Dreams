@@ -52,6 +52,11 @@ void fragment() {
 	wsum += 6.0;
 	m /= wsum;
 	m = max(m, mask_at(cellf) * 0.75);  // a lone or 1-wide water cell keeps its middle
+	// Far from any water (most of a soft_ground/path rect): neither water nor bank can
+	// reach this pixel whatever the noise, so skip the noise and water fetches.
+	if (m + 0.5 * wobble < min(0.28, 0.5 - soft)) {
+		discard;
+	}
 	float n = vnoise(wpos / 24.0) * 0.67 + vnoise(wpos / 9.0) * 0.33;
 	float v = m + (n - 0.5) * wobble;
 	float a = smoothstep(0.5 - soft, 0.5 + soft, v);
