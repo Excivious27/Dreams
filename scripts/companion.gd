@@ -97,6 +97,13 @@ static func use_ability(m: GameMap, p: Player) -> void:
 	var ab := ability_for(m, p)
 	if ab == "":
 		return
+	if ab.begins_with("gift:"):
+		# Gift powers rest too (8 s), so a lent guard can't be held forever.
+		var gl := cooldown_left(ab)
+		if gl > 0.0:
+			m.hud.toast("Ready in %ds." % int(ceil(gl)), Color(0.8, 0.85, 1.0))
+			return
+		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + 8.0
 	if not ab.begins_with("gift:"):
 		var left := cooldown_left(ab)
 		if left > 0.0:

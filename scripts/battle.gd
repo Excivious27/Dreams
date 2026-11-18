@@ -264,7 +264,6 @@ func _tick() -> void:
 		var bb := map.spawn_enemy(str(d["boss"]), at, clampi(GameState.progress_tier() + 1, 0, 5))
 		if bb:
 			bb.set_meta("boss_name", bb.display_name())
-			bb.set_meta("battle_cmd", true)  # a battle commander: their own story fight still waits
 			# The commander is a real fight: half again as tough.
 			bb.max_hp = maxi(int(bb.max_hp * 1.5), 120 * (1 + GameState.progress_tier()))
 			bb.hp = bb.max_hp

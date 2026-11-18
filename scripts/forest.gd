@@ -151,7 +151,7 @@ func after_ready() -> void:
 	var n := GameState.enemy_count(2 + (2 if GameState.is_night() else 0))
 	for i in n:
 		var at := cell_center(Vector2i(randi_range(6, cols - 7), randi_range(12, rows - 8)))
-		if not blocked.has(world_to_cell(at)):
+		if not blocked.has(world_to_cell(at - Vector2(0, 2))) and not is_water_cell(world_to_cell(at - Vector2(0, 2))):
 			spawn_enemy("wisp" if GameState.is_penguins() else ("thug_speedster" if GameState.progress_tier() >= 1 else "thug_lookout"), at)
 	if not GameState.run["flags"].has("forest_seen"):
 		GameState.run["flags"]["forest_seen"] = true

@@ -54,8 +54,7 @@ func after_ready() -> void:
 		wp.scale = Vector2(0.5, 0.5)
 		wp.position = cell_center(Vector2i(24, 20)) + Vector2(0, 2)
 		wp.offset = Vector2(0, -float(Art.info("props", "warp_pad").get("cell_h", 64)) / 2.0 + 14)
-		wp.z_index = -1
-		add_child(wp)
+		to_under(wp)
 		wp.play("idle")
 	prop("props", "rocket_house", Vector2i(3, 6), 4)
 	if Art.has("buildings", "greenhouse_dome"):
@@ -167,7 +166,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				return true
 			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("chop")
-			thing["hp"] = int(thing["hp"]) - (1 + GameState.tool_tier("pickaxe") / 2)
+			thing["hp"] = int(thing["hp"]) - (1 + (GameState.tool_tier("pickaxe") + 1) / 2 + int(GameState.bonus("mining", "mine_power")))
 			if int(thing["hp"]) <= 0:
 				var ore := str(thing["ore"])
 				things.erase(c)

@@ -543,7 +543,8 @@
       },
       {
        "who": "Big Jim",
-       "text": "By Jove. That baby looks like she's made of crystals."
+       "text": "By Jove. That baby looks like she's made of crystals.",
+       "if_flag": "st_p3_campfire"
       },
       {
        "who": "",
@@ -551,7 +552,8 @@
       },
       {
        "who": "Big Jim",
-       "text": "First guardians of the mountain, I'd say. How do we get past them?"
+       "text": "First guardians of the mountain, I'd say. How do we get past them?",
+       "if_flag": "st_p3_campfire"
       },
       {
        "who": "",
@@ -563,7 +565,8 @@
       },
       {
        "who": "Big Jim",
-       "text": "Oh. Oh, I see. They've been cursed by the Dark Crystal: all they can say is that. You can understand them because of the magic. And you're going to lift it. The Meow Pow Wow."
+       "text": "Oh. Oh, I see. They've been cursed by the Dark Crystal: all they can say is that. You can understand them because of the magic. And you're going to lift it. The Meow Pow Wow.",
+       "if_flag": "st_p3_campfire"
       }
      ],
      "effects": {
@@ -1752,7 +1755,7 @@
       },
       {
        "who": "Deuce",
-       "text": "A card parlour there pays the crew for a season. She'd have to go, of course. Somewhere nice. We'd make sure.",
+       "text": "An arcade there pays the crew for a season. She'd have to go, of course. Somewhere nice. We'd make sure.",
        "choice": [
         "Fund it. Business is business.",
         "No. Not her shop. Not anyone's."
@@ -1787,7 +1790,7 @@
           "posy": -100,
           "bram": -30
          },
-         "hint": "Posy's bakery is a card parlour now. A thug walks the avenue at night."
+         "hint": "Posy's bakery is an arcade now. A thug walks the avenue at night."
         },
         "1": {
          "flags": [
@@ -2144,7 +2147,7 @@
      "lines": [
       {
        "who": "",
-       "text": "Neon. Rain that's pink on one side of the street and blue on the other. Under the dragon sign, a woman who sets things on fire for a living, and a crowd pretending not to watch him do it."
+       "text": "Neon. Rain that's pink on one side of the street and blue on the other. Under the dragon sign, a woman who sets things on fire for a living, and a crowd pretending not to watch her do it."
       },
       {
        "who": "",

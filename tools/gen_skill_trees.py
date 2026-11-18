@@ -22,8 +22,8 @@ AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.
        "pass_risk": 0.01, "heat_cool": 0.04, "wash_bonus": 0.02, "job_pay": 0.04, "gun_damage": 1, "supply_rate": 0.05, "helper_hp": 4,
        "ability_cooldown": 0.03, "colony_discount": 0.03,
        "capture_speed": 0.05, "start_supply": 3, "spawner_discount": 0.04, "helper_damage": 1, "ticket_bleed": 0.06, "ticket_guard": 0.05,
-       "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04}
-DESC = {"growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
+       "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04, "xp_gain": 0.03}
+DESC = {"xp_gain": "faster levelling in this skill", "growth": "faster crop growth", "extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
         "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock (3 = one more)",
         "ore_bonus": "extra ore", "mine_energy": "less energy to mine", "gem_chance": "gem chance", "shard_bonus": "crystal shards",
@@ -243,7 +243,7 @@ for sk, sd in base["skills"].items():
                 ranks = 3 if c < 6 else (2 if c < 9 else 1)
                 a = AMT[k] * (2 if c == 9 else 1)
                 if k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9:
-                    for fk in FALLBACK.get(sk, []) + [x for x in keys if x != k] + ["energy", "hp"]:
+                    for fk in FALLBACK.get(sk, []) + [x for x in keys if x != k] + ["xp_gain", "energy", "hp"]:
                         fa = AMT.get(fk, 0) * (2 if c == 9 else 1)
                         if fk in AMT and not (fk in CAPS and used.get(fk, 0) + fa * ranks > CAPS[fk] + 1e-9):
                             k, a = fk, fa
@@ -253,7 +253,7 @@ for sk, sd in base["skills"].items():
                     a = round(a, 3) if isinstance(a, float) else a
                 used[k] = used.get(k, 0) + a * ranks
                 a = round(a, 3) if isinstance(a, float) else a
-                nm = names[ni % len(names)]
+                nm = names[ni % len(names)] + ("" if ni < len(names) else " " + ROMAN[min(9, ni // len(names))])
                 ni += 1
                 grid[r][c] = {"id": f"{sk}_{r}_{c}", "name": nm, "desc": fmt(k, a) + (" (per rank)" if ranks > 1 else ""),
                               "ranks": ranks, "tier": c, "row": r, "effect": {k: a}}

@@ -76,8 +76,7 @@ func after_ready() -> void:
 		a.scale = Vector2(0.5, 0.5)
 		a.position = cell_pos(SPRING.position.x + 1.5, SPRING.end.y)
 		a.offset = Vector2(0, -float(Art.info("props", "hot_spring").get("cell_h", 96)) / 2.0)
-		a.z_index = -1
-		add_child(a)
+		to_under(a)
 		a.play("idle")
 	prop("props", "lookout_tower", Vector2i(48, 42), 1)
 	block_rect(48, 39, 2, 4)

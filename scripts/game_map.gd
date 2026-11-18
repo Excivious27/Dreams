@@ -171,11 +171,13 @@ func _ready() -> void:
 	var mw := (cols + 2 * pad) * TILE
 	var mh := (rows + 2 * pad) * TILE
 	var ox := maxi(0, (270 - mw) / 2)
-	var oy := maxi(0, (480 - mh) / 2)
+	# Indoors the HUD sits across the bottom (Hud.INTERIOR_SHIFT): fit the room above it.
+	var view_h := int(Hud.INTERIOR_SHIFT) if scene_id() in ["house", "interior"] else 480
+	var oy := maxi(0, (view_h - mh) / 2)
 	cam.limit_left = -ox
 	cam.limit_top = -oy
 	cam.limit_right = maxi(mw, 270) - ox
-	cam.limit_bottom = maxi(mh, 480) - oy
+	cam.limit_bottom = maxi(mh, view_h) - oy + (480 - view_h)
 	cam.position_smoothing_enabled = true
 	cam.position_smoothing_speed = 7.0
 	player.add_child(cam)
@@ -551,7 +553,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				thing["hp"] = int(thing.get("hp", 3)) - 1
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
-			thing["hp"] = int(thing.get("hp", 3)) - (1 + GameState.tool_tier("axe") / 2 + int(GameState.bonus("foraging", "chop_power")))
+			thing["hp"] = int(thing.get("hp", 3)) - (1 + (GameState.tool_tier("axe") + 1) / 2 + int(GameState.bonus("foraging", "chop_power")))
 			if Companion.has_ability("haul"):
 				thing["hp"] = 0  # Dad: "Just point at the tree."
 			if int(thing["hp"]) <= 0:
@@ -597,7 +599,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			Music.instance(get_tree()).sfx("pick", "chop")
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			var swing := 1 + GameState.tool_tier("pickaxe") / 2
+			var swing := 1 + (GameState.tool_tier("pickaxe") + 1) / 2
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
 			swing += int(GameState.bonus("mining", "mine_power"))
@@ -1823,7 +1825,7 @@ func spawn_enemy(kind: String, at: Vector2, tier_override := -1) -> Enemy:
 ## Nearest walkable spot to `at` (an enemy spawned inside a tree or wall can
 ## never move). Spirals out a few cells; falls back to `at`.
 func free_spot_near(at: Vector2) -> Vector2:
-	var c0 := world_to_cell(at)
+	var c0 := world_to_cell(at - Vector2(0, 2))  # cell_center sits on the cell's bottom edge
 	for r in range(0, 5):
 		for dy in range(-r, r + 1):
 			for dx in range(-r, r + 1):
@@ -1876,7 +1878,7 @@ func on_enemy_died(e: Enemy) -> void:
 		Racket.on_collector_down(self)
 	if (e.has_meta("colony_foe") or e.has_meta("colony_boss")) and not e.has_meta("decoy"):
 		Colony.on_kill(self, e)
-	if e.kind.begins_with("lt_") and not e.has_meta("decoy") and not e.has_meta("battle_cmd"):
+	if e.kind.begins_with("lt_") and not e.has_meta("decoy"):
 		GameState.run["flags"][e.kind] = true
 		var down := 0
 		for lid in Gift.data().get("lieutenants", {}):
@@ -2027,7 +2029,8 @@ func handle_tap(pos: Vector2) -> void:
 				c = tc
 				break
 	var e := nearest_enemy_to(world, 14.0)
-	if pet != null and is_instance_valid(pet) and pet.visible and world.distance_to(pet.position + Vector2(0, -6)) < 12.0:
+	# An enemy under your finger wins over the pup biting it; the pup needs a close tap.
+	if e == null and pet != null and is_instance_valid(pet) and pet.visible and world.distance_to(pet.position + Vector2(0, -6)) < 9.0:
 		if player.position.distance_to(pet.position) < 40.0:
 			later(_pup_menu)
 		else:
@@ -2815,6 +2818,29 @@ func soft_ground(cells: Dictionary, seam: String, lip := Color(0.2, 0.14, 0.07, 
 
 ## Ground-level layers go right after the anim layer: above the ground, below
 ## docks, props and people (y-sort ties fall back to tree order).
+## Flat things that lie on the ground (decals, pools, pads): above the ground
+## drawing, below everything that stands. (z_index -1 would hide them under the map.)
+var _under_layer: Node2D
+
+
+func under_layer() -> Node2D:
+	if _under_layer == null or not is_instance_valid(_under_layer):
+		_under_layer = Node2D.new()
+		_under_layer.name = "UnderLayer"
+		_add_under(_under_layer)
+	return _under_layer
+
+
+func to_under(n: Node2D) -> void:
+	if n == null:
+		return
+	n.z_index = 0
+	if n.get_parent():
+		n.reparent(under_layer())
+	else:
+		under_layer().add_child(n)
+
+
 func _add_under(n: Node) -> void:
 	add_child(n)
 	if _anim_layer and _anim_layer.get_parent() == self:
@@ -3309,7 +3335,10 @@ func draw_border() -> void:
 ## Shared fishing minigame: cast, wait for the bite, press A. `pool` is the
 ## water's fish from easiest to rarest; skill, night light, rain and perks
 ## reach deeper into it.
-func fish_at(c: Vector2i, pool: Array) -> void:
+func fish_at(c: Vector2i, pool_in: Array) -> void:
+	# Pools run cheapest → priciest, so the weighted pick keeps valuable fish rare.
+	var pool := pool_in.duplicate()
+	pool.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) < GameState.item_value(b))
 	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return

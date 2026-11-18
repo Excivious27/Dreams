@@ -38,9 +38,8 @@ Everything below shows a code-drawn stand-in today.
 
 - none
 
-## Named art the code asks for (4)
+## Named art the code asks for (3)
 
-- fx/dirt_puff
 - props/fountain
 - props/horse3
 - tiles/cliff2_1

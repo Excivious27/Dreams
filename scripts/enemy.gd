@@ -465,7 +465,7 @@ func _tick_abilities(delta: float, player: Player, to: Vector2, dist: float, tgt
 			_regen_t = 0.0
 			hp = mini(max_hp, hp + maxi(1, max_hp / 25))
 			map.fx("regen", position + Vector2(0, -8), 12.0, 0.5)
-	if abilities.has("shield") and _shield <= 0.0 and _shield_cd <= 0.0 and dist < 60.0:
+	if abilities.has("shield") and _shield <= 0.0 and _shield_cd <= 0.0 and dist < 60.0 and _stun <= 0.0 and not (_gift and _gift.open_t > 0.0):
 		_shield = 1.4
 		_shield_cd = 6.0
 		map.fx("shield_up" if Art.has("fx", "shield_up") else "sparkle", position + Vector2(0, -12), 14.0, 0.5)

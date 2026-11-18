@@ -113,8 +113,7 @@ func after_ready() -> void:
 			gp.scale = Vector2(0.5, 0.5)
 			gp.position = cell_center(Vector2i(5, 16)) + Vector2(8, 0)
 			gp.offset = Vector2(0, -float(Art.info("props", "glow_pond").get("cell_h", 72)) / 2.0)
-			gp.z_index = -1
-			add_child(gp)
+			to_under(gp)
 		for y in range(STONES.position.y - 1, STONES.end.y + 1):
 			for x in range(STONES.position.x - 1, STONES.end.x + 1):
 				avoid[Vector2i(x, y)] = true

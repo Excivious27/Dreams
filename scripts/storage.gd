@@ -125,7 +125,7 @@ static func deposit_all(key: String) -> int:
 static func quick_stack(key: String) -> int:
 	var moved := 0
 	for id: String in GameState.run["inventory"].keys():
-		if box(key)["items"].has(id) and not GameState.has_tool(id) and deposit(key, id, GameState.count(id)) > 0:
+		if box(key)["items"].has(id) and not _keep(id) and deposit(key, id, GameState.count(id)) > 0:
 			moved += 1
 	return moved
 

@@ -76,7 +76,7 @@ func vuln(from: Vector2, magic: bool) -> float:
 	var opened := float(r.get("open", 2.0))
 	match rule():
 		"wet":
-			return opened if _wet() else closed
+			return opened if (_wet() or open_t > 0.0) else closed
 		"back":
 			var behind := (from.x - e.position.x) * face < -2.0
 			return opened if (behind or open_t > 0.0) else closed
@@ -117,6 +117,10 @@ func on_blocked() -> void:
 
 
 func on_hit(mult: float) -> void:
+	if mult < 1.0 and not _told:
+		# A glancing blow: tell them how to land a real one, once.
+		_told = true
+		e.map.hud.toast(str(d.get("tip", "Read their moves. Wait for the opening.")), Color(1, 0.9, 0.6))
 	if mult >= 1.5 or open_t > 0.0:
 		_say("OPEN!", Color(1, 1, 0.6))
 		if Art.has("fx", "gift_open"):

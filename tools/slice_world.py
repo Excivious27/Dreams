@@ -3744,29 +3744,44 @@ def w197():
             save(scale_to(crop(rgba, b), width=TILE2, height=TILE2 * 2, cover=True), T, "%s_%s" % (nm, ["corner_tl", "corner_tr", "corner_bl", "corner_br", "end_l", "end_r"][i]))
 
 def w198():
-    rgba, rows = _peng_rows("w198_icons_sorcery_pup.png", 4)
+    # The icons' frames nearly touch: split each row at empty columns (_col_cells).
+    rgba = load("w198_icons_sorcery_pup.png")
+    H, Wd = rgba.shape[:2]
+    b = [x for x in _bands(rgba, gap=6, minh=60)][:4]
     U = "ui"
+    if len(b) < 4:
+        print("   w198 bands:", len(b)); return
+    def even(y0, y1, n):
+        cs = _col_cells(rgba, y0, y1, 0, Wd, n)
+        if len(cs) == n:
+            return cs
+        band = rgba[y0:y1]
+        xs = np.where((band[..., 3] > 40).sum(axis=0) > 3)[0]
+        x0, x1 = xs[0], xs[-1] + 1
+        w = (x1 - x0) / float(n)
+        out = []
+        for i in range(n):
+            sub = band[:, int(x0 + i * w):int(x0 + (i + 1) * w)]
+            m = sub[..., 3] > 40
+            yy = np.where(m.any(axis=1))[0]; xx = np.where(m.any(axis=0))[0]
+            if len(yy):
+                out.append(Image.fromarray(sub[yy[0]:yy[-1] + 1, xx[0]:xx[-1] + 1].copy()))
+        return out
+    def put(cells, names, prefix):
+        for nm, im in zip(names, cells):
+            save(scale_to(im, width=48, height=48), U, prefix + nm)
     sorc = ["spark", "deep_well", "attune", "glow", "lance", "rain_call", "haste", "sense", "shard_skin", "ember", "radiance", "growth", "lull", "mana_flow", "crystal_shield", "moonbeam", "sunder", "warp_home", "bloom", "resonance", "gem_eye", "light_bearer", "dreamwalk"]
-    r0 = _peng_cells(rgba, *rows[0])
-    for nm, b in zip(sorc, r0):
-        save(scale_to(crop(rgba, b), width=48, height=48), U, "node_magic_" + nm)
-    r1 = _peng_cells(rgba, *rows[1])
-    for nm, b in zip(["crystal_heart", "awakening"], r1[:2]):
-        save(scale_to(crop(rgba, b), width=48, height=48), U, "node_magic_" + nm)
-    for nm, b in zip(["light", "dream", "crystal"], r1[2:5]):
-        save(scale_to(crop(rgba, b), width=48, height=48), U, "path_" + nm)
-    spells = ["spark", "rain_call", "haste", "glow", "crystal_shield", "ember", "radiance", "growth", "lull", "warp_home", "bloom", "resonance", "dreamwalk"]
-    for nm, b in zip(spells, r1[5:18]):
-        save(scale_to(crop(rgba, b), width=48, height=48), U, "spell_" + nm)
+    put(even(b[0][0], b[0][1], 23), sorc, "node_magic_")
+    r1 = _col_cells(rgba, b[1][0], b[1][1], 0, Wd, 18)
+    put(r1[:2], ["crystal_heart", "awakening"], "node_magic_")
+    put(r1[2:5], ["light", "dream", "crystal"], "path_")
+    put(r1[5:18], ["spark", "rain_call", "haste", "glow", "crystal_shield", "ember", "radiance", "growth", "lull", "warp_home", "bloom", "resonance", "dreamwalk"], "spell_")
     pup = ["tough_pup", "sniff", "fetch", "bite", "guard_dog", "quick_paws", "pack_1", "howl", "truffle_nose", "thick_coat", "pack_2", "rescue", "hunter", "tracker", "pack_3", "dream_hound", "best_friend"]
-    r2 = _peng_cells(rgba, *rows[2])
-    for nm, b in zip(pup, r2):
-        save(scale_to(crop(rgba, b), width=48, height=48), U, "node_pup_" + nm)
-    r3 = _peng_cells(rgba, *rows[3])
-    for nm, b in zip(["farming", "mining", "foraging", "fishing", "combat", "bartering", "building", "magic", "pup"], r3[:9]):
-        save(scale_to(crop(rgba, b), width=48, height=48), U, "skill3_" + nm)
-    for i, b in enumerate(r3[9:18]):
-        save(scale_to(crop(rgba, b), width=48, height=48), U, "skill3_locked_%d" % i)
+    put(even(b[2][0], b[2][1], 17), pup, "node_pup_")
+    r3 = even(b[3][0], b[3][1], 18)
+    put(r3[:9], ["farming", "mining", "foraging", "fishing", "combat", "bartering", "building", "magic", "pup"], "skill3_")
+    put(r3[9:18], ["locked_%d" % i for i in range(9)], "skill3_")
+    print("   w198 rows:", [len(even(y0, y1, n)) for (y0, y1), n in zip(b, [23, 18, 17, 18])])
 
 def w199():
     rgba, rows = _peng_rows("w199_icons_buffs_bubbles.png", 4)
@@ -5756,6 +5771,12 @@ def w340_352():
 
 
 def _prompt_names(file):
+    # Frozen copy of the order the sheets were drawn in (gen_prompts17.py rewrites the raw file).
+    fz = os.path.join(os.path.dirname(__file__), "..", "docs", "src", "skill-icon-order.json")
+    if os.path.exists(fz):
+        o = json.load(open(fz)).get(file)
+        if o:
+            return o
     raw = open(os.path.join(os.path.dirname(__file__), "..", "docs", "src", "ART-PROMPTS-17-raw.md")).read()
     for ln in raw.splitlines():
         if file in ln:

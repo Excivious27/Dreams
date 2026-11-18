@@ -50,22 +50,19 @@ The four colony sheets each had one painted boss. The Grey Reef came with full a
 
 ---
 
-## PROMPT 18-3 — The last icons · 3 images
+## PROMPT 18-3 — The last icons · 2 images
 
-> PROMPT 18-3. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 18-3. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory. Characters keep their exact look from the attached references.
 >
-> ■■■ IMAGE 1 of 3 — FILE NAME: "w369_item_icons_18.png" ■■■
+> ■■■ IMAGE 1 of 2 — FILE NAME: "w369_item_icons_18.png" ■■■
 > 24 ITEM ICONS, 48×48 each, rows of 12 (x = 24 + N×120, y = 24 + M×120), same soft top-left light as the other item icons, no frames, no text. In order: 1 Moonwort (a slender herb with deep-blue star-shaped flowers), 2 Shiitake (a brown cap mushroom crop, cleaner and plumper than wild mushrooms), 3 Journal Page (a torn, sepia page with a tiny drawn map), 4 Wayfarer's Journal (a worn leather journal tied with string, pages sticking out), 5 Buried Cache (a small dirty sack with a coin peeking out), 6 Hidden Chest key (an old iron key), 7 Coral Charm, 8 Kelp Wrap, 9 Pearl, 10 Starfish Snack, 11 Frost Scale, 12 Ember Shard (the colony goods), 13 Fertiliser (a burlap bag with a green leaf), 14 Bread loaf, 15 Brick, 16 Stone block, 17 Lookout's whistle (gangster arc), 18 Data Chip, 19 Relic Orb, 20 Wonder Elixir, 21 Energy Tea (a steaming cup), 22 Greater Potion, 23 Crate of loot (small, open), 24 Gold Bar.
 >
-> ■■■ IMAGE 2 of 3 — FILE NAME: "w370_spell_icons.png" ■■■
-> 12 SPELL ICONS, 64×64 each, two rows of 6 (x = 24 + N×100, y = 24 + M×100), each a round crystal-framed badge with one clear symbol and a soft glow. In order: SPARK (a bolt of light), GLOW (a little floating light), HASTE (a winged boot), RAIN CALL (a cloud raining on a sprout), GROWTH (a seedling bursting up), CRYSTAL SHIELD (a hexagon shield of crystal), WARP HOME (a tiny house with a swirl), RADIANCE (a sunburst ring), LULL (a crescent moon with z's drawn as little stars, no letters), BLOOM (a basket of ripe crops glowing), RESONANCE (a crystal on a pedestal with rings), DREAMWALK (a door made of stars). Then a second row below with the same 12 in a DIMMED, greyed "not learned" version.
->
-> ■■■ IMAGE 3 of 3 — FILE NAME: "w372_ui_marks.png" ■■■
+> ■■■ IMAGE 2 of 2 — FILE NAME: "w372_ui_marks.png" ■■■
 > SMALL UI MARKS, each isolated: MAIL ENVELOPE icons 32×32 (closed, open, with a heart seal, with a gift ribbon, with a red "urgent" wax seal, a stack of three); a PIN icon 24×24 (a red map pin) for the goal line; a NEW-POINTS DOT 12×12 (gold dot with a sparkle) ×3 frames; a NIGHT/DAY toggle icon 32×32 (sun, moon); a SPEAKER icon 32×32 (on, off) and a LEAF icon 32×32 for "Nature sounds"; HEAT flame icons 16×16 ×5 (cool to very hot, gangster arc).
 >
-> (End of PROMPT 18-3: 3 images.)
+> (End of PROMPT 18-3: 2 images.)
 
 
 ---

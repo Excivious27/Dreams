@@ -438,6 +438,7 @@ func after_ready() -> void:
 	var n := int(round((2.0 + mini(floor_no, 60) / 5.0) * area_k))
 	if floor_no <= 3:
 		n = mini(n, 4 + floor_no)
+	n = mini(n, 7 + mini(floor_no, 100) / 12)  # deep floors: bigger caves, not swarms
 	var pools: Array = GameState.tier_data.get("mine", {}).get("pools", [])
 	var pool: Array = pools[mini(mine_tier, pools.size() - 1)] if not pools.is_empty() else ["slime", "bat"]
 	var ol: Array = _open.keys()
@@ -596,7 +597,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			Music.instance(get_tree()).sfx("pick", "chop")
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			var swing := 1 + GameState.tool_tier("pickaxe") / 2
+			var swing := 1 + (GameState.tool_tier("pickaxe") + 1) / 2
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
 			swing += int(GameState.bonus("mining", "mine_power"))
@@ -839,7 +840,7 @@ func _place_props() -> void:
 			if not things.has(c) and not blocked.has(c) and ndec > 0:
 				var sp := prop("props", "mine_%s_decal_%d" % [ts, rng.randi_range(0, ndec - 1)], c, 0, 0.0, false)
 				if sp:
-					sp.z_index = -1
+					to_under(sp)
 		for x in [2, cols - 3]:
 			var c := Vector2i(x, 1)
 			if not things.has(c) and Art.has("props", "mine_%s_lamp_0" % ts):
@@ -977,6 +978,15 @@ func _process(delta: float) -> void:
 					queue_redraw()
 
 
+## The HUD points here: the awake keeper first, then the open way down.
+func pointer_target() -> Vector2:
+	if _guardian != null and is_instance_valid(_guardian):
+		return _guardian.position
+	if _way_open:
+		return cell_center(_ladder)
+	return Vector2.ZERO
+
+
 func _deepest() -> int:
 	return int(GameState.run["flags"].get("mine_deepest", 1))
 
@@ -1023,7 +1033,7 @@ func _summon_guardian() -> void:
 		return
 	# Never weaker than its native tier; floor 1's golem is still a golem.
 	# The first floors' keeper meets you at the floor's own tier; deeper ones never go below their home tier.
-	_guardian = spawn_enemy(kind, at, mine_tier if floor_no <= 5 else maxi(mine_tier, GameState.enemy_tier(kind)))
+	_guardian = spawn_enemy(kind, at, mine_tier if floor_no <= 10 else maxi(mine_tier, GameState.enemy_tier(kind)))
 	_guardian.is_guardian = true
 	_depth_scale(_guardian)
 	_guardian.set_meta("boss_name", "Keeper of floor %d" % floor_no)

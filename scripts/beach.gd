@@ -263,7 +263,7 @@ func _place_props() -> void:
 				continue
 			var sp := prop("props", decals[drng.randi() % decals.size()], dc, 0, 0.0, false, 0.22)
 			if sp:
-				sp.z_index = -1
+				to_under(sp)
 	_anim("props", "bonfire", Vector2i(36, 15), 0, 8.0)
 	_anim("props", "buoy", Vector2i(8, 29), 0, 2.0)
 	_anim("props", "buoy", Vector2i(44, 30), 0, 2.0)
@@ -302,8 +302,7 @@ func _place_props() -> void:
 			sp.region_rect = Rect2(32, 0, 32, 32)
 			sp.scale = Vector2(0.5, 0.5)
 			sp.position = cell_pos(k.x, k.y) + Vector2(8, 8)
-			sp.z_index = -1
-			add_child(sp)
+			to_under(sp)
 
 
 func _anim(group: String, name: String, c: Vector2i, extra_w := 0, fps := 4.0) -> void:

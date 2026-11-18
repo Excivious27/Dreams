@@ -199,6 +199,8 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
 			one.erase("branches")
 			d.say([one])
 			await d.finished
+			if not is_instance_valid(m):
+				return  # the scene changed under the choice
 			var br: Dictionary = l.get("branches", {})
 			var pick := str(d.last_choice)
 			var gates: Dictionary = l.get("gates", {})
@@ -220,6 +222,8 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
 				GameState.take_crops(int(gates[pick]["crops"]))
 			if br.has(pick):
 				await _play_lines(m, _fill(br[pick]), beat_id)
+			if not is_instance_valid(m):
+				return
 			if l.has("effects_by_choice") and (l["effects_by_choice"] as Dictionary).has(pick):
 				_apply(m, l["effects_by_choice"][pick])
 		else:

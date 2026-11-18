@@ -111642,20 +111642,130 @@
    "h": 24,
    "w": 24
   },
+  "node_magic_attune": {
+   "file": "ui/node_magic_attune.png",
+   "h": 48,
+   "w": 46
+  },
   "node_magic_awakening": {
    "file": "ui/node_magic_awakening.png",
-   "h": 4,
+   "h": 47,
    "w": 48
+  },
+  "node_magic_bloom": {
+   "file": "ui/node_magic_bloom.png",
+   "h": 48,
+   "w": 46
   },
   "node_magic_crystal_heart": {
    "file": "ui/node_magic_crystal_heart.png",
-   "h": 11,
+   "h": 47,
    "w": 48
+  },
+  "node_magic_crystal_shield": {
+   "file": "ui/node_magic_crystal_shield.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_deep_well": {
+   "file": "ui/node_magic_deep_well.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_dreamwalk": {
+   "file": "ui/node_magic_dreamwalk.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_ember": {
+   "file": "ui/node_magic_ember.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_gem_eye": {
+   "file": "ui/node_magic_gem_eye.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_glow": {
+   "file": "ui/node_magic_glow.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_growth": {
+   "file": "ui/node_magic_growth.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_haste": {
+   "file": "ui/node_magic_haste.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_lance": {
+   "file": "ui/node_magic_lance.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_light_bearer": {
+   "file": "ui/node_magic_light_bearer.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_lull": {
+   "file": "ui/node_magic_lull.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_mana_flow": {
+   "file": "ui/node_magic_mana_flow.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_moonbeam": {
+   "file": "ui/node_magic_moonbeam.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_radiance": {
+   "file": "ui/node_magic_radiance.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_rain_call": {
+   "file": "ui/node_magic_rain_call.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_resonance": {
+   "file": "ui/node_magic_resonance.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_sense": {
+   "file": "ui/node_magic_sense.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_shard_skin": {
+   "file": "ui/node_magic_shard_skin.png",
+   "h": 48,
+   "w": 46
   },
   "node_magic_spark": {
    "file": "ui/node_magic_spark.png",
-   "h": 2,
-   "w": 48
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_sunder": {
+   "file": "ui/node_magic_sunder.png",
+   "h": 48,
+   "w": 46
+  },
+  "node_magic_warp_home": {
+   "file": "ui/node_magic_warp_home.png",
+   "h": 48,
+   "w": 46
   },
   "node_mastered": {
    "file": "ui/node_mastered.png",
@@ -111902,9 +112012,89 @@
    "h": 48,
    "w": 43
   },
+  "node_pup_best_friend": {
+   "file": "ui/node_pup_best_friend.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_bite": {
+   "file": "ui/node_pup_bite.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_dream_hound": {
+   "file": "ui/node_pup_dream_hound.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_fetch": {
+   "file": "ui/node_pup_fetch.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_guard_dog": {
+   "file": "ui/node_pup_guard_dog.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_howl": {
+   "file": "ui/node_pup_howl.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_hunter": {
+   "file": "ui/node_pup_hunter.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_pack_1": {
+   "file": "ui/node_pup_pack_1.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_pack_2": {
+   "file": "ui/node_pup_pack_2.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_pack_3": {
+   "file": "ui/node_pup_pack_3.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_quick_paws": {
+   "file": "ui/node_pup_quick_paws.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_rescue": {
+   "file": "ui/node_pup_rescue.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_sniff": {
+   "file": "ui/node_pup_sniff.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_thick_coat": {
+   "file": "ui/node_pup_thick_coat.png",
+   "h": 43,
+   "w": 48
+  },
   "node_pup_tough_pup": {
    "file": "ui/node_pup_tough_pup.png",
-   "h": 3,
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_tracker": {
+   "file": "ui/node_pup_tracker.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_pup_truffle_nose": {
+   "file": "ui/node_pup_truffle_nose.png",
+   "h": 43,
    "w": 48
   },
   "node_star": {
@@ -112056,6 +112246,21 @@
    "file": "ui/party_paw.png",
    "h": 32,
    "w": 33
+  },
+  "path_crystal": {
+   "file": "ui/path_crystal.png",
+   "h": 48,
+   "w": 41
+  },
+  "path_dream": {
+   "file": "ui/path_dream.png",
+   "h": 48,
+   "w": 42
+  },
+  "path_light": {
+   "file": "ui/path_light.png",
+   "h": 48,
+   "w": 41
   },
   "paw_touched": {
    "file": "ui/paw_touched.png",
@@ -112972,9 +113177,94 @@
    "h": 41,
    "w": 48
   },
+  "skill3_bartering": {
+   "file": "ui/skill3_bartering.png",
+   "h": 46,
+   "w": 48
+  },
+  "skill3_building": {
+   "file": "ui/skill3_building.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_combat": {
+   "file": "ui/skill3_combat.png",
+   "h": 47,
+   "w": 48
+  },
   "skill3_farming": {
    "file": "ui/skill3_farming.png",
-   "h": 3,
+   "h": 47,
+   "w": 48
+  },
+  "skill3_fishing": {
+   "file": "ui/skill3_fishing.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_foraging": {
+   "file": "ui/skill3_foraging.png",
+   "h": 46,
+   "w": 48
+  },
+  "skill3_locked_0": {
+   "file": "ui/skill3_locked_0.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_locked_1": {
+   "file": "ui/skill3_locked_1.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_locked_2": {
+   "file": "ui/skill3_locked_2.png",
+   "h": 46,
+   "w": 48
+  },
+  "skill3_locked_3": {
+   "file": "ui/skill3_locked_3.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_locked_4": {
+   "file": "ui/skill3_locked_4.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_locked_5": {
+   "file": "ui/skill3_locked_5.png",
+   "h": 46,
+   "w": 48
+  },
+  "skill3_locked_6": {
+   "file": "ui/skill3_locked_6.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_locked_7": {
+   "file": "ui/skill3_locked_7.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_locked_8": {
+   "file": "ui/skill3_locked_8.png",
+   "h": 46,
+   "w": 48
+  },
+  "skill3_magic": {
+   "file": "ui/skill3_magic.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_mining": {
+   "file": "ui/skill3_mining.png",
+   "h": 47,
+   "w": 48
+  },
+  "skill3_pup": {
+   "file": "ui/skill3_pup.png",
+   "h": 46,
    "w": 48
   },
   "skill_bartering": {
@@ -113086,6 +113376,71 @@
    "file": "ui/speed_up.png",
    "h": 22,
    "w": 24
+  },
+  "spell_bloom": {
+   "file": "ui/spell_bloom.png",
+   "h": 47,
+   "w": 48
+  },
+  "spell_crystal_shield": {
+   "file": "ui/spell_crystal_shield.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_dreamwalk": {
+   "file": "ui/spell_dreamwalk.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_ember": {
+   "file": "ui/spell_ember.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_glow": {
+   "file": "ui/spell_glow.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_growth": {
+   "file": "ui/spell_growth.png",
+   "h": 47,
+   "w": 48
+  },
+  "spell_haste": {
+   "file": "ui/spell_haste.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_lull": {
+   "file": "ui/spell_lull.png",
+   "h": 47,
+   "w": 48
+  },
+  "spell_radiance": {
+   "file": "ui/spell_radiance.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_rain_call": {
+   "file": "ui/spell_rain_call.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_resonance": {
+   "file": "ui/spell_resonance.png",
+   "h": 47,
+   "w": 48
+  },
+  "spell_spark": {
+   "file": "ui/spell_spark.png",
+   "h": 46,
+   "w": 48
+  },
+  "spell_warp_home": {
+   "file": "ui/spell_warp_home.png",
+   "h": 47,
+   "w": 48
   },
   "stack_0": {
    "file": "ui/stack_0.png",

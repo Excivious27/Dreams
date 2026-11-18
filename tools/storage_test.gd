@@ -26,6 +26,11 @@ func _run() -> void:
 	Storage.deposit("chest", "turnip", 3)
 	GameState.add_item("stone", 7)
 	Storage.deposit("chest", "stone", 1)
+	# Quick stack leaves the toolbar alone (like Sun Haven's action bar): take them off it.
+	var tb: Array = GameState.run["toolbar"]
+	for i in tb.size():
+		if str(tb[i]) in ["turnip", "stone"]:
+			tb[i] = ""
 	var n := Storage.quick_stack("chest")
 	check(n == 2 and GameState.count("turnip") == 0 and GameState.count("stone") == 0, "quick stack moves matching items (%d)" % n)
 	# Old stash first: before the chest is built, a full bag still keeps new items.

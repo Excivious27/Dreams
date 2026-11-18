@@ -1086,7 +1086,6 @@ func take_damage(n: int, from: Vector2) -> void:
 func _puff(back: Vector2) -> void:
 	var d := Node2D.new()
 	d.position = position + back * 3.0
-	d.z_index = -1
 	var age := [0.0]
 	d.draw.connect(func() -> void:
 		var a: float = age[0]

@@ -8397,7 +8397,7 @@
  "fuel_cell": {
   "name": "Fuel Cell",
   "type": "craft",
-  "value": 320,
+  "value": 150,
   "rarity": "rare",
   "tier": 3,
   "desc": "One launch each."

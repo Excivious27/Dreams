@@ -46,7 +46,7 @@ G = [  # id, name, type, value, tier, extra
  ('crystal_sled', 'Crystal Sled', 'vehicle', 2400, 3, {'speed': 1.7, 'snow': 2.3, 'sprite': 'veh_crystal_sled', 'size': 22, 'arc': 'penguins', 'desc': 'Fast anywhere; faster in winter and on the mountain.'}),
  ('getaway_car', 'Getaway Car', 'vehicle', 5200, 3, {'speed': 2.3, 'sprite': 'veh_getaway_car', 'size': 40, 'arc': 'gangsters', 'desc': 'Black, quiet, quick. Nobody saw you leave.'}),
  # rocket parts
- ('hull_plate', 'Hull Plate', 'craft', 900, 3, {}), ('rocket_engine', 'Rocket Engine', 'craft', 2600, 4, {}), ('fuel_cell', 'Fuel Cell', 'craft', 320, 3, {'desc': 'One launch each.'}),
+ ('hull_plate', 'Hull Plate', 'craft', 900, 3, {}), ('rocket_engine', 'Rocket Engine', 'craft', 2600, 4, {}), ('fuel_cell', 'Fuel Cell', 'craft', 150, 3, {'desc': 'One launch each.'}),
  ('nav_computer', 'Nav Computer', 'craft', 2200, 4, {}), ('heat_shield', 'Heat Shield', 'craft', 1500, 4, {}),
  # gangster arc only
  ('blank_stock', 'Blank Stock', 'craft', 8, 1, {'arc': 'gangsters', 'desc': 'Paper with the right feel.'}), ('ink', 'Printing Ink', 'craft', 14, 1, {'arc': 'gangsters'}),

@@ -256,6 +256,7 @@ func _draw_hud() -> void:
 			if i < Racket.heat():
 				c.draw_circle(pc, 2.6, Color(1, 0.35 + 0.1 * (4 - i), 0.2))
 	_draw_boss_bar(c)
+	_draw_pointer(c)
 	# Energy bar (vertical, right side, Stardew style)
 	# The energy bar stays on the right edge; indoors (HUD at the bottom) it
 	# moves up so it doesn't sit on the clock box.
@@ -460,6 +461,30 @@ func fade_in(seconds := 0.4) -> void:
 	var tw := _fade.create_tween()
 	tw.tween_property(_fade, "color:a", 0.0, seconds)
 	await tw.finished
+
+
+## Big maps (the mines): an arrow at the screen edge toward the open shaft or the awake keeper.
+func _draw_pointer(c: CanvasItem) -> void:
+	var m := get_tree().current_scene as GameMap
+	if m == null or m.player == null or y_offset != 0.0 or not m.has_method("pointer_target"):
+		return
+	var tgt: Vector2 = m.call("pointer_target")
+	if tgt == Vector2.ZERO:
+		return
+	var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt
+	var view := Rect2(14, 110, 242, 250)
+	if view.has_point(sp):
+		return
+	var ctr := view.get_center()
+	var d := (sp - ctr)
+	var k := minf(absf((view.size.x * 0.5) / maxf(0.001, absf(d.x))), absf((view.size.y * 0.5) / maxf(0.001, absf(d.y))))
+	var at := ctr + d * k
+	var dir := d.normalized()
+	var col: Color = Color(1, 0.4, 0.35) if bool(m.get("_guardian") != null) else Color(0.5, 1, 0.6)
+	var pts := PackedVector2Array([at + dir * 7.0, at - dir * 4.0 + dir.orthogonal() * 5.0, at - dir * 4.0 - dir.orthogonal() * 5.0])
+	c.draw_colored_polygon(pts, Color(0, 0, 0, 0.6))
+	var pts2 := PackedVector2Array([at + dir * 5.5, at - dir * 3.0 + dir.orthogonal() * 3.8, at - dir * 3.0 - dir.orthogonal() * 3.8])
+	c.draw_colored_polygon(pts2, col)
 
 
 ## The nearest boss in view: name and a health bar across the top of the field.

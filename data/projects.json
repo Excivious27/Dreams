@@ -326,11 +326,12 @@
   },
   "salvage": {
    "name": "Salvage runs",
-   "desc": "Brings back scrap: gears, springs, circuit boards.",
+   "desc": "Brings back a little scrap: a gear or a spring.",
    "give": {
-    "gear": 2,
-    "spring": 1,
-    "circuit_board": 1
+    "gear": 1
+   },
+   "give_alt": {
+    "spring": 1
    }
   },
   "train": {

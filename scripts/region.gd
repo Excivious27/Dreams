@@ -257,13 +257,14 @@ func after_ready() -> void:
 			a.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
 			a.offset = Vector2(0, -float(Art.info(g, nm).get("cell_h", 48)) / 2.0)
 			if bool(p.get("under", false)):
-				a.z_index = -1
-			add_child(a)
+				to_under(a)
+			else:
+				add_child(a)
 			a.play("idle")
 		else:
 			var sp := prop(g, nm, c, w, 0.0, false)  # footprint blocked below, sized to the art
 			if sp and bool(p.get("under", false)):
-				sp.z_index = -1
+				to_under(sp)
 		if bool(p.get("solid", true)):
 			var h := int(p.get("h", 1))
 			# Footprint = the art's real size (declared w/h are upper bounds), so
@@ -360,7 +361,7 @@ func after_ready() -> void:
 			var at := cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			# Never right on top of where you walked in.
 			for tries in 20:
-				var cc := world_to_cell(at)
+				var cc := world_to_cell(at - Vector2(0, 2))
 				if player == null or (cc - world_to_cell(player.position)).length() >= 8.0 and not is_water_cell(cc) and not blocked.has(cc):
 					break
 				at = cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))

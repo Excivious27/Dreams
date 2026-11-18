@@ -12,7 +12,7 @@ uniform vec4 tint : source_color = vec4(1.0);
 uniform vec4 bank : source_color = vec4(0.42, 0.29, 0.17, 0.85);
 uniform vec4 foam : source_color = vec4(0.88, 0.96, 1.0, 0.7);
 uniform float soft = 0.07;
-uniform float wobble = 0.22;
+uniform float wobble = 0.3;
 varying vec2 wpos;
 
 void vertex() {
@@ -36,8 +36,21 @@ float mask_at(vec2 cellf) {
 
 void fragment() {
 	vec2 cellf = wpos / 16.0;
-	float d = 0.33;
-	float m = (mask_at(cellf + vec2(d, d)) + mask_at(cellf + vec2(-d, d)) + mask_at(cellf + vec2(d, -d)) + mask_at(cellf + vec2(-d, -d))) * 0.25;
+	// Wider, rounder blur (3x3 tent over ~1.2 cells, plus a ring at 0.75 cells),
+	// so corners curve instead of following the cell grid.
+	float m = 0.0;
+	float wsum = 0.0;
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			float wgt = (i == 0 && j == 0) ? 4.0 : ((i == 0 || j == 0) ? 2.0 : 1.0);
+			m += mask_at(cellf + vec2(float(i), float(j)) * 0.6) * wgt;
+			wsum += wgt;
+		}
+	}
+	float r = 0.75;
+	m += (mask_at(cellf + vec2(r, 0.0)) + mask_at(cellf - vec2(r, 0.0)) + mask_at(cellf + vec2(0.0, r)) + mask_at(cellf - vec2(0.0, r))) * 1.5;
+	wsum += 6.0;
+	m /= wsum;
 	float n = vnoise(wpos / 24.0) * 0.67 + vnoise(wpos / 9.0) * 0.33;
 	float v = m + (n - 0.5) * wobble;
 	float a = smoothstep(0.5 - soft, 0.5 + soft, v);

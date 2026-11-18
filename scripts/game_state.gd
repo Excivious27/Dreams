@@ -473,7 +473,8 @@ static func buy_price(id: String) -> int:
 					m *= 0.85  # off-season seed is a little cheaper, and a gamble
 	# Never cheaper than you could sell it back for (with every perk): shops are
 	# not a money machine.
-	var best_sell := base * sell_multiplier() * (1.0 + minf(0.20, 0.02 * (skill_level("bartering") - 1))) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
+	var best_sell := base * sell_multiplier() * (1.0 + minf(0.20, 0.02 * (skill_level("bartering") - 1))) * (1.0 + 0.05 * Crew.perk_level("sell_bonus")) \
+		* (1.0 + (bonus("farming", "crop_value") if family(id) != "" else 0.0)) * (1.0 + (bonus("fishing", "fish_value") if str(it.get("type", "")) == "fish" else 0.0))
 	m *= 1.0 - 0.05 * Crew.perk_level("shop_discount") if Crew.perk_level("shop_discount") < 3 else 0.9  # Specs knows the till codes
 	return maxi(1, int(ceil(maxf(base * m, best_sell * 1.1))))
 
@@ -742,6 +743,7 @@ static func add_xp(skill: String, xp: int) -> bool:
 	var mult := 1.15 if has_friend_perk("theo", 8) else (1.10 if has_friend_perk("theo", 4) else (1.05 if has_friend_perk("theo", 2) else 1.0))
 	if skill != "leadership" and has_team():
 		mult *= 1.0 + bonus("leadership", "team_xp")
+	mult *= 1.0 + bonus(skill, "xp_gain")  # "Studied" nodes: this skill levels faster
 	# Carry the fraction so a +5% perk is +5%, not +50% on a 2-xp grant.
 	var exact := xp * mult + float(s.get("xp_frac", 0.0))
 	s["xp"] = int(s["xp"]) + int(exact)
@@ -903,7 +905,8 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0,
 	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.5, "extra_day": 0.25, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
 	"animal_yield": 1.0, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
-	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0}
+	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
+	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1}
 
 
 static var _bonus_cache := {}

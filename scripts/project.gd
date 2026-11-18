@@ -298,8 +298,10 @@ static func overnight(report: Dictionary) -> void:
 		taken[str(cj[cid])] = true
 		var j: Dictionary = jobs.get(str(cj[cid]), {})
 		GameState.add_xp("leadership", 3)
-		for it in j.get("give", {}):
-			GameState.add_item(str(it), int(ceil(int(j["give"][it]) * mult)))
+		# Goods: alternate nights bring the alternate haul; pay bonuses grow money, not goods.
+		var give: Dictionary = j.get("give_alt", {}) if j.has("give_alt") and int(GameState.run["day"]) % 2 == 1 else j.get("give", {})
+		for it in give:
+			GameState.add_item(str(it), int(give[it]) + (1 if mult >= 2.0 and str(it).begins_with("bills") else 0))
 		if j.has("crystals"):
 			GameState.run["crystals"] = int(GameState.run["crystals"]) + int(int(j["crystals"]) * mult)
 		if j.has("heat"):

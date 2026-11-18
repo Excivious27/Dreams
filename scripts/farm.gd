@@ -285,7 +285,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"water":
 			if GameState.held_tool() == "rod" and not _fishing:
-				_fish()
+				# The farm pond uses the same fishing as everywhere else.
+				later(_pond_fish.bind(c))
 			elif GameState.has_tool("rod"):
 				hud.toast("Hold the fishing rod.")
 			return true
@@ -884,6 +885,12 @@ func _resonator(sel: String) -> void:
 
 
 # ---- fishing -----------------------------------------------------------------
+
+func _pond_fish(c: Vector2i) -> void:
+	_fishing = true
+	await fish_at(c, ["sunfish", "minnow", "carp", "trout", "bass", "catfish", "salmon", "eel", "puffer", "goldfish", "starfin", "mooncarp"])
+	_fishing = false
+
 
 func _fish() -> void:
 	if not GameState.spend_for("rod"):
