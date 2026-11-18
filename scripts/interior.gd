@@ -209,7 +209,7 @@ func _talk(n: Npc) -> void:
 		player.frozen = false
 		return
 	if lines.is_empty():
-		await say([{"who": name, "text": "Come in, come in. Mind the step."}])
+		await say(Talk.line(n.id))
 	else:
 		await say([{"who": name, "text": str(lines[int(GameState.run["day"]) % lines.size()])}])
 	player.frozen = false

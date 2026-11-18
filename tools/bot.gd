@@ -87,6 +87,11 @@ func _apply_progress() -> void:
 
 
 func _pick_scene() -> String:
+	# A quarter of the time, go and poke the newer systems: battlefields,
+	# colonies, the big mine caverns, the gangster districts with their bosses.
+	if rng.randf() < 0.25:
+		var newer: Array = ["bf_frostfield", "bf_shattered_vale", "colony_coral", "colony_kelp", "colony_ice", "colony_ember", "mine"] if arc == "penguins" else ["bf_rail_yards", "bf_dockside", "docks", "neon", "crystal_meadow", "countryside", "mine"]
+		return newer[rng.randi_range(0, newer.size() - 1)]
 	match style:
 		"farmer":
 			return ["farm", "farm", "town", "house"][rng.randi_range(0, 3)]

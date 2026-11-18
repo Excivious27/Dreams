@@ -162,6 +162,15 @@ static func play(m: GameMap, b: Dictionary) -> void:
 	if b.has("chapter_title") and str(b.get("chapter_title", "")) != "" and bool(b.get("title_card", false)):
 		m.hud.toast(str(b["chapter_title"]), Color(1, 0.9, 0.6))
 	var lines: Array = _fill(b.get("lines", []))
+	if str(b["id"]) == "g5_win" and not GameState.is_penguins():
+		# The crew were with you the whole way up: each one gets a line.
+		var roll: Array = []
+		for cid in Crew.all_recruited():
+			var fl := str(Crew.members().get(cid, {}).get("finale", ""))
+			if fl != "":
+				roll.append({"who": "", "text": fl})
+		if not roll.is_empty():
+			lines = roll + lines
 	await _play_lines(m, lines, str(b["id"]))
 	_apply(m, b.get("effects", {}))
 	GameState.run.erase("story_pending")

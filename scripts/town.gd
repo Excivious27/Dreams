@@ -816,7 +816,7 @@ func _lines(id: String, friend: int) -> Array:
 			if peng:
 				return [{"who": "Sal", "text": "Drifted in last week. Stayed for the quiet. The quiet's getting loud, in the east. You hear it?"}]
 			return [{"who": "Sal", "text": "...You're not from here. Neither am I. Let's leave it there, yeah?"}]
-	return [{"who": id, "text": "..."}]
+	return Talk.line(id)
 
 
 # ---- drawing -----------------------------------------------------------------

@@ -1,0 +1,154 @@
+{
+ "benno": {
+  "always": [
+   "The horses can tell when weather's coming. Today they say: keep your hat on.",
+   "Muck out, feed, brush, repeat. It's honest work, {name}. Horses don't lie.",
+   "You ever need a ride, the stable's open. Old Clover still has a few good miles in her."
+  ],
+  "spring": [
+   "Foals this spring. Two of them. Don't tell them they're cute; it goes to their heads."
+  ],
+  "summer": [
+   "Too hot for the horses past noon. I take them down to the stream."
+  ],
+  "fall": [
+   "Hay's in. Best feeling in the world, a full loft."
+  ],
+  "winter": [
+   "Blankets on every horse tonight. Mine stays on the hook."
+  ],
+  "rain": [
+   "Rain makes the barn smell like a barn. I don't mind it."
+  ],
+  "gangsters": [
+   "Men in long coats asked to rent a horse last week. Paid cash. I didn't ask why.",
+   "Your crew's welcome to the stable, long as they shut the gate."
+  ],
+  "penguins": [
+   "Saw a penguin by the creek this morning. Waddled right past the horses like it owned the place."
+  ],
+  "festival": [
+   "The horses get ribbons today too. They know. Look how they stand."
+  ],
+  "heat": [
+   "There's a car parked by the stable every night now. Engine running. Just so you know."
+  ]
+ },
+ "ivy": {
+  "always": [
+   "Deposits, withdrawals, and a good long gossip. That's banking in {town}.",
+   "I count coins in my sleep. Sometimes I dream I'm short one.",
+   "Interest is just money being patient. You could learn from it."
+  ],
+  "spring": [
+   "New ledgers every spring. I love the smell of an empty page."
+  ],
+  "summer": [
+   "The vault is the coolest room in town in summer. I'm not saying I eat lunch in there."
+  ],
+  "fall": [
+   "Harvest money, harvest money. Everyone's rich for a week."
+  ],
+  "winter": [
+   "Nobody banks in winter. I knit."
+  ],
+  "gangsters": [
+   "Someone tried to pay off a loan in very fresh bills yesterday. Very fresh. Still damp.",
+   "If you're ever carrying more than you'd like to explain, the bank's safer than your boot."
+  ],
+  "penguins": [
+   "A merkitty tried to open an account with a shell. I gave her one. Policy is policy."
+  ],
+  "festival": [
+   "The bank's closed for the festival. I'm still doing sums in my head."
+  ],
+  "heat": [
+   "Men in grey suits were reading the ledgers this morning. I didn't let them. Mostly."
+  ]
+ },
+ "orla": {
+  "always": [
+   "Flour on everything. Flour in my hair. You get used to it.",
+   "The mill wheel's been turning since my grandmother's grandmother. I just keep it fed.",
+   "Bring me grain and I'll bring you flour. That's the whole deal, and it's a good one."
+  ],
+  "spring": [
+   "The stream's high. The wheel's happy."
+  ],
+  "summer": [
+   "Low water, slow wheel. Patience."
+  ],
+  "fall": [
+   "Every farm in the valley comes through my door this month."
+  ],
+  "winter": [
+   "Ice on the wheel. I chip it off every morning with a spoon. Don't laugh."
+  ],
+  "gangsters": [
+   "Somebody's been using my back room to count something that isn't flour. I've stopped going in there."
+  ],
+  "penguins": [
+   "The penguins love the mill. They slide down the flour chute when they think I'm not looking."
+  ]
+ },
+ "bram": {
+  "always": [
+   "A warm room, a hot stew, and nobody asks your business. That's an inn.",
+   "Half the stories in {town} start at my bar. The other half end there.",
+   "Sit, sit. You look like a person who's walked a long way."
+  ],
+  "rain": [
+   "Rainy days are full-house days. Everyone wants a fire and a story."
+  ],
+  "winter": [
+   "Mulled cider, no charge, for anyone who shovelled the square."
+  ],
+  "gangsters": [
+   "The back booth's yours, boss, any night. I keep it clear."
+  ],
+  "penguins": [
+   "Big Jim came in for stew and ate the whole pot. Paid in fish. I'm not complaining."
+  ],
+  "festival": [
+   "Festival nights, the inn never sleeps. Neither do I."
+  ]
+ },
+ "juniper": {
+  "always": [
+   "Drink water. Eat something green. Sleep. That's ninety percent of medicine.",
+   "If you get hurt out there, come straight here. Don't be brave about it.",
+   "I patch up farmers, miners, and once a very embarrassed goat."
+  ],
+  "spring": [
+   "Spring sniffles season. Wash your hands."
+  ],
+  "summer": [
+   "Sunburn. Every summer. Hats, people. Hats."
+  ],
+  "winter": [
+   "Wrap up. I mean it."
+  ],
+  "gangsters": [
+   "I don't ask how anyone gets their bruises. I just fix them."
+  ],
+  "penguins": [
+   "Coldy brought me a frostbitten pup. Carried it all the way down the mountain. She's softer than she looks."
+  ]
+ },
+ "_any": {
+  "always": [
+   "Lovely day for it, whatever it is.",
+   "Good to see you around, {name}.",
+   "{town}'s a good place. Better with you in it."
+  ],
+  "rain": [
+   "Wet one today. Good for the crops, at least."
+  ],
+  "winter": [
+   "Cold enough to freeze your thoughts."
+  ],
+  "festival": [
+   "Are you going to the plaza? Everyone's going."
+  ]
+ }
+}
