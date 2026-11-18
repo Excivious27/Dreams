@@ -743,7 +743,7 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 ## chances certain).
 const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.45, "crit": 0.6, "damage_reduction": 0.6, "wood_discount": 0.6,
 	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.9, "pass_risk": 0.2,
-	"heat_cool": 0.6, "ability_cooldown": 0.5, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
+	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
 	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.8, "interest": 0.05}
 
 

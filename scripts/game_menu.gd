@@ -623,7 +623,7 @@ func _skill_tree(sk: String) -> void:
 ## Sun Haven-style skills page: a tab per skill, the level / points / EXP panel,
 ## and the tree as a grid of 4 branches x 10 tiers (I-X). Column N opens after
 ## 2N points spent in that skill. Tap a node to read it, then Learn.
-const SKILL_ORDER := ["farming", "mining", "foraging", "fishing", "combat", "magic", "pup", "bartering", "building", "leadership", "harmony", "hustle"]
+const SKILL_ORDER := ["farming", "mining", "foraging", "fishing", "combat", "magic", "pup", "bartering", "building", "leadership", "strategist", "harmony", "hustle"]
 const BRANCH_COL := [Color(0.32, 0.55, 0.25), Color(0.25, 0.42, 0.62), Color(0.6, 0.38, 0.22), Color(0.48, 0.3, 0.58)]
 var _node_sel := ""
 ## Item icons that stand in for node art until the node icon sheets arrive.
@@ -636,7 +636,7 @@ const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_ener
 	"gift_bonus": "gift_pie", "buy_discount": "gold", "wood_discount": "plank", "stone_discount": "brick", "craft_speed": "hammer", "build_discount": "hammer",
 	"spark_damage": "crystal", "spell_power": "big_crystal", "mana": "mana_potion", "mana_regen": "mana_potion", "spell_discount": "amethyst",
 	"pet_hp": "bone", "pet_dmg": "bone", "pet_speed": "bone", "pet_def": "bone", "pass_risk": "map", "heat_cool": "key", "wash_bonus": "gold",
-	"job_pay": "gold", "gun_damage": "six_shooter", "supply_rate": "chest", "helper_hp": "emerald", "ability_cooldown": "paw_charm",
+	"job_pay": "gold", "capture_speed": "map", "start_supply": "chest", "spawner_discount": "brick", "helper_damage": "crystal", "ticket_bleed": "ruby", "ticket_guard": "copper_ring", "gun_damage": "six_shooter", "supply_rate": "chest", "helper_hp": "emerald", "ability_cooldown": "paw_charm",
 	"colony_discount": "pearl", "team_damage": "sword", "team_defense": "copper_ring", "team_heal": "greater_potion", "friend_gain": "cake",
 	"pet_bond": "bone", "team_xp": "luck_potion"}
 
@@ -673,7 +673,7 @@ func _skills_tab() -> void:
 	var spent := GameState.points_spent(sk)
 	var head := HBoxContainer.new()
 	_body.add_child(head)
-	var ic := Art.tex("ui", "skillbig_" + sk) if Art.has("ui", "skillbig_" + sk) else Art.tex("items", str({"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")))
+	var ic := Art.tex("ui", "skillbig_" + sk) if Art.has("ui", "skillbig_" + sk) else Art.tex("items", str({"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")))
 	if ic:
 		var tr := TextureRect.new()
 		tr.texture = ic
@@ -801,7 +801,7 @@ func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
 			ik = str(KEY_ICON.get(ek, ""))
 			break
 		if ik == "":
-			ik = {"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")
+			ik = {"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter"}.get(sk, "map")
 		tr.texture = Art.tex("items", ik)
 	if not col_open:
 		tr.modulate = Color(0.4, 0.4, 0.4, 0.6)

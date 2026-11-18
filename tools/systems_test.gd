@@ -106,7 +106,7 @@ func _run() -> void:
 	check(Ops.morning() == 80 and int(GameState.run["crystals"]) == g0 + 80, "two blocks pay every morning")
 	check(Ops.holds("docks") and not Ops.holds("uptown"), "turf held per block")
 	# Sun Haven trees: 4 x 10 per skill, the arc's own tree, leadership
-	for sk in ["farming", "leadership", "hustle", "harmony"]:
+	for sk in ["farming", "leadership", "strategist", "hustle", "harmony"]:
 		check(GameState.nodes_of(sk).size() == 40, "%s has a 4x10 grid" % sk)
 	check(GameState.skill_in_arc("hustle") and not GameState.skill_in_arc("harmony"), "gangster run shows Hustle, not Harmony")
 	GameState.run["skills"]["leadership"]["level"] = 12

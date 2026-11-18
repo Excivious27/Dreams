@@ -3951,6 +3951,458 @@
     }
    ]
   },
+  "strategist": {
+   "name": "Strategist",
+   "desc": "Conquest battles: taking ground, supply, your crystal or drone helpers and breaking the enemy's tickets. Levels up with every battle campaign you fight.",
+   "branches": {
+    "0": "Ground",
+    "1": "Logistics",
+    "2": "Forces",
+    "3": "Command"
+   },
+   "nodes": [
+    {
+     "id": "strategist_0_0",
+     "name": "Scout the Field",
+     "desc": "+5% faster point capture (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 0,
+     "effect": {
+      "capture_speed": 0.05
+     }
+    },
+    {
+     "id": "strategist_0_1",
+     "name": "High Ground",
+     "desc": "+3 supply at the start of a battle (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 0,
+     "effect": {
+      "start_supply": 3
+     }
+    },
+    {
+     "id": "strategist_0_2",
+     "name": "Quick Claim",
+     "desc": "+5% faster point capture (per rank)",
+     "ranks": 3,
+     "tier": 2,
+     "row": 0,
+     "effect": {
+      "capture_speed": 0.05
+     }
+    },
+    {
+     "id": "strategist_0_3",
+     "name": "Forward Base",
+     "desc": "+3 supply at the start of a battle (per rank)",
+     "ranks": 3,
+     "tier": 3,
+     "row": 0,
+     "effect": {
+      "start_supply": 3
+     }
+    },
+    {
+     "id": "strategist_0_4",
+     "name": "Fast Flags",
+     "desc": "+5% faster point capture (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 0,
+     "effect": {
+      "capture_speed": 0.05
+     }
+    },
+    {
+     "id": "strategist_0_5",
+     "name": "Dig In",
+     "desc": "+3 supply at the start of a battle (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 0,
+     "effect": {
+      "start_supply": 3
+     }
+    },
+    {
+     "id": "strategist_0_6",
+     "name": "Map Room",
+     "desc": "+5% faster point capture (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "row": 0,
+     "effect": {
+      "capture_speed": 0.05
+     }
+    },
+    {
+     "id": "strategist_0_7",
+     "name": "Terrain Master",
+     "desc": "+3 supply at the start of a battle (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 0,
+     "effect": {
+      "start_supply": 3
+     }
+    },
+    {
+     "id": "strategist_0_8",
+     "name": "Field Marshal",
+     "desc": "+5% faster point capture (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 0,
+     "effect": {
+      "capture_speed": 0.05
+     }
+    },
+    {
+     "id": "strategist_0_9",
+     "name": "Scout the Field",
+     "desc": "+6 supply at the start of a battle",
+     "ranks": 1,
+     "tier": 9,
+     "row": 0,
+     "effect": {
+      "start_supply": 6
+     }
+    },
+    {
+     "id": "strategist_1_0",
+     "name": "Supply Runner",
+     "desc": "+4% cheaper spires / drone bays (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 1,
+     "effect": {
+      "spawner_discount": 0.04
+     }
+    },
+    {
+     "id": "strategist_1_1",
+     "name": "Lean Builds",
+     "desc": "+5% battle supply (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 1,
+     "effect": {
+      "supply_rate": 0.05
+     }
+    },
+    {
+     "id": "strategist_1_2",
+     "name": "Stockpile",
+     "desc": "+4% cheaper spires / drone bays (per rank)",
+     "ranks": 3,
+     "tier": 2,
+     "row": 1,
+     "effect": {
+      "spawner_discount": 0.04
+     }
+    },
+    {
+     "id": "strategist_1_3",
+     "name": "Prefab Spires",
+     "desc": "+5% battle supply (per rank)",
+     "ranks": 3,
+     "tier": 3,
+     "row": 1,
+     "effect": {
+      "supply_rate": 0.05
+     }
+    },
+    {
+     "id": "strategist_1_4",
+     "name": "Convoy",
+     "desc": "+4% cheaper spires / drone bays (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 1,
+     "effect": {
+      "spawner_discount": 0.04
+     }
+    },
+    {
+     "id": "strategist_1_5",
+     "name": "Efficient Works",
+     "desc": "+5% battle supply (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 1,
+     "effect": {
+      "supply_rate": 0.05
+     }
+    },
+    {
+     "id": "strategist_1_6",
+     "name": "Depot",
+     "desc": "+4% cheaper spires / drone bays (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "row": 1,
+     "effect": {
+      "spawner_discount": 0.04
+     }
+    },
+    {
+     "id": "strategist_1_7",
+     "name": "Assembly Yard",
+     "desc": "+5% battle supply (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 1,
+     "effect": {
+      "supply_rate": 0.05
+     }
+    },
+    {
+     "id": "strategist_1_8",
+     "name": "Endless Supply",
+     "desc": "+4% cheaper spires / drone bays (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 1,
+     "effect": {
+      "spawner_discount": 0.04
+     }
+    },
+    {
+     "id": "strategist_1_9",
+     "name": "Supply Runner",
+     "desc": "+10% battle supply",
+     "ranks": 1,
+     "tier": 9,
+     "row": 1,
+     "effect": {
+      "supply_rate": 0.1
+     }
+    },
+    {
+     "id": "strategist_2_0",
+     "name": "Drill",
+     "desc": "+4 battle helper health (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 2,
+     "effect": {
+      "helper_hp": 4
+     }
+    },
+    {
+     "id": "strategist_2_1",
+     "name": "Sharpened Sparks",
+     "desc": "+1 helper zap damage (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 2,
+     "effect": {
+      "helper_damage": 1
+     }
+    },
+    {
+     "id": "strategist_2_2",
+     "name": "Hardened Shells",
+     "desc": "+4 battle helper health (per rank)",
+     "ranks": 3,
+     "tier": 2,
+     "row": 2,
+     "effect": {
+      "helper_hp": 4
+     }
+    },
+    {
+     "id": "strategist_2_3",
+     "name": "Formation",
+     "desc": "+1 helper zap damage (per rank)",
+     "ranks": 3,
+     "tier": 3,
+     "row": 2,
+     "effect": {
+      "helper_damage": 1
+     }
+    },
+    {
+     "id": "strategist_2_4",
+     "name": "Volley",
+     "desc": "+4 battle helper health (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 2,
+     "effect": {
+      "helper_hp": 4
+     }
+    },
+    {
+     "id": "strategist_2_5",
+     "name": "Veterans",
+     "desc": "+1 helper zap damage (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 2,
+     "effect": {
+      "helper_damage": 1
+     }
+    },
+    {
+     "id": "strategist_2_6",
+     "name": "Elite Guard",
+     "desc": "+4 battle helper health (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "row": 2,
+     "effect": {
+      "helper_hp": 4
+     }
+    },
+    {
+     "id": "strategist_2_7",
+     "name": "Overcharge",
+     "desc": "+1 helper zap damage (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 2,
+     "effect": {
+      "helper_damage": 1
+     }
+    },
+    {
+     "id": "strategist_2_8",
+     "name": "Legion",
+     "desc": "+4 battle helper health (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 2,
+     "effect": {
+      "helper_hp": 4
+     }
+    },
+    {
+     "id": "strategist_2_9",
+     "name": "Drill",
+     "desc": "+2 helper zap damage",
+     "ranks": 1,
+     "tier": 9,
+     "row": 2,
+     "effect": {
+      "helper_damage": 2
+     }
+    },
+    {
+     "id": "strategist_3_0",
+     "name": "Pressure",
+     "desc": "+5% slower ticket loss for your side (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 3,
+     "effect": {
+      "ticket_guard": 0.05
+     }
+    },
+    {
+     "id": "strategist_3_1",
+     "name": "Hold the Line",
+     "desc": "+6% faster enemy ticket loss (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 3,
+     "effect": {
+      "ticket_bleed": 0.06
+     }
+    },
+    {
+     "id": "strategist_3_2",
+     "name": "Pincer Move",
+     "desc": "+5% slower ticket loss for your side (per rank)",
+     "ranks": 3,
+     "tier": 2,
+     "row": 3,
+     "effect": {
+      "ticket_guard": 0.05
+     }
+    },
+    {
+     "id": "strategist_3_3",
+     "name": "Morale",
+     "desc": "+6% faster enemy ticket loss (per rank)",
+     "ranks": 3,
+     "tier": 3,
+     "row": 3,
+     "effect": {
+      "ticket_bleed": 0.06
+     }
+    },
+    {
+     "id": "strategist_3_4",
+     "name": "Attrition",
+     "desc": "+5% slower ticket loss for your side (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 3,
+     "effect": {
+      "ticket_guard": 0.05
+     }
+    },
+    {
+     "id": "strategist_3_5",
+     "name": "Last Stand",
+     "desc": "+6% faster enemy ticket loss (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 3,
+     "effect": {
+      "ticket_bleed": 0.06
+     }
+    },
+    {
+     "id": "strategist_3_6",
+     "name": "Rout",
+     "desc": "+5% slower ticket loss for your side (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "row": 3,
+     "effect": {
+      "ticket_guard": 0.05
+     }
+    },
+    {
+     "id": "strategist_3_7",
+     "name": "Iron Resolve",
+     "desc": "+6% faster enemy ticket loss (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 3,
+     "effect": {
+      "ticket_bleed": 0.06
+     }
+    },
+    {
+     "id": "strategist_3_8",
+     "name": "Grand Victory",
+     "desc": "+5% slower ticket loss for your side (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 3,
+     "effect": {
+      "ticket_guard": 0.05
+     }
+    },
+    {
+     "id": "strategist_3_9",
+     "name": "Pressure",
+     "desc": "+12% faster enemy ticket loss",
+     "ranks": 1,
+     "tier": 9,
+     "row": 3,
+     "effect": {
+      "ticket_bleed": 0.12
+     }
+    }
+   ]
+  },
   "leadership": {
    "name": "Leadership",
    "desc": "Working with your team: partners, the pup, your crew or companions, battle helpers and friends. Levels up whenever you work together.",
@@ -3958,7 +4410,7 @@
     "0": "Command",
     "1": "Care",
     "2": "Bonds",
-    "3": "Strategy"
+    "3": "Crew Work"
    },
    "nodes": [
     {
@@ -4304,29 +4756,29 @@
     },
     {
      "id": "leadership_3_1",
-     "name": "Supply Lines",
-     "desc": "+4 battle helper health (per rank)",
+     "name": "Right Job, Right Person",
+     "desc": "+4% crew job pay (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "helper_hp": 4
+      "job_pay": 0.04
      }
     },
     {
      "id": "leadership_3_2",
-     "name": "Right Job, Right Person",
-     "desc": "+5% battle supply (per rank)",
+     "name": "Teach the Team",
+     "desc": "+4% skill XP while a partner is with you (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 3,
      "effect": {
-      "supply_rate": 0.05
+      "team_xp": 0.04
      }
     },
     {
      "id": "leadership_3_3",
-     "name": "Teach the Team",
+     "name": "Shared Lessons",
      "desc": "+4% crew job pay (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -4348,29 +4800,29 @@
     },
     {
      "id": "leadership_3_5",
-     "name": "Logistics",
-     "desc": "+4 battle helper health (per rank)",
+     "name": "Mentor",
+     "desc": "+4% crew job pay (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 3,
      "effect": {
-      "helper_hp": 4
+      "job_pay": 0.04
      }
     },
     {
      "id": "leadership_3_6",
      "name": "Chain of Command",
-     "desc": "+5% battle supply (per rank)",
+     "desc": "+4% skill XP while a partner is with you (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "supply_rate": 0.05
+      "team_xp": 0.04
      }
     },
     {
      "id": "leadership_3_7",
-     "name": "Grand Strategy",
+     "name": "Trusted Hands",
      "desc": "+4% crew job pay (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -4393,12 +4845,12 @@
     {
      "id": "leadership_3_9",
      "name": "Delegate",
-     "desc": "+8 battle helper health",
+     "desc": "+8% crew job pay",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "helper_hp": 8
+      "job_pay": 0.08
      }
     }
    ]

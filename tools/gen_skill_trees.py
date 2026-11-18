@@ -21,6 +21,7 @@ AMT = {"extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day":
        "pet_hp": 6, "pet_dmg": 1, "pet_speed": 0.05, "pet_def": 1,
        "pass_risk": 0.01, "heat_cool": 0.04, "wash_bonus": 0.02, "job_pay": 0.04, "gun_damage": 1, "supply_rate": 0.05, "helper_hp": 4,
        "ability_cooldown": 0.03, "colony_discount": 0.03,
+       "capture_speed": 0.05, "start_supply": 3, "spawner_discount": 0.04, "helper_damage": 1, "ticket_bleed": 0.06, "ticket_guard": 0.05,
        "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04}
 DESC = {"extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
@@ -37,6 +38,8 @@ DESC = {"extra_crop": "chance of an extra crop", "farm_energy": "less energy to 
         "pet_speed": "pup speed", "pet_def": "pup defence", "pass_risk": "less risk passing bills", "heat_cool": "chance heat cools an extra step overnight",
         "wash_bonus": "laundromat payout", "job_pay": "crew job pay", "gun_damage": "gun damage", "supply_rate": "battle supply",
         "helper_hp": "battle helper health", "ability_cooldown": "faster partner power", "colony_discount": "cheaper colony shops",
+        "capture_speed": "faster point capture", "start_supply": "supply at the start of a battle", "spawner_discount": "cheaper spires / drone bays",
+        "helper_damage": "helper zap damage", "ticket_bleed": "faster enemy ticket loss", "ticket_guard": "slower ticket loss for your side",
         "team_damage": "damage while a partner is with you", "team_defense": "less damage taken while a partner is with you",
         "team_heal": "health healed each time you use a partner power", "friend_gain": "friendship from talking and gifts",
         "pet_bond": "pup health", "team_xp": "skill XP while a partner is with you"}
@@ -100,8 +103,13 @@ T["harmony"] = ([("Bond", ["ability_cooldown", "hp"], ["Paw in Hand", "Trust", "
 T["leadership"] = ([("Command", ["team_damage", "ability_cooldown"], ["Lead by Example", "Clear Orders", "On My Mark", "Pincer", "Rally Cry", "Coordinated Strike", "Battle Plan", "Vanguard", "General"]),
                     ("Care", ["team_heal", "team_defense"], ["Look Out", "Patch Up", "Cover Me", "Watch Your Back", "Steady Hands", "Shield Wall", "No One Left Behind", "Guardian", "Heart of the Team"]),
                     ("Bonds", ["friend_gain", "pet_bond"], ["Good Word", "Remember Birthdays", "Pup's Best Friend", "Open Door", "Loyal Hearts", "Inner Circle", "Kindred Spirits", "Unshakable Trust", "Family First"]),
-                    ("Strategy", ["helper_hp", "supply_rate", "job_pay", "team_xp"], ["Delegate", "Supply Lines", "Right Job, Right Person", "Teach the Team", "Field Promotions", "Logistics", "Chain of Command", "Grand Strategy", "Legend of the Crew"])], {})
-EXTRA = {"leadership": ("Leadership", "Working with your team: partners, the pup, your crew or companions, battle helpers and friends. Levels up whenever you work together."),
+                    ("Crew Work", ["job_pay", "team_xp"], ["Delegate", "Right Job, Right Person", "Teach the Team", "Shared Lessons", "Field Promotions", "Mentor", "Chain of Command", "Trusted Hands", "Legend of the Crew"])], {})
+T["strategist"] = ([("Ground", ["capture_speed", "start_supply"], ["Scout the Field", "High Ground", "Quick Claim", "Forward Base", "Fast Flags", "Dig In", "Map Room", "Terrain Master", "Field Marshal"]),
+                    ("Logistics", ["supply_rate", "spawner_discount"], ["Supply Runner", "Lean Builds", "Stockpile", "Prefab Spires", "Convoy", "Efficient Works", "Depot", "Assembly Yard", "Endless Supply"]),
+                    ("Forces", ["helper_hp", "helper_damage"], ["Drill", "Sharpened Sparks", "Hardened Shells", "Formation", "Volley", "Veterans", "Elite Guard", "Overcharge", "Legion"]),
+                    ("Command", ["ticket_bleed", "ticket_guard"], ["Pressure", "Hold the Line", "Pincer Move", "Morale", "Attrition", "Last Stand", "Rout", "Iron Resolve", "Grand Victory"])], {})
+EXTRA = {"strategist": ("Strategist", "Conquest battles: taking ground, supply, your crystal or drone helpers and breaking the enemy's tickets. Levels up with every battle campaign you fight."),
+         "leadership": ("Leadership", "Working with your team: partners, the pup, your crew or companions, battle helpers and friends. Levels up whenever you work together."),
          "hustle": ("Hustle", "The street: passing bills, washing money, your crew, your guns and your drones. Gangster arc only."),
          "harmony": ("Harmony", "The bonds of the penguin arc: your partners, the song, the merkitty islands and the crystal wardens. Penguin arc only.")}
 for k, (nm, ds) in EXTRA.items():

@@ -41,7 +41,7 @@ static func start(m: GameMap, region_id: String, data: Dictionary) -> Battle:
 func _setup() -> void:
 	var t := int(d.get("tickets", 150))
 	tickets = {"ally": t, "enemy": t}
-	supply = int(d.get("supply", 10))
+	supply = int(d.get("supply", 10)) + int(GameState.bonus("strategist", "start_supply"))
 	for p in d.get("points", []):
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var pt := {"id": str(p["id"]), "name": str(p["name"]), "cell": c, "pos": map.cell_center(c), "owner": str(p.get("owner", "neutral")), "prog": 0.0, "spawner": "", "made": [], "t": 0.0}
@@ -102,6 +102,14 @@ func _exit_tree() -> void:
 		map.remove_meta("rally_pos")
 
 
+var _bleed_e := 0.0
+var _bleed_a := 0.0
+
+
+func _cost(k: String) -> int:
+	return maxi(1, int(round(int(SPAWNER_COST[k]) * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
+
+
 func point(id: String) -> Dictionary:
 	for p in points:
 		if str(p["id"]) == id:
@@ -146,7 +154,7 @@ func _capture(delta: float) -> void:
 		for e in map.enemies:
 			if is_instance_valid(e) and e._alive and e.position.distance_to(p["pos"]) < CAP_R:
 				foes += 1
-		var rate := delta / CAP_TIME
+		var rate := delta / CAP_TIME * (1.0 + GameState.bonus("strategist", "capture_speed"))
 		if allies > 0 and foes == 0:
 			p["prog"] = minf(1.0, float(p["prog"]) + rate * (1.0 + 0.25 * (allies - 1)))
 		elif foes > 0 and allies == 0:
@@ -176,12 +184,16 @@ func _capture(delta: float) -> void:
 func _tick() -> void:
 	var a := _owned("ally")
 	var e := _owned("enemy")
-	supply += int(round(a * int(d.get("supply_per_point", 2)) * (1.0 + GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("leadership", "supply_rate"))))
+	supply += int(round(a * int(d.get("supply_per_point", 2)) * (1.0 + GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("leadership", "supply_rate") + GameState.bonus("strategist", "supply_rate"))))
 	# Bleed: whoever holds fewer points loses tickets every second, faster the worse it is.
 	if a > e:
-		tickets["enemy"] = int(tickets["enemy"]) - (a - e)
+		_bleed_e += (a - e) * (1.0 + GameState.bonus("strategist", "ticket_bleed"))
+		tickets["enemy"] = int(tickets["enemy"]) - int(_bleed_e)
+		_bleed_e -= int(_bleed_e)
 	elif e > a:
-		tickets["ally"] = int(tickets["ally"]) - (e - a)
+		_bleed_a += (e - a) * (1.0 - GameState.bonus("strategist", "ticket_guard"))
+		tickets["ally"] = int(tickets["ally"]) - int(_bleed_a)
+		_bleed_a -= int(_bleed_a)
 	# Spawners turn out helpers.
 	for p in points:
 		if str(p["owner"]) != "ally" or str(p["spawner"]) == "":
@@ -277,7 +289,7 @@ func interact(id: String) -> void:
 	var opts: Array = []
 	var keys: Array = []
 	for k in ["striker", "healer", "warden", "shade"]:
-		opts.append("%s (◇%d): %s" % [str(HelperUnit.KINDS[k]["crystal" if crystal else "drone"]), int(SPAWNER_COST[k]), {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}[k]])
+		opts.append("%s (◇%d): %s" % [str(HelperUnit.KINDS[k]["crystal" if crystal else "drone"]), _cost(k), {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}[k]])
 		keys.append(k)
 	opts.append("%s (◇%d): holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", int(SPAWNER_COST["turret"])])
 	keys.append("turret")
@@ -289,10 +301,10 @@ func interact(id: String) -> void:
 	if i < 0 or i >= keys.size():
 		return
 	var k: String = keys[i]
-	if supply < int(SPAWNER_COST[k]):
+	if supply < _cost(k):
 		map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
 		return
-	supply -= int(SPAWNER_COST[k])
+	supply -= _cost(k)
 	GameState.add_xp("leadership", 8)
 	p["spawner"] = k
 	p["t"] = 10.0
@@ -302,6 +314,8 @@ func interact(id: String) -> void:
 
 func _end(won: bool) -> void:
 	_over = true
+	# A full campaign is what trains a Strategist (more for a win, something for a loss).
+	GameState.add_xp("strategist", 160 if won else 50)
 	if won:
 		GameState.add_arc_xp(80)
 	for e in map.enemies.duplicate():

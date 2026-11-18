@@ -32,7 +32,7 @@ static func make(m: GameMap, k: String, at: Vector2, home_at: Vector2) -> Helper
 	h.map = m
 	h.kind = k
 	h.style = "crystal" if GameState.is_penguins() else "drone"
-	h.max_hp = int(KINDS[k]["hp"]) + 4 * GameState.progress_tier() + int(GameState.bonus(GameState.arc_skill(), "helper_hp")) + int(GameState.bonus("leadership", "helper_hp"))
+	h.max_hp = int(KINDS[k]["hp"]) + 4 * GameState.progress_tier() + int(GameState.bonus(GameState.arc_skill(), "helper_hp")) + int(GameState.bonus("leadership", "helper_hp")) + int(GameState.bonus("strategist", "helper_hp"))
 	h.hp = h.max_hp
 	h.position = at
 	h.home = home_at
@@ -92,7 +92,7 @@ func _process(delta: float) -> void:
 				_zap_to = foe.position + Vector2(0, -8)
 				_zap_t = 0.12
 				foe.provoke(map.player)
-				foe.hit(2 + GameState.progress_tier(), position, true)
+				foe.hit(2 + GameState.progress_tier() + int(GameState.bonus("strategist", "helper_damage")), position, true)
 		"healer":
 			_cd = 3.0
 			if map.player.position.distance_to(position) < 70.0 and int(GameState.run["hp"]) < int(GameState.run["max_hp"]):
