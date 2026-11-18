@@ -2,7 +2,7 @@
 
 WHAT THIS COVERS, most important first: one clean pup sheet and gear that sits on it; moving bosses for three colonies; the last icons (new items, spells, mail and goal-line marks); night glow for lamps and windows; the Hollow Heart's landmarks and people; small fixes; the hidden chests, caches and journal pages.
 
-HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at most 6 images and carries every rule it needs, so you can paste it into a fresh chat. Ask for the images one at a time if ChatGPT stops early ("now image 2"). Save each image under its exact file name and upload it here.
+HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at most 3 images and carries every rule it needs, so you can paste it into a fresh chat. Ask for the images one at a time if ChatGPT stops early ("now image 2"). Save each image under its exact file name and upload it here.
 
 
 ---

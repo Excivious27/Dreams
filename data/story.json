@@ -998,7 +998,12 @@
       "companion": "mer",
       "toast": "The merkitties' gift: you grow a tail in any water. Swim anywhere.",
       "hint": "You can swim and dive anywhere now. The way to the top is the mountain pad now.",
-      "sfx": "levelup"
+      "sfx": "levelup",
+      "fx": [
+       "merkitty_ring",
+       0,
+       0
+      ]
      }
     },
     {

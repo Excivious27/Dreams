@@ -142,3 +142,9 @@ p18raw = open(f"{D}/src/ART-PROMPTS-18-raw.md").read()
 c = build(p18raw, "18", f"{D}/ART-PROMPTS-18.md", "the pup, moving colony bosses, last icons, night lights, the Hollow Heart, fixes",
           "WHAT THIS COVERS, most important first: one clean pup sheet and gear that sits on it; moving bosses for three colonies; the last icons (new items, spells, mail and goal-line marks); night glow for lamps and windows; the Hollow Heart's landmarks and people; small fixes; the hidden chests, caches and journal pages.")
 print("18:", c)
+p19raw = open(f"{D}/src/ART-PROMPTS-19-raw.md").read()
+DEFS["SEAMLESS"] = para(p19raw, "SEAMLESS RULE")
+DEFS["BLOB RULE"] = para(p19raw, "BLOB RULE")
+d = build(p19raw, "19", f"{D}/ART-PROMPTS-19.md", "clean edges everywhere, interiors, and the last stand-ins",
+          "WHAT THIS COVERS, most important first: water edges (rivers, ponds, lakes, the beach, bog and cave water); ground-to-ground edges (grass to sand, dirt, snow, dry grass, mud); cliffs and stairs in every material; paths and paving; the farm (tilled soil, pond bank, fences); house and shop interiors; colony, moon and battle ground; the last stand-ins (gangster walk cycles, the President, enemy attacks, partner ability effects, ore nodes, icons, props).")
+print("19:", d)

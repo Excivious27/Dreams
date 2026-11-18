@@ -2,6 +2,18 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 (CONDUCT round) — audit, bots, edges audit, skill unlocks, bag and chests, mines
+- Two 20-agent audits (general + edges/transitions; reports in /tmp/audit, not in the repo); bots clean apart from navigation stalls.
+- Edges: `WaterMask` shader draws whole water bodies and ground patches with curved, foamy, banked edges; dirt/sand paths and region patches blend (`soft_ground`); seamless textures wrap (`tools/make_seamless.py`).
+- Farm soil layer was hidden by y-sort (crops invisible): fixed; rounded beds; dark (not blue) wet soil.
+- Interiors: props fitted to footprint, small rooms centred, `tools/furnish.py` (282 props), walk-out doors; building front walls enter (`tools/door_check.gd` in check.sh).
+- Skill trees: real unlock nodes (blueprints gate stations, spells from other trees, move speed, chop/mine power, damage); unlock nodes framed violet with what-they-give icons.
+- Sun Haven bag and chests: 30-kind bag (+12 per backpack, 3 upgrades), overflow to the farm chest, Sort, quick stack to nearby chests, `ChestScreen`, placeable chests (`Storage`, tools/storage_test.gd).
+- Mines: ~1.7× bigger floors, ~half the ore, fewer enemies scaled to area, gentle floors 1–4.
+- Art in: 16-1..16-7 (lieutenants, HQ/Ward stages, Marisol & Bo, the Marked, gift fx, cyber stations), 17-1 (Catkins, finargles, crystal babies, merkitties, catship, story panels), 17-3 (skill icons for five trees).
+- Many audit fixes: battles (supply, cooldowns, safe spawns, loss XP), enemy telegraphs, fishing bait, animals, story beat order, epilogue flags, economy/shop stock, gift cap, two-window save guard, story beat survives scene change.
+- Prompts 19 (edges, interiors, last stand-ins; 15 prompts / 43 images, 2–3 per prompt), Prompts 17/18 rebuilt to 3-per-prompt; Guide 12.
+
 ## 2026-11-18 — remaining work: battles, story branches, farm life, colonies
 - Battles: helpers and enemies path with flow fields (`GameMap.flow_dir`); rally cycles guard posts → follow me → each point; supply buys Upgrade/Fortify/Mend/Barrage with upkeep per unit; the enemy commander masses on one point and warns you; wolves and ash hounds hunt in packs.
 - Story: Marlene's beat branches on the intro letter; Sasha's loyalty opens the tower doors quietly; Fennimore can be freed in the Meow Pow Wow; endings list more of your choices. Penguin arc: the great tree waits for the mountain campfire.

@@ -2,7 +2,7 @@
 
 Everything below shows a code-drawn stand-in today.
 
-## Item icons (37)
+## Item icons (21)
 
 - crystal_bloom
 - strawberry_wine
@@ -13,34 +13,18 @@ Everything below shows a code-drawn stand-in today.
 - brass_locket
 - knight_shard
 - manifest
-- finargle_fuzz
-- sacred_key
-- merkitty_necklace
 - sand
-- circuit_board
-- data_chip
-- servo
-- scrambler
-- ghost_ledger
-- emp_charge
-- emp_heavy
-- spy_drone
-- scrap_bot
-- guard_bot
-- drone_swarm
-- optic_implant
-- optic_mk2
-- reflex_wires
-- reflex_mk2
-- chrome_arm
-- subdermal_plating
-- neural_link
 - colony_light
 - coral_charm
 - tide_pearl
 - kelp_wrap
 - ember_glass
 - starfish_snack
+- shiitake
+- moonwort
+- backpack_1
+- backpack_2
+- backpack_3
 
 ## Enemy sprites (7)
 
@@ -52,28 +36,20 @@ Everything below shows a code-drawn stand-in today.
 - thug_enforcer (thug_enforcer)
 - president (The President)
 
-## Dialogue portraits (0)
+## Dialogue portraits (4)
+
+- pip (Pip)
+- wren_jr (Wren jr)
+- tobin (Tobin)
+- mabel (Mabel)
+
+## Stations and buildings (0)
 
 - none
 
-## Stations and buildings (12)
-
-- terminal tier 1
-- terminal tier 2
-- terminal tier 3
-- terminal tier 4
-- clinic tier 1
-- clinic tier 2
-- clinic tier 3
-- clinic tier 4
-- robotics tier 1
-- robotics tier 2
-- robotics tier 3
-- robotics tier 4
-
 ## Named art the code asks for (4)
 
-- fx/emp
+- fx/dirt_puff
 - props/fountain
 - props/horse3
 - tiles/cliff2_1
