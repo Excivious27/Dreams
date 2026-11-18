@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/topiary_b.png-8eca476f726ef91d8e9254b7a1f7dbf
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

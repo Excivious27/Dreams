@@ -36,6 +36,16 @@ static func load_all() -> Dictionary:
 	if parsed is Dictionary:
 		_cache = parsed
 		return _cache
+	if not FileAccess.file_exists(PATH):
+		# Interrupted between renames: the temp file is the newest complete save,
+		# then the backup. Promote whichever reads.
+		for alt in [TMP, BAK]:
+			var got: Variant = _read(alt)
+			if got is Dictionary and not (got as Dictionary).is_empty():
+				_cache = got
+				flush()
+				push_warning("save.json was missing; recovered from " + alt)
+				return _cache
 	if FileAccess.file_exists(PATH):
 		# Corrupt or truncated: keep a copy, fall back to the backup.
 		DirAccess.copy_absolute(ProjectSettings.globalize_path(PATH), ProjectSettings.globalize_path(BAD))
@@ -44,8 +54,9 @@ static func load_all() -> Dictionary:
 			_cache = bak
 			push_warning("save.json was unreadable; restored save.bak.json (bad copy kept as save.bad.json)")
 			return _cache
-		_blocked = true
-		push_warning("save.json was unreadable and there's no backup; kept as save.bad.json, saving disabled this session")
+		# Nothing readable: keep the bad copy aside and start clean, so saving works again.
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))
+		push_warning("save.json was unreadable and there's no backup; kept as save.bad.json")
 	_cache = {}
 	return _cache
 

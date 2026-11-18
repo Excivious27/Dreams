@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/r_ruins_54.png-8033ad8d8fd2a060c033665f790f74
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

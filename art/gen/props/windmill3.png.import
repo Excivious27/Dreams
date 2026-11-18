@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/windmill3.png-ab0d92699d789c23e2a135a03375163
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

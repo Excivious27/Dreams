@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/swatch_empty_2.png-a6ed49d1e20e43813fe59b8c0d
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

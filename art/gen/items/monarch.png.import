@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/monarch.png-bb65db618eb7ce6c36c6b5d02d783714.
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

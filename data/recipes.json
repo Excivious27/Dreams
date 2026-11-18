@@ -146,6 +146,17 @@
    },
    "give": "wheel",
    "tier": 2
+  },
+  {
+   "id": "sprinkler_iridium",
+   "name": "Crystal Sprinkler",
+   "need": {
+    "gold_bar": 1,
+    "iron_bar": 2,
+    "crystal_refined": 1
+   },
+   "give": "sprinkler_iridium",
+   "tier": 3
   }
  ],
  "kitchen": [

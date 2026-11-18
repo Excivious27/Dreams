@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/seed_pouch.png-7c0a1f27e637144b9d969e36aa1bfd
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

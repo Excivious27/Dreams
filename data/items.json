@@ -260,7 +260,8 @@
   "type": "placeable",
   "value": 300,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "desc": "Place it on the farm (hold it, USE on open ground). Waters the 4 tiles beside it every morning. USE it again to pick it up."
  },
  "chest": {
   "name": "Chest",
@@ -274,7 +275,8 @@
   "type": "placeable",
   "value": 40,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "desc": "Place it on the farm. Keeps crows off crops within 4 tiles."
  },
  "honey": {
   "name": "Honey",
@@ -999,17 +1001,19 @@
  },
  "sprinkler_quality": {
   "name": "Quality Sprinkler",
-  "type": "craft",
+  "type": "placeable",
   "value": 450,
   "rarity": "rare",
-  "tier": 3
+  "tier": 3,
+  "desc": "Waters the 8 tiles around it every morning."
  },
  "sprinkler_iridium": {
   "name": "Iridium Sprinkler",
-  "type": "craft",
+  "type": "placeable",
   "value": 1500,
   "rarity": "epic",
-  "tier": 4
+  "tier": 4,
+  "desc": "Waters a 5x5 square around it every morning."
  },
  "crab_pot": {
   "name": "Crab Pot",

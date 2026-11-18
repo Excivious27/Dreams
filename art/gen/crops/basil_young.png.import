@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/basil_young.png-e84d1bfa7c720e80d1b990ee9823a
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

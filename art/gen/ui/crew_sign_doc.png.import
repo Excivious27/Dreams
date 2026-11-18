@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/crew_sign_doc.png-7fbe1c92ca96e451d546e119c7e
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

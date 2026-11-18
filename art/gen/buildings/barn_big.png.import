@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/barn_big.png-98df4a65c7683c85f63402af8fd70b5e
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/twinkle_b.png-f2f33ba1b6d9f0054eb89239fab7e56
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

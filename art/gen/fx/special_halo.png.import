@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/special_halo.png-f2e85701a115d49c384dae55e2d0
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

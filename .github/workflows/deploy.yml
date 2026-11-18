@@ -53,6 +53,15 @@ jobs:
       - name: Add Godot to PATH
         run: echo "$HOME/godot" >> "$GITHUB_PATH"
 
+      # Re-importing ~15k textures takes minutes; keep them between deploys.
+      - name: Cache imported assets
+        uses: actions/cache@v4
+        with:
+          path: .godot
+          key: godot-import-${{ env.GODOT_VERSION }}-${{ hashFiles('art/gen/manifest.json', 'project.godot') }}
+          restore-keys: |
+            godot-import-${{ env.GODOT_VERSION }}-
+
       - name: Import project and run smoke test
         run: bash tools/check.sh
 
@@ -67,7 +76,7 @@ jobs:
           size=$(stat -c %s build/web/index.pck)
           echo "index.pck: $((size / 1048576)) MB"
           echo "### index.pck: $((size / 1048576)) MB" >> "$GITHUB_STEP_SUMMARY"
-          test "$size" -lt 629145600 || { echo "pck over 600 MB"; exit 1; }
+          test "$size" -lt 167772160 || { echo "pck over 160 MB: is new art imported lossless? run tools/set_import_lossy.py"; exit 1; }
 
       - uses: actions/configure-pages@v5
 

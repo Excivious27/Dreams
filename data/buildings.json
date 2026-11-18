@@ -437,7 +437,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2.",
     "price": 240,
     "art_missing": false
    },
@@ -453,7 +453,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 1610,
     "unlock": {
      "progress": 1,
@@ -476,7 +476,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 5340,
     "unlock": {
      "progress": 2,
@@ -499,7 +499,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 10890,
     "unlock": {
      "progress": 3,
@@ -568,7 +568,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Ore into bars.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Ore into bars.",
     "price": 370,
     "art_missing": false
    },
@@ -584,7 +584,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 2380,
     "unlock": {
      "progress": 1,
@@ -607,7 +607,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 7070,
     "unlock": {
      "progress": 2,
@@ -630,7 +630,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 14630,
     "unlock": {
      "progress": 3,
@@ -672,7 +672,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Anything you grow, given time.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Anything you grow, given time.",
     "price": 440,
     "art_missing": false
    },
@@ -688,7 +688,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 1970,
     "unlock": {
      "progress": 1,
@@ -711,7 +711,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 5000,
     "unlock": {
      "progress": 2,
@@ -734,7 +734,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 10500,
     "unlock": {
      "progress": 3,
@@ -804,7 +804,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Shards into refined crystal.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Shards into refined crystal.",
     "price": 290,
     "art_missing": false
    },
@@ -820,7 +820,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 3240,
     "unlock": {
      "progress": 1,
@@ -843,7 +843,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 7160,
     "unlock": {
      "progress": 2,
@@ -866,7 +866,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 15950,
     "unlock": {
      "progress": 3,
@@ -935,7 +935,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Planks from logs.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Planks from logs.",
     "price": 330,
     "art_missing": false
    },
@@ -951,7 +951,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 1900,
     "unlock": {
      "progress": 1,
@@ -974,7 +974,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 5710,
     "unlock": {
      "progress": 2,
@@ -998,7 +998,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 11130,
     "unlock": {
      "progress": 3,
@@ -1040,7 +1040,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Nails, tools, copper gear.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Nails, tools, copper gear.",
     "price": 660,
     "art_missing": false
    },
@@ -1056,7 +1056,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 3720,
     "unlock": {
      "progress": 1,
@@ -1079,7 +1079,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 6850,
     "unlock": {
      "progress": 2,
@@ -1102,7 +1102,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 19030,
     "unlock": {
      "progress": 3,
@@ -1144,7 +1144,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Cloth, yarn, rope.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Cloth, yarn, rope.",
     "price": 300,
     "art_missing": false
    },
@@ -1160,7 +1160,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 1660,
     "unlock": {
      "progress": 1,
@@ -1183,7 +1183,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 4830,
     "unlock": {
      "progress": 2,
@@ -1206,7 +1206,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 8600,
     "unlock": {
      "progress": 3,
@@ -1248,7 +1248,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Pelts into leather.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Pelts into leather.",
     "price": 300,
     "art_missing": false
    },
@@ -1264,7 +1264,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 1470,
     "unlock": {
      "progress": 1,
@@ -1287,7 +1287,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 3200,
     "unlock": {
      "progress": 2,
@@ -1310,7 +1310,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 8380,
     "unlock": {
      "progress": 3,
@@ -1352,7 +1352,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Also sets what the house kitchen can do.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Also sets what the house kitchen can do.",
     "price": 220,
     "art_missing": false
    },
@@ -1368,7 +1368,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 2590,
     "unlock": {
      "progress": 1,
@@ -1391,7 +1391,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 6060,
     "unlock": {
      "progress": 2,
@@ -1414,7 +1414,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 10060,
     "unlock": {
      "progress": 3,
@@ -1457,7 +1457,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Cheese, butter, jam, oil.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Cheese, butter, jam, oil.",
     "price": 390,
     "art_missing": false
    },
@@ -1473,7 +1473,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 2080,
     "unlock": {
      "progress": 1,
@@ -1496,7 +1496,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 3660,
     "unlock": {
      "progress": 2,
@@ -1519,7 +1519,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 10450,
     "unlock": {
      "progress": 3,
@@ -1561,7 +1561,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Bricks, pots, glass.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Bricks, pots, glass.",
     "price": 410,
     "art_missing": false
    },
@@ -1576,7 +1576,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 2120,
     "unlock": {
      "progress": 1,
@@ -1599,7 +1599,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 5930,
     "unlock": {
      "progress": 2,
@@ -1622,7 +1622,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 11380,
     "unlock": {
      "progress": 3,
@@ -1664,7 +1664,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Rings and charms.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Rings and charms.",
     "price": 590,
     "art_missing": false
    },
@@ -1680,7 +1680,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 2560,
     "unlock": {
      "progress": 1,
@@ -1703,7 +1703,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 6320,
     "unlock": {
      "progress": 2,
@@ -1726,7 +1726,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 11070,
     "unlock": {
      "progress": 3,
@@ -1769,7 +1769,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Remedies and red potions.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Remedies and red potions.",
     "price": 630,
     "art_missing": false
    },
@@ -1785,7 +1785,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Swift, luck and hearth brews.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Swift, luck and hearth brews.",
     "price": 2960,
     "unlock": {
      "progress": 1,
@@ -1808,7 +1808,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Growth elixir, stoneskin.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Growth elixir, stoneskin.",
     "price": 7220,
     "unlock": {
      "progress": 2,
@@ -1831,7 +1831,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Moonlight elixir.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Moonlight elixir.",
     "price": 13750,
     "unlock": {
      "progress": 3,
@@ -1874,7 +1874,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. A kick scooter.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. A kick scooter.",
     "price": 1650,
     "art_missing": false
    },
@@ -1890,7 +1890,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. A rowboat.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. A rowboat.",
     "price": 3770,
     "unlock": {
      "progress": 1,
@@ -1913,7 +1913,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Engines.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Engines.",
     "price": 9270,
     "unlock": {
      "progress": 2,
@@ -1936,7 +1936,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. A hot-air balloon.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. A hot-air balloon.",
     "price": 15950,
     "unlock": {
      "progress": 3,
@@ -1979,7 +1979,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Build rocket parts here.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Build rocket parts here.",
     "price": 5250,
     "art_missing": false,
     "unlock": {
@@ -2002,7 +2002,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. A hull on the pad.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. A hull on the pad.",
     "price": 16990,
     "unlock": {
      "progress": 2,
@@ -2025,7 +2025,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. LAUNCH: fly to the moon (1 fuel cell a trip).",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. LAUNCH: fly to the moon (1 fuel cell a trip).",
     "price": 27310,
     "unlock": {
      "progress": 3,
@@ -2049,7 +2049,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Also flies to the star station.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Also flies to the star station.",
     "price": 35400,
     "unlock": {
      "progress": 3,
@@ -2093,7 +2093,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Crude bills. Risky.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Crude bills. Risky.",
     "price": 1020,
     "art_missing": false
    },
@@ -2109,7 +2109,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Passable bills, forged permits.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Passable bills, forged permits.",
     "price": 4960,
     "unlock": {
      "progress": 1,
@@ -2132,7 +2132,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Fine bills.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Fine bills.",
     "price": 7880,
     "unlock": {
      "progress": 2,
@@ -2155,7 +2155,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Perfect bills.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Perfect bills.",
     "price": 14100,
     "unlock": {
      "progress": 3,
@@ -2199,7 +2199,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Knuckles, a fedora, rounds.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Knuckles, a fedora, rounds.",
     "price": 1080,
     "art_missing": false
    },
@@ -2215,7 +2215,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Crowbar, bat, six-shooter, suits.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Crowbar, bat, six-shooter, suits.",
     "price": 4190,
     "unlock": {
      "progress": 1,
@@ -2238,7 +2238,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Chrome, tommy gun, scattergun.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Chrome, tommy gun, scattergun.",
     "price": 7550,
     "unlock": {
      "progress": 2,
@@ -2261,7 +2261,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Neon and armor.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Neon and armor.",
     "price": 19470,
     "unlock": {
      "progress": 3,
@@ -2305,7 +2305,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Root beer. A front with a real queue.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Root beer. A front with a real queue.",
     "price": 1040,
     "art_missing": false
    },
@@ -2321,7 +2321,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3.",
     "price": 3680,
     "unlock": {
      "progress": 1,
@@ -2344,7 +2344,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4.",
     "price": 7380,
     "unlock": {
      "progress": 2,
@@ -2367,7 +2367,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 14060,
     "unlock": {
      "progress": 3,
@@ -2567,7 +2567,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. An icicle blade, snow goggles.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. An icicle blade, snow goggles.",
     "price": 1010,
     "art_missing": false
    },
@@ -2583,7 +2583,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Sabre, parka, cleats.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Sabre, parka, cleats.",
     "price": 5480,
     "unlock": {
      "progress": 1,
@@ -2606,7 +2606,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Prism lance, aurora gear.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Prism lance, aurora gear.",
     "price": 9230,
     "unlock": {
      "progress": 2,
@@ -2629,7 +2629,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. The Starheart Blade.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. The Starheart Blade.",
     "price": 19380,
     "unlock": {
      "progress": 3,
@@ -2673,7 +2673,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Litter boxes: Cat-topia's secret weapon.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Litter boxes: Cat-topia's secret weapon.",
     "price": 480,
     "art_missing": false
    },
@@ -2689,7 +2689,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Scented boxes, paw lanterns.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Scented boxes, paw lanterns.",
     "price": 3080,
     "unlock": {
      "progress": 1,
@@ -2712,7 +2712,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Mega boxes, heart sparks.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Mega boxes, heart sparks.",
     "price": 4250,
     "unlock": {
      "progress": 2,
@@ -2735,7 +2735,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 9730,
     "unlock": {
      "progress": 3,
@@ -2778,7 +2778,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Marshmallows on a stick.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Marshmallows on a stick.",
     "price": 290,
     "art_missing": false
    },
@@ -2794,7 +2794,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. S'mores and cocoa.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. S'mores and cocoa.",
     "price": 2320,
     "unlock": {
      "progress": 1,
@@ -2817,7 +2817,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Big Jim's stew.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Big Jim's stew.",
     "price": 5530,
     "unlock": {
      "progress": 2,
@@ -2840,7 +2840,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5.",
     "price": 10500,
     "unlock": {
      "progress": 3,
@@ -3125,7 +3125,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Circuit boards, data chips.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Circuit boards, data chips.",
     "price": 1160,
     "art_missing": true
    },
@@ -3141,7 +3141,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Scramblers, EMP charges.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Scramblers, EMP charges.",
     "price": 4080,
     "unlock": {
      "progress": 1,
@@ -3164,7 +3164,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Blackout charges.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Blackout charges.",
     "price": 6870,
     "unlock": {
      "progress": 2,
@@ -3187,7 +3187,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. The Ghost Ledger.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. The Ghost Ledger.",
     "price": 14020,
     "unlock": {
      "progress": 3,
@@ -3231,7 +3231,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Nothing yet: Doc wants better tools.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Nothing yet: Doc wants better tools.",
     "price": 1900,
     "art_missing": true
    },
@@ -3247,7 +3247,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Optics and reflex wires.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Optics and reflex wires.",
     "price": 3790,
     "unlock": {
      "progress": 1,
@@ -3270,7 +3270,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. A chrome arm, plating under the skin.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. A chrome arm, plating under the skin.",
     "price": 8320,
     "unlock": {
      "progress": 2,
@@ -3293,7 +3293,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. Mk II implants, the neural link.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. Mk II implants, the neural link.",
     "price": 12610,
     "unlock": {
      "progress": 3,
@@ -3337,7 +3337,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes to tier 2. Servos.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Servos.",
     "price": 1950,
     "art_missing": true
    },
@@ -3353,7 +3353,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "2 jobs at once, 15% faster, recipes to tier 3. Scrap bots and the spy drone.",
+    "desc": "2 jobs at once, 15% faster, recipes up to tier 3. Scrap bots and the spy drone.",
     "price": 5840,
     "unlock": {
      "progress": 1,
@@ -3376,7 +3376,7 @@
     },
     "permit": 0,
     "days": 1,
-    "desc": "3 jobs at once, 30% faster, recipes to tier 4. Guard bots.",
+    "desc": "3 jobs at once, 30% faster, recipes up to tier 4. Guard bots.",
     "price": 7910,
     "unlock": {
      "progress": 2,
@@ -3399,7 +3399,7 @@
     },
     "permit": 0,
     "days": 2,
-    "desc": "4 jobs at once, 45% faster, recipes to tier 5. A drone swarm.",
+    "desc": "4 jobs at once, 45% faster, recipes up to tier 5. A drone swarm.",
     "price": 16920,
     "unlock": {
      "progress": 3,

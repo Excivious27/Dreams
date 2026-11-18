@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/moon_boots.png-8866c13597f1b24f78fc9c72bc091f
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

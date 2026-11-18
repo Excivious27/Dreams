@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/hoe_iron.png-d5c2de1c8e5d819f15a0f8ba20a6c2f9
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

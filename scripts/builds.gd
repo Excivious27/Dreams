@@ -97,9 +97,10 @@ static func blocker(id: String) -> String:
 	var g := gate(id)
 	if g != "":
 		return g
-	for need in nd.get("cost", {}):
-		if GameState.count(str(need)) < int(nd["cost"][need]):
-			return "need %d %s" % [int(nd["cost"][need]), GameState.item_name(str(need))]
+	var cst := cost_of(nd)
+	for need in cst:
+		if GameState.count(str(need)) < int(cst[need]):
+			return "need %d %s" % [int(cst[need]), GameState.item_name(str(need))]
 	return ""
 
 
@@ -118,8 +119,9 @@ static func start(id: String, buy := false) -> String:
 			return "Can't build yet: it costs ◆%d (you have ◆%d)." % [p, int(GameState.run["crystals"])]
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - p
 	else:
-		for need in nd.get("cost", {}):
-			GameState.add_item(str(need), -int(nd["cost"][need]))
+		var cst := cost_of(nd)
+		for need in cst:
+			GameState.add_item(str(need), -int(cst[need]))
 	var days := int(nd.get("days", 0))
 	if days <= 0:
 		_finish(id, int(nd["tier"]))
@@ -192,3 +194,17 @@ static func permit_price(id: String) -> int:
 	if GameState.has_friend_perk("alder", 4):
 		price = int(price * 0.8)
 	return price
+
+
+## A tier's material cost after the Building perks (Carpenter, Mason, Master Builder).
+static func cost_of(nd: Dictionary) -> Dictionary:
+	var out := {}
+	var all_off := GameState.bonus("building", "build_discount")
+	for k in nd.get("cost", {}):
+		var off := all_off
+		if str(k) in ["wood", "plank", "hardwood", "hardwood_plank", "beam", "ironwood_beam", "veneer"]:
+			off += GameState.bonus("building", "wood_discount")
+		elif str(k) in ["stone", "brick", "tile", "clay"]:
+			off += GameState.bonus("building", "stone_discount")
+		out[k] = maxi(1, int(ceil(int(nd["cost"][k]) * (1.0 - minf(0.6, off)))))
+	return out

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/skill_combat.png-1fb1765f9b2e1bb72c36e1d82793
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

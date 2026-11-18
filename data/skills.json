@@ -143,7 +143,11 @@
      "requires": [
       "harvest_lord",
       "seed_saver"
-     ]
+     ],
+     "effect": {
+      "crop_value": 0.25,
+      "growth": 1.0
+     }
     }
    ]
   },

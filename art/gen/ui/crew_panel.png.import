@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/crew_panel.png-bea6a832fab6debc4c92747108eb9b
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

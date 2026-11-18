@@ -121,6 +121,13 @@ func build() -> void:
 
 
 func after_ready() -> void:
+	# Ore Sense (magic): ore and crystals glimmer through rock within 6 cells.
+	if GameState.bonus("magic", "ore_sense") > 0.0:
+		var t := Timer.new()
+		t.wait_time = 1.6
+		t.autostart = true
+		t.timeout.connect(_ore_glimmer)
+		add_child(t)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 2000 + floor_no + int(GameState.run["day"])
 	_place_props()
@@ -558,6 +565,12 @@ func _use_lift() -> void:
 	while f <= _deepest():
 		floors.append(f)
 		f += 5
+	# Deep Breath: the cart drops past the last checkpoint.
+	var extra := int(GameState.bonus("mining", "deeper"))
+	if extra > 0 and not floors.is_empty():
+		var deepest_ok := mini(_deepest(), int(floors[-1]) + extra)
+		if deepest_ok > int(floors[-1]):
+			floors.append(deepest_ok)
 	if floors.is_empty():
 		return
 	var labels: Array = []
@@ -607,3 +620,13 @@ func _meet_mer() -> void:
 		Companion.refuse("mer")
 		await say([{"who": "Mer", "text": "...Suit yourself. I'll be here. I'm always here."}])
 	player.frozen = false
+
+
+func _ore_glimmer() -> void:
+	if player == null:
+		return
+	var pc := world_to_cell(player.position)
+	for c in things:
+		var t: Dictionary = things[c]
+		if str(t.get("type", "")) == "rock" and str(t.get("ore", "stone")) != "stone" and (c - pc).length() <= 6.0:
+			fx("sparkle", cell_center(c) + Vector2(0, -8), 8.0, 0.5)

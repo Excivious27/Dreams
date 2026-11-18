@@ -150,6 +150,8 @@ static func on_morning(m: GameMap) -> void:
 
 static func play(m: GameMap, b: Dictionary) -> void:
 	GameState.run["flags"]["st_" + str(b["id"])] = true
+	# If the app is closed mid-scene, the beat plays again next time (see GameState.has_run).
+	GameState.run["story_pending"] = str(b["id"])
 	m.player.frozen = true
 	m.player.velocity = Vector2.ZERO
 	if b.has("chapter_title") and str(b.get("chapter_title", "")) != "" and bool(b.get("title_card", false)):
@@ -157,6 +159,8 @@ static func play(m: GameMap, b: Dictionary) -> void:
 	var lines: Array = _fill(b.get("lines", []))
 	await _play_lines(m, lines, str(b["id"]))
 	_apply(m, b.get("effects", {}))
+	GameState.run.erase("story_pending")
+	GameState.save()
 	m.player.frozen = false
 	Dialogue.block_input()
 

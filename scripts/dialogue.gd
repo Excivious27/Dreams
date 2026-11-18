@@ -279,15 +279,16 @@ func _process_input() -> void:
 		var n := _choices.get_child_count()
 		if n == 0:
 			return
-		# A tap meant to skip text must not also pick the first answer.
-		if Engine.get_process_frames() - _choice_opened < 12:
-			return
+		# A tap meant to skip text must not also pick an answer (moving is fine).
+		var settling := Engine.get_process_frames() - _choice_opened < 12
 		if Input.is_action_just_pressed("down"):
 			_choice_focus = (_choice_focus + 1) % n
 			_refresh_focus()
 		elif Input.is_action_just_pressed("up"):
 			_choice_focus = (_choice_focus - 1 + n) % n
 			_refresh_focus()
+		elif settling:
+			return
 		elif InputSetup.confirm_pressed():
 			(_choices.get_child(_choice_focus) as Button).pressed.emit()
 		elif Input.is_action_just_pressed("b"):

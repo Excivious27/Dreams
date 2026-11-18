@@ -51,10 +51,10 @@ static func talk(m: GameMap, id: String) -> bool:
 		for l in lines:
 			if l.has("text_gangsters"):
 				l["text"] = l["text_gangsters"]
-	GameState.run["flags"][_flag(id, n)] = true
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
 	m.hud.toast("%s ♥%d" % [name, n], Color(1, 0.8, 0.9))
 	await m.say(lines)
+	GameState.run["flags"][_flag(id, n)] = true
 	if n == 6:
 		var q := str(v.get("quest6", ""))
 		if q != "" and not GameState.has_quest(q):

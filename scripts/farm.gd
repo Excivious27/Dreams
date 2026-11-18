@@ -228,6 +228,9 @@ func _partner_scene() -> void:
 
 
 func after_ready() -> void:
+	for pk in GameState.run.get("placed", {}):
+		var xy := str(pk).split(",")
+		_show_placed(Vector2i(int(xy[0]), int(xy[1])), str(GameState.run["placed"][pk]))
 	if int(GameState.run["day"]) >= 3 and not GameState.run["flags"].has("partner_scene") and bool(GameState.run["intro_done"]):
 		GameState.run["flags"]["partner_scene"] = true
 		_partner_scene.call_deferred()
@@ -316,7 +319,23 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"plans":
 			_plans()
 			return true
+		"placed":
+			var pk := "%d,%d" % [c.x, c.y]
+			var kind := str(GameState.run.get("placed", {}).get(pk, ""))
+			(GameState.run["placed"] as Dictionary).erase(pk)
+			things.erase(c)
+			blocked.erase(c)
+			if props.has(c):
+				(props[c] as Node).queue_free()
+				props.erase(c)
+			if kind != "":
+				give(kind, 1)
+			hud.toast("Picked up the %s." % GameState.item_name(kind))
+			return true
 		"":
+			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and can_till(c) and not GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
+				_place_item(c, sel)
+				return true
 			# Open grass in front of you: farm it (hoe / seeds / water / harvest).
 			if _tillable(c) and _farm_tile(c, sel):
 				return true
@@ -416,7 +435,8 @@ func _plans() -> void:
 		var nd2 := Builds.next_def(id)
 		var parts: Array = []
 		for need in nd2.get("cost", {}):
-			parts.append("%d/%d %s" % [mini(GameState.count(str(need)), int(nd2["cost"][need])), int(nd2["cost"][need]), GameState.item_name(str(need))])
+			var c2 := Builds.cost_of(nd2)
+			parts.append("%d/%d %s" % [mini(GameState.count(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
 		var g2 := Builds.gate(id)
 		var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
 		if int(nd2.get("days", 0)) > 0:
@@ -513,6 +533,9 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		var n := 1 + (1 if randf() < 0.03 * GameState.skill_level("farming") + GameState.bonus("farming", "extra_crop") else 0)
 		if randf() < GameState.bonus("farming", "double_harvest"):
 			n *= 2
+		if randf() < GameState.bonus("farming", "star_chance"):
+			n += 2
+			hud.toast("★ Star-quality harvest!", Color(1, 0.95, 0.5))
 		give(str(cd["yield"]), n)
 		if GameState.log_grown(crop):
 			hud.toast("Field log: first %s! (%d of %d crops grown)" % [str(cd["name"]), (GameState.run["grown"] as Dictionary).size(), GameState.crops.size()], Color(0.8, 1, 0.7))
@@ -1206,3 +1229,22 @@ func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false
 	blocked[c] = true
 
 
+## Sprinklers and scarecrows: placed on open farm ground, picked up with USE.
+func _place_item(c: Vector2i, id: String) -> void:
+	GameState.run["placed"] = GameState.run.get("placed", {})
+	GameState.run["placed"]["%d,%d" % [c.x, c.y]] = id
+	GameState.add_item(id, -1)
+	_show_placed(c, id)
+	player.play_tool("hold")
+	fx("poof", cell_center(c) + Vector2(0, -4), 10.0, 0.4)
+	hud.toast("Placed the %s. USE it again to pick it up." % GameState.item_name(id), Color(0.8, 1, 0.8))
+
+
+func _show_placed(c: Vector2i, id: String) -> void:
+	set_thing(c.x, c.y, {"type": "placed", "kind": id, "hint": "A: pick up %s" % GameState.item_name(id)})
+	blocked[c] = true
+	var nm: String = {"sprinkler": "sprinkler_basic", "sprinkler_quality": "sprinkler_quality", "sprinkler_iridium": "sprinkler_iridium", "scarecrow": "scarecrow_classic"}.get(id, id)
+	if not Art.has("props", nm):
+		nm = "sprinkler" if id.begins_with("sprinkler") else "scarecrow"
+	if Art.has("props", nm):
+		prop("props", nm, c)

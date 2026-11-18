@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/tier_aura_3.png-91e1e3be3821330aa3f009314f07c
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

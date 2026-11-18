@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/pumpkin.png-1b39f46126e6d4d3b4b45ba3d4b63f7e.
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -87,6 +87,10 @@ static func has_run() -> bool:
 		if saved is Dictionary and not saved.is_empty():
 			run = saved
 			_migrate()
+			# A story scene that was cut off (app closed) plays again from the start.
+			if run.has("story_pending"):
+				run["flags"].erase("st_" + str(run["story_pending"]))
+				run.erase("story_pending")
 			board_restore()
 	return not run.is_empty()
 
@@ -347,6 +351,10 @@ static func saturation(id: String, n_more := 0) -> float:
 
 static func sell_price(id: String, n := 1) -> int:
 	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1)) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
+	if family(id) != "":
+		unit *= 1.0 + bonus("farming", "crop_value")
+	if str(items.get(id, {}).get("type", "")) == "fish":
+		unit *= 1.0 + bonus("fishing", "fish_value")
 	var total := 0.0
 	for i in n:
 		total += unit * saturation(id, i)
@@ -713,9 +721,14 @@ static func spend_for(task: String) -> bool:
 
 
 static func spend_mana(n: int) -> bool:
+	var floor_m := 10 if bonus("magic", "awakened") > 0.0 else 0
+	if int(run.get("mana", 0)) < n and int(run.get("mana", 0)) <= floor_m:
+		if floor_m > 0 and n <= floor_m:
+			return true  # Awakening: the last 10 never run dry
+		return false
 	if int(run.get("mana", 0)) < n:
 		return false
-	run["mana"] = int(run["mana"]) - n
+	run["mana"] = maxi(floor_m if floor_m > 0 else 0, int(run["mana"]) - n)
 	return true
 
 
@@ -775,6 +788,15 @@ static func roll_drops(table: Array, luck_bonus := 0) -> Dictionary:
 
 ## Pick one forage item for a region: Array of [item, weight, (skill, level)].
 static func roll_forage(region: String) -> String:
+	# Rare Finds: sometimes roll twice and keep the rarer find.
+	if randf() < bonus("foraging", "rare_forage") * 2.0:
+		var a := _roll_forage_once(region)
+		var b := _roll_forage_once(region)
+		return a if int(items.get(a, {}).get("tier", 1)) >= int(items.get(b, {}).get("tier", 1)) else b
+	return _roll_forage_once(region)
+
+
+static func _roll_forage_once(region: String) -> String:
 	var pool: Array = forage_data.get(region, forage_data.get("farm", []))
 	var total := 0.0
 	var ok: Array = []
@@ -1502,6 +1524,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["sellbox"] = {}
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
 	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
+	_sprinklers_water()
 	for key in run["farm"].keys():
 		var tile: Dictionary = run["farm"][key]
 		var crop_id := str(tile.get("crop", ""))
@@ -1549,6 +1572,8 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["acc"] = float(tile.get("acc", 0.0)) + rate
 				while float(tile["acc"]) >= 1.0:
 					tile["acc"] = float(tile["acc"]) - 1.0
+					tile["days"] = int(tile.get("days", 0)) + 1
+				if rate > 0.0 and randf() < bonus("farming", "extra_day"):
 					tile["days"] = int(tile.get("days", 0)) + 1
 				report["grown"] += 1
 			tile["watered"] = false
@@ -1766,3 +1791,29 @@ static func take_crops(n: int) -> void:
 		var take := mini(n, int(run["inventory"][id]))
 		add_item(str(id), -take)
 		n -= take
+
+
+## Placed sprinklers water the tiles around them before the night's growth.
+const SPRINKLER_REACH := {"sprinkler": 1, "sprinkler_quality": 2, "sprinkler_iridium": 3}
+static func _sprinklers_water() -> void:
+	var placed: Dictionary = run.get("placed", {})
+	for key in placed:
+		var kind := str(placed[key])
+		if not SPRINKLER_REACH.has(kind):
+			continue
+		var xy := str(key).split(",")
+		var cx := int(xy[0])
+		var cy := int(xy[1])
+		var r := int(SPRINKLER_REACH[kind])
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				if dx == 0 and dy == 0:
+					continue
+				var ok := false
+				match r:
+					1: ok = absi(dx) + absi(dy) == 1
+					2: ok = absi(dx) <= 1 and absi(dy) <= 1
+					_: ok = true
+				var k2 := "%d,%d" % [cx + dx, cy + dy]
+				if ok and run["farm"].has(k2):
+					run["farm"][k2]["watered"] = true

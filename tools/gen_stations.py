@@ -319,7 +319,7 @@ metal_gear = [r for r in old.values() if r['id'].split('_')[0] in ('copper', 'ir
 leather_gear = [r for r in old.values() if r['id'].startswith('leather_') and r['id'] != 'leather']
 books = {}
 books['workbench'] = keep('torch', 'chest', 'scarecrow', 'fertilizer', 'sprinkler', 'sprinkler_quality', 'crab_pot', 'bait', 'straw_hat', 'pup_treat') + [
- rc('fence_kit', 'Shingle Bundle', {'plank': 4, 'nails': 2}, 'shingles', 1, 6), rc('wheel', 'Cart Wheel', {'plank': 6, 'nails': 4, 'iron_bar': 1}, tier=2)]
+ rc('fence_kit', 'Shingle Bundle', {'plank': 4, 'nails': 2}, 'shingles', 1, 6), rc('wheel', 'Cart Wheel', {'plank': 6, 'nails': 4, 'iron_bar': 1}, tier=2), rc('sprinkler_iridium', 'Crystal Sprinkler', {'gold_bar': 1, 'iron_bar': 2, 'crystal_refined': 1}, tier=3)]
 books['sawmill'] = [rc('plank', 'Plank', {'wood': 2}, n=1), rc('charcoal', 'Charcoal (burns as coal)', {'wood': 6}, 'coal', 1, 2), rc('beam', 'Timber Beam', {'wood': 12}, tier=2),
  rc('hardwood_plank', 'Hardwood Plank', {'hardwood': 1}, tier=2), rc('veneer', 'Fine Veneer', {'hardwood_plank': 3, 'sap': 2}, tier=3), rc('ironwood_beam', 'Ironwood Beam', {'hardwood_plank': 6, 'beam': 2, 'dark': 1}, tier=4)]
 books['furnace'] = keep('copper_bar', 'iron_bar', 'steel_bar', 'silver_bar', 'gold_bar') + [rc('dark_bar', 'Shadowsteel Bar', {'dark': 5, 'coal': 4}, tier=4), rc('moon_bar', 'Moonsilver Bar', {'moon_shard': 2, 'silver_bar': 2}, tier=5)]
@@ -389,6 +389,12 @@ for k in ('smith', 'alchemy'): R.pop(k, None)
 R.update(books)
 json.dump(B, open(D + 'buildings.json', 'w'), indent=1, ensure_ascii=False)
 json.dump(R, open(D + 'recipes.json', 'w'), indent=1, ensure_ascii=False)
+for k, d in (('sprinkler', 'Place it on the farm (hold it, USE on open ground). Waters the 4 tiles beside it every morning. USE it again to pick it up.'),
+             ('sprinkler_quality', 'Waters the 8 tiles around it every morning.'),
+             ('sprinkler_iridium', 'Waters a 5x5 square around it every morning.'),
+             ('scarecrow', 'Place it on the farm. Keeps crows off crops within 4 tiles.')):
+    if k in I:
+        I[k]['type'] = 'placeable'; I[k]['desc'] = d
 json.dump(I, open(D + 'items.json', 'w'), indent=1, ensure_ascii=False)
 print('stations', sum(1 for v in B.values() if isinstance(v, dict) and v.get('thing') == 'station'), 'recipes', {k: len(v) for k, v in R.items() if isinstance(v, list)}, 'moved to workbench:', lost)
 print('art missing:', [(k, t['name']) for k, v in B.items() if isinstance(v, dict) for t in v.get('tiers', []) if t.get('art_missing')])

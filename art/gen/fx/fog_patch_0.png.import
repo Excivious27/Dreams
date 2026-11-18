@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/fog_patch_0.png-60b4fad954906dc911a5b9aa7ec89
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/pin2_docks.png-4434c2858d9ee5b391be1e006f5d6b
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

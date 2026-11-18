@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/r_quarry_56.png-be4cf674ef413c9538704c7065f53
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

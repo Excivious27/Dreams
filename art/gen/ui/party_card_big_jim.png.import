@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/party_card_big_jim.png-846e1711466f4ba3e36c49
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/miner_hat.png-db5c0e0fc179c8b4810b692d68cf8b3
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/rose_white2.png-4873422bf3c0ae127a1dba9d12f7d
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

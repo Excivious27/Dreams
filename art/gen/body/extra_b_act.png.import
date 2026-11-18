@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/extra_b_act.png-3ec21e1e6b2bab6cfca59c5f22c87
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

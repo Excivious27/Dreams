@@ -15,9 +15,9 @@ dest_files=["res://.godot/imported/berry.png-2a001d6e1e5a53af8b49f950310ce9ec.ct
 
 [params]
 
-compress/mode=0
+compress/mode=1
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

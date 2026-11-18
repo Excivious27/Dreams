@@ -190,7 +190,8 @@ func _process(delta: float) -> void:
 	# Pull / gust act on you while they last.
 	if _pull > 0.0:
 		_pull -= delta
-		_shove(p, (e.position - p.position).normalized() * float(d.get("pull_force", 42.0)) * delta)
+		if GameState.bonus("magic", "awakened") <= 0.0:
+			_shove(p, (e.position - p.position).normalized() * float(d.get("pull_force", 42.0)) * delta)
 		if _pull <= 0.0:
 			_ring(14, 80.0, 3.0)
 			e.map.shake(3.0)

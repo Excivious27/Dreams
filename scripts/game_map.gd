@@ -478,7 +478,10 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			Music.instance(get_tree()).sfx("chop")
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			thing["hp"] = int(thing.get("hp", 2)) - (1 + GameState.tool_tier("pickaxe") / 2)
+			var swing := 1 + GameState.tool_tier("pickaxe") / 2
+			if randf() < GameState.bonus("mining", "double_hit"):
+				swing *= 2
+			thing["hp"] = int(thing.get("hp", 2)) - swing
 			if int(thing["hp"]) <= 0:
 				xp("mining", 2)
 				_mark_cleared(c)
@@ -749,6 +752,8 @@ func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0, kind := "") 
 
 ## Items burst out of a spot, bounce, then fly to you and land in the bag.
 func pop_items(at: Vector2, id: String, n: int, give_it := true) -> void:
+	if id in ["shard", "crystal_shard"] and randf() < GameState.bonus("mining", "shard_bonus") * n:
+		n += 1
 	if give_it:
 		give(id, n)
 	var icon := Art.tex("items", "pop_" + id) if Art.has("items", "pop_" + id) else Art.tex("items", Hud.icon_for(id))
@@ -1475,10 +1480,20 @@ func free_spot_near(at: Vector2) -> Vector2:
 				if blocked.has(c) or is_water_cell(c):
 					continue
 				return at if r == 0 else cell_center(c)
-	# Nothing free near `at` (or `at` is off the map): pull it inside the map.
+	# Nothing free near `at` (or `at` is off the map): search from a point inside the map.
 	var cc := Vector2i(clampi(c0.x, 2, cols - 3), clampi(c0.y, 2, rows - 3))
 	if cc != c0:
-		return free_spot_near(cell_center(cc))
+		for r in range(0, 8):
+			for dy in range(-r, r + 1):
+				for dx in range(-r, r + 1):
+					if maxi(absi(dx), absi(dy)) != r:
+						continue
+					var c := cc + Vector2i(dx, dy)
+					if c.x < 1 or c.y < 1 or c.x >= cols - 1 or c.y >= rows - 1:
+						continue
+					if blocked.has(c) or is_water_cell(c):
+						continue
+					return cell_center(c)
 	return at
 
 
@@ -1491,6 +1506,9 @@ func on_enemy_died(e: Enemy) -> void:
 	hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(e.kind, {})
 	xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
+	var ke := int(GameState.bonus("combat", "kill_energy"))
+	if ke > 0:
+		GameState.run["energy"] = mini(int(GameState.run["max_energy"]), int(GameState.run["energy"]) + ke)
 	var table: Array = GameState.enemy_data.get("drops", {}).get(e.kind, [])
 	var got := GameState.roll_drops(table)
 	if e.tier > GameState.enemy_tier(e.kind) and randf() < 0.5 * GameState.tier_scale(e.kind, e.tier, "loot"):
@@ -1646,11 +1664,19 @@ func has_npc_at(_c: Vector2i) -> bool:
 var _job_check := 0
 
 
+var _autosave_t := 0.0
+
+
 func _process(delta: float) -> void:
 	if hitstop > 0.0:
 		hitstop -= delta
 	if get_tree().paused:
 		return
+	# Autosave every 90 s of play when nothing is mid-scene (phones kill tabs).
+	_autosave_t += minf(delta, 0.5)
+	if _autosave_t >= 90.0 and not _changing and not Dialogue.instance(get_tree()).active:
+		_autosave_t = 0.0
+		GameState.save()
 	# Clamp: a phone coming back from the background reports one huge frame;
 	# that must not fast-forward the clock by hours.
 	_time_acc += minf(delta, 0.25) * GameState.MINUTES_PER_SECOND
@@ -2568,7 +2594,7 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 	if caught:
 		var lvl := GameState.skill_level("fishing")
 		var reach := mini(pool.size(), 2 + lvl * 2 + (2 if night else 0))
-		var fish: String = pool[randi() % reach] if randf() > 0.08 else "boot"
+		var fish: String = pool[randi() % reach] if randf() > 0.08 * (1.0 - minf(1.0, GameState.bonus("fishing", "escape_less") * 2.0)) else "boot"
 		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
 			fish = pool[mini(pool.size() - 1, reach + 1)]
 		player.play_tool("reel")

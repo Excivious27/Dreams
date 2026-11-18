@@ -81,6 +81,12 @@ static func _all(station: String) -> Array:
 	for rc in GameState.recipes.get(book(station), []):
 		if rc.has("arc") and str(rc["arc"]) != str(GameState.run.get("arc", "")):
 			continue
+		var sd := int(GameState.bonus("mining", "smelt_discount"))
+		if book(station) == "furnace" and sd > 0:
+			rc = rc.duplicate(true)
+			for k in rc["need"]:
+				if str(k) in ["copper", "iron", "silver", "gold", "dark", "moon_shard"]:
+					rc["need"][k] = maxi(1, int(rc["need"][k]) - sd)
 		out.append(rc)
 	if book(station) == "keg":
 		out += _keg_recipes()
