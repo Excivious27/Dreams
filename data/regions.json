@@ -2246,9 +2246,9 @@
      26,
      21
     ],
-    "who": "Bookie",
-    "text": "Fights every night. Winner takes the pot. The President's boys fight here too, when they want to hurt somebody legally.",
-    "hint": "A: bookie",
+    "who": "Ring Announcer",
+    "text": "Sparring every night: pads, gloves, and a ref who blows a whistle at anything unfriendly. The President's boys spar here too, when they want to look tough.",
+    "hint": "A: ring announcer",
     "solid": false
    },
    {
@@ -6801,7 +6801,7 @@
     "scene": "beach",
     "spawn": [
      12,
-     20
+     22
     ],
     "facing": "down",
     "label": "▼ ferry home"
@@ -7078,7 +7078,7 @@
     "scene": "beach",
     "spawn": [
      12,
-     20
+     22
     ],
     "facing": "down",
     "label": "▼ ferry home"
@@ -7356,7 +7356,7 @@
     "scene": "beach",
     "spawn": [
      12,
-     20
+     22
     ],
     "facing": "down",
     "label": "▼ ferry home"
@@ -7645,7 +7645,7 @@
     "scene": "beach",
     "spawn": [
      12,
-     20
+     22
     ],
     "facing": "down",
     "label": "▼ ferry home"

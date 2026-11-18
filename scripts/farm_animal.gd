@@ -13,6 +13,7 @@ var _rng := RandomNumberGenerator.new()
 
 
 var baby := false
+var _at := Vector2i(-999, -999)  # the cell that holds this animal's interact thing
 
 
 func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> void:
@@ -79,14 +80,23 @@ func _process(delta: float) -> void:
 			_play("idle")
 	# Keep the interact thing under the animal.
 	var cell := map.world_to_cell(position - Vector2(0, 2))
+	if cell == _at:
+		return  # still on the same cell: nothing to move
 	if map.things.has(cell) and map.things[cell].get("animal", null) != self:
 		return  # never sit on (or erase) a crop, rock or another animal's spot
-	for c: Vector2i in map.things.keys():
-		var t: Dictionary = map.things[c]
-		if t.get("animal", null) == self and c != cell:
-			map.things.erase(c)
-			map.things[cell] = t
-			break
+	if map.things.has(_at) and map.things[_at].get("animal", null) == self:
+		var t: Dictionary = map.things[_at]
+		map.things.erase(_at)
+		map.things[cell] = t
+		_at = cell
+	else:
+		for c: Vector2i in map.things.keys():
+			var t2: Dictionary = map.things[c]
+			if t2.get("animal", null) == self:
+				map.things.erase(c)
+				map.things[cell] = t2
+				_at = cell
+				break
 
 
 func _play(a: String) -> void:

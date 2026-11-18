@@ -70,7 +70,8 @@ func _process(delta: float) -> void:
 	# Move: guard home; drift toward the player when no foe is near home.
 	var foe := map.nearest_enemy_to(position, 120.0)
 	var want := home
-	if foe == null and map.has_meta("follow_me"):
+	if map.has_meta("follow_me"):
+		# Following you means following you, fight or no fight.
 		want = map.player.position + Vector2(cos(get_instance_id() % 7), sin(get_instance_id() % 5)) * 22.0
 	if map.has_meta("rally_pos"):
 		var rp: Vector2 = map.get_meta("rally_pos")
@@ -104,7 +105,7 @@ func _process(delta: float) -> void:
 				_act_t = 0.5
 				_zap_to = foe.position + Vector2(0, -8)
 				_zap_t = 0.12
-				foe.provoke(map.player)
+				foe.provoke(self)
 				foe.hit(2 + GameState.progress_tier() + int(GameState.bonus("strategist", "helper_damage")), position, true, true)
 		"healer":
 			_cd = 3.0

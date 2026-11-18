@@ -292,6 +292,13 @@ func _draw_hud() -> void:
 		c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
 
 
+## Close stand-ins from art we already have, until each item gets its own icon.
+const ICON_NEAR := {"crystal_bloom": "cave_bloom", "strawberry_wine": "fruit_wine", "corn_ale": "harvest_ale", "berry_juice": "juice_berry",
+	"sprinkler_iridium": "sprinkler_quality", "old_collar": "collar_a", "brass_locket": "pendant_pearl", "knight_shard": "light_shard",
+	"manifest": "letter_sealed", "sand": "time_sand", "colony_light": "lantern_crystal", "coral_charm": "charm_tide", "tide_pearl": "rain_pearl",
+	"kelp_wrap": "sandwich", "ember_glass": "storm_glass", "starfish_snack": "starfish"}
+
+
 static func icon_for(id: String) -> String:
 	if GameState.TOOL_KINDS.has(id) or GameState.is_sword(id):
 		var ti := GameState.tool_icon(id)
@@ -299,6 +306,14 @@ static func icon_for(id: String) -> String:
 			return ti
 	if Art.has("items", id):
 		return id
+	var own := str(GameState.items.get(id, {}).get("icon", ""))
+	if own != "" and Art.has("items", own):
+		return own
+	var near := str(ICON_NEAR.get(id, ""))
+	if near != "" and Art.has("items", near):
+		return near
+	if id.begins_with("backpack_") and Art.has("items", "backpack"):
+		return "backpack"
 	if id.ends_with("_seed"):
 		return "seeds"
 	match id:

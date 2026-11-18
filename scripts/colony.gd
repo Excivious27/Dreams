@@ -89,6 +89,13 @@ static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 			GameState.add_arc_xp(15)
 			m.fx("levelup", m.cell_center(m.world_to_cell(m.player.position + m.player.facing_dir() * 16.0)) + Vector2(0, -12), 10.0, 0.6)
 			m.hud.toast("Beacon lit (%d/%d)." % [(s["beacons"] as Dictionary).size(), int(c.get("beacons", 3))], Color(0.7, 0.95, 1))
+			# Swap the lantern for its lit picture now, not on the next visit.
+			var bc := m.world_to_cell(m.player.position + m.player.facing_dir() * 16.0)
+			var on := "%s_beacon_on" % str(region_id).trim_prefix("colony_")
+			if m.props.has(bc) and Art.has("props", on):
+				var sp := m.props[bc] as Sprite2D
+				if sp:
+					sp.texture = Art.tex("props", on)
 			m.queue_redraw()
 			return true
 		"star_crystal":

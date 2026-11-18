@@ -68,14 +68,14 @@
     {
      "id": "rich_soil",
      "name": "Rich Soil",
-     "desc": "Watered crops have a 12% chance to grow an extra day (per rank)",
+     "desc": "Watered crops have an 8% chance to grow an extra day (per rank)",
      "ranks": 2,
      "tier": 2,
      "requires": [
       "fertilizer"
      ],
      "effect": {
-      "extra_day": 0.12
+      "extra_day": 0.08
      }
     },
     {
@@ -146,7 +146,7 @@
     {
      "id": "fields_of_gold",
      "name": "Fields of Gold",
-     "desc": "Every crop sells for 25% more and grows a day faster",
+     "desc": "Every crop sells for 25% more and grows 30% faster",
      "ranks": 1,
      "tier": 4,
      "requires": [
@@ -155,7 +155,7 @@
      ],
      "effect": {
       "crop_value": 0.25,
-      "growth": 1.0
+      "growth": 0.3
      }
     }
    ]
@@ -528,14 +528,14 @@
     {
      "id": "strong_line",
      "name": "Strong Line",
-     "desc": "Fish escape 20% less (per rank)",
+     "desc": "Fish escape 15% less (per rank)",
      "ranks": 2,
      "tier": 1,
      "requires": [
       "patience"
      ],
      "effect": {
-      "escape_less": 0.2
+      "escape_less": 0.15
      }
     },
     {
@@ -580,14 +580,14 @@
     {
      "id": "lucky_lure",
      "name": "Lucky Lure",
-     "desc": "Fish are bigger (x1.25 value per rank)",
+     "desc": "Fish sell for 18% more (per rank)",
      "ranks": 2,
      "tier": 3,
      "requires": [
       "strong_line"
      ],
      "effect": {
-      "fish_value": 0.25
+      "fish_value": 0.18
      }
     },
     {
@@ -808,11 +808,11 @@
     {
      "id": "trader",
      "name": "Trader",
-     "desc": "Sell box pays 5% more (per rank)",
+     "desc": "Sell box pays 4% more (per rank)",
      "ranks": 3,
      "tier": 0,
      "effect": {
-      "sell_bonus": 0.05
+      "sell_bonus": 0.04
      }
     },
     {

@@ -184,6 +184,7 @@ static func overnight(report: Dictionary) -> void:
 		var it: Dictionary = GameState.items.get(str(id), {})
 		var face := int(it.get("face", 0))
 		var rate := float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(it.get("tier", 1)), 0, 4)]) + GameState.bonus("hustle", "wash_bonus")
+		rate = minf(rate, 0.92)  # washing always costs something
 		for k in int(wash[id]):
 			if face > face_left:
 				back[id] = int(back.get(id, 0)) + 1

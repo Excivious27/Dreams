@@ -19,15 +19,16 @@ out["Item icons"] = miss
 miss = []
 for k, d in enemies.items():
     art = str(d.get("art", "grump" if k == "big_grump" else k))
-    grp = f"characters/{d['char']}" if d.get("char") else (f"characters/{k[6:]}" if k.startswith("thug_") else f"enemies/{art}")
+    grp = f"characters/{d['char']}" if d.get("char") else (f"characters/{k[5:]}" if k.startswith("thug_") else ("characters/president" if k == "president" else f"enemies/{art}"))
     if grp not in man:
         miss.append(f"{k} ({d.get('name', k)})")
 out["Enemy sprites"] = miss
 # portraits
 miss = []
 for k, d in npcs.items():
-    pg = f"portraits/{d.get('portrait', k)}"
-    if pg not in man or "neutral" not in man[pg]:
+    # The game also looks for their own painting: npc_<id>, npc_<id>_normal, npc_<id>_<season>.
+    cands = [f"portraits/{d.get('portrait', k)}", f"portraits/npc_{k}", f"portraits/npc_{k}_normal"]
+    if not any(pg in man and "neutral" in man[pg] for pg in cands):
         miss.append(f"{k} ({d['name']})")
 for k, d in crew.items():
     pg = f"portraits/{d.get('sprite', k)}"

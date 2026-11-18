@@ -1831,7 +1831,7 @@
       },
       {
        "who": "",
-       "text": "He isn't moving money. He's moving something that eats money, and people, and towns. You've seen the colour before. In the meadow, in the thing that was his man."
+       "text": "He isn't moving money. He's moving something that eats money, and luck, and whole towns. You've seen the colour before. In the meadow, in the thing that was his man."
       },
       {
        "who": "",
@@ -2144,7 +2144,7 @@
      "lines": [
       {
        "who": "",
-       "text": "Neon. Rain that's pink on one side of the street and blue on the other. Under the dragon sign, a man who sets things on fire for a living, and a crowd pretending not to watch him do it."
+       "text": "Neon. Rain that's pink on one side of the street and blue on the other. Under the dragon sign, a woman who sets things on fire for a living, and a crowd pretending not to watch him do it."
       },
       {
        "who": "",
@@ -2689,7 +2689,8 @@
       },
       {
        "who": "Sasha",
-       "text": "Move."
+       "text": "Move.",
+       "if_flag": "crew_sasha"
       },
       {
        "who": "",

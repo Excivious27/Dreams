@@ -491,7 +491,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		_soil.queue_redraw() if _soil else queue_redraw()
 		return true
 	var crop := str(tile.get("crop", ""))
-	if sel == "fertilizer" and GameState.count(sel) > 0 and GameState.held_tool() == "":
+	var ripe := crop != "" and GameState.crops.has(crop) and int(tile.get("days", 0)) >= int(GameState.crops[crop]["days"])
+	if sel == "fertilizer" and GameState.count(sel) > 0 and GameState.held_tool() == "" and not ripe:
 		if bool(tile.get("fert", false)):
 			hud.toast("Already fertilised.")
 			return true
@@ -516,8 +517,11 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 				hud.toast("%s is a %s crop. It won't grow in %s%s." % [GameState.item_name(str(pcd.get("yield", it["crop"]))), " or ".join(cs) if cs is Array else str(cs), se, " (try the greenhouse plot)" if Builds.is_built("greenhouse") else ""], Color(1, 0.8, 0.6))
 				Music.instance(get_tree()).sfx("nope")
 				return true
-			var left := GameState.DAYS_PER_SEASON - GameState.day_of_season() + 1
-			if str(pcd.get("season", "any")) != "any" and int(pcd["days"]) > left and not GameState.in_greenhouse(key):
+			# It grows on the nights from today to day 27; it dies at the season's turn.
+			var left := GameState.DAYS_PER_SEASON - GameState.day_of_season()
+			if bool(pcd.get("tree", false)) and not GameState.crop_fits_season(pcd, se):
+				hud.toast("Fruit trees only grow in their season: this one sleeps until then.", Color(1, 0.9, 0.6))
+			elif str(pcd.get("season", "any")) != "any" and int(pcd["days"]) > left and not GameState.in_greenhouse(key):
 				hud.toast("Careful: it needs %d days and only %d are left this season." % [int(pcd["days"]), left], Color(1, 0.9, 0.6))
 			if not GameState.spend_for("plant"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
@@ -1275,6 +1279,13 @@ func _draw_bed(ci: CanvasItem, name: String, c: Vector2i, farm: Dictionary) -> b
 
 func _draw_soil(ci: CanvasItem) -> void:
 	var farm: Dictionary = GameState.run["farm"]
+	# The greenhouse plot (crops ignore the season here): a low stone border marks it.
+	if Builds.is_built("greenhouse"):
+		var gp := GameState.GREENHOUSE_PLOT
+		var r := Rect2(Vector2(gp.position * TILE) + Vector2(1, 1), Vector2(gp.size * TILE) - Vector2(2, 2))
+		ci.draw_rect(r, Color(0.85, 0.95, 0.8, 0.10))
+		ci.draw_rect(r, Color(0.55, 0.5, 0.42, 0.9), false, 2.0)
+		ci.draw_rect(r.grow(-2), Color(0.85, 0.8, 0.7, 0.5), false, 1.0)
 	for key in farm:
 		var parts: PackedStringArray = str(key).split(",")
 		var c := Vector2i(int(parts[0]), int(parts[1]))
@@ -1290,7 +1301,9 @@ func _draw_soil(ci: CanvasItem) -> void:
 			ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(1, 1), Vector2(TILE - 2, TILE - 2)), Color(0, 0, 0, 0.16))
 		var crop := str(tile.get("crop", ""))
 		if crop != "":
-			var cd: Dictionary = GameState.crops[crop]
+			var cd: Dictionary = GameState.crops.get(crop, {})
+			if cd.is_empty():
+				continue
 			var frac := clampf(float(tile["days"]) / float(cd["days"]), 0.0, 1.0)
 			var stage := mini(4, int(frac * 5.0))
 			if frac >= 1.0:
@@ -1299,7 +1312,7 @@ func _draw_soil(ci: CanvasItem) -> void:
 			var t := Art.tex("crops", art)
 			if Art.has("crops", art + "_seed"):
 				# Prompts-09 crops: one sprite per stage (seed, sprout, young, growing, mature, ready).
-				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(5, int(frac * 6.0)) if frac < 1.0 else 5]
+				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(4, int(frac * 5.0)) if frac < 1.0 else 5]
 				var tex := Art.tex("crops", "%s_%s" % [art, st])
 				# Sized by the ripe plant so a full bed reads as rows, not a hedge.
 				var rt := Art.tex("crops", art + "_ready")

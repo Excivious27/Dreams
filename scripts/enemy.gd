@@ -10,7 +10,7 @@ var base_hp := 3        # HP before any scaling: size checks (bars, stun, boss) 
 var hp_scale := 1.0     # how much the home-tier scaling multiplied HP (allies hit harder by the same)
 ## Home-tier toughness: an enemy at home takes several swings at every stage.
 const PACK_KINDS := ["hill_wolf", "ash_hound"]
-const NATIVE_HP := [2.0, 3.0, 3.0, 3.5, 4.0, 5.0]
+const NATIVE_HP := [1.5, 2.2, 2.8, 3.5, 4.0, 5.0]
 const BOSS_HP := [2.0, 2.0, 2.5, 3.0, 3.0, 3.5]
 var speed := 34.0
 var damage := 1
@@ -158,7 +158,7 @@ func setup(k: String, tier_override := -1) -> void:
 	kb_resist = maxf(0.0, float(tw.get("kb_resist", 0.0)) - float(nw.get("kb_resist", 0.0)))
 	base_hp = hp
 	var bossy := ed.has("gift") or k.begins_with("marked_") or k.begins_with("lt_") or k.begins_with("cboss_") or k in ["big_grump", "president", "golem_king", "ruin_warden", "dark_crystal", "marsh_witch"]
-	hp_scale = float((BOSS_HP if bossy else NATIVE_HP)[clampi(native, 0, 5)])
+	hp_scale = float((BOSS_HP if bossy else NATIVE_HP)[clampi(mini(native, tier), 0, 5)])  # run below home: scale for the tier you meet it at
 	if Settings.easy():
 		hp_scale = maxf(1.0, hp_scale * 0.6)
 	hp = int(round(hp * hp_scale))
@@ -217,7 +217,7 @@ func _process(delta: float) -> void:
 		if _burn_t >= 1.0:
 			_burn_t = 0.0
 			set_meta("burn", int(get_meta("burn")) - 1)
-			hit(1, position, true, false, true)  # a tick: no knockback/stun
+			hit(maxi(1, int(round(hp_scale))), position, true, false, true)  # a tick: no knockback/stun; scales like a hit
 			if not _alive:
 				return
 			map.fx("sparkle", position + Vector2(0, -6), 14.0, 0.4)
@@ -383,7 +383,8 @@ func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) ->
 	if _gift:
 		var mult := _gift.vuln(from, magic)
 		if mult <= 0.0:
-			_gift.on_blocked()
+			if not tick:
+				_gift.on_blocked()  # a burn tick bouncing off isn't a swing to answer
 			return false
 		n = maxi(1, int(round(n * mult)))
 		_gift.on_hit(mult)

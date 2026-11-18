@@ -30,6 +30,9 @@ static func web_hook() -> void:
 
 
 static func _save_now_js(_args: Array) -> void:
+	var sc := (Engine.get_main_loop() as SceneTree).current_scene
+	if sc is GameMap and (sc as GameMap)._changing:
+		return  # mid door: the next map saves itself once it's in
 	if not GameState.run.is_empty():
 		GameState.save()
 
@@ -112,7 +115,7 @@ static func flush() -> void:
 	if _blocked:
 		return
 	_cache["_saved_at"] = int(_cache.get("_saved_at", 0)) + 1
-	var txt := JSON.stringify(_cache)
+	var txt := JSON.stringify(_cache, "", false)  # keep key order (sorted bags and chests)
 	if OS.has_feature("web"):
 		var ls: Variant = JavaScriptBridge.get_interface("localStorage")
 		if ls:

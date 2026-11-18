@@ -50,7 +50,7 @@ func _process(delta: float) -> void:
 			_cd = rate
 			_zap_to = e.position + Vector2(0, -8)
 			_zap_t = 0.12
-			e.provoke(map.player)
+			e.provoke(self)
 			e.hit(dmg, position, true, true)
 			if Art.has("fx", "cy_bot_zap"):
 				map.fx("cy_bot_zap", e.position + Vector2(0, -8), 16.0, 0.35)

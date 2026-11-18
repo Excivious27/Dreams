@@ -44,6 +44,8 @@ static func theme_for(f: int) -> Dictionary:
 
 ## How much you've "tried" this floor: rocks broken count 1, kills count 3.
 ## Past the threshold the guardian shows up; beat it and the way down opens.
+var _slam_redraw := false
+
 func _tried() -> int:
 	return int(GameState.run.get("mine_tried", {}).get("%d_%d" % [floor_no, int(GameState.run["day"])], 0))
 
@@ -159,6 +161,14 @@ func build() -> void:
 			var c: Vector2i = wl[rng2.randi() % wl.size()]
 			if not things[c].has("crystal"):
 				things[c] = {"type": "water", "crystal": true, "key": "grotto_%d" % placed, "hint": "A: dive for the crystal"}
+				# A crystal glinting under the water, so you can find them.
+				if not GameState.run["flags"].has("grotto_%d" % placed):
+					var gnm := "grotto_crystal_a" if placed % 2 == 0 else "grotto_crystal_b"
+					if Art.has("props", gnm):
+						var gs := prop("props", gnm, c, 0, 0.0, false, 0.28)
+						if gs:
+							gs.modulate = Color(0.75, 0.9, 1.0, 0.75)
+							gs.set_meta("grotto_glint", true)
 				placed += 1
 				if placed >= 6:
 					break
@@ -487,6 +497,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					return true
 				GameState.run["flags"][str(thing["key"])] = true
 				thing.erase("crystal")
+				if props.has(c) and (props[c] as Node).has_meta("grotto_glint"):
+					(props[c] as Node).queue_free()
+					props.erase(c)
 				thing["hint"] = ""
 				player.play_tool("hold")
 				fx("splash", player.position, 12.0, 0.6)
@@ -593,6 +606,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				things.erase(c)
 				blocked.erase(c)
 				hard.erase(c)
+				var drawn := not props.has(c)  # rocks without a sprite are part of the floor drawing
 				if props.has(c):
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
@@ -607,7 +621,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					var gems: Array = [["amethyst"], ["amethyst", "ruby"], ["ruby", "emerald"], ["emerald", "sapphire"], ["sapphire", "ruby"], ["sapphire", "emerald"]][clampi(mine_tier, 0, 5)]
 					pop_items(cell_center(c), str(gems[randi() % gems.size()]), 1)
 				xp("mining", (2 if ore == "stone" else 5) + mine_tier)
-				queue_redraw()
+				if drawn:
+					queue_redraw()
 				_try_more(1)
 			return true
 	return false
@@ -951,11 +966,15 @@ func _process(delta: float) -> void:
 						if props.has(cc):
 							(props[cc] as Node).queue_free()
 							props.erase(cc)
+						else:
+							_slam_redraw = true
 						broke += 1
 			if broke > 0:
 				shake(2.5)
 				fx("boss_shockwave" if Art.has("fx", "boss_shockwave") else "poof", _guardian.position, 12.0, 0.5)
-				queue_redraw()
+				if _slam_redraw:
+					_slam_redraw = false
+					queue_redraw()
 
 
 func _deepest() -> int:
@@ -1003,7 +1022,8 @@ func _summon_guardian() -> void:
 	if not is_inside_tree():
 		return
 	# Never weaker than its native tier; floor 1's golem is still a golem.
-	_guardian = spawn_enemy(kind, at, maxi(mine_tier, GameState.enemy_tier(kind)))
+	# The first floors' keeper meets you at the floor's own tier; deeper ones never go below their home tier.
+	_guardian = spawn_enemy(kind, at, mine_tier if floor_no <= 5 else maxi(mine_tier, GameState.enemy_tier(kind)))
 	_guardian.is_guardian = true
 	_depth_scale(_guardian)
 	_guardian.set_meta("boss_name", "Keeper of floor %d" % floor_no)
@@ -1036,7 +1056,6 @@ func _open_way() -> void:
 		props.erase(_ladder)
 	shake(4.0)
 	fx("rock_m_break", cell_center(_ladder), 14.0, 0.8)
-	queue_redraw()
 	queue_redraw()
 	hud.toast("The rock splits. A shaft leads down!", Color(0.8, 1.0, 0.8))
 	GameState.add_hint("The way down to floor %d is open." % (floor_no + 1))

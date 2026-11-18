@@ -784,7 +784,7 @@ func _place_colony() -> void:
 func _colony_village(cid: String, at: Vector2i, done: bool) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(region_id)
-	var spots := [Vector2i(-6, -5), Vector2i(0, -7), Vector2i(6, -5)]
+	var spots := [Vector2i(-8, -3), Vector2i(0, -7), Vector2i(6, -5)]  # left house clear of the plateau ramp
 	for i in 3:
 		var hn := "%s_house_%d" % [cid, i + 1]
 		var hc: Vector2i = at + spots[i]

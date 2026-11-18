@@ -16,7 +16,7 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return Vector2(2 * TILE, 10 * TILE)
+	return Vector2(2 * TILE, 10 * TILE) + offset()
 
 
 func build() -> void:
@@ -58,7 +58,7 @@ func after_ready() -> void:
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 42, 6, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 43, 20, avoid)
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 44, 12, ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "bee", "bee", "rabbit", "sparrow", "deer"])
-	var n := 4 if not GameState.quest_done("clear_meadow") else 2
+	var n := 3 if not GameState.quest_done("clear_meadow") else 2
 	for i in n:
 		_spawn_one()
 	if not GameState.run["flags"].has("meadow_seen"):
@@ -129,9 +129,10 @@ func on_enemy_died(e: Enemy) -> void:
 		if enemies.size() < 2 and randf() < 0.5:
 			_spawn_one()
 		return
-	if int(GameState.run["kills"]) >= 5 and _boss == null and not _boss_pending:
+	GameState.run["meadow_kills"] = int(GameState.run.get("meadow_kills", 0)) + 1
+	if int(GameState.run["meadow_kills"]) >= 5 and _boss == null and not _boss_pending:
 		_summon_boss()
-	elif enemies.size() < 3:
+	elif enemies.size() < 2:
 		_spawn_one()
 
 
@@ -159,6 +160,8 @@ func _summon_boss() -> void:
 		])
 	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", Vector2(18 * TILE, 12 * TILE), -1 if GameState.is_penguins() else 1)
 	_boss.set_meta("boss_name", "Big Grump" if GameState.is_penguins() else "The President's Man")
+	if not GameState.is_penguins():
+		_boss.damage = mini(_boss.damage, 2)  # the first boss of the arc hits like the penguin one
 	boss_card("big_grump" if GameState.is_penguins() else "thug_brute", "Big Grump" if GameState.is_penguins() else "The President's Man")
 	Music.instance(get_tree()).play("boss")
 	player.frozen = false

@@ -287,9 +287,15 @@ static func overnight(report: Dictionary) -> void:
 	var cj: Dictionary = GameState.run.get("crew_jobs", {})
 	var mult := (1.5 if has("hq_workshop") else 1.0) * (1.0 + GameState.bonus("hustle", "job_pay") + GameState.bonus("leadership", "job_pay"))
 	var lines: Array = []
+	var taken := {}
 	for cid in cj:
 		if not Crew.recruited(str(cid)):
 			continue
+		# One crew member per job: a second on the same job just gets in the way.
+		if taken.has(str(cj[cid])):
+			lines.append("%s had nothing to do: someone already runs that job." % str(Crew.members().get(str(cid), {}).get("name", cid)))
+			continue
+		taken[str(cj[cid])] = true
 		var j: Dictionary = jobs.get(str(cj[cid]), {})
 		GameState.add_xp("leadership", 3)
 		for it in j.get("give", {}):

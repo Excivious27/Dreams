@@ -26,22 +26,13 @@ Everything below shows a code-drawn stand-in today.
 - backpack_2
 - backpack_3
 
-## Enemy sprites (7)
+## Enemy sprites (0)
 
-- thug_cyber (thug_cyber)
-- thug_brute (thug_brute)
-- thug_flame (thug_flame)
-- thug_speedster (thug_speedster)
-- thug_gambler (thug_gambler)
-- thug_enforcer (thug_enforcer)
-- president (The President)
+- none
 
-## Dialogue portraits (4)
+## Dialogue portraits (0)
 
-- pip (Pip)
-- wren_jr (Wren jr)
-- tobin (Tobin)
-- mabel (Mabel)
+- none
 
 ## Stations and buildings (0)
 

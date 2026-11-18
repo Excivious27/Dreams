@@ -16,7 +16,7 @@ static func data() -> Dictionary:
 		for id in mem:
 			if not GameState.npcs.has(id):
 				var mdef: Dictionary = mem[id]
-				GameState.npcs[id] = {"name": str(mdef["name"]), "sprite": str(mdef.get("sprite", "")), "portrait": str(mdef.get("sprite", "")) if Art.has("portraits/" + str(mdef.get("sprite", "")), "neutral") else "gambler", "role": str(mdef.get("role", "")), "routine": [], "likes": ["thug_cash", "wine", "coffee"], "dislikes": ["turnip"]}
+				GameState.npcs[id] = {"name": str(mdef["name"]), "sprite": str(mdef.get("sprite", "")), "portrait": str(mdef.get("sprite", "")) if Art.has("portraits/" + str(mdef.get("sprite", "")), "neutral") else "gambler", "role": str(mdef.get("role", "")), "routine": [], "likes": ["thug_cash", "root_beer", "coffee"], "dislikes": ["turnip"]}
 	return _data
 
 
@@ -82,7 +82,7 @@ static func place(m: GameMap) -> void:
 			continue
 		# Find a free cell near the wanted one.
 		var c := at
-		for r in 4:
+		for r in 10:
 			var found := false
 			for dy in range(-r, r + 1):
 				for dx in range(-r, r + 1):

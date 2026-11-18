@@ -76,7 +76,7 @@ static func offers(shop: String) -> Array:
 		"old_moss":
 			return ["glowcap", "slime_goo", "herb_remedy"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid in ["mushroom", "truffle", "morel", "glowcap", "glowcap2", "glowcap3", "saffron", "aloe", "wasabi", "ginger", "turmeric", "vanilla", "tea", "coffee", "cacao", "watercress", "water_chestnut", "sesame", "chia"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 2)
 		"granite":
-			return ["stone", "brick", "coal", "copper", "iron", "dynamite"]
+			return ["stone", "brick", "coal", "copper", "iron", "glass", "dynamite"]
 		"sel":
 			# Seeds from the old places: wonders once you've gone far enough to grow them.
 			return ["rune_tablet", "old_coin", "book"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) >= 4 and int(cd.get("tier", 1)) <= GameState.progress_tier() + 1 and not cid.begins_with("crystal"), 3, 3)

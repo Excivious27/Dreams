@@ -15,7 +15,7 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return Vector2(32 * TILE, 3 * TILE)
+	return Vector2(32 * TILE, 3 * TILE) + offset()
 
 
 func build() -> void:

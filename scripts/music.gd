@@ -109,9 +109,17 @@ func _load_sfx(name: String) -> AudioStream:
 
 
 ## Play a sound effect. If it doesn't exist yet, `fallback` plays instead.
+var _last_sfx := {}
+
+
 func sfx(name: String, fallback := "") -> void:
 	if _muted or _sfx.is_empty():
 		return
+	# The same sound twice within 70 ms is one sound (a burst of pickups mustn't eat every voice).
+	var now := Time.get_ticks_msec()
+	if now - int(_last_sfx.get(name, -1000)) < 70:
+		return
+	_last_sfx[name] = now
 	var st := _load_sfx(name)
 	if st == null and fallback != "":
 		st = _load_sfx(fallback)

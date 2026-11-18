@@ -110690,7 +110690,7 @@
   "node_combat_combat_0_9": {
    "file": "ui/node_combat_combat_0_9.png",
    "h": 48,
-   "w": 44
+   "w": 43
   },
   "node_combat_combat_1_0": {
    "file": "ui/node_combat_combat_1_0.png",
@@ -110822,6 +110822,31 @@
    "h": 48,
    "w": 43
   },
+  "node_combat_combat_u_crystal_ward": {
+   "file": "ui/node_combat_combat_u_crystal_ward.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_combat_combat_u_fleet_foot": {
+   "file": "ui/node_combat_combat_u_fleet_foot.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_combat_combat_u_honed_blade": {
+   "file": "ui/node_combat_combat_u_honed_blade.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_combat_combat_u_killing_edge": {
+   "file": "ui/node_combat_combat_u_killing_edge.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_combat_combat_u_tanner_s_blueprint": {
+   "file": "ui/node_combat_combat_u_tanner_s_blueprint.png",
+   "h": 48,
+   "w": 43
+  },
   "node_combat_critical_eye": {
    "file": "ui/node_combat_critical_eye.png",
    "h": 48,
@@ -110900,12 +110925,12 @@
   "node_farming_farming_0_5": {
    "file": "ui/node_farming_farming_0_5.png",
    "h": 48,
-   "w": 43
+   "w": 44
   },
   "node_farming_farming_0_7": {
    "file": "ui/node_farming_farming_0_7.png",
    "h": 48,
-   "w": 44
+   "w": 43
   },
   "node_farming_farming_0_9": {
    "file": "ui/node_farming_farming_0_9.png",
@@ -110960,12 +110985,12 @@
   "node_farming_farming_2_5": {
    "file": "ui/node_farming_farming_2_5.png",
    "h": 48,
-   "w": 42
+   "w": 43
   },
   "node_farming_farming_2_6": {
    "file": "ui/node_farming_farming_2_6.png",
    "h": 48,
-   "w": 43
+   "w": 42
   },
   "node_farming_farming_2_7": {
    "file": "ui/node_farming_farming_2_7.png",
@@ -111039,6 +111064,31 @@
   },
   "node_farming_farming_u_3_8": {
    "file": "ui/node_farming_farming_u_3_8.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_farming_farming_u_bountiful_touch": {
+   "file": "ui/node_farming_farming_u_bountiful_touch.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_farming_farming_u_brewer_s_blueprint": {
+   "file": "ui/node_farming_farming_u_brewer_s_blueprint.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_farming_farming_u_field_runner": {
+   "file": "ui/node_farming_farming_u_field_runner.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_farming_farming_u_press_blueprint": {
+   "file": "ui/node_farming_farming_u_press_blueprint.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_farming_farming_u_rain_dance": {
+   "file": "ui/node_farming_farming_u_rain_dance.png",
    "h": 48,
    "w": 44
   },
@@ -111262,6 +111312,21 @@
    "h": 48,
    "w": 44
   },
+  "node_fishing_fishing_u_pond_blueprint": {
+   "file": "ui/node_fishing_fishing_u_pond_blueprint.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_fishing_fishing_u_still_waters": {
+   "file": "ui/node_fishing_fishing_u_still_waters.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_fishing_fishing_u_strong_strokes": {
+   "file": "ui/node_fishing_fishing_u_strong_strokes.png",
+   "h": 48,
+   "w": 44
+  },
   "node_fishing_lucky_lure": {
    "file": "ui/node_fishing_lucky_lure.png",
    "h": 48,
@@ -111340,7 +111405,7 @@
   "node_foraging_foraging_0_4": {
    "file": "ui/node_foraging_foraging_0_4.png",
    "h": 48,
-   "w": 44
+   "w": 43
   },
   "node_foraging_foraging_0_5": {
    "file": "ui/node_foraging_foraging_0_5.png",
@@ -111350,7 +111415,7 @@
   "node_foraging_foraging_0_7": {
    "file": "ui/node_foraging_foraging_0_7.png",
    "h": 48,
-   "w": 43
+   "w": 44
   },
   "node_foraging_foraging_0_8": {
    "file": "ui/node_foraging_foraging_0_8.png",
@@ -111360,7 +111425,7 @@
   "node_foraging_foraging_0_9": {
    "file": "ui/node_foraging_foraging_0_9.png",
    "h": 48,
-   "w": 44
+   "w": 43
   },
   "node_foraging_foraging_1_1": {
    "file": "ui/node_foraging_foraging_1_1.png",
@@ -111489,6 +111554,31 @@
   },
   "node_foraging_foraging_u_2_7": {
    "file": "ui/node_foraging_foraging_u_2_7.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_foraging_foraging_u_loom_blueprint": {
+   "file": "ui/node_foraging_foraging_u_loom_blueprint.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_foraging_foraging_u_lumberjack_s_might": {
+   "file": "ui/node_foraging_foraging_u_lumberjack_s_might.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_foraging_foraging_u_sharp_edge": {
+   "file": "ui/node_foraging_foraging_u_sharp_edge.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_foraging_foraging_u_trailblazer": {
+   "file": "ui/node_foraging_foraging_u_trailblazer.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_foraging_foraging_u_wind_at_your_back": {
+   "file": "ui/node_foraging_foraging_u_wind_at_your_back.png",
    "h": 48,
    "w": 43
   },
@@ -111635,12 +111725,12 @@
   "node_mining_mining_0_5": {
    "file": "ui/node_mining_mining_0_5.png",
    "h": 48,
-   "w": 43
+   "w": 44
   },
   "node_mining_mining_0_6": {
    "file": "ui/node_mining_mining_0_6.png",
    "h": 48,
-   "w": 44
+   "w": 43
   },
   "node_mining_mining_0_7": {
    "file": "ui/node_mining_mining_0_7.png",
@@ -111774,6 +111864,26 @@
   },
   "node_mining_mining_u_2_7": {
    "file": "ui/node_mining_mining_u_2_7.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_mining_mining_u_heavy_swing": {
+   "file": "ui/node_mining_mining_u_heavy_swing.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_mining_mining_u_kiln_blueprint": {
+   "file": "ui/node_mining_mining_u_kiln_blueprint.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_mining_mining_u_seismic_swing": {
+   "file": "ui/node_mining_mining_u_seismic_swing.png",
+   "h": 48,
+   "w": 44
+  },
+  "node_mining_mining_u_tunnel_legs": {
+   "file": "ui/node_mining_mining_u_tunnel_legs.png",
    "h": 48,
    "w": 43
   },

@@ -6,7 +6,8 @@ extends SceneTree
 var fails := 0
 const SCENES := ["farm", "town", "forest", "lake", "meadow", "crystal_meadow", "mine", "mountain", "beach", "moon",
 	"countryside", "docks", "hideout", "neon", "uptown", "underground", "highlands", "jungle", "marsh",
-	"orchard_hills", "quarry", "riverlands", "ruins", "sky", "station", "wastes", "house"]
+	"orchard_hills", "quarry", "riverlands", "ruins", "sky", "station", "wastes", "house",
+	"bf_dockside", "bf_frostfield", "bf_rail_yards", "bf_shattered_vale", "colony_coral", "colony_ember", "colony_ice", "colony_kelp", "hollow_heart"]
 
 func _initialize() -> void:
 	_run.call_deferred()

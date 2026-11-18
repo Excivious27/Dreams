@@ -258,7 +258,7 @@
  "sprinkler": {
   "name": "Sprinkler",
   "type": "placeable",
-  "value": 300,
+  "value": 180,
   "rarity": "common",
   "tier": 1,
   "desc": "Place it on the farm (hold it, USE on open ground). Waters the 4 tiles beside it every morning. USE it again to pick it up."
@@ -1003,7 +1003,7 @@
  "sprinkler_quality": {
   "name": "Quality Sprinkler",
   "type": "placeable",
-  "value": 450,
+  "value": 300,
   "rarity": "rare",
   "tier": 3,
   "desc": "Waters the 8 tiles around it every morning."

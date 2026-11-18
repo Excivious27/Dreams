@@ -101,6 +101,26 @@ static func has_run() -> bool:
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
 static func _migrate() -> void:
+	# The toolbar always has 12 slots.
+	if run.has("toolbar") and run["toolbar"] is Array:
+		while (run["toolbar"] as Array).size() < 12:
+			(run["toolbar"] as Array).append("")
+	if run.has("look") and run["look"] == null:
+		run.erase("look")
+	# Skill nodes that no longer exist (the trees were rebuilt): drop them, which refunds the points.
+	if run.has("skills"):
+		for sk in run["skills"]:
+			var have: Dictionary = (run["skills"][sk] as Dictionary).get("nodes", {}) if run["skills"][sk] is Dictionary else {}
+			if have.is_empty() or not skills_data.has(sk):
+				continue
+			var ids := {}
+			for n in skills_data[sk].get("nodes", []):
+				ids[str(n["id"])] = int(n.get("ranks", 1))
+			for nid in have.keys():
+				if not ids.has(str(nid)):
+					have.erase(nid)
+				elif int(have[nid]) > int(ids[str(nid)]):
+					have[nid] = ids[str(nid)]
 	if run.has("look") and run["look"] is Dictionary and run["look"].has("body") and not run["look"].has("outfit"):
 		run["look"]["outfit"] = "outfit_neon" if str(run.get("arc", "")) == "gangsters" else "outfit_farmer"
 	var defaults := {
@@ -453,7 +473,7 @@ static func buy_price(id: String) -> int:
 					m *= 0.85  # off-season seed is a little cheaper, and a gamble
 	# Never cheaper than you could sell it back for (with every perk): shops are
 	# not a money machine.
-	var best_sell := base * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1)) * (1.0 + 0.05 * Crew.perk_level("sell_bonus")) * 1.1
+	var best_sell := base * sell_multiplier() * (1.0 + minf(0.20, 0.02 * (skill_level("bartering") - 1))) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
 	m *= 1.0 - 0.05 * Crew.perk_level("shop_discount") if Crew.perk_level("shop_discount") < 3 else 0.9  # Specs knows the till codes
 	return maxi(1, int(ceil(maxf(base * m, best_sell * 1.1))))
 
@@ -511,7 +531,8 @@ static var overflow_note := ""
 static func add_item(id: String, n: int = 1, force := false) -> void:
 	var inv: Dictionary = run["inventory"]
 	# Bag full: a new kind of item goes to the farm chest instead of vanishing.
-	if n > 0 and not force and not inv.has(id) and bag_free() <= 0 and not str(items.get(id, {}).get("type", "")) in ["tool", "key", "quest"] and run.has("toolbar"):
+	if n > 0 and not force and not inv.has(id) and bag_free() <= 0 and not str(items.get(id, {}).get("type", "")) in ["tool", "key", "quest"] and run.has("toolbar") \
+			and Builds.is_built("chest") and Storage.room_for("chest", id) >= n:
 		var b := Storage.box("chest")
 		b["items"][id] = int(b["items"].get(id, 0)) + n
 		_mark_seen(id)
@@ -571,6 +592,11 @@ static func add_quality(id: String, q: String, n: int) -> void:
 		run["quality"] = {}
 	var d: Dictionary = run["quality"].get(id, {})
 	d[q] = int(d.get(q, 0)) + n
+	# Never more starred items than you hold (an overflowed crop keeps no stars on the bag).
+	var over := int(d.get("g", 0)) + int(d.get("s", 0)) - count(id)
+	if over > 0:
+		var cut := mini(over, int(d.get(q, 0)))
+		d[q] = int(d[q]) - cut
 	run["quality"][id] = d
 
 
@@ -769,7 +795,7 @@ static var _unlock_cache := {}
 static func _unlocks() -> Dictionary:
 	if _unlock_cache.is_empty():
 		_unlock_cache = {"blueprint": {}, "spell": {}}
-		var S: Dictionary = load_json("res://data/skills.json").get("skills", {})
+		var S: Dictionary = skills_data
 		for sk in S:
 			for n in S[sk].get("nodes", []):
 				var e: Dictionary = n.get("effect", {})
@@ -793,14 +819,14 @@ static func spell_from_tree(spell: String) -> bool:
 
 
 static func skill_name(sk: String) -> String:
-	return str(load_json("res://data/skills.json").get("skills", {}).get(sk, {}).get("name", sk.capitalize()))
+	return str(skills_data.get(sk, {}).get("name", sk.capitalize()))
 
 
 ## Walking speed from every tree's movement nodes (capped).
 static func move_bonus() -> float:
 	var t := 0.0
-	for sk in ["farming", "mining", "foraging", "fishing", "combat", "building", "pup"]:
-		t += bonus(sk, "move_speed")
+	for sk in skills_data.keys():
+		t += bonus(str(sk), "move_speed")
 	return minf(t, 0.25)
 
 
@@ -876,7 +902,8 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.6, "interest": 0.05,
 	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0,
 	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.5, "extra_day": 0.25, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
-	"animal_yield": 1.0, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0}
+	"animal_yield": 1.0, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
+	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0}
 
 
 static var _bonus_cache := {}
@@ -1014,8 +1041,15 @@ static func _apply_max_stats() -> void:
 		if skill_in_arc(str(sk)):
 			levels += skill_level(str(sk)) - 1
 	var arc_sk := arc_skill() if run.has("arc") else ""
-	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + int(bonus("magic", "hp")) + gear_stat("hp") + (int(bonus(arc_sk, "hp")) if arc_sk != "" else 0)
-	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + int(bonus("building", "energy")) + gear_stat("energy") + (int(bonus(arc_sk, "energy")) if arc_sk != "" else 0)
+	# Health and energy nodes count from every tree you can use.
+	var tree_hp := 0
+	var tree_en := 0
+	for sk in skills_data.keys():
+		if skill_in_arc(str(sk)):
+			tree_hp += int(bonus(str(sk), "hp"))
+			tree_en += int(bonus(str(sk), "energy"))
+	var base_hp := 100 + 8 * (skill_level("combat") - 1) + tree_hp + gear_stat("hp")
+	var base_en := 100 + 3 * levels + tree_en + gear_stat("energy")
 	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana") + (int(bonus(arc_sk, "mana")) if arc_sk != "" else 0)
 	if has_friend_perk("juniper", 4):
 		base_hp += 20
@@ -2291,10 +2325,23 @@ static func status_damage_mod() -> int:
 
 
 ## How many harvested crops (any kind) are in the pack.
+## Anything you grew counts: vegetables, fruit, herbs, flowers.
+static func is_grown(id: String) -> bool:
+	if str(items.get(id, {}).get("type", "")) == "crop":
+		return true
+	if _grown_cache.is_empty():
+		for cid in crops:
+			_grown_cache[str(crops[cid].get("yield", cid))] = true
+	return _grown_cache.has(id)
+
+
+static var _grown_cache := {}
+
+
 static func crop_count() -> int:
 	var n := 0
 	for id in run["inventory"]:
-		if str(items.get(id, {}).get("type", "")) == "crop":
+		if is_grown(str(id)):
 			n += int(run["inventory"][id])
 	return n
 
@@ -2303,7 +2350,7 @@ static func crop_count() -> int:
 static func take_crops(n: int) -> void:
 	var ids: Array = []
 	for id in run["inventory"]:
-		if str(items.get(id, {}).get("type", "")) == "crop":
+		if is_grown(str(id)):
 			ids.append(id)
 	ids.sort_custom(func(a: String, b: String) -> bool: return int(run["inventory"][a]) > int(run["inventory"][b]))
 	for id in ids:
@@ -2333,7 +2380,8 @@ static func _crows(report: Dictionary) -> void:
 			var xy := str(pk).split(",")
 			guards.append(Vector2i(int(xy[0]), int(xy[1])))
 	if Builds.is_built("scarecrow"):
-		guards.append(Vector2i(22, 12))
+		var sc: Array = Builds.data().get("scarecrow", {}).get("cell", [22, 12])
+		guards.append(Vector2i(int(sc[0]), int(sc[1])))
 	var open_: Array = []
 	for k: String in planted:
 		var xy := k.split(",")

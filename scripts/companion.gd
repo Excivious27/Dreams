@@ -13,6 +13,11 @@ var _idle := 0.0
 static var _data := {}
 
 
+## Sal never fences things quests ask for.
+const FENCE_KEEP := ["fossil", "old_coin", "pearl", "knight_shard", "sacred_key", "manifest", "brass_locket", "old_collar"]
+static var _fence_t := 0
+static var _fence_pick := ""
+
 static func data() -> Dictionary:
 	if _data.is_empty():
 		_data = GameState.load_json("res://data/companions.json")
@@ -118,7 +123,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				if not is_instance_valid(e) or not e._alive or e.position.distance_to(p.position) > 70.0:
 					continue
 				var rv: Array = REVERT.get(e.kind, [])
-				if e.kind == "knight" and GameState.run["flags"].has("knight_mercy_try") and float(e.hp) / e.max_hp < 0.34:
+				if e.kind == "knight" and GameState.run["flags"].has("knight_mercy_try") and not GameState.run["flags"].has("boss_sky") and not GameState.run["flags"].has("knight_reverted") and m.scene_id() == "sky" and float(e.hp) / e.max_hp < 0.34:
 					rv = ["penguin", 1]
 					GameState.run["flags"]["knight_reverted"] = true
 				# Fennimore: only turned back once she doubts him (the prison talk), and
@@ -197,7 +202,9 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			var fc: Vector2i = p.facing_cell()
 			var th: Dictionary = m.things.get(fc, {})
 			var tt := str(th.get("type", ""))
-			if tt in ["rock", "mrock", "stump", "log"]:
+			if tt in ["rock", "mrock"] and GameState.ore_block(str(th.get("ore", "stone"))) != "":
+				m.hud.toast("Big Jim: 'That one's too tough even for me. Get a better pickaxe.'", Color(1, 0.9, 0.8))
+			elif tt in ["rock", "mrock", "stump", "log"]:
 				# He breaks it himself: no tool, no energy.
 				m.things.erase(fc)
 				m.blocked.erase(fc)
@@ -223,10 +230,17 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			for id in GameState.run["inventory"].keys():
 				var v := GameState.item_value(str(id))
 				# Only loot: enemy drops, junk, ore and treasure. Never gear, food or keys.
-				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore"]:
+				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore"] and not str(id) in FENCE_KEEP:
 					bv = v
 					best = str(id)
-			if best != "":
+			# One tap names the deal, a second tap within 5 seconds makes it.
+			var now := Time.get_ticks_msec()
+			if best != "" and (_fence_pick != best or now - int(_fence_t) > 5000):
+				_fence_pick = best
+				_fence_t = now
+				m.hud.toast("Sal: 'All %d %s for ◆%d? Ask again and it's done.'" % [GameState.count(best), GameState.item_name(best), GameState.sell_price(best, GameState.count(best))], Color(1, 0.9, 0.6))
+			elif best != "":
+				_fence_pick = ""
 				var n := GameState.count(best)
 				GameState.add_item(best, -n)
 				var pay := GameState.sell_price(best, n)

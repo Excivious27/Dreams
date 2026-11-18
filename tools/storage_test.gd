@@ -28,7 +28,25 @@ func _run() -> void:
 	Storage.deposit("chest", "stone", 1)
 	var n := Storage.quick_stack("chest")
 	check(n == 2 and GameState.count("turnip") == 0 and GameState.count("stone") == 0, "quick stack moves matching items (%d)" % n)
-	# Fill the bag; the next new item goes to the chest.
+	# Old stash first: before the chest is built, a full bag still keeps new items.
+	var ids0: Array = []
+	for id in GameState.items:
+		if GameState.bag_free() <= 0:
+			break
+		var t0 := str(GameState.items[id].get("type", ""))
+		if t0 in ["tool", "key", "quest", "upgrade"] or GameState.run["inventory"].has(id) or id == "copper" or id == "silver":
+			continue
+		GameState.add_item(id, 1)
+		ids0.append(id)
+	GameState.add_item("silver", 1)
+	check(GameState.count("silver") == 1, "no chest built: a full bag keeps the new item")
+	GameState.add_item("silver", -1)
+	for id in ids0:
+		GameState.add_item(id, -1)
+	# Fill the bag; the next new item goes to the chest (once the chest is built).
+	if not GameState.run.has("builds") or not (GameState.run["builds"] is Dictionary):
+		GameState.run["builds"] = {}
+	GameState.run["builds"]["chest"] = 1
 	var ids: Array = []
 	for id in GameState.items:
 		if GameState.bag_free() <= 0:

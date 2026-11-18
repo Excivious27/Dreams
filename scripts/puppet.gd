@@ -52,7 +52,10 @@ func _apply_look(info: Dictionary) -> void:
 	GameState.run["equip"] = sub_equip if sub_equip is Dictionary else {}
 	# Their arc decides their sprite (a gangster-arc friend wears the _gang strip).
 	_p.set_character(GameState.sprite_for_playable(str(GameState.run["playable"]), str(lk.get("arc", ""))))
-	GameState.run["look"] = saved_look
+	if saved_look is Dictionary and not (saved_look as Dictionary).is_empty():
+		GameState.run["look"] = saved_look
+	else:
+		GameState.run.erase("look")
 	GameState.run["playable"] = saved_play
 	GameState.run["equip"] = saved_equip
 

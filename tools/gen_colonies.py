@@ -91,12 +91,26 @@ COL = {
 }
 COL["colony_coral"]["need"] = {"#fish": 6}
 OUT = {}
+import zlib
+_OLD = json.load(open(D + "/data/regions.json"))
+_OLD = _OLD.get("regions", _OLD)
+
+
+def _seed(rid):
+    """Stable island seed: keep the seed the colony already has (so maps never
+    reshape on a rerun), else derive one that's the same every run."""
+    isl = (_OLD.get(rid) or {}).get("islands") or []
+    if isl and isinstance(isl[0], dict) and "seed" in isl[0]:
+        return int(isl[0]["seed"]) - 1
+    return zlib.crc32(rid.encode()) % 900
+
+
 for rid, c in COL.items():
     cols, rows = 96, 76
     # Islands: a big main island, two smaller ones joined by sand bars, and a reef islet.
-    isl = [{"c": [40, 40], "r": 22, "seed": hash(rid) % 900 + 1}, {"c": [72, 26], "r": 11, "seed": hash(rid) % 900 + 2},
-           {"c": [70, 56], "r": 10, "seed": hash(rid) % 900 + 3}, {"c": [56, 33], "r": 5, "seed": 4}, {"c": [57, 48], "r": 5, "seed": 5},
-           {"c": [18, 16], "r": 7, "seed": hash(rid) % 900 + 6}]
+    isl = [{"c": [40, 40], "r": 22, "seed": _seed(rid) + 1}, {"c": [72, 26], "r": 11, "seed": _seed(rid) + 2},
+           {"c": [70, 56], "r": 10, "seed": _seed(rid) + 3}, {"c": [56, 33], "r": 5, "seed": 4}, {"c": [57, 48], "r": 5, "seed": 5},
+           {"c": [18, 16], "r": 7, "seed": _seed(rid) + 6}]
     pts = {"elder": [40, 44], "shop": [44, 44], "crystal": [72, 24], "beacons": [[24, 30], [40, 58], [70, 58], [18, 16]][: c["beacons"]]}
     things = [{"type": "elder", "cell": pts["elder"], "hint": "A: " + c["elder"], "solid": True},
               {"type": "colony_shop", "cell": pts["shop"], "hint": "A: " + c["shop_who"], "solid": True},
@@ -109,7 +123,7 @@ for rid, c in COL.items():
                {"type": "loot", "cell": [68, 60], "item": "crystal_refined", "n": 1, "every": 5, "empty": "The tide will bring more.", "hint": "A: tide pool", "solid": False}]
     R[rid] = {"cols": cols, "rows": rows, "music": "beach", "backdrop": "sea", "ground": "grass", "path": "sand", "spawn": [40, 60], "pad": 6,
               "border": {"n": "water", "s": "water", "w": "water", "e": "water"},
-              "exits": [{"rect": [38, 63, 4, 1], "scene": "beach", "spawn": [12, 20], "facing": "down", "label": "▼ ferry home"}],
+              "exits": [{"rect": [38, 63, 4, 1], "scene": "beach", "spawn": [12, 22], "facing": "down", "label": "▼ ferry home"}],
               "paths": [[39, 44, 2, 20], [40, 34, 34, 2], [40, 50, 32, 2], [18, 22, 2, 20], [18, 40, 24, 2]], "islands": isl, "island_shore": "sand",
               "plateaus": [{"blobs": [{"c": [34, 32], "r": 7, "seed": 41}]}, {"blobs": [{"c": [74, 22], "r": 5, "seed": 42}]}],
               "patch_set": "sand", "ground_threshold": -0.05, "fruit": 0, "forage": 6,

@@ -36,6 +36,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
+	Music.instance(get_tree()).sfx("chest_open", "door")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.16, 0.11, 0.07, 0.97)
@@ -131,6 +132,7 @@ func _btn(text: String, cb: Callable) -> Button:
 
 
 func _note(n: int, verb: String) -> void:
+	Music.instance(get_tree()).sfx("pickup" if n > 0 else "nope", "thud")
 	if m and m.hud:
 		m.hud.toast("%d stack%s %s." % [n, "" if n == 1 else "s", verb] if n > 0 else "Nothing to move.")
 	_refresh()
@@ -144,6 +146,7 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}) -> Control:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(SLOT, SLOT)
 	b.focus_mode = Control.FOCUS_NONE
+	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE  # a drag to scroll never moves an item
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.25, 0.17, 0.1) if id != "" else Color(0.19, 0.13, 0.08)
 	sb.border_color = GameState.rarity_color(id).darkened(0.3) if id != "" else Color(0.1, 0.07, 0.04)
@@ -207,7 +210,7 @@ func _refresh() -> void:
 			_top.add_child(_slot(id, stack, _take.bind(id), b["q"].get(id, {})))
 	for i in maxi(0, Storage.cap(key) - shown):
 		_top.add_child(_slot("", 0, func() -> void: pass))
-	_btl.text = "Bag %d/%d" % [GameState.bag_used(), GameState.bag_size()]
+	_btl.text = "Bag %d/%d" % [GameState.bag_used(), GameState.bag_size()] + ("  · %s" % _last if _last != "" else "")
 	var inv: Dictionary = GameState.run["inventory"]
 	for id: String in inv.keys():
 		_bot.add_child(_slot(id, int(inv[id]), _put.bind(id), GameState.quality_of(id)))
@@ -215,15 +218,28 @@ func _refresh() -> void:
 		_bot.add_child(_slot("", 0, func() -> void: pass))
 
 
+var _last := ""
+
+
 func _take(id: String) -> void:
-	if Storage.withdraw(key, id, _n(Storage.amount(key, id))) == 0 and m and m.hud:
-		m.hud.toast("Your bag is full.")
+	_last = GameState.item_name(id)
+	if Storage.withdraw(key, id, _n(Storage.amount(key, id))) == 0:
+		Music.instance(get_tree()).sfx("nope", "thud")
+		if m and m.hud:
+			m.hud.toast("Your bag is full.")
+	else:
+		Music.instance(get_tree()).sfx("pickup")
 	_refresh()
 
 
 func _put(id: String) -> void:
-	if Storage.deposit(key, id, _n(GameState.count(id))) == 0 and m and m.hud:
-		m.hud.toast("The chest is full.")
+	_last = GameState.item_name(id)
+	if Storage.deposit(key, id, _n(GameState.count(id))) == 0:
+		Music.instance(get_tree()).sfx("nope", "thud")
+		if m and m.hud:
+			m.hud.toast("The chest is full.")
+	else:
+		Music.instance(get_tree()).sfx("ui_tap", "pickup")
 	_refresh()
 
 

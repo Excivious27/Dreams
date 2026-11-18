@@ -2,7 +2,7 @@
 """World batch sheets (W1..). Uses slice_art helpers; merges into art/gen/manifest.json.
 Run after slice_art.py and slice_art2.py:  python3 tools/slice_world.py
 """
-import json, os, sys
+import json, os, sys, re
 sys.path.insert(0, os.path.dirname(__file__))
 import slice_art as S
 from slice_art import load, crop, scale_to, save, strip, bbox, fg_mask, cells_by_grid, cells_by_projection, TILE2
@@ -5739,9 +5739,28 @@ def w340_352():
                 yy = np.where(m.any(axis=1))[0]; xx = np.where(m.any(axis=0))[0]
                 if len(yy): cells.append(Image.fromarray(sub[yy[0]:yy[-1] + 1, xx[0]:xx[-1] + 1].copy()))
         nodes = sorted(S_[sk]["nodes"], key=lambda n: (n["row"], n["tier"]))
-        for n, im in zip(nodes, cells):
-            save(scale_to(im, 48, 48), "ui", "node_%s_%s" % (sk, n["id"]))
-        print("   %s: %d icons for %d nodes" % (sk, len(cells), len(nodes)))
+        # The sheets were drawn in the order Prompts 17 listed the nodes by name;
+        # the trees have changed since, so match each icon to its node by name.
+        order = _prompt_names(file)
+        by_name = {}
+        for nm, im in zip(order, cells):
+            by_name.setdefault(nm.lower(), []).append(im)
+        done = 0
+        for n in nodes:
+            if n.get("unlock"):
+                continue  # unlock nodes show what they unlock
+            lst = by_name.get(str(n["name"]).lower(), [])
+            if lst:
+                save(scale_to(lst.pop(0), 48, 48), "ui", "node_%s_%s" % (sk, n["id"])); done += 1
+        print("   %s: %d icons, %d matched to %d nodes" % (sk, len(cells), done, len(nodes)))
+
+
+def _prompt_names(file):
+    raw = open(os.path.join(os.path.dirname(__file__), "..", "docs", "src", "ART-PROMPTS-17-raw.md")).read()
+    for ln in raw.splitlines():
+        if file in ln:
+            return [m.strip() for m in re.findall(r"\d+\. ([^(;]+?) \(tier", ln)]
+    return []
 
 def w295(): _grit("w295_hero_dad_gang_full.png")
 def w296(): _grit("w296_hero_pax_gang_full.png")

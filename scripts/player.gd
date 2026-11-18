@@ -989,7 +989,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 		var off := absf(to.dot(dir.orthogonal()))
 		if along < -4.0 or along > reach:
 			continue
-		if off <= (along * 0.6 + 12.0 if bool(wd.get("spread", false)) else 13.0 + aim):
+		if off <= (along * 0.6 + 12.0 if bool(wd.get("spread", false)) else maxf(5.0, 13.0 - aim)):  # dazed: harder to hit, not easier
 			targets.append([along, e])
 	targets.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
 	if not bool(wd.get("spread", false)) and targets.size() > 1:

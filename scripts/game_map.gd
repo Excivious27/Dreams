@@ -241,7 +241,7 @@ func build() -> void:
 func after_ready() -> void:
 	pass
 func default_spawn() -> Vector2:
-	return Vector2(cols * TILE / 2.0, rows * TILE / 2.0)
+	return Vector2(cols * TILE / 2.0, rows * TILE / 2.0) + offset()
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
 ## One short verb for what USE / CHECK would do on this cell (shown on the button).
@@ -499,7 +499,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						var n := 1 + int(ay) + (1 if randf() < fmod(ay, 1.0) else 0)
 						pop_items(a.position, prod, n)
 						# Friendship shows in the goods: silver after 5 days running, gold after 14.
-						var q := "gold" if int(st["streak"]) >= 14 else ("silver" if int(st["streak"]) >= 5 else "")
+						var q := "g" if int(st["streak"]) >= 14 else ("s" if int(st["streak"]) >= 5 else "")
 						if q != "":
 							GameState.add_quality(prod, q, n)
 			return true
@@ -1875,7 +1875,7 @@ func on_enemy_died(e: Enemy) -> void:
 		Racket.on_collector_down(self)
 	if (e.has_meta("colony_foe") or e.has_meta("colony_boss")) and not e.has_meta("decoy"):
 		Colony.on_kill(self, e)
-	if e.kind.begins_with("lt_") and not e.has_meta("decoy"):
+	if e.kind.begins_with("lt_") and not e.has_meta("decoy") and not e.has_meta("battle_cmd"):
 		GameState.run["flags"][e.kind] = true
 		var down := 0
 		for lid in Gift.data().get("lieutenants", {}):
@@ -2060,11 +2060,21 @@ func _pup_menu() -> void:
 	foods.sort_custom(func(a: String, b: String) -> bool: return _pet_heal_of(a) > _pet_heal_of(b))
 	var opts: Array = []
 	var acts: Array = []
-	for id in foods.slice(0, 4):
-		opts.append("Give %s (+%d health)" % [GameState.item_name(id), _pet_heal_of(id)])
-		acts.append(["feed", id])
 	if not down:
 		opts.append("Pet %s" % nm); acts.append(["pet", ""])
+	# Food only when it's needed; cheapest that fully heals first, so a pat never costs your best meal.
+	var missing := Pet.max_hp() - int(st["hp"])
+	if down or missing > 0:
+		foods.sort_custom(func(a: String, b: String) -> bool:
+			var ha := _pet_heal_of(a) >= missing
+			var hb := _pet_heal_of(b) >= missing
+			if ha != hb:
+				return ha
+			return _pet_heal_of(a) < _pet_heal_of(b) if ha else _pet_heal_of(a) > _pet_heal_of(b))
+		for id in foods.slice(0, 3):
+			opts.append("Give %s (+%d health)" % [GameState.item_name(id), _pet_heal_of(id)])
+			acts.append(["feed", id])
+	if not down:
 		opts.append("Gear and pack…"); acts.append(["menu", ""])
 		opts.append("Heel" if str(st.get("mode", "")) != "follow" else "Stay here"); acts.append(["mode", "follow" if str(st.get("mode", "")) != "follow" else "wait"])
 	opts.append("Leave"); acts.append(["leave", ""])
@@ -2231,8 +2241,9 @@ func _process(delta: float) -> void:
 	if _upd_t >= 3.0 and OS.has_feature("web") and not _other_told and bool(JavaScriptBridge.eval("window.dreamsOtherOlder === true", true)):
 		_other_told = true
 		hud.toast("Dreams is open in another window too. That one has stopped saving; keep playing here.", Color(1, 0.85, 0.6))
-	if _upd_t >= 3.0 and not _update_told and OS.has_feature("web"):
-		_upd_t = 0.0
+	if _upd_t >= 3.0:
+		_upd_t = 0.0  # every check above runs once per 3 s, never every frame
+	if _upd_t == 0.0 and not _update_told and OS.has_feature("web"):
 		if bool(JavaScriptBridge.eval("window.dreamsUpdateReady === true", true)):
 			_update_told = true
 			if not _changing:
@@ -3334,6 +3345,8 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		await tree.process_frame
 		if not is_inside_tree():
 			return  # the map changed under the line (scene change, collapse)
+		if tree.paused or Dialogue.instance(tree).active:
+			continue  # menu open: the fish waits
 		t += get_process_delta_time()
 		if not bite and t >= wait:
 			bite = true
@@ -3356,9 +3369,11 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 	if caught:
 		var lvl := GameState.skill_level("fishing")
 		var reach := mini(pool.size(), 2 + lvl * 2 + (2 if night else 0) + (1 if baited else 0))
-		var fish: String = pool[randi() % reach] if randf() > 0.08 else "boot"
+		# Pools run easiest → rarest: weight the pick so rare fish stay rare.
+		var fish: String = pool[_weighted_index(0, reach)] if randf() > 0.08 else "boot"
 		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
-			fish = pool[randi_range(mini(reach, pool.size() - 1), pool.size() - 1)]
+			var lo := mini(reach, pool.size() - 1) if reach < pool.size() else pool.size() / 2
+			fish = pool[_weighted_index(lo, pool.size())]
 		Music.instance(get_tree()).sfx("reel")
 		player.play_tool("reel")
 		give(fish)
@@ -3370,6 +3385,19 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 	else:
 		hud.toast("It got away.")
 		Music.instance(get_tree()).sfx("fish_escape")
+
+
+## A random index in [lo, hi), each step up half again as rare as the last.
+func _weighted_index(lo: int, hi: int) -> int:
+	var tot := 0.0
+	for i in range(lo, hi):
+		tot += pow(0.67, i - lo)
+	var r := randf() * tot
+	for i in range(lo, hi):
+		r -= pow(0.67, i - lo)
+		if r <= 0.0:
+			return i
+	return hi - 1
 
 
 ## Ask before handing a villager the item you're holding.

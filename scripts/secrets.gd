@@ -146,7 +146,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			GameState.run["flags"][key] = true
 			m.things.erase(c)
 			m.player.play_tool("hoe")
-			m.fx("dirt_puff" if Art.has("fx", "dirt_puff") else "poof", m.cell_center(c), 12.0, 0.4)
+			m.fx("dust_puff" if Art.has("fx", "dust_puff") else "poof", m.cell_center(c), 12.0, 0.4)
 			Music.instance(m.get_tree()).sfx("dig")
 			m.hud.toast("Something was buried here!", Color(1, 0.95, 0.6))
 			m.give(str(thing["item"]), int(thing["n"]))

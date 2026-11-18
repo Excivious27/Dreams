@@ -46,7 +46,7 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return Vector2(40 * TILE, 3 * TILE)
+	return Vector2(40 * TILE, 3 * TILE) + offset()
 
 
 func build() -> void:
@@ -334,9 +334,11 @@ func _festival_event(fest: String) -> void:
 			var gift: String = ["heart_fruit", "stamina_root", "mana_berry", "cake", "wine", "gold_bar"][int(GameState.run["day"]) % 6]
 			give(gift)
 			GameState.run["flags"][key] = true
+			# Everyone you know, who's still here.
 			for id in GameState.npcs:
-				GameState.add_friend(str(id), 10)
-			hud.toast("Everyone +10 friendship", Color(1, 0.8, 0.9))
+				if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone"):
+					GameState.add_friend(str(id), 10)
+			hud.toast("Everyone you know +10 friendship", Color(1, 0.8, 0.9))
 	player.frozen = false
 
 
@@ -742,7 +744,10 @@ func _talk(n: Npc) -> void:
 		player.frozen = false
 		return
 	var hl := Hearts.daily(id)
-	if hl != "" and (int(r["day"]) + GameState.friend_hearts(id)) % 2 == 0:
+	# Sal's recruitment is story, not chatter: it always comes first once the meadow is clear.
+	if id == "sal" and not GameState.is_penguins() and GameState.quest_done("clear_meadow") and not r["flags"].has("sal_recruited"):
+		await say(_lines(id, int(fr.get(id, 0))))
+	elif hl != "" and (int(r["day"]) + GameState.friend_hearts(id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])
 	elif Talk.data().has(id) and (id in ["pip", "wren_jr", "tobin", "mabel"] or randf() < 0.6):
 		# Everyday chatter that changes with the season, weather and arc.
