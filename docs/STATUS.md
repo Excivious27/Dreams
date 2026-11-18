@@ -2,6 +2,9 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 9 of 10
+- 20-agent audit (/tmp/audit_c9), bots clean before/after, check (now with tools/coop_test.gd) + playtest pass. Perf patch 3 (walking spikes on hollow_heart/highlands/ruins). Co-op clock shift covers jobs/upgrades/haste/drone, save_view restores guest clock, Net.visiting(); enemy _walk_clear feet box, shooter ring; unwon battles cap 80 paid kills; Hot Loads→Fresh Rounds (NODE_RENAMES); reset keeps gift spells; colony plateaus over patches; forest seasons; ♥8 waits for ♥6; creator outfit picker + hair luma tint; 1075 re-cut art (901 icons, w77 rows, benches, pets, hounds/golems). Prompts 28 (2 prompts / 3 images), Guide 21. Tom asked: re-export w72/w73 (cut off).
+
 ## 2026-11-18 — CONDUCT loop 8 of 10
 - 20-agent audit (/tmp/audit_c8), bots clean before/after, check + playtest pass. Perf patch 2 (bake spikes, redraw cost, soil). Kill pay cap uses e.bossy/named kinds; capped kills drop only quest items; rest_energy() half bar; bait 0.8; blooms 4/day; gun_damage cap + SKILL_VER 8; co-op timer shift, placed sync; farm debris stable; mine barrels/lamps; region invisible walls; story quest timing; heart quests gated at ♥6; Catkins art; 623 re-cut art files (tools/edge_slivers.py new; fix_overlays softens cloud shadow). build_prompt_files keeps every rule. Prompts 27 (1 prompt / 2 images), Guide 20.
 
