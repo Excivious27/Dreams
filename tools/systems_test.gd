@@ -77,6 +77,32 @@ func _run() -> void:
 	var si := ["spring", "summer", "fall", "winter"].find(str(bd[0]))
 	GameState.run["day"] = si * 28 + int(bd[1])
 	check(GameState.is_birthday("maple") and GameState.gift_value("maple", "strawberry") == plain * 3, "birthday gifts count triple")
+	# Endings slideshow, both arcs
+	GameState.run["ending"] = "revert"
+	GameState.run["decisions"]["tell_town"] = 0
+	var sl := Epilogue.build()
+	check(sl.size() >= 5 and str(sl[0][0]).contains("Two Crystals"), "penguin epilogue slides (%d)" % sl.size())
+	GameState.new_run("gangsters", "dad", "Cal", "Town", "Pup")
+	GameState.run["ending"] = "free"
+	GameState.run["flags"]["crew_specs"] = true
+	GameState.run["flags"]["lt_vance"] = true
+	GameState.run["flags"]["lt_spared_vance"] = true
+	var sg := Epilogue.build()
+	var all_txt := ""
+	for x in sg:
+		all_txt += str(x[1])
+	check(str(sg[0][0]).contains("A Tired Man") and all_txt.contains("Harbourmaster Vance walked away"), "gangster epilogue covers crew and lieutenants")
+	# Ops: heists need their crew and chapter; missions gate the last loyalty step.
+	check(not Ops.heist_ready("vault"), "vault waits for the chapter")
+	GameState.run["flags"]["crew_sasha"] = true
+	check(Ops.heist_ready("vault"), "vault ready with Specs and Sasha")
+	GameState.run["crew"] = {"doc": 2}
+	GameState.run["flags"]["crew_doc"] = true
+	check(Ops.mission_open("doc"), "Doc's favour opens at loyalty 2")
+	GameState.run["turf"] = {"docks": 1, "neon": 2}
+	var g0 := int(GameState.run["crystals"])
+	check(Ops.morning() == 80 and int(GameState.run["crystals"]) == g0 + 80, "two blocks pay every morning")
+	check(Ops.holds("docks") and not Ops.holds("uptown"), "turf held per block")
 	Settings.set_v("music_vol", 8)
 	print("systems_test: %d failures" % fails)
 	quit()

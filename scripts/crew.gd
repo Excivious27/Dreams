@@ -108,11 +108,13 @@ static func place(m: GameMap) -> void:
 static func talk(m: GameMap, id: String) -> bool:
 	if not members().has(id) or not recruited(id):
 		return false
+	if await Ops.talk(m, id):
+		return true
 	var mdef: Dictionary = members()[id]
 	var lv := loyalty(id)
 	var last := int(GameState.run.get("crew_last", {}).get(id, -10))
 	var day := int(GameState.run["day"])
-	if m.scene_id() == "hideout" and lv < 3 and day - last >= 3:
+	if m.scene_id() == "hideout" and lv < 3 and day - last >= 3 and not (lv == 2 and Ops.mission_open(id)):
 		var scenes: Array = mdef.get("loyalty", [])
 		if lv < scenes.size():
 			await m.say(scenes[lv])

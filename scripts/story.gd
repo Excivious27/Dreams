@@ -295,6 +295,10 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		Companion.recruit(str(fx["companion"]))
 		if m.has_method("_refresh_party"):
 			m.call("_refresh_party")
+	if fx.has("know") and not str(fx["know"]) in (Companion.party().get("known", []) as Array) and str(fx["know"]) != str(GameState.run.get("playable", "")):
+		# A companion who catches up with you without taking the active slot.
+		Companion.recruit(str(fx["know"]), false)
+		m.hud.toast("%s catches up with you." % str(Companion.defs().get(str(fx["know"]), {}).get("name", fx["know"])), Color(0.8, 0.95, 1.0))
 	for id in fx.get("bitter", []):
 		Companion.refuse(str(id))
 	if fx.has("toast"):

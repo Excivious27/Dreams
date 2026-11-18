@@ -70,6 +70,11 @@ func _process(delta: float) -> void:
 	var want := home
 	if foe == null and map.player.position.distance_to(home) < 200.0:
 		want = map.player.position + Vector2(cos(get_instance_id() % 7), sin(get_instance_id() % 5)) * 22.0
+	if map.has_meta("rally_pos"):
+		var rp: Vector2 = map.get_meta("rally_pos")
+		want = rp + Vector2(cos(get_instance_id() % 11), sin(get_instance_id() % 13)) * 20.0
+		if foe and foe.position.distance_to(position) > 70.0:
+			foe = map.nearest_enemy_to(position, 70.0)
 	if foe and kind == "striker":
 		want = foe.position + (position - foe.position).normalized() * 40.0
 	var step := (want - position)

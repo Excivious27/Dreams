@@ -14,7 +14,14 @@ const INTERIOR_SHIFT := 280.0
 static var y_offset := 0.0
 
 
+## Other on-screen buttons that should get taps instead of the world (battle RALLY...).
+static var extra_rects: Array = []
+
+
 static func hud_rect_blocks(p: Vector2) -> bool:
+	for r: Rect2 in extra_rects:
+		if r.has_point(p):
+			return true
 	return p.y >= y_offset and p.y < y_offset + TOOLBAR_BOTTOM
 
 var _canvas: Control

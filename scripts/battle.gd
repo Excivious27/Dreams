@@ -56,9 +56,50 @@ func _setup() -> void:
 	_hud.size = Vector2(270, 480)
 	_hud.draw.connect(_draw_hud)
 	layer.add_child(_hud)
+	# RALLY: send every helper to one point (tap to cycle), or let them guard their own.
+	_rally_btn = Button.new()
+	_rally_btn.position = RALLY_RECT.position
+	_rally_btn.size = RALLY_RECT.size
+	_rally_btn.add_theme_font_size_override("font_size", 7)
+	_rally_btn.focus_mode = Control.FOCUS_NONE
+	_rally_btn.pressed.connect(_cycle_rally)
+	layer.add_child(_rally_btn)
+	Hud.extra_rects.append(RALLY_RECT)
+	_set_rally(-1)
 	map.hud.toast("%s. Take the points. Hold more than they do." % str(d.get("title", "Battle")), Color(1, 0.9, 0.6))
 	map.later(func() -> void:
 		await map.say([{"who": str(d.get("who", "")), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
+
+
+const RALLY_RECT := Rect2(8, 128, 86, 18)
+var _rally_btn: Button
+var _rally := -1
+
+
+func _cycle_rally() -> void:
+	var i := _rally + 1
+	if i >= points.size():
+		i = -1
+	_set_rally(i)
+	Music.instance(map.get_tree()).sfx("pickup")
+
+
+func _set_rally(i: int) -> void:
+	_rally = i
+	if i < 0:
+		if map.has_meta("rally_pos"):
+			map.remove_meta("rally_pos")
+		_rally_btn.text = "RALLY: guard posts"
+	else:
+		map.set_meta("rally_pos", points[i]["pos"])
+		_rally_btn.text = "RALLY ▸ %s" % str(points[i]["name"])
+		map.hud.toast("Helpers: everyone to %s!" % str(points[i]["name"]), Color(0.7, 0.95, 1.0))
+
+
+func _exit_tree() -> void:
+	Hud.extra_rects.erase(RALLY_RECT)
+	if map and is_instance_valid(map) and map.has_meta("rally_pos"):
+		map.remove_meta("rally_pos")
 
 
 func point(id: String) -> Dictionary:

@@ -514,7 +514,8 @@
       "friend": {
        "big_jim": 30
       },
-      "hint": "Big Jim camps with you from here on. The babies hold the pass."
+      "hint": "Big Jim camps with you from here on. The babies hold the pass.",
+      "know": "penguin_f"
      }
     },
     {
@@ -1590,9 +1591,9 @@
       },
       {
        "who": "Deuce",
-       "text": "You're building something. I can tell; you've got the look of a man counting. I'm in, for a stake. A hundred and fifty, or beat me at a hand and I'll call it paid.",
+       "text": "You're building something. I can tell; you've got the look of a man counting. I'm in, for a fee. A hundred and fifty, or beat me at one friendly hand of cards, nothing on the table, and I'll call it paid.",
        "choice": [
-        "Pay the stake (◆150).",
+        "Pay his fee (◆150).",
         "Play him for it.",
         "Not yet."
        ],

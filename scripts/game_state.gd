@@ -1802,6 +1802,9 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["gifted_today"] = {}
 	for line in Perks.morning():
 		notify(str(line))
+	var tp := Ops.morning()
+	if tp > 0:
+		notify("Your blocks paid ◆%d overnight." % tp)
 	var bd := birthday_today()
 	if bd != "":
 		notify("It's %s's birthday today! Gifts count triple." % str(npcs[bd].get("name", bd)))

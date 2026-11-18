@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+"""Writes data/epilogue.json: the end slideshow (scripts/epilogue.gd).
+One line per villager (close = 6+ hearts, else far), per crew member (loyal = 3,
+else around), per companion kept, per colony, per lieutenant, per Marked, and per
+story choice. %hero %pet %town are filled in.  Run: python3 tools/gen_epilogue.py
+"""
+import json, os
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+V = {
+ "maple": ("Maple started keeping a jar of the good seeds behind the counter, labelled with your name.", "Maple still marks up the nails. Some things don't change."),
+ "gideon": ("Gideon hung your first broken hoe over the forge. He says it's a warning. It isn't.", "Gideon's hammer rings every morning, steady as a clock."),
+ "wren": ("Wren names a potion after you. It tastes awful and works perfectly.", "Wren's window glows green late into the night, like always."),
+ "alder": ("Mayor Alder gives a speech about you at the Harvest Fair. It runs long. You don't mind.", "Mayor Alder takes the credit for everything, which is how you know things are back to normal."),
+ "sal": ("Sal stops drifting. There's a chair on your porch that's his now.", "Sal moves on down the road one morning, and leaves a note that just says: thanks."),
+ "finn": ("Finn teaches the kids to fish off the end of the pier, and swears your name is lucky.", "Finn still fishes from dawn to dusk, and still says the big one got away."),
+ "lumi": ("Lumi paints %town as it is now. You're in the corner of it, small, watering something.", "Lumi's new paintings are brighter. Nobody asks why."),
+ "theo": ("Theo finishes his book. The last chapter is about a farm.", "Theo is still writing the book. He'll finish it. Probably."),
+ "hazel": ("Hazel and you swap seeds over the fence every spring, like neighbours have done forever.", "Hazel's rows are the straightest in the valley, and she'll tell you so."),
+ "bram": ("Bram keeps a stool at the inn that nobody else sits on.", "The inn stays loud and warm, with or without you in it."),
+ "posy": ("Posy's window has a new cake in it: a little farm made of sugar.", "Posy's bread is ready at six, every day, no matter what."),
+ "juniper": ("Juniper says she's glad she hasn't had to patch you up in weeks. She means it as a compliment.", "Juniper's clinic stays open, quiet and ready."),
+ "rook": ("Rook takes you up into the high woods once, to show you a place he's never shown anyone.", "Rook goes back to the woods, where he's happiest."),
+ "pip": ("Pip tells everyone at school that you're her best friend. She is not wrong.", "Pip finds a new treasure every week and keeps them all in a shoebox."),
+ "wren_jr": ("Wren jr's notebook of birds has a page just for you.", "Wren jr is still out in the meadow with binoculars, counting."),
+ "tobin": ("Tobin's kite flies higher than the lighthouse. He says you taught him that.", "Tobin finally fixed his bike. He rides it everywhere."),
+ "mabel": ("Mabel writes a song about the summer. You're in the second verse.", "Mabel reads under the big tree every afternoon."),
+ "marlowe": ("Marlowe lets you light the lighthouse lamp, just once, on the longest night.", "The lighthouse turns every night, the way it always has."),
+ "orla": ("Orla's mill grinds your wheat first, always.", "The mill wheel keeps turning, patient as Orla."),
+ "benno": ("Benno says your horse is the happiest in the valley.", "Benno brushes the horses and hums."),
+ "ivy": ("Ivy opens an account in your name with one crystal in it. 'For luck.'", "Ivy keeps the books balanced to the last crystal."),
+ "tam": ("Tam's sheep follow you down the hill whenever you visit.", "Tam's flock grows bigger every spring."),
+ "old_moss": ("Old Moss walks out of the marsh for the first time in years, to see your farm.", "Old Moss stays in his marsh, and that's how he likes it."),
+ "granite": ("Granite carves your name on the quarry wall, next to the crew's.", "The quarry rings with picks from dawn to dusk."),
+ "sel": ("Sel reads the last rune aloud with you there. It says: home.", "Sel is still out in the ruins, reading stones."),
+ "catkins": ("Catkins sits on your fence at dusk and purrs the Meow Pow Wow, just quietly, for you.", "Catkins rules Cat-topia with a soft paw and a sharp eye."),
+}
+CREW = {
+ "deuce": ("Deuce deals straight at a table uptown with your name on the chair beside his.", "Deuce takes his table three valleys over. He sends a postcard."),
+ "mama_rosa": ("Mama Rosa's restaurant has a line round the block, and the first plate every night is yours.", "Mama Rosa feeds whoever comes in hungry."),
+ "specs": ("Specs keeps the books honest now. Mostly.", "Specs found a quieter line of work."),
+ "ladder": ("Ladder still watches the street from the rooftops, but now it's to warn the bakery about rain.", "Ladder climbs somewhere new every week."),
+ "vic": ("Vic and Val run the gym under the pit, and the kids there call you boss.", "Vic went back to the pit, where things are simple."),
+ "val": ("Val stands at your door some nights for no reason at all. Just in case.", "Val keeps an eye on the docks."),
+ "halo": ("Halo's car is the fastest in the city, and it's always parked outside your farm.", "Halo drives off into the sunset. Literally. Show-off."),
+ "dice": ("Dice runs the token arcade on the avenue. Everyone wins something.", "Dice is still rolling, somewhere."),
+ "the_kid": ("The Kid goes back to school. He comes by after, every day.", "The Kid runs messages across the city, faster than anyone."),
+ "doc": ("Doc's free clinic opens with your name over the door.", "Doc patches people up and doesn't ask questions."),
+ "marlene": ("Marlene burns her old ledger in your fireplace and laughs.", "Marlene's shop is still there, dark window, open door."),
+ "sasha": ("Sasha teaches the Marked to open doors instead of forcing them.", "Sasha slipped away one night. She'll turn up again."),
+}
+COMP = {
+ "penguin_m": "Pip-Pip waddles the farm every morning like he owns it. He sort of does.",
+ "penguin_f": "Nova keeps the knight's old helmet on a shelf, polished, and tells the story to anyone who'll sit still.",
+ "big_jim": "Big Jim still screams about tails sometimes. Then he laughs about it.",
+ "mer": "Mer swims up the river to visit, and leaves shells on the porch.",
+ "coldy": "Coldy and the crystal babies stamp around the field, keeping the dark away just by being there.",
+ "pax": "Pax stays on as a farmhand and is secretly better at it than you.",
+ "kairi": "Kairi plants a row of flowers by the gate, one for every friend you made.",
+ "sal": "Sal keeps the porch light on.",
+}
+COLONY = {"colony_coral": "Coral Reach glows rose-gold again, and Grandmother Brine tells the story of the farmer who came by ferry.",
+          "colony_kelp": "In Kelp Hollow, the old song is sung every evening, and the kelp stays green.",
+          "colony_ice": "Frostfin Isle thawed, and Captain Icewhisker's boats are back out on the water.",
+          "colony_ember": "On Emberclaw Atoll, the star crystal burns bright, and Lady Cinderpaw's glassblowers make you a gift every year."}
+LT = {"vance": "Harbourmaster Vance", "lucia": "Lucia \"Flame\" Ardent", "brock": "Brock the Unbroken", "silas": "Silas Crane",
+      "mags": "Old Mags", "surveyor": "The Surveyor", "pike": "Conductor Pike", "ostrova": "Madame Ostrova"}
+LT_LINES = {"spared": "%s walked away when you let them, and nobody's seen them make trouble since.",
+            "joined": "%s works with your crew now, and the city is safer for it.",
+            "beaten": "%s was beaten, and the President's orders stopped coming."}
+CHOICES = {
+ "tell_town": {"0": "%town knows the truth about the Grumps now, and they look after every stray.", "1": "You kept the secret about the Grumps. Some nights it's heavy. The Star Crystal helps you carry it."},
+ "locket": {"0": "Finn wears the locket now. He smiles more.", "1": "The humming locket sits by your bed. Sometimes it glows when the moon is full."},
+ "knight_mercy": {"0": "The knight above the clouds was given a chance, and took it.", "1": "The knight above the clouds is gone. Nova still thinks about him."},
+ "fennimore": {"0": "Fennimore heard the truth from you first. It mattered.", "1": "Fennimore found her own way out."},
+ "photo": {"0": "You burned the photo. The past stays burned.", "1": "The photo stays with the deed, a little piece of a case nobody else will ever close.", "2": "Two notes, one hand. You solved it, and kept the proof."},
+ "shop_1": {"0": "The bakery reopened in the end. You made sure of it.", "1": "The bakery never closed. You were the reason why."},
+ "shop_2": {"0": "The shop you took is a token arcade now. Kids love it.", "1": "You left her shop alone, and she never forgot it."},
+ "shop_3": {"0": "The clinic you took is free now. That was the deal you made with yourself.", "1": "You drew the line at the clinic, and held it."},
+ "sell_letter": {"0": "You sold the letter. The money built the crew. The President knew your face, and it didn't matter.", "1": "You never sold the letter. It's still in your drawer.", "2": "You burned the letter. Nothing to sell, nothing to fear."},
+}
+ENDINGS = {"revert": "Two Crystals", "shatter": "The Quiet Mountain", "free": "A Tired Man", "take": "The Chair"}
+json.dump({"_": "End slideshow. Generated by tools/gen_epilogue.py.", "villagers": V, "crew": CREW, "companions": COMP,
+           "colonies": COLONY, "lieutenants": LT, "lt_lines": LT_LINES, "choices": CHOICES, "endings": ENDINGS},
+          open(os.path.join(ROOT, "data/epilogue.json"), "w"), indent=1, ensure_ascii=False)
+print("epilogue lines:", len(V) * 2 + len(CREW) * 2 + len(COMP) + len(COLONY) + sum(len(v) for v in CHOICES.values()))

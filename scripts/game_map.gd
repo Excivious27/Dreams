@@ -1566,6 +1566,8 @@ func on_enemy_died(e: Enemy) -> void:
 				down += 1
 		hud.toast("The President's lieutenants: %d of 8 down." % down, Color(1, 0.85, 0.5))
 		GameState.add_hint("Lieutenant down: %s (%d/8)" % [e.display_name(), down])
+		later(_lieutenant_choice.bind(e.kind.trim_prefix("lt_"), e.display_name()))
+	Ops.on_kill(self)
 	var kc: Dictionary = GameState.run.get("kill_counts", {})
 	kc[e.kind] = int(kc.get(e.kind, 0)) + 1
 	GameState.run["kill_counts"] = kc
@@ -1716,6 +1718,33 @@ var _job_check := 0
 var _autosave_t := 0.0
 
 
+## A beaten lieutenant: let them walk, or (Old Mags and Brock only) bring them in.
+const LT_JOINS := {"mags": "Fine. I know every back road from here to the coast. They're yours.", "brock": "Nobody ever asked. ...Yeah. I'll stand with you."}
+
+
+func _lieutenant_choice(id: String, nm: String) -> void:
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": nm, "text": "...Go on, then. What happens to me now?", "choice": ["Walk away. Don't come back.", "Come with us. Work for the crew."], "key": "lt_" + id}])
+	await d.finished
+	if d.last_choice == 1:
+		if LT_JOINS.has(id):
+			GameState.run["flags"]["lt_joined_" + id] = true
+			d.say([{"who": nm, "text": str(LT_JOINS[id])}])
+			await d.finished
+			if id == "brock":
+				GameState.run["bonus_hp"] = int(GameState.run.get("bonus_hp", 0)) + 15
+				GameState._apply_max_stats()
+				hud.toast("Brock joins: +15 max health (he spars with you).", Color(1, 0.9, 0.5))
+			else:
+				GameState.run["bonus_energy"] = int(GameState.run.get("bonus_energy", 0)) + 20
+				GameState._apply_max_stats()
+				hud.toast("Old Mags joins: +20 max energy (her back roads save your legs).", Color(1, 0.9, 0.5))
+			return
+		d.say([{"who": nm, "text": "Work for you? I'd rather walk. Don't worry. I'm done with him too."}])
+		await d.finished
+	GameState.run["flags"]["lt_spared_" + id] = true
+
+
 func _process(delta: float) -> void:
 	if hitstop > 0.0:
 		hitstop -= delta
@@ -1725,6 +1754,9 @@ func _process(delta: float) -> void:
 		for nt in GameState.run["notes"]:
 			hud.toast(str(nt), Color(1, 0.85, 0.9))
 		GameState.run["notes"] = []
+	if not GameState.run.is_empty() and GameState.run["flags"].has("epilogue_done") and not GameState.run["flags"].has("epilogue_shown") and not _changing and not Dialogue.instance(get_tree()).active and player and not player.frozen:
+		GameState.run["flags"]["epilogue_shown"] = true
+		Epilogue.play(self)
 	# Autosave every 90 s of play when nothing is mid-scene (phones kill tabs).
 	_autosave_t += minf(delta, 0.5)
 	if _autosave_t >= 90.0 and not _changing and not Dialogue.instance(get_tree()).active:

@@ -473,6 +473,12 @@ func _refresh() -> void:
 			_button("Easy mode: %s" % ("on (foes hit softer, no fee when you faint)" if Settings.easy() else "off"), func() -> void: Settings.set_v("easy", not Settings.easy()); _refresh())
 			_button("On-screen controls: %s" % ("shown" if TouchControls.visible_controls else "hidden"), func() -> void: TouchControls.visible_controls = not TouchControls.visible_controls; _refresh())
 			_button("Key bindings…", func() -> void: _tab = "Keys"; _refresh())
+			if r["flags"].has("epilogue_done"):
+				_button("Replay the ending", func() -> void:
+					toggle()
+					var mp := get_tree().current_scene as GameMap
+					if mp:
+						Epilogue.play(mp))
 			_button("Save & back to title", func() -> void:
 				GameState.save()
 				get_tree().paused = false
