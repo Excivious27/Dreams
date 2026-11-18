@@ -120,7 +120,13 @@ def write_wav(path, buf):
         w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR)
         w.writeframes((buf * 32767).astype("<i2").tobytes())
 
+# Tracks Tom has replaced with real music. Never overwrite these with placeholders.
+REAL_TRACKS = {"title"}  # title.ogg = "Dreams" (ACE Music), original in audio/incoming/title-dreams.mp3
+
 def write_track(name, buf):
+    if name in REAL_TRACKS:
+        print("kept real track", name)
+        return
     os.makedirs(os.path.join(ROOT, "music"), exist_ok=True)
     tmp = f"/tmp/{name}.wav"
     write_wav(tmp, buf)
