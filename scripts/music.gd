@@ -27,15 +27,19 @@ static func instance(tree: SceneTree) -> Music:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	Settings.apply_audio()
 	_player = AudioStreamPlayer.new()
+	_player.bus = "Music"
 	_player.volume_db = MUSIC_DB
 	add_child(_player)
 	_fading = AudioStreamPlayer.new()
+	_fading.bus = "Music"
 	_fading.volume_db = MUSIC_DB
 	add_child(_fading)
 	for i in 4:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -4.0
+		p.bus = "SFX"
 		add_child(p)
 		_sfx.append(p)
 	_muted = bool(SaveGame.get_value("muted", false))

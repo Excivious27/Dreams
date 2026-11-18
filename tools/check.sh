@@ -85,3 +85,10 @@ echo "$kout" | grep -E "FAIL|campaign_test" || true
 if ! echo "$kout" | grep -q "campaign_test: 0 failures"; then
   echo "Campaign test failed"; exit 1
 fi
+
+echo "== settings, slots, quality, discovery, perks, birthdays =="
+yout="$("$GODOT" --headless --path . -s res://tools/systems_test.gd 2>&1)"
+echo "$yout" | grep -E "FAIL|systems_test" || true
+if ! echo "$yout" | grep -q "systems_test: 0 failures"; then
+  echo "Systems test failed"; exit 1
+fi

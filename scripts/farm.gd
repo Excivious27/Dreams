@@ -537,6 +537,18 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			n += 2
 			hud.toast("★ Star-quality harvest!", Color(1, 0.95, 0.5))
 		give(str(cd["yield"]), n)
+		# Quality: farming skill and fertiliser raise the odds of silver and gold.
+		var flv := GameState.skill_level("farming")
+		var fert := bool(tile.get("fert", false))
+		var qr := randf()
+		var gold_p := 0.015 * flv + (0.10 if fert else 0.0) + GameState.bonus("farming", "star_chance")
+		var silver_p := gold_p + 0.05 * flv + (0.20 if fert else 0.0)
+		if qr < gold_p:
+			GameState.add_quality(str(cd["yield"]), "g", n)
+			hud.toast("★ Gold-star %s!" % GameState.item_name(str(cd["yield"])), Color(1, 0.85, 0.3))
+		elif qr < silver_p:
+			GameState.add_quality(str(cd["yield"]), "s", n)
+			hud.toast("☆ Silver-star %s" % GameState.item_name(str(cd["yield"])), Color(0.85, 0.9, 1.0))
 		if GameState.log_grown(crop):
 			hud.toast("Field log: first %s! (%d of %d crops grown)" % [str(cd["name"]), (GameState.run["grown"] as Dictionary).size(), GameState.crops.size()], Color(0.8, 1, 0.7))
 		if randf() < GameState.bonus("farming", "seed_back"):
@@ -643,9 +655,17 @@ func _sellbox(sel: String) -> void:
 		var n := GameState.count(sel)
 		var prev := int(box.get(sel, 0))
 		box[sel] = prev + n
+		var tq := GameState.take_quality(sel, n)
+		if int(tq["g"]) + int(tq["s"]) > 0:
+			if not GameState.run.has("sellbox_q"):
+				GameState.run["sellbox_q"] = {}
+			var bq: Dictionary = GameState.run["sellbox_q"].get(sel, {})
+			bq["g"] = int(bq.get("g", 0)) + int(tq["g"])
+			bq["s"] = int(bq.get("s", 0)) + int(tq["s"])
+			GameState.run["sellbox_q"][sel] = bq
 		GameState.add_item(sel, -n)
 		net_act({"a": "sellbox", "id": sel, "n": n})
-		var est := GameState.sell_price(sel, prev + n) - GameState.sell_price(sel, prev)
+		var est := GameState.sell_price(sel, prev + n) - GameState.sell_price(sel, prev) + GameState.quality_bonus_value({sel: tq})
 		hud.toast("Put %d %s in the sell box (about ◆%d tonight%s)." % [n, GameState.item_name(sel), est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
 		Music.instance(get_tree()).sfx("pickup")
 		return

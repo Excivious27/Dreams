@@ -196,6 +196,17 @@ func _slot_button(id: String, selected: bool, cb: Callable) -> Control:
 			n.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 			n.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			b.add_child(n)
+			var q := GameState.quality_of(id)
+			if int(q.get("g", 0)) + int(q.get("s", 0)) > 0:
+				var st := Label.new()
+				st.text = "★" if int(q.get("g", 0)) > 0 else "☆"
+				st.add_theme_font_size_override("font_size", 8)
+				st.add_theme_color_override("font_color", Color(1, 0.85, 0.3) if int(q.get("g", 0)) > 0 else Color(0.85, 0.9, 1.0))
+				st.add_theme_constant_override("outline_size", 2)
+				st.add_theme_color_override("font_outline_color", Color.BLACK)
+				st.position = Vector2(3, 1)
+				st.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				b.add_child(st)
 	return b
 
 
@@ -384,6 +395,23 @@ func _refresh() -> void:
 				pl.text = " %d" % pts
 				pl.add_theme_font_size_override("font_size", 7)
 				h.add_child(pl)
+				# Birthday, what you've learned they love, and the next heart perk.
+				var bd := GameState.birthday_of(str(id))
+				var seen: Dictionary = (r.get("gift_seen", {}) as Dictionary).get(id, {})
+				var loves: Array = []
+				var hates: Array = []
+				for gi: String in seen:
+					if int(seen[gi]) >= 12:
+						loves.append(GameState.item_name(gi))
+					elif int(seen[gi]) < 0:
+						hates.append(GameState.item_name(gi))
+				var nxt := ""
+				for hh in [2, 4, 6, 8, 10]:
+					if GameState.friend_hearts(str(id)) < hh and GameState.friend_perk_at(str(id), hh) != "":
+						nxt = "♥%d: %s" % [hh, GameState.friend_perk_at(str(id), hh)]
+						break
+				var info := "   🎂 %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
+				_line(info, 6, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
 		"Map":
 			var m := Control.new()
 			m.custom_minimum_size = Vector2(240, 300 if Art.has("ui", "world_map") else 190)
@@ -426,6 +454,23 @@ func _refresh() -> void:
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])
 			_button("Music: %s" % ("off" if bool(SaveGame.get_value("muted", false)) else "on"), func() -> void: Music.instance(get_tree()).toggle_mute(); _refresh())
+			for vk: String in ["music_vol", "sfx_vol"]:
+				var row := HBoxContainer.new()
+				_body.add_child(row)
+				var vl := Label.new()
+				vl.text = "%s volume  %d/10" % ["Music" if vk == "music_vol" else "Sound", int(Settings.get_v(vk))]
+				vl.add_theme_font_size_override("font_size", 8)
+				vl.custom_minimum_size = Vector2(110, 0)
+				row.add_child(vl)
+				for step: int in [-1, 1]:
+					var bt := Button.new()
+					bt.text = " − " if step < 0 else " + "
+					bt.custom_minimum_size = Vector2(34, 22)
+					bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("pickup"); _refresh())
+					row.add_child(bt)
+			_button("Button size: %s" % Settings.BTN_NAMES[clampi(int(Settings.get_v("btn_size")), 0, 2)], func() -> void: Settings.set_v("btn_size", (int(Settings.get_v("btn_size")) + 1) % 3); _refresh())
+			_button("Controls: %s-handed" % ("left" if Settings.left_handed() else "right"), func() -> void: Settings.set_v("left_handed", not Settings.left_handed()); _refresh())
+			_button("Easy mode: %s" % ("on (foes hit softer, no fee when you faint)" if Settings.easy() else "off"), func() -> void: Settings.set_v("easy", not Settings.easy()); _refresh())
 			_button("On-screen controls: %s" % ("shown" if TouchControls.visible_controls else "hidden"), func() -> void: TouchControls.visible_controls = not TouchControls.visible_controls; _refresh())
 			_button("Key bindings…", func() -> void: _tab = "Keys"; _refresh())
 			_button("Save & back to title", func() -> void:

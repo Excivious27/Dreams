@@ -668,7 +668,7 @@ func _physics_process(delta: float) -> void:
 			if not GameState.spend_energy(1):
 				map.player_down("tired")
 	elif mounted:
-		spd_mult *= 1.8 if running else 1.5
+		spd_mult *= (1.8 if running else 1.5) * (1.1 if Perks.flag("ride_fast") else 1.0)
 	elif vehicle != "":
 		var vs := float(vd.get("speed", 1.0))
 		if vd.has("snow") and (GameState.season() == "winter" or (map and map.scene_id() in ["mountain", "sky", "highlands"])):
@@ -996,6 +996,8 @@ func take_damage(n: int, from: Vector2) -> void:
 	var defn := GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence")) + int(GameState.buff("defense")) + (2 if Colony.has_ability("coral_ward") else 0)
 	n = maxi(1, roundi(n * 60.0 / (60.0 + 4.0 * maxf(0.0, defn))))
 	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
+	if Settings.easy():
+		n = maxi(1, roundi(n * 0.6))
 	# Short mercy window: enough to not get chain-hit by one enemy, not enough to
 	# tank a crowd. The knockback is shorter too, so you can't bounce to safety.
 	invuln = 0.35

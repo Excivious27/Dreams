@@ -119,8 +119,39 @@ func _show_title() -> void:
 	if prev is Dictionary and not (prev as Dictionary).is_empty():
 		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
 		_page.add_child(_button("Restore %s (day %d)" % [pn, int((prev as Dictionary).get("day", 1))], _restore_prev))
+	_page.add_child(_button("Save slots (slot %d)" % GameState.slot(), _show_slots))
 	if OS.is_debug_build():
 		_page.add_child(_button("Character test map", func() -> void: get_tree().change_scene_to_file("res://scenes/test_map.tscn")))
+
+
+func _show_slots() -> void:
+	_clear()
+	_page.add_child(_label("Save slots", 16))
+	_page.add_child(_label("Three farms side by side. Tap one to play it.", 8, false))
+	for n in [1, 2, 3]:
+		var here: bool = int(n) == GameState.slot()
+		_page.add_child(_button("%s%d: %s" % ["▶ " if here else "", n, GameState.slot_info(n)], func() -> void:
+			GameState.use_slot(n)
+			_show_title(), here))
+	_page.add_child(_label("Move a farm to another phone: copy its code here, then paste it on the other phone.", 8, false))
+	_page.add_child(_button("Copy this slot's save code", func() -> void:
+		DisplayServer.clipboard_set(GameState.export_code())
+		_slot_msg.text = "Copied. Paste it somewhere safe (a note or a message to yourself)."))
+	_slot_code = TextEdit.new()
+	_slot_code.placeholder_text = "Paste a save code here"
+	_slot_code.custom_minimum_size = Vector2(220, 46)
+	_slot_code.add_theme_font_size_override("font_size", 7)
+	_page.add_child(_slot_code)
+	_page.add_child(_button("Load the code into slot %d" % GameState.slot(), func() -> void:
+		var err := GameState.import_code(_slot_code.text)
+		_slot_msg.text = err if err != "" else "Loaded. The farm that was here can be brought back with Restore."))
+	_slot_msg = _label("", 8, false)
+	_page.add_child(_slot_msg)
+	_page.add_child(_button("Back", _show_title))
+
+
+var _slot_code: TextEdit
+var _slot_msg: Label
 
 
 ## Starting over never loses a farm: the current one is kept to restore.
@@ -140,7 +171,7 @@ func _restore_prev() -> void:
 		return
 	var cur: Dictionary = GameState.run.duplicate(true) if GameState.has_run() else {}
 	GameState.run = {}
-	SaveGame.set_value(GameState.SAVE_KEY, (prev as Dictionary).duplicate(true))
+	SaveGame.set_value(GameState.save_key(), (prev as Dictionary).duplicate(true))
 	GameState.has_run()   # loads and migrates it
 	if not cur.is_empty():
 		SaveGame.set_value("run_prev", cur)  # swap, so nothing is ever lost

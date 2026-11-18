@@ -176,12 +176,13 @@ func _on_draw() -> void:
 	if weather == "fog" and overhead:
 		# Soft drifting haze, drawn in code: the tiled fog strip read as hard grey bands.
 		ov = null
-		_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.85, 0.88, 0.92, 0.10))
+		var lift := 0.4 if not GameState.run.is_empty() and Perks.flag("fog_lift") else 1.0
+		_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.85, 0.88, 0.92, 0.10 * lift))
 		for i in 7:
 			var cx := fmod(i * 97.0 + _ov_t * (4.0 + i), _w + 160.0) - 80.0
 			var cy := 60.0 + fmod(i * 131.0, _h - 120.0) + sin(_ov_t * 0.2 + i) * 12.0
 			for k in 5:
-				_canvas.draw_circle(Vector2(cx, cy), 70.0 - k * 12.0, Color(0.9, 0.92, 0.95, 0.025))
+				_canvas.draw_circle(Vector2(cx, cy), 70.0 - k * 12.0, Color(0.9, 0.92, 0.95, 0.025 * lift))
 	if ov != null and overhead:
 		# Painted weather overlay: 4-frame 128x96 strip tiled across the screen, additive-ish.
 		var fw := 128

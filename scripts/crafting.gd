@@ -362,117 +362,43 @@ static func run(m: GameMap, station: String, title := "", where := "farm") -> vo
 		var ok: Dictionary = GameState.run["flags"]["keg"]
 		jobs(key).append({"id": "brew_old", "name": GameState.item_name(str(ok["out"])), "give": str(ok["out"]), "n": 1, "batches": 1, "tier": 1, "tool": false, "st": 1, "station": "keg", "done_at": int(ok["ready"]) * 1440 + GameState.DAY_START})
 		GameState.run["flags"]["keg"] = {}
-	var cat := ""
-	while true:
-		collect(m, station, key)
-		var js := jobs(key)
-		var list := available(station, tier)
-		var cats: Array = []
-		if list.size() > 9:
-			for rc in list:
-				if _cat(rc) not in cats:
-					cats.append(_cat(rc))
-		var d := Dialogue.instance(m.get_tree())
-		var status := "Tier %d · %d of %d slot%s busy" % [tier, js.size(), slots(tier), "" if slots(tier) == 1 else "s"]
-		if not js.is_empty():
-			var soon := 999999
-			for j: Dictionary in js:
-				soon = mini(soon, int(j["done_at"]) - now_abs())
-			status += " · next in %s" % fmt_minutes(maxi(0, soon))
-		if town:
-			status += " · %s's bench: ◆ fee per piece" % str(GameState.npcs.get(str(TOWN_KEEPER.get(station, "")), {}).get("name", "The keeper"))
-		# Step 1 (big books only): pick a shelf.
-		if cats.size() > 1 and cat == "":
-			var copts: Array = cats.duplicate()
-			copts.append("Leave")
-			d.say([{"who": head, "text": status, "choice": copts, "key": ""}])
-			await d.finished
-			if d.last_choice < 0 or d.last_choice >= cats.size():
-				return
-			cat = str(cats[d.last_choice])
-			continue
-		var shown: Array = []
-		var opts: Array = []
-		for rc in list:
-			if cat != "" and _cat(rc) != cat:
-				continue
-			shown.append(rc)
-			var n := int(rc.get("n", 1))
-			opts.append("%s%s%s  [%s]  ⏱%s" % ["✓ have · " if _owned(rc) else ("" if can_make(rc) else "✗ "), str(rc["name"]), " ×%d" % n if n > 1 else "", _need_text(rc), fmt_minutes(minutes_for(station, rc, tier))])
-		# What the next upgrade or level opens, so there's always something to aim at.
-		var locked: Array = []
-		for rc in _all(station):
-			var why := why_locked(station, tier, rc)
-			if why != "" and (cat == "" or _cat(rc) == cat) and locked.size() < 3:
-				locked.append("🔒 %s — %s" % [str(rc["name"]), why])
-		opts += locked
-		var wait_i := -1
-		if not js.is_empty():
-			wait_i = opts.size()
-			opts.append("Wait here for the next job")
-		var back_i := -1
-		if cat != "":
-			back_i = opts.size()
-			opts.append("← Other shelves")
-		opts.append("Leave")
-		if shown.is_empty() and locked.is_empty() and station == "keg":
-			status += "\nBring produce: fruit, vegetables, herbs, grain, mushrooms or flowers."
-		d.say([{"who": head, "text": status if cat == "" else "%s\n%s" % [cat, status], "choice": opts, "key": ""}])
-		await d.finished
-		var i := d.last_choice
-		if i == wait_i and wait_i >= 0:
-			var soon2 := 999999
-			for j: Dictionary in js:
-				soon2 = mini(soon2, int(j["done_at"]) - now_abs())
-			var day_left := GameState.DAY_END - int(GameState.run["time"]) - 10
-			if soon2 > day_left:
-				m.hud.toast("That won't be ready today. Sleep on it.")
-			elif soon2 > 0:
-				GameState.run["time"] = int(GameState.run["time"]) + soon2
-				m.hud.toast("You wait. %s." % fmt_minutes(soon2))
-			continue
-		if i == back_i and back_i >= 0:
-			cat = ""
-			continue
-		if i < 0 or i >= shown.size():
-			if i >= shown.size() and i < shown.size() + locked.size():
-				m.hud.toast(str(locked[i - shown.size()]).trim_prefix("🔒 "), Color(1, 0.85, 0.6))
-				continue
-			return
-		var rc: Dictionary = shown[i]
-		if _owned(rc):
-			m.hud.toast("You already have the %s." % GameState.item_name(str(rc["give"])), Color(1, 0.8, 0.6))
-			continue
-		if js.size() >= slots(tier):
-			m.hud.toast("Every slot is busy. A better %s runs more jobs at once." % label(station), Color(1, 0.8, 0.6))
-			continue
-		if not can_make(rc):
-			m.hud.toast("Missing: %s." % _need_text(rc), Color(1, 0.7, 0.7))
-			continue
-		# How many?
-		var qty := 1
-		var mx := mini(max_qty(rc), 10 * tier)
-		if not _single(rc) and mx > 1:
-			var qs: Array = [1]
-			if mx >= 5:
-				qs.append(5)
-			if mx not in qs:
-				qs.append(mx)
-			var qopts: Array = []
-			for q in qs:
-				qopts.append("Make %d  [%s]  ⏱%s" % [int(q) * int(rc.get("n", 1)), _need_text(rc, int(q)), fmt_minutes(minutes_for(station, rc, tier, int(q)))])
-			qopts.append("Back")
-			d.say([{"who": head, "text": "%s: how many?" % str(rc["name"]), "choice": qopts, "key": ""}])
-			await d.finished
-			if d.last_choice < 0 or d.last_choice >= qs.size():
-				continue
-			qty = int(qs[d.last_choice])
-		if town:
-			var fee := 5 * int(rc.get("tier", 1)) * qty
-			if int(GameState.run["crystals"]) < fee:
-				m.hud.toast("The bench fee is ◆%d." % fee, Color(1, 0.7, 0.7))
-				continue
-			GameState.run["crystals"] = int(GameState.run["crystals"]) - fee
-		var j := start(station, key, rc, tier, qty)
-		m.hud.toast("%s: ready in %s." % [str(rc["name"]), fmt_minutes(int(j["done_at"]) - now_abs())], Color(1, 0.9, 0.4))
-		Music.instance(m.get_tree()).sfx("plant")
+	await CraftScreen.open(m, station, key, tier, town, head)
+
+
+# ---- discovery -----------------------------------------------------------------
+
+## A recipe is known once you've made it, or held every ingredient at least once
+## (tier-1 recipes are always known, so a new station is never empty).
+static func discovered(rc: Dictionary) -> bool:
+	if int(rc.get("tier", 1)) <= 1 or str(rc.get("id", "")).begins_with("brew_"):
+		return true
+	var kn: Dictionary = GameState.run.get("known_recipes", {})
+	if kn.has(str(rc["id"])):
+		return true
+	for id in rc["need"]:
+		if not GameState.has_seen(str(id)):
+			return false
+	return true
+
+
+static func mark_known(rc: Dictionary) -> void:
+	if not GameState.run.has("known_recipes"):
+		GameState.run["known_recipes"] = {}
+	GameState.run["known_recipes"][str(rc["id"])] = true
+
+
+## The ingredients you've never held, for the ??? card.
+static func discover_hint(rc: Dictionary) -> String:
+	var miss: Array = []
+	for id in rc["need"]:
+		if not GameState.has_seen(str(id)):
+			miss.append(GameState.need_name(str(id)))
+	return ", ".join(miss) if not miss.is_empty() else "make it once"
+
+
+## "2/3 Copper Ore, 0/1 Coal" for the card.
+static func have_text(rc: Dictionary, qty := 1) -> String:
+	var parts: Array = []
+	for id in rc["need"]:
+		parts.append("%d/%d %s" % [GameState.count_any(str(id)), int(rc["need"][id]) * qty, GameState.need_name(str(id))])
+	return ", ".join(parts)

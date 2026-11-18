@@ -224,6 +224,31 @@ func default_spawn() -> Vector2:
 	return Vector2(cols * TILE / 2.0, rows * TILE / 2.0)
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
+## One short verb for what USE / CHECK would do on this cell (shown on the button).
+const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "elder": "Talk", "beacon": "Light"}
+
+
+func action_word(c: Vector2i) -> String:
+	if player == null:
+		return ""
+	if has_npc_at(c):
+		return "Talk"
+	if nearest_enemy_to(player.position, 22.0) != null:
+		return "Fight"
+	if _exit_at(c):
+		return "Go"
+	var thing: Dictionary = things.get(c, {})
+	if thing.is_empty() or hint_for(c, thing) == "":
+		return ""
+	var t := str(thing.get("type", ""))
+	if ACTION_WORDS.has(t):
+		return str(ACTION_WORDS[t])
+	for k: String in ACTION_WORDS:
+		if t.begins_with(k) or t.ends_with(k):
+			return str(ACTION_WORDS[k])
+	return "Use"
+
+
 func hint_for(_cell: Vector2i, thing: Dictionary) -> String:
 	if not resources_here and str(thing.get("type", "")) in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
 		return ""
@@ -1577,6 +1602,8 @@ func player_down(reason := "hurt") -> void:
 			rate = 0.0
 		elif GameState.has_friend_perk("juniper", 2):
 			rate = 0.05
+	if Settings.easy() or (reason == "hurt" and Perks.flag("no_clinic_fee")):
+		rate = 0.0
 	var fee := int(ceil(cr * rate))
 	# A Marked who beat you won't come at you again today.
 	for e in enemies:
@@ -1694,6 +1721,10 @@ func _process(delta: float) -> void:
 		hitstop -= delta
 	if get_tree().paused:
 		return
+	if hud and not (GameState.run.get("notes", []) as Array).is_empty():
+		for nt in GameState.run["notes"]:
+			hud.toast(str(nt), Color(1, 0.85, 0.9))
+		GameState.run["notes"] = []
 	# Autosave every 90 s of play when nothing is mid-scene (phones kill tabs).
 	_autosave_t += minf(delta, 0.5)
 	if _autosave_t >= 90.0 and not _changing and not Dialogue.instance(get_tree()).active:
@@ -1732,6 +1763,7 @@ func _process(delta: float) -> void:
 	if player and hud:
 		var fc := player.facing_cell()
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
+		TouchControls.context_word = action_word(fc)
 	Events.tick(self, delta)
 	Story.tick(self, delta)
 	if Net.online():

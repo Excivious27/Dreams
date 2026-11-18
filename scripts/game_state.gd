@@ -83,7 +83,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 static func has_run() -> bool:
 	load_data()
 	if run.is_empty():
-		var saved: Variant = SaveGame.get_value(SAVE_KEY)
+		var saved: Variant = SaveGame.get_value(save_key())
 		if saved is Dictionary and not saved.is_empty():
 			run = saved
 			_migrate()
@@ -135,7 +135,63 @@ static func _migrate() -> void:
 
 
 static func save() -> void:
-	SaveGame.set_value(SAVE_KEY, Net.save_view(run))
+	SaveGame.set_value(save_key(), Net.save_view(run))
+
+
+## Three save slots. Slot 1 keeps the old "run" key so existing saves are slot 1.
+static func slot() -> int:
+	return clampi(int(SaveGame.get_value("slot", 1)), 1, 3)
+
+
+static func slot_key(n: int) -> String:
+	return SAVE_KEY if n <= 1 else "%s_%d" % [SAVE_KEY, n]
+
+
+static func save_key() -> String:
+	return slot_key(slot())
+
+
+static func slot_info(n: int) -> String:
+	var d: Variant = SaveGame.get_value(slot_key(n), null)
+	if not d is Dictionary or (d as Dictionary).is_empty() or not (d as Dictionary).has("names"):
+		return "Empty"
+	var r: Dictionary = d
+	var arc := "Penguins" if str(r.get("arc", "")) == "penguins" else "Gangsters"
+	return "%s · %s · day %d" % [str(r["names"].get("character", "?")), arc, int(r.get("day", 1))]
+
+
+static func use_slot(n: int) -> void:
+	if not run.is_empty():
+		save()
+	run = {}
+	SaveGame.set_value("slot", clampi(n, 1, 3))
+
+
+## A save as one text code (gzip + base64) to move it to another phone.
+static func export_code() -> String:
+	var raw := JSON.stringify(Net.save_view(run) if not run.is_empty() else SaveGame.get_value(save_key(), {})).to_utf8_buffer()
+	return "DRM1:" + Marshalls.raw_to_base64(raw.compress(FileAccess.COMPRESSION_GZIP))
+
+
+## Loads a code into the current slot; the slot's old farm goes to Restore. "" on success.
+static func import_code(code: String) -> String:
+	var c := code.strip_edges()
+	if not c.begins_with("DRM1:"):
+		return "That doesn't look like a Dreams save code."
+	var buf := Marshalls.base64_to_raw(c.substr(5))
+	if buf.is_empty():
+		return "The code is cut off or has a typo."
+	var txt := buf.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP).get_string_from_utf8()
+	var d: Variant = JSON.parse_string(txt)
+	if not d is Dictionary or not (d as Dictionary).has("names") or not (d as Dictionary).has("arc"):
+		return "The code is cut off or has a typo."
+	var cur: Variant = SaveGame.get_value(save_key(), null)
+	if cur is Dictionary and not (cur as Dictionary).is_empty():
+		SaveGame.set_value("run_prev", cur)
+	run = {}
+	SaveGame.set_value(save_key(), d)
+	has_run()
+	return ""
 
 
 ## A guest's morning when the host's day rolls over: pay their own sell box,
@@ -148,6 +204,8 @@ static func guest_morning() -> Dictionary:
 	run["sold_today"] = {}
 	for id in run["sellbox"].keys():
 		total += sell_price(id, int(run["sellbox"][id]))
+	total += quality_bonus_value(run.get("sellbox_q", {}))
+	run["sellbox_q"] = {}
 	run["sellbox"] = {}
 	run["sold_today"] = {}
 	run["crystals"] = int(run["crystals"]) + total
@@ -398,6 +456,10 @@ static func count(id: String) -> int:
 static func add_item(id: String, n: int = 1) -> void:
 	var inv: Dictionary = run["inventory"]
 	inv[id] = int(inv.get(id, 0)) + n
+	if n < 0:
+		_trim_quality(id)
+	elif n > 0:
+		_mark_seen(id)
 	if inv[id] <= 0:
 		inv.erase(id)
 		var tb: Array = run["toolbar"]
@@ -411,6 +473,78 @@ static func add_item(id: String, n: int = 1) -> void:
 		if free >= 0:
 			tb[free] = id
 	sync_selected()
+
+
+static func _mark_seen(id: String) -> void:
+	if not run.has("seen"):
+		run["seen"] = {}
+	run["seen"][id] = true
+
+
+## Ever held this item (or, for "#family", anything of that family)?
+static func has_seen(key: String) -> bool:
+	if count_any(key) > 0:
+		return true
+	var seen: Dictionary = run.get("seen", {})
+	if not key.begins_with("#"):
+		return seen.has(key) or has_tool(key)
+	var f := key.substr(1)
+	for id: String in seen:
+		if family(id) == f or (f == "fruit" and family(id) in ["tree", "berry"]):
+			return true
+	return false
+
+
+## Quality crops: run["quality"][id] = {"g": gold count, "s": silver count}, a
+## subset of the stack. Gold sells for half again, silver a quarter more.
+const QUALITY_BONUS := {"g": 0.5, "s": 0.25}
+
+
+static func quality_of(id: String) -> Dictionary:
+	return (run.get("quality", {}) as Dictionary).get(id, {})
+
+
+static func add_quality(id: String, q: String, n: int) -> void:
+	if not run.has("quality"):
+		run["quality"] = {}
+	var d: Dictionary = run["quality"].get(id, {})
+	d[q] = int(d.get(q, 0)) + n
+	run["quality"][id] = d
+
+
+static func _trim_quality(id: String) -> void:
+	var d := quality_of(id)
+	if d.is_empty():
+		return
+	var over := int(d.get("g", 0)) + int(d.get("s", 0)) - count(id)
+	if over <= 0:
+		return
+	var cut := mini(over, int(d.get("s", 0)))
+	d["s"] = int(d.get("s", 0)) - cut
+	d["g"] = maxi(0, int(d.get("g", 0)) - (over - cut))
+	if int(d["s"]) + int(d["g"]) <= 0:
+		run["quality"].erase(id)
+
+
+## Takes up to n of the best pieces (gold first) for selling: returns {"g", "s"}.
+static func take_quality(id: String, n: int) -> Dictionary:
+	var d := quality_of(id)
+	var g := mini(n, int(d.get("g", 0)))
+	var sv := mini(n - g, int(d.get("s", 0)))
+	if g + sv > 0:
+		d["g"] = int(d.get("g", 0)) - g
+		d["s"] = int(d.get("s", 0)) - sv
+	return {"g": g, "s": sv}
+
+
+## The extra a sell box's quality pieces earn on top of the normal price.
+static func quality_bonus_value(box_q: Dictionary) -> int:
+	var t := 0.0
+	for id: String in box_q:
+		var q: Dictionary = box_q[id]
+		var unit := float(sell_price(id, 1))
+		t += unit * (QUALITY_BONUS["g"] * int(q.get("g", 0)) + QUALITY_BONUS["s"] * int(q.get("s", 0)))
+	return int(round(t))
 
 
 ## What's "in hand": the toolbar slot's item if it's a usable item with count > 0.
@@ -552,7 +686,7 @@ static func points_spent(skill: String) -> int:
 
 
 static func points_free(skill: String) -> int:
-	return maxi(0, skill_level(skill) - 1 - points_spent(skill))
+	return maxi(0, skill_level(skill) - 1 + (1 if Perks.flag("skill_point") else 0) - points_spent(skill))
 
 
 ## Why a node can't be bought ("" = it can).
@@ -1036,6 +1170,12 @@ static func need_name(key: String) -> String:
 static func give_gift(npc: String, item: String) -> int:
 	add_item(item, -1)
 	var gain := gift_value(npc, item)
+	# Remember what they thought of it (for the Social page).
+	if not run.has("gift_seen"):
+		run["gift_seen"] = {}
+	var gs: Dictionary = run["gift_seen"].get(npc, {})
+	gs[item] = gain
+	run["gift_seen"][npc] = gs
 	add_friend(npc, gain)
 	var g: Dictionary = run.get("gifted_today", {})
 	g[npc] = true
@@ -1046,6 +1186,21 @@ static func give_gift(npc: String, item: String) -> int:
 static func add_friend(npc: String, n: int) -> void:
 	var fr: Dictionary = run["friendship"]
 	fr[npc] = clampi(int(fr.get(npc, 0)) + n, 0, 250)
+	if n > 0:
+		for line in Perks.check(npc):
+			notify(str(line))
+	# Bram's soup: the first chat with him each day tops you up.
+	if npc == "bram" and n > 0 and Perks.flag("soup") and int(run["flags"].get("soup_day", -1)) != int(run["day"]):
+		run["flags"]["soup_day"] = int(run["day"])
+		run["energy"] = mini(int(run["max_energy"]), int(run["energy"]) + 30)
+		notify("Bram slides you a bowl of soup. +30 energy.")
+
+
+## A message for the HUD from code that has no map handy (shown next frame).
+static func notify(text: String) -> void:
+	if not run.has("notes"):
+		run["notes"] = []
+	(run["notes"] as Array).append(text)
 
 
 static func gift_value(npc: String, item: String) -> int:
@@ -1068,7 +1223,27 @@ static func gift_value(npc: String, item: String) -> int:
 		base = 8
 	if base > 0:
 		base += int(bonus("bartering", "gift_bonus")) + int(it.get("friend", 0))
+		if is_birthday(npc):
+			base *= 3
 	return base
+
+
+## [season, day] from data/npcs.json (tools/gen_heart_perks.py).
+static func birthday_of(npc: String) -> Array:
+	return npcs.get(npc, {}).get("birthday", [])
+
+
+static func is_birthday(npc: String) -> bool:
+	var b := birthday_of(npc)
+	return b.size() == 2 and str(b[0]) == season() and int(b[1]) == day_of_season()
+
+
+## Whose birthday is today ("" if nobody's).
+static func birthday_today() -> String:
+	for id: String in npcs:
+		if is_birthday(id):
+			return id
+	return ""
 
 
 # ---- quests ------------------------------------------------------------------
@@ -1525,6 +1700,11 @@ static func sleep(passed_out := false) -> Dictionary:
 		run["sold_today"][id] = n
 		total += v
 		report["sold"].append("%s x%d = %d" % [item_name(id), n, v])
+	var qb := quality_bonus_value(run.get("sellbox_q", {}))
+	if qb > 0:
+		total += qb
+		report["sold"].append("quality bonus = %d" % qb)
+	run["sellbox_q"] = {}
 	if total > 0:
 		add_xp("bartering", total / 4)
 	run["sold_today"] = {}
@@ -1620,6 +1800,11 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
 	run["gifted_today"] = {}
+	for line in Perks.morning():
+		notify(str(line))
+	var bd := birthday_today()
+	if bd != "":
+		notify("It's %s's birthday today! Gifts count triple." % str(npcs[bd].get("name", bd)))
 	# The pup heals overnight; a rest day ends with full health.
 	var pt: Dictionary = run.get("pet", {})
 	if not pt.is_empty():

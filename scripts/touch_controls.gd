@@ -18,6 +18,8 @@ const BUTTONS := {
 	"dodge": {"pos": Vector2(184, 384), "r": 13.0, "label": "ROLL"},
 }
 static var dodge_pressed := false
+## What USE would do right now ("Talk", "Chop"...), set by the map every frame.
+static var context_word := ""
 ## Pup commands: a strip down the left edge, shown while the pup is with you.
 ## (Teammates will get a second strip the same way.)
 const PUP_CMDS := [["follow", "cmd_heel", "HEEL"], ["attack", "cmd_attack", "ATK"], ["wait", "cmd_stay", "STAY"], ["guard", "cmd_guard", "GUARD"], ["recall", "cmd_recall", "CALL"]]
@@ -149,6 +151,10 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
+func _pup_x() -> float:
+	return 270.0 - PUP_X if Settings.left_handed() else PUP_X
+
+
 func _foe_near() -> bool:
 	var m := get_tree().current_scene as GameMap
 	if m == null or m.player == null or get_tree().paused:
@@ -201,7 +207,7 @@ func _pup_cmd(cmd: String) -> void:
 func _hit(pos: Vector2) -> String:
 	if _pet() != null and not get_tree().paused and not Dialogue.instance(get_tree()).active:
 		for i in PUP_CMDS.size():
-			if pos.distance_to(Vector2(PUP_X, PUP_Y0 + PUP_STEP * i)) <= PUP_R * 1.25:
+			if pos.distance_to(Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)) <= PUP_R * 1.25:
 				return "pup:" + str(PUP_CMDS[i][0])
 	for action: String in BUTTONS:
 		if action == "ability" and not _has_ability():
@@ -209,7 +215,8 @@ func _hit(pos: Vector2) -> String:
 		if action == "dodge" and not _foe_near():
 			continue
 		var b: Dictionary = BUTTONS[action]
-		if pos.distance_to(b["pos"]) <= float(b["r"]) * 1.35:
+		var br := Settings.button_at(b["pos"], float(b["r"]))
+		if pos.distance_to(br[0]) <= float(br[1]) * 1.35:
 			return action
 	return ""
 
@@ -289,7 +296,7 @@ func _on_draw() -> void:
 	var edge := Color(1, 1, 1, 0.45)
 	var lit := Color(1, 1, 1, 0.5)
 	# Joystick: faint resting ring bottom-left until you touch; then it floats under your thumb.
-	var origin := _stick_origin if _stick_active else Vector2(58, 412)
+	var origin := _stick_origin if _stick_active else Vector2(212 if Settings.left_handed() else 58, 412)
 	var jb := Art.tex("ui", "joy_base_a")
 	var jk := Art.tex("ui", "joy_knob_light")
 	if jb:
@@ -317,7 +324,7 @@ func _on_draw() -> void:
 		var mode := str(Pet.state().get("mode", "follow"))
 		for i in PUP_CMDS.size():
 			var cmd := str(PUP_CMDS[i][0])
-			var cp := Vector2(PUP_X, PUP_Y0 + PUP_STEP * i)
+			var cp := Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)
 			var active := cmd == mode
 			var dim := (cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0) or (not pt.visible and cmd != "recall")
 			_canvas.draw_circle(cp, PUP_R, Color(0.12, 0.09, 0.05, 0.62))
@@ -339,8 +346,9 @@ func _on_draw() -> void:
 		if action == "dodge" and not _foe_near():
 			continue
 		var b: Dictionary = BUTTONS[action]
-		var p: Vector2 = b["pos"]
-		var r := float(b["r"])
+		var br := Settings.button_at(b["pos"], float(b["r"]))
+		var p: Vector2 = br[0]
+		var r := float(br[1])
 		var on := _held.has(action)
 		var sk: Array = skins.get(action, [])
 		if not sk.is_empty() and Art.has("ui", str(sk[0])):
@@ -362,6 +370,11 @@ func _on_draw() -> void:
 					_canvas.draw_arc(p, r - 1, -PI / 2, -PI / 2 + TAU * (1.0 - cl / full), 32, Color(0.6, 0.85, 1, 0.95), 2.5, true)
 		var label := str(b["label"])
 		var size := 9 if r > 20.0 else 7
+		if action == "a" and context_word != "" and not get_tree().paused:
+			var tw := font.get_string_size(context_word, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x + 8.0
+			var tp := p + Vector2(-tw / 2.0, -r - 13.0)
+			_canvas.draw_rect(Rect2(tp, Vector2(tw, 11)), Color(0.1, 0.07, 0.04, 0.75))
+			_canvas.draw_string(font, tp + Vector2(4, 8.5), context_word, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.93, 0.7))
 		if action == "a":
 			# Show what USE will do: the held tool's icon, or a sword.
 			var held := GameState.held_tool() if not GameState.run.is_empty() else ""

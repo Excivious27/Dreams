@@ -245,7 +245,12 @@ func _process(delta: float) -> void:
 		return
 	var stunned := _stun > 0.0
 	if not stunned and _windup <= 0.0:
-		if dist < 80.0 and dist > reach * 0.6:
+		var sight := 80.0
+		if tgt == player and Perks.flag("quiet_steps"):
+			sight = 58.0
+		if tgt == player and kind.contains("wisp") and Perks.flag("wisp_safe") and hp >= max_hp:
+			sight = 0.0
+		if dist < sight and dist > reach * 0.6:
 			if not _noticed:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)

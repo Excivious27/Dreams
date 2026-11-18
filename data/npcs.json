@@ -66,12 +66,16 @@
   "perks": {
    "2": "5% off at the General Store",
    "4": "10% off; Maple stocks rare seeds",
-   "6": "Maple sends you a seed pack each season",
+   "6": "Maple sends a seed pack each season",
    "8": "20% off at the General Store",
-   "10": "Store open late; Maple gifts a Golden Watering Can"
+   "10": "Maple gifts a Golden Watering Can's worth of growth: 3 Growth Elixirs"
   },
   "home": "store",
-  "work": "store"
+  "work": "store",
+  "birthday": [
+   "spring",
+   15
+  ]
  },
  "gideon": {
   "name": "Gideon",
@@ -136,12 +140,16 @@
   "perks": {
    "2": "Tool upgrades 10% cheaper",
    "4": "Free repairs; upgrades 20% cheaper",
-   "6": "Gideon forges a free Copper Ring",
+   "6": "Gideon forges you a free Copper Ring",
    "8": "Upgrades 30% cheaper",
-   "10": "Gideon teaches Whirlwind (combat)"
+   "10": "Gideon's last lesson: +20 max health"
   },
   "home": "smith",
-  "work": "smith"
+  "work": "smith",
+  "birthday": [
+   "summer",
+   9
+  ]
  },
  "wren": {
   "name": "Wren",
@@ -204,13 +212,17 @@
   ],
   "perks": {
    "2": "Potions heal 25% more",
-   "4": "Wren sells Energy Tea at cost",
+   "4": "Wren leaves Energy Tea on your step each week",
    "6": "Wren brews you a free potion each week",
    "8": "Potions heal 50% more",
-   "10": "Wren teaches Crystal Shield (magic)"
+   "10": "Wren teaches you to hold more magic: +20 max mana"
   },
   "home": "cottage_a",
-  "work": "potions"
+  "work": "potions",
+  "birthday": [
+   "spring",
+   27
+  ]
  },
  "alder": {
   "name": "Mayor Alder",
@@ -281,14 +293,18 @@
    "junk"
   ],
   "perks": {
-   "2": "Town records: see crop prices in the Journal",
+   "2": "Town records: the mayor sends a Map Scrap",
    "4": "Alder waives the clinic fee once a season",
-   "6": "Building permits: tier-2 plans unlocked",
+   "6": "A building grant: ◆500 toward your next plans",
    "8": "Alder lends you the town cart (sell box pays 10% more)",
-   "10": "Keys to the city: free room at the Inn"
+   "10": "Keys to the city: ◆1000 from the town purse"
   },
   "home": "mansion",
-  "work": "hall"
+  "work": "hall",
+  "birthday": [
+   "spring",
+   3
+  ]
  },
  "sal": {
   "name": "Sal",
@@ -347,14 +363,18 @@
    "flower"
   ],
   "perks": {
-   "2": "Sal tells you where the loot is (map pins)",
-   "4": "Sal watches your back: enemies notice you later",
-   "6": "Sal joins your crew",
-   "8": "Sal's contacts: black-market prices",
-   "10": "Sal fights beside you in the city"
+   "2": "Sal tells you where the loot is: a Map Scrap and a Luck Potion",
+   "4": "Sal teaches you to walk quiet: enemies notice you later",
+   "6": "Sal's spare kit: 2 Greater Potions",
+   "8": "Sal's contacts slip you ◆300",
+   "10": "Sal's old charm: a Dream Charm"
   },
   "home": "inn",
-  "work": "inn"
+  "work": "inn",
+  "birthday": [
+   "winter",
+   20
+  ]
  },
  "finn": {
   "name": "Finn",
@@ -414,13 +434,17 @@
   ],
   "perks": {
    "2": "Fish bite 10% sooner",
-   "4": "Finn's bait is free",
-   "6": "Finn shows you the secret fishing spot",
+   "4": "Finn's bait is free: 10 Bait every week",
+   "6": "Finn's secret spot: a Golden Float",
    "8": "Rare fish bite twice as often",
-   "10": "Finn gives you the Legendary Rod plans"
+   "10": "Finn's best tackle: 3 Golden Floats"
   },
   "home": "cottage_b",
-  "work": "fishing_hut"
+  "work": "fishing_hut",
+  "birthday": [
+   "spring",
+   8
+  ]
  },
  "lumi": {
   "name": "Lumi",
@@ -478,14 +502,18 @@
    "slime_goo"
   ],
   "perks": {
-   "2": "Lumi paints a sign for your farm",
-   "4": "Lumi sells paints (house colours)",
-   "6": "A portrait of you hangs in the hall",
-   "8": "Lumi teaches you to see hidden forage (glints)",
-   "10": "Lumi paints the Dream mural at your house"
+   "2": "Lumi gives you paints for your sign",
+   "4": "Lumi sells you paints at cost: 3 Paint each week",
+   "6": "A portrait of you hangs in the hall (+10 max energy, you feel proud)",
+   "8": "Lumi teaches you to see: +10 max energy",
+   "10": "Lumi paints the Dream mural: a Dream Charm"
   },
   "home": "cottage_c",
-  "work": "cottage_c"
+  "work": "cottage_c",
+  "birthday": [
+   "fall",
+   12
+  ]
  },
  "theo": {
   "name": "Theo",
@@ -548,12 +576,16 @@
   "perks": {
    "2": "+5% skill XP",
    "4": "Theo lends you books: +10% skill XP",
-   "6": "Theo translates the ruin stones",
+   "6": "Theo translates the ruin stones: a Memory Tea",
    "8": "+15% skill XP",
    "10": "Theo's thesis: one free skill point in every tree"
   },
   "home": "cottage_c",
-  "work": "library"
+  "work": "library",
+  "birthday": [
+   "fall",
+   24
+  ]
  },
  "hazel": {
   "name": "Hazel",
@@ -614,14 +646,18 @@
    "flower"
   ],
   "perks": {
-   "2": "Hazel sells seeds at her yard on market days",
+   "2": "Hazel shares seeds: a seed pack each week",
    "4": "Hazel waters your crops when it's sunny (every other day)",
    "6": "Hazel waters your crops every day",
    "8": "Hazel harvests ripe crops into your sell box",
-   "10": "Hazel's heirloom seeds (star quality)"
+   "10": "Hazel's heirloom seeds: 5 Dream Seeds"
   },
   "home": "hazel_house",
-  "work": "hazel_house"
+  "work": "hazel_house",
+  "birthday": [
+   "winter",
+   8
+  ]
  },
  "bram": {
   "name": "Bram",
@@ -677,14 +713,18 @@
    "slime_goo"
   ],
   "perks": {
-   "2": "Inn room 50% off",
-   "4": "Free soup: +30 energy when you visit",
-   "6": "Inn room free",
-   "8": "Bram's stories: map of the hidden regions",
+   "2": "Bram's breakfast: a Tea each week",
+   "4": "Free soup at the inn: +30 energy once a day",
+   "6": "Bram's pies: 2 Orchard Pies",
+   "8": "Bram's stories: a Map Scrap",
    "10": "Bram names a dish after you (+50 max energy)"
   },
   "home": "inn",
-  "work": "inn"
+  "work": "inn",
+  "birthday": [
+   "fall",
+   5
+  ]
  },
  "posy": {
   "name": "Posy",
@@ -747,13 +787,17 @@
   ],
   "perks": {
    "2": "A free loaf every morning",
-   "4": "Posy buys your flour at double",
-   "6": "Posy's recipes: pies and cakes",
+   "4": "Posy bakes for you: a Berry Pie each week",
+   "6": "Posy's recipes: 2 Cakes",
    "8": "Festival cake: +20 max energy",
-   "10": "Posy opens a second oven at your farm"
+   "10": "Posy's best: a Wishfruit Cake each week"
   },
   "home": "bakery",
-  "work": "bakery"
+  "work": "bakery",
+  "birthday": [
+   "summer",
+   21
+  ]
  },
  "juniper": {
   "name": "Juniper",
@@ -818,10 +862,14 @@
    "4": "Juniper's tonic: +20 max health",
    "6": "Clinic fee waived",
    "8": "Juniper visits: wake with full energy after a collapse",
-   "10": "Juniper teaches Second Wind (combat)"
+   "10": "Juniper teaches Second Wind: +30 max health"
   },
   "home": "clinic",
-  "work": "clinic"
+  "work": "clinic",
+  "birthday": [
+   "summer",
+   11
+  ]
  },
  "rook": {
   "name": "Rook",
@@ -886,14 +934,18 @@
    "cake"
   ],
   "perks": {
-   "2": "Rook shows tracks: critters drop pelts",
+   "2": "Rook shows tracks: a Pelt each week",
    "4": "Rook sells arrows and traps",
-   "6": "Rook's map: the quarry path",
-   "8": "Rook walks with you (fights beside you)",
-   "10": "Rook's bow"
+   "6": "Rook's map of the quarry path: a Map Scrap",
+   "8": "Rook's field kit: 2 Greater Potions",
+   "10": "Rook's lucky arrowhead: a Light Charm"
   },
   "home": "lodge",
-  "work": "lodge"
+  "work": "lodge",
+  "birthday": [
+   "fall",
+   19
+  ]
  },
  "pip": {
   "name": "Pip",
@@ -953,14 +1005,18 @@
    "turnip"
   ],
   "perks": {
-   "2": "Pip finds you a coin now and then",
-   "4": "Pip's treasure map",
-   "6": "Pip's secret: the fountain wish works",
-   "8": "Pip's gang",
+   "2": "Pip finds you coins: ◆20 each week",
+   "4": "Pip's treasure map: a Map Scrap",
+   "6": "Pip's secret: the fountain wish works (a Luck Potion)",
+   "8": "Pip's gang brings you shells each week",
    "10": "Pip's lucky charm"
   },
   "home": "store",
-  "work": "school"
+  "work": "school",
+  "birthday": [
+   "spring",
+   20
+  ]
  },
  "wren_jr": {
   "name": "Wren jr",
@@ -1018,14 +1074,18 @@
    "bone"
   ],
   "perks": {
-   "2": "Wren jr shares forage spots",
-   "4": "A frog friend",
-   "6": "Wren jr's garden: free flower seeds",
-   "8": "Wren jr's potion lesson",
-   "10": "Wren jr's wish"
+   "2": "Wren jr shares forage spots: a Tea Leaf each week",
+   "4": "A frog friend (it eats the bugs: +10 max energy)",
+   "6": "Wren jr's garden: flower seeds each week",
+   "8": "Wren jr's potion lesson: 2 Mana Potions",
+   "10": "Wren jr's wish: a Wishfruit"
   },
   "home": "cottage_a",
-  "work": "school"
+  "work": "school",
+  "birthday": [
+   "summer",
+   28
+  ]
  },
  "tobin": {
   "name": "Tobin",
@@ -1084,14 +1144,18 @@
    "turnip"
   ],
   "perks": {
-   "2": "Tobin trades shells",
-   "4": "Tobin's beach map",
-   "6": "Tobin's kite",
-   "8": "Tobin's crew",
-   "10": "Tobin's compass"
+   "2": "Tobin trades shells: 3 each week",
+   "4": "Tobin's beach map: a Map Scrap",
+   "6": "Tobin's kite day: +10 max energy",
+   "8": "Tobin's crew finds you ◆30 a week",
+   "10": "Tobin's compass: a Light Charm"
   },
   "home": "inn",
-  "work": "school"
+  "work": "school",
+  "birthday": [
+   "winter",
+   25
+  ]
  },
  "mabel": {
   "name": "Mabel",
@@ -1150,14 +1214,18 @@
    "bone"
   ],
   "perks": {
-   "2": "Mabel shares a secret",
-   "4": "Mabel's flower crown",
-   "6": "Mabel's songs",
-   "8": "Mabel's diary",
-   "10": "Mabel's wish"
+   "2": "Mabel shares a secret: a Memory Tea",
+   "4": "Mabel's flower crown: +10 max energy",
+   "6": "Mabel's songs: +10 max mana",
+   "8": "Mabel's diary: a Herbal Tea each week",
+   "10": "Mabel's wish: a Wonder Elixir"
   },
   "home": "hazel_house",
-  "work": "school"
+  "work": "school",
+  "birthday": [
+   "winter",
+   13
+  ]
  },
  "marlowe": {
   "name": "Marlowe",
@@ -1184,14 +1252,18 @@
    "candy"
   ],
   "perks": {
-   "2": "Marlowe sells lamp oil (night fishing bonus)",
-   "4": "Marlowe's charts: rare fish spots marked",
-   "6": "Night fishing at the lighthouse doubles rare bites",
-   "8": "Marlowe tells the story of the crystal (lore)",
-   "10": "Marlowe's old rod"
+   "2": "Marlowe sells you lamp oil: 2 each week",
+   "4": "Marlowe's charts: a Golden Float",
+   "6": "Night fishing at the lighthouse: 10 Bait each week",
+   "8": "Marlowe tells the story of the crystal: a Moonlight Elixir",
+   "10": "Marlowe's old tackle box: 3 Golden Floats"
   },
   "home": "lighthouse",
-  "work": "lighthouse"
+  "work": "lighthouse",
+  "birthday": [
+   "summer",
+   16
+  ]
  },
  "orla": {
   "name": "Orla",
@@ -1215,14 +1287,18 @@
    "slime_goo"
   ],
   "perks": {
-   "2": "Milling costs 1 less wheat",
-   "4": "Orla sells wheat seed at cost",
-   "6": "Orla's cornmeal recipes",
-   "8": "Mill runs overnight: flour in the sell box",
-   "10": "Orla's heirloom grain"
+   "2": "Orla's spare flour: 3 each week",
+   "4": "Orla sells wheat seed at cost: a seed pack each week",
+   "6": "Orla's cornmeal: 3 each week",
+   "8": "The mill works for you: 5 Flour each week",
+   "10": "Orla's heirloom grain: 5 Dream Seeds"
   },
   "home": "water_mill",
-  "work": "water_mill"
+  "work": "water_mill",
+  "birthday": [
+   "winter",
+   15
+  ]
  },
  "benno": {
   "name": "Benno",
@@ -1276,13 +1352,17 @@
   ],
   "perks": {
    "2": "Stable boarding 50% off",
-   "4": "Benno sells saddles",
-   "6": "Your horse runs 10% faster",
-   "8": "Benno breaks in a donkey for you",
-   "10": "Benno's llama"
+   "4": "Benno's saddle care: your horse runs 10% faster",
+   "6": "Benno's oats: +20 max energy",
+   "8": "Benno's spare tack sells for ◆250",
+   "10": "Benno's llama wool: 3 Wool each week"
   },
   "home": "stable",
-  "work": "stable"
+  "work": "stable",
+  "birthday": [
+   "summer",
+   4
+  ]
  },
  "ivy": {
   "name": "Ivy",
@@ -1334,13 +1414,17 @@
   ],
   "perks": {
    "2": "Savings account: 1% interest",
-   "4": "Small loans",
+   "4": "Ivy's small loan you never have to pay back: ◆400",
    "6": "2% interest",
-   "8": "Ivy's insurance: no clinic fee",
-   "10": "Ivy's vault"
+   "8": "Ivy's insurance: no clinic fee when you collapse",
+   "10": "Ivy's vault: a Sapphire each week"
   },
   "home": "bank",
-  "work": "bank"
+  "work": "bank",
+  "birthday": [
+   "spring",
+   13
+  ]
  },
  "tam": {
   "name": "Tam",
@@ -1364,14 +1448,18 @@
    "pelt"
   ],
   "perks": {
-   "2": "Tam sells wool",
-   "4": "Tam's sheepdog finds forage",
-   "6": "Tam gives you a lamb",
-   "8": "Tam's cider",
-   "10": "Tam's hills are yours to graze"
+   "2": "Tam's wool: 2 each week",
+   "4": "Tam's sheepdog finds forage: a Tea Leaf each week",
+   "6": "Tam gives you a lamb's worth of wool: 5 Wool",
+   "8": "Tam's cider: 2 each week",
+   "10": "Tam's hills: 2 Golden Apples"
   },
   "home": "tam_hut",
-  "work": "tam_hut"
+  "work": "tam_hut",
+  "birthday": [
+   "summer",
+   23
+  ]
  },
  "old_moss": {
   "name": "Old Moss",
@@ -1397,14 +1485,18 @@
    "flower"
   ],
   "perks": {
-   "2": "Moss shows safe paths (wisps don't hunt you)",
-   "4": "Bog iron recipe",
-   "6": "Moss's lantern (fog lifts near you)",
-   "8": "Marsh gas jars for alchemy",
-   "10": "Moss's secret: the drowned road"
+   "2": "Moss shows safe paths: marsh wisps leave you be",
+   "4": "Bog iron: 3 each week",
+   "6": "Moss's lantern: the marsh fog lifts near you",
+   "8": "Marsh gas jars: 2 each week",
+   "10": "Moss's secret: a Growth Elixir each week"
   },
   "home": "moss_hut",
-  "work": "moss_hut"
+  "work": "moss_hut",
+  "birthday": [
+   "fall",
+   17
+  ]
  },
  "granite": {
   "name": "Granite",
@@ -1430,14 +1522,18 @@
    "candy"
   ],
   "perks": {
-   "2": "Quarry ore respawns faster",
-   "4": "Granite sells dynamite",
-   "6": "Mine cart ride to the mountain",
-   "8": "Granite's crew clears rockslides",
-   "10": "The deep quarry opens"
+   "2": "Granite's crew drops off stone: 10 each week",
+   "4": "Granite sells dynamite at cost: 2 each week",
+   "6": "Granite's spare ore: 5 Copper each week",
+   "8": "Granite's crew clears rockslides: 3 Dynamite",
+   "10": "The deep quarry: 2 Sapphires"
   },
   "home": "quarry_office",
-  "work": "quarry_office"
+  "work": "quarry_office",
+  "birthday": [
+   "fall",
+   7
+  ]
  },
  "sel": {
   "name": "Sel",
@@ -1463,14 +1559,18 @@
    "slime_goo"
   ],
   "perks": {
-   "2": "Sel reads the first rune",
+   "2": "Sel reads the first rune: a Memory Tea",
    "4": "+10 max mana",
-   "6": "Sel opens the stone door",
-   "8": "Sel's translation: the crystal's origin",
-   "10": "Sel's staff"
+   "6": "Sel opens the stone door: 2 Mana Potions",
+   "8": "Sel's translation: +10 max mana",
+   "10": "Sel's staff: +20 max mana"
   },
   "home": "sel_camp",
-  "work": "sel_camp"
+  "work": "sel_camp",
+  "birthday": [
+   "spring",
+   25
+  ]
  },
  "catkins": {
   "name": "Catkins",
@@ -1492,6 +1592,10 @@
    "A-meow-zing. You came back.",
    "Heart at the chest. Hearts and paws. Remember.",
    "The cats say hello. Biscuit is not impressed; dogs never are."
+  ],
+  "birthday": [
+   "winter",
+   3
   ]
  }
 }
