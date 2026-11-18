@@ -124,7 +124,7 @@
    "I need honey. Two jars. There's a cough going round the children and honey's kinder than anything in my cabinet.",
    "I'd ask Hazel but she's got her hands full with a goat."
   ],
-  "yes": "Thank you. Hives if you have one; the meadow flowers hide wild comb.",
+  "yes": "Thank you. Hives if you have one; Hazel builds them. There's a wild one up in the orchard hills.",
   "no": "I understand. I'll manage with warm water and stern looks.",
   "wait": "Honey, when you can. Two jars. The cough's still going round.",
   "done": [
@@ -343,10 +343,10 @@
  },
  "alder_fall_fair": {
   "offer": [
-   "The fall fair. Five pumpkins, five corn, for the hall display. People come from the next valley for it.",
+   "The fall fair. Five pumpkins, five cranberries, for the hall display. People come from the next valley for it.",
    "Last year's pumpkins were... modest. I'd like immodest."
   ],
-  "yes": "Marvellous. Immodest pumpkins. Big corn.",
+  "yes": "Marvellous. Immodest pumpkins. Red cranberries.",
   "no": "We'll have a modest fair. Again.",
   "wait": "Five and five for the fair. Immodest, remember.",
   "done": [
@@ -640,7 +640,7 @@
    "There's a book in the mine. An old one. A miner wrote it a hundred years ago and nobody's read it since.",
    "Bring it up. I'll read it to you. Slowly, I'm afraid. The hand is terrible."
   ],
-  "yes": "Wonderful. Every fifth floor or so, one of the old miners left a pack behind. Look in those.",
+  "yes": "Wonderful. Every fifth floor or so, one of the old miners left a supply crate behind. Look in those.",
   "no": "It's kept this long. It'll keep.",
   "wait": "The book. In the mine. Still waiting to be read.",
   "done": [
@@ -883,7 +883,7 @@
   "offer": [
    "The lamb's coming any day. The pen wants fresh bedding: ten bundles of fiber. Weeds give it, if you pull them."
   ],
-  "yes": "Good. She'll thank you. Sheep thank you by not dying.",
+  "yes": "Good. She'll thank you. Sheep thank you by not eating your hat.",
   "no": "Then I'll pull weeds myself. Slowly.",
   "wait": "Ten fiber. For the pen.",
   "done": [
@@ -928,7 +928,7 @@
  },
  "sel_fossil": {
   "offer": [
-   "There's a stone up the mountain, or in the quarry, with a record in it. Same hand as the ruin walls. I need it to finish the sentence."
+   "There's a stone in the quarry, or down in the old mine, with a record in it. Same hand as the ruin walls. I need it to finish the sentence."
   ],
   "yes": "It looks like a fossil. It isn't.",
   "no": "The sentence can stay unfinished a little longer.",
@@ -1014,7 +1014,7 @@
   "offer": [
    "The clock tower's stuck at ten past. Four gears. Not mine: yours. I want to see what your anvil can do."
   ],
-  "yes": "A Smithy turns out gears. A field anvil won't. Build up.",
+  "yes": "One iron bar a gear, on your own anvil. Your mining has to be up to it.",
   "no": "Then it stays ten past.",
   "wait": "Four gears, off your own anvil.",
   "done": [

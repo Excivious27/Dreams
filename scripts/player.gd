@@ -17,6 +17,9 @@ var _flash_sent := -1.0
 var char_id := ""
 static var last_mouse_motion_ms := -100000
 var facing := "down"  # down, up, left, right
+var _cur_pos := Vector2.INF  # cursor-square redraw throttle
+var _cur_face := ""
+var _cur_acc := 0.0
 var anim_name := ""
 var velocity := Vector2.ZERO
 var map: GameMap
@@ -544,7 +547,13 @@ func _physics_process(delta: float) -> void:
 		_move(_dodge_dir * 165.0 * delta)
 		return
 	update_aim()
-	queue_redraw()
+	# The cursor square only moves with you/your facing; refresh it 5x a second for tool/selection changes.
+	_cur_acc += delta
+	if position != _cur_pos or facing != _cur_face or _cur_acc >= 0.2:
+		_cur_pos = position
+		_cur_face = facing
+		_cur_acc = 0.0
+		queue_redraw()
 	if _busy:
 		_busy_t += delta
 		if _busy_t > 1.2:
@@ -891,7 +900,7 @@ func _ground_word() -> String:
 		return "stone"
 	if id in ["beach"]:
 		return "sand"
-	if GameState.season() == "winter" and map.has_sky:
+	if GameState.look_se() == "winter" and map.has_sky:
 		return "snow"
 	var gw := str(map.ground_word.get(map.world_to_cell(position), ""))
 	if gw != "":
@@ -1018,7 +1027,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 		var e: Node2D = t[1]
 		if not bool(wd.get("spread", false)):
 			end = e.position + Vector2(0, -6)
-		if map.attack_at(Rect2(e.position + Vector2(-1, -8), Vector2(2, 2)), dmg, position):  # just this foe, not its neighbours
+		if map.attack_at(Rect2(e.position + Vector2(-1, -8), Vector2(2, 2)), dmg, position, false):  # just this foe, not its neighbours
 			hit = true
 			map.fx("poof", e.position + Vector2(0, -8), 8.0, 0.3)
 	var ln := Line2D.new()

@@ -371,11 +371,20 @@ func _on_draw() -> void:
 				_canvas.draw_string(font, cp + Vector2(-PUP_R, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0, 5, Color(1, 1, 1, 0.9))
 			if _held.has("pup:" + cmd):
 				_canvas.draw_circle(cp, PUP_R, Color(1, 1, 1, 0.25))
-			if Art.has("ui", ic) and int(GameState.run.get("day", 1)) <= 3:
-				# Early days: name each command under its icon.
-				var lp := cp + Vector2(-PUP_R - 4, PUP_R + 5)
-				_canvas.draw_string_outline(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 5, 2, Color(0, 0, 0, 0.8))
-				_canvas.draw_string(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 5, Color(1, 1, 1, 0.95))
+		if int(GameState.run.get("day", 1)) <= 3:
+			# Early days: name each command under its icon (all outlines, then all fills: fewer batch breaks).
+			for pass_i in 2:
+				for i in PUP_CMDS.size():
+					var cmd := str(PUP_CMDS[i][0])
+					if cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
+						continue
+					if not Art.has("ui", str(PUP_CMDS[i][1])):
+						continue
+					var lp := Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i) + Vector2(-PUP_R - 4, PUP_R + 5)
+					if pass_i == 0:
+						_canvas.draw_string_outline(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 5, 2, Color(0, 0, 0, 0.8))
+					else:
+						_canvas.draw_string(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 5, Color(1, 1, 1, 0.95))
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")

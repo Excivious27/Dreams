@@ -202,12 +202,12 @@
    "1": "The humming locket sits by your bed. Sometimes it glows when the moon is full."
   },
   "fennimore": {
-   "1": "You told Fennimore nothing on the mountain. Whatever she learned about him, she learned the hard way."
+   "1": "You told Fennimore nothing above the clouds. Whatever she learned about him, she learned the hard way."
   },
   "photo": {
    "0": "You burned the photo. The past stays burned.",
    "1": "The photo stays with the deed, a little piece of a case nobody else will ever close.",
-   "2": "Two notes, one hand. You solved it."
+   "2": "You learned that hand by heart. In the end, it was a hand you knew."
   },
   "shop_1": {
    "0": "The bakery stayed an arcade. Some mornings the avenue still smells of bread that isn't there.",
@@ -237,7 +237,8 @@
   "tower_loud": "Every light in the tower came on the night you went in. The city still calls it the Loud Night.",
   "fennimore_free": "Fennimore's crown went out in your arms. The finargles have a queen again: a gentler one.",
   "final_town_help": "The whole town climbed the tower stairs to ring the bell, and the Dark Crystal's shell cracked at the sound.",
-  "doors_by_sasha": "Sasha took the tower doors off their hinges without a sound. Nobody in the city has ever asked her how.",
+  "doors_by_sasha": "Sasha let you into the tower with a service key she never handed back. Nobody in the city has ever asked her how she kept it.",
+  "doors_by_letter": "The letter you kept since the rain went into the tower's slot, and the doors opened. Nobody fought you.",
   "finn_told": "Finn wears the locket now. He smiles more.",
   "knight_reverted": "The knight above the clouds was given a chance, and took it.",
   "auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk waddled off into the high cloud. Nova still goes looking for him, and some mornings she finds fresh footprints.",

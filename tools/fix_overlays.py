@@ -6,7 +6,7 @@ Run after the slicers."""
 import json, os
 import numpy as np
 from PIL import Image
-GEN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "art", "gen")
+GEN = os.environ.get("ART_GEN") or os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "art", "gen")
 man = json.load(open(os.path.join(GEN, "manifest.json")))
 fixed = 0
 for name, info in man.get("fx", {}).items():
@@ -24,3 +24,21 @@ for name, info in man.get("fx", {}).items():
         fixed += 1
         print(name, int(cols.sum()), "cols", int(rows.sum()), "rows")
 print("fixed", fixed)
+
+# Cloud shadows: the sheet gives them binary alpha, so on snow and pale ground they drift as
+# pixel-edged grey blocks. Blur the alpha once (skipped when it already has soft edges).
+cs = man.get("fx", {}).get("cloud_shadow")
+if cs:
+    from PIL import ImageFilter
+    p = os.path.join(GEN, cs["file"])
+    im = Image.open(p).convert("RGBA")
+    al = np.array(im)[..., 3]
+    if ((al > 20) & (al < 235)).mean() < 0.05:  # not softened yet
+        arr = np.array(im)
+        solid = al > 200
+        if solid.any():
+            arr[~solid, :3] = arr[solid, :3].mean(0).astype(np.uint8)  # no dark halo where the blur reaches keyed pixels
+        im = Image.fromarray(arr)
+        im.putalpha(im.getchannel("A").filter(ImageFilter.GaussianBlur(5)))
+        im.save(p)
+        print("cloud_shadow softened")

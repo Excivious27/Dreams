@@ -1076,7 +1076,7 @@
   "perks": {
    "2": "Wren jr shares forage spots: a Tea Leaf each week",
    "4": "A frog friend (it eats the bugs: +10 max energy)",
-   "6": "Wren jr's garden: flower seeds each week",
+   "6": "Wren jr's garden: a seed pack each week",
    "8": "Wren jr's potion lesson: 2 Mana Potions",
    "10": "Wren jr's wish: 2 Wishfruit"
   },
@@ -1288,7 +1288,7 @@
   ],
   "perks": {
    "2": "Orla's spare flour: 3 each week",
-   "4": "Orla sells wheat seed at cost: a seed pack each week",
+   "4": "Orla's spare wheat seed: 5 each week",
    "6": "Orla's cornmeal: 3 each week",
    "8": "The mill works for you: 5 Flour each week",
    "10": "Orla's heirloom grain: 5 Dream Seeds"
@@ -1574,8 +1574,8 @@
  },
  "catkins": {
   "name": "Catkins",
-  "sprite": "merry",
-  "portrait": "merry",
+  "sprite": "catkins",
+  "portrait": "catkins",
   "role": "leader of Cat-topia",
   "home": "",
   "work": "",

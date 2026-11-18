@@ -878,7 +878,8 @@
      },
      {
       "who": "Pip",
-      "text": "Bring candy. I'll show you. You have to say the wish out loud or it doesn't count and I'll know."
+      "text": "Bring candy. I'll show you. You have to say the wish out loud or it doesn't count and I'll know.",
+      "if_done": "You brought candy already, so you know it works. I made my wish. I'm not telling. It's SCIENCE."
      }
     ],
     "8": [
@@ -1000,11 +1001,13 @@
     "6": [
      {
       "who": "Tobin",
-      "text": "Shells. Five. The beach has them but you have to go past the dock and I'm not allowed past the dock."
+      "text": "Shells. Five. The beach has them but you have to go past the dock and I'm not allowed past the dock.",
+      "if_done": "The five shells you got me are on the tail. Bram says a kite needs them. I think he made that up."
      },
      {
       "who": "Tobin",
-      "text": "If you got them I'd build the kite. Bram says a kite needs shells for the tail. I think he made that up. I don't care."
+      "text": "If you got them I'd build the kite. Bram says a kite needs shells for the tail. I think he made that up. I don't care.",
+      "if_done": "The kite's nearly built. The wind's wrong. The wind's always wrong. I don't care."
      }
     ],
     "8": [
@@ -1063,7 +1066,8 @@
     "6": [
      {
       "who": "Mabel",
-      "text": "Flowers. For the cellar. Mum built it for two and it's empty and I think flowers would make it less empty while we wait for cheese."
+      "text": "Flowers. For the cellar. Mum built it for two and it's empty and I think flowers would make it less empty while we wait for cheese.",
+      "if_done": "Your flowers are in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
      },
      {
       "who": "Mabel",
@@ -1126,7 +1130,8 @@
     "6": [
      {
       "who": "Marlowe",
-      "text": "The lens is cracked. Has been since the night the bell stopped. Same night, you know. I heard it from up here."
+      "text": "The lens is cracked. Has been since the night the bell stopped. Same night, you know. I heard it from up here.",
+      "if_done": "The new lens holds. I still look for the crack every night. It was there since the night the bell stopped. Same night, you know."
      },
      {
       "who": "Marlowe",
@@ -1253,7 +1258,8 @@
     "6": [
      {
       "who": "Benno",
-      "text": "That pup wants to carry things. I can see it in the shoulders. A pack, small, and it'd feel like a job."
+      "text": "That pup wants to carry things. I can see it in the shoulders. A pack, small, and it'd feel like a job.",
+      "if_done": "That pup wears the pack like a medal. I can see it in the shoulders. It's got a job now."
      },
      {
       "who": "Benno",

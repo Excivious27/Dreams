@@ -61,6 +61,8 @@ static func holds(scene: String) -> bool:
 static func on_kill(m: GameMap) -> void:
 	if not on() or not TURF.has(m.scene_id()) or holds(m.scene_id()):
 		return
+	if m.scene_id() != "alley" and not GameState.run["flags"].has("boss_" + m.scene_id()):
+		return  # take the district from its boss first
 	for e in m.enemies:
 		if is_instance_valid(e) and e._alive:
 			return
@@ -68,7 +70,7 @@ static func on_kill(m: GameMap) -> void:
 	GameState.add_arc_xp(40)
 	m.hud.toast("This block is yours: %s. ◆%d every morning, and collectors stay away." % [str(TURF[m.scene_id()]), TURF_PAY], Color(1, 0.9, 0.5))
 	m.fx("sparkle", m.player.position + Vector2(0, -18), 16.0, 0.6)
-	Music.instance(m.get_tree()).sfx("levelup")
+	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 
 
 static func morning() -> int:
@@ -136,7 +138,7 @@ static func _run_heist(m: GameMap, id: String) -> void:
 			GameState.add_item(["data_chip", "relic_orb", "gold_bar"][randi() % 3], 1)
 		await m.say([{"who": "", "text": "It goes like a song you've all rehearsed. Nobody hurt, nobody seen, and the van is heavier on the way home."}, {"who": who, "text": "...We did it. We actually did it."}])
 		m.hud.toast("%s done: %s" % [str(h["name"]), Perks._list(h["reward"])], Color(1, 0.9, 0.4))
-		Music.instance(m.get_tree()).sfx("levelup")
+		Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 		if c == 1:
 			Racket.set_heat(Racket.heat() + 1)
 	else:

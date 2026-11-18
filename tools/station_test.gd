@@ -153,6 +153,15 @@ func _run() -> void:
 	GameState.select_slot(0)
 	GameState.add_item("rounds", 3)
 	m.player.facing = "right"
+	# Stand where the line to the right is open (the Plans board's posts block the spawn row now).
+	for cy in range(14, 30):
+		var open := true
+		for dx in range(0, 7):
+			if m.blocked.has(Vector2i(13 + dx, cy)):
+				open = false
+		if open:
+			m.player.position = m.cell_center(Vector2i(13, cy))
+			break
 	var foe := m.spawn_enemy("thug_brute", m.player.position + Vector2(70, 0))
 	for i in 3:
 		await process_frame

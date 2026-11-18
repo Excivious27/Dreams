@@ -34,7 +34,7 @@ func build() -> void:
 		for c: Vector2i in [Vector2i(14, 8), Vector2i(17, 7), Vector2i(20, 8), Vector2i(13, 11), Vector2i(21, 11), Vector2i(14, 14), Vector2i(17, 15), Vector2i(20, 14)]:
 			set_thing(c.x, c.y, {"type": "stone", "hint": ""})
 		set_thing(17, 11, {"type": "altar", "hint": "A: the crystal altar"})
-		for i in 10:
+		for i in 4:  # crystal blooms: a handful a day (70 each), not a 700/day forage battery
 			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
 			if things.has(c) or STONES.has_point(c):
 				continue
@@ -227,6 +227,12 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 				go_to("hideout", Vector2(2 * TILE, 14 * TILE + 8), "right")
 			return true
 		"crater":
+			var sq := (GameState.has_quest("wren_starflower") and not GameState.quest_done("wren_starflower")) or (GameState.has_quest("lumi_starflower") and not GameState.quest_done("lumi_starflower"))
+			if sq and GameState.count("starflower") == 0 and int(GameState.run["flags"].get("crater_flower", 0)) != int(GameState.run["day"]):
+				GameState.run["flags"]["crater_flower"] = int(GameState.run["day"])
+				give("starflower", 1)
+				tell([{"text": "At the crater's lip, a small flower with light inside it. A starflower."}])
+				return true
 			tell([{"who": "Star Crystal", "text": ("This is where I landed first. The ground remembers, and now it's glad." if GameState.run["flags"].has("final_done") else "This is where I landed first, before your field. The ground remembers."), "mood": "happy"}])
 			return true
 		"shack":
@@ -327,4 +333,12 @@ func draw_map() -> void:
 ## (a second corridor patch on top left a darker slab with a seam).
 func draw_corridor(cells: Dictionary) -> void:
 	if not GameState.is_penguins():
-		super(cells)
+		# The asphalt road runs on through the band to the west edge (no dirt blob on it).
+		var road := Rect2i(-pad, 11, pad + 3, 3)  # (the corridor reaches 2 cells in)
+		var rest := {}
+		for c: Vector2i in cells:
+			if not road.has_point(c):
+				rest[c] = true
+		draw_tileset_rect("asphalt", road, Color("3a3a40"))
+		if not rest.is_empty():
+			super(rest)

@@ -131,6 +131,8 @@ for rid, R in I.items():
     # Corners: one plant at most, the rest from the room's own kit.
     kit = kit_all[:]
     for i, c in enumerate([(1, 2), (cols - 2, 2), (1, rows - 2), (cols - 2, rows - 2)]):
+        if c[1] == 2 and c[0] in wins:
+            continue  # a back corner under a window stays clear (a crate would hide the glass)
         put(rng.choice(CORNER) if i == 0 else rng.choice(kit), c)
     # Homes: a living set in the middle (a rug under a table and two chairs), unless
     # the room already has its own table.

@@ -9,6 +9,8 @@ import os, re
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = f"{R}/docs"
 have = {f.split(".")[0] for f in os.listdir(f"{R}/art/incoming")}
+# An upload under another name still counts by its wNNN prefix (w267_penguin_cutscenes = w267_cutscene_panels_a).
+have |= {m.group(0) for m in (re.match(r"w\d+[a-z]?(?=_)", f) for f in os.listdir(f"{R}/art/incoming")) if m}
 WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX"]
 
 
@@ -85,12 +87,20 @@ def build(raw, num, out_path, title, intro):
     head, batches = parse(raw)
     rules = para(head, "RULES")
     skill_grid = para(head, "SKILL ICON GRID")
+    # The file's own rules (ICON RULE, PROP RULE...) and its own SEAMLESS RULE travel with its prompts.
+    defs = dict(DEFS)
+    for hp in head.split("\n\n"):
+        mm = re.match(r"([A-Z][A-Z ]*? RULE)\b", hp.strip())
+        if mm and not hp.strip().startswith("RULES"):
+            k = mm.group(1).replace(" RULE", "") if mm.group(1).replace(" RULE", "") in DEFS else mm.group(1)
+            if k not in DEFS or k == "SEAMLESS":
+                defs[k] = hp.strip()
     L = [f"# Dreams — Art Prompts {num}: {title}\n", intro + "\n",
          "HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at most 3 images and carries every rule it needs, so you can paste it into a fresh chat. Ask for the images one at a time if ChatGPT stops early (\"now image 2\"). Save each image under its exact file name and upload it here.\n"]
     received, n_prompt, n_img = [], 0, 0
     for title_b, notes, shared, images in batches:
-        todo = [im for im in images if im[0].split(".")[0] not in have]
-        received += [im[0] for im in images if im[0].split(".")[0] in have]
+        todo = [im for im in images if not (im[0].split(".")[0] in have or im[0].split("_")[0] in have)]
+        received += [im[0] for im in images if (im[0].split(".")[0] in have or im[0].split("_")[0] in have)]
         if not todo:
             continue
         parts = chunks(len(todo))
@@ -108,7 +118,7 @@ def build(raw, num, out_path, title, intro):
                     L.append(nt + "\n")
             q = [f"PROMPT {label}. Make {WORDS[len(group)]} SEPARATE IMAGE{'S' if len(group) > 1 else ''}, each one its own picture, saved under the exact file name given.", "",
                  "RULES FOR EVERY IMAGE: " + rules.replace("RULES THAT APPLY TO EVERY IMAGE: ", "")]
-            for key, d in DEFS.items():
+            for key, d in defs.items():
                 if key in text and d:
                     q += ["", d]
             if "SKILL ICON GRID" in text and skill_grid:
@@ -176,3 +186,7 @@ p26raw = open(f"{D}/src/ART-PROMPTS-26-raw.md").read()
 f26 = build(p26raw, "26", f"{D}/ART-PROMPTS-26.md", "what the loop-7 audit found",
             "WHAT THIS COVERS: seamless glowing ground (teal moss and violet soil) for the Hollow Heart, Jungle and Kelp colony; storm puddles.")
 print("26:", f26)
+p27raw = open(f"{D}/src/ART-PROMPTS-27-raw.md").read()
+f27 = build(p27raw, "27", f"{D}/ART-PROMPTS-27.md", "what the loop-8 audit found",
+            "WHAT THIS COVERS: seamless ground and path squares for the Wastes, Sky and Jungle (soft patches and paths); one sheet of the last 21 item icons, which replaces three older icon sheets (17 w354, 18 w369, 19 w421).")
+print("27:", f27)

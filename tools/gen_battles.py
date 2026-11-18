@@ -12,13 +12,18 @@ def scene(rid):
 
 B = {}
 BOSSES = {"bf_rail_yards": "lt_pike", "bf_dockside": "lt_ostrova", "bf_shattered_vale": "knight", "bf_frostfield": "big_grump"}
+# Themed scatter per battlefield, so the long stretches between points aren't bare.
+PROP_SETS = {"bf_frostfield": ["rock_snow_l", "rock_snow_m", "rock_snow_s", "boulder_m", "stump_snow", "bush_snow"],
+             "bf_shattered_vale": ["boulder_l", "boulder_m", "crystal_rock", "mine_crystal_rock_1", "cave_stalag_m", "stalagmite_a"],
+             "bf_rail_yards": ["drums", "tyres", "crates_a", "oil_drums"],
+             "bf_dockside": ["crates_a", "crates_pallet", "barrel_a", "oil_drums"]}
 def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="battle"):
     exits = [{"rect": [cols // 2 - 2, rows - 1, 4, 1], "scene": back[0], "spawn": back[1:], "facing": "down", "label": "▼ fall back"}]
     R[rid] = {"cols": cols, "rows": rows, "music": music, "backdrop": "mountains" if "snow" in patch or "frost" in rid else "hills", "ground": ground,
               "path": path, "spawn": [cols // 2, rows - 9], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
               "exits": exits, "paths": [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
               "water_blobs": water, "plateaus": plateaus, "props": props, "patch_set": patch, "ground_threshold": 0.15, "fruit": 0,
-              "gen": {"clumps": 10, "scatter": 110, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
+              "gen": {"clumps": 10, "scatter": 110, "region_props": PROP_SETS[rid], "region_count": 90, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
               "battle": {"title": title, "who": who, "brief": brief, "win": win, "lose": lose, "points": points, "enemies": enemies,
                          "tickets": 150, "supply": 15, "wave_every": 7.0, "enemy_cap": 16, "tier_bonus": max(0, tier - 2), "reward": reward, "back": back}}
     if rid in BOSSES:

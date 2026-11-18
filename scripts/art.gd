@@ -195,6 +195,7 @@ const T_WATER_IDX := {"top": 1, "bottom": 14, "left": 10, "right": 3, "tl": 5, "
 ## `inside` cells are the material; neighbours outside get the edge treatment.
 ## Missing roles fall back sensibly, so 12-piece simple sets work too.
 static func draw_blob(ci: CanvasItem, inside: Dictionary, set_name: String, size := 16.0, fill_count := 12) -> void:
+	var by_tex := {}  # piece name -> cell positions
 	for c: Vector2i in inside:
 		var n := inside.has(c + Vector2i(0, -1))
 		var s := inside.has(c + Vector2i(0, 1))
@@ -233,7 +234,12 @@ static func draw_blob(ci: CanvasItem, inside: Dictionary, set_name: String, size
 		var nm := _blob_name(set_name, role, maxi(1, h), maxi(1, fill_count))
 		if nm == "":
 			continue
-		draw_tile(ci, "tiles", nm, Vector2(c) * size, 0, size)
+		(by_tex.get_or_add(nm, []) as Array).append(Vector2(c) * size)
+	# Every piece fills exactly its own cell, so drawing them grouped by texture looks
+	# the same and batches: one draw call per piece kind instead of one per edge cell.
+	for nm: String in by_tex:
+		for at: Vector2 in by_tex[nm]:
+			draw_tile(ci, "tiles", nm, at, 0, size)
 
 
 ## Same as draw_blob but draws only `c`, using `inside` for context.

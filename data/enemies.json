@@ -156,17 +156,17 @@
   "wisp": [
    [
     "wisp_light",
-    0.3,
+    0.15,
     1
    ],
    [
     "light_mote",
-    0.09,
+    0.05,
     1
    ],
    [
     "dream_essence",
-    0.08,
+    0.02,
     1
    ]
   ],
@@ -813,6 +813,18 @@
     1.0,
     2
    ]
+  ],
+  "thug_lookout": [
+   [
+    "thug_cash",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.3,
+    1
+   ]
   ]
  },
  "enemies": {
@@ -1374,7 +1386,7 @@
    "abilities": [
     "stomp"
    ],
-   "art": "shard",
+   "art": "crystal_baby",
    "reward": 6
   },
   "marked_kit": {

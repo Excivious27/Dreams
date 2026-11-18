@@ -24,6 +24,13 @@ def boxes(img, min_w=30, min_h=40, close=3):
     return [(b[1].start, b[0].start, b[1].stop - b[1].start, b[0].stop - b[0].start) for b in bs]
 
 
+def _labels(img, close=3):
+    a = np.array(img.convert("RGB")).astype(int)
+    mag = (a[:, :, 0] > 190) & (a[:, :, 1] < 90) & (a[:, :, 2] > 190)
+    m2 = ndimage.binary_closing(~mag, iterations=close) if close else ~mag
+    return ndimage.label(m2)[0]
+
+
 def keyed(img, box):
     x, y, w, h = box
     c = img.convert("RGBA").crop((x, y, x + w, y + h))
@@ -127,8 +134,18 @@ def kit(fname, table, group="props", close=2):
         return
     im = Image.open(f)
     bs = boxes(im, 14, 14, close)
+    lab = _labels(im, close)
+    tot = np.bincount(lab.ravel())
     for name, x, y in table:
-        save(group, name, keyed(im, nearest(bs, x, y)))
+        b = nearest(bs, x, y)
+        k = np.array(keyed(im, b))
+        sub = lab[b[1]:b[1] + b[3], b[0]:b[0] + b[2]]
+        ids, cnt = np.unique(sub[sub > 0], return_counts=True)
+        # A neighbour reaching into the box (bk_towel had the sandcastle's edge): drop pieces that lie mostly outside it.
+        away = [i for i, c in zip(ids, cnt) if c < 0.5 * tot[i]]
+        if away:
+            k[np.isin(sub, away), 3] = 0
+        save(group, name, Image.fromarray(k, "RGBA"))
 
 
 def fog(img, box):

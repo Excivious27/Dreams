@@ -56,6 +56,12 @@ static func talk(m: GameMap, id: String) -> bool:
 		for who in (l.get("if_gone", {}) as Dictionary):
 			if GameState.run["flags"].has(str(who) + "_gone"):
 				l["text"] = str(l["if_gone"][who])
+	# A ♥6 ask for a quest you already finished plays its "if_done" words instead.
+	var q6 := str(v.get("quest6_gangsters", v.get("quest6", ""))) if not GameState.is_penguins() else str(v.get("quest6", ""))
+	if n == 6 and q6 != "" and GameState.quest_done(q6):
+		for l in lines:
+			if l.has("if_done"):
+				l["text"] = str(l["if_done"])
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
 	m.hud.toast("%s ♥%d" % [name, n], Color(1, 0.8, 0.9))
 	await m.say(lines)
@@ -70,6 +76,9 @@ static func talk(m: GameMap, id: String) -> bool:
 			if not d.is_empty() and GameState._cond_ok(d.get("when", {})):
 				GameState.add_quest(q, str(d.get("text", q)))
 				m.hud.toast("New quest: %s" % str(d.get("text", q)), Color(1, 0.9, 0.4))
+				var yes := Quests._as_lines(name, Quests.lines(q).get("yes", ""))
+				if not yes.is_empty():
+					await m.say(yes)
 	if n == 10:
 		Music.instance(m.get_tree()).sfx("levelup")
 		var fall := str(v.get("fall", ""))

@@ -93,8 +93,13 @@ func _process(delta: float) -> void:
 				dir = map.flow_dir(position, home)
 			elif map.has_meta("rally_pos"):
 				dir = map.flow_dir(position, map.get_meta("rally_pos"))
-			elif map.has_meta("follow_me") and not map.line_clear(position, want):
-				dir = map.flow_dir(position, (map.player.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
+			elif map.has_meta("follow_me") and (not map.line_clear(position, want) or not _can_step(position + step.normalized() * 8.0)):
+				# Near you: the bounded chase field. Left far behind (outside its 14-cell
+				# window): a coarse unbounded field, so it still walks round cliffs/water.
+				if position.distance_to(map.player.position) < 200.0:
+					dir = map.flow_dir(position, (map.player.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
+				else:
+					dir = map.flow_dir(position, (map.player.position - map.offset()).snapped(Vector2(128, 128)) + map.offset())
 		var np := position + dir * minf(step.length(), 52.0 * delta)
 		if _can_step(np):
 			position = np

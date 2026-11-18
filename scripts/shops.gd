@@ -72,7 +72,7 @@ static func offers(shop: String) -> Array:
 			return ["lamp_oil", "bait", "rope"]
 		"tam":
 			# Orchard stock: saplings and berry canes for the season.
-			return ["sheep_wool", "hay"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)
+			return ["sheep_wool", "hay"] + ({"summer": ["blueberry_seed"], "fall": ["pear_seed"]}.get(GameState.season(), []) as Array) + _seeds(func(cid: String, cd: Dictionary) -> bool: return not (cid in ["blueberry", "pear"]) and int(cd.get("tier", 1)) <= 3 and (bool(cd.get("tree", false)) or "berry" in cid or "melon" in cid or cid in ["pineapple", "dragonfruit", "kiwi", "passionfruit", "watermelon", "cantaloupe"]) and not cid.begins_with("crystal") and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 1)
 		"old_moss":
 			return ["glowcap", "slime_goo", "herb_remedy"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid in ["mushroom", "truffle", "morel", "glowcap", "glowcap2", "glowcap3", "saffron", "aloe", "wasabi", "ginger", "turmeric", "vanilla", "tea", "coffee", "cacao", "watercress", "water_chestnut", "sesame", "chia"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 2)
 		"granite":
@@ -121,7 +121,8 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		for id in offers:
 			if GameState.has_tool(id):
 				continue
-			opts.append("%s  ◆%d" % [GameState.item_name(id), price(id)])
+			var cd: Dictionary = GameState.crops.get(str(GameState.items.get(id, {}).get("crop", "")), {})
+			opts.append("%s  ◆%d%s" % [GameState.item_name(id), price(id), ("  · %d days" % int(cd.get("days", 0))) if not cd.is_empty() else ""])
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": keeper, "text": "%s  (you have ◆%d)" % [greet, int(GameState.run["crystals"])], "choice": opts, "key": ""}])

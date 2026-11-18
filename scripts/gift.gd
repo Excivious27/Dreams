@@ -538,7 +538,10 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 					en.hit(maxi(1, dmg - 1), p.position, true, true)
 		"luck":
 			var roll := randi() % 3
-			var payers: Array = near.filter(func(x: Enemy) -> bool: return not x.has_meta("luck_paid") and not x.has_meta("decoy") and not x.has_meta("minion"))
+			# A map picked clean for today (12 paid kills) only pays luck on bosses.
+			var kk := m.scene_id() + (":%d" % int(m.get("floor_no")) if m.scene_id() == "mine" else "")
+			var picked: bool = int((GameState.run.get("kills_today", {}) as Dictionary).get(kk, 0)) >= 12
+			var payers: Array = near.filter(func(x: Enemy) -> bool: return not x.has_meta("luck_paid") and not x.has_meta("decoy") and not x.has_meta("minion") and (not picked or x.has_meta("boss_name")))
 			if roll == 0 and not payers.is_empty():
 				for x: Enemy in payers:
 					x.set_meta("luck_paid", true)  # one payout per real foe

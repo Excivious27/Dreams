@@ -214,7 +214,7 @@
       3
      ]
     },
-    "locked": "The Commander's camp is ringed with soldiers. Not yet: find the cat ship first, and get stronger."
+    "locked": "The Commander's camp is ringed with soldiers. Not yet: wake the second spark at your resonator first, and reach Combat 3."
    },
    {
     "type": "note",
@@ -652,9 +652,12 @@
     "wdeco_3",
     "tyres",
     "drums",
-    "crow_a"
+    "crow_a",
+    "crates_a",
+    "oil_drums",
+    "barrel_a"
    ],
-   "region_count": 8,
+   "region_count": 26,
    "critters": [
     "crow",
     "rat",
@@ -1523,9 +1526,12 @@
     "lamp2_short_3",
     "vend_red",
     "vend_blue",
-    "payphone2"
+    "payphone2",
+    "crates_a",
+    "oil_drums",
+    "bench_green"
    ],
-   "region_count": 14
+   "region_count": 32
   },
   "things": [
    {
@@ -1981,7 +1987,7 @@
     "hedge2_pot",
     "planter2_0",
     "planter2_1",
-    "bench2_iron_a",
+    "bench_green",
     "lamp2_tall_0"
    ],
    "region_count": 26
@@ -2333,7 +2339,7 @@
   "backdrop": "mountains",
   "ground": "shoulder",
   "ground_seam": "dry_grass",
-  "path": "highway",
+  "path": "asphalt2",
   "spawn": [
    16,
    25
@@ -3263,7 +3269,7 @@
     16,
     2,
     2,
-    26
+    19
    ]
   ],
   "layers": [
@@ -3774,16 +3780,6 @@
     "r_orchard_15",
     "r_orchard_19",
     "r_orchard_22",
-    "r_orchard_26",
-    "r_orchard_27",
-    "r_orchard_28",
-    "r_orchard_31",
-    "r_orchard_32",
-    "r_orchard_33",
-    "r_orchard_36",
-    "r_orchard_37",
-    "r_orchard_38",
-    "r_orchard_39",
     "r_orchard_40",
     "r_orchard_44"
    ],
@@ -4135,7 +4131,7 @@
      10
     ],
     "w": 9,
-    "h": 5
+    "h": 1
    },
    {
     "name": "r_highlands_01",
@@ -4154,17 +4150,14 @@
     "crow",
     "owl",
     "rabbit",
-    "sparrow"
+    "sparrow",
+    "goat"
    ],
    "critter_count": 8,
    "region_props": [
     "r_highlands_05",
     "r_highlands_06",
     "r_highlands_07",
-    "r_highlands_12",
-    "r_highlands_13",
-    "r_highlands_14",
-    "r_highlands_15",
     "r_highlands_39",
     "r_highlands_40",
     "r_highlands_41"
@@ -4328,9 +4321,9 @@
    ],
    [
     34,
-    8,
+    11,
     2,
-    10
+    7
    ]
   ],
   "water_blobs": [
@@ -4853,7 +4846,7 @@
     "name": "mrock_stone_1",
     "cell": [
      22,
-     22
+     24
     ],
     "h": 1
    },
@@ -4883,6 +4876,22 @@
     ],
     "w": 3,
     "h": 5
+   },
+   {
+    "name": "mrock_stone_1",
+    "cell": [
+     36,
+     28
+    ],
+    "h": 1
+   },
+   {
+    "name": "mrock_stone_0",
+    "cell": [
+     18,
+     10
+    ],
+    "h": 1
    }
   ],
   "gen": {
@@ -5367,25 +5376,6 @@
     "r_marsh_20",
     "r_marsh_21",
     "r_marsh_22",
-    "r_marsh_28",
-    "r_marsh_30",
-    "r_marsh_31",
-    "r_marsh_32",
-    "r_marsh_34",
-    "r_marsh_35",
-    "r_marsh_36",
-    "r_marsh_37",
-    "r_marsh_39",
-    "r_marsh_40",
-    "r_marsh_41",
-    "r_marsh_42",
-    "r_marsh_43",
-    "r_marsh_44",
-    "r_marsh_45",
-    "r_marsh_46",
-    "r_marsh_47",
-    "r_marsh_48",
-    "r_marsh_50",
     "r_marsh_62",
     "r_marsh_72",
     "r_marsh_92",
@@ -5430,7 +5420,7 @@
     "kind": "marsh_witch",
     "who": "",
     "text": "The black water boils. Something that was a woman once stands up out of it, reeds for hair, a lantern that isn't lit by fire.",
-    "win": "The witch sinks back into the bog, laughing. The water goes still. Old Moss will want to hear about this.",
+    "win": "The witch sinks back into the bog, laughing, and comes up far off in the reeds, small and tired, and the fog goes with her. Old Moss will want to hear about this.",
     "after": "The bog where the witch rose. Still.",
     "reward": "relic_mask",
     "max_hp": 1,
@@ -5701,13 +5691,13 @@
     "h": 11
    },
    {
-    "name": "r_riverlands_35",
+    "name": "rowboat2_idle",
     "cell": [
      38,
      10
     ],
-    "w": 6,
-    "h": 5
+    "w": 4,
+    "h": 2
    },
    {
     "name": "r_riverlands_38",
@@ -5729,23 +5719,14 @@
     "frog",
     "sparrow",
     "butterfly_blue",
-    "fish_jump"
+    "fish_jump",
+    "otter"
    ],
    "critter_count": 14,
    "region_props": [
-    "r_riverlands_07",
-    "r_riverlands_08",
-    "r_riverlands_10",
-    "r_riverlands_11",
-    "r_riverlands_13",
-    "r_riverlands_14",
-    "r_riverlands_15",
     "r_riverlands_16",
-    "r_riverlands_18",
     "r_riverlands_20",
     "r_riverlands_22",
-    "r_riverlands_31",
-    "r_riverlands_33",
     "r_riverlands_41",
     "r_riverlands_44",
     "r_riverlands_45"
@@ -5754,11 +5735,8 @@
    "water_props": [
     "r_riverlands_16",
     "r_riverlands_17",
-    "r_riverlands_18",
     "r_riverlands_20",
     "r_riverlands_22",
-    "r_riverlands_31",
-    "r_riverlands_33",
     "r_riverlands_41",
     "r_riverlands_44",
     "r_riverlands_45"
@@ -5983,6 +5961,15 @@
   "gen": {
    "clumps": 10,
    "scatter": 110,
+   "region_props": [
+    "rock_snow_l",
+    "rock_snow_m",
+    "rock_snow_s",
+    "boulder_m",
+    "stump_snow",
+    "bush_snow"
+   ],
+   "region_count": 90,
    "critters": [
     "crow",
     "rabbit",
@@ -6211,6 +6198,15 @@
   "gen": {
    "clumps": 10,
    "scatter": 110,
+   "region_props": [
+    "boulder_l",
+    "boulder_m",
+    "crystal_rock",
+    "mine_crystal_rock_1",
+    "cave_stalag_m",
+    "stalagmite_a"
+   ],
+   "region_count": 90,
    "critters": [
     "crow",
     "owl"
@@ -6446,6 +6442,13 @@
   "gen": {
    "clumps": 10,
    "scatter": 110,
+   "region_props": [
+    "drums",
+    "tyres",
+    "crates_a",
+    "oil_drums"
+   ],
+   "region_count": 90,
    "critters": [
     "crow",
     "sparrow"
@@ -6673,6 +6676,13 @@
   "gen": {
    "clumps": 10,
    "scatter": 110,
+   "region_props": [
+    "crates_a",
+    "crates_pallet",
+    "barrel_a",
+    "oil_drums"
+   ],
+   "region_count": 90,
    "critters": [
     "crow"
    ],
@@ -8201,6 +8211,18 @@
   "gen": {
    "clumps": 0,
    "scatter": 0,
+   "region_props": [
+    "cave_mush_blue",
+    "cave_mush_purple",
+    "cave_mush_orange",
+    "cave_stalag_m",
+    "cave_stalag_l",
+    "mine_heart_stalag_0",
+    "mine_heart_stalag_1",
+    "mine_crystal_rock_1",
+    "mine_crystal_rock_4"
+   ],
+   "region_count": 60,
    "critters": [
     "firefly",
     "bat",

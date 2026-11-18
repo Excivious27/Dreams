@@ -304,7 +304,7 @@
    "weekly": {
     "#seedpack": 1
    },
-   "text": "Wren jr's garden: flower seeds each week"
+   "text": "Wren jr's garden: a seed pack each week"
   },
   "8": {
    "give": {
@@ -424,9 +424,9 @@
   },
   "4": {
    "weekly": {
-    "#seedpack": 1
+    "wheat_seed": 5
    },
-   "text": "Orla sells wheat seed at cost: a seed pack each week"
+   "text": "Orla's spare wheat seed: 5 each week"
   },
   "6": {
    "weekly": {

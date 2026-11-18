@@ -8,7 +8,7 @@ var hp := 3
 var max_hp := 3
 var base_hp := 3        # HP before any scaling: size checks (bars, stun, boss) use this
 var _flash_sent := -1.0
-var _draw_sig := ""
+var _draw_sig := -1
 var hp_scale := 1.0     # how much the home-tier scaling multiplied HP (allies hit harder by the same)
 ## Home-tier toughness: an enemy at home takes several swings at every stage.
 const PACK_KINDS := ["hill_wolf", "ash_hound"]
@@ -48,6 +48,7 @@ var inflicts := ""            # status put on the player when it lands a hit
 var armor := 0                # flat damage soaked per hit (spells soak half)
 var kb_resist := 0.0          # 0..1, how little it slides when hit
 var is_guardian := false      # mine floor guardian: its death opens the way down
+var bossy := false            # a real boss kind (not just a tier-boosted foe): boss HP scale, boss send-off
 var _kb_hits := 0             # knockbacks taken recently (anti-kiting)
 var _kb_t := 0.0
 var _lunge := 0.0             # >0: dashing at the player
@@ -164,7 +165,7 @@ func setup(k: String, tier_override := -1) -> void:
 	armor = maxi(0, int(tw.get("armor", 0)) - int(nw.get("armor", 0)))
 	kb_resist = maxf(0.0, float(tw.get("kb_resist", 0.0)) - float(nw.get("kb_resist", 0.0)))
 	base_hp = hp
-	var bossy := ed.has("gift") or k.begins_with("marked_") or k.begins_with("lt_") or k.begins_with("cboss_") or k in ["big_grump", "president", "golem_king", "ruin_warden", "dark_crystal", "marsh_witch"]
+	bossy = ed.has("gift") or k.begins_with("marked_") or k.begins_with("lt_") or k.begins_with("cboss_") or k in ["big_grump", "president", "golem_king", "ruin_warden", "dark_crystal", "marsh_witch"]
 	hp_scale = float((BOSS_HP if bossy else NATIVE_HP)[clampi(mini(native, tier), 0, 5)])  # run below home: scale for the tier you meet it at
 	if Settings.easy():
 		hp_scale = maxf(1.0, hp_scale * 0.6)
@@ -280,7 +281,7 @@ func _process(delta: float) -> void:
 		_los_t -= delta
 		if _los_t <= 0.0:
 			_los_t = 0.25
-			_los_ok = dist > 150.0 or _walk_clear(position, tgt.position)
+			_los_ok = dist > 150.0 or (map.line_clear(position, tgt.position) if abilities.has("ranged") else _walk_clear(position, tgt.position))
 		if _noticed and (not _los_ok or _chase_t > 0.0):
 			sight = 140.0
 		_chase_t = 3.0 if (_noticed and not _los_ok) else maxf(0.0, _chase_t - delta)
@@ -296,7 +297,7 @@ func _process(delta: float) -> void:
 				Music.instance(get_tree()).sfx("alert")
 			_dir = -to.normalized() * 0.8 if dist < 48.0 else (to.normalized() if dist > 90.0 else Vector2.ZERO)
 			# No clear shot (a wall or tree line between): walk round it to find one.
-			if dist >= 48.0 and not map.line_clear(position, tgt.position):
+			if dist >= 48.0 and not _los_ok:
 				_dir = map.flow_dir(position, (tgt.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
 		elif dist < sight and dist > reach * 0.6:
 			if not _noticed:
@@ -367,7 +368,11 @@ func _process(delta: float) -> void:
 		_sprite.modulate = tint
 		_sprite.scale = Vector2(0.5 * (1.0 + _squash * 0.25), 0.5 * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(1.1, 1.1)
 	# Redraw (hp bar, shadow, telegraph icon) only when what it shows changes.
-	var sig := "%d/%d/%d/%d/%d/%d/%d/%d/%d/%d/%d/%.1f/%d" % [hp, max_hp, int(_shield > 0.0), int(_lunge_tele > 0.0 or _lunge > 0.0), int(_range_tele > 0.0), int(_stomp_tele > 0.0), int(_enraged), int(_hit_flash > 0.0), int(_since_hit < 0.3), tier, int(is_guardian), _shadow_r, int(_tele_flash > 0.0) * 2 + int(abilities.has("regen") and _since_hit > 3.0 and hp < max_hp)]
+	# Packed into one int (no per-frame string format): hp, max_hp, 8 flags, tier, shadow, telegraph/regen.
+	var flags := int(_shield > 0.0) | int(_lunge_tele > 0.0 or _lunge > 0.0) << 1 | int(_range_tele > 0.0) << 2 | int(_stomp_tele > 0.0) << 3 \
+		| int(_enraged) << 4 | int(_hit_flash > 0.0) << 5 | int(_since_hit < 0.3) << 6 | int(is_guardian) << 7
+	var sig := (clampi(hp, 0, 0xFFFF)) | (clampi(max_hp, 0, 0xFFFF) << 16) | (flags << 32) | (clampi(tier, 0, 15) << 40) \
+		| (clampi(int(round(_shadow_r * 10.0)), 0, 255) << 44) | ((int(_tele_flash > 0.0) * 2 + int(abilities.has("regen") and _since_hit > 3.0 and hp < max_hp)) << 52)
 	if _sprite == null or sig != _draw_sig:
 		_draw_sig = sig
 		queue_redraw()
@@ -650,7 +655,7 @@ class Shot extends Node2D:
 				hn = ("impact_" + flavour) if Art.has("fx", "impact_" + flavour) else "poof"
 			map.fx(hn, position, 14.0, 0.4)
 			queue_free()
-		queue_redraw()
+		# No queue_redraw: _draw is fixed relative to the shot, so moving it is enough.
 
 	func _draw() -> void:
 		if _spr:
@@ -672,7 +677,7 @@ func _die() -> void:
 				o._die()
 	map.on_enemy_died(self)
 	# A puff where it stood and a thud; bosses get a bigger send-off.
-	var big := base_hp >= 60
+	var big := bossy or is_guardian or has_meta("boss_name")
 	map.fx("poof" if Art.has("fx", "poof") else "spark", position + Vector2(0, -8), 32.0 if big else 20.0, 0.6)
 	Music.instance(get_tree()).sfx("boss_down" if big else "thud")
 	if big:

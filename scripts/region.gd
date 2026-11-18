@@ -271,6 +271,7 @@ func build() -> void:
 			continue
 		for c: Vector2i in lane_cells:
 			pc.erase(c)
+			pc.erase(c + Vector2i(0, -1))  # the rock face goes on the row below the plateau: keep it off the lane
 		# The lanes may cut it in pieces: each piece gets its own ramp; slivers go.
 		for part: Dictionary in _components(pc):
 			if part.size() >= 8:
@@ -361,6 +362,9 @@ func after_ready() -> void:
 				bh = maxi(2, int(ceil(bh * 0.62)))
 			var x0 := c.x + (w + 1 - bw) / 2
 			block_rect(x0, c.y - bh + 1, bw, bh)
+	for mc: Vector2i in things:
+		if str(things[mc].get("type", "")) == "mrock" and not props.has(mc):
+			prop("props", "mrock_stone_%d" % (absi(mc.x + mc.y) % 2), mc)  # every ore rock shows
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
 			var it := str(things[k]["item"])
@@ -428,7 +432,8 @@ func after_ready() -> void:
 			var c := Vector2i(rng.randi_range(inner.position.x, inner.end.x - 1), rng.randi_range(inner.position.y, inner.end.y - 1))
 			if things.has(c) or blocked.has(c) or avoid.has(c):
 				continue
-			prop(g, nm, c)
+			var tx := Art.tex(g, nm)
+			prop(g, nm, c, 0, 0.0, tx != null and tx.get_width() * tx.get_height() >= 1000)  # ankle-high decals don't block
 	if gen.has("critters"):
 		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, int(gen.get("critter_count", 6)), gen["critters"])
 	var colony_kinds := 0
@@ -532,11 +537,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
 		"heal":
-			if int(GameState.run["flags"].get("heal_%s" % region_id, 0)) < int(GameState.run["day"]):
+			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's rest for later
+			elif int(GameState.run["flags"].get("heal_%s" % region_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_%s" % region_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
-				GameState.extra_energy(int(thing.get("energy", 30)))
-				hud.toast(str(thing.get("msg", "You feel better.")))
+				var got := GameState.rest_energy(int(thing.get("energy", 30)))
+				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else "  You've rested plenty today."))
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
 			else:
 				hud.toast("Once a day.")
@@ -553,19 +560,28 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"mrock":
 			if GameState.held_tool() != "pickaxe":
+				if GameState.has_tool("pickaxe"):
+					hud.toast("Hold the pickaxe.")
 				return GameState.has_tool("pickaxe")
 			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
 			if ob != "":
 				player.play_tool("pickaxe")
 				hud.toast(ob, Color(1, 0.85, 0.6))
+				Music.instance(get_tree()).sfx("dry_click", "thud")
 				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("pick", "chop")
+			hitstop = maxf(hitstop, 0.025)
+			wobble(c, 0.04)
+			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			thing["hp"] = int(thing.get("hp", 2)) - 1
 			if int(thing["hp"]) <= 0:
+				hitstop = maxf(hitstop, 0.05)
+				Music.instance(get_tree()).sfx("crate_break", "thud")
+				fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
 				things.erase(c)
 				blocked.erase(c)
 				hard.erase(c)
@@ -754,7 +770,7 @@ func draw_map() -> void:
 		var gseam := str(R.get("ground_seam", ""))
 		for y in range(-pad, rows + pad):
 			for x in range(-pad, cols + pad):
-				if gseam != "" and seam_cell(self, gseam, Vector2i(x, y)):
+				if gseam != "" and (seam_cell(self, gseam, Vector2i(x, y)) or (gseam == "teal_moss" and seam_cell(self, "meadow_grass", Vector2i(x, y), Color(0.42, 0.85, 0.82)))):
 					continue
 				Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), posmod(y, 3) * 3 + posmod(x, 3) if ground in VARIANT_SETS else 4)
 	else:
@@ -961,11 +977,27 @@ func _place_colony() -> void:
 func _colony_village(cid: String, at: Vector2i, done: bool) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(region_id)
-	var spots := [Vector2i(-8, -3), Vector2i(0, -7), Vector2i(6, -5)]  # left house clear of the plateau ramp
-	for i in 3:
-		var hn := "%s_house_%d" % [cid, i + 1]
-		var hc: Vector2i = at + spots[i]
-		if Art.has("props", hn) and not blocked.has(hc):
+	var spots := [Vector2i(-8, -3), Vector2i(0, -7), Vector2i(6, -5), Vector2i(-9, 4), Vector2i(7, 4), Vector2i(9, -2)]  # first three preferred; the rest are fallbacks off the roads
+	var pav := {}
+	for pr in R.get("paths", []):
+		for y in range(int(pr[1]) - 1, int(pr[1]) + int(pr[3]) + 1):
+			for x in range(int(pr[0]) - 1, int(pr[0]) + int(pr[2]) + 1):
+				pav[Vector2i(x, y)] = true
+	var used := 0
+	for s: Vector2i in spots:
+		if used >= 3:
+			break
+		var hn := "%s_house_%d" % [cid, used + 1]
+		var hc: Vector2i = at + s
+		var clear := not blocked.has(hc)
+		for fy in range(hc.y - 3, hc.y + 1):
+			for fx2 in range(hc.x - 1, hc.x + 4):
+				if pav.has(Vector2i(fx2, fy)):
+					clear = false
+		if not clear:
+			continue
+		used += 1
+		if Art.has("props", hn):
 			prop("props", hn, hc, 2, 0.0, true, 0.32)
 	for i in 3:
 		var kid := "%s_kit_%d" % [cid, i + 1]

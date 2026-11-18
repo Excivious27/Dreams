@@ -20,8 +20,11 @@ static func make(m: GameMap, cells: Dictionary, seam: String, opts := {}, lut :=
 	mn -= Vector2i(2, 2)
 	mx += Vector2i(2, 2)
 	var size := mx - mn + Vector2i.ONE
-	# R: the cells. G: some cell within 3 (else the shader discards after one
-	# fetch). B: every cell within 3 is water (open water: no shore maths). Only
+	# R: the cells. G: some cell within 1 (else the shader discards after one
+	# fetch). B: every cell within 1 is water (open water: no shore maths). The blur
+	# reads texels at most 1.75 cells from a pixel, which is within 1 texel of one of
+	# the 4 texels the lut fetch blends, so radius 1 is exact (3 sent 2x the pixels
+	# down the 14-fetch shore path). Only
 	# live water bodies (lut) work these out; baked patches keep G=1, B=0.
 	var w := size.x
 	var h := size.y
@@ -58,7 +61,7 @@ func _draw() -> void:
 	draw_rect(rect, Color.WHITE)
 
 
-## Radius-3 square dilate (grow) or erode (shrink) of a 0/1 grid, as two 1-D
+## Radius-1 square dilate (grow) or erode (shrink) of a 0/1 grid, as two 1-D
 ## passes. Outside the grid counts as no water.
 static func _morph(src: PackedByteArray, w: int, h: int, grow: bool) -> PackedByteArray:
 	var tmp := PackedByteArray()
@@ -68,7 +71,7 @@ static func _morph(src: PackedByteArray, w: int, h: int, grow: bool) -> PackedBy
 	for y in h:
 		for x in w:
 			var v := 0 if grow else 1
-			for d in range(-3, 4):
+			for d in range(-1, 2):
 				var xx := x + d
 				var s := src[y * w + xx] if xx >= 0 and xx < w else 0
 				v = maxi(v, s) if grow else mini(v, s)
@@ -76,7 +79,7 @@ static func _morph(src: PackedByteArray, w: int, h: int, grow: bool) -> PackedBy
 	for y in h:
 		for x in w:
 			var v := 0 if grow else 1
-			for d in range(-3, 4):
+			for d in range(-1, 2):
 				var yy := y + d
 				var s := tmp[yy * w + x] if yy >= 0 and yy < h else 0
 				v = maxi(v, s) if grow else mini(v, s)

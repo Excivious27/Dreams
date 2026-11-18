@@ -13,6 +13,8 @@ var _title: Label
 var _body: Label
 var _foot: Label
 var _arm := 0
+## True while the slideshow is up (Ambience can stay quiet under the title song).
+static var showing := false
 
 
 static func data() -> Dictionary:
@@ -126,6 +128,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
+	showing = true
 	# The ending gets its own song, not whatever the last fight left playing.
 	Music.instance(get_tree()).set_duck(0.0)
 	Music.instance(get_tree()).play("title")
@@ -199,7 +202,12 @@ func _close() -> void:
 	if not is_inside_tree():
 		return
 	get_tree().paused = false
+	showing = false
 	Dialogue.block_input(0.4)
 	Hud.modal_rect = Rect2()
 	closed.emit()
 	queue_free()
+
+
+func _exit_tree() -> void:
+	showing = false

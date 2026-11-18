@@ -89,9 +89,7 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 	dl.say(lines)
 	await dl.finished
 	# Closed without picking: ask again, so nothing is decided for you.
-	var tries := 0
-	while dl.last_choice < 0 and tries < 5:
-		tries += 1
+	while dl.last_choice < 0 and is_instance_valid(dl):  # each pass waits for the player
 		dl.say([ask])
 		await dl.finished
 	var join := dl.last_choice == 0

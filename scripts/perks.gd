@@ -108,13 +108,15 @@ static func morning() -> Array:
 		# Villagers the story sent away (posy_gone, lumi_gone...) don't send gifts.
 		if GameState.run["flags"].has(npc + "_gone"):
 			continue
-		# Only the best weekly gift from each friend arrives, not one per heart level.
+		# Every weekly perk keeps coming; the same item from a higher heart level replaces the lower one (no stacking).
 		var best_weekly: Dictionary = {}
 		var best_h := -1
 		for h: String in data()[npc]:
-			if GameState.has_friend_perk(npc, int(h)) and (data()[npc][h] as Dictionary).has("weekly") and int(h) > best_h:
-				best_h = int(h)
-				best_weekly = data()[npc][h]["weekly"]
+			if GameState.has_friend_perk(npc, int(h)) and (data()[npc][h] as Dictionary).has("weekly"):
+				best_h = maxi(best_h, int(h))
+				var wk: Dictionary = data()[npc][h]["weekly"]
+				for wid: String in wk:
+					best_weekly[wid] = maxi(int(best_weekly.get(wid, 0)), int(wk[wid]))
 		var nm := str(GameState.npcs.get(npc, {}).get("name", npc))
 		if weekly and best_h >= 0:
 			_give(best_weekly)

@@ -22,9 +22,9 @@ const OFF_DB := -45.0
 const MAX_BEDS := 4
 
 const SEA_MAPS := ["beach", "docks", "bf_dockside", "colony_coral", "colony_kelp"]
-const WINDY_MAPS := ["mountain", "highlands", "sky", "station", "colony_ice"]
+const WINDY_MAPS := ["mountain", "highlands", "sky", "station", "colony_ice", "quarry"]
 const CITY_MAPS := ["neon", "uptown", "docks", "hideout"]
-const CAVE_MAPS := ["mine", "underground", "quarry", "hollow_heart"]
+const CAVE_MAPS := ["mine", "underground", "hollow_heart"]  # the quarry is an open pit: wind, not a cave drone
 const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake"]
 const BIRDY_MAPS := ["forest", "orchard_hills", "meadow"]
 ## Outdoors but no birds, crickets or frogs: the underground country, dead or hot lands, space.
@@ -108,12 +108,12 @@ static func phase(t: int) -> String:
 func _evaluate() -> Dictionary:
 	var out := {}
 	var m := _map()
-	if m == null or _muted():
+	if m == null or _muted() or Epilogue.showing:
 		return out
 	var id := m.scene_id()
 	var t := int(GameState.run.get("time", 480))
 	var ph := phase(t)
-	var se := GameState.season()
+	var se := GameState.look_se()  # the region's look (an ice colony in summer still sounds like winter)
 	var w := GameState.weather_today()
 	if m.sky and m.has_sky:
 		w = m.sky.weather
@@ -190,7 +190,7 @@ func _evaluate() -> Dictionary:
 	if outdoors and ph == "night" and not deep:
 		duck = -4.0
 	if w == "storm" and outdoors:
-		duck = -3.0
+		duck = minf(duck, -3.0) - (1.0 if duck < 0.0 else 0.0)  # a night storm dips more than a calm night
 	var mu := Music._inst
 	if mu and is_instance_valid(mu):
 		mu.set_duck(duck)
@@ -237,16 +237,18 @@ func _water_near(m: GameMap) -> float:
 
 func _spots(delta: float) -> void:
 	var m := _map()
-	if m == null or _muted() or m.player == null or get_tree().paused:
+	if m == null or _muted() or Epilogue.showing or m.player == null or get_tree().paused:
 		return
 	var id := m.scene_id()
 	var t := int(GameState.run.get("time", 480))
 	var ph := phase(t)
 	var outdoors := m.has_sky and id not in ["house", "interior"]
+	var w := m.sky.weather if m.sky and m.has_sky and id != "hollow_heart" else GameState.weather_today()
+	var calm := w not in ["rain", "storm", "blizzard", "snow"]
 	var rules := []  # [spot, min_s, max_s, dB]
-	if outdoors and ph == "night" and id in OWL_MAPS:
+	if outdoors and calm and ph == "night" and id in OWL_MAPS:
 		rules.append(["owl", 25.0, 60.0, -8.0])
-	if outdoors and id not in QUIET_MAPS and GameState.season() == "winter" and ph == "day":
+	if outdoors and calm and id not in QUIET_MAPS and GameState.look_se() == "winter" and ph == "day":
 		rules.append(["bird_chirp", 8.0, 20.0, -12.0])
 	if id == "crystal_meadow" and GameState.is_penguins():
 		rules.append(["penguin_chatter", 10.0, 25.0, -10.0])

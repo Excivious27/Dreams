@@ -178,7 +178,7 @@ func after_ready() -> void:
 		for dy in range(-2, 3):
 			for dx in range(-2, 3):
 				avoid[c + Vector2i(dx, dy)] = true
-	for r: Rect2i in [Rect2i(24, 12, 24, 14), Rect2i(22, 24, 14, 12), Rect2i(0, 22, 12, 14)]:
+	for r: Rect2i in [Rect2i(24, 12, 24, 14), Rect2i(22, 24, 14, 12), Rect2i(0, 22, 12, 14), Rect2i(43, 0, 5, 21), Rect2i(46, 20, 12, 5), Rect2i(0, 0, 47, 3), Rect2i(0, 3, 4, 4)]:
 		for c in cells_of([r]):
 			avoid[c] = true
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 72, 9, avoid)

@@ -58,7 +58,7 @@ func build() -> void:
 		for l in LEDGES:
 			if absi(c.y - int(l[0])) <= 2 and c.x >= int(l[1]) - 2 and c.x <= int(l[2]) + 2:
 				near_stairs = true
-		if near_stairs or TOWN_EXIT.grow(3).has_point(c):
+		if near_stairs or TOWN_EXIT.grow(3).has_point(c) or Rect2i(27, 29, 16, 2).has_point(c) or Rect2i(41, 29, 2, 16).has_point(c):
 			continue
 		var roll := rng.randf()
 		var ore := "stone" if roll < 0.5 else ("copper" if roll < 0.78 else ("iron" if roll < 0.94 else "shard"))
@@ -123,6 +123,8 @@ func after_ready() -> void:
 		for y in range(int(l[0]) - 2, int(l[0]) + 3):
 			for x in range(int(l[1]) - 3, int(l[2]) + 4):
 				avoid[Vector2i(x, y)] = true
+	for c in cells_of([Rect2i(26, 28, 18, 4), Rect2i(40, 28, 4, 18)]):
+		avoid[c] = true  # the road to the quarry exit
 	WorldGen.tree_clumps(self, Rect2i(2, 30, cols - 4, 14), 92, 5, avoid)
 	WorldGen.tree_clumps(self, Rect2i(2, 16, 18, 10), 95, 2, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 93, 16, avoid)
@@ -151,14 +153,21 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if ob != "":
 				player.play_tool("pickaxe")
 				hud.toast(ob, Color(1, 0.85, 0.6))
+				Music.instance(get_tree()).sfx("dry_click", "thud")
 				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("pick", "chop")
+			hitstop = maxf(hitstop, 0.025)
+			wobble(c, 0.04)
+			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			thing["hp"] = int(thing["hp"]) - 1
 			if int(thing["hp"]) <= 0:
+				hitstop = maxf(hitstop, 0.05)
+				Music.instance(get_tree()).sfx("crate_break", "thud")
+				fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)
@@ -170,9 +179,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				xp("mining", 2 if ore == "stone" else 5)
 			return true
 		"spring":
-			if int(GameState.run["flags"].get("spring_day", 0)) < int(GameState.run["day"]):
+			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's soak for later
+			elif int(GameState.run["flags"].get("spring_day", 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["spring_day"] = int(GameState.run["day"])
-				var got := GameState.extra_energy(50)
+				var got := GameState.rest_energy(50)
 				GameState.heal(3)
 				hud.toast("Ahh. +%d energy, +3 hearts." % got)
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
@@ -240,7 +251,7 @@ func draw_map() -> void:
 	draw_ground("stone", cells_of([Rect2i(20, 1, 18, 8)]))
 	# One continuous switchback: west gate → up the left stairs → across → up the
 	# middle stairs → the top terrace. Every stair gap has the path running through it.
-	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 27, 3, 14), Rect2i(10, 29, 18, 2), Rect2i(25, 13, 3, 18), Rect2i(25, 8, 3, 6), Rect2i(13, 1, 2, 3), Rect2i(13, 3, 8, 2)]))  # + the highlands exit
+	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 27, 3, 14), Rect2i(10, 29, 18, 2), Rect2i(25, 13, 3, 18), Rect2i(25, 8, 3, 6), Rect2i(13, 1, 2, 3), Rect2i(13, 3, 8, 2), Rect2i(27, 29, 16, 2), Rect2i(41, 29, 2, 16)]))  # + the quarry exit  # + the highlands exit
 	if Art.has("tiles", "t_cliffg"):
 		var stairs := {}
 		for l in LEDGES:

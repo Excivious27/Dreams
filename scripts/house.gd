@@ -87,7 +87,7 @@ func _sleep() -> void:
 	var report := GameState.sleep()
 	if Net.online():
 		Net.i().clear_beds()
-	var lines: Array = [{"text": "Day %d." % int(GameState.run["day"])}]
+	var lines: Array = []
 	if int(report["earned"]) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report["sold"]), int(report["earned"])]})
 	if int(report.get("left", 0)) > 0:
@@ -120,7 +120,7 @@ func _sleep() -> void:
 	if GameState.festival_today() != "":
 		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())
 	brief += " Sunset about %s." % GameState.clock_of(GameState.sunset())
-	lines.append({"text": brief})
+	lines.push_front({"text": "Day %d. %s" % [int(GameState.run["day"]), brief]})
 	var nxt := GameState.next_step()
 	if nxt != "":
 		lines.append({"text": "Next: " + nxt})
@@ -155,8 +155,8 @@ func _journal() -> void:
 		var said: String = ["I said I'd help.", "I said I just want to farm.", "I called it a talking rock. It did not love that."][ans] if ans >= 0 else "I haven't answered the crystal yet."
 		lines.append({"who": "Journal", "text": "A crystal fell in my field and talked to me about the end of the universe. %s" % said})
 	else:
-		var l := "sold" if r["flags"].has("letter_sold") else str(r["flags"].get("letter", ""))
-		var said: String = {"sold": "I sold the letter to Marlene. He knows my face now.", "burned": "I burned the letter.", "kept": "I kept the letter with the deed.", "memorized": "I memorized the handwriting on the letter."}.get(l, "There's a letter I haven't dealt with.")
+		var l := "sold" if r["flags"].has("letter_sold") else ("used" if r["flags"].has("doors_by_letter") else str(r["flags"].get("letter", "")))
+		var said: String = {"sold": "I sold the letter to Marlene. He knows my face now.", "used": "The letter I kept opened the tower doors. He wrote it for exactly that.", "burned": "I burned the letter.", "kept": "I kept the letter with the deed.", "memorized": "I memorized the handwriting on the letter."}.get(l, "There's a letter I haven't dealt with.")
 		lines.append({"who": "Journal", "text": "Someone knows I'm here. %s" % said})
 	var open_q: Array = r["quests"].filter(func(q: Dictionary) -> bool: return not q["done"])
 	if not open_q.is_empty():

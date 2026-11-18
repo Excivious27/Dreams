@@ -138,45 +138,29 @@
    "h": 77,
    "w": 148
   },
-  "bark2": {
+  "beg": {
    "cell_h": 63,
-   "cell_w": 70,
-   "file": "animals/cat_calico/bark2.png",
+   "cell_w": 50,
+   "file": "animals/cat_calico/beg.png",
    "frames": 2,
    "h": 63,
-   "w": 140
+   "w": 100
   },
-  "bite": {
+  "dig": {
    "cell_h": 63,
    "cell_w": 80,
-   "file": "animals/cat_calico/bite.png",
+   "file": "animals/cat_calico/dig.png",
+   "frames": 6,
+   "h": 63,
+   "w": 480
+  },
+  "fetch": {
+   "cell_h": 63,
+   "cell_w": 85,
+   "file": "animals/cat_calico/fetch.png",
    "frames": 4,
    "h": 63,
-   "w": 320
-  },
-  "guard": {
-   "cell_h": 63,
-   "cell_w": 90,
-   "file": "animals/cat_calico/guard.png",
-   "frames": 2,
-   "h": 63,
-   "w": 180
-  },
-  "howl": {
-   "cell_h": 63,
-   "cell_w": 93,
-   "file": "animals/cat_calico/howl.png",
-   "frames": 2,
-   "h": 63,
-   "w": 186
-  },
-  "hurt": {
-   "cell_h": 63,
-   "cell_w": 78,
-   "file": "animals/cat_calico/hurt.png",
-   "frames": 2,
-   "h": 63,
-   "w": 156
+   "w": 340
   },
   "idle": {
    "cell_h": 75,
@@ -186,14 +170,6 @@
    "h": 75,
    "w": 152
   },
-  "limp": {
-   "cell_h": 63,
-   "cell_w": 85,
-   "file": "animals/cat_calico/limp.png",
-   "frames": 4,
-   "h": 63,
-   "w": 340
-  },
   "play": {
    "cell_h": 77,
    "cell_w": 86,
@@ -201,6 +177,14 @@
    "frames": 2,
    "h": 77,
    "w": 172
+  },
+  "roll": {
+   "cell_h": 63,
+   "cell_w": 93,
+   "file": "animals/cat_calico/roll.png",
+   "frames": 2,
+   "h": 63,
+   "w": 186
   },
   "run": {
    "cell_h": 64,
@@ -219,12 +203,12 @@
    "w": 69
   },
   "sleep": {
-   "cell_h": 47,
-   "cell_w": 83,
+   "cell_h": 63,
+   "cell_w": 90,
    "file": "animals/cat_calico/sleep.png",
-   "frames": 1,
-   "h": 47,
-   "w": 83
+   "frames": 2,
+   "h": 63,
+   "w": 180
   },
   "walk": {
    "cell_h": 70,
@@ -244,45 +228,29 @@
    "h": 83,
    "w": 192
   },
-  "bark2": {
+  "beg": {
    "cell_h": 62,
-   "cell_w": 61,
-   "file": "animals/cat_grey/bark2.png",
+   "cell_w": 49,
+   "file": "animals/cat_grey/beg.png",
    "frames": 2,
    "h": 62,
-   "w": 122
+   "w": 98
   },
-  "bite": {
+  "dig": {
    "cell_h": 62,
    "cell_w": 77,
-   "file": "animals/cat_grey/bite.png",
+   "file": "animals/cat_grey/dig.png",
+   "frames": 6,
+   "h": 62,
+   "w": 462
+  },
+  "fetch": {
+   "cell_h": 62,
+   "cell_w": 84,
+   "file": "animals/cat_grey/fetch.png",
    "frames": 4,
    "h": 62,
-   "w": 308
-  },
-  "guard": {
-   "cell_h": 62,
-   "cell_w": 85,
-   "file": "animals/cat_grey/guard.png",
-   "frames": 2,
-   "h": 62,
-   "w": 170
-  },
-  "howl": {
-   "cell_h": 62,
-   "cell_w": 92,
-   "file": "animals/cat_grey/howl.png",
-   "frames": 2,
-   "h": 62,
-   "w": 184
-  },
-  "hurt": {
-   "cell_h": 62,
-   "cell_w": 76,
-   "file": "animals/cat_grey/hurt.png",
-   "frames": 2,
-   "h": 62,
-   "w": 152
+   "w": 336
   },
   "idle": {
    "cell_h": 74,
@@ -292,14 +260,6 @@
    "h": 74,
    "w": 152
   },
-  "limp": {
-   "cell_h": 62,
-   "cell_w": 84,
-   "file": "animals/cat_grey/limp.png",
-   "frames": 4,
-   "h": 62,
-   "w": 336
-  },
   "play": {
    "cell_h": 89,
    "cell_w": 86,
@@ -307,6 +267,14 @@
    "frames": 2,
    "h": 89,
    "w": 172
+  },
+  "roll": {
+   "cell_h": 62,
+   "cell_w": 92,
+   "file": "animals/cat_grey/roll.png",
+   "frames": 2,
+   "h": 62,
+   "w": 184
   },
   "run": {
    "cell_h": 61,
@@ -325,12 +293,12 @@
    "w": 68
   },
   "sleep": {
-   "cell_h": 47,
-   "cell_w": 82,
+   "cell_h": 62,
+   "cell_w": 85,
    "file": "animals/cat_grey/sleep.png",
-   "frames": 1,
-   "h": 47,
-   "w": 82
+   "frames": 2,
+   "h": 62,
+   "w": 170
   },
   "walk": {
    "cell_h": 70,
@@ -350,45 +318,29 @@
    "h": 71,
    "w": 136
   },
-  "bark2": {
+  "beg": {
    "cell_h": 59,
-   "cell_w": 61,
-   "file": "animals/cat_orange/bark2.png",
+   "cell_w": 47,
+   "file": "animals/cat_orange/beg.png",
    "frames": 2,
    "h": 59,
-   "w": 122
+   "w": 94
   },
-  "bite": {
+  "dig": {
    "cell_h": 59,
    "cell_w": 75,
-   "file": "animals/cat_orange/bite.png",
+   "file": "animals/cat_orange/dig.png",
+   "frames": 6,
+   "h": 59,
+   "w": 450
+  },
+  "fetch": {
+   "cell_h": 59,
+   "cell_w": 76,
+   "file": "animals/cat_orange/fetch.png",
    "frames": 4,
    "h": 59,
-   "w": 300
-  },
-  "guard": {
-   "cell_h": 59,
-   "cell_w": 83,
-   "file": "animals/cat_orange/guard.png",
-   "frames": 2,
-   "h": 59,
-   "w": 166
-  },
-  "howl": {
-   "cell_h": 59,
-   "cell_w": 95,
-   "file": "animals/cat_orange/howl.png",
-   "frames": 2,
-   "h": 59,
-   "w": 190
-  },
-  "hurt": {
-   "cell_h": 59,
-   "cell_w": 71,
-   "file": "animals/cat_orange/hurt.png",
-   "frames": 2,
-   "h": 59,
-   "w": 142
+   "w": 304
   },
   "idle": {
    "cell_h": 70,
@@ -398,14 +350,6 @@
    "h": 70,
    "w": 138
   },
-  "limp": {
-   "cell_h": 59,
-   "cell_w": 76,
-   "file": "animals/cat_orange/limp.png",
-   "frames": 4,
-   "h": 59,
-   "w": 304
-  },
   "play": {
    "cell_h": 74,
    "cell_w": 86,
@@ -413,6 +357,14 @@
    "frames": 2,
    "h": 74,
    "w": 172
+  },
+  "roll": {
+   "cell_h": 59,
+   "cell_w": 95,
+   "file": "animals/cat_orange/roll.png",
+   "frames": 2,
+   "h": 59,
+   "w": 190
   },
   "run": {
    "cell_h": 59,
@@ -431,12 +383,12 @@
    "w": 63
   },
   "sleep": {
-   "cell_h": 46,
-   "cell_w": 81,
+   "cell_h": 59,
+   "cell_w": 83,
    "file": "animals/cat_orange/sleep.png",
-   "frames": 1,
-   "h": 46,
-   "w": 81
+   "frames": 2,
+   "h": 59,
+   "w": 166
   },
   "walk": {
    "cell_h": 67,
@@ -1170,53 +1122,29 @@
    "h": 32,
    "w": 156
   },
-  "bark2": {
-   "cell_h": 32,
-   "cell_w": 39,
-   "file": "animals/dog_husky/bark2.png",
+  "beg": {
+   "cell_h": 27,
+   "cell_w": 21,
+   "file": "animals/dog_husky/beg.png",
    "frames": 2,
-   "h": 32,
-   "w": 78
-  },
-  "bite": {
-   "cell_h": 32,
-   "cell_w": 39,
-   "file": "animals/dog_husky/bite.png",
-   "frames": 4,
-   "h": 32,
-   "w": 156
+   "h": 27,
+   "w": 42
   },
   "dig": {
-   "cell_h": 32,
-   "cell_w": 39,
+   "cell_h": 27,
+   "cell_w": 34,
    "file": "animals/dog_husky/dig.png",
    "frames": 6,
-   "h": 32,
-   "w": 234
+   "h": 27,
+   "w": 204
   },
-  "guard": {
-   "cell_h": 32,
-   "cell_w": 39,
-   "file": "animals/dog_husky/guard.png",
-   "frames": 2,
-   "h": 32,
-   "w": 78
-  },
-  "howl": {
-   "cell_h": 32,
-   "cell_w": 39,
-   "file": "animals/dog_husky/howl.png",
-   "frames": 2,
-   "h": 32,
-   "w": 78
-  },
-  "hurt": {
-   "cell_h": 32,
-   "cell_w": 39,
-   "file": "animals/dog_husky/hurt.png",
-   "frames": 2,
-   "h": 32,
-   "w": 78
+  "fetch": {
+   "cell_h": 27,
+   "cell_w": 34,
+   "file": "animals/dog_husky/fetch.png",
+   "frames": 4,
+   "h": 27,
+   "w": 136
   },
   "idle": {
    "cell_h": 32,
@@ -1226,13 +1154,13 @@
    "h": 32,
    "w": 156
   },
-  "limp": {
-   "cell_h": 32,
+  "roll": {
+   "cell_h": 27,
    "cell_w": 39,
-   "file": "animals/dog_husky/limp.png",
-   "frames": 4,
-   "h": 32,
-   "w": 156
+   "file": "animals/dog_husky/roll.png",
+   "frames": 2,
+   "h": 27,
+   "w": 78
   },
   "run": {
    "cell_h": 32,
@@ -1251,11 +1179,11 @@
    "w": 78
   },
   "sleep": {
-   "cell_h": 32,
+   "cell_h": 27,
    "cell_w": 39,
    "file": "animals/dog_husky/sleep.png",
    "frames": 2,
-   "h": 32,
+   "h": 27,
    "w": 78
   },
   "walk": {
@@ -14879,7 +14807,7 @@
   },
   "big_crane": {
    "file": "buildings/big_crane.png",
-   "h": 155,
+   "h": 147,
    "w": 240
   },
   "chapel": {
@@ -16789,11 +16717,11 @@
   },
   "celebrate": {
    "cell_h": 96,
-   "cell_w": 63,
+   "cell_w": 65,
    "file": "characters/coldy/celebrate.png",
    "frames": 2,
    "h": 96,
-   "w": 126
+   "w": 130
   },
   "cheer": {
    "cell_h": 96,
@@ -40685,6 +40613,22 @@
   }
  },
  "enemies/crystal_baby": {
+  "attack": {
+   "cell_h": 64,
+   "cell_w": 39,
+   "file": "enemies/crystal_baby/attack.png",
+   "frames": 6,
+   "h": 64,
+   "w": 234
+  },
+  "hurt": {
+   "cell_h": 64,
+   "cell_w": 35,
+   "file": "enemies/crystal_baby/hurt.png",
+   "frames": 2,
+   "h": 64,
+   "w": 70
+  },
   "idle": {
    "cell_h": 64,
    "cell_w": 37,
@@ -40705,43 +40649,43 @@
  "enemies/crystal_baby_leader": {
   "attack": {
    "cell_h": 100,
-   "cell_w": 75,
+   "cell_w": 47,
    "file": "enemies/crystal_baby_leader/attack.png",
-   "frames": 4,
+   "frames": 3,
    "h": 100,
-   "w": 300
+   "w": 141
   },
   "hurt": {
-   "cell_h": 88,
-   "cell_w": 104,
+   "cell_h": 100,
+   "cell_w": 51,
    "file": "enemies/crystal_baby_leader/hurt.png",
    "frames": 2,
-   "h": 88,
-   "w": 208
+   "h": 100,
+   "w": 102
   },
   "idle": {
    "cell_h": 100,
-   "cell_w": 135,
+   "cell_w": 48,
    "file": "enemies/crystal_baby_leader/idle.png",
    "frames": 2,
    "h": 100,
-   "w": 270
+   "w": 96
   },
   "turned": {
-   "cell_h": 94,
-   "cell_w": 63,
+   "cell_h": 100,
+   "cell_w": 54,
    "file": "enemies/crystal_baby_leader/turned.png",
-   "frames": 4,
-   "h": 94,
-   "w": 252
+   "frames": 3,
+   "h": 100,
+   "w": 162
   },
   "walk": {
    "cell_h": 100,
-   "cell_w": 135,
+   "cell_w": 48,
    "file": "enemies/crystal_baby_leader/walk.png",
    "frames": 2,
    "h": 100,
-   "w": 270
+   "w": 96
   }
  },
  "enemies/dark_crystal": {
@@ -42682,8 +42626,8 @@
   },
   "charts_hammock": {
    "file": "furniture/charts_hammock.png",
-   "h": 196,
-   "w": 311
+   "h": 105,
+   "w": 181
   },
   "chest2": {
    "file": "furniture/chest2.png",
@@ -45847,11 +45791,11 @@
   },
   "blink": {
    "cell_h": 48,
-   "cell_w": 310,
+   "cell_w": 306,
    "file": "fx/blink.png",
    "frames": 12,
    "h": 48,
-   "w": 3720
+   "w": 3672
   },
   "bobber": {
    "cell_h": 24,
@@ -47061,27 +47005,27 @@
   },
   "shield_hold": {
    "cell_h": 48,
-   "cell_w": 111,
+   "cell_w": 88,
    "file": "fx/shield_hold.png",
-   "frames": 9,
+   "frames": 7,
    "h": 48,
-   "w": 999
+   "w": 616
   },
   "shield_pop": {
    "cell_h": 48,
-   "cell_w": 96,
+   "cell_w": 62,
    "file": "fx/shield_pop.png",
-   "frames": 8,
+   "frames": 7,
    "h": 48,
-   "w": 768
+   "w": 434
   },
   "shield_up": {
    "cell_h": 48,
-   "cell_w": 86,
+   "cell_w": 87,
    "file": "fx/shield_up.png",
-   "frames": 7,
+   "frames": 8,
    "h": 48,
-   "w": 602
+   "w": 696
   },
   "shooting_star": {
    "cell_h": 72,
@@ -47477,11 +47421,11 @@
   },
   "stomp": {
    "cell_h": 96,
-   "cell_w": 238,
+   "cell_w": 204,
    "file": "fx/stomp.png",
    "frames": 9,
    "h": 96,
-   "w": 2142
+   "w": 1836
   },
   "stone_chips": {
    "cell_h": 64,
@@ -47501,11 +47445,11 @@
   },
   "summon": {
    "cell_h": 48,
-   "cell_w": 154,
+   "cell_w": 146,
    "file": "fx/summon.png",
-   "frames": 8,
+   "frames": 6,
    "h": 48,
-   "w": 1232
+   "w": 876
   },
   "tail_shimmer": {
    "cell_h": 96,
@@ -66786,7 +66730,7 @@
   "mid_birch_b": {
    "file": "nature/mid_birch_b.png",
    "h": 96,
-   "w": 75
+   "w": 61
   },
   "mid_cherry": {
    "file": "nature/mid_cherry.png",
@@ -66796,7 +66740,7 @@
   "mid_cherry_b": {
    "file": "nature/mid_cherry_b.png",
    "h": 96,
-   "w": 60
+   "w": 81
   },
   "mid_dead": {
    "file": "nature/mid_dead.png",
@@ -66806,7 +66750,7 @@
   "mid_dead_b": {
    "file": "nature/mid_dead_b.png",
    "h": 96,
-   "w": 60
+   "w": 67
   },
   "mid_maple": {
    "file": "nature/mid_maple.png",
@@ -66816,7 +66760,7 @@
   "mid_maple_b": {
    "file": "nature/mid_maple_b.png",
    "h": 96,
-   "w": 60
+   "w": 75
   },
   "mid_oak": {
    "file": "nature/mid_oak.png",
@@ -66826,7 +66770,7 @@
   "mid_oak_b": {
    "file": "nature/mid_oak_b.png",
    "h": 96,
-   "w": 251
+   "w": 65
   },
   "mid_pine": {
    "file": "nature/mid_pine.png",
@@ -66836,7 +66780,7 @@
   "mid_pine_b": {
    "file": "nature/mid_pine_b.png",
    "h": 96,
-   "w": 81
+   "w": 56
   },
   "mid_snowpine": {
    "file": "nature/mid_snowpine.png",
@@ -66856,7 +66800,7 @@
   "mid_willow_b": {
    "file": "nature/mid_willow_b.png",
    "h": 96,
-   "w": 67
+   "w": 76
   },
   "mossy_rock2": {
    "file": "nature/mossy_rock2.png",
@@ -67444,7 +67388,7 @@
   "embarrassed": {
    "file": "portraits/coco/embarrassed.png",
    "h": 96,
-   "w": 111
+   "w": 113
   },
   "happy": {
    "file": "portraits/coco/happy.png",
@@ -70917,22 +70861,22 @@
   "angry": {
    "file": "portraits/npc_ivy/angry.png",
    "h": 96,
-   "w": 96
+   "w": 94
   },
   "determined": {
    "file": "portraits/npc_ivy/determined.png",
-   "h": 95,
-   "w": 96
+   "h": 96,
+   "w": 94
   },
   "happy": {
    "file": "portraits/npc_ivy/happy.png",
    "h": 96,
-   "w": 96
+   "w": 94
   },
   "laughing": {
    "file": "portraits/npc_ivy/laughing.png",
-   "h": 95,
-   "w": 96
+   "h": 96,
+   "w": 94
   },
   "love": {
    "file": "portraits/npc_ivy/love.png",
@@ -70942,37 +70886,37 @@
   "neutral": {
    "file": "portraits/npc_ivy/neutral.png",
    "h": 96,
-   "w": 95
+   "w": 94
   },
   "sad": {
    "file": "portraits/npc_ivy/sad.png",
-   "h": 95,
-   "w": 96
+   "h": 96,
+   "w": 94
   },
   "sick": {
    "file": "portraits/npc_ivy/sick.png",
-   "h": 95,
-   "w": 96
+   "h": 96,
+   "w": 94
   },
   "sleepy": {
    "file": "portraits/npc_ivy/sleepy.png",
-   "h": 94,
-   "w": 96
+   "h": 96,
+   "w": 94
   },
   "surprised": {
    "file": "portraits/npc_ivy/surprised.png",
    "h": 96,
-   "w": 96
+   "w": 94
   },
   "tired": {
    "file": "portraits/npc_ivy/tired.png",
-   "h": 95,
-   "w": 96
+   "h": 96,
+   "w": 94
   },
   "worried": {
    "file": "portraits/npc_ivy/worried.png",
-   "h": 95,
-   "w": 96
+   "h": 96,
+   "w": 94
   }
  },
  "portraits/npc_juniper": {
@@ -71104,8 +71048,8 @@
   },
   "surprised": {
    "file": "portraits/npc_maple_festival/surprised.png",
-   "h": 1,
-   "w": 2
+   "h": 96,
+   "w": 74
   }
  },
  "portraits/npc_maple_normal": {
@@ -71134,22 +71078,22 @@
   "happy": {
    "file": "portraits/npc_maple_summer/happy.png",
    "h": 96,
-   "w": 79
+   "w": 78
   },
   "neutral": {
    "file": "portraits/npc_maple_summer/neutral.png",
    "h": 96,
-   "w": 74
+   "w": 79
   },
   "sad": {
    "file": "portraits/npc_maple_summer/sad.png",
    "h": 96,
-   "w": 78
+   "w": 77
   },
   "surprised": {
    "file": "portraits/npc_maple_summer/surprised.png",
    "h": 96,
-   "w": 66
+   "w": 73
   }
  },
  "portraits/npc_maple_winter": {
@@ -71385,13 +71329,13 @@
   },
   "sad": {
    "file": "portraits/npc_posy_festival/sad.png",
-   "h": 3,
-   "w": 2
+   "h": 96,
+   "w": 74
   },
   "surprised": {
    "file": "portraits/npc_posy_festival/surprised.png",
    "h": 96,
-   "w": 74
+   "w": 75
   }
  },
  "portraits/npc_posy_normal": {
@@ -71425,7 +71369,7 @@
   "neutral": {
    "file": "portraits/npc_posy_summer/neutral.png",
    "h": 96,
-   "w": 75
+   "w": 76
   },
   "sad": {
    "file": "portraits/npc_posy_summer/sad.png",
@@ -71435,7 +71379,7 @@
   "surprised": {
    "file": "portraits/npc_posy_summer/surprised.png",
    "h": 96,
-   "w": 67
+   "w": 70
   }
  },
  "portraits/npc_posy_winter": {
@@ -74072,7 +74016,7 @@
   },
   "crates_a": {
    "file": "props/crates_a.png",
-   "h": 42,
+   "h": 38,
    "w": 40
   },
   "crates_b": {
@@ -77895,11 +77839,11 @@
   },
   "moon_spire_anim": {
    "cell_h": 160,
-   "cell_w": 239,
+   "cell_w": 218,
    "file": "props/moon_spire_anim.png",
    "frames": 4,
    "h": 160,
-   "w": 956
+   "w": 872
   },
   "moonrock_l": {
    "file": "props/moonrock_l.png",
@@ -82856,11 +82800,11 @@
   },
   "tide_pool": {
    "cell_h": 72,
-   "cell_w": 90,
+   "cell_w": 84,
    "file": "props/tide_pool.png",
    "frames": 4,
    "h": 72,
-   "w": 360
+   "w": 336
   },
   "toll_closed": {
    "file": "props/toll_closed.png",

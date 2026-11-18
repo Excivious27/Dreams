@@ -7,7 +7,7 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 
 ---
 
-## PROMPT 17-1 — Prompts 13 again: the penguin book's creatures, places and items (part 1 of 3) · 3 images
+## PROMPT 17-1 — Prompts 13 again: the penguin book's creatures, places and items (part 1 of 2) · 3 images
 
 These never came back, so the game still uses stand-ins for Catkins' Cat-topia, the finargles, the crystal babies, the merkitties, the catship and the summit. Same prompts as before.
 
@@ -23,25 +23,25 @@ These never came back, so the game still uses stand-ins for Catkins' Cat-topia, 
 >
 > FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm Stardew / Sun Haven palette, flat #FF00FF magenta background, NO grid lines, NO text, NO letterboxing. GRID RULE: 64×96 cells at x = 24 + N×88 (16 columns), y = 24 + M×120 (8 rows), feet at the bottom, character 56 px tall, 16 px of clear magenta around every sprite. Rows are read left to right; leave unused cells empty.
 >
-> ■■■ IMAGE 1 of 3 — FILE NAME: "w267_cutscene_panels_a.png" ■■■
-> four 352×240 PAINTED PANELS, side by side in two rows, no text: (1) the Star Crystal lying in a farm field at night, two small penguins reaching for her, the sky going red at the edge; (2) inside Cat-topia's cave: warm light, a hundred cats, some flying, Catkins with his hood down teaching the two penguins the Meow Pow Wow, rainbow hearts; (3) the catship racing out of the crystal meadow with three grump ships behind it and litter boxes in the air; (4) Big Jim's campfire on Mount Prismatica: marshmallows, shooting stars, an aurora, the penguins wrapped in a blanket. Keep the same 16-bit painted style as the Prompts-11 gate scenes. Make SIX SEPARATE IMAGES, 1536×1024 each, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm Stardew / Sun Haven palette, flat #FF00FF magenta background, NO grid lines, NO text, NO letterboxing, 16 px of clear magenta around every sprite. Attach the references for Coldy, Big Jim, Pip-Pip (penguin king) and Nova (penguin wizard) to images 5 and 6.
->
-> ■■■ IMAGE 2 of 3 — FILE NAME: "w268_cattopia_cave.png" ■■■
+> ■■■ IMAGE 1 of 3 — FILE NAME: "w268_cattopia_cave.png" ■■■
 > CAT-TOPIA, the cave in the crystal meadow. Row 0: 32×32 FLOOR tiles ×8 (warm stone with paw-print wear, two with scattered cat treats), 32×32 WALL tiles ×8 (purple crystal cave wall: fill, top edge, left, right, two corners, a crystal vein, a glowing vein). Row 1: PROPS, each isolated: a scratching post, a cat tree (96 px tall), a pile of cat treats, three cat beds, a teaching stone (a round purple crystal on a plinth, 64×80, with a 4-frame glow), a hanging lantern, a fog-mouth cave entrance 128×96 (for the outside). Row 2: FLYING CATS: three small cats (tabby, black, calico) FLY loop ×4 each (little wings of light), PERCH ×2 each. Row 3: a 96×128 CAVE MOUTH with fog (outside view) ×3 frames (fog breathing), a crystal meadow STANDING STONE ×3 variants, a RING OF LIGHT ground decal 128×64 ×4 frames (turning).
 >
-> ■■■ IMAGE 3 of 3 — FILE NAME: "w269_prismatica_summit.png" ■■■
+> ■■■ IMAGE 2 of 3 — FILE NAME: "w269_prismatica_summit.png" ■■■
 > MOUNT PRISMATICA. Row 0: 32×32 MOUNTAIN PATH tiles ×8 that change colour (pink, purple, orange, green rock — two of each). Row 1: an AURORA sky strip 512×96 ×2 frames (for the campfire scene parallax); a CAMPFIRE 48×64 ×4 frames; a tent 96×72; two sleeping bags; a marshmallow stick ×2 frames. Row 2: the SUMMIT: the DARK CRYSTAL spire as a 160×240 piece (a church-sized dark crystal, a closed-eye feel, cracks that glow when lit) ×3 states (dark, cracking, bright); a SMALL STAR CRYSTAL 48×64 ×4 frames (soft white-gold pulse); the TWO CRYSTALS TOGETHER 160×120 (ending panel piece). Row 3: the UPHILL STREAM: 32×32 water tiles that flow UP ×4 frames; a WATERFALL top 96×96 ×4 frames and base 96×96 ×4 frames; the FLOODED TUNNEL (an underwater tunnel piece 96×96 ×2, blue-black with crystal light).
+>
+> ■■■ IMAGE 3 of 3 — FILE NAME: "w270_penguin_items_ui.png" ■■■
+> ITEMS and UI for the arc, each isolated, 48×48 unless said: Litter Box (again, matching image 5 of batch 1), Sacred Key, Merkitty Necklace, Finargle Fuzz, Crystal Shard, Refined Crystal, Knight's Shard, Old Collar (leather, brass tag), Brass Locket (open, two boys), Gold Clapper, Marshmallow, Cat Treat, a Crystal Baby Rattle. Then UI: a MEOW POW WOW charge bar (parchment, 160×24, empty / half / full / full-glowing), a HOLD-B prompt 48×48 ×3 frames, a "mind voice" speech bubble 160×80 (purple, wavy edge, no text) in two sizes, a STAR CRYSTAL hint icon 32×32 ×4 frames, a DAZE status icon 24×24, a STINK status icon 24×24, a TAIL (mermaid) status icon 24×24, three chapter TITLE-CARD frames 352×96 (parchment with crystal corners, no text; one gold, one blue, one purple).
 >
 > (End of PROMPT 17-1: 3 images.)
 
 
 ---
 
-## PROMPT 17-2 — Prompts 13 again: the penguin book's creatures, places and items (part 2 of 3) · 2 images
+## PROMPT 17-2 — Prompts 13 again: the penguin book's creatures, places and items (part 2 of 2) · 3 images
 
 These never came back, so the game still uses stand-ins for Catkins' Cat-topia, the finargles, the crystal babies, the merkitties, the catship and the summit. Same prompts as before.
 
-> PROMPT 17-2. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 17-2. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
@@ -53,47 +53,23 @@ These never came back, so the game still uses stand-ins for Catkins' Cat-topia, 
 >
 > FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm Stardew / Sun Haven palette, flat #FF00FF magenta background, NO grid lines, NO text, NO letterboxing. GRID RULE: 64×96 cells at x = 24 + N×88 (16 columns), y = 24 + M×120 (8 rows), feet at the bottom, character 56 px tall, 16 px of clear magenta around every sprite. Rows are read left to right; leave unused cells empty.
 >
-> ■■■ IMAGE 1 of 2 — FILE NAME: "w270_penguin_items_ui.png" ■■■
-> ITEMS and UI for the arc, each isolated, 48×48 unless said: Litter Box (again, matching image 5 of batch 1), Sacred Key, Merkitty Necklace, Finargle Fuzz, Crystal Shard, Refined Crystal, Knight's Shard, Old Collar (leather, brass tag), Brass Locket (open, two boys), Gold Clapper, Marshmallow, Cat Treat, a Crystal Baby Rattle. Then UI: a MEOW POW WOW charge bar (parchment, 160×24, empty / half / full / full-glowing), a HOLD-B prompt 48×48 ×3 frames, a "mind voice" speech bubble 160×80 (purple, wavy edge, no text) in two sizes, a STAR CRYSTAL hint icon 32×32 ×4 frames, a DAZE status icon 24×24, a STINK status icon 24×24, a TAIL (mermaid) status icon 24×24, three chapter TITLE-CARD frames 352×96 (parchment with crystal corners, no text; one gold, one blue, one purple).
->
-> ■■■ IMAGE 2 of 2 — FILE NAME: "w271_cutscene_panels_b.png" ■■■
+> ■■■ IMAGE 1 of 3 — FILE NAME: "w271_cutscene_panels_b.png" ■■■
 > four 352×240 PAINTED PANELS, no text: (1) the crystal prison from inside: a room of pale crystal, the hero and friends blinking, two purple eyes in a crack; (2) the uphill stream: everyone holding hands in fast dark water, a light at the end of the tunnel; (3) the merkitties' ring in the lake at sunset, necklaces glowing, Big Jim mid-scream with a tail; (4) the top of Mount Prismatica: the dark spire, Fennimore floating beside it crowned in purple light, the Star Crystal small and bright in the foreground. Same style as the Prompts-11 gate scenes.
 >
-> (End of PROMPT 17-2: 2 images.)
-
-
----
-
-## PROMPT 17-3 — Prompts 13 again: the penguin book's creatures, places and items (part 3 of 3) · 2 images
-
-These never came back, so the game still uses stand-ins for Catkins' Cat-topia, the finargles, the crystal babies, the merkitties, the catship and the summit. Same prompts as before.
-
-> PROMPT 17-3. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
->
-> RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
->
-> GRID RULE (character sheets): 64×96 cells at x = 24 + N×88, y = 24 + M×120 (16 columns, 8 rows), feet at the bottom of the cell, the character 56 px tall. LEAVE A CLEAR MAGENTA GAP of at least 16 px between every sprite; effects that belong to a pose stay INSIDE that pose's cell.
->
-> WHO IS WHO (from the book): the STAR CRYSTAL is a she, a soft white-gold six-point crystal. CATKINS is the leader of Cat-topia: a slim dark-grey cat in a hooded midnight-blue robe with gold trim, calm gold eyes, a small crystal pendant. FINARGLES are black fuzzy creatures the size of a pumpkin, two round purple-glowing eyes, NO mouth, tiny stub legs; they talk only in your mind. FENNIMORE is their queen: bigger, a thin purple crown of light, longer fur. CRYSTAL BABIES are two-foot toddlers covered in pale-blue crystal shards, angry little faces, stamping; their LEADER grows to five feet. MERKITTIES are cat-mermaids in blue-green with glowing necklaces (Mer is one). The CATSHIP is a wooden ship shaped like a sitting cat, ears for sails. GRUMP SHIPS are dark iron hulls with red eye-lamps. LITTER BOXES are grey plastic trays with sand (yes, really). Attach the penguin-arc character references (Merry, Coco, Mer, Coldy, Big Jim, Pip-Pip, Nova) to the prompts that name them.
->
-> THE SEVEN (keep each EXACTLY as already drawn): - MERRY: a small white-lavender ghost cat with a purple witch hat and cape, no legs (a ghost tail), big blue eyes; hovers with a dark oval shadow under her. - COCO: a pale blue cat-mermaid with a sky-blue bob, blue bikini top, dark blue tail ending in a heart-shaped white fin; hovers above ground on land. - MER: a grey cat-mermaid with purple hair, pink shell top, red tail with an orange fin; the mercat of the grotto. - COLDY: a small ice person: spiky pale-blue ice hair, blue skin, spiked ice collar, a diamond mark on the chest. - BIG JIM: a round purple cat in a red shirt, calm closed eyes, striped sleeves, big and heavy. - PENGUIN KING — PIP-PIP (one of the Two Too Powerful Penguins): a brown-and-cream penguin with a gold crown with red gems and a long red scarf; serious eyes. - PENGUIN WIZARD — NOVA (the other Too Powerful Penguin): a dark plum penguin with a purple wizard hat with a pink feather, a red scarf, closed happy eyes.
->
-> FOR THIS PROMPT: For every image in this prompt: 1536×1024 each, 16-bit pixel art, top-down 3/4 view, clean 1px dark outlines, warm Stardew / Sun Haven palette, flat #FF00FF magenta background, NO grid lines, NO text, NO letterboxing. GRID RULE: 64×96 cells at x = 24 + N×88 (16 columns), y = 24 + M×120 (8 rows), feet at the bottom, character 56 px tall, 16 px of clear magenta around every sprite. Rows are read left to right; leave unused cells empty.
->
-> ■■■ IMAGE 1 of 2 — FILE NAME: "w251b_portraits_cards_b.png" ■■■
+> ■■■ IMAGE 2 of 3 — FILE NAME: "w251b_portraits_cards_b.png" ■■■
 > (12B batch 2 redo, part 1): top half: DIALOGUE PORTRAITS 128×128 with 24 px gaps, columns Coldy, Big Jim, Pip-Pip, Nova; rows NEUTRAL, HAPPY, SAD, ANGRY, SURPRISED, SLY (shoulders up, soft vignette, no frame). Bottom half: four CHARACTER SELECT CARDS 144×200 (dark wooden frame, parchment panel, no text, the character 96 px tall standing in it, same frame as the Merry/Coco/Mer cards), four 64×64 ROUND PARTY ICONS (face in a gold ring), and four 48×48 ABILITY ICONS (bevelled square): Coldy's bee-bop stomp (a ring of crystal), Big Jim's carry (a sack), Pip-Pip's rally (a crown), Nova's Meow Pow Wow (a heart with paw prints).
 >
-> ■■■ IMAGE 2 of 2 — FILE NAME: "w253b_partner_abilities_follow_b.png" ■■■
+> ■■■ IMAGE 3 of 3 — FILE NAME: "w253b_partner_abilities_follow_b.png" ■■■
 > (12B batch 2 redo, part 2): 64×96 cells on the GRID RULE, one block per character (Coldy, Big Jim, Pip-Pip, Nova): row A the 4-frame ABILITY cast pose, then the EFFECT alone as an 8-frame strip (Coldy — a stomp ring of crystal shards 96×96; Big Jim — a warm red flex aura 96×96; Pip-Pip — a gold crown burst with rising stars 96×96; Nova — a heart of light bursting into rainbow hearts and paw prints 96×96); row B FOLLOWING poses as a partner behind the hero: WALK down/up/side ×4 each, IDLE down/up/side ×2 each; plus one 320×160 painted GATE-SCENE panel per character (standing at the farm gate at dawn).
 >
-> (End of PROMPT 17-3: 2 images.)
+> (End of PROMPT 17-2: 3 images.)
 
 
 ---
 
-## PROMPT 17-4 — Skill-tree icons: one per skill (40 icons each) (part 1 of 3) · 3 images
+## PROMPT 17-3 — Skill-tree icons: one per skill (40 icons each) (part 1 of 3) · 3 images
 
-> PROMPT 17-4. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 17-3. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
@@ -110,14 +86,14 @@ These never came back, so the game still uses stand-ins for Catkins' Cat-topia, 
 > ■■■ IMAGE 3 of 3 — FILE NAME: "w347_skill_icons_bartering.png" ■■■
 > the BARTERING tree. 40 icons, left to right, top to bottom. ROW 1 — Selling (soft leaf green background): 1. Trader (tier I; theme: a coin stack with an up arrow); 2. Fair Price (tier II; theme: a coin stack with an up arrow); 3. Good Pitch (tier III; theme: a coin stack with an up arrow); 4. Bulk Deal (tier IV; theme: a coin stack with an up arrow); 5. Appraiser (tier V; theme: a coin stack with an up arrow); 6. Display Skill (tier VI; theme: a coin stack with an up arrow); 7. Monopolist (tier VII; theme: a coin stack with an up arrow); 8. Sharp Ledger (tier VIII; theme: a coin stack with an up arrow); 9. Hot Market (tier IX; theme: a coin stack with an up arrow); 10. Premium Goods (tier X; theme: a coin stack with an up arrow) | ROW 2 — Buying (soft sky blue background): 11. Haggler (tier I; theme: shops 5% cheaper); 12. Thrifty (tier II; theme: a coin stack with an up arrow); 13. Stall Plans (tier III; theme: build a market stall on the farm); 14. Coupon Clipper (tier IV; theme: a coin stack with an up arrow); 15. Tycoon (tier V; theme: shops 15% cheaper); 16. Haggler's Grin (tier VI; theme: a coin stack with an up arrow); 17. Wholesale (tier VII; theme: a piggy bank); 18. Back Room Prices (tier VIII; theme: a coin stack with an up arrow); 19. Insider (tier IX; theme: a piggy bank); 20. Bargain Sense (tier X; theme: a coin stack with an up arrow) | ROW 3 — Friends (warm terracotta background): 21. Warm Smile (tier I; theme: a wrapped gift with a heart); 22. Remember Names (tier II; theme: a wrapped gift with a heart); 23. Smooth Talker (tier III; theme: a wrapped gift with a heart); 24. Thoughtful Gifts (tier IV; theme: a wrapped gift with a heart); 25. Festival Favorite (tier V; theme: festival prizes doubled; villagers greet you by name); 26. Good Listener (tier VI; theme: a wrapped gift with a heart); 27. Patron (tier VII; theme: villagers at 6+ hearts send gifts in the mail); 28. Town Favourite (tier VIII; theme: a wrapped gift with a heart); 29. Best Neighbour (tier IX; theme: a wrapped gift with a heart); 30. Party Guest (tier X; theme: a wrapped gift with a heart) | ROW 4 — Savings (soft violet background): 31. Piggy Bank (tier I; theme: a coin stack with an up arrow); 32. Rainy Day Fund (tier II; theme: a piggy bank); 33. Networker (tier III; theme: shops stock extra items); 34. Coin Counter (tier IV; theme: a piggy bank); 35. Compound (tier V; theme: a coin stack with an up arrow); 36. Nest Egg (tier VI; theme: a piggy bank); 37. Crystal Baron (tier VII; theme: a piggy bank); 38. Investor (tier VIII; theme: a piggy bank); 39. Magnate (tier IX; theme: own the market: set the town's prices once a season); 40. Vault Key (tier X; theme: a piggy bank).
 >
-> (End of PROMPT 17-4: 3 images.)
+> (End of PROMPT 17-3: 3 images.)
 
 
 ---
 
-## PROMPT 17-5 — Skill-tree icons: one per skill (40 icons each) (part 2 of 3) · 3 images
+## PROMPT 17-4 — Skill-tree icons: one per skill (40 icons each) (part 2 of 3) · 3 images
 
-> PROMPT 17-5. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 17-4. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
@@ -134,14 +110,14 @@ These never came back, so the game still uses stand-ins for Catkins' Cat-topia, 
 > ■■■ IMAGE 3 of 3 — FILE NAME: "w350_skill_icons_strategist.png" ■■■
 > the STRATEGIST tree. 40 icons, left to right, top to bottom. ROW 1 — Ground (soft leaf green background): 1. Scout the Field (tier I; theme: a flag on a hill with speed lines); 2. High Ground (tier II; theme: a stack of crates); 3. Quick Claim (tier III; theme: a flag on a hill with speed lines); 4. Forward Base (tier IV; theme: a stack of crates); 5. Fast Flags (tier V; theme: a flag on a hill with speed lines); 6. Dig In (tier VI; theme: a stack of crates); 7. Map Room (tier VII; theme: a flag on a hill with speed lines); 8. Terrain Master (tier VIII; theme: a stack of crates); 9. Field Marshal (tier IX; theme: a flag on a hill with speed lines); 10. Scout the Field (tier X; theme: a stack of crates) | ROW 2 — Logistics (soft sky blue background): 11. Supply Runner (tier I; theme: a spire blueprint with a tag); 12. Lean Builds (tier II; theme: a crate with an up arrow); 13. Stockpile (tier III; theme: a spire blueprint with a tag); 14. Prefab Spires (tier IV; theme: a crate with an up arrow); 15. Convoy (tier V; theme: a spire blueprint with a tag); 16. Efficient Works (tier VI; theme: a crate with an up arrow); 17. Depot (tier VII; theme: a spire blueprint with a tag); 18. Assembly Yard (tier VIII; theme: a crate with an up arrow); 19. Endless Supply (tier IX; theme: a spire blueprint with a tag); 20. Supply Runner (tier X; theme: a crate with an up arrow) | ROW 3 — Forces (warm terracotta background): 21. Drill (tier I; theme: a little helper crystal/drone with a heart); 22. Sharpened Sparks (tier II; theme: a helper firing a spark); 23. Hardened Shells (tier III; theme: a little helper crystal/drone with a heart); 24. Formation (tier IV; theme: a helper firing a spark); 25. Volley (tier V; theme: a little helper crystal/drone with a heart); 26. Veterans (tier VI; theme: a helper firing a spark); 27. Elite Guard (tier VII; theme: a little helper crystal/drone with a heart); 28. Overcharge (tier VIII; theme: a helper firing a spark); 29. Legion (tier IX; theme: a little helper crystal/drone with a heart); 30. Drill (tier X; theme: a helper firing a spark) | ROW 4 — Command (soft violet background): 31. Pressure (tier I; theme: an unbroken banner); 32. Hold the Line (tier II; theme: a cracked enemy banner); 33. Pincer Move (tier III; theme: an unbroken banner); 34. Morale (tier IV; theme: a cracked enemy banner); 35. Attrition (tier V; theme: an unbroken banner); 36. Last Stand (tier VI; theme: a cracked enemy banner); 37. Rout (tier VII; theme: an unbroken banner); 38. Iron Resolve (tier VIII; theme: a cracked enemy banner); 39. Grand Victory (tier IX; theme: an unbroken banner); 40. Pressure (tier X; theme: a cracked enemy banner).
 >
-> (End of PROMPT 17-5: 3 images.)
+> (End of PROMPT 17-4: 3 images.)
 
 
 ---
 
-## PROMPT 17-6 — Skill-tree icons: one per skill (40 icons each) (part 3 of 3) · 2 images
+## PROMPT 17-5 — Skill-tree icons: one per skill (40 icons each) (part 3 of 3) · 2 images
 
-> PROMPT 17-6. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 17-5. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
@@ -155,42 +131,42 @@ These never came back, so the game still uses stand-ins for Catkins' Cat-topia, 
 > ■■■ IMAGE 2 of 2 — FILE NAME: "w352_skill_icons_hustle.png" ■■■
 > the HUSTLE tree. DARK UNDERWORLD palette with neon accents (gangster arc). 40 icons, left to right, top to bottom. ROW 1 — Street (soft leaf green background): 1. Blend In (tier I; theme: a folded bill and a calm eye); 2. Smooth Hands (tier II; theme: a small flame going out); 3. Know the Beat (tier III; theme: a folded bill and a calm eye); 4. Quiet Money (tier IV; theme: a small flame going out); 5. Low Profile (tier V; theme: a folded bill and a calm eye); 6. Cold Trail (tier VI; theme: a small flame going out); 7. Ghost of the Avenue (tier VII; theme: a folded bill and a calm eye); 8. Clean Record (tier VIII; theme: a small flame going out); 9. Nobody Saw Nothing (tier IX; theme: a folded bill and a calm eye); 10. Blend In (tier X; theme: a small flame going out) | ROW 2 — Money (soft sky blue background): 11. Small Change (tier I; theme: an envelope of pay); 12. Spin Cycle (tier II; theme: a washing machine window with coins); 13. Payroll (tier III; theme: an envelope of pay); 14. Clean Sheets (tier IV; theme: a washing machine window with coins); 15. Fat Envelope (tier V; theme: an envelope of pay); 16. Good Books (tier VI; theme: a washing machine window with coins); 17. Front Business (tier VII; theme: an envelope of pay); 18. Silent Partner (tier VIII; theme: a washing machine window with coins); 19. Empire Ledger (tier IX; theme: an envelope of pay); 20. Small Change (tier X; theme: a washing machine window with coins) | ROW 3 — Muscle (warm terracotta background): 21. Steady Aim (tier I; theme: an old toy-like six-shooter (no blood)); 22. Thick Skin (tier II; theme: a red heart); 23. Quick Reload (tier III; theme: an old toy-like six-shooter (no blood)); 24. Street Tough (tier IV; theme: a red heart); 25. Dead Eye (tier V; theme: an old toy-like six-shooter (no blood)); 26. Brawler (tier VI; theme: a red heart); 27. Iron Nerves (tier VII; theme: an old toy-like six-shooter (no blood)); 28. Sharpshooter (tier VIII; theme: a red heart); 29. The Heavy (tier IX; theme: an old toy-like six-shooter (no blood)); 30. Steady Aim (tier X; theme: a red heart) | ROW 4 — Operations (soft violet background): 31. Radio Check (tier I; theme: a crate with an up arrow); 32. Drone Tune-Up (tier II; theme: a little helper crystal/drone with a heart); 33. Night Shift (tier III; theme: a green energy bolt); 34. Supply Run (tier IV; theme: a crate with an up arrow); 35. Armoured Drones (tier V; theme: a little helper crystal/drone with a heart); 36. Logistics (tier VI; theme: a green energy bolt); 37. Field Command (tier VII; theme: a crate with an up arrow); 38. War Room (tier VIII; theme: a little helper crystal/drone with a heart); 39. Kingpin's Reach (tier IX; theme: a green energy bolt); 40. Radio Check (tier X; theme: a crate with an up arrow).
 >
-> (End of PROMPT 17-6: 2 images.)
+> (End of PROMPT 17-5: 2 images.)
 
 
 ---
 
-## PROMPT 17-7 — The skills screen and skill badges · 1 image
+## PROMPT 17-6 — The skills screen and skill badges · 1 image
 
-> PROMPT 17-7. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
+> PROMPT 17-6. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
 > ■■■ IMAGE 1 of 1 — FILE NAME: "w353_skills_ui.png" ■■■
 > magenta background, each piece separate: (1) a SKILLS PANEL frame 760×440 in Sun Haven style: deep red outer frame with gold corner studs, a dark wood inner board, empty (no text); (2) a TIER HEADER cell 60×36 in two states: open (bright green) and locked (dark brown); (3) a NODE FRAME 72×72 in four states: empty socket, available (soft glow), learned (gold frame), maxed (gold frame with a small green gem); (4) a SKILL POINTS box 150×90 (tan parchment, empty); (5) an EXP BAR 300×26 empty and its green fill 300×26; (6) THIRTEEN SKILL TAB BADGES 64×64 (round, coloured rim, one object each): Farming (watering can), Mining (pickaxe), Foraging (axe and leaf), Fishing (fish), Combat (sword), Sorcery (crystal staff), Pup (paw), Bartering (coin pouch), Building (hammer and plank), Leadership (two hands clasped over a star), Strategist (a map with a flag), Harmony (a crystal heart with a music note, pastel), Hustle (a fedora over a neon dollar sign, dark); (7) the same 13 badges again at 128×128 for the big panel.
 >
-> (End of PROMPT 17-7: 1 image.)
+> (End of PROMPT 17-6: 1 image.)
 
 
 ---
 
-## PROMPT 17-8 — The last item icons · 1 image
+## PROMPT 17-7 — The last item icons · 1 image
 
-> PROMPT 17-8. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
+> PROMPT 17-7. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
 > ■■■ IMAGE 1 of 1 — FILE NAME: "w354_item_icons_last.png" ■■■
 > 37 ITEM ICONS, 48×48 each, in rows of 12 (x = 24 + N×120, y = 24 + M×120), each isolated on magenta with the same soft top-left light as the other item icons, no frames, no text. In this order: 1. Crystal Bloom (); 2. Strawberry Wine (); 3. Corn Ale (); 4. Berry Juice (); 5. Iridium Sprinkler (Waters a 5x5 square around it every morning.); 6. Old Collar (Leather, chewed, a brass tag worn smooth. BISCUIT.); 7. Brass Locket (Two boys on a dock. It hums near crystals.); 8. Knight's Shard (Warm, heavy. Your sword hand stops aching.); 9. Shipping Manifest (Every crate marked with a purple crystal. UPTOWN, TOWER, SUB-BASEMENT ); 10. Finargle Fuzz (Black and warm and it hums faintly in your pack. Spies' leavings.); 11. Sacred Key (Coldy's key to the heart of Mount Prismatica. It is warm, and it is hu); 12. Merkitty Necklace (Glows blue-green in the dark. You grow a tail the moment you touch wat); 13. Sand (); 14. Circuit Board (); 15. Data Chip (Somebody else's secrets, very small.); 16. Servo (); 17. Signal Scrambler (USE it: your face drops off two wanted lists. Heat -2.); 18. Ghost Ledger (USE it: you were never here. Heat to zero.); 19. EMP Charge (USE it: everything near you locks up for 4 seconds, and any Gift stutt); 20. Blackout Charge (A whole block goes dark. Gifts stutter open for 5 seconds.); 21. Spy Drone (USE it (kept; recharges for 2 days): it circles and reports who is her); 22. Scrap Bot (USE it: a little bot plants itself and zaps anything hostile for 30 se); 23. Guard Bot (A bigger bot. A minute of cover.); 24. Drone Swarm (Six drones, 45 seconds, no mercy for furniture.); 25. Optic Implant (One eye glows a little. You see the tell before the swing.); 26. Optic Implant Mk II (); 27. Reflex Wires (Your hands arrive before you decide.); 28. Reflex Wires Mk II (); 29. Chrome Arm (It hums. Handshakes are shorter now.); 30. Subdermal Plating (); 31. Neural Link (More room for borrowed Gifts.); 32. Colony Light (The steady glow of a saved colony's star crystal. The Crystal Ward wan); 33. Coral Charm (Grown, not carved. Warm in your hand.); 34. Tide Pearl (You can hear the sea in it.); 35. Kelp Wrap (); 36. Ember Glass (Glass made in a volcano by a very patient cat.); 37. Starfish Snack (biscuit) ().
 >
-> (End of PROMPT 17-8: 1 image.)
+> (End of PROMPT 17-7: 1 image.)
 
 
 ---
 
-## PROMPT 17-9 — New screens: crafting, slots, settings, the hack, quality stars · 2 images
+## PROMPT 17-8 — New screens: crafting, slots, settings, the hack, quality stars · 2 images
 
-> PROMPT 17-9. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+> PROMPT 17-8. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
@@ -200,28 +176,28 @@ These never came back, so the game still uses stand-ins for Catkins' Cat-topia, 
 > ■■■ IMAGE 2 of 2 — FILE NAME: "w360_screens_b.png" ■■■
 > (1) SETTINGS ICONS 48×48: music note, speaker, hand (button size), left/right hand swap arrows, a feather (easy mode), a save disk, a copy symbol, a paste clipboard; (2) the HACKING TERMINAL screen 520×860: a dark green-black CRT with scanlines and a chunky metal bezel, empty; four ARROW KEYS 96×96 (up, right, down, left) in dim and lit cyan states; a row of 12 progress pips 16×16 dim/lit; (3) a TURF FLAG 32×48 (a small crew flag on a pole, 4-frame wave) and a HEIST BOARD 160×120 (cork board with pins, string and photos of buildings, no text).
 >
-> (End of PROMPT 17-9: 2 images.)
+> (End of PROMPT 17-8: 2 images.)
 
 
 ---
 
-## PROMPT 17-10 — The four endings · 1 image
+## PROMPT 17-9 — The four endings · 1 image
 
-> PROMPT 17-10. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
+> PROMPT 17-9. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
 > ■■■ IMAGE 1 of 1 — FILE NAME: "w361_endings.png" ■■■
 > FOUR PAINTED PANELS, each 744×488, in a 2×2 layout with a 16 px dark gap, filling the whole 1536×1024 (no magenta). Soft painterly pixel art, warm and quiet. TOP LEFT "Two Crystals" (penguin arc, healed): a field at sunrise, two crystals side by side half-buried in the soil, one bright and one softly glowing, two penguins on the fence. TOP RIGHT "The Quiet Mountain" (penguin arc, shattered): the mountain summit at dawn, a small new sapling where a great dark crystal used to stand, sparkling dust in the air. BOTTOM LEFT "A Tired Man" (gangster arc, freed): a marble lobby, an old man in a grey suit sitting on the floor looking at his hands, a broken purple stone at his feet, morning light through tall windows. BOTTOM RIGHT "The Chair" (gangster arc, taken): a dark office high in a tower, a too-big chair facing a window over the neon city, a faint purple glow on the desk. No text anywhere.
 >
-> (End of PROMPT 17-10: 1 image.)
+> (End of PROMPT 17-9: 1 image.)
 
 
 ---
 
-## PROMPT 17-11 — The President, rewritten · 1 image
+## PROMPT 17-10 — The President, rewritten · 1 image
 
-> PROMPT 17-11. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
+> PROMPT 17-10. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
@@ -230,25 +206,25 @@ These never came back, so the game still uses stand-ins for Catkins' Cat-topia, 
 > ■■■ IMAGE 1 of 1 — FILE NAME: "w362_president.png" ■■■
 > the PRESIDENT, now "M.": the hero's old mentor, the man who got them out of the city. Sixties, kind tired face that has gone cold, neat grey beard, grey three-piece suit, a fist-sized purple stone set in his chest where a pocket square would be (glowing softly, not gory). DARK UNDERWORLD palette, GRID RULE sheet as in batch 5: row 0 IDLE ×4 each direction (seated in a big chair ×2, standing ×2); row 1 WALK ×4 down/up/side; row 2 ATTACK ×6 (purple shards fly from the stone), CAST ×4 (the stone flares), HURT ×2; row 3 DEFEATED (kneeling, stone cracked) ×3 and FREED (sitting, stone gone, looking at his hands) ×3; row 4 PORTRAITS 128×128: warm (the old mentor), cold, angry, pleading, broken, freed; row 5 a BOSS CARD 300×420 (standing under one hard light in an iron frame).
 >
-> (End of PROMPT 17-11: 1 image.)
+> (End of PROMPT 17-10: 1 image.)
 
 
 ---
 
-## PROMPT 17-12 — App icon · 1 image
+## PROMPT 17-11 — App icon · 1 image
 
-> PROMPT 17-12. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
+> PROMPT 17-11. Make ONE SEPARATE IMAGE, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.
 >
 > ■■■ IMAGE 1 of 1 — FILE NAME: "w363_app_icon.png" ■■■
 > 1024×1024 (square, the only image not 1536×1024), filling the whole image, no magenta: the Dreams app icon. A night sky gradient from deep indigo to violet, a big glowing star crystal in the middle with soft light rays, a tiny farmhouse silhouette and a penguin and a cat silhouette on the horizon. Readable at 48 px. No text.
 >
-> (End of PROMPT 17-12: 1 image.)
+> (End of PROMPT 17-11: 1 image.)
 
 
 ---
 
 ## Already received (thank you)
 
-w262_catkins.png, w263_finargles.png, w264_crystal_babies.png, w265_merkitties.png, w266_catship_grumpships.png, w340_skill_icons_farming.png, w341_skill_icons_mining.png, w342_skill_icons_foraging.png, w343_skill_icons_fishing.png, w344_skill_icons_combat.png
+w262_catkins.png, w263_finargles.png, w264_crystal_babies.png, w265_merkitties.png, w266_catship_grumpships.png, w267_cutscene_panels_a.png, w340_skill_icons_farming.png, w341_skill_icons_mining.png, w342_skill_icons_foraging.png, w343_skill_icons_fishing.png, w344_skill_icons_combat.png

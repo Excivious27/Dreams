@@ -74,7 +74,9 @@ func build() -> void:
 	set_thing(MAILBOX.x, MAILBOX.y, {"type": "mailbox", "hint": "A: check mailbox"})
 	set_thing(SELLBOX.x, SELLBOX.y, {"type": "sellbox", "hint": "A: shipping bin (sell what you hold)"})
 	set_thing(PLANS.x, PLANS.y, {"type": "plans", "hint": "A: building plans"})
-	(GameState.run["farm"] as Dictionary).erase("%d,%d" % [PLANS.x, PLANS.y])
+	for dx in [-1, 0, 1]:  # the board and its overhanging posts
+		_clear_tile(PLANS + Vector2i(dx, 0))
+		blocked[PLANS + Vector2i(dx, 0)] = true
 	# Pond: an organic blob.
 	_rng.seed = 404
 	for y in range(int(POND_C.y) - 6, int(POND_C.y) + 7):
@@ -113,7 +115,7 @@ func build() -> void:
 		# Nothing grows under a building.
 		for fy in range(c.y - int(b["h"]) + 1, c.y + 1):
 			for fx2 in range(c.x, c.x + int(b["w"]) + 1):
-				(GameState.run["farm"] as Dictionary).erase("%d,%d" % [fx2, fy])
+				_clear_tile(Vector2i(fx2, fy))
 		if str(b["thing"]) == "station":
 			for fx3 in range(c.x, c.x + int(b["w"]) + 1):
 				set_thing(fx3, c.y, {"type": "station", "station": id, "hint": "A: %s" % str(Builds.current_def(id).get("name", id))})
@@ -139,17 +141,36 @@ func build() -> void:
 	_place_debris()
 
 
+## Nothing grows under a building or the plans board: a crop there gives its seed back.
+func _clear_tile(c: Vector2i) -> void:
+	var pk := "%d,%d" % [c.x, c.y]
+	var pt = (GameState.run["farm"] as Dictionary).get(pk)
+	if pt is Dictionary and str(pt.get("crop", "")) != "" and GameState.items.has(str(pt["crop"]) + "_seed"):
+		GameState.add_item(str(pt["crop"]) + "_seed", 1)  # the seed back
+	(GameState.run["farm"] as Dictionary).erase(pk)
+
+
 ## Weeds, rocks, logs, stumps and saplings all over the field, thicker away from
 ## the house. Deterministic from a seed; cleared cells are remembered in the save.
 func _place_debris() -> void:
-	_rng.seed = 77
 	var home := Vector2(DOOR)
+	# Keep the fronts of built things clear (beehive, shed, keg, fish pond...).
+	var keep_clear := {}
+	for kc: Vector2i in cells_of([Rect2i(PLANS.x - 2, PLANS.y - 1, 5, 4)]):
+		keep_clear[kc] = true  # the plans board stays in view
+	for bid: String in GameState.run.get("builds", {}):
+		var bb := _build_rec(bid)
+		if not bb.is_empty():
+			var bc: Vector2i = bb["cell"]
+			for kc: Vector2i in cells_of([Rect2i(bc.x - 1, bc.y + 1, int(bb["w"]) + 3, 2)]):
+				keep_clear[kc] = true
 	for y in range(1, rows - 1):
 		for x in range(1, cols - 1):
 			var c := Vector2i(x, y)
+			_rng.seed = 77 + x * 7919 + y * 104729  # per cell: clearing or tilling one cell never reshuffles the rest
 			if blocked.has(c) or things.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
 				continue
-			if HOUSE.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3:
+			if HOUSE.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3 or keep_clear.has(c):
 				continue
 			if (Builds.is_built("coop") and COOP_PEN.has_point(c)) or (Builds.is_built("barn") and BARN_PEN.has_point(c)) or (Builds.is_built("greenhouse") and GameState.GREENHOUSE_PLOT.has_point(c)):
 				continue
@@ -169,10 +190,14 @@ func _place_debris() -> void:
 			var r := _rng.randf()
 			if r > chance:
 				continue
-			# Never on soil you've tilled; cleared ground stays clear for two weeks.
-			if GameState.run["farm"].has("%d,%d" % [c.x, c.y]) or is_cleared(c, 14):
+			# Never on soil you've tilled.
+			if GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
 				continue
 			var k := _rng.randf()
+			if dist < 9.0:
+				k = k * 0.4  # by the house: only weeds, so the first plot is quick to clear
+			if is_cleared(c, 14 if k < 0.40 else 0):
+				continue  # weeds come back in two weeks; rocks, logs and trees you cleared stay gone
 			if k < 0.40:
 				things[c] = {"type": "weeds", "hint": "A: pull weeds"}
 				blocked[c] = true
@@ -307,10 +332,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast("Hold the fishing rod.")
 			return true
 		"well":
-			if int(GameState.run["flags"].get("well_day", 0)) < int(GameState.run["day"]):
+			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
+				hud.toast("You're not thirsty.")  # keep today's drink for later
+			elif int(GameState.run["flags"].get("well_day", 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["well_day"] = int(GameState.run["day"])
-				var got := GameState.extra_energy(20)
-				hud.toast("Cold water. +%d energy." % got if got > 0 else "Cold water. Too full for more energy today.")
+				var got := GameState.rest_energy(20)
+				hud.toast("Cold water. +%d energy." % got if got > 0 else "Cold water. You've rested plenty today.")
 			else:
 				hud.toast("You already drank today.")
 			return true
@@ -327,6 +354,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_furnace()
 			return true
 		"chest":
+			if Net.online() and not Net.is_host() and not GameState.run.get("chests", {}).has(str(thing.get("build", "chest"))):
+				hud.toast("The host's chest. Build your own on your farm.")
+				return true
 			later(ChestScreen.open.bind(self, str(thing.get("build", "chest")), "Shed" if str(thing.get("build", "")) == "shed" else "Chest"))
 			return true
 		"beehive":
@@ -344,10 +374,19 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"coop":
 			_coop(sel)
 			return true
+		"barn":
+			hud.toast("The animals live out in the pen: hold hay and tap them, pet them daily for milk and wool.%s" % (" The Big Barn feeds them from the silo." if Builds.built_tier("barn") >= 2 else ""))
+			return true
+		"greenhouse":
+			hud.toast("Plant in the stone-bordered plot in front: crops there grow in any season.")
+			return true
 		"plans":
 			_plans()
 			return true
 		"placed":
+			if Net.online() and not Net.is_host():
+				hud.toast("That's the host's. Your own things stay on your farm.")
+				return true
 			if str(thing.get("kind", "")) == "chest":
 				later(ChestScreen.open.bind(self, "p:%d,%d" % [c.x, c.y], "Chest"))
 				return true
@@ -358,8 +397,17 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			pickup_placed(c)
 			return true
 		"":
-			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and can_till(c) and not GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
+			var guest := Net.online() and not Net.is_host()
+			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and not guest and can_till(c) and str(GameState.run["farm"].get("%d,%d" % [c.x, c.y], {}).get("crop", "")) == "":
+				(GameState.run["farm"] as Dictionary).erase("%d,%d" % [c.x, c.y])  # an empty bed tile: the sprinkler goes in it
+				if _soil:
+					_soil.queue_redraw()
+				else:
+					queue_redraw()
 				_place_item(c, sel)
+				return true
+			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and not guest and GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
+				hud.toast("Not on a growing crop. Put it on open ground or empty soil.")
 				return true
 			# Open grass in front of you: farm it (hoe / seeds / water / harvest).
 			if _tillable(c) and _farm_tile(c, sel):
@@ -382,7 +430,7 @@ func _build_rec(id: String) -> Dictionary:
 	var td := Builds.current_def(id)
 	if td.is_empty():
 		return {}
-	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo"}.get(id, ""))), "label": str(bd.get("label", id))}
+	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo", "barn": "barn", "greenhouse": "greenhouse"}.get(id, ""))), "label": str(bd.get("label", id))}
 	if bd.has("anim"):
 		rec["anim"] = str(bd["anim"])
 	return rec
@@ -553,7 +601,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			var left := GameState.DAYS_PER_SEASON - GameState.day_of_season()
 			if bool(pcd.get("tree", false)) and not GameState.crop_fits_season(pcd, se):
 				hud.toast("Fruit trees only grow in their season: this one sleeps until then.", Color(1, 0.9, 0.6))
-			elif str(pcd.get("season", "any")) != "any" and int(pcd["days"]) > left and not GameState.in_greenhouse(key):
+			elif not bool(pcd.get("tree", false)) and str(pcd.get("season", "any")) != "any" and int(pcd["days"]) > left and not GameState.in_greenhouse(key):
 				hud.toast("Careful: it needs %d days and only %d are left this season." % [int(pcd["days"]), left], Color(1, 0.9, 0.6))
 			if not GameState.spend_for("plant"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
@@ -568,7 +616,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			xp("farming", 2)
 			_soil.queue_redraw() if _soil else queue_redraw()
 			return true
-		if not bool(tile.get("watered", false)) and not GameState.is_wet():
+		if not bool(tile.get("watered", false)) and not GameState.sky_waters():
 			return _water(tile, key)
 		hud.toast("Pick seeds on your toolbar to plant here.")
 		return true
@@ -621,10 +669,10 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		_check_first_harvest()
 		_soil.queue_redraw() if _soil else queue_redraw()
 		return true
-	if not bool(tile.get("watered", false)) and not GameState.is_wet():
+	if not bool(tile.get("watered", false)) and not GameState.sky_waters():
 		return _water(tile, key)
 	var left := int(cd["days"]) - int(tile["days"])
-	hud.toast("%s%s: %d more day%s." % [("The rain has it. " if GameState.is_wet() else "Already watered. ") if GameState.held_tool() == "can" else "", cd["name"], left, "" if left == 1 else "s"])
+	hud.toast("%s%s: %d more day%s." % [("The sky has it. " if GameState.sky_waters() else "Already watered. ") if GameState.held_tool() == "can" else "", cd["name"], left, "" if left == 1 else "s"])
 	return true
 
 
@@ -876,7 +924,7 @@ func _launchpad() -> void:
 		return
 	GameState.add_item("fuel_cell", -1)
 	GameState.run["flags"]["rocket_flown"] = true
-	Music.instance(get_tree()).sfx("levelup")
+	Music.instance(get_tree()).sfx("quest_done", "levelup")
 	shake(4.0)
 	var c := Vector2i(int(Builds.data()["launchpad"]["cell"][0]), int(Builds.data()["launchpad"]["cell"][1]))
 	fx("poof", cell_center(c) + Vector2(8, 0), 16.0, 1.0)
@@ -1220,9 +1268,12 @@ func _place_props() -> void:
 			var sc := AnimatedSprite2D.new()
 			sc.sprite_frames = Art.frames("props", {"idle": str(b["anim"])}, {"idle": 5.0})
 			sc.animation = "idle"
-			sc.scale = Vector2(0.5, 0.5)
-			sc.position = cell_center(c)
-			sc.offset = Vector2(0, -float(Art.info("props", str(b["anim"])).get("cell_h", 96)) / 2.0)
+			var ai := Art.info("props", str(b["anim"]))
+			# Fill the footprint like prop() does (one building per frame since the loop-6 re-cut).
+			var fs := clampf(float(int(b["w"]) + 1) * TILE / maxf(1.0, float(ai.get("cell_w", 64))), 0.5, 1.0)
+			sc.scale = Vector2(fs, fs)
+			sc.position = cell_pos(c.x + (int(b["w"]) + 1) / 2.0, c.y + 1)
+			sc.offset = Vector2(0, -float(ai.get("cell_h", 96)) / 2.0)
 			add_child(sc)
 			sc.play("idle")
 		elif id == "resonator" and Art.has("props", "resonator"):
@@ -1350,23 +1401,27 @@ func _make_soil() -> void:
 
 ## A tilled cell as four quarters of the 3x3 bed painting, picked by which
 ## neighbours are tilled: beds get rounded rims and corners, not square tiles.
-func _draw_bed(ci: CanvasItem, name: String, c: Vector2i, farm: Dictionary) -> bool:
+func _draw_bed(ci: CanvasItem, name: String, c: Vector2i, farm: Dictionary, tilled: Dictionary = {}) -> bool:
 	var t := Art.tex("tiles", name)
 	if t == null or t.get_width() < 96:
 		return false
 	var cw := t.get_width() / 3.0
 	var ch := t.get_height() / 3.0
-	var has := func(d: Vector2i) -> bool: return farm.has("%d,%d" % [c.x + d.x, c.y + d.y])
 	for q in 4:
 		var qx := q % 2
 		var qy := q / 2
-		var side_x := Vector2i(-1 if qx == 0 else 1, 0)
-		var side_y := Vector2i(0, -1 if qy == 0 else 1)
-		var col := 1 if has.call(side_x) else (0 if qx == 0 else 2)
-		var row := 1 if has.call(side_y) else (0 if qy == 0 else 2)
+		var side_x := c + Vector2i(-1 if qx == 0 else 1, 0)
+		var side_y := c + Vector2i(0, -1 if qy == 0 else 1)
+		var hx := tilled.has(side_x) if not tilled.is_empty() else farm.has("%d,%d" % [side_x.x, side_x.y])
+		var hy := tilled.has(side_y) if not tilled.is_empty() else farm.has("%d,%d" % [side_y.x, side_y.y])
+		var col := 1 if hx else (0 if qx == 0 else 2)
+		var row := 1 if hy else (0 if qy == 0 else 2)
 		var src := Rect2(col * cw + qx * cw / 2.0, row * ch + qy * ch / 2.0, cw / 2.0, ch / 2.0)
 		ci.draw_texture_rect_region(t, Rect2(Vector2(c * TILE) + Vector2(qx, qy) * (TILE / 2.0), Vector2(TILE, TILE) / 2.0), src)
 	return true
+
+
+var _crop_art := {}  # crop sheet -> [has stage sprites, stage textures, ripe width, sheet]
 
 
 func _draw_soil(ci: CanvasItem) -> void:
@@ -1390,13 +1445,13 @@ func _draw_soil(ci: CanvasItem) -> void:
 		tiles[c] = farm[key]
 	# Row by row, so a tall crop overlaps the row behind it, never the one in front.
 	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
-	var rain := GameState.is_wet()
+	var rain := GameState.sky_waters()
 	for pass_wet: bool in [false, true]:
 		for c: Vector2i in cells:
 			var wet := rain or bool((tiles[c] as Dictionary).get("watered", false))
 			if wet != pass_wet:
 				continue
-			if not _draw_bed(ci, "tilled_wet" if wet else "tilled_dry", c, farm):
+			if not _draw_bed(ci, "tilled_wet" if wet else "tilled_dry", c, farm, tiles):
 				ci.draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), Color("5c3d22") if wet else Color("8a5f38"))
 	for c: Vector2i in cells:
 		var tile: Dictionary = tiles[c]
@@ -1418,14 +1473,20 @@ func _draw_soil(ci: CanvasItem) -> void:
 			if frac >= 1.0:
 				stage = 4
 			var art := str(cd.get("art", crop))  # strain variants share their parent's sheet
-			var t := Art.tex("crops", art)
-			if Art.has("crops", art + "_seed"):
+			var ca: Array = _crop_art.get(art, [])
+			if ca.is_empty():  # per crop sheet, once: stage textures and the ripe width (no string work per tile)
+				var stx := []
+				for st: String in ["seed", "sprout", "young", "growing", "mature", "ready"]:
+					stx.append(Art.tex("crops", "%s_%s" % [art, st]))
+				var rt0: Texture2D = stx[5]
+				ca = [Art.has("crops", art + "_seed"), stx, rt0.get_width() if rt0 else 0, Art.tex("crops", art)]
+				_crop_art[art] = ca
+			var t: Texture2D = ca[3]
+			if ca[0]:
 				# Prompts-09 crops: one sprite per stage (seed, sprout, young, growing, mature, ready).
-				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(4, int(frac * 5.0)) if frac < 1.0 else 5]
-				var tex := Art.tex("crops", "%s_%s" % [art, st])
+				var tex: Texture2D = ca[1][mini(4, int(frac * 5.0)) if frac < 1.0 else 5]
 				# Sized by the ripe plant so a full bed reads as rows, not a hedge.
-				var rt := Art.tex("crops", art + "_ready")
-				var ks := minf(0.5, 30.0 / float(maxi(1, rt.get_width() if rt else tex.get_width())))
+				var ks := minf(0.5, 30.0 / float(maxi(1, int(ca[2]) if int(ca[2]) > 0 else tex.get_width())))
 				var w2 := tex.get_width() * ks
 				var h2 := tex.get_height() * ks
 				ci.draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false)

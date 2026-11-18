@@ -37,15 +37,23 @@ func _ready() -> void:
 	for t: String in TABS:
 		var b := Button.new()
 		var tab_icon := "tab_" + t.to_lower()
-		if Art.has("ui", tab_icon):
-			b.icon = Art.tex("ui", tab_icon)
-			b.expand_icon = true
-			b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var has_icon := Art.has("ui", tab_icon)
+		if has_icon:
+			# A fixed icon box: wide banners and round faces sit at the same height,
+			# so every tab name lines up underneath.
+			var ir := TextureRect.new()
+			ir.texture = Art.tex("ui", tab_icon)
+			ir.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			ir.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			ir.set_anchors_preset(Control.PRESET_TOP_WIDE)
+			ir.offset_top = 2
+			ir.offset_bottom = 16
+			ir.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			b.add_child(ir)
 			b.tooltip_text = t
 			# Phones never show tooltips: print the name under the icon.
 			b.text = t
 			b.add_theme_font_size_override("font_size", 6)
-			b.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
 			b.custom_minimum_size = Vector2(0, 30)
 			b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		else:
@@ -57,6 +65,14 @@ func _ready() -> void:
 		b.pressed.connect(func() -> void: _tab = t; _rebinding = ""; _refresh())
 		_tabs.add_child(b)
 		_tab_buttons[t] = b
+		if has_icon:
+			for st_name: String in ["normal", "hover", "pressed", "focus"]:
+				var sbx: StyleBox = b.get_theme_stylebox(st_name)
+				if sbx:
+					sbx = sbx.duplicate()
+					sbx.content_margin_top = 16
+					sbx.content_margin_bottom = 1
+					b.add_theme_stylebox_override(st_name, sbx)
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(0, 246)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -139,6 +155,11 @@ func toggle() -> void:
 		_reset_arm = ""
 		_was_paused = get_tree().paused
 		get_tree().paused = true
+		# Toasts still on screen would sit over the tab rows: clear them (new ones still show).
+		var gm0 := get_tree().current_scene as GameMap
+		if gm0 and gm0.hud and gm0.hud._toasts:
+			for c in gm0.hud._toasts.get_children():
+				c.queue_free()
 		_refresh()
 	else:
 		get_tree().paused = _was_paused
@@ -268,7 +289,7 @@ func _refresh() -> void:
 			var sel := str(tb[slot])
 			if _bag_pick != "" and GameState.count(_bag_pick) <= 0 and not GameState.has_tool(_bag_pick):
 				_bag_pick = ""
-			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("Toolbar  ·  in hand: %s  (tap it again to move)" % GameState.item_name(sel) if sel != "" else "In hand: nothing"), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
+			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("Toolbar  ·  in hand: %s  (tap it again, then a slot, to move it)" % GameState.item_name(sel) if sel != "" else "In hand: nothing"), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
 			var g := _grid(6)
 			for i in 12:
 				var id := str(tb[i])
@@ -289,7 +310,7 @@ func _refresh() -> void:
 				sb2.reparent(bh)
 				sb2.size_flags_horizontal = Control.SIZE_SHRINK_END
 				sb2.autowrap_mode = TextServer.AUTOWRAP_OFF
-			_line("Bag: tap to pick, tap a slot to move it there", 8, Color(0.9, 0.85, 0.7))
+			_line("Bag (toolbar items are these same stacks): tap one, then a slot", 8, Color(0.9, 0.85, 0.7))
 			var bs := GameState.bag_slots()
 			var g2 := _grid(6)
 			for i in bs.size():
@@ -472,7 +493,7 @@ func _refresh() -> void:
 				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
 		"Map":
 			var m := Control.new()
-			m.custom_minimum_size = Vector2(240, 300 if Art.has("ui", "world_map") else 190)
+			m.custom_minimum_size = Vector2(228, 246 if Art.has("ui", "world_map") else 190)
 			m.draw.connect(func() -> void: _draw_map(m))
 			_body.add_child(m)
 			_line("You are in: %s" % str(r["scene"]).capitalize(), 8)
@@ -841,7 +862,7 @@ func _skills_tab() -> void:
 			_refresh())
 		lb.disabled = why != ""
 	var moved := 0
-	for i in range(sel_from, _body.get_child_count()):
+	for i in (range(sel_from, _body.get_child_count()) if not sel.is_empty() else []):
 		_body.move_child(_body.get_child(i), sel_at + moved)
 		moved += 1
 	if sk == "magic":
@@ -1159,9 +1180,13 @@ func _pup_tab() -> void:
 				_refresh())
 	if GameState.bonus("pup", "bedroll") > 0.0 and int(st.get("bedroll_day", 0)) != int(GameState.run["day"]) and pt and pt.visible:
 		_button("  Rest by %s's bedroll (+20 energy, once a day)" % pname, func() -> void:
+			var gm := get_tree().current_scene as GameMap
+			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
+				if gm and gm.hud:
+					gm.hud.toast("You're fully rested. Come back when you're tired.", Color(1, 0.9, 0.7))
+				return  # keep today's rest for later
 			st["bedroll_day"] = int(GameState.run["day"])
 			var got := GameState.extra_energy(20)
-			var gm := get_tree().current_scene as GameMap
 			if gm and gm.hud and got <= 0:
 				gm.hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
 			_refresh())
@@ -1172,6 +1197,7 @@ func _eat(id: String) -> void:
 	# In a fight the menu doesn't stop the clock for snacks: one bite every 3
 	# seconds, and the menu closes so you're back in it.
 	var mp := get_tree().current_scene as GameMap
+	var in_fight := false
 	if mp and mp.player:
 		for e in mp.enemies:
 			if is_instance_valid(e) and e.position.distance_to(mp.player.position) < 120.0:
@@ -1179,15 +1205,17 @@ func _eat(id: String) -> void:
 				if now < _food_ready:
 					mp.hud.toast("Still chewing. (%.0fs)" % ((_food_ready - now) / 1000.0), Color(1, 0.85, 0.7))
 					return
-				_food_ready = now + 3000
-				toggle()
+				in_fight = true
 				break
 	var fx_out := GameState.consume(id)
 	var m := get_tree().current_scene
 	if fx_out.keys() == ["full"]:
 		if m is GameMap and (m as GameMap).hud:
 			(m as GameMap).hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
-		return  # nothing eaten: the food stays in the bag
+		return  # nothing eaten: the food stays in the bag (and no chewing lock)
+	if in_fight:
+		_food_ready = Time.get_ticks_msec() + 3000
+		toggle()
 	if m is GameMap and (m as GameMap).player:
 		(m as GameMap).effect_text((m as GameMap).player.position, fx_out)
 	Music.instance(get_tree()).sfx("eat", "pickup")
@@ -1252,7 +1280,7 @@ func _draw_map(m: Control) -> void:
 
 func _draw_painted_map(m: Control, font: Font) -> void:
 	var tex := Art.tex("ui", "world_map")
-	var area := Rect2(0, 0, 240, 300)
+	var area := Rect2(Vector2.ZERO, m.custom_minimum_size)
 	# Fit the portrait painting into the panel, centred.
 	var sc := minf(area.size.x / tex.get_width(), area.size.y / tex.get_height())
 	var sz := Vector2(tex.get_width(), tex.get_height()) * sc
@@ -1264,6 +1292,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 	var names := {"crystal_meadow": "East" if GameState.is_penguins() else "Outskirts", "underground": "Pit", "countryside": "Highway"}
 	for k: String in PINS:
 		var visited := k in ["farm", "house", "town", "meadow"] or seen.has(k + "_seen") or seen.has(str(SEEN_FLAG.get(k, "-")))
+		if k == "house" and here != "house":
+			continue  # sits on the Farm pin; only shown while you're inside
 		if not visited:
 			continue
 		var p: Vector2 = org + (PINS[k] as Vector2) * sz

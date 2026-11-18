@@ -347,7 +347,13 @@ func _sprite_card(pid: String, name: String) -> Control:
 			sb.set_corner_radius_all(3)
 			b.add_theme_stylebox_override(st, sb)
 		else:
-			b.add_theme_stylebox_override(st, Hud.panel_stylebox("panel_parchment"))
+			# Drawn parchment (the painted panel art showed as a flat grey box at this size).
+			var ps := StyleBoxFlat.new()
+			ps.bg_color = Color("ead2a2") if st != "pressed" else Color("fff1b8")
+			ps.border_color = Color("6b4423")
+			ps.set_border_width_all(3)
+			ps.set_corner_radius_all(4)
+			b.add_theme_stylebox_override(st, ps)
 	b.pressed.connect(func() -> void: _pick(pid))
 	_cards[pid] = b
 	var sprite_id := GameState.sprite_for_playable(pid, _arc)

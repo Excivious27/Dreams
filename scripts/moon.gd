@@ -34,7 +34,7 @@ func build() -> void:
 		if things.has(c) or blocked.has(c) or Rect2i(10, 17, 5, 4).has_point(c):
 			continue
 		var roll := rng.randf()
-		if roll < 0.5:
+		if roll < 0.8:
 			set_thing(c.x, c.y, {"type": "mrock", "ore": "shard" if roll < 0.2 else "stone", "hp": 3, "hint": "A: mine"})
 		else:
 			var key := "forage_moon_%d_%d" % [c.x, c.y]
@@ -162,14 +162,21 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if ob != "":
 				player.play_tool("pickaxe")
 				hud.toast(ob, Color(1, 0.85, 0.6))
+				Music.instance(get_tree()).sfx("dry_click", "thud")
 				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("pick", "chop")
+			hitstop = maxf(hitstop, 0.025)
+			wobble(c, 0.04)
+			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			thing["hp"] = int(thing["hp"]) - (1 + (GameState.tool_tier("pickaxe") + 1) / 2 + int(GameState.bonus("mining", "mine_power")))
 			if int(thing["hp"]) <= 0:
+				hitstop = maxf(hitstop, 0.05)
+				Music.instance(get_tree()).sfx("crate_break", "thud")
+				fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)
@@ -186,7 +193,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func draw_map() -> void:
-	draw_tileset_rect("moon_dust", Rect2i(0, 0, cols, rows), Color("b9a8d8"))
+	draw_tileset_rect("moon_dust", Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), Color("b9a8d8"))  # under the band too: no void rows
 	draw_tileset_rect("crater", CRATER, Color("8a7ab8"))
 	draw_rect(Rect2(0, 0, cols * TILE, TILE), Color("2a1a44"))
 	draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("2a1a44"))

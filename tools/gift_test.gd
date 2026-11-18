@@ -82,12 +82,26 @@ func _run() -> void:
 	Companion.party()["active"] = "mk_juno"
 	check(Companion.ability_for(m, m.player) == "gift:volt", "the partner ability is her gift")
 	GameState.restore_mana(99)
+	# An open line to the right (the Plans board's posts block the spawn row now).
+	var pos0 := m.player.position
+	var face0 := m.player.facing
+	for cy in range(14, 30):
+		var open := true
+		for dx in range(0, 7):
+			if m.blocked.has(Vector2i(13 + dx, cy)):
+				open = false
+		if open:
+			m.player.position = m.cell_center(Vector2i(13, cy))
+			m.player.facing = "right"
+			break
 	var t := m.spawn_enemy("grump", m.player.position + m.player.facing_dir() * 40.0)
 	await process_frame
 	t.position = m.player.position + m.player.facing_dir() * 40.0
 	var th := t.hp
 	Companion.use_ability(m, m.player)
 	check(not is_instance_valid(t) or not t._alive or t.hp < th, "borrowed Volt hits down the line")
+	m.player.position = pos0
+	m.player.facing = face0
 	# Bramble: front is bark, back is not.
 	var b := Marked.spawn(m, "dahlia", m.player.position + Vector2(60, 40))
 	await process_frame

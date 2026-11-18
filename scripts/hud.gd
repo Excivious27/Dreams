@@ -62,6 +62,7 @@ func _ready() -> void:
 	_fade.color = Color(0, 0, 0, 0)
 	_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_fade.visible = false  # an invisible full-screen rect still costs a blended full-screen pass every frame
 	add_child(_fade)
 
 
@@ -112,13 +113,13 @@ func _process(delta: float) -> void:
 
 ## Toasts: under the goal line outdoors, above the HUD block indoors, above the dialogue box while one is open.
 func _place_toasts() -> void:
-	var y := 80.0 if y_offset == 0.0 else 190.0
+	var y := 89.0 if y_offset == 0.0 else 199.0  # under the (two-line) goal
 	var d := Dialogue.instance(get_tree())
 	if d.active:
 		var h := 0.0
 		for c in _toasts.get_children():
 			h += (c as Control).size.y + 1.0
-		y = maxf(TOOLBAR_Y + SLOT + 8.0, minf(y, d.panel_top() - h - 4.0))
+		y = maxf((4.0 if y_offset > 0.0 else TOOLBAR_Y + SLOT + 8.0), minf(y, d.panel_top() - h - 4.0))  # indoors the toolbar isn't at the top
 	_toasts.position.y = y
 
 
@@ -254,6 +255,8 @@ func _draw_hud() -> void:
 		c.draw_rect(Rect2(TOOLBAR_X - 2, TOOLBAR_Y - 2, 12 * SLOT + 4, SLOT + 4), Color(0.1, 0.07, 0.04, 0.75))
 	var slot_tex := Art.tex("ui", "slot")
 	var slot_sel := Art.tex("ui", "slot_selected")
+	# Three passes (slot frames, icons, counts): each stays inside its own slot, so
+	# the order between slots doesn't matter and the bar batches (~10 draw calls, not ~30).
 	for i in 12:
 		var rect := Rect2(TOOLBAR_X + i * SLOT, TOOLBAR_Y, SLOT, SLOT)
 		if slot_tex and slot_sel:
@@ -262,6 +265,8 @@ func _draw_hud() -> void:
 			c.draw_rect(rect.grow(-1), Color(0.35, 0.25, 0.15, 0.9) if i != slot else Color(0.55, 0.42, 0.2, 1.0))
 			if i == slot:
 				c.draw_rect(rect.grow(-0.5), Color(1, 0.9, 0.5), false, 1.5)
+	for i in 12:
+		var rect := Rect2(TOOLBAR_X + i * SLOT, TOOLBAR_Y, SLOT, SLOT)
 		var id := str(tb[i])
 		if id == "":
 			continue
@@ -270,7 +275,10 @@ func _draw_hud() -> void:
 			c.draw_texture_rect(icon, rect.grow(-2), false)
 		else:
 			c.draw_string(_font, Vector2(rect.position.x + 1, rect.position.y + 13), GameState.item_name(id).left(3), HORIZONTAL_ALIGNMENT_LEFT, SLOT, 7, Color.WHITE)
-		if r["inventory"].has(id):
+	for i in 12:
+		var rect := Rect2(TOOLBAR_X + i * SLOT, TOOLBAR_Y, SLOT, SLOT)
+		var id := str(tb[i])
+		if id != "" and r["inventory"].has(id):
 			var n := str(int(r["inventory"][id]))
 			var nw := _font.get_string_size(n, HORIZONTAL_ALIGNMENT_RIGHT, -1, 7).x
 			c.draw_string(_font, Vector2(rect.end.x - nw - 1, rect.end.y - 1), n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color.WHITE)
@@ -290,10 +298,19 @@ func _draw_hud() -> void:
 	if sc0 and sc0.get("battle") != null:
 		nxt = ""  # the battle bar says what matters
 	if nxt != "" and not Dialogue.instance(get_tree()).active:  # indoors too, under the held-item line
+		# Up to two lines, cut at a word, so the how-to half of a long goal isn't lost.
+		var gl: Array = [nxt]
 		if nxt.length() > 54:
-			nxt = nxt.left(52) + "…"
-		c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 21), "▸ " + nxt, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, 3, Color(0, 0, 0, 0.7))
-		c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 21), "▸ " + nxt, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, Color(1, 0.92, 0.6))
+			var cut := nxt.rfind(" ", 54)
+			if cut < 24:
+				cut = 54
+			var rest := nxt.substr(cut).strip_edges()
+			gl = [nxt.left(cut), rest if rest.length() <= 58 else rest.left(56) + "…"]
+		for gi in gl.size():
+			var gy := TOOLBAR_Y + SLOT + 21 + gi * 9
+			var gs := ("▸ " if gi == 0 else "   ") + str(gl[gi])
+			c.draw_string_outline(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, 3, Color(0, 0, 0, 0.7))
+			c.draw_string(_font, Vector2(TOOLBAR_X, gy), gs, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, Color(1, 0.92, 0.6))
 	# Heat (gangster arc): five pips under the clock.
 	# Hidden until there is some heat (first time: a toast says what it means).
 	if Racket.on() and (Racket.heat() > 0 or r["flags"].has("heat_told")):
@@ -547,6 +564,7 @@ func toast(text: String, color := Color.WHITE) -> void:
 
 
 func fade_out(seconds := 0.4) -> void:
+	_fade.visible = true
 	var tw := _fade.create_tween()
 	tw.tween_property(_fade, "color:a", 1.0, seconds)
 	await tw.finished
@@ -556,6 +574,7 @@ func fade_in(seconds := 0.4) -> void:
 	var tw := _fade.create_tween()
 	tw.tween_property(_fade, "color:a", 0.0, seconds)
 	await tw.finished
+	_fade.visible = _fade.color.a > 0.0
 
 
 ## Big maps (the mines): an arrow at the screen edge toward the open shaft or the awake keeper.
@@ -594,7 +613,7 @@ func _draw_boss_bar(c: CanvasItem) -> void:
 		return
 	var boss: Enemy = null
 	for e in m.enemies:
-		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and (e.base_hp >= 60 or e.is_guardian or e.has_meta("marked") or e._gift != null or e.has_meta("boss_name")) and (e.has_meta("boss_name") or e.position.distance_to(m.player.position) < 170.0):
+		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and (e.bossy or e.is_guardian or e.has_meta("marked") or e._gift != null or e.has_meta("boss_name")) and (e.has_meta("boss_name") or e.position.distance_to(m.player.position) < 170.0):
 			if boss == null or e.max_hp > boss.max_hp:
 				boss = e
 	if boss == null:

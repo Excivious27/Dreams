@@ -223,7 +223,7 @@ static var _one_face_cache := {}
 ## Some portrait cells hold two faces side by side (the sheet's spacing didn't match
 ## the grid): show only the widest one. Single wide busts (one opaque run) are kept.
 static func one_face(t: Texture2D) -> Texture2D:
-	if t == null or t.get_width() < t.get_height() * 1.3:
+	if t == null or t.get_width() < t.get_height() * 1.8:  # two faces side by side are ~2x wide; single wide busts skip the pixel scan
 		return t
 	var key := t.resource_path if t.resource_path != "" else str(t.get_instance_id())
 	if _one_face_cache.has(key):

@@ -81,17 +81,20 @@ void fragment() {
 	float n = vnoise(wpos / 24.0) * 0.67 + vnoise(wpos / 9.0) * 0.33;
 	float v = m + (n - 0.5) * wobble;
 	float a = smoothstep(0.5 - soft, 0.5 + soft, v);
-	vec2 uv = wpos / 128.0;
-	vec4 w = texture(water_tex, uv + drift * TIME / 128.0);
-	vec4 w2 = texture(water_tex, uv * 1.0 + vec2(-drift.y * 1.7, drift.x * 0.6) * TIME / 128.0 + vec2(0.31, 0.55));
-	vec3 col = mix(w.rgb, w2.rgb, 0.35) * tint.rgb;
-	if (deep_amt > 0.0) {
-		float md = (mask_at(cellf + vec2(2.5, 0.0)) + mask_at(cellf - vec2(2.5, 0.0)) + mask_at(cellf + vec2(0.0, 2.5)) + mask_at(cellf - vec2(0.0, 2.5))) * 0.25;
-		col = mix(col, texture(deep_tex, uv + drift * TIME / 160.0).rgb * tint.rgb, smoothstep(0.85, 1.0, md) * deep_amt);
+	vec3 col = vec3(0.0);
+	if (a > 0.0) {  // bank side (a == 0): the water colour is mixed out, skip its fetches
+		vec2 uv = wpos / 128.0;
+		vec4 w = texture(water_tex, uv + drift * TIME / 128.0);
+		vec4 w2 = texture(water_tex, uv * 1.0 + vec2(-drift.y * 1.7, drift.x * 0.6) * TIME / 128.0 + vec2(0.31, 0.55));
+		col = mix(w.rgb, w2.rgb, 0.35) * tint.rgb;
+		if (deep_amt > 0.0) {
+			float md = (mask_at(cellf + vec2(2.5, 0.0)) + mask_at(cellf - vec2(2.5, 0.0)) + mask_at(cellf + vec2(0.0, 2.5)) + mask_at(cellf - vec2(0.0, 2.5))) * 0.25;
+			col = mix(col, texture(deep_tex, uv + drift * TIME / 160.0).rgb * tint.rgb, smoothstep(0.85, 1.0, md) * deep_amt);
+		}
+		float pulse = 0.65 + 0.35 * sin(TIME * 2.0 + n * 6.0);
+		float f = (smoothstep(0.46, 0.52, v) - smoothstep(0.55, 0.66, v)) * foam.a * pulse;
+		col = mix(col, foam.rgb, f);
 	}
-	float pulse = 0.65 + 0.35 * sin(TIME * 2.0 + n * 6.0);
-	float f = (smoothstep(0.46, 0.52, v) - smoothstep(0.55, 0.66, v)) * foam.a * pulse;
-	col = mix(col, foam.rgb, f);
 	float b = (smoothstep(0.28, 0.40, v) - smoothstep(0.47, 0.52, v)) * bank.a;
 	vec4 outside = vec4(bank.rgb, b);
 	COLOR = mix(outside, vec4(col, tint.a), a);

@@ -178,11 +178,20 @@ static func play(m: GameMap, b: Dictionary) -> void:
 		if m == null:
 			return
 	_apply(m, b.get("effects", {}))
+	if is_instance_valid(m):
+		_quests_now.call_deferred(m)  # beat flags (final_done, catship_done) close/open quests now
 	GameState.run.erase("story_pending")
 	GameState.save()
 	if is_instance_valid(m) and m.player:
 		m.player.frozen = false
 	Dialogue.block_input()
+
+
+## Twice: the first tick closes quests a beat's flags finished, the second opens the next main step.
+static func _quests_now(m: GameMap) -> void:
+	if is_instance_valid(m) and not GameState.run.is_empty():
+		m._check_quests()
+		m._check_quests()
 
 
 static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
@@ -367,7 +376,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 				tw.tween_property(sp, "modulate:a", 0.0, 1.2)
 				tw.tween_callback(sp.queue_free)
 	if fx.has("sfx"):
-		Music.instance(m.get_tree()).sfx(str(fx["sfx"]))
+		Music.instance(m.get_tree()).sfx("quest_done" if str(fx["sfx"]) == "levelup" else str(fx["sfx"]), "levelup")
 	if fx.has("heal"):
 		GameState.run["hp"] = int(GameState.run["max_hp"])
 	if fx.has("grow"):

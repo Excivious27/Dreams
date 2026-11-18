@@ -5253,23 +5253,23 @@
     {
      "id": "hustle_2_2",
      "name": "Quick Reload",
-     "desc": "+1 gun damage (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 2,
      "effect": {
-      "gun_damage": 1
+      "xp_gain": 0.03
      }
     },
     {
      "id": "hustle_2_3",
      "name": "Street Tough",
-     "desc": "+1 gun damage (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "gun_damage": 1
+      "xp_gain": 0.03
      }
     },
     {
@@ -5287,23 +5287,23 @@
     {
      "id": "hustle_2_5",
      "name": "Dead Eye",
-     "desc": "+1 gun damage (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "gun_damage": 1
+      "xp_gain": 0.03
      }
     },
     {
      "id": "hustle_2_6",
      "name": "Brawler",
-     "desc": "+1 gun damage (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "gun_damage": 1
+      "xp_gain": 0.03
      }
     },
     {
@@ -5321,23 +5321,23 @@
     {
      "id": "hustle_2_8",
      "name": "Iron Nerves",
-     "desc": "+1 gun damage (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "gun_damage": 1
+      "energy": 6
      }
     },
     {
      "id": "hustle_2_9",
      "name": "Sharpshooter",
-     "desc": "+2 gun damage",
+     "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "gun_damage": 2
+      "energy": 12
      }
     },
     {
@@ -5399,12 +5399,12 @@
     {
      "id": "hustle_3_5",
      "name": "Armoured Drones",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+5% battle supply (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 3,
      "effect": {
-      "energy": 6
+      "supply_rate": 0.05
      }
     },
     {

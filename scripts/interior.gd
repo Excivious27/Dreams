@@ -18,7 +18,12 @@ const ART_CROP := {
 	"shelf_cans": [50, 95, 0, 0, 50, 90], "shelf_dry": [50, 96, 0, 0, 50, 90], "shelf_house": [50, 96, 0, 0, 50, 90],
 	"shelf_misc": [50, 96, 0, 0, 50, 90], "shelf_seeds": [190, 99, 8, 6, 52, 88],
 	"chair2_a_left": [98, 35, 81, 7, 17, 28], "chair2_a_right": [98, 35, 0, 7, 17, 28],
+	"charts_hammock": [311, 196, 15, 85, 192, 102],
 }
+
+## Back-wall middle pieces per kit that tile cleanly side by side (the full
+## _m/_m2/_m3 cycle steps or breaks for these: marble capitals, floral roses).
+const WALL_MIDS := {"wl_marble": ["_m2"], "wl_floral": ["_m2"], "wl_wood": ["_m2"], "wl_hut": ["_m2"], "wl_log": ["_m", "_m2"], "wl_mill": ["_m2"], "wl_curve": ["_m"], "wl_reed": ["_m3"], "wl_plaster": ["_m2"], "wl_timber": ["_m2"]}
 
 
 static func art_crop(g: String, nm: String) -> Rect2:
@@ -216,7 +221,7 @@ func after_ready() -> void:
 		if at == Vector2i(-1, -1) or used.has(at):
 			for tries in 60:
 				var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(4, rows - 3))
-				if not blocked.has(c) and not things.has(c) and not used.has(c) and not (absi(c.x - int(dl[0])) <= 1 and c.y >= int(dl[1]) - 2):
+				if not blocked.has(c) and not blocked.has(c + Vector2i(0, 1)) and not things.has(c) and not used.has(c) and not (absi(c.x - int(dl[0])) <= 1 and c.y >= int(dl[1]) - 2):
 					at = c
 					break
 		if at == Vector2i(-1, -1):
@@ -295,11 +300,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
 		"heal":
-			if int(GameState.run["flags"].get("heal_" + interior_id, 0)) < int(GameState.run["day"]):
+			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's rest for later
+			elif int(GameState.run["flags"].get("heal_" + interior_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_" + interior_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
-				GameState.extra_energy(int(thing.get("energy", 30)))
-				hud.toast(str(thing.get("msg", "You feel better.")))
+				var got := GameState.rest_energy(int(thing.get("energy", 30)))
+				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else "  You've rested plenty today."))
 			else:
 				hud.toast("Once a day.")
 			return true
@@ -402,14 +409,41 @@ static func clean_src(t: Texture2D) -> Rect2:
 var _floor_vars: Array = []
 
 
+## Mean luminance of a floor tile's clean window (sampled every 3 px).
+static func _lum(t: Texture2D) -> float:
+	var img := t.get_image()
+	if img == null:
+		return 0.5
+	if img.is_compressed():
+		img.decompress()
+	var r := clean_src(t)
+	var s := 0.0
+	var n := 0
+	for y in range(int(r.position.y), int(r.end.y), 3):
+		for x in range(int(r.position.x), int(r.end.x), 3):
+			s += img.get_pixel(x, y).get_luminance()
+			n += 1
+	return s / maxf(1.0, float(n))
+
+
 func _floor_cell(fl: String, c: Vector2i) -> void:
 	if Art.has("tiles", fl + "_0"):
 		if _floor_vars.is_empty():
-			# Variants whose clean window is most of the tile (others would stretch too far).
+			# Variants whose clean window is most of the tile (others would stretch too far),
+			# kept to those near the middle brightness so the floor doesn't read as a checker.
+			var lums := {}
 			for i in 8:
 				var tv := Art.tex("tiles", fl + "_%d" % i)
 				if tv and clean_src(tv).size.x >= tv.get_width() * 0.72:
 					_floor_vars.append(i)
+					lums[i] = _lum(tv)
+			if _floor_vars.size() > 2:
+				var ls: Array = lums.values()
+				ls.sort()
+				var mid: float = ls[ls.size() / 2]
+				var near := _floor_vars.filter(func(i: int) -> bool: return absf(float(lums[i]) - mid) <= 0.035)
+				if near.size() >= 2:
+					_floor_vars = near
 			if _floor_vars.is_empty():
 				_floor_vars = [0]
 		var vi: int = _floor_vars[(c.x * 3 + c.y * 5) % _floor_vars.size()]
@@ -504,8 +538,12 @@ func draw_map() -> void:
 	var windows := window_cols()
 	var night := GameState.is_night()
 	var night_glass := night and Art.has("furniture", "window_night")
+	var mids: Array = WALL_MIDS.get(wl, ["_m", "_m2", "_m3"])
+	mids = mids.filter(func(m: String) -> bool: return Art.has("tiles", wl + m))
+	if mids.is_empty():
+		mids = ["_m", "_m2", "_m3"]
 	for x in range(1, cols - 1):
-		var part: String = "_l" if x == 1 else ("_r" if x == cols - 2 else ["_m", "_m2", "_m3"][x % 3])
+		var part: String = "_l" if x == 1 else ("_r" if x == cols - 2 else mids[x % mids.size()])
 		if x in windows and Art.has("tiles", wl + "_window"):
 			part = "_window"
 		elif not Art.has("tiles", wl + part):
@@ -518,6 +556,10 @@ func draw_map() -> void:
 			draw_texture_rect(t, Rect2(0, 0, TILE, TILE * 2), false)
 			draw_set_transform(offset())
 		elif t:
+			if part != "_window":
+				# Backing: see-through gaps between panels (mill, stable) read as shadow, not void.
+				var fy := float(first_opaque_row(t)) * 2.0 * TILE / float(t.get_height())
+				draw_rect(Rect2(x * TILE, fy, TILE, 2 * TILE - fy), Color(0.16, 0.11, 0.07))
 			draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
 			if night_glass and part == "_window":
 				Art.draw_prop(self, "furniture", "window_night", Vector2(x * TILE + 8, 2 * TILE - 4))  # dark glass after dark
@@ -596,7 +638,7 @@ func _upgrade_tools() -> void:
 			GameState.run["flags"]["tool_away_" + k0] = false
 			GameState.run["flags"].erase("tool_away_" + k0)
 			hud.toast("%s upgraded!" % GameState.item_name(k0), Color(1, 0.9, 0.4))
-			Music.instance(get_tree()).sfx("levelup")
+			Music.instance(get_tree()).sfx("quest_done", "levelup")
 			xp("mining", 6)
 			if player:
 				fx("levelup", player.position + Vector2(0, -12), 12.0, 0.8)
@@ -658,7 +700,7 @@ func _stable() -> void:
 			GameState.run["names"]["horse"] = "Clover"
 			GameState.run["names"]["horse_coat"] = ["bay", "grey", "black", "palomino"][d.last_choice]
 			hud.toast("Clover is yours!", Color(1, 0.9, 0.4))
-			Music.instance(get_tree()).sfx("levelup")
+			Music.instance(get_tree()).sfx("quest_done", "levelup")
 			GameState.add_friend("benno", 10)
 		return
 	d.say([{"who": "Benno", "text": "Clover's saddled. Ride out?  (A/C with nothing in front of you dismounts; she waits where you leave her.)", "choice": ["Ride", "Not now"], "key": ""}])

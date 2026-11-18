@@ -192,7 +192,7 @@ static func _check_stage(m: GameMap) -> void:
 	st()["stage"] = s + 1
 	m.fx("levelup", m.player.position + Vector2(0, -12), 10.0, 0.9)
 	m.shake(2.0)
-	Music.instance(m.get_tree()).sfx("levelup")
+	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 	m.xp("building", 40 + 20 * s)
 	await m.say([{"who": str(def()["keeper"]), "text": "%s: done.\n%s" % [str(sd["name"]), str(sd["desc"])]}])
 	GameState.save()

@@ -133,7 +133,8 @@ def _caps():
     src = open(f"{R}/scripts/game_state.gd").read()
     m = re.search(r"const BONUS_CAPS := \{(.*?)\}", src, re.S)
     caps = {k: float(v) for k, v in re.findall(r'"(\w+)":\s*([0-9.]+)', m.group(1))}
-    m2 = re.search(r"const SKILL_CAPS := \{(.*?)\}\n", src)
+    m2 = re.search(r"const SKILL_CAPS := \{(.*?)\}\s*\n(?=\S|$)", src, re.S)
+    assert m2, "SKILL_CAPS not found"
     per = {}
     if m2:
         for sk, body in re.findall(r'"(\w+)":\s*\{([^}]*)\}', m2.group(1) + "}"):
@@ -142,9 +143,9 @@ def _caps():
 
 
 BASE_CAPS, SKILL_CAPS = _caps()
-# Pup bite damage: without a cap the pup FALLBACK pours every leftover rank into it
-# (53 in all). Mirrors GameState.BONUS_CAPS["pet_dmg"] once that lands.
-BASE_CAPS.setdefault("pet_dmg", 24.0)
+# Gun damage (Hustle "Muscle" row): GameState.BONUS_CAPS["gun_damage"] is 12. Kept here
+# too so the fillers stop at 12 even before/if the game-side cap line is read.
+BASE_CAPS.setdefault("gun_damage", 12.0)
 FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
             "fishing": ["fish_value", "double_fish"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],

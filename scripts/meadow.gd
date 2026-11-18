@@ -55,6 +55,8 @@ func after_ready() -> void:
 	for y in range(3, 9):
 		for x in range(30, 35):
 			avoid[Vector2i(x, y)] = true
+	for c in cells_of([Rect2i(0, 8, 32, 5), Rect2i(27, 8, 9, 10), Rect2i(14, 0, 4, 10), Rect2i(34, 13, 20, 5)]):
+		avoid[c] = true  # keep the roads clear
 	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), 42, 6, avoid)
 	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), 43, 20, avoid)
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 44, 12, ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "bee", "bee", "rabbit", "sparrow", "deer"])
@@ -258,7 +260,7 @@ func draw_map() -> void:
 		for c: Vector2i in cells_of([Rect2i(14, 20, 8, 5)]):
 			if not blocked.has(c):
 				Art.draw_tile(self, "tiles", "g_tall", Vector2(c * TILE), 4)
-	draw_ground("dirt", cells_of([Rect2i(1, 9, 30, 3), Rect2i(28, 9, 3, 6), Rect2i(28, 14, 7, 3), FARM_EXIT, EAST_EXIT]))
+	draw_ground("dirt", cells_of([Rect2i(15, 0, 2, 10), Rect2i(1, 9, 30, 3), Rect2i(28, 9, 3, 6), Rect2i(28, 14, 7, 3), FARM_EXIT, EAST_EXIT]))
 	draw_exits()
 	if not Art.has("nature", "oak"):
 		for k in things:
@@ -274,7 +276,8 @@ func draw_map() -> void:
 						var p := cell_center(k)
 						draw_rect(Rect2(p.x - 4, p.y - 8, 8, 3), Color("c9452f"))
 	# Mine entrance in a rocky hill.
-	draw_ground("stone", cells_of([Rect2i(30, 2, 5, 7)]))
+	if not soft_ground(cells_of([Rect2i(30, 2, 5, 7)]), "ruin_floor", Color(0.12, 0.1, 0.08, 0.3)):
+		draw_ground("stone", cells_of([Rect2i(30, 2, 5, 7)]))
 	if not Art.has("props", "mine_entrance"):
 		draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
 	if pad == 0:

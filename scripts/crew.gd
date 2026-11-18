@@ -133,7 +133,7 @@ static func talk(m: GameMap, id: String) -> bool:
 			var perks: Array = mdef.get("perks", [])
 			if lv < perks.size():
 				m.hud.toast("%s loyalty %d: %s" % [str(mdef["name"]), lv + 1, str(perks[lv])], Color(1, 0.85, 0.7))
-				Music.instance(m.get_tree()).sfx("levelup")
+				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 				if m.player and Art.has("fx", "special_" + id):
 					m.fx("special_" + id, m.player.position + Vector2(0, -16), 10.0, 0.5)
 			return true

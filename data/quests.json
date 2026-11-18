@@ -43,7 +43,7 @@
   {
    "id": "spark",
    "arc": "penguins",
-   "text": "Build the Crystal Resonator from the Plans board by your house (10 stone, 1 shard), then refine 3 shards into a Refined Crystal in it. Shards: the meadow, mountain rocks, the beach wreck, the Wastes commander.",
+   "text": "Build the Crystal Resonator from the Plans board by your house (10 stone, 1 shard), then refine 3 shards into a Refined Crystal in it. Shards: the meadow boss, mountain rocks, the beach wreck, the mine's crystal floors.",
    "when": {
     "quest": "clear_meadow",
     "flag": "meow_taught"
@@ -232,13 +232,9 @@
   {
    "id": "uptown",
    "arc": "gangsters",
-   "text": "Reach the President's tower and beat his Enforcer.",
+   "text": "Reach the President's tower and beat his Enforcer. (He hits hard: Combat 5 or more helps.)",
    "when": {
-    "quest": "pit",
-    "skill": [
-     "combat",
-     5
-    ]
+    "quest": "pit"
    },
    "done_when": {
     "flag": "boss_uptown"
@@ -250,6 +246,18 @@
      1
     ]
    }
+  },
+  {
+   "id": "tower",
+   "arc": "gangsters",
+   "text": "The tower doors are past the Enforcer. Get inside and face the President.",
+   "when": {
+    "quest": "uptown"
+   },
+   "done_when": {
+    "flag": "final_done"
+   },
+   "reward": {}
   },
   {
    "id": "gang",
@@ -668,7 +676,7 @@
    "when": {
     "friend": [
      "maple",
-     4
+     6
     ]
    },
    "done_when": {
@@ -758,7 +766,7 @@
    "when": {
     "friend": [
      "gideon",
-     3
+     6
     ],
     "skill": [
      "mining",
@@ -904,7 +912,7 @@
    "when": {
     "friend": [
      "wren",
-     4
+     6
     ],
     "arc": "penguins"
    },
@@ -981,7 +989,7 @@
   {
    "id": "alder_fall_fair",
    "giver": "alder",
-   "text": "Alder wants 5 pumpkins and 5 corn for the fall fair.",
+   "text": "Alder wants 5 pumpkins and 5 cranberries for the fall fair.",
    "when": {
     "season": "fall",
     "friend": [
@@ -996,7 +1004,7 @@
       5
      ],
      [
-      "corn",
+      "cranberry",
       5
      ]
     ]
@@ -1156,7 +1164,7 @@
    "when": {
     "friend": [
      "finn",
-     5
+     6
     ],
     "skill": [
      "fishing",
@@ -1269,7 +1277,7 @@
    "when": {
     "friend": [
      "hazel",
-     4
+     6
     ]
    },
    "done_when": {
@@ -1354,7 +1362,7 @@
    "when": {
     "friend": [
      "posy",
-     2
+     6
     ],
     "season": "spring"
    },
@@ -1456,7 +1464,7 @@
    "when": {
     "friend": [
      "bram",
-     3
+     6
     ]
    },
    "done_when": {
@@ -1507,7 +1515,7 @@
    "when": {
     "friend": [
      "juniper",
-     3
+     6
     ],
     "skill": [
      "foraging",
@@ -1597,7 +1605,7 @@
    "when": {
     "friend": [
      "rook",
-     3
+     6
     ],
     "quest": "clear_meadow"
    },
@@ -1620,7 +1628,7 @@
    "when": {
     "friend": [
      "theo",
-     1
+     6
     ],
     "skill": [
      "mining",
@@ -1733,7 +1741,7 @@
    "when": {
     "friend": [
      "lumi",
-     3
+     6
     ],
     "arc": "penguins"
    },
@@ -1809,7 +1817,7 @@
    "when": {
     "friend": [
      "sal",
-     2
+     6
     ],
     "skill": [
      "fishing",
@@ -2232,7 +2240,7 @@
   {
    "id": "sel_fossil",
    "giver": "sel",
-   "text": "Sel wants the fossil that isn't a fossil (mountain or quarry).",
+   "text": "Sel wants the fossil that isn't a fossil (quarry or deep mine).",
    "when": {
     "friend": [
      "sel",
@@ -2374,7 +2382,9 @@
     "friend": [
      "wren",
      4
-    ]
+    ],
+    "season": "fall",
+    "quest": "clear_meadow"
    },
    "done_when": {
     "item": [
@@ -2487,7 +2497,7 @@
    "when": {
     "friend": [
      "wren",
-     4
+     6
     ],
     "arc": "gangsters"
    },
@@ -2517,7 +2527,7 @@
    "when": {
     "friend": [
      "lumi",
-     3
+     6
     ],
     "arc": "gangsters"
    },
@@ -2543,7 +2553,7 @@
    "when": {
     "friend": [
      "bram",
-     3
+     6
     ]
    },
    "done_when": {

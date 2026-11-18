@@ -23,7 +23,7 @@ regs["hollow_heart"] = {
               {"name": "mine_crystal_rock_2", "cell": [22, 40]}, {"name": "mine_crystal_rock_4", "cell": [54, 40]}, {"name": "mine_crystal_rock_1", "cell": [32, 16]},
               {"name": "mine_crystal_rock_5", "cell": [46, 26]}, {"name": "mine_heart_stalag_0", "cell": [8, 40]}, {"name": "mine_heart_stalag_1", "cell": [68, 40]},
               {"name": "cave_stalag_l", "cell": [28, 60]}, {"name": "cave_stalag_m", "cell": [50, 60]}, {"name": "cave_arch", "cell": [36, 30], "w": 3, "solid": False}],
-    "gen": {"clumps": 0, "scatter": 0, "critters": ["firefly", "bat", "firefly", "firefly", "bat"], "critter_count": 18},
+    "gen": {"clumps": 0, "scatter": 0, "region_props": ["cave_mush_blue", "cave_mush_purple", "cave_mush_orange", "cave_stalag_m", "cave_stalag_l", "mine_heart_stalag_0", "mine_heart_stalag_1", "mine_crystal_rock_1", "mine_crystal_rock_4"], "region_count": 60, "critters": ["firefly", "bat", "firefly", "firefly", "bat"], "critter_count": 18},
     "fruit": 0,
     "forage": 10,
     "things": [

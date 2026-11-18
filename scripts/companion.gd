@@ -280,12 +280,14 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				GameState.run["sold_today"] = sold
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
 				m.hud.toast("Sal moved %d %s for ◆%d. No questions." % [n, GameState.item_name(best), pay], Color(1, 0.9, 0.6))
+				m.fx("sparkle", p.position + Vector2(0, -12), 10.0, 0.5)
 			else:
 				m.hud.toast("Sal: 'Nothing worth moving. Bring me loot.'", Color(1, 0.9, 0.6))
 		"tail":
 			m.hud.toast("Mer: 'The water's right there.'", Color(0.8, 0.95, 1.0))
 		"mend":
 			GameState.heal_points(10)
+			m.fx("heal", p.position + Vector2(0, -10), 10.0, 0.6)
 			m.hud.toast("Mom: 'Hold still.' +10 health.", Color(1, 0.8, 0.8))
 
 

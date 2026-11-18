@@ -256,7 +256,7 @@ func _broadcast_state() -> void:
 ## Only what's truly shared: the host's clock, weather and farm. Each player
 ## keeps their own money, bank, sell box, quests, story flags and friendships
 ## (overwriting those from the host let guests copy crystals and replay story).
-const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared"]
+const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed"]
 
 
 func _push_world(to_id := -1) -> void:
@@ -277,6 +277,7 @@ func _apply_world(d: Dictionary) -> void:
 	var scene_changed := false
 	# The host's day we last saw (0 = first world since joining): only a real rollover is a morning.
 	var host_day := int(_last_world.get("day", 0))
+	var abs0 := GameState.now_abs()
 	for k in d:
 		if not (k in WORLD_KEYS):
 			continue
@@ -287,9 +288,11 @@ func _apply_world(d: Dictionary) -> void:
 		GameState.run[k] = d[k]
 	if not _host:
 		# A full world from the host: keys it doesn't have aren't ours to show (ours are in _solo_backup).
-		for k in ["builds", "construction", "permits", "cleared", "weather"]:
+		for k in ["builds", "construction", "permits", "cleared", "weather", "placed"]:
 			if not d.has(k):
 				GameState.run.erase(k)
+	if not _host and host_day == 0:
+		GameState.shift_clock(GameState.now_abs() - abs0)  # first world: our timers move onto the host's clock
 	# The host slept: a new morning for us too (our sell box, energy, health).
 	if not _host and host_day > 0 and int(GameState.run.get("day", 0)) > host_day:
 		var rep := GameState.guest_morning()
@@ -375,11 +378,13 @@ func _restore_solo() -> void:
 	if GameState.run.is_empty():
 		_solo_backup = {}
 		return
+	var abs0 := GameState.now_abs()
 	for k in _solo_backup:
 		if _solo_backup[k] == null:
 			GameState.run.erase(k)
 		else:
 			GameState.run[k] = _solo_backup[k]
+	GameState.shift_clock(GameState.now_abs() - abs0)  # and back onto ours
 	_solo_backup = {}
 	GameState.save()
 

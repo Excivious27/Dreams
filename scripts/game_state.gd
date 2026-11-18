@@ -109,7 +109,7 @@ const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_
 ## Renames that only apply when the old node was bought under this name.
 const NODE_RENAME_NAME := {"combat_2_8": "Iron Gut"}
 ## Bump when gen_skill_trees.py changes what existing filler nodes do: old saves get those points back.
-const SKILL_VER := 7
+const SKILL_VER := 8
 
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
@@ -302,10 +302,14 @@ static func guest_morning() -> Dictionary:
 	report["earned"] = total
 	run["energy"] = int(run["max_energy"])
 	run["fed_en"] = 0
+	run["rest_en"] = 0
+	run["kills_today"] = {}  # a guest never sleeps here: the host's morning resets the kill pay too
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
 	run["gifted_today"] = {}
+	if int(run["day"]) % 7 == 1:
+		run["gifts_week"] = {}
 	Racket.overnight(report)
 	Sanctuary.overnight(report)
 	save()
@@ -1051,7 +1055,7 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.5, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
 	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
 	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
-	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0}
+	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 12.0}
 ## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
 ## Warrior, Legend). tools/gen_skill_trees.py reads this too.
 const SKILL_CAPS := {"combat": {"hp": 140.0, "energy": 60.0}}
@@ -1377,7 +1381,7 @@ static func consume(id: String) -> Dictionary:
 		return out
 	# Plain food past the daily energy cap with full health would do nothing: keep it.
 	var e_only := not (it.has("mana") or it.has("buff") or it.has("grow")) and (int(it.get("heal", 0)) == 0 or int(run["hp"]) >= int(run["max_hp"]))
-	if e_only and int(it.get("energy", 0)) + int(it.get("heal", 0)) > 0 and int(run.get("fed_en", 0)) >= int(run["max_energy"]):
+	if e_only and int(it.get("energy", 0)) + int(it.get("heal", 0)) > 0 and (int(run.get("fed_en", 0)) >= int(run["max_energy"]) or int(run["energy"]) >= int(run["max_energy"])):
 		return {"full": true}  # nothing to gain: keep the food
 	add_item(id, -1)
 	var hp0 := int(run["hp"]); var en0 := int(run["energy"]); var ma0 := int(run.get("mana", 0))
@@ -1430,6 +1434,25 @@ static func now_abs() -> int:
 	return int(run.get("day", 1)) * 1440 + int(run.get("time", DAY_START))
 
 
+## Co-op: switching between our own clock and a host's moves timers set on the other clock.
+static func shift_clock(dm: int) -> void:
+	if dm == 0 or run.is_empty():
+		return
+	var dd := int(round(dm / 1440.0))
+	var bf: Dictionary = run.get("buffs", {})
+	for k in bf:
+		if bf[k] is Dictionary:
+			bf[k]["until"] = int(bf[k].get("until", 0)) + dm
+	var pt: Dictionary = run.get("pet", {})
+	if pt.has("rest_until_abs"):
+		pt["rest_until_abs"] = int(pt["rest_until_abs"]) + dm
+	if pt.has("rest_until"):
+		pt["rest_until"] = int(pt["rest_until"]) + dd
+	var cl: Dictionary = run.get("crew_last", {})
+	for id in cl:
+		cl[id] = int(cl[id]) + dd
+
+
 static func restore_energy(n: int) -> void:
 	run["energy"] = mini(int(run["energy"]) + n, int(run["max_energy"]))
 
@@ -1442,6 +1465,17 @@ static func extra_energy(n: int) -> int:
 	restore_energy(mini(room, n))
 	var got := int(run["energy"]) - en0
 	run["fed_en"] = int(run.get("fed_en", 0)) + got
+	return got
+
+
+## Rest spots (well, spring, inn, chapel...): their own half bar a day (rest_en,
+## reset each morning), apart from food and perk meals. Returns what was gained.
+static func rest_energy(n: int) -> int:
+	var room := maxi(0, int(run["max_energy"]) / 2 - int(run.get("rest_en", 0)))
+	var en0 := int(run["energy"])
+	restore_energy(mini(room, n))
+	var got := int(run["energy"]) - en0
+	run["rest_en"] = int(run.get("rest_en", 0)) + got
 	return got
 
 
@@ -1606,10 +1640,14 @@ static func give_gift(npc: String, item: String) -> int:
 	var gw: Dictionary = run.get("gifts_week", {})
 	gw[npc] = int(gw.get(npc, 0)) + 1
 	run["gifts_week"] = gw
+	var hearts_before := friend_hearts(npc)
 	add_friend(npc, gain)
 	var g: Dictionary = run.get("gifted_today", {})
 	g[npc] = true
 	run["gifted_today"] = g
+	# Every gift gets a sound wherever it is given (not just in town); a new heart gets the jingle.
+	if Engine.get_main_loop() is SceneTree:
+		Music.instance(Engine.get_main_loop() as SceneTree).sfx("levelup" if friend_hearts(npc) > hearts_before else ("harvest" if gain >= 12 else ("pickup" if gain > 0 else "nope")), "pickup")
 	return gain
 
 
@@ -1633,7 +1671,7 @@ static func add_friend(npc: String, n: int) -> void:
 				if pk != "" and not (Perks.data().get(npc, {}) as Dictionary).has(str(h)):
 					notify("%s ♥%d: %s" % [str(npcs.get(npc, {}).get("name", npc.capitalize())), h, pk])
 	# Bram's soup: the first chat with him each day tops you up.
-	if npc == "bram" and n > 0 and Perks.flag("soup") and int(run["flags"].get("soup_day", -1)) != int(run["day"]):
+	if npc == "bram" and n > 0 and Perks.flag("soup") and int(run["flags"].get("soup_day", -1)) != int(run["day"]) and int(run["energy"]) < int(run["max_energy"]):  # full bar: keep today's bowl for later
 		run["flags"]["soup_day"] = int(run["day"])
 		var got := extra_energy(30)
 		notify("Bram slides you a bowl of soup. +%d energy." % got if got > 0 else "Bram slides you a bowl of soup. You're too full for more energy today.")
@@ -1783,6 +1821,14 @@ const BOARD_POOL := {
 }
 
 
+## False for a crop's harvest that can't be grown this season (no strawberry orders in winter).
+static func crop_in_season(item: String) -> bool:
+	for cid: String in crops:
+		if str(crops[cid].get("yield", "")) == item:
+			return str(crops[cid].get("season", "any")) in ["any", season()]
+	return true
+
+
 static func board_today() -> Array:
 	var b: Dictionary = run.get("board", {})
 	if int(b.get("day", -1)) == int(run["day"]):
@@ -1803,7 +1849,7 @@ static func board_today() -> Array:
 		used[who] = true
 		var pool: Array = BOARD_POOL[who]
 		var item: String = pool[rng.randi_range(0, mini(pool.size(), 2 + tier) - 1)]
-		if not items.has(item):
+		if not items.has(item) or not crop_in_season(item):
 			continue
 		var n := rng.randi_range(2, 4 + tier * 2)
 		var val := maxi(2, item_value(item))
@@ -2011,6 +2057,11 @@ static func tick_quests() -> Array:
 					add_item(str(pair[0]), -int(pair[1]))
 			if complete_quest(str(q["id"])):
 				done.append(str(q["id"]))
+	if not done.is_empty():
+		# The next main step opens now, not on the next map load.
+		for q in quests_data.get("main", []):
+			if str(q.get("arc", "both")) in ["both", str(run["arc"])] and not has_quest(str(q["id"])) and _cond_ok(q.get("when", {})):
+				add_quest(str(q["id"]), str(q["text"]))
 	return done
 
 
@@ -2021,9 +2072,27 @@ static func side_quest_for(npc: String) -> Dictionary:
 			continue
 		if str(q.get("arc", "both")) not in ["both", str(run["arc"])]:
 			continue
+		if (q.get("when", {}) as Dictionary).has("season") and day_of_season() > 18 and _quest_grows(q):
+			continue  # too late in the season to grow it: asked again next year
 		if _cond_ok(q.get("when", {})):
 			return q
 	return {}
+
+
+## True when a quest asks for a crop's harvest (it has to be grown in time).
+static func _quest_grows(q: Dictionary) -> bool:
+	var dw: Variant = q.get("done_when", {})
+	if not (dw is Dictionary):
+		return false
+	var want: Array = []
+	if (dw as Dictionary).has("item"):
+		want.append(str(dw["item"][0]))
+	for pair in (dw as Dictionary).get("items", []):
+		want.append(str(pair[0]))
+	for cid in crops:
+		if str(crops[cid].get("yield", "")) in want:
+			return true
+	return false
 
 
 static func side_quest_pending(npc: String) -> Dictionary:
@@ -2037,7 +2106,7 @@ static func side_quest_pending(npc: String) -> Dictionary:
 			continue
 		if d.has("done_when") and d["done_when"] is Dictionary and _cond_ok(d["done_when"]):
 			return d
-		if first.is_empty() and not bool(d.get("board", false)):
+		if first.is_empty() and not bool(d.get("board", false)) and str((d.get("when", {}) as Dictionary).get("season", season())) == season():
 			first = d  # an unfinished board job doesn't stop the villager offering their own quests (it is still turned in via _ready_quest)
 	return first
 
@@ -2177,6 +2246,8 @@ static func weather_for(day: int) -> String:
 			break
 	if day <= 2 and pick in ["storm", "blizzard", "fog"]:
 		pick = "clear"  # gentle first days
+	if day == 1 and not is_penguins() and pick in ["clear", "fog", "wind", "petals"]:
+		pick = "rain"  # the gangster opening is a rainy night, and the rain is real (it waters the first crop)
 	w[key] = pick
 	run["weather"] = w
 	return pick
@@ -2210,6 +2281,11 @@ static func festival_name(id: String) -> String:
 
 static func is_wet() -> bool:
 	return weather_today() in ["rain", "storm"]
+
+
+## Rain, storms and snow water the crops (snow overnight, like sleep() does).
+static func sky_waters() -> bool:
+	return is_wet() or weather_today() in ["snow", "blizzard"]
 
 
 static func weather_name(w: String) -> String:
@@ -2299,7 +2375,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["acc"] = 0.0
 				tile["watered"] = false
 				continue
-			if tile.get("watered", false) or is_wet() or weather_today() in ["snow", "blizzard"] or hazel_waters:
+			if tile.get("watered", false) or sky_waters() or hazel_waters:
 				# Growth: in its season a crop grows a full day; out of season half
 				# a day (it struggles). Fertiliser and the farming tree speed it.
 				var rate := 1.0
@@ -2356,6 +2432,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
 	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) / 2
 	run["fed_en"] = 0
+	run["rest_en"] = 0
 	run["kills_today"] = {}  # per-map paid kills (game_map: re-entry respawns don't pay forever)
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
@@ -2364,6 +2441,8 @@ static func sleep(passed_out := false) -> Dictionary:
 	(run.get("pet", {}) as Dictionary).erase("down_until")  # a night's rest gets the pup up
 	if int(run["day"]) % 7 == 1:
 		run["gifts_week"] = {}
+	# Open quests from villagers the story sent away can never be handed in: drop them.
+	run["quests"] = (run["quests"] as Array).filter(func(q: Dictionary) -> bool: return bool(q["done"]) or str(_quest_def(str(q["id"])).get("giver", "")) == "" or not run["flags"].has(str(_quest_def(str(q["id"])).get("giver", "")) + "_gone"))
 	for line in Perks.morning():
 		notify(str(line))
 	# Traps in the bag catch something overnight (Rook's design): up to 3 work.
@@ -2685,7 +2764,9 @@ static func _first_crop_step() -> String:
 	var planted: Array = tiles.filter(func(t: Dictionary) -> bool: return str(t.get("crop", "")) != "")
 	if planted.is_empty():
 		return "Pick Turnip Seeds on the toolbar, USE on the soil."
-	if planted.any(func(t: Dictionary) -> bool: return not bool(t.get("watered", false))) and not is_wet():
+	if planted.any(func(t: Dictionary) -> bool: return int(t.get("days", 0)) >= int(crops.get(str(t["crop"]), {}).get("days", 99))):
+		return "Your crop is ripe: face it and tap USE to harvest."
+	if planted.any(func(t: Dictionary) -> bool: return not bool(t.get("watered", false))) and not sky_waters():
 		return "Water your crop: watering can, USE."
 	return "Crops grow overnight. Sleep, then harvest."
 

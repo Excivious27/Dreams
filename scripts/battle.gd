@@ -14,6 +14,7 @@ const SPAWNER_COST := {"striker": 20, "healer": 25, "warden": 25, "shade": 30, "
 const MAX_PER_SPAWNER := 3
 
 var map: GameMap
+var _redraw_acc := 0.0
 var bid := ""
 var d: Dictionary = {}
 var points: Array = []        # [{id, name, cell, pos, owner, prog, spawner, made, t}]
@@ -176,8 +177,11 @@ func _process(delta: float) -> void:
 		_spawn_t = float(d.get("wave_every", 6.0))
 		_enemy_wave()
 	_count_kills()
-	queue_redraw()
-	_hud.queue_redraw()
+	_redraw_acc += delta
+	if _redraw_acc >= 0.066:  # ~15 Hz is plenty for flags, arcs and the ticket HUD
+		_redraw_acc = 0.0
+		queue_redraw()
+		_hud.queue_redraw()
 
 
 func _capture(delta: float) -> void:
@@ -223,7 +227,7 @@ func _capture(delta: float) -> void:
 				map.hud.toast("%s is ours." % str(p["name"]), Color(0.6, 1, 0.7))
 				_caps += 1
 				map.fx("levelup", p["pos"] + Vector2(0, -10), 10.0, 0.6)
-				Music.instance(get_tree()).sfx("levelup")
+				Music.instance(get_tree()).sfx("coin", "pickup")  # many per battle: keep levelup for real level-ups
 			elif str(p["owner"]) == "enemy":
 				map.hud.toast("We lost %s." % str(p["name"]), Color(1, 0.6, 0.5))
 				Music.instance(get_tree()).sfx("alert", "thud")

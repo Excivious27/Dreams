@@ -279,8 +279,8 @@ def w5():
     foam = cells_by_grid(rgba, 4, 2, region=(1180, 10, 1480, 200), trim=False)
     strip([tile(rgba, b, 3) for b in foam[0]], "tiles", "foam")
     strip([tile(rgba, b, 3) for b in foam[1]], "tiles", "foam2")
-    row = cells_by_grid(rgba, 4, 1, region=(12, 215, 500, 325), trim=False)[0]
-    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=72) for b in row], "props", "tide_pool")
+    row = row_sprites(rgba, (12, 215, 512, 325), 4)  # by blobs: equal cells left slivers, and pool 4 runs to x510
+    strip([scale_to(crop(rgba, b), height=72) for b in row], "props", "tide_pool")
     row = cells_by_grid(rgba, 12, 1, region=(510, 215, 1525, 325), trim=False)[0]
     for b, nm in zip(row, ["shell_a", "shell_b", "shell_c", "starfish", "seaweed", "driftwood", "crab", "bucket", "sandcastle", "footprints", "bottle", "coconut_p"]):
         bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
@@ -462,7 +462,7 @@ def w10():
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=200) for b in row], "props", "star_crater")
 
 
-def load_hue(name, thresh=90):
+def load_hue(name, thresh=90, keep_inside=True):
     """Like load() but keys out every magenta/purple-hued pixel regardless of
     brightness, so dark grid lines between cells never count as sprite."""
     img = np.array(Image.open(os.path.join(S.INC, name)).convert("RGBA")).astype(np.int32)
@@ -474,7 +474,7 @@ def load_hue(name, thresh=90):
     # near pure magenta (the backdrop colour), never the softer sprite purples.
     from scipy import ndimage
     lab, n = ndimage.label(bg)
-    if n:
+    if n and keep_inside:
         edge = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
         mean_g = ndimage.mean(g, lab, np.arange(1, n + 1))
         keep_bg = np.zeros(n + 1, bool)
@@ -582,7 +582,9 @@ def w17():
         g += grid_tiles(rgba, (x0, 195, x1, 300), 3, 2, 4)
     save_set("harbour", g[:9], 3)
     props_from(rgba, "buildings", {"warehouse_a": ((12, 320, 290, 540), (144, 112)), "warehouse_b": ((300, 320, 665, 540), (176, 112)), "warehouse_c": ((700, 330, 930, 540), (112, 96)),
-        "lighthouse_rust": ((40, 740, 160, 1010), (56, 128)), "big_crane": ((1030, 690, 1536, 1010), (240, 160))})
+        "lighthouse_rust": ((40, 740, 160, 1010), (56, 128))})
+    # big_crane: the fish market's bottom line and the crate stack reach into its box; keep only the crane's own blob.
+    save(scale_to(_biggest_blob(crop(rgba, region_bbox(rgba, (1030, 705, 1536, 1010)))), width=240, height=160), "buildings", "big_crane")
     props_from(rgba, "props", {"crane": ((940, 320, 1110, 540), (80, 112)),
         "container_red": ((1150, 330, 1280, 390), (64, 32)), "container_blue": ((1320, 330, 1450, 390), (64, 32)), "container_orange": ((1150, 400, 1280, 450), (64, 32)), "container_green": ((1320, 400, 1450, 450), (64, 32)),
         "container_red2": ((1110, 470, 1200, 550), (40, 40)), "container_blue2": ((1210, 470, 1300, 550), (40, 40)), "container_orange2": ((1310, 470, 1400, 550), (40, 40)), "container_green2": ((1410, 470, 1500, 550), (40, 40)),
@@ -688,8 +690,8 @@ def w13():
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=44) for b in row], "props", "glow_pool_moon")
     row = cells_by_grid(rgba, 2, 1, region=(12, 640, 280, 760), trim=False)[0]
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=44) for b in row], "props", "moon_cow")
-    row = cells_by_grid(rgba, 4, 1, region=(12, 780, 1536, 1010), trim=False)[0]
-    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=160) for b in row], "props", "moon_spire_anim")
+    row = row_sprites(rgba, (12, 778, 1536, 1010), 4)  # by blobs: equal cells gave frame 2 a sliver of frame 3
+    strip([scale_to(crop(rgba, b), height=160) for b in row], "props", "moon_spire_anim")
 
 
 def w14():
@@ -1512,7 +1514,10 @@ def w48():
     _cells(rgba, (1206, y0, 1362, y1), 2, "nature", ["big_dead_a", "big_dead_b"], 128, fade=True)
     _cells(rgba, (1366, y0, 1532, y1), 2, "nature", ["big_snowpine_a", "big_snowpine_b"], 128, fade=True)
     mid = ["mid_oak", "mid_pine", "mid_birch", "mid_willow", "mid_cherry", "mid_maple", "mid_dead", "mid_snowpine", "mid_oak_b", "mid_pine_b", "mid_birch_b", "mid_willow_b", "mid_cherry_b", "mid_maple_b", "mid_dead_b", "mid_snowpine_b"]
-    for b, nm in zip(row_sprites(rgba, (10, 462, 1535, 582), 16), mid):
+    # Measured spans: mid_oak_b and mid_pine_b touch (split at x948), so row_sprites found 15 and fell back to equal cells (names shifted).
+    spans = [(13, 122), (133, 216), (231, 319), (329, 428), (435, 544), (550, 650), (660, 760), (775, 860),
+             (873, 948), (948, 1011), (1013, 1085), (1088, 1171), (1175, 1269), (1273, 1361), (1366, 1440), (1450, 1519)]
+    for b, nm in zip([(x0, 462, x1, 582) for x0, x1 in spans], mid):
         save(_cut(rgba, b, h=96), "nature", nm)
     _cells(rgba, (130, 648, 430, 822), 2, "nature", "oak_sway", 112, True)
     _cells(rgba, (445, 648, 690, 822), 2, "nature", "pine_sway", 112, True)
@@ -2356,7 +2361,7 @@ def _canvas(im, w=96, h=96, bottom=4):
     return c
 
 
-def _equal_cells(rgba, reg, n):
+def _equal_cells(rgba, reg, n, min_w=0):
     """Column runs of content in the row, then split the widest runs at their
     thinnest column until there are n (sprites that touch, like hair), or merge
     the closest runs if there are too many (sprites that split into pieces)."""
@@ -2372,6 +2377,8 @@ def _equal_cells(rgba, reg, n):
             on = False; runs.append([st, i])
     if on:
         runs.append([st, len(colp)])
+    if min_w:
+        runs = [r for r in runs if r[1] - r[0] >= min_w] or runs  # stray specks (w161 maple row: a 2-px run took a cell)
     while len(runs) > n:
         gaps = [(runs[i + 1][0] - runs[i][1], i) for i in range(len(runs) - 1)]
         g, i = min(gaps)
@@ -2584,8 +2591,17 @@ def _portrait_rows(file, group_names, rows_n=8, n=12):
     rgba = load(file)
     a = rgba[..., 3] > 40
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:rows_n]
+    pad = 2
+    if len(rows) != rows_n:  # touching rows merge and a row at the bottom edge is dropped (w131: 6 for 8)
+        H = rgba.shape[0]
+        rows = [(i * H // rows_n, (i + 1) * H // rows_n) for i in range(rows_n)]
+        pad = 0  # a fixed grid: don't reach into the next row
     for gname, (y0, y1) in zip(group_names, rows):
-        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), n)
+        bs = _equal_cells(rgba, (4, max(0, y0 - pad), rgba.shape[1] - 4, min(rgba.shape[0], y1 + pad)), n)
+        cw = rgba.shape[1] / float(n)
+        if pad == 0 or len(bs) < n or any(b[2] - b[0] < 20 or b[2] - b[0] > cw * 1.6 for b in bs[:n]):
+            # hat brims touch across the row (w131 Ivy): the plain n-cell grid
+            bs = [(int(i * cw) + 2, y0, int((i + 1) * cw) - 2, y1) for i in range(n)]
         for i, b in enumerate(bs):
             bb = region_bbox(rgba, b)
             if not bb or i >= len(EXPR):
@@ -2741,6 +2757,18 @@ def _region_sheet(region, file):
     rgba[:, x0:x0 + 6, 3] = 0; rgba[:, x1 - 6:x1, 3] = 0
     # Dark-magenta gradient at the bars' edges reads as foreground: key it.
     dm = (rgb[..., 1] < 40) & (rgb[..., 0] < 200) & (rgb[..., 0] > rgb[..., 1] + 10) & (abs(rgb[..., 0] - rgb[..., 2]) < 40)
+    # Props are cropped from a copy that keeps small dark red-brown specks (sapling stems, which the rule above also
+    # matched); long runs (bar edges, frame lines) still go. Boxes, tiles and prop numbers keep the old mask
+    # (regions.json names props by number).
+    from scipy import ndimage
+    pix = rgba.copy()
+    dl, dn = ndimage.label(dm)
+    drop = np.ones(dn + 1, bool)
+    for i, sl in enumerate(ndimage.find_objects(dl)):
+        if sl is not None and sl[0].stop - sl[0].start <= 24 and sl[1].stop - sl[1].start <= 24 and sl[1].start > x0 + 8 and sl[1].stop < x1 - 8:
+            drop[i + 1] = False
+    drop[0] = False
+    pix[drop[dl], 3] = 0
     rgba[dm, 3] = 0
     a = rgba[..., 3] > 40
     rowp = a[:, x0:x1].mean(1)
@@ -2780,7 +2808,7 @@ def _region_sheet(region, file):
     boxes.sort(key=lambda b: (b[1] // 90, b[0]))
     k = 0
     for b in boxes:
-        save(crop(rgba, b), "props", "r_%s_%02d" % (region, k))
+        save(crop(pix, b), "props", "r_%s_%02d" % (region, k))
         k += 1
     print("  ", region, "ground", len(ground), "deco", len(deco), "edge", len(edge), "props", k, "band", (bx0, ty0, bx1, ty1))
 
@@ -2973,7 +3001,7 @@ def w161():
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:8]
     who = ["maple", "gideon", "wren", "alder", "finn", "hazel", "posy", "rook"]
     for v, (y0, y1) in zip(who, rows):
-        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 16)
+        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 16, min_w=6)
         # 4 outfits x 4 expressions per the delivered sheet (normal, winter, festival, summer)
         for oi, outfit in enumerate(["normal", "winter", "festival", "summer"]):
             for ei, ex in enumerate(["neutral", "happy", "sad", "surprised"]):
@@ -3558,6 +3586,8 @@ def w_interiors():
     for i, nm in enumerate(["oil_cans", "oil_still", "charts_hammock", "kettle_stove", "telescope2", "logbook_desk", "fog_bell", "wool_bales", "wool_pile", "cider_press2", "apple_tub", "crook_rack", "cot_plaid", "stool2", "stool_fleece", "chest2", "blanket2", "lantern2", "reed_mat_a", "shelf_jars", "flower_jug", "frog_jars"]):
         _alias(F, "int_light_%02d" % (42 + i), nm)
     _alias(F, "int_light_49", "wool_bale")  # 49 holds the bales and the single bale as one blob
+    # 44 is 4 wall charts + the hammock + a second kettle stove (kettle_stove is 45): the hammock alone.
+    save(_biggest_blob(Image.open(os.path.join(S.OUT, m["int_light_44"]["file"])).convert("RGBA")), F, "charts_hammock")
     _anim_from(F, "int_light_64", 4, "bubbling_pot")
     for i, nm in enumerate(["herb_bundles", "reed_mat_b", "low_table", "jug", "lantern3", "cattail_pot", "net_a", "net_b", "net_c", "rod_a", "rod_b", "rod_c", "bait_bucket_a", "bait_bucket_c", "fish_ice", "barrels3", "crab_pots3", "life_ring", "floats", "fish_hang"]):
         _alias(F, "int_light_%02d" % (69 + i), nm)
@@ -3923,10 +3953,8 @@ def w193():
         G = _pup_group(nm)
         # Same body height as the breed's idle/walk strips, so a bite doesn't shrink the dog.
         h = 40 if nm == "dog" else int(S.manifest.get(G, {}).get("idle", {}).get("cell_h", 50) * 0.85)
-        if i < 4:
-            _pup_strips(rgba, cells, G, {"bite": (0, 4), "bark2": (4, 6), "hurt": (6, 8), "limp": (8, 12), "guard": (12, 14), "howl": (14, 16)}, h)
-        else:
-            _pup_strips(rgba, cells, G, {"dig": (0, 6), "fetch": (6, 10), "beg": (10, 12), "sleep": (12, 14), "roll": (14, 16)}, h)
+        # Every row of this sheet is dig/fetch/beg/sleep/roll (the fight poses are w192 only).
+        _pup_strips(rgba, cells, G, {"dig": (0, 6), "fetch": (6, 10), "beg": (10, 12), "sleep": (12, 14), "roll": (14, 16)}, h)
 
 def w194():
     rgba, rows = _peng_rows("w194_pup_gear.png", 6)
@@ -4646,10 +4674,10 @@ def w234(): _enemy_sheet("w234_enemy_dark.png")
 def w235(): _enemy_sheet("w235_enemy_heart.png")
 
 def w231():
-    rgba = load_hue("w231_fx_abilities.png")
+    rgba = load_hue("w231_fx_abilities.png", keep_inside=False)  # see-through bubbles/glows: the key shows through them
     H, Wd = rgba.shape[:2]
     bands = [("lunge_tele", 10, 60), ("lunge_trail", 70, 125), ("shot_poison", 130, 175), ("shot_fire", 180, 225), ("shot_ice", 230, 275), ("shot_dark", 280, 325),
-             ("shield_up", 335, 395), ("shield_hold", 400, 450), ("shield_pop", 455, 505), ("summon", 510, 555), ("stomp", 560, 650), ("blink", 655, 705), ("enrage", 715, 770), ("regen", 775, 835), ("keeper_wake", 850, 1010)]
+             ("shield_up", 333, 386), ("shield_hold", 386, 441), ("shield_pop", 441, 500), ("summon", 501, 548), ("stomp", 548, 653), ("blink", 653, 706), ("enrage", 715, 770), ("regen", 775, 835), ("keeper_wake", 850, 1010)]
     for name, y0, y1 in bands:
         cells = _band_cells(rgba, y0, y1, 0, Wd)
         if name.startswith("shot_"):
@@ -4676,9 +4704,10 @@ def w236():
         pieces = [b for b in cells if (b[3] - b[1]) <= 80]
         for pi, b in enumerate(pieces[:3]):
             save(scale_to(crop(rgba, b), height=24), "fx", "armor_%s_piece_%d" % (tier, pi))
+    fx_rgba = load_hue("w236_tier_overlays.png", keep_inside=False)  # the shield aura is see-through
     for name, y0, y1 in [("aura_enraged", 390, 510), ("aura_shield", 515, 640)]:
-        cells = _band_cells(rgba, y0, y1, 0, Wd)
-        strip([scale_to(crop(rgba, b), height=64) for b in cells[:8]], "fx", name)
+        cells = _band_cells(fx_rgba, y0, y1, 0, Wd)
+        strip([scale_to(crop(fx_rgba, b), height=64) for b in cells[:8]], "fx", name)
     # Status strips: three per row, split by big x gaps.
     def groups(cells, gap=60):
         out = []
@@ -5075,7 +5104,12 @@ def w260():
             save(scale_to(crop(rgba, arrows[i]), height=22), G, nm)
     dice = _components(rgba, (1090, 420, W, 540), dilate=2, min_px=5000)
     if dice:
-        save(scale_to(crop(rgba, dice[0]), height=28), G, "dice")
+        # load_hue keyed the dark purple fill inside the closed frame: fill the holes back in.
+        from scipy import ndimage
+        x0, y0, x1, y1 = dice[0]
+        sub = rgba[y0:y1, x0:x1].copy()
+        sub[..., 3] = np.where(ndimage.binary_fill_holes(sub[..., 3] > 0), 255, 0).astype(np.uint8)
+        save(scale_to(Image.fromarray(sub), height=28), G, "dice")
     ok = _components(rgba, (740, 630, 1050, 750), dilate=2, min_px=5000)
     if ok:
         save(scale_to(crop(rgba, ok[0]), height=28), G, "done")
@@ -6009,6 +6043,8 @@ def w264():
     rgba = load_hue("w264_crystal_babies.png")
     H, Wd = rgba.shape[:2]
     b = _bands(rgba, gap=8)
+    if len(b) == 3 and b[1][1] - b[1][0] > 400:  # rows 1-3 touch (stamp rings): split at the measured gaps
+        b = [b[0], (b[1][0], 302), (303, 550), (551, b[1][1]), b[2]]
     print("   baby bands:", len(b))
     if len(b) < 3: return
     G = "enemies/crystal_baby"; S.manifest[G] = {}

@@ -248,6 +248,13 @@ v("sel", "sel_fossil",
 # Lines that change when the story sent someone away (hearts.gd swaps them in).
 H["gideon"]["milestones"]["10"][0]["if_gone"] = {"juniper": "I gave her the ring the morning she left. She said I was an idiot. She took it with her."}
 H["bram"]["milestones"]["10"][0]["if_gone"] = {"posy": "Posy writes from the capital. There's a bakery there with her name over the door, and her mother's under it."}
+# ♥6 lines for a quest you finished before ♥6 (hearts.gd swaps them in).
+H["pip"]["milestones"]["6"][1]["if_done"] = "You brought candy already, so you know it works. I made my wish. I'm not telling. It's SCIENCE."
+H["tobin"]["milestones"]["6"][0]["if_done"] = "The five shells you got me are on the tail. Bram says a kite needs them. I think he made that up."
+H["tobin"]["milestones"]["6"][1]["if_done"] = "The kite's nearly built. The wind's wrong. The wind's always wrong. I don't care."
+H["mabel"]["milestones"]["6"][0]["if_done"] = "Your flowers are in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
+H["marlowe"]["milestones"]["6"][0]["if_done"] = "The new lens holds. I still look for the crack every night. It was there since the night the bell stopped. Same night, you know."
+H["benno"]["milestones"]["6"][0]["if_done"] = "That pup wears the pack like a medal. I can see it in the shoulders. It's got a job now."
 
 out = {"_": "Villager heart arcs. milestones: lines at ♥2/4/6/8/10 (play when you next talk to them). quest6: side quest promoted at ♥6 (offered with its own lines). after: a daily line used once a milestone has passed. fall: what they'd do if the town fell (endings).", "villagers": H}
 json.dump(out, open("data/hearts.json", "w"), indent=1, ensure_ascii=False)

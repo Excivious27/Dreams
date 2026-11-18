@@ -76,11 +76,11 @@
      "lines": [
       {
        "who": "",
-       "text": "Where the Big Grump fell, the grass is green in a circle. In the middle of the circle: a collar. Leather, chewed, a brass tag worn smooth. BISCUIT. For one cold second you think of %pet. No: the tag is old."
+       "text": "Where the Big Grump fell, the grass is green in a circle. The grey shakes off it like water, and something small and shaggy bolts for the trees. In the middle of the circle it leaves a collar. Leather, chewed, a brass tag worn smooth. BISCUIT. For one cold second you think of %pet. No: the tag is old."
       },
       {
        "who": "Star Crystal",
-       "text": "The Dark Crystal doesn't make Grumps. He takes something that loved and squeezes until only the wanting is left. That was somebody's dog."
+       "text": "The Dark Crystal doesn't make Grumps. He takes something that loved and squeezes until only the wanting is left. That was somebody's dog. It still is, out there somewhere."
       },
       {
        "who": "Star Crystal",
@@ -231,7 +231,7 @@
       "quest": [
        [
         "spark",
-        "Build the Crystal Resonator from the Plans board by your house. Feed it crystal shards and it wakes the second spark."
+        "Build the Crystal Resonator from the Plans board by your house (10 stone, 1 shard), then refine 3 shards into a Refined Crystal in it. Shards: the meadow boss, mountain rocks, the beach wreck, the mine's crystal floors."
        ]
       ],
       "grow": [
@@ -324,7 +324,7 @@
       "quest": [
        [
         "wastes_gate",
-        "The Wastes gate opens when your sword arm is ready (Combat 3)."
+        "Reach Combat 3, then face the Grump Commander in the Wastes (east gate of the crystal meadow)."
        ]
       ],
       "toast": "Litter Box: throw it; every Grump nearby stops to hold its nose.",
@@ -523,7 +523,7 @@
       "friend": {
        "big_jim": 30
       },
-      "hint": "Big Jim tags along on the climb (he doesn't fight), and Nova is with you again: switch partners in Party. The babies hold the pass.",
+      "hint": "Big Jim tags along on the climb (he doesn't fight), and Nova is with you again: switch partners in Party. If the crystal babies still hold the pass, turn them back with ♥.",
       "know": "penguin_f"
      }
     },
@@ -1030,7 +1030,8 @@
       },
       {
        "who": "Star Crystal",
-       "text": "Before we go: the bell. Alder's been asking. A town that rings its bell is a town that's awake, and the Dark Crystal has never once beaten a town that was awake."
+       "text": "Before we go: the bell. Alder's been asking. A town that rings its bell is a town that's awake, and the Dark Crystal has never once beaten a town that was awake.",
+       "unless_flag": "bell_rung"
       },
       {
        "who": "Star Crystal",
@@ -1038,7 +1039,13 @@
       }
      ],
      "effects": {
-      "hint": "The bell needs a gold clapper (Alder). When you're ready: the moon (mountain pad), then touch the crystal spire."
+      "quest": [
+       [
+        "alder_gold",
+        "The town bell needs a gold bar for the clapper. Bring one to Alder."
+       ]
+      ],
+      "hint": "The bell needs a gold clapper: a gold bar for Alder (optional). When you're ready: the moon (mountain pad), then touch the crystal spire."
      }
     },
     {
@@ -1529,19 +1536,19 @@
         "0": [
          {
           "who": "",
-          "text": "Ash in the meadow grass. It's getting to be a habit."
+          "text": "Ash in the meadow grass. Let them wonder."
          }
         ],
         "1": [
          {
           "who": "",
-          "text": "Two pieces of paper now. A case, almost."
+          "text": "It goes in with the deed. Paper keeps. Paper remembers."
          }
         ],
         "2": [
          {
           "who": "",
-          "text": "Same W. Same K. You'd bet the farm on it, and you've only got the one."
+          "text": "Hard loops on the W, a hard press on the K. You'll know that hand the next time you see it."
          }
         ]
        }
@@ -1599,7 +1606,7 @@
       "flags": [
        "sal_recruited"
       ],
-      "hint": "Hideout town: Deuce (card table), Mama Rosa (kitchen door). Recruit people, not thugs."
+      "hint": "Hideout town: Deuce (card tricks), Mama Rosa (kitchen door). Recruit people, not thugs."
      }
     }
    ]
@@ -1624,11 +1631,11 @@
       },
       {
        "who": "",
-       "text": "A man at a folding table dealing cards to nobody. A woman in a doorway with a rolling pin and an expression. Two people who want something."
+       "text": "A man at a folding table doing card tricks for nobody. A woman in a doorway with a rolling pin and an expression. Two people who want something."
       }
      ],
      "effects": {
-      "hint": "Deuce at the card table; Mama Rosa at the kitchen door. Each wants something before they'll join."
+      "hint": "Deuce at his folding table; Mama Rosa at the kitchen door. Each wants something before they'll join."
      }
     },
     {
@@ -2187,7 +2194,7 @@
      "lines": [
       {
        "who": "Marlene",
-       "text": "You're the farmer who had the paper. Had. The tower's open, so whatever it was worth, it's spent."
+       "text": "You're the farmer with the paper. The tower's open now, so whatever that paper was worth, nobody's buying."
       },
       {
        "who": "Marlene",
@@ -2714,40 +2721,6 @@
      }
     },
     {
-     "id": "g5_doors_sasha",
-     "trigger": {
-      "talk": "tower_doors"
-     },
-     "when": {
-      "flags": [
-       "boss_uptown",
-       "doors_sasha"
-      ],
-      "not_flags": [
-       "letter_safe",
-       "tower_open"
-      ],
-      "quest": "pit"
-     },
-     "lines": [
-      {
-       "who": "Sasha",
-       "text": "Stand back. I used to clean these doors. The service lock still takes my old key."
-      },
-      {
-       "text": "A click, a sigh of brass, and the tower doors swing in without a sound."
-      }
-     ],
-     "effects": {
-      "flags": [
-       "tower_open",
-       "tower_quiet",
-       "doors_by_sasha"
-      ],
-      "hint": "The lobby is quiet. Nobody knows you're in."
-     }
-    },
-    {
      "id": "g5_doors_kept",
      "trigger": {
       "talk": "tower_doors"
@@ -2780,7 +2753,8 @@
       "flags": [
        "tower_open",
        "tower_quiet",
-       "letter_safe"
+       "letter_safe",
+       "doors_by_letter"
       ],
       "hint": "The doors are open. The lobby."
      }
@@ -2818,9 +2792,44 @@
       "flags": [
        "tower_open",
        "tower_quiet",
-       "letter_safe"
+       "letter_safe",
+       "doors_by_letter"
       ],
       "hint": "The doors are open. The lobby."
+     }
+    },
+    {
+     "id": "g5_doors_sasha",
+     "trigger": {
+      "talk": "tower_doors"
+     },
+     "when": {
+      "flags": [
+       "boss_uptown",
+       "doors_sasha"
+      ],
+      "not_flags": [
+       "letter_safe",
+       "tower_open"
+      ],
+      "quest": "pit"
+     },
+     "lines": [
+      {
+       "who": "Sasha",
+       "text": "Stand back. I used to clean these doors. The service lock still takes my old key."
+      },
+      {
+       "text": "A click, a sigh of brass, and the tower doors swing in without a sound."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "tower_open",
+       "tower_quiet",
+       "doors_by_sasha"
+      ],
+      "hint": "The lobby is quiet. Nobody knows you're in."
      }
     },
     {
@@ -2895,7 +2904,7 @@
      "lines": [
       {
        "who": "",
-       "text": "The lobby is marble and empty and very, very cold. At the far end, a man in a grey suit in a chair that is too big for him, and in his chest, where a pocket square should be, a purple stone the size of a fist, pulsing."
+       "text": "The lobby is marble and very, very cold. At the far end, a man in a grey suit in a chair that is too big for him, and in his chest, where a pocket square should be, a purple stone the size of a fist, pulsing."
       },
       {
        "who": "",
@@ -3057,7 +3066,7 @@
       "flags": [
        "final_done"
       ],
-      "hint": "Go home. Sleep. See who's in the plaza.",
+      "hint": "Go home and sleep. The crew will be at the gate in the morning.",
       "heal": true
      }
     },
@@ -3080,11 +3089,11 @@
       },
       {
        "who": "Sal",
-       "text": "Boss. The town's in the plaza. Or what's left of it. They're not sure what you are. Neither am I."
+       "text": "Boss. Word's all over town by now. They're not sure what you are. Neither am I."
       },
       {
        "who": "Sal",
-       "text": "Go find out. We'll mind the farm. Somebody's got to water the turnips."
+       "text": "Doesn't have to be decided today. We'll mind the farm. Somebody's got to water the turnips."
       }
      ],
      "effects": {

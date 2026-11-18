@@ -38,7 +38,7 @@ func _overlay() -> Texture2D:
 	var nm2 := nm.replace("ov_", "ov2_").replace("ov2_heavy_rain", "ov2_storm")
 	# These ov2 strips cut their shapes at the 128-px frame edges (a grid of half
 	# blobs once tiled): use the clean ov_ strip when there is one.
-	if Art.has("fx", nm2) and not (Art.has("fx", nm) and weather in ["fireflies", "leaves", "petals", "snow", "blizzard", "ash"]):
+	if Art.has("fx", nm2) and not (Art.has("fx", nm) and weather in ["fireflies", "leaves", "petals", "snow", "ash"]):
 		return Art.tex("fx", nm2)
 	if not Art.has("fx", nm):
 		return null

@@ -89,5 +89,5 @@ static func shrine(m: GameMap) -> void:
 	m.player.play_tool("hold")
 	m.fx("heart_burst" if Art.has("fx", "heart_burst") else "pawring", m.player.position + Vector2(0, -16), 9.0, 0.5)
 	GameState.restore_mana(20 * (2 if st >= 2 else 1))
-	m.xp("foraging", 12 * (2 if st >= 2 else 1))
+	m.xp("magic", 12 * (2 if st >= 2 else 1))
 	m.hud.toast("Hands at your chest. A small heart of light, steadier than yesterday.", Color(1, 0.8, 0.95))

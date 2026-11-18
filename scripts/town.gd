@@ -344,14 +344,20 @@ func _festival_event(fest: String) -> void:
 			var bv := 0
 			for id in GameState.run["inventory"].keys():
 				var it: Dictionary = GameState.items.get(id, {})
-				if (str(it.get("type", "")) == "crop" or str(it.get("family", "")) != "") and GameState.item_value(str(id)) > bv:
+				if (str(it.get("type", "")) == "crop" or str(it.get("family", "")) != "") and not GameState.is_locked(str(id)) and GameState.item_value(str(id)) > bv:
 					bv = GameState.item_value(str(id))
 					best = str(id)
 			if best == "":
 				await say([{"who": "Mayor Alder", "text": "Bring a crop to enter the fair! Biggest, brightest, rarest wins."}])
 			else:
+				var dc := Dialogue.instance(get_tree())
+				dc.say([{"who": "Mayor Alder", "text": "Enter your %s in the fair? (Lock an item in your bag to keep it out.)" % GameState.item_name(best), "choice": ["Enter it", "Not now"], "key": ""}])
+				await dc.finished
+				if dc.last_choice != 0:
+					player.frozen = false
+					return
 				GameState.add_item(best, -1)
-				# The judges also weigh how much you've grown this year.
+				# The judges also weigh how many kinds of crop you've ever grown (field log).
 				var grown := (GameState.run.get("grown", {}) as Dictionary).size()
 				var score := bv + grown * 4
 				var place := 1 if score >= 100 else (2 if score >= 40 else 3)
@@ -768,12 +774,9 @@ func _talk(n: Npc) -> void:
 		player.frozen = false
 		return
 	if GameState.can_gift(id, sel) and await confirm_gift(name, sel):
-		var before := GameState.friend_hearts(id)
-		var gain := GameState.give_gift(id, sel)
-		Music.instance(get_tree()).sfx("harvest" if gain >= 12 else ("pickup" if gain > 0 else "nope"), "pickup")
+		var gain := GameState.give_gift(id, sel)  # plays the gift sound (the heart jingle on a new heart) itself
 		await say([{"who": name, "text": _gift_line(id, sel, gain)}])
 		hud.toast("%s %s%d" % [name, "+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
-		_heart_unlock(id, before)
 		player.frozen = false
 		return
 	var hl := Hearts.daily(id)
@@ -917,9 +920,11 @@ func draw_map() -> void:
 	draw_ground("dirt", lanes)
 	# The plaza: flagstones in a circle, a ring of brick at the edge.
 	if Art.has("tiles", "flagstone"):
-		for c: Vector2i in _plaza:
-			var d := Vector2(c.x + 0.5, c.y + 0.5).distance_to(PLAZA_C)
-			Art.draw_tile(self, "tiles", "brick_road" if d > PLAZA_R - 1.2 and Art.has("tiles", "brick_road") else "flagstone", Vector2(c * TILE), 4)
+		for ring in [false, true]:  # flagstones, then the brick ring: each tile is its own cell, so two batches
+			for c: Vector2i in _plaza:
+				var d := Vector2(c.x + 0.5, c.y + 0.5).distance_to(PLAZA_C)
+				if (d > PLAZA_R - 1.2 and Art.has("tiles", "brick_road")) == ring:
+					Art.draw_tile(self, "tiles", "brick_road" if ring else "flagstone", Vector2(c * TILE), 4)
 	else:
 		draw_ground("stone", _plaza)
 	# The river and the pond.

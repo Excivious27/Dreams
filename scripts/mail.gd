@@ -120,9 +120,15 @@ static func _favour_item(who: String, rng: RandomNumberGenerator) -> String:
 	var opts: Array = []
 	for l in likes:
 		var id := str(l)
-		if GameState.items.has(id) and int(GameState.items[id].get("tier", 1)) <= GameState.progress_tier() + 1:
+		if GameState.items.has(id) and int(GameState.items[id].get("tier", 1)) <= GameState.progress_tier() + 1 and not (id == "starflower" and not GameState.is_penguins()):
 			opts.append(id)
-	for id in ["wood", "stone", "turnip", "copper", "fiber", "egg", "milk", "potato", "berry"]:
+	# Eggs and milk only once there's a coop / barn to get them from.
+	var basics: Array = ["wood", "stone", "turnip", "copper", "fiber", "potato", "berry"]
+	if Builds.is_built("coop"):
+		basics.append("egg")
+	if Builds.is_built("barn"):
+		basics.append("milk")
+	for id in basics:
 		if GameState.items.has(id):
 			opts.append(id)
 	return str(opts[rng.randi() % opts.size()]) if not opts.is_empty() else ""

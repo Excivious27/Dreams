@@ -1,0 +1,54 @@
+# Dreams — Art Prompts 27: what the loop-8 audit found
+
+WHAT THIS COVERS: seamless ground and path squares for the Wastes, Sky and Jungle (soft patches and paths); one sheet of the last 21 item icons, which replaces three older icon sheets (17 w354, 18 w369, 19 w421).
+
+HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at most 3 images and carries every rule it needs, so you can paste it into a fresh chat. Ask for the images one at a time if ChatGPT stops early ("now image 2"). Save each image under its exact file name and upload it here.
+
+
+---
+
+## PROMPT 27-1 — Ground and paths that stop being boxes, and the last item icons · 2 images
+
+The Wastes paint a 12×9 rectangle of purple soil round the dark spire and the Sky a 12×6 rectangle of starry cloud round the observatory, both with hard straight edges. The Jungle's glowing path, the Wastes' cracked-earth road and the Sky's floating-stone path are drawn as straight square stripes. With seamless squares the game draws all five as soft, curved patches like the dirt paths. 21 items still borrow a look-alike icon.
+
+======================================================================
+
+COVERAGE TABLE (file → what it fixes → code name the slicer should write)
+
+w477  region ground and paths → seamless/purple_soil, seamless/cloud_star, seamless/bio_path, seamless/cracked_earth, seamless/float_stone (slice_art3.py: `square(im, b)` on the five boxes in row order, then make_seamless.py). Code: none for purple_soil and cloud_star (region.gd:858 already draws a layer with soft_ground when seamless/<tile> exists); the three paths need SOFT_PATHS in region.gd (audit 15 fix 6).
+
+w478  last item icons         → items/crystal_bloom, strawberry_wine, corn_ale, berry_juice, sprinkler_iridium, old_collar, brass_locket, knight_shard, manifest, sand, colony_light, coral_charm, tide_pearl, kelp_wrap, ember_glass, starfish_snack, shiitake, moonwort, backpack_1, backpack_2, backpack_3 (slice_world.py: `_p14_icons("w478_item_icons_last.png", [those ids in order])`). Hud.icon_for prefers items/<id>, so the ICON_NEAR look-alikes switch off by themselves. Replaces 17 w354, 18 w369 and 19 w421.
+
+LEFT OUT ON PURPOSE
+
+- Catkins: his walking sheet and portraits already exist (characters/catkins, portraits/catkins); npcs.json just points him at Merry (fix 1).
+
+- Crystal babies: the toddler sheet w264 was uploaded; it was cut wrong and the enemy points at the shard (fix 2).
+
+- The dark spire's "box": it is the purple soil layer, fixed by w477. The spire's keyed-out glow is still asked in 18 w377.
+
+- A rock fill behind the Hollow Heart's crystal wall: seamless/cave_crystal_rock already exists (fix 7).
+
+- City paths and plazas (asphalt, sidewalk, marble, dock, metal, gravel lot, hazard, grating) and the countryside cornfields: square edges are right for built and planted ground.
+
+- Effect strips for Mom's Mend and Sal's Fence: 19 w418/w419 already ask for them; until then the code can play the existing heal and sparkle (fix 14).
+
+- Ending paintings, the President, the app icon, skill icons and everything else from 17–26 still waiting (w345 onward): asked already; nothing new has been uploaded since loop 2.
+
+- Withered crops (21 w451): no code shows a dead crop yet, so the art would be unused.
+
+> PROMPT 27-1. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
+>
+> RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the wastes and jungle pieces in a moody night palette — deep violet, slate, a little cyan glow — where it says so), flat #FF00FF magenta background, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere (not under, above or beside any piece, not on any paper or tag), no watermark, NO LETTERBOXING. At least 24 px of clear magenta between separate pieces. All ages: nothing gory.
+>
+> SEAMLESS RULE: a seamless square must tile with no visible edge when copied side by side in every direction: no border, no vignette, no lighter or darker rim, no shadow on one side, no single big feature that repeats obviously (small details only, spread evenly). Squares are 256×256, 5 per row, x = 24 + N×304, y = 24 + M×304. Seen from straight above. Fill each square edge to edge (no magenta inside a square).
+>
+> ITEM ICON RULE: each icon 48×48, isolated on magenta, in rows of 12 at x = 24 + N×120, y = 24 + M×120, read left to right then top to bottom. No frame, no background tile, no shadow box: just the object, slightly turned, with a soft top-left light and a 1px dark outline, the same look as the existing item icons (attach items/juice_berry, items/fruit_wine, items/charm_tide and items/backpack). One object per icon, filling about 40 px of the 48. No letters anywhere, even on paper, labels or tags.
+>
+> ■■■ IMAGE 1 of 2 — FILE NAME: "w477_region_ground_seamless.png" ■■■
+> FIVE SEAMLESS SQUARES by the SEAMLESS RULE (256×256, 5 per row, x = 24 + N×304, y = 24 + M×304, no border, no rim, small details spread evenly, filled edge to edge), matching the existing pieces in colour (attach tiles/purple_soil, tiles/cloud_star, tiles/bio_path_0, tiles/cracked_earth and tiles/float_stone for the look). Row 0, left to right: (1) CORRUPTED PURPLE SOIL — loose dark violet earth with small black-purple pebbles, a few tiny glowing violet crystal grains and thin dark cracks, the ground round the Wastes' dark spire (moody night palette); (2) STARRY CLOUD — soft pale blue-white cloud top with gentle lilac shading and tiny gold four-point star sparkles scattered evenly, the floor round the Sky's observatory; (3) GLOWING JUNGLE PATH — packed dark blue-violet earth set with small rounded stepping stones, cyan glowing moss and tiny glow specks in the joints, the jungle's path (moody night palette); (4) CRACKED EARTH ROAD — dry grey-violet earth split into irregular plates by dark cracks, a little dust in the cracks, the Wastes' road (moody night palette); (5) FLOATING STONE PATH — pale lavender rounded cobbles with soft violet gaps and a few wisps of white cloud between the stones, the Sky's path. Nothing else in the picture.
+>
+> ■■■ IMAGE 2 of 2 — FILE NAME: "w478_item_icons_last.png" ■■■
+> 21 ITEM ICONS by the ITEM ICON RULE (48×48, rows of 12 at x = 24 + N×120, y = 24 + M×120, isolated on magenta, no frames, no letters). In this order: 1 CRYSTAL BLOOM (a pale-blue crystal flower with glassy petals); 2 STRAWBERRY WINE (a small corked bottle of pink-red wine with a strawberry on the label shape, no letters); 3 CORN ALE (a foaming wooden mug with a corn cob leaning on it); 4 BERRY JUICE (a glass of deep purple juice with two berries on the rim); 5 IRIDIUM SPRINKLER (a purple-silver sprinkler head on a short pipe, four nozzles); 6 OLD COLLAR (a chewed brown leather dog collar with a worn round brass tag, no letters); 7 BRASS LOCKET (an open round brass locket on a chain, a tiny painted picture of two boys on a dock inside); 8 KNIGHT'S SHARD (a heavy dark-silver crystal shard with a warm gold glow inside); 9 SHIPPING MANIFEST (a rolled sheet of paper tied with string, a small purple crystal stamp on it, lines but no letters); 10 SAND (a small neat pile of golden sand); 11 COLONY LIGHT (a little brass lantern holding a steady white-gold star crystal); 12 CORAL CHARM (a smooth pink coral branch on a cord); 13 TIDE PEARL (a large blue-white pearl with a faint wave swirl inside); 14 KELP WRAP (a green kelp roll tied with a strand, rice showing at the end); 15 EMBER GLASS (a chunk of orange-red glass with glowing embers trapped inside); 16 STARFISH SNACK (a starfish-shaped golden biscuit with sugar dots); 17 SHIITAKE (two plump brown-capped mushrooms with pale stems); 18 MOONWORT (a slender herb with deep-blue star-shaped flowers); 19 BIGGER BACKPACK (a sturdy brown canvas backpack with one front pocket); 20 TRAVELLER'S PACK (a bigger green pack with a rolled bedroll strapped on top); 21 BOTTOMLESS PACK (a deep-blue pack with tiny glowing stars sewn on and a soft glow from the open flap). Nothing else in the picture.
+>
+> (End of PROMPT 27-1: 2 images.)

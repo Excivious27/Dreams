@@ -77,7 +77,7 @@ func build() -> void:
 		var key := "forage_beach_%d_%d" % [c.x, c.y]
 		if not GameState.respawned(key, 2):  # Honey Sense shortens it
 			continue
-		var item: String = ["seashell", "seashell", "coconut", "fiber"][rng.randi_range(0, 3)]
+		var item: String = ["seashell", "seashell", "coconut", "fiber", "crab"][rng.randi_range(0, 4)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}
 	set_thing(5, 16, {"type": "wreck", "hint": "A: search the wreck"})
 	# The sea, the water under the piers and the water past the map edge are one body.
@@ -166,7 +166,8 @@ func draw_map() -> void:
 		if str(things[k].get("type", "")) in ["dock", "ferry"] and not _pier_sea.has(k):
 			sand[k] = true
 	if Art.has("tiles", "sand"):
-		draw_ground("sand", sand)
+		if not soft_ground(sand, "sand", Color(0.3, 0.22, 0.1, 0.25)):
+			draw_ground("sand", sand)
 		# Wet sand along the tide line, soft-edged.
 		var wet := {}
 		for c: Vector2i in sand:
@@ -282,7 +283,7 @@ func _place_props() -> void:
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
 			var item := str(things[k]["item"])
-			var nm: String = {"seashell": ["shell_a", "shell_b", "shell_c", "starfish"][(k.x + k.y) % 4], "coconut": "coconut_p", "fiber": "seaweed"}.get(item, "shell_a")
+			var nm: String = {"seashell": ["shell_a", "shell_b", "shell_c", "starfish"][(k.x + k.y) % 4], "coconut": "coconut_p", "fiber": "seaweed", "crab": "crab"}.get(item, "shell_a")
 			var sc := 0.5
 			if Art.has("props", "bk_shell_conch") and item in ["seashell", "fiber"]:
 				nm = (["bk_shell_conch", "bk_shell_scallop", "bk_shell_clam", "bk_shell_cowrie", "bk_starfish_orange", "bk_starfish_pink", "bk_sand_dollar_a"][(k.x * 3 + k.y) % 7]) if item == "seashell" else "bk_seaweed_c"
