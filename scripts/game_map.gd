@@ -120,8 +120,11 @@ func _ready() -> void:
 			for extra in ["bite", "hurt", "limp", "guard", "howl", "dig", "fetch", "beg"]:
 				if Art.has("animals/" + pet_kind, extra):
 					anims[extra] = extra
-			_pet_anim.sprite_frames = Art.frames("animals/" + pet_kind, anims, {"idle": 2.0, "walk": 8.0, "run": 12.0, "sit": 1.0, "sleep": 1.0, "bark": 4.0, "play": 4.0, "bite": 10.0, "hurt": 6.0, "limp": 5.0, "guard": 2.0, "howl": 4.0, "dig": 8.0, "fetch": 8.0, "beg": 2.0}, {"bite": false, "hurt": false, "howl": false})
-			_pet_anim.scale = Vector2(0.5, 0.5)
+			_pet_anim.sprite_frames = Art.frames("animals/" + pet_kind, anims, {"idle": 2.0, "walk": 8.0, "run": 12.0, "sit": 1.0, "sleep": 1.0, "bark": 4.0, "play": 4.0, "bite": 10.0, "hurt": 6.0, "limp": 5.0, "guard": 2.0, "howl": 4.0, "dig": 8.0, "fetch": 8.0, "beg": 2.0}, {"bite": false, "hurt": false, "howl": false, "bark": false, "play": false, "dig": false})
+			# Same size on screen as the classic pup, whatever the breed's art size.
+			var ih := float(Art.info("animals/" + pet_kind, "idle").get("cell_h", 60))
+			var ps := clampf(17.0 / maxf(20.0, ih), 0.12, 0.5)
+			_pet_anim.scale = Vector2(ps, ps)
 			_pet_anim.animation = "idle"
 			_pet_anim.frame_changed.connect(func() -> void:
 				var tex := _pet_anim.sprite_frames.get_frame_texture(_pet_anim.animation, _pet_anim.frame)
@@ -218,7 +221,7 @@ func _place_waiting_horse() -> void:
 
 ## Save when the phone/browser backgrounds the game or the tab closes.
 func _notification(what: int) -> void:
-	if what in [NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_WM_GO_BACK_REQUEST]:
+	if what in [NOTIFICATION_APPLICATION_PAUSED, NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_OUT, NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_WM_GO_BACK_REQUEST]:
 		if not GameState.run.is_empty() and not _changing:
 			GameState.run["scene"] = scene_id()
 			GameState.save()
@@ -559,7 +562,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var big := props.has(c) and (props[c] as Sprite2D).texture and str((props[c] as Sprite2D).texture.resource_path).contains("rock_m")
 				var extra := "copper"
 				var en := 1 if randf() < 0.15 else 0
-				if randf() < GameState.bonus("mining", "gem_chance"):
+				if randf() < GameState.bonus("mining", "gem_chance") + GameState.bonus("magic", "gem_chance"):
 					extra = ["amethyst", "ruby", "sapphire", "emerald"][randi() % 4]
 					en = 1
 				break_rock(c, 1 + (1 if randf() < 0.5 else 0) + int(GameState.bonus("mining", "stone_bonus") / 3.0), extra, en, "m" if big else "")
@@ -774,7 +777,9 @@ func _fell_tree_fx(sp: Node2D, c: Vector2i, dir: float, anim: String, pine: bool
 	Music.instance(get_tree()).sfx("hit")
 	fx("leaf_burst", leaves_at, 14.0, 0.6)
 	fx("dust_puff", at + Vector2(dir * 22.0, 0), 14.0, 0.5)
-	await get_tree().create_timer(0.25).timeout
+	await get_tree().create_timer(0.25, false).timeout
+	if not is_inside_tree() or not is_instance_valid(a):
+		return
 	if a.sprite_frames.has_animation("trunk"):
 		a.animation = "trunk"
 		a.offset = Vector2(0, -float(Art.info("fx", "trunk_break").get("cell_h", 56)) / 2.0)
@@ -973,12 +978,16 @@ var _bprops: Array = []
 
 
 ## Every building you can't go into says why, instead of ignoring you.
+## Open structures that are not buildings you go into.
+const LOCK_SKIP := ["well", "bandstand", "gazebo", "mailbox", "fountain", "statue", "stall", "tent", "kiosk", "booth"]
+## First match wins: the more specific words come first.
 const LOCK_REASONS := [
-	[["house", "cottage", "home", "hut", "cabin", "manor", "villa"], "Nobody answers. Whoever lives here is out, and folks round here keep their doors shut to strangers."],
 	[["shop", "store", "stall", "market", "cafe", "diner", "bar", "bakery"], "Closed. A card in the window says the keeper is away; come back once the town knows you better."],
-	[["warehouse", "factory", "garage", "depot", "container", "office"], "Locked tight. Some crew runs this place: it opens to whoever holds this block."],
-	[["tower", "lighthouse", "temple", "shrine", "ruin"], "The door is barred from the inside. Whatever's in there isn't ready for you yet."],
+	[["warehouse", "factory", "garage", "depot", "container", "office"], "Locked tight. Some crew runs this place: it opens to whoever holds this block.", "Hazel's feed store. Padlocked until the harvest comes in."],
+	[["clock"], "The clock works. Theo has the only key, and he's very particular about it."],
+	[["tower", "lighthouse", "temple", "shrine", "ruin"], "The door is barred from the inside. Nobody's gone in for years."],
 	[["barn", "coop", "shed", "silo", "mill", "greenhouse", "stable"], "Empty and padlocked. Nothing in there needs you today."],
+	[["house", "cottage", "home", "hut", "cabin", "manor", "villa"], "Nobody answers. Whoever lives here is out, and folks round here keep their doors shut to strangers."],
 ]
 
 
@@ -987,6 +996,8 @@ func _lock_untouched_buildings() -> void:
 		return
 	for bp in _bprops:
 		var nm := str(bp[0])
+		if LOCK_SKIP.any(func(k: String) -> bool: return nm.contains(k)):
+			continue
 		var base: Vector2i = bp[1]
 		var w := int(bp[2]) + 1
 		var door := Vector2i(base.x + w / 2, base.y + 1)
@@ -999,10 +1010,15 @@ func _lock_untouched_buildings() -> void:
 		if has_door or things.has(door) or blocked.has(door) or not in_content(door):
 			continue
 		var reason := "Locked. It doesn't look like anyone's using it."
+		var picked := false
 		for rr in LOCK_REASONS:
+			if picked:
+				break
 			for kw: String in rr[0]:
 				if nm.contains(kw):
-					reason = str(rr[1])
+					reason = str(rr[2]) if rr.size() > 2 and GameState.is_penguins() else str(rr[1])
+					picked = true
+					break
 		set_thing(door.x, door.y, {"type": "locked", "text": reason, "hint": "A: knock"}, false)
 
 
@@ -1356,7 +1372,20 @@ func set_aurora(on: bool) -> void:
 ## Swing at enemies inside the rect. Subclasses can extend (rocks, etc.).
 ## Everyone fighting on your side that an enemy can turn on: the pup now,
 ## teammates later (anything with a position and take_damage()).
+var _allies_cache: Array = []
+var _allies_frame := -1
+
+
 func allies() -> Array:
+	var fr := Engine.get_process_frames()
+	if fr == _allies_frame:
+		return _allies_cache
+	_allies_frame = fr
+	_allies_cache = _allies_raw()
+	return _allies_cache
+
+
+func _allies_raw() -> Array:
 	var out: Array = []
 	if pet != null and is_instance_valid(pet) and pet.visible and not Pet.resting() and int(Pet.state().get("hp", 0)) > 0:
 		out.append(pet)
@@ -1780,6 +1809,10 @@ func player_down(reason := "hurt") -> void:
 		hud.toast("%s drags you back to your feet!" % Pet.name_of(), Color(1, 0.9, 0.6))
 		emote(pet, "heart", 1.5)
 		return
+	# Knocked out mid-battle counts as a lost campaign (and still teaches something).
+	var bt: Variant = get("battle")
+	if bt is Battle and not (bt as Battle)._over:
+		(bt as Battle)._end(false)
 	_changing = true
 	player.frozen = true
 	var cr := int(GameState.run["crystals"])

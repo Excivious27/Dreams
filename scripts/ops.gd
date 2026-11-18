@@ -112,9 +112,10 @@ static func _run_heist(m: GameMap, id: String) -> void:
 	d.say([{"who": who, "text": str(h["pitch"])}, {"who": who, "text": "%s. How do we play it?" % str(h["name"]), "choice": ["Quiet. In and out, nobody sees us.", "Fast. Hit it and run.", "Not tonight."], "key": ""}])
 	await d.finished
 	var c := d.last_choice
+	# Even a "not tonight" counts as today's pitch, so their own talk comes next time.
+	GameState.run["flags"]["heist_try_" + id] = int(GameState.run["day"])
 	if c < 0 or c > 1:
 		return
-	GameState.run["flags"]["heist_try_" + id] = int(GameState.run["day"])
 	# Odds: the plan, the crew's loyalty, and how hot you are.
 	var odds := 0.55 if c == 0 else 0.45
 	for cm in h["crew"]:
@@ -123,11 +124,16 @@ static func _run_heist(m: GameMap, id: String) -> void:
 	if c == 1:
 		odds += 0.1 * minf(1.0, float(GameState.skill_level("combat")) / 8.0)
 	odds = clampf(odds, 0.2, 0.95)
-	GameState.run["time"] = int(GameState.run["time"]) + 120
+	# Quiet takes the night's best hours; fast is over in no time.
+	GameState.run["time"] = int(GameState.run["time"]) + (120 if c == 0 else 30)
 	if randf() < odds:
 		GameState.run["flags"]["heist_" + id] = true
 		GameState.add_arc_xp(60)
 		Perks._give(h["reward"])
+		if c == 1:
+			# Fast and loud pays more: half again in cash, and something grabbed on the way out.
+			GameState.run["crystals"] = int(GameState.run["crystals"]) + 150 * (1 + GameState.progress_tier())
+			GameState.add_item(["data_chip", "relic_orb", "gold_bar"][randi() % 3], 1)
 		await m.say([{"who": "", "text": "It goes like a song you've all rehearsed. Nobody hurt, nobody seen, and the van is heavier on the way home."}, {"who": who, "text": "...We did it. We actually did it."}])
 		m.hud.toast("%s done: %s" % [str(h["name"]), Perks._list(h["reward"])], Color(1, 0.9, 0.4))
 		Music.instance(m.get_tree()).sfx("levelup")

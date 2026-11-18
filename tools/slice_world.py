@@ -2405,7 +2405,7 @@ def w130():
     a = rgba[..., 3] > 40
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
     for name, (y0, y1) in zip(VILLAGERS_B, rows):
-        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), ncells)
         frames = []
         for b in bs:
             bb = region_bbox(rgba, b)
@@ -2949,7 +2949,7 @@ def w179(): _comp_sheet("w179_festival_fall_winter.png", "props", "fest_fw", dil
 ANIMALS_C = ["goat", "goat_kid", "sheep", "lamb", "llama", "llama_cria", "donkey", "foal"]
 PETS = ["dog_brown", "dog_corgi", "dog_shepherd", "dog_hound", "dog_white", "cat_orange", "cat_grey", "cat_calico"]
 
-def _anim_rows(file, names, group_prefix, layout):
+def _anim_rows(file, names, group_prefix, layout, ncells=16):
     rgba = load(file)
     a = rgba[..., 3] > 40
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 24) if r[1] - r[0] >= 24][:8]
@@ -2964,7 +2964,7 @@ def _anim_rows(file, names, group_prefix, layout):
             strip(fr[i0:i1], g, anim)
 
 def w175(): _anim_rows("w175_animals_c.png", ANIMALS_C, "animals/", {"idle": (0, 2), "walk": (2, 6), "eat": (6, 8), "sleep": (8, 10), "hurt": (10, 11), "happy": (11, 13), "idle_b": (13, 16)})
-def w176(): _anim_rows("w176_pets.png", PETS, "animals/", {"idle": (0, 2), "walk": (2, 6), "run": (6, 10), "sit": (10, 11), "sleep": (11, 12), "bark": (12, 14), "play": (14, 16)})
+def w176(): _anim_rows("w176_pets.png", PETS, "animals/", {"idle": (0, 2), "walk": (2, 6), "run": (6, 8), "sit": (8, 9), "sleep": (9, 10), "bark": (10, 12), "play": (12, 14)}, 14)
 
 STATION_ROWS = [["stove_1", "stove_2", "stove_3", "stove_4"], ["cauldron_1", "cauldron_2", "cauldron_3", "cauldron_4"], ["mill_1", "mill_2", "mill_3", "mill_4"],
                 ["forge_1", "forge_2", "forge_3", "forge_4"], ["bench_1", "bench_2", "bench_3", "bench_4"], ["loom_1", "loom_2", "wheel_1", "wheel_2"],
@@ -3619,20 +3619,34 @@ def _pup_strips(rgba, cells, G, layout, h):
         if fr:
             strip(fr, G, anim)
 
+def _row16(rgba, y0, y1):
+    return [b for b in _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)]
+
+
+def _bbox_cells(rgba, cells):
+    out = []
+    for b in cells:
+        bb = region_bbox(rgba, b)
+        out.append(bb if bb else b)
+    return out
+
+
 def w192():
     rgba, rows = _peng_rows("w192_pup_fight.png", 8)
     for nm, (y0, y1) in zip(PUP_FIGHT_ROWS, rows):
-        cells = _peng_cells(rgba, y0, y1)
+        cells = _bbox_cells(rgba, _row16(rgba, y0, y1))
         G = _pup_group(nm)
-        h = 40 if nm == "dog" else 50
+        # Same body height as the breed's idle/walk strips, so a bite doesn't shrink the dog.
+        h = 40 if nm == "dog" else int(S.manifest.get(G, {}).get("idle", {}).get("cell_h", 50) * 0.85)
         _pup_strips(rgba, cells, G, {"bite": (0, 4), "bark2": (4, 6), "hurt": (6, 8), "limp": (8, 12), "guard": (12, 14), "howl": (14, 16)}, h)
 
 def w193():
     rgba, rows = _peng_rows("w193_pup_fight_b.png", 8)
     for i, (nm, (y0, y1)) in enumerate(zip(PUP_FIGHT_B_ROWS, rows)):
-        cells = _peng_cells(rgba, y0, y1)
+        cells = _bbox_cells(rgba, _row16(rgba, y0, y1))
         G = _pup_group(nm)
-        h = 40 if nm == "dog" else 50
+        # Same body height as the breed's idle/walk strips, so a bite doesn't shrink the dog.
+        h = 40 if nm == "dog" else int(S.manifest.get(G, {}).get("idle", {}).get("cell_h", 50) * 0.85)
         if i < 4:
             _pup_strips(rgba, cells, G, {"bite": (0, 4), "bark2": (4, 6), "hurt": (6, 8), "limp": (8, 12), "guard": (12, 14), "howl": (14, 16)}, h)
         else:

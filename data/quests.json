@@ -225,6 +225,20 @@
      1
     ]
    }
+  },
+  {
+   "id": "gang",
+   "arc": "gangsters",
+   "text": "Recruit your first crew. (Sal is in. The rest is up to you.)",
+   "when": {
+    "flag": "sal_recruited"
+   },
+   "done_when": {
+    "crew_any": 1
+   },
+   "reward": {
+    "crystals": 100
+   }
   }
  ],
  "side": [
@@ -2403,6 +2417,62 @@
     "item": [
      "paint",
      3
+    ]
+   }
+  },
+  {
+   "id": "wren_moonwort",
+   "giver": "wren",
+   "text": "Wren needs moonwort: the blue herb that grows by the orchard wall.",
+   "when": {
+    "friend": [
+     "wren",
+     4
+    ],
+    "arc": "gangsters"
+   },
+   "done_when": {
+    "item": [
+     "moonwort",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 350,
+    "friend": [
+     "wren",
+     20
+    ],
+    "xp": [
+     "magic",
+     40
+    ]
+   }
+  },
+  {
+   "id": "lumi_moonwort",
+   "giver": "lumi",
+   "text": "Lumi wants moonwort from the orchard wall for a painting.",
+   "when": {
+    "friend": [
+     "lumi",
+     3
+    ],
+    "arc": "gangsters"
+   },
+   "done_when": {
+    "item": [
+     "moonwort",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "crystals": 300,
+    "friend": [
+     "lumi",
+     20
     ]
    }
   }

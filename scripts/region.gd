@@ -337,8 +337,24 @@ func after_ready() -> void:
 			prop(g, nm, c)
 	if gen.has("critters"):
 		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, int(gen.get("critter_count", 6)), gen["critters"])
+	var colony_kinds := 0
+	for e0 in R.get("enemies", []):
+		if bool(e0.get("colony", false)):
+			colony_kinds += 1
+	# Your own HQ and blocks you hold stay clear of the President's thugs.
+	var safe: bool = (region_id == "hideout" and GameState.run["flags"].has("hideout_seen")) or Ops.holds(region_id)
 	for e in R.get("enemies", []):
+		if safe and not bool(e.get("colony", false)):
+			continue
 		var n := GameState.enemy_count(int(e.get("count", 1)))
+		if bool(e.get("colony", false)) and R.has("colony"):
+			var cs := Colony.st(region_id)
+			if bool(cs.get("done", false)):
+				continue  # a saved island stays clear
+			# Enough foes this visit to finish the elder's count.
+			var left := int(Colony.data().get(region_id, {}).get("kills", 0)) - int(cs.get("kills", 0))
+			if left > 0 and colony_kinds > 0:
+				n = maxi(n, int(ceil(float(left) / colony_kinds)))
 		for i in n:
 			var at := cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			# Never right on top of where you walked in.

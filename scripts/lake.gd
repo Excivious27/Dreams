@@ -242,6 +242,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 func _talk_marlowe() -> void:
 	player.frozen = true
 	var fr: Dictionary = GameState.run["friendship"]
+	if not GameState.run["talked_today"].has("marlowe"):
+		GameState.run["talked_today"]["marlowe"] = true
+		GameState.add_friend("marlowe", 5)
 	if await Story.talk(self, "marlowe"):
 		player.frozen = false
 		return
@@ -251,9 +254,6 @@ func _talk_marlowe() -> void:
 	if await Quests.talk(self, "marlowe", "Marlowe"):
 		player.frozen = false
 		return
-	if not GameState.run["talked_today"].has("marlowe"):
-		GameState.run["talked_today"]["marlowe"] = true
-		fr["marlowe"] = int(fr.get("marlowe", 0)) + 5
 	if GameState.run["flags"].has("lighthouse_lit"):
 		await say([{"who": "Marlowe", "text": "Lamp's lit. Fish come up to look at it after dark, fools that they are. Best night fishing in the valley now, and you did that."}])
 	else:

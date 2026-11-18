@@ -228,6 +228,7 @@ func _partner_scene() -> void:
 
 
 func after_ready() -> void:
+	_make_soil()
 	for pk in GameState.run.get("placed", {}):
 		var xy := str(pk).split(",")
 		_show_placed(Vector2i(int(xy[0]), int(xy[1])), str(GameState.run["placed"][pk]))
@@ -491,7 +492,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		player.play_tool("hoe")
 		Music.instance(get_tree()).sfx("dig")
 		xp("farming", 1)
-		queue_redraw()
+		_soil.queue_redraw() if _soil else queue_redraw()
 		return true
 	var crop := str(tile.get("crop", ""))
 	if sel == "fertilizer" and GameState.count(sel) > 0 and GameState.held_tool() == "":
@@ -504,7 +505,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		player.play_tool("hold")
 		Music.instance(get_tree()).sfx("plant")
 		hud.toast("Fertilised: grows half again as fast.", Color(0.7, 1, 0.7))
-		queue_redraw()
+		_soil.queue_redraw() if _soil else queue_redraw()
 		return true
 	if crop == "":
 		var it: Dictionary = GameState.items.get(sel, {})
@@ -533,7 +534,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			Music.instance(get_tree()).sfx("plant")
 			fx("sprout_pop", cell_center(c), 8.0, 0.5)
 			xp("farming", 2)
-			queue_redraw()
+			_soil.queue_redraw() if _soil else queue_redraw()
 			return true
 		if not bool(tile.get("watered", false)) and not GameState.is_wet():
 			return _water(tile, key)
@@ -578,7 +579,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			tile.erase("fert")
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 		_check_first_harvest()
-		queue_redraw()
+		_soil.queue_redraw() if _soil else queue_redraw()
 		return true
 	if not bool(tile.get("watered", false)) and not GameState.is_wet():
 		return _water(tile, key)
@@ -610,45 +611,47 @@ func _water(tile: Dictionary, key := "") -> bool:
 		net_act({"a": "farm_tile", "key": key, "tile": tile})
 	player.play_tool("water")
 	Music.instance(get_tree()).sfx("water")
-	queue_redraw()
+	_soil.queue_redraw() if _soil else queue_redraw()
 	return true
 
 
 ## Crops with no painted sheet yet: a drawn plant that grows (a trunk and canopy
 ## for trees), showing the produce's own icon when it's ready to pick.
-func _draw_plain_crop(c: Vector2i, cd: Dictionary, frac: float) -> void:
+func _draw_plain_crop(c: Vector2i, cd: Dictionary, frac: float, ci: CanvasItem = null) -> void:
+	if ci == null:
+		ci = self
 	var cx := c.x * TILE + TILE / 2.0
 	var base := (c.y + 1) * TILE - 2.0
 	var leaf := Color(str(cd.get("color", "4f9a3a")))
 	var top := Color(str(cd.get("top", "e8c84a")))
 	if bool(cd.get("tree", false)):
 		var th := 2.0 + frac * 8.0
-		draw_rect(Rect2(cx - 1, base - th, 2, th), Color("6a4a2a"))
+		ci.draw_rect(Rect2(cx - 1, base - th, 2, th), Color("6a4a2a"))
 		var r := 2.0 + frac * 4.5
-		draw_circle(Vector2(cx, base - th - r * 0.6), r, Color("3f8a3a"))
-		draw_circle(Vector2(cx - r * 0.5, base - th - r * 0.3), r * 0.7, Color("4f9a3a"))
+		ci.draw_circle(Vector2(cx, base - th - r * 0.6), r, Color("3f8a3a"))
+		ci.draw_circle(Vector2(cx - r * 0.5, base - th - r * 0.3), r * 0.7, Color("4f9a3a"))
 		if frac >= 1.0:
 			for p: Vector2 in [Vector2(-2.5, -1), Vector2(2, -3), Vector2(0.5, 1.5)]:
-				draw_circle(Vector2(cx, base - th - r * 0.6) + p, 1.4, top)
+				ci.draw_circle(Vector2(cx, base - th - r * 0.6) + p, 1.4, top)
 	else:
 		var hgt := 2.0 + frac * 9.0
-		draw_rect(Rect2(cx - 0.5, base - hgt, 1.5, hgt), leaf.darkened(0.15))
+		ci.draw_rect(Rect2(cx - 0.5, base - hgt, 1.5, hgt), leaf.darkened(0.15))
 		var leaves := 1 + int(frac * 3.0)
 		for i in leaves:
 			var y := base - 2.0 - i * (hgt / float(leaves + 1))
 			var sgn := -1.0 if i % 2 == 0 else 1.0
-			draw_circle(Vector2(cx + sgn * 2.2, y), 1.6 + frac, leaf)
+			ci.draw_circle(Vector2(cx + sgn * 2.2, y), 1.6 + frac, leaf)
 		if frac >= 0.75 and frac < 1.0:
-			draw_circle(Vector2(cx, base - hgt - 0.5), 1.5, top.darkened(0.3))
+			ci.draw_circle(Vector2(cx, base - hgt - 0.5), 1.5, top.darkened(0.3))
 	if frac >= 1.0:
 		var y := str(cd.get("yield", ""))
 		var icon := Hud.icon_for(y)
 		if Art.has("items", icon) and icon != "seeds":
 			var t := Art.tex("items", icon)
-			draw_texture_rect(t, Rect2(cx - 5, base - 17, 10, 10), false)
+			ci.draw_texture_rect(t, Rect2(cx - 5, base - 17, 10, 10), false)
 		elif not bool(cd.get("tree", false)):
-			draw_circle(Vector2(cx, base - 12.0), 3.0, top)
-			draw_circle(Vector2(cx - 1, base - 13.0), 1.0, top.lightened(0.4))
+			ci.draw_circle(Vector2(cx, base - 12.0), 3.0, top)
+			ci.draw_circle(Vector2(cx - 1, base - 13.0), 1.0, top.lightened(0.4))
 
 
 func _check_first_harvest() -> void:
@@ -1082,48 +1085,8 @@ func draw_map() -> void:
 	if not Art.has("tiles", "t_cliffg"):
 		Art.draw_prop(self, "props", "cliff_stairs_down", Vector2((STAIRS_X + 1) * TILE, (LEDGE_Y + 1) * TILE))
 	draw_exits()
-	var farm: Dictionary = GameState.run["farm"]
-	for key in farm:
-		var parts: PackedStringArray = str(key).split(",")
-		var c := Vector2i(int(parts[0]), int(parts[1]))
-		var tile: Dictionary = farm[key]
-		var wet := bool(tile.get("watered", false)) or GameState.is_wet()
-		if not Art.draw_tile(self, "tiles", "tilled_wet" if wet else "tilled_dry", Vector2(c * TILE), 4):
-			draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), Color("5c3d22") if wet else Color("8a5f38"))
-		if bool(tile.get("fert", false)):
-			for k in 3:
-				draw_rect(Rect2(Vector2(c * TILE) + Vector2(3 + 4 * k, 12 - (k % 2) * 7), Vector2(2, 2)), Color(0.95, 0.85, 0.5, 0.8))
-		if wet:
-			# Make watered soil read at phone size: a dark, slightly blue wash.
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.1, 0.15, 0.35, 0.32))
-		var crop := str(tile.get("crop", ""))
-		if crop != "":
-			var cd: Dictionary = GameState.crops[crop]
-			var frac := clampf(float(tile["days"]) / float(cd["days"]), 0.0, 1.0)
-			var stage := mini(4, int(frac * 5.0))
-			if frac >= 1.0:
-				stage = 4
-			var art := str(cd.get("art", crop))  # strain variants share their parent's sheet
-			var t := Art.tex("crops", art)
-			if Art.has("crops", art + "_seed"):
-				# Prompts-09 crops: one sprite per stage (seed, sprout, young, growing, mature, ready).
-				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(5, int(frac * 6.0)) if frac < 1.0 else 5]
-				var tex := Art.tex("crops", "%s_%s" % [art, st])
-				# Sized by the ripe plant so a full bed reads as rows, not a hedge.
-				var rt := Art.tex("crops", art + "_ready")
-				var ks := minf(0.5, 30.0 / float(maxi(1, rt.get_width() if rt else tex.get_width())))
-				var w2 := tex.get_width() * ks
-				var h2 := tex.get_height() * ks
-				draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false)
-			elif t:
-				var info := Art.info("crops", art)
-				var cw := int(info.get("cell_w", 32))
-				var ch := int(info.get("cell_h", 32))
-				var w := cw / 2.0
-				var h := ch / 2.0
-				draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch))
-			else:
-				_draw_plain_crop(c, cd, frac)
+	if _soil:
+		_soil.queue_redraw()
 	if not Art.has("buildings", "house"):
 		draw_building(HOUSE.position.x, HOUSE.position.y, HOUSE.size.x, HOUSE.size.y, Color("8b5a2b"), Color("b03a2e"), "")
 
@@ -1279,3 +1242,64 @@ func _show_placed(c: Vector2i, id: String) -> void:
 		nm = "sprinkler" if id.begins_with("sprinkler") else "scarecrow"
 	if Art.has("props", nm):
 		prop("props", nm, c)
+
+
+## Tilled soil and crops live on their own layer, so hoeing, planting and
+## watering redraw only the field, not the whole farm (that hitched on phones).
+var _soil: Node2D
+
+
+func _make_soil() -> void:
+	_soil = Node2D.new()
+	_soil.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	# Far up in y so the y-sort always puts the field under everyone.
+	_soil.position = Vector2(offset().x, -100000.0)
+	_soil.draw.connect(func() -> void:
+		_soil.draw_set_transform(Vector2(0, offset().y + 100000.0))
+		_draw_soil(_soil))
+	add_child(_soil)
+
+
+func _draw_soil(ci: CanvasItem) -> void:
+	var farm: Dictionary = GameState.run["farm"]
+	for key in farm:
+		var parts: PackedStringArray = str(key).split(",")
+		var c := Vector2i(int(parts[0]), int(parts[1]))
+		var tile: Dictionary = farm[key]
+		var wet := bool(tile.get("watered", false)) or GameState.is_wet()
+		if not Art.draw_tile(ci, "tiles", "tilled_wet" if wet else "tilled_dry", Vector2(c * TILE), 4):
+			ci.draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), Color("5c3d22") if wet else Color("8a5f38"))
+		if bool(tile.get("fert", false)):
+			for k in 3:
+				ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(3 + 4 * k, 12 - (k % 2) * 7), Vector2(2, 2)), Color(0.95, 0.85, 0.5, 0.8))
+		if wet:
+			# Make watered soil read at phone size: a dark, slightly blue wash.
+			ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.1, 0.15, 0.35, 0.32))
+		var crop := str(tile.get("crop", ""))
+		if crop != "":
+			var cd: Dictionary = GameState.crops[crop]
+			var frac := clampf(float(tile["days"]) / float(cd["days"]), 0.0, 1.0)
+			var stage := mini(4, int(frac * 5.0))
+			if frac >= 1.0:
+				stage = 4
+			var art := str(cd.get("art", crop))  # strain variants share their parent's sheet
+			var t := Art.tex("crops", art)
+			if Art.has("crops", art + "_seed"):
+				# Prompts-09 crops: one sprite per stage (seed, sprout, young, growing, mature, ready).
+				var st: String = ["seed", "sprout", "young", "growing", "mature", "ready"][mini(5, int(frac * 6.0)) if frac < 1.0 else 5]
+				var tex := Art.tex("crops", "%s_%s" % [art, st])
+				# Sized by the ripe plant so a full bed reads as rows, not a hedge.
+				var rt := Art.tex("crops", art + "_ready")
+				var ks := minf(0.5, 30.0 / float(maxi(1, rt.get_width() if rt else tex.get_width())))
+				var w2 := tex.get_width() * ks
+				var h2 := tex.get_height() * ks
+				ci.draw_texture_rect(tex, Rect2(c.x * TILE + TILE / 2.0 - w2 / 2.0, (c.y + 1) * TILE - h2, w2, h2), false)
+			elif t:
+				var info := Art.info("crops", art)
+				var cw := int(info.get("cell_w", 32))
+				var ch := int(info.get("cell_h", 32))
+				var w := cw / 2.0
+				var h := ch / 2.0
+				ci.draw_texture_rect_region(t, Rect2(c.x * TILE + TILE / 2.0 - w / 2.0, (c.y + 1) * TILE - h, w, h), Rect2(stage * cw, 0, cw, ch))
+			else:
+				_draw_plain_crop(c, cd, frac, ci)

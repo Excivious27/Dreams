@@ -1049,7 +1049,7 @@ func take_damage(n: int, from: Vector2) -> void:
 	# Armour scales: every point helps, none makes you untouchable.
 	var defn := GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence")) + int(GameState.buff("defense")) + (2 if Colony.has_ability("coral_ward") else 0)
 	n = maxi(1, roundi(n * 60.0 / (60.0 + 2.5 * maxf(0.0, defn))))
-	n = maxi(1, int(n * (1.0 - GameState.bonus("combat", "damage_reduction"))))
+	n = maxi(1, int(n * (1.0 - minf(0.45, GameState.bonus("combat", "damage_reduction") + GameState.bonus("magic", "damage_reduction")))))
 	if Settings.easy():
 		n = maxi(1, roundi(n * 0.6))
 	if GameState.has_team():

@@ -1218,7 +1218,11 @@
       ],
       "toast": "The Dark Crystal's shell cracks: it's half as strong.",
       "heal": true,
-      "sfx": "levelup"
+      "sfx": "levelup",
+      "weaken": [
+       "boss_dark_crystal",
+       0.5
+      ]
      }
     },
     {
@@ -1245,7 +1249,8 @@
      ],
      "effects": {
       "heal": true,
-      "toast": "Grandfather Auk holds the shards off."
+      "toast": "Grandfather Auk holds the shards off.",
+      "clear_kind": "shard"
      }
     },
     {
@@ -1474,7 +1479,7 @@
       },
       {
        "who": "",
-       "text": "Written on the back of the photograph, in a hand with hard loops on the W: \"THE FARM IS A NICE TOUCH.\"",
+       "text": "Written on the back of the photograph, in a hand with hard loops on the W and a hard press on the K: \"WE KNOW ABOUT THE FARM. NICE TOUCH.\"",
        "choice": [
         "Burn it.",
         "Keep it with the deed.",
@@ -1900,7 +1905,7 @@
       },
       {
        "who": "",
-       "text": "You don't win. Nobody wins against Halo. But you don't stop, either, and when he pulls up at the end you're still coming, and he watches you come."
+       "text": "You don't win. Nobody wins against Halo. But you don't stop, either, and when she pulls up at the end you're still coming, and she watches you come."
       },
       {
        "who": "Halo",
@@ -2561,7 +2566,7 @@
       },
       {
        "who": "",
-       "text": "Sasha and Big Jim put their shoulders to the brass together, and the mechanism inside gives with a sound like a bell that's been dropped."
+       "text": "Your crew put their shoulders to the brass together, and the mechanism inside gives with a sound like a bell that's been dropped."
       },
       {
        "who": "",
@@ -2619,6 +2624,10 @@
       },
       {
        "who": "The President",
+       "text": "The note on the envelope, the hard loops on the W? My other hand. You only ever saw me write with the right. I made sure of that."
+      },
+      {
+       "who": "The President",
        "text": "I put your hands on that deed. I sent the man with the photograph so you'd be angry enough to climb my stairs. And here you are. You always did come when I called."
       },
       {
@@ -2662,7 +2671,8 @@
       "flags": [
        "final_started",
        "crew_doc"
-      ]
+      ],
+      "hp_below": 0.5
      },
      "after": "g5_president",
      "lines": [

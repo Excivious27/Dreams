@@ -337,12 +337,17 @@ func _refresh() -> void:
 			var fr: Dictionary = r["friendship"]
 			var full := Art.tex("ui", "pheart_full") if Art.has("ui", "pheart_full") else Art.tex("ui", "heart_full")
 			var empty := Art.tex("ui", "pheart_empty") if Art.has("ui", "pheart_empty") else Art.tex("ui", "heart_empty")
+			var hearts_def: Dictionary = GameState.load_json("res://data/hearts.json").get("villagers", {})
 			for id in GameState.npcs:
 				var d: Dictionary = GameState.npcs[id]
+				# Only people you can actually befriend (Catkins and co. have no heart arc yet).
+				if not hearts_def.has(str(id)) and not Crew.members().has(str(id)) and not Perks.data().has(str(id)):
+					continue
 				var pts := int(fr.get(id, 0))
 				var h := HBoxContainer.new()
 				_body.add_child(h)
-				var pt := Art.tex("portraits/" + str(d.get("portrait", id)), "neutral")
+				var ppid := Dialogue.portrait_for(str(d.get("name", id)))
+				var pt := Art.tex("portraits/" + (ppid if ppid != "" else str(d.get("portrait", id))), "neutral")
 				if pt:
 					var tr := TextureRect.new()
 					tr.texture = pt
@@ -694,7 +699,8 @@ func _skills_tab() -> void:
 	_body.add_child(tabs)
 	for k in shown:
 		var tb := Button.new()
-		tb.text = str(GameState.skills_data[k]["name"])
+		var pf := GameState.points_free(str(k))
+		tb.text = str(GameState.skills_data[k]["name"]) + (" •%d" % pf if pf > 0 else "")
 		tb.add_theme_font_size_override("font_size", 7)
 		tb.custom_minimum_size = Vector2(0, 16)
 		tb.focus_mode = Control.FOCUS_NONE
@@ -741,6 +747,7 @@ func _skills_tab() -> void:
 	l3.text = "%s EXP %d / %d" % [str(sd["name"]), xp, need]
 	l3.add_theme_font_size_override("font_size", 6)
 	hv.add_child(l3)
+	var sel_at := _body.get_child_count()
 	# The grid
 	var by_cell := {}
 	for n in GameState.nodes_of(sk):
@@ -775,7 +782,8 @@ func _skills_tab() -> void:
 	for r in 4:
 		names.append(str(br.get(str(r), "")))
 	_line("Rows: " + " · ".join(names), 6, Color(0.8, 0.78, 0.7))
-	# The picked node
+	# The picked node: shown ABOVE the grid so Learn is on screen without scrolling.
+	var sel_from := _body.get_child_count()
 	var sel := GameState.node(sk, _node_sel) if _node_sel != "" else {}
 	if sel.is_empty():
 		_line(str(sd.get("desc", "")), 7, Color(0.85, 0.8, 0.7))
@@ -792,6 +800,10 @@ func _skills_tab() -> void:
 				Music.instance(get_tree()).sfx("levelup")
 			_refresh())
 		lb.disabled = why != ""
+	var moved := 0
+	for i in range(sel_from, _body.get_child_count()):
+		_body.move_child(_body.get_child(i), sel_at + moved)
+		moved += 1
 	if sk == "magic":
 		_magic_casts()
 	if spent > 0:
@@ -966,9 +978,11 @@ func _pup_tab() -> void:
 		elif it.has("pet_heal"):
 			_button("  Give %s (+%d health)" % [GameState.item_name(id), int(it["pet_heal"])], func() -> void:
 				GameState.add_item(id, -1)
-				st["hp"] = mini(Pet.max_hp(), int(st["hp"]) + int(it["pet_heal"]))
 				if pt:
+					pt.revive_with(int(it["pet_heal"]))  # also gets a downed pup back up
 					pt._hp_bar.queue_redraw()
+				else:
+					st["hp"] = mini(Pet.max_hp(), int(st["hp"]) + int(it["pet_heal"]))
 				_refresh())
 	if not any_gear:
 		_line("  Collars and packs come from the workbench and the smithy (pelts, rope, bars).", 7, Color(0.7, 0.7, 0.7))

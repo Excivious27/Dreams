@@ -276,6 +276,10 @@ func setup(cid: String, m: GameMap) -> void:
 	y_sort_enabled = true
 
 
+var _moving := false
+var _vert := false
+
+
 func _process(delta: float) -> void:
 	if map == null or map.player == null or anim == null or map.get_tree().paused:
 		return
@@ -284,18 +288,35 @@ func _process(delta: float) -> void:
 		goal = map.player.position + Vector2(16, -4)
 	var to := goal - position
 	var dist := to.length()
-	if dist > 20.0:
-		var sp := minf(dist * 4.0, 100.0)
+	# Hysteresis: start walking a bit past the stop distance (no walk/idle flicker).
+	if _moving:
+		_moving = dist > 18.0
+	else:
+		_moving = dist > 30.0
+	if dist > 140.0:
+		position = goal
+		map.fx("sparkle", position + Vector2(0, -8), 10.0, 0.4)
+		return
+	if _moving:
+		var sp := minf(dist * 3.0, maxf(100.0, map.player.velocity.length() * 1.15))
 		if map.player.mounted:
 			sp = 150.0
 		var step := to.normalized() * sp * delta
 		var np := position + step
-		if not map.rect_blocked_player(Rect2(np + Vector2(-3, -2), Vector2(6, 2)), self) or dist > 80.0:
+		if not map.rect_blocked_player(Rect2(np + Vector2(-3, -2), Vector2(6, 2)), self):
 			position = np
+		else:
+			for alt: Vector2 in [Vector2(step.x, 0), Vector2(0, step.y)]:
+				if alt != Vector2.ZERO and not map.rect_blocked_player(Rect2(position + alt + Vector2(-3, -2), Vector2(6, 2)), self):
+					position += alt
+					break
 		var a := "walk" if dist < 48.0 else "run"
 		if not anim.sprite_frames.has_animation(a):
 			a = "walk"
-		if absf(to.y) > absf(to.x) and anim.sprite_frames.has_animation(a + ("_up" if to.y < 0 else "_down")):
+		# Axis stickiness: only switch between side and up/down views on a clear lead.
+		var vertical := absf(to.y) > absf(to.x) * (0.7 if _vert else 1.4)
+		_vert = vertical
+		if vertical and anim.sprite_frames.has_animation(a + ("_up" if to.y < 0 else "_down")):
 			a = a + ("_up" if to.y < 0 else "_down")
 			anim.flip_h = false
 		else:

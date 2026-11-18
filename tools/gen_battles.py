@@ -15,7 +15,7 @@ BOSSES = {"bf_rail_yards": "lt_pike", "bf_dockside": "lt_ostrova", "bf_shattered
 def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="boss"):
     exits = [{"rect": [cols // 2 - 2, rows - 1, 4, 1], "scene": back[0], "spawn": back[1:], "facing": "down", "label": "▼ fall back"}]
     R[rid] = {"cols": cols, "rows": rows, "music": music, "backdrop": "mountains" if "snow" in patch or "frost" in rid else "hills", "ground": ground,
-              "path": path, "spawn": [cols // 2, rows - 3], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
+              "path": path, "spawn": [cols // 2, rows - 9], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
               "exits": exits, "paths": [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
               "water_blobs": water, "plateaus": plateaus, "props": props, "patch_set": patch, "ground_threshold": 0.15, "fruit": 0,
               "gen": {"clumps": 4, "scatter": 30, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],

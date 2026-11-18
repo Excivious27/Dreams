@@ -14,7 +14,7 @@ const HERO_H := 26.0
 const TARGET_H := {"penguin": 14.0, "dog": 15.0, "light_crystal": 16.0, "president": 30.0}
 const VIEW_NAMES: Array[String] = ["view_front", "view_right", "view_back", "view_left"]
 const FPS := {"idle": 4.0, "walk": 8.0, "run": 12.0, "attack": 10.0, "play": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run_down": 12.0, "run_up": 12.0, "sit": 3.0, "dig": 8.0, "powerup": 8.0, "hurt": 6.0, "speak": 6.0, "charge": 6.0}
-const LOOPS := {"bite": false, "howl": false, "beg": false, "attack": false, "attack_down": false, "attack_up": false, "powerup": false, "hurt": false, "faint": false, "dive": false, "cast_down": false, "cast_side": false, "cast_up": false,
+const LOOPS := {"bite": false, "howl": false, "beg": false, "bark": false, "play": false, "dig": false, "fetch": false, "attack": false, "attack_down": false, "attack_up": false, "powerup": false, "hurt": false, "faint": false, "dive": false, "cast_down": false, "cast_side": false, "cast_up": false,
 	"hoe_down": false, "hoe_right": false, "hoe_up": false, "water_down": false, "water_right": false, "water_up": false, "axe_down": false, "axe_right": false, "axe_up": false,
 	"pickaxe_down": false, "pickaxe_right": false, "pickaxe_up": false, "cast_right": false, "reel_right": false, "hold_down": false, "eat_down": false}
 ## Tool-use actions (from Tom's tool sheets), each with _down/_right/_up strips.

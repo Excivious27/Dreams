@@ -94,7 +94,7 @@ func _run() -> void:
 	GameState.status_apply("chill", 1)
 	check(GameState.status_speed() < 1.0, "chill slows")
 	# Deep floor: tier mapping and lift availability.
-	check(GameState.mine_tier(1) == 0 and GameState.mine_tier(5) == 1 and GameState.mine_tier(13) == 3 and GameState.mine_tier(40) == 5, "floor -> tier mapping")
+	check(GameState.mine_tier(1) == 0 and GameState.mine_tier(25) == 0 and GameState.mine_tier(26) == 1 and GameState.mine_tier(126) == 5, "floor -> tier mapping")
 	GameState.run["flags"]["mine_deepest"] = 10
 	GameState.run["mine_floor"] = 1
 	change_scene_to_file("res://scenes/mine.tscn")

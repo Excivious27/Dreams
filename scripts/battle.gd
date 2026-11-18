@@ -164,6 +164,7 @@ func _capture(delta: float) -> void:
 			if str(p["owner"]) != "ally":
 				GameState.add_arc_xp(10)
 				GameState.add_xp("leadership", 6)
+				GameState.add_xp("strategist", 20)
 			p["owner"] = "ally"
 		elif float(p["prog"]) <= -1.0:
 			p["owner"] = "enemy"
@@ -171,6 +172,11 @@ func _capture(delta: float) -> void:
 			p["owner"] = "neutral"
 			if str(p["spawner"]) != "":
 				p["spawner"] = ""
+				# Whatever it built goes down with it (turrets included).
+				for mm in p["made"]:
+					if is_instance_valid(mm) and mm is Bot:
+						(mm as Node).queue_free()
+				p["made"] = []
 				map.hud.toast("The spawner at %s was knocked out." % str(p["name"]), Color(1, 0.7, 0.6))
 		if str(p["owner"]) != was:
 			if str(p["owner"]) == "ally":
@@ -206,7 +212,7 @@ func _tick() -> void:
 				var it: Dictionary = GameState.items.get("guard_bot", {"life": 60, "dmg": 4, "reach": 90})
 				var b := Bot.deploy(map, "guard_bot", it)
 				b.position = p["pos"] + Vector2(randf_range(-20, 20), randf_range(-14, 14))
-				b.life = 9999.0
+				b.life = 90.0  # a turret runs a minute and a half, then the point builds a new one
 				(p["made"] as Array).append(b)
 			else:
 				var h := HelperUnit.make(map, str(p["spawner"]), p["pos"] + Vector2(randf_range(-16, 16), 10), p["pos"])
@@ -221,6 +227,10 @@ func _tick() -> void:
 				break
 		var bb := map.spawn_enemy(str(d["boss"]), at, clampi(GameState.progress_tier() + 1, 0, 5))
 		if bb:
+			bb.set_meta("boss_name", bb.display_name())
+			# The commander is a real fight: half again as tough.
+			bb.max_hp = int(bb.max_hp * 1.5)
+			bb.hp = bb.max_hp
 			map.hud.toast("%s takes the field!" % bb.display_name(), Color(1, 0.6, 0.4))
 			map.shake(3.0)
 	if int(tickets["enemy"]) <= 0 or e == 0 and a == points.size():
@@ -274,7 +284,11 @@ func _count_kills() -> void:
 		var e: Variant = _known[k]
 		if not is_instance_valid(e) or not (e as Enemy)._alive:
 			_known.erase(k)
-			tickets["enemy"] = int(tickets["enemy"]) - 1
+			var was_boss: bool = is_instance_valid(e) and (e as Enemy).has_meta("boss_name")
+			tickets["enemy"] = int(tickets["enemy"]) - (30 if was_boss else 1)
+			GameState.add_xp("strategist", 15 if was_boss else 1)
+			if was_boss:
+				map.hud.toast("Their commander is down! Rout!", Color(1, 0.9, 0.4))
 
 
 ## USE on a point's banner: build (or change) its spawner.
@@ -315,7 +329,7 @@ func interact(id: String) -> void:
 func _end(won: bool) -> void:
 	_over = true
 	# A full campaign is what trains a Strategist (more for a win, something for a loss).
-	GameState.add_xp("strategist", 160 if won else 50)
+	GameState.add_xp("strategist", 400 if won else 120)
 	if won:
 		GameState.add_arc_xp(80)
 	for e in map.enemies.duplicate():

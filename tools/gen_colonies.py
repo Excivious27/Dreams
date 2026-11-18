@@ -105,7 +105,7 @@ for rid, c in COL.items():
         things.append({"type": "beacon", "key": "b%d" % i, "cell": b, "hint": "A: tide beacon", "solid": True})
     # Secrets: a buried cache on the islet, a message in a bottle, a lore stone.
     things += [{"type": "loot", "cell": [20, 18], "item": "pearl", "n": 1, "every": 7, "empty": "Just sand and a crab, now.", "hint": "A: dig", "solid": False},
-               {"type": "note", "cell": [36, 30], "who": "", "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'", "hint": "A: carved stone", "solid": False},
+               {"type": "note", "cell": [30, 40], "who": "", "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'", "hint": "A: carved stone", "solid": False},
                {"type": "loot", "cell": [68, 60], "item": "crystal_refined", "n": 1, "every": 5, "empty": "The tide will bring more.", "hint": "A: tide pool", "solid": False}]
     R[rid] = {"cols": cols, "rows": rows, "music": "beach", "backdrop": "sea", "ground": "grass", "path": "sand", "spawn": [40, 60], "pad": 6,
               "border": {"n": "water", "s": "water", "w": "water", "e": "water"},

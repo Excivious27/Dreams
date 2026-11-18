@@ -85,7 +85,11 @@ static func has_run() -> bool:
 	if run.is_empty():
 		var saved: Variant = SaveGame.get_value(save_key())
 		if saved is Dictionary and not saved.is_empty():
-			run = saved
+			run = (saved as Dictionary).duplicate(true)
+			# Villagers fresh from data: a gangster slot loaded earlier this session
+			# must not leave its crew in a penguin save's town.
+			npcs = load_json("res://data/npcs.json")
+			Companion._ready_at = {}
 			_migrate()
 			# A story scene that was cut off (app closed) plays again from the start.
 			if run.has("story_pending"):
@@ -135,12 +139,18 @@ static func _migrate() -> void:
 
 
 static func save() -> void:
-	SaveGame.set_value(save_key(), Net.save_view(run))
+	# A copy: the save cache must never share the live day in progress.
+	SaveGame.set_value(save_key(), (Net.save_view(run) as Dictionary).duplicate(true))
 
 
 ## Three save slots. Slot 1 keeps the old "run" key so existing saves are slot 1.
 static func slot() -> int:
 	return clampi(int(SaveGame.get_value("slot", 1)), 1, 3)
+
+
+## Each slot keeps its own "farm you can bring back" (Restore).
+static func prev_key() -> String:
+	return "run_prev" if slot() <= 1 else "run_prev_%d" % slot()
 
 
 static func slot_key(n: int) -> String:
@@ -187,7 +197,7 @@ static func import_code(code: String) -> String:
 		return "The code is cut off or has a typo."
 	var cur: Variant = SaveGame.get_value(save_key(), null)
 	if cur is Dictionary and not (cur as Dictionary).is_empty():
-		SaveGame.set_value("run_prev", cur)
+		SaveGame.set_value(prev_key(), cur)
 	run = {}
 	SaveGame.set_value(save_key(), d)
 	has_run()
@@ -644,6 +654,9 @@ static func add_xp(skill: String, xp: int) -> bool:
 		s["level"] = int(s["level"]) + 1
 		leveled = true
 	run["skills"][skill] = s
+	# These skills level up away from the usual XP popups: say so.
+	if leveled and skill in ["leadership", "strategist", "harmony", "hustle", "pup"]:
+		notify("%s level %d! A skill point to spend (MENU → Skills)." % [str(skills_data.get(skill, {}).get("name", skill.capitalize())), int(s["level"])])
 	if leveled:
 		_apply_max_stats()
 	return leveled
@@ -683,8 +696,11 @@ static func node_rank(skill: String, id: String) -> int:
 
 static func points_spent(skill: String) -> int:
 	var t := 0
-	for v in run["skills"].get(skill, {}).get("nodes", {}).values():
-		t += int(v)
+	var nodes: Dictionary = run["skills"].get(skill, {}).get("nodes", {})
+	var gifted: Dictionary = run.get("gift_nodes", {})
+	for k in nodes:
+		# Spells a colony gave you were a gift, not a point you spent.
+		t += maxi(0, int(nodes[k]) - int(gifted.get(skill + "|" + str(k), 0)))
 	return t
 
 
@@ -747,7 +763,25 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0}
 
 
+static var _bonus_cache := {}
+static var _bonus_frame := -1
+
+
 static func bonus(skill: String, key: String) -> float:
+	# Cached for the current frame: the pup, partner and player ask many times a frame.
+	var fr := Engine.get_process_frames()
+	if fr != _bonus_frame:
+		_bonus_frame = fr
+		_bonus_cache.clear()
+	var ck := skill + "|" + key
+	if _bonus_cache.has(ck):
+		return float(_bonus_cache[ck])
+	var v := _bonus_raw(skill, key)
+	_bonus_cache[ck] = v
+	return v
+
+
+static func _bonus_raw(skill: String, key: String) -> float:
 	var t := 0.0
 	for n in nodes_of(skill):
 		var r := node_rank(skill, str(n["id"]))
@@ -761,7 +795,14 @@ static func bonus(skill: String, key: String) -> float:
 ## The arc's own tree: Harmony (penguins) or Hustle (gangsters).
 ## A partner (companion) or the pup is with you right now.
 static func has_team() -> bool:
-	return not run.is_empty() and (Companion.active_id() != "" or not run.get("pet", {}).is_empty())
+	if run.is_empty():
+		return false
+	if Companion.active_id() != "":
+		return true
+	# The pup counts only while it's actually out with you and on its feet.
+	var t := Engine.get_main_loop() as SceneTree
+	var m: GameMap = t.current_scene as GameMap if t and t.current_scene is GameMap else null
+	return m != null and m.pet != null and is_instance_valid(m.pet) and m.pet.visible and not Pet.resting() and int(Pet.state().get("hp", 0)) > 0 and str(Pet.state().get("mode", "follow")) != "wait"
 
 
 static func arc_skill() -> String:
@@ -857,7 +898,7 @@ static func _apply_max_stats() -> void:
 		if skill_in_arc(str(sk)):
 			levels += skill_level(str(sk)) - 1
 	var arc_sk := arc_skill() if run.has("arc") else ""
-	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + gear_stat("hp") + (int(bonus(arc_sk, "hp")) if arc_sk != "" else 0)
+	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + int(bonus("magic", "hp")) + gear_stat("hp") + (int(bonus(arc_sk, "hp")) if arc_sk != "" else 0)
 	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + gear_stat("energy") + (int(bonus(arc_sk, "energy")) if arc_sk != "" else 0)
 	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana") + (int(bonus(arc_sk, "mana")) if arc_sk != "" else 0)
 	if has_friend_perk("juniper", 4):
@@ -1227,10 +1268,14 @@ static func add_friend(npc: String, n: int) -> void:
 		n = int(round(n * (1.0 + bonus("leadership", "friend_gain"))))
 		if npc in Companion.party().get("known", []) or Crew.recruited(npc):
 			add_xp("leadership", 3)
+	var before_h := int(fr.get(npc, 0)) / 25
 	fr[npc] = clampi(int(fr.get(npc, 0)) + n, 0, 250)
 	if n > 0:
+		Perks._fc = {}
 		for line in Perks.check(npc):
 			notify(str(line))
+		if int(fr[npc]) / 25 > before_h:
+			_apply_max_stats()
 	# Bram's soup: the first chat with him each day tops you up.
 	if npc == "bram" and n > 0 and Perks.flag("soup") and int(run["flags"].get("soup_day", -1)) != int(run["day"]):
 		run["flags"]["soup_day"] = int(run["day"])
@@ -1283,7 +1328,8 @@ static func is_birthday(npc: String) -> bool:
 ## Whose birthday is today ("" if nobody's).
 static func birthday_today() -> String:
 	for id: String in npcs:
-		if is_birthday(id):
+		# Only people you can give gifts to (Catkins has no heart arc).
+		if is_birthday(id) and id != "catkins":
 			return id
 	return ""
 
@@ -1505,11 +1551,20 @@ static func _cond_ok(when: Dictionary) -> bool:
 			return false
 	if when.has("companion") and Companion.active_id() != str(when["companion"]):
 		return false
-	if when.has("known") and not (Companion.party().get("known", []) as Array).has(str(when["known"])):
+	if when.has("known") and not (Companion.party().get("known", []) as Array).has(str(when["known"])) and str(when["known"]) != str(run.get("playable", "")):
 		return false
 	if when.has("mine_floor") and int(run["flags"].get("mine_deepest", 1)) < int(when["mine_floor"]):
 		return false
 	if when.has("crystals") and int(run.get("crystals", 0)) < int(when["crystals"]):
+		return false
+	if when.has("crew_any"):
+		var nc := 0
+		for cid in Crew.members():
+			if Crew.recruited(str(cid)):
+				nc += 1
+		if nc < int(when["crew_any"]):
+			return false
+	if when.has("hp_below") and float(run.get("hp", 0)) >= float(when["hp_below"]) * float(run.get("max_hp", 100)):
 		return false
 	if when.has("hearts_total"):
 		var tot := 0
@@ -1536,7 +1591,7 @@ static func _give_reward(rw: Dictionary) -> void:
 		add_xp(str(rw["xp"][0]), int(rw["xp"][1]))
 	if rw.has("friend"):
 		var fr: Dictionary = run["friendship"]
-		fr[str(rw["friend"][0])] = int(fr.get(str(rw["friend"][0]), 0)) + int(rw["friend"][1])
+		add_friend(str(rw["friend"][0]), int(rw["friend"][1]))
 
 
 ## Main-story quests appear as the game progresses; side quests come from the
@@ -1986,7 +2041,7 @@ static func status_def(name: String) -> Dictionary:
 static func status_apply(name: String, t: int) -> void:
 	if status_def(name).is_empty():
 		return
-	if has_perk("combat", "Iron Gut") and name in ["poison", "burn"]:
+	if (has_perk("combat", "Iron Gut") or node_rank("combat", "combat_2_4") > 0) and name in ["poison", "burn"]:
 		return
 	if buff("warm") > 0.0 and name in ["chill", "freeze", "cold"]:
 		return

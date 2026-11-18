@@ -117,26 +117,29 @@ func after_ready() -> void:
 func _town_tour() -> void:
 	# Let the arrival scene finish first.
 	for i in 600:
+		if not is_inside_tree():
+			return
 		if not Dialogue.instance(get_tree()).active and player and not player.frozen and not _changing:
 			break
 		await get_tree().process_frame
-	if GameState.run["flags"].has("town_tour") or _changing:
+	if not is_inside_tree() or GameState.run["flags"].has("town_tour") or _changing:
 		return
 	GameState.run["flags"]["town_tour"] = true
 	var pen := GameState.is_penguins()
 	var who := "Mayor Alder" if pen else "Sal"
 	player.frozen = true
 	await say([
-		{"who": who, "text": ("Welcome, welcome! I'm Alder, mayor of %s. Let me save you a week of wandering: here's who does what." if pen else "Before you go knocking on doors: here's who's who in %s. Remember it; nobody likes being asked twice.") % GameState.names()["town"]},
-		{"who": who, "text": "FARM SUPPLIES: Maple's General Store, north side of the plaza. Seeds for the season, fertiliser, snacks. Hazel, the farmer down the south-west lane, sells seeds from her yard on market days and knows everything about crops."},
-		{"who": who, "text": "TOOLS AND METAL: Gideon's forge, right next to Maple's. Bring him copper and iron and he'll upgrade your hoe, can, axe and pickaxe, smelt ore, and sell weapons."},
-		{"who": who, "text": "BUILDING SUPPLIES: wood and stone you cut yourself; the Plans board by your house lists every station and building and what each needs. Granite at the quarry sells stone and brick, Orla's mill by the lake turns wheat into flour, and Benno at the stable sells horses."},
-		{"who": who, "text": "STAYING ALIVE: Wren's potion shop and Juniper's clinic, both south and east of the plaza. Bram's inn for a hot meal, Posy's bakery for bread, Ivy at the bank up north if you're saving."},
-		{"who": who, "text": "WORK: the community board here on the plaza has three paid jobs every day. Folks also ask favours as you get to know them, and they send letters to your mailbox." + (" The town hall is where the Crystal Ward gets built." if pen else "")},
-		{"who": who, "text": "Shops keep daytime hours, roughly nine to five, and close on festival days. Any door that won't open will tell you why. That's the lot. Go on: say hello to people. It's how a town starts to trust you."},
+		{"who": who, "text": ("Welcome! I'm Alder, mayor of %s. Here's who does what, the short version." if pen else "Before you go knocking on doors: here's who's who in %s. Remember it.") % GameState.names()["town"]},
+		{"who": who, "text": "FARMING: Maple's General Store, north of the plaza, has this season's seeds, fertiliser and bread. Hazel, down the south-west lane, knows everything about crops; ask her."},
+		{"who": who, "text": "TOOLS AND BUILDING: Gideon's forge next to Maple upgrades your tools and smelts ore. Wood and stone you cut yourself, or buy stone and brick from Granite at the quarry. The Plans board by your house lists what you can build."},
+		{"who": who, "text": "HEALTH AND WORK: Wren sells potions, Juniper runs the clinic, Bram's inn has hot meals. The board on the plaza posts paid jobs each day, and people write to your mailbox once they know you." + (" The town hall is where the Crystal Ward gets built." if pen else "")},
 	])
+	if not is_inside_tree():
+		return
+	if GameState.complete_quest("meet_town"):
+		hud.toast("Quest done: met the town.", Color(1, 0.9, 0.4))
 	player.frozen = false
-	for h in ["Maple's store (north of the plaza): seeds, fertiliser, snacks.", "Gideon's forge (next to Maple): tool upgrades, smelting, weapons.", "Building supplies: the Plans board by your house; Granite's quarry for stone and brick; Orla's mill for flour; Benno's stable for horses.", "Wren (potions) and Juniper (clinic) are south and east of the plaza; the board on the plaza has daily jobs."]:
+	for h in ["Maple's store (north of the plaza): seeds, fertiliser, bread.", "Gideon's forge (next to Maple): tool upgrades, smelting, weapons.", "Building: the Plans board by your house; Granite's quarry sells stone and brick; Orla's mill for flour; Benno's stable for horses.", "Wren (potions) and Juniper (clinic) are south and east of the plaza; the plaza board has paid jobs."]:
 		GameState.add_hint(h)
 	GameState.notify("Town guide saved: MENU → Quests → Things people said.")
 
@@ -327,12 +330,12 @@ func _festival_event(fest: String) -> void:
 				GameState.run["flags"][key] = true
 				xp("farming", 40)
 		"star":
-			await say([{"who": "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
+			await say([{"who": "Bram" if GameState.run["flags"].has("posy_gone") else "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
 			var gift: String = ["heart_fruit", "stamina_root", "mana_berry", "cake", "wine", "gold_bar"][int(GameState.run["day"]) % 6]
 			give(gift)
 			GameState.run["flags"][key] = true
 			for id in GameState.npcs:
-				GameState.run["friendship"][id] = int(GameState.run["friendship"].get(id, 0)) + 10
+				GameState.add_friend(str(id), 10)
 			hud.toast("Everyone +10 friendship", Color(1, 0.8, 0.9))
 	player.frozen = false
 
@@ -608,6 +611,8 @@ func _place_people() -> void:
 			continue
 		if (d.get("routine", []) as Array).is_empty():
 			continue  # lives out in a region (lighthouse, mill, quarry...), not in town
+		if GameState.run["flags"].has(str(id) + "_gone"):
+			continue  # moved away when their shop was taken
 		var n := Npc.new()
 		n.map = self
 		var spot := str(d.get("spot_name", "plaza"))
@@ -738,6 +743,9 @@ func _talk(n: Npc) -> void:
 	var hl := Hearts.daily(id)
 	if hl != "" and (int(r["day"]) + GameState.friend_hearts(id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])
+	elif Talk.data().has(id) and (id in ["pip", "wren_jr", "tobin", "mabel"] or randf() < 0.6):
+		# Everyday chatter that changes with the season, weather and arc.
+		await say(Talk.line(id))
 	else:
 		await say(_lines(id, int(fr.get(id, 0))))
 	player.frozen = false
@@ -795,12 +803,12 @@ func _lines(id: String, friend: int) -> Array:
 				return [{"who": "Gideon", "text": "Keep the edge dry. Iron remembers rust the way people remember insults."}]
 			if peng:
 				return [{"who": "Gideon", "text": "Wooden sword. Hm. It'll do for whatever's bleating in that meadow. For now. Bring me copper bars and we'll talk."}]
-			return [{"who": "Gideon", "text": "I don't ask what a farmer needs an iron sword for. I only ask for a hundred and twenty crystals."}]
+			return [{"who": "Gideon", "text": "I don't ask what a farmer needs an iron sword for. I only ask for %d crystals." % GameState.buy_price("iron_sword")}]
 		"wren":
 			if meadow_done:
 				return [{"who": "Wren", "text": "The howling stopped. You did that. The bottles on the left shelf are half price for you. Don't tell Alder, he'll want it in the records."}]
 			if peng:
-				return [{"who": "Wren", "text": "Something fell out of the sky three nights ago and the town's pretending it didn't. I'm not pretending. If it talks to you, tell it I said hello."}]
+				return [{"who": "Wren", "text": "Something fell out of the sky when you arrived, and the town's pretending it didn't. I'm not pretending. If it talks to you, tell it I said hello."}]
 			return [{"who": "Wren", "text": "You've got the look of someone who sleeps with a chair under the doorknob. Red potion's on the left. The tea's for the nights."}]
 		"alder":
 			if hearts >= 4:
@@ -821,7 +829,7 @@ func _lines(id: String, friend: int) -> Array:
 				return [{"who": "Hazel", "text": "I'll swing by your fields when I'm up early. Don't thank me, just keep the strawberries coming."}]
 			return [{"who": "Hazel", "text": "Water before nine, harvest after six. Turnips forgive, strawberries don't. Come borrow my hoe if yours breaks."}]
 		"bram":
-			return [{"who": "Bram", "text": "Room's twenty crystals, and it comes with the best sleep in the valley. Soup's free if you listen to my stories."}]
+			return [{"who": "Bram", "text": "Best soup in the valley, and it's free if you listen to my stories. Long stories. Come in out of the cold."}]
 		"posy":
 			if season == "winter":
 				return [{"who": "Posy", "text": "Spiced loaf season! If you bring me honey I'll make the one my gran made."}]
@@ -831,7 +839,7 @@ func _lines(id: String, friend: int) -> Array:
 		"rook":
 			if hearts >= 8:
 				return [{"who": "Rook", "text": "You've got the eye now. If you're heading into the hills, say the word and I'll walk with you."}]
-			return [{"who": "Rook", "text": "Tracks in the orchard again. Big ones. Not deer. Keep your dog close after dark."}]
+			return [{"who": "Rook", "text": "Tracks in the orchard again. Big ones. Not deer. Keep %s close after dark." % GameState.names().get("pet", "your pup")}]
 		"pip", "tobin":
 			return [{"who": GameState.npcs[id]["name"], "text": "Did you see the fountain change colour last night? Mabel says it's the crystals. Wren jr says it's frogs."}]
 		"wren_jr", "mabel":
@@ -840,7 +848,7 @@ func _lines(id: String, friend: int) -> Array:
 			if meadow_done and not peng:
 				if not r["flags"].has("sal_recruited"):
 					r["flags"]["sal_recruited"] = true
-					GameState.add_quest("gang", "Recruit your first crew. (Sal is in. The rest is up to Tom.)")
+					GameState.add_quest("gang", "Recruit your first crew. (Sal is in. The rest is up to you.)")
 					return [
 						{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You put him down."},
 						{"who": "Sal", "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent."},

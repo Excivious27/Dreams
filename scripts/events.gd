@@ -92,7 +92,7 @@ static func play(m: GameMap, ev: Dictionary, actors: Array) -> void:
 		return
 	var after: Dictionary = ev.get("after", {})
 	for id in after.get("friend", {}):
-		GameState.run["friendship"][str(id)] = int(GameState.run["friendship"].get(str(id), 0)) + int(after["friend"][id])
+		GameState.add_friend(str(id), int(after["friend"][id]))
 	if after.has("item"):
 		GameState.add_item(str(after["item"][0]), int(after["item"][1]))
 		m.hud.toast("Got %d %s." % [int(after["item"][1]), GameState.item_name(str(after["item"][0]))], Color(1, 0.9, 0.5))

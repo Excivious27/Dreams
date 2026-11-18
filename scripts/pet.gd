@@ -78,10 +78,25 @@ static func name_of() -> String:
 	return str(GameState.names().get("pet", "Pup"))
 
 
+const GEAR_OVERLAYS := false
+
+
 func _ready() -> void:
 	y_sort_enabled = true
 	state()
-	if int(state()["hp"]) <= 0:
+	# A pup knocked down on another map is still down here (the 2-minute window
+	# keeps counting across doors); after it runs out it has gone home.
+	var until := float(state().get("down_until", -1.0))
+	if until > 0.0:
+		var left := until - Time.get_ticks_msec() / 1000.0
+		if left > 0.0:
+			state()["hp"] = 0
+			_down_t = left
+			call_deferred("_show_down")
+		else:
+			state().erase("down_until")
+			call_deferred("_go_home")
+	elif int(state()["hp"]) <= 0:
 		state()["hp"] = max_hp()
 	_hp_bar = Node2D.new()
 	_hp_bar.position = Vector2(0, -22)
@@ -100,6 +115,10 @@ func refresh_gear() -> void:
 	for k in _gear_sprites:
 		(_gear_sprites[k] as Node).queue_free()
 	_gear_sprites.clear()
+	# The gear art is whole dogs wearing the gear, not overlays: drawing it stacked
+	# dogs on the pup. Gear shows in the Pup tab and as icons until overlays exist.
+	if not GEAR_OVERLAYS:
+		return
 	var who := "cat" if str(GameState.look_d().get("pet", "")).begins_with("cat") else "dog"
 	var st := state()
 	var map_names := {"collar": {"pup_collar_leather": "collar_leather", "pup_collar_iron": "collar_iron", "pup_collar_crystal": "collar_crystal"}, "pack": {"pup_pack_small": "pack_small", "pup_pack_large": "pack_large"}, "boots": {"pup_boots": "boots"}}
@@ -146,6 +165,9 @@ func _draw_hp() -> void:
 
 
 func set_mode(mode: String) -> void:
+	if is_down():
+		map.hud.toast("%s can't hear commands right now. Food or a potion first." % name_of(), Color(1, 0.8, 0.7))
+		return
 	var st := state()
 	st["mode"] = mode
 	_target = null
@@ -166,6 +188,9 @@ func set_mode(mode: String) -> void:
 ## Recall from anywhere: the pup appears beside you (Best Friend: instantly;
 ## otherwise it takes a game hour to find you if it was on another map).
 func recall() -> void:
+	if is_down():
+		map.hud.toast("%s is down. Tap the pup and give food or a potion." % name_of(), Color(1, 0.8, 0.7))
+		return
 	var st := state()
 	if Pet.resting():
 		map.hud.toast("%s is resting at home." % name_of(), Color(1, 0.85, 0.75))
@@ -212,10 +237,16 @@ func take_damage(n: int, from: Vector2) -> void:
 ## Out of health: the pup lies down where it is. You have two minutes to feed it
 ## or give it a potion (tap it, or face it and press CHECK); after that it goes
 ## home to its dog house on the farm until tomorrow.
+func _show_down() -> void:
+	if anim and anim.sprite_frames.has_animation("sleep"):
+		anim.play("sleep")
+
+
 func _knock_down() -> void:
 	Music.instance(get_tree()).sfx("whimper")
 	state()["hp"] = 0
 	_down_t = DOWN_WINDOW
+	state()["down_until"] = Time.get_ticks_msec() / 1000.0 + DOWN_WINDOW
 	_target = null
 	if anim.sprite_frames.has_animation("sleep"):
 		anim.play("sleep")
@@ -232,6 +263,7 @@ func is_down() -> bool:
 ## Food or a potion brings a downed pup back up (or just heals it).
 func revive_with(n: int) -> void:
 	var st := state()
+	st.erase("down_until")
 	st["hp"] = mini(max_hp(), maxi(int(st["hp"]), 0) + n)
 	if _down_t >= 0.0:
 		_down_t = -1.0
@@ -245,6 +277,7 @@ func revive_with(n: int) -> void:
 func _go_home() -> void:
 	_down_t = -1.0
 	var st := state()
+	st.erase("down_until")
 	st["hp"] = 0
 	# Back next morning; Best Friend: back in half a day.
 	var best := GameState.bonus("pup", "best") > 0.0
@@ -354,13 +387,21 @@ func _process(delta: float) -> void:
 	else:
 		_moving = dist > stop + 10.0
 	if _moving:
-		var sp := minf(dist * 3.0, 95.0 * speed_mult())
+		# Keep up with a running player instead of falling behind and clipping.
+		var cap := maxf(95.0 * speed_mult(), player.velocity.length() * 1.15)
+		var sp := minf(dist * 3.0, cap)
 		if _target == null and mode == "follow" and player.mounted:
 			sp = 150.0 * speed_mult()
+		if _target == null and mode == "follow" and dist > 140.0:
+			# Far behind (doors, cliffs): pop back to heel rather than walk through walls.
+			position = player.position + Vector2(-14, 4)
+			map.fx("sparkle", position + Vector2(0, -8), 10.0, 0.4)
+			_vel = Vector2.ZERO
+			return
 		_vel = _vel.lerp(to.normalized() * sp, minf(1.0, delta * 8.0))
 		var step := _vel * delta
 		var np := position + step
-		if not map.rect_blocked_player(Rect2(np + Vector2(-3, -2), Vector2(6, 2)), self) or dist > 90.0:
+		if not map.rect_blocked_player(Rect2(np + Vector2(-3, -2), Vector2(6, 2)), self):
 			position = np
 		else:
 			for alt: Vector2 in [Vector2(step.x, 0), Vector2(0, step.y)]:
@@ -405,7 +446,8 @@ func _process(delta: float) -> void:
 			want = "sit"
 		elif _idle > 3.0 and anim.sprite_frames.has_animation("sit"):
 			want = "sit"
-		if anim.animation != want and anim.animation != "dig" and anim.animation != "bark" and anim.animation != "bite" and anim.animation != "hurt" and anim.animation != "howl":
+		var one_shot := anim.animation in ["dig", "bark", "bite", "hurt", "howl", "play", "fetch", "beg"]
+		if anim.animation != want and not (one_shot and anim.is_playing()):
 			anim.play(want)
 		if _idle > 14.0 and mode != "wait":
 			_idle = randf_range(-6.0, 0.0)
@@ -434,8 +476,8 @@ func _bite(e: Enemy) -> void:
 func _dig() -> void:
 	busy = true
 	anim.play("dig" if anim.sprite_frames.has_animation("dig") else "play")
-	await get_tree().create_timer(1.6).timeout
-	if not is_instance_valid(anim):
+	await get_tree().create_timer(1.6, false).timeout
+	if not is_inside_tree() or not is_instance_valid(anim):
 		return
 	busy = false
 	anim.play("idle")

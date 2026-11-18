@@ -9354,5 +9354,14 @@
   "rarity": "uncommon",
   "tier": 3,
   "family": "mushroom"
+ },
+ "moonwort": {
+  "name": "Moonwort",
+  "type": "forage",
+  "value": 60,
+  "heal": 1,
+  "rarity": "uncommon",
+  "tier": 2,
+  "family": "herb"
  }
 }

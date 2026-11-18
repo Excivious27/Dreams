@@ -29,12 +29,15 @@
     {
      "id": "sprinkler_plans",
      "name": "Sprinkler Plans",
-     "desc": "Craft basic sprinklers",
+     "desc": "Crops grow 10% faster overnight",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "quick_hands"
-     ]
+     ],
+     "effect": {
+      "growth": 0.1
+     }
     },
     {
      "id": "harvest_moon",
@@ -52,12 +55,15 @@
     {
      "id": "fertilizer",
      "name": "Fertilizer",
-     "desc": "Craft fertilizer (crops grow 1 day faster)",
+     "desc": "+5% chance a crop grows an extra day overnight",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "green_thumb"
-     ]
+     ],
+     "effect": {
+      "extra_day": 0.05
+     }
     },
     {
      "id": "rich_soil",
@@ -75,12 +81,15 @@
     {
      "id": "greenhouse_plans",
      "name": "Greenhouse Plans",
-     "desc": "Build the greenhouse: any season inside",
+     "desc": "+5% chance of a double harvest",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "sprinkler_plans"
-     ]
+     ],
+     "effect": {
+      "double_harvest": 0.05
+     }
     },
     {
      "id": "rancher",
@@ -256,43 +265,55 @@
     {
      "id": "geologist",
      "name": "Geologist",
-     "desc": "Rare gems from mountain nodes",
+     "desc": "+5% chance of a gem from any rock",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "crystal_resonance"
-     ]
+     ],
+     "effect": {
+      "gem_chance": 0.05
+     }
     },
     {
      "id": "core_diver",
      "name": "Core Diver",
-     "desc": "Dark ore drops from deep rocks",
+     "desc": "+10% chance of an extra ore lump",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "heavy_swing"
-     ]
+     ],
+     "effect": {
+      "ore_bonus": 0.1
+     }
     },
     {
      "id": "prospector",
      "name": "Prospector",
-     "desc": "See ore through rock: nodes glint on the map",
+     "desc": "+10% more crystal shards",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "hot_furnace"
-     ]
+     ],
+     "effect": {
+      "shard_bonus": 0.1
+     }
     },
     {
      "id": "mountain_heart",
      "name": "Mountain Heart",
-     "desc": "Every rock drops double; the moon's crystals sing to you",
+     "desc": "+10% chance a pickaxe swing hits twice",
      "ranks": 1,
      "tier": 4,
      "requires": [
       "geologist",
       "core_diver"
-     ]
+     ],
+     "effect": {
+      "double_hit": 0.1
+     }
     }
    ]
   },
@@ -323,12 +344,15 @@
     {
      "id": "herbalist",
      "name": "Herbalist",
-     "desc": "Craft herb remedies",
+     "desc": "+5% rare forage chance",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "forager"
-     ]
+     ],
+     "effect": {
+      "rare_forage": 0.05
+     }
     },
     {
      "id": "tracker",
@@ -369,22 +393,28 @@
     {
      "id": "beekeeper",
      "name": "Beekeeper",
-     "desc": "Beehives make double honey",
+     "desc": "+10% chance of sap from a felled tree",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "herbalist"
-     ]
+     ],
+     "effect": {
+      "sap_chance": 0.1
+     }
     },
     {
      "id": "night_eyes",
      "name": "Night Eyes",
-     "desc": "Glow-caps and fireflies: forage after dark",
+     "desc": "+6% chance of a double forage pick",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "tracker"
-     ]
+     ],
+     "effect": {
+      "forage_bonus": 1
+     }
     },
     {
      "id": "rare_finds",
@@ -412,12 +442,15 @@
     {
      "id": "wild_friend",
      "name": "Wild Friend",
-     "desc": "Critters don't flee; deer and foxes can be petted",
+     "desc": "+1 chop power on big trees",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "beekeeper"
-     ]
+     ],
+     "effect": {
+      "chop_bonus": 1
+     }
     },
     {
      "id": "old_growth",
@@ -449,9 +482,12 @@
     {
      "id": "bait_maker",
      "name": "Bait Maker",
-     "desc": "Craft bait from bugs and fiber",
+     "desc": "Fish bite 8% sooner",
      "ranks": 1,
-     "tier": 0
+     "tier": 0,
+     "effect": {
+      "bite_speed": 0.08
+     }
     },
     {
      "id": "swimmer",
@@ -466,12 +502,15 @@
     {
      "id": "trapper",
      "name": "Trapper",
-     "desc": "Craft crab pots",
+     "desc": "+5% chance of a treasure chest on the line",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "bait_maker"
-     ]
+     ],
+     "effect": {
+      "chest_chance": 0.05
+     }
     },
     {
      "id": "angler",
@@ -502,12 +541,15 @@
     {
      "id": "pond_plans",
      "name": "Pond Plans",
-     "desc": "Build a fish pond",
+     "desc": "Fish sell for 8% more",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "trapper"
-     ]
+     ],
+     "effect": {
+      "fish_value": 0.08
+     }
     },
     {
      "id": "treasure_hunter",
@@ -525,12 +567,15 @@
     {
      "id": "master_bait",
      "name": "Master Bait",
-     "desc": "Legendary fish can bite",
+     "desc": "+5% rare fish chance",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "angler"
-     ]
+     ],
+     "effect": {
+      "rare_fish": 0.05
+     }
     },
     {
      "id": "lucky_lure",
@@ -561,23 +606,29 @@
     {
      "id": "sea_legend",
      "name": "Sea Legend",
-     "desc": "Never miss a bite",
+     "desc": "15% fewer fish get away",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "master_bait"
-     ]
+     ],
+     "effect": {
+      "escape_less": 0.15
+     }
     },
     {
      "id": "tide_whisperer",
      "name": "Tide Whisperer",
-     "desc": "The ocean's secret fish appear, and the lighthouse keeper trusts you",
+     "desc": "+5% chance of a double catch",
      "ranks": 1,
      "tier": 4,
      "requires": [
       "sea_legend",
       "lucky_lure"
-     ]
+     ],
+     "effect": {
+      "double_fish": 0.05
+     }
     }
    ]
   },
@@ -714,23 +765,29 @@
     {
      "id": "whirlwind",
      "name": "Whirlwind",
-     "desc": "Third hit of a combo strikes all around you",
+     "desc": "+4% critical hit chance",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "second_wind"
-     ]
+     ],
+     "effect": {
+      "crit": 0.04
+     }
     },
     {
      "id": "legend",
      "name": "Legend",
-     "desc": "Bosses drop their relic; +1 heart container",
+     "desc": "+20 max health",
      "ranks": 1,
      "tier": 4,
      "requires": [
       "champion",
       "iron_skin"
-     ]
+     ],
+     "effect": {
+      "hp": 20
+     }
     }
    ]
   },
@@ -761,12 +818,15 @@
     {
      "id": "stall_plans",
      "name": "Stall Plans",
-     "desc": "Build a market stall on the farm",
+     "desc": "Everything sells for 3% more",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "trader"
-     ]
+     ],
+     "effect": {
+      "sell_bonus": 0.03
+     }
     },
     {
      "id": "networker",
@@ -820,12 +880,15 @@
     {
      "id": "festival_favorite",
      "name": "Festival Favorite",
-     "desc": "Festival prizes doubled; villagers greet you by name",
+     "desc": "+2 friendship from every gift",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "smooth_talker"
-     ]
+     ],
+     "effect": {
+      "gift_bonus": 2
+     }
     },
     {
      "id": "monopolist",
@@ -856,23 +919,29 @@
     {
      "id": "patron",
      "name": "Patron",
-     "desc": "Villagers at 6+ hearts send gifts in the mail",
+     "desc": "+2 friendship from every gift",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "festival_favorite"
-     ]
+     ],
+     "effect": {
+      "gift_bonus": 2
+     }
     },
     {
      "id": "magnate",
      "name": "Magnate",
-     "desc": "Own the market: set the town's prices once a season",
+     "desc": "+0.5% daily interest on savings",
      "ranks": 1,
      "tier": 4,
      "requires": [
       "monopolist",
       "crystal_baron"
-     ]
+     ],
+     "effect": {
+      "interest": 0.005
+     }
     }
    ]
   },
@@ -903,52 +972,67 @@
     {
      "id": "engineer",
      "name": "Engineer",
-     "desc": "Quality sprinklers",
+     "desc": "Crafting is 8% faster",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "carpenter"
-     ]
+     ],
+     "effect": {
+      "craft_speed": 0.08
+     }
     },
     {
      "id": "architect",
      "name": "Architect",
-     "desc": "Tier-2 plans (barn, coop, shed)",
+     "desc": "Buildings cost 6% less",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "mason"
-     ]
+     ],
+     "effect": {
+      "build_discount": 0.06
+     }
     },
     {
      "id": "tinkerer",
      "name": "Tinkerer",
-     "desc": "Craft the preserves jar and keg",
+     "desc": "Crafting is 8% faster",
      "ranks": 1,
      "tier": 1,
      "requires": [
       "carpenter"
-     ]
+     ],
+     "effect": {
+      "craft_speed": 0.08
+     }
     },
     {
      "id": "decorator",
      "name": "Decorator",
-     "desc": "Furniture recipes",
+     "desc": "Builds need 5% less wood",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "tinkerer"
-     ]
+     ],
+     "effect": {
+      "wood_discount": 0.05
+     }
     },
     {
      "id": "foreman",
      "name": "Foreman",
-     "desc": "Tier-3 plans (stable, mill, greenhouse)",
+     "desc": "Builds need 5% less stone",
      "ranks": 1,
      "tier": 2,
      "requires": [
       "architect"
-     ]
+     ],
+     "effect": {
+      "stone_discount": 0.05
+     }
     },
     {
      "id": "master_builder",
@@ -966,43 +1050,55 @@
     {
      "id": "grand_architect",
      "name": "Grand Architect",
-     "desc": "Iridium sprinklers",
+     "desc": "Buildings cost 8% less",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "master_builder"
-     ]
+     ],
+     "effect": {
+      "build_discount": 0.08
+     }
     },
     {
      "id": "bridgewright",
      "name": "Bridgewright",
-     "desc": "Repair bridges and docks across the valley",
+     "desc": "Builds need 5% less wood",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "foreman"
-     ]
+     ],
+     "effect": {
+      "wood_discount": 0.05
+     }
     },
     {
      "id": "homemaker",
      "name": "Homemaker",
-     "desc": "House upgrades: second floor, cellar",
+     "desc": "Crafting is 6% faster",
      "ranks": 1,
      "tier": 3,
      "requires": [
       "decorator"
-     ]
+     ],
+     "effect": {
+      "craft_speed": 0.06
+     }
     },
     {
      "id": "city_planner",
      "name": "City Planner",
-     "desc": "Build a second farmhouse on any region you own",
+     "desc": "Buildings cost 10% less",
      "ranks": 1,
      "tier": 4,
      "requires": [
       "grand_architect",
       "bridgewright"
-     ]
+     ],
+     "effect": {
+      "build_discount": 0.1
+     }
     }
    ]
   },
@@ -1107,7 +1203,7 @@
     {
      "id": "shard_skin",
      "name": "Shard Skin",
-     "desc": "-1 damage from every hit per rank (never below 1)",
+     "desc": "Hits on you land 8% softer (per rank)",
      "ranks": 2,
      "tier": 1,
      "requires": [

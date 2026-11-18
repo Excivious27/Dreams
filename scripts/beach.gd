@@ -207,7 +207,8 @@ func draw_map() -> void:
 		var frame := int(Time.get_ticks_msec() / 250) % 4
 		var nm := "sea" if Art.has("tiles", "sea") else "water"
 		var tt := Time.get_ticks_msec() / 1000.0
-		for c: Vector2i in _sea:
+		var vis := _on_screen(_sea)
+		for c: Vector2i in vis:
 			if Art.has("seamless", "sea"):
 				seam_cell(ci, "sea", c, Color.WHITE, Vector2(tt * 4.0, tt * 1.5))
 				seam_cell(ci, "sea", c, Color(1, 1, 1, 0.3), Vector2(-tt * 2.5 + 40.0, tt * 3.0 + 60.0))
@@ -217,7 +218,7 @@ func draw_map() -> void:
 		if foam_t:
 			# The painted wave line: sand on top, surf, then sea; one window per edge cell.
 			var fw := float(foam_t.get_width()) / 8.0
-			for c: Vector2i in _sea:
+			for c: Vector2i in vis:
 				if not _sea.has(c + Vector2i(0, -1)) and not things.get(c + Vector2i(0, -1), {}).get("type", "") == "dock":
 					ci.draw_texture_rect_region(foam_t, Rect2(c.x * TILE, (c.y - 1) * TILE + 4, TILE, TILE * 1.5), Rect2(fw * posmod(c.x, 8), foam_t.get_height() * 0.25, fw, foam_t.get_height() * 0.6))
 			return

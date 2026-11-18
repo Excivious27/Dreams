@@ -3,7 +3,9 @@ extends RefCounted
 ## Tiny key/value save stored in user:// (browser storage on the web build).
 ## Writes go to a temp file that's renamed over the real one, the previous good
 ## save is kept as save.bak.json, and an unreadable save is set aside rather than
-## overwritten (and writes are blocked for that session so nothing clobbers it).
+## overwritten. On the web build every save is also mirrored, synchronously, to
+## the browser's localStorage, because the file copy only reaches the browser's
+## storage on the next frame and a phone that hides the app gives it none.
 
 const PATH := "user://save.json"
 const TMP := "user://save.tmp.json"
@@ -13,6 +15,35 @@ const BAD := "user://save.bad.json"
 static var _cache: Dictionary = {}
 static var _loaded := false
 static var _blocked := false
+static var _js_cb: Variant = null
+const LS_KEY := "dreams_save"
+
+
+## On the web: let the page save us when it's hidden or about to update.
+static func web_hook() -> void:
+	if not OS.has_feature("web") or _js_cb != null:
+		return
+	_js_cb = JavaScriptBridge.create_callback(_save_now_js)
+	var w: Variant = JavaScriptBridge.get_interface("window")
+	if w:
+		w.dreamsSaveNow = _js_cb
+
+
+static func _save_now_js(_args: Array) -> void:
+	if not GameState.run.is_empty():
+		GameState.save()
+
+
+static func _ls_read() -> Variant:
+	if not OS.has_feature("web"):
+		return null
+	var ls: Variant = JavaScriptBridge.get_interface("localStorage")
+	if ls == null:
+		return null
+	var txt: Variant = ls.getItem(LS_KEY)
+	if txt == null or str(txt) == "" or str(txt) == "null":
+		return null
+	return JSON.parse_string(str(txt))
 
 
 static func _read(path: String) -> Variant:
@@ -33,6 +64,10 @@ static func load_all() -> Dictionary:
 		return _cache
 	_loaded = true
 	var parsed: Variant = _read(PATH)
+	var lsd: Variant = _ls_read()
+	if lsd is Dictionary and (not parsed is Dictionary or int((lsd as Dictionary).get("_saved_at", 0)) > int((parsed as Dictionary).get("_saved_at", 0))):
+		# The browser copy is newer (the page closed before the file synced).
+		parsed = lsd
 	if parsed is Dictionary:
 		_cache = parsed
 		return _cache
@@ -52,6 +87,8 @@ static func load_all() -> Dictionary:
 		var bak: Variant = _read(BAK)
 		if bak is Dictionary:
 			_cache = bak
+			# Remove the corrupt file so the next save doesn't rotate it onto the good backup.
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(PATH))
 			push_warning("save.json was unreadable; restored save.bak.json (bad copy kept as save.bad.json)")
 			return _cache
 		# Nothing readable: keep the bad copy aside and start clean, so saving works again.
@@ -74,10 +111,16 @@ static func set_value(key: String, value: Variant) -> void:
 static func flush() -> void:
 	if _blocked:
 		return
+	_cache["_saved_at"] = int(_cache.get("_saved_at", 0)) + 1
+	var txt := JSON.stringify(_cache)
+	if OS.has_feature("web"):
+		var ls: Variant = JavaScriptBridge.get_interface("localStorage")
+		if ls:
+			ls.setItem(LS_KEY, txt)
 	var f := FileAccess.open(TMP, FileAccess.WRITE)
 	if f == null:
 		return
-	f.store_string(JSON.stringify(_cache))
+	f.store_string(txt)
 	f.close()
 	var dir := DirAccess.open("user://")
 	if dir == null:

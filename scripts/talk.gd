@@ -18,7 +18,10 @@ static func line(id: String) -> Array:
 	var pool: Array = []
 	var d: Dictionary = data().get(id, data().get("_any", {}))
 	var arc := str(GameState.run.get("arc", "penguins"))
-	for key in ["always", GameState.season(), GameState.weather_today(), arc]:
+	var keys := ["always", GameState.season(), GameState.weather_today(), arc]
+	if GameState.is_wet() and not "rain" in keys:
+		keys.append("rain")
+	for key in keys:
 		for l in d.get(key, []):
 			pool.append(str(l))
 	if GameState.festival_today() != "":

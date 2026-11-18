@@ -191,7 +191,8 @@
     "6": "A starflower. Just one. I'm not greedy.",
     "8": "She's seven now. She talks about frogs. Frogs are fine.",
     "10": "I answered her today before she asked. That's new."
-   }
+   },
+   "quest6_gangsters": "wren_moonwort"
   },
   "alder": {
    "quest6": "alder_gold",
@@ -448,7 +449,8 @@
     "6": "The blue. Just the blue.",
     "8": "The gate painting's drying.",
     "10": "Next to his portrait. He cried."
-   }
+   },
+   "quest6_gangsters": "lumi_moonwort"
   },
   "theo": {
    "quest6": "theo_book",

@@ -18,6 +18,7 @@ func default_spawn() -> Vector2:
 
 func build() -> void:
 	interior_id = GameMap.next_interior if GameMap.next_interior != "" else str(GameState.run.get("interior", "store"))
+	GameMap.next_interior = ""
 	GameState.run["interior"] = interior_id
 	var all := GameState.load_json("res://data/interiors.json")
 	I = all.get(interior_id, all.get("store", {}))
@@ -344,7 +345,7 @@ func _stable() -> void:
 			GameState.run["names"]["horse_coat"] = ["bay", "grey", "black", "palomino"][d.last_choice]
 			hud.toast("Clover is yours!", Color(1, 0.9, 0.4))
 			Music.instance(get_tree()).sfx("levelup")
-			GameState.run["friendship"]["benno"] = int(GameState.run["friendship"].get("benno", 0)) + 10
+			GameState.add_friend("benno", 10)
 		return
 	d.say([{"who": "Benno", "text": "Clover's saddled. Ride out?  (A/C with nothing in front of you dismounts; she waits where you leave her.)", "choice": ["Ride", "Not now"], "key": ""}])
 	await d.finished

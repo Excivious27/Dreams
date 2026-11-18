@@ -56,8 +56,8 @@ static func offers(shop: String) -> Array:
 				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
 			# Plus a few of the season's other vegetables and herbs.
 			base += _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 2 and not bool(cd.get("tree", false)) and not ("berry" in cid) and not (cid + "_seed" in base), 4, 0)
-			base += ["wheat_seed", "gift_pie", "paint"]
-			if GameState.has_perk("bartering", "Networker"):
+			base += ["wheat_seed", "fertilizer", "bread", "gift_pie", "paint"]
+			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):
 				base += rare[se] + ["dream_seed"]
 			return base
 		"smith":
@@ -74,7 +74,7 @@ static func offers(shop: String) -> Array:
 		"old_moss":
 			return ["glow_cap", "slime_goo", "tea"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return cid in ["mushroom", "truffle", "morel", "glowcap", "glowcap2", "glowcap3", "saffron", "aloe", "wasabi", "ginger", "turmeric", "vanilla", "tea", "coffee", "cacao", "watercress", "water_chestnut", "sesame", "chia"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 2, 4, 2)
 		"granite":
-			return ["coal", "copper", "iron", "dynamite"]
+			return ["stone", "brick", "coal", "copper", "iron", "dynamite"]
 		"sel":
 			# Seeds from the old places: wonders once you've gone far enough to grow them.
 			return ["rune_tablet", "old_coin", "book"] + _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) >= 4 and int(cd.get("tier", 1)) <= GameState.progress_tier() + 1 and not cid.begins_with("crystal"), 3, 3)

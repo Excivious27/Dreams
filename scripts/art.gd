@@ -42,7 +42,7 @@ static func tex(group: String, name: String) -> Texture2D:
 ## SpriteFrames built from one or more strips: {"anim_name": "strip_name", ...}.
 ## Called on every scene change: textures pile up as you travel (the web build
 ## has little memory), so past a budget everything is let go and reloaded on use.
-static func trim_cache(budget := 500) -> void:
+static func trim_cache(budget := 1500) -> void:
 	if _tex.size() <= budget:
 		return
 	_tex.clear()

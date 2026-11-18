@@ -288,7 +288,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 			m.hud.toast("Quest complete.", Color(1, 0.9, 0.4))
 	var fr: Dictionary = GameState.run["friendship"]
 	for id in fx.get("friend", {}):
-		fr[id] = int(fr.get(id, 0)) + int(fx["friend"][id])
+		GameState.add_friend(str(id), int(fx["friend"][id]))
 	for pair in fx.get("items", []):
 		GameState.add_item(str(pair[0]), int(pair[1]))
 		m.hud.toast("+%d %s" % [int(pair[1]), GameState.item_name(str(pair[0]))], Color(0.8, 1, 0.8))
@@ -306,6 +306,18 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		m.hud.toast("%s catches up with you." % str(Companion.defs().get(str(fx["know"]), {}).get("name", fx["know"])), Color(0.8, 0.95, 1.0))
 	for id in fx.get("bitter", []):
 		Companion.refuse(str(id))
+	if fx.has("weaken"):
+		# ["story_flag", factor]: a live story enemy loses part of its health now.
+		var wf := str(fx["weaken"][0])
+		for e in m.enemies:
+			if is_instance_valid(e) and str(e.get_meta("story_flag", "")) == wf:
+				e.max_hp = maxi(1, int(e.max_hp * float(fx["weaken"][1])))
+				e.hp = mini(e.hp, e.max_hp)
+	if fx.has("clear_kind"):
+		# Every enemy of this kind on the map is driven off (an ally's help).
+		for e in m.enemies.duplicate():
+			if is_instance_valid(e) and e.kind == str(fx["clear_kind"]) and e._alive:
+				e.hit(99999, e.position, true)
 	if fx.has("toast"):
 		m.hud.toast(str(fx["toast"]), Color(1, 0.9, 0.6))
 		if str(fx["toast"]).find("joined the crew") >= 0 and Art.has("ui", "crew_joined"):
@@ -363,6 +375,10 @@ static func _spawn_list(m: GameMap, spawns: Array) -> void:
 			e.is_guardian = true
 		if sp.size() > 5:
 			e.max_hp = int(e.max_hp * float(sp[5]))
+			e.hp = e.max_hp
+		# The bell: the town's help cracks the Dark Crystal's shell (half health).
+		if sp.size() > 4 and str(sp[4]) == "boss_dark_crystal" and (GameState.run["flags"].has("final_town_help") or GameState.run["flags"].has("bell_rung")):
+			e.max_hp = maxi(1, e.max_hp / 2)
 			e.hp = e.max_hp
 
 

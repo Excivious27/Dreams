@@ -262,5 +262,31 @@
    "acorn",
    10
   ]
+ ],
+ "orchard_hills": [
+  [
+   "berry",
+   30
+  ],
+  [
+   "fiber",
+   20
+  ],
+  [
+   "flower",
+   15
+  ],
+  [
+   "wild_herb",
+   15
+  ],
+  [
+   "acorn",
+   10
+  ],
+  [
+   "moonwort",
+   12
+  ]
  ]
 }

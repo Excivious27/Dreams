@@ -298,6 +298,8 @@ static func icon_for(id: String) -> String:
 		"minnow", "trout": return "fish"
 		"berry": return "apple"
 		"mushroom": return "bread"
+		"moonwort": return "wild_herb2"
+		"shiitake": return "mushroom"
 		"boot": return "map"
 	return id
 

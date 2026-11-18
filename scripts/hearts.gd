@@ -56,7 +56,7 @@ static func talk(m: GameMap, id: String) -> bool:
 	await m.say(lines)
 	GameState.run["flags"][_flag(id, n)] = true
 	if n == 6:
-		var q := str(v.get("quest6", ""))
+		var q := str(v.get("quest6_gangsters", v.get("quest6", ""))) if not GameState.is_penguins() else str(v.get("quest6", ""))
 		if q != "" and not GameState.has_quest(q):
 			var d := GameState._quest_def(q)
 			# Respect the quest's own gates (arc, skill, earlier quest); if they

@@ -33,6 +33,7 @@ static func instance(tree: SceneTree) -> Music:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	SaveGame.web_hook()
 	Settings.apply_audio()
 	_player = AudioStreamPlayer.new()
 	_player.bus = "Music"

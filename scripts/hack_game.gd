@@ -1,10 +1,11 @@
 class_name HackGame
 extends CanvasLayer
 ## The Hacking Terminal's daily hack: watch a string of arrows light up, then
-## repeat it with the joystick / arrow keys (or tap the arrows). Three rounds,
+## repeat it by tapping the arrows (or the arrow keys). Three rounds,
 ## each one longer. Clean run: heat −1 and a data chip; partial: some gold.
 
 signal closed
+var quit := false
 
 const DIRS := ["up", "right", "down", "left"]
 const GLYPH := {"up": "▲", "right": "▶", "down": "▼", "left": "◀"}
@@ -29,7 +30,8 @@ static func play(m: GameMap, t: int) -> int:
 	g.tier = clampi(t, 1, 4)
 	m.add_child(g)
 	await g.closed
-	return g.result
+	# Walking away mid-hack banks nothing.
+	return -1 if g.quit else g.result
 
 
 func _ready() -> void:
@@ -58,14 +60,18 @@ func _next_round() -> void:
 func _play_back() -> void:
 	_showing = true
 	await get_tree().create_timer(0.6).timeout
+	if not is_inside_tree():
+		return
 	var gap := maxf(0.28, 0.55 - 0.05 * _round)
 	for d in _seq:
 		if not is_inside_tree():
 			return
 		_lit = str(d)
 		_lit_t = gap * 0.8
-		Music.instance(get_tree()).sfx("pickup")
+		Music.instance(get_tree()).sfx("ui_tap", "pickup")
 		await get_tree().create_timer(gap).timeout
+	if not is_inside_tree():
+		return
 	_lit = ""
 	_showing = false
 	_msg = "Your turn: repeat it (%d)." % _seq.size()
@@ -80,6 +86,7 @@ func _process(delta: float) -> void:
 	if _arm < 8:
 		return
 	if Input.is_action_just_pressed("b"):
+		quit = true
 		_finish()
 		return
 	if _showing:
@@ -87,6 +94,7 @@ func _process(delta: float) -> void:
 	for d in DIRS:
 		if Input.is_action_just_pressed(d):
 			_press(d)
+			break  # one arrow per frame: a diagonal must not press two
 
 
 func _tap(ev: InputEvent) -> void:
@@ -103,27 +111,34 @@ func _tap(ev: InputEvent) -> void:
 
 
 func _press(d: String) -> void:
+	if _showing or _at >= _seq.size():
+		return
 	_lit = d
 	_lit_t = 0.15
 	if d == str(_seq[_at]):
 		_at += 1
-		Music.instance(get_tree()).sfx("pickup")
+		Music.instance(get_tree()).sfx("ui_tap", "pickup")
 		if _at >= _seq.size():
 			result += 1
 			if _round >= 3:
 				_msg = "You're in. Clean run."
+				_showing = true
 				await get_tree().create_timer(0.8).timeout
-				_finish()
+				if is_inside_tree():
+					_finish()
 			else:
 				_msg = "Got it."
+				_showing = true
 				await get_tree().create_timer(0.6).timeout
-				_next_round()
+				if is_inside_tree():
+					_next_round()
 	else:
 		Music.instance(get_tree()).sfx("hurt")
 		_msg = "Alarm tripped. You pull the plug."
 		_showing = true
 		await get_tree().create_timer(1.0).timeout
-		_finish()
+		if is_inside_tree():
+			_finish()
 
 
 func _finish() -> void:

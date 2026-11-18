@@ -163,7 +163,19 @@ static func _crystal(m: GameMap, id: String) -> void:
 	if m.has_meta("colony_boss"):
 		return
 	await m.say([{"text": str(c["crystal_wake"])}])
-	var b := m.spawn_enemy(str(c["boss"]), m.player.position + Vector2(0, -60))
+	var spot := m.player.position + Vector2(0, -40)
+	for r in [40.0, 56.0, 28.0, 72.0]:
+		var found := false
+		for ang in [-PI / 2, 0.0, PI, PI / 2, -PI / 4, -3 * PI / 4]:
+			var cand: Vector2 = m.player.position + Vector2(cos(ang), sin(ang)) * r
+			var cc := m.world_to_cell(cand)
+			if not m.blocked.has(cc) and not m.is_water_cell(cc):
+				spot = cand
+				found = true
+				break
+		if found:
+			break
+	var b := m.spawn_enemy(str(c["boss"]), spot)
 	if b:
 		b.set_meta("colony_boss", id)
 		b.set_meta("boss_name", str(c["boss_name"]))
@@ -198,6 +210,10 @@ static func _restore(m: GameMap, id: String) -> void:
 	GameState.add_item("colony_light", 1)
 	for sp in c.get("spells", []):
 		GameState.run["skills"]["magic"] = GameState.run["skills"].get("magic", {"level": 1, "xp": 0, "nodes": {}})
+		if int(GameState.run["skills"]["magic"]["nodes"].get(str(sp), 0)) == 0:
+			var gn: Dictionary = GameState.run.get("gift_nodes", {})
+			gn["magic|" + str(sp)] = 1
+			GameState.run["gift_nodes"] = gn
 		GameState.run["skills"]["magic"]["nodes"][str(sp)] = maxi(1, int(GameState.run["skills"]["magic"]["nodes"].get(str(sp), 0)))
 	if int(c.get("mana", 0)) > 0:
 		GameState.grow_vital("mana", int(c["mana"]))

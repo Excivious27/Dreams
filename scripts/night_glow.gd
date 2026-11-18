@@ -31,8 +31,14 @@ func _ready() -> void:
 	_canvas.material = mat
 
 
+var _was_on := false
+
+
 func _process(_d: float) -> void:
-	_canvas.queue_redraw()
+	var on := map != null and map.has_sky and GameState.darkness() * Settings.night_strength() > 0.05
+	if on or _was_on:
+		_canvas.queue_redraw()
+	_was_on = on
 
 
 func _draw_glow() -> void:
@@ -42,9 +48,13 @@ func _draw_glow() -> void:
 	if a < 0.05:
 		return
 	var tm := Time.get_ticks_msec() / 1000.0
+	var cam := map.get_viewport().get_camera_2d()
+	var cc := cam.get_screen_center_position() if cam else Vector2.ZERO
 	for l: Array in lights:
 		var n := l[0] as Node2D
 		if not is_instance_valid(n) or not n.visible:
+			continue
+		if cam and n.global_position.distance_to(cc) > 320.0:
 			continue
 		var r := float(l[1]) * (1.0 + 0.04 * sin(tm * 3.0 + n.position.x))
 		var p := n.global_position + Vector2(0, -float(l[2]))

@@ -150,5 +150,301 @@
   "festival": [
    "Are you going to the plaza? Everyone's going."
   ]
+ },
+ "maple": {
+  "always": [
+   "Seeds by the door, prices on the shelf, gossip at the counter. The gossip's free.",
+   "If you're short on something, ask. I'll order it in, or tell you who's got it.",
+   "{name}! You look like someone who skipped breakfast. Again.",
+   "I keep a ledger of who owes me. I keep a smaller one of who I owe. Yours is in the small one."
+  ],
+  "spring": [
+   "Spring seeds fly off the shelf. Turnips first, always turnips first."
+  ],
+  "summer": [
+   "Corn and tomatoes, that's summer in a basket. Plant them before the 10th."
+  ],
+  "fall": [
+   "Pumpkins! The whole valley wants pumpkins this month."
+  ],
+  "winter": [
+   "Winter's quiet in here. Come in and warm your hands, even if you're not buying."
+  ],
+  "rain": [
+   "Rain's good for the fields and bad for business. I'll take the trade."
+  ]
+ },
+ "gideon": {
+  "always": [
+   "Copper, iron, then the good stuff. Bring me bars and I'll make your tools sing.",
+   "A tool that fits your hand is worth two that don't. Swing it till it knows you.",
+   "The forge never really goes cold. Neither do I.",
+   "You hear that hum in the anvil? That's iron telling you it's ready."
+  ],
+  "winter": [
+   "Best season for smithing. The forge keeps me warm and the work keeps me honest."
+  ],
+  "summer": [
+   "Hot out, hotter in here. Don't touch anything orange."
+  ],
+  "rain": [
+   "Rain on the roof, hammer on the anvil. Good rhythm, that."
+  ],
+  "gangsters": [
+   "The President's men buy blades by the crate. I make them dull on purpose. Don't tell."
+  ]
+ },
+ "wren": {
+  "always": [
+   "Potions don't brew themselves. Mostly. Some of them try.",
+   "Mind the green bottle. It's not dangerous, it's just shy.",
+   "If you bring me herbs from the forest, I'll teach you what they do.",
+   "I talk to my plants. The plants talk back. We're working on manners."
+  ],
+  "spring": [
+   "Spring herbs are the strongest. Everything wants to grow."
+  ],
+  "fall": [
+   "Mushroom season! The good ones and the very bad ones look alike, so ask me first."
+  ],
+  "rain": [
+   "Rain days are brewing days. Everything steeps better when it's grey."
+  ]
+ },
+ "alder": {
+  "always": [
+   "The town's growing, {name}. Some of that is your doing.",
+   "A mayor's job is mostly listening. And signing things. Mostly signing things.",
+   "If you ever want something built in town, the hall has the plans.",
+   "{town} was half empty when I took this job. Look at it now."
+  ],
+  "festival": [
+   "Festival day! Best day of the season. Eat everything."
+  ],
+  "winter": [
+   "Mind the ice on the plaza. I've asked for salt. I've asked twice."
+  ],
+  "penguins": [
+   "The Star Crystal chose well. I'll deny I said that if the council asks."
+  ]
+ },
+ "sal": {
+  "always": [
+   "Keep your head down and your boots clean, and people forget to look at you.",
+   "Everyone in this town owes someone. The trick is knowing who.",
+   "I've walked every road out of here. They all come back.",
+   "Coffee? No? Smart. It's terrible."
+  ],
+  "gangsters": [
+   "The President's got eyes everywhere. Most of them are bored. Bored eyes miss things.",
+   "You're getting a name. That's good and bad. Mostly good."
+  ],
+  "rain": [
+   "Rain washes out tracks. Good day to go somewhere you shouldn't."
+  ]
+ },
+ "finn": {
+  "always": [
+   "Fish bite at dawn and dusk. In between they're just thinking about it.",
+   "Patience, {name}. The lake gives to the ones who wait.",
+   "Caught a carp this big yesterday. Let it go. It had a look about it.",
+   "Bait's half the battle. The other half is not falling in."
+  ],
+  "summer": [
+   "Summer evenings, the trout come right up to the dock."
+  ],
+  "winter": [
+   "Ice fishing's not for everyone. It's barely for me."
+  ],
+  "rain": [
+   "Rain stirs the fish up. Grab your rod."
+  ]
+ },
+ "lumi": {
+  "always": [
+   "I'm painting the light on the lake. It changes every minute. It's rude, honestly.",
+   "Everyone has a colour. Yours is a sort of hopeful green.",
+   "If you find interesting stones, bring them by. I grind them for paint.",
+   "Art's just noticing things, slowly, on purpose."
+  ],
+  "fall": [
+   "Fall is the only season that paints itself."
+  ],
+  "winter": [
+   "Snow is hard to paint. It's all the colours pretending to be white."
+  ],
+  "rain": [
+   "Rain makes everything shine. Best light all week."
+  ]
+ },
+ "theo": {
+  "always": [
+   "Did you know the valley used to be a lake? The stones remember.",
+   "I've read every book in the library twice. The third time is where it gets interesting.",
+   "Knowledge is a lamp, {name}. You don't hoard a lamp; you hold it up.",
+   "Ask me anything. If I don't know, I'll know someone dead who did."
+  ],
+  "winter": [
+   "Long nights, long books. Winter's my season."
+  ],
+  "rain": [
+   "Rain's for reading. I've got three going at once."
+  ],
+  "penguins": [
+   "The old texts mention a falling star over this valley. Twice. Long ago, and now."
+  ]
+ },
+ "hazel": {
+  "always": [
+   "Water in the morning, before the sun gets greedy.",
+   "Every crop has its season. Plant out of season and it'll just sulk and die.",
+   "Good soil's half the work. Fertiliser's the other half. Talking to them doesn't hurt.",
+   "Need a hand? I've got two, and both have dirt on them."
+  ],
+  "spring": [
+   "Spring rains do half the watering. Don't tell the sprinklers."
+  ],
+  "summer": [
+   "Summer crops need water every single day. No excuses."
+  ],
+  "fall": [
+   "Harvest what you can before winter. The frost doesn't negotiate."
+  ],
+  "winter": [
+   "Winter's for planning next year. And for winter crops, if you're brave."
+  ]
+ },
+ "posy": {
+  "always": [
+   "Flour on my nose? Probably. It's always there.",
+   "A warm loaf fixes most things. The rest needs two.",
+   "I bake at dawn. The whole street smells like bread by six.",
+   "If you bring me berries, I'll make you something you'll remember."
+  ],
+  "fall": [
+   "Pumpkin pies all month. I've stopped counting."
+  ],
+  "winter": [
+   "Spiced bread in winter. My gran's recipe. Secret ingredient: more spice."
+  ],
+  "festival": [
+   "I've baked for the whole festival. My arms will never recover."
+  ]
+ },
+ "rook": {
+  "always": [
+   "Quiet steps, {name}. The woods hear everything.",
+   "Wolves keep to the hills unless something drives them down. Lately, something has.",
+   "I hunt what I need and no more. The forest notices greed.",
+   "Tracks don't lie. People do. That's why I like tracks."
+  ],
+  "winter": [
+   "Easy tracking in snow. Hard everything else."
+  ],
+  "fall": [
+   "The deer are fat and nervous. So am I, come to think of it."
+  ]
+ },
+ "pip": {
+  "always": [
+   "When I'm mayor, the fountain will be lemonade. Write that down.",
+   "I rang the town bell once. ONE time. Nobody lets me forget it.",
+   "I'm nine and three quarters. The quarters count.",
+   "Do you need an assistant? I'm very assisting."
+  ],
+  "festival": [
+   "I'm in charge of the festival! Well. I'm in charge of the balloons. Some balloons."
+  ]
+ },
+ "wren_jr": {
+  "always": [
+   "I found a frog with spots! I named it Spots. It's a good name.",
+   "Mum says I can't keep frogs in the kitchen. She didn't say anything about the bathtub.",
+   "Frogs sing at night if it's warm. Have you heard them?",
+   "I'm going to be a frog scientist. Or a potion-maker. Or both, for frogs."
+  ],
+  "spring": [
+   "Tadpoles in the pond! Hundreds! I counted to forty and then they moved."
+  ],
+  "rain": [
+   "Rain means FROG DAY."
+  ]
+ },
+ "tobin": {
+  "always": [
+   "My kite went over the lighthouse yesterday. Marlowe gave it back. Again.",
+   "I collect shells. This one's my best. Don't touch it, look with your eyes.",
+   "If you hold a shell to your ear you hear the sea. Or your ear. Nobody's sure.",
+   "The wind's good today. Good for kites, bad for hats."
+  ],
+  "summer": [
+   "Summer wind is the best kite wind. Everyone knows that."
+  ]
+ },
+ "mabel": {
+  "always": [
+   "I press flowers in my diary. This one's from the meadow. Don't tell anyone it's my diary.",
+   "Some flowers only open at night. I've seen them. Mostly.",
+   "I'm writing down everything that happens in town. You're in it. Page twelve.",
+   "Daisies mean innocence. Dandelions mean I was bored."
+  ],
+  "spring": [
+   "Spring is when the diary gets heavy. All the flowers."
+  ]
+ },
+ "marlowe": {
+  "always": [
+   "The lamp's been lit every night for forty years. Mostly by me.",
+   "Ships haven't come in a while. I keep it lit anyway. Habit, or hope.",
+   "Storm or calm, the sea's always talking. You just have to sit long enough.",
+   "Gulls are terrible company and I'd miss them dreadfully."
+  ],
+  "rain": [
+   "Weather like this, the lamp's the only thing that matters."
+  ]
+ },
+ "granite": {
+  "always": [
+   "Stone's honest. You hit it right, it breaks right.",
+   "The quarry's deeper than it looks. Mind the edges.",
+   "Coal, copper, iron, stone, brick. If it's heavy, I sell it.",
+   "My golems are long gone. The old ones were here before the quarry."
+  ],
+  "winter": [
+   "Cold stone splits easier. Silver lining."
+  ]
+ },
+ "sel": {
+  "always": [
+   "These runes are older than the town. Older than the valley, maybe.",
+   "Every ruin is a sentence. I'm still learning the grammar.",
+   "The deeper you go, the older the stories get.",
+   "I came here for a week, eleven years ago."
+  ],
+  "penguins": [
+   "The star that fell here didn't fall by accident. The ruins say it was sent."
+  ]
+ },
+ "old_moss": {
+  "always": [
+   "The marsh keeps its own time. Don't rush it.",
+   "Mushrooms and moss, mud and mist. Everything I need.",
+   "Visitors are rare. Tea? It's mostly marsh. Mostly.",
+   "The frogs told me you were coming. They tell me everything."
+  ],
+  "rain": [
+   "Rain? Out here we just call it Tuesday."
+  ]
+ },
+ "tam": {
+  "always": [
+   "Sheep are smarter than people think. Not smart. Smarter.",
+   "The orchard's best in late summer. Come pick something.",
+   "Wool today, jumpers tomorrow. That's the whole business.",
+   "My dog does the real work. I just carry the snacks."
+  ],
+  "fall": [
+   "Apple season! Cider soon. Bring a jug."
+  ]
  }
 }

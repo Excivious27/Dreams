@@ -139,7 +139,7 @@
   ],
   "perks": {
    "2": "Tool upgrades 10% cheaper",
-   "4": "Free repairs; upgrades 20% cheaper",
+   "4": "Tool upgrades 20% cheaper",
    "6": "Gideon forges you a free Copper Ring",
    "8": "Upgrades 30% cheaper",
    "10": "Gideon's last lesson: +20 max health"
@@ -294,7 +294,7 @@
   ],
   "perks": {
    "2": "Town records: the mayor sends a Map Scrap",
-   "4": "Alder waives the clinic fee once a season",
+   "4": "Permits and buildings 20% cheaper",
    "6": "A building grant: ◆500 toward your next plans",
    "8": "Alder lends you the town cart (sell box pays 10% more)",
    "10": "Keys to the city: ◆500 from the town purse"
@@ -436,7 +436,7 @@
    "2": "Fish bite 10% sooner",
    "4": "Finn's bait is free: 10 Bait every week",
    "6": "Finn's secret spot: a Golden Float",
-   "8": "Rare fish bite twice as often",
+   "8": "+10% chance of a rare fish",
    "10": "Finn's best tackle: 3 Golden Floats"
   },
   "home": "cottage_b",
@@ -647,7 +647,7 @@
   ],
   "perks": {
    "2": "Hazel shares seeds: a seed pack each week",
-   "4": "Hazel waters your crops when it's sunny (every other day)",
+   "4": "Hazel waters your crops every other day",
    "6": "Hazel waters your crops every day",
    "8": "Hazel harvests ripe crops into your sell box",
    "10": "Hazel's heirloom seeds: 5 Dream Seeds"
@@ -956,7 +956,7 @@
    24
   ],
   "sprite": "npc_child_boy_a",
-  "portrait": "young_farmer",
+  "portrait": "",
   "lines": [
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
@@ -1027,7 +1027,7 @@
    24
   ],
   "sprite": "npc_child_girl_a",
-  "portrait": "young_farmer",
+  "portrait": "",
   "lines": [
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
@@ -1096,7 +1096,7 @@
    24
   ],
   "sprite": "npc_child_boy_b",
-  "portrait": "young_farmer",
+  "portrait": "",
   "lines": [
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
@@ -1166,7 +1166,7 @@
    24
   ],
   "sprite": "npc_child_girl_b",
-  "portrait": "young_farmer",
+  "portrait": "",
   "lines": [
    "Wanna see a frog?",
    "I'm not allowed in the forest. Are you?",
@@ -1351,7 +1351,7 @@
    "fish"
   ],
   "perks": {
-   "2": "Stable boarding 50% off",
+   "2": "Horses half price",
    "4": "Benno's saddle care: your horse runs 10% faster",
    "6": "Benno's oats: +20 max energy",
    "8": "Benno's spare tack sells for ◆250",

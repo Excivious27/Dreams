@@ -223,9 +223,11 @@ func _dresser() -> void:
 		panel.add_child(cr)
 		add_child(layer)
 		get_tree().paused = true
+		Hud.modal_rect = Rect2(0, 0, 270, 480)
 		var finish := func(l: Dictionary) -> void:
 			if not l.is_empty():
 				GameState.run["look"] = l
+			Hud.modal_rect = Rect2()
 			get_tree().paused = false
 			layer.queue_free()
 			player.frozen = false

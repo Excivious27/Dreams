@@ -5823,7 +5823,7 @@
   "path": "stone",
   "spawn": [
    55,
-   85
+   79
   ],
   "pad": 7,
   "border": {
@@ -6073,7 +6073,7 @@
   "path": "stone",
   "spawn": [
    59,
-   89
+   83
   ],
   "pad": 7,
   "border": {
@@ -6313,7 +6313,7 @@
   "path": "stone",
   "spawn": [
    56,
-   83
+   77
   ],
   "pad": 7,
   "border": {
@@ -6542,7 +6542,7 @@
   "path": "stone",
   "spawn": [
    58,
-   87
+   81
   ],
   "pad": 7,
   "border": {
@@ -6846,7 +6846,7 @@
      40
     ],
     "r": 22,
-    "seed": 42
+    "seed": 520
    },
    {
     "c": [
@@ -6854,7 +6854,7 @@
      26
     ],
     "r": 11,
-    "seed": 43
+    "seed": 521
    },
    {
     "c": [
@@ -6862,7 +6862,7 @@
      56
     ],
     "r": 10,
-    "seed": 44
+    "seed": 522
    },
    {
     "c": [
@@ -6886,7 +6886,7 @@
      16
     ],
     "r": 7,
-    "seed": 47
+    "seed": 525
    }
   ],
   "island_shore": "sand",
@@ -7004,8 +7004,8 @@
    {
     "type": "note",
     "cell": [
-     36,
-     30
+     30,
+     40
     ],
     "who": "",
     "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
@@ -7123,7 +7123,7 @@
      40
     ],
     "r": 22,
-    "seed": 289
+    "seed": 753
    },
    {
     "c": [
@@ -7131,7 +7131,7 @@
      26
     ],
     "r": 11,
-    "seed": 290
+    "seed": 754
    },
    {
     "c": [
@@ -7139,7 +7139,7 @@
      56
     ],
     "r": 10,
-    "seed": 291
+    "seed": 755
    },
    {
     "c": [
@@ -7163,7 +7163,7 @@
      16
     ],
     "r": 7,
-    "seed": 294
+    "seed": 758
    }
   ],
   "island_shore": "sand",
@@ -7281,8 +7281,8 @@
    {
     "type": "note",
     "cell": [
-     36,
-     30
+     30,
+     40
     ],
     "who": "",
     "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
@@ -7400,7 +7400,7 @@
      40
     ],
     "r": 22,
-    "seed": 293
+    "seed": 608
    },
    {
     "c": [
@@ -7408,7 +7408,7 @@
      26
     ],
     "r": 11,
-    "seed": 294
+    "seed": 609
    },
    {
     "c": [
@@ -7416,7 +7416,7 @@
      56
     ],
     "r": 10,
-    "seed": 295
+    "seed": 610
    },
    {
     "c": [
@@ -7440,7 +7440,7 @@
      16
     ],
     "r": 7,
-    "seed": 298
+    "seed": 613
    }
   ],
   "island_shore": "sand",
@@ -7568,8 +7568,8 @@
    {
     "type": "note",
     "cell": [
-     36,
-     30
+     30,
+     40
     ],
     "who": "",
     "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",
@@ -7687,7 +7687,7 @@
      40
     ],
     "r": 22,
-    "seed": 543
+    "seed": 154
    },
    {
     "c": [
@@ -7695,7 +7695,7 @@
      26
     ],
     "r": 11,
-    "seed": 544
+    "seed": 155
    },
    {
     "c": [
@@ -7703,7 +7703,7 @@
      56
     ],
     "r": 10,
-    "seed": 545
+    "seed": 156
    },
    {
     "c": [
@@ -7727,7 +7727,7 @@
      16
     ],
     "r": 7,
-    "seed": 548
+    "seed": 159
    }
   ],
   "island_shore": "sand",
@@ -7855,8 +7855,8 @@
    {
     "type": "note",
     "cell": [
-     36,
-     30
+     30,
+     40
     ],
     "who": "",
     "text": "A carving on a flat stone: four crystals in a ring around a fifth, dark one. Under it, in merkitty scratch-script: 'They were one star, once.'",

@@ -118,6 +118,8 @@ MAGIC_ROW = {"light": 0, "dream": 1, "crystal": 2, "core": 3}
 
 
 def fmt(k, v):
+    if isinstance(v, float) and v < 0.01:
+        return "+%.1f%% %s" % (v * 100, DESC[k])
     if isinstance(v, float) and v < 1:
         return "+%d%% %s" % (round(v * 100), DESC[k])
     return "+%s %s" % (v, DESC[k])

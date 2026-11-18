@@ -45,9 +45,12 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 	for y in range(1, m.rows - 1):
 		for x in range(1, m.cols - 1):
 			var c := Vector2i(x, y)
+			# Roll first so each cell's roll never depends on its neighbours
+			# (otherwise the decor reshuffles whenever a cell fills up).
+			rng.seed = hash(Vector3i(seed_v, x, y))
+			var r := rng.randf()
 			if m.blocked.has(c) or m.things.has(c) or avoid.has(c):
 				continue
-			var r := rng.randf()
 			if r > density:
 				continue
 			var at := Vector2(x * TILE, y * TILE)

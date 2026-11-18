@@ -115,7 +115,7 @@ func _show_title() -> void:
 	_page.add_child(_button("New game", _confirm_new if GameState.has_run() else _show_arcs, true))
 	if GameState.has_run():
 		_page.add_child(_button("Play together", _show_net))
-	var prev: Variant = SaveGame.get_value("run_prev", null)
+	var prev: Variant = SaveGame.get_value(GameState.prev_key(), null)
 	if prev is Dictionary and not (prev as Dictionary).is_empty():
 		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
 		_page.add_child(_button("Restore %s (day %d)" % [pn, int((prev as Dictionary).get("day", 1))], _restore_prev))
@@ -135,15 +135,26 @@ func _show_slots() -> void:
 			_show_title(), here))
 	_page.add_child(_label("Move a farm to another phone: copy its code here, then paste it on the other phone.", 8, false))
 	_page.add_child(_button("Copy this slot's save code", func() -> void:
-		DisplayServer.clipboard_set(GameState.export_code())
-		_slot_msg.text = "Copied. Paste it somewhere safe (a note or a message to yourself)."))
+		var code := GameState.export_code()
+		if OS.has_feature("web"):
+			# Phones only allow copying from the tap itself: show the code in a
+			# real page box with the phone's own Share / Copy.
+			JavaScriptBridge.eval(_web_code_box(code))
+			_slot_msg.text = "Your code is on screen: tap Copy or Share and keep it somewhere safe."
+		else:
+			DisplayServer.clipboard_set(code)
+			_slot_msg.text = "Copied. Paste it somewhere safe (a note or a message to yourself)."))
 	_slot_code = TextEdit.new()
 	_slot_code.placeholder_text = "Paste a save code here"
 	_slot_code.custom_minimum_size = Vector2(220, 46)
 	_slot_code.add_theme_font_size_override("font_size", 7)
 	_page.add_child(_slot_code)
 	_page.add_child(_button("Load the code into slot %d" % GameState.slot(), func() -> void:
-		var err := GameState.import_code(_slot_code.text)
+		var txt := _slot_code.text
+		if OS.has_feature("web") and txt.strip_edges() == "":
+			var got: Variant = JavaScriptBridge.eval("prompt('Paste your Dreams save code') || ''")
+			txt = str(got) if got != null else ""
+		var err := GameState.import_code(txt)
 		_slot_msg.text = err if err != "" else "Loaded. The farm that was here can be brought back with Restore."))
 	_slot_msg = _label("", 8, false)
 	_page.add_child(_slot_msg)
@@ -154,19 +165,34 @@ var _slot_code: TextEdit
 var _slot_msg: Label
 
 
+## An HTML overlay with the code in a text box and Copy / Share buttons (web).
+func _web_code_box(code: String) -> String:
+	var js := """(function(){var o=document.createElement('div');o.style.cssText='position:fixed;inset:0;z-index:9999;background:#000c;display:flex;align-items:center;justify-content:center';
+var b=document.createElement('div');b.style.cssText='background:#f4e6c4;border-radius:12px;padding:14px;width:86%;max-width:420px;font:15px sans-serif;color:#2a1a10';
+b.innerHTML='<b>Your Dreams save code</b><br><small>Keep it in a note or message. Paste it on the other phone.</small>';
+var t=document.createElement('textarea');t.readOnly=true;t.value=CODE;t.style.cssText='width:100%;height:120px;margin:8px 0;font:11px monospace';
+var row=document.createElement('div');row.style.cssText='display:flex;gap:8px';
+function btn(l,f){var x=document.createElement('button');x.textContent=l;x.style.cssText='flex:1;padding:10px;font:bold 15px sans-serif;border-radius:8px;border:0;background:#c98a3a;color:#fff';x.onclick=f;row.appendChild(x);}
+btn('Copy',function(){t.select();try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}});
+if(navigator.share)btn('Share',function(){navigator.share({text:t.value}).catch(function(){});});
+btn('Close',function(){o.remove();});
+b.appendChild(t);b.appendChild(row);o.appendChild(b);document.body.appendChild(o);t.focus();t.select();})();"""
+	return js.replace("CODE", JSON.stringify(code))
+
+
 ## Starting over never loses a farm: the current one is kept to restore.
 func _confirm_new() -> void:
 	_clear()
 	_page.add_child(_label("Start a new game?", 16))
 	_page.add_child(_label("%s's farm (day %d) will be kept, and you can bring it back from the title screen with Restore. Only the most recent one is kept." % [str(GameState.run["names"]["character"]), int(GameState.run.get("day", 1))], 8, false))
 	_page.add_child(_button("Yes, start fresh", func() -> void:
-		SaveGame.set_value("run_prev", GameState.run.duplicate(true))
+		SaveGame.set_value(GameState.prev_key(), GameState.run.duplicate(true))
 		_show_arcs(), true))
 	_page.add_child(_button("Back", _show_title))
 
 
 func _restore_prev() -> void:
-	var prev: Variant = SaveGame.get_value("run_prev", null)
+	var prev: Variant = SaveGame.get_value(GameState.prev_key(), null)
 	if not prev is Dictionary:
 		return
 	var cur: Dictionary = GameState.run.duplicate(true) if GameState.has_run() else {}
@@ -174,7 +200,7 @@ func _restore_prev() -> void:
 	SaveGame.set_value(GameState.save_key(), (prev as Dictionary).duplicate(true))
 	GameState.has_run()   # loads and migrates it
 	if not cur.is_empty():
-		SaveGame.set_value("run_prev", cur)  # swap, so nothing is ever lost
+		SaveGame.set_value(GameState.prev_key(), cur)  # swap, so nothing is ever lost
 	_show_title()
 
 
@@ -486,7 +512,14 @@ func _begin() -> void:
 	_start_game()
 
 
+var _starting := false
+
+
 func _start_game() -> void:
+	if _starting or not is_inside_tree():
+		return
+	_starting = true
+	GameMap.next_interior = ""
 	var scene := str(GameState.run.get("scene", "farm"))
 	if not ResourceLoader.exists("res://scenes/%s.tscn" % scene):
 		scene = "farm"

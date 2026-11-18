@@ -103,10 +103,10 @@ static func _news(rng: RandomNumberGenerator) -> void:
 	var w := GameState.weather_for(tomorrow)
 	if w in ["storm", "blizzard"]:
 		send("Marlowe at the lighthouse", "Storm coming in tomorrow. Bring the animals in and don't bother watering.", "news")
-	for id: String in GameState.npcs:
+	for id: String in _known():
 		var b := GameState.birthday_of(id)
 		if b.size() == 2 and str(b[0]) == GameState.season_of(tomorrow) and int(b[1]) == dos:
-			send("Pip", "Psst! Tomorrow is %s's birthday. A gift would mean a lot (gifts count triple)." % _name(id), "news")
+			send("Wren jr" if id == "pip" else "Pip", "Psst! Tomorrow is %s's birthday. A gift would mean a lot (gifts count triple)." % _name(id), "news")
 	if GameState.DAYS_PER_SEASON - GameState.day_of_season() == 3:
 		send("Hazel", "Three days left of %s. Anything still in the ground that can't take the new season won't make it; harvest what you can." % GameState.season().capitalize(), "news")
 	if Racket.on() and Racket.heat() >= 3 and rng.randf() < 0.6:

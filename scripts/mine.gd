@@ -121,7 +121,7 @@ func build() -> void:
 	set_thing(_entry.x, _entry.y, {"type": "up", "hint": "A: climb out"})
 	_way_open = GameState.run["flags"].has("mine_open_%d" % floor_no)
 	if _way_open:
-		things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
+		things[_ladder] = {"type": "down", "hint": ("A: the long lift down to the Hollow Heart" if floor_no >= MAX_FLOOR else "A: climb down to floor %d" % (floor_no + 1))}
 	# The lift: once you've opened floor 5, Granite's cart takes you straight to
 	# any floor you've opened the way to (every 5th).
 	if (floor_no == 1 or floor_no % 5 == 0) and _deepest() >= 5:
@@ -254,7 +254,13 @@ func _carve(rng: RandomNumberGenerator, boost := 0.0) -> void:
 
 ## Theme hazards: pools, lava and chasms on open floor away from the paths in
 ## and out. They block walking (Tideswim / a mercat lets you swim pools).
+## Cells you can walk to from the entry (through rock you can mine, never
+## through lava, chasms or deep water). Findables only go here.
+var _reach := {}
+
+
 func _features(rng: RandomNumberGenerator) -> void:
+	_reach = _open.duplicate()
 	var feat: Array = theme.get("feat", [])
 	var seed := floor_no * 13 + int(GameState.run["day"])
 	for c: Vector2i in _open:
@@ -281,7 +287,9 @@ func _features(rng: RandomNumberGenerator) -> void:
 			if _open.has(b) and not reach.has(b) and not _lava.has(b) and not _chasm.has(b) and not (things.has(b) and str(things[b].get("type", "")) == "water"):
 				reach[b] = true
 				q.append(b)
+	_reach = reach
 	if not reach.has(_ladder):
+		_reach = _open.duplicate()
 		for c: Vector2i in _lava.keys() + _chasm.keys():
 			blocked.erase(c)
 			hard.erase(c)
@@ -297,7 +305,7 @@ func _features(rng: RandomNumberGenerator) -> void:
 func _findables(rng: RandomNumberGenerator) -> void:
 	var free: Array = []
 	for c: Vector2i in _open:
-		if not things.has(c) and not blocked.has(c) and c.distance_to(_entry) > 3:
+		if _reach.has(c) and not things.has(c) and not blocked.has(c) and c.distance_to(_entry) > 3:
 			free.append(c)
 	if free.is_empty():
 		return
@@ -318,15 +326,22 @@ func _findables(rng: RandomNumberGenerator) -> void:
 		var ck := "mcrate_%d_%d_%d" % [floor_no, i, day]
 		if not things.has(c) and not GameState.run["flags"].has(ck):
 			set_thing(c.x, c.y, {"type": "crate", "key": ck, "kind": "barrel_a" if rng.randf() < 0.4 else "crates_a", "hp": 2 + floor_no / 30, "hint": "A: smash it open"}, true)
-	if rng.randf() < 0.3 + 0.002 * mini(floor_no, 100):
+	if rng.randf() < 0.15 + 0.001 * mini(floor_no, 100):
 		var c: Vector2i = free[rng.randi() % free.size()]
 		var key := "mchest_%d_%d" % [floor_no, day]
 		if not things.has(c) and not GameState.run["flags"].has(key):
 			set_thing(c.x, c.y, {"type": "mchest", "key": key, "hint": "A: a miner's chest"}, true)
 	if floor_no % 10 == 0 and not GameState.run["flags"].has("mine_prize_%d" % floor_no):
-		var c := _farthest_open(_ladder)
-		if things.has(c):
-			c = free[rng.randi() % free.size()]
+		# Off to the side: as far as possible from both the way in and the way down.
+		var c: Vector2i = free[0]
+		var best := -1.0
+		for fc: Vector2i in free:
+			if things.has(fc):
+				continue
+			var sc := minf(fc.distance_to(_entry), fc.distance_to(_ladder))
+			if sc > best:
+				best = sc
+				c = fc
 		set_thing(c.x, c.y, {"type": "bigchest", "hint": "A: the floor %d prize chest" % floor_no}, true)
 
 
@@ -553,7 +568,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				return true
 			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("pick", "chop")
-			thing["hp"] = int(thing["hp"]) - (1 + GameState.tool_tier("pickaxe") / 2)
+			wobble(c, 0.04)
+			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
+			var swing := 1 + GameState.tool_tier("pickaxe") / 2
+			if randf() < GameState.bonus("mining", "double_hit"):
+				swing *= 2
+			thing["hp"] = int(thing["hp"]) - swing
 			if int(thing["hp"]) <= 0:
 				var ore := str(thing["ore"])
 				things.erase(c)
@@ -563,11 +583,15 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
 				# Ore rocks give one lump, often two with a better pickaxe or the mining tree.
-				var lumps := 2 if ore == "stone" else 1 + (1 if randf() < 0.3 + 0.1 * GameState.tool_tier("pickaxe") + GameState.bonus("mining", "ore_bonus") else 0)
+				fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
+				var lumps := (1 + (1 if randf() < 0.5 else 0) + int(GameState.bonus("mining", "stone_bonus") / 3.0)) if ore == "stone" else 1 + (1 if randf() < 0.3 + 0.1 * GameState.tool_tier("pickaxe") + GameState.bonus("mining", "ore_bonus") else 0)
 				# Resonance (spell): +1 ore from every rock today.
 				if ore != "stone" and int(GameState.run["flags"].get("ore_bonus_day", -1)) == int(GameState.run["day"]):
 					lumps += 1
-				give(ore, lumps)
+				pop_items(cell_center(c), ore, lumps)
+				if randf() < GameState.bonus("mining", "gem_chance") + GameState.bonus("magic", "gem_chance"):
+					var gems: Array = [["amethyst"], ["amethyst", "ruby"], ["ruby", "emerald"], ["emerald", "sapphire"], ["sapphire", "ruby"], ["sapphire", "emerald"]][clampi(mine_tier, 0, 5)]
+					pop_items(cell_center(c), str(gems[randi() % gems.size()]), 1)
 				xp("mining", (2 if ore == "stone" else 5) + mine_tier)
 				queue_redraw()
 				_try_more(1)
@@ -738,11 +762,7 @@ func draw_map() -> void:
 					nm = "shaft_open_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3)
 				if not Art.draw_prop(self, "props", nm, p):
 					draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
-
-		draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("221d28"))
-		draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("221d28"))
-		draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("221d28"))
-	label("floor %d · %s" % [floor_no, str(theme.get("name", ""))], Vector2(2 * TILE, TILE - 3), 10 * TILE)
+	label("floor %d · %s" % [floor_no, str(theme.get("name", ""))], Vector2(2 * TILE, TILE * 2 + 6), 10 * TILE)
 
 
 func _place_props() -> void:
@@ -920,7 +940,8 @@ func _depth_scale(e: Enemy) -> void:
 	if e == null:
 		return
 	var into := (floor_no - 1) % 25
-	var m := 1.0 + 0.06 * into + 0.1 * mine_tier
+	# Each tier starts about where the last one ended (no easier floor after a boundary).
+	var m := 1.0 + 0.045 * into + 0.35 * mine_tier
 	e.max_hp = int(round(e.max_hp * m))
 	e.hp = e.max_hp
 	e.damage = e.damage + into / 10
@@ -947,7 +968,9 @@ func _summon_guardian() -> void:
 		at = cell_center(_nearest_open(Vector2i(cols / 2, rows / 2)))
 	shake(3.0)
 	fx("keeper_wake" if Art.has("fx", "keeper_wake") else "boss_shockwave", at, 12.0, 0.8)
-	await get_tree().create_timer(0.9 if Art.has("fx", "keeper_wake") else 0.4).timeout
+	await get_tree().create_timer(0.9 if Art.has("fx", "keeper_wake") else 0.4, false).timeout
+	if not is_inside_tree():
+		return
 	# Never weaker than its native tier; floor 1's golem is still a golem.
 	_guardian = spawn_enemy(kind, at, maxi(mine_tier, GameState.enemy_tier(kind)))
 	_guardian.is_guardian = true
@@ -974,7 +997,7 @@ func _summon_guardian() -> void:
 func _open_way() -> void:
 	GameState.run["flags"]["mine_open_%d" % floor_no] = true
 	_way_open = true
-	things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
+	things[_ladder] = {"type": "down", "hint": ("A: the long lift down to the Hollow Heart" if floor_no >= MAX_FLOOR else "A: climb down to floor %d" % (floor_no + 1))}
 	blocked.erase(_ladder)
 	hard.erase(_ladder)
 	if props.has(_ladder):

@@ -78,6 +78,17 @@ jobs:
           echo "### index.pck: $((size / 1048576)) MB" >> "$GITHUB_STEP_SUMMARY"
           test "$size" -lt 167772160 || { echo "pck over 160 MB: is new art imported lossless? run tools/set_import_lossy.py"; exit 1; }
 
+      # Phones must get the NEW game when they update: the service worker's own
+      # downloads skip the browser's 10-minute HTTP cache.
+      - name: Make updates bypass the HTTP cache
+        run: |
+          sw=build/web/index.service.worker.js
+          grep -q "cache.addAll(CACHED_FILES)" "$sw"
+          grep -q "self.fetch(event.request)" "$sw"
+          sed -i "s|cache.addAll(CACHED_FILES)|cache.addAll(CACHED_FILES.map((u) => new Request(u, {cache: 'reload'})))|" "$sw"
+          sed -i "s|self.fetch(event.request)|self.fetch(event.request.mode === 'navigate' ? event.request : new Request(event.request, {cache: 'no-cache'}))|" "$sw"
+          grep -q "cache: 'reload'" "$sw"
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
