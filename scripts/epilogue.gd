@@ -75,12 +75,17 @@ static func build() -> Array:
 				cr.append(str(d["crew"][id][0 if Crew.loyalty(id) >= 3 else 1]))
 		if not cr.is_empty():
 			out.append(["The crew", "\n\n".join(cr)])
+		# "The Chair" ending: you took the President's place, so nothing "stopped coming".
+		var took := str(r.get("ending", "")) == "take"
 		var lt: Array = []
 		for id: String in d.get("lieutenants", {}):
 			if not r["flags"].has("lt_" + id):
 				continue
 			var how := "joined" if r["flags"].has("lt_joined_" + id) else ("spared" if r["flags"].has("lt_spared_" + id) else "beaten")
-			lt.append(str(d["lt_lines"][how]) % str(d["lieutenants"][id]))
+			if took and how == "beaten":
+				lt.append("%s takes orders from the tower again. Yours." % str(d["lieutenants"][id]))
+			else:
+				lt.append(str(d["lt_lines"][how]) % str(d["lieutenants"][id]))
 		if not lt.is_empty():
 			out.append(["The President's lieutenants", "\n\n".join(lt)])
 		var mk: Array = []
@@ -88,16 +93,16 @@ static func build() -> Array:
 			var st := Marked.state(str(mid))
 			var md: Dictionary = Marked.all()[mid]
 			if st == "crew":
-				mk.append("%s \"%s\" stays with your crew, and the Gift is steadier now." % [str(md["name"]), str(md["epithet"])])
+				mk.append(("%s \"%s\" stays with your crew. Some nights the stone in their pocket is warm, and they look toward the tower." if took else "%s \"%s\" stays with your crew, and the Gift is steadier now.") % [str(md["name"]), str(md["epithet"])])
 			elif st == "free":
-				mk.append("%s \"%s\" went home, and nobody calls them Marked any more." % [str(md["name"]), str(md["epithet"])])
+				mk.append(("%s \"%s\" went home, and still turns toward the tower without knowing why." if took else "%s \"%s\" went home, and nobody calls them Marked any more.") % [str(md["name"]), str(md["epithet"])])
 		if not mk.is_empty():
 			out.append(["The Marked", "\n\n".join(mk)])
 	# Villagers, closest first, four to a slide.
 	var vs: Array = []
 	for id: String in d.get("villagers", {}):
-		if not GameState.npcs.has(id) or GameState.run["flags"].has(id + "_gone") or (id == "catkins" and not GameState.is_penguins()):
-			continue
+		if not GameState.npcs.has(id) or GameState.run["flags"].has(id + "_gone") or (id == "catkins" and not GameState.is_penguins()) or (id != "catkins" and not GameState.run["friendship"].has(id)):
+			continue  # only villagers you actually got to know
 		vs.append([GameState.friend_hearts(id), _fill(str(d["villagers"][id][0 if GameState.friend_hearts(id) >= 6 else 1]))])
 	vs.sort_custom(func(a: Array, b: Array) -> bool: return int(a[0]) > int(b[0]))
 	for i in range(0, vs.size(), 4):
@@ -121,6 +126,9 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
+	# The ending gets its own song, not whatever the last fight left playing.
+	Music.instance(get_tree()).set_duck(0.0)
+	Music.instance(get_tree()).play("title")
 	var bg := ColorRect.new()
 	bg.color = Color(0.05, 0.04, 0.08, 0.96)
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)

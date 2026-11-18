@@ -33,6 +33,8 @@ func _overlay() -> Texture2D:
 	var nm := str(OVERLAYS.get(weather, ""))
 	if nm == "":
 		return null
+	if weather in ["fireflies", "snow"] and Art.has("fx", "firefly" if weather == "fireflies" else "snowflake"):
+		return null  # drifting particles; a tiled frame reads as a grid
 	var nm2 := nm.replace("ov_", "ov2_").replace("ov2_heavy_rain", "ov2_storm")
 	# These ov2 strips cut their shapes at the 128-px frame edges (a grid of half
 	# blobs once tiled): use the clean ov_ strip when there is one.
@@ -174,10 +176,10 @@ func _on_draw() -> void:
 	if overhead and weather == "clear" and Art.has("fx", "cloud_shadow") and _canvas.visible:
 		# Soft cloud shadows drifting over the ground on clear days.
 		var cs := Art.tex("fx", "cloud_shadow")
-		var fr := int(_ov_t * 0.5) % 4
+		var fr := 2  # the one frame whose blobs aren't cut by the frame edge (frames swapping made the shadows jump)
 		var ox := fmod(_ov_t * 6.0, 512.0)
 		for i in range(-1, 2):
-			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256, 0, 256, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
+			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256 + 8, 0, 232, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
 	if aurora and overhead and (Art.has("fx", "aurora2") or Art.has("fx", "aurora")):
 		var at := Art.tex("fx", "aurora2") if Art.has("fx", "aurora2") else Art.tex("fx", "aurora")
 		var fr := int(_ov_t * 3.0) % 4
@@ -224,6 +226,8 @@ func _on_draw() -> void:
 		var f: int = int(p["f"]) % n
 		_canvas.draw_texture_rect_region(t, Rect2(p["pos"], Vector2(cw, ch) * 0.5), Rect2(f * cw, 0, cw, ch))
 	for c: Dictionary in _clouds:
+		if overhead:
+			break  # over the world these were hard-edged boxes on the ground; cloud_shadow does the shadows
 		var p: Vector2 = c["pos"]
 		var w: float = c["w"]
 		var col := Color(0, 0, 0.1, c["alpha"] * 0.13) if overhead else Color(1, 1, 1, c["alpha"] * 0.55)

@@ -211,5 +211,5 @@ func _alien_shop() -> void:
 
 
 func _tele_first() -> void:
-	await say([{"who": "Star Crystal", "text": "There. It remembers where it goes.", "mood": "happy"}])
+	await say([{"who": "Star Crystal", "text": "There. Feel that? It's waking up.", "mood": "happy"}])
 	go_to("station", Vector2(4 * TILE, 12 * TILE + 8), "right")

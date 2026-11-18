@@ -123,6 +123,9 @@ static func set_value(key: String, value: Variant) -> void:
 static func flush() -> void:
 	if _blocked:
 		return
+	if OS.has_feature("web") and bool(JavaScriptBridge.eval("window.dreamsOtherOpen === true", true)):
+		_blocked = true  # a newer window owns the farm; a hidden tab never ran GameMap's 3 s check
+		return
 	_cache["_saved_at"] = int(_cache.get("_saved_at", 0)) + 1
 	var txt := JSON.stringify(_cache, "", false)  # keep key order (sorted bags and chests)
 	if OS.has_feature("web"):

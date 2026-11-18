@@ -295,6 +295,9 @@ func _process(delta: float) -> void:
 				map.emote(self, "surprise", 0.8, -26.0)
 				Music.instance(get_tree()).sfx("alert")
 			_dir = -to.normalized() * 0.8 if dist < 48.0 else (to.normalized() if dist > 90.0 else Vector2.ZERO)
+			# No clear shot (a wall or tree line between): walk round it to find one.
+			if dist >= 48.0 and not map.line_clear(position, tgt.position):
+				_dir = map.flow_dir(position, (tgt.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
 		elif dist < sight and dist > reach * 0.6:
 			if not _noticed:
 				_noticed = true
@@ -303,7 +306,7 @@ func _process(delta: float) -> void:
 			_dir = to.normalized()
 			# A wall between us: walk round it on the flow field instead of pressing into it.
 			if not _los_ok:
-				_dir = map.flow_dir(position, (tgt.position - map.offset()).snapped(Vector2(32, 32)) + map.offset())
+				_dir = map.flow_dir(position, (tgt.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
 			# Wolves and hounds circle you before they lunge, instead of walking into your sword.
 			if kind in PACK_KINDS and dist < 48.0 and dist > reach and _lunge_cd > 0.0:
 				_dir = to.normalized().orthogonal() * (1.0 if get_instance_id() % 2 == 0 else -1.0)
@@ -677,6 +680,7 @@ func _die() -> void:
 	# Sheets with a "die" strip play it, then fade; the rest get the squash.
 	if _sprite and _sprite.sprite_frames.has_animation("die"):
 		_sprite.play("die")
+		queue_redraw()  # drop the HP bar while the die strip plays
 		var sf := _sprite.sprite_frames
 		var dur := clampf(sf.get_frame_count("die") / maxf(1.0, sf.get_animation_speed("die")), 0.3, 1.2)
 		var tw2 := create_tween()
@@ -708,7 +712,7 @@ func _walk_clear(a: Vector2, b: Vector2) -> bool:
 
 func _draw() -> void:
 	draw_circle(Vector2(0, 0), _shadow_r, Color(0, 0, 0, 0.2))
-	if max_hp > 3:
+	if max_hp > 3 and _alive:
 		var top := -30.0 if base_hp < 30 else -60.0
 		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))
 		draw_rect(Rect2(-10, top, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2) if _shield <= 0.0 else Color(0.5, 0.7, 1.0))

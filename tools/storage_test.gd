@@ -165,5 +165,18 @@ func _run() -> void:
 	check(int(GameState.run.get("skill_ver", 0)) == GameState.SKILL_VER, "skill_ver stamped after the refund")
 	GameState.run["skills"]["combat"]["nm"] = {}
 	GameState.run["skills"]["combat"]["nodes"] = {}
+	# A fresh run that ships something before any sale to Sal must still turn the day (audit c7/13).
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	GameState.run.erase("sold_today")  # an old save without the key
+	GameState.run["sellbox"] = {"turnip": 2}
+	var d0 := int(GameState.run["day"])
+	var rep := GameState.sleep()
+	check(int(GameState.run["day"]) == d0 + 1 and int(rep.get("earned", 0)) > 0, "sell box pays and the day turns on a fresh run")
+	# Food past the daily energy cap is kept, not eaten for nothing.
+	GameState.run["fed_en"] = int(GameState.run["max_energy"])
+	GameState.add_item("bread", 1)
+	var fx := GameState.consume("bread")
+	check(fx.has("full") and GameState.count("bread") == 1, "full: bread stays in the bag")
+	check(GameState.extra_energy(20) == 0, "rest energy respects the daily cap")
 	print("storage_test: %d failures" % fails)
 	quit()

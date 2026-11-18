@@ -70,6 +70,10 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 
 
 func _sleep() -> void:
+	var nn := Net.i()
+	if nn and not Net.online() and not nn._host and not nn._solo_backup.is_empty():
+		hud.toast("Reconnecting to your host... sleep once you're back.", Color(0.9, 0.95, 1.0))
+		return
 	if Net.online() and not Net.is_host():
 		Net.send_host({"k": "act", "a": "sleep"})
 		hud.toast("You're in bed. The day ends when everyone is.", Color(0.9, 0.95, 1.0))
@@ -151,8 +155,8 @@ func _journal() -> void:
 		var said: String = ["I said I'd help.", "I said I just want to farm.", "I called it a talking rock. It did not love that."][ans] if ans >= 0 else "I haven't answered the crystal yet."
 		lines.append({"who": "Journal", "text": "A crystal fell in my field and talked to me about the end of the universe. %s" % said})
 	else:
-		var l := str(r["flags"].get("letter", ""))
-		var said: String = {"burned": "I burned the letter.", "kept": "I kept the letter with the deed.", "memorized": "I memorized the handwriting on the letter."}.get(l, "There's a letter I haven't dealt with.")
+		var l := "sold" if r["flags"].has("letter_sold") else str(r["flags"].get("letter", ""))
+		var said: String = {"sold": "I sold the letter to Marlene. He knows my face now.", "burned": "I burned the letter.", "kept": "I kept the letter with the deed.", "memorized": "I memorized the handwriting on the letter."}.get(l, "There's a letter I haven't dealt with.")
 		lines.append({"who": "Journal", "text": "Someone knows I'm here. %s" % said})
 	var open_q: Array = r["quests"].filter(func(q: Dictionary) -> bool: return not q["done"])
 	if not open_q.is_empty():
@@ -164,7 +168,11 @@ func draw_map() -> void:
 	draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color("1a1410"))
 	if Art.has("tiles", "fl_wood"):
 		draw_tileset_rect("fl_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
-		_draw_rug("fl_carpet_red", Rect2i(6, 6, 4, 3), Color("b03a2e"))
+		if Art.has("furniture", "rug_rect_red"):
+			# A bordered 2:1 rug (the carpet tile's inside is a flat colour block).
+			draw_texture_rect(Art.tex("furniture", "rug_rect_red"), Rect2(6 * TILE, 6 * TILE + 8, 4 * TILE, 2 * TILE), false)
+		else:
+			_draw_rug("fl_carpet_red", Rect2i(6, 6, 4, 3), Color("b03a2e"))
 		for x in range(1, cols - 1):
 			var idx := 0 if x == 1 else (2 if x == cols - 2 else 1)
 			var nm: String = ["wl_floral_l", "wl_floral_m", "wl_floral_r"][idx]

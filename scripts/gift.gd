@@ -538,11 +538,14 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 					en.hit(maxi(1, dmg - 1), p.position, true, true)
 		"luck":
 			var roll := randi() % 3
-			if roll == 0 and not near.is_empty():
+			var payers: Array = near.filter(func(x: Enemy) -> bool: return not x.has_meta("luck_paid") and not x.has_meta("decoy") and not x.has_meta("minion"))
+			if roll == 0 and not payers.is_empty():
+				for x: Enemy in payers:
+					x.set_meta("luck_paid", true)  # one payout per real foe
 				var n := 20 + 15 * GameState.progress_tier()
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + n
 				m.hud.toast("Lucky: +◆%d" % n, Color(1, 0.9, 0.4))
-			elif roll == 1 or near.is_empty():
+			elif roll == 1 or near.is_empty() or roll == 0:
 				GameState.heal_points(12)
 				m.hud.toast("Lucky: +12 health", Color(1, 0.8, 0.8))
 			else:

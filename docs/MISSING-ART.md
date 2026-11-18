@@ -42,7 +42,8 @@ Everything below shows a code-drawn stand-in today.
 
 - props/fountain
 
-## Broken art to redraw (2)
+## Broken art to redraw (3)
 
 - props/puddle_storm_0..3 (sliced as a solid magenta blob; storms use the plain puddles until redrawn)
 - seamless/teal_moss (wrapping ground texture for colony_kelp)
+- seamless/violet_soil (jungle soil patch)

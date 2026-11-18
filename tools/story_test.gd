@@ -50,6 +50,9 @@ func _run() -> void:
 			for f in when.get("flags", []): GameState.run["flags"][str(f)] = true
 			if when.has("flag"): GameState.run["flags"][str(when["flag"])] = true
 			if when.has("known"): Companion.recruit(str(when["known"]))
+			# Choices made outside story beats (the farm intro's letter, skipped here) and mid-fight health.
+			if when.has("decision"): GameState.run["decisions"][str(when["decision"][0])] = int(when["decision"][1])
+			if when.has("hp_below"): GameState.run["hp"] = maxi(1, int(float(when["hp_below"]) * 0.5 * float(GameState.run["max_hp"])))
 			if b.has("after") and not Story.fired(str(b["after"])): GameState.run["flags"]["st_" + str(b["after"])] = true
 			if when.has("not_flag") and not str(when["not_flag"]).begins_with("crew_"): GameState.run["flags"].erase(str(when["not_flag"]))
 			for f in when.get("not_flags", []):

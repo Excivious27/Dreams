@@ -151,7 +151,7 @@ func _play_scene(sc: String) -> void:
 				if roll < 0.55: await _walk()
 				elif roll < 0.8: await _random_button()
 				elif roll < 0.9: await _swing()
-				else: await _tap_world(m)
+				elif is_instance_valid(m): await _tap_world(m)  # the map may have been freed by an await above
 		steps += 1
 		_check_invariants(sc)
 		# Stuck detection: lots of walking but the player never moves.

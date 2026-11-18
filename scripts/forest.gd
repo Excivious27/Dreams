@@ -170,7 +170,8 @@ func _path_cells() -> Array[Vector2i]:
 	# A hand-laid winding route: farm exit -> pond clearing -> woodcutter -> stones -> great tree, with a spur to the lake.
 	var pts := [Vector2i(36, 49), Vector2i(36, 44), Vector2i(32, 40), Vector2i(28, 34), Vector2i(24, 30), Vector2i(20, 24), Vector2i(22, 18), Vector2i(28, 14), Vector2i(24, 10), Vector2i(18, 8), Vector2i(16, 10)]
 	var spur := [Vector2i(20, 24), Vector2i(14, 26), Vector2i(8, 28), Vector2i(3, 24), Vector2i(0, 21)]
-	for seq in [pts, spur]:
+	var north := [Vector2i(24, 10), Vector2i(24, 4), Vector2i(23, 0)]  # to the orchard-hills exit
+	for seq in [pts, spur, north]:
 		for i in range(seq.size() - 1):
 			var a: Vector2i = seq[i]
 			var b: Vector2i = seq[i + 1]

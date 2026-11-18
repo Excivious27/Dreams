@@ -47,7 +47,7 @@ static func ferry(m: GameMap) -> void:
 	for id in data():
 		var c: Dictionary = data()[id]
 		var ok := GameState.progress_tier() >= int(c.get("tier", 1)) or Project.has("sky_lens")
-		opts.append("%s%s%s" % ["✓ " if bool(st(str(id))["done"]) else "", str(c["name"]), "" if ok else " (the sea's too rough yet)"])
+		opts.append("%s%s%s" % ["✓ " if bool(st(str(id))["done"]) else "", str(c["name"]), "" if ok else " (rough seas until story chapter %d)" % (int(c.get("tier", 1)) + 1)])
 		ids.append([str(id), ok])
 	opts.append("Stay ashore")
 	var d := Dialogue.instance(m.get_tree())
@@ -57,7 +57,7 @@ static func ferry(m: GameMap) -> void:
 	if i < 0 or i >= ids.size():
 		return
 	if not bool(ids[i][1]):
-		m.hud.toast("Pip: 'Not in this weather. Come back when you're stronger.'", Color(1, 0.85, 0.6))
+		m.hud.toast("Pip: 'Not in this weather. The sea calms as the story goes on.'", Color(1, 0.85, 0.6))
 		return
 	var R: Dictionary = GameState.load_json("res://data/regions.json").get(str(ids[i][0]), {})
 	var sp: Array = R.get("spawn", [10, 10])

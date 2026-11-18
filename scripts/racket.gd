@@ -135,8 +135,8 @@ static func forged_permit(m: GameMap, id: String) -> bool:
 static func on_enter(m: GameMap) -> void:
 	if on() and m.scene_id() == "hideout" and Crew.perk_level("meal_heal") >= 3 and int(GameState.run["flags"].get("rosa_meal_day", -1)) != int(GameState.run["day"]):
 		GameState.run["flags"]["rosa_meal_day"] = int(GameState.run["day"])
-		GameState.run["energy"] = int(GameState.run["max_energy"])
-		m.hud.toast("Mama Rosa left a hot plate out for you. Energy full.", Color(1, 0.9, 0.6))
+		var got := GameState.extra_energy(int(GameState.run["max_energy"]))
+		m.hud.toast("Mama Rosa left a hot plate out for you. +%d energy." % got if got > 0 else "Mama Rosa left a hot plate out for you. You're too full to eat.", Color(1, 0.9, 0.6))
 	if on() and Crew.perk_level("raid_warning") >= 3 and m.scene_id() in PEOPLED and m.scene_id() != "hideout":
 		m.later(func() -> void:
 			var n := 0
@@ -215,7 +215,7 @@ static func laundromat(m: GameMap) -> void:
 		for id in ["bills_crude", "bills_passable", "bills_fine", "bills_perfect"]:
 			if GameState.count(id) > 0 and room > 0:
 				ids.append(id)
-				opts.append("Wash %s  (have %d · pays ◆%d each tomorrow)" % [GameState.item_name(id), GameState.count(id), int(int(GameState.items[id]["face"]) * float(WASH_RATE[lt]))])
+				opts.append("Wash %s  (have %d · pays ◆%d each tomorrow)" % [GameState.item_name(id), GameState.count(id), int(int(GameState.items[id]["face"]) * minf(0.92, float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(GameState.items[id].get("tier", 1)), 0, 4)]) + GameState.bonus("hustle", "wash_bonus")))])  # same rate overnight() pays
 		opts.append("Leave")
 		d.say([{"who": str(Builds.current_def("laundromat").get("name", "Laundromat")), "text": "%d of %d in the wash. Paid out clean in the morning, no risk. Heat: %d/5." % [inside, int(WASH_CAP[lt]), heat()], "choice": opts, "key": ""}])
 		await d.finished

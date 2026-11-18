@@ -238,7 +238,6 @@ static func use_ability(m: GameMap, p: Player) -> void:
 					m.call("_try_more", 1)  # mine: counts toward the way down
 				if m.has_method("redraw_cell"):
 					m.call("redraw_cell", fc)  # chunked mine: redraw the rock's chunk
-				m.queue_redraw()
 				if tt in ["rock", "mrock"]:
 					m.give("stone", 2 if in_mine else 3)
 					var ore := str(th.get("ore", ""))

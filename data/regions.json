@@ -201,7 +201,7 @@
     "reward": "shard",
     "reward_n": 5,
     "max_hp": 2,
-    "after": "The spire hums, waiting. Something brass glints in the grey where he stood.",
+    "after": "Grey ground, quiet now. Where he stood, a circle that's a little less grey than the rest.",
     "hint": "A: the Commander",
     "solid": true,
     "kind_gangsters": "lt_surveyor",
@@ -1518,7 +1518,14 @@
     "pigeon",
     "bat"
    ],
-   "critter_count": 6
+   "critter_count": 6,
+   "region_props": [
+    "lamp2_short_3",
+    "vend_red",
+    "vend_blue",
+    "payphone2"
+   ],
+   "region_count": 14
   },
   "things": [
    {
@@ -1965,7 +1972,19 @@
     "pigeon",
     "cat_grey"
    ],
-   "critter_count": 4
+   "critter_count": 4,
+   "region_props": [
+    "topiary_a",
+    "topiary_b",
+    "topiary_c",
+    "hedge2_ball",
+    "hedge2_pot",
+    "planter2_0",
+    "planter2_1",
+    "bench2_iron_a",
+    "lamp2_tall_0"
+   ],
+   "region_count": 26
   },
   "things": [
    {
@@ -1976,6 +1995,8 @@
     ],
     "who": "Doorman",
     "text": "The President sees nobody without an appointment. The President has never once made an appointment. You can see where that leaves you.",
+    "after_flag": "tower_open",
+    "text_after": "The doorman holds the brass door for you and looks at a point just past your ear. He has decided he never saw you.",
     "hint": "A: the tower doors",
     "solid": false,
     "story": "tower_doors"
@@ -2524,7 +2545,16 @@
     "rabbit",
     "owl"
    ],
-   "critter_count": 6
+   "critter_count": 6,
+   "region_props": [
+    "haystack",
+    "hay",
+    "scarecrow_field",
+    "tractor",
+    "fence2_wood_h",
+    "mailbox2_red"
+   ],
+   "region_count": 26
   },
   "things": [
    {
@@ -2753,19 +2783,6 @@
      12,
      26
     ]
-   },
-   {
-    "name": "sky_whale",
-    "group": "fx",
-    "cell": [
-     22,
-     29
-    ],
-    "w": 6,
-    "anim": true,
-    "fps": 2,
-    "solid": false,
-    "under": true
    }
   ],
   "gen": {
@@ -3226,6 +3243,7 @@
   "music": "cattopia",
   "backdrop": "night",
   "ground": "teal_moss",
+  "ground_seam": "teal_moss",
   "path": "bio_path_0",
   "weather": "fireflies",
   "pet": false,
@@ -3871,7 +3889,7 @@
    }
   ],
   "patch_set": "track",
-  "ground_threshold": 0.12,
+  "ground_threshold": 0.32,
   "deco_keep": [
    0,
    1,
@@ -4147,20 +4165,11 @@
     "r_highlands_13",
     "r_highlands_14",
     "r_highlands_15",
-    "r_highlands_23",
-    "r_highlands_24",
-    "r_highlands_25",
-    "r_highlands_27",
-    "r_highlands_28",
-    "r_highlands_29",
     "r_highlands_39",
     "r_highlands_40",
-    "r_highlands_41",
-    "r_highlands_44",
-    "r_highlands_46",
-    "r_highlands_48"
+    "r_highlands_41"
    ],
-   "region_count": 38
+   "region_count": 20
   },
   "forage": 8,
   "things": [
@@ -4490,23 +4499,14 @@
     "r_ruins_06",
     "r_ruins_08",
     "r_ruins_16",
-    "r_ruins_22",
-    "r_ruins_25",
     "r_ruins_27",
-    "r_ruins_29",
     "r_ruins_38",
     "r_ruins_39",
     "r_ruins_40",
     "r_ruins_47",
-    "r_ruins_48",
-    "r_ruins_49",
-    "r_ruins_50",
-    "r_ruins_51",
-    "r_ruins_52",
-    "r_ruins_58",
-    "r_ruins_59"
+    "r_ruins_48"
    ],
-   "region_count": 42
+   "region_count": 24
   },
   "forage": 8,
   "things": [
@@ -4936,21 +4936,9 @@
     "r_quarry_52",
     "r_quarry_53",
     "r_quarry_54",
-    "r_quarry_55",
-    "r_quarry_57",
-    "r_quarry_59",
-    "r_quarry_60",
-    "r_quarry_62",
-    "r_quarry_63",
-    "r_quarry_64",
-    "r_quarry_65",
-    "r_quarry_66",
-    "r_quarry_67",
-    "r_quarry_69",
-    "r_quarry_73",
-    "r_quarry_75"
+    "r_quarry_55"
    ],
-   "region_count": 108
+   "region_count": 84
   },
   "forage": 4,
   "things": [
@@ -4988,7 +4976,7 @@
     "type": "mrock",
     "cell": [
      22,
-     22
+     24
     ],
     "ore": "stone",
     "hp": 2,
@@ -5380,7 +5368,6 @@
     "r_marsh_21",
     "r_marsh_22",
     "r_marsh_28",
-    "r_marsh_29",
     "r_marsh_30",
     "r_marsh_31",
     "r_marsh_32",
@@ -5399,41 +5386,14 @@
     "r_marsh_47",
     "r_marsh_48",
     "r_marsh_50",
-    "r_marsh_54",
-    "r_marsh_55",
-    "r_marsh_56",
-    "r_marsh_57",
-    "r_marsh_58",
-    "r_marsh_59",
-    "r_marsh_60",
     "r_marsh_62",
-    "r_marsh_63",
-    "r_marsh_64",
-    "r_marsh_65",
-    "r_marsh_66",
-    "r_marsh_67",
-    "r_marsh_68",
     "r_marsh_72",
-    "r_marsh_77",
-    "r_marsh_78",
-    "r_marsh_79",
-    "r_marsh_80",
-    "r_marsh_81",
-    "r_marsh_82",
-    "r_marsh_83",
-    "r_marsh_84",
-    "r_marsh_85",
-    "r_marsh_86",
-    "r_marsh_87",
-    "r_marsh_88",
-    "r_marsh_89",
-    "r_marsh_90",
     "r_marsh_92",
     "r_marsh_94",
     "r_marsh_95",
     "r_marsh_96"
    ],
-   "region_count": 122
+   "region_count": 70
   },
   "forage": 12,
   "things": [
@@ -5781,7 +5741,6 @@
     "r_riverlands_14",
     "r_riverlands_15",
     "r_riverlands_16",
-    "r_riverlands_17",
     "r_riverlands_18",
     "r_riverlands_20",
     "r_riverlands_22",
@@ -5791,7 +5750,7 @@
     "r_riverlands_44",
     "r_riverlands_45"
    ],
-   "region_count": 38,
+   "region_count": 36,
    "water_props": [
     "r_riverlands_16",
     "r_riverlands_17",
@@ -5861,7 +5820,7 @@
   "deco_set": "rdeco_riverlands",
   "deco_count": 12,
   "patch_set": "track",
-  "ground_threshold": 0.12,
+  "ground_threshold": 0.32,
   "deco_keep": [
    0,
    1,
@@ -6022,8 +5981,8 @@
   "ground_threshold": 0.15,
   "fruit": 0,
   "gen": {
-   "clumps": 4,
-   "scatter": 30,
+   "clumps": 10,
+   "scatter": 110,
    "critters": [
     "crow",
     "rabbit",
@@ -6250,8 +6209,8 @@
   "ground_threshold": 0.15,
   "fruit": 0,
   "gen": {
-   "clumps": 4,
-   "scatter": 30,
+   "clumps": 10,
+   "scatter": 110,
    "critters": [
     "crow",
     "owl"
@@ -6485,8 +6444,8 @@
   "ground_threshold": 0.15,
   "fruit": 0,
   "gen": {
-   "clumps": 4,
-   "scatter": 30,
+   "clumps": 10,
+   "scatter": 110,
    "critters": [
     "crow",
     "sparrow"
@@ -6712,8 +6671,8 @@
   "ground_threshold": 0.15,
   "fruit": 0,
   "gen": {
-   "clumps": 4,
-   "scatter": 30,
+   "clumps": 10,
+   "scatter": 110,
    "critters": [
     "crow"
    ],
@@ -7366,6 +7325,7 @@
    "The forest under the water is dying, and it was the only home we had."
   ],
   "colony": "colony_kelp",
+  "ground_seam": "teal_moss",
   "weather": "fog"
  },
  "colony_ice": {
@@ -7951,8 +7911,10 @@
   "music": "hollow_heart",
   "backdrop": "night",
   "ground": "teal_moss",
+  "ground_seam": "teal_moss",
   "path": "stone",
   "pet": true,
+  "weather": "clear",
   "spawn": [
    38,
    60
@@ -8243,7 +8205,7 @@
     "firefly",
     "bat",
     "firefly",
-    "moth",
+    "firefly",
     "bat"
    ],
    "critter_count": 18

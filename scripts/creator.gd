@@ -146,6 +146,8 @@ func _picker(label: String, options: Array, key: String, pretty: Callable) -> vo
 	var l := Label.new()
 	l.text = label + ":"
 	l.add_theme_font_size_override("font_size", 9)
+	if Art.has("ui_creator2", "panel"):
+		l.add_theme_color_override("font_color", Color("4a2c14"))  # dark ink on the parchment
 	l.custom_minimum_size = Vector2(62, 0)
 	h.add_child(l)
 	var idx := options.find(str(look.get(key, "")))
@@ -156,6 +158,8 @@ func _picker(label: String, options: Array, key: String, pretty: Callable) -> vo
 	var nm := Label.new()
 	nm.text = str(pretty.call(str(options[idx])))
 	nm.add_theme_font_size_override("font_size", 9)
+	if Art.has("ui_creator2", "panel"):
+		nm.add_theme_color_override("font_color", Color("4a2c14"))
 	nm.custom_minimum_size = Vector2(84, 0)
 	nm.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	h.add_child(nm)

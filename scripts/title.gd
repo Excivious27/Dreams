@@ -114,7 +114,7 @@ func _show_title() -> void:
 	_page.add_child(_label("a mystical farming adventure", 9))
 	_page.add_child(_label("Two paths. One world. Every choice counts.", 8))
 	var spacer2 := Control.new()
-	spacer2.custom_minimum_size = Vector2(0, 230)
+	spacer2.custom_minimum_size = Vector2(0, 230 if not GameState.has_run() else 150)
 	_page.add_child(spacer2)
 	if GameState.has_run():
 		var n: String = GameState.run["names"]["character"]
@@ -301,6 +301,7 @@ func _show_characters() -> void:
 	grid.size_flags_horizontal = SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 4)
 	grid.add_theme_constant_override("v_separation", 4)
+	_page.add_child(_label("Tap a card to see who it is, or build your own (last card).", 8))
 	_page.add_child(grid)
 	for pid: String in ids:
 		var p: Dictionary = _playables.get(pid, {})
@@ -327,7 +328,6 @@ func _show_characters() -> void:
 			_cards[pid] = tb
 		else:
 			grid.add_child(_sprite_card(pid, name) if cards else _button(name, func() -> void: _pick(pid)))
-	_page.add_child(_label("Pick a hero and play as them, or build your own.", 8, false))
 	_page.add_child(_button("Back", _show_arcs))
 	_pick(_playable if _playable in ids else ids[0])
 
@@ -426,6 +426,21 @@ func _pick(pid: String) -> void:
 		body.play("walk_down")
 		body.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		_preview.add_child(body)
+		# The same hair (and hat) layers as the creator, so the first look isn't bald.
+		var lk: Dictionary = cr.look
+		var hair := Sprite2D.new()
+		hair.modulate = Color(str(PaperDoll.HAIR_COLORS.get(str(lk.get("hair_color", "brown")), "ffffff")))
+		hair.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		var hat := Sprite2D.new()
+		hat.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		_preview.add_child(hair)
+		_preview.add_child(hat)
+		var upd := func() -> void:
+			var pose := PaperDoll.pose_index(body.animation, body.frame)
+			PaperDoll.place_layer(hair, "hair", str(lk.get("hair", "")), str(lk.get("body", "medium_slim")), pose, false, sc)
+			PaperDoll.place_layer(hat, "hats", str(lk.get("hat", "")), str(lk.get("body", "medium_slim")), pose, false, sc)
+		body.frame_changed.connect(upd)
+		upd.call()
 		_look_full = cr.look.duplicate()
 	elif sprite_id != "":
 		var s := CharacterLibrary.make_sprite(sprite_id)
@@ -481,6 +496,9 @@ func _show_look() -> void:
 	var cr := Creator.new(_look_full, sprite_id, false)
 	cr.done.connect(func(l: Dictionary) -> void: _look_full = l; _show_names())
 	_page.add_child(cr)
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, 12)  # Back clear of the creator panel's bottom frame
+	_page.add_child(gap)
 	_page.add_child(_button("Back", _show_characters))
 
 

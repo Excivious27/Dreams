@@ -77,6 +77,14 @@ static func caption_crop(t: Texture2D) -> Rect2:
 	return out
 
 
+## Back-wall columns with a window, as ints (JSON numbers load as floats, and 4 in [4.0] is false).
+func window_cols() -> Array:
+	var out := []
+	for wx in I.get("windows", [4, cols - 5]):
+		out.append(int(wx))
+	return out
+
+
 func scene_id() -> String:
 	return "interior"
 
@@ -147,6 +155,13 @@ func after_ready() -> void:
 			th = crop.size.y
 		var on_wall := c.y <= 1
 		var maxw := TILE * 1.6 if on_wall else (w + 1) * TILE * 1.2 + 4.0
+		if on_wall:
+			# Pictures never hang over the wall's windows: none on or between two, one cell wide beside one.
+			var wins := window_cols()
+			if c.x in wins or ((c.x - 1) in wins and (c.x + 1) in wins):
+				continue
+			if (c.x - 1) in wins or (c.x + 1) in wins:
+				maxw = TILE
 		# Pieces on the edge columns stop at the side walls.
 		var cxp := (c.x + (w + 1) / 2.0) * TILE
 		maxw = maxf(TILE, minf(maxw, 2.0 * minf(cxp - TILE, (cols - 1) * TILE - cxp)))
@@ -283,7 +298,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if int(GameState.run["flags"].get("heal_" + interior_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_" + interior_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
-				GameState.restore_energy(int(thing.get("energy", 30)))
+				GameState.extra_energy(int(thing.get("energy", 30)))
 				hud.toast(str(thing.get("msg", "You feel better.")))
 			else:
 				hud.toast("Once a day.")
@@ -453,7 +468,7 @@ func _draw_side_walls(wl: String) -> void:
 			var r := Rect2(x0, y * TILE, 8, TILE)
 			if trim:
 				# One small square of the moulding (the whole 32x12 squeezed to 8x16 reads as candy stripes).
-				draw_texture_rect_region(trim, r, Rect2(12, ty + 2, 8, 8), Color(0.8, 0.75, 0.7))
+				draw_texture_rect_region(trim, r, Rect2(12, 26, 8, 16), Color(0.62, 0.56, 0.5))  # the wall's plain body, in shade
 			else:
 				draw_rect(r, rim)
 			# A soft shadow the wall throws onto the floor.
@@ -486,7 +501,7 @@ func draw_map() -> void:
 		draw_rect(Rect2(TILE, 2 * TILE, (cols - 2) * TILE, (rows - 3) * TILE), Color("a07a4c"))
 	for r in I.get("rugs", []):
 		draw_tileset_rect(str(r["tile"]), Rect2i(int(r["rect"][0]), int(r["rect"][1]), int(r["rect"][2]), int(r["rect"][3])), Color("b03a2e"))
-	var windows: Array = I.get("windows", [4, cols - 5])
+	var windows := window_cols()
 	var night := GameState.is_night()
 	var night_glass := night and Art.has("furniture", "window_night")
 	for x in range(1, cols - 1):
@@ -514,10 +529,13 @@ func draw_map() -> void:
 			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(int(wx) * TILE + 8, 2 * TILE))
 	for p in I.get("wall_props", []):
 		# Fit to the wall (portraits and rubbings are drawn far taller than the 32 px wall).
-		var wt := Art.tex("furniture", str(p["name"]))
+		var wn := str(p["name"])
+		if night and wn.ends_with("_day") and Art.has("furniture", wn.trim_suffix("_day") + "_night"):
+			wn = wn.trim_suffix("_day") + "_night"  # stained glass goes dark too
+		var wt := Art.tex("furniture", wn)
 		if wt == null:
 			continue
-		var src := art_crop("furniture", str(p["name"]))
+		var src := art_crop("furniture", wn)
 		if not src.has_area():
 			src = Rect2(Vector2.ZERO, wt.get_size())
 		var ws := minf(0.5, 26.0 / maxf(1.0, src.size.y))
@@ -545,8 +563,7 @@ func _counter(shop: String) -> void:
 			keeper = str(n["id"])
 			break
 		if keeper != "" and not npcs.any(func(x: Npc) -> bool: return x.id == keeper):
-			keeper_out = true
-			hud.toast("%s is out. Take what you need and leave the crystals by the till." % str(GameState.npcs.get(keeper, {}).get("name", keeper.capitalize())), Color(1, 0.9, 0.7))
+			keeper_out = true  # the till note / "The shop's empty..." line says so (no toast over the list)
 	if shop == "hall":
 		await Shops.hall(self)
 	elif shop in ["smith", "potions"]:

@@ -172,9 +172,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"spring":
 			if int(GameState.run["flags"].get("spring_day", 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["spring_day"] = int(GameState.run["day"])
-				GameState.restore_energy(50)
+				var got := GameState.extra_energy(50)
 				GameState.heal(3)
-				hud.toast("Ahh. +50 energy, +3 hearts.")
+				hud.toast("Ahh. +%d energy, +3 hearts." % got)
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
 			else:
 				hud.toast("Once a day is plenty.")
@@ -240,7 +240,7 @@ func draw_map() -> void:
 	draw_ground("stone", cells_of([Rect2i(20, 1, 18, 8)]))
 	# One continuous switchback: west gate → up the left stairs → across → up the
 	# middle stairs → the top terrace. Every stair gap has the path running through it.
-	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 27, 3, 14), Rect2i(10, 29, 18, 2), Rect2i(25, 13, 3, 18), Rect2i(25, 8, 3, 6)]))
+	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 27, 3, 14), Rect2i(10, 29, 18, 2), Rect2i(25, 13, 3, 18), Rect2i(25, 8, 3, 6), Rect2i(13, 1, 2, 3), Rect2i(13, 3, 8, 2)]))  # + the highlands exit
 	if Art.has("tiles", "t_cliffg"):
 		var stairs := {}
 		for l in LEDGES:

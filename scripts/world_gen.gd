@@ -106,8 +106,11 @@ static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) ->
 		if m.blocked.has(c) or m.things.has(c) or avoid.has(c) or m.is_water_cell(c):
 			continue
 		if wet and Art.has("props", "puddle_0"):
-			# (puddle_storm_N art is a solid magenta blob: plain puddles until it's redone.)
-			m.anim_prop("props", "puddle_%d" % rng.randi_range(0, 5), c, 0, 3.0)
+			# Storm puddles once real 3-frame art lands (today's puddle_storm_N is one magenta blob).
+			if GameState.weather_today() == "storm" and int(Art.info("props", "puddle_storm_0").get("frames", 1)) > 1:
+				m.anim_prop("props", "puddle_storm_%d" % rng.randi_range(0, 3), c, 0, 3.0)
+			else:
+				m.anim_prop("props", "puddle_%d" % rng.randi_range(0, 5), c, 0, 3.0)
 		elif winter and Art.has("props", "snowdrift_0"):
 			m.prop("props", "snowdrift_%d" % rng.randi_range(0, 5), c, 0, 0.0, false)
 

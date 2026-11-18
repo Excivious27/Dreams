@@ -43,7 +43,7 @@
   {
    "id": "spark",
    "arc": "penguins",
-   "text": "Build the Crystal Resonator from the Plans board by your house (10 stone, 1 shard), then refine a shard in it. Shards: the meadow, mountain rocks, the beach wreck, the Wastes commander.",
+   "text": "Build the Crystal Resonator from the Plans board by your house (10 stone, 1 shard), then refine 3 shards into a Refined Crystal in it. Shards: the meadow, mountain rocks, the beach wreck, the Wastes commander.",
    "when": {
     "quest": "clear_meadow",
     "flag": "meow_taught"
@@ -62,7 +62,7 @@
   {
    "id": "cattopia",
    "arc": "penguins",
-   "text": "Find the purring in the crystal meadow: talk to Catkins at Cat-topia's cave.",
+   "text": "Find the purring in the crystal meadow: talk to Catkins by the cat statue.",
    "when": {
     "quest": "clear_meadow"
    },
@@ -110,7 +110,7 @@
   {
    "id": "sky_stair",
    "arc": "penguins",
-   "text": "Climb the great tree in the forest.",
+   "text": "Calm the crystal babies on the mountain pass and camp a night, then climb the great tree in the forest.",
    "when": {
     "quest": "commander"
    },
@@ -2026,7 +2026,7 @@
   {
    "id": "benno_pup_pack",
    "giver": "benno",
-   "text": "Benno: make your pup a pack at the workbench (2 pelts, rope, 5 wood).",
+   "text": "Benno: make your pup a pack at a Tanning Rack (2 pelts, rope, 5 wood).",
    "when": {
     "quest": "benno_pup_stay"
    },
@@ -2288,7 +2288,8 @@
    "giver": "posy",
    "text": "Posy wants 6 blueberries for the summer pies.",
    "when": {
-    "day": 10
+    "day": 10,
+    "season": "summer"
    },
    "done_when": {
     "item": [
@@ -2343,7 +2344,8 @@
    "giver": "tam",
    "text": "Tam wants 5 pears from your own orchard.",
    "when": {
-    "day": 15
+    "day": 15,
+    "season": "fall"
    },
    "done_when": {
     "item": [
@@ -2456,7 +2458,8 @@
     "friend": [
      "lumi",
      2
-    ]
+    ],
+    "season": "spring"
    },
    "done_when": {
     "item": [

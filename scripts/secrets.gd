@@ -102,12 +102,15 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 static func _path_side_cells(m: GameMap) -> Array:
 	var out: Array = []
 	var R: Dictionary = m.get("R") if m.get("R") is Dictionary else {}
+	var rects: Array = []
 	for p in R.get("paths", []):
-		var r := Rect2i(int(p[0]), int(p[1]), int(p[2]), int(p[3]))
+		rects.append(Rect2i(int(p[0]), int(p[1]), int(p[2]), int(p[3])))
+	for r: Rect2i in rects:
 		for y in range(r.position.y - 2, r.end.y + 2):
 			for x in range(r.position.x - 2, r.end.x + 2):
 				var c := Vector2i(x, y)
-				if r.has_point(c) or x < 2 or y < 2 or x >= m.cols - 2 or y >= m.rows - 2:
+				# Not on this path or any other (a chest on a crossing road plugs it).
+				if rects.any(func(q: Rect2i) -> bool: return q.has_point(c)) or x < 2 or y < 2 or x >= m.cols - 2 or y >= m.rows - 2:
 					continue
 				if m.blocked.has(c) or m.things.has(c) or m.is_water_cell(c):
 					continue

@@ -37,14 +37,16 @@ func _ready() -> void:
 	for t: String in TABS:
 		var b := Button.new()
 		var tab_icon := "tab_" + t.to_lower()
-		if t == "Party" and not Art.has("ui", tab_icon) and Art.has("ui", "party_paw"):
-			tab_icon = "party_paw"
 		if Art.has("ui", tab_icon):
 			b.icon = Art.tex("ui", tab_icon)
 			b.expand_icon = true
 			b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			b.tooltip_text = t
-			b.custom_minimum_size = Vector2(0, 22)
+			# Phones never show tooltips: print the name under the icon.
+			b.text = t
+			b.add_theme_font_size_override("font_size", 6)
+			b.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+			b.custom_minimum_size = Vector2(0, 30)
 			b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		else:
 			b.text = t
@@ -423,7 +425,7 @@ func _refresh() -> void:
 				var h := HBoxContainer.new()
 				_body.add_child(h)
 				var ppid := Dialogue.portrait_for(str(d.get("name", id)))
-				var pt := Art.tex("portraits/" + (ppid if ppid != "" else str(d.get("portrait", id))), "neutral")
+				var pt := Dialogue.one_face(Art.tex("portraits/" + (ppid if ppid != "" else str(d.get("portrait", id))), "neutral"))  # no twin faces
 				if pt:
 					var tr := TextureRect.new()
 					tr.texture = pt
@@ -786,6 +788,14 @@ func _skills_tab() -> void:
 	grid.add_theme_constant_override("h_separation", 2)
 	grid.add_theme_constant_override("v_separation", 2)
 	_body.add_child(grid)
+	if _node_sel != "":
+		# Keep the grid (and the node just tapped) on screen once the info block is above it.
+		var sc := _body.get_parent() as ScrollContainer
+		if sc:
+			var show_grid := func() -> void:
+				if is_instance_valid(grid) and is_instance_valid(sc):
+					sc.ensure_control_visible(grid)
+			get_tree().process_frame.connect(show_grid, CONNECT_ONE_SHOT)
 	var romans := ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 	for c in 10:
 		var open := spent >= c * GameState.TIER_POINTS
@@ -816,7 +826,7 @@ func _skills_tab() -> void:
 	var sel := GameState.node(sk, _node_sel) if _node_sel != "" else {}
 	if sel.is_empty():
 		_line(str(sd.get("desc", "")), 8, Color(0.85, 0.8, 0.7))
-		_line("Tap a node. Each tier column opens after 2 more points in this skill. 1 point per level.", 8, Color(0.75, 0.75, 0.75))
+		_line("Level up to earn points (1 per level). Tap a node to read it. Violet frame = unlocks something new. A column opens after 2 more points here.", 8, Color(0.75, 0.75, 0.75))
 	else:
 		var rank := GameState.node_rank(sk, _node_sel)
 		var ranks := int(sel.get("ranks", 1))
@@ -1150,7 +1160,10 @@ func _pup_tab() -> void:
 	if GameState.bonus("pup", "bedroll") > 0.0 and int(st.get("bedroll_day", 0)) != int(GameState.run["day"]) and pt and pt.visible:
 		_button("  Rest by %s's bedroll (+20 energy, once a day)" % pname, func() -> void:
 			st["bedroll_day"] = int(GameState.run["day"])
-			GameState.restore_energy(20)
+			var got := GameState.extra_energy(20)
+			var gm := get_tree().current_scene as GameMap
+			if gm and gm.hud and got <= 0:
+				gm.hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
 			_refresh())
 	_line("Skill tree: see Skills → Pup.", 8, Color(0.7, 0.7, 0.7))
 
@@ -1171,6 +1184,10 @@ func _eat(id: String) -> void:
 				break
 	var fx_out := GameState.consume(id)
 	var m := get_tree().current_scene
+	if fx_out.keys() == ["full"]:
+		if m is GameMap and (m as GameMap).hud:
+			(m as GameMap).hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
+		return  # nothing eaten: the food stays in the bag
 	if m is GameMap and (m as GameMap).player:
 		(m as GameMap).effect_text((m as GameMap).player.position, fx_out)
 	Music.instance(get_tree()).sfx("eat", "pickup")
@@ -1258,7 +1275,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		else:
 			m.draw_circle(p, 3.0, Color(0.9, 0.3, 0.2))
 		var nm := str(names.get(k, k.capitalize()))
-		m.draw_string(font, p + Vector2(-20, 7), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(0.1, 0.08, 0.05))
+		m.draw_string_outline(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, 3, Color(1, 0.95, 0.8, 0.9))
+		m.draw_string(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(0.1, 0.08, 0.05))
 	if PINS.has(here):
 		var p: Vector2 = org + (PINS[here] as Vector2) * sz
 		m.draw_circle(p + Vector2(0, -6), 3.0, Color(1, 0.2, 0.2))
@@ -1279,7 +1297,7 @@ func _crew_tab() -> void:
 		var h := HBoxContainer.new()
 		h.add_theme_constant_override("separation", 4)
 		_body.add_child(h)
-		var pt := Art.tex("portraits/" + id, "neutral")
+		var pt := Dialogue.one_face(Art.tex("portraits/" + id, "neutral"))
 		if pt:
 			var tr := TextureRect.new()
 			tr.texture = pt

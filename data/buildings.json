@@ -155,7 +155,7 @@
       5
      ]
     },
-    "desc": "Goats and a llama; an auto-feeder fills troughs from the silo.",
+    "desc": "Goats and a llama; barn animals eat silo hay when you visit them.",
     "price": 6060
    }
   ],
@@ -882,8 +882,8 @@
  "scarecrow": {
   "label": "Scarecrow",
   "cell": [
-   22,
-   12
+   24,
+   14
   ],
   "w": 0,
   "h": 1,

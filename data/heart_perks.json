@@ -108,15 +108,15 @@
   },
   "6": {
    "give": {
-    "golden_float": 1
+    "luck_potion": 1
    },
-   "text": "Finn's secret spot: a Golden Float"
+   "text": "Finn's secret spot: a Luck Potion for the big ones"
   },
   "10": {
    "give": {
-    "golden_float": 3
+    "luck_potion": 3
    },
-   "text": "Finn's best tackle: 3 Golden Floats"
+   "text": "Finn's lucky tin: 3 Luck Potions"
   }
  },
  "lumi": {
@@ -156,7 +156,7 @@
    "give": {
     "memory_tea": 2
    },
-   "text": "Theo translates the ruin stones: a Memory Tea"
+   "text": "Theo translates the ruin stones: 2 Memory Teas"
   },
   "10": {
    "flag": "skill_point",
@@ -316,7 +316,7 @@
    "give": {
     "wishfruit": 2
    },
-   "text": "Wren jr's wish: a Wishfruit"
+   "text": "Wren jr's wish: 2 Wishfruit"
   }
  },
  "tobin": {
@@ -392,9 +392,9 @@
   },
   "4": {
    "give": {
-    "golden_float": 1
+    "luck_potion": 1
    },
-   "text": "Marlowe's charts: a Golden Float"
+   "text": "Marlowe's charts: a Luck Potion"
   },
   "6": {
    "weekly": {
@@ -410,9 +410,9 @@
   },
   "10": {
    "give": {
-    "golden_float": 3
+    "luck_potion": 3
    },
-   "text": "Marlowe's old tackle box: 3 Golden Floats"
+   "text": "Marlowe's old tackle box: 3 Luck Potions"
   }
  },
  "orla": {

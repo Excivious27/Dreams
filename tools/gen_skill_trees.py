@@ -15,7 +15,7 @@ AMT = {"growth": 0.03, "extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.
        "double_harvest": 0.03, "seed_back": 0.05, "stone_bonus": 1, "ore_bonus": 0.05, "mine_energy": 0.04, "gem_chance": 0.02,
        "shard_bonus": 0.06, "double_hit": 0.04, "forage_bonus": 1, "wood_bonus": 1, "chop_bonus": 1, "sap_chance": 0.06,
        "rare_forage": 0.03, "bite_speed": 0.05, "rare_fish": 0.03, "escape_less": 0.06, "chest_chance": 0.02, "fish_value": 0.06,
-       "double_fish": 0.04, "damage": 1, "hp": 8, "energy": 6, "block": 0.03, "crit": 0.03, "kill_energy": 2, "damage_reduction": 0.03,
+       "double_fish": 0.04, "damage": 1, "hp": 8, "energy": 6, "block": 0.03, "crit": 0.03, "kill_energy": 1, "damage_reduction": 0.03,
        "sell_bonus": 0.03, "gift_bonus": 1, "interest": 0.003, "wood_discount": 0.04, "stone_discount": 0.04, "craft_speed": 0.05,
        "build_discount": 0.04, "spark_damage": 1, "mana": 6, "mana_regen": 1, "spell_discount": 0.04, "spell_power": 0.06,
        "pet_hp": 6, "pet_dmg": 1, "pet_speed": 0.05, "pet_def": 1,
@@ -142,6 +142,9 @@ def _caps():
 
 
 BASE_CAPS, SKILL_CAPS = _caps()
+# Pup bite damage: without a cap the pup FALLBACK pours every leftover rank into it
+# (53 in all). Mirrors GameState.BONUS_CAPS["pet_dmg"] once that lands.
+BASE_CAPS.setdefault("pet_dmg", 24.0)
 FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
             "fishing": ["fish_value", "double_fish"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
@@ -190,7 +193,7 @@ UNLOCKS = {
                  (1, 3, "Cauldron Blueprint", "Learn to build the Cauldron: potions and tonics.", {"blueprint": "cauldron"}),
                  (2, 2, "Light Feet", "Move 5% faster.", {"move_speed": 0.05}),
                  (3, 9, "Quick Build", "Hazel's crew finishes every build a day sooner.", {"quick_build": 1})],
-    "pup": [(1, 4, "Pack Run", "Move 5% faster while your pup is out.", {"move_speed": 0.05})],
+    "pup": [(1, 4, "Pack Run", "Move 5% faster.", {"move_speed": 0.05})],
     "magic": [(2, 3, "Blink Step", "Move 5% faster.", {"move_speed": 0.05}),
               (3, 9, "Twin Cast", "15% chance a spell costs no mana.", {"free_cast": 0.15})],
     "hustle": [(0, 1, "Terminal Blueprint", "Learn to build the Hacking Terminal.", {"blueprint": "terminal"}),
@@ -240,7 +243,7 @@ for sk, sd in base["skills"].items():
                 if 0 <= cc < 10 and grid[rr][cc] is None:
                     # Stable id (by name), so later grid changes never rename a node you bought.
                     slug = re.sub(r"[^a-z0-9]+", "_", unm.lower()).strip("_")
-                    grid[rr][cc] = {"id": f"{sk}_u_{slug}", "name": unm, "desc": udesc, "ranks": 1, "tier": cc, "row": rr, "effect": dict(ueff), "unlock": True}
+                    grid[rr][cc] = {"id": f"{sk}_u_{slug}", "name": unm, "desc": udesc if "move_speed" not in ueff else "Move 5% faster (all trees together: 25% at most).", "ranks": 1, "tier": cc, "row": rr, "effect": dict(ueff), "unlock": True}
                     placed = True
                     break
             if placed:

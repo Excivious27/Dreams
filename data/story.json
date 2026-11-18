@@ -76,7 +76,7 @@
      "lines": [
       {
        "who": "",
-       "text": "Where the Big Grump fell, the grass is green in a circle. In the middle of the circle: a collar. Leather, chewed, a brass tag worn smooth. BISCUIT. ...No. Not %pet. The tag is old."
+       "text": "Where the Big Grump fell, the grass is green in a circle. In the middle of the circle: a collar. Leather, chewed, a brass tag worn smooth. BISCUIT. For one cold second you think of %pet. No: the tag is old."
       },
       {
        "who": "Star Crystal",
@@ -145,7 +145,7 @@
       "quest": [
        [
         "cattopia",
-        "Find the purring in the crystal meadow: Cat-topia's cave."
+        "Find the purring in the crystal meadow: talk to Catkins by the cat statue."
        ]
       ],
       "sfx": "levelup"
@@ -182,7 +182,7 @@
       }
      ],
      "effects": {
-      "hint": "Talk to Catkins at the cave mouth in the crystal meadow."
+      "hint": "Talk to Catkins, by the cat statue in the crystal meadow."
      }
     },
     {
@@ -238,7 +238,7 @@
        "mana",
        5
       ],
-      "toast": "Meow Pow Wow learned: tap ♥ with Nova (or any partner once they know it).",
+      "toast": "Meow Pow Wow learned: tap ♥ near a Grump to turn it back. It's yours now, whoever walks with you.",
       "sfx": "levelup"
      }
     },
@@ -328,7 +328,7 @@
        ]
       ],
       "toast": "Litter Box: throw it; every Grump nearby stops to hold its nose.",
-      "hint": "Litter boxes stun Grumps. Catkins sells more at the cave mouth."
+      "hint": "Litter boxes stun Grumps. Catkins sells more in the crystal meadow."
      }
     },
     {
@@ -382,7 +382,7 @@
          "flags": [
           "locket_keep"
          ],
-         "hint": "The locket hums louder near crystals."
+         "hint": "The locket stays in your pack, humming to itself."
         }
        }
       }
@@ -397,7 +397,7 @@
       "quest": [
        [
         "sky_stair",
-        "Climb the great tree in the forest: the way up Mount Prismatica starts above the clouds."
+        "First the mountain pass (the crystal babies) and a night's camp, then the great tree in the forest: the way up Mount Prismatica starts above the clouds."
        ]
       ]
      }
@@ -446,7 +446,7 @@
       "flags": [
        "finn_told"
       ],
-      "hint": "Finn knows. He says he'll row you across when the time comes.",
+      "hint": "Finn knows now. He took the locket, and he's glad it was you who brought it.",
       "sfx": "levelup"
      }
     }
@@ -523,7 +523,7 @@
       "friend": {
        "big_jim": 30
       },
-      "hint": "Big Jim camps with you from here on. The babies hold the pass.",
+      "hint": "Big Jim tags along on the climb (he doesn't fight), and Nova is with you again: switch partners in Party. The babies hold the pass.",
       "know": "penguin_f"
      }
     },
@@ -808,7 +808,7 @@
         "The top of the mountain is in space. Power the moon teleporter with 3 Refined Crystals, then face the spire."
        ]
       ],
-      "hint": "The moon station's teleporter needs 3 Refined Crystals. The resonator makes them."
+      "hint": "The teleporter on the moon (mountain pad) needs 3 Refined Crystals. The resonator makes them."
      }
     },
     {
@@ -1569,13 +1569,22 @@
       "talk": "sal"
      },
      "when": {
-      "quest": "clear_meadow",
-      "flag": "sal_recruited"
+      "quest": "clear_meadow"
      },
      "lines": [
       {
        "who": "Sal",
-       "text": "Hideout town. Past the outskirts, through a gate that doesn't look like a gate. Deuce deals cards there, Mama Rosa feeds whoever's left, nobody runs the street. That's the opening."
+       "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running.",
+       "unless_flag": "sal_recruited"
+      },
+      {
+       "who": "Sal",
+       "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent.",
+       "unless_flag": "sal_recruited"
+      },
+      {
+       "who": "Sal",
+       "text": "Hideout town. Past the outskirts, through a gate that doesn't look like a gate. Deuce does card tricks there, Mama Rosa feeds whoever's left, nobody runs the street. That's the opening."
       },
       {
        "who": "Sal",
@@ -1587,6 +1596,9 @@
       }
      ],
      "effects": {
+      "flags": [
+       "sal_recruited"
+      ],
       "hint": "Hideout town: Deuce (card table), Mama Rosa (kitchen door). Recruit people, not thugs."
      }
     }
@@ -1631,14 +1643,14 @@
      "lines": [
       {
        "who": "Deuce",
-       "text": "Sit. No? Then stand, it's your knees. I'm Deuce. I deal, I don't cheat, which is why I'm here and not uptown."
+       "text": "Sit. No? Then stand, it's your knees. I'm Deuce. I do card tricks, I don't cheat, which is why I'm here and not uptown."
       },
       {
        "who": "Deuce",
-       "text": "You're building something. I can tell; you've got the look of a man counting. I'm in, for a fee. A hundred and fifty, or beat me at one friendly hand of cards, nothing on the table, and I'll call it paid.",
+       "text": "You're building something. I can tell; you've got the look of someone counting. I'm in, for a fee. A hundred and fifty, or catch my best card trick, one try, and I'll waive it.",
        "choice": [
         "Pay his fee (◆150).",
-        "Play him for it.",
+        "Catch his trick.",
         "Not yet."
        ],
        "key": "deuce_join",
@@ -1652,11 +1664,11 @@
         "1": [
          {
           "who": "",
-          "text": "He deals. You lose. He deals again, slower, and you watch his left thumb, and you win."
+          "text": "He fans the deck and your card vanishes. He does it again, slower, and you watch his left thumb, and you call it."
          },
          {
           "who": "Deuce",
-          "text": "...You watched the thumb. Nobody watches the thumb. Fine. FINE. I'm in, and I'm never playing you again."
+          "text": "...You watched the thumb. Nobody watches the thumb. Fine. FINE. I'm in, and I'm never doing that one for you again."
          }
         ],
         "2": [
@@ -1852,7 +1864,7 @@
      "lines": [
       {
        "who": "",
-       "text": "The manifest. Every crate marked with a small purple crystal, and every destination the same: UPTOWN, TOWER, SUB-BASEMENT 3."
+       "text": "Every crate on the manifest goes to the same place: UPTOWN, TOWER, SUB-BASEMENT 3."
       },
       {
        "who": "",
@@ -1967,7 +1979,10 @@
      },
      "when": {
       "flag": "boss_docks",
-      "not_flag": "letter_decided",
+      "not_flags": [
+       "letter_decided",
+       "tower_open"
+      ],
       "decision": [
        "letter",
        1
@@ -1996,7 +2011,7 @@
         "1": [
          {
           "who": "Marlene",
-          "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like a man who knows what he's holding."
+          "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like someone who knows what they're holding."
          }
         ]
        },
@@ -2044,7 +2059,10 @@
      },
      "when": {
       "flag": "boss_docks",
-      "not_flag": "letter_decided",
+      "not_flags": [
+       "letter_decided",
+       "tower_open"
+      ],
       "decision": [
        "letter",
        2
@@ -2073,7 +2091,7 @@
         "1": [
          {
           "who": "Marlene",
-          "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like a man who knows what he's holding."
+          "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like someone who knows what they're holding."
          }
         ]
        },
@@ -2130,7 +2148,7 @@
      "lines": [
       {
        "who": "Marlene",
-       "text": "You're the farmer with the paper. Don't look surprised; it's my business to know who has paper. I'm Marlene. I buy things people shouldn't have."
+       "text": "You're the farmer who had the paper. Don't look surprised; it's my business to know who has paper. I'm Marlene. I buy things people shouldn't have."
       },
       {
        "who": "Marlene",
@@ -2146,6 +2164,40 @@
        "crew_marlene",
        "letter_decided",
        "letter_burned"
+      ],
+      "toast": "Marlene joined the crew.",
+      "sfx": "levelup"
+     }
+    },
+    {
+     "id": "g3_marlene_late",
+     "trigger": {
+      "talk": "marlene"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "flags": [
+       "tower_open"
+      ],
+      "not_flags": [
+       "letter_decided",
+       "letter_burned"
+      ]
+     },
+     "lines": [
+      {
+       "who": "Marlene",
+       "text": "You're the farmer who had the paper. Had. The tower's open, so whatever it was worth, it's spent."
+      },
+      {
+       "who": "Marlene",
+       "text": "Nothing left to sell me. I find that restful. I'm in. Somebody should fence for you who isn't an idiot."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_marlene",
+       "letter_decided"
       ],
       "toast": "Marlene joined the crew.",
       "sfx": "levelup"
@@ -2188,7 +2240,7 @@
      "lines": [
       {
        "who": "",
-       "text": "The flames go out. The crowd, very quietly, starts to clap. A pair of identical faces in red and blue stop clapping first and look at each other."
+       "text": "At the edge of the crowd, a pair of identical faces in red and blue stop clapping first and look at each other."
       },
       {
        "who": "Vic",
@@ -2635,6 +2687,7 @@
        "boss_uptown",
        "letter_safe"
       ],
+      "not_flag": "tower_open",
       "quest": "pit"
      },
      "title_card": true,
@@ -3023,7 +3076,7 @@
       },
       {
        "who": "",
-       "text": "At the gate, the crew. All of them, the ones who stayed, leaning on Halo's car like they've been there since before the sun. Sal at the front."
+       "text": "At the gate, the crew. All of them, the ones who stayed, leaning on the gate like they've been there since before the sun. Sal at the front."
       },
       {
        "who": "Sal",

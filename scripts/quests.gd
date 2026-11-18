@@ -75,7 +75,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 				for pair in dw.get("items", []):
 					GameState.add_item(str(pair[0]), -int(pair[1]))
 			if GameState.complete_quest(qid):
-				m.hud.toast("Quest complete for %s." % name, Color(1, 0.9, 0.4))
+				m.hud.toast(GameMap.quest_done_text(qid), Color(1, 0.9, 0.4))
 				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 				m.emote(_npc_node(m, id), "heart", 1.4)
 			return true
@@ -84,7 +84,10 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 		if waited.has("wait_" + id):
 			return false
 		waited["wait_" + id] = true
-		await m.say(_as_lines(name, ql.get("wait", "Still waiting on that: " + str(pend["text"]).to_lower())))
+		var dflt := "Still waiting on that: " + str(pend["text"]).to_lower()
+		if bool(d.get("board", false)) and d.get("done_when", {}).has("item"):
+			dflt = "Still need those %d %s from the board. No rush. Some rush." % [int(d["done_when"]["item"][1]), GameState.item_name(str(d["done_when"]["item"][0]))]
+		await m.say(_as_lines(name, ql.get("wait", dflt)))
 		return true
 	# 2) Offer.
 	var offer := GameState.side_quest_for(id)

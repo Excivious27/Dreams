@@ -39,6 +39,24 @@ float mask_at(vec2 cellf) {
 
 void fragment() {
 	vec2 cellf = wpos / 16.0;
+	vec3 lut = texture(mask_tex, (cellf - origin) / grid).rgb;
+	// No water within reach of the blur: nothing to draw (one fetch, not fourteen).
+	if (lut.g <= 0.0) {
+		discard;
+	}
+	vec2 uv0 = wpos / 128.0;
+	// Open water: every texel the blur reads is water, so m == 1, a == 1 and the
+	// foam and bank bands are zero whatever the noise. Water colour only.
+	if (lut.b >= 0.999 && wobble < 0.6 && soft < 0.3) {
+		vec4 w0 = texture(water_tex, uv0 + drift * TIME / 128.0);
+		vec4 w1 = texture(water_tex, uv0 + vec2(-drift.y * 1.7, drift.x * 0.6) * TIME / 128.0 + vec2(0.31, 0.55));
+		vec3 c0 = mix(w0.rgb, w1.rgb, 0.35) * tint.rgb;
+		if (deep_amt > 0.0) {
+			float md0 = (mask_at(cellf + vec2(2.5, 0.0)) + mask_at(cellf - vec2(2.5, 0.0)) + mask_at(cellf + vec2(0.0, 2.5)) + mask_at(cellf - vec2(0.0, 2.5))) * 0.25;
+			c0 = mix(c0, texture(deep_tex, uv0 + drift * TIME / 160.0).rgb * tint.rgb, smoothstep(0.85, 1.0, md0) * deep_amt);
+		}
+		COLOR = vec4(c0, tint.a);
+	} else {
 	// Wider, rounder blur (3x3 tent over ~1.2 cells, plus a ring at 0.75 cells),
 	// so corners curve instead of following the cell grid.
 	float m = 0.0;
@@ -77,4 +95,5 @@ void fragment() {
 	float b = (smoothstep(0.28, 0.40, v) - smoothstep(0.47, 0.52, v)) * bank.a;
 	vec4 outside = vec4(bank.rgb, b);
 	COLOR = mix(outside, vec4(col, tint.a), a);
+}
 }

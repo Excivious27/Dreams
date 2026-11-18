@@ -191,7 +191,7 @@
       }
      ],
      "grant": "hq_back_room",
-     "desc": "A table, a lamp, a map. Two crew can be given standing jobs overnight (talk to Deuce at HQ)."
+     "desc": "A table, a lamp, a map. Two crew can be given standing jobs overnight (the HQ board: Crew jobs)."
     },
     {
      "name": "The Safehouse",
@@ -233,7 +233,7 @@
       }
      ],
      "grant": "war_table",
-     "desc": "Specs wires a war table: the battlefields are open. Lieutenant intel goes up on the wall."
+     "desc": "Specs wires a war table: the battlefields are open."
     },
     {
      "name": "The Workshop Wing",

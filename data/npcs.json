@@ -435,9 +435,9 @@
   "perks": {
    "2": "Fish bite 10% sooner",
    "4": "Finn's bait is free: 10 Bait every week",
-   "6": "Finn's secret spot: a Golden Float",
+   "6": "Finn's secret spot: a Luck Potion for the big ones",
    "8": "+10% chance of a rare fish",
-   "10": "Finn's best tackle: 3 Golden Floats"
+   "10": "Finn's lucky tin: 3 Luck Potions"
   },
   "home": "cottage_b",
   "work": "fishing_hut",
@@ -576,7 +576,7 @@
   "perks": {
    "2": "+5% skill XP",
    "4": "Theo lends you books: +10% skill XP",
-   "6": "Theo translates the ruin stones: a Memory Tea",
+   "6": "Theo translates the ruin stones: 2 Memory Teas",
    "8": "+15% skill XP",
    "10": "Theo's thesis: one free skill point in every tree"
   },
@@ -1078,7 +1078,7 @@
    "4": "A frog friend (it eats the bugs: +10 max energy)",
    "6": "Wren jr's garden: flower seeds each week",
    "8": "Wren jr's potion lesson: 2 Mana Potions",
-   "10": "Wren jr's wish: a Wishfruit"
+   "10": "Wren jr's wish: 2 Wishfruit"
   },
   "home": "cottage_a",
   "work": "school",
@@ -1135,7 +1135,7 @@
   ],
   "likes": [
    "candy",
-   "shell",
+   "seashell",
    "crab",
    "toy",
    "tropical_smoothie"
@@ -1253,10 +1253,10 @@
   ],
   "perks": {
    "2": "Marlowe sells you lamp oil: 2 each week",
-   "4": "Marlowe's charts: a Golden Float",
+   "4": "Marlowe's charts: a Luck Potion",
    "6": "Night fishing at the lighthouse: 10 Bait each week",
    "8": "Marlowe tells the story of the crystal: a Moonlight Elixir",
-   "10": "Marlowe's old tackle box: 3 Golden Floats"
+   "10": "Marlowe's old tackle box: 3 Luck Potions"
   },
   "home": "lighthouse",
   "work": "lighthouse",
@@ -1591,7 +1591,7 @@
   "lines": [
    "A-meow-zing. You came back.",
    "Heart at the chest. Hearts and paws. Remember.",
-   "The cats say hello. Biscuit is not impressed; dogs never are."
+   "The cats say hello. Your dog is not impressed; dogs never are."
   ],
   "birthday": [
    "winter",

@@ -233,6 +233,8 @@ func _hit(pos: Vector2) -> String:
 		return ""
 	if _pet() != null and not get_tree().paused and not Dialogue.instance(get_tree()).active:
 		for i in PUP_CMDS.size():
+			if str(PUP_CMDS[i][0]) == "guard" and GameState.bonus("pup", "guard") <= 0.0:
+				continue  # locked until the Guard Dog skill: not shown
 			if pos.distance_to(Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)) <= PUP_R * 1.25:
 				return "pup:" + str(PUP_CMDS[i][0])
 	for action: String in BUTTONS:
@@ -355,6 +357,8 @@ func _on_draw() -> void:
 		var mode := str(Pet.state().get("mode", "follow"))
 		for i in PUP_CMDS.size():
 			var cmd := str(PUP_CMDS[i][0])
+			if cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
+				continue  # locked until the Guard Dog skill (the others keep their spots)
 			var cp := Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)
 			var active := cmd == mode
 			var dim := (cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0) or (not pt.visible and cmd != "recall")
@@ -434,6 +438,8 @@ func _on_draw() -> void:
 					icon = Art.tex("ui", "buff2_asleep")
 				elif context_word in ["Talk", "Pet"] and Art.has("ui", "bubble"):
 					icon = Art.tex("ui", "bubble")
+				elif context_word in ["Go", "Enter", "Exit", "Leave"] and Art.has("ui", "arrow_up"):
+					icon = Art.tex("ui", "arrow_up")
 				else:
 					icon = Art.tex("items", "hand")
 			if icon:

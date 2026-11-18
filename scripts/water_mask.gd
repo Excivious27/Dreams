@@ -9,7 +9,7 @@ const SHADER := preload("res://shaders/water_mask.gdshader")
 var rect := Rect2()
 
 
-static func make(m: GameMap, cells: Dictionary, seam: String, opts := {}) -> WaterMask:
+static func make(m: GameMap, cells: Dictionary, seam: String, opts := {}, lut := false) -> WaterMask:
 	if cells.is_empty() or not Art.has("seamless", seam):
 		return null
 	var mn := Vector2i(1 << 20, 1 << 20)
@@ -20,9 +20,24 @@ static func make(m: GameMap, cells: Dictionary, seam: String, opts := {}) -> Wat
 	mn -= Vector2i(2, 2)
 	mx += Vector2i(2, 2)
 	var size := mx - mn + Vector2i.ONE
-	var img := Image.create(size.x, size.y, false, Image.FORMAT_L8)
+	# R: the cells. G: some cell within 3 (else the shader discards after one
+	# fetch). B: every cell within 3 is water (open water: no shore maths). Only
+	# live water bodies (lut) work these out; baked patches keep G=1, B=0.
+	var w := size.x
+	var h := size.y
+	var base := PackedByteArray()
+	base.resize(w * h)
 	for c: Vector2i in cells:
-		img.set_pixel(c.x - mn.x, c.y - mn.y, Color.WHITE)
+		base[(c.y - mn.y) * w + (c.x - mn.x)] = 1
+	var near := _morph(base, w, h, true) if lut else PackedByteArray()
+	var open := _morph(base, w, h, false) if lut else PackedByteArray()
+	var data := PackedByteArray()
+	data.resize(w * h * 3)
+	for i in w * h:
+		data[i * 3] = base[i] * 255
+		data[i * 3 + 1] = near[i] * 255 if lut else 255
+		data[i * 3 + 2] = open[i] * 255 if lut else 0
+	var img := Image.create_from_data(w, h, false, Image.FORMAT_RGB8, data)
 	var wm := WaterMask.new()
 	wm.rect = Rect2(Vector2(mn * GameMap.TILE), Vector2(size * GameMap.TILE))
 	var mat := ShaderMaterial.new()
@@ -41,3 +56,29 @@ static func make(m: GameMap, cells: Dictionary, seam: String, opts := {}) -> Wat
 
 func _draw() -> void:
 	draw_rect(rect, Color.WHITE)
+
+
+## Radius-3 square dilate (grow) or erode (shrink) of a 0/1 grid, as two 1-D
+## passes. Outside the grid counts as no water.
+static func _morph(src: PackedByteArray, w: int, h: int, grow: bool) -> PackedByteArray:
+	var tmp := PackedByteArray()
+	tmp.resize(w * h)
+	var out := PackedByteArray()
+	out.resize(w * h)
+	for y in h:
+		for x in w:
+			var v := 0 if grow else 1
+			for d in range(-3, 4):
+				var xx := x + d
+				var s := src[y * w + xx] if xx >= 0 and xx < w else 0
+				v = maxi(v, s) if grow else mini(v, s)
+			tmp[y * w + x] = v
+	for y in h:
+		for x in w:
+			var v := 0 if grow else 1
+			for d in range(-3, 4):
+				var yy := y + d
+				var s := tmp[yy * w + x] if yy >= 0 and yy < h else 0
+				v = maxi(v, s) if grow else mini(v, s)
+			out[y * w + x] = v
+	return out

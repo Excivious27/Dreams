@@ -172,3 +172,7 @@ p25raw = open(f"{D}/src/ART-PROMPTS-25-raw.md").read()
 f25 = build(p25raw, "25", f"{D}/ART-PROMPTS-25.md", "what the loop-6 audit found",
             "WHAT THIS COVERS, most important first: the hero's face in the Neon Jacket and Ceremony Coat; a proper Big Grump boss sheet; ability button icons for 19 partners; icons for the 15 special skill unlocks.")
 print("25:", f25)
+p26raw = open(f"{D}/src/ART-PROMPTS-26-raw.md").read()
+f26 = build(p26raw, "26", f"{D}/ART-PROMPTS-26.md", "what the loop-7 audit found",
+            "WHAT THIS COVERS: seamless glowing ground (teal moss and violet soil) for the Hollow Heart, Jungle and Kelp colony; storm puddles.")
+print("26:", f26)

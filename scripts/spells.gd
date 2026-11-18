@@ -219,7 +219,8 @@ static func cast(m: GameMap, id: String) -> bool:
 
 ## Farm soil and crops draw on their own layer (farm.gd _soil); the map itself too.
 static func _redraw_soil(m: GameMap) -> void:
-	m.queue_redraw()
 	var soil = m.get("_soil")
 	if soil is CanvasItem:
 		(soil as CanvasItem).queue_redraw()
+	else:
+		m.queue_redraw()

@@ -18,7 +18,7 @@ def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, wat
               "path": path, "spawn": [cols // 2, rows - 9], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
               "exits": exits, "paths": [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
               "water_blobs": water, "plateaus": plateaus, "props": props, "patch_set": patch, "ground_threshold": 0.15, "fruit": 0,
-              "gen": {"clumps": 4, "scatter": 30, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
+              "gen": {"clumps": 10, "scatter": 110, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
               "battle": {"title": title, "who": who, "brief": brief, "win": win, "lose": lose, "points": points, "enemies": enemies,
                          "tickets": 150, "supply": 15, "wave_every": 7.0, "enemy_cap": 16, "tier_bonus": max(0, tier - 2), "reward": reward, "back": back}}
     if rid in BOSSES:

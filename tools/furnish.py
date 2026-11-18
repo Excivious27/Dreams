@@ -25,7 +25,7 @@ WORKS = {"stable", "quarry_office", "water_mill", "lighthouse", "fishing_hut", "
 PUBLIC = {"chapel", "bank", "library", "hall", "clinic", "school"}
 # No window_day here: the walls draw their own windows (a prop one beside or on top looked doubled).
 WALL = ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting_a", "painting_b", "clock", "mirror2"]
-HOME_SIDE = ["bookcase3_a", "dresser2_a", "kitchen_stove", "wardrobe2_a", "lamp_floor", "bookcase3_c", "nightstand_a", "sofa_blue", "chest_closed", "piano", "lamp_floor_b", "toy_chest", "pet_bed"]
+HOME_SIDE = ["bookcase3_a", "dresser2_a", "kitchen_stove", "wardrobe2_a", "lamp_floor", "bookcase3_c", "nightstand_a", "plant2_c", "chest_closed", "piano", "lamp_floor_b", "toy_chest", "pet_bed"]
 SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrel", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e"]
 # "barrels3" (barrels + rope) / "low_table" are correct since the int_light alias fix; not added here so rooms keep their look.
 WORK_SIDE = ["barrel", "crate", "lamp_floor", "plant2_c", "barrel", "crate", "plant_c", "bookcase3_d"]
@@ -108,9 +108,20 @@ for rid, R in I.items():
     onwall = {tuple(p["cell"]) for p in R["props"] if p["cell"][1] <= 2 and not p.get("solid", True)}
     onwall |= {(int(w["x"]), 1) for w in R.get("wall_props", [])}
     wins = {int(w) for w in R.get("windows", [4, cols - 5])}
+
+    def top_px(p):  # where a back-row piece's top lands once interior.gd fits it
+        i = F.get(p["name"], {})
+        aw, ah = i.get("cell_w", i.get("w", 32)), i.get("cell_h", i.get("h", 32))
+        y = p["cell"][1]
+        sc = min(0.5, ((int(p.get("w", 0)) + 1) * 16 * 1.2 + 4) / max(1, aw), min(54, (y + 1) * 16) / max(1, ah))
+        return (y + 1) * 16 - ah * sc
+
+    # Columns where a tall machine, stair or board by the back wall would hide a picture.
+    tall = {c[0] for p in R["props"] if p["cell"][1] in (2, 3) and top_px(p) < 24 for c in cells_of(p)}
     k = 0
     for x in range(2, cols - 2, 3):
-        if x in wins or any(abs(x - c[0]) <= 1 for c in onwall) or (x, 2) in used:
+        # Never on a window, between two windows, behind a tall piece, or beside another picture.
+        if x in wins or (x - 1 in wins and x + 1 in wins) or x in tall or any(abs(x - c[0]) <= 1 for c in onwall) or (x, 2) in used:
             continue
         nm = wall[k % len(wall)]
         if have(nm):
@@ -123,14 +134,14 @@ for rid, R in I.items():
         put(rng.choice(CORNER) if i == 0 else rng.choice(kit), c)
     # Homes: a living set in the middle (a rug under a table and two chairs), unless
     # the room already has its own table.
-    has_table = any(p["name"].startswith(("table", "low_table", "round_set", "dining")) for p in R["props"])
+    has_table = any(p["name"].startswith(("table", "low_table", "round_set", "dining", "grand_desk", "map_table", "skin_bench", "reading_table")) for p in R["props"])
     if home and not has_table and cols >= 8 and rows >= 7:
         cx = cols // 2 + (2 if dx <= cols // 2 else -2)
         cy = rows // 2
         if put(rng.choice(TABLES), (cx, cy)):
             put("chair_d", (cx - 1, cy))  # faces right, toward the table
             put("chair_c", (cx + 1, cy))  # faces left
-            put(rng.choice(RUGS), (cx, cy + 1), solid=False)
+            put(rng.choice(RUGS), (cx - 1, cy + 1), solid=False, w=2)  # fitted to 3 cells, not 1
     # Side walls, every other cell.
     side = kit_all[:]
     rng.shuffle(side)

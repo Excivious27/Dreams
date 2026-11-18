@@ -200,6 +200,7 @@ func _run() -> void:
 			break
 	check(int(GameState.run["day"]) == day0 + 1, "slept to the next day")
 	check(int(GameState.run["farm"][key]["days"]) == 1, "crop grew overnight")
+	await frames(45)  # past the day-change fade
 	await shot("07_morning")
 
 	# Go to town directly.

@@ -118,8 +118,8 @@ func build() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = floor_no * 7919 + int(GameState.run["day"]) * 104729
 	# Tom: levels should be quite a bit larger (was ~40-78 x 32-57).
-	cols = 64 + mini(floor_no, 40) / 2 + rng.randi_range(0, 22)
-	rows = 52 + mini(floor_no, 40) / 3 + rng.randi_range(0, 16)
+	cols = 64 + mini(floor_no, 40) / 2 + clampi(floor_no - 40, 0, 60) / 4 + rng.randi_range(0, 22)
+	rows = 52 + mini(floor_no, 40) / 3 + clampi(floor_no - 40, 0, 60) / 6 + rng.randi_range(0, 16)
 	mine_tier = GameState.mine_tier(floor_no)
 	_carve(rng)
 	# Some days the dice carve a cramped cave: re-carve fuller until it's roomy.
@@ -313,15 +313,18 @@ func _features(rng: RandomNumberGenerator) -> void:
 	var feat: Array = theme.get("feat", [])
 	var seed := floor_no * 13 + int(GameState.run["day"])
 	for c: Vector2i in _open:
-		if things.has(c) or c.distance_to(_entry) < 6 or c.distance_to(_ladder) < 4:
+		# Rocks were placed first: hazards swallow them (no rocks stranded in lava/pools).
+		if (things.has(c) and str(things[c].get("type", "")) != "rock") or c.distance_to(_entry) < 6 or c.distance_to(_ladder) < 4:
 			continue
 		var n := WorldGen.fbm(float(c.x), float(c.y), seed, 10.0 if "lava" in feat else 6.0)
 		if "water" in feat and not _grotto and n > 0.38:
 			set_thing(c.x, c.y, {"type": "water", "hint": ""}, true)
 		elif "lava" in feat and n > 0.42:
+			things.erase(c)
 			_lava[c] = true
 			blocked[c] = true
 		elif "chasm" in feat and n > 0.4:
+			things.erase(c)
 			_chasm[c] = true
 			blocked[c] = true
 	# Lava: drop specks under 4 cells (they read as stray orange squares).
@@ -505,7 +508,7 @@ func after_ready() -> void:
 		t.timeout.connect(_ore_glimmer)
 		add_child(t)
 	var rng := RandomNumberGenerator.new()
-	rng.seed = 2000 + floor_no + int(GameState.run["day"])
+	rng.seed = 2000 + floor_no * 7919 + int(GameState.run["day"]) * 104729  # no (f+1,d-1) collisions
 	_place_props()
 	_place_find_props()
 	# Fewer enemies, scaled to cave size (bigger caves no longer mean more crowds);
@@ -651,20 +654,22 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				(props[c] as Node).queue_free()
 				props.erase(c)
 			prop("props", "chest_open", c)
-			Music.instance(get_tree()).sfx("levelup")
+			Music.instance(get_tree()).sfx("chest_open", "coin")
 			_give_loot(c, _loot(big))
 			hud.toast("The floor %d prize!" % floor_no if big else "A miner's stash.", Color(1, 0.9, 0.5))
 			return true
-		"skeleton":
+		"skeleton":  # an old miner's supply crate (all-ages: no remains)
 			if not GameState.run["flags"].has("skel_%d" % floor_no):
 				GameState.run["flags"]["skel_%d" % floor_no] = true
+				thing["hint"] = ""
 				give("gold", 2)
-				give("bone", 3)
 				if GameState.has_quest("theo_book") and not GameState.quest_done("theo_book") and GameState.count("book") == 0:
 					give("book", 1)
-					tell([{"text": "Somebody didn't make it back up. In their pack, wrapped in oilcloth: a miner's log. Theo's book."}])
+					tell([{"text": "An old miner's supply crate, left behind when the lift was new. Wrapped in oilcloth inside: a miner's log. Theo's book."}])
 				else:
-					tell([{"text": "Somebody didn't make it back up. Their pack still has something in it."}])
+					tell([{"text": "An old miner's supply crate, left behind when the lift was new. There's still something in it."}])
+			else:
+				hud.toast("Empty now.", Color(0.8, 0.8, 0.85))
 			return true
 		"rock":
 			if GameState.held_tool() != "pickaxe":
@@ -676,12 +681,14 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if ob != "":
 				player.play_tool("pickaxe")
 				hud.toast(ob, Color(1, 0.85, 0.6))
+				Music.instance(get_tree()).sfx("dry_click", "thud")  # clink: the pick is too weak
 				return true
 			if not GameState.spend_for("pickaxe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
 			Music.instance(get_tree()).sfx("pick", "chop")
+			hitstop = maxf(hitstop, 0.025)  # a little weight on each swing
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			var swing := 1 + (GameState.tool_tier("pickaxe") + 1) / 2
@@ -691,6 +698,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			thing["hp"] = int(thing["hp"]) - swing
 			if int(thing["hp"]) <= 0:
 				_tremor(c, swing)
+				hitstop = maxf(hitstop, 0.05)
+				Music.instance(get_tree()).sfx("crate_break", "thud")
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)
@@ -739,7 +748,7 @@ func _draw_cave_kit() -> bool:
 		return false
 	var tint: Array = theme.get("tint", [1, 1, 1])
 	var tc := Color(float(tint[0]), float(tint[1]), float(tint[2]))
-	var dark := tc.darkened(0.38 + 0.002 * mini(floor_no, 100))
+	var dark := tc.darkened((0.58 if k == "crystal" else 0.38) + 0.002 * mini(floor_no, 100))  # crystal walls were as bright as the floor
 	var area := _clip.intersection(Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad))
 	for y in range(area.position.y, area.end.y):
 		for x in range(area.position.x, area.end.x):
@@ -812,7 +821,16 @@ func _build_layers() -> void:
 	if not wc.is_empty():
 		draw_water(wc, "cave")
 	var lava := _lava
-	if not lava.is_empty() and Art.has("tiles", "lava") and _anim_layer:
+	# Soft lava: one curved WaterMask shape (like cave water) instead of 16 px squares;
+	# the anim layer then only adds the hot glow along the top edges.
+	if not lava.is_empty() and Art.has("seamless", "lava") and soft_ground(lava, "lava", Color(0.12, 0.05, 0.03, 0.55), Color(1.1, 0.95, 0.9)):
+		if _anim_layer:
+			_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
+				var glow := 0.3 + 0.15 * sin(Time.get_ticks_msec() / 400.0)
+				for c: Vector2i in _on_screen(lava):
+					if not lava.has(c + Vector2i(0, -1)):
+						ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(2, 0), Vector2(TILE - 4, 3)), Color(1, 0.5, 0.15, glow * 0.5)))
+	elif not lava.is_empty() and Art.has("tiles", "lava") and _anim_layer:
 		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 			var frame := int(Time.get_ticks_msec() / 300) % 4
 			var vis := _on_screen(lava)
@@ -1072,6 +1090,14 @@ func _place_props() -> void:
 		var nrock := 0
 		while Art.has("props", "mine_%s_rock_%d" % [ts, nrock]):
 			nrock += 1
+		# Mineable stones: only art 24-49 px wide (the small ones read as floor pebbles).
+		var rock_ok: Array = []
+		for ri in nrock:
+			var rt := Art.tex("props", "mine_%s_rock_%d" % [ts, ri])
+			if rt and rt.get_width() >= 24 and rt.get_width() < 50:
+				rock_ok.append(ri)
+		if rock_ok.is_empty():
+			rock_ok = range(maxi(1, mini(nrock, 5)))
 		var ore_sets := {"deep": {"iron": "a", "gold": "b"}, "crystal": {"shard": "a", "gold": "b"}, "dark": {"dark": "a", "shard": "b"}, "heart": {"shard": "a", "dark": "b"}}
 		for k in things:
 			var t: Dictionary = things[k]
@@ -1087,12 +1113,12 @@ func _place_props() -> void:
 			elif ore != "stone" and Art.has("props", str(NODE_ALIAS.get(ore, ""))):
 				nm = str(NODE_ALIAS[ore])
 			elif nrock > 0:
-				nm = "mine_%s_rock_%d" % [ts, absi((k.x * 7 + k.y * 13)) % maxi(1, mini(nrock, 5))]
+				nm = "mine_%s_rock_%d" % [ts, int(rock_ok[absi(k.x * 7 + k.y * 13) % rock_ok.size()])]
 			if nm != "":
 				var sp := prop("props", nm, k)
 				# Tier stone art runs 19-44 px: small ones looked like floor pebbles.
 				if sp and sp.texture and ore == "stone":
-					sp.scale = Vector2.ONE * clampf(20.0 / sp.texture.get_width(), 0.5, 0.9)
+					sp.scale = Vector2.ONE * clampf(22.0 / sp.texture.get_width(), 0.5, 1.0)
 		var rng := RandomNumberGenerator.new()
 		rng.seed = 4100 + floor_no
 		var ndec := 0
@@ -1105,10 +1131,16 @@ func _place_props() -> void:
 				var sp := prop("props", "mine_%s_decal_%d" % [ts, rng.randi_range(0, ndec - 1)], c, 0, 0.0, false)
 				if sp:
 					to_under(sp)
-		for x in [2, cols - 3]:
-			var c := Vector2i(x, 1)
-			if not things.has(c) and Art.has("props", "mine_%s_lamp_0" % ts):
-				prop("props", "mine_%s_lamp_%d" % [ts, x % 2], c)
+		# Lamps on open floor (the old spots at row 1 sat in the rock rim, never seen).
+		if Art.has("props", "mine_%s_lamp_0" % ts):
+			var spots: Array = [_entry + Vector2i(3, 1), _ladder + Vector2i(-3, 0)]
+			for li in maxi(2, _open.size() / 700):
+				spots.append(okeys[rng.randi() % okeys.size()])
+			for li in spots.size():
+				var c := _roomy_open(spots[li])
+				if not things.has(c) and not blocked.has(c):
+					prop("props", "mine_%s_lamp_%d" % [ts, li % 2], c)
+					blocked[c] = true
 		for i in maxi(2, _open.size() / 400):
 			var c := _roomy_open(okeys[rng.randi() % okeys.size()])
 			if not things.has(c) and not blocked.has(c) and Art.has("props", "mine_%s_stalag_0" % ts):
@@ -1120,9 +1152,9 @@ func _place_props() -> void:
 			blocked[cc] = true
 		if floor_no % 5 == 0:
 			var sc := _roomy_open(Vector2i(cols - 3, 2))
-			prop("props", "mine_%s_skeleton" % ts if Art.has("props", "mine_%s_skeleton" % ts) else "skeleton", sc)
+			prop("props", "cave_ore_crate", sc, 0, 0.0, true, 0.3)
 			blocked[sc] = true
-			set_thing(sc.x, sc.y, {"type": "skeleton", "hint": "A: an old miner"})
+			set_thing(sc.x, sc.y, {"type": "skeleton", "hint": "A: an old crate"})
 		if floor_no % 3 == 0 and Art.has("props", "mine_%s_crystal" % ts):
 			var c := Vector2i(rng.randi_range(3, cols - 4), rng.randi_range(3, rows - 4))
 			if not things.has(c) and not blocked.has(c):
@@ -1153,23 +1185,21 @@ func _place_props() -> void:
 			for i in maxi(3, _open.size() / 400):
 				var c := _roomy_open(okeys2[rng2.randi() % okeys2.size()])
 				if not things.has(c) and not blocked.has(c):
-					prop("props", "stalagmite_a", c)
+					prop("props", "stalagmite_a", c, 0, 0.0, true, 0.8)
 					blocked[c] = true
-			for x in [3, cols - 4]:
-				var sp := Art.sprite("props", "stalactite_%s" % ["a", "b", "c"][x % 3])
-				if sp:
-					sp.position = Vector2(x * TILE + 8, TILE + 20)
-					add_child(sp)
-			prop("props", "beam_lamp", Vector2i(cols / 2 - 1, 1), 1)
+			# Lamp and beam on open floor (row 1 is the rock rim; ceiling stalactites were never seen).
+			var bl := _roomy_open(_entry + Vector2i(4, 1))
+			if not things.has(bl):
+				prop("props", "beam_lamp", bl, 1)
 			if floor_no % 2 == 0:
 				var cc := _roomy_open(Vector2i(2, rows - 3))
 				prop("props", "cart_full", cc)
 				blocked[cc] = true
 			if floor_no % 5 == 0:
 				var sc := _roomy_open(Vector2i(cols - 3, 2))
-				prop("props", "skeleton", sc)
+				prop("props", "cave_ore_crate", sc, 0, 0.0, true, 0.3)
 				blocked[sc] = true
-				set_thing(sc.x, sc.y, {"type": "skeleton", "hint": "A: an old miner"})
+				set_thing(sc.x, sc.y, {"type": "skeleton", "hint": "A: an old crate"})
 		var rng := RandomNumberGenerator.new()
 		rng.seed = 3000 + floor_no
 		for i in 4:
@@ -1177,7 +1207,9 @@ func _place_props() -> void:
 			if not things.has(c) and not blocked.has(c):
 				pass  # pickable mushrooms are placed as findables now
 		if floor_no % 3 == 0:
-			prop("props", "beam", Vector2i(cols / 2 - 1, 1), 1)
+			var bm := _roomy_open(_ladder + Vector2i(-4, 0))
+			if not things.has(bm):
+				prop("props", "beam", bm, 1)
 		return
 	if not Art.has("nature", "rock_m"):
 		return
@@ -1221,6 +1253,8 @@ func _place_find_props() -> void:
 		var n: Node = props[c]
 		if n is CanvasItem and str(things.get(c, {}).get("type", "")) == "rock" and str(things[c].get("ore", "stone")) == "stone":
 			(n as CanvasItem).modulate = Color(float(tint[0]), float(tint[1]), float(tint[2]))
+		elif n is CanvasItem and str(things.get(c, {}).get("ore", "")) == "copper" and n is Sprite2D and (n as Sprite2D).texture and "node_copper" in (n as Sprite2D).texture.resource_path:
+			(n as CanvasItem).modulate = Color(1.15, 0.82, 0.55)  # node_copper art is pink like ruby: warm it to copper
 
 
 func _process(delta: float) -> void:

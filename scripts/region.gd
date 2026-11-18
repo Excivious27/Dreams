@@ -276,7 +276,12 @@ func build() -> void:
 			if part.size() >= 8:
 				add_plateau(part, pl.get("ramps", []).filter(func(r: Array) -> bool: return part.has(Vector2i(int(r[0]), int(r[1])))))
 	if int(R.get("fruit", 0 if region_id in NO_FRUIT else 3)) > 0:
-		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)))
+		var pav := {}  # keep fruit trees off the paths (and one cell either side)
+		for pr in R.get("paths", []):
+			for y in range(int(pr[1]) - 1, int(pr[1]) + int(pr[3]) + 1):
+				for x in range(int(pr[0]) - 1, int(pr[0]) + int(pr[2]) + 1):
+					pav[Vector2i(x, y)] = true
+		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)), pav)
 	for t in R.get("things", []):
 		var c: Array = t["cell"]
 		var d := {"type": str(t["type"]), "hint": str(t.get("hint", ""))}
@@ -500,7 +505,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				later(func() -> void:
 					if await Story.talk(self, str(thing["story"])):
 						return
-					tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}]))
+					var txt := str(thing.get("text_after", thing.get("text", "..."))) if thing.has("after_flag") and GameState.run["flags"].has(str(thing["after_flag"])) else str(thing.get("text", "..."))
+					tell([{"who": str(thing.get("who", "")), "text": txt, "mood": str(thing.get("mood", "neutral"))}]))
 				return true
 			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
@@ -529,7 +535,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if int(GameState.run["flags"].get("heal_%s" % region_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_%s" % region_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
-				GameState.restore_energy(int(thing.get("energy", 30)))
+				GameState.extra_energy(int(thing.get("energy", 30)))
 				hud.toast(str(thing.get("msg", "You feel better.")))
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
 			else:
@@ -756,7 +762,7 @@ func draw_map() -> void:
 	# Region ground set (Prompts-08 batch 3): the region's own fill tiles in
 	# noise drifts over the grass, with its decals scattered on top.
 	var ps := str(R.get("patch_set", ""))
-	if ps != "" and Art.has("tiles", ps + "_top_0"):
+	if ps != "" and (Art.has("tiles", ps + "_top_0") or (ps == "sand" and Art.has("seamless", "sand"))):
 		# Coherent ground patches (noise blobs with real edges from the region's
 		# blob set) instead of a per-cell tile lottery.
 		var sd := hash(region_id) % 977
@@ -848,7 +854,9 @@ func draw_map() -> void:
 	for layer in R.get("layers", []):
 		var nm := str(layer["tile"])
 		var r: Array = layer["rect"]
-		draw_tileset_rect(nm, Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])), Color(str(layer.get("color", "888888"))))
+		var lr := Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))
+		if not (Art.has("seamless", nm) and soft_ground(cells_of([lr]), nm)):
+			draw_tileset_rect(nm, lr, Color(str(layer.get("color", "888888"))))
 	var path_kind := str(R.get("path", "dirt"))
 	var pcs := {}
 	for pr in R.get("paths", []):

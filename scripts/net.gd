@@ -87,7 +87,7 @@ func join(u: String, code: String) -> void:
 	_connect(u)
 
 
-func leave() -> void:
+func leave(why := "left") -> void:
 	_retries = MAX_RETRIES  # a deliberate leave never reconnects
 	_last_room = ""
 	_restore_solo()
@@ -98,7 +98,7 @@ func leave() -> void:
 	room = ""
 	peers.clear()
 	peers_changed.emit()
-	disconnected.emit("left")
+	disconnected.emit(why)
 
 
 func _my_look() -> Dictionary:
@@ -192,11 +192,9 @@ func _on_msg(m: Dictionary) -> void:
 			connected.emit(_host)
 			peers_changed.emit()
 		"full":
-			disconnected.emit("That room is full (8 players).")
-			leave()
+			leave("That room is full (8 players).")
 		"no_room":
-			disconnected.emit("No game with that code. Check the code with your host.")
-			leave()
+			leave("No game with that code. Check the code with your host.")
 		"peer_joined":
 			var p: Dictionary = m["peer"]
 			peers[int(p["id"])] = p
@@ -277,7 +275,8 @@ func _apply_world(d: Dictionary) -> void:
 	if d.is_empty():
 		return
 	var scene_changed := false
-	var old_day := int(GameState.run.get("day", 0))
+	# The host's day we last saw (0 = first world since joining): only a real rollover is a morning.
+	var host_day := int(_last_world.get("day", 0))
 	for k in d:
 		if not (k in WORLD_KEYS):
 			continue
@@ -286,8 +285,13 @@ func _apply_world(d: Dictionary) -> void:
 		if k == "farm" and not (d[k] is Dictionary):
 			continue
 		GameState.run[k] = d[k]
+	if not _host:
+		# A full world from the host: keys it doesn't have aren't ours to show (ours are in _solo_backup).
+		for k in ["builds", "construction", "permits", "cleared", "weather"]:
+			if not d.has(k):
+				GameState.run.erase(k)
 	# The host slept: a new morning for us too (our sell box, energy, health).
-	if not _host and int(GameState.run.get("day", 0)) > old_day and old_day > 0:
+	if not _host and host_day > 0 and int(GameState.run.get("day", 0)) > host_day:
 		var rep := GameState.guest_morning()
 		var m0 := get_tree().current_scene
 		if m0 is GameMap and int(rep.get("earned", 0)) > 0:
@@ -365,6 +369,7 @@ func _became_host() -> void:
 
 
 func _restore_solo() -> void:
+	_last_world = {}  # the next join's first world is not a morning
 	if _solo_backup.is_empty():
 		return
 	if GameState.run.is_empty():

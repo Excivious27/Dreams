@@ -157,6 +157,8 @@ func _draw_hud() -> void:
 	if r.is_empty():
 		return
 	var c := _canvas
+	if y_offset > 0.0 and Dialogue.instance(get_tree()).active:
+		return  # indoors the dialogue box opens over the HUD block: don't show it through the box
 	c.draw_set_transform(Vector2(0, y_offset))
 	# Hearts
 	# Hearts: one per 20 HP; the last heart drains as a partial fill.
@@ -360,8 +362,8 @@ func _draw_energy_h(c: CanvasItem, e: float) -> void:
 	if bolt:
 		c.draw_texture_rect(bolt, Rect2(r.position.x - 10, r.position.y - 3, 9, 9), false)
 	var et := "%d/%d" % [int(GameState.run["energy"]), int(GameState.run["max_energy"])]
-	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.position.y - 2), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, 3, Color(0, 0, 0, 0.7))
-	c.draw_string(_font, Vector2(r.end.x - 34, r.position.y - 2), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, Color(1, 1, 0.9))
+	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, Color(1, 1, 0.9))
 
 
 ## Close stand-ins from art we already have, until each item gets its own icon.
@@ -488,7 +490,7 @@ func toast(text: String, color := Color.WHITE) -> void:
 				(otw as Tween).kill()
 			(c as Label).modulate.a = 1.0
 			var ntw := (c as Label).create_tween()
-			ntw.tween_interval(1.6)
+			ntw.tween_interval(clampf(1.2 + text.length() * 0.03, 1.6, 4.0))
 			ntw.tween_property(c, "modulate:a", 0.0, 0.5)
 			ntw.tween_callback(c.queue_free)
 			c.set_meta("tw", ntw)
@@ -499,7 +501,13 @@ func toast(text: String, color := Color.WHITE) -> void:
 		if not c.is_queued_for_deletion():
 			live.append(c)
 	while live.size() >= 3:
-		var old_l: Node = live.pop_front()
+		# Item pickups ("+1 Wood") go first; the oldest otherwise (it's often the important one).
+		var old_l: Node = live[0]
+		for v in live:
+			if str(v.get_meta("base", "")).begins_with("+"):
+				old_l = v
+				break
+		live.erase(old_l)
 		_toasts.remove_child(old_l)
 		old_l.queue_free()
 	# Keep a short history for the journal.

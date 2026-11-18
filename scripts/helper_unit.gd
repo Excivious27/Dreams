@@ -86,12 +86,15 @@ func _process(delta: float) -> void:
 		var dir := step.normalized()
 		# One shared goal per rally point / per your cell, so the flow-field cache stays small.
 		if step.length() > 24.0:
-			if want == home:
+			if foe and kind == "striker" and not map.line_clear(position, foe.position):
+				# A wall or cliff edge between us and the foe: walk round it to get a line.
+				dir = map.flow_dir(position, (foe.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
+			elif want == home:
 				dir = map.flow_dir(position, home)
 			elif map.has_meta("rally_pos"):
 				dir = map.flow_dir(position, map.get_meta("rally_pos"))
 			elif map.has_meta("follow_me") and not map.line_clear(position, want):
-				dir = map.flow_dir(position, map.cell_center(map.world_to_cell(map.player.position)))
+				dir = map.flow_dir(position, (map.player.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
 		var np := position + dir * minf(step.length(), 52.0 * delta)
 		if _can_step(np):
 			position = np

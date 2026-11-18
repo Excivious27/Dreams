@@ -117,6 +117,9 @@ func _evaluate() -> Dictionary:
 	var w := GameState.weather_today()
 	if m.sky and m.has_sky:
 		w = m.sky.weather
+	var deep := id == "hollow_heart"  # underground country: no surface weather, wind or night sky
+	if deep:
+		w = "clear"
 	var wet := w in ["rain", "storm"]
 	var snowy := w in ["snow", "blizzard"]
 	var outdoors := m.has_sky and id not in ["house", "interior"]
@@ -133,7 +136,7 @@ func _evaluate() -> Dictionary:
 				out["crickets"] = -14.0 - (4.0 if se == "spring" else 0.0)
 			if ph == "night" and se in ["spring", "summer"] and (near > 0.3 or id == "marsh"):
 				out["frogs"] = -16.0 + 6.0 * (near - 1.0)
-		if se == "winter" or id in WINDY_MAPS or w == "wind":
+		if (se == "winter" and not deep) or id in WINDY_MAPS or w == "wind":
 			out["wind_soft"] = -10.0 if w == "wind" else -14.0
 		if w == "blizzard" or id == "colony_ice":
 			out["wind_strong"] = -6.0
@@ -151,7 +154,7 @@ func _evaluate() -> Dictionary:
 			out["wind_soft"] = -12.0
 		if w == "leaves" or (se == "fall" and id == "forest"):
 			out["leaves"] = -18.0
-		if id == "town" and t >= 8 * 60 and t < 20 * 60 and not wet:
+		if id == "town" and t >= 8 * 60 and t < (23 * 60 if GameState.festival_today() != "" else 20 * 60) and not wet:
 			if GameState.festival_today() != "":
 				out["crowd"] = -14.0
 			else:
@@ -172,7 +175,7 @@ func _evaluate() -> Dictionary:
 			out["lava"] = -14.0
 		elif "crystal" in str(th.get("cave", "")):
 			out["crystal_hum"] = -20.0
-	if id == "moon":
+	if id in ["moon", "station"]:
 		out["space"] = -16.0
 	# Keep the loudest few.
 	if out.size() > MAX_BEDS:
@@ -184,7 +187,7 @@ func _evaluate() -> Dictionary:
 		out = trimmed
 	# Let night sounds and storms through by dipping the music a little.
 	var duck := 0.0
-	if outdoors and ph == "night":
+	if outdoors and ph == "night" and not deep:
 		duck = -4.0
 	if w == "storm" and outdoors:
 		duck = -3.0

@@ -76,16 +76,16 @@ static func collect(m: GameMap, kind: String) -> void:
 
 static func shrine(m: GameMap) -> void:
 	var st := Builds.built_tier("shrine")
-	var done: bool = int(GameState.run["flags"].get("shrine_day", -1)) == int(GameState.run["day"])
+	var done: bool = int(GameState.run["flags"].get("meow_shrine_day", -1)) == int(GameState.run["day"])
 	var d := Dialogue.instance(m.get_tree())
 	var text := "The stone is warm, like something asleep in the sun."
 	if st >= 2:
-		text += " Your Meow Pow Wow reaches %d rank%s further here." % [st - 1, "" if st == 2 else "s"]
+		text += " Your Meow Pow Wow reaches %d rank%s further, wherever you go." % [st - 1, "" if st == 2 else "s"]
 	d.say([{"who": str(Builds.current_def("shrine").get("name", "Shrine")), "text": text, "choice": ["Practise (done for today)" if done else "Practise the Meow Pow Wow", "Leave"], "key": ""}])
 	await d.finished
 	if d.last_choice != 0 or done:
 		return
-	GameState.run["flags"]["shrine_day"] = int(GameState.run["day"])
+	GameState.run["flags"]["meow_shrine_day"] = int(GameState.run["day"])
 	m.player.play_tool("hold")
 	m.fx("heart_burst" if Art.has("fx", "heart_burst") else "pawring", m.player.position + Vector2(0, -16), 9.0, 0.5)
 	GameState.restore_mana(20 * (2 if st >= 2 else 1))

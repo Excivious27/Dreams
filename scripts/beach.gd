@@ -31,6 +31,10 @@ func build() -> void:
 	# The tide line wanders: sea cells start at SEA_Y ± noise, with a cove on the east.
 	for y in range(8, rows):
 		for x in cols:
+			# The grass/sand line wanders 0-2 rows (the lane columns keep row 8).
+			var top := 8 + clampi(int(round((WorldGen.fbm(float(x), 1.0, 507, 5.0) + 0.5) * 2.0)), 0, 2)
+			if y < top and (x < 28 or x > 35):
+				continue  # grass
 			var n := WorldGen.fbm(float(x), 3.0, 505, 9.0) * 3.0
 			var cove := 0.0
 			if x > 46:
@@ -176,8 +180,8 @@ func draw_map() -> void:
 		draw_tileset_rect("shore_set", Rect2i(0, 8, cols, SEA_Y - 8), Color("e3cf8f"))
 	if border_water_extra.is_empty():
 		_draw_sea_cells()
-	# Only the town lane is dirt (it runs over grass); on the sand, paths are just sand.
-	draw_ground("dirt", cells_of([Rect2i(30, 1, 4, 8), TOWN_EXIT]))
+	# Only the town lane is dirt (it runs over grass): draw_corridor draws it with the
+	# town exit's corridor as one soft lane. On the sand, paths are just sand.
 	_after_sea()
 
 
@@ -189,7 +193,8 @@ func draw_corridor(cells: Dictionary) -> void:
 	for c: Vector2i in cells:
 		if not _sand.has(Vector2i(clampi(c.x, 0, cols - 1), clampi(c.y, 0, rows - 1))):
 			on_grass[c] = true
-	if not on_grass.is_empty():
+	on_grass.merge(cells_of([Rect2i(30, 1, 4, 8), TOWN_EXIT]))
+	if not soft_ground(widen_path(on_grass), "dirt_track", Color(0.25, 0.15, 0.06, 0.3)):
 		draw_ground("dirt", on_grass)
 
 

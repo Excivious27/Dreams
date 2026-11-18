@@ -157,7 +157,7 @@ func _town_tour() -> void:
 	if not is_inside_tree():
 		return
 	if GameState.complete_quest("meet_town"):
-		hud.toast("Quest done: met the town.", Color(1, 0.9, 0.4))
+		hud.toast(GameMap.quest_done_text("meet_town"), Color(1, 0.9, 0.4))
 	player.frozen = false
 	for h in ["Maple's store (north of the plaza): seeds, fertiliser, bread.", "Gideon's forge (next to Maple): tool upgrades, smelting, weapons.", "Building: the Plans board by your house; Granite's quarry sells stone and brick; Orla's mill for flour; Benno's stable for horses.", "Wren (potions) and Juniper (clinic) are south and east of the plaza; the plaza board has paid jobs.", "Hazel (south-west lane) knows crops; Bram's inn has hot meals; people write to your mailbox once they know you."] + (["The town hall is where the Crystal Ward gets built."] if pen else []):
 		GameState.add_hint(h)
@@ -750,7 +750,7 @@ func _talk(n: Npc) -> void:
 	player.frozen = true
 	n.face(player.position)
 	if GameState.complete_quest("meet_town"):
-		hud.toast("Quest done: met the town.", Color(1, 0.9, 0.4))
+		hud.toast(GameMap.quest_done_text("meet_town"), Color(1, 0.9, 0.4))
 	var talked0: Dictionary = r["talked_today"]
 	if not talked0.has(id):
 		talked0[id] = true

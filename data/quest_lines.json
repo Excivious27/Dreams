@@ -124,7 +124,7 @@
    "I need honey. Two jars. There's a cough going round the children and honey's kinder than anything in my cabinet.",
    "I'd ask Hazel but she's got her hands full with a goat."
   ],
-  "yes": "Thank you. Hives if you have one; Maple sometimes stocks it.",
+  "yes": "Thank you. Hives if you have one; the meadow flowers hide wild comb.",
   "no": "I understand. I'll manage with warm water and stern looks.",
   "wait": "Honey, when you can. Two jars. The cough's still going round.",
   "done": [
@@ -266,7 +266,7 @@
  },
  "wren_mushrooms": {
   "offer": [
-   "Eight mushrooms for a tonic. The ordinary kind, the brown ones. I'm not trying to see visions, I'm trying to help Bram sleep."
+   "Eight mushrooms for a tonic. The ordinary kind, the brown ones. Nothing fancy; I'm trying to help Bram sleep."
   ],
   "yes": "Thank you. The forest floor, or the meadow after rain.",
   "no": "I'll tell Bram to count sheep. He'll count his customers instead.",
@@ -535,7 +535,7 @@
  },
  "bram_mushrooms": {
   "offer": [
-   "Ten mushrooms for the pot. Brown ones. Not the glowing ones, I don't want the inn humming."
+   "Ten mushrooms for the pot. Brown ones. Not the glowing ones, I don't want the stew glowing."
   ],
   "yes": "Good. Forest floor. Watch for the ones with spots, they're spiteful.",
   "no": "Thin stew tonight, then.",
@@ -640,7 +640,7 @@
    "There's a book in the mine. An old one. A miner wrote it a hundred years ago and nobody's read it since.",
    "Bring it up. I'll read it to you. Slowly, I'm afraid. The hand is terrible."
   ],
-  "yes": "Wonderful. Deeper than the copper. Look for the chest.",
+  "yes": "Wonderful. Every fifth floor or so, one of the old miners left a pack behind. Look in those.",
   "no": "It's kept this long. It'll keep.",
   "wait": "The book. In the mine. Still waiting to be read.",
   "done": [
@@ -793,7 +793,7 @@
    "Ten coal and I can fire the burner. It's a start. It's not the lens, but it's a start."
   ],
   "yes": "Thank you. The mountain, or the quarry. Hard black coal, not the soft stuff.",
-  "no": "Three winters. What's a fourth.",
+  "no": "Twenty winters. What's one more.",
   "wait": "Ten coal, for the burner. The ships keep coming.",
   "done": [
    "...Hear that? The burner. She's breathing.",
@@ -843,11 +843,11 @@
  "benno_pup_pack": {
   "offer": [
    "A dog can carry. Mine carried my lunch for six years and only ate it twice.",
-   "Workbench. Two pelts, a rope, some wood. Make a pack and it'll haul for you."
+   "Tanning rack. Two pelts, a rope, some wood. Make a pack and it'll haul for you."
   ],
-  "yes": "Good. Pelts from Rook, or the hills.",
+  "yes": "Good. Rook sells the rack. Pelts are on the hill wolves.",
   "no": "Then you carry your own lunch.",
-  "wait": "The pack. Workbench. Pelts, rope, wood.",
+  "wait": "The pack. Tanning rack. Pelts, rope, wood.",
   "done": [
    "Look at that. Proud as anything.",
    "Here. And a bit of a tip for a job well made."
@@ -1037,7 +1037,7 @@
  "rook_tracks@gangsters": {
   "offer": [
    "Strangers across the river. Orchard side. Coats too good for picking apples.",
-   "Clear them out. All of them. I'll know."
+   "Run them off. Every one. I'll know."
   ],
   "wait": "The orchard. Those coats. Still there."
  },

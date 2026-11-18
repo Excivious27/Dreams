@@ -31,11 +31,11 @@ P = {
   "intro": "Deuce kicks a crate. 'A back room is a back room. A headquarters is a promise. Build it, and the people we've helped move in. Then we go after his lieutenants. Then him.'",
   "stages": [
    {"name": "The Back Room", "bundles": [{"name": "Walls", "need": {"plank": 40, "nails": 20}}, {"name": "Furniture", "need": {"cloth": 10, "iron_bar": 4}}],
-    "grant": "hq_back_room", "desc": "A table, a lamp, a map. Two crew can be given standing jobs overnight (talk to Deuce at HQ)."},
+    "grant": "hq_back_room", "desc": "A table, a lamp, a map. Two crew can be given standing jobs overnight (the HQ board: Crew jobs)."},
    {"name": "The Safehouse", "bundles": [{"name": "Bunks", "need": {"hardwood_plank": 12, "cotton_cloth": 8}}, {"name": "Pantry", "need": {"#veg": 15, "root_beer": 4}}],
     "grant": "hq_safehouse", "desc": "Recruits live here now. Heat cools one extra each night, and four crew can work jobs."},
    {"name": "The Ops Floor", "bundles": [{"name": "Wiring", "need": {"circuit_board": 6, "copper_bar": 8}}, {"name": "Maps", "need": {"blank_stock": 10, "ink": 6}}],
-    "grant": "war_table", "desc": "Specs wires a war table: the battlefields are open. Lieutenant intel goes up on the wall."},
+    "grant": "war_table", "desc": "Specs wires a war table: the battlefields are open."},
    {"name": "The Workshop Wing", "bundles": [{"name": "Machines", "need": {"gear": 12, "spring": 8, "servo": 4}}, {"name": "Power", "need": {"crystal_battery": 2, "steel_bar": 6}}],
     "grant": "hq_workshop", "desc": "Six crew can work jobs, and every job pays half again."},
    {"name": "Rooftop Comms", "bundles": [{"name": "Antenna", "need": {"steel_bar": 8, "data_chip": 4}}, {"name": "Drones", "need": {"spy_drone": 1, "scrap_bot": 2}}],

@@ -44,7 +44,7 @@ CREW = {
  "vic": ("Vic and Val run the gym under the pit, and the kids there call you boss.", "Vic went back to the pit, where things are simple."),
  "val": ("Val stands at your door some nights for no reason at all. Just in case.", "Val keeps an eye on the docks."),
  "halo": ("Halo's car is the fastest in the city, and it's always parked outside your farm.", "Halo drives off into the sunset. Literally. Show-off."),
- "dice": ("Dice runs the token arcade on the avenue. Everyone wins something.", "Dice is still rolling, somewhere."),
+ "dice": ("Dice runs the token arcade on the avenue. Everyone wins something.", "Dice is still running messages, somewhere, faster than ever."),
  "the_kid": ("The Kid goes back to school. He comes by after, every day.", "The Kid runs messages across the city, faster than anyone."),
  "doc": ("Doc's free clinic opens with your name over the door.", "Doc patches people up and doesn't ask questions."),
  "marlene": ("Marlene burns her old ledger in your fireplace and laughs.", "Marlene's shop is still there, dark window, open door."),

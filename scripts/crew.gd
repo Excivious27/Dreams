@@ -68,6 +68,8 @@ static func place(m: GameMap) -> void:
 	if GameState.is_penguins():
 		return
 	data()
+	if recruited("sasha") and perk_level("doors") >= 3:
+		GameState.run["flags"]["doors_sasha"] = true  # drilled crew count too (Training Center)
 	for id in members():
 		var mdef: Dictionary = members()[id]
 		var at := Vector2i(-1, -1)
@@ -78,6 +80,8 @@ static func place(m: GameMap) -> void:
 				# Loyalty 3: Halo waits by wherever you arrive (the player isn't spawned yet).
 				var wp := (GameMap.next_spawn + m.offset()) if GameMap.next_spawn != Vector2.ZERO else m.default_spawn()
 				at = m.world_to_cell(wp) + Vector2i(3, 1)
+		elif GameState.run["flags"].has(id + "_refused"):
+			continue  # walked off (Dice after the letter was sold)
 		else:
 			var b: Dictionary = mdef.get("before", {})
 			if str(b.get("scene", "")) == m.scene_id():

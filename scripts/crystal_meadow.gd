@@ -112,7 +112,7 @@ func after_ready() -> void:
 			gp.sprite_frames = Art.frames("props", {"idle": "glow_pond"}, {"idle": 3.0})
 			gp.animation = "idle"
 			gp.scale = Vector2(0.5, 0.5)
-			gp.position = cell_center(Vector2i(5, 16)) + Vector2(8, -4)  # sits on its water cells (rows 14-15)
+			gp.position = cell_center(Vector2i(5, 15)) + Vector2(8, 0)  # bottom at row 16's top: covers rows 14-15, its water cells
 			gp.offset = Vector2(0, -float(Art.info("props", "glow_pond").get("cell_h", 72)) / 2.0)
 			to_under(gp)
 			# The pond is real water: you can't stand in it, and you can fish it.
@@ -176,6 +176,15 @@ func _talk_catkins() -> void:
 	if await Hearts.talk(self, "catkins"):
 		player.frozen = false
 		return
+	if not GameState.run["talked_today"].has("catkins"):
+		GameState.run["talked_today"]["catkins"] = true
+		GameState.add_friend("catkins", 5)
+	var sel := str(GameState.run["selected"])
+	if GameState.can_gift("catkins", sel) and await confirm_gift("Catkins", sel):
+		var gain := GameState.give_gift("catkins", sel)
+		await say([{"who": "Catkins", "text": gift_reaction("Catkins", sel, gain)}])
+		player.frozen = false
+		return
 	var lines: Array = GameState.npcs["catkins"].get("lines", ["..."])
 	if GameState.run["flags"].has("st_p2_spark"):
 		# After the cave shook, Cat-topia's stores are open to you.
@@ -235,7 +244,7 @@ func _altar() -> void:
 	if charges >= 10:
 		await say([{"who": "Star Crystal", "text": "The altar is full. It has given you all it can.", "mood": "happy"}])
 	elif refined > 0:
-		if refined <= 3 and not GameState.quest_done("teleporter"):
+		if refined <= 3 and GameState.has_quest("teleporter") and not GameState.quest_done("teleporter"):
 			await say([{"who": "Star Crystal", "text": "Careful: the teleporter on the moon needs 3 refined crystals. Bring me a fourth and I'll take that one."}])
 			return
 		GameState.add_item("crystal_refined", -1)
@@ -295,7 +304,7 @@ func draw_map() -> void:
 				if rng.randf() < 0.08 and not blocked.has(c):
 					Art.draw_prop(self, "props", "cdeco_%d" % rng.randi_range(0, 6), Vector2(c * TILE) + Vector2(8, 16))
 		draw_tileset_rect("pale_stone" if Art.has("tiles", "pale_stone") else "moon_dust", STONES, Color("c9c0e0"))
-		draw_ground("dirt", cells_of([Rect2i(1, 11, 13, 3), Rect2i(21, 11, 13, 3), MEADOW_EXIT]))
+		draw_ground("dirt", cells_of([Rect2i(-pad, 11, 14 + pad, 3), Rect2i(21, 11, 13, 3)]))  # the west path runs through the band in one patch
 	else:
 		draw_tileset_rect("dirt_lot", Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), Color("6a5a40"))  # under the band too: no void column
 		draw_tileset_rect("asphalt", Rect2i(1, 11, cols - 1, 3), Color("3a3a40"))  # on to the gate column
@@ -312,3 +321,10 @@ func draw_map() -> void:
 	if GameState.is_penguins() or not Art.draw_prop(self, "props", "chain_broken", gp + Vector2(0, 8)):
 		draw_rect(Rect2(gp.x - 8, gp.y - 30, 16, 32), Color("3a2412") if GameState.is_penguins() else Color("5a5a66"))
 	label("east" if GameState.is_penguins() else "hideout ▶", Vector2(gp.x - 24, gp.y - 34), 48)
+
+
+## Penguins: draw_map already runs the west path through the band in one patch
+## (a second corridor patch on top left a darker slab with a seam).
+func draw_corridor(cells: Dictionary) -> void:
+	if not GameState.is_penguins():
+		super(cells)

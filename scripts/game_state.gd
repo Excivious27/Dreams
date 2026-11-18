@@ -70,6 +70,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"selected": "",
 		"farm": {},
 		"sellbox": {},
+		"sold_today": {},
 		"quests": [],
 		"scene": "farm",
 		"mine_floor": 1,
@@ -108,7 +109,7 @@ const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_
 ## Renames that only apply when the old node was bought under this name.
 const NODE_RENAME_NAME := {"combat_2_8": "Iron Gut"}
 ## Bump when gen_skill_trees.py changes what existing filler nodes do: old saves get those points back.
-const SKILL_VER := 6
+const SKILL_VER := 7
 
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
@@ -156,6 +157,7 @@ static func _migrate() -> void:
 		# once per SKILL_VER (base and unlock nodes are kept).
 		if int(run.get("skill_ver", 0)) < SKILL_VER:
 			var rx := RegEx.create_from_string("^[a-z]+_\\d_\\d$")
+			var back := 0
 			for sk in run["skills"]:
 				if not run["skills"][sk] is Dictionary:
 					continue
@@ -163,9 +165,13 @@ static func _migrate() -> void:
 				var hn: Dictionary = (run["skills"][sk] as Dictionary).get("nm", {})
 				for nid in hv.keys():
 					if rx.search(str(nid)) != null:
+						back += int(hv[nid])
 						hv.erase(nid)
 						hn.erase(nid)
+			if back > 0:
+				notify("The skill trees changed: %d skill point%s came back. Spend them in Menu > Skills." % [back, "" if back == 1 else "s"])
 			run["skill_ver"] = SKILL_VER
+			_bonus_frame = -1
 	if run.has("look") and run["look"] is Dictionary and run["look"].has("body") and not run["look"].has("outfit"):
 		run["look"]["outfit"] = "outfit_neon" if str(run.get("arc", "")) == "gangsters" else "outfit_farmer"
 	var defaults := {
@@ -499,7 +505,7 @@ static func sell_price(id: String, n := 1) -> int:
 		unit *= 1.0 + bonus("farming", "crop_value")
 	if str(items.get(id, {}).get("type", "")) == "fish":
 		unit *= 1.0 + bonus("fishing", "fish_value")
-	if Crew.perk_level("fence") >= 1 and str(items.get(id, {}).get("type", "")) in ["drop", "loot", "material"] and str(run.get("arc", "")) == "gangsters":
+	if Crew.perk_level("fence") >= 1 and str(items.get(id, {}).get("type", "")) in ["drop", "treasure", "junk"] and str(run.get("arc", "")) == "gangsters":
 		unit *= 1.2
 	var total := 0.0
 	for i in n:
@@ -526,7 +532,7 @@ static func buy_price(id: String) -> int:
 				var cs := str(crops[cid].get("season", "any"))
 				if cs != "any" and cs != season():
 					m *= 0.85  # off-season seed is a little cheaper, and a gamble
-	m *= [1.0, 0.95, 0.9, 0.85][clampi(Crew.perk_level("shop_discount"), 0, 3)]  # Specs knows the till codes
+	m *= [1.0, 0.95, 0.9, 0.9][clampi(Crew.perk_level("shop_discount"), 0, 3)]  # Specs knows the till codes
 	# Never cheaper than you could sell it back for (demand, fence and every perk
 	# included): shops are not a money machine.
 	return maxi(1, int(ceil(maxf(base * m, sell_price(id, 1) * 1.15))))
@@ -1008,6 +1014,7 @@ static func buy_node(skill: String, id: String) -> bool:
 	run["skills"][skill]["nodes"][id] = node_rank(skill, id) + 1
 	# Remember what was bought under this id, so a rebuilt tree can't turn it into another perk.
 	(run["skills"][skill] as Dictionary).get_or_add("nm", {})[id] = str(node(skill, id).get("name", ""))
+	_bonus_frame = -1
 	_apply_max_stats()
 	return true
 
@@ -1015,6 +1022,7 @@ static func buy_node(skill: String, id: String) -> bool:
 static func reset_tree(skill: String) -> void:
 	run["skills"][skill]["nodes"] = {}
 	(run["skills"][skill] as Dictionary).erase("nm")
+	_bonus_frame = -1
 	_apply_max_stats()
 
 
@@ -1043,7 +1051,7 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.5, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
 	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
 	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
-	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05}
+	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0}
 ## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
 ## Warrior, Legend). tools/gen_skill_trees.py reads this too.
 const SKILL_CAPS := {"combat": {"hp": 140.0, "energy": 60.0}}
@@ -1230,7 +1238,10 @@ static func energy_cost(task: String) -> int:
 
 
 static func spend_for(task: String) -> bool:
-	return spend_energy(energy_cost(task))
+	var ok := spend_energy(energy_cost(task))
+	if not ok and Engine.get_main_loop() is SceneTree:
+		Music.instance(Engine.get_main_loop() as SceneTree).sfx("nope")  # "Too tired." is heard, not just read
+	return ok
 
 
 static func spend_mana(n: int) -> bool:
@@ -1364,6 +1375,10 @@ static func consume(id: String) -> Dictionary:
 	var out := {}
 	if it.is_empty() or count(id) <= 0:
 		return out
+	# Plain food past the daily energy cap with full health would do nothing: keep it.
+	var e_only := not (it.has("mana") or it.has("buff") or it.has("grow")) and (int(it.get("heal", 0)) == 0 or int(run["hp"]) >= int(run["max_hp"]))
+	if e_only and int(it.get("energy", 0)) + int(it.get("heal", 0)) > 0 and int(run.get("fed_en", 0)) >= int(run["max_energy"]):
+		return {"full": true}  # nothing to gain: keep the food
 	add_item(id, -1)
 	var hp0 := int(run["hp"]); var en0 := int(run["energy"]); var ma0 := int(run.get("mana", 0))
 	var mh := Crew.perk_level("meal_heal")
@@ -1417,6 +1432,17 @@ static func now_abs() -> int:
 
 static func restore_energy(n: int) -> void:
 	run["energy"] = mini(int(run["energy"]) + n, int(run["max_energy"]))
+
+
+## Energy from food, rest spots and perk meals: together at most one full bar a day
+## (fed_en resets on sleep). Returns what was actually gained.
+static func extra_energy(n: int) -> int:
+	var room := maxi(0, int(run["max_energy"]) - int(run.get("fed_en", 0)))
+	var en0 := int(run["energy"])
+	restore_energy(mini(room, n))
+	var got := int(run["energy"]) - en0
+	run["fed_en"] = int(run.get("fed_en", 0)) + got
+	return got
 
 
 # ---- friendship --------------------------------------------------------------
@@ -1574,6 +1600,8 @@ static func give_gift(npc: String, item: String) -> int:
 		run["gift_seen"] = {}
 	var gs: Dictionary = run["gift_seen"].get(npc, {})
 	gs[item] = gain / (3 if is_birthday(npc) else 1)
+	if int(gs[item]) > 0:
+		gs[item] = maxi(1, int(gs[item]) - int(bonus("bartering", "gift_bonus")) - int(items.get(item, {}).get("friend", 0)))  # what they think of the gift itself
 	run["gift_seen"][npc] = gs
 	var gw: Dictionary = run.get("gifts_week", {})
 	gw[npc] = int(gw.get(npc, 0)) + 1
@@ -1607,8 +1635,8 @@ static func add_friend(npc: String, n: int) -> void:
 	# Bram's soup: the first chat with him each day tops you up.
 	if npc == "bram" and n > 0 and Perks.flag("soup") and int(run["flags"].get("soup_day", -1)) != int(run["day"]):
 		run["flags"]["soup_day"] = int(run["day"])
-		run["energy"] = mini(int(run["max_energy"]), int(run["energy"]) + 30)
-		notify("Bram slides you a bowl of soup. +30 energy.")
+		var got := extra_energy(30)
+		notify("Bram slides you a bowl of soup. +%d energy." % got if got > 0 else "Bram slides you a bowl of soup. You're too full for more energy today.")
 
 
 ## A message for the HUD from code that has no map handy (shown next frame).
@@ -1838,7 +1866,7 @@ static func respawned(key: String, respawn_days: int) -> bool:
 	var cleared := int(run["flags"].get(key, 0))
 	if cleared <= 0:
 		return true
-	var wait := maxi(1, respawn_days - int(bonus("foraging", "regrowth")))
+	var wait := maxi(maxi(1, int((respawn_days + 1) / 2.0)), respawn_days - int(bonus("foraging", "regrowth")))  # Honey Sense at most halves a wait
 	return int(run["day"]) >= cleared + wait
 
 
@@ -2009,8 +2037,8 @@ static func side_quest_pending(npc: String) -> Dictionary:
 			continue
 		if d.has("done_when") and d["done_when"] is Dictionary and _cond_ok(d["done_when"]):
 			return d
-		if first.is_empty():
-			first = d
+		if first.is_empty() and not bool(d.get("board", false)):
+			first = d  # an unfinished board job doesn't stop the villager offering their own quests (it is still turned in via _ready_quest)
 	return first
 
 
@@ -2208,6 +2236,8 @@ static func sleep(passed_out := false) -> Dictionary:
 		run["crystals"] = int(run["crystals"]) + mini(int(int(run["crystals"]) * bonus("bartering", "interest")), 50 + 50 * progress_tier())
 	var total := 0
 	# sold_today still holds the day's sales to Sal's fence, so the box saturates on top of them.
+	if not (run.get("sold_today") is Dictionary):
+		run["sold_today"] = {}
 	for id in run["sellbox"].keys():
 		var n: int = int(run["sellbox"][id])
 		var v := sell_price(id, n)
@@ -2308,7 +2338,7 @@ static func sleep(passed_out := false) -> Dictionary:
 		var relic: String = ["relic_orb", "relic_mask", "relic_blade", "relic_crown"][randi() % 4]
 		add_item(relic, 1)
 		report["relic"] = relic
-	if has_friend_perk("posy", 2):
+	if has_friend_perk("posy", 2) and not run["flags"].has("posy_gone"):
 		add_item("bread", 1)
 	if int(run.get("bank", 0)) > 0 and has_friend_perk("ivy", 2):
 		# Interest: 1% (2% with Ivy 6), capped so it's a nest egg, not a printer.
@@ -2326,6 +2356,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
 	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) / 2
 	run["fed_en"] = 0
+	run["kills_today"] = {}  # per-map paid kills (game_map: re-entry respawns don't pay forever)
 	run["hp"] = int(run["max_hp"])
 	run["mana"] = int(run.get("max_mana", 20))
 	run["talked_today"] = {}
@@ -2575,7 +2606,7 @@ static func _crows(report: Dictionary) -> void:
 			var xy := str(pk).split(",")
 			guards.append(Vector2i(int(xy[0]), int(xy[1])))
 	if Builds.is_built("scarecrow"):
-		var sc: Array = Builds.data().get("scarecrow", {}).get("cell", [22, 12])
+		var sc: Array = Builds.data().get("scarecrow", {}).get("cell", [24, 14])
 		guards.append(Vector2i(int(sc[0]), int(sc[1])))
 	var open_: Array = []
 	for k: String in planted:
@@ -2645,6 +2676,20 @@ static func _sprinklers_water() -> void:
 
 ## One line telling a phone player what to do next: the first open main quest,
 ## else the chapter summary.
+## The first crop, one step at a time (the goal line for "first_harvest").
+static func _first_crop_step() -> String:
+	var farm: Dictionary = run.get("farm", {})
+	var tiles: Array = farm.values().filter(func(t: Variant) -> bool: return t is Dictionary)
+	if tiles.is_empty():
+		return "Hold the hoe, face grass, tap USE to till."
+	var planted: Array = tiles.filter(func(t: Dictionary) -> bool: return str(t.get("crop", "")) != "")
+	if planted.is_empty():
+		return "Pick Turnip Seeds on the toolbar, USE on the soil."
+	if planted.any(func(t: Dictionary) -> bool: return not bool(t.get("watered", false))) and not is_wet():
+		return "Water your crop: watering can, USE."
+	return "Crops grow overnight. Sleep, then harvest."
+
+
 static func next_step() -> String:
 	if run.is_empty():
 		return ""
@@ -2661,7 +2706,7 @@ static func next_step() -> String:
 	for i in range(qs.size() - 1, -1, -1):
 		var q: Dictionary = qs[i]
 		if not bool(q.get("done", false)) and mains.has(str(q.get("id", ""))):
-			return str(q.get("text", ""))
+			return _first_crop_step() if str(q.get("id", "")) == "first_harvest" else str(q.get("text", ""))
 	for q in run.get("quests", []):
 		if not bool(q.get("done", false)):
 			return str(q.get("text", ""))

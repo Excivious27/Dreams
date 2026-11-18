@@ -293,7 +293,7 @@ func _place_props() -> void:
 				prop("nature", "rock_m", k)
 			"shroom":
 				if bool(t.get("has", false)):
-					prop("tiles", "deco_5", k, 0, 0.0, false)
+					prop("nature", "mushrooms_fall" if Art.has("nature", "mushrooms_fall") else "flowers", k, 0, 0.0, false)  # deco_5 is an opaque grass square
 	if Art.has("props", "mine_entrance"):
 		prop("props", "mine_entrance", Vector2i(31, 6), 2)
 	else:

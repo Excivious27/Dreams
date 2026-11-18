@@ -37,7 +37,8 @@
     "8": [
      {
       "who": "Maple",
-      "text": "When that light came down in your field, I was closing up. I saw it from the step. I didn't run out. I didn't tell anyone."
+      "text": "When that light came down in your field, I was closing up. I saw it from the step. I didn't run out. I didn't tell anyone.",
+      "text_gangsters": "The day you came in with that deed in the wrong name, I was closing up. I saw your face. I didn't ask. I didn't tell anyone."
      },
      {
       "who": "Maple",
@@ -694,7 +695,8 @@
      },
      {
       "who": "Posy",
-      "text": "Dad walked to the lake for wine. Did you hear? Two hours. He's insufferable about it."
+      "text": "Dad walked to the lake for wine. Did you hear? Two hours. He's insufferable about it.",
+      "text_gangsters": "Dad walked to the avenue for root beer. Did you hear? Two hours. He's insufferable about it."
      }
     ],
     "10": [
@@ -851,7 +853,8 @@
     "2": [
      {
       "who": "Pip",
-      "text": "You're the one with the light! Mabel says it's a crystal and Wren jr says it's frogs and I say it's BOTH."
+      "text": "You're the one with the light! Mabel says it's a crystal and Wren jr says it's frogs and I say it's BOTH.",
+      "text_gangsters": "You're the new one! Mabel says you're a spy and Wren jr says you're a frog in a coat and I say it's BOTH."
      },
      {
       "who": "Pip",
@@ -1143,7 +1146,8 @@
     "10": [
      {
       "who": "Marlowe",
-      "text": "It tried again. The night your light came down. I saw it from the top, and I lit the lamp, and this time it wasn't the dark that landed."
+      "text": "It tried again. The night your light came down. I saw it from the top, and I lit the lamp, and this time it wasn't the dark that landed.",
+      "text_gangsters": "It tried again, this year. Purple, in the city crates. I saw the boats from the top, and I lit the lamp, and this time somebody came to stop it. You."
      },
      {
       "who": "Marlowe",
@@ -1428,7 +1432,7 @@
     "4": [
      {
       "who": "Old Moss",
-      "text": "I was the town's doctor before Juniper. Before her mother. I came out here when I ran out of people I could lie to about what I couldn't fix."
+      "text": "I was the town's doctor before Juniper. Before her mother. I came out here when I got tired of promising cures I didn't have."
      },
      {
       "who": "Old Moss",
@@ -1501,7 +1505,7 @@
     "6": [
      {
       "who": "Granite",
-      "text": "Bones in the mine. Old ones. Rook wants them for arrowheads and I want them out of my quarry's reputation."
+      "text": "Bones in the mine. Old beast bones, from before the quarry. Rook wants them for arrowheads and I want them out of my quarry's reputation."
      },
      {
       "who": "Granite",

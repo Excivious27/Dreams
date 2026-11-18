@@ -46,10 +46,10 @@ static func portrait_for(who: String) -> String:
 		var look: Dictionary = GameState.run.get("look", {})
 		if look.has("body"):
 			var cs := str(GameState.items.get(GameState.equipped("body"), {}).get("costume", ""))
-			if cs != "" and Art.has("portraits/hero_" + cs, "neutral"):
+			if cs != "" and _portrait_ok("hero_" + cs):
 				return "hero_" + cs
 			var body := str(look.get("body", "medium_slim"))
-			if Art.has("portraits/hero_" + body, "neutral"):
+			if _portrait_ok("hero_" + body):
 				return "hero_" + body
 		return sprite
 	if who == str(n.get("pet", "")):
@@ -208,6 +208,80 @@ func _next() -> void:
 	_panel.position.y = BOX_Y
 
 
+## A portrait set that was sliced into a usable picture (a mis-cut sheet gives 1 px slivers).
+static func _portrait_ok(pid: String) -> bool:
+	return _face_ok(Art.tex("portraits/" + pid, "neutral"))
+
+
+static func _face_ok(t: Texture2D) -> bool:
+	return t != null and t.get_width() >= 24 and t.get_height() >= 24
+
+
+static var _one_face_cache := {}
+
+
+## Some portrait cells hold two faces side by side (the sheet's spacing didn't match
+## the grid): show only the widest one. Single wide busts (one opaque run) are kept.
+static func one_face(t: Texture2D) -> Texture2D:
+	if t == null or t.get_width() < t.get_height() * 1.3:
+		return t
+	var key := t.resource_path if t.resource_path != "" else str(t.get_instance_id())
+	if _one_face_cache.has(key):
+		return _one_face_cache[key]
+	var out: Texture2D = t
+	var img := t.get_image()
+	if img != null:
+		if img.is_compressed():
+			img.decompress()
+		var w := img.get_width()
+		var h := img.get_height()
+		# Opaque pixels per column; faces are tall "cores", the dip between two is where to cut
+		# (neighbouring faces often touch at the shoulders, so there is no empty column).
+		var cnt := PackedInt32Array()
+		cnt.resize(w)
+		var top := 1
+		for x in w:
+			var n := 0
+			for y in h:
+				if img.get_pixel(x, y).a > 0.16:
+					n += 1
+			cnt[x] = n
+			top = maxi(top, n)
+		var cores: Array = []
+		var s0 := -1
+		for x in w + 1:
+			var on := x < w and cnt[x] > top * 0.35
+			if on and s0 < 0:
+				s0 = x
+			elif not on and s0 >= 0:
+				if x - s0 >= h / 4:  # specks and hands don't count as faces
+					cores.append(Vector2i(s0, x))
+				s0 = -1
+		if cores.size() >= 2:
+			var bi := 0
+			for i in cores.size():
+				if cores[i].y - cores[i].x > cores[bi].y - cores[bi].x:
+					bi = i
+			var l := 0
+			var r := w
+			if bi > 0:  # cut at the thinnest column between this face and the one before
+				l = cores[bi - 1].y
+				for x in range(cores[bi - 1].y, cores[bi].x):
+					if cnt[x] < cnt[l]:
+						l = x
+			if bi < cores.size() - 1:
+				r = cores[bi].y
+				for x in range(cores[bi].y, cores[bi + 1].x):
+					if cnt[x] <= cnt[r]:
+						r = x
+			var at := AtlasTexture.new()
+			at.atlas = t
+			at.region = Rect2(l, 0, r - l, h)
+			out = at
+	_one_face_cache[key] = out
+	return out
+
+
 func _set_portrait(who: String, mood: String) -> void:
 	var pid := portrait_for(who)
 	var tex: Texture2D = null
@@ -215,8 +289,11 @@ func _set_portrait(who: String, mood: String) -> void:
 		if pid.ends_with("_gang") and not Art.has("portraits/" + pid, "neutral"):
 			pid = pid.trim_suffix("_gang")
 		tex = Art.tex("portraits/" + pid, mood)
-		if tex == null:
+		if not _face_ok(tex):
 			tex = Art.tex("portraits/" + pid, "neutral")
+		if not _face_ok(tex):
+			tex = null  # a broken slice: no portrait beats a sliver
+		tex = one_face(tex)
 	_portrait.texture = tex
 	_portrait.visible = tex != null
 	_text.custom_minimum_size = Vector2(180 if tex else 240, 34)

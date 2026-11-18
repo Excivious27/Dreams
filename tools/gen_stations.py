@@ -74,7 +74,7 @@ G = [  # id, name, type, value, tier, extra
  ('subdermal_plating', 'Subdermal Plating', 'equip', 1800, 3, {'arc': 'gangsters', 'slot': 'back', 'stats': {'defense': 5}}),
  ('neural_link', 'Neural Link', 'equip', 3200, 4, {'arc': 'gangsters', 'slot': 'ring', 'stats': {'mana': 20, 'luck': 3}, 'desc': 'More room for borrowed Gifts.'}),
  ('root_beer', 'Root Beer', 'food', 60, 1, {'arc': 'gangsters', 'energy': 35}), ('cream_soda', 'Cream Soda', 'food', 95, 2, {'arc': 'gangsters', 'energy': 45, 'buff': {'kind': 'speed', 'minutes': 120, 'amount': 1}}),
- ('cherry_fizz', 'Cherry Fizz', 'food', 150, 2, {'arc': 'gangsters', 'energy': 55, 'heal': 3}), ('golden_float', 'Golden Float', 'food', 420, 3, {'arc': 'gangsters', 'energy': 90, 'heal': 5, 'buff': {'kind': 'luck', 'minutes': 240, 'amount': 2}, 'friend': 4}),
+ ('cherry_fizz', 'Cherry Fizz', 'food', 55, 2, {'arc': 'gangsters', 'energy': 30, 'heal': 2}), ('golden_float', 'Golden Float', 'food', 420, 3, {'arc': 'gangsters', 'energy': 90, 'heal': 5, 'buff': {'kind': 'luck', 'minutes': 240, 'amount': 2}, 'friend': 4}),
 ]
 for id, name, typ, val, tier, extra in G:
     item(id, name, typ, val, tier, **extra)
@@ -107,7 +107,7 @@ for id, name, dmg, val, tier, extra in [('six_shooter', 'Six-Shooter', 4, 700, 2
                                          ('tommy_gun', 'Tommy Gun', 3, 2600, 3, {'range': 120, 'cd': 0.6}), ('gold_revolver', 'Gold Revolver', 10, 5600, 4, {'range': 140, 'cd': 2.5})]:
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters', **extra)
 for id, name, slot, stats, val, tier in [
- ('fedora', 'Fedora', 'head', {'defense': 1, 'luck': 1}, 140, 1), ('shades', 'Shades', 'head', {'luck': 2, 'speed': 1}, 520, 3),
+ ('fedora', 'Fedora', 'head', {'defense': 1, 'luck': 1}, 60, 1), ('shades', 'Shades', 'head', {'luck': 2, 'speed': 1}, 520, 3),
  ('pinstripe_suit', 'Pinstripe Suit', 'body', {'defense': 2, 'luck': 1}, 380, 2), ('padded_vest', 'Padded Vest', 'body', {'defense': 4}, 900, 3), ('armored_suit', 'Armored Suit', 'body', {'defense': 6, 'luck': 1}, 3200, 4),
  ('steel_toes', 'Steel-Toe Shoes', 'feet', {'defense': 2}, 300, 2), ('knuckle_gloves', 'Knuckle Gloves', 'hands', {'damage': 1}, 260, 2),
  ('trench_coat', 'Trench Coat', 'back', {'defense': 2, 'speed': 1}, 700, 3), ('tool_belt', "Driver's Belt", 'belt', {'speed': 1, 'damage': 1}, 480, 3), ('gold_chain', 'Gold Chain', 'charm', {'luck': 2}, 800, 3)]:

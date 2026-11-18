@@ -179,15 +179,15 @@ def w4():
     props_from(rgba, "props", {
         "cliff_stairs_up": ((10, 350, 130, 500), (TILE2, TILE2 * 2)), "cliff_stairs_down": ((130, 350, 240, 500), (TILE2, TILE2 * 2)),
         "dirt_ramp": ((245, 350, 350, 500), (TILE2, TILE2 * 2)), "rope_ladder": ((355, 350, 455, 500), (TILE2, TILE2 * 2)),
-        "cave_mouth": ((460, 350, 630, 500), (TILE2 * 3, TILE2 * 2)), "mine_entrance": ((635, 350, 760, 500), (TILE2 * 3, TILE2 * 2)),
+        "cave_mouth": ((464, 350, 612, 500), (TILE2 * 3, TILE2 * 2)), "mine_entrance": ((635, 350, 760, 500), (TILE2 * 3, TILE2 * 2)),
         "boulder_l": ((770, 390, 840, 490), (36, 36)), "boulder_m": ((845, 405, 900, 490), (28, 28)), "boulder_s": ((900, 420, 950, 490), (20, 20)),
         "rockslide": ((955, 380, 1120, 500), (96, 56)), "goat": ((1125, 395, 1200, 490), (36, 40)),
-        "lookout_tower": ((10, 520, 230, 1010), (96, 192)), "rope_bridge": ((240, 520, 775, 790), (160, 80)),
+        "lookout_tower": ((10, 520, 200, 1010), (96, 192)), "rope_bridge": ((240, 520, 775, 790), (160, 80)),
         "mountain_backdrop": ((780, 520, 1536, 1010), (384, 192)),
     })
     boxes = cells_by_grid(rgba, 4, 1, region=(1210, 395, 1536, 490), trim=False)[0]
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=16) for b in boxes], "fx", "hawk_shadow")
-    boxes = cells_by_grid(rgba, 4, 1, region=(200, 800, 775, 1010), trim=False)[0]
+    boxes = [(x0, 804, x1, 996) for x0, x1 in ((202, 341), (341, 483), (483, 622), (622, 770))]  # measured frames
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=96) for b in boxes], "props", "hot_spring")
 
 
@@ -1246,7 +1246,7 @@ def w41():
                             ["rug2_round_red", "rug2_round_blue", "rug2_red", "rug2_blue", "rug2_green", "rug2_runner"]):
         _pieces(rgba, (x0, 455, x1, 555), [nm], "furniture")
     _pieces(rgba, (15, 628, 625, 705), ["kitchen_sink", "kitchen_stove", "kitchen_counter_a", "kitchen_counter_b", "kitchen_fridge", "kitchen_corner"], "furniture")
-    _anim(rgba, (645, 600, 945, 705), 4, "furniture", "kettle")
+    _anim(rgba, (634, 604, 944, 708), 4, "furniture", "kettle")
     _pieces(rgba, (960, 625, 1195, 705), ["cat_bed", "dog_bed"], "furniture")
     _pieces(rgba, (1205, 610, 1335, 705), ["cradle"], "furniture")
     _pieces(rgba, (1355, 610, 1510, 705), ["toy_chest"], "furniture")
@@ -1266,14 +1266,14 @@ def w41():
 def w42():
     rgba = load("w42_public_interiors.png")
     _pieces(rgba, (140, 65, 395, 185), ["bar_counter"], "furniture")
-    _anim(rgba, (405, 85, 545, 185), 4, "furniture", "beer_taps")
+    _anim(rgba, (405, 88, 585, 168), 4, "furniture", "beer_taps")
     _pieces(rgba, (600, 100, 745, 185), ["stool_red", "stool_blue", "stool_green"], "furniture")
     _pieces(rgba, (760, 70, 930, 185), ["round_set_a"], "furniture")
     _pieces(rgba, (935, 70, 1085, 185), ["round_set_b"], "furniture")
     _pieces(rgba, (1095, 65, 1245, 185), ["keg_wall"], "furniture")
     _pieces(rgba, (1250, 100, 1390, 185), ["hanging_mugs"], "furniture")
     _pieces(rgba, (1395, 60, 1525, 185), ["hearth"], "furniture")
-    _anim(rgba, (225, 240, 495, 345), 4, "furniture", "bakery_oven")
+    strip([_shrink(crop(rgba, region_bbox(rgba, (x0, 244, x1, 346))), 0.5) for x0, x1 in ((148, 236), (236, 320), (320, 405), (405, 492))], "furniture", "bakery_oven")  # frames 3px apart: measured
     _pieces(rgba, (510, 240, 850, 345), ["bread_rack_a", "bread_rack_b", "bread_rack_c"], "furniture")
     _pieces(rgba, (865, 240, 1055, 345), ["cake_case"], "furniture")
     _pieces(rgba, (1070, 240, 1250, 345), ["flour_sacks"], "furniture")
@@ -1471,8 +1471,10 @@ def w47():
 
 # ---------------------------------------------------------------- batch W48-W51 (trees, landmarks, farm buildings, animals)
 
-def _cells(rgba, reg, n, group, names_or_name, h, as_strip=False):
-    """Equal cells across reg (trees that touch each other), trimmed per cell."""
+def _cells(rgba, reg, n, group, names_or_name, h, as_strip=False, fade=False):
+    """Equal cells across reg (trees that touch each other), trimmed per cell.
+    fade: soften a side the cell boundary cut through (canopies that touch on the
+    sheet), so band trees don't read as square-cut chunks."""
     x0, y0, x1, y1 = reg
     cw = (x1 - x0) / n
     out = []
@@ -1480,6 +1482,16 @@ def _cells(rgba, reg, n, group, names_or_name, h, as_strip=False):
         box = (int(x0 + i * cw) + 2, y0, int(x0 + (i + 1) * cw) - 2, y1)
         bb = region_bbox(rgba, box)
         im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
+        if fade and bb:
+            im = im.copy()
+            px = im.load(); w, hh = im.size
+            for side in (0, w - 1):
+                if sum(1 for y in range(hh) if px[side, y][3] > 100) > hh * 0.08:
+                    for d in range(min(4, w // 2)):
+                        x = side + d if side == 0 else side - d
+                        for y in range(hh):
+                            r, g, b, a = px[x, y]
+                            px[x, y] = (r, g, b, a * (d + 1) // 5)
         out.append(scale_to(im, height=h))
     if as_strip:
         strip(out, group, names_or_name)
@@ -1490,15 +1502,15 @@ def _cells(rgba, reg, n, group, names_or_name, h, as_strip=False):
 
 def w48():
     rgba = load("w48_big_trees.png")
-    y0, y1 = 178, 348
-    _cells(rgba, (12, y0, 292, y1), 3, "nature", ["big_oak_a", "big_oak_b", "big_oak_c"], 128)
-    _cells(rgba, (292, y0, 532, y1), 3, "nature", ["big_pine_a", "big_pine_b", "big_pine_c"], 128)
-    _cells(rgba, (532, y0, 692, y1), 3, "nature", ["big_birch_a", "big_birch_b", "big_birch_c"], 128)
-    _cells(rgba, (695, y0, 822, y1), 1, "nature", ["big_willow"], 128)
-    _cells(rgba, (826, y0, 1012, y1), 2, "nature", ["big_cherry_a", "big_cherry_b"], 128)
-    _cells(rgba, (1016, y0, 1202, y1), 2, "nature", ["big_maple_a", "big_maple_b"], 128)
-    _cells(rgba, (1206, y0, 1362, y1), 2, "nature", ["big_dead_a", "big_dead_b"], 128)
-    _cells(rgba, (1366, y0, 1532, y1), 2, "nature", ["big_snowpine_a", "big_snowpine_b"], 128)
+    y0, y1 = 183, 348  # captions end at y181
+    _cells(rgba, (12, y0, 292, y1), 3, "nature", ["big_oak_a", "big_oak_b", "big_oak_c"], 128, fade=True)
+    _cells(rgba, (292, y0, 532, y1), 3, "nature", ["big_pine_a", "big_pine_b", "big_pine_c"], 128, fade=True)
+    _cells(rgba, (532, y0, 692, y1), 2, "nature", ["big_birch_a", "big_birch_b"], 128, fade=True)  # "x3" on the sheet, but only 2 are drawn
+    _cells(rgba, (695, y0, 822, y1), 1, "nature", ["big_willow"], 128, fade=True)
+    _cells(rgba, (826, y0, 1012, y1), 2, "nature", ["big_cherry_a", "big_cherry_b"], 128, fade=True)
+    _cells(rgba, (1016, y0, 1202, y1), 2, "nature", ["big_maple_a", "big_maple_b"], 128, fade=True)
+    _cells(rgba, (1206, y0, 1362, y1), 2, "nature", ["big_dead_a", "big_dead_b"], 128, fade=True)
+    _cells(rgba, (1366, y0, 1532, y1), 2, "nature", ["big_snowpine_a", "big_snowpine_b"], 128, fade=True)
     mid = ["mid_oak", "mid_pine", "mid_birch", "mid_willow", "mid_cherry", "mid_maple", "mid_dead", "mid_snowpine", "mid_oak_b", "mid_pine_b", "mid_birch_b", "mid_willow_b", "mid_cherry_b", "mid_maple_b", "mid_dead_b", "mid_snowpine_b"]
     for b, nm in zip(row_sprites(rgba, (10, 462, 1535, 582), 16), mid):
         save(_cut(rgba, b, h=96), "nature", nm)
@@ -1511,7 +1523,7 @@ def w48():
 
 def w49():
     rgba = load("w49_landmarks.png")
-    _anim(rgba, (15, 140, 605, 362), 4, "props", "windmill3", 0.5)
+    _anim(rgba, (8, 148, 605, 362), 4, "props", "windmill3", 0.5, gap=1)
     save(_cut(rgba, (625, 140, 835, 362), h=128), "props", "watchtower")
     save(_cut(rgba, (875, 155, 1215, 352), h=96), "props", "stone_circle")
     save(_cut(rgba, (1235, 175, 1530, 335), h=48), "props", "hollow_log")
@@ -1525,29 +1537,29 @@ def w49():
     frames = [_cut(rgba, (x0, y0, x0 + 195, y0 + 115), 96, 64, cover=False) for (x0, y0) in [(15, 780), (215, 780), (15, 895), (215, 895)]]
     strip(frames, "props", "campsite")
     save(_cut(rgba, (435, 780, 625, 1012), h=96), "props", "cat_statue")
-    save(_cut(rgba, (675, 785, 835, 985), h=64), "props", "signpost_cluster")
-    save(_cut(rgba, (865, 785, 1185, 995), h=64), "props", "bus_shelter")
+    save(_cut(rgba, (675, 790, 835, 985), h=64), "props", "signpost_cluster")
+    save(_cut(rgba, (865, 795, 1185, 995), h=64), "props", "bus_shelter")
     save(_cut(rgba, (1205, 785, 1530, 1005), h=64), "props", "toll_house")
 
 
 def w50():
     rgba = load("w50_farm_buildings.png")
-    _cells(rgba, (25, 100, 335, 262), 2, "props", ["coop_small", "coop_small_open"], 80)
-    _cells(rgba, (340, 100, 700, 262), 2, "props", ["coop_big", "coop_big_open"], 96)
-    _cells(rgba, (705, 100, 1060, 262), 2, "props", ["barn_small", "barn_small_open"], 96)
-    _cells(rgba, (1070, 100, 1525, 262), 2, "props", ["barn_big", "barn_big_open"], 112)
-    save(_cut(rgba, (25, 340, 145, 520), h=112), "props", "silo2")
-    _anim(rgba, (155, 340, 725, 520), 4, "props", "greenhouse2", 0.5)
+    # measured spans (equal cells cut the open coop and left slivers); y1=259 stops above the captions
+    for (x0, x1), nm, h in zip([(18, 170), (170, 326), (330, 513), (513, 700), (705, 884), (884, 1060), (1062, 1290), (1290, 1525)],
+                               ["coop_small", "coop_small_open", "coop_big", "coop_big_open", "barn_small", "barn_small_open", "barn_big", "barn_big_open"], [80, 80, 96, 96, 96, 96, 112, 112]):
+        save(_cut(rgba, (x0, 110, x1, 259), h=h), "props", nm)
+    save(_cut(rgba, (25, 346, 145, 520), h=112), "props", "silo2")
+    _anim(rgba, (155, 348, 725, 509), 4, "props", "greenhouse2", 0.5)
     save(_cut(rgba, (735, 345, 845, 520), h=64), "props", "well_roofed")
     save(_cut(rgba, (865, 345, 1045, 520), h=72), "props", "shed")
     save(_cut(rgba, (1055, 345, 1325, 520), h=96), "props", "stable2")
     save(_cut(rgba, (1335, 345, 1525, 520), h=128), "props", "mill")
-    _anim(rgba, (10, 590, 565, 700), 4, "props", "fish_pond", 0.5)
+    _anim(rgba, (10, 595, 565, 684), 4, "props", "fish_pond", 0.5)
     for b, nm in zip(row_sprites(rgba, (565, 590, 1525, 700), 8), ["beehive3_a", "beehive3_b", "keg2", "preserves_jar", "furnace2_off", "furnace2_on", "workbench3", "anvil_stand"]):
         save(_cut(rgba, b, h=40 if nm not in ("workbench3",) else 44), "props", nm)
-    _anim(rgba, (10, 760, 325, 840), 4, "props", "sprinkler_basic", 0.5)
-    _anim(rgba, (365, 760, 685, 840), 4, "props", "sprinkler_quality", 0.5)
-    _anim(rgba, (695, 760, 1015, 840), 4, "props", "sprinkler_iridium", 0.5)
+    _anim(rgba, (10, 773, 325, 831), 4, "props", "sprinkler_basic", 0.5)
+    _anim(rgba, (365, 771, 685, 831), 4, "props", "sprinkler_quality", 0.5)
+    _anim(rgba, (695, 771, 1015, 831), 4, "props", "sprinkler_iridium", 0.5)
     for b, nm in zip(row_sprites(rgba, (1035, 755, 1525, 845), 3), ["scarecrow_classic", "scarecrow_knight", "scarecrow_pumpkin"]):
         save(_cut(rgba, b, h=48), "props", nm)
     for x0, x1, pre in [(10, 495, "fence2_wood"), (515, 1005, "fence2_stone"), (1015, 1525, "fence2_iron")]:
@@ -1582,6 +1594,20 @@ def _main_blob(im):
     out = Image.fromarray(a)
     bb = out.getbbox()
     return out.crop(bb) if bb else im
+
+
+def _biggest_blob(im, it=2):
+    """Only the biggest blob (dilated by `it`), cropped: drops neighbours that overlap the box."""
+    from scipy import ndimage
+    a = np.asarray(im).copy()
+    m = a[..., 3] > 40
+    dl, n = ndimage.label(ndimage.binary_dilation(m, iterations=it))
+    if n < 2:
+        return im
+    k = 1 + int(np.argmax(ndimage.sum(m, dl, range(1, n + 1))))
+    a[dl != k, 3] = 0
+    out = Image.fromarray(a)
+    return out.crop(out.getbbox())
 
 
 def _box_anim(rgba, box, n, group, name, h, clean=False):
@@ -2042,7 +2068,7 @@ def w66():
 def w65():
     rgba = load("w65_forest_design.png")
     a = rgba[..., 3] > 40
-    rows = [r for r in _grid_runs(a.mean(1), 0.05, 40) if r[1] - r[0] >= 50]
+    rows = [r for r in _grid_runs(a.mean(1), 0.05, 40) if r[1] - r[0] >= 40]
     y0, y1 = rows[0]
     for i, b in enumerate(row_sprites(rgba, (10, y0, 1526, y1), 8, gap=8)):
         save(scale_to(crop(rgba, region_bbox(rgba, b)), height=96), "nature", "grove_%d" % i)
@@ -2058,15 +2084,19 @@ def w65():
     y0, y1 = rows[4]
     for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), 8, gap=8), ["path_s", "path_straight", "path_fork", "path_left", "path_right", "path_roots", "path_puddle", "path_end"]):
         save(scale_to(crop(rgba, region_bbox(rgba, b)), width=64, height=32, cover=True), "tiles", "fpath_" + nm)
-    y0, y1 = rows[5]
-    bs = row_sprites(rgba, (10, y0, 1526, y1), 16, gap=5)
-    save(scale_to(crop(rgba, region_bbox(rgba, bs[0])), height=96), "fx", "god_ray")
-    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=32) for b in bs[1:5]], "fx", "dust_motes")
-    strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=32) for b in bs[5:9]], "fx", "firefly_cluster")
-    for i, b in enumerate(bs[9:12]):
-        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=32), "fx", "fog_patch_%d" % i)
-    for i, b in enumerate(bs[12:16]):
-        save(scale_to(crop(rgba, region_bbox(rgba, b)), height=32), "fx", "dapple_%d" % i)
+    # Row 5 is faint glows that row_sprites can't count: fixed spans (label ends y772), equal frames inside each.
+    def eq(x0, x1, n):
+        w = (x1 - x0) / float(n)
+        return [region_bbox(rgba, (int(x0 + i * w), 774, int(x0 + (i + 1) * w), 860)) for i in range(n)]
+    def fxim(b, h=32):
+        return scale_to(crop(rgba, b), height=h) if b else Image.new("RGBA", (8, 8))
+    save(fxim(eq(10, 110, 1)[0], 96), "fx", "god_ray")
+    strip([fxim(b) for b in eq(110, 485, 4)], "fx", "dust_motes")
+    strip([fxim(b) for b in eq(485, 770, 3)], "fx", "firefly_cluster")
+    for i, b in enumerate(eq(770, 1100, 3)):
+        save(fxim(b), "fx", "fog_patch_%d" % i)
+    for i, b in enumerate(eq(1120, 1530, 4)):
+        save(fxim(b), "fx", "dapple_%d" % i)
     y0, y1 = rows[6]
     for b, nm in zip(row_sprites(rgba, (10, y0, 1526, y1), 16, gap=5), ["feather_a", "feather_b", "acorns", "pinecones", "snail_leaf", "mush_red", "mush_brown", "mush_purple", "mush_blue", "flw_white", "flw_yellow", "flw_pink", "flw_blue", "pebble_a", "pebble_b", "dew_grass"]):
         save(scale_to(crop(rgba, region_bbox(rgba, b)), height=20), "nature", "fd_" + nm)
@@ -2522,6 +2552,34 @@ def w125():
 EXPR = ["neutral", "happy", "sad", "angry", "surprised", "tired", "laughing", "worried", "determined", "sleepy", "sick", "love"]
 VILLAGERS_B = ["marlowe", "orla", "benno", "ivy", "tam", "old_moss", "granite", "sel"]
 
+def _one_face(im):
+    """One face per portrait: some cells hold two or more faces side by side
+    (equal cells that don't match the sheet's spacing). Keep the widest run of
+    opaque columns; if the faces touch, split at the dips in the column counts."""
+    if im.width < im.height * 1.3:
+        return im
+    a = np.asarray(im)[..., 3] > 40
+    cnt = a.sum(0)
+    def runs_of(on):
+        out, st = [], None
+        for x, v in enumerate(list(on) + [False]):
+            if v and st is None: st = x
+            elif not v and st is not None: out.append((st, x)); st = None
+        return out
+    runs = runs_of(cnt > 0)
+    if len(runs) < 2 or max(e - s0 for s0, e in runs) > im.height * 1.3:
+        # faces that touch at the shoulders: cut at the low columns between the cores
+        runs = runs_of(cnt > cnt.max() * 0.3)
+    if len(runs) < 2:
+        return im
+    s0, e = max(runs, key=lambda r: r[1] - r[0])
+    if e - s0 < im.height * 0.6:
+        return im  # no face-sized core (a single wide bust): leave it whole
+    out = im.crop((s0, 0, e, im.height))
+    bb = out.getbbox()
+    return out.crop(bb) if bb else out
+
+
 def _portrait_rows(file, group_names, rows_n=8, n=12):
     rgba = load(file)
     a = rgba[..., 3] > 40
@@ -2532,7 +2590,7 @@ def _portrait_rows(file, group_names, rows_n=8, n=12):
             bb = region_bbox(rgba, b)
             if not bb or i >= len(EXPR):
                 continue
-            im = crop(rgba, bb)
+            im = _one_face(crop(rgba, bb))
             im.thumbnail((96, 96))
             save(im, gname, EXPR[i])
 
@@ -2541,18 +2599,23 @@ def w131():
 
 def w128():
     rgba = load("w128_hero_portraits.png")
-    a = rgba[..., 3] > 40
-    rows = [r for r in _grid_runs(a.mean(1), 0.01, 40) if r[1] - r[0] >= 40][:8]
+    H = rgba.shape[0]
+    rows = [(i * H // 8, (i + 1) * H // 8) for i in range(8)]  # fixed 12x8 grid; rows 4/5 touch (Dark Broad was lost)
+    det = [r for r in _grid_runs((rgba[..., 3] > 40).mean(1), 0.01, 40) if r[1] - r[0] >= 40][:8]
     for name, (y0, y1) in zip(BODY_NAMES, rows[:6]):
-        bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 12)
+        bs = _equal_cells(rgba, (4, y0, rgba.shape[1] - 4, y1), 12)
+        cw = rgba.shape[1] / 12.0
+        if len(bs) < 12 or any(b[2] - b[0] < 20 or b[2] - b[0] > cw * 1.6 for b in bs[:12]):
+            # shoulders touch across the whole row (Dark Broad): the plain 12-cell grid
+            bs = [(int(i * cw) + 2, y0, int((i + 1) * cw) - 2, y1) for i in range(12)]
         for i, b in enumerate(bs):
             bb = region_bbox(rgba, b)
             if bb and i < 12:
-                im = crop(rgba, bb); im.thumbnail((96, 96))
+                im = _one_face(crop(rgba, bb)); im.thumbnail((96, 96))
                 save(im, "portraits/hero_" + name, EXPR[i])
-    # rows 6-7: portrait hair overlays (24)
+    # rows 6-7: portrait hair overlays (24); the detected rows fit these tighter
     k = 0
-    for (y0, y1) in rows[6:8]:
+    for (y0, y1) in (det if len(det) == 8 else rows)[6:8]:
         bs = _equal_cells(rgba, (4, max(0, y0 - 2), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 2)), 12)
         for b in bs:
             bb = region_bbox(rgba, b)
@@ -2584,20 +2647,17 @@ def w129():
     grab(rows[4:8], ["eyes_%d" % i for i in range(48)], "portraits/eyes")
 
 def w130():
+    # The sheet has 14 sprites per row, not the 16 the prompt asked for: 0 idle down, 1 idle up, 2 idle side,
+    # 3-6 walk side, 7 down, 8 back, 9 side, 10-12 back, 13 work. Cut by blobs and map them.
     rgba = load("w130_villagers_b.png")
     a = rgba[..., 3] > 40
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
     for name, (y0, y1) in zip(VILLAGERS_B, rows):
-        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), ncells)
-        frames = []
-        for b in bs:
-            bb = region_bbox(rgba, b)
-            im = crop(rgba, bb) if bb else Image.new("RGBA", (8, 8))
-            frames.append(im)
+        bs = row_sprites(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 14, gap=4)
+        f = [crop(rgba, region_bbox(rgba, b)) for b in bs]
         g = "characters/npc_" + name
-        # 16 cells: idle down, idle up, idle side, walk side x4, walk down x4, walk up x4, work
-        strip([frames[0]], g, "idle"); strip([frames[1]], g, "idle_up"); strip([frames[2]], g, "idle_side")
-        strip(frames[3:7], g, "walk"); strip(frames[7:11], g, "walk_down"); strip(frames[11:15], g, "walk_up"); strip([frames[15]], g, "work")
+        strip([f[0]], g, "idle"); strip([f[1]], g, "idle_up"); strip([f[2]], g, "idle_side")
+        strip(f[3:7], g, "walk"); strip([f[0], f[7], f[0], f[7]], g, "walk_down"); strip([f[1], f[8], f[10], f[11]], g, "walk_up"); strip([f[13]], g, "work")
 
 def w126():
     rgba = load("w126_riding.png")
@@ -2920,7 +2980,7 @@ def w161():
                 b = bs[oi * 4 + ei]
                 bb = region_bbox(rgba, b)
                 if bb:
-                    im = crop(rgba, bb); im.thumbnail((96, 96))
+                    im = _one_face(crop(rgba, bb)); im.thumbnail((96, 96))
                     save(im, "portraits/npc_%s_%s" % (v, outfit), ex)
 
 
@@ -3220,7 +3280,7 @@ def w183():
             for ei, e in enumerate(ex):
                 bb = region_bbox(rgba, bs[si * 6 + ei])
                 if bb:
-                    im = crop(rgba, bb); im.thumbnail((96, 96))
+                    im = _one_face(crop(rgba, bb)); im.thumbnail((96, 96))
                     save(im, "portraits/hero_" + cs, e)
 
 
@@ -3253,8 +3313,15 @@ def _anim_from(group, src, n, name, group_out=None):
     im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
     w, h = im.size
     frames = []
+    # Cut at the emptiest column near each equal split, so no frame keeps a sliver of its neighbour.
+    col = (np.asarray(im)[..., 3] > 40).sum(0)
+    xs = [0]
+    for i in range(1, n):
+        c = int(i * w / n); lo, hi = max(1, c - 10), min(w - 1, c + 10)
+        xs.append(lo + int(np.argmin(col[lo:hi])))
+    xs.append(w)
     for i in range(n):
-        sub = im.crop((int(i * w / n), 0, int((i + 1) * w / n), h))
+        sub = im.crop((xs[i], 0, xs[i + 1], h))
         bb = sub.getbbox()
         frames.append(sub.crop(bb) if bb else sub)
     strip(frames, group_out, name)
@@ -3496,6 +3563,9 @@ def w_interiors():
         _alias(F, "int_light_%02d" % (69 + i), nm)
     _alias(F, "int_light_70", "reed_mat_round")  # 70 holds both reed mats
     _alias(F, "int_light_81", "bait_bucket_b")  # 81 is the two-bucket picture
+    for nm in ("rod_a", "rod_b", "rod_c"):  # the rods lean over each other: keep each one's own blob
+        if nm in S.manifest[F]:
+            save(_biggest_blob(Image.open(os.path.join(S.OUT, S.manifest[F][nm]["file"])).convert("RGBA")), F, nm)
     # quarry / ruins
     _floor_kit(F, "int_quarry_00", "fl_quarry")
     for i, nm in enumerate(["wl_quarry_m", "wl_quarry_window", "wl_quarry_door"]):
@@ -4110,7 +4180,7 @@ def _hero_sheet(file, char_id):
             merged.append(tuple(b))
     PG = "portraits/" + char_id
     for i, b in enumerate(merged[:len(HERO_EXPR)]):
-        img = scale_to(crop(rgba, b), height=96)
+        img = scale_to(_one_face(crop(rgba, b)), height=96)
         save(img, PG, HERO_EXPR[i])
 
 def w201(): _hero_sheet("w201_hero_june.png", "june")
@@ -4654,8 +4724,12 @@ def _peng_hero_sheet(file):
     cid, nrows, rows, exprs = PENG_HEROES[file]
     ch = H / float(nrows)
     G = "characters/" + cid
+    # Rows are not evenly spaced (merry/big_jim row 3 starts 24-41px above r*ch): use the real bands when they add up.
+    bands = _bands(rgba, gap=6, minh=60)
+    if len(bands) != nrows:
+        bands = [(int(r * ch) + 2, int((r + 1) * ch) - 2) for r in range(nrows)]
     for r, spec in rows.items():
-        y0, y1 = int(r * ch) + 2, int((r + 1) * ch) - 2
+        y0, y1 = bands[r]
         cells = _band_cells(rgba, y0, y1, 300 if (cid == "coldy" and r < 2) else 0, Wd)
         if r == nrows - 1 and exprs:
             # Last row: views (small) then portraits (big).
@@ -5271,7 +5345,7 @@ def w288():
 def w293(): _icons_named("w293_sanctuary_icons.png", _p15_layout()["icons_sanctuary"])
 
 
-def _band_cells(rgba, y0, y1, x0, x1, min_area, expect):
+def _band_cells_b(rgba, y0, y1, x0, x1, min_area, expect):
     return [c for r in _blob_rows(rgba[y0:y1], x0, x1, min_area, 600, expect) for c in r]
 
 
@@ -5284,7 +5358,7 @@ def w292():
             # Tiers 3 and 4 touch on the sheet: cut by column instead.
             cells = [crop(rgba, region_bbox(rgba, (a, y0, b, y1))) for a, b in ((10, 140), (140, 356), (356, 546), (546, 780))]
         else:
-            cells = _band_cells(rgba, y0, y1, x0, x1, 2500, n)
+            cells = _band_cells_b(rgba, y0, y1, x0, x1, 2500, n)
         if len(cells) != n: raise RuntimeError("w292 %s: %d cells" % (sid, len(cells)))
         for t, im in enumerate(cells):
             save(_shrink(im, k), "props", "st_%s_%d" % (sid, t + 1))
@@ -5304,15 +5378,15 @@ def w294():
     for nm, x0, x1 in (("merkitty_a", 10, 480), ("merkitty_b", 510, 975), ("merkitty_c", 1015, 1505)):
         _even_strip(rgba, (x0, 20, x1, 205), 5, "fx", nm)
     for nm, x0, x1, n in (("baby_dig", 0, 480, 4), ("baby_carry", 480, 1010, 5), ("baby_sleep", 1010, 1536, 4)):
-        cells = _band_cells(rgba, 235, 405, x0, x1, 900, n)
+        cells = _band_cells_b(rgba, 235, 405, x0, x1, 900, n)
         if len(cells) == n: strip([_shrink(im, 0.5) for im in cells], "fx", nm)
     _even_strip(rgba, (20, 440, 340, 545), 6, "fx", "stink_small")
     _even_strip(rgba, (355, 440, 725, 545), 6, "fx", "stink_scented")
     _even_strip(rgba, (740, 440, 1120, 545), 6, "fx", "stink_big")
-    lan = _band_cells(rgba, 555, 665, 0, 500, 300, 5)
+    lan = _band_cells_b(rgba, 555, 665, 0, 500, 300, 5)
     if len(lan) == 5: strip([_shrink(im, 0.5) for im in lan], "fx", "paw_lantern_glow")
     _even_strip(rgba, (515, 555, 1000, 665), 6, "fx", "heart_burst")
-    low = _band_cells(rgba, 715, 935, 0, 990, 500, 7)
+    low = _band_cells_b(rgba, 715, 935, 0, 990, 500, 7)
     if len(low) == 7:
         for nm, im in zip(["gift_basket_empty", "gift_basket_full"], low[:2]): save(_shrink(im, 0.3), "props", nm)
         save(scale_to(low[2], width=24, height=24), "ui", "ic_gift")
@@ -5326,7 +5400,7 @@ def w289():
     rgba = load("w289_operation_stations.png")
     for sid, (y0, y1, x0, x1, n, k) in {"print_shop": (20, 250, 0, 770, 4, 0.44), "armory": (20, 250, 770, 1536, 4, 0.44), "soda": (255, 480, 0, 780, 4, 0.44),
                                          "laundromat": (255, 480, 780, 1536, 3, 0.44), "training": (480, 830, 0, 1536, 3, 0.36)}.items():
-        cells = _band_cells(rgba, y0, y1, x0, x1, 2500, n)
+        cells = _band_cells_b(rgba, y0, y1, x0, x1, 2500, n)
         if len(cells) != n: raise RuntimeError("w289 %s: %d cells" % (sid, len(cells)))
         for t, im in enumerate(cells):
             save(_shrink(im, k), "props", "st_%s_%d" % (sid, t + 1))
@@ -5370,7 +5444,7 @@ def _grit(file):
     R_SWIM, R_RIDE, R_VIEW = NR - 3, NR - 2, NR - 1
     def cells_of(r, min_area=450, x0=0, x1=None):
         y0, y1 = bands[r]
-        return _band_cells(rgba, y0, y1, x0, x1 or rgba.shape[1], min_area, 0)
+        return _band_cells_b(rgba, y0, y1, x0, x1 or rgba.shape[1], min_area, 0)
     for r, names in GRIT_ROWS.items():
         cells = cells_of(r)
         if len(cells) > 20:
@@ -5422,7 +5496,7 @@ def _grit(file):
     for x in range(335, 420):
         if not colfill[x:x + 5].any():
             split = x + 2; break
-    r7 = _band_cells(rgba, bands[R_VIEW][0], H, 0, split, 700, 0)
+    r7 = _band_cells_b(rgba, bands[R_VIEW][0], H, 0, split, 700, 0)
     small = r7[:4]
     for nm, im in zip(["view_front", "view_right", "view_back", "view_left"], small):
         strip([scale_to(im, height=min(96, int(im.height * 0.96)))], G, nm)
@@ -5451,7 +5525,7 @@ def _grit(file):
                 rows_ = np.where((c[..., 3] > 40).sum(axis=1) > c.shape[1] * 0.3)[0]
                 if len(rows_): big.append(Image.fromarray(c[rows_[0]:rows_[-1] + 1]))
     for nm, im in zip(["neutral", "happy", "sad", "angry", "surprised", "embarrassed", "sly", "worried"], big):
-        save(scale_to(im, height=96), "portraits/" + cid, nm)
+        save(scale_to(_one_face(im), height=96), "portraits/" + cid, nm)
 
 
 
@@ -5523,7 +5597,7 @@ def _lt_sheet(file):
         bands = [(max(0, a - 3), min(H, b + 3)) for a, b in runs[half * 4:half * 4 + 4]]
         def cells(r, x1=cx0 - 8, min_area=450, expect=16):
             if expect == 0:
-                return _band_cells(rgba, bands[r][0], bands[r][1], 0, x1, min_area, expect)
+                return _band_cells_b(rgba, bands[r][0], bands[r][1], 0, x1, min_area, expect)
             return _col_cells(rgba, bands[r][0], bands[r][1], 0, x1, expect)
         rows = [cells(0, Wd), cells(1, Wd), cells(2)]
         def sc(im): return scale_to(im, height=max(30, min(110, int(im.height * 0.96))))
@@ -5631,7 +5705,7 @@ def _mk_sheet(file):
         r0, r1 = rows[0], rows[1]
         side = r0[int(round(14 * len(r0) / 16.0)):] + r1[:int(round(2 * len(r1) / 16.0))]
         if side: strip([sc(im) for im in side], G, "walk")
-        d = _band_cells(rgba, bands[-1][0], bands[-1][1], 0, Wd, 700, 0)
+        d = _band_cells_b(rgba, bands[-1][0], bands[-1][1], 0, Wd, 700, 0)
         for nm, im in zip(["view_front", "view_right", "view_back", "view_left"], d[:4]):
             strip([sc(im)], G, nm)
         faces = d[4:]
@@ -5735,7 +5809,7 @@ PORTRAIT_ROWS = {"w336_portraits_a.png": ["npc_old_moss", "npc_tam", "npc_benno"
                  "w337_portraits_kids.png": ["npc_pip", "npc_tobin", "npc_wren_jr", "npc_mabel", "npc_lumi", "npc_theo", "npc_bram", "npc_juniper"]}
 
 
-def _portrait_rows(file):
+def _portrait_rows7(file):
     rgba = load(file)
     H, Wd = rgba.shape[:2]
     on = (rgba[:, :, 3] > 40).sum(axis=1) > 3
@@ -5750,6 +5824,8 @@ def _portrait_rows(file):
     runs = [r for r in runs if r[1] - r[0] > 40]
     ids = PORTRAIT_ROWS[file]
     if len(runs) != len(ids):
+        runs = [list(b) for b in _bands(rgba, gap=2, minh=40)]  # rows that touch (w337: 6 runs for 8 rows)
+    if len(runs) != len(ids):
         print("   %s: %d rows for %d ids, using even rows" % (file, len(runs), len(ids)))
         runs = [[int(i * H / len(ids)), int((i + 1) * H / len(ids))] for i in range(len(ids))]
     for pid, (y0, y1) in zip(ids, runs):
@@ -5760,8 +5836,8 @@ def _portrait_rows(file):
         print("   %s: %d" % (pid, len(cells)))
 
 
-def w336(): _portrait_rows("w336_portraits_a.png")
-def w337(): _portrait_rows("w337_portraits_kids.png")
+def w336(): _portrait_rows7("w336_portraits_a.png")
+def w337(): _portrait_rows7("w337_portraits_kids.png")
 
 
 def _bands(rgba, gap=6, minh=30, x1=None):
@@ -5814,7 +5890,7 @@ def w262():
     for nm, a, c in [("sit", 0, 2), ("happy", 2, 4), ("sad", 4, 6), ("run", 6, 10)]:
         _put(r2, 10, G, nm, a, c)
     _fx_strip(_col_cells(rgba, b[2][0], b[2][1], int(Wd * 0.66), Wd, 6), "meow_pow_wow")
-    d = _band_cells(rgba, b[3][0], b[3][1], 0, Wd, 700, 0)
+    d = _band_cells_b(rgba, b[3][0], b[3][1], 0, Wd, 700, 0)
     for nm, im in zip(["view_front", "view_right", "view_back", "view_left"], d[:4]):
         strip([scale_to(im, height=int(im.height * 0.96))], G, nm)
     S.manifest["portraits/catkins"] = {}
@@ -5841,7 +5917,7 @@ def w263():
     r2 = _col_cells(rgba, b[2][0], b[2][1], 0, Wd, 19)
     for nm, a, c in [("idle", 0, 4), ("walk", 4, 8), ("attack", 8, 12), ("hurt", 12, 14), ("turned", 14, 19)]:
         _put(r2, 19, F, nm, a, c, 90)
-    d = _band_cells(rgba, b[3][0], b[3][1], 0, Wd, 700, 0)
+    d = _band_cells_b(rgba, b[3][0], b[3][1], 0, Wd, 700, 0)
     if len(d) >= 3:
         save(scale_to(d[0], height=96), "portraits/fennimore", "neutral")
         save(scale_to(d[1], height=96), "portraits/finargle", "neutral")
@@ -5984,7 +6060,8 @@ def w340_352():
         for n in nodes:
             if n.get("unlock"):
                 continue  # unlock nodes show what they unlock
-            lst = by_name.get(str(n["name"]).lower(), [])
+            nm_l = str(n["name"]).lower()
+            lst = by_name.get(nm_l) or by_name.get(nm_l.removesuffix(" ii"), [])  # "X II" shares the 2nd "X" icon
             if lst:
                 save(scale_to(lst.pop(0), 48, 48), "ui", "node_%s_%s" % (sk, n["id"])); done += 1
         print("   %s: %d icons, %d matched to %d nodes" % (sk, len(cells), done, len(nodes)))

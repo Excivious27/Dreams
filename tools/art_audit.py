@@ -18,7 +18,7 @@ changed = False
 # Frames known to be wrong on the source sheets (a portrait, a fishing line, a
 # neighbour) — dropped by --fix after every re-slice.
 KNOWN_DROPS = {("bo", "celebrate"): [0], ("marisol", "axe_down"): [0], ("nia", "reel_right"): [0, 1], ("ollie", "hoe_up"): [2],
-               ("npc_old_moss", "walk_up"): [3], ("merry", "wave"): [2], ("nia", "pickaxe_up"): [0]}
+               ("nia", "pickaxe_up"): [0]}
 
 def frames_of(key, name):
     info = m.get(key, {}).get(name)

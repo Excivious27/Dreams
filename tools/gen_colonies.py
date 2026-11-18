@@ -132,7 +132,7 @@ for rid, c in COL.items():
               "intro": [c["intro"][0]], "colony": rid}
     # Each island looks and feels like itself.
     LOOK = {"colony_coral": {"music": "colony_coral", "critters": ["seagull", "crab", "turtle"]},
-            "colony_kelp": {"music": "colony_kelp", "ground": "teal_moss", "patch_set": "bog", "critters": ["frog", "heron", "dragonfly"], "weather": "fog"},
+            "colony_kelp": {"music": "colony_kelp", "ground": "teal_moss", "ground_seam": "teal_moss", "patch_set": "bog", "critters": ["frog", "heron", "dragonfly"], "weather": "fog"},
             "colony_ice": {"music": "colony_ice", "season": "winter", "patch_set": "snowpatch", "critters": ["seagull", "otter", "moon_rabbit"], "weather": "snow"},
             "colony_ember": {"music": "colony_ember", "ground": "dead_grass", "ground_seam": "ash", "patch_set": "sand", "critters": ["firefly", "crow", "snake"]}}
     lk = LOOK.get(rid, {})

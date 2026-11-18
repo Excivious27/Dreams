@@ -8,7 +8,7 @@ R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 p = f"{R}/data/regions.json"
 raw = open(p).read(); regs = json.loads(raw)
 regs["hollow_heart"] = {
-    "cols": 76, "rows": 64, "music": "hollow_heart", "backdrop": "night", "ground": "teal_moss", "path": "stone", "pet": True,
+    "cols": 76, "rows": 64, "music": "hollow_heart", "backdrop": "night", "ground": "teal_moss", "ground_seam": "teal_moss", "path": "stone", "pet": True, "weather": "clear",
     "spawn": [38, 60], "pad": 7, "border": {"n": "cliff", "s": "cliff", "w": "cliff", "e": "cliff"},
     "exits": [{"rect": [36, 63, 4, 1], "scene": "meadow", "spawn": [31, 9], "facing": "down", "label": "▼ the long lift up"}],
     "paths": [[37, 8, 2, 54], [10, 30, 56, 2], [10, 12, 2, 20], [64, 12, 2, 20], [10, 12, 56, 2]],
@@ -23,7 +23,7 @@ regs["hollow_heart"] = {
               {"name": "mine_crystal_rock_2", "cell": [22, 40]}, {"name": "mine_crystal_rock_4", "cell": [54, 40]}, {"name": "mine_crystal_rock_1", "cell": [32, 16]},
               {"name": "mine_crystal_rock_5", "cell": [46, 26]}, {"name": "mine_heart_stalag_0", "cell": [8, 40]}, {"name": "mine_heart_stalag_1", "cell": [68, 40]},
               {"name": "cave_stalag_l", "cell": [28, 60]}, {"name": "cave_stalag_m", "cell": [50, 60]}, {"name": "cave_arch", "cell": [36, 30], "w": 3, "solid": False}],
-    "gen": {"clumps": 0, "scatter": 0, "critters": ["firefly", "bat", "firefly", "moth", "bat"], "critter_count": 18},
+    "gen": {"clumps": 0, "scatter": 0, "critters": ["firefly", "bat", "firefly", "firefly", "bat"], "critter_count": 18},
     "fruit": 0,
     "forage": 10,
     "things": [

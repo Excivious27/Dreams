@@ -39,13 +39,13 @@ static func offers(shop: String) -> Array:
 		"store":
 			# Maple stocks this season's seeds (and next season's in the last week).
 			var by_season := {
-				"spring": ["turnip_seed", "potato_seed", "carrot_seed", "strawberry_seed"],
+				"spring": ["turnip_seed", "potato_seed", "carrot_seed", "strawberry_seed", "flax_seed"],
 				"summer": ["corn_seed", "tomato_seed", "rice_seed", "sunflower_seed"],
 				"fall": ["pumpkin_seed", "cranberry_seed", "sugar_beet_seed"],
 				"winter": ["snow_pea_seed"],
 			}
 			var rare := {
-				"spring": ["flax_seed", "tea_leaf_seed"],
+				"spring": ["tea_leaf_seed"],
 				"summer": ["melon_seed", "hops_seed", "cotton_seed", "lotus_seed", "ghost_pepper_seed"],
 				"fall": ["grape_seed", "moon_melon_seed"],
 				"winter": [],
@@ -56,7 +56,7 @@ static func offers(shop: String) -> Array:
 				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
 			# Plus a few of the season's other vegetables and herbs.
 			base += _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 2 and not bool(cd.get("tree", false)) and not ("berry" in cid) and not (cid + "_seed" in base) and not (cid + "_seed" in rare[se]) and cid != "wheat", 4, 0)
-			base += ["wheat_seed", "fertilizer", "bread", "hay", "gift_pie", "paint", "sap", "candy", "toy", "chest"]
+			base += ["wheat_seed", "fertilizer", "bread", "coffee", "hay", "gift_pie", "paint", "sap", "candy", "toy", "chest"]
 			if int(GameState.run.get("bag_up", 0)) < GameState.BAG_MAX_UP:
 				base.append("backpack_%d" % (int(GameState.run.get("bag_up", 0)) + 1))
 			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):

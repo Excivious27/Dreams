@@ -6713,7 +6713,7 @@
   "value": 6,
   "rarity": "common",
   "tier": 1,
-  "desc": "From the mine. The dog approves."
+  "desc": "Old beast bones. The dog approves."
  },
  "slime_goo": {
   "name": "Slime Goo",
@@ -7416,7 +7416,7 @@
   "value": 0,
   "rarity": "epic",
   "tier": 4,
-  "desc": "Coldy's key to the heart of Mount Prismatica. It is warm, and it is humming."
+  "desc": "A keepsake from the crystal babies. Coldy says it once opened the heart of Mount Prismatica. It is warm, and it is humming."
  },
  "merkitty_necklace": {
   "name": "Merkitty Necklace",
@@ -8534,12 +8534,12 @@
  "cherry_fizz": {
   "name": "Cherry Fizz",
   "type": "food",
-  "value": 150,
+  "value": 55,
   "rarity": "uncommon",
   "tier": 2,
   "arc": "gangsters",
-  "energy": 55,
-  "heal": 3
+  "energy": 30,
+  "heal": 2
  },
  "golden_float": {
   "name": "Golden Float",
@@ -8600,7 +8600,7 @@
  "fedora": {
   "name": "Fedora",
   "type": "equip",
-  "value": 140,
+  "value": 60,
   "rarity": "common",
   "tier": 1,
   "slot": "head",
