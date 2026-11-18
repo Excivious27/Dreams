@@ -50,6 +50,8 @@ var _canvas: Control
 var _running := false
 
 
+const BTN_ROW := ["btn_blue", "btn_blue_down", "btn_green", "btn_green_down", "btn_red", "btn_red_down", "btn_gold", "btn_gold_down"]
+
 func _ready() -> void:
 	layer = 10
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -359,14 +361,21 @@ func _on_draw() -> void:
 		var r := float(br[1])
 		var on := _held.has(action)
 		var sk: Array = skins.get(action, [])
+		var bname := ""
 		if not sk.is_empty() and Art.has("ui", str(sk[0])):
 			btn = Art.tex("ui", str(sk[0]))
 			btn_down = Art.tex("ui", str(sk[1]))
+			bname = str(sk[1] if on else sk[0])
 		if btn and btn_down:
-			# These sheets hold a row of round buttons: draw only the first one.
 			var bt: Texture2D = btn_down if on else btn
 			var cell := float(bt.get_height())
-			_canvas.draw_texture_rect_region(bt, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), Rect2(0, 0, cell, cell), Color(1, 1, 1, 0.85))
+			var src := Rect2(0, 0, cell, cell)
+			if bt.get_width() > cell * 4:
+				# The slicer left the whole row (8 buttons side by side): pick ours.
+				var idx := BTN_ROW.find(bname)
+				var cw := float(bt.get_width()) / BTN_ROW.size()
+				src = Rect2(cw * maxi(idx, 0) + (cw - cell) / 2.0, 0, cell, cell)
+			_canvas.draw_texture_rect_region(bt, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), src, Color(1, 1, 1, 0.85))
 		else:
 			_canvas.draw_circle(p, r, lit if on else base)
 			_canvas.draw_arc(p, r, 0, TAU, 40, edge, 1.5, true)

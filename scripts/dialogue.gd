@@ -239,8 +239,17 @@ func _show_choice(line: Dictionary) -> void:
 		_choices.add_child(b)
 	# Size the list by the rows' real (wrapped) heights, up to about half the screen.
 	var want := 0.0
+	var lw := maxf(60.0, _panel.size.x - 24.0)
 	for c in _choices.get_children():
-		want += maxf(20.0, (c as Button).get_combined_minimum_size().y) + 2.0
+		var bb := c as Button
+		# Autowrap buttons have no width yet: count the wrapped lines ourselves.
+		var f := bb.get_theme_font("font")
+		var fs := bb.get_theme_font_size("font_size")
+		var lines := 1
+		if f:
+			lines = maxi(1, ceili(f.get_string_size(bb.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x / lw))
+		var lh := f.get_height(fs) if f else 9.0
+		want += maxf(20.0, maxf(bb.get_combined_minimum_size().y, lines * lh + 8.0)) + 2.0
 	var cap := 7 * 22.0
 	_choice_scroll.custom_minimum_size = Vector2(0, minf(want, cap))
 	_panel.size.y = BOX_H + minf(want, cap)

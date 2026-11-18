@@ -378,12 +378,23 @@ func in_content(c: Vector2i) -> bool:
 	return c.x >= 0 and c.y >= 0 and c.x < cols and c.y < rows
 
 
+## A villager on (or right by) this cell: talking wins over the pup at your feet.
+func _npc_near(c: Vector2i) -> bool:
+	var list = get("npcs")
+	if not (list is Array):
+		return false
+	for n in list:
+		if n is Node2D and is_instance_valid(n) and (n as Node2D).visible and (n as Node2D).position.distance_to(cell_center(c)) < 14.0:
+			return true
+	return false
+
+
 func _pup_at(c: Vector2i) -> bool:
 	return pet != null and is_instance_valid(pet) and pet.visible and pet is Pet and (pet.position.distance_to(cell_center(c)) < 13.0 or (player and pet.position.distance_to(player.position) < 16.0 and world_to_cell(pet.position) == c))
 
 
 func try_interact(c: Vector2i) -> bool:
-	if _pup_at(c):
+	if _pup_at(c) and not _npc_near(c):
 		later(_pup_menu)
 		return true
 	var thing: Dictionary = things.get(c, {})
@@ -2489,8 +2500,8 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 					elif n < -0.38:
 						tname = "g_dry" if season == "summer" else "g_flower"
 				Art.draw_tile(self, "tiles", tname, at, 4)
-				if season == "spring" and _deco_rng.randf() < 0.07:
-					Art.draw_tile(self, "tiles", "deco_%d" % _deco_rng.randi_range(0, 5), at)
+				if season == "spring" and _deco_rng.randf() < 0.07 and Art.has("nature", "gdeco_dandelion"):
+					Art.draw_prop(self, "nature", "gdeco_dandelion" if _deco_rng.randf() < 0.5 else "gdeco_clover", at + Vector2(8, 14))
 			else:
 				draw_rect(Rect2(at, Vector2(TILE, TILE)), Color("5a9e4b") if (x + y) % 2 == 0 else Color("67ab55"))
 	if not _tall.is_empty() and Art.has("tiles", "tall_edge_top_0"):

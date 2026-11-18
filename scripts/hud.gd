@@ -328,30 +328,26 @@ static func icon_for(id: String) -> String:
 
 
 func _panel(c: CanvasItem, name: String, rect: Rect2) -> void:
+	# panel_parchment's 24px cells have transparent gutters (they stretch into
+	# dark lines): use the framed panel_parchment2 as a true 9-slice.
+	if name == "panel_parchment" and Art.has("ui", "panel_parchment2"):
+		name = "panel_parchment2"
 	var t := Art.tex("ui", name)
 	if t == null:
 		c.draw_rect(rect, Color(0.95, 0.88, 0.7, 0.95))
 		c.draw_rect(rect, Color(0.4, 0.25, 0.1), false, 1.0)
 		return
-	# 3x3 cells of 24px -> draw as a 9-slice with 8px corners.
-	var cs := 24
-	var m := 8.0
-	var w := rect.size.x
-	var h := rect.size.y
-	var p := rect.position
-	var pieces := [
-		[Rect2(0, 0, cs, cs), Rect2(p, Vector2(m, m))],
-		[Rect2(cs, 0, cs, cs), Rect2(p + Vector2(m, 0), Vector2(w - 2 * m, m))],
-		[Rect2(2 * cs, 0, cs, cs), Rect2(p + Vector2(w - m, 0), Vector2(m, m))],
-		[Rect2(0, cs, cs, cs), Rect2(p + Vector2(0, m), Vector2(m, h - 2 * m))],
-		[Rect2(cs, cs, cs, cs), Rect2(p + Vector2(m, m), Vector2(w - 2 * m, h - 2 * m))],
-		[Rect2(2 * cs, cs, cs, cs), Rect2(p + Vector2(w - m, m), Vector2(m, h - 2 * m))],
-		[Rect2(0, 2 * cs, cs, cs), Rect2(p + Vector2(0, h - m), Vector2(m, m))],
-		[Rect2(cs, 2 * cs, cs, cs), Rect2(p + Vector2(m, h - m), Vector2(w - 2 * m, m))],
-		[Rect2(2 * cs, 2 * cs, cs, cs), Rect2(p + Vector2(w - m, h - m), Vector2(m, m))],
-	]
-	for pc in pieces:
-		c.draw_texture_rect_region(t, pc[1], pc[0])
+	var tw := float(t.get_width())
+	var th := float(t.get_height())
+	var sm := 12.0 if name == "panel_parchment2" else 8.0   # source corner (texture px)
+	var m := minf(6.0, minf(rect.size.x, rect.size.y) / 3.0)  # drawn corner
+	var xs := [0.0, sm, tw - sm, tw]
+	var ys := [0.0, sm, th - sm, th]
+	var dx := [rect.position.x, rect.position.x + m, rect.end.x - m, rect.end.x]
+	var dy := [rect.position.y, rect.position.y + m, rect.end.y - m, rect.end.y]
+	for yi in 3:
+		for xi in 3:
+			c.draw_texture_rect_region(t, Rect2(dx[xi], dy[yi], dx[xi + 1] - dx[xi], dy[yi + 1] - dy[yi]), Rect2(xs[xi], ys[yi], xs[xi + 1] - xs[xi], ys[yi + 1] - ys[yi]))
 
 
 ## Panels in the art's palette: parchment (light, dark ink) or wood (dark, light text).

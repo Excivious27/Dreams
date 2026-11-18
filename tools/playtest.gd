@@ -97,8 +97,10 @@ func _run() -> void:
 	touch(0, Vector2(60, 400), true)
 	await frames(2)
 	drag(0, Vector2(60, 400), Vector2(110, 400))
-	await frames(40)
-	var tspd := p.velocity.length()
+	var tspd := 0.0
+	for i in 40:
+		await frames(1)
+		tspd = maxf(tspd, p.velocity.length())
 	check(tspd > Player.WALK_SPEED * 1.3, "joystick pushed far runs (%.0f)" % tspd)
 	p.position = farm.cell_center(Vector2i(6, 20))  # fresh runway for the walk check
 	drag(0, Vector2(110, 400), Vector2(76, 400))
@@ -216,12 +218,30 @@ func _run() -> void:
 	check(maple.visible, "Maple is outside at noon (%s)" % maple._place)
 	maple.wander = 0.0  # hold still for the test (she drifts around her stall otherwise)
 	maple._target = maple.position
-	town.player.position = maple.position + Vector2(0, 14)
-	town.player.facing = "up"
+	maple.set_process(false)  # she walks her routine otherwise and can step onto the player's cell
+	# Stand on an open side of her (scatter props move with the world seed).
+	var sides := [[Vector2(0, 14), "up"], [Vector2(-14, 0), "right"], [Vector2(14, 0), "left"], [Vector2(0, -14), "down"]]
+	var pick: Array = sides[0]
+	for sd in sides:
+		var cc: Vector2i = town.world_to_cell(maple.position + sd[0])
+		if not town.blocked.has(cc):
+			pick = sd
+			break
+	town.player.position = maple.position + pick[0]
+	town.player.facing = pick[1]
 	await frames(20)
+	# A story beat may still be open from arriving in town: finish it first.
+	for i in 30:
+		if not d.active:
+			break
+		await press("a", 2)
+		await frames(4)
+	await frames(30)
+	Dialogue.block_until_ms = 0
 	await press("a", 3)
 	await frames(10)
 	check(d.active, "Maple talks")
+	maple.set_process(true)
 	await shot("09_talk")
 	for i in 10:
 		if not d.active:
@@ -339,6 +359,7 @@ func _run() -> void:
 		await frames(6)
 	check(str(GameState.run["flags"].get("letter", "")) == "kept", "letter decision stored")
 	GameState.run["kills"] = 4
+	GameState.run["meadow_kills"] = 4
 	GameState.select_slot(4)
 	GameMap.next_spawn = Vector2.ZERO
 	change_scene_to_file("res://scenes/meadow.tscn")

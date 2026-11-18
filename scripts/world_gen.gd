@@ -66,10 +66,13 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 					m.prop("nature", nm if Art.has("nature", nm) else "flowers", c, 0, 0.0, false)
 				continue
 			if season == "spring" or season == "summer":
-				if r < density * 0.5:
-					Art.draw_tile(m, "tiles", "deco_%d" % rng.randi_range(0, 2), at)
+				# (deco_N tiles are opaque squares in another green: they read as a checkerboard.)
+				if r < density * 0.8 and not Art.has("nature", "gdeco_tuft_a"):
+					Art.draw_tile(m, "tiles", "deco_%d" % rng.randi_range(0, 5), at)
+				elif r < density * 0.8 and rng.randf() < 0.5:
+					Art.draw_prop(m, "nature", ["gdeco_tuft_a", "gdeco_tuft_b", "gdeco_tuft_c"][rng.randi_range(0, 2)], at + Vector2(rng.randf_range(4, 12), rng.randf_range(10, 16)))
 				elif r < density * 0.8:
-					Art.draw_tile(m, "tiles", "deco_%d" % rng.randi_range(3, 5), at)
+					pass
 				elif Art.has("nature", "gdeco_tuft_a") and rng.randf() < 0.6:
 					Art.draw_prop(m, "nature", ["gdeco_tuft_a", "gdeco_tuft_b", "gdeco_tuft_c", "gdeco_clover", "gdeco_dandelion"][rng.randi_range(0, 4)], at + Vector2(8, 16))
 				else:
