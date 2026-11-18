@@ -42,6 +42,40 @@ static func tex(group: String, name: String) -> Texture2D:
 ## SpriteFrames built from one or more strips: {"anim_name": "strip_name", ...}.
 ## Called on every scene change: textures pile up as you travel (the web build
 ## has little memory), so past a budget everything is let go and reloaded on use.
+static var _rings: Dictionary = {}
+
+
+## A white disc (w 0) or ring (w = line width as a fraction of the radius):
+## 96 px, radius 44, antialiased edge. Drawn with a modulate colour it looks like
+## draw_circle / draw_arc, but it is one textured quad, so many of them batch into
+## one draw call (each draw_circle is a draw call, an antialiased draw_arc three).
+static func ring_tex(w := 0.0) -> Texture2D:
+	var key := snappedf(w, 0.01)
+	if _rings.has(key):
+		return _rings[key]
+	var img := Image.create(96, 96, false, Image.FORMAT_RGBA8)
+	for y in 96:
+		for x in 96:
+			var d := Vector2(x + 0.5 - 48.0, y + 0.5 - 48.0).length()
+			var a := clampf(44.0 - d + 0.5, 0.0, 1.0) if key <= 0.0 else clampf(key * 22.0 - absf(d - 44.0) + 0.5, 0.0, 1.0)
+			img.set_pixel(x, y, Color(1, 1, 1, a))
+	var t := ImageTexture.create_from_image(img)
+	_rings[key] = t
+	return t
+
+
+## draw_circle(c, r, col) as one batchable quad.
+static func draw_disc(ci: CanvasItem, c: Vector2, r: float, col: Color) -> void:
+	var h := r * 48.0 / 44.0
+	ci.draw_texture_rect(ring_tex(), Rect2(c - Vector2(h, h), Vector2(h, h) * 2.0), false, col)
+
+
+## A full draw_arc(c, r, 0, TAU, ..., col, w, true) as one batchable quad.
+static func draw_ring(ci: CanvasItem, c: Vector2, r: float, w: float, col: Color) -> void:
+	var h := r * 48.0 / 44.0
+	ci.draw_texture_rect(ring_tex(w / r), Rect2(c - Vector2(h, h), Vector2(h, h) * 2.0), false, col)
+
+
 static func trim_cache(budget := 1500) -> void:
 	if _tex.size() <= budget:
 		return

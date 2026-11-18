@@ -89,7 +89,8 @@ static func seed_pack() -> String:
 	var opts: Array = []
 	for cid: String in GameState.crops:
 		var cd: Dictionary = GameState.crops[cid]
-		if str(cd.get("season", "any")) in [GameState.season(), "any"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 1:
+		if str(cd.get("season", "any")) in [GameState.season(), "any"] and int(cd.get("tier", 1)) <= GameState.progress_tier() + 1 \
+				and not bool(cd.get("tree", false)) and (GameState.is_penguins() or not cid.begins_with("crystal")):
 			var sid := cid + "_seed"
 			if GameState.items.has(sid):
 				opts.append(sid)

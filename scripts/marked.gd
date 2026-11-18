@@ -43,6 +43,8 @@ static func on_enter(m: GameMap) -> void:
 		var e := spawn(m, id, m.player.position + Vector2(96 * side, -40 if mid.y < m.player.position.y else 40))
 		if e:
 			m.hud.toast("%s, \"%s\": %s" % [str(d["name"]), str(d["epithet"]), str(d["intro"])], Color(str(Gift.def(str(d["gift"])).get("colour", "ffffff"))))
+			Music.instance(m.get_tree()).sfx("alert")
+			Music.instance(m.get_tree()).play("boss")  # _boss_playing keeps it until they yield
 		return
 
 
@@ -71,6 +73,7 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 	if e._sprite:
 		e._sprite.modulate.a = 1.0
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
+	m.hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	m.xp("combat", int(GameState.enemy_data["enemies"]["marked_" + id].get("xp", 40)))
 	Music.instance(m.get_tree()).sfx("boss_down")
 	m.fx("sparkle", e.position + Vector2(0, -10), 16.0, 0.8)

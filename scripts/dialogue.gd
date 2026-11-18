@@ -366,7 +366,7 @@ func _refresh_focus() -> void:
 				sb.border_color = Color(0.95, 0.7, 0.15) if on else Color(0.45, 0.3, 0.15)
 				sb.set_border_width_all(2 if on else 1)
 		if i == _choice_focus and _choice_scroll:
-			_choice_scroll.ensure_control_visible.call_deferred(c)
+			_scroll_to_choice.call_deferred(c)
 		i += 1
 
 
@@ -499,3 +499,9 @@ func _advance() -> void:
 		_hint.visible = true
 	else:
 		_next()
+
+
+## Deferred scroll-to-focus: the choice list may have been rebuilt (or closed) by then.
+func _scroll_to_choice(c: Control) -> void:
+	if is_instance_valid(_choice_scroll) and is_instance_valid(c) and _choice_scroll.is_ancestor_of(c):
+		_choice_scroll.ensure_control_visible(c)

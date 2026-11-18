@@ -88,7 +88,7 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 		GameState.add_xp("bartering", 2 + int(it.get("tier", 1)))
 		GameState.add_arc_xp(5)
 		m.hud.toast("Passed. +◆%d  (risk was %d%%, %d/%d today)" % [face, int(round(r_now * 100.0)), passed_today(), pass_cap()], Color(0.7, 1, 0.7))
-		Music.instance(m.get_tree()).sfx("pickup")
+		Music.instance(m.get_tree()).sfx("coin", "pickup")
 		return true
 	# Noticed: the bill is gone, you pay to make it go away, and people remember.
 	var fine := mini(int(GameState.run["crystals"]), int(face / 2))
@@ -103,6 +103,7 @@ static func pass_bills(m: GameMap, id: String) -> bool:
 		GameState.add_friend(who, -8)
 	m.hud.toast("%s holds it to the light. You pay ◆%d to make it a misunderstanding." % [str(GameState.npcs.get(who, {}).get("name", "The clerk")), fine], Color(1, 0.6, 0.5))
 	m.shake(2.0)
+	Music.instance(m.get_tree()).sfx("nope", "thud")
 	add_heat(m, 1)
 	return true
 
@@ -159,6 +160,7 @@ static func on_enter(m: GameMap) -> void:
 			c.reward = 0          # collectors carry no cash; beating them is the point
 			c.set_meta("collector", true)
 	m.hud.toast("Collectors. Somebody remembered your face. Beat them all and the heat drops.", Color(1, 0.5, 0.4))
+	Music.instance(m.get_tree()).sfx("alert")
 
 
 ## A collector went down: when the last one in this street falls, heat drops one.
@@ -168,6 +170,7 @@ static func on_collector_down(m: GameMap) -> void:
 			return
 	set_heat(heat() - 1)
 	m.hud.toast("The collectors scatter and won't be back today. Heat %d/5." % heat(), Color(0.7, 1, 0.7))
+	Music.instance(m.get_tree()).sfx("quest_done", "pickup")
 
 
 ## Called from sleep(): heat cools, the wash pays out.

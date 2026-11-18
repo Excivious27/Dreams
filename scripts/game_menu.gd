@@ -38,6 +38,8 @@ func _ready() -> void:
 	for t: String in TABS:
 		var b := Button.new()
 		var tab_icon := "tab_" + t.to_lower()
+		if t == "Party" and not Art.has("ui", tab_icon):
+			tab_icon = "crew_badge_dice" if not GameState.is_penguins() else "icon_party_merry"  # no tab_party art yet
 		var has_icon := Art.has("ui", tab_icon)
 		if has_icon:
 			# A fixed icon box: wide banners and round faces sit at the same height,
@@ -371,10 +373,10 @@ func _refresh() -> void:
 			_line("Wearing", 8, Color(0.9, 0.85, 0.7))
 			for eslot: String in GameState.SLOTS:
 				var eid := GameState.equipped(eslot)
-				if eid == "":
-					_line("  %s: -" % eslot, 8, Color(0.6, 0.6, 0.6))
-				else:
+				if eid != "":
 					_button("  %s: %s  (take off)" % [eslot, GameState.item_name(eid)], func() -> void: GameState.unequip(eslot); _refresh())
+			if GameState.SLOTS.all(func(s2: String) -> bool: return GameState.equipped(s2) == ""):
+				_line("  nothing yet: armour, rings and charms go here.", 8, Color(0.6, 0.6, 0.6))
 			var gs := "def %d  spd %d  luck %d  dmg %d  energy +%d" % [GameState.gear_stat("defense"), GameState.gear_stat("speed"), GameState.gear_stat("luck"), GameState.gear_stat("damage"), GameState.gear_stat("energy")]
 			_line("  " + gs, 8, Color(0.8, 0.9, 1.0))
 			_line("Tools: " + ", ".join(r["tools"].map(func(t: String) -> String: return GameState.item_name(t))), 8, Color(0.8, 0.8, 0.8))
@@ -875,7 +877,7 @@ func _skills_tab() -> void:
 	if sk == "magic":
 		_magic_casts()
 	if spent > 0:
-		var rb := _button("Sure? Tap again to reset %s" % str(sd["name"]) if _reset_arm == sk else "Reset this tree (refund all points)", func() -> void:
+		var rb := _button("Sure? Tap again to reset %s" % str(sd["name"]) if _reset_arm == sk else ("Reset this tree (refund all points; colony spells stay)" if sk == "magic" and not (GameState.run.get("gift_nodes", {}) as Dictionary).is_empty() else "Reset this tree (refund all points)"), func() -> void:
 			if _reset_arm == sk:
 				GameState.reset_tree(sk); _node_sel = ""; _reset_arm = ""
 			else:

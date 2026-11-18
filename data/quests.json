@@ -74,7 +74,7 @@
   {
    "id": "wastes_gate",
    "arc": "penguins",
-   "text": "Get to Combat 3 before you face the Grump Commander in the Wastes (the Star Crystal insists).",
+   "text": "Reach Combat 3, then face the Grump Commander in the Wastes (east gate of the crystal meadow).",
    "when": {
     "quest": "clear_meadow",
     "flag": "catship_done"
@@ -92,7 +92,7 @@
   {
    "id": "commander",
    "arc": "penguins",
-   "text": "Defeat the Grump Commander in the Wastes.",
+   "text": "Defeat the Grump Commander in the Wastes (east gate of the crystal meadow).",
    "when": {
     "quest": "wastes_gate"
    },
@@ -142,7 +142,7 @@
   {
    "id": "teleporter",
    "arc": "penguins",
-   "text": "Power the moon teleporter with 3 Refined Crystals, then face the spire.",
+   "text": "Power the moon teleporter (mountain pad to the moon) with 3 Refined Crystals, then face the spire.",
    "when": {
     "quest": "knight"
    },
@@ -1375,6 +1375,10 @@
    "take": true,
    "reward": {
     "crystals": 220,
+    "item": [
+     "jam",
+     1
+    ],
     "friend": [
      "posy",
      15

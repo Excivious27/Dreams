@@ -30,8 +30,9 @@ func _run() -> void:
 	var vill := Hearts.data().keys()
 	check(vill.size() == 25, "25 villagers with arcs")
 	# ♥8 can wait on another villager's ♥8 (Hearts.NEEDS_FLAG): those go first.
-	var first := ["granite", "bram", "gideon"]
-	vill.sort_custom(func(a: String, b: String) -> bool: return a in first and not (b in first))
+	var first := ["granite", "bram", "gideon", "hazel"]
+	var rank := func(x: String) -> int: return first.find(x) if x in first else 99
+	vill.sort_custom(func(a: String, b: String) -> bool: return rank.call(a) < rank.call(b))
 	for id in vill:
 		var fr: Dictionary = GameState.run["friendship"]
 		var offered := false

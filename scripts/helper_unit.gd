@@ -25,6 +25,7 @@ var _bob := 0.0
 var _zap_to := Vector2.INF
 var _zap_t := 0.0
 var _hurt := 0.0
+var _rd_acc := 0.0
 var _act_t := 0.0   # the action pose plays for a moment after each zap / heal / shield
 
 
@@ -110,7 +111,7 @@ func _process(delta: float) -> void:
 					position = ap
 					break
 	if _cd > 0.0:
-		queue_redraw()
+		_rd()
 		return
 	match kind:
 		"striker":
@@ -146,7 +147,15 @@ func _process(delta: float) -> void:
 				map.set_meta("shade_next", Time.get_ticks_msec() + 6000)
 				map.set_meta("stealth_until", Time.get_ticks_msec() + 2500)
 				map.fx("poof", map.player.position + Vector2(0, -8), 12.0, 0.4)
-	queue_redraw()
+	_rd()
+
+
+## Redraw at ~20 Hz while standing (only the bob and the 8 fps frame change; moving needs no redraw).
+func _rd() -> void:
+	_rd_acc += get_process_delta_time()
+	if _rd_acc >= 0.05 or _hurt > 0.0 or _zap_t > 0.0:
+		_rd_acc = 0.0
+		queue_redraw()
 
 
 func _can_step(at: Vector2) -> bool:

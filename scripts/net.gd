@@ -14,6 +14,8 @@ extends Node
 signal connected(host: bool)
 signal disconnected(reason: String)
 signal peers_changed
+## A guest's own world was put back (left, host gone, gave up reconnecting).
+signal went_home
 
 const TICK := 0.1
 var ws: WebSocketPeer = null
@@ -90,7 +92,7 @@ func join(u: String, code: String) -> void:
 func leave(why := "left") -> void:
 	_retries = MAX_RETRIES  # a deliberate leave never reconnects
 	_last_room = ""
-	_restore_solo()
+	_restore_solo(why if why != "left" else "You left. You're back on your own farm.")
 	if ws:
 		ws.close()
 	ws = null
@@ -142,11 +144,13 @@ func _process(delta: float) -> void:
 		if not _pending_join.is_empty():
 			_send(_pending_join)
 			_pending_join = {}
-		while ws.get_available_packet_count() > 0:
+		while ws != null and ws.get_available_packet_count() > 0:
 			var pkt := ws.get_packet().get_string_from_utf8()
 			var m: Variant = JSON.parse_string(pkt)
 			if m is Dictionary:
 				_on_msg(m)
+		if ws == null:
+			return  # a message made us leave
 		if my_id > 0:
 			_t += delta
 			if _t >= TICK:
@@ -168,6 +172,8 @@ func _process(delta: float) -> void:
 			why += "; reconnecting (%d/%d)" % [_retries + 1, MAX_RETRIES]
 		else:
 			_restore_solo()
+		if why.contains("reconnecting"):
+			_toast("Connection lost, " + why.get_slice("; ", 1) + "...", Color(1, 0.85, 0.6))
 		disconnected.emit(why)
 
 
@@ -179,8 +185,12 @@ func _on_msg(m: Dictionary) -> void:
 			_last_room = room
 			_retries = 0
 			_host = bool(m.get("host", false))
+			var fresh := _solo_backup.is_empty()  # first join, not a reconnect
+			_arc_mismatch = false
 			if _host and not _solo_backup.is_empty():
-				_became_host()  # rejoined into a room whose host left: we own the world now
+				# Rejoined a room whose host is gone: the host's farm goes with the host, we go home.
+				leave("Your host left. You're back on your own farm.")
+				return
 			if not _host and _solo_backup.is_empty():
 				for k in WORLD_KEYS:
 					# null = the guest had no such key: drop it again later, never keep the host's.
@@ -190,7 +200,7 @@ func _on_msg(m: Dictionary) -> void:
 				if str(p.get("arc", "")) != str(GameState.run["arc"]):
 					_arc_mismatch = true
 			connected.emit(_host)
-			if _arc_mismatch and not _host:
+			if _arc_mismatch and not _host and fresh:
 				var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
 				if gm and gm.hud:
 					gm.hud.toast("Your host is on the other story: some places and builds will look different.")
@@ -215,6 +225,9 @@ func _on_msg(m: Dictionary) -> void:
 				peers[int(m["id"])]["scene"] = str(m["scene"])
 			peers_changed.emit()
 		"you_are_host":
+			if not _solo_backup.is_empty():
+				leave("Your host left. You're back on your own farm.")  # the host's farm goes with the host
+				return
 			_host = true
 			_became_host()
 			connected.emit(true)
@@ -377,7 +390,7 @@ func _became_host() -> void:
 	_solo_backup = {}
 
 
-func _restore_solo() -> void:
+func _restore_solo(why := "Lost your host. You're back on your own farm.") -> void:
 	_last_world = {}  # the next join's first world is not a morning
 	if _solo_backup.is_empty():
 		return
@@ -394,6 +407,18 @@ func _restore_solo() -> void:
 	GameState.shift_clock(GameState.now_abs() - abs0, int(GameState.run.get("day", 1)) - day0)  # and back onto ours
 	_solo_backup = {}
 	GameState.save()
+	went_home.emit()
+	# The map on screen is still the host's: walk home so what's drawn is our own farm.
+	var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
+	if gm and not gm._changing:
+		_toast(why, Color(1, 0.85, 0.6))
+		gm.go_to("farm", Vector2.ZERO, "down", true)
+
+
+func _toast(text: String, col := Color.WHITE) -> void:
+	var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
+	if gm and gm.hud:
+		gm.hud.toast(text, col)
 
 
 ## A guest on someone else's world, also while reconnecting (the host's world is still loaded).

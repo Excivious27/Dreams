@@ -29,10 +29,17 @@ var _idle_t := 0.0
 var map: GameMap
 
 
+## Villagers whose life-pose row (w157/w158) was drawn as a different person from
+## their walker: they keep the walker's idle until matching poses are drawn.
+const LIFE_SKIP := ["orla", "benno", "tam", "ivy"]
+
+
 ## Life poses (w156-158): a single-frame strip under characters/<base>/<pose>.
 func set_pose(pose: String) -> void:
 	if _anim == null or _base_sprite == "":
 		return
+	if pose != "" and pose != "work" and id in LIFE_SKIP:
+		return  # their own "work" strip is in the walker's design; the other life poses were cut
 	if pose == "":
 		if _pose != "":
 			_pose = ""

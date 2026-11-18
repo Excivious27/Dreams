@@ -59,7 +59,7 @@ for rid, R in I.items():
     if rid in HUTS or rid == "mansion":
         kit_all = [k for k in kit_all if k not in ("piano", "kitchen_stove", "toy_chest")]
     if rid in ("smith", "potions", "bakery"):
-        kit_all = [k for k in kit_all if k not in ("bookcase3_d", "bookcase3_e", "crate_cabbage")] + ["barrel", "crate"]
+        kit_all = [k for k in kit_all if k not in ("bookcase3_d", "bookcase3_e", "crate_cabbage")]  # SHOP_SIDE already has barrels and a crate
     used = set()
     for p in R["props"]:
         used.update(cells_of(p))
@@ -150,8 +150,17 @@ for rid, R in I.items():
     side = kit_all[:]
     rng.shuffle(side)
     k = 0
+    def near_same(name, c):  # the same piece one or two cells away reads as copy-paste
+        return any(p["name"] == name and abs(p["cell"][0] - c[0]) <= 1 and abs(p["cell"][1] - c[1]) <= 2 for p in R["props"])
+
     for y in range(4, rows - 3, 2):  # one free cell between corner and side pieces
         for x in (1, cols - 2):
+            if (x, y - 1) in used or (x, y + 1) in used:
+                continue  # never right above/below another piece (tall sprites stack)
+            for _ in range(len(side)):
+                if not near_same(side[k % len(side)], (x, y)):
+                    break
+                k += 1
             if put(side[k % len(side)], (x, y)):
                 k += 1
 

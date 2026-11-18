@@ -281,7 +281,7 @@ func _process(delta: float) -> void:
 		_los_t -= delta
 		if _los_t <= 0.0:
 			_los_t = 0.25
-			_los_ok = map.line_clear(position, tgt.position) if abilities.has("ranged") else (dist > 150.0 or _walk_clear(position, tgt.position))
+			_los_ok = map.line_clear(position, tgt.position) if abilities.has("ranged") and tgt == player else (dist > 150.0 or _walk_clear(position, tgt.position))
 		if _noticed and (not _los_ok or _chase_t > 0.0):
 			sight = 140.0
 		_chase_t = 3.0 if (_noticed and not _los_ok) else maxf(0.0, _chase_t - delta)
@@ -303,7 +303,8 @@ func _process(delta: float) -> void:
 			if not _noticed:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)
-				Music.instance(get_tree()).sfx("alert")
+				if tgt == player or position.distance_to(player.position) < 170.0:
+					Music.instance(get_tree()).sfx("alert")
 			_dir = to.normalized()
 			# A wall between us: walk round it on the flow field instead of pressing into it.
 			if not _los_ok:
@@ -679,7 +680,8 @@ func _die() -> void:
 	# A puff where it stood and a thud; bosses get a bigger send-off.
 	var big := bossy or is_guardian or has_meta("boss_name")
 	map.fx("poof" if Art.has("fx", "poof") else "spark", position + Vector2(0, -8), 32.0 if big else 20.0, 0.6)
-	Music.instance(get_tree()).sfx("boss_down" if big else "thud")
+	if big or (map.player and position.distance_to(map.player.position) < 200.0):
+		Music.instance(get_tree()).sfx("boss_down" if big else "thud")
 	if big:
 		map.shake(5.0)
 	# Sheets with a "die" strip play it, then fade; the rest get the squash.

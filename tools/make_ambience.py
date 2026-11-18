@@ -272,7 +272,13 @@ NEW_SFX = {
     "step_stone": lambda: noise("ss", 0.05, 2, 0.015) * 0.5,
     "step_sand": lambda: noise("sa", 0.09, 3, 0.04) * 0.4,
     "step_snow": lambda: noise("sn", 0.1, 6, 0.05) * 0.5,
+    # An enemy winding up a move: not the player's own "spell" sound.
+    "tell": lambda: cat(sweep(1300, 500, 0.16, "saw", 0.08), tone(330, 0.14, "square", 0.08), gap=0.02),
 }
+
+# Peak per sound (x 0.55): keeps the blip/menu/nope cues under the reward jingles.
+SFX_GAIN = {"talk_blip": 0.35, "ui_tap": 0.5, "dry_click": 0.45, "menu_open": 0.5, "menu_close": 0.5, "nope": 0.55,
+            "alert": 0.6, "coin": 0.75, "mail": 0.8, "locked": 0.7, "harvest": 0.75, "tell": 0.7}
 
 
 def main():
@@ -289,7 +295,7 @@ def main():
     for s, fnc in NEW_SFX.items():
         fn = f"{s}.wav"
         if fn not in rs:
-            write_wav(os.path.join(SFX, fn), norm(fnc(), 0.55))
+            write_wav(os.path.join(SFX, fn), norm(fnc(), 0.55 * SFX_GAIN.get(s, 1.0)))
     print(len(BEDS), "beds,", len(SPOTS), "spots,", len(NEW_SFX), "sfx")
 
 

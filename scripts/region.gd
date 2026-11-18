@@ -385,9 +385,10 @@ func after_ready() -> void:
 		add_child(npc)
 		npcs.append(npc)
 	Crew.place(self)
-	if Crew.perk_level("heal_hideout") >= 1 and region_id == "hideout" and int(GameState.run["flags"].get("doc_heal_day", -1)) != int(GameState.run["day"]):
-		GameState.run["flags"]["doc_heal_day"] = int(GameState.run["day"])
+	if Crew.perk_level("heal_hideout") >= 1 and region_id == "hideout" and int(GameState.run["hp"]) < int(GameState.run["max_hp"]) and int(GameState.run["flags"].get("doc_heal_day", -1)) != int(GameState.run["day"]):
+		GameState.run["flags"]["doc_heal_day"] = int(GameState.run["day"])  # only used up when you're hurt
 		GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + 20)
+		later(func() -> void: hud.toast("Doc patches you up at the door. +1 heart.", Color(0.8, 1, 0.8)))
 	var gen: Dictionary = R.get("gen", {})
 	var inner := Rect2i(2, 2, cols - 4, rows - 4)
 	var avoid := {}
@@ -915,12 +916,27 @@ func draw_map() -> void:
 			for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
 				pcs[Vector2i(x, y)] = true
 	for e in exits:
-		for c in cells_of([e["rect"]]):
+		# Run the path out over the exit's edge row in its own lanes only (all of the exit
+		# when no path reaches it): the full 4-wide row widened into a slab with shoulders.
+		var er: Rect2i = e["rect"]
+		var inw := Vector2i(1 if er.position.x <= 0 else (-1 if er.end.x >= cols else 0), 1 if er.position.y <= 0 else (-1 if er.end.y >= rows else 0))
+		var ecs := cells_of([er])
+		var lane := {}
+		for c: Vector2i in ecs:
+			for k in range(1, 4):
+				if pcs.has(c + inw * k):
+					for j in k:
+						lane[c + inw * j] = true  # (and the gap up to a path that stops short)
+					break
+		for c: Vector2i in (lane if not lane.is_empty() else ecs):
 			pcs[c] = true
+	_pcs = pcs
 	if path_kind in ["dirt", "sand", "stone"]:
 		draw_ground(path_kind, pcs)
-	elif path_kind.begins_with("bio_path") and soft_ground(widen_path(pcs), "cave_crystal_floor", Color(0.1, 0.05, 0.15, 0.3)):
-		pass  # one soft glowing path, not a tile lattice
+	elif path_kind == "cracked_earth" and soft_ground(widen_path(pcs), "cave_stone_floor", Color(0.1, 0.05, 0.15, 0.3), Color(0.8, 0.75, 0.8)):
+		pass  # soft cracked road on the ash, not a tile band
+	elif path_kind.begins_with("bio_path") and soft_ground(widen_path(pcs), "cave_stone_floor", Color(0.1, 0.05, 0.15, 0.3), Color(0.85, 1.0, 0.95)):
+		pass  # one soft paved path (the blue crystal floor read as a river)
 	else:
 		_draw_path_tiles(pcs, path_kind)
 	for wsh in _rect_water:
@@ -956,14 +972,24 @@ func _draw_path_tiles(pcs: Dictionary, path_kind: String) -> void:
 
 ## Exit corridors through the border band use the region's own path, tile sets too
 ## (they used to turn into a dark cobble slab across the road).
+var _pcs := {}  # the region's own path cells (draw_map), redrawn with the exit corridors as one shape
+
+
 func draw_corridor(cells: Dictionary) -> void:
 	var k := str(R.get("path", "dirt"))
-	var ps := str(R.get("patch_set", ""))
-	if (k == "dirt" and ps != "track") or (k == "sand" and ps != "sand"):
-		super(cells)  # one soft body with the region's own path (not when a same-seam ground patch would be redrawn too)
-	elif k in ["dirt", "sand", "stone"]:
-		draw_ground(k, cells)
-	elif k.begins_with("bio_path") and soft_ground(widen_path(cells), "cave_crystal_floor", Color(0.1, 0.05, 0.15, 0.3)):
+	if k in ["dirt", "sand", "stone"]:
+		# One soft body: the region's own path (as draw_map widened it) plus the corridor cells
+		# unwidened, so the road runs on through the band at its own width (no 4-wide slab with
+		# shoulders, no dark ring where two bodies meet). Only path cells: ground patches stay put.
+		var body := widen_path(_pcs)
+		body.merge(cells)
+		var seam: String = {"dirt": "dirt_track", "sand": "sand", "stone": "ruin_floor"}[k]
+		var lip := Color(0.12, 0.1, 0.08, 0.35) if k == "stone" else Color(0.25, 0.15, 0.06, 0.3 if k == "dirt" else 0.0)
+		if not soft_ground(body, seam, lip):
+			draw_ground(k, cells)
+	elif k == "cracked_earth" and soft_ground(widen_path(cells), "cave_stone_floor", Color(0.1, 0.05, 0.15, 0.3), Color(0.8, 0.75, 0.8)):
+		pass  # matches the soft wastes road
+	elif k.begins_with("bio_path") and soft_ground(widen_path(cells), "cave_stone_floor", Color(0.1, 0.05, 0.15, 0.3), Color(0.85, 1.0, 0.95)):
 		pass  # matches the soft jungle path
 	else:
 		_draw_path_tiles(cells, k)

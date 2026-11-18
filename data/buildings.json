@@ -88,7 +88,7 @@
     },
     "permit": 100,
     "days": 1,
-    "desc": "4 chickens.",
+    "desc": "Two hens, a rooster and a chick.",
     "price": 850
    },
    {
@@ -135,7 +135,7 @@
     },
     "permit": 200,
     "days": 2,
-    "desc": "4 animals: cows, sheep.",
+    "desc": "Two cows, a sheep, a calf and a lamb.",
     "price": 1380
    },
    {

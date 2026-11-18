@@ -124,3 +124,10 @@ echo "$yout" | grep -E "FAIL|systems_test" || true
 if ! echo "$yout" | grep -q "systems_test: 0 failures"; then
   echo "Systems test failed"; exit 1
 fi
+
+echo "== story: every chapter plays to the end =="
+tout="$("$GODOT" --headless --path . -s res://tools/story_test.gd 2>&1)"
+echo "$tout" | grep -E "FAIL|STORY DONE" || true
+if ! echo "$tout" | grep -q "STORY DONE, failures: 0"; then
+  echo "Story test failed"; exit 1
+fi

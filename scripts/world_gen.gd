@@ -100,8 +100,11 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var winter := GameState.season() == "winter"
-	var wet := GameState.is_wet()
+	# A region's own weather wins over the calendar (no puddles in snowy colony_ice or the clear sky).
+	var rd: Variant = m.get("R")
+	var ov := str((rd as Dictionary).get("weather", "")) if rd is Dictionary else ""
+	var winter := GameState.season() == "winter" or ov in ["snow", "blizzard"]
+	var wet := GameState.is_wet() and ov in ["", "rain", "storm"]
 	if not wet and not winter:
 		return
 	var n := int(m.cols * m.rows * (0.012 if wet else 0.008))

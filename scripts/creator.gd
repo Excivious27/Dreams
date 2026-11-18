@@ -108,7 +108,7 @@ func _build() -> void:
 			if Art.has("body", o):
 				outs.append(o)
 		_picker("Outfit", outs, "outfit", func(v: String) -> String: return v.trim_prefix("outfit_").capitalize())
-		_picker("Hair", PaperDoll.hair_styles(), "hair", func(v: String) -> String: return v.replace("_", " ").capitalize())
+		_picker("Hair", PaperDoll.hair_styles(), "hair", func(v: String) -> String: return v.trim_suffix("_b").trim_suffix("_c").replace("_", " ").capitalize() + (" 2" if v.ends_with("_b") else (" 3" if v.ends_with("_c") else "")))
 		_picker("Hair colour", PaperDoll.HAIR_COLORS.keys(), "hair_color", func(v: String) -> String: return v.capitalize())
 		var hats: Array = [""]
 		hats.append_array(PaperDoll.hat_styles())
@@ -132,7 +132,7 @@ func _build() -> void:
 		if _playable_sprite == "penguin":
 			look["tint_name"] = PaperDoll.PENGUIN_TINTS.keys()[randi() % PaperDoll.PENGUIN_TINTS.size()]
 			look["scarf"] = PaperDoll.SCARF_COLORS.keys()[randi() % PaperDoll.SCARF_COLORS.size()]
-			var hs := PaperDoll.hat_styles()
+			var hs: Array = ["straw", "beanie", "tophat", "wizard", "flower_crown", "miner", "sailor", "crown", "pumpkin", "santa", "bucket", "visor"] if Art.has("characters/penguin_wear", "hat_straw_front") else PaperDoll.hat_styles()
 			look["hat"] = "" if hs.is_empty() or randf() < 0.4 else hs[randi() % hs.size()]
 		else:
 			var keep_outfit: Variant = look.get("outfit", null)
@@ -198,6 +198,7 @@ func _refresh_preview() -> void:
 		Player.dress_penguin(_preview, pg, look, 3.0)
 		return
 	if PaperDoll.available():
+		PaperDoll.preview_bare = true  # the outfit you're picking, not the armour you wear
 		var body := AnimatedSprite2D.new()
 		body.sprite_frames = PaperDoll.body_frames(look)
 		body.centered = true
@@ -217,10 +218,13 @@ func _refresh_preview() -> void:
 		_preview.add_child(hat)
 		var upd := func() -> void:
 			var pose := PaperDoll.pose_index(body.animation, body.frame)
+			PaperDoll.preview_bare = true
 			PaperDoll.place_layer(hair, "hair", str(look.get("hair", "")), PaperDoll.body_for(look), pose, false, sc)
 			PaperDoll.place_layer(hat, "hats", str(look.get("hat", "")), PaperDoll.body_for(look), pose, false, sc)
+			PaperDoll.preview_bare = false
 		body.frame_changed.connect(upd)
 		upd.call()
+		PaperDoll.preview_bare = false
 	elif _playable_sprite != "":
 		var sp := CharacterLibrary.make_sprite(_playable_sprite)
 		sp.scale *= 1.6

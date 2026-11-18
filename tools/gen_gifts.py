@@ -103,7 +103,7 @@ MARKED = [
   "Heads I win. Tails, also me. Want to see?", "Three rolls. It's always three. How did you know it was three?", "A man in a grey suit flipped me a black stone for calling heads. Only time I think he let me be right."),
  ('bruno', 'Bruno Castellan', 28, 'Anvil', 'iron', 'countryside', 2, 70, 3, 22, 3, ['brute', 'enforcer'],
   "Hit me. Go on. Everyone gets one.", "...Fair. You waited. Nobody waits.", "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. The rest threw theirs in the furnace. I kept mine."),
- ('tomas', 'Tomas Vela', 17, 'Glass', 'mirror', 'uptown', 3, 44, 3, 44, 4, ['jax', 'gambler'],
+ ('tomas', 'Teo Vela', 17, 'Glass', 'mirror', 'uptown', 3, 44, 3, 44, 4, ['jax', 'gambler'],
   "Which one of us are you looking at? Wrong.", "You found me. People don't. Even I don't, some days.", "I cleaned windows uptown. Found a black stone on a sill, forty floors up. I looked into it and it looked back."),
  ('sable', 'Sable Marchetti', 26, 'Hush', 'shade', 'underground', 3, 50, 4, 46, 4, ['vex', 'speedster'],
   "You won't hear me. Nobody does. It's restful.", "You turned round. People never turn round.", "I was a getaway driver who wanted to disappear. A grey suit said he could arrange it. He gave me a black stone and I haven't cast a shadow at noon since."),

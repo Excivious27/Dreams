@@ -43,7 +43,7 @@ func _ready() -> void:
 	Music.instance(get_tree()).sfx("chest_open", "pickup")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.16, 0.11, 0.07, 0.97)
+	sb.bg_color = Color(0.16, 0.11, 0.07, 1.0)  # opaque: no toolbar/buttons showing through
 	sb.border_color = Color(0.85, 0.7, 0.4)
 	sb.set_border_width_all(2)
 	sb.set_corner_radius_all(4)
@@ -96,6 +96,7 @@ func _ready() -> void:
 	_acts.add_theme_constant_override("separation", 2)
 	_acts.custom_minimum_size = Vector2(0, 22)  # the row appearing never moves the grids
 	_bot = _scroll_grid(v, 168)  # keeps the panel and its tip line on the 480 screen
+	(_bot.get_parent() as ScrollContainer).size_flags_vertical = Control.SIZE_EXPAND_FILL  # bag fills the panel, no dead band
 	v.add_child(_acts)  # under the bag, so its empty band isn't between the label and the grid
 	var tip := _label("Tap: move across.  Hold: pick up, lock, trash, move half.", 7, Color(0.8, 0.75, 0.65))
 	v.add_child(tip)

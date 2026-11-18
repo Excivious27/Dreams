@@ -141,5 +141,24 @@ func _run() -> void:
 		gif["got"] = false
 		check(Mail.act(gif) == "" and GameState.count(str(gif["item"])) == c0 + 1, "a gift letter gives its item")
 	Settings.set_v("music_vol", 8)
+	# A renamed skill node (same id and effect, old name in "aka") keeps its ranks
+	# silently; one bought under a foreign name is refunded.
+	var aka_id := ""
+	var aka_nm := ""
+	var aka_sk := ""
+	for sk in GameState.skills_data:
+		for n in GameState.skills_data[sk].get("nodes", []):
+			if aka_id == "" and not (n.get("aka", []) as Array).is_empty():
+				aka_sk = str(sk); aka_id = str(n["id"]); aka_nm = str(n["aka"][0])
+	if aka_id != "":
+		var sd: Dictionary = GameState.run["skills"][aka_sk]
+		sd["nodes"][aka_id] = 1
+		sd.get_or_add("nm", {})[aka_id] = aka_nm
+		GameState.run["notes"] = []
+		GameState._migrate()
+		check(int(sd["nodes"].get(aka_id, 0)) == 1 and (GameState.run["notes"] as Array).is_empty(), "a skill rename alone keeps the ranks")
+		sd["nm"][aka_id] = "Some Other Perk"
+		GameState._migrate()
+		check(not sd["nodes"].has(aka_id) and (GameState.run["notes"] as Array).size() == 1, "a node bought under another name is refunded")
 	print("systems_test: %d failures" % fails)
 	quit()

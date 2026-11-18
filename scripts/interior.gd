@@ -178,7 +178,7 @@ func after_ready() -> void:
 			ps.region_enabled = true
 			ps.region_rect = crop
 			ps.offset = Vector2(0, -crop.size.y / 2.0)
-		if ps and (nm.begins_with("rug") or nm.begins_with("reed_mat") or nm == "round_rug_stone"):
+		if ps and (nm.begins_with("rug") or nm.begins_with("reed_mat") or nm.begins_with("pelt_") or nm == "round_rug_stone"):
 			to_under(ps)  # rugs lie flat: you walk over them, not behind them
 	# Keep the way in and the spot in front of every counter/thing walkable.
 	var dd: Array = I.get("door", [cols / 2, rows - 2])
@@ -213,7 +213,9 @@ func after_ready() -> void:
 		if not here:
 			continue
 		# A shopkeeper at home in their own shop after hours: off duty, not at the counter.
-		var off_duty := place == "home" and str(data.get("work", "")) == interior_id
+		# Keepers with no routine (place "") are off duty in the same closed hours as _counter.
+		var tnow := int(GameState.run["time"]) % 1440
+		var off_duty := (place == "home" or (place == "" and (tnow < 7 * 60 or tnow >= 21 * 60))) and str(data.get("work", "")) == interior_id
 		var at: Vector2i = Vector2i(-1, -1) if off_duty else listed.get(id, Vector2i(-1, -1))
 		var posted := at != Vector2i(-1, -1)
 		# A listed cell under furniture (or a thing) isn't a place to stand.
@@ -512,7 +514,7 @@ static func wall_gap(t: Texture2D) -> Vector2i:
 			if clear and run < 0:
 				run = x
 			elif not clear and run >= 0:
-				if x - run >= 3 and run > 0 and x < img.get_width():
+				if x - run >= 3 and run > 0 and (x < img.get_width() or x - run <= 6):  # (a short trailing strip too: wl_mill_m)
 					g = Vector2i(run, x)
 					break
 				run = -1
@@ -535,7 +537,7 @@ func _draw_side_walls(wl: String) -> void:
 		sx = 2.0 if gq.x >= 10 else float(gq.y) + 1.0
 	for side in [0, cols - 1]:
 		var x0 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
-		for y in range(2, rows):
+		for y in range(2, rows - 1):  # the last row is the 8 px front lip (its corner squares close it)
 			var r := Rect2(x0, y * TILE, 8, TILE)
 			if trim:
 				# One small square of the moulding (the whole 32x12 squeezed to 8x16 reads as candy stripes).
@@ -544,7 +546,7 @@ func _draw_side_walls(wl: String) -> void:
 				draw_rect(r, rim)
 	for side in [0, cols - 1]:
 		var x0 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
-		for y in range(2, rows):
+		for y in range(2, rows - 1):  # the last row is the 8 px front lip (its corner squares close it)
 			# A soft shadow the wall throws onto the floor (own pass: it never overlaps a rim).
 			draw_rect(Rect2(x0 + (8.0 if side == 0 else -4.0), y * TILE, 4, TILE), lip)
 	for x in range(0, cols):
@@ -621,7 +623,8 @@ func draw_map() -> void:
 				var tw := float(t.get_width())
 				var lw := TILE * float(gp.x) / (tw - float(gp.y - gp.x))
 				draw_texture_rect_region(t, Rect2(x * TILE, 0, lw, TILE * 2), Rect2(0, 0, gp.x, t.get_height()))
-				draw_texture_rect_region(t, Rect2(x * TILE + lw, 0, TILE - lw, TILE * 2), Rect2(gp.y, 0, tw - gp.y, t.get_height()))
+				if float(gp.y) < tw:
+					draw_texture_rect_region(t, Rect2(x * TILE + lw, 0, TILE - lw, TILE * 2), Rect2(gp.y, 0, tw - gp.y, t.get_height()))
 			else:
 				draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
 			if night_glass and part == "_window":

@@ -355,22 +355,28 @@ func _on_draw() -> void:
 	var pt := _pet()
 	if pt != null and not get_tree().paused:
 		var mode := str(Pet.state().get("mode", "follow"))
-		for i in PUP_CMDS.size():
-			var cmd := str(PUP_CMDS[i][0])
-			if cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
-				continue  # locked until the Guard Dog skill (the others keep their spots)
-			var cp := Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)
-			var active := cmd == mode
-			var dim := (cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0) or (not pt.visible and cmd != "recall")
-			_canvas.draw_circle(cp, PUP_R, Color(0.12, 0.09, 0.05, 0.62))
-			_canvas.draw_arc(cp, PUP_R, 0, TAU, 28, Color(1, 0.85, 0.35, 0.95) if active else Color(1, 1, 1, 0.35), 2.0 if active else 1.0, true)
-			var ic := str(PUP_CMDS[i][1])
-			if Art.has("ui", ic):
-				_canvas.draw_texture_rect(Art.tex("ui", ic), Rect2(cp - Vector2(8, 8), Vector2(16, 16)), false, Color(1, 1, 1, 0.4 if dim else (1.0 if active else 0.85)))
-			else:
-				_canvas.draw_string(font, cp + Vector2(-PUP_R, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0, 5, Color(1, 1, 1, 0.9))
-			if _held.has("pup:" + cmd):
-				_canvas.draw_circle(cp, PUP_R, Color(1, 1, 1, 0.25))
+		# Pass by pass (discs, rings, icons, presses): a draw_circle is a draw call
+		# each and an antialiased draw_arc three, so the old per-button order cost ~20.
+		for pass_i in 4:
+			for i in PUP_CMDS.size():
+				var cmd := str(PUP_CMDS[i][0])
+				if cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
+					continue  # locked until the Guard Dog skill (the others keep their spots)
+				var cp := Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)
+				var active := cmd == mode
+				if pass_i == 0:
+					Art.draw_disc(_canvas, cp, PUP_R, Color(0.12, 0.09, 0.05, 0.62))
+				elif pass_i == 1:
+					Art.draw_ring(_canvas, cp, PUP_R, 2.0 if active else 1.0, Color(1, 0.85, 0.35, 0.95) if active else Color(1, 1, 1, 0.35))
+				elif pass_i == 2:
+					var dim := (cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0) or (not pt.visible and cmd != "recall")
+					var ic := str(PUP_CMDS[i][1])
+					if Art.has("ui", ic):
+						_canvas.draw_texture_rect(Art.tex("ui", ic), Rect2(cp - Vector2(8, 8), Vector2(16, 16)), false, Color(1, 1, 1, 0.4 if dim else (1.0 if active else 0.85)))
+					else:
+						_canvas.draw_string(font, cp + Vector2(-PUP_R, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0, 5, Color(1, 1, 1, 0.9))
+				elif _held.has("pup:" + cmd):
+					Art.draw_disc(_canvas, cp, PUP_R, Color(1, 1, 1, 0.25))
 		if int(GameState.run.get("day", 1)) <= 3:
 			# Early days: name each command under its icon (all outlines, then all fills: fewer batch breaks).
 			for pass_i in 2:
@@ -388,6 +394,7 @@ func _on_draw() -> void:
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
+	var caps := []  # icon captions, drawn after the loop: all outlines, then all fills
 	for action: String in BUTTONS:
 		if action == "ability" and not _has_ability():
 			continue
@@ -452,7 +459,7 @@ func _on_draw() -> void:
 				else:
 					icon = Art.tex("items", "hand")
 			if icon:
-				_caption(font, p, r, label)
+				caps.append([p, r, label])
 				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(12, 12), Vector2(24, 24)), false)
 				continue
 		if action == "ability" and not GameState.run.is_empty():
@@ -475,18 +482,23 @@ func _on_draw() -> void:
 			_canvas.draw_texture_rect(Art.tex("ui", "party_paw"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
 			continue
 		if action == "menu" and Art.has("ui", "ic_menu"):
-			_caption(font, p, r, label)
+			caps.append([p, r, label])
 			_canvas.draw_texture_rect(Art.tex("ui", "ic_menu"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
 			continue
 		if action == "action" and Art.has("items", "hand"):
-			_caption(font, p, r, label)
+			caps.append([p, r, label])
 			_canvas.draw_texture_rect(Art.tex("items", "hand"), Rect2(p - Vector2(11, 11), Vector2(22, 22)), false)
 			continue
 		_canvas.draw_string(font, p + Vector2(-r, size * 0.36), label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, size, Color(1, 1, 1, 0.9))
+	for pass_i in 2:
+		for cap: Array in caps:
+			_caption(font, cap[0], cap[1], cap[2], pass_i == 0)
 
 
 ## A small word under an icon button (the tutorial says "tap USE", "open MENU").
-func _caption(font: Font, p: Vector2, r: float, label: String) -> void:
+func _caption(font: Font, p: Vector2, r: float, label: String, outline: bool) -> void:
 	var at := Vector2(p.x - r, minf(p.y + r + 7.0, 479.0))
-	_canvas.draw_string_outline(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 6, 2, Color(0, 0, 0, 0.8))
-	_canvas.draw_string(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 6, Color(1, 1, 1, 0.85))
+	if outline:
+		_canvas.draw_string_outline(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 6, 2, Color(0, 0, 0, 0.8))
+	else:
+		_canvas.draw_string(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 6, Color(1, 1, 1, 0.85))

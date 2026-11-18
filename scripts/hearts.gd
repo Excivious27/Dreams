@@ -49,6 +49,9 @@ static func quest6(id: String) -> String:
 
 
 static func _ready_for(id: String, n: int) -> bool:
+	if n == 10:
+		# Hazel's and Mabel's ♥10 talk about the full cellar: that needs Hazel's milk.
+		return not (id in ["hazel", "mabel"]) or GameState._quest_def("hazel_milk").is_empty() or GameState.quest_done("hazel_milk")
 	if n != 8:
 		return true
 	var q := quest6(id)
@@ -57,10 +60,33 @@ static func _ready_for(id: String, n: int) -> bool:
 	return not NEEDS_FLAG.has(id) or GameState.run["flags"].has(NEEDS_FLAG[id])
 
 
+## Why a reached milestone is held back, for the journal.
+const WAIT_WHY := {"hv_granite_8": "Granite has something to tell them first", "hv_bram_8": "once Bram has had his say", "lighthouse_lit": "once Marlowe's lamp is lit", "hv_gideon_8": "Gideon has something to give her first"}
+
+
+## A milestone you've reached that waits (_ready_for): say why in the journal (once).
+static func _held_hint(id: String) -> void:
+	if not data().has(id):
+		return
+	var n := seen_level(id) + 2
+	if n > 10 or GameState.friend_hearts(id) < n or _ready_for(id, n):
+		return
+	var q := "hazel_milk" if n == 10 else quest6(id)
+	var why := ""
+	if q != "" and not GameState._quest_def(q).is_empty() and not GameState.quest_done(q) and (n == 10 or id in AFTER_Q6):
+		why = "first: " + str(GameState._quest_def(q).get("text", q))
+	elif NEEDS_FLAG.has(id):
+		why = str(WAIT_WHY.get(NEEDS_FLAG[id], ""))
+	if why != "":
+		var nm := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
+		GameState.add_hint("%s has more to say at ♥%d (%s)." % [nm, n, why])
+
+
 ## Play the due milestone scene. Returns true if one played.
 static func talk(m: GameMap, id: String) -> bool:
 	var n := due(id)
 	if n == 0:
+		_held_hint(id)
 		return false
 	var v: Dictionary = data()[id]
 	var lines: Array = ((v.get("milestones", {}) as Dictionary).get(str(n), []) as Array).duplicate(true)

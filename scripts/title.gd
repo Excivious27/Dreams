@@ -253,6 +253,8 @@ func _on_net_connected(is_host: bool) -> void:
 
 func _show_arcs() -> void:
 	_clear()
+	_look_full = {}  # a look is made for one arc's outfit; a new arc starts fresh
+	_playable = ""
 	_mood(false)
 	Music.instance(get_tree()).play("title")
 	Music.instance(get_tree()).set_duck(0.0)  # night/storm duck from the map
@@ -302,7 +304,7 @@ func _show_characters() -> void:
 	grid.size_flags_horizontal = SIZE_EXPAND_FILL
 	grid.add_theme_constant_override("h_separation", 4)
 	grid.add_theme_constant_override("v_separation", 4)
-	_page.add_child(_label("Tap a card to see who it is, or build your own (last card).", 8))
+	_page.add_child(_label("Tap a card to pick a hero, or build your own (last card).", 8))
 	_page.add_child(grid)
 	for pid: String in ids:
 		var p: Dictionary = _playables.get(pid, {})
@@ -325,6 +327,18 @@ func _show_characters() -> void:
 			tb.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 			tb.tooltip_text = name
 			tb.pressed.connect(func() -> void: _pick(pid))
+			# Name on the card (phones show no tooltips).
+			var tl := Label.new()
+			tl.text = name.get_slice(" (", 0)
+			tl.add_theme_font_size_override("font_size", 8)
+			tl.add_theme_constant_override("outline_size", 3)
+			tl.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.05))
+			tl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			tl.set_anchors_preset(PRESET_BOTTOM_WIDE)
+			tl.offset_top = -13
+			tl.offset_bottom = 1
+			tl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			tb.add_child(tl)
 			grid.add_child(tb)
 			_cards[pid] = tb
 		else:
@@ -382,12 +396,12 @@ func _sprite_card(pid: String, name: String) -> Control:
 			tr.offset_bottom = -20
 			var nl := Label.new()
 			nl.text = name.get_slice(" (", 0)
-			nl.add_theme_font_size_override("font_size", 7)
+			nl.add_theme_font_size_override("font_size", 8)  # at 7 "cl" merges ("Unde Rafe")
 			nl.add_theme_color_override("font_color", Color(0.95, 0.85, 0.6))
 			nl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			nl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			nl.set_anchors_preset(PRESET_BOTTOM_WIDE)
-			nl.offset_top = -19
+			nl.offset_top = -21
 			nl.offset_bottom = -3
 			nl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			b.add_child(nl)
@@ -446,6 +460,7 @@ func _pick(pid: String) -> void:
 		var cr := Creator.new(_look_full if _look_full.has("body") else rl, "", false)
 		_preview.add_child(cr)
 		cr.visible = false
+		PaperDoll.preview_bare = true  # a loaded run's armour must not dress the new hero
 		var body := AnimatedSprite2D.new()
 		body.sprite_frames = PaperDoll.body_frames(cr.look)
 		body.centered = true
@@ -467,10 +482,13 @@ func _pick(pid: String) -> void:
 		_preview.add_child(hat)
 		var upd := func() -> void:
 			var pose := PaperDoll.pose_index(body.animation, body.frame)
+			PaperDoll.preview_bare = true
 			PaperDoll.place_layer(hair, "hair", str(lk.get("hair", "")), PaperDoll.body_for(lk), pose, false, sc)
 			PaperDoll.place_layer(hat, "hats", str(lk.get("hat", "")), PaperDoll.body_for(lk), pose, false, sc)
+			PaperDoll.preview_bare = false
 		body.frame_changed.connect(upd)
 		upd.call()
+		PaperDoll.preview_bare = false
 		_look_full = cr.look.duplicate()
 	elif sprite_id != "":
 		var s := CharacterLibrary.make_sprite(sprite_id)
@@ -539,9 +557,10 @@ func _show_names() -> void:
 	var pname := "Hero" if bool(_playables[_playable].get("custom", false)) else str(_playables[_playable].get("name", "Hero")).get_slice(" (", 0)
 	_name_edit = _edit("Your name", pname)
 	_town_edit = _edit("Town name", "Dreamhollow")
-	_pet_edit = _edit("Pet name", "Pup")
+	_pet_edit = _edit("Pet name", "Kitty" if str(_look_full.get("pet", "")).begins_with("cat_") else "Pup")
 	_page.add_child(_button("Start", _begin, true))
-	_page.add_child(_button("Back", _show_characters))
+	var made_look := bool(_playables[_playable].get("custom", false)) or GameState.sprite_for_playable(_playable, _arc) == "penguin"
+	_page.add_child(_button("Back", _show_look if made_look else _show_characters))  # back to the look you made, not the hero grid
 
 
 ## A visible box for text fields (the default style is see-through over the dark art).

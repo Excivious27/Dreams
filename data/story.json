@@ -165,7 +165,8 @@
      },
      "when": {
       "flag": "cm_seen",
-      "quest": "clear_meadow"
+      "quest": "clear_meadow",
+      "not_flag": "meow_taught"
      },
      "lines": [
       {

@@ -195,3 +195,7 @@ p28raw = open(f"{D}/src/ART-PROMPTS-28-raw.md").read()
 f28 = build(p28raw, "28", f"{D}/ART-PROMPTS-28.md", "what the loop-9 audit found",
             "WHAT THIS COVERS, most important first: dialogue faces for six villagers whose portrait is a different person from their walking sprite; fight poses for three dog breeds, so a pet stays the same dog in a fight.")
 print("28:", f28)
+p29raw = open(f"{D}/src/ART-PROMPTS-29-raw.md").read()
+f29 = build(p29raw, "29", f"{D}/ART-PROMPTS-29.md", "what the loop-10 audit found",
+            "WHAT THIS COVERS, most important first: everyday poses (sit, sleep, eat, dance, umbrella...) for 15 villagers so they stay the same person as their face; seasonal outfits for 10 villagers drawn in their new look; then three optional sheets (Marlowe and Benno with their hats, lamps for the deep mines, snowy groves) and a fallback for two cut-off icon rows.")
+print("29:", f29)

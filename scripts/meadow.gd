@@ -28,10 +28,10 @@ func build() -> void:
 	add_exit(FARM_EXIT, "farm", Vector2(68 * TILE, 30 * TILE + 8), "left", "◀ farm")
 	add_exit(EAST_EXIT, "crystal_meadow", Vector2(2 * TILE, 12 * TILE), "right", ("crystal meadow ▶" if GameState.is_penguins() else "outskirts ▶"))
 	add_exit(Rect2i(14, 0, 4, 1), "ruins", Vector2(24 * TILE, 41 * TILE + 8), "up", "▲ ruins")
-	for p: Vector2i in [Vector2i(4, 2), Vector2i(10, 2), Vector2i(16, 3), Vector2i(21, 12), Vector2i(3, 13), Vector2i(14, 8), Vector2i(9, 12), Vector2i(26, 22), Vector2i(8, 22), Vector2i(19, 25)]:
+	for p: Vector2i in [Vector2i(4, 2), Vector2i(10, 2), Vector2i(19, 3), Vector2i(21, 13), Vector2i(3, 13), Vector2i(13, 7), Vector2i(9, 13), Vector2i(26, 22), Vector2i(8, 22), Vector2i(19, 25)]:
 		if not is_cleared(p):
 			set_thing(p.x, p.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
-	for p: Vector2i in [Vector2i(7, 5), Vector2i(19, 7), Vector2i(12, 10), Vector2i(27, 17), Vector2i(15, 20)]:
+	for p: Vector2i in [Vector2i(7, 5), Vector2i(19, 7), Vector2i(12, 14), Vector2i(27, 17), Vector2i(15, 20)]:
 		if not is_cleared(p, 8):
 			set_thing(p.x, p.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
 	set_thing(MINE_DOOR.x, MINE_DOOR.y, {"type": "mine", "hint": "A: enter the mine"})

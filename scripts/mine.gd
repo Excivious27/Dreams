@@ -346,6 +346,26 @@ func _features(rng: RandomNumberGenerator) -> void:
 			for q2: Vector2i in comp:
 				_lava.erase(q2)
 				blocked.erase(q2)
+	# Water specks too: a 1-3 cell pool draws as a stray teal diamond.
+	var wseen := {}
+	for c: Vector2i in things.keys():
+		if _grotto or wseen.has(c) or not is_water_cell(c):
+			continue
+		var wcomp: Array = []
+		var wst: Array = [c]
+		while not wst.is_empty():
+			var q3: Vector2i = wst.pop_back()
+			if wseen.has(q3) or not is_water_cell(q3):
+				continue
+			wseen[q3] = true
+			wcomp.append(q3)
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				wst.append(q3 + d)
+		if wcomp.size() < 4:
+			for q3: Vector2i in wcomp:
+				things.erase(q3)
+				blocked.erase(q3)
+				hard.erase(q3)
 	if "water" in feat and not _grotto:
 		swim_ok = Colony.has_ability("tideswim") or Companion.has_ability("tail")
 	# Keep the way down reachable: clear any hazard that cuts entry from ladder.
@@ -394,7 +414,8 @@ func _findables(rng: RandomNumberGenerator) -> void:
 	var day := int(GameState.run["day"])
 	var forage: Array = theme.get("forage", ["cave_mushroom"])
 	# Full forage only on the deepest floor you have reached; old floors refill a little.
-	var nf := ((4 + rng.randi_range(0, 4)) if floor_no >= _deepest() else rng.randi_range(1, 3)) + (3 if "glow" in theme.get("feat", []) else 0)
+	var ak := clampf(_open.size() / 2200.0, 1.0, 2.5)  # bigger caves, a little more to find
+	var nf := int(round(((4 + rng.randi_range(0, 4)) if floor_no >= _deepest() else rng.randi_range(1, 3)) * ak)) + (3 if "glow" in theme.get("feat", []) else 0)
 	for i in nf:
 		var c: Vector2i = free[rng.randi() % free.size()]
 		if things.has(c):
@@ -404,7 +425,7 @@ func _findables(rng: RandomNumberGenerator) -> void:
 			continue
 		var item := str(forage[rng.randi() % forage.size()])
 		set_thing(c.x, c.y, {"type": "forage", "item": item, "key": key, "hint": "A: pick up %s" % GameState.item_name(item)}, false)
-	for i in rng.randi_range(2, 5):
+	for i in int(round(rng.randi_range(2, 5) * ak)):
 		var c: Vector2i = free[rng.randi() % free.size()]
 		var ck := "mcrate_%d_%d_%d" % [floor_no, i, day]
 		if not things.has(c) and not GameState.run["flags"].has(ck):
@@ -505,6 +526,24 @@ func _farthest_open(from: Vector2i) -> Vector2i:
 				dist[n] = int(dist[q]) + 1
 				queue.append(n)
 	return far
+
+
+## Steps from a to b over floor you can walk or mine, or -1 if more than max_steps.
+func _walk_dist(a: Vector2i, b: Vector2i, max_steps: int) -> int:
+	var dist := {a: 0}
+	var q: Array = [a]
+	while not q.is_empty():
+		var c: Vector2i = q.pop_front()
+		if c == b:
+			return int(dist[c])
+		if int(dist[c]) >= max_steps:
+			continue
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n := c + d
+			if _reach.has(n) and not dist.has(n):
+				dist[n] = int(dist[c]) + 1
+				q.append(n)
+	return -1
 
 
 func after_ready() -> void:
@@ -1116,7 +1155,7 @@ func _place_props() -> void:
 		var rock_ok: Array = []
 		for ri in nrock:
 			var rt := Art.tex("props", "mine_%s_rock_%d" % [rs, ri])
-			if rt and rt.get_width() >= 24 and rt.get_width() < 50:
+			if rt and rt.get_width() >= 24 and rt.get_width() < 50 and not (rs == "deep" and ri == 0):  # deep_rock_0 has gold flecks: it read as gold ore
 				rock_ok.append(ri)
 		if rock_ok.is_empty():
 			rock_ok = range(maxi(1, mini(nrock, 5)))
@@ -1226,7 +1265,7 @@ func _place_props() -> void:
 			if Art.has("props", "cave_lamp"):
 				for li in range(1, 2 + _open.size() / 1500):
 					var lc := _roomy_open(okeys2[rng2.randi() % okeys2.size()])
-					if not things.has(lc) and not blocked.has(lc):
+					if not things.has(lc) and not blocked.has(lc) and lc.distance_to(_entry) >= 12:  # the beam lamp already lights the entry
 						prop("props", "cave_lamp", lc, 0, 0.0, true, 0.35)
 						blocked[lc] = true
 			if floor_no % 2 == 0:
@@ -1378,7 +1417,7 @@ func _summon_guardian() -> void:
 	var at := cell_center(_ladder)
 	if _grotto:
 		at = cell_center(_nearest_open(Vector2i(cols / 2, rows / 2)))
-	elif player and player.position.distance_to(at) > 20 * TILE:
+	elif player and _walk_dist(world_to_cell(player.position), _ladder, 24) < 0:  # by walking, not as the crow flies (a wall between)
 		# Don't make the player cross the whole cave: it surfaces a few cells away.
 		var pc := world_to_cell(player.position)
 		var aim := pc + Vector2i(randi_range(-6, 6), randi_range(-6, 6))

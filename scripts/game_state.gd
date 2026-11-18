@@ -134,9 +134,11 @@ static func _migrate() -> void:
 				continue
 			var ids := {}
 			var nm := {}
+			var aka := {}  # earlier names of a node whose effect did not change (gen_skill_trees.py)
 			for n in skills_data[sk].get("nodes", []):
 				ids[str(n["id"])] = int(n.get("ranks", 1))
 				nm[str(n["id"])] = str(n.get("name", ""))
+				aka[str(n["id"])] = n.get("aka", [])
 			var bought_nm: Dictionary = (run["skills"][sk] as Dictionary).get_or_add("nm", {})
 			for nid in have.keys():
 				var ren := str(NODE_RENAMES.get(str(nid), ""))
@@ -150,6 +152,10 @@ static func _migrate() -> void:
 				# Positional ids can be reused by a different node when a tree is rebuilt:
 				# ranks bought under another name are refunded, not moved to the new perk.
 				var was := str(bought_nm.get(str(nid), nm.get(str(nid), "")))
+				# A rename alone (same id, same effect) keeps the ranks silently.
+				if ids.has(str(nid)) and was != str(nm[str(nid)]) and (aka[str(nid)] as Array).has(was):
+					bought_nm[str(nid)] = str(nm[str(nid)])
+					was = str(nm[str(nid)])
 				if not ids.has(str(nid)) or was != str(nm.get(str(nid), "")):
 					if not moved:
 						renamed_back += maxi(0, int(have[nid]) - int((run.get("gift_nodes", {}) as Dictionary).get(str(sk) + "|" + str(nid), 0)))
@@ -293,7 +299,7 @@ static func import_code(code: String) -> String:
 ## A guest's morning when the host's day rolls over: pay their own sell box,
 ## refill, clear the day's talk/gift marks. (Farm growth is the host's job.)
 ## Open quests from villagers the story sent away can never be handed in: drop them.
-## Board jobs lapse a week after they were pinned (the board posts new ones every day).
+## Board jobs lapse a week after they were pinned, crop orders two (the board posts new ones every day).
 ## (Lapsing only on our own sleep: a guest's day is the host's.)
 static func _drop_gone_quests(lapse := false) -> void:
 	var today := int(run["day"])
@@ -301,10 +307,17 @@ static func _drop_gone_quests(lapse := false) -> void:
 		if bool(q["done"]):
 			return true
 		var qid := str(q["id"])
-		if lapse and qid.begins_with("board_") and qid.get_slice("_", 1).is_valid_int() and today - int(qid.get_slice("_", 1)) > 7:
+		if lapse and qid.begins_with("board_") and qid.get_slice("_", 1).is_valid_int() \
+				and today - int(q.get("pin_day", int(qid.get_slice("_", 1)))) > (14 if qid.ends_with("_c") else 7):
+			notify("Too late for the board job: %s" % str(q["text"]))
 			return false
 		var giver := str(_quest_def(qid).get("giver", ""))
 		return giver == "" or not run["flags"].has(giver + "_gone"))
+	# Accepted board jobs are only needed while their quest is open (board_restore).
+	var acc: Dictionary = run.get("board_accepted", {})
+	for id: String in acc.keys():
+		if not has_quest(id) or quest_done(id):
+			acc.erase(id)
 
 
 static func guest_morning() -> Dictionary:
@@ -333,8 +346,20 @@ static func guest_morning() -> Dictionary:
 	run["gifted_today"] = {}
 	if int(run["day"]) % 7 == 1:
 		run["gifts_week"] = {}
+	# The laundromat, pool and burrow that count are on our own farm (the host's builds are loaded now).
+	# Wash at our own tier; pool/burrow gifts wait for our own nights (our farm's days don't pass while we visit).
+	var hb: Variant = run.get("builds", null)
+	var nn := Net.i()
+	var own: Variant = nn._solo_backup.get("builds", null) if nn != null and nn.visiting() else hb
+	if own is Dictionary:
+		run["builds"] = own
+	else:
+		run.erase("builds")
 	Racket.overnight(report)
-	Sanctuary.overnight(report)
+	if hb is Dictionary:
+		run["builds"] = hb
+	else:
+		run.erase("builds")
 	save()
 	return report
 
@@ -664,8 +689,7 @@ static func loose_tools() -> Array:
 
 ## Co-op: we're a guest on someone else's world (also while reconnecting).
 static func visiting() -> bool:
-	var n := Net.i()
-	return n != null and n.visiting()
+	return Net.visiting()
 
 
 ## Set when a new item didn't fit and went to the farm chest (Hud shows it).
@@ -1239,7 +1263,7 @@ static func _apply_max_stats() -> void:
 			tree_hp += int(bonus(str(sk), "hp"))
 			tree_en += int(bonus(str(sk), "energy"))
 	var base_hp := 100 + 8 * (skill_level("combat") - 1) + tree_hp + gear_stat("hp")
-	var base_en := 100 + 3 * levels + tree_en + gear_stat("energy")
+	var base_en := 100 + 3 * mini(levels, 40) + tree_en + gear_stat("energy")  # level-ups add up to +120; nodes and gear do the rest
 	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana") + (int(bonus(arc_sk, "mana")) if arc_sk != "" else 0)
 	if has_friend_perk("juniper", 4):
 		base_hp += 20
@@ -1501,6 +1525,23 @@ static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) ->
 	var cl: Dictionary = r.get("crew_last", {})
 	for id in cl:
 		cl[id] = int(cl[id]) + dd
+	# Day stamps in flags (forage/bush/fruit/loot/heal spots, once-a-day uses) move with the day.
+	if dd != 0:
+		var rx := RegEx.create_from_string("^(forage_|fg_|bush_|fruit_|shroom_|loot_|heal_|heist_try_|marked_try_|bfpay_)|_day$|^(forest_thicket|crater_flower)$")
+		for k in fl.keys():
+			var fv: Variant = fl[k]
+			if (fv is int or fv is float) and int(fv) > 0 and rx.search(str(k)) != null:
+				fl[k] = int(fv) + dd
+		for k in ["petted_day", "bedroll_day", "rescued_day"]:
+			if int(pt.get(k, 0)) > 0:
+				pt[k] = int(pt[k]) + dd
+		var pd: Variant = r.get("passed_day", null)
+		if pd is Dictionary and (pd as Dictionary).has("day"):
+			pd["day"] = int(pd["day"]) + dd
+		# Board jobs carry their pin day in the id (the host's day if pinned while visiting): keep it on the quest.
+		for q: Variant in r.get("quests", []):
+			if q is Dictionary and not bool(q.get("done", false)) and str(q.get("id", "")).begins_with("board_") and str(q["id"]).get_slice("_", 1).is_valid_int():
+				q["pin_day"] = int(q.get("pin_day", int(str(q["id"]).get_slice("_", 1)))) + dd
 
 
 static func restore_energy(n: int) -> void:
@@ -1632,7 +1673,7 @@ static func random_season_seed(max_tier := -1) -> String:
 			continue
 		var cd: Dictionary = crops[str(it["crop"])]
 		var cs := str(cd.get("season", "any"))
-		if (cs == se or cs == "any") and int(cd.get("tier", 1)) <= max_tier:
+		if (cs == se or cs == "any") and int(cd.get("tier", 1)) <= max_tier and (is_penguins() or not str(it["crop"]).begins_with("crystal")):
 			# Commoner seeds turn up more often.
 			for w in maxi(1, 4 - int(cd.get("tier", 1))):
 				pool.append(str(sid))
@@ -1884,6 +1925,10 @@ static func crop_in_season(item: String) -> bool:
 	return not found
 
 
+## Board items any shop sells at 1.5x value: no markup on them, or buy-and-hand-in is free money.
+const BOARD_SHOP_GOODS := ["coal", "copper", "iron", "stone", "brick", "old_coin", "book", "meat", "bait", "flour", "hay", "bread", "coffee"]
+
+
 static func board_today() -> Array:
 	var b: Dictionary = run.get("board", {})
 	if int(b.get("day", -1)) == int(run["day"]):
@@ -1906,9 +1951,11 @@ static func board_today() -> Array:
 		var item: String = pool[rng.randi_range(0, mini(pool.size(), 2 + tier) - 1)]
 		if not items.has(item) or not crop_in_season(item):
 			continue
+		if (item == "egg" and not Builds.is_built("coop")) or (item in ["milk", "butter"] and not Builds.is_built("barn")):
+			continue  # nothing to get it from yet
 		var n := rng.randi_range(2, 4 + tier * 2)
 		var val := maxi(2, item_value(item))
-		var pay := int(val * n * 1.6) + 20 * tier
+		var pay := int(val * n * (1.15 if item in BOARD_SHOP_GOODS else 1.6)) + 20 * tier  # shop goods: pay for the errand, not a markup
 		jobs.append({"id": "board_%d_%d" % [int(run["day"]), i], "npc": who, "item": item, "n": n, "crystals": pay, "friend": 8 + tier * 2})
 	# Plus one order for something growing this season (any farmer's crop counts).
 	var se := season()
@@ -1916,7 +1963,8 @@ static func board_today() -> Array:
 	for cid in crops:
 		var cd: Dictionary = crops[cid]
 		if str(cd.get("season", "any")) in [se, "any"] and int(cd.get("tier", 1)) <= tier + 1 and items.has(str(cd["yield"])) \
-				and not bool(cd.get("tree", false)) and (is_penguins() or not str(cid).begins_with("crystal")):
+				and not bool(cd.get("tree", false)) and (is_penguins() or not str(cid).begins_with("crystal")) \
+				and int(cd.get("days", 4)) <= 12 and (str(cd.get("season", "any")) == "any" or int(cd.get("days", 4)) <= DAYS_PER_SEASON - day_of_season()):
 			crop_pool.append(str(cd["yield"]))
 	crop_pool.sort()
 	if not crop_pool.is_empty():
@@ -2828,7 +2876,12 @@ static func _first_crop_step() -> String:
 		return "Your crop is ripe: face it and tap USE to harvest."
 	if planted.any(func(t: Dictionary) -> bool: return not bool(t.get("watered", false))) and not sky_waters():
 		return "Water your crop: watering can, USE."
-	return "Crops grow overnight. Sleep, then harvest."
+	var left := 99
+	for t: Dictionary in planted:
+		left = mini(left, int(crops.get(str(t["crop"]), {}).get("days", 1)) - int(t.get("days", 0)))
+	if left <= 1:
+		return "Watered. Sleep, and it's ripe tomorrow."
+	return "Watered. Ripe in %d nights: water it each morning." % left
 
 
 static func next_step() -> String:
@@ -2847,6 +2900,8 @@ static func next_step() -> String:
 	for i in range(qs.size() - 1, -1, -1):
 		var q: Dictionary = qs[i]
 		if not bool(q.get("done", false)) and mains.has(str(q.get("id", ""))):
+			if str(q.get("id", "")) == "sky_stair" and run["flags"].has("campfire_done") and run["flags"].has("babies_done"):
+				return "Climb the great tree in the forest: the stair goes above the clouds."
 			return _first_crop_step() if str(q.get("id", "")) == "first_harvest" else str(q.get("text", ""))
 	for q in run.get("quests", []):
 		if not bool(q.get("done", false)):

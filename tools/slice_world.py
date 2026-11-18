@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 import slice_art as S
 from slice_art import load, crop, scale_to, save, strip, bbox, fg_mask, cells_by_grid, cells_by_projection, TILE2
 from slice_art2 import region_bbox, comps, props_from, tileset3x3
-from PIL import Image
+from PIL import Image, ImageDraw
 import numpy as np
 
 
@@ -487,7 +487,7 @@ def load_hue(name, thresh=90, keep_inside=True):
     return out
 
 
-def row_sprites(rgba, reg, n, gap=4):
+def row_sprites(rgba, reg, n, gap=4, split=False):
     """Boxes of the n sprites in a row region, found by connected components so
     uneven cells never cut a sprite in half. Close components are merged, then
     the nearest pairs are merged until exactly n remain."""
@@ -507,6 +507,18 @@ def row_sprites(rgba, reg, n, gap=4):
         g, i = min(gaps)
         a, b = merged[i], merged[i + 1]
         merged[i:i + 2] = [[min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])]]
+    while split and 0 < len(merged) < n:
+        # Sprites touch (packets side by side): split the widest box at its emptiest column near
+        # the middle, so each cell keeps one whole sprite (equal cells cut through them).
+        i = max(range(len(merged)), key=lambda k: merged[k][2] - merged[k][0])
+        bx = merged[i]
+        x0, x1 = bx[0], bx[2]
+        if x1 - x0 < 12:
+            break
+        occ = (rgba[reg[1]:reg[3], x0:x1, 3] > 40).sum(0)
+        lo, hi = int((x1 - x0) * 0.3), int((x1 - x0) * 0.7) + 1
+        k = int(np.argmin(occ[lo:hi])) + lo
+        merged[i:i + 1] = [[x0, bx[1], x0 + k, bx[3]], [x0 + k, bx[1], x1, bx[3]]]
     if len(merged) < n:
         # Sprites touch (dust trails, ground lines): fall back to equal cells across the content.
         x0 = min(b[0] for b in merged); x1 = max(b[2] for b in merged)
@@ -527,7 +539,7 @@ def w11():
     row = cells_by_grid(rgba, 9, 1, region=(12, 230, 775, 305), trim=False)[0]
     for i, b in enumerate(row):
         bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
-        if bb: save(scale_to(crop(rgba, bb), width=32, height=32), "props", "wdeco_%d" % i)
+        if bb: save(scale_to(_main_blob(crop(rgba, bb)), width=32, height=32), "props", "wdeco_%d" % i)
     row = cells_by_grid(rgba, 4, 1, region=(785, 230, 1110, 305), trim=False)[0]
     strip([scale_to(crop(rgba, region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))), height=20) for b in row], "fx", "fog_wisp")
     props_from(rgba, "nature", {"dead_tree_s": ((20, 330, 130, 500), (36, 56)), "dead_tree_m": ((140, 330, 270, 500), (56, 72)), "dead_tree_l": ((280, 330, 450, 500), (80, 96)), "dead_giant": ((460, 320, 720, 520), (128, 160))})
@@ -666,7 +678,10 @@ def w12():
     row = cells_by_grid(rgba, 2, 1, region=(1240, 240, 1525, 330), trim=False)[0]
     strip([scale_to(crop(rgba, region_bbox(rgba, b)), height=36) for b in row], "wildlife/eagle", "idle")
     props_from(rgba, "nature", {"cloud_tree_a": ((20, 380, 160, 620), (64, 96)), "cloud_tree_b": ((170, 370, 330, 620), (80, 112)), "cloud_tree_c": ((340, 370, 500, 620), (80, 112))})
-    props_from(rgba, "props", {"sky_stairs": ((510, 370, 720, 640), (96, 128)), "sky_temple": ((740, 350, 1080, 640), (160, 144)), "sky_bridge": ((60, 650, 860, 850), (352, 96)), "observatory": ((1050, 350, 1536, 1010), (224, 320))})
+    props_from(rgba, "props", {"sky_stairs": ((510, 370, 720, 640), (96, 128)), "sky_temple": ((740, 350, 1080, 640), (160, 144)), "sky_bridge": ((60, 650, 860, 850), (352, 96))})
+    obs = rgba.copy()
+    ImageDraw.Draw(obs_im := Image.fromarray(obs)).rectangle((1040, 350, 1092, 650), fill=(0, 0, 0, 0))  # the temple's crystal pillar sits in this box
+    props_from(np.array(obs_im), "props", {"observatory": ((1050, 350, 1536, 1010), (224, 320))})
     row = cells_by_grid(rgba, 4, 1, region=(12, 860, 970, 1010), trim=False)[0]
     strip([scale_to(crop(rgba, (b[0] + 3, b[1] + 3, b[2] - 3, b[3] - 3)), width=224, height=112) for b in row], "fx", "sky_whale")
 
@@ -733,7 +748,7 @@ def w15():
     row = cells_by_grid(rgba, 12, 1, region=(12, 210, 1170, 300), trim=False)[0]
     for i, b in enumerate(row):
         bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
-        if bb: save(scale_to(crop(rgba, bb), width=32, height=36), "props", "jdeco_%d" % i)
+        if bb: save(scale_to(_main_blob(crop(rgba, bb)), width=32, height=36), "props", "jdeco_%d" % i)
     props_from(rgba, "props", {"vines_a": ((1180, 195, 1300, 310), (56, 56)), "vines_b": ((1310, 195, 1420, 310), (56, 56)), "vines_c": ((1430, 195, 1525, 310), (48, 56)),
         "mushroom_tree_a": ((12, 330, 230, 640), (96, 144)), "mushroom_tree_b": ((240, 320, 500, 640), (128, 160)), "crashed_ship": ((500, 410, 880, 640), (192, 112)), "alien_statue": ((880, 330, 1110, 640), (96, 160))})
     row = cells_by_grid(rgba, 2, 1, region=(510, 330, 720, 440), trim=False)[0]
@@ -1860,8 +1875,11 @@ def _icon_sheet(file, names_by_row, group="items", size=32, rarity_strip=True):
         if m >= len(rows):
             break
         y0, y1 = rows[m]
-        # split the row into 16 columns by connected components, merged to 16
-        boxes = row_sprites(rgba, (10, y0, 1526, y1), 16, gap=6)
+        # split the row into its sprites by connected components (16, or 15 when a
+        # name is marked "!name": the sheet has no sprite for it)
+        missing = [x[1:] for x in names if x.startswith("!")]
+        names = [x for x in names if not x.startswith("!")]
+        boxes = row_sprites(rgba, (10, y0, 1526, y1), len(names) if file in ICON_SPLIT else 16, gap=6, split=file in ICON_SPLIT)
         for n, nm in enumerate(names):
             if not nm or n >= len(boxes):
                 continue
@@ -1884,11 +1902,21 @@ def _icon_sheet(file, names_by_row, group="items", size=32, rarity_strip=True):
                 if nm not in KEEP_BITS:
                     im = _drop_edge_bits(im)
             save(scale_to(im, width=size, height=size), group, nm)
+        for nm in missing:  # no sprite on the sheet: a stand-in from a near icon (else the item's fallback)
+            src = os.path.join(S.OUT, group, ICON_STANDIN.get(nm, "-") + ".png")
+            if nm in ICON_STANDIN and os.path.exists(src):
+                save(Image.open(src).convert("RGBA"), group, nm)
 
+
+# Sheets whose rows are cut into exactly as many sprites as they have names ("!name" marks a
+# sprite the sheet doesn't have; touching sprites are split at their emptiest column).
+ICON_STANDIN = {"glowcap_spore2": "glowcap_spore", "glowcap_spore3": "glowcap_spore", "worldseed2": "worldseed", "worldseed3": "worldseed",
+                "truffle_spore": "mushroom_spore", "void_pepper_seed2": "void_pepper_seed", "flame_core": "flame_ember"}
+ICON_SPLIT = {"w70_seeds.png", "w72_monster_drops.png", "w83_quest_collection.png"}
 
 # Icons whose small detached bits at the edge are part of the picture (steam, sparkles, sound rings, notes, flames).
 KEEP_BITS = {"coffee", "cream_soda", "golden_float", "echo_leek", "singing_pear", "light_mote2", "star_dust2", "wishfruit_cake",
-             "dream_orchid", "dreamflower", "ethereal_corn", "hush_carrot", "halo", "flameberry"}
+             "dream_orchid", "dreamflower", "ethereal_corn", "hush_carrot", "halo", "flameberry", "star_dust"}
 
 
 def _drop_edge_bits(im, frac=0.08):
@@ -1904,7 +1932,8 @@ def _drop_edge_bits(im, frac=0.08):
     h, w = a.shape
     hit = False
     for i, sl in enumerate(ndimage.find_objects(lab)):
-        if sz[i] < frac * sz.max() and (sl[1].start <= 2 or sl[0].start <= 2 or sl[1].stop >= w - 2):
+        if (sz[i] < frac * sz.max() and (sl[1].start <= 2 or sl[0].start <= 2 or sl[1].stop >= w - 2)) \
+                or (sz[i] < 0.35 * sz.max() and (sl[1].start <= 1 or sl[1].stop >= w - 1) and (sl[1].stop - sl[1].start) <= 0.35 * w):  # the next icon's sliver
             arr[lab == i + 1, 3] = 0
             hit = True
     if not hit:
@@ -1944,14 +1973,14 @@ def w69():
 
 def w70():
     _icon_sheet("w70_seeds.png", _ids(
-        "potato_seed,turnip_seed,carrot_seed,beet_seed,onion_seed,garlic_seed,lettuce_seed,corn_seed,tomato_seed,radish_seed,bok_choy_seed,wheat_seed,oat_seed,rice_seed,sunflower_seed,cotton_seed",
-        "cabbage_seed,kale_seed,spinach_seed,green_bean_seed,pea_seed,cucumber_seed,pepper_seed,eggplant_seed,leek_seed,scallion_seed,shallot_seed,celery_seed,dill_seed,parsley_seed,basil_seed,mint_seed",
-        "strawberry_seed,blueberry_seed,raspberry_seed,blackberry_seed,cranberry_seed,grape_seed,apple_seed,pear_seed,peach_seed,orange_seed,lemon_seed,banana_seed,pineapple_seed,melon_seed,watermelon_seed,cantaloupe_seed",
-        "pumpkin_seed,zucchini_seed,yellow_squash_seed,broccoli_seed,cauliflower_seed,artichoke_seed,asparagus_seed,sweet_potato_seed,chili_seed,ginger_seed,turmeric_seed,wasabi_seed,sesame_seed,poppy_seed,flax_seed,chia_seed",
-        "moonberry_seed,starfruit_seed,pomegranate_seed,fig_seed,dragonfruit_seed,coconut_seed,kiwi_seed,mango_seed,avocado_seed,lychee_seed,persimmon_seed,quince_seed,kumquat_seed,mulberry_seed,passionfruit_seed,guava_seed",
-        "vanilla_seed,cacao_seed,coffee_seed,tea_seed,hops_seed,aloe_seed,saffron_seed,lotus_seed,watercress_seed,water_chestnut_seed,mushroom_spore,truffle_spore,morel_spore,glowcap_spore,glowcap_spore2,glowcap_spore3",
-        "enchanted_berry_seed,frostberry_seed,flameberry_seed,shadowberry_seed,dreamfruit_seed,starflower_seed,moonflower_seed,sunfruit_seed,crystal_melon_seed,crystal_tomato_seed,rainbow_beet_seed,aurora_corn_seed,crystal_lettuce_seed,sky_lettuce_seed,void_pepper_seed,void_pepper_seed2",
-        "luminous_starfruit_seed,celestial_apple_seed,dragonberry_seed,phoenix_pepper_seed,atlas_melon_seed,nebula_grape_seed,wishfruit_seed,infinity_bean_seed,stardust_pumpkin_seed,ethereal_corn_seed,prism_tomato_seed,lumiflora_seed,soulleaf_seed,worldseed,worldseed2,worldseed3"))
+        "potato_seed,turnip_seed,carrot_seed,beet_seed,onion_seed,garlic_seed,lettuce_seed,corn_seed,tomato_seed,radish_seed,bok_choy_seed,wheat_seed,oat_seed,!rice_seed,sunflower_seed,cotton_seed",
+        "cabbage_seed,kale_seed,spinach_seed,green_bean_seed,pea_seed,cucumber_seed,pepper_seed,eggplant_seed,leek_seed,scallion_seed,shallot_seed,celery_seed,!dill_seed,parsley_seed,basil_seed,mint_seed",
+        "strawberry_seed,blueberry_seed,raspberry_seed,blackberry_seed,cranberry_seed,grape_seed,apple_seed,pear_seed,peach_seed,orange_seed,lemon_seed,banana_seed,pineapple_seed,melon_seed,watermelon_seed,!cantaloupe_seed",
+        "pumpkin_seed,zucchini_seed,yellow_squash_seed,broccoli_seed,cauliflower_seed,artichoke_seed,asparagus_seed,sweet_potato_seed,chili_seed,ginger_seed,turmeric_seed,wasabi_seed,sesame_seed,poppy_seed,flax_seed,!chia_seed",
+        "moonberry_seed,starfruit_seed,pomegranate_seed,fig_seed,dragonfruit_seed,coconut_seed,kiwi_seed,mango_seed,avocado_seed,lychee_seed,persimmon_seed,quince_seed,!kumquat_seed,mulberry_seed,passionfruit_seed,guava_seed",
+        "vanilla_seed,cacao_seed,coffee_seed,tea_seed,hops_seed,aloe_seed,saffron_seed,lotus_seed,watercress_seed,water_chestnut_seed,,,mushroom_spore,!truffle_spore,morel_spore,glowcap_spore,!glowcap_spore2,!glowcap_spore3",
+        "enchanted_berry_seed,frostberry_seed,flameberry_seed,shadowberry_seed,dreamfruit_seed,starflower_seed,moonflower_seed,sunfruit_seed,crystal_melon_seed,crystal_tomato_seed,!rainbow_beet_seed,aurora_corn_seed,crystal_lettuce_seed,,sky_lettuce_seed,void_pepper_seed,!void_pepper_seed2",
+        "luminous_starfruit_seed,celestial_apple_seed,dragonberry_seed,phoenix_pepper_seed,atlas_melon_seed,nebula_grape_seed,,wishfruit_seed,,infinity_bean_seed,stardust_pumpkin_seed,ethereal_corn_seed,!prism_tomato_seed,lumiflora_seed,soulleaf_seed,worldseed,!worldseed2,!worldseed3"))
 
 
 def w71():
@@ -2231,12 +2260,12 @@ def _catalogue(file, group, names_by_row, size=32, detect_th=0.08):
 
 def w72():
     _catalogue("w72_monster_drops.png", "items", _ids(
-        "grump_dust,grump_tooth,grump_cloth,grump_button,storm_fluff,grey_feather,sulk_stone,grumble_seed,slime_gel,slime_gel_blue,slime_core,bat_wing,bat_fang,bat_fur,wisp_spark,wisp_thread",
-        "thug_cash,loose_change,bottle_cap,cig_tin,bent_knuckle,broken_blade,bandana_drop,burner_phone,lockpick,dice,poker_chip,matchbook,cheap_watch,car_key,spray_can,chain_link",
-        "golem_core,golem_moss,golem_heart,shard_splinter,shard_heart,soldier_badge,grump_medal,archer_string,soldier_buckle,knight_rivet,wisp_light,enforcer_badge,cyber_chip,flame_ember,speedster_sole,gambler_chip",
-        "jacket_patch,riot_shard,dock_manifest,warehouse_key,neon_tube,karaoke_mic,ramen_token,rat_tail,pit_ticket,boxing_wrap,cash_bundle,phone_sim,hard_drive,gold_tooth,fake_id,vault_blueprint",
-        "commander_crest,commander_cape,knight_crystal,dark_shard,golem_crown,wisp_lantern,bat_king_wing,slime_king_gel,general_hat,storm_heart,enforcer_helm,flame_core,cyber_eye,speedster_shoe,golden_dice,dock_boss_ring",
-        "president_cufflink,tower_keycard,ledger_page,limo_key,heli_blade,bank_token,gold_bundle,penthouse_key,dragon_scale,champion_belt,cctv_lens,sealed_envelope,contract,briefcase,wiretap,earpiece",
+        "grump_dust,grump_tooth,grump_cloth,grump_button,storm_fluff,grey_feather,sulk_stone,grumble_seed,slime_gel,slime_gel_blue,!slime_core,bat_wing,bat_fang,bat_fur,wisp_spark,wisp_thread",
+        "thug_cash,loose_change,bottle_cap,cig_tin,bent_knuckle,broken_blade,bandana_drop,burner_phone,lockpick,dice,!poker_chip,matchbook,cheap_watch,car_key,spray_can,chain_link",
+        "golem_core,golem_moss,golem_heart,shard_splinter,shard_heart,soldier_badge,grump_medal,archer_string,soldier_buckle,!knight_rivet,wisp_light,enforcer_badge,cyber_chip,flame_ember,speedster_sole,gambler_chip",
+        "jacket_patch,riot_shard,dock_manifest,warehouse_key,neon_tube,karaoke_mic,ramen_token,rat_tail,pit_ticket,boxing_wrap,cash_bundle,!phone_sim,hard_drive,gold_tooth,fake_id,vault_blueprint",
+        "commander_crest,commander_cape,knight_crystal,dark_shard,golem_crown,wisp_lantern,bat_king_wing,slime_king_gel,general_hat,storm_heart,enforcer_helm,!flame_core,cyber_eye,speedster_shoe,golden_dice,dock_boss_ring",
+        "president_cufflink,tower_keycard,ledger_page,limo_key,heli_blade,bank_token,gold_bundle,penthouse_key,dragon_scale,champion_belt,cctv_lens,sealed_envelope,!contract,briefcase,wiretap,earpiece",
         "dark_crystal_shard,commander_soul,grump_king_crown,knight_heart,storm_core,wisp_queen_light,bat_lord_fang,golem_elder_core,slime_emperor_gel,void_dust,president_tie_pin,president_signet,tower_core,dragon_heart,pit_legend_belt,big_ledger",
         "dark_crystal_fragment,meow_spark,light_tear,grump_king_heart,penguin_promise,storm_eye,moon_shard,star_core,president_seal,president_crown,tower_key,city_deed,first_dollar,golden_pawprint,dream_heart,space_pearl"))
 
@@ -2352,9 +2381,9 @@ def w82():
 
 def w83():
     _catalogue("w83_quest_collection.png", "items", _ids(
-        "letter_sealed,letter_open,letter_torn,letter_gold,note_a,note_b,map_a,map_b,map_c,key_iron,key_brass,key_silver,key_gold,key_crystal,key_moon,token_paw",
+        "letter_sealed,letter_open,letter_torn,letter_gold,note_a,note_b,map_a,map_b,map_c,key_iron,key_brass,key_silver,key_gold,!key_crystal,key_moon,token_paw",
         "token_star,token_crown,token_leaf,badge_star,badge_paw,badge_anchor,badge_flower,photo_a,photo_b,photo_c,photo_d,lockbox,deed,blueprint,tape,film_reel",
-        "fossil_skull,fossil_jaw,fossil_claw,fossil_vertebra,fossil_bone,fossil_tooth_a,fossil_tooth_b,fossil_tooth_c,fossil_ammonite,fossil_shell_a,fossil_shell_b,fossil_sand_dollar,fossil_horn,fossil_egg_a,fossil_egg_b,fossil_egg_c",
+        "fossil_skull,fossil_jaw,fossil_claw,fossil_vertebra,fossil_bone,fossil_tooth_a,fossil_tooth_b,fossil_tooth_c,fossil_ammonite,fossil_shell_a,fossil_shell_b,fossil_sand_dollar,fossil_horn,fossil_egg_a,fossil_egg_b,!fossil_egg_c",
         "fossil_fish2,fossil_leaf2,fossil_fern,fossil_trilobite,fossil_dragonfly,fossil_amber,tablet_a,tablet_b,relic_head,idol_cat,idol_green,idol_gold,pot_a,pot_b,pot_c,mask",
         "mount_trout,mount_bass,mount_salmon,mount_pike,mount_tuna,mount_flounder,mount_catfish,mount_eel,mount_goldfish,mount_blue,mount_purple,mount_shark,mount_prism,mount_swordfish,mount_marlin,mount_koi",
         "trophy_farm_a,trophy_farm_b,trophy_farm_c,trophy_farm_d,trophy_craft_a,trophy_craft_b,trophy_craft_c,trophy_craft_d,trophy_fish_a,trophy_fish_b,trophy_fish_c,trophy_fish_d,trophy_forage,trophy_combat_a,trophy_combat_b,trophy_master",
@@ -3007,6 +3036,9 @@ def _npc_sprite_id(v):
     d = json.load(open(os.path.join(os.path.dirname(S.OUT), "..", "data", "npcs.json"))) if False else None
     return "npc_" + v
 
+# Life rows drawn as a different person from the villager's walker: keep the walker's own poses.
+LIFE_SKIP = {"orla", "benno", "tam", "ivy"}
+
 def _life_sheet(file, villagers):
     rgba = load(file)
     a = rgba[..., 3] > 40
@@ -3015,6 +3047,8 @@ def _life_sheet(file, villagers):
         med = sorted(y1 - y0 for y0, y1 in rows)[len(rows) // 2]
         rows = [(y0 + (y1 - y0) * i // k, y0 + (y1 - y0) * (i + 1) // k) for y0, y1 in rows for k in [max(1, round((y1 - y0) / med))] for i in range(k)][:8]
     for v, (y0, y1) in zip(villagers, rows):
+        if v in LIFE_SKIP:
+            continue
         bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
         for nm, b in zip(LIFE_NAMES, bs):
             bb = region_bbox(rgba, b)
@@ -4701,7 +4735,12 @@ ENEMY_SHEETS = {
 }
 ENEMY_ROW_NAMES = [[("idle", 4), ("walk", 4), ("attack", 99)], [("hurt", 2), ("die", 4), ("special", 99)], [("special2", 99)]]
 
-def _band_cells(rgba, y0, y1, x0, x1, strict=False):
+# Row 1 (hurt/die) cut strictly for these: the sentinel's "!" marks join two hurt frames.
+ROW1_STRICT = {"obsidian_sentinel"}
+# Frame counts that differ from ENEMY_ROW_NAMES (ash_hound's flat 6th die sprite merges with the 5th).
+ENEMY_N = {("ash_hound", "die"): 3}
+
+def _band_cells(rgba, y0, y1, x0, x1, strict=False, split=True):
     """strict: merge only boxes that really overlap (a tail tip or flame reaching the next
     sprite stays its own frame); loose pieces (shatter/die rows) need the default."""
     boxes = _components(rgba, (x0, y0, x1, y1), dilate=3, min_px=80)
@@ -4716,8 +4755,10 @@ def _band_cells(rgba, y0, y1, x0, x1, strict=False):
     hs = sorted(b[3] - b[1] for b in merged)
     if hs:
         med = hs[len(hs) // 2]
-        merged = [b for b in merged if (b[3] - b[1]) >= 0.45 * med]
-    if strict and merged:
+        mw0 = sorted(b[2] - b[0] for b in merged)[len(merged) // 2]
+        # strict row 1: flat (wide) die poses stay, lone sparkles don't
+        merged = [b for b in merged if (b[3] - b[1]) >= 0.45 * med or (strict and not split and (b[3] - b[1]) >= 0.2 * med and (b[2] - b[0]) >= 0.6 * mw0)]
+    if strict and split and merged:
         # Two sprites that still overlap a lot (w234 ash_hound walk f3): cut a box ~2x the
         # typical width at its emptiest column in the middle third. Idle/walk cells only (the
         # first 8): attack frames can be wide on their own (a dash streak, scattered sparks).
@@ -4749,8 +4790,8 @@ def _enemy_sheet(file):
             if pq:
                 fx0 = int(max(pq, key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))[2]) + 4
         for ri, (y0, y1) in enumerate(bands):
-            cells = _band_cells(rgba, y0 - 10, y1 + 10, fx0, fx1, strict=(ri == 0))
-            names = ENEMY_ROW_NAMES[min(ri, 2)]
+            cells = _band_cells(rgba, y0 - 10, y1 + 10, fx0, fx1, strict=(ri == 0 or (ri == 1 and kind in ROW1_STRICT)), split=(ri == 0))
+            names = [(nm, ENEMY_N.get((kind, nm), n)) for nm, n in ENEMY_ROW_NAMES[min(ri, 2)]]
             i = 0
             for name, n in names:
                 part = cells[i:i + n]
@@ -6193,8 +6234,11 @@ def w340_352():
         for n in nodes:
             if n.get("unlock"):
                 continue  # unlock nodes show what they unlock
-            nm_l = str(n["name"]).lower()
-            lst = by_name.get(nm_l) or by_name.get(nm_l.removesuffix(" ii"), [])  # "X II" shares the 2nd "X" icon
+            lst = []
+            for nm_l in [str(n["name"]).lower()] + [str(a).lower() for a in n.get("aka", [])]:  # aka: earlier names
+                lst = by_name.get(nm_l) or by_name.get({"hollow points": "quick reload"}.get(nm_l, ""), []) or by_name.get(nm_l.removesuffix(" ii"), [])  # "X II" shares the 2nd "X" icon
+                if lst:
+                    break
             if lst:
                 save(scale_to(lst.pop(0), 48, 48), "ui", "node_%s_%s" % (sk, n["id"])); done += 1
         print("   %s: %d icons, %d matched to %d nodes" % (sk, len(cells), done, len(nodes)))

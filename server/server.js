@@ -1,6 +1,6 @@
 // Dreams relay: rooms of up to 8 players. Pure forwarder with a tiny bit of
 // room bookkeeping. Deploy anywhere Node runs (Fly.io, Render, a $4 VPS).
-//   PORT (default 8787), MAX_PLAYERS (8), ROOM_TTL_MS (30 min empty).
+//   PORT (default 8787), MAX_PLAYERS (8), ROOM_TTL_MS (30 min empty), HOST_GRACE_MS (30 s).
 // Protocol (JSON text frames):
 //   client -> {t:"join", room:"ABCD", name, look, arc}   // room "" = create
 //   server -> {t:"joined", id, room, host:true|false, peers:[{id,name,look,arc}]}
@@ -14,6 +14,7 @@ const { WebSocketServer } = require("ws");
 const PORT = process.env.PORT || 8787;
 const MAX = parseInt(process.env.MAX_PLAYERS || "8", 10);
 const TTL = parseInt(process.env.ROOM_TTL_MS || "1800000", 10);
+const GRACE = parseInt(process.env.HOST_GRACE_MS || "30000", 10);  // a host's phone gets this long to come back (screen lock, app switch, signal)
 
 const rooms = new Map(); // code -> {host, peers: Map(id -> ws), world, emptySince}
 let nextId = 1;
@@ -48,10 +49,10 @@ wss.on("connection", (ws) => {
             try { p.terminate(); } catch {}
           }
         }
-        if (room.hostToken && room.hostToken === token) room.host = ws.id;
+        if (room.hostToken && room.hostToken === token) { room.host = ws.id; room.hostGoneAt = 0; }
       }
       // A room whose host is gone (left alone, timed out) gets a new host: whoever comes in.
-      if (!room.peers.has(room.host) && room.host !== ws.id) { room.host = ws.id; room.hostToken = token; }
+      if (!room.peers.has(room.host) && room.host !== ws.id && !(room.hostGoneAt && Date.now() - room.hostGoneAt < GRACE)) { room.host = ws.id; room.hostToken = token; room.hostGoneAt = 0; }
       if (room.peers.size >= MAX) return send(ws, { t: "full" });
       ws.token = token;
       ws.room = r; ws.info = { id: ws.id, name: String(m.name || "Player").slice(0, 24), look: m.look || {}, arc: m.arc || "penguins", scene: "farm" };
@@ -72,7 +73,14 @@ wss.on("connection", (ws) => {
     const room = ws.room && rooms.get(ws.room); if (!room) return;
     room.peers.delete(ws.id);
     for (const p of room.peers.values()) send(p, { t: "peer_left", id: ws.id });
-    if (room.host === ws.id && room.peers.size) { room.host = [...room.peers.keys()][0]; room.hostToken = room.peers.get(room.host).token || ""; send(room.peers.get(room.host), { t: "you_are_host" }); }
+    if (room.host === ws.id && room.peers.size) {
+      const gone = ws.id; room.hostGoneAt = Date.now();
+      setTimeout(() => {
+        if (room.host !== gone || room.peers.has(gone) || !room.peers.size) return;  // the host came back (or everyone left)
+        room.host = [...room.peers.keys()][0]; room.hostToken = room.peers.get(room.host).token || ""; room.hostGoneAt = 0;
+        send(room.peers.get(room.host), { t: "you_are_host" });
+      }, GRACE);
+    }
     if (!room.peers.size) room.emptySince = Date.now();
   });
 });

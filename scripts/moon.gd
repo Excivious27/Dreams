@@ -117,7 +117,7 @@ func after_ready() -> void:
 		player.frozen = true
 		await say([
 			{"text": "Silence, and lavender dust that puffs up and falls slower than it should. The sky is black and full of stars, and the valley is a green coin far below."},
-			{"who": "Star Crystal", "text": "This is where I fell from. There's a teleporter here that goes further out. It needs power we don't have yet.", "mood": "worried"},
+			{"who": "Star Crystal", "text": "This is where I fell from. There's a teleporter here that goes further out. " + ("Three Refined Crystals would wake it, and you're carrying them." if GameState.count("crystal_refined") >= 3 else "It wants three Refined Crystals. The resonator makes them."), "mood": "worried"},
 		])
 		player.frozen = false
 
@@ -134,7 +134,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			later(func() -> void:
 				if await Story.talk(self, "spire"):
 					return
-				tell([{"who": "Star Crystal", "text": ("It's quiet now. Whatever lived in it has somewhere better to be." if GameState.run["flags"].has("final_done") else ("It's still in there. Steady, and finish it." if GameState.run["flags"].has("final_started") else "Not yet. Light the teleporter first. The spire won't listen until it's lit.")), "mood": "worried"}]))
+				tell([{"who": "Star Crystal", "text": (("It's quiet now. Whatever lived in it has somewhere better to be." if GameState.run["flags"].has("dc_reverted") else "It's quiet now. Just glass, and the stars through it.") if GameState.run["flags"].has("final_done") else ("It's still in there. Steady, and finish it." if GameState.run["flags"].has("final_started") else "Not yet. Light the teleporter first. The spire won't listen until it's lit.")), "mood": "worried"}]))
 			return true
 		"spire_old":
 			tell([{"who": "Star Crystal", "text": "This is it. The missing piece. It's grown into the moon itself. We can't just pick it up; it has to be... persuaded.", "mood": "worried"}])

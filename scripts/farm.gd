@@ -162,10 +162,12 @@ func _place_debris() -> void:
 		var bb := _build_rec(bid)
 		if not bb.is_empty():
 			var bc: Vector2i = bb["cell"]
-			for kc: Vector2i in cells_of([Rect2i(bc.x - 1, bc.y + 1, int(bb["w"]) + 3, 2)]):
+			var bai := Art.info(str(bb["group"]), str(bb["sprite"]))
+			var up := maxi(int(bb["h"]), ceili(float(bai.get("cell_h", bai.get("h", 0))) * 0.5 / TILE))  # roofs and rockets reach above the footprint
+			for kc: Vector2i in cells_of([Rect2i(bc.x - 1, bc.y - up + 1, int(bb["w"]) + 3, up + 2)]):  # same sides as the construction site, so nothing pops in when it's done
 				keep_clear[kc] = true
 	for cid: String in GameState.run.get("construction", {}):
-		var cbd: Dictionary = Builds.data().get(cid, {})
+		var cbd: Dictionary = Builds.all().get(cid, {})
 		if cbd.has("cell"):
 			var cc0 := Vector2i(int(cbd["cell"][0]), int(cbd["cell"][1]))
 			var ch := int(cbd.get("h", 1))
@@ -179,7 +181,7 @@ func _place_debris() -> void:
 				continue
 			if HOUSE.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3 or keep_clear.has(c):
 				continue
-			if (Builds.is_built("coop") and COOP_PEN.has_point(c)) or (Builds.is_built("barn") and BARN_PEN.has_point(c)) or (Builds.is_built("greenhouse") and GameState.GREENHOUSE_PLOT.has_point(c)):
+			if (Builds.is_built("coop") and COOP_PEN.grow_individual(0, 0, 0, 2).has_point(c)) or (Builds.is_built("barn") and BARN_PEN.has_point(c)) or (Builds.is_built("greenhouse") and GameState.GREENHOUSE_PLOT.has_point(c)):
 				continue
 			var near_pond := false
 			for pc: Vector2i in _pond_cells:
@@ -434,7 +436,7 @@ func can_till(c: Vector2i) -> bool:
 
 ## BUILDS-shaped record for what's actually built (tier-aware), from buildings.json.
 func _build_rec(id: String) -> Dictionary:
-	var bd: Dictionary = Builds.data().get(id, {})
+	var bd: Dictionary = Builds.all().get(id, {})  # co-op: the host may be on the other story
 	if bd.is_empty() or id == "house":
 		return {}
 	var td := Builds.current_def(id)
@@ -443,6 +445,8 @@ func _build_rec(id: String) -> Dictionary:
 	var rec := {"cell": Vector2i(int(bd["cell"][0]), int(bd["cell"][1])), "w": int(bd.get("w", 0)), "h": int(bd.get("h", 1)), "group": str(td.get("group", bd.get("group", "props"))), "sprite": str(td.get("sprite", "")), "thing": str(bd.get("thing", {"coop": "coop", "silo": "silo", "barn": "barn", "greenhouse": "greenhouse"}.get(id, ""))), "label": str(bd.get("label", id))}
 	if bd.has("anim"):
 		rec["anim"] = str(bd["anim"])
+	if not Builds.data().has(id):
+		rec["thing"] = ""  # the other story's building: solid and drawn, not ours to use
 	return rec
 
 
@@ -876,10 +880,12 @@ func _talk_crystal() -> void:
 			{"who": "Star Crystal", "text": "I feel Grumps gathering in the meadow to the east. They are small now. They will not stay small."},
 			{"who": "Star Crystal", "text": "Your sword is wood, but your heart is not. Go when you're ready."},
 		])
+	elif r["flags"].has("final_done"):
+		await say([{"who": "Star Crystal", "text": ("He sleeps a lot. Crystals do, after. Thank you for the field, %s." if r["flags"].has("dc_reverted") else "It's quiet up there now. Down here there are turnips, %s.") % GameState.names()["character"], "mood": "happy"}])
 	else:
 		await say([
 			{"who": "Star Crystal", "text": "The first spark of the Meow Pow Wow is yours. The rest is scattered across this world, and beyond it."},
-			{"who": "Star Crystal", "text": "There's a locket I keep thinking about, and a knight above the clouds, and a bell. One thing at a time. Turnips first."},
+			{"who": "Star Crystal", "text": ("What I feel next: %s" % GameState.next_step()) if GameState.next_step() != "" else "One thing at a time. Turnips first."},
 		])
 
 
@@ -1233,11 +1239,12 @@ func _place_props() -> void:
 	prop("props", "notice_board", PLANS)
 	# Under construction: a scaffold/sign where the crew is working.
 	for cid in GameState.run.get("construction", {}):
-		var bd: Dictionary = Builds.data().get(cid, {})
+		var bd: Dictionary = Builds.all().get(cid, {})
 		if bd.is_empty():
 			continue
 		var cc := Vector2i(int(bd["cell"][0]), int(bd["cell"][1]))
-		prop("props", "crates2_b" if Art.has("props", "crates2_b") else "crates_a", cc, int(bd.get("w", 0)))
+		if not Builds.is_built(cid):  # an upgrade keeps the old picture: just the sign
+			prop("props", "crates_c" if Art.has("props", "crates_c") else "crates_a", cc, int(bd.get("w", 0)))  # crates, pallet and tarp
 		prop("props", "signpost" if Art.has("props", "signpost") else "notice_board", cc + Vector2i(int(bd.get("w", 0)) + 1, 0), 0, 0.0, false)  # a small sign that never blocks a path
 	# Built things.
 	var builds: Dictionary = GameState.run.get("builds", {})
@@ -1253,7 +1260,7 @@ func _place_props() -> void:
 			station_anim = str(b["sprite"])  # the look follows the tier you built
 		elif str(b["thing"]) == "station" and not Art.has(str(b["group"]), str(b["sprite"])):
 			# No painting yet: a stack of crates with the tier's name on it.
-			prop("props", "crates2_b" if Art.has("props", "crates2_b") else "crates_a", c, int(b["w"]))
+			prop("props", "crates_c" if Art.has("props", "crates_c") else "crates_a", c, int(b["w"]))
 			var tag := Label.new()
 			tag.text = str(Builds.current_def(id).get("name", id))
 			tag.add_theme_font_size_override("font_size", 5)
@@ -1303,9 +1310,20 @@ func _place_props() -> void:
 			var sw := float(sinfo.get("cell_w", sinfo.get("w", 0)))
 			var ssc := 0.5 if str(b["thing"]) != "station" or sw <= 0.0 else minf(0.5, float(int(b["w"]) + 3) * TILE / sw)  # a wide top-tier station stays in its slot (one cell spare each side)
 			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]), 0.0, true, ssc)
+	# Starter babies grow up two weeks after their coop/barn goes up (names kept, so friendship carries over).
+	var fl: Dictionary = GameState.run["flags"]
+	for bk in ["coop", "barn"]:
+		if builds.has(bk) and not fl.has(bk + "_day"):
+			fl[bk + "_day"] = int(GameState.run["day"])  # first time we see it built (old saves: today)
+	if Builds.built_tier("barn") >= 2 and not fl.has("barn2_day"):
+		fl["barn2_day"] = int(GameState.run["day"])
+	var today := int(GameState.run["day"])
+	var coop_kids := today < int(fl.get("coop_day", 0)) + 14
+	var barn_kids := today < int(fl.get("barn_day", 0)) + 14
+	var goat_kids := today < int(fl.get("barn2_day", 0)) + 14
 	if builds.has("coop"):
 		var pen := COOP_PEN
-		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick", Vector2i(28, 11), pen, true)
+		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick" if coop_kids else "chicken", Vector2i(28, 11), pen, coop_kids, "chick_28_11")
 		if Builds.built_tier("coop") >= 2:
 			# The Big Coop: two more hens, two ducks, and the incubator's chicks.
 			_animal("chicken", Vector2i(26, 10), pen); _animal("chicken", Vector2i(31, 10), pen); _animal("duck2", Vector2i(27, 11), pen); _animal("duck2", Vector2i(29, 11), pen)
@@ -1317,10 +1335,10 @@ func _place_props() -> void:
 					_animal("chick" if young else "chicken", Vector2i(26 + hi, 9), pen, young, "hatch_%d" % hi)
 	if builds.has("barn"):
 		var pen := BARN_PEN
-		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf", Vector2i(35, 7), pen, true); _animal("lamb", Vector2i(36, 7), pen, true)
+		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf" if barn_kids else "cow2", Vector2i(35, 7), pen, barn_kids, "calf_35_7"); _animal("lamb" if barn_kids else "sheep2", Vector2i(36, 7), pen, barn_kids, "lamb_36_7")
 		if Builds.built_tier("barn") >= 2:
 			# The Big Barn: goats and a llama.
-			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(35, 8), pen); _animal("goat_kid", Vector2i(33, 6), pen, true)
+			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(35, 8), pen); _animal("goat_kid" if goat_kids else "goat", Vector2i(33, 6), pen, goat_kids, "goat_kid_33_6")
 	# Debris sprites for the things placed in build().
 	var season := GameState.season()
 	for c: Vector2i in things.keys():
@@ -1390,9 +1408,17 @@ func _place_item(c: Vector2i, id: String) -> void:
 
 ## Guests: the host's sprinklers/scarecrows come and go with the world sync (no ghosts).
 var _placed_sig := 0
+var _cleared_sig := 0
 
 
 func on_world_sync(d: Dictionary) -> void:
+	var csig := hash(GameState.run.get("cleared", {}).get("farm", {}))
+	if csig != _cleared_sig:
+		_cleared_sig = csig
+		for c: Vector2i in things.keys():
+			var ty := str(things[c].get("type", ""))
+			if ty in ["weeds", "rock", "log", "stump", "tree"] and is_cleared(c, 14 if ty == "weeds" else 0):
+				clear_cell(c)  # the other player cleared it
 	var placed: Dictionary = GameState.run.get("placed", {})
 	var psig := hash(placed)
 	if psig != _placed_sig:

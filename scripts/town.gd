@@ -396,7 +396,7 @@ func _board() -> void:
 		var taken := GameState.has_quest(str(j["id"]))
 		ch.append("%s%s: %d %s · ◆%d" % ["✓ " if taken else "", str(GameState.npcs[str(j["npc"])]["name"]), int(j["n"]), GameState.item_name(str(j["item"])), int(j["crystals"])])
 	ch.append("Close")
-	d.say([{"who": "Community Board", "text": "Pinned today (%s %d). Bring the goods to whoever posted it." % [GameState.season().capitalize(), GameState.day_of_season()], "choice": ch, "key": ""}])
+	d.say([{"who": "Community Board", "text": "Pinned today (%s %d). Bring the goods to whoever posted it: a week for goods, two for crop orders." % [GameState.season().capitalize(), GameState.day_of_season()], "choice": ch, "key": ""}])
 	await d.finished
 	if d.last_choice >= 0 and d.last_choice < jobs.size():
 		var j: Dictionary = jobs[d.last_choice]
@@ -911,7 +911,7 @@ func draw_map() -> void:
 	for c in _plaza:
 		roads.erase(c)
 	draw_ground("cobble", roads)
-	var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 25), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)])
+	var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)])
 	var all_roads := roads.duplicate()
 	all_roads.merge(lanes_base)
 	_carve_door_paths(all_roads)

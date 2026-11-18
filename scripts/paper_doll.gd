@@ -7,6 +7,8 @@ extends RefCounted
 ## Once the full-costume sheets (Prompts 08 batch 1) land, `body_for()` swaps
 ## the base for the equipped costume and everything else stays the same.
 
+## True while the creator / new-game preview builds a doll: show the look's outfit, not worn armour.
+static var preview_bare := false
 const BODIES := ["light_slim", "light_broad", "medium_slim", "medium_broad", "dark_slim", "dark_broad"]
 const HAIR_COLORS := {"brown": "ffffff", "black": "3a3440", "blonde": "f2d27a", "red": "c8562e", "silver": "dcdcea", "pink": "f294c4", "blue": "5c84e0", "green": "62b266"}
 ## Everyday outfits the creator offers (the look's "outfit"; armor still wins in game).
@@ -67,7 +69,7 @@ const ACT := {"hoe_down": [0, 1, 2], "hoe_right": [3, 4, 5], "hoe_up": [6, 7, 8]
 ## The body sheet to draw: the equipped costume (chest armor / outfit) when
 ## that sheet exists, else the bare base from the look.
 static func body_for(look: Dictionary) -> String:
-	var chest := GameState.equipped("body")
+	var chest := "" if preview_bare else GameState.equipped("body")
 	var cs := str(GameState.items.get(chest, {}).get("costume", ""))
 	if cs != "" and Art.has("body", cs):
 		return cs

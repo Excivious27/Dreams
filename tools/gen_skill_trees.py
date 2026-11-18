@@ -92,10 +92,14 @@ T = {
           ("Nose & Pack", ["pet_hp", "pet_speed"], ["Sniffer", "Good Nose", "Treat Finder", "Loyal", "Pack Sense", "Trail Hound", "Faithful", "Heart Hound", "Forever Friend"])],
          {"tough_pup": 0, "thick_coat": 0, "best_friend": 0, "bite": 1, "hunter": 1, "rescue": 1, "quick_paws": 2, "howl": 2, "guard_dog": 2, "sniff": 3, "fetch": 3, "pack_1": 3, "truffle_nose": 3, "pack_2": 3, "tracker": 3, "pack_3": 3, "dream_hound": 2}),
 }
+# Names for filler nodes whose row hit its caps and fell back to a general effect.
+OFF_NAMES = {"xp_gain": ["Practice", "Study", "Lessons", "Know-How", "Experience", "Insight", "Drills", "Homework"],
+             "energy": ["Stamina", "Endurance", "Early Riser", "Deep Breath"],
+             "hp": ["Hardy", "Sturdy Frame", "Tough Hide", "Good Health"]}
 # The arcs' own trees (only shown in their arc).
 T["hustle"] = ([("Street", ["pass_risk", "heat_cool"], ["Blend In", "Smooth Hands", "Know the Beat", "Quiet Money", "Low Profile", "Cold Trail", "Ghost of the Avenue", "Clean Record", "Nobody Saw Nothing"]),
                 ("Money", ["wash_bonus", "job_pay"], ["Small Change", "Spin Cycle", "Payroll", "Clean Sheets", "Fat Envelope", "Good Books", "Front Business", "Silent Partner", "Empire Ledger"]),
-                ("Muscle", ["gun_damage", "hp"], ["Steady Aim", "Hollow Points", "Street Smarts", "Quick Study", "Dead Eye", "Old Hand", "Iron Nerves", "Second Wind", "The Heavy"]),
+                ("Muscle", ["gun_damage", "hp"], ["Steady Aim", "Hollow Points", "Street Smarts", "Quick Study", "Lessons Learned", "Old Hand", "Iron Nerves", "Second Wind", "The Heavy"]),
                 ("Operations", ["supply_rate", "helper_hp", "energy"], ["Radio Check", "Drone Tune-Up", "Night Shift", "Supply Run", "Armoured Drones", "Logistics", "Field Command", "War Room", "Kingpin's Reach"])], {})
 T["harmony"] = ([("Bond", ["ability_cooldown", "hp"], ["Paw in Hand", "Trust", "Side by Side", "Warm Feathers", "Kindred", "Shared Breath", "Heart Link", "Unbreakable Friends", "Family"]),
                  ("Song", ["mana", "energy"], ["Hum", "First Verse", "Meow Chorus", "Steady Song", "Tidal Melody", "Waterfall Hymn", "Choir of Stars", "Pow Wow Heart", "The Real One"]),
@@ -252,6 +256,8 @@ for sk, sd in base["skills"].items():
         for ek, ev in (n.get("effect") or {}).items():
             if isinstance(ev, (int, float)):
                 used[ek] = used.get(ek, 0) + ev * int(n.get("ranks", 1))
+    off_used = {}
+    taken = {str(g["name"]) for row in grid for g in row if g}
     for r in range(4):
         title, keys, names = rows[r]
         ni = 0
@@ -281,7 +287,13 @@ for sk, sd in base["skills"].items():
                     a = round(a, 3) if isinstance(a, float) else a
                 used[k] = used.get(k, 0) + a * ranks
                 a = round(a, 3) if isinstance(a, float) else a
-                nm = names[ni % len(names)] + ("" if ni < len(names) else " " + ROMAN[min(9, ni // len(names))])
+                if k in keys or k not in OFF_NAMES or sk == "hustle":  # hustle's names were fitted by hand
+                    nm = names[ni % len(names)] + ("" if ni < len(names) else " " + ROMAN[min(9, ni // len(names))])
+                else:  # a capped row fell back to another effect: name it for that effect
+                    pool = [x for x in OFF_NAMES[k] if x not in taken] or OFF_NAMES[k]
+                    j = off_used.get(k, 0)
+                    off_used[k] = j + 1
+                    nm = pool[j % len(pool)] + ("" if j < len(pool) else " " + ROMAN[min(9, j // len(pool))])
                 ni += 1
                 grid[r][c] = {"id": f"{sk}_{r}_{c}", "name": nm, "desc": fmt(k, a) + (" (per rank)" if ranks > 1 else ""),
                               "ranks": ranks, "tier": c, "row": r, "effect": {k: a}}
@@ -292,5 +304,19 @@ for sk, sd in base["skills"].items():
         out["skills"][sk]["arc"] = "gangsters" if sk == "hustle" else "penguins"
     if sk == "magic":
         out["skills"][sk]["branch_keys"] = sd.get("branches", {})
+# "aka": earlier names of a node whose effect and ranks did not change, so a
+# rename alone never refunds an old save's ranks (GameState._migrate reads it).
+# A node whose effect or ranks change loses its aka list (its old ranks refund).
+_prev_path = os.environ.get("SKILLS_PREV", f"{R}/data/skills.json")
+_prev = json.load(open(_prev_path)).get("skills", {}) if os.path.exists(_prev_path) else {}
+for sk, sd in out["skills"].items():
+    pm = {str(x["id"]): x for x in _prev.get(sk, {}).get("nodes", [])}
+    for n in sd["nodes"]:
+        o = pm.get(str(n["id"]))
+        if not o or o.get("effect") != n.get("effect") or int(o.get("ranks", 1)) != int(n.get("ranks", 1)):
+            continue
+        aka = [a for a in list(o.get("aka", [])) + [str(o.get("name", ""))] if a and a != n["name"]]
+        if aka:
+            n["aka"] = sorted(set(aka))
 json.dump(out, open(f"{R}/data/skills.json", "w"), indent=1, ensure_ascii=False)
 print("nodes:", total)

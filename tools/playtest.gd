@@ -285,6 +285,9 @@ func _run() -> void:
 	await press("down", 2)
 	await press("a", 2)   # buy option 1 (strawberry seeds)
 	await frames(10)
+	if d._in_choice and d._text and d._text.text.contains("How many"):
+		await press("a", 2)   # seeds ask how many: take 1
+		await frames(10)
 	check(int(GameState.run["crystals"]) < before, "bought something")
 	# Leave the shop: focus starts at 0, so one "up" wraps to the last option (Leave).
 	for i in 10:

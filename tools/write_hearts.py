@@ -24,7 +24,7 @@ v("maple", "maple_supply_run",
   L("Maple", ("When that light came down in your field, I was closing up. I saw it from the step. I didn't run out. I didn't tell anyone.", "The day you came in with that deed in the wrong name, I was closing up. I saw your face. I didn't ask. I didn't tell anyone."), "I thought: whoever's out there, they're going to need somebody who doesn't ask questions. So I didn't. I'm asking one now. Are you all right?"),
   L("Maple", "Four lines came today. Five, actually. The fifth one says: 'Is it safe to come home?'", "I don't know what to write back. I think the answer's you. I think the answer's been you since the turnips."),
   "Maple would lock the store and stand in the doorway with a broom, and nobody would get past the broom.",
-  {"2": "Plant the bent packet. I want to know what comes up.", "4": "Four lines this month. He asked about the weather. That's a lot, from him.", "6": "Storeroom's standing. I've stopped pretending. Mostly.", "8": "I still don't ask questions. I've just started noticing the answers.", "10": "I wrote back. One line. 'Yes.'"})
+  {"2": "Plant the bent packet. I want to know what comes up.", "4": "Four lines this month. He asked about the weather. That's a lot, from him.", "6": "The storeroom. I've stopped pretending about it. Mostly.", "8": "I still don't ask questions. I've just started noticing the answers.", "10": "I wrote back. One line. 'Yes.'"})
 
 v("gideon", "gideon_ruby",
   L("Gideon", "You swing like a farmer. Shoulders. It's the wrists; the hammer does the work if you let it.", "...Here. Hold it like that. No. Like THAT. Hm. Better."),
@@ -36,7 +36,7 @@ v("gideon", "gideon_ruby",
   {"2": "Wrists. Remember.", "4": "Father's hammer's holding up. You're holding up.", "6": "Eleven years. Don't look at me like that.", "8": "She said idiot again today. Twice. Good day.", "10": "She's wearing it. Still. I check."})
 
 v("wren", "wren_starflower",
-  L("Wren", "You pick herbs like you're apologising to them. Don't. They're herbs. Pull.", "...The mushroom you brought last time had a good smell. I kept the stem. For reasons."),
+  L("Wren", "You pick herbs like you're apologising to them. Don't. They're herbs. Pull.", "...The mushroom you brought last time had a good smell. I kept the stem. For the spore jar."),
   L("Wren", "My daughter thinks I talk to the plants. I do. They don't answer, which is restful, which is the point.", "You answer. That's... fine. That's also fine."),
   L("Wren", ("There's a flower that only grows where the crystal fell. Starflower. I had one once; I used it on a fever and it worked and I never found another.", "There's a blue herb by the orchard wall. Moonwort. I had some once; I used it on a fever and it worked and I never found more."), "If you're going back out there. If."),
   L("Wren", ("The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told her mother how close it was.", "The fever was Wren junior's. She was three. The moonwort was the only thing in this town that was going to work, and it did, and I never told her mother how close it was."), "Her mother's not here now. That's a different story, and it's not yours. But you should know what you brought me."),
@@ -61,7 +61,7 @@ v("sal", "sal_fish",
   L("Sal", "The knee was a door. Uptown. I held it so the others could get out, and they wouldn't come. They stayed with him. I went.", "That's the whole story. There isn't a better version. I've looked."),
   L("Sal", "I've decided something. If this town goes, I go with it. Not away from it. With it.", "First time I've picked a side since the door. Feels like the knee's going to hold."),
   "Sal would sit on the bench by the south gate with a bad knee and a worse temper, and nothing would get past the bench.",
-  {"2": "Shoulders. Down.", "4": "Gate's quiet. Quiet's fine. I'll tell you when it isn't.", "6": "Cooked it. It was fine. Don't make it a thing.", "8": "Knee's holding.", "10": "With it, boss. Not away."})
+  {"2": "Shoulders. Down.", "4": "Gate's quiet. Quiet's fine. I'll tell you when it isn't.", "6": "Fish. Still testing whether I can take things. Don't make it a thing.", "8": "Knee's holding.", "10": "With it, boss. Not away."})
 
 v("finn", "finn_pearl",
   L("Finn", "You cast like you're angry at the water. Water doesn't care. Cast like you're asking.", "There. See? It's not about the fish. The fish is a bonus."),
@@ -162,7 +162,7 @@ v("tobin", "tobin_shells",
   L("Tobin", "Kite flies. It FLIES. Bram cried. He says it was onions. There weren't any onions; I checked the whole kitchen.", "I'm allowed in the kitchen now. For checking."),
   L("Tobin", "Bram asked if I wanted to call him Dad. I said I already did, in my head, and he said that counts, and I said I know.", "The kite's on the inn roof. You can see it from your farm. Look up sometime."),
   "Tobin would climb onto the inn roof and fly the kite, because when the kite's up everyone looks up, and when everyone's looking up nobody's afraid.",
-  {"2": "Not allowed in the kitchen.", "4": "Practically the same as a sail.", "6": "Six shells. For the tail.", "8": "It FLIES. No onions.", "10": "Look up sometime."})
+  {"2": "Not allowed in the kitchen.", "4": "Practically the same as a sail.", "6": "Five shells. For the tail.", "8": "It FLIES. No onions.", "10": "Look up sometime."})
 
 v("mabel", "mabel_flowers",
   L("Mabel", "I sing to the cows. They give more milk. Mum says it's the singing. It's definitely the singing.", "I'll sing one for your pup. Dogs are harder than cows. They have opinions."),
@@ -249,10 +249,10 @@ v("sel", "sel_fossil",
 H["gideon"]["milestones"]["10"][0]["if_gone"] = {"juniper": "I gave her the ring the morning she left. She said I was an idiot. She took it with her."}
 H["bram"]["milestones"]["10"][0]["if_gone"] = {"posy": "Posy writes from the capital. There's a bakery there with her name over the door, and her mother's under it."}
 # ♥6 lines for a quest you finished before ♥6 (hearts.gd swaps them in).
-H["pip"]["milestones"]["6"][1]["if_done"] = "You brought candy already, so you know it works. I made my wish. I'm not telling. It's SCIENCE."
+H["pip"]["milestones"]["6"][1]["if_done"] = "You already paid me candy for the secret. I kept one back and threw it in the fountain. I made my wish. I'm not telling. It's SCIENCE."
 H["tobin"]["milestones"]["6"][0]["if_done"] = "The five shells you got me are on the tail. Bram says a kite needs them. I think he made that up."
 H["tobin"]["milestones"]["6"][1]["if_done"] = "The kite's nearly built. The wind's wrong. The wind's always wrong. I don't care."
-H["mabel"]["milestones"]["6"][0]["if_done"] = "Your flowers are in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
+H["mabel"]["milestones"]["6"][0]["if_done"] = "Your flowers were my crown. Now they're in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
 H["marlowe"]["milestones"]["6"][0]["if_done"] = "The new lens holds. I still look for the crack every night. It was there since the night the bell stopped. Same night, you know."
 H["benno"]["milestones"]["6"][0]["if_done"] = "That pup wears the pack like a medal. I can see it in the shoulders. It's got a job now."
 

@@ -110,9 +110,12 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		# Nobody at the counter: a note on the till, no keeper's voice.
 		greet = "A note on the till: \"Back soon. Prices on the tags. - %s\"" % keeper
 		keeper = ""
-	if shop == "store" and not absent and not GameState.run["flags"].has("store_first"):
+	if shop == "store" and not GameState.run["flags"].has("store_first"):
 		GameState.run["flags"]["store_first"] = true
-		await m.say([{"who": keeper, "text": "You're the one who took the old plot! Here, first-timer's bundle. Don't tell Gideon I give things away."}])
+		if absent:
+			await m.say([{"text": "A bundle on the counter, tagged: \"For whoever took the old plot. First-timer's gift, don't tell Gideon. - Maple\""}])
+		else:
+			await m.say([{"who": keeper, "text": "You're the one who took the old plot! Here, first-timer's bundle. Don't tell Gideon I give things away."}])
 		m.give("turnip_seed", 10)
 		m.give("energy_tea", 1)
 	while true:
@@ -133,6 +136,15 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			break
 		var id: String = buyable[pick]
 		var price := price(id)
+		var qty := 1
+		if str(GameState.items[id].get("type", "")) == "seed":
+			var dq := Dialogue.instance(m.get_tree())
+			dq.say([{"who": keeper, "text": "%s, ◆%d each. How many?  (you have ◆%d)" % [GameState.item_name(id), price, int(GameState.run["crystals"])], "choice": ["1", "5", "10", "Back"], "key": ""}])
+			await dq.finished
+			if dq.last_choice < 0 or dq.last_choice > 2:
+				continue
+			qty = [1, 5, 10][dq.last_choice]
+		price *= qty
 		if int(GameState.run["crystals"]) < price:
 			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 			Music.instance(m.get_tree()).sfx("nope", "thud")
@@ -146,7 +158,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			GameState.add_tool(id)
 			m.hud.toast("Got the %s!" % GameState.item_name(id), Color(1, 0.9, 0.4))
 		else:
-			m.give(id, 1)
+			m.give(id, qty)
 		m.xp("bartering", 1)
 		greet = "Anything else?" if not absent else "(The till's honesty jar clinks.)"
 

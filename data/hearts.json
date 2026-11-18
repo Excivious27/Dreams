@@ -60,7 +60,7 @@
    "after": {
     "2": "Plant the bent packet. I want to know what comes up.",
     "4": "Four lines this month. He asked about the weather. That's a lot, from him.",
-    "6": "Storeroom's standing. I've stopped pretending. Mostly.",
+    "6": "The storeroom. I've stopped pretending about it. Mostly.",
     "8": "I still don't ask questions. I've just started noticing the answers.",
     "10": "I wrote back. One line. 'Yes.'"
    }
@@ -141,7 +141,7 @@
      },
      {
       "who": "Wren",
-      "text": "...The mushroom you brought last time had a good smell. I kept the stem. For reasons."
+      "text": "...The mushroom you brought last time had a good smell. I kept the stem. For the spore jar."
      }
     ],
     "4": [
@@ -321,7 +321,7 @@
    "after": {
     "2": "Shoulders. Down.",
     "4": "Gate's quiet. Quiet's fine. I'll tell you when it isn't.",
-    "6": "Cooked it. It was fine. Don't make it a thing.",
+    "6": "Fish. Still testing whether I can take things. Don't make it a thing.",
     "8": "Knee's holding.",
     "10": "With it, boss. Not away."
    }
@@ -880,7 +880,7 @@
      {
       "who": "Pip",
       "text": "Bring candy. I'll show you. You have to say the wish out loud or it doesn't count and I'll know.",
-      "if_done": "You brought candy already, so you know it works. I made my wish. I'm not telling. It's SCIENCE."
+      "if_done": "You already paid me candy for the secret. I kept one back and threw it in the fountain. I made my wish. I'm not telling. It's SCIENCE."
      }
     ],
     "8": [
@@ -1036,7 +1036,7 @@
    "after": {
     "2": "Not allowed in the kitchen.",
     "4": "Practically the same as a sail.",
-    "6": "Six shells. For the tail.",
+    "6": "Five shells. For the tail.",
     "8": "It FLIES. No onions.",
     "10": "Look up sometime."
    }
@@ -1068,7 +1068,7 @@
      {
       "who": "Mabel",
       "text": "Flowers. For the cellar. Mum built it for two and it's empty and I think flowers would make it less empty while we wait for cheese.",
-      "if_done": "Your flowers are in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
+      "if_done": "Your flowers were my crown. Now they're in the cellar. Mum built it for two and it's less empty now, while we wait for cheese."
      },
      {
       "who": "Mabel",

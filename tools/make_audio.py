@@ -145,9 +145,14 @@ def add(*sigs):
         out[:len(x)] += x
     return out
 
+# Reward jingles were quieter than the UI blips and "nope"/"alert" (make_ambience.py
+# sounds peak at 0.55, active RMS ~0.3): lift them so a level-up or a pickup reads
+# as the loudest happy sound (active RMS ~0.32-0.36, peak ~0.6).
+SFX_GAIN = {"levelup": 1.7, "pickup": 1.7, "chest_open": 1.6, "crit": 1.3}
+
 def sfx(name, sig):
     os.makedirs(os.path.join(ROOT, "sfx"), exist_ok=True)
-    write_wav(os.path.join(ROOT, "sfx", f"{name}.wav"), np.tanh(sig * 1.5))
+    write_wav(os.path.join(ROOT, "sfx", f"{name}.wav"), np.tanh(sig * 1.5) * SFX_GAIN.get(name, 1.0))
 
 def sweep(f0, f1, dur, wave_fn="square", vol=0.3):
     n = int(SR * dur); t = np.arange(n) / SR
@@ -162,7 +167,7 @@ def chest_open():
                                       tone(freq("G", 5), 0.06, "square", 0.22, a=0.001, d=0.2, s=0.5, r=0.3),
                                       tone(freq("D", 6), 0.14, "square", 0.22, a=0.001, d=0.2, s=0.5, r=0.5)]))
 
-if __name__ == "__main__":
+def music():
     compose("title", 92, ["C", "Am", "F", "G", "C", "Em", "F", "G"], MAJ, 1, lead_wave="tri", lead_vol=0.2, drums=False)
     compose("farm", 112, ["C", "F", "Am", "G", "C", "F", "Dm", "G"], MAJ, 2, duty=0.25)
     compose("town", 124, ["F", "C", "Dm", "Bb", "F", "C", "Gm", "C"], MAJ, 3, duty=0.5)
@@ -177,6 +182,9 @@ if __name__ == "__main__":
     compose("cattopia", 104, ["F", "C", "Dm", "Bb", "F", "Am", "Bb", "C"], MAJ, 13, lead_wave="square", duty=0.5, lead_vol=0.15)
     compose("rain", 76, ["Am", "Em", "F", "Em", "Am", "Dm", "F", "E" if "E" in CHORDS else "Em"], AMIN, 8, lead_wave="tri", drums=False, dark=True, lead_vol=0.12)
 
+
+def sounds():
+    np.random.seed(5)  # the noise in hits/chops comes out the same on every run
     sfx("swing", sweep(900, 300, 0.12, "square", 0.25))
     sfx("hit", add(noise(0.12, 0.5, 0.03), tone(180, 0.1, "square", 0.3, a=0.001, d=0.5, s=0.1, r=0.4)))
     sfx("hurt", sweep(400, 120, 0.25, "square", 0.3))
@@ -194,4 +202,11 @@ if __name__ == "__main__":
     sfx("stun", add(sweep(600, 900, 0.15, "tri", 0.2), noise(0.1, 0.15, 0.05)))
     sfx("stink", add(noise(0.4, 0.2, 0.2), sweep(300, 90, 0.4, "tri", 0.2)))
     chest_open()
+
+
+if __name__ == "__main__":
+    import sys
+    if "--sfx" not in sys.argv:  # --sfx: only the sound effects, leave the music alone
+        music()
+    sounds()
     print("done")

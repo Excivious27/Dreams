@@ -100,6 +100,22 @@ static func build() -> Array:
 				mk.append(("%s \"%s\" went home, and still turns toward the tower without knowing why." if took else "%s \"%s\" went home, and nobody calls them Marked any more.") % [str(md["name"]), str(md["epithet"])])
 		if not mk.is_empty():
 			out.append(["The Marked", "\n\n".join(mk)])
+		# The side ops: blocks you hold and jobs you pulled.
+		var ops_l: Array = []
+		var blocks: Array = []
+		for sid in Ops.turf():
+			blocks.append(str(Ops.TURF.get(sid, sid)))
+		if not blocks.is_empty():
+			var bs := ", ".join(blocks)
+			ops_l.append("%s%s answer to your crew now. The rent stays on the block." % [bs.left(1).to_upper(), bs.substr(1)])
+		var jobs: Array = []
+		for hid: String in Ops.HEISTS:
+			if r["flags"].has("heist_" + hid):
+				jobs.append(str(Ops.HEISTS[hid]["name"]))
+		if not jobs.is_empty():
+			ops_l.append("Nobody ever proved who pulled %s. Nobody got hurt, either." % ", ".join(jobs))
+		if not ops_l.is_empty():
+			out.append(["The blocks", "\n\n".join(ops_l)])
 	# Villagers, closest first, four to a slide.
 	var vs: Array = []
 	for id: String in d.get("villagers", {}):
@@ -203,6 +219,9 @@ func _close() -> void:
 		return
 	get_tree().paused = false
 	showing = false
+	var gm := get_tree().current_scene as GameMap
+	if gm:
+		Music.instance(get_tree()).play(gm.area_track())
 	Dialogue.block_input(0.4)
 	Hud.modal_rect = Rect2()
 	closed.emit()

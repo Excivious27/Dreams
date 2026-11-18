@@ -93,7 +93,7 @@ print("TOTAL", len(issues), "issues in", len(by), "characters")
 # Item icons: clear small detached bits (< 8% of the main piece) touching the icon's edge (a neighbour's sliver,
 # the cut-off rest of a rarity gem). KEEP_BITS: icons where such a bit is part of the picture (kept in step with slice_world.KEEP_BITS).
 KEEP_BITS = {"coffee", "cream_soda", "golden_float", "echo_leek", "singing_pear", "light_mote2", "star_dust2", "wishfruit_cake",
-             "dream_orchid", "dreamflower", "ethereal_corn", "hush_carrot", "halo", "flameberry"}
+             "dream_orchid", "dreamflower", "ethereal_corn", "hush_carrot", "halo", "flameberry", "star_dust"}
 if fix and not only:
     from scipy import ndimage
     n_bits = 0
@@ -108,7 +108,8 @@ if fix and not only:
             continue
         sz = ndimage.sum(a, lab, range(1, n + 1))
         h, w = a.shape
-        drop = [i + 1 for i, sl in enumerate(ndimage.find_objects(lab)) if sz[i] < 0.08 * sz.max() and (sl[1].start <= 2 or sl[0].start <= 2 or sl[1].stop >= w - 2)]
+        drop = [i + 1 for i, sl in enumerate(ndimage.find_objects(lab)) if (sz[i] < 0.08 * sz.max() and (sl[1].start <= 2 or sl[0].start <= 2 or sl[1].stop >= w - 2))
+                or (sz[i] < 0.35 * sz.max() and (sl[1].start <= 1 or sl[1].stop >= w - 1) and (sl[1].stop - sl[1].start) <= 0.35 * w)]  # a narrow piece on the left/right edge = the next icon's sliver
         if drop:
             im[np.isin(lab, drop), 3] = 0
             Image.fromarray(im).save(p)

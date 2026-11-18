@@ -75,7 +75,7 @@ static func is_built(id: String) -> bool:
 
 
 static func tier_def(id: String, tier: int) -> Dictionary:
-	for t in data().get(id, {}).get("tiers", []):
+	for t in all().get(id, {}).get("tiers", []):  # any arc: a co-op host can own the other story's builds
 		if int(t["tier"]) == tier:
 			return t
 	return {}

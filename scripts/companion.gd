@@ -232,6 +232,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			var tt := str(th.get("type", ""))
 			if tt in ["rock", "mrock"] and GameState.ore_block(str(th.get("ore", "stone"))) != "":
 				m.hud.toast("Big Jim: 'That one's too tough even for me. Get a better pickaxe.'", Color(1, 0.9, 0.8))
+				Music.instance(m.get_tree()).sfx("nope", "thud")
 			elif tt in ["rock", "mrock", "stump", "log"]:
 				# He breaks it himself: no tool, no energy.
 				m.clear_cell(fc)
@@ -253,9 +254,11 @@ static func use_ability(m: GameMap, p: Player) -> void:
 					m.give("wood", 3)
 				m.fx("stone_chips" if tt in ["rock", "mrock"] else "wood_chips", m.cell_center(fc) + Vector2(0, -8), 16.0, 0.5)
 				m.shake(3.0)
+				Music.instance(m.get_tree()).sfx("crate_break", "thud")
 				m.hud.toast("Big Jim: 'Next.'", Color(1, 0.9, 0.8))
 			else:
 				m.hud.toast("Big Jim: 'Point me at something.'", Color(1, 0.9, 0.8))
+				Music.instance(m.get_tree()).sfx("nope", "thud")
 		"fence":
 			var best := ""
 			var bv := 0
@@ -284,9 +287,11 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				GameState.run["sold_today"] = sold
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
 				m.hud.toast("Sal moved %d %s for ◆%d. No questions." % [n, GameState.item_name(best), pay], Color(1, 0.9, 0.6))
+				Music.instance(m.get_tree()).sfx("coin", "pickup")
 				m.fx("sparkle", p.position + Vector2(0, -12), 10.0, 0.5)
 			else:
 				m.hud.toast("Sal: 'Nothing worth moving. Bring me loot.'", Color(1, 0.9, 0.6))
+				Music.instance(m.get_tree()).sfx("nope", "thud")
 		"tail":
 			m.hud.toast("Mer: 'The water's right there.'", Color(0.8, 0.95, 1.0))
 		"mend":

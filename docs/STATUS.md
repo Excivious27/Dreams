@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 10 of 10 (audit fixes, round G)
+- Skill renames keep ranks: gen_skill_trees.py writes `"aka"` (earlier names of a node whose effect and ranks didn't change; set `SKILLS_PREV=<old skills.json>` to seed it). `GameState._migrate` keeps those ranks silently and only refunds real effect changes (systems_test checks it). The skill-icon slicer also matches aka names.
+- max_energy: the level part is capped at +120 (100 + 3 x min(levels, 40)); late saves get a smaller bar.
+- Art: w70/w72/w83 icon rows cut by sprite count (`ICON_SPLIT`, "!name" = no sprite on the sheet, `ICON_STANDIN`); side-sliver rule in art_audit/_drop_edge_bits; sentinel/ash_hound die frames; observatory, wdeco/jdeco slivers. Orla/Benno/Tam/Ivy life rows skipped (`LIFE_SKIP`), they use only their walker-design work pose. Hound pet skips its other-dog fight strips.
+- make_ambience.py: `SFX_GAIN` per sound and a new "tell" (enemy move wind-up). check.sh runs story_test.
+
 ## 2026-11-18 — CONDUCT loop 9 of 10
 - 20-agent audit (/tmp/audit_c9), bots clean before/after, check (now with tools/coop_test.gd) + playtest pass. Perf patch 3 (walking spikes on hollow_heart/highlands/ruins). Co-op clock shift covers jobs/upgrades/haste/drone, save_view restores guest clock, Net.visiting(); enemy _walk_clear feet box, shooter ring; unwon battles cap 80 paid kills; Hot Loads→Fresh Rounds (NODE_RENAMES); reset keeps gift spells; colony plateaus over patches; forest seasons; ♥8 waits for ♥6; creator outfit picker + hair luma tint; 1075 re-cut art (901 icons, w77 rows, benches, pets, hounds/golems). Prompts 28 (2 prompts / 3 images), Guide 21. Tom asked: re-export w72/w73 (cut off).
 

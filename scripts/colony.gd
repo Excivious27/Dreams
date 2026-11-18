@@ -227,10 +227,11 @@ static func _restore(m: GameMap, id: String) -> void:
 	GameState.add_item("colony_light", 1)
 	for sp in c.get("spells", []):
 		GameState.run["skills"]["magic"] = GameState.run["skills"].get("magic", {"level": 1, "xp": 0, "nodes": {}})
-		if int(GameState.run["skills"]["magic"]["nodes"].get(str(sp), 0)) == 0:
-			var gn: Dictionary = GameState.run.get("gift_nodes", {})
-			gn["magic|" + str(sp)] = 1
-			GameState.run["gift_nodes"] = gn
+		var gn: Dictionary = GameState.run.get("gift_nodes", {})
+		if int(GameState.run["skills"]["magic"]["nodes"].get(str(sp), 0)) > 0 and not gn.has("magic|" + str(sp)):
+			GameState.notify("You already knew %s: its Sorcery point came back." % str(GameState.node("magic", str(sp)).get("name", sp)))
+		gn["magic|" + str(sp)] = 1  # always the colony's gift: a learned rank's point comes back, and a reset keeps it
+		GameState.run["gift_nodes"] = gn
 		GameState.run["skills"]["magic"]["nodes"][str(sp)] = maxi(1, int(GameState.run["skills"]["magic"]["nodes"].get(str(sp), 0)))
 	if int(c.get("mana", 0)) > 0:
 		GameState.grow_vital("mana", int(c["mana"]))

@@ -131,7 +131,7 @@ func _ready() -> void:
 			# Prompts-09 pets (corgi, shepherd, hound, white dog, cats); "" = Tom's original pup.
 			_pet_anim = AnimatedSprite2D.new()
 			var anims := {"idle": "idle", "walk": "walk", "run": "run", "sit": "sit", "sleep": "sleep", "bark": "bark", "play": "play"}
-			for extra in ["bite", "hurt", "limp", "guard", "howl", "dig", "fetch", "beg"]:
+			for extra in ([] if pet_kind == "dog_hound" else ["bite", "hurt", "limp", "guard", "howl", "dig", "fetch", "beg"]):  # the hound's fight strips are another dog (red collar)
 				if Art.has("animals/" + pet_kind, extra):
 					anims[extra] = extra
 			_pet_anim.sprite_frames = Art.frames("animals/" + pet_kind, anims, {"idle": 2.0, "walk": 8.0, "run": 12.0, "sit": 1.0, "sleep": 1.0, "bark": 4.0, "play": 4.0, "bite": 10.0, "hurt": 6.0, "limp": 5.0, "guard": 2.0, "howl": 4.0, "dig": 8.0, "fetch": 8.0, "beg": 2.0}, {"bite": false, "hurt": false, "howl": false, "bark": false, "play": false, "dig": false})
@@ -175,7 +175,8 @@ func _ready() -> void:
 	elif Net.i() != null:
 		# Still connecting when the scene loaded: hook up once we're online.
 		Net.connected.connect(func(_h: bool) -> void:
-			Net.peers_changed.connect(_sync_puppets)
+			if not Net.peers_changed.is_connected(_sync_puppets):
+				Net.peers_changed.connect(_sync_puppets)
 			_sync_puppets()
 			Net._send({"t": "scene", "scene": scene_id()}))
 
@@ -725,7 +726,7 @@ func extend(dx: int, dy: int) -> void:
 	var orow := rows
 	cols += dx
 	rows += dy
-	_ext = Rect2i(0, 0, cols, rows)
+	_ext = Rect2i(oc, orow, dx, dy)  # position: where the added columns/rows start
 	for e in exits:
 		var r: Rect2i = e["rect"]
 		if r.end.x >= oc and dx > 0:
@@ -801,9 +802,17 @@ func _fill_extension() -> void:
 		for c in cells_of([(e["rect"] as Rect2i).grow(2)]):
 			avoid[c] = true
 	var seed_v := hash(scene_id()) % 1000
-	WorldGen.tree_clumps(self, Rect2i(2, 2, cols - 4, rows - 4), seed_v + 5, int(cols * rows / 260.0), avoid)
-	WorldGen.scatter_props(self, Rect2i(2, 2, cols - 4, rows - 4), seed_v + 6, int(cols * rows / 110.0), avoid)
-	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), seed_v + 7, int(cols * rows / 350.0))
+	# Only the added strips: the old area is dressed by the map itself, and its own paths
+	# (drawn later, so not in ground_word yet) got trees and stumps on them (lake north road).
+	var k := 0
+	for r: Rect2i in [Rect2i(_ext.position.x, 2, _ext.size.x - 2, rows - 4), Rect2i(2, _ext.position.y, _ext.position.x - 2, _ext.size.y - 2)]:
+		if r.size.x <= 0 or r.size.y <= 0:
+			continue
+		var area := float(r.size.x * r.size.y)
+		WorldGen.tree_clumps(self, r, seed_v + 5 + k, int(area / 260.0), avoid)
+		WorldGen.scatter_props(self, r, seed_v + 6 + k, int(area / 110.0), avoid)
+		WorldGen.add_critters(self, r, seed_v + 7 + k, int(area / 350.0))
+		k += 10
 
 
 ## "Quest complete: <the quest's own line> (reward)" instead of the raw id.
@@ -1837,6 +1846,7 @@ func use_consumable(sel: String) -> bool:
 					grew += 1
 			if grew == 0:
 				hud.toast("Nothing is growing on your farm right now.")
+				Music.instance(get_tree()).sfx("nope", "thud")
 				return true
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
@@ -1852,6 +1862,7 @@ func use_consumable(sel: String) -> bool:
 		"scrub":
 			if Racket.heat() <= 0:
 				hud.toast("Nobody is looking for you right now.")
+				Music.instance(get_tree()).sfx("nope", "thud")
 				return true
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
@@ -1867,6 +1878,7 @@ func use_consumable(sel: String) -> bool:
 					any_near = true
 			if not any_near:
 				hud.toast("Nothing close enough to fry. Save it.", Color(0.7, 0.9, 1.0))
+				Music.instance(get_tree()).sfx("nope", "thud")
 				return true
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
@@ -1888,8 +1900,7 @@ func use_consumable(sel: String) -> bool:
 		"bot":
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
-			Bot.deploy(self, sel, it)
-			Music.instance(get_tree()).sfx("zap", "pickup")
+			Bot.deploy(self, sel, it)  # plays its own zap
 			fx("cy_bot_deploy" if Art.has("fx", "cy_bot_deploy") else "poof", player.position + Vector2(10, 0), 12.0, 0.5)
 			hud.toast("%s deployed: %d seconds of cover." % [GameState.item_name(sel), int(it.get("life", 30))], Color(0.5, 1.0, 0.95))
 			return true
@@ -1897,6 +1908,7 @@ func use_consumable(sel: String) -> bool:
 			var ready_day := int(GameState.run["flags"].get("drone_ready", 0))
 			if int(GameState.run["day"]) < ready_day:
 				hud.toast("The drone is still charging. Ready on day %d." % ready_day, Color(0.7, 0.9, 1.0))
+				Music.instance(get_tree()).sfx("nope", "thud")
 				return true
 			GameState.run["flags"]["drone_ready"] = int(GameState.run["day"]) + 2
 			Music.instance(get_tree()).sfx("alert", "zap")
@@ -2041,7 +2053,8 @@ func free_spot_near(at: Vector2) -> Vector2:
 					continue
 				if blocked.has(c) or is_water_cell(c):
 					continue
-				return at if r == 0 else cell_center(c)
+				# `at` itself only if the 8x3 feet box fits (a box half in a wall can never move).
+				return at if r == 0 and not rect_blocked(Rect2(at + Vector2(-4, -3), Vector2(8, 3))) else cell_center(c)
 	# Nothing free near `at` (or `at` is off the map): search from a point inside the map.
 	var cc := Vector2i(clampi(c0.x, 2, cols - 3), clampi(c0.y, 2, rows - 3))
 	if cc != c0:
@@ -2095,16 +2108,19 @@ func on_enemy_died(e: Enemy) -> void:
 	var kt: Dictionary = GameState.run.get("kills_today", {})
 	var kkey := scene_id() + (":%d" % int(get("floor_no")) if scene_id() == "mine" else "")
 	# Re-entering a map respawns its foes: only the first 12 a day per map (per mine floor) pay.
-	# Named bosses, an unwon battle (80 kills a day: one full fight, not endless
+	# Named bosses, an unwon battle (160 kills in all: about two full fights, not endless
 	# fall-back-and-retry) and an island's foes until its quota always pay, and don't
 	# use up the map's 12.
 	var boss: bool = e.is_guardian or e.has_meta("boss_name") or e.has_meta("story_flag") or e.has_meta("colony_boss") or e.kind.begins_with("lt_") or e.kind.begins_with("cboss_") or e.kind.begins_with("marked_")
-	var fkey := "bf:" + kkey
-	var first_battle: bool = scene_id().begins_with("bf_") and not GameState.run["flags"].has("battle_" + scene_id()) and int(kt.get(fkey, 0)) < 80
+	var fkey := "bfk_" + kkey  # kept in flags: an unwon battle pays its first 160 kills in all, not 80 every day
+	var first_battle: bool = scene_id().begins_with("bf_") and not GameState.run["flags"].has("battle_" + scene_id()) and int(GameState.run["flags"].get(fkey, 0)) < 160
 	var quota: bool = e.has_meta("colony_foe") and Colony.data().has(scene_id()) and int(Colony.st(scene_id()).get("kills", 0)) < int((Colony.data()[scene_id()] as Dictionary).get("kills", 0))
 	var exempt := boss or first_battle or quota
 	if first_battle:
-		kt[fkey] = int(kt.get(fkey, 0)) + 1
+		GameState.run["flags"][fkey] = int(GameState.run["flags"].get(fkey, 0)) + 1
+		kt["bf:" + kkey] = int(kt.get("bf:" + kkey, 0)) + 1  # today's count (Fortune's "picked clean" reads it)
+		if int(GameState.run["flags"][fkey]) == 160:
+			hud.toast("This field has paid what it will until you win it.", Color(0.8, 0.8, 0.9))
 	elif not exempt:
 		kt[kkey] = int(kt.get(kkey, 0)) + 1
 	GameState.run["kills_today"] = kt
@@ -3365,6 +3381,17 @@ func _draw_plateau_painted(cells: Dictionary, stairs: Dictionary) -> bool:
 		# Stone rims on snow/sand/ash read as pale boxes: those plateaus show their own
 		# ground, edged by the painted face.
 		Art.draw_blob(self, cells, cap, 16.0, 1)
+	else:
+		# No cap: give the blocked rim a lip so the ledge's sides read as a wall.
+		for c: Vector2i in cells:
+			for d: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1)]:
+				if cells.has(c + d):
+					continue
+				var p := Vector2(c * TILE) + Vector2(TILE - 3 if d.x == 1 else 0, 0)
+				var sz := Vector2(3, TILE) if d.x != 0 else Vector2(TILE, 3)
+				draw_rect(Rect2(p, sz), Color(0.08, 0.06, 0.12, 0.5))
+				var hp := p + (Vector2(1, 0) if d.x == -1 else (Vector2(-1, 0) if d.x == 1 else Vector2(0, 2)))
+				draw_rect(Rect2(hp, Vector2(1, TILE) if d.x != 0 else Vector2(TILE, 1)), Color(1, 1, 1, 0.22))
 	# The face: a window of the painted strip under every southern edge cell.
 	var face_h := TILE * 1.6
 	var src_w := float(strip.get_height()) * TILE / face_h   # strip px per cell, keeping the strip's aspect
@@ -3530,7 +3557,7 @@ func _draw_blob_edges(ci: CanvasItem, cells: Dictionary, edge_cells: Dictionary,
 ## A mass of raised rock (map edges, mountain walls): stone fill with a grassy
 ## lip facing the open ground and painted cliff faces on the sides that face south.
 func draw_rock_mass(cells: Dictionary) -> void:
-	var wall: String = {"marsh": "wall_marsh", "highlands": "wall_highlands", "ruins": "wall_ruins", "riverlands": "wall_river", "hollow_heart": "mine_heart_wall"}.get(scene_id(), "")
+	var wall: String = {"marsh": "wall_marsh", "highlands": "wall_highlands", "ruins": "wall_ruins", "quarry": "wall_ruins", "riverlands": "wall_river", "hollow_heart": "mine_heart_wall"}.get(scene_id(), "")
 	if wall != "" and Art.has("tiles", wall + "_0"):
 		# Region-themed border wall (Prompts 10): the inner edge of the band is a
 		# two-tile-tall wall facing the player; deeper cells are plain dark fill.
@@ -3714,6 +3741,9 @@ func _build_border() -> void:
 	var season := GameState.look_se()
 	var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
 	var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
+	if scene_id() == "wastes" and Art.has("nature", "mid_dead"):
+		mids = ["mid_dead", "mid_dead_b"]  # a corrupted wasteland, not a blossom ring
+		bigs = ["big_dead_a", "big_dead_b"]
 	for c: Vector2i in _border_cells:
 		if _border_cells[c] != "tree":
 			continue

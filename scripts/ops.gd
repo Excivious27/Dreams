@@ -9,7 +9,7 @@ extends RefCounted
 ##    failed heist costs heat and can be tried again another day.
 ##  - Loyalty missions: a crew member's last loyalty step needs a favour.
 
-const TURF := {"docks": "the docks", "neon": "Neon", "uptown": "Uptown", "underground": "the pit", "alley": "the alley"}
+const TURF := {"docks": "the docks", "neon": "Neon", "uptown": "Uptown", "underground": "the pit"}
 const TURF_PAY := 40
 
 const HEISTS := {
@@ -61,7 +61,7 @@ static func holds(scene: String) -> bool:
 static func on_kill(m: GameMap, late := false) -> void:
 	if not on() or not is_instance_valid(m) or not TURF.has(m.scene_id()) or holds(m.scene_id()):
 		return
-	if m.scene_id() != "alley" and not GameState.run["flags"].has("boss_" + m.scene_id()):
+	if not GameState.run["flags"].has("boss_" + m.scene_id()):
 		if not late:
 			# The boss may be the foe that just fell: the region marks boss_<id> right
 			# after this call, so look again once that has happened.
@@ -143,19 +143,23 @@ static func _run_heist(m: GameMap, id: String) -> void:
 		GameState.run["flags"]["heist_" + id] = true
 		GameState.add_arc_xp(60)
 		Perks._give(h["reward"])
+		var extra := ""
 		if c == 1:
 			# Fast and loud pays more: half again in cash, and something grabbed on the way out.
-			GameState.run["crystals"] = int(GameState.run["crystals"]) + 150 * (1 + GameState.progress_tier())
-			GameState.add_item(["data_chip", "relic_orb", "gold_bar"][randi() % 3], 1)
+			var bonus := 150 * (1 + GameState.progress_tier())
+			var grab: String = ["data_chip", "relic_orb", "gold_bar"][randi() % 3]
+			GameState.run["crystals"] = int(GameState.run["crystals"]) + bonus
+			GameState.add_item(grab, 1)
+			extra = ", +◆%d and a %s grabbed on the way out" % [bonus, GameState.item_name(grab)]
 		await m.say([{"who": "", "text": "It goes like a song you've all rehearsed. Nobody hurt, nobody seen, and the van is heavier on the way home."}, {"who": who, "text": "...We did it. We actually did it."}])
-		m.hud.toast("%s done: %s" % [str(h["name"]), Perks._list(h["reward"])], Color(1, 0.9, 0.4))
+		m.hud.toast("%s done: %s%s" % [str(h["name"]), Perks._list(h["reward"]), extra], Color(1, 0.9, 0.4))
 		Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 		if c == 1:
-			Racket.set_heat(Racket.heat() + 1)
+			Racket.add_heat(m, 1)
 	else:
-		Racket.set_heat(Racket.heat() + 1)
 		await m.say([{"who": "", "text": "A guard changes his route. A dog barks. You're out the back with empty hands and a siren somewhere behind you."}, {"who": who, "text": "Nobody's hurt. That's what matters. We go again another night."}])
-		m.hud.toast("The heist went wrong. Heat +1. Try again another day.", Color(1, 0.6, 0.5))
+		m.hud.toast("The heist went wrong. Try again another day.", Color(1, 0.6, 0.5))
+		Racket.add_heat(m, 1)
 
 
 # ---- loyalty missions --------------------------------------------------------
@@ -182,5 +186,9 @@ static func _mission(m: GameMap, id: String) -> bool:
 		GameState.run["flags"]["mission_asked_" + id] = true
 		await m.say([{"who": nm, "text": str(ms[2])}])
 		GameState.add_hint("%s wants %d %s." % [nm, n, GameState.need_name(item)])
+		return true
+	if int(GameState.run["flags"].get("mission_nag_" + id, -1)) != int(GameState.run["day"]):
+		GameState.run["flags"]["mission_nag_" + id] = int(GameState.run["day"])  # once a day, so Halo's rides still work
+		await m.say([{"who": nm, "text": "Still waiting on that favour: %d %s. (You have %d.)" % [n, GameState.need_name(item), GameState.count_any(item)]}])
 		return true
 	return false

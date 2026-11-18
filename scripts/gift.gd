@@ -192,6 +192,8 @@ func _process(delta: float) -> void:
 			var on := float(d["rule"].get("on", 5.0))
 			var off := float(d["rule"].get("off", 3.0))
 			if fmod(_closed_t, on + off) > on:
+				if open_t <= 0.0 and e.position.distance_to(p.position) < 150.0:
+					Music.instance(get_tree()).sfx("stun", "alert")  # hear the opening
 				open_t = maxf(open_t, 0.1)
 		"offbeat":
 			_closed_t += delta
@@ -286,7 +288,7 @@ static func fx_for(g: String) -> String:
 func _do(mv: Dictionary, p: Player) -> void:
 	var t := str(mv.get("type", "ring"))
 	var gf := fx_for(gid)
-	Music.instance(get_tree()).sfx("spell", "zap")  # the move's tell
+	Music.instance(get_tree()).sfx("tell", "spell")  # the move's tell (not the player's cast sound)
 	if gf != "" and t != "roll":
 		e.map.fx(gf, e.position + Vector2(0, -4), 14.0, 0.6)
 	if t == "roll":
@@ -297,6 +299,7 @@ func _do(mv: Dictionary, p: Player) -> void:
 		if _rolls % int(d.get("rule", {}).get("rolls", 3)) == 0:
 			open_t = float(d.get("rule", {}).get("secs", 4.0))
 			_say("...snake eyes.", Color(1, 1, 0.6))
+			Music.instance(get_tree()).sfx("stun", "alert")  # hear the opening
 		if t == "heal":
 			e.hp = mini(e.max_hp, e.hp + int(e.max_hp * 0.06))
 			e.map.fx("sparkle", e.position + Vector2(0, -10), 12.0, 0.5)
@@ -457,7 +460,7 @@ func _draw() -> void:
 	# Aura: gift colour while guarded, flashing white when open.
 	if not decoy:
 		var ac := Color(1, 1, 1, 0.55 + 0.4 * pulse) if open_t > 0.0 else Color(col.r, col.g, col.b, 0.5)
-		draw_arc(e.position + Vector2(0, -8), 13.0 + (2.0 * pulse if open_t > 0.0 else 0.0), 0, TAU, 28, ac, 2.0 if open_t > 0.0 else 1.2, true)
+		Art.draw_ring(self, e.position + Vector2(0, -8), 13.0 + (2.0 * pulse if open_t > 0.0 else 0.0), 2.0 if open_t > 0.0 else 1.2, ac)  # one quad (an antialiased draw_arc is 3 draw calls)
 		if rule() == "back":
 			var mid := 0.0 if face > 0.0 else PI
 			draw_arc(e.position + Vector2(0, -8), 16.0, mid - 1.2, mid + 1.2, 14, Color(col.r, col.g, col.b, 0.95), 2.5, true)
@@ -476,11 +479,11 @@ func _draw() -> void:
 	for z: Dictionary in _zones:
 		var zp: Vector2 = z["p"]
 		if float(z["t"]) > 0.0:
-			draw_arc(zp, float(z["r"]), 0, TAU, 24, Color(col.r, col.g, col.b, 0.85), 1.2, true)
-			draw_circle(zp, float(z["r"]) * (1.0 - clampf(float(z["t"]) / 0.9, 0.0, 1.0)), Color(col.r, col.g, col.b, 0.22))
+			Art.draw_ring(self, zp, float(z["r"]), 1.2, Color(col.r, col.g, col.b, 0.85))
+			Art.draw_disc(self, zp, float(z["r"]) * (1.0 - clampf(float(z["t"]) / 0.9, 0.0, 1.0)), Color(col.r, col.g, col.b, 0.22))
 		else:
-			draw_circle(zp, float(z["r"]), Color(col.r, col.g, col.b, 0.42 + 0.15 * pulse))
-			draw_arc(zp, float(z["r"]), 0, TAU, 24, Color(1, 1, 1, 0.5), 1.0, true)
+			Art.draw_disc(self, zp, float(z["r"]), Color(col.r, col.g, col.b, 0.42 + 0.15 * pulse))
+			Art.draw_ring(self, zp, float(z["r"]), 1.0, Color(1, 1, 1, 0.5))
 	for l: Dictionary in _lines:
 		if bool(l["fired"]) and not bool(l.get("warn", false)):
 			draw_line(l["a"], l["b"], Color(1, 1, 1, 0.95), float(l["w"]))
@@ -489,9 +492,10 @@ func _draw() -> void:
 			draw_line(l["a"], l["b"], Color(col.r, col.g, col.b, 0.3 + 0.25 * pulse), 1.5)
 			draw_line(l["a"], l["b"], Color(col.r, col.g, col.b, 0.1), float(l["w"]) * 2.0)
 	for b: Dictionary in _bul:
-		draw_circle(b["p"], float(b["r"]) + 1.5, Color(col.r, col.g, col.b, 0.35))
-		draw_circle(b["p"], float(b["r"]), col)
-		draw_circle(b["p"], float(b["r"]) * 0.45, Color(1, 1, 1, 0.9))
+		# Textured discs: a 14-bullet ring x3 waves was ~126 draw calls as draw_circles, now one.
+		Art.draw_disc(self, b["p"], float(b["r"]) + 1.5, Color(col.r, col.g, col.b, 0.35))
+		Art.draw_disc(self, b["p"], float(b["r"]), col)
+		Art.draw_disc(self, b["p"], float(b["r"]) * 0.45, Color(1, 1, 1, 0.9))
 
 
 # ---- your side: a recruited Marked lends you their Gift --------------------------
@@ -553,7 +557,8 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 			var roll := randi() % 3
 			# A map picked clean for today (12 paid kills) only pays luck on bosses.
 			var kk := m.scene_id() + (":%d" % int(m.get("floor_no")) if m.scene_id() == "mine" else "")
-			var picked: bool = int((GameState.run.get("kills_today", {}) as Dictionary).get(kk, 0)) >= 12
+			var kt_: Dictionary = GameState.run.get("kills_today", {})
+			var picked: bool = int(kt_.get(kk, 0)) >= 12 or int(kt_.get("bf:" + kk, 0)) >= 12
 			var payers: Array = near.filter(func(x: Enemy) -> bool: return not x.has_meta("luck_paid") and not x.has_meta("decoy") and not x.has_meta("minion") and (not picked or x.has_meta("boss_name")))
 			if roll == 0 and not payers.is_empty():
 				for x: Enemy in payers:

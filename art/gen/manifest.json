@@ -25895,54 +25895,6 @@
   }
  },
  "characters/npc_benno": {
-  "carry": {
-   "cell_h": 107,
-   "cell_w": 73,
-   "file": "characters/npc_benno/carry.png",
-   "frames": 1,
-   "h": 107,
-   "w": 73
-  },
-  "counter": {
-   "cell_h": 111,
-   "cell_w": 82,
-   "file": "characters/npc_benno/counter.png",
-   "frames": 1,
-   "h": 111,
-   "w": 82
-  },
-  "dance": {
-   "cell_h": 97,
-   "cell_w": 71,
-   "file": "characters/npc_benno/dance.png",
-   "frames": 1,
-   "h": 97,
-   "w": 71
-  },
-  "dance_2": {
-   "cell_h": 98,
-   "cell_w": 70,
-   "file": "characters/npc_benno/dance_2.png",
-   "frames": 1,
-   "h": 98,
-   "w": 70
-  },
-  "eat": {
-   "cell_h": 90,
-   "cell_w": 59,
-   "file": "characters/npc_benno/eat.png",
-   "frames": 1,
-   "h": 90,
-   "w": 59
-  },
-  "fish": {
-   "cell_h": 111,
-   "cell_w": 92,
-   "file": "characters/npc_benno/fish.png",
-   "frames": 1,
-   "h": 111,
-   "w": 92
-  },
   "idle": {
    "cell_h": 108,
    "cell_w": 68,
@@ -25966,62 +25918,6 @@
    "frames": 1,
    "h": 108,
    "w": 65
-  },
-  "laugh": {
-   "cell_h": 100,
-   "cell_w": 69,
-   "file": "characters/npc_benno/laugh.png",
-   "frames": 1,
-   "h": 100,
-   "w": 69
-  },
-  "shiver": {
-   "cell_h": 89,
-   "cell_w": 71,
-   "file": "characters/npc_benno/shiver.png",
-   "frames": 1,
-   "h": 89,
-   "w": 71
-  },
-  "sit": {
-   "cell_h": 89,
-   "cell_w": 63,
-   "file": "characters/npc_benno/sit.png",
-   "frames": 1,
-   "h": 89,
-   "w": 63
-  },
-  "sleep": {
-   "cell_h": 114,
-   "cell_w": 86,
-   "file": "characters/npc_benno/sleep.png",
-   "frames": 1,
-   "h": 114,
-   "w": 86
-  },
-  "talk": {
-   "cell_h": 99,
-   "cell_w": 79,
-   "file": "characters/npc_benno/talk.png",
-   "frames": 1,
-   "h": 99,
-   "w": 79
-  },
-  "talk_2": {
-   "cell_h": 99,
-   "cell_w": 76,
-   "file": "characters/npc_benno/talk_2.png",
-   "frames": 1,
-   "h": 99,
-   "w": 76
-  },
-  "umbrella": {
-   "cell_h": 112,
-   "cell_w": 93,
-   "file": "characters/npc_benno/umbrella.png",
-   "frames": 1,
-   "h": 112,
-   "w": 93
   },
   "walk": {
    "cell_h": 107,
@@ -26047,29 +25943,13 @@
    "h": 109,
    "w": 260
   },
-  "wave": {
-   "cell_h": 92,
-   "cell_w": 71,
-   "file": "characters/npc_benno/wave.png",
-   "frames": 1,
-   "h": 92,
-   "w": 71
-  },
   "work": {
-   "cell_h": 100,
-   "cell_w": 81,
+   "cell_h": 105,
+   "cell_w": 75,
    "file": "characters/npc_benno/work.png",
    "frames": 1,
-   "h": 100,
-   "w": 81
-  },
-  "work_2": {
-   "cell_h": 102,
-   "cell_w": 86,
-   "file": "characters/npc_benno/work_2.png",
-   "frames": 1,
-   "h": 102,
-   "w": 86
+   "h": 105,
+   "w": 75
   }
  },
  "characters/npc_blacksmith": {
@@ -27637,54 +27517,6 @@
   }
  },
  "characters/npc_ivy": {
-  "carry": {
-   "cell_h": 107,
-   "cell_w": 71,
-   "file": "characters/npc_ivy/carry.png",
-   "frames": 1,
-   "h": 107,
-   "w": 71
-  },
-  "counter": {
-   "cell_h": 105,
-   "cell_w": 84,
-   "file": "characters/npc_ivy/counter.png",
-   "frames": 1,
-   "h": 105,
-   "w": 84
-  },
-  "dance": {
-   "cell_h": 108,
-   "cell_w": 78,
-   "file": "characters/npc_ivy/dance.png",
-   "frames": 1,
-   "h": 108,
-   "w": 78
-  },
-  "dance_2": {
-   "cell_h": 105,
-   "cell_w": 71,
-   "file": "characters/npc_ivy/dance_2.png",
-   "frames": 1,
-   "h": 105,
-   "w": 71
-  },
-  "eat": {
-   "cell_h": 105,
-   "cell_w": 62,
-   "file": "characters/npc_ivy/eat.png",
-   "frames": 1,
-   "h": 105,
-   "w": 62
-  },
-  "fish": {
-   "cell_h": 99,
-   "cell_w": 104,
-   "file": "characters/npc_ivy/fish.png",
-   "frames": 1,
-   "h": 99,
-   "w": 104
-  },
   "idle": {
    "cell_h": 105,
    "cell_w": 61,
@@ -27708,62 +27540,6 @@
    "frames": 1,
    "h": 107,
    "w": 61
-  },
-  "laugh": {
-   "cell_h": 114,
-   "cell_w": 68,
-   "file": "characters/npc_ivy/laugh.png",
-   "frames": 1,
-   "h": 114,
-   "w": 68
-  },
-  "shiver": {
-   "cell_h": 105,
-   "cell_w": 60,
-   "file": "characters/npc_ivy/shiver.png",
-   "frames": 1,
-   "h": 105,
-   "w": 60
-  },
-  "sit": {
-   "cell_h": 107,
-   "cell_w": 56,
-   "file": "characters/npc_ivy/sit.png",
-   "frames": 1,
-   "h": 107,
-   "w": 56
-  },
-  "sleep": {
-   "cell_h": 107,
-   "cell_w": 82,
-   "file": "characters/npc_ivy/sleep.png",
-   "frames": 1,
-   "h": 107,
-   "w": 82
-  },
-  "talk": {
-   "cell_h": 108,
-   "cell_w": 74,
-   "file": "characters/npc_ivy/talk.png",
-   "frames": 1,
-   "h": 108,
-   "w": 74
-  },
-  "talk_2": {
-   "cell_h": 108,
-   "cell_w": 71,
-   "file": "characters/npc_ivy/talk_2.png",
-   "frames": 1,
-   "h": 108,
-   "w": 71
-  },
-  "umbrella": {
-   "cell_h": 115,
-   "cell_w": 89,
-   "file": "characters/npc_ivy/umbrella.png",
-   "frames": 1,
-   "h": 115,
-   "w": 89
   },
   "walk": {
    "cell_h": 105,
@@ -27789,14 +27565,6 @@
    "h": 111,
    "w": 244
   },
-  "wave": {
-   "cell_h": 108,
-   "cell_w": 69,
-   "file": "characters/npc_ivy/wave.png",
-   "frames": 1,
-   "h": 108,
-   "w": 69
-  },
   "work": {
    "cell_h": 100,
    "cell_w": 91,
@@ -27804,14 +27572,6 @@
    "frames": 1,
    "h": 100,
    "w": 91
-  },
-  "work_2": {
-   "cell_h": 109,
-   "cell_w": 74,
-   "file": "characters/npc_ivy/work_2.png",
-   "frames": 1,
-   "h": 109,
-   "w": 74
   }
  },
  "characters/npc_juniper": {
@@ -28909,54 +28669,6 @@
   }
  },
  "characters/npc_orla": {
-  "carry": {
-   "cell_h": 113,
-   "cell_w": 78,
-   "file": "characters/npc_orla/carry.png",
-   "frames": 1,
-   "h": 113,
-   "w": 78
-  },
-  "counter": {
-   "cell_h": 97,
-   "cell_w": 82,
-   "file": "characters/npc_orla/counter.png",
-   "frames": 1,
-   "h": 97,
-   "w": 82
-  },
-  "dance": {
-   "cell_h": 99,
-   "cell_w": 67,
-   "file": "characters/npc_orla/dance.png",
-   "frames": 1,
-   "h": 99,
-   "w": 67
-  },
-  "dance_2": {
-   "cell_h": 95,
-   "cell_w": 77,
-   "file": "characters/npc_orla/dance_2.png",
-   "frames": 1,
-   "h": 95,
-   "w": 77
-  },
-  "eat": {
-   "cell_h": 91,
-   "cell_w": 63,
-   "file": "characters/npc_orla/eat.png",
-   "frames": 1,
-   "h": 91,
-   "w": 63
-  },
-  "fish": {
-   "cell_h": 84,
-   "cell_w": 90,
-   "file": "characters/npc_orla/fish.png",
-   "frames": 1,
-   "h": 84,
-   "w": 90
-  },
   "idle": {
    "cell_h": 108,
    "cell_w": 65,
@@ -28980,62 +28692,6 @@
    "frames": 1,
    "h": 109,
    "w": 63
-  },
-  "laugh": {
-   "cell_h": 101,
-   "cell_w": 73,
-   "file": "characters/npc_orla/laugh.png",
-   "frames": 1,
-   "h": 101,
-   "w": 73
-  },
-  "shiver": {
-   "cell_h": 90,
-   "cell_w": 65,
-   "file": "characters/npc_orla/shiver.png",
-   "frames": 1,
-   "h": 90,
-   "w": 65
-  },
-  "sit": {
-   "cell_h": 88,
-   "cell_w": 61,
-   "file": "characters/npc_orla/sit.png",
-   "frames": 1,
-   "h": 88,
-   "w": 61
-  },
-  "sleep": {
-   "cell_h": 115,
-   "cell_w": 86,
-   "file": "characters/npc_orla/sleep.png",
-   "frames": 1,
-   "h": 115,
-   "w": 86
-  },
-  "talk": {
-   "cell_h": 99,
-   "cell_w": 86,
-   "file": "characters/npc_orla/talk.png",
-   "frames": 1,
-   "h": 99,
-   "w": 86
-  },
-  "talk_2": {
-   "cell_h": 99,
-   "cell_w": 83,
-   "file": "characters/npc_orla/talk_2.png",
-   "frames": 1,
-   "h": 99,
-   "w": 83
-  },
-  "umbrella": {
-   "cell_h": 105,
-   "cell_w": 93,
-   "file": "characters/npc_orla/umbrella.png",
-   "frames": 1,
-   "h": 105,
-   "w": 93
   },
   "walk": {
    "cell_h": 107,
@@ -29061,29 +28717,13 @@
    "h": 109,
    "w": 260
   },
-  "wave": {
-   "cell_h": 94,
-   "cell_w": 75,
-   "file": "characters/npc_orla/wave.png",
-   "frames": 1,
-   "h": 94,
-   "w": 75
-  },
   "work": {
-   "cell_h": 96,
-   "cell_w": 74,
+   "cell_h": 104,
+   "cell_w": 89,
    "file": "characters/npc_orla/work.png",
    "frames": 1,
-   "h": 96,
-   "w": 74
-  },
-  "work_2": {
-   "cell_h": 95,
-   "cell_w": 67,
-   "file": "characters/npc_orla/work_2.png",
-   "frames": 1,
-   "h": 95,
-   "w": 67
+   "h": 104,
+   "w": 89
   }
  },
  "characters/npc_pip": {
@@ -30207,54 +29847,6 @@
   }
  },
  "characters/npc_tam": {
-  "carry": {
-   "cell_h": 104,
-   "cell_w": 65,
-   "file": "characters/npc_tam/carry.png",
-   "frames": 1,
-   "h": 104,
-   "w": 65
-  },
-  "counter": {
-   "cell_h": 104,
-   "cell_w": 84,
-   "file": "characters/npc_tam/counter.png",
-   "frames": 1,
-   "h": 104,
-   "w": 84
-  },
-  "dance": {
-   "cell_h": 104,
-   "cell_w": 89,
-   "file": "characters/npc_tam/dance.png",
-   "frames": 1,
-   "h": 104,
-   "w": 89
-  },
-  "dance_2": {
-   "cell_h": 104,
-   "cell_w": 80,
-   "file": "characters/npc_tam/dance_2.png",
-   "frames": 1,
-   "h": 104,
-   "w": 80
-  },
-  "eat": {
-   "cell_h": 99,
-   "cell_w": 61,
-   "file": "characters/npc_tam/eat.png",
-   "frames": 1,
-   "h": 99,
-   "w": 61
-  },
-  "fish": {
-   "cell_h": 94,
-   "cell_w": 104,
-   "file": "characters/npc_tam/fish.png",
-   "frames": 1,
-   "h": 94,
-   "w": 104
-  },
   "idle": {
    "cell_h": 107,
    "cell_w": 81,
@@ -30278,62 +29870,6 @@
    "frames": 1,
    "h": 110,
    "w": 77
-  },
-  "laugh": {
-   "cell_h": 113,
-   "cell_w": 69,
-   "file": "characters/npc_tam/laugh.png",
-   "frames": 1,
-   "h": 113,
-   "w": 69
-  },
-  "shiver": {
-   "cell_h": 102,
-   "cell_w": 59,
-   "file": "characters/npc_tam/shiver.png",
-   "frames": 1,
-   "h": 102,
-   "w": 59
-  },
-  "sit": {
-   "cell_h": 99,
-   "cell_w": 63,
-   "file": "characters/npc_tam/sit.png",
-   "frames": 1,
-   "h": 99,
-   "w": 63
-  },
-  "sleep": {
-   "cell_h": 106,
-   "cell_w": 82,
-   "file": "characters/npc_tam/sleep.png",
-   "frames": 1,
-   "h": 106,
-   "w": 82
-  },
-  "talk": {
-   "cell_h": 104,
-   "cell_w": 70,
-   "file": "characters/npc_tam/talk.png",
-   "frames": 1,
-   "h": 104,
-   "w": 70
-  },
-  "talk_2": {
-   "cell_h": 104,
-   "cell_w": 78,
-   "file": "characters/npc_tam/talk_2.png",
-   "frames": 1,
-   "h": 104,
-   "w": 78
-  },
-  "umbrella": {
-   "cell_h": 116,
-   "cell_w": 85,
-   "file": "characters/npc_tam/umbrella.png",
-   "frames": 1,
-   "h": 116,
-   "w": 85
   },
   "walk": {
    "cell_h": 108,
@@ -30359,14 +29895,6 @@
    "h": 113,
    "w": 320
   },
-  "wave": {
-   "cell_h": 96,
-   "cell_w": 70,
-   "file": "characters/npc_tam/wave.png",
-   "frames": 1,
-   "h": 96,
-   "w": 70
-  },
   "work": {
    "cell_h": 106,
    "cell_w": 88,
@@ -30374,14 +29902,6 @@
    "frames": 1,
    "h": 106,
    "w": 88
-  },
-  "work_2": {
-   "cell_h": 106,
-   "cell_w": 84,
-   "file": "characters/npc_tam/work_2.png",
-   "frames": 1,
-   "h": 106,
-   "w": 84
   }
  },
  "characters/npc_theo": {
@@ -40465,9 +39985,9 @@
    "cell_h": 64,
    "cell_w": 120,
    "file": "enemies/ash_hound/die.png",
-   "frames": 4,
+   "frames": 3,
    "h": 64,
-   "w": 480
+   "w": 360
   },
   "hurt": {
    "cell_h": 64,
@@ -40489,9 +40009,9 @@
    "cell_h": 64,
    "cell_w": 74,
    "file": "enemies/ash_hound/special.png",
-   "frames": 3,
+   "frames": 4,
    "h": 64,
-   "w": 222
+   "w": 296
   },
   "walk": {
    "cell_h": 64,
@@ -41657,11 +41177,11 @@
   },
   "hurt": {
    "cell_h": 64,
-   "cell_w": 109,
+   "cell_w": 62,
    "file": "enemies/obsidian_sentinel/hurt.png",
    "frames": 2,
    "h": 64,
-   "w": 218
+   "w": 124
   },
   "idle": {
    "cell_h": 64,
@@ -41673,11 +41193,11 @@
   },
   "special": {
    "cell_h": 64,
-   "cell_w": 72,
+   "cell_w": 70,
    "file": "enemies/obsidian_sentinel/special.png",
-   "frames": 3,
+   "frames": 4,
    "h": 64,
-   "w": 216
+   "w": 280
   },
   "walk": {
    "cell_h": 64,
@@ -53987,7 +53507,7 @@
   },
   "aloe_seed": {
    "file": "items/aloe_seed.png",
-   "h": 24,
+   "h": 28,
    "w": 32
   },
   "amber": {
@@ -54077,8 +53597,8 @@
   },
   "apple_seed": {
    "file": "items/apple_seed.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "apricot": {
    "file": "items/apricot.png",
@@ -54092,7 +53612,7 @@
   },
   "archer_string": {
    "file": "items/archer_string.png",
-   "h": 28,
+   "h": 22,
    "w": 32
   },
   "armor_gold": {
@@ -54117,7 +53637,7 @@
   },
   "artichoke_seed": {
    "file": "items/artichoke_seed.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "artist_plate": {
@@ -54132,7 +53652,7 @@
   },
   "asparagus_seed": {
    "file": "items/asparagus_seed.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "astral_risotto": {
@@ -54147,7 +53667,7 @@
   },
   "atlas_melon_seed": {
    "file": "items/atlas_melon_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "atlas_moth": {
@@ -54167,7 +53687,7 @@
   },
   "aurora_corn_seed": {
    "file": "items/aurora_corn_seed.png",
-   "h": 32,
+   "h": 30,
    "w": 32
   },
   "aurora_hood": {
@@ -54212,7 +53732,7 @@
   },
   "avocado_seed": {
    "file": "items/avocado_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "axe": {
@@ -54272,23 +53792,23 @@
   },
   "badge_anchor": {
    "file": "items/badge_anchor.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "badge_flower": {
    "file": "items/badge_flower.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "badge_paw": {
    "file": "items/badge_paw.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "badge_star": {
    "file": "items/badge_star.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "bagel": {
    "file": "items/bagel.png",
@@ -54312,7 +53832,7 @@
   },
   "ball": {
    "file": "items/ball.png",
-   "h": 24,
+   "h": 27,
    "w": 32
   },
   "balloon": {
@@ -54333,7 +53853,7 @@
   "banana_seed": {
    "file": "items/banana_seed.png",
    "h": 32,
-   "w": 28
+   "w": 30
   },
   "bandana": {
    "file": "items/bandana.png",
@@ -54342,7 +53862,7 @@
   },
   "bandana_drop": {
    "file": "items/bandana_drop.png",
-   "h": 27,
+   "h": 29,
    "w": 32
   },
   "bandolier": {
@@ -54352,7 +53872,7 @@
   },
   "bank_token": {
    "file": "items/bank_token.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "bare_feet": {
@@ -54397,17 +53917,17 @@
   },
   "bat_king_wing": {
    "file": "items/bat_king_wing.png",
-   "h": 28,
+   "h": 26,
    "w": 32
   },
   "bat_lord_fang": {
    "file": "items/bat_lord_fang.png",
-   "h": 27,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "bat_wing": {
    "file": "items/bat_wing.png",
-   "h": 26,
+   "h": 24,
    "w": 32
   },
   "beam": {
@@ -54437,8 +53957,8 @@
   },
   "beet_seed": {
    "file": "items/beet_seed.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "beetle": {
    "file": "items/beetle.png",
@@ -54612,8 +54132,8 @@
   },
   "blackberry_seed": {
    "file": "items/blackberry_seed.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "blacksmith_steak": {
    "file": "items/blacksmith_steak.png",
@@ -54677,7 +54197,7 @@
   },
   "blueprint": {
    "file": "items/blueprint.png",
-   "h": 27,
+   "h": 25,
    "w": 32
   },
   "bog_iron": {
@@ -54698,7 +54218,7 @@
   "bok_choy_seed": {
    "file": "items/bok_choy_seed.png",
    "h": 32,
-   "w": 25
+   "w": 29
   },
   "bone": {
    "file": "items/bone.png",
@@ -54712,7 +54232,7 @@
   },
   "bone_toy": {
    "file": "items/bone_toy.png",
-   "h": 30,
+   "h": 23,
    "w": 32
   },
   "book": {
@@ -54732,8 +54252,8 @@
   },
   "bottle_cap": {
    "file": "items/bottle_cap.png",
-   "h": 32,
-   "w": 30
+   "h": 30,
+   "w": 32
   },
   "bottled_wind": {
    "file": "items/bottled_wind.png",
@@ -54812,7 +54332,7 @@
   },
   "boxing_wrap": {
    "file": "items/boxing_wrap.png",
-   "h": 28,
+   "h": 30,
    "w": 32
   },
   "bracelet": {
@@ -54847,7 +54367,7 @@
   },
   "briefcase": {
    "file": "items/briefcase.png",
-   "h": 32,
+   "h": 28,
    "w": 32
   },
   "broccoli": {
@@ -54862,12 +54382,12 @@
   },
   "broccoli_seed": {
    "file": "items/broccoli_seed.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "broken_blade": {
    "file": "items/broken_blade.png",
-   "h": 27,
+   "h": 29,
    "w": 32
   },
   "bronze_bar": {
@@ -54907,8 +54427,8 @@
   },
   "burner_phone": {
    "file": "items/burner_phone.png",
-   "h": 27,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "butter": {
    "file": "items/butter.png",
@@ -55060,11 +54580,6 @@
    "h": 31,
    "w": 32
   },
-  "cantaloupe_seed": {
-   "file": "items/cantaloupe_seed.png",
-   "h": 32,
-   "w": 31
-  },
   "cap": {
    "file": "items/cap.png",
    "h": 26,
@@ -55157,7 +54672,7 @@
   },
   "car_key": {
    "file": "items/car_key.png",
-   "h": 32,
+   "h": 31,
    "w": 32
   },
   "carp": {
@@ -55183,7 +54698,7 @@
   "carrot_seed": {
    "file": "items/carrot_seed.png",
    "h": 32,
-   "w": 26
+   "w": 29
   },
   "carrots": {
    "file": "items/carrots.png",
@@ -55192,12 +54707,12 @@
   },
   "cash_bundle": {
    "file": "items/cash_bundle.png",
-   "h": 28,
+   "h": 26,
    "w": 32
   },
   "cat_bed_item": {
    "file": "items/cat_bed_item.png",
-   "h": 24,
+   "h": 25,
    "w": 32
   },
   "cat_favourite": {
@@ -55247,7 +54762,7 @@
   },
   "cauliflower_seed": {
    "file": "items/cauliflower_seed.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "cave_bloom": {
@@ -55272,7 +54787,7 @@
   },
   "cctv_lens": {
    "file": "items/cctv_lens.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "celebration_cake": {
@@ -55288,7 +54803,7 @@
   "celery_seed": {
    "file": "items/celery_seed.png",
    "h": 32,
-   "w": 28
+   "w": 29
   },
   "celestial_apple": {
    "file": "items/celestial_apple.png",
@@ -55297,7 +54812,7 @@
   },
   "celestial_apple_seed": {
    "file": "items/celestial_apple_seed.png",
-   "h": 31,
+   "h": 30,
    "w": 32
   },
   "centipede": {
@@ -55307,7 +54822,7 @@
   },
   "chain_link": {
    "file": "items/chain_link.png",
-   "h": 30,
+   "h": 27,
    "w": 32
   },
   "chamomile": {
@@ -55317,7 +54832,7 @@
   },
   "champion_belt": {
    "file": "items/champion_belt.png",
-   "h": 26,
+   "h": 23,
    "w": 32
   },
   "char": {
@@ -55412,8 +54927,8 @@
   },
   "cheap_watch": {
    "file": "items/cheap_watch.png",
-   "h": 32,
-   "w": 29
+   "h": 31,
+   "w": 32
   },
   "check": {
    "file": "items/check.png",
@@ -55485,11 +55000,6 @@
    "h": 22,
    "w": 32
   },
-  "chia_seed": {
-   "file": "items/chia_seed.png",
-   "h": 32,
-   "w": 32
-  },
   "chili": {
    "file": "items/chili.png",
    "h": 32,
@@ -55502,7 +55012,7 @@
   },
   "chili_seed": {
    "file": "items/chili_seed.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "chipmunk": {
@@ -55577,7 +55087,7 @@
   },
   "cig_tin": {
    "file": "items/cig_tin.png",
-   "h": 27,
+   "h": 29,
    "w": 32
   },
   "circuit_board": {
@@ -55747,7 +55257,7 @@
   },
   "coconut_seed": {
    "file": "items/coconut_seed.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "cod": {
@@ -55772,7 +55282,7 @@
   },
   "coffee_seed": {
    "file": "items/coffee_seed.png",
-   "h": 32,
+   "h": 28,
    "w": 32
   },
   "collar_a": {
@@ -55812,7 +55322,7 @@
   },
   "commander_cape": {
    "file": "items/commander_cape.png",
-   "h": 29,
+   "h": 25,
    "w": 32
   },
   "commander_crest": {
@@ -55829,11 +55339,6 @@
    "file": "items/compass.png",
    "h": 32,
    "w": 18
-  },
-  "contract": {
-   "file": "items/contract.png",
-   "h": 27,
-   "w": 32
   },
   "cookie": {
    "file": "items/cookie.png",
@@ -55957,8 +55462,8 @@
   },
   "corn_seed": {
    "file": "items/corn_seed.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "cornmeal": {
    "file": "items/cornmeal.png",
@@ -55978,7 +55483,7 @@
   "cotton_seed": {
    "file": "items/cotton_seed.png",
    "h": 32,
-   "w": 26
+   "w": 29
   },
   "courage_scarf": {
    "file": "items/courage_scarf.png",
@@ -56013,7 +55518,7 @@
   "cranberry_seed": {
    "file": "items/cranberry_seed.png",
    "h": 32,
-   "w": 28
+   "w": 30
   },
   "crayfish": {
    "file": "items/crayfish.png",
@@ -56197,7 +55702,7 @@
   },
   "crystal_lettuce_seed": {
    "file": "items/crystal_lettuce_seed.png",
-   "h": 31,
+   "h": 30,
    "w": 32
   },
   "crystal_leviathan": {
@@ -56212,7 +55717,7 @@
   },
   "crystal_melon_seed": {
    "file": "items/crystal_melon_seed.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "crystal_onion": {
@@ -56282,7 +55787,7 @@
   },
   "crystal_tomato_seed": {
    "file": "items/crystal_tomato_seed.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "crystal_tulip": {
@@ -56297,8 +55802,8 @@
   },
   "cucumber_seed": {
    "file": "items/cucumber_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "cupcake": {
    "file": "items/cupcake.png",
@@ -56317,12 +55822,12 @@
   },
   "cyber_chip": {
    "file": "items/cyber_chip.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "cyber_eye": {
    "file": "items/cyber_eye.png",
-   "h": 30,
+   "h": 25,
    "w": 32
   },
   "dace": {
@@ -56473,7 +55978,7 @@
   "dark_shard": {
    "file": "items/dark_shard.png",
    "h": 32,
-   "w": 27
+   "w": 29
   },
   "dark_torte": {
    "file": "items/dark_torte.png",
@@ -56517,7 +56022,7 @@
   },
   "deed": {
    "file": "items/deed.png",
-   "h": 29,
+   "h": 30,
    "w": 32
   },
   "diamond": {
@@ -56532,18 +56037,13 @@
   },
   "dice": {
    "file": "items/dice.png",
-   "h": 27,
+   "h": 32,
    "w": 32
   },
   "dill": {
    "file": "items/dill.png",
    "h": 32,
    "w": 31
-  },
-  "dill_seed": {
-   "file": "items/dill_seed.png",
-   "h": 32,
-   "w": 29
   },
   "dino_egg": {
    "file": "items/dino_egg.png",
@@ -56582,12 +56082,12 @@
   },
   "dock_manifest": {
    "file": "items/dock_manifest.png",
-   "h": 32,
-   "w": 30
+   "h": 29,
+   "w": 32
   },
   "dog_bed_item": {
    "file": "items/dog_bed_item.png",
-   "h": 30,
+   "h": 25,
    "w": 32
   },
   "dolphin": {
@@ -56622,8 +56122,8 @@
   },
   "dragonberry_seed": {
    "file": "items/dragonberry_seed.png",
-   "h": 32,
-   "w": 28
+   "h": 30,
+   "w": 32
   },
   "dragonfly_bug": {
    "file": "items/dragonfly_bug.png",
@@ -56642,7 +56142,7 @@
   },
   "dragonfruit_seed": {
    "file": "items/dragonfruit_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "dream_butterfly": {
@@ -56752,7 +56252,7 @@
   },
   "dreamfruit_seed": {
    "file": "items/dreamfruit_seed.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "dreamleaf": {
@@ -56862,7 +56362,7 @@
   },
   "earpiece": {
    "file": "items/earpiece.png",
-   "h": 26,
+   "h": 25,
    "w": 32
   },
   "earwig": {
@@ -56967,8 +56467,8 @@
   },
   "eggplant_seed": {
    "file": "items/eggplant_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "elderberry": {
    "file": "items/elderberry.png",
@@ -57068,11 +56568,11 @@
   "enforcer_badge": {
    "file": "items/enforcer_badge.png",
    "h": 32,
-   "w": 24
+   "w": 32
   },
   "enforcer_helm": {
    "file": "items/enforcer_helm.png",
-   "h": 28,
+   "h": 30,
    "w": 32
   },
   "enforcer_plate": {
@@ -57087,12 +56587,12 @@
   },
   "ethereal_corn_seed": {
    "file": "items/ethereal_corn_seed.png",
-   "h": 26,
+   "h": 31,
    "w": 32
   },
   "fake_id": {
    "file": "items/fake_id.png",
-   "h": 32,
+   "h": 28,
    "w": 32
   },
   "fanny_pack": {
@@ -57202,18 +56702,18 @@
   },
   "feed_bag": {
    "file": "items/feed_bag.png",
-   "h": 25,
+   "h": 30,
    "w": 32
   },
   "feed_bag_b": {
    "file": "items/feed_bag_b.png",
-   "h": 25,
+   "h": 28,
    "w": 32
   },
   "feed_bag_c": {
    "file": "items/feed_bag_c.png",
-   "h": 32,
-   "w": 29
+   "h": 28,
+   "w": 32
   },
   "fennel": {
    "file": "items/fennel.png",
@@ -57232,7 +56732,7 @@
   },
   "festival_ribbon": {
    "file": "items/festival_ribbon.png",
-   "h": 32,
+   "h": 31,
    "w": 32
   },
   "festival_ticket": {
@@ -57262,12 +56762,12 @@
   },
   "fig_seed": {
    "file": "items/fig_seed.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "film_reel": {
    "file": "items/film_reel.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "finargle_fuzz": {
@@ -57462,8 +56962,8 @@
   },
   "flame_core": {
    "file": "items/flame_core.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "flame_ember": {
    "file": "items/flame_ember.png",
@@ -57477,8 +56977,8 @@
   },
   "flameberry_seed": {
    "file": "items/flameberry_seed.png",
-   "h": 32,
-   "w": 30
+   "h": 29,
+   "w": 32
   },
   "flatcap": {
    "file": "items/flatcap.png",
@@ -57532,12 +57032,12 @@
   },
   "flower_crown_a": {
    "file": "items/flower_crown_a.png",
-   "h": 28,
+   "h": 24,
    "w": 32
   },
   "flower_crown_b": {
    "file": "items/flower_crown_b.png",
-   "h": 30,
+   "h": 24,
    "w": 32
   },
   "flower_mead": {
@@ -57667,12 +57167,12 @@
   },
   "fossil_amber": {
    "file": "items/fossil_amber.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "fossil_ammonite": {
    "file": "items/fossil_ammonite.png",
-   "h": 29,
+   "h": 30,
    "w": 32
   },
   "fossil_bone": {
@@ -57682,26 +57182,21 @@
   },
   "fossil_claw": {
    "file": "items/fossil_claw.png",
-   "h": 29,
+   "h": 25,
    "w": 32
   },
   "fossil_dragonfly": {
    "file": "items/fossil_dragonfly.png",
-   "h": 28,
+   "h": 31,
    "w": 32
   },
   "fossil_egg_a": {
    "file": "items/fossil_egg_a.png",
-   "h": 31,
-   "w": 32
-  },
-  "fossil_egg_b": {
-   "file": "items/fossil_egg_b.png",
    "h": 32,
    "w": 30
   },
-  "fossil_egg_c": {
-   "file": "items/fossil_egg_c.png",
+  "fossil_egg_b": {
+   "file": "items/fossil_egg_b.png",
    "h": 29,
    "w": 32
   },
@@ -57717,17 +57212,17 @@
   },
   "fossil_fish2": {
    "file": "items/fossil_fish2.png",
-   "h": 24,
+   "h": 21,
    "w": 32
   },
   "fossil_horn": {
    "file": "items/fossil_horn.png",
-   "h": 32,
+   "h": 31,
    "w": 32
   },
   "fossil_jaw": {
    "file": "items/fossil_jaw.png",
-   "h": 29,
+   "h": 23,
    "w": 32
   },
   "fossil_leaf": {
@@ -57737,12 +57232,12 @@
   },
   "fossil_leaf2": {
    "file": "items/fossil_leaf2.png",
-   "h": 28,
+   "h": 23,
    "w": 32
   },
   "fossil_sand_dollar": {
    "file": "items/fossil_sand_dollar.png",
-   "h": 29,
+   "h": 28,
    "w": 32
   },
   "fossil_shell": {
@@ -57752,42 +57247,42 @@
   },
   "fossil_shell_a": {
    "file": "items/fossil_shell_a.png",
-   "h": 29,
+   "h": 28,
    "w": 32
   },
   "fossil_shell_b": {
    "file": "items/fossil_shell_b.png",
-   "h": 28,
+   "h": 22,
    "w": 32
   },
   "fossil_skull": {
    "file": "items/fossil_skull.png",
-   "h": 27,
+   "h": 24,
    "w": 32
   },
   "fossil_tooth_a": {
    "file": "items/fossil_tooth_a.png",
-   "h": 21,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "fossil_tooth_b": {
    "file": "items/fossil_tooth_b.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 27
   },
   "fossil_tooth_c": {
    "file": "items/fossil_tooth_c.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "fossil_trilobite": {
    "file": "items/fossil_trilobite.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "fossil_vertebra": {
    "file": "items/fossil_vertebra.png",
-   "h": 29,
+   "h": 26,
    "w": 32
   },
   "fried_egg": {
@@ -57847,7 +57342,7 @@
   },
   "frostberry_seed": {
    "file": "items/frostberry_seed.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "frostkale": {
@@ -57892,8 +57387,8 @@
   },
   "garlic_seed": {
    "file": "items/garlic_seed.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "garnet": {
    "file": "items/garnet.png",
@@ -58017,7 +57512,7 @@
   },
   "gift_star": {
    "file": "items/gift_star.png",
-   "h": 32,
+   "h": 27,
    "w": 32
   },
   "gift_white": {
@@ -58032,8 +57527,8 @@
   },
   "ginger_seed": {
    "file": "items/ginger_seed.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "glass": {
    "file": "items/glass.png",
@@ -58267,7 +57762,7 @@
   },
   "gold_bundle": {
    "file": "items/gold_bundle.png",
-   "h": 27,
+   "h": 25,
    "w": 32
   },
   "gold_cape": {
@@ -58367,8 +57862,8 @@
   },
   "gold_tooth": {
    "file": "items/gold_tooth.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "golden_apple": {
    "file": "items/golden_apple.png",
@@ -58377,7 +57872,7 @@
   },
   "golden_dice": {
    "file": "items/golden_dice.png",
-   "h": 31,
+   "h": 32,
    "w": 32
   },
   "golden_float": {
@@ -58427,18 +57922,18 @@
   },
   "golem_crown": {
    "file": "items/golem_crown.png",
-   "h": 32,
-   "w": 26
+   "h": 28,
+   "w": 32
   },
   "golem_elder_core": {
    "file": "items/golem_elder_core.png",
-   "h": 32,
-   "w": 25
+   "h": 29,
+   "w": 32
   },
   "golem_heart": {
    "file": "items/golem_heart.png",
-   "h": 32,
-   "w": 30
+   "h": 30,
+   "w": 32
   },
   "golem_moss": {
    "file": "items/golem_moss.png",
@@ -58458,7 +57953,7 @@
   "grape_seed": {
    "file": "items/grape_seed.png",
    "h": 32,
-   "w": 28
+   "w": 31
   },
   "grapes": {
    "file": "items/grapes.png",
@@ -58507,8 +58002,8 @@
   },
   "green_bean_seed": {
    "file": "items/green_bean_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "green_potion": {
    "file": "items/green_potion.png",
@@ -58522,7 +58017,7 @@
   },
   "grey_feather": {
    "file": "items/grey_feather.png",
-   "h": 28,
+   "h": 30,
    "w": 32
   },
   "grouper": {
@@ -58537,18 +58032,18 @@
   },
   "grumble_seed": {
    "file": "items/grumble_seed.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 27
   },
   "grump_button": {
    "file": "items/grump_button.png",
    "h": 32,
-   "w": 27
+   "w": 32
   },
   "grump_cloth": {
    "file": "items/grump_cloth.png",
-   "h": 32,
-   "w": 30
+   "h": 27,
+   "w": 32
   },
   "grump_dust": {
    "file": "items/grump_dust.png",
@@ -58557,7 +58052,7 @@
   },
   "grump_king_crown": {
    "file": "items/grump_king_crown.png",
-   "h": 30,
+   "h": 27,
    "w": 32
   },
   "grump_king_heart": {
@@ -58567,7 +58062,7 @@
   },
   "grump_medal": {
    "file": "items/grump_medal.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "grump_tooth": {
@@ -58687,7 +58182,7 @@
   },
   "hard_drive": {
    "file": "items/hard_drive.png",
-   "h": 32,
+   "h": 25,
    "w": 32
   },
   "hardwood": {
@@ -58802,7 +58297,7 @@
   },
   "heli_blade": {
    "file": "items/heli_blade.png",
-   "h": 27,
+   "h": 28,
    "w": 32
   },
   "herb_remedy": {
@@ -58927,8 +58422,8 @@
   },
   "hops_seed": {
    "file": "items/hops_seed.png",
-   "h": 32,
-   "w": 28
+   "h": 28,
+   "w": 32
   },
   "hornet": {
    "file": "items/hornet.png",
@@ -59007,18 +58502,18 @@
   },
   "idol_cat": {
    "file": "items/idol_cat.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "idol_gold": {
    "file": "items/idol_gold.png",
-   "h": 28,
+   "h": 30,
    "w": 32
   },
   "idol_green": {
    "file": "items/idol_green.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "infinity_bean": {
    "file": "items/infinity_bean.png",
@@ -59027,7 +58522,7 @@
   },
   "infinity_bean_seed": {
    "file": "items/infinity_bean_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "ink": {
@@ -59172,7 +58667,7 @@
   },
   "jacket_patch": {
    "file": "items/jacket_patch.png",
-   "h": 28,
+   "h": 27,
    "w": 32
   },
   "jackfruit": {
@@ -59258,12 +58753,12 @@
   "kale_seed": {
    "file": "items/kale_seed.png",
    "h": 32,
-   "w": 29
+   "w": 30
   },
   "karaoke_mic": {
    "file": "items/karaoke_mic.png",
    "h": 32,
-   "w": 24
+   "w": 30
   },
   "keepsake": {
    "file": "items/keepsake.png",
@@ -59287,32 +58782,27 @@
   },
   "key_brass": {
    "file": "items/key_brass.png",
-   "h": 30,
-   "w": 32
-  },
-  "key_crystal": {
-   "file": "items/key_crystal.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "key_gold": {
    "file": "items/key_gold.png",
-   "h": 29,
+   "h": 30,
    "w": 32
   },
   "key_iron": {
    "file": "items/key_iron.png",
-   "h": 28,
-   "w": 32
-  },
-  "key_moon": {
-   "file": "items/key_moon.png",
    "h": 32,
    "w": 31
   },
+  "key_moon": {
+   "file": "items/key_moon.png",
+   "h": 31,
+   "w": 32
+  },
   "key_silver": {
    "file": "items/key_silver.png",
-   "h": 30,
+   "h": 32,
    "w": 32
   },
   "kilt_set": {
@@ -59332,8 +58822,8 @@
   },
   "kite": {
    "file": "items/kite.png",
-   "h": 32,
-   "w": 26
+   "h": 30,
+   "w": 32
   },
   "kiwi": {
    "file": "items/kiwi.png",
@@ -59342,7 +58832,7 @@
   },
   "kiwi_seed": {
    "file": "items/kiwi_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "knight": {
@@ -59352,17 +58842,12 @@
   },
   "knight_crystal": {
    "file": "items/knight_crystal.png",
-   "h": 32,
-   "w": 30
+   "h": 31,
+   "w": 32
   },
   "knight_heart": {
    "file": "items/knight_heart.png",
-   "h": 27,
-   "w": 32
-  },
-  "knight_rivet": {
-   "file": "items/knight_rivet.png",
-   "h": 27,
+   "h": 29,
    "w": 32
   },
   "knuckle_gloves": {
@@ -59372,11 +58857,6 @@
   },
   "kumquat": {
    "file": "items/kumquat.png",
-   "h": 32,
-   "w": 31
-  },
-  "kumquat_seed": {
-   "file": "items/kumquat_seed.png",
    "h": 32,
    "w": 31
   },
@@ -59557,7 +59037,7 @@
   },
   "leash": {
    "file": "items/leash.png",
-   "h": 27,
+   "h": 22,
    "w": 32
   },
   "leather": {
@@ -59662,7 +59142,7 @@
   },
   "ledger_page": {
    "file": "items/ledger_page.png",
-   "h": 32,
+   "h": 27,
    "w": 32
   },
   "leek": {
@@ -59672,8 +59152,8 @@
   },
   "leek_seed": {
    "file": "items/leek_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "legend_dish_a": {
    "file": "items/legend_dish_a.png",
@@ -59748,7 +59228,7 @@
   "lemon_seed": {
    "file": "items/lemon_seed.png",
    "h": 32,
-   "w": 27
+   "w": 30
   },
   "lemonade": {
    "file": "items/lemonade.png",
@@ -59772,22 +59252,22 @@
   },
   "letter_gold": {
    "file": "items/letter_gold.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "letter_open": {
    "file": "items/letter_open.png",
-   "h": 30,
+   "h": 31,
    "w": 32
   },
   "letter_sealed": {
    "file": "items/letter_sealed.png",
-   "h": 31,
+   "h": 28,
    "w": 32
   },
   "letter_torn": {
    "file": "items/letter_torn.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "lettuce": {
@@ -59797,8 +59277,8 @@
   },
   "lettuce_seed": {
    "file": "items/lettuce_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "life_ring": {
    "file": "items/life_ring.png",
@@ -59907,7 +59387,7 @@
   },
   "limo_key": {
    "file": "items/limo_key.png",
-   "h": 27,
+   "h": 25,
    "w": 32
   },
   "linen": {
@@ -59947,12 +59427,12 @@
   },
   "lockpick": {
    "file": "items/lockpick.png",
-   "h": 28,
+   "h": 26,
    "w": 32
   },
   "loose_change": {
    "file": "items/loose_change.png",
-   "h": 31,
+   "h": 30,
    "w": 32
   },
   "lotus": {
@@ -59962,8 +59442,8 @@
   },
   "lotus_seed": {
    "file": "items/lotus_seed.png",
-   "h": 32,
-   "w": 31
+   "h": 28,
+   "w": 32
   },
   "love_letter": {
    "file": "items/love_letter.png",
@@ -60022,8 +59502,8 @@
   },
   "lumiflora_seed": {
    "file": "items/lumiflora_seed.png",
-   "h": 32,
-   "w": 31
+   "h": 31,
+   "w": 32
   },
   "luminous_starfruit": {
    "file": "items/luminous_starfruit.png",
@@ -60057,7 +59537,7 @@
   },
   "lychee_seed": {
    "file": "items/lychee_seed.png",
-   "h": 26,
+   "h": 31,
    "w": 32
   },
   "mackerel": {
@@ -60087,7 +59567,7 @@
   },
   "mango_seed": {
    "file": "items/mango_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "manta": {
@@ -60112,7 +59592,7 @@
   },
   "map_b": {
    "file": "items/map_b.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "map_c": {
@@ -60157,13 +59637,13 @@
   },
   "mask": {
    "file": "items/mask.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 27
   },
   "matchbook": {
    "file": "items/matchbook.png",
-   "h": 32,
-   "w": 31
+   "h": 28,
+   "w": 32
   },
   "mayfly": {
    "file": "items/mayfly.png",
@@ -60243,7 +59723,7 @@
   "melon_seed": {
    "file": "items/melon_seed.png",
    "h": 32,
-   "w": 30
+   "w": 31
   },
   "memory_apple": {
    "file": "items/memory_apple.png",
@@ -60392,7 +59872,7 @@
   },
   "milk_pail": {
    "file": "items/milk_pail.png",
-   "h": 25,
+   "h": 31,
    "w": 32
   },
   "milkshake": {
@@ -60797,7 +60277,7 @@
   },
   "moonflower_seed": {
    "file": "items/moonflower_seed.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "moonlight_elixir": {
@@ -60832,7 +60312,7 @@
   },
   "morel_spore": {
    "file": "items/morel_spore.png",
-   "h": 29,
+   "h": 28,
    "w": 32
   },
   "mosquito": {
@@ -60867,27 +60347,27 @@
   },
   "mount_blue": {
    "file": "items/mount_blue.png",
-   "h": 26,
+   "h": 28,
    "w": 32
   },
   "mount_catfish": {
    "file": "items/mount_catfish.png",
-   "h": 32,
+   "h": 28,
    "w": 32
   },
   "mount_eel": {
    "file": "items/mount_eel.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "mount_flounder": {
    "file": "items/mount_flounder.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "mount_goldfish": {
    "file": "items/mount_goldfish.png",
-   "h": 26,
+   "h": 28,
    "w": 32
   },
   "mount_koi": {
@@ -60897,37 +60377,37 @@
   },
   "mount_marlin": {
    "file": "items/mount_marlin.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "mount_pike": {
    "file": "items/mount_pike.png",
-   "h": 31,
+   "h": 27,
    "w": 32
   },
   "mount_prism": {
    "file": "items/mount_prism.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "mount_purple": {
    "file": "items/mount_purple.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "mount_salmon": {
    "file": "items/mount_salmon.png",
-   "h": 29,
+   "h": 28,
    "w": 32
   },
   "mount_shark": {
    "file": "items/mount_shark.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "mount_swordfish": {
    "file": "items/mount_swordfish.png",
-   "h": 30,
+   "h": 28,
    "w": 32
   },
   "mount_trout": {
@@ -60937,7 +60417,7 @@
   },
   "mount_tuna": {
    "file": "items/mount_tuna.png",
-   "h": 32,
+   "h": 27,
    "w": 32
   },
   "mountain_barley": {
@@ -60997,8 +60477,8 @@
   },
   "mushroom_spore": {
    "file": "items/mushroom_spore.png",
-   "h": 32,
-   "w": 31
+   "h": 28,
+   "w": 32
   },
   "mushroom_stew": {
    "file": "items/mushroom_stew.png",
@@ -61057,7 +60537,7 @@
   },
   "nebula_grape_seed": {
    "file": "items/nebula_grape_seed.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "necklace_a": {
@@ -61177,8 +60657,8 @@
   },
   "neon_tube": {
    "file": "items/neon_tube.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "net": {
    "file": "items/net.png",
@@ -61282,12 +60762,12 @@
   },
   "note_a": {
    "file": "items/note_a.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "note_b": {
    "file": "items/note_b.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "nurse_broth": {
@@ -61308,7 +60788,7 @@
   "oat_seed": {
    "file": "items/oat_seed.png",
    "h": 32,
-   "w": 28
+   "w": 29
   },
   "observatory_lens": {
    "file": "items/observatory_lens.png",
@@ -61362,8 +60842,8 @@
   },
   "onion_seed": {
    "file": "items/onion_seed.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "opal": {
    "file": "items/opal.png",
@@ -61392,8 +60872,8 @@
   },
   "orange_seed": {
    "file": "items/orange_seed.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "orchard_pie": {
    "file": "items/orchard_pie.png",
@@ -61617,8 +61097,8 @@
   },
   "pea_seed": {
    "file": "items/pea_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "peach": {
    "file": "items/peach.png",
@@ -61632,8 +61112,8 @@
   },
   "peach_seed": {
    "file": "items/peach_seed.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "pear": {
    "file": "items/pear.png",
@@ -61647,8 +61127,8 @@
   },
   "pear_seed": {
    "file": "items/pear_seed.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "pearl": {
    "file": "items/pearl.png",
@@ -61872,7 +61352,7 @@
   },
   "penthouse_key": {
    "file": "items/penthouse_key.png",
-   "h": 27,
+   "h": 29,
    "w": 32
   },
   "pepper": {
@@ -61892,8 +61372,8 @@
   },
   "pepper_seed": {
    "file": "items/pepper_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "perch": {
    "file": "items/perch.png",
@@ -61912,7 +61392,7 @@
   },
   "persimmon_seed": {
    "file": "items/persimmon_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "phoenix_chili": {
@@ -61942,18 +61422,13 @@
   },
   "phoenix_pepper_seed": {
    "file": "items/phoenix_pepper_seed.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "phoenix_poppy": {
    "file": "items/phoenix_poppy.png",
    "h": 32,
    "w": 30
-  },
-  "phone_sim": {
-   "file": "items/phone_sim.png",
-   "h": 28,
-   "w": 32
   },
   "photo_a": {
    "file": "items/photo_a.png",
@@ -61962,18 +61437,18 @@
   },
   "photo_b": {
    "file": "items/photo_b.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "photo_c": {
    "file": "items/photo_c.png",
-   "h": 29,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "photo_d": {
    "file": "items/photo_d.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "pickaxe": {
    "file": "items/pickaxe.png",
@@ -62048,7 +61523,7 @@
   "pineapple_seed": {
    "file": "items/pineapple_seed.png",
    "h": 32,
-   "w": 29
+   "w": 30
   },
   "pinecone": {
    "file": "items/pinecone.png",
@@ -62067,12 +61542,12 @@
   },
   "pit_legend_belt": {
    "file": "items/pit_legend_belt.png",
-   "h": 20,
+   "h": 21,
    "w": 32
   },
   "pit_ticket": {
    "file": "items/pit_ticket.png",
-   "h": 26,
+   "h": 25,
    "w": 32
   },
   "pit_wings": {
@@ -62135,11 +61610,6 @@
    "h": 32,
    "w": 25
   },
-  "poker_chip": {
-   "file": "items/poker_chip.png",
-   "h": 27,
-   "w": 32
-  },
   "pomegranate": {
    "file": "items/pomegranate.png",
    "h": 32,
@@ -62152,8 +61622,8 @@
   },
   "pomegranate_seed": {
    "file": "items/pomegranate_seed.png",
-   "h": 32,
-   "w": 30
+   "h": 30,
+   "w": 32
   },
   "pop_acorn": {
    "file": "items/pop_acorn.png",
@@ -62227,18 +61697,18 @@
   },
   "pot_a": {
    "file": "items/pot_a.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "pot_b": {
    "file": "items/pot_b.png",
-   "h": 24,
-   "w": 32
+   "h": 32,
+   "w": 21
   },
   "pot_c": {
    "file": "items/pot_c.png",
-   "h": 25,
-   "w": 32
+   "h": 32,
+   "w": 26
   },
   "potato": {
    "file": "items/potato.png",
@@ -62282,7 +61752,7 @@
   },
   "president_cufflink": {
    "file": "items/president_cufflink.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "president_grape": {
@@ -62307,8 +61777,8 @@
   },
   "president_signet": {
    "file": "items/president_signet.png",
-   "h": 27,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "president_spider": {
    "file": "items/president_spider.png",
@@ -62327,7 +61797,7 @@
   },
   "president_tie_pin": {
    "file": "items/president_tie_pin.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "prism_basil": {
@@ -62365,11 +61835,6 @@
    "h": 31,
    "w": 32
   },
-  "prism_tomato_seed": {
-   "file": "items/prism_tomato_seed.png",
-   "h": 32,
-   "w": 29
-  },
   "prism_trout": {
    "file": "items/prism_trout.png",
    "h": 23,
@@ -62392,8 +61857,8 @@
   },
   "pumpkin_lantern": {
    "file": "items/pumpkin_lantern.png",
-   "h": 32,
-   "w": 31
+   "h": 27,
+   "w": 32
   },
   "pumpkin_pie": {
    "file": "items/pumpkin_pie.png",
@@ -62512,8 +61977,8 @@
   },
   "quince_seed": {
    "file": "items/quince_seed.png",
-   "h": 32,
-   "w": 30
+   "h": 31,
+   "w": 32
   },
   "radish": {
    "file": "items/radish.png",
@@ -62527,8 +61992,8 @@
   },
   "radish_seed": {
    "file": "items/radish_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "rain_boots": {
    "file": "items/rain_boots.png",
@@ -62545,11 +62010,6 @@
    "h": 32,
    "w": 31
   },
-  "rainbow_beet_seed": {
-   "file": "items/rainbow_beet_seed.png",
-   "h": 32,
-   "w": 30
-  },
   "rainbow_chard": {
    "file": "items/rainbow_chard.png",
    "h": 32,
@@ -62562,7 +62022,7 @@
   },
   "ramen_token": {
    "file": "items/ramen_token.png",
-   "h": 28,
+   "h": 29,
    "w": 32
   },
   "raspberry": {
@@ -62573,11 +62033,11 @@
   "raspberry_seed": {
    "file": "items/raspberry_seed.png",
    "h": 32,
-   "w": 27
+   "w": 32
   },
   "rat_tail": {
    "file": "items/rat_tail.png",
-   "h": 28,
+   "h": 27,
    "w": 32
   },
   "ray": {
@@ -62617,7 +62077,7 @@
   },
   "relic_head": {
    "file": "items/relic_head.png",
-   "h": 28,
+   "h": 31,
    "w": 32
   },
   "relic_mask": {
@@ -62664,11 +62124,6 @@
    "file": "items/rice_bowl.png",
    "h": 30,
    "w": 32
-  },
-  "rice_seed": {
-   "file": "items/rice_seed.png",
-   "h": 32,
-   "w": 30
   },
   "ring_box": {
    "file": "items/ring_box.png",
@@ -62837,7 +62292,7 @@
   },
   "riot_shard": {
    "file": "items/riot_shard.png",
-   "h": 31,
+   "h": 30,
    "w": 32
   },
   "river_dragon": {
@@ -63027,12 +62482,12 @@
   },
   "saddle_a": {
    "file": "items/saddle_a.png",
-   "h": 30,
+   "h": 28,
    "w": 32
   },
   "saddle_b": {
    "file": "items/saddle_b.png",
-   "h": 29,
+   "h": 26,
    "w": 32
   },
   "saddle_bag": {
@@ -63047,7 +62502,7 @@
   },
   "saddle_c": {
    "file": "items/saddle_c.png",
-   "h": 29,
+   "h": 27,
    "w": 32
   },
   "saffron": {
@@ -63062,7 +62517,7 @@
   },
   "saffron_seed": {
    "file": "items/saffron_seed.png",
-   "h": 24,
+   "h": 28,
    "w": 32
   },
   "sage": {
@@ -63152,8 +62607,8 @@
   },
   "scallion_seed": {
    "file": "items/scallion_seed.png",
-   "h": 30,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "scarab": {
    "file": "items/scarab.png",
@@ -63407,7 +62862,7 @@
   },
   "sealed_envelope": {
    "file": "items/sealed_envelope.png",
-   "h": 27,
+   "h": 26,
    "w": 32
   },
   "seashell": {
@@ -63448,7 +62903,7 @@
   "sesame_seed": {
    "file": "items/sesame_seed.png",
    "h": 32,
-   "w": 31
+   "w": 32
   },
   "shades": {
    "file": "items/shades.png",
@@ -63487,7 +62942,7 @@
   },
   "shadowberry_seed": {
    "file": "items/shadowberry_seed.png",
-   "h": 26,
+   "h": 29,
    "w": 32
   },
   "shallot": {
@@ -63498,7 +62953,7 @@
   "shallot_seed": {
    "file": "items/shallot_seed.png",
    "h": 32,
-   "w": 26
+   "w": 29
   },
   "shard": {
    "file": "items/shard.png",
@@ -63507,17 +62962,17 @@
   },
   "shard_heart": {
    "file": "items/shard_heart.png",
-   "h": 32,
-   "w": 24
+   "h": 31,
+   "w": 32
   },
   "shard_splinter": {
    "file": "items/shard_splinter.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 28
   },
   "shears": {
    "file": "items/shears.png",
-   "h": 24,
+   "h": 30,
    "w": 32
   },
   "sheep_wool": {
@@ -63835,24 +63290,19 @@
    "h": 27,
    "w": 32
   },
-  "slime_core": {
-   "file": "items/slime_core.png",
-   "h": 27,
-   "w": 32
-  },
   "slime_emperor_gel": {
    "file": "items/slime_emperor_gel.png",
-   "h": 27,
+   "h": 30,
    "w": 32
   },
   "slime_gel": {
    "file": "items/slime_gel.png",
-   "h": 28,
+   "h": 25,
    "w": 32
   },
   "slime_gel_blue": {
    "file": "items/slime_gel_blue.png",
-   "h": 28,
+   "h": 24,
    "w": 32
   },
   "slime_goo": {
@@ -63862,7 +63312,7 @@
   },
   "slime_king_gel": {
    "file": "items/slime_king_gel.png",
-   "h": 28,
+   "h": 30,
    "w": 32
   },
   "slippers": {
@@ -63942,7 +63392,7 @@
   },
   "snowman": {
    "file": "items/snowman.png",
-   "h": 26,
+   "h": 32,
    "w": 32
   },
   "soap": {
@@ -63957,12 +63407,12 @@
   },
   "soldier_badge": {
    "file": "items/soldier_badge.png",
-   "h": 28,
+   "h": 31,
    "w": 32
   },
   "soldier_buckle": {
    "file": "items/soldier_buckle.png",
-   "h": 26,
+   "h": 28,
    "w": 32
   },
   "sole": {
@@ -64022,7 +63472,7 @@
   },
   "soulleaf_seed": {
    "file": "items/soulleaf_seed.png",
-   "h": 32,
+   "h": 31,
    "w": 32
   },
   "soup_mushroom": {
@@ -64097,7 +63547,7 @@
   },
   "speedster_shoe": {
    "file": "items/speedster_shoe.png",
-   "h": 31,
+   "h": 27,
    "w": 32
   },
   "speedster_sole": {
@@ -64128,7 +63578,7 @@
   "spinach_seed": {
    "file": "items/spinach_seed.png",
    "h": 32,
-   "w": 26
+   "w": 30
   },
   "spire_fragment": {
    "file": "items/spire_fragment.png",
@@ -64327,7 +63777,7 @@
   },
   "stardust_pumpkin_seed": {
    "file": "items/stardust_pumpkin_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "starfin": {
@@ -64347,7 +63797,7 @@
   },
   "starflower_seed": {
    "file": "items/starflower_seed.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "starfruit": {
@@ -64572,7 +64022,7 @@
   },
   "storm_core": {
    "file": "items/storm_core.png",
-   "h": 27,
+   "h": 28,
    "w": 32
   },
   "storm_eye": {
@@ -64582,7 +64032,7 @@
   },
   "storm_fluff": {
    "file": "items/storm_fluff.png",
-   "h": 28,
+   "h": 30,
    "w": 32
   },
   "storm_fondue": {
@@ -64597,7 +64047,7 @@
   },
   "storm_heart": {
    "file": "items/storm_heart.png",
-   "h": 28,
+   "h": 31,
    "w": 32
   },
   "storm_marlin": {
@@ -64802,7 +64252,7 @@
   },
   "sunfruit_seed": {
    "file": "items/sunfruit_seed.png",
-   "h": 26,
+   "h": 30,
    "w": 32
   },
   "sunpepper": {
@@ -64837,7 +64287,7 @@
   },
   "sweet_potato_seed": {
    "file": "items/sweet_potato_seed.png",
-   "h": 28,
+   "h": 32,
    "w": 32
   },
   "swift_draught": {
@@ -64912,12 +64362,12 @@
   },
   "tablet_a": {
    "file": "items/tablet_a.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "tablet_b": {
    "file": "items/tablet_b.png",
-   "h": 28,
+   "h": 31,
    "w": 32
   },
   "taco": {
@@ -64942,7 +64392,7 @@
   },
   "tape": {
    "file": "items/tape.png",
-   "h": 23,
+   "h": 21,
    "w": 32
   },
   "tea": {
@@ -64957,8 +64407,8 @@
   },
   "tea_seed": {
    "file": "items/tea_seed.png",
-   "h": 32,
-   "w": 28
+   "h": 27,
+   "w": 32
   },
   "teddy_bear": {
    "file": "items/teddy_bear.png",
@@ -65113,21 +64563,21 @@
   "token_crown": {
    "file": "items/token_crown.png",
    "h": 32,
-   "w": 29
+   "w": 32
   },
   "token_leaf": {
    "file": "items/token_leaf.png",
-   "h": 29,
+   "h": 32,
    "w": 32
   },
   "token_paw": {
    "file": "items/token_paw.png",
-   "h": 30,
+   "h": 31,
    "w": 32
   },
   "token_star": {
    "file": "items/token_star.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "tomato": {
@@ -65142,8 +64592,8 @@
   },
   "tomato_seed": {
    "file": "items/tomato_seed.png",
-   "h": 31,
-   "w": 32
+   "h": 32,
+   "w": 29
   },
   "tommy_gun": {
    "file": "items/tommy_gun.png",
@@ -65197,8 +64647,8 @@
   },
   "tower_core": {
    "file": "items/tower_core.png",
-   "h": 27,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "tower_key": {
    "file": "items/tower_key.png",
@@ -65292,7 +64742,7 @@
   },
   "trophy_fish_b": {
    "file": "items/trophy_fish_b.png",
-   "h": 32,
+   "h": 29,
    "w": 32
   },
   "trophy_fish_c": {
@@ -65352,7 +64802,7 @@
   },
   "truffle_spore": {
    "file": "items/truffle_spore.png",
-   "h": 30,
+   "h": 28,
    "w": 32
   },
   "tulip": {
@@ -65388,7 +64838,7 @@
   "turmeric_seed": {
    "file": "items/turmeric_seed.png",
    "h": 32,
-   "w": 27
+   "w": 32
   },
   "turnip": {
    "file": "items/turnip.png",
@@ -65457,7 +64907,7 @@
   },
   "vault_blueprint": {
    "file": "items/vault_blueprint.png",
-   "h": 26,
+   "h": 27,
    "w": 32
   },
   "velvet_beet": {
@@ -65502,7 +64952,7 @@
   },
   "void_dust": {
    "file": "items/void_dust.png",
-   "h": 26,
+   "h": 28,
    "w": 32
   },
   "void_eel": {
@@ -65572,7 +65022,7 @@
   },
   "warehouse_key": {
    "file": "items/warehouse_key.png",
-   "h": 27,
+   "h": 32,
    "w": 32
   },
   "wasabi": {
@@ -65583,7 +65033,7 @@
   "wasabi_seed": {
    "file": "items/wasabi_seed.png",
    "h": 32,
-   "w": 29
+   "w": 32
   },
   "wasp": {
    "file": "items/wasp.png",
@@ -65602,7 +65052,7 @@
   },
   "water_chestnut_seed": {
    "file": "items/water_chestnut_seed.png",
-   "h": 24,
+   "h": 28,
    "w": 32
   },
   "water_strider": {
@@ -65617,7 +65067,7 @@
   },
   "watercress_seed": {
    "file": "items/watercress_seed.png",
-   "h": 24,
+   "h": 28,
    "w": 32
   },
   "watermelon": {
@@ -65663,7 +65113,7 @@
   "wheat_seed": {
    "file": "items/wheat_seed.png",
    "h": 32,
-   "w": 27
+   "w": 29
   },
   "wheel": {
    "file": "items/wheel.png",
@@ -65737,7 +65187,7 @@
   },
   "wiretap": {
    "file": "items/wiretap.png",
-   "h": 31,
+   "h": 30,
    "w": 32
   },
   "wish": {
@@ -65782,7 +65232,7 @@
   },
   "wishfruit_seed": {
    "file": "items/wishfruit_seed.png",
-   "h": 27,
+   "h": 31,
    "w": 32
   },
   "wisp_apple": {
@@ -65802,13 +65252,13 @@
   },
   "wisp_lantern": {
    "file": "items/wisp_lantern.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "wisp_light": {
    "file": "items/wisp_light.png",
-   "h": 28,
-   "w": 32
+   "h": 32,
+   "w": 25
   },
   "wisp_minnow": {
    "file": "items/wisp_minnow.png",
@@ -65822,7 +65272,7 @@
   },
   "wisp_queen_light": {
    "file": "items/wisp_queen_light.png",
-   "h": 27,
+   "h": 32,
    "w": 32
   },
   "wisp_rosemary": {
@@ -65837,7 +65287,7 @@
   },
   "wisp_thread": {
    "file": "items/wisp_thread.png",
-   "h": 27,
+   "h": 25,
    "w": 32
   },
   "witch": {
@@ -65892,12 +65342,12 @@
   },
   "worldseed": {
    "file": "items/worldseed.png",
-   "h": 31,
+   "h": 30,
    "w": 32
   },
   "worldseed2": {
    "file": "items/worldseed2.png",
-   "h": 31,
+   "h": 30,
    "w": 32
   },
   "worldseed3": {
@@ -65927,8 +65377,8 @@
   },
   "yellow_squash_seed": {
    "file": "items/yellow_squash_seed.png",
-   "h": 32,
-   "w": 28
+   "h": 31,
+   "w": 32
   },
   "yogurt": {
    "file": "items/yogurt.png",
@@ -76208,12 +75658,12 @@
   },
   "jdeco_0": {
    "file": "props/jdeco_0.png",
-   "h": 24,
+   "h": 35,
    "w": 32
   },
   "jdeco_1": {
    "file": "props/jdeco_1.png",
-   "h": 22,
+   "h": 35,
    "w": 32
   },
   "jdeco_10": {
@@ -76228,7 +75678,7 @@
   },
   "jdeco_2": {
    "file": "props/jdeco_2.png",
-   "h": 30,
+   "h": 29,
    "w": 32
   },
   "jdeco_3": {
@@ -76243,13 +75693,13 @@
   },
   "jdeco_5": {
    "file": "props/jdeco_5.png",
-   "h": 28,
-   "w": 32
+   "h": 36,
+   "w": 20
   },
   "jdeco_6": {
    "file": "props/jdeco_6.png",
-   "h": 30,
-   "w": 32
+   "h": 36,
+   "w": 23
   },
   "jdeco_7": {
    "file": "props/jdeco_7.png",
@@ -76258,7 +75708,7 @@
   },
   "jdeco_8": {
    "file": "props/jdeco_8.png",
-   "h": 30,
+   "h": 32,
    "w": 32
   },
   "jdeco_9": {
@@ -83258,38 +82708,38 @@
   },
   "wdeco_0": {
    "file": "props/wdeco_0.png",
-   "h": 26,
-   "w": 32
+   "h": 32,
+   "w": 31
   },
   "wdeco_1": {
    "file": "props/wdeco_1.png",
-   "h": 23,
-   "w": 32
+   "h": 32,
+   "w": 26
   },
   "wdeco_2": {
    "file": "props/wdeco_2.png",
-   "h": 22,
-   "w": 32
+   "h": 32,
+   "w": 23
   },
   "wdeco_3": {
    "file": "props/wdeco_3.png",
-   "h": 19,
-   "w": 32
+   "h": 32,
+   "w": 27
   },
   "wdeco_4": {
    "file": "props/wdeco_4.png",
-   "h": 18,
-   "w": 32
+   "h": 32,
+   "w": 16
   },
   "wdeco_5": {
    "file": "props/wdeco_5.png",
-   "h": 20,
-   "w": 32
+   "h": 32,
+   "w": 30
   },
   "wdeco_6": {
    "file": "props/wdeco_6.png",
-   "h": 23,
-   "w": 32
+   "h": 32,
+   "w": 24
   },
   "wdeco_7": {
    "file": "props/wdeco_7.png",

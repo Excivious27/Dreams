@@ -294,7 +294,7 @@ func _tick() -> void:
 		if bb:
 			bb.set_meta("boss_name", bb.display_name())
 			# The commander is a real fight: half again as tough.
-			bb.max_hp = maxi(int(bb.max_hp * 1.5), 120 * (1 + GameState.progress_tier()))
+			bb.max_hp = maxi(int(bb.max_hp * 1.5), int(120 * (1 + GameState.progress_tier()) * (0.6 if Settings.easy() else 1.0)))
 			bb.hp = bb.max_hp
 			map.hud.toast("%s takes the field!" % bb.display_name(), Color(1, 0.6, 0.4))
 			map.shake(3.0)
@@ -516,7 +516,10 @@ func _end(won: bool, travel := true) -> void:
 		var first: bool = not GameState.run["flags"].has(key)
 		GameState.run["flags"][key] = true
 		var rw: Dictionary = d.get("reward", {})
-		var cr := int(rw.get("crystals", 300)) * (1 if first else 1) / (1 if first else 3)
+		# Rematches pay a third, and only once a day per field (no endless purse farming).
+		var paid_today: bool = not first and int(GameState.run["flags"].get("bfpay_" + bid, -1)) == int(GameState.run["day"])
+		GameState.run["flags"]["bfpay_" + bid] = int(GameState.run["day"])
+		var cr := 0 if paid_today else int(rw.get("crystals", 300)) / (1 if first else 3)
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + cr
 		for it in rw.get("items", {}):
 			if first:
@@ -525,7 +528,7 @@ func _end(won: bool, travel := true) -> void:
 				else:
 					GameState.add_item(str(it), int(rw["items"][it]))
 		map.xp("combat", 60 if first else 20)
-		await map.say([{"who": _who(), "text": str(d.get("win", "The field is ours.")) + ("" if first else " (A rematch pays less.)")}, {"text": "+◆%d%s" % [cr, (", " + ", ".join((rw.get("items", {}) as Dictionary).keys().map(func(x: Variant) -> String: return GameState.item_name(str(x))))) if first and not (rw.get("items", {}) as Dictionary).is_empty() else ""]}])
+		await map.say([{"who": _who(), "text": str(d.get("win", "The field is ours.")) + ("" if first else (" (You've been paid for this field today.)" if paid_today else " (A rematch pays less.)"))}, {"text": "+◆%d%s" % [cr, (", " + ", ".join((rw.get("items", {}) as Dictionary).keys().map(func(x: Variant) -> String: return GameState.item_name(str(x))))) if first and not (rw.get("items", {}) as Dictionary).is_empty() else ""]}])
 	else:
 		await map.say([{"who": _who(), "text": str(d.get("lose", "Fall back. We'll come back stronger."))}])
 	GameState.save()
@@ -537,13 +540,24 @@ func _end(won: bool, travel := true) -> void:
 
 func _draw() -> void:
 	var t := Time.get_ticks_msec() / 1000.0
+	# Only points near the screen (this one canvas item spans the whole field, so
+	# nothing culls its commands), rings first and pictures after: an antialiased
+	# arc is three draw calls, so the old order cost ~32 per frame on bf maps.
+	var view := ((get_viewport().get_canvas_transform() * get_global_transform()).affine_inverse() * get_viewport_rect()).grow(CAP_R + 48.0)
 	for p in points:
 		var pos: Vector2 = p["pos"]
+		if not view.has_point(pos):
+			continue
 		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.85, 0.85, 0.85))
 		draw_arc(pos, CAP_R, 0, TAU, 48, Color(col.r, col.g, col.b, 0.35 + 0.1 * sin(t * 2.0)), 1.5, true)
 		var pr := float(p["prog"])
 		if absf(pr) > 0.01:
 			draw_arc(pos, CAP_R - 3, -PI / 2, -PI / 2 + TAU * absf(pr), 48, Color(0.5, 0.9, 1.0) if pr > 0 else Color(1, 0.45, 0.4), 3.0, true)
+	for p in points:
+		var pos: Vector2 = p["pos"]
+		if not view.has_point(pos):
+			continue
+		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.85, 0.85, 0.85))
 		# The structure built here (spire / drone bay / pylon / turret), behind the flag.
 		var spn := str(p["spawner"])
 		if spn != "":
@@ -570,6 +584,7 @@ func _draw() -> void:
 
 func _draw_hud() -> void:
 	var f := ThemeDB.fallback_font
+	var txt := []  # [pos, text, align, width, size, colour]: drawn at the end, all outlines then all fills
 	var y := 104.0
 	var bw := 90.0
 	var ta := clampf(float(tickets["ally"]) / float(d.get("tickets", 150)), 0, 1)
@@ -578,34 +593,40 @@ func _draw_hud() -> void:
 	_hud.draw_rect(Rect2(10, y, bw * ta, 5), Color(0.5, 0.9, 1.0))
 	_hud.draw_rect(Rect2(170, y, bw, 5), Color(0, 0, 0, 0.6))
 	_hud.draw_rect(Rect2(170 + bw * (1.0 - te), y, bw * te, 5), Color(1, 0.45, 0.4))
-	_hud.draw_string_outline(f, Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
-	_hud.draw_string(f, Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.8, 0.95, 1))
-	_hud.draw_string_outline(f, Vector2(220, y + 13), "Them %d" % int(tickets["enemy"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
-	_hud.draw_string(f, Vector2(220, y + 13), "Them %d" % int(tickets["enemy"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75))
+	txt.append([Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.8, 0.95, 1)])
+	txt.append([Vector2(220, y + 13), "Them %d" % int(tickets["enemy"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
 	# Point pips, left to right in data order, with an arrow toward the nearest one you don't hold.
 	var x0 := 135.0 - points.size() * 7.0
 	for i in points.size():
 		var p: Dictionary = points[i]
 		var col := Color(0.5, 0.9, 1.0) if str(p["owner"]) == "ally" else (Color(1, 0.45, 0.4) if str(p["owner"]) == "enemy" else Color(0.8, 0.8, 0.8))
-		_hud.draw_circle(Vector2(x0 + i * 14 + 7, y + 3), 5.0, Color(0, 0, 0, 0.6))
-		_hud.draw_circle(Vector2(x0 + i * 14 + 7, y + 3), 4.0, col)
-		_hud.draw_string(f, Vector2(x0 + i * 14 + 4, y + 6), str(p["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(0.1, 0.1, 0.1))
+		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 5.0, Color(0, 0, 0, 0.6))
+		Art.draw_disc(_hud, Vector2(x0 + i * 14 + 7, y + 3), 4.0, col)
+	for i in points.size():
+		_hud.draw_string(f, Vector2(x0 + i * 14 + 4, y + 6), str(points[i]["id"]).left(1).to_upper(), HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(0.1, 0.1, 0.1))
 	# Who is bleeding tickets (the side holding fewer points), and supply income.
 	var oa := _owned("ally")
 	var oe := _owned("enemy")
 	if oe > oa:
-		_hud.draw_string_outline(f, Vector2(42, y + 13), "-%d/s" % (oe - oa), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
-		_hud.draw_string(f, Vector2(42, y + 13), "-%d/s" % (oe - oa), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.5, 0.4))
+		txt.append([Vector2(42, y + 13), "-%d/s" % (oe - oa), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.5, 0.4)])
 	elif oa > oe:
-		_hud.draw_string_outline(f, Vector2(196, y + 13), "-%d/s" % (oa - oe), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
-		_hud.draw_string(f, Vector2(196, y + 13), "-%d/s" % (oa - oe), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.6, 1, 0.7))
+		txt.append([Vector2(196, y + 13), "-%d/s" % (oa - oe), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.6, 1, 0.7)])
 	var stxt := "Supply ◇%d (%+.1f/s)" % [supply, _rate]
-	_hud.draw_string_outline(f, Vector2(92, y + 20), stxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
-	_hud.draw_string(f, Vector2(92, y + 20), stxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.95, 0.7))
+	txt.append([Vector2(92, y + 20), stxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.95, 0.7)])
 	# Off-screen pointer to the nearest point you don't hold.
 	var cam := map.get_viewport().get_camera_2d()
-	if cam == null:
-		return
+	if cam != null:
+		_hud_pointer(txt)
+	for pass_i in 2:
+		for e: Array in txt:
+			if pass_i == 0:
+				_hud.draw_string_outline(f, e[0], e[1], e[2], e[3], e[4], 3, Color(0, 0, 0, 0.8))
+			else:
+				_hud.draw_string(f, e[0], e[1], e[2], e[3], e[4], e[5])
+
+
+## Off-screen pointer to the nearest point you don't hold (its name goes in txt).
+func _hud_pointer(txt: Array) -> void:
 	var best: Variant = null
 	var bd := 1e9
 	for p in points:
@@ -619,5 +640,4 @@ func _draw_hud() -> void:
 		var dir: Vector2 = ((best as Dictionary)["pos"] - map.player.position).normalized()
 		var c := Vector2(135, 260) + dir * 110.0
 		_hud.draw_colored_polygon(PackedVector2Array([c + dir * 8, c + dir.orthogonal() * 5, c - dir.orthogonal() * 5]), Color(1, 0.9, 0.5, 0.9))
-		_hud.draw_string_outline(f, c + Vector2(-20, 14), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 40, 6, 3, Color(0, 0, 0, 0.8))
-		_hud.draw_string(f, c + Vector2(-20, 14), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(1, 0.95, 0.8))
+		txt.append([c + Vector2(-20, 14), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(1, 0.95, 0.8)])

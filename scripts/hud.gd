@@ -79,6 +79,7 @@ func set_hint(text: String) -> void:
 
 var _redraw_t := 0.0
 var _sig := ""
+var _was_paused := false
 
 
 func _process(delta: float) -> void:
@@ -95,8 +96,15 @@ func _process(delta: float) -> void:
 		y_offset = want
 		_canvas.queue_redraw()
 	if get_tree().paused:
-		_canvas.queue_redraw()
+		# Dialogue and menus pause the tree: the HUD only changes when a menu equips
+		# or spends something, so 10 Hz (it redrew every frame of every dialogue).
+		_redraw_t += delta
+		if _redraw_t >= 0.1 or not _was_paused:
+			_redraw_t = 0.0
+			_canvas.queue_redraw()
+		_was_paused = true
 		return
+	_was_paused = false
 	# Keyboard: number keys pick a toolbar slot (1-9, 0, -, =).
 	for i in 12:
 		if Input.is_action_just_pressed("slot_%d" % (i + 1)):

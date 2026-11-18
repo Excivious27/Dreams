@@ -112,7 +112,7 @@ func _process(delta: float) -> void:
 				_drops[i] = Vector2(randf_range(0, _w + 40), -10)
 	# Clear calm sky: clouds drift a few px/s, so 20 redraws a second is plenty.
 	_redraw_acc += delta
-	if not _drops.is_empty() or not _parts.is_empty() or not _birds.is_empty() or _overlay() != null or aurora or weather in ["wind", "storm"] or _redraw_acc >= 0.05:
+	if not _drops.is_empty() or not _parts.is_empty() or not _birds.is_empty() or (_overlay() != null and weather != "fog") or aurora or weather in ["wind", "storm"] or _redraw_acc >= 0.05:
 		_redraw_acc = 0.0
 		_canvas.queue_redraw()
 
@@ -154,6 +154,27 @@ func _draw_weather_extras() -> void:
 			_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(1, 1, 1, 0.12 if fr < 2 else 0.04))
 
 
+var _puff: Texture2D
+
+
+## The fog puff: white-blue, alpha as 5 stacked 2.5% discs (r 70..22) gave, smoothed.
+func _fog_puff() -> Texture2D:
+	if _puff == null:
+		var g := Gradient.new()
+		g.offsets = PackedFloat32Array([0.0, 0.31, 0.49, 0.66, 0.83, 1.0])
+		var c := Color(0.9, 0.92, 0.95)
+		g.colors = PackedColorArray([Color(c, 0.119), Color(c, 0.097), Color(c, 0.074), Color(c, 0.05), Color(c, 0.025), Color(c, 0.0)])
+		var gt := GradientTexture2D.new()
+		gt.gradient = g
+		gt.fill = GradientTexture2D.FILL_RADIAL
+		gt.fill_from = Vector2(0.5, 0.5)
+		gt.fill_to = Vector2(1.0, 0.5)
+		gt.width = 64
+		gt.height = 64
+		_puff = gt
+	return _puff
+
+
 func _spawn_flock() -> void:
 	var going_right := randf() < 0.5
 	var y := randf_range(20, 120)
@@ -192,11 +213,13 @@ func _on_draw() -> void:
 		ov = null
 		var lift := 0.4 if not GameState.run.is_empty() and Perks.flag("fog_lift") else 1.0
 		_canvas.draw_rect(Rect2(0, 0, _w, _h), Color(0.85, 0.88, 0.92, 0.10 * lift))
+		# One soft blob texture per puff (it was 5 stacked draw_circles: 35 draw calls
+		# and twice the blended fill).
+		var puff := _fog_puff()
 		for i in 7:
 			var cx := fmod(i * 97.0 + _ov_t * (4.0 + i), _w + 160.0) - 80.0
 			var cy := 60.0 + fmod(i * 131.0, _h - 120.0) + sin(_ov_t * 0.2 + i) * 12.0
-			for k in 5:
-				_canvas.draw_circle(Vector2(cx, cy), 70.0 - k * 12.0, Color(0.9, 0.92, 0.95, 0.025 * lift))
+			_canvas.draw_texture_rect(puff, Rect2(cx - 70.0, cy - 70.0, 140.0, 140.0), false, Color(1, 1, 1, lift))
 	if ov != null and overhead:
 		# Painted weather overlay: 4-frame 128x96 strip tiled across the screen, additive-ish.
 		var fw := 128
