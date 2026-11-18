@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bo4v5w15p1ct2"
-path="res://.godot/imported/mine_crystal_lamp_0.png-30ae4fdba0aee0c272c4c0db01c6e242.ctex"
+uid="uid://bjoopivlm08xg"
+path="res://.godot/imported/mill_scales.png-0c09924277172e2713355327ba6a3e56.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/gen/props/mine_crystal_lamp_0.png"
-dest_files=["res://.godot/imported/mine_crystal_lamp_0.png-30ae4fdba0aee0c272c4c0db01c6e242.ctex"]
+source_file="res://art/gen/furniture/mill_scales.png"
+dest_files=["res://.godot/imported/mill_scales.png-0c09924277172e2713355327ba6a3e56.ctex"]
 
 [params]
 

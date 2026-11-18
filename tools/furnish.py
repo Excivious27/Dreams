@@ -27,7 +27,7 @@ PUBLIC = {"chapel", "bank", "library", "hall", "clinic", "school"}
 WALL = ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting_a", "painting_b", "clock", "mirror2"]
 HOME_SIDE = ["bookcase3_a", "dresser2_a", "kitchen_stove", "wardrobe2_a", "lamp_floor", "bookcase3_c", "nightstand_a", "sofa_blue", "chest_closed", "piano", "lamp_floor_b", "toy_chest", "pet_bed"]
 SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrel", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e"]
-# "barrels3" / "low_table" are mis-aliased in slice_world (a life ring / a jug) until its int_light list is fixed.
+# "barrels3" (barrels + rope) / "low_table" are correct since the int_light alias fix; not added here so rooms keep their look.
 WORK_SIDE = ["barrel", "crate", "lamp_floor", "plant2_c", "barrel", "crate", "plant_c", "bookcase3_d"]
 PUBLIC_SIDE = ["bookcase3_d", "plant2_c", "lamp_floor", "bookcase3_e", "plant_c", "lamp_floor_b", "plant2_b", "globe2"]
 CORNER = ["plant2_a", "plant2_b", "plant2_c", "plant2_d", "plant_b", "plant_c"]

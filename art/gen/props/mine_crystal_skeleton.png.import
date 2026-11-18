@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqmk3q2yhvwta"
-path="res://.godot/imported/mine_deep_lamp_1.png-843c432ca849ebc250344ffc9ac3fdcb.ctex"
+uid="uid://beiuuyeymrave"
+path="res://.godot/imported/mine_crystal_skeleton.png-29d4e2202d5ded91d6b29638f57d17e0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/gen/props/mine_deep_lamp_1.png"
-dest_files=["res://.godot/imported/mine_deep_lamp_1.png-843c432ca849ebc250344ffc9ac3fdcb.ctex"]
+source_file="res://art/gen/props/mine_crystal_skeleton.png"
+dest_files=["res://.godot/imported/mine_crystal_skeleton.png-29d4e2202d5ded91d6b29638f57d17e0.ctex"]
 
 [params]
 

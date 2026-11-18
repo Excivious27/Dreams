@@ -209,10 +209,13 @@ def w8():
         tiles = grid_tiles(rgba, (x0, 205, x0 + 195, 415), 3, 3, 4)
         save_set("mw_" + nm, tiles, 3)
     # Ore nodes row (9) and rock sizes (2 rows x 8)
-    row = cells_by_grid(rgba, 9, 1, region=(850, 205, 1525, 275), trim=False)[0]
-    for b, nm in zip(row, ["node_copper", "node_iron", "node_gold", "node_silver", "node_coal", "node_crystal", "node_dark", "node_ruby", "node_emerald"]):
-        bb = region_bbox(rgba, (b[0] + 2, b[1] + 2, b[2] - 2, b[3] - 2))
-        if bb: save(scale_to(crop(rgba, bb), width=40, height=40), "props", nm)
+    # measured per-node spans (the nodes have uneven widths; equal cells cut slivers)
+    hue = load_hue("w8_deepmine.png")
+    xs = [(852, 920), (922, 989), (990, 1054), (1055, 1117), (1118, 1190), (1192, 1270), (1272, 1354), (1356, 1441), (1444, 1525)]
+    for (x0, x1), nm in zip(xs, ["node_copper", "node_iron", "node_gold", "node_silver", "node_coal", "node_crystal", "node_dark", "node_ruby", "node_emerald"]):
+        src = hue if nm == "node_dark" else rgba
+        bb = region_bbox(src, (x0 + 2, 207, x1 - 2, 273))
+        if bb: save(scale_to(crop(src, bb), width=40, height=40), "props", nm)
     for r, (y0, y1) in enumerate([(280, 345), (350, 415)]):
         row = cells_by_grid(rgba, 8, 1, region=(850, y0, 1525, y1), trim=False)[0]
         for i, b in enumerate(row):
@@ -766,7 +769,9 @@ def w21():
     rgba = load("w21_countryside.png")
     save_set("highway", grid_tiles(rgba, (12, 10, 225, 215), 3, 3, 9), 3)
     save_set("highway_b", grid_tiles(rgba, (235, 10, 445, 215), 3, 3, 9), 3)
-    save_set("shoulder", grid_tiles(rgba, (455, 10, 665, 215), 3, 3, 9), 3)
+    # shoulder: painted tiles sit between 3px dark gutters that an equal grid misses
+    save_set("shoulder", [tile(rgba, (x0, y0, x1, y1), 1) for (y0, y1) in [(21, 85), (87, 151), (153, 206)]
+                          for (x0, x1) in [(474, 537), (540, 602), (605, 666)]], 3)
     save_set("t_road_edge", grid_tiles(rgba, (680, 10, 1195, 215), 5, 2, 4), 5)
     props_from(rgba, "props", {"tunnel": ((1200, 10, 1536, 360), (160, 160)), "highway_bridge": ((12, 230, 760, 360), (352, 64)),
         "motel_sign": ((12, 380, 185, 540), (80, 72)), "billboard2": ((210, 380, 440, 540), (112, 72)), "rest_stop": ((450, 380, 840, 540), (192, 80)), "payphone3": ((850, 400, 920, 540), (28, 64)), "broken_bus": ((930, 380, 1340, 540), (192, 80)), "hitchhiker": ((1380, 380, 1500, 540), (48, 64)),
@@ -1097,6 +1102,35 @@ def w35():
 
 # ---------------------------------------------------------------- batch W36-W43 (emotes, portraits, interiors)
 
+def _drop_captions(im):
+    """Sheet labels sit under each piece and rule lines above/below it: drop
+    every blob that lies wholly below the main sprite, and thin wide lines."""
+    from scipy import ndimage
+    a = np.asarray(im).copy()
+    m = a[..., 3] > 40
+    dl, n = ndimage.label(ndimage.binary_dilation(m, iterations=1))
+    if n < 2:
+        return im
+    lab = dl * m
+    objs = ndimage.find_objects(lab)
+    sizes = ndimage.sum(m, lab, range(1, n + 1))
+    k = int(np.argmax(sizes))
+    my0, my1 = objs[k][0].start, objs[k][0].stop
+    H, W = m.shape
+    for i, sl in enumerate(objs):
+        if sl is None or i == k:
+            continue
+        h = sl[0].stop - sl[0].start; w = sl[1].stop - sl[1].start
+        below = sl[0].start >= my1 - 1
+        line = h <= 10 and w >= 0.4 * W
+        above = sl[0].stop <= my0 + 1 and h <= 12  # rule line wholly above the sprite
+        if below or line or above:
+            a[dl == i + 1, 3] = 0
+    out = Image.fromarray(a)
+    bb = out.getbbox()
+    return out.crop(bb) if bb else im
+
+
 def _pieces(rgba, reg, names, group, factor=0.5, gap=6):
     """Labelled row of len(names) pieces, each scaled by `factor` (sheet 64px = 1 cell = 32px in art/gen)."""
     boxes = row_sprites(rgba, reg, len(names), gap=gap)
@@ -1104,7 +1138,7 @@ def _pieces(rgba, reg, names, group, factor=0.5, gap=6):
         bb = region_bbox(rgba, b)
         if not bb:
             continue
-        im = crop(rgba, bb)
+        im = _drop_captions(crop(rgba, bb))
         save(scale_to(im, width=max(1, round(im.width * factor)), height=max(1, round(im.height * factor))), group, nm)
 
 
@@ -1148,8 +1182,8 @@ def w39():
 def w43():
     rgba = load("w43_interior_floors_walls.png")
     floors = ["fl_wood_light", "fl_wood", "fl_wood_dark", "fl_stone", "fl_tile", "fl_carpet_red", "fl_carpet_blue", "fl_carpet_green", "fl_carpet_purple", "fl_concrete", "fl_brick", "fl_bakery", "fl_clinic", "fl_inn"]
-    xs = [(25, 148), (180, 303), (335, 458)]
-    ys = [(140, 262), (305, 427), (470, 592), (635, 757), (800, 922)]
+    xs = [(26, 145), (180, 299), (335, 454)]
+    ys = [(137, 256), (301, 420), (470, 589), (637, 729), (770, 858)]  # rows 4-5 are shorter; measured tile edges, captions excluded
     i = 0
     for (y0, y1) in ys:
         for (x0, x1) in xs:
@@ -1207,7 +1241,10 @@ def w41():
     _pieces(rgba, (350, 455, 510, 555), ["table2_long4"], "furniture")
     _pieces(rgba, (530, 470, 750, 555), ["chair2_a_down", "chair2_a_left", "chair2_a_right", "chair2_a_up"], "furniture")
     _pieces(rgba, (760, 470, 975, 555), ["chair2_b_down", "chair2_b_left", "chair2_b_right", "chair2_b_up"], "furniture")
-    _pieces(rgba, (985, 455, 1528, 555), ["rug2_round_red", "rug2_round_blue", "rug2_red", "rug2_blue", "rug2_green", "rug2_runner"], "furniture")
+    # the round rugs are 2px apart (row_sprites merges them): measured spans
+    for (x0, x1), nm in zip([(989, 1092), (1092, 1196), (1197, 1290), (1290, 1389), (1389, 1460), (1460, 1527)],
+                            ["rug2_round_red", "rug2_round_blue", "rug2_red", "rug2_blue", "rug2_green", "rug2_runner"]):
+        _pieces(rgba, (x0, 455, x1, 555), [nm], "furniture")
     _pieces(rgba, (15, 628, 625, 705), ["kitchen_sink", "kitchen_stove", "kitchen_counter_a", "kitchen_counter_b", "kitchen_fridge", "kitchen_corner"], "furniture")
     _anim(rgba, (645, 600, 945, 705), 4, "furniture", "kettle")
     _pieces(rgba, (960, 625, 1195, 705), ["cat_bed", "dog_bed"], "furniture")
@@ -1262,8 +1299,9 @@ def w42():
     _pieces(rgba, (1200, 725, 1520, 835), ["pew_a", "pew_b"], "furniture")
     _pieces(rgba, (150, 865, 365, 990), ["altar"], "furniture")
     _anim(rgba, (380, 880, 585, 990), 4, "furniture", "candle_stand")
-    _pieces(rgba, (605, 865, 1115, 990), ["stained_a_day", "stained_a_night", "stained_b_day", "stained_b_night", "stained_c_day", "stained_c_night"], "furniture")
-    _pieces(rgba, (1140, 880, 1350, 990), ["pew_c", "pew_d"], "furniture")
+    _pieces(rgba, (605, 876, 1115, 974), ["stained_a_day", "stained_a_night", "stained_b_day", "stained_b_night", "stained_c_day", "stained_c_night"], "furniture", gap=3)
+    # "Pew (x2)" is two pews stacked diagonally, not side by side: one piece
+    _pieces(rgba, (1130, 887, 1305, 1000), ["pew_stack"], "furniture")
     _pieces(rgba, (1355, 865, 1490, 990), ["organ"], "furniture")
 
 
@@ -1279,8 +1317,26 @@ def w45():
     rgba = load("w45_ui_touch.png")
     _pieces(rgba, (20, 100, 300, 235), ["joy_base_a", "joy_base_b"], "ui", 0.5)
     _pieces(rgba, (335, 130, 505, 215), ["joy_knob_light", "joy_knob_dark"], "ui", 0.5)
-    _pieces(rgba, (540, 95, 1520, 235), ["btn_blue", "btn_blue_down", "btn_green", "btn_green_down", "btn_red", "btn_red_down", "btn_gold", "btn_gold_down"], "ui", 0.5)
-    _pieces(rgba, (15, 315, 625, 395), ["sbtn_blue", "sbtn_blue_down", "sbtn_green", "sbtn_green_down", "sbtn_red", "sbtn_red_down", "sbtn_gold", "sbtn_gold_down"], "ui", 0.5)
+    # Big buttons touch in idle/pressed pairs: split each measured pair box at its
+    # middle (rows 100-222 leave out the title rule above and the captions below),
+    # then centre each on a square canvas so TouchControls can use the whole texture.
+    names = ["btn_blue", "btn_blue_down", "btn_green", "btn_green_down", "btn_red", "btn_red_down", "btn_gold", "btn_gold_down"]
+    for k, (px0, px1) in enumerate([(540, 776), (786, 1021), (1033, 1269), (1283, 1520)]):
+        mid = (px0 + px1) // 2
+        for j, (bx0, bx1) in enumerate([(px0, mid), (mid, px1)]):
+            bb = region_bbox(rgba, (bx0, 100, bx1, 222))
+            im = _main_blob(Image.fromarray(np.ascontiguousarray(rgba[bb[1]:bb[3], bb[0]:bb[2]])))
+            im = scale_to(im, width=max(1, round(im.width * 0.5)), height=max(1, round(im.height * 0.5)))
+            side = max(im.size)
+            c = Image.new("RGBA", (side, side))
+            c.alpha_composite(im, ((side - im.width) // 2, (side - im.height) // 2))
+            save(c, "ui", names[k * 2 + j])
+    # Small buttons sit 2px apart (row_sprites merges anything closer than 3px): measured boxes.
+    for nm, (bx0, bx1) in zip(["sbtn_blue", "sbtn_blue_down", "sbtn_green", "sbtn_green_down", "sbtn_red", "sbtn_red_down", "sbtn_gold", "sbtn_gold_down"],
+                              [(17, 87), (88, 158), (172, 241), (243, 312), (325, 393), (394, 464), (478, 547), (548, 617)]):
+        bb = region_bbox(rgba, (bx0, 318, bx1, 392))
+        im = crop(rgba, bb)
+        save(scale_to(im, width=max(1, round(im.width * 0.5)), height=max(1, round(im.height * 0.5))), "ui", nm)
     _pieces(rgba, (645, 315, 1045, 395), ["ic_run", "ic_menu", "ic_map", "ic_journal", "ic_inventory"], "ui", 0.5)
     _pieces(rgba, (1070, 310, 1520, 420), ["slot_attack", "slot_tool", "slot_interact", "slot_custom"], "ui", 0.5)
     tools = ["hoe", "can", "axe", "pickaxe", "scythe", "rod", "sword", "iron_sword", "hammer", "hand", "check"]
@@ -1372,12 +1428,35 @@ def w47():
         W = (x1 - x0) / fw
         frames = [scale_to(crop(rgba, (int(x0 + i * W) + 3, y0 + 3, int(x0 + (i + 1) * W) - 3, y1 - 3)), width=size[0], height=size[1], cover=True) for i in range(fw)]
         strip(frames, "fx", name)
+    from scipy import ndimage
+    FALL = {"ov2_rain": (24, -6), "ov2_storm": (24, -12), "ov2_drizzle": (24, -4), "ov2_snow": (8, 2), "ov2_blizzard": (16, -8), "ov2_hail": (24, 0),
+            "ov2_ash": (6, 2), "ov2_petals": (8, -4), "ov2_leaves": (8, -6), "ov2_fireflies": (0, 0)}
+    def tile_panel(x0, y0, x1, y1, name, size=(128, 96)):
+        """The particle panels are ONE painted field, not 4 frames: cut a 128x96
+        window, drop blobs cut by its edges (no half-shapes when tiled) and make
+        4 frames by wrapping the tile along the fall direction."""
+        im = crop(rgba, (x0 + 7, y0 + 7, x1 - 7, y1 - 7))
+        im = scale_to(im, height=size[1], width=max(size[0], round(im.width * size[1] / im.height)))
+        cx = (im.width - size[0]) // 2
+        a = np.asarray(im.crop((cx, 0, cx + size[0], size[1]))).copy()
+        lab, n = ndimage.label(a[..., 3] > 24)
+        edge = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
+        cut = np.isin(lab, edge[edge > 0])
+        a[ndimage.binary_dilation(cut, iterations=1), 3] = 0
+        dy, dx = FALL[name]
+        frames = []
+        for i in range(4):
+            f = np.roll(a, (i * dy, i * dx), axis=(0, 1)).copy()
+            if name == "ov2_fireflies":
+                f[..., 3] = (f[..., 3].astype(np.float32) * (0.55, 0.8, 1.0, 0.8)[i]).astype(np.uint8)
+            frames.append(Image.fromarray(f))
+        strip(frames, "fx", name)
     row1 = [(40, "ov2_rain"), (295, "ov2_storm"), (545, "ov2_drizzle"), (785, "ov2_snow"), (1020, "ov2_blizzard"), (1265, "ov2_hail")]
     for x0, nm in row1:
-        panel(x0, 125, x0 + 245, 230, nm)
+        tile_panel(x0, 125, x0 + 245, 230, nm)
     row2 = [(40, "ov2_sandstorm"), (310, "ov2_ash"), (550, "ov2_petals"), (795, "ov2_leaves"), (1040, "ov2_fireflies"), (1265, "ov2_fog")]
     for x0, nm in row2:
-        panel(x0, 295, x0 + 245, 400, nm)
+        (tile_panel if nm in FALL else panel)(x0, 295, x0 + 245, 400, nm)
     panel(40, 465, 305, 575, "ov2_godrays")
     panel(320, 465, 560, 575, "ov2_lightning")
     panel(570, 465, 825, 575, "ov2_sunglare")
@@ -1476,9 +1555,65 @@ def w50():
             save(_cut(rgba, b, h=32), "props", pre + part)
 
 
-def _box_anim(rgba, box, n, group, name, h):
+def _main_blob(im):
+    """Keep the frame's biggest blob and what sits over it (dirt, bark marks);
+    drop slivers of the neighbouring frame cut at the cell edge."""
+    from scipy import ndimage
+    a = np.asarray(im).copy()
+    m = a[..., 3] > 40
+    dl, n = ndimage.label(ndimage.binary_dilation(m, iterations=1))
+    if n < 2:
+        return im
+    objs = ndimage.find_objects(dl)
+    sizes = ndimage.sum(m, dl, range(1, n + 1))
+    k = int(np.argmax(sizes))
+    mx0, mx1 = objs[k][1].start, objs[k][1].stop
+    my0 = objs[k][0].start
+    W = m.shape[1]
+    for i, sl in enumerate(objs):
+        if i == k:
+            continue
+        x0, x1 = sl[1].start, sl[1].stop
+        at_edge = x0 <= 1 or x1 >= W - 1
+        line = (sl[0].stop - sl[0].start) <= 4 and (x1 - x0) >= 0.5 * W
+        above = sl[0].stop <= my0 + 1 and (sl[0].stop - sl[0].start) <= 6  # label border bits over the frame
+        if line or above or (at_edge and (x1 <= mx0 + 2 or x0 >= mx1 - 2)):
+            a[dl == i + 1, 3] = 0
+    out = Image.fromarray(a)
+    bb = out.getbbox()
+    return out.crop(bb) if bb else im
+
+
+def _box_anim(rgba, box, n, group, name, h, clean=False):
     x0, y0, x1, y1 = box
-    _row_strip(rgba, (x0 + 14, y0 + 13, x1 - 14, y1 - 12), n, group, name, h, None, 2)
+    if not clean:
+        _row_strip(rgba, (x0 + 14, y0 + 13, x1 - 14, y1 - 12), n, group, name, h, None, 2)
+        return
+    # Equal cells over the panel's content (frames touch), one blob per cell.
+    reg = (x0 + 4, y0 + 10, x1 - 4, y1 - 4)
+    bb = region_bbox(rgba, reg)
+    if not bb:
+        return
+    cw = (bb[2] - bb[0]) / n
+    # Frames touch (tails overlap the next frame): cut at the thinnest column
+    # near each equal split instead of exactly at it.
+    col = (rgba[bb[1]:bb[3], bb[0]:bb[2], 3] > 40).sum(0)
+    cuts = [bb[0]]
+    for i in range(1, n):
+        t = int(round(i * cw)); r = int(cw * 0.3)
+        lo, hi = max(1, t - r), min(len(col) - 1, t + r)
+        win = col[lo:hi]
+        best = [j for j in range(len(win)) if win[j] == win.min()]
+        cuts.append(bb[0] + lo + min(best, key=lambda j: abs(lo + j - t)))
+    cuts.append(bb[2])
+    frames = []
+    for i in range(n):
+        c = (cuts[i], bb[1], cuts[i + 1], bb[3])
+        cb = region_bbox(rgba, c)
+        frames.append(_main_blob(Image.fromarray(np.ascontiguousarray(rgba[cb[1]:cb[3], cb[0]:cb[2]]))) if cb else Image.new("RGBA", (8, 8)))
+    H = max(f.height for f in frames)
+    sc = h / H
+    strip([scale_to(f, width=max(1, round(f.width * sc)), height=max(1, round(f.height * sc))) for f in frames], group, name)
 
 
 def w51():
@@ -1487,6 +1622,13 @@ def w51():
     # drop the thin box borders.
     rgb = rgba[..., :3].astype(np.int32)
     beige = np.abs(rgb - np.array([244, 213, 160])).sum(-1) < 60
+    # Only the panels themselves: cream/white fur (golden, husky, collie chest,
+    # sheep) is the same colour, so key just the big connected beige areas.
+    from scipy import ndimage
+    lab, nb = ndimage.label(beige)
+    if nb:
+        big = np.asarray(ndimage.sum(beige, lab, np.arange(1, nb + 1))) > 1500
+        beige = np.concatenate([[False], big])[lab]
     rgba = rgba.copy()
     rgba[..., 3] = np.where(beige, 0, rgba[..., 3])
     rgba = S.remove_thin_lines(rgba, 2)
@@ -1510,7 +1652,8 @@ def w51():
             _box_anim(rgba, (x0, y0, x1, y0 + 56), n, "animals/" + nm, a, 28)
     for y0, nm in [(638, "dog_golden"), (712, "dog_collie"), (787, "dog_husky")]:
         for (x0, x1, a, n) in [(190, 340, "idle", 4), (355, 590, "walk", 6), (605, 840, "run", 6), (860, 955, "sit", 2), (970, 1080, "sleep", 2), (1090, 1330, "dig", 6), (1345, 1530, "bark", 4)]:
-            _box_anim(rgba, (x0, y0, x1, y0 + 60), n, "animals/" + nm, a, 32)
+            # a lying dog is ~2/3 as tall as a standing one on the sheet
+            _box_anim(rgba, (x0, y0, x1, y0 + 60), n, "animals/" + nm, a, 22 if a == "sleep" else 32, clean=True)
     babies = [("chick", 10, 130, 140, 255), ("calf", 265, 385, 395, 510), ("lamb", 520, 640, 650, 765), ("piglet", 775, 895, 905, 1020), ("kid_goat", 1030, 1150, 1160, 1275), ("foal", 1285, 1405, 1415, 1530)]
     for nm, i0, i1, w0, w1 in babies:
         _box_anim(rgba, (i0, 905, i1, 978), 4, "animals/" + nm, "idle", 22)
@@ -1770,6 +1913,46 @@ def w61():
         "bread,salad,fish_stew,berry_pie,pumpkin_soup,truffle_pasta,moon_cake,herb_remedy,energy_tea,potion,dream_tonic,roast_fish,jam,cheese,omelette,juice",
         "trout,bass,salmon,tuna,catfish,carp,minnow,sunfish,eel,puffer,goldfish,starfin,mooncarp,crab,legendary_koi,boot",
         "stone,copper,iron,silver,gold,shard,dark2,ruby,sapphire,emerald,amethyst,diamond,opal,pearl,geode,meteorite"))
+    # The fish row: the fish are 2-4px apart (tails touch) and reach under the
+    # projected band, so cut it again by blobs over a taller band.
+    _icon_row_blobs("w61_drops_magic_icons.png", (8, 772, 1528, 854), _ids(
+        "trout,bass,salmon,tuna,catfish,carp,minnow,sunfish,eel,puffer,goldfish,starfin,mooncarp,crab,legendary_koi,boot")[0])
+
+
+def _icon_row_blobs(file, reg, names, group="items", size=32):
+    """One icon per blob: the len(names) biggest blobs in reg are the icons (left
+    to right); smaller bits join the nearest icon; thin wide bits (banner edges) go."""
+    from scipy import ndimage
+    rgba = load(file)
+    x0, y0, x1, y1 = reg
+    sub = rgba[y0:y1, x0:x1]
+    m = sub[..., 3] > 40
+    lab, nl = ndimage.label(m)
+    if nl < len(names):
+        return
+    objs = ndimage.find_objects(lab)
+    sizes = np.asarray(ndimage.sum(m, lab, range(1, nl + 1)))
+    main = sorted(np.argsort(sizes)[::-1][:len(names)], key=lambda i: objs[i][1].start)
+    cx = [(objs[i][1].start + objs[i][1].stop) / 2 for i in main]
+    owner = {}
+    for i, sl in enumerate(objs):
+        if i in main:
+            owner[i] = main.index(i); continue
+        h = sl[0].stop - sl[0].start; w = sl[1].stop - sl[1].start
+        if h <= 4 and w >= 20:
+            continue
+        c = (sl[1].start + sl[1].stop) / 2
+        owner[i] = int(np.argmin([abs(c - v) for v in cx]))
+    for k, nm in enumerate(names):
+        if not nm:
+            continue
+        keep = np.isin(lab, [i + 1 for i, o in owner.items() if o == k])
+        a = np.ascontiguousarray(sub).copy()
+        a[..., 3] = np.where(keep, a[..., 3], 0)
+        im = Image.fromarray(a.astype(np.uint8))
+        bb = im.getbbox()
+        if bb:
+            save(scale_to(im.crop(bb), width=size, height=size), group, nm)
 
 
 def w63():
@@ -1993,14 +2176,14 @@ def w73():
 
 def w74():
     _catalogue("w74_fish.png", "items", _ids(
-        "minnow,sunfish,carp,perch,bluegill,chub,roach,dace,trout,bass,catfish,bream,goldfish,smelt,sardine,anchovy",
-        "herring,mackerel,cod,haddock,flounder,sole,mullet,whiting,crab,shrimp,clam,mussel,oyster,sea_snail,crayfish,seaweed",
-        "salmon,tuna,pike,walleye,zander,eel,lamprey,sturgeon,grayling,char,puffer,lionfish,flying_fish,barracuda,snapper,grouper",
-        "lobster,octopus,squid,jellyfish,sea_urchin,starfish,seahorse,ray,nautilus,cuttlefish,cave_fish,glow_eel,mooncarp,sun_trout,river_king,lake_queen",
-        "starfin,moon_carp2,crystal_fish,lantern_fish,ghost_fish,shadow_eel,ember_koi,frost_pike,cloud_fish,thunder_tuna,prism_trout,mirror_bass,echo_catfish,wisp_minnow,dream_guppy,angel_fish",
+        ",,,perch,bluegill,chub,roach,dace,,,,bream,,smelt,sardine,anchovy",  # blanks: w61 has clean icons
+        "herring,mackerel,cod,haddock,flounder,sole,mullet,whiting,,shrimp,clam,mussel,oyster,sea_snail,crayfish,seaweed",
+        ",,pike,walleye,zander,,lamprey,sturgeon,grayling,char,,lionfish,flying_fish,barracuda,snapper,grouper",
+        "lobster,octopus,squid,jellyfish,sea_urchin,starfish,seahorse,ray,nautilus,cuttlefish,cave_fish,glow_eel,,sun_trout,river_king,lake_queen",
+        ",moon_carp2,crystal_fish,lantern_fish,ghost_fish,shadow_eel,ember_koi,frost_pike,cloud_fish,thunder_tuna,prism_trout,mirror_bass,echo_catfish,wisp_minnow,dream_guppy,angel_fish",
         "swordfish,marlin,sailfish,hammerhead,blue_shark,giant_squid,manta,whale_shark,coelacanth,oarfish,mola,narwhal,dolphin,sea_turtle,giant_clam,king_crab",
         "void_eel,storm_marlin,lava_koi,ice_pike,sky_fish,stone_fish,time_trout,memory_carp,heart_bass,soul_salmon,nightmare_angler,lullaby_seahorse,wish_guppy,halo_ray,mirror_octopus,echo_squid",
-        "legendary_koi,lake_elder,river_dragon,sea_wolf,moon_whale,sun_marlin,star_eel,crystal_leviathan,penguin_fish,cat_favourite,president_shark,dock_kraken,lighthouse_fish,first_trout,dream_fish,space_fish"))
+        ",lake_elder,river_dragon,sea_wolf,moon_whale,sun_marlin,star_eel,crystal_leviathan,penguin_fish,cat_favourite,president_shark,dock_kraken,lighthouse_fish,first_trout,dream_fish,space_fish"))
 
 
 def w75():
@@ -3186,23 +3369,43 @@ def w_names4():
 # ---- interiors (Prompts-09 batch 4): floor/wall kits -> tiles, furniture names
 
 def _floor_kit(group, src, name, n=8):
+    """A row of n painted floor tiles with transparent gutters and a 1-2px dark
+    outline each: split on the gutters (not equal widths, which put the gutter
+    at a different x in every variant), cut the outline off, then scale."""
     m = S.manifest.get(group, {})
     if src not in m:
         return
     im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
+    a = np.asarray(im)
     w, h = im.size
-    for i in range(n):
-        sub = im.crop((int(i * w / n), 0, int((i + 1) * w / n), h))
-        bb = sub.getbbox()
-        if bb:
-            tile = scale_to(sub.crop(bb), width=TILE2, height=TILE2, cover=True)
-            save(tile, "tiles", "%s_%d" % (name, i))
+    on = (a[..., 3] > 40).mean(axis=0) >= 0.3
+    segs = []; st = None
+    for x in range(w + 1):
+        v = x < w and on[x]
+        if v and st is None: st = x
+        if not v and st is not None:
+            if x - st >= w / (n * 2): segs.append((st, x))
+            st = None
+    if len(segs) < n:
+        segs = [(int(i * w / n), int((i + 1) * w / n)) for i in range(n)]
+    segs = segs[:n]  # some rows hold 9 tiles (int_mansion_00/24)
+    tiles = []
+    for i, (x0, x1) in enumerate(segs):
+        sub = im.crop((x0, 0, x1, h)); bb = sub.getbbox()
+        if not bb:
+            continue
+        sub = sub.crop(bb)
+        r = 3  # dark outline + antialias
+        sub = sub.crop((r, r, sub.width - r, sub.height - r))
+        tile = scale_to(sub, width=TILE2, height=TILE2, cover=True)
+        save(tile, "tiles", "%s_%d" % (name, i))
+        tiles.append(tile)
+    if not tiles:
+        return
     # main fl_<name> = variant 0 as a 3x3-compatible single tile set (tileset_rect uses index 4 = centre)
-    sub = im.crop((0, 0, int(w / n), h)); bb = sub.getbbox()
-    t = scale_to(sub.crop(bb), width=TILE2, height=TILE2, cover=True)
     sheet = Image.new("RGBA", (TILE2 * 3, TILE2 * 3))
     for i in range(9):
-        sheet.alpha_composite(t, ((i % 3) * TILE2, (i // 3) * TILE2))
+        sheet.alpha_composite(tiles[0], ((i % 3) * TILE2, (i // 3) * TILE2))
     save(sheet, "tiles", name)
     S.manifest["tiles"][name].update({"cols": 3, "rows": 3})
 
@@ -3238,7 +3441,7 @@ def w_interiors():
         _alias(F, "int_mansion_%02d" % (17 + i), nm)
     _floor_kit(F, "int_mansion_24", "fl_marble"); _wall_kit(F, "int_mansion_25", "wl_marble", 4, ("_l", "_m", "_m2", "_r"))
     _wall_piece(F, "int_mansion_26", "wl_marble_corner"); _wall_piece(F, "int_mansion_27", "wl_marble_m3"); _wall_piece(F, "int_mansion_28", "wl_marble_window"); _wall_piece(F, "int_mansion_29", "wl_marble_door")
-    for i, nm in enumerate(["teller_window", "vault_closed", "vault_open", "ledger_desk", "safe", "coins_a", "coins_b", "coins_c", "rope_posts", "clock_tall", "ivy_pot", "sofa_green"]):
+    for i, nm in enumerate(["teller_window", "vault_closed", "vault_open", "ledger_desk", "safe", "coins_a", "coins_b", "coins_c", "rope_posts", "clock_tall", "ivy_pot", "sofa_velvet"]):
         _alias(F, "int_mansion_%02d" % (30 + i), nm)
     # school / stable
     _floor_kit(F, "int_school_00", "fl_plank"); _wall_kit(F, "int_school_01", "wl_chalk", 4, ("_l", "_m", "_m2", "_r"))
@@ -3260,14 +3463,14 @@ def w_interiors():
         _wall_piece(F, "int_lodge_%02d" % (1 + i), nm)
     _wall_piece(F, "int_lodge_06", "wl_log_window"); _wall_piece(F, "int_lodge_07", "wl_log_door")
     _anim_from(F, "int_lodge_08", 4, "fire_pit2")
-    for i, nm in enumerate(["pelt_bear", "pelt_wolf", "pelt_leopard", "bow_rack", "trap_pile", "meat_rack", "bunk_bed", "antler_hooks", "map_table", "skin_bench"]):
+    for i, nm in enumerate(["pelt_bear", "pelt_wolf", "pelt_leopard", "bow_rack", "trap_pile", "meat_rack", "bunk_log", "antler_hooks", "map_table", "skin_bench"]):
         _alias(F, "int_lodge_%02d" % (9 + i), nm)
     _floor_kit(F, "int_lodge_19", "fl_flour"); 
     for i, nm in enumerate(["wl_mill_m", "wl_mill_m2", "wl_mill_corner", "wl_mill_window", "wl_mill_door"]):
         _wall_piece(F, "int_lodge_%02d" % (20 + i), nm)
     _alias(F, "int_lodge_20", "wl_mill_raw")
     strip([Image.open(os.path.join(S.OUT, m["int_lodge_%02d" % i]["file"])).convert("RGBA") for i in range(25, 29)], F, "millstones")
-    for i, nm in enumerate(["hopper", "grain_chute", "flour_sacks", "scales", "sieve", "bread_crate_a", "bread_crate_b", "mouse_hole", "wheel_axle"]):
+    for i, nm in enumerate(["hopper", "grain_chute", "flour_sack_row", "mill_scales", "sieve", "bread_crate_a", "bread_crate_b", "mouse_hole", "wheel_axle"]):
         _alias(F, "int_lodge_%02d" % (29 + i), nm)
     # lighthouse / huts
     _floor_kit(F, "int_light_00", "fl_round_stone")
@@ -3285,11 +3488,14 @@ def w_interiors():
     _alias(F, "int_light_39", "round_rug_stone"); _alias(F, "int_light_40", "spiral_stair")
     strip([Image.open(os.path.join(S.OUT, m["int_light_41"]["file"])).convert("RGBA")], F, "lamp_mech_raw")
     _anim_from(F, "int_light_41", 4, "lamp_mechanism")
-    for i, nm in enumerate(["oil_cans", "oil_still", "charts_hammock", "kettle_stove", "telescope2", "logbook_desk", "fog_bell", "wool_bales", "wool_bale", "wool_pile", "cider_press2", "apple_tub", "crook_rack", "cot_plaid", "stool2", "stool_fleece", "chest2", "blanket2", "lantern2", "reed_mat_a", "shelf_jars", "flower_jug", "frog_jars"]):
+    for i, nm in enumerate(["oil_cans", "oil_still", "charts_hammock", "kettle_stove", "telescope2", "logbook_desk", "fog_bell", "wool_bales", "wool_pile", "cider_press2", "apple_tub", "crook_rack", "cot_plaid", "stool2", "stool_fleece", "chest2", "blanket2", "lantern2", "reed_mat_a", "shelf_jars", "flower_jug", "frog_jars"]):
         _alias(F, "int_light_%02d" % (42 + i), nm)
+    _alias(F, "int_light_49", "wool_bale")  # 49 holds the bales and the single bale as one blob
     _anim_from(F, "int_light_64", 4, "bubbling_pot")
-    for i, nm in enumerate(["herb_bundles", "reed_mat_b", "reed_mat_round", "low_table", "jug", "lantern3", "cattail_pot", "net_a", "net_b", "net_c", "rod_a", "rod_b", "rod_c", "bait_bucket_a", "bait_bucket_b", "bait_bucket_c", "fish_ice", "barrels3", "crab_pots3", "life_ring", "floats", "fish_hang"]):
+    for i, nm in enumerate(["herb_bundles", "reed_mat_b", "low_table", "jug", "lantern3", "cattail_pot", "net_a", "net_b", "net_c", "rod_a", "rod_b", "rod_c", "bait_bucket_a", "bait_bucket_c", "fish_ice", "barrels3", "crab_pots3", "life_ring", "floats", "fish_hang"]):
         _alias(F, "int_light_%02d" % (69 + i), nm)
+    _alias(F, "int_light_70", "reed_mat_round")  # 70 holds both reed mats
+    _alias(F, "int_light_81", "bait_bucket_b")  # 81 is the two-bucket picture
     # quarry / ruins
     _floor_kit(F, "int_quarry_00", "fl_quarry")
     for i, nm in enumerate(["wl_quarry_m", "wl_quarry_window", "wl_quarry_door"]):
@@ -4250,9 +4456,16 @@ def _mine_set(file, tier):
         save(scale_to(crop(rgba, r3[i]), height=40), "props", "mine_%s_ore_b_%d" % (tier, n))
     post = list(range(first_lamp, len(r3)))
     names = ["lamp_0", "lamp_1", "stalag_0", "stalag_1", "cart", "skeleton", "crystal"]
+    if len(post) == 6:  # one lamp (dark)
+        names = ["lamp_0"] + names[2:]
+    elif len(post) == 5:  # no lamps (deep, crystal)
+        names = names[2:]
     for n, i in enumerate(post[:7]):
         b = r3[i]
-        save(scale_to(crop(rgba, b), height=int(min(110, (b[3] - b[1]) * 0.75))), "props", "mine_%s_%s" % (tier, names[n]))
+        im = scale_to(crop(rgba, b), height=int(min(110, (b[3] - b[1]) * 0.75)))
+        save(im, "props", "mine_%s_%s" % (tier, names[n]))
+        if names[n] == "lamp_0" and "lamp_1" not in names:
+            save(im, "props", "mine_%s_lamp_1" % tier)  # mine.gd alternates lamp_0/lamp_1
     # Rows 4+: bigger versions and break strips: keep the large rocks / nodes
     # as hi-res props (first 4 of row 4 and row 5) for the keeper floors.
     if len(rows) > 4:
@@ -5333,12 +5546,19 @@ def _lt_sheet(file):
         for nm, im in zip(["neutral", "angry", "sad", "worried"], d[4:8]):
             save(scale_to(im, height=96), "portraits/" + cid, nm)
         # The boss card in this half.
-        y0, y1 = half * H // 2, (half + 1) * H // 2
-        sub = rgba[y0:y1, cx0 - 8:]
-        ys = np.where((sub[..., 3] > 40).sum(axis=1) > 30)[0]
-        xs = np.where((sub[..., 3] > 40).sum(axis=0) > 30)[0]
-        if len(ys) and len(xs):
-            card = Image.fromarray(sub[ys[0]:ys[-1] + 1, xs[0]:xs[-1] + 1])
+        # The card is the biggest blob in the right part of this half (sprite rows
+        # run past its left edge, so a column/row projection took them in too).
+        from scipy import ndimage
+        # The two cards can cross the sheet's middle line, so label the whole
+        # right side: the two biggest blobs, top one for half 0.
+        sub = rgba[:, 1100:]
+        lab, nl = ndimage.label(sub[..., 3] > 40)
+        if nl >= 2:
+            big2 = np.argsort(np.asarray(ndimage.sum(np.ones_like(lab), lab, range(1, nl + 1))))[::-1][:2]
+            objs = ndimage.find_objects(lab)
+            k = sorted(big2, key=lambda i: objs[i][0].start)[half]
+            sl = objs[k]
+            card = Image.fromarray(np.ascontiguousarray(sub[sl]))
             save(scale_to(card, height=200), "ui", "card_" + cid)
 
 

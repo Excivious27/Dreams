@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bifgxqa5ybbmo"
-path="res://.godot/imported/mine_deep_lamp_0.png-0ccb911d54a047eed012ea22cf72939e.ctex"
+uid="uid://d3l6whutclxya"
+path="res://.godot/imported/bunk_log.png-309992b4d158ec18f26d5ae083115db8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/gen/props/mine_deep_lamp_0.png"
-dest_files=["res://.godot/imported/mine_deep_lamp_0.png-0ccb911d54a047eed012ea22cf72939e.ctex"]
+source_file="res://art/gen/furniture/bunk_log.png"
+dest_files=["res://.godot/imported/bunk_log.png-309992b4d158ec18f26d5ae083115db8.ctex"]
 
 [params]
 

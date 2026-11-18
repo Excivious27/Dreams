@@ -940,7 +940,7 @@
  "inn": {
   "cols": 16,
   "rows": 13,
-  "floor": "fl_wood",
+  "floor": "fl_inn",
   "wall": "wl_wood",
   "door": [
    9,
@@ -1385,7 +1385,7 @@
  "clinic": {
   "cols": 13,
   "rows": 11,
-  "floor": "fl_tile",
+  "floor": "fl_clinic",
   "wall": "wl_plaster",
   "door": [
    6,
@@ -2568,7 +2568,7 @@
     "w": 1
    },
    {
-    "name": "flour_sacks",
+    "name": "flour_sack_row",
     "cell": [
      11,
      4
@@ -2576,7 +2576,7 @@
     "w": 2
    },
    {
-    "name": "scales",
+    "name": "mill_scales",
     "cell": [
      2,
      7
@@ -3049,7 +3049,7 @@
     ]
    },
    {
-    "name": "sofa_green",
+    "name": "sofa_velvet",
     "cell": [
      9,
      9
@@ -4142,7 +4142,7 @@
     "w": 2
    },
    {
-    "name": "bunk_bed",
+    "name": "bunk_log",
     "cell": [
      11,
      3
@@ -4420,7 +4420,7 @@
     ]
    },
    {
-    "name": "sofa_green",
+    "name": "sofa_velvet",
     "cell": [
      9,
      9
