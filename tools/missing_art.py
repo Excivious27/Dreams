@@ -18,8 +18,9 @@ out["Item icons"] = miss
 # enemies: characters/<sprite or kind>
 miss = []
 for k, d in enemies.items():
-    s = str(d.get("sprite", d.get("char", k)))
-    if not any(g == f"characters/{s}" for g in man) and not any(g == f"enemies/{s}" for g in man) and not has("enemies", s):
+    art = str(d.get("art", "grump" if k == "big_grump" else k))
+    grp = f"characters/{d['char']}" if d.get("char") else (f"characters/{k[6:]}" if k.startswith("thug_") else f"enemies/{art}")
+    if grp not in man:
         miss.append(f"{k} ({d.get('name', k)})")
 out["Enemy sprites"] = miss
 # portraits

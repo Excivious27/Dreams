@@ -10,17 +10,52 @@ var mine_tier := 0           # unified tier for this floor (GameState.mine_tier)
 var _guardian: Enemy = null  # the floor's gatekeeper, once it has shown up
 var _summoning := false
 var _way_open := false       # shaft revealed (flag mine_open_<floor>)
+var theme: Dictionary = {}
+var _gsmash_t := 3.0
+var _lava := {}
+var _chasm := {}
+
+## 150 floors. Every 10 floors the cave changes look (15 themes); every floor's
+## layout is re-carved each day; every 5th floor is a lift stop you keep; every
+## 10th floor has a prize chest; floor 150's shaft opens the Hollow Heart.
+const MAX_FLOOR := 150
+const THEMES := [
+	{"name": "Earthen Tunnels", "var": "earth", "ts": "", "rock": "2a2018", "fa": "4a3a2c", "fb": "52412f", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_mushroom", "mushroom"]},
+	{"name": "Mossy Hollows", "var": "earth", "ts": "", "rock": "1f2a1c", "fa": "3e4a34", "fb": "44503a", "tint": [0.85, 1.0, 0.85], "feat": ["water"], "forage": ["cave_mushroom", "cave_fig", "mushroom_spore"]},
+	{"name": "Grey Stone Deeps", "var": "stone", "ts": "deep", "rock": "24222c", "fa": "4a4152", "fb": "50475a", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_fig", "cave_mushroom"]},
+	{"name": "Flooded Galleries", "var": "stone", "ts": "deep", "rock": "1c2430", "fa": "3a4656", "fb": "40506a", "tint": [0.8, 0.9, 1.05], "feat": ["water"], "forage": ["cave_fig", "mushroom_spore"]},
+	{"name": "Fungal Caverns", "var": "earth", "ts": "", "rock": "241c2c", "fa": "3c3048", "fb": "42354e", "tint": [1.0, 0.85, 1.0], "feat": ["glow"], "forage": ["cave_bloom", "mushroom_spore", "cave_mushroom"]},
+	{"name": "Crystal Veins", "var": "stone", "ts": "crystal", "rock": "1c1c34", "fa": "3c3c64", "fb": "42426c", "tint": [0.85, 0.9, 1.1], "feat": ["crystals"], "forage": ["shard", "cave_bloom"]},
+	{"name": "Frost Caves", "var": "ice", "ts": "", "rock": "1c2634", "fa": "4a5c6c", "fb": "52667a", "tint": [0.85, 0.95, 1.1], "feat": ["water"], "forage": ["cave_fig", "shard"]},
+	{"name": "Amethyst Grotto", "var": "ice", "ts": "crystal", "rock": "241434", "fa": "4a2e5c", "fb": "523466", "tint": [1.0, 0.8, 1.1], "feat": ["crystals"], "forage": ["amethyst", "shard", "cave_bloom"]},
+	{"name": "Sandstone Ruins", "var": "earth", "ts": "", "rock": "3a2c1c", "fa": "6a5638", "fb": "72603e", "tint": [1.1, 1.0, 0.85], "feat": [], "forage": ["fossil", "cave_fig"]},
+	{"name": "Gold Seams", "var": "stone", "ts": "deep", "rock": "2c2418", "fa": "5a4a30", "fb": "62523a", "tint": [1.1, 1.0, 0.8], "feat": [], "forage": ["gold", "cave_bloom"]},
+	{"name": "Magma Rifts", "var": "lava", "ts": "", "rock": "2c1814", "fa": "4a2a22", "fb": "52302a", "tint": [1.1, 0.85, 0.8], "feat": ["lava"], "forage": ["dark", "cave_fig"]},
+	{"name": "Obsidian Halls", "var": "lava", "ts": "dark", "rock": "120e16", "fa": "2a2432", "fb": "302a3a", "tint": [0.8, 0.8, 0.95], "feat": ["lava"], "forage": ["dark", "shard"]},
+	{"name": "Drowned Dark", "var": "stone", "ts": "dark", "rock": "0e1620", "fa": "22303c", "fb": "283846", "tint": [0.8, 0.9, 1.0], "feat": ["water", "glow"], "forage": ["cave_bloom", "dark"]},
+	{"name": "The Void Reach", "var": "stone", "ts": "dark", "rock": "0c0a14", "fa": "1e1a2c", "fb": "241f34", "tint": [0.9, 0.8, 1.1], "feat": ["chasm"], "forage": ["dark", "crystal_refined"]},
+	{"name": "The Heart's Edge", "var": "lava", "ts": "heart", "rock": "1a0c18", "fa": "3a1c34", "fb": "42223c", "tint": [1.1, 0.85, 1.0], "feat": ["crystals", "glow"], "forage": ["crystal_refined", "shard", "cave_bloom"]},
+]
+
+
+static func theme_for(f: int) -> Dictionary:
+	return THEMES[clampi((f - 1) / 10, 0, THEMES.size() - 1)]
 
 
 ## How much you've "tried" this floor: rocks broken count 1, kills count 3.
 ## Past the threshold the guardian shows up; beat it and the way down opens.
 func _tried() -> int:
-	return int(GameState.run.get("mine_tried", {}).get(str(floor_no), 0))
+	return int(GameState.run.get("mine_tried", {}).get("%d_%d" % [floor_no, int(GameState.run["day"])], 0))
 
 
 func _try_more(n: int) -> void:
+	var k := "%d_%d" % [floor_no, int(GameState.run["day"])]
 	var d: Dictionary = GameState.run.get("mine_tried", {})
-	d[str(floor_no)] = int(d.get(str(floor_no), 0)) + n
+	if not d.has(k):
+		for ok in d.keys():
+			if not str(ok).ends_with("_%d" % int(GameState.run["day"])):
+				d.erase(ok)   # a new day: yesterday's counts go
+	d[k] = int(d.get(k, 0)) + n
 	GameState.run["mine_tried"] = d
 	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
 		_summoning = true
@@ -29,8 +64,23 @@ func _try_more(n: int) -> void:
 		hud.toast("Something below is listening.", Color(0.8, 0.75, 0.9))
 
 
+## How much digging and fighting wakes the keeper: random per floor and day.
+## Usually a good while; now and then it comes up almost at once.
 func _threshold() -> int:
-	return 8 + floor_no * 2
+	var day := int(GameState.run["day"])
+	var key := "%d_%d" % [floor_no, day]
+	var old: Dictionary = GameState.run.get("mine_thresh", {})
+	if not old.has(key):
+		var base := 14.0 + minf(60.0, floor_no * 0.4)
+		var r := randf()
+		var mult := randf_range(0.3, 0.5) if r < 0.15 else (randf_range(0.75, 1.0) if r < 0.4 else randf_range(1.0, 1.7))
+		var d := {key: int(round(base * mult))}
+		for k in old:
+			if str(k).ends_with("_%d" % day):
+				d[k] = old[k]
+		GameState.run["mine_thresh"] = d
+		old = d
+	return maxi(4, int(old[key]))
 
 
 func scene_id() -> String:
@@ -44,16 +94,23 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	# Big organic caverns: a floor grows with depth, carved by cellular automata
 	# so the edges read as natural rock, not a box.
-	floor_no = int(GameState.run.get("mine_floor", 1))
-	cols = 40 + mini(floor_no, 20) * 2
-	rows = 32 + mini(floor_no, 20)
+	floor_no = clampi(int(GameState.run.get("mine_floor", 1)), 1, MAX_FLOOR)
+	theme = theme_for(floor_no)
 	has_sky = false
 	has_pet = false
 	music_track = "mine"
+	# A fresh layout every day, different on every floor.
 	var rng := RandomNumberGenerator.new()
-	rng.seed = 1000 + floor_no
+	rng.seed = floor_no * 7919 + int(GameState.run["day"]) * 104729
+	cols = 40 + mini(floor_no, 40) / 2 + rng.randi_range(0, 18)
+	rows = 32 + mini(floor_no, 40) / 3 + rng.randi_range(0, 12)
 	mine_tier = GameState.mine_tier(floor_no)
 	_carve(rng)
+	# Some days the dice carve a cramped cave: re-carve fuller until it's roomy.
+	var tries := 0
+	while _open.size() < int(cols * rows * 0.32) and tries < 6:
+		tries += 1
+		_carve(rng, 0.03 * tries)
 	# Way in: the open cell nearest the top-left; way down: the farthest open cell from it.
 	_entry = _nearest_open(Vector2i(3, 3))
 	_ladder = _farthest_open(_entry)
@@ -67,7 +124,7 @@ func build() -> void:
 		things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
 	# The lift: once you've opened floor 5, Granite's cart takes you straight to
 	# any floor you've opened the way to (every 5th).
-	if floor_no == 1 and _deepest() >= 5:
+	if (floor_no == 1 or floor_no % 5 == 0) and _deepest() >= 5:
 		var lc := _nearest_open(_entry + Vector2i(3, 0))
 		set_thing(lc.x, lc.y, {"type": "lift", "hint": "A: the mine lift"})
 	# Floor 5: the flooded grotto. Much of the cave is black water; crystals sit
@@ -106,7 +163,7 @@ func build() -> void:
 					break
 	# Rock: about one open cell in seven, more on deeper floors.
 	var open_list: Array = _open.keys()
-	var count := int(open_list.size() * (0.11 + 0.005 * mini(floor_no, 12)))
+	var count := int(open_list.size() * (0.08 + 0.0004 * mini(floor_no, 100)))
 	for i in count:
 		if _grotto and i > count / 2:
 			break
@@ -118,8 +175,8 @@ func build() -> void:
 		var pool: Array = (GameState.tier_data.get("mine", {}).get("ores", []) as Array)
 		var ores: Array = pool[mini(mine_tier, pool.size() - 1)] if not pool.is_empty() else ["stone", "copper"]
 		# Half stone, the rest spread over the tier's ores (rarest last, least common).
-		if roll > 0.5 and ores.size() > 1:
-			var r2 := (roll - 0.5) * 2.0
+		if roll > 0.62 and ores.size() > 1:
+			var r2 := (roll - 0.62) / 0.38
 			var idx := 1
 			var acc := 0.0
 			var weights: Array = []
@@ -135,7 +192,10 @@ func build() -> void:
 					break
 			ore = str(ores[idx])
 		# Ore gathers in veins: rich rocks pull neighbours toward the same ore.
-		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": (2 if ore == "stone" else 3) + mine_tier, "hint": "A: mine"})
+		var hard := (3 if ore == "stone" else 4 + ores.find(ore)) + floor_no / 15
+		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
+	_features(rng)
+	_findables(rng)
 
 
 var _open := {}          # walkable cave floor
@@ -144,16 +204,21 @@ var _entry := Vector2i(2, 2)
 
 ## Cellular-automata cave: random fill, smoothed, then only the biggest connected
 ## cavern is kept so every part of the floor can be reached.
-func _carve(rng: RandomNumberGenerator) -> void:
+var _fill := 0.56
+
+
+func _carve(rng: RandomNumberGenerator, boost := 0.0) -> void:
+	_fill = rng.randf_range(0.52, 0.6) + boost
+	var passes := rng.randi_range(4, 6)
 	var g := {}
 	for y in range(1, rows - 1):
 		for x in range(1, cols - 1):
 			# Bias toward open in the middle, rock at the rim: no straight edges.
 			var edge := minf(minf(x, cols - 1 - x), minf(y, rows - 1 - y))
-			var p := 0.56 if edge > 4 else (0.42 if edge > 2 else 0.2)
+			var p := _fill if edge > 4 else (0.42 if edge > 2 else 0.2)
 			if rng.randf() < p:
 				g[Vector2i(x, y)] = true
-	for pass_i in 5:
+	for pass_i in passes:
 		var nxt := {}
 		for y in range(1, rows - 1):
 			for x in range(1, cols - 1):
@@ -185,6 +250,114 @@ func _carve(rng: RandomNumberGenerator) -> void:
 		if region.size() > best.size():
 			best = region
 	_open = best
+
+
+## Theme hazards: pools, lava and chasms on open floor away from the paths in
+## and out. They block walking (Tideswim / a mercat lets you swim pools).
+func _features(rng: RandomNumberGenerator) -> void:
+	var feat: Array = theme.get("feat", [])
+	var seed := floor_no * 13 + int(GameState.run["day"])
+	for c: Vector2i in _open:
+		if things.has(c) or c.distance_to(_entry) < 6 or c.distance_to(_ladder) < 4:
+			continue
+		var n := WorldGen.fbm(float(c.x), float(c.y), seed, 6.0)
+		if "water" in feat and not _grotto and n > 0.38:
+			set_thing(c.x, c.y, {"type": "water", "hint": ""}, true)
+		elif "lava" in feat and n > 0.42:
+			_lava[c] = true
+			blocked[c] = true
+		elif "chasm" in feat and n > 0.4:
+			_chasm[c] = true
+			blocked[c] = true
+	if "water" in feat and not _grotto:
+		swim_ok = Colony.has_ability("tideswim") or Companion.has_ability("tail")
+	# Keep the way down reachable: clear any hazard that cuts entry from ladder.
+	var reach := {_entry: true}
+	var q: Array = [_entry]
+	while not q.is_empty():
+		var a: Vector2i = q.pop_back()
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var b := a + d
+			if _open.has(b) and not reach.has(b) and not _lava.has(b) and not _chasm.has(b) and not (things.has(b) and str(things[b].get("type", "")) == "water"):
+				reach[b] = true
+				q.append(b)
+	if not reach.has(_ladder):
+		for c: Vector2i in _lava.keys() + _chasm.keys():
+			blocked.erase(c)
+		_lava.clear()
+		_chasm.clear()
+		for c in things.keys():
+			if str(things[c].get("type", "")) == "water" and not _grotto:
+				things.erase(c)
+				blocked.erase(c)
+
+
+## Things to find: glowing forage, crates and barrels, a hidden chest now and
+## then, a fossil or relic in the ruins, and the prize chest every 10th floor.
+func _findables(rng: RandomNumberGenerator) -> void:
+	var free: Array = []
+	for c: Vector2i in _open:
+		if not things.has(c) and not blocked.has(c) and c.distance_to(_entry) > 3:
+			free.append(c)
+	if free.is_empty():
+		return
+	var day := int(GameState.run["day"])
+	var forage: Array = theme.get("forage", ["cave_mushroom"])
+	var nf := 4 + rng.randi_range(0, 4) + (3 if "glow" in theme.get("feat", []) else 0)
+	for i in nf:
+		var c: Vector2i = free[rng.randi() % free.size()]
+		if things.has(c):
+			continue
+		var key := "mfor_%d_%d_%d" % [floor_no, i, day]
+		if GameState.run["flags"].has(key):
+			continue
+		var item := str(forage[rng.randi() % forage.size()])
+		set_thing(c.x, c.y, {"type": "forage", "item": item, "key": key, "hint": "A: pick up %s" % GameState.item_name(item)}, false)
+	for i in rng.randi_range(2, 5):
+		var c: Vector2i = free[rng.randi() % free.size()]
+		if not things.has(c):
+			set_thing(c.x, c.y, {"type": "crate", "kind": "barrel_a" if rng.randf() < 0.4 else "crates_a", "hp": 2 + floor_no / 30, "hint": "A: smash it open"}, true)
+	if rng.randf() < 0.3 + 0.002 * mini(floor_no, 100):
+		var c: Vector2i = free[rng.randi() % free.size()]
+		var key := "mchest_%d_%d" % [floor_no, day]
+		if not things.has(c) and not GameState.run["flags"].has(key):
+			set_thing(c.x, c.y, {"type": "mchest", "key": key, "hint": "A: a miner's chest"}, true)
+	if floor_no % 10 == 0 and not GameState.run["flags"].has("mine_prize_%d" % floor_no):
+		var c := _farthest_open(_ladder)
+		if things.has(c):
+			c = free[rng.randi() % free.size()]
+		set_thing(c.x, c.y, {"type": "bigchest", "hint": "A: the floor %d prize chest" % floor_no}, true)
+
+
+## Loot by depth. Big = the prize chest every 10th floor.
+func _loot(big: bool) -> Dictionary:
+	var t := clampi(floor_no / 25, 0, 5)
+	var gems: Array = [["amethyst"], ["amethyst", "ruby"], ["ruby", "emerald"], ["emerald", "sapphire"], ["sapphire", "ruby"], ["sapphire", "emerald"]][t]
+	var out := {}
+	if big:
+		out["#gold"] = 200 + floor_no * 25
+		out[str(gems[randi() % gems.size()])] = 1 + t
+		var rare: Array = [["copper_ring", "luck_potion"], ["silver_ring", "greater_potion"], ["ruby_ring", "relic_orb"], ["relic_mask", "wonder_elixir"], ["moon_ring", "relic_blade"], ["crystal_crown", "relic_crown"]][t]
+		out[str(rare[(floor_no / 10) % rare.size()])] = 1
+		out["crystal_refined"] = 1 + t
+		if floor_no >= MAX_FLOOR:
+			out["relic_crown"] = 1
+			out["wonder_elixir"] = 3
+	else:
+		out["#gold"] = 20 + floor_no * 3
+		var opts: Array = ["potion", "energy_tea", str(gems[0]), "shard", "fossil", "cave_bloom", "iron", "gold"]
+		var a := str(opts[randi() % opts.size()])
+		out[a] = 1 + (1 if a in ["potion", "energy_tea", "shard", "iron"] else 0)
+	return out
+
+
+func _give_loot(c: Vector2i, loot: Dictionary) -> void:
+	for id: String in loot:
+		if id == "#gold":
+			GameState.run["crystals"] = int(GameState.run["crystals"]) + int(loot[id])
+			hud.toast("+◆%d" % int(loot[id]), Color(1, 0.9, 0.5))
+		else:
+			pop_items(cell_center(c), id, int(loot[id]))
 
 
 func _nearest_open(c: Vector2i) -> Vector2i:
@@ -226,7 +399,8 @@ func after_ready() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 2000 + floor_no + int(GameState.run["day"])
 	_place_props()
-	var n := 5 + mini(floor_no, 16) / 2
+	_place_find_props()
+	var n := 5 + mini(floor_no, 60) / 4
 	var pools: Array = GameState.tier_data.get("mine", {}).get("pools", [])
 	var pool: Array = pools[mini(mine_tier, pools.size() - 1)] if not pools.is_empty() else ["slime", "bat"]
 	var ol: Array = _open.keys()
@@ -238,6 +412,7 @@ func after_ready() -> void:
 		if not GameState.is_penguins() and kind == "shard":
 			kind = "thug_cyber"
 		var me := spawn_enemy(kind, cell_center(c), mine_tier)
+		_depth_scale(me)
 		# Boss kinds wandering the deep floors fight plainly; only keepers have Gifts.
 		if me and me._gift:
 			me._gift.queue_free()
@@ -302,10 +477,49 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if _grotto and not GameState.run["flags"].has("grotto_done"):
 				hud.toast("The ladder is under the water. You'd need to swim like she does.", Color(0.8, 0.9, 1.0))
 				return true
+			if floor_no >= MAX_FLOOR:
+				GameState.run["flags"]["hollow_heart_open"] = true
+				go_to("hollow_heart", Vector2.ZERO, "down")
+				return true
 			GameState.run["mine_floor"] = floor_no + 1
-			GameState.run["flags"]["mine_deepest"] = maxi(_deepest(), floor_no + 1)
+			var newd := floor_no + 1
+			if newd > _deepest() and newd % 5 == 0:
+				GameState.notify("Floor %d reached: the lift will always stop here now." % newd)
+			GameState.run["flags"]["mine_deepest"] = maxi(_deepest(), newd)
 			xp("mining", 4)
 			go_to("mine", Vector2.ZERO)
+			return true
+		"crate":
+			player.play_tool("pickaxe" if GameState.held_tool() == "pickaxe" else "axe")
+			thing["hp"] = int(thing["hp"]) - 1
+			Music.instance(get_tree()).sfx("chop")
+			if int(thing["hp"]) <= 0:
+				things.erase(c)
+				blocked.erase(c)
+				if props.has(c):
+					(props[c] as Node).queue_free()
+					props.erase(c)
+				fx("poof", cell_center(c), 12.0, 0.4)
+				if randf() < 0.65:
+					_give_loot(c, _loot(false))
+				else:
+					pop_items(cell_center(c), "plank" if GameState.items.has("plank") else "wood", 1)
+				_try_more(1)
+			return true
+		"mchest", "bigchest":
+			var big := str(thing["type"]) == "bigchest"
+			GameState.run["flags"][str(thing.get("key", "mine_prize_%d" % floor_no))] = true
+			if big:
+				GameState.run["flags"]["mine_prize_%d" % floor_no] = true
+			things.erase(c)
+			blocked.erase(c)
+			if props.has(c):
+				(props[c] as Node).queue_free()
+				props.erase(c)
+			prop("props", "chest_open", c)
+			Music.instance(get_tree()).sfx("levelup")
+			_give_loot(c, _loot(big))
+			hud.toast("The floor %d prize!" % floor_no if big else "A miner's stash.", Color(1, 0.9, 0.5))
 			return true
 		"skeleton":
 			if not GameState.run["flags"].has("skel_%d" % floor_no):
@@ -352,20 +566,14 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 ## Prompts-11 tiered floor set for this floor ("" = use the older variants).
 func _tier_set() -> String:
-	var ts: String = {2: "deep", 3: "crystal", 4: "dark", 5: "heart"}.get(mine_tier, "")
+	var ts: String = str(theme.get("ts", ""))
 	if ts != "" and Art.has("tiles", "mine_%s_fill_0" % ts):
 		return str(ts)
 	return ""
 
 
 func _variant() -> String:
-	if floor_no >= 10:
-		return "lava"
-	if floor_no >= 7:
-		return "ice"
-	if floor_no >= 4:
-		return "stone"
-	return "earth"
+	return str(theme.get("var", "earth"))
 
 
 func draw_map() -> void:
@@ -387,7 +595,7 @@ func draw_map() -> void:
 			nwall += 1
 		while Art.has("tiles", "mine_%s_walltop_%d" % [ts, ntop]):
 			ntop += 1
-	var rock_col: Color = {"earth": Color("2a2018"), "stone": Color("24222c"), "ice": Color("1c2634"), "lava": Color("2c1814")}.get(v, Color("24222c"))
+	var rock_col := Color(str(theme.get("rock", "24222c")))
 	# Solid rock everywhere first (with a little grain), padding included.
 	draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), rock_col)
 	for y in range(0, rows):
@@ -409,7 +617,13 @@ func draw_map() -> void:
 		elif Art.has("tiles", "mine_floor"):
 			drawn = Art.draw_tile(self, "tiles", "mine_floor", Vector2(c * TILE), h % 4)
 		if not drawn:
-			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("4a4152") if (c.x + c.y) % 2 == 0 else Color("50475a"))
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(str(theme.get("fa", "4a4152"))) if (c.x + c.y) % 2 == 0 else Color(str(theme.get("fb", "50475a"))))
+	# Theme wash: the same tiles read differently every 10 floors.
+	if floor_no > 10:
+		var wash := Color(str(theme.get("fa", "4a4152")))
+		wash.a = 0.38
+		for c: Vector2i in _open:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), wash)
 	# Rock faces: where the floor meets rock to the north, the wall rises above it.
 	for c: Vector2i in _open:
 		var up := c + Vector2i(0, -1)
@@ -434,11 +648,21 @@ func draw_map() -> void:
 				else:
 					draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), lip)
 	draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(0.03, 0.02, 0.08, 0.08 + 0.02 * mini(floor_no, 10)))
-	if v == "lava" and Art.has("tiles", "lava"):
-		var lava := {}
-		for c: Vector2i in _open:
-			if WorldGen.fbm(float(c.x), float(c.y), 77 + floor_no, 6.0) > 0.42 and not things.has(c) and c.distance_to(_entry) > 6 and c.distance_to(_ladder) > 3:
-				lava[c] = true
+	var wc2 := {}
+	for c in things:
+		if str(things[c].get("type", "")) == "water" and not _grotto:
+			wc2[c] = true
+	if not wc2.is_empty():
+		draw_water(wc2, "grass")
+	for c: Vector2i in _chasm:
+		draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.01, 0.0, 0.03))
+		if not _chasm.has(c + Vector2i(0, -1)):
+			draw_rect(Rect2(Vector2(c * TILE), Vector2(TILE, 3)), rock_col.lightened(0.2))
+	var lava := _lava
+	if not lava.is_empty() and not Art.has("tiles", "lava"):
+		for c: Vector2i in lava:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.9, 0.35, 0.1))
+	if not lava.is_empty() and Art.has("tiles", "lava"):
 		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 			var frame := int(Time.get_ticks_msec() / 300) % 4
 			for c: Vector2i in lava:
@@ -468,7 +692,7 @@ func draw_map() -> void:
 		draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("221d28"))
 		draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("221d28"))
 		draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("221d28"))
-	label("floor %d" % floor_no, Vector2(2 * TILE, TILE - 3), 6 * TILE)
+	label("floor %d · %s" % [floor_no, str(theme.get("name", ""))], Vector2(2 * TILE, TILE - 3), 10 * TILE)
 
 
 func _place_props() -> void:
@@ -544,7 +768,7 @@ func _place_props() -> void:
 			for i in 3:
 				var c := Vector2i(rng2.randi_range(2, cols - 3), rng2.randi_range(2, rows - 3))
 				if not things.has(c) and not blocked.has(c):
-					prop("props", ["cluster_blue", "cluster_purple", "gmush_blue", "gmush_red", "stalagmite_a"][rng2.randi_range(0, 4)], c)
+					prop("props", "stalagmite_a", c)
 			for x in [3, cols - 4]:
 				var sp := Art.sprite("props", "stalactite_%s" % ["a", "b", "c"][x % 3])
 				if sp:
@@ -563,7 +787,7 @@ func _place_props() -> void:
 		for i in 4:
 			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
 			if not things.has(c) and not blocked.has(c):
-				prop("props", "cave_mushroom" if rng.randf() < 0.5 else "cave_moss", c)
+				pass  # pickable mushrooms are placed as findables now
 		if floor_no % 3 == 0:
 			prop("props", "beam", Vector2i(cols / 2 - 1, 1), 1)
 		return
@@ -576,12 +800,79 @@ func _place_props() -> void:
 		prop("nature", "rock_m", k)
 
 
+const FORAGE_PROP := {"cave_mushroom": "gmush_red", "mushroom": "cave_mushroom", "mushroom_spore": "gmush_purple", "cave_fig": "cluster_green",
+	"cave_bloom": "gmush_blue", "shard": "cluster_purple", "amethyst": "cluster_purple", "fossil": "cave_moss", "gold": "cluster_red", "dark": "cluster_purple",
+	"crystal_refined": "cluster_blue"}
+
+
+func _place_find_props() -> void:
+	var tint: Array = theme.get("tint", [1, 1, 1])
+	for c in things.keys():
+		var t: Dictionary = things[c]
+		match str(t.get("type", "")):
+			"forage":
+				var nm := str(FORAGE_PROP.get(str(t["item"]), "gmush_blue"))
+				if Art.has("props", nm):
+					prop("props", nm, c, 0, 0.0, false)
+				elif Art.has("items", str(t["item"])):
+					var sp := Art.sprite("items", str(t["item"]))
+					if sp:
+						sp.position = cell_center(c) + Vector2(0, -4)
+						sp.scale = Vector2(0.4, 0.4)
+						add_child(sp)
+						props[c] = sp
+			"crate":
+				prop("props", str(t.get("kind", "crates_a")), c)
+			"mchest", "bigchest":
+				var sp2 := prop("props", "chest_closed", c)
+				if sp2 and str(t["type"]) == "bigchest":
+					sp2.modulate = Color(1.25, 1.1, 0.7)
+	# Theme tint on rocks and props so every 10 floors looks different even
+	# before each theme has its own art.
+	for c in props:
+		var n: Node = props[c]
+		if n is CanvasItem and str(things.get(c, {}).get("type", "")) == "rock":
+			(n as CanvasItem).modulate = Color(float(tint[0]), float(tint[1]), float(tint[2]))
+
+
 func _process(delta: float) -> void:
 	super(delta)
+	# The keeper can't be boxed in: its ground slam breaks every rock around it.
+	if _guardian != null and is_instance_valid(_guardian) and _guardian._alive and not get_tree().paused:
+		_gsmash_t -= delta
+		if _gsmash_t <= 0.0:
+			_gsmash_t = randf_range(2.5, 4.0)
+			var gc := world_to_cell(_guardian.position)
+			var broke := 0
+			for dy in range(-2, 3):
+				for dx in range(-2, 3):
+					var cc := gc + Vector2i(dx, dy)
+					if things.has(cc) and str(things[cc].get("type", "")) in ["rock", "crate"]:
+						things.erase(cc)
+						blocked.erase(cc)
+						if props.has(cc):
+							(props[cc] as Node).queue_free()
+							props.erase(cc)
+						broke += 1
+			if broke > 0:
+				shake(2.5)
+				fx("boss_shockwave" if Art.has("fx", "boss_shockwave") else "poof", _guardian.position, 12.0, 0.5)
+				queue_redraw()
 
 
 func _deepest() -> int:
 	return int(GameState.run["flags"].get("mine_deepest", 1))
+
+
+## Within a 25-floor tier, every floor deeper hits harder and lasts longer.
+func _depth_scale(e: Enemy) -> void:
+	if e == null:
+		return
+	var into := (floor_no - 1) % 25
+	var m := 1.0 + 0.04 * into + 0.1 * mine_tier
+	e.max_hp = int(round(e.max_hp * m))
+	e.hp = e.max_hp
+	e.damage = e.damage + into / 10
 
 
 func on_enemy_died(e: Enemy) -> void:
@@ -609,8 +900,9 @@ func _summon_guardian() -> void:
 	# Never weaker than its native tier; floor 1's golem is still a golem.
 	_guardian = spawn_enemy(kind, at, maxi(mine_tier, GameState.enemy_tier(kind)))
 	_guardian.is_guardian = true
+	_depth_scale(_guardian)
 	_guardian.set_meta("boss_name", "Keeper of floor %d" % floor_no)
-	var into := (floor_no - 1) % int(GameState.tier_data.get("mine", {}).get("floors_per_tier", 4))
+	var into := mini(5, ((floor_no - 1) % 25) / 5)
 	_guardian.max_hp = int(_guardian.max_hp * minf(2.0, 1.3 + 0.08 * into))
 	_guardian.hp = _guardian.max_hp
 	var extra: Array = ["lunge", "stomp", "ranged", "shield", "summon", "regen"]
@@ -659,11 +951,13 @@ func _use_lift() -> void:
 		var deepest_ok := mini(_deepest(), int(floors[-1]) + extra)
 		if deepest_ok > int(floors[-1]):
 			floors.append(deepest_ok)
-	if floors.is_empty():
-		return
+	floors.insert(0, 1)
 	var labels: Array = []
 	for n in floors:
-		labels.append("Floor %d" % n)
+		labels.append("Floor %d · %s" % [n, str(theme_for(int(n))["name"])])
+	if GameState.run["flags"].has("hollow_heart_open"):
+		floors.append(-1)
+		labels.append("The Hollow Heart")
 	labels.append("Stay")
 	player.frozen = true
 	var d := Dialogue.instance(get_tree())
@@ -671,6 +965,9 @@ func _use_lift() -> void:
 	await d.finished
 	player.frozen = false
 	if d.last_choice >= 0 and d.last_choice < floors.size():
+		if int(floors[d.last_choice]) == -1:
+			go_to("hollow_heart", Vector2.ZERO, "down")
+			return
 		GameState.run["mine_floor"] = int(floors[d.last_choice])
 		go_to("mine", Vector2.ZERO)
 

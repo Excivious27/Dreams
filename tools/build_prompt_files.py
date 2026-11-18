@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""Rebuilds docs/ART-PROMPTS-16.md and -17.md from their sources in docs/src/
+so that every copy-paste prompt asks for at most 6 images, carries every rule
+it depends on (it works pasted into a fresh chat), and labels each image in its
+own clearly separated section. Images already uploaded (found in art/incoming/)
+are listed as received instead.   Run: python3 tools/build_prompt_files.py
+"""
+import os, re
+R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+D = f"{R}/docs"
+have = {f.split(".")[0] for f in os.listdir(f"{R}/art/incoming")}
+WORDS = ["ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX"]
+
+
+def para(text, start):
+    for p in text.split("\n\n"):
+        if p.strip().startswith(start):
+            return p.strip()
+    return ""
+
+
+p13 = open(f"{D}/ART-PROMPTS-13.md").read()
+p12 = open(f"{D}/ART-PROMPTS-12.md").read()
+p15 = open(f"{D}/ART-PROMPTS-15.md").read()
+p16raw = open(f"{D}/src/ART-PROMPTS-16-raw.md").read()
+grid_rule = re.search(r"Character sheets use the GRID RULE:.*?(?=Save every image|$)", para(p13, "RULES"), re.S).group(0).strip()
+DEFS = {
+    "SEAMLESS": para(p16raw, "SEAMLESS RULE"),
+    "STATION GRID": para(p15, "STATION GRID"),
+    "GRID RULE": "GRID RULE (character sheets): " + grid_rule.replace("Character sheets use the GRID RULE: ", ""),
+}
+WHO = para(p13, "WHO IS WHO") + "\n\n" + para(p13, "Attach the penguin-arc")
+m = re.search(r"THE SEVEN.*?(?=\n\nHERO SHEET|\n---)", p12, re.S)
+SEVEN = m.group(0).strip() if m else ""
+PENGUIN_FILES = re.compile(r"w26[2-9]|w27[01]|w251b|w253b")
+
+
+def parse(raw):
+    """[(title, notes, shared_paragraphs, [(file, text)])] per batch, plus header paragraphs."""
+    head, _, rest = raw.partition("\n## BATCH")
+    batches = []
+    for chunk in ("## BATCH" + rest).split("\n## BATCH")[0:]:
+        chunk = chunk if chunk.startswith("## BATCH") else "## BATCH" + chunk
+        lines = chunk.strip("\n-").splitlines()
+        title = re.sub(r"^## BATCH \d+ — ", "", lines[0]).strip()
+        title = re.sub(r"\s*\([^)]*images?[^)]*\)", "", title)
+        title = re.sub(r":\s*\d+ images,\s*", ": ", title)
+        notes, qlines = [], []
+        for ln in lines[1:]:
+            if ln.startswith(">"):
+                qlines.append(ln[1:].strip())
+            elif ln.strip() and ln.strip() != "---":
+                notes.append(ln.strip())
+        paras, cur = [], []
+        for ln in qlines + [""]:
+            if ln == "":
+                if cur:
+                    paras.append(" ".join(cur)); cur = []
+            elif ln.startswith("IMAGE") and cur:
+                paras.append(" ".join(cur)); cur = [ln]
+            else:
+                cur.append(ln)
+        shared, images = [], []
+        for p in paras:
+            mm = re.match(r'IMAGE\s*\d*\s*"([^"]+)"\s*[:,]?\s*(.*)', p, re.S)
+            if mm:
+                images.append((mm.group(1), mm.group(2).strip()))
+            else:
+                shared.append(p)
+        batches.append((title, notes, shared, images))
+    return head, batches
+
+
+def chunks(n):
+    k = (n + 5) // 6
+    base, extra = divmod(n, k)
+    out, i = [], 0
+    for j in range(k):
+        size = base + (1 if j < extra else 0)
+        out.append((i, i + size)); i += size
+    return out
+
+
+def build(raw, num, out_path, title, intro):
+    head, batches = parse(raw)
+    rules = para(head, "RULES")
+    skill_grid = para(head, "SKILL ICON GRID")
+    L = [f"# Dreams — Art Prompts {num}: {title}\n", intro + "\n",
+         "HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at most 6 images and carries every rule it needs, so you can paste it into a fresh chat. Ask for the images one at a time if ChatGPT stops early (\"now image 2\"). Save each image under its exact file name and upload it here.\n"]
+    received, n_prompt, n_img = [], 0, 0
+    for title_b, notes, shared, images in batches:
+        todo = [im for im in images if im[0].split(".")[0] not in have]
+        received += [im[0] for im in images if im[0].split(".")[0] in have]
+        if not todo:
+            continue
+        parts = chunks(len(todo))
+        for pi, (a, b) in enumerate(parts):
+            n_prompt += 1
+            group = todo[a:b]
+            n_img += len(group)
+            text = " ".join(shared) + " " + " ".join(t for _, t in group)
+            label = f"{num}-{n_prompt}"
+            sub = f" (part {pi + 1} of {len(parts)})" if len(parts) > 1 else ""
+            L.append("\n---\n")
+            L.append(f"## PROMPT {label} — {title_b}{sub} · {len(group)} image{'s' if len(group) > 1 else ''}\n")
+            for nt in notes:
+                if not nt.startswith("STATUS"):
+                    L.append(nt + "\n")
+            q = [f"PROMPT {label}. Make {WORDS[len(group)]} SEPARATE IMAGE{'S' if len(group) > 1 else ''}, each one its own picture, saved under the exact file name given.", "",
+                 "RULES FOR EVERY IMAGE: " + rules.replace("RULES THAT APPLY TO EVERY IMAGE: ", "")]
+            for key, d in DEFS.items():
+                if key in text and d:
+                    q += ["", d]
+            if "SKILL ICON GRID" in text and skill_grid:
+                q += ["", skill_grid]
+            if any(PENGUIN_FILES.search(f) for f, _ in group):
+                q += ["", WHO.replace("\n\n", " ").replace("\n", " ")]
+                if SEVEN:
+                    q += ["", SEVEN.replace("\n", " ")]
+            for sp in shared:
+                sp2 = re.sub(r"Make [A-Z]+ SEPARATE IMAGES,?", "For every image in this prompt:", sp)
+                q += ["", "FOR THIS PROMPT: " + sp2]
+            for i, (f, t) in enumerate(group, 1):
+                q += ["", f"■■■ IMAGE {i} of {len(group)} — FILE NAME: \"{f}\" ■■■", t]
+            q += ["", f"(End of PROMPT {label}: {len(group)} image{'s' if len(group) > 1 else ''}.)"]
+            L.append("\n".join("> " + x if x else ">" for x in q) + "\n")
+    if received:
+        L.append("\n---\n")
+        L.append("## Already received (thank you)\n")
+        L.append(", ".join(received) + "\n")
+    open(out_path, "w").write("\n".join(L))
+    return n_prompt, n_img
+
+
+a = build(p16raw, "16", f"{D}/ART-PROMPTS-16.md", "clean ground, cliffs and stairs, the beach, the mines, battles, colonies, the lieutenants",
+          "WHAT THIS COVERS, most important first: big one-piece cliffs, ramps and stair sets; the beach and the marsh; organic mine caves; the conquest battles; the four merkitty colonies; the President's eight lieutenants; the two town projects; everything still owed from Prompts 15 (Marisol and Bo, the Marked, Gift effects, the chrome); missing portraits.")
+p17raw = open(f"{D}/src/ART-PROMPTS-17-raw.md").read()
+b = build(p17raw, "17", f"{D}/ART-PROMPTS-17.md", "skill trees, the last stand-ins, and Prompts 13",
+          "WHAT THIS COVERS, most important first: icons for all 520 skill-tree nodes and the Sun Haven-style skills screen; Prompts 13 again (the penguin book's creatures and places, never came back); the last item icons; the new screens; the four ending paintings; the President's new look; the app icon.")
+print("16:", a, "17:", b)

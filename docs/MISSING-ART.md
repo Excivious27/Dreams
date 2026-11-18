@@ -42,22 +42,15 @@ Everything below shows a code-drawn stand-in today.
 - ember_glass
 - starfish_snack
 
-## Enemy sprites (14)
+## Enemy sprites (7)
 
-- big_grump (Big Grump)
 - thug_cyber (thug_cyber)
 - thug_brute (thug_brute)
 - thug_flame (thug_flame)
 - thug_speedster (thug_speedster)
 - thug_gambler (thug_gambler)
 - thug_enforcer (thug_enforcer)
-- finargle (finargle)
-- finargle_elder (The Finargle Elder)
-- crystal_baby (crystal_baby)
-- cboss_coral (The Grey Reef)
-- cboss_kelp (The Drowning Tide)
-- cboss_ice (Hollow Winter)
-- cboss_ember (The Smother)
+- president (The President)
 
 ## Dialogue portraits (0)
 

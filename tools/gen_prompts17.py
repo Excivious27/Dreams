@@ -26,14 +26,14 @@ VIS = {"extra_crop": "a sprout bursting with extra vegetables", "double_harvest"
  "spawner_discount": "a spire blueprint with a tag", "helper_damage": "a helper firing a spark", "ticket_bleed": "a cracked enemy banner", "ticket_guard": "an unbroken banner",
  "team_damage": "two swords crossed", "team_defense": "two shields overlapping", "team_heal": "two hands sharing a heart", "friend_gain": "a heart with a smile",
  "pet_bond": "a hand and a paw touching", "team_xp": "an open book with two hands"}
-rules = open(f"{R}/docs/ART-PROMPTS-16.md").read()
+rules = open(f"{R}/docs/src/ART-PROMPTS-16-raw.md").read()
 p13 = open(f"{R}/docs/ART-PROMPTS-13.md").read()
 def blocks(text, batch):
     m = re.search(r"## BATCH %d .*?\n(.*?)(?=\n## |\Z)" % batch, text, re.S)
     return m.group(1).strip().strip("-").strip()
 L = []
 L.append("# Dreams — Art Prompts 17: skill trees, the last stand-ins, and Prompts 13\n")
-L.append("WHAT THIS COVERS, in order: (1) Prompts 13 again (the penguin-book creatures and places: never came back), (2) icons for all 520 skill-tree nodes plus the Sun Haven-style skills screen, (3) the last 37 item icons, (4) the six street-thug types and the Big Grump, (5) the new screens (crafting, save slots, settings, the hack, quality stars), (6) the four ending paintings, (7) turf and heist pieces, (8) the President's new look, (9) the app icon. Art Prompts 16 is the other half of the job (ground, cliffs, stairs, beach, caves, battles, colonies, lieutenants, town projects, Marked, Gift effects, the chrome).\n")
+L.append("WHAT THIS COVERS, in order: (1) Prompts 13 again (the penguin-book creatures and places: never came back), (2) icons for all 520 skill-tree nodes plus the Sun Haven-style skills screen, (3) the last 37 item icons, (5) the new screens (crafting, save slots, settings, the hack, quality stars), (6) the four ending paintings, (7) turf and heist pieces, (8) the President's new look, (9) the app icon. Art Prompts 16 is the other half of the job (ground, cliffs, stairs, beach, caves, battles, colonies, lieutenants, town projects, Marked, Gift effects, the chrome).\n")
 L.append("RULES THAT APPLY TO EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette where it says so), flat #FF00FF magenta background unless the batch says fill the image, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere, no watermark, NO LETTERBOXING. At least 16 px of clear magenta between separate sprites. All ages: no blood, nothing gory.\n")
 L.append("SKILL ICON GRID (batch 2): 40 square icons, each 112×112, in 4 rows of 10: icon N (1–40) sits at x = 24 + ((N−1) mod 10)×148, y = 24 + floor((N−1)/10)×148. Each icon is a small framed picture like Sun Haven's skill icons: a rounded square tile with a 3px gold frame, a soft coloured background in the ROW COLOUR given, and one clear object in the middle with a soft top-left light. Every row uses its own background colour; icons in a row look like a set. No numbers or text on the icons.\n")
 L.append("\n---\n")
@@ -53,10 +53,12 @@ for i, sk in enumerate(order):
     for n in nodes:
         k = next(iter(n.get("effect", {}) or {}), "")
         hint = VIS.get(k, n["desc"].split("(")[0].strip().lower())
-        parts.append("%d. %s (theme: %s)" % (len(parts) + 1, n["name"], hint))
+        idx = len(parts) + 1
+        row_lead = ("ROW %d — %s (%s background): " % (n["row"] + 1, br[str(n["row"])], ROWCOL[n["row"]])) if n["tier"] == 0 else ""
+        parts.append("%s%d. %s (tier %s; theme: %s)" % (row_lead, idx, n["name"], ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][n["tier"]], hint))
     style = " DARK UNDERWORLD palette with neon accents (gangster arc)." if sk == "hustle" else (" crystal-pastel palette (penguin arc)." if sk == "harmony" else "")
-    L.append("> IMAGE \"w%d_skill_icons_%s.png\": the %s tree.%s Row 1 = %s, row 2 = %s, row 3 = %s, row 4 = %s. Icons in order: %s.\n>" % (
-        340 + i, sk, S[sk]["name"].upper(), style, br["0"], br["1"], br["2"], br["3"], "; ".join(parts)))
+    L.append("> IMAGE \"w%d_skill_icons_%s.png\": the %s tree.%s 40 icons, left to right, top to bottom. %s.\n>" % (
+        340 + i, sk, S[sk]["name"].upper(), style, " | ".join("; ".join(parts[r * 10:(r + 1) * 10]) for r in range(4))))
 L.append("\n---\n")
 L.append("## BATCH 3 — The skills screen and skill badges (1 image)\n")
 L.append("> IMAGE \"w353_skills_ui.png\", magenta background, each piece separate: (1) a SKILLS PANEL frame 760×440 in Sun Haven style: deep red outer frame with gold corner studs, a dark wood inner board, empty (no text); (2) a TIER HEADER cell 60×36 in two states: open (bright green) and locked (dark brown); (3) a NODE FRAME 72×72 in four states: empty socket, available (soft glow), learned (gold frame), maxed (gold frame with a small green gem); (4) a SKILL POINTS box 150×90 (tan parchment, empty); (5) an EXP BAR 300×26 empty and its green fill 300×26; (6) THIRTEEN SKILL TAB BADGES 64×64 (round, coloured rim, one object each): Farming (watering can), Mining (pickaxe), Foraging (axe and leaf), Fishing (fish), Combat (sword), Sorcery (crystal staff), Pup (paw), Bartering (coin pouch), Building (hammer and plank), Leadership (two hands clasped over a star), Strategist (a map with a flag), Harmony (a crystal heart with a music note, pastel), Hustle (a fedora over a neon dollar sign, dark); (7) the same 13 badges again at 128×128 for the big panel.\n")
@@ -66,9 +68,7 @@ L.append("\n---\n")
 L.append("## BATCH 4 — The last item icons (1 image)\n")
 L.append("> IMAGE \"w354_item_icons_last.png\": %d ITEM ICONS, 48×48 each, in rows of 12 (x = 24 + N×120, y = 24 + M×120), each isolated on magenta with the same soft top-left light as the other item icons, no frames, no text. In this order: %s.\n" % (len(miss), "; ".join("%d. %s (%s)" % (i + 1, items[m]["name"], str(items[m].get("desc", ""))[:70]) for i, m in enumerate(miss))))
 L.append("\n---\n")
-L.append("## BATCH 5 — Street thugs and the Big Grump (4 images)\n")
-L.append("> Make FOUR SEPARATE IMAGES, character sheets on the GRID RULE (64×96 cells at x = 24 + N×88, y = 24 + M×120, 16 columns × 8 rows, feet at the bottom, 56 px tall), DARK UNDERWORLD palette, all ages: guns are old-fashioned and toy-like, no blood. Each image holds TWO characters, rows 0–3 and rows 4–7. Per character: row A IDLE down/up/side ×2 each, WALK down ×4, up ×4, side ×2; row B WALK side ×2 more, ATTACK down/up/side ×3 each, HURT ×2, KNOCKED DOWN (sitting, dazed stars) ×2, TAUNT ×1; row C SPECIAL MOVE ×6, VIEWS front/right/back/left, 2 spare; row D a 96×96 PORTRAIT across two cells and 3 expressions (angry, hurt, dazed).\n>\n> IMAGE \"w355_thugs_a.png\": the CYBER THUG (hoodie, visor glowing cyan, wrist gadget; special: a zap from the gadget) and the BRUTE (huge, flat cap, rolled sleeves; special: a ground stomp).\n> IMAGE \"w356_thugs_b.png\": the FLAME THUG (orange leather jacket, lighter; special: a puff of cartoon flame, no burns) and the SPEEDSTER (track suit, sneakers; special: a dash with speed lines).\n> IMAGE \"w357_thugs_c.png\": the CARD SHARK (waistcoat, visor, a fan of cards; special: flicks cards) and the ENFORCER (long coat, fedora, cane; special: a cane sweep).\n> IMAGE \"w358_big_grump.png\": warm farm palette instead: the BIG GRUMP (a grump the size of a cow: a big grumpy fluffball with stubby horns, tiny angry eyes; walk ×4 each way, attack ×4 (a belly flop), hurt ×2, poof ×4) on rows 0–3, and rows 4–7 the GRUMP COMMANDER's 4 minions as small grumps in four colours, idle ×4 and walk ×4 each.\n")
-L.append("\n---\n")
+
 L.append("## BATCH 6 — New screens: crafting, slots, settings, the hack, quality stars (2 images)\n")
 L.append("> IMAGE \"w359_screens_a.png\", magenta background, each piece separate: (1) a CRAFTING PANEL 520×860 (wood board with brass corners, empty); (2) a RECIPE CARD 500×68 in three states: can make (warm), missing items (dull red tint), undiscovered (dark with a big faint question-mark shape, no letters); (3) a MAKE button 180×56 and pressed state; (4) a QUANTITY stepper: minus 48×48, plus 48×48, MAX 72×48 (no letters: use a double up-arrow); (5) QUALITY STARS 24×24: a silver star and a gold star, plus 16×16 versions; (6) a SAVE SLOT CARD 480×120 in three states: empty (dashed outline), penguin farm (pastel with a tiny penguin), gangster farm (dark with a tiny fedora).\n> IMAGE \"w360_screens_b.png\": (1) SETTINGS ICONS 48×48: music note, speaker, hand (button size), left/right hand swap arrows, a feather (easy mode), a save disk, a copy symbol, a paste clipboard; (2) the HACKING TERMINAL screen 520×860: a dark green-black CRT with scanlines and a chunky metal bezel, empty; four ARROW KEYS 96×96 (up, right, down, left) in dim and lit cyan states; a row of 12 progress pips 16×16 dim/lit; (3) a TURF FLAG 32×48 (a small crew flag on a pole, 4-frame wave) and a HEIST BOARD 160×120 (cork board with pins, string and photos of buildings, no text).\n")
 L.append("\n---\n")
@@ -80,5 +80,5 @@ L.append("> IMAGE \"w362_president.png\": the PRESIDENT, now \"M.\": the hero's 
 L.append("\n---\n")
 L.append("## BATCH 9 — App icon (1 image, fill the whole image)\n")
 L.append("> IMAGE \"w363_app_icon.png\": 1024×1024 (square, the only image not 1536×1024), filling the whole image, no magenta: the Dreams app icon. A night sky gradient from deep indigo to violet, a big glowing star crystal in the middle with soft light rays, a tiny farmhouse silhouette and a penguin and a cat silhouette on the horizon. Readable at 48 px. No text.\n")
-open(f"{R}/docs/ART-PROMPTS-17.md", "w").write("\n".join(L))
+open(f"{R}/docs/src/ART-PROMPTS-17-raw.md", "w").write("\n".join(L))
 print("prompts 17 written,", sum(1 for x in L if "IMAGE" in x), "blocks")

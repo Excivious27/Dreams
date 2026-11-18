@@ -145,7 +145,7 @@
   }
  },
  "mine": {
-  "floors_per_tier": 4,
+  "floors_per_tier": 25,
   "guardians": [
    "golem",
    "quarry_golem",

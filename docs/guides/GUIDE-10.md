@@ -222,24 +222,34 @@ Pick any you want, or add your own. Each is 3–6 scenes. *Default: I write all 
 
 # PART 3 — Art, in the order to make it
 
-Make them in ChatGPT as before and upload each image to the chat with its file name.
+Each **PROMPT** is one copy-paste into ChatGPT, with **6 images at most**. Every prompt carries all the rules it needs, so it works pasted into a fresh chat. Each image has its own labelled section with its file name. If ChatGPT stops early, say "now image 2".
 
-| Order | File | Batches | What it fixes |
-|---|---|---|---|
-| 1 | **Art Prompts 16** | 1–3 | Seamless ground, soft edges, big cliffs and **big one-piece stairs**. Fixes the choppy look everywhere. |
-| 2 | Art Prompts 16 | 4 | Beach and marsh cleanup. |
-| 3 | Art Prompts 16 | 5 | Organic mine caves. |
-| 4 | **Art Prompts 17** | 2–3 | Skill-tree icons (13 sheets, 40 each) and the Sun Haven-style skills screen. |
-| 5 | Art Prompts 17 | 1 | Prompts 13 again: Cat-topia, finargles, crystal babies, merkitties, catship, summit. Still missing. |
-| 6 | Art Prompts 16 | 6–9 | Battles, colonies, the eight lieutenants, the town projects. |
-| 7 | Art Prompts 17 | 5, 8 | Street thugs, the Big Grump, the President's new look. |
-| 8 | Art Prompts 16 | 10–13 | Still owed: Marisol and Bo, the Marked, Gift effects, the chrome. |
-| 9 | Art Prompts 17 | 4, 6, 7, 9 | Last item icons, the new screens, the ending paintings, the app icon. |
-| 10 | Art Prompts 16 | 14 | Missing portraits, including the kids, who are copies of each other right now. |
+**Already received:** ground textures and water (16 batch 1), and soft edges and shores (16 batch 2). I'm wiring them in now.
 
-That's **36 images in Prompts 17 and 35 in Prompts 16**. Nothing is blocked while you work through them; the game uses stand-ins.
+| Order | Prompt | What it fixes |
+|---|---|---|
+| 1 | **16-1** | Big cliffs, ramps and **big one-piece stairs** |
+| 2 | **16-2** | The beach and marsh cleanup |
+| 3 | **16-3** | Organic mine caves |
+| 4 | **17-3, 17-4, 17-5** | Skill-tree icons (13 sheets) |
+| 5 | **17-6** | The Sun Haven-style skills screen |
+| 6 | **17-1, 17-2** | Prompts 13 again: Cat-topia, finargles, crystal babies, merkitties, the catship, the summit |
+| 7 | **16-4** | Battles |
+| 8 | **16-5** | The four colonies |
+| 9 | **16-6** | The eight lieutenants |
+| 10 | **16-7** | The two town projects |
+| 11 | **17-10** | The President's new look |
+| 12 | **16-8** | Marisol and Bo, still owed |
+| 13 | **16-9** | The Marked, still owed |
+| 14 | **16-10** | Gift effects, still owed |
+| 15 | **16-11** | The chrome, still owed |
+| 16 | **17-7** | The last item icons |
+| 17 | **17-8** | The new screens |
+| 18 | **17-9** | The ending paintings |
+| 19 | **17-11** | The app icon |
+| 20 | **16-12** | Missing portraits, including the kids, who are copies of each other right now |
 
-I keep a live list of every missing piece in the repo (`docs/MISSING-ART.md`). It updates each time new art arrives.
+That's 32 images in Prompts 16 and 32 in Prompts 17. Nothing is blocked while you work through them; the game uses stand-ins. My live list of missing art is `docs/MISSING-ART.md` in the repo.
 
 ---
 
