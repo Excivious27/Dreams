@@ -2,6 +2,9 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 7 of 10
+- 20-agent audit (/tmp/audit_c7), bots clean before/after (one bot.gd guard), check + playtest pass. Perf patch (soil draw calls, bake spikes, water shader, spell redraws, co-op sync hash, hidpi off); sell box new-game crash; shared daily energy allowance; kill crystals 12/day/map (bosses/battles/colonies exempt); SKILL_VER 7, pet_dmg cap; bounded flow_dir(max_r); greenhouse plot clear; mine lamps/reachability/size; story/quest fixes; one-face portraits (Dialogue.one_face + slicer _one_face); quest_done_text toasts; 173 re-cut art files. story_test.gd now passes (not in check.sh). Prompts 26 (1 prompt / 2 images), Guide 19.
+
 ## 2026-11-18 — CONDUCT loop 6 of 10
 - 20-agent audit (/tmp/audit_c6), bots 0/0 before and after, playtest 0 fails. Fix agents A–E by file ownership, G deferred, H slicer (412 art files promoted via a /tmp copy). Map ground baked to chunk textures (BAKE_*, painter twin); food energy one bar a day; Big Coop/Barn/Silo; mine ore ~1/6; Not Today clears statuses; enemy flow-field pathing; SKILL_VER 6 refunds; menu/chest drag scroll; shops absent flag; quest/blocked/collapse sounds. Prompts 25 (2 prompts / 4 images), Guide 18.
 
