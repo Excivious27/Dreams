@@ -637,7 +637,7 @@ func _physics_process(delta: float) -> void:
 			auto = true
 
 	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
-	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed") + 0.15 * GameState.buff("speed")
+	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed") + 0.15 * GameState.buff("speed") + GameState.move_bonus()
 	if int(GameState.run["flags"].get("haste_until", -1)) > int(GameState.run["time"]):
 		spd_mult *= 1.3
 	if GameState.weather_today() in ["snow", "blizzard"] and map and map.has_sky:

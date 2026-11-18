@@ -550,7 +550,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				thing["hp"] = int(thing.get("hp", 3)) - int(GameState.bonus("foraging", "chop_bonus"))
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
-			thing["hp"] = int(thing.get("hp", 3)) - (1 + GameState.tool_tier("axe") / 2)
+			thing["hp"] = int(thing.get("hp", 3)) - (1 + GameState.tool_tier("axe") / 2 + int(GameState.bonus("foraging", "chop_power")))
 			if Companion.has_ability("haul"):
 				thing["hp"] = 0  # Dad: "Just point at the tree."
 			if int(thing["hp"]) <= 0:
@@ -599,6 +599,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			var swing := 1 + GameState.tool_tier("pickaxe") / 2
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
+			swing += int(GameState.bonus("mining", "mine_power"))
 			thing["hp"] = int(thing.get("hp", 2)) - swing
 			if int(thing["hp"]) <= 0:
 				xp("mining", 2)

@@ -35,19 +35,20 @@
      }
     },
     {
-     "id": "farming_0_2",
-     "name": "Tender Care",
-     "desc": "+5% chance to get a seed back (per rank)",
-     "ranks": 3,
+     "id": "farming_u_0_2",
+     "name": "Brewer's Blueprint",
+     "desc": "Learn to build the Keg: brew crops into drinks.",
+     "ranks": 1,
      "tier": 2,
      "row": 0,
      "effect": {
-      "seed_back": 0.05
-     }
+      "blueprint": "keg"
+     },
+     "unlock": true
     },
     {
      "id": "farming_0_3",
-     "name": "Full Rows",
+     "name": "Tender Care",
      "desc": "+3% chance of a double harvest (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -58,7 +59,7 @@
     },
     {
      "id": "farming_0_4",
-     "name": "Heavy Stalks",
+     "name": "Full Rows",
      "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 4,
@@ -69,7 +70,7 @@
     },
     {
      "id": "farming_0_5",
-     "name": "Plenty",
+     "name": "Heavy Stalks",
      "desc": "+3% chance of a double harvest (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -91,7 +92,7 @@
     },
     {
      "id": "farming_0_7",
-     "name": "Overflowing Baskets",
+     "name": "Plenty",
      "desc": "+3% chance of a double harvest (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -114,7 +115,7 @@
     },
     {
      "id": "farming_0_9",
-     "name": "Harvest Dance",
+     "name": "Overflowing Baskets",
      "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
@@ -190,19 +191,20 @@
      "row": 1
     },
     {
-     "id": "farming_1_6",
-     "name": "Light Hoe",
-     "desc": "+5% chance to get a seed back (per rank)",
-     "ranks": 2,
+     "id": "farming_u_1_6",
+     "name": "Rain Dance",
+     "desc": "Learn the Rain Call spell: water every crop at once.",
+     "ranks": 1,
      "tier": 6,
      "row": 1,
      "effect": {
-      "seed_back": 0.05
-     }
+      "spell": "rain_call"
+     },
+     "unlock": true
     },
     {
      "id": "farming_1_7",
-     "name": "Rain Reader",
+     "name": "Light Hoe",
      "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -213,7 +215,7 @@
     },
     {
      "id": "farming_1_8",
-     "name": "Loam Lore",
+     "name": "Rain Reader",
      "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -224,7 +226,7 @@
     },
     {
      "id": "farming_1_9",
-     "name": "Deep Watering",
+     "name": "Loam Lore",
      "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
@@ -289,19 +291,20 @@
      "row": 2
     },
     {
-     "id": "farming_2_5",
-     "name": "Happy Herd",
-     "desc": "+5% chance to get a seed back (per rank)",
-     "ranks": 3,
+     "id": "farming_u_2_5",
+     "name": "Press Blueprint",
+     "desc": "Learn to build the Press: jams, oils and juices.",
+     "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
-      "seed_back": 0.05
-     }
+      "blueprint": "press"
+     },
+     "unlock": true
     },
     {
      "id": "farming_2_6",
-     "name": "Brushed Coats",
+     "name": "Happy Herd",
      "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -312,7 +315,7 @@
     },
     {
      "id": "farming_2_7",
-     "name": "Best in Show",
+     "name": "Brushed Coats",
      "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -323,7 +326,7 @@
     },
     {
      "id": "farming_2_8",
-     "name": "Big Eggs",
+     "name": "Best in Show",
      "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -334,7 +337,7 @@
     },
     {
      "id": "farming_2_9",
-     "name": "Full Pails",
+     "name": "Big Eggs",
      "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
@@ -377,19 +380,20 @@
      "row": 3
     },
     {
-     "id": "farming_3_3",
-     "name": "Polished Produce",
-     "desc": "+5% chance to get a seed back (per rank)",
-     "ranks": 3,
+     "id": "farming_u_3_3",
+     "name": "Field Runner",
+     "desc": "Move 5% faster.",
+     "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "seed_back": 0.05
-     }
+      "move_speed": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "farming_3_4",
-     "name": "Shiny Skins",
+     "name": "Polished Produce",
      "desc": "+2% chance of a star harvest (per rank)",
      "ranks": 3,
      "tier": 4,
@@ -400,7 +404,7 @@
     },
     {
      "id": "farming_3_5",
-     "name": "Star Sense",
+     "name": "Shiny Skins",
      "desc": "+5% chance to get a seed back (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -432,19 +436,20 @@
      "row": 3
     },
     {
-     "id": "farming_3_8",
-     "name": "Prize Picker",
-     "desc": "+5% chance to get a seed back (per rank)",
-     "ranks": 2,
+     "id": "farming_u_3_8",
+     "name": "Bountiful Touch",
+     "desc": "Learn the Growth spell: the crop in front of you grows a day.",
+     "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "seed_back": 0.05
-     }
+      "spell": "growth"
+     },
+     "unlock": true
     },
     {
      "id": "farming_3_9",
-     "name": "Golden Glow",
+     "name": "Star Sense",
      "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
@@ -488,19 +493,20 @@
      }
     },
     {
-     "id": "mining_0_2",
-     "name": "Grit",
-     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
-     "ranks": 3,
+     "id": "mining_u_0_2",
+     "name": "Heavy Swing",
+     "desc": "Your pickaxe breaks rock with one more hit per swing.",
+     "ranks": 1,
      "tier": 2,
      "row": 0,
      "effect": {
-      "stone_bonus": 1
-     }
+      "mine_power": 1
+     },
+     "unlock": true
     },
     {
      "id": "mining_0_3",
-     "name": "Rubble Rouser",
+     "name": "Grit",
      "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -522,7 +528,7 @@
     },
     {
      "id": "mining_0_5",
-     "name": "Quarry Legs",
+     "name": "Rubble Rouser",
      "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -533,7 +539,7 @@
     },
     {
      "id": "mining_0_6",
-     "name": "Stone Ear",
+     "name": "Quarry Legs",
      "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -543,15 +549,16 @@
      }
     },
     {
-     "id": "mining_0_7",
-     "name": "Boulder Breaker",
-     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
-     "ranks": 2,
+     "id": "mining_u_0_7",
+     "name": "Seismic Swing",
+     "desc": "Another extra hit per pickaxe swing.",
+     "ranks": 1,
      "tier": 7,
      "row": 0,
      "effect": {
-      "stone_bonus": 1
-     }
+      "mine_power": 1
+     },
+     "unlock": true
     },
     {
      "id": "mountain_heart",
@@ -566,7 +573,7 @@
     },
     {
      "id": "mining_0_9",
-     "name": "Tunnel Lungs",
+     "name": "Stone Ear",
      "desc": "+2 toward an extra stone per rock (3 = one more)",
      "ranks": 1,
      "tier": 9,
@@ -631,15 +638,16 @@
      "row": 1
     },
     {
-     "id": "mining_1_5",
-     "name": "Twin Strike",
-     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
-     "ranks": 3,
+     "id": "mining_u_1_5",
+     "name": "Kiln Blueprint",
+     "desc": "Learn to build the Kiln: glass, brick and pottery.",
+     "ranks": 1,
      "tier": 5,
      "row": 1,
      "effect": {
-      "stone_bonus": 1
-     }
+      "blueprint": "kiln"
+     },
+     "unlock": true
     },
     {
      "id": "prospector",
@@ -654,7 +662,7 @@
     },
     {
      "id": "mining_1_7",
-     "name": "Iron Grip",
+     "name": "Twin Strike",
      "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -665,7 +673,7 @@
     },
     {
      "id": "mining_1_8",
-     "name": "Rich Seams",
+     "name": "Iron Grip",
      "desc": "+4% chance a swing hits twice (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -676,7 +684,7 @@
     },
     {
      "id": "mining_1_9",
-     "name": "Deep Veins",
+     "name": "Rich Seams",
      "desc": "+2 toward an extra stone per rock (3 = one more)",
      "ranks": 1,
      "tier": 9,
@@ -763,19 +771,20 @@
      "row": 2
     },
     {
-     "id": "mining_2_7",
-     "name": "Facet Sense",
-     "desc": "+6% crystal shards (per rank)",
-     "ranks": 2,
+     "id": "mining_u_2_7",
+     "name": "Tunnel Legs",
+     "desc": "Move 5% faster.",
+     "ranks": 1,
      "tier": 7,
      "row": 2,
      "effect": {
-      "shard_bonus": 0.06
-     }
+      "move_speed": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "mining_2_8",
-     "name": "Glittering Walls",
+     "name": "Facet Sense",
      "desc": "+2% gem chance (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -786,7 +795,7 @@
     },
     {
      "id": "mining_2_9",
-     "name": "Prism Touch",
+     "name": "Glittering Walls",
      "desc": "+12% crystal shards",
      "ranks": 1,
      "tier": 9,
@@ -929,15 +938,16 @@
      "row": 0
     },
     {
-     "id": "foraging_0_1",
-     "name": "Keen Nose",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
-     "ranks": 3,
+     "id": "foraging_u_0_1",
+     "name": "Sharp Edge",
+     "desc": "Your axe fells trees with one more hit per swing.",
+     "ranks": 1,
      "tier": 1,
      "row": 0,
      "effect": {
-      "wood_bonus": 1
-     }
+      "chop_power": 1
+     },
+     "unlock": true
     },
     {
      "id": "herbalist",
@@ -952,7 +962,7 @@
     },
     {
      "id": "foraging_0_3",
-     "name": "Basket Weaver",
+     "name": "Keen Nose",
      "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -963,7 +973,7 @@
     },
     {
      "id": "foraging_0_4",
-     "name": "Berry Picker",
+     "name": "Basket Weaver",
      "desc": "+1 (each = +6% chance of a double pick) (per rank)",
      "ranks": 3,
      "tier": 4,
@@ -974,7 +984,7 @@
     },
     {
      "id": "foraging_0_5",
-     "name": "Mushroom Eye",
+     "name": "Berry Picker",
      "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -995,19 +1005,20 @@
      "row": 0
     },
     {
-     "id": "foraging_0_7",
-     "name": "Wild Bounty",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
-     "ranks": 2,
+     "id": "foraging_u_0_7",
+     "name": "Lumberjack's Might",
+     "desc": "Another extra hit per axe swing.",
+     "ranks": 1,
      "tier": 7,
      "row": 0,
      "effect": {
-      "wood_bonus": 1
-     }
+      "chop_power": 1
+     },
+     "unlock": true
     },
     {
      "id": "foraging_0_8",
-     "name": "Hidden Patches",
+     "name": "Mushroom Eye",
      "desc": "+1 (each = +6% chance of a double pick) (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -1018,7 +1029,7 @@
     },
     {
      "id": "foraging_0_9",
-     "name": "Forest Feast",
+     "name": "Wild Bounty",
      "desc": "+2 toward an extra log per tree (4 = one more)",
      "ranks": 1,
      "tier": 9,
@@ -1083,19 +1094,20 @@
      }
     },
     {
-     "id": "foraging_1_5",
-     "name": "Heartwood",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
-     "ranks": 3,
+     "id": "foraging_u_1_5",
+     "name": "Loom Blueprint",
+     "desc": "Learn to build the Loom: cloth, rope and sacks.",
+     "ranks": 1,
      "tier": 5,
      "row": 1,
      "effect": {
-      "wood_bonus": 1
-     }
+      "blueprint": "loom"
+     },
+     "unlock": true
     },
     {
      "id": "foraging_1_6",
-     "name": "Log Roller",
+     "name": "Heartwood",
      "desc": "+1 chop power (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -1106,7 +1118,7 @@
     },
     {
      "id": "foraging_1_7",
-     "name": "Forest Giant",
+     "name": "Log Roller",
      "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -1125,7 +1137,7 @@
     },
     {
      "id": "foraging_1_9",
-     "name": "Grain Reader",
+     "name": "Forest Giant",
      "desc": "+2 toward an extra log per tree (4 = one more)",
      "ranks": 1,
      "tier": 9,
@@ -1168,15 +1180,16 @@
      }
     },
     {
-     "id": "foraging_2_3",
-     "name": "Honey Sense",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
-     "ranks": 3,
+     "id": "foraging_u_2_3",
+     "name": "Trailblazer",
+     "desc": "Move 5% faster.",
+     "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
-      "wood_bonus": 1
-     }
+      "move_speed": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "sap_tapper",
@@ -1202,7 +1215,7 @@
     },
     {
      "id": "foraging_2_6",
-     "name": "Amber Drops",
+     "name": "Honey Sense",
      "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -1212,19 +1225,20 @@
      }
     },
     {
-     "id": "foraging_2_7",
-     "name": "Busy Bees",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
-     "ranks": 2,
+     "id": "foraging_u_2_7",
+     "name": "Wind at Your Back",
+     "desc": "Learn the Haste spell: run 30% faster for an hour.",
+     "ranks": 1,
      "tier": 7,
      "row": 2,
      "effect": {
-      "wood_bonus": 1
-     }
+      "spell": "haste"
+     },
+     "unlock": true
     },
     {
      "id": "foraging_2_8",
-     "name": "Golden Sap",
+     "name": "Amber Drops",
      "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -1235,7 +1249,7 @@
     },
     {
      "id": "foraging_2_9",
-     "name": "Hive Mind",
+     "name": "Busy Bees",
      "desc": "+2 toward an extra log per tree (4 = one more)",
      "ranks": 1,
      "tier": 9,
@@ -1512,19 +1526,20 @@
      "row": 1
     },
     {
-     "id": "fishing_1_4",
-     "name": "Steady Reel",
-     "desc": "+4% chance of a double catch",
+     "id": "fishing_u_1_4",
+     "name": "Pond Blueprint",
+     "desc": "Learn to build the Fish Pond on your farm.",
      "ranks": 1,
      "tier": 4,
      "row": 1,
      "effect": {
-      "double_fish": 0.04
-     }
+      "blueprint": "fish_pond"
+     },
+     "unlock": true
     },
     {
      "id": "fishing_1_5",
-     "name": "Iron Line",
+     "name": "Steady Reel",
      "desc": "+6% fewer fish escape",
      "ranks": 1,
      "tier": 5,
@@ -1546,7 +1561,7 @@
     },
     {
      "id": "fishing_1_7",
-     "name": "Double Hook",
+     "name": "Iron Line",
      "desc": "+6% fewer fish escape",
      "ranks": 1,
      "tier": 7,
@@ -1557,7 +1572,7 @@
     },
     {
      "id": "fishing_1_8",
-     "name": "Fighting Spirit",
+     "name": "Double Hook",
      "desc": "+4% chance of a double catch",
      "ranks": 1,
      "tier": 8,
@@ -1568,7 +1583,7 @@
     },
     {
      "id": "fishing_1_9",
-     "name": "No Escape",
+     "name": "Fighting Spirit",
      "desc": "+12% fewer fish escape",
      "ranks": 1,
      "tier": 9,
@@ -1633,15 +1648,16 @@
      }
     },
     {
-     "id": "fishing_2_5",
-     "name": "Rare Lure",
-     "desc": "+6% fish sell value",
+     "id": "fishing_u_2_5",
+     "name": "Still Waters",
+     "desc": "Learn the Lull spell: nearby enemies fall asleep.",
      "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
-      "fish_value": 0.06
-     }
+      "spell": "lull"
+     },
+     "unlock": true
     },
     {
      "id": "lucky_lure",
@@ -1678,7 +1694,7 @@
     },
     {
      "id": "fishing_2_9",
-     "name": "Prize Fish",
+     "name": "Rare Lure",
      "desc": "+12% fish sell value",
      "ranks": 1,
      "tier": 9,
@@ -1721,15 +1737,16 @@
      "row": 3
     },
     {
-     "id": "fishing_3_3",
-     "name": "Barnacle Luck",
-     "desc": "+2% treasure chest chance (per rank)",
-     "ranks": 3,
+     "id": "fishing_u_3_3",
+     "name": "Strong Strokes",
+     "desc": "Move 5% faster.",
+     "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "chest_chance": 0.02
-     }
+      "move_speed": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "pond_plans",
@@ -1755,7 +1772,7 @@
     },
     {
      "id": "fishing_3_6",
-     "name": "Wreck Diver",
+     "name": "Barnacle Luck",
      "desc": "+2% treasure chest chance (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -1766,9 +1783,9 @@
     },
     {
      "id": "fishing_3_7",
-     "name": "Pearl Eye",
-     "desc": "+2% treasure chest chance",
-     "ranks": 1,
+     "name": "Wreck Diver",
+     "desc": "+2% treasure chest chance (per rank)",
+     "ranks": 2,
      "tier": 7,
      "row": 3,
      "effect": {
@@ -1777,9 +1794,9 @@
     },
     {
      "id": "fishing_3_8",
-     "name": "Old Maps",
-     "desc": "+2% treasure chest chance",
-     "ranks": 1,
+     "name": "Pearl Eye",
+     "desc": "+2% treasure chest chance (per rank)",
+     "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
@@ -1788,7 +1805,7 @@
     },
     {
      "id": "fishing_3_9",
-     "name": "Pirate's Luck",
+     "name": "Old Maps",
      "desc": "+4% treasure chest chance",
      "ranks": 1,
      "tier": 9,
@@ -1843,19 +1860,20 @@
      "row": 0
     },
     {
-     "id": "combat_0_3",
-     "name": "Quick Draw",
-     "desc": "+8 max health (per rank)",
-     "ranks": 3,
+     "id": "combat_u_0_3",
+     "name": "Honed Blade",
+     "desc": "+2 damage on every hit.",
+     "ranks": 1,
      "tier": 3,
      "row": 0,
      "effect": {
-      "hp": 8
-     }
+      "damage": 2
+     },
+     "unlock": true
     },
     {
      "id": "combat_0_4",
-     "name": "Weak Spot",
+     "name": "Quick Draw",
      "desc": "+1 sword damage (per rank)",
      "ranks": 3,
      "tier": 4,
@@ -1866,7 +1884,7 @@
     },
     {
      "id": "combat_0_5",
-     "name": "Clean Strike",
+     "name": "Weak Spot",
      "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -1884,15 +1902,16 @@
      "row": 0
     },
     {
-     "id": "combat_0_7",
-     "name": "Flurry",
-     "desc": "+3% critical hit chance (per rank)",
-     "ranks": 2,
+     "id": "combat_u_0_7",
+     "name": "Killing Edge",
+     "desc": "+3 damage on every hit.",
+     "ranks": 1,
      "tier": 7,
      "row": 0,
      "effect": {
-      "crit": 0.03
-     }
+      "damage": 3
+     },
+     "unlock": true
     },
     {
      "id": "legend",
@@ -1907,13 +1926,13 @@
     },
     {
      "id": "combat_0_9",
-     "name": "Keen Blade",
-     "desc": "+16 max health",
+     "name": "Clean Strike",
+     "desc": "+6% critical hit chance",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "hp": 16
+      "crit": 0.06
      }
     },
     {
@@ -1958,19 +1977,20 @@
      "row": 1
     },
     {
-     "id": "combat_1_4",
-     "name": "Thick Hide",
-     "desc": "+8 max health (per rank)",
-     "ranks": 3,
+     "id": "combat_u_1_4",
+     "name": "Fleet Foot",
+     "desc": "Move 5% faster.",
+     "ranks": 1,
      "tier": 4,
      "row": 1,
      "effect": {
-      "hp": 8
-     }
+      "move_speed": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "combat_1_5",
-     "name": "Shield Arm",
+     "name": "Thick Hide",
      "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -1991,19 +2011,20 @@
      "row": 1
     },
     {
-     "id": "combat_1_7",
-     "name": "Iron Stance",
-     "desc": "+8 max health (per rank)",
-     "ranks": 2,
+     "id": "combat_u_1_7",
+     "name": "Crystal Ward",
+     "desc": "Learn the Crystal Shield spell: block the next blows.",
+     "ranks": 1,
      "tier": 7,
      "row": 1,
      "effect": {
-      "hp": 8
-     }
+      "spell": "crystal_shield"
+     },
+     "unlock": true
     },
     {
      "id": "combat_1_8",
-     "name": "Deflect",
+     "name": "Shield Arm",
      "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -2014,7 +2035,7 @@
     },
     {
      "id": "combat_1_9",
-     "name": "Unshaken",
+     "name": "Iron Stance",
      "desc": "+16 max health",
      "ranks": 1,
      "tier": 9,
@@ -2079,19 +2100,20 @@
      "row": 2
     },
     {
-     "id": "combat_2_5",
-     "name": "Runner",
-     "desc": "+6 max energy (per rank)",
-     "ranks": 3,
+     "id": "combat_u_2_5",
+     "name": "Tanner's Blueprint",
+     "desc": "Learn to build the Tannery: leather and armour.",
+     "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
-      "energy": 6
-     }
+      "blueprint": "tannery"
+     },
+     "unlock": true
     },
     {
      "id": "combat_2_6",
-     "name": "Big Lungs",
+     "name": "Runner",
      "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -2102,7 +2124,7 @@
     },
     {
      "id": "combat_2_7",
-     "name": "Iron Gut",
+     "name": "Big Lungs",
      "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -2113,7 +2135,7 @@
     },
     {
      "id": "combat_2_8",
-     "name": "Toughness",
+     "name": "Iron Gut",
      "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -2124,7 +2146,7 @@
     },
     {
      "id": "combat_2_9",
-     "name": "Second Breath",
+     "name": "Toughness",
      "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
@@ -2309,15 +2331,16 @@
      "row": 0
     },
     {
-     "id": "bartering_0_5",
-     "name": "Display Skill",
-     "desc": "+3% sell prices",
+     "id": "bartering_u_0_5",
+     "name": "Jeweler's Blueprint",
+     "desc": "Learn to build the Jeweler: rings and charms.",
      "ranks": 1,
      "tier": 5,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.03
-     }
+      "blueprint": "jeweler"
+     },
+     "unlock": true
     },
     {
      "id": "monopolist",
@@ -2332,7 +2355,7 @@
     },
     {
      "id": "bartering_0_7",
-     "name": "Sharp Ledger",
+     "name": "Display Skill",
      "desc": "+0.3% daily interest on savings (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -2343,7 +2366,7 @@
     },
     {
      "id": "bartering_0_8",
-     "name": "Hot Market",
+     "name": "Sharp Ledger",
      "desc": "+3% sell prices",
      "ranks": 1,
      "tier": 8,
@@ -2354,7 +2377,7 @@
     },
     {
      "id": "bartering_0_9",
-     "name": "Premium Goods",
+     "name": "Hot Market",
      "desc": "+6% sell prices",
      "ranks": 1,
      "tier": 9,
@@ -2551,19 +2574,20 @@
      "row": 2
     },
     {
-     "id": "bartering_2_7",
-     "name": "Town Favourite",
-     "desc": "+1 friendship per gift",
+     "id": "bartering_u_2_7",
+     "name": "Homeward",
+     "desc": "Learn the Warp Home spell: blink back to your bed.",
      "ranks": 1,
      "tier": 7,
      "row": 2,
      "effect": {
-      "gift_bonus": 1
-     }
+      "spell": "warp_home"
+     },
+     "unlock": true
     },
     {
      "id": "bartering_2_8",
-     "name": "Best Neighbour",
+     "name": "Town Favourite",
      "desc": "+1 friendship per gift",
      "ranks": 1,
      "tier": 8,
@@ -2574,7 +2598,7 @@
     },
     {
      "id": "bartering_2_9",
-     "name": "Party Guest",
+     "name": "Best Neighbour",
      "desc": "+2 friendship per gift",
      "ranks": 1,
      "tier": 9,
@@ -2736,30 +2760,31 @@
      "row": 0
     },
     {
-     "id": "building_0_3",
+     "id": "building_u_0_3",
+     "name": "Garage Blueprint",
+     "desc": "Learn to build the Garage: carts and vehicles.",
+     "ranks": 1,
+     "tier": 3,
+     "row": 0,
+     "effect": {
+      "blueprint": "garage"
+     },
+     "unlock": true
+    },
+    {
+     "id": "building_0_4",
      "name": "Measure Twice",
      "desc": "+4% less wood for building (per rank)",
      "ranks": 3,
-     "tier": 3,
+     "tier": 4,
      "row": 0,
      "effect": {
       "wood_discount": 0.04
      }
     },
     {
-     "id": "building_0_4",
-     "name": "Joinery",
-     "desc": "+6 max energy (per rank)",
-     "ranks": 3,
-     "tier": 4,
-     "row": 0,
-     "effect": {
-      "energy": 6
-     }
-    },
-    {
      "id": "building_0_5",
-     "name": "Beam Lore",
+     "name": "Joinery",
      "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -2781,7 +2806,7 @@
     },
     {
      "id": "building_0_7",
-     "name": "Saw Song",
+     "name": "Beam Lore",
      "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -2792,7 +2817,7 @@
     },
     {
      "id": "building_0_8",
-     "name": "Roof Raiser",
+     "name": "Saw Song",
      "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -2803,7 +2828,7 @@
     },
     {
      "id": "building_0_9",
-     "name": "Timber Frame",
+     "name": "Roof Raiser",
      "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
@@ -2868,15 +2893,16 @@
      }
     },
     {
-     "id": "building_1_5",
-     "name": "Arch Lore",
-     "desc": "+6 max energy (per rank)",
-     "ranks": 3,
+     "id": "building_u_1_5",
+     "name": "Cauldron Blueprint",
+     "desc": "Learn to build the Cauldron: potions and tonics.",
+     "ranks": 1,
      "tier": 5,
      "row": 1,
      "effect": {
-      "energy": 6
-     }
+      "blueprint": "cauldron"
+     },
+     "unlock": true
     },
     {
      "id": "grand_architect",
@@ -2891,7 +2917,7 @@
     },
     {
      "id": "building_1_7",
-     "name": "Cut Stone",
+     "name": "Arch Lore",
      "desc": "+4% less stone for building (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -2902,7 +2928,7 @@
     },
     {
      "id": "building_1_8",
-     "name": "Foundations",
+     "name": "Cut Stone",
      "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -2913,7 +2939,7 @@
     },
     {
      "id": "building_1_9",
-     "name": "Tower Builder",
+     "name": "Foundations",
      "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
@@ -2956,15 +2982,16 @@
      "row": 2
     },
     {
-     "id": "building_2_3",
-     "name": "Quick Hands",
-     "desc": "+6 max energy (per rank)",
-     "ranks": 3,
+     "id": "building_u_2_3",
+     "name": "Light Feet",
+     "desc": "Move 5% faster.",
+     "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
-      "energy": 6
-     }
+      "move_speed": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "decorator",
@@ -2979,7 +3006,7 @@
     },
     {
      "id": "building_2_5",
-     "name": "Jig Maker",
+     "name": "Quick Hands",
      "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -3001,7 +3028,7 @@
     },
     {
      "id": "building_2_7",
-     "name": "Assembly Line",
+     "name": "Jig Maker",
      "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
@@ -3012,7 +3039,7 @@
     },
     {
      "id": "building_2_8",
-     "name": "Fine Work",
+     "name": "Assembly Line",
      "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -3023,7 +3050,7 @@
     },
     {
      "id": "building_2_9",
-     "name": "Clockwork",
+     "name": "Fine Work",
      "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
@@ -3758,19 +3785,20 @@
      }
     },
     {
-     "id": "pup_1_4",
-     "name": "Lunge",
-     "desc": "+1 pup bite damage (per rank)",
-     "ranks": 3,
+     "id": "pup_u_1_4",
+     "name": "Pack Run",
+     "desc": "Move 5% faster while your pup is out.",
+     "ranks": 1,
      "tier": 4,
      "row": 1,
      "effect": {
-      "pet_dmg": 1
-     }
+      "move_speed": 0.05
+     },
+     "unlock": true
     },
     {
      "id": "pup_1_5",
-     "name": "Shake",
+     "name": "Lunge",
      "desc": "+1 pup bite damage (per rank)",
      "ranks": 3,
      "tier": 5,
@@ -3803,7 +3831,7 @@
     },
     {
      "id": "pup_1_8",
-     "name": "Pounce",
+     "name": "Shake",
      "desc": "+1 pup bite damage (per rank)",
      "ranks": 2,
      "tier": 8,
@@ -3814,7 +3842,7 @@
     },
     {
      "id": "pup_1_9",
-     "name": "Fangs",
+     "name": "Pounce",
      "desc": "+2 pup bite damage",
      "ranks": 1,
      "tier": 9,

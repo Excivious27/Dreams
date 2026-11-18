@@ -41,6 +41,10 @@ static func gate(id: String) -> String:
 		return "max"
 	if not under_construction(id).is_empty():
 		return "building"
+	if built_tier(id) == 0:
+		var bl := GameState.blueprint_lock(id)
+		if bl != "":
+			return bl
 	var ul: Dictionary = nd.get("unlock", {})
 	if ul.has("progress") and GameState.progress_tier() < int(ul["progress"]):
 		return "story chapter %d first" % (int(ul["progress"]) + 1)

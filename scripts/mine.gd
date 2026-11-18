@@ -577,6 +577,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			var swing := 1 + GameState.tool_tier("pickaxe") / 2
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
+			swing += int(GameState.bonus("mining", "mine_power"))
 			thing["hp"] = int(thing["hp"]) - swing
 			if int(thing["hp"]) <= 0:
 				var ore := str(thing["ore"])

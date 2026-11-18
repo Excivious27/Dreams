@@ -141,6 +141,44 @@ FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_
             "hustle": ["hp"], "harmony": ["mana"], "leadership": ["team_heal"], "strategist": ["start_supply"]}
 
 
+# Real unlocks (Tom: "unlock abilities to craft new types of craft stations,
+# move faster, chop wood faster, deal more damage, learn new spells"): these
+# take a filler cell near the column given, one rank each.
+#   blueprint: a station you can't build until you learn it (Builds.gate)
+#   spell: a spell learned outside the Sorcery tree (Spells.known)
+#   move_speed / chop_power / mine_power / damage: read in Player / GameMap
+UNLOCKS = {
+    "farming": [(0, 2, "Brewer's Blueprint", "Learn to build the Keg: brew crops into drinks.", {"blueprint": "keg"}),
+                (2, 4, "Press Blueprint", "Learn to build the Press: jams, oils and juices.", {"blueprint": "press"}),
+                (1, 6, "Rain Dance", "Learn the Rain Call spell: water every crop at once.", {"spell": "rain_call"}),
+                (3, 8, "Bountiful Touch", "Learn the Growth spell: the crop in front of you grows a day.", {"spell": "growth"}),
+                (3, 3, "Field Runner", "Move 5% faster.", {"move_speed": 0.05})],
+    "mining": [(0, 2, "Heavy Swing", "Your pickaxe breaks rock with one more hit per swing.", {"mine_power": 1}),
+               (1, 4, "Kiln Blueprint", "Learn to build the Kiln: glass, brick and pottery.", {"blueprint": "kiln"}),
+               (0, 7, "Seismic Swing", "Another extra hit per pickaxe swing.", {"mine_power": 1}),
+               (2, 6, "Tunnel Legs", "Move 5% faster.", {"move_speed": 0.05})],
+    "foraging": [(0, 1, "Sharp Edge", "Your axe fells trees with one more hit per swing.", {"chop_power": 1}),
+                 (0, 6, "Lumberjack's Might", "Another extra hit per axe swing.", {"chop_power": 1}),
+                 (2, 3, "Trailblazer", "Move 5% faster.", {"move_speed": 0.05}),
+                 (2, 7, "Wind at Your Back", "Learn the Haste spell: run 30% faster for an hour.", {"spell": "haste"}),
+                 (1, 5, "Loom Blueprint", "Learn to build the Loom: cloth, rope and sacks.", {"blueprint": "loom"})],
+    "fishing": [(1, 3, "Pond Blueprint", "Learn to build the Fish Pond on your farm.", {"blueprint": "fish_pond"}),
+                (2, 6, "Still Waters", "Learn the Lull spell: nearby enemies fall asleep.", {"spell": "lull"}),
+                (3, 4, "Strong Strokes", "Move 5% faster.", {"move_speed": 0.05})],
+    "combat": [(0, 2, "Honed Blade", "+2 damage on every hit.", {"damage": 2}),
+               (0, 6, "Killing Edge", "+3 damage on every hit.", {"damage": 3}),
+               (1, 3, "Fleet Foot", "Move 5% faster.", {"move_speed": 0.05}),
+               (1, 7, "Crystal Ward", "Learn the Crystal Shield spell: block the next blows.", {"spell": "crystal_shield"}),
+               (2, 4, "Tanner's Blueprint", "Learn to build the Tannery: leather and armour.", {"blueprint": "tannery"})],
+    "bartering": [(0, 4, "Jeweler's Blueprint", "Learn to build the Jeweler: rings and charms.", {"blueprint": "jeweler"}),
+                  (2, 6, "Homeward", "Learn the Warp Home spell: blink back to your bed.", {"spell": "warp_home"})],
+    "building": [(0, 3, "Garage Blueprint", "Learn to build the Garage: carts and vehicles.", {"blueprint": "garage"}),
+                 (1, 5, "Cauldron Blueprint", "Learn to build the Cauldron: potions and tonics.", {"blueprint": "cauldron"}),
+                 (2, 2, "Light Feet", "Move 5% faster.", {"move_speed": 0.05})],
+    "pup": [(1, 4, "Pack Run", "Move 5% faster while your pup is out.", {"move_speed": 0.05})],
+}
+
+
 out = {"_format": "Sun Haven-style grids (tools/gen_skill_trees.py): 4 branches x 10 tiers. Column c opens after 2*c points spent in the skill. 1 point per level.",
        "tier_points": 2, "skills": {}}
 total = 0
@@ -161,6 +199,12 @@ for sk, sd in base["skills"].items():
         m["tier"] = c
         m["row"] = r
         grid[r][c] = m
+    for (ur, uc, unm, udesc, ueff) in UNLOCKS.get(sk, []):
+        for dc in [0, 1, -1, 2, -2, 3, -3, 4, -4, 5]:
+            cc = uc + dc
+            if 0 <= cc < 10 and grid[ur][cc] is None:
+                grid[ur][cc] = {"id": f"{sk}_u_{ur}_{cc}", "name": unm, "desc": udesc, "ranks": 1, "tier": cc, "row": ur, "effect": dict(ueff), "unlock": True}
+                break
     nodes = []
     used = {}
     for n in sd["nodes"]:

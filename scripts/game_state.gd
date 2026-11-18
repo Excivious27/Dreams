@@ -708,6 +708,48 @@ static func node(skill: String, id: String) -> Dictionary:
 	return {}
 
 
+## Skill-tree unlocks: which node (if any) teaches a station blueprint or a spell.
+static var _unlock_cache := {}
+
+
+static func _unlocks() -> Dictionary:
+	if _unlock_cache.is_empty():
+		_unlock_cache = {"blueprint": {}, "spell": {}}
+		var S: Dictionary = load_json("res://data/skills.json").get("skills", {})
+		for sk in S:
+			for n in S[sk].get("nodes", []):
+				var e: Dictionary = n.get("effect", {})
+				for kind in ["blueprint", "spell"]:
+					if e.has(kind):
+						_unlock_cache[kind][str(e[kind])] = [str(sk), str(n["id"]), str(n["name"])]
+	return _unlock_cache
+
+
+## "" if you can build it, else the node that teaches it, e.g. "Brewer's Blueprint (Farming tree)".
+static func blueprint_lock(bid: String) -> String:
+	var u: Variant = _unlocks()["blueprint"].get(bid)
+	if u == null or node_rank(str(u[0]), str(u[1])) > 0:
+		return ""
+	return "learn %s (%s tree)" % [str(u[2]), skill_name(str(u[0]))]
+
+
+static func spell_from_tree(spell: String) -> bool:
+	var u: Variant = _unlocks()["spell"].get(spell)
+	return u != null and node_rank(str(u[0]), str(u[1])) > 0
+
+
+static func skill_name(sk: String) -> String:
+	return str(load_json("res://data/skills.json").get("skills", {}).get(sk, {}).get("name", sk.capitalize()))
+
+
+## Walking speed from every tree's movement nodes (capped).
+static func move_bonus() -> float:
+	var t := 0.0
+	for sk in ["farming", "mining", "foraging", "fishing", "combat", "building", "pup"]:
+		t += bonus(sk, "move_speed")
+	return minf(t, 0.25)
+
+
 static func node_rank(skill: String, id: String) -> int:
 	return int(run["skills"].get(skill, {}).get("nodes", {}).get(id, 0))
 

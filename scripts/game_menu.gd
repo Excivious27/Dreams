@@ -836,6 +836,30 @@ func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
 		b.add_theme_stylebox_override(k, st)
 	var nic := "node_%s_%s" % [sk, id]
 	var tex: Texture2D = Art.tex("ui", nic) if Art.has("ui", nic) else null
+	if bool(n.get("unlock", false)):
+		# Unlock nodes show what they unlock, framed in violet.
+		st.border_color = Color(1, 0.84, 0.35) if rank > 0 else Color(0.75, 0.55, 1.0)
+		st.set_border_width_all(2)
+		var e: Dictionary = n.get("effect", {})
+		var cands: Array = []
+		if e.has("blueprint"):
+			var bd: Dictionary = Builds.all().get(str(e["blueprint"]), {})
+			var t1: Dictionary = (bd.get("tiers", [{}]) as Array)[0] if not (bd.get("tiers", []) as Array).is_empty() else {}
+			cands = [[str(t1.get("group", bd.get("group", "props"))), str(t1.get("sprite", bd.get("sprite", "")))], ["items", "hammer"]]
+		elif e.has("spell"):
+			cands = [["ui", "spell_" + str(e["spell"])], ["items", "crystal"]]
+		elif e.has("move_speed"):
+			cands = [["items", "boots_leather"], ["items", "boots"]]
+		elif e.has("chop_power"):
+			cands = [["items", "axe"]]
+		elif e.has("mine_power"):
+			cands = [["items", "pickaxe"]]
+		elif e.has("damage"):
+			cands = [["items", "sword"]]
+		for cd in cands:
+			if Art.has(str(cd[0]), str(cd[1])):
+				tex = Art.tex(str(cd[0]), str(cd[1]))
+				break
 	var tr := TextureRect.new()
 	tr.set_anchors_preset(Control.PRESET_FULL_RECT)
 	tr.offset_left = 3

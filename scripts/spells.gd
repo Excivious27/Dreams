@@ -32,13 +32,13 @@ static func power() -> float:
 static func known() -> Array:
 	var out: Array = []
 	for id in SPELLS:
-		if GameState.node_rank("magic", id) > 0:
+		if GameState.node_rank("magic", id) > 0 or GameState.spell_from_tree(id):
 			out.append(id)
 	return out
 
 
 static func can_cast(id: String) -> String:
-	if GameState.node_rank("magic", id) <= 0:
+	if GameState.node_rank("magic", id) <= 0 and not GameState.spell_from_tree(id):
 		return "not learned"
 	if int(GameState.run.get("mana", 0)) < cost_of(id):
 		return "not enough mana"
