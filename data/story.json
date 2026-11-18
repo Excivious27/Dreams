@@ -40,8 +40,8 @@
       ]
      },
      "when": {
-      "day": 2,
-      "quest": "first_harvest"
+      "day": 3,
+      "not_quest": "clear_meadow"
      },
      "lines": [
       {
@@ -230,7 +230,7 @@
       "quest": [
        [
         "spark",
-        "Catkins' teaching stone (the resonator) wants 3 Crystal Shards to wake the second spark."
+        "Build the Crystal Resonator from the Plans board by your house. Feed it crystal shards and it wakes the second spark."
        ]
       ],
       "grow": [

@@ -104,7 +104,7 @@ func _pick_kind() -> String:
 		return "wisp"
 	else:
 		if not cleared:
-			return "grump" if r < 0.6 else "thug_speedster"
+			return "thug_lookout" if r < 0.6 else "thug_speedster"
 		var pool: Array = ["thug_cyber", "thug_speedster", "thug_gambler", "thug_flame"]
 		return pool[randi() % pool.size()]
 
@@ -172,16 +172,16 @@ func _boss_down() -> void:
 		GameState.grow_vital("hp", 20)
 		GameState.run["hp"] = int(GameState.run["max_hp"])
 		GameState.run["flags"]["spark"] = true
+		GameState.add_item("shard", 2)
 		await say([
 			{"text": "The big Grump comes apart into grey smoke. Where it stood, the grass turns green again. Then greener than it was."},
 			{"who": "Star Crystal", "text": "(from very far away) ...there it is. The first spark. It was in you the whole time, I only lit it."},
-			{"text": "Your heart grows two sizes. Literally: +2 max hearts."},
+			{"text": "Your heart grows two sizes. Literally: +2 max hearts. Two crystal shards glitter in the grass where it fell."},
 		])
 	else:
-		GameState.run["crystals"] = int(GameState.run["crystals"]) + 60
 		await say([
 			{"text": "He goes down hard and stays down. In his coat: sixty crystals and a folded note. The handwriting on it has loops on the W and a hard press on the K."},
-			{"text": "+60 crystals. Sal, back in town, will want to hear about this."},
+			{"text": "Sal, back in town, will want to hear about this."},
 		])
 	GameState.save()
 	player.frozen = false

@@ -82,6 +82,7 @@ func build() -> void:
 func _dock(c: Vector2i) -> void:
 	things[c] = {"type": "dock"}
 	blocked.erase(c)
+	hard.erase(c)
 	_water.erase(c)
 
 

@@ -266,11 +266,13 @@ func _process(delta: float) -> void:
 			if not _noticed:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)
+				Music.instance(get_tree()).sfx("alert")
 			_dir = -to.normalized() * 0.8 if dist < 48.0 else (to.normalized() if dist > 90.0 else Vector2.ZERO)
 		elif dist < sight and dist > reach * 0.6:
 			if not _noticed:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)
+				Music.instance(get_tree()).sfx("alert")
 			_dir = to.normalized()
 		elif dist <= reach * 0.6:
 			_dir = Vector2.ZERO

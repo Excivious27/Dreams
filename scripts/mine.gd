@@ -284,14 +284,14 @@ func _features(rng: RandomNumberGenerator) -> void:
 	if not reach.has(_ladder):
 		for c: Vector2i in _lava.keys() + _chasm.keys():
 			blocked.erase(c)
+			hard.erase(c)
 		_lava.clear()
 		_chasm.clear()
 		for c in things.keys():
 			if str(things[c].get("type", "")) == "water" and not _grotto:
 				things.erase(c)
 				blocked.erase(c)
-
-
+				hard.erase(c)
 ## Things to find: glowing forage, crates and barrels, a hidden chest now and
 ## then, a fossil or relic in the ruins, and the prize chest every 10th floor.
 func _findables(rng: RandomNumberGenerator) -> void:
@@ -412,6 +412,8 @@ func after_ready() -> void:
 		var kind := str(pool[rng.randi_range(0, pool.size() - 1)])
 		if not GameState.is_penguins() and kind == "shard":
 			kind = "thug_cyber"
+		if not GameState.is_penguins() and kind == "grump":
+			kind = "thug_lookout"  # grumps are the Dark Crystal's army: penguin arc only
 		var me := spawn_enemy(kind, cell_center(c), mine_tier)
 		_depth_scale(me)
 		# Boss kinds wandering the deep floors fight plainly; only keepers have Gifts.
@@ -500,6 +502,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if int(thing["hp"]) <= 0:
 				things.erase(c)
 				blocked.erase(c)
+				hard.erase(c)
 				if props.has(c):
 					(props[c] as Node).queue_free()
 					props.erase(c)
@@ -519,6 +522,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				GameState.run["flags"]["mine_prize_%d" % floor_no] = true
 			things.erase(c)
 			blocked.erase(c)
+			hard.erase(c)
 			if props.has(c):
 				(props[c] as Node).queue_free()
 				props.erase(c)
@@ -554,6 +558,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)
+				hard.erase(c)
 				if props.has(c):
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
@@ -895,6 +900,7 @@ func _process(delta: float) -> void:
 					if things.has(cc) and str(things[cc].get("type", "")) in ["rock", "crate"]:
 						things.erase(cc)
 						blocked.erase(cc)
+						hard.erase(cc)
 						if props.has(cc):
 							(props[cc] as Node).queue_free()
 							props.erase(cc)
@@ -970,6 +976,7 @@ func _open_way() -> void:
 	_way_open = true
 	things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
 	blocked.erase(_ladder)
+	hard.erase(_ladder)
 	if props.has(_ladder):
 		(props[_ladder] as Node).queue_free()
 		props.erase(_ladder)

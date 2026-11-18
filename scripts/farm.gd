@@ -325,6 +325,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			(GameState.run["placed"] as Dictionary).erase(pk)
 			things.erase(c)
 			blocked.erase(c)
+			hard.erase(c)
 			if props.has(c):
 				(props[c] as Node).queue_free()
 				props.erase(c)
@@ -1006,7 +1007,7 @@ func _intro_penguins(n: Dictionary) -> void:
 		GameState.run["flags"]["crystal_trust"] = 0
 	await say([
 		{"who": "Star Crystal", "text": "That little one by your feet - %s, is it? - has more Meow Pow Wow in one paw than this whole valley. Keep them close." % pet_name},
-		{"who": "Star Crystal", "text": "Till the ground with A. Plant seeds from your MENU. Water every morning. When your first crop comes in, we'll talk again."},
+		{"who": "Star Crystal", "text": "Till the ground with the hoe. Pick the seeds on your toolbar, face the soil and tap USE. Water every morning. When your first crop comes in, we'll talk again."},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop.")
 	GameState.add_quest("meet_town", "Walk south and meet the people of %s." % town)
@@ -1051,7 +1052,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 		{"text": "You'll need money to move on anyone. Money means crops. Crops mean dirt under your nails. Fine."},
 		{"text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each morning. Sell at the box. Don't draw eyes."},
 	])
-	GameState.add_quest("first_harvest", "Grow and sell something. You need ◆200 before you can do anything.")
+	GameState.add_quest("first_harvest", "Grow and harvest your first crop. Sell it at the box by the house.")
 	GameState.add_quest("meet_town", "Go south. Learn who in %s can be bought, and who is watching." % town)
 	hud.toast("New quests. Open MENU to see them.", Color(1, 0.9, 0.4))
 

@@ -101,7 +101,7 @@ func after_ready() -> void:
 		var deep := _grove.has(c + Vector2i(2, 0)) and _grove.has(c + Vector2i(-2, 0)) and _grove.has(c + Vector2i(0, 2)) and _grove.has(c + Vector2i(0, -2))
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
 		if Art.has("nature", "mid_oak"):
-			nm = ["mid_oak", "mid_pine", "mid_birch", "mid_oak_b"][rng.randi_range(0, 3)] if not deep or rng.randf() < 0.5 else ["big_oak_a", "big_pine_a", "big_birch_a", "big_oak_b"][rng.randi_range(0, 3)]
+			nm = ["mid_oak", "mid_pine", "mid_birch", "mid_oak"][rng.randi_range(0, 3)] if not deep or rng.randf() < 0.5 else ["big_oak_a", "big_pine_a", "big_birch_a", "big_oak_b"][rng.randi_range(0, 3)]
 		set_thing(c.x, c.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
 		prop("nature", nm, c, 0, rng.randf_range(-2.0, 2.0))
 		placed += 1
@@ -190,7 +190,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_shrine()
 			return true
 		"water":
-			hud.toast("Fishing here is coming with the next lake art.")
+			if GameState.has_tool("rod"):
+				fish_at(c, ["minnow", "trout", "carp"])
 			return true
 		"great_tree":
 			if GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")):

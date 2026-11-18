@@ -32,6 +32,9 @@ static func add_heat(m: GameMap, n: int) -> void:
 	set_heat(heat() + n)
 	if m and n > 0:
 		m.hud.toast("Heat %d/5. %s" % [heat(), "Lie low a while." if heat() < 3 else "The President's collectors will be looking."], Color(1, 0.6, 0.4))
+		if not GameState.run["flags"].has("heat_explained"):
+			GameState.run["flags"]["heat_explained"] = true
+			m.tell([{"who": "Sal", "text": "That flame by your hearts is heat: how much the President's people have noticed you. Fights, raids and passing bills raise it. It cools a step most nights. At 3 or more, his collectors come looking."}])
 
 
 ## Chance this bill gets noticed right now.

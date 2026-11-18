@@ -41,6 +41,7 @@ func _ready() -> void:
 	layer = 60
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
+	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
@@ -104,6 +105,7 @@ func close() -> void:
 		return
 	get_tree().paused = _was_paused
 	Dialogue.block_input(0.3)
+	Hud.modal_rect = Rect2()
 	closed.emit()
 	queue_free()
 
@@ -278,6 +280,7 @@ func _hack() -> void:
 	visible = false
 	var got := await HackGame.play(m, tier)
 	visible = true
+	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
 	match got:
 		3:

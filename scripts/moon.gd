@@ -171,6 +171,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				var ore := str(thing["ore"])
 				things.erase(c)
 				blocked.erase(c)
+				hard.erase(c)
 				if props.has(c):
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)

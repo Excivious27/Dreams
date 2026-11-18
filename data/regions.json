@@ -6407,6 +6407,7 @@
   "props": [
    {
     "name": "big_crane",
+    "group": "buildings",
     "cell": [
      60,
      24
@@ -6644,6 +6645,7 @@
   "props": [
    {
     "name": "warehouse_a",
+    "group": "buildings",
     "cell": [
      86,
      22
@@ -6653,6 +6655,7 @@
    },
    {
     "name": "big_crane",
+    "group": "buildings",
     "cell": [
      54,
      22
@@ -6843,7 +6846,7 @@
      40
     ],
     "r": 22,
-    "seed": 480
+    "seed": 42
    },
    {
     "c": [
@@ -6851,7 +6854,7 @@
      26
     ],
     "r": 11,
-    "seed": 481
+    "seed": 43
    },
    {
     "c": [
@@ -6859,7 +6862,7 @@
      56
     ],
     "r": 10,
-    "seed": 482
+    "seed": 44
    },
    {
     "c": [
@@ -6883,7 +6886,7 @@
      16
     ],
     "r": 7,
-    "seed": 485
+    "seed": 47
    }
   ],
   "island_shore": "sand",
@@ -7120,7 +7123,7 @@
      40
     ],
     "r": 22,
-    "seed": 716
+    "seed": 289
    },
    {
     "c": [
@@ -7128,7 +7131,7 @@
      26
     ],
     "r": 11,
-    "seed": 717
+    "seed": 290
    },
    {
     "c": [
@@ -7136,7 +7139,7 @@
      56
     ],
     "r": 10,
-    "seed": 718
+    "seed": 291
    },
    {
     "c": [
@@ -7160,7 +7163,7 @@
      16
     ],
     "r": 7,
-    "seed": 721
+    "seed": 294
    }
   ],
   "island_shore": "sand",
@@ -7397,7 +7400,7 @@
      40
     ],
     "r": 22,
-    "seed": 533
+    "seed": 293
    },
    {
     "c": [
@@ -7405,7 +7408,7 @@
      26
     ],
     "r": 11,
-    "seed": 534
+    "seed": 294
    },
    {
     "c": [
@@ -7413,7 +7416,7 @@
      56
     ],
     "r": 10,
-    "seed": 535
+    "seed": 295
    },
    {
     "c": [
@@ -7437,7 +7440,7 @@
      16
     ],
     "r": 7,
-    "seed": 538
+    "seed": 298
    }
   ],
   "island_shore": "sand",
@@ -7684,7 +7687,7 @@
      40
     ],
     "r": 22,
-    "seed": 242
+    "seed": 543
    },
    {
     "c": [
@@ -7692,7 +7695,7 @@
      26
     ],
     "r": 11,
-    "seed": 243
+    "seed": 544
    },
    {
     "c": [
@@ -7700,7 +7703,7 @@
      56
     ],
     "r": 10,
-    "seed": 244
+    "seed": 545
    },
    {
     "c": [
@@ -7724,7 +7727,7 @@
      16
     ],
     "r": 7,
-    "seed": 247
+    "seed": 548
    }
   ],
   "island_shore": "sand",
@@ -7900,7 +7903,7 @@
  "hollow_heart": {
   "cols": 76,
   "rows": 64,
-  "music": "mine",
+  "music": "hollow_heart",
   "backdrop": "night",
   "ground": "teal_moss",
   "path": "stone",
@@ -8056,12 +8059,141 @@
      50
     ],
     "w": 4,
-    "h": 3
+    "h": 3,
+    "anim": true
+   },
+   {
+    "name": "cave_lamp",
+    "cell": [
+     41,
+     56
+    ]
+   },
+   {
+    "name": "cave_cart",
+    "cell": [
+     13,
+     15
+    ]
+   },
+   {
+    "name": "cave_lamp",
+    "cell": [
+     65,
+     15
+    ]
+   },
+   {
+    "name": "cave_mush_blue",
+    "cell": [
+     20,
+     36
+    ]
+   },
+   {
+    "name": "cave_mush_purple",
+    "cell": [
+     52,
+     34
+    ]
+   },
+   {
+    "name": "cave_mush_orange",
+    "cell": [
+     30,
+     24
+    ]
+   },
+   {
+    "name": "cave_mush_blue",
+    "cell": [
+     44,
+     18
+    ]
+   },
+   {
+    "name": "cave_mush_purple",
+    "cell": [
+     16,
+     22
+    ]
+   },
+   {
+    "name": "cave_mush_orange",
+    "cell": [
+     58,
+     54
+    ]
+   },
+   {
+    "name": "mine_crystal_rock_2",
+    "cell": [
+     22,
+     40
+    ]
+   },
+   {
+    "name": "mine_crystal_rock_4",
+    "cell": [
+     54,
+     40
+    ]
+   },
+   {
+    "name": "mine_crystal_rock_1",
+    "cell": [
+     32,
+     16
+    ]
+   },
+   {
+    "name": "mine_crystal_rock_5",
+    "cell": [
+     46,
+     26
+    ]
+   },
+   {
+    "name": "mine_heart_stalag_0",
+    "cell": [
+     8,
+     40
+    ]
+   },
+   {
+    "name": "mine_heart_stalag_1",
+    "cell": [
+     68,
+     40
+    ]
+   },
+   {
+    "name": "cave_stalag_l",
+    "cell": [
+     28,
+     60
+    ]
+   },
+   {
+    "name": "cave_stalag_m",
+    "cell": [
+     50,
+     60
+    ]
+   },
+   {
+    "name": "cave_arch",
+    "cell": [
+     36,
+     30
+    ],
+    "w": 3,
+    "solid": false
    }
   ],
   "gen": {
-   "clumps": 2,
-   "scatter": 10,
+   "clumps": 0,
+   "scatter": 0,
    "critters": [
     "firefly",
     "bat",
@@ -8071,14 +8203,17 @@
    ],
    "critter_count": 18
   },
+  "fruit": 0,
   "forage": 10,
   "things": [
    {
     "type": "note",
     "cell": [
-     38,
-     56
+     40,
+     57
     ],
+    "hint": "A: read the carving",
+    "solid": false,
     "who": "",
     "text": "Carved into the rock by the lift, in a hand older than the town: WHERE THE STAR WAS BORN, IT STILL BEATS."
    },
@@ -8088,6 +8223,8 @@
      12,
      14
     ],
+    "hint": "A: read the journal",
+    "solid": false,
     "who": "",
     "text": "A miner's journal, waterlogged: \"Day 40. The light down here isn't from the crystals. The crystals are from the light.\""
    },
@@ -8097,6 +8234,8 @@
      64,
      14
     ],
+    "hint": "A: look at the painting",
+    "solid": false,
     "who": "",
     "text": "A painted wall: a falling star, a field, two small figures, and a long line of people carrying pieces of it away."
    },
@@ -8193,10 +8332,6 @@
    }
   ],
   "enemies": [
-   {
-    "kind": "light_eater",
-    "count": 1
-   },
    {
     "kind": "obsidian_sentinel",
     "count": 3

@@ -235,8 +235,13 @@ static func _fill(lines: Array) -> Array:
 	if partner == "":
 		partner = "a friend"
 	var out: Array = []
+	# Playing as a story character (Big Jim, Coldy, Mer, Nova, Pip-Pip...): their
+	# own lines in scenes would have them talking to themselves, so drop those.
+	var me := str(GameState.playables.get(str(GameState.run.get("playable", "")), {}).get("name", "")).get_slice(" (", 0)
 	for ln in lines:
 		var l: Dictionary = (ln as Dictionary).duplicate(true)
+		if me != "" and str(l.get("who", "")) == me and lines.size() > 1 and not l.has("choice") and not l.has("branches"):
+			continue
 		# "if_flag": only said when that flag is set; "unless_flag": only when it isn't.
 		if l.has("if_flag") and not GameState.run["flags"].has(str(l["if_flag"])):
 			continue

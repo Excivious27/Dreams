@@ -400,5 +400,7 @@ static func discover_hint(rc: Dictionary) -> String:
 static func have_text(rc: Dictionary, qty := 1) -> String:
 	var parts: Array = []
 	for id in rc["need"]:
-		parts.append("%d/%d %s" % [GameState.count_any(str(id)), int(rc["need"][id]) * qty, GameState.need_name(str(id))])
+		var need := int(rc["need"][id]) * qty
+		var have := GameState.count_any(str(id))
+		parts.append("%d %s (have %d%s)" % [need, GameState.need_name(str(id)), have, "" if have >= need else ", short"])
 	return ", ".join(parts)

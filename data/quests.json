@@ -43,7 +43,7 @@
   {
    "id": "spark",
    "arc": "penguins",
-   "text": "Bring 3 Crystal Shards to the resonator and refine one.",
+   "text": "Build the Crystal Resonator from the Plans board by your house (10 stone, 1 shard), then refine a shard in it. Shards: the meadow, mountain rocks, the beach wreck, the Wastes commander.",
    "when": {
     "quest": "clear_meadow",
     "flag": "meow_taught"
@@ -62,7 +62,7 @@
   {
    "id": "wastes_gate",
    "arc": "penguins",
-   "text": "The Star Crystal wants you stronger before the Wastes: reach Combat 3.",
+   "text": "Get to Combat 3 before you face the Grump Commander in the Wastes (the Star Crystal insists).",
    "when": {
     "quest": "clear_meadow"
    },

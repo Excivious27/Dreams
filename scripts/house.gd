@@ -78,6 +78,7 @@ func _sleep() -> void:
 		return
 	_changing = true  # stops the 2am pass-out from firing during the fade
 	player.frozen = true
+	Music.instance(get_tree()).sfx("sleep")
 	await hud.fade_out(0.8)
 	var report := GameState.sleep()
 	if Net.online():

@@ -257,7 +257,9 @@ func _show_characters() -> void:
 	Music.instance(get_tree()).play(arc_track if ResourceLoader.exists("res://audio/music/%s.ogg" % arc_track) else "title")
 	_page.add_child(_label("Who are you?", 16))
 	_preview_holder = Control.new()
-	_preview_holder.custom_minimum_size = Vector2(0, 70)
+	_preview_holder.custom_minimum_size = Vector2(0, 80)
+	_name_lbl = null
+	_cards = {}
 	_page.add_child(_preview_holder)
 	var ids: Array = _arcs[_arc]["playable"]
 	var cards := Art.has("ui", "card_hero_dad")
@@ -276,7 +278,8 @@ func _show_characters() -> void:
 		# A hero redrawn for the underworld shows the new art, not the old painted card.
 		var gsprite := GameState.sprite_for_playable(pid, _arc)
 		var redrawn := _arc == "gangsters" and gsprite.ends_with("_gang") and Art.has("characters/" + gsprite, "swim") and Art.has("characters/" + gsprite, "ride")
-		if redrawn:
+		_cards.erase(pid)
+		if redrawn or pid in STALE_CARDS:
 			grid.add_child(_sprite_card(pid, name))
 		elif cards and Art.has("ui", card_name):
 			var tb := TextureButton.new()
@@ -288,6 +291,7 @@ func _show_characters() -> void:
 			tb.tooltip_text = name
 			tb.pressed.connect(func() -> void: _pick(pid))
 			grid.add_child(tb)
+			_cards[pid] = tb
 		else:
 			grid.add_child(_sprite_card(pid, name) if cards else _button(name, func() -> void: _pick(pid)))
 	_page.add_child(_label("Pick a hero and play as them, or build your own.", 7, false))
@@ -312,6 +316,7 @@ func _sprite_card(pid: String, name: String) -> Control:
 		else:
 			b.add_theme_stylebox_override(st, Hud.panel_stylebox("panel_parchment"))
 	b.pressed.connect(func() -> void: _pick(pid))
+	_cards[pid] = b
 	var sprite_id := GameState.sprite_for_playable(pid, _arc)
 	var tex: Texture2D = null
 	if sprite_id != "":
@@ -339,9 +344,32 @@ func _sprite_card(pid: String, name: String) -> Control:
 	return b
 
 
+## Painted cards that no longer match the hero's current look: show a sprite card.
+const STALE_CARDS := ["penguin_m", "penguin_f"]
+var _cards := {}
+var _name_lbl: Label
+
+
 func _pick(pid: String) -> void:
 	var same := pid == _playable and not _look_full.is_empty()
 	_playable = pid
+	# Phones never show tooltips: say who's picked, and light up their card.
+	for k: String in _cards:
+		var cc: Control = _cards[k]
+		if is_instance_valid(cc):
+			cc.modulate = Color(1.15, 1.1, 0.95) if k == pid else Color(0.72, 0.72, 0.78)
+	if _name_lbl == null or not is_instance_valid(_name_lbl):
+		_name_lbl = Label.new()
+		_name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_name_lbl.add_theme_font_size_override("font_size", 9)
+		_name_lbl.add_theme_constant_override("outline_size", 3)
+		_name_lbl.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.05))
+		_name_lbl.set_anchors_preset(PRESET_BOTTOM_WIDE)
+		_name_lbl.offset_top = -12
+		_name_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_preview_holder.add_child(_name_lbl)
+	var pd: Dictionary = _playables.get(pid, {})
+	_name_lbl.text = str(pd.get("name", pid)) + ("  ·  " + str(pd.get("role", "")) if str(pd.get("role", "")) != "" else "")
 	if _preview:
 		_preview.queue_free()
 	_preview = Node2D.new()

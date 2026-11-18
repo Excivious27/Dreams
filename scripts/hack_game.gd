@@ -35,6 +35,7 @@ static func play(m: GameMap, t: int) -> int:
 func _ready() -> void:
 	layer = 70
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
 	_canvas = Control.new()
 	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -130,6 +131,7 @@ func _finish() -> void:
 		return
 	get_tree().paused = false
 	Dialogue.block_input(0.3)
+	Hud.modal_rect = Rect2()
 	closed.emit()
 	queue_free()
 

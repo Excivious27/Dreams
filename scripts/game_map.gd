@@ -24,6 +24,9 @@ var hud: Hud
 var enemies: Array = []
 var sky: Scenery
 var glow: NightGlow
+var _canopies: Array = []      # tall sprites that fade when you walk behind them
+var _faded: Array = []
+var _fade_t := 0.0
 const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon"]
 var props := {}          # Vector2i -> Sprite2D (so things can change their look)
 ## Organic border: `pad` cells of forest/cliff/water around the content, drawn by
@@ -84,7 +87,7 @@ func _ready() -> void:
 		for y in range(r.position.y, r.end.y):
 			for x in range(r.position.x, r.end.x):
 				blocked.erase(Vector2i(x, y))
-
+				hard.erase(Vector2i(x, y))
 	if has_sky:
 		sky = Scenery.new()
 		sky.raining = not GameState.is_penguins() and int(GameState.run["day"]) == 1
@@ -173,7 +176,7 @@ func _ready() -> void:
 	add_child(hud)
 	add_child(TouchControls.new())
 	add_child(GameMenu.new())
-	Music.instance(get_tree()).play(music_track)
+	Music.instance(get_tree()).play(area_track())
 	Ambience.instance(get_tree()).scene_changed()
 	queue_redraw()
 	hud.fade_in(0.5)
@@ -233,7 +236,7 @@ func default_spawn() -> Vector2:
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
 ## One short verb for what USE / CHECK would do on this cell (shown on the button).
-const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "elder": "Talk", "beacon": "Light"}
+const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "elder": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
 
 
 func action_word(c: Vector2i) -> String:
@@ -271,6 +274,12 @@ func block_rect(x: int, y: int, w: int, h: int) -> void:
 	for i in w:
 		for j in h:
 			blocked[Vector2i(x + i, y + j)] = true
+			hard[Vector2i(x + i, y + j)] = true
+
+
+## Cells blocked by a structure (prop, building, hut on stilts): even a swimmer
+## can't pass under these.
+var hard := {}
 
 
 func set_thing(x: int, y: int, thing: Dictionary, solid := true) -> void:
@@ -308,6 +317,9 @@ func can_swim_cell(c: Vector2i) -> bool:
 		return false
 	if GameState.has_perk("fishing", "Swimmer") or Companion.has_ability("tail"):
 		return true
+	# Bog and marsh mud: thick, sucking, not for wading. Only a swimmer or a boat.
+	if str(things.get(c, {}).get("shore", "")) == "bog":
+		return false
 	for dy in range(-3, 4):
 		for dx in range(-3, 4):
 			var n := c + Vector2i(dx, dy)
@@ -325,7 +337,7 @@ func rect_blocked_player(r: Rect2, _p: Node) -> bool:
 	for x in range(x0, x1 + 1):
 		for y in range(y0, y1 + 1):
 			var c := Vector2i(x, y)
-			if blocked.has(c) and not can_swim_cell(c):
+			if blocked.has(c) and (hard.has(c) or not can_swim_cell(c)):
 				return true
 	return false
 
@@ -608,10 +620,10 @@ func extend(dx: int, dy: int) -> void:
 	for c: Vector2i in blocked.keys():
 		if (c.x == oc - 1 or c.y == orow - 1) and not things.has(c) and not props.has(c):
 			blocked.erase(c)
+			hard.erase(c)
 	for c: Vector2i in _ext_paths:
 		blocked.erase(c)
-
-
+		hard.erase(c)
 ## A wooden signpost beside every labelled exit (W26 travel pieces).
 func _place_signposts() -> void:
 	if not Art.has("props", "signpost_1"):
@@ -710,9 +722,11 @@ func wobble(c: Vector2i, amount := 0.08) -> void:
 
 ## Fell a tree: it tips over away from the player, thuds, bursts into wood.
 func fell_tree(c: Vector2i, wood := 5) -> void:
+	Music.instance(get_tree()).sfx("timber")
 	var sp: Node2D = props.get(c, null)
 	things.erase(c)
 	blocked.erase(c)
+	hard.erase(c)
 	props.erase(c)
 	# The wood is yours the moment it falls (leaving mid-animation used to lose it).
 	give("wood", wood)
@@ -778,6 +792,7 @@ func break_rock(c: Vector2i, stone := 2, extra := "", extra_n := 0, kind := "") 
 	var sp: Node2D = props.get(c, null)
 	things.erase(c)
 	blocked.erase(c)
+	hard.erase(c)
 	props.erase(c)
 	var at := cell_center(c)
 	var anim: String = {"copper": "ore_copper_break", "iron": "ore_iron_break", "shard": "ore_crystal_break", "m": "rock_m_break"}.get(kind, "rock_s_break")
@@ -903,8 +918,7 @@ func add_exit(r: Rect2i, scene: String, spawn: Vector2, facing: String, label_te
 	for y in range(r.position.y, r.end.y):
 		for x in range(r.position.x, r.end.x):
 			blocked.erase(Vector2i(x, y))
-
-
+			hard.erase(Vector2i(x, y))
 func check_exits() -> void:
 	if player == null or player.frozen or _changing:
 		return
@@ -997,6 +1011,66 @@ func _lock_untouched_buildings() -> void:
 var exact_footprints := false
 
 
+## Each area's own song where one exists, the festival tune on festival day in
+## town, a quiet night piece outdoors after dark, and a winter piece on the farm.
+const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "danger", "neon": "neon", "hideout": "neon",
+	"jungle": "jungle", "marsh": "marsh", "bf_frostfield": "battle", "bf_shattered_vale": "battle", "bf_rail_yards": "battle",
+	"bf_dockside": "battle", "colony_coral": "colony_coral", "colony_kelp": "colony_kelp", "colony_ice": "colony_ice",
+	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart", "moon": "sky"}
+const NIGHT_OK := ["farm", "town", "meadow", "lake", "beach", "mountain", "forest", "orchard_hills", "countryside", "riverlands", "highlands", "crystal_meadow"]
+
+
+func area_track() -> String:
+	var id := scene_id()
+	var t := str(AREA_MUSIC.get(id, music_track))
+	if not ResourceLoader.exists("res://audio/music/%s.ogg" % t):
+		t = music_track
+	if id == "town" and GameState.festival_today() != "":
+		return "festival"
+	if id in NIGHT_OK and GameState.is_night():
+		return "night"
+	if id == "farm" and GameState.season() == "winter":
+		return "winter"
+	return t
+
+
+var _music_t := 0.0
+
+
+## A boss fight's music keeps going while any big foe still stands.
+func _boss_playing() -> bool:
+	var mu := Music._inst
+	if mu == null or not is_instance_valid(mu) or mu._current != "boss":
+		return false
+	for e in enemies:
+		if is_instance_valid(e) and (e.base_hp >= 60 or e._gift != null):
+			return true
+	return false
+
+
+## Walking behind a tree canopy or a roof: that sprite turns see-through so you
+## (and anything hidden behind it) stay visible.
+func _update_canopy_fade() -> void:
+	for s in _faded:
+		if is_instance_valid(s):
+			(s as Sprite2D).modulate.a = 1.0
+	_faded.clear()
+	var pp := player.position
+	for s in _canopies:
+		if not is_instance_valid(s):
+			continue
+		var sp := s as Sprite2D
+		if absf(sp.position.x - pp.x) > 80.0 or absf(sp.position.y - pp.y) > 120.0:
+			continue
+		var sz := sp.texture.get_size() * sp.scale
+		var r := Rect2(sp.position - Vector2(sz.x / 2.0, sz.y) + (sp.offset * sp.scale if not sp.centered else Vector2(0, sz.y / 2.0)), sz)
+		if sp.centered:
+			r = Rect2(sp.position + sp.offset * sp.scale - sz / 2.0, sz)
+		if pp.y < sp.position.y - 4.0 and r.grow(-3.0).has_point(pp + Vector2(0, -8)):
+			sp.modulate.a = 0.45
+			_faded.append(sp)
+
+
 ## The light colour for this map at time t (minutes). Outdoors follows the
 ## season's sunset and sunrise: warm gold at dusk, then real night. Indoors
 ## gets lamplight after dark; underground and space keep their own light.
@@ -1022,10 +1096,21 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	var s := Art.sprite(group, name)
 	if s == null:
 		return null
+	var fr := int(Art.info(group, name).get("frames", 1))
+	if fr > 1 and s.texture:
+		# An animation strip placed as a still: show its first frame, not all of them.
+		var at := AtlasTexture.new()
+		at.atlas = s.texture
+		var cw := float(Art.info(group, name).get("cell_w", s.texture.get_width() / fr))
+		at.region = Rect2(0, 0, cw, s.texture.get_height())
+		s.texture = at
+		s.offset = Vector2(0, -at.get_height() / 2.0)
 	s.scale = Vector2(scale, scale)
 	s.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1) + Vector2(0, dy)
 	add_child(s)
 	props[c] = s
+	if s.texture and s.texture.get_height() * scale > 30.0 and group in ["nature", "buildings", "props"]:
+		_canopies.append(s)
 	if glow and not name.ends_with("unlit") and not name.ends_with("_off"):
 		for gw: String in GLOW_WORDS:
 			if gw in name:
@@ -1055,6 +1140,8 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 				var bc := Vector2i(x0 + i, c.y - j)
 				if j == 0 or not things.has(bc):
 					blocked[bc] = true
+					if group != "nature":
+						hard[bc] = true
 	return s
 
 
@@ -1192,6 +1279,7 @@ func find_path(from: Vector2i, to: Vector2i, max_cells := 6000) -> Array:
 func clear_cell(c: Vector2i) -> void:
 	things.erase(c)
 	blocked.erase(c)
+	hard.erase(c)
 	if props.has(c):
 		(props[c] as Node).queue_free()
 		props.erase(c)
@@ -1368,7 +1456,7 @@ func _use_vehicle(id: String, it: Dictionary) -> bool:
 		hud.toast("Not in the water.")
 		return true
 	player.ride(id)
-	Music.instance(get_tree()).sfx("pickup")
+	Music.instance(get_tree()).sfx("menu_open", "pickup")
 	hud.toast("%s: USE to hop off." % GameState.item_name(id), Color(0.9, 0.95, 1.0))
 	return true
 
@@ -1517,14 +1605,14 @@ func use_consumable(sel: String) -> bool:
 				e._knock = Vector2.ZERO
 				n += 1
 		hud.toast("%s! %d held their noses." % [GameState.item_name(sel), n] if n > 0 else "%s. Nobody around to mind." % GameState.item_name(sel), Color(0.9, 0.9, 0.7))
-		Music.instance(get_tree()).sfx("pickup")
+		Music.instance(get_tree()).sfx("stink", "pickup")
 		return true
 	if it.has("heal") or it.has("energy") or it.has("mana") or it.has("buff"):
 		player.play_tool("eat")
 		var fx_out := GameState.consume(sel)
 		effect_text(player.position, fx_out)
 		hud.toast("Ate %s." % GameState.item_name(sel))
-		Music.instance(get_tree()).sfx("pickup")
+		Music.instance(get_tree()).sfx("eat", "pickup")
 		return true
 	return false
 
@@ -1851,7 +1939,7 @@ func _pup_menu() -> void:
 			GameState.add_item(id, -1)
 			pt.revive_with(_pet_heal_of(id))
 			emote(pt, "heart", 0.8)
-			Music.instance(get_tree()).sfx("pickup")
+			Music.instance(get_tree()).sfx("eat", "pickup")
 		"pet":
 			emote(pt, "heart", 1.0)
 			if pt.anim.sprite_frames.has_animation("play"):
@@ -1960,11 +2048,22 @@ func _process(delta: float) -> void:
 		hitstop -= delta
 	if _night:
 		_night.color = sky_tint(int(GameState.run["time"]))
+	_music_t -= delta
+	if _music_t <= 0.0:
+		_music_t = 3.0
+		if not get_tree().paused and not _boss_playing():
+			Music.instance(get_tree()).play(area_track())
+	_fade_t -= delta
+	if _fade_t <= 0.0 and player:
+		_fade_t = 0.1
+		_update_canopy_fade()
 	if get_tree().paused:
 		return
 	if hud and not (GameState.run.get("notes", []) as Array).is_empty():
 		for nt in GameState.run["notes"]:
 			hud.toast(str(nt), Color(1, 0.85, 0.9))
+			if "letter" in str(nt):
+				Music.instance(get_tree()).sfx("mail")
 		GameState.run["notes"] = []
 	if not GameState.run.is_empty() and GameState.run["flags"].has("epilogue_done") and not GameState.run["flags"].has("epilogue_shown") and not _changing and not Dialogue.instance(get_tree()).active and player and not player.frozen:
 		GameState.run["flags"]["epilogue_shown"] = true
@@ -2890,7 +2989,7 @@ func _build_border() -> void:
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
 		if Art.has("nature", "big_oak_a"):
 			var season := GameState.season()
-			var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry", "mid_oak_b"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow", "mid_oak_b"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
+			var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
 			var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
 			nm = str(mids[rng.randi_range(0, mids.size() - 1)]) if depth <= 2 or rng.randf() < 0.4 else str(bigs[rng.randi_range(0, bigs.size() - 1)])
 		if depth <= 1 and in_content(c + Vector2i(0, 1)) and not _border_cells.has(c + Vector2i(0, 1)):
@@ -2988,6 +3087,7 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		add_child(bob)
 		bob.play("bobber")
 	hud.toast("Casting...")
+	Music.instance(get_tree()).sfx("cast")
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
 	var night: bool = GameState.is_night() and GameState.run["flags"].has("lighthouse_lit")
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
@@ -3022,6 +3122,7 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		var fish: String = pool[randi() % reach] if randf() > 0.08 * (1.0 - minf(1.0, GameState.bonus("fishing", "escape_less") * 2.0)) else "boot"
 		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
 			fish = pool[mini(pool.size() - 1, reach + 1)]
+		Music.instance(get_tree()).sfx("reel")
 		player.play_tool("reel")
 		give(fish)
 		if randf() < GameState.bonus("fishing", "double_fish"):
@@ -3031,6 +3132,7 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		xp("fishing", 6)
 	else:
 		hud.toast("It got away.")
+		Music.instance(get_tree()).sfx("fish_escape")
 
 
 ## Ask before handing a villager the item you're holding.
@@ -3086,7 +3188,9 @@ func add_plateau(cells: Dictionary, ramps: Array = []) -> void:
 		if ramp_set.has(c):
 			stairs[below] = true
 			blocked.erase(c)
+			hard.erase(c)
 			blocked.erase(below)
+			hard.erase(below)
 			continue
 		if edge and not ramp_set.has(c + Vector2i(-1, 0)) and not ramp_set.has(c + Vector2i(1, 0)):
 			blocked[c] = true

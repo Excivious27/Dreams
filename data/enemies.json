@@ -1622,6 +1622,17 @@
    "art": "cboss_ember",
    "name": "The Smother",
    "reward": 400
+  },
+  "thug_lookout": {
+   "hp": 3,
+   "dmg": 1,
+   "speed": 30,
+   "xp": 2,
+   "tier": 0,
+   "abilities": [],
+   "reward": 4,
+   "name": "Lookout",
+   "char": "speedster"
   }
  }
 }

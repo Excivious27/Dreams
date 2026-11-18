@@ -60,6 +60,18 @@ static func portrait_for(who: String) -> String:
 		"riley": "riley", "manny": "manny", "eli": "eli", "jax": "jax", "vex": "vex", "nico": "nico",
 		"grandmother brine": "elder_brine", "old tidewhisker": "elder_tidewhisker", "captain icewhisker": "elder_icewhisker", "lady cinderpaw": "elder_cinderpaw",
 		"barnaby": "barnaby", "greta": "greta", "finn": "finn", "lumi": "lumi", "theo": "theo", "hazel": "hazel"}
+	map["nova"] = "penguin_wizard"
+	map["pip-pip"] = "penguin_king"
+	var comp := Companion.data()
+	for cid in comp:
+		var cd: Variant = comp[cid]
+		if cd is Dictionary and (cd as Dictionary).has("name"):
+			map[str(cd["name"]).to_lower()] = str((cd as Dictionary).get("sprite", cid))
+	var crew: Variant = Crew.data().get("members", {})
+	if crew is Dictionary:
+		for cid in crew:
+			if crew[cid] is Dictionary:
+				map[str(crew[cid].get("name", cid)).to_lower()] = str(crew[cid].get("sprite", cid))
 	var se := GameState.season()
 	for k in GameState.npcs:
 		var pid := str(GameState.npcs[k].get("portrait", k))
@@ -167,6 +179,8 @@ func _next() -> void:
 	_who.text = str(line.get("who", ""))
 	_who.visible = _who.text != ""
 	_full = str(line.get("text", ""))
+	if is_inside_tree():
+		Music.instance(get_tree()).sfx("talk_blip")
 	_shown = 0.0
 	_typing = true
 	_text.text = ""

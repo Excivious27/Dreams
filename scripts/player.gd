@@ -897,11 +897,38 @@ func _move(step: Vector2) -> void:
 		velocity.y = 0
 	var was := swimming
 	swimming = map.is_water_cell(cell())
+	_update_wade()
 	if swimming and not was:
 		map.fx("splash", position, 12.0, 0.5)
 		Music.instance(get_tree()).sfx("splash", "bite")
 	elif was and not swimming:
 		map.fx("splash", position, 12.0, 0.4)
+
+
+var _wade: Node2D
+
+
+## In water without a boat, the lower body sits under the surface: a band of
+## water with a ripple edge is drawn over the legs.
+func _update_wade() -> void:
+	var on := swimming and float(vehicle_def().get("water", 0.0)) <= 0.0
+	if on and _wade == null:
+		_wade = Node2D.new()
+		_wade.z_index = 1
+		_wade.draw.connect(func() -> void:
+			var col := Color(0.28, 0.55, 0.78, 0.92)
+			if map and str(map.things.get(cell(), {}).get("shore", "")) == "bog":
+				col = Color(0.33, 0.30, 0.2, 0.95)
+			var t := Time.get_ticks_msec() / 300.0
+			_wade.draw_rect(Rect2(-10, -9, 20, 9), col)
+			for i in 5:
+				_wade.draw_circle(Vector2(-8 + i * 4, -9 + sin(t + i) * 0.8), 2.2, col)
+			_wade.draw_arc(Vector2(0, -8), 11.0, PI * 1.05, PI * 1.95, 12, Color(1, 1, 1, 0.5), 1.0))
+		add_child(_wade)
+	if _wade:
+		_wade.visible = on
+		if on:
+			_wade.queue_redraw()
 
 
 func _attack_hit() -> void:
@@ -1032,6 +1059,8 @@ func take_damage(n: int, from: Vector2) -> void:
 	invuln = 0.35
 	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n
+	if int(GameState.run["hp"]) > 0 and int(GameState.run["hp"]) < int(GameState.run.get("max_hp", 100)) / 4:
+		Music.instance(get_tree()).sfx("heartbeat")
 	velocity = (position - from).normalized() * (60.0 if Crew.perk_level("defence") >= 3 else 120.0)
 	auto_target = Vector2.INF
 	# Doc patches you mid-fight once per map when you're in trouble.

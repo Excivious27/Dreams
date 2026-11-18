@@ -37,6 +37,8 @@ func _ready() -> void:
 	for t: String in TABS:
 		var b := Button.new()
 		var tab_icon := "tab_" + t.to_lower()
+		if t == "Party" and not Art.has("ui", tab_icon) and Art.has("ui", "party_paw"):
+			tab_icon = "party_paw"
 		if Art.has("ui", tab_icon):
 			b.icon = Art.tex("ui", tab_icon)
 			b.expand_icon = true
@@ -63,7 +65,7 @@ func _ready() -> void:
 	_body.add_theme_constant_override("separation", 3)
 	scroll.add_child(_body)
 	var close := Button.new()
-	close.text = "Close  (MENU / E)"
+	close.text = "Close" if DisplayServer.is_touchscreen_available() else "Close  (MENU / E)"
 	close.add_theme_font_size_override("font_size", 8)
 	close.pressed.connect(toggle)
 	v.add_child(close)
@@ -119,6 +121,7 @@ func toggle() -> void:
 	_open = not _open
 	_rebinding = ""
 	_panel.visible = _open
+	Music.instance(get_tree()).sfx("menu_open" if _open else "menu_close")
 	if _open:
 		_was_paused = get_tree().paused
 		get_tree().paused = true
@@ -345,6 +348,7 @@ func _refresh() -> void:
 					tr.texture = pt
 					tr.custom_minimum_size = Vector2(22, 22)
 					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 					h.add_child(tr)
 				var l := Label.new()
 				l.text = "%s\n%s" % [d["name"], d["role"]]
@@ -353,11 +357,13 @@ func _refresh() -> void:
 				h.add_child(l)
 				var hearts := HBoxContainer.new()
 				hearts.add_theme_constant_override("separation", 0)
+				hearts.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 				h.add_child(hearts)
 				for i in 10:
 					var tr := TextureRect.new()
 					tr.custom_minimum_size = Vector2(11, 11)
 					tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+					tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 					tr.texture = full if i < pts / 25 else empty
 					hearts.add_child(tr)
 				var pl := Label.new()
@@ -402,6 +408,12 @@ func _refresh() -> void:
 				if dq.has("giver"):
 					any = true
 					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
+					if not q["done"]:
+						var qid := str(q["id"])
+						var pinned := str(r.get("pinned_quest", "")) == qid
+						_button("   %s" % ("Unpin from the goal line" if pinned else "Pin to the goal line"), func() -> void:
+							r["pinned_quest"] = "" if pinned else qid
+							_refresh())
 			if not any:
 				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 7, Color(0.7, 0.7, 0.7))
 			var ws := Crafting.summary()
@@ -436,7 +448,7 @@ func _refresh() -> void:
 					var bt := Button.new()
 					bt.text = " − " if step < 0 else " + "
 					bt.custom_minimum_size = Vector2(34, 22)
-					bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("pickup"); _refresh())
+					bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("ui_tap", "pickup"); _refresh())
 					row.add_child(bt)
 			_button("Night darkness: %s" % Settings.NIGHT_NAMES[clampi(int(Settings.get_v("night")), 0, 2)], func() -> void: Settings.set_v("night", (int(Settings.get_v("night")) + 1) % 3); _refresh())
 			_button("Button size: %s" % Settings.BTN_NAMES[clampi(int(Settings.get_v("btn_size")), 0, 2)], func() -> void: Settings.set_v("btn_size", (int(Settings.get_v("btn_size")) + 1) % 3); _refresh())
@@ -1005,7 +1017,7 @@ func _eat(id: String) -> void:
 	if m is GameMap and (m as GameMap).player:
 		(m as GameMap).effect_text((m as GameMap).player.position, fx_out)
 	Music.instance(get_tree()).sfx("eat", "pickup")
-	if visible:
+	if _open:
 		_refresh()
 
 

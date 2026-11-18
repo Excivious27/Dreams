@@ -422,6 +422,8 @@ func _bite(e: Enemy) -> void:
 	anim.play("bite" if anim.sprite_frames.has_animation("bite") else "bark")
 	anim.flip_h = e.position.x < position.x
 	e.provoke(self)  # it turns to fight back
+	if randf() < 0.35:
+		Music.instance(get_tree()).sfx("bark")
 	var landed := e.hit(dmg, position, false, true)
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
 	GameState.add_xp("pup", 2)

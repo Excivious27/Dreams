@@ -16,6 +16,8 @@ static var y_offset := 0.0
 
 ## Other on-screen buttons that should get taps instead of the world (battle RALLY...).
 static var extra_rects: Array = []
+## Set by full-screen panels while open; touch buttons ignore taps inside it.
+static var modal_rect := Rect2()
 
 
 static func hud_rect_blocks(p: Vector2) -> bool:
@@ -45,7 +47,14 @@ func _ready() -> void:
 	_toasts.position = Vector2(6, 76)
 	_toasts.size = Vector2(258, 100)
 	_toasts.add_theme_constant_override("separation", 1)
-	add_child(_toasts)
+	_toasts.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Toasts live on their own top layer so crafting, the menu and other
+	# full-screen panels never hide them.
+	var top := CanvasLayer.new()
+	top.layer = 90
+	top.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(top)
+	top.add_child(_toasts)
 	_fade = ColorRect.new()
 	_fade.color = Color(0, 0, 0, 0)
 	_fade.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -243,7 +252,10 @@ func _draw_hud() -> void:
 	# Energy bar (vertical, right side, Stardew style)
 	# The energy bar stays on the right edge; indoors (HUD at the bottom) it
 	# moves up so it doesn't sit on the clock box.
-	c.draw_set_transform(Vector2(0, -150.0 if y_offset > 0.0 else 0.0))
+	# Left-handed play mirrors the buttons to the left, so the bar moves left too
+	# (the pup commands take the right edge).
+	var lh := Settings.left_handed()
+	c.draw_set_transform(Vector2(-248.0 if lh else 0.0, -150.0 if y_offset > 0.0 else 0.0))
 	var e := float(r["energy"]) / float(r["max_energy"])
 	var bar := Rect2(256, 200, 9, 130)
 	var fill_h := bar.size.y * e
@@ -267,7 +279,10 @@ func _draw_hud() -> void:
 		var bolt := Art.tex("ui", "bolt_full")
 		if bolt:
 			c.draw_texture_rect(bolt, Rect2(bar.position.x - 2, bar.position.y - 14, 13, 13), false)
-	c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
+	if lh:
+		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 7, Color(1, 1, 0.9))
+	else:
+		c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
 
 
 static func icon_for(id: String) -> String:
@@ -330,22 +345,20 @@ static func skin_buttons(ctrl: Control) -> void:
 		return
 	var th := Theme.new()
 	for st: String in ["normal", "hover", "pressed", "disabled", "focus"]:
-		var sb := StyleBoxTexture.new()
-		sb.texture = Art.tex("ui", "btn2_wood" if st != "disabled" else "btn2_disabled")
-		var w := sb.texture.get_width()
-		var h := sb.texture.get_height()
-		sb.texture_margin_left = w * 0.12
-		sb.texture_margin_right = w * 0.12
-		sb.texture_margin_top = h * 0.25
-		sb.texture_margin_bottom = h * 0.3
+		# A flat wooden plank: the painted button art is far bigger than an
+		# 18 px menu button and only showed a sliver of its edge.
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = {"normal": Color(0.55, 0.36, 0.2), "hover": Color(0.62, 0.42, 0.24), "pressed": Color(0.45, 0.29, 0.16), "disabled": Color(0.4, 0.36, 0.33), "focus": Color(0.55, 0.36, 0.2)}[st]
+		sb.border_color = Color(0.28, 0.16, 0.08) if st != "focus" else Color(1, 0.85, 0.4)
+		sb.set_border_width_all(1)
+		sb.border_width_bottom = 2
+		sb.set_corner_radius_all(3)
 		sb.content_margin_left = 6
 		sb.content_margin_right = 6
 		sb.content_margin_top = 3
 		sb.content_margin_bottom = 3
-		if st == "pressed":
-			sb.modulate_color = Color(0.85, 0.8, 0.75)
-		elif st == "hover":
-			sb.modulate_color = Color(1.1, 1.05, 1.0)
+		if st == "focus":
+			sb.draw_center = false
 		th.set_stylebox(st, "Button", sb)
 	th.set_color("font_color", "Button", Color(1, 0.95, 0.85))
 	th.set_color("font_hover_color", "Button", Color(1, 1, 0.9))

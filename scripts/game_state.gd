@@ -283,17 +283,16 @@ static func ore_block(ore: String) -> String:
 	return gather_block("pickaxe", int(ORE_TIER.get(ore, 0)), "mining", int(ORE_SKILL.get(ore, 0)), ore.replace("_", " "))
 
 
-## Trees: saplings/logs free; grown trees copper; big old trees iron + foraging 3;
-## crystal and moon trees further still.
+## Trees: ordinary trees need any axe; big old hardwood trees copper + foraging 3;
+## crystal trees iron + foraging 5.
 static func tree_block(thing: Dictionary) -> String:
 	var hp := int(thing.get("hp", 3))
 	var kind := str(thing.get("wood", "wood"))
+	# Ordinary trees always come down with any axe; only the special ones are gated.
 	if kind == "crystal_wood":
-		return gather_block("axe", 3, "foraging", 5, "the crystal tree")
-	if kind == "hardwood" or hp >= 6:
-		return gather_block("axe", 2, "foraging", 3, "this old tree")
-	if hp >= 4 and str(thing.get("type", "")) == "tree":
-		return gather_block("axe", 1, "foraging", 0, "this tree")
+		return gather_block("axe", 2, "foraging", 5, "the crystal tree")
+	if kind == "hardwood" or hp >= 8:
+		return gather_block("axe", 1, "foraging", 3, "this old tree")
 	return ""
 
 
@@ -2144,8 +2143,18 @@ static func next_step() -> String:
 	if run.is_empty():
 		return ""
 	var pinned := str(run.get("pinned_quest", ""))
-	for q in run.get("quests", []):
-		if not bool(q.get("done", false)) and (pinned == "" or str(q["id"]) == pinned):
+	if pinned != "":
+		for q in run.get("quests", []):
+			if not bool(q.get("done", false)) and str(q["id"]) == pinned:
+				return str(q.get("text", ""))
+	# The main story first (newest step), then everything else in order.
+	var mains := {}
+	for mq in quests_data.get("main", []):
+		mains[str(mq.get("id", ""))] = true
+	var qs: Array = run.get("quests", [])
+	for i in range(qs.size() - 1, -1, -1):
+		var q: Dictionary = qs[i]
+		if not bool(q.get("done", false)) and mains.has(str(q.get("id", ""))):
 			return str(q.get("text", ""))
 	for q in run.get("quests", []):
 		if not bool(q.get("done", false)):

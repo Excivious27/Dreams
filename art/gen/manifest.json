@@ -15271,21 +15271,37 @@
    "h": 96,
    "w": 219
   },
-  "view_front": {
-   "cell_h": 96,
-   "cell_w": 60,
-   "file": "characters/big_jim/view_front.png",
-   "frames": 1,
-   "h": 96,
-   "w": 60
-  },
-  "view_right": {
+  "view_back": {
    "cell_h": 96,
    "cell_w": 75,
-   "file": "characters/big_jim/view_right.png",
+   "file": "characters/big_jim/view_back.png",
    "frames": 1,
    "h": 96,
    "w": 75
+  },
+  "view_front": {
+   "cell_h": 96,
+   "cell_w": 71,
+   "file": "characters/big_jim/view_front.png",
+   "frames": 1,
+   "h": 96,
+   "w": 71
+  },
+  "view_left": {
+   "cell_h": 96,
+   "cell_w": 62,
+   "file": "characters/big_jim/view_left.png",
+   "frames": 1,
+   "h": 96,
+   "w": 62
+  },
+  "view_right": {
+   "cell_h": 96,
+   "cell_w": 60,
+   "file": "characters/big_jim/view_right.png",
+   "frames": 1,
+   "h": 96,
+   "w": 60
   },
   "walk": {
    "cell_h": 96,
@@ -16607,9 +16623,9 @@
    "cell_h": 112,
    "cell_w": 92,
    "file": "characters/deuce/bubble.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 184
+   "w": 92
   },
   "cheer": {
    "cell_h": 112,
@@ -16663,9 +16679,9 @@
    "cell_h": 112,
    "cell_w": 83,
    "file": "characters/deuce/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 166
+   "w": 83
   },
   "laugh": {
    "cell_h": 112,
@@ -16849,9 +16865,9 @@
    "cell_h": 112,
    "cell_w": 117,
    "file": "characters/dice/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 234
+   "w": 117
   },
   "laugh": {
    "cell_h": 112,
@@ -17035,9 +17051,9 @@
    "cell_h": 112,
    "cell_w": 75,
    "file": "characters/doc/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 150
+   "w": 75
   },
   "laugh": {
    "cell_h": 112,
@@ -18150,9 +18166,9 @@
    "cell_h": 112,
    "cell_w": 90,
    "file": "characters/halo/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 180
+   "w": 90
   },
   "laugh": {
    "cell_h": 112,
@@ -18828,11 +18844,11 @@
   },
   "swim": {
    "cell_h": 68,
-   "cell_w": 89,
+   "cell_w": 108,
    "file": "characters/june_gang/swim.png",
    "frames": 6,
    "h": 68,
-   "w": 534
+   "w": 648
   },
   "view_back": {
    "cell_h": 93,
@@ -18843,20 +18859,20 @@
    "w": 55
   },
   "view_front": {
-   "cell_h": 97,
+   "cell_h": 96,
    "cell_w": 53,
    "file": "characters/june_gang/view_front.png",
    "frames": 1,
-   "h": 97,
+   "h": 96,
    "w": 53
   },
   "view_left": {
-   "cell_h": 137,
-   "cell_w": 93,
+   "cell_h": 95,
+   "cell_w": 48,
    "file": "characters/june_gang/view_left.png",
    "frames": 1,
-   "h": 137,
-   "w": 93
+   "h": 95,
+   "w": 48
   },
   "view_right": {
    "cell_h": 95,
@@ -19030,9 +19046,9 @@
    "cell_h": 112,
    "cell_w": 117,
    "file": "characters/ladder/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 234
+   "w": 117
   },
   "laugh": {
    "cell_h": 112,
@@ -19249,9 +19265,9 @@
    "cell_h": 112,
    "cell_w": 122,
    "file": "characters/mama_rosa/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 244
+   "w": 122
   },
   "laugh": {
    "cell_h": 112,
@@ -19690,44 +19706,44 @@
    "w": 224
   },
   "swim": {
-   "cell_h": 66,
+   "cell_h": 68,
    "cell_w": 79,
    "file": "characters/man_gang/swim.png",
-   "frames": 6,
-   "h": 66,
-   "w": 474
+   "frames": 7,
+   "h": 68,
+   "w": 553
   },
   "view_back": {
-   "cell_h": 102,
-   "cell_w": 63,
+   "cell_h": 96,
+   "cell_w": 59,
    "file": "characters/man_gang/view_back.png",
    "frames": 1,
-   "h": 102,
-   "w": 63
+   "h": 96,
+   "w": 59
   },
   "view_front": {
-   "cell_h": 102,
-   "cell_w": 65,
+   "cell_h": 96,
+   "cell_w": 61,
    "file": "characters/man_gang/view_front.png",
    "frames": 1,
-   "h": 102,
-   "w": 65
-  },
-  "view_left": {
-   "cell_h": 104,
-   "cell_w": 61,
-   "file": "characters/man_gang/view_left.png",
-   "frames": 1,
-   "h": 104,
+   "h": 96,
    "w": 61
   },
+  "view_left": {
+   "cell_h": 96,
+   "cell_w": 56,
+   "file": "characters/man_gang/view_left.png",
+   "frames": 1,
+   "h": 96,
+   "w": 56
+  },
   "view_right": {
-   "cell_h": 103,
-   "cell_w": 60,
+   "cell_h": 96,
+   "cell_w": 56,
    "file": "characters/man_gang/view_right.png",
    "frames": 1,
-   "h": 103,
-   "w": 60
+   "h": 96,
+   "w": 56
   },
   "walk": {
    "cell_h": 91,
@@ -20458,9 +20474,9 @@
    "cell_h": 112,
    "cell_w": 82,
    "file": "characters/marlene/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 164
+   "w": 82
   },
   "laugh": {
    "cell_h": 112,
@@ -29774,9 +29790,9 @@
    "cell_h": 112,
    "cell_w": 119,
    "file": "characters/sasha/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 238
+   "w": 119
   },
   "laugh": {
    "cell_h": 112,
@@ -30364,9 +30380,9 @@
    "cell_h": 112,
    "cell_w": 102,
    "file": "characters/specs/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 204
+   "w": 102
   },
   "laugh": {
    "cell_h": 112,
@@ -30596,9 +30612,9 @@
    "cell_h": 112,
    "cell_w": 115,
    "file": "characters/the_kid/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 230
+   "w": 115
   },
   "laugh": {
    "cell_h": 112,
@@ -30797,9 +30813,9 @@
    "cell_h": 112,
    "cell_w": 122,
    "file": "characters/val/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 244
+   "w": 122
   },
   "laugh": {
    "cell_h": 112,
@@ -30998,9 +31014,9 @@
    "cell_h": 112,
    "cell_w": 122,
    "file": "characters/vic/cheer.png",
-   "frames": 2,
+   "frames": 1,
    "h": 112,
-   "w": 244
+   "w": 122
   },
   "laugh": {
    "cell_h": 112,
@@ -62684,7 +62700,7 @@
   "angry": {
    "file": "portraits/bo/angry.png",
    "h": 96,
-   "w": 103
+   "w": 107
   },
   "embarrassed": {
    "file": "portraits/bo/embarrassed.png",
@@ -62694,17 +62710,17 @@
   "happy": {
    "file": "portraits/bo/happy.png",
    "h": 96,
-   "w": 142
+   "w": 107
   },
   "neutral": {
    "file": "portraits/bo/neutral.png",
    "h": 96,
-   "w": 77
+   "w": 107
   },
   "sad": {
    "file": "portraits/bo/sad.png",
    "h": 96,
-   "w": 104
+   "w": 107
   },
   "sly": {
    "file": "portraits/bo/sly.png",
@@ -62714,7 +62730,7 @@
   "surprised": {
    "file": "portraits/bo/surprised.png",
    "h": 96,
-   "w": 103
+   "w": 107
   },
   "worried": {
    "file": "portraits/bo/worried.png",
@@ -64672,7 +64688,7 @@
   "angry": {
    "file": "portraits/june/angry.png",
    "h": 96,
-   "w": 61
+   "w": 106
   },
   "embarrassed": {
    "file": "portraits/june/embarrassed.png",
@@ -64682,17 +64698,17 @@
   "happy": {
    "file": "portraits/june/happy.png",
    "h": 96,
-   "w": 54
+   "w": 106
   },
   "neutral": {
    "file": "portraits/june/neutral.png",
    "h": 96,
-   "w": 18
+   "w": 106
   },
   "sad": {
    "file": "portraits/june/sad.png",
    "h": 96,
-   "w": 55
+   "w": 106
   },
   "sly": {
    "file": "portraits/june/sly.png",
@@ -64702,7 +64718,7 @@
   "surprised": {
    "file": "portraits/june/surprised.png",
    "h": 96,
-   "w": 102
+   "w": 106
   },
   "worried": {
    "file": "portraits/june/worried.png",
@@ -64714,42 +64730,42 @@
   "angry": {
    "file": "portraits/june_gang/angry.png",
    "h": 96,
-   "w": 78
+   "w": 80
   },
   "embarrassed": {
    "file": "portraits/june_gang/embarrassed.png",
    "h": 96,
-   "w": 78
+   "w": 80
   },
   "happy": {
    "file": "portraits/june_gang/happy.png",
    "h": 96,
-   "w": 79
+   "w": 82
   },
   "neutral": {
    "file": "portraits/june_gang/neutral.png",
    "h": 96,
-   "w": 80
+   "w": 88
   },
   "sad": {
    "file": "portraits/june_gang/sad.png",
    "h": 96,
-   "w": 78
+   "w": 80
   },
   "sly": {
    "file": "portraits/june_gang/sly.png",
    "h": 96,
-   "w": 76
+   "w": 78
   },
   "surprised": {
    "file": "portraits/june_gang/surprised.png",
    "h": 96,
-   "w": 77
+   "w": 79
   },
   "worried": {
    "file": "portraits/june_gang/worried.png",
    "h": 96,
-   "w": 77
+   "w": 79
   }
  },
  "portraits/ladder": {
@@ -64873,7 +64889,7 @@
   "angry": {
    "file": "portraits/man_gang/angry.png",
    "h": 96,
-   "w": 86
+   "w": 90
   },
   "embarrassed": {
    "file": "portraits/man_gang/embarrassed.png",
@@ -64883,17 +64899,17 @@
   "happy": {
    "file": "portraits/man_gang/happy.png",
    "h": 96,
-   "w": 90
+   "w": 89
   },
   "neutral": {
    "file": "portraits/man_gang/neutral.png",
    "h": 96,
-   "w": 115
+   "w": 98
   },
   "sad": {
    "file": "portraits/man_gang/sad.png",
    "h": 96,
-   "w": 89
+   "w": 90
   },
   "sly": {
    "file": "portraits/man_gang/sly.png",
@@ -65094,7 +65110,7 @@
   "angry": {
    "file": "portraits/nia/angry.png",
    "h": 96,
-   "w": 58
+   "w": 107
   },
   "embarrassed": {
    "file": "portraits/nia/embarrassed.png",
@@ -65104,17 +65120,17 @@
   "happy": {
    "file": "portraits/nia/happy.png",
    "h": 96,
-   "w": 57
+   "w": 107
   },
   "neutral": {
    "file": "portraits/nia/neutral.png",
    "h": 96,
-   "w": 30
+   "w": 107
   },
   "sad": {
    "file": "portraits/nia/sad.png",
    "h": 96,
-   "w": 56
+   "w": 107
   },
   "sly": {
    "file": "portraits/nia/sly.png",
@@ -65124,7 +65140,7 @@
   "surprised": {
    "file": "portraits/nia/surprised.png",
    "h": 96,
-   "w": 101
+   "w": 107
   },
   "worried": {
    "file": "portraits/nia/worried.png",
@@ -66364,7 +66380,7 @@
   "angry": {
    "file": "portraits/ollie/angry.png",
    "h": 96,
-   "w": 58
+   "w": 107
   },
   "embarrassed": {
    "file": "portraits/ollie/embarrassed.png",
@@ -66374,17 +66390,17 @@
   "happy": {
    "file": "portraits/ollie/happy.png",
    "h": 96,
-   "w": 56
+   "w": 107
   },
   "neutral": {
    "file": "portraits/ollie/neutral.png",
    "h": 96,
-   "w": 44
+   "w": 107
   },
   "sad": {
    "file": "portraits/ollie/sad.png",
    "h": 96,
-   "w": 57
+   "w": 107
   },
   "sly": {
    "file": "portraits/ollie/sly.png",
@@ -66394,7 +66410,7 @@
   "surprised": {
    "file": "portraits/ollie/surprised.png",
    "h": 96,
-   "w": 57
+   "w": 107
   },
   "worried": {
    "file": "portraits/ollie/worried.png",
@@ -66458,7 +66474,7 @@
   "neutral": {
    "file": "portraits/penguin_king/neutral.png",
    "h": 96,
-   "w": 131
+   "w": 96
   },
   "sad": {
    "file": "portraits/penguin_king/sad.png",
@@ -66553,7 +66569,7 @@
   "angry": {
    "file": "portraits/rafe/angry.png",
    "h": 96,
-   "w": 63
+   "w": 107
   },
   "embarrassed": {
    "file": "portraits/rafe/embarrassed.png",
@@ -66563,64 +66579,64 @@
   "happy": {
    "file": "portraits/rafe/happy.png",
    "h": 96,
-   "w": 57
+   "w": 107
   },
   "neutral": {
    "file": "portraits/rafe/neutral.png",
    "h": 96,
-   "w": 44
+   "w": 107
   },
   "sad": {
    "file": "portraits/rafe/sad.png",
    "h": 96,
-   "w": 54
+   "w": 107
   },
   "surprised": {
    "file": "portraits/rafe/surprised.png",
    "h": 96,
-   "w": 87
+   "w": 107
   }
  },
  "portraits/rafe_gang": {
   "angry": {
    "file": "portraits/rafe_gang/angry.png",
    "h": 96,
-   "w": 78
+   "w": 80
   },
   "embarrassed": {
    "file": "portraits/rafe_gang/embarrassed.png",
    "h": 96,
-   "w": 77
+   "w": 79
   },
   "happy": {
    "file": "portraits/rafe_gang/happy.png",
    "h": 96,
-   "w": 81
+   "w": 83
   },
   "neutral": {
    "file": "portraits/rafe_gang/neutral.png",
    "h": 96,
-   "w": 88
+   "w": 91
   },
   "sad": {
    "file": "portraits/rafe_gang/sad.png",
    "h": 96,
-   "w": 80
+   "w": 82
   },
   "sly": {
    "file": "portraits/rafe_gang/sly.png",
    "h": 96,
-   "w": 76
+   "w": 78
   },
   "surprised": {
    "file": "portraits/rafe_gang/surprised.png",
    "h": 96,
-   "w": 73
+   "w": 75
   },
   "worried": {
    "file": "portraits/rafe_gang/worried.png",
    "h": 96,
-   "w": 72
+   "w": 73
   }
  },
  "portraits/riley": {
@@ -66771,35 +66787,25 @@
   "embarrassed": {
    "file": "portraits/son_gang/embarrassed.png",
    "h": 96,
-   "w": 81
+   "w": 170
   },
   "happy": {
    "file": "portraits/son_gang/happy.png",
    "h": 96,
-   "w": 83
+   "w": 85
   },
   "neutral": {
    "file": "portraits/son_gang/neutral.png",
    "h": 96,
-   "w": 92
+   "w": 93
   },
   "sad": {
    "file": "portraits/son_gang/sad.png",
    "h": 96,
-   "w": 84
-  },
-  "sly": {
-   "file": "portraits/son_gang/sly.png",
-   "h": 96,
-   "w": 82
+   "w": 172
   },
   "surprised": {
    "file": "portraits/son_gang/surprised.png",
-   "h": 96,
-   "w": 83
-  },
-  "worried": {
-   "file": "portraits/son_gang/worried.png",
    "h": 96,
    "w": 83
   }
@@ -102892,8 +102898,8 @@
   },
   "card_hero_bo_gang": {
    "file": "ui/card_hero_bo_gang.png",
-   "h": 206,
-   "w": 149
+   "h": 100,
+   "w": 83
   },
   "card_hero_coco": {
    "file": "ui/card_hero_coco.png",
@@ -102947,8 +102953,8 @@
   },
   "card_hero_marisol_gang": {
    "file": "ui/card_hero_marisol_gang.png",
-   "h": 206,
-   "w": 150
+   "h": 100,
+   "w": 83
   },
   "card_hero_mer": {
    "file": "ui/card_hero_mer.png",

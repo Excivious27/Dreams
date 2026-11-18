@@ -53,11 +53,13 @@ func build() -> void:
 		var t: Dictionary = things.get(o, {})
 		things.erase(o)
 		blocked.erase(o)
+		hard.erase(o)
 		set_thing(g.x, g.y + k, t)
 	for x in range(EAST_GATE.x, cols - 1):
 		for y in range(11, 14):
 			_ext_paths[Vector2i(x, y)] = true
 			blocked.erase(Vector2i(x, y))
+			hard.erase(Vector2i(x, y))
 	_gate = g
 
 

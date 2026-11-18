@@ -62,10 +62,8 @@ static func morning() -> int:
 			m["lapsed"] = true
 	_news(rng)
 	var known := _known()
-	if known.is_empty():
-		known = ["maple", "alder"]
-	# A favour about every third day.
-	if rng.randf() < 0.35:
+	# A favour about every third day, only from people you've met.
+	if not known.is_empty() and rng.randf() < 0.35:
 		var who := str(known[rng.randi() % known.size()])
 		var want := _favour_item(who, rng)
 		if want != "":
@@ -82,7 +80,7 @@ static func morning() -> int:
 		var gift := _gift_item(who2, rng)
 		send(_name(who2), "Found this and thought of you. Don't make a fuss. - %s" % _name(who2), "gift", {"npc": who2, "item": gift, "n": 1})
 	# Chatter.
-	if rng.randf() < 0.3:
+	if not known.is_empty() and rng.randf() < 0.3:
 		var who3 := str(known[rng.randi() % known.size()])
 		var lines := [
 			"The weather's turned and the whole town's talking about it. How's the farm?",

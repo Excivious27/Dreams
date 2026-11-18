@@ -201,10 +201,13 @@ func _pup_cmd(cmd: String) -> void:
 			m.hud.toast("Guard needs the Guard Dog skill (Pup tree).", Color(1, 0.85, 0.6))
 	else:
 		pt.set_mode(cmd)
-	Music.instance(get_tree()).sfx("pickup")
+	Music.instance(get_tree()).sfx("bark", "pickup")
 
 
 func _hit(pos: Vector2) -> String:
+	# A full-screen panel (crafting, hack, ending) owns its area: no hidden buttons under it.
+	if Hud.modal_rect.has_area() and Hud.modal_rect.has_point(pos) and not Dialogue.instance(get_tree()).active:
+		return ""
 	if _pet() != null and not get_tree().paused and not Dialogue.instance(get_tree()).active:
 		for i in PUP_CMDS.size():
 			if pos.distance_to(Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)) <= PUP_R * 1.25:
@@ -355,7 +358,10 @@ func _on_draw() -> void:
 			btn = Art.tex("ui", str(sk[0]))
 			btn_down = Art.tex("ui", str(sk[1]))
 		if btn and btn_down:
-			_canvas.draw_texture_rect(btn_down if on else btn, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), false, Color(1, 1, 1, 0.85))
+			# These sheets hold a row of round buttons: draw only the first one.
+			var bt: Texture2D = btn_down if on else btn
+			var cell := float(bt.get_height())
+			_canvas.draw_texture_rect_region(bt, Rect2(p - Vector2(r, r), Vector2(r * 2, r * 2)), Rect2(0, 0, cell, cell), Color(1, 1, 1, 0.85))
 		else:
 			_canvas.draw_circle(p, r, lit if on else base)
 			_canvas.draw_arc(p, r, 0, TAU, 40, edge, 1.5, true)

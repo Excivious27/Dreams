@@ -466,6 +466,19 @@ def load_hue(name, thresh=90):
     r, g, b = img[..., 0], img[..., 1], img[..., 2]
     mag = np.minimum(r, b) - g
     bg = (mag > thresh) & (np.abs(r - b) < 70)
+    # Only real backdrop goes: purple patches enclosed inside a character (fur,
+    # capes, hats) stay. A patch is backdrop if it touches the sheet edge or is
+    # near pure magenta (the backdrop colour), never the softer sprite purples.
+    from scipy import ndimage
+    lab, n = ndimage.label(bg)
+    if n:
+        edge = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
+        mean_g = ndimage.mean(g, lab, np.arange(1, n + 1))
+        keep_bg = np.zeros(n + 1, bool)
+        keep_bg[edge] = True
+        keep_bg[1:] |= np.asarray(mean_g) < 30
+        keep_bg[0] = False
+        bg = keep_bg[lab]
     out = img.astype(np.uint8)
     out[..., 3] = np.where(bg, 0, 255).astype(np.uint8)
     return out

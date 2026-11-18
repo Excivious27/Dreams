@@ -68,6 +68,7 @@ func after_ready() -> void:
 			var fc: Vector2i = tc + off
 			if fc.x > 0 and fc.y > 1 and fc.x < cols - 1 and fc.y < rows - 1 and not things.has(fc):
 				blocked.erase(fc)
+				hard.erase(fc)
 				break
 	# Who is in here right now: anyone whose routine puts them in this interior
 	# (their work, their home, or a named place like the inn/school/chapel). The

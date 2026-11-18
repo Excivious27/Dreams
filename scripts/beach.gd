@@ -50,6 +50,7 @@ func build() -> void:
 				var c := Vector2i(x, y)
 				things.erase(c)
 				blocked.erase(c)
+				hard.erase(c)
 				_sea.erase(c)
 				things[c] = {"type": "dock"}
 	# The ferry to the merkitty colonies waits at the end of the west pier.

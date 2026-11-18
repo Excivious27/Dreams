@@ -111,6 +111,7 @@ static func play(m: GameMap) -> void:
 func _ready() -> void:
 	layer = 80
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
 	var bg := ColorRect.new()
 	bg.color = Color(0.05, 0.04, 0.08, 0.96)
@@ -183,5 +184,6 @@ func _close() -> void:
 		return
 	get_tree().paused = false
 	Dialogue.block_input(0.4)
+	Hud.modal_rect = Rect2()
 	closed.emit()
 	queue_free()

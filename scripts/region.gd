@@ -20,6 +20,49 @@ const AREA_TIER := {"orchard_hills": 1, "wastes": 1, "hideout": 1, "countryside"
 	"colony_kelp": 3, "sky": 4, "station": 4, "underground": 4, "colony_ice": 4, "hollow_heart": 5, "colony_ember": 5}
 
 
+const NO_FRUIT := ["hollow_heart", "wastes", "jungle", "quarry", "highlands", "station", "sky", "underground", "neon", "uptown", "docks", "hideout"]
+
+
+func _place_secrets() -> void:
+	Secrets.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
+	_boss_markers()
+
+
+## Show who's waiting at a boss spot (a dim, still figure) until they're beaten,
+## so a boss isn't an invisible wall.
+func _boss_markers() -> void:
+	if GameState.run["flags"].has("boss_%s" % region_id):
+		return
+	for c: Vector2i in things.keys():
+		var t: Dictionary = things[c]
+		if str(t.get("type", "")) != "boss":
+			continue
+		var gang := not GameState.is_penguins()
+		var bk := str(t.get("kind_gangsters", t.get("kind", ""))) if gang else str(t.get("kind", ""))
+		var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(bk, {})
+		var grp := "enemies/" + str(ed.get("art", bk))
+		if ed.has("char"):
+			grp = "characters/" + str(ed["char"])
+		elif bk.begins_with("thug_"):
+			grp = "characters/" + bk.trim_prefix("thug_")
+		var tex := Art.tex(grp, "idle")
+		if tex == null:
+			continue
+		var info := Art.info(grp, "idle")
+		var at := AtlasTexture.new()
+		at.atlas = tex
+		at.region = Rect2(0, 0, float(info.get("cell_w", tex.get_width())), tex.get_height())
+		var sp := Sprite2D.new()
+		sp.texture = at
+		sp.scale = Vector2(0.5, 0.5)
+		sp.offset = Vector2(0, -tex.get_height() / 2.0)
+		sp.position = cell_center(c)
+		sp.modulate = Color(0.55, 0.5, 0.65, 0.9)
+		add_child(sp)
+		if t.get("hint", "") == "":
+			t["hint"] = "A: face it"
+
+
 func _spawn_tier(kind: String) -> int:
 	var at := int(R.get("tier", AREA_TIER.get(region_id, -1)))
 	if at < 0:
@@ -178,7 +221,7 @@ func build() -> void:
 					nx.erase(c)
 			pc = nx
 		add_plateau(pc, pl.get("ramps", []))
-	if int(R.get("fruit", 3)) > 0:
+	if int(R.get("fruit", 0 if region_id in NO_FRUIT else 3)) > 0:
 		WorldGen.fruit_trees(self, Rect2i(3, 3, cols - 6, rows - 6), hash(region_id) % 500 + 3, int(R.get("fruit", 3)))
 	for t in R.get("things", []):
 		var c: Array = t["cell"]
@@ -199,6 +242,7 @@ func after_ready() -> void:
 	place_project_site()
 	if R.has("colony"):
 		_place_colony()
+	_place_secrets.call_deferred()
 	for p in R.get("props", []):
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var g := str(p.get("group", "props"))
@@ -209,7 +253,7 @@ func after_ready() -> void:
 			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": float(p.get("fps", 4.0))})
 			a.animation = "idle"
 			a.scale = Vector2(0.5, 0.5)
-			a.position = Vector2((c.x + (w + 1) / 2.0) * TILE, (c.y + 1) * TILE)
+			a.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
 			a.offset = Vector2(0, -float(Art.info(g, nm).get("cell_h", 48)) / 2.0)
 			if bool(p.get("under", false)):
 				a.z_index = -1
@@ -305,7 +349,10 @@ func after_ready() -> void:
 				at = cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			if e.has("cell"):
 				at = cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
-			var se := spawn_enemy(str(e["kind"]), at, _spawn_tier(str(e["kind"])))
+			var ek := str(e["kind"])
+			if ek == "grump" and not GameState.is_penguins():
+				ek = "thug_lookout"
+			var se := spawn_enemy(ek, at, _spawn_tier(ek))
 			if se and bool(e.get("colony", false)):
 				se.set_meta("colony_foe", true)
 	if R.has("weather"):
@@ -336,6 +383,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		if n.visible and (n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0)):
 			later(_talk_npc.bind(n))
 			return true
+	if Secrets.interact(self, c, thing):
+		return true
 	match str(thing.get("type", "")):
 		"cpoint":
 			if battle:
@@ -408,6 +457,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if int(thing["hp"]) <= 0:
 				things.erase(c)
 				blocked.erase(c)
+				hard.erase(c)
 				if props.has(c):
 					(props[c] as Node).queue_free()
 					props.erase(c)
