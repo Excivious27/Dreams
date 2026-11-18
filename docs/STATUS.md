@@ -434,3 +434,9 @@
 - Hacking Terminal: daily memory hack (`HackGame`).
 - Web: PWA on (installable, portrait, icons in web/), styled loading screen.
 - Tests: tools/systems_test.gd in check.sh. Screens: tools/ui_shot.gd.
+
+## 2026-11-17 — Skills rebuilt, President rewritten, Guide 10 + Art Prompts 17
+- Skills: `tools/gen_skill_trees.py` (reads data/skills_base.json) → 13 skills × 4 branches × 10 tiers = 520 nodes; column c opens at 2c points; `GameState.BONUS_CAPS`; arc trees Harmony/Hustle (`skill_in_arc`, `arc_skill`, `add_arc_xp`), Leadership (teamwork XP; `has_team`), Strategist (battle campaign XP). Menu Skills tab is a Sun Haven grid (`_skills_tab`, `_node_cell`).
+- The President is M. (story.json g5_president / g5_win).
+- PWA update flow: head_include script checks the service worker, saves via `window.dreamsUpdateReady`, yellow update bar.
+- tools/missing_art.py → docs/MISSING-ART.md. tools/gen_prompts17.py → docs/ART-PROMPTS-17.md. Guide 10.
