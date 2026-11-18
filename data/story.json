@@ -2610,20 +2610,28 @@
        "text": "The lobby is marble and empty and very, very cold. At the far end, a man in a grey suit in a chair that is too big for him, and in his chest, where a pocket square should be, a purple stone the size of a fist, pulsing."
       },
       {
-       "who": "The President",
-       "text": "The farmer. With the paper. I did like the farm; that part was true. I liked a lot of things, once. It's easier now."
+       "who": "",
+       "text": "He turns the chair. You know the face. You've known it longer than you've known your own name: the man who got you out of the city with a coat over your head and a deed in your pocket."
       },
       {
        "who": "The President",
-       "text": "You met my young people on the way up. The fire girl. The one who runs on the wind. The boy made of glass. They think they were born special."
+       "text": "Hello, kid. You read my letters. Burned, kept, memorised: I wrote every one of them so you'd do exactly what you did. M. was always me."
       },
       {
        "who": "The President",
-       "text": "I gave each of them a splinter of this. One black stone apiece, pressed into a cold hand on a bad day. Every Gift in this city is the same stone, and the stone is mine. Watch."
+       "text": "I put your hands on that deed. I sent the man with the photograph so you'd be angry enough to climb my stairs. And here you are. You always did come when I called."
       },
       {
        "who": "The President",
-       "text": "It told me I could keep the city if I stopped minding what it cost. I've stopped minding. Come and see."
+       "text": "Twenty-one years ago a star fell in your field. I took one piece and left the rest under the soil, waiting for someone it would trust. It trusts you. I made sure of that, too."
+      },
+      {
+       "who": "The President",
+       "text": "You met my young people on the way up. I gave each of them a splinter of this, one black stone pressed into a cold hand on a bad day. Every Gift in this city is the same stone, and the stone is mine."
+      },
+      {
+       "who": "The President",
+       "text": "It promised me nobody would ever leave me again. Everybody leaves, kid. So I stopped needing anyone to stay. Come and see what that buys."
       }
      ],
      "effects": {
@@ -2698,11 +2706,11 @@
         "0": [
          {
           "who": "",
-          "text": "It comes out like a tooth. He screams, once, and then he's just a tired man in a bad suit on a cold floor, looking at his hands like they're new."
+          "text": "It comes out like a tooth. He cries out, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new."
          },
          {
           "who": "The President",
-          "text": "...She was seven. My girl. I went up there with her picture and it said— it said I could have her back if I—"
+          "text": "...I was going to come out to the farm. One spring. Help you plant, and tell you all of it. It said I didn't need to. It said you'd come to me."
          },
          {
           "who": "",

@@ -1745,6 +1745,10 @@ func _lieutenant_choice(id: String, nm: String) -> void:
 	GameState.run["flags"]["lt_spared_" + id] = true
 
 
+var _upd_t := 0.0
+static var _update_told := false
+
+
 func _process(delta: float) -> void:
 	if hitstop > 0.0:
 		hitstop -= delta
@@ -1762,6 +1766,16 @@ func _process(delta: float) -> void:
 	if _autosave_t >= 90.0 and not _changing and not Dialogue.instance(get_tree()).active:
 		_autosave_t = 0.0
 		GameState.save()
+	# Web: a new version was deployed (the page's service worker found it). Save
+	# now so tapping the update banner loses nothing, and say where the banner is.
+	_upd_t += delta
+	if _upd_t >= 3.0 and not _update_told and OS.has_feature("web"):
+		_upd_t = 0.0
+		if bool(JavaScriptBridge.eval("window.dreamsUpdateReady === true", true)):
+			_update_told = true
+			if not _changing:
+				GameState.save()
+			hud.toast("A new version of Dreams is ready. Tap the yellow bar at the top to update. Your farm is saved.", Color(1, 0.85, 0.4))
 	# Clamp: a phone coming back from the background reports one huge frame;
 	# that must not fast-forward the clock by hours.
 	_time_acc += minf(delta, 0.25) * GameState.MINUTES_PER_SECOND
