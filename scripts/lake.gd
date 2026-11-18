@@ -68,6 +68,10 @@ func build() -> void:
 			_water.erase(c)
 	for c: Vector2i in _water:
 		set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	# The lake, its outlet stream and the water past the map edge: one body.
+	if Art.has("seamless", "lake_shallow"):
+		border_water_extra = _water
+		border_water_shore = "grass"
 	# East dock: from the shore at row 21 out into the water.
 	var x := 30
 	while _water.has(Vector2i(x, 21)) and x > 24:
@@ -270,7 +274,8 @@ func draw_map() -> void:
 	draw_grass(7)
 	WorldGen.draw_ground_detail(self, 76, 0.12)
 	draw_ground("dirt", cells_of([Rect2i(31, 21, 17, 3), Rect2i(44, 1, 3, 21), Rect2i(34, 23, 2, 12), Rect2i(10, 28, 2, 7), Rect2i(10, 30, 26, 2), FARM_EXIT, FOREST_EXIT]))
-	draw_water(_water, "grass")
+	if border_water_extra.is_empty():
+		draw_water(_water, "grass")
 	draw_exits()
 	if pad == 0:
 		draw_fence_border()

@@ -8,6 +8,7 @@ const QUARRY_EXIT := Rect2i(63, 12, 1, 4)
 const SEA_Y := 24
 var _sea := {}
 var _sand := {}
+var _pier_sea := {}  # sea cells under the piers: the water runs on beneath the planks
 
 
 func scene_id() -> String:
@@ -51,6 +52,8 @@ func build() -> void:
 				things.erase(c)
 				blocked.erase(c)
 				hard.erase(c)
+				if _sea.has(c):
+					_pier_sea[c] = true
 				_sea.erase(c)
 				things[c] = {"type": "dock"}
 	# The ferry to the merkitty colonies waits at the end of the west pier.
@@ -73,6 +76,11 @@ func build() -> void:
 		var item: String = ["seashell", "seashell", "coconut", "fiber"][rng.randi_range(0, 3)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}
 	set_thing(5, 16, {"type": "wreck", "hint": "A: search the wreck"})
+	# The sea, the water under the piers and the water past the map edge are one body.
+	if Art.has("seamless", "sea"):
+		border_water_extra = _sea.duplicate()
+		border_water_extra.merge(_pier_sea)
+		border_water_shore = "sand"
 
 
 func after_ready() -> void:
@@ -194,15 +202,30 @@ func draw_map() -> void:
 	# Sand (with grass transition), wet strip, then sea with foam.
 	var sand := _sand.duplicate()
 	for k in things:
-		if str(things[k].get("type", "")) == "dock":
+		if str(things[k].get("type", "")) in ["dock", "ferry"] and not _pier_sea.has(k):
 			sand[k] = true
 	if Art.has("tiles", "sand"):
 		draw_ground("sand", sand)
+		# Wet sand along the tide line, soft-edged.
+		var wet := {}
 		for c: Vector2i in sand:
-			if _sea.has(c + Vector2i(0, 1)):
+			for dd: Vector2i in [Vector2i(0, 1), Vector2i(-1, 1), Vector2i(1, 1)]:
+				if _sea.has(c + dd) or _pier_sea.has(c + dd):
+					wet[c] = true
+		if not soft_ground(wet, "wet_sand", Color(0, 0, 0, 0), Color(1.1, 1.08, 1.02, 0.7)):
+			for c: Vector2i in wet:
 				Art.draw_tile(self, "tiles", "sand_wet", Vector2(c * TILE), 4)
 	else:
 		draw_tileset_rect("shore_set", Rect2i(0, 8, cols, SEA_Y - 8), Color("e3cf8f"))
+	if border_water_extra.is_empty():
+		_draw_sea_cells()
+	# Only the town lane is dirt (it runs over grass); on the sand, paths are just sand.
+	draw_ground("dirt", cells_of([Rect2i(30, 1, 4, 8), TOWN_EXIT]))
+	_after_sea()
+
+
+## No seamless sea art: the old per-cell sea with painted foam.
+func _draw_sea_cells() -> void:
 	_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 		var frame := int(Time.get_ticks_msec() / 250) % 4
 		var nm := "sea" if Art.has("tiles", "sea") else "water"
@@ -226,8 +249,9 @@ func draw_map() -> void:
 			if not _sea.has(c + Vector2i(0, -1)) and not things.get(c + Vector2i(0, -1), {}).get("type", "") == "dock":
 				if not Art.draw_tile(ci, "tiles", "foam", Vector2(c * TILE), (frame + c.x) % 4):
 					ci.draw_rect(Rect2(c.x * TILE, c.y * TILE, TILE, 2), Color(1, 1, 1, 0.5)))
-	# Only the town lane is dirt (it runs over grass); on the sand, paths are just sand.
-	draw_ground("dirt", cells_of([Rect2i(30, 1, 4, 8), TOWN_EXIT]))
+
+
+func _after_sea() -> void:
 	draw_exits()
 	if not Art.has("buildings", "galleon"):
 		var p := cell_center(Vector2i(5, 16))

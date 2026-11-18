@@ -7,6 +7,8 @@ extends Node2D
 var hp := 3
 var max_hp := 3
 var base_hp := 3        # HP before any scaling: size checks (bars, stun, boss) use this
+var _flash_sent := -1.0
+var _draw_sig := ""
 var hp_scale := 1.0     # how much the home-tier scaling multiplied HP (allies hit harder by the same)
 ## Home-tier toughness: an enemy at home takes several swings at every stage.
 const PACK_KINDS := ["hill_wolf", "ash_hound"]
@@ -227,7 +229,8 @@ func _process(delta: float) -> void:
 	_stun = maxf(0.0, _stun - delta)
 	_cooldown = maxf(0.0, _cooldown - delta)
 	_squash = maxf(0.0, _squash - delta * 5.0)
-	if _flash_mat:
+	if _flash_mat and _flash != _flash_sent:
+		_flash_sent = _flash  # only touch the material when the flash changes
 		_flash_mat.set_shader_parameter("flash", _flash)
 	var player := map.player
 	# Who am I fighting? Whoever hurt me last, or an ally of yours that is much
@@ -339,7 +342,11 @@ func _process(delta: float) -> void:
 			tint = Color(1.0, 0.55, 0.5)
 		_sprite.modulate = tint
 		_sprite.scale = Vector2(0.5 * (1.0 + _squash * 0.25), 0.5 * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(1.1, 1.1)
-	queue_redraw()
+	# Redraw (hp bar, shadow, telegraph icon) only when what it shows changes.
+	var sig := "%d/%d/%d/%d/%d/%d/%d/%d/%d" % [hp, max_hp, int(_shield > 0.0), int(_lunge_tele > 0.0 or _lunge > 0.0), int(_range_tele > 0.0), int(_stomp_tele > 0.0), int(_enraged), int(_hit_flash > 0.0), int(_since_hit < 0.3)]
+	if _sprite == null or sig != _draw_sig:
+		_draw_sig = sig
+		queue_redraw()
 
 
 var _aggro: Node2D

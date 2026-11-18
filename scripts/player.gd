@@ -13,6 +13,7 @@ const DECEL := 760.0
 const PLAY_TIME := 1.5
 const FEET := Rect2(-4, -3, 8, 3)
 
+var _flash_sent := -1.0
 var char_id := ""
 static var last_mouse_motion_ms := -100000
 var facing := "down"  # down, up, left, right
@@ -489,7 +490,8 @@ func _physics_process(delta: float) -> void:
 	invuln = maxf(0.0, invuln - delta)
 	_attack_cd = maxf(0.0, _attack_cd - delta)
 	_flash = maxf(0.0, _flash - delta * 6.0)
-	if _flash_mat:
+	if _flash_mat and _flash != _flash_sent:
+		_flash_sent = _flash
 		_flash_mat.set_shader_parameter("flash", _flash)
 	_update_doll()
 	if map and map.hitstop > 0.0:

@@ -38,6 +38,10 @@ var _border_cells := {}  # Vector2i -> "tree" | "bigtree" | "rock" | "water" | "
 var _border_draw: Array = []  # [[Vector2i cell, String group, String name], ...] sorted by y
 var _border_rng := RandomNumberGenerator.new()
 var _border_open := {}
+## Content water drawn in ONE mask with the border water (beach sea, lake outlet),
+## so no bank line runs across open water where they meet.
+var border_water_extra := {}
+var border_water_shore := ""
 var _ext := Rect2i()          # area added by extend()
 var _ext_paths := {}          # dirt connecting moved exits
 var hitstop := 0.0
@@ -2770,7 +2774,7 @@ const WATER_LOOK := {
 	"grass": {"seam": "lake_shallow", "bank": Color(0.40, 0.29, 0.17, 0.85)},
 	"river": {"seam": "river", "bank": Color(0.38, 0.28, 0.17, 0.9), "drift": Vector2(0.0, 9.0)},
 	"bog": {"seam": "bog_water", "bank": Color(0.22, 0.18, 0.11, 0.9), "foam": Color(0.55, 0.62, 0.4, 0.25)},
-	"sand": {"seam": "sea", "bank": Color(0.86, 0.74, 0.5, 0.9)},
+	"sand": {"seam": "sea", "bank": Color(0.80, 0.70, 0.50, 0.75), "foam": Color(1.0, 1.0, 1.0, 0.95), "drift": Vector2(4.0, 1.5)},
 	"cave": {"seam": "lake_shallow", "bank": Color(0.12, 0.1, 0.14, 0.75), "tint": Color(0.5, 0.62, 0.78), "foam": Color(0.8, 0.9, 1.0, 0.3)},
 	"lava": {"seam": "lava", "bank": Color(0.12, 0.08, 0.06, 0.9), "foam": Color(1.0, 0.75, 0.3, 0.6), "drift": Vector2(1.0, 0.5)},
 }
@@ -3228,6 +3232,10 @@ func _build_border() -> void:
 			var n := WorldGen.fbm(float(c.x), float(c.y), sd, 9.0) * amp
 			# depth > 0 is outside the content; the band starts where depth + n > 1.
 			var filled := depth + n > 1.2
+			var inner := Vector2i(clampi(c.x, 0, cols - 1), clampi(c.y, 0, rows - 1))
+			if depth > 0 and border_water_extra.has(inner):
+				filled = true
+				kind = "water"  # the sea carries straight on out past the map edge
 			if depth >= pad - 1:
 				filled = true
 			if kind == "none":
@@ -3321,8 +3329,10 @@ func draw_border() -> void:
 			if not blocked.has(c):
 				corridor[c] = true
 		draw_ground("dirt", corridor)
-	if not water.is_empty():
-		draw_water(water, "sand" if Art.has("tiles", "t_water_sand") and GameState.run["scene"] == "beach" else "grass")
+	if not water.is_empty() or not border_water_extra.is_empty():
+		var body := water.duplicate()
+		body.merge(border_water_extra)
+		draw_water(body, border_water_shore if border_water_shore != "" else ("sand" if scene_id() == "beach" else "grass"))
 	if not cliff.is_empty():
 		draw_rock_mass(cliff)
 	# Forest floor only under the deep part of the tree mass, with a soft edge.
