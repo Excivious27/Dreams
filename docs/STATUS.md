@@ -2,6 +2,9 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 6 of 10
+- 20-agent audit (/tmp/audit_c6), bots 0/0 before and after, playtest 0 fails. Fix agents A–E by file ownership, G deferred, H slicer (412 art files promoted via a /tmp copy). Map ground baked to chunk textures (BAKE_*, painter twin); food energy one bar a day; Big Coop/Barn/Silo; mine ore ~1/6; Not Today clears statuses; enemy flow-field pathing; SKILL_VER 6 refunds; menu/chest drag scroll; shops absent flag; quest/blocked/collapse sounds. Prompts 25 (2 prompts / 4 images), Guide 18.
+
 ## 2026-11-18 — CONDUCT loop 5 of 10
 - 20-agent audit (/tmp/audit_c5), 20 bots × 3 days twice (one GameMenu.toggle crash fixed, then 0 errors / 0 fails), playtest 0 fails. Fixes applied by file owner (A bag/saves, B combat/skills/economy, C world/water/mines, D story/text, E UI/interiors/map, F deferred). Prompts 24 (2 prompts / 5 images), Guide 17.
 
