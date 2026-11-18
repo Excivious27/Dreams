@@ -408,3 +408,15 @@
 ## 2026-11-17 — Round 3 pass 2 + Round 4 pass 2
 - Art: portrait/fragment frames dropped from bo celebrate, marisol axe_down, nia reel/pickaxe_up, ollie hoe_up, old_moss walk_up, merry wave (persisted as `KNOWN_DROPS` in art_audit so re-slices keep them). 27 → 20 audit lines, all cosmetic.
 - Feel: tool swings play at 1.35× and can be walked out of after 0.3 s (fishing excepted); the work still happens on the press. Playtest 43/43.
+
+## 2026-11-17 — 20-agent audit round + design round (Guide 09, Art Prompts 16)
+- Audit: 20 reports (merged list in `docs/AUDIT-2026-11-17b.md`). Done: save recovery (TMP/BAK, corrupt save moved aside), 90 s autosave, story_pending replay, new-game confirm + Restore, toast cap/log, next-step line, dialogue B-back and confirm guard, percentage armour, wall-aware attacks and guns, dodge roll, crew/skill perks wired, racket pass cap/wash cap/collector rework, sprinklers and scarecrows placeable, web pack 216 → 82 MB (lossy WebP for art/gen).
+- Mines: cellular-automata caverns, 40–80 wide, organic walls, ladder at the farthest point (`scripts/mine.gd`).
+- Elevation: `GameMap.add_plateau(cells, ramps)`; regions read `plateaus` from data.
+- Conquest: `Battle` + `HelperUnit`; `tools/gen_battles.py` → bf_frostfield, bf_shattered_vale, bf_rail_yards, bf_dockside.
+- Colonies: `Colony`; `tools/gen_colonies.py` → colony_coral/kelp/ice/ember, ferry from the beach pier, cboss_* gift bosses, abilities coral_ward/tideswim/frost_step/starfire.
+- Town projects: `Project`; `tools/gen_projects.py` → crystal_ward and hq (6 stages each), crew jobs.
+- Lieutenants: eight `lt_*` gift bosses in gifts.json `lieutenants`.
+- Talk: `Talk` + data/talk.json (season/weather/arc/festival/heat).
+- check.sh adds compile_all.gd and campaign_test.gd. 20-bot run: all finish, 0 errors.
+- Open: crafting screen, quality crops, save slots, settings, heists/turf, endings/epilogues, heart perks, relay host. Art: Prompts 16.
