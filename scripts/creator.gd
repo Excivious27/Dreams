@@ -1,6 +1,6 @@
 class_name Creator
 extends VBoxContainer
-## Character creator: body (skin × build), hair style and colour, hat, face.
+## Character creator: outfit, hair style and colour, hat, pet.
 ## Used on the title screen (new game) and at the dresser in the house.
 ## Emits `done(look)`; `look` is the dictionary stored in run["look"].
 
@@ -102,7 +102,12 @@ func _build() -> void:
 		ppets.sort()
 		_picker("Pet", ppets, "pet", func(v: String) -> String: return "Pup (classic)" if v == "" else v.replace("_", " ").capitalize())
 	elif PaperDoll.available():
-		_picker("Body", PaperDoll.BODIES, "body", func(v: String) -> String: return v.replace("_", " ").capitalize())
+		# The look's outfit is what the hero wears (PaperDoll.body_for), so that's the picker (the bare skin/build bases never show).
+		var outs: Array = []
+		for o: String in PaperDoll.OUTFITS:
+			if Art.has("body", o):
+				outs.append(o)
+		_picker("Outfit", outs, "outfit", func(v: String) -> String: return v.trim_prefix("outfit_").capitalize())
 		_picker("Hair", PaperDoll.hair_styles(), "hair", func(v: String) -> String: return v.replace("_", " ").capitalize())
 		_picker("Hair colour", PaperDoll.HAIR_COLORS.keys(), "hair_color", func(v: String) -> String: return v.capitalize())
 		var hats: Array = [""]
@@ -130,7 +135,10 @@ func _build() -> void:
 			var hs := PaperDoll.hat_styles()
 			look["hat"] = "" if hs.is_empty() or randf() < 0.4 else hs[randi() % hs.size()]
 		else:
+			var keep_outfit: Variant = look.get("outfit", null)
 			look = PaperDoll.random_look()
+			if keep_outfit != null:
+				look["outfit"] = keep_outfit  # dice re-rolls hair and face, not the arc's clothes
 		_build()))
 	h.add_child(_icon_btn("done", "Done", func() -> void: done.emit(look), true))
 	if _show_cancel:
@@ -201,7 +209,7 @@ func _refresh_preview() -> void:
 		body.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		_preview.add_child(body)
 		var hair := Sprite2D.new()
-		hair.modulate = Color(str(PaperDoll.HAIR_COLORS.get(str(look.get("hair_color", "brown")), "ffffff")))
+		hair.material = PaperDoll.hair_material(str(look.get("hair_color", "brown")))
 		hair.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		var hat := Sprite2D.new()
 		hat.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -209,8 +217,8 @@ func _refresh_preview() -> void:
 		_preview.add_child(hat)
 		var upd := func() -> void:
 			var pose := PaperDoll.pose_index(body.animation, body.frame)
-			PaperDoll.place_layer(hair, "hair", str(look.get("hair", "")), str(look.get("body", "medium_slim")), pose, false, sc)
-			PaperDoll.place_layer(hat, "hats", str(look.get("hat", "")), str(look.get("body", "medium_slim")), pose, false, sc)
+			PaperDoll.place_layer(hair, "hair", str(look.get("hair", "")), PaperDoll.body_for(look), pose, false, sc)
+			PaperDoll.place_layer(hat, "hats", str(look.get("hat", "")), PaperDoll.body_for(look), pose, false, sc)
 		body.frame_changed.connect(upd)
 		upd.call()
 	elif _playable_sprite != "":

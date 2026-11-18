@@ -190,6 +190,10 @@ func _on_msg(m: Dictionary) -> void:
 				if str(p.get("arc", "")) != str(GameState.run["arc"]):
 					_arc_mismatch = true
 			connected.emit(_host)
+			if _arc_mismatch and not _host:
+				var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
+				if gm and gm.hud:
+					gm.hud.toast("Your host is on the other story: some places and builds will look different.")
 			peers_changed.emit()
 		"full":
 			leave("That room is full (8 players).")
@@ -278,6 +282,7 @@ func _apply_world(d: Dictionary) -> void:
 	# The host's day we last saw (0 = first world since joining): only a real rollover is a morning.
 	var host_day := int(_last_world.get("day", 0))
 	var abs0 := GameState.now_abs()
+	var day0 := int(GameState.run.get("day", 1))
 	for k in d:
 		if not (k in WORLD_KEYS):
 			continue
@@ -292,7 +297,7 @@ func _apply_world(d: Dictionary) -> void:
 			if not d.has(k):
 				GameState.run.erase(k)
 	if not _host and host_day == 0:
-		GameState.shift_clock(GameState.now_abs() - abs0)  # first world: our timers move onto the host's clock
+		GameState.shift_clock(GameState.now_abs() - abs0, int(GameState.run.get("day", 1)) - day0)  # first world: our timers move onto the host's clock
 	# The host slept: a new morning for us too (our sell box, energy, health).
 	if not _host and host_day > 0 and int(GameState.run.get("day", 0)) > host_day:
 		var rep := GameState.guest_morning()
@@ -363,6 +368,7 @@ func _became_host() -> void:
 				keep.erase(k)
 			else:
 				keep[k] = _solo_backup[k]
+		GameState.shift_clock(int(keep.get("day", 1)) * 1440 + int(keep.get("time", GameState.DAY_START)) - GameState.now_abs(), int(keep.get("day", 1)) - int(GameState.run.get("day", 1)), keep)
 		var had_prev := SaveGame.get_value(GameState.prev_key(), null) is Dictionary
 		SaveGame.set_value(GameState.prev_key(), keep)
 		var gm := get_tree().current_scene as GameMap if is_inside_tree() else null
@@ -379,24 +385,34 @@ func _restore_solo() -> void:
 		_solo_backup = {}
 		return
 	var abs0 := GameState.now_abs()
+	var day0 := int(GameState.run.get("day", 1))
 	for k in _solo_backup:
 		if _solo_backup[k] == null:
 			GameState.run.erase(k)
 		else:
 			GameState.run[k] = _solo_backup[k]
-	GameState.shift_clock(GameState.now_abs() - abs0)  # and back onto ours
+	GameState.shift_clock(GameState.now_abs() - abs0, int(GameState.run.get("day", 1)) - day0)  # and back onto ours
 	_solo_backup = {}
 	GameState.save()
+
+
+## A guest on someone else's world, also while reconnecting (the host's world is still loaded).
+func visiting() -> bool:
+	return not _host and not _solo_backup.is_empty()
 
 
 ## What to write to the save file: while visiting as a guest, your own world.
 func save_view(run: Dictionary) -> Dictionary:
 	if _solo_backup.is_empty() or _host:
 		return run
-	var v := run.duplicate()
+	var v := run.duplicate(true)  # deep: the timers are moved on the copy only
+	var host_abs := GameState.now_abs()
+	var host_day := int(run.get("day", 1))
 	for k in _solo_backup:
 		if _solo_backup[k] == null:
 			v.erase(k)
 		else:
 			v[k] = _solo_backup[k]
+	# Back onto our own clock, so a save made mid-visit doesn't keep host-clock timers.
+	GameState.shift_clock(int(v.get("day", 1)) * 1440 + int(v.get("time", GameState.DAY_START)) - host_abs, int(v.get("day", 1)) - host_day, v)
 	return v

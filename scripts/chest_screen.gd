@@ -49,8 +49,9 @@ func _ready() -> void:
 	sb.set_corner_radius_all(4)
 	sb.set_content_margin_all(5)
 	_root.add_theme_stylebox_override("panel", sb)
-	_root.position = Vector2(4, 22)
-	_root.size = Vector2(262, 452)
+	Hud.skin_buttons(_root)  # wooden buttons, like the menu
+	_root.position = Vector2(4, 30)  # below the clock
+	_root.size = Vector2(262, 446)
 	add_child(_root)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 3)
@@ -63,7 +64,7 @@ func _ready() -> void:
 	var x := _btn("✕", close)
 	x.custom_minimum_size = Vector2(26, 22)
 	top.add_child(x)
-	_top = _scroll_grid(v, 150)
+	_top = _scroll_grid(v, 156)  # 5 rows: a 36-slot chest fits
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 2)
 	v.add_child(row)
@@ -93,9 +94,9 @@ func _ready() -> void:
 	# Long-press an item: pick it up to place it, or lock / trash / move half.
 	_acts = HBoxContainer.new()
 	_acts.add_theme_constant_override("separation", 2)
-	_acts.custom_minimum_size = Vector2(0, 22)  # the row appearing never pushes the bag grid
-	v.add_child(_acts)
-	_bot = _scroll_grid(v, 180)  # keeps the panel and its tip line on the 480 screen
+	_acts.custom_minimum_size = Vector2(0, 22)  # the row appearing never moves the grids
+	_bot = _scroll_grid(v, 168)  # keeps the panel and its tip line on the 480 screen
+	v.add_child(_acts)  # under the bag, so its empty band isn't between the label and the grid
 	var tip := _label("Tap: move across.  Hold: pick up, lock, trash, move half.", 7, Color(0.8, 0.75, 0.65))
 	v.add_child(tip)
 	_refresh()

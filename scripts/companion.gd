@@ -107,6 +107,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		var gl := cooldown_left(ab)
 		if gl > 0.0:
 			m.hud.toast("Ready in %ds." % int(ceil(gl)), Color(0.8, 0.85, 1.0))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
 			return
 		# Check mana first (same rule as GameState.spend_mana), so a short cast costs no cooldown.
 		var cost := int(Gift.def(ab.trim_prefix("gift:")).get("mana", 8))
@@ -114,6 +115,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		var floor_m := 10 if GameState.bonus("magic", "awakened") > 0.0 else 0
 		if mana < cost and not (floor_m > 0 and mana <= floor_m and cost <= floor_m):
 			m.hud.toast("Not enough mana.", Color(0.7, 0.8, 1.0))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
 			return
 		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + 8.0
 	if ab in ["haul", "tail"]:
@@ -124,6 +126,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		var left := cooldown_left(ab)
 		if left > 0.0:
 			m.hud.toast("Ready in %ds." % int(ceil(left)), Color(0.8, 0.85, 1.0))
+			Music.instance(m.get_tree()).sfx("nope", "thud")
 			return
 		GameState.add_arc_xp(3)
 		GameState.add_xp("leadership", 4)
@@ -131,6 +134,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		var th := int(GameState.bonus("leadership", "team_heal"))
 		if th > 0:
 			GameState.run["hp"] = mini(int(GameState.run["max_hp"]), int(GameState.run["hp"]) + th)
+	Music.instance(m.get_tree()).sfx("spell", "pickup")
 	# Prompts-12 partner art: cast pose + the partner's own effect strip.
 	var sprite_id := str(defs().get(active_id(), {}).get("sprite", active_id()))
 	if Art.has("fx", "ability_" + sprite_id):

@@ -24,7 +24,7 @@ w477  region ground and paths → seamless/purple_soil, seamless/cloud_star, sea
 w478  last item icons         → items/crystal_bloom, strawberry_wine, corn_ale, berry_juice, sprinkler_iridium, old_collar, brass_locket, knight_shard, manifest, sand, colony_light, coral_charm, tide_pearl, kelp_wrap, ember_glass, starfish_snack, shiitake, moonwort, backpack_1, backpack_2, backpack_3 (slice_world.py: `_p14_icons("w478_item_icons_last.png", [those ids in order])`). Hud.icon_for prefers items/<id>, so the ICON_NEAR look-alikes switch off by themselves. Replaces 17 w354, 18 w369 and 19 w421.
 
 LEFT OUT ON PURPOSE
-- Catkins: his walking sheet and portraits already exist (characters/catkins, portraits/catkins); npcs.json just points him at Merry (fix 1).
+- Catkins: his walking sheet and portraits already exist (characters/catkins, portraits/catkins); the grey-cat portrait npc_catkins overrode them (code fix, loop-9 audit 15 #2).
 - Crystal babies: the toddler sheet w264 was uploaded; it was cut wrong and the enemy points at the shard (fix 2).
 - The dark spire's "box": it is the purple soil layer, fixed by w477. The spire's keyed-out glow is still asked in 18 w377.
 - A rock fill behind the Hollow Heart's crystal wall: seamless/cave_crystal_rock already exists (fix 7).

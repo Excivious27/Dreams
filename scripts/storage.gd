@@ -171,8 +171,8 @@ static func move_slot(key: String, from: int, to: int) -> void:
 ## Chests near the player on this map (farm builds and placed chests), nearest first.
 static func nearby(m: GameMap, radius := 10.0) -> Array:
 	var out: Array = []
-	if m == null or m.player == null:
-		return out
+	if m == null or m.player == null or GameState.visiting():
+		return out  # the host's chests aren't ours
 	var pc := m.player.cell()
 	for c: Vector2i in m.things:
 		var t: Dictionary = m.things[c]

@@ -133,6 +133,8 @@ for rid, R in I.items():
     for i, c in enumerate([(1, 2), (cols - 2, 2), (1, rows - 2), (cols - 2, rows - 2)]):
         if c[1] == 2 and c[0] in wins:
             continue  # a back corner under a window stays clear (a crate would hide the glass)
+        if c[1] == 2 and (c[0], 3) in used:
+            continue  # a corner behind a back-row machine stays empty
         put(rng.choice(CORNER) if i == 0 else rng.choice(kit), c)
     # Homes: a living set in the middle (a rug under a table and two chairs), unless
     # the room already has its own table.
@@ -148,7 +150,7 @@ for rid, R in I.items():
     side = kit_all[:]
     rng.shuffle(side)
     k = 0
-    for y in range(3, rows - 2, 2):
+    for y in range(4, rows - 3, 2):  # one free cell between corner and side pieces
         for x in (1, cols - 2):
             if put(side[k % len(side)], (x, y)):
                 k += 1

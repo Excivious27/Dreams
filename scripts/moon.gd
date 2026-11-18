@@ -195,10 +195,6 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 func draw_map() -> void:
 	draw_tileset_rect("moon_dust", Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), Color("b9a8d8"))  # under the band too: no void rows
 	draw_tileset_rect("crater", CRATER, Color("8a7ab8"))
-	draw_rect(Rect2(0, 0, cols * TILE, TILE), Color("2a1a44"))
-	draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("2a1a44"))
-	draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("2a1a44"))
-	draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("2a1a44"))
 
 
 func _alien_shop() -> void:

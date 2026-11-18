@@ -44,6 +44,7 @@ var border_water_extra := {}
 var border_water_shore := ""
 ## Footstep word per cell for soft ground patches (paths, sand, groves); player._ground_word reads it.
 var ground_word := {}
+var ground_seam := {}  # cell -> seam of the soft patch drawn there (exit corridors join the path's own body)
 var _ext := Rect2i()          # area added by extend()
 var _ext_paths := {}          # dirt connecting moved exits
 var hitstop := 0.0
@@ -501,6 +502,11 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"pet_animal":
 			var a: Variant = thing.get("animal", null)
+			if a != null and is_instance_valid(a) and Net.visiting():
+				# The host's animals: a guest's visit never touches their own animals, silo or goods.
+				emote(a, "heart", 1.4, -18.0)
+				hud.toast("The host's animals. They're happy to see you.", Color(1, 0.8, 0.9))
+				return true
 			if a != null and is_instance_valid(a):
 				var nm := str(a.name)
 				var all: Dictionary = GameState.run.get("animals", {})
@@ -565,7 +571,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			xp("foraging", 1)
 			# Cut with the scythe, weeds and tall grass make hay for the animals.
 			if ht == "scythe" and randf() < 0.5:
-				if not ((not Net.online() or Net.is_host()) and Builds.silo_add(1)):  # a built silo takes it straight in (host's silo)
+				if not (not Net.visiting() and Builds.silo_add(1)):  # a built silo takes it straight in (host's silo)
 					pop_items(cell_center(c), "hay", 1)
 			# Now and then a weed's roots hold a packet of wild seed.
 			if randf() < 0.06 + 0.01 * GameState.skill_level("foraging"):
@@ -824,6 +830,9 @@ func _check_quests() -> void:
 	for id in GameState.tick_quests():
 		hud.toast(quest_done_text(id), Color(1, 0.9, 0.4))
 		Music.instance(get_tree()).sfx("quest_done", "levelup")
+	for t in GameState.opened:
+		hud.toast("New quest: %s" % str(t), Color(1, 0.9, 0.4))
+	GameState.opened.clear()
 
 
 ## Emote bubble over a node (W36): "heart", "surprise", "confused", "sleep", "music", "angry", "talk"...
@@ -1190,7 +1199,7 @@ var exact_footprints := false
 const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "danger", "neon": "neon", "hideout": "neon",
 	"jungle": "jungle", "marsh": "marsh", "bf_frostfield": "battle", "bf_shattered_vale": "battle", "bf_rail_yards": "battle",
 	"bf_dockside": "battle", "colony_coral": "colony_coral", "colony_kelp": "colony_kelp", "colony_ice": "colony_ice",
-	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart", "moon": "sky"}
+	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart", "moon": "sky", "quarry": "mountain"}
 const NIGHT_OK := ["farm", "town", "meadow", "lake", "beach", "mountain", "forest", "orchard_hills", "countryside", "riverlands", "highlands"]  # not crystal_meadow: cattopia is its song day and night
 
 
@@ -1380,7 +1389,7 @@ func _sync_puppets() -> void:
 func on_world_sync(_d: Dictionary) -> void:
 	# The soil layer is cheap; a full map redraw costs 150-350 ms, so at most one per 2 s.
 	var soil = get("_soil")
-	var ssig := hash([GameState.run.get("farm", {}), GameState.is_wet(), Builds.is_built("greenhouse")])
+	var ssig := hash([GameState.run.get("farm", {}), GameState.sky_waters(), Builds.is_built("greenhouse")])
 	if soil is CanvasItem and ssig != _soil_sig:
 		_soil_sig = ssig
 		(soil as CanvasItem).queue_redraw()
@@ -1610,8 +1619,9 @@ var _flows := {}
 
 func flow_dir(from: Vector2, goal: Vector2, max_r := 0) -> Vector2:
 	var gc := world_to_cell(goal)
-	if blocked.has(gc) and not is_water_cell(gc):
-		# A goal snapped to the 32-px grid can land on the wall you stand against:
+	if blocked.has(gc):
+		# (Water cells too: on a bank the snapped goal lands in the stream, and a field
+		# grown from there reaches both banks.) A goal snapped to the 32-px grid can land on the wall you stand against:
 		# use a free cell of the 2x2 block at that corner (the one you're in).
 		for d2: Vector2i in [Vector2i(-1, 0), Vector2i(0, -1), Vector2i(-1, -1)]:
 			if not blocked.has(gc + d2):
@@ -1638,6 +1648,8 @@ func flow_dir(from: Vector2, goal: Vector2, max_r := 0) -> Vector2:
 			return Vector2.ZERO
 		return (goal - from).normalized()
 	var nxt: Vector2i = f[fc]
+	if nxt == gc and blocked.has(gc):
+		return Vector2.ZERO  # you're in the water just off this bank: wait here, don't wade
 	return (cell_center(nxt) - Vector2(0, TILE / 2.0) - from).normalized()
 
 
@@ -1829,6 +1841,7 @@ func use_consumable(sel: String) -> bool:
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
 			fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.8)
+			Music.instance(get_tree()).sfx("spell", "pickup")
 			hud.toast("%d crop%s leap a day ahead." % [grew, "" if grew == 1 else "s"], Color(0.7, 1, 0.7))
 			# Crops live on the farm's soil layer: never redraw the whole map for them.
 			var soil = get("_soil")
@@ -1843,6 +1856,7 @@ func use_consumable(sel: String) -> bool:
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
 			Racket.set_heat(Racket.heat() - int(it.get("amount", 2)))
+			Music.instance(get_tree()).sfx("zap", "pickup")
 			fx("cy_scramble" if Art.has("fx", "cy_scramble") else "sparkle", player.position + Vector2(0, -14), 12.0, 0.6)
 			hud.toast("%s: heat down to %d." % [GameState.item_name(sel), Racket.heat()], Color(0.5, 1.0, 0.95))
 			return true
@@ -1858,6 +1872,7 @@ func use_consumable(sel: String) -> bool:
 			player.play_tool("hold")
 			fx("emp" if Art.has("fx", "emp") else "ripple_ring" if Art.has("fx", "ripple_ring") else "spark", player.position + Vector2(0, -8), 10.0, 0.5 * float(it.get("radius", 84.0)) / 40.0)
 			shake(2.0)
+			Music.instance(get_tree()).sfx("zap", "hit")
 			var hit_n := 0
 			var opened := 0
 			for e in enemies:
@@ -1874,6 +1889,7 @@ func use_consumable(sel: String) -> bool:
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")
 			Bot.deploy(self, sel, it)
+			Music.instance(get_tree()).sfx("zap", "pickup")
 			fx("cy_bot_deploy" if Art.has("fx", "cy_bot_deploy") else "poof", player.position + Vector2(10, 0), 12.0, 0.5)
 			hud.toast("%s deployed: %d seconds of cover." % [GameState.item_name(sel), int(it.get("life", 30))], Color(0.5, 1.0, 0.95))
 			return true
@@ -1883,6 +1899,7 @@ func use_consumable(sel: String) -> bool:
 				hud.toast("The drone is still charging. Ready on day %d." % ready_day, Color(0.7, 0.9, 1.0))
 				return true
 			GameState.run["flags"]["drone_ready"] = int(GameState.run["day"]) + 2
+			Music.instance(get_tree()).sfx("alert", "zap")
 			player.play_tool("hold")
 			fx("cy_drone_scan" if Art.has("fx", "cy_drone_scan") else "sparkle", player.position + Vector2(0, -26), 10.0, 0.6)
 			var seen := 0
@@ -2048,9 +2065,15 @@ func _open_quest_items() -> Dictionary:
 	for q in GameState.run.get("quests", []):
 		if bool(q.get("done", false)):
 			continue
-		var it = GameState._quest_def(str(q["id"])).get("done_when", {}).get("item", [])
-		if it is Array and it.size() > 0:
+		var dw: Dictionary = GameState._quest_def(str(q["id"])).get("done_when", {})
+		var it = dw.get("item", [])
+		if it is String:
+			out[it] = true
+		elif it is Array and it.size() > 0:
 			out[str(it[0])] = true
+		for pair in dw.get("items", []):  # [[id, n], ...] (maple_supply_run's stone)
+			if pair is Array and pair.size() > 0:
+				out[str(pair[0])] = true
 	return out
 
 
@@ -2071,23 +2094,30 @@ func on_enemy_died(e: Enemy) -> void:
 	GameState.run["kills"] = int(GameState.run.get("kills", 0)) + 1
 	var kt: Dictionary = GameState.run.get("kills_today", {})
 	var kkey := scene_id() + (":%d" % int(get("floor_no")) if scene_id() == "mine" else "")
-	kt[kkey] = int(kt.get(kkey, 0)) + 1
-	GameState.run["kills_today"] = kt
 	# Re-entering a map respawns its foes: only the first 12 a day per map (per mine floor) pay.
-	# Named bosses, a first battle and an island's foes until its quota always pay.
+	# Named bosses, an unwon battle (80 kills a day: one full fight, not endless
+	# fall-back-and-retry) and an island's foes until its quota always pay, and don't
+	# use up the map's 12.
 	var boss: bool = e.is_guardian or e.has_meta("boss_name") or e.has_meta("story_flag") or e.has_meta("colony_boss") or e.kind.begins_with("lt_") or e.kind.begins_with("cboss_") or e.kind.begins_with("marked_")
-	var first_battle: bool = scene_id().begins_with("bf_") and not GameState.run["flags"].has("battle_" + scene_id())
+	var fkey := "bf:" + kkey
+	var first_battle: bool = scene_id().begins_with("bf_") and not GameState.run["flags"].has("battle_" + scene_id()) and int(kt.get(fkey, 0)) < 80
 	var quota: bool = e.has_meta("colony_foe") and Colony.data().has(scene_id()) and int(Colony.st(scene_id()).get("kills", 0)) < int((Colony.data()[scene_id()] as Dictionary).get("kills", 0))
-	var paid: bool = int(kt[kkey]) <= 12 or boss or first_battle or quota
+	var exempt := boss or first_battle or quota
+	if first_battle:
+		kt[fkey] = int(kt.get(fkey, 0)) + 1
+	elif not exempt:
+		kt[kkey] = int(kt.get(kkey, 0)) + 1
+	GameState.run["kills_today"] = kt
+	var paid: bool = exempt or int(kt.get(kkey, 0)) <= 12
 	if paid:
 		GameState.run["crystals"] = int(GameState.run["crystals"]) + e.reward
 		hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
-	elif int(kt[kkey]) == 13:
+	elif int(kt.get(kkey, 0)) == 13:
 		hud.toast("No more crystals from these foes today.", Color(0.8, 0.8, 0.9))
 	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(e.kind, {})
 	xp("combat", maxi(1, int(round(int(ed.get("xp", 2)) * GameState.tier_scale(e.kind, e.tier, "xp")))))
 	var ke := int(GameState.bonus("combat", "kill_energy"))
-	if ke > 0:
+	if ke > 0 and paid:  # past the cap foes give nothing, energy included
 		GameState.extra_energy(ke)
 	var table: Array = GameState.enemy_data.get("drops", {}).get(e.kind, [])
 	var got: Dictionary = GameState.roll_drops(table)
@@ -2178,7 +2208,7 @@ func player_down(reason := "hurt") -> void:
 	Music.instance(get_tree()).sfx("die" if reason == "hurt" else "sleep")
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)
-	if (Net.online() and not Net.is_host()) or (Net.i() != null and not Net.i()._host and not Net.i()._solo_backup.is_empty()):
+	if Net.visiting():
 		# A guest's night is the host's: wake up when the host's day rolls over.
 		GameState.run["flags"]["guest_out_day"] = int(GameState.run["day"])
 		GameState.run["energy"] = int(GameState.run["max_energy"]) / 2
@@ -2464,7 +2494,7 @@ func _process(delta: float) -> void:
 			var low := str(nt).to_lower()
 			if "letter" in low:
 				Music.instance(get_tree()).sfx("mail")
-			elif "level" in low or "heart" in low or low.begins_with("built") or low.begins_with("learned"):
+			elif "level" in low or "heart" in low or low.begins_with("built"):  # (learned: the menu already played craft_done)
 				Music.instance(get_tree()).sfx("levelup")
 				if player:
 					fx("skill_up" if Art.has("fx", "skill_up") else "levelup", player.position + Vector2(0, -4), 10.0, 0.6)
@@ -2509,7 +2539,7 @@ func _process(delta: float) -> void:
 			for note in Crafting.newly_done():
 				hud.toast(str(note), Color(1, 0.9, 0.5))
 	var t := int(GameState.run["time"])
-	if t >= GameState.DAY_END and not _changing and not (Net.online() and not Net.is_host() and int(GameState.run["flags"].get("guest_out_day", -1)) == int(GameState.run["day"])):  # a guest already out tonight waits for the host's morning
+	if t >= GameState.DAY_END and not _changing and not (Net.visiting() and int(GameState.run["flags"].get("guest_out_day", -1)) == int(GameState.run["day"])):  # a guest already out tonight waits for the host's morning
 		player_down("late")
 	elif int(GameState.run["energy"]) <= 0 and not _changing and not player.frozen:
 		player_down("tired")
@@ -2656,7 +2686,17 @@ func _draw() -> void:
 
 ## Exit corridors through the border band (region.gd draws its own road tiles).
 func draw_corridor(cells: Dictionary) -> void:
-	draw_ground(corridor_kind(), cells)
+	var k := corridor_kind()
+	if k in ["dirt", "sand"] and scene_id() != "beach":
+		var body := widen_path(cells)
+		var seam := "dirt_track" if k == "dirt" else "sand"
+		var gs: Dictionary = (_painter_of if _painter_of != null else self).ground_seam
+		for c: Vector2i in gs:
+			if str(gs[c]) == seam:
+				body[c] = true  # redraw the map's own paths with the corridor as one shape: no ring where they meet
+		if soft_ground(body, seam, Color(0.25, 0.15, 0.06, 0.3 if k == "dirt" else 0.0)):
+			return
+	draw_ground(k, cells)
 
 
 ## What the exit corridors through the border band are paved with. Regions use
@@ -2680,6 +2720,23 @@ var _tall := {}
 ## Seamless ground (Prompts 16): a 256px texture that tiles every 8 cells. Each
 ## cell draws its own 32px window, so any set of cells joins up with no seams.
 const SEAM_PERIOD := 128.0   # world px per texture repeat (256 art px at 2x detail)
+
+
+## A seamless texture over a whole world-px rect, in blocks aligned to the 8-cell
+## period: exactly the texels seam_cell draws for each cell inside it.
+func seam_fill(ci: CanvasItem, name: String, area: Rect2, col := Color.WHITE) -> bool:
+	var t := Art.tex("seamless", name)
+	if t == null:
+		return false
+	var by := floorf(area.position.y / SEAM_PERIOD) * SEAM_PERIOD
+	while by < area.end.y:
+		var bx := floorf(area.position.x / SEAM_PERIOD) * SEAM_PERIOD
+		while bx < area.end.x:
+			var blk := Rect2(bx, by, SEAM_PERIOD, SEAM_PERIOD).intersection(area)
+			ci.draw_texture_rect_region(t, blk, Rect2((blk.position - Vector2(bx, by)) * 2.0, blk.size * 2.0), col)
+			bx += SEAM_PERIOD
+		by += SEAM_PERIOD
+	return true
 
 
 func seam_cell(ci: CanvasItem, name: String, c: Vector2i, col := Color.WHITE, scroll := Vector2.ZERO) -> bool:
@@ -2854,7 +2911,7 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 		# as a chain of little boxes. Widen to 2 so there is a real middle.
 		var cells := widen_path(cells_in)
 		# Dirt and sand paths: one soft, wobbly-edged shape instead of square cells.
-		if kind in ["dirt", "sand"] and scene_id() != "beach" and soft_ground(cells, "dirt_track" if kind == "dirt" else "sand", Color(0.25, 0.15, 0.06, 0.3)):
+		if kind in ["dirt", "sand"] and scene_id() != "beach" and soft_ground(cells, "dirt_track" if kind == "dirt" else "sand", Color(0.25, 0.15, 0.06, 0.3 if kind == "dirt" else 0.0)):
 			return
 		# Plain fill under everything (the blob set's fill variants are mostly
 		# decals: pebbles, puddles, ruts) with an occasional decal, then edges.
@@ -3150,6 +3207,7 @@ func soft_ground(cells: Dictionary, seam: String, lip := Color(0.2, 0.14, 0.07, 
 	var gw := "sand" if "sand" in seam else ("stone" if ("ruin" in seam or "stone" in seam or "cobble" in seam or "pave" in seam) else ("grass" if ("grass" in seam or "moss" in seam) else "dirt"))
 	for gc in cells:
 		gw_host.ground_word[gc] = gw
+		gw_host.ground_seam[gc] = seam
 	if not Art.has("seamless", seam):
 		return false
 	var key := "g:%s:%d:%d" % [seam, cells.size(), cells.hash()]
@@ -3303,7 +3361,9 @@ func _draw_plateau_painted(cells: Dictionary, stairs: Dictionary) -> bool:
 	var cap := "cliff" if str(st[0]) == "grass" and scene_id() != "hollow_heart" else "cliff_stone"
 	if not Art.has("tiles", cap + "_top_0"):
 		cap = "cliff"
-	if Art.has("tiles", cap + "_top_0"):
+	if (cap == "cliff" or scene_id() == "hollow_heart") and Art.has("tiles", cap + "_top_0"):
+		# Stone rims on snow/sand/ash read as pale boxes: those plateaus show their own
+		# ground, edged by the painted face.
 		Art.draw_blob(self, cells, cap, 16.0, 1)
 	# The face: a window of the painted strip under every southern edge cell.
 	var face_h := TILE * 1.6
@@ -3478,21 +3538,31 @@ func draw_rock_mass(cells: Dictionary) -> void:
 		while Art.has("tiles", "%s_%d" % [wall, n]):
 			n += 1
 		var wfill := "mf_stone" if Art.has("tiles", "mf_stone") else "g_gravel"
+		var crystal := scene_id() == "hollow_heart" and Art.has("seamless", "cave_crystal_rock")
 		for c: Vector2i in cells:
 			# Dark rock mass behind the wall, not a black hole.
-			if scene_id() == "hollow_heart" and seam_cell(self, "cave_crystal_rock", c):
+			if crystal and seam_cell(self, "cave_crystal_rock", c):
 				pass  # blue crystal rock behind the Hollow Heart's crystal band, not a grey slab
 			elif not Art.draw_tile(self, "tiles", wfill, Vector2(c * TILE), 4):
 				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.3, 0.29, 0.32))
+		# The shade in its own pass: a plain rect after every textured cell broke the
+		# batch twice per cell (hollow_heart: ~4000 draw calls per chunk bake).
+		for c: Vector2i in cells:
 			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.05, 0.04, 0.08, 0.2))
+		# Wall faces grouped by texture (they never overlap: a face sits on the cell
+		# above it, which is band fill with no face of its own).
+		var faces := {}
 		for c: Vector2i in cells:
 			var below := c + Vector2i(0, 1)
 			if cells.has(below):
 				continue
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
-			var t := Art.tex("tiles", "%s_%d" % [wall, h % n])
+			(faces.get_or_add(h % n, []) as Array).append(c)
+		for fi: int in faces:
+			var t := Art.tex("tiles", "%s_%d" % [wall, fi])
 			if t:
-				draw_texture_rect(t, Rect2(c.x * TILE, c.y * TILE - TILE, TILE, TILE * 2), false)
+				for c: Vector2i in faces[fi]:
+					draw_texture_rect(t, Rect2(c.x * TILE, c.y * TILE - TILE, TILE, TILE * 2), false)
 		# side walls: cells with open land to the left/right get an end cap
 		for c: Vector2i in cells:
 			for side: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0)]:
@@ -3582,14 +3652,16 @@ func _build_border() -> void:
 	for e in exits:
 		var r: Rect2i = e["rect"]
 		var g := r.grow(1)
+		# Same cells as testing every map cell: each case needs x inside g's columns
+		# (north/south exits) or y inside g's rows (west/east exits).
 		for y in range(-pad, rows + pad):
+			for x in range(maxi(g.position.x, -pad), mini(g.end.x, cols + pad)):
+				if (r.position.y <= 0 and y < r.end.y) or (r.end.y >= rows and y >= r.position.y):
+					open[Vector2i(x, y)] = true
+		for y in range(maxi(g.position.y, -pad), mini(g.end.y, rows + pad)):
 			for x in range(-pad, cols + pad):
-				var c := Vector2i(x, y)
-				if (r.position.y <= 0 and c.y < r.end.y and c.x >= g.position.x and c.x < g.end.x) \
-				or (r.end.y >= rows and c.y >= r.position.y and c.x >= g.position.x and c.x < g.end.x) \
-				or (r.position.x <= 0 and c.x < r.end.x and c.y >= g.position.y and c.y < g.end.y) \
-				or (r.end.x >= cols and c.x >= r.position.x and c.y >= g.position.y and c.y < g.end.y):
-					open[c] = true
+				if (r.position.x <= 0 and x < r.end.x) or (r.end.x >= cols and x >= r.position.x):
+					open[Vector2i(x, y)] = true
 	_border_open = open
 	# Meandering edge: the band's inner edge is content-edge + noise, so it wanders
 	# in and out by a few cells (and eats into the content where nothing stands).
@@ -3607,6 +3679,8 @@ func _build_border() -> void:
 				depth = sqrt(dx * dx + dy * dy)
 			else:
 				depth = maxf(dx, dy)
+			if depth <= 0.0 and depth < pad - 1 and depth + amp <= 1.2:
+				continue  # deep inside the content: no noise value can fill it (|n| <= amp)
 			var side := _side_of(c)
 			var kind := border_kind(side)
 			var n := WorldGen.fbm(float(c.x), float(c.y), sd, 9.0) * (amp * 0.3 if kind == "cliff" else amp)  # cliffs run straighter
@@ -3636,6 +3710,10 @@ func _build_border() -> void:
 				_: _border_cells[c] = "void"
 	# Trees: sparse at the inner edge, dense and large deeper in.
 	var rng := _border_rng
+	var has_big := Art.has("nature", "big_oak_a")
+	var season := GameState.look_se()
+	var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
+	var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
 	for c: Vector2i in _border_cells:
 		if _border_cells[c] != "tree":
 			continue
@@ -3644,10 +3722,7 @@ func _build_border() -> void:
 		if rng.randf() > chance:
 			continue
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
-		if Art.has("nature", "big_oak_a"):
-			var season := GameState.look_se()
-			var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
-			var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
+		if has_big:
 			nm = str(mids[rng.randi_range(0, mids.size() - 1)]) if depth <= 2 or rng.randf() < 0.4 else str(bigs[rng.randi_range(0, bigs.size() - 1)])
 		if depth <= 1 and in_content(c + Vector2i(0, 1)) and not _border_cells.has(c + Vector2i(0, 1)):
 			prop("nature", nm, c, 0, 0.0, false)  # inner-edge trees are props so you walk behind the canopy
@@ -3709,17 +3784,24 @@ func draw_border() -> void:
 		var corridor := {}
 		var rd = get("R")
 		var soft_k := not (rd is Dictionary) or str((rd as Dictionary).get("path", "dirt")) in ["dirt", "sand", "stone"]
+		var gw_map: Dictionary = (_painter_of if _painter_of != null else self).ground_word
 		for e in exits:
 			var r: Rect2i = e["rect"]
 			var vert := r.size.y >= r.size.x  # west/east exit
+			var inward := Vector2i(1 if r.position.x <= 0 else (-1 if r.end.x >= cols else 0), 1 if r.position.y <= 0 else (-1 if r.end.y >= rows else 0))
+			# Where the map's own soft path meets the exit, keep to its lanes (no wide slab with shoulders).
+			var lanes := {}
+			if soft_k:
+				for c: Vector2i in cells_of([Rect2i(r.position + inward * 3, r.size)]):
+					if str(gw_map.get(c, "")) in ["dirt", "sand", "stone"]:
+						lanes[c.y if vert else c.x] = true
 			for c: Vector2i in _border_open:
-				if not blocked.has(c) and ((vert and c.y >= r.position.y and c.y < r.end.y) or (not vert and c.x >= r.position.x and c.x < r.end.x)):
+				if not blocked.has(c) and ((vert and c.y >= r.position.y and c.y < r.end.y) or (not vert and c.x >= r.position.x and c.x < r.end.x)) and (lanes.is_empty() or lanes.has(c.y if vert else c.x)):
 					corridor[c] = true
 			if soft_k:
-				var inward := Vector2i(1 if r.position.x <= 0 else (-1 if r.end.x >= cols else 0), 1 if r.position.y <= 0 else (-1 if r.end.y >= rows else 0))
 				for k in range(1, 3):
 					for c: Vector2i in cells_of([Rect2i(r.position + inward * k, r.size)]):
-						if in_content(c) and not blocked.has(c):
+						if in_content(c) and not blocked.has(c) and (lanes.is_empty() or lanes.has(c.y if vert else c.x)):
 							corridor[c] = true
 		draw_corridor(corridor)
 	if not water.is_empty() or not border_water_extra.is_empty():
@@ -3879,7 +3961,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 			var up := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= cap_v + 40)
 			if up.is_empty():
 				up = open
-			fish = up[_weighted_index(0, mini(up.size(), reach + 1))]
+			fish = up[_weighted_index(0, mini(up.size(), reach + 1), 0.8 if baited else 0.67)]
 		Music.instance(get_tree()).sfx("reel")
 		player.play_tool("reel")
 		# The fish flies out of the water to you; a boot thuds, a rare one sparkles.

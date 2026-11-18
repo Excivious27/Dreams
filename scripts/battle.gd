@@ -237,7 +237,7 @@ func _tick() -> void:
 	var a := _owned("ally")
 	var e := _owned("enemy")
 	# Supply trickles in (fractions carry over, so small skill bonuses count).
-	var rate := minf(1.0, GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("leadership", "supply_rate") + GameState.bonus("strategist", "supply_rate"))
+	var rate := minf(1.0, GameState.bonus(GameState.arc_skill(), "supply_rate") + GameState.bonus("strategist", "supply_rate"))
 	_sup_f += a * int(d.get("supply_per_point", 2)) * 0.35 * (1.0 + rate)
 	supply += int(_sup_f)
 	_sup_f -= int(_sup_f)
@@ -272,7 +272,7 @@ func _tick() -> void:
 			p["t"] = 0.0
 			if str(p["spawner"]) == "turret":
 				var it: Dictionary = GameState.items.get("guard_bot", {"life": 60, "dmg": 4, "reach": 90})
-				var b := Bot.deploy(map, "guard_bot", it)
+				var b := Bot.deploy(map, "guard_bot", it, true)
 				b.position = p["pos"] + Vector2(randf_range(-20, 20), randf_range(-14, 14))
 				b.life = 45.0  # a turret runs 45 seconds, then the point builds a new one
 				(p["made"] as Array).append(b)

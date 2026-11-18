@@ -5,6 +5,7 @@
   "music": "boss",
   "backdrop": "night",
   "ground": "dead_grass",
+  "ground_seam": "ash",
   "path": "cracked_earth",
   "weather": "fog",
   "spawn": [
@@ -1658,7 +1659,7 @@
   "music": "boss",
   "backdrop": "gritty",
   "ground": "lawn",
-  "path": "polished_road",
+  "path": "asphalt2",
   "spawn": [
    2,
    14
@@ -1786,15 +1787,15 @@
     "name": "lux_car_black",
     "cell": [
      6,
-     17
+     15
     ],
     "w": 2
    },
    {
     "name": "lux_car_red",
     "cell": [
-     9,
-     20
+     24,
+     15
     ],
     "w": 2
    },
@@ -2557,8 +2558,7 @@
     "hay",
     "scarecrow_field",
     "tractor",
-    "fence2_wood_h",
-    "mailbox2_red"
+    "fence2_wood_h"
    ],
    "region_count": 26
   },
@@ -2645,6 +2645,7 @@
   }
  },
  "sky": {
+  "weather": "clear",
   "cols": 48,
   "rows": 42,
   "music": "sky",
@@ -4447,7 +4448,7 @@
     "solid": false
    },
    {
-    "name": "r_ruins_13",
+    "name": "r_ruins_33",
     "cell": [
      8,
      8
@@ -4904,15 +4905,8 @@
    ],
    "critter_count": 6,
    "region_props": [
-    "r_quarry_00",
     "r_quarry_01",
     "r_quarry_02",
-    "r_quarry_03",
-    "r_quarry_05",
-    "r_quarry_06",
-    "r_quarry_07",
-    "r_quarry_08",
-    "r_quarry_09",
     "r_quarry_10",
     "r_quarry_11",
     "r_quarry_12",
@@ -4925,10 +4919,7 @@
     "r_quarry_19",
     "r_quarry_20",
     "r_quarry_21",
-    "r_quarry_22",
-    "r_quarry_23",
     "r_quarry_24",
-    "r_quarry_29",
     "r_quarry_31",
     "r_quarry_32",
     "r_quarry_33",
@@ -4941,13 +4932,9 @@
     "r_quarry_42",
     "r_quarry_44",
     "r_quarry_45",
-    "r_quarry_46",
-    "r_quarry_52",
-    "r_quarry_53",
-    "r_quarry_54",
-    "r_quarry_55"
+    "r_quarry_46"
    ],
-   "region_count": 84
+   "region_count": 60
   },
   "forage": 4,
   "things": [
@@ -5376,8 +5363,6 @@
     "r_marsh_20",
     "r_marsh_21",
     "r_marsh_22",
-    "r_marsh_62",
-    "r_marsh_72",
     "r_marsh_92",
     "r_marsh_94",
     "r_marsh_95",
@@ -5724,19 +5709,12 @@
    ],
    "critter_count": 14,
    "region_props": [
-    "r_riverlands_16",
-    "r_riverlands_20",
-    "r_riverlands_22",
     "r_riverlands_41",
     "r_riverlands_44",
     "r_riverlands_45"
    ],
-   "region_count": 36,
+   "region_count": 18,
    "water_props": [
-    "r_riverlands_16",
-    "r_riverlands_17",
-    "r_riverlands_20",
-    "r_riverlands_22",
     "r_riverlands_41",
     "r_riverlands_44",
     "r_riverlands_45"
@@ -6982,8 +6960,8 @@
     "type": "beacon",
     "key": "b1",
     "cell": [
-     40,
-     58
+     42,
+     57
     ],
     "hint": "A: tide beacon",
     "solid": true
@@ -7259,8 +7237,8 @@
     "type": "beacon",
     "key": "b1",
     "cell": [
-     40,
-     58
+     42,
+     57
     ],
     "hint": "A: tide beacon",
     "solid": true
@@ -7538,8 +7516,8 @@
     "type": "beacon",
     "key": "b1",
     "cell": [
-     40,
-     58
+     42,
+     57
     ],
     "hint": "A: tide beacon",
     "solid": true
@@ -7827,8 +7805,8 @@
     "type": "beacon",
     "key": "b1",
     "cell": [
-     40,
-     58
+     42,
+     57
     ],
     "hint": "A: tide beacon",
     "solid": true
@@ -8096,7 +8074,7 @@
    {
     "name": "cave_lamp",
     "cell": [
-     65,
+     66,
      15
     ]
    },

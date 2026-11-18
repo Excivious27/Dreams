@@ -33,6 +33,7 @@ var _canvas: Control
 var _toasts: VBoxContainer
 var _fade: ColorRect
 var _hint := ""
+var _boss_on := false  # the boss bar is up: toasts start under it
 var _font: Font
 
 
@@ -86,6 +87,7 @@ func _process(delta: float) -> void:
 	_place_toasts()
 	if GameState.overflow_note != "":
 		toast(GameState.overflow_note, Color(1, 0.8, 0.5))
+		Music.instance(get_tree()).sfx("thud", "nope")
 		GameState.overflow_note = ""
 	var sc := get_tree().current_scene
 	var want := INTERIOR_SHIFT if sc is GameMap and (sc as GameMap).scene_id() in ["house", "interior"] else 0.0
@@ -113,7 +115,7 @@ func _process(delta: float) -> void:
 
 ## Toasts: under the goal line outdoors, above the HUD block indoors, above the dialogue box while one is open.
 func _place_toasts() -> void:
-	var y := 89.0 if y_offset == 0.0 else 199.0  # under the (two-line) goal
+	var y := (108.0 if _boss_on else 89.0) if y_offset == 0.0 else 199.0  # under the goal (and the boss bar)
 	var d := Dialogue.instance(get_tree())
 	if d.active:
 		var h := 0.0
@@ -172,15 +174,18 @@ func _draw_hud() -> void:
 		per = max_hp / 10.0
 	var heart_full := Art.tex("ui", "heart2_full") if Art.has("ui", "heart2_full") else Art.tex("ui", "heart_full")
 	var heart_empty := Art.tex("ui", "heart2_empty") if Art.has("ui", "heart2_empty") else Art.tex("ui", "heart_empty")
-	for i in hearts:
-		var p := Vector2(6 + i * 11, 4)
-		var f := clampf((hp - i * per) / per, 0.0, 1.0)
-		if heart_full and heart_empty:
-			c.draw_texture_rect(heart_empty, Rect2(p, Vector2(10, 10)), false)
-			if f > 0.0:
-				c.draw_texture_rect_region(heart_full, Rect2(p + Vector2(0, 10 * (1.0 - f)), Vector2(10, 10 * f)), Rect2(0, heart_full.get_height() * (1.0 - f), heart_full.get_width(), heart_full.get_height() * f))
-		else:
-			c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if f >= 1.0 else Color(0, 0, 0, 0.4))
+	# Empty hearts, then the fills (each fill sits inside its own heart): two batches, not ten.
+	for pass_i in (2 if heart_full and heart_empty else 1):
+		for i in hearts:
+			var p := Vector2(6 + i * 11, 4)
+			var f := clampf((hp - i * per) / per, 0.0, 1.0)
+			if heart_full and heart_empty:
+				if pass_i == 0:
+					c.draw_texture_rect(heart_empty, Rect2(p, Vector2(10, 10)), false)
+				elif f > 0.0:
+					c.draw_texture_rect_region(heart_full, Rect2(p + Vector2(0, 10 * (1.0 - f)), Vector2(10, 10 * f)), Rect2(0, heart_full.get_height() * (1.0 - f), heart_full.get_width(), heart_full.get_height() * f))
+			else:
+				c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if f >= 1.0 else Color(0, 0, 0, 0.4))
 	var hp_txt := "%d/%d" % [hp, max_hp]
 	c.draw_string_outline(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, 3, Color(0, 0, 0, 0.7))
 	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 0.95, 0.9))
@@ -272,7 +277,11 @@ func _draw_hud() -> void:
 			continue
 		var icon := Art.tex("items", icon_for(id))
 		if icon:
-			c.draw_texture_rect(icon, rect.grow(-2), false)
+			# Keep the icon's shape (tier tools are tall: squashed they read as boots and bells).
+			var ir := rect.grow(-2)
+			var isz := icon.get_size()
+			var k := minf(ir.size.x / isz.x, ir.size.y / isz.y)
+			c.draw_texture_rect(icon, Rect2(ir.position + (ir.size - isz * k) / 2.0, isz * k), false)
 		else:
 			c.draw_string(_font, Vector2(rect.position.x + 1, rect.position.y + 13), GameState.item_name(id).left(3), HORIZONTAL_ALIGNMENT_LEFT, SLOT, 7, Color.WHITE)
 	for i in 12:
@@ -316,7 +325,7 @@ func _draw_hud() -> void:
 	if Racket.on() and (Racket.heat() > 0 or r["flags"].has("heat_told")):
 		if not r["flags"].has("heat_told"):
 			r["flags"]["heat_told"] = true
-			toast.call_deferred("Heat: how closely the cops are watching you.", Color(1, 0.75, 0.6))
+			toast.call_deferred("Heat: how closely the President's people are watching you.", Color(1, 0.75, 0.6))
 		var hx := 196.0
 		var hy := TOOLBAR_Y + SLOT + 5.0
 		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 2, Color(0, 0, 0, 0.8))
@@ -610,12 +619,14 @@ func _draw_pointer(c: CanvasItem) -> void:
 func _draw_boss_bar(c: CanvasItem) -> void:
 	var m := get_tree().current_scene as GameMap
 	if m == null or m.player == null or y_offset != 0.0:
+		_boss_on = false
 		return
 	var boss: Enemy = null
 	for e in m.enemies:
 		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and (e.bossy or e.is_guardian or e.has_meta("marked") or e._gift != null or e.has_meta("boss_name")) and (e.has_meta("boss_name") or e.position.distance_to(m.player.position) < 170.0):
 			if boss == null or e.max_hp > boss.max_hp:
 				boss = e
+	_boss_on = boss != null
 	if boss == null:
 		return
 	var nm := boss.display_name()

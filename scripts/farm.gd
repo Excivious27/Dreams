@@ -145,7 +145,7 @@ func build() -> void:
 func _clear_tile(c: Vector2i) -> void:
 	var pk := "%d,%d" % [c.x, c.y]
 	var pt = (GameState.run["farm"] as Dictionary).get(pk)
-	if pt is Dictionary and str(pt.get("crop", "")) != "" and GameState.items.has(str(pt["crop"]) + "_seed"):
+	if pt is Dictionary and str(pt.get("crop", "")) != "" and GameState.items.has(str(pt["crop"]) + "_seed") and not Net.visiting():  # a guest gets no seed for the host's crop
 		GameState.add_item(str(pt["crop"]) + "_seed", 1)  # the seed back
 	(GameState.run["farm"] as Dictionary).erase(pk)
 
@@ -164,6 +164,13 @@ func _place_debris() -> void:
 			var bc: Vector2i = bb["cell"]
 			for kc: Vector2i in cells_of([Rect2i(bc.x - 1, bc.y + 1, int(bb["w"]) + 3, 2)]):
 				keep_clear[kc] = true
+	for cid: String in GameState.run.get("construction", {}):
+		var cbd: Dictionary = Builds.data().get(cid, {})
+		if cbd.has("cell"):
+			var cc0 := Vector2i(int(cbd["cell"][0]), int(cbd["cell"][1]))
+			var ch := int(cbd.get("h", 1))
+			for kc: Vector2i in cells_of([Rect2i(cc0.x - 1, cc0.y - ch + 1, int(cbd.get("w", 0)) + 3, ch + 2)]):
+				keep_clear[kc] = true  # the crew's site: footprint, sign and front
 	for y in range(1, rows - 1):
 		for x in range(1, cols - 1):
 			var c := Vector2i(x, y)
@@ -307,7 +314,8 @@ func _process(delta: float) -> void:
 	if _crystal:
 		_crystal_t += delta
 		_crystal.position.y = cell_center(CRYSTAL_SPOT).y - 3.0 - sin(_crystal_t * 1.5) * 2.0
-		_crystal.queue_redraw()
+		if int(_crystal_t * 10.0) != int((_crystal_t - delta) * 10.0):
+			_crystal.queue_redraw()  # the glow pulse at 10 Hz; the bob is a position change
 
 
 # ---- interaction -------------------------------------------------------------
@@ -334,6 +342,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"well":
 			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
 				hud.toast("You're not thirsty.")  # keep today's drink for later
+			elif int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2:
+				hud.toast("You've rested plenty today.")  # the half bar is used up: keep today's drink
 			elif int(GameState.run["flags"].get("well_day", 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["well_day"] = int(GameState.run["day"])
 				var got := GameState.rest_energy(20)
@@ -354,7 +364,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_furnace()
 			return true
 		"chest":
-			if Net.online() and not Net.is_host() and not GameState.run.get("chests", {}).has(str(thing.get("build", "chest"))):
+			if Net.visiting() and not GameState.run.get("chests", {}).has(str(thing.get("build", "chest"))):
 				hud.toast("The host's chest. Build your own on your farm.")
 				return true
 			later(ChestScreen.open.bind(self, str(thing.get("build", "chest")), "Shed" if str(thing.get("build", "")) == "shed" else "Chest"))
@@ -384,7 +394,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_plans()
 			return true
 		"placed":
-			if Net.online() and not Net.is_host():
+			if Net.visiting():
 				hud.toast("That's the host's. Your own things stay on your farm.")
 				return true
 			if str(thing.get("kind", "")) == "chest":
@@ -397,7 +407,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			pickup_placed(c)
 			return true
 		"":
-			var guest := Net.online() and not Net.is_host()
+			var guest := Net.visiting()
 			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and not guest and can_till(c) and str(GameState.run["farm"].get("%d,%d" % [c.x, c.y], {}).get("crop", "")) == "":
 				(GameState.run["farm"] as Dictionary).erase("%d,%d" % [c.x, c.y])  # an empty bed tile: the sprinkler goes in it
 				if _soil:
@@ -532,8 +542,11 @@ func _plans() -> void:
 		if d.last_choice < 0 or d.last_choice >= acts.size():
 			continue
 		var buy := str(acts[d.last_choice]) == "buy"
-		if Net.online() and not Net.is_host():
+		if Net.visiting():
 			# On someone else's farm the host decides (and pays).
+			if not Net.online():
+				hud.toast("Reconnecting to your host... try again in a moment.", Color(0.9, 0.95, 1.0))
+				return
 			net_act({"a": "build", "id": id})
 			hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
 			return
@@ -629,7 +642,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			n += 2
 			hud.toast("★ Star-quality harvest!", Color(1, 0.95, 0.5))
 		pop_items(cell_center(c), str(cd["yield"]), n)  # the crop hops out to you
-		if str(cd["yield"]) == "wheat" and (not Net.online() or Net.is_host()):
+		if str(cd["yield"]) == "wheat" and not Net.visiting():
 			Builds.silo_add(1)  # chaff goes to the silo
 		# Quality: farming skill and fertiliser raise the odds of silver and gold.
 		var flv := GameState.skill_level("farming")
@@ -796,7 +809,7 @@ func _sellbox(sel: String) -> void:
 		for id in box:
 			total += GameState.sell_price(id, int(box[id]))
 		var txt := "In the box: %s. Worth ◆%d, paid tonight." % [", ".join(box.keys().map(func(k: String) -> String: return "%s x%d" % [GameState.item_name(k), int(box[k])])), total]
-		if Net.online() and not Net.is_host():
+		if Net.visiting():
 			await say([{"text": txt}])
 			return
 		# Changed your mind? Everything comes back out before the night's pickup.
@@ -973,7 +986,7 @@ func _daily_pickup(key: String, item: String, wait_msg: String) -> void:
 
 ## The Silo: store held hay, or take 20 out. Scythed hay and wheat chaff go in by themselves.
 func _silo(sel: String) -> void:
-	if Net.online() and not Net.is_host():
+	if Net.visiting():
 		hud.toast("The host keeps the silo.")
 		return
 	var have := Builds.silo_hay()
@@ -1001,7 +1014,7 @@ func _coop(sel: String) -> void:
 	if Builds.built_tier("coop") < 2:
 		hud.toast("The hens cluck at you. (The Big Coop has an incubator.)")
 		return
-	if Net.online() and not Net.is_host():
+	if Net.visiting():
 		hud.toast("The host minds the incubator.")
 		return
 	var hatch: Array = GameState.run.get("coop_hatch", [])
@@ -1097,7 +1110,7 @@ func _intro_penguins(n: Dictionary) -> void:
 	if pet:
 		pet.position = player.position + Vector2(-14, 4)
 	await hud.fade_in(0.8)
-	Music.instance(get_tree()).sfx("levelup")
+	Music.instance(get_tree()).sfx("spell", "levelup")
 	await say([
 		{"who": "???", "text": "...you can hear me? Good. Good. I was starting to think I'd landed on a world of rocks."},
 		{"who": "Star Crystal", "text": "I am a Star Crystal. Where I come from, we are the memory of every kind thing anyone ever did. We are... fewer than we were."},
@@ -1225,7 +1238,7 @@ func _place_props() -> void:
 			continue
 		var cc := Vector2i(int(bd["cell"][0]), int(bd["cell"][1]))
 		prop("props", "crates2_b" if Art.has("props", "crates2_b") else "crates_a", cc, int(bd.get("w", 0)))
-		prop("props", "board2" if Art.has("props", "board2") else "signpost", cc + Vector2i(int(bd.get("w", 0)) + 1, 0))
+		prop("props", "signpost" if Art.has("props", "signpost") else "notice_board", cc + Vector2i(int(bd.get("w", 0)) + 1, 0), 0, 0.0, false)  # a small sign that never blocks a path
 	# Built things.
 	var builds: Dictionary = GameState.run.get("builds", {})
 	for id: String in builds:
@@ -1286,7 +1299,10 @@ func _place_props() -> void:
 			add_child(a)
 			a.play("idle")
 		else:
-			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]))
+			var sinfo := Art.info(str(b["group"]), str(b["sprite"]))
+			var sw := float(sinfo.get("cell_w", sinfo.get("w", 0)))
+			var ssc := 0.5 if str(b["thing"]) != "station" or sw <= 0.0 else minf(0.5, float(int(b["w"]) + 3) * TILE / sw)  # a wide top-tier station stays in its slot (one cell spare each side)
+			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]), 0.0, true, ssc)
 	if builds.has("coop"):
 		var pen := COOP_PEN
 		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick", Vector2i(28, 11), pen, true)
@@ -1370,6 +1386,31 @@ func _place_item(c: Vector2i, id: String) -> void:
 	player.play_tool("hold")
 	fx("poof", cell_center(c) + Vector2(0, -4), 10.0, 0.4)
 	hud.toast("Placed the %s. USE it again to pick it up." % GameState.item_name(id), Color(0.8, 1, 0.8))
+
+
+## Guests: the host's sprinklers/scarecrows come and go with the world sync (no ghosts).
+var _placed_sig := 0
+
+
+func on_world_sync(d: Dictionary) -> void:
+	var placed: Dictionary = GameState.run.get("placed", {})
+	var psig := hash(placed)
+	if psig != _placed_sig:
+		_placed_sig = psig
+		for c: Vector2i in things.keys():
+			if str(things[c].get("type", "")) == "placed" and not placed.has("%d,%d" % [c.x, c.y]):
+				things.erase(c)
+				blocked.erase(c)
+				hard.erase(c)
+				if props.has(c):
+					(props[c] as Node).queue_free()
+					props.erase(c)
+		for pk in placed:
+			var xy := str(pk).split(",")
+			var pc := Vector2i(int(xy[0]), int(xy[1]))
+			if not things.has(pc):
+				_show_placed(pc, str(placed[pk]))
+	super(d)
 
 
 func _show_placed(c: Vector2i, id: String) -> void:

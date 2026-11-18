@@ -90,6 +90,30 @@ for cid in sorted(by):
     for name, what in by[cid][:12]:
         print("   ", name, "-", what)
 print("TOTAL", len(issues), "issues in", len(by), "characters")
+# Item icons: clear small detached bits (< 8% of the main piece) touching the icon's edge (a neighbour's sliver,
+# the cut-off rest of a rarity gem). KEEP_BITS: icons where such a bit is part of the picture (kept in step with slice_world.KEEP_BITS).
+KEEP_BITS = {"coffee", "cream_soda", "golden_float", "echo_leek", "singing_pear", "light_mote2", "star_dust2", "wishfruit_cake",
+             "dream_orchid", "dreamflower", "ethereal_corn", "hush_carrot", "halo", "flameberry"}
+if fix and not only:
+    from scipy import ndimage
+    n_bits = 0
+    for p in sorted(glob.glob("art/gen/items/*.png")):
+        nm = os.path.basename(p)[:-4]
+        if nm in KEEP_BITS or m.get("items", {}).get(nm, {}).get("frames"):
+            continue
+        im = np.array(Image.open(p).convert("RGBA"))
+        a = im[..., 3] > 40
+        lab, n = ndimage.label(a, structure=np.ones((3, 3)))
+        if n < 2:
+            continue
+        sz = ndimage.sum(a, lab, range(1, n + 1))
+        h, w = a.shape
+        drop = [i + 1 for i, sl in enumerate(ndimage.find_objects(lab)) if sz[i] < 0.08 * sz.max() and (sl[1].start <= 2 or sl[0].start <= 2 or sl[1].stop >= w - 2)]
+        if drop:
+            im[np.isin(lab, drop), 3] = 0
+            Image.fromarray(im).save(p)
+            n_bits += 1
+    print("item icons: stray edge bits cleared on", n_bits)
 if fix and changed:
     json.dump(m, open("art/gen/manifest.json", "w"), indent=1, sort_keys=True)
     print("manifest updated")

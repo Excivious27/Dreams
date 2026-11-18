@@ -275,7 +275,7 @@ func set_character(id: String) -> void:
 				l.queue_free()
 		_hair = Sprite2D.new()
 		_hair.centered = true
-		_hair.modulate = Color(str(PaperDoll.HAIR_COLORS.get(str(look.get("hair_color", "brown")), "ffffff")))
+		_hair.material = PaperDoll.hair_material(str(look.get("hair_color", "brown")))
 		_hat = Sprite2D.new()
 		_hat.centered = true
 		var sh := load("res://shaders/flash.gdshader")
@@ -391,7 +391,7 @@ func _draw() -> void:
 	var thing: Dictionary = map.things.get(fc, {})
 	var fkey := "%d,%d" % [fc.x, fc.y]
 	var ftile: Dictionary = (GameState.run["farm"] as Dictionary).get(fkey, {})
-	var usable: bool = map.hint_for(fc, thing) != "" or (held == "hoe" and map.can_till(fc)) or (held == "can" and not ftile.is_empty() and not bool(ftile.get("watered", false)) and not GameState.is_wet()) or (held == "scythe" and str(thing.get("type", "")) in ["grass", "weeds", "plot"]) or (seed_held and not ftile.is_empty() and str(ftile.get("crop", "")) == "") or (held == "" and sel == "fertilizer" and not ftile.is_empty() and not bool(ftile.get("fert", false)))
+	var usable: bool = map.hint_for(fc, thing) != "" or (held == "hoe" and map.can_till(fc)) or (held == "can" and not ftile.is_empty() and not bool(ftile.get("watered", false)) and not GameState.sky_waters()) or (held == "scythe" and str(thing.get("type", "")) in ["grass", "weeds", "plot"]) or (seed_held and not ftile.is_empty() and str(ftile.get("crop", "")) == "") or (held == "" and sel == "fertilizer" and not ftile.is_empty() and not bool(ftile.get("fert", false)))
 	var col := Color(0.4, 1.0, 0.5, 0.55) if usable else Color(1.0, 0.45, 0.4, 0.4)
 	var r := Rect2(map.cell_pos(fc.x, fc.y) - position, Vector2(GameMap.TILE, GameMap.TILE))
 	draw_rect(r.grow(-1), col, false, 1.5)
@@ -985,7 +985,7 @@ func _attack_hit() -> void:
 			dmg = int(dmg / 2)  # swung like a club
 		var hit := map.attack_at(box, maxi(1, dmg), position)
 		if hit and _combo == 0 and Crew.perk_level("sword") >= 3:
-			map.attack_at(box, maxi(1, dmg), position)  # Vic's twin strike
+			map.attack_at(box, maxi(1, dmg), position, false)  # Vic's twin strike (one whoosh)
 		if hit:
 			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
 		_swing_arc(center)

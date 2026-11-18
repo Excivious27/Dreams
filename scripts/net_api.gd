@@ -18,6 +18,12 @@ static func online() -> bool:
 	return n != null and n.online()
 
 
+## True while we are a co-op guest on someone else's farm (online, not the host).
+static func visiting() -> bool:
+	var n := i()
+	return n != null and n.visiting()
+
+
 static func is_host() -> bool:
 	var n := i()
 	return n == null or n.is_host()

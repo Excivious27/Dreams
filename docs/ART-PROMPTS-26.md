@@ -11,28 +11,6 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 
 The Hollow Heart, the Jungle and the Kelp colony paint the same small moss square on every cell, so the ground looks like a grid of tiles instead of moss. The Jungle's violet soil is a hard rectangle. The storm puddles were sliced as a solid magenta blob, so storms reuse the plain rain puddles.
 
-======================================================================
-
-COVERAGE TABLE (file → what it fixes → code name the slicer should write)
-
-w475  glowing ground squares → seamless/teal_moss, seamless/teal_moss_dense, seamless/teal_moss_wet, seamless/violet_soil, seamless/violet_moss (slice_art3.py: `square(im, b)` on the five boxes in row order, then make_seamless.py). Code: "ground_seam": "teal_moss" on jungle (regions.json), hollow_heart (gen_deep_region.py), "teal_moss_wet" on colony_kelp (gen_colonies.py); region.gd:851 layers use soft_ground(cells, "violet_soil") when seamless/violet_soil exists (audit 15 fix 2).
-
-w476  storm puddles          → props/puddle_storm_0..3, 3-frame strips like props/puddle_0..5 (replace the wx_143–146 alias in slice_world.py w_names5). Code: world_gen.gd:108 picks puddle_storm_N on storm days (audit 15 fix 5); drop the puddle_storm line from missing_art.py.
-
-LEFT OUT ON PURPOSE
-
-- A cave border wall for the Hollow Heart: tiles/mine_heart_wall_0..6 already exist, so this is a one-line code fix (fix 3).
-
-- Sand drifts on the coral and ember colonies: seamless/sand exists, and the patch block is skipped by a guard (fix 4).
-
-- A glowing moth for the Hollow Heart: 19 w422 already asks for it. It only needs a slicer mapping to wildlife/moth (fix 6).
-
-- The town fountain (props/fountain) and the 21 item icons in MISSING-ART.md: already asked for (19 w422; 18, 19, 23).
-
-- Hero portraits for the two coats, Big Grump, partner ability icons and skill unlock icons: Prompts 25.
-
-- Everything from 17–24 that is still waiting for upload (w345 onward): nothing new was uploaded since loop 2, so those prompts still stand as written.
-
 > PROMPT 26-1. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the cave and jungle pieces in a glowing night palette — deep teal, cyan, violet, a little gold — where it says so), flat #FF00FF magenta background, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere (not under, above or beside any piece), no watermark, NO LETTERBOXING. At least 24 px of clear magenta between separate pieces. All ages: nothing gory.

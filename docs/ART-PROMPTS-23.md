@@ -87,40 +87,6 @@ The hero changes into a full costume sheet when you wear a chest piece. Six new 
 
 ## PROMPT 23-5 — Faces for the people who talk, and the small leftovers · 3 images
 
-======================================================================
-
-COVERAGE TABLE (file → what it fixes → code name the slicer should write)
-
-w455  boss banners: commander, knight, light_eater          → ui/card_commander, ui/card_knight, ui/card_light_eater (wide banner, >2:1, the game writes the name)
-
-w456  boss banners: 4 colony bosses                         → ui/card_cboss_coral|kelp|ice|ember
-
-w457  boss gift strips                                      → fx/gift_grudge|command|king|warden|eater (Gift.fx_for maps b_grudge→grudge etc.; add to its family map)
-
-w458  party cards Dad/Mom/Pax/Kairi/Sal                     → ui/party_card_man|woman|son|girl|npc_drifter[_sel]
-
-w459  party cards the Marked                               → ui/party_card_mk_<name>[_sel]
-
-w460/1 six costumes (walk/action)                           → body/outfit_<name>[_act] (same naming as outfit_farmer) + items.json "costume" for pinstripe_suit, padded_vest, armored_suit, puffy_parka, crystal_parka, starlight_mantle
-
-w462  worn headgear                                         → hats/fedora|shades|snow_goggles|aurora_hood|crystal_helm|moon_helm|gold_helm|silver_helm (+ point gold_helm/silver_helm sprites at them)
-
-w463  12 speaker portraits                                  → portraits/<slug>/neutral|happy + names in Dialogue.portrait_for
-
-w464  seeds, emote, poison hit, slow, mill ends, tabs       → items/dream_seed|tea_leaf_seed|moon_melon_seed, emotes/happy, fx/shot_poison_hit, fx/st_slow, tiles/wl_mill_l|wl_mill_r, ui/tab_party[_sel], ui/tab_pup[_sel]
-
-w465  Mabel's own walking sheet                             → characters/npc_mabel_* (she is the only villager without one after Prompts 20-7/20-8)
-
-LEFT OUT ON PURPOSE
-
-- Festival/seasonal outfits for most villagers (only alder/bram have festival sheets): the game falls back to the everyday sheet cleanly; ask later if wanted.
-
-- pop_<item> flying-pickup icons: optional, the game uses the item icon.
-
-- _life/_ride/_water variants for the six new costumes: the hero falls back to the plain costume; add a batch later if riding/swimming in them looks wrong.
-
-- wl_quarry/wl_tent windows: the game draws a furniture window instead, which reads fine.
-
 > PROMPT 23-5. Make THREE SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette — charcoal, oxblood, navy, olive, tarnished brass — where it says so), flat #FF00FF magenta background, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere (not under, above or beside any piece, not even on cards or banners), no watermark, NO LETTERBOXING. At least 24 px of clear magenta between separate pieces. All ages: no blood, nothing gory. Characters keep their exact look from the attached references.

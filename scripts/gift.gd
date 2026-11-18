@@ -40,6 +40,9 @@ var _spiral_a := 0.0
 var decoy := false
 var face := 1.0          # which way a 'back' gift is turned (lags behind you)
 var _turn_t := 0.0
+var _rd_acc := 0.0
+var _rd_pos := Vector2.INF
+var _rd_face := 0.0
 
 
 static func data() -> Dictionary:
@@ -253,13 +256,21 @@ func _process(delta: float) -> void:
 		_next = float(mv.get("gap", d.get("gap", 3.2))) * (0.8 if float(e.hp) / e.max_hp < 0.4 else 1.0)
 		_do(mv, p)
 	_clones_check()
-	queue_redraw()
+	# Every frame only while something moves or pulses; a guarded aura that stands
+	# still needs no redraw (each Marked redrew an antialiased arc + its name every frame).
+	_rd_acc += delta
+	if not (_bul.is_empty() and _lines.is_empty() and _zones.is_empty()) or open_t > 0.0 or _pull > 0.0 or _gust > 0.0 or e.position != _rd_pos or face != _rd_face or _rd_acc >= 0.1:
+		_rd_acc = 0.0
+		_rd_pos = e.position
+		_rd_face = face
+		queue_redraw()
 
 
 func _open_after(move: String) -> void:
 	var r: Dictionary = d.get("rule", {})
 	if str(r.get("after", "")) in [move, "any"]:
 		open_t = float(r.get("secs", 2.0))
+		Music.instance(get_tree()).sfx("stun", "alert")  # hear the opening
 		e._stun = maxf(e._stun, minf(open_t, float(r.get("stagger", 0.0))))
 
 
@@ -275,6 +286,7 @@ static func fx_for(g: String) -> String:
 func _do(mv: Dictionary, p: Player) -> void:
 	var t := str(mv.get("type", "ring"))
 	var gf := fx_for(gid)
+	Music.instance(get_tree()).sfx("spell", "zap")  # the move's tell
 	if gf != "" and t != "roll":
 		e.map.fx(gf, e.position + Vector2(0, -4), 14.0, 0.6)
 	if t == "roll":
@@ -411,6 +423,7 @@ func _tick_shots(delta: float, p: Player) -> void:
 			if not bool(l["fired"]):
 				l["fired"] = true
 				l["t"] = 0.14  # the flash
+				Music.instance(get_tree()).sfx("zap", "shot")
 				if _seg_dist(feet, l["a"], l["b"]) < float(l["w"]) + 3.0:
 					_hurt(p, e.damage + 1)
 				if bool(l.get("last", false)):

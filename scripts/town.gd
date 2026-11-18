@@ -517,7 +517,7 @@ func _place_props() -> void:
 		prop("props", _lamp_name(y), Vector2i(36, y))
 		prop("props", _lamp_name(y), Vector2i(45, y))
 	for x in range(6, 80, 8):
-		if (x > 28 and x < 54) or (x > 66 and x < 74):
+		if (x > 28 and x < 54) or (x > 66 and x < 74) or x == 78:  # 78: the clinic/chapel lane crosses there
 			continue
 		prop("props", _lamp_name(x), Vector2i(x, 43))
 		prop("props", _lamp_name(x), Vector2i(x, 52))
@@ -889,7 +889,7 @@ func _lines(id: String, friend: int) -> Array:
 			if meadow_done and not peng:
 				if not r["flags"].has("sal_recruited"):
 					r["flags"]["sal_recruited"] = true
-					GameState.add_quest("gang", "Recruit your first crew. (Sal is in. The rest is up to you.)")
+					GameState.add_quest("gang", "Recruit your first crew in Hideout town, past the meadow outskirts. (Sal is in. The rest is up to you.)")
 					return [
 						{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running."},
 						{"who": "Sal", "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent."},
@@ -907,7 +907,7 @@ func draw_map() -> void:
 	draw_grass(3)
 	WorldGen.draw_ground_detail(self, 31, 0.08)
 	# Avenues: cobbles with grass edges. Side lanes to the districts are dirt.
-	var roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT, BEACH_EXIT, MOUNTAIN_EXIT])
+	var roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0)])  # cobbles run on through the band
 	for c in _plaza:
 		roads.erase(c)
 	draw_ground("cobble", roads)
@@ -939,3 +939,8 @@ func draw_map() -> void:
 		draw_building(46, 30, 12, 11, Color("e8dcc2"), Color("2f6b4a"), "TOWN HALL")
 	if pad == 0:
 		draw_fence_border()
+
+
+## The avenues are cobbled out through the band (draw_map); the base dirt corridor would cover them.
+func draw_corridor(_cells: Dictionary) -> void:
+	pass

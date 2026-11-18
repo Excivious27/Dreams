@@ -179,11 +179,11 @@ func _on_draw() -> void:
 		var fr := 2  # the one frame whose blobs aren't cut by the frame edge (frames swapping made the shadows jump)
 		var ox := fmod(_ov_t * 6.0, 512.0)
 		for i in range(-1, 2):
-			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256 + 8, 0, 232, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
-	if aurora and overhead and (Art.has("fx", "aurora2") or Art.has("fx", "aurora")):
+			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256 + 2, 0, 252, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
+	if aurora and overhead and GameState.darkness() > 0.0 and (Art.has("fx", "aurora2") or Art.has("fx", "aurora")):
 		var at := Art.tex("fx", "aurora2") if Art.has("fx", "aurora2") else Art.tex("fx", "aurora")
 		var fr := int(_ov_t * 3.0) % 4
-		_canvas.draw_texture_rect_region(at, Rect2(Vector2(-10, 60), Vector2(290, 72)), Rect2(fr * 512, 0, 512, 128), Color(1, 1, 1, 0.55))
+		_canvas.draw_texture_rect_region(at, Rect2(Vector2(-10, 60), Vector2(290, 72)), Rect2(fr * 512, 0, 512, 128), Color(1, 1, 1, 0.55 * GameState.darkness()))  # a night sky thing: fades in after sunset
 	if overhead:
 		_draw_weather_extras()
 	var ov := _overlay()

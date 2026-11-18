@@ -73,7 +73,7 @@ func _run() -> void:
 	s["kills"] = 99
 	GameState.add_item("crystal_refined", 3)
 	for b in Colony.data()["colony_coral"].get("beacons", 3):
-		var bc: Array = [[24, 30], [40, 58], [70, 58], [18, 16]][b]
+		var bc: Array = [[24, 30], [42, 57], [70, 58], [18, 16]][b]  # gen_colonies.py beacon cells
 		Colony.interact(m, "colony_coral", m.things.get(Vector2i(int(bc[0]), int(bc[1])), {}))
 	check((s["beacons"] as Dictionary).size() == 3, "three beacons lit (%d)" % (s["beacons"] as Dictionary).size())
 	check(Colony.ready_to_wake("colony_coral"), "ready to wake the crystal")

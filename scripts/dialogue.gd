@@ -89,7 +89,9 @@ static func portrait_for(who: String) -> String:
 	for k in GameState.npcs:
 		var pid := str(GameState.npcs[k].get("portrait", k))
 		# Their own painted portrait (by season) beats the shared job portrait.
-		for g in ["npc_%s_%s" % [k, se], "npc_%s_normal" % k, "npc_" + str(k)]:
+		# A portrait pinned to the walking sprite (Catkins) isn't overridden by an older npc_ face.
+		var pinned: bool = str(GameState.npcs[k].get("portrait", "")) == str(GameState.npcs[k].get("sprite", "")) and not pid.begins_with("npc_")
+		for g in ([] if pinned else ["npc_%s_%s" % [k, se], "npc_%s_normal" % k, "npc_" + str(k)]):
 			if Art.has("portraits/" + g, "neutral"):
 				pid = g
 				break

@@ -8,7 +8,18 @@ extends RefCounted
 ## the base for the equipped costume and everything else stays the same.
 
 const BODIES := ["light_slim", "light_broad", "medium_slim", "medium_broad", "dark_slim", "dark_broad"]
-const HAIR_COLORS := {"brown": "ffffff", "black": "6a6a7a", "blonde": "ffe4a0", "red": "ff9c7a", "silver": "e8e8f8", "pink": "ffb0d8", "blue": "9ab8ff", "green": "a8e0a0"}
+const HAIR_COLORS := {"brown": "ffffff", "black": "3a3440", "blonde": "f2d27a", "red": "c8562e", "silver": "dcdcea", "pink": "f294c4", "blue": "5c84e0", "green": "62b266"}
+## Everyday outfits the creator offers (the look's "outfit"; armor still wins in game).
+const OUTFITS := ["outfit_farmer", "outfit_neon", "outfit_fisher", "outfit_forester", "outfit_miner", "outfit_merchant", "outfit_scholar"]
+
+
+## The hair layer's material: recolours the brown hair art (brown = as drawn).
+static func hair_material(col: String) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = load("res://shaders/hair_tint.gdshader")
+	m.set_shader_parameter("tint", Color(str(HAIR_COLORS.get(col, "ffffff"))))
+	m.set_shader_parameter("on", col != "brown" and HAIR_COLORS.has(col))
+	return m
 ## 16-pose row from w56: idle down, idle up, idle side, walk side ×4, walk down ×4, walk up ×4, run side.
 const POSES := {"idle": [0], "idle_up": [1], "idle_side": [2], "walk": [3, 4, 5, 6], "walk_down": [7, 8, 9, 10], "walk_up": [11, 12, 13, 14], "run": [15, 4, 15, 6], "run_down": [7, 8, 9, 10], "run_up": [11, 12, 13, 14], "view_front": [0], "view_back": [1], "view_right": [2]}
 const FPS := {"idle": 1.0, "idle_up": 1.0, "idle_side": 1.0, "walk": 8.0, "walk_down": 8.0, "walk_up": 8.0, "run": 12.0, "run_down": 12.0, "run_up": 12.0}

@@ -147,7 +147,7 @@ static func on_enter(m: GameMap) -> void:
 				m.hud.toast("Ladder, on the radio: %d hostile%s on this block." % [n, "" if n == 1 else "s"], Color(0.8, 0.9, 1)))
 	if Project.has("hq_comms") or Ops.holds(m.scene_id()):
 		return  # drones on the roofs / your own block: collectors never get close
-	if not on() or heat() < 3 or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine", "hideout"]:
+	if not on() or heat() < 3 or GameState.run["flags"].has("president_freed") or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine", "hideout"]:
 		return
 	if int(GameState.run["flags"].get("raid_day", -1)) == int(GameState.run["day"]) or randf() > (0.25 if Crew.perk_level("raid_warning") >= 2 else 0.5):
 		return

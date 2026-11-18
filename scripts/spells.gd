@@ -47,6 +47,13 @@ static func can_cast(id: String) -> String:
 
 ## Returns true if the spell fired. `m` is the current map (may be an interior).
 static func cast(m: GameMap, id: String) -> bool:
+	var ok := _cast(m, id)
+	if not ok and m and m.is_inside_tree():
+		Music.instance(m.get_tree()).sfx("nope", "thud")  # a cast that did nothing sounds like it
+	return ok
+
+
+static func _cast(m: GameMap, id: String) -> bool:
 	var why := can_cast(id)
 	if why != "":
 		if m and m.hud:
@@ -152,17 +159,10 @@ static func cast(m: GameMap, id: String) -> bool:
 			if seen.is_empty():
 				m.hud.toast("You haven't seen anywhere to walk to.", Color(1, 0.8, 0.6))
 				return false
-			var d := Dialogue.instance(m.get_tree())
-			var ch: Array = seen.map(func(x: String) -> String: return x.replace("_", " ").capitalize())
-			ch.append("Stay")
-			d.say([{"who": "", "text": "The Dream opens. Where?", "choice": ch, "key": ""}])
-			await d.finished
-			if d.last_choice < 0 or d.last_choice >= seen.size():
-				return false
-			if m._transitioning or m._changing:
-				return false
-			m.fx("sparkle", p.position + Vector2(0, -14), 14.0, 0.8)
-			m.go_to(seen[d.last_choice], Vector2.ZERO)
+			# The picker waits on a dialogue, so it runs on its own and pays for the cast
+			# only when a place is picked ("Stay" costs nothing). cast() itself never waits.
+			_dreamwalk(m, seen)
+			return true
 		"glow":
 			GameState.run["flags"]["glow_day"] = int(GameState.run["day"])
 			m.hud.toast("The dark pulls back.", Color(0.9, 0.95, 1.0))
@@ -206,15 +206,38 @@ static func cast(m: GameMap, id: String) -> bool:
 		_:
 			fired = false
 	if fired:
-		if int(GameState.run.get("mana", 0)) > (10 if GameState.bonus("magic", "awakened") > 0.0 else 0) and randf() < GameState.bonus("magic", "free_cast"):
-			# Twin Cast (Magic): now and then a spell costs nothing.
-			m.hud.toast("Twin Cast: free!", Color(0.85, 0.75, 1.0))
-			m.fx("sparkle", p.position + Vector2(0, -14), 12.0, 0.5)
-		else:
-			GameState.spend_mana(cost_of(id))
-		m.xp("magic", 2 + int(SPELLS[id]["cost"]) / 5)
-		Music.instance(m.get_tree()).sfx("spell", "levelup")
+		_pay(m, id)
 	return fired
+
+
+## Mana (or a Twin Cast), magic XP and the cast sound for a spell that fired.
+static func _pay(m: GameMap, id: String) -> void:
+	var p := m.player
+	if int(GameState.run.get("mana", 0)) > (10 if GameState.bonus("magic", "awakened") > 0.0 else 0) and randf() < GameState.bonus("magic", "free_cast"):
+		# Twin Cast (Magic): now and then a spell costs nothing.
+		m.hud.toast("Twin Cast: free!", Color(0.85, 0.75, 1.0))
+		m.fx("sparkle", p.position + Vector2(0, -14), 12.0, 0.5)
+	else:
+		GameState.spend_mana(cost_of(id))
+	m.xp("magic", 2 + int(SPELLS[id]["cost"]) / 5)
+	Music.instance(m.get_tree()).sfx("spell", "levelup")
+
+
+static func _dreamwalk(m: GameMap, seen: Array) -> void:
+	var d := Dialogue.instance(m.get_tree())
+	var ch: Array = seen.map(func(x: String) -> String: return x.replace("_", " ").capitalize())
+	ch.append("Stay")
+	d.say([{"who": "", "text": "The Dream opens. Where?", "choice": ch, "key": ""}])
+	await d.finished
+	if not is_instance_valid(m) or not m.is_inside_tree():
+		return
+	if d.last_choice < 0 or d.last_choice >= seen.size():
+		return
+	if m._transitioning or m._changing or can_cast("dreamwalk") != "":
+		return
+	_pay(m, "dreamwalk")
+	m.fx("sparkle", m.player.position + Vector2(0, -14), 14.0, 0.8)
+	m.go_to(seen[d.last_choice], Vector2.ZERO)
 
 
 ## Farm soil and crops draw on their own layer (farm.gd _soil); the map itself too.

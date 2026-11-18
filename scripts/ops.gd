@@ -17,7 +17,7 @@ const HEISTS := {
 		"pitch": "There's a cannery on pier nine that doesn't can anything. Crates of purple crystal go in the front and out the back. I've counted the guards for a week. Halo drives.",
 		"reward": {"#gold": 900, "crystal_refined": 4}},
 	"arcade": {"name": "The Neon Arcade", "where": "neon", "planner": "dice", "crew": ["dice", "vic"], "after": "crew_vic",
-		"pitch": "The arcade under the dragon sign takes the whole district's tokens to a back room every Friday. Vic stands at the door looking big. I open the safe. Nobody gets hurt; that's the deal.",
+		"pitch": "The arcade under the dragon sign is the President's counting room: every Friday the district's takings go to a back room. Vic stands at the door looking big. I open the safe. Nobody gets hurt; that's the deal.",
 		"reward": {"#gold": 1400, "data_chip": 3}},
 	"vault": {"name": "The Vault", "where": "uptown", "planner": "specs", "crew": ["specs", "sasha"], "after": "crew_sasha",
 		"pitch": "The bank uptown has a sub-basement on its own wire, and in it, a crystal the size of a car. I get us past the wire. Sasha gets us past the doors. We take a battery's worth and leave the rest humming.",
@@ -58,11 +58,18 @@ static func holds(scene: String) -> bool:
 
 
 ## After a kill: the last hostile on a district block hands you the block.
-static func on_kill(m: GameMap) -> void:
-	if not on() or not TURF.has(m.scene_id()) or holds(m.scene_id()):
+static func on_kill(m: GameMap, late := false) -> void:
+	if not on() or not is_instance_valid(m) or not TURF.has(m.scene_id()) or holds(m.scene_id()):
 		return
 	if m.scene_id() != "alley" and not GameState.run["flags"].has("boss_" + m.scene_id()):
+		if not late:
+			# The boss may be the foe that just fell: the region marks boss_<id> right
+			# after this call, so look again once that has happened.
+			(func() -> void: Ops.on_kill(m, true)).call_deferred()
 		return  # take the district from its boss first
+	if not GameState.run["flags"].has("turf_hint"):
+		GameState.run["flags"]["turf_hint"] = true
+		GameState.add_hint("Clear every hostile left on a district block and it's yours: ◆%d every morning, and collectors stay away." % TURF_PAY)
 	for e in m.enemies:
 		if is_instance_valid(e) and e._alive:
 			return
@@ -76,6 +83,10 @@ static func on_kill(m: GameMap) -> void:
 static func morning() -> int:
 	if not on():
 		return 0
+	for hid: String in HEISTS:
+		if heist_ready(hid) and not GameState.run["flags"].has("heist_hint_" + hid):
+			GameState.run["flags"]["heist_hint_" + hid] = true
+			GameState.add_hint("%s has a job planned: %s. Talk to them at the hideout." % [str(Crew.members()[str(HEISTS[hid]["planner"])]["name"]), str(HEISTS[hid]["name"])])
 	var pay := TURF_PAY * turf().size()
 	GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
 	return pay

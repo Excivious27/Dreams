@@ -95,7 +95,7 @@ T = {
 # The arcs' own trees (only shown in their arc).
 T["hustle"] = ([("Street", ["pass_risk", "heat_cool"], ["Blend In", "Smooth Hands", "Know the Beat", "Quiet Money", "Low Profile", "Cold Trail", "Ghost of the Avenue", "Clean Record", "Nobody Saw Nothing"]),
                 ("Money", ["wash_bonus", "job_pay"], ["Small Change", "Spin Cycle", "Payroll", "Clean Sheets", "Fat Envelope", "Good Books", "Front Business", "Silent Partner", "Empire Ledger"]),
-                ("Muscle", ["gun_damage", "hp"], ["Steady Aim", "Thick Skin", "Quick Reload", "Street Tough", "Dead Eye", "Brawler", "Iron Nerves", "Sharpshooter", "The Heavy"]),
+                ("Muscle", ["gun_damage", "hp"], ["Steady Aim", "Hollow Points", "Street Smarts", "Quick Study", "Dead Eye", "Old Hand", "Iron Nerves", "Second Wind", "The Heavy"]),
                 ("Operations", ["supply_rate", "helper_hp", "energy"], ["Radio Check", "Drone Tune-Up", "Night Shift", "Supply Run", "Armoured Drones", "Logistics", "Field Command", "War Room", "Kingpin's Reach"])], {})
 T["harmony"] = ([("Bond", ["ability_cooldown", "hp"], ["Paw in Hand", "Trust", "Side by Side", "Warm Feathers", "Kindred", "Shared Breath", "Heart Link", "Unbreakable Friends", "Family"]),
                  ("Song", ["mana", "energy"], ["Hum", "First Verse", "Meow Chorus", "Steady Song", "Tidal Melody", "Waterfall Hymn", "Choir of Stars", "Pow Wow Heart", "The Real One"]),
@@ -143,9 +143,6 @@ def _caps():
 
 
 BASE_CAPS, SKILL_CAPS = _caps()
-# Gun damage (Hustle "Muscle" row): GameState.BONUS_CAPS["gun_damage"] is 12. Kept here
-# too so the fillers stop at 12 even before/if the game-side cap line is read.
-BASE_CAPS.setdefault("gun_damage", 12.0)
 FALLBACK = {"farming": ["growth", "seed_back"], "mining": ["stone_bonus", "mine_energy"], "foraging": ["wood_bonus", "forage_bonus"],
             "fishing": ["fish_value", "double_fish"], "combat": ["xp_gain", "hp", "energy"], "bartering": ["sell_bonus", "interest", "xp_gain", "gift_bonus"],
             "building": ["energy", "craft_speed"], "magic": ["mana"], "pup": ["pet_hp", "pet_dmg"],
@@ -201,7 +198,7 @@ UNLOCKS = {
                (1, 3, "Clinic Blueprint", "Learn to build the Chrome Clinic.", {"blueprint": "clinic"}),
                (2, 4, "Robotics Blueprint", "Learn to build the Robotics Bench: bots and drones.", {"blueprint": "robotics"}),
                (3, 2, "Street Sprint", "Move 5% faster.", {"move_speed": 0.05}),
-               (0, 5, "Hot Loads", "+2 gun damage.", {"gun_damage": 2}),
+               (0, 5, "Fresh Rounds", "+2 gun damage.", {"gun_damage": 2}),
                (2, 7, "Heavy Hitter", "+3 gun damage.", {"gun_damage": 3})],
     "harmony": [(0, 2, "Lantern Step", "Move 5% faster.", {"move_speed": 0.05}),
                 (1, 4, "Radiant Heart", "Learn the Radiance spell: a ring of light hits everything near you.", {"spell": "radiance"}),

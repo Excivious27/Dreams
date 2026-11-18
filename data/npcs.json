@@ -883,7 +883,7 @@
   "portrait": "drifter",
   "inside": [
    "Tracks by the stream. Big ones.",
-   "Don't go in the forest after dark without a lantern. Or do. I'll find what's left."
+   "Don't go in the forest after dark without a lantern. Or do. I'll come and find you in the morning."
   ],
   "spot_name": "lodge_front",
   "routine": [
@@ -1255,7 +1255,7 @@
    "2": "Marlowe sells you lamp oil: 2 each week",
    "4": "Marlowe's charts: a Luck Potion",
    "6": "Night fishing at the lighthouse: 10 Bait each week",
-   "8": "Marlowe tells the story of the crystal: a Moonlight Elixir",
+   "8": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir",
    "10": "Marlowe's old tackle box: 3 Luck Potions"
   },
   "home": "lighthouse",

@@ -42,8 +42,10 @@ Everything below shows a code-drawn stand-in today.
 
 - props/fountain
 
-## Broken art to redraw (3)
+## Broken art to redraw (5)
 
 - props/puddle_storm_0..3 (sliced as a solid magenta blob; storms use the plain puddles until redrawn)
+- portraits/npc_marlowe|orla|ivy|tam|benno|sel (portrait is a different person from the walking sprite; Prompts 28 w479/w480)
+- animals/dog_golden|dog_collie|dog_husky fight strips (other breed / missing; Prompts 28 w481)
 - seamless/teal_moss (wrapping ground texture for colony_kelp)
 - seamless/violet_soil (jungle soil patch)

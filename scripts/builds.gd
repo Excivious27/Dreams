@@ -195,6 +195,8 @@ static func buy_permit(id: String) -> String:
 		return "No permit needed."
 	if permitted(id) >= int(nd["tier"]):
 		return "You already hold that permit."
+	if Net.visiting() and not Net.online():
+		return "Reconnecting to your host... try again in a moment."
 	if int(GameState.run["crystals"]) < price:
 		return "A %s permit is ◆%d. You have ◆%d." % [str(nd["name"]), price, int(GameState.run["crystals"])]
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - price

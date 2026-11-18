@@ -86,7 +86,7 @@ v("theo", "theo_book",
   L("Theo", "You read the board notices. All of them. Nobody reads the small ones.", "I write the small ones. Hello."),
   L("Theo", "The library has four hundred books and I've read three hundred and ninety-eight. The other two are in a language I'm inventing as I go.", "It's going slowly. The language, not the reading."),
   L("Theo", "There's a book in the mine. Old. The miners' log, from before the bell stopped. It would explain... a great many small notices.", "I can't go down there. I'm a reader. You're a... whatever you are. Please."),
-  L("Theo", "The log says the bell cracked the same night something fell in the east. The same night. Twenty-one years ago.", "Your light isn't the first. Something came before. Something that didn't ask for help."),
+  L("Theo", "The log says the bell cracked the same night something fell in the east. The same night. Twenty-one years ago.", ("Your light isn't the first. Something came before. Something that didn't ask for help.", "You aren't the first stranger up that road. Something came before. Something that didn't ask for help.")),
   L("Theo", "I've finished the two books. The language was mine after all; I just hadn't learned it yet.", "The last line of the last one says: 'They came back for the town.' I don't know if it's a record or a prediction. I'd like it to be both."),
   "Theo would carry four hundred books into the chapel two at a time and read the last one aloud until whatever came was bored into leaving.",
   {"2": "Small notices. Hello.", "4": "Three hundred and ninety-eight.", "6": "The miners' log. Please.", "8": "The same night. Twenty-one years.", "10": "They came back for the town."})
@@ -174,7 +174,7 @@ v("mabel", "mabel_flowers",
   {"2": "Definitely the singing.", "4": "When I'm ten.", "6": "Flowers for the cellar. I have plans.", "8": "A good stone.", "10": "Just Granite."})
 
 v("marlowe", "lighthouse_lens",
-  L("Marlowe", "Lamp's lit every night for thirty years. Nobody's needed it for twenty. I light it anyway.", "You don't light a lamp for the boats. You light it so the dark knows somebody's counting."),
+  L("Marlowe", "Thirty years I lit that lamp. Nobody's needed it for twenty. I'd light it tonight if it had oil.", "You don't light a lamp for the boats. You light it so the dark knows somebody's counting."),
   L("Marlowe", "There's a pearl in the lake. I've seen it, once, from the top, in the right moon. Finn doesn't believe me. Finn believes in fish.", "Tell him. He'll believe you; you've got the face for it."),
   L("Marlowe", "The lens is cracked. Has been since the night the bell stopped. Same night, you know. I heard it from up here.", "Something fell in the east that night. I lit the lamp at it. It didn't come."),
   L("Marlowe", "New lens. Thirty years I've looked through a crack and now I can't remember what I was looking at.", "I'll tell you: the east. Every night. Waiting for whatever it was to try again."),

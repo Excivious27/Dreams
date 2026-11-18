@@ -17,7 +17,7 @@ regs["hollow_heart"] = {
     "props": [{"name": "geode_chamber", "cell": [34, 4], "w": 6, "h": 4}, {"name": "mushroom_tree_a", "cell": [14, 38], "w": 2, "h": 2},
               {"name": "mushroom_tree_b", "cell": [60, 36], "w": 2, "h": 2}, {"name": "mushroom_tree_a", "cell": [50, 22], "w": 2, "h": 2},
               {"name": "mushroom_tree_b", "cell": [26, 54], "w": 2, "h": 2}, {"name": "star_crater", "cell": [48, 50], "w": 4, "h": 3, "anim": True},
-              {"name": "cave_lamp", "cell": [41, 56]}, {"name": "cave_cart", "cell": [13, 15]}, {"name": "cave_lamp", "cell": [65, 15]},
+              {"name": "cave_lamp", "cell": [41, 56]}, {"name": "cave_cart", "cell": [13, 15]}, {"name": "cave_lamp", "cell": [66, 15]},
               {"name": "cave_mush_blue", "cell": [20, 36]}, {"name": "cave_mush_purple", "cell": [52, 34]}, {"name": "cave_mush_orange", "cell": [30, 24]},
               {"name": "cave_mush_blue", "cell": [44, 18]}, {"name": "cave_mush_purple", "cell": [16, 22]}, {"name": "cave_mush_orange", "cell": [58, 54]},
               {"name": "mine_crystal_rock_2", "cell": [22, 40]}, {"name": "mine_crystal_rock_4", "cell": [54, 40]}, {"name": "mine_crystal_rock_1", "cell": [32, 16]},

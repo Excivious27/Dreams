@@ -496,7 +496,8 @@
      },
      {
       "who": "Theo",
-      "text": "Your light isn't the first. Something came before. Something that didn't ask for help."
+      "text": "Your light isn't the first. Something came before. Something that didn't ask for help.",
+      "text_gangsters": "You aren't the first stranger up that road. Something came before. Something that didn't ask for help."
      }
     ],
     "10": [
@@ -1110,7 +1111,7 @@
     "2": [
      {
       "who": "Marlowe",
-      "text": "Lamp's lit every night for thirty years. Nobody's needed it for twenty. I light it anyway."
+      "text": "Thirty years I lit that lamp. Nobody's needed it for twenty. I'd light it tonight if it had oil."
      },
      {
       "who": "Marlowe",

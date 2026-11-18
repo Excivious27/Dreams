@@ -563,7 +563,7 @@
    "Two wine for the festival night. One toast for the council, and one for the town.",
    "I'd like to have some for the rest of us."
   ],
-  "yes": "Good. Keg it yourself if you've got one, it's cheaper than buying.",
+  "yes": "Good. Grapes in a keg. Maple keeps grape seed back for friends, come fall.",
   "no": "The council will be pleased. Nobody else will.",
   "wait": "Two wine. The festival's coming.",
   "done": [
@@ -832,7 +832,7 @@
    "That pup of yours follows you into the stalls. Clover doesn't mind. I mind.",
    "Teach it to stay. Open the menu, Pup, tell it STAY. Then come back and I'll give you something for its trouble."
   ],
-  "yes": "Good. A dog that stays is a dog that lives long.",
+  "yes": "Good. A dog that stays is a dog that stays out of trouble.",
   "no": "Then keep it out of my stalls.",
   "wait": "Has it learned to stay yet? Menu, Pup, STAY. It's not hard. Clover learned it.",
   "done": [
@@ -875,7 +875,7 @@
   "no": "Fine.",
   "wait": "Six. Guard Dog. Not there yet.",
   "done": [
-   "...Mine was like that. Once.",
+   "...Mine was like that. Still is, on a good day.",
    "Studded collar. Iron. Don't let it rust."
   ]
  },

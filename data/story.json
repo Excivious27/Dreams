@@ -426,7 +426,7 @@
       },
       {
        "who": "Finn",
-       "text": "He'd have liked you. He liked anybody who'd walk into a field and swing at what was howling. Keep swinging, %hero. For both of us, yeah?"
+       "text": "He'll like you. He likes anybody who'll walk into a field and swing at what's howling. Keep swinging, %hero. For both of us, yeah?"
       },
       {
        "who": "",
@@ -463,6 +463,7 @@
       "scene": "mountain"
      },
      "when": {
+      "quest": "commander",
       "flags": [
        "mountain_seen",
        "meow_taught",
@@ -489,6 +490,7 @@
       "sleep": true
      },
      "when": {
+      "quest": "commander",
       "flags": [
        "mountain_seen",
        "meow_taught",
@@ -539,6 +541,7 @@
       ]
      },
      "when": {
+      "quest": "commander",
       "flags": [
        "meow_taught",
        "catship_done"
@@ -620,6 +623,7 @@
       "scene": "mountain"
      },
      "when": {
+      "quest": "commander",
       "flag": "babies_calm",
       "not_flag": "babies_done"
      },
@@ -1475,6 +1479,7 @@
        "epilogue_done"
       ],
       "toast": "Thank you for playing. The farm goes on.",
+      "hint": "The story is done. The merkitty islands, the mine's deep floors and the green planet past the station are still out there.",
       "sfx": "levelup"
      }
     }
@@ -3101,6 +3106,7 @@
        "epilogue_done"
       ],
       "toast": "Thank you for playing. The farm goes on.",
+      "hint": "The story is done. The farm, the crew and every block you haven't walked yet are still yours.",
       "sfx": "levelup"
      }
     }

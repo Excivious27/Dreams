@@ -283,8 +283,8 @@ station('burrow', 'Crystal Baby Burrow', 'sanctuary', [18, 27], 'mining', '', 'C
  ('Cosy Burrow', ['burrow_1'], {'plank': 30, 'cloth': 8, 'stone': 40}, 'The babies you turned back dig for you overnight: stone, coal, copper, a shard.'),
  ('Baby Dig', ['burrow_2'], {'beam': 16, 'brick': 60, 'yarn': 10}, 'More diggers; iron and shards.'),
  ('Stomping Grounds', ['burrow_3'], {'ironwood_beam': 4, 'plating': 6, 'fine_fabric': 8}, 'Silver, gold and refined crystal turn up.')], w=2, h=2, arc='penguins', kind='building')
-station('shrine', 'Meow Pow Wow Shrine', 'sanctuary', [18, 23], 'foraging', '', 'Catkins', [
- ('Paw Stone', ['shrine_1'], {'stone': 30, 'crystal_bloom': 6, 'shard': 3}, 'Practise once a day: mana back and foraging XP. +5 max mana.'),
+station('shrine', 'Meow Pow Wow Shrine', 'sanctuary', [18, 23], 'magic', '', 'Catkins', [
+ ('Paw Stone', ['shrine_1'], {'stone': 30, 'crystal_bloom': 6, 'shard': 3}, 'Practise once a day: mana back and magic XP. +5 max mana.'),
  ('Heart Shrine', ['shrine_2'], {'brick': 40, 'crystal_refined': 6, 'starflower': 3}, 'Your Meow Pow Wow counts one rank stronger. Practice pays double.'),
  ('Rainbow Shrine', ['shrine_3'], {'crystal_glass': 6, 'moonweave': 3, 'star_dust': 4}, 'Two ranks stronger. +15 max mana.')], arc='penguins', kind='building')
 B['burrow']['tiers'][0].setdefault('unlock', {})['progress'] = 2

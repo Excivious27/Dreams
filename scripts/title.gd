@@ -155,6 +155,7 @@ func _show_slots() -> void:
 	_slot_code.placeholder_text = "Paste a save code here"
 	_slot_code.custom_minimum_size = Vector2(220, 46)
 	_slot_code.add_theme_font_size_override("font_size", 7)
+	_field_style(_slot_code)
 	_page.add_child(_slot_code)
 	_page.add_child(_button("Load the code into slot %d" % GameState.slot(), func() -> void:
 		var txt := _slot_code.text
@@ -376,6 +377,20 @@ func _sprite_card(pid: String, name: String) -> Control:
 		tr.offset_left = 7; tr.offset_right = -7; tr.offset_top = 9; tr.offset_bottom = -9
 		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		b.add_child(tr)
+		if _arc == "gangsters":
+			# Name under the portrait (phones show no tooltips).
+			tr.offset_bottom = -20
+			var nl := Label.new()
+			nl.text = name.get_slice(" (", 0)
+			nl.add_theme_font_size_override("font_size", 7)
+			nl.add_theme_color_override("font_color", Color(0.95, 0.85, 0.6))
+			nl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			nl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			nl.set_anchors_preset(PRESET_BOTTOM_WIDE)
+			nl.offset_top = -19
+			nl.offset_bottom = -3
+			nl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			b.add_child(nl)
 	else:
 		b.text = name
 		b.add_theme_font_size_override("font_size", 7)
@@ -397,6 +412,13 @@ func _pick(pid: String) -> void:
 		var cc: Control = _cards[k]
 		if is_instance_valid(cc):
 			cc.modulate = Color(1.15, 1.1, 0.95) if k == pid else Color(0.72, 0.72, 0.78)
+		if cc is Button and _arc == "gangsters" and is_instance_valid(cc):
+			var nsb := (cc as Button).get_theme_stylebox("normal")
+			if nsb is StyleBoxFlat:
+				var sb := (nsb as StyleBoxFlat).duplicate() as StyleBoxFlat
+				sb.border_color = Color(1, 0.82, 0.35) if k == pid else Color(0.62, 0.5, 0.26)
+				sb.set_border_width_all(3 if k == pid else 2)
+				(cc as Button).add_theme_stylebox_override("normal", sb)
 	if _name_lbl == null or not is_instance_valid(_name_lbl):
 		_name_lbl = Label.new()
 		_name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -419,7 +441,9 @@ func _pick(pid: String) -> void:
 		_look_full = {}  # a new pick starts clean; the look is only for penguins and custom heroes
 	if bool(_playables[pid].get("custom", false)) and PaperDoll.available():
 		# Build-your-own: preview a paper doll (the look you made, coming back).
-		var cr := Creator.new(_look_full if _look_full.has("body") else PaperDoll.random_look(), "", false)
+		var rl := PaperDoll.random_look()
+		rl["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"  # the preview matches the game
+		var cr := Creator.new(_look_full if _look_full.has("body") else rl, "", false)
 		_preview.add_child(cr)
 		cr.visible = false
 		var body := AnimatedSprite2D.new()
@@ -435,7 +459,7 @@ func _pick(pid: String) -> void:
 		# The same hair (and hat) layers as the creator, so the first look isn't bald.
 		var lk: Dictionary = cr.look
 		var hair := Sprite2D.new()
-		hair.modulate = Color(str(PaperDoll.HAIR_COLORS.get(str(lk.get("hair_color", "brown")), "ffffff")))
+		hair.material = PaperDoll.hair_material(str(lk.get("hair_color", "brown")))
 		hair.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		var hat := Sprite2D.new()
 		hat.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -443,8 +467,8 @@ func _pick(pid: String) -> void:
 		_preview.add_child(hat)
 		var upd := func() -> void:
 			var pose := PaperDoll.pose_index(body.animation, body.frame)
-			PaperDoll.place_layer(hair, "hair", str(lk.get("hair", "")), str(lk.get("body", "medium_slim")), pose, false, sc)
-			PaperDoll.place_layer(hat, "hats", str(lk.get("hat", "")), str(lk.get("body", "medium_slim")), pose, false, sc)
+			PaperDoll.place_layer(hair, "hair", str(lk.get("hair", "")), PaperDoll.body_for(lk), pose, false, sc)
+			PaperDoll.place_layer(hat, "hats", str(lk.get("hat", "")), PaperDoll.body_for(lk), pose, false, sc)
 		body.frame_changed.connect(upd)
 		upd.call()
 		_look_full = cr.look.duplicate()
@@ -499,6 +523,7 @@ func _show_look() -> void:
 		return
 	elif _look_full.is_empty() or not _look_full.has("body"):
 		_look_full = PaperDoll.random_look()
+		_look_full["outfit"] = "outfit_neon" if _arc == "gangsters" else "outfit_farmer"  # the preview matches the game
 	var cr := Creator.new(_look_full, sprite_id, false)
 	cr.done.connect(func(l: Dictionary) -> void: _look_full = l; _show_names())
 	_page.add_child(cr)
@@ -519,6 +544,21 @@ func _show_names() -> void:
 	_page.add_child(_button("Back", _show_characters))
 
 
+## A visible box for text fields (the default style is see-through over the dark art).
+func _field_style(c: Control) -> void:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color("f1e2bd")
+	sb.border_color = Color("6b4423")
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(3)
+	sb.set_content_margin_all(4)
+	for st in ["normal", "focus", "read_only"]:
+		c.add_theme_stylebox_override(st, sb)
+	c.add_theme_color_override("font_color", Color("3a2410"))
+	c.add_theme_color_override("caret_color", Color("3a2410"))
+	c.add_theme_color_override("font_placeholder_color", Color(0.4, 0.3, 0.2, 0.8))
+
+
 func _edit(label_text: String, default_text: String) -> LineEdit:
 	_page.add_child(_label(label_text, 9, false))
 	var e := LineEdit.new()
@@ -526,6 +566,7 @@ func _edit(label_text: String, default_text: String) -> LineEdit:
 	e.max_length = 16
 	e.add_theme_font_size_override("font_size", 11)
 	e.custom_minimum_size = Vector2(0, 28)
+	_field_style(e)
 	e.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_page.add_child(e)
 	return e

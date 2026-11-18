@@ -71,7 +71,8 @@ func after_ready() -> void:
 	rng.seed = 64
 	# Grove trees: every other cell, mix of mid trees, bigger ones in the middle of a mass.
 	var placed := 0
-	var use_groves := Art.has("nature", "grove_0")
+	var se := GameState.look_se()
+	var use_groves := Art.has("nature", "grove_0") and se in ["spring", "summer"]  # grove art is summer-green only
 	if use_groves:
 		# Composed canopy clusters every ~4 cells inside the grove mass; single trees fill the rest.
 		for c: Vector2i in _grove:
@@ -101,7 +102,9 @@ func after_ready() -> void:
 		var deep := _grove.has(c + Vector2i(2, 0)) and _grove.has(c + Vector2i(-2, 0)) and _grove.has(c + Vector2i(0, 2)) and _grove.has(c + Vector2i(0, -2))
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
 		if Art.has("nature", "mid_oak"):
-			nm = ["mid_oak", "mid_pine", "mid_birch", "mid_oak"][rng.randi_range(0, 3)] if not deep or rng.randf() < 0.5 else ["big_oak_a", "big_pine_a", "big_birch_a", "big_oak_b"][rng.randi_range(0, 3)]
+			var mids: Array = {"fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b"], "winter": ["mid_snowpine", "mid_snowpine_b", "mid_dead", "mid_pine"]}.get(se, ["mid_oak", "mid_pine", "mid_birch", "mid_oak"])
+			var bigs: Array = {"fall": ["big_maple_a", "big_maple_b", "big_pine_a", "big_oak_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_pine_c"]}.get(se, ["big_oak_a", "big_pine_a", "big_birch_a", "big_oak_b"])
+			nm = str(mids[rng.randi_range(0, mids.size() - 1)]) if not deep or rng.randf() < 0.5 else str(bigs[rng.randi_range(0, bigs.size() - 1)])
 		set_thing(c.x, c.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
 		prop("nature", nm, c, 0, rng.randf_range(-2.0, 2.0))
 		placed += 1
@@ -202,7 +205,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			elif GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")):
 				go_to("sky", Vector2(16 * TILE, 26 * TILE), "up")
 			else:
-				tell([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight." + (" Something tells you it's not time yet." if GameState.is_penguins() else " The stair is roped off.")}])
+				tell([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight." + ((" The Star Crystal hums: the Grump Commander in the Wastes first." if GameState.run["flags"].has("catship_done") else " Something tells you it's not time yet.") if GameState.is_penguins() else " The stair is roped off.")}])
 			return true
 	return false
 

@@ -30,32 +30,6 @@ A hero wearing the Neon Jacket or the Ceremony Coat talks with the face of the b
 
 Every partner's ability button shows the same paw, except Coco, Mer and Merry. The 15 skill-tree unlock nodes that give a special power show a plain potion or tool instead of a picture of the power.
 
-======================================================================
-
-COVERAGE TABLE (file → what it fixes → code name the slicer should write)
-
-w471  hero portraits, neon + ceremony coats → portraits/hero_outfit_neon/<mood>, portraits/hero_outfit_penguin/<mood> (moods neutral|happy|sad|angry|surprised|determined, same as hero_outfit_farmer). Dialogue.portrait_for picks them up by costume name, no code needed.
-
-w472  Big Grump boss sheet                   → enemies/big_grump/idle|walk|attack|hurt|die. Code: enemies.json big_grump "art": "big_grump" (or drop the "grump" default at enemy.gd:171 when enemies/big_grump exists) and enemy.gd:186 `var s := 0.5 if k != "big_grump" else 1.1` → `var s := 0.5 if (k != "big_grump" or Art.has("enemies/big_grump", "idle")) else 1.1`
-
-w473  partner ability icons                  → ui/icon_ability_penguin_king|penguin_wizard|man|woman|son|girl|coldy|big_jim|npc_drifter|mk_kit|mk_ember|mk_dahlia|mk_juno|mk_rio|mk_mei|mk_bruno|mk_tomas|mk_sable|mk_atlas (48 px tall like the others; the key is the companion's "sprite"). Icon 20 is a spare (ui/icon_ability_default, optional).
-
-w474  skill unlock icons                     → ui/node_farming_farming_u_wide_spout, node_mining_mining_u_tremor, node_foraging_foraging_u_domino_fall, node_fishing_fishing_u_tidecall, node_combat_combat_u_iron_gut, node_combat_combat_u_not_today, node_bartering_bartering_u_lucky_day, node_building_building_u_quick_build, node_magic_magic_u_twin_cast, node_strategist_strategist_u_quartermaster, node_strategist_strategist_u_drill_sergeant, node_leadership_leadership_u_rally_cry, node_leadership_leadership_u_field_medic, node_hustle_hustle_u_hot_loads, node_hustle_hustle_u_heavy_hitter (48×48; game_menu keeps node_ art for unlock nodes whose effect has no candidate list).
-
-LEFT OUT ON PURPOSE
-
-- Skill icons for magic, pup, bartering, building, leadership, strategist, harmony and hustle (252 nodes show item icons today): Prompts 17 w345–w352 already ask for them, and they just haven't been uploaded. Only the three " II" names need a slicer fix (fix 4).
-
-- Effect strips for Coldy, Big Jim, Pip-Pip and Nova (17, 12B redo part 2) and for Dad, Mom, Pax, Kairi and Sal (19 w418/w419 plus a slicer mapping): already asked for.
-
-- Countryside ground: the existing shoulder/dry_grass art is enough; the stripes are a slicer/data bug (fix 1).
-
-- Portrait moods beyond neutral/happy for minor speakers: only 11 lines in the whole game ask for a mood.
-
-- The 13 enemies with a "die" strip, and an attack for the ash hound: the art is already there (fixes 5 and 6).
-
-- Ending paintings, vehicles, horses, bots, spells, tele icons, crew badges and specials: all present or already asked for (17).
-
 > PROMPT 25-2. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette — charcoal, oxblood, navy, olive, tarnished brass — where it says so), flat #FF00FF magenta background, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere (not under, above or beside any piece, not even on cards, banners or icons), no watermark, NO LETTERBOXING. At least 24 px of clear magenta between separate pieces. All ages: no blood, nothing gory. Characters keep their exact look from the attached references.

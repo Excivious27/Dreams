@@ -136,7 +136,7 @@ func sfx(name: String, fallback := "") -> void:
 		_next_voice += 1
 	pick.stream = st
 	# A little pitch drift so repeated swings and steps don't sound stamped out.
-	pick.pitch_scale = 1.0 if st.get_length() > 0.45 else randf_range(0.93, 1.07)  # jingles stay in key
+	pick.pitch_scale = 1.0 if (st.get_length() > 0.45 or name in ["craft_done", "mail", "coin"]) else randf_range(0.93, 1.07)  # jingles stay in key
 	pick.play()
 
 

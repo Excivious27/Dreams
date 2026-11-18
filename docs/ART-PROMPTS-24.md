@@ -33,36 +33,6 @@ Big Grump and the Grump Commander have lines but no face in the dialogue box. An
 
 Any dog or cat can be your pet. The game plays FETCH when the pet brings you something, BEG and PLAY when you fuss over it and DIG when it sniffs out a find. Five breeds and all three cats are missing some of these, so they freeze in place. The golem and the shard hit you without moving.
 
-======================================================================
-
-COVERAGE TABLE (file → what it fixes → code name the slicer should write)
-
-w466  villain faces                       → portraits/grump/neutral|happy|worried, portraits/commander/neutral|happy|worried + Dialogue.portrait_for map "big grump"→grump, "grump commander"→commander
-
-w467  hero portraits, 3 gangster costumes → portraits/hero_outfit_pinstripe_suit|outfit_padded_vest|outfit_armored_suit/<mood> (name = the items.json "costume" value set from w460)
-
-w468  hero portraits, 3 penguin costumes  → portraits/hero_outfit_puffy_parka|outfit_crystal_parka|outfit_starlight_mantle/<mood>
-
-w469  pet poses                           → animals/dog_collie|dog_golden|dog_husky/play|fetch|beg, animals/dog_hound|dog_white/dig|fetch|beg, animals/cat_orange|cat_grey|cat_calico/dig|fetch|beg (pet.gd and game_map._place_pet pick them up by name)
-
-w470  golem and shard attacks             → enemies/golem/attack, enemies/shard/attack (6 frames; enemy.gd loads "attack" when it exists), fx/shot_crystal (splinter, optional)
-
-LEFT OUT ON PURPOSE
-
-- Partner ability strips for Dad, Mom, Pax, Kairi and Sal: 19 w418/w419 already ask for 18 generic ability effects; mapping them is a slicer job.
-
-- The four skill icons with no art (Starborn, Pressure II, Delegate II, Crystal Nursery II): already drawn in the w345/w349–w351 sheets; the matcher just needs to accept the " II" names.
-
-- A walking sheet and select card for the Star Crystal: she isn't playable in any arc (arcs.json), so the title never shows her.
-
-- New weather overlays: the old ov_ strips tile cleanly; only the ov2_ strips are broken, and that's a code fix.
-
-- Death animations: 24 enemies already have a "die" strip the game never plays (code fix), so asking for more is pointless.
-
-- Ride/swim/life sheets for the new costumes and hero portraits for skin/build variants: the game falls back cleanly.
-
-- Place signs that "talk" (Diner, Ramen, Bank, Rest stop, Book, Journal, Letter...): text boxes, no face needed.
-
 > PROMPT 24-2. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (gangster-arc pieces in the dark underworld palette — charcoal, oxblood, navy, olive, tarnished brass — where it says so), flat #FF00FF magenta background, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere (not under, above or beside any piece, not even on cards or banners), no watermark, NO LETTERBOXING. At least 24 px of clear magenta between separate pieces. All ages: no blood, nothing gory. Characters keep their exact look from the attached references.

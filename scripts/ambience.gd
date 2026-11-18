@@ -189,7 +189,7 @@ func _evaluate() -> Dictionary:
 	var duck := 0.0
 	if outdoors and ph == "night" and not deep:
 		duck = -4.0
-	if w == "storm" and outdoors:
+	if w in ["storm", "blizzard"] and outdoors:
 		duck = minf(duck, -3.0) - (1.0 if duck < 0.0 else 0.0)  # a night storm dips more than a calm night
 	var mu := Music._inst
 	if mu and is_instance_valid(mu):

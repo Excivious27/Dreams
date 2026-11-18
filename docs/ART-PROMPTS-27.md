@@ -11,32 +11,6 @@ HOW TO USE: each PROMPT below is one copy-paste into ChatGPT. It asks for at mos
 
 The Wastes paint a 12×9 rectangle of purple soil round the dark spire and the Sky a 12×6 rectangle of starry cloud round the observatory, both with hard straight edges. The Jungle's glowing path, the Wastes' cracked-earth road and the Sky's floating-stone path are drawn as straight square stripes. With seamless squares the game draws all five as soft, curved patches like the dirt paths. 21 items still borrow a look-alike icon.
 
-======================================================================
-
-COVERAGE TABLE (file → what it fixes → code name the slicer should write)
-
-w477  region ground and paths → seamless/purple_soil, seamless/cloud_star, seamless/bio_path, seamless/cracked_earth, seamless/float_stone (slice_art3.py: `square(im, b)` on the five boxes in row order, then make_seamless.py). Code: none for purple_soil and cloud_star (region.gd:858 already draws a layer with soft_ground when seamless/<tile> exists); the three paths need SOFT_PATHS in region.gd (audit 15 fix 6).
-
-w478  last item icons         → items/crystal_bloom, strawberry_wine, corn_ale, berry_juice, sprinkler_iridium, old_collar, brass_locket, knight_shard, manifest, sand, colony_light, coral_charm, tide_pearl, kelp_wrap, ember_glass, starfish_snack, shiitake, moonwort, backpack_1, backpack_2, backpack_3 (slice_world.py: `_p14_icons("w478_item_icons_last.png", [those ids in order])`). Hud.icon_for prefers items/<id>, so the ICON_NEAR look-alikes switch off by themselves. Replaces 17 w354, 18 w369 and 19 w421.
-
-LEFT OUT ON PURPOSE
-
-- Catkins: his walking sheet and portraits already exist (characters/catkins, portraits/catkins); npcs.json just points him at Merry (fix 1).
-
-- Crystal babies: the toddler sheet w264 was uploaded; it was cut wrong and the enemy points at the shard (fix 2).
-
-- The dark spire's "box": it is the purple soil layer, fixed by w477. The spire's keyed-out glow is still asked in 18 w377.
-
-- A rock fill behind the Hollow Heart's crystal wall: seamless/cave_crystal_rock already exists (fix 7).
-
-- City paths and plazas (asphalt, sidewalk, marble, dock, metal, gravel lot, hazard, grating) and the countryside cornfields: square edges are right for built and planted ground.
-
-- Effect strips for Mom's Mend and Sal's Fence: 19 w418/w419 already ask for them; until then the code can play the existing heal and sparkle (fix 14).
-
-- Ending paintings, the President, the app icon, skill icons and everything else from 17–26 still waiting (w345 onward): asked already; nothing new has been uploaded since loop 2.
-
-- Withered crops (21 w451): no code shows a dead crop yet, so the art would be unused.
-
 > PROMPT 27-1. Make TWO SEPARATE IMAGES, each one its own picture, saved under the exact file name given.
 >
 > RULES FOR EVERY IMAGE: 1536×1024, 16-bit pixel art, clean 1px dark outlines, warm saturated Stardew Valley / Sun Haven palette (the wastes and jungle pieces in a moody night palette — deep violet, slate, a little cyan glow — where it says so), flat #FF00FF magenta background, NO GRID LINES, NO TEXT OR LABELS OR NUMBERS anywhere (not under, above or beside any piece, not on any paper or tag), no watermark, NO LETTERBOXING. At least 24 px of clear magenta between separate pieces. All ages: nothing gory.

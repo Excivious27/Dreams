@@ -95,7 +95,7 @@ func _threshold() -> int:
 				d[k] = old[k]
 		GameState.run["mine_thresh"] = d
 		old = d
-	return 8 if floor_no <= 2 else (maxi(10, int(old[key])) if floor_no <= 10 else maxi(4, int(old[key])))
+	return 8 if floor_no <= 2 else maxi(10 if floor_no <= 10 else (7 if floor_no <= 20 else 4), int(old[key]))
 
 
 func scene_id() -> String:
@@ -128,7 +128,7 @@ func build() -> void:
 		tries += 1
 		_carve(rng, 0.03 * tries)
 	# Way in: the open cell nearest the top-left; way down: the farthest open cell from it.
-	_entry = _nearest_open(Vector2i(4, 6))  # a little down from the top, so the toolbar never hides the ladder
+	_entry = _nearest_open(Vector2i(4, 9))  # a little down from the top, so the toolbar never hides the ladder
 	_ladder = _farthest_open(_entry)
 	for c in range(0, cols * rows):
 		var cc := Vector2i(c % cols, c / cols)
@@ -524,7 +524,7 @@ func after_ready() -> void:
 	_place_find_props()
 	# Fewer enemies, scaled to cave size (bigger caves no longer mean more crowds);
 	# the first floors are gentle.
-	var area_k := float(_open.size()) / 900.0  # floor space, not the map box
+	var area_k := float(_open.size() - (_open.keys().filter(func(q: Vector2i) -> bool: return is_water_cell(q)).size() if _grotto else 0)) / 900.0  # walkable floor space (Mer's lake isn't)
 	var n := int(round((2.0 + mini(floor_no, 60) / 5.0) * area_k))
 	if floor_no <= 4:
 		n = mini(n, 3 + floor_no)
@@ -761,13 +761,18 @@ func _draw_cave_kit() -> bool:
 	var tc := Color(float(tint[0]), float(tint[1]), float(tint[2]))
 	var dark := tc.darkened((0.58 if k == "crystal" else 0.38) + 0.002 * mini(floor_no, 100))  # crystal walls were as bright as the floor
 	var area := _clip.intersection(Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad))
+	# Rock cells, then floor cells: each fills only its own cell, and two passes
+	# keep the batch (alternating textures along every row broke it per run).
+	var floor_cells: Array[Vector2i] = []
 	for y in range(area.position.y, area.end.y):
 		for x in range(area.position.x, area.end.x):
 			var c := Vector2i(x, y)
 			if _open.has(c):
-				seam_cell(_ci, floor_nm, c, tc)
+				floor_cells.append(c)
 			else:
 				seam_cell(_ci, rock_nm, c, dark)
+	for c in floor_cells:
+		seam_cell(_ci, floor_nm, c, tc)
 	var wall := Art.tex("cliffs", "cave_%s_wall" % k)
 	if wall:
 		var face_h := TILE * 1.5
@@ -893,15 +898,20 @@ func _draw_ground() -> void:
 					_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.darkened(0.25))
 		var open_here := _cells_in(_open, _clip)
 		# Cave floor.
+		# Fill variants grouped by texture (each fills only its own cell).
+		var by_fill := {}
 		for c: Vector2i in open_here:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ floor_no)
-			var drawn := false
-			if nfill > 0:
-				drawn = Art.draw_tile(_ci, "tiles", "mine_%s_fill_%d" % [ts, h % nfill], Vector2(c * TILE), 0)
-			elif Art.has("tiles", "mine_floor"):
-				drawn = Art.draw_tile(_ci, "tiles", "mine_floor", Vector2(c * TILE), h % 4)
-			if not drawn:
-				_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(str(theme.get("fa", "4a4152"))) if (c.x + c.y) % 2 == 0 else Color(str(theme.get("fb", "50475a"))))
+			(by_fill.get_or_add(h % nfill if nfill > 0 else -1 - h % 4, []) as Array).append(c)
+		for fi: int in by_fill:
+			for c: Vector2i in by_fill[fi]:
+				var drawn := false
+				if nfill > 0:
+					drawn = Art.draw_tile(_ci, "tiles", "mine_%s_fill_%d" % [ts, fi], Vector2(c * TILE), 0)
+				elif Art.has("tiles", "mine_floor"):
+					drawn = Art.draw_tile(_ci, "tiles", "mine_floor", Vector2(c * TILE), -1 - fi)
+				if not drawn:
+					_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(str(theme.get("fa", "4a4152"))) if (c.x + c.y) % 2 == 0 else Color(str(theme.get("fb", "50475a"))))
 		# Theme wash: the same tiles read differently every 10 floors.
 		if floor_no > 10:
 			var wash := Color(str(theme.get("fa", "4a4152")))
@@ -1097,14 +1107,15 @@ func on_world_sync(d: Dictionary) -> void:
 
 func _place_props() -> void:
 	var ts := _tier_set()
+	var rs := "deep" if ts == "crystal" and Art.has("props", "mine_deep_rock_0") else ts  # the grotto's plain stone is grey (a modulate can't take the purple out)
 	if ts != "":
 		var nrock := 0
-		while Art.has("props", "mine_%s_rock_%d" % [ts, nrock]):
+		while Art.has("props", "mine_%s_rock_%d" % [rs, nrock]):
 			nrock += 1
 		# Mineable stones: only art 24-49 px wide (the small ones read as floor pebbles).
 		var rock_ok: Array = []
 		for ri in nrock:
-			var rt := Art.tex("props", "mine_%s_rock_%d" % [ts, ri])
+			var rt := Art.tex("props", "mine_%s_rock_%d" % [rs, ri])
 			if rt and rt.get_width() >= 24 and rt.get_width() < 50:
 				rock_ok.append(ri)
 		if rock_ok.is_empty():
@@ -1124,7 +1135,7 @@ func _place_props() -> void:
 			elif ore != "stone" and Art.has("props", str(NODE_ALIAS.get(ore, ""))):
 				nm = str(NODE_ALIAS[ore])
 			elif nrock > 0:
-				nm = "mine_%s_rock_%d" % [ts, int(rock_ok[absi(k.x * 7 + k.y * 13) % rock_ok.size()])]
+				nm = "mine_%s_rock_%d" % [rs, int(rock_ok[absi(k.x * 7 + k.y * 13) % rock_ok.size()])]
 			if nm != "":
 				var sp := prop("props", nm, k)
 				# Tier stone art runs 19-44 px: small ones looked like floor pebbles.
@@ -1156,7 +1167,7 @@ func _place_props() -> void:
 			# Deep and crystal sets have no lamp art of their own: a lantern post.
 			for li in 2 + _open.size() / 1500:
 				var c := _roomy_open(_entry + Vector2i(3, 1) if li == 0 else okeys[rng.randi() % okeys.size()])
-				if not things.has(c) and not blocked.has(c):
+				if not things.has(c) and not blocked.has(c) and (li == 0 or c.distance_to(_entry) >= 12):
 					prop("props", "cave_lamp", c, 0, 0.0, true, 0.35)
 					blocked[c] = true
 		for i in maxi(2, _open.size() / 400):
@@ -1280,7 +1291,7 @@ func _place_find_props() -> void:
 	for c in props:
 		var n: Node = props[c]
 		if n is CanvasItem and str(things.get(c, {}).get("type", "")) == "rock" and str(things[c].get("ore", "stone")) == "stone":
-			(n as CanvasItem).modulate = Color(0.72, 0.72, 0.82) if _tier_set() == "crystal" else Color(float(tint[0]), float(tint[1]), float(tint[2]))
+			(n as CanvasItem).modulate = Color(1, 1, 1) if _tier_set() == "crystal" else Color(float(tint[0]), float(tint[1]), float(tint[2]))
 		elif n is CanvasItem and str(things.get(c, {}).get("ore", "")) == "amethyst":
 			(n as CanvasItem).modulate = Color(1.15, 0.7, 1.3)  # amethyst reads purple; the grotto's stone goes grey
 		elif n is CanvasItem and str(things.get(c, {}).get("ore", "")) == "copper" and n is Sprite2D and (n as Sprite2D).texture and "node_copper" in (n as Sprite2D).texture.resource_path:

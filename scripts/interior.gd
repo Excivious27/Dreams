@@ -212,7 +212,9 @@ func after_ready() -> void:
 			here = listed.has(id)  # region folk with no routine: where the file says
 		if not here:
 			continue
-		var at: Vector2i = listed.get(id, Vector2i(-1, -1))
+		# A shopkeeper at home in their own shop after hours: off duty, not at the counter.
+		var off_duty := place == "home" and str(data.get("work", "")) == interior_id
+		var at: Vector2i = Vector2i(-1, -1) if off_duty else listed.get(id, Vector2i(-1, -1))
 		var posted := at != Vector2i(-1, -1)
 		# A listed cell under furniture (or a thing) isn't a place to stand.
 		if posted and (blocked.has(at) or things.has(at)):
@@ -221,7 +223,7 @@ func after_ready() -> void:
 		if at == Vector2i(-1, -1) or used.has(at):
 			for tries in 60:
 				var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(4, rows - 3))
-				if not blocked.has(c) and not blocked.has(c + Vector2i(0, 1)) and not things.has(c) and not used.has(c) and not (absi(c.x - int(dl[0])) <= 1 and c.y >= int(dl[1]) - 2):
+				if not blocked.has(c) and not blocked.has(c + Vector2i(0, 1)) and not blocked.has(c + Vector2i(0, -1)) and not things.has(c) and not used.has(c) and not (absi(c.x - int(dl[0])) <= 1 and c.y >= int(dl[1]) - 2):
 					at = c
 					break
 		if at == Vector2i(-1, -1):
@@ -306,7 +308,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				GameState.run["flags"]["heal_" + interior_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
 				var got := GameState.rest_energy(int(thing.get("energy", 30)))
-				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else "  You've rested plenty today."))
+				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2 else "")))
 			else:
 				hud.toast("Once a day.")
 			return true
@@ -329,7 +331,7 @@ func _talk(n: Npc) -> void:
 	# Sal joins after the meadow wherever you find her (the inn too).
 	if n.id == "sal" and not GameState.is_penguins() and GameState.quest_done("clear_meadow") and not GameState.run["flags"].has("sal_recruited"):
 		GameState.run["flags"]["sal_recruited"] = true
-		GameState.add_quest("gang", "Recruit your first crew. (Sal is in. The rest is up to you.)")
+		GameState.add_quest("gang", "Recruit your first crew in Hideout town, past the meadow outskirts. (Sal is in. The rest is up to you.)")
 		await say([
 			{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running."},
 			{"who": "Sal", "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent."},
@@ -488,6 +490,36 @@ static func first_opaque_row(t: Texture2D) -> int:
 	return row
 
 
+## A sheet gutter inside a wall piece: a fully clear vertical run (3+ px, not at the
+## edge) in the lower 70%. Its x range, or ZERO. Cached per texture.
+static func wall_gap(t: Texture2D) -> Vector2i:
+	var key := "gap:" + t.resource_path
+	if _clean.has(key):
+		return _clean[key]
+	var g := Vector2i.ZERO
+	var img := t.get_image()
+	if img:
+		if img.is_compressed():
+			img.decompress()
+		var run := -1
+		for x in img.get_width() + 1:
+			var clear := x < img.get_width()
+			if clear:
+				for y in range(int(img.get_height() * 0.3), img.get_height(), 2):
+					if img.get_pixel(x, y).a > 0.15:
+						clear = false
+						break
+			if clear and run < 0:
+				run = x
+			elif not clear and run >= 0:
+				if x - run >= 3 and run > 0 and x < img.get_width():
+					g = Vector2i(run, x)
+					break
+				run = -1
+	_clean[key] = g
+	return g
+
+
 ## Side walls and a front lip so the room is a room, not a floating rug: the
 ## wall's own top moulding turned into thick rims, darker than the floor.
 func _draw_side_walls(wl: String) -> void:
@@ -496,16 +528,24 @@ func _draw_side_walls(wl: String) -> void:
 	var d: Array = I.get("door", [cols / 2, rows - 2])
 	var rim := Color("3a2a1c")
 	var lip := Color(0, 0, 0, 0.28)
+	# Sample the moulding beside a sheet gutter, never across it (comb-like lips).
+	var sx := 12.0
+	var gq := wall_gap(trim) if trim else Vector2i.ZERO
+	if gq != Vector2i.ZERO and gq.x < 20 and gq.y > 12:
+		sx = 2.0 if gq.x >= 10 else float(gq.y) + 1.0
 	for side in [0, cols - 1]:
 		var x0 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
 		for y in range(2, rows):
 			var r := Rect2(x0, y * TILE, 8, TILE)
 			if trim:
 				# One small square of the moulding (the whole 32x12 squeezed to 8x16 reads as candy stripes).
-				draw_texture_rect_region(trim, r, Rect2(12, 26, 8, 16), Color(0.62, 0.56, 0.5))  # the wall's plain body, in shade
+				draw_texture_rect_region(trim, r, Rect2(sx, 26, 8, 16), Color(0.62, 0.56, 0.5))  # the wall's plain body, in shade
 			else:
 				draw_rect(r, rim)
-			# A soft shadow the wall throws onto the floor.
+	for side in [0, cols - 1]:
+		var x0 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
+		for y in range(2, rows):
+			# A soft shadow the wall throws onto the floor (own pass: it never overlaps a rim).
 			draw_rect(Rect2(x0 + (8.0 if side == 0 else -4.0), y * TILE, 4, TILE), lip)
 	for x in range(0, cols):
 		if x == int(d[0]):
@@ -516,7 +556,7 @@ func _draw_side_walls(wl: String) -> void:
 		elif x == cols - 1:
 			r2 = Rect2((cols - 1) * TILE, (rows - 1) * TILE, 8, 8)
 		if trim:
-			draw_texture_rect_region(trim, r2, Rect2(12, ty + 2, 8, 8), Color(0.8, 0.75, 0.7))
+			draw_texture_rect_region(trim, r2, Rect2(sx, ty + 2, 8, 8), Color(0.8, 0.75, 0.7))
 		else:
 			draw_rect(r2, rim)
 	# Under the back wall: a shadow line where it meets the floor.
@@ -528,9 +568,17 @@ func draw_map() -> void:
 	var wl := str(I.get("wall", "wl_plaster"))
 	if Art.has("tiles", fl + "_0") or Art.has("tiles", fl):
 		# Cell by cell from the clean part of the floor art (the 3x3 sheets have dark slicing gutters).
-		for y in range(2, rows - 1):
-			for x in range(1, cols - 1):
-				_floor_cell(fl, Vector2i(x, y))
+		# Grouped by floor variant (each cell covers only itself): cell by cell the
+		# variants alternated and every cell was its own draw call, every frame.
+		var nv := 1
+		if Art.has("tiles", fl + "_0") and rows > 3 and cols > 2:
+			_floor_cell(fl, Vector2i(1, 2))  # picks _floor_vars
+			nv = maxi(1, _floor_vars.size())
+		for k in nv:
+			for y in range(2, rows - 1):
+				for x in range(1, cols - 1):
+					if nv == 1 or (x * 3 + y * 5) % nv == k:
+						_floor_cell(fl, Vector2i(x, y))
 	else:
 		draw_rect(Rect2(TILE, 2 * TILE, (cols - 2) * TILE, (rows - 3) * TILE), Color("a07a4c"))
 	for r in I.get("rugs", []):
@@ -542,6 +590,7 @@ func draw_map() -> void:
 	mids = mids.filter(func(m: String) -> bool: return Art.has("tiles", wl + m))
 	if mids.is_empty():
 		mids = ["_m", "_m2", "_m3"]
+	var parts := []
 	for x in range(1, cols - 1):
 		var part: String = "_l" if x == 1 else ("_r" if x == cols - 2 else mids[x % mids.size()])
 		if x in windows and Art.has("tiles", wl + "_window"):
@@ -549,6 +598,15 @@ func draw_map() -> void:
 		elif not Art.has("tiles", wl + part):
 			# No end pieces (the mill): use the corner, mirrored on the right; else the plain middle.
 			part = "_corner" if part in ["_l", "_r"] and Art.has("tiles", wl + "_corner") else "_m"
+		parts.append(part)
+		# Backing first, in its own pass (each sits only behind its own panel), so the
+		# panels below don't alternate with plain rects.
+		var tb := Art.tex("tiles", wl + part)
+		if tb and part != "_window" and not (part == "_corner" and x == cols - 2):
+			var fy := float(first_opaque_row(tb)) * 2.0 * TILE / float(tb.get_height())
+			draw_rect(Rect2(x * TILE, fy, TILE, 2 * TILE - fy), Color(0.16, 0.11, 0.07))
+	for x in range(1, cols - 1):
+		var part: String = parts[x - 1]
 		var t := Art.tex("tiles", wl + part)
 		if t and part == "_corner" and x == cols - 2:
 			# Mirror with a transform (a negative-width rect lands one cell to the right).
@@ -556,11 +614,16 @@ func draw_map() -> void:
 			draw_texture_rect(t, Rect2(0, 0, TILE, TILE * 2), false)
 			draw_set_transform(offset())
 		elif t:
-			if part != "_window":
-				# Backing: see-through gaps between panels (mill, stable) read as shadow, not void.
-				var fy := float(first_opaque_row(t)) * 2.0 * TILE / float(t.get_height())
-				draw_rect(Rect2(x * TILE, fy, TILE, 2 * TILE - fy), Color(0.16, 0.11, 0.07))
-			draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
+			# (Backing for see-through gaps between panels: drawn in the pass above.)
+			var gp := wall_gap(t)
+			if gp != Vector2i.ZERO:
+				# A slicing gutter inside the piece: skip it and stretch the two halves over the cell.
+				var tw := float(t.get_width())
+				var lw := TILE * float(gp.x) / (tw - float(gp.y - gp.x))
+				draw_texture_rect_region(t, Rect2(x * TILE, 0, lw, TILE * 2), Rect2(0, 0, gp.x, t.get_height()))
+				draw_texture_rect_region(t, Rect2(x * TILE + lw, 0, TILE - lw, TILE * 2), Rect2(gp.y, 0, tw - gp.y, t.get_height()))
+			else:
+				draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
 			if night_glass and part == "_window":
 				Art.draw_prop(self, "furniture", "window_night", Vector2(x * TILE + 8, 2 * TILE - 4))  # dark glass after dark
 		else:

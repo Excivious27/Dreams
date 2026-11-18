@@ -77,7 +77,7 @@ P = {
  "marlowe": {"2": ("Marlowe sells you lamp oil: 2 each week", {"weekly": {"lamp_oil": 2}}),
              "4": ("Marlowe's charts: a Luck Potion", {"give": {"luck_potion": 1}}),
              "6": ("Night fishing at the lighthouse: 10 Bait each week", {"weekly": {"bait": 10}}),
-             "8": ("Marlowe tells the story of the crystal: a Moonlight Elixir", {"give": {"moonlight_elixir": 1}}),
+             "8": ("Marlowe tells the story of the night the bell stopped: a Moonlight Elixir", {"give": {"moonlight_elixir": 1}}),
              "10": ("Marlowe's old tackle box: 3 Luck Potions", {"give": {"luck_potion": 3}})},
  "orla": {"2": ("Orla's spare flour: 3 each week", {"weekly": {"flour": 3}}),
           "4": ("Orla's spare wheat seed: 5 each week", {"weekly": {"wheat_seed": 5}}),

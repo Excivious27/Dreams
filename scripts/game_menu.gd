@@ -15,6 +15,7 @@ var _open := false
 var _tab := "Items"
 var _skill_open := ""
 var _tab_buttons := {}
+var _scroll_key := ""  # tab (and skill tree) last shown: a new one opens at the top
 
 
 func _ready() -> void:
@@ -276,6 +277,12 @@ func _refresh() -> void:
 	for c in _body.get_children():
 		_body.remove_child(c)
 		c.queue_free()
+	var skey := _tab + ("|" + _skill_open if _tab == "Skills" else "")
+	if skey != _scroll_key:
+		_scroll_key = skey
+		var sc0 := _body.get_parent() as ScrollContainer
+		if sc0:
+			sc0.scroll_vertical = 0
 	# Long rows used to stretch the panel off the right edge; pin it.
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
@@ -726,7 +733,7 @@ const KEY_ICON := {"extra_crop": "turnip", "double_harvest": "wheat", "farm_ener
 	"pet_hp": "bone", "pet_dmg": "bone", "pet_speed": "bone", "pet_def": "bone", "pass_risk": "map", "heat_cool": "key", "wash_bonus": "gold",
 	"job_pay": "gold", "capture_speed": "map", "start_supply": "chest", "spawner_discount": "brick", "helper_damage": "crystal", "ticket_bleed": "ruby", "ticket_guard": "copper_ring", "gun_damage": "six_shooter", "supply_rate": "chest", "helper_hp": "emerald", "ability_cooldown": "paw_charm",
 	"colony_discount": "pearl", "team_damage": "sword", "team_defense": "copper_ring", "team_heal": "greater_potion", "friend_gain": "cake",
-	"pet_bond": "bone", "team_xp": "luck_potion", "status_guard": "potion", "last_stand": "greater_potion", "free_cast": "mana_potion", "regrowth": "seeds",
+	"pet_bond": "bone", "team_xp": "luck_potion", "xp_gain": "book", "status_guard": "potion", "last_stand": "greater_potion", "free_cast": "mana_potion", "regrowth": "seeds",
 	"wide_water": "can", "timber": "axe", "tremor": "pickaxe", "tidecall": "rod", "jackpot": "gold", "quick_build": "hammer"}
 
 
@@ -977,7 +984,7 @@ func _magic_casts() -> void:
 			var m := get_tree().current_scene
 			if m is GameMap:
 				toggle()
-				Spells.cast(m as GameMap, id))
+				Spells.cast(m as GameMap, id))  # a failed cast plays "nope" itself
 		cb.add_theme_font_size_override("font_size", 7)
 
 
@@ -1285,7 +1292,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 	var sc := minf(area.size.x / tex.get_width(), area.size.y / tex.get_height())
 	var sz := Vector2(tex.get_width(), tex.get_height()) * sc
 	var org := area.position + (area.size - sz) / 2.0
-	m.draw_rect(area, Color(0.12, 0.1, 0.08))
+	m.draw_rect(area, Color(0.36, 0.25, 0.14))  # the panel's wood, not a black void
+	m.draw_rect(Rect2(org - Vector2(2, 2), sz + Vector2(4, 4)), Color(0.2, 0.12, 0.06))
 	m.draw_texture_rect(tex, Rect2(org, sz), false)
 	var here := str(GameState.run["scene"])
 	var seen: Dictionary = GameState.run["flags"]

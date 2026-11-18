@@ -7,6 +7,7 @@ extends GameMap
 
 @export var region_id := "wastes"
 var R: Dictionary = {}
+var _patch_memo := {}  # region patch cells, worked out on the first draw
 var _anim_nodes: Array = []
 var _water_cells := {}
 var _forage_n := 0
@@ -367,6 +368,9 @@ func after_ready() -> void:
 			prop("props", "mrock_stone_%d" % (absi(mc.x + mc.y) % 2), mc)  # every ore rock shows
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
+			if blocked.has(k):  # walled in by a landmark placed after the roll
+				things.erase(k)
+				continue
 			var it := str(things[k]["item"])
 			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
 			prop("nature", nm, k, 0, 0.0, false)
@@ -537,13 +541,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
 		"heal":
-			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
 				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's rest for later
 			elif int(GameState.run["flags"].get("heal_%s" % region_id, 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["heal_%s" % region_id] = int(GameState.run["day"])
 				GameState.heal(int(thing.get("hp", 3)))
 				var got := GameState.rest_energy(int(thing.get("energy", 30)))
-				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else "  You've rested plenty today."))
+				hud.toast(str(thing.get("msg", "You feel better.")) + ("  +%d energy." % got if got > 0 else ("  You've rested plenty today." if int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2 else "")))
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
 			else:
 				hud.toast("Once a day.")
@@ -768,11 +772,15 @@ func draw_map() -> void:
 		# A seamless ground where the region names one; otherwise the set's variants
 		# in turn, so the 16px grid doesn't show.
 		var gseam := str(R.get("ground_seam", ""))
-		for y in range(-pad, rows + pad):
-			for x in range(-pad, cols + pad):
-				if gseam != "" and (seam_cell(self, gseam, Vector2i(x, y)) or (gseam == "teal_moss" and seam_cell(self, "meadow_grass", Vector2i(x, y), Color(0.42, 0.85, 0.82)))):
-					continue
-				Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), posmod(y, 3) * 3 + posmod(x, 3) if ground in VARIANT_SETS else 4)
+		var garea := Rect2(Vector2(-pad, -pad) * TILE, Vector2(cols + 2 * pad, rows + 2 * pad) * TILE)
+		if gseam != "" and seam_fill(self, gseam, garea):
+			pass  # whole texture repeats: the texels seam_cell drew cell by cell, ~1/64 of the calls
+		elif gseam == "teal_moss" and seam_fill(self, "meadow_grass", garea, Color(0.42, 0.85, 0.82)):
+			pass
+		else:
+			for y in range(-pad, rows + pad):
+				for x in range(-pad, cols + pad):
+					Art.draw_tile(self, "tiles", ground, Vector2(x * TILE, y * TILE), posmod(y, 3) * 3 + posmod(x, 3) if ground in VARIANT_SETS else 4)
 	else:
 		draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(str(R.get("ground_color", "5a9e4b"))))
 	# Region ground set (Prompts-08 batch 3): the region's own fill tiles in
@@ -781,48 +789,67 @@ func draw_map() -> void:
 	if ps != "" and (Art.has("tiles", ps + "_top_0") or (ps == "sand" and Art.has("seamless", "sand"))):
 		# Coherent ground patches (noise blobs with real edges from the region's
 		# blob set) instead of a per-cell tile lottery.
-		var sd := hash(region_id) % 977
-		var cells := {}
-		for y in range(-pad + 1, rows + pad - 1):
-			for x in range(-pad + 1, cols + pad - 1):
-				var n := WorldGen.fbm(float(x), float(y), sd, float(R.get("patch_scale", 10.0)))
-				if n > float(R.get("ground_threshold", 0.08)):
-					cells[Vector2i(x, y)] = true
-		# Drop single-cell specks and fill single-cell holes so edges read cleanly.
-		for pass_i in 2:
-			var next := cells.duplicate()
+		# The patch shape never changes on this map: worked out once (~50 ms on a
+		# colony map), not on every redraw (spells, co-op sync).
+		var cells: Dictionary = _patch_memo.get("cells", {})
+		if not _patch_memo.has("cells"):
+			var sd := hash(region_id) % 977
+			cells = {}
 			for y in range(-pad + 1, rows + pad - 1):
 				for x in range(-pad + 1, cols + pad - 1):
-					var c := Vector2i(x, y)
-					var nb := 0
-					for off: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-						if cells.has(c + off):
-							nb += 1
-					if cells.has(c) and nb <= 1:
-						next.erase(c)
-					elif not cells.has(c) and nb >= 3:
-						next[c] = true
-			cells = next
-		# Never over the border band (cliff walls, void, deep trees draw on the map
-		# canvas, under the soft layer) nor under a feature blob drawn from tiles.
-		for c: Vector2i in cells.keys():
-			if not in_content(c) or _border_cells.has(c) or _tile_feature.has(c):
-				cells.erase(c)
+					var n := WorldGen.fbm(float(x), float(y), sd, float(R.get("patch_scale", 10.0)))
+					if n > float(R.get("ground_threshold", 0.08)):
+						cells[Vector2i(x, y)] = true
+			# Drop single-cell specks and fill single-cell holes so edges read cleanly.
+			for pass_i in 2:
+				var next := cells.duplicate()
+				for y in range(-pad + 1, rows + pad - 1):
+					for x in range(-pad + 1, cols + pad - 1):
+						var c := Vector2i(x, y)
+						var nb := int(cells.has(Vector2i(x + 1, y))) + int(cells.has(Vector2i(x - 1, y))) + int(cells.has(Vector2i(x, y + 1))) + int(cells.has(Vector2i(x, y - 1)))
+						var here := cells.has(c)
+						if here and nb <= 1:
+							next.erase(c)
+						elif not here and nb >= 3:
+							next[c] = true
+				cells = next
+			# Never over the border band (cliff walls, void, deep trees draw on the map
+			# canvas, under the soft layer) nor under a feature blob drawn from tiles.
+			for c: Vector2i in cells.keys():
+				if not in_content(c) or _border_cells.has(c) or _tile_feature.has(c):
+					cells.erase(c)
+			for pl: Dictionary in plateaus:  # cliff faces, rims and stairs draw on the map canvas: never cover them
+				for pc2: Vector2i in pl["cells"]:
+					for d2: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, 0), Vector2i(-1, 0)]:
+						cells.erase(pc2 + d2)
+			_patch_memo["cells"] = cells
 		var soft_seam: String = {"bog": "bog", "ruinfloor": "ruin_floor", "snowpatch": "snow", "track": "dirt_track", "sand": "sand"}.get(ps, "")
 		if ps == "snowpatch" and GameState.look_se() == "winter":
 			cells = {}  # snow on snow
 		if soft_seam != "" and soft_ground(cells, soft_seam):
 			cells = {}  # drawn by the soft-edge layer
+		# Fills, bog shade and decals in grouped passes (each covers only its own cell).
+		var seam_ps: String = {"bog": "bog", "ruinfloor": "ruin_floor"}.get(ps, "")
+		var pfills := {}
+		var pdecos := {}
+		var shade: Array[Vector2i] = []
 		for c: Vector2i in cells:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
-			var seam_ps: String = {"bog": "bog", "ruinfloor": "ruin_floor"}.get(ps, "")
 			if seam_ps != "" and seam_cell(self, seam_ps, c):
 				continue
-			Art.draw_tile(self, "tiles", Art.fill_name(ps, h), Vector2(c * TILE), 0)
+			(pfills.get_or_add(Art.fill_name(ps, h), []) as Array).append(c)
 			if ps == "bog":
-				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.32, 0.45, 0.22, 0.3))  # mossier, less void
+				shade.append(c)
 			if h % 29 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [ps, h / 29 % 36]):
-				Art.draw_tile(self, "tiles", "%s_deco_%d" % [ps, h / 29 % 36], Vector2(c * TILE), 0)
+				(pdecos.get_or_add("%s_deco_%d" % [ps, h / 29 % 36], []) as Array).append(c)
+		for nm: String in pfills:
+			for c: Vector2i in pfills[nm]:
+				Art.draw_tile(self, "tiles", nm, Vector2(c * TILE), 0)
+		for c in shade:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.32, 0.45, 0.22, 0.3))  # mossier, less void
+		for nm: String in pdecos:
+			for c: Vector2i in pdecos[nm]:
+				Art.draw_tile(self, "tiles", nm, Vector2(c * TILE), 0)
 		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
 		var ds := str(R.get("deco_set", ""))
 		var dc := int(R.get("deco_count", 0))
@@ -845,11 +872,19 @@ func draw_map() -> void:
 			continue  # snow on snow
 		if fs != "" and soft_ground(cells, fs, Color(0.2, 0.14, 0.07, 0.12)):
 			continue  # soft edges, like the patch set
+		# Grouped by texture (fill variants, then decals): each piece covers only its
+		# own cell, so the order between cells doesn't show, and the batch holds.
+		var fills := {}
+		var decos := {}
 		for c: Vector2i in cells:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
-			Art.draw_tile(self, "tiles", Art.fill_name(setn, h), Vector2(c * TILE), 0)
+			(fills.get_or_add(Art.fill_name(setn, h), []) as Array).append(c)
 			if h % 23 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [setn, h / 23 % 36]):
-				Art.draw_tile(self, "tiles", "%s_deco_%d" % [setn, h / 23 % 36], Vector2(c * TILE), 0)
+				(decos.get_or_add("%s_deco_%d" % [setn, h / 23 % 36], []) as Array).append(c)
+		for group: Dictionary in [fills, decos]:
+			for nm: String in group:
+				for c: Vector2i in group[nm]:
+					Art.draw_tile(self, "tiles", nm, Vector2(c * TILE), 0)
 		Art.draw_blob(self, cells, setn, 16.0, 0)  # the set's rims and corners frame it
 		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
 	draw_plateaus()
@@ -884,6 +919,8 @@ func draw_map() -> void:
 			pcs[c] = true
 	if path_kind in ["dirt", "sand", "stone"]:
 		draw_ground(path_kind, pcs)
+	elif path_kind.begins_with("bio_path") and soft_ground(widen_path(pcs), "cave_crystal_floor", Color(0.1, 0.05, 0.15, 0.3)):
+		pass  # one soft glowing path, not a tile lattice
 	else:
 		_draw_path_tiles(pcs, path_kind)
 	for wsh in _rect_water:
@@ -921,8 +958,13 @@ func _draw_path_tiles(pcs: Dictionary, path_kind: String) -> void:
 ## (they used to turn into a dark cobble slab across the road).
 func draw_corridor(cells: Dictionary) -> void:
 	var k := str(R.get("path", "dirt"))
-	if k in ["dirt", "sand", "stone"]:
+	var ps := str(R.get("patch_set", ""))
+	if (k == "dirt" and ps != "track") or (k == "sand" and ps != "sand"):
+		super(cells)  # one soft body with the region's own path (not when a same-seam ground patch would be redrawn too)
+	elif k in ["dirt", "sand", "stone"]:
 		draw_ground(k, cells)
+	elif k.begins_with("bio_path") and soft_ground(widen_path(cells), "cave_crystal_floor", Color(0.1, 0.05, 0.15, 0.3)):
+		pass  # matches the soft jungle path
 	else:
 		_draw_path_tiles(cells, k)
 

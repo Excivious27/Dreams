@@ -3042,7 +3042,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "Practise once a day: mana back and foraging XP. +5 max mana.",
+    "desc": "Practise once a day: mana back and magic XP. +5 max mana.",
     "price": 1500,
     "art_missing": false,
     "unlock": {
@@ -3067,7 +3067,7 @@
     "unlock": {
      "progress": 1,
      "skill": [
-      "foraging",
+      "magic",
       3
      ]
     },
@@ -3090,7 +3090,7 @@
     "unlock": {
      "progress": 2,
      "skill": [
-      "foraging",
+      "magic",
       5
      ]
     },

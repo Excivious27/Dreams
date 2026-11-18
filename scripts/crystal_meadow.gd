@@ -183,6 +183,7 @@ func _talk_catkins() -> void:
 	if GameState.can_gift("catkins", sel) and await confirm_gift("Catkins", sel):
 		var gain := GameState.give_gift("catkins", sel)
 		await say([{"who": "Catkins", "text": gift_reaction("Catkins", sel, gain)}])
+		hud.toast("Catkins %s%d" % ["+" if gain >= 0 else "", gain], Color(1, 0.8, 0.9) if gain > 0 else Color(1, 0.7, 0.7))
 		player.frozen = false
 		return
 	var lines: Array = GameState.npcs["catkins"].get("lines", ["..."])
@@ -236,7 +237,7 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 			tell([{"who": "Star Crystal", "text": ("This is where I landed first. The ground remembers, and now it's glad." if GameState.run["flags"].has("final_done") else "This is where I landed first, before your field. The ground remembers."), "mood": "happy"}])
 			return true
 		"shack":
-			tell([{"text": "The old shack. Someone lived here before you and left in a hurry. A corkboard inside has photos with the faces cut out."}])
+			tell([{"text": "The old shack. Someone lived here before you and left in a hurry. A corkboard inside has a map of the valley with your farm circled."}])
 			return true
 		"market":
 			_market()
@@ -321,7 +322,12 @@ func draw_map() -> void:
 	var gap := {}
 	for yy in range(_gate.y - 1, _gate.y + 3):
 		gap[yy] = true
-	draw_fence_border(Color("6b4a2b") if GameState.is_penguins() else Color("5a5a66"), gap)
+	if GameState.is_penguins() and Art.has("buildings", "fence_v"):
+		for yy in range(1, rows - 1):  # only the east fence by the gate: the other sides are forest
+			if not gap.has(yy + 1):
+				Art.draw_prop(self, "buildings", "fence_v", Vector2((cols - 0.5) * TILE, (yy + 1) * TILE))
+	else:
+		draw_fence_border(Color("6b4a2b") if GameState.is_penguins() else Color("5a5a66"), gap)
 	# Drawing space is content cells (no pad); cell_center() is world space.
 	var gp := Vector2(_gate.x * TILE + TILE / 2.0, (_gate.y + 1) * TILE)
 	if GameState.is_penguins() or not Art.draw_prop(self, "props", "chain_broken", gp + Vector2(0, 8)):

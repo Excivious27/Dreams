@@ -120,6 +120,8 @@ static func _favour_item(who: String, rng: RandomNumberGenerator) -> String:
 	var opts: Array = []
 	for l in likes:
 		var id := str(l)
+		if (id == "egg" and not Builds.is_built("coop")) or (id in ["milk", "cheese"] and not Builds.is_built("barn")):
+			continue  # nothing to get it from yet
 		if GameState.items.has(id) and int(GameState.items[id].get("tier", 1)) <= GameState.progress_tier() + 1 and not (id == "starflower" and not GameState.is_penguins()):
 			opts.append(id)
 	# Eggs and milk only once there's a coop / barn to get them from.

@@ -113,8 +113,9 @@ func _sleep() -> void:
 	if report.has("relic"):
 		lines.append({"who": "Marlene", "text": "A little something from the tower. Don't ask. (%s)" % GameState.item_name(str(report["relic"]))})
 	if Racket.on():
-		lines.append({"text": "Heat %d/5.%s" % [Racket.heat(), " Collectors may be out." if Racket.heat() >= 3 else ""]})
-		if Racket.heat() >= 3 and Crew.perk_level("raid_warning") >= 1:
+		var raids: bool = Racket.heat() >= 3 and not GameState.run["flags"].has("president_freed")  # no collectors once the stone is broken
+		lines.append({"text": "Heat %d/5.%s" % [Racket.heat(), " Collectors may be out." if raids else ""]})
+		if raids and Crew.perk_level("raid_warning") >= 1:
 			lines.append({"who": "Ladder", "text": "Word from the roofs: the President's collectors are walking the districts today. Stay off the main streets, or bring friends."})
 	var brief := "%s today, %s tomorrow." % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()]
 	if GameState.festival_today() != "":
@@ -155,7 +156,7 @@ func _journal() -> void:
 		var said: String = ["I said I'd help.", "I said I just want to farm.", "I called it a talking rock. It did not love that."][ans] if ans >= 0 else "I haven't answered the crystal yet."
 		lines.append({"who": "Journal", "text": "A crystal fell in my field and talked to me about the end of the universe. %s" % said})
 	else:
-		var l := "sold" if r["flags"].has("letter_sold") else ("used" if r["flags"].has("doors_by_letter") else str(r["flags"].get("letter", "")))
+		var l := "sold" if r["flags"].has("letter_sold") else ("used" if r["flags"].has("doors_by_letter") or r["flags"].has("st_g5_doors_letter") else str(r["flags"].get("letter", "")))
 		var said: String = {"sold": "I sold the letter to Marlene. He knows my face now.", "used": "The letter I kept opened the tower doors. He wrote it for exactly that.", "burned": "I burned the letter.", "kept": "I kept the letter with the deed.", "memorized": "I memorized the handwriting on the letter."}.get(l, "There's a letter I haven't dealt with.")
 		lines.append({"who": "Journal", "text": "Someone knows I'm here. %s" % said})
 	var open_q: Array = r["quests"].filter(func(q: Dictionary) -> bool: return not q["done"])

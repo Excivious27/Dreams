@@ -33,8 +33,28 @@ static func due(id: String) -> int:
 	var hearts := GameState.friend_hearts(id)
 	for n in [2, 4, 6, 8, 10]:
 		if hearts >= n and not GameState.run["flags"].has(_flag(id, n)):
-			return n
+			return n if _ready_for(id, n) else 0
 	return 0
+
+
+## ♥8 scenes that tell what came of the ♥6 quest (or of another villager's scene) wait for it.
+const AFTER_Q6 := ["gideon", "wren", "lumi", "theo", "bram", "posy", "tobin", "marlowe", "ivy", "tam", "sel"]
+const NEEDS_FLAG := {"hazel": "hv_granite_8", "mabel": "hv_granite_8", "posy": "hv_bram_8", "orla": "lighthouse_lit", "juniper": "hv_gideon_8"}
+
+
+## The villager's ♥6 quest in this arc ("" if none).
+static func quest6(id: String) -> String:
+	var v: Dictionary = data().get(id, {})
+	return str(v.get("quest6_gangsters", v.get("quest6", ""))) if not GameState.is_penguins() else str(v.get("quest6", ""))
+
+
+static func _ready_for(id: String, n: int) -> bool:
+	if n != 8:
+		return true
+	var q := quest6(id)
+	if id in AFTER_Q6 and q != "" and not GameState._quest_def(q).is_empty() and not GameState.quest_done(q):
+		return false
+	return not NEEDS_FLAG.has(id) or GameState.run["flags"].has(NEEDS_FLAG[id])
 
 
 ## Play the due milestone scene. Returns true if one played.
@@ -57,7 +77,7 @@ static func talk(m: GameMap, id: String) -> bool:
 			if GameState.run["flags"].has(str(who) + "_gone"):
 				l["text"] = str(l["if_gone"][who])
 	# A ♥6 ask for a quest you already finished plays its "if_done" words instead.
-	var q6 := str(v.get("quest6_gangsters", v.get("quest6", ""))) if not GameState.is_penguins() else str(v.get("quest6", ""))
+	var q6 := quest6(id)
 	if n == 6 and q6 != "" and GameState.quest_done(q6):
 		for l in lines:
 			if l.has("if_done"):
@@ -67,18 +87,29 @@ static func talk(m: GameMap, id: String) -> bool:
 	await m.say(lines)
 	GameState.run["flags"][_flag(id, n)] = true
 	if n == 6:
-		var q := str(v.get("quest6_gangsters", v.get("quest6", ""))) if not GameState.is_penguins() else str(v.get("quest6", ""))
+		var q := quest6(id)
 		if q != "" and not GameState.has_quest(q):
 			var d := GameState._quest_def(q)
 			# Respect the quest's own gates (skill, earlier quest; _quest_def already
 			# drops other-arc quests); if they aren't met yet, the villager offers
 			# it later through Quests.talk.
-			if not d.is_empty() and GameState._cond_ok(d.get("when", {})):
+			# A crop quest offered late in its season would sit a year: offer it next season.
+			var late := (d.get("when", {}) as Dictionary).has("season") and GameState.day_of_season() > 18 and GameState._quest_grows(d)
+			if not d.is_empty() and not late and GameState._cond_ok(d.get("when", {})):
 				GameState.add_quest(q, str(d.get("text", q)))
 				m.hud.toast("New quest: %s" % str(d.get("text", q)), Color(1, 0.9, 0.4))
 				var yes := Quests._as_lines(name, Quests.lines(q).get("yes", ""))
 				if not yes.is_empty():
 					await m.say(yes)
+			elif not d.is_empty():
+				# Not yet: say what's missing so the ask isn't left hanging.
+				var w: Dictionary = d.get("when", {})
+				var need := ""
+				if w.has("skill") and GameState.skill_level(str(w["skill"][0])) < int(w["skill"][1]):
+					need = " (once your %s is %d)" % [str(w["skill"][0]).capitalize(), int(w["skill"][1])]
+				elif w.has("season"):
+					need = " (next %s)" % str(w["season"]).capitalize()
+				GameState.add_hint("%s will ask you again: %s%s" % [name, str(d.get("text", q)), need])
 	if n == 10:
 		Music.instance(m.get_tree()).sfx("levelup")
 		var fall := str(v.get("fall", ""))

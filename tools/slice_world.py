@@ -1832,7 +1832,19 @@ ICON_GRID = [(24 + n * 88, 24 + m * 120) for m in range(8) for n in range(16)]
 def _icon_sheet(file, names_by_row, group="items", size=32, rarity_strip=True):
     """names_by_row: list of 8 lists (<=16 names). Empty name = skip. Detects the row
     bands by projection so label banners never shift the grid."""
-    rgba = load(file)
+    rgba = load(file).copy()
+    # Label banners ("Row 3: ...", the title) sit between icon rows and merged into the
+    # bands (caption bars on top of icons; w77's title band shifted every row by one):
+    # clear every row that holds a long cream run, plus 4 rows round it.
+    from scipy import ndimage
+    c = rgba[..., :3].astype(int)
+    ban_px = (c[..., 0] > 215) & (c.min(2) > 185) & (rgba[..., 3] > 40)
+    ban = np.zeros(rgba.shape[0], bool)
+    for y in range(rgba.shape[0]):
+        r = np.diff(np.concatenate(([0], ban_px[y].astype(np.int8), [0])))
+        st, en = np.where(r == 1)[0], np.where(r == -1)[0]
+        ban[y] = len(st) > 0 and (en - st).max() >= 250
+    rgba[ndimage.binary_dilation(ban, iterations=4), :, 3] = 0
     a = rgba[..., 3] > 40
     rows = _grid_runs(a.mean(1), 0.08, 40)
     # Drop banner rows (title / labels): mostly cream pixels.
@@ -1858,6 +1870,8 @@ def _icon_sheet(file, names_by_row, group="items", size=32, rarity_strip=True):
             if not bb:
                 continue
             im = crop(rgba, bb)
+            if nm not in KEEP_BITS:
+                im = _drop_edge_bits(im)
             if rarity_strip:
                 # drop the little rarity gem: it sits in the top-left ~14px square
                 arr = np.array(im)
@@ -1867,7 +1881,37 @@ def _icon_sheet(file, names_by_row, group="items", size=32, rarity_strip=True):
                 bb2 = region_bbox(np.array(im), (0, 0, w, h))
                 if bb2:
                     im = im.crop(bb2)
+                if nm not in KEEP_BITS:
+                    im = _drop_edge_bits(im)
             save(scale_to(im, width=size, height=size), group, nm)
+
+
+# Icons whose small detached bits at the edge are part of the picture (steam, sparkles, sound rings, notes, flames).
+KEEP_BITS = {"coffee", "cream_soda", "golden_float", "echo_leek", "singing_pear", "light_mote2", "star_dust2", "wishfruit_cake",
+             "dream_orchid", "dreamflower", "ethereal_corn", "hush_carrot", "halo", "flameberry"}
+
+
+def _drop_edge_bits(im, frac=0.08):
+    """Clear detached specks (< frac of the biggest piece) that touch the crop's edge: slivers of the
+    neighbouring icon and the cut-off rest of a rarity gem. Re-crops to what is left."""
+    from scipy import ndimage
+    arr = np.array(im)
+    a = arr[..., 3] > 40
+    lab, n = ndimage.label(a, structure=np.ones((3, 3)))
+    if n < 2:
+        return im
+    sz = ndimage.sum(a, lab, range(1, n + 1))
+    h, w = a.shape
+    hit = False
+    for i, sl in enumerate(ndimage.find_objects(lab)):
+        if sz[i] < frac * sz.max() and (sl[1].start <= 2 or sl[0].start <= 2 or sl[1].stop >= w - 2):
+            arr[lab == i + 1, 3] = 0
+            hit = True
+    if not hit:
+        return im
+    out = Image.fromarray(arr)
+    bb = region_bbox(arr, (0, 0, w, h))
+    return out.crop(bb) if bb else out
 
 
 def _ids(*rows):
@@ -2967,6 +3011,9 @@ def _life_sheet(file, villagers):
     rgba = load(file)
     a = rgba[..., 3] > 40
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 30) if r[1] - r[0] >= 30][:8]
+    if rows and len(rows) < len(villagers):  # w157: the bottom rows touch and merge (Orla + Benno)
+        med = sorted(y1 - y0 for y0, y1 in rows)[len(rows) // 2]
+        rows = [(y0 + (y1 - y0) * i // k, y0 + (y1 - y0) * (i + 1) // k) for y0, y1 in rows for k in [max(1, round((y1 - y0) / med))] for i in range(k)][:8]
     for v, (y0, y1) in zip(villagers, rows):
         bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
         for nm, b in zip(LIFE_NAMES, bs):
@@ -3225,7 +3272,7 @@ def _anim_rows(file, names, group_prefix, layout, ncells=16):
     a = rgba[..., 3] > 40
     rows = [r for r in _grid_runs(a.mean(1), 0.01, 24) if r[1] - r[0] >= 24][:8]
     for name, (y0, y1) in zip(names, rows):
-        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)
+        bs = _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), ncells)
         fr = []
         for b in bs:
             bb = region_bbox(rgba, b)
@@ -3320,6 +3367,28 @@ def _alias(group, src, dst, group_out=None):
         im = Image.open(os.path.join(S.OUT, m[src]["file"])).convert("RGBA")
         save(im, group_out or group, dst)
 
+# Each w138 plaza bench pair is the same bench drawn twice, the front one overlapping the back one, so no split
+# is clean (equal halves and the emptiest-column cut both left slivers). Cut the whole FRONT bench by hand and use
+# it for _a and _b. name: (box on the sheet, rects to clear in sheet coords = the back bench showing round it).
+PLAZA_BENCHES = {
+    "wood": ((1122, 198, 1216, 263), [(0, 0, 1131, 228)]),
+    "green": ((1288, 200, 1393, 263), [(0, 0, 1300, 221), (0, 0, 1294, 224)]),
+    "iron": ((1443, 196, 1541, 259), [(0, 0, 1456, 219), (0, 0, 1454, 200), (1464, 0, 1514, 200), (1525, 0, 9999, 200)]),
+}
+
+
+def _plaza_benches():
+    rgba = load("w138_town_plaza.png")
+    for nm, (b, drops) in PLAZA_BENCHES.items():
+        sub = rgba[b[1]:b[3], b[0]:b[2]].copy()
+        for x0, y0, x1, y1 in drops:
+            sub[max(0, y0 - b[1]):max(0, y1 - b[1]), max(0, x0 - b[0]):max(0, x1 - b[0]), 3] = 0
+        im = Image.fromarray(sub)
+        im = im.crop(im.getbbox())
+        save(im, "props", "bench2_%s_a" % nm)
+        save(im, "props", "bench2_%s_b" % nm)
+
+
 def _split(group, src, n, names, horizontal=True):
     m = S.manifest.get(group, {})
     if src not in m:
@@ -3361,7 +3430,7 @@ def w_names():
     for i, c in enumerate(["red", "green", "blue", "yellow", "purple", "white"]):
         _alias(P, "plaza_%02d" % (7 + i), "stall2_%s_closed" % c)
     _anim_from(P, "plaza_06", 4, "fountain2")
-    _split(P, "plaza_13", 2, ["bench2_wood_a", "bench2_wood_b"]); _split(P, "plaza_14", 2, ["bench2_green_a", "bench2_green_b"]); _split(P, "plaza_15", 2, ["bench2_iron_a", "bench2_iron_b"])
+    _plaza_benches()  # bench2_* (was _split of plaza_13/14/15: both halves carried part of the other bench)
     for i in range(16, 22):
         _alias(P, "plaza_%02d" % i, "lamp2_tall_%d" % (i - 16))
     for i in range(22, 28):
@@ -3920,13 +3989,18 @@ def _pup_group(nm):
     return ("characters/" + nm) if nm == "dog" else ("animals/" + nm)
 
 def _pup_strips(rgba, cells, G, layout, h):
+    # One scale for the whole row (median sprite height -> h), so poses keep their real size
+    # (a curled-up sleep was blown up to a standing pet's height).
+    crops = [crop(rgba, b) for b in cells]
+    hs = sorted(c.height for c in crops)
+    k = h / float(max(1, hs[len(hs) // 2])) if hs else 1.0
     for anim, (i0, i1) in layout.items():
-        fr = [scale_to(crop(rgba, b), height=h) for b in cells[i0:i1]]
+        fr = [c.resize((max(1, round(c.width * k)), max(1, round(c.height * k))), Image.LANCZOS) for c in crops[i0:i1]]
         if fr:
             strip(fr, G, anim)
 
 def _row16(rgba, y0, y1):
-    return [b for b in _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16)]
+    return [b for b in _equal_cells(rgba, (4, max(0, y0 - 4), rgba.shape[1] - 4, min(rgba.shape[0], y1 + 4)), 16, min_w=30)]  # loose "!" marks are no frame (w192 hound hurt)
 
 
 def _bbox_cells(rgba, cells):
@@ -4627,13 +4701,15 @@ ENEMY_SHEETS = {
 }
 ENEMY_ROW_NAMES = [[("idle", 4), ("walk", 4), ("attack", 99)], [("hurt", 2), ("die", 4), ("special", 99)], [("special2", 99)]]
 
-def _band_cells(rgba, y0, y1, x0, x1):
+def _band_cells(rgba, y0, y1, x0, x1, strict=False):
+    """strict: merge only boxes that really overlap (a tail tip or flame reaching the next
+    sprite stays its own frame); loose pieces (shatter/die rows) need the default."""
     boxes = _components(rgba, (x0, y0, x1, y1), dilate=3, min_px=80)
     boxes.sort(key=lambda b: b[0])
     merged = []
     for b in boxes:
         b = tuple(b)
-        if merged and b[0] < merged[-1][2] - 4:
+        if merged and ((min(b[2], merged[-1][2]) - b[0]) > 0.5 * min(b[2] - b[0], merged[-1][2] - merged[-1][0]) if strict else b[0] < merged[-1][2] - 4):
             m0 = merged[-1]; merged[-1] = (min(m0[0], b[0]), min(m0[1], b[1]), max(m0[2], b[2]), max(m0[3], b[3]))
         else:
             merged.append(b)
@@ -4641,6 +4717,22 @@ def _band_cells(rgba, y0, y1, x0, x1):
     if hs:
         med = hs[len(hs) // 2]
         merged = [b for b in merged if (b[3] - b[1]) >= 0.45 * med]
+    if strict and merged:
+        # Two sprites that still overlap a lot (w234 ash_hound walk f3): cut a box ~2x the
+        # typical width at its emptiest column in the middle third. Idle/walk cells only (the
+        # first 8): attack frames can be wide on their own (a dash streak, scattered sparks).
+        ws = sorted(b[2] - b[0] for b in merged)
+        mw = ws[len(ws) // 2]
+        out = []
+        for b in merged:
+            if len(out) < 8 and b[2] - b[0] > 1.6 * mw:
+                col = (rgba[b[1]:b[3], b[0]:b[2], 3] > 40).sum(0)
+                w = b[2] - b[0]
+                cx = b[0] + w // 3 + int(np.argmin(col[w // 3: 2 * w // 3]))
+                out += [(b[0], b[1], cx, b[3]), (cx, b[1], b[2], b[3])]
+            else:
+                out.append(b)
+        merged = out
     return merged
 
 def _enemy_sheet(file):
@@ -4651,8 +4743,13 @@ def _enemy_sheet(file):
     px0, px1 = (0, 235) if side == "left" else (1335, Wd)
     for kind, bands in enemies:
         G = "enemies/" + kind
+        if side == "left":
+            # Frames start right after this kind's portrait (a fixed x 235 cut the first frames).
+            pq = _components(rgba, (0, max(0, bands[0][0] - 20), 300, min(H, bands[-1][1] + 20)), dilate=2, min_px=2000)
+            if pq:
+                fx0 = int(max(pq, key=lambda b: (b[2] - b[0]) * (b[3] - b[1]))[2]) + 4
         for ri, (y0, y1) in enumerate(bands):
-            cells = _band_cells(rgba, y0 - 10, y1 + 10, fx0, fx1)
+            cells = _band_cells(rgba, y0 - 10, y1 + 10, fx0, fx1, strict=(ri == 0))
             names = ENEMY_ROW_NAMES[min(ri, 2)]
             i = 0
             for name, n in names:
@@ -6049,7 +6146,7 @@ def w264():
     if len(b) < 3: return
     G = "enemies/crystal_baby"; S.manifest[G] = {}
     r0 = _col_cells(rgba, b[0][0], b[0][1], 0, Wd, 16)
-    _put(r0, 16, G, "idle", 0, 2, 64); _put(r0, 16, G, "walk", 6, 10, 64)
+    _put(r0, 16, G, "idle", 0, 2, 64); _put(r0, len(r0), G, "walk", 8, 12, 64)  # row 0 has 15 sprites: 6-8 were the pink "turned" babies
     r1 = _col_cells(rgba, b[1][0], b[1][1], 0, Wd, 16)
     _put(r1, 16, G, "attack", 2, 8, 64); _put(r1, 16, G, "hurt", 12, 14, 64)
     L = "enemies/crystal_baby_leader"; S.manifest[L] = {}

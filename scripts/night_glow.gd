@@ -32,11 +32,15 @@ func _ready() -> void:
 
 
 var _was_on := false
+var _acc := 0.0
 
 
 func _process(_d: float) -> void:
 	var on := map != null and map.has_sky and GameState.darkness() * Settings.night_strength() > 0.05
-	if on or _was_on:
+	# The flicker is +-4%: 15 redraws a second is plenty (it ran every frame from dusk to dawn).
+	_acc += _d
+	if (on and _acc >= 0.066) or on != _was_on:
+		_acc = 0.0
 		_canvas.queue_redraw()
 	_was_on = on
 

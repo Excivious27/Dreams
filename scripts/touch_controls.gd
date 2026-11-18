@@ -452,6 +452,7 @@ func _on_draw() -> void:
 				else:
 					icon = Art.tex("items", "hand")
 			if icon:
+				_caption(font, p, r, label)
 				_canvas.draw_texture_rect(icon, Rect2(p - Vector2(12, 12), Vector2(24, 24)), false)
 				continue
 		if action == "ability" and not GameState.run.is_empty():
@@ -474,9 +475,18 @@ func _on_draw() -> void:
 			_canvas.draw_texture_rect(Art.tex("ui", "party_paw"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
 			continue
 		if action == "menu" and Art.has("ui", "ic_menu"):
+			_caption(font, p, r, label)
 			_canvas.draw_texture_rect(Art.tex("ui", "ic_menu"), Rect2(p - Vector2(9, 9), Vector2(18, 18)), false)
 			continue
 		if action == "action" and Art.has("items", "hand"):
+			_caption(font, p, r, label)
 			_canvas.draw_texture_rect(Art.tex("items", "hand"), Rect2(p - Vector2(11, 11), Vector2(22, 22)), false)
 			continue
 		_canvas.draw_string(font, p + Vector2(-r, size * 0.36), label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, size, Color(1, 1, 1, 0.9))
+
+
+## A small word under an icon button (the tutorial says "tap USE", "open MENU").
+func _caption(font: Font, p: Vector2, r: float, label: String) -> void:
+	var at := Vector2(p.x - r, minf(p.y + r + 7.0, 479.0))
+	_canvas.draw_string_outline(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 6, 2, Color(0, 0, 0, 0.8))
+	_canvas.draw_string(font, at, label, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 6, Color(1, 1, 1, 0.85))

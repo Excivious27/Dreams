@@ -179,13 +179,13 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				xp("mining", 2 if ore == "stone" else 5)
 			return true
 		"spring":
-			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
+			if (int(GameState.run["energy"]) >= int(GameState.run["max_energy"]) or int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2) and int(GameState.run["hp"]) >= int(GameState.run["max_hp"]):
 				hud.toast("You're fully rested. Come back when you're tired.")  # keep today's soak for later
 			elif int(GameState.run["flags"].get("spring_day", 0)) < int(GameState.run["day"]):
 				GameState.run["flags"]["spring_day"] = int(GameState.run["day"])
 				var got := GameState.rest_energy(50)
 				GameState.heal(3)
-				hud.toast("Ahh. +%d energy, +3 hearts." % got)
+				hud.toast(("Ahh. +%d energy, +3 hearts." % got) if got > 0 else ("Ahh. +3 hearts. You've rested plenty today." if int(GameState.run.get("rest_en", 0)) >= int(GameState.run["max_energy"]) / 2 else "Ahh. +3 hearts."))
 				fx("heal", player.position + Vector2(0, -10), 10.0, 0.6)
 			else:
 				hud.toast("Once a day is plenty.")

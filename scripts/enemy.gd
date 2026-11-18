@@ -281,7 +281,7 @@ func _process(delta: float) -> void:
 		_los_t -= delta
 		if _los_t <= 0.0:
 			_los_t = 0.25
-			_los_ok = dist > 150.0 or (map.line_clear(position, tgt.position) if abilities.has("ranged") else _walk_clear(position, tgt.position))
+			_los_ok = map.line_clear(position, tgt.position) if abilities.has("ranged") else (dist > 150.0 or _walk_clear(position, tgt.position))
 		if _noticed and (not _los_ok or _chase_t > 0.0):
 			sight = 140.0
 		_chase_t = 3.0 if (_noticed and not _los_ok) else maxf(0.0, _chase_t - delta)
@@ -295,9 +295,9 @@ func _process(delta: float) -> void:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)
 				Music.instance(get_tree()).sfx("alert")
-			_dir = -to.normalized() * 0.8 if dist < 48.0 else (to.normalized() if dist > 90.0 else Vector2.ZERO)
+			_dir = -to.normalized() * 0.8 if dist < 48.0 and _los_ok else (to.normalized() if dist > 90.0 else Vector2.ZERO)
 			# No clear shot (a wall or tree line between): walk round it to find one.
-			if dist >= 48.0 and not _los_ok:
+			if not _los_ok:
 				_dir = map.flow_dir(position, (tgt.position - map.offset()).snapped(Vector2(32, 32)) + map.offset(), 14)
 		elif dist < sight and dist > reach * 0.6:
 			if not _noticed:
@@ -706,11 +706,9 @@ func _die() -> void:
 func _walk_clear(a: Vector2, b: Vector2) -> bool:
 	var d := b - a
 	var steps := int(d.length() / 4.0)
-	var ca := map.world_to_cell(a)
-	var cb := map.world_to_cell(b)
 	for i in range(1, steps):
-		var c := map.world_to_cell(a + d * (float(i) / steps))
-		if c != ca and c != cb and map.blocked.has(c):
+		# The feet box, not a thin line: a body that clips a wall corner can't walk straight.
+		if map.rect_blocked(Rect2(a + d * (float(i) / steps) + Vector2(-4, -3), Vector2(8, 3))):
 			return false
 	return true
 

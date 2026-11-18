@@ -14,7 +14,7 @@ var _spr: Sprite2D
 var item := "scrap_bot"
 
 
-static func deploy(m: GameMap, id: String, it: Dictionary) -> Bot:
+static func deploy(m: GameMap, id: String, it: Dictionary, quiet := false) -> Bot:
 	var b := Bot.new()
 	b.map = m
 	b.item = id
@@ -31,6 +31,8 @@ static func deploy(m: GameMap, id: String, it: Dictionary) -> Bot:
 		b._spr.offset = Vector2(0, -b._spr.texture.get_height() / 2.0)
 		b.add_child(b._spr)
 	m.add_child(b)
+	if not quiet:
+		Music.instance(m.get_tree()).sfx("zap", "pickup")  # the player drops a bot: hear it boot
 	return b
 
 

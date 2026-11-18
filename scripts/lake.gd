@@ -32,7 +32,7 @@ func build() -> void:
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}
 	music_track = "lake"
 	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 30 * TILE + 8), "right", "farm ▶")
-	add_exit(FOREST_EXIT, "forest", Vector2(3 * TILE, 21 * TILE + 8), "right", "▲ forest")
+	add_exit(FOREST_EXIT, "forest", Vector2(2 * TILE, 22 * TILE + 8), "right", "▲ forest")
 	add_exit(Rect2i(0, 4, 1, 3), "riverlands", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ riverlands")
 	# The lake: a wobbly disc plus a northern inlet (the waterfall) and the
 	# southern outlet stream that runs to the border water past the mill.
@@ -303,7 +303,7 @@ func _talk_marlowe() -> void:
 	if GameState.run["flags"].has("lighthouse_lit"):
 		await say([{"who": "Marlowe", "text": "Lamp's lit. Fish come up to look at it after dark, fools that they are. Best night fishing in the valley now, and you did that."}])
 	else:
-		await say([{"who": "Marlowe", "text": "Forty years I kept that lamp. Oil ran out the winter the crystal fell. Bring me coal and a proper lens and I'll light it again."}])
+		await say([{"who": "Marlowe", "text": "Thirty years I kept that lamp. Oil ran out, and the lens cracked the night the bell stopped. Bring me coal and a proper lens and I'll light it again."}])
 	player.frozen = false
 
 

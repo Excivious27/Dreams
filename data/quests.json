@@ -142,7 +142,7 @@
   {
    "id": "teleporter",
    "arc": "penguins",
-   "text": "Power the moon teleporter with 3 Refined Crystals.",
+   "text": "Power the moon teleporter with 3 Refined Crystals, then face the spire.",
    "when": {
     "quest": "knight"
    },
@@ -262,7 +262,7 @@
   {
    "id": "gang",
    "arc": "gangsters",
-   "text": "Recruit your first crew. (Sal is in. The rest is up to you.)",
+   "text": "Recruit your first crew in Hideout town, past the meadow outskirts. (Sal is in. The rest is up to you.)",
    "when": {
     "flag": "sal_recruited"
    },

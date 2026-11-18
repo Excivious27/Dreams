@@ -33,7 +33,7 @@ static func make(m: GameMap, k: String, at: Vector2, home_at: Vector2) -> Helper
 	h.map = m
 	h.kind = k
 	h.style = "crystal" if GameState.is_penguins() else "drone"
-	h.max_hp = int(KINDS[k]["hp"]) + 4 * GameState.progress_tier() + int(GameState.bonus(GameState.arc_skill(), "helper_hp")) + int(GameState.bonus("leadership", "helper_hp")) + int(GameState.bonus("strategist", "helper_hp"))
+	h.max_hp = int(KINDS[k]["hp"]) + 4 * GameState.progress_tier() + int(GameState.bonus(GameState.arc_skill(), "helper_hp")) + int(GameState.bonus("strategist", "helper_hp"))
 	h.hp = h.max_hp
 	h.position = at
 	h.home = home_at

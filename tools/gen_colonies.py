@@ -30,7 +30,7 @@ item("starfish_snack", "Starfish Snack (biscuit)", "food", 90, 2, energy=30, fri
 GIFTS_NEW = {
  "c_coral": {"name": "Choking Reef", "colour": "ff7aa0", "gap": 2.8, "moves": [{"type": "zones", "n": 5, "fx": "slow", "linger": 3.0}, {"type": "ring", "n": 14, "gap_n": 3}, {"type": "pull", "secs": 1.2}],
    "rule": {"type": "back", "closed": 0.3, "open": 1.8, "turn": 1.4}, "tip": "Its front is armoured reef. Bait the circles, step round, and hit it from behind."},
- "c_kelp": {"name": "Drowning Tide", "colour": "4ad0a0", "gap": 2.6, "pull_force": 44.0, "moves": [{"type": "pull", "secs": 1.5}, {"type": "lines", "n": 3}, {"type": "spiral", "secs": 1.4}],
+ "c_kelp": {"name": "Black Tide", "colour": "4ad0a0", "gap": 2.6, "pull_force": 44.0, "moves": [{"type": "pull", "secs": 1.5}, {"type": "lines", "n": 3}, {"type": "spiral", "secs": 1.4}],
    "rule": {"type": "window", "after": "spiral", "secs": 2.2, "stagger": 1.0, "closed": 0.3, "open": 2.2}, "tip": "Get out of the tide's pull, wait out the spiral, then hit it while it's spent."},
  "c_ice": {"name": "Hollow Winter", "colour": "bfe9ff", "gap": 2.8, "clones": {"n": 2, "at": [0.6, 0.3]}, "moves": [{"type": "ring", "n": 12, "gap_n": 2}, {"type": "zones", "n": 4, "fx": "slow"}],
    "rule": {"type": "real", "open": 1.0}, "tip": "Its reflections cast no shadow. Hit the one with a shadow."},
@@ -57,7 +57,7 @@ COL = {
              "Bring us plank and rope to shore up the stilt-houses, chase the shadow serpents out, light the beacons, and wake the crystal."],
    "need": {"plank": 30, "rope": 6}, "need_text": "The stilt-houses lean further every tide.", "need_thanks": "That'll hold. That'll hold for years.",
    "foe_word": "Shadow serpents", "kills": 10, "beacons": 3, "enemies": ["river_serpent", "wisp", "slime"],
-   "boss": "cboss_kelp", "boss_name": "The Drowning Tide", "boss_art": "cboss_kelp", "gift": "c_kelp",
+   "boss": "cboss_kelp", "boss_name": "The Black Tide", "boss_art": "cboss_kelp", "gift": "c_kelp",
    "crystal_dim": "A green star crystal wrapped in black kelp. Its light pulses slower each time.",
    "crystal_wake": "The black kelp unwinds from the crystal and gathers itself into a long, cold shape.",
    "crystal_restored": "Green light floods the hollow. The kelp lifts toward it like it's breathing again.",
@@ -111,7 +111,7 @@ for rid, c in COL.items():
     isl = [{"c": [40, 40], "r": 22, "seed": _seed(rid) + 1}, {"c": [72, 26], "r": 11, "seed": _seed(rid) + 2},
            {"c": [70, 56], "r": 10, "seed": _seed(rid) + 3}, {"c": [56, 33], "r": 5, "seed": 4}, {"c": [57, 48], "r": 5, "seed": 5},
            {"c": [18, 16], "r": 7, "seed": _seed(rid) + 6}]
-    pts = {"elder": [40, 44], "shop": [44, 44], "crystal": [72, 24], "beacons": [[24, 30], [40, 58], [70, 58], [18, 16]][: c["beacons"]]}
+    pts = {"elder": [40, 44], "shop": [44, 44], "crystal": [72, 24], "beacons": [[24, 30], [42, 57], [70, 58], [18, 16]][: c["beacons"]]}
     things = [{"type": "elder", "cell": pts["elder"], "hint": "A: " + c["elder"], "solid": True},
               {"type": "colony_shop", "cell": pts["shop"], "hint": "A: " + c["shop_who"], "solid": True},
               {"type": "star_crystal", "cell": pts["crystal"], "hint": "A: the star crystal", "solid": True}]

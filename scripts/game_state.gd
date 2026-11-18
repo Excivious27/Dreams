@@ -105,7 +105,7 @@ static func has_run() -> bool:
 
 ## Unlock ids are name slugs: add an entry whenever an unlock is renamed.
 ## (Dropped fillers such as Starborn magic_3_8 are simply refunded.)
-const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_8": "combat_u_iron_gut"}
+const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_8": "combat_u_iron_gut", "hustle_u_hot_loads": "hustle_u_fresh_rounds"}
 ## Renames that only apply when the old node was bought under this name.
 const NODE_RENAME_NAME := {"combat_2_8": "Iron Gut"}
 ## Bump when gen_skill_trees.py changes what existing filler nodes do: old saves get those points back.
@@ -127,6 +127,7 @@ static func _migrate() -> void:
 		run.erase("look")
 	# Skill nodes that no longer exist (the trees were rebuilt): drop them, which refunds the points.
 	if run.has("skills"):
+		var renamed_back := 0
 		for sk in run["skills"]:
 			var have: Dictionary = (run["skills"][sk] as Dictionary).get("nodes", {}) if run["skills"][sk] is Dictionary else {}
 			if have.is_empty() or not skills_data.has(sk):
@@ -141,17 +142,23 @@ static func _migrate() -> void:
 				var ren := str(NODE_RENAMES.get(str(nid), ""))
 				if ren != "" and NODE_RENAME_NAME.has(str(nid)) and str(bought_nm.get(str(nid), NODE_RENAME_NAME[str(nid)])) != str(NODE_RENAME_NAME[str(nid)]):
 					ren = ""
+				var moved := false
 				if ren != "" and ids.has(ren) and not have.has(ren):
 					have[ren] = mini(int(have[nid]), int(ids[ren]))
 					bought_nm[ren] = str(nm[ren])
+					moved = true
 				# Positional ids can be reused by a different node when a tree is rebuilt:
 				# ranks bought under another name are refunded, not moved to the new perk.
 				var was := str(bought_nm.get(str(nid), nm.get(str(nid), "")))
 				if not ids.has(str(nid)) or was != str(nm.get(str(nid), "")):
+					if not moved:
+						renamed_back += maxi(0, int(have[nid]) - int((run.get("gift_nodes", {}) as Dictionary).get(str(sk) + "|" + str(nid), 0)))
 					have.erase(nid)
 					bought_nm.erase(nid)
 				elif int(have[nid]) > int(ids[str(nid)]):
 					have[nid] = ids[str(nid)]
+		if renamed_back > 0:
+			notify("Some skills were renamed or removed: %d skill point%s came back. Spend them in Menu > Skills." % [renamed_back, "" if renamed_back == 1 else "s"])
 		# Filler nodes keep their positional id and name when the generator changes
 		# their effect, so the name check can't see it: refund every positional rank
 		# once per SKILL_VER (base and unlock nodes are kept).
@@ -285,8 +292,24 @@ static func import_code(code: String) -> String:
 
 ## A guest's morning when the host's day rolls over: pay their own sell box,
 ## refill, clear the day's talk/gift marks. (Farm growth is the host's job.)
+## Open quests from villagers the story sent away can never be handed in: drop them.
+## Board jobs lapse a week after they were pinned (the board posts new ones every day).
+## (Lapsing only on our own sleep: a guest's day is the host's.)
+static func _drop_gone_quests(lapse := false) -> void:
+	var today := int(run["day"])
+	run["quests"] = (run["quests"] as Array).filter(func(q: Dictionary) -> bool:
+		if bool(q["done"]):
+			return true
+		var qid := str(q["id"])
+		if lapse and qid.begins_with("board_") and qid.get_slice("_", 1).is_valid_int() and today - int(qid.get_slice("_", 1)) > 7:
+			return false
+		var giver := str(_quest_def(qid).get("giver", ""))
+		return giver == "" or not run["flags"].has(giver + "_gone"))
+
+
 static func guest_morning() -> Dictionary:
 	status_clear()
+	_drop_gone_quests()
 	_apply_max_stats()
 	var report := {"earned": 0}
 	var total := 0
@@ -639,6 +662,12 @@ static func loose_tools() -> Array:
 	return out
 
 
+## Co-op: we're a guest on someone else's world (also while reconnecting).
+static func visiting() -> bool:
+	var n := Net.i()
+	return n != null and n.visiting()
+
+
 ## Set when a new item didn't fit and went to the farm chest (Hud shows it).
 static var overflow_note := ""
 
@@ -647,7 +676,7 @@ static func add_item(id: String, n: int = 1, force := false) -> void:
 	var inv: Dictionary = run["inventory"]
 	# Bag full: a new kind of item goes to the farm chest instead of vanishing.
 	if n > 0 and not force and not inv.has(id) and bag_free() <= 0 and not str(items.get(id, {}).get("type", "")) in ["tool", "key", "quest"] and run.has("toolbar") \
-			and Builds.is_built("chest") and Storage.room_for("chest", id) >= n:
+			and (Builds.is_built("chest") if not visiting() else (run.get("chests", {}) as Dictionary).has("chest")) and Storage.room_for("chest", id) >= n:
 		var b := Storage.box("chest")
 		b["items"][id] = int(b["items"].get(id, 0)) + n
 		_mark_seen(id)
@@ -854,9 +883,10 @@ static func add_tool(id: String) -> void:
 static func sword_damage() -> int:
 	var held := held_tool()
 	var best := int(items.get(held, {}).get("damage", 0))
-	if best == 0:
+	if best == 0 or held == "sword":
 		for t in run["tools"]:
-			best = maxi(best, int(items.get(t, {}).get("damage", 0)))
+			if not items.get(t, {}).has("range"):  # guns don't make melee stronger
+				best = maxi(best, int(items.get(t, {}).get("damage", 0)))
 	best += int(bonus("combat", "damage")) + gear_stat("damage") + tool_tier("sword")
 	if has_team():
 		best += int(bonus("leadership", "team_damage"))
@@ -1024,7 +1054,11 @@ static func buy_node(skill: String, id: String) -> bool:
 
 
 static func reset_tree(skill: String) -> void:
-	run["skills"][skill]["nodes"] = {}
+	var keep := {}  # colony-gift spells were free: a respec keeps them
+	for gk in (run.get("gift_nodes", {}) as Dictionary):
+		if str(gk).get_slice("|", 0) == skill:
+			keep[str(gk).get_slice("|", 1)] = int(run["gift_nodes"][gk])
+	run["skills"][skill]["nodes"] = keep
 	(run["skills"][skill] as Dictionary).erase("nm")
 	_bonus_frame = -1
 	_apply_max_stats()
@@ -1435,20 +1469,36 @@ static func now_abs() -> int:
 
 
 ## Co-op: switching between our own clock and a host's moves timers set on the other clock.
-static func shift_clock(dm: int) -> void:
-	if dm == 0 or run.is_empty():
+## dd: the real day gap (callers pass it, so time of day doesn't round into it);
+## into: shift this run copy instead of the live run (save_view).
+static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) -> void:
+	var r: Dictionary = run if into == null else into
+	if r.is_empty():
 		return
-	var dd := int(round(dm / 1440.0))
-	var bf: Dictionary = run.get("buffs", {})
+	var dd: int = int(round(dm / 1440.0)) if dd_in == null else int(dd_in)
+	if dm == 0 and dd == 0:
+		return
+	var jb: Dictionary = r.get("jobs", {})
+	for key in jb:
+		var js: Variant = jb[key]
+		for j: Variant in (js if js is Array else [js]):
+			if j is Dictionary and (j as Dictionary).has("done_at"):
+				j["done_at"] = int(j["done_at"]) + dm
+	var fl: Dictionary = r.get("flags", {})
+	if int(fl.get("haste_abs", -1)) > 0:
+		fl["haste_abs"] = int(fl["haste_abs"]) + dm
+	if fl.has("drone_ready"):
+		fl["drone_ready"] = int(fl["drone_ready"]) + dd
+	var bf: Dictionary = r.get("buffs", {})
 	for k in bf:
 		if bf[k] is Dictionary:
 			bf[k]["until"] = int(bf[k].get("until", 0)) + dm
-	var pt: Dictionary = run.get("pet", {})
+	var pt: Dictionary = r.get("pet", {})
 	if pt.has("rest_until_abs"):
 		pt["rest_until_abs"] = int(pt["rest_until_abs"]) + dm
 	if pt.has("rest_until"):
 		pt["rest_until"] = int(pt["rest_until"]) + dd
-	var cl: Dictionary = run.get("crew_last", {})
+	var cl: Dictionary = r.get("crew_last", {})
 	for id in cl:
 		cl[id] = int(cl[id]) + dd
 
@@ -1665,6 +1715,8 @@ static func add_friend(npc: String, n: int) -> void:
 			notify(str(line))
 		if int(fr[npc]) / 25 > before_h:
 			_apply_max_stats()
+			if Engine.get_main_loop() is SceneTree:
+				Music.instance(Engine.get_main_loop() as SceneTree).sfx("levelup")  # a new heart, from any source
 			# Hand-coded heart perks (not in heart_perks.json) announce here, every level passed.
 			for h in range(before_h + 1, int(fr[npc]) / 25 + 1):
 				var pk := friend_perk_at(npc, h)
@@ -1823,10 +1875,13 @@ const BOARD_POOL := {
 
 ## False for a crop's harvest that can't be grown this season (no strawberry orders in winter).
 static func crop_in_season(item: String) -> bool:
+	var found := false  # strain variants share a yield: any one in season counts
 	for cid: String in crops:
 		if str(crops[cid].get("yield", "")) == item:
-			return str(crops[cid].get("season", "any")) in ["any", season()]
-	return true
+			if str(crops[cid].get("season", "any")) in ["any", season()]:
+				return true
+			found = true
+	return not found
 
 
 static func board_today() -> Array:
@@ -1860,7 +1915,8 @@ static func board_today() -> Array:
 	var crop_pool: Array = []
 	for cid in crops:
 		var cd: Dictionary = crops[cid]
-		if str(cd.get("season", "any")) in [se, "any"] and int(cd.get("tier", 1)) <= tier + 1 and items.has(str(cd["yield"])):
+		if str(cd.get("season", "any")) in [se, "any"] and int(cd.get("tier", 1)) <= tier + 1 and items.has(str(cd["yield"])) \
+				and not bool(cd.get("tree", false)) and (is_penguins() or not str(cid).begins_with("crystal")):
 			crop_pool.append(str(cd["yield"]))
 	crop_pool.sort()
 	if not crop_pool.is_empty():
@@ -2034,6 +2090,10 @@ static func _give_reward(rw: Dictionary) -> void:
 
 ## Main-story quests appear as the game progresses; side quests come from the
 ## person who gives them (see town talk). Returns ids of quests just completed.
+## Main steps tick_quests opened right after a hand-in (GameMap._check_quests toasts and clears them).
+static var opened: Array = []
+
+
 static func tick_quests() -> Array:
 	var done: Array = []
 	for q in quests_data.get("main", []):
@@ -2062,6 +2122,7 @@ static func tick_quests() -> Array:
 		for q in quests_data.get("main", []):
 			if str(q.get("arc", "both")) in ["both", str(run["arc"])] and not has_quest(str(q["id"])) and _cond_ok(q.get("when", {})):
 				add_quest(str(q["id"]), str(q["text"]))
+				opened.append(str(q["text"]))
 	return done
 
 
@@ -2441,8 +2502,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	(run.get("pet", {}) as Dictionary).erase("down_until")  # a night's rest gets the pup up
 	if int(run["day"]) % 7 == 1:
 		run["gifts_week"] = {}
-	# Open quests from villagers the story sent away can never be handed in: drop them.
-	run["quests"] = (run["quests"] as Array).filter(func(q: Dictionary) -> bool: return bool(q["done"]) or str(_quest_def(str(q["id"])).get("giver", "")) == "" or not run["flags"].has(str(_quest_def(str(q["id"])).get("giver", "")) + "_gone"))
+	_drop_gone_quests(true)
 	for line in Perks.morning():
 		notify(str(line))
 	# Traps in the bag catch something overnight (Rook's design): up to 3 work.
@@ -2791,5 +2851,7 @@ static func next_step() -> String:
 	for q in run.get("quests", []):
 		if not bool(q.get("done", false)):
 			return str(q.get("text", ""))
+	if run["flags"].has("final_done"):
+		return "The story's done. Farm, build, fish, and finish what's left on the map."
 	var j := Story.journal()
 	return str(j.get("summary", ""))

@@ -5062,8 +5062,8 @@
      }
     },
     {
-     "id": "hustle_u_hot_loads",
-     "name": "Hot Loads",
+     "id": "hustle_u_fresh_rounds",
+     "name": "Fresh Rounds",
      "desc": "+2 gun damage.",
      "ranks": 1,
      "tier": 5,
@@ -5241,7 +5241,7 @@
     },
     {
      "id": "hustle_2_1",
-     "name": "Thick Skin",
+     "name": "Hollow Points",
      "desc": "+1 gun damage (per rank)",
      "ranks": 3,
      "tier": 1,
@@ -5252,7 +5252,7 @@
     },
     {
      "id": "hustle_2_2",
-     "name": "Quick Reload",
+     "name": "Street Smarts",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 2,
@@ -5263,7 +5263,7 @@
     },
     {
      "id": "hustle_2_3",
-     "name": "Street Tough",
+     "name": "Quick Study",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
@@ -5297,7 +5297,7 @@
     },
     {
      "id": "hustle_2_6",
-     "name": "Brawler",
+     "name": "Old Hand",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 6,
@@ -5331,7 +5331,7 @@
     },
     {
      "id": "hustle_2_9",
-     "name": "Sharpshooter",
+     "name": "Second Wind",
      "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,

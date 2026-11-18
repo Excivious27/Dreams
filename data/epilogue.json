@@ -204,6 +204,9 @@
   "fennimore": {
    "1": "You told Fennimore nothing above the clouds. Whatever she learned about him, she learned the hard way."
   },
+  "letter": {
+   "0": "You burned the letter. Nothing to sell, nothing to fear."
+  },
   "photo": {
    "0": "You burned the photo. The past stays burned.",
    "1": "The photo stays with the deed, a little piece of a case nobody else will ever close.",
@@ -242,7 +245,6 @@
   "finn_told": "Finn wears the locket now. He smiles more.",
   "knight_reverted": "The knight above the clouds was given a chance, and took it.",
   "auk_shard": "The knight's armour lies in pieces above the clouds, and Grandfather Auk waddled off into the high cloud. Nova still goes looking for him, and some mornings she finds fresh footprints.",
-  "letter_burned": "You burned the letter. Nothing to sell, nothing to fear.",
   "proj_star_beacon": "The Star Beacon still burns over the plaza. Ships steer by it now.",
   "journal_done": "You found every page of the Wayfarer's Journal. The last one had your name on it."
  }

@@ -40,6 +40,7 @@ PENGUIN_FILES = re.compile(r"w26[2-9]|w27[01]|w251b|w253b")
 def parse(raw):
     """[(title, notes, shared_paragraphs, [(file, text)])] per batch, plus header paragraphs."""
     head, _, rest = raw.partition("\n## BATCH")
+    rest = re.split(r"\n={20,}\n", rest)[0]  # coverage table / left-out notes are for Claude, not for the paste
     batches = []
     for chunk in ("## BATCH" + rest).split("\n## BATCH")[0:]:
         chunk = chunk if chunk.startswith("## BATCH") else "## BATCH" + chunk
@@ -190,3 +191,7 @@ p27raw = open(f"{D}/src/ART-PROMPTS-27-raw.md").read()
 f27 = build(p27raw, "27", f"{D}/ART-PROMPTS-27.md", "what the loop-8 audit found",
             "WHAT THIS COVERS: seamless ground and path squares for the Wastes, Sky and Jungle (soft patches and paths); one sheet of the last 21 item icons, which replaces three older icon sheets (17 w354, 18 w369, 19 w421).")
 print("27:", f27)
+p28raw = open(f"{D}/src/ART-PROMPTS-28-raw.md").read()
+f28 = build(p28raw, "28", f"{D}/ART-PROMPTS-28.md", "what the loop-9 audit found",
+            "WHAT THIS COVERS, most important first: dialogue faces for six villagers whose portrait is a different person from their walking sprite; fight poses for three dog breeds, so a pet stays the same dog in a fight.")
+print("28:", f28)

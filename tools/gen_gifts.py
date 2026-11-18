@@ -74,7 +74,7 @@ GIFTS = {
   'rule': {'type': 'window', 'after': 'never', 'rolls': 1, 'secs': 3.0, 'closed': 0.0, 'open': 2.2}, 'tip': "He uses the Gifts he handed out, one after another. Every time he rolls the dice the stone stutters and he is open for three seconds. Watch for the dice."},
  'b_dark': {'name': 'The Source', 'colour': '5a2a9a', 'gap': 2.6, 'clones': {'n': 2, 'at': [0.3]}, 'trail': True,
   'moves': [{'type': 'ring', 'n': 16, 'gap_n': 3}, {'type': 'lines', 'n': 4}, {'type': 'pull', 'secs': 1.5}, {'type': 'zones', 'n': 5, 'fx': 'burn'}, {'type': 'dash'}, {'type': 'spiral'}],
-  'rule': {'type': 'cycle', 'on': 7.0, 'off': 3.0, 'closed': 0.0, 'open': 2.0}, 'tip': 'Every Gift came from here, and it throws all of them. It dims every few seconds: that is the only time it can be hurt badly.'},
+  'rule': {'type': 'cycle', 'on': 7.0, 'off': 3.0, 'closed': 0.0, 'open': 2.0}, 'tip': 'Every curse came from here, and it throws all of them. It dims every few seconds: only then can it be hurt.'},
  'b_elder': {'name': 'Mind Fog', 'colour': '9a5ad8', 'gap': 3.0, 'moves': [{'type': 'veil'}, {'type': 'ring', 'n': 10, 'gap_n': 2}],
   'rule': {'type': 'window', 'after': 'veil', 'secs': 1.8, 'closed': 0.2, 'open': 2.2}, 'tip': 'It goes out like a light and comes back behind you. Turn and hit it then.'},
  'b_sentinel': {'name': 'Black Glass', 'colour': '6a6a8a', 'gap': 3.4, 'moves': [{'type': 'lines', 'n': 4, 'fan': True}, {'type': 'zones', 'n': 4}],

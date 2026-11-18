@@ -551,7 +551,7 @@
     "closed": 0.0,
     "open": 2.0
    },
-   "tip": "Every Gift came from here, and it throws all of them. It dims every few seconds: that is the only time it can be hurt badly."
+   "tip": "Every curse came from here, and it throws all of them. It dims every few seconds: only then can it be hurt."
   },
   "b_elder": {
    "name": "Mind Fog",
@@ -934,7 +934,7 @@
    "tip": "Its front is armoured reef. Bait the circles, step round, and hit it from behind."
   },
   "c_kelp": {
-   "name": "Drowning Tide",
+   "name": "Black Tide",
    "colour": "4ad0a0",
    "gap": 2.6,
    "pull_force": 44.0,
