@@ -20,10 +20,11 @@ I = json.load(open(P))
 HOMES = {"cottage_a", "cottage_b", "cottage_c", "hazel_house", "mansion", "tam_hut", "moss_hut", "river_hut", "sel_camp",
          "lodge", "lighthouse", "fishing_hut", "water_mill", "stable", "quarry_office"}
 WALL = ["painting2_a", "painting2_b", "painting2_c", "painting2_d", "painting2_e", "painting_a", "painting_b", "window_day", "clock", "mirror2", "window_day"]
-HOME_SIDE = ["bookcase3_a", "dresser2_a", "plant2_a", "wardrobe2_a", "lamp_floor", "bookcase3_c", "dresser", "plant_b", "chest_closed", "bookcase2_b", "lamp_floor_b", "wardrobe2_b"]
+HOME_SIDE = ["bookcase3_a", "dresser2_a", "kitchen_stove", "wardrobe2_a", "lamp_floor", "bookcase3_c", "nightstand_a", "sofa_blue", "chest_closed", "piano", "lamp_floor_b", "toy_chest", "pet_bed"]
 SHOP_SIDE = ["barrel", "crate", "bookcase3_d", "plant2_c", "barrel", "lamp_floor", "crate_cabbage", "plant_c", "bookcase3_e", "flour_sacks"]
 CORNER = ["plant2_a", "plant2_b", "plant2_c", "plant2_d", "plant_b", "plant_c"]
-RUGS = ["rug_rect_blue", "rug_rect_green", "rug_rect_red", "rug_round_blue", "rug_round_green"]
+RUGS = ["rug_rect_blue", "rug_rect_green", "rug_rect_red", "rug_round_blue", "rug_round_green", "rug2_blue", "rug2_green", "rug2_red", "rug2_round_red"]
+TABLES = ["table_square_cloth", "table_round_cloth", "table_square", "low_table"]
 
 
 def have(n):
@@ -56,7 +57,7 @@ for rid, R in I.items():
             used.add(tuple(n["cell"]))
             keep.add(tuple(n["cell"]))
     dx, dy = R.get("door", [cols // 2, rows - 2])
-    for y in range(2, rows):  # the lane from the door up the middle stays open
+    for y in range(max(2, dy - 3), rows):  # the lane just inside the door stays open
         for x in (dx - 1, dx, dx + 1):
             keep.add((x, y))
     floor = (cols - 2) * (rows - 3)
@@ -98,9 +99,18 @@ for rid, R in I.items():
             R["props"].append({"name": nm, "cell": [x, 1], "solid": False, "auto": True})
             added += 1
             k += 1
-    # Corners.
-    for c in [(1, 2), (cols - 2, 2), (1, rows - 2), (cols - 2, rows - 2)]:
-        put(rng.choice(CORNER), c)
+    # Corners: one plant at most, the rest from the room's own kit.
+    kit = (HOME_SIDE if home else SHOP_SIDE)[:]
+    for i, c in enumerate([(1, 2), (cols - 2, 2), (1, rows - 2), (cols - 2, rows - 2)]):
+        put(rng.choice(CORNER) if i == 0 else rng.choice(kit), c)
+    # Homes: a living set in the middle (a rug under a table and two chairs).
+    if home and cols >= 8 and rows >= 7:
+        cx = cols // 2 + (2 if dx <= cols // 2 else -2)
+        cy = rows // 2
+        if put(rng.choice(TABLES), (cx, cy)):
+            put("chair2_a_right", (cx - 1, cy))
+            put("chair2_a_left", (cx + 1, cy))
+            put(rng.choice(RUGS), (cx, cy + 1), solid=False)
     # Side walls, every other cell.
     side = (HOME_SIDE if home else SHOP_SIDE)[:]
     rng.shuffle(side)

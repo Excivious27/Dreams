@@ -93,6 +93,11 @@ func _process(_delta: float) -> void:
 		return
 	# Stardew hotkeys: E/Esc toggles the menu (Items tab when opening), M opens
 	# straight to the Map, F to the Journal; pressing the same key again closes.
+	if _open and _bag_pick != "" and (Input.is_action_just_pressed("menu") or Input.is_action_just_pressed("b")):
+		_bag_pick = ""  # B / MENU first drops what you picked up
+		_trash_arm = ""
+		_refresh()
+		return
 	if Input.is_action_just_pressed("menu"):
 		if not _open:
 			_tab = "Items"
@@ -250,11 +255,13 @@ func _refresh() -> void:
 			var slot := int(r["slot"])
 			var tb: Array = r["toolbar"]
 			var sel := str(tb[slot])
-			_line("In hand: %s" % (GameState.item_name(sel) if sel != "" else "nothing"), 9)
+			if _bag_pick != "" and GameState.count(_bag_pick) <= 0 and not GameState.has_tool(_bag_pick):
+				_bag_pick = ""
+			_line(("Picked: %s  (tap a slot to place it)" % GameState.item_name(_bag_pick)) if _bag_pick != "" else ("In hand: %s" % (GameState.item_name(sel) if sel != "" else "nothing")), 9, Color(1, 0.85, 0.4) if _bag_pick != "" else Color(1, 0.96, 0.85))
 			var g := _grid(6)
 			for i in 12:
 				var id := str(tb[i])
-				g.add_child(_slot_button(id, i == slot, func() -> void: GameState.select_slot(i); _refresh()))
+				g.add_child(_slot_button(id, i == slot, _toolbar_tap.bind(i)))
 			var bh := HBoxContainer.new()
 			bh.add_theme_constant_override("separation", 3)
 			_body.add_child(bh)
@@ -271,13 +278,42 @@ func _refresh() -> void:
 				sb2.reparent(bh)
 				sb2.size_flags_horizontal = Control.SIZE_SHRINK_END
 				sb2.autowrap_mode = TextServer.AUTOWRAP_OFF
-			_line("Backpack (tap to put in the selected slot)", 8, Color(0.9, 0.85, 0.7))
-			var pack := GameState.backpack()
+			_line("Bag: tap to pick, tap a slot to move it there", 8, Color(0.9, 0.85, 0.7))
+			var bs := GameState.bag_slots()
 			var g2 := _grid(6)
-			for id: String in pack:
-				g2.add_child(_slot_button(id, false, func() -> void: _swap_into_toolbar(id)))
-			for i in maxi(0, 12 - pack.size()):
-				g2.add_child(_slot_button("", false, func() -> void: pass))
+			for i in bs.size():
+				var bid := str(bs[i])
+				var bb := _slot_button(bid, bid != "" and bid == _bag_pick, _bag_tap.bind(i))
+				if bid != "" and GameState.is_locked(bid):
+					var lk := Label.new()
+					lk.text = "•"
+					lk.add_theme_color_override("font_color", Color(1, 0.85, 0.3))
+					lk.position = Vector2(SLOT - 8, -3)
+					lk.mouse_filter = Control.MOUSE_FILTER_IGNORE
+					bb.add_child(lk)
+				g2.add_child(bb)
+			var lt := GameState.loose_tools()
+			if not lt.is_empty():
+				_line("Tools", 8, Color(0.9, 0.85, 0.7))
+				var g3 := _grid(6)
+				for t: String in lt:
+					g3.add_child(_slot_button(t, t == _bag_pick, _tool_tap.bind(t)))
+			if _bag_pick != "" and not GameState.has_tool(_bag_pick):
+				var ah := HBoxContainer.new()
+				ah.add_theme_constant_override("separation", 3)
+				_body.add_child(ah)
+				var p := _bag_pick
+				for pair in [["To hand", func() -> void: _assign_toolbar(p, int(GameState.run["slot"]))],
+						[("Unlock" if GameState.is_locked(p) else "Lock"), func() -> void: GameState.toggle_lock(p); _refresh()],
+						[("Sure? Trash %d" % GameState.count(p)) if _trash_arm == p else "Trash", func() -> void: _trash_tap(p)],
+						["✕", func() -> void: _bag_pick = ""; _trash_arm = ""; _refresh()]]:
+					if str(pair[0]).begins_with("Trash") or str(pair[0]).begins_with("Sure"):
+						if not GameState.can_trash(p):
+							continue
+					var ab := _button(str(pair[0]), pair[1])
+					ab.reparent(ah)
+					ab.autowrap_mode = TextServer.AUTOWRAP_OFF
+				sel = p
 			if sel != "":
 				var itd: Dictionary = GameState.items.get(sel, {})
 				var rar := str(itd.get("rarity", "common"))
@@ -951,6 +987,73 @@ func _refresh_player() -> void:
 	var m := get_tree().current_scene
 	if m is GameMap and (m as GameMap).player:
 		(m as GameMap).player.refresh_doll()
+
+
+var _bag_pick := ""
+var _trash_arm := ""
+
+
+## Bag slot tapped: pick it, or place/swap the picked item there.
+func _bag_tap(i: int) -> void:
+	var bs := GameState.bag_slots()
+	var id := str(bs[i]) if i < bs.size() else ""
+	if _bag_pick == "":
+		if id != "":
+			_bag_pick = id
+			_trash_arm = ""
+		_refresh()
+		return
+	var from := bs.find(_bag_pick)
+	if from >= 0:
+		GameState.bag_move(from, i)
+	elif GameState.has_tool(_bag_pick) and id != "":
+		pass  # a tool can't go into the bag
+	_bag_pick = ""
+	_refresh()
+
+
+## Toolbar slot tapped: select it, or put the picked item on it.
+func _toolbar_tap(i: int) -> void:
+	if _bag_pick != "":
+		_assign_toolbar(_bag_pick, i)
+		return
+	GameState.select_slot(i)
+	_refresh()
+
+
+func _tool_tap(t: String) -> void:
+	_bag_pick = "" if _bag_pick == t else t
+	_refresh()
+
+
+func _trash_tap(id: String) -> void:
+	if _trash_arm == id:
+		GameState.trash(id, GameState.count(id))
+		Music.instance(get_tree()).sfx("thud", "nope")
+		_bag_pick = ""
+		_trash_arm = ""
+	else:
+		_trash_arm = id
+	_refresh()
+
+
+## Put id on toolbar slot i. If it's on another slot they swap; a tool that gets
+## bumped moves to a free slot or back to the Tools row (never lost).
+func _assign_toolbar(id: String, i: int) -> void:
+	var tb: Array = GameState.run["toolbar"]
+	var was := str(tb[i])
+	var other := tb.find(id)
+	if other >= 0 and other != i:
+		tb[other] = was
+	elif GameState.has_tool(was) and was != id:
+		var free := tb.find("")
+		if free >= 0 and free != i:
+			tb[free] = was
+	tb[i] = id
+	GameState.run["slot"] = i
+	GameState.sync_selected()
+	_bag_pick = ""
+	_refresh()
 
 
 func _swap_into_toolbar(id: String) -> void:

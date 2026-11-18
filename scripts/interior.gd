@@ -68,7 +68,9 @@ func after_ready() -> void:
 		var maxw := TILE * 1.6 if on_wall else (w + 1) * TILE * 1.2 + 4.0
 		var maxh := TILE * 1.5 if on_wall else TILE * 3.4
 		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
-		prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
+		var ps := prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
+		if ps and (nm.begins_with("rug") or nm.begins_with("reed_mat") or nm == "round_rug_stone"):
+			to_under(ps)  # rugs lie flat: you walk over them, not behind them
 	# Keep the way in and the spot in front of every counter/thing walkable.
 	var dd: Array = I.get("door", [cols / 2, rows - 2])
 	blocked.erase(Vector2i(int(dd[0]), int(dd[1]) - 1))
@@ -253,6 +255,39 @@ func _floor_cell(fl: String, c: Vector2i) -> void:
 	draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2(sx, sy, 28.0 * k, 26))
 
 
+## Side walls and a front lip so the room is a room, not a floating rug: the
+## wall's own top moulding turned into thick rims, darker than the floor.
+func _draw_side_walls(wl: String) -> void:
+	var trim := Art.tex("tiles", wl + "_m")
+	var d: Array = I.get("door", [cols / 2, rows - 2])
+	var rim := Color("3a2a1c")
+	var lip := Color(0, 0, 0, 0.28)
+	for side in [0, cols - 1]:
+		var x0 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
+		for y in range(2, rows):
+			var r := Rect2(x0, y * TILE, 8, TILE)
+			if trim:
+				draw_texture_rect_region(trim, r, Rect2(0, 0, 32, 12), Color(0.8, 0.75, 0.7))
+			else:
+				draw_rect(r, rim)
+			# A soft shadow the wall throws onto the floor.
+			draw_rect(Rect2(x0 + (8.0 if side == 0 else -4.0), y * TILE, 4, TILE), lip)
+	for x in range(0, cols):
+		if x == int(d[0]):
+			continue
+		var r2 := Rect2(x * TILE, (rows - 1) * TILE, TILE, 8)
+		if x == 0:
+			r2 = Rect2(TILE - 8, (rows - 1) * TILE, 8, 8)
+		elif x == cols - 1:
+			r2 = Rect2((cols - 1) * TILE, (rows - 1) * TILE, 8, 8)
+		if trim:
+			draw_texture_rect_region(trim, r2, Rect2(0, 0, 32, 12), Color(0.8, 0.75, 0.7))
+		else:
+			draw_rect(r2, rim)
+	# Under the back wall: a shadow line where it meets the floor.
+	draw_rect(Rect2(TILE, 2 * TILE, (cols - 2) * TILE, 3), Color(0, 0, 0, 0.22))
+
+
 func draw_map() -> void:
 	var fl := str(I.get("floor", "fl_wood"))
 	var wl := str(I.get("wall", "wl_plaster"))
@@ -277,6 +312,7 @@ func draw_map() -> void:
 			draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
 		else:
 			draw_rect(Rect2(x * TILE, 0, TILE, TILE * 2), Color("c9b08a"))
+	_draw_side_walls(wl)
 	var night := GameState.is_night()
 	if not Art.has("tiles", wl + "_window"):
 		for wx in windows:

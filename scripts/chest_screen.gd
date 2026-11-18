@@ -14,7 +14,11 @@ var _top: GridContainer
 var _bot: GridContainer
 var _ttl: Label
 var _btl: Label
-var _amt := 0   # 0 all, 1 ten, 2 one
+var _amt := 0   # 0 all, 1 half, 2 ten, 3 one
+var _pick := {}  # {"grid": "c"/"b", "i": slot, "id": id} after a long press
+var _press := {}  # the slot under the finger: {"grid", "i", "t"}
+var _acts: HBoxContainer
+var _trash_arm := ""
 var _amt_btn: Button
 var _was_paused := false
 var _arm := 0
@@ -73,11 +77,17 @@ func _ready() -> void:
 	_btl = _label("", 9, Color(0.95, 0.9, 0.75))
 	_btl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row2.add_child(_btl)
-	_amt_btn = _btn("Move: all", func() -> void: _amt = (_amt + 1) % 3; _refresh())
+	_amt_btn = _btn("Move: all", func() -> void: _amt = (_amt + 1) % 4; _refresh())
 	row2.add_child(_amt_btn)
 	if key.begins_with("p:"):
 		row2.add_child(_btn("Pick up", _pick_up))
-	_bot = _scroll_grid(v, 225)
+	# Long-press an item: pick it up to place it, or lock / trash / move half.
+	_acts = HBoxContainer.new()
+	_acts.add_theme_constant_override("separation", 2)
+	v.add_child(_acts)
+	_bot = _scroll_grid(v, 205)
+	var tip := _label("Tap: move across.  Hold: pick up, lock, trash, move half.", 7, Color(0.8, 0.75, 0.65))
+	v.add_child(tip)
 	_refresh()
 
 
@@ -96,10 +106,19 @@ func _scroll_grid(v: VBoxContainer, h: float) -> GridContainer:
 
 func _process(_d: float) -> void:
 	_arm += 1
+	if not _press.is_empty() and Time.get_ticks_msec() - int(_press["t"]) > 450:
+		var pr := _press
+		_press = {}
+		_swallow = true
+		_hold(str(pr["grid"]), int(pr["i"]))
 	if _arm < 8:
 		return
 	if Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu"):
-		close()
+		if not _pick.is_empty():
+			_pick = {}
+			_refresh()
+		else:
+			close()
 
 
 func close() -> void:
@@ -139,24 +158,43 @@ func _note(n: int, verb: String) -> void:
 
 
 func _n(have: int) -> int:
-	return have if _amt == 0 else mini(have, 10 if _amt == 1 else 1)
+	match _amt:
+		1:
+			return int(ceil(have / 2.0))
+		2:
+			return mini(have, 10)
+		3:
+			return mini(have, 1)
+	return have
 
 
-func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}) -> Control:
+var _swallow := false
+
+
+func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "", idx := -1) -> Control:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(SLOT, SLOT)
 	b.focus_mode = Control.FOCUS_NONE
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE  # a drag to scroll never moves an item
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.25, 0.17, 0.1) if id != "" else Color(0.19, 0.13, 0.08)
-	sb.border_color = GameState.rarity_color(id).darkened(0.3) if id != "" else Color(0.1, 0.07, 0.04)
-	sb.set_border_width_all(1)
+	var picked := not _pick.is_empty() and str(_pick["grid"]) == grid and int(_pick["i"]) == idx
+	sb.border_color = Color(1, 0.85, 0.3) if picked else (GameState.rarity_color(id).darkened(0.3) if id != "" else Color(0.1, 0.07, 0.04))
+	sb.set_border_width_all(2 if picked else 1)
 	sb.set_corner_radius_all(2)
 	for st in ["normal", "hover", "pressed", "focus"]:
 		b.add_theme_stylebox_override(st, sb)
+	if grid != "":
+		b.button_down.connect(func() -> void: _press = {"grid": grid, "i": idx, "t": Time.get_ticks_msec()} if id != "" else {})
+		b.button_up.connect(func() -> void: _press = {})
+	b.pressed.connect(_tap.bind(grid, idx, cb))
 	if id != "":
-		b.pressed.connect(cb)
 		b.tooltip_text = GameState.item_name(id)
+		if grid == "b" and GameState.is_locked(id):
+			var lk := _label("•", 9, Color(1, 0.85, 0.3))
+			lk.position = Vector2(SLOT - 9, -2)
+			lk.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			b.add_child(lk)
 		var tex := Art.tex("items", Hud.icon_for(id))
 		if tex:
 			var tr := TextureRect.new()
@@ -198,24 +236,29 @@ func _refresh() -> void:
 		for c in (g as Node).get_children():
 			c.queue_free()
 	_ttl.text = "%s  %d/%d" % [head, Storage.slots_used(key), Storage.cap(key)]
-	_amt_btn.text = ["Move: all", "Move: 10", "Move: 1"][_amt]
+	_amt_btn.text = ["Move: all", "Move: half", "Move: 10", "Move: 1"][_amt]
 	var b := Storage.box(key)
-	var shown := 0
-	for id: String in (b["items"] as Dictionary).keys():
-		var have := int(b["items"][id])
-		while have > 0:
-			var stack := mini(have, Storage.STACK)
-			have -= stack
-			shown += 1
-			_top.add_child(_slot(id, stack, _take.bind(id), b["q"].get(id, {})))
-	for i in maxi(0, Storage.cap(key) - shown):
-		_top.add_child(_slot("", 0, func() -> void: pass))
+	var cs := Storage.slots(key)
+	var left := {}
+	for i in cs.size():
+		var id := str(cs[i])
+		if id == "":
+			_top.add_child(_slot("", 0, Callable(), {}, "c", i))
+			continue
+		if not left.has(id):
+			left[id] = int(b["items"].get(id, 0))
+		var stack := mini(int(left[id]), Storage.STACK)
+		left[id] = int(left[id]) - stack
+		_top.add_child(_slot(id, stack, _take.bind(id), b["q"].get(id, {}), "c", i))
+	_draw_acts()
 	_btl.text = "Bag %d/%d" % [GameState.bag_used(), GameState.bag_size()] + ("  · %s" % _last if _last != "" else "")
-	var inv: Dictionary = GameState.run["inventory"]
-	for id: String in inv.keys():
-		_bot.add_child(_slot(id, int(inv[id]), _put.bind(id), GameState.quality_of(id)))
-	for i in maxi(0, GameState.bag_size() - inv.size()):
-		_bot.add_child(_slot("", 0, func() -> void: pass))
+	var bs := GameState.bag_slots()
+	for i in bs.size():
+		var id := str(bs[i])
+		if id == "":
+			_bot.add_child(_slot("", 0, Callable(), {}, "b", i))
+		else:
+			_bot.add_child(_slot(id, GameState.count(id), _put.bind(id), GameState.quality_of(id), "b", i))
 
 
 var _last := ""
@@ -254,3 +297,85 @@ func _pick_up() -> void:
 	close()
 	if m and m.has_method("pickup_placed"):
 		m.call("pickup_placed", c)
+
+
+## A tap: place a picked item, else the slot's own action (quick move across).
+func _tap(grid: String, i: int, cb: Callable) -> void:
+	if _swallow:
+		_swallow = false
+		return
+	if not _pick.is_empty():
+		var pg := str(_pick["grid"])
+		var pid := str(_pick["id"])
+		if pg == grid:
+			if grid == "b":
+				GameState.bag_move(int(_pick["i"]), i)
+			else:
+				Storage.move_slot(key, int(_pick["i"]), i)
+		elif pg == "b":
+			# Into this chest slot: claim it for the stack, then move the lot across.
+			var sl := Storage.slots(key)
+			if i < sl.size() and str(sl[i]) == "":
+				sl[i] = pid
+			Storage.deposit(key, pid, GameState.count(pid))
+		else:
+			var bs := GameState.bag_slots()
+			if not GameState.run["inventory"].has(pid) and i < bs.size() and str(bs[i]) == "":
+				bs[i] = pid
+			Storage.withdraw(key, pid, Storage.amount(key, pid))
+		Music.instance(get_tree()).sfx("ui_tap", "pickup")
+		_pick = {}
+		_refresh()
+		return
+	if cb.is_valid():
+		cb.call()
+
+
+## A long press: pick the item up and show what you can do with it.
+func _hold(grid: String, i: int) -> void:
+	var arr := GameState.bag_slots() if grid == "b" else Storage.slots(key)
+	if i < 0 or i >= arr.size() or str(arr[i]) == "":
+		return
+	_pick = {"grid": grid, "i": i, "id": str(arr[i])}
+	_trash_arm = ""
+	_last = GameState.item_name(str(arr[i]))
+	Music.instance(get_tree()).sfx("ui_tap", "pickup")
+	_refresh()
+
+
+func _draw_acts() -> void:
+	for c in _acts.get_children():
+		c.queue_free()
+	if _pick.is_empty():
+		return
+	var id := str(_pick["id"])
+	var in_bag := str(_pick["grid"]) == "b"
+	_acts.add_child(_label("Tap a slot to place", 7, Color(1, 0.85, 0.3)))
+	_acts.add_child(_btn("Half →" if in_bag else "Half ←", func() -> void:
+		if in_bag:
+			Storage.deposit(key, id, int(ceil(GameState.count(id) / 2.0)))
+		else:
+			Storage.withdraw(key, id, int(ceil(Storage.amount(key, id) / 2.0)))
+		_pick = {}
+		_refresh()))
+	if in_bag:
+		_acts.add_child(_btn("Unlock" if GameState.is_locked(id) else "Lock", func() -> void:
+			GameState.toggle_lock(id)
+			_refresh()))
+		if GameState.can_trash(id):
+			var armed := _trash_arm == id
+			var tb := _btn("Sure? Trash %d" % GameState.count(id) if armed else "Trash", func() -> void:
+				if _trash_arm == id:
+					GameState.trash(id, GameState.count(id))
+					Music.instance(get_tree()).sfx("thud", "nope")
+					_pick = {}
+					_trash_arm = ""
+				else:
+					_trash_arm = id
+				_refresh())
+			if armed:
+				tb.add_theme_color_override("font_color", Color(1, 0.45, 0.4))
+			_acts.add_child(tb)
+	_acts.add_child(_btn("✕", func() -> void:
+		_pick = {}
+		_refresh()))

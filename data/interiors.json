@@ -178,7 +178,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "crate_cabbage",
     "cell": [
      1,
      10
@@ -409,7 +409,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "plant2_c",
     "cell": [
      12,
      2
@@ -417,7 +417,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "crate",
     "cell": [
      1,
      9
@@ -425,7 +425,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "bookcase3_e",
     "cell": [
      12,
      9
@@ -633,7 +633,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "crate_cabbage",
     "cell": [
      1,
      9
@@ -641,7 +641,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "barrel",
     "cell": [
      11,
      9
@@ -649,9 +649,17 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "barrel",
     "cell": [
      1,
+     3
+    ],
+    "auto": true
+   },
+   {
+    "name": "lamp_floor",
+    "cell": [
+     11,
      3
     ],
     "auto": true
@@ -659,8 +667,16 @@
    {
     "name": "crate",
     "cell": [
+     1,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "plant2_c",
+    "cell": [
      11,
-     3
+     5
     ],
     "auto": true
    },
@@ -668,28 +684,12 @@
     "name": "bookcase3_d",
     "cell": [
      1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "crate_cabbage",
-    "cell": [
-     11,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "lamp_floor",
-    "cell": [
-     1,
      7
     ],
     "auto": true
    },
    {
-    "name": "flour_sacks",
+    "name": "crate_cabbage",
     "cell": [
      11,
      7
@@ -862,7 +862,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "crate",
     "cell": [
      16,
      2
@@ -870,7 +870,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "crate_cabbage",
     "cell": [
      1,
      10
@@ -878,7 +878,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "lamp_floor",
     "cell": [
      16,
      10
@@ -1033,7 +1033,7 @@
     "anim": false
    },
    {
-    "name": "round_set_a",
+    "name": "table_round_cloth",
     "cell": [
      4,
      7
@@ -1121,7 +1121,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "bookcase3_d",
     "cell": [
      16,
      2
@@ -1129,7 +1129,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "lamp_floor",
     "cell": [
      1,
      11
@@ -1137,7 +1137,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "bookcase3_e",
     "cell": [
      16,
      11
@@ -1348,7 +1348,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "plant_c",
     "cell": [
      11,
      2
@@ -1356,7 +1356,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "barrel",
     "cell": [
      1,
      9
@@ -1364,7 +1364,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "bookcase3_e",
     "cell": [
      11,
      9
@@ -1549,7 +1549,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "plant_c",
     "cell": [
      1,
      9
@@ -1557,7 +1557,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "bookcase3_d",
     "cell": [
      11,
      9
@@ -1744,7 +1744,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "plant_c",
     "cell": [
      14,
      2
@@ -1752,7 +1752,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "barrel",
     "cell": [
      1,
      10
@@ -1760,7 +1760,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "barrel",
     "cell": [
      14,
      10
@@ -1980,7 +1980,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "crate_cabbage",
     "cell": [
      10,
      2
@@ -1988,7 +1988,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "crate",
     "cell": [
      1,
      11
@@ -1996,7 +1996,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "crate",
     "cell": [
      10,
      11
@@ -2004,7 +2004,7 @@
     "auto": true
    },
    {
-    "name": "flour_sacks",
+    "name": "plant_c",
     "cell": [
      1,
      3
@@ -2012,7 +2012,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_d",
+    "name": "plant2_c",
     "cell": [
      1,
      5
@@ -2020,7 +2020,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "bookcase3_d",
     "cell": [
      10,
      5
@@ -2028,7 +2028,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "bookcase3_e",
     "cell": [
      1,
      7
@@ -2044,7 +2044,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "barrel",
     "cell": [
      1,
      9
@@ -2052,7 +2052,7 @@
     "auto": true
    },
    {
-    "name": "barrel",
+    "name": "lamp_floor",
     "cell": [
      10,
      9
@@ -2109,7 +2109,7 @@
     ]
    },
    {
-    "name": "table2_round",
+    "name": "table_round_cloth",
     "cell": [
      5,
      5
@@ -2163,7 +2163,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "bookcase3_c",
     "cell": [
      1,
      8
@@ -2171,7 +2171,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "pet_bed",
     "cell": [
      9,
      8
@@ -2179,7 +2179,40 @@
     "auto": true
    },
    {
-    "name": "bookcase2_b",
+    "name": "low_table",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     6,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     8,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug_rect_green",
+    "cell": [
+     7,
+     6
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "dresser2_a",
     "cell": [
      9,
      3
@@ -2187,7 +2220,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "kitchen_stove",
     "cell": [
      1,
      5
@@ -2195,7 +2228,7 @@
     "auto": true
    },
    {
-    "name": "chest_closed",
+    "name": "lamp_floor_b",
     "cell": [
      9,
      5
@@ -2203,7 +2236,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "lamp_floor",
     "cell": [
      1,
      7
@@ -2211,7 +2244,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "bookcase3_a",
     "cell": [
      9,
      7
@@ -2282,7 +2315,7 @@
     ]
    },
    {
-    "name": "table2_long4",
+    "name": "table_square_cloth",
     "cell": [
      5,
      5
@@ -2322,7 +2355,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "wardrobe2_a",
     "cell": [
      1,
      8
@@ -2330,7 +2363,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "dresser2_a",
     "cell": [
      9,
      8
@@ -2338,7 +2371,32 @@
     "auto": true
    },
    {
-    "name": "bookcase2_b",
+    "name": "table_square",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     8,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug_rect_green",
+    "cell": [
+     7,
+     6
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "piano",
     "cell": [
      9,
      3
@@ -2346,7 +2404,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "bookcase3_c",
     "cell": [
      1,
      5
@@ -2354,7 +2412,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "toy_chest",
     "cell": [
      9,
      5
@@ -2362,7 +2420,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "pet_bed",
     "cell": [
      1,
      7
@@ -2370,7 +2428,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "bookcase3_a",
     "cell": [
      9,
      7
@@ -2486,7 +2544,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "wardrobe2_a",
     "cell": [
      9,
      2
@@ -2494,7 +2552,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "bookcase3_a",
     "cell": [
      1,
      7
@@ -2502,7 +2560,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "sofa_blue",
     "cell": [
      9,
      7
@@ -2510,7 +2568,40 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "table_square_cloth",
+    "cell": [
+     7,
+     4
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     6,
+     4
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     8,
+     4
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug2_red",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "bookcase3_c",
     "cell": [
      1,
      3
@@ -2518,7 +2609,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "pet_bed",
     "cell": [
      9,
      3
@@ -2534,7 +2625,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "kitchen_stove",
     "cell": [
      9,
      5
@@ -2698,7 +2789,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "wardrobe2_a",
     "cell": [
      12,
      9
@@ -2706,7 +2797,40 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "low_table",
+    "cell": [
+     9,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     8,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     10,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug_round_blue",
+    "cell": [
+     9,
+     6
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "lamp_floor_b",
     "cell": [
      1,
      3
@@ -2714,7 +2838,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "pet_bed",
     "cell": [
      12,
      3
@@ -2722,7 +2846,7 @@
     "auto": true
    },
    {
-    "name": "wardrobe2_b",
+    "name": "bookcase3_c",
     "cell": [
      1,
      5
@@ -2888,7 +3012,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "piano",
     "cell": [
      9,
      2
@@ -2896,7 +3020,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "lamp_floor_b",
     "cell": [
      1,
      9
@@ -2904,10 +3028,26 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "table_square_cloth",
     "cell": [
-     1,
-     3
+     7,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     6,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     8,
+     5
     ],
     "auto": true
    },
@@ -2915,12 +3055,20 @@
     "name": "lamp_floor",
     "cell": [
      1,
+     3
+    ],
+    "auto": true
+   },
+   {
+    "name": "bookcase3_a",
+    "cell": [
+     1,
      5
     ],
     "auto": true
    },
    {
-    "name": "wardrobe2_b",
+    "name": "pet_bed",
     "cell": [
      9,
      5
@@ -3141,7 +3289,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "chest_closed",
     "cell": [
      14,
      2
@@ -3149,7 +3297,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "bookcase3_a",
     "cell": [
      1,
      10
@@ -3157,7 +3305,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "sofa_blue",
     "cell": [
      14,
      10
@@ -3165,7 +3313,31 @@
     "auto": true
    },
    {
-    "name": "wardrobe2_a",
+    "name": "low_table",
+    "cell": [
+     10,
+     6
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     9,
+     6
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     11,
+     6
+    ],
+    "auto": true
+   },
+   {
+    "name": "sofa_blue",
     "cell": [
      1,
      5
@@ -3173,7 +3345,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "bookcase3_c",
     "cell": [
      1,
      7
@@ -3181,7 +3353,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "chest_closed",
     "cell": [
      14,
      7
@@ -3189,7 +3361,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "bookcase3_a",
     "cell": [
      1,
      9
@@ -3197,7 +3369,7 @@
     "auto": true
    },
    {
-    "name": "dresser",
+    "name": "kitchen_stove",
     "cell": [
      14,
      9
@@ -3413,7 +3585,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "bookcase3_e",
     "cell": [
      14,
      2
@@ -3421,7 +3593,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "bookcase3_e",
     "cell": [
      1,
      10
@@ -3445,7 +3617,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_e",
+    "name": "plant_c",
     "cell": [
      14,
      5
@@ -3453,7 +3625,7 @@
     "auto": true
    },
    {
-    "name": "flour_sacks",
+    "name": "lamp_floor",
     "cell": [
      1,
      7
@@ -3461,7 +3633,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "bookcase3_e",
     "cell": [
      14,
      7
@@ -3469,7 +3641,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor",
+    "name": "plant2_c",
     "cell": [
      1,
      9
@@ -3580,7 +3752,7 @@
     ]
    },
    {
-    "name": "table2_long4",
+    "name": "table_square_cloth",
     "cell": [
      5,
      5
@@ -3620,7 +3792,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "kitchen_stove",
     "cell": [
      1,
      8
@@ -3628,10 +3800,51 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "piano",
     "cell": [
      9,
      8
+    ],
+    "auto": true
+   },
+   {
+    "name": "table_round_cloth",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     8,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug2_red",
+    "cell": [
+     7,
+     6
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "wardrobe2_a",
+    "cell": [
+     1,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "piano",
+    "cell": [
+     9,
+     5
     ],
     "auto": true
    },
@@ -3639,28 +3852,12 @@
     "name": "lamp_floor_b",
     "cell": [
      1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "wardrobe2_a",
-    "cell": [
-     9,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "lamp_floor",
-    "cell": [
-     1,
      7
     ],
     "auto": true
    },
    {
-    "name": "chest_closed",
+    "name": "toy_chest",
     "cell": [
      9,
      7
@@ -3750,7 +3947,7 @@
     ]
    },
    {
-    "name": "table2_round",
+    "name": "table_round_cloth",
     "cell": [
      5,
      5
@@ -3804,7 +4001,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "nightstand_a",
     "cell": [
      1,
      8
@@ -3812,7 +4009,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "nightstand_a",
     "cell": [
      9,
      8
@@ -3820,7 +4017,40 @@
     "auto": true
    },
    {
-    "name": "bookcase2_b",
+    "name": "table_round_cloth",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     6,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     8,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug_rect_green",
+    "cell": [
+     7,
+     6
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "sofa_blue",
     "cell": [
      9,
      3
@@ -3828,7 +4058,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "nightstand_a",
     "cell": [
      1,
      5
@@ -3836,7 +4066,7 @@
     "auto": true
    },
    {
-    "name": "dresser",
+    "name": "bookcase3_a",
     "cell": [
      9,
      5
@@ -3844,7 +4074,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "pet_bed",
     "cell": [
      1,
      7
@@ -3852,7 +4082,7 @@
     "auto": true
    },
    {
-    "name": "chest_closed",
+    "name": "dresser2_a",
     "cell": [
      9,
      7
@@ -4035,7 +4265,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "dresser2_a",
     "cell": [
      14,
      2
@@ -4043,7 +4273,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "kitchen_stove",
     "cell": [
      1,
      10
@@ -4051,47 +4281,80 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "pet_bed",
     "cell": [
      14,
      10
+    ],
+    "auto": true
+   },
+   {
+    "name": "table_square_cloth",
+    "cell": [
+     10,
+     6
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     9,
+     6
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     11,
+     6
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug_rect_blue",
+    "cell": [
+     10,
+     7
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "chest_closed",
+    "cell": [
+     1,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "kitchen_stove",
+    "cell": [
+     14,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "piano",
+    "cell": [
+     1,
+     7
     ],
     "auto": true
    },
    {
     "name": "dresser2_a",
     "cell": [
-     1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "dresser",
-    "cell": [
      14,
-     5
+     7
     ],
     "auto": true
    },
    {
     "name": "lamp_floor",
-    "cell": [
-     1,
-     7
-    ],
-    "auto": true
-   },
-   {
-    "name": "bookcase3_c",
-    "cell": [
-     14,
-     7
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant2_a",
     "cell": [
      1,
      9
@@ -4275,7 +4538,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "sofa_blue",
     "cell": [
      12,
      2
@@ -4283,39 +4546,63 @@
     "auto": true
    },
    {
-    "name": "plant_c",
-    "cell": [
-     1,
-     9
-    ],
-    "auto": true
-   },
-   {
-    "name": "plant2_d",
-    "cell": [
-     12,
-     9
-    ],
-    "auto": true
-   },
-   {
-    "name": "chest_closed",
-    "cell": [
-     1,
-     5
-    ],
-    "auto": true
-   },
-   {
-    "name": "dresser",
-    "cell": [
-     12,
-     5
-    ],
-    "auto": true
-   },
-   {
     "name": "lamp_floor_b",
+    "cell": [
+     1,
+     9
+    ],
+    "auto": true
+   },
+   {
+    "name": "nightstand_a",
+    "cell": [
+     12,
+     9
+    ],
+    "auto": true
+   },
+   {
+    "name": "low_table",
+    "cell": [
+     9,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     8,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     10,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "sofa_blue",
+    "cell": [
+     1,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "dresser2_a",
+    "cell": [
+     12,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "pet_bed",
     "cell": [
      1,
      7
@@ -4487,7 +4774,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "crate_cabbage",
     "cell": [
      14,
      2
@@ -4495,7 +4782,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "barrel",
     "cell": [
      1,
      10
@@ -4503,7 +4790,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "bookcase3_e",
     "cell": [
      14,
      10
@@ -4700,7 +4987,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "piano",
     "cell": [
      11,
      2
@@ -4708,7 +4995,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "lamp_floor_b",
     "cell": [
      1,
      8
@@ -4716,7 +5003,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "kitchen_stove",
     "cell": [
      11,
      8
@@ -4724,7 +5011,32 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "table_square_cloth",
+    "cell": [
+     8,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_right",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug_round_blue",
+    "cell": [
+     8,
+     6
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "lamp_floor_b",
     "cell": [
      1,
      7
@@ -4732,7 +5044,7 @@
     "auto": true
    },
    {
-    "name": "chest_closed",
+    "name": "nightstand_a",
     "cell": [
      11,
      7
@@ -4873,7 +5185,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "kitchen_stove",
     "cell": [
      9,
      2
@@ -4881,7 +5193,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "toy_chest",
     "cell": [
      1,
      7
@@ -4889,7 +5201,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "toy_chest",
     "cell": [
      9,
      7
@@ -4897,7 +5209,7 @@
     "auto": true
    },
    {
-    "name": "wardrobe2_a",
+    "name": "bookcase3_c",
     "cell": [
      9,
      3
@@ -4905,7 +5217,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "kitchen_stove",
     "cell": [
      1,
      5
@@ -4913,7 +5225,7 @@
     "auto": true
    },
    {
-    "name": "bookcase2_b",
+    "name": "chest_closed",
     "cell": [
      9,
      5
@@ -5078,7 +5390,7 @@
     "auto": true
    },
    {
-    "name": "plant2_a",
+    "name": "bookcase3_a",
     "cell": [
      9,
      2
@@ -5086,7 +5398,7 @@
     "auto": true
    },
    {
-    "name": "plant2_d",
+    "name": "sofa_blue",
     "cell": [
      1,
      7
@@ -5094,7 +5406,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "wardrobe2_a",
     "cell": [
      9,
      7
@@ -5102,7 +5414,32 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "table_square_cloth",
+    "cell": [
+     7,
+     4
+    ],
+    "auto": true
+   },
+   {
+    "name": "chair2_a_left",
+    "cell": [
+     8,
+     4
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug2_red",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "lamp_floor_b",
     "cell": [
      9,
      5
@@ -5252,7 +5589,7 @@
     "auto": true
    },
    {
-    "name": "plant2_c",
+    "name": "lamp_floor",
     "cell": [
      9,
      2
@@ -5260,7 +5597,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "piano",
     "cell": [
      9,
      7
@@ -5268,7 +5605,7 @@
     "auto": true
    },
    {
-    "name": "lamp_floor_b",
+    "name": "pet_bed",
     "cell": [
      9,
      3
@@ -5276,7 +5613,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_a",
+    "name": "nightstand_a",
     "cell": [
      9,
      5
@@ -5423,7 +5760,7 @@
     "auto": true
    },
    {
-    "name": "plant2_b",
+    "name": "wardrobe2_a",
     "cell": [
      9,
      2
@@ -5431,7 +5768,7 @@
     "auto": true
    },
    {
-    "name": "plant_b",
+    "name": "piano",
     "cell": [
      1,
      7
@@ -5439,7 +5776,7 @@
     "auto": true
    },
    {
-    "name": "plant_c",
+    "name": "toy_chest",
     "cell": [
      9,
      7
@@ -5447,7 +5784,24 @@
     "auto": true
    },
    {
-    "name": "chest_closed",
+    "name": "table_square_cloth",
+    "cell": [
+     7,
+     4
+    ],
+    "auto": true
+   },
+   {
+    "name": "rug2_green",
+    "cell": [
+     7,
+     5
+    ],
+    "auto": true,
+    "solid": false
+   },
+   {
+    "name": "dresser2_a",
     "cell": [
      9,
      3
@@ -5455,7 +5809,7 @@
     "auto": true
    },
    {
-    "name": "dresser2_a",
+    "name": "chest_closed",
     "cell": [
      1,
      5
@@ -5463,7 +5817,7 @@
     "auto": true
    },
    {
-    "name": "bookcase3_c",
+    "name": "wardrobe2_a",
     "cell": [
      9,
      5

@@ -26,6 +26,32 @@ func _run() -> void:
 	ChestScreen.open(m, "chest", "Chest")
 	for k in 15:
 		await process_frame
+	var cs: ChestScreen = null
+	for c in m.get_children():
+		if c is ChestScreen:
+			cs = c
+	if cs:
+		cs._hold("b", 2)
+	for k in 6:
+		await process_frame
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(out + "/chest.png")
+	if cs:
+		cs.close()
+	for k in 6:
+		await process_frame
+	var gm: GameMenu = null
+	for n in m.get_children():
+		if n is GameMenu:
+			gm = n
+	if gm:
+		gm.call("toggle")
+		for k in 6:
+			await process_frame
+		gm.set("_bag_pick", "potato")
+		gm.call("_refresh")
+		for k in 6:
+			await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(out + "/items.png")
 	quit()

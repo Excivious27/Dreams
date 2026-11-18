@@ -523,6 +523,57 @@ static func sort_bag() -> void:
 		d[id] = inv[id]
 	run["inventory"] = d
 	run["bag_sorted"] = true
+	run["bag_slots"] = Slots.sorted(bag_slots(), run.get("bag_lock", {}), item_order)
+
+
+## The bag as Sun Haven shows it: one slot per kind, in the player's own order.
+static func bag_slots() -> Array:
+	if not (run.get("bag_slots") is Array):
+		var ids: Array = (run["inventory"] as Dictionary).keys()
+		if not bool(run.get("bag_sorted", false)):
+			ids.sort()
+		run["bag_slots"] = ids
+	return Slots.reconcile(run["bag_slots"], run["inventory"], bag_size(), 0)
+
+
+static func bag_move(from: int, to: int) -> void:
+	Slots.move(bag_slots(), from, to)
+
+
+static func is_locked(id: String) -> bool:
+	return (run.get("bag_lock", {}) as Dictionary).has(id)
+
+
+static func toggle_lock(id: String) -> void:
+	if not run.has("bag_lock") or not (run["bag_lock"] is Dictionary):
+		run["bag_lock"] = {}
+	if run["bag_lock"].has(id):
+		run["bag_lock"].erase(id)
+	else:
+		run["bag_lock"][id] = true
+
+
+static func can_trash(id: String) -> bool:
+	var t := str(items.get(id, {}).get("type", ""))
+	return count(id) > 0 and not has_tool(id) and not t in ["tool", "key", "quest", "upgrade"] and not is_locked(id)
+
+
+## Throw n away. Returns how many went.
+static func trash(id: String, n: int) -> int:
+	if not can_trash(id):
+		return 0
+	n = mini(n, count(id))
+	add_item(id, -n)
+	return n
+
+
+## Tools that aren't on the toolbar (they never take bag slots).
+static func loose_tools() -> Array:
+	var out: Array = []
+	for t in run.get("tools", []):
+		if not (run["toolbar"] as Array).has(t):
+			out.append(t)
+	return out
 
 
 ## Set when a new item didn't fit and went to the farm chest (Hud shows it).
@@ -546,6 +597,7 @@ static func add_item(id: String, n: int = 1, force := false) -> void:
 		_mark_seen(id)
 	if inv[id] <= 0:
 		inv.erase(id)
+		(run.get("bag_lock", {}) as Dictionary).erase(id)
 		var tb: Array = run["toolbar"]
 		var i := tb.find(id)
 		if i >= 0:
@@ -556,6 +608,8 @@ static func add_item(id: String, n: int = 1, force := false) -> void:
 		var free := tb.find("")
 		if free >= 0:
 			tb[free] = id
+	if run.has("bag_slots"):
+		bag_slots()  # a new kind takes the first empty slot; a used-up kind leaves a hole
 	sync_selected()
 
 
