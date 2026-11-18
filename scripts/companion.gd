@@ -116,6 +116,20 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				if e.kind == "knight" and GameState.run["flags"].has("knight_mercy_try") and float(e.hp) / e.max_hp < 0.34:
 					rv = ["penguin", 1]
 					GameState.run["flags"]["knight_reverted"] = true
+				# Fennimore: only turned back once she doubts him (the prison talk), and
+				# then she's freed, not made into an owl.
+				if str(e.get_meta("story_flag", "")) == "boss_fennimore":
+					if not GameState.run["flags"].has("fennimore_turnable"):
+						m.emote(e, "confused", 0.8)
+						m.hud.toast("The purple light holds. She isn't ready to listen.", Color(0.9, 0.8, 1.0))
+						continue
+					GameState.run["flags"]["fennimore_free"] = true
+					m.fx("sparkle", e.position + Vector2(0, -8), 18.0, 0.8)
+					m.hud.toast("Fennimore's crown goes out. She blinks, and she's herself.", Color(0.85, 0.95, 1.0))
+					e.set_meta("reverted", true)
+					e._die()
+					n += 1
+					continue
 				if rv.is_empty() or int(rv[1]) > rank:
 					m.emote(e, "confused", 0.8)
 					continue

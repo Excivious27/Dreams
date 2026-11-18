@@ -254,24 +254,24 @@ func _refresh() -> void:
 				var rar := str(itd.get("rarity", "common"))
 				_line("%s  ·  %s  ·  tier %d  ·  ◆%d" % [GameState.item_name(sel), rar, int(itd.get("tier", 1)), GameState.item_value(sel)], 8, GameState.rarity_color(sel))
 				if itd.has("desc"):
-					_line(str(itd["desc"]), 7, Color(0.8, 0.8, 0.8))
+					_line(str(itd["desc"]), 8, Color(0.8, 0.8, 0.8))
 				if itd.has("heal") or itd.has("energy") or itd.has("mana") or itd.has("grow"):
 					var what := "Drink" if str(itd.get("type", "")) == "tonic" else "Eat"
 					_button("%s %s" % [what, GameState.item_name(sel)], func() -> void: _eat(sel))
 				if str(itd.get("type", "")) == "equip":
 					var st: Dictionary = itd.get("stats", {})
-					_line("  " + ", ".join(st.keys().map(func(k: String) -> String: return "%s +%d" % [k, int(st[k])])), 7, Color(0.8, 0.9, 1.0))
+					_line("  " + ", ".join(st.keys().map(func(k: String) -> String: return "%s +%d" % [k, int(st[k])])), 8, Color(0.8, 0.9, 1.0))
 					_button("Equip (%s)" % str(itd.get("slot", "")), func() -> void: GameState.equip(sel); _refresh_player(); _refresh())
 			_line("Wearing", 8, Color(0.9, 0.85, 0.7))
 			for eslot: String in GameState.SLOTS:
 				var eid := GameState.equipped(eslot)
 				if eid == "":
-					_line("  %s: -" % eslot, 7, Color(0.6, 0.6, 0.6))
+					_line("  %s: -" % eslot, 8, Color(0.6, 0.6, 0.6))
 				else:
 					_button("  %s: %s  (take off)" % [eslot, GameState.item_name(eid)], func() -> void: GameState.unequip(eslot); _refresh())
 			var gs := "def %d  spd %d  luck %d  dmg %d  energy +%d" % [GameState.gear_stat("defense"), GameState.gear_stat("speed"), GameState.gear_stat("luck"), GameState.gear_stat("damage"), GameState.gear_stat("energy")]
-			_line("  " + gs, 7, Color(0.8, 0.9, 1.0))
-			_line("Tools: " + ", ".join(r["tools"].map(func(t: String) -> String: return GameState.item_name(t))), 7, Color(0.8, 0.8, 0.8))
+			_line("  " + gs, 8, Color(0.8, 0.9, 1.0))
+			_line("Tools: " + ", ".join(r["tools"].map(func(t: String) -> String: return GameState.item_name(t))), 8, Color(0.8, 0.8, 0.8))
 		"Skills":
 			_skills_tab()
 		"Pup":
@@ -283,7 +283,7 @@ func _refresh() -> void:
 				_crew_tab()
 			_line("Party", 10, Color(1, 0.95, 0.8))
 			if (pt["known"] as Array).is_empty():
-				_line("  Nobody yet. Partners find you as the story goes; some wait at the farm gate.", 7, Color(0.7, 0.7, 0.7))
+				_line("  Nobody yet. Partners find you as the story goes; some wait at the farm gate.", 8, Color(0.7, 0.7, 0.7))
 			for cid in pt["known"]:
 				var cd: Dictionary = Companion.defs().get(cid, {})
 				var card := "party_card_" + str(cd.get("sprite", cid)) + ("_sel" if cid == act else "")
@@ -328,11 +328,11 @@ func _refresh() -> void:
 				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))], pick)
 				b.add_theme_font_size_override("font_size", 7)
 			if act != "":
-				_line("  Tap the ♥ button to use the active partner's ability.", 7, Color(0.8, 0.8, 0.8))
+				_line("  Tap the ♥ button to use the active partner's ability.", 8, Color(0.8, 0.8, 0.8))
 			if not (pt["bitter"] as Array).is_empty():
 				_line("Bitter", 9, Color(1, 0.7, 0.7))
 				for cid in pt["bitter"]:
-					_line("  %s hasn't been seen since you turned them away." % str(Companion.defs().get(cid, {}).get("name", cid)), 7, Color(0.9, 0.7, 0.7))
+					_line("  %s hasn't been seen since you turned them away." % str(Companion.defs().get(cid, {}).get("name", cid)), 8, Color(0.9, 0.7, 0.7))
 		"Social":
 			var fr: Dictionary = r["friendship"]
 			var full := Art.tex("ui", "pheart_full") if Art.has("ui", "pheart_full") else Art.tex("ui", "heart_full")
@@ -391,7 +391,7 @@ func _refresh() -> void:
 						nxt = "♥%d: %s" % [hh, GameState.friend_perk_at(str(id), hh)]
 						break
 				var info := "   Birthday %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
-				_line(info, 6, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
+				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
 		"Map":
 			var m := Control.new()
 			m.custom_minimum_size = Vector2(240, 300 if Art.has("ui", "world_map") else 190)
@@ -420,7 +420,7 @@ func _refresh() -> void:
 							r["pinned_quest"] = "" if pinned else qid
 							_refresh())
 			if not any:
-				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 7, Color(0.7, 0.7, 0.7))
+				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 8, Color(0.7, 0.7, 0.7))
 			var ws := Crafting.summary()
 			var busy := 0
 			for w in ws:
@@ -436,7 +436,7 @@ func _refresh() -> void:
 				var hs := hints.duplicate()
 				hs.reverse()
 				for hnt in hs.slice(0, 12):
-					_line("  ✎ " + str(hnt), 7, Color(0.9, 0.85, 0.95))
+					_line("  ✎ " + str(hnt), 8, Color(0.9, 0.85, 0.95))
 		"Options":
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])
@@ -471,7 +471,7 @@ func _refresh() -> void:
 				GameState.save()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
-			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = use your tool · CHECK = talk/pick up · ♥ = partner power · ROLL = dodge (near enemies) · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 7, Color(0.8, 0.8, 0.8))
+			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = use your tool · CHECK = talk/pick up · ♥ = partner power · ROLL = dodge (near enemies) · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 8, Color(0.8, 0.8, 0.8))
 		"Workshop":
 			var ws2 := Crafting.summary()
 			_line("Workshop · %d pieces made so far" % int(r.get("made", 0)), 9, Color(1, 0.9, 0.6))
@@ -485,18 +485,18 @@ func _refresh() -> void:
 				if Builds.is_built("pool") or Builds.is_built("burrow") or Builds.is_built("shrine"):
 					_line("Sanctuary · %d gift%s waiting · Meow Pow Wow +%d rank%s from the shrine" % [waiting, "" if waiting == 1 else "s", Sanctuary.meow_bonus(), "" if Sanctuary.meow_bonus() == 1 else "s"], 8, Color(0.8, 0.95, 1.0))
 			if ws2.is_empty():
-				_line("No stations yet. The Plans board by your house lists every station: build each from materials or buy it ready-made.", 7, Color(0.8, 0.8, 0.8))
+				_line("No stations yet. The Plans board by your house lists every station: build each from materials or buy it ready-made.", 8, Color(0.8, 0.8, 0.8))
 			for w in ws2:
 				_line(str(w["head"]), 8, Color(1, 0.96, 0.85))
 				for jl in w["jobs"]:
-					_line("   ⏱ " + str(jl), 7, Color(0.75, 0.95, 0.75) if str(jl).ends_with("READY") else Color(0.8, 0.85, 0.95))
+					_line("   ⏱ " + str(jl), 8, Color(0.75, 0.95, 0.75) if str(jl).ends_with("READY") else Color(0.8, 0.85, 0.95))
 			var nxt: Array = []
 			for bid in Builds.data():
 				if Crafting.is_station(str(bid)) and not Builds.next_def(str(bid)).is_empty() and Builds.gate(str(bid)) == "" and nxt.size() < 4:
 					nxt.append(str(Builds.next_def(str(bid))["name"]))
 			if not nxt.is_empty():
-				_line("Open to build now: " + ", ".join(nxt), 7, Color(0.8, 1, 0.7))
-			_line("A better station runs more jobs at once, works faster, opens higher recipes, and sometimes turns out a bonus piece.", 7, Color(0.7, 0.7, 0.7))
+				_line("Open to build now: " + ", ".join(nxt), 8, Color(0.8, 1, 0.7))
+			_line("A better station runs more jobs at once, works faster, opens higher recipes, and sometimes turns out a bonus piece.", 8, Color(0.7, 0.7, 0.7))
 			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"Foes":
 			var kc: Dictionary = r.get("kill_counts", {})
@@ -506,32 +506,32 @@ func _refresh() -> void:
 				_line("Gifts you've learned to beat", 8, Color(1, 0.95, 0.7))
 				for gid in known:
 					var g := Gift.def(str(gid))
-					_line("  ✦ %s: %s" % [str(g.get("name", gid)), str(g.get("tip", ""))], 7, Color(1, 0.95, 0.85))
+					_line("  ✦ %s: %s" % [str(g.get("name", gid)), str(g.get("tip", ""))], 8, Color(1, 0.95, 0.85))
 			if GameState.run.get("arc", "") == "gangsters":
 				_line("The Marked", 8, Color(1, 0.9, 0.7))
 				for mid in Marked.all():
 					var md: Dictionary = Marked.all()[mid]
 					var st := Marked.state(str(mid))
 					var who := "%s \"%s\", %d" % [str(md["name"]), str(md["epithet"]), int(md["age"])] if st != "" else "??? (%s)" % str(md["scene"]).replace("_", " ")
-					_line("  %s  %s" % [who, {"crew": "· in your crew", "free": "· went home"}.get(st, "")], 7, Color(0.95, 0.9, 1.0))
+					_line("  %s  %s" % [who, {"crew": "· in your crew", "free": "· went home"}.get(st, "")], 8, Color(0.95, 0.9, 1.0))
 			_line("Beaten", 8, Color(0.9, 0.85, 1.0))
 			var ks := kc.keys()
 			ks.sort_custom(func(a: Variant, b: Variant) -> bool: return int(kc[a]) > int(kc[b]))
 			for k in ks:
 				var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(str(k), {})
 				var nm := str(ed.get("name", str(k).replace("thug_", "").replace("marked_", "").replace("_", " ").capitalize()))
-				_line("  %s ×%d · tier %d%s" % [nm, int(kc[k]), int(ed.get("tier", 0)), ("  · " + str(Gift.def(str(ed["gift"])).get("name", ""))) if ed.has("gift") else ""], 7, Color(0.85, 0.85, 0.9))
+				_line("  %s ×%d · tier %d%s" % [nm, int(kc[k]), int(ed.get("tier", 0)), ("  · " + str(Gift.def(str(ed["gift"])).get("name", ""))) if ed.has("gift") else ""], 8, Color(0.85, 0.85, 0.9))
 			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"Mail":
 			_line("Letters (newest first)", 9, Color(1, 0.9, 0.7))
 			var ml: Array = Mail.list().duplicate()
 			ml.reverse()
 			if ml.is_empty():
-				_line("  No letters yet. Folks write once they know you.", 7, Color(0.7, 0.7, 0.7))
+				_line("  No letters yet. Folks write once they know you.", 8, Color(0.7, 0.7, 0.7))
 			for m: Dictionary in ml:
 				m["read"] = true
 				_line("Day %d · %s" % [int(m.get("day", 0)), str(m["from"])], 8, Color(1, 0.95, 0.8))
-				_line("  " + str(m["text"]), 7, Color(0.9, 0.9, 0.85))
+				_line("  " + str(m["text"]), 8, Color(0.9, 0.9, 0.85))
 				var mm := m
 				if str(m.get("kind", "")) == "gift" and not bool(m.get("got", false)):
 					_button("  Take the %s" % GameState.item_name(str(m["item"])), func() -> void:
@@ -550,7 +550,7 @@ func _refresh() -> void:
 			var tl: Array = (r.get("toast_log", []) as Array).duplicate()
 			tl.reverse()
 			for t in tl:
-				_line("  " + str(t), 7, Color(0.9, 0.9, 0.9))
+				_line("  " + str(t), 8, Color(0.9, 0.9, 0.9))
 			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"FieldLog":
 			# Every crop by family: grown ones with counts, in-season ones hinted, the rest as ???.
@@ -578,11 +578,11 @@ func _refresh() -> void:
 					else:
 						parts.append("???")
 				_line("%s  %d/%d" % [GameState.family_name(f), got, ids.size()], 8, Color(1, 0.9, 0.6))
-				_line("  " + ", ".join(parts), 7, Color(0.85, 0.85, 0.8))
-			_line("(Names in brackets grow this season; look for their seeds at Maple's, Tam's, Old Moss's, Sel's%s.)" % (" and Catkins's" if GameState.is_penguins() else ""), 7, Color(0.7, 0.7, 0.7))
+				_line("  " + ", ".join(parts), 8, Color(0.85, 0.85, 0.8))
+			_line("(Names in brackets grow this season; look for their seeds at Maple's, Tam's, Old Moss's, Sel's%s.)" % (" and Catkins's" if GameState.is_penguins() else ""), 8, Color(0.7, 0.7, 0.7))
 			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"Keys":
-			_line("Key bindings (Stardew defaults). Tap a row, then press the new key. Esc cancels.", 7, Color(0.8, 0.8, 0.8))
+			_line("Key bindings (Stardew defaults). Tap a row, then press the new key. Esc cancels.", 8, Color(0.8, 0.8, 0.8))
 			for pair in InputSetup.SHOWN:
 				var action: String = pair[0]
 				var label: String = pair[1]
@@ -599,7 +599,7 @@ func _refresh() -> void:
 func _skill_tree(sk: String) -> void:
 	var free := GameState.points_free(sk)
 	var spent := GameState.points_spent(sk)
-	_line("  " + str(GameState.skills_data.get(sk, {}).get("desc", "")), 7, Color(0.85, 0.8, 0.7))
+	_line("  " + str(GameState.skills_data.get(sk, {}).get("desc", "")), 8, Color(0.85, 0.8, 0.7))
 	_line("  Skill points: %d free · %d spent  (1 per level)" % [free, spent], 8, Color(1, 0.9, 0.5) if free > 0 else Color(0.8, 0.8, 0.8))
 	var by_tier := {}
 	for n in GameState.nodes_of(sk):
@@ -611,7 +611,7 @@ func _skill_tree(sk: String) -> void:
 	tiers.sort()
 	for t in tiers:
 		var open := spent >= int(t) * GameState.TIER_POINTS
-		_line("  — Tier %d %s —" % [int(t) + 1, "" if open else "(locked: %d points in tree)" % (int(t) * GameState.TIER_POINTS)], 7, Color(0.9, 0.8, 0.5) if open else Color(0.5, 0.5, 0.5))
+		_line("  — Tier %d %s —" % [int(t) + 1, "" if open else "(locked: %d points in tree)" % (int(t) * GameState.TIER_POINTS)], 8, Color(0.9, 0.8, 0.5) if open else Color(0.5, 0.5, 0.5))
 		var branches: Dictionary = GameState.skills_data.get(sk, {}).get("branches", {})
 		for n in by_tier[t]:
 			var id := str(n["id"])
@@ -643,7 +643,7 @@ func _skill_tree(sk: String) -> void:
 	if sk == "magic":
 		var kn := Spells.known()
 		if kn.is_empty():
-			_line("  Learn Spark or Deep Well to start casting.", 7, Color(0.8, 0.8, 0.8))
+			_line("  Learn Spark or Deep Well to start casting.", 8, Color(0.8, 0.8, 0.8))
 		else:
 			_line("  Cast  (mana %d / %d)" % [int(GameState.run.get("mana", 0)), int(GameState.run.get("max_mana", 0))], 8, Color(0.6, 0.8, 1.0))
 			for id in kn:
@@ -781,13 +781,13 @@ func _skills_tab() -> void:
 	var names: Array = []
 	for r in 4:
 		names.append(str(br.get(str(r), "")))
-	_line("Rows: " + " · ".join(names), 6, Color(0.8, 0.78, 0.7))
+	_line("Rows: " + " · ".join(names), 8, Color(0.8, 0.78, 0.7))
 	# The picked node: shown ABOVE the grid so Learn is on screen without scrolling.
 	var sel_from := _body.get_child_count()
 	var sel := GameState.node(sk, _node_sel) if _node_sel != "" else {}
 	if sel.is_empty():
-		_line(str(sd.get("desc", "")), 7, Color(0.85, 0.8, 0.7))
-		_line("Tap a node. Each tier column opens after 2 more points in this skill. 1 point per level.", 7, Color(0.75, 0.75, 0.75))
+		_line(str(sd.get("desc", "")), 8, Color(0.85, 0.8, 0.7))
+		_line("Tap a node. Each tier column opens after 2 more points in this skill. 1 point per level.", 8, Color(0.75, 0.75, 0.75))
 	else:
 		var rank := GameState.node_rank(sk, _node_sel)
 		var ranks := int(sel.get("ranks", 1))
@@ -876,7 +876,7 @@ func _node_cell(sk: String, n: Dictionary, r: int, col_open: bool) -> Control:
 func _magic_casts() -> void:
 	var kn := Spells.known()
 	if kn.is_empty():
-		_line("Learn Spark or Deep Well to start casting.", 7, Color(0.8, 0.8, 0.8))
+		_line("Learn Spark or Deep Well to start casting.", 8, Color(0.8, 0.8, 0.8))
 		return
 	_line("Cast  (mana %d / %d)" % [int(GameState.run.get("mana", 0)), int(GameState.run.get("max_mana", 0))], 8, Color(0.6, 0.8, 1.0))
 	for id in kn:
@@ -952,7 +952,7 @@ func _pup_tab() -> void:
 	for slot: String in ["collar", "pack", "boots"]:
 		var gid := str(st["gear"].get(slot, ""))
 		if gid == "":
-			_line("  %s: -" % slot, 7, Color(0.6, 0.6, 0.6))
+			_line("  %s: -" % slot, 8, Color(0.6, 0.6, 0.6))
 		else:
 			_button("  %s: %s  (take off)" % [slot, GameState.item_name(gid)], func() -> void:
 				st["gear"][slot] = ""
@@ -985,7 +985,7 @@ func _pup_tab() -> void:
 					st["hp"] = mini(Pet.max_hp(), int(st["hp"]) + int(it["pet_heal"]))
 				_refresh())
 	if not any_gear:
-		_line("  Collars and packs come from the workbench and the smithy (pelts, rope, bars).", 7, Color(0.7, 0.7, 0.7))
+		_line("  Collars and packs come from the workbench and the smithy (pelts, rope, bars).", 8, Color(0.7, 0.7, 0.7))
 	var cap := Pet.pack_size()
 	if cap > 0:
 		var pack: Dictionary = st["pack"]
@@ -1009,7 +1009,7 @@ func _pup_tab() -> void:
 			st["bedroll_day"] = int(GameState.run["day"])
 			GameState.restore_energy(20)
 			_refresh())
-	_line("Skill tree: see Skills → Pup.", 7, Color(0.7, 0.7, 0.7))
+	_line("Skill tree: see Skills → Pup.", 8, Color(0.7, 0.7, 0.7))
 
 
 func _eat(id: String) -> void:
@@ -1128,7 +1128,7 @@ func _crew_tab() -> void:
 	_line("Crew", 10, Color(1, 0.85, 0.7))
 	var ids := Crew.all_recruited()
 	if ids.is_empty():
-		_line("  Nobody yet. People in the hideout and the districts want something before they'll join.", 7, Color(0.7, 0.7, 0.7))
+		_line("  Nobody yet. People in the hideout and the districts want something before they'll join.", 8, Color(0.7, 0.7, 0.7))
 		return
 	for id in ids:
 		var mdef: Dictionary = Crew.members()[id]

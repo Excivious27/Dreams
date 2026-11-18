@@ -1,0 +1,182 @@
+{
+ "_": "Gift reactions per villager: [loved, liked, neutral, disliked], {item} is replaced. birthday: special line.",
+ "lines": {
+  "maple": [
+   "A {item}! You remembered! Oh, you're going to fit right in.",
+   "A {item}! For me? That's kind.",
+   "A {item}. I'll put it on the shelf by the till.",
+   "Oh. A {item}. I'll... find somewhere for it."
+  ],
+  "gideon": [
+   "...A {item}. Where did you— Don't make it weird. Thank you.",
+   "Hm. A {item}. Good. Thank you.",
+   "A {item}. All right.",
+   "A {item}. ...Why."
+  ],
+  "wren": [
+   "A {item}. Do you know how rare these are? I do.",
+   "A {item}. I can do something with this. Probably not what you'd expect.",
+   "A {item}. Thank you, dear.",
+   "A {item}. You can keep that, actually."
+  ],
+  "alder": [
+   "A {item}! The town hall will hear about this. Officially.",
+   "A {item}, how civic-minded. It'll go in the town records.",
+   "A {item}. Thank you, very kind.",
+   "A {item}. I'll have it... filed."
+  ],
+  "sal": [
+   "A {item}. Nobody gives me things. ...Thanks, boss.",
+   "A {item}. Huh. Useful.",
+   "A {item}. What do you want?",
+   "A {item}. No."
+  ],
+  "finn": [
+   "A {item}! Now that's a gift. Come by the hut, I'll show you the good spots.",
+   "A {item}. That'll do nicely, thanks.",
+   "A {item}. Thanks.",
+   "A {item}? Not much use on a boat."
+  ],
+  "lumi": [
+   "A {item}! I'm going to paint it. I'm going to paint it right now.",
+   "A {item}. The colour on it is lovely.",
+   "A {item}. Thank you.",
+   "A {item}. Hm. It's very... beige."
+  ],
+  "theo": [
+   "A {item}! There's a whole chapter on these. Two chapters.",
+   "A {item}. Fascinating, thank you.",
+   "A {item}. Thank you.",
+   "A {item}. I'm afraid I'm allergic to that. Possibly in spirit."
+  ],
+  "hazel": [
+   "A {item}! Oh, that's the good stuff. Thank you!",
+   "A {item}. That'll come in handy on the farm.",
+   "A {item}. Thanks, neighbour.",
+   "A {item}. I'll put it on the compost, love."
+  ],
+  "bram": [
+   "A {item}! That's going in tonight's stew. You're eating free.",
+   "A {item}. Good, good. Thank you.",
+   "A {item}. Ta.",
+   "A {item}. I'll give it to the dog. I don't have a dog."
+  ],
+  "posy": [
+   "A {item}! Oh, I know exactly what I'm baking with this.",
+   "A {item}. That's sweet of you.",
+   "A {item}. Thank you!",
+   "A {item}. ...It's not edible, is it."
+  ],
+  "juniper": [
+   "A {item}. That's exactly what I needed. Thank you, truly.",
+   "A {item}. Very thoughtful.",
+   "A {item}. Thanks.",
+   "A {item}. Please don't bring these into the clinic."
+  ],
+  "rook": [
+   "A {item}. Huh. You pay attention. Good.",
+   "A {item}. Useful out there. Thanks.",
+   "A {item}.",
+   "A {item}. Keep it."
+  ],
+  "pip": [
+   "A {item}!!! I'm putting it in the town museum! There isn't one yet!",
+   "A {item}! Cool!",
+   "A {item}. Thanks!",
+   "A {item}? Eww."
+  ],
+  "wren_jr": [
+   "A {item}! The frogs are going to LOVE this!",
+   "A {item}! Thank you!",
+   "A {item}. Okay!",
+   "A {item}. The frogs don't like it."
+  ],
+  "tobin": [
+   "A {item}! I'm going to tie it to my kite!",
+   "A {item}. Neat!",
+   "A {item}. Thanks.",
+   "A {item}. Hm."
+  ],
+  "mabel": [
+   "A {item}! I'm pressing it in my diary. Page thirteen.",
+   "A {item}. That's pretty.",
+   "A {item}. Thank you.",
+   "A {item}. Not diary material."
+  ],
+  "marlowe": [
+   "A {item}. Forty years at the lamp and nobody's brought me one of these. Thank you.",
+   "A {item}. That's kind of you.",
+   "A {item}. Thanks.",
+   "A {item}. Gulls might want it."
+  ],
+  "orla": [
+   "A {item}! The mill's going to smell wonderful.",
+   "A {item}. Thank you, dear.",
+   "A {item}. Thanks.",
+   "A {item}. Not for the mill, love."
+  ],
+  "benno": [
+   "A {item}! The horses'll be jealous. Thank you!",
+   "A {item}. Good of you.",
+   "A {item}. Thanks.",
+   "A {item}. Even Clover won't eat that."
+  ],
+  "ivy": [
+   "A {item}! I'll put it in the vault. With the important things.",
+   "A {item}. That's very generous.",
+   "A {item}. Thank you.",
+   "A {item}. I'll have to log that as a loss."
+  ],
+  "tam": [
+   "A {item}! The sheep and I thank you.",
+   "A {item}. That's nice.",
+   "A {item}. Ta.",
+   "A {item}. The sheep won't touch it."
+  ],
+  "old_moss": [
+   "A {item}! The frogs will sing about you tonight.",
+   "A {item}. The marsh thanks you.",
+   "A {item}. Hm. Thank you.",
+   "A {item}. The marsh doesn't want that."
+  ],
+  "granite": [
+   "A {item}. Solid. Like stone. Thank you.",
+   "A {item}. Good.",
+   "A {item}.",
+   "A {item}. Can't build with that."
+  ],
+  "sel": [
+   "A {item}! There are runes about these. Real ones.",
+   "A {item}. Thank you, friend.",
+   "A {item}. Thanks.",
+   "A {item}. The ruins wouldn't approve."
+  ]
+ },
+ "birthday": {
+  "maple": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "gideon": "...You know it's my birthday. A {item}. I— thank you.",
+  "wren": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "alder": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "sal": "Who told you it's my birthday? ...A {item}. Thanks, boss.",
+  "finn": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "lumi": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "theo": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "hazel": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "bram": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "posy": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "juniper": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "rook": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "pip": "A BIRTHDAY {item}!!! Best birthday EVER!",
+  "wren_jr": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "tobin": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "mabel": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "marlowe": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "orla": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "benno": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "ivy": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "tam": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "old_moss": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "granite": "A birthday {item}! You remembered my birthday. I won't forget this.",
+  "sel": "A birthday {item}! You remembered my birthday. I won't forget this."
+ }
+}

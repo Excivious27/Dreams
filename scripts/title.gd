@@ -10,6 +10,7 @@ var _arcs: Dictionary
 var _playables: Dictionary
 var _page: VBoxContainer
 var _preview_holder: Control
+var _scroll: ScrollContainer
 var _preview: Node2D
 var _name_edit: LineEdit
 var _next_btn: Button
@@ -38,6 +39,7 @@ func _ready() -> void:
 		add_child(sky)
 	Music.instance(get_tree()).play("title")
 	var scroll := ScrollContainer.new()
+	_scroll = scroll
 	scroll.set_anchors_preset(PRESET_FULL_RECT)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	add_child(scroll)
@@ -212,7 +214,7 @@ var _net_status: Label
 func _show_net() -> void:
 	_clear()
 	_page.add_child(_label("Play together", 16))
-	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 7, false))
+	_page.add_child(_label("Up to 8 players. The host's farm is the world; everyone keeps their own character, skills and pack. Different arcs can play together: you'll each see your own story scenes.", 8, false))
 	_net_url = _edit("Server (wss://...)", str(SaveGame.get_value("net_url", "")))
 	_net_url.max_length = 120
 	_net_code = _edit("Room code (to join)", "")
@@ -320,7 +322,7 @@ func _show_characters() -> void:
 			_cards[pid] = tb
 		else:
 			grid.add_child(_sprite_card(pid, name) if cards else _button(name, func() -> void: _pick(pid)))
-	_page.add_child(_label("Pick a hero and play as them, or build your own.", 7, false))
+	_page.add_child(_label("Pick a hero and play as them, or build your own.", 8, false))
 	_page.add_child(_button("Back", _show_arcs))
 	_pick(_playable if _playable in ids else ids[0])
 
@@ -438,7 +440,13 @@ func _pick(pid: String) -> void:
 	_next_btn = _button("Next: your look" if (is_custom or is_penguin) else "Next: names", _show_look if (is_custom or is_penguin) else _show_names, true)
 	_next_btn.name = "NextBtn"
 	_page.add_child(_next_btn)
-	_page.move_child(_next_btn, _page.get_child_count() - 2)
+	# Right under the preview, so the picked hero, their name and Next are together.
+	if is_instance_valid(_preview_holder) and _preview_holder.get_parent() == _page:
+		_page.move_child(_next_btn, _preview_holder.get_index() + 1)
+		if _scroll:
+			_scroll.set_deferred("scroll_vertical", 0)
+	else:
+		_page.move_child(_next_btn, _page.get_child_count() - 2)
 
 
 const LOOKS := {

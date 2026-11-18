@@ -9,6 +9,7 @@ var max_hp := 3
 var base_hp := 3        # HP before any scaling: size checks (bars, stun, boss) use this
 var hp_scale := 1.0     # how much the home-tier scaling multiplied HP (allies hit harder by the same)
 ## Home-tier toughness: an enemy at home takes several swings at every stage.
+const PACK_KINDS := ["hill_wolf", "ash_hound"]
 const NATIVE_HP := [2.0, 3.0, 3.0, 3.5, 4.0, 5.0]
 const BOSS_HP := [2.0, 2.0, 2.5, 3.0, 3.0, 3.5]
 var speed := 34.0
@@ -274,12 +275,15 @@ func _process(delta: float) -> void:
 				map.emote(self, "surprise", 0.8, -26.0)
 				Music.instance(get_tree()).sfx("alert")
 			_dir = to.normalized()
+			# Wolves and hounds circle you before they lunge, instead of walking into your sword.
+			if kind in PACK_KINDS and dist < 48.0 and dist > reach and _lunge_cd > 0.0:
+				_dir = to.normalized().orthogonal() * (1.0 if get_instance_id() % 2 == 0 else -1.0)
 		elif dist <= reach * 0.6:
 			_dir = Vector2.ZERO
 		elif has_meta("goal"):
 			# Battlefield orders: march on the objective.
 			var g: Vector2 = get_meta("goal")
-			_dir = (g - position).normalized() if position.distance_to(g) > 20.0 else Vector2.ZERO
+			_dir = map.flow_dir(position, g) if position.distance_to(g) > 20.0 else Vector2.ZERO
 		elif _t <= 0.0:
 			_t = randf_range(1.0, 3.0)
 			_dir = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() if randf() < 0.7 else Vector2.ZERO
@@ -405,6 +409,12 @@ func hit(n: int, from: Vector2, magic := false, ally := false) -> bool:
 	if _kb_hits >= 3 and abilities.has("lunge") and _lunge_cd <= 0.0:
 		_lunge_tele = 0.18
 		_lunge_cd = 2.5
+	# Hit one of a pack and the rest come running.
+	if kind in PACK_KINDS and not magic:
+		for o in map.enemies:
+			if o != self and is_instance_valid(o) and o.kind == kind and o.position.distance_to(position) < 70.0:
+				o._noticed = true
+				o.provoke(map.player)
 	if abilities.has("blink") and hp > 0 and randf() < 0.5:
 		_blink()
 	if abilities.has("summon") and hp > 0:

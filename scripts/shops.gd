@@ -56,7 +56,7 @@ static func offers(shop: String) -> Array:
 				base += by_season[GameState.season_of(int(GameState.run["day"]) + 7)]
 			# Plus a few of the season's other vegetables and herbs.
 			base += _seeds(func(cid: String, cd: Dictionary) -> bool: return int(cd.get("tier", 1)) <= 2 and not bool(cd.get("tree", false)) and not ("berry" in cid) and not (cid + "_seed" in base), 4, 0)
-			base += ["wheat_seed", "fertilizer", "bread", "gift_pie", "paint"]
+			base += ["wheat_seed", "fertilizer", "bread", "hay", "gift_pie", "paint"]
 			if GameState.has_perk("bartering", "Networker") or GameState.has_friend_perk("maple", 4):
 				base += rare[se] + ["dream_seed"]
 			return base

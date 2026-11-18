@@ -221,6 +221,18 @@ func _show_choice(line: Dictionary) -> void:
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		b.custom_minimum_size = Vector2(0, 20)
+		# Dark text on parchment: every choice readable, the focused one outlined in gold.
+		for st in ["normal", "hover", "pressed", "focus"]:
+			var sb := StyleBoxFlat.new()
+			sb.bg_color = Color(0.96, 0.9, 0.74)
+			sb.border_color = Color(0.45, 0.3, 0.15)
+			sb.set_border_width_all(1)
+			sb.set_corner_radius_all(3)
+			sb.content_margin_left = 6
+			sb.content_margin_right = 6
+			b.add_theme_stylebox_override(st, sb)
+		for fc in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+			b.add_theme_color_override(fc, Color(0.2, 0.12, 0.06))
 		b.pressed.connect(func() -> void: _choose(key, i))
 		_choices.add_child(b)
 	# Size the list by the rows' real (wrapped) heights, up to about half the screen.
@@ -238,7 +250,12 @@ func _show_choice(line: Dictionary) -> void:
 func _refresh_focus() -> void:
 	var i := 0
 	for c in _choices.get_children():
-		(c as Button).modulate = Color(1, 1, 0.7) if i == _choice_focus else Color(0.8, 0.8, 0.8)
+		var on := i == _choice_focus
+		for st in ["normal", "hover", "focus"]:
+			var sb := (c as Button).get_theme_stylebox(st) as StyleBoxFlat
+			if sb:
+				sb.border_color = Color(0.95, 0.7, 0.15) if on else Color(0.45, 0.3, 0.15)
+				sb.set_border_width_all(2 if on else 1)
 		if i == _choice_focus and _choice_scroll:
 			_choice_scroll.ensure_control_visible.call_deferred(c)
 		i += 1

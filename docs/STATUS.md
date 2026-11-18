@@ -2,6 +2,15 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — remaining work: battles, story branches, farm life, colonies
+- Battles: helpers and enemies path with flow fields (`GameMap.flow_dir`); rally cycles guard posts → follow me → each point; supply buys Upgrade/Fortify/Mend/Barrage with upkeep per unit; the enemy commander masses on one point and warns you; wolves and ash hounds hunt in packs.
+- Story: Marlene's beat branches on the intro letter; Sasha's loyalty opens the tower doors quietly; Fennimore can be freed in the Meow Pow Wow; endings list more of your choices. Penguin arc: the great tree waits for the mountain campfire.
+- Farm: feed animals hay (scythe weeds, Maple sells it) for goods; petting streaks raise quality; crows eat unguarded crops on big farms (scarecrows, rain stop them); animals shelter at night/rain/winter; shop counters keep hours.
+- Mines get themed ores and stone caves for the fire depths; colonies get their own music, ground, critters, weather and season look (`GameState.look_season`).
+- Villagers react to gifts with their own lines (data/gift_lines.json); bigger menu/title text; parchment dialogue choices; hero picker scrolls to Next.
+- Saves warn when Dreams is open in two windows. Skill trees never waste ranks past a bonus cap.
+- Not done: chunked map drawing / water shader, alpha-mask footprints, pup gear overlays (need art), telegraphed brute charge.
+
 ## 2026-11-17 (night, round 3) — 20-agent audit, 20-bot playtest, fixes
 
 - Audit reports: /home/claude/audit2 (not in the repo). 20 bots × 3 days: 0 script errors after fixes (only bot navigation stalls at map edges).

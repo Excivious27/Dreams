@@ -19,6 +19,9 @@ var d: Dictionary = {}
 var points: Array = []        # [{id, name, cell, pos, owner, prog, spawner, made, t}]
 var tickets := {"ally": 150, "enemy": 150}
 var supply := 10
+var _upkeep := 0.0
+var _order_t := 0.0
+var _target_pt: Dictionary = {}
 var _sec := 0.0
 var _spawn_t := 3.0
 var _known := {}
@@ -65,7 +68,7 @@ func _setup() -> void:
 	_rally_btn.pressed.connect(_cycle_rally)
 	layer.add_child(_rally_btn)
 	Hud.extra_rects.append(RALLY_RECT)
-	_set_rally(-1)
+	_set_rally(-2)
 	map.hud.toast("%s. Take the points. Hold more than they do." % str(d.get("title", "Battle")), Color(1, 0.9, 0.6))
 	map.later(func() -> void:
 		await map.say([{"who": str(d.get("who", "")), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
@@ -76,17 +79,26 @@ var _rally_btn: Button
 var _rally := -1
 
 
+## Cycle: guard posts → follow me → each point in turn → guard posts.
 func _cycle_rally() -> void:
 	var i := _rally + 1
 	if i >= points.size():
-		i = -1
+		i = -2
 	_set_rally(i)
 	Music.instance(map.get_tree()).sfx("pickup")
 
 
 func _set_rally(i: int) -> void:
 	_rally = i
-	if i < 0:
+	if map.has_meta("follow_me"):
+		map.remove_meta("follow_me")
+	if i == -1:
+		if map.has_meta("rally_pos"):
+			map.remove_meta("rally_pos")
+		map.set_meta("follow_me", true)
+		_rally_btn.text = "RALLY: follow me"
+		map.hud.toast("Helpers: on me!", Color(0.7, 0.95, 1.0))
+	elif i < 0:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
 		_rally_btn.text = "RALLY: guard posts"
@@ -158,7 +170,7 @@ func _capture(delta: float) -> void:
 		if allies > 0 and foes == 0:
 			p["prog"] = minf(1.0, float(p["prog"]) + rate * (1.0 + 0.25 * (allies - 1)))
 		elif foes > 0 and allies == 0:
-			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * (1.0 + 0.25 * (foes - 1)))
+			p["prog"] = maxf(-1.0, float(p["prog"]) - rate * (1.0 + 0.25 * (foes - 1)) * (0.5 if bool(p.get("fort", false)) else 1.0))
 		var was := str(p["owner"])
 		if float(p["prog"]) >= 1.0:
 			if str(p["owner"]) != "ally":
@@ -177,6 +189,8 @@ func _capture(delta: float) -> void:
 					if is_instance_valid(mm) and mm is Bot:
 						(mm as Node).queue_free()
 				p["made"] = []
+				p["lvl"] = 1
+				p["fort"] = false
 				map.hud.toast("The spawner at %s was knocked out." % str(p["name"]), Color(1, 0.7, 0.6))
 		if str(p["owner"]) != was:
 			if str(p["owner"]) == "ally":
@@ -200,13 +214,21 @@ func _tick() -> void:
 		_bleed_a += (e - a) * (1.0 - GameState.bonus("strategist", "ticket_guard"))
 		tickets["ally"] = int(tickets["ally"]) - int(_bleed_a)
 		_bleed_a -= int(_bleed_a)
+	# Upkeep: every unit in the field costs a little supply.
+	var units := 0
+	for pp in points:
+		units += (pp["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x)).size()
+	_upkeep += units * 0.2
+	supply = maxi(0, supply - int(_upkeep))
+	_upkeep -= int(_upkeep)
 	# Spawners turn out helpers.
 	for p in points:
 		if str(p["owner"]) != "ally" or str(p["spawner"]) == "":
 			continue
 		p["made"] = (p["made"] as Array).filter(func(x: Variant) -> bool: return is_instance_valid(x))
 		p["t"] = float(p["t"]) + 1.0
-		if float(p["t"]) >= 12.0 and (p["made"] as Array).size() < MAX_PER_SPAWNER:
+		var plv := int(p.get("lvl", 1))
+		if float(p["t"]) >= 12.0 - 3.0 * (plv - 1) and (p["made"] as Array).size() < MAX_PER_SPAWNER + plv - 1:
 			p["t"] = 0.0
 			if str(p["spawner"]) == "turret":
 				var it: Dictionary = GameState.items.get("guard_bot", {"life": 60, "dmg": 4, "reach": 90})
@@ -259,19 +281,44 @@ func _enemy_wave() -> void:
 				e._gift = null
 			e.reward = maxi(1, e.reward / 2)
 			alive += 1
-	# Orders: every foe marches on the nearest point it doesn't hold.
+	# Orders: the enemy commander picks one target every 25 s and sends a squad;
+	# the rest hold the points they own, a couple of defenders each.
+	_order_t -= float(d.get("wave_every", 6.0))
+	if _order_t <= 0.0 or _target_pt.is_empty() or str(_target_pt.get("owner", "")) == "enemy":
+		_order_t = 25.0
+		var bestp: Dictionary = {}
+		var bs := -1e9
+		for p in points:
+			if str(p["owner"]) == "enemy" and float(p["prog"]) <= -0.99:
+				continue
+			var defenders := 0
+			for h in map.get_tree().get_nodes_in_group("allies"):
+				if is_instance_valid(h) and (h as Node2D).position.distance_to(p["pos"]) < 80.0:
+					defenders += 1
+			# Weak, valuable (has a spawner) and recently lost points first.
+			var sc := 10.0 - defenders * 3.0 + (6.0 if str(p["spawner"]) != "" else 0.0) + (8.0 if str(p["owner"]) == "neutral" else 0.0) + randf() * 3.0
+			if sc > bs:
+				bs = sc
+				bestp = p
+		if not bestp.is_empty() and bestp != _target_pt:
+			_target_pt = bestp
+			if str(bestp["owner"]) == "ally":
+				map.hud.toast("They're massing on %s!" % str(bestp["name"]), Color(1, 0.6, 0.45))
+	var held: Array = points.filter(func(p: Dictionary) -> bool: return str(p["owner"]) == "enemy")
+	var guards := {}
 	for e in map.enemies:
 		if not is_instance_valid(e) or not e._alive:
 			continue
 		var best: Variant = null
-		var bd := 1e9
-		for p in points:
-			if str(p["owner"]) == "enemy" and float(p["prog"]) <= -0.99:
-				continue
-			var dd: float = e.position.distance_to(p["pos"])
-			if dd < bd:
-				bd = dd
-				best = p["pos"]
+		# Up to two defenders stay on each point they hold (the nearest ones).
+		for hp_ in held:
+			var key := str(hp_["id"])
+			if int(guards.get(key, 0)) < 2 and e.position.distance_to(hp_["pos"]) < 90.0:
+				guards[key] = int(guards.get(key, 0)) + 1
+				best = hp_["pos"]
+				break
+		if best == null and not _target_pt.is_empty():
+			best = _target_pt["pos"]
 		if best != null:
 			e.set_meta("goal", best)
 
@@ -307,6 +354,17 @@ func interact(id: String) -> void:
 		keys.append(k)
 	opts.append("%s (◇%d): holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", int(SPAWNER_COST["turret"])])
 	keys.append("turret")
+	var lvl := int(p.get("lvl", 1))
+	if str(p["spawner"]) != "" and lvl < 3:
+		opts.append("Upgrade to level %d (◇%d): more units, faster" % [lvl + 1, 30 * lvl])
+		keys.append("upgrade")
+	if not bool(p.get("fort", false)):
+		opts.append("Fortify (◇40): they take it 50% slower")
+		keys.append("fortify")
+	opts.append("Mend pulse (◇25): heal you and helpers near you")
+	keys.append("mend")
+	opts.append("Barrage (◇35): stun every foe near this point")
+	keys.append("barrage")
 	opts.append("Leave")
 	var dl := Dialogue.instance(get_tree())
 	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s Build a %s here:" % [supply, (" Now: %s." % str(p["spawner"])) if str(p["spawner"]) != "" else "", "crystal spire" if crystal else "drone bay"], "choice": opts, "key": ""}])
@@ -315,10 +373,42 @@ func interact(id: String) -> void:
 	if i < 0 or i >= keys.size():
 		return
 	var k: String = keys[i]
+	var extra := {"upgrade": 30 * int(p.get("lvl", 1)), "fortify": 40, "mend": 25, "barrage": 35}
+	if extra.has(k):
+		var c := maxi(1, int(round(int(extra[k]) * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
+		if supply < c:
+			map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
+			return
+		supply -= c
+		GameState.add_xp("strategist", 5)
+		match k:
+			"upgrade":
+				p["lvl"] = int(p.get("lvl", 1)) + 1
+				map.hud.toast("%s upgraded to level %d." % [str(p["name"]), int(p["lvl"])], Color(0.7, 1, 0.8))
+			"fortify":
+				p["fort"] = true
+				map.hud.toast("%s fortified." % str(p["name"]), Color(0.7, 1, 0.8))
+			"mend":
+				GameState.heal_points(40)
+				for h in map.get_tree().get_nodes_in_group("allies"):
+					if h is HelperUnit and (h as Node2D).position.distance_to(map.player.position) < 120.0:
+						(h as HelperUnit).hp = (h as HelperUnit).max_hp
+				map.fx("heal", map.player.position + Vector2(0, -10), 10.0, 0.6)
+				map.hud.toast("Mend pulse!", Color(0.7, 1, 0.8))
+			"barrage":
+				var n := 0
+				for e in map.enemies:
+					if is_instance_valid(e) and e.position.distance_to(p["pos"]) < 110.0:
+						e._stun = maxf(e._stun, 3.0)
+						n += 1
+				map.shake(3.0)
+				map.hud.toast("Barrage! %d foes stunned." % n, Color(1, 0.9, 0.5))
+		return
 	if supply < _cost(k):
 		map.hud.toast("Not enough supply. Hold more points.", Color(1, 0.7, 0.6))
 		return
 	supply -= _cost(k)
+	GameState.add_xp("strategist", 5)
 	GameState.add_xp("leadership", 8)
 	p["spawner"] = k
 	p["t"] = 10.0

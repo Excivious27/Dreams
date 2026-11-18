@@ -58,6 +58,7 @@ var _deco_rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
+	GameState.look_season = ""
 	Art.trim_cache()
 	InputSetup.ensure_actions()
 	y_sort_enabled = true
@@ -449,20 +450,44 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		"pet_animal":
 			var a: Variant = thing.get("animal", null)
 			if a != null and is_instance_valid(a):
-				var key := "pet_%s_%d" % [str(a.name), int(GameState.run["day"])]
-				if GameState.run["flags"].has(key):
-					hud.toast("Already happy today.")
-				else:
-					GameState.run["flags"][key] = true
-					emote(a, "heart", 1.4, -18.0)
-					hud.toast("%s loves that." % str(a.kind).split("_")[0].capitalize(), Color(1, 0.8, 0.9))
-					xp("farming", 2)
-					# A happy animal gives: eggs from hens, milk from cows and goats, wool from sheep.
-					var k := str(a.kind)
-					var prod := "egg" if k.begins_with("chicken") or k.begins_with("hen") or k.begins_with("duck") else ("milk" if k.begins_with("cow") or k.begins_with("goat") else ("sheep_wool" if k.begins_with("sheep") else ""))
-					if prod != "" and not bool(a.get("baby")):
+				var nm := str(a.name)
+				var all: Dictionary = GameState.run.get("animals", {})
+				var st: Dictionary = all.get(nm, {"streak": 0, "last_pet": -9, "fed": -9})
+				var day := int(GameState.run["day"])
+				var species := str(a.kind).split("_")[0].capitalize()
+				# Holding hay: feed it (once a day). Fed and petted animals give each day.
+				if GameState.held_item() == "hay" and int(st["fed"]) != day:
+					GameState.add_item("hay", -1)
+					st["fed"] = day
+					all[nm] = st
+					GameState.run["animals"] = all
+					emote(a, "happy", 1.0, -18.0)
+					Music.instance(get_tree()).sfx("eat", "pickup")
+					hud.toast("%s munches the hay." % species, Color(0.9, 1, 0.8))
+					return true
+				if int(st["last_pet"]) == day:
+					hud.toast("Already happy today." if int(st["fed"]) == day else "%s is hungry. Bring hay (hold it and tap)." % species)
+					return true
+				st["streak"] = int(st["streak"]) + 1 if int(st["last_pet"]) == day - 1 else 1
+				st["last_pet"] = day
+				all[nm] = st
+				GameState.run["animals"] = all
+				emote(a, "heart", 1.4, -18.0)
+				hud.toast("%s loves that." % species, Color(1, 0.8, 0.9))
+				xp("farming", 2)
+				# A happy, fed animal gives: eggs from hens, milk from cows, goat milk, wool.
+				var k := str(a.kind)
+				var prod := "egg" if k.begins_with("chicken") or k.begins_with("hen") or k.begins_with("duck") else ("goat_milk" if k.begins_with("goat") else ("milk" if k.begins_with("cow") else ("sheep_wool" if k.begins_with("sheep") else "")))
+				if prod != "" and not bool(a.get("baby")):
+					if int(st["fed"]) != day:
+						hud.toast("%s is too hungry to give anything today. Hay first." % species, Color(1, 0.85, 0.7))
+					else:
 						var n := 1 + (1 if randf() < GameState.bonus("farming", "animal_yield") else 0)
 						pop_items(a.position, prod, n)
+						# Friendship shows in the goods: silver after 5 days running, gold after 14.
+						var q := "gold" if int(st["streak"]) >= 14 else ("silver" if int(st["streak"]) >= 5 else "")
+						if q != "":
+							GameState.add_quality(prod, q, n)
 			return true
 		"weeds":
 			# Weeds come out by hand (or any tool): fiber, Stardew-style.
@@ -476,6 +501,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				player.play_tool("hold")
 			Music.instance(get_tree()).sfx("chop")
 			xp("foraging", 1)
+			# Cut with the scythe, weeds and tall grass make hay for the animals.
+			if ht == "scythe" and randf() < 0.5:
+				pop_items(cell_center(c), "hay", 1)
 			# Now and then a weed's roots hold a packet of wild seed.
 			if randf() < 0.06 + 0.01 * GameState.skill_level("foraging"):
 				pop_items(cell_center(c), "seed_packet", 1)
@@ -1396,6 +1424,50 @@ func _allies_raw() -> Array:
 
 
 ## Nothing solid between a and b (stepped every 4 px).
+## Path-finding for marching units: a breadth-first "flow field" toward a goal
+## cell, cached per goal. flow_dir() gives the direction of the next step from
+## a world position, around cliffs, water and buildings.
+var _flows := {}
+
+
+func flow_dir(from: Vector2, goal: Vector2) -> Vector2:
+	var gc := world_to_cell(goal)
+	var fc := world_to_cell(from)
+	if fc == gc or from.distance_to(goal) < 18.0:
+		return (goal - from).normalized() if from.distance_to(goal) > 4.0 else Vector2.ZERO
+	if not _flows.has(gc):
+		if _flows.size() > 24:
+			_flows.clear()
+		_flows[gc] = _build_flow(gc)
+	var f: Dictionary = _flows[gc]
+	if not f.has(fc):
+		return (goal - from).normalized()
+	var nxt: Vector2i = f[fc]
+	return (cell_center(nxt) - Vector2(0, TILE / 2.0) - from).normalized()
+
+
+func _build_flow(gc: Vector2i) -> Dictionary:
+	var out := {gc: gc}
+	var q: Array = [gc]
+	var head := 0
+	var dirs := [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(-1, -1)]
+	while head < q.size():
+		var c: Vector2i = q[head]
+		head += 1
+		for d: Vector2i in dirs:
+			var n := c + d
+			if out.has(n) or n.x < -pad or n.y < -pad or n.x >= cols + pad or n.y >= rows + pad:
+				continue
+			if blocked.has(n) or is_water_cell(n):
+				continue
+			# No cutting corners past a wall on a diagonal.
+			if d.x != 0 and d.y != 0 and (blocked.has(c + Vector2i(d.x, 0)) or blocked.has(c + Vector2i(0, d.y))):
+				continue
+			out[n] = c
+			q.append(n)
+	return out
+
+
 func line_clear(a: Vector2, b: Vector2) -> bool:
 	var d := b - a
 	var steps := int(d.length() / 4.0)
@@ -2074,6 +2146,7 @@ func _lieutenant_choice(id: String, nm: String) -> void:
 
 var _upd_t := 0.0
 static var _update_told := false
+static var _other_told := false
 
 
 func _process(delta: float) -> void:
@@ -2109,6 +2182,10 @@ func _process(delta: float) -> void:
 	# Web: a new version was deployed (the page's service worker found it). Save
 	# now so tapping the update banner loses nothing, and say where the banner is.
 	_upd_t += delta
+	if _upd_t >= 3.0 and OS.has_feature("web") and not _other_told and bool(JavaScriptBridge.eval("window.dreamsOtherOpen === true", true)):
+		_other_told = true
+		GameState.save()
+		hud.toast("Dreams is open in another window too. Play in one at a time, or the two copies will overwrite each other's saves.", Color(1, 0.7, 0.5))
 	if _upd_t >= 3.0 and not _update_told and OS.has_feature("web"):
 		_upd_t = 0.0
 		if bool(JavaScriptBridge.eval("window.dreamsUpdateReady === true", true)):
@@ -2301,7 +2378,7 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 	_deco_rng.seed = seed_v
 	var gname := GameState.grass_tile()
 	var has_tiles := Art.has("tiles", gname)
-	var season := GameState.season()
+	var season := GameState.look_se()
 	# Natural variation: patches of tall / flowery / dry grass from low-frequency noise.
 	var patchy := season in ["spring", "summer"] and Art.has("tiles", "g_tall") and Art.has("tiles", "g_dry")
 	_tall.clear()
@@ -3021,7 +3098,7 @@ func _build_border() -> void:
 			continue
 		var nm := GameState.tree_sprite(rng.randi_range(0, 2))
 		if Art.has("nature", "big_oak_a"):
-			var season := GameState.season()
+			var season := GameState.look_se()
 			var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
 			var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
 			nm = str(mids[rng.randi_range(0, mids.size() - 1)]) if depth <= 2 or rng.randf() < 0.4 else str(bigs[rng.randi_range(0, bigs.size() - 1)])
@@ -3179,6 +3256,14 @@ func confirm_gift(who_name: String, sel: String) -> bool:
 ## A reaction that tells you how much they liked it.
 func gift_reaction(who_name: String, sel: String, gain: int) -> String:
 	var nm := GameState.item_name(sel)
+	var gid := ""
+	for k in GameState.npcs:
+		if str(GameState.npcs[k].get("name", "")) == who_name or str(k) == who_name:
+			gid = str(k)
+			break
+	var own := GameState.gift_line(gid, sel, gain)
+	if own != "":
+		return own
 	if gain >= 20:
 		return "A %s! How did you know? This is my favourite thing." % nm
 	if gain >= 12:

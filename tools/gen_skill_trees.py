@@ -125,6 +125,16 @@ def fmt(k, v):
     return "+%s %s" % (v, DESC[k])
 
 
+# Same caps as GameState.BONUS_CAPS: once a row's ranks would pass a cap, the
+# filler switches to a key that still does something (no dead ranks).
+CAPS = {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
+        "stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.9,
+        "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6, "star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4,
+        "bite_speed": 0.8, "interest": 0.05, "sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3}
+FALLBACK = {"farming": "growth", "mining": "shard_bonus", "foraging": "rare_forage", "fishing": "rare_fish", "combat": "hp",
+            "bartering": "gift_bonus", "building": "energy", "magic": "mana", "pup": "pet_hp"}
+
+
 out = {"_format": "Sun Haven-style grids (tools/gen_skill_trees.py): 4 branches x 10 tiers. Column c opens after 2*c points spent in the skill. 1 point per level.",
        "tier_points": 2, "skills": {}}
 total = 0
@@ -146,6 +156,11 @@ for sk, sd in base["skills"].items():
         m["row"] = r
         grid[r][c] = m
     nodes = []
+    used = {}
+    for n in sd["nodes"]:
+        for ek, ev in (n.get("effect") or {}).items():
+            if isinstance(ev, (int, float)):
+                used[ek] = used.get(ek, 0) + ev * int(n.get("ranks", 1))
     for r in range(4):
         title, keys, names = rows[r]
         ni = 0
@@ -154,6 +169,10 @@ for sk, sd in base["skills"].items():
                 k = keys[(c + r) % len(keys)]
                 ranks = 3 if c < 6 else (2 if c < 9 else 1)
                 a = AMT[k] * (2 if c == 9 else 1)
+                if k in CAPS and used.get(k, 0) + a * ranks > CAPS[k] + 1e-9 and FALLBACK.get(sk) in AMT:
+                    k = FALLBACK[sk]
+                    a = AMT[k] * (2 if c == 9 else 1)
+                used[k] = used.get(k, 0) + a * ranks
                 a = round(a, 3) if isinstance(a, float) else a
                 nm = names[ni % len(names)]
                 ni += 1

@@ -43,6 +43,10 @@ static func build() -> Array:
 			var line := str(d["choices"][k].get(str(int(dec[k])), ""))
 			if line != "":
 				ch.append(_fill(line))
+	# Moments flagged during play.
+	for fk: String in d.get("flag_lines", {}):
+		if r["flags"].has(fk):
+			ch.append(_fill(str(d["flag_lines"][fk])))
 	if not ch.is_empty():
 		out.append(["What you chose", "\n\n".join(ch)])
 	# Companions who stayed.

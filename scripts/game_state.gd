@@ -573,6 +573,15 @@ static func tool_away(kind: String) -> bool:
 	return bool(run["flags"].get("tool_away_" + kind, false))
 
 
+## Whatever item sits in the selected toolbar slot (if you have any of it).
+static func held_item() -> String:
+	var tb: Array = run.get("toolbar", [])
+	if tb.is_empty():
+		return ""
+	var id := str(tb[clampi(int(run.get("slot", 0)), 0, tb.size() - 1)])
+	return id if count(id) > 0 else ""
+
+
 static func held_tool() -> String:
 	var tb: Array = run["toolbar"]
 	var id := str(tb[int(run["slot"])])
@@ -899,7 +908,7 @@ static func _apply_max_stats() -> void:
 			levels += skill_level(str(sk)) - 1
 	var arc_sk := arc_skill() if run.has("arc") else ""
 	var base_hp := 100 + 8 * (skill_level("combat") - 1) + int(bonus("combat", "hp")) + int(bonus("magic", "hp")) + gear_stat("hp") + (int(bonus(arc_sk, "hp")) if arc_sk != "" else 0)
-	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + gear_stat("energy") + (int(bonus(arc_sk, "energy")) if arc_sk != "" else 0)
+	var base_en := 100 + 3 * levels + int(bonus("combat", "energy")) + int(bonus("building", "energy")) + gear_stat("energy") + (int(bonus(arc_sk, "energy")) if arc_sk != "" else 0)
 	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana") + (int(bonus(arc_sk, "mana")) if arc_sk != "" else 0)
 	if has_friend_perk("juniper", 4):
 		base_hp += 20
@@ -1326,6 +1335,25 @@ static func is_birthday(npc: String) -> bool:
 
 
 ## Whose birthday is today ("" if nobody's).
+## A villager's own reaction to a gift (data/gift_lines.json), "" if none.
+static func gift_line(id: String, item: String, gain: int) -> String:
+	var d := load_json("res://data/gift_lines.json") if _gift_lines.is_empty() else _gift_lines
+	_gift_lines = d
+	var n := item_name(item)
+	if is_birthday(id) and gain > 0 and d.get("birthday", {}).has(id):
+		return str(d["birthday"][id]).replace("{item}", n)
+	var ls: Array = d.get("lines", {}).get(id, [])
+	if ls.size() < 4:
+		return ""
+	var mult := 3 if is_birthday(id) else 1
+	var g := gain / mult
+	var idx := 3 if g < 0 else (0 if g >= 20 else (1 if g >= 12 else 2))
+	return str(ls[idx]).replace("{item}", n)
+
+
+static var _gift_lines := {}
+
+
 static func birthday_today() -> String:
 	for id: String in npcs:
 		# Only people you can give gifts to (Catkins has no heart arc).
@@ -1708,8 +1736,16 @@ static func day_of_season() -> int:
 	return (int(run.get("day", 1)) - 1) % DAYS_PER_SEASON + 1
 
 
+## A map can look like another season (the ice island is always winter).
+static var look_season := ""
+
+
+static func look_se() -> String:
+	return look_season if look_season != "" else season()
+
+
 static func grass_tile() -> String:
-	match season():
+	match look_se():
 		"summer": return "grass_summer"
 		"fall": return "grass_fall"
 		"winter": return "grass_winter"
@@ -1718,7 +1754,7 @@ static func grass_tile() -> String:
 
 ## Tree/bush sprite names per season (variant 0..2).
 static func tree_sprite(v: int) -> String:
-	match season():
+	match look_se():
 		"summer": return ["apple_tree", "pine", "orange_tree"][v % 3] if Art.has("nature", "apple_tree") else ["oak", "pine", "oak"][v % 3]
 		"fall": return ["tree_red", "tree_orange", "tree_birch"][v % 3] if Art.has("nature", "tree_red") else ["oak_autumn", "pine", "oak_autumn"][v % 3]
 		"winter": return ["tree_bare", "pine_snow", "tree_bare_s"][v % 3] if Art.has("nature", "tree_bare") else ["oak", "pine", "oak"][v % 3]
@@ -1726,7 +1762,7 @@ static func tree_sprite(v: int) -> String:
 
 
 static func bush_sprite(berries: bool) -> String:
-	match season():
+	match look_se():
 		"fall": return "berry_bush_fall" if berries else "bush_fall_orange"
 		"winter": return "berry_bush_snow" if berries else "bush_snow"
 		"summer": return "bush_red" if berries else "bush"
@@ -1910,6 +1946,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
+	_crows(report)
 	# Sprinklers and Hazel water again so the morning starts with wet soil.
 	_sprinklers_water()
 	if hazel_waters:
@@ -2149,6 +2186,47 @@ static func take_crops(n: int) -> void:
 
 ## Placed sprinklers water the tiles around them before the night's growth.
 const SPRINKLER_REACH := {"sprinkler": 1, "sprinkler_quality": 2, "sprinkler_iridium": 3}
+## Crows: a big field with no scarecrow near loses a crop or two overnight.
+static func _crows(report: Dictionary) -> void:
+	if weather_today() in ["rain", "storm", "snow", "blizzard"]:
+		return
+	var planted: Array = []
+	for k in run["farm"].keys():
+		var t: Dictionary = run["farm"][k]
+		if str(t.get("crop", "")) != "" and not bool(crops.get(str(t["crop"]), {}).get("tree", false)) and not in_greenhouse(str(k)):
+			planted.append(str(k))
+	if planted.size() < 16:
+		return
+	var guards: Array = []
+	for pk in run.get("placed", {}):
+		if str(run["placed"][pk]) == "scarecrow":
+			var xy := str(pk).split(",")
+			guards.append(Vector2i(int(xy[0]), int(xy[1])))
+	if Builds.is_built("scarecrow"):
+		guards.append(Vector2i(22, 12))
+	var open_: Array = []
+	for k: String in planted:
+		var xy := k.split(",")
+		var c := Vector2i(int(xy[0]), int(xy[1]))
+		var safe := false
+		for g: Vector2i in guards:
+			if c.distance_to(g) <= 8.0:
+				safe = true
+				break
+		if not safe:
+			open_.append(k)
+	if open_.is_empty():
+		return
+	var n := mini(open_.size(), 1 + (randi() % 2))
+	open_.shuffle()
+	for i in n:
+		var t: Dictionary = run["farm"][open_[i]]
+		t["crop"] = ""
+		t["days"] = 0
+		t["acc"] = 0.0
+	report["crows"] = n
+
+
 ## The glass plot in front of the greenhouse: crops there ignore the season.
 const GREENHOUSE_PLOT := Rect2i(17, 7, 9, 6)
 

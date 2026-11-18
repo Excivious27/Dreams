@@ -194,7 +194,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				fish_at(c, ["minnow", "trout", "carp"])
 			return true
 		"great_tree":
-			if GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")):
+			if GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")) and not GameState.run["flags"].has("campfire_done"):
+				tell([{"who": "Star Crystal", "text": "Not yet, farmer. Somebody's waiting for you up the mountain pass first, by a campfire. Go and sit with them."}])
+			elif GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")):
 				go_to("sky", Vector2(16 * TILE, 26 * TILE), "up")
 			else:
 				tell([{"text": "A tree older than the town, with lanterns in its branches and a stair winding up its trunk. The top is out of sight." + (" Something tells you it's not time yet." if GameState.is_penguins() else " The stair is roped off.")}])

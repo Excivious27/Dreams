@@ -186,7 +186,7 @@ func _dialogue_tick() -> void:
 			await press("a", 2)
 		await frames(4)
 	if d.active:
-		_warn("dialogue still open after 60 presses")
+		_warn("dialogue still open after 60 presses: %s" % (d._text.text.left(80) if d._text else ""))
 
 
 func _walk() -> void:

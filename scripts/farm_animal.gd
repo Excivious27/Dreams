@@ -60,6 +60,9 @@ func _process(delta: float) -> void:
 		if r < 0.45:
 			_state = "walk"
 			var c := Vector2i(_rng.randi_range(pen.position.x, pen.end.x - 1), _rng.randi_range(pen.position.y, pen.end.y - 1))
+			# At night, in rain and in winter they huddle at the back of the pen, by the barn.
+			if GameState.is_night() or GameState.is_wet() or GameState.season() == "winter":
+				c.y = pen.position.y
 			if map.blocked.has(c) and not map.things.has(c):
 				_wait = 0.5
 				_state = "idle"

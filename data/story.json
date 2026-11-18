@@ -1928,7 +1928,11 @@
      },
      "when": {
       "flag": "boss_docks",
-      "not_flag": "letter_decided"
+      "not_flag": "letter_decided",
+      "decision": [
+       "letter",
+       1
+      ]
      },
      "lines": [
       {
@@ -1940,8 +1944,7 @@
        "text": "A letter, in a certain hand, with a certain W. There are people who'd pay to have it not exist. Two thousand. Tonight.",
        "choice": [
         "Sell it. ◆2000 buys a lot of crew.",
-        "It's not for sale.",
-        "I burned it. There's nothing to sell."
+        "It's not for sale."
        ],
        "key": "sell_letter",
        "branches": {
@@ -1956,12 +1959,6 @@
           "who": "Marlene",
           "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like a man who knows what he's holding."
          }
-        ],
-        "2": [
-         {
-          "who": "Marlene",
-          "text": "Then you're the only person in this city with nothing to sell me. I find that... restful. I'm in. Somebody should fence for you who isn't an idiot."
-         }
         ]
        },
        "effects_by_choice": {
@@ -1969,7 +1966,8 @@
          "crystals": 2000,
          "flags": [
           "letter_sold",
-          "president_knows"
+          "president_knows",
+          "letter_decided"
          ],
          "unflag": [
           "letter"
@@ -1979,14 +1977,8 @@
         "1": {
          "flags": [
           "crew_marlene",
-          "letter_safe"
-         ],
-         "toast": "Marlene joined the crew.",
-         "sfx": "levelup"
-        },
-        "2": {
-         "flags": [
-          "crew_marlene"
+          "letter_safe",
+          "letter_decided"
          ],
          "toast": "Marlene joined the crew.",
          "sfx": "levelup"
@@ -2004,6 +1996,119 @@
         "Put out Flame in the neon district."
        ]
       ]
+     }
+    },
+    {
+     "id": "g3_marlene_m",
+     "trigger": {
+      "talk": "marlene"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "not_flag": "letter_decided",
+      "decision": [
+       "letter",
+       2
+      ]
+     },
+     "lines": [
+      {
+       "who": "Marlene",
+       "text": "You're the farmer with the paper. Don't look surprised; it's my business to know who has paper. I'm Marlene. I buy things people shouldn't have."
+      },
+      {
+       "who": "Marlene",
+       "text": "A letter, in a certain hand, with a certain W. There are people who'd pay to have it not exist. Two thousand. Tonight.",
+       "choice": [
+        "Sell it. ◆2000 buys a lot of crew.",
+        "It's not for sale."
+       ],
+       "key": "sell_letter",
+       "branches": {
+        "0": [
+         {
+          "who": "Marlene",
+          "text": "Sensible. Paper is only worth what someone fears it for. ...He'll know your face by the weekend, you understand. That's the price under the price."
+         }
+        ],
+        "1": [
+         {
+          "who": "Marlene",
+          "text": "Then it's worth more than two thousand, and you know it. Keep it dry. I'm in, by the way. I like a man who knows what he's holding."
+         }
+        ]
+       },
+       "effects_by_choice": {
+        "0": {
+         "crystals": 2000,
+         "flags": [
+          "letter_sold",
+          "president_knows",
+          "letter_decided"
+         ],
+         "unflag": [
+          "letter"
+         ],
+         "hint": "The President knows your face now."
+        },
+        "1": {
+         "flags": [
+          "crew_marlene",
+          "letter_safe",
+          "letter_decided"
+         ],
+         "toast": "Marlene joined the crew.",
+         "sfx": "levelup"
+        }
+       }
+      }
+     ],
+     "effects": {
+      "flags": [
+       "letter_decided"
+      ],
+      "quest": [
+       [
+        "neon",
+        "Put out Flame in the neon district."
+       ]
+      ]
+     }
+    },
+    {
+     "id": "g3_marlene_burned",
+     "trigger": {
+      "talk": "marlene"
+     },
+     "when": {
+      "flag": "boss_docks",
+      "not_flag": "letter_decided",
+      "decision": [
+       "letter",
+       0
+      ]
+     },
+     "lines": [
+      {
+       "who": "Marlene",
+       "text": "You're the farmer with the paper. Don't look surprised; it's my business to know who has paper. I'm Marlene. I buy things people shouldn't have."
+      },
+      {
+       "who": "Marlene",
+       "text": "There was a letter, in a certain hand, with a certain W. People would have paid to have it not exist. Then I hear you burned it on your first night."
+      },
+      {
+       "who": "Marlene",
+       "text": "So you're the only person in this city with nothing to sell me. I find that... restful. I'm in. Somebody should fence for you who isn't an idiot."
+      }
+     ],
+     "effects": {
+      "flags": [
+       "crew_marlene",
+       "letter_decided"
+      ],
+      "toast": "Marlene joined the crew.",
+      "sfx": "levelup"
      }
     }
    ]

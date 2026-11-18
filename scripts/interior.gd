@@ -250,6 +250,14 @@ func draw_map() -> void:
 
 
 func _counter(shop: String) -> void:
+	# Shops close for the night (7am to 9pm) and on festival days the town's at the plaza.
+	var t := int(GameState.run["time"]) % (24 * 60)
+	if shop != "" and (t < 7 * 60 or t >= 21 * 60):
+		hud.toast("Closed for the night. Opens at 7am.", Color(1, 0.85, 0.7))
+		return
+	if shop != "" and shop != "hall" and GameState.festival_today() != "" and t >= 9 * 60 and t < 18 * 60:
+		hud.toast("Closed today: everyone's at the %s on the plaza." % GameState.festival_name(GameState.festival_today()), Color(1, 0.85, 0.7))
+		return
 	if shop == "hall":
 		await Shops.hall(self)
 	elif shop in ["smith", "potions"]:

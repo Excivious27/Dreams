@@ -763,6 +763,9 @@ func _heart_unlock(id: String, before: int) -> void:
 
 
 func _gift_line(id: String, item: String, gain: int) -> String:
+	var own := GameState.gift_line(id, item, gain)
+	if own != "":
+		return own
 	var n := GameState.item_name(item)
 	if gain < 0:
 		return {"gideon": "A %s. ...Why." % n, "alder": "A %s. I'll have it... filed." % n, "wren": "A %s. You can keep that, actually." % n}.get(id, "Oh. A %s. Thanks, I suppose." % n)

@@ -501,12 +501,12 @@
     {
      "id": "mining_0_3",
      "name": "Rubble Rouser",
-     "desc": "+4% less energy to mine (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "mine_energy": 0.04
+      "shard_bonus": 0.06
      }
     },
     {
@@ -523,12 +523,12 @@
     {
      "id": "mining_0_5",
      "name": "Quarry Legs",
-     "desc": "+4% less energy to mine (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "mine_energy": 0.04
+      "shard_bonus": 0.06
      }
     },
     {
@@ -545,12 +545,12 @@
     {
      "id": "mining_0_7",
      "name": "Boulder Breaker",
-     "desc": "+4% less energy to mine (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "mine_energy": 0.04
+      "shard_bonus": 0.06
      }
     },
     {
@@ -567,12 +567,12 @@
     {
      "id": "mining_0_9",
      "name": "Tunnel Lungs",
-     "desc": "+8% less energy to mine",
+     "desc": "+12% crystal shards",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "mine_energy": 0.08
+      "shard_bonus": 0.12
      }
     },
     {
@@ -589,12 +589,12 @@
     {
      "id": "mining_1_1",
      "name": "Vein Finder",
-     "desc": "+5% extra ore (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
      "effect": {
-      "ore_bonus": 0.05
+      "shard_bonus": 0.06
      }
     },
     {
@@ -611,12 +611,12 @@
     {
      "id": "mining_1_3",
      "name": "Ore Song",
-     "desc": "+5% extra ore (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "ore_bonus": 0.05
+      "shard_bonus": 0.06
      }
     },
     {
@@ -633,12 +633,12 @@
     {
      "id": "mining_1_5",
      "name": "Twin Strike",
-     "desc": "+5% extra ore (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "ore_bonus": 0.05
+      "shard_bonus": 0.06
      }
     },
     {
@@ -655,12 +655,12 @@
     {
      "id": "mining_1_7",
      "name": "Iron Grip",
-     "desc": "+5% extra ore (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "ore_bonus": 0.05
+      "shard_bonus": 0.06
      }
     },
     {
@@ -677,12 +677,12 @@
     {
      "id": "mining_1_9",
      "name": "Deep Veins",
-     "desc": "+10% extra ore",
+     "desc": "+12% crystal shards",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "ore_bonus": 0.1
+      "shard_bonus": 0.12
      }
     },
     {
@@ -809,12 +809,12 @@
     {
      "id": "mining_3_1",
      "name": "Lantern Light",
-     "desc": "+4% less energy to mine (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "mine_energy": 0.04
+      "shard_bonus": 0.06
      }
     },
     {
@@ -831,34 +831,34 @@
     {
      "id": "mining_3_3",
      "name": "Cave Sense",
-     "desc": "+4% less energy to mine (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "mine_energy": 0.04
+      "shard_bonus": 0.06
      }
     },
     {
      "id": "mining_3_4",
      "name": "Cool Head",
-     "desc": "+5% extra ore (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "ore_bonus": 0.05
+      "shard_bonus": 0.06
      }
     },
     {
      "id": "mining_3_5",
      "name": "Ladder Luck",
-     "desc": "+4% less energy to mine (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 3,
      "effect": {
-      "mine_energy": 0.04
+      "shard_bonus": 0.06
      }
     },
     {
@@ -875,34 +875,34 @@
     {
      "id": "mining_3_7",
      "name": "Dark Eyes",
-     "desc": "+4% less energy to mine (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 3,
      "effect": {
-      "mine_energy": 0.04
+      "shard_bonus": 0.06
      }
     },
     {
      "id": "mining_3_8",
      "name": "Deep Stamina",
-     "desc": "+5% extra ore (per rank)",
+     "desc": "+6% crystal shards (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "ore_bonus": 0.05
+      "shard_bonus": 0.06
      }
     },
     {
      "id": "mining_3_9",
      "name": "Echo Map",
-     "desc": "+8% less energy to mine",
+     "desc": "+12% crystal shards",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "mine_energy": 0.08
+      "shard_bonus": 0.12
      }
     }
    ]
@@ -1396,12 +1396,12 @@
     {
      "id": "fishing_0_3",
      "name": "Calm Breath",
-     "desc": "+5% faster bites (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "bite_speed": 0.05
+      "rare_fish": 0.03
      }
     },
     {
@@ -1418,12 +1418,12 @@
     {
      "id": "fishing_0_5",
      "name": "Quick Bobber",
-     "desc": "+5% faster bites (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "bite_speed": 0.05
+      "rare_fish": 0.03
      }
     },
     {
@@ -1440,34 +1440,34 @@
     {
      "id": "fishing_0_7",
      "name": "Ripple Reader",
-     "desc": "+5% faster bites (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "bite_speed": 0.05
+      "rare_fish": 0.03
      }
     },
     {
      "id": "fishing_0_8",
      "name": "Dawn Caster",
-     "desc": "+5% faster bites (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
      "effect": {
-      "bite_speed": 0.05
+      "rare_fish": 0.03
      }
     },
     {
      "id": "fishing_0_9",
      "name": "Lazy River",
-     "desc": "+10% faster bites",
+     "desc": "+6% rare fish chance",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "bite_speed": 0.1
+      "rare_fish": 0.06
      }
     },
     {
@@ -1525,12 +1525,12 @@
     {
      "id": "fishing_1_5",
      "name": "Iron Line",
-     "desc": "+6% fewer fish escape (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "escape_less": 0.06
+      "rare_fish": 0.03
      }
     },
     {
@@ -1558,23 +1558,23 @@
     {
      "id": "fishing_1_8",
      "name": "Fighting Spirit",
-     "desc": "+4% chance of a double catch (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "double_fish": 0.04
+      "rare_fish": 0.03
      }
     },
     {
      "id": "fishing_1_9",
      "name": "No Escape",
-     "desc": "+12% fewer fish escape",
+     "desc": "+6% rare fish chance",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "escape_less": 0.12
+      "rare_fish": 0.06
      }
     },
     {
@@ -1591,12 +1591,12 @@
     {
      "id": "fishing_2_1",
      "name": "Shiny Scales",
-     "desc": "+6% fish sell value (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "fish_value": 0.06
+      "rare_fish": 0.03
      }
     },
     {
@@ -1613,12 +1613,12 @@
     {
      "id": "fishing_2_3",
      "name": "Deep Water",
-     "desc": "+6% fish sell value (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "fish_value": 0.06
+      "rare_fish": 0.03
      }
     },
     {
@@ -1635,12 +1635,12 @@
     {
      "id": "fishing_2_5",
      "name": "Rare Lure",
-     "desc": "+6% fish sell value (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "fish_value": 0.06
+      "rare_fish": 0.03
      }
     },
     {
@@ -1679,12 +1679,12 @@
     {
      "id": "fishing_2_9",
      "name": "Prize Fish",
-     "desc": "+12% fish sell value",
+     "desc": "+6% rare fish chance",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "fish_value": 0.12
+      "rare_fish": 0.06
      }
     },
     {
@@ -1767,34 +1767,34 @@
     {
      "id": "fishing_3_7",
      "name": "Pearl Eye",
-     "desc": "+2% treasure chest chance (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 3,
      "effect": {
-      "chest_chance": 0.02
+      "rare_fish": 0.03
      }
     },
     {
      "id": "fishing_3_8",
      "name": "Old Maps",
-     "desc": "+2% treasure chest chance (per rank)",
+     "desc": "+3% rare fish chance (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "chest_chance": 0.02
+      "rare_fish": 0.03
      }
     },
     {
      "id": "fishing_3_9",
      "name": "Pirate's Luck",
-     "desc": "+4% treasure chest chance",
+     "desc": "+6% rare fish chance",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "chest_chance": 0.04
+      "rare_fish": 0.06
      }
     }
    ]
@@ -1823,12 +1823,12 @@
     {
      "id": "combat_0_1",
      "name": "Sharp Edge",
-     "desc": "+3% critical hit chance (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "crit": 0.03
+      "hp": 8
      }
     },
     {
@@ -1845,12 +1845,12 @@
     {
      "id": "combat_0_3",
      "name": "Quick Draw",
-     "desc": "+3% critical hit chance (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "crit": 0.03
+      "hp": 8
      }
     },
     {
@@ -1867,12 +1867,12 @@
     {
      "id": "combat_0_5",
      "name": "Clean Strike",
-     "desc": "+3% critical hit chance (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "crit": 0.03
+      "hp": 8
      }
     },
     {
@@ -1908,34 +1908,34 @@
     {
      "id": "combat_0_9",
      "name": "Keen Blade",
-     "desc": "+6% critical hit chance",
+     "desc": "+16 max health",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "crit": 0.06
+      "hp": 16
      }
     },
     {
      "id": "combat_1_0",
      "name": "Brace",
-     "desc": "+3% damage taken reduced (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 1,
      "effect": {
-      "damage_reduction": 0.03
+      "hp": 8
      }
     },
     {
      "id": "combat_1_1",
      "name": "Parry",
-     "desc": "+3% chance to block (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
      "effect": {
-      "block": 0.03
+      "hp": 8
      }
     },
     {
@@ -1960,23 +1960,23 @@
     {
      "id": "combat_1_4",
      "name": "Thick Hide",
-     "desc": "+3% damage taken reduced (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 1,
      "effect": {
-      "damage_reduction": 0.03
+      "hp": 8
      }
     },
     {
      "id": "combat_1_5",
      "name": "Shield Arm",
-     "desc": "+3% chance to block (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "block": 0.03
+      "hp": 8
      }
     },
     {
@@ -1993,34 +1993,34 @@
     {
      "id": "combat_1_7",
      "name": "Iron Stance",
-     "desc": "+3% chance to block (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "block": 0.03
+      "hp": 8
      }
     },
     {
      "id": "combat_1_8",
      "name": "Deflect",
-     "desc": "+3% damage taken reduced (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "damage_reduction": 0.03
+      "hp": 8
      }
     },
     {
      "id": "combat_1_9",
      "name": "Unshaken",
-     "desc": "+6% chance to block",
+     "desc": "+16 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "block": 0.06
+      "hp": 16
      }
     },
     {
@@ -2136,12 +2136,12 @@
     {
      "id": "combat_3_0",
      "name": "Rush",
-     "desc": "+3% critical hit chance (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "crit": 0.03
+      "hp": 8
      }
     },
     {
@@ -2158,12 +2158,12 @@
     {
      "id": "combat_3_2",
      "name": "Hunter's Eye",
-     "desc": "+3% critical hit chance (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 3,
      "effect": {
-      "crit": 0.03
+      "hp": 8
      }
     },
     {
@@ -2222,12 +2222,12 @@
     {
      "id": "combat_3_8",
      "name": "Fury",
-     "desc": "+3% critical hit chance (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "crit": 0.03
+      "hp": 8
      }
     },
     {
@@ -2267,34 +2267,34 @@
     {
      "id": "bartering_0_1",
      "name": "Fair Price",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
      "id": "bartering_0_2",
      "name": "Good Pitch",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
      "id": "bartering_0_3",
      "name": "Bulk Deal",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
@@ -2311,12 +2311,12 @@
     {
      "id": "bartering_0_5",
      "name": "Display Skill",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
@@ -2333,34 +2333,34 @@
     {
      "id": "bartering_0_7",
      "name": "Sharp Ledger",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
      "id": "bartering_0_8",
      "name": "Hot Market",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
      "id": "bartering_0_9",
      "name": "Premium Goods",
-     "desc": "+6% sell prices",
+     "desc": "+2 friendship per gift",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "sell_bonus": 0.06
+      "gift_bonus": 2
      }
     },
     {
@@ -2377,12 +2377,12 @@
     {
      "id": "bartering_1_1",
      "name": "Thrifty",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
@@ -2399,12 +2399,12 @@
     {
      "id": "bartering_1_3",
      "name": "Coupon Clipper",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
@@ -2421,12 +2421,12 @@
     {
      "id": "bartering_1_5",
      "name": "Haggler's Grin",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
@@ -2443,12 +2443,12 @@
     {
      "id": "bartering_1_7",
      "name": "Back Room Prices",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
@@ -2465,12 +2465,12 @@
     {
      "id": "bartering_1_9",
      "name": "Bargain Sense",
-     "desc": "+6% sell prices",
+     "desc": "+2 friendship per gift",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "sell_bonus": 0.06
+      "gift_bonus": 2
      }
     },
     {
@@ -2586,12 +2586,12 @@
     {
      "id": "bartering_3_0",
      "name": "Piggy Bank",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
@@ -2616,34 +2616,34 @@
     {
      "id": "bartering_3_3",
      "name": "Coin Counter",
-     "desc": "+0.3% daily interest on savings (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "gift_bonus": 1
      }
     },
     {
      "id": "bartering_3_4",
      "name": "Compound",
-     "desc": "+3% sell prices (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "sell_bonus": 0.03
+      "gift_bonus": 1
      }
     },
     {
      "id": "bartering_3_5",
      "name": "Nest Egg",
-     "desc": "+0.3% daily interest on savings (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "gift_bonus": 1
      }
     },
     {
@@ -2660,12 +2660,12 @@
     {
      "id": "bartering_3_7",
      "name": "Investor",
-     "desc": "+0.3% daily interest on savings (per rank)",
+     "desc": "+1 friendship per gift (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 3,
      "effect": {
-      "interest": 0.003
+      "gift_bonus": 1
      }
     },
     {
@@ -2682,12 +2682,12 @@
     {
      "id": "bartering_3_9",
      "name": "Vault Key",
-     "desc": "+0.6% daily interest on savings",
+     "desc": "+2 friendship per gift",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "interest": 0.006
+      "gift_bonus": 2
      }
     }
    ]
@@ -2749,23 +2749,23 @@
     {
      "id": "building_0_4",
      "name": "Joinery",
-     "desc": "+4% less wood for building (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
      "effect": {
-      "wood_discount": 0.04
+      "energy": 6
      }
     },
     {
      "id": "building_0_5",
      "name": "Beam Lore",
-     "desc": "+4% less wood for building (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "wood_discount": 0.04
+      "energy": 6
      }
     },
     {
@@ -2782,34 +2782,34 @@
     {
      "id": "building_0_7",
      "name": "Saw Song",
-     "desc": "+4% less wood for building (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "wood_discount": 0.04
+      "energy": 6
      }
     },
     {
      "id": "building_0_8",
      "name": "Roof Raiser",
-     "desc": "+4% less wood for building (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
      "effect": {
-      "wood_discount": 0.04
+      "energy": 6
      }
     },
     {
      "id": "building_0_9",
      "name": "Timber Frame",
-     "desc": "+8% less wood for building",
+     "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "wood_discount": 0.08
+      "energy": 12
      }
     },
     {
@@ -2859,23 +2859,23 @@
     {
      "id": "building_1_4",
      "name": "Brick Layer",
-     "desc": "+4% less stone for building (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 1,
      "effect": {
-      "stone_discount": 0.04
+      "energy": 6
      }
     },
     {
      "id": "building_1_5",
      "name": "Arch Lore",
-     "desc": "+4% less stone for building (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "stone_discount": 0.04
+      "energy": 6
      }
     },
     {
@@ -2903,23 +2903,23 @@
     {
      "id": "building_1_8",
      "name": "Foundations",
-     "desc": "+4% less stone for building (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "stone_discount": 0.04
+      "energy": 6
      }
     },
     {
      "id": "building_1_9",
      "name": "Tower Builder",
-     "desc": "+8% less stone for building",
+     "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "stone_discount": 0.08
+      "energy": 12
      }
     },
     {
@@ -2958,12 +2958,12 @@
     {
      "id": "building_2_3",
      "name": "Quick Hands",
-     "desc": "+5% faster crafting (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 6
      }
     },
     {
@@ -2980,12 +2980,12 @@
     {
      "id": "building_2_5",
      "name": "Jig Maker",
-     "desc": "+5% faster crafting (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 2,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 6
      }
     },
     {
@@ -3002,78 +3002,78 @@
     {
      "id": "building_2_7",
      "name": "Assembly Line",
-     "desc": "+5% faster crafting (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 6
      }
     },
     {
      "id": "building_2_8",
      "name": "Fine Work",
-     "desc": "+5% faster crafting (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 6
      }
     },
     {
      "id": "building_2_9",
      "name": "Clockwork",
-     "desc": "+10% faster crafting",
+     "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "craft_speed": 0.1
+      "energy": 12
      }
     },
     {
      "id": "building_3_0",
      "name": "Blueprints",
-     "desc": "+5% faster crafting (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 6
      }
     },
     {
      "id": "building_3_1",
      "name": "Permit Pal",
-     "desc": "+4% cheaper buildings (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "build_discount": 0.04
+      "energy": 6
      }
     },
     {
      "id": "building_3_2",
      "name": "Site Boss",
-     "desc": "+5% faster crafting (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 3,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 6
      }
     },
     {
      "id": "building_3_3",
      "name": "Crew Chief",
-     "desc": "+4% cheaper buildings (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "build_discount": 0.04
+      "energy": 6
      }
     },
     {
@@ -3101,12 +3101,12 @@
     {
      "id": "building_3_6",
      "name": "Efficient Plans",
-     "desc": "+5% faster crafting (per rank)",
+     "desc": "+6 max energy (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "craft_speed": 0.05
+      "energy": 6
      }
     },
     {
@@ -3134,12 +3134,12 @@
     {
      "id": "building_3_9",
      "name": "Skyline",
-     "desc": "+8% cheaper buildings",
+     "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "build_discount": 0.08
+      "energy": 12
      }
     }
    ]
@@ -3373,12 +3373,12 @@
     {
      "id": "magic_2_1",
      "name": "Clear Mind",
-     "desc": "+4% cheaper spells (per rank)",
+     "desc": "+6 max mana (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "spell_discount": 0.04
+      "mana": 6
      }
     },
     {

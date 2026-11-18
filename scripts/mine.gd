@@ -21,20 +21,20 @@ var _chasm := {}
 const MAX_FLOOR := 150
 const THEMES := [
 	{"cave": "earth", "name": "Earthen Tunnels", "var": "earth", "ts": "", "rock": "2a2018", "fa": "4a3a2c", "fb": "52412f", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_mushroom", "mushroom"]},
-	{"cave": "earth", "name": "Mossy Hollows", "var": "earth", "ts": "", "rock": "1f2a1c", "fa": "3e4a34", "fb": "44503a", "tint": [0.85, 1.0, 0.85], "feat": ["water"], "forage": ["cave_mushroom", "cave_fig", "mushroom_spore"]},
-	{"cave": "stone", "name": "Grey Stone Deeps", "var": "stone", "ts": "deep", "rock": "24222c", "fa": "4a4152", "fb": "50475a", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_fig", "cave_mushroom"]},
-	{"cave": "stone", "name": "Flooded Galleries", "var": "stone", "ts": "deep", "rock": "1c2430", "fa": "3a4656", "fb": "40506a", "tint": [0.8, 0.9, 1.05], "feat": ["water"], "forage": ["cave_fig", "mushroom_spore"]},
+	{"cave": "earth", "name": "Mossy Hollows", "ores": ["copper"], "var": "earth", "ts": "", "rock": "1f2a1c", "fa": "3e4a34", "fb": "44503a", "tint": [0.85, 1.0, 0.85], "feat": ["water"], "forage": ["cave_mushroom", "cave_fig", "mushroom_spore"]},
+	{"cave": "stone", "name": "Grey Stone Deeps", "ores": ["iron"], "var": "stone", "ts": "deep", "rock": "24222c", "fa": "4a4152", "fb": "50475a", "tint": [1.0, 1.0, 1.0], "feat": [], "forage": ["cave_fig", "cave_mushroom"]},
+	{"cave": "stone", "name": "Flooded Galleries", "ores": ["copper", "iron"], "var": "stone", "ts": "deep", "rock": "1c2430", "fa": "3a4656", "fb": "40506a", "tint": [0.8, 0.9, 1.05], "feat": ["water"], "forage": ["cave_fig", "mushroom_spore"]},
 	{"cave": "earth", "name": "Fungal Caverns", "var": "earth", "ts": "", "rock": "241c2c", "fa": "3c3048", "fb": "42354e", "tint": [1.0, 0.85, 1.0], "feat": ["glow"], "forage": ["cave_bloom", "mushroom_spore", "cave_mushroom"]},
-	{"cave": "crystal", "name": "Crystal Veins", "var": "stone", "ts": "crystal", "rock": "1c1c34", "fa": "3c3c64", "fb": "42426c", "tint": [0.85, 0.9, 1.1], "feat": ["crystals"], "forage": ["shard", "cave_bloom"]},
-	{"cave": "ice", "name": "Frost Caves", "var": "ice", "ts": "", "rock": "1c2634", "fa": "4a5c6c", "fb": "52667a", "tint": [0.85, 0.95, 1.1], "feat": ["water"], "forage": ["cave_fig", "shard"]},
-	{"cave": "crystal", "name": "Amethyst Grotto", "var": "ice", "ts": "crystal", "rock": "241434", "fa": "4a2e5c", "fb": "523466", "tint": [1.0, 0.8, 1.1], "feat": ["crystals"], "forage": ["amethyst", "shard", "cave_bloom"]},
-	{"cave": "earth", "name": "Sandstone Ruins", "var": "earth", "ts": "", "rock": "3a2c1c", "fa": "6a5638", "fb": "72603e", "tint": [1.1, 1.0, 0.85], "feat": [], "forage": ["fossil", "cave_fig"]},
-	{"cave": "stone", "name": "Gold Seams", "var": "stone", "ts": "deep", "rock": "2c2418", "fa": "5a4a30", "fb": "62523a", "tint": [1.1, 1.0, 0.8], "feat": [], "forage": ["gold", "cave_bloom"]},
-	{"cave": "lava", "name": "Magma Rifts", "var": "lava", "ts": "", "rock": "2c1814", "fa": "4a2a22", "fb": "52302a", "tint": [1.1, 0.85, 0.8], "feat": ["lava"], "forage": ["dark", "cave_fig"]},
-	{"cave": "lava", "name": "Obsidian Halls", "var": "lava", "ts": "dark", "rock": "120e16", "fa": "2a2432", "fb": "302a3a", "tint": [0.8, 0.8, 0.95], "feat": ["lava"], "forage": ["dark", "shard"]},
-	{"cave": "stone", "name": "Drowned Dark", "var": "stone", "ts": "dark", "rock": "0e1620", "fa": "22303c", "fb": "283846", "tint": [0.8, 0.9, 1.0], "feat": ["water", "glow"], "forage": ["cave_bloom", "dark"]},
-	{"cave": "crystal", "name": "The Void Reach", "var": "stone", "ts": "dark", "rock": "0c0a14", "fa": "1e1a2c", "fb": "241f34", "tint": [0.9, 0.8, 1.1], "feat": ["chasm"], "forage": ["dark", "crystal_refined"]},
-	{"cave": "lava", "name": "The Heart's Edge", "var": "lava", "ts": "heart", "rock": "1a0c18", "fa": "3a1c34", "fb": "42223c", "tint": [1.1, 0.85, 1.0], "feat": ["crystals", "glow"], "forage": ["crystal_refined", "shard", "cave_bloom"]},
+	{"cave": "crystal", "name": "Crystal Veins", "ores": ["shard"], "var": "stone", "ts": "crystal", "rock": "1c1c34", "fa": "3c3c64", "fb": "42426c", "tint": [0.85, 0.9, 1.1], "feat": ["crystals"], "forage": ["shard", "cave_bloom"]},
+	{"cave": "ice", "name": "Frost Caves", "ores": ["iron", "shard"], "var": "ice", "ts": "", "rock": "1c2634", "fa": "4a5c6c", "fb": "52667a", "tint": [0.85, 0.95, 1.1], "feat": ["water"], "forage": ["cave_fig", "shard"]},
+	{"cave": "crystal", "name": "Amethyst Grotto", "ores": ["amethyst", "shard"], "var": "ice", "ts": "crystal", "rock": "241434", "fa": "4a2e5c", "fb": "523466", "tint": [1.0, 0.8, 1.1], "feat": ["crystals"], "forage": ["amethyst", "shard", "cave_bloom"]},
+	{"cave": "earth", "name": "Sandstone Ruins", "ores": ["fossil", "gold"], "var": "earth", "ts": "", "rock": "3a2c1c", "fa": "6a5638", "fb": "72603e", "tint": [1.1, 1.0, 0.85], "feat": [], "forage": ["fossil", "cave_fig"]},
+	{"cave": "stone", "name": "Gold Seams", "ores": ["gold"], "var": "stone", "ts": "deep", "rock": "2c2418", "fa": "5a4a30", "fb": "62523a", "tint": [1.1, 1.0, 0.8], "feat": [], "forage": ["gold", "cave_bloom"]},
+	{"cave": "stone", "name": "Magma Rifts", "ores": ["dark", "gold"], "var": "lava", "ts": "", "rock": "2c1814", "fa": "4a2a22", "fb": "52302a", "tint": [1.1, 0.85, 0.8], "feat": ["lava"], "forage": ["dark", "cave_fig"]},
+	{"cave": "stone", "name": "Obsidian Halls", "ores": ["dark"], "var": "lava", "ts": "dark", "rock": "120e16", "fa": "2a2432", "fb": "302a3a", "tint": [0.8, 0.8, 0.95], "feat": ["lava"], "forage": ["dark", "shard"]},
+	{"cave": "stone", "name": "Drowned Dark", "ores": ["dark", "shard"], "var": "stone", "ts": "dark", "rock": "0e1620", "fa": "22303c", "fb": "283846", "tint": [0.8, 0.9, 1.0], "feat": ["water", "glow"], "forage": ["cave_bloom", "dark"]},
+	{"cave": "crystal", "name": "The Void Reach", "ores": ["dark", "crystal"], "var": "stone", "ts": "dark", "rock": "0c0a14", "fa": "1e1a2c", "fb": "241f34", "tint": [0.9, 0.8, 1.1], "feat": ["chasm"], "forage": ["dark", "crystal_refined"]},
+	{"cave": "stone", "name": "The Heart's Edge", "ores": ["crystal", "shard"], "var": "lava", "ts": "heart", "rock": "1a0c18", "fa": "3a1c34", "fb": "42223c", "tint": [1.1, 0.85, 1.0], "feat": ["crystals", "glow"], "forage": ["crystal_refined", "shard", "cave_bloom"]},
 ]
 
 
@@ -191,6 +191,10 @@ func build() -> void:
 					idx = wi + 1
 					break
 			ore = str(ores[idx])
+			# Each cave look has its own ore: Gold Seams really has gold, the Grotto amethyst.
+			var tb: Array = theme.get("ores", [])
+			if not tb.is_empty() and rng.randf() < 0.4:
+				ore = str(tb[rng.randi() % tb.size()])
 		# Ore gathers in veins: rich rocks pull neighbours toward the same ore.
 		var hard := (3 if ore == "stone" else 4 + ores.find(ore)) + floor_no / 15
 		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
@@ -740,7 +744,20 @@ func draw_map() -> void:
 		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 			var frame := int(Time.get_ticks_msec() / 300) % 4
 			for c: Vector2i in lava:
-				Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame))
+				Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame)
+			# A dark rocky lip and a hot glow where lava meets floor, so it reads as a pit.
+			var glow := 0.35 + 0.15 * sin(Time.get_ticks_msec() / 400.0)
+			for c: Vector2i in lava:
+				var o := Vector2(c * TILE)
+				if not lava.has(c + Vector2i(0, -1)):
+					ci.draw_rect(Rect2(o, Vector2(TILE, 3)), Color(0.12, 0.06, 0.05))
+					ci.draw_rect(Rect2(o + Vector2(0, -3), Vector2(TILE, 3)), Color(1, 0.5, 0.15, glow * 0.6))
+				if not lava.has(c + Vector2i(0, 1)):
+					ci.draw_rect(Rect2(o + Vector2(0, TILE - 2), Vector2(TILE, 2)), Color(0.12, 0.06, 0.05))
+				if not lava.has(c + Vector2i(-1, 0)):
+					ci.draw_rect(Rect2(o, Vector2(2, TILE)), Color(0.12, 0.06, 0.05))
+				if not lava.has(c + Vector2i(1, 0)):
+					ci.draw_rect(Rect2(o + Vector2(TILE - 2, 0), Vector2(2, TILE)), Color(0.12, 0.06, 0.05)))
 	if not _way_open and Art.has("props", "shaft_hint_0") and not things.has(_ladder):
 		Art.draw_prop(self, "props", "shaft_hint_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3), cell_center(_ladder) + Vector2(0, 6))
 	for k in things:

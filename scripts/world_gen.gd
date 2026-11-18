@@ -41,7 +41,7 @@ static func _hash01(x: int, y: int, seed_v: int) -> float:
 static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var season := GameState.season()
+	var season := GameState.look_se()
 	for y in range(1, m.rows - 1):
 		for x in range(1, m.cols - 1):
 			var c := Vector2i(x, y)
@@ -161,7 +161,7 @@ static func tree_clumps(m: GameMap, rect: Rect2i, seed_v: int, clumps: int, avoi
 static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avoid: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
-	var season := GameState.season()
+	var season := GameState.look_se()
 	for i in count:
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
 		var r := rng.randf()  # rolled first so the layout doesn't shift as things are cleared
@@ -450,7 +450,7 @@ static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
 	if not FRUIT.has(kind) or m.things.has(c) or m.blocked.has(c):
 		return
 	var info: Array = FRUIT[kind]
-	var season := GameState.season()
+	var season := GameState.look_se()
 	var key := "fruit_%s_%d_%d" % [m.scene_id(), c.x, c.y]
 	var ripe := str(info[0]) == season and int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
 	var sprite := str(info[1])

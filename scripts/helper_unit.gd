@@ -70,7 +70,7 @@ func _process(delta: float) -> void:
 	# Move: guard home; drift toward the player when no foe is near home.
 	var foe := map.nearest_enemy_to(position, 120.0)
 	var want := home
-	if foe == null and map.player.position.distance_to(home) < 200.0:
+	if foe == null and map.has_meta("follow_me"):
 		want = map.player.position + Vector2(cos(get_instance_id() % 7), sin(get_instance_id() % 5)) * 22.0
 	if map.has_meta("rally_pos"):
 		var rp: Vector2 = map.get_meta("rally_pos")
@@ -81,9 +81,19 @@ func _process(delta: float) -> void:
 		want = foe.position + (position - foe.position).normalized() * 40.0
 	var step := (want - position)
 	if step.length() > 4.0:
-		var np := position + step.normalized() * minf(step.length(), 52.0 * delta)
+		# Walk around cliffs and water toward fixed spots (home, rally point).
+		var dir := step.normalized()
+		if step.length() > 24.0 and (want == home or map.has_meta("rally_pos")):
+			dir = map.flow_dir(position, want)
+		var np := position + dir * minf(step.length(), 52.0 * delta)
 		if not map.blocked.has(map.world_to_cell(np)):
 			position = np
+		else:
+			for alt: Vector2 in [Vector2(dir.x, 0), Vector2(0, dir.y)]:
+				var ap := position + alt * 52.0 * delta
+				if alt != Vector2.ZERO and not map.blocked.has(map.world_to_cell(ap)):
+					position = ap
+					break
 	if _cd > 0.0:
 		queue_redraw()
 		return

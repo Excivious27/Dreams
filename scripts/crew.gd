@@ -47,7 +47,7 @@ static func _set_loyalty(id: String, n: int) -> void:
 	if n >= 3:
 		GameState.run["flags"][id + "_loyal_3"] = true
 		if id == "sasha":
-			GameState.run["flags"]["letter_safe"] = true  # Sasha gets you through the tower doors
+			GameState.run["flags"]["doors_sasha"] = true  # Sasha gets you through the tower doors quietly
 
 
 ## Does any recruited member at loyalty >= n have this perk key?

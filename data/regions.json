@@ -6775,7 +6775,7 @@
  "colony_coral": {
   "cols": 96,
   "rows": 76,
-  "music": "beach",
+  "music": "colony_coral",
   "backdrop": "sea",
   "ground": "grass",
   "path": "sand",
@@ -6846,7 +6846,7 @@
      40
     ],
     "r": 22,
-    "seed": 520
+    "seed": 761
    },
    {
     "c": [
@@ -6854,7 +6854,7 @@
      26
     ],
     "r": 11,
-    "seed": 521
+    "seed": 762
    },
    {
     "c": [
@@ -6862,7 +6862,7 @@
      56
     ],
     "r": 10,
-    "seed": 522
+    "seed": 763
    },
    {
     "c": [
@@ -6886,7 +6886,7 @@
      16
     ],
     "r": 7,
-    "seed": 525
+    "seed": 766
    }
   ],
   "island_shore": "sand",
@@ -6926,7 +6926,7 @@
    "critters": [
     "seagull",
     "crab",
-    "sparrow"
+    "turtle"
    ],
    "critter_count": 8
   },
@@ -7052,9 +7052,9 @@
  "colony_kelp": {
   "cols": 96,
   "rows": 76,
-  "music": "beach",
+  "music": "colony_kelp",
   "backdrop": "sea",
-  "ground": "grass",
+  "ground": "teal_moss",
   "path": "sand",
   "spawn": [
    40,
@@ -7123,7 +7123,7 @@
      40
     ],
     "r": 22,
-    "seed": 753
+    "seed": 156
    },
    {
     "c": [
@@ -7131,7 +7131,7 @@
      26
     ],
     "r": 11,
-    "seed": 754
+    "seed": 157
    },
    {
     "c": [
@@ -7139,7 +7139,7 @@
      56
     ],
     "r": 10,
-    "seed": 755
+    "seed": 158
    },
    {
     "c": [
@@ -7163,7 +7163,7 @@
      16
     ],
     "r": 7,
-    "seed": 758
+    "seed": 161
    }
   ],
   "island_shore": "sand",
@@ -7193,7 +7193,7 @@
     ]
    }
   ],
-  "patch_set": "sand",
+  "patch_set": "bog",
   "ground_threshold": -0.05,
   "fruit": 0,
   "forage": 6,
@@ -7201,9 +7201,9 @@
    "clumps": 2,
    "scatter": 18,
    "critters": [
-    "seagull",
-    "crab",
-    "sparrow"
+    "frog",
+    "heron",
+    "dragonfly"
    ],
    "critter_count": 8
   },
@@ -7324,12 +7324,13 @@
   "intro": [
    "The forest under the water is dying, and it was the only home we had."
   ],
-  "colony": "colony_kelp"
+  "colony": "colony_kelp",
+  "weather": "fog"
  },
  "colony_ice": {
   "cols": 96,
   "rows": 76,
-  "music": "beach",
+  "music": "colony_ice",
   "backdrop": "sea",
   "ground": "grass",
   "path": "sand",
@@ -7400,7 +7401,7 @@
      40
     ],
     "r": 22,
-    "seed": 608
+    "seed": 577
    },
    {
     "c": [
@@ -7408,7 +7409,7 @@
      26
     ],
     "r": 11,
-    "seed": 609
+    "seed": 578
    },
    {
     "c": [
@@ -7416,7 +7417,7 @@
      56
     ],
     "r": 10,
-    "seed": 610
+    "seed": 579
    },
    {
     "c": [
@@ -7440,7 +7441,7 @@
      16
     ],
     "r": 7,
-    "seed": 613
+    "seed": 582
    }
   ],
   "island_shore": "sand",
@@ -7470,7 +7471,7 @@
     ]
    }
   ],
-  "patch_set": "sand",
+  "patch_set": "snowpatch",
   "ground_threshold": -0.05,
   "fruit": 0,
   "forage": 6,
@@ -7479,8 +7480,8 @@
    "scatter": 18,
    "critters": [
     "seagull",
-    "crab",
-    "sparrow"
+    "otter",
+    "moon_rabbit"
    ],
    "critter_count": 8
   },
@@ -7611,14 +7612,16 @@
   "intro": [
    "You picked a cold day to visit. Every day is a cold day now."
   ],
-  "colony": "colony_ice"
+  "colony": "colony_ice",
+  "weather": "snow",
+  "season": "winter"
  },
  "colony_ember": {
   "cols": 96,
   "rows": 76,
-  "music": "beach",
+  "music": "colony_ember",
   "backdrop": "sea",
-  "ground": "grass",
+  "ground": "dead_grass",
   "path": "sand",
   "spawn": [
    40,
@@ -7687,7 +7690,7 @@
      40
     ],
     "r": 22,
-    "seed": 154
+    "seed": 20
    },
    {
     "c": [
@@ -7695,7 +7698,7 @@
      26
     ],
     "r": 11,
-    "seed": 155
+    "seed": 21
    },
    {
     "c": [
@@ -7703,7 +7706,7 @@
      56
     ],
     "r": 10,
-    "seed": 156
+    "seed": 22
    },
    {
     "c": [
@@ -7727,7 +7730,7 @@
      16
     ],
     "r": 7,
-    "seed": 159
+    "seed": 25
    }
   ],
   "island_shore": "sand",
@@ -7765,9 +7768,9 @@
    "clumps": 2,
    "scatter": 18,
    "critters": [
-    "seagull",
-    "crab",
-    "sparrow"
+    "firefly",
+    "crow",
+    "snake"
    ],
    "critter_count": 8
   },

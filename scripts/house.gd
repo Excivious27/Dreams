@@ -92,6 +92,8 @@ func _sleep() -> void:
 		lines.append({"who": "Laundromat", "text": "Clean and folded: ◆%d." % int(report["washed"])})
 	if int(report["grown"]) > 0:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report["grown"]), "" if int(report["grown"]) == 1 else "s"]})
+	if int(report.get("crows", 0)) > 0:
+		lines.append({"text": "Crows got into the field overnight and ate %d crop%s. A scarecrow covers about 8 steps around it." % [int(report["crows"]), "" if int(report["crows"]) == 1 else "s"]})
 	if int(report.get("died", 0)) > 0:
 		lines.append({"text": "%s took %d crop%s. Crops only live through their own season (or under the greenhouse glass)." % [GameState.season().capitalize(), int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
 	for nm in report.get("built", []):

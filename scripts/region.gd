@@ -85,6 +85,7 @@ func default_spawn() -> Vector2:
 func build() -> void:
 	var all := GameState.load_json("res://data/regions.json")
 	R = all.get(region_id, {})
+	GameState.look_season = str(R.get("season", ""))
 	cols = int(R.get("cols", 30))
 	rows = int(R.get("rows", 26))
 	music_track = str(R.get("music", "meadow"))

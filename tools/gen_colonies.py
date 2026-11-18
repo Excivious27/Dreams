@@ -116,6 +116,17 @@ for rid, c in COL.items():
               "gen": {"clumps": 2, "scatter": 18, "critters": ["seagull", "crab", "sparrow"], "critter_count": 8},
               "things": things, "enemies": [{"kind": k, "count": 3, "colony": True} for k in c["enemies"]], "npcs": [],
               "intro": [c["intro"][0]], "colony": rid}
+    # Each island looks and feels like itself.
+    LOOK = {"colony_coral": {"music": "colony_coral", "critters": ["seagull", "crab", "turtle"]},
+            "colony_kelp": {"music": "colony_kelp", "ground": "teal_moss", "patch_set": "bog", "critters": ["frog", "heron", "dragonfly"], "weather": "fog"},
+            "colony_ice": {"music": "colony_ice", "season": "winter", "patch_set": "snowpatch", "critters": ["seagull", "otter", "moon_rabbit"], "weather": "snow"},
+            "colony_ember": {"music": "colony_ember", "ground": "dead_grass", "patch_set": "sand", "critters": ["firefly", "crow", "snake"]}}
+    lk = LOOK.get(rid, {})
+    for key in ("music", "ground", "patch_set", "weather", "season"):
+        if key in lk:
+            R[rid][key] = lk[key]
+    if "critters" in lk:
+        R[rid]["gen"]["critters"] = lk["critters"]
     scene(rid)
     E["enemies"]["cboss_" + rid.split("_")[1]] = {"hp": 70 + 30 * c["tier"], "dmg": 2 + c["tier"] // 2, "speed": 26, "xp": 50 + 20 * c["tier"], "tier": c["tier"] + 1,
         "abilities": [], "gift": c["gift"], "art": c["boss_art"], "name": c["boss_name"], "reward": 100 * c["tier"]}

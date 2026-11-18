@@ -223,7 +223,7 @@
   },
   "sell_letter": {
    "0": "You sold the letter. The money built the crew. The President knew your face, and it didn't matter.",
-   "1": "You never sold the letter. It's still in your drawer.",
+   "1": "You never sold the letter. It opened the tower doors, the way he meant it to.",
    "2": "You burned the letter. Nothing to sell, nothing to fear."
   }
  },
@@ -232,5 +232,11 @@
   "shatter": "The Quiet Mountain",
   "free": "A Tired Man",
   "take": "The Chair"
+ },
+ "flag_lines": {
+  "fennimore_free": "Fennimore's crown went out in your arms. The finargles have a queen again: a gentler one.",
+  "final_town_help": "The whole town climbed the tower stairs to ring the bell, and the Dark Crystal's shell cracked at the sound.",
+  "doors_sasha": "Sasha took the tower doors off their hinges without a sound. Nobody in the city has ever asked her how.",
+  "journal_done": "You found every page of the Wayfarer's Journal. The last one had your name on it."
  }
 }
