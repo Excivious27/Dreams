@@ -2,6 +2,9 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 10 of 10 (final)
+- 20-agent audit (/tmp/audit_c10) incl. a progress inventory; bots clean before/after; check (now with story_test + coop_test) + playtest pass. Perf + edge patches; co-op day stamps, other-story buildings, relay host grace (server/server.js, needs redeploy); unwon battles 160 paid kills per run; skill "aka" names keep ranks; tidy build sites; mine pools/keeper/finds; plateau edges; Star Crystal next-step lines; 576 re-cut art files. Prompts 29 (5 prompts / 12 images, 4 optional). Guide 22 = all-in-one guide replacing 12–21; final combined page (guide + progress sheet + every prompt file) and Dreams-Progress-after-10-loops.xlsx.
+
 ## 2026-11-18 — CONDUCT loop 10 of 10 (audit fixes, round G)
 - Skill renames keep ranks: gen_skill_trees.py writes `"aka"` (earlier names of a node whose effect and ranks didn't change; set `SKILLS_PREV=<old skills.json>` to seed it). `GameState._migrate` keeps those ranks silently and only refunds real effect changes (systems_test checks it). The skill-icon slicer also matches aka names.
 - max_energy: the level part is capped at +120 (100 + 3 x min(levels, 40)); late saves get a smaller bar.
