@@ -51,6 +51,7 @@ void fragment() {
 	m += (mask_at(cellf + vec2(r, 0.0)) + mask_at(cellf - vec2(r, 0.0)) + mask_at(cellf + vec2(0.0, r)) + mask_at(cellf - vec2(0.0, r))) * 1.5;
 	wsum += 6.0;
 	m /= wsum;
+	m = max(m, mask_at(cellf) * 0.75);  // a lone or 1-wide water cell keeps its middle
 	float n = vnoise(wpos / 24.0) * 0.67 + vnoise(wpos / 9.0) * 0.33;
 	float v = m + (n - 0.5) * wobble;
 	float a = smoothstep(0.5 - soft, 0.5 + soft, v);

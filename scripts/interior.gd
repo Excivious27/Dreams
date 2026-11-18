@@ -213,7 +213,7 @@ func _talk(n: Npc) -> void:
 		GameState.run["flags"]["sal_recruited"] = true
 		GameState.add_quest("gang", "Recruit your first crew. (Sal is in. The rest is up to you.)")
 		await say([
-			{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You put him down."},
+			{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running."},
 			{"who": "Sal", "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent."},
 		])
 		player.frozen = false

@@ -99,7 +99,7 @@ v("bram", "bram_wine",
   L("Bram", "Festival night. Two wine. I want to raise one glass that isn't water, for once, for Posy's mother.", "I'll pay for the wine. I just can't walk to the lake for it. Every year I mean to."),
   L("Bram", "I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way.", "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down."),
   L("Bram", "Posy's running the front now. She's better than her mother was, and I said so, and she threw a tea towel at me.", "Corner's still yours. Always will be. I've put your name on it; don't look, it's under the table."),
-  "Bram would stand in the inn doorway with a cleaver, which he has never once used on anything but onions, and he would look like a man who has.",
+  "Bram would stand in the inn doorway with a cleaver, which he has never once used on anything but onions, and nobody would argue with the doorway.",
   {"2": "Corner's yours.", "4": "Still hiding in the kitchen.", "6": "Two wine. Festival night.", "8": "Two hours. Her glass was full.", "10": "Tea towel. Right in the face."})
 
 v("posy", "posy_strawberries",
@@ -126,7 +126,7 @@ v("rook", "rook_tracks",
   L("Rook", "The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge.", "I can't hold it alone. I've tried, and I'm not a man who says that."),
   L("Rook", "Your pup's got a nose. I've watched it. It tracks the way I did before I learned to, which means it'll be better than me.", "Bring it by. I'll show it the orchard the right way; the way you don't get seen."),
   L("Rook", "I've a daughter in the river cities. Grown. She doesn't know I'm alive. I've decided she should.", "I'm writing it tonight. Toe first, roll. That's the only way I know to do hard things."),
-  "Rook would be on the lodge roof with a bow before anyone else knew anything was coming, and the first three of whatever it was would never reach the bridge.",
+  "Rook would be on the lodge roof with a bow before anyone else knew anything was coming, and whatever it was would turn back before it reached the bridge.",
   {"2": "Toe first. Roll.", "4": "Mostly empty. I like mostly.", "6": "The orchard. By harvest.", "8": "That pup's got a nose.", "10": "Wrote it. Sent it. Toe first."})
 
 v("pip", "pip_candy",
@@ -216,7 +216,7 @@ v("old_moss", "wren_glowcap",
   L("Old Moss", "Glow caps. The witch in the deep marsh uses them for the fog. I use them for the opposite.", "Bring me some and I'll show you a lantern the fog doesn't like. I made it for myself. I don't need it anymore; I've gotten to like the fog."),
   L("Old Moss", "The marsh witch was my patient. Fifty years ago. The thing I couldn't fix. She went into the water and came out as what she is.", "I stayed out here to be near her. That's the whole reason. Juniper knows; she's the only one I told."),
   L("Old Moss", "If you ever put her down— the witch— do it quick. Don't let her talk. She'll use my voice; she learned it from fifty years of me talking to her through the fog.", "And then come and tell me. I'd like to go into town after. I'd like to see the clinic. Just once."),
-  "Old Moss would walk into the black water, and talk to what's in it, and it would listen, because it always has.",
+  "Old Moss would stand at the edge of the black water and call to what's in it, and it would listen, because it always has.",
   {"2": "The pot's always on.", "4": "I listen to the frogs.", "6": "The fog doesn't like it.", "8": "She was my patient.", "10": "Quick. Don't let her talk."})
 
 v("granite", "rook_bones",

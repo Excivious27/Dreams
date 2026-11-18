@@ -9031,7 +9031,8 @@
   "damage": 4,
   "weapon": true,
   "arc": "gangsters",
-  "range": 110
+  "range": 110,
+  "cd": 2.0
  },
  "scattergun": {
   "name": "Scattergun",
@@ -9052,11 +9053,11 @@
   "value": 2600,
   "rarity": "rare",
   "tier": 3,
-  "damage": 5,
+  "damage": 3,
   "weapon": true,
   "arc": "gangsters",
   "range": 120,
-  "cd": 0.45
+  "cd": 0.6
  },
  "gold_revolver": {
   "name": "Gold Revolver",
@@ -9067,7 +9068,8 @@
   "damage": 10,
   "weapon": true,
   "arc": "gangsters",
-  "range": 140
+  "range": 140,
+  "cd": 2.5
  },
  "circuit_board": {
   "name": "Circuit Board",

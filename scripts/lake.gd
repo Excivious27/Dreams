@@ -68,10 +68,6 @@ func build() -> void:
 			_water.erase(c)
 	for c: Vector2i in _water:
 		set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
-	# The lake, its outlet stream and the water past the map edge: one body.
-	if Art.has("seamless", "lake_shallow"):
-		border_water_extra = _water
-		border_water_shore = "grass"
 	# East dock: from the shore at row 21 out into the water.
 	var x := 30
 	while _water.has(Vector2i(x, 21)) and x > 24:
@@ -81,9 +77,28 @@ func build() -> void:
 	for dx in range(x + 1, x + 6):
 		_dock(Vector2i(dx, 22))
 	extend(10, 8)
+	# The outlet stream runs on through the added rows to the border water.
+	for y in range(40, rows):
+		for sx in range(26, 29):
+			var c := Vector2i(sx, y)
+			if not things.has(c):
+				_water[c] = true
+				set_thing(sx, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	# The lake, its outlet stream and the water past the map edge: one body
+	# (drawn under the docks too, so the planks sit on water, not a hole).
+	if Art.has("seamless", "lake_shallow"):
+		border_water_extra = _water.duplicate()
+		for c: Vector2i in _docked:
+			border_water_extra[c] = true
+		border_water_shore = "grass"
+
+
+var _docked := {}
 
 
 func _dock(c: Vector2i) -> void:
+	if _water.has(c):
+		_docked[c] = true
 	things[c] = {"type": "dock"}
 	blocked.erase(c)
 	hard.erase(c)
@@ -212,6 +227,8 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 				var wc := Vector2i(x, y)
 				if wc != door and in_content(wc) and not things.has(wc):
 					_water[wc] = true
+					if not border_water_extra.is_empty():
+						border_water_extra[wc] = true
 					set_thing(wc.x, wc.y, {"type": "water", "hint": ""})
 	things[door] = {"type": "door", "interior": interior, "hint": hint}
 

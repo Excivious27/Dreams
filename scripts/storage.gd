@@ -110,7 +110,7 @@ static func withdraw(key: String, id: String, n: int) -> int:
 static func _keep(id: String) -> bool:
 	# Deposit All leaves these in the bag: tools, seeds, food you carry, and whatever's on the toolbar.
 	var t := str(GameState.items.get(id, {}).get("type", ""))
-	return GameState.has_tool(id) or t in ["tool", "key", "quest"] or (GameState.run["toolbar"] as Array).has(id) or GameState.is_locked(id)
+	return GameState.has_tool(id) or t in ["tool", "key", "quest", "vehicle"] or (GameState.run["toolbar"] as Array).has(id) or GameState.is_locked(id)
 
 
 static func deposit_all(key: String) -> int:

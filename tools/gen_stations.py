@@ -103,8 +103,8 @@ for id, name, dmg, val, tier in [('brass_knuckles', 'Brass Knuckles', 3, 150, 1)
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters')
 # Guns (gangster arc): ranged, one round a shot; out of rounds they're a clumsy club. Cartoon puffs, no blood.
 item('rounds', 'Rounds', 'craft', 3, 1, arc='gangsters', desc='One per shot.')
-for id, name, dmg, val, tier, extra in [('six_shooter', 'Six-Shooter', 4, 700, 2, {'range': 110}), ('scattergun', 'Scattergun', 6, 2000, 3, {'range': 64, 'spread': True, 'cd': 1.6}),
-                                         ('tommy_gun', 'Tommy Gun', 5, 2600, 3, {'range': 120, 'cd': 0.45}), ('gold_revolver', 'Gold Revolver', 10, 5600, 4, {'range': 140})]:
+for id, name, dmg, val, tier, extra in [('six_shooter', 'Six-Shooter', 4, 700, 2, {'range': 110, 'cd': 2.0}), ('scattergun', 'Scattergun', 6, 2000, 3, {'range': 64, 'spread': True, 'cd': 1.6}),
+                                         ('tommy_gun', 'Tommy Gun', 3, 2600, 3, {'range': 120, 'cd': 0.6}), ('gold_revolver', 'Gold Revolver', 10, 5600, 4, {'range': 140, 'cd': 2.5})]:
     item(id, name, 'tool', val, tier, damage=dmg, weapon=True, arc='gangsters', **extra)
 for id, name, slot, stats, val, tier in [
  ('fedora', 'Fedora', 'head', {'defense': 1, 'luck': 1}, 140, 1), ('shades', 'Shades', 'head', {'luck': 2, 'speed': 1}, 520, 3),

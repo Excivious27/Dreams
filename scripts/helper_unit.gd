@@ -48,7 +48,7 @@ func label() -> String:
 
 
 func take_damage(n: int, _from: Vector2) -> void:
-	hp -= maxi(1, n / 3)
+	hp -= maxi(1, n / 2)
 	_hurt = 0.2
 	if hp <= 0:
 		map.fx("poof", position + Vector2(0, -6), 12.0, 0.4)
@@ -121,7 +121,9 @@ func _process(delta: float) -> void:
 			_act_t = 0.5
 			if map.player.position.distance_to(position) < 70.0:
 				GameState.run["buffs"] = GameState.run.get("buffs", {})
-				GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 3, "amount": 2.0}
+				var db: Dictionary = GameState.run["buffs"].get("defense", {})
+				if db.is_empty() or int(db.get("until", 0)) <= GameState.now_abs() or float(db.get("amount", 0.0)) <= 2.0:
+					GameState.run["buffs"]["defense"] = {"until": GameState.now_abs() + 3, "amount": 2.0}
 		"shade":
 			_cd = 6.0
 			_act_t = 0.5

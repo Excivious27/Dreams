@@ -677,6 +677,9 @@ func _sellbox(sel: String) -> void:
 	if sel != "" and GameState.count(sel) > 0 and stype in ["key", "vehicle"]:
 		hud.toast("You can't sell the %s. It matters." % GameState.item_name(sel), Color(1, 0.85, 0.6))
 		return
+	if sel != "" and GameState.is_locked(sel):
+		hud.toast("Your %s is locked in your bag. Unlock it to sell it." % GameState.item_name(sel), Color(1, 0.85, 0.6))
+		return
 	if sel != "" and GameState.count(sel) > 0 and stype != "tool":
 		var n := GameState.count(sel)
 		var prev := int(box.get(sel, 0))
@@ -1179,8 +1182,8 @@ func _place_props() -> void:
 		var pen := Rect2i(26, 9, 6, 3)
 		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick", Vector2i(28, 11), pen, true)
 	if builds.has("barn"):
-		var pen := Rect2i(32, 6, 8, 4)
-		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 9), pen); _animal("calf", Vector2i(38, 9), pen, true); _animal("lamb", Vector2i(36, 7), pen, true)
+		var pen := Rect2i(32, 6, 8, 3)
+		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf", Vector2i(38, 8), pen, true); _animal("lamb", Vector2i(36, 7), pen, true)
 	# Debris sprites for the things placed in build().
 	var season := GameState.season()
 	for c: Vector2i in things.keys():

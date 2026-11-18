@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 		return
 	if _cd <= 0.0:
 		var e := map.nearest_enemy_to(position, reach)
-		if e and e._alive:
+		if e and e._alive and map.line_clear(position, e.position):
 			_cd = rate
 			_zap_to = e.position + Vector2(0, -8)
 			_zap_t = 0.12

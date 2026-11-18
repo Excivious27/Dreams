@@ -64,7 +64,7 @@ func _process(delta: float) -> void:
 			# At night, in rain and in winter they huddle at the back of the pen, by the barn.
 			if GameState.is_night() or GameState.is_wet() or GameState.season() == "winter":
 				c.y = pen.position.y
-			if map.blocked.has(c) and not map.things.has(c):
+			if map.blocked.has(c):
 				_wait = 0.5
 				_state = "idle"
 			else:

@@ -1042,7 +1042,7 @@
    "progress": 1,
    "intro": "The docks are mine. Everything here burns if I say so.",
    "yield": "...It's out. I've never had it go out before.",
-   "origin": "A man in a grey suit handed me a black stone at my mother's funeral. It was warm. I thought that meant something.",
+   "origin": "A man in a grey suit handed me a black stone the day they boarded up our house. It was warm. I thought that meant something.",
    "char": "mk_ember"
   },
   "dahlia": {
@@ -1102,7 +1102,7 @@
    "progress": 2,
    "intro": "Hit me. Go on. Everyone gets one.",
    "yield": "...Fair. You waited. Nobody waits.",
-   "origin": "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. I'm the only one still standing.",
+   "origin": "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. The rest threw theirs in the furnace. I kept mine.",
    "char": "mk_bruno"
   },
   "tomas": {

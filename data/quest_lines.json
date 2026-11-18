@@ -356,7 +356,7 @@
  },
  "alder_wine": {
   "offer": [
-   "A bottle of wine. For the council. For morale.",
+   "A bottle of wine. For the council's toast at the fair.",
    "...Discreetly. Bram talks."
   ],
   "yes": "Thank you. Discreetly.",
@@ -560,7 +560,7 @@
  },
  "bram_wine": {
   "offer": [
-   "Two wine for the festival night. The council drinks it. The council drinks all of it.",
+   "Two wine for the festival night. One toast for the council, and one for the town.",
    "I'd like to have some for the rest of us."
   ],
   "yes": "Good. Keg it yourself if you've got one, it's cheaper than buying.",
@@ -703,7 +703,7 @@
  },
  "sal_coffee": {
   "offer": [
-   "Three coffees. I'd kill for them. Figure of speech. Mostly."
+   "Three coffees. I'd sell my bench for them. Figure of speech. Mostly."
   ],
   "yes": "You're alright.",
   "no": "Fine. I'll chew the beans.",

@@ -167,7 +167,7 @@ static func on_collector_down(m: GameMap) -> void:
 		if is_instance_valid(e) and e._alive and e.has_meta("collector"):
 			return
 	set_heat(heat() - 1)
-	m.hud.toast("The collectors won't be reporting back. Heat %d/5." % heat(), Color(0.7, 1, 0.7))
+	m.hud.toast("The collectors scatter and won't be back today. Heat %d/5." % heat(), Color(0.7, 1, 0.7))
 
 
 ## Called from sleep(): heat cools, the wash pays out.

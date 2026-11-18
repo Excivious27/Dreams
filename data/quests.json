@@ -988,7 +988,7 @@
   {
    "id": "alder_wine",
    "giver": "alder",
-   "text": "Alder would like a bottle of wine for the council. Discreetly.",
+   "text": "Alder would like a bottle of wine for the council's fair toast.",
    "when": {
     "friend": [
      "alder",
@@ -1730,7 +1730,7 @@
   {
    "id": "sal_coffee",
    "giver": "sal",
-   "text": "Sal would kill for 3 coffees.",
+   "text": "Sal would give anything for 3 coffees.",
    "when": {
     "quest": "meet_town"
    },

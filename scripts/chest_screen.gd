@@ -67,7 +67,7 @@ func _ready() -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 2)
 	v.add_child(row)
-	row.add_child(_btn("Sort", func() -> void: Storage.sort_box(key); GameState.sort_bag(); _refresh()))
+	row.add_child(_btn("Sort", func() -> void: Storage.sort_box(key); _pick = {}; _refresh()))
 	row.add_child(_btn("Quick stack", func() -> void: _note(Storage.quick_stack(key), "stacked")))
 	row.add_child(_btn("Deposit all", func() -> void: _note(Storage.deposit_all(key), "stored")))
 	row.add_child(_btn("Take all", func() -> void: _note(Storage.take_all(key), "taken")))
@@ -106,10 +106,15 @@ func _scroll_grid(v: VBoxContainer, h: float) -> GridContainer:
 
 func _process(_d: float) -> void:
 	_arm += 1
+	# A finger that moves is scrolling, not holding.
+	if not _press.is_empty() and get_viewport().get_mouse_position().distance_to(_press["at"]) > 6.0:
+		_press = {}
 	if not _press.is_empty() and Time.get_ticks_msec() - int(_press["t"]) > 450:
 		var pr := _press
 		_press = {}
-		_swallow = true
+		# The refresh frees the button under the finger, so its release never
+		# arrives: swallow only a tap that comes within the next moment.
+		_swallow_until = Time.get_ticks_msec() + 350
 		_hold(str(pr["grid"]), int(pr["i"]))
 	if _arm < 8:
 		return
@@ -168,7 +173,7 @@ func _n(have: int) -> int:
 	return have
 
 
-var _swallow := false
+var _swallow_until := 0
 
 
 func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "", idx := -1) -> Control:
@@ -185,11 +190,10 @@ func _slot(id: String, count: int, cb: Callable, q: Dictionary = {}, grid := "",
 	for st in ["normal", "hover", "pressed", "focus"]:
 		b.add_theme_stylebox_override(st, sb)
 	if grid != "":
-		b.button_down.connect(func() -> void: _press = {"grid": grid, "i": idx, "t": Time.get_ticks_msec()} if id != "" else {})
+		b.button_down.connect(func() -> void: _press = {"grid": grid, "i": idx, "t": Time.get_ticks_msec(), "at": get_viewport().get_mouse_position()} if id != "" else {})
 		b.button_up.connect(func() -> void: _press = {})
 	b.pressed.connect(_tap.bind(grid, idx, cb))
 	if id != "":
-		b.tooltip_text = GameState.item_name(id)
 		if grid == "b" and GameState.is_locked(id):
 			var lk := _label("•", 9, Color(1, 0.85, 0.3))
 			lk.position = Vector2(SLOT - 9, -2)
@@ -301,8 +305,7 @@ func _pick_up() -> void:
 
 ## A tap: place a picked item, else the slot's own action (quick move across).
 func _tap(grid: String, i: int, cb: Callable) -> void:
-	if _swallow:
-		_swallow = false
+	if Time.get_ticks_msec() < _swallow_until:
 		return
 	if not _pick.is_empty():
 		var pg := str(_pick["grid"])

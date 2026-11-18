@@ -729,7 +729,7 @@
     {
      "id": "second_wind",
      "name": "Second Wind",
-     "desc": "Killing an enemy restores 5 energy (per rank)",
+     "desc": "Beating an enemy restores 5 energy (per rank)",
      "ranks": 2,
      "tier": 2,
      "requires": [

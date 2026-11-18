@@ -739,7 +739,7 @@
        "text": "The Knight turns its head. Slowly. Toward Nova, not you.",
        "choice": [
         "Let Nova try the Meow Pow Wow first.",
-        "He'll kill her. We fight."
+        "He'll hurt her. We fight."
        ],
        "key": "knight_mercy",
        "branches": {
@@ -1492,7 +1492,7 @@
      "lines": [
       {
        "who": "",
-       "text": "The President's man goes down between the rocks. In his coat, a photograph of your old front door, and a phone with one number in it."
+       "text": "The President's man stumbles off between the rocks and is gone, leaving his coat behind. In it, a photograph of your old front door, and a phone with one number in it."
       },
       {
        "who": "",

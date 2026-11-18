@@ -212,7 +212,7 @@ func _process(delta: float) -> void:
 		return
 	# Sorcery status: asleep (Lull) holds the enemy still; burn (Ember) ticks damage.
 	if has_meta("asleep_until") and Time.get_ticks_msec() < int(get_meta("asleep_until")):
-		_stun = maxf(_stun, 0.2)
+		_stun = maxf(_stun, 0.2); _shield = maxf(0.0, _shield - delta)
 		return
 	if has_meta("burn") and int(get_meta("burn")) > 0:
 		_burn_t += delta
@@ -394,7 +394,7 @@ func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) ->
 				_gift.on_blocked()  # a burn tick bouncing off isn't a swing to answer
 			return false
 		n = maxi(1, int(round(n * mult)))
-		_gift.on_hit(mult)
+		if not tick: _gift.on_hit(mult)
 	if ally:
 		n = int(round(n * hp_scale))
 	var soak := armor / 2 if magic else armor
@@ -431,7 +431,7 @@ func hit(n: int, from: Vector2, magic := false, ally := false, tick := false) ->
 			if o != self and is_instance_valid(o) and o.kind == kind and o.position.distance_to(position) < 70.0:
 				o._noticed = true
 				o.provoke(map.player)
-	if abilities.has("blink") and hp > 0 and randf() < 0.5:
+	if not tick and abilities.has("blink") and hp > 0 and randf() < 0.5:
 		_blink()
 	if abilities.has("summon") and hp > 0:
 		for frac in [0.6, 0.3]:

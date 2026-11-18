@@ -425,7 +425,7 @@ func interact(id: String) -> void:
 				var n := 0
 				for e in map.enemies:
 					if is_instance_valid(e) and e.position.distance_to(p["pos"]) < 110.0:
-						e._stun = maxf(e._stun, 3.0)
+						e._stun = maxf(e._stun, 1.0 if e.has_meta("boss_name") else 3.0)
 						n += 1
 				map.shake(3.0)
 				map.hud.toast("Barrage! %d foes stunned." % n, Color(1, 0.9, 0.5))
@@ -443,7 +443,7 @@ func interact(id: String) -> void:
 	map.hud.toast("Built at %s." % str(p["name"]), Color(0.7, 1, 0.8))
 
 
-func _end(won: bool) -> void:
+func _end(won: bool, travel := true) -> void:
 	_over = true
 	# A full campaign is what trains a Strategist (more for a win, something for a loss).
 	GameState.add_xp("strategist", 400 if won else mini(120, 20 * _caps + _kills))
@@ -457,6 +457,8 @@ func _end(won: bool) -> void:
 	for h in get_tree().get_nodes_in_group("allies"):
 		if h is HelperUnit:
 			h.queue_free()
+	if not travel:
+		return
 	var key := "battle_" + bid
 	if won:
 		var first: bool = not GameState.run["flags"].has(key)

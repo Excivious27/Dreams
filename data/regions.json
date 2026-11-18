@@ -1026,21 +1026,21 @@
     "name": "bollard_a",
     "cell": [
      10,
-     19
+     18
     ]
    },
    {
     "name": "bollard_b",
     "cell": [
      18,
-     19
+     18
     ]
    },
    {
     "name": "bollard_c",
     "cell": [
      26,
-     19
+     18
     ]
    },
    {
@@ -1127,7 +1127,7 @@
     "kind": "lt_vance",
     "who": "Harbourmaster Vance",
     "text": "You're the farmer. The President said you'd come by water eventually. Everyone does.",
-    "win": "He goes down between two containers. In his jacket: a shipping manifest. Every crate on it is marked with a small purple crystal.",
+    "win": "He sits down hard between two containers and tosses you his jacket. 'Take it. I'm done.' In the pocket: a shipping manifest. Every crate on it is marked with a small purple crystal.",
     "reward": "dark",
     "reward_n": 2,
     "after": "The docks are yours now. Riley says a mechanic could do a lot with a forklift.",
@@ -5491,7 +5491,7 @@
      11
     ],
     "lines": [
-     "Don't drink the black water. Unless.",
+     "Don't drink the black water. Not even if it asks nicely.",
      "The wisps are only curious. Mostly.",
      "Frogs know things. I listen."
     ]

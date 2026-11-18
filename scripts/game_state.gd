@@ -555,7 +555,7 @@ static func toggle_lock(id: String) -> void:
 
 static func can_trash(id: String) -> bool:
 	var t := str(items.get(id, {}).get("type", ""))
-	return count(id) > 0 and not has_tool(id) and not t in ["tool", "key", "quest", "upgrade"] and not is_locked(id)
+	return count(id) > 0 and not has_tool(id) and not t in ["tool", "key", "quest", "upgrade", "vehicle"] and not is_locked(id)
 
 
 ## Throw n away. Returns how many went.
@@ -2140,7 +2140,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				tile["acc"] = 0.0
 				tile["watered"] = false
 				continue
-			if tile.get("watered", false) or is_wet() or hazel_waters:
+			if tile.get("watered", false) or is_wet() or weather_today() in ["snow", "blizzard"] or hazel_waters:
 				# Growth: in its season a crop grows a full day; out of season half
 				# a day (it struggles). Fertiliser and the farming tree speed it.
 				var rate := 1.0
@@ -2151,8 +2151,8 @@ static func sleep(passed_out := false) -> Dictionary:
 					if bool(cd.get("tree", false)):
 						rate = 0.0  # orchard trees rest out of season; they don't die
 						report["dormant"] = int(report.get("dormant", 0)) + 1
-				rate += bonus("farming", "growth")
-				if bool(tile.get("fert", false)):
+				if rate > 0.0: rate += bonus("farming", "growth")
+				if rate > 0.0 and bool(tile.get("fert", false)):
 					rate += 0.5
 				tile["acc"] = float(tile.get("acc", 0.0)) + rate
 				while float(tile["acc"]) >= 1.0:
@@ -2160,7 +2160,7 @@ static func sleep(passed_out := false) -> Dictionary:
 					tile["days"] = int(tile.get("days", 0)) + 1
 				if rate > 0.0 and randf() < bonus("farming", "extra_day"):
 					tile["days"] = int(tile.get("days", 0)) + 1
-				report["grown"] += 1
+				if rate > 0.0: report["grown"] += 1
 			tile["watered"] = false
 		else:
 			tile["watered"] = false

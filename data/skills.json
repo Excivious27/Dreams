@@ -60,12 +60,12 @@
     {
      "id": "farming_0_4",
      "name": "Full Rows",
-     "desc": "+5% chance to get a seed back (per rank)",
+     "desc": "+3% chance of a double harvest (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
      "effect": {
-      "seed_back": 0.05
+      "double_harvest": 0.03
      }
     },
     {
@@ -116,12 +116,12 @@
     {
      "id": "farming_0_9",
      "name": "Overflowing Baskets",
-     "desc": "+6% chance of a double harvest",
+     "desc": "+10% chance to get a seed back",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "double_harvest": 0.06
+      "seed_back": 0.1
      }
     },
     {
@@ -160,12 +160,12 @@
     {
      "id": "farming_1_3",
      "name": "Morning Dew",
-     "desc": "+5% chance to get a seed back (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "seed_back": 0.05
+      "xp_gain": 0.03
      }
     },
     {
@@ -205,34 +205,34 @@
     {
      "id": "farming_1_7",
      "name": "Light Hoe",
-     "desc": "+5% chance to get a seed back (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "seed_back": 0.05
+      "xp_gain": 0.03
      }
     },
     {
      "id": "farming_1_8",
      "name": "Rain Reader",
-     "desc": "+5% chance to get a seed back (per rank)",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "seed_back": 0.05
+      "xp_gain": 0.03
      }
     },
     {
      "id": "farming_1_9",
      "name": "Loam Lore",
-     "desc": "+10% chance to get a seed back",
+     "desc": "+6% faster levelling in this skill",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "seed_back": 0.1
+      "xp_gain": 0.06
      }
     },
     {
@@ -338,12 +338,12 @@
     {
      "id": "farming_2_9",
      "name": "Big Eggs",
-     "desc": "+6% faster levelling in this skill",
+     "desc": "+12 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "xp_gain": 0.06
+      "energy": 12
      }
     },
     {
@@ -1883,8 +1883,8 @@
      }
     },
     {
-     "id": "combat_u_killing_edge",
-     "name": "Killing Edge",
+     "id": "combat_u_keen_edge",
+     "name": "Keen Edge",
      "desc": "+3 damage on every hit.",
      "ranks": 1,
      "tier": 5,
@@ -2158,7 +2158,7 @@
     {
      "id": "combat_3_0",
      "name": "Rush",
-     "desc": "+2 energy back per kill (per rank)",
+     "desc": "+2 energy back per foe beaten (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
@@ -2169,7 +2169,7 @@
     {
      "id": "combat_3_1",
      "name": "Battle Cry",
-     "desc": "+2 energy back per kill (per rank)",
+     "desc": "+2 energy back per foe beaten (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
@@ -2180,7 +2180,7 @@
     {
      "id": "combat_3_2",
      "name": "Hunter's Eye",
-     "desc": "+2 energy back per kill (per rank)",
+     "desc": "+2 energy back per foe beaten (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 3,
@@ -2191,7 +2191,7 @@
     {
      "id": "combat_3_3",
      "name": "Chain Fighter",
-     "desc": "+2 energy back per kill (per rank)",
+     "desc": "+2 energy back per foe beaten (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
@@ -2211,7 +2211,7 @@
     {
      "id": "second_wind",
      "name": "Second Wind",
-     "desc": "Killing an enemy restores 5 energy (per rank)",
+     "desc": "Beating an enemy restores 5 energy (per rank)",
      "ranks": 2,
      "tier": 5,
      "effect": {
@@ -2233,7 +2233,7 @@
     {
      "id": "combat_3_7",
      "name": "Adrenaline",
-     "desc": "+2 energy back per kill (per rank)",
+     "desc": "+2 energy back per foe beaten (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 3,
@@ -2244,7 +2244,7 @@
     {
      "id": "combat_3_8",
      "name": "Fury",
-     "desc": "+2 energy back per kill (per rank)",
+     "desc": "+2 energy back per foe beaten (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
@@ -2255,7 +2255,7 @@
     {
      "id": "combat_3_9",
      "name": "Unstoppable",
-     "desc": "+4 energy back per kill",
+     "desc": "+4 energy back per foe beaten",
      "ranks": 1,
      "tier": 9,
      "row": 3,
@@ -3591,7 +3591,7 @@
     },
     {
      "id": "magic_3_8",
-     "name": "Star Blood",
+     "name": "Starborn",
      "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 8,

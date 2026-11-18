@@ -855,7 +855,7 @@ func _lines(id: String, friend: int) -> Array:
 					r["flags"]["sal_recruited"] = true
 					GameState.add_quest("gang", "Recruit your first crew. (Sal is in. The rest is up to you.)")
 					return [
-						{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You put him down."},
+						{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running."},
 						{"who": "Sal", "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent."},
 					]
 				return [{"who": "Sal", "text": "Say the word, boss. I've got nothing but time and a bad knee."}]

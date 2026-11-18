@@ -201,7 +201,7 @@ func _process(delta: float) -> void:
 		if GameState.bonus("magic", "awakened") <= 0.0:
 			_shove(p, (e.position - p.position).normalized() * float(d.get("pull_force", 42.0)) * delta)
 		if _pull <= 0.0:
-			_ring(14, 80.0, 3.0)
+			_ring(14, 80.0, 3.0, 3)
 			e.map.shake(3.0)
 			_open_after("pull")
 	if _gust > 0.0:
@@ -355,7 +355,7 @@ func _clones_check() -> void:
 				c.max_hp = 1
 				c.reward = 0
 				c.damage = maxi(1, e.damage - 1)
-				c._shadow_r = 0.0   # the tell: reflections cast no shadow
+				c._shadow_r = 0.0; c.abilities = []; c.inflicts = ""; c._shield = 0.0; c.is_guardian = false   # the tell: reflections cast no shadow
 				c.set_meta("decoy", true)
 				if c._gift:
 					c._gift.decoy = true
@@ -475,7 +475,7 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 	var g := def(id)
 	if g.is_empty():
 		return
-	if not GameState.spend_mana(int(g.get("mana", 8))):
+	if int(GameState.run.get("mana", 0)) < int(g.get("mana", 8)) or not GameState.spend_mana(int(g.get("mana", 8))):
 		m.hud.toast("Not enough mana.", Color(0.7, 0.8, 1.0))
 		return
 	var c := Color(str(g.get("colour", "c080ff")))

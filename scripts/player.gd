@@ -1074,7 +1074,7 @@ func take_damage(n: int, from: Vector2) -> void:
 	# Doc patches you mid-fight once per map when you're in trouble.
 	if Crew.perk_level("status_half") >= 3 and int(GameState.run["hp"]) > 0 and int(GameState.run["hp"]) < int(GameState.run["max_hp"]) * 0.2 and map and not map.has_meta("doc_patched"):
 		map.set_meta("doc_patched", true)
-		GameState.run["hp"] = int(GameState.run["hp"]) + int(GameState.run["max_hp"]) * 0.3
+		GameState.run["hp"] = int(GameState.run["hp"]) + int(int(GameState.run["max_hp"]) * 0.3)
 		map.hud.toast("Doc: \"Hold still.\" Patched up mid-fight.", Color(0.7, 1, 0.8))
 	_busy = false
 	Music.instance(get_tree()).sfx("hurt")

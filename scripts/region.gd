@@ -23,6 +23,8 @@ const AREA_TIER := {"orchard_hills": 1, "wastes": 1, "hideout": 1, "countryside"
 const NO_FRUIT := ["hollow_heart", "wastes", "jungle", "quarry", "highlands", "station", "sky", "underground", "neon", "uptown", "docks", "hideout"]
 
 
+var _rect_water := {}  # shore -> cells of painted water rects
+
 func _place_secrets() -> void:
 	Secrets.place(self, region_id, int(R.get("tier", AREA_TIER.get(region_id, 1))))
 	_boss_markers()
@@ -175,9 +177,33 @@ func build() -> void:
 			continue
 		for y in range(int(rr[1]), int(rr[1]) + int(rr[3])):
 			for x in range(int(rr[0]), int(rr[0]) + int(rr[2])):
-				if x < 1 or y < 1 or x >= cols - 1 or y >= rows - 1 or things.has(Vector2i(x, y)):
+				if x < 0 or y < 0 or x >= cols or y >= rows or things.has(Vector2i(x, y)):
 					continue
-				set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": wr.get("fish", R.get("fish", [])), "shore": str(wr.get("shore", "sand"))})
+				var wsh := str(wr.get("shore", "sand"))
+				set_thing(x, y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else "", "pool": wr.get("fish", R.get("fish", [])), "shore": wsh})
+				blocked[Vector2i(x, y)] = true
+				if not _rect_water.has(wsh):
+					_rect_water[wsh] = {}
+				_rect_water[wsh][Vector2i(x, y)] = true
+	# A water border joins the map's own water into one body (one shore look).
+	var water_border := false
+	if border is Dictionary:
+		water_border = "water" in (border as Dictionary).values()
+	else:
+		water_border = str(border) == "water"
+	if water_border:
+		var bsh := str(R.get("border_water_shore", ""))
+		if bsh == "":
+			if _rect_water.has("sand"):
+				bsh = "sand"
+			elif str(R.get("patch_set", "")) == "bog":
+				bsh = "bog"
+			else:
+				bsh = "grass"
+		border_water_shore = bsh
+		if _rect_water.has(bsh):
+			border_water_extra.merge(_rect_water[bsh])
+			_rect_water.erase(bsh)
 	# Forage spots from data/forage.json (respawn every 2 days, 1 with Tracker).
 	var fcount := int(R.get("forage", 0))
 	if fcount > 0:
@@ -721,9 +747,8 @@ func draw_map() -> void:
 		for c: Vector2i in pcs:
 			if not Art.draw_tile(self, "tiles", path_kind, Vector2(c * TILE), 4):
 				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("8a8a90"))
-	for wr in R.get("water", []):
-		var r: Array = wr["rect"]
-		draw_water(cells_of([Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))]), str(wr.get("shore", "grass")))
+	for wsh in _rect_water:
+		draw_water(_rect_water[wsh], str(wsh))
 	if not _water_cells.is_empty():
 		var by_shore := {}
 		for c: Vector2i in _water_cells:

@@ -37,8 +37,7 @@
     "8": [
      {
       "who": "Maple",
-      "text": "When that light came down in your field, I was closing up. I saw it from the step. I didn't run out. I didn't tell anyone.",
-      "text_gangsters": "When you turned up at that farm, I was closing up. Saw your lamp from the step. Nobody's lived out there in years. I didn't sleep that night either."
+      "text": "When that light came down in your field, I was closing up. I saw it from the step. I didn't run out. I didn't tell anyone."
      },
      {
       "who": "Maple",
@@ -154,8 +153,7 @@
     "6": [
      {
       "who": "Wren",
-      "text": "There's a flower that only grows where the crystal fell. Starflower. I had one once; I used it on a fever and it worked and I never found another.",
-      "text_gangsters": "There's a herb that only grows by the old orchard wall. Moonwort. I had some once; I used it all on one fever."
+      "text": "There's a flower that only grows where the crystal fell. Starflower. I had one once; I used it on a fever and it worked and I never found another."
      },
      {
       "who": "Wren",
@@ -165,8 +163,7 @@
     "8": [
      {
       "who": "Wren",
-      "text": "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told her mother how close it was.",
-      "text_gangsters": "The fever was Wren junior's. She was three. The moonwort was the only thing in this town that broke it."
+      "text": "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told her mother how close it was."
      },
      {
       "who": "Wren",
@@ -191,8 +188,7 @@
     "6": "A starflower. Just one. I'm not greedy.",
     "8": "She's seven now. She talks about frogs. Frogs are fine.",
     "10": "I answered her today before she asked. That's new."
-   },
-   "quest6_gangsters": "wren_moonwort"
+   }
   },
   "alder": {
    "quest6": "alder_gold",
@@ -393,8 +389,7 @@
      },
      {
       "who": "Lumi",
-      "text": "I'm painting the light, not you. You're what the light's doing.",
-      "text_gangsters": "I'm painting the lamplight, not you. You're what the lamplight's doing."
+      "text": "I'm painting the light, not you. You're what the light's doing."
      }
     ],
     "4": [
@@ -410,8 +405,7 @@
     "6": [
      {
       "who": "Lumi",
-      "text": "There's a flower where the crystal fell. Starflower. The blue in it doesn't exist anywhere else; I've tried to mix it for a year.",
-      "text_gangsters": "There's a herb by the orchard wall, moonwort. The blue in it doesn't exist anywhere else. I want it for a painting."
+      "text": "There's a flower where the crystal fell. Starflower. The blue in it doesn't exist anywhere else; I've tried to mix it for a year."
      },
      {
       "who": "Lumi",
@@ -421,13 +415,11 @@
     "8": [
      {
       "who": "Lumi",
-      "text": "I mixed the blue. From the starflower. It's not the same; it's better, because I had to work for it.",
-      "text_gangsters": "I mixed the blue. From memory. It's not the same; it's better, because I had to work for it."
+      "text": "I mixed the blue. From the starflower. It's not the same; it's better, because I had to work for it."
      },
      {
       "who": "Lumi",
-      "text": "The painting's of the gate. Your gate. The morning the penguins came. Don't ask how I knew; painters know.",
-      "text_gangsters": "The painting's of the gate. Your gate. The morning you came back. Don't ask how I knew what it looked like."
+      "text": "The painting's of the gate. Your gate. The morning the penguins came. Don't ask how I knew; painters know."
      }
     ],
     "10": [
@@ -437,8 +429,7 @@
      },
      {
       "who": "Lumi",
-      "text": "It's the gate, and the light, and someone in it who looks like they've decided to stay. I didn't give them a face. They have yours.",
-      "text_gangsters": "It's the gate, and the lamp, and someone in it who looks like they've decided to stay. I think it's you."
+      "text": "It's the gate, and the light, and someone in it who looks like they've decided to stay. I didn't give them a face. They have yours."
      }
     ]
    },
@@ -449,8 +440,7 @@
     "6": "The blue. Just the blue.",
     "8": "The gate painting's drying.",
     "10": "Next to his portrait. He cried."
-   },
-   "quest6_gangsters": "lumi_moonwort"
+   }
   },
   "theo": {
    "quest6": "theo_book",
@@ -632,7 +622,7 @@
      }
     ]
    },
-   "fall": "Bram would stand in the inn doorway with a cleaver, which he has never once used on anything but onions, and he would look like a man who has.",
+   "fall": "Bram would stand in the inn doorway with a cleaver, which he has never once used on anything but onions, and nobody would argue with the doorway.",
    "after": {
     "2": "Corner's yours.",
     "4": "Still hiding in the kitchen.",
@@ -777,8 +767,7 @@
      },
      {
       "who": "Rook",
-      "text": "Try it. No. Try it again. ...Better. Grumps won't hear that.",
-      "text_gangsters": "Try it. No. Try it again. ...Better. They won't hear that coming."
+      "text": "Try it. No. Try it again. ...Better. Grumps won't hear that."
      }
     ],
     "4": [
@@ -794,8 +783,7 @@
     "6": [
      {
       "who": "Rook",
-      "text": "The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge.",
-      "text_gangsters": "The orchard. Thugs camping in it. They'll reach the north bridge by harvest, and the clinic's past that."
+      "text": "The orchard. Grumps in it. They'll reach the north bridge by harvest, and the clinic's past the bridge."
      },
      {
       "who": "Rook",
@@ -823,7 +811,7 @@
      }
     ]
    },
-   "fall": "Rook would be on the lodge roof with a bow before anyone else knew anything was coming, and the first three of whatever it was would never reach the bridge.",
+   "fall": "Rook would be on the lodge roof with a bow before anyone else knew anything was coming, and whatever it was would turn back before it reached the bridge.",
    "after": {
     "2": "Toe first. Roll.",
     "4": "Mostly empty. I like mostly.",
@@ -838,8 +826,7 @@
     "2": [
      {
       "who": "Pip",
-      "text": "You're the one with the light! Mabel says it's a crystal and Wren jr says it's frogs and I say it's BOTH.",
-      "text_gangsters": "You're the one from the farm! Mabel says you're a spy and Wren jr says you're a pirate and I say you're both."
+      "text": "You're the one with the light! Mabel says it's a crystal and Wren jr says it's frogs and I say it's BOTH."
      },
      {
       "who": "Pip",
@@ -1131,8 +1118,7 @@
     "10": [
      {
       "who": "Marlowe",
-      "text": "It tried again. The night your light came down. I saw it from the top, and I lit the lamp, and this time it wasn't the dark that landed.",
-      "text_gangsters": "They tried again. The night you came back. I saw the cars from the top, and I lit the lamp, and they turned around."
+      "text": "It tried again. The night your light came down. I saw it from the top, and I lit the lamp, and this time it wasn't the dark that landed."
      },
      {
       "who": "Marlowe",
@@ -1150,7 +1136,7 @@
    }
   },
   "orla": {
-   "quest6": "orla_oil",
+   "quest6": "lighthouse_oil",
    "milestones": {
     "2": [
      {
@@ -1276,7 +1262,7 @@
    }
   },
   "ivy": {
-   "quest6": "ivy_coins",
+   "quest6": "theo_coins",
    "milestones": {
     "2": [
      {
@@ -1311,8 +1297,7 @@
     "8": [
      {
       "who": "Ivy",
-      "text": "The coins settled it. The bell, the light, the mine log: one night, twenty-one years ago. Theo's writing a small notice.",
-      "text_gangsters": "The coins settled it. The bell, the deeds, the mine log: one night, twenty-one years ago. Someone bought this town in an evening."
+      "text": "The coins settled it. The bell, the light, the mine log: one night, twenty-one years ago. Theo's writing a small notice."
      },
      {
       "who": "Ivy",
@@ -1340,7 +1325,7 @@
    }
   },
   "tam": {
-   "quest6": "tam_lamb",
+   "quest6": "mer_crystals",
    "milestones": {
     "2": [
      {
@@ -1403,7 +1388,7 @@
    }
   },
   "old_moss": {
-   "quest6": "moss_glowcaps",
+   "quest6": "wren_glowcap",
    "milestones": {
     "2": [
      {
@@ -1456,7 +1441,7 @@
      }
     ]
    },
-   "fall": "Old Moss would walk into the black water, and talk to what's in it, and it would listen, because it always has.",
+   "fall": "Old Moss would stand at the edge of the black water and call to what's in it, and it would listen, because it always has.",
    "after": {
     "2": "The pot's always on.",
     "4": "I listen to the frogs.",
@@ -1466,7 +1451,7 @@
    }
   },
   "granite": {
-   "quest6": "granite_bones",
+   "quest6": "rook_bones",
    "milestones": {
     "2": [
      {
@@ -1529,7 +1514,7 @@
    }
   },
   "sel": {
-   "quest6": "sel_fossil",
+   "quest6": "theo_fossil",
    "milestones": {
     "2": [
      {
@@ -1564,8 +1549,7 @@
     "8": [
      {
       "who": "Sel",
-      "text": "The sentence: 'The light came; the town was awake; the dark went home.' That's it. That's the whole wall. Three thousand years to say three things.",
-      "text_gangsters": "The sentence: 'They came; the town was awake; they went home.' That's it. That's the whole of it."
+      "text": "The sentence: 'The light came; the town was awake; the dark went home.' That's it. That's the whole wall. Three thousand years to say three things."
      },
      {
       "who": "Sel",

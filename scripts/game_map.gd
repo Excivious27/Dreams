@@ -969,7 +969,7 @@ func is_cleared(c: Vector2i, regrow_days := 10) -> bool:
 	if regrow_days <= 0:
 		return true
 	var days := regrow_days
-	if GameState.has_perk("foraging", "Old Growth"):
+	if GameState.has_perk("foraging", "Old Growth") and scene_id() != "farm":
 		days = mini(days, 4)
 	return int(GameState.run["day"]) - int(lst[key]) < days
 
@@ -1925,7 +1925,7 @@ func player_down(reason := "hurt") -> void:
 	# Knocked out mid-battle counts as a lost campaign (and still teaches something).
 	var bt: Variant = get("battle")
 	if bt is Battle and not (bt as Battle)._over:
-		(bt as Battle)._end(false)
+		(bt as Battle)._end(false, false)
 	_changing = true
 	player.frozen = true
 	var cr := int(GameState.run["crystals"])
@@ -2815,6 +2815,7 @@ func soft_ground(cells: Dictionary, seam: String, lip := Color(0.2, 0.14, 0.07, 
 	var wm := WaterMask.make(self, cells, seam, {"drift": Vector2.ZERO, "foam": Color(1, 1, 1, 0.0), "bank": lip, "tint": tint, "wobble": 0.3, "soft": 0.09})
 	if wm == null:
 		return false
+	wm.set_meta("under_rank", 0)
 	_water_masks[key] = wm
 	_add_under.call_deferred(wm)
 	return true
@@ -2833,6 +2834,7 @@ func under_layer() -> Node2D:
 		_under_layer.name = "UnderLayer"
 		# Sort just after the water and path layers (which sit at the content offset).
 		_under_layer.position = Vector2(0, offset().y + 0.5)
+		_under_layer.set_meta("under_rank", 2)
 		_add_under(_under_layer)
 	return _under_layer
 
@@ -2848,10 +2850,22 @@ func to_under(n: Node2D) -> void:
 		under_layer().add_child(n)
 
 
+var _under_nodes: Array = []
+
+## Ground-level nodes go right above the anim layer: ground patches, then
+## water bodies, then the under layer (decals); same rank keeps call order.
 func _add_under(n: Node) -> void:
 	add_child(n)
-	if _anim_layer and _anim_layer.get_parent() == self:
-		move_child(n, _anim_layer.get_index() + 1)
+	if not (_anim_layer and _anim_layer.get_parent() == self):
+		return
+	var rank := int(n.get_meta("under_rank", 1))
+	var at := _anim_layer.get_index() + 1
+	_under_nodes = _under_nodes.filter(func(x): return is_instance_valid(x) and x.get_parent() == self and x != n)
+	for x in _under_nodes:
+		if int(x.get_meta("under_rank", 1)) <= rank:
+			at = maxi(at, x.get_index() + 1)
+	move_child(n, at)
+	_under_nodes.append(n)
 
 
 ## A rectangle of a 3x3 tile set (dirt, stone, dock...) with proper edges.
