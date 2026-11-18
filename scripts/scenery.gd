@@ -167,7 +167,7 @@ func _on_draw() -> void:
 		var fr := int(_ov_t * 0.5) % 4
 		var ox := fmod(_ov_t * 6.0, 512.0)
 		for i in range(-1, 2):
-			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256, 0, 256, 160), Color(1, 1, 1, 0.18))
+			_canvas.draw_texture_rect_region(cs, Rect2(Vector2(i * 256.0 + ox - 256.0, 120 + sin(_ov_t * 0.1 + i) * 40.0), Vector2(256, 160)), Rect2(fr * 256, 0, 256, 160), Color(0.12, 0.14, 0.2, 0.16))  # purple-keyed art: tint it to a neutral shade
 	if aurora and overhead and (Art.has("fx", "aurora2") or Art.has("fx", "aurora")):
 		var at := Art.tex("fx", "aurora2") if Art.has("fx", "aurora2") else Art.tex("fx", "aurora")
 		var fr := int(_ov_t * 3.0) % 4

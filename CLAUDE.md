@@ -42,3 +42,7 @@
 - Region look: `R.season` sets `GameState.look_season`; tile/tree/bush pickers use `GameState.look_se()` (reset in `GameMap._ready`).
 - Gift reactions: `GameState.gift_line(id, item, gain)` from data/gift_lines.json. Animals: `run.animals` (streak/fed); hay feeds; crows in `GameState._crows` at sleep. Shop counters close outside hours (`interior._counter`).
 - Skill generator is cap-aware (CAPS mirrors `GameState.BONUS_CAPS`; keep them in sync).
+- Soft edges: `WaterMask` (scripts/water_mask.gd + shaders/water_mask.gdshader) draws a whole water body or ground patch in one rect from a 1-texel-per-cell mask, blurred + noise (curved shores, foam, bank). `GameMap.draw_water` and `soft_ground(cells, seam)` (dirt/sand paths, region patch_set) use it; nodes go right after the anim layer (`_add_under`). Gameplay still uses cells.
+- `python3 tools/make_seamless.py` after slicing (makes art/gen/seamless wrap; `--check`). `tools/furnish.py` dresses interiors (auto props); interior props are fitted to their footprint in interior.gd. Farm soil layer sits at y=0.5 (y-sort with the map's own draw); beds are drawn in quarters (`farm._draw_bed`).
+- `tools/door_check.gd` (in check.sh) checks every outdoor door; front walls of buildings also enter.
+- Dialogue lines can carry `"pic": "cut_*"` (ui story panels, w267).

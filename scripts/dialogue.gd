@@ -172,6 +172,7 @@ func _next() -> void:
 		_close()
 		return
 	var line: Dictionary = _queue.pop_front()
+	_set_pic(str(line.get("pic", "")))
 	_set_portrait(str(line.get("who", "")), str(line.get("mood", "neutral")))
 	if line.has("choice"):
 		_show_choice(line)
@@ -279,7 +280,34 @@ static func input_blocked() -> bool:
 	return Time.get_ticks_msec() < block_until_ms
 
 
+## A painted story panel above the box ("pic": "cut_star" -> ui/cut_star).
+## It stays up for the following lines until another pic or "pic": "none".
+var _pic: TextureRect
+
+
+func _set_pic(name: String) -> void:
+	if name == "":
+		return
+	if name == "none" or not Art.has("ui", name):
+		if _pic:
+			_pic.visible = false
+		return
+	if _pic == null:
+		_pic = TextureRect.new()
+		_pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		_pic.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		_pic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_pic.position = Vector2(8, 70)
+		_pic.size = Vector2(254, 156)
+		add_child(_pic)
+	_pic.texture = Art.tex("ui", name)
+	_pic.visible = true
+
+
 func _close() -> void:
+	if _pic:
+		_pic.visible = false
 	active = false
 	_panel.visible = false
 	get_tree().paused = false

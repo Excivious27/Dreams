@@ -970,7 +970,7 @@ func _intro_penguins(n: Dictionary) -> void:
 	var pet_name: String = n["pet"]
 	var town: String = n["town"]
 	await say([
-		{"text": "Far past the edge of the sky, something fell."},
+		{"text": "Far past the edge of the sky, something fell.", "pic": "cut_star"},
 		{"text": "It crossed a thousand dark skies, dimmer with every one, looking for a place that still had joy in it."},
 		{"text": "It found %s. It found a little plot of land with a crooked house. It found you, %s." % [town, who]},
 	])
@@ -1253,12 +1253,34 @@ var _soil: Node2D
 func _make_soil() -> void:
 	_soil = Node2D.new()
 	_soil.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	# Far up in y so the y-sort always puts the field under everyone.
-	_soil.position = Vector2(offset().x, -100000.0)
+	# Just below the map's own ground in the y-sort (the map draws at y=0 and is
+	# sorted with its children): above the grass, under every prop and person.
+	_soil.position = Vector2(offset().x, 0.5)
 	_soil.draw.connect(func() -> void:
-		_soil.draw_set_transform(Vector2(0, offset().y + 100000.0))
+		_soil.draw_set_transform(Vector2(0, offset().y - 0.5))
 		_draw_soil(_soil))
 	add_child(_soil)
+
+
+## A tilled cell as four quarters of the 3x3 bed painting, picked by which
+## neighbours are tilled: beds get rounded rims and corners, not square tiles.
+func _draw_bed(ci: CanvasItem, name: String, c: Vector2i, farm: Dictionary) -> bool:
+	var t := Art.tex("tiles", name)
+	if t == null or t.get_width() < 96:
+		return false
+	var cw := t.get_width() / 3.0
+	var ch := t.get_height() / 3.0
+	var has := func(d: Vector2i) -> bool: return farm.has("%d,%d" % [c.x + d.x, c.y + d.y])
+	for q in 4:
+		var qx := q % 2
+		var qy := q / 2
+		var side_x := Vector2i(-1 if qx == 0 else 1, 0)
+		var side_y := Vector2i(0, -1 if qy == 0 else 1)
+		var col := 1 if has.call(side_x) else (0 if qx == 0 else 2)
+		var row := 1 if has.call(side_y) else (0 if qy == 0 else 2)
+		var src := Rect2(col * cw + qx * cw / 2.0, row * ch + qy * ch / 2.0, cw / 2.0, ch / 2.0)
+		ci.draw_texture_rect_region(t, Rect2(Vector2(c * TILE) + Vector2(qx, qy) * (TILE / 2.0), Vector2(TILE, TILE) / 2.0), src)
+	return true
 
 
 func _draw_soil(ci: CanvasItem) -> void:
@@ -1268,14 +1290,14 @@ func _draw_soil(ci: CanvasItem) -> void:
 		var c := Vector2i(int(parts[0]), int(parts[1]))
 		var tile: Dictionary = farm[key]
 		var wet := bool(tile.get("watered", false)) or GameState.is_wet()
-		if not Art.draw_tile(ci, "tiles", "tilled_wet" if wet else "tilled_dry", Vector2(c * TILE), 4):
+		if not _draw_bed(ci, "tilled_wet" if wet else "tilled_dry", c, farm):
 			ci.draw_rect(Rect2(c * TILE + Vector2i(1, 1), Vector2i(TILE - 2, TILE - 2)), Color("5c3d22") if wet else Color("8a5f38"))
 		if bool(tile.get("fert", false)):
 			for k in 3:
 				ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(3 + 4 * k, 12 - (k % 2) * 7), Vector2(2, 2)), Color(0.95, 0.85, 0.5, 0.8))
 		if wet:
-			# Make watered soil read at phone size: a dark, slightly blue wash.
-			ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.1, 0.15, 0.35, 0.32))
+			# Watered soil reads darker (no blue: it turned the beds purple).
+			ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(1, 1), Vector2(TILE - 2, TILE - 2)), Color(0, 0, 0, 0.16))
 		var crop := str(tile.get("crop", ""))
 		if crop != "":
 			var cd: Dictionary = GameState.crops[crop]

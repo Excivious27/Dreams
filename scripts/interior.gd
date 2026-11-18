@@ -59,7 +59,16 @@ func after_ready() -> void:
 				for i in w + 1:
 					blocked[Vector2i(c.x + i, c.y)] = true
 			continue
-		prop(g, nm, c, w, 0.0, bool(p.get("solid", true)))
+		# Fit every piece to its footprint: painted furniture comes in all sizes,
+		# and a wool bale must not be wider than the hut.
+		var info := Art.info(g, nm)
+		var tw := float(info.get("cell_w", info.get("w", 32)))
+		var th := float(info.get("cell_h", info.get("h", 32)))
+		var on_wall := c.y <= 1
+		var maxw := TILE * 1.6 if on_wall else (w + 1) * TILE * 1.2 + 4.0
+		var maxh := TILE * 1.5 if on_wall else TILE * 3.4
+		var sc := minf(0.5, minf(maxw / maxf(1.0, tw), maxh / maxf(1.0, th)))
+		prop(g, nm, c, w, 0.0, bool(p.get("solid", true)), sc)
 	# Keep the way in and the spot in front of every counter/thing walkable.
 	var dd: Array = I.get("door", [cols / 2, rows - 2])
 	blocked.erase(Vector2i(int(dd[0]), int(dd[1]) - 1))
@@ -388,3 +397,18 @@ func _bank() -> void:
 			GameState.run["crystals"] = int(GameState.run["crystals"]) + bal
 			GameState.run["bank"] = 0
 			hud.toast("Withdrew ◆%d." % bal)
+
+
+## Walking down onto the doorway takes you outside (no need to press A there).
+var _walked_out := false
+
+
+func _process(delta: float) -> void:
+	super(delta)
+	if _walked_out or player == null or player.frozen or get_tree().paused:
+		return
+	var d: Array = I.get("door", [cols / 2, rows - 2])
+	if player.cell() == Vector2i(int(d[0]), int(d[1])) and Input.is_action_pressed("down"):
+		_walked_out = true
+		var back: Array = I.get("back", ["town", 13, 11])
+		go_to(str(back[0]), Vector2(float(back[1]) * TILE + 8, float(back[2]) * TILE + 4), "down")

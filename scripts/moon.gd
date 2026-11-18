@@ -125,7 +125,7 @@ func after_ready() -> void:
 func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"pad":
-			go_to("mountain", Vector2(17 * TILE, 8 * TILE), "down")
+			go_to("mountain", Vector2(27 * TILE + 8, 9 * TILE), "down")
 			return true
 		"alien_shop":
 			later(_alien_shop)

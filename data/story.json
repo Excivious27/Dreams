@@ -197,7 +197,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Inside it's warm. Cat treats everywhere, scratching posts, a hundred cats, and some of them flying. Nobody mentions the flying."
+       "text": "Inside it's warm. Cat treats everywhere, scratching posts, a hundred cats, and some of them flying. Nobody mentions the flying.",
+       "pic": "cut_cattopia"
       },
       {
        "who": "Catkins",
@@ -286,7 +287,8 @@
       },
       {
        "who": "Catkins",
-       "text": "The Grumps have found our sacred island. They know we're the only ones with the magic to stop them. RUN. The catship is this way."
+       "text": "The Grumps have found our sacred island. They know we're the only ones with the magic to stop them. RUN. The catship is this way.",
+       "pic": "cut_chase"
       },
       {
        "who": "",
@@ -491,7 +493,8 @@
      "lines": [
       {
        "who": "",
-       "text": "That night, something follows you up from the valley. Bushes. Footsteps. The penguins press close together. Out of the shadows jumps a large figure."
+       "text": "That night, something follows you up from the valley. Bushes. Footsteps. The penguins press close together. Out of the shadows jumps a large figure.",
+       "pic": "cut_campfire"
       },
       {
        "who": "Big Jim",

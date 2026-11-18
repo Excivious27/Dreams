@@ -659,7 +659,7 @@ func draw_map() -> void:
 		for c in things:
 			if str(things[c].get("type", "")) == "water":
 				wc[c] = true
-		draw_water(wc, "grass")
+		draw_water(wc, "cave")
 	var kit := _draw_cave_kit()
 	var ts := "" if kit else _tier_set()
 	var nfill := 0

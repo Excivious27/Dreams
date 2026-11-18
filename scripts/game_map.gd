@@ -167,10 +167,15 @@ func _ready() -> void:
 			Net._send({"t": "scene", "scene": scene_id()}))
 
 	var cam := Camera2D.new()
-	cam.limit_left = 0
-	cam.limit_top = 0
-	cam.limit_right = maxi((cols + 2 * pad) * TILE, 270)
-	cam.limit_bottom = maxi((rows + 2 * pad) * TILE, 480)
+	# Rooms smaller than the screen sit in the middle of it, not pinned top-left.
+	var mw := (cols + 2 * pad) * TILE
+	var mh := (rows + 2 * pad) * TILE
+	var ox := maxi(0, (270 - mw) / 2)
+	var oy := maxi(0, (480 - mh) / 2)
+	cam.limit_left = -ox
+	cam.limit_top = -oy
+	cam.limit_right = maxi(mw, 270) - ox
+	cam.limit_bottom = maxi(mh, 480) - oy
 	cam.position_smoothing_enabled = true
 	cam.position_smoothing_speed = 7.0
 	player.add_child(cam)
@@ -2434,8 +2439,13 @@ func draw_grass(seed_v := 1, r := Rect2i(0, 0, 0, 0)) -> void:
 					seam_cell(self, "dry_grass", Vector2i(x, y), Color(1, 1, 1, clampf((-0.3 - n0) * 4.0, 0.0, 0.8)))
 				elif patchy and n0 > 0.42:
 					_tall[Vector2i(x, y)] = true
-				elif season == "spring" and n0 < -0.4 and hv0 % 3 == 0 and Art.has("tiles", "gv_flower_0"):
-					Art.draw_tile(self, "tiles", "gv_flower_%d" % (hv0 % 12), at, 0)
+				elif season == "spring" and n0 < -0.4 and hv0 % 3 == 0:
+					# Flower drifts as cut-out decals with a little jitter (the old
+					# gv_flower tiles were opaque squares on the grass).
+					var fl: Array = ["gdeco_dandelion", "gdeco_clover", "fdeco_0", "fdeco_1", "fdeco_2", "fdeco_3", "fdeco_4", "fdeco_5"]
+					var nm: String = fl[hv0 % fl.size()]
+					if Art.has("nature", nm):
+						Art.draw_prop(self, "nature", nm, at + Vector2(8 + (hv0 >> 4) % 7 - 3, 14 + (hv0 >> 8) % 5 - 2))
 				continue
 			if has_tiles:
 				var tname := gname
@@ -2491,6 +2501,9 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 		# Paths are never one cell wide: a 1-wide strip is all edge tiles and reads
 		# as a chain of little boxes. Widen to 2 so there is a real middle.
 		var cells := widen_path(cells_in)
+		# Dirt and sand paths: one soft, wobbly-edged shape instead of square cells.
+		if kind in ["dirt", "sand"] and scene_id() != "beach" and soft_ground(cells, "dirt_track" if kind == "dirt" else "sand", Color(0.25, 0.15, 0.06, 0.3)):
+			return
 		# Plain fill under everything (the blob set's fill variants are mostly
 		# decals: pebbles, puddles, ruts) with an occasional decal, then edges.
 		for c: Vector2i in cells:
@@ -2604,7 +2617,14 @@ func cells_of(rects: Array) -> Dictionary:
 
 
 ## Water body with proper shore edges (grass or sand outside) and animated fill.
+var _water_masks := {}  # shape key -> WaterMask (one shader rect per water body)
+
+
 func draw_water(cells: Dictionary, shore := "grass") -> void:
+	# The soft shoreline: one shader rect per body of water (curved, noisy edge,
+	# moving water, foam and bank), made once and kept.
+	if _water_mask(cells, shore):
+		return
 	# Water is the only thing that animates on the ground, so it lives on its own
 	# layer that redraws every frame; the rest of the map is drawn once.
 	# Which cells are on the edge never changes: work it out once, not per frame.
@@ -2728,6 +2748,64 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 				var cp: Vector2 = r.position + corner[1]
 				ci.draw_circle(cp, 3.0, earth)
 				ci.draw_circle(cp, 1.5, rim)
+
+
+const WATER_LOOK := {
+	"grass": {"seam": "lake_shallow", "bank": Color(0.40, 0.29, 0.17, 0.85)},
+	"river": {"seam": "river", "bank": Color(0.38, 0.28, 0.17, 0.9), "drift": Vector2(0.0, 9.0)},
+	"bog": {"seam": "bog_water", "bank": Color(0.22, 0.18, 0.11, 0.9), "foam": Color(0.55, 0.62, 0.4, 0.25)},
+	"sand": {"seam": "sea", "bank": Color(0.86, 0.74, 0.5, 0.9)},
+	"cave": {"seam": "lake_shallow", "bank": Color(0.12, 0.1, 0.14, 0.75), "tint": Color(0.5, 0.62, 0.78), "foam": Color(0.8, 0.9, 1.0, 0.3)},
+	"lava": {"seam": "lava", "bank": Color(0.12, 0.08, 0.06, 0.9), "foam": Color(1.0, 0.75, 0.3, 0.6), "drift": Vector2(1.0, 0.5)},
+}
+
+
+func _water_mask(cells: Dictionary, shore: String) -> bool:
+	if cells.is_empty():
+		return false
+	var look: Dictionary = WATER_LOOK.get(shore, WATER_LOOK["grass"])
+	if not Art.has("seamless", str(look["seam"])):
+		return false
+	var key := "%s:%d:%d" % [shore, cells.size(), cells.hash()]
+	if _water_masks.has(key):
+		return true
+	var opts := {"bank": look["bank"]}
+	if GameState.look_se() == "winter" and shore in ["grass", "river"]:
+		opts["bank"] = Color(0.9, 0.93, 0.98, 0.9)
+		opts["tint"] = Color(0.78, 0.86, 1.0)
+	for k in ["foam", "tint", "drift"]:
+		if look.has(k) and not opts.has(k):
+			opts[k] = look[k]
+	var wm := WaterMask.make(self, cells, str(look["seam"]), opts)
+	if wm == null:
+		return false
+	_water_masks[key] = wm
+	_add_under.call_deferred(wm)
+	return true
+
+
+## A patch of one ground drawn over another with a soft, noisy edge (same
+## shader as the water, standing still, no foam, a faint worn lip outside).
+func soft_ground(cells: Dictionary, seam: String, lip := Color(0.2, 0.14, 0.07, 0.28), tint := Color.WHITE) -> bool:
+	if cells.is_empty() or not Art.has("seamless", seam):
+		return false
+	var key := "g:%s:%d:%d" % [seam, cells.size(), cells.hash()]
+	if _water_masks.has(key):
+		return true
+	var wm := WaterMask.make(self, cells, seam, {"drift": Vector2.ZERO, "foam": Color(1, 1, 1, 0.0), "bank": lip, "tint": tint, "wobble": 0.3, "soft": 0.09})
+	if wm == null:
+		return false
+	_water_masks[key] = wm
+	_add_under.call_deferred(wm)
+	return true
+
+
+## Ground-level layers go right after the anim layer: above the ground, below
+## docks, props and people (y-sort ties fall back to tree order).
+func _add_under(n: Node) -> void:
+	add_child(n)
+	if _anim_layer and _anim_layer.get_parent() == self:
+		move_child(n, _anim_layer.get_index() + 1)
 
 
 ## A rectangle of a 3x3 tile set (dirt, stone, dock...) with proper edges.

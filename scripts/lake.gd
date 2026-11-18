@@ -99,7 +99,8 @@ func after_ready() -> void:
 		wp.play("idle")
 	var dock := DockLayer.new()
 	dock.map = self
-	add_child(dock)
+	dock.position = offset()
+	add_child.call_deferred(dock)  # after the water masks, so planks sit on the water
 	# Finn's hut: stilts in the water at the end of the dock (door opens onto the planks).
 	_shore_building("fishing_hut", Vector2i(26, 13), "fishing_hut", "A: Finn's bait shop", Vector2i(29, 20))
 	# The mill straddles the outlet stream on the south shore; its door is on the wheel side.

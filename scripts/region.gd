@@ -635,6 +635,11 @@ func draw_map() -> void:
 						elif not cells.has(c) and nb >= 3:
 							next[c] = true
 				cells = next
+			var soft_seam: String = {"bog": "bog", "ruinfloor": "ruin_floor", "snowpatch": "snow", "track": "dirt_track", "sand": "sand"}.get(ps, "")
+			if ps == "snowpatch" and GameState.look_se() == "winter":
+				cells = {}  # snow on snow
+			if soft_seam != "" and soft_ground(cells, soft_seam):
+				cells = {}  # drawn by the soft-edge layer
 			for c: Vector2i in cells:
 				var h := absi((c.x * 73856093) ^ (c.y * 19349663))
 				var seam_ps: String = {"bog": "bog", "ruinfloor": "ruin_floor"}.get(ps, "")

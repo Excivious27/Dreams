@@ -89,8 +89,8 @@ func after_ready() -> void:
 		set_thing(cols - 10, 11, {"type": "note", "text": "Someone's camp. The fire's still warm. Footprints lead into the sea and don't come back.", "hint": "A: the camp"}, false)
 	var dock := DockLayer.new()
 	dock.map = self
-	dock.z_index = -1
-	add_child(dock)
+	dock.position = offset()
+	add_child.call_deferred(dock)
 	var avoid := {}
 	for y in range(8, rows):
 		for x in cols:

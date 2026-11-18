@@ -80,9 +80,7 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 				else:
 					Art.draw_prop(m, "nature", "mushrooms_fall", at + Vector2(8, 16))
 			else:
-				if r < density * 0.5:
-					Art.draw_tile(m, "tiles", "deco_0", at)
-				elif Art.has("nature", "grass_tuft_winter") and rng.randf() < 0.5:
+				if Art.has("nature", "grass_tuft_winter") and rng.randf() < 0.5:
 					Art.draw_prop(m, "nature", "grass_tuft_winter" if rng.randf() < 0.7 else "grass_tuft_frost", at + Vector2(8, 16))
 	# Placed once per map (this runs from _draw, which repeats on every redraw).
 	if not m.has_meta("wx_dressed"):
