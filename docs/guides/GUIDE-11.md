@@ -357,4 +357,4 @@ Most useful right now: the test list in Part 1, then one full battle, one colony
 | Multiplayer relay and fixes | 4 | Hosting account |
 | Bigger phone-speed work (chunked map drawing, water shader) | 4 | No |
 
-**Total remaining: about 55–70 hours. The game is about 55% done.**
+**Total remaining: about 55–71 hours. The game is about 50–55% done.**
