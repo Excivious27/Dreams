@@ -13,6 +13,23 @@ var _forage_n := 0
 var npcs: Array = []
 
 
+## How tough this area's foes are. An enemy from an easier tier is brought up
+## to the area's tier (never down), and one in ten comes as an elite a tier higher.
+const AREA_TIER := {"orchard_hills": 1, "wastes": 1, "hideout": 1, "countryside": 1, "quarry": 2, "marsh": 2,
+	"riverlands": 2, "highlands": 2, "docks": 2, "colony_coral": 2, "ruins": 3, "neon": 3, "uptown": 3, "jungle": 3,
+	"colony_kelp": 3, "sky": 4, "station": 4, "underground": 4, "colony_ice": 4, "hollow_heart": 5, "colony_ember": 5}
+
+
+func _spawn_tier(kind: String) -> int:
+	var at := int(R.get("tier", AREA_TIER.get(region_id, -1)))
+	if at < 0:
+		return -1
+	var t := maxi(at, GameState.enemy_tier(kind))
+	if randf() < 0.1:
+		t = mini(5, t + 1)
+	return t if t != GameState.enemy_tier(kind) else -1
+
+
 func scene_id() -> String:
 	return region_id
 
@@ -288,7 +305,7 @@ func after_ready() -> void:
 				at = cell_center(Vector2i(randi_range(4, cols - 5), randi_range(4, rows - 5)))
 			if e.has("cell"):
 				at = cell_center(Vector2i(int(e["cell"][0]), int(e["cell"][1])))
-			var se := spawn_enemy(str(e["kind"]), at)
+			var se := spawn_enemy(str(e["kind"]), at, _spawn_tier(str(e["kind"])))
 			if se and bool(e.get("colony", false)):
 				se.set_meta("colony_foe", true)
 	if R.has("weather"):
@@ -654,24 +671,70 @@ func _process(delta: float) -> void:
 
 ## Colony maps: the elder, the shop, the star crystal and the tide beacons.
 func _place_colony() -> void:
+	var cid := region_id.trim_prefix("colony_")
+	var done := bool(Colony.st(region_id)["done"])
+	const ELDERS := {"coral": "elder_brine", "kelp": "elder_tidewhisker", "ice": "elder_icewhisker", "ember": "elder_cinderpaw"}
 	for t in R.get("things", []):
 		var c := Vector2i(int(t["cell"][0]), int(t["cell"][1]))
 		match str(t.get("type", "")):
 			"elder":
-				var sp := CharacterLibrary.make_sprite("mer")
+				var eid := str(ELDERS.get(cid, "mer"))
+				var sp := CharacterLibrary.make_sprite(eid if CharacterLibrary.has_character(eid) else "mer")
 				if sp:
 					sp.position = cell_center(c)
-					sp.play("idle")
+					sp.play("happy" if done and sp.sprite_frames.has_animation("happy") else ("idle" if done else ("sad" if sp.sprite_frames.has_animation("sad") else "idle")))
 					add_child(sp)
+				_colony_village(cid, c, done)
 			"colony_shop":
-				if Art.has("props", "stall2_blue"):
-					prop("props", "stall2_blue" if Colony.st(region_id)["done"] else "stall2_blue_closed", c, 1)
+				var stn := "%s_stall_%s" % [cid, "open" if done else "closed"]
+				if Art.has("props", stn):
+					prop("props", stn, c, 2, 0.0, true, 0.3)
+				elif Art.has("props", "stall2_blue"):
+					prop("props", "stall2_blue" if done else "stall2_blue_closed", c, 1)
 			"star_crystal":
-				var nm := "ccrystal_%d" % (4 if Colony.st(region_id)["done"] else 2)
-				if Art.has("props", nm):
+				var cn := "%s_crystal_%s" % [cid, "lit" if done else "dim"]
+				var nm := "ccrystal_%d" % (4 if done else 2)
+				if Art.has("props", cn):
+					prop("props", cn, c, 1, 0.0, true, 0.3)
+				elif Art.has("props", nm):
 					prop("props", nm, c)
 			"beacon":
 				var lit := (Colony.st(region_id)["beacons"] as Dictionary).has(str(t.get("key", "")))
+				var bn := "%s_beacon_%s" % [cid, "on" if lit else "off"]
 				var ln := "lantern_lit" if lit else "lantern_unlit"
-				if Art.has("props", ln):
+				if Art.has("props", bn):
+					prop("props", bn, c, 0, 0.0, true, 0.22)
+				elif Art.has("props", ln):
 					prop("props", ln, c)
+
+
+# Houses, villagers and (until the crystal wakes) the creeping blight around the elder.
+func _colony_village(cid: String, at: Vector2i, done: bool) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(region_id)
+	var spots := [Vector2i(-6, -5), Vector2i(0, -7), Vector2i(6, -5)]
+	for i in 3:
+		var hn := "%s_house_%d" % [cid, i + 1]
+		var hc: Vector2i = at + spots[i]
+		if Art.has("props", hn) and not blocked.has(hc):
+			prop("props", hn, hc, 2, 0.0, true, 0.32)
+	for i in 3:
+		var kid := "%s_kit_%d" % [cid, i + 1]
+		if not CharacterLibrary.has_character(kid):
+			continue
+		var sp := CharacterLibrary.make_sprite(kid)
+		if sp == null:
+			continue
+		var kc: Vector2i = at + Vector2i(-4 + i * 4, 3 + (i % 2))
+		sp.position = cell_center(kc)
+		sp.play("idle")
+		sp.speed_scale = 0.7 + 0.2 * i
+		sp.y_sort_enabled = true
+		add_child(sp)
+	if done:
+		return
+	for i in 10:
+		var bn := "%s_blight_%d" % [cid, 1 + (i % 3)]
+		var bc := Vector2i(rng.randi_range(4, cols - 5), rng.randi_range(4, rows - 5))
+		if Art.has("props", bn) and not blocked.has(bc) and bc.distance_to(at) > 5:
+			prop("props", bn, bc, 0, 0.0, true, 0.35)

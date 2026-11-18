@@ -468,20 +468,20 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 	match str(g.get("lend", "burst")):
 		"burn":
 			for en: Enemy in near:
-				en.hit(dmg, p.position, true)
+				en.hit(dmg, p.position, true, true)
 				en.set_meta("burn", 4)
 		"line":
 			var dir := p.facing_dir()
 			for en in m.enemies.duplicate():
 				if is_instance_valid(en) and en._alive and _seg_dist(en.position, p.position, p.position + dir * 130.0) < 12.0:
-					en.hit(dmg + 3, p.position, true)
+					en.hit(dmg + 3, p.position, true, true)
 		"dazzle":
 			for en: Enemy in near:
 				en._stun = maxf(en._stun, 2.8)
 		"root":
 			for en: Enemy in near:
 				en._stun = maxf(en._stun, 3.2)
-				en.hit(maxi(1, dmg - 2), p.position, true)
+				en.hit(maxi(1, dmg - 2), p.position, true, true)
 		"gale":
 			for en: Enemy in near:
 				en._knock = (en.position - p.position).normalized() * 320.0
@@ -495,9 +495,9 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 			p.invuln = maxf(p.invuln, 3.0)
 		"beat":
 			for en: Enemy in near:
-				en.hit(maxi(1, dmg - 1), p.position, true)
+				en.hit(maxi(1, dmg - 1), p.position, true, true)
 				if is_instance_valid(en) and en._alive:
-					en.hit(maxi(1, dmg - 1), p.position, true)
+					en.hit(maxi(1, dmg - 1), p.position, true, true)
 		"luck":
 			var roll := randi() % 3
 			if roll == 0:
@@ -508,10 +508,10 @@ static func cast(m: GameMap, p: Player, id: String) -> void:
 				GameState.heal(12)
 			else:
 				for en: Enemy in near:
-					en.hit(dmg + 4, p.position, true)
+					en.hit(dmg + 4, p.position, true, true)
 		"pull":
 			for en: Enemy in near:
 				en.position = en.position.lerp(p.position + (en.position - p.position).normalized() * 18.0, 0.8)
-				en.hit(dmg, p.position, true)
+				en.hit(dmg, p.position, true, true)
 				en._stun = maxf(en._stun, 1.0)
 	m.hud.toast("%s!" % str(g.get("name", "Gift")), c)

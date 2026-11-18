@@ -37,8 +37,8 @@ func build() -> void:
 				_grove[c] = true
 	# Forage: a few per clearing, respawning (region pools + rarity).
 	var rng := RandomNumberGenerator.new()
-	rng.seed = 61 + int(GameState.run["day"])
-	for i in 18:
+	rng.seed = 61 + int(GameState.run["day"]) / 7
+	for i in 10:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
 		if things.has(c) or _grove.has(c) or _on_path(c):
 			continue
@@ -148,7 +148,7 @@ func after_ready() -> void:
 	if Art.has("props", "lantern_lit"):
 		for c: Vector2i in [Vector2i(13, 11), Vector2i(19, 11)]:
 			prop("props", "lantern_lit", c)
-	var n := GameState.enemy_count(2 + (2 if int(GameState.run["time"]) > 18 * 60 else 0))
+	var n := GameState.enemy_count(2 + (2 if GameState.is_night() else 0))
 	for i in n:
 		var at := cell_center(Vector2i(randi_range(6, cols - 7), randi_range(12, rows - 8)))
 		if not blocked.has(world_to_cell(at)):

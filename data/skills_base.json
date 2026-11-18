@@ -158,7 +158,7 @@
     {
      "id": "rockbreaker",
      "name": "Rockbreaker",
-     "desc": "+1 stone from every rock (per rank)",
+     "desc": "+a third of a stone per rock (per rank)",
      "ranks": 2,
      "tier": 0,
      "effect": {
@@ -303,7 +303,7 @@
     {
      "id": "forager",
      "name": "Forager",
-     "desc": "+1 from every forage pickup (per rank)",
+     "desc": "+6% chance of a double forage pick (per rank)",
      "ranks": 2,
      "tier": 0,
      "effect": {
@@ -313,7 +313,7 @@
     {
      "id": "lumberjack",
      "name": "Lumberjack",
-     "desc": "+2 wood per tree (per rank)",
+     "desc": "+half a log per tree on average (per rank)",
      "ranks": 2,
      "tier": 0,
      "effect": {

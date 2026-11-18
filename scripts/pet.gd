@@ -213,6 +213,7 @@ func take_damage(n: int, from: Vector2) -> void:
 ## or give it a potion (tap it, or face it and press CHECK); after that it goes
 ## home to its dog house on the farm until tomorrow.
 func _knock_down() -> void:
+	Music.instance(get_tree()).sfx("whimper")
 	state()["hp"] = 0
 	_down_t = DOWN_WINDOW
 	_target = null
@@ -421,7 +422,7 @@ func _bite(e: Enemy) -> void:
 	anim.play("bite" if anim.sprite_frames.has_animation("bite") else "bark")
 	anim.flip_h = e.position.x < position.x
 	e.provoke(self)  # it turns to fight back
-	var landed := e.hit(dmg, position)
+	var landed := e.hit(dmg, position, false, true)
 	map.fx("sparkle" if GameState.bonus("pup", "pet_magic") > 0.0 else "hit_spark", e.position + Vector2(0, -8), 14.0, 0.4)
 	GameState.add_xp("pup", 2)
 	if landed:

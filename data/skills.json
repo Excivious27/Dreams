@@ -459,7 +459,7 @@
     {
      "id": "rockbreaker",
      "name": "Rockbreaker",
-     "desc": "+1 stone from every rock (per rank)",
+     "desc": "+a third of a stone per rock (per rank)",
      "ranks": 2,
      "tier": 0,
      "effect": {
@@ -481,7 +481,7 @@
     {
      "id": "mining_0_2",
      "name": "Grit",
-     "desc": "+1 extra stone per rock (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 0,
@@ -525,7 +525,7 @@
     {
      "id": "mining_0_6",
      "name": "Stone Ear",
-     "desc": "+1 extra stone per rock (per rank)",
+     "desc": "+1 toward an extra stone per rock (3 = one more) (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 0,
@@ -899,7 +899,7 @@
     {
      "id": "forager",
      "name": "Forager",
-     "desc": "+1 from every forage pickup (per rank)",
+     "desc": "+6% chance of a double forage pick (per rank)",
      "ranks": 2,
      "tier": 0,
      "effect": {
@@ -940,7 +940,7 @@
     {
      "id": "foraging_0_4",
      "name": "Berry Picker",
-     "desc": "+1 extra forage (per rank)",
+     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
@@ -984,7 +984,7 @@
     {
      "id": "foraging_0_8",
      "name": "Hidden Patches",
-     "desc": "+1 extra forage (per rank)",
+     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 0,
@@ -1006,7 +1006,7 @@
     {
      "id": "lumberjack",
      "name": "Lumberjack",
-     "desc": "+2 wood per tree (per rank)",
+     "desc": "+half a log per tree on average (per rank)",
      "ranks": 2,
      "tier": 0,
      "effect": {
@@ -1017,7 +1017,7 @@
     {
      "id": "foraging_1_1",
      "name": "Sharp Axe",
-     "desc": "+1 extra wood per tree (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
@@ -1039,7 +1039,7 @@
     {
      "id": "foraging_1_3",
      "name": "Clean Cut",
-     "desc": "+1 extra wood per tree (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
@@ -1061,7 +1061,7 @@
     {
      "id": "foraging_1_5",
      "name": "Heartwood",
-     "desc": "+1 extra wood per tree (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
@@ -1083,7 +1083,7 @@
     {
      "id": "foraging_1_7",
      "name": "Forest Giant",
-     "desc": "+1 extra wood per tree (per rank)",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
@@ -1102,7 +1102,7 @@
     {
      "id": "foraging_1_9",
      "name": "Grain Reader",
-     "desc": "+2 extra wood per tree",
+     "desc": "+2 toward an extra log per tree (4 = one more)",
      "ranks": 1,
      "tier": 9,
      "row": 1,
@@ -1220,7 +1220,7 @@
     {
      "id": "foraging_3_0",
      "name": "Quiet Steps",
-     "desc": "+1 extra forage (per rank)",
+     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
@@ -1296,7 +1296,7 @@
     {
      "id": "foraging_3_8",
      "name": "Glint Eye",
-     "desc": "+1 extra forage (per rank)",
+     "desc": "+1 (each = +6% chance of a double pick) (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,

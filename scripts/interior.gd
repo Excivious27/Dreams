@@ -236,7 +236,7 @@ func draw_map() -> void:
 			draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
 		else:
 			draw_rect(Rect2(x * TILE, 0, TILE, TILE * 2), Color("c9b08a"))
-	var night := int(GameState.run["time"]) >= 19 * 60
+	var night := GameState.is_night()
 	if not Art.has("tiles", wl + "_window"):
 		for wx in windows:
 			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(int(wx) * TILE + 8, 2 * TILE))

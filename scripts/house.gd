@@ -92,7 +92,7 @@ func _sleep() -> void:
 	if int(report["grown"]) > 0:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report["grown"]), "" if int(report["grown"]) == 1 else "s"]})
 	if int(report.get("died", 0)) > 0:
-		lines.append({"text": "The frost took %d crop%s. Only winter crops (or a greenhouse) survive the cold." % [int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
+		lines.append({"text": "%s took %d crop%s. Crops only live through their own season (or under the greenhouse glass)." % [GameState.season().capitalize(), int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
 	for nm in report.get("built", []):
 		lines.append({"who": "Hazel", "text": "Crew's done with the %s. Go have a look." % str(nm)})
 	if int(report.get("wash_back", 0)) > 0:
@@ -112,6 +112,7 @@ func _sleep() -> void:
 	var brief := "%s today, %s tomorrow." % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()]
 	if GameState.festival_today() != "":
 		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())
+	brief += " Sunset about %s." % GameState.clock_of(GameState.sunset())
 	lines.append({"text": brief})
 	var nxt := GameState.next_step()
 	if nxt != "":
@@ -163,7 +164,7 @@ func draw_map() -> void:
 			var t := Art.tex("tiles", nm)
 			if t:
 				draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
-		var night := int(GameState.run["time"]) >= 19 * 60
+		var night := GameState.is_night()
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(6 * TILE + 8, 2 * TILE))
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(10 * TILE + 8, 2 * TILE))
 	elif Art.has("tiles", "floor_wood"):

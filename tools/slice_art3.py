@@ -225,6 +225,75 @@ kit("w324_battle_structures.png", [
     ("ring_0", 53, 847), ("ring_1", 237, 841), ("ring_2", 417, 840), ("ring_3", 601, 839), ("ring_4", 786, 839),
     ("ring_5", 971, 839), ("ring_6", 1158, 839), ("ring_7", 1342, 839)], group="battle")
 
+
+def strip(group, name, frames, h=96):
+    """Frames → one horizontal strip (bottom-aligned cells of equal size)."""
+    fr = []
+    for im in frames:
+        im = trim(im)
+        k = h / im.height
+        fr.append(im.resize((max(1, int(im.width * k)), h), Image.LANCZOS))
+    cw = max(f.width for f in fr)
+    out = Image.new("RGBA", (cw * len(fr), h), (0, 0, 0, 0))
+    for i, f in enumerate(fr):
+        out.alpha_composite(f, (i * cw + (cw - f.width) // 2, 0))
+    os.makedirs(f"{GEN}/{group}", exist_ok=True)
+    out.save(f"{GEN}/{group}/{name}.png")
+    man.setdefault(group, {})[name] = {"file": f"{group}/{name}.png", "w": out.width, "h": h, "cell_w": cw, "cell_h": h, "frames": len(fr)}
+
+
+def colony_sheet(fname, cid, elder, frames, portraits, props, villagers, boss, boss_h=96):
+    f = f"{INC}/{fname}"
+    if not os.path.exists(f):
+        return
+    im = Image.open(f)
+    bs = boxes(im, 30, 30, 2)
+    get = lambda xy: keyed(im, nearest(bs, xy[0], xy[1]))
+    for anim, pts in frames.items():
+        strip(f"characters/{elder}", anim, [get(p) for p in pts])
+    strip(f"characters/{elder}", "walk", [get(p) for p in frames["idle"]])
+    for name, p in zip(["neutral", "happy", "sad", "worried", "surprised", "grateful"], portraits):
+        save(f"portraits/{elder}", name, trim(get(p)))
+    for name, p in props.items():
+        save("props", f"{cid}_{name}", trim(get(p)))
+    for i, pts in enumerate(villagers):
+        vid = f"{cid}_kit_{i + 1}"
+        strip(f"characters/{vid}", "idle", [get(p) for p in pts])
+        strip(f"characters/{vid}", "walk", [get(p) for p in pts])
+    for anim, pts in boss.items():
+        strip(f"enemies/cboss_{cid}", anim, [get(p) for p in pts], boss_h)
+
+
+colony_sheet("w326_colony_coral.png", "coral", "elder_brine",
+    {"idle": [(26, 23), (133, 23), (240, 23), (343, 23)], "talk": [(468, 23), (573, 23), (676, 23), (777, 23)], "happy": [(917, 18), (1032, 18)], "sad": [(1170, 22), (1277, 22)]},
+    [(44, 148), (287, 148), (529, 148), (776, 148), (1021, 145), (1275, 148)],
+    {"house_1": (15, 389), "house_2": (228, 392), "house_3": (440, 380), "stall_open": (651, 408), "stall_closed": (843, 410), "crystal_dim": (1030, 400),
+     "crystal_lit": (1185, 400), "beacon_off": (1351, 398), "beacon_on": (1444, 397), "blight_1": (21, 678), "blight_2": (109, 649), "blight_3": (224, 628)},
+    [[(395, 639), (474, 639), (549, 639), (626, 639)], [(749, 636), (833, 637), (915, 637), (998, 637)], [(1139, 630), (1238, 631), (1334, 630), (1429, 630)]],
+    {"idle": [(15, 780), (174, 786), (324, 784), (464, 789)], "walk": [(15, 780), (174, 786), (324, 784), (464, 789)], "attack": [(608, 771), (748, 791), (912, 792), (1078, 801)], "hurt": [(1247, 792), (1391, 806)]})
+colony_sheet("w327_colony_kelp.png", "kelp", "elder_tidewhisker",
+    {"idle": [(45, 14), (178, 14), (304, 14)], "talk": [(455, 15), (577, 15), (690, 15), (808, 16)], "happy": [(951, 16), (1073, 16)], "sad": [(1239, 16), (1370, 18)]},
+    [(41, 140), (291, 140), (532, 146), (777, 140), (1013, 140), (1260, 141)],
+    {"house_1": (18, 364), "house_2": (249, 371), "house_3": (484, 362), "stall_open": (679, 398), "stall_closed": (913, 398), "crystal_dim": (1154, 374),
+     "crystal_lit": (1348, 374), "beacon_off": (22, 600), "beacon_on": (139, 600), "blight_1": (261, 624), "blight_2": (489, 627), "blight_3": (680, 616)},
+    [[(914, 603), (1064, 603), (1214, 604), (1369, 603)], [(914, 713), (1063, 713), (1213, 713), (1366, 713)], [(915, 844), (1071, 844), (1224, 844), (1373, 844)]],
+    {"idle": [(21, 784)], "walk": [(21, 784)], "attack": [(21, 784)], "hurt": [(21, 784)]}, 56)
+colony_sheet("w328_colony_ice.png", "ice", "elder_icewhisker",
+    {"idle": [(40, 20), (157, 22), (274, 22), (390, 22)], "talk": [(39, 129), (162, 129), (279, 129), (396, 132)], "happy": [(39, 237), (162, 237)], "sad": [(39, 349), (165, 353)]},
+    [(541, 7), (788, 7), (1035, 10), (542, 221), (790, 221), (1037, 221)],
+    {"house_1": (8, 460), "house_2": (218, 470), "house_3": (442, 437), "stall_open": (667, 458), "stall_closed": (922, 461), "crystal_dim": (1164, 444),
+     "crystal_lit": (1359, 430), "beacon_off": (28, 640), "beacon_on": (140, 637), "blight_1": (352, 726), "blight_2": (437, 697), "blight_3": (544, 650),
+     "boss_copy_1": (288, 801), "boss_copy_2": (552, 801)},
+    [[(838, 643), (958, 644), (1076, 644), (1193, 644)], [(836, 760), (962, 760), (1076, 760), (1194, 760)], [(837, 878), (962, 878), (1082, 878), (1196, 878)]],
+    {"idle": [(23, 798)], "walk": [(23, 798)], "attack": [(23, 798)], "hurt": [(288, 801)]})
+colony_sheet("w329_colony_ember.png", "ember", "elder_cinderpaw",
+    {"idle": [(19, 18), (125, 18), (227, 18), (325, 18)], "talk": [(456, 18), (560, 18), (662, 18), (763, 18)], "happy": [(896, 18), (995, 18)], "sad": [(1127, 18), (1224, 18)]},
+    [(41, 154), (286, 155), (524, 155), (763, 155), (1003, 155), (1240, 155)],
+    {"house_1": (20, 400), "house_2": (284, 399), "house_3": (566, 400), "stall_open": (874, 425), "stall_closed": (1187, 429), "crystal_dim": (31, 647),
+     "crystal_lit": (255, 647), "beacon_off": (483, 647), "beacon_on": (613, 647), "blight_1": (762, 728), "blight_2": (894, 733), "blight_3": (1016, 735)},
+    [[(31, 880), (112, 881), (194, 881), (276, 882)], [(389, 879), (469, 879), (548, 880), (627, 881)], [(744, 879), (828, 880), (911, 880), (996, 880)]],
+    {"idle": [(1115, 643)], "walk": [(1115, 643)], "attack": [(1115, 643)], "hurt": [(1115, 643)]})
+
 json.dump(man, open(man_p, "w"), indent=1, sort_keys=True)
 for g in ["seamless", "cliffs", "stairs", "edges"]:
     print(g, len(man.get(g, {})))

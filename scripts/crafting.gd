@@ -268,7 +268,7 @@ static func collect(m: GameMap, station: String, key: String) -> int:
 		list.erase(j)
 		got += 1
 	if got > 0:
-		Music.instance(m.get_tree()).sfx("levelup")
+		Music.instance(m.get_tree()).sfx("craft_done", "levelup")
 	return got
 
 

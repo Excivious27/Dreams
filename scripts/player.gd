@@ -681,6 +681,11 @@ func _physics_process(delta: float) -> void:
 	velocity = velocity.move_toward(target, rate * delta)
 	var before := position
 	_move(velocity * delta)
+	if dir != Vector2.ZERO and position.distance_to(before) > 0.1:
+		_step_t -= delta
+		if _step_t <= 0.0:
+			_step_t = 0.22 if running else 0.3
+			Music.instance(get_tree()).step(_ground_word())
 	if auto:
 		# Give up if a wall stops us.
 		if position.distance_to(before) < 0.2:
@@ -854,6 +859,28 @@ func _swing() -> void:
 		_busy = false
 
 
+var _step_t := 0.0
+
+
+## Which footstep sound fits the ground under us.
+func _ground_word() -> String:
+	var map := get_parent() as GameMap
+	if map == null:
+		return "grass"
+	var id := map.scene_id()
+	if id in ["house", "interior"]:
+		return "wood"
+	if id in ["mine", "underground", "quarry", "hollow_heart", "moon", "station"]:
+		return "stone"
+	if id in ["beach"]:
+		return "sand"
+	if GameState.season() == "winter" and map.has_sky:
+		return "snow"
+	if id in ["town", "neon", "uptown", "docks"]:
+		return "stone"
+	return "grass"
+
+
 func _move(step: Vector2) -> void:
 	if map == null:
 		position += step
@@ -872,7 +899,7 @@ func _move(step: Vector2) -> void:
 	swimming = map.is_water_cell(cell())
 	if swimming and not was:
 		map.fx("splash", position, 12.0, 0.5)
-		Music.instance(get_tree()).sfx("bite")
+		Music.instance(get_tree()).sfx("splash", "bite")
 	elif was and not swimming:
 		map.fx("splash", position, 12.0, 0.4)
 
@@ -954,7 +981,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	tw.tween_property(ln, "modulate:a", 0.0, 0.09)
 	tw.tween_callback(ln.queue_free)
 	map.fx("sparkle", muzzle, 6.0, 0.15)
-	Music.instance(get_tree()).sfx("thud")
+	Music.instance(get_tree()).sfx("shot", "thud")
 	if hit:
 		map.hitstop = 0.03
 	map.shake(1.0)
@@ -994,8 +1021,8 @@ func take_damage(n: int, from: Vector2) -> void:
 		return
 	# Armour scales: every point helps, none makes you untouchable.
 	var defn := GameState.gear_stat("defense") + mini(2, Crew.perk_level("defence")) + int(GameState.buff("defense")) + (2 if Colony.has_ability("coral_ward") else 0)
-	n = maxi(1, roundi(n * 60.0 / (60.0 + 4.0 * maxf(0.0, defn))))
-	n = int(n * (1.0 - GameState.bonus("combat", "damage_reduction")))
+	n = maxi(1, roundi(n * 60.0 / (60.0 + 2.5 * maxf(0.0, defn))))
+	n = maxi(1, int(n * (1.0 - GameState.bonus("combat", "damage_reduction"))))
 	if Settings.easy():
 		n = maxi(1, roundi(n * 0.6))
 	if GameState.has_team():

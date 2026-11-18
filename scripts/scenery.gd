@@ -130,6 +130,8 @@ func _draw_weather_extras() -> void:
 		if _next_flash <= 0.0:
 			_flash_t = 0.5
 			_next_flash = randf_range(3.0, 9.0)
+			if is_inside_tree():
+				Ambience.instance(get_tree()).thunder()
 		if _flash_t > 0.0:
 			_flash_t -= get_process_delta_time()
 			var fr := clampi(int((0.5 - _flash_t) * 8.0), 0, 3)

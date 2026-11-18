@@ -95,7 +95,7 @@ func _process(delta: float) -> void:
 				_zap_to = foe.position + Vector2(0, -8)
 				_zap_t = 0.12
 				foe.provoke(map.player)
-				foe.hit(2 + GameState.progress_tier() + int(GameState.bonus("strategist", "helper_damage")), position, true)
+				foe.hit(2 + GameState.progress_tier() + int(GameState.bonus("strategist", "helper_damage")), position, true, true)
 		"healer":
 			_cd = 3.0
 			_act_t = 0.5

@@ -308,7 +308,7 @@ func _make() -> void:
 	var j := Crafting.start(station, key, rc, tier, _qty)
 	Crafting.mark_known(rc)
 	m.hud.toast("%s: ready in %s." % [str(rc["name"]), Crafting.fmt_minutes(int(j["done_at"]) - Crafting.now_abs())], Color(1, 0.9, 0.4))
-	Music.instance(get_tree()).sfx("pickup")
+	Music.instance(get_tree()).sfx("craft_done", "pickup")
 	_qty = 1
 	if not Crafting.can_make(rc):
 		_sel = {}

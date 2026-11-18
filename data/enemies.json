@@ -1583,7 +1583,7 @@
    "tier": 2,
    "abilities": [],
    "gift": "c_coral",
-   "art": "geode_golem",
+   "art": "cboss_coral",
    "name": "The Grey Reef",
    "reward": 100
   },
@@ -1595,7 +1595,7 @@
    "tier": 3,
    "abilities": [],
    "gift": "c_kelp",
-   "art": "void_eel",
+   "art": "cboss_kelp",
    "name": "The Drowning Tide",
    "reward": 200
   },
@@ -1607,7 +1607,7 @@
    "tier": 4,
    "abilities": [],
    "gift": "c_ice",
-   "art": "ice_wisp",
+   "art": "cboss_ice",
    "name": "Hollow Winter",
    "reward": 300
   },
@@ -1619,7 +1619,7 @@
    "tier": 5,
    "abilities": [],
    "gift": "c_ember",
-   "art": "geode_golem",
+   "art": "cboss_ember",
    "name": "The Smother",
    "reward": 400
   }

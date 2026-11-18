@@ -105,14 +105,21 @@ static func morning() -> Array:
 	var weekly := day % 7 == 1
 	var first_of_season := (day - 1) % GameState.DAYS_PER_SEASON == 0
 	for npc: String in data():
+		# Only the best weekly gift from each friend arrives, not one per heart level.
+		var best_weekly: Dictionary = {}
+		var best_h := -1
+		for h: String in data()[npc]:
+			if GameState.has_friend_perk(npc, int(h)) and (data()[npc][h] as Dictionary).has("weekly") and int(h) > best_h:
+				best_h = int(h)
+				best_weekly = data()[npc][h]["weekly"]
+		var nm := str(GameState.npcs.get(npc, {}).get("name", npc))
+		if weekly and best_h >= 0:
+			_give(best_weekly)
+			out.append("%s left you something (%s)." % [nm, _list(best_weekly)])
 		for h: String in data()[npc]:
 			if not GameState.has_friend_perk(npc, int(h)):
 				continue
 			var p: Dictionary = data()[npc][h]
-			var nm := str(GameState.npcs.get(npc, {}).get("name", npc))
-			if weekly and p.has("weekly"):
-				_give(p["weekly"])
-				out.append("%s left you something (%s)." % [nm, _list(p["weekly"])])
 			if first_of_season and p.has("season"):
 				_give(p["season"])
 				out.append("%s sent a seed pack for the new season." % nm)

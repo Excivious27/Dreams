@@ -70,7 +70,7 @@ static func morning() -> int:
 		var want := _favour_item(who, rng)
 		if want != "":
 			var n := rng.randi_range(2, 6) if GameState.item_value(want) < 60 else rng.randi_range(1, 2)
-			var pay := int(GameState.item_value(want) * n * 1.6) + 20
+			var pay := int(GameState.item_value(want) * n * 1.3) + 10
 			send(_name(who), "Could you spare %d %s? I'd pay ◆%d, and I'd owe you one. Send them back with this letter within %d days." % [n, GameState.item_name(want), pay, 4], "favour", {"npc": who, "item": want, "n": n, "pay": pay, "until": day + 4})
 	# Gifts from friends (2+ hearts).
 	var friends: Array = []

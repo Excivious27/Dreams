@@ -63,9 +63,9 @@
   },
   "10": {
    "give": {
-    "#gold": 1000
+    "#gold": 500
    },
-   "text": "Keys to the city: \u25c61000 from the town purse"
+   "text": "Keys to the city: \u25c6500 from the town purse"
   }
  },
  "sal": {
@@ -216,9 +216,9 @@
   },
   "10": {
    "weekly": {
-    "wishfruit_cake": 1
+    "berry_pie": 2
    },
-   "text": "Posy's best: a Wishfruit Cake each week"
+   "text": "Posy's best: two berry pies each week"
   }
  },
  "juniper": {

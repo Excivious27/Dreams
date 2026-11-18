@@ -59,15 +59,15 @@ func build() -> void:
 			tip = Vector2i(12, y)
 	things[tip] = {"type": "ferry", "hint": "A: the ferry to the colonies"}
 	var rng := RandomNumberGenerator.new()
-	rng.seed = 81 + int(GameState.run["day"])
-	for i in 24:
+	rng.seed = 81 + int(GameState.run["day"]) / 7
+	for i in 12:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y + 2))
 		if not _sand.has(c):
 			continue
 		if things.has(c):
 			continue
 		var key := "forage_beach_%d_%d" % [c.x, c.y]
-		if int(GameState.run["flags"].get(key, 0)) >= int(GameState.run["day"]):
+		if int(GameState.run["flags"].get(key, -9)) > int(GameState.run["day"]) - 2:
 			continue
 		var item: String = ["seashell", "seashell", "coconut", "fiber"][rng.randi_range(0, 3)]
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick up %s" % GameState.item_name(item)}

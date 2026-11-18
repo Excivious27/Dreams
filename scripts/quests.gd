@@ -42,7 +42,7 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 					GameState.add_item(str(pair[0]), -int(pair[1]))
 			if GameState.complete_quest(qid):
 				m.hud.toast("Quest complete: %s" % qid.replace("_", " "), Color(1, 0.9, 0.4))
-				Music.instance(m.get_tree()).sfx("levelup")
+				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 				m.emote(_npc_node(m, id), "heart", 1.4)
 			return true
 		# The reminder plays once a day; after that the villager chats normally.

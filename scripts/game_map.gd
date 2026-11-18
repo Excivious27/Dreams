@@ -23,6 +23,8 @@ var companion: Companion = null
 var hud: Hud
 var enemies: Array = []
 var sky: Scenery
+var glow: NightGlow
+const GLOW_WORDS := ["lamp", "lantern", "torch", "fire_barrel", "campfire", "beacon_on", "brazier", "crystal_lit", "streetlight", "neon"]
 var props := {}          # Vector2i -> Sprite2D (so things can change their look)
 ## Organic border: `pad` cells of forest/cliff/water around the content, drawn by
 ## draw_border(). Content coordinates stay 0..cols-1; world = (cell + pad) * TILE.
@@ -90,6 +92,10 @@ func _ready() -> void:
 		add_child(sky)
 	_night = CanvasModulate.new()
 	add_child(_night)
+	_night.color = sky_tint(int(GameState.run["time"]))
+	glow = NightGlow.new()
+	glow.map = self
+	add_child(glow)
 
 	player = Player.new()
 	player.map = self
@@ -168,6 +174,7 @@ func _ready() -> void:
 	add_child(TouchControls.new())
 	add_child(GameMenu.new())
 	Music.instance(get_tree()).play(music_track)
+	Ambience.instance(get_tree()).scene_changed()
 	queue_redraw()
 	hud.fade_in(0.5)
 	after_ready()
@@ -492,7 +499,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			if int(thing["hp"]) <= 0:
 				var is_tree := str(thing["type"]) == "tree"
 				xp("foraging", 3)
-				var bonus := int(GameState.bonus("foraging", "wood_bonus"))
+				# Woodcutting nodes: every 4 points is a sure extra log, the rest a chance at one.
+				var wb := GameState.bonus("foraging", "wood_bonus")
+				var bonus := int(wb / 4.0) + (1 if randf() < fmod(wb, 4.0) / 4.0 else 0)
 				if is_tree:
 					# Every tree comes down: it falls, leaves a stump, and regrows
 					# after a few days (sooner with Old Growth). No infinite wood.
@@ -501,7 +510,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						pop_items(cell_center(c), "sap", 1)
 					if GameState.has_perk("foraging", "Old Growth") and randf() < 0.5:
 						pop_items(cell_center(c), "hardwood" if GameState.items.has("hardwood") else "wood", 1)
-					fell_tree(c, 5 + bonus)
+					fell_tree(c, 3 + bonus)
 				else:
 					_mark_cleared(c)
 					var sp: Node2D = props.get(c, null)
@@ -509,7 +518,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 					if sp:
 						sp.queue_free()
 					fx("poof", cell_center(c) + Vector2(0, -6), 16.0, 0.5)
-					pop_items(cell_center(c), "wood", 2)
+					pop_items(cell_center(c), "wood", 1 + (1 if randf() < 0.5 else 0) + bonus / 2)
 			return true
 		"rock":
 			if GameState.held_tool() != "pickaxe":
@@ -525,7 +534,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("pick", "chop")
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			var swing := 1 + GameState.tool_tier("pickaxe") / 2
@@ -537,11 +546,11 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				_mark_cleared(c)
 				var big := props.has(c) and (props[c] as Sprite2D).texture and str((props[c] as Sprite2D).texture.resource_path).contains("rock_m")
 				var extra := "copper"
-				var en := 1 if randf() < 0.25 else 0
+				var en := 1 if randf() < 0.15 else 0
 				if randf() < GameState.bonus("mining", "gem_chance"):
 					extra = ["amethyst", "ruby", "sapphire", "emerald"][randi() % 4]
 					en = 1
-				break_rock(c, 2 + int(GameState.bonus("mining", "stone_bonus")), extra, en, "m" if big else "")
+				break_rock(c, 1 + (1 if randf() < 0.5 else 0) + int(GameState.bonus("mining", "stone_bonus") / 3.0), extra, en, "m" if big else "")
 			return true
 		"bush":
 			if bool(thing.get("berries", false)):
@@ -555,7 +564,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"locked":
 			hud.toast(str(thing.get("text", "Locked.")), Color(1, 0.9, 0.75))
-			Music.instance(get_tree()).sfx("thud")
+			Music.instance(get_tree()).sfx("locked", "thud")
 			return true
 		"forage":
 			var item := str(thing.get("item", "mushroom"))
@@ -565,7 +574,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			props.erase(c)
 			if fsp:
 				fsp.queue_free()
-			pop_items(cell_center(c), item, 1 + int(GameState.bonus("foraging", "forage_bonus")))
+			# Forager nodes: +6% chance per rank of a double pick, not a flat extra.
+			pop_items(cell_center(c), item, 1 + (1 if randf() < GameState.bonus("foraging", "forage_bonus") * 0.06 else 0))
 			xp("foraging", 2 + int(GameState.items.get(item, {}).get("tier", 1)))
 			return true
 	return false
@@ -869,7 +879,7 @@ func _mark_cleared(c: Vector2i) -> void:
 	net_act({"a": "cleared", "scene": scene_id(), "key": "%d,%d" % [c.x, c.y]})
 
 
-func is_cleared(c: Vector2i, regrow_days := 6) -> bool:
+func is_cleared(c: Vector2i, regrow_days := 10) -> bool:
 	var all: Dictionary = GameState.run.get("cleared", {})
 	var lst = all.get(scene_id(), {})
 	var key := "%d,%d" % [c.x, c.y]
@@ -882,7 +892,7 @@ func is_cleared(c: Vector2i, regrow_days := 6) -> bool:
 		return true
 	var days := regrow_days
 	if GameState.has_perk("foraging", "Old Growth"):
-		days = mini(days, 2)
+		days = mini(days, 4)
 	return int(GameState.run["day"]) - int(lst[key]) < days
 
 
@@ -987,6 +997,27 @@ func _lock_untouched_buildings() -> void:
 var exact_footprints := false
 
 
+## The light colour for this map at time t (minutes). Outdoors follows the
+## season's sunset and sunrise: warm gold at dusk, then real night. Indoors
+## gets lamplight after dark; underground and space keep their own light.
+func sky_tint(t: int) -> Color:
+	var dark := GameState.darkness(t)
+	if int(GameState.run["flags"].get("glow_day", -1)) == int(GameState.run["day"]):
+		dark *= 0.3
+	dark *= Settings.night_strength()
+	if not has_sky:
+		if scene_id() in ["house", "interior"]:
+			return Color(1, 1, 1).lerp(Color(1.0, 0.9, 0.78), dark)
+		return Color(1, 1, 1)
+	var gang := Racket.on()
+	var day_col := Color(0.84, 0.86, 0.93) if gang else Color(1, 1, 1)
+	var dusk_col := Color(1.0, 0.84, 0.70) if not gang else Color(0.92, 0.76, 0.70)
+	var night_col := Color(0.28, 0.30, 0.52) if gang else Color(0.36, 0.40, 0.66)
+	if dark < 0.35:
+		return day_col.lerp(dusk_col, dark / 0.35)
+	return dusk_col.lerp(night_col, (dark - 0.35) / 0.65)
+
+
 func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, solid := true, scale := 0.5) -> Sprite2D:
 	var s := Art.sprite(group, name)
 	if s == null:
@@ -995,6 +1026,11 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 	s.position = cell_pos(c.x + (extra_w + 1) / 2.0, c.y + 1) + Vector2(0, dy)
 	add_child(s)
 	props[c] = s
+	if glow and not name.ends_with("unlit") and not name.ends_with("_off"):
+		for gw: String in GLOW_WORDS:
+			if gw in name:
+				glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
+				break
 	if group == "buildings":
 		_bprops.append([name, c, extra_w])
 	if solid:
@@ -1279,8 +1315,8 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 		# Enemies have a body ~12px wide, 14 tall above their feet.
 		var body := Rect2(e.position + Vector2(-6, -14), Vector2(12, 14))
 		if r.intersects(body) and line_clear(from + Vector2(0, -4), e.position + Vector2(0, -4)):
-			var crit := randf() < 0.03 * GameState.skill_level("combat") + GameState.bonus("combat", "crit")
-			var dmg := damage * (2 if crit else 1)
+			var crit := randf() < minf(0.40, 0.01 * GameState.skill_level("combat") + GameState.bonus("combat", "crit"))
+			var dmg := int(round(damage * (1.5 if crit else 1.0)))
 			if e.kind.begins_with("thug_") and Crew.perk_level("doors") >= 2:
 				dmg += 2
 			e.provoke(player)
@@ -1922,6 +1958,8 @@ static var _update_told := false
 func _process(delta: float) -> void:
 	if hitstop > 0.0:
 		hitstop -= delta
+	if _night:
+		_night.color = sky_tint(int(GameState.run["time"]))
 	if get_tree().paused:
 		return
 	if hud and not (GameState.run.get("notes", []) as Array).is_empty():
@@ -1969,13 +2007,6 @@ func _process(delta: float) -> void:
 	if t % regen_every == 0 and t != _last_mana_t:
 		_last_mana_t = t
 		GameState.restore_mana(1)
-	# Evening tint from 6pm, darkest by midnight.
-	var dark := clampf((t - 18 * 60) / 360.0, 0.0, 1.0)
-	if int(GameState.run["flags"].get("glow_day", -1)) == int(GameState.run["day"]):
-		dark *= 0.3
-	# The gangster arc is a darker world: overcast by day, deeper at night.
-	var day_col := Color(0.84, 0.86, 0.93) if Racket.on() and has_sky else Color(1, 1, 1)
-	_night.color = day_col.lerp(Color(0.38, 0.42, 0.7) if Racket.on() else Color(0.45, 0.5, 0.8), dark * (0.7 if Racket.on() else 0.6))
 	if player and hud:
 		var fc := player.facing_cell()
 		hud.set_hint(hint_for(fc, things.get(fc, {})))
@@ -2007,6 +2038,7 @@ func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> v
 	if _transitioning or (_changing and not force):
 		return
 	_transitioning = true
+	Music.instance(get_tree()).sfx("door")
 	_changing = true
 	player.frozen = true
 	next_spawn = spawn
@@ -2957,7 +2989,7 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		bob.play("bobber")
 	hud.toast("Casting...")
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
-	var night: bool = int(GameState.run["time"]) >= 19 * 60 and GameState.run["flags"].has("lighthouse_lit")
+	var night: bool = GameState.is_night() and GameState.run["flags"].has("lighthouse_lit")
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
 	var t := 0.0
 	var bite := false

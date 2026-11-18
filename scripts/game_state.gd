@@ -402,15 +402,15 @@ static func saturation(id: String, n_more := 0) -> float:
 	if Crew.perk_level("fence") >= 2:
 		return 1.0  # Marlene takes any amount at full value
 	var already := int(sold.get(id, 0)) + n_more
-	# The first 20 of a thing sell at full price; after that the town has had
-	# enough of it: -10% per further 10, floor 40%. Grow a few things.
-	if already < 20:
+	# The first 12 of a thing sell at full price; after that the town has had
+	# enough of it: -10% per further 6, floor 30%. Grow and gather a mix.
+	if already < 12:
 		return 1.0
-	return maxf(0.4, 1.0 - 0.10 * (1 + (already - 20) / 10))
+	return maxf(0.3, 1.0 - 0.10 * (1 + (already - 12) / 6))
 
 
 static func sell_price(id: String, n := 1) -> int:
-	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1)) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
+	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + minf(0.20, 0.02 * (skill_level("bartering") - 1))) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
 	if family(id) != "":
 		unit *= 1.0 + bonus("farming", "crop_value")
 	if str(items.get(id, {}).get("type", "")) == "fish":
@@ -741,10 +741,11 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 ## Summed effect of ranks bought in a tree, e.g. bonus("combat", "damage").
 ## Ceilings for stacking effects (the big trees can't make costs negative or
 ## chances certain).
-const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.45, "crit": 0.6, "damage_reduction": 0.6, "wood_discount": 0.6,
+const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
 	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.9, "pass_risk": 0.2,
 	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
-	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.8, "interest": 0.05}
+	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.8, "interest": 0.05,
+	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0}
 
 
 static func bonus(skill: String, key: String) -> float:
@@ -977,7 +978,7 @@ static func roll_forage(region: String) -> String:
 
 
 static func _roll_forage_once(region: String) -> String:
-	var pool: Array = forage_data.get(region, forage_data.get("farm", []))
+	var pool: Array = forage_data.get(region, forage_data.get("wild", forage_data.get("farm", [])))
 	var total := 0.0
 	var ok: Array = []
 	for row in pool:
@@ -1610,6 +1611,45 @@ static func season_of(day: int) -> String:
 	return SEASONS[((day - 1) / DAYS_PER_SEASON) % 4]
 
 
+## Day of the year, 1..112. Summer's midpoint is day 42.
+static func doy() -> int:
+	return (int(run.get("day", 1)) - 1) % (DAYS_PER_SEASON * 4) + 1
+
+
+## Minutes after midnight. Sunset drifts a little every day: about 4:30pm in
+## midwinter, 8pm in midsummer. Full dark comes two hours after it starts.
+static func sunset() -> int:
+	return int(1095 + 105 * cos(TAU * (doy() - 42) / 112.0))
+
+
+static func full_dark() -> int:
+	return sunset() + 120
+
+
+static func sunrise() -> int:
+	return int(405 - 45 * cos(TAU * (doy() - 42) / 112.0))
+
+
+## 0 = full daylight, 1 = deep night. Uses the clock and the season.
+static func darkness(t := -1) -> float:
+	if t < 0:
+		t = int(run.get("time", DAY_START))
+	var ss := sunset()
+	if t >= ss:
+		return smoothstep(float(ss), float(ss + 120), float(t))
+	var sr := sunrise()
+	return 1.0 - smoothstep(float(sr - 90), float(sr), float(t))
+
+
+static func is_night() -> bool:
+	return darkness() > 0.5
+
+
+static func clock_of(m: int) -> String:
+	var h := (m / 60) % 24
+	return "%d:%02d%s" % [(h + 11) % 12 + 1, m % 60, "am" if h < 12 else "pm"]
+
+
 static func day_of_season() -> int:
 	return (int(run.get("day", 1)) - 1) % DAYS_PER_SEASON + 1
 
@@ -1748,7 +1788,7 @@ static func sleep(passed_out := false) -> Dictionary:
 		report["sold"].append("quality bonus = %d" % qb)
 	run["sellbox_q"] = {}
 	if total > 0:
-		add_xp("bartering", total / 4)
+		add_xp("bartering", total / 15)
 	run["sold_today"] = {}
 	run["crystals"] = int(run["crystals"]) + total
 	report["earned"] = total
@@ -1765,12 +1805,15 @@ static func sleep(passed_out := false) -> Dictionary:
 			crop_id = ""
 		if crop_id != "":
 			var cd: Dictionary = crops[crop_id]
-			var cs := str(cd.get("season", "any"))
 			var se := season()
-			# Winter kills anything that isn't a winter crop, watered or not,
-			# unless it's in the greenhouse (built).
+			var next_se := season_of(int(run["day"]) + 1)
+			var fits := crop_fits_season(cd, se)
+			var glass := in_greenhouse(str(key))
+			# A crop that can't take the coming season dies when it arrives, and
+			# winter kills anything that isn't a winter crop, unless it's under glass.
 			var is_tree := bool(cd.get("tree", false))
-			if se == "winter" and cs != "winter" and cs != "any" and not Builds.is_built("greenhouse") and not is_tree:
+			var dies := (next_se != se and not crop_fits_season(cd, next_se)) or (se == "winter" and not fits)
+			if dies and not glass and not is_tree:
 				tile["crop"] = ""
 				tile["days"] = 0
 				tile["acc"] = 0.0
@@ -1795,7 +1838,7 @@ static func sleep(passed_out := false) -> Dictionary:
 				var rate := 1.0
 				if Project.has("prism_array"):
 					rate += 0.25
-				if cs != "any" and cs != se and not Builds.is_built("greenhouse"):
+				if not fits and not glass:
 					rate = 0.5
 					if bool(cd.get("tree", false)):
 						rate = 0.0  # orchard trees rest out of season; they don't die
@@ -1813,6 +1856,12 @@ static func sleep(passed_out := false) -> Dictionary:
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
+	# Sprinklers and Hazel water again so the morning starts with wet soil.
+	_sprinklers_water()
+	if hazel_waters:
+		for k2 in run["farm"].keys():
+			if str(run["farm"][k2].get("crop", "")) != "":
+				run["farm"][k2]["watered"] = true
 	for nm in Builds.tick_overnight():
 		report["built"] = report.get("built", []) + [nm]
 	Racket.overnight(report)
@@ -2046,6 +2095,25 @@ static func take_crops(n: int) -> void:
 
 ## Placed sprinklers water the tiles around them before the night's growth.
 const SPRINKLER_REACH := {"sprinkler": 1, "sprinkler_quality": 2, "sprinkler_iridium": 3}
+## The glass plot in front of the greenhouse: crops there ignore the season.
+const GREENHOUSE_PLOT := Rect2i(17, 7, 9, 6)
+
+
+static func in_greenhouse(key: String) -> bool:
+	if not Builds.is_built("greenhouse"):
+		return false
+	var p := key.split(",")
+	return p.size() == 2 and GREENHOUSE_PLOT.has_point(Vector2i(int(p[0]), int(p[1])))
+
+
+## A crop's season can be "any", one season, or a list of seasons.
+static func crop_fits_season(cd: Dictionary, se: String) -> bool:
+	var cs: Variant = cd.get("season", "any")
+	if cs is Array:
+		return se in cs
+	return str(cs) == "any" or str(cs) == se
+
+
 static func _sprinklers_water() -> void:
 	var placed: Dictionary = run.get("placed", {})
 	for key in placed:

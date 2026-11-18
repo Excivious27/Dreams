@@ -52,11 +52,11 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 				continue
 			var at := Vector2(x * TILE, y * TILE)
 			# Some of the ground life is real forage you can pick (respawns daily).
-			if r < density * 0.12 and m.resources_here and not m.things.has(c):
+			if r < density * 0.05 and m.resources_here and not m.things.has(c):
 				var key := "fg_%s_%d_%d" % [m.scene_id(), x, y]
-				if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]):
+				if int(GameState.run["flags"].get(key, -9)) < int(GameState.run["day"]) - 1:
 					var item: String = {"spring": "flower", "summer": "wild_herb", "fall": "mushroom", "winter": "wild_leek"}.get(season, "mushroom")
-					if season == "fall" and rng.randf() < 0.2:
+					if season == "fall" and rng.randf() < 0.03 and GameState.skill_level("foraging") >= 5:
 						item = "truffle"
 					m.set_thing(x, y, {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}, false)
 					var nm: String = {"flower": "wildflowers2", "wild_herb": "gdeco_clover", "mushroom": "mushrooms_fall", "truffle": "mushrooms_fall", "wild_leek": "gdeco_tuft_a"}.get(item, "flowers")
@@ -162,7 +162,7 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 	for i in count:
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
 		var r := rng.randf()  # rolled first so the layout doesn't shift as things are cleared
-		if m.things.has(c) or m.blocked.has(c) or avoid.has(c) or (r < 0.62 and m.is_cleared(c, 4 if r < 0.35 else 6)):
+		if m.things.has(c) or m.blocked.has(c) or avoid.has(c) or (r < 0.62 and m.is_cleared(c, 8 if r < 0.35 else 10)):
 			continue
 		if r < 0.35:
 			var nm := "rock_s" if r < 0.2 else "rock_m"
@@ -347,9 +347,9 @@ class Backdrop:
 		var W := 900.0
 		var H := 1200.0
 		var t := int(GameState.run.get("time", 480))
-		var dark := clampf((t - 18 * 60) / 360.0, 0.0, 1.0)
+		var dark := GameState.darkness(t)
 		var strip_name: String = {"hills": "sky_day", "mountains": "sky_mountains", "sea": "sky_sea", "forest": "sky_forest", "night": "sky_night", "moon": "sky_night", "space": "sky_night"}.get(kind, "")
-		if t >= 17 * 60 and t < 20 * 60 and kind in ["hills", "forest"]:
+		if t >= GameState.sunset() - 60 and t < GameState.full_dark() and kind in ["hills", "forest"]:
 			strip_name = "sky_sunset"
 		elif dark > 0.5 and kind in ["hills", "forest", "mountains", "sea"]:
 			strip_name = "sky_night"

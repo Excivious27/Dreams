@@ -125,7 +125,7 @@
  "mushroom": {
   "name": "Mushroom",
   "type": "forage",
-  "value": 150,
+  "value": 10,
   "heal": 1,
   "rarity": "common",
   "tier": 1,
@@ -9346,5 +9346,13 @@
   "arc": "penguins",
   "energy": 30,
   "friend": 2
+ },
+ "shiitake": {
+  "name": "Shiitake",
+  "type": "crop",
+  "value": 150,
+  "rarity": "uncommon",
+  "tier": 3,
+  "family": "mushroom"
  }
 }

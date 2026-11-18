@@ -315,8 +315,9 @@ func _findables(rng: RandomNumberGenerator) -> void:
 		set_thing(c.x, c.y, {"type": "forage", "item": item, "key": key, "hint": "A: pick up %s" % GameState.item_name(item)}, false)
 	for i in rng.randi_range(2, 5):
 		var c: Vector2i = free[rng.randi() % free.size()]
-		if not things.has(c):
-			set_thing(c.x, c.y, {"type": "crate", "kind": "barrel_a" if rng.randf() < 0.4 else "crates_a", "hp": 2 + floor_no / 30, "hint": "A: smash it open"}, true)
+		var ck := "mcrate_%d_%d_%d" % [floor_no, i, day]
+		if not things.has(c) and not GameState.run["flags"].has(ck):
+			set_thing(c.x, c.y, {"type": "crate", "key": ck, "kind": "barrel_a" if rng.randf() < 0.4 else "crates_a", "hp": 2 + floor_no / 30, "hint": "A: smash it open"}, true)
 	if rng.randf() < 0.3 + 0.002 * mini(floor_no, 100):
 		var c: Vector2i = free[rng.randi() % free.size()]
 		var key := "mchest_%d_%d" % [floor_no, day]
@@ -344,7 +345,7 @@ func _loot(big: bool) -> Dictionary:
 			out["relic_crown"] = 1
 			out["wonder_elixir"] = 3
 	else:
-		out["#gold"] = 20 + floor_no * 3
+		out["#gold"] = 10 + int(floor_no * 1.5)
 		var opts: Array = ["potion", "energy_tea", str(gems[0]), "shard", "fossil", "cave_bloom", "iron", "gold"]
 		var a := str(opts[randi() % opts.size()])
 		out[a] = 1 + (1 if a in ["potion", "energy_tea", "shard", "iron"] else 0)
@@ -490,9 +491,12 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to("mine", Vector2.ZERO)
 			return true
 		"crate":
+			if not GameState.spend_for("axe"):
+				hud.toast("Too tired.", Color(1, 0.7, 0.7))
+				return true
 			player.play_tool("pickaxe" if GameState.held_tool() == "pickaxe" else "axe")
 			thing["hp"] = int(thing["hp"]) - 1
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("crate_break", "chop")
 			if int(thing["hp"]) <= 0:
 				things.erase(c)
 				blocked.erase(c)
@@ -500,7 +504,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					(props[c] as Node).queue_free()
 					props.erase(c)
 				fx("poof", cell_center(c), 12.0, 0.4)
-				if randf() < 0.65:
+				if thing.has("key"):
+					GameState.run["flags"][str(thing["key"])] = true
+				if randf() < 0.4:
 					_give_loot(c, _loot(false))
 				else:
 					pop_items(cell_center(c), "plank" if GameState.items.has("plank") else "wood", 1)
@@ -542,7 +548,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
 			player.play_tool("pickaxe")
-			Music.instance(get_tree()).sfx("chop")
+			Music.instance(get_tree()).sfx("pick", "chop")
 			thing["hp"] = int(thing["hp"]) - (1 + GameState.tool_tier("pickaxe") / 2)
 			if int(thing["hp"]) <= 0:
 				var ore := str(thing["ore"])
@@ -908,7 +914,7 @@ func _depth_scale(e: Enemy) -> void:
 	if e == null:
 		return
 	var into := (floor_no - 1) % 25
-	var m := 1.0 + 0.04 * into + 0.1 * mine_tier
+	var m := 1.0 + 0.06 * into + 0.1 * mine_tier
 	e.max_hp = int(round(e.max_hp * m))
 	e.hp = e.max_hp
 	e.damage = e.damage + into / 10

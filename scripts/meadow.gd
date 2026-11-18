@@ -32,7 +32,7 @@ func build() -> void:
 		if not is_cleared(p):
 			set_thing(p.x, p.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
 	for p: Vector2i in [Vector2i(7, 5), Vector2i(19, 7), Vector2i(12, 10), Vector2i(27, 17), Vector2i(15, 20)]:
-		if not is_cleared(p, 4):
+		if not is_cleared(p, 8):
 			set_thing(p.x, p.y, {"type": "rock", "hp": 2, "hint": "A: break rock"})
 	set_thing(MINE_DOOR.x, MINE_DOOR.y, {"type": "mine", "hint": "A: enter the mine"})
 	things[MINE_DOOR] = {"type": "mine", "hint": "A: enter the mine"}

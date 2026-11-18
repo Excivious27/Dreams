@@ -25,6 +25,22 @@ const HERO2_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk
 const HERO3_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "run_down", "run_up", "hurt", "attack", "attack_down", "faint", "celebrate", "powerup", "swim", "cheer", "sit", "sleep", "wave", "view_front", "view_right", "view_back", "view_left"]
 const HERO12_ANIMS := ["idle", "idle_down", "idle_up", "walk", "walk_down", "walk_up", "run", "hurt", "attack", "faint", "celebrate", "cheer", "powerup", "burst", "hoe_down", "axe_down", "pickaxe_down", "water_down", "hold_down", "eat_down", "cast_right", "reel_right", "sit", "sleep", "sleep_bed", "wave", "swim", "float", "ride", "ability", "view_front", "view_right", "view_back", "view_left"]
 const GEN_ONLY := {
+	"elder_brine": ["idle", "walk", "talk", "happy", "sad"],
+	"elder_tidewhisker": ["idle", "walk", "talk", "happy", "sad"],
+	"elder_icewhisker": ["idle", "walk", "talk", "happy", "sad"],
+	"elder_cinderpaw": ["idle", "walk", "talk", "happy", "sad"],
+	"coral_kit_1": ["idle", "walk"],
+	"coral_kit_2": ["idle", "walk"],
+	"coral_kit_3": ["idle", "walk"],
+	"kelp_kit_1": ["idle", "walk"],
+	"kelp_kit_2": ["idle", "walk"],
+	"kelp_kit_3": ["idle", "walk"],
+	"ice_kit_1": ["idle", "walk"],
+	"ice_kit_2": ["idle", "walk"],
+	"ice_kit_3": ["idle", "walk"],
+	"ember_kit_1": ["idle", "walk"],
+	"ember_kit_2": ["idle", "walk"],
+	"ember_kit_3": ["idle", "walk"],
 	"penguin_king": HERO12_ANIMS,
 	"penguin_wizard": HERO12_ANIMS,
 	"merry": HERO12_ANIMS,

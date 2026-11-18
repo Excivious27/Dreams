@@ -51,8 +51,8 @@ func _process(delta: float) -> void:
 			_zap_to = e.position + Vector2(0, -8)
 			_zap_t = 0.12
 			e.provoke(map.player)
-			e.hit(dmg, position, true)
-			Music.instance(get_tree()).sfx("zap" if FileAccess.file_exists("res://audio/sfx/zap.wav") else "hit")
+			e.hit(dmg, position, true, true)
+			Music.instance(get_tree()).sfx("zap", "hit")
 	queue_redraw()
 
 

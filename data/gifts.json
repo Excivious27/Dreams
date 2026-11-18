@@ -294,7 +294,7 @@
     "after": "never",
     "rolls": 3,
     "secs": 4.0,
-    "closed": 0.5,
+    "closed": 0.2,
     "open": 2.5
    },
    "tip": "She rolls for everything, and her luck holds for exactly three rolls. On the third it runs out for four seconds. Count her rolls.",
@@ -327,7 +327,7 @@
    ],
    "rule": {
     "type": "range",
-    "closed": 0.4,
+    "closed": 0.2,
     "open": 1.6,
     "after": "pull",
     "secs": 1.6,
@@ -359,7 +359,7 @@
     "after": "pull",
     "secs": 2.0,
     "stagger": 1.0,
-    "closed": 0.5,
+    "closed": 0.2,
     "open": 2.0
    },
    "tip": "It drags you in to slam. Get clear of the slam, then it is winded."
@@ -380,7 +380,7 @@
    ],
    "rule": {
     "type": "back",
-    "closed": 0.5,
+    "closed": 0.2,
     "open": 1.6
    },
    "tip": "The shield faces front. Step round it."
@@ -410,7 +410,7 @@
     "type": "cycle",
     "on": 6.0,
     "off": 3.5,
-    "closed": 0.34,
+    "closed": 0.2,
     "open": 2.0
    },
    "tip": "Stone for six seconds, then it has to rest. Hit it when the ring turns white."
@@ -444,7 +444,7 @@
     "after": "lines",
     "secs": 2.4,
     "stagger": 1.0,
-    "closed": 0.5,
+    "closed": 0.2,
     "open": 2.2
    },
    "tip": "Count the beams. After the last one the Warden is blind for a moment. At half health, only one of them has a shadow."
@@ -471,7 +471,7 @@
     "type": "window",
     "after": "veil",
     "secs": 2.0,
-    "closed": 0.5,
+    "closed": 0.2,
     "open": 2.2
    },
    "tip": "She sinks into the bog and comes up behind you. That is when she can be hit hard."
@@ -502,7 +502,7 @@
     "after": "never",
     "rolls": 1,
     "secs": 3.0,
-    "closed": 0.5,
+    "closed": 0.0,
     "open": 2.2
    },
    "tip": "He uses the Gifts he handed out, one after another. Every time he rolls the dice the stone stutters and he is open for three seconds. Watch for the dice."
@@ -548,7 +548,7 @@
     "type": "cycle",
     "on": 7.0,
     "off": 3.0,
-    "closed": 0.34,
+    "closed": 0.0,
     "open": 2.0
    },
    "tip": "Every Gift came from here, and it throws all of them. It dims every few seconds: that is the only time it can be hurt badly."
@@ -571,7 +571,7 @@
     "type": "window",
     "after": "veil",
     "secs": 1.8,
-    "closed": 0.5,
+    "closed": 0.2,
     "open": 2.2
    },
    "tip": "It goes out like a light and comes back behind you. Turn and hit it then."
@@ -593,7 +593,7 @@
    ],
    "rule": {
     "type": "back",
-    "closed": 0.4,
+    "closed": 0.2,
     "open": 1.8
    },
    "tip": "Its face is armoured. Its back is not."
@@ -645,7 +645,7 @@
    "rule": {
     "type": "range",
     "far": 30,
-    "closed": 0.4,
+    "closed": 0.2,
     "open": 1.6,
     "after": "pull",
     "secs": 1.8,
@@ -677,7 +677,7 @@
    ],
    "rule": {
     "type": "wet",
-    "closed": 0.6,
+    "closed": 0.2,
     "open": 0.6,
     "after": "pull",
     "secs": 2.0,
@@ -712,7 +712,7 @@
     "after": "spiral",
     "secs": 2.2,
     "stagger": 1.2,
-    "closed": 0.3,
+    "closed": 0.2,
     "open": 2.2
    },
    "tip": "Her spiral burns her out. Stay outside it, then close in while the neon sputters."
@@ -768,7 +768,7 @@
    ],
    "rule": {
     "type": "back",
-    "closed": 0.3,
+    "closed": 0.2,
     "open": 1.8,
     "turn": 1.2
    },
@@ -801,7 +801,7 @@
     "after": "veil",
     "secs": 2.0,
     "stagger": 0.8,
-    "closed": 0.3,
+    "closed": 0.2,
     "open": 2.4
    },
    "tip": "She vanishes into the hedges and steps out behind you. Turn the moment she reappears."
@@ -829,7 +829,7 @@
    "rule": {
     "type": "range",
     "far": 40,
-    "closed": 0.4,
+    "closed": 0.2,
     "open": 1.6,
     "after": "pull",
     "secs": 1.8,
@@ -899,7 +899,7 @@
     "after": "never",
     "rolls": 3,
     "secs": 3.5,
-    "closed": 0.4,
+    "closed": 0.2,
     "open": 2.4
    },
    "tip": "Her luck lasts three rolls. Count them. At low health only one of her has a shadow."

@@ -179,6 +179,6 @@ static func hall(m: GameMap) -> void:
 		var msg := Builds.buy_permit(str(ids[i]))
 		m.hud.toast(msg, Color(1, 0.9, 0.4) if msg.begins_with("Permit stamped") else Color(1, 0.7, 0.7))
 		if msg.begins_with("Permit stamped"):
-			Music.instance(m.get_tree()).sfx("pickup")
+			Music.instance(m.get_tree()).sfx("coin", "pickup")
 
 

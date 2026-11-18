@@ -197,7 +197,7 @@ func _pad() -> void:
 
 func _camp() -> void:
 	var d := Dialogue.instance(get_tree())
-	var picks := [["iron_sword", 90], ["potion", GameState.shop_price("potion", 20)], ["energy_tea", GameState.shop_price("energy_tea", 15)]]
+	var picks := [["iron_sword", 90], ["potion", GameState.shop_price("potion", 20)], ["energy_tea", GameState.shop_price("energy_tea", 60)]]
 	var ch: Array = []
 	for pk in picks:
 		ch.append("%s  ◆%d" % [GameState.item_name(str(pk[0])), int(pk[1])])

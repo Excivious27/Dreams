@@ -170,7 +170,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			var hits := 0
 			for e in m.enemies.duplicate():
 				if is_instance_valid(e) and e.position.distance_to(p.position) < 44.0:
-					e.hit(2 + meow_rank(), p.position)
+					e.hit(2 + meow_rank(), p.position, false, true)
 					e._stun = maxf(e._stun, 0.8)
 					hits += 1
 			m.hud.toast("Coldy: 'BEE BOP BOO BABY.'" if hits > 0 else "Coldy: 'Bee bop boo... nobody.'", Color(0.8, 0.9, 1.0))
@@ -204,13 +204,16 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			for id in GameState.run["inventory"].keys():
 				var v := GameState.item_value(str(id))
 				# Only loot: enemy drops, junk, ore and treasure. Never gear, food or keys.
-				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore", "material"]:
+				if v > bv and str(GameState.items.get(id, {}).get("type", "")) in ["drop", "junk", "treasure", "ore"]:
 					bv = v
 					best = str(id)
 			if best != "":
 				var n := GameState.count(best)
 				GameState.add_item(best, -n)
-				var pay := int(bv * n * 1.2)
+				var pay := GameState.sell_price(best, n)
+				var sold: Dictionary = GameState.run.get("sold_today", {})
+				sold[best] = int(sold.get(best, 0)) + n
+				GameState.run["sold_today"] = sold
 				GameState.run["crystals"] = int(GameState.run["crystals"]) + pay
 				m.hud.toast("Sal moved %d %s for ◆%d. No questions." % [n, GameState.item_name(best), pay], Color(1, 0.9, 0.6))
 			else:

@@ -423,12 +423,12 @@ func _refresh() -> void:
 		"Options":
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])
-			_button("Music: %s" % ("off" if bool(SaveGame.get_value("muted", false)) else "on"), func() -> void: Music.instance(get_tree()).toggle_mute(); _refresh())
-			for vk: String in ["music_vol", "sfx_vol"]:
+			_button("All sound: %s" % ("off" if bool(SaveGame.get_value("muted", false)) else "on"), func() -> void: Music.instance(get_tree()).toggle_mute(); _refresh())
+			for vk: String in ["music_vol", "sfx_vol", "amb_vol"]:
 				var row := HBoxContainer.new()
 				_body.add_child(row)
 				var vl := Label.new()
-				vl.text = "%s volume  %d/10" % ["Music" if vk == "music_vol" else "Sound", int(Settings.get_v(vk))]
+				vl.text = "%s volume  %d/10" % [{"music_vol": "Music", "sfx_vol": "Sound", "amb_vol": "Nature"}[vk], int(Settings.get_v(vk))]
 				vl.add_theme_font_size_override("font_size", 8)
 				vl.custom_minimum_size = Vector2(110, 0)
 				row.add_child(vl)
@@ -438,6 +438,7 @@ func _refresh() -> void:
 					bt.custom_minimum_size = Vector2(34, 22)
 					bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("pickup"); _refresh())
 					row.add_child(bt)
+			_button("Night darkness: %s" % Settings.NIGHT_NAMES[clampi(int(Settings.get_v("night")), 0, 2)], func() -> void: Settings.set_v("night", (int(Settings.get_v("night")) + 1) % 3); _refresh())
 			_button("Button size: %s" % Settings.BTN_NAMES[clampi(int(Settings.get_v("btn_size")), 0, 2)], func() -> void: Settings.set_v("btn_size", (int(Settings.get_v("btn_size")) + 1) % 3); _refresh())
 			_button("Controls: %s-handed" % ("left" if Settings.left_handed() else "right"), func() -> void: Settings.set_v("left_handed", not Settings.left_handed()); _refresh())
 			_button("Easy mode: %s" % ("on (foes hit softer, no fee when you faint)" if Settings.easy() else "off"), func() -> void: Settings.set_v("easy", not Settings.easy()); _refresh())
@@ -986,12 +987,29 @@ func _pup_tab() -> void:
 
 
 func _eat(id: String) -> void:
+	# In a fight the menu doesn't stop the clock for snacks: one bite every 3
+	# seconds, and the menu closes so you're back in it.
+	var mp := get_tree().current_scene as GameMap
+	if mp and mp.player:
+		for e in mp.enemies:
+			if is_instance_valid(e) and e.position.distance_to(mp.player.position) < 120.0:
+				var now := Time.get_ticks_msec()
+				if now < _food_ready:
+					mp.hud.toast("Still chewing. (%.0fs)" % ((_food_ready - now) / 1000.0), Color(1, 0.85, 0.7))
+					return
+				_food_ready = now + 3000
+				toggle()
+				break
 	var fx_out := GameState.consume(id)
 	var m := get_tree().current_scene
 	if m is GameMap and (m as GameMap).player:
 		(m as GameMap).effect_text((m as GameMap).player.position, fx_out)
-	Music.instance(get_tree()).sfx("pickup")
-	_refresh()
+	Music.instance(get_tree()).sfx("eat", "pickup")
+	if visible:
+		_refresh()
+
+
+var _food_ready := 0
 
 
 const PINS := {"farm": Vector2(0.44, 0.47), "house": Vector2(0.40, 0.44), "town": Vector2(0.52, 0.70), "forest": Vector2(0.30, 0.24), "lake": Vector2(0.14, 0.40),

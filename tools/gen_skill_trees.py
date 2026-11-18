@@ -25,9 +25,9 @@ AMT = {"extra_crop": 0.04, "farm_energy": 0.04, "crop_value": 0.03, "extra_day":
        "team_damage": 1, "team_defense": 0.02, "team_heal": 2, "friend_gain": 0.05, "pet_bond": 5, "team_xp": 0.04}
 DESC = {"extra_crop": "chance of an extra crop", "farm_energy": "less energy to hoe and water", "crop_value": "crop sell value",
         "extra_day": "chance a crop grows an extra day overnight", "animal_yield": "animal products", "star_chance": "chance of a star harvest",
-        "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "extra stone per rock",
+        "double_harvest": "chance of a double harvest", "seed_back": "chance to get a seed back", "stone_bonus": "toward an extra stone per rock (3 = one more)",
         "ore_bonus": "extra ore", "mine_energy": "less energy to mine", "gem_chance": "gem chance", "shard_bonus": "crystal shards",
-        "double_hit": "chance a swing hits twice", "forage_bonus": "extra forage", "wood_bonus": "extra wood per tree", "chop_bonus": "chop power",
+        "double_hit": "chance a swing hits twice", "forage_bonus": "(each = +6% chance of a double pick)", "wood_bonus": "toward an extra log per tree (4 = one more)", "chop_bonus": "chop power",
         "sap_chance": "chance of sap", "rare_forage": "rare forage chance", "bite_speed": "faster bites", "rare_fish": "rare fish chance",
         "escape_less": "fewer fish escape", "chest_chance": "treasure chest chance", "fish_value": "fish sell value", "double_fish": "chance of a double catch",
         "damage": "sword damage", "hp": "max health", "energy": "max energy", "block": "chance to block", "crit": "critical hit chance",

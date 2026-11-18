@@ -66,7 +66,7 @@ static func cast(m: GameMap, id: String) -> bool:
 			if GameState.has_perk("magic", "Moonbeam"):
 				for e2 in m.enemies.duplicate():
 					if is_instance_valid(e2) and e2.position.distance_to(p.position) < 72.0:
-						e2.hit(dmg, p.position, true)
+						e2.hit(dmg, p.position, true, true)
 						m.fx("sparkle", e2.position + Vector2(0, -8), 14.0, 0.6)
 			elif pierce > 0:
 				# Light Lance: everything along the line to the target and beyond it.
@@ -77,12 +77,12 @@ static func cast(m: GameMap, id: String) -> bool:
 					var rel: Vector2 = e2.position - p.position
 					var along := rel.dot(dir)
 					if along > 0.0 and along < 72.0 + 32.0 * pierce and absf(rel.cross(dir)) < 14.0:
-						e2.hit(dmg, p.position, true)
+						e2.hit(dmg, p.position, true, true)
 						if burn > 0:
 							e2.set_meta("burn", burn * 3)
 						m.fx("sparkle", e2.position + Vector2(0, -8), 14.0, 0.6)
 			else:
-				e.hit(dmg, p.position, true)
+				e.hit(dmg, p.position, true, true)
 				if burn > 0:
 					e.set_meta("burn", burn * 3)
 				m.fx("sparkle", e.position + Vector2(0, -8), 14.0, 0.6)
@@ -92,7 +92,7 @@ static func cast(m: GameMap, id: String) -> bool:
 			var rdmg := int(4 * power())
 			for e2 in m.enemies.duplicate():
 				if is_instance_valid(e2) and e2.position.distance_to(p.position) < 56.0:
-					e2.hit(rdmg, p.position, true)
+					e2.hit(rdmg, p.position, true, true)
 					hit_any = true
 			if GameState.bonus("magic", "sunder") > 0.0:
 				var pc := p.cell()
@@ -197,5 +197,5 @@ static func cast(m: GameMap, id: String) -> bool:
 	if fired:
 		GameState.spend_mana(cost_of(id))
 		m.xp("magic", 2 + int(SPELLS[id]["cost"]) / 5)
-		Music.instance(m.get_tree()).sfx("levelup")
+		Music.instance(m.get_tree()).sfx("spell", "levelup")
 	return fired

@@ -15,6 +15,9 @@ var _muted := false
 var _tw_out: Tween
 var _tw_in: Tween
 var _sfx_cache := {}
+var _steps: AudioStreamPlayer
+var _duck := 0.0
+var _next_voice := 0
 
 
 static func instance(tree: SceneTree) -> Music:
@@ -39,13 +42,18 @@ func _ready() -> void:
 	_fading.bus = "Music"
 	_fading.volume_db = MUSIC_DB
 	add_child(_fading)
-	for i in 4:
+	for i in 6:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -4.0
 		p.bus = "SFX"
 		add_child(p)
 		_sfx.append(p)
+	_steps = AudioStreamPlayer.new()
+	_steps.bus = "SFX"
+	_steps.volume_db = -14.0
+	add_child(_steps)
 	_muted = bool(SaveGame.get_value("muted", false))
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), _muted)
 	if _pending != "":
 		var t := _pending
 		_pending = ""
@@ -89,24 +97,69 @@ func play(track: String) -> void:
 	if not _muted:
 		_player.play()
 		_tw_in = create_tween()
-		_tw_in.tween_property(_player, "volume_db", MUSIC_DB, FADE)
+		_tw_in.tween_property(_player, "volume_db", MUSIC_DB + _duck, FADE)
 
 
-func sfx(name: String) -> void:
+func _load_sfx(name: String) -> AudioStream:
+	if not _sfx_cache.has(name):
+		var path := "res://audio/sfx/%s.wav" % name
+		_sfx_cache[name] = load(path) if ResourceLoader.exists(path) else null
+	return _sfx_cache[name]
+
+
+## Play a sound effect. If it doesn't exist yet, `fallback` plays instead.
+func sfx(name: String, fallback := "") -> void:
 	if _muted or _sfx.is_empty():
 		return
-	var path := "res://audio/sfx/%s.wav" % name
-	if not ResourceLoader.exists(path):
+	var st := _load_sfx(name)
+	if st == null and fallback != "":
+		st = _load_sfx(fallback)
+	if st == null:
 		return
-	if not _sfx_cache.has(name):
-		_sfx_cache[name] = load(path)
+	var pick: AudioStreamPlayer = null
 	for p in _sfx:
 		if not p.playing:
-			p.stream = _sfx_cache[name]
-			# A little pitch drift so repeated swings and steps don't sound stamped out.
-			p.pitch_scale = randf_range(0.93, 1.07)
-			p.play()
-			return
+			pick = p
+			break
+	if pick == null:
+		# All voices busy: take over the oldest one rather than dropping the sound.
+		pick = _sfx[_next_voice % _sfx.size()]
+		_next_voice += 1
+	pick.stream = st
+	# A little pitch drift so repeated swings and steps don't sound stamped out.
+	pick.pitch_scale = randf_range(0.93, 1.07)
+	pick.play()
+
+
+## Footsteps get their own voice so they never block hits.
+func step(ground: String) -> void:
+	if _muted or _steps == null or _steps.playing:
+		return
+	var st := _load_sfx("step_" + ground)
+	if st == null:
+		st = _load_sfx("step_grass")
+	if st == null:
+		return
+	_steps.stream = st
+	_steps.pitch_scale = randf_range(0.85, 1.15)
+	_steps.play()
+
+
+## Dip the music (dB below normal) so night sounds and storms come through.
+func set_duck(db: float) -> void:
+	if is_equal_approx(db, _duck) or _player == null:
+		return
+	_duck = db
+	if _tw_in and _tw_in.is_valid():
+		return
+	create_tween().tween_property(_player, "volume_db", MUSIC_DB + _duck, 2.0)
+
+
+func stop_all() -> void:
+	if _player:
+		_player.stop()
+		_fading.stop()
+	_current = ""
 
 
 func toggle_mute() -> bool:
@@ -115,6 +168,8 @@ func toggle_mute() -> bool:
 		SaveGame.set_value("muted", _muted)
 		return _muted
 	SaveGame.set_value("muted", _muted)
+	var mi := AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_mute(mi, _muted)
 	if _muted:
 		_player.stop()
 		_fading.stop()

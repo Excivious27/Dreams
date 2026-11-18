@@ -110,7 +110,7 @@ func after_ready() -> void:
 	for c: Vector2i in [Vector2i(9, 12), Vector2i(21, 3), Vector2i(28, 22)]:
 		prop("props", "spiral_fern", c)
 	for i in 4:
-		spawn_enemy(["grump", "soldier", "shard", "wisp"][i], Vector2(randf_range(14, 28) * TILE, randf_range(3, 23) * TILE))
+		spawn_enemy(["grump", "soldier", "shard", "wisp"][i], Vector2(randf_range(14, 28) * TILE, randf_range(3, 23) * TILE), 4)
 	if not GameState.run["flags"].has("moon_seen"):
 		GameState.run["flags"]["moon_seen"] = true
 		player.frozen = true
@@ -194,7 +194,7 @@ func draw_map() -> void:
 func _alien_shop() -> void:
 	var d := Dialogue.instance(get_tree())
 	var p1 := GameState.shop_price("dream_tonic", 200)
-	var p2 := GameState.shop_price("energy_tea", 20)
+	var p2 := GameState.shop_price("energy_tea", 70)
 	d.say([{"who": "Alien trader", "text": "Zzzt. Crystals for goods. Goods for crystals. Zzzt. (◆%d)" % int(GameState.run["crystals"]), "choice": ["Dream Tonic  ◆%d" % p1, "Energy Tea  ◆%d" % p2, "Leave"], "key": ""}])
 	await d.finished
 	if d.last_choice == 0 and int(GameState.run["crystals"]) >= p1:

@@ -511,6 +511,16 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			hud.toast("%s won't take in this soil." % GameState.item_name(sel), Color(1, 0.8, 0.6))
 			return true
 		if it.get("type", "") == "seed" and GameState.count(sel) > 0:
+			var pcd: Dictionary = GameState.crops[str(it["crop"])]
+			var se := GameState.season()
+			if not GameState.crop_fits_season(pcd, se) and not GameState.in_greenhouse(key) and not bool(pcd.get("tree", false)):
+				var cs: Variant = pcd.get("season", "any")
+				hud.toast("%s is a %s crop. It won't grow in %s%s." % [GameState.item_name(str(pcd.get("yield", it["crop"]))), " or ".join(cs) if cs is Array else str(cs), se, " (try the greenhouse plot)" if Builds.is_built("greenhouse") else ""], Color(1, 0.8, 0.6))
+				Music.instance(get_tree()).sfx("nope")
+				return true
+			var left := GameState.DAYS_PER_SEASON - GameState.day_of_season() + 1
+			if str(pcd.get("season", "any")) != "any" and int(pcd["days"]) > left and not GameState.in_greenhouse(key):
+				hud.toast("Careful: it needs %d days and only %d are left this season." % [int(pcd["days"]), left], Color(1, 0.9, 0.6))
 			if not GameState.spend_for("plant"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
@@ -526,7 +536,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			return true
 		if not bool(tile.get("watered", false)) and not GameState.is_wet():
 			return _water(tile, key)
-		hud.toast("Hold seeds (MENU) to plant here.")
+		hud.toast("Pick seeds on your toolbar to plant here.")
 		return true
 	var cd: Dictionary = GameState.crops[crop]
 	if int(tile["days"]) >= int(cd["days"]):
@@ -667,7 +677,7 @@ func _sellbox(sel: String) -> void:
 		net_act({"a": "sellbox", "id": sel, "n": n})
 		var est := GameState.sell_price(sel, prev + n) - GameState.sell_price(sel, prev) + GameState.quality_bonus_value({sel: tq})
 		hud.toast("Put %d %s in the sell box (about ◆%d tonight%s)." % [n, GameState.item_name(sel), est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
-		Music.instance(get_tree()).sfx("pickup")
+		Music.instance(get_tree()).sfx("harvest", "pickup")
 		return
 	if box.is_empty():
 		await say([{"text": "The sell box is empty. Pick an item on the toolbar and tap USE here to sell it. You get paid in crystals overnight."}])

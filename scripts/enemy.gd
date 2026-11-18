@@ -6,6 +6,11 @@ extends Node2D
 
 var hp := 3
 var max_hp := 3
+var base_hp := 3        # HP before any scaling: size checks (bars, stun, boss) use this
+var hp_scale := 1.0     # how much the home-tier scaling multiplied HP (allies hit harder by the same)
+## Home-tier toughness: an enemy at home takes several swings at every stage.
+const NATIVE_HP := [2.0, 3.0, 3.0, 3.5, 4.0, 5.0]
+const BOSS_HP := [2.0, 2.0, 2.5, 3.0, 3.0, 3.5]
 var speed := 34.0
 var damage := 1
 var reward := 3
@@ -146,6 +151,12 @@ func setup(k: String, tier_override := -1) -> void:
 	var nw := GameState.tier(native)
 	armor = maxi(0, int(tw.get("armor", 0)) - int(nw.get("armor", 0)))
 	kb_resist = maxf(0.0, float(tw.get("kb_resist", 0.0)) - float(nw.get("kb_resist", 0.0)))
+	base_hp = hp
+	var bossy := ed.has("gift") or k.begins_with("marked_") or k.begins_with("lt_") or k.begins_with("cboss_") or k in ["big_grump", "president", "golem_king", "ruin_warden", "dark_crystal", "marsh_witch"]
+	hp_scale = float((BOSS_HP if bossy else NATIVE_HP)[clampi(native, 0, 5)])
+	if Settings.easy():
+		hp_scale = maxf(1.0, hp_scale * 0.6)
+	hp = int(round(hp * hp_scale))
 	max_hp = hp
 	var art_kind := str(ed.get("art", "grump" if k == "big_grump" else k))
 	var group := "enemies/" + art_kind
@@ -177,7 +188,7 @@ func setup(k: String, tier_override := -1) -> void:
 			_flash_mat = ShaderMaterial.new()
 			_flash_mat.shader = sh
 			_sprite.material = _flash_mat
-	reach = 22.0 if hp >= 16 else 16.0
+	reach = 22.0 if base_hp >= 16 else 19.0
 	if ed.has("gift") and not Gift.def(str(ed["gift"])).is_empty():
 		_gift = Gift.new()
 		_gift.setup(self, str(ed["gift"]))
@@ -250,7 +261,13 @@ func _process(delta: float) -> void:
 			sight = 58.0
 		if tgt == player and kind.contains("wisp") and Perks.flag("wisp_safe") and hp >= max_hp:
 			sight = 0.0
-		if dist < sight and dist > reach * 0.6:
+		if dist < sight and abilities.has("ranged") and tgt == player:
+			# Shooters keep their distance: back off when you close in, hold at range.
+			if not _noticed:
+				_noticed = true
+				map.emote(self, "surprise", 0.8, -26.0)
+			_dir = -to.normalized() * 0.8 if dist < 48.0 else (to.normalized() if dist > 90.0 else Vector2.ZERO)
+		elif dist < sight and dist > reach * 0.6:
 			if not _noticed:
 				_noticed = true
 				map.emote(self, "surprise", 0.8, -26.0)
@@ -345,7 +362,7 @@ func _slide(step: Vector2) -> void:
 
 
 ## `magic`: spells pierce half the armour and don't feed the anti-kite counter.
-func hit(n: int, from: Vector2, magic := false) -> bool:
+func hit(n: int, from: Vector2, magic := false, ally := false) -> bool:
 	if not _alive:
 		return false
 	if _shield > 0.0:
@@ -359,6 +376,8 @@ func hit(n: int, from: Vector2, magic := false) -> bool:
 			return false
 		n = maxi(1, int(round(n * mult)))
 		_gift.on_hit(mult)
+	if ally:
+		n = int(round(n * hp_scale))
 	var soak := armor / 2 if magic else armor
 	n = maxi(1, n - soak)
 	last_applied = n
@@ -367,16 +386,19 @@ func hit(n: int, from: Vector2, magic := false) -> bool:
 	_hit_flash = 0.22
 	_flash = 1.0
 	_squash = 1.0
-	_windup = 0.0
+	# Only the weakest pests flinch out of an attack; anything tougher finishes
+	# its swing (the red wind-up tint tells you to step back).
+	if tier == 0 and _kb_hits < 1:
+		_windup = 0.0
 	# Knockback: lighter for heavy kinds, cut by the tier's resistance, and it
 	# decays with every quick repeat so you can't juggle something forever.
 	if not magic:
 		_kb_hits += 1
 		_kb_t = 1.6
 	var combo := maxf(0.25, 1.0 - 0.3 * maxi(0, _kb_hits - 1))
-	_stun = (0.32 if max_hp < 30 else 0.15) * combo * (1.0 - kb_resist * 0.6)
-	var heavy := 1.0 if max_hp < 16 else (0.55 if max_hp < 40 else 0.3)
-	_knock = (position - from).normalized() * 230.0 * heavy * combo * (1.0 - kb_resist) * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
+	_stun = (0.32 if base_hp < 30 else 0.15) * combo * (1.0 - kb_resist * 0.6)
+	var heavy := 1.0 if base_hp < 16 else (0.55 if base_hp < 40 else 0.3)
+	_knock = (position - from).normalized() * (230.0 if tier == 0 else 150.0) * heavy * combo * (1.0 - kb_resist) * (1.3 if GameState.has_perk("combat", "Acrobat") else 1.0)
 	# Juggled three times: answer with a lunge the moment the stun ends.
 	if _kb_hits >= 3 and abilities.has("lunge") and _lunge_cd <= 0.0:
 		_lunge_tele = 0.18
@@ -566,7 +588,7 @@ func _die() -> void:
 				o._die()
 	map.on_enemy_died(self)
 	# A puff where it stood and a thud; bosses get a bigger send-off.
-	var big := max_hp >= 60
+	var big := base_hp >= 60
 	map.fx("poof" if Art.has("fx", "poof") else "spark", position + Vector2(0, -8), 32.0 if big else 20.0, 0.6)
 	Music.instance(get_tree()).sfx("boss_down" if big else "thud")
 	if big:
@@ -582,7 +604,7 @@ func _die() -> void:
 func _draw() -> void:
 	draw_circle(Vector2(0, 0), _shadow_r, Color(0, 0, 0, 0.2))
 	if max_hp > 3:
-		var top := -30.0 if max_hp < 30 else -60.0
+		var top := -30.0 if base_hp < 30 else -60.0
 		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))
 		draw_rect(Rect2(-10, top, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2) if _shield <= 0.0 else Color(0.5, 0.7, 1.0))
 		if tier > 0 and Art.has("ui", "tier_pip_%d" % tier):
@@ -602,13 +624,13 @@ func _draw() -> void:
 		tele = "enrage"
 	if tele != "" and Art.has("ui", "tele_" + tele):
 		var tt := Art.tex("ui", "tele_" + tele)
-		draw_texture(tt, Vector2(-tt.get_width() / 2.0, (-34.0 if max_hp < 30 else -66.0) - tt.get_height()))
+		draw_texture(tt, Vector2(-tt.get_width() / 2.0, (-34.0 if base_hp < 30 else -66.0) - tt.get_height()))
 	if is_guardian and Art.has("ui", "guardian_crown"):
 		var cr := Art.tex("ui", "guardian_crown")
-		draw_texture_rect(cr, Rect2(-6, (-30.0 if max_hp < 30 else -60.0) - 40, 12, 10), false)
+		draw_texture_rect(cr, Rect2(-6, (-30.0 if base_hp < 30 else -60.0) - 40, 12, 10), false)
 	if is_guardian and Art.has("ui", "keeper_crest_0"):
 		var kc := Art.tex("ui", "keeper_crest_%d" % clampi(tier, 0, 5))
-		draw_texture_rect(kc, Rect2(-8, (-30.0 if max_hp < 30 else -60.0) - 22, 16, 16), false)
+		draw_texture_rect(kc, Rect2(-8, (-30.0 if base_hp < 30 else -60.0) - 22, 16, 16), false)
 	if _sprite:
 		return
 	# Procedural fallback: a stormy little cloud.
