@@ -80,12 +80,16 @@ static func play(m: GameMap, ev: Dictionary, actors: Array) -> void:
 		m.player.face_toward(first.position)
 		m.emote(first, "surprise", 1.0)
 		await m.get_tree().create_timer(0.6).timeout
+		if not is_instance_valid(m) or not m.is_inside_tree():
+			return  # the map changed under us (scene switch mid-event)
 	var ls: Array = (ev.get("lines", []) as Array).duplicate(true)
 	if not GameState.is_penguins():
 		for l in ls:
 			if l.has("text_gangsters"):
 				l["text"] = l["text_gangsters"]
 	await m.say(ls)
+	if not is_instance_valid(m) or not m.is_inside_tree():
+		return
 	var after: Dictionary = ev.get("after", {})
 	for id in after.get("friend", {}):
 		GameState.run["friendship"][str(id)] = int(GameState.run["friendship"].get(str(id), 0)) + int(after["friend"][id])
