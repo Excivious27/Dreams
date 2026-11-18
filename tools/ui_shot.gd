@@ -58,4 +58,29 @@ func _run() -> void:
 			menu._refresh()
 			await _shot(out, "menu_" + t.to_lower())
 		menu.toggle()
+	await process_frame
+	HackGame.play(m, 2)
+	for i in 40:
+		await process_frame
+	await _shot(out, "hack")
+	for c in m.get_children():
+		if c is HackGame:
+			(c as HackGame)._finish()
+	await process_frame
+	GameState.run["ending"] = "revert"
+	GameState.add_friend("maple", 200)
+	Epilogue.play(m)
+	await _shot(out, "epilogue_1")
+	for c in m.get_children():
+		if c is Epilogue:
+			var ep := c as Epilogue
+			ep._arm = 20
+			ep._next()
+			await _shot(out, "epilogue_2")
+			ep._arm = 20
+			ep._next()
+			ep._arm = 20
+			ep._next()
+			await _shot(out, "epilogue_4")
+			ep._close()
 	quit()

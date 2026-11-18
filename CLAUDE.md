@@ -24,3 +24,6 @@
 - Design round generators (edit these, not the JSON): `tools/gen_battles.py` (bf_* regions/scenes, battles.json; `Battle`, `HelperUnit`), `tools/gen_colonies.py` (colony_* regions, colonies.json, cboss enemies, colony items, c_* gifts; `Colony`), `tools/gen_projects.py` (projects.json; `Project`). Run gen_gifts.py after gen_colonies.py (it keeps c_ gifts). `tools/tile_clean.py` writes data/tile_clean.json.
 - Art post-steps after slicing: `tools/tile_seams.py`, `tools/tile_clean.py`, `tools/key_water.py`, `tools/set_import_lossy.py`.
 - Screenshots of any spot: `tools/area_shot.gd` (scene:x:y args, ARC=gangsters env). `tools/reach_all.gd` walks every map.
+- Heart perks and birthdays: `python3 tools/gen_heart_perks.py` (writes data/heart_perks.json and the perk texts/birthdays in data/npcs.json); `Perks` runs them. Endings slideshow: `python3 tools/gen_epilogue.py` → data/epilogue.json; `Epilogue`. Gangster side ops (turf, heists, loyalty favours): `Ops`.
+- Settings live in SaveGame globals via `Settings`; save slots via `GameState.save_key()` (never hard-code "run").
+- Full-screen UIs (CraftScreen, HackGame, Epilogue) pause the tree and poll actions; register any on-screen Button rect in `Hud.extra_rects` so TouchControls lets taps through.

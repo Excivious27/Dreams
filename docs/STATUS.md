@@ -420,3 +420,17 @@
 - Talk: `Talk` + data/talk.json (season/weather/arc/festival/heat).
 - check.sh adds compile_all.gd and campaign_test.gd. 20-bot run: all finish, 0 errors.
 - Open: crafting screen, quality crops, save slots, settings, heists/turf, endings/epilogues, heart perks, relay host. Art: Prompts 16.
+
+## 2026-11-17 — "Complete remaining work" round
+- Settings (`Settings`, scripts/settings.gd): music/sound volume on Music/SFX buses, button size, left-handed mirror, easy mode (60% damage, no faint fee). Options tab.
+- USE button shows an action word (`GameMap.action_word`, `TouchControls.context_word`).
+- Save slots: `GameState.slot()/save_key()/use_slot()`, slot 1 = old "run" key; `export_code()/import_code()` (gzip+base64 "DRM1:"). Title → Save slots.
+- Quality crops: run.quality[id] = {g, s}; harvest rolls (farming level, fertiliser); sell box pays +50%/+25%; stars on inventory slots.
+- Crafting screen: `CraftScreen` replaces the dialogue list; recipe discovery (`Crafting.discovered`, run.seen, run.known_recipes).
+- Heart perks: `tools/gen_heart_perks.py` → data/heart_perks.json + npcs.json perk texts + birthdays; `Perks` (scripts/perks.gd). Birthdays triple gifts. Social page shows birthday, learned loves, next perk.
+- Endings: `Epilogue` slideshow from data/epilogue.json (`tools/gen_epilogue.py`), once after epilogue_done, replay in Options. Lieutenants: spare or recruit (Mags, Brock). Nova catches up at the campfire (story effect `know`). Deuce's card game is a friendly hand.
+- Gangster ops (`Ops`, scripts/ops.gd): turf per district (clear the block, ◆40/morning, no raids), three heists (cannery/arcade/vault), crew loyalty favours gate loyalty 3.
+- Battles: RALLY button (`Hud.extra_rects` lets on-screen buttons take taps).
+- Hacking Terminal: daily memory hack (`HackGame`).
+- Web: PWA on (installable, portrait, icons in web/), styled loading screen.
+- Tests: tools/systems_test.gd in check.sh. Screens: tools/ui_shot.gd.

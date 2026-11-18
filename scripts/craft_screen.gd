@@ -212,7 +212,7 @@ func _card(rc: Dictionary, why: String, disc: bool) -> Control:
 		var top := "%s%s%s" % ["✓ " if Crafting._owned(rc) else "", str(rc["name"]), " ×%d" % n if n > 1 else ""]
 		var bot := Crafting.have_text(rc)
 		if why != "":
-			bot = "🔒 " + why
+			bot = "Locked: " + why
 		l.text = "%s   ⏱%s\n%s" % [top, Crafting.fmt_minutes(Crafting.minutes_for(station, rc, tier)), bot]
 		var ok := why == "" and Crafting.can_make(rc)
 		l.add_theme_color_override("font_color", Color(1, 0.96, 0.85) if ok else (Color(0.9, 0.7, 0.6) if why == "" else Color(0.7, 0.7, 0.75)))
@@ -269,6 +269,30 @@ func _show_detail() -> void:
 		row.add_child(make)
 	if not js.is_empty():
 		_detail.add_child(_btn("Wait here for the next job", _wait))
+	if station == "terminal" and int(GameState.run["flags"].get("hack_day", -1)) != int(GameState.run["day"]):
+		_detail.add_child(_btn("Run today's hack (a memory game)", _hack))
+
+
+func _hack() -> void:
+	GameState.run["flags"]["hack_day"] = int(GameState.run["day"])
+	visible = false
+	var got := await HackGame.play(m, tier)
+	visible = true
+	get_tree().paused = true
+	match got:
+		3:
+			Racket.set_heat(Racket.heat() - 1)
+			GameState.add_item("data_chip", 1)
+			m.hud.toast("Clean hack: your file is wiped (heat −1) and a data chip.", Color(0.5, 1, 0.85))
+		2:
+			GameState.run["crystals"] = int(GameState.run["crystals"]) + 100 * tier
+			m.hud.toast("Partial hack: ◆%d skimmed from a shell account." % (100 * tier), Color(0.5, 1, 0.85))
+		1:
+			GameState.run["crystals"] = int(GameState.run["crystals"]) + 30
+			m.hud.toast("You got a peek before the alarm: ◆30.", Color(0.7, 0.9, 0.85))
+		_:
+			m.hud.toast("The wire was hot today. Try again tomorrow.", Color(1, 0.75, 0.6))
+	_refresh()
 
 
 func _make() -> void:

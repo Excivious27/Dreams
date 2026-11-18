@@ -285,12 +285,46 @@ Upload the images to the chat with the batch name, as before.
 
 ---
 
-# PART C — Still open on my side (no input needed)
-- A real crafting screen with recipe discovery (right now it's a list).
-- Quality crops (silver and gold stars).
-- A hacking minigame for the terminal.
-- A relationship page with birthdays.
-- Contextual action labels on the A button ("Talk", "Chop", "Open").
-- Install-to-home-screen (PWA) and a loading bar.
+# PART C — Update: the remaining work is done
+
+After this guide went out, I built everything that didn't need you. Where Part B had a default, I used the default; you can still change any of it.
+
+## New in the game
+- **Options page:** music and sound volume, button size (small / normal / large), left-handed controls, and **Easy mode** (enemies hit softer, no fee when you faint).
+- **The USE button says what it will do:** "Talk", "Chop", "Mine", "Open", "Go" and so on.
+- **3 save slots:** on the title screen, tap **Save slots**. There's also a **save code**. Copy it on one phone, paste it on another, and your farm moves over.
+- **Quality crops:** harvests can come out ☆ silver or ★ gold. Farming level and fertiliser raise the odds. Silver sells for 25% more and gold for 50% more.
+- **A real crafting screen:** every station opens a full screen of recipe cards showing the icon, what you have against what you need, and the time. Recipes you haven't found yet show as **???** and tell you which ingredient to look for. Hold that ingredient once and the recipe appears.
+- **96 villager heart perks** now do something: gifts when you reach a heart level, weekly deliveries (tea, bait, pies, wool...), and bonuses to max health, energy or mana. A few change how the game plays: Ivy pays your clinic fee, Sal teaches you to walk quietly, Theo gives a free skill point in every skill, and Old Moss lifts the marsh fog.
+- **Birthdays:** every villager has one. Gifts count triple on the day, and the morning tells you whose birthday it is. The Social page shows each villager's birthday, the gifts you've learned they love, and their next perk.
+- **The ending slideshow:** after the final scene, slides show your ending, the choices you made, who stayed with you, the colonies (penguins) or the crew, lieutenants and the Marked (gangsters), and a line for every villager, warmer if you're close. You can replay it from Options.
+- **Lieutenants:** when you beat one, you choose to let them walk or ask them to join. Old Mags and Brock say yes and give a bonus; the others leave town.
+- **Nova** now catches up with you at Big Jim's campfire if you never met her. This fixes the knight scene that could be missed.
+- **Deuce's card game** is a friendly hand with nothing at stake. I made no other changes to gambling.
+- **Gangster side operations:**
+  - **Turf:** clear every hostile on a district block and it's yours. Each block pays ◆40 every morning, and collectors stop raiding there.
+  - **Three heists**, planned with two crew members at the hideout:
+
+    | Heist | Planner | Crew | Where |
+    |---|---|---|---|
+    | The Cannery Job | Ladder | Ladder and Halo | the docks |
+    | The Neon Arcade | Dice | Dice and Vic | Neon |
+    | The Vault | Specs | Specs and Sasha | uptown |
+
+    You pick quiet or fast. Your crew's loyalty and your heat set the odds.
+  - **Crew favours:** each crew member asks one favour before their last loyalty step. This decides what their ending line says.
+- **Battles:** a **RALLY** button sends every helper to one point. Tap it to cycle through the points.
+- **Hacking Terminal:** a daily memory hack. Repeat the arrows; a clean run lowers your heat and gives a data chip.
+- **Install to home screen:** on your phone, open the game in the browser and choose "Add to Home Screen". It opens full screen, upright, with its own icon. There's also a nicer loading screen.
+
+## What to test (10 minutes)
+1. **Options:** change the volume, set buttons to large, and switch to left-handed.
+2. **Save slots:** pick slot 2, start a game, then go back and pick slot 1. Your first farm should still be there.
+3. **Crafting:** build a station and open it. Look at the ??? cards.
+4. **Social page:** check the birthdays.
+5. **Home screen:** add the game to your home screen.
+
+## Still open
 - Wearable art, once the costume sheets arrive.
-- Multiplayer fixes, once the relay exists.
+- Multiplayer fixes, once there's a relay server (Part B, item 10).
+- Everything in Part B is still yours to change. Each default is now in the game, so you can play it and react.
