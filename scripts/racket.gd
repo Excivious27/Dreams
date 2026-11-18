@@ -39,6 +39,7 @@ static func risk(id: String) -> float:
 	var r := float(GameState.items.get(id, {}).get("risk", 0.3)) + 0.05 * heat()
 	r += 0.04 * passed_today()                     # every till you hit today talks to the next
 	r -= 0.03 * Crew.perk_level("shop_discount")  # Specs knows which tills to avoid
+	r -= 0.02 if Crew.perk_level("board_bonus") >= 2 else 0.0  # Dice hears which shops are watching
 	return clampf(r, 0.03, 0.9)
 
 
@@ -127,9 +128,21 @@ static func forged_permit(m: GameMap, id: String) -> bool:
 
 ## Walking into a street with heat on you.
 static func on_enter(m: GameMap) -> void:
+	if on() and m.scene_id() == "hideout" and Crew.perk_level("meal_heal") >= 3 and int(GameState.run["flags"].get("rosa_meal_day", -1)) != int(GameState.run["day"]):
+		GameState.run["flags"]["rosa_meal_day"] = int(GameState.run["day"])
+		GameState.run["energy"] = int(GameState.run["max_energy"])
+		m.hud.toast("Mama Rosa left a hot plate out for you. Energy full.", Color(1, 0.9, 0.6))
+	if on() and Crew.perk_level("raid_warning") >= 3 and m.scene_id() in PEOPLED and m.scene_id() != "hideout":
+		m.later(func() -> void:
+			var n := 0
+			for e in m.enemies:
+				if is_instance_valid(e) and e._alive:
+					n += 1
+			if n > 0:
+				m.hud.toast("Ladder, on the radio: %d hostile%s on this block." % [n, "" if n == 1 else "s"], Color(0.8, 0.9, 1)))
 	if not on() or heat() < 3 or not m.has_sky or m.scene_id() in ["farm", "house", "moon", "station", "sky", "mine", "hideout"]:
 		return
-	if int(GameState.run["flags"].get("raid_day", -1)) == int(GameState.run["day"]) or randf() > 0.5:
+	if int(GameState.run["flags"].get("raid_day", -1)) == int(GameState.run["day"]) or randf() > (0.25 if Crew.perk_level("raid_warning") >= 2 else 0.5):
 		return
 	GameState.run["flags"]["raid_day"] = int(GameState.run["day"])
 	var n := 2 + (heat() - 3)

@@ -275,7 +275,7 @@ func _process(delta: float) -> void:
 					GameState.status_apply(inflicts, tier)
 			_cooldown = 1.1
 	elif not stunned and dist < reach and _cooldown <= 0.0:
-		_windup = 0.32
+		_windup = 0.32 * (1.35 if kind.begins_with("thug_") and Crew.perk_level("doors") >= 1 else 1.0)
 		if _sprite and _sprite.sprite_frames.has_animation("attack"):
 			_sprite.play("attack")
 		_attacking = 0.45
@@ -608,3 +608,16 @@ func _draw() -> void:
 	draw_circle(Vector2(0, -5 * s + bob), 5.5 * s, col)
 	draw_rect(Rect2(-3 * s, -9 * s + bob, 2 * s, 2 * s), Color(1, 0.9, 0.3))
 	draw_rect(Rect2(1.5 * s, -9 * s + bob, 2 * s, 2 * s), Color(1, 0.9, 0.3))
+
+
+## The name shown on the boss bar.
+func display_name() -> String:
+	if has_meta("marked"):
+		var d: Dictionary = Marked.all().get(str(get_meta("marked")), {})
+		return "%s \"%s\"" % [str(d.get("name", "")), str(d.get("epithet", ""))]
+	if has_meta("boss_name"):
+		return str(get_meta("boss_name"))
+	var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(kind, {})
+	if ed.has("name"):
+		return str(ed["name"])
+	return kind.replace("thug_", "").replace("_", " ").capitalize()

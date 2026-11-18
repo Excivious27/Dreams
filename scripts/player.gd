@@ -40,6 +40,9 @@ var _buffered := ""
 var _flash_mat: ShaderMaterial
 var _flash := 0.0
 var _combo := 0
+var _dodge_t := 0.0
+var _dodge_cd := 0.0
+var _dodge_dir := Vector2.ZERO
 var _wear: WearLayer
 var _doll := false
 ## Swimming (in a water cell) and riding (on the horse) change speed, anims and what you can do.
@@ -512,6 +515,23 @@ func _physics_process(delta: float) -> void:
 	if dir != Vector2.ZERO:
 		auto_target = Vector2.INF
 		auto_cell = Vector2i(-1, -1)
+	# Dodge roll (ROLL button, or Space): a quick dash with a moment of safety.
+	_dodge_cd = maxf(0.0, _dodge_cd - delta)
+	if TouchControls.dodge_pressed or (InputMap.has_action("dodge") and Input.is_action_just_pressed("dodge")):
+		TouchControls.dodge_pressed = false
+		if _dodge_cd <= 0.0 and _dodge_t <= 0.0 and not Dialogue.input_blocked() and map:
+			if GameState.run["energy"] >= 3:
+				GameState.run["energy"] = int(GameState.run["energy"]) - 2
+				_dodge_dir = (dir if dir != Vector2.ZERO else facing_dir()).normalized()
+				_dodge_t = 0.22
+				_dodge_cd = 0.6
+				_busy = false
+				invuln = maxf(invuln, 0.3 if Crew.perk_level("run_speed") >= 3 else 0.2)
+				map.fx("lunge_trail" if Art.has("fx", "lunge_trail") else "poof", position + Vector2(0, -4), 14.0, 0.3)
+	if _dodge_t > 0.0:
+		_dodge_t -= delta
+		_move(_dodge_dir * 165.0 * delta)
+		return
 	update_aim()
 	queue_redraw()
 	if _busy:
@@ -877,6 +897,8 @@ func _attack_hit() -> void:
 		if wd.has("range"):
 			dmg = int(dmg / 2)  # swung like a club
 		var hit := map.attack_at(box, maxi(1, dmg), position)
+		if hit and _combo == 0 and Crew.perk_level("sword") >= 3:
+			map.attack_at(box, maxi(1, dmg), position)  # Vic's twin strike
 		if hit:
 			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
 		_swing_arc(center)
@@ -979,8 +1001,13 @@ func take_damage(n: int, from: Vector2) -> void:
 	invuln = 0.35
 	_flash = 1.0
 	GameState.run["hp"] = int(GameState.run["hp"]) - n
-	velocity = (position - from).normalized() * 120.0
+	velocity = (position - from).normalized() * (60.0 if Crew.perk_level("defence") >= 3 else 120.0)
 	auto_target = Vector2.INF
+	# Doc patches you mid-fight once per map when you're in trouble.
+	if Crew.perk_level("status_half") >= 3 and int(GameState.run["hp"]) > 0 and int(GameState.run["hp"]) < int(GameState.run["max_hp"]) * 0.2 and map and not map.has_meta("doc_patched"):
+		map.set_meta("doc_patched", true)
+		GameState.run["hp"] = int(GameState.run["hp"]) + int(GameState.run["max_hp"]) * 0.3
+		map.hud.toast("Doc: \"Hold still.\" Patched up mid-fight.", Color(0.7, 1, 0.8))
 	_busy = false
 	Music.instance(get_tree()).sfx("hurt")
 	if map:

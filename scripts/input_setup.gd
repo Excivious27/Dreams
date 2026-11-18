@@ -26,6 +26,7 @@ const DEFAULTS := {
 	"action": [KEY_X],
 	"b": [KEY_SHIFT],
 	"menu": [KEY_E, KEY_ESCAPE],
+	"dodge": [KEY_V],
 	"journal": [KEY_F],
 	"map": [KEY_M],
 	"emote": [KEY_Y],

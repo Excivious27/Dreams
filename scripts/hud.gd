@@ -210,7 +210,26 @@ func _draw_hud() -> void:
 		line = GameState.item_name(held)
 	if _hint != "":
 		line = (line + "   " if line != "" else "") + _hint
-	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 240, 8, Color(1, 1, 0.9))
+	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, 180 if Racket.on() else 240, 8, Color(1, 1, 0.9))
+	# The goal, always on screen (one line, small).
+	var nxt := GameState.next_step()
+	if nxt != "" and y_offset == 0.0:
+		if nxt.length() > 54:
+			nxt = nxt.left(52) + "…"
+		c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 21), "▸ " + nxt, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, 3, Color(0, 0, 0, 0.7))
+		c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 21), "▸ " + nxt, HORIZONTAL_ALIGNMENT_LEFT, 240, 7, Color(1, 0.92, 0.6))
+	# Heat (gangster arc): five pips under the clock.
+	if Racket.on():
+		var hx := 196.0
+		var hy := TOOLBAR_Y + SLOT + 5.0
+		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 2, Color(0, 0, 0, 0.8))
+		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(1, 0.75, 0.6))
+		for i in 5:
+			var pc := Vector2(hx + 24 + i * 9, hy + 3)
+			c.draw_circle(pc, 3.2, Color(0, 0, 0, 0.6))
+			if i < Racket.heat():
+				c.draw_circle(pc, 2.6, Color(1, 0.35 + 0.1 * (4 - i), 0.2))
+	_draw_boss_bar(c)
 	# Energy bar (vertical, right side, Stardew style)
 	# The energy bar stays on the right edge; indoors (HUD at the bottom) it
 	# moves up so it doesn't sit on the clock box.
@@ -394,3 +413,30 @@ func fade_in(seconds := 0.4) -> void:
 	var tw := _fade.create_tween()
 	tw.tween_property(_fade, "color:a", 0.0, seconds)
 	await tw.finished
+
+
+## The nearest boss in view: name and a health bar across the top of the field.
+func _draw_boss_bar(c: CanvasItem) -> void:
+	var m := get_tree().current_scene as GameMap
+	if m == null or m.player == null or y_offset != 0.0:
+		return
+	var boss: Enemy = null
+	for e in m.enemies:
+		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and (e.max_hp >= 60 or e.is_guardian or e.has_meta("marked") or e._gift != null) and e.position.distance_to(m.player.position) < 170.0:
+			if boss == null or e.max_hp > boss.max_hp:
+				boss = e
+	if boss == null:
+		return
+	var nm := boss.display_name()
+	var r := Rect2(40, 96, 190, 6)
+	c.draw_rect(r.grow(1.5), Color(0, 0, 0, 0.7))
+	c.draw_rect(Rect2(r.position, Vector2(r.size.x * clampf(float(boss.hp) / boss.max_hp, 0, 1), r.size.y)), Color(0.9, 0.25, 0.3))
+	if boss._gift and boss._gift.open_t > 0.0:
+		c.draw_rect(r.grow(1.5), Color(1, 1, 1, 0.9), false, 1.0)
+	c.draw_string_outline(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, 7, 3, Color(0, 0, 0, 0.85))
+	c.draw_string(_font, Vector2(r.position.x, r.position.y - 2), nm, HORIZONTAL_ALIGNMENT_LEFT, 190, 7, Color(1, 0.9, 0.85))
+	if boss._gift:
+		var gn := str(boss._gift.d.get("name", ""))
+		var st := "OPEN" if boss._gift.open_t > 0.0 else "guarded"
+		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, 3, Color(0, 0, 0, 0.85))
+		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))

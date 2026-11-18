@@ -309,3 +309,20 @@ static func _blob_name(set_name: String, role: String, h: int, fill_count: int) 
 			if has("tiles", nm):
 				return nm
 	return ""
+
+
+## The clean fill tiles of a ground/water set (tools/tile_clean.py): picking
+## from these keeps big areas reading as one surface instead of a patchwork.
+static var _clean: Dictionary = {}
+static func fill_name(set_name: String, h: int) -> String:
+	if _clean.is_empty():
+		var f := FileAccess.open("res://data/tile_clean.json", FileAccess.READ)
+		if f:
+			var d: Variant = JSON.parse_string(f.get_as_text())
+			_clean = d if d is Dictionary else {"_": []}
+		else:
+			_clean = {"_": []}
+	var idx: Array = _clean.get(set_name, [])
+	if idx.is_empty():
+		return "%s_fill_%d" % [set_name, absi(h) % 12]
+	return "%s_fill_%d" % [set_name, int(idx[absi(h) % idx.size()])]

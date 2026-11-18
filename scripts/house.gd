@@ -95,6 +95,25 @@ func _sleep() -> void:
 		lines.append({"text": "The frost took %d crop%s. Only winter crops (or a greenhouse) survive the cold." % [int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
 	for nm in report.get("built", []):
 		lines.append({"who": "Hazel", "text": "Crew's done with the %s. Go have a look." % str(nm)})
+	if int(report.get("wash_back", 0)) > 0:
+		lines.append({"who": "Laundromat", "text": "%d bill%s came back unwashed: the machines only take so much face value a night." % [int(report["wash_back"]), "" if int(report["wash_back"]) == 1 else "s"]})
+	for kind in ["pool", "burrow"]:
+		if GameState.run["flags"].has("basket_full_" + kind):
+			GameState.run["flags"].erase("basket_full_" + kind)
+			lines.append({"text": "The %s basket is full. Empty it, or the gifts stop." % kind})
+	if report.has("relic"):
+		lines.append({"who": "Marlene", "text": "A little something from the tower. Don't ask. (%s)" % GameState.item_name(str(report["relic"]))})
+	if Racket.on():
+		lines.append({"text": "Heat %d/5.%s" % [Racket.heat(), " Collectors may be out." if Racket.heat() >= 3 else ""]})
+		if Racket.heat() >= 3 and Crew.perk_level("raid_warning") >= 1:
+			lines.append({"who": "Ladder", "text": "Word from the roofs: the President's collectors are walking the districts today. Stay off the main streets, or bring friends."})
+	var brief := "%s today, %s tomorrow." % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()]
+	if GameState.festival_today() != "":
+		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())
+	lines.append({"text": brief})
+	var nxt := GameState.next_step()
+	if nxt != "":
+		lines.append({"text": "Next: " + nxt})
 	for nm in report.get("gone", []):
 		lines.append({"who": "", "text": "A note under the door, in a hand you know: '%s went east. Didn't say why. You know why.'" % str(nm)})
 	await hud.fade_in(0.8)

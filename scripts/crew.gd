@@ -46,6 +46,8 @@ static func _set_loyalty(id: String, n: int) -> void:
 	GameState.run["crew"] = c
 	if n >= 3:
 		GameState.run["flags"][id + "_loyal_3"] = true
+		if id == "sasha":
+			GameState.run["flags"]["letter_safe"] = true  # Sasha gets you through the tower doors
 
 
 ## Does any recruited member at loyalty >= n have this perk key?
@@ -124,11 +126,13 @@ static func talk(m: GameMap, id: String) -> bool:
 				Music.instance(m.get_tree()).sfx("levelup")
 			return true
 	# Halo: rides between the gangster districts.
-	if id == "halo" and lv >= 1 and m.scene_id() == "hideout":
+	if id == "halo" and lv >= 1 and (m.scene_id() == "hideout" or perk_level("rides") >= 3):
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": "Halo", "text": "Say where.", "choice": ["The docks", "Neon", "Uptown", "Stay"], "key": ""}])
 		await d.finished
 		var dest := ["docks", "neon", "uptown"]
+		if perk_level("rides") < 2 and d.last_choice >= 0 and d.last_choice < 3:
+			GameState.run["time"] = int(GameState.run["time"]) + 30  # the drive takes a while
 		if d.last_choice >= 0 and d.last_choice < 3:
 			var sc: String = dest[d.last_choice]
 			if GameState.run["flags"].has(sc + "_seen"):

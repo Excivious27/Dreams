@@ -218,8 +218,8 @@ func _partner_scene() -> void:
 		for other in pool:
 			if other != cid:
 				Companion.party()["refused"][other] = int(Companion.party()["refused"].get(other, 0)) + 1
-		await say([{"who": str(Companion.defs()[cid]["name"]), "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party. Hold B while standing still to use %s. Change partners in the menu (Party)." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])]}])
-		GameState.add_hint("Partners: hold B to use %s's %s. Others who asked may take it badly if you keep saying no." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])])
+		await say([{"who": str(Companion.defs()[cid]["name"]), "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party. Tap the ♥ button to use %s. Change partners in the menu (Party)." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])]}])
+		GameState.add_hint("Partners: tap ♥ to use %s's %s. Others who asked may take it badly if you keep saying no." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])])
 	else:
 		for other in pool:
 			Companion.refuse(other)
@@ -650,7 +650,7 @@ func _sellbox(sel: String) -> void:
 		Music.instance(get_tree()).sfx("pickup")
 		return
 	if box.is_empty():
-		await say([{"text": "The sell box is empty. Hold an item (MENU) and press A here to sell it. You get paid in crystals overnight."}])
+		await say([{"text": "The sell box is empty. Pick an item on the toolbar and tap USE here to sell it. You get paid in crystals overnight."}])
 	else:
 		var lines: Array = []
 		var total := 0
@@ -698,7 +698,7 @@ func _talk_crystal() -> void:
 	if not GameState.quest_done("first_harvest"):
 		await say([
 			{"who": "Star Crystal", "text": "Tend the soil, %s. Every living thing you raise feeds the Meow Pow Wow a little." % GameState.names()["character"]},
-			{"who": "Star Crystal", "text": "Till with A. Hold seeds from the MENU and press A to plant. Water each day. The sell box pays you in crystals overnight."},
+			{"who": "Star Crystal", "text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each day. The sell box pays you in crystals overnight."},
 		])
 	elif not GameState.quest_done("clear_meadow"):
 		await say([
@@ -838,7 +838,7 @@ func _keg(sel: String) -> void:
 		GameState.run["flags"]["keg"] = {"out": brew, "ready": day + days}
 		hud.toast("%s → %s. Ready in %d days." % [GameState.item_name(sel), GameState.item_name(brew), days])
 	else:
-		hud.toast("Hold produce (fruit, vegetables, herbs, grain, mushrooms, flowers) and press A to brew.")
+		hud.toast("Hold produce (fruit, vegetables, herbs, grain, mushrooms, flowers) and tap USE to brew.")
 
 
 
@@ -885,7 +885,7 @@ func _fish() -> void:
 		t += dt
 		if not _fish_bite and t >= wait:
 			_fish_bite = true
-			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
+			hud.toast("!!!  Tap USE!", Color(1, 1, 0.4))
 			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
 			Music.instance(get_tree()).sfx("bite")
 			if bob:
@@ -1019,7 +1019,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 	await say([
 		{"text": "%s shakes the rain off and looks up at you like all of this is normal. Maybe for a while it can be." % pet_name},
 		{"text": "You'll need money to move on anyone. Money means crops. Crops mean dirt under your nails. Fine."},
-		{"text": "Till with A. Hold seeds from the MENU and press A to plant. Water each morning. Sell at the box. Don't draw eyes."},
+		{"text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each morning. Sell at the box. Don't draw eyes."},
 	])
 	GameState.add_quest("first_harvest", "Grow and sell something. You need ◆200 before you can do anything.")
 	GameState.add_quest("meet_town", "Go south. Learn who in %s can be bought, and who is watching." % town)

@@ -115,7 +115,16 @@ func after_ready() -> void:
 	prop("props", "signpost", Vector2i(36, 24))
 	for c: Vector2i in [Vector2i(36, 20), Vector2i(36, 28)]:
 		prop("props", "bench_wood", c, 1)
-	prop("props", "crab_pot_water" if Art.has("props", "crab_pot_water") else "barrel_a", Vector2i(33, 23))
+	# The crab pot floats in the shallows: the nearest water cell to the path bend.
+	var cp := Vector2i(33, 23)
+	var bd := 1e9
+	for wc: Vector2i in _water:
+		var dd := float((wc - Vector2i(30, 22)).length_squared())
+		var shallow := _water.has(wc + Vector2i(0, -1)) and _water.has(wc + Vector2i(1, 0)) and _water.has(wc + Vector2i(-1, 0))
+		if dd < bd and shallow and not things.get(wc, {}).has("door"):
+			bd = dd
+			cp = wc
+	prop("props", "crab_pot_water" if Art.has("props", "crab_pot_water") else "barrel_a", cp, 0, 0.0, false)
 	# Reeds along the shore, lilies in the shallows.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 77
@@ -187,8 +196,13 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 	_dock(door)
 	if name != "fishing_hut":
 		# The sprite's own water/rock skirt: make those cells water so the shore wraps it.
-		for y in range(base.y - 1, base.y + 1):
-			for x in range(c.x, c.x + w_cells):
+		# The mill's water is keyed out of its sprite (tools/key_water.py): fill the
+		# whole lower half with real water, one cell wider each side, so it reads as a pond.
+		var y0 := base.y - (h_cells / 2 if name == "water_mill" else 1)
+		var x0 := c.x - (1 if name == "water_mill" else 0)
+		var x1 := c.x + w_cells + (1 if name == "water_mill" else 0)
+		for y in range(y0, base.y + (2 if name == "water_mill" else 1)):
+			for x in range(x0, x1):
 				var wc := Vector2i(x, y)
 				if wc != door and in_content(wc) and not things.has(wc):
 					_water[wc] = true

@@ -106,8 +106,8 @@
    ],
    "perks": [
     "Shop prices -5%",
-    "Shop prices -10% and the board shows reward values",
-    "Every door in Uptown is already unlocked"
+    "Shop prices -10%",
+    "Shop prices -10%, and bills you pass are noticed far less"
    ],
    "loyalty": [
     [
@@ -278,8 +278,8 @@
    ],
    "perks": [
     "Ride between gangster districts (talk to Halo)",
-    "Rides are instant",
-    "The car is waiting at any district exit"
+    "Rides are instant and free",
+    "Halo picks you up at any district: talk to her anywhere"
    ],
    "loyalty": [
     [
@@ -320,8 +320,8 @@
    ],
    "perks": [
     "Board jobs pay +10%",
-    "Messages: villagers' moods are shown",
-    "A second board job each day"
+    "Bills you pass are noticed a little less",
+    "Board jobs pay +25%"
    ],
    "loyalty": [
     [
@@ -363,7 +363,7 @@
    "perks": [
     "Run speed +5%",
     "Run speed +10%",
-    "Grinding rails: enemies ignore you for a second after a dodge"
+    "Grinding rails: a dodge roll makes you untouchable a moment longer"
    ],
    "loyalty": [
     [
@@ -450,7 +450,7 @@
    ],
    "perks": [
     "Sell gangster drops at +20%",
-    "Buys any item at full value",
+    "Buys any item at full value (no glut at the sell box)",
     "A relic from the tower every week"
    ],
    "loyalty": [
@@ -492,7 +492,7 @@
    ],
    "perks": [
     "Thugs hesitate before attacking",
-    "Break doors and crates the pickaxe can't",
+    "Your hits on thugs land harder (+2)",
     "Sasha opens the tower doors without the letter"
    ],
    "loyalty": [

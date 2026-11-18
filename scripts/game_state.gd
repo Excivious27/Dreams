@@ -341,6 +341,8 @@ static func demand(id: String) -> float:
 
 static func saturation(id: String, n_more := 0) -> float:
 	var sold: Dictionary = run.get("sold_today", {})
+	if Crew.perk_level("fence") >= 2:
+		return 1.0  # Marlene takes any amount at full value
 	var already := int(sold.get(id, 0)) + n_more
 	# The first 20 of a thing sell at full price; after that the town has had
 	# enough of it: -10% per further 10, floor 40%. Grow a few things.
@@ -355,6 +357,8 @@ static func sell_price(id: String, n := 1) -> int:
 		unit *= 1.0 + bonus("farming", "crop_value")
 	if str(items.get(id, {}).get("type", "")) == "fish":
 		unit *= 1.0 + bonus("fishing", "fish_value")
+	if Crew.perk_level("fence") >= 1 and str(items.get(id, {}).get("type", "")) in ["drop", "loot", "material"] and str(run.get("arc", "")) == "gangsters":
+		unit *= 1.2
 	var total := 0.0
 	for i in n:
 		total += unit * saturation(id, i)
@@ -383,6 +387,7 @@ static func buy_price(id: String) -> int:
 	# Never cheaper than you could sell it back for (with every perk): shops are
 	# not a money machine.
 	var best_sell := base * sell_multiplier() * (1.0 + 0.04 * (skill_level("bartering") - 1)) * (1.0 + 0.05 * Crew.perk_level("sell_bonus")) * 1.1
+	m *= 1.0 - 0.05 * Crew.perk_level("shop_discount") if Crew.perk_level("shop_discount") < 3 else 0.9  # Specs knows the till codes
 	return maxi(1, int(ceil(maxf(base * m, best_sell * 1.1))))
 
 
@@ -850,7 +855,8 @@ static func consume(id: String) -> Dictionary:
 		return out
 	add_item(id, -1)
 	var hp0 := int(run["hp"]); var en0 := int(run["energy"]); var ma0 := int(run.get("mana", 0))
-	heal(int(it.get("heal", 0)))
+	var mh := Crew.perk_level("meal_heal")
+	heal(int(round(int(it.get("heal", 0)) * (1.0 + (0.1 if mh == 1 else (0.25 if mh >= 2 else 0.0))))))
 	restore_energy(int(it.get("energy", 0)) + int(it.get("heal", 0)) * 8)
 	restore_mana(int(it.get("mana", 0)))
 	if int(run["hp"]) != hp0:
@@ -1175,7 +1181,7 @@ static func board_accept(job: Dictionary) -> void:
 		return
 	var who := str(job["npc"])
 	var text := "%s needs %d %s (board job)." % [str(npcs[who]["name"]), int(job["n"]), item_name(str(job["item"]))]
-	quests_data["side"].append({"id": id, "giver": who, "text": text, "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(job["crystals"]), "friend": [who, int(job["friend"])]}, "board": true})
+	quests_data["side"].append({"id": id, "giver": who, "text": text, "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(round(int(job["crystals"]) * (1.25 if Crew.perk_level("board_bonus") >= 3 else (1.1 if Crew.perk_level("board_bonus") >= 1 else 1.0)))), "friend": [who, int(job["friend"])]}, "board": true})
 	add_quest(id, text)
 	# Keep the job itself: the board's list is replaced every day.
 	var acc: Dictionary = run.get("board_accepted", {})
@@ -1196,7 +1202,7 @@ static func board_restore() -> void:
 			for job in jobs:
 				if str(job["id"]) == id:
 					var who := str(job["npc"])
-					quests_data["side"].append({"id": id, "giver": who, "text": str(q["text"]), "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(job["crystals"]), "friend": [who, int(job["friend"])]}, "board": true})
+					quests_data["side"].append({"id": id, "giver": who, "text": str(q["text"]), "when": {}, "done_when": {"item": [str(job["item"]), int(job["n"])]}, "take": true, "reward": {"crystals": int(round(int(job["crystals"]) * (1.25 if Crew.perk_level("board_bonus") >= 3 else (1.1 if Crew.perk_level("board_bonus") >= 1 else 1.0)))), "friend": [who, int(job["friend"])]}, "board": true})
 
 
 ## Rough "how far along" number 0..4 that scales board jobs, enemies, prices.
@@ -1583,6 +1589,10 @@ static func sleep(passed_out := false) -> Dictionary:
 		report["built"] = report.get("built", []) + [nm]
 	Racket.overnight(report)
 	Sanctuary.overnight(report)
+	if Crew.perk_level("fence") >= 3 and int(run["day"]) % 7 == 6:
+		var relic: String = ["relic_orb", "relic_mask", "relic_blade", "relic_crown"][randi() % 4]
+		add_item(relic, 1)
+		report["relic"] = relic
 	if has_friend_perk("posy", 2):
 		add_item("bread", 1)
 	if int(run.get("bank", 0)) > 0 and has_friend_perk("ivy", 2):
@@ -1817,3 +1827,19 @@ static func _sprinklers_water() -> void:
 				var k2 := "%d,%d" % [cx + dx, cy + dy]
 				if ok and run["farm"].has(k2):
 					run["farm"][k2]["watered"] = true
+
+
+## One line telling a phone player what to do next: the first open main quest,
+## else the chapter summary.
+static func next_step() -> String:
+	if run.is_empty():
+		return ""
+	var pinned := str(run.get("pinned_quest", ""))
+	for q in run.get("quests", []):
+		if not bool(q.get("done", false)) and (pinned == "" or str(q["id"]) == pinned):
+			return str(q.get("text", ""))
+	for q in run.get("quests", []):
+		if not bool(q.get("done", false)):
+			return str(q.get("text", ""))
+	var j := Story.journal()
+	return str(j.get("summary", ""))

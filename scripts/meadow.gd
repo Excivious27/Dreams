@@ -72,12 +72,12 @@ func _first_visit() -> void:
 	if GameState.is_penguins():
 		await say([
 			{"text": "The meadow should be quiet. It isn't. Small grey shapes grumble in the grass, and the flowers near them have gone the colour of old dishwater."},
-			{"text": "Grumps. The Star Crystal wasn't exaggerating. Press A to swing. Hold B to run if it goes badly."},
+			{"text": "Grumps. The Star Crystal wasn't exaggerating. Tap USE to swing, ROLL to dodge. Run if it goes badly."},
 		])
 	else:
 		await say([
 			{"text": "Whoever came through here brought company. Small, ugly, and organized. The President's cheapest kind of muscle."},
-			{"text": "Press A to swing. Hold B to run. Nobody's watching, so there's no shame in it."},
+			{"text": "Tap USE to swing, ROLL to dodge. Nobody's watching, so there's no shame in it."},
 		])
 	player.frozen = false
 

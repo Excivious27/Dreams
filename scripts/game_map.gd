@@ -1188,6 +1188,8 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF) -> bool:
 		if r.intersects(body) and line_clear(from + Vector2(0, -4), e.position + Vector2(0, -4)):
 			var crit := randf() < 0.03 * GameState.skill_level("combat") + GameState.bonus("combat", "crit")
 			var dmg := damage * (2 if crit else 1)
+			if e.kind.begins_with("thug_") and Crew.perk_level("doors") >= 2:
+				dmg += 2
 			e.provoke(player)
 			if e.hit(dmg, from):
 				hit = true
@@ -1895,7 +1897,7 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 		var cells2 := widen_path(cells_in)
 		for c: Vector2i in cells2:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ hash(blob2))
-			Art.draw_tile(self, "tiles", "%s_fill_%d" % [blob2, h % 42], Vector2(c * TILE), 0)
+			Art.draw_tile(self, "tiles", Art.fill_name(blob2, h), Vector2(c * TILE), 0)
 			if h % 17 == 0 and _blob_interior(cells2, c) and Art.has("tiles", "%s_deco_%d" % [blob2, h / 17 % 36]):
 				Art.draw_tile(self, "tiles", "%s_deco_%d" % [blob2, h / 17 % 36], Vector2(c * TILE), 0)
 		Art.draw_blob(self, cells2, blob2, 16.0, 0)
@@ -1911,7 +1913,7 @@ func draw_ground(kind: String, cells_in: Dictionary) -> void:
 			var plain := ""
 			match kind:
 				"dirt": plain = "path_dirt_fill_%d" % (7 + h % 5)
-				"sand": plain = "sand_fill_%d" % (h % 12) if Art.has("tiles", "sand_fill_0") else "sand"
+				"sand": plain = Art.fill_name("sand", h) if Art.has("tiles", "sand_fill_0") else "sand"
 				"stone", "cobble": plain = "cobble_a" if Art.has("tiles", "cobble_a") else "g_gravel"
 				_: plain = fill
 			Art.draw_tile(self, "tiles", plain, Vector2(c * TILE), 0)
@@ -2072,8 +2074,10 @@ func _draw_water_on(ci: CanvasItem, cells: Dictionary, shore: String, edge_cells
 				idx = (h % 12) + (frame if h % 12 < 12 else 0)  # current tiles 12-15 animate
 				if h % 5 == 0:
 					idx = 12 + frame
-			Art.draw_tile(ci, "tiles", "%s_fill_%d" % [shore, idx], Vector2(c * TILE), 0)
-	if custom or Art.has("tiles", "shore_grass_top_0"):
+			Art.draw_tile(ci, "tiles", Art.fill_name(shore, h), Vector2(c * TILE), 0)
+			if shore == "bog":
+				ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.3, 0.42, 0.22, 0.28))
+	if (custom or Art.has("tiles", "shore_grass_top_0")) and shore not in ["bog", "river"]:
 		# Painted 47-tile shore set. Edges only: keep the animated fill underneath.
 		_draw_blob_edges(ci, all_cells, edge_cells, shore if custom else ("shore_grass" if shore == "grass" else "shore_sand"))
 		return
@@ -2577,7 +2581,7 @@ func fish_at(c: Vector2i, pool: Array) -> void:
 		t += get_process_delta_time()
 		if not bite and t >= wait:
 			bite = true
-			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
+			hud.toast("!!!  Tap USE!", Color(1, 1, 0.4))
 			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
 			Music.instance(get_tree()).sfx("bite")
 			if bob:

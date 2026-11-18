@@ -777,7 +777,7 @@ func _lines(id: String, friend: int) -> Array:
 		"finn":
 			if GameState.skill_level("fishing") >= 3:
 				return [{"who": "Finn", "text": "Level three already? Try the lake at dusk. The starfin only bites when the light goes blue."}]
-			return [{"who": "Finn", "text": "Cast with A, wait for the splash, press A again. Patience catches more than tackle. My hut's up at the lake if you want bait."}]
+			return [{"who": "Finn", "text": "Cast with USE, wait for the splash, tap USE again. Patience catches more than tackle. My hut's up at the lake if you want bait."}]
 		"lumi":
 			return [{"who": "Lumi", "text": "The sky over your farm has the strangest colours lately. I've started painting it. Don't tell Alder, he thinks it's weather." if peng else "I paint what I see. Lately I see a lot of people looking over their shoulders."}]
 		"theo":

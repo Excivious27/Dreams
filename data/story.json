@@ -237,7 +237,7 @@
        "mana",
        5
       ],
-      "toast": "Meow Pow Wow learned: hold B with Nova (or any partner once they know it).",
+      "toast": "Meow Pow Wow learned: tap ♥ with Nova (or any partner once they know it).",
       "sfx": "levelup"
      }
     },
@@ -594,8 +594,8 @@
       "flags": [
        "babies_fight"
       ],
-      "toast": "Don't just fight them: hold B (Meow Pow Wow) when they're low.",
-      "hint": "The babies are cursed, not evil. Turn them back with the Meow Pow Wow (tap the ♥ button, or hold B)."
+      "toast": "Don't just fight them: tap ♥ (Meow Pow Wow) when they're low.",
+      "hint": "The babies are cursed, not evil. Turn them back with the Meow Pow Wow (tap the ♥ button)."
      }
     },
     {
@@ -754,7 +754,7 @@
          "flags": [
           "knight_mercy_try"
          ],
-         "hint": "Hold B near the Knight when he's below a third of his strength: Nova's Meow Pow Wow."
+         "hint": "Tap ♥ near the Knight when he's below a third of his strength: Nova's Meow Pow Wow."
         },
         "1": {
          "flags": [

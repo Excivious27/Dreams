@@ -216,7 +216,7 @@ func _shrine() -> void:
 		else:
 			await say([{"who": "Shrine", "text": "The offering sinks into the stone. Something, somewhere, is pleased."}])
 		return
-	await say([{"who": "Shrine", "text": "An old stone altar with a pale crystal set in it. Hold something worth at least 20 crystals and press A to offer it." if GameState.is_penguins() else "An old altar. Someone left fresh flowers. Someone in this town still believes in something. Hold an item worth 20+ and press A to leave an offering."}])
+	await say([{"who": "Shrine", "text": "An old stone altar with a pale crystal set in it. Hold something worth at least 20 crystals and tap USE to offer it." if GameState.is_penguins() else "An old altar. Someone left fresh flowers. Someone in this town still believes in something. Hold an item worth 20+ and tap USE to leave an offering."}])
 
 
 func draw_map() -> void:

@@ -14,7 +14,10 @@ const BUTTONS := {
 	"menu": {"pos": Vector2(237, 460), "r": 13.0, "label": "MENU"},
 	# Partner ability / Meow Pow Wow (B-hold on a keyboard). Shown only when you have one.
 	"ability": {"pos": Vector2(146, 462), "r": 14.0, "label": "♥"},
+	# Dodge roll: shown only while an enemy is close.
+	"dodge": {"pos": Vector2(184, 384), "r": 13.0, "label": "ROLL"},
 }
+static var dodge_pressed := false
 ## Pup commands: a strip down the left edge, shown while the pup is with you.
 ## (Teammates will get a second strip the same way.)
 const PUP_CMDS := [["follow", "cmd_heel", "HEEL"], ["attack", "cmd_attack", "ATK"], ["wait", "cmd_stay", "STAY"], ["guard", "cmd_guard", "GUARD"], ["recall", "cmd_recall", "CALL"]]
@@ -146,6 +149,13 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
+func _foe_near() -> bool:
+	var m := get_tree().current_scene as GameMap
+	if m == null or m.player == null or get_tree().paused:
+		return false
+	return m.nearest_enemy_to(m.player.position, 100.0) != null
+
+
 func _has_ability() -> bool:
 	if GameState.run.is_empty():
 		return false
@@ -195,6 +205,8 @@ func _hit(pos: Vector2) -> String:
 				return "pup:" + str(PUP_CMDS[i][0])
 	for action: String in BUTTONS:
 		if action == "ability" and not _has_ability():
+			continue
+		if action == "dodge" and not _foe_near():
 			continue
 		var b: Dictionary = BUTTONS[action]
 		if pos.distance_to(b["pos"]) <= float(b["r"]) * 1.35:
@@ -251,6 +263,10 @@ func _press(action: String) -> void:
 		ability_pressed = true
 		_canvas.queue_redraw()
 		return
+	if action == "dodge":
+		dodge_pressed = true
+		_canvas.queue_redraw()
+		return
 	Input.action_press(action)
 	_canvas.queue_redraw()
 
@@ -260,7 +276,7 @@ func _release(action: String) -> void:
 	if action.begins_with("pup:"):
 		_canvas.queue_redraw()
 		return
-	if action == "ability":
+	if action in ["ability", "dodge"]:
 		_canvas.queue_redraw()
 		return
 	Input.action_release(action)
@@ -320,6 +336,8 @@ func _on_draw() -> void:
 	for action: String in BUTTONS:
 		if action == "ability" and not _has_ability():
 			continue
+		if action == "dodge" and not _foe_near():
+			continue
 		var b: Dictionary = BUTTONS[action]
 		var p: Vector2 = b["pos"]
 		var r := float(b["r"])
@@ -333,6 +351,15 @@ func _on_draw() -> void:
 		else:
 			_canvas.draw_circle(p, r, lit if on else base)
 			_canvas.draw_arc(p, r, 0, TAU, 40, edge, 1.5, true)
+		if action == "ability" and not GameState.run.is_empty():
+			var m0 := get_tree().current_scene as GameMap
+			if m0 and m0.player:
+				var ab := Companion.ability_for(m0, m0.player)
+				var cl := Companion.cooldown_left(ab)
+				if cl > 0.0:
+					var full := float(Companion.COOLDOWN.get(ab, Companion.DEFAULT_COOLDOWN))
+					_canvas.draw_circle(p, r, Color(0, 0, 0, 0.45))
+					_canvas.draw_arc(p, r - 1, -PI / 2, -PI / 2 + TAU * (1.0 - cl / full), 32, Color(0.6, 0.85, 1, 0.95), 2.5, true)
 		var label := str(b["label"])
 		var size := 9 if r > 20.0 else 7
 		if action == "a":

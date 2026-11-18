@@ -278,6 +278,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if not GameState.run["flags"].has(key) or int(GameState.run["day"]) >= int(GameState.run["flags"][key]) + int(thing.get("every", 1)):
 				GameState.run["flags"][key] = int(GameState.run["day"])
 				give(str(thing.get("item", "stone")), int(thing.get("n", 1)))
+				if Crew.perk_level("sell_bonus") >= 3:
+					GameState.run["crystals"] = int(GameState.run["crystals"]) + 25
+					hud.toast("Deuce taught you where people hide coins. +◆25", Color(1, 0.9, 0.5))
 			else:
 				hud.toast(str(thing.get("empty", "Nothing here right now.")))
 			return true
@@ -474,10 +477,12 @@ func draw_map() -> void:
 				cells = next
 			for c: Vector2i in cells:
 				var h := absi((c.x * 73856093) ^ (c.y * 19349663))
-				Art.draw_tile(self, "tiles", "%s_fill_%d" % [ps, h % 42], Vector2(c * TILE), 0)
-				if h % 11 == 0 and Art.has("tiles", "%s_deco_%d" % [ps, h / 11 % 36]):
-					Art.draw_tile(self, "tiles", "%s_deco_%d" % [ps, h / 11 % 36], Vector2(c * TILE), 0)
-			Art.draw_blob(self, cells, ps, 16.0, 0)
+				Art.draw_tile(self, "tiles", Art.fill_name(ps, h), Vector2(c * TILE), 0)
+				if ps == "bog":
+					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.32, 0.45, 0.22, 0.3))  # mossier, less void
+				if h % 29 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [ps, h / 29 % 36]):
+					Art.draw_tile(self, "tiles", "%s_deco_%d" % [ps, h / 29 % 36], Vector2(c * TILE), 0)
+			_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
 			var ds := str(R.get("deco_set", ""))
 			var dc := int(R.get("deco_count", 0))
 			if ds != "" and dc > 0:
@@ -509,10 +514,10 @@ func draw_map() -> void:
 						cells[Vector2i(x, y)] = true
 		for c: Vector2i in cells:
 			var h := absi((c.x * 73856093) ^ (c.y * 19349663))
-			Art.draw_tile(self, "tiles", "%s_fill_%d" % [setn, h % 42], Vector2(c * TILE), 0)
-			if h % 9 == 0 and Art.has("tiles", "%s_deco_%d" % [setn, h / 9 % 36]):
-				Art.draw_tile(self, "tiles", "%s_deco_%d" % [setn, h / 9 % 36], Vector2(c * TILE), 0)
-		Art.draw_blob(self, cells, setn, 16.0, 0)
+			Art.draw_tile(self, "tiles", Art.fill_name(setn, h), Vector2(c * TILE), 0)
+			if h % 23 == 0 and _blob_interior(cells, c) and Art.has("tiles", "%s_deco_%d" % [setn, h / 23 % 36]):
+				Art.draw_tile(self, "tiles", "%s_deco_%d" % [setn, h / 23 % 36], Vector2(c * TILE), 0)
+		_draw_soft_rim(cells, Color(0.2, 0.13, 0.06, 0.22), Color(0.1, 0.2, 0.05, 0.18))
 	for layer in R.get("layers", []):
 		var nm := str(layer["tile"])
 		var r: Array = layer["rect"]

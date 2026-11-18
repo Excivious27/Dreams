@@ -216,7 +216,7 @@ func _refresh() -> void:
 	_panel.size = Vector2(258, 320)
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
-		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop"]) else Color(0.85, 0.85, 0.85)
+		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages"]) else Color(0.85, 0.85, 0.85)
 	var r := GameState.run
 	match _tab:
 		"Items":
@@ -345,7 +345,7 @@ func _refresh() -> void:
 				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))], pick)
 				b.add_theme_font_size_override("font_size", 7)
 			if act != "":
-				_line("  Hold B while standing still to use the active partner's ability.", 7, Color(0.8, 0.8, 0.8))
+				_line("  Tap the ♥ button to use the active partner's ability.", 7, Color(0.8, 0.8, 0.8))
 			if not (pt["bitter"] as Array).is_empty():
 				_line("Bitter", 9, Color(1, 0.7, 0.7))
 				for cid in pt["bitter"]:
@@ -413,10 +413,14 @@ func _refresh() -> void:
 				busy += (w["jobs"] as Array).size()
 			_button("Workshop: %d station%s, %d job%s running ›" % [ws.size(), "" if ws.size() == 1 else "s", busy, "" if busy == 1 else "s"], func() -> void: _tab = "Workshop"; _refresh())
 			_button("Field log: %d of %d crops grown ›" % [(r.get("grown", {}) as Dictionary).size(), GameState.crops.size()], func() -> void: _tab = "FieldLog"; _refresh())
+			_button("Foes & Gifts: %d kinds met ›" % (r.get("kill_counts", {}) as Dictionary).size(), func() -> void: _tab = "Foes"; _refresh())
+			_button("Recent messages ›", func() -> void: _tab = "Messages"; _refresh())
 			var hints: Array = r.get("hints", [])
 			if not hints.is_empty():
-				_line("Things people said", 9, Color(0.95, 0.85, 1.0))
-				for hnt in hints:
+				_line("Things people said (newest first)", 9, Color(0.95, 0.85, 1.0))
+				var hs := hints.duplicate()
+				hs.reverse()
+				for hnt in hs.slice(0, 12):
 					_line("  ✎ " + str(hnt), 7, Color(0.9, 0.85, 0.95))
 		"Options":
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
@@ -428,7 +432,7 @@ func _refresh() -> void:
 				GameState.save()
 				get_tree().paused = false
 				get_tree().change_scene_to_file("res://scenes/title.tscn"))
-			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = check/use · B = run · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 7, Color(0.8, 0.8, 0.8))
+			_line("Touch: joystick (drag anywhere on the left) or tap where to go · USE = use your tool · CHECK = talk/pick up · ♥ = partner power · ROLL = dodge (near enemies) · tap the toolbar to pick an item\nMouse: left click = use tool toward the cursor · right click = check/talk · wheel = next item", 7, Color(0.8, 0.8, 0.8))
 		"Workshop":
 			var ws2 := Crafting.summary()
 			_line("Workshop · %d pieces made so far" % int(r.get("made", 0)), 9, Color(1, 0.9, 0.6))
@@ -454,6 +458,37 @@ func _refresh() -> void:
 			if not nxt.is_empty():
 				_line("Open to build now: " + ", ".join(nxt), 7, Color(0.8, 1, 0.7))
 			_line("A better station runs more jobs at once, works faster, opens higher recipes, and sometimes turns out a bonus piece.", 7, Color(0.7, 0.7, 0.7))
+			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
+		"Foes":
+			var kc: Dictionary = r.get("kill_counts", {})
+			var known: Dictionary = r.get("gifts_known", {})
+			_line("Foes & Gifts · %d kinds beaten · %d Gifts read" % [kc.size(), known.size()], 9, Color(1, 0.85, 0.75))
+			if not known.is_empty():
+				_line("Gifts you've learned to beat", 8, Color(1, 0.95, 0.7))
+				for gid in known:
+					var g := Gift.def(str(gid))
+					_line("  ✦ %s: %s" % [str(g.get("name", gid)), str(g.get("tip", ""))], 7, Color(1, 0.95, 0.85))
+			if GameState.run.get("arc", "") == "gangsters":
+				_line("The Marked", 8, Color(1, 0.9, 0.7))
+				for mid in Marked.all():
+					var md: Dictionary = Marked.all()[mid]
+					var st := Marked.state(str(mid))
+					var who := "%s \"%s\", %d" % [str(md["name"]), str(md["epithet"]), int(md["age"])] if st != "" else "??? (%s)" % str(md["scene"]).replace("_", " ")
+					_line("  %s  %s" % [who, {"crew": "· in your crew", "free": "· went home"}.get(st, "")], 7, Color(0.95, 0.9, 1.0))
+			_line("Beaten", 8, Color(0.9, 0.85, 1.0))
+			var ks := kc.keys()
+			ks.sort_custom(func(a: Variant, b: Variant) -> bool: return int(kc[a]) > int(kc[b]))
+			for k in ks:
+				var ed: Dictionary = GameState.enemy_data.get("enemies", {}).get(str(k), {})
+				var nm := str(ed.get("name", str(k).replace("thug_", "").replace("marked_", "").replace("_", " ").capitalize()))
+				_line("  %s ×%d · tier %d%s" % [nm, int(kc[k]), int(ed.get("tier", 0)), ("  · " + str(Gift.def(str(ed["gift"])).get("name", ""))) if ed.has("gift") else ""], 7, Color(0.85, 0.85, 0.9))
+			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
+		"Messages":
+			_line("Recent messages (newest first)", 9, Color(0.85, 0.9, 1.0))
+			var tl: Array = (r.get("toast_log", []) as Array).duplicate()
+			tl.reverse()
+			for t in tl:
+				_line("  " + str(t), 7, Color(0.9, 0.9, 0.9))
 			_button("← Back to Quests", func() -> void: _tab = "Quests"; _refresh())
 		"FieldLog":
 			# Every crop by family: grown ones with counts, in-season ones hinted, the rest as ???.
@@ -698,9 +733,11 @@ func _eat(id: String) -> void:
 const PINS := {"farm": Vector2(0.44, 0.47), "house": Vector2(0.40, 0.44), "town": Vector2(0.52, 0.70), "forest": Vector2(0.30, 0.24), "lake": Vector2(0.14, 0.40),
 	"meadow": Vector2(0.66, 0.46), "crystal_meadow": Vector2(0.86, 0.40), "mine": Vector2(0.72, 0.20), "mountain": Vector2(0.74, 0.70), "beach": Vector2(0.40, 0.90), "moon": Vector2(0.90, 0.08),
 	"wastes": Vector2(0.95, 0.26), "hideout": Vector2(0.95, 0.52), "docks": Vector2(0.86, 0.84), "neon": Vector2(0.72, 0.92), "uptown": Vector2(0.58, 0.96), "underground": Vector2(0.70, 0.98), "countryside": Vector2(0.98, 0.66),
-	"sky": Vector2(0.28, 0.06), "station": Vector2(0.80, 0.03), "jungle": Vector2(0.66, 0.04)}
+	"sky": Vector2(0.28, 0.06), "station": Vector2(0.80, 0.03), "jungle": Vector2(0.66, 0.04),
+	"orchard_hills": Vector2(0.24, 0.12), "highlands": Vector2(0.50, 0.12), "ruins": Vector2(0.60, 0.30), "quarry": Vector2(0.58, 0.84), "marsh": Vector2(0.22, 0.86), "riverlands": Vector2(0.08, 0.62)}
 const PIN_ICON := {"farm": "pin_farm", "house": "pin_farm", "town": "pin_town", "forest": "pin_forest", "lake": "pin_lake", "meadow": "pin_meadow", "crystal_meadow": "pin_meadow", "mine": "pin_mine", "mountain": "pin_mountain", "beach": "pin_beach", "moon": "pin_moon",
-	"wastes": "pin_wastes", "hideout": "pin_docks", "docks": "pin_docks", "neon": "pin_tower", "uptown": "pin_tower", "underground": "pin_mine", "countryside": "pin_farm", "sky": "pin_mountain", "station": "pin_moon", "jungle": "pin_forest"}
+	"wastes": "pin_wastes", "hideout": "pin_docks", "docks": "pin_docks", "neon": "pin_tower", "uptown": "pin_tower", "underground": "pin_mine", "countryside": "pin_farm", "sky": "pin_mountain", "station": "pin_moon", "jungle": "pin_forest",
+	"orchard_hills": "pin_farm", "highlands": "pin_mountain", "ruins": "pin_wastes", "quarry": "pin_mine", "marsh": "pin_lake", "riverlands": "pin_lake"}
 const SEEN_FLAG := {"crystal_meadow": "cm_seen"}
 
 

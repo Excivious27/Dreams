@@ -158,7 +158,7 @@ func _fish_old(c: Vector2i) -> void:
 		t += get_process_delta_time()
 		if not bite and t >= wait:
 			bite = true
-			hud.toast("!!!  Press A!", Color(1, 1, 0.4))
+			hud.toast("!!!  Tap USE!", Color(1, 1, 0.4))
 			fx("alert", player.position + Vector2(0, -26), 10.0, 0.5)
 			Music.instance(get_tree()).sfx("bite")
 			if bob:
@@ -206,7 +206,8 @@ func draw_map() -> void:
 			if not _sea.has(c + Vector2i(0, -1)) and not things.get(c + Vector2i(0, -1), {}).get("type", "") == "dock":
 				if not Art.draw_tile(ci, "tiles", "foam", Vector2(c * TILE), (frame + c.x) % 4):
 					ci.draw_rect(Rect2(c.x * TILE, c.y * TILE, TILE, 2), Color(1, 1, 1, 0.5)))
-	draw_ground("dirt", cells_of([Rect2i(30, 1, 4, 8), TOWN_EXIT, Rect2i(1, 13, 12, 2), Rect2i(52, 13, 11, 2), MARSH_EXIT, QUARRY_EXIT]))
+	# Only the town lane is dirt (it runs over grass); on the sand, paths are just sand.
+	draw_ground("dirt", cells_of([Rect2i(30, 1, 4, 8), TOWN_EXIT]))
 	draw_exits()
 	if not Art.has("buildings", "galleon"):
 		var p := cell_center(Vector2i(5, 16))
@@ -236,7 +237,7 @@ func _place_props() -> void:
 		prop("nature", "rock_l" if Art.has("nature", "rock_l") else "rock_m", c, 1)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 87
-	for i in 22:
+	for i in 10:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(9, SEA_Y - 2))
 		if things.has(c) or blocked.has(c) or not _sand.has(c):
 			continue

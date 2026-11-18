@@ -38,63 +38,80 @@ func scene_id() -> String:
 
 
 func default_spawn() -> Vector2:
-	return cell_center(Vector2i(2, 2))
+	return cell_center(_nearest_open(_entry + Vector2i(1, 1)))
 
 
 func build() -> void:
-	cols = 18
-	rows = 18
+	# Big organic caverns: a floor grows with depth, carved by cellular automata
+	# so the edges read as natural rock, not a box.
+	floor_no = int(GameState.run.get("mine_floor", 1))
+	cols = 40 + mini(floor_no, 20) * 2
+	rows = 32 + mini(floor_no, 20)
 	has_sky = false
 	has_pet = false
 	music_track = "mine"
-	floor_no = int(GameState.run.get("mine_floor", 1))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1000 + floor_no
-	set_thing(1, 1, {"type": "up", "hint": "A: climb out"})
 	mine_tier = GameState.mine_tier(floor_no)
-	_ladder = Vector2i(rng.randi_range(12, 16), rng.randi_range(12, 16))
+	_carve(rng)
+	# Way in: the open cell nearest the top-left; way down: the farthest open cell from it.
+	_entry = _nearest_open(Vector2i(3, 3))
+	_ladder = _farthest_open(_entry)
+	for c in range(0, cols * rows):
+		var cc := Vector2i(c % cols, c / cols)
+		if not _open.has(cc):
+			blocked[cc] = true
+	set_thing(_entry.x, _entry.y, {"type": "up", "hint": "A: climb out"})
 	_way_open = GameState.run["flags"].has("mine_open_%d" % floor_no)
 	if _way_open:
 		things[_ladder] = {"type": "down", "hint": "A: climb down to floor %d" % (floor_no + 1)}
 	# The lift: once you've opened floor 5, Granite's cart takes you straight to
 	# any floor you've opened the way to (every 5th).
 	if floor_no == 1 and _deepest() >= 5:
-		set_thing(cols - 2, 1, {"type": "lift", "hint": "A: the mine lift"})
-	# Floor 5: the flooded grotto. Half the floor is black water; crystals sit
+		var lc := _nearest_open(_entry + Vector2i(3, 0))
+		set_thing(lc.x, lc.y, {"type": "lift", "hint": "A: the mine lift"})
+	# Floor 5: the flooded grotto. Much of the cave is black water; crystals sit
 	# under it. Mer the mercat lives here; with her you can swim and dive.
 	_grotto = floor_no == 5
 	if _grotto:
-		for y in range(6, rows - 1):
-			for x in range(1, cols - 1):
-				var wc := Vector2i(x, y)
-				if WorldGen.fbm(float(x), float(y), 55, 6.0) > -0.1 and wc.distance_to(_ladder) > 2:
-					set_thing(x, y, {"type": "water", "hint": ""}, true)
+		for c: Vector2i in _open:
+			if c.distance_to(_entry) > 6 and c.distance_to(_ladder) > 3 and WorldGen.fbm(float(c.x), float(c.y), 55, 7.0) > -0.05 and not things.has(c):
+				set_thing(c.x, c.y, {"type": "water", "hint": ""}, true)
 		swim_ok = true
-		set_thing(4, 4, {"type": "mer", "hint": "A: ...a cat?"}, false)
+		var mc := _nearest_open(_entry + Vector2i(3, 3))
+		set_thing(mc.x, mc.y, {"type": "mer", "hint": "A: ...a cat?"}, false)
 		# Mer has to be visible: she gates the grotto. Hidden while she follows you.
 		if Companion.active_id() != "mer" and str(GameState.run.get("playable", "")) != "mer":
 			var ms := CharacterLibrary.make_sprite("mer")
 			if ms:
-				ms.position = cell_center(Vector2i(4, 4))
+				ms.position = cell_center(mc)
 				ms.play("idle")
 				ms.flip_h = true
 				add_child(ms)
 		var rng2 := RandomNumberGenerator.new()
 		rng2.seed = 5555
 		var placed := 0
-		for i in 60:
-			var c := Vector2i(rng2.randi_range(2, cols - 3), rng2.randi_range(8, rows - 2))
-			if is_water_cell(c) and not things[c].has("crystal"):
+		var wl: Array = []
+		for c in things:
+			if is_water_cell(c):
+				wl.append(c)
+		for i in 200:
+			if wl.is_empty():
+				break
+			var c: Vector2i = wl[rng2.randi() % wl.size()]
+			if not things[c].has("crystal"):
 				things[c] = {"type": "water", "crystal": true, "key": "grotto_%d" % placed, "hint": "A: dive for the crystal"}
 				placed += 1
 				if placed >= 6:
 					break
-	var count := 40 + floor_no * 4
+	# Rock: about one open cell in seven, more on deeper floors.
+	var open_list: Array = _open.keys()
+	var count := int(open_list.size() * (0.11 + 0.005 * mini(floor_no, 12)))
 	for i in count:
 		if _grotto and i > count / 2:
 			break
-		var c := Vector2i(rng.randi_range(1, cols - 2), rng.randi_range(1, rows - 2))
-		if c.distance_to(Vector2i(1, 1)) < 3 or c == _ladder or things.has(c):
+		var c: Vector2i = open_list[rng.randi() % open_list.size()]
+		if c.distance_to(_entry) < 3 or c.distance_to(_ladder) < 2 or things.has(c):
 			continue
 		var roll := rng.randf()
 		var ore := "stone"
@@ -117,7 +134,85 @@ func build() -> void:
 					idx = wi + 1
 					break
 			ore = str(ores[idx])
+		# Ore gathers in veins: rich rocks pull neighbours toward the same ore.
 		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": (2 if ore == "stone" else 3) + mine_tier, "hint": "A: mine"})
+
+
+var _open := {}          # walkable cave floor
+var _entry := Vector2i(2, 2)
+
+
+## Cellular-automata cave: random fill, smoothed, then only the biggest connected
+## cavern is kept so every part of the floor can be reached.
+func _carve(rng: RandomNumberGenerator) -> void:
+	var g := {}
+	for y in range(1, rows - 1):
+		for x in range(1, cols - 1):
+			# Bias toward open in the middle, rock at the rim: no straight edges.
+			var edge := minf(minf(x, cols - 1 - x), minf(y, rows - 1 - y))
+			var p := 0.56 if edge > 4 else (0.42 if edge > 2 else 0.2)
+			if rng.randf() < p:
+				g[Vector2i(x, y)] = true
+	for pass_i in 5:
+		var nxt := {}
+		for y in range(1, rows - 1):
+			for x in range(1, cols - 1):
+				var n := 0
+				for dy in range(-1, 2):
+					for dx in range(-1, 2):
+						if (dx != 0 or dy != 0) and g.has(Vector2i(x + dx, y + dy)):
+							n += 1
+				var here := g.has(Vector2i(x, y))
+				if (here and n >= 4) or (not here and n >= 5):
+					nxt[Vector2i(x, y)] = true
+		g = nxt
+	# Keep the largest connected region.
+	var seen := {}
+	var best := {}
+	for c: Vector2i in g:
+		if seen.has(c):
+			continue
+		var region := {}
+		var stack: Array = [c]
+		while not stack.is_empty():
+			var q: Vector2i = stack.pop_back()
+			if seen.has(q) or not g.has(q):
+				continue
+			seen[q] = true
+			region[q] = true
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				stack.append(q + d)
+		if region.size() > best.size():
+			best = region
+	_open = best
+
+
+func _nearest_open(c: Vector2i) -> Vector2i:
+	var bestc := c
+	var bd := 1e9
+	for o: Vector2i in _open:
+		var d := float((o - c).length_squared())
+		if d < bd and not things.has(o):
+			bd = d
+			bestc = o
+	return bestc
+
+
+## Walk distance (BFS) to the farthest open cell: the way down is a real trek.
+func _farthest_open(from: Vector2i) -> Vector2i:
+	var dist := {from: 0}
+	var queue: Array = [from]
+	var far := from
+	while not queue.is_empty():
+		var q: Vector2i = queue.pop_front()
+		if int(dist[q]) > int(dist[far]):
+			far = q
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n := q + d
+			if _open.has(n) and not dist.has(n):
+				dist[n] = int(dist[q]) + 1
+				queue.append(n)
+	return far
 
 
 func after_ready() -> void:
@@ -131,12 +226,13 @@ func after_ready() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 2000 + floor_no + int(GameState.run["day"])
 	_place_props()
-	var n := 3 + mini(floor_no, 12) / 2
+	var n := 5 + mini(floor_no, 16) / 2
 	var pools: Array = GameState.tier_data.get("mine", {}).get("pools", [])
 	var pool: Array = pools[mini(mine_tier, pools.size() - 1)] if not pools.is_empty() else ["slime", "bat"]
+	var ol: Array = _open.keys()
 	for i in n:
-		var c := Vector2i(rng.randi_range(4, cols - 2), rng.randi_range(4, rows - 2))
-		if blocked.has(c) or things.has(c) or (_grotto and is_water_cell(c)):
+		var c: Vector2i = ol[rng.randi() % ol.size()]
+		if blocked.has(c) or things.has(c) or (_grotto and is_water_cell(c)) or c.distance_to(_entry) < 8:
 			continue
 		var kind := str(pool[rng.randi_range(0, pool.size() - 1)])
 		if not GameState.is_penguins() and kind == "shard":
@@ -281,80 +377,72 @@ func draw_map() -> void:
 				wc[c] = true
 		draw_water(wc, "grass")
 	var ts := _tier_set()
+	var nfill := 0
+	var nwall := 0
+	var ntop := 0
 	if ts != "":
-		var nfill := 0
 		while Art.has("tiles", "mine_%s_fill_%d" % [ts, nfill]):
 			nfill += 1
-		var nwall := 0
 		while Art.has("tiles", "mine_%s_wall_%d" % [ts, nwall]):
 			nwall += 1
-		var ntop := 0
 		while Art.has("tiles", "mine_%s_walltop_%d" % [ts, ntop]):
 			ntop += 1
-		for y in range(1, rows - 1):
-			for x in range(1, cols - 1):
-				var h := absi((x * 73856093) ^ (y * 19349663) ^ floor_no)
-				Art.draw_tile(self, "tiles", "mine_%s_fill_%d" % [ts, h % maxi(1, nfill)], Vector2(x * TILE, y * TILE), 0)
-		# Top wall: two tiles tall, standing on row 0 and rising into the pad.
+	var rock_col: Color = {"earth": Color("2a2018"), "stone": Color("24222c"), "ice": Color("1c2634"), "lava": Color("2c1814")}.get(v, Color("24222c"))
+	# Solid rock everywhere first (with a little grain), padding included.
+	draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), rock_col)
+	for y in range(0, rows):
 		for x in range(0, cols):
-			var h := absi((x * 2654435761) ^ floor_no)
-			var t := Art.tex("tiles", "mine_%s_wall_%d" % [ts, h % maxi(1, nwall)])
+			var c := Vector2i(x, y)
+			if _open.has(c):
+				continue
+			var n := WorldGen.fbm(float(x), float(y), 900 + floor_no, 4.0)
+			if n > 0.15:
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.06))
+			elif n < -0.2:
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), rock_col.darkened(0.25))
+	# Cave floor.
+	for c: Vector2i in _open:
+		var h := absi((c.x * 73856093) ^ (c.y * 19349663) ^ floor_no)
+		var drawn := false
+		if nfill > 0:
+			drawn = Art.draw_tile(self, "tiles", "mine_%s_fill_%d" % [ts, h % nfill], Vector2(c * TILE), 0)
+		elif Art.has("tiles", "mine_floor"):
+			drawn = Art.draw_tile(self, "tiles", "mine_floor", Vector2(c * TILE), h % 4)
+		if not drawn:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color("4a4152") if (c.x + c.y) % 2 == 0 else Color("50475a"))
+	# Rock faces: where the floor meets rock to the north, the wall rises above it.
+	for c: Vector2i in _open:
+		var up := c + Vector2i(0, -1)
+		if not _open.has(up):
+			var h2 := absi((c.x * 2654435761) ^ floor_no)
+			var t := Art.tex("tiles", "mine_%s_wall_%d" % [ts, h2 % maxi(1, nwall)]) if nwall > 0 else null
 			if t:
-				draw_texture_rect(t, Rect2(x * TILE, -TILE, TILE, TILE * 2), false)
-		# Sides and bottom: the cap tiles.
-		for y in range(1, rows):
-			for x in [0, cols - 1]:
-				var h2 := absi((x * 83492791) ^ (y * 19349663))
-				var t2 := Art.tex("tiles", "mine_%s_walltop_%d" % [ts, h2 % maxi(1, ntop)])
-				if t2:
-					draw_texture_rect(t2, Rect2(x * TILE, (y - 1) * TILE, TILE, TILE * 2), false)
-		for x in range(1, cols - 1):
-			var h3 := absi((x * 97) ^ (rows * 19349663))
-			var t3 := Art.tex("tiles", "mine_%s_walltop_%d" % [ts, h3 % maxi(1, ntop)])
-			if t3:
-				draw_texture_rect(t3, Rect2(x * TILE, (rows - 2) * TILE, TILE, TILE * 2), false)
-		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.03, 0.02, 0.08, 0.1 + 0.02 * mini(floor_no, 10)))
-	elif Art.has("tiles", "mf_" + v) and Art.has("tiles", "mw_" + v):
-		draw_tileset_rect("mf_" + v, Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
-		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.15 + 0.03 * mini(floor_no, 8)))
-		var w := "mw_" + v
-		for x in range(1, cols - 1):
-			Art.draw_tile(self, "tiles", w, Vector2(x * TILE, 0), 1)
-			Art.draw_tile(self, "tiles", w, Vector2(x * TILE, (rows - 1) * TILE), 7)
-		for y in range(1, rows - 1):
-			Art.draw_tile(self, "tiles", w, Vector2(0, y * TILE), 3)
-			Art.draw_tile(self, "tiles", w, Vector2((cols - 1) * TILE, y * TILE), 5)
-		Art.draw_tile(self, "tiles", w, Vector2(0, 0), 0)
-		Art.draw_tile(self, "tiles", w, Vector2((cols - 1) * TILE, 0), 2)
-		Art.draw_tile(self, "tiles", w, Vector2(0, (rows - 1) * TILE), 6)
-		Art.draw_tile(self, "tiles", w, Vector2((cols - 1) * TILE, (rows - 1) * TILE), 8)
-		if v == "lava" and Art.has("tiles", "lava"):
-			_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
-				var frame := int(Time.get_ticks_msec() / 300) % 4
-				for c: Vector2i in cells_of([Rect2i(3, 12, 4, 3), Rect2i(12, 4, 3, 2)]):
-					Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame))
-	elif Art.has("tiles", "mine_floor"):
-		draw_tileset_rect("mine_floor", Rect2i(1, 1, cols - 2, rows - 2), Color("3b3542"))
-		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.05, 0.03, 0.1, 0.3 + 0.05 * mini(floor_no, 6)))
-		for x in range(1, cols - 1):
-			Art.draw_tile(self, "tiles", "wall_t", Vector2(x * TILE, 0), 0)
-			Art.draw_tile(self, "tiles", "wall_b", Vector2(x * TILE, (rows - 1) * TILE), 0)
-		for y in range(1, rows - 1):
-			Art.draw_tile(self, "tiles", "wall_l", Vector2(0, y * TILE), 0)
-			Art.draw_tile(self, "tiles", "wall_r", Vector2((cols - 1) * TILE, y * TILE), 0)
-		Art.draw_tile(self, "tiles", "wall_tl", Vector2(0, 0), 0)
-		Art.draw_tile(self, "tiles", "wall_tr", Vector2((cols - 1) * TILE, 0), 0)
-		Art.draw_tile(self, "tiles", "wall_bl", Vector2(0, (rows - 1) * TILE), 0)
-		Art.draw_tile(self, "tiles", "wall_br", Vector2((cols - 1) * TILE, (rows - 1) * TILE), 0)
-	elif Art.has("tiles", "stone"):
-		for y in rows:
-			for x in cols:
-				Art.draw_tile(self, "tiles", "stone", Vector2(x * TILE, y * TILE), 4)
-		draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color(0.1, 0.05, 0.2, 0.45))
-	else:
-		for y in rows:
-			for x in cols:
-				draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), Color("3b3542") if (x + y) % 2 == 0 else Color("433c4b"))
+				draw_texture_rect(t, Rect2(up.x * TILE, (up.y - 1) * TILE, TILE, TILE * 2), false)
+			else:
+				draw_rect(Rect2(up * TILE, Vector2i(TILE, TILE)), rock_col.lightened(0.18))
+				draw_rect(Rect2(Vector2(up.x * TILE, up.y * TILE + TILE - 3), Vector2(TILE, 3)), rock_col.lightened(0.3))
+	# A soft dark lip along every floor edge so the cave reads as hollowed rock.
+	for c: Vector2i in _open:
+		var r := Rect2(c * TILE, Vector2i(TILE, TILE))
+		for d: Vector2i in [Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
+			if not _open.has(c + d):
+				var lip := Color(0, 0, 0, 0.35)
+				if d == Vector2i(0, 1):
+					draw_rect(Rect2(r.position + Vector2(0, TILE - 3), Vector2(TILE, 3)), lip)
+				elif d == Vector2i(-1, 0):
+					draw_rect(Rect2(r.position, Vector2(3, TILE)), lip)
+				else:
+					draw_rect(Rect2(r.position + Vector2(TILE - 3, 0), Vector2(3, TILE)), lip)
+	draw_rect(Rect2(-pad * TILE, -pad * TILE, (cols + 2 * pad) * TILE, (rows + 2 * pad) * TILE), Color(0.03, 0.02, 0.08, 0.08 + 0.02 * mini(floor_no, 10)))
+	if v == "lava" and Art.has("tiles", "lava"):
+		var lava := {}
+		for c: Vector2i in _open:
+			if WorldGen.fbm(float(c.x), float(c.y), 77 + floor_no, 6.0) > 0.42 and not things.has(c) and c.distance_to(_entry) > 6 and c.distance_to(_ladder) > 3:
+				lava[c] = true
+		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
+			var frame := int(Time.get_ticks_msec() / 300) % 4
+			for c: Vector2i in lava:
+				Art.draw_tile(ci, "tiles", "lava", Vector2(c * TILE), frame))
 	if not _way_open and Art.has("props", "shaft_hint_0") and not things.has(_ladder):
 		Art.draw_prop(self, "props", "shaft_hint_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3), cell_center(_ladder) + Vector2(0, 6))
 	for k in things:
@@ -376,8 +464,7 @@ func draw_map() -> void:
 					nm = "shaft_open_%d" % clampi(mine_tier / 2 + (1 if mine_tier >= 3 else 0), 0, 3)
 				if not Art.draw_prop(self, "props", nm, p):
 					draw_rect(Rect2(p.x - 6, p.y - 14, 12, 14), Color("1a1620"))
-	if not Art.has("tiles", "mine_floor"):
-		draw_rect(Rect2(0, 0, cols * TILE, TILE), Color("221d28"))
+
 		draw_rect(Rect2(0, (rows - 1) * TILE, cols * TILE, TILE), Color("221d28"))
 		draw_rect(Rect2(0, 0, TILE, rows * TILE), Color("221d28"))
 		draw_rect(Rect2((cols - 1) * TILE, 0, TILE, rows * TILE), Color("221d28"))
@@ -515,13 +602,14 @@ func _summon_guardian() -> void:
 	var kind := str(kinds[mini(mine_tier, kinds.size() - 1)])
 	var at := cell_center(_ladder)
 	if _grotto:
-		at = cell_center(Vector2i(cols / 2, 3))
+		at = cell_center(_nearest_open(Vector2i(cols / 2, rows / 2)))
 	shake(3.0)
 	fx("keeper_wake" if Art.has("fx", "keeper_wake") else "boss_shockwave", at, 12.0, 0.8)
 	await get_tree().create_timer(0.9 if Art.has("fx", "keeper_wake") else 0.4).timeout
 	# Never weaker than its native tier; floor 1's golem is still a golem.
 	_guardian = spawn_enemy(kind, at, maxi(mine_tier, GameState.enemy_tier(kind)))
 	_guardian.is_guardian = true
+	_guardian.set_meta("boss_name", "Keeper of floor %d" % floor_no)
 	var into := (floor_no - 1) % int(GameState.tier_data.get("mine", {}).get("floors_per_tier", 4))
 	_guardian.max_hp = int(_guardian.max_hp * minf(2.0, 1.3 + 0.08 * into))
 	_guardian.hp = _guardian.max_hp

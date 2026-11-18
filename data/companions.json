@@ -7,7 +7,7 @@
    "arc": "penguins",
    "ability": "powerup",
    "ability_name": "Power Pose",
-   "ability_desc": "Hold B: a crystal aura that stuns grumps nearby and lifts your mana by 5.",
+   "ability_desc": "Tap ♥: a crystal aura that stuns grumps nearby and lifts your mana by 5.",
    "join": "I was going to find the crystal on my own. Together is faster. And warmer."
   },
   "penguin_f": {
@@ -52,7 +52,7 @@
    "arc": "both",
    "ability": "tinker",
    "ability_name": "Tinker",
-   "ability_desc": "Crafting is 30% faster; hold B to open your bag anywhere.",
+   "ability_desc": "Crafting is 30% faster; tap ♥ to open your bag anywhere.",
    "join": "I can fix the resonator. Probably. Let's find out."
   },
   "big_jim": {
@@ -61,7 +61,7 @@
    "arc": "gangsters",
    "ability": "muscle",
    "ability_name": "Muscle",
-   "ability_desc": "Hold B facing a rock, log or stump: he breaks it himself, no tool needed.",
+   "ability_desc": "Tap ♥ facing a rock, log or stump: he breaks it himself, no tool needed.",
    "join": "You pay, I swing. You don't pay, I still swing, I just complain."
   },
   "mer": {
@@ -79,7 +79,7 @@
    "arc": "gangsters",
    "ability": "fence",
    "ability_name": "Fence",
-   "ability_desc": "Hold B: he sells your most valuable stack of loot (drops, ore, treasure) at 120%.",
+   "ability_desc": "Tap ♥: he sells your most valuable stack of loot (drops, ore, treasure) at 120%.",
    "join": "I know people. People who know people. Keep your head down."
   },
   "coldy": {
@@ -98,7 +98,7 @@
     ],
     "gate": "I hold the key. Key goes where you go."
    },
-   "ability_desc": "Hold B: Coldy stamps a ring that cracks the ground and staggers everything close."
+   "ability_desc": "Tap ♥: Coldy stamps a ring that cracks the ground and staggers everything close."
   },
   "mk_kit": {
    "name": "Kit",

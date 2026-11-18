@@ -735,7 +735,8 @@
     "lunge",
     "enrage"
    ],
-   "gift": "b_grudge"
+   "gift": "b_grudge",
+   "name": "Big Grump"
   },
   "slime": {
    "hp": 2,
@@ -826,7 +827,8 @@
     "summon",
     "lunge"
    ],
-   "gift": "b_command"
+   "gift": "b_command",
+   "name": "The Commander"
   },
   "dark_crystal": {
    "hp": 90,
@@ -841,7 +843,8 @@
     "stomp"
    ],
    "status": "weak",
-   "gift": "b_dark"
+   "gift": "b_dark",
+   "name": "The Dark Crystal"
   },
   "thug_cyber": {
    "hp": 10,
@@ -924,7 +927,8 @@
     "stomp"
    ],
    "status": "weak",
-   "gift": "b_president"
+   "gift": "b_president",
+   "name": "The President"
   },
   "bog_hag": {
    "hp": 14,
@@ -1033,7 +1037,8 @@
    ],
    "status": "poison",
    "reward": 120,
-   "gift": "b_witch"
+   "gift": "b_witch",
+   "name": "The Marsh Witch"
   },
   "golem_king": {
    "hp": 120,
@@ -1048,7 +1053,8 @@
     "enrage"
    ],
    "reward": 250,
-   "gift": "b_king"
+   "gift": "b_king",
+   "name": "The Golem King"
   },
   "ruin_warden": {
    "hp": 150,
@@ -1065,7 +1071,8 @@
    ],
    "status": "weak",
    "reward": 300,
-   "gift": "b_warden"
+   "gift": "b_warden",
+   "name": "The Ruin Warden"
   },
   "dark_crystal_shard": {
    "hp": 22,
@@ -1192,7 +1199,8 @@
     "stomp"
    ],
    "reward": 40,
-   "gift": "b_sentinel"
+   "gift": "b_sentinel",
+   "name": "Obsidian Sentinel"
   },
   "mirror": {
    "hp": 36,
@@ -1207,7 +1215,8 @@
    ],
    "status": "weak",
    "reward": 35,
-   "gift": "b_mirror"
+   "gift": "b_mirror",
+   "name": "The Mirror"
   },
   "light_eater": {
    "hp": 70,
@@ -1221,7 +1230,8 @@
    ],
    "status": "blind",
    "reward": 60,
-   "gift": "b_eater"
+   "gift": "b_eater",
+   "name": "The Light Eater"
   },
   "finargle": {
    "hp": 18,
@@ -1252,7 +1262,8 @@
    "status": "blind",
    "art": "wisp",
    "reward": 40,
-   "gift": "b_elder"
+   "gift": "b_elder",
+   "name": "The Finargle Elder"
   },
   "crystal_baby": {
    "hp": 14,
