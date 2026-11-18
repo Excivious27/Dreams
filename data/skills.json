@@ -1064,7 +1064,7 @@
     {
      "id": "woodcutter",
      "name": "Woodcutter",
-     "desc": "Trees fall one hit sooner (per rank)",
+     "desc": "Each rank: +10% chance a swing bites twice",
      "ranks": 2,
      "tier": 2,
      "effect": {
@@ -1332,7 +1332,7 @@
     {
      "id": "wild_friend",
      "name": "Wild Friend",
-     "desc": "+1 chop power on big trees",
+     "desc": "+10% chance a swing bites twice",
      "ranks": 1,
      "tier": 7,
      "effect": {
@@ -4976,12 +4976,12 @@
     {
      "id": "leadership_3_9",
      "name": "Delegate",
-     "desc": "+8% crew job pay",
+     "desc": "+4 health healed each time you use a partner power",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "job_pay": 0.08
+      "team_heal": 4
      }
     }
    ]
@@ -5200,12 +5200,12 @@
     {
      "id": "hustle_1_8",
      "name": "Silent Partner",
-     "desc": "+4% crew job pay (per rank)",
+     "desc": "+8 max health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "job_pay": 0.04
+      "hp": 8
      }
     },
     {

@@ -546,8 +546,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				return true
 			player.play_tool("axe")
 			Music.instance(get_tree()).sfx("chop")
-			if GameState.bonus("foraging", "chop_bonus") > 0.0 and int(thing.get("hp", 3)) > 1:
-				thing["hp"] = int(thing.get("hp", 3)) - int(GameState.bonus("foraging", "chop_bonus"))
+			# Woodcutter nodes: a chance (10% per point) that a swing bites twice as deep.
+			if randf() < 0.1 * GameState.bonus("foraging", "chop_bonus") and int(thing.get("hp", 3)) > 1:
+				thing["hp"] = int(thing.get("hp", 3)) - 1
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
 			thing["hp"] = int(thing.get("hp", 3)) - (1 + GameState.tool_tier("axe") / 2 + int(GameState.bonus("foraging", "chop_power")))

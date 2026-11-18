@@ -148,3 +148,7 @@ DEFS["BLOB RULE"] = para(p19raw, "BLOB RULE")
 d = build(p19raw, "19", f"{D}/ART-PROMPTS-19.md", "clean edges everywhere, interiors, and the last stand-ins",
           "WHAT THIS COVERS, most important first: water edges (rivers, ponds, lakes, the beach, bog and cave water); ground-to-ground edges (grass to sand, dirt, snow, dry grass, mud); cliffs and stairs in every material; paths and paving; the farm (tilled soil, pond bank, fences); house and shop interiors; colony, moon and battle ground; the last stand-ins (gangster walk cycles, the President, enemy attacks, partner ability effects, ore nodes, icons, props).")
 print("19:", d)
+p20raw = open(f"{D}/src/ART-PROMPTS-20-raw.md").read()
+e = build(p20raw, "20", f"{D}/ART-PROMPTS-20.md", "what the loop-1 audit found",
+          "WHAT THIS COVERS, most important first: farm fixes (clean sprinklers, tall orchard trees, incubator and silo); the ferry and Pip the ferry-cat; the lookout, the crystal pylon and crystal trees; small screen pieces (rally icons, keeper pointer, bite meter, quality stars, close button, glints); story panels for both arcs and Grandfather Auk's ghost; two hero cards; the villagers' own walking sheets and winter portraits.")
+print("20:", e)

@@ -367,7 +367,7 @@
     {
      "id": "woodcutter",
      "name": "Woodcutter",
-     "desc": "Trees fall one hit sooner (per rank)",
+     "desc": "Each rank: +10% chance a swing bites twice",
      "ranks": 2,
      "tier": 1,
      "requires": [
@@ -442,7 +442,7 @@
     {
      "id": "wild_friend",
      "name": "Wild Friend",
-     "desc": "+1 chop power on big trees",
+     "desc": "+10% chance a swing bites twice",
      "ranks": 1,
      "tier": 3,
      "requires": [

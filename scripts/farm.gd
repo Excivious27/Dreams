@@ -167,7 +167,7 @@ func _place_debris() -> void:
 				things[c] = {"type": "log" if _rng.randf() < 0.6 else "stump", "hp": 2, "hint": "A: chop"}
 				blocked[c] = true
 			elif k < 0.94:
-				things[c] = {"type": "tree", "hp": 4, "fell": true, "hint": "A: chop down"}
+				things[c] = {"type": "tree", "hp": 5, "fell": true, "hint": "A: chop down"}
 				blocked[c] = true
 			else:
 				var key := "bush_farm_%d_%d" % [c.x, c.y]

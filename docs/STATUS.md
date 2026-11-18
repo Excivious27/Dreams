@@ -2,6 +2,10 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 1 of 10
+- 20-agent audit (/tmp/audit_c1), 20 bots: 0 errors, 0 fails. Fixes: animal goods quality, bag overflow only into a built chest with room, quality clamp, Sal two-tap fence (quest items safe), Big Jim ore gate, pup menu, fishing pauses in menus + weighted rare fish, chop/yield caps (chop_bonus = chance), ripe sprite, greenhouse border, season warning, fertiliser on ripe, grown-crop counting, gentler early HP (NATIVE_HP 1.5/2.2…), meadow counts, first gangster boss damage, floor-1 keeper tier, burn ticks, helpers follow in fights + strikers/bots draw aggro, battle commanders don't count as story lieutenants, capped bartering buy floor, wash/job caps, one crew per job, sprinkler value, glass at Granite, stable unlock ids + migration refunds, unlocks in all 13 trees, hp/energy nodes from every tree, icons matched by node name, mine redraw only when needed, grotto glints, perf (update check, farm animals, skill_name), saves keep key order and skip mid-door, toolbar pad, colony seeds stable/ferry/beacons/house, Marlene ashore, Sal recruit, knight mercy, all-ages text, sfx throttle, chest sounds, default_spawn offset, exit_check covers colonies/battlefields/Hollow Heart.
+- Prompts 20 (8 prompts / 20 images), Guide 13.
+
 ## 2026-11-18 (CONDUCT round) — audit, bots, edges audit, skill unlocks, bag and chests, mines
 - Two 20-agent audits (general + edges/transitions; reports in /tmp/audit, not in the repo); bots clean apart from navigation stalls.
 - Edges: `WaterMask` shader draws whole water bodies and ground patches with curved, foamy, banked edges; dirt/sand paths and region patches blend (`soft_ground`); seamless textures wrap (`tools/make_seamless.py`).

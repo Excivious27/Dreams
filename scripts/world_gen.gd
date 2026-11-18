@@ -135,7 +135,7 @@ static func tree_border(m: GameMap, rect: Rect2i, seed_v: int, gaps: Array = [],
 		var cc := c + jitter
 		if cc.x >= m.cols - 1:
 			cc = c
-		m.set_thing(cc.x, cc.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
+		m.set_thing(cc.x, cc.y, {"type": "tree", "hp": 4, "hint": "A: chop"})
 		m.prop("nature", GameState.tree_sprite(rng.randi_range(0, 2)), cc)
 
 
@@ -151,7 +151,7 @@ static func tree_clumps(m: GameMap, rect: Rect2i, seed_v: int, clumps: int, avoi
 			var c := Vector2i(cx + rng.randi_range(-2, 2), cy + rng.randi_range(-1, 1))
 			if not rect.has_point(c) or m.things.has(c) or m.blocked.has(c) or avoid.has(c) or m.is_cleared(c):
 				continue
-			m.set_thing(c.x, c.y, {"type": "tree", "hp": 3, "hint": "A: chop"})
+			m.set_thing(c.x, c.y, {"type": "tree", "hp": 4, "hint": "A: chop"})
 			m.prop("nature", GameState.tree_sprite(rng.randi_range(0, 2)), c)
 
 
