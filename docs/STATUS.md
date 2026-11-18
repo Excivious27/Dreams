@@ -2,6 +2,10 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — CONDUCT loop 3 of 10
+- 20-agent audit (/tmp/audit_c3), 20 bots × 3 days: 0 errors, 0 fails. Fixes: hut exits restored + interior_back check in check.sh, Orla [11,5], under layer sorts above water (offset y), Sal fence cooldown after the sale, lunge waits for stun / none during openings, tools hit foes in front, keepers at floor tier, freed Fennimore leaves (clear_kind), Trickster, wine quests penguin-only, 81 armour recipes (gen_stations: Crystal t4, Moon t5, tempers, Neon Jacket), lens/ink values, seed_back 0.5 + smelt_discount caps, Builds count/take chest materials (Storage.total/take_from_chests), stick inert while paused (dialogue excepted), merkitties at the pool (GEN_ONLY), _set_pic accepts group/name (catship panels), gutter-free interior floors (_floor_cell), barrels3→barrel.
+- Prompts 22 (1 prompt / 2 images), Guide 15.
+
 ## 2026-11-18 — CONDUCT loop 2 of 10
 - 20-agent audit (/tmp/audit_c2, each re-checking loop 1), 20 bots × 3 days: 0 errors, 0 fails. Fixes: Orla beside her counter, Granite off his door, hut exits, spawn checks one row up, Pike/Ostrova count again, farm pond on shared fishing, value-sorted pools, (tier+1)/2 tool power + moon mine_power, deep-floor enemy cap, keeper ramp to floor 10, HUD edge pointer (Mine.pointer_target), xp_gain filler + caps (energy/hp/mana/supply/helper/pet), gift power cooldown, enemy taps beat pup, sword auto-select in first fight, glancing-blow tips, wet+open window, no shields during openings, story text (Doc, crates, arcade, Flame), _play_lines guards, quick stack spares toolbar, rooms fit above indoor HUD, GameMap.under_layer()/to_under() for ground props (z -1 was hidden), rounder WaterMask, w198 icons re-sliced, frozen skill icon order (docs/src/skill-icon-order.json), Sal recruit indoors, unique node names, salvage/fuel cell/buy floor.
 - Prompts 21 (4 prompts / 10 images), Guide 14.

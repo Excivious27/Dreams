@@ -37,7 +37,7 @@
 - Collisions: structures write `GameMap.hard` (blocks even swimmers); bog water isn't wadeable. Tall sprites fade when the player is behind them (`_canopies`).
 - Farm soil/crops draw on their own `_soil` layer: field actions call `_soil.queue_redraw()`.
 - `tools/fix_overlays.py` after slicing (weather strip border bars). `slice_world.py` `load_hue` keeps enclosed purples (hero fur/capes).
-- Art Prompts 18–20: `docs/src/ART-PROMPTS-NN-raw.md` → `python3 tools/build_prompt_files.py` builds 16–21 (19–21 use the BLOB RULE + their own SEAMLESS RULE); new prompt files ask for 2–3 images per prompt (Tom: ChatGPT struggles with more). Guide 11 is docs/guides/GUIDE-11.md.
+- Art Prompts 18–20: `docs/src/ART-PROMPTS-NN-raw.md` → `python3 tools/build_prompt_files.py` builds 16–22 (19–22 use the BLOB RULE + their own SEAMLESS RULE); new prompt files ask for 2–3 images per prompt (Tom: ChatGPT struggles with more). Guide 11 is docs/guides/GUIDE-11.md.
 - Pathing: `GameMap.flow_dir(from, goal)` (cached BFS flow fields) for battle units/enemies. Battles: rally modes -2 guard / -1 follow (`follow_me` meta) / points; point menu spends supply (upgrade, fortify, mend, barrage).
 - Region look: `R.season` sets `GameState.look_season`; tile/tree/bush pickers use `GameState.look_se()` (reset in `GameMap._ready`).
 - Gift reactions: `GameState.gift_line(id, item, gain)` from data/gift_lines.json. Animals: `run.animals` (streak/fed); hay feeds; crows in `GameState._crows` at sleep. Shop counters close outside hours (`interior._counter`).
@@ -45,7 +45,7 @@
 - Soft edges: `WaterMask` (scripts/water_mask.gd + shaders/water_mask.gdshader) draws a whole water body or ground patch in one rect from a 1-texel-per-cell mask, blurred + noise (curved shores, foam, bank). `GameMap.draw_water` and `soft_ground(cells, seam)` (dirt/sand paths, region patch_set) use it; nodes go right after the anim layer (`_add_under`). Gameplay still uses cells.
 - `python3 tools/make_seamless.py` after slicing (makes art/gen/seamless wrap; `--check`). `tools/furnish.py` dresses interiors (auto props); interior props are fitted to their footprint in interior.gd. Farm soil layer sits at y=0.5 (y-sort with the map's own draw); beds are drawn in quarters (`farm._draw_bed`).
 - `tools/door_check.gd` (in check.sh) checks every outdoor door; front walls of buildings also enter.
-- Dialogue lines can carry `"pic": "cut_*"` (ui story panels, w267).
+- Dialogue lines can carry `"pic": "cut_*"` (ui story panels, w267) or `"pic": "group/name"` (any art, e.g. props/catship_sail).
 - Bag & chests (Sun Haven style): `GameState.bag_size()/bag_free()/sort_bag()/item_order`; a full bag sends new kinds to the farm chest (`overflow_note`). `Storage` (scripts/storage.gd) keeps run["chests"] by key ("chest", "shed", "p:x,y" placed); `ChestScreen` is the two-grid UI; Items tab has Sort / Stack to chests. Backpack upgrades `backpack_1..3` in Maple's store (`run.bag_up`). Test: tools/storage_test.gd (in check.sh).
 - Skill-tree unlock nodes (`UNLOCKS` in gen_skill_trees.py): blueprint (Builds.gate via `GameState.blueprint_lock`), spell (`spell_from_tree`), move_speed (`move_bonus`), chop_power, mine_power, damage.
 - Skill unlock ids are stable (`<skill>_u_<name slug>`); `GameState._migrate` drops node ids that no longer exist (refunds points). Skill icons are matched to nodes by name from docs/src/skill-icon-order.json (frozen draw order; `_prompt_names` in slice_world.py).
