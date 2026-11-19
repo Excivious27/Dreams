@@ -59,6 +59,9 @@ var _stair_keep := {}    # plateau stairs and the cells around them: kept clear
 var _crystal: Node2D
 var _fishing := false
 var _crystal_t := 0.0
+var _crystal_spr: AnimatedSprite2D
+var _mail_mark: Sprite2D  # a letter bobbing over the mailbox while something waits in it
+var _mail_t := 0.0
 var _rng := RandomNumberGenerator.new()
 
 
@@ -432,6 +435,8 @@ func _partner_scene() -> void:
 			if c != pid and pool.size() < 3:
 				pool.append(c)
 	player.frozen = true
+	player.facing = "down"
+	var visitors := _partner_visitors(pool)
 	# A line can be for everyone but one hero ("not_hero"), or only one ("only_hero"):
 	# you don't hear yourself ask to stay.
 	var ls: Array = []
@@ -454,13 +459,67 @@ func _partner_scene() -> void:
 		for other in pool:
 			if other != cid:
 				Companion.party()["refused"][other] = int(Companion.party()["refused"].get(other, 0)) + 1
-		await say([{"who": str(Companion.defs()[cid]["name"]), "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party. Tap the ♥ button to use %s. Change partners in the menu (Party)." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])]}])
-		GameState.add_hint("Partners: tap ♥ to use %s's %s. Others who asked may take it badly if you keep saying no." % [str(Companion.defs()[cid]["name"]), str(Companion.defs()[cid]["ability_name"])])
+		# The one who stays becomes the follower standing in the same spot; the rest head off.
+		var stay_at: Vector2 = (visitors[cid] as Node2D).position if visitors.has(cid) else player.position + Vector2(14, 6)
+		_partner_leave(visitors, cid)
+		_refresh_party()
+		if companion:
+			companion.position = stay_at
+		var cname := str(Companion.defs()[cid]["name"])
+		var ab := str(Companion.defs()[cid]["ability_name"])
+		await say([{"who": cname, "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party and follows you around. Tap %s's round button (bottom of the screen, left of CHECK) to use %s. Change partners in MENU > Party." % [cname, cname, ab]}])
+		GameState.add_hint("Partners: tap %s's round button (bottom, left of CHECK) to use %s. Others who asked may take it badly if you keep saying no." % [cname, ab])
 	else:
 		for other in pool:
 			Companion.refuse(other)
+		_partner_leave(visitors, "")
 		await say([{"text": "They look at each other. They go. The gate is quieter than before."}])
 	player.frozen = false
+
+
+## The partner scene's visitors, standing in front of you while they ask.
+func _partner_visitors(pool: Array) -> Dictionary:
+	var out := {}
+	var n := pool.size()
+	for i in n:
+		var cid := str(pool[i])
+		var spr_id := str(Companion.defs().get(cid, {}).get("sprite", ""))
+		if spr_id == "" or not CharacterLibrary.has_character(spr_id):
+			continue
+		var spr := CharacterLibrary.make_sprite(spr_id)
+		# Beside you, level with you: below would be under the dialogue box.
+		var side := -1.0 if i % 2 == 0 else 1.0
+		var to := player.position + Vector2(side * (26.0 + 22.0 * floorf(i / 2.0)), 2.0)
+		spr.position = to + Vector2(side * 60.0, 0)
+		spr.z_index = 2
+		spr.set_meta("partner_visitor", true)
+		spr.flip_h = side > 0.0  # walking in toward you
+		spr.play("walk" if spr.sprite_frames.has_animation("walk") else "idle")
+		add_child(spr)
+		var tw := spr.create_tween()
+		tw.tween_property(spr, "position", to, 0.9)
+		tw.tween_callback(func() -> void:
+			if is_instance_valid(spr):
+				spr.flip_h = false
+				spr.play("idle"))
+		out[cid] = spr
+	return out
+
+
+## Everyone but `stays` walks off south and fades; the one who stays is replaced by the follower.
+func _partner_leave(visitors: Dictionary, stays: String) -> void:
+	for cid in visitors:
+		var spr := visitors[cid] as AnimatedSprite2D
+		if not is_instance_valid(spr):
+			continue
+		if str(cid) == stays:
+			spr.queue_free()
+			continue
+		spr.play("walk_down" if spr.sprite_frames.has_animation("walk_down") else "idle")
+		var tw := spr.create_tween()
+		tw.tween_property(spr, "position", spr.position + Vector2(0, 70), 1.6)
+		tw.parallel().tween_property(spr, "modulate:a", 0.0, 1.6)
+		tw.tween_callback(spr.queue_free)
 
 
 func after_ready() -> void:
@@ -468,7 +527,9 @@ func after_ready() -> void:
 	for pk in GameState.run.get("placed", {}):
 		var xy := str(pk).split(",")
 		_show_placed(Vector2i(int(xy[0]), int(xy[1])), str(GameState.run["placed"][pk]))
-	if int(GameState.run["day"]) >= 3 and not GameState.run["flags"].has("partner_scene") and bool(GameState.run["intro_done"]):
+	# The partner scene's day comes from companions.json (penguins: day 2, the day after the crystal lands).
+	var pday := int(Companion.data().get("partner_scene", {}).get(str(GameState.run.get("arc", "")), {}).get("when", {}).get("day", 3))
+	if int(GameState.run["day"]) >= pday and not GameState.run["flags"].has("partner_scene") and bool(GameState.run["intro_done"]):
 		GameState.run["flags"]["partner_scene"] = true
 		_partner_scene.call_deferred()
 	WorldGen.add_backdrop(self, "hills")
@@ -479,29 +540,64 @@ func after_ready() -> void:
 		_make_crystal()
 	if not bool(GameState.run["intro_done"]):
 		_intro.call_deferred()
+	_make_mail_mark()
+
+
+func _make_mail_mark() -> void:
+	var t := Art.tex("items", "letter_sealed")
+	if t == null:
+		return
+	_mail_mark = Sprite2D.new()
+	_mail_mark.texture = t
+	_mail_mark.region_enabled = true  # skip the stray stroke above the envelope
+	_mail_mark.region_rect = Rect2(3, 6, t.get_width() - 3, t.get_height() - 6)
+	_mail_mark.scale = Vector2(0.4, 0.4)
+	_mail_mark.z_index = 20
+	_mail_mark.position = cell_center(MAILBOX) + Vector2(0, -30)
+	_mail_mark.visible = false
+	add_child(_mail_mark)
 
 
 func _make_crystal() -> void:
 	_crystal = Node2D.new()
 	_crystal.position = cell_center(CRYSTAL_SPOT)
+	var drawn := CharacterLibrary.has_character("light_crystal")
 	_crystal.draw.connect(func() -> void:
 		var c := _crystal
 		var glow := 0.5 + 0.5 * sin(_crystal_t * 2.0)
-		c.draw_circle(Vector2(0, -8), 11.0 + glow * 2.0, Color(0.6, 0.85, 1.0, 0.18))
-		var pts := PackedVector2Array([Vector2(0, -20), Vector2(5, -10), Vector2(0, 2), Vector2(-5, -10)])
-		c.draw_colored_polygon(pts, Color(0.75, 0.9, 1.0))
-		c.draw_colored_polygon(PackedVector2Array([Vector2(0, -20), Vector2(5, -10), Vector2(0, -8)]), Color(1, 1, 1, 0.8))
-		c.draw_circle(Vector2(0, 1), 5.0, Color(0, 0, 0, 0.2)))
+		c.draw_circle(Vector2(0, -10), 11.0 + glow * 2.0, Color(0.6, 0.85, 1.0, 0.14 if drawn else 0.18))
+		if not drawn:
+			var pts := PackedVector2Array([Vector2(0, -20), Vector2(5, -10), Vector2(0, 2), Vector2(-5, -10)])
+			c.draw_colored_polygon(pts, Color(0.75, 0.9, 1.0))
+			c.draw_colored_polygon(PackedVector2Array([Vector2(0, -20), Vector2(5, -10), Vector2(0, -8)]), Color(1, 1, 1, 0.8))
+		c.draw_circle(Vector2(0, 4.0 + sin(_crystal_t * 1.5) * 2.0), 4.0, Color(0, 0, 0, 0.2)))
+	if drawn:
+		# The Star Crystal's own sprite (the face from its portrait): it bobs, and talks when it talks.
+		_crystal_spr = CharacterLibrary.make_sprite("light_crystal")
+		_crystal_spr.scale *= 1.4
+		_crystal_spr.play("idle")
+		_crystal.add_child(_crystal_spr)
 	add_child(_crystal)
 
 
 func _process(delta: float) -> void:
 	super(delta)
+	if _mail_mark:
+		_mail_t += delta
+		_mail_mark.position.y = cell_center(MAILBOX).y - 30.0 - absf(sin(_mail_t * 3.0)) * 3.0
+		if int(_mail_t * 2.0) != int((_mail_t - delta) * 2.0):
+			_mail_mark.visible = bool(GameState.run.get("intro_done", false)) and Mail.waiting()
 	if _crystal:
 		_crystal_t += delta
 		_crystal.position.y = cell_center(CRYSTAL_SPOT).y - 3.0 - sin(_crystal_t * 1.5) * 2.0
 		if int(_crystal_t * 10.0) != int((_crystal_t - delta) * 10.0):
 			_crystal.queue_redraw()  # the glow pulse at 10 Hz; the bob is a position change
+			if _crystal_spr:
+				var dl := Dialogue.instance(get_tree())
+				var talking := dl.active and dl._who.text in ["Star Crystal", "???"] and dl._typing
+				var want := "speak" if talking and _crystal_spr.sprite_frames.has_animation("speak") else "idle"
+				if _crystal_spr.animation != want:
+					_crystal_spr.play(want)
 
 
 # ---- interaction -------------------------------------------------------------
@@ -1098,7 +1194,8 @@ func _talk_crystal() -> void:
 	if not GameState.quest_done("first_harvest"):
 		await say([
 			{"who": "Star Crystal", "text": "Tend the soil, %s. Every living thing you raise feeds the Meow Pow Wow a little." % GameState.names()["character"]},
-			{"who": "Star Crystal", "text": "Hold the hoe and tap USE on grass to till. Pick seeds on the toolbar and tap USE to plant. Water each day with the can: a crop only grows on nights it was watered. The sell box pays you in crystals overnight."},
+			{"who": "Star Crystal", "text": GameState._first_crop_step()},
+			{"who": "Star Crystal", "text": "While it grows: clear weeds and stones with your tools, gather wild things to sell in the box by the house, meet the town to the south, or fish the pond with the rod in hand."},
 		])
 	elif not GameState.quest_done("clear_meadow"):
 		await say([
@@ -1375,7 +1472,8 @@ func _intro_penguins(n: Dictionary) -> void:
 		GameState.run["flags"]["crystal_trust"] = 0
 	await say([
 		{"who": "Star Crystal", "text": "That little one by your feet - %s, is it? - has more Meow Pow Wow in one paw than this whole valley. Keep them close." % pet_name},
-		{"who": "Star Crystal", "text": "Till the ground with the hoe. Pick the seeds on your toolbar, face the soil and tap USE. Water every morning. When your first crop comes in, we'll talk again.", "keep": true},
+		{"who": "Star Crystal", "text": "Hold the hoe (the first toolbar slot), face the grass and tap USE to till. Then pick the seeds, tap USE on the soil, and water it with the can.", "keep": true},
+		{"who": "Star Crystal", "text": "Lost? The line under the toolbar always says what to do next. Water every morning; when your first crop comes in, we'll talk again.", "keep": true},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop.")
 	GameState.add_quest("meet_town", "Walk south and meet the people of %s." % town)

@@ -202,15 +202,15 @@
   }
  },
  "partner_scene": {
-  "_": "Chapter 1: by day 3 (penguins) / day 3 (gangsters) a scene at the farm gate offers a partner from the characters you didn't pick. Penguin arc: a penguin must be among the offers (both if you're not a penguin; the other if you are).",
+  "_": "Chapter 1: on day 2 (penguins, the morning after the crystal lands) / day 3 (gangsters) a scene at the farm gate offers a partner from the characters you didn't pick. farm.gd reads when.day. Penguin arc: a penguin must be among the offers (both if you're not a penguin; the other if you are).",
   "penguins": {
    "when": {
-    "day": 3
+    "day": 2
    },
    "lines": [
     {
      "who": "",
-     "text": "Someone at the gate at dawn. Snow on their shoulders, though it isn't snowing."
+     "text": "Someone at the gate. Snow on their shoulders, though it isn't snowing."
     },
     {
      "who": "Pip-Pip",

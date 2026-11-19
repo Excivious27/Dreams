@@ -27,6 +27,16 @@ static func unread() -> int:
 	return n
 
 
+## Something waits in the farm mailbox: the opening story letters (farm._mailbox) or unread mail.
+static func waiting() -> bool:
+	if GameState.run.is_empty():
+		return false
+	var fl: Dictionary = GameState.run["flags"]
+	if not fl.has("mail_1") or (int(GameState.run["day"]) >= 3 and not fl.has("mail_2")):
+		return true
+	return unread() > 0
+
+
 static func send(from: String, text: String, kind := "chat", extra := {}) -> void:
 	var m := {"id": "%d_%d" % [int(GameState.run["day"]), list().size() + randi() % 1000], "day": int(GameState.run["day"]), "from": from, "text": text, "kind": kind, "read": false}
 	m.merge(extra, true)
