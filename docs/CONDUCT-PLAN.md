@@ -74,3 +74,13 @@ Runs after CONDUCT 9 (then the final package and artifact). Goal: make the game 
 - Sources: shops (tiered by progress), crafting stations, quests and heart perks, festivals, the rec prize counter, mines/regions/mega regions loot and secrets, bosses, collections, rare world finds.
 - Rarity: common, uncommon, rare, epic, legendary, mythic, and unique one-of-a-kind items (only one in the game); drop/price curves to match.
 - The auditors' job: identify every place in the game the need can be filled and how it should plug into existing systems (house/interior placement, farm placement, wardrobe/character sheet, shops, quests, loot tables, saves), then the fix agents build it with art from the image tool, a catalog/collection screen, tests, and save migration.
+
+
+## CONDUCT 11 — Ranching and livestock ecosystem (Tom, 2026-11-19 14:05)
+
+Runs after CONDUCT 10 (then the final package and artifact). Goal: a massively sophisticated, progressively tiered ranching system, seamlessly part of the game.
+- Classic: chickens and coops, cows and barns, goats, sheep, pigs, ducks, rabbits, bees; buildings upgrade by tier (coop → big coop → deluxe), feeders, incubators, auto-water, pastures and fencing.
+- Exotics bought, imported or earned through quests: ostriches (ostrich eggs), Komodo dragons, and fantastic creatures from mega regions and story places (moon/space creatures, Merkitty Islands creatures, etc.); gangster arc: genetically modified creatures from the cyber/robotics side (all-ages).
+- Products and processing (eggs, milk, wool, feathers, scales, exotic goods) feeding cooking, crafting, shops, quests and festivals; animal care, mood, friendship, breeding, rare variants/colours, shows/competitions.
+- A full Ranching skill tree (gen_skill_trees.py) with abilities like the others; heart perks, quests, mail, villagers (Hazel, Tam, Benno...) tied in; saves migrated.
+- Art via the image tool for every creature (walk/idle/produce animations) and building; audio for each creature.

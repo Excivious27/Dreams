@@ -31,12 +31,14 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 - **Jobs running elsewhere:** CONDUCT 2 agents in the personal sandbox (see In progress). The Team chat may fire one stale watchdog reminder; ignore.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
-- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), then the fully updated artifact.
+- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics) and CONDUCT 11 (ranching), then the fully updated artifact.
 
 ## Decisions (newest first)
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19 14:05: Tom: a massively sophisticated ranching/livestock ecosystem (coops, barns, classic animals plus bought/quest-earned exotics and fantastic creatures; gangster arc: genetically modified creatures), progressively tiered, with its own skill tree, unified with the whole game. Planned as CONDUCT 11 (see docs/CONDUCT-PLAN.md).
+- 2026-11-19 14:01: Tom: desktop play must fill the screen properly (full screen on a computer); phones unchanged. In CONDUCT 2 fix package P8.
 - 2026-11-19 13:46: Tom added CONDUCT 10 (after C9): decor and cosmetics ecosystem. A massive, tiered selection of furniture, art, decor, wallpaper, flooring, house exteriors, outdoor/farm decor, apparel and footwear, earned/bought/found/quest rewards, with a wide rarity spread from common to one-of-a-kind ultra rare; audit every place in the game it can plug in and how, then build it. Details in docs/CONDUCT-PLAN.md.
 - 2026-11-19 13:36: Tom: keep going through ALL nine CONDUCTs start to finish (and the final package/artifact) without stopping. His phone playtest notes (20 items) are in docs/TOM-PLAYTEST-2026-11-19.md; each is assigned to a CONDUCT and must be done.
 - 2026-11-19: CONDUCT process changed (standing rule): 20 read/play-only auditors (no code changes, no check.sh) → synthesize into 5-6 file-disjoint fix packages → 5-6 fix agents in parallel with targeted tests only (60-75 min cap) → one merge, one full check.sh, bots, playtest → full package. Target about 2-2.5 h per CONDUCT. Agents that were mid-run under the old process switch now (see Baton).
