@@ -713,7 +713,7 @@ func _text(cv: Control, f: Font, p: Vector2, t: String, size: int, col: Color, w
 func _close_now() -> void:
 	if not is_inside_tree():
 		return
-	get_tree().paused = _was_paused
+	get_tree().paused = _was_paused and Hud.keep_paused(get_tree(), self)
 	if m != null and is_instance_valid(m):
 		Music.instance(get_tree()).play(m.area_track())
 	Hud.modal_rect = Rect2()

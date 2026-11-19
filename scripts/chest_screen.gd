@@ -142,7 +142,7 @@ func _process(_d: float) -> void:
 func close() -> void:
 	if not is_inside_tree():
 		return
-	get_tree().paused = _was_paused
+	get_tree().paused = _was_paused and Hud.keep_paused(get_tree(), self)
 	Dialogue.block_input(0.3)
 	Hud.modal_rect = Rect2()
 	if m and m.player and m.player.has_method("refresh_held"):

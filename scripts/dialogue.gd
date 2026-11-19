@@ -498,7 +498,7 @@ func _close() -> void:
 		_pic.visible = false
 	active = false
 	_panel.visible = false
-	get_tree().paused = false
+	get_tree().paused = Hud.keep_paused(get_tree(), self)  # a menu or full-screen UI underneath stays paused
 	block_input()
 	finished.emit()
 

@@ -182,6 +182,30 @@ var _orphan_pause := 0
 ## full-screen UI that sets `modal_rect`). A pause left behind with none of them
 ## (a screen that restored a pause its opener had already dropped) would freeze
 ## the game for good with nothing to press, so it is let go after a moment.
+## True while something still needs the game paused: a dialogue, an open menu, or a
+## full-screen UI other than `except` (screens call this as they close, so a stale
+## "was paused" never leaves the game frozen with nothing on screen).
+static func keep_paused(tree: SceneTree, except: Node = null) -> bool:
+	if tree == null:
+		return false
+	var d := Dialogue.instance(tree)
+	if d != except and d.active:
+		return true
+	var sc := tree.current_scene
+	if sc == null:
+		return false
+	for n in sc.get_children():
+		if n == except:
+			continue
+		if n is GameMenu and (n as GameMenu)._open:
+			return true
+		if n is ChestScreen or n is CraftScreen or n is CampaignScreen or n is ArcadeGame \
+				or n is HackGame or n is PrizeScreen or n is Bowling or n is Epilogue:
+			if not n.is_queued_for_deletion():
+				return true
+	return false
+
+
 func _pause_watch(sc: Node) -> void:
 	if not get_tree().paused or not (sc is GameMap) or (sc as GameMap)._changing:
 		_orphan_pause = 0
