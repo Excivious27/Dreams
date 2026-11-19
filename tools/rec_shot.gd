@@ -58,6 +58,17 @@ func _run() -> void:
 	Tickets.set_best("bowling", 168)
 	m = await _go("interior", "rec", Vector2(8 * 16 + 8, 11 * 16 + 8))
 	await _shot(a + "_rec_ground")
+	# The front desk's "What's on today?" board (league night: the lanes line).
+	var dd := Dialogue.instance(self)
+	dd.say(RecCenter.today_lines())
+	for page in 3:
+		await process_frame
+		dd._advance()  # the first press shows the whole line
+		await _shot(a + "_desk_today%d" % page)
+		dd._advance()
+	while dd.active:
+		dd._advance()
+		await process_frame
 	m = await _go("interior", "rec_up", Vector2(8 * 16 + 8, 13 * 16 + 8))
 	for k in 200:
 		await process_frame

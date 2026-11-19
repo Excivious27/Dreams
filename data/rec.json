@@ -23,7 +23,12 @@
   ],
   "open_day": 7,
   "fee": 25,
-  "soda": 12
+  "soda": 12,
+  "hours": [
+   9,
+   24
+  ],
+  "house_lane": 4
  },
  "cabinets": [
   {
@@ -327,8 +332,8 @@
      [
       6
      ],
-     14,
-     16,
+     17,
+     19,
      "rec"
     ]
    ],
@@ -448,10 +453,6 @@
      12
     ],
     [
-     13,
-     12
-    ],
-    [
      2,
      13
     ],
@@ -461,10 +462,6 @@
     ],
     [
      9,
-     13
-    ],
-    [
-     12,
      13
     ]
    ],
@@ -478,15 +475,114 @@
      14
     ],
     [
-     2,
+     8,
+     13
+    ],
+    [
+     14,
      15
     ],
     [
      12,
      15
+    ],
+    [
+     7,
+     15
     ]
    ]
   }
+ },
+ "bowl_avg": {
+  "maple": 182,
+  "gideon": 168,
+  "benno": 118,
+  "finn": 142,
+  "ivy": 131,
+  "juniper": 124,
+  "rook": 147,
+  "theo": 74,
+  "tobin": 66,
+  "wren_jr": 58,
+  "pip": 61,
+  "mabel": 55,
+  "sal": 120,
+  "alder": 96,
+  "lumi": 88,
+  "hazel": 79,
+  "posy": 92
+ },
+ "chat_spot": {
+  "cab": [
+   "Shh. I'm on a streak. {game} can smell fear.",
+   "One more go on {game} and then I'll go home. That was four goes ago.",
+   "If you want {game}, just ask. I'll watch. I'm a great watcher."
+  ],
+  "lane": [
+   "Lane's warm. Want to bowl a game together? Loser buys the Fizzy Pop.",
+   "Bowling's better with company. Grab a ball and join me.",
+   "I'm just practising. ...Okay, I'm losing to myself."
+  ],
+  "lobby": [
+   "I came for the games. I'm staying for the sofa.",
+   "Best seat in the house is right here. You see everyone's face when they miss.",
+   "Somebody won the big teddy last week. The whole room clapped."
+  ]
+ },
+ "chat_league": [
+  "League night! Two to a lane, and lane four's kept for walk-ins.",
+  "League's friendly. Mostly. Gideon keeps a notebook.",
+  "Bowl a game with us if you like. No dues, just bragging rights."
+ ],
+ "chat_league_own": {
+  "gideon": [
+   "League night. Maple's ahead by six pins. Six. I counted twice.",
+   "Steady hands, steady line. Same as the anvil."
+  ],
+  "maple": [
+   "League night, dear. I'm defending the cup. Again.",
+   "Gideon thinks I can't hear him counting. I can."
+  ],
+  "finn": [
+   "League's like a good tide. Comes round every week whether you're ready or not."
+  ],
+  "ivy": [
+   "I've got everyone's averages on paper. Mine's improving. Slowly. Measurably."
+  ],
+  "benno": [
+   "League night's the one night the horses go to bed without me."
+  ]
+ },
+ "chat_rain": [
+  "Rain all day, so here we all are. Best roof in town.",
+  "Listen to it hammering on the roof! Nobody's going home till it stops.",
+  "Rainy days are rec days. Everybody knows that."
+ ],
+ "chat_result": {
+  "_": [
+   "{you} to {them}! You win this one. I want a rematch.",
+   "{them} to your {you}. Good game though. Same time next week?",
+   "{you} each! A dead heat. That never happens."
+  ],
+  "maple": [
+   "{you} to {them}... well. Don't tell Gideon, dear.",
+   "{them} to {you}. The cup stays on my shelf. Lovely game.",
+   "A tie! I'll take it. Gideon won't."
+  ],
+  "gideon": [
+   "{you} to {them}. Hm. Good line. I'll be practising.",
+   "{them} to {you}. Weight, line, follow through. You'll get there.",
+   "Even at {you}. Like two halves of a horseshoe."
+  ],
+  "tobin": [
+   "{you} to {them}?! The lane was SLANTED.",
+   "{them} to {you}! I WON! Tell everyone. Tell Pip.",
+   "Same score! That means I win. That's the rule."
+  ]
+ },
+ "day_words": {
+  "rest": "a rest day (the 6th and 7th of each week)",
+  "league": "league night (the 3rd, 10th, 17th and 24th)"
  },
  "chat_any": [
   "Have you been to the {hall} yet? I keep hearing pins in my sleep.",

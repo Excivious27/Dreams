@@ -225,7 +225,7 @@ func after_ready() -> void:
 		var at: Vector2i = Vector2i(-1, -1) if off_duty else listed.get(id, Vector2i(-1, -1))
 		var posted := at != Vector2i(-1, -1)
 		# A listed cell under furniture (or a thing) isn't a place to stand.
-		if posted and (blocked.has(at) or things.has(at)):
+		if posted and (blocked.has(at) or (things.has(at) and not RecCenter.stand_on(things[at]))):
 			at = Vector2i(-1, -1)
 			posted = false
 		if at == Vector2i(-1, -1) or used.has(at):

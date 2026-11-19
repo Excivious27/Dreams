@@ -110,7 +110,13 @@ static func soon_lines() -> Array:
 
 ## Town door: shut (with a word about the opening) until the grand opening.
 static func door_closed(m: GameMap, thing: Dictionary) -> bool:
-	if str(thing.get("interior", "")) != "rec" or is_open():
+	if str(thing.get("interior", "")) != "rec":
+		return false
+	if is_open():
+		var why := why_closed()
+		if why != "":
+			m.hud.toast(why, Color(1, 0.9, 0.6))
+			return true
 		return false
 	var day := int(GameState.run["day"])
 	var od := int(data().get("building", {}).get("open_day", 7))
@@ -119,35 +125,128 @@ static func door_closed(m: GameMap, thing: Dictionary) -> bool:
 	return true
 
 
+# ---- hours ------------------------------------------------------------------------
+
+## [open hour, close hour] (close may be 24 = midnight).
+static func hours() -> Array:
+	var h: Array = data().get("building", {}).get("hours", [9, 24])
+	return [int(h[0]), int(h[1])]
+
+
+## "" while the doors are open, else the sign (closed for the night, or festival day).
+static func why_closed() -> String:
+	if GameState.run.is_empty():
+		return ""
+	var h := (int(GameState.run.get("time", 0)) % 1440) / 60.0
+	var oh := hours()
+	if h < float(oh[0]) or h >= float(oh[1]):
+		return "%s: closed for the night. Open %s." % [name(), TownHours.hours_text(int(oh[0]), int(oh[1]))]
+	if GameState.festival_today() != "" and h >= 9.0 and h < 18.0:
+		return "%s: closed today. Everyone's at the %s on the plaza." % [name(), GameState.festival_name(GameState.festival_today())]
+	return ""
+
+
+## Acts that need the place open (the stairs, the door and looking around always work).
+const NEEDS_OPEN := ["lane", "cabinet", "claw", "skee", "snack", "soda", "prize", "jukebox", "shoes"]
+
+
 # ---- villagers ------------------------------------------------------------------
+
+## Does a slot's day rule match this day? ("all", "rest", "league", "rain" or [day % 7, ...])
+static func _day_ok(days: Variant, day: int) -> bool:
+	if days is Array:
+		return (days as Array).has(float(day % 7)) or (days as Array).has(day % 7)
+	match str(days):
+		"all": return true
+		"rest": return is_rest_day(day)
+		"league": return day % 7 == 3
+		"rain": return GameState.is_wet() or GameState.weather_today() == "blizzard"
+	return false
+
+
+## The 6th and 7th day of every week (the town's weekend).
+static func is_rest_day(day := -1) -> bool:
+	if day < 0:
+		day = int(GameState.run.get("day", 1))
+	return day % 7 == 6 or day % 7 == 0
+
 
 ## The slot a villager is in right now ({} if none): [days, from, to, floor].
 static func slot_now(npc_id: String) -> Array:
-	if not is_open():
+	if not is_open() or why_closed() != "":
 		return []
 	var v: Dictionary = data().get("visitors", {}).get(npc_id, {})
-	if v.is_empty() or GameState.festival_today() != "":
+	if v.is_empty() or GameState.festival_today() != "" or not GameState.npc_present(npc_id):
 		return []
 	var t := int(GameState.run["time"]) % 1440
 	var hour := t / 60.0
 	var day := int(GameState.run["day"])
-	var wet := GameState.is_wet() or GameState.weather_today() == "blizzard"
 	for s: Array in v.get("slots", []):
 		if hour < float(s[1]) or hour >= float(s[2]):
 			continue
-		var days: Variant = s[0]
-		var ok := false
-		if days is Array:
-			ok = (days as Array).has(float(day % 7)) or (days as Array).has(day % 7)
-		else:
-			match str(days):
-				"all": ok = true
-				"rest": ok = day % 7 == 6 or day % 7 == 0
-				"league": ok = day % 7 == 3
-				"rain": ok = wet
-		if ok:
+		if _day_ok(s[0], day):
 			return s
 	return []
+
+
+## Today's visits as {floor: [[npc id, from hour, to hour], ...]}: only the hours each
+## villager really comes (never while they're at work), checked half-hour by half-hour.
+static func today_visits() -> Dictionary:
+	var out := {"rec": [], "rec_up": []}
+	if GameState.run.is_empty() or not is_open():
+		return out
+	var keep := int(GameState.run["time"])
+	var day0 := keep - keep % 1440
+	var ids: Array = data().get("visitors", {}).keys()
+	ids.sort()
+	for id in ids:
+		var spans := {}  # floor -> [from, to]
+		for hh in range(0, 48):
+			GameState.run["time"] = day0 + hh * 30
+			var s := slot_now(str(id))
+			if s.is_empty() or Npc.place_now(GameState.npcs.get(id, {}).get("routine", []), str(id)) != "rec":
+				continue
+			var fl := str(s[3])
+			if not spans.has(fl):
+				spans[fl] = [hh / 2.0, hh / 2.0 + 0.5]
+			else:
+				spans[fl][1] = hh / 2.0 + 0.5
+		for fl in spans:
+			out[fl].append([str(id), float(spans[fl][0]), float(spans[fl][1])])
+	GameState.run["time"] = keep
+	return out
+
+
+static func _clock(h: float) -> String:
+	var hi := int(h) % 24
+	var mins := int(round((h - floorf(h)) * 60.0))
+	var base := "midnight" if hi == 0 and mins == 0 else ("%d" % (hi if hi <= 12 and hi > 0 else (12 if hi == 0 else hi - 12)))
+	if base == "midnight":
+		return base
+	return base + (":%02d" % mins if mins > 0 else "") + ("am" if hi < 12 else "pm")
+
+
+## The front desk's "What's on today?": who comes in when, on which floor.
+static func today_lines() -> Array:
+	var day := int(GameState.run["day"])
+	var dw: Dictionary = data().get("day_words", {})
+	var head := "Today is %s." % (str(dw.get("league", "league night")) if day % 7 == 3 else (str(dw.get("rest", "a rest day")) if is_rest_day(day) else "a working day: folks drop in after work and school"))
+	var oh := hours()
+	head += "  Open %s." % TownHours.hours_text(int(oh[0]), int(oh[1]))
+	if GameState.festival_today() != "":
+		head += "  Closed until 6pm for the %s." % GameState.festival_name(GameState.festival_today())
+	var tv := today_visits()
+	var lines: Array = [{"who": "Front desk", "text": head}]
+	for fl in ["rec", "rec_up"]:
+		var bits: Array = []
+		for e: Array in tv[fl]:
+			var nm := str(GameState.npcs.get(str(e[0]), {}).get("name", str(e[0]).capitalize()))
+			bits.append("%s %s-%s" % [nm, _clock(float(e[1])), _clock(float(e[2]))])
+		var where := "Arcade floor" if fl == "rec" else "Lanes upstairs"
+		lines.append({"who": "Front desk", "text": "%s: %s." % [where, ", ".join(bits) if not bits.is_empty() else "nobody booked in, so take your pick"]})
+	if GameState.is_wet():
+		lines.append({"who": "Front desk", "text": "It's raining, so expect a crowd this afternoon."})
+	return lines
 
 
 ## Npc.place_now hook: "rec" while a visit slot is on (never pulls anyone off work).
@@ -177,6 +276,8 @@ static func stand_cells(interior_id: String) -> Dictionary:
 	for id in ids:
 		if floor_of(str(id)) != interior_id or GameState.run["flags"].has(str(id) + "_gone"):
 			continue
+		if Npc.place_now(GameState.npcs.get(id, {}).get("routine", []), str(id)) != "rec":
+			continue  # still at work: their slot waits
 		var kind := str(data()["visitors"][id].get("spot", "lobby"))
 		var pool: Array = st.get(kind, []) + st.get("lobby", [])
 		for c in pool:
@@ -188,12 +289,39 @@ static func stand_cells(interior_id: String) -> Dictionary:
 	return out
 
 
-## Lanes taken by villagers right now (lane number -> npc id).
+## Interior hook: a villager may stand on this thing's cell (a lane approach: the
+## bowler holds the lane, and talking to them offers a game together).
+static func stand_on(thing: Variant) -> bool:
+	return thing is Dictionary and str(thing.get("type", "")) == "rec" and str(thing.get("act", "")) == "lane"
+
+
+static var _lt_key := ""
+static var _lt: Dictionary = {}
+
+
+## Lanes taken by villagers right now (lane number -> npc id). Cached per game minute
+## (RecDecor asks every frame).
 static func lanes_taken() -> Dictionary:
+	if GameState.run.is_empty():
+		return {}
+	var key := "%d:%d:%s:%d" % [int(GameState.run.get("day", 0)), int(GameState.run.get("time", 0)), GameState.weather_today(), GameState.run.get("flags", {}).size()]
+	if key == _lt_key:
+		return _lt
+	_lt = _lanes_taken()
+	_lt_key = key
+	return _lt
+
+
+static func _lanes_taken() -> Dictionary:
 	var out := {}
 	var cells := stand_cells("rec_up")
+	var lane_pool := {}
+	for a in data().get("stands", {}).get("rec_up", {}).get("lane", []):
+		lane_pool[Vector2i(int(a[0]), int(a[1]))] = true
 	for id in cells:
 		var c: Vector2i = cells[id]
+		if not lane_pool.has(c):
+			continue  # watching from the lobby, not bowling
 		for ln in data().get("lanes", []):
 			var x := int(ln["x"])
 			if c.y >= int(data().get("lane_foul", 11)) and (c.x == x or c.x == x + 1):
@@ -227,15 +355,26 @@ static func talk_pool(npc_id: String) -> Array:
 ## Interior._talk hook for a visitor: their line, and if they're standing at a
 ## cabinet (so the player can't reach it) they offer you a go and step aside.
 static func visitor_talk(m: GameMap, n: Npc) -> void:
-	var lines := chat(n.id)
 	var cab := cabinet_above(m, n.cell())
+	var cab_name := str(cab.get("hint", "")).trim_prefix("A: play ")
+	var lines := chat(n.id, cab_name)
+	var ln := lane_of(n.id)
+	if ln > 0 and is_rec(m) and bool((m.get("I") as Dictionary).get("lanes", false)):
+		var lastl: Dictionary = (lines[-1] as Dictionary).duplicate()
+		lastl["choice"] = ["Bowl a game together", "Not now"]
+		lastl["key"] = ""
+		var dl := Dialogue.instance(m.get_tree())
+		dl.say(lines.slice(0, lines.size() - 1) + [lastl])
+		await dl.finished
+		if dl.last_choice == 0:
+			await bowl_with(m, n.id, ln)
+		return
 	if cab.is_empty():
 		await m.say(lines)
 		return
 	var who := str(lines[0].get("who", n.id.capitalize()))
-	var cab_name := str(cab.get("hint", "")).trim_prefix("A: play ")
 	var last: Dictionary = (lines[-1] as Dictionary).duplicate()
-	last["choice"] = ["Can I have a go?", "Carry on"]
+	last["choice"] = ["Can I have a go?", "Not now, carry on"]
 	last["key"] = ""
 	var d := Dialogue.instance(m.get_tree())
 	d.say(lines.slice(0, lines.size() - 1) + [last])
@@ -252,6 +391,9 @@ static func visitor_talk(m: GameMap, n: Npc) -> void:
 	n.set("_target", n.home)
 	n.face(m.cell_center(n.cell() + Vector2i(0, -1)))
 	m.player.frozen = false
+	if why_closed() != "":
+		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		return
 	_cabinet(m, str(cab.get("game", "")))
 
 
@@ -282,16 +424,52 @@ static func step_aside_cell(m: GameMap, c: Vector2i) -> Vector2i:
 	return Vector2i(-1, -1)
 
 
-## What a villager says inside the rec center.
-static func chat(npc_id: String) -> Array:
+## Where a visitor is spending the visit: "cab", "lane" or "lobby" (lane folk downstairs
+## on a rainy day are in the lobby).
+static func spot_kind(npc_id: String) -> String:
+	var kind := str(data().get("visitors", {}).get(npc_id, {}).get("spot", "lobby"))
+	var fl := floor_of(npc_id)
+	if kind == "lane" and fl != "rec_up":
+		return "lobby"
+	if kind == "cab" and fl == "rec_up":
+		return "lobby"
+	return kind
+
+
+## The lane a villager is bowling on right now (0 = none).
+static func lane_of(npc_id: String) -> int:
+	var taken := lanes_taken()
+	for n in taken:
+		if str(taken[n]) == npc_id:
+			return int(n)
+	return 0
+
+
+## What a villager says inside the rec center: what they're doing (league night, a rainy
+## afternoon, their cabinet or lane), then their own lines about the place.
+## `game` is the cabinet in front of them, if any.
+static func chat(npc_id: String, game := "") -> Array:
 	var who := str(GameState.npcs.get(npc_id, {}).get("name", npc_id.capitalize()))
-	var pool := talk_pool(npc_id)
-	if is_league_night():
-		pool.append("League night! Grab a lane before Gideon does.")
+	var pool: Array = []
+	var s := slot_now(npc_id)
+	if not s.is_empty():
+		if is_league_night() and str(s[3]) == "rec_up":
+			pool.append_array((data().get("chat_league_own", {}) as Dictionary).get(npc_id, []))
+			pool.append_array(data().get("chat_league", []))
+		elif str(s[0]) == "rain":
+			pool.append_array(data().get("chat_rain", []))
+		var kind := spot_kind(npc_id)
+		if kind == "lane" and lane_of(npc_id) == 0:
+			kind = "lobby"
+		if kind != "cab" or game != "":
+			for l in (data().get("chat_spot", {}) as Dictionary).get(kind, []):
+				pool.append(str(l).replace("{game}", game))
+	for l in talk_pool(npc_id):
+		pool.append(l)
 	if pool.is_empty():
 		pool = [_fill("Good to see you at the {hall}.")]
-	var pick := str(pool[(int(GameState.run["day"]) + hash(npc_id) + int(GameState.run["time"]) / 30) % pool.size()])
-	return [{"who": who, "text": pick}]
+	var pick := str(pool[absi(int(GameState.run["day"]) + hash(npc_id) + int(GameState.run["time"]) / 30) % pool.size()])
+	return [{"who": who, "text": _fill(pick)}]
 
 
 # ---- inside -----------------------------------------------------------------------
@@ -344,6 +522,9 @@ static func dress(m: GameMap, interior_id: String) -> void:
 ## Every "rec" thing in both rooms.
 static func use(m: GameMap, thing: Dictionary, c: Vector2i) -> void:
 	var act := str(thing.get("act", ""))
+	if act in NEEDS_OPEN and why_closed() != "":
+		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		return
 	match act:
 		"up":
 			GameMap.next_interior = "rec_up"
@@ -391,8 +572,14 @@ static func _cabinet(m: GameMap, game: String) -> void:
 static func _lane(m: GameMap, lane: int) -> void:
 	var taken := lanes_taken()
 	if taken.has(lane):
-		var who := str(GameState.npcs.get(str(taken[lane]), {}).get("name", "Someone"))
-		m.hud.toast("%s is bowling on lane %d. Try another lane." % [who, lane], Color(1, 0.9, 0.7))
+		var tid := str(taken[lane])
+		var who := str(GameState.npcs.get(tid, {}).get("name", "Someone"))
+		var dj := Dialogue.instance(m.get_tree())
+		dj.say([{"who": "", "text": "%s is bowling on lane %d. Lane %d is the house lane, always kept free." % [who, lane, house_lane()],
+			"choice": ["Bowl with %s" % who, "Not now"], "key": ""}])
+		await dj.finished
+		if dj.last_choice == 0:
+			await bowl_with(m, tid, lane)
 		return
 	var free := bool(GameState.run["flags"].get("rec_free_game", false))
 	var cost := 0 if free else fee()
@@ -417,6 +604,68 @@ static func _lane(m: GameMap, lane: int) -> void:
 	GameState.run["flags"].erase("rec_free_game")
 	var res: Dictionary = await Bowling.play(m, lane)
 	finish_game(m, res)
+
+
+static func house_lane() -> int:
+	return int(data().get("building", {}).get("house_lane", 4))
+
+
+## A villager's score for today's game with you (steady for the day: their average
+## give or take 25, so a rematch tomorrow can go the other way).
+static func rival_score(npc_id: String) -> int:
+	var avg := int(data().get("bowl_avg", {}).get(npc_id, 100))
+	var swing := absi(hash("%s:%d" % [npc_id, int(GameState.run.get("day", 1))])) % 51 - 25
+	return clampi(avg + swing, 30, 279)
+
+
+## A game side by side with a villager on their lane: you pay as usual, they bowl
+## their game, and afterwards you compare cards. Bowling together is a good evening:
+## friendship once a day per villager (more if you win), and a few bonus tickets for a win.
+static func bowl_with(m: GameMap, npc_id: String, lane: int) -> void:
+	if why_closed() != "":
+		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
+		return
+	var who := str(GameState.npcs.get(npc_id, {}).get("name", npc_id.capitalize()))
+	var free := bool(GameState.run["flags"].get("rec_free_game", false))
+	var cost := 0 if free else fee()
+	if int(GameState.run["crystals"]) < cost:
+		m.hud.toast("Not enough crystals for a game (%s)." % Money.amount(cost), Color(1, 0.7, 0.7))
+		return
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
+	GameState.run["flags"].erase("rec_free_game")
+	var res: Dictionary = await Bowling.play(m, lane)
+	finish_game(m, res)
+	if res.is_empty() or not bool(res.get("done", false)):
+		await m.say([{"who": who, "text": "Leaving already? I'll finish the frame for you."}])
+		return
+	await m.say(together_result(npc_id, int(res.get("score", 0)), m))
+
+
+## The talk after a game together (and its rewards). Shared with the headless test.
+static func together_result(npc_id: String, you: int, m: GameMap = null) -> Array:
+	var who := str(GameState.npcs.get(npc_id, {}).get("name", npc_id.capitalize()))
+	var them := rival_score(npc_id)
+	var res: Dictionary = data().get("chat_result", {})
+	var said: Array = res.get(npc_id, res.get("_", ["", "", ""]))
+	var k := 0 if you > them else (1 if you < them else 2)
+	var text := str(said[k]).replace("{you}", str(you)).replace("{them}", str(them))
+	var f: Dictionary = GameState.run["flags"]
+	var key := "rec_bowled_" + npc_id
+	var gain := 0
+	if int(f.get(key, -1)) != int(GameState.run["day"]):
+		f[key] = int(GameState.run["day"])
+		gain = 8 if k == 0 else 5
+		GameState.add_friend(npc_id, gain)
+	if k == 0:
+		Tickets.add(10, "rival")
+	if m:
+		var note := "%s bowled %d · you %d" % [who, them, you]
+		if gain > 0:
+			note += " · %s +%d" % [who, gain]
+		if k == 0:
+			note += " · +10 tickets"
+		m.hud.toast(note, Color(1, 0.85, 0.95))
+	return [{"who": who, "text": text}]
 
 
 ## Pays out a finished (or abandoned) game. Shared with the headless test.
@@ -445,14 +694,21 @@ static func tickets_for(score: int, strikes: int, spares: int) -> int:
 
 static func _desk(m: GameMap) -> void:
 	var d := Dialogue.instance(m.get_tree())
-	var opts := ["Tickets & scores", "What's here?", "Leave"]
-	d.say([{"who": "Front desk", "text": "Welcome to the %s! You have %d tickets.%s" % [name(), Tickets.count(), "  Tonight is LEAGUE NIGHT." if is_league_night() else ""], "choice": opts, "key": ""}])
+	var opts := ["What's on today?", "Tickets & scores", "What's here?", "Leave"]
+	var shut := why_closed()
+	var hi := "Welcome to the %s! You have %d tickets.%s" % [name(), Tickets.count(), "  Tonight is LEAGUE NIGHT." if is_league_night() else ""]
+	if shut != "":
+		hi = "We're closed, hon. Open %s. You have %d tickets." % [TownHours.hours_text(int(hours()[0]), int(hours()[1])), Tickets.count()]
+	d.say([{"who": "Front desk", "text": hi, "choice": opts, "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
-		await _scores(m)
+		await m.say(today_lines())
 	elif d.last_choice == 1:
-		await m.say([{"who": "Front desk", "text": "Bowling upstairs (◆%d a game). Arcade cabinets along the back wall. Every game pays tickets; the prize counter takes them." % fee()},
-			{"who": "Front desk", "text": "Some prizes only come out for high scores: a 100, a 160, a 200 game... Lanes are busy evenings and league night (every third day of the week)."}])
+		await _scores(m)
+	elif d.last_choice == 2:
+		await m.say([{"who": "Front desk", "text": "Bowling upstairs (◆%d a game). Arcade cabinets along the back wall. Every game pays tickets; the prize counter takes them. Open %s." % [fee(), TownHours.hours_text(int(hours()[0]), int(hours()[1]))]},
+			{"who": "Front desk", "text": "Folks drop in after work and school, all afternoon on rest days (the 6th and 7th of each week), and when it rains. League night is the 3rd, 10th, 17th and 24th."},
+			{"who": "Front desk", "text": "If someone's on a lane, ask to bowl with them: it's friendlier than it looks. Lane %d is the house lane, kept free for walk-ins. Some prizes only come out for high scores: a 100, a 160, a 200 game..." % house_lane()}])
 
 
 static func _scores(m: GameMap) -> void:
