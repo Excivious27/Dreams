@@ -1325,6 +1325,229 @@ def w526():
             S.manifest[g][pose].update({"cell_w": S.manifest[g][pose]["w"], "cell_h": S.manifest[g][pose]["h"], "frames": 1})
 
 
+# ---- Round 13: tool poses for the six gritty gang heroes (w295-w300) ---------
+# The full sheets drew hoe/axe/pickaxe/water rows, but the sprites wander off the
+# prompt's grid and order (and some face left), so each frame is picked by hand:
+# (row, sprite centre x, flip). Rows are the sheet's own sprite bands.
+def _gang_bands(rgba):
+    H = rgba.shape[0]
+    on = (rgba[:, :340, 3] > 40).any(axis=1)
+    runs, st = [], None
+    for y in range(H + 1):
+        v = y < H and on[y]
+        if v and st is None: st = y
+        if not v and st is not None:
+            if runs and st - runs[-1][1] < 7: runs[-1][1] = y
+            else: runs.append([st, y])
+            st = None
+    runs = [r for r in runs if r[1] - r[0] > 30]
+    return [(max(0, a - 3), min(H, b + 3)) for a, b in runs]
+
+GANG_TOOL_ROWS = {
+    "man_gang": ("w295_hero_dad_gang_full.png", {
+        3: [60, 185, 290, 400, 520, 610, 725, 835, 950, 1060, 1165, 1270, 1385, 1480],
+        4: [65, 180, 295, 405, 525, 630, 740, 855, 960, 1070, 1165, 1270, 1380, 1480]}, {
+        "hoe_down": [(3, 0), (3, 3), (3, 6)], "hoe_right": [(3, 1), (3, 4)], "hoe_up": [(3, 2), (3, 10)],
+        "axe_down": [(3, 7), (3, 13)], "axe_right": [(3, 12), (3, 8), (4, 1)],
+        "pickaxe_right": [(4, 3), (4, 4), (4, 2)], "pickaxe_up": [(4, 5), (4, 6)],
+        "water_down": [(4, 7)], "water_right": [(4, 8), (4, 9), (4, 10)], "hold_down": [(4, 12)], "eat_down": [(4, 13)]}),
+    "son_gang": ("w296_hero_pax_gang_full.png", {
+        3: [65, 185, 280, 390, 490, 580, 690, 815, 920, 1015, 1120, 1235, 1335, 1455],
+        4: [55, 160, 295, 390, 490, 590, 710, 840, 940, 1030, 1160, 1250, 1370, 1470]}, {
+        "hoe_down": [(3, 0), (3, 3)], "hoe_right": [(3, 1), (3, 4)], "axe_right": [(3, 8), (3, 10), (3, 11)],
+        "pickaxe_right": [(4, 2), (4, 1, True)], "pickaxe_down": [(4, 4), (4, 3)], "pickaxe_up": [(4, 6), (4, 5)],
+        "water_down": [(4, 7)], "water_right": [(4, 8)], "hold_down": [(4, 12)], "eat_down": [(4, 13)]}),
+    "june_gang": ("w297_hero_june_gang_full.png", {
+        3: [55, 165, 265, 360, 465, 575, 670, 775, 880, 985, 1085, 1195, 1295, 1390, 1480],
+        4: [55, 160, 265, 370, 480, 585, 680, 785, 890, 990, 1115, 1235, 1350, 1460]}, {
+        "hoe_right": [(3, 1), (3, 3), (3, 5)], "axe_right": [(4, 0), (4, 1), (4, 2)],
+        "pickaxe_right": [(4, 5), (4, 6), (4, 3)],
+        "water_down": [(4, 11)], "water_right": [(4, 8), (4, 9), (4, 10)], "hold_down": [(4, 12)], "eat_down": [(4, 13)]}),
+    "rafe_gang": ("w298_hero_rafe_gang_full.png", {
+        3: [50, 160, 255, 365, 470, 575, 680, 790, 905, 1010, 1135, 1235, 1345, 1460],
+        4: [55, 160, 270, 380, 480, 590, 700, 830, 960, 1100, 1230, 1350, 1470]}, {
+        "hoe_right": [(3, 1, True), (3, 3, True), (3, 5, True)], "axe_right": [(3, 13, True), (3, 10, True), (3, 11, True)], "axe_down": [(4, 0)],
+        "pickaxe_right": [(4, 3), (4, 6)], "pickaxe_down": [(4, 5), (4, 2)],
+        "water_down": [(4, 7)], "water_right": [(4, 8), (4, 9)], "hold_down": [(4, 11)], "eat_down": [(4, 12)]}),
+    "nia_gang": ("w299_hero_nia_gang_full.png", {
+        3: [45, 130, 190, 280, 370, 430, 520, 590, 660, 750, 830, 880, 975, 1060, 1145, 1215, 1295, 1375, 1460],
+        4: [50, 140, 240, 320, 410, 500, 570, 650, 745, 800, 880, 990, 1090, 1210, 1320, 1440]}, {
+        "hoe_right": [(3, 3), (3, 4)], "axe_right": [(3, 12), (3, 17), (3, 18)],
+        "pickaxe_right": [(4, 6), (4, 7)], "pickaxe_up": [(4, 9), (4, 10)],
+        "water_down": [(4, 11)], "water_right": [(4, 12), (4, 13)], "hold_down": [(4, 14)], "eat_down": [(4, 15)]}),
+    "ollie_gang": ("w300_hero_ollie_gang_full.png", {
+        3: [40, 140, 230, 320, 400, 500, 590, 680, 770, 860, 950, 1040, 1150, 1240, 1320, 1400, 1480],
+        4: [45, 140, 230, 320, 410, 490, 580, 660, 750, 850, 940, 1020, 1110, 1200, 1300, 1400, 1480]}, {
+        "hoe_down": [(3, 0), (3, 1), (3, 2)], "hoe_right": [(3, 3), (3, 4), (3, 5)], "axe_right": [(3, 6), (3, 15), (3, 16)],
+        "pickaxe_right": [(3, 12), (3, 13)], "pickaxe_down": [(4, 0), (4, 1), (4, 2)], "pickaxe_up": [(3, 7), (3, 8)],
+        "cast_right": [(4, 5), (4, 6), (4, 7)], "water_right": [(4, 10)], "hold_down": [(4, 15)], "eat_down": [(4, 16)]}),
+}
+
+
+def _gang_frame(rgba, band, centres, i, flip=False):
+    """The sprite whose centre is centres[i]: the window between its neighbours'
+    midpoints, keeping only blobs whose middle sits inside it (no borrowed
+    pickaxe heads from the next frame)."""
+    from scipy import ndimage
+    y0, y1 = band
+    Wd = rgba.shape[1]
+    c = centres[i]
+    a = (centres[i - 1] + c) // 2 if i > 0 else max(0, c - 60)
+    b = (centres[i + 1] + c) // 2 if i + 1 < len(centres) else min(Wd, c + 60)
+    pad = 14
+    x0, x1 = max(0, a - pad), min(Wd, b + pad)
+    sub = rgba[y0:y1, x0:x1].copy()
+    mask = sub[..., 3] > 40
+    lab, n = ndimage.label(ndimage.binary_dilation(mask, iterations=1))
+    keep = np.zeros(n + 1, bool)
+    for k, sl in enumerate(ndimage.find_objects(lab), 1):
+        if sl is None: continue
+        mx = x0 + (sl[1].start + sl[1].stop) / 2.0
+        if a <= mx <= b: keep[k] = True
+    sub[~keep[lab]] = 0
+    ys, xs = np.where(sub[..., 3] > 40)
+    if not len(ys): return None
+    im = Image.fromarray(sub[ys.min():ys.max() + 1, xs.min():xs.max() + 1].astype(np.uint8))
+    return im.transpose(Image.FLIP_LEFT_RIGHT) if flip else im
+
+
+R13_HEROES = {"man_gang": "r13/w295d_hero_dad_gang_dark.png", "son_gang": "r13/w296d_hero_pax_gang_dark.png",
+              "june_gang": "r13/w297d_hero_june_gang_dark.png", "rafe_gang": "r13/w298d_hero_rafe_gang_dark.png",
+              "nia_gang": "r13/w299d_hero_nia_gang_dark.png", "ollie_gang": "r13/w300d_hero_ollie_gang_dark.png",
+              "marisol_gang": "r13/w301d_hero_marisol_gang_dark.png", "bo_gang": "r13/w302d_hero_bo_gang_dark.png"}
+
+
+def r13_heroes():
+    """The eight gang heroes redrawn darker (same sheet layout as w295-w302):
+    the w295 slicer cuts them, then gang_tools re-adds the hand-picked tool poses."""
+    import slice_world as W
+    for cid, f in R13_HEROES.items():
+        if have(f):
+            W.GRIT[f] = cid
+            W._grit(f)
+            # The w295 slicer's tool rows come from even fractions of a row
+            # (mixed-up frames): gang_tools hand-picks those; drop the rest.
+            if cid in GANG_TOOL_ROWS:
+                keep = GANG_TOOL_ROWS[cid][2]
+                g = S.manifest.get("characters/" + cid, {})
+                for k in list(g):
+                    if k.split("_")[0] in ("hoe", "axe", "pickaxe", "water", "hold", "eat") and k not in keep:
+                        del g[k]
+            pg = S.manifest.get("portraits/" + cid, {})
+            for want, sub in (("worried", "sad"), ("sly", "neutral"), ("embarrassed", "sad")):
+                if want not in pg and sub in pg:
+                    pg[want] = dict(pg[sub])
+    gang_tools()
+
+
+def gang_tools():
+    for cid, (file, rows, anims) in GANG_TOOL_ROWS.items():
+        if have(R13_HEROES.get(cid, "-")):
+            file = R13_HEROES[cid]  # the redraw keeps every sprite where it was
+        if not have(file): continue
+        rgba = _hue(file)
+        bs = _gang_bands(rgba)
+        G = "characters/" + cid
+        for name, picks in anims.items():
+            ims = []
+            for pk in picks:
+                im = _gang_frame(rgba, bs[pk[0]], rows[pk[0]], pk[1], len(pk) > 2 and pk[2])
+                if im is not None:
+                    ims.append(scale_to(im, height=min(110, max(40, int(im.height * 0.96)))))
+            if ims:
+                strip(ims, G, name)
+        print("   %s: %d tool strips" % (cid, len(anims)))
+
+
+def _hue(file):
+    import slice_world as W
+    return W.load_hue(file)
+
+
+
+# ---- Round 13: darker, cyberpunk underworld redraws (image tool, same layouts) --
+# Each render keeps its original sheet's layout, so the original slicers cut it.
+R13_THUGS = [("r13/w414d_thug_walks_a_dark.png", ["cyber", "brute", "flame"]),
+             ("r13/w415d_thug_walks_b_dark.png", ["speedster", "gambler", "enforcer"]),
+             ("r13/w428d_lookout_dark.png", ["lookout"])]
+R13_LTS = {"r13/w330d_lt_vance_lucia_dark.png": ("lt_vance", "lt_lucia"), "r13/w331d_lt_brock_silas_dark.png": ("lt_brock", "lt_silas"),
+           "r13/w332d_lt_mags_surveyor_dark.png": ("lt_mags", "lt_surveyor"), "r13/w333d_lt_pike_ostrova_dark.png": ("lt_pike", "lt_ostrova")}
+R13_CREW = [("r13/w213d_gang_deuce_rosa_dark.png", "deuce", "mama_rosa"), ("r13/w214d_gang_specs_ladder_dark.png", "specs", "ladder"),
+            ("r13/w215d_gang_twins_dark.png", "vic", "val"), ("r13/w216d_gang_halo_dice_dark.png", "halo", "dice"),
+            ("r13/w217d_gang_marlene_kid_dark.png", "marlene", "the_kid"), ("r13/w218d_gang_doc_sasha_dark.png", "doc", "sasha")]
+
+
+def r13_dark():
+    import slice_world as W
+    for f, ids in R13_THUGS:
+        if have(f):
+            thug_sheet(f, ids)
+    for f, ids in R13_LTS.items():
+        if have(f):
+            W.LTS[f] = ids
+            W._lt_sheet(f)
+    for f, a, b in R13_CREW:
+        if have(f):
+            W._crew_sheet(f, a, b)
+
+
+
+def r13_cash():
+    """Gangster-arc money art: ui/cash (HUD) and ui/cash_bundle (cash flying to you)."""
+    f = "r13/cash_icons.png"
+    if not have(f):
+        return
+    rgba = load(f)
+    bs = sorted([b for b in blobs(rgba, merge=6, min_area=2000)], key=lambda b: b[0])
+    if len(bs) < 2:
+        raise RuntimeError("r13_cash: %d pieces" % len(bs))
+    save(piece(rgba, bs[0], h=36), "ui", "cash")
+    save(piece(rgba, bs[1], h=40), "ui", "cash_bundle")
+
+
+
+R13_MARKED = {"r13/w304d_marked_kit_ember_dark.png": "w304_marked_kit_ember.png", "r13/w305d_marked_dahlia_juno_dark.png": "w305_marked_dahlia_juno.png",
+              "r13/w306d_marked_rio_mei_dark.png": "w306_marked_rio_mei.png", "r13/w307d_marked_bruno_tomas_dark.png": "w307_marked_bruno_tomas.png",
+              "r13/w308d_marked_sable_atlas_dark.png": "w308_marked_sable_atlas.png"}
+
+
+def r13_marked():
+    """The Marked redrawn darker (same layouts as w304-w308)."""
+    import slice_world as W, tempfile
+    for f, orig in R13_MARKED.items():
+        if not have(f):
+            continue
+        # A raised arm can bridge two sprite rows into one band: open a one-pixel
+        # gap at the emptiest line of any band twice the usual height (copy in /tmp).
+        img = Image.open(os.path.join(S.INC, f)).convert("RGBA")
+        rgba = W.load_hue(f)
+        on = (rgba[:, :, 3] > 40).sum(axis=1)
+        runs, st = [], None
+        for y in range(len(on) + 1):
+            v = y < len(on) and on[y] > 0
+            if v and st is None: st = y
+            if not v and st is not None:
+                if runs and st - runs[-1][1] < 6: runs[-1][1] = y
+                else: runs.append([st, y])
+                st = None
+        runs = [r for r in runs if r[1] - r[0] > 30]
+        med = float(np.median([b - a for a, b in runs]))
+        src = f
+        for a, b in runs:
+            if b - a > 1.8 * med:
+                lo, hi = a + int(0.3 * (b - a)), a + int(0.7 * (b - a))
+                y = lo + int(np.argmin(on[lo:hi]))
+                for yy in range(y - 3, y + 4):  # a 7-px backdrop seam (the band merge gap is 6)
+                    for x in range(img.width):
+                        img.putpixel((x, yy), (255, 0, 255, 255))
+                print("   %s: split a merged band at y=%d (%d px of sprite cut)" % (f, y, int(on[y - 3:y + 4].sum())))
+                src = os.path.join(tempfile.mkdtemp(prefix="r13mk_"), os.path.basename(f))
+        if src != f:
+            img.save(src)
+        W.MKS[src] = W.MKS[orig]
+        W._mk_sheet(src)
+
+
 STEPS = [w478, w493, w422, w476, w479, w480, w442, w463, w466, w467, w468, w471,
          w465, w376, w487, w488, w489, w482, w483, w484, w485, w486, w490,
          w414, w415, w428, w417, w470, w472, w366, w367, w368,
@@ -1335,7 +1558,7 @@ STEPS = [w478, w493, w422, w476, w479, w480, w442, w463, w466, w467, w468, w471,
          w424, w425, w420, w423, w430, w429, w426, w427, w462, w460, w461, w418, w419, w457, w373,
          w475, w477, w381, w408, w392, w403, w412, w413,
          w380, w383, w385, w386, w388, w389, w391, w394, w396, w402, w404, w405, w406, w393, w397, w411, w398, w443b, w409, w444,
-         w524, w525, w526, kits]
+         w524, w525, w526, kits, r13_heroes, r13_dark, r13_marked, r13_cash]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

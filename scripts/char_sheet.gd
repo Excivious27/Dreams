@@ -779,7 +779,11 @@ static func _small_btn(parent: Control, text: String, cb: Callable) -> Button:
 static func _hero_tex() -> Texture2D:
 	var pid := str(GameState.run.get("playable", ""))
 	var gang := not GameState.is_penguins()
-	for cand: String in (["card_hero_%s_gang" % pid] if gang else []) + ["card_hero_" + pid]:
+	# Gangster arc: the redrawn underworld heroes show their own sprite (the old
+	# painted cards, and the farm cards, are a different look).
+	var gs := GameState.sprite_for_playable(pid) if gang else ""
+	var redrawn := gang and gs.ends_with("_gang") and Art.has("characters/" + gs, "swim") and Art.has("characters/" + gs, "ride")
+	for cand: String in ([] if redrawn else (["card_hero_%s_gang" % pid] if gang else []) + ["card_hero_" + pid]):
 		if Art.has("ui", cand):
 			return Art.tex("ui", cand)
 	# No card: the hero's own idle frame from the live player.

@@ -356,3 +356,9 @@ bowl_roll
 pin_crash
 pin_crash_2
 pin_crash_3
+cash_pickup
+cash_pickup_2
+cash_pickup_3
+cash_register
+cash_register_2
+cash_register_3

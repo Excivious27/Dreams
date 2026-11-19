@@ -165,7 +165,8 @@ func build() -> void:
 	floor_no = clampi(int(GameState.run.get("mine_floor", 1)), 1, MAX_FLOOR)
 	theme = theme_for(floor_no)
 	has_sky = false
-	has_pet = false
+	has_pet = true  # the pup comes down too (PupMine places it on this layout)
+	PupMine.settle.call_deferred(self)
 	music_track = "mine"
 	# Tom: floor 1 should rarely be the same twice. A fresh layout every time you
 	# enter or go down: seeded by how many floors you've walked into, the floor
@@ -671,6 +672,9 @@ func _give_loot(c: Vector2i, loot: Dictionary) -> void:
 		if id == "#gold":
 			GameState.run["crystals"] = int(GameState.run["crystals"]) + int(loot[id])
 			hud.toast("+◆%d" % int(loot[id]), Color(1, 0.9, 0.5))
+			Music.instance(get_tree()).sfx("coin", "pickup")
+			if Money.cash():
+				MoneyIcon.fly(self, cell_center(c))
 		else:
 			pop_items(cell_center(c), id, int(loot[id]))
 

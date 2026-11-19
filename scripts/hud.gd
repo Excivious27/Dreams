@@ -318,7 +318,9 @@ func _draw_hud() -> void:
 	var ctext := str(int(r["crystals"]))
 	var tw := _font.get_string_size(ctext, HORIZONTAL_ALIGNMENT_RIGHT, -1, 8).x
 	c.draw_string(_font, Vector2(cx - tw, box.position.y + 17), ctext, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
-	if crystal:
+	if Money.cash():
+		MoneyIcon.draw(c, Rect2(cx - tw - 13, box.position.y + 8, 11, 11))
+	elif crystal:
 		c.draw_texture_rect(crystal, Rect2(cx - tw - 11, box.position.y + 9, 9, 9), false)
 	else:
 		c.draw_string(_font, Vector2(cx - tw - 10, box.position.y + 17), "◆", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
@@ -374,7 +376,7 @@ func _draw_hud() -> void:
 	c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, 3, Color(0, 0, 0, 0.7))  # reads on white sky ground
 	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, Color(1, 1, 0.9))
 	# The goal, always on screen (one line, small).
-	var nxt := GameState.next_step()
+	var nxt := Money.t(GameState.next_step())
 	var sc0 := get_tree().current_scene
 	if sc0 and sc0.get("battle") != null:
 		nxt = ""  # the battle bar says what matters

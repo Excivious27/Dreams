@@ -199,7 +199,7 @@ func _next() -> void:
 		return
 	_who.text = str(line.get("who", ""))
 	_who.visible = _who.text != ""
-	_full = str(line.get("text", ""))
+	_full = Money.t(str(line.get("text", "")))
 	if is_inside_tree():
 		Music.instance(get_tree()).blip(str(line.get("who", "")))
 	_shown = 0.0

@@ -25,6 +25,7 @@ window/dpi/allow_hidpi=false
 [autoload]
 
 NetSvc="*res://scripts/net.gd"
+MoneyHook="*res://scripts/money_hook.gd"
 
 [input_devices]
 

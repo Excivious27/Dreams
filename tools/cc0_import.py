@@ -25,10 +25,8 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 # name: (kind, [patterns relative to the CC0 root], options)
 MAP = {
     # --- footsteps ---------------------------------------------------------
-    "step_grass": ("sfx", ["different-steps-on-wood-stone-leaves-gravel-and-mud/*leaves01*", "different-steps-on-wood-stone-leaves-gravel-and-mud/*leaves02*", "fantozzis-footsteps-grasssand-stone/*SandR1*"], {"cap": 0.4}),  # no boot steps on grass (Tom: "clomping")
-    "heartbeat": ("sfx", ["heartbeat-single-sound/heartbeat*"], {"cap": 1.1}),
-    "whimper": ("sfx", ["dog-sounds-pauliuw/sad_dog.*", "dog-sounds-pauliuw/sad_dog_1.*"], {"cap": 1.6, "af": "highpass=f=250,afftdn=nf=-40,agate=threshold=0.02:ratio=3"}),
-    "step_dirt": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*soil-steps-01*", "100-cc0-sfx-2/sfx100v2_footstep_01*", "100-cc0-sfx-2/sfx100v2_footstep_02*"], {"cap": 0.45}),  # soft soil, not boots
+    "step_grass": ("sfx", ["different-steps-on-wood-stone-leaves-gravel-and-mud/*leaves01*", "different-steps-on-wood-stone-leaves-gravel-and-mud/*leaves02*", "50-rpg-sound-effects/*footstep01*"], {"cap": 0.45}),
+    "step_dirt": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*soil-steps-01*", "50-rpg-sound-effects/*footstep03*", "50-rpg-sound-effects/*footstep05*"], {"cap": 0.45}),
     "step_sand": ("sfx", ["fantozzis-footsteps-grasssand-stone/*SandL1*", "fantozzis-footsteps-grasssand-stone/*SandR2*", "fantozzis-footsteps-grasssand-stone/*SandL3*"], {"cap": 0.45}),
     "step_stone": ("sfx", ["fantozzis-footsteps-grasssand-stone/*StoneL1*", "fantozzis-footsteps-grasssand-stone/*StoneR2*", "fantozzis-footsteps-grasssand-stone/*StoneL3*"], {"cap": 0.45}),
     "step_wood": ("sfx", ["100-cc0-sfx-2/*footstep_wood_01*", "100-cc0-sfx-2/*footstep_wood_02*", "100-cc0-sfx-2/*footstep_wood_03*"], {"cap": 0.45}),
@@ -37,9 +35,6 @@ MAP = {
     "step_mud": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*mud-steps-01*", "fantasy-sound-effects-tinysized-sfx/*mud-steps-02*", "fantasy-sound-effects-tinysized-sfx/*mud-steps-03*"], {"cap": 0.5}),
     "step_gravel": ("sfx", ["different-steps-on-wood-stone-leaves-gravel-and-mud/*gravel*", "42-snow-and-gravel-footsteps/*gravel_02*", "42-snow-and-gravel-footsteps/*gravel_05*"], {"cap": 0.5}),
     "step_leaves": ("sfx", ["20-rustles-dry-leaves/*rustle04*", "20-rustles-dry-leaves/*rustle07*", "20-rustles-dry-leaves/*rustle09*"], {"cap": 0.5}),
-    # --- Rec Center bowling (round 13) ---------------------------------------
-    "bowl_roll": ("sfx", ["30-cc0-sfx-loops/sfx_loops_x/rolling.ogg"], {"cap": 2.2}),
-    "pin_crash": ("sfx", ["68-workshop-sounds/workshop_x/workshop/workshop - wood clatter.wav", "68-workshop-sounds/workshop_x/workshop/workshop - loud clatter.wav", "68-workshop-sounds/workshop_x/workshop/workshop - clatter.wav"], {"cap": 1.6}),
     # --- combat ------------------------------------------------------------
     "swing": ("sfx", ["swishes-sound-pack/swish-1.*", "swishes-sound-pack/swish-2.*", "swishes-sound-pack/swish-3.*"], {"cap": 0.5}),
     "swing_heavy": ("sfx", ["swish-bamboo-stick-weapon-swhoshes/*swosh-05*", "swish-bamboo-stick-weapon-swhoshes/*swosh-12*", "swish-bamboo-stick-weapon-swhoshes/*swosh-20*"], {"cap": 0.7}),
@@ -191,6 +186,9 @@ MAP = {
     "boiling": ("bed", ["boiling-water-loops/cooking_with_cover*"], {}),
     "machines": ("bed", ["30-cc0-sfx-loops/machine_03*"], {}),
     "purr_loop": ("bed", ["cat-purr-meow/cat_purrsleepy_loop*"], {}),
+    # --- gangster arc money (Round 13): bills, not crystal chimes ------------
+    "cash_pickup": ("sfx", ["202-more-sound-effects/Money_20*", "202-more-sound-effects/Money_22*", "202-more-sound-effects/Money_24*"], {"cap": 0.6}),
+    "cash_register": ("sfx", ["purchasing-sound-effect/*", "202-more-sound-effects/Money_36*", "202-more-sound-effects/Money_18*"], {"cap": 1.3}),
 }
 
 SOURCES = os.path.join(ROOT, "tools", "cc0_sources.json")
@@ -222,10 +220,10 @@ def files_for(root, pats):
     return out
 
 
-def make_sfx(src, dst, cap, mono=True, lufs=None, pre=""):
+def make_sfx(src, dst, cap, mono=True, lufs=None):
     d = dur(src)
     tmp = dst + ".tmp.wav"
-    trim = (pre + "," if pre else "") + "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse"
+    trim = "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse"
     run("ffmpeg", "-hide_banner", "-y", "-i", src, "-af", trim, "-ac", "1" if mono else "2", "-ar", "44100", tmp)
     d = dur(tmp)
     fo = min(0.08, d / 4) if d <= cap else 0.15
@@ -242,13 +240,8 @@ def make_sfx(src, dst, cap, mono=True, lufs=None, pre=""):
         af += f",volume={-1.0 - mx:.2f}dB"
     else:
         af += f",loudnorm=I={lufs}:TP=-2:LRA=11"
-    # Audio files are hardlinked across worktrees: never write into one in place.
-    out = dst + ".new.ogg"
-    run("ffmpeg", "-hide_banner", "-y", "-i", tmp, "-af", af, "-c:a", "libvorbis", "-q:a", "4", out)
+    run("ffmpeg", "-hide_banner", "-y", "-i", tmp, "-af", af, "-c:a", "libvorbis", "-q:a", "4", dst)
     os.remove(tmp)
-    if os.path.exists(dst):
-        os.remove(dst)
-    os.rename(out, dst)
 
 
 def make_bed(srcs, dst, join, xf=2.5, maxlen=48.0):
@@ -275,26 +268,25 @@ def make_bed(srcs, dst, join, xf=2.5, maxlen=48.0):
     flt = (f"[0:a]atrim=0:{x},asetpts=PTS-STARTPTS[h];[0:a]atrim={x}:{d - x},asetpts=PTS-STARTPTS[b];"
            f"[0:a]atrim={d - x}:{d},asetpts=PTS-STARTPTS[tl];[tl][h]acrossfade=d={x}:c1=tri:c2=tri[j];[b][j]concat=n=2:v=0:a=1[o]")
     run("ffmpeg", "-hide_banner", "-y", "-i", cur, "-filter_complex", flt, "-map", "[o]", loop)
-    out = dst + ".new.ogg"
-    run("ffmpeg", "-hide_banner", "-y", "-i", loop, "-af", "loudnorm=I=-26:TP=-3:LRA=11", "-ar", "32000", "-c:a", "libvorbis", "-q:a", "1", out)
-    if os.path.exists(dst):
-        os.remove(dst)  # hardlinked: replace, never write through
-    os.rename(out, dst)
+    run("ffmpeg", "-hide_banner", "-y", "-i", loop, "-af", "loudnorm=I=-26:TP=-3:LRA=11", "-ar", "32000", "-c:a", "libvorbis", "-q:a", "1", dst)
+
+
+def _replace(path, text):
+    """Write via a temp file + rename: audio/ files may be hardlinked elsewhere."""
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        f.write(text)
+    if os.path.exists(path):
+        os.remove(path)
+    os.rename(tmp, path)
 
 
 def add_real(path, names):
-    have = set()
-    if os.path.exists(path):
-        have = {l.strip() for l in open(path) if l.strip() and not l.startswith("#")}
+    old = open(path).read() if os.path.exists(path) else ""
+    have = {l.strip() for l in old.splitlines() if l.strip() and not l.startswith("#")}
     new = sorted(set(names) - have)
-    if not new:
-        return
-    txt = open(path).read() if os.path.exists(path) else ""
-    if txt and not txt.endswith("\n"):
-        txt += "\n"
-    with open(path + ".new", "w") as f:  # hardlinked: write a new file, then swap it in
-        f.write(txt + "".join(n + "\n" for n in new))
-    os.replace(path + ".new", path)
+    if new:
+        _replace(path, old + ("" if old.endswith("\n") or not old else "\n") + "".join(n + "\n" for n in new))
 
 
 def main():
@@ -330,17 +322,16 @@ def main():
             out_dir = sfx_dir if kind == "sfx" else amb_dir
             for i, f in enumerate(full[:3]):
                 nm = base if i == 0 else f"{base}_{i + 1}"
-                make_sfx(f, os.path.join(out_dir, nm + ".ogg"), float(opt.get("cap", 1.5)), pre=str(opt.get("af", "")))
+                make_sfx(f, os.path.join(out_dir, nm + ".ogg"), float(opt.get("cap", 1.5)))
                 (done_sfx if kind == "sfx" else done_amb).append(nm)
         used[name] = fs
     if not a.dry:
         add_real(os.path.join(ROOT, "audio", "sfx", "REAL.txt"), done_sfx)
         add_real(os.path.join(ROOT, "audio", "amb", "REAL.txt"), done_amb)
         up = os.path.join(ROOT, "audio", "CC0_USED.json")
-        allu = json.load(open(up)) if os.path.exists(up) else {}
-        allu.update(used)  # --only must not drop the rest
-        json.dump(allu, open(up + ".new", "w"), indent=1, sort_keys=True)
-        os.replace(up + ".new", up)
+        allused = json.load(open(up)) if os.path.exists(up) else {}
+        allused.update(used)  # --only runs keep every other sound's record
+        _replace(up, json.dumps(allused, indent=1, sort_keys=True))
     print(f"sfx {len(done_sfx)}  amb {len(done_amb)}  missing: {missing}")
 
 
