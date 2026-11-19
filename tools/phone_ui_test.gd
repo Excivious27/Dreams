@@ -259,7 +259,7 @@ func _fullscreen_pass(m: GameMap) -> void:
 	bw.lane = 1
 	m.add_child(bw)
 	await _frames(10)
-	_taps("bowling", [Bowling.BTN_L, Bowling.BTN_R, Bowling.BTN_SPIN_L, Bowling.BTN_SPIN_R, Bowling.BTN_GO, Bowling.BTN_QUIT])
+	_taps("bowling", bw._rects())
 	for ph in ["aim", "power"]:
 		bw.phase = ph
 		await _check("bowling_" + ph, bw)
