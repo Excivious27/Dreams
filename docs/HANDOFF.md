@@ -8,7 +8,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 - **Last update:** 2026-11-19 09:40 PT, Team account (game chat)
 - **Done:** Round 13. CONDUCT 1 of 9: all 20 agent branches merged, check.sh rc 0, pushed (see PROJECT-MEMORY section 5).
-- **In progress:** CONDUCT 1 step 2: 20-bot playtest + scripted playtest on the merged build, then fixes and the package.
+- **In progress:** CONDUCT 1 bots + playtest done and fixed (20 bots 0 crashes; playtest 0 fails). Next: package, then CONDUCT 2.
 - **Next step:** finish CONDUCT 1 (bots, playtest, fix, package), then CONDUCT 2 (rec/arcade/community farm) and CONDUCT 3 (campaigns), wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package. Plan: docs/CONDUCT-PLAN.md.
 - **Jobs running elsewhere:** none.
 - **WIP branches:** none.
