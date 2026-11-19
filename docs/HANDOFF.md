@@ -37,6 +37,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19 15:16: Tom: the report, guide, progress sheet etc. must always be shared as an artifact in the chat (the published artifact page with every part), in addition to the files.
 - 2026-11-19 15:13: Tom added CONDUCT 17 (multiplayer: full co-op review of the whole game, versus/co-op modes for bowling, Skee-Ball, arcade and more; after it Tom sets up a ~$4/month relay server and starts testing with friends). Order: C2-C9 (5 h waits), C10-C17, then the final package and artifact.
 - 2026-11-19 14:32: Tom added CONDUCT 15 (seasons: unique festivals, holidays, events, seasonal items/quests) and CONDUCT 16 (progression and balance across every way to play: nothing too fast, unlocks take time and effort, quick/moderate/long goals, some big rewards only in year 2-3). Order: C2-C9 (5 h waits), C10 decor, C11 ranching, C12 writing, C13 audio, C14 aesthetics, C15 seasons, C16 progression, then the final package and artifact.
 - 2026-11-19 14:27: Tom added CONDUCT 13 (audio depth: alternate area soundtracks, many seasonal alternates, full audit of every sound/song pairing) and CONDUCT 14 (aesthetic quality: graphics, region maps, boundaries, explorability, geography, smooth edges). Order: C2-C9 (5 h waits), C10 decor, C11 ranching, C12 writing, C13 audio, C14 aesthetics, then the final package and artifact.
