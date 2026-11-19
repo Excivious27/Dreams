@@ -2,6 +2,16 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: arcade mini-games (Recreation Center)
+- **Five playable cabinets**, full-screen, paused, with their own touch deck (◀▲▼▶, A, B) that presses the input actions:
+  - **Block Jumper** (flagship): auto-runner; A jumps (hold for higher), ▼ ducks under low ceilings / drops fast. 8 levels that unlock in order (Meadow Dash … Star Gauntlet), faster and busier each time (gaps, spikes, blocks, steps, low ceilings, cloud platforms, moving platforms, spike pits), plus Endless (speed keeps rising). Checkpoints, coins, 3 lives, level select with locks and best distance per level; clearing level 4 unlocks a double jump.
+  - **Crystal Stack** (falling gems, 7-bag, ghost piece, faster every 8 rows), **Whack-a-Grump** (40 s, gold/helmet grumps, don't bop bunnies, combos), **Claw Machine** (12 s to aim; a centred grab wins a real item; the grip loosens after each win), **Duck Pond** (cork popper, 3 lanes, golden ducks, frogs cost points).
+- **Money and tickets:** each play costs crystals (cash in the gangster arc): 10, or 20 for the claw. Tickets are paid by performance through `Tickets` (scripts/tickets.gd) and each game keeps a high score.
+- **Hub:** `ArcadeHub.open(id)` with ids jumper/stack/whack/claw/gallery, or "" for the cabinet picker. `ArcadeHub.milestone(id)` (jumper_1..8, jumper_coins, jumper_endless_300/1000, stack_3000/15000/stack_tetra, whack_150/400, claw_win/claw_5, gallery_300/800, all_games) for prize locks.
+- **Art (10 image-tool renders, art/incoming/r13_arcade):** 5 cabinets (picker icons and title cards, ready as world props), 9 painted parallax backdrops, 8 ground tile sets, the cube hero, coins, spikes, flags, goal, platforms, grumps/bunny/mallet/hole, 6 plush prizes and the claw, toy ducks/frog/cork popper, and lawn/booth/claw-box stages. Sliced by `tools/slice_r13_arcade.py` into art/gen/arcade/.
+- **Music:** two ACE songs: `arcade_jumper` (chiptune) and `arcade_hall` (the other cabinets). The cabinet puts back the area song when you leave.
+- **Tests:** `tools/arcade_test.gd` (each game starts, plays scripted frames, ends, pays; level 1 played to the goal; unlock order; picker; no-money; milestones). `tools/jumper_solve.gd` replays a stored winning input plan for every level (data/jumper_plans.json; `-- --solve` searches the real physics again after level changes). Both in check.sh. Screenshots: `tools/arcade_shot.gd`.
+
 ## 2026-11-18 — Round 12: art complete (image tool)
 - **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
 - **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):

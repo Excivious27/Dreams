@@ -60,3 +60,5 @@ finargle
 shop_gang
 credits
 merkitty_song
+arcade_jumper
+arcade_hall

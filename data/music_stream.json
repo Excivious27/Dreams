@@ -2,6 +2,8 @@
  "stream": [
   "arc_gangsters",
   "arc_penguins",
+  "arcade_hall",
+  "arcade_jumper",
   "battle",
   "battle_escort",
   "battle_siege",
