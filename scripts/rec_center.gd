@@ -83,9 +83,32 @@ static func place_town(m: GameMap) -> Vector2i:
 	for p: Array in [["bench2_wood_a", Vector2i(door.x - 5, door.y + 1)], ["flowerbed_pink", Vector2i(door.x - 3, door.y)], ["flowerbed_yellow", Vector2i(door.x + 5, door.y)]]:
 		if Art.has("props", str(p[0])):
 			m.prop("props", str(p[0]), p[1], 1 if str(p[0]).begins_with("bench") else 0)
+	_night_lights(m, door, info, sc)
 	if not GameState.is_penguins() and Art.has("props", "neon_open"):
 		m.anim_prop("props", "neon_open", Vector2i(door.x + 1, door.y - 1), 0, 2.0)
 	return door
+
+
+## Lit windows, the doors and the sign after dark (NightGlow pools; the building art
+## has no night version). Offsets are fractions of the drawn building (both skins
+## share the layout: two rows of windows either side of the double doors).
+static func _night_lights(m: GameMap, door: Vector2i, info: Dictionary, sc: float) -> void:
+	if m.glow == null:
+		return
+	var w := float(info.get("w", 320)) * sc
+	var h := float(info.get("h", 240)) * sc
+	var base := m.cell_pos(door.x + 0.5, door.y + 1)
+	var spots := [[0.0, 0.14, 30.0], [-0.27, 0.23, 22.0], [0.27, 0.23, 22.0],
+		[0.0, 0.58, 22.0], [-0.3, 0.55, 16.0], [0.3, 0.55, 16.0]]
+	for sp: Array in spots:
+		var n := Node2D.new()
+		n.position = base + Vector2(float(sp[0]) * w, 0)
+		m.add_child(n)
+		m.glow.lights.append([n, float(sp[2]), float(sp[1]) * h])
+	var sg := Node2D.new()
+	sg.position = m.cell_pos(door.x + 3.5, door.y + 1)
+	m.add_child(sg)
+	m.glow.lights.append([sg, 22.0, 14.0])
 
 
 static func lane_rect() -> Rect2i:
@@ -508,6 +531,9 @@ static func dress(m: GameMap, interior_id: String) -> void:
 	wall.map = m
 	wall.z_index = 1
 	m.add_child(wall)
+	var gl := RecGlow.new()
+	gl.map = m
+	m.add_child(gl)
 	if not bool(I.get("lanes", false)):
 		var bd := RecDecor.new()
 		bd.mode = "board"

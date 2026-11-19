@@ -168,23 +168,26 @@ func _cheer(who: String) -> void:
 # ---- ground floor -------------------------------------------------------------------
 
 func _draw_floor() -> void:
-	# Arcade carpet under the cabinets: deep blue with confetti.
+	# Arcade carpet under the cabinets: the house's confetti carpet (blacklight in the Rec Hall),
+	# with a brass trim so it reads as a laid rug, not a hole in the floor.
 	var gang := not GameState.is_penguins()
-	var r := Rect2(7 * T, 2 * T, 7 * T, 3 * T)
-	draw_rect(r, Color("1c2048") if not gang else Color("140a24"))
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 77
-	var cols := [Color("f5c842"), Color("f5486e"), Color("3fdc8c"), Color("3fa9f5"), Color("a46cf5")]
-	for i in 70:
-		var p := Vector2(rng.randf_range(r.position.x + 2, r.end.x - 2), rng.randf_range(r.position.y + 2, r.end.y - 2))
-		var c: Color = cols[i % cols.size()]
-		if i % 3 == 0:
-			draw_rect(Rect2(p, Vector2(2, 2)), c)
-		elif i % 3 == 1:
-			draw_line(p, p + Vector2(3, -1), c, 1.0)
-		else:
-			draw_arc(p, 1.5, 0, PI, 4, c, 1.0)
-	draw_rect(r, Color(1, 1, 1, 0.12), false, 1.0)
+	var r := carpet_rect()
+	var tx := Art.tex("tiles", "rec_carpet_gang" if gang else "rec_carpet")
+	draw_rect(Rect2(r.position + Vector2(0, 2), r.size), Color(0, 0, 0, 0.22))
+	if tx:
+		texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+		draw_texture_rect(tx, r, true)
+	else:
+		draw_rect(r, Color("1c2048") if not gang else Color("140a24"))
+	var trim := Color("c9a24a") if not gang else Color("7a3ac8")
+	draw_rect(r.grow(1.0), Color(0, 0, 0, 0.45), false, 1.0)
+	draw_rect(r, trim, false, 1.0)
+	draw_rect(r.grow(-1.5), Color(trim, 0.35), false, 1.0)
+
+
+## The carpet under the cabinet row and the pinballs (cells 7..13, rows 2..6).
+static func carpet_rect() -> Rect2:
+	return Rect2(7 * T, 2 * T, 7 * T, 5 * T)
 
 
 func _draw_wall() -> void:
@@ -205,17 +208,21 @@ func _draw_wall() -> void:
 		if tx:
 			draw_texture_rect(tx, Rect2(7 * T + 6, 6, 20, 17), false, Color(1, 1, 1, pulse))
 		return
-	# Ground floor: neon over the cabinets, flickering out of step.
-	var spots := [[9.0, 2], [12.0, 5], [2.0 + 1.0, 6]]
-	for i in spots.size():
-		var s: Array = spots[i]
-		var tx2 := Art.tex("props", "neon_sign_%d" % int(s[1]))
+	# Ground floor: neon pictograms in the gaps between the cabinets (clear of the window),
+	# each humming at its own pace with the odd flicker.
+	for i in WALL_NEON.size():
+		var s: Array = WALL_NEON[i]
+		var tx2 := Art.tex("props", str(s[1]))
 		if tx2 == null:
 			continue
-		var on := 0.7 + 0.3 * sin(_t * (1.7 + i * 0.6) + i)
-		if fmod(_t * (0.9 + i * 0.3), 7.0) < 0.12:
-			on = 0.25  # the odd flicker
-		draw_texture_rect(tx2, Rect2(float(s[0]) * T, 2, 22, 18), false, Color(1, 1, 1, on))
+		var on := 0.86 + 0.14 * sin(_t * (1.7 + i * 0.6) + i)
+		if fmod(_t * (0.9 + i * 0.3) + i * 2.0, 7.0) < 0.1:
+			on = 0.45  # the odd flicker
+		draw_texture_rect(tx2, Rect2(float(s[0]) * T + 1, 3, 14, 14), false, Color(on, on, on, 1.0))
+
+
+## [wall column, prop] of the ground floor's neon signs (RecGlow lights them too).
+const WALL_NEON := [[10, "rec_neon_0"], [13, "rec_neon_1"]]
 
 
 ## The high-score board on legs (ground floor).
@@ -249,11 +256,11 @@ func _draw_sign() -> void:
 	var txt := RecCenter.name().to_upper()
 	var tc := Color(1, 0.4, 0.8) if gang else Color("fff2cc")
 	draw_string(f, Vector2(r.position.x, r.position.y + 8), txt, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 6, tc)
-	# A little pin and ball.
-	draw_rect(Rect2(-9, -14, 2, 5), Color.WHITE)
-	draw_rect(Rect2(-9, -13, 2, 1), Color("d23a3a"))
-	draw_circle(Vector2(-4, -10.5), 2.2, Color("3a7be0") if not gang else Color("ff3fb0"))
-	draw_string(f, Vector2(-1, -9), "BOWL · ARCADE", HORIZONTAL_ALIGNMENT_LEFT, 20, 3, tc)
+	# A pin and a ball under the name (3 px text never read on a phone).
+	draw_rect(Rect2(-5, -16, 3, 7), Color.WHITE)
+	draw_rect(Rect2(-5, -14, 3, 1), Color("d23a3a"))
+	draw_circle(Vector2(2.5, -11.5), 3.0, Color("3a7be0") if not gang else Color("ff3fb0"))
+	draw_circle(Vector2(1.5, -12.5), 0.8, Color(1, 1, 1, 0.6))
 	if not open:
 		draw_set_transform(Vector2.ZERO, -0.25)
 		draw_rect(Rect2(-20, -16, 40, 6), Color("d23a3a"))
