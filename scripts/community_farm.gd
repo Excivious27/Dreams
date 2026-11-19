@@ -567,6 +567,12 @@ func _city_edge() -> void:
 		var da := _city_depth(a)
 		var db := _city_depth(b)
 		return da < db or (da == db and (hash(a) % 1000) < (hash(b) % 1000)))
+	# A few alley mouths, back walls and fences reserved along the inner edge first,
+	# so the facades leave gaps between them (the block reads as streets, not one wall).
+	for ac: Vector2i in order:
+		if occ.has(ac) or _city_depth(ac) != 1 or posmod(ac.x * 7 + ac.y * 13, 6) != 0:
+			continue
+		_city_try(str(CITY_GAP[rng.randi_range(0, CITY_GAP.size() - 1)]), ac, band, occ, 1.0)
 	for ac: Vector2i in order:
 		if occ.has(ac):
 			continue
