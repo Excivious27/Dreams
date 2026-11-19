@@ -12,7 +12,11 @@ extends RefCounted
 ## Community plots grow overnight (`overnight`, from GameState.sleep): ripe
 ## crops go to the market stand's stock, a third to the player's share crate.
 ##   run["cfarm"] = {stage, given {item: n}, cleared {key: true}, plots {"x,y": {crop, days, w}},
-##                   stock {item: n}, share {item: n}, harvests, goodwill, gw_got, gw_day [day, n], drank}
+##                   stock {item: n}, share {item: n}, harvests, goodwill, gw_got, gw_day [day, n], drank,
+##                   pending (stage index the crew builds tonight, -1 none), asks {"year:season": true}}
+## Building stages (data "build") finish overnight: the board takes the bundle, the crew
+## raises it while you sleep, and the next visit plays the reveal. Once the market is
+## open, the board carries one seasonal ask (`ask`).
 
 static var _d: Dictionary = {}
 
@@ -41,12 +45,21 @@ static func tx(v: Variant) -> Variant:
 static func st() -> Dictionary:
 	var s: Dictionary = GameState.run.get("cfarm", {})
 	if s.is_empty():
-		s = {"stage": 0, "given": {}, "cleared": {}, "plots": {}, "stock": {}, "share": {}, "harvests": 0, "goodwill": 0, "gw_got": 0, "gw_day": [0, 0], "drank": -1}
+		s = {"stage": 0, "given": {}, "cleared": {}, "plots": {}, "stock": {}, "share": {}, "harvests": 0, "goodwill": 0, "gw_got": 0, "gw_day": [0, 0], "drank": -1, "pending": -1, "asks": {}}
 		GameState.run["cfarm"] = s
-	for k: String in ["given", "cleared", "plots", "stock", "share"]:
+	for k: String in ["given", "cleared", "plots", "stock", "share", "asks"]:
 		if not s.has(k):
 			s[k] = {}
+	if not s.has("pending"):
+		s["pending"] = -1  # saves from before overnight builds
 	return s
+
+
+## The stage the crew is building tonight (-1: none).
+static func pending() -> int:
+	if GameState.run.is_empty():
+		return -1
+	return int(st().get("pending", -1))
 
 
 static func stage() -> int:
@@ -172,11 +185,43 @@ static func have_of(key: String) -> int:
 			if str(GameState.items.get(id, {}).get("type", "")) == "seed" and not GameState.is_locked(str(id)):
 				n += int(GameState.run["inventory"][id])
 		return n
+	if key.begins_with("@"):
+		var t := 0
+		for id: String in _of_type(key.substr(1)):
+			t += GameState.count(id)
+		return t
 	return GameState.count_any(key)
 
 
+## Unlocked items you carry whose type is `ty` (cheapest first).
+static func _of_type(ty: String) -> Array:
+	var ids: Array = []
+	for id in GameState.run["inventory"]:
+		if str(GameState.items.get(id, {}).get("type", "")) == ty and int(GameState.run["inventory"][id]) > 0 and not GameState.is_locked(str(id)):
+			ids.append(str(id))
+	ids.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) < GameState.item_value(b))
+	return ids
+
+
+## Takes n of an item, family ("#veg") or type ("@fish"), cheapest first.
+static func take_of(key: String, n: int) -> void:
+	if not key.begins_with("@"):
+		GameState.take_any(key, n)
+		return
+	for id: String in _of_type(key.substr(1)):
+		if n <= 0:
+			break
+		var t := mini(n, GameState.count(id))
+		GameState.add_item(id, -t)
+		n -= t
+
+
 static func need_name(key: String) -> String:
-	return "any seeds" if key == "#seed" else GameState.need_name(key)
+	if key == "#seed":
+		return "any seeds"
+	if key.begins_with("@"):
+		return {"fish": "Fish (any)", "forage": "Forage (any)"}.get(key.substr(1), key.substr(1).capitalize())
+	return GameState.need_name(key)
 
 
 static func needs() -> Dictionary:
@@ -193,7 +238,7 @@ static func seed_kinds() -> int:
 
 
 static func stage_ready() -> bool:
-	if complete():
+	if complete() or pending() >= 0:
 		return false
 	var sd: Dictionary = stages()[stage()]
 	if str(sd.get("task", "")) == "debris":
@@ -208,7 +253,7 @@ static func stage_ready() -> bool:
 
 ## Put what you carry toward the current stage. Returns how many items went in.
 static func contribute() -> int:
-	if complete():
+	if complete() or pending() >= 0:
 		return 0
 	var sd: Dictionary = stages()[stage()]
 	var n := 0
@@ -262,6 +307,8 @@ static func need_lines() -> Array:
 static func quest_text() -> String:
 	if complete():
 		return "%s is thriving. Market every 7th day." % place_name()
+	if pending() >= 0:
+		return "%s: the crew is building the %s tonight. Visit tomorrow." % [place_name(), build_word(pending())]
 	if not GameState.run["flags"].has("cf_met"):
 		return "Meet %s at %s, out the west road from the town plaza." % [keeper_name(), short_name()]
 	return "%s (%d/%d): %s. Check the board by the gate." % [place_name(), stage() + 1, stages().size(), stage_name(stage())]
@@ -282,13 +329,14 @@ static func sync_quest() -> void:
 
 ## Finish the current stage: rewards, friendship, the recipe, then the map shows the change
 ## (the map reloads; `flags.cf_reveal` makes it play the reveal).
-static func finish_stage(m: GameMap) -> void:
+static func finish_stage(m: GameMap, save := true) -> void:
 	if complete():
 		return
 	var s := stage()
 	var sd: Dictionary = stages()[s]
 	st()["stage"] = s + 1
 	st()["given"] = {}
+	st()["pending"] = -1
 	GameState.run["flags"]["cf_stage_" + str(sd["id"])] = true
 	var got: Array = []
 	if int(sd.get("crystals", 0)) > 0:
@@ -314,7 +362,8 @@ static func finish_stage(m: GameMap) -> void:
 	GameState.run["flags"]["cf_reveal_got"] = ", ".join(got)
 	sync_quest()
 	if m == null or not is_instance_valid(m):
-		GameState.save()
+		if save:
+			GameState.save()
 		return
 	m.fx("levelup", m.player.position + Vector2(0, -12), 10.0, 0.9)
 	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
@@ -323,6 +372,86 @@ static func finish_stage(m: GameMap) -> void:
 		m.go_to(SCENE, m.player.position - m.offset(), m.player.facing)
 	else:
 		GameState.save()
+
+
+## What the crew is putting up for stage i, for "building the ___ tonight".
+static func build_word(i: int) -> String:
+	if i < 0 or i >= stages().size():
+		return "next thing"
+	return {"shed": "shed", "beds": "raised beds", "well": "well", "orchard": "orchard", "greenhouse": "greenhouse"}.get(str(stages()[i]["id"]), stage_name(i).to_lower())
+
+
+static func is_build(i: int) -> bool:
+	return i >= 0 and i < stages().size() and bool(stages()[i].get("build", false))
+
+
+## The bundle is full: a building stage goes up overnight, anything else finishes now.
+static func bundle_full(m: GameMap) -> void:
+	var s := stage()
+	var sd: Dictionary = stages()[s]
+	if is_build(s):
+		st()["pending"] = s
+		st()["given"] = {}
+		sync_quest()
+		if m != null and is_instance_valid(m):
+			Music.instance(m.get_tree()).sfx("quest_done", "levelup")
+			await m.say([{"who": keeper_name(), "text": str(tx(sd.get("tonight", sd["done"])))}])
+			m.hud.toast("The crew builds the %s tonight. Sleep, then come and see." % build_word(s), Color(1, 0.95, 0.8))
+			if m.scene_id() == SCENE:
+				m.go_to(SCENE, m.player.position - m.offset(), m.player.facing)  # the build site appears
+				return
+		GameState.save()
+		return
+	if m != null and is_instance_valid(m):
+		await m.say([{"who": keeper_name(), "text": str(tx(sd["done"]))}])
+	finish_stage(m)
+
+
+# ---- seasonal asks (after the market opens) ---------------------------------------------
+
+static func ask_key() -> String:
+	return "%d:%s" % [(int(GameState.run["day"]) - 1) / (GameState.DAYS_PER_SEASON * 4), GameState.season()]
+
+
+## This season's ask: {key, n}, or {} (none before the market, or already answered).
+static func ask() -> Dictionary:
+	if GameState.run.is_empty() or not complete() or (st()["asks"] as Dictionary).has(ask_key()):
+		return {}
+	var rows: Array = (data().get("asks", {}) as Dictionary).get(GameState.season(), [])
+	if rows.is_empty():
+		return {}
+	var yr := (int(GameState.run["day"]) - 1) / (GameState.DAYS_PER_SEASON * 4)
+	var r: Array = rows[yr % rows.size()]
+	return {"key": str(r[0]), "n": int(r[1])}
+
+
+static func ask_need() -> String:
+	var a := ask()
+	if a.is_empty():
+		return ""
+	var k := str(a["key"])
+	return "%d %s" % [int(a["n"]), need_name(k) if k.begins_with("#") or k.begins_with("@") else GameState.item_name(k)]
+
+
+## Hand in this season's ask (all at once). Returns the reward text, or "" if you can't yet.
+static func give_ask() -> String:
+	var a := ask()
+	if a.is_empty() or have_of(str(a["key"])) < int(a["n"]):
+		return ""
+	take_of(str(a["key"]), int(a["n"]))
+	(st()["asks"] as Dictionary)[ask_key()] = true
+	var rw: Dictionary = data().get("ask_reward", {})
+	var got: Array = []
+	if int(rw.get("crystals", 0)) > 0:
+		GameState.run["crystals"] = int(GameState.run["crystals"]) + int(rw["crystals"])
+		got.append(Money.amount(int(rw["crystals"])))
+	for it: String in rw.get("give", {}):
+		GameState.add_item(it, int(rw["give"][it]), true)
+		got.append("%s ×%d" % [GameState.item_name(it), int(rw["give"][it])])
+	GameState.add_friend(keeper(), int(rw.get("friend", 0)))
+	st()["goodwill"] = int(st().get("goodwill", 0)) + int(rw.get("goodwill", 0))
+	GameState.add_xp("farming", 20)
+	return ", ".join(got)
 
 
 # ---- the board ---------------------------------------------------------------------------
@@ -339,12 +468,23 @@ static func open_board(m: GameMap) -> void:
 		var text := ""
 		if complete():
 			text = "%s · all %d stages done.\nMarket every 7th day of the season%s." % [place_name(), stages().size(), " (today!)" if market_day() else ""]
+			if not ask().is_empty():
+				text += "\n%s: \"%s\" (you carry %d)" % [keeper_name(), str(tx(data().get("ask_text", ""))).format({"need": ask_need()}), have_of(str(ask()["key"]))]
+				opts.append("Give for the ask")
+				acts.append("ask")
+			else:
+				text += "\nThis season's ask is answered. Thank you!"
+		elif pending() >= 0:
+			text = "%s · stage %d of %d: %s\nAll in! The crew is building the %s tonight. Come back tomorrow and see." % [place_name(), pending() + 1, stages().size(), stage_name(pending()), build_word(pending())]
 		else:
 			var sd: Dictionary = stages()[stage()]
 			text = "%s · stage %d of %d: %s\n%s\n%s" % [place_name(), stage() + 1, stages().size(), stage_name(stage()), str(tx(sd["desc"])), "\n".join(need_lines())]
 			if not sd.get("need", {}).is_empty():
 				opts.append("Give what I carry")
 				acts.append("give")
+			elif stage_ready():  # the lot is clear but the stage never closed (app shut mid-scene)
+				opts.append("Tell %s it's done" % keeper_name())
+				acts.append("finish")
 		opts.append("All stages")
 		acts.append("list")
 		opts.append("Leave")
@@ -368,10 +508,22 @@ static func open_board(m: GameMap) -> void:
 				else:
 					m.hud.toast("You carry nothing this stage still needs.", Color(1, 0.85, 0.7))
 				if stage_ready():
-					await m.say([{"who": keeper_name(), "text": str(tx(stages()[stage()]["done"]))}])
-					finish_stage(m)
+					await bundle_full(m)
 					return
 				sync_quest()
+			"finish":
+				await bundle_full(m)
+				return
+			"ask":
+				if Net.visiting():
+					m.hud.toast("This is your host's valley: their farm, their board.", Color(1, 0.85, 0.7))
+					continue
+				var got := give_ask()
+				if got == "":
+					m.hud.toast("Not enough yet: %s." % ask_need(), Color(1, 0.85, 0.7))
+					continue
+				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
+				await m.say([{"who": keeper_name(), "text": ("That'll feed a lot of people. Here, from the commons: %s." if arc() == "penguins" else "That feeds the whole block. Here, from all of us: %s.") % got}])
 			"list":
 				var lines: Array = []
 				for k in stages().size():
@@ -637,6 +789,14 @@ static func pick_crop(key: String, se: String, glass: bool) -> String:
 	var p := key.split(",")
 	# Whole runs of one crop per bed row (rows read as rows), changing every season.
 	var i := absi(int(p[1]) * 7 + int(p[0]) / 4 + int(GameState.run["day"]) / 28)
+	# The seeds you donated go in first, while they suit the season (open beds only).
+	var mine: Array = []
+	for sid: String in (st().get("seed_kinds", {}) as Dictionary):
+		var c := str(GameState.items.get(sid, {}).get("crop", ""))
+		if c != "" and GameState.crops.has(c) and not c in mine and GameState.crop_fits_season(GameState.crops[c], se):
+			mine.append(c)
+	if not glass and not mine.is_empty() and i % 3 != 0:  # a third of the rows stay the volunteers' pick
+		return str(mine[i % mine.size()])
 	return str(lst[i % lst.size()])
 
 
@@ -671,7 +831,23 @@ static func overnight(report: Dictionary) -> void:
 		if not flags.has("cf_met"):  # already met her out there: no "come and help" letter
 			Mail.send(keeper_name(), str(tx(data()["letter"])), "chat", {"npc": keeper()})
 		sync_quest()
+	var lines: Array = []
+	if pending() >= 0:
+		var b := pending()
+		var night := str(tx(stages()[b].get("night", {"penguins": "The crew finished the %s overnight." % build_word(b)})))
+		finish_stage(null, false)  # the sleep saves
+		flags["cf_reveal_done"] = true  # Hazel's "done" line plays in the reveal on your next visit
+		lines.append(night)
+	# The compost works from the day the shed stands (a little fertilizer every third night).
+	var share_before := _share_n()
+	if stage() >= 2 and int(GameState.run["day"]) % 3 == 0:
+		var sh0: Dictionary = st()["share"]
+		sh0["fertilizer"] = mini(20, int(sh0.get("fertilizer", 0)) + 1)
 	if stage() < 4:
+		if _share_n() > share_before:
+			lines.append("The compost made a little fertilizer: it's in your share crate.")
+		if not lines.is_empty():
+			report["cfarm"] = lines
 		return
 	var se := GameState.season_of(int(GameState.run["day"]) + 1)
 	var wet := GameState.sky_waters() or stage() >= 5  # the well: Benno waters every evening
@@ -713,8 +889,24 @@ static func overnight(report: Dictionary) -> void:
 		take -= t
 		if int(stock[id]) <= 0:
 			stock.erase(id)
-	if stage() >= 2 and int(GameState.run["day"]) % 3 == 0:
-		var sh: Dictionary = st()["share"]
-		sh["fertilizer"] = mini(20, int(sh.get("fertilizer", 0)) + 1)
-	if picked > 0 or not (st()["share"] as Dictionary).is_empty():
-		report["cfarm"] = ["%s: %d bed%s harvested; something's waiting in your share crate." % [place_name(), picked, "" if picked == 1 else "s"]] if not (st()["share"] as Dictionary).is_empty() else ["%s: the volunteers harvested %d bed%s." % [place_name(), picked, "" if picked == 1 else "s"]]
+	var fresh := _share_n() > share_before
+	if complete():
+		var nd := int(GameState.run["day"]) + 1
+		var dos := (nd - 1) % GameState.DAYS_PER_SEASON + 1
+		if dos % 7 == 0:
+			lines.append("Market day at %s today! The stand pays a quarter over the shipping box." % short_name())
+		elif dos == 1:
+			lines.append("New season, new ask on the board at %s, if you can spare it." % short_name())
+	if picked > 0:
+		lines.append("The volunteers picked %d bed%s at %s%s" % [picked, "" if picked == 1 else "s", short_name(), ": your share's in the crate." if fresh else "."])
+	elif fresh:
+		lines.append("Something new is waiting in your share crate at %s." % short_name())
+	if not lines.is_empty():
+		report["cfarm"] = lines
+
+
+static func _share_n() -> int:
+	var n := 0
+	for v in (st()["share"] as Dictionary).values():
+		n += int(v)
+	return n

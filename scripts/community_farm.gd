@@ -267,6 +267,7 @@ func after_ready() -> void:
 	_place_greenhouse(s)
 	_place_market(s)
 	_place_extras(s)
+	_place_site()
 	var young := s >= 6 and int(GameState.run["day"]) - int(GameState.run["flags"].get("cf_orchard_day", -99)) < 7
 	for o: Array in Commons.data().get("orchard", []):
 		var oc := Vector2i(int(o[0]), int(o[1]))
@@ -283,10 +284,34 @@ func after_ready() -> void:
 	_dress()
 	_place_people()
 	Commons.sync_quest()
-	if GameState.run["flags"].has("cf_reveal"):
+	if s == 0 and int(Commons.st().get("debris_left", 1)) <= 0 and GameState.run["flags"].has("cf_intro"):
+		later(_lot_cleared)  # the last pile went but the app shut before Hazel's scene: finish it now
+	elif GameState.run["flags"].has("cf_reveal"):
 		later(_reveal)
 	elif not GameState.run["flags"].has("community_farm_seen") or not GameState.run["flags"].has("cf_intro"):
 		later(_first_visit)
+
+
+## Cells for the overnight build sites, by stage id: [prop, cell].
+const SITES := {
+	"shed": [["cf_site_lumber", Vector2i(22, 9)], ["cf_site_stone", Vector2i(32, 10)]],
+	"beds": [["cf_site_lumber", Vector2i(8, 18)], ["cf_site_stone", Vector2i(16, 18)]],
+	"well": [["cf_site_stone", Vector2i(25, 22)]],
+	"orchard": [["cf_site_saplings", Vector2i(20, 34)]],
+	"greenhouse": [["cf_site_glass", Vector2i(36, 11)], ["cf_site_lumber", Vector2i(42, 11)]],
+}
+
+
+## While the crew builds a stage tonight: its materials stacked on the spot.
+func _place_site() -> void:
+	var b := Commons.pending()
+	if b < 0:
+		return
+	for e: Array in SITES.get(str(Commons.stages()[b]["id"]), []):
+		var c: Vector2i = e[1]
+		prop("props", str(e[0]), c, 1, 0.0, true, 0.5)
+		for x in range(c.x, c.x + 2):
+			set_thing(x, c.y, {"type": "cf_note", "text": "Everything for the %s, stacked and ready. The crew starts after dark: come back in the morning." % Commons.build_word(b), "hint": "A: the build site"})
 
 
 func _place_board() -> void:
@@ -626,6 +651,8 @@ func _clear_debris(c: Vector2i, thing: Dictionary) -> void:
 
 
 func _lot_cleared() -> void:
+	if Commons.stage() != 0:
+		return
 	player.frozen = true
 	await say([{"who": Commons.keeper_name(), "text": str(Commons.tx(Commons.stages()[0]["done"]))}])
 	player.frozen = false
@@ -690,8 +717,17 @@ func _talk(n: Npc) -> void:
 			GameState.run["flags"]["cf_board_seen"] = true
 			await say([{"who": name, "text": str(Commons.tx(Commons.data()["intro"]))}])
 			Commons.sync_quest()
+		elif Commons.pending() >= 0:
+			await say([{"who": name, "text": ("Everything's here for the %s. We start after supper: go home, sleep, and come see it in the morning." if not _gang() else "Got everything for the %s. Crew starts after dark. Go sleep, come see it tomorrow.") % Commons.build_word(Commons.pending())}])
 		elif Commons.complete():
-			await say([{"who": name, "text": ("Look at it. Every bed full, the trees fruiting, half the town here on market day. Thank you, really." if not _gang() else "Look at it. Every bed full, fruit on the trees, the whole block here on market day. I won't forget who did this.") if not Commons.market_day() else "Market day! Go see what Posy brought. And sell at the stand, folks pay well today."}])
+			var ln := ""
+			if Commons.market_day():
+				ln = "Market day! Go see what Posy brought. And sell at the stand, folks pay well today." if not _gang() else "Market day. Posy's bread's going fast. Sell at the stand, folks pay over the odds today."
+			elif not Commons.ask().is_empty():
+				ln = ("The board has this season's ask: %s. No rush. Whenever you can." if not _gang() else "This season's ask is on the board: %s. Whenever you can.") % Commons.ask_need()
+			else:
+				ln = "Look at it. Every bed full, the trees fruiting, half the town here on market day. Thank you, really." if not _gang() else "Look at it. Every bed full, fruit on the trees, the whole block here on market day. I won't forget who did this."
+			await say([{"who": name, "text": ln}])
 		else:
 			var lines := Commons.need_lines()
 			await say([{"who": name, "text": "Next up: %s. %s" % [Commons.stage_name(_s()).to_lower(), ("Still need: " + "; ".join(lines.slice(0, 3))) if not lines.is_empty() else ""]}])
@@ -740,12 +776,20 @@ func _reveal() -> void:
 	await get_tree().create_timer(0.4).timeout
 	fx("levelup", player.position + Vector2(0, -12), 10.0, 0.9)
 	Music.instance(get_tree()).sfx("j_victory", "quest_done")
-	var lines: Array = [{"text": "%s: done! (stage %d of %d)\n%s" % [Commons.stage_name(s), s + 1, Commons.stages().size(), got]}]
+	var sd: Dictionary = Commons.stages()[s]
+	var lines: Array = []
+	if GameState.run["flags"].has("cf_reveal_done"):  # built overnight: Hazel says it now, on the spot
+		GameState.run["flags"].erase("cf_reveal_done")
+		lines.append({"who": Commons.keeper_name(), "text": str(Commons.tx(sd["done"]))})
+	lines.append({"text": "%s: done! (stage %d of %d)\n%s" % [Commons.stage_name(s), s + 1, Commons.stages().size(), got]})
+	var beat: Array = sd.get("beat", [])
+	if beat.size() == 2 and GameState.npc_present(str(beat[0])) and GameState.npcs.has(str(beat[0])):
+		lines.append({"who": str(GameState.npcs[str(beat[0])]["name"]), "text": str(Commons.tx(beat[1]))})
 	if s + 1 < Commons.stages().size():
 		lines.append({"who": Commons.keeper_name(), "text": "Next: %s. It's on the board." % Commons.stage_name(s + 1).to_lower()})
 	else:
 		Music.instance(get_tree()).play("festival")
-		lines.append({"who": "Mayor Alder" if not _gang() else "Sal", "text": "Friends! Neighbours! A year ago this was brambles and junk. Today it feeds us. Eat, buy, trade, and come back next week." if not _gang() else "Listen up. This block used to be where things got dumped. Now it's where we eat. Every week. Spread the word."})
+		lines.append({"who": "Mayor Alder" if not _gang() else "Sal", "text": "Friends! Neighbours! Not long ago this was brambles and fallen logs. Today it feeds us. Eat, buy, trade, and come back next week." if not _gang() else "Listen up. This block used to be where things got dumped. Now it's where we eat. Every week. Spread the word."})
 		lines.append({"who": Commons.keeper_name(), "text": "From now on, the 7th, 14th, 21st and 28th are market days. Sell at the stand: folks pay a quarter over the shipping box."})
 	await say(lines)
 	GameState.save()

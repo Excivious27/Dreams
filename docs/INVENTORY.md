@@ -40,7 +40,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Systems | Hero tab, gear sets, energy revamp | done | 85 | char_sheet_test (not in check.sh) |  |
 | Systems | Shops, economy, money (gangster cash), kill-crystal cap | done | 80 | cash_test | Balance sheet docs/economy.xlsx |
 | Systems | Rec Center: bowling, 5 arcade cabinets, tickets, prizes | done | 85 | rec_test, arcade_test | New in round 13 |
-| Systems | Community farm (Commons), 8 stages, volunteers | done | 85 | commons_test | New in round 13 |
+| Systems | Community farm (Commons), 8 stages, volunteers | done | 90 | commons_test | Round 13; CONDUCT 2: overnight builds, seasonal asks |
 | Systems | Collections: museum, shipping log, fish log, achievements | missing | 0 | none | Stardew-grade milestone layer absent (audit 17b W11); Claude can build |
 | Systems | Haptics (phone vibration) | missing | 0 | none | Audit 17b W7; Claude can build |
 | Multiplayer | Co-op up to 8 through relay (host-authoritative) | rough | 55 | coop_test (in check.sh), net_test (needs relay, not in check.sh) | Relay not deployed; audit 17b net findings F1-F11 partly fixed |
