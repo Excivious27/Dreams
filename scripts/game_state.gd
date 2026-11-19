@@ -115,6 +115,7 @@ const SKILL_VER := 8
 ## Older saves (or saves from before a new field existed) get the missing keys.
 static func _migrate() -> void:
 	Tickets._st()  # Rec Center tickets / arcade bests (old saves start at zero)
+	ArcadeHub._data()  # cabinet milestones / plays (run.arcade_hub)
 	if not (run.get("skills") is Dictionary):
 		run["skills"] = {}
 	for sk in (run["skills"] as Dictionary).keys():
@@ -2192,6 +2193,8 @@ static func _cond_ok(when: Dictionary) -> bool:
 			return false
 	if when.has("chapter") and Story.chapter_no() < int(when["chapter"]):
 		return false
+	if (when.has("arcade_ms") or when.has("rec_best") or when.has("tickets_won")) and not Tickets.cond_ok(when):
+		return false  # Rec Center / arcade progress
 	return true
 
 
@@ -2210,6 +2213,8 @@ static func _give_reward(rw: Dictionary) -> void:
 			add_item(str(rw["item"][0]), int(rw["item"][1]))
 	if rw.has("xp"):
 		add_xp(str(rw["xp"][0]), int(rw["xp"][1]))
+	if rw.has("tickets"):
+		Tickets.add(int(rw["tickets"]), "quest")
 	if rw.has("friend"):
 		var fr: Dictionary = run["friendship"]
 		add_friend(str(rw["friend"][0]), int(rw["friend"][1]))

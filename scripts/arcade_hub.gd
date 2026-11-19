@@ -4,7 +4,7 @@ extends ArcadeGame
 ##   ArcadeHub.open("jumper")  -> that game's screen (await .closed)
 ##   ArcadeHub.open("")        -> the cabinet picker
 ## Also the money helpers (crystals; "cash" in the gangster arc) and the
-## progress milestones the prize counter locks prizes behind:
+## progress milestones (prizes can need them via need.ms; quests via arcade_ms):
 ##   ArcadeHub.milestone("jumper_5") -> bool
 
 const GAMES := [

@@ -21,7 +21,12 @@ def load(n):
 
 
 def save(n, obj):
-    json.dump(obj, open(os.path.join(D, n), "w"), indent=1, ensure_ascii=False)
+    path = os.path.join(D, n)
+    nl = os.path.exists(path) and open(path, "rb").read()[-1:] == b"\n"  # keep the file's ending (small diffs)
+    with open(path, "w") as f:
+        json.dump(obj, f, indent=1, ensure_ascii=False)
+        if nl:
+            f.write("\n")
 
 
 # ---------------------------------------------------------------- the building
@@ -280,6 +285,20 @@ QUESTS = [
      "done_when": {"flag": "bowl_120"}, "reward": {"crystals": 150, "friend": ["tobin", 15]}},
     {"id": "rec_teddy", "giver": "mabel", "text": "Mabel wants the Teddy Bear from the prize counter (80 tickets).", "when": {"flag": "rec_open", "day": 9},
      "done_when": {"item": ["rp_teddy", 1]}, "take": True, "reward": {"item": ["rp_kite", 1], "friend": ["mabel", 20]}},
+    # Arcade challenges (CONDUCT 2, c2_14): the cabinets feed quests, friendship and tickets.
+    # Condition keys arcade_ms / rec_best / tickets_won are read by Tickets.cond_ok; reward "tickets" by GameState._give_reward.
+    {"id": "rec_pip_jumper", "giver": "pip", "text": "Pip is stuck on Block Jumper. Clear level 3 to show how it's done.", "when": {"flag": "rec_visited", "day": 10},
+     "done_when": {"arcade_ms": "jumper_3"}, "reward": {"tickets": 40, "friend": ["pip", 15]}},
+    {"id": "rec_theo_stack", "giver": "theo", "text": "Theo wants proof his Crystal Stack pattern works: score 3,000 points.", "when": {"flag": "rec_visited", "day": 12},
+     "done_when": {"rec_best": ["stack", 3000]}, "reward": {"crystals": 120, "tickets": 30, "friend": ["theo", 15]}},
+    {"id": "rec_wren_jr_duck", "giver": "wren_jr", "text": "Wren jr wants a Duck Pond score of 300 for the class chart.", "when": {"flag": "rec_visited", "day": 11},
+     "done_when": {"rec_best": ["gallery", 300]}, "reward": {"tickets": 35, "friend": ["wren_jr", 15]}},
+    {"id": "rec_sal_whack", "giver": "sal", "text": "Sal wants initials on the Whack-a-Grump board: score 400.", "when": {"flag": "rec_visited", "day": 14},
+     "done_when": {"rec_best": ["whack", 400]}, "reward": {"tickets": 60, "item": ["luck_potion", 1], "friend": ["sal", 15]}},
+    {"id": "rec_maple_league", "giver": "maple", "text": "Maple dares you onto league night: bowl 150 or better.", "when": {"flag": "rec_visited", "day": 16, "quest": "rec_bowl_120"},
+     "done_when": {"rec_best": ["bowling", 150]}, "reward": {"crystals": 250, "friend": ["maple", 20]}},
+    {"id": "rec_alder_cabinets", "giver": "alder", "text": "Mayor Alder wants every cabinet tried before he cuts the arcade ribbon twice.", "when": {"flag": "rec_visited", "day": 9},
+     "done_when": {"arcade_ms": "all_games"}, "reward": {"crystals": 100, "tickets": 30, "friend": ["alder", 15]}},
 ]
 QUEST_LINES = {
     "rec_bowl_120": {"offer": ["You've been to the Rec Center? Bet you can't bowl a hundred and twenty.", "I'll give you my whole allowance if you do. Okay, Dad's whole allowance. Okay, Dad will pay."],
@@ -291,10 +310,40 @@ QUEST_LINES = {
                   "wait": "Is he still there? The bear? With the bow?",
                   "done": ["You got him! He's softer than I thought! He's PERFECT.", "Here, the kite's yours. I mean it. Bears are better than kites."]},
 }
+QUEST_LINES.update({
+    "rec_pip_jumper": {"offer": ["Block Jumper level three has a gap that is IMPOSSIBLE. Like, actually impossible.", "If you clear it I'll give you my tickets. Some of my tickets. Forty tickets!"],
+                       "yes": "Jump at the LAST second. Or the first. I don't know, that's why I'm asking.", "no": "Okay. I'll keep falling in the gap. It's fine.",
+                       "wait": "Level three yet? The gap? THE GAP?",
+                       "done": ["You cleared it? Show me how! ...Okay, don't, I'll work it out.", "Here, forty tickets. A deal's a deal."]},
+    "rec_theo_stack": {"offer": ["I've written down a pattern for Crystal Stack. Flat rows first, a well on the right, wait for the long gem.", "I can't test it. My hands panic. Would you score three thousand with it, for science?"],
+                       "yes": "Flat rows. Right-hand well. Patience. Report back.", "no": "The pattern will wait. Patterns are patient.",
+                       "wait": "Three thousand points on Crystal Stack. The pattern holds, I'm nearly sure.",
+                       "done": ["Three thousand! The pattern holds. I'm writing a footnote with your name in it.", "Take this for your trouble. Science pays. A little."]},
+    "rec_wren_jr_duck": {"offer": ["Our class has a chart of Duck Pond scores and mine is the lowest. By a LOT.", "If you get three hundred I can say a friend did it. That counts. I asked."],
+                         "yes": "Pop the gold ducks, they're worth more! Mum says aim small.", "no": "Okay. The chart can stay sad.",
+                         "wait": "Three hundred on Duck Pond! For the chart!",
+                         "done": ["Three hundred! I'm putting a star next to it. A big one.", "These are my saved tickets. You earned them."]},
+    "rec_sal_whack": {"offer": ["There's a board over Whack-a-Grump. Top score's four hundred and the initials are rude.", "Knock them off. I'll make it worth your while."],
+                      "yes": "Bop the grumps, leave the bunnies. The bunnies cost you.", "no": "Rude initials stay up, then. Your call.",
+                      "wait": "Four hundred on Whack-a-Grump. The board's still rude.",
+                      "done": ["Four hundred. The board's clean. Good work.", "Tickets, and something for luck. You'll need it on the lanes."]},
+    "rec_maple_league": {"offer": ["You beat Tobin's bet, I hear. That's sweet, dear. Tobin is eleven.", "League night is the third day of every week. Bowl a hundred and fifty and I'll treat you like a real rival."],
+                         "yes": "Lane one is mine. You can have lane two.", "no": "Scared of an old lady with a heavy ball. Sensible.",
+                         "wait": "A hundred and fifty, dear. League night's the third day of the week.",
+                         "done": ["A hundred and fifty! Well. Gideon owes me a pie, he bet against you.", "Here, from the league kitty. Don't tell the league."]},
+    "rec_alder_cabinets": {"offer": ["The arcade cabinets are the town's pride and I have personally tried... one.", "Would you play every cabinet once and tell me they all work? The town will reward diligence!"],
+                           "yes": "Splendid! Report back, citizen.", "no": "Another day, then. They're not going anywhere. They're bolted down.",
+                           "wait": "Every cabinet, once! For the public good.",
+                           "done": ["Every cabinet works! Diligence! Civic spirit!", "A small reward from the town purse, and tickets from the front desk."]},
+})
 QUEST_LINES_GANG = {
     "rec_bowl_120@gangsters": {"offer": ["You been up the Rec Hall? Bet you can't bowl a hundred and twenty.", "I'll get Dad to put up the stakes. He likes a bet. Mum says he can't, but bowling's different."],
                                "done": ["You did NOT. ...The chalk wall says you did.", "Fine. Dad, pay up. A deal's a deal."]},
     "rec_teddy@gangsters": {"offer": ["The Teddy Bear. At the Rec Hall counter. With the bow.", "I need eighty tickets and I have four. Win him for me? I'll give you my kite."]},
+    "rec_alder_cabinets@gangsters": {"offer": ["The Rec Hall cabinets keep this town calm, and I have personally tried... one.", "Play every cabinet once and tell me they all work. The town pays for diligence, whatever else it's paying for."],
+                                     "done": ["Every cabinet works. Good. A town that plays doesn't fight.", "Something from the town purse, and tickets from the front desk."]},
+    "rec_sal_whack@gangsters": {"offer": ["Board over Whack-a-Grump. Top score's four hundred and the initials are from a crew I don't like.", "Knock them off. I'll make it worth your while."],
+                                "done": ["Four hundred. Their initials are gone. They'll notice. Good.", "Tickets, and something for luck."]},
 }
 
 
@@ -340,8 +389,10 @@ def main():
     save("interiors.json", rooms)
 
     q = load("quests.json")
-    ids = {x["id"] for x in QUESTS}
-    q["side"] = [x for x in q["side"] if x["id"] not in ids] + QUESTS
+    mine = {x["id"]: x for x in QUESTS}
+    have = {x["id"] for x in q["side"]}
+    # Update rec quests where they already sit (small diffs), append new ones.
+    q["side"] = [mine.get(x["id"], x) for x in q["side"]] + [x for x in QUESTS if x["id"] not in have]
     save("quests.json", q)
     ql = load("quest_lines.json")
     ql.update(QUEST_LINES)

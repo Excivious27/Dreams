@@ -1008,7 +1008,7 @@
    "2": "Pip finds you coins: ◆20 each week",
    "4": "Pip's treasure map: a Map Scrap",
    "6": "Pip's secret: the fountain wish works (a Luck Potion)",
-   "8": "Pip's gang brings you shells each week",
+   "8": "Pip's gang brings shells and arcade tickets: 3 shells, 10 tickets a week",
    "10": "Pip's lucky charm"
   },
   "home": "store",
@@ -1144,7 +1144,7 @@
    "turnip"
   ],
   "perks": {
-   "2": "Tobin trades shells: 3 each week",
+   "2": "Tobin trades shells and arcade tickets: 3 shells, 5 tickets a week",
    "4": "Tobin's beach map: a Map Scrap",
    "6": "Tobin's kite day: +10 max energy",
    "8": "Tobin's crew finds you ◆30 a week",

@@ -80,6 +80,8 @@ static func _give(g: Dictionary) -> void:
 			GameState.run["crystals"] = int(GameState.run["crystals"]) + n
 		elif id == "#seedpack":
 			GameState.add_item(seed_pack(), 5 * n)
+		elif id == "#tickets":
+			Tickets.add(n, "friends")
 		else:
 			GameState.add_item(id, n)
 
@@ -119,7 +121,9 @@ static func morning() -> Array:
 				for wid: String in wk:
 					best_weekly[wid] = maxi(int(best_weekly.get(wid, 0)), int(wk[wid]))
 		var nm := str(GameState.npcs.get(npc, {}).get("name", npc))
-		if weekly and best_h >= 0:
+		if not RecCenter.is_open():
+			best_weekly.erase("#tickets")  # arcade tickets start once the Rec Center opens
+		if weekly and best_h >= 0 and not best_weekly.is_empty():
 			_give(best_weekly)
 			out.append("%s left you something (%s)." % [nm, _list(best_weekly)])
 		for h: String in data()[npc]:
@@ -139,6 +143,8 @@ static func _list(g: Dictionary) -> String:
 			parts.append("◆%d" % int(g[id]))
 		elif id == "#seedpack":
 			parts.append("seeds")
+		elif id == "#tickets":
+			parts.append("%d tickets" % int(g[id]))
 		else:
 			parts.append("%d %s" % [int(g[id]), GameState.item_name(id)])
 	return ", ".join(parts)

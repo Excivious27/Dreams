@@ -36,7 +36,10 @@ static func is_open() -> bool:
 
 ## Each morning (Mail.morning): the grand opening once the town knows you and a week has gone by.
 static func morning() -> void:
-	if GameState.run.is_empty() or is_open():
+	if GameState.run.is_empty():
+		return
+	if is_open():
+		news()
 		return
 	var day := int(GameState.run["day"])
 	if day < int(data().get("building", {}).get("open_day", 7)) or not GameState.quest_done("meet_town"):
@@ -55,6 +58,67 @@ static func open_now() -> void:
 	f["rec_free_game"] = true
 	GameState.add_quest("rec_visit", "Visit the new %s south-east of the library (first game free)." % name())
 	GameState.add_hint("The %s (south-east of the library): bowling upstairs, arcade cabinets and a prize counter. Win tickets, trade them for prizes." % name())
+
+
+## Letters once the rec is open (Mail.morning via morning()): a league-night
+## invitation a few days in, and a note from the front desk whenever a prize you
+## worked for (a score, plays, tickets won, a milestone) comes out at the counter.
+static func news() -> void:
+	var f: Dictionary = GameState.run["flags"]
+	var day := int(GameState.run["day"])
+	if not f.has("rec_league_mail") and f.has("rec_visited") and day - int(f.get("rec_open", day)) >= 3:
+		f["rec_league_mail"] = true
+		Mail.send("Maple", "League night is the third day of every week, upstairs at the %s. Gideon brings his own ball. I bring mine. Bring yourself, dear, and bowl a hundred and fifty if you want me to take you seriously. - Maple" % name(), "chat", {"npc": "maple"})
+	var told: Dictionary = f.get("rec_pz_told", {}) if f.get("rec_pz_told") is Dictionary else {}
+	var fresh: Array = []
+	for pid in Tickets.prizes().get("order", []):
+		var need: Dictionary = Tickets.prize(str(pid)).get("need", {})
+		var earned_need := false
+		for k in ["best", "plays", "earned", "arcade", "ms"]:
+			earned_need = earned_need or need.has(k)
+		if not earned_need or told.has(str(pid)) or not Tickets.unlocked(str(pid)):
+			continue
+		told[str(pid)] = day
+		fresh.append("%s (%d tickets)" % [GameState.item_name(str(Tickets.prize(str(pid)).get("item", pid))), int(Tickets.prize(str(pid)).get("cost", 0))])
+	f["rec_pz_told"] = told
+	if not fresh.is_empty():
+		Mail.send("%s front desk" % name(), "Good news from the prize counter: you've earned the right to %s. Come and get %s. You have %d tickets. - The front desk" % [_and_list(fresh), "it" if fresh.size() == 1 else "them", Tickets.count()], "news")
+
+
+static func _and_list(a: Array) -> String:
+	if a.size() <= 1:
+		return "".join(a)
+	return ", ".join(a.slice(0, a.size() - 1)) + " and " + str(a[-1])
+
+
+## Festival days (town._festival_event): the rec chips in tickets once you've joined in.
+static func festival_bonus(m: GameMap, key: String) -> int:
+	var f: Dictionary = GameState.run["flags"]
+	if not is_open() or not f.has(key) or f.has("rec_" + key):
+		return 0
+	f["rec_" + key] = true
+	Tickets.add(15, "festival")
+	if m and m.hud:
+		m.hud.toast("The %s sponsors the festival: +15 tickets" % name(), Color(1, 0.85, 0.5))
+	return 15
+
+
+## Notes pinned beside the town's community board (town._board): what's on at the
+## rec and the community farm today, so both are easy to find.
+static func board_notes() -> String:
+	var out: Array = []
+	if is_open():
+		if is_league_night():
+			out.append("League night at the %s tonight." % name())
+		else:
+			out.append("%s open: bowling, arcade, prizes." % name())
+	elif GameState.quest_done("meet_town"):
+		var left := int(data().get("building", {}).get("open_day", 7)) - int(GameState.run["day"])
+		if left > 0 and left <= 3:
+			out.append("Something is opening south-east of the library soon.")
+	if Commons.known() and Commons.market_day():
+		out.append("Market day at the %s." % Commons.short_name())
+	return " ".join(out)
 
 
 ## The town lot: the building, its lane, a sign. Called from town._place_buildings;
@@ -459,14 +523,36 @@ static func _scores(m: GameMap) -> void:
 	var lines: Array = ["Bowling best: %d  (%d games)" % [Tickets.best_score("bowling"), Tickets.plays("bowling")]]
 	var names: Dictionary = Tickets.prizes().get("game_names", {})
 	for g in names:  # every cabinet, the claw and skee-ball you've played
-		if str(g) != "bowling" and Tickets.plays(str(g)) > 0:
+		if str(g) == "bowling" or Tickets.plays(str(g)) <= 0:
+			continue
+		if str(g) == "jumper":  # its cabinet score is campaign progress: say it in levels
+			var lv := 0
+			for i in range(1, 9):
+				if ArcadeHub.milestone("jumper_%d" % i):
+					lv = i
+			lines.append("%s: %d of 8 levels cleared" % [str(names[g]), lv])
+		else:
 			lines.append("%s: %d" % [str(names[g]), Tickets.best_score(str(g))])
-	lines.append("Tickets: %d on hand, %d won in all." % [Tickets.count(), Tickets.earned()])
-	var house := {"bowling": 0}
+	var house := 0
 	for id in data().get("visitors", {}):
-		house["bowling"] = maxi(int(house["bowling"]), 90 + absi(hash(str(id))) % 120)
-	lines.append("House record: %d%s" % [maxi(int(house["bowling"]), Tickets.best_score("bowling")), "  (yours!)" if Tickets.best_score("bowling") >= int(house["bowling"]) else ""])
-	await m.say([{"who": "High scores", "text": "\n".join(lines)}])
+		house = maxi(house, 90 + absi(hash(str(id))) % 120)
+	var mine := Tickets.best_score("bowling")
+	var rest: Array = ["House record (bowling): %d%s" % [maxi(house, mine), "  (yours!)" if mine >= house and mine > 0 else ""],
+		"Tickets: %d on hand, %d won in all." % [Tickets.count(), Tickets.earned()], milestone_line()]
+	await m.say([{"who": "High scores", "text": "\n".join(lines)}, {"who": "High scores", "text": "\n".join(rest)}])
+
+
+## "Arcade milestones 3/21 · next: ..." for the high score board.
+static func milestone_line() -> String:
+	var got := 0
+	var next := ""
+	for id in ArcadeHub.MILESTONES:
+		if ArcadeHub.milestone(str(id)):
+			got += 1
+		elif next == "":
+			next = str(ArcadeHub.MILESTONES[id])
+	var t := "Arcade milestones: %d/%d" % [got, ArcadeHub.MILESTONES.size()]
+	return t + ("  Next: " + next if next != "" else "  All done!")
 
 
 const JUKEBOX := ["rec_center", "neon", "festival", "inn", "town", "beach", "uptown", "countryside"]

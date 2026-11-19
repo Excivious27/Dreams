@@ -9,6 +9,10 @@ extends RefCounted
 ##   Tickets.best_score(game_id)   best score of a game (0 if never played)
 ##   Tickets.set_best(game_id, s)  record a score; returns true if it is a new best
 ##   Tickets.unlocked(prize_id)    the prize's milestone is met (data/prizes.json)
+##   Tickets.cond_ok(when)         quest/event condition keys for the rec (GameState._cond_ok):
+##       "arcade_ms": id or [ids]   ArcadeHub milestones reached
+##       "rec_best": [game, score]  best score in a game (bowling, stack, whack...)
+##       "tickets_won": n           tickets won in all (every source)
 ##
 ## Lives in run["arcade"] = {"tickets": int, "best": {game: score},
 ##   "earned": {source: total}, "plays": {game: n}, "bought": {prize: n}}.
@@ -137,9 +141,29 @@ static func lock_text(prize_id: String) -> String:
 		return "Play %d arcade games" % int(arc["plays"])
 	if arc.has("games") and arcade_games() < int(arc["games"]):
 		return "Try %d different cabinets" % int(arc["games"])
+	var ms: Variant = need.get("ms", [])
+	for id in (ms if ms is Array else [ms]):
+		if not ArcadeHub.milestone(str(id)):
+			return str(ArcadeHub.MILESTONES.get(str(id), str(id)))
 	if need.has("once") and bought(prize_id) > 0:
 		return "Already yours"
 	return ""
+
+
+## The rec's condition keys (GameState._cond_ok asks here; keys it doesn't know pass).
+static func cond_ok(when: Dictionary) -> bool:
+	if when.has("arcade_ms"):
+		var ms: Variant = when["arcade_ms"]
+		for id in (ms if ms is Array else [ms]):
+			if not ArcadeHub.milestone(str(id)):
+				return false
+	if when.has("rec_best"):
+		var rb: Array = when["rec_best"]
+		if best_score(str(rb[0])) < int(rb[1]):
+			return false
+	if when.has("tickets_won") and earned() < int(when["tickets_won"]):
+		return false
+	return true
 
 
 static func bought(prize_id: String) -> int:

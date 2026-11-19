@@ -1187,5 +1187,103 @@
   "done": [
    "Perfect. Look at it shine! She'll hate it. Here, for you."
   ]
+ },
+ "rec_pip_jumper": {
+  "offer": [
+   "Block Jumper level three has a gap that is IMPOSSIBLE. Like, actually impossible.",
+   "If you clear it I'll give you my tickets. Some of my tickets. Forty tickets!"
+  ],
+  "yes": "Jump at the LAST second. Or the first. I don't know, that's why I'm asking.",
+  "no": "Okay. I'll keep falling in the gap. It's fine.",
+  "wait": "Level three yet? The gap? THE GAP?",
+  "done": [
+   "You cleared it? Show me how! ...Okay, don't, I'll work it out.",
+   "Here, forty tickets. A deal's a deal."
+  ]
+ },
+ "rec_theo_stack": {
+  "offer": [
+   "I've written down a pattern for Crystal Stack. Flat rows first, a well on the right, wait for the long gem.",
+   "I can't test it. My hands panic. Would you score three thousand with it, for science?"
+  ],
+  "yes": "Flat rows. Right-hand well. Patience. Report back.",
+  "no": "The pattern will wait. Patterns are patient.",
+  "wait": "Three thousand points on Crystal Stack. The pattern holds, I'm nearly sure.",
+  "done": [
+   "Three thousand! The pattern holds. I'm writing a footnote with your name in it.",
+   "Take this for your trouble. Science pays. A little."
+  ]
+ },
+ "rec_wren_jr_duck": {
+  "offer": [
+   "Our class has a chart of Duck Pond scores and mine is the lowest. By a LOT.",
+   "If you get three hundred I can say a friend did it. That counts. I asked."
+  ],
+  "yes": "Pop the gold ducks, they're worth more! Mum says aim small.",
+  "no": "Okay. The chart can stay sad.",
+  "wait": "Three hundred on Duck Pond! For the chart!",
+  "done": [
+   "Three hundred! I'm putting a star next to it. A big one.",
+   "These are my saved tickets. You earned them."
+  ]
+ },
+ "rec_sal_whack": {
+  "offer": [
+   "There's a board over Whack-a-Grump. Top score's four hundred and the initials are rude.",
+   "Knock them off. I'll make it worth your while."
+  ],
+  "yes": "Bop the grumps, leave the bunnies. The bunnies cost you.",
+  "no": "Rude initials stay up, then. Your call.",
+  "wait": "Four hundred on Whack-a-Grump. The board's still rude.",
+  "done": [
+   "Four hundred. The board's clean. Good work.",
+   "Tickets, and something for luck. You'll need it on the lanes."
+  ]
+ },
+ "rec_maple_league": {
+  "offer": [
+   "You beat Tobin's bet, I hear. That's sweet, dear. Tobin is eleven.",
+   "League night is the third day of every week. Bowl a hundred and fifty and I'll treat you like a real rival."
+  ],
+  "yes": "Lane one is mine. You can have lane two.",
+  "no": "Scared of an old lady with a heavy ball. Sensible.",
+  "wait": "A hundred and fifty, dear. League night's the third day of the week.",
+  "done": [
+   "A hundred and fifty! Well. Gideon owes me a pie, he bet against you.",
+   "Here, from the league kitty. Don't tell the league."
+  ]
+ },
+ "rec_alder_cabinets": {
+  "offer": [
+   "The arcade cabinets are the town's pride and I have personally tried... one.",
+   "Would you play every cabinet once and tell me they all work? The town will reward diligence!"
+  ],
+  "yes": "Splendid! Report back, citizen.",
+  "no": "Another day, then. They're not going anywhere. They're bolted down.",
+  "wait": "Every cabinet, once! For the public good.",
+  "done": [
+   "Every cabinet works! Diligence! Civic spirit!",
+   "A small reward from the town purse, and tickets from the front desk."
+  ]
+ },
+ "rec_alder_cabinets@gangsters": {
+  "offer": [
+   "The Rec Hall cabinets keep this town calm, and I have personally tried... one.",
+   "Play every cabinet once and tell me they all work. The town pays for diligence, whatever else it's paying for."
+  ],
+  "done": [
+   "Every cabinet works. Good. A town that plays doesn't fight.",
+   "Something from the town purse, and tickets from the front desk."
+  ]
+ },
+ "rec_sal_whack@gangsters": {
+  "offer": [
+   "Board over Whack-a-Grump. Top score's four hundred and the initials are from a crew I don't like.",
+   "Knock them off. I'll make it worth your while."
+  ],
+  "done": [
+   "Four hundred. Their initials are gone. They'll notice. Good.",
+   "Tickets, and something for luck."
+  ]
  }
 }

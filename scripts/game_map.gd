@@ -874,6 +874,8 @@ static func quest_done_text(id: String) -> String:
 	for k in ["max_hp", "max_energy", "max_mana"]:
 		if rw.has(k):
 			bits.append("+%d max %s" % [int(rw[k]), k.trim_prefix("max_")])
+	if rw.has("tickets"):
+		bits.append("%d tickets" % int(rw["tickets"]))
 	var t := str(q.get("text", id.replace("_", " "))).get_slice(". ", 0).trim_suffix(".")  # first sentence: a short toast
 	if t.length() > 70:
 		t = t.left(67) + "..."
