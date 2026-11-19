@@ -19,8 +19,20 @@ func _initialize() -> void:
 	_run.call_deferred()
 
 
+## Start past any battle briefing card (it pauses the game until dismissed).
+func _skip_brief() -> void:
+	var sc := current_scene
+	if sc == null:
+		return
+	for n in sc.get_children():
+		if n is BattleBrief and not n.is_queued_for_deletion():
+			(n as BattleBrief)._arm = 99.0
+			(n as BattleBrief)._close()
+
+
 func _drain(frames := 60) -> void:
 	for i in frames:
+		_skip_brief()
 		var d := Dialogue.instance(self)
 		if d.active:
 			if d._in_choice:
@@ -48,6 +60,7 @@ func _arrive(sc: String, limit := 400) -> GameMap:
 				await process_frame
 			return gm
 		var d := Dialogue.instance(self)
+		_skip_brief()
 		if d.active:
 			if d._in_choice:
 				d._choose("", d._choices.get_child_count() - 1)
@@ -91,7 +104,29 @@ func _run() -> void:
 	check(Campaign.region_open("farm") and Campaign.region_open("town"), "home areas are never held")
 	check(Campaign.gate_of("sky") == "c_sky" and Campaign.gate_of("docks") == "", "penguin run: sky is a campaign, the docks aren't this arc's")
 	check(Campaign.why_locked("c_sky") != "", "the sky waits for the wastes and the story")
-	check(Campaign.why_locked("c_orchard_hills") == "", "the orchard road can be fought at once")
+	# ---- the lead-in: story, training, team, provisions ----------------------------
+	check(Campaign.why_locked("c_orchard_hills").contains("chapter 2"), "day one: campaigns wait for chapter 2 (%s)" % Campaign.why_locked("c_orchard_hills"))
+	GameState.run["flags"]["meow_taught"] = true
+	check(Campaign.why_locked("c_orchard_hills").contains("Train"), "then for training (%s)" % Campaign.why_locked("c_orchard_hills"))
+	GameState.run["flags"][CampaignGate.TRAINED] = true
+	GameState.run["crystals"] = 0
+	GameState.run["party"] = {}
+	var w := Campaign.why_locked("c_orchard_hills")
+	check(w.begins_with("Recruit 2 more allies and bring"), "then for a team and provisions (%s)" % w)
+	check(Campaign.plan_lock("c_orchard_hills") == "", "gathering isn't a hard lock: the board can be planned")
+	Companion.recruit("dad", false)
+	Companion.recruit("mom", false)
+	check(not Campaign.why_locked("c_orchard_hills").contains("Recruit"), "two partners make a team")
+	for it in ["wood", "stone", "copper_bar", "iron_bar"]:
+		GameState.add_item(it, 80)
+	GameState.run["crystals"] = 5000
+	Companion.recruit("pax", false)
+	check(Campaign.why_locked("c_orchard_hills") == "", "with a team and provisions the orchard road can be mustered")
+	check(not Campaign.started("c_orchard_hills") and not Campaign.can_attack("c_orchard_hills", "n1"), "nothing can be attacked before mustering")
+	var wood0 := GameState.count("wood")
+	check(CampaignGate.muster("c_orchard_hills") != "", "muster")
+	check(Campaign.started("c_orchard_hills") and GameState.count("wood") == wood0 - 20, "mustering pays the provisions")
+	check(int(Campaign.cs("c_orchard_hills")["supply"]) > 10, "provisions become starting supply")
 	var m := await _go("town")
 	check(m != null and m.scene_id() == "town", "town loads")
 	check(Campaign.blocks(m, "orchard_hills"), "walking to a held region is stopped")
@@ -211,9 +246,10 @@ func _run() -> void:
 	check(not Campaign.blocks(m, "orchard_hills"), "and the road lets you through")
 	check(GameState.run["flags"].has("campaign_orchard_hills"), "the win leaves a flag for the story/menus")
 	check(Campaign.why_locked("c_highlands") == "", "winning the orchards opens the highland campaign")
-	check(modes_seen.size() >= 3, "several node types were fought (%s)" % ", ".join(modes_seen.keys()))
+	check(modes_seen.size() >= 2, "several node types were fought (%s)" % ", ".join(modes_seen.keys()))
 	# ---- a retreat --------------------------------------------------------------
 	cid = "c_marsh"
+	check(CampaignGate.muster(cid) != "", "the marsh can be mustered with three allies (%s)" % Campaign.why_locked(cid))
 	var first := ""
 	for n in Campaign.get_c(cid)["nodes"]:
 		if Campaign.can_attack(cid, str(n["id"])) and str(n["type"]) not in Campaign.NONBATTLE:
@@ -246,6 +282,14 @@ func _run() -> void:
 	check(not Campaign.region_open("quarry"), "but not the ones it hasn't")
 	# ---- gangster arc --------------------------------------------------------------
 	GameState.new_run("gangsters", "kairi", "Kairi", "Dreamhollow", "Biscuit")
+	GameState.run["flags"]["hideout_seen"] = true
+	GameState.run["flags"][CampaignGate.TRAINED] = true
+	Companion.recruit("sal", false)
+	GameState.run["flags"]["crew_deuce"] = true
+	GameState.run["flags"]["crew_mama_rosa"] = true
+	GameState.add_item("wood", 60)
+	GameState.add_item("copper_bar", 10)
+	GameState.run["crystals"] = 3000
 	var gl := Campaign.for_arc()
 	check(gl.has("c_docks") and gl.has("c_underground") and not gl.has("c_sky"), "gangster run: its own campaigns")
 	check(Campaign.gate_of("sky") == "" and Campaign.gate_of("neon") == "c_neon", "gangster run: sky isn't gated, neon is")
@@ -261,6 +305,10 @@ func _run() -> void:
 		await process_frame
 		# An escort node: the convoy rolls with you and reaches its goal.
 		var esc := ""
+		for n in Campaign.get_c("c_docks")["nodes"]:
+			if str(n["type"]) == "escort" and Campaign.can_attack("c_docks", str(n["id"])):
+				esc = str(n["id"])
+		check(CampaignGate.muster("c_docks") != "", "the docks can be mustered (%s)" % Campaign.why_locked("c_docks"))
 		for n in Campaign.get_c("c_docks")["nodes"]:
 			if str(n["type"]) == "escort" and Campaign.can_attack("c_docks", str(n["id"])):
 				esc = str(n["id"])
@@ -300,6 +348,8 @@ func _data_checks() -> void:
 		var c: Dictionary = all[cid]
 		var nodes: Array = c["nodes"]
 		check(nodes.size() - 1 >= 4 and nodes.size() - 1 <= 7, "%s has 4-7 territories" % cid)
+		check(int(c["tier"]) > 1 or nodes.size() - 1 <= 4, "%s: a tier-1 campaign is short" % cid)
+		check(not (c.get("need", {}) as Dictionary).is_empty() and int(c["need"].get("team", 0)) >= 2, "%s asks for a team and provisions" % cid)
 		check(ResourceLoader.exists("res://scenes/%s.tscn" % str(c["region"])), "%s opens a real region" % cid)
 		var ids := {}
 		for n in nodes:

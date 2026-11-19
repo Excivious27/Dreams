@@ -183,7 +183,10 @@ func _place_toasts() -> void:
 				break
 	_toasts.visible = not board
 	if sc and sc.get("battle") != null and y_offset == 0.0:
-		y = 150.0 if _boss_on else 142.0  # under the battle bar (tickets, supply, objective)
+		y = 178.0 if _boss_on else 168.0  # under the battle bar (tickets, objective, RALLY)
+		var bt0: Variant = sc.get("battle")
+		if is_instance_valid(bt0) and bt0 is Battle and (bt0 as Battle).drill != null:
+			y = 214.0  # under the training card
 	var d := Dialogue.instance(get_tree())
 	if d.active:
 		var h := 0.0

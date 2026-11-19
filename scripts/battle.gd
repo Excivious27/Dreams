@@ -48,6 +48,8 @@ var _elapsed := 0.0
 var _boss_down := false
 var _boss_ref: Enemy = null
 var convoy: CampaignConvoy = null
+var drill: BattleDrill = null   # the training drill (CampaignGate), else null
+var is_drill := false
 
 
 static func start(m: GameMap, region_id: String, data: Dictionary) -> Battle:
@@ -71,9 +73,14 @@ func _who() -> String:
 
 func _setup() -> void:
 	var cf := Campaign.fight_for(bid)
+	var df := CampaignGate.drill_for(bid)
 	if not cf.is_empty():
 		d = Campaign.battle_data(d, cf)
 		camp = str(cf["cid"])
+	elif not df.is_empty():
+		d = CampaignGate.drill_data(d, df)
+		is_drill = true
+		d["win_by"] = "drill"
 	mode = str(d.get("mode", ""))
 	win_by = str(d.get("win_by", ""))
 	var t := int(d.get("tickets", 150))
@@ -88,7 +95,7 @@ func _setup() -> void:
 		pt["prog"] = 1.0 if pt["owner"] == "ally" else (-1.0 if pt["owner"] == "enemy" else 0.0)
 		points.append(pt)
 		map.set_thing(c.x, c.y, {"type": "cpoint", "id": pt["id"], "hint": "A: %s" % pt["name"]}, true)
-	if camp != "":
+	if camp != "" or is_drill:
 		_campaign_setup()
 	var layer := CanvasLayer.new()
 	layer.layer = 5
@@ -104,18 +111,31 @@ func _setup() -> void:
 	_rally_btn.size = RALLY_RECT.size
 	_rally_btn.add_theme_font_size_override("font_size", 8)
 	_rally_btn.focus_mode = Control.FOCUS_NONE
+	_rally_btn.expand_icon = true
+	_rally_btn.add_theme_constant_override("icon_max_width", 14)
+	_rally_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	_rally_btn.clip_text = true
 	_rally_btn.pressed.connect(func() -> void: map.later(_pick_rally))
 	layer.add_child(_rally_btn)
 	Hud.extra_rects.append(RALLY_RECT)
-	_set_rally(-2)
-	map.hud.toast(str(d.get("title", "Battle")) if camp != "" else "%s. Take the points. Hold more than they do." % str(d.get("title", "Battle")), Color(1, 0.9, 0.6))
-	map.later(func() -> void:
-		await map.say([{"who": _who(), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
+	_set_rally(-2, true)
+	if is_drill:
+		drill = BattleDrill.attach(self, layer)
+	if camp != "" or is_drill:
+		# Campaign fights and the drill open with a briefing card (objective, how to win, controls).
+		var bd := d.duplicate()
+		bd["who"] = _who()
+		map.later(func() -> void: await BattleBrief.show_for(map, bd))
+	else:
+		map.hud.toast("%s. Take the points. Hold more than they do." % str(d.get("title", "Battle")), Color(1, 0.9, 0.6))
+		map.later(func() -> void:
+			await map.say([{"who": _who(), "text": str(d.get("brief", "Every point you hold earns supply. Build at a point you hold to make helpers."))}]))
 
 
-const RALLY_RECT := Rect2(8, 128, 86, 18)
+const RALLY_RECT := Rect2(8, 146, 112, 18)
 var _rally_btn: Button
 var _rally := -1
+var _rally_flash := 0.0
 
 
 ## Cycle: guard posts → follow me → each point in turn → guard posts.
@@ -129,18 +149,27 @@ func _cycle_rally() -> void:
 
 ## One tap: pick where the helpers go from a list (instead of cycling through every point).
 func _pick_rally() -> void:
-	var o: Array = ["Guard posts", "Follow me"]
-	for p in points:
-		o.append("%s %s" % [str(p["id"]).to_upper(), str(p["name"])])
+	var o: Array = ["%sGuard posts: each holds the point that built it" % ("▸ " if _rally == -2 else ""), "%sFollow me: they walk with you" % ("▸ " if _rally == -1 else "")]
+	for i in points.size():
+		var p: Dictionary = points[i]
+		o.append("%sSend to %s %s (%s)" % ["▸ " if _rally == i else "", str(p["id"]).to_upper(), str(p["name"]), {"ally": "ours", "enemy": "theirs", "neutral": "open"}.get(str(p["owner"]), "")])
 	var dl := Dialogue.instance(get_tree())
-	dl.say([{"who": "", "text": "Helpers:", "choice": o, "key": ""}])
+	dl.say([{"who": "", "text": "Rally %d helper%s:" % [_helpers(), "" if _helpers() == 1 else "s"], "choice": o, "key": ""}])
 	await dl.finished
 	if dl.last_choice >= 0 and not _over:
 		_set_rally(dl.last_choice - 2)
 		Music.instance(map.get_tree()).sfx("pickup")
 
 
-func _set_rally(i: int) -> void:
+func _helpers() -> int:
+	var n := 0
+	for h in map.get_tree().get_nodes_in_group("allies"):
+		if h is HelperUnit and is_instance_valid(h):
+			n += 1
+	return n
+
+
+func _set_rally(i: int, quiet := false) -> void:
 	_rally = i
 	if map.has_meta("follow_me"):
 		map.remove_meta("follow_me")
@@ -149,20 +178,28 @@ func _set_rally(i: int) -> void:
 			map.remove_meta("rally_pos")
 		map.set_meta("follow_me", true)
 		_rally_btn.text = "RALLY: follow me"
+		_rally_btn.icon = Art.tex("ui", "rally_follow")
 		map.hud.toast("Helpers: on me!", Color(0.7, 0.95, 1.0))
 	elif i < 0:
 		if map.has_meta("rally_pos"):
 			map.remove_meta("rally_pos")
 		_rally_btn.text = "RALLY: guard posts"
+		_rally_btn.icon = Art.tex("ui", "rally_guard")
+		if not quiet:
+			map.hud.toast("Helpers: hold your posts.", Color(0.7, 0.95, 1.0))
 	else:
 		map.set_meta("rally_pos", points[i]["pos"])
-		_rally_btn.text = "RALLY ▸ %s %s" % [str(points[i]["id"]).to_upper(), str(points[i]["name"])]
+		_rally_btn.text = "RALLY ▸ %s" % str(points[i]["name"])
+		_rally_btn.icon = Art.tex("ui", "rally_send")
 		map.hud.toast("Helpers: everyone to %s!" % str(points[i]["name"]), Color(0.7, 0.95, 1.0))
+	_rally_flash = 1.0
 
 
 func _exit_tree() -> void:
 	if camp != "" and not _over:
 		Campaign.retreat(supply)  # walked off the field mid-fight
+	elif is_drill and not _over:
+		CampaignGate.drill_quit()
 	Hud.extra_rects.erase(RALLY_RECT)
 	if map and is_instance_valid(map) and map.has_meta("rally_pos"):
 		map.remove_meta("rally_pos")
@@ -205,6 +242,7 @@ func _process(delta: float) -> void:
 		_spawn_t = float(d.get("wave_every", 6.0))
 		_enemy_wave()
 	_count_kills()
+	_rally_flash = maxf(0.0, _rally_flash - delta)
 	_redraw_acc += delta
 	if _redraw_acc >= 0.066:  # ~15 Hz is plenty for flags, arcs and the ticket HUD
 		_redraw_acc = 0.0
@@ -355,12 +393,16 @@ func _tick() -> void:
 		"boss":
 			if _boss_down or (e == 0 and a == points.size()):
 				_end(true)
+		"drill":
+			pass  # BattleDrill ends it when the last step is done
 		_:
 			if int(tickets["enemy"]) <= 0 or e == 0 and a == points.size():
 				_end(true)
 
 
 func _enemy_wave() -> void:
+	if drill != null and not drill.waves_on():
+		return
 	var cap := int(d.get("enemy_cap", 14))
 	var alive := 0
 	for e in map.enemies:
@@ -555,6 +597,9 @@ func interact(id: String) -> void:
 
 
 func _end(won: bool, travel := true) -> void:
+	if is_drill:
+		_end_drill(won, travel)
+		return
 	if camp != "":
 		_end_campaign(won, travel)
 		return
@@ -655,6 +700,27 @@ func _draw() -> void:
 			draw_line(pos + Vector2(0, 2), pos + Vector2(0, -26), Color(0.25, 0.2, 0.15), 2.0)
 			var wave := sin(t * 4.0 + pos.x) * 2.0
 			draw_colored_polygon(PackedVector2Array([pos + Vector2(1, -26), pos + Vector2(14, -22 + wave), pos + Vector2(1, -17)]), col)
+	_draw_rally(t)
+
+
+## Where the helpers are headed: a pulsing ring and chevrons on the rally point,
+## or a small ring round you when they follow.
+func _draw_rally(t: float) -> void:
+	var cyan := Color(0.55, 0.95, 1.0)
+	var k := 0.5 + 0.5 * sin(t * 4.0)
+	if _rally >= 0 and _rally < points.size():
+		var pos: Vector2 = points[_rally]["pos"]
+		draw_arc(pos, CAP_R + 7 + 2.0 * k, 0, TAU, 48, Color(cyan.r, cyan.g, cyan.b, 0.55 + 0.35 * k + _rally_flash * 0.3), 2.0 + _rally_flash * 2.0, true)
+		for q in 4:
+			var a := TAU * q / 4.0 + t * 0.8
+			var dir := Vector2.from_angle(a)
+			var tip := pos + dir * (CAP_R + 12)
+			draw_colored_polygon(PackedVector2Array([tip, tip + dir * 7 + dir.orthogonal() * 4, tip + dir * 7 - dir.orthogonal() * 4]), Color(cyan.r, cyan.g, cyan.b, 0.8))
+		var f := ThemeDB.fallback_font
+		draw_string_outline(f, pos + Vector2(-30, -CAP_R - 14), "RALLY", HORIZONTAL_ALIGNMENT_CENTER, 60, 8, 3, Color(0, 0, 0, 0.8))
+		draw_string(f, pos + Vector2(-30, -CAP_R - 14), "RALLY", HORIZONTAL_ALIGNMENT_CENTER, 60, 8, cyan)
+	elif _rally == -1 and map.player:
+		draw_arc(map.player.position + Vector2(0, -4), 22 + 2.0 * k, 0, TAU, 32, Color(cyan.r, cyan.g, cyan.b, 0.35 + 0.3 * k + _rally_flash * 0.3), 1.5, true)
 
 
 func _draw_hud() -> void:
@@ -669,10 +735,20 @@ func _draw_hud() -> void:
 	_hud.draw_rect(Rect2(170, y, bw, 5), Color(0, 0, 0, 0.6))
 	_hud.draw_rect(Rect2(170 + bw * (1.0 - te), y, bw * te, 5), Color(1, 0.45, 0.4))
 	txt.append([Vector2(10, y + 13), "Us %d" % int(tickets["ally"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.8, 0.95, 1)])
-	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by == "hold" else str(int(tickets["enemy"]))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
+	txt.append([Vector2(220, y + 13), "Them %s" % ("∞" if win_by in ["hold", "drill"] else str(maxi(0, int(tickets["enemy"])))), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.8, 0.75)])
+	# The objective, always on screen, in its own banner.
 	var goal := _goal_text()
 	if goal != "":
-		txt.append([Vector2(10, y + 31), goal, HORIZONTAL_ALIGNMENT_CENTER, 250, 7, Color(1, 0.92, 0.6)])
+		var gr := Rect2(8, y + 22, 254, 15)
+		_hud.draw_rect(gr, Color(0.06, 0.05, 0.08, 0.72))
+		_hud.draw_rect(gr, Color(1, 0.86, 0.45, 0.55), false, 1.0)
+		var oi := Art.tex("ui", "icon_objective")
+		if oi:
+			_hud.draw_texture_rect(oi, Rect2(gr.position + Vector2(3, 1.5), Vector2(12, 12)), false)
+		txt.append([Vector2(18, y + 33), goal, HORIZONTAL_ALIGNMENT_CENTER, 240, 7, Color(1, 0.92, 0.6)])
+	# Helpers in the field, beside the RALLY button.
+	var hn := _helpers()
+	txt.append([Vector2(RALLY_RECT.end.x + 5, RALLY_RECT.position.y + 12), "%d helper%s%s" % [hn, "" if hn == 1 else "s", " · build at a banner" if hn == 0 else ""], HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.75, 0.95, 1.0) if _rally_flash <= 0.0 else Color(1, 1, 0.7)])
 	# Point pips, left to right in data order, with an arrow toward the nearest one you don't hold.
 	var x0 := 135.0 - points.size() * 7.0
 	for i in points.size():
@@ -690,7 +766,10 @@ func _draw_hud() -> void:
 	elif oa > oe:
 		txt.append([Vector2(196, y + 13), "-%d/s" % (oa - oe), HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(0.6, 1, 0.7)])
 	var stxt := "Supply ◇%d (%+.1f/s)" % [supply, _rate]
-	txt.append([Vector2(92, y + 20), stxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.95, 0.7)])
+	txt.append([Vector2(76, y + 13), stxt, HORIZONTAL_ALIGNMENT_CENTER, 124, 7, Color(1, 0.95, 0.7)])
+	var si := Art.tex("ui", "icon_supply")
+	if si:
+		_hud.draw_texture_rect(si, Rect2(Vector2(80, y + 6), Vector2(9, 9)), false)
 	# Off-screen pointer to the nearest point you don't hold.
 	var cam := map.get_viewport().get_camera_2d()
 	if cam != null:
@@ -716,7 +795,8 @@ func _hud_pointer(txt: Array) -> void:
 			best = p
 	if best != null and bd > 140.0:
 		var dir: Vector2 = ((best as Dictionary)["pos"] - map.player.position).normalized()
-		var c := Vector2(135, 260) + dir * 110.0
+		# On an ellipse below the battle bar, so a point to the north never lands on the HUD.
+		var c := Vector2(135, 310) + dir * Vector2(110.0, 80.0)
 		_hud.draw_colored_polygon(PackedVector2Array([c + dir * 8, c + dir.orthogonal() * 5, c - dir.orthogonal() * 5]), Color(1, 0.9, 0.5, 0.9))
 		txt.append([c + Vector2(-20, 14), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(1, 0.95, 0.8)])
 
@@ -743,6 +823,8 @@ func _campaign_setup() -> void:
 
 func _goal_text() -> String:
 	match win_by:
+		"drill":
+			return "TRAINING · follow the steps below"
 		"hold":
 			return "HOLD %d:%02d · keep a point" % [int(maxf(0.0, _hold)) / 60, int(maxf(0.0, _hold)) % 60]
 		"convoy":
@@ -754,8 +836,30 @@ func _goal_text() -> String:
 			return "Their captain is coming" if not _boss_out else ""
 	if mode == "siege" or mode == "gate":
 		var forts := points.filter(func(p: Dictionary) -> bool: return bool(p.get("efort", false)) and str(p["owner"]) != "ally").size()
-		return "SIEGE · %d fortified point%s left" % [forts, "" if forts == 1 else "s"] if forts > 0 else ""
-	return ""
+		if forts > 0:
+			return "SIEGE · %d fortified point%s left · or drain their tickets" % [forts, "" if forts == 1 else "s"]
+	var held := _owned("ally")
+	return "TAKE ALL %d POINTS (%d/%d) · or drain their tickets" % [points.size(), held, points.size()]
+
+
+func _end_drill(won: bool, travel: bool) -> void:
+	_over = true
+	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
+	for e in map.enemies.duplicate():
+		if is_instance_valid(e):
+			e.queue_free()
+	map.enemies.clear()
+	for h in get_tree().get_nodes_in_group("allies"):
+		if h is HelperUnit:
+			h.queue_free()
+	var lines := CampaignGate.drill_finish(won)
+	GameState.save()
+	if not travel:
+		return
+	await map.say(lines)
+	var back: Array = d.get("back", ["town", 0, 0])
+	Campaign.reopen_later(get_tree(), "")
+	map.go_to(str(back[0]), Vector2(float(back[1]) * GameMap.TILE, float(back[2]) * GameMap.TILE) if float(back[1]) > 0 else Vector2.ZERO, "down")
 
 
 func _end_campaign(won: bool, travel: bool) -> void:

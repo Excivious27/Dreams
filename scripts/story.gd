@@ -21,6 +21,11 @@ static var _t := 0.0
 static func data() -> Dictionary:
 	if _data.is_empty():
 		_data = GameState.load_json("res://data/story.json")
+		# Campaign lead-in beats (CampaignGate) live in their own file.
+		var extra: Dictionary = GameState.load_json("res://data/campaign_story.json")
+		for k in ["penguins", "gangsters", "both"]:
+			if extra.get(k) is Array:
+				_data[k] = (_data.get(k, []) as Array) + (extra[k] as Array)
 	return _data
 
 

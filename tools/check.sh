@@ -188,6 +188,11 @@ echo "$sout2" | grep -E "FAIL|SCRIPT ERROR|campaign_story_test" || true
 if ! echo "$sout2" | grep -q "campaign_story_test: 0 fails"; then
   echo "Campaign story test failed"; exit 1
 fi
+gout2="$("$GODOT" --headless --path . -s res://tools/campaign_gate_test.gd 2>&1)"
+echo "$gout2" | grep -E "FAIL|SCRIPT ERROR|campaign_gate_test" || true
+if ! echo "$gout2" | grep -q "campaign_gate_test: 0 fails"; then
+  echo "Campaign gate test failed"; exit 1
+fi
 
 echo "== settings, slots, quality, discovery, perks, birthdays =="
 yout="$("$GODOT" --headless --path . -s res://tools/systems_test.gd 2>&1)"

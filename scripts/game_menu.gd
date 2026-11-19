@@ -518,7 +518,12 @@ func _refresh() -> void:
 			for cid: String in Campaign.for_arc():
 				if not Campaign.is_won(cid) and Campaign.why_locked(cid) == "":
 					ready_c += 1
-			_button("Campaign map%s" % (" (%d ready)" % ready_c if ready_c > 0 else ""), func() -> void:
+			var ctag := (" (%d ready)" % ready_c) if ready_c > 0 else ""
+			if not CampaignGate.story_ok():
+				ctag = " (locked)"
+			elif not CampaignGate.trained():
+				ctag = " (training ready)"
+			_button("Campaign map%s" % ctag, func() -> void:
 				var gm := get_tree().current_scene as GameMap
 				if gm == null or gm.scene_id().begins_with("bf_"):
 					return
@@ -1336,7 +1341,7 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		if k == "house" and here != "house":
 			continue  # sits on the Farm pin; only shown while you're inside
 		var held := Campaign.gate_of(k) != "" and not Campaign.region_open(k)
-		if not visited and not (held and Campaign.why_locked(Campaign.gate_of(k)) == ""):
+		if not visited and not (held and Campaign.plan_lock(Campaign.gate_of(k)) == ""):
 			continue
 		var p: Vector2 = org + (PINS[k] as Vector2) * sz
 		if held:

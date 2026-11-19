@@ -1,0 +1,31 @@
+{
+ "_": "Campaign lead-in beats (CampaignGate). Merged into story.json's 'both' list by Story.data(). Hand-edited.",
+ "both": [
+  {"id": "campaign_leadin", "title": "Campaigns", "beats": [
+   {"id": "bt_invite_p", "trigger": {"quest_done": "cattopia"}, "when": {"flag": "meow_taught", "not_flags": ["bt_invited", "bt_trained"]},
+    "lines": [
+     {"who": "Catkins", "text": "One more thing before you go. The Grumps don't just wander: they hold roads, ridges, whole valleys. One brave farmer can't take a valley alone."},
+     {"who": "Catkins", "pic": "cut_drill_catkins", "text": "I led Cat-topia's armies once. Come and drill with me in the orchard field: points, helpers, rallies. It won't take long, and nobody gets hurt."},
+     {"who": "", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
+    "effects": {"flags": ["bt_invited"], "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training. Campaigns open new regions."}},
+   {"id": "bt_invite_p_late", "trigger": {"scene": "crystal_meadow"}, "when": {"flag": "meow_taught", "not_flags": ["bt_invited", "bt_trained"]},
+    "lines": [
+     {"who": "Catkins", "text": "Farmer! The Grumps hold the roads out of here. Drill with me before you try to take one: MENU > Map > Campaign map > Training."}],
+    "effects": {"flags": ["bt_invited"], "hint": "Catkins will train you to lead an army: MENU > Map > Campaign map > Training."}},
+   {"id": "bt_invite_g", "trigger": {"quest_done": "hideout"}, "when": {"flag": "hideout_seen", "not_flags": ["bt_invited", "bt_trained"]},
+    "lines": [
+     {"who": "Sal", "text": "Lying low's fine. But the President's people hold every road out of here, and you don't take a road with one pair of fists."},
+     {"who": "Sal", "pic": "cut_drill_sal", "text": "I ran crews before I ran out of luck. Meet me in the orchard field for a drill: points, drones, rallies. Then we talk about a real job."},
+     {"who": "", "text": "Training is on the campaign map: MENU > Map > Campaign map > Training."}],
+    "effects": {"flags": ["bt_invited"], "hint": "Sal will drill you on running a crew in a fight: MENU > Map > Campaign map > Training. Campaigns open new turf."}},
+   {"id": "bt_invite_g_late", "trigger": {"scene": "hideout"}, "when": {"flag": "hideout_seen", "not_flags": ["bt_invited", "bt_trained"]},
+    "lines": [
+     {"who": "Sal", "text": "Boss. Before you try for the docks or the highway: a drill with me. MENU > Map > Campaign map > Training."}],
+    "effects": {"flags": ["bt_invited"], "hint": "Sal will drill you: MENU > Map > Campaign map > Training."}},
+   {"id": "bt_ready", "trigger": {"sleep": true}, "when": {"flag": "bt_trained", "not_flag": "bt_ready_note"},
+    "lines": [
+     {"who": "", "text": "You dream of a board covered in little flags. Every region past home has its own campaign, and each one asks for a team and provisions. The campaign map lists what's missing."}],
+    "effects": {"flags": ["bt_ready_note"]}}
+  ]}
+ ]
+}

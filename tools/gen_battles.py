@@ -265,6 +265,8 @@ CAMPS = [
 
 # Board layouts: [x, y] in 0..1 on the board, then links. Slot 0 is the start camp.
 LAYOUTS = {
+    4: {"pos": [[0.5, 0.92], [0.24, 0.66], [0.76, 0.66], [0.5, 0.40], [0.5, 0.10]],
+        "links": [[0, 1], [0, 2], [1, 3], [2, 3], [3, 4]], "layer": [0, 1, 1, 2, 3]},
     5: {"pos": [[0.5, 0.92], [0.22, 0.70], [0.78, 0.70], [0.5, 0.50], [0.26, 0.28], [0.56, 0.09]],
         "links": [[0, 1], [0, 2], [1, 3], [2, 3], [3, 4], [3, 5], [4, 5]], "layer": [0, 1, 1, 2, 3, 4]},
     6: {"pos": [[0.5, 0.92], [0.24, 0.72], [0.76, 0.72], [0.18, 0.48], [0.66, 0.50], [0.40, 0.28], [0.60, 0.08]],
@@ -274,6 +276,27 @@ LAYOUTS = {
 }
 # Node type pools by layer (the last layer is always the gate: a siege with a boss).
 POOL = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["siege", "defend", "escort", "camp", "boss"], 3: ["camp", "cache", "defend", "boss", "siege"]}
+# Tier 1 boards teach the basics: no sieges or defends before the gate.
+POOL_T1 = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["skirmish", "boss", "escort"], 3: ["camp", "boss", "skirmish"]}
+# Board size by tier: short early campaigns, growing modestly (territories, camp excluded).
+SIZE = {1: 4, 2: 5, 3: 5, 4: 6, 5: 7}
+# Battle length and pressure by tier: early fights are short and gentle.
+TICKET_K = {1: 0.6, 2: 0.8, 3: 1.0, 4: 1.15, 5: 1.3}
+# What a campaign asks before you can muster for it (CampaignGate): allies on your
+# team, and provisions that become the army's starting supply.
+NEED = {1: {"team": 2, "items": {"wood": 20, "stone": 10}, "crystals": 100, "supply": 15},
+        2: {"team": 3, "items": {"wood": 30, "copper_bar": 3}, "crystals": 250, "supply": 20},
+        3: {"team": 4, "items": {"iron_bar": 4, "stone": 40}, "crystals": 500, "supply": 25},
+        4: {"team": 5, "items": {"gold_bar": 2, "iron_bar": 6}, "crystals": 900, "supply": 30},
+        5: {"team": 6, "items": {"gold_bar": 5, "crystal_refined": 2}, "crystals": 1400, "supply": 35}}
+# The training drill (CampaignGate / BattleDrill): a short guided fight on the
+# orchard field with three points close to the camp.
+DRILL = {"field": "bf_orchard_line", "who": {"penguins": "Catkins", "gangsters": "Sal"},
+         "points": [{"id": "e", "name": "Wagon Camp", "cell": [52, 74], "owner": "ally"},
+                    {"id": "d", "name": "Scarecrow Post", "cell": [52, 56], "owner": "neutral"},
+                    {"id": "b", "name": "Old Mill", "cell": [52, 38], "owner": "enemy"}],
+         "enemies": {"penguins": ["grump"], "gangsters": ["soldier"]}, "supply": 60, "enemy_cap": 3, "wave_every": 9.0,
+         "reward": {"crystals": 150, "items": {"potion": 3}}}
 STEP = {1: 0, 2: 0, 3: 1, 4: 1}
 BRIEF = {
     "skirmish": "A quick clash at %s. Take the points and their line breaks.",
@@ -344,8 +367,9 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     arc = "penguins" if region in PENG_ONLY else ("gangsters" if region in GANG_ONLY else "both")
     arcs = ["penguins", "gangsters"] if arc == "both" else [arc]
     fl = fields if isinstance(fields, dict) else {a: fields for a in arcs}
-    n = 5 if tier <= 1 else (6 if tier <= 3 else 7)
+    n = SIZE[tier]
     L = LAYOUTS[n]
+    pools = POOL_T1 if tier <= 1 else POOL
     nm = list(names)
     nodes = []
     used = {}
@@ -359,11 +383,11 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
             typ = "gate"
             name = nm[-1]
         else:
-            pool = [t for t in POOL[min(layer, 3)] if used.get(t, 0) < (2 if t in ("skirmish", "siege") else 1)] or ["skirmish"]
+            pool = [t for t in pools[min(layer, 3)] if used.get(t, 0) < (2 if t in ("skirmish", "siege") else 1)] or ["skirmish"]
             # never two non-battles on one layer, at most one camp and one cache, and
             # a 5-node board keeps its hub (every route passes it) a fight
-            if any(nn["layer"] == layer and nn["type"] in ("camp", "cache") for nn in nodes) or (n == 5 and layer == 2) \
-                    or sum(1 for nn in nodes if nn["type"] in ("camp", "cache")) >= (1 if n == 5 else 2):
+            if any(nn["layer"] == layer and nn["type"] in ("camp", "cache") for nn in nodes) or (n <= 5 and layer == 2) \
+                    or sum(1 for nn in nodes if nn["type"] in ("camp", "cache")) >= (1 if n <= 5 else 2):
                 pool = [t for t in pool if t not in ("camp", "cache")]
             typ = pool[rng.randrange(len(pool))]
             name = nm[(i - 1) % (len(nm) - 1)]
@@ -396,11 +420,13 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
             if typ == "escort":
                 node["convoy_hp"] = 60 + 20 * tier
             if typ == "defend":
-                node["hold"] = 120 + 15 * tier
-            node["enemy_tickets"] = {"skirmish": 70, "siege": 150, "escort": 400, "defend": 999, "boss": 110, "gate": 170}[typ] + 10 * tier
+                node["hold"] = 75 + 20 * tier
+            k = TICKET_K[tier]
+            et = {"skirmish": 80, "siege": 150, "escort": 400, "defend": 999, "boss": 110, "gate": 170}[typ]
+            node["enemy_tickets"] = et if typ in ("escort", "defend") else int(round(et * k / 5.0)) * 5
             node["tickets"] = {"skirmish": 110, "siege": 150, "escort": 130, "defend": 140, "boss": 130, "gate": 170}[typ]
-            node["wave_every"] = {"skirmish": 7.0, "siege": 6.5, "escort": 6.0, "defend": 5.0, "boss": 7.0, "gate": 6.0}[typ]
-            node["enemy_cap"] = {"skirmish": 10, "siege": 14, "escort": 12, "defend": 16, "boss": 10, "gate": 16}[typ] + tier
+            node["wave_every"] = {"skirmish": 7.0, "siege": 6.5, "escort": 6.0, "defend": 5.0, "boss": 7.0, "gate": 6.0}[typ] + max(0, 3 - tier) * 0.75
+            node["enemy_cap"] = {"skirmish": 8, "siege": 11, "escort": 10, "defend": 12, "boss": 8, "gate": 12}[typ] + 2 * (tier - 1)
             if typ == "escort":
                 cv = node["cfg"][arcs[0]]["convoy"]
                 pn = {p["id"]: p["name"] for p in node["cfg"][arcs[0]]["points"]}
@@ -412,9 +438,23 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     links = [["n%d" % a, "n%d" % b] for a, b in L["links"]]
     for nd in nodes:
         nd["links"] = sorted({b if a == nd["id"] else a for a, b in links if nd["id"] in (a, b)})
+    # Fewest battles from the camp to the gate (camps and caches are free).
+    import heapq
+    byid = {nd["id"]: nd for nd in nodes}
+    best = {"n0": 0}
+    hq = [(0, "n0")]
+    while hq:
+        dd, cur = heapq.heappop(hq)
+        for l in byid[cur]["links"]:
+            w = dd + (0 if byid[l]["type"] in ("camp", "cache") else 1)
+            if w < best.get(l, 99):
+                best[l] = w
+                heapq.heappush(hq, (w, l))
+    gate_id = [nd["id"] for nd in nodes if nd["type"] == "gate"][0]
     big = {"crystals": 500 + 400 * tier, "items": dict(REWARD_ITEMS[tier]), "arc_items": ARC_ITEMS, "strategist": 250 + 100 * tier}
     C[cid] = {"id": cid, "region": region, "title": title, "arc": arc, "tier": tier, "after": ["c_" + a for a in after], "min_pt": max(0, tier - 2),
               "who": SPEAK if arc == "both" else {arc: SPEAK[arc]}, "intro": intro, "won": won, "reward": big, "nodes": nodes, "links": links,
+              "need": NEED[tier], "min_battles": best[gate_id],
               "region_name": COL.get(region, {}).get("name") or R.get(region, {}).get("name") or region.replace("_", " ").title()}
     # sanity: every reward item exists, every enemy exists, every field exists
     for nd in nodes:
@@ -428,7 +468,11 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     for k in big["items"]:
         assert k in IT, k
 
-B["_campaigns"] = {"title": "Campaigns", "arc": "none", "tier": 0, "list": C}
+for k in [k for nd in NEED.values() for k in nd["items"]] + list(DRILL["reward"]["items"]):
+    assert k in IT, k
+for a, ks in DRILL["enemies"].items():
+    assert all(k in EN for k in ks), ks
+B["_campaigns"] = {"title": "Campaigns", "arc": "none", "tier": 0, "list": C, "drill": DRILL}
 OUT = os.environ.get("DRY_OUT", D + "/data")  # DRY_OUT=/tmp/x: write the JSON elsewhere to compare
 json.dump(R, open(OUT + "/regions.json", "w"), indent=1, ensure_ascii=False)
 json.dump(B, open(OUT + "/battles.json", "w"), indent=1, ensure_ascii=False)

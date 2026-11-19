@@ -30,6 +30,9 @@ var _t := 0.0
 var _flash := ""
 var _flash_t := 0.0
 var _acts: Array = []   # [label, callable] for the card's buttons (A presses the first)
+var _brief: PanelContainer   # the campaign briefing (first open of a board, or the ? button)
+var _brief_box: VBoxContainer
+var _help: Button
 
 
 static func open(map: GameMap, campaign := "") -> void:
@@ -77,7 +80,11 @@ func _ready() -> void:
 	back.position = Vector2(196, 6)
 	back.size = Vector2(40, 22)
 	_root.add_child(back)
-	_top_btns = [x, back]
+	_help = _btn("?", _toggle_brief)
+	_help.position = Vector2(170, 6)
+	_help.size = Vector2(22, 22)
+	_root.add_child(_help)
+	_top_btns = [x, back, _help]
 	# The node card under the board.
 	var panel := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
@@ -110,6 +117,18 @@ func _ready() -> void:
 	_list.size = Vector2(254, 432)
 	_list.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_root.add_child(_list)
+	# The briefing card over the board.
+	_brief = PanelContainer.new()
+	var bsb := sb.duplicate() as StyleBoxFlat
+	bsb.bg_color.a = 0.97
+	_brief.add_theme_stylebox_override("panel", bsb)
+	_brief.position = Vector2(10, 40)
+	_brief.custom_minimum_size = Vector2(250, 0)
+	_brief.visible = false
+	_root.add_child(_brief)
+	_brief_box = VBoxContainer.new()
+	_brief_box.add_theme_constant_override("separation", 3)
+	_brief.add_child(_brief_box)
 	if cid == "" or Campaign.get_c(cid).is_empty():
 		_show_list()
 	else:
@@ -146,6 +165,8 @@ func _show_list() -> void:
 	_list.visible = true
 	(_card.get_parent() as Control).visible = false
 	_top_btns[1].visible = false
+	_top_btns[2].visible = false
+	_brief.visible = false
 	for c in _list.get_children():
 		c.queue_free()
 	var v := VBoxContainer.new()
@@ -153,6 +174,22 @@ func _show_list() -> void:
 	v.custom_minimum_size = Vector2(246, 0)
 	_list.add_child(v)
 	v.add_child(_label("Each new region is held. Win its campaign, battle by battle across the board, and the way opens.", 7, Color(0.9, 0.88, 0.8)))
+	# The lead-in: the story, then training with the veteran.
+	var tr := CampaignGate.trainer()
+	if not CampaignGate.story_ok():
+		v.add_child(_label("🔒 Campaigns aren't open yet. %s Then %s will train you." % [CampaignGate.story_need(), tr], 8, Color(1, 0.8, 0.6)))
+	var tb := _btn("%s  Training: First Muster\n%s · %s" % ["✓" if CampaignGate.trained() else "★", tr,
+		"done (drill again any time)" if CampaignGate.trained() else ("locked · " + CampaignGate.drill_lock() if CampaignGate.drill_lock() != "" else "ready · a short guided battle")], _start_drill)
+	tb.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	tb.custom_minimum_size = Vector2(246, 30)
+	tb.icon = Art.tex("ui", "icon_whistle")
+	tb.expand_icon = true
+	tb.add_theme_constant_override("icon_max_width", 22)
+	if CampaignGate.drill_lock() != "":
+		tb.modulate = Color(0.7, 0.7, 0.72)
+	elif not CampaignGate.trained():
+		tb.modulate = Color(1.15, 1.05, 0.8)
+	v.add_child(tb)
 	for id: String in Campaign.for_arc():
 		var c := Campaign.get_c(id)
 		var why := Campaign.why_locked(id)
@@ -167,10 +204,17 @@ func _show_list() -> void:
 			tag = "locked"
 		else:
 			tag = "ready"
-		var b := _btn("%s  %s\n%s · Tier %d · %s" % ["✓" if Campaign.is_won(id) else ("⚔" if why == "" else "✕"), str(c["title"]), str(c["region_name"]), int(c["tier"]), tag + ("" if why == "" or Campaign.is_won(id) else " · " + why)], _show_board.bind(id))
+		var plan := Campaign.plan_lock(id)
+		if why != "" and why == CampaignGate.lock(id):
+			why = "needs chapter 2" if not CampaignGate.story_ok() else "train first"  # said once, at the top
+		if tag == "locked" and plan == "":
+			tag = "gathering"
+		var b := _btn("%s  %s\n%s · Tier %d · %d territories · %s" % ["✓" if Campaign.is_won(id) else ("⚔" if why == "" else ("⚑" if plan == "" else "✕")), str(c["title"]), str(c["region_name"]), int(c["tier"]), (c["nodes"] as Array).size() - 1, tag + ("" if why == "" or Campaign.is_won(id) else " · " + why)], _show_board.bind(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.custom_minimum_size = Vector2(246, 30)
-		if why != "" and not Campaign.is_won(id):
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.add_theme_font_size_override("font_size", 7)
+		if plan != "" and not Campaign.is_won(id):
 			b.modulate = Color(0.7, 0.7, 0.72)
 		v.add_child(b)
 	_board.queue_redraw()
@@ -183,6 +227,7 @@ func _show_board(id: String) -> void:
 	_list.visible = false
 	(_card.get_parent() as Control).visible = true
 	_top_btns[1].visible = true
+	_top_btns[2].visible = true
 	var fresh := not Campaign.started(id)
 	var s := Campaign.cs(id)
 	sel = str(s["at"])
@@ -192,8 +237,14 @@ func _show_board(id: String) -> void:
 			sel = str(n["id"])
 			break
 	_refresh()
-	if fresh and Campaign.why_locked(id) == "":
-		_body.text = str(Campaign.get_c(id).get("intro", "")) + "\n\n" + _body.text
+	# The briefing opens by itself the first time you look at a campaign, and
+	# whenever it isn't mustered yet; ? shows it again.
+	var key := "cb_seen_" + id
+	if fresh or not GameState.run["flags"].has(key):
+		GameState.run["flags"][key] = true
+		_show_brief()
+	else:
+		_brief.visible = false
 
 
 func _refresh() -> void:
@@ -215,6 +266,8 @@ func _refresh() -> void:
 	var body := ""
 	if Campaign.is_won(cid):
 		body = "Campaign won. %s is open.\n" % str(c["region_name"])
+	elif not Campaign.started(cid):
+		body = ("Ready to muster: %s.\n" % CampaignGate.provisions_text(cid)) if why == "" else "Not ready: %s\n" % why
 	elif why != "":
 		body = "Locked: %s\n" % why
 	if typ in Campaign.NONBATTLE:
@@ -247,7 +300,10 @@ func _refresh() -> void:
 	for b in _btns.get_children():
 		b.queue_free()
 	_acts = []
-	if why == "" and not Campaign.is_won(cid):
+	if why == "" and not Campaign.is_won(cid) and not Campaign.started(cid):
+		_acts.append(["⚑ Muster the army (%s)" % CampaignGate.provisions_text(cid), _muster])
+		_acts.append(["Briefing", _show_brief])
+	elif why == "" and not Campaign.is_won(cid):
 		if Campaign.can_attack(cid, sel):
 			if typ in ["camp", "cache"]:
 				for ch in Campaign.board_choices(cid, sel):
@@ -262,8 +318,10 @@ func _refresh() -> void:
 			for ch in Campaign.board_choices(cid, sel):
 				_acts.append([str(ch[1]), _settle.bind(str(ch[0]))])
 	if _acts.is_empty() and not Campaign.is_won(cid):
-		var hint := "Tap a node next to ground you hold." if why == "" else why
-		_acts.append([hint, func() -> void: pass])
+		if why != "":
+			_acts.append(["What's needed", _show_brief])
+		else:
+			_acts.append(["Tap a glowing node next to ground you hold.", func() -> void: pass])
 	for a in _acts:
 		var b := _btn(str(a[0]), a[1])
 		b.custom_minimum_size = Vector2(0, 22)
@@ -281,6 +339,81 @@ func _enemy_name(k: String) -> String:
 	if nm == "":
 		nm = k.replace("thug_", "").replace("_", " ").capitalize()
 	return nm
+
+
+func _muster() -> void:
+	var line := CampaignGate.muster(cid)
+	if line == "":
+		return
+	Music.instance(get_tree()).sfx("j_battle_start", "alert")
+	GameState.save()
+	_brief.visible = false
+	_show_board(cid)
+	_flash_msg(line)
+
+
+func _start_drill() -> void:
+	var why := CampaignGate.drill_lock()
+	if why != "":
+		_flash_list(why)
+		return
+	_close_now()
+	CampaignGate.launch_drill(m)
+
+
+func _flash_list(t: String) -> void:
+	var l := _label(t, 8, Color(1, 0.8, 0.6))
+	var v := _list.get_child(0) if _list.get_child_count() > 0 else null
+	if v:
+		v.add_child(l)
+		v.move_child(l, 1)
+
+
+## The campaign briefing: what it is, how a campaign works, how long it is, and
+## what it asks (story, training, team, provisions) with ticks.
+func _show_brief() -> void:
+	if cid == "":
+		return
+	for ch in _brief_box.get_children():
+		ch.queue_free()
+	var c := Campaign.get_c(cid)
+	var wt := Art.tex("ui", "cut_war_table")
+	if wt:
+		var tr := TextureRect.new()
+		tr.texture = wt
+		tr.custom_minimum_size = Vector2(234, 64)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		tr.clip_contents = true
+		_brief_box.add_child(tr)
+	_brief_box.add_child(_label("CAMPAIGN BRIEFING · TIER %d" % int(c["tier"]), 7, Color(0.85, 0.85, 0.9)))
+	_brief_box.add_child(_label(str(c["title"]), 12, Color(1, 0.9, 0.6)))
+	_brief_box.add_child(_label(str(c.get("intro", "")), 7, Color(0.95, 0.93, 0.88)))
+	_brief_box.add_child(_label("HOW IT WORKS", 7, Color(1, 0.8, 0.4)))
+	_brief_box.add_child(_label("• Attack a territory linked to one you hold. Battles are fought on a field; camps rest the army, caches give supply.\n• Morale sets your tickets in battle; supply is your starting purse for helpers.\n• Win the gate (the crown) and %s opens. Lose and you keep what you took." % str(c["region_name"]), 7, Color(0.92, 0.92, 0.95)))
+	_brief_box.add_child(_label("LENGTH: %d territories · at least %d battle%s to the gate" % [(c["nodes"] as Array).size() - 1, int(c.get("min_battles", 3)), "" if int(c.get("min_battles", 3)) == 1 else "s"], 7, Color(0.7, 0.92, 1)))
+	if not Campaign.started(cid) and not Campaign.is_won(cid):
+		_brief_box.add_child(_label("TO MUSTER", 7, Color(1, 0.8, 0.4)))
+		for row in CampaignGate.checklist(cid):
+			_brief_box.add_child(_label(("✓ " if bool(row[0]) else "✕ ") + str(row[1]), 7, Color(0.6, 1, 0.7) if bool(row[0]) else Color(1, 0.75, 0.65)))
+		var after := Campaign.why_locked(cid)
+		if after != "" and after != CampaignGate.short_text(cid) and after != CampaignGate.lock(cid):
+			_brief_box.add_child(_label("✕ " + after, 7, Color(1, 0.75, 0.65)))
+		var tm := CampaignGate.team()
+		if not tm.is_empty():
+			_brief_box.add_child(_label("Your team: " + ", ".join(tm.map(func(x: Array) -> String: return str(x[1]))), 6, Color(0.85, 0.85, 0.8)))
+	var ok := _btn("Got it", func() -> void: _brief.visible = false)
+	ok.custom_minimum_size = Vector2(0, 22)
+	_brief_box.add_child(ok)
+	_brief.visible = true
+	_brief.size = Vector2(250, 0)
+
+
+func _toggle_brief() -> void:
+	if _brief.visible:
+		_brief.visible = false
+	else:
+		_show_brief()
 
 
 func _attack() -> void:
@@ -323,7 +456,7 @@ func _flash_msg(t: String) -> void:
 
 
 func _on_board_input(ev: InputEvent) -> void:
-	if cid == "":
+	if cid == "" or _brief.visible:
 		return
 	var pos := Vector2.INF
 	if ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed and (ev as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
@@ -360,6 +493,9 @@ func _process(delta: float) -> void:
 	_arm += 1
 	_board.queue_redraw()
 	if _arm < 8:
+		return
+	if _brief.visible and (Input.is_action_just_pressed("b") or Input.is_action_just_pressed("a")):
+		_brief.visible = false
 		return
 	if Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu"):
 		if cid != "":
@@ -495,6 +631,13 @@ func _draw_board() -> void:
 func _icon(cv: Control, p: Vector2, typ: String, tk: bool) -> void:
 	var w := Color(1, 0.97, 0.9)
 	var dk := Color(0.1, 0.06, 0.03, 0.9)
+	var badge := Art.tex("ui", "mode_" + typ) if typ not in ["start", "camp", "cache"] else null
+	if badge:
+		var bs := NODE_R * 2.0 + (4.0 if typ == "gate" else 0.0)
+		cv.draw_texture_rect(badge, Rect2(p - Vector2(bs, bs) / 2.0, Vector2(bs, bs)), false, Color(0.75, 0.85, 1.0, 0.85) if tk else Color.WHITE)
+		if tk:
+			cv.draw_string(ThemeDB.fallback_font, p + Vector2(5, 11), "✓", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, Color(0.6, 1, 0.7))
+		return
 	match typ:
 		"start", "camp":
 			var tex := Art.tex("props", "st_campfire_%d" % (1 + int(_t * 6.0) % 4))

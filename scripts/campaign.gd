@@ -96,8 +96,13 @@ static func cs(cid: String) -> Dictionary:
 	return s["c"][cid]
 
 
+## Mustered (CampaignGate.muster), or under way in an older save.
 static func started(cid: String) -> bool:
-	return st()["c"].has(cid)
+	var c: Variant = st()["c"].get(cid)
+	if not (c is Dictionary):
+		return false
+	return bool(c.get("mustered", false)) or (c.get("taken", {}) as Dictionary).size() > 1 \
+		or int(c.get("wins", 0)) + int(c.get("losses", 0)) + int(c.get("retreats", 0)) > 0
 
 
 static func is_won(cid: String) -> bool:
@@ -121,9 +126,19 @@ static func why_locked(cid: String) -> String:
 	for a in c.get("after", []):
 		if all().has(a) and str(all()[a].get("arc", "both")) in ["both", arc()] and not region_open(str(all()[a]["region"])):
 			return "Open %s first." % str(all()[a]["region_name"])
+	var gl: String = CampaignGate.lock(cid)
+	if gl != "":
+		return gl
 	if GameState.progress_tier() < int(c.get("min_pt", 0)):
 		return "Get further in the story first."
-	return ""
+	return CampaignGate.short_text(cid)
+
+
+## Like why_locked, but ignores what you can still gather (allies, provisions):
+## "" when the campaign is open for planning.
+static func plan_lock(cid: String) -> String:
+	var w := why_locked(cid)
+	return "" if w == "" or w == CampaignGate.short_text(cid) else w
 
 
 static func unlock_all() -> void:
@@ -154,12 +169,12 @@ static func linked(cid: String, a: String, b: String) -> bool:
 
 ## Linked to where the army stands and not yet yours.
 static func can_attack(cid: String, nid: String) -> bool:
-	return not is_won(cid) and not taken(cid, nid) and linked(cid, str(cs(cid)["at"]), nid)
+	return not is_won(cid) and (started(cid) or bypass) and not taken(cid, nid) and linked(cid, str(cs(cid)["at"]), nid)
 
 
 ## A node you hold, linked to nid, that the army can stand on to attack it ("" if none).
 static func staging(cid: String, nid: String) -> String:
-	if is_won(cid) or taken(cid, nid):
+	if is_won(cid) or taken(cid, nid) or not (started(cid) or bypass):
 		return ""
 	var at := str(cs(cid)["at"])
 	if linked(cid, at, nid):
@@ -504,7 +519,8 @@ static func story_pointer(qid: String) -> String:
 		held = " (%d/%d held)" % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1]
 	if GameState.progress_tier() < int(c.get("min_pt", 0)):
 		return "%s is held. Get further in the story, then win \"%s\"." % [str(get_c(gate_of(reg))["region_name"]), str(c["title"])]
-	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s." % [str(c["region_name"]), str(c["title"]), held]
+	var first: String = CampaignGate.next_step(cid)
+	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s.%s" % [str(c["region_name"]), str(c["title"]), held, (" First: " + first.left(1).to_lower() + first.substr(1)) if first != "" else ""]
 
 
 ## True (and offers the campaign) when `scene` is still held by a campaign.
@@ -523,7 +539,7 @@ static func offer(m: GameMap, cid: String) -> void:
 	if c.is_empty() or not is_instance_valid(m):
 		return
 	var why := why_locked(cid)
-	var prog := "" if not started(cid) else " You hold %d of %d territories." % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1]
+	var prog := " Muster for it on the campaign map." if not started(cid) else " You hold %d of %d territories." % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1]
 	var dl := Dialogue.instance(m.get_tree())
 	if why != "":
 		dl.say([{"who": "", "text": "%s is held against you. Win the %s campaign to open the way. %s" % [str(c["region_name"]), str(c["title"]), why]}])
