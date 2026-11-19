@@ -85,3 +85,11 @@ Runs after CONDUCT 10 (then the final package and artifact). Goal: a massively s
 - A full Ranching skill tree (gen_skill_trees.py) with abilities like the others; heart perks, quests, mail, villagers (Hazel, Tam, Benno...) tied in; saves migrated.
 - Some raised animals can occasionally be trained to join your team as companions, like Pup (Tom 14:06): training path, fighting/helping abilities, a team slot, unified with the companion/party system.
 - Art via the image tool for every creature (walk/idle/produce animations) and building; audio for each creature.
+
+
+## CONDUCT 12 — Writing, story and dialogue (Tom, 2026-11-19 14:13)
+
+A very thorough pass, after CONDUCT 11 (so it covers the decor and ranching content too), then the final package and artifact. C7's story work comes first; C12 makes all writing rich, robust, well-worded and seamless across the whole game, both arcs, start to finish.
+- Every line of text: main story beats, side quests, villager dialogue (first meetings, daily, hearts, gifts, birthdays, festivals, weather, rec/commons/ranch chatter), mail, item and quest descriptions, tutorials and hints, locked-area messages, boss intros, endings.
+- Cohesion: each NPC's voice is consistent; what villagers say matches the player's real progress, quests, relationships and story state (no contradictions or references to things not yet seen); storylines reference each other; both arcs feel complete and distinct (penguins from Tom's book *The Two Too Powerful Penguins*; gangster arc serious, cool, all-ages).
+- Auditors read and play all writing by area/NPC/arc and cross-check continuity with a script (who mentions what, when); fix agents rewrite and fill gaps, add progression-aware variants, and add tests that check dialogue conditions match game state.
