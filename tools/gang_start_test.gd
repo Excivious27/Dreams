@@ -152,7 +152,7 @@ func _run() -> void:
 	await frames(30)
 	goal()
 	check(seen("Sal: Sal. I sit on this bench"), "Sal introduces himself on the town tour")
-	check(seen("A man on the bench by the gate"), "the arrival names Sal as a man (his portrait)")
+	check(seen("A man with a bad knee"), "the arrival names Sal as a man (his portrait)")
 	await shot("town_free")
 	for id in ["sal", "maple", "gideon", "alder", "bram"]:
 		for n in town.npcs:
