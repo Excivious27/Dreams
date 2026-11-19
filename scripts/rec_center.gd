@@ -262,6 +262,8 @@ static func step_aside_cell(m: GameMap, c: Vector2i) -> Vector2i:
 			continue
 		if m.blocked.has(cc) or m.things.has(cc) or not cabinet_above(m, cc).is_empty():
 			continue
+		if m.blocked.has(cc + Vector2i(0, -1)) and d.y == 0:
+			continue  # not tucked under a pot plant or a machine: watch from an open spot
 		if m.player and m.world_to_cell(m.player.position) == cc:
 			continue
 		if m.has_method("has_npc_at") and bool(m.call("has_npc_at", cc)):
