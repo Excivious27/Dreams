@@ -407,8 +407,8 @@
    "market"
   ],
   "cf_picnic": [
-   38,
-   34,
+   36,
+   32,
    "picnic"
   ],
   "cf_board": [
@@ -420,6 +420,16 @@
    34,
    18,
    "sit"
+  ],
+  "cf_market_3": [
+   36,
+   28,
+   "market"
+  ],
+  "cf_plaza": [
+   26,
+   23,
+   "talk"
   ]
  },
  "spot_stage": {
@@ -434,7 +444,9 @@
   "cf_market": 3,
   "cf_market_2": 8,
   "cf_picnic": 1,
-  "cf_bench": 1
+  "cf_bench": 1,
+  "cf_market_3": 8,
+  "cf_plaza": 1
  },
  "beds": [
   [
@@ -557,7 +569,7 @@
   [
    "hazel",
    6,
-   8,
+   10,
    "cf_beds_a",
    0
   ],
@@ -692,8 +704,14 @@
   [
    "hazel",
    9,
-   14,
+   15,
    "cf_market"
+  ],
+  [
+   "rook",
+   9,
+   11,
+   "cf_market_2"
   ],
   [
    "lumi",
@@ -702,16 +720,22 @@
    "cf_picnic"
   ],
   [
-   "finn",
+   "mabel",
+   9,
    11,
-   13,
-   "cf_market_2"
+   "cf_plaza"
   ],
   [
    "alder",
    11,
    13,
    "cf_board"
+  ],
+  [
+   "finn",
+   11,
+   13,
+   "cf_market_2"
   ],
   [
    "theo",
@@ -723,13 +747,19 @@
    "ivy",
    12,
    13,
-   "cf_market_2"
+   "cf_market_3"
   ],
   [
    "juniper",
    12,
    13,
    "cf_picnic"
+  ],
+  [
+   "sal",
+   13,
+   15,
+   "cf_plaza"
   ],
   [
    "pip",
@@ -754,6 +784,12 @@
    14,
    16,
    "cf_bench"
+  ],
+  [
+   "benno",
+   15,
+   17,
+   "cf_plaza"
   ]
  ],
  "winter_spots": [
@@ -1094,6 +1130,40 @@
     "I come here to think. Nobody looks for you on a garden bench.",
     "Best seat on the block. Quiet, and you can see who's coming."
    ]
+  },
+  "rain": {
+   "penguins": [
+    "Rain's doing the watering for us. I'm just keeping the tools dry.",
+    "Nothing grows faster than a garden in the rain. Except mud.",
+    "We'll wait it out under here. The beds don't mind a bit."
+   ],
+   "gangsters": [
+    "Rain does the watering. I'm keeping the tools dry.",
+    "Wet day. The beds love it, my boots don't.",
+    "We wait it out under here. Dirt doesn't care."
+   ]
+  },
+  "winter": {
+   "penguins": [
+    "Winter's for mending and planning. And the greenhouse, thank goodness.",
+    "Cold hands, warm compost."
+   ],
+   "gangsters": [
+    "Winter's for fixing things and planning. And the greenhouse.",
+    "Cold hands, warm compost. That's the trade."
+   ]
+  },
+  "market_day": {
+   "penguins": [
+    "Market day! Have you tried Posy's bread yet?",
+    "Half the valley's here. Isn't it wonderful?",
+    "Sell at the stand today, folks pay well."
+   ],
+   "gangsters": [
+    "Market day. Whole block's out.",
+    "Try the bread before it's gone.",
+    "Sell at the stand today. People pay good."
+   ]
   }
  },
  "asks": {
@@ -1177,5 +1247,294 @@
  "ask_text": {
   "penguins": "Market's going strong, but the soup kitchen runs short this time of year. If you can spare it, bring {need}. The whole commons will thank you.",
   "gangsters": "Market's doing fine, but the block's short this time of year. Bring {need} if you can spare it. Everybody eats."
- }
+ },
+ "at_work_own": {
+  "hazel": {
+   "penguins": [
+    "You can tell a lot about a person by how they hold a hoe. You hold it like you mean it."
+   ],
+   "gangsters": [
+    "You hold a hoe like you mean it. Good."
+   ]
+  },
+  "sal": {
+   "penguins": [
+    "Strong back, quiet mouth. That's what Hazel wanted, that's what she got."
+   ],
+   "gangsters": [
+    "Strong back, quiet mouth. That's the job."
+   ]
+  },
+  "gideon": {
+   "penguins": [
+    "This rake's older than you. Still pulls true."
+   ],
+   "gangsters": [
+    "Rake's older than you. Still pulls true."
+   ]
+  },
+  "finn": {
+   "penguins": [
+    "Worms are worms. Garden worms, fishing worms. I don't judge."
+   ],
+   "gangsters": [
+    "Worms are worms. I don't judge where they came from."
+   ]
+  },
+  "wren": {
+   "penguins": [
+    "The feverfew's coming up nicely. Don't eat it."
+   ],
+   "gangsters": [
+    "Feverfew's coming up. Still not lunch."
+   ]
+  },
+  "wren_jr": {
+   "penguins": [
+    "Mum says I've got green fingers. They're just muddy."
+   ],
+   "gangsters": [
+    "Mum says I've got green fingers. They're just dirty."
+   ]
+  },
+  "pip": {
+   "penguins": [
+    "I found a worm this long! Then it left."
+   ],
+   "gangsters": [
+    "I found a worm this long! Then it left."
+   ]
+  },
+  "tobin": {
+   "penguins": [
+    "I'm guarding the trees. From what? Everything."
+   ],
+   "gangsters": [
+    "I'm guarding the trees. From who? Everybody."
+   ]
+  },
+  "benno": {
+   "penguins": [
+    "Two buckets a bed. The horses could do it faster, but they won't."
+   ],
+   "gangsters": [
+    "Two buckets a bed. Quietest hour in town."
+   ]
+  },
+  "rook": {
+   "penguins": [
+    "Bees found the blossom before I did."
+   ],
+   "gangsters": [
+    "Bees found the blossom before I did. Good scouts."
+   ]
+  },
+  "juniper": {
+   "penguins": [
+    "Mint wants the whole greenhouse. Mint can't have it."
+   ],
+   "gangsters": [
+    "Mint wants the whole greenhouse. Mint doesn't get it."
+   ]
+  },
+  "mabel": {
+   "penguins": [
+    "Compost is just old dinner having a nap."
+   ],
+   "gangsters": [
+    "Compost is old dinner taking a nap."
+   ]
+  },
+  "lumi": {
+   "penguins": [
+    "I'm sketching the beds. The light's perfect on the kale."
+   ],
+   "gangsters": [
+    "Sketching the beds. The kale's got good bones."
+   ]
+  },
+  "theo": {
+   "penguins": [
+    "Did you know the old commons had forty-one kinds of apple? I'm writing it down."
+   ],
+   "gangsters": [
+    "This lot was an orchard in 1903. I checked the records."
+   ]
+  },
+  "alder": {
+   "penguins": [
+    "Officially a park. Unofficially the best thing I've signed."
+   ],
+   "gangsters": [
+    "Officially a park now. Best thing I ever signed."
+   ]
+  }
+ },
+ "barks": {
+  "greet": {
+   "penguins": [
+    "Morning!",
+    "Hello there!",
+    "Nice day for it!",
+    "Oh, hi!"
+   ],
+   "gangsters": [
+    "Hey.",
+    "'Sup.",
+    "Look who it is.",
+    "Hey, you."
+   ]
+  },
+  "farm": {
+   "penguins": [
+    "Pull, don't snap...",
+    "These are coming on!",
+    "Ooh, a big one."
+   ],
+   "gangsters": [
+    "Pull, don't snap...",
+    "These are coming on.",
+    "Ooh, a fat one."
+   ]
+  },
+  "haul": {
+   "penguins": [
+    "Heave!",
+    "Mind your toes!",
+    "Last load. Ish."
+   ],
+   "gangsters": [
+    "Heave!",
+    "Watch your toes!",
+    "Last load. Maybe."
+   ]
+  },
+  "work": {
+   "penguins": [
+    "Tap, tap...",
+    "There we go.",
+    "Who bent this?"
+   ],
+   "gangsters": [
+    "Tap, tap...",
+    "There we go.",
+    "Who bent this?"
+   ]
+  },
+  "market": {
+   "penguins": [
+    "Fresh greens!",
+    "Two for one!",
+    "Try a slice!"
+   ],
+   "gangsters": [
+    "Fresh greens!",
+    "Two for one!",
+    "Get it while it's hot!"
+   ]
+  },
+  "picnic": {
+   "penguins": [
+    "Mmm!",
+    "Pass the bread?",
+    "Lovely."
+   ],
+   "gangsters": [
+    "Mmm.",
+    "Pass the bread?",
+    "Not bad."
+   ]
+  },
+  "sit": {
+   "penguins": [
+    "Ahh.",
+    "Listen to the bees."
+   ],
+   "gangsters": [
+    "Ahh.",
+    "Quiet, huh?"
+   ]
+  },
+  "talk": {
+   "penguins": [
+    "Next on the list...",
+    "Hmm, hmm."
+   ],
+   "gangsters": [
+    "Next on the list...",
+    "Hmm."
+   ]
+  },
+  "rain": {
+   "penguins": [
+    "What a downpour!",
+    "Free water!",
+    "Brr!"
+   ],
+   "gangsters": [
+    "What a downpour!",
+    "Free water.",
+    "Brr."
+   ]
+  }
+ },
+ "help": {
+  "weed": {
+   "n": 4,
+   "ask": {
+    "penguins": "Weeds keep coming up round the bed frames faster than I can pull them. Grab a few for me?",
+    "gangsters": "Weeds keep coming up round the bed frames. Pull a few for me?"
+   },
+   "go": {
+    "penguins": "Pull the weeds round the beds (marked with leaves).",
+    "gangsters": "Pull the weeds round the beds."
+   },
+   "done": {
+    "penguins": "Lovely and tidy. Here, take some of what we grew.",
+    "gangsters": "Clean as a whistle. Here, take a cut of the harvest."
+   }
+  },
+  "haul": {
+   "n": 3,
+   "ask": {
+    "penguins": "There's a stack of crates that needs carrying to the %s. Give me a hand?",
+    "gangsters": "Stack of crates needs hauling to the %s. Got a minute?"
+   },
+   "go": {
+    "penguins": "Carry the crates to the %s, one at a time.",
+    "gangsters": "Haul the crates to the %s, one at a time."
+   },
+   "done": {
+    "penguins": "That's the lot. Strong arms! Here, for your trouble.",
+    "gangsters": "That's the lot. Here, for your trouble."
+   }
+  },
+  "water": {
+   "n": 0,
+   "ask": {
+    "penguins": "The beds are thirsty and the river's a long walk. Water a few for me? Grab your can.",
+    "gangsters": "Beds are dry and the hydrant's a hike. Water a few? Bring your can."
+   },
+   "go": {
+    "penguins": "Water the dry beds near %s with your can.",
+    "gangsters": "Water the dry beds near %s."
+   },
+   "done": {
+    "penguins": "Listen to them drink! Thank you. Here, take some of this.",
+    "gangsters": "They'll be fat by Friday. Here, take some of this."
+   }
+  }
+ },
+ "help_kind": {
+  "farm": "weed",
+  "haul": "haul",
+  "work": "haul",
+  "market": "haul"
+ },
+ "kids": [
+  "pip",
+  "wren_jr",
+  "tobin",
+  "mabel"
+ ]
 }

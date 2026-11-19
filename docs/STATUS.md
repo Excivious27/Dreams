@@ -83,6 +83,15 @@
 - **Morning "Next:" line was a day behind** on days a main quest opens by date (day 3 said "Water your crop" while the HUD said meadow): `SleepReport._open_due` opens due main quests first.
 - Removed the unused duplicate mailbox marker class `MailFlag` (the farm's `_mail_mark` is the one drawn). `newgame_flow_c1.gd` now plays the whole gangster opening before farming.
 - **Test:** `tools/first_hours_test.gd` (in check.sh) plays both arcs on the real maps to day 3: goal line, arrow targets, mailbox marker per day, tool tips, town tour completing meet_town, Next: matching the goal line.
+## 2026-11-19 — CONDUCT 2 (c2_10): community farm volunteers
+- **No more stacking:** every volunteer gets their own cell of a shared spot (`CfVolunteers.stand_cell`, hooked in `Npc._apply_routine`); bench sitters sit on the bench, picnickers at the table (picnic spot moved off the campfire). Market day had 3 cells with 2-3 people on top of each other.
+- **Market day really happens:** the 7th-day chapel morning used to pull everyone off the market until noon (`Npc.place_now` now lets `Commons.market_slot` win). The market-day crowd is bigger and spread over two new spots (third stall, plaza).
+- **Visible work:** bed volunteers walk to a bed, crouch (work/work_2) and tend, water dry cells (splash) and pick what's ripe; haulers carry loads to the compost/cart/timber pile; Benno carries water from the well to the beds; market keepers restock from the crates; on stage 0 they drag at the junk.
+- **Shifts:** a volunteer whose shift starts while you're there walks in along the road; one whose shift ends walks back out before vanishing.
+- **Rain days:** grown-ups shelter under the shed eaves / in the greenhouse and chat (no umbrellas under a roof), kids stay home, Finn/Rook/Sal and the day's umbrella walkers keep working; at-work lines talk about the rain.
+- **Chatter:** gangster-arc at-work lines of their own, per-volunteer lines, winter and market-day lines, short floating call-outs as you pass (greeting first). Fixed the villager chat bubble everywhere: it drew the whole 12-icon emote sheet; now one icon at a time.
+- **Lend a hand:** talk to a working volunteer (stage 1+) and they may ask for help once a day: pull 4 weeds round the beds, carry 3 crates to the shed/compost/stall (one at a time, crate over your head), or water their dry beds before the well. Reward: +10 friendship, goodwill, xp and a cut of the stand's produce. A lightbulb now and then marks someone with a job.
+- Test: tools/cf_volunteer_test.gd (in check.sh). Shots: tools/cf_volunteer_shot.gd.
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.

@@ -147,8 +147,8 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 	for entry in routine_list:
 		if hour >= float(entry[0]):
 			place = str(entry[1])
-	if day % 7 == 0 and hour >= 9.0 and hour < 12.0 and place != "work":
-		place = "chapel_front"
+	if day % 7 == 0 and hour >= 9.0 and hour < 12.0 and place != "work" and not Commons.market_slot(npc_id, hour):
+		place = "chapel_front"  # (the community farm's market day beats the chapel morning)
 	elif place != "work":
 		# Volunteering at the community farm (Commons): there, not in town.
 		var cf := Commons.slot(npc_id, hour)
@@ -245,6 +245,8 @@ func _apply_routine(snap := false) -> void:
 	_place = place
 	_pose = ""
 	if (is_indoors(place) and not routine.is_empty()) or (place.begins_with("cf_") != spots_only and not spots.has(place)) or (spots_only and not spots.has(place)):
+		if visible and not snap and map and map.has_method("npc_leave") and map.npc_leave(self):
+			return  # the map walks them off (community farm: out along the road) and hides them
 		visible = false  # indoors, away at the community farm, or (on the farm map) not volunteering now
 		_path.clear()
 		return
@@ -253,11 +255,20 @@ func _apply_routine(snap := false) -> void:
 		visible = true
 		return
 	activity = str(SPOT_ACTIVITY.get(place, Commons.spot_activity(place)))
+	if map.has_method("stand_cell"):
+		spot = map.stand_cell(self, place, spot)  # each person their own patch of a shared spot
 	var at := map.cell_center(spot)
 	home = at
 	_target = at
 	var was_visible := visible
 	visible = true
+	if not snap and not was_visible and map.has_method("npc_arrive"):
+		var from: Vector2 = map.npc_arrive(self)  # walk in from the map's entrance
+		if from != Vector2.INF:
+			position = from
+			_path = map.find_path(cell(), spot)
+			if not _path.is_empty():
+				return
 	if snap or not was_visible or (map.player and map.player.position.distance_to(position) > 260.0):
 		# Out of sight (or just stepped outside a door): simply be there.
 		position = at
@@ -389,9 +400,7 @@ func _chat(delta: float, to: Vector2) -> void:
 				_bubble.text = ["...", "..", ".", "!", "?", "..."][int(Time.get_ticks_msec() / 500) % 6]
 			if _bubble_sprite and int(Time.get_ticks_msec() / 1400) != _bubble_i:
 				_bubble_i = int(Time.get_ticks_msec() / 1400)
-				var pick: String = ["bubble_dots", "bubble_bang", "bubble_question", "bubble_laugh", "bubble_music", "bubble_idea", "bubble_heart", "bubble_dots"][(_bubble_i + hash(id)) % 8]
-				if Art.has("emotes", pick):
-					_bubble_sprite.texture = Art.tex("emotes", pick)
+				_bubble_icon(BUBBLE_ICONS[(_bubble_i + absi(hash(id))) % BUBBLE_ICONS.size()])
 		return
 	if to.length() > 2.0 or _wander_t > 2.0:
 		return
@@ -405,6 +414,20 @@ func _chat(delta: float, to: Vector2) -> void:
 			_start_chat(o)
 			o._start_chat(self)
 			return
+
+
+## emotes/bubble_dots is a sheet of 12 speech icons in a row (dots, !, ?, heart,
+## music, swirl, sweat, zzz, idea, swords, fish, coins): show one at a time.
+const BUBBLE_ICONS := [0, 1, 2, 0, 3, 4, 8, 0]
+
+
+func _bubble_icon(i: int) -> void:
+	var t := _bubble_sprite.texture
+	if t == null:
+		return
+	var w := t.get_width() / 12.0
+	_bubble_sprite.region_enabled = true
+	_bubble_sprite.region_rect = Rect2(w * i, 0, w, t.get_height())
 
 
 func _start_chat(o: Npc) -> void:
@@ -421,6 +444,7 @@ func _start_chat(o: Npc) -> void:
 		_bubble_sprite.z_index = 30
 		_bubble_sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		add_child(_bubble_sprite)
+		_bubble_icon(0)
 	if _bubble_sprite:
 		_bubble_sprite.visible = true
 	if _bubble == null:
