@@ -150,6 +150,11 @@ echo "$cout" | grep -E "FAIL|SCRIPT ERROR|commons_test" || true
 if ! echo "$cout" | grep -q "commons_test: 0 failures"; then
   echo "Community farm test failed"; exit 1
 fi
+cout="$("$GODOT" --headless --path . -s res://tools/cf_volunteer_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|cf_volunteer_test" || true
+if ! echo "$cout" | grep -q "cf_volunteer_test: 0 failures"; then
+  echo "Community farm volunteer test failed"; exit 1
+fi
 
 cout="$("$GODOT" --headless --path . -s res://tools/early_gating_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|early_gating_test" || true

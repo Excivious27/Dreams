@@ -78,12 +78,14 @@ SPOTS = {
     "cf_lot": [16, 18, "haul"], "cf_beds_a": [8, 18, "farm"], "cf_beds_b": [17, 22, "farm"],
     "cf_shed": [26, 9, "work"], "cf_compost": [23, 9, "haul"], "cf_well": [31, 22, "haul"],
     "cf_orchard_w": [11, 32, "farm"], "cf_orchard_e": [24, 32, "farm"], "cf_greenhouse": [39, 12, "farm"],
-    "cf_market": [41, 28, "market"], "cf_market_2": [46, 28, "market"], "cf_picnic": [38, 34, "picnic"],
+    "cf_market": [41, 28, "market"], "cf_market_2": [46, 28, "market"], "cf_picnic": [36, 32, "picnic"],
     "cf_board": [44, 18, "talk"], "cf_bench": [34, 18, "sit"],
+    "cf_market_3": [36, 28, "market"], "cf_plaza": [26, 23, "talk"],
 }
 # A spot opens once this many stages are done (before that, its volunteer helps clear the lot).
 SPOT_STAGE = {"cf_beds_a": 3, "cf_beds_b": 3, "cf_shed": 2, "cf_compost": 2, "cf_well": 5, "cf_orchard_w": 6, "cf_orchard_e": 6,
-              "cf_greenhouse": 7, "cf_market": 3, "cf_market_2": 8, "cf_picnic": 1, "cf_bench": 1}
+              "cf_greenhouse": 7, "cf_market": 3, "cf_market_2": 8, "cf_picnic": 1, "cf_bench": 1,
+              "cf_market_3": 8, "cf_plaza": 1}
 # Raised beds (4) and the cold frames by the greenhouse (2): [x, y, w, h].
 BEDS = [[5, 14, 7, 3], [14, 14, 7, 3], [5, 23, 7, 3], [14, 23, 7, 3]]
 FRAMES = [[34, 13, 4, 2], [41, 13, 4, 2]]
@@ -96,22 +98,28 @@ PLANT = {"spring": ["turnip", "carrot", "potato", "cabbage", "lettuce", "radish"
 
 # ---- volunteers: [npc, from hour, to hour, spot, stages done needed] --------------
 SCHEDULE = [
-    ["hazel", 6, 8, "cf_beds_a", 0], ["hazel", 15, 17, "cf_orchard_w", 1],
+    ["hazel", 6, 10, "cf_beds_a", 0], ["hazel", 15, 17, "cf_orchard_w", 1],
     ["sal", 9, 11, "cf_shed", 0], ["gideon", 12, 13, "cf_shed", 1], ["alder", 15, 17, "cf_board", 1],
     ["lumi", 7, 9, "cf_bench", 1], ["finn", 13, 15, "cf_beds_b", 2], ["mabel", 15, 17, "cf_compost", 2],
     ["wren", 6, 8, "cf_beds_b", 3], ["wren_jr", 16, 18, "cf_beds_a", 3], ["pip", 15, 17, "cf_picnic", 3], ["theo", 16, 17, "cf_bench", 3],
     ["benno", 18, 20, "cf_well", 4], ["rook", 5, 8, "cf_orchard_e", 5], ["tobin", 16, 18, "cf_orchard_e", 5],
     ["juniper", 17, 19, "cf_greenhouse", 6], ["posy", 13, 14, "cf_market", 7], ["bram", 11, 13, "cf_market_2", 7], ["maple", 12, 13, "cf_market", 7],
 ]
-# Market day (every 7th day once the market is open): who comes, when.
+# Market day (every 7th day once the market is open): who comes, when. The market beats
+# the 7th-day chapel morning (Npc.place_now asks Commons first on market days).
 MARKET_DAY = [
-    ["hazel", 9, 14, "cf_market"], ["lumi", 9, 12, "cf_picnic"], ["finn", 11, 13, "cf_market_2"], ["alder", 11, 13, "cf_board"],
-    ["theo", 12, 13, "cf_picnic"], ["ivy", 12, 13, "cf_market_2"], ["juniper", 12, 13, "cf_picnic"],
+    ["hazel", 9, 15, "cf_market"], ["rook", 9, 11, "cf_market_2"], ["lumi", 9, 12, "cf_picnic"], ["mabel", 9, 11, "cf_plaza"],
+    ["alder", 11, 13, "cf_board"], ["finn", 11, 13, "cf_market_2"],
+    ["theo", 12, 13, "cf_picnic"], ["ivy", 12, 13, "cf_market_3"], ["juniper", 12, 13, "cf_picnic"], ["sal", 13, 15, "cf_plaza"],
     ["pip", 14, 16, "cf_picnic"], ["mabel", 14, 16, "cf_market"], ["tobin", 14, 16, "cf_orchard_e"], ["wren_jr", 14, 16, "cf_bench"],
+    ["benno", 15, 17, "cf_plaza"],
 ]
 # Spots that keep working in winter (once the greenhouse stands) and in the rain.
 WINTER_SPOTS = ["cf_greenhouse", "cf_shed", "cf_compost", "cf_board", "cf_market", "cf_market_2"]
 RAIN_SPOTS = ["cf_greenhouse", "cf_shed"]
+# In the wet, grown-up volunteers shelter at an open rain spot (the shed's eaves, the greenhouse)
+# instead of going home; the kids stay in. Npc.rain_walker villagers keep working out in it.
+KIDS = ["pip", "wren_jr", "tobin", "mabel"]
 
 # ---- chatter --------------------------------------------------------------------
 # Lines anyone may say, by stages done (index = stages done, 0..8).
@@ -163,16 +171,76 @@ TALK_OWN = [
     ["alder", 1, P(["The commons is the best thing to happen to this town's budget in years. It costs nothing.", "I've put the commons in the town records. Officially, it's a park now."],
                    ["The lot garden is officially a park now. I filed it myself. Let the developers argue with a park.", "Civic pride, at last. And at no cost to the treasury."])],
 ]
-# What a volunteer says when you talk to them at the farm, by activity.
+# What a volunteer says when you talk to them at the farm, by activity (plus "rain", "winter", "market_day").
 AT_WORK = {
-    "farm": P(["Weeds don't take days off, so neither do I.", "Look at these roots! Healthy as anything.", "Mind the edges, the seedlings are shy."]),
-    "haul": P(["One more load and I'll sit down. Probably.", "Heavy, but good heavy.", "Everything here gets carried twice. Once in, once out as dinner."]),
-    "work": P(["Hinges, handles, the odd broken rake. Somebody has to.", "Tools last forever if you clean them. Nobody cleans them."]),
-    "market": P(["Fresh today! Well, fresh-ish.", "Prices are low because the soil works for free.", "Take a look, everything's from the beds behind me."]),
-    "picnic": P(["Lunch tastes better outside. That's science.", "Sit down a minute. The beds will still be there."]),
-    "talk": P(["The board says what's next. Read it, then help me make it happen.", "I like to see the plan with my own eyes."]),
-    "sit": P(["I come here to think. And to watch the bees.", "Best bench in the valley. Don't tell the park."]),
+    "farm": P(["Weeds don't take days off, so neither do I.", "Look at these roots! Healthy as anything.", "Mind the edges, the seedlings are shy."],
+              ["Weeds don't take days off. Neither do I.", "Look at those roots. Healthiest thing on the block.", "Watch your feet, the seedlings bruise easy."]),
+    "haul": P(["One more load and I'll sit down. Probably.", "Heavy, but good heavy.", "Everything here gets carried twice. Once in, once out as dinner."],
+              ["One more load, then a break. Probably.", "Heavy, but honest heavy.", "Everything on this lot gets carried twice: junk out, dinner in."]),
+    "work": P(["Hinges, handles, the odd broken rake. Somebody has to.", "Tools last forever if you clean them. Nobody cleans them."],
+              ["Hinges, handles, the odd bent rake. Somebody's got to.", "Clean your tools and they never let you down. Same as people."]),
+    "market": P(["Fresh today! Well, fresh-ish.", "Prices are low because the soil works for free.", "Take a look, everything's from the beds behind me."],
+                ["Fresh today. Mostly.", "Prices are low: the dirt works for free.", "Everything here grew twenty steps away."]),
+    "picnic": P(["Lunch tastes better outside. That's science.", "Sit down a minute. The beds will still be there."],
+                ["Lunch tastes better outside. Fact.", "Sit a minute. The beds aren't going anywhere."]),
+    "talk": P(["The board says what's next. Read it, then help me make it happen.", "I like to see the plan with my own eyes."],
+              ["The board's got the plan. Read it, then let's make it happen.", "I like to see the plan for myself."]),
+    "sit": P(["I come here to think. And to watch the bees.", "Best bench in the valley. Don't tell the park."],
+             ["I come here to think. Quietest bench in town.", "Best seat on the block. Don't tell anyone."]),
+    "rain": P(["Rain's doing the watering for us. I'm just keeping the tools dry.", "Nothing grows faster than a garden in the rain. Except mud.", "We'll wait it out under here. The beds don't mind a bit."],
+              ["Rain does the watering. I'm keeping the tools dry.", "Wet day. The beds love it, my boots don't.", "We wait it out under here. Dirt doesn't care."]),
+    "winter": P(["Winter's for mending and planning. And the greenhouse, thank goodness.", "Cold hands, warm compost."],
+                ["Winter's for fixing things and planning. And the greenhouse.", "Cold hands, warm compost. That's the trade."]),
+    "market_day": P(["Market day! Have you tried Posy's bread yet?", "Half the valley's here. Isn't it wonderful?", "Sell at the stand today, folks pay well."],
+                    ["Market day. Whole block's out.", "Try the bread before it's gone.", "Sell at the stand today. People pay good."]),
 }
+# A volunteer's own at-work lines (mixed in with the activity's).
+AT_WORK_OWN = {
+    "hazel": P(["You can tell a lot about a person by how they hold a hoe. You hold it like you mean it."], ["You hold a hoe like you mean it. Good."]),
+    "sal": P(["Strong back, quiet mouth. That's what Hazel wanted, that's what she got."], ["Strong back, quiet mouth. That's the job."]),
+    "gideon": P(["This rake's older than you. Still pulls true."], ["Rake's older than you. Still pulls true."]),
+    "finn": P(["Worms are worms. Garden worms, fishing worms. I don't judge."], ["Worms are worms. I don't judge where they came from."]),
+    "wren": P(["The feverfew's coming up nicely. Don't eat it."], ["Feverfew's coming up. Still not lunch."]),
+    "wren_jr": P(["Mum says I've got green fingers. They're just muddy."], ["Mum says I've got green fingers. They're just dirty."]),
+    "pip": P(["I found a worm this long! Then it left."], ["I found a worm this long! Then it left."]),
+    "tobin": P(["I'm guarding the trees. From what? Everything."], ["I'm guarding the trees. From who? Everybody."]),
+    "benno": P(["Two buckets a bed. The horses could do it faster, but they won't."], ["Two buckets a bed. Quietest hour in town."]),
+    "rook": P(["Bees found the blossom before I did."], ["Bees found the blossom before I did. Good scouts."]),
+    "juniper": P(["Mint wants the whole greenhouse. Mint can't have it."], ["Mint wants the whole greenhouse. Mint doesn't get it."]),
+    "mabel": P(["Compost is just old dinner having a nap."], ["Compost is old dinner taking a nap."]),
+    "lumi": P(["I'm sketching the beds. The light's perfect on the kale."], ["Sketching the beds. The kale's got good bones."]),
+    "theo": P(["Did you know the old commons had forty-one kinds of apple? I'm writing it down."], ["This lot was an orchard in 1903. I checked the records."]),
+    "alder": P(["Officially a park. Unofficially the best thing I've signed."], ["Officially a park now. Best thing I ever signed."]),
+}
+# Short lines volunteers call out when you pass close (floating text, by activity; "rain", "greet").
+BARKS = {
+    "greet": P(["Morning!", "Hello there!", "Nice day for it!", "Oh, hi!"], ["Hey.", "'Sup.", "Look who it is.", "Hey, you."]),
+    "farm": P(["Pull, don't snap...", "These are coming on!", "Ooh, a big one."], ["Pull, don't snap...", "These are coming on.", "Ooh, a fat one."]),
+    "haul": P(["Heave!", "Mind your toes!", "Last load. Ish."], ["Heave!", "Watch your toes!", "Last load. Maybe."]),
+    "work": P(["Tap, tap...", "There we go.", "Who bent this?"], ["Tap, tap...", "There we go.", "Who bent this?"]),
+    "market": P(["Fresh greens!", "Two for one!", "Try a slice!"], ["Fresh greens!", "Two for one!", "Get it while it's hot!"]),
+    "picnic": P(["Mmm!", "Pass the bread?", "Lovely."], ["Mmm.", "Pass the bread?", "Not bad."]),
+    "sit": P(["Ahh.", "Listen to the bees."], ["Ahh.", "Quiet, huh?"]),
+    "talk": P(["Next on the list...", "Hmm, hmm."], ["Next on the list...", "Hmm."]),
+    "rain": P(["What a downpour!", "Free water!", "Brr!"], ["What a downpour!", "Free water.", "Brr."]),
+}
+# Lend a hand: what a volunteer asks you to do, by kind (CfVolunteers runs them; once per volunteer a day).
+HELP = {
+    "weed": {"n": 4, "ask": P("Weeds keep coming up round the bed frames faster than I can pull them. Grab a few for me?",
+                              "Weeds keep coming up round the bed frames. Pull a few for me?"),
+             "go": P("Pull the weeds round the beds (marked with leaves).", "Pull the weeds round the beds."),
+             "done": P("Lovely and tidy. Here, take some of what we grew.", "Clean as a whistle. Here, take a cut of the harvest.")},
+    "haul": {"n": 3, "ask": P("There's a stack of crates that needs carrying to the %s. Give me a hand?",
+                              "Stack of crates needs hauling to the %s. Got a minute?"),
+             "go": P("Carry the crates to the %s, one at a time.", "Haul the crates to the %s, one at a time."),
+             "done": P("That's the lot. Strong arms! Here, for your trouble.", "That's the lot. Here, for your trouble.")},
+    "water": {"n": 0, "ask": P("The beds are thirsty and the river's a long walk. Water a few for me? Grab your can.",
+                               "Beds are dry and the hydrant's a hike. Water a few? Bring your can."),
+              "go": P("Water the dry beds near %s with your can.", "Water the dry beds near %s."),
+              "done": P("Listen to them drink! Thank you. Here, take some of this.", "They'll be fat by Friday. Here, take some of this.")},
+}
+# What each activity asks help with ("" = they're happy chatting).
+HELP_KIND = {"farm": "weed", "haul": "haul", "work": "haul", "market": "haul"}
 
 # ---- items and recipes -------------------------------------------------------------
 ITEMS = {
@@ -201,7 +269,8 @@ out = {
                 "Hey. There's a vacant lot on the west road out of town, full of junk the crews dumped. I'm turning it back into a garden. I could use help. Mornings, I'm there. - Hazel"),
     "stages": STAGES, "spots": SPOTS, "spot_stage": SPOT_STAGE, "beds": BEDS, "frames": FRAMES, "orchard": ORCHARD, "plant": PLANT,
     "schedule": SCHEDULE, "market_day": MARKET_DAY, "winter_spots": WINTER_SPOTS, "rain_spots": RAIN_SPOTS,
-    "talk_any": TALK_ANY, "talk_own": TALK_OWN, "at_work": AT_WORK,
+    "talk_any": TALK_ANY, "talk_own": TALK_OWN, "at_work": AT_WORK, "at_work_own": AT_WORK_OWN, "barks": BARKS,
+    "help": HELP, "help_kind": HELP_KIND, "kids": KIDS,
 }
 for s in STAGES:
     for k in s.get("give", {}):

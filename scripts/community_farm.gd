@@ -34,8 +34,7 @@ const JUNK := {
 var npcs: Array = []
 var _plots: Node2D
 var _cells := {}          # plot key "x,y" -> cold frame?
-var _jobs := {}           # Npc -> [plot key, seconds]
-var _job_t := 0.0
+var crew: CfVolunteers    # the volunteers at work (scripts/cf_volunteers.gd)
 var _busy := {}           # cells kept clear of trees and scatter
 
 
@@ -434,6 +433,9 @@ func _place_people() -> void:
 	for e: Array in Commons.data().get("schedule", []) + Commons.data().get("market_day", []):
 		who[str(e[0])] = true
 	var sp := Commons.spots()
+	crew = CfVolunteers.new()
+	crew.map = self
+	add_child(crew)
 	for id: String in who:
 		var d: Dictionary = GameState.npcs.get(id, {})
 		if d.is_empty() or not GameState.npc_present(id) or (d.get("routine", []) as Array).is_empty():
@@ -443,7 +445,7 @@ func _place_people() -> void:
 		n.routine = d.get("routine", [])
 		n.spots = sp
 		n.spots_only = true
-		n.wander = 14.0
+		n.wander = 8.0
 		n.setup(id, d, cell_center(sp["cf_lot"]))
 		add_child(n)
 		npcs.append(n)
@@ -456,62 +458,21 @@ func has_npc_at(c: Vector2i) -> bool:
 	return false
 
 
-func _process(delta: float) -> void:
-	super(delta)
-	if _changing or player == null:
-		return
-	_job_t -= delta
-	for n: Npc in _jobs.keys():
-		var jb: Array = _jobs[n]
-		jb[1] = float(jb[1]) + delta
-		var p := (jb[0] as String).split(",")
-		var c := Vector2i(int(p[0]), int(p[1]))
-		if not is_instance_valid(n) or not n.visible:
-			_jobs.erase(n)
-		elif n.position.distance_to(cell_center(c)) < 12.0 or float(jb[1]) > 9.0:
-			_jobs.erase(n)
-			if Commons.ripe(Commons.plot(str(jb[0]))):
-				Commons.harvest(str(jb[0]))
-				n.set_pose("carry")
-				emote(n, "happy", 1.0, -30.0)
-				if player.position.distance_to(n.position) < 140.0:
-					Music.instance(get_tree()).sfx("harvest", "pickup")
-				_plots.queue_redraw()
-			n.home = cell_center(Commons.spots().get(_spot_of(n), n.cell()))
-			n._target = n.home
-	if _job_t > 0.0:
-		return
-	_job_t = 2.0
-	# A volunteer at the beds with nothing to do picks the nearest ripe crop.
-	for n: Npc in npcs:
-		if not n.visible or _jobs.has(n) or n.activity != "farm" or n._chat_partner != null:
-			continue
-		var best := ""
-		var bd := 40.0
-		for key: String in _cells:
-			if not Commons.ripe(Commons.plot(key)):
-				continue
-			var p := key.split(",")
-			var dd := Vector2(int(p[0]), int(p[1])).distance_to(Vector2(n.cell()))
-			if dd < bd and not _taken(key):
-				bd = dd
-				best = key
-		if best != "":
-			var p2 := best.split(",")
-			_jobs[n] = [best, 0.0]
-			n._path = find_path(n.cell(), Vector2i(int(p2[0]), int(p2[1])))
-			break
+## Npc hooks (Npc._apply_routine): each volunteer's own cell of a spot, walking in and out.
+func stand_cell(n: Npc, place: String, spot: Vector2i) -> Vector2i:
+	return crew.stand_cell(n, place, spot) if crew else spot
 
 
-func _taken(key: String) -> bool:
-	for n: Npc in _jobs:
-		if str(_jobs[n][0]) == key:
-			return true
-	return false
+func npc_arrive(n: Npc) -> Vector2:
+	return crew.npc_arrive(n) if crew else Vector2.INF
 
 
-func _spot_of(n: Npc) -> String:
-	return Npc.place_now(n.routine, n.id)
+func npc_leave(n: Npc) -> bool:
+	return crew.npc_leave(n) if crew else false
+
+
+func task_of(n: Npc) -> String:
+	return crew.task_of(n) if crew else ""
 
 
 # ---- interacting ---------------------------------------------------------------------
@@ -523,6 +484,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		if n.cell() == c or (thing.is_empty() and n.position.distance_to(player.position + player.facing_dir() * 14.0) < 16.0):
 			later(_talk.bind(n))
 			return true
+	if crew and crew.interact(c, thing):
+		return true
 	match str(thing.get("type", "")):
 		"cf_debris":
 			_clear_debris(c, thing)
@@ -571,6 +534,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 
 
 func hint_for(c: Vector2i, thing: Dictionary) -> String:
+	var h := crew.hint(thing) if crew else ""
+	if h != "":
+		return h
+	if str(thing.get("type", "")) in ["cf_weed", "cf_load"]:
+		return str(thing.get("hint", ""))
 	if str(thing.get("type", "")) == "cf_plot":
 		var p := Commons.plot(str(thing["key"]))
 		if Commons.ripe(p):

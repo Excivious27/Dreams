@@ -106,14 +106,33 @@ static func rain_spots() -> Array:
 
 ## Where villager `npc` is at the community farm at `hour`, or "" (not there).
 ## Npc.place_now asks this first; town then hides them (the spot isn't a town spot).
+## In the wet, grown-ups shelter at an open rain spot (shed eaves, greenhouse) and
+## the kids stay home; Npc.rain_walker villagers keep to their spot.
 static func slot(npc: String, hour: float) -> String:
 	if GameState.run.is_empty() or not known() or GameState.festival_today() != "" or not GameState.npc_present(npc):
 		return ""
+	var spot := _slot_dry(npc, hour)
+	if spot == "" or spot in rain_spots() or not (GameState.is_wet() or GameState.weather_today() == "blizzard"):
+		return spot
+	if Npc.rain_walker(npc):
+		return spot
+	if npc in data().get("kids", []):
+		return ""
+	return shelter(npc)
+
+
+## The open rain spot a volunteer waits out the weather at ("" = none built yet: home).
+static func shelter(npc: String) -> String:
+	var open: Array = rain_spots().filter(func(sp: Variant) -> bool: return spot_open(str(sp)))
+	if open.is_empty():
+		return ""
+	return str(open[absi(hash(npc)) % open.size()])
+
+
+static func _slot_dry(npc: String, hour: float) -> String:
 	var winter := GameState.season() == "winter"
-	var rows: Array = []
 	if market_day():
-		rows = data().get("market_day", [])
-		for e: Array in rows:
+		for e: Array in data().get("market_day", []):
 			if str(e[0]) == npc and hour >= float(e[1]) and hour < float(e[2]):
 				return str(e[3])
 	for e: Array in data().get("schedule", []):
@@ -126,6 +145,16 @@ static func slot(npc: String, hour: float) -> String:
 			spot = "cf_lot" if not winter else ""
 		return spot
 	return ""
+
+
+## True when `npc` has a market-day slot right now (it beats the 7th-day chapel morning).
+static func market_slot(npc: String, hour: float) -> bool:
+	if not market_day():
+		return false
+	for e: Array in data().get("market_day", []):
+		if str(e[0]) == npc and hour >= float(e[1]) and hour < float(e[2]):
+			return true
+	return false
 
 
 static func spot_activity(place: String) -> String:
@@ -157,9 +186,92 @@ static func talk_pool(npc: String) -> Array:
 	return out
 
 
-static func work_line(activity: String) -> String:
-	var l: Array = tx((data().get("at_work", {}) as Dictionary).get(activity, {"penguins": ["Good to see you out here."]}))
+## What a volunteer says at work: their activity's lines, the weather/season/market day's,
+## and a line of their own.
+static func work_line(activity: String, npc := "") -> String:
+	var aw: Dictionary = data().get("at_work", {})
+	var l: Array = (tx(aw.get(activity, {"penguins": ["Good to see you out here."]})) as Array).duplicate()
+	if GameState.run.is_empty():
+		return str(l[randi() % l.size()])
+	var extra := ""
+	if GameState.is_wet() or GameState.weather_today() == "blizzard":
+		extra = "rain"
+	elif GameState.season() == "winter":
+		extra = "winter"
+	elif market_day():
+		extra = "market_day"
+	if extra != "" and aw.has(extra):
+		var ex: Array = tx(aw[extra])
+		if extra == "rain":
+			return str(ex[randi() % ex.size()])  # nobody talks about weeds in a downpour
+		else:
+			l.append_array(ex)
+	var own: Dictionary = data().get("at_work_own", {})
+	if own.has(npc):
+		l.append_array(tx(own[npc]))
 	return str(l[randi() % l.size()])
+
+
+## A short call-out as you pass (floating text over the volunteer).
+static func bark(activity: String, first_today: bool) -> String:
+	var b: Dictionary = data().get("barks", {})
+	var key := activity
+	if first_today:
+		key = "greet"
+	elif GameState.is_wet() and b.has("rain"):
+		key = "rain"
+	if not b.has(key):
+		return ""
+	var l: Array = tx(b[key])
+	return str(l[randi() % l.size()]) if not l.is_empty() else ""
+
+
+# ---- lending a hand --------------------------------------------------------------------
+
+## The kind of help a volunteer doing `activity` asks for ("" = none). Farm help is
+## watering when the beds are dry (before the well, no rain), weeding otherwise.
+static func help_kind(activity: String) -> String:
+	var k := str((data().get("help_kind", {}) as Dictionary).get(activity, ""))
+	if k == "weed" and stage() >= 4 and stage() < 5 and not GameState.sky_waters():
+		k = "water"
+	return k
+
+
+static func help_def(kind: String) -> Dictionary:
+	return (data().get("help", {}) as Dictionary).get(kind, {})
+
+
+static func helped_today(npc: String) -> bool:
+	return GameState.run.is_empty() or int((st().get("helped", {}) as Dictionary).get(npc, -1)) == int(GameState.run["day"])
+
+
+## A finished help task: friendship, a little goodwill, xp and a cut of the produce
+## (stand stock first, else a seed packet). Returns what you got, for the thank-you line.
+static func reward_help(npc: String) -> Array:
+	var h: Dictionary = st().get("helped", {})
+	h[npc] = int(GameState.run["day"])
+	st()["helped"] = h
+	if GameState.npcs.has(npc):
+		GameState.add_friend(npc, 10)
+	if npc != keeper():
+		GameState.add_friend(keeper(), 2)
+	st()["goodwill"] = int(st().get("goodwill", 0)) + 40
+	GameState.add_xp("farming", 8)
+	var got: Array = []
+	var stock: Dictionary = st()["stock"]
+	var best := ""
+	for id: String in stock:
+		if int(stock[id]) > 0 and (best == "" or int(stock[id]) > int(stock[best])):
+			best = id
+	if best != "":
+		var n := mini(2, int(stock[best]))
+		stock[best] = int(stock[best]) - n
+		if int(stock[best]) <= 0:
+			stock.erase(best)
+		got.append([best, n])
+	else:
+		got.append(["seed_packet", 1])
+	return got
 
 
 # ---- the quest line -------------------------------------------------------------------
