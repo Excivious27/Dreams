@@ -84363,6 +84363,76 @@
    "h": 32,
    "w": 60
   },
+  "city_alley": {
+   "file": "props/city_alley.png",
+   "h": 126,
+   "w": 112
+  },
+  "city_apartment": {
+   "file": "props/city_apartment.png",
+   "h": 280,
+   "w": 200
+  },
+  "city_brickwall": {
+   "file": "props/city_brickwall.png",
+   "h": 69,
+   "w": 128
+  },
+  "city_chainlink": {
+   "file": "props/city_chainlink.png",
+   "h": 68,
+   "w": 128
+  },
+  "city_garage": {
+   "file": "props/city_garage.png",
+   "h": 163,
+   "w": 128
+  },
+  "city_pallets": {
+   "file": "props/city_pallets.png",
+   "h": 43,
+   "w": 72
+  },
+  "city_planter": {
+   "file": "props/city_planter.png",
+   "h": 43,
+   "w": 64
+  },
+  "city_pole": {
+   "file": "props/city_pole.png",
+   "h": 112,
+   "w": 66
+  },
+  "city_roof_a": {
+   "file": "props/city_roof_a.png",
+   "h": 179,
+   "w": 176
+  },
+  "city_roof_b": {
+   "file": "props/city_roof_b.png",
+   "h": 167,
+   "w": 128
+  },
+  "city_shop": {
+   "file": "props/city_shop.png",
+   "h": 225,
+   "w": 96
+  },
+  "city_street_tree": {
+   "file": "props/city_street_tree.png",
+   "h": 96,
+   "w": 50
+  },
+  "city_tenement": {
+   "file": "props/city_tenement.png",
+   "h": 301,
+   "w": 120
+  },
+  "city_walkup": {
+   "file": "props/city_walkup.png",
+   "h": 250,
+   "w": 160
+  },
   "claw_machine": {
    "file": "props/claw_machine.png",
    "h": 76,

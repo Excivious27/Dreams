@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """CONDUCT 2 (c2_11): community farm art. art/incoming/r13/c2_11_*.png ->
   nature/ftree_<apple|orange|plum>_green (leafy, no fruit: the growing season
-  between blossom and fruit), props/cf_junk_* (the lot's stage-0 debris).
+  between blossom and fruit), props/cf_junk_* (the lot's stage-0 debris), props/city_* (the gangster
+  arc's city-block edge round the lot).
 python3 tools/slice_r13_c2_11.py; then art_audit --fix, godot --import."""
 import json, os, sys
 sys.path.insert(0, os.path.dirname(__file__))
@@ -31,6 +32,11 @@ def run():
     kit("r13/c2_11_ftree_green.png", "nature", [("ftree_apple_green", {"h": 128}), ("ftree_orange_green", {"h": 128}), ("ftree_plum_green", {"h": 128})])
     kit("r13/c2_11_debris_wild.png", "props", [("cf_junk_bramble", {"h": 60}), ("cf_junk_weeds", {"h": 56}), ("cf_junk_branches", {"h": 54}),
                                                ("cf_junk_stones", {"h": 54}), ("cf_junk_stump", {"h": 64})], merge=3)
+    # The gangster arc's city-block edge round the Westside Lot Garden (community_farm._city_edge).
+    kit("r13/c2_11_city_blocks_a.png", "props", [("city_tenement", {"w": 120}), ("city_apartment", {"w": 200}), ("city_walkup", {"w": 160})])
+    kit("r13/c2_11_city_blocks_b.png", "props", [("city_garage", {"w": 128}), ("city_shop", {"w": 96}), ("city_roof_a", {"w": 176}), ("city_roof_b", {"w": 128})])
+    kit("r13/c2_11_city_edge_kit.png", "props", [("city_alley", {"w": 112}), ("city_brickwall", {"w": 128}), ("city_chainlink", {"w": 128}),
+                                                 ("city_street_tree", {"h": 96}), ("city_planter", {"w": 64}), ("city_pole", {"h": 112}), ("city_pallets", {"w": 72})])
     kit("r13/c2_11_debris_lot.png", "props", [("cf_junk_slab", {"h": 64}), ("cf_junk_rubble", {"h": 56}), ("cf_junk_scrap", {"h": 56}), ("cf_junk_tyres", {"h": 60})])
 
 

@@ -158,7 +158,16 @@ func draw_map() -> void:
 	for c: Vector2i in _wood:
 		if str(_wood[c]) == "tree":
 			under[c] = true
-	soft_ground(WorldGen.smooth_cells(under), "forest_floor", Color(0.12, 0.1, 0.04, 0.2))
+	if _gang():
+		soft_ground(WorldGen.smooth_cells(under), "pavement", Color(0.08, 0.08, 0.1, 0.25))
+		# The city round the lot: alleys and back yards between the buildings.
+		var city := {}
+		for c: Vector2i in _border_cells:
+			if str(_border_cells[c]) == "city":
+				city[c] = true
+		soft_ground(city, "pavement", Color(0.05, 0.05, 0.07, 0.35), Color(0.62, 0.62, 0.7))
+	else:
+		soft_ground(WorldGen.smooth_cells(under), "forest_floor", Color(0.12, 0.1, 0.04, 0.2))
 	var ways := {}
 	var plaza := _plaza() if s >= 1 or _gang() else {}
 	for c in cells_of(_paths()):
@@ -474,6 +483,20 @@ func _plant_wood(avoid: Dictionary) -> void:
 			continue
 		rng.seed = hash(Vector3i(1752, c.x, c.y))
 		var r := rng.randf()
+		if _gang():
+			# The lot's fringe: a street tree here and there, planters, pallets, tufts of weed.
+			if str(_wood[c]) == "tree" and (c.x + c.y) % 2 == 0:
+				if r < 0.16:
+					prop("props", "city_street_tree", c)
+				elif r < 0.24:
+					prop("props", "city_planter", c, 1 if not things.has(c + Vector2i(1, 0)) else 0)
+				elif r < 0.29:
+					prop("props", "city_pallets", c, 1 if not things.has(c + Vector2i(1, 0)) else 0)
+			elif r < 0.22:
+				var tf := prop("nature", "grass_tuft_" + ("summer" if se in ["spring", "summer"] else ("frost" if se == "winter" else "fall")), c, 0, 0.0, false, 0.5)
+				if tf:
+					tf.position.x += rng.randf_range(-4.0, 4.0)
+			continue
 		if str(_wood[c]) == "tree":
 			if (c.x + c.y) % 2 == 1 or r < 0.25 or is_cleared(c):
 				continue  # spaced out: a wood you can see into, not a hedge
@@ -489,8 +512,108 @@ func _plant_wood(avoid: Dictionary) -> void:
 				sp.position.x += rng.randf_range(-4.0, 4.0)
 
 
+## Gangster arc: the Westside Lot Garden sits inside a city block, so the
+## border band becomes buildings instead of blossom woods: brick tenements and
+## walk-ups facing the lot along the meandering inner edge, flat roofs, garages
+## and shops behind and to the south, alley mouths, back walls and chain-link in
+## the gaps, street trees, planters and utility poles. Everything stays on band
+## cells (already solid), so the walkable lot is unchanged. Deterministic (seeded).
+const CITY_BIG := ["city_apartment", "city_tenement", "city_walkup", "city_shop", "city_garage", "city_roof_a", "city_roof_b"]
+const CITY_GAP := ["city_alley", "city_brickwall", "city_chainlink"]
+const CITY_SMALL := ["city_street_tree", "city_pole", "city_planter", "city_pallets"]
+
+
+func _city_edge() -> void:
+	var band := {}
+	for c: Vector2i in _border_cells:
+		if str(_border_cells[c]) == "tree":
+			band[c] = true
+			_border_cells[c] = "city"  # draw_border: no forest floor, no trees
+			if props.has(c):
+				(props[c] as Node).queue_free()  # the band's inner-edge trees
+				props.erase(c)
+	_border_draw.clear()
+	var occ := {}
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1761
+	# Anchors nearest the lot first (facades line the edge), then the deeper fill.
+	var order: Array = band.keys()
+	order.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		var da := _city_depth(a)
+		var db := _city_depth(b)
+		return da < db or (da == db and (hash(a) % 1000) < (hash(b) % 1000)))
+	for ac: Vector2i in order:
+		if occ.has(ac):
+			continue
+		var picks := CITY_BIG.duplicate()
+		for i in range(picks.size() - 1, 0, -1):  # seeded shuffle
+			var j := rng.randi_range(0, i)
+			var t: Variant = picks[i]
+			picks[i] = picks[j]
+			picks[j] = t
+		for nm: String in picks:
+			if _city_try(nm, ac, band, occ, 0.55):
+				break
+	# Gaps along the inner edge: alley mouths, back walls, fences; then small things.
+	for ac: Vector2i in order:
+		if occ.has(ac) or _city_depth(ac) > 2:
+			continue
+		var nm: String = CITY_GAP[rng.randi_range(0, CITY_GAP.size() - 1)]
+		if not _city_try(nm, ac, band, occ, 0.6):
+			_city_try(str(CITY_SMALL[rng.randi_range(0, CITY_SMALL.size() - 1)]), ac, band, occ, 0.6)
+	for ac: Vector2i in order:
+		if not occ.has(ac) and rng.randf() < 0.3:
+			_city_try(str(CITY_SMALL[rng.randi_range(0, CITY_SMALL.size() - 1)]), ac, band, occ, 0.5)
+	_border_draw.sort_custom(func(a: Array, b: Array) -> bool: return (a[0] as Vector2i).y < (b[0] as Vector2i).y)
+
+
+## How far a band cell is from the open lot (1 = touching it).
+func _city_depth(c: Vector2i) -> int:
+	for d in range(1, pad + 4):
+		for off: Vector2i in [Vector2i(d, 0), Vector2i(-d, 0), Vector2i(0, d), Vector2i(0, -d)]:
+			var n := c + off
+			if in_content(n) and not _border_cells.has(n):
+				return d
+	return pad + 4
+
+
+## Place a city piece with its bottom centre on cell `ac` if its whole picture
+## stays on band cells (or past the map edge) and it covers enough new ground.
+func _city_try(nm: String, ac: Vector2i, band: Dictionary, occ: Dictionary, fresh: float) -> bool:
+	var t := Art.tex("props", nm)
+	if t == null:
+		return false
+	var wc := t.get_width() * 0.5 / TILE
+	var hc := t.get_height() * 0.5 / TILE
+	var x0 := ac.x + 0.5 - wc / 2.0
+	var y0 := ac.y + 1.0 - hc
+	var cells: Array[Vector2i] = []
+	var total := 0
+	var new := 0
+	for y in range(floori(y0 + 0.35), ac.y + 1):
+		for x in range(floori(x0 + 0.25), ceili(x0 + wc - 0.25)):
+			var c := Vector2i(x, y)
+			var outside := x < -pad or y < -pad or x >= cols + pad or y >= rows + pad
+			if outside:
+				continue
+			if not band.has(c):
+				return false
+			total += 1
+			if not occ.has(c):
+				new += 1
+			cells.append(c)
+	if total == 0 or float(new) / float(total) < fresh:
+		return false
+	for c in cells:
+		occ[c] = true
+	_border_draw.append([ac, "props", nm, 0.0])
+	return true
+
+
 ## Trees and undergrowth round the edges (never on the beds, paths or yards).
 func _dress() -> void:
+	if _gang():
+		_city_edge()
 	var avoid := _busy.duplicate()
 	for e in exits:
 		for c in cells_of([(e["rect"] as Rect2i).grow(3)]):
@@ -500,7 +623,8 @@ func _dress() -> void:
 			avoid[c] = true
 	_plant_wood(avoid)
 	WorldGen.scatter_props(self, Rect2i(0, 0, cols, rows), 1745, 12, avoid)
-	WorldGen.dress_band(self, 1746)
+	if not _gang():
+		WorldGen.dress_band(self, 1746)
 	var kinds := ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "bee", "sparrow"]
 	kinds += ["rabbit"] if not _gang() else ["sparrow"]
 	if _s() >= 6:

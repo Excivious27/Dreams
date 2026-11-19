@@ -4,7 +4,8 @@ extends SceneTree
 ## donation box, greenhouse) can be walked up to, the woodland edge wanders
 ## (organic, on all four sides) and never sits on a path, bed or yard, every
 ## debris kind has its own art, and the orchard trees are in leaf (never bare)
-## in spring and summer.
+## in spring and summer. Gangster arc: the band is a city block (buildings on
+## every side, alleys/walls/fences, no trees), never drawn over the walkable lot.
 ##   godot --headless --path . -s res://tools/cf_layout_test.gd
 var fails := 0
 
@@ -120,6 +121,60 @@ func _stage(arc: String, s: int, day: int) -> void:
 	check(bad == 0, "%s %d edge-wood cells on paths/beds/yards" % [tag, bad])
 	check(sides.size() == 4, "%s woodland edge on only %s" % [tag, str(sides.keys())])
 	check(depths.size() >= 4, "%s woodland edge too even (depths %s)" % [tag, str(depths.keys())])
+	# Edge style: gangsters get a city block (buildings, no border trees), penguins the woods.
+	var bc: Dictionary = m.get("_border_cells")
+	var kinds := {}
+	for c: Vector2i in bc:
+		kinds[str(bc[c])] = true
+	var bd: Array = m.get("_border_draw")
+	var city_n := 0
+	var tree_n := 0
+	var sides_c := {}
+	for it: Array in bd:
+		if str(it[2]).begins_with("city_"):
+			city_n += 1
+			var c: Vector2i = it[0]
+			if c.y < 0: sides_c["n"] = true
+			if c.y >= m.rows: sides_c["s"] = true
+			if c.x < 0: sides_c["w"] = true
+			if c.x >= m.cols: sides_c["e"] = true
+		elif str(it[1]) == "nature":
+			tree_n += 1
+	if arc == "gangsters":
+		check(not kinds.has("tree"), "%s gangster band still has tree cells" % tag)
+		check(tree_n == 0, "%s gangster band still draws %d trees" % [tag, tree_n])
+		check(city_n >= 30, "%s city edge too thin (%d pieces)" % [tag, city_n])
+		check(sides_c.size() == 4, "%s city edge on only %s" % [tag, str(sides_c.keys())])
+		var names := {}
+		for it: Array in bd:
+			names[str(it[2])] = true
+		for nm in ["city_tenement", "city_apartment", "city_walkup", "city_roof_a"]:
+			check(names.has(nm), "%s city edge never uses %s" % [tag, nm])
+		check(names.has("city_alley") or names.has("city_brickwall") or names.has("city_chainlink"), "%s no alley/wall/fence in the city edge" % tag)
+		# No band prop (old inner-edge trees) left standing, and nothing in the band is walkable.
+		var leaks := 0
+		for c: Vector2i in bc:
+			if m.in_content(c) and not m.blocked.has(c):
+				leaks += 1
+			if m.props.has(c) and is_instance_valid(m.props[c]) and str((m.props[c] as Sprite2D).texture.resource_path).contains("/nature/"):
+				leaks += 1
+		check(leaks == 0, "%s %d band cells walkable or still wooded" % [tag, leaks])
+		# Pieces stay inside the band: no building picture over the walkable lot.
+		var over := 0
+		for it: Array in bd:
+			var t := Art.tex(str(it[1]), str(it[2]))
+			if t == null:
+				continue
+			var c: Vector2i = it[0]
+			var wc := t.get_width() * 0.5 / 16.0
+			var hc := t.get_height() * 0.5 / 16.0
+			for y in range(floori(c.y + 1.0 - hc + 0.35), c.y + 1):
+				for x in range(floori(c.x + 0.5 - wc / 2.0 + 0.25), ceili(c.x + 0.5 + wc / 2.0 - 0.25)):
+					if seen.has(Vector2i(x, y)):
+						over += 1
+		check(over == 0, "%s city pictures over %d walkable cells" % [tag, over])
+	else:
+		check(kinds.has("tree") and city_n == 0 and tree_n > 50, "%s penguin edge should stay woodland (%d trees, %d city)" % [tag, tree_n, city_n])
 	# Debris art.
 	if s == 0:
 		for k: String in m.JUNK:
