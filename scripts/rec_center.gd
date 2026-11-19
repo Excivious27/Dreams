@@ -98,6 +98,16 @@ static func lot_rect() -> Rect2i:
 	return Rect2i(44, 74, 24, 17)
 
 
+## The lead-in: from day 3 until the grand opening, villagers talk about the works.
+static func soon_lines() -> Array:
+	if GameState.run.is_empty() or is_open() or int(GameState.run["day"]) < 3:
+		return []
+	var out: Array = []
+	for l in data().get("chat_soon" if GameState.is_penguins() else "chat_soon_gang", []):
+		out.append(_fill(str(l)))
+	return out
+
+
 ## Town door: shut (with a word about the opening) until the grand opening.
 static func door_closed(m: GameMap, thing: Dictionary) -> bool:
 	if str(thing.get("interior", "")) != "rec" or is_open():
@@ -198,7 +208,7 @@ static func _fill(s: String) -> String:
 ## Extra everyday lines for Talk.line once the place is open.
 static func talk_pool(npc_id: String) -> Array:
 	if not is_open():
-		return []
+		return soon_lines()
 	var out: Array = []
 	var own: Array = (data().get("chat_gang", {}) as Dictionary).get(npc_id, []) if not GameState.is_penguins() else []
 	if own.is_empty():
