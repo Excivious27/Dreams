@@ -235,7 +235,8 @@ func _faint_rules() -> void:
 		_ok(Faint.fee(false, 0) == 0, "%s day 1: nothing goes missing" % arc)
 		r["day"] = 9
 		r["crystals"] = 1000
-		_ok(Faint.fee(true, 0) == 100, "%s day 9: clinic bill 8%% + 20 (%d)" % [arc, Faint.fee(true, 0)])
+		_ok(Faint.fee(true, 0) == 0, "%s day 9: first clinic visit after the grace week is free" % arc)
+		_ok(Faint.fee(true, 0) == 100, "%s day 9: then the bill is 8%% + 20 (%d)" % [arc, Faint.fee(true, 0)])
 		_ok(Faint.fee(true, 10) == 140, "%s day 9: deeper floors cost more (%d)" % [arc, Faint.fee(true, 10)])
 		_ok(Faint.fee(false, 0) == 50, "%s day 9: 5%% goes missing at home (%d)" % [arc, Faint.fee(false, 0)])
 		r["crystals"] = 30
