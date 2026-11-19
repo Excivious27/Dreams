@@ -1274,10 +1274,14 @@ func _pond_fish(c: Vector2i, river := false) -> void:
 func _intro() -> void:
 	player.frozen = true
 	var n := GameState.names()
+	var dlg := Dialogue.instance(get_tree())
+	dlg.begin_skippable(self)  # Skip (or MENU) jumps to the choices and the how-to-play lines
 	if GameState.is_penguins():
 		await _intro_penguins(n)
 	else:
 		await _intro_gangsters(n)
+	if dlg._skip_owner == self:
+		dlg.end_skippable()
 	GameState.run["intro_done"] = true
 	GameState.save()
 	player.frozen = false
@@ -1329,7 +1333,7 @@ func _intro_penguins(n: Dictionary) -> void:
 		GameState.run["flags"]["crystal_trust"] = 0
 	await say([
 		{"who": "Star Crystal", "text": "That little one by your feet - %s, is it? - has more Meow Pow Wow in one paw than this whole valley. Keep them close." % pet_name},
-		{"who": "Star Crystal", "text": "Till the ground with the hoe. Pick the seeds on your toolbar, face the soil and tap USE. Water every morning. When your first crop comes in, we'll talk again."},
+		{"who": "Star Crystal", "text": "Till the ground with the hoe. Pick the seeds on your toolbar, face the soil and tap USE. Water every morning. When your first crop comes in, we'll talk again.", "keep": true},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop.")
 	GameState.add_quest("meet_town", "Walk south and meet the people of %s." % town)
@@ -1372,7 +1376,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 	await say([
 		{"text": "%s shakes the rain off and looks up at you like all of this is normal. Maybe for a while it can be." % pet_name},
 		{"text": "You'll need money to move on anyone. Money means crops. Crops mean dirt under your nails. Fine."},
-		{"text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each morning. Sell at the box. Don't draw eyes."},
+		{"text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each morning. Sell at the box. Don't draw eyes.", "keep": true},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop. Sell it at the box by the house.")
 	GameState.add_quest("meet_town", "Go south. Learn who in %s can be bought, and who is watching." % town)

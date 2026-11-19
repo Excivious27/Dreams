@@ -211,6 +211,13 @@ if ! echo "$yout" | grep -q "systems_test: 0 failures"; then
   echo "Systems test failed"; exit 1
 fi
 
+echo "== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 =="
+svout="$("$GODOT" --headless --path . -s res://tools/save_test.gd 2>&1)"
+echo "$svout" | grep -E "FAIL|SCRIPT ERROR|save_test" || true
+if ! echo "$svout" | grep -q "save_test: [0-9]* checks, 0 failures"; then
+  echo "Save test failed"; exit 1
+fi
+
 echo "== story: every chapter plays to the end =="
 tout="$("$GODOT" --headless --path . -s res://tools/story_test.gd 2>&1)"
 echo "$tout" | grep -E "FAIL|STORY DONE" || true

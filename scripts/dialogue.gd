@@ -32,6 +32,14 @@ var _hint: Label
 var _opened_frame := 0
 var _portrait: TextureRect
 var _row: HBoxContainer
+## Skippable scenes (the opening): a Skip button (or MENU) fast-forwards every
+## line up to the next choice; lines marked "keep" (how-to-play) still show.
+## The scene calls begin_skippable() before its first say and end_skippable() after.
+var skippable := false
+var skipping := false
+var _skip_btn: Button
+var _skip_owner: Node = null
+const SKIP_SIZE := Vector2(56, 18)  # sits just above the box, right side (clear of the clock and the story panel)
 
 ## Portrait id per speaker name. Player/pet names come from the run.
 static func portrait_for(who: String) -> String:
@@ -167,9 +175,52 @@ func _ready() -> void:
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_hint.modulate = Color(0.3, 0.2, 0.1, 0.8) if ink else Color(1, 1, 1, 0.6)
 	v.add_child(_hint)
+	_skip_btn = Button.new()
+	_skip_btn.text = "Skip ▸▸"
+	_skip_btn.add_theme_font_size_override("font_size", 8)
+	_skip_btn.size = SKIP_SIZE
+	_skip_btn.focus_mode = Control.FOCUS_NONE
+	_skip_btn.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_skip_btn.add_theme_stylebox_override("normal", Hud.panel_stylebox("panel_wood"))
+	_skip_btn.add_theme_stylebox_override("hover", Hud.panel_stylebox("panel_wood"))
+	_skip_btn.add_theme_stylebox_override("pressed", Hud.panel_stylebox("panel_parchment"))
+	_skip_btn.visible = false
+	_skip_btn.pressed.connect(skip)
+	add_child(_skip_btn)
 
 
 var _choice_scroll: ScrollContainer
+
+
+## owner: the scene playing it; if it leaves the tree mid-scene, Skip goes too.
+func begin_skippable(owner_node: Node = null) -> void:
+	skippable = true
+	skipping = false
+	_skip_owner = owner_node
+
+
+func end_skippable() -> void:
+	_skip_owner = null
+	skippable = false
+	skipping = false
+	if _skip_btn:
+		_skip_btn.visible = false
+
+
+## Fast-forward: drop narration up to the next choice or "keep" line, for the
+## rest of the skippable scene (later say() batches skip too).
+func skip() -> void:
+	if not skippable or skipping:
+		return
+	skipping = true
+	if _skip_btn:
+		_skip_btn.visible = false
+	if _pic:
+		_pic.visible = false
+	if is_inside_tree():
+		Music.instance(get_tree()).sfx("ui_tap")
+	if active and not _in_choice:
+		_next.call_deferred()  # after this frame's _process: the MENU press must not also open the menu
 
 
 func say(lines: Array) -> void:
@@ -178,8 +229,11 @@ func say(lines: Array) -> void:
 		active = true
 		_opened_frame = Engine.get_process_frames()
 		get_tree().paused = true
-		_panel.visible = true
-		_next()
+		_panel.visible = not skipping
+		if skipping:
+			_next.call_deferred()  # may close at once: finished must come after the caller's await
+		else:
+			_next()
 
 
 func _next() -> void:
@@ -188,9 +242,13 @@ func _next() -> void:
 		c.queue_free()
 	_choice_scroll.custom_minimum_size = Vector2.ZERO
 	_in_choice = false
+	if skipping:
+		while not _queue.is_empty() and not (_queue[0] as Dictionary).has("choice") and not bool((_queue[0] as Dictionary).get("keep", false)):
+			_queue.pop_front()
 	if _queue.is_empty():
 		_close()
 		return
+	_panel.visible = true
 	var line: Dictionary = _queue.pop_front()
 	_set_pic(str(line.get("pic", "")))
 	_set_portrait(str(line.get("who", "")), str(line.get("mood", "neutral")))
@@ -428,10 +486,15 @@ func _close() -> void:
 
 
 func _process(delta: float) -> void:
+	if skippable and _skip_owner != null and not (is_instance_valid(_skip_owner) and _skip_owner.is_inside_tree()):
+		end_skippable()  # the scene that offered Skip is gone (left mid-intro)
 	if not active:
 		return
 	# The box grows upward as text wraps, so it never covers the touch buttons.
 	_panel.position.y = maxf(4.0, minf(BOX_Y, TouchControls.TOP_OF_CONTROLS - 6.0 - _panel.size.y))
+	if _skip_btn:
+		_skip_btn.visible = skippable and not skipping and not _in_choice
+		_skip_btn.position = Vector2(_panel.position.x + _panel.size.x - SKIP_SIZE.x, _panel.position.y - SKIP_SIZE.y - 3)
 	_process_input()
 	if _typing:
 		_shown += delta * 45.0
@@ -474,6 +537,9 @@ func _process_input() -> void:
 					last.pressed.emit()
 					break
 		return
+	if skippable and not skipping and Input.is_action_just_pressed("menu"):
+		skip()
+		return
 	if InputSetup.confirm_pressed():
 		_advance()
 
@@ -487,6 +553,8 @@ func _input(event: InputEvent) -> void:
 		pos = (event as InputEventScreenTouch).position
 	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and event.device != InputEvent.DEVICE_ID_EMULATION:
 		pos = (event as InputEventMouseButton).position
+	if pos != Vector2.INF and _skip_btn and _skip_btn.visible and Rect2(_skip_btn.position, SKIP_SIZE).grow(4).has_point(pos):
+		return  # the Skip button takes it
 	if pos != Vector2.INF and pos.y < TouchControls.TOP_OF_CONTROLS:
 		_advance()
 		get_viewport().set_input_as_handled()

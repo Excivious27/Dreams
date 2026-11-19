@@ -2,6 +2,10 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 1 (c1_13): saves for a new player, opening Skip
+- **Skip the opening:** the farm's opening scene (both arcs) now has a **Skip ▸▸** button top-right (MENU does the same). It jumps past the narration to the opening's choice, so the answer still counts, and the how-to-play line still shows. The quests arrive as before. The button goes away when the scene ends, and also if you leave mid-scene.
+- **Save audit:** checked first run with no save (every setting at its default, the title shows only New game), a new game in all three slots (penguins, gangsters, a custom hero), save and reopen at every early milestone (opening done, first planting, closing mid-way to town, standing in town, inside the store, first night's sleep, a story scene cut off), slot isolation, settings shared across slots, a save file cut off mid-write (falls back to the backup and keeps the bad copy), and an old pre-Round-13 save moving into the arcade tickets, community farm, mega regions and campaign gate. All of these held. No save bugs found beyond the missing Skip.
+- **Test:** `tools/save_test.gd` (in check.sh; pass a dir under xvfb for a picture of the opening with its Skip button).
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.
