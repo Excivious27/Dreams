@@ -75,6 +75,23 @@ func _run() -> void:
 		for k in mini(stop, plan.size()):
 			_frames(j, 1, acts[int(plan[k])])
 		await _shot("02_jumper_level%d" % n)
+	# Level 3 just before its first low ceiling (the hanging slab art).
+	j.state = "select"
+	j.play_tile(2)
+	j.lv["dbl"] = false
+	var ceil_x := 0.0
+	for r: Rect2 in j.lv["solids"]:
+		if r.position.y < 0.0 and r.position.x > 300.0:
+			ceil_x = r.position.x
+			break
+	var plan3: Array = JumperLevels.stored_plan(3)
+	while j.intro_t - 1.0 / 60.0 > 0.5:
+		_frames(j, 1)
+	for k in plan3.size():
+		_frames(j, 1, acts[int(plan3[k])])
+		if float(j.st[JumperLevels.X]) >= ceil_x - 10.0:
+			break
+	await _shot("02_jumper_ceiling")
 	j.state = "select"
 	j.play_tile(8)
 	for k in 60 * 8:

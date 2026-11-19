@@ -361,6 +361,11 @@ echo "$jout" | grep -E "FAIL|jumper_solve" || true
 if ! echo "$jout" | grep -q "jumper_solve: 0 failures"; then
   echo "Jumper level check failed"; exit 1
 fi
+jtout="$("$GODOT" --headless --path . -s res://tools/jumper_test.gd 2>&1)"
+echo "$jtout" | grep -E "FAIL|SCRIPT ERROR|jumper_test" || true
+if ! echo "$jtout" | grep -q "jumper_test: 0 failures"; then
+  echo "Jumper feel/checkpoint test failed"; exit 1
+fi
 aout2="$("$GODOT" --headless --path . -s res://tools/arcade_test.gd 2>&1)"
 echo "$aout2" | grep -E "FAIL|SCRIPT ERROR|arcade_test" || true
 if ! echo "$aout2" | grep -q "arcade_test: 0 failures"; then
