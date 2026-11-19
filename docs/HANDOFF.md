@@ -2,14 +2,32 @@
 
 The shared memory between Tom's two Claude accounts (Team and personal). Tom switches between them when one hits a usage limit, without warning and without telling either chat, so every session keeps this file current on its own (rules in `CLAUDE.md`). Read it at the start of every session, after `CLAUDE.md`; for depth, `reference/BRIEF.md`, the top of `docs/STATUS.md` and the newest guide in `docs/guides/`.
 
+## Tom's deliverables (every account, every time; Tom 2026-11-19)
+
+Tom judges progress only by these. The Team account always gave them; the other account must too.
+
+**Every reply** ends with: the play link https://excivious27.github.io/Dreams/ (after a push it auto-deploys), what changed, what to test, and at most one question, placed last. Phone-length.
+
+**During long jobs (CONDUCT, agent rounds):** send Tom a short check-in (SendUserMessage) at least every 60 minutes: what finished, what's running, any problem (restarts, failures), the ETA. Watchdog every 30 minutes (see CONDUCT).
+
+**At the end of every completed piece of work (each CONDUCT, each round, each big fix), the full package, sent as FILES in the chat (SendUserFile) and not only as repo links:**
+1. **The complete all-in-one guide**: `docs/guides/GUIDE-NN.md` (next number). It must be **100% complete on its own**: every single thing still needed from Tom to finish the whole game, not only this round's delta. That includes taste calls, open story questions, accounts, uploads, art prompts still needed (or "none"), and how to test the latest changes. Carry over every still-open item from earlier guides.
+2. **The progress spreadsheet** (.xlsx, Arial, header row styled): an Overview tab with **% complete for the whole game and % remaining**, plus % per area. A tab per system (from docs/inventory.csv: area, system, status, % done, % remaining, tests, notes). A tab for this round (area / found / fixed / test). A tab "Still needed from Tom". Template: tools/package/Dreams-Progress-CONDUCT-1.xlsx (built inline; tools/package/build_progress.py is the older builder).
+3. **The report**: `docs/reports/CONDUCT-N.md` (or ROUND-N.md): found/fixed table, tests, what's left.
+4. **Every art prompt file still needed** (max 2-3 images per prompt). Usually none, because the image tool makes the art; then say "no art prompts needed".
+5. **The artifact page** (one hosted page with tabs: progress, guide, prompts, report): tools/package/build_final_page.py + page_template.html. Publish with the Artifact tool. Each account owns its own page: Team page `67cf3116-3dba-4920-801d-e0ebd5f7c947`. The personal account creates one on first use and records its id here.
+6. The play link.
+
+Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current.
+
 ## Baton (update on every push)
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 09:50 PT, personal account (game chat).
+- **Last update:** 2026-11-19 13:00 PT, Team account (Tom's process change only; the personal account is running CONDUCT 2).
 - **Done:** Round 13 and CONDUCT 1 of 9 (report docs/reports/CONDUCT-1.md, guide docs/guides/GUIDE-25.md).
-- **In progress:** CONDUCT 2 (rec center, arcade, community farm) on the PERSONAL account, started 09:50 PT: 20 agents in /home/claude/wt/c2_01..c2_20 on branches conduct2/c2_NN (local to the personal sandbox, not pushed), plus the 20-bot playtest. If you are the Team account and this is under ~2 h old, the personal account is likely still working: ask Tom before pushing.
-- **Next step:** merge the c2 branches (tools/conduct/merge_c.sh), check.sh, push, re-verify, deliver the CONDUCT 2 package (report docs/reports/CONDUCT-2.md, GUIDE-26, spreadsheet). Then CONDUCT 3 (battle campaigns), then wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package and a new artifact page on the personal account (record its id in PROJECT-MEMORY). If the c2 worktrees are lost (account switch), restart CONDUCT 2 from scratch with docs/CONDUCT-2-SCOPES.txt.
+- **In progress:** CONDUCT 2 (rec center, arcade, community farm) on the PERSONAL account, started 09:50 PT under the OLD process (20 agents fixing + full check.sh each). **Tom, 12:56 PT: switch to the new CONDUCT process now** (see Tom's commands → CONDUCT). Personal account: message every running c2 agent to stop running tools/check.sh and stop any further work, commit what it has on its branch (it is fine if unfinished), and report its findings plus what it fixed and what it didn't. Then follow steps 3-6: merge the committed work once, turn the leftovers into 5-6 file-disjoint fix packages for fix agents (60-75 min cap, targeted tests only), one full check.sh, bots, playtest, package. Send Tom an hourly check-in.
+- **Next step:** finish CONDUCT 2 as above and deliver its package (report docs/reports/CONDUCT-2.md, GUIDE-26 complete on its own, progress xlsx with % done/% remaining, art prompts or "none", your own artifact page with its id recorded here). Then CONDUCT 3 (battle campaigns) with the new process, wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package. If the c2 worktrees are lost (account switch), run CONDUCT 2 again with the new process from docs/CONDUCT-2-SCOPES.txt.
 - **Jobs running elsewhere:** CONDUCT 2 agents in the personal sandbox (see In progress). The Team chat may fire one stale watchdog reminder; ignore.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
@@ -19,6 +37,8 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19: CONDUCT process changed (standing rule): 20 read/play-only auditors (no code changes, no check.sh) → synthesize into 5-6 file-disjoint fix packages → 5-6 fix agents in parallel with targeted tests only (60-75 min cap) → one merge, one full check.sh, bots, playtest → full package. Target about 2-2.5 h per CONDUCT. Agents that were mid-run under the old process switch now (see Baton).
+- 2026-11-19: Both accounts give Tom the same deliverables: a play link every reply, check-ins at least hourly on long jobs, and after every completed piece of work the full package (complete guide, progress xlsx with % done/% remaining, report, art prompts or 'none', updated artifact page) as files in the chat. See "Tom's deliverables".
 - 2026-11-19: Watchdog: during every CONDUCT (and any agent/bot job), check all agents and bots every 30 minutes and restart anything stopped or stuck (details under CONDUCT).
 - 2026-11-18: Default move speed stays as it is (Tom withdrew "twice as fast"); speed comes from gear, potions, foods, mounts and skills.
 - 2026-11-18: Fishing only with the rod in hand.
@@ -96,15 +116,15 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 
 When Tom sends **CONDUCT** (alone or with a focus), run the whole cycle below to the end without stopping to ask, then deliver. It is the same on both accounts.
 
-1. **Fresh 20-agent audit.** Start 20 new sub-agents (never reuse earlier findings), each auditing a different part of the game: systems, story and writing (both arcs), balance and economy, UI and controls vs Stardew, maps vs Sun Haven openness, art consistency and missing art, audio, performance on phone and web, multiplayer, saves and migrations, bugs and crashes. Each lists concrete work or fixes Claude can do.
-2. **20-bot playtest.** Run the bot harness (`tools/bots.sh`, 20 bots) plus the scripted playtests (`tools/playtest.gd`, story, co-op), look at the screenshots, and add every failure and oddity to the list.
-3. **Do every fix AND all open work Claude can do alone:** all art work, all audio work, and any and all work identified as needed on the game in any way (from the audit, the bots, the Baton, STATUS.md, the guides, MISSING-ART.md, plans agreed but not started). That includes code, data, writing, balance, and generating and wiring in art and audio (dreams-image, ACE Music, CC0), so nothing Claude can do is left outstanding. Push in small steps, check.sh before every push, Baton updated each time.
-4. **Re-verify.** Rerun check.sh, the playtests and the bots on the finished code; fix what they find; confirm the web deploy is live.
-5. **Deliver the full package, 100% complete and up to date,** as one artifact and as files sent directly in the chat (not only repo links):
-    - progress report file (what the audit and bots found, what was fixed, what is still open and why);
-    - every art prompt file still needed (only what the image tool couldn't make; at most 2-3 images per prompt, each labeled and separated, nothing left out);
-    - the complete all-in-one guide of everything Claude needs from Tom (next `docs/guides/GUIDE-NN.md`).
-6. Short reply ending with the play link, what changed and what to test.
+**How it runs (standing process, Tom 2026-11-19; target about 2-2.5 hours per CONDUCT).** Agents must not each run the full check.sh: the sandbox has 2 CPUs and one Godot lock, so 20 full suites queue for hours.
+
+1. **Fresh 20-agent audit (read and play only, about 40 min).** Start 20 new sub-agents (never reuse earlier findings), each on a different part of the game or of this CONDUCT's focus: systems, story and writing (both arcs), balance and economy, UI and controls vs Stardew, maps vs Sun Haven openness, art consistency and missing art, audio, performance on phone and web, multiplayer, saves and migrations, bugs and crashes, plus regression checks of the last CONDUCT. Auditors read code and data, play their area by short scripts, take screenshots and look at them. They may write a small focused test or probe that reproduces a finding. They do **not** change game code and do **not** run tools/check.sh. Each returns a findings list: what's wrong, where (file/function), how to reproduce, a suggested fix, art/audio needed, and anything only Tom can decide.
+2. **20-bot playtest** (`tools/bots.sh 3 DIR`) plus the scripted playtests (`tools/playtest.gd`, story, co-op), run while the auditors work or right after; look at the screenshots and add every failure and oddity to the list.
+3. **Synthesize (main chat).** Merge and dedupe all findings. Group them into **5-6 fix packages, each owning separate files/systems** so no two packages edit the same thing. Add all open work Claude can do alone (Baton, STATUS.md, guides, MISSING-ART.md, plans agreed but not started), including art (dreams-image) and audio (ACE Music, CC0).
+4. **5-6 fix agents in parallel** (worktrees via tools/conduct/mkwt.sh), one package each, with a 60-75 minute cap. Each fixes its package fully, adds or extends tests for what it fixed, makes and wires in the art and audio its package needs, runs **only its own targeted tests** (under `flock /tmp/godot.lock`), commits, and reports. The main chat may take a package itself.
+5. **Merge once** (tools/conduct/merge_c.sh), then one full `tools/check.sh`, then the 20 bots and the playtest again. Fix what they find, push (Baton updated), confirm the web deploy is live.
+6. **Deliver the full package** (see "Tom's deliverables" at the top: the 100%-complete guide, the progress xlsx with % done and % remaining, the report, art prompts or "none", the updated artifact page) as files in the chat.
+7. Short reply ending with the play link, what changed and what to test.
 
 **Watchdog (Tom, 2026-11-19):** while any agents or bots run (in a CONDUCT or any other job), check on every one of them **every 30 minutes**: is it still working (recent tool use, commits, log output), stuck, or stopped (for example after a server restart)? Resume stopped agents from their transcript (or re-create them with the same scope if they can't be resumed), restart dead bot/test runs, and note it in the Baton. Use the session's scheduled-message tool (send_later, 30 minutes) to wake yourself for each check, and schedule the next one at every check until all agents are done. Never let avoidable downtime build up.
 

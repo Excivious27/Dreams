@@ -35,7 +35,12 @@ Every sound or song your feature needs must exist and be wired in (tools/sfx_aud
 - Songs: the ACE Music MCP (mcp__ace-music__create_song / get_song / download_song; read get_skill "lyrics" first; instrumental via style only) and tools/ace_batch.py / ace_import.py (see CLAUDE.md ACE lines). New songs: add to GameMap.AREA_MUSIC etc., then python3 tools/music_stream.py. Use at most 1 new song per agent, and only where reuse of an existing track would feel wrong (e.g. arcade music, bowling alley, a new mega region theme).
 - No synthetic beeps from tools/make_audio.py for new sounds.
 
-## CONDUCT runs (Tom's standing order)
+## CONDUCT runs (Tom's standing order; process changed 2026-11-19)
+
+AUDITORS (step 1): read, play by script, screenshot, write a small reproducing test if useful; do NOT edit game code and do NOT run tools/check.sh. Return findings: what, where, how to reproduce, suggested fix, art/audio needed, NEEDS TOM.
+FIX AGENTS (step 4): one package of file-disjoint fixes, 60-75 min cap, targeted tests only (flock /tmp/godot.lock), make/wire any art or audio the package needs, commit, report. Never run the full check.sh; the main chat runs it once after merging.
+
+(The old text below is kept for reference; where it conflicts, the two paragraphs above win.)
 Each CONDUCT agent both AUDITS and FIXES its scope:
 1. Audit: read the relevant code/data, play it headlessly (write small scripted test/shot tools as needed), take screenshots and LOOK at them, and run focused bots if useful (`tools/bots.sh` takes days as first arg; use 2-3).
 2. Fix everything you find that you can fix alone, at Stardew/Sun Haven polish. Add/extend tests for what you fixed.
