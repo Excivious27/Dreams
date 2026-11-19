@@ -21,7 +21,7 @@ const FOREST_EXIT := Rect2i(34, 0, 4, 2)
 const LAKE_EXIT := Rect2i(0, 28, 2, 4)
 ## Animal pens (kept clear of debris; the barn pen stops short of the cliff at x38).
 const COOP_PEN := Rect2i(26, 9, 6, 3)
-const BARN_PEN := Rect2i(32, 6, 5, 3)
+const BARN_PEN := Rect2i(31, 6, 5, 3)  # x31-35: the north track runs on x36 (C1), keep the herd off it
 ## The river: in from the west edge, under the footbridge (the house path's line)
 ## and the stone bridge (the town road), past the pond and out the east edge.
 const RIVER_PTS := [Vector2(0, 40), Vector2(18, 45), Vector2(36, 48), Vector2(50, 52), Vector2(71, 45)]
@@ -1666,7 +1666,7 @@ func _place_props() -> void:
 					_animal("chick" if young else "chicken", Vector2i(26 + hi, 9), pen, young, "hatch_%d" % hi)
 	if builds.has("barn"):
 		var pen := BARN_PEN
-		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(36, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf" if barn_kids else "cow2", Vector2i(35, 7), pen, barn_kids, "calf_35_7"); _animal("lamb" if barn_kids else "sheep2", Vector2i(36, 7), pen, barn_kids, "lamb_36_7")
+		_animal("cow2", Vector2i(33, 7), pen); _animal("cow_bw", Vector2i(31, 8), pen); _animal("sheep2", Vector2i(34, 8), pen); _animal("calf" if barn_kids else "cow2", Vector2i(35, 7), pen, barn_kids, "calf_35_7"); _animal("lamb" if barn_kids else "sheep2", Vector2i(31, 7), pen, barn_kids, "lamb_36_7")  # (name kept: friendship)
 		if Builds.built_tier("barn") >= 2:
 			# The Big Barn: goats and a llama.
 			_animal("goat", Vector2i(32, 8), pen); _animal("llama", Vector2i(35, 8), pen); _animal("goat_kid" if goat_kids else "goat", Vector2i(33, 6), pen, goat_kids, "goat_kid_33_6")

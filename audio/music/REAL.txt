@@ -70,3 +70,4 @@ mega_wind
 mega_gilt
 bowling_alley
 jukebox_oldie
+mega_iron

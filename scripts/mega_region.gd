@@ -211,14 +211,18 @@ static func on_enter(m: GameMap) -> void:
 	if here != VALLEY and unlock(here):
 		fresh.append(here)
 	var last := str(s.get("last", VALLEY))
+	var last_scene := str(s.get("last_scene", ""))
 	s["last"] = here
+	s["last_scene"] = sid
 	MegaMap.tab = here if here != VALLEY else "valley"
 	if here != last:
+		# An area may carry its own lines (the Ironline rides the night train,
+		# not the Cities' bus); otherwise the region's.
 		var line := ""
 		if here != VALLEY:
-			line = str(get_r(here).get("travel", ""))
+			line = str(area(here, sid).get("travel", get_r(here).get("travel", "")))
 		elif last != "" and not get_r(last).is_empty():
-			line = str(get_r(last).get("leave", ""))
+			line = str(area(last, last_scene).get("leave", get_r(last).get("leave", "")))
 		banner(m, here, sid, line)
 	for id in fresh:
 		if id != here:

@@ -83,6 +83,16 @@ func _banner(m: GameMap) -> bool:
 	return false
 
 
+## The banner's text (all its labels), "" when none is up.
+func _banner_text(m: GameMap) -> String:
+	var t := ""
+	for c in m.get_children():
+		if c is CanvasLayer and str(c.name).begins_with("MegaBanner"):
+			for l in c.find_children("*", "Label", true, false):
+				t += (l as Label).text + " "
+	return t
+
+
 func _menu(m: GameMap) -> GameMenu:
 	for c in m.get_children():
 		if c is GameMenu:
@@ -210,6 +220,18 @@ func _run() -> void:
 	m = await _arrive("docks")
 	await process_frame
 	check(m != null and m.scene_id() == "docks" and MegaRegion.is_unlocked("cities") and _banner(m), "the city bus opens the Lieutenant Cities")
+	check(m != null and "bus" in _banner_text(m), "the docks arrival rides the city bus (%s)" % (_banner_text(m) if m else ""))
+	# The Ironline (Cities tab) rides the night train from town, both ways (C2).
+	m = await _go("town")
+	check(m != null and "bus" in _banner_text(m), "leaving the docks: the last bus home")
+	m = await _go("iron_junction")
+	check(m != null and "night train" in _banner_text(m) and not ("bus" in _banner_text(m)), "Junction City arrival says night train, not bus (%s)" % (_banner_text(m) if m else ""))
+	m = await _go("town")
+	check(m != null and "night train" in _banner_text(m) and not ("bus" in _banner_text(m)), "back from the Ironline: the night train home (%s)" % (_banner_text(m) if m else ""))
+	m = await _go("hideout")
+	m.go_to("docks", Vector2(2 * GameMap.TILE, 8 * GameMap.TILE), "right")
+	m = await _arrive("docks")
+	await process_frame
 	menu = _menu(m)
 	if menu:
 		menu._tab = "Map"

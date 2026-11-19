@@ -69,18 +69,21 @@ static func on_enter(m: GameMap) -> void:
 			if m.props.has(c):
 				(m.props[c] as Node).queue_free()
 				m.props.erase(c)
-		# Keep the cells round a small gate (fairy ring) clear of tall grass and clutter so it reads.
-		for dx in range(-1, 2):
-			for dy in range(-1, 2):
+		# Keep the cells round a small gate (fairy ring) clear of tall grass and clutter so it reads
+		# (two cells round a ground ring: one left it a speck in a grass field, C2).
+		var g := str(e.get("group", "props"))
+		var cr := 2 if g == "nature" else 1
+		for dx in range(-cr, cr + 1):
+			for dy in range(-cr, cr + 1):
 				var n := c + Vector2i(dx, dy)
 				if n != c and m.things.has(n) and str(m.things[n].get("type", "")) in ["grass", "weed", "weeds", "stick", "twig"]:
 					m.things.erase(n)
 					if m.props.has(n):
 						(m.props[n] as Node).queue_free()
 						m.props.erase(n)
-		var g := str(e.get("group", "props"))
 		if Art.has(g, str(e.get("prop", ""))):
-			var sp0 := m.prop(g, str(e["prop"]), c, int(e.get("w", 0)), 0.0, false)
+			# A ground ring is small art (the fairy ring is 49 px): drawn a little larger so it reads as a way through.
+			var sp0 := m.prop(g, str(e["prop"]), c, int(e.get("w", 0)), 0.0, false, float(e.get("scale", 0.8 if g == "nature" else 0.5)))
 			# A vehicle or booth is solid along its base row (you can't walk through the
 			# limo or the caravan); a ground ring (nature group) stays walk-on.
 			if sp0 and sp0.texture and g != "nature":

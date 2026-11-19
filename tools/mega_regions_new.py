@@ -167,7 +167,12 @@ for _r in REGIONS:
                  "unlock": _unlock(_r), "map_art": "ui/map_" + _r["id"]})
 
 _I = BY_ID["ironline"]
-IRONLINE = {"areas": [_area(a) for a in _I["areas"]], "links": _links(_I),
+# The rail frontier sits in the Cities tab but you ride the night train, not the
+# city bus: its areas carry their own arrival/leaving lines (MegaRegion.on_enter
+# prefers an area's "travel"/"leave" over the region's).
+_RAIL = {"travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+         "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."}
+IRONLINE = {"areas": [dict(_area(a), **_RAIL) for a in _I["areas"]], "links": _links(_I),
             "entries": [{"from": _I["entry"]["scene"], "to": _I["hub"], "how": "night train", "label": "Town"}],
             "unlock": _unlock(_I)}
 
