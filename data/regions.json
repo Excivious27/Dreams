@@ -38,19 +38,29 @@
    ],
    [
     17,
+    10,
     3,
-    3,
-    10
+    2
    ]
   ],
   "layers": [
    {
-    "tile": "purple_soil",
+    "tile": "corrupt_soil",
+    "rect": [
+     13,
+     2,
+     10,
+     9
+    ],
+    "color": "4a2a5a"
+   },
+   {
+    "tile": "corrupt_soil",
     "rect": [
      12,
-     2,
+     4,
      12,
-     9
+     6
     ],
     "color": "4a2a5a"
    }
@@ -12291,7 +12301,7 @@
  "iron_junction": {
   "cols": 44,
   "rows": 40,
-  "music": "docks",
+  "music": "mega_iron",
   "tier": 3,
   "pad": 6,
   "fruit": 0,
@@ -13675,7 +13685,7 @@
   "area_name": "Hearthhold",
   "ground": "snow_packed",
   "ground_seam": "snow_packed",
-  "path": "snow_trodden",
+  "path": "snow_paving",
   "border": "trees",
   "backdrop": "mountains",
   "weather": "snow",

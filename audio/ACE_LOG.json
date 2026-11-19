@@ -1849,6 +1849,43 @@
    }
   ]
  },
+ "mega_iron": {
+  "chosen": "so_6059e861ef144627977dbe58",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/mega_iron__so_6059e861ef144627977dbe58.mp3",
+    "id": "so_6059e861ef144627977dbe58",
+    "page": "https://acemusic.ai/song/bpewpjrbyhay",
+    "score": {
+     "dur": 121.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_iron__so_6059e861ef144627977dbe58.mp3",
+     "holes": 0,
+     "lvl_diff": 1.2000000476837158,
+     "peak": 1.252,
+     "score": 92.98,
+     "seam": 0.948
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/mega_iron__so_f82aa988f1e547639a094ad8.mp3",
+    "id": "so_f82aa988f1e547639a094ad8",
+    "page": "https://acemusic.ai/song/cfmv9marh5ed",
+    "score": {
+     "dur": 123.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/mega_iron__so_f82aa988f1e547639a094ad8.mp3",
+     "holes": 0,
+     "lvl_diff": 6.5,
+     "peak": 1.221,
+     "score": 89.42,
+     "seam": 0.991
+    }
+   }
+  ]
+ },
  "mega_wind": {
   "chosen": "so_1002825165f64d33b15a297e",
   "kind": "music",

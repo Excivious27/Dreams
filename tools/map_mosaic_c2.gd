@@ -3,7 +3,7 @@ extends SceneTree
 ## screen-sized shots with the HUD hidden, plus a JSON of exits, doors and
 ## travel points (cells) so tools/map_mosaic_c2.py can mark them.
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 270x480 -s res://tools/map_mosaic_c2.gd -- /tmp/out farm town ...
-## ARC=gangsters, DAY=n, TIME=minutes. Then: python3 tools/map_mosaic_c2.py /tmp/out
+## ARC=gangsters, DAY=n, TIME=minutes, BUILDS=barn:2. Then: python3 tools/map_mosaic_c2.py /tmp/out
 
 
 func _initialize() -> void:
@@ -30,6 +30,11 @@ func _run() -> void:
 	GameState.run["time"] = int(OS.get_environment("TIME")) if OS.get_environment("TIME") != "" else 11 * 60
 	GameState.run["flags"]["partner_scene"] = true
 	GameState.run["quests"] = [{"id": "clear_meadow", "text": "x", "done": true}]
+	# BUILDS=barn:2,coop:2 builds farm buildings first (pens, animals).
+	for b in OS.get_environment("BUILDS").split(",", false):
+		var bp := b.split(":")
+		GameState.run["builds"] = GameState.run.get("builds", {})
+		GameState.run["builds"][bp[0]] = int(bp[1]) if bp.size() > 1 else 1
 	for i in range(1, args.size()):
 		var sc := args[i]
 		GameState.run["flags"][sc + "_seen"] = true

@@ -378,7 +378,7 @@ A("desert_sunken_temple", cols=46, rows=42, music="ruins", look="desert", ground
   intro=["Half buried in sand, a temple of pale stone. Braziers still burn at the far door, and something enormous is sitting very still in front of it."])
 
 # Ironline ----------------------------------------------------------------------
-A("iron_junction", cols=44, rows=40, music="docks", look="rail", links={"iron_freight_yards": ("w", 17), "iron_mill_district": ("n", 21)},
+A("iron_junction", cols=44, rows=40, music="mega_iron", look="rail", links={"iron_freight_yards": ("w", 17), "iron_mill_district": ("n", 21)},
   plaza="city_pavement", ground_seam="brick_herring",
   structs=[("buildings/station", 13, 4, (14, 12)), ("props/train_engine", 7, 2, (31, 14)), ("buildings/warehouse_b", 10, 5, (32, 30)), ("props/water_tower", 2, 2, (8, 29)),
            ("props/floodlight_on", 0, 1, (17, 24)), ("props/floodlight_on", 0, 1, (27, 24)), ("props/bus_stop", 4, 2, (12, 25)), ("props/payphone", 0, 1, (27, 11)), ("props/ir_signal_tower", 1, 2, (37, 8)), ("props/ir_coal_hopper", 2, 2, (7, 20))],
@@ -433,8 +433,8 @@ A("iron_tunnels", cols=46, rows=42, music="underground", look="rail", ground_sea
   intro=["Under the mills the old rail tunnels run in the dark, lamps flickering along the walls. Far ahead, a private rail car is parked with all its lights on."])
 
 # Frostpeak ---------------------------------------------------------------------
-A("frost_hearthhold", cols=44, rows=40, music="mega_frost", look="snow", links={"frost_glacier": ("n", 21), "frost_caverns": ("w", 17), "frost_falls": ("e", 17)},
-  plaza="snow_paving",
+A("frost_hearthhold", cols=44, rows=40, music="mega_frost", look="snow", path="snow_paving", links={"frost_glacier": ("n", 21), "frost_caverns": ("w", 17), "frost_falls": ("e", 17)},
+  plaza="snow_paving",  # paths paved too (C2): trodden snow over the plaza cut it into four grey islands
   structs=[("props/fr_lodge", 3, 3, (12, 12)), ("props/fr_cabin", 2, 2, (31, 12)), ("props/fr_hearth", 3, 2, (22, 9)), ("props/fr_bell_tower", 2, 3, (37, 20)), ("props/fr_lodge", 3, 3, (36, 30)), ("props/fishing_hut_stilts_winter", 5, 3, (32, 29)), ("props/crystal_tree_frost", 2, 2, (8, 26)),
            ("nature/lamp_snow", 0, 1, (17, 24)), ("nature/lamp_snow", 0, 1, (27, 24)), ("nature/big_snowpine_a", 1, 2, (6, 9)), ("nature/big_snowpine_b", 1, 2, (38, 9)), ("props/fr_cabin", 2, 2, (8, 18))],
   shop=("props/ice_stall_open", 7, 2, (21, 28), {"who": "Ingrid's Stall", "greet": "Warm things for cold people. Everything's knitted, even the sorbet. Not really.",
