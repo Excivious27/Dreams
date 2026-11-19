@@ -1,0 +1,384 @@
+{
+ "_": "Written by tools/gen_mega_new.py (edit tools/mega_regions_new.py / gen_mega_new.py, not this).",
+ "regions": {
+  "gloamwood": {
+   "name": "Gloamwood",
+   "arc": "both",
+   "hub": "gloam_lanternfall",
+   "hub_name": "Lanternfall",
+   "hub_spawn": [
+    17,
+    34
+   ],
+   "areas": [
+    "gloam_lanternfall",
+    "gloam_violet_glade",
+    "gloam_crystal_thicket",
+    "gloam_moonpool"
+   ],
+   "entry": {
+    "scene": "forest",
+    "cell": [
+     26,
+     41
+    ],
+    "prop": "fairy_ring",
+    "label": "step into the fairy ring",
+    "w": 0,
+    "keeper_at": [
+     -2,
+     0
+    ],
+    "home_name": "the forest",
+    "spawn": [
+     26,
+     43
+    ]
+   },
+   "unlock": {
+    "tier": 1
+   },
+   "quest": "mega_gloamwood_hook",
+   "keeper": "Liesl",
+   "keeper_sprite": "npc_lumen",
+   "lines": {
+    "locked": "The ring's asleep, love. It wakes when the valley's had a proper fright and come through it. Come back when the east meadow's quiet again.",
+    "offer": [
+     "Oh! You can see the ring? Most folk walk straight through it.",
+     "It goes to Gloamwood: lanterns, moss, the kindest dark you'll ever meet. But the ring's gone sleepy.",
+     "Bring me six flowers and three wild herbs, and I'll sing it awake. Deal?"
+    ],
+    "yes": "Lovely. Any flowers will do. The ring isn't fussy, only hungry.",
+    "wait": "Six flowers and three wild herbs, love. The ring's yawning but it isn't up yet.",
+    "done": [
+     "There we are. Hear that? Like a kettle just before it sings.",
+     "Step into the middle and think of lanterns. You'll land in Lanternfall."
+    ],
+    "travel": "The ring's humming. Off to Lanternfall?",
+    "home": "Back to the forest, or somewhere further?",
+    "wrong_arc": "The ring doesn't open for you."
+   },
+   "mail": {
+    "from": "Liesl",
+    "text": "There's a fairy ring by the forest path that hums at dusk. I keep the moths that keep it. If you've got a minute and a few flowers, come and find me. - Liesl"
+   },
+   "sfx": "sparkle"
+  },
+  "sunscorch": {
+   "name": "Sunscorch Expanse",
+   "arc": "both",
+   "hub": "desert_mirage_post",
+   "hub_name": "Mirage Post",
+   "hub_spawn": [
+    17,
+    36
+   ],
+   "areas": [
+    "desert_mirage_post",
+    "desert_dune_sea",
+    "desert_glass_canyon",
+    "desert_sunken_temple"
+   ],
+   "entry": {
+    "scene": "beach",
+    "cell": [
+     24,
+     14
+    ],
+    "prop": "cart_covered",
+    "label": "the sand-sailors' caravan",
+    "w": 0,
+    "keeper_at": [
+     -2,
+     0
+    ],
+    "home_name": "the beach",
+    "spawn": [
+     24,
+     16
+    ]
+   },
+   "unlock": {
+    "tier": 2
+   },
+   "quest": "mega_sunscorch_hook",
+   "keeper": "Sefa",
+   "keeper_sprite": "npc_drifter",
+   "lines": {
+    "locked": "The dune winds are wrong this season. We sail when the valley's had two good stories told about it. Not before.",
+    "offer": [
+     "You've got the look of someone who walks too far for fun.",
+     "This wagon sails the sand to Mirage Post, the last well before the Sunscorch. Three days of dunes.",
+     "I'm short on bread and rope. Four loaves, three coils, and you ride free. Yes?"
+    ],
+    "yes": "Good. The desert eats rope and the crew eats bread. Bring both.",
+    "wait": "Four bread, three rope. The wind's turning, friend.",
+    "done": [
+     "That'll see us across. Climb aboard, mind the water barrels.",
+     "The sails go up at a word. Mirage Post, and then the whole Expanse."
+    ],
+    "travel": "Sails are up. Mirage Post?",
+    "home": "Back to the coast, or on somewhere else?",
+    "wrong_arc": "The caravan isn't taking riders."
+   },
+   "mail": {
+    "from": "Sefa",
+    "text": "A sand-sail caravan is beached past the dunes on your coast. We cross to the Sunscorch Expanse when we're stocked. Bring bread if you want a ride. - Sefa"
+   },
+   "sfx": "door"
+  },
+  "ironline": {
+   "name": "Ironline Frontier",
+   "arc": "gangsters",
+   "hub": "iron_junction",
+   "hub_name": "Junction City",
+   "hub_spawn": [
+    17,
+    36
+   ],
+   "areas": [
+    "iron_junction",
+    "iron_freight_yards",
+    "iron_mill_district",
+    "iron_tunnels"
+   ],
+   "entry": {
+    "scene": "town",
+    "cell": [
+     50,
+     4
+    ],
+    "prop": "ticket_booth",
+    "label": "the night train booth",
+    "w": 0,
+    "keeper_at": [
+     -2,
+     0
+    ],
+    "home_name": "town",
+    "spawn": [
+     50,
+     6
+    ]
+   },
+   "unlock": {
+    "tier": 2
+   },
+   "quest": "mega_ironline_hook",
+   "keeper": "Conductor Hollis",
+   "keeper_sprite": "man_gang",
+   "lines": {
+    "locked": "Night train's not running. Line's tied up in somebody's paperwork. When your name means something in this valley, come back and we'll talk tickets.",
+    "offer": [
+     "You're the one moving up in this town. I hear things in a ticket booth.",
+     "There's a night train to Ironline. Rail town, coal smoke, a Baron who thinks he owns every track. He's squeezing the whole line dry.",
+     "My engine's cold. Ten coal and three iron bars and she runs again. You in?"
+    ],
+    "yes": "Coal for the firebox, iron for the couplings. I'll keep the booth lit.",
+    "wait": "Ten coal, three iron bars. She won't run on promises.",
+    "done": [
+     "Hear that? That's a firebox catching. Best sound in the world.",
+     "Ticket's on the house. Junction City, end of the line. Watch your pockets."
+    ],
+    "travel": "All aboard for Junction City?",
+    "home": "Back to town, or another stop?",
+    "wrong_arc": "Booth's closed. Sign says 'Not today'."
+   },
+   "mail": {
+    "from": "Conductor Hollis",
+    "text": "There's a ticket booth by the town square nobody uses. I run the night train out of it, when I've got coal. Stop by. Could be work in it. - Hollis"
+   },
+   "sfx": "door"
+  },
+  "frostpeak": {
+   "name": "Frostpeak Reach",
+   "arc": "both",
+   "hub": "frost_hearthhold",
+   "hub_name": "Hearthhold",
+   "hub_spawn": [
+    17,
+    36
+   ],
+   "areas": [
+    "frost_hearthhold",
+    "frost_glacier",
+    "frost_caverns",
+    "frost_falls",
+    "frost_summit"
+   ],
+   "entry": {
+    "scene": "mountain",
+    "cell": [
+     7,
+     35
+    ],
+    "prop": "veh_crystal_sled_side",
+    "label": "the sled run up to Frostpeak",
+    "w": 0,
+    "keeper_at": [
+     -2,
+     0
+    ],
+    "home_name": "the mountain",
+    "spawn": [
+     7,
+     37
+    ]
+   },
+   "unlock": {
+    "tier": 3
+   },
+   "quest": "mega_frostpeak_hook",
+   "keeper": "Brannoch",
+   "keeper_sprite": "npc_hunter",
+   "lines": {
+    "locked": "Up there? Not yet. The Reach is no place for someone who hasn't seen a few hard winters of trouble. Come back later on in your story.",
+    "offer": [
+     "So you want to go higher than the mountain. Everybody does, once.",
+     "Past the clouds there's Frostpeak Reach: Hearthhold, the glaciers, and the Summit, where something big sleeps in the ice.",
+     "Four wool for your coat and six coal for the sled's warmer. Then I'll take you. Agreed?"
+    ],
+    "yes": "Good. And eat something before you come back. Cold eats the hungry first.",
+    "wait": "Four wool, six coal. I'm not hauling a frozen hero down the hill.",
+    "done": [
+     "There. Wrap up. Hold on to the rail, not to me.",
+     "Hearthhold's at the top. Ask for the hot spring. Everyone does."
+    ],
+    "travel": "Sled's waxed. Hearthhold?",
+    "home": "Down the mountain, or somewhere else?",
+    "wrong_arc": "Brannoch shakes his head."
+   },
+   "mail": {
+    "from": "Brannoch",
+    "text": "There's a sled run off the mountain that goes up past the clouds to Frostpeak Reach. I guide it. If you're tough enough by now, come and ask. - Brannoch"
+   },
+   "sfx": "door"
+  },
+  "windward": {
+   "name": "Windward Isles",
+   "arc": "penguins",
+   "hub": "wind_breezehaven",
+   "hub_name": "Breezehaven",
+   "hub_spawn": [
+    17,
+    36
+   ],
+   "areas": [
+    "wind_breezehaven",
+    "wind_sunrise_shelf",
+    "wind_storm_shelf",
+    "wind_starfall_garden"
+   ],
+   "entry": {
+    "scene": "meadow",
+    "cell": [
+     42,
+     24
+    ],
+    "prop": "veh_balloon",
+    "label": "Captain Zephyr's balloon",
+    "w": 0,
+    "keeper_at": [
+     -2,
+     0
+    ],
+    "home_name": "the meadow",
+    "spawn": [
+     42,
+     26
+    ]
+   },
+   "unlock": {
+    "tier": 4
+   },
+   "quest": "mega_windward_hook",
+   "keeper": "Captain Zephyr",
+   "keeper_sprite": "penguin",
+   "lines": {
+    "locked": "Too much weather up there for a passenger, I'm afraid. When the Star Crystal's nearly whole again the winds will calm. Then we fly.",
+    "offer": [
+     "Ahoy! Well, ahoy-ish. There's no water. Ahoy anyway!",
+     "Above the sky islands, higher than the station even, are the Windward Isles. Breezehaven. Storm Shelf. And the Roc.",
+     "My envelope's torn and the lift crystal's gone dim. Four cloth and one Refined Crystal and we sail. Aye?"
+    ],
+    "yes": "Splendid! I'll be right here, being a penguin in a basket.",
+    "wait": "Four cloth, one Refined Crystal. Penguins can't fly, you see. Balloons can.",
+    "done": [
+     "Patched! Glowing! Hold your hat.",
+     "Breezehaven, here we come. Don't look down. Actually, do. It's lovely."
+    ],
+    "travel": "Balloon's warm. Breezehaven?",
+    "home": "Down to the meadow, or onward?",
+    "wrong_arc": "The balloon's basket is full of penguin. There's no room."
+   },
+   "mail": {
+    "from": "Captain Zephyr",
+    "text": "A balloon is tied up in the east meadow. It is captained by a penguin. That is me. I fly to the Windward Isles when I have a crew and a patch. - Capt. Zephyr"
+   },
+   "sfx": "sparkle"
+  },
+  "giltcity": {
+   "name": "Gilt City",
+   "arc": "gangsters",
+   "hub": "gilt_grand_plaza",
+   "hub_name": "Grand Plaza",
+   "hub_spawn": [
+    14,
+    34
+   ],
+   "areas": [
+    "gilt_grand_plaza",
+    "gilt_casino_row",
+    "gilt_gardens",
+    "gilt_vaults"
+   ],
+   "entry": {
+    "scene": "farm",
+    "cell": [
+     40,
+     31
+    ],
+    "spawn": [
+     40,
+     29
+    ],
+    "prop": "limo",
+    "label": "the gold limousine",
+    "w": 0,
+    "keeper_at": [
+     -2,
+     0
+    ],
+    "home_name": "the farm"
+   },
+   "unlock": {
+    "tier": 4
+   },
+   "quest": "mega_giltcity_hook",
+   "keeper": "Mister Pell",
+   "keeper_sprite": "gambler",
+   "lines": {
+    "locked": "Madame Aurum doesn't send the car for just anyone. Make a bigger name for yourself, then I'll come back with the engine running.",
+    "offer": [
+     "Nice place. Small. Honest. Gilt City is neither.",
+     "Madame Aurum runs the casinos, the gardens and the Vaults under them. She's heard of you. She wants to meet.",
+     "The invitation costs twelve stacks of cash and one gold bar. Call it a cover charge. In?"
+    ],
+    "yes": "Wonderful. I'll keep the leather seats warm.",
+    "wait": "Twelve stacks and a gold bar. Madame is patient. I am less so.",
+    "done": [
+     "Pleasure doing business. Mind the step, it's real gold.",
+     "Grand Plaza in an hour. Smile for the statues."
+    ],
+    "travel": "Car's running. The Grand Plaza?",
+    "home": "Back to the farm, or another address?",
+    "wrong_arc": "The limo's windows stay up."
+   },
+   "mail": {
+    "from": "Mister Pell",
+    "text": "Madame Aurum of Gilt City sends her regards and a car. It is parked by your farm. Do not keep it waiting. - P."
+   },
+   "sfx": "door"
+  }
+ }
+}

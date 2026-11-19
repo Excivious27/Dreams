@@ -211,6 +211,7 @@ func _ready() -> void:
 	Story.restore_spawns(self)
 	Racket.on_enter(self)
 	Marked.on_enter(self)
+	MegaTravel.on_enter(self)
 	_fill_extension()
 	_place_signposts()
 	_place_waiting_horse()
@@ -277,7 +278,7 @@ func default_spawn() -> Vector2:
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
 ## One short verb for what USE / CHECK would do on this cell (shown on the button).
-const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "elder": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
+const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "mega_gate": "Travel", "elder": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
 
 
 func action_word(c: Vector2i) -> String:
@@ -468,6 +469,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		return true
 	if t == "ferry":
 		later(Colony.ferry.bind(self))
+		return true
+	if t == "mega_gate":
+		later(MegaTravel.gate.bind(self, thing))
 		return true
 	if t in ["elder", "beacon", "star_crystal", "colony_shop"]:
 		return Colony.interact(self, scene_id(), thing)

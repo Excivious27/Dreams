@@ -830,6 +830,304 @@
     0.3,
     1
    ]
+  ],
+  "gloom_moth": [
+   [
+    "wisp_thread",
+    0.35,
+    1
+   ],
+   [
+    "light_mote",
+    0.08,
+    1
+   ]
+  ],
+  "thorn_slime": [
+   [
+    "slime_gel",
+    0.6,
+    1
+   ],
+   [
+    "wisp_thread",
+    0.15,
+    1
+   ]
+  ],
+  "glade_wisp": [
+   [
+    "wisp_spark",
+    0.2,
+    1
+   ],
+   [
+    "wisp_thread",
+    0.3,
+    1
+   ]
+  ],
+  "gloom_spider": [
+   [
+    "wisp_thread",
+    0.5,
+    2
+   ],
+   [
+    "amethyst",
+    0.06,
+    1
+   ]
+  ],
+  "thornmother": [
+   [
+    "wisp_spark",
+    1.0,
+    3
+   ],
+   [
+    "luna_moth",
+    0.5,
+    1
+   ]
+  ],
+  "dune_crab": [
+   [
+    "sunstone",
+    0.12,
+    1
+   ],
+   [
+    "shell",
+    0.3,
+    1
+   ]
+  ],
+  "sand_hound": [
+   [
+    "pelt",
+    0.4,
+    1
+   ],
+   [
+    "spice",
+    0.15,
+    1
+   ]
+  ],
+  "sun_moth": [
+   [
+    "sun_scarab",
+    0.05,
+    1
+   ],
+   [
+    "light_mote",
+    0.1,
+    1
+   ]
+  ],
+  "glass_golem": [
+   [
+    "glass",
+    0.8,
+    2
+   ],
+   [
+    "sunstone",
+    0.2,
+    1
+   ]
+  ],
+  "sun_colossus": [
+   [
+    "sunstone",
+    1.0,
+    4
+   ],
+   [
+    "sun_scarab",
+    1.0,
+    1
+   ]
+  ],
+  "rail_bot": [
+   [
+    "chain_link",
+    0.4,
+    1
+   ],
+   [
+    "gear",
+    0.15,
+    1
+   ],
+   [
+    "oil",
+    0.25,
+    1
+   ]
+  ],
+  "coal_crawler": [
+   [
+    "charcoal",
+    0.6,
+    2
+   ],
+   [
+    "coal",
+    0.4,
+    1
+   ]
+  ],
+  "baron_coalbrook": [
+   [
+    "thug_cash",
+    1.0,
+    6
+   ],
+   [
+    "chain_link",
+    1.0,
+    3
+   ]
+  ],
+  "frost_wolf": [
+   [
+    "pelt",
+    0.5,
+    1
+   ],
+   [
+    "frost",
+    0.08,
+    1
+   ]
+  ],
+  "rime_golem": [
+   [
+    "frost",
+    0.35,
+    1
+   ],
+   [
+    "stone",
+    1.0,
+    3
+   ],
+   [
+    "glass_frosted",
+    0.15,
+    1
+   ]
+  ],
+  "frost_spider": [
+   [
+    "glass_frosted",
+    0.2,
+    1
+   ],
+   [
+    "silver",
+    0.2,
+    1
+   ]
+  ],
+  "rime_wyrm": [
+   [
+    "frost",
+    1.0,
+    4
+   ],
+   [
+    "glass_frosted",
+    1.0,
+    2
+   ]
+  ],
+  "gale_finargle": [
+   [
+    "storm_fluff",
+    0.35,
+    1
+   ],
+   [
+    "finargle_fuzz",
+    0.3,
+    1
+   ]
+  ],
+  "storm_wisp": [
+   [
+    "storm_glass",
+    0.12,
+    1
+   ],
+   [
+    "wisp_spark",
+    0.2,
+    1
+   ]
+  ],
+  "cloud_knight": [
+   [
+    "storm_fluff",
+    0.3,
+    1
+   ],
+   [
+    "silver",
+    0.3,
+    1
+   ]
+  ],
+  "storm_roc": [
+   [
+    "storm_glass",
+    1.0,
+    3
+   ],
+   [
+    "storm_fluff",
+    1.0,
+    3
+   ]
+  ],
+  "gilt_guard": [
+   [
+    "gambler_chip",
+    0.5,
+    2
+   ],
+   [
+    "gold",
+    0.2,
+    1
+   ]
+  ],
+  "gilded_mirror": [
+   [
+    "gold_bundle",
+    0.15,
+    1
+   ],
+   [
+    "glass",
+    0.5,
+    1
+   ]
+  ],
+  "madame_aurum": [
+   [
+    "gambler_chip",
+    1.0,
+    8
+   ],
+   [
+    "lucky_coin",
+    1.0,
+    2
+   ]
   ]
  },
  "enemies": {
@@ -1666,6 +1964,375 @@
    "reward": 4,
    "name": "Lookout",
    "char": "lookout"
+  },
+  "gloom_moth": {
+   "hp": 12,
+   "dmg": 1,
+   "speed": 46,
+   "xp": 4,
+   "tier": 2,
+   "abilities": [
+    "blink"
+   ],
+   "name": "Gloom Moth",
+   "tint": "#c8a0ff",
+   "art": "lantern_moth",
+   "status": "blind"
+  },
+  "thorn_slime": {
+   "hp": 9,
+   "dmg": 1,
+   "speed": 26,
+   "xp": 4,
+   "tier": 2,
+   "abilities": [],
+   "name": "Thorn Slime",
+   "tint": "#b878e0",
+   "art": "mud_slime",
+   "status": "slow"
+  },
+  "glade_wisp": {
+   "hp": 8,
+   "dmg": 1,
+   "speed": 44,
+   "xp": 4,
+   "tier": 2,
+   "abilities": [
+    "blink"
+   ],
+   "name": "Glade Wisp",
+   "tint": "#ffa8e8",
+   "art": "wisp",
+   "status": "weak"
+  },
+  "gloom_spider": {
+   "hp": 20,
+   "dmg": 2,
+   "speed": 44,
+   "xp": 6,
+   "tier": 3,
+   "abilities": [
+    "lunge"
+   ],
+   "name": "Gloom Spider",
+   "tint": "#9878f0",
+   "art": "shard_spider",
+   "status": "poison"
+  },
+  "thornmother": {
+   "hp": 150,
+   "dmg": 3,
+   "speed": 28,
+   "xp": 75,
+   "tier": 3,
+   "abilities": [
+    "ranged",
+    "summon",
+    "blink",
+    "enrage",
+    "lunge"
+   ],
+   "name": "The Thornmother",
+   "tint": "#c898ff",
+   "art": "marsh_witch",
+   "status": "poison",
+   "boss": true,
+   "scale": 1.2
+  },
+  "dune_crab": {
+   "hp": 18,
+   "dmg": 1,
+   "speed": 40,
+   "xp": 6,
+   "tier": 3,
+   "abilities": [
+    "shield"
+   ],
+   "name": "Dune Crab",
+   "tint": "#f4d898",
+   "art": "rock_crab"
+  },
+  "sand_hound": {
+   "hp": 22,
+   "dmg": 3,
+   "speed": 56,
+   "xp": 7,
+   "tier": 3,
+   "abilities": [
+    "enrage",
+    "lunge"
+   ],
+   "name": "Sand Hound",
+   "tint": "#e8c080",
+   "art": "ash_hound",
+   "status": "burn"
+  },
+  "sun_moth": {
+   "hp": 16,
+   "dmg": 1,
+   "speed": 46,
+   "xp": 5,
+   "tier": 3,
+   "abilities": [
+    "blink"
+   ],
+   "name": "Sun Moth",
+   "tint": "#ffc860",
+   "art": "lantern_moth",
+   "status": "blind"
+  },
+  "glass_golem": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 22,
+   "xp": 10,
+   "tier": 3,
+   "abilities": [
+    "stomp",
+    "regen"
+   ],
+   "name": "Glass Golem",
+   "tint": "#a8f0ff",
+   "art": "quarry_golem"
+  },
+  "sun_colossus": {
+   "hp": 190,
+   "dmg": 5,
+   "speed": 22,
+   "xp": 95,
+   "tier": 4,
+   "abilities": [
+    "shield",
+    "ranged",
+    "stomp",
+    "regen",
+    "enrage",
+    "lunge"
+   ],
+   "name": "The Sun Colossus",
+   "tint": "#ffd868",
+   "art": "ruin_warden",
+   "status": "weak",
+   "boss": true,
+   "scale": 1.15
+  },
+  "rail_bot": {
+   "hp": 26,
+   "dmg": 2,
+   "speed": 22,
+   "xp": 8,
+   "tier": 3,
+   "abilities": [
+    "shield",
+    "lunge"
+   ],
+   "name": "Rail Bot",
+   "tint": "#c89060",
+   "art": "rust_knight"
+  },
+  "coal_crawler": {
+   "hp": 20,
+   "dmg": 2,
+   "speed": 30,
+   "xp": 6,
+   "tier": 3,
+   "abilities": [
+    "ranged"
+   ],
+   "name": "Coal Crawler",
+   "tint": "#8a8a8a",
+   "art": "drip_crawler",
+   "status": "poison"
+  },
+  "baron_coalbrook": {
+   "hp": 210,
+   "dmg": 4,
+   "speed": 20,
+   "xp": 105,
+   "tier": 4,
+   "abilities": [
+    "shield",
+    "stomp",
+    "enrage",
+    "lunge"
+   ],
+   "name": "Baron Coalbrook",
+   "tint": "#e0b890",
+   "boss": true,
+   "scale": 1.15,
+   "char": "enforcer"
+  },
+  "frost_wolf": {
+   "hp": 28,
+   "dmg": 3,
+   "speed": 54,
+   "xp": 9,
+   "tier": 4,
+   "abilities": [
+    "lunge"
+   ],
+   "name": "Frost Wolf",
+   "tint": "#dcf2ff",
+   "art": "hill_wolf"
+  },
+  "rime_golem": {
+   "hp": 40,
+   "dmg": 3,
+   "speed": 18,
+   "xp": 13,
+   "tier": 4,
+   "abilities": [
+    "stomp"
+   ],
+   "name": "Rime Golem",
+   "tint": "#acdcff",
+   "art": "golem"
+  },
+  "frost_spider": {
+   "hp": 30,
+   "dmg": 3,
+   "speed": 44,
+   "xp": 10,
+   "tier": 4,
+   "abilities": [
+    "lunge"
+   ],
+   "name": "Frost Spider",
+   "tint": "#c4ecff",
+   "art": "shard_spider",
+   "status": "poison"
+  },
+  "rime_wyrm": {
+   "hp": 230,
+   "dmg": 3,
+   "speed": 36,
+   "xp": 115,
+   "tier": 5,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "The Rime Wyrm",
+   "tint": "#a4e4ff",
+   "art": "river_serpent",
+   "status": "poison",
+   "boss": true,
+   "scale": 1.3
+  },
+  "gale_finargle": {
+   "hp": 36,
+   "dmg": 3,
+   "speed": 36,
+   "xp": 12,
+   "tier": 5,
+   "abilities": [
+    "blink",
+    "ranged"
+   ],
+   "name": "Gale Finargle",
+   "tint": "#d4f2ff",
+   "art": "finargle",
+   "status": "blind"
+  },
+  "storm_wisp": {
+   "hp": 30,
+   "dmg": 3,
+   "speed": 40,
+   "xp": 10,
+   "tier": 5,
+   "abilities": [
+    "summon",
+    "blink",
+    "ranged"
+   ],
+   "name": "Storm Wisp",
+   "tint": "#b4bcff",
+   "art": "prism_wisp",
+   "status": "blind"
+  },
+  "cloud_knight": {
+   "hp": 46,
+   "dmg": 3,
+   "speed": 28,
+   "xp": 15,
+   "tier": 5,
+   "abilities": [
+    "shield",
+    "lunge"
+   ],
+   "name": "Cloud Knight",
+   "tint": "#f2f8ff",
+   "art": "knight"
+  },
+  "storm_roc": {
+   "hp": 260,
+   "dmg": 4,
+   "speed": 32,
+   "xp": 130,
+   "tier": 5,
+   "abilities": [
+    "blink",
+    "ranged",
+    "shield",
+    "summon",
+    "enrage",
+    "lunge"
+   ],
+   "name": "The Storm Roc",
+   "tint": "#9898ff",
+   "art": "fennimore",
+   "status": "blind",
+   "boss": true,
+   "scale": 1.3
+  },
+  "gilt_guard": {
+   "hp": 48,
+   "dmg": 3,
+   "speed": 28,
+   "xp": 16,
+   "tier": 5,
+   "abilities": [
+    "shield",
+    "lunge"
+   ],
+   "name": "Gilt Guard",
+   "tint": "#ffe488",
+   "art": "knight"
+  },
+  "gilded_mirror": {
+   "hp": 40,
+   "dmg": 4,
+   "speed": 48,
+   "xp": 13,
+   "tier": 5,
+   "abilities": [
+    "lunge",
+    "blink",
+    "enrage"
+   ],
+   "name": "Gilded Mirror",
+   "tint": "#ffe070",
+   "art": "mirror",
+   "status": "weak"
+  },
+  "madame_aurum": {
+   "hp": 260,
+   "dmg": 3,
+   "speed": 32,
+   "xp": 130,
+   "tier": 5,
+   "abilities": [
+    "ranged",
+    "blink",
+    "enrage",
+    "lunge"
+   ],
+   "name": "Madame Aurum",
+   "tint": "#ffe078",
+   "status": "blind",
+   "boss": true,
+   "scale": 1.15,
+   "char": "gambler"
   }
  }
 }
