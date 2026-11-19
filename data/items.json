@@ -9486,7 +9486,7 @@
    "minutes": 60,
    "amount": 1
   },
-  "icon": "cloud_cotton",
+  "icon": "snack_cotton_candy",
   "desc": "Pure sugar cloud. A spring in your step for an hour.",
   "rec": true
  },
@@ -10053,5 +10053,32 @@
   "stats": {
    "luck": 3
   }
+ },
+ "rp_popcorn": {
+  "name": "Lucky Popcorn",
+  "type": "food",
+  "value": 6,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 15,
+  "buff": {
+   "kind": "luck",
+   "minutes": 90,
+   "amount": 1
+  },
+  "icon": "snack_popcorn",
+  "desc": "A striped bucket of buttery popcorn. Regulars swear it steadies your hand at the claw and the skee lanes.",
+  "rec": true
+ },
+ "rp_pretzel": {
+  "name": "Hot Pretzel",
+  "type": "food",
+  "value": 10,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 45,
+  "icon": "snack_pretzel",
+  "desc": "Warm, salty, as big as your face. Bowling fuel.",
+  "rec": true
  }
 }

@@ -34,6 +34,14 @@ BUILDING = {
     "open_day": 7,              # opens on the first morning from this day once the town intro is done
     "fee": 25,                  # crystals for one game of bowling
     "soda": 12,                 # vending machine price
+    # Upstairs snack bar (RecCenter._snack): item, price, what the menu says it does.
+    # Item values stay well under the price, so buying to sell always loses.
+    "snacks": [
+        ["rp_popcorn", 10, "lucky hands, 90 min"],
+        ["rp_pretzel", 20, "big energy"],
+        ["rp_cotton_candy", 15, "quick feet, 60 min"],
+        ["rp_fizzy_pop", 12, "a pick-me-up"],
+    ],
 }
 
 # Arcade cabinets on the ground floor: ArcadeHub.open(map, id) plays one (a2's games;
@@ -134,7 +142,9 @@ def room_up():
 # ---------------------------------------------------------------- items & prizes
 ITEMS = {
     "rp_fizzy_pop": {"name": "Fizzy Pop", "type": "food", "value": 20, "rarity": "common", "tier": 1, "energy": 25, "icon": "soda", "desc": "From the Rec Center machine. Fizzes up your nose."},
-    "rp_cotton_candy": {"name": "Cotton Candy", "type": "food", "value": 35, "rarity": "common", "tier": 1, "energy": 30, "buff": {"kind": "speed", "minutes": 60, "amount": 1}, "icon": "cloud_cotton", "desc": "Pure sugar cloud. A spring in your step for an hour."},
+    "rp_cotton_candy": {"name": "Cotton Candy", "type": "food", "value": 35, "rarity": "common", "tier": 1, "energy": 30, "buff": {"kind": "speed", "minutes": 60, "amount": 1}, "icon": "snack_cotton_candy", "desc": "Pure sugar cloud. A spring in your step for an hour."},
+    "rp_popcorn": {"name": "Lucky Popcorn", "type": "food", "value": 6, "rarity": "common", "tier": 1, "energy": 15, "buff": {"kind": "luck", "minutes": 90, "amount": 1}, "icon": "snack_popcorn", "desc": "A striped bucket of buttery popcorn. Regulars swear it steadies your hand at the claw and the skee lanes."},
+    "rp_pretzel": {"name": "Hot Pretzel", "type": "food", "value": 10, "rarity": "common", "tier": 1, "energy": 45, "icon": "snack_pretzel", "desc": "Warm, salty, as big as your face. Bowling fuel."},
     "rp_ribbon": {"name": "Lucky Ribbon", "type": "gift", "value": 40, "rarity": "common", "tier": 1, "icon": "ribbon_red", "desc": "A prize-counter ribbon. Nice to give."},
     "rp_kite": {"name": "Kite", "type": "gift", "value": 90, "rarity": "uncommon", "tier": 2, "icon": "kite", "desc": "Diamond kite with a long tail. The kids would love it."},
     "rp_teddy": {"name": "Teddy Bear", "type": "gift", "value": 120, "rarity": "uncommon", "tier": 2, "icon": "teddy_bear", "desc": "The prize every kid points at first."},

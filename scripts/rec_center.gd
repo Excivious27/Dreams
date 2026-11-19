@@ -508,80 +508,71 @@ static func _jukebox(m: GameMap) -> void:
 		return
 
 
-## The claw machine: ◆10 a go, a plush now and then (better luck with Luck).
+## The claw machine and the skee lane are full-screen arcade games (ArcadeClaw,
+## ArcadeSkee); the rec props just open them.
 static func _claw(m: GameMap) -> void:
-	# The full claw game (agent a2's ArcadeClaw) when it is there.
-	for g in ProjectSettings.get_global_class_list():
-		if str(g.get("class", "")) == "ArcadeHub":
-			await (load(str(g.get("path", ""))).call("open", m, "claw") as CanvasLayer).closed
-			return
-	var price := 10
-	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "", "text": "CLAW MACHINE · ◆%d a go. A teddy bear stares at you through the glass.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["Try it", "Leave"], "key": ""}])
-	await d.finished
-	if d.last_choice != 0:
-		return
-	if int(GameState.run["crystals"]) < price:
-		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
-		return
-	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-	Music.instance(m.get_tree()).sfx("servo", "ui_tap")
-	var odds := 0.12 + 0.02 * GameState.gear_stat("luck")
-	var f: Dictionary = GameState.run["flags"]
-	f["claw_tries"] = int(f.get("claw_tries", 0)) + 1
-	if randf() < odds or int(f["claw_tries"]) >= 12:  # a pity win after a long dry run
-		f["claw_tries"] = 0
-		var pick: String = ["rp_teddy", "rp_penguin_plush", "rp_cat_plush"][randi() % 3]
-		await m.say([{"who": "", "text": "The claw wobbles... and holds! Down the chute it comes."}])
-		Music.instance(m.get_tree()).sfx("j_treasure", "levelup")
-		m.give(pick, 1)
-	elif randf() < 0.45:
-		m.give("candy", 1, true)
-		m.hud.toast("The claw drops it... and knocks a candy loose.", Color(1, 0.9, 0.7))
-	else:
-		m.hud.toast("So close! The claw lets go at the last second.", Color(1, 0.85, 0.7))
+	var g := ArcadeHub.open(m, "claw")
+	if g:
+		await g.closed
 
 
-## Skee-ball: ◆5 for three balls, timed rolls up the ramp; tickets by the rings hit.
 static func _skee(m: GameMap) -> void:
-	var price := 5
-	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "", "text": "SKEE-BALL · ◆%d for three balls. Rings pay 10 to 50; the corner cup pays 100.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["Roll", "Leave"], "key": ""}])
-	await d.finished
-	if d.last_choice != 0:
-		return
-	if int(GameState.run["crystals"]) < price:
-		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
-		return
-	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-	var total := 0
-	var rolls: Array = []
-	for i in 3:
-		var r := randf() + 0.03 * GameState.gear_stat("luck")
-		var pts := 100 if r > 0.95 else (50 if r > 0.82 else (40 if r > 0.65 else (30 if r > 0.45 else (20 if r > 0.25 else 10))))
-		total += pts
-		rolls.append(str(pts))
-		Music.instance(m.get_tree()).sfx("thud", "block")
-	var t := maxi(1, total / 20)
-	Tickets.set_best("skee_ball", total)
-	Tickets.add(t, "skee_ball")
-	await m.say([{"who": "", "text": "Thunk, thunk, thunk: %s. Score %d!  +%d tickets." % [" + ".join(rolls), total, t]}])
+	var g := ArcadeHub.open(m, "skee_ball")
+	if g:
+		await g.closed
+
+
+## The upstairs snack bar: building.snacks = [[item, price, what it does], ...].
+## Stays open after a purchase so you can buy a round; the last choice leaves.
+static func snack_menu() -> Array:
+	var out: Array = []
+	for s: Array in data().get("building", {}).get("snacks", []):
+		if GameState.items.has(str(s[0])):
+			out.append(s)
+	return out
 
 
 static func _snack(m: GameMap) -> void:
-	var price := 15
-	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "", "text": "SNACK BAR · Cotton candy ◆%d, Fizzy Pop ◆%d.  (you have ◆%d)" % [price, int(data().get("building", {}).get("soda", 12)), int(GameState.run["crystals"])], "choice": ["Cotton candy", "Fizzy Pop", "Leave"], "key": ""}])
-	await d.finished
-	if d.last_choice < 0 or d.last_choice > 1:
-		return
-	var cost := price if d.last_choice == 0 else int(data().get("building", {}).get("soda", 12))
+	var menu := snack_menu()
+	var first := true
+	while true:
+		var opts: Array = []
+		var lines: Array = []
+		for s: Array in menu:
+			var nm := GameState.item_name(str(s[0]))
+			opts.append("%s ◆%d" % [nm, int(s[1])])
+			lines.append("%s: %s" % [nm, str(s[2])])
+		opts.append("Leave")
+		var head := "SNACK BAR · " if first else "Anything else?  "
+		var d := Dialogue.instance(m.get_tree())
+		d.say([{"who": "", "text": head + ". ".join(lines) + ".  (you have ◆%d)" % int(GameState.run["crystals"]), "choice": opts, "key": ""}])
+		await d.finished
+		first = false
+		var i := d.last_choice
+		if i < 0 or i >= menu.size():
+			return
+		if not buy_snack(m, i):
+			return
+
+
+## Buys snack i from the menu (false when you can't pay). Shared with the test.
+static func buy_snack(m: GameMap, i: int) -> bool:
+	var menu := snack_menu()
+	if i < 0 or i >= menu.size():
+		return false
+	var s: Array = menu[i]
+	var cost := int(s[1])
 	if int(GameState.run["crystals"]) < cost:
-		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
-		return
+		if m:
+			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+		return false
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
-	Music.instance(m.get_tree()).sfx("cash", "coin")
-	m.give("rp_cotton_candy" if d.last_choice == 0 else "rp_fizzy_pop", 1)
+	if m:
+		Music.instance(m.get_tree()).sfx("cash", "coin")
+		m.give(str(s[0]), 1)
+	else:
+		GameState.add_item(str(s[0]), 1)
+	return true
 
 
 static func _trophies(m: GameMap) -> void:

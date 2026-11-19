@@ -68349,6 +68349,21 @@
    "h": 29,
    "w": 32
   },
+  "snack_cotton_candy": {
+   "file": "items/snack_cotton_candy.png",
+   "h": 32,
+   "w": 22
+  },
+  "snack_popcorn": {
+   "file": "items/snack_popcorn.png",
+   "h": 32,
+   "w": 25
+  },
+  "snack_pretzel": {
+   "file": "items/snack_pretzel.png",
+   "h": 30,
+   "w": 32
+  },
   "snail_bug": {
    "file": "items/snail_bug.png",
    "h": 25,

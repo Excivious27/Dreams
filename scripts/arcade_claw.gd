@@ -78,6 +78,30 @@ func _setup_round() -> void:
 	held_i = -1
 	won_item = ""
 	aim_left = AIM_T
+	if dry_streak() >= 4:
+		say("The machine hums warmly. Feels generous.", 2.0)
+
+
+## How hard the claw holds: centring matters most (a few pixels off halves it),
+## big plushes are heavier, wins today loosen it, luck (gear + popcorn) and a
+## long dry run firm it up again (the old dialogue claw's pity win, kept fair).
+static func grip_for(dx: float, r: float, tight: float, lk: float, dry: int) -> float:
+	var c := clampf(1.0 - dx / (r * 1.1), 0.0, 1.0)
+	var heavy := 0.84 if r > 12.5 else 0.94
+	var g := pow(c, 1.5) * heavy * tight
+	if c > 0.0:
+		g += 0.03 * lk + minf(0.25, 0.05 * maxi(0, dry - 2))
+	return clampf(g, 0.0, 0.97)
+
+
+## Chance per second that a grip slips while lifting and carrying.
+static func slip_rate(g: float) -> float:
+	return (1.0 - g) * (1.0 - g) * 1.4
+
+
+## Losses in a row since the last prize (run["arcade_hub"]["claw_dry"]).
+static func dry_streak() -> int:
+	return int(ArcadeHub._data().get("claw_dry", 0))
 
 
 func _tightness() -> float:
@@ -123,8 +147,7 @@ func _step(dt: float) -> void:
 				if i >= 0:
 					var p2: Dictionary = pile[i]
 					var dx := absf(float(p2["x"]) - claw.x)
-					var heavy := 0.78 if float(p2["r"]) > 12.5 else 0.92
-					grip = clampf(1.0 - dx / (float(p2["r"]) * 1.15), 0.0, 1.0) * heavy * _tightness()
+					grip = grip_for(dx, float(p2["r"]), _tightness(), ArcadeSkee.luck(), dry_streak())
 					if grip > 0.15:
 						held_i = i
 						sfx("cloth", "pickup")
@@ -175,8 +198,8 @@ func _carry(dt: float) -> void:
 	var p: Dictionary = pile[held_i]
 	p["x"] = claw.x
 	p["y"] = claw.y + float(p["r"]) * 0.7
-	# A weak grip can slip on the way.
-	if rng.randf() < (1.0 - grip) * 0.9 * dt:
+	# A weak grip can slip on the way (a dead-centre grab mostly holds).
+	if rng.randf() < slip_rate(grip) * dt:
 		open_amt = 0.6
 		sfx("nope", "drop")
 		say("It slipped!")
@@ -200,6 +223,7 @@ func _win(i: int) -> void:
 	pile.remove_at(i)
 	held_i = -1
 	ArcadeHub._data()["claw_today"] = [int(GameState.run.get("day", 0)), wins_today() + 1]
+	ArcadeHub._data()["claw_dry"] = 0
 	GameState.add_item(won_item, 1)
 	score = maxi(1, GameState.item_value(won_item)) if GameState.items.has(won_item) else 10
 	var d: Dictionary = ArcadeHub._data()
@@ -209,11 +233,18 @@ func _win(i: int) -> void:
 		ArcadeHub.set_milestone("claw_5")
 	burst(Vector2(CHUTE.get_center().x, CHUTE.position.y), Color(1, 0.85, 0.4), 24, 110.0)
 	sfx("j_treasure", "j_victory")
-	game_over(["!YOU WON!", "%s (%s plush)" % [GameState.item_name(won_item), str(p["look"])], "It's in your bag."])
+	# The plush is only the wrapping: say what was inside, never "(bear plush)" after candy.
+	var inside := "" if won_item.begins_with("rp_") else "Tucked inside the %s plush." % str(p["look"])
+	var lines: Array = ["!YOU WON!", GameState.item_name(won_item)]
+	if inside != "":
+		lines.append(inside)
+	lines.append("It's in your bag.")
+	game_over(lines)
 
 
 func _lose() -> void:
 	score = 0
+	ArcadeHub._data()["claw_dry"] = dry_streak() + 1
 	game_over(["!SO CLOSE", "Line it up dead centre next time."])
 
 
@@ -241,9 +272,19 @@ func _draw_play(c: Control) -> void:
 		for i in 12:
 			c.draw_circle(Vector2(BOX.position.x + 20 + (i % 6) * 40, BOX.position.y + 40 + (i / 6) * 50), 10, Color(1, 1, 1, 0.04))
 	# Chute.
-	c.draw_rect(CHUTE, Color(0.05, 0.02, 0.05))
-	c.draw_rect(Rect2(CHUTE.position.x, CHUTE.position.y - 4, CHUTE.size.x, 4), accent)
-	text(c, Vector2(CHUTE.position.x, CHUTE.position.y + 30), "PRIZE", CHUTE.size.x, 7, Color(1, 0.8, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
+	# The prize chute: an acrylic box with a dark drop, a lit rim and a sign.
+	c.draw_rect(CHUTE, Color(0.07, 0.03, 0.08))
+	for i in 6:  # depth shading down the drop
+		c.draw_rect(Rect2(CHUTE.position.x, CHUTE.position.y + i * 10, CHUTE.size.x, 10), Color(0.25, 0.1, 0.22, 0.32 - i * 0.05))
+	c.draw_rect(CHUTE, Color(0.75, 0.85, 1.0, 0.07))
+	c.draw_line(CHUTE.position + Vector2(5, 6), CHUTE.position + Vector2(5, CHUTE.size.y - 8), Color(1, 1, 1, 0.22), 2.0)
+	c.draw_line(CHUTE.position + Vector2(10, 6), CHUTE.position + Vector2(10, 26), Color(1, 1, 1, 0.12), 1.0)
+	c.draw_rect(CHUTE, accent.darkened(0.3), false, 1.0)
+	var glow := 0.6 + 0.4 * sin(t * 5.0)
+	c.draw_rect(Rect2(CHUTE.position.x - 1, CHUTE.position.y - 4, CHUTE.size.x + 2, 4), accent.lerp(Color(1, 0.95, 0.7), glow * 0.5))
+	panel(c, Rect2(CHUTE.position.x + 4, CHUTE.position.y + 24, CHUTE.size.x - 8, 13), Color(0.95, 0.85, 0.3), Color(0.5, 0.3, 0.1))
+	text(c, Vector2(CHUTE.position.x, CHUTE.position.y + 34), "PRIZE", CHUTE.size.x, 7, Color(0.35, 0.15, 0.1), HORIZONTAL_ALIGNMENT_CENTER)
+	c.draw_line(CHUTE.position + Vector2(3, CHUTE.size.y - 12), CHUTE.end - Vector2(3, 12), Color(0.85, 0.85, 0.95, 0.5), 2.0)  # the flap
 	if tex("stage_clawbox") == null:
 		c.draw_rect(Rect2(CHUTE.end.x, FLOOR_Y, BOX.end.x - CHUTE.end.x, BOX.end.y - FLOOR_Y), Color(0.35, 0.15, 0.3))
 	spr(c, "capsule", Rect2(CHUTE.position.x + 8, CHUTE.position.y - 34, 28, 28))

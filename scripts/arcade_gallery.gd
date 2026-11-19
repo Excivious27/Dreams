@@ -174,12 +174,14 @@ func _finish() -> void:
 	game_over(["!TIME!" if play_t >= ROUND else ("!OUT OF CORKS" if corks <= 0 else "!GAME ENDED"), "Hits %d/%d (%d%%)" % [hits, shots, acc], "Golden ducks %d · frogs %d" % [golds, frogs]])
 
 
+## About 1-2 tickets per crystal for a fair round, ~3 for an expert (c2_04: was s/15,
+## which paid 40-66 tickets for a 10-crystal game, far above every other cabinet).
 func _tickets_for(s: int) -> int:
-	return s / 15
+	return s / 25
 
 
 func _good_tickets() -> int:
-	return 12
+	return 20
 
 
 func _draw_play(c: Control) -> void:

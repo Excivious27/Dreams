@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_04): claw, Duck Pond, Skee-Ball, snack bar
+- **Skee-Ball is a real game now** (`ArcadeSkee`, game id `skee_ball`, ◆10): nine balls up a painted maple lane (new art `arcade/stage_skee`, `skee_ball_ball`). ◀ ▶ or a tap picks the line, hold ROLL and let go on the power meter (painted with what each power scores on your line). Board 10, outer ring 20, inner ring 30, cup collar 40, cup 50, corner cups 100 (need a line by the bumper and a strong roll); soft rolls die on the ramp (0), rockets hit the net (10). Tickets score/20 + 1 per corner cup + 3 at 300+. Milestones skee_300, skee_cup. Before: a ◆5 dialogue with three random rolls and no skill at all.
+- **Claw Machine odds:** centring now decides the grip (`ArcadeClaw.grip_for` / `slip_rate`); luck (gear + the new Lucky Popcorn buff) helps; a dry run of 3+ losses firms the grip (the old pity win, kept fair; "The machine hums warmly"); wins per day still loosen it. Surveyed (tools/rec_odds.gd, 100 rounds): dead-centre 36% (was 24%), 4 px off 31% (20%), sloppy 15% (8%). Win card names the prize ("Candy · Tucked inside the bear plush.") instead of "Candy (bear plush)"; nicer prize chute.
+- **Duck Pond payout** score/25 (was /15: 20-66 tickets for a 10-crystal game, double every other cabinet); now ~12 casual / 25 fair / 40 expert.
+- **Snack bar:** four snacks with what they do on the menu (gen_rec `building.snacks`), stays open for another round: Lucky Popcorn ◆10 (luck +1, 90 min), Hot Pretzel ◆20 (45 energy), Cotton Candy ◆15, Fizzy Pop ◆12. New icons (snack_popcorn/pretzel/cotton_candy; cotton candy used a crop icon before). Values stay under prices.
+- Rec props for claw/skee open the arcade games directly (old dialogue fallbacks removed). Art: `tools/slice_r13_c2_04.py`. Test `tools/rec_games_test.gd` (check.sh); shots `tools/rec_games_shot.gd`, `tools/rec_snack_shot.gd`; odds survey `tools/rec_odds.gd` (ONLY=skee).
+
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.
