@@ -74,7 +74,7 @@ static func shelf_ready(t: int) -> bool:
 	var all: Dictionary = Tickets.prizes().get("prizes", {})
 	for id in all:
 		var p: Dictionary = all[id]
-		if int(p.get("tier", 1)) == t + 1 and Tickets.lock_text(str(id)) == "" and Tickets.count() >= int(p.get("cost", 0)):
+		if int(p.get("tier", 1)) == t + 1 and Tickets.arc_ok(str(p.get("item", id))) and Tickets.lock_text(str(id)) == "" and Tickets.count() >= int(p.get("cost", 0)):
 			return true
 	return false
 

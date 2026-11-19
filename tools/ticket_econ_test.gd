@@ -83,8 +83,8 @@ func _run() -> void:
 	for t in PrizeScreen.TIERS.size():
 		var n := 0
 		for id in pz.get("prizes", {}):
-			if int(Tickets.prize(str(id)).get("tier", 1)) == t + 1:
-				n += 1
+			if int(Tickets.prize(str(id)).get("tier", 1)) == t + 1 and Tickets.arc_ok(str(Tickets.prize(str(id)).get("item", id))):
+				n += 1  # the screen shows only this arc's prizes
 		ok(PrizeScreen.LIST_Y + n * PrizeScreen.ROW_H <= 342.0, "shelf %d fits (%d prizes)" % [t, n])
 	ok(PrizeScreen.row_note("rp_arcade_medal").begins_with("Yours"), "owned row says so")
 	Tickets.spend(Tickets.count())
