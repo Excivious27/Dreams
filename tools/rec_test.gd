@@ -180,5 +180,84 @@ func _run() -> void:
 				ok(vis.size() >= 2, "%s league night: villagers at the lanes (%d)" % [arc, vis.size()])
 				ok(not RecCenter.lanes_taken().is_empty(), "%s: some lanes taken" % arc)
 			ok(str(m.get("music_track")) == ("rec_center" if arc == "penguins" else "neon"), "%s/%s music" % [arc, room])
+	await _c1_15_checks()
 	print("rec_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
+
+
+## CONDUCT 1 (c1_15): cabinets vs props, prize balance, stands, the cabinet a visitor
+## stands at, the jukebox surviving the area-song refresh, money words in both arcs.
+func _c1_15_checks() -> void:
+	var rd := RecCenter.data()
+	var room: Dictionary = GameState.load_json("res://data/interiors.json")["rec"]
+	var cab_cells := {}
+	for cab: Dictionary in rd.get("cabinets", []):
+		var id := str(cab["id"])
+		ok(ArcadeHub.game_ids().has(id), "cabinet %s is an ArcadeHub game" % id)
+		ok(Art.has("props", str(cab["sprite"])), "cabinet %s prop art %s" % [id, str(cab["sprite"])])
+		ok(ArcadeHub.make(id) != null and ArcadeHub.make(id).game_id == id, "cabinet %s opens its own game" % id)
+		cab_cells[Vector2i(int(cab["cell"][0]), int(cab["cell"][1]))] = id
+		var has_thing := false
+		for th: Dictionary in room["things"]:
+			if str(th.get("act", "")) == "cabinet" and str(th.get("game", "")) == id and Vector2i(int(th["cell"][0]), int(th["cell"][1])) == Vector2i(int(cab["cell"][0]), int(cab["cell"][1])):
+				has_thing = true
+		ok(has_thing, "cabinet %s has its A-thing on the prop cell" % id)
+	# Every arcade game is reachable in the hall: the four cabinets plus the claw prop.
+	var reach: Array = cab_cells.values()
+	reach.append("claw")
+	for g in ArcadeHub.game_ids():
+		ok(reach.has(g), "arcade game %s has a machine in the hall" % g)
+	ok(int((Tickets.prize("rp_arcade_medal").get("need", {}) as Dictionary).get("arcade", {}).get("games", 0)) <= reach.size(), "arcade medal asks no more cabinets than exist")
+	# Prize balance: no prize sells for as many crystals as its tickets cost.
+	for pid in Tickets.prizes().get("prizes", {}):
+		var pr := Tickets.prize(str(pid))
+		var item := str(pr.get("item", pid))
+		ok(GameState.item_value(item) * 4 <= int(pr["cost"]) * 3 or bool((pr.get("need", {}) as Dictionary).get("once", false)),
+			"prize %s: worth %d crystals for %d tickets (resale loop)" % [item, GameState.item_value(item), int(pr["cost"])])
+
+	# A rest-day afternoon: Pip and Mabel at the cabinets downstairs.
+	for arc in ["penguins", "gangsters"]:
+		GameState.new_run(arc, "kairi" if arc == "penguins" else "dad", "T", "Town", "Pup")
+		GameState.run["intro_done"] = true
+		GameState.run["flags"]["rec_open"] = 1
+		GameState.run["day"] = 13
+		GameState.run["time"] = 14 * 60 + 30
+		ok(ArcadeHub.price(10) == ("10 crystals" if arc == "penguins" else "$10"), "%s cabinet price words (%s)" % [arc, ArcadeHub.price(10)])
+		GameMap.next_interior = "rec"
+		GameMap.next_spawn = Vector2.ZERO
+		change_scene_to_file("res://scenes/interior.tscn")
+		for i in 10:
+			await process_frame
+		var m := current_scene as GameMap
+		if m == null:
+			ok(false, "%s rec loads for the stand checks" % arc)
+			continue
+		var d := Dialogue.instance(self)
+		for k in 6:
+			if d.active:
+				d._advance()
+			await process_frame
+		for kind in ["cab", "lobby"]:
+			for c in rd["stands"]["rec"][kind]:
+				var cc := Vector2i(int(c[0]), int(c[1]))
+				ok(not m.blocked.has(cc) and not m.things.has(cc), "%s stand %s %s is open floor" % [arc, kind, str(cc)])
+		var at_cab: Array = []
+		for n: Npc in m.get("npcs"):
+			if is_instance_valid(n) and not RecCenter.cabinet_above(m, n.cell()).is_empty():
+				at_cab.append(n)
+		ok(at_cab.size() >= 1, "%s: a visitor is at a cabinet on a rest day (%d)" % [arc, at_cab.size()])
+		for n: Npc in at_cab:
+			var spot := RecCenter.step_aside_cell(m, n.cell())
+			ok(spot != Vector2i(-1, -1) and RecCenter.cabinet_above(m, spot).is_empty() and not m.blocked.has(spot), "%s: %s can step aside from %s (to %s)" % [arc, n.id, str(n.cell()), str(spot)])
+		# The jukebox: a new record that the 3-second area-song refresh keeps.
+		var mus := Music.instance(self)
+		var house := m.area_track()
+		ok(house == ("rec_center" if arc == "penguins" else "neon"), "%s house song %s" % [arc, house])
+		mus.play(house)
+		RecCenter._jukebox(m)
+		var rec1 := mus.wanted()
+		ok(rec1 != house and m.area_track() == rec1, "%s jukebox: new record %s kept by area_track (%s)" % [arc, rec1, m.area_track()])
+		RecCenter._jukebox(m)
+		ok(mus.wanted() != rec1 and m.area_track() == mus.wanted(), "%s jukebox: next record %s" % [arc, mus.wanted()])
+		GameState.run["day"] = 14
+		ok(m.area_track() == house, "%s jukebox resets the next day" % arc)

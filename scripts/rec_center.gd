@@ -214,6 +214,62 @@ static func talk_pool(npc_id: String) -> Array:
 	return out
 
 
+## Interior._talk hook for a visitor: their line, and if they're standing at a
+## cabinet (so the player can't reach it) they offer you a go and step aside.
+static func visitor_talk(m: GameMap, n: Npc) -> void:
+	var lines := chat(n.id)
+	var cab := cabinet_above(m, n.cell())
+	if cab.is_empty():
+		await m.say(lines)
+		return
+	var who := str(lines[0].get("who", n.id.capitalize()))
+	var cab_name := str(cab.get("hint", "")).trim_prefix("A: play ")
+	var last: Dictionary = (lines[-1] as Dictionary).duplicate()
+	last["choice"] = ["Can I have a go?", "Carry on"]
+	last["key"] = ""
+	var d := Dialogue.instance(m.get_tree())
+	d.say(lines.slice(0, lines.size() - 1) + [last])
+	await d.finished
+	if d.last_choice != 0:
+		return
+	var spot := step_aside_cell(m, n.cell())
+	if spot == Vector2i(-1, -1):
+		await m.say([{"who": who, "text": "Nearly done, promise. One more life!"}])
+		return
+	await m.say([{"who": who, "text": "All yours. %s eats coins, so aim well!" % cab_name if cab_name != "" else "All yours!"}])
+	n.home = m.cell_center(spot)
+	n.position = n.home
+	n.set("_target", n.home)
+	n.face(m.cell_center(n.cell() + Vector2i(0, -1)))
+	m.player.frozen = false
+	_cabinet(m, str(cab.get("game", "")))
+
+
+## The cabinet thing just above a cell ({} if none).
+static func cabinet_above(m: GameMap, c: Vector2i) -> Dictionary:
+	var th: Variant = m.things.get(c + Vector2i(0, -1), null)
+	if th is Dictionary and str(th.get("type", "")) == "rec" and str(th.get("act", "")) == "cabinet":
+		return th
+	return {}
+
+
+## A free floor cell beside a cabinet front where a visitor can watch from:
+## never in front of another cabinet, never under furniture or someone else.
+static func step_aside_cell(m: GameMap, c: Vector2i) -> Vector2i:
+	for d: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(-1, 1), Vector2i(1, 1), Vector2i(-2, 1), Vector2i(2, 1), Vector2i(0, 2)]:
+		var cc := c + d
+		if cc.x < 1 or cc.y < 1 or cc.x >= m.cols - 1 or cc.y >= m.rows - 1:
+			continue
+		if m.blocked.has(cc) or m.things.has(cc) or not cabinet_above(m, cc).is_empty():
+			continue
+		if m.player and m.world_to_cell(m.player.position) == cc:
+			continue
+		if m.has_method("has_npc_at") and bool(m.call("has_npc_at", cc)):
+			continue
+		return cc
+	return Vector2i(-1, -1)
+
+
 ## What a villager says inside the rec center.
 static func chat(npc_id: String) -> Array:
 	var who := str(GameState.npcs.get(npc_id, {}).get("name", npc_id.capitalize()))
@@ -389,10 +445,10 @@ static func _desk(m: GameMap) -> void:
 
 static func _scores(m: GameMap) -> void:
 	var lines: Array = ["Bowling best: %d  (%d games)" % [Tickets.best_score("bowling"), Tickets.plays("bowling")]]
-	for cab in data().get("cabinets", []):
-		var g := str(cab["id"])
-		if Tickets.plays(g) > 0:
-			lines.append("%s: %d" % [str(cab["name"]), Tickets.best_score(g)])
+	var names: Dictionary = Tickets.prizes().get("game_names", {})
+	for g in names:  # every cabinet, the claw and skee-ball you've played
+		if str(g) != "bowling" and Tickets.plays(str(g)) > 0:
+			lines.append("%s: %d" % [str(names[g]), Tickets.best_score(str(g))])
 	lines.append("Tickets: %d on hand, %d won in all." % [Tickets.count(), Tickets.earned()])
 	var house := {"bowling": 0}
 	for id in data().get("visitors", {}):
@@ -404,15 +460,40 @@ static func _scores(m: GameMap) -> void:
 const JUKEBOX := ["rec_center", "neon", "festival", "inn", "town", "beach", "uptown", "countryside"]
 
 
+## The record the jukebox is playing today ("" = the house song). It lasts the day,
+## on both floors, and survives an arcade game (GameMap.area_track asks music_for).
+static func jukebox_track() -> String:
+	if GameState.run.is_empty():
+		return ""
+	var f: Dictionary = GameState.run.get("flags", {})
+	if int(f.get("rec_juke_day", -1)) != int(GameState.run.get("day", 0)):
+		return ""
+	var t := str(f.get("rec_juke", ""))
+	return t if t != "" and Music.has_track(t) else ""
+
+
+## GameMap.area_track hook: inside the rec, today's jukebox record wins over the house song.
+static func music_for(m: GameMap, t: String) -> String:
+	if not is_rec(m):
+		return t
+	var j := jukebox_track()
+	return j if j != "" else t
+
+
 static func _jukebox(m: GameMap) -> void:
-	var cur := int(GameState.run["flags"].get("rec_jukebox", -1)) + 1
-	for i in JUKEBOX.size():
+	var mus := Music.instance(m.get_tree())
+	var now := mus.wanted()
+	var cur := JUKEBOX.find(now)
+	for i in range(1, JUKEBOX.size() + 1):
 		var t: String = JUKEBOX[(cur + i) % JUKEBOX.size()]
-		if Music.has_track(t):
-			GameState.run["flags"]["rec_jukebox"] = (cur + i) % JUKEBOX.size()
-			Music.instance(m.get_tree()).play(t)
-			m.hud.toast("♪ The jukebox clunks and spins a new record.", Color(0.9, 0.85, 1))
-			return
+		if t == now or not Music.has_track(t):
+			continue  # a new record, never the one already playing
+		GameState.run["flags"]["rec_juke"] = t
+		GameState.run["flags"]["rec_juke_day"] = int(GameState.run["day"])
+		mus.play(t)
+		mus.sfx("ui_tap", "ui_tap")
+		m.hud.toast("♪ The jukebox clunks and spins a new record.", Color(0.9, 0.85, 1))
+		return
 
 
 ## The claw machine: ◆10 a go, a plush now and then (better luck with Luck).

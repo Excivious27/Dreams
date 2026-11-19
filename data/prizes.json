@@ -6,7 +6,8 @@
   "stack": "Crystal Stack",
   "whack": "Whack-a-Grump",
   "gallery": "Duck Pond",
-  "claw": "Claw Machine"
+  "claw": "Claw Machine",
+  "skee_ball": "Skee-Ball"
  },
  "order": [
   "candy",
@@ -35,7 +36,7 @@
  "prizes": {
   "candy": {
    "item": "candy",
-   "cost": 8,
+   "cost": 15,
    "tier": 1,
    "need": {}
   },
@@ -121,7 +122,7 @@
   },
   "growth_elixir": {
    "item": "growth_elixir",
-   "cost": 200,
+   "cost": 400,
    "tier": 3,
    "need": {
     "earned": 150

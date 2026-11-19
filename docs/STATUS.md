@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 1 (c1_15): Rec Center + arcade regression after the merge
+- **Jukebox works now:** the record you pick used to be replaced by the house song within 3 seconds (the area-song refresh). `RecCenter.music_for` (hooked in `GameMap.area_track`) keeps today's record on both floors and through an arcade game; it resets the next day. The first press no longer "changes" to the song already playing.
+- **Visitors no longer block cabinets:** a villager standing at a cabinet offers "Can I have a go?" when you talk to them, steps aside to a watching spot and opens the game (`RecCenter.visitor_talk`). Cabinet stands are ordered two players, then watchers in the gaps, so fewer cabinets are taken.
+- **No ticket-to-crystal loop:** prize-counter items sold for 1.3-1.5x their ticket cost (a Teddy for 80 tickets sold for 120). Prize items now sell for half their ticket cost (gen_rec `balance_values`); candy costs 15 tickets, Growth Elixir 400.
+- **Claw grip loosens per day,** not per visit: walking out and back in no longer resets it (`ArcadeClaw.wins_today`).
+- Cabinet prices read "10 crystals" / "$10" in the gangster arc (`ArcadeHub.price`). The high-score board lists the claw and skee-ball too.
+- Tests: rec_test checks cabinet ids vs ArcadeHub games, props and A-cells, every game has a machine, prize resale, stands on open floor, step-aside cells, the jukebox vs area_track, money words, in both arcs.
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.

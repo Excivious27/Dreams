@@ -2,8 +2,8 @@ class_name ArcadeClaw
 extends ArcadeGame
 ## Claw Machine: steer the claw with ◀ ▶ (12 seconds), A drops it. Centre it on
 ## a plush and it may hold on all the way to the chute: each plush carries a
-## real prize. The machine's grip loosens a little after every win (it resets
-## when you leave), so luck runs out eventually.
+## real prize. The machine's grip loosens a little after every win that day
+## (it resets overnight, not by walking out and back in), so luck runs out.
 
 const FEE := 20
 const BOX := Rect2(16, 44, 238, 262)
@@ -17,7 +17,6 @@ const LOOKS := ["bear", "penguin", "star", "duck", "blob", "bunny"]
 const LOOK_COL := {"bear": Color(0.75, 0.52, 0.32), "penguin": Color(0.2, 0.22, 0.3), "star": Color(1, 0.85, 0.3), "duck": Color(1, 0.9, 0.35), "blob": Color(0.55, 0.85, 1.0), "bunny": Color(1, 0.75, 0.85)}
 
 static var pile: Array = []
-static var session_wins := 0
 
 var claw := Vector2(150, TOP_Y)
 var phase := "aim"
@@ -36,11 +35,6 @@ func _init() -> void:
 	fee = FEE
 	accent = Color(1.0, 0.5, 0.72)
 	howto = ["◀ ▶ steer the claw · A drop", "Centre it on a plush for a good grip.", "Every plush hides a real prize!", "12 seconds to aim."]
-
-
-func _ready() -> void:
-	super()
-	session_wins = 0
 
 
 func _deck_buttons() -> Array:
@@ -87,7 +81,15 @@ func _setup_round() -> void:
 
 
 func _tightness() -> float:
-	return maxf(0.45, 1.0 - 0.12 * session_wins)
+	return maxf(0.45, 1.0 - 0.12 * wins_today())
+
+
+## Prizes won from the machine today (run["arcade_hub"]["claw_today"] = [day, wins]).
+static func wins_today() -> int:
+	var ct: Variant = ArcadeHub._data().get("claw_today", [])
+	if ct is Array and (ct as Array).size() == 2 and int(ct[0]) == int(GameState.run.get("day", 0)):
+		return int(ct[1])
+	return 0
 
 
 func _step(dt: float) -> void:
@@ -197,7 +199,7 @@ func _win(i: int) -> void:
 	won_item = str(p["item"])
 	pile.remove_at(i)
 	held_i = -1
-	session_wins += 1
+	ArcadeHub._data()["claw_today"] = [int(GameState.run.get("day", 0)), wins_today() + 1]
 	GameState.add_item(won_item, 1)
 	score = maxi(1, GameState.item_value(won_item)) if GameState.items.has(won_item) else 10
 	var d: Dictionary = ArcadeHub._data()
