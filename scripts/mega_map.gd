@@ -326,6 +326,11 @@ static func valley_gates(m: Control, font: Font, pins: Dictionary, org: Vector2,
 			m.draw_circle(p, 3.5, Color(0.12, 0.08, 0.05))
 			m.draw_circle(p, 2.5, acc)
 			var s := str(r.get("short", id))
-			m.draw_string_outline(font, p + Vector2(5, 2), s, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 3, Color(0.1, 0.06, 0.03, 0.9))
-			m.draw_string(font, p + Vector2(5, 2), s, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, acc.lightened(0.3))
+			# Near the map's right edge the name goes on the left of the dot, inside the art.
+			var tw := font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, 6).x
+			var tp := p + Vector2(5, 2)
+			if tp.x + tw > org.x + sz.x - 2:
+				tp = p + Vector2(-5 - tw, 2)
+			m.draw_string_outline(font, tp, s, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 3, Color(0.1, 0.06, 0.03, 0.9))
+			m.draw_string(font, tp, s, HORIZONTAL_ALIGNMENT_LEFT, -1, 6, acc.lightened(0.3))
 			break

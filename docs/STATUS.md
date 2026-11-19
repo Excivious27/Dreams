@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 1: mega regions and campaigns regression (c1_18)
+- **Fairy ring was invisible:** the forest travel point to Gloamwood (opens at chapter 2) looked for `props/fairy_ring`, but the art is `nature/fairy_ring`, so players saw the keeper standing in tall grass with nothing to step into. The entry now names its group (tools/mega_regions_new.py), and tall grass/weeds right round any travel point are cleared so the ring reads.
+- **Vehicles are solid:** the limo, caravan, sled station, balloon tower and ticket booth blocked only their middle cell; now their base row blocks (never an exit or another thing), so you no longer walk through the gold limo on the farm road.
+- **Campaign list:** the "aren't open yet" line showed a missing-glyph box (lock emoji); the locked Training row's long text squeezed its whistle icon away (now "locked · after chapter 2").
+- **Battles:** the off-screen arrow's point name was cut to 40 px ("Scarecrow Po"); 90 px now, kept on screen.
+- **Valley map:** gate badges near the right edge (Cities) put their name off the painted map; it now goes left of the dot.
+- Tests: `tools/campaign_gate_test.gd` takes `ARC=gangsters` (Sal, Hideout town) and check.sh runs both arcs; `tools/mega_regions_test.gd` fails when a travel point's art is missing or not drawn.
+
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.

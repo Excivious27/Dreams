@@ -177,9 +177,9 @@ func _show_list() -> void:
 	# The lead-in: the story, then training with the veteran.
 	var tr := CampaignGate.trainer()
 	if not CampaignGate.story_ok():
-		v.add_child(_label("🔒 Campaigns aren't open yet. %s Then %s will train you." % [CampaignGate.story_need(), tr], 8, Color(1, 0.8, 0.6)))
+		v.add_child(_label("✕ Campaigns aren't open yet. %s Then %s will train you." % [CampaignGate.story_need(), tr], 8, Color(1, 0.8, 0.6)))
 	var tb := _btn("%s  Training: First Muster\n%s · %s" % ["✓" if CampaignGate.trained() else "★", tr,
-		"done (drill again any time)" if CampaignGate.trained() else ("locked · " + CampaignGate.drill_lock() if CampaignGate.drill_lock() != "" else "ready · a short guided battle")], _start_drill)
+		"done (drill again any time)" if CampaignGate.trained() else ("locked · after chapter 2" if CampaignGate.drill_lock() != "" else "ready · a short guided battle")], _start_drill)
 	tb.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	tb.custom_minimum_size = Vector2(246, 30)
 	tb.icon = Art.tex("ui", "icon_whistle")

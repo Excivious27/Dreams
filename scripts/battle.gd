@@ -798,7 +798,8 @@ func _hud_pointer(txt: Array) -> void:
 		# On an ellipse below the battle bar, so a point to the north never lands on the HUD.
 		var c := Vector2(135, 310) + dir * Vector2(110.0, 80.0)
 		_hud.draw_colored_polygon(PackedVector2Array([c + dir * 8, c + dir.orthogonal() * 5, c - dir.orthogonal() * 5]), Color(1, 0.9, 0.5, 0.9))
-		txt.append([c + Vector2(-20, 14), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(1, 0.95, 0.8)])
+		# 90 px wide (kept on screen) so names like "Scarecrow Post" aren't cut short.
+		txt.append([Vector2(clampf(c.x - 45.0, 2.0, 178.0), c.y + 14.0), str((best as Dictionary)["name"]), HORIZONTAL_ALIGNMENT_CENTER, 90, 6, Color(1, 0.95, 0.8)])
 
 
 # ---- campaign nodes --------------------------------------------------------------

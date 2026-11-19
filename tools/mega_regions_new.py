@@ -21,7 +21,7 @@ Fields
 
 REGIONS = [
     {"id": "gloamwood", "name": "Gloamwood", "arc": "both", "theme": "gloam", "color": "7a5ab8",
-     "entry": {"scene": "forest", "cell": [26, 41], "prop": "fairy_ring", "label": "step into the fairy ring"},
+     "entry": {"scene": "forest", "cell": [26, 41], "prop": "fairy_ring", "group": "nature", "label": "step into the fairy ring"},
      "unlock": {"tier": 1, "quest": "mega_gloamwood_hook", "flag": "mega_gloamwood_open"},
      "hub": "gloam_lanternfall",
      "areas": [

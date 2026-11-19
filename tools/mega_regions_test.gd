@@ -125,6 +125,11 @@ func _run() -> void:
 			var e: Dictionary = r["entry"]
 			var hm: GameMap = await _load(str(e["scene"]), Vector2((float(e["spawn"][0]) + 0.5) * 16, (float(e["spawn"][1]) + 0.5) * 16))
 			var gc := Vector2i(int(e["cell"][0]), int(e["cell"][1]))
+			# The travel point must be drawn (a missing prop left the forest's fairy ring invisible).
+			if not Art.has(str(e.get("group", "props")), str(e.get("prop", ""))):
+				fail("%s: travel point art %s/%s missing" % [id, e.get("group", "props"), e.get("prop", "")])
+			elif hm != null and not hm.props.has(gc):
+				fail("%s: travel point %s not drawn at %s" % [id, e.get("prop", ""), gc])
 			if hm == null or str(hm.things.get(gc, {}).get("type", "")) != "mega_gate":
 				fail("%s: no travel point at %s in %s" % [id, gc, e["scene"]])
 			else:

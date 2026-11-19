@@ -69,9 +69,26 @@ static func on_enter(m: GameMap) -> void:
 			if m.props.has(c):
 				(m.props[c] as Node).queue_free()
 				m.props.erase(c)
+		# Keep the cells round a small gate (fairy ring) clear of tall grass and clutter so it reads.
+		for dx in range(-1, 2):
+			for dy in range(-1, 2):
+				var n := c + Vector2i(dx, dy)
+				if n != c and m.things.has(n) and str(m.things[n].get("type", "")) in ["grass", "weed", "weeds", "stick", "twig"]:
+					m.things.erase(n)
+					if m.props.has(n):
+						(m.props[n] as Node).queue_free()
+						m.props.erase(n)
 		var g := str(e.get("group", "props"))
 		if Art.has(g, str(e.get("prop", ""))):
-			m.prop(g, str(e["prop"]), c, int(e.get("w", 0)), 0.0, false)
+			var sp0 := m.prop(g, str(e["prop"]), c, int(e.get("w", 0)), 0.0, false)
+			# A vehicle or booth is solid along its base row (you can't walk through the
+			# limo or the caravan); a ground ring (nature group) stays walk-on.
+			if sp0 and sp0.texture and g != "nature":
+				var k := int(roundi(sp0.texture.get_width() * sp0.scale.x / GameMap.TILE) - 1) / 2
+				for dx in range(-k, k + 1):
+					var n := c + Vector2i(dx, 0)
+					if dx != 0 and not m.things.has(n) and not m._exit_at(n):
+						m.block_rect(n.x, n.y, 1, 1)
 		m.set_thing(c.x, c.y, {"type": "mega_gate", "mega": id, "hint": "A: " + str(e.get("label", "travel"))}, true)
 		var kp := str(r.get("keeper_sprite", ""))
 		if kp != "" and CharacterLibrary.has_character(kp):
