@@ -220,7 +220,7 @@ static func _pay(m: GameMap, id: String) -> void:
 	else:
 		GameState.spend_mana(cost_of(id))
 	m.xp("magic", 2 + int(SPELLS[id]["cost"]) / 5)
-	Music.instance(m.get_tree()).sfx("spell", "levelup")
+	Music.instance(m.get_tree()).sfx(spell_sound(id), "spell")
 
 
 static func _dreamwalk(m: GameMap, seen: Array) -> void:
@@ -247,3 +247,16 @@ static func _redraw_soil(m: GameMap) -> void:
 		(soil as CanvasItem).queue_redraw()
 	else:
 		m.queue_redraw()
+
+
+## The sound for a spell, from its id/element words (fire, ice, heal...).
+static func spell_sound(id: String) -> String:
+	var d: Dictionary = SPELLS.get(id, {})
+	var words := (id + " " + str(d.get("element", "")) + " " + str(d.get("name", ""))).to_lower()
+	for pair: Array in [["heal", "heal"], ["mend", "heal"], ["cure", "heal"], ["fire", "spell_fire"], ["flame", "spell_fire"], ["ember", "spell_fire"],
+			["ice", "spell_ice"], ["frost", "spell_ice"], ["snow", "spell_ice"], ["bolt", "spell_lightning"], ["storm", "spell_lightning"], ["shock", "spell_lightning"],
+			["thorn", "spell_nature"], ["vine", "spell_nature"], ["grow", "spell_nature"], ["leaf", "spell_nature"], ["quake", "spell_earth"], ["stone", "spell_earth"],
+			["tremor", "spell_earth"], ["shadow", "spell_dark"], ["dark", "spell_dark"], ["void", "spell_dark"], ["blink", "teleport"], ["warp", "teleport"], ["tide", "bubble"], ["water", "bubble"]]:
+		if str(pair[0]) in words:
+			return str(pair[1])
+	return "spell"

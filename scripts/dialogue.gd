@@ -201,7 +201,7 @@ func _next() -> void:
 	_who.visible = _who.text != ""
 	_full = str(line.get("text", ""))
 	if is_inside_tree():
-		Music.instance(get_tree()).sfx("talk_blip")
+		Music.instance(get_tree()).blip(str(line.get("who", "")))
 	_shown = 0.0
 	_typing = true
 	_text.text = ""

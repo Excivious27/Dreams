@@ -1814,7 +1814,7 @@ static func give_gift(npc: String, item: String) -> int:
 	run["gifted_today"] = g
 	# Every gift gets a sound wherever it is given (not just in town); a new heart gets the jingle.
 	if Engine.get_main_loop() is SceneTree:
-		Music.instance(Engine.get_main_loop() as SceneTree).sfx("levelup" if friend_hearts(npc) > hearts_before else ("harvest" if gain >= 12 else ("pickup" if gain > 0 else "nope")), "pickup")
+		Music.instance(Engine.get_main_loop() as SceneTree).sfx("j_heart" if friend_hearts(npc) > hearts_before else ("j_gift" if gain >= 12 else ("pickup" if gain > 0 else "nope")), "pickup")
 	return gain
 
 
@@ -1833,7 +1833,7 @@ static func add_friend(npc: String, n: int) -> void:
 		if int(fr[npc]) / 25 > before_h:
 			_apply_max_stats()
 			if Engine.get_main_loop() is SceneTree:
-				Music.instance(Engine.get_main_loop() as SceneTree).sfx("levelup")  # a new heart, from any source
+				Music.instance(Engine.get_main_loop() as SceneTree).sfx("j_heart", "levelup")  # a new heart, from any source
 			# Hand-coded heart perks (not in heart_perks.json) announce here, every level passed.
 			for h in range(before_h + 1, int(fr[npc]) / 25 + 1):
 				var pk := friend_perk_at(npc, h)

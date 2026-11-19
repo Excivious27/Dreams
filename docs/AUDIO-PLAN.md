@@ -1,5 +1,34 @@
 # Dreams — Audio plan through ACE Music
 
+## Status (Nov 18): done
+
+- **Music, 61 tracks, all from ACE Music:**
+  - every area, region and colony, both arcs and every room type;
+  - festivals, the campaign board and three battle moods;
+  - bosses by kind: the arc themes played heavy for arc bosses, stone drums for mine keepers, the Marked's own theme;
+  - chase and danger music;
+  - both endings, built on the arc themes, plus the credits;
+  - a music-box version of the title theme and a sung merkitty lullaby.
+
+  The title and both arc themes were uploaded so their melodies could be reused for the endings and the boss songs.
+- **Jingles and instrument sounds (45, from ACE):**
+  - level up, quest, skill and victory;
+  - heart and gift, birthday and morning;
+  - secret, journal page, new region and treasure;
+  - battle won, lost and start, and campaign won;
+  - marimba menu clicks and talk blips (each speaker at their own pitch);
+  - bell sparkles, shop bell and save chime.
+- **Recorded effects (306 files, 3 takes each where packs allowed) and 40 ambience pieces:** from 96 free CC0 packs on OpenGameArt, all downloaded and processed by me. Every pack is listed in docs/AUDIO-CREDITS.md.
+- **Wiring:**
+  - every action calls its sound;
+  - footsteps follow the ground (grass, dirt, sand, stone, wood, snow, water, mud, gravel, leaves);
+  - spells, guns, enemy deaths and crafting stations each have their own sound;
+  - new beds: river, jungle, marsh, neon street, festival fire, kitchen and workshop rooms;
+  - new spots: gulls, waves, crows, frogs, cicadas and insects.
+- **Checks:** `tools/sfx_audit.py` runs in check.sh. It fails the build if any sound or song the game asks for is missing.
+- **Phone size:** 57 songs stream on demand (data/music_stream.json) and are cached after first play. Only the title, farm, house and music-box songs are in the first download.
+- **Credits:** about 280 of 988 used.
+
 ## 1. The connection is ready
 
 I checked every step end to end:

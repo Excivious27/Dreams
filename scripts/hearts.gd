@@ -137,7 +137,7 @@ static func talk(m: GameMap, id: String) -> bool:
 					need = " (next %s)" % str(w["season"]).capitalize()
 				GameState.add_hint("%s will ask you again: %s%s" % [name, str(d.get("text", q)), need])
 	if n == 10:
-		Music.instance(m.get_tree()).sfx("levelup")
+		Music.instance(m.get_tree()).sfx("j_heart", "levelup")
 		var fall := str(v.get("fall", ""))
 		if fall != "":
 			GameState.add_hint("%s: %s" % [name, fall])

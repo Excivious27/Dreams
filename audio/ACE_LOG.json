@@ -1,4 +1,189 @@
 {
+ "amb_crystal": {
+  "chosen": "so_76cbdd69008a4c6e8dd5677e",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/amb_crystal__so_76cbdd69008a4c6e8dd5677e.mp3",
+    "id": "so_76cbdd69008a4c6e8dd5677e",
+    "page": "https://acemusic.ai/song/jfsqjujs5r77",
+    "score": {
+     "dur": 58.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/amb_crystal__so_76cbdd69008a4c6e8dd5677e.mp3",
+     "holes": 0,
+     "lvl_diff": 3.5999999046325684,
+     "peak": 0.762,
+     "score": 74.16,
+     "seam": 0.996
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/amb_crystal__so_0794e097356e4e45be147dbb.mp3",
+    "id": "so_0794e097356e4e45be147dbb",
+    "page": "https://acemusic.ai/song/wxu5ivtbhp7f",
+    "score": {
+     "dur": 59.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/amb_crystal__so_0794e097356e4e45be147dbb.mp3",
+     "holes": 0,
+     "lvl_diff": 1.0,
+     "peak": 0.789,
+     "score": 73.24,
+     "seam": 0.948
+    }
+   }
+  ]
+ },
+ "amb_space": {
+  "chosen": "so_67b2f0b5b0594cf0a7f88bb8",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/amb_space__so_1652558813a248479d305d1c.mp3",
+    "id": "so_1652558813a248479d305d1c",
+    "page": "https://acemusic.ai/song/abfupak8u6z4",
+    "score": {
+     "dur": 59.7,
+     "fade": 0.2,
+     "file": "/home/claude/work/ace_raw/amb_space__so_1652558813a248479d305d1c.mp3",
+     "holes": 0,
+     "lvl_diff": 0.6000000238418579,
+     "peak": 0.962,
+     "score": 50.92,
+     "seam": 0.722
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/amb_space__so_67b2f0b5b0594cf0a7f88bb8.mp3",
+    "id": "so_67b2f0b5b0594cf0a7f88bb8",
+    "page": "https://acemusic.ai/song/k7kcn833xbyh",
+    "score": {
+     "dur": 58.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/amb_space__so_67b2f0b5b0594cf0a7f88bb8.mp3",
+     "holes": 0,
+     "lvl_diff": 5.800000190734863,
+     "peak": 1.284,
+     "score": 70.31,
+     "seam": 0.99
+    }
+   }
+  ]
+ },
+ "battle": {
+  "chosen": "so_9ce316cdadc9465381710a96",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/battle__so_725d82825dc7400792360848.mp3",
+    "id": "so_725d82825dc7400792360848",
+    "page": "https://acemusic.ai/song/jd4t52gpsnrs",
+    "score": {
+     "dur": 144.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle__so_725d82825dc7400792360848.mp3",
+     "holes": 0,
+     "lvl_diff": 5.900000095367432,
+     "peak": 1.127,
+     "score": 90.54,
+     "seam": 0.993
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/battle__so_9ce316cdadc9465381710a96.mp3",
+    "id": "so_9ce316cdadc9465381710a96",
+    "page": "https://acemusic.ai/song/awb4pde7wdpz",
+    "score": {
+     "dur": 145.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle__so_9ce316cdadc9465381710a96.mp3",
+     "holes": 0,
+     "lvl_diff": 3.5,
+     "peak": 1.145,
+     "score": 92.08,
+     "seam": 0.973
+    }
+   }
+  ]
+ },
+ "battle_escort": {
+  "chosen": "so_98043a8de82d44249b95cbd4",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/battle_escort__so_98043a8de82d44249b95cbd4.mp3",
+    "id": "so_98043a8de82d44249b95cbd4",
+    "page": "https://acemusic.ai/song/v2wmrg9ddny4",
+    "score": {
+     "dur": 144.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_escort__so_98043a8de82d44249b95cbd4.mp3",
+     "holes": 0,
+     "lvl_diff": 5.400000095367432,
+     "peak": 1.203,
+     "score": 88.5,
+     "seam": 0.965
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/battle_escort__so_9f67260b834c434cb766e5e1.mp3",
+    "id": "so_9f67260b834c434cb766e5e1",
+    "page": "https://acemusic.ai/song/gs6we5kd5izd",
+    "score": {
+     "dur": 146.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_escort__so_9f67260b834c434cb766e5e1.mp3",
+     "holes": 1,
+     "lvl_diff": 10.600000381469727,
+     "peak": 1.259,
+     "score": 72.47,
+     "seam": 0.944
+    }
+   }
+  ]
+ },
+ "battle_siege": {
+  "chosen": "so_f6acacc36d51451596c1e9b2",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/battle_siege__so_866fb21e3a364f38a26e6f1e.mp3",
+    "id": "so_866fb21e3a364f38a26e6f1e",
+    "page": "https://acemusic.ai/song/3fcya3ykesmg",
+    "score": {
+     "dur": 146.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_siege__so_866fb21e3a364f38a26e6f1e.mp3",
+     "holes": 0,
+     "lvl_diff": 2.200000047683716,
+     "peak": 1.069,
+     "score": 66.94,
+     "seam": 0.703
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/battle_siege__so_f6acacc36d51451596c1e9b2.mp3",
+    "id": "so_f6acacc36d51451596c1e9b2",
+    "page": "https://acemusic.ai/song/7nvdxwep3f6r",
+    "score": {
+     "dur": 146.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/battle_siege__so_f6acacc36d51451596c1e9b2.mp3",
+     "holes": 0,
+     "lvl_diff": 3.9000000953674316,
+     "peak": 1.302,
+     "score": 93.5,
+     "seam": 0.994
+    }
+   }
+  ]
+ },
  "beach": {
   "chosen": "so_b85959e2be6a416dbf50adbf",
   "kind": "music",
@@ -32,6 +217,154 @@
      "peak": 1.307,
      "score": 96.38,
      "seam": 0.967
+    }
+   }
+  ]
+ },
+ "boss": {
+  "chosen": "so_7b29e0a9f56e4ef195a33dd7",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/boss__so_7b29e0a9f56e4ef195a33dd7.mp3",
+    "id": "so_7b29e0a9f56e4ef195a33dd7",
+    "page": "https://acemusic.ai/song/7ebx3u8sswt8",
+    "score": {
+     "dur": 113.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss__so_7b29e0a9f56e4ef195a33dd7.mp3",
+     "holes": 0,
+     "lvl_diff": 8.100000381469727,
+     "peak": 1.139,
+     "score": 85.29,
+     "seam": 0.975
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/boss__so_6d7b749a910946e89b3ba956.mp3",
+    "id": "so_6d7b749a910946e89b3ba956",
+    "page": "https://acemusic.ai/song/awrhc9kqmacz",
+    "score": {
+     "dur": 115.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss__so_6d7b749a910946e89b3ba956.mp3",
+     "holes": 0,
+     "lvl_diff": 5.599999904632568,
+     "peak": 1.132,
+     "score": 80.97,
+     "seam": 0.894
+    }
+   }
+  ]
+ },
+ "boss_gang": {
+  "chosen": "so_0876d91f44134347a9ed501b",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/boss_gang__so_15c34f22ba6d4f4f9502604d.mp3",
+    "id": "so_15c34f22ba6d4f4f9502604d",
+    "page": "https://acemusic.ai/song/p6fnukztu6y5",
+    "score": {
+     "dur": 80.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_gang__so_15c34f22ba6d4f4f9502604d.mp3",
+     "holes": 2,
+     "lvl_diff": 4.900000095367432,
+     "peak": 1.397,
+     "score": 80.09,
+     "seam": 0.994
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/boss_gang__so_0876d91f44134347a9ed501b.mp3",
+    "id": "so_0876d91f44134347a9ed501b",
+    "page": "https://acemusic.ai/song/d3jve5e2z3qa",
+    "score": {
+     "dur": 74.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_gang__so_0876d91f44134347a9ed501b.mp3",
+     "holes": 0,
+     "lvl_diff": 3.700000047683716,
+     "peak": 1.056,
+     "score": 94.11,
+     "seam": 0.997
+    }
+   }
+  ]
+ },
+ "boss_penguin": {
+  "chosen": "so_980e3ab95fe0488fa53c0011",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/boss_penguin__so_980e3ab95fe0488fa53c0011.mp3",
+    "id": "so_980e3ab95fe0488fa53c0011",
+    "page": "https://acemusic.ai/song/w62e3k5q83hb",
+    "score": {
+     "dur": 51.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_penguin__so_980e3ab95fe0488fa53c0011.mp3",
+     "holes": 0,
+     "lvl_diff": 0.6000000238418579,
+     "peak": 1.006,
+     "score": 78.89,
+     "seam": 0.999
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/boss_penguin__so_cc11e4b177584e8493d92486.mp3",
+    "id": "so_cc11e4b177584e8493d92486",
+    "page": "https://acemusic.ai/song/a4xmnvwc8ah5",
+    "score": {
+     "dur": 44.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/boss_penguin__so_cc11e4b177584e8493d92486.mp3",
+     "holes": 0,
+     "lvl_diff": 2.0,
+     "peak": 0.993,
+     "score": 76.74,
+     "seam": 0.997
+    }
+   }
+  ]
+ },
+ "campaign_map": {
+  "chosen": "so_39ca20eebbfe4007a138e33e",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/campaign_map__so_1bc1ef73a665425da11a2f0b.mp3",
+    "id": "so_1bc1ef73a665425da11a2f0b",
+    "page": "https://acemusic.ai/song/sqwabdh2bp8j",
+    "score": {
+     "dur": 150.0,
+     "fade": 1.5,
+     "file": "/home/claude/work/ace_raw/campaign_map__so_1bc1ef73a665425da11a2f0b.mp3",
+     "holes": 4,
+     "lvl_diff": 9.100000381469727,
+     "peak": 1.274,
+     "score": 36.89,
+     "seam": 0.774
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/campaign_map__so_39ca20eebbfe4007a138e33e.mp3",
+    "id": "so_39ca20eebbfe4007a138e33e",
+    "page": "https://acemusic.ai/song/rmtce9uus2jm",
+    "score": {
+     "dur": 144.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/campaign_map__so_39ca20eebbfe4007a138e33e.mp3",
+     "holes": 0,
+     "lvl_diff": 3.799999952316284,
+     "peak": 1.193,
+     "score": 67.4,
+     "seam": 0.731
     }
    }
   ]
@@ -73,6 +406,228 @@
    }
   ]
  },
+ "chapel": {
+  "chosen": "so_c0667e53aad349e09449ab6c",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/chapel__so_20704c1e331247d89b7ccbbf.mp3",
+    "id": "so_20704c1e331247d89b7ccbbf",
+    "page": "https://acemusic.ai/song/n9fdnasztzux",
+    "score": {
+     "dur": 135.5,
+     "fade": 1.9,
+     "file": "/home/claude/work/ace_raw/chapel__so_20704c1e331247d89b7ccbbf.mp3",
+     "holes": 0,
+     "lvl_diff": 5.199999809265137,
+     "peak": 1.078,
+     "score": 87.06,
+     "seam": 0.987
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/chapel__so_c0667e53aad349e09449ab6c.mp3",
+    "id": "so_c0667e53aad349e09449ab6c",
+    "page": "https://acemusic.ai/song/8rrt4upzu82p",
+    "score": {
+     "dur": 135.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/chapel__so_c0667e53aad349e09449ab6c.mp3",
+     "holes": 0,
+     "lvl_diff": 0.5,
+     "peak": 1.091,
+     "score": 87.62,
+     "seam": 0.884
+    }
+   }
+  ]
+ },
+ "clinic": {
+  "chosen": "so_e4177eaf50d64b91ada59e63",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/clinic__so_9b982f256a3b4086bd58ebc3.mp3",
+    "id": "so_9b982f256a3b4086bd58ebc3",
+    "page": "https://acemusic.ai/song/r9htwv7saheu",
+    "score": {
+     "dur": 134.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/clinic__so_9b982f256a3b4086bd58ebc3.mp3",
+     "holes": 0,
+     "lvl_diff": 0.4000000059604645,
+     "peak": 1.129,
+     "score": 86.42,
+     "seam": 0.87
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/clinic__so_e4177eaf50d64b91ada59e63.mp3",
+    "id": "so_e4177eaf50d64b91ada59e63",
+    "page": "https://acemusic.ai/song/v7ixirfubgku",
+    "score": {
+     "dur": 137.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/clinic__so_e4177eaf50d64b91ada59e63.mp3",
+     "holes": 0,
+     "lvl_diff": 2.9000000953674316,
+     "peak": 1.006,
+     "score": 94.99,
+     "seam": 0.994
+    }
+   }
+  ]
+ },
+ "colony_coral": {
+  "chosen": "so_2c2ce8904d91483bb361442b",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/colony_coral__so_2c2ce8904d91483bb361442b.mp3",
+    "id": "so_2c2ce8904d91483bb361442b",
+    "page": "https://acemusic.ai/song/r4q5uh75asth",
+    "score": {
+     "dur": 147.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_coral__so_2c2ce8904d91483bb361442b.mp3",
+     "holes": 0,
+     "lvl_diff": 2.700000047683716,
+     "peak": 1.194,
+     "score": 93.06,
+     "seam": 0.972
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/colony_coral__so_b7fab4938bf54ba6b6470f49.mp3",
+    "id": "so_b7fab4938bf54ba6b6470f49",
+    "page": "https://acemusic.ai/song/6n9v78r5d9s7",
+    "score": {
+     "dur": 147.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_coral__so_b7fab4938bf54ba6b6470f49.mp3",
+     "holes": 0,
+     "lvl_diff": 5.099999904632568,
+     "peak": 1.328,
+     "score": 87.69,
+     "seam": 0.953
+    }
+   }
+  ]
+ },
+ "colony_ember": {
+  "chosen": "so_66e1b12137cc4af7add974e6",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/colony_ember__so_66e1b12137cc4af7add974e6.mp3",
+    "id": "so_66e1b12137cc4af7add974e6",
+    "page": "https://acemusic.ai/song/eea76v4kttu6",
+    "score": {
+     "dur": 145.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_ember__so_66e1b12137cc4af7add974e6.mp3",
+     "holes": 0,
+     "lvl_diff": 4.599999904632568,
+     "peak": 1.15,
+     "score": 92.22,
+     "seam": 0.991
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/colony_ember__so_b0286c28d4294931a20ca39e.mp3",
+    "id": "so_b0286c28d4294931a20ca39e",
+    "page": "https://acemusic.ai/song/xwwz48qt3knd",
+    "score": {
+     "dur": 148.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_ember__so_b0286c28d4294931a20ca39e.mp3",
+     "holes": 0,
+     "lvl_diff": 5.199999809265137,
+     "peak": 1.182,
+     "score": 90.92,
+     "seam": 0.987
+    }
+   }
+  ]
+ },
+ "colony_ice": {
+  "chosen": "so_8b8884ffd06c4445b466abe6",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/colony_ice__so_133706667ecb4520b1859342.mp3",
+    "id": "so_133706667ecb4520b1859342",
+    "page": "https://acemusic.ai/song/68i4zuzsgbkx",
+    "score": {
+     "dur": 145.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_ice__so_133706667ecb4520b1859342.mp3",
+     "holes": 0,
+     "lvl_diff": 3.799999952316284,
+     "peak": 1.3,
+     "score": 86.09,
+     "seam": 0.919
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/colony_ice__so_8b8884ffd06c4445b466abe6.mp3",
+    "id": "so_8b8884ffd06c4445b466abe6",
+    "page": "https://acemusic.ai/song/ugtqdxvh39zj",
+    "score": {
+     "dur": 146.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_ice__so_8b8884ffd06c4445b466abe6.mp3",
+     "holes": 0,
+     "lvl_diff": 1.7999999523162842,
+     "peak": 1.348,
+     "score": 90.96,
+     "seam": 0.937
+    }
+   }
+  ]
+ },
+ "colony_kelp": {
+  "chosen": "so_1a2364eed2b942f8b73f41e9",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/colony_kelp__so_1a2364eed2b942f8b73f41e9.mp3",
+    "id": "so_1a2364eed2b942f8b73f41e9",
+    "page": "https://acemusic.ai/song/t3bcker8k9mx",
+    "score": {
+     "dur": 145.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_kelp__so_1a2364eed2b942f8b73f41e9.mp3",
+     "holes": 0,
+     "lvl_diff": 3.799999952316284,
+     "peak": 1.337,
+     "score": 91.44,
+     "seam": 0.971
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/colony_kelp__so_c900a41bcb024d2297434206.mp3",
+    "id": "so_c900a41bcb024d2297434206",
+    "page": "https://acemusic.ai/song/zv36yfdmmtru",
+    "score": {
+     "dur": 146.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/colony_kelp__so_c900a41bcb024d2297434206.mp3",
+     "holes": 0,
+     "lvl_diff": 5.900000095367432,
+     "peak": 1.226,
+     "score": 76.42,
+     "seam": 0.853
+    }
+   }
+  ]
+ },
  "countryside": {
   "chosen": "so_acc5a9e73f8643a6bce02097",
   "kind": "music",
@@ -110,6 +665,80 @@
    }
   ]
  },
+ "credits": {
+  "chosen": "so_9f423d61f2464d64852c29d3",
+  "kind": "once",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/credits__so_9f423d61f2464d64852c29d3.mp3",
+    "id": "so_9f423d61f2464d64852c29d3",
+    "page": "https://acemusic.ai/song/px9ergikphz6",
+    "score": {
+     "dur": 174.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/credits__so_9f423d61f2464d64852c29d3.mp3",
+     "holes": 0,
+     "lvl_diff": 14.300000190734863,
+     "peak": 1.352,
+     "score": 54.17,
+     "seam": 0.756
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/credits__so_b38127751bb74af3a55f9340.mp3",
+    "id": "so_b38127751bb74af3a55f9340",
+    "page": "https://acemusic.ai/song/k7cn5bw4bteq",
+    "score": {
+     "dur": 171.5,
+     "fade": 2.5,
+     "file": "/home/claude/work/ace_raw/credits__so_b38127751bb74af3a55f9340.mp3",
+     "holes": 0,
+     "lvl_diff": 3.9000000953674316,
+     "peak": 1.325,
+     "score": 53.83,
+     "seam": 0.646
+    }
+   }
+  ]
+ },
+ "danger": {
+  "chosen": "so_38f9c44266f34769b1691cef",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/danger__so_7a88529d9da142979dfeaee5.mp3",
+    "id": "so_7a88529d9da142979dfeaee5",
+    "page": "https://acemusic.ai/song/hs9bd77z8nts",
+    "score": {
+     "dur": 145.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/danger__so_7a88529d9da142979dfeaee5.mp3",
+     "holes": 0,
+     "lvl_diff": 6.400000095367432,
+     "peak": 1.187,
+     "score": 58.97,
+     "seam": 0.685
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/danger__so_38f9c44266f34769b1691cef.mp3",
+    "id": "so_38f9c44266f34769b1691cef",
+    "page": "https://acemusic.ai/song/u2fhbqw4mwxg",
+    "score": {
+     "dur": 147.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/danger__so_38f9c44266f34769b1691cef.mp3",
+     "holes": 0,
+     "lvl_diff": 4.400000095367432,
+     "peak": 1.378,
+     "score": 92.54,
+     "seam": 0.991
+    }
+   }
+  ]
+ },
  "docks": {
   "chosen": "so_2eeb22e3142e4a9580297d65",
   "kind": "music",
@@ -143,6 +772,80 @@
      "peak": 1.253,
      "score": 96.29,
      "seam": 0.984
+    }
+   }
+  ]
+ },
+ "ending_gangster": {
+  "chosen": "so_026def02ca7d42188f548fda",
+  "kind": "once",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/ending_gangster__so_026def02ca7d42188f548fda.mp3",
+    "id": "so_026def02ca7d42188f548fda",
+    "page": "https://acemusic.ai/song/7e8bqg4uivnt",
+    "score": {
+     "dur": 65.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/ending_gangster__so_026def02ca7d42188f548fda.mp3",
+     "holes": 0,
+     "lvl_diff": 0.20000000298023224,
+     "peak": 1.436,
+     "score": 87.54,
+     "seam": 0.879
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/ending_gangster__so_e02f8e1974f342bca345f9cc.mp3",
+    "id": "so_e02f8e1974f342bca345f9cc",
+    "page": "https://acemusic.ai/song/ihjj7h9dedbk",
+    "score": {
+     "dur": 71.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/ending_gangster__so_e02f8e1974f342bca345f9cc.mp3",
+     "holes": 0,
+     "lvl_diff": 3.9000000953674316,
+     "peak": 1.377,
+     "score": 79.05,
+     "seam": 0.849
+    }
+   }
+  ]
+ },
+ "ending_penguin": {
+  "chosen": "so_408e5e6c7d7f4a5fb5fc9297",
+  "kind": "once",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/ending_penguin__so_408e5e6c7d7f4a5fb5fc9297.mp3",
+    "id": "so_408e5e6c7d7f4a5fb5fc9297",
+    "page": "https://acemusic.ai/song/4gxv5d86yuix",
+    "score": {
+     "dur": 64.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/ending_penguin__so_408e5e6c7d7f4a5fb5fc9297.mp3",
+     "holes": 0,
+     "lvl_diff": 1.899999976158142,
+     "peak": 1.198,
+     "score": 93.49,
+     "seam": 0.964
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/ending_penguin__so_2eb696af2d704c659b47d6c3.mp3",
+    "id": "so_2eb696af2d704c659b47d6c3",
+    "page": "https://acemusic.ai/song/yafbbmbw7e6w",
+    "score": {
+     "dur": 57.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/ending_penguin__so_2eb696af2d704c659b47d6c3.mp3",
+     "holes": 0,
+     "lvl_diff": 1.2000000476837158,
+     "peak": 1.105,
+     "score": 72.84,
+     "seam": 0.946
     }
    }
   ]
@@ -254,6 +957,43 @@
      "peak": 1.385,
      "score": 90.63,
      "seam": 0.966
+    }
+   }
+  ]
+ },
+ "finargle": {
+  "chosen": "so_5d38cf910d5a4bce8da3a0da",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/finargle__so_fc0d26604eae4f67a92a0b45.mp3",
+    "id": "so_fc0d26604eae4f67a92a0b45",
+    "page": "https://acemusic.ai/song/p4mwmrjsag38",
+    "score": {
+     "dur": 125.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/finargle__so_fc0d26604eae4f67a92a0b45.mp3",
+     "holes": 0,
+     "lvl_diff": 5.300000190734863,
+     "peak": 1.292,
+     "score": 82.22,
+     "seam": 0.902
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/finargle__so_5d38cf910d5a4bce8da3a0da.mp3",
+    "id": "so_5d38cf910d5a4bce8da3a0da",
+    "page": "https://acemusic.ai/song/nfesspv2vjd3",
+    "score": {
+     "dur": 135.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/finargle__so_5d38cf910d5a4bce8da3a0da.mp3",
+     "holes": 0,
+     "lvl_diff": 5.5,
+     "peak": 1.373,
+     "score": 86.53,
+     "seam": 0.947
     }
    }
   ]
@@ -406,6 +1146,191 @@
    }
   ]
  },
+ "inn": {
+  "chosen": "so_10f12881cf494d698d60f122",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/inn__so_10f12881cf494d698d60f122.mp3",
+    "id": "so_10f12881cf494d698d60f122",
+    "page": "https://acemusic.ai/song/6yx6mmbkm23z",
+    "score": {
+     "dur": 135.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/inn__so_10f12881cf494d698d60f122.mp3",
+     "holes": 0,
+     "lvl_diff": 1.2000000476837158,
+     "peak": 1.276,
+     "score": 91.28,
+     "seam": 0.93
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/inn__so_abddc00e18cd4952833a1db1.mp3",
+    "id": "so_abddc00e18cd4952833a1db1",
+    "page": "https://acemusic.ai/song/bqmtk582wuz7",
+    "score": {
+     "dur": 138.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/inn__so_abddc00e18cd4952833a1db1.mp3",
+     "holes": 0,
+     "lvl_diff": 4.699999809265137,
+     "peak": 1.055,
+     "score": 85.76,
+     "seam": 0.928
+    }
+   }
+  ]
+ },
+ "jin_battle": {
+  "chosen": "so_9e57eb9683934a929e7ea35d",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/jin_battle__so_ff1b41b5cbd64c06b65dd4f3.mp3",
+    "id": "so_ff1b41b5cbd64c06b65dd4f3",
+    "page": "https://acemusic.ai/song/zp6fqrqwh85y",
+    "score": {
+     "dur": 31.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jin_battle__so_ff1b41b5cbd64c06b65dd4f3.mp3",
+     "holes": 0,
+     "lvl_diff": 7.099999904632568,
+     "peak": 0.874,
+     "score": 65.87,
+     "seam": 0.966
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/jin_battle__so_9e57eb9683934a929e7ea35d.mp3",
+    "id": "so_9e57eb9683934a929e7ea35d",
+    "page": "https://acemusic.ai/song/p4e9fqksdmhz",
+    "score": {
+     "dur": 31.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jin_battle__so_9e57eb9683934a929e7ea35d.mp3",
+     "holes": 0,
+     "lvl_diff": 4.699999809265137,
+     "peak": 1.189,
+     "score": 72.33,
+     "seam": 0.994
+    }
+   }
+  ]
+ },
+ "jin_bright": {
+  "chosen": "so_87dc306500d14948bf68e071",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/jin_bright__so_f4972f4eb4d34658b909d733.mp3",
+    "id": "so_f4972f4eb4d34658b909d733",
+    "page": "https://acemusic.ai/song/3fyqh9kbp5bm",
+    "score": {
+     "dur": 33.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jin_bright__so_f4972f4eb4d34658b909d733.mp3",
+     "holes": 0,
+     "lvl_diff": 5.400000095367432,
+     "peak": 1.176,
+     "score": 67.44,
+     "seam": 0.956
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/jin_bright__so_87dc306500d14948bf68e071.mp3",
+    "id": "so_87dc306500d14948bf68e071",
+    "page": "https://acemusic.ai/song/uzqe2yr4ryzi",
+    "score": {
+     "dur": 35.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jin_bright__so_87dc306500d14948bf68e071.mp3",
+     "holes": 0,
+     "lvl_diff": 4.800000190734863,
+     "peak": 0.951,
+     "score": 72.29,
+     "seam": 0.995
+    }
+   }
+  ]
+ },
+ "jin_disc": {
+  "chosen": "so_2d4a5afafa7d4a35b6c45d53",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/jin_disc__so_2d4a5afafa7d4a35b6c45d53.mp3",
+    "id": "so_2d4a5afafa7d4a35b6c45d53",
+    "page": "https://acemusic.ai/song/57sqjphieair",
+    "score": {
+     "dur": 31.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jin_disc__so_2d4a5afafa7d4a35b6c45d53.mp3",
+     "holes": 0,
+     "lvl_diff": 4.699999809265137,
+     "peak": 1.21,
+     "score": 60.67,
+     "seam": 0.878
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/jin_disc__so_bd2469cacb3747a5b789d8e2.mp3",
+    "id": "so_bd2469cacb3747a5b789d8e2",
+    "page": "https://acemusic.ai/song/ndm4izprrhwn",
+    "score": {
+     "dur": 33.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jin_disc__so_bd2469cacb3747a5b789d8e2.mp3",
+     "holes": 0,
+     "lvl_diff": 9.899999618530273,
+     "peak": 1.205,
+     "score": 51.74,
+     "seam": 0.866
+    }
+   }
+  ]
+ },
+ "jin_warm": {
+  "chosen": "so_f487b0851b924b0eb029c105",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/jin_warm__so_f487b0851b924b0eb029c105.mp3",
+    "id": "so_f487b0851b924b0eb029c105",
+    "page": "https://acemusic.ai/song/f8cjpzis4izs",
+    "score": {
+     "dur": 30.0,
+     "fade": 0.9,
+     "file": "/home/claude/work/ace_raw/jin_warm__so_f487b0851b924b0eb029c105.mp3",
+     "holes": 0,
+     "lvl_diff": 0.5,
+     "peak": 1.175,
+     "score": 73.88,
+     "seam": 0.964
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/jin_warm__so_35b0f7350bfc40ec9c124ea6.mp3",
+    "id": "so_35b0f7350bfc40ec9c124ea6",
+    "page": "https://acemusic.ai/song/epsv5iuxa7es",
+    "score": {
+     "dur": 30.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jin_warm__so_35b0f7350bfc40ec9c124ea6.mp3",
+     "holes": 0,
+     "lvl_diff": 2.700000047683716,
+     "peak": 1.104,
+     "score": 57.33,
+     "seam": 0.813
+    }
+   }
+  ]
+ },
  "jungle": {
   "chosen": "so_9241a75a780447a88bdae595",
   "kind": "music",
@@ -443,6 +1368,117 @@
    }
   ]
  },
+ "keeper": {
+  "chosen": "so_a59484eec41c4ce09de49724",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/keeper__so_2ec49d9330e1426ea2d9517e.mp3",
+    "id": "so_2ec49d9330e1426ea2d9517e",
+    "page": "https://acemusic.ai/song/2xragx67rfv9",
+    "score": {
+     "dur": 116.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/keeper__so_2ec49d9330e1426ea2d9517e.mp3",
+     "holes": 0,
+     "lvl_diff": 5.900000095367432,
+     "peak": 1.205,
+     "score": 86.56,
+     "seam": 0.955
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/keeper__so_a59484eec41c4ce09de49724.mp3",
+    "id": "so_a59484eec41c4ce09de49724",
+    "page": "https://acemusic.ai/song/76txe3nudk8z",
+    "score": {
+     "dur": 117.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/keeper__so_a59484eec41c4ce09de49724.mp3",
+     "holes": 0,
+     "lvl_diff": 3.4000000953674316,
+     "peak": 1.165,
+     "score": 91.33,
+     "seam": 0.965
+    }
+   }
+  ]
+ },
+ "kit_bells": {
+  "chosen": "so_ba37ac2d34774d519005a83a",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/kit_bells__so_ba37ac2d34774d519005a83a.mp3",
+    "id": "so_ba37ac2d34774d519005a83a",
+    "page": "https://acemusic.ai/song/zz572cuqw6rh",
+    "score": {
+     "dur": 38.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/kit_bells__so_ba37ac2d34774d519005a83a.mp3",
+     "holes": 0,
+     "lvl_diff": 1.7000000476837158,
+     "peak": 0.851,
+     "score": 72.73,
+     "seam": 0.953
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/kit_bells__so_cfebdea530614581b7bc7281.mp3",
+    "id": "so_cfebdea530614581b7bc7281",
+    "page": "https://acemusic.ai/song/t93n8t8a62v2",
+    "score": {
+     "dur": 39.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/kit_bells__so_cfebdea530614581b7bc7281.mp3",
+     "holes": 0,
+     "lvl_diff": 3.9000000953674316,
+     "peak": 1.227,
+     "score": 71.28,
+     "seam": 0.972
+    }
+   }
+  ]
+ },
+ "kit_marimba": {
+  "chosen": "so_c8b6e1b0ef40476fac8635a4",
+  "kind": "raw",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/kit_marimba__so_c8b6e1b0ef40476fac8635a4.mp3",
+    "id": "so_c8b6e1b0ef40476fac8635a4",
+    "page": "https://acemusic.ai/song/4x2wh259yxt8",
+    "score": {
+     "dur": 34.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/kit_marimba__so_c8b6e1b0ef40476fac8635a4.mp3",
+     "holes": 0,
+     "lvl_diff": 1.7999999523162842,
+     "peak": 1.263,
+     "score": 72.22,
+     "seam": 0.949
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/kit_marimba__so_10668e22cbcc47249484eb32.mp3",
+    "id": "so_10668e22cbcc47249484eb32",
+    "page": "https://acemusic.ai/song/fuwrif5hgq38",
+    "score": {
+     "dur": 37.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/kit_marimba__so_10668e22cbcc47249484eb32.mp3",
+     "holes": 0,
+     "lvl_diff": 0.30000001192092896,
+     "peak": 1.258,
+     "score": 69.32,
+     "seam": 0.898
+    }
+   }
+  ]
+ },
  "lake": {
   "chosen": "so_ccbaa36d42b44859807f661d",
   "kind": "music",
@@ -476,6 +1512,43 @@
      "peak": 1.109,
      "score": 90.89,
      "seam": 0.984
+    }
+   }
+  ]
+ },
+ "marked": {
+  "chosen": "so_e07bba4d2fba4b419c8e88b6",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/marked__so_e07bba4d2fba4b419c8e88b6.mp3",
+    "id": "so_e07bba4d2fba4b419c8e88b6",
+    "page": "https://acemusic.ai/song/bxw4sitt3c9m",
+    "score": {
+     "dur": 116.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/marked__so_e07bba4d2fba4b419c8e88b6.mp3",
+     "holes": 0,
+     "lvl_diff": 3.5,
+     "peak": 1.192,
+     "score": 84.03,
+     "seam": 0.894
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/marked__so_ffe8832dbbe944309d013ee2.mp3",
+    "id": "so_ffe8832dbbe944309d013ee2",
+    "page": "https://acemusic.ai/song/9nmgvjpdmd32",
+    "score": {
+     "dur": 114.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/marked__so_ffe8832dbbe944309d013ee2.mp3",
+     "holes": 0,
+     "lvl_diff": 3.700000047683716,
+     "peak": 1.081,
+     "score": 80.37,
+     "seam": 0.859
     }
    }
   ]
@@ -550,6 +1623,43 @@
      "peak": 1.18,
      "score": 49.99,
      "seam": 0.951
+    }
+   }
+  ]
+ },
+ "merkitty_song": {
+  "chosen": "so_8b9f580846e3452fa7beb322",
+  "kind": "once",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/merkitty_song__so_8b9f580846e3452fa7beb322.mp3",
+    "id": "so_8b9f580846e3452fa7beb322",
+    "page": "https://acemusic.ai/song/hdm2pbsr7u52",
+    "score": {
+     "dur": 149.2,
+     "fade": 3.9,
+     "file": "/home/claude/work/ace_raw/merkitty_song__so_8b9f580846e3452fa7beb322.mp3",
+     "holes": 0,
+     "lvl_diff": 4.800000190734863,
+     "peak": 1.147,
+     "score": 83.94,
+     "seam": 0.99
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/merkitty_song__so_5f11338d21bd42978b28ef80.mp3",
+    "id": "so_5f11338d21bd42978b28ef80",
+    "page": "https://acemusic.ai/song/z58m3767impi",
+    "score": {
+     "dur": 149.2,
+     "fade": 2.9,
+     "file": "/home/claude/work/ace_raw/merkitty_song__so_5f11338d21bd42978b28ef80.mp3",
+     "holes": 0,
+     "lvl_diff": 7.199999809265137,
+     "peak": 1.278,
+     "score": 80.78,
+     "seam": 0.975
     }
    }
   ]
@@ -702,6 +1812,43 @@
    }
   ]
  },
+ "neon": {
+  "chosen": "so_44fc9fcceb554bda89775091",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/neon__so_44fc9fcceb554bda89775091.mp3",
+    "id": "so_44fc9fcceb554bda89775091",
+    "page": "https://acemusic.ai/song/7d6vre5q3fe7",
+    "score": {
+     "dur": 142.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/neon__so_44fc9fcceb554bda89775091.mp3",
+     "holes": 0,
+     "lvl_diff": 3.200000047683716,
+     "peak": 1.3,
+     "score": 94.48,
+     "seam": 0.993
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/neon__so_4edc36b94cf14541afc54ef7.mp3",
+    "id": "so_4edc36b94cf14541afc54ef7",
+    "page": "https://acemusic.ai/song/unef6n5hgghq",
+    "score": {
+     "dur": 146.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/neon__so_4edc36b94cf14541afc54ef7.mp3",
+     "holes": 0,
+     "lvl_diff": 3.0999999046325684,
+     "peak": 1.259,
+     "score": 94.06,
+     "seam": 0.986
+    }
+   }
+  ]
+ },
  "night": {
   "chosen": "so_36c6951a45b648bcb09e1b76",
   "kind": "music",
@@ -813,6 +1960,43 @@
    }
   ]
  },
+ "raid": {
+  "chosen": "so_9fa03084d5404b5796b0de1c",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/raid__so_106bd2c3dea9439dbba24201.mp3",
+    "id": "so_106bd2c3dea9439dbba24201",
+    "page": "https://acemusic.ai/song/86puu9ixbw52",
+    "score": {
+     "dur": 117.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/raid__so_106bd2c3dea9439dbba24201.mp3",
+     "holes": 0,
+     "lvl_diff": 5.300000190734863,
+     "peak": 1.18,
+     "score": 91.76,
+     "seam": 0.998
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/raid__so_9fa03084d5404b5796b0de1c.mp3",
+    "id": "so_9fa03084d5404b5796b0de1c",
+    "page": "https://acemusic.ai/song/tx7xfih6f5iy",
+    "score": {
+     "dur": 115.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/raid__so_9fa03084d5404b5796b0de1c.mp3",
+     "holes": 0,
+     "lvl_diff": 4.099999904632568,
+     "peak": 1.2,
+     "score": 92.87,
+     "seam": 0.99
+    }
+   }
+  ]
+ },
  "rain": {
   "chosen": "so_50a8f34d746d4efaa09f9913",
   "kind": "music",
@@ -887,6 +2071,117 @@
    }
   ]
  },
+ "sanctuary": {
+  "chosen": "so_e765cfe9da7c45d9b466f44b",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/sanctuary__so_2dd2bdc5f80b47e89a6ddd5b.mp3",
+    "id": "so_2dd2bdc5f80b47e89a6ddd5b",
+    "page": "https://acemusic.ai/song/iwzaebzznzur",
+    "score": {
+     "dur": 136.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/sanctuary__so_2dd2bdc5f80b47e89a6ddd5b.mp3",
+     "holes": 0,
+     "lvl_diff": 4.300000190734863,
+     "peak": 1.066,
+     "score": 72.54,
+     "seam": 0.79
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/sanctuary__so_e765cfe9da7c45d9b466f44b.mp3",
+    "id": "so_e765cfe9da7c45d9b466f44b",
+    "page": "https://acemusic.ai/song/xm3e8v7ivewm",
+    "score": {
+     "dur": 136.7,
+     "fade": 0.2,
+     "file": "/home/claude/work/ace_raw/sanctuary__so_e765cfe9da7c45d9b466f44b.mp3",
+     "holes": 0,
+     "lvl_diff": 2.5999999046325684,
+     "peak": 1.287,
+     "score": 85.19,
+     "seam": 0.894
+    }
+   }
+  ]
+ },
+ "shop": {
+  "chosen": "so_5efd588f965f423d9905f2d2",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/shop__so_dc4053df76b44890a02a0463.mp3",
+    "id": "so_dc4053df76b44890a02a0463",
+    "page": "https://acemusic.ai/song/3tsr998i32wr",
+    "score": {
+     "dur": 138.2,
+     "fade": 5.8,
+     "file": "/home/claude/work/ace_raw/shop__so_dc4053df76b44890a02a0463.mp3",
+     "holes": 0,
+     "lvl_diff": 1.5,
+     "peak": 1.304,
+     "score": 77.46,
+     "seam": 0.913
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/shop__so_5efd588f965f423d9905f2d2.mp3",
+    "id": "so_5efd588f965f423d9905f2d2",
+    "page": "https://acemusic.ai/song/nk63ma5hzegf",
+    "score": {
+     "dur": 138.2,
+     "fade": 1.3,
+     "file": "/home/claude/work/ace_raw/shop__so_5efd588f965f423d9905f2d2.mp3",
+     "holes": 0,
+     "lvl_diff": 1.2999999523162842,
+     "peak": 1.101,
+     "score": 79.69,
+     "seam": 0.842
+    }
+   }
+  ]
+ },
+ "shop_gang": {
+  "chosen": "so_a44a06b5342441dc98f6b90d",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/shop_gang__so_7c15903592374eb5954599c0.mp3",
+    "id": "so_7c15903592374eb5954599c0",
+    "page": "https://acemusic.ai/song/83gvz8nt8atk",
+    "score": {
+     "dur": 137.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/shop_gang__so_7c15903592374eb5954599c0.mp3",
+     "holes": 0,
+     "lvl_diff": 1.2000000476837158,
+     "peak": 1.199,
+     "score": 94.36,
+     "seam": 0.962
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/shop_gang__so_a44a06b5342441dc98f6b90d.mp3",
+    "id": "so_a44a06b5342441dc98f6b90d",
+    "page": "https://acemusic.ai/song/eswt2crzs8va",
+    "score": {
+     "dur": 135.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/shop_gang__so_a44a06b5342441dc98f6b90d.mp3",
+     "holes": 0,
+     "lvl_diff": 0.0,
+     "peak": 1.38,
+     "score": 97.18,
+     "seam": 0.972
+    }
+   }
+  ]
+ },
  "sky": {
   "chosen": "so_97bc67b805e44eee94f765ad",
   "kind": "music",
@@ -924,6 +2219,43 @@
    }
   ]
  },
+ "title_musicbox": {
+  "chosen": "so_93afca4713fc4538bf5c88e8",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/title_musicbox__so_93afca4713fc4538bf5c88e8.mp3",
+    "id": "so_93afca4713fc4538bf5c88e8",
+    "page": "https://acemusic.ai/song/zqyyb67hf7z4",
+    "score": {
+     "dur": 91.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/title_musicbox__so_93afca4713fc4538bf5c88e8.mp3",
+     "holes": 0,
+     "lvl_diff": 1.100000023841858,
+     "peak": 1.239,
+     "score": 93.69,
+     "seam": 0.954
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/title_musicbox__so_6f5a4b8ec9e34f87b8256546.mp3",
+    "id": "so_6f5a4b8ec9e34f87b8256546",
+    "page": "https://acemusic.ai/song/dddhgmvmfa4y",
+    "score": {
+     "dur": 92.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/title_musicbox__so_6f5a4b8ec9e34f87b8256546.mp3",
+     "holes": 0,
+     "lvl_diff": 3.200000047683716,
+     "peak": 1.051,
+     "score": 90.14,
+     "seam": 0.95
+    }
+   }
+  ]
+ },
  "town": {
   "chosen": "so_0b8240c213be46339e892860",
   "kind": "music",
@@ -957,6 +2289,80 @@
      "peak": 1.339,
      "score": 95.3,
      "seam": 0.956
+    }
+   }
+  ]
+ },
+ "underground": {
+  "chosen": "so_891a3d4f61cc4ac495cd2cf9",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/underground__so_891a3d4f61cc4ac495cd2cf9.mp3",
+    "id": "so_891a3d4f61cc4ac495cd2cf9",
+    "page": "https://acemusic.ai/song/rkwb3sis9gn4",
+    "score": {
+     "dur": 146.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/underground__so_891a3d4f61cc4ac495cd2cf9.mp3",
+     "holes": 0,
+     "lvl_diff": 6.699999809265137,
+     "peak": 1.357,
+     "score": 87.16,
+     "seam": 0.972
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/underground__so_595406db6f3840999ea861da.mp3",
+    "id": "so_595406db6f3840999ea861da",
+    "page": "https://acemusic.ai/song/ayvs4pkwigwf",
+    "score": {
+     "dur": 147.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/underground__so_595406db6f3840999ea861da.mp3",
+     "holes": 0,
+     "lvl_diff": 7.300000190734863,
+     "peak": 1.304,
+     "score": 84.34,
+     "seam": 0.952
+    }
+   }
+  ]
+ },
+ "uptown": {
+  "chosen": "so_e8edd2b2c97e406ea724a0ca",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/uptown__so_e8edd2b2c97e406ea724a0ca.mp3",
+    "id": "so_e8edd2b2c97e406ea724a0ca",
+    "page": "https://acemusic.ai/song/tarq7dev5wbn",
+    "score": {
+     "dur": 148.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/uptown__so_e8edd2b2c97e406ea724a0ca.mp3",
+     "holes": 0,
+     "lvl_diff": 3.200000047683716,
+     "peak": 1.224,
+     "score": 91.16,
+     "seam": 0.959
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/uptown__so_ebda1691ab5246fd913ce739.mp3",
+    "id": "so_ebda1691ab5246fd913ce739",
+    "page": "https://acemusic.ai/song/fjvi9sh3iixm",
+    "score": {
+     "dur": 147.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/uptown__so_ebda1691ab5246fd913ce739.mp3",
+     "holes": 0,
+     "lvl_diff": 9.0,
+     "peak": 1.312,
+     "score": 82.68,
+     "seam": 0.962
     }
    }
   ]

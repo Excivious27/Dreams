@@ -52,6 +52,7 @@ func _ready() -> void:
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	get_tree().paused = true
 	Music.instance(get_tree()).sfx("page", "pickup")
+	Music.instance(get_tree()).play("campaign_map")
 	var bg := ColorRect.new()
 	bg.color = Color(0.07, 0.06, 0.09, 1.0) if not GameState.is_penguins() else Color(0.1, 0.08, 0.06, 1.0)
 	bg.size = Vector2(270, 480)
@@ -569,6 +570,8 @@ func _close_now() -> void:
 	if not is_inside_tree():
 		return
 	get_tree().paused = _was_paused
+	if m != null and is_instance_valid(m):
+		Music.instance(get_tree()).play(m.area_track())
 	Hud.modal_rect = Rect2()
 	Dialogue.block_input(0.4)
 	closed.emit()

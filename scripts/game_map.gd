@@ -220,6 +220,8 @@ func _ready() -> void:
 	if has_sky and scene_id() not in ["house", "interior", "mine", "moon", "station", "sky", "title", "test_map", "hollow_heart"] and not scene_id().begins_with("bf_"):
 		var vis: Dictionary = GameState.run.get("visited", {})
 		if not vis.has(scene_id()):
+			if not vis.is_empty():
+				Music.instance(get_tree()).sfx("j_region", "levelup")
 			var at := player.position - offset()
 			vis[scene_id()] = [at.x, at.y]
 			GameState.run["visited"] = vis
@@ -1328,27 +1330,98 @@ var exact_footprints := false
 
 ## Each area's own song where one exists, the festival tune on festival day in
 ## town, a quiet night piece outdoors after dark, and a winter piece on the farm.
-const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "danger", "neon": "neon", "hideout": "neon",
+const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "uptown", "neon": "neon", "hideout": "hideout",
+	"docks": "docks", "underground": "underground", "countryside": "countryside", "orchard_hills": "orchard", "highlands": "mountain",
+	"ruins": "ruins", "quarry": "quarry", "riverlands": "lake", "sky": "sky", "station": "sky", "moon": "moon",
 	"jungle": "jungle", "marsh": "marsh", "bf_frostfield": "battle", "bf_shattered_vale": "battle", "bf_rail_yards": "battle",
-	"bf_dockside": "battle", "colony_coral": "colony_coral", "colony_kelp": "colony_kelp", "colony_ice": "colony_ice",
-	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart", "moon": "sky", "quarry": "mountain"}
+	"bf_dockside": "battle", "bf_orchard_line": "battle", "bf_bog_crossing": "battle", "bf_ash_wastes": "battle", "bf_neon_block": "battle",
+	"colony_coral": "colony_coral", "colony_kelp": "colony_kelp", "colony_ice": "colony_ice",
+	"colony_ember": "colony_ember", "hollow_heart": "hollow_heart", "sanctuary": "sanctuary"}
+## Interiors by kind (data/interiors.json ids). Gangster-arc shops get the crew's lounge tune.
+const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "bank": "shop", "quarry_office": "shop", "stable": "shop",
+	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "inn", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
+	"school": "chapel", "mansion": "chapel", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house"}
+## Every track that counts as boss music (it keeps playing while the fight lasts).
+const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid"]
+var boss_music := "boss"
+
+
+## The boss song for a foe: the arc themes for arc bosses, stone drums for mine keepers,
+## the Marked's own theme for Gift fights.
+func boss_track(kind: String) -> String:
+	var k := kind.to_lower()
+	var t := "boss"
+	if k.begins_with("marked") or k.begins_with("mk_"):
+		t = "marked"
+	elif "golem" in k or "keeper" in k or scene_id() == "mine":
+		t = "keeper"
+	elif k in ["big_grump", "dark_crystal", "grump_commander", "finargle"] or (k == "commander" and GameState.is_penguins()) or (GameState.is_penguins() and k.begins_with("cboss")):
+		t = "boss_penguin"
+	elif k in ["president", "thug_brute"] or k.begins_with("lieutenant") or k.begins_with("lt_") or (k == "commander" and not GameState.is_penguins()) or (Racket.on() and k.begins_with("thug")):
+		t = "boss_gang"
+	return t if Music.has_track(t) else "boss"
 const NIGHT_OK := ["farm", "town", "meadow", "lake", "beach", "mountain", "forest", "orchard_hills", "countryside", "riverlands", "highlands"]  # not crystal_meadow: cattopia is its song day and night
 
 
 func area_track() -> String:
 	var id := scene_id()
 	var t := str(AREA_MUSIC.get(id, music_track))
-	if not ResourceLoader.exists("res://audio/music/%s.ogg" % t):
+	if id == "interior":
+		var iid := str(get("interior_id"))
+		t = str(INTERIOR_MUSIC.get(iid, music_track if music_track != "town" else "house"))
+		if t == "shop" and Racket.on():
+			t = "shop_gang"
+	if id == "mine" and int(get("floor_no") if get("floor_no") != null else 1) > 30:
+		t = "mine_deep"
+	if id.begins_with("bf_") and get("battle") != null and is_instance_valid(get("battle")):
+		var md := str(get("battle").get("mode"))
+		if md in ["siege", "gate", "defend", "camp"]:
+			t = "battle_siege"
+		elif md in ["escort", "supply"]:
+			t = "battle_escort"
+	if Racket.on() and _collectors_near():
+		return "raid"
+	if not Music.has_track(t):
 		t = music_track
 	if id == "town" and GameState.festival_today() != "":
 		return "festival"
 	if id in NIGHT_OK and GameState.is_night():
 		return "night"
-	if id in NIGHT_OK and (GameState.is_wet() or (sky != null and sky.weather in ["rain", "storm"])) and ResourceLoader.exists("res://audio/music/rain.ogg"):
+	if id in NIGHT_OK and (GameState.is_wet() or (sky != null and sky.weather in ["rain", "storm"])) and Music.has_track("rain"):
 		return "rain"
 	if id == "farm" and GameState.season() == "winter":
 		return "winter"
+	if id == "farm" and GameState.season() == "fall" and Music.has_track("farm_fall"):
+		return "farm_fall"
+	if has_sky and id not in ["farm", "town", "house", "interior"] and not id.begins_with("bf_") and _danger_near():
+		return "danger"
 	return t
+
+
+## The President's collectors are on this map and close: chase music.
+func _collectors_near() -> bool:
+	if player == null:
+		return false
+	for e in enemies:
+		if is_instance_valid(e) and e._alive and e.has_meta("collector") and e.position.distance_to(player.position) < 220.0:
+			return true
+	return false
+
+
+## Three or more foes awake around you in the wild: the tense track (with a little
+## hysteresis so it doesn't flicker as one wanders in and out).
+var _danger_on := false
+
+
+func _danger_near() -> bool:
+	if player == null or not Music.has_track("danger"):
+		return false
+	var n := 0
+	for e in enemies:
+		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and e.position.distance_to(player.position) < (170.0 if _danger_on else 120.0):
+			n += 1
+	_danger_on = n >= (2 if _danger_on else 3)
+	return _danger_on
 
 
 var _music_t := 0.0
@@ -1357,7 +1430,7 @@ var _music_t := 0.0
 ## A boss fight's music keeps going while any big foe still stands.
 func _boss_playing() -> bool:
 	var mu := Music._inst
-	if mu == null or not is_instance_valid(mu) or mu._current != "boss":
+	if mu == null or not is_instance_valid(mu) or not (mu._current in BOSS_TRACKS):
 		return false
 	for e in enemies:
 		if is_instance_valid(e) and (e.bossy or e._gift != null or e.has_meta("boss_name")):
@@ -1638,7 +1711,8 @@ func clear_cell(c: Vector2i) -> void:
 
 ## Boss intro card (ui/card_<kind>): slides in over the screen for a couple of seconds.
 func boss_card(kind: String, title := "") -> void:
-	Music.instance(get_tree()).play("boss")  # every boss, mine keepers too (_boss_playing keeps it up)
+	boss_music = boss_track(kind)
+	Music.instance(get_tree()).play(boss_music)  # every boss, mine keepers too (_boss_playing keeps it up)
 	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president" if not GameState.is_penguins() else ""}.get(kind, "")
 	if kind.begins_with("card:"):
 		nm = kind.trim_prefix("card:")
@@ -1677,7 +1751,7 @@ func boss_card(kind: String, title := "") -> void:
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tr.add_child(lbl)
 	add_child(layer)
-	Music.instance(get_tree()).sfx("alert", "thud")  # danger, not the level-up jingle
+	Music.instance(get_tree()).sfx("roar" if not ("thug" in kind or kind == "president") else "alert", "alert")  # danger, not the level-up jingle
 	shake(4.0)
 	var tw := create_tween()
 	tw.tween_property(tr, "position:x", 10.0, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -2007,7 +2081,7 @@ func use_consumable(sel: String) -> bool:
 			player.play_tool("hold")
 			fx("emp" if Art.has("fx", "emp") else "ripple_ring" if Art.has("fx", "ripple_ring") else "spark", player.position + Vector2(0, -8), 10.0, 0.5 * float(it.get("radius", 84.0)) / 40.0)
 			shake(2.0)
-			Music.instance(get_tree()).sfx("zap", "hit")
+			Music.instance(get_tree()).sfx("emp", "zap")
 			var hit_n := 0
 			var opened := 0
 			for e in enemies:

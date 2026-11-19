@@ -44,7 +44,7 @@ static func on_enter(m: GameMap) -> void:
 		if e:
 			m.hud.toast("%s, \"%s\": %s" % [str(d["name"]), str(d["epithet"]), str(d["intro"])], Color(str(Gift.def(str(d["gift"])).get("colour", "ffffff"))))
 			Music.instance(m.get_tree()).sfx("alert")
-			Music.instance(m.get_tree()).play("boss")  # _boss_playing keeps it until they yield
+			Music.instance(m.get_tree()).play("marked" if Music.has_track("marked") else "boss")  # _boss_playing keeps it until they yield
 		return
 
 

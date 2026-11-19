@@ -147,7 +147,12 @@ func _ready() -> void:
 	showing = true
 	# The ending gets its own song, not whatever the last fight left playing.
 	Music.instance(get_tree()).set_duck(0.0)
-	Music.instance(get_tree()).play("title")
+	var end_track := "ending_penguin" if GameState.is_penguins() else "ending_gangster"
+	if Music.has_track(end_track):
+		Music.instance(get_tree()).play(end_track)
+		Music.instance(get_tree()).queue_after("credits")
+	else:
+		Music.instance(get_tree()).play("title")
 	var bg := ColorRect.new()
 	bg.color = Color(0.05, 0.04, 0.08, 0.96)
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)

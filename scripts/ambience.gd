@@ -177,6 +177,27 @@ func _evaluate() -> Dictionary:
 			out["crystal_hum"] = -20.0
 	if id in ["moon", "station"]:
 		out["space"] = -16.0
+	# CC0 recordings (tools/cc0_import.py): rivers, fires, streets, jungles, marsh.
+	if outdoors:
+		var wn := _water_near(m)
+		if id in ["riverlands", "farm"] and wn > 0.2:
+			out["river"] = -16.0 + 8.0 * (wn - 1.0)
+		if id == "jungle" and not wet:
+			out["jungle_insects"] = -14.0
+		if id in ["marsh", "bf_bog_crossing"]:
+			out["marsh"] = -16.0
+		if gang and id in ["neon", "bf_neon_block", "uptown"]:
+			out["neon_street"] = -16.0
+		if id in ["countryside", "highlands", "mountain"] and not wet and ph != "night":
+			out["wind_soft"] = maxf(float(out.get("wind_soft", -40.0)), -18.0)
+		if GameState.festival_today() != "" and id == "town" and ph == "night":
+			out["campfire"] = -20.0
+	elif id == "interior":
+		var kind := str(m.get("interior_id")) if m.get("interior_id") != null else ""
+		if "kitchen" in kind or "bakery" in kind or "diner" in kind:
+			out["boiling"] = -22.0
+		if "smith" in kind or "forge" in kind or "workshop" in kind:
+			out["machines"] = -24.0
 	# Keep the loudest few.
 	if out.size() > MAX_BEDS:
 		var ks := out.keys()
@@ -254,6 +275,17 @@ func _spots(delta: float) -> void:
 		rules.append(["penguin_chatter", 10.0, 25.0, -10.0])
 	if id in CAVE_MAPS:
 		rules.append(["drip", 3.0, 9.0, -10.0])
+	if outdoors and calm and id in SEA_MAPS and ph != "night":
+		rules.append(["gull", 10.0, 26.0, -12.0])
+		rules.append(["wave", 7.0, 16.0, -14.0])
+	if outdoors and calm and ph == "day" and id in ["farm", "countryside", "orchard_hills", "meadow"] and GameState.look_se() != "winter":
+		rules.append(["crow", 30.0, 70.0, -14.0])
+	if outdoors and ph in ["dusk", "night"] and id in ["marsh", "lake", "bf_bog_crossing"]:
+		rules.append(["frog", 6.0, 16.0, -12.0])
+	if outdoors and calm and ph == "day" and GameState.look_se() == "summer" and id in ["jungle", "forest", "meadow", "orchard_hills"]:
+		rules.append(["cicada", 20.0, 45.0, -16.0])
+	if outdoors and calm and id in ["jungle", "marsh"]:
+		rules.append(["insect", 12.0, 30.0, -16.0])
 	for r: Array in rules:
 		var k := str(r[0])
 		_spot_t[k] = float(_spot_t.get(k, randf_range(float(r[1]), float(r[2])))) - delta
@@ -269,7 +301,9 @@ func _spots(delta: float) -> void:
 
 func _spot(name: String, db: float) -> void:
 	var m := _map()
-	var s := _stream("res://audio/amb/spot_%s.wav" % name)
+	var s := _stream("res://audio/amb/spot_%s.ogg" % name)  # CC0 recording (tools/cc0_import.py)
+	if s == null:
+		s = _stream("res://audio/amb/spot_%s.wav" % name)
 	if s == null or m == null or m.player == null:
 		return
 	var p := AudioStreamPlayer2D.new()

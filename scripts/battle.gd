@@ -52,6 +52,7 @@ var convoy: CampaignConvoy = null
 
 static func start(m: GameMap, region_id: String, data: Dictionary) -> Battle:
 	var b := Battle.new()
+	Music.instance(m.get_tree()).sfx("j_battle_start", "alert")
 	b.map = m
 	b.bid = region_id
 	b.d = data
@@ -561,7 +562,7 @@ func _end(won: bool, travel := true) -> void:
 	# A full campaign is what trains a Strategist (more for a win, something for a loss).
 	var rematch: bool = GameState.run["flags"].has("battle_" + bid)
 	GameState.add_xp("strategist", (120 if rematch else 400) if won else mini(120, 20 * _caps + _kills))
-	Music.instance(get_tree()).sfx("quest_done" if won else "die", "levelup")
+	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
 	if won:
 		GameState.add_arc_xp(25 if rematch else 80)
 	for e in map.enemies.duplicate():
@@ -760,7 +761,7 @@ func _goal_text() -> String:
 func _end_campaign(won: bool, travel: bool) -> void:
 	_over = true
 	GameState.add_xp("strategist", 150 if won else mini(80, 15 * _caps + _kills))
-	Music.instance(get_tree()).sfx("quest_done" if won else "die", "levelup")
+	Music.instance(get_tree()).sfx("j_battle_won" if won else "j_battle_lost", "levelup")
 	if won:
 		GameState.add_arc_xp(30)
 	for e in map.enemies.duplicate():

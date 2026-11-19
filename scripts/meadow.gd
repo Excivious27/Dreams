@@ -185,7 +185,7 @@ func _summon_boss() -> void:
 	if not GameState.is_penguins():
 		_boss.damage = mini(_boss.damage, 2)  # the first boss of the arc hits like the penguin one
 	boss_card("big_grump" if GameState.is_penguins() else "thug_brute", "Big Grump" if GameState.is_penguins() else "The President's Man")
-	Music.instance(get_tree()).play("boss")
+	Music.instance(get_tree()).play(boss_music)
 	player.frozen = false
 	_boss_pending = false
 

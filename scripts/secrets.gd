@@ -132,7 +132,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 				(m.props[c] as Node).queue_free()
 				m.props.erase(c)
 			m.prop("props", "chest_open", c)
-			Music.instance(m.get_tree()).sfx("coin", "pickup")
+			Music.instance(m.get_tree()).sfx("j_treasure", "coin")
 			var g: Dictionary = thing["give"]
 			for id: String in g:
 				if id == "#gold":
@@ -157,6 +157,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 		"page":
 			var key := str(thing["key"])
 			GameState.run["flags"][key] = true
+			Music.instance(m.get_tree()).sfx("j_page", "page")
 			m.things.erase(c)
 			if m.props.has(c):
 				(m.props[c] as Node).queue_free()

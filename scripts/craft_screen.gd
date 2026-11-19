@@ -316,7 +316,7 @@ func _make() -> void:
 	var j := Crafting.start(station, key, rc, tier, _qty)
 	Crafting.mark_known(rc)
 	m.hud.toast("%s: ready in %s." % [str(rc["name"]), Crafting.fmt_minutes(int(j["done_at"]) - Crafting.now_abs())], Color(1, 0.9, 0.4))
-	Music.instance(get_tree()).sfx("craft_done", "pickup")
+	Music.instance(get_tree()).sfx(station_sound(station), "craft_done")
 	_qty = 1
 	if not Crafting.can_make(rc):
 		_sel = {}
@@ -334,3 +334,15 @@ func _wait() -> void:
 		GameState.run["time"] = int(GameState.run["time"]) + soon
 		m.hud.toast("You wait. %s." % Crafting.fmt_minutes(soon))
 	_refresh()
+
+
+## What a station sounds like at work (anvils ring, pots bubble, terminals beep).
+static func station_sound(st: String) -> String:
+	var k := st.to_lower()
+	for pair: Array in [["smith", "anvil"], ["forge", "anvil"], ["anvil", "anvil"], ["kitchen", "pot"], ["cook", "pot"], ["stove", "pot"],
+			["bake", "pot"], ["brew", "bubble"], ["alchem", "bubble"], ["potion", "bubble"], ["hack", "typing"], ["terminal", "typing"],
+			["robot", "drill"], ["chrome", "servo"], ["work", "hammer"], ["carpent", "hammer"], ["saw", "hammer"], ["loom", "cloth"],
+			["sew", "cloth"], ["tailor", "cloth"], ["jewel", "gem"], ["gem", "gem"], ["print", "beep"], ["lab", "beep"]]:
+		if str(pair[0]) in k:
+			return str(pair[1])
+	return "tools"

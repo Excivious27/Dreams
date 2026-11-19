@@ -994,6 +994,18 @@ var _step_t := 0.0
 
 
 ## Which footstep sound fits the ground under us.
+## Which report a gun makes: shotguns boom, rifles crack, the rest pop.
+func _gun_sound() -> String:
+	var w := GameState.equipped("weapon").to_lower()
+	if "shotgun" in w or "blunder" in w or "scatter" in w:
+		return "shot_shotgun"
+	if "rifle" in w or "sniper" in w or "long" in w:
+		return "shot_rifle"
+	if "laser" in w or "ray" in w or "plasma" in w:
+		return "laser"
+	return "shot"
+
+
 func _ground_word() -> String:
 	var map := get_parent() as GameMap
 	if map == null:
@@ -1007,9 +1019,17 @@ func _ground_word() -> String:
 		return "sand"
 	if GameState.look_se() == "winter" and map.has_sky:
 		return "snow"
+	if swimming or map.is_water_cell(map.world_to_cell(position)):
+		return "water"
+	if id in ["marsh", "bf_bog_crossing"]:
+		return "mud"
 	var gw := str(map.ground_word.get(map.world_to_cell(position), ""))
 	if gw != "":
 		return gw
+	if GameState.look_se() == "fall" and id in ["forest", "orchard_hills", "meadow"]:
+		return "leaves"
+	if id in ["quarry", "wastes", "highlands"]:
+		return "gravel"
 	if id in ["town", "neon", "uptown"]:
 		return "stone"
 	return "grass"
@@ -1145,7 +1165,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	tw.tween_property(ln, "modulate:a", 0.0, 0.09)
 	tw.tween_callback(ln.queue_free)
 	map.fx("sparkle", muzzle, 6.0, 0.15)
-	Music.instance(get_tree()).sfx("shot", "thud")
+	Music.instance(get_tree()).sfx(_gun_sound(), "shot")
 	if hit:
 		map.hitstop = maxf(map.hitstop, 0.03)
 	map.shake(1.0)

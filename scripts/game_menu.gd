@@ -69,7 +69,7 @@ func _ready() -> void:
 			b.custom_minimum_size = Vector2(0, 18)
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-		b.pressed.connect(func() -> void: _tab = t; _rebinding = ""; _refresh())
+		b.pressed.connect(func() -> void: _tab = t; _rebinding = ""; Music.instance(get_tree()).sfx("tab", "ui_tap"); _refresh())
 		_tabs.add_child(b)
 		_tab_buttons[t] = b
 		if has_icon:

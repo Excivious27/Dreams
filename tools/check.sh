@@ -77,6 +77,8 @@ echo "== workshop: no dead ends =="
 python3 tools/station_check.py || { echo "Station check failed"; exit 1; }
 echo "== art prompts: at most 3 images each =="
 python3 tools/prompt_size_check.py || { echo "Prompt size check failed"; exit 1; }
+echo "== every sound the game asks for exists =="
+python3 tools/sfx_audit.py || { echo "Sound audit failed"; exit 1; }
 
 echo "== workshop: stations at run time =="
 sout="$("$GODOT" --headless --path . -s res://tools/station_test.gd 2>&1)"

@@ -705,7 +705,7 @@ func _die() -> void:
 	var big := bossy or is_guardian or has_meta("boss_name")
 	map.fx("poof" if Art.has("fx", "poof") else "spark", position + Vector2(0, -8), 32.0 if big else 20.0, 0.6)
 	if big or (map.player and position.distance_to(map.player.position) < 200.0):
-		Music.instance(get_tree()).sfx("boss_down" if big else "thud")
+		Music.instance(get_tree()).sfx("boss_down" if big else _death_sound(), "thud")
 	if big:
 		map.shake(5.0)
 	# Sheets with a "die" strip play it, then fade; the rest get the squash.
@@ -799,3 +799,21 @@ func display_name() -> String:
 	if ed.has("name"):
 		return str(ed["name"])
 	return kind.replace("thug_", "").replace("_", " ").capitalize()
+
+
+## A small foe's send-off, by what it is.
+func _death_sound() -> String:
+	var k := kind.to_lower()
+	if "slime" in k or "blob" in k or "ooze" in k:
+		return "slime"
+	if "bat" in k:
+		return "bat"
+	if "golem" in k or "rock" in k or "stone" in k or "crystal" in k:
+		return "rock_break"
+	if "bot" in k or "drone" in k or "robot" in k or "cyber" in k:
+		return "power_off"
+	if "spirit" in k or "ghost" in k or "wisp" in k or "shade" in k:
+		return "spirit"
+	if "bug" in k or "beetle" in k or "wasp" in k or "spider" in k:
+		return "bug"
+	return "die"

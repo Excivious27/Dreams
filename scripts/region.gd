@@ -705,7 +705,7 @@ func _boss(thing: Dictionary) -> void:
 	if b:
 		b.set_meta("boss_name", bw if bw != "" else str(thing.get("title", "")))
 	boss_card(bk, str(thing.get("title", bw)))
-	Music.instance(get_tree()).play("boss")
+	Music.instance(get_tree()).play(boss_music)
 	player.frozen = false
 	_boss_node = b
 	_boss_thing = thing

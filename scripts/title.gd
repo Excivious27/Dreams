@@ -290,7 +290,7 @@ func _show_characters() -> void:
 	_mood(_arc == "gangsters")
 	# Choosing an arc switches to its theme (crossfades); Back returns to "title".
 	var arc_track := "arc_" + _arc
-	Music.instance(get_tree()).play(arc_track if ResourceLoader.exists("res://audio/music/%s.ogg" % arc_track) else "title")
+	Music.instance(get_tree()).play(arc_track if Music.has_track(arc_track) else "title")
 	_page.add_child(_label("Who are you?", 16))
 	_preview_holder = Control.new()
 	_preview_holder.custom_minimum_size = Vector2(0, 80)

@@ -1,8 +1,9 @@
 class_name Music
 extends Node
 ## Plays looping music per area and short sound effects. Tracks live in
-## audio/music/<name>.ogg and audio/sfx/<name>.wav (generated placeholders for now;
-## real tracks drop in with the same names).
+## audio/music/<name>.ogg (ACE Music renders, see audio/ACE_LOG.json). Effects are
+## audio/sfx/<name>.ogg (ACE kits and CC0 recordings) with up to two variations
+## <name>_2/_3 picked at random; generated .wav placeholders fill any gap.
 
 static var _inst: Music
 var _player: AudioStreamPlayer
@@ -43,6 +44,8 @@ func _ready() -> void:
 	_fading.bus = "Music"
 	_fading.volume_db = MUSIC_DB
 	add_child(_fading)
+	_player.finished.connect(_on_finished.bind(_player))
+	_fading.finished.connect(_on_finished.bind(_fading))
 	for i in 6:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -4.0
@@ -62,6 +65,11 @@ func _ready() -> void:
 
 
 var _pending := ""
+## Tracks that play once (endings, credits, the lullaby scene) instead of looping.
+const ONCE := ["ending_penguin", "ending_gangster", "credits", "merkitty_song"]
+## Loudness by kind of effect, on top of each file's own level (dB).
+const GROUP_DB := {"ui_": -9.0, "menu_": -8.0, "page": -6.0, "equip": -6.0, "talk_blip": -10.0, "keypress": -10.0,
+	"step_": 0.0, "coin": -3.0, "pickup": -3.0, "j_": 0.0, "levelup": 0.0, "quest_done": 0.0}
 
 
 func play(track: String) -> void:
@@ -72,12 +80,21 @@ func play(track: String) -> void:
 		return
 	_current = track
 	var path := "res://audio/music/%s.ogg" % track
-	if not ResourceLoader.exists(path):
+	var stream: AudioStream = null
+	if ResourceLoader.exists(path):
+		stream = load(path) as AudioStream
+	elif _streamed.has(track):
+		stream = _streamed[track]
+	elif track in _stream_list():
+		# Web build: this song isn't in the download; fetch it (or read our cached copy), then play.
+		_player.stop()
+		_fetch(track)
+		return
+	if stream == null:
 		_player.stop()
 		return
-	var stream := load(path) as AudioStream
 	if stream is AudioStreamOggVorbis:
-		(stream as AudioStreamOggVorbis).loop = true
+		(stream as AudioStreamOggVorbis).loop = not (track in ONCE)
 	# Crossfade: the old track fades out on the spare player while the new one fades in.
 	# A second change mid-fade must not let the first fade's stop() land on the
 	# new track: kill both tweens first.
@@ -101,15 +118,89 @@ func play(track: String) -> void:
 		_tw_in.tween_property(_player, "volume_db", MUSIC_DB + _duck, FADE)
 
 
+# ---- streamed music (web): data/music_stream.json lists songs kept outside the pack ----
+var _streamed := {}
+var _fetching := {}
+static var _stream_names: Array = []
+
+
+static func _stream_list() -> Array:
+	if _stream_names.is_empty() and FileAccess.file_exists("res://data/music_stream.json"):
+		var d: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/music_stream.json"))
+		if d is Dictionary:
+			_stream_names = (d as Dictionary).get("stream", [])
+	return _stream_names
+
+
+## A song exists: in the pack, or streamed on the web build.
+static func has_track(t: String) -> bool:
+	return ResourceLoader.exists("res://audio/music/%s.ogg" % t) or t in _stream_list()
+
+
+func _fetch(track: String) -> void:
+	var cache := "user://mcache/%s.ogg" % track
+	if FileAccess.file_exists(cache):
+		_got(track, FileAccess.get_file_as_bytes(cache), false)
+		return
+	if _fetching.has(track):
+		return
+	var rq := HTTPRequest.new()
+	add_child(rq)
+	_fetching[track] = rq
+	rq.request_completed.connect(func(result: int, code: int, _h: PackedStringArray, body: PackedByteArray) -> void:
+		_fetching.erase(track)
+		rq.queue_free()
+		if result == HTTPRequest.RESULT_SUCCESS and code == 200 and body.size() > 1000:
+			_got(track, body, true))
+	if rq.request("music/%s.ogg" % track) != OK:
+		_fetching.erase(track)
+		rq.queue_free()
+
+
+func _got(track: String, bytes: PackedByteArray, save: bool) -> void:
+	var st := AudioStreamOggVorbis.load_from_buffer(bytes)
+	if st == null:
+		return
+	_streamed[track] = st
+	if save:
+		DirAccess.make_dir_recursive_absolute("user://mcache")
+		var f := FileAccess.open("user://mcache/%s.ogg" % track, FileAccess.WRITE)
+		if f:
+			f.store_buffer(bytes)
+	if _current == track:
+		_current = ""
+		play(track)
+
+
 func _load_sfx(name: String) -> AudioStream:
 	if not _sfx_cache.has(name):
-		# A real recording/ACE jingle (.ogg) wins over the generated placeholder (.wav).
-		var real := "res://audio/sfx/%s.ogg" % name
-		var path := "res://audio/sfx/%s.wav" % name
-		if ResourceLoader.exists(real):
-			path = real
-		_sfx_cache[name] = load(path) if ResourceLoader.exists(path) else null
-	return _sfx_cache[name]
+		# A real recording/ACE sound (.ogg, plus _2/_3 takes) wins over the generated placeholder (.wav).
+		var takes: Array = []
+		for suf: String in ["", "_2", "_3"]:
+			var real := "res://audio/sfx/%s%s.ogg" % [name, suf]
+			if ResourceLoader.exists(real):
+				takes.append(load(real))
+		if takes.is_empty():
+			var path := "res://audio/sfx/%s.wav" % name
+			if ResourceLoader.exists(path):
+				takes.append(load(path))
+		_sfx_cache[name] = takes
+	var t: Array = _sfx_cache[name]
+	if t.is_empty():
+		return null
+	return t[randi() % t.size()]
+
+
+## True when a sound of this name exists (any take).
+func has_sfx(name: String) -> bool:
+	return _load_sfx(name) != null
+
+
+func _group_db(name: String) -> float:
+	for k: String in GROUP_DB:
+		if name.begins_with(k):
+			return float(GROUP_DB[k])
+	return 0.0
 
 
 ## Play a sound effect. If it doesn't exist yet, `fallback` plays instead.
@@ -139,8 +230,9 @@ func sfx(name: String, fallback := "") -> void:
 		pick = _sfx[_next_voice % _sfx.size()]
 		_next_voice += 1
 	pick.stream = st
+	pick.volume_db = -4.0 + _group_db(name)
 	# A little pitch drift so repeated swings and steps don't sound stamped out.
-	pick.pitch_scale = 1.0 if (st.get_length() > 0.45 or name in ["craft_done", "mail", "coin"]) else randf_range(0.93, 1.07)  # jingles stay in key
+	pick.pitch_scale = 1.0 if (st.get_length() > 0.45 or name.begins_with("j_") or name in ["craft_done", "mail", "coin", "levelup", "quest_done"]) else randf_range(0.93, 1.07)  # jingles stay in key
 	pick.play()
 
 
@@ -168,6 +260,21 @@ func set_duck(db: float) -> void:
 	create_tween().tween_property(_player, "volume_db", MUSIC_DB + _duck, 2.0)
 
 
+## After a play-once track (an ending) finishes, play this one.
+var _after := ""
+
+
+func queue_after(track: String) -> void:
+	_after = track
+
+
+func _on_finished(pl: AudioStreamPlayer) -> void:
+	if pl == _player and _current in ONCE and _after != "":
+		var nx := _after
+		_after = ""
+		play(nx)
+
+
 func stop_all() -> void:
 	if _player:
 		_player.stop()
@@ -190,3 +297,24 @@ func toggle_mute() -> bool:
 		_player.volume_db = MUSIC_DB + _duck
 		_player.play()
 	return _muted
+
+
+## A dialogue blip: every speaker keeps their own pitch (from their name), so
+## voices are told apart without words.
+func blip(who: String) -> void:
+	if _muted or _sfx.is_empty():
+		return
+	var now := Time.get_ticks_msec()
+	if now - int(_last_sfx.get("talk_blip", -1000)) < 70:
+		return
+	_last_sfx["talk_blip"] = now
+	var st := _load_sfx("talk_blip")
+	if st == null:
+		return
+	var pick: AudioStreamPlayer = _sfx[_next_voice % _sfx.size()]
+	_next_voice += 1
+	pick.stream = st
+	pick.volume_db = -4.0 + _group_db("talk_blip")
+	var h := absi(who.hash()) % 1000
+	pick.pitch_scale = 0.8 + 0.5 * float(h) / 1000.0 if who != "" else 1.0
+	pick.play()

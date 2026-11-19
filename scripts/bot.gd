@@ -32,7 +32,7 @@ static func deploy(m: GameMap, id: String, it: Dictionary, quiet := false) -> Bo
 		b.add_child(b._spr)
 	m.add_child(b)
 	if not quiet:
-		Music.instance(m.get_tree()).sfx("zap", "pickup")  # the player drops a bot: hear it boot
+		Music.instance(m.get_tree()).sfx("power_up", "zap")  # the player drops a bot: hear it boot
 	return b
 
 

@@ -21,12 +21,18 @@ def save_log(l):
     json.dump(l, open(LOG, "w"), indent=1, sort_keys=True, default=float)
 
 def imp(name, kind, path):
-    if kind == "music":
-        subprocess.run([sys.executable, os.path.join(HERE, "ace_import.py"), name, path], check=True)
+    if kind in ("music", "once"):
+        subprocess.run([sys.executable, os.path.join(HERE, "ace_import.py"), name, path] + (["--once"] if kind == "once" else []), check=True)
 
 def main():
     os.makedirs(RAW, exist_ok=True)
     log = load_log()
+    if len(sys.argv) > 1 and sys.argv[1] == "--reimport-all":
+        for nm, e in log.items():
+            if e["kind"] in ("music", "once"):
+                v = [x for x in e["versions"] if x["id"] == e["chosen"]][0]
+                imp(nm, e["kind"], v["file"])
+        return
     if len(sys.argv) > 2 and sys.argv[1] == "--swap":
         e = log[sys.argv[2]]
         other = [v for v in e["versions"] if v["id"] != e["chosen"]][0]

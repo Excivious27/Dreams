@@ -198,7 +198,7 @@ static func _crystal(m: GameMap, id: String) -> void:
 		b.set_meta("boss_name", str(c["boss_name"]))
 		m.set_meta("colony_boss", true)
 		m.boss_card(str(c["boss"]), str(c["boss_name"]))
-		Music.instance(m.get_tree()).play("boss")
+		Music.instance(m.get_tree()).play(m.boss_music)
 
 
 ## From GameMap.on_enemy_died.

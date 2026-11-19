@@ -72,6 +72,7 @@ def main():
     ap.add_argument("--kind", default="music", choices=["music", "jingle"])
     ap.add_argument("--trim", default="")
     ap.add_argument("--loop-xfade", type=float, default=3.0)
+    ap.add_argument("--once", action="store_true", help="plays once (endings, credits): keep the natural ending, no loop seam")
     ap.add_argument("--dry", default="", help="write here instead of the repo (testing)")
     a = ap.parse_args()
     tmp = tempfile.mkdtemp(prefix="ace_")
@@ -84,16 +85,20 @@ def main():
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         import ace_pick
         x, sr = ace_pick.load(a.src)
-        s0, s1 = ace_pick.trim_quiet(x, sr)
+        s0, s1 = ace_pick.trim_quiet(x, sr, tail_db=40.0 if a.once else 9.0)
         run("ffmpeg", "-hide_banner", "-y", "-i", a.src, "-af",
             f"atrim={s0 / sr}:{s1 / sr},asetpts=PTS-STARTPTS", t1)
         t2 = os.path.join(tmp, "t2.wav")
         loudnorm(t1, t2, -16)
         t3 = os.path.join(tmp, "t3.wav")
-        seamless(t2, t3, a.loop_xfade)
+        if a.once:
+            d = duration(t2)
+            run("ffmpeg", "-hide_banner", "-y", "-i", t2, "-af", f"afade=t=out:st={max(0.0, d - 2.5)}:d=2.5", t3)
+        else:
+            seamless(t2, t3, a.loop_xfade)
         outdir = a.dry or os.path.join(AUD, "music")
         out = os.path.join(outdir, a.name + ".ogg")
-        run("ffmpeg", "-hide_banner", "-y", "-i", t3, "-c:a", "libvorbis", "-q:a", "4", out)
+        run("ffmpeg", "-hide_banner", "-y", "-i", t3, "-c:a", "libvorbis", "-q:a", "2", out)
         if not a.dry:
             add_real(os.path.join(AUD, "music", "REAL.txt"), a.name)
     else:

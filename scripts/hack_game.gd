@@ -112,6 +112,7 @@ func _tap(ev: InputEvent) -> void:
 
 
 func _press(d: String) -> void:
+	Music.instance(get_tree()).sfx("keypress", "ui_tap")
 	if _showing or _at >= _seq.size():
 		return
 	_lit = d

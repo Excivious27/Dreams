@@ -2,6 +2,17 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — Audio project (ACE Music + CC0)
+- **Music:** 61 real tracks from ACE Music replace every placeholder. Every area, room, colony and battle mood has one. Bosses get music by kind, with the arc themes reused for the boss and ending songs. Also: chase and danger music, both endings with the credits after, a music-box title and a sung merkitty lullaby.
+- **Jingles and effects:**
+  - 45 jingles and instrument sounds from ACE;
+  - 306 CC0 effect files (with takes) from 96 OpenGameArt packs;
+  - 40 CC0 ambience beds and spots;
+  - 2 ACE drones (crystal cave, space).
+- **Wiring:** spells, guns, enemy deaths, crafting stations, footsteps (10 ground types), menus, shops, battles, campaigns, secrets, journal pages and new regions all have their own sounds. Talk blips are pitched per speaker.
+- **Web:** music streams on demand and is cached; the first download only carries 4 songs.
+- **Checks:** `tools/sfx_audit.py` added to check.sh. Credits: docs/AUDIO-CREDITS.md. Plan: docs/AUDIO-PLAN.md.
+
 ## 2026-11-18 — Round 11 (Tom's playtest list)
 - Region campaigns: every major region (and the story regions: Wastes, Sky; Docks, Neon, Uptown, Pit) opens by winning a campaign on a 5-7 territory board (skirmish, siege, escort, defend, captain, gate, caches, camps; morale and supply carry over). Board from Menu > Map > Campaign map, the town project board and the war table; walking into a held region offers it. The goal line names the campaign the story needs next. 4 new battlefields (orchard, bog, ash wastes, neon block).
 - Cliffs and edges: plateaus, terraces, ledges and cliff border bands are drawn by `CliffPainter`: curved corners and smooth slopes instead of grid steps, painted faces on the front, rock side walls on east/west sides, rims in the ground's own colour (no pale cap ring), snow pieces in winter, stairs sized to the face. Quarry/colonies use grass faces with wooden stairs. Border woods: rounded two-layer forest floor and deeper shade toward the edge; cliff bands get a face inside the band, shade and boulders/shrubs. Mountain trail no longer buries its stairs; farm terrace yard is a soft ruin patch.

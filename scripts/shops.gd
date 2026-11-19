@@ -150,7 +150,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			Music.instance(m.get_tree()).sfx("nope", "thud")
 			continue
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-		Music.instance(m.get_tree()).sfx("coin", "pickup")
+		Music.instance(m.get_tree()).sfx("cash", "coin")
 		if id.begins_with("backpack_"):
 			GameState.run["bag_up"] = int(GameState.run.get("bag_up", 0)) + 1
 			m.hud.toast("%s! Bag now holds %d kinds of item." % [GameState.item_name(id), GameState.bag_size()], Color(1, 0.9, 0.4))

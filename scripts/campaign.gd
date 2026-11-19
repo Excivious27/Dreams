@@ -398,6 +398,12 @@ static func finish(won: bool, supply_left: int) -> Array:
 	if won:
 		s["taken"][nid] = true
 		s["at"] = nid
+		if Engine.get_main_loop() is SceneTree:
+			var all_taken := true
+			for nd: Dictionary in c.get("nodes", []):
+				if not s["taken"].has(str(nd.get("id", ""))):
+					all_taken = false
+			Music.instance(Engine.get_main_loop() as SceneTree).sfx("j_campaign_won" if all_taken else "j_battle_won", "levelup")
 		s["wins"] = int(s.get("wins", 0)) + 1
 		var rw: Dictionary = n.get("reward", {})
 		s["supply"] = clampi(supply_left / 2 + int(rw.get("supply", 0)), 0, SUPPLY_CAP)
