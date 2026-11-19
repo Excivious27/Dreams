@@ -272,6 +272,7 @@ static func jobs_menu(m: GameMap) -> void:
 		jo.append("%s: %s" % [str(jobs[k]["name"]), str(jobs[k]["desc"])])
 		jk.append(str(k))
 	jo.append("No job")
+	jo.append("← Back")  # B: keep the job as it is
 	var d2 := Dialogue.instance(m.get_tree())
 	d2.say([{"who": str(Crew.members()[cid]["name"]), "text": "What do you need, boss?", "choice": jo, "key": ""}])
 	await d2.finished

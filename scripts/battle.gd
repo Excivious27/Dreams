@@ -153,10 +153,11 @@ func _pick_rally() -> void:
 	for i in points.size():
 		var p: Dictionary = points[i]
 		o.append("%sSend to %s %s (%s)" % ["▸ " if _rally == i else "", str(p["id"]).to_upper(), str(p["name"]), {"ally": "ours", "enemy": "theirs", "neutral": "open"}.get(str(p["owner"]), "")])
+	o.append("Leave as is")
 	var dl := Dialogue.instance(get_tree())
 	dl.say([{"who": "", "text": "Rally %d helper%s:" % [_helpers(), "" if _helpers() == 1 else "s"], "choice": o, "key": ""}])
 	await dl.finished
-	if dl.last_choice >= 0 and not _over:
+	if dl.last_choice >= 0 and dl.last_choice < o.size() - 1 and not _over:
 		_set_rally(dl.last_choice - 2)
 		Music.instance(map.get_tree()).sfx("pickup")
 
@@ -533,6 +534,7 @@ func interact(id: String) -> void:
 		now_nm = "Crystal Pylon" if crystal else "Gun Turret"
 	elif sp != "":
 		now_nm = str(HelperUnit.KINDS[sp]["crystal" if crystal else "drone"])
+	opts.append("Leave")  # B picks it: the list is long and the fight goes on
 	var dl := Dialogue.instance(get_tree())
 	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s %s:" % [supply, (" Now: %s." % now_nm) if now_nm != "" else "", ("Change the %s" if sp != "" else "Build a %s here") % ("crystal spire" if crystal else "drone bay")], "choice": opts, "key": ""}])
 	await dl.finished

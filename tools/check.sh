@@ -259,3 +259,9 @@ echo "$aout2" | grep -E "FAIL|SCRIPT ERROR|arcade_test" || true
 if ! echo "$aout2" | grep -q "arcade_test: 0 failures"; then
   echo "Arcade test failed"; exit 1
 fi
+echo "== softlocks: every menu/screen leaves on B, dialogues always finish =="
+slout="$("$GODOT" --headless --path . -s res://tools/softlock_test.gd 2>&1)"
+echo "$slout" | grep -E "FAIL|SCRIPT ERROR|softlock_test" || true
+if ! echo "$slout" | grep -q "softlock_test: 0 failures"; then
+  echo "Softlock test failed"; exit 1
+fi

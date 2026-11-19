@@ -126,6 +126,9 @@ func _process(_delta: float) -> void:
 		_trash_arm = ""
 		_refresh()
 		return
+	if _open and Input.is_action_just_pressed("b") and Engine.get_process_frames() - _opened_frame > 6 and Hud.modal_rect.size == Vector2.ZERO:
+		toggle()  # B backs out of the menu too (phones: no hunting for the MENU key)
+		return
 	if Input.is_action_just_pressed("menu"):
 		if not _open:
 			_tab = "Items"
@@ -144,6 +147,16 @@ func _process(_delta: float) -> void:
 
 
 var _was_paused := false
+var _opened_frame := 0
+
+
+## A story beat is playing (its player is held). A beat that broke off and left
+## the flag behind doesn't count, so the menu is never locked for good.
+static func story_busy(tree: SceneTree) -> bool:
+	if GameState.run.is_empty() or not GameState.run.has("story_pending"):
+		return false
+	var gm := tree.current_scene as GameMap
+	return Dialogue.instance(tree).active or (gm != null and gm.player != null and gm.player.frozen)
 
 
 func toggle() -> void:
@@ -153,11 +166,15 @@ func toggle() -> void:
 	# would unpause the game under it.
 	if not _open and get_tree().paused:
 		return
+	# Nor in the middle of a story beat (between its lines the tree runs).
+	if not _open and story_busy(get_tree()):
+		return
 	_open = not _open
 	_rebinding = ""
 	_panel.visible = _open
 	Music.instance(get_tree()).sfx("menu_open" if _open else "menu_close")
 	if _open:
+		_opened_frame = Engine.get_process_frames()
 		_bag_pick = ""
 		_pick_bar = -1
 		_trash_arm = ""
