@@ -84,12 +84,13 @@
      6
     ],
     "w": 3,
-    "h": 2
+    "h": 2,
+    "scale": 1.0
    },
    {
     "name": "corrupt_well",
     "cell": [
-     8,
+     10,
      21
     ],
     "w": 1,
@@ -132,7 +133,7 @@
    {
     "name": "dspike_3",
     "cell": [
-     32,
+     33,
      3
     ]
    },
@@ -146,7 +147,7 @@
    {
     "name": "dspike_3",
     "cell": [
-     4,
+     3,
      25
     ]
    },
@@ -164,7 +165,8 @@
      24
     ],
     "w": 2,
-    "h": 4
+    "h": 4,
+    "scale": 0.9
    }
   ],
   "gen": {
@@ -231,8 +233,8 @@
    {
     "type": "loot",
     "cell": [
-     8,
-     22
+     7,
+     25
     ],
     "item": "dark",
     "n": 1,
@@ -404,28 +406,31 @@
     "name": "gas_station",
     "cell": [
      3,
-     10
+     11
     ],
     "w": 6,
-    "h": 3
+    "h": 3,
+    "scale": 0.75
    },
    {
     "name": "diner_pink",
     "cell": [
      12,
-     10
+     11
     ],
     "w": 3,
-    "h": 3
+    "h": 3,
+    "scale": 0.8
    },
    {
     "name": "motel_cyan",
     "cell": [
      22,
-     10
+     11
     ],
     "w": 6,
-    "h": 3
+    "h": 3,
+    "scale": 0.9
    },
    {
     "name": "trailer",
@@ -434,22 +439,24 @@
      25
     ],
     "w": 4,
-    "h": 2
+    "h": 2,
+    "scale": 0.8
    },
    {
     "name": "trailer",
     "cell": [
-     10,
-     25
+     11,
+     23
     ],
     "w": 4,
-    "h": 2
+    "h": 2,
+    "scale": 0.8
    },
    {
     "name": "water_tower",
     "cell": [
-     31,
-     6
+     46,
+     8
     ],
     "w": 1,
     "h": 3
@@ -522,7 +529,7 @@
     "name": "fire_barrel2",
     "cell": [
      13,
-     22
+     19
     ],
     "anim": true,
     "fps": 8
@@ -531,7 +538,7 @@
     "name": "chained_dog",
     "cell": [
      7,
-     22
+     21
     ],
     "anim": true,
     "fps": 3
@@ -539,11 +546,12 @@
    {
     "name": "drive_in",
     "cell": [
-     26,
-     8
+     34,
+     11
     ],
     "w": 7,
-    "h": 4
+    "h": 4,
+    "scale": 0.75
    },
    {
     "name": "pole_wire",
@@ -616,15 +624,15 @@
     "name": "graffiti_0",
     "cell": [
      16,
-     9
+     5
     ],
     "solid": false
    },
    {
     "name": "graffiti_3",
     "cell": [
-     11,
-     9
+     9,
+     6
     ],
     "solid": false
    },
@@ -708,7 +716,7 @@
     "type": "note",
     "cell": [
      29,
-     12
+     13
     ],
     "who": "",
     "text": "The drive-in screen is torn through. Somebody painted a crown on what's left. The President's crown. He owns the dark out here too.",
@@ -844,41 +852,45 @@
     "name": "warehouse_b",
     "group": "buildings",
     "cell": [
-     2,
-     10
+     4,
+     11
     ],
     "w": 5,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "warehouse_a",
     "group": "buildings",
     "cell": [
-     10,
-     10
+     15,
+     11
     ],
     "w": 4,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "warehouse_c",
     "group": "buildings",
     "cell": [
-     17,
-     10
+     24,
+     11
     ],
     "w": 3,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "big_crane",
     "group": "buildings",
     "cell": [
-     24,
-     11
+     41,
+     18
     ],
     "w": 7,
-    "h": 5
+    "h": 5,
+    "scale": 0.85
    },
    {
     "name": "cargo_ship",
@@ -948,16 +960,16 @@
    {
     "name": "container_orange",
     "cell": [
-     3,
-     6
+     1,
+     4
     ],
     "w": 1
    },
    {
     "name": "container_green",
     "cell": [
-     5,
-     6
+     6,
+     4
     ],
     "w": 1
    },
@@ -994,7 +1006,7 @@
     "name": "oil_drums",
     "cell": [
      14,
-     6
+     4
     ],
     "w": 1
    },
@@ -1010,7 +1022,7 @@
     "name": "crates_pallet",
     "cell": [
      16,
-     6
+     4
     ]
    },
    {
@@ -1063,7 +1075,8 @@
      24
     ],
     "w": 1,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "ferry",
@@ -1152,8 +1165,8 @@
    {
     "type": "loot",
     "cell": [
-     21,
-     5
+     22,
+     4
     ],
     "item": "copper",
     "n": 3,
@@ -1303,41 +1316,45 @@
      7
     ],
     "w": 3,
-    "h": 3
+    "h": 3,
+    "scale": 0.8
    },
    {
     "name": "arcade",
     "group": "buildings",
     "cell": [
-     7,
+     8,
      7
     ],
     "w": 3,
     "h": 3,
     "anim": true,
-    "fps": 6
+    "fps": 6,
+    "scale": 0.75
    },
    {
     "name": "noodle_stand",
     "group": "buildings",
     "cell": [
-     14,
+     15,
      7
     ],
     "w": 2,
     "h": 3,
     "anim": true,
-    "fps": 4
+    "fps": 4,
+    "scale": 1.0
    },
    {
     "name": "neon_hotel",
     "group": "buildings",
     "cell": [
-     24,
+     25,
      7
     ],
     "w": 5,
-    "h": 4
+    "h": 4,
+    "scale": 0.9
    },
    {
     "name": "ramen_shop",
@@ -1347,17 +1364,19 @@
      17
     ],
     "w": 3,
-    "h": 3
+    "h": 3,
+    "scale": 0.8
    },
    {
     "name": "karaoke",
     "group": "buildings",
     "cell": [
-     7,
+     8,
      17
     ],
     "w": 3,
-    "h": 3
+    "h": 3,
+    "scale": 0.75
    },
    {
     "name": "neon_dragon",
@@ -1369,7 +1388,8 @@
     "w": 7,
     "h": 3,
     "anim": true,
-    "fps": 6
+    "fps": 6,
+    "scale": 0.7
    },
    {
     "name": "vend_red",
@@ -1404,7 +1424,7 @@
     "name": "scooter",
     "cell": [
      4,
-     13
+     11
     ],
     "w": 1
    },
@@ -1738,21 +1758,23 @@
     "name": "bank",
     "group": "buildings",
     "cell": [
-     2,
-     9
+     4,
+     11
     ],
     "w": 4,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "mansion",
     "group": "buildings",
     "cell": [
-     25,
-     10
+     23,
+     11
     ],
     "w": 6,
-    "h": 4
+    "h": 4,
+    "scale": 1.0
    },
    {
     "name": "penthouse",
@@ -1762,7 +1784,8 @@
      27
     ],
     "w": 3,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "gold_fountain",
@@ -1812,7 +1835,7 @@
     "name": "guard_booth2",
     "cell": [
      21,
-     10
+     16
     ],
     "w": 1,
     "h": 2
@@ -1820,7 +1843,7 @@
    {
     "name": "topiary_a",
     "cell": [
-     10,
+     11,
      8
     ]
    },
@@ -1828,7 +1851,7 @@
     "name": "topiary_c",
     "cell": [
      24,
-     8
+     3
     ]
    },
    {
@@ -1884,7 +1907,7 @@
    {
     "name": "spotlight_cyan",
     "cell": [
-     20,
+     19,
      11
     ]
    },
@@ -1910,7 +1933,7 @@
     "name": "gold_fence_a",
     "cell": [
      2,
-     22
+     19
     ],
     "w": 1
    },
@@ -1918,14 +1941,14 @@
     "name": "gold_fence_a",
     "cell": [
      4,
-     22
+     19
     ],
     "w": 1
    },
    {
     "name": "gold_gate",
     "cell": [
-     6,
+     8,
      22
     ],
     "w": 1
@@ -2012,7 +2035,7 @@
     "type": "note",
     "cell": [
      4,
-     12
+     13
     ],
     "who": "Bank",
     "text": "Closed to the public. Open to the President. There's a crystal the size of a car in the vault, Specs says. Specs hacked the inventory.",
@@ -2435,13 +2458,14 @@
      16
     ],
     "w": 5,
-    "h": 2
+    "h": 2,
+    "scale": 0.9
    },
    {
     "name": "motel_sign",
     "cell": [
      10,
-     17
+     18
     ],
     "w": 1,
     "h": 2
@@ -2475,10 +2499,11 @@
     "name": "farm_silo_b",
     "cell": [
      24,
-     2
+     4
     ],
     "w": 3,
-    "h": 2
+    "h": 2,
+    "scale": 0.9
    },
    {
     "name": "radio_tower_a",
@@ -2538,11 +2563,12 @@
    {
     "name": "toll_house",
     "cell": [
-     12,
-     2
+     7,
+     3
     ],
     "w": 3,
-    "h": 2
+    "h": 2,
+    "scale": 1.0
    }
   ],
   "gen": {
@@ -2577,8 +2603,8 @@
    {
     "type": "note",
     "cell": [
-     13,
-     4
+     8,
+     5
     ],
     "who": "",
     "text": "The checkpoint is dark. The barrier is down. The tunnel beyond it goes somewhere the map doesn't show.",
@@ -2694,10 +2720,11 @@
     "name": "sky_temple",
     "cell": [
      3,
-     15
+     17
     ],
     "w": 5,
-    "h": 4
+    "h": 4,
+    "scale": 1.0
    },
    {
     "name": "sky_stairs",
@@ -2762,7 +2789,7 @@
    {
     "name": "skydeco_5",
     "cell": [
-     10,
+     11,
      13
     ]
    },
@@ -3594,7 +3621,8 @@
      4
     ],
     "w": 3,
-    "h": 4
+    "h": 4,
+    "scale": 1.0
    },
    {
     "name": "hermit_hut",
@@ -3603,7 +3631,8 @@
      6
     ],
     "w": 4,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "beehive3_a",
@@ -3998,11 +4027,12 @@
    {
     "name": "lookout_tower",
     "cell": [
-     42,
-     6
+     44,
+     7
     ],
     "w": 2,
-    "h": 4
+    "h": 4,
+    "scale": 0.8
    },
    {
     "name": "rope_bridge2",
@@ -4060,7 +4090,7 @@
    {
     "name": "ri_eagle_nest",
     "cell": [
-     46,
+     47,
      4
     ],
     "w": 1,
@@ -4440,7 +4470,8 @@
      30
     ],
     "w": 4,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "stone_wall",
@@ -4776,7 +4807,8 @@
      6
     ],
     "w": 3,
-    "h": 3
+    "h": 3,
+    "scale": 0.85
    },
    {
     "name": "rail_h",
@@ -4844,7 +4876,8 @@
      8
     ],
     "w": 2,
-    "h": 4
+    "h": 4,
+    "scale": 0.9
    },
    {
     "name": "campsite",
@@ -5320,7 +5353,8 @@
      8
     ],
     "w": 4,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "beaver_dam",
@@ -5687,7 +5721,8 @@
      30
     ],
     "w": 4,
-    "h": 3
+    "h": 3,
+    "scale": 1.0
    },
    {
     "name": "rowboat",

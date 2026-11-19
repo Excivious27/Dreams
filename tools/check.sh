@@ -48,6 +48,27 @@ if ! echo "$xout" | grep -q "exit_check: 0 failures"; then
   echo "Exit check failed"; exit 1
 fi
 
+echo "== exits line up (top edge leads to the next map's bottom edge...) =="
+xeout="$("$GODOT" --headless --path . -s res://tools/exit_edge_check.gd 2>&1)"
+echo "$xeout" | grep -E "FAIL|exit_edge_check" || true
+if ! echo "$xeout" | grep -q "exit_edge_check: 0 failures"; then
+  echo "Exit edge check failed"; exit 1
+fi
+
+echo "== no invisible walls (rocket pad, moon) =="
+iwout="$(MAPS=mountain,moon "$GODOT" --headless --path . -s res://tools/invisible_walls.gd 2>&1)"
+echo "$iwout" | grep -E "invisible" || true
+if ! echo "$iwout" | grep -q "invisible_walls: 0 failures"; then
+  echo "Invisible wall check failed"; exit 1
+fi
+
+echo "== faint at 10pm, dawn light, region names =="
+wout="$("$GODOT" --headless --path . -s res://tools/r13_world_test.gd 2>&1)"
+echo "$wout" | grep -E "FAIL|r13_world_test|SCRIPT ERROR" || true
+if ! echo "$wout" | grep -q "r13_world_test: 0 failures"; then
+  echo "World/time test failed"; exit 1
+fi
+
 echo "== crops wired in =="
 # Every interior's way back names its scene: ["scene", x, y].
 python3 - <<'PY' || { echo "interior back check failed"; exit 1; }

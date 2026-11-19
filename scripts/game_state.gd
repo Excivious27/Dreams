@@ -2343,8 +2343,24 @@ static func darkness(t := -1) -> float:
 	var ss := sunset()
 	if t >= ss:
 		return smoothstep(float(ss), float(ss + 120), float(t))
+	# Mornings are dawn, not night: at most DAWN_DARK before the sun is up, gone at
+	# sunrise (the warm light after it is morning_glow, drawn by GameMap.sky_tint).
 	var sr := sunrise()
-	return 1.0 - smoothstep(float(sr - 90), float(sr), float(t))
+	return DAWN_DARK * (1.0 - smoothstep(float(sr - 90), float(sr), float(t)))
+
+
+const DAWN_DARK := 0.42
+
+
+## 0..1 warmth of the early light: full from first light through sunrise, fading
+## to plain daylight by mid-morning (2.5 h after sunrise; follows the season).
+static func morning_glow(t := -1) -> float:
+	if t < 0:
+		t = int(run.get("time", DAY_START))
+	var sr := sunrise()
+	if t >= sunset() or t < sr - 120:
+		return 0.0
+	return 1.0 - smoothstep(float(sr), float(sr + 150), float(t))
 
 
 static func is_night() -> bool:
@@ -2490,6 +2506,7 @@ static func clock_text() -> String:
 
 ## Advance to the next morning: crops grow, sell box pays, energy restores.
 static func sleep(passed_out := false) -> Dictionary:
+	passed_out = passed_out or int(run["flags"].get("fainted_day", -1)) == int(run["day"])  # Faint: came round at 10pm
 	status_clear()
 	_apply_max_stats()
 	var report := {"earned": 0, "sold": [], "grown": 0}

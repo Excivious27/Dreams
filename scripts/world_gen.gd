@@ -404,6 +404,8 @@ class Backdrop:
 		var strip_name: String = {"hills": "sky_day", "mountains": "sky_mountains", "sea": "sky_sea", "forest": "sky_forest", "night": "sky_night", "moon": "sky_night", "space": "sky_night"}.get(kind, "")
 		if t >= GameState.sunset() - 60 and t < GameState.full_dark() and kind in ["hills", "forest"]:
 			strip_name = "sky_sunset"
+		elif t < GameState.sunrise() + 45 and kind in ["hills", "forest"]:
+			strip_name = "sky_sunset"  # sunrise reds
 		elif dark > 0.5 and kind in ["hills", "forest", "mountains", "sea"]:
 			strip_name = "sky_night"
 		var st := Art.tex("backdrops", str(strip_name)) if strip_name != "" else null

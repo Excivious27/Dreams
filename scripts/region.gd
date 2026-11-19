@@ -388,11 +388,14 @@ func after_ready() -> void:
 		var g := str(p.get("group", "props"))
 		var nm := str(p["name"])
 		var w := int(p.get("w", 0))
+		# Buildings carry a "scale" (round 13) so they stand at town size next to the
+		# hero (town buildings are ~1.0); everything else is drawn at the usual 0.5.
+		var psc := float(p.get("scale", 0.5))
 		if bool(p.get("anim", false)) and Art.has(g, nm):
 			var a := AnimatedSprite2D.new()
 			a.sprite_frames = Art.frames(g, {"idle": nm}, {"idle": float(p.get("fps", 4.0))})
 			a.animation = "idle"
-			a.scale = Vector2(0.5, 0.5)
+			a.scale = Vector2(psc, psc)
 			a.position = cell_pos(c.x + (w + 1) / 2.0, c.y + 1)
 			a.offset = Vector2(0, -float(Art.info(g, nm).get("cell_h", 48)) / 2.0)
 			if bool(p.get("under", false)):
@@ -400,10 +403,14 @@ func after_ready() -> void:
 			else:
 				add_child(a)
 			a.play("idle")
+			if g == "buildings":
+				_bprops.append([nm, c, w, a])  # BuildingAccess: says why you can't go in
 		else:
-			var sp := prop(g, nm, c, w, 0.0, false)  # footprint blocked below, sized to the art
+			var sp := prop(g, nm, c, w, 0.0, false, psc)  # footprint blocked below, sized to the art
 			if sp and bool(p.get("under", false)):
 				to_under(sp)
+			if sp and p.has("scale") and g != "buildings":
+				_bprops.append([nm, c, w, sp])  # a building drawn from props: BuildingAccess too
 		if bool(p.get("solid", true)):
 			var h := int(p.get("h", 1))
 			# Footprint = the art's real size (declared w/h are upper bounds), so
@@ -413,10 +420,14 @@ func after_ready() -> void:
 			var bh := h
 			if Art.has(g, nm):
 				var info := Art.info(g, nm)
-				var aw := int(floor(float(info.get("cell_w", info.get("w", bw * TILE * 2))) / (TILE * 2.0) + 0.4))
-				var ah := int(floor(float(info.get("cell_h", info.get("h", bh * TILE * 2))) / (TILE * 2.0) + 0.4))
-				bw = clampi(aw, 1, bw)
-				bh = clampi(ah, 1, bh)
+				var aw := int(floor(float(info.get("cell_w", info.get("w", bw * TILE * 2))) * psc / TILE + 0.4))
+				var ah := int(floor(float(info.get("cell_h", info.get("h", bh * TILE * 2))) * psc / TILE + 0.4))
+				if p.has("scale"):  # a scaled building: its own art decides the footprint
+					bw = maxi(aw, 1)
+					bh = maxi(ah, 1)
+				else:
+					bw = clampi(aw, 1, bw)
+					bh = clampi(ah, 1, bh)
 			if bh >= 3 and g != "nature":
 				bh = maxi(2, int(ceil(bh * 0.62)))
 			var x0 := c.x + (w + 1 - bw) / 2

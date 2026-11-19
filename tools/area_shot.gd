@@ -1,6 +1,6 @@
 extends SceneTree
 ## Dev helper: 1:1 screenshots of a scene at given cells.
-##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/area_shot.gd -- /tmp/out scene:x:y [scene:x:y ...]
+##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/area_shot.gd -- /tmp/out scene:x:y[:minutes[:flag]] [...]
 func _initialize() -> void:
 	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
@@ -26,6 +26,11 @@ func _run() -> void:
 			GameMap.next_interior = sc.trim_prefix("in_")
 			sc = "interior"
 		GameState.run["flags"][sc + "_seen"] = true
+		# Optional 4th/5th fields: time in minutes, and a flag to set (lighthouse_lit...).
+		if p.size() >= 4 and p[3] != "":
+			GameState.run["time"] = int(p[3])
+		if p.size() >= 5 and p[4] != "":
+			GameState.run["flags"][p[4]] = true
 		GameMap.next_spawn = Vector2(int(p[1]) * 16 + 8, int(p[2]) * 16 + 8) if p.size() >= 3 else Vector2.ZERO
 		change_scene_to_file("res://scenes/%s.tscn" % sc)
 		for k in 25:

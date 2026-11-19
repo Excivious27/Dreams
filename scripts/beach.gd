@@ -274,9 +274,9 @@ func _place_props() -> void:
 	prop("buildings", "galleon", Vector2i(4, 20), 13)
 	things.erase(Vector2i(5, 16))
 	set_thing(10, 20, {"type": "wreck", "hint": "A: search the wreck"}, false)
-	prop("buildings", "beach_hut", Vector2i(40, 12), 3)
+	prop("buildings", "beach_hut", Vector2i(40, 12), 3, 0.0, true, 0.85)  # town-sized next to the hero
 	set_thing(41, 13, {"type": "hut", "hint": "A: beach hut"}, false)
-	for c: Vector2i in [Vector2i(3, 10), Vector2i(20, 9), Vector2i(44, 8), Vector2i(57, 10), Vector2i(8, 11), Vector2i(50, 9), Vector2i(26, 10)]:
+	for c: Vector2i in [Vector2i(3, 10), Vector2i(20, 9), Vector2i(34, 9), Vector2i(57, 10), Vector2i(8, 11), Vector2i(50, 9), Vector2i(26, 10)]:
 		prop("nature", "palm", c, 1)
 	prop("props", "beached_boat", Vector2i(22, 20), 2)
 	var bk := Art.has("props", "bk_umbrella_red")
