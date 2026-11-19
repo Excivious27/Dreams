@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (fix P2): movement, facing, targeting, swimming pup
+- **Facing on stop (Tom):** stopping keeps the way you walked for every hero (12B heroes' side rests too), keys and touch stick. A single-axis input in the last 0.14 s of a diagonal (one key let go first, the stick's thumb roll on lift) doesn't turn you (`Player.FACE_GRACE`, `facing_for`); deceleration never re-reads facing from the sliding velocity; up/down -> sideways needs a clear lead (no flicker on a drifting thumb). Exact diagonals still face up/down.
+- **Targeting (Tom):** `Player.target_cell()` is Stardew-style: the front cell when it holds something to use; else the diagonal you walked toward, the front cell on the side your feet lean to, then the side cell you walked toward (`target_candidates`, `cell_has_target`); USE turns to a side target so swing and hit agree; the cursor square uses the same cell; work rows stay strictly on their line.
+- **Attacks:** aim assist takes foes in front or along the way you walked (`_foe_ahead`, `move8`) and the hit box/arc/shot go straight at the foe it snapped to (`hit_dir`).
+- **Pup swims (Tom):** in water the pup (and a walking partner) swims: water band over the legs, body lower with a bob, slow paddle, splash in and out, never sits/digs on the water (`Paddle`, scripts/paddle.gd). Both arcs.
+- Removed the dead `Hud.stick_ok` (TouchControls never started a stick while paused; HackGame has its own arrows and keys).
+- Test: tools/move_target_test.gd (in check.sh): rests in 8 directions x 3 release orders x 6 heroes, stick + thumb roll, rock/tree/crop/villager from 8 directions, sword after diagonal approaches, swimming pup in both arcs.
 ## 2026-11-19 — CONDUCT 2 (c2_13): gangster flavour of the Rec Hall, arcade and Westside Lot Garden
 - Rec Hall: every adult visitor now has gangster-arc lines there (Gideon, Maple, Finn, Lumi, Theo, Ivy, Juniper, Posy, Benno, Hazel, Rook + Alder/Sal); front desk greets with the hall's rule; Tobin's bowling bet no longer has Dad "putting up stakes"; the quest text says "the rec" (fits both arcs).
 - Prizes: Penguin Plush and Top Hat are penguin-arc only; the gangster counter (and claw machine) has Fuzzy Dice and a Pinstripe Fedora instead (`Tickets.arc_ok`, lock_text "Not on this counter."). Item texts no longer name the Rec Center/commons or say "high roller"; Commons Stew is Community Stew.

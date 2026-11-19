@@ -113,14 +113,15 @@ func _run() -> void:
 	_open_area(m, home, 7)
 	await frames(2)
 	# ---- 1. facing on stop -------------------------------------------------
-	for who: String in ["kairi", "merry", "coldy", "penguin", "man_gang"]:
-		if not CharacterLibrary.has_character(who) and who != "kairi":
+	for who: String in [GameState.sprite_for_playable("kairi"), "merry", "coldy", "penguin", "man_gang", "dad"]:
+		if not CharacterLibrary.has_character(who):
 			continue
-		if who != "kairi":
-			p.set_character(who)
+		p.set_character(who)
 		await frames(2)
 		for d: Vector2i in DIRS8:
-			var modes: Array[String] = ["together"] if d.x == 0 or d.y == 0 else ["together", "x_first", "y_first"]
+			var modes: Array[String] = ["together"]
+			if d.x != 0 and d.y != 0:
+				modes.append_array(["x_first", "y_first"])
 			for mode: String in modes:
 				p.position = m.cell_center(home)
 				p.velocity = Vector2.ZERO
@@ -143,7 +144,7 @@ func _run() -> void:
 				check(_rest_ok(p, want), "%s keys %s (%s): rest pose fits %s (anim %s flip %s)" % [who, d, mode, want, p.anim_name, p._anim.flip_h if p._anim else false])
 				_release_all()
 	# Touch stick: 8-way vector, then the thumb rolls to a cardinal for 2 frames on lift.
-	p.set_character("kairi")
+	p.set_character(GameState.sprite_for_playable("kairi"))
 	await frames(2)
 	var tcs := root.find_children("*", "TouchControls", true, false)
 	var tc: TouchControls = tcs[0] if tcs.size() > 0 else null
@@ -199,13 +200,16 @@ func _run() -> void:
 		m.pet.visible = false
 		m.pet.process_mode = Node.PROCESS_MODE_DISABLED
 	GameState.select_slot((GameState.run["toolbar"] as Array).find("sword"))
-	for d: Vector2i in [Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1), Vector2i(-1, -1)]:
+	for k in 8:
+		var d: Vector2i = [Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1), Vector2i(-1, -1)][k % 4]
+		# First a foe on the diagonal, then one off to the side you walked toward.
+		var off := Vector2(d) * 15.0 if k < 4 else Vector2(d.x * 18.0, d.y * 4.0)
 		var c0 := Vector2i(14, 10)
 		_open_area(m, c0, 4)
 		p.position = m.cell_center(c0)
 		p.velocity = Vector2.ZERO
-		var g := m.spawn_enemy("grump", p.position + Vector2(d) * 15.0)
-		g.position = p.position + Vector2(d) * 15.0
+		var g := m.spawn_enemy("grump", p.position + off)
+		g.position = p.position + off
 		g.process_mode = Node.PROCESS_MODE_DISABLED
 		p.facing = _face_of(d)
 		p.move8 = d
@@ -214,7 +218,7 @@ func _run() -> void:
 		var hp0: int = g.hp
 		p.do_action("tool")
 		await frames(4)
-		check(not is_instance_valid(g) or g.hp < hp0 or not g._alive, "sword after a %s approach hits the foe there (hp %d -> %d)" % [d, hp0, g.hp if is_instance_valid(g) else -1])
+		check(not is_instance_valid(g) or g.hp < hp0 or not g._alive, "sword after a %s approach hits the foe at %s (hp %d -> %d)" % [d, off, hp0, g.hp if is_instance_valid(g) else -1])
 		if is_instance_valid(g):
 			g.queue_free()
 		m.enemies.clear()
@@ -325,6 +329,9 @@ func _villager_check() -> void:
 		return
 	for d: Vector2i in DIRS8:
 		npc.position = m.cell_center(t)
+		await _drain()
+		p.frozen = false  # a first-visit beat may hold the hero: this is about aiming
+		Dialogue.block_until_ms = 0
 		var res := await _approach(m, p, t, d)
 		check(res[0], "villager from %s: target is the villager (got %s, stood %s facing %s)" % [d, res[1], res[2], p.facing])
 
