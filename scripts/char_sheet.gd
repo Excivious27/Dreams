@@ -733,7 +733,7 @@ static func _bar(parent: Control, frac: float, col: Color, h := 5) -> ProgressBa
 
 
 ## A flat parchment row button (release mode: a scroll that starts on it never fires).
-static func _row(parent: Control, cb: Callable, h := 16) -> Button:
+static func _row(parent: Control, cb: Callable, h := 20) -> Button:
 	var b := Button.new()
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	b.focus_mode = Control.FOCUS_NONE
@@ -769,7 +769,7 @@ static func _small_btn(parent: Control, text: String, cb: Callable) -> Button:
 	b.add_theme_font_size_override("font_size", 8)
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	b.focus_mode = Control.FOCUS_NONE
-	b.custom_minimum_size = Vector2(0, 16)
+	b.custom_minimum_size = Vector2(0, 22)  # finger-sized at 270 wide
 	b.pressed.connect(func() -> void: Music.instance(b.get_tree()).sfx("ui_tap"))
 	b.pressed.connect(cb)
 	parent.add_child(b)
@@ -1126,7 +1126,7 @@ static func _stats(body: Control) -> void:
 	var v := _card(body, "Stats (tap one to see where it comes from)")
 	for s: Dictionary in stats():
 		var sid := str(s["id"])
-		var b := _row(v, func() -> void: open_stat = "" if open_stat == sid else sid; _redo(), 17)
+		var b := _row(v, func() -> void: open_stat = "" if open_stat == sid else sid; _redo(), 20)
 		var f := _fill(b)
 		var ic: Array = s.get("icon", [])
 		f.add_child(_icon(str(ic[0]) if ic.size() == 2 else "", str(ic[1]) if ic.size() == 2 else "", 12))
@@ -1198,7 +1198,7 @@ static func _skills(body: Control) -> void:
 				_menu._skill_open = kk
 				_menu._node_sel = ""
 				_menu._tab = "Skills"
-				_menu._refresh(), 18)
+				_menu._refresh(), 20)
 		var f := _fill(b)
 		var grp := "items"
 		var nm := Hud.icon_for(str(SKILL_ICON.get(sk, "map")))

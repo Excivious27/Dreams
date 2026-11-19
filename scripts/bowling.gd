@@ -339,7 +339,7 @@ const BTN_R := Rect2(54, 398, 42, 34)
 const BTN_SPIN_L := Rect2(8, 438, 42, 28)
 const BTN_SPIN_R := Rect2(54, 438, 42, 28)
 const BTN_GO := Rect2(102, 398, 48, 68)
-const BTN_QUIT := Rect2(6, 72, 28, 18)
+const BTN_QUIT := Rect2(6, 72, 30, 24)  # finger-sized (was 28x18)
 
 var lane := 1
 var sim := Sim.new()

@@ -140,7 +140,7 @@ func _refresh() -> void:
 	var st := "Tier %d · %d of %d slot%s busy" % [tier, js.size(), Crafting.slots(tier), "" if Crafting.slots(tier) == 1 else "s"]
 	for j: Dictionary in js:
 		var left := int(j["done_at"]) - Crafting.now_abs()
-		st += "\n⏱ %s ×%d: %s" % [str(j["name"]), int(j.get("n", 1)), "READY" if left <= 0 else Crafting.fmt_minutes(left)]
+		st += "\n◷ %s ×%d: %s" % [str(j["name"]), int(j.get("n", 1)), "READY" if left <= 0 else Crafting.fmt_minutes(left)]
 	if town:
 		st += "\nTown bench: a small ◆ fee per piece."
 	_status.text = st
@@ -217,7 +217,7 @@ func _card(rc: Dictionary, why: String, disc: bool) -> Control:
 		var bot := Crafting.have_short(rc)
 		if why != "":
 			bot = "Locked: " + why
-		l.text = "%s   ⏱%s\n%s" % [top, Crafting.fmt_minutes(Crafting.minutes_for(station, rc, tier)), bot]
+		l.text = "%s   ◷%s\n%s" % [top, Crafting.fmt_minutes(Crafting.minutes_for(station, rc, tier)), bot]
 		var ok := why == "" and Crafting.can_make(rc)
 		l.add_theme_color_override("font_color", Color(1, 0.96, 0.85) if ok else (Color(0.9, 0.7, 0.6) if why == "" else Color(0.7, 0.7, 0.75)))
 	h.add_child(l)
@@ -255,21 +255,44 @@ func _show_detail() -> void:
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var desc := str(GameState.items.get(str(rc["give"]), {}).get("desc", ""))
-		l.text = "%s ×%d  ⏱%s\n%s%s" % [str(rc["name"]), int(rc.get("n", 1)) * _qty, Crafting.fmt_minutes(Crafting.minutes_for(station, rc, tier, _qty)), Crafting.have_text(rc, _qty), ("\n" + desc.left(90)) if desc != "" else ""]
+		l.text = "%s ×%d  ◷%s\n%s%s" % [str(rc["name"]), int(rc.get("n", 1)) * _qty, Crafting.fmt_minutes(Crafting.minutes_for(station, rc, tier, _qty)), Crafting.have_text(rc, _qty), ("\n" + desc.left(90)) if desc != "" else ""]
 		h.add_child(l)
 		var row := HBoxContainer.new()
 		_detail.add_child(row)
 		if mx > 1:
-			row.add_child(_btn(" − ", func() -> void: _qty = maxi(1, _qty - 1); _show_detail()))
+			# Finger-sized: these were 17 px wide at 270.
+			var mb := _btn("−", func() -> void: _qty = maxi(1, _qty - 1); _show_detail())
+			mb.custom_minimum_size = Vector2(28, 26)
+			row.add_child(mb)
 			var ql := Label.new()
-			ql.text = " %d " % _qty
-			ql.add_theme_font_size_override("font_size", 9)
+			ql.text = "%d" % _qty
+			ql.custom_minimum_size = Vector2(20, 0)
+			ql.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			ql.add_theme_font_size_override("font_size", 10)
 			row.add_child(ql)
-			row.add_child(_btn(" + ", func() -> void: _qty = mini(mx, _qty + 1); _show_detail()))
-			row.add_child(_btn("Max", func() -> void: _qty = mx; _show_detail()))
-		var make := _btn("  MAKE  ", _make)
+			var pb := _btn("+", func() -> void: _qty = mini(mx, _qty + 1); _show_detail())
+			pb.custom_minimum_size = Vector2(28, 26)
+			row.add_child(pb)
+			var xb := _btn("Max", func() -> void: _qty = mx; _show_detail())
+			xb.custom_minimum_size = Vector2(34, 26)
+			row.add_child(xb)
+		var make := _btn("MAKE", _make)
 		make.disabled = why != "" or not Crafting.can_make(rc, _qty) or Crafting._owned(rc) or js.size() >= Crafting.slots(tier)
 		make.add_theme_font_size_override("font_size", 10)
+		make.custom_minimum_size = Vector2(72, 26)
+		make.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		# The one action that matters here: warm gold when it can run, plain grey when not.
+		if not make.disabled:
+			var gsb := StyleBoxFlat.new()
+			gsb.bg_color = Color(0.78, 0.55, 0.18)
+			gsb.border_color = Color(1, 0.86, 0.45)
+			gsb.set_border_width_all(1)
+			gsb.set_corner_radius_all(3)
+			for st in ["normal", "hover", "pressed", "focus"]:
+				make.add_theme_stylebox_override(st, gsb)
+			for fc in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
+				make.add_theme_color_override(fc, Color(0.16, 0.09, 0.03))
+		row.add_theme_constant_override("separation", 4)
 		row.add_child(make)
 	if not js.is_empty():
 		_detail.add_child(_btn("Wait here for the next job", _wait))

@@ -95,6 +95,7 @@ func _ready() -> void:
 	var close := Button.new()
 	close.text = "Close" if DisplayServer.is_touchscreen_available() else "Close  (MENU / E)"
 	close.add_theme_font_size_override("font_size", 8)
+	close.custom_minimum_size = Vector2(0, 22)
 	close.pressed.connect(toggle)
 	v.add_child(close)
 
@@ -196,7 +197,7 @@ func _button(text: String, cb: Callable) -> Button:
 	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	b.custom_minimum_size = Vector2(0, 18)
+	b.custom_minimum_size = Vector2(0, 22)  # finger-sized rows (18 was under 5 mm on a phone)
 	b.pressed.connect(cb)
 	_body.add_child(b)
 	return b
@@ -636,7 +637,7 @@ func _refresh() -> void:
 			for w in ws2:
 				_line(str(w["head"]), 8, Color(1, 0.96, 0.85))
 				for jl in w["jobs"]:
-					_line("   ⏱ " + str(jl), 8, Color(0.75, 0.95, 0.75) if str(jl).ends_with("READY") else Color(0.8, 0.85, 0.95))
+					_line("   ◷ " + str(jl), 8, Color(0.75, 0.95, 0.75) if str(jl).ends_with("READY") else Color(0.8, 0.85, 0.95))
 			var nxt: Array = []
 			for bid in Builds.data():
 				if Crafting.is_station(str(bid)) and not Builds.next_def(str(bid)).is_empty() and Builds.gate(str(bid)) == "" and nxt.size() < 4:
@@ -792,7 +793,7 @@ func _skills_tab() -> void:
 		var pf := GameState.points_free(str(k))
 		tb.text = str(GameState.skills_data[k]["name"]) + (" •%d" % pf if pf > 0 else "")
 		tb.add_theme_font_size_override("font_size", 7)
-		tb.custom_minimum_size = Vector2(0, 16)
+		tb.custom_minimum_size = Vector2(0, 20)
 		tb.focus_mode = Control.FOCUS_NONE
 		tb.modulate = Color(1, 0.88, 0.45) if k == sk else Color(0.78, 0.78, 0.78)
 		var kk := str(k)

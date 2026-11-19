@@ -309,7 +309,7 @@ func _draw_hud() -> void:
 	c.draw_string(_font, Vector2(box.position.x + (15 if sicon else 6), box.position.y + 11), "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()], HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
 	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 22), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
 	var wx := GameState.weather_today()
-	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "〰", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
+	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "∿", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
 	var wxa := "wx_" + (wx if wx != "petals" else "petals_a")
 	if Art.has("ui", wxa):
 		c.draw_texture_rect(Art.tex("ui", wxa), Rect2(box.position.x + 50, box.position.y + 14, 11, 11), false)
@@ -366,7 +366,10 @@ func _draw_hud() -> void:
 		if id != "" and r["inventory"].has(id):
 			var n := str(int(r["inventory"][id]))
 			var nw := _font.get_string_size(n, HORIZONTAL_ALIGNMENT_RIGHT, -1, 7).x
-			c.draw_string(_font, Vector2(rect.end.x - nw - 1, rect.end.y - 1), n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color.WHITE)
+			# Outlined and kept inside the slot: bare white on the light slot art was hard to read.
+			var np := Vector2(rect.end.x - nw - 2, rect.end.y - 2)
+			c.draw_string_outline(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 2, Color(0.1, 0.06, 0.03, 0.95))
+			c.draw_string(_font, np, n, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color.WHITE)
 	# Held item name / hint line
 	var held := str(tb[slot])
 	var line := ""

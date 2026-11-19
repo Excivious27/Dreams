@@ -26,6 +26,7 @@ window/dpi/allow_hidpi=false
 
 NetSvc="*res://scripts/net.gd"
 MoneyHook="*res://scripts/money_hook.gd"
+SymbolFont="*res://scripts/symbol_font.gd"
 
 [input_devices]
 

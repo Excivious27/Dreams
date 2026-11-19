@@ -191,9 +191,19 @@ func _draw_it() -> void:
 			var sz := Vector2(ic.get_width(), ic.get_height()) * s
 			c.draw_texture_rect(ic, Rect2(Vector2(26, y + ROW_H / 2.0 - 1.5) - sz / 2.0, sz), false, Color(1, 1, 1, 1.0 if lock == "" or lock == "Already yours" else 0.35))
 		c.draw_string(_font, Vector2(44, y + 13), GameState.item_name(item), HORIZONTAL_ALIGNMENT_LEFT, 150, 9, Color.WHITE if lock == "" else Color(1, 1, 1, 0.5))
-		var sub := lock if lock != "" else str(GameState.items.get(item, {}).get("desc", "")).left(44)
-		c.draw_string(_font, Vector2(44, y + 25), ("Locked: " if lock != "" and lock != "Already yours" else "") + sub, HORIZONTAL_ALIGNMENT_LEFT, 170, 7, Color(1, 0.75, 0.6) if lock != "" else Color(0.8, 0.8, 0.9))
+		var sub := lock if lock != "" else str(GameState.items.get(item, {}).get("desc", ""))
+		sub = _fit(("Locked: " if lock != "" and lock != "Already yours" else "") + sub, 148.0, 7)
+		c.draw_string(_font, Vector2(44, y + 25), sub, HORIZONTAL_ALIGNMENT_LEFT, 150, 7, Color(1, 0.75, 0.6) if lock != "" else Color(0.8, 0.8, 0.9))
 		c.draw_string(_font, Vector2(196, y + 18), "♦%d" % int(p.get("cost", 0)), HORIZONTAL_ALIGNMENT_RIGHT, 60, 10, Color(1, 0.85, 0.35) if can else Color(1, 1, 1, 0.4))
+	# The picked prize in full (rows cut long text to one line).
+	if sel >= 0 and sel < _rows.size():
+		var pid: String = _rows[sel]
+		var pit := str(Tickets.prize(pid).get("item", pid))
+		var plock := Tickets.lock_text(pid)
+		var full := str(GameState.items.get(pit, {}).get("desc", "")) if plock == "" or plock == "Already yours" else "Locked: " + plock
+		if full != "":
+			c.draw_rect(Rect2(10, 342, 250, 34), Color(0, 0, 0, 0.35))
+			c.draw_multiline_string(_font, Vector2(16, 355), full, HORIZONTAL_ALIGNMENT_LEFT, 238, 8, 2, Color(0.9, 0.88, 0.95) if plock == "" or plock == "Already yours" else Color(1, 0.78, 0.65))
 	if _flash_t > 0.0:
 		c.draw_rect(Rect2(10, 380, 250, 30), Color(0, 0, 0, 0.7))
 		c.draw_string(_font, Vector2(10, 399), _flash, HORIZONTAL_ALIGNMENT_CENTER, 250, 8, Color(0.6, 1, 0.6) if _flash_good else Color(1, 0.7, 0.6))
@@ -203,3 +213,17 @@ func _draw_it() -> void:
 		c.draw_rect(br, Color(1, 0.85, 0.35, 0.8), false, 1.0)
 		c.draw_string(_font, Vector2(br.position.x, br.position.y + 22), str(b[1]), HORIZONTAL_ALIGNMENT_CENTER, br.size.x, 11, Color(1, 0.9, 0.6))
 	c.draw_string(_font, Vector2(0, 470), "◀ ▶ shelf · ▲▼ pick · USE buy · B leave", HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.5))
+
+
+## One line that fits w px: cut at a word with an ellipsis instead of mid-word.
+func _fit(t: String, w: float, fs: int) -> String:
+	if _font.get_string_size(t, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x <= w:
+		return t
+	var words := t.split(" ")
+	var out := ""
+	for wd in words:
+		var nxt := (out + " " + wd) if out != "" else wd
+		if _font.get_string_size(nxt + "…", HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > w:
+			break
+		out = nxt
+	return out.rstrip(",.;:") + "…"
