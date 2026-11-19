@@ -52,6 +52,9 @@
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/bang_04.ogg",
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/bang_07.ogg"
  ],
+ "bowl_roll": [
+  "30-cc0-sfx-loops/sfx_loops_x/rolling.ogg"
+ ],
  "bubble": [
   "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/bubble_01.ogg",
   "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/bubble_02.ogg",
@@ -371,6 +374,11 @@
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/item_misc_02.ogg",
   "80-cc0-rpg-sfx/80-CC0-RPG-SFX_0_x/item_misc_03.ogg"
  ],
+ "pin_crash": [
+  "68-workshop-sounds/workshop_x/workshop/workshop - wood clatter.wav",
+  "68-workshop-sounds/workshop_x/workshop/workshop - loud clatter.wav",
+  "68-workshop-sounds/workshop_x/workshop/workshop - clatter.wav"
+ ],
  "plant": [
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle01.flac",
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle02.flac",
@@ -404,6 +412,11 @@
  ],
  "rain_light": [
   "amb-rain-loop-1/amb_rain_loop_1.ogg"
+ ],
+ "rec_alley": [
+  "30-cc0-sfx-loops/sfx_loops_x/rolling.ogg",
+  "68-workshop-sounds (clatters)",
+  "crowd bed (audio/amb/crowd.ogg)"
  ],
  "reel": [
   "68-workshop-sounds/workshop_x/workshop/workshop - ratchet1.wav",

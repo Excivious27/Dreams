@@ -18,7 +18,11 @@ def load_log():
     return json.load(open(LOG)) if os.path.exists(LOG) else {}
 
 def save_log(l):
-    json.dump(l, open(LOG, "w"), indent=1, sort_keys=True, default=float)
+    # audio/ may be hardlinked to another checkout: never rewrite a file in place.
+    json.dump(l, open(LOG + ".tmp", "w"), indent=1, sort_keys=True, default=float)
+    if os.path.exists(LOG):
+        os.remove(LOG)
+    os.rename(LOG + ".tmp", LOG)
 
 def imp(name, kind, path):
     if kind in ("music", "once"):

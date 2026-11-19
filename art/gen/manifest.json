@@ -3399,6 +3399,11 @@
   }
  },
  "backdrops": {
+  "bowling_wall": {
+   "file": "backdrops/bowling_wall.png",
+   "h": 200,
+   "w": 540
+  },
   "city_strip": {
    "file": "backdrops/city_strip.png",
    "h": 71,
@@ -15868,6 +15873,16 @@
    "file": "buildings/ramen_shop.png",
    "h": 96,
    "w": 105
+  },
+  "rec_center": {
+   "file": "buildings/rec_center.png",
+   "h": 206,
+   "w": 320
+  },
+  "rec_hall": {
+   "file": "buildings/rec_hall.png",
+   "h": 179,
+   "w": 320
   },
   "school": {
    "file": "buildings/school.png",
@@ -44347,6 +44362,16 @@
    "h": 47,
    "w": 164
   },
+  "ball_rack": {
+   "file": "furniture/ball_rack.png",
+   "h": 64,
+   "w": 49
+  },
+  "ball_return": {
+   "file": "furniture/ball_return.png",
+   "h": 52,
+   "w": 32
+  },
   "bar_counter": {
    "file": "furniture/bar_counter.png",
    "h": 58,
@@ -46913,6 +46938,11 @@
    "h": 44,
    "w": 66
   },
+  "pin_statue": {
+   "file": "furniture/pin_statue.png",
+   "h": 64,
+   "w": 29
+  },
   "plant": {
    "file": "furniture/plant.png",
    "h": 60,
@@ -47213,6 +47243,11 @@
    "h": 124,
    "w": 79
   },
+  "score_console": {
+   "file": "furniture/score_console.png",
+   "h": 52,
+   "w": 59
+  },
   "seed_rack": {
    "file": "furniture/seed_rack.png",
    "h": 67,
@@ -47258,6 +47293,11 @@
    "h": 90,
    "w": 52
   },
+  "shoe_counter": {
+   "file": "furniture/shoe_counter.png",
+   "h": 60,
+   "w": 66
+  },
   "shop_bell": {
    "file": "furniture/shop_bell.png",
    "h": 119,
@@ -47287,6 +47327,11 @@
    "file": "furniture/slates.png",
    "h": 102,
    "w": 113
+  },
+  "snack_counter": {
+   "file": "furniture/snack_counter.png",
+   "h": 56,
+   "w": 65
   },
   "sofa_blue": {
    "file": "furniture/sofa_blue.png",
@@ -47527,6 +47572,16 @@
    "file": "furniture/trash.png",
    "h": 33,
    "w": 28
+  },
+  "trophy_case": {
+   "file": "furniture/trophy_case.png",
+   "h": 72,
+   "w": 38
+  },
+  "trophy_shelf": {
+   "file": "furniture/trophy_shelf.png",
+   "h": 40,
+   "w": 56
   },
   "trough3": {
    "cell_h": 91,
@@ -81417,6 +81472,36 @@
    "h": 98,
    "w": 81
   },
+  "arcade_cab_0": {
+   "file": "props/arcade_cab_0.png",
+   "h": 64,
+   "w": 31
+  },
+  "arcade_cab_1": {
+   "file": "props/arcade_cab_1.png",
+   "h": 64,
+   "w": 31
+  },
+  "arcade_cab_2": {
+   "file": "props/arcade_cab_2.png",
+   "h": 64,
+   "w": 31
+  },
+  "arcade_cab_3": {
+   "file": "props/arcade_cab_3.png",
+   "h": 64,
+   "w": 31
+  },
+  "arcade_cab_4": {
+   "file": "props/arcade_cab_4.png",
+   "h": 64,
+   "w": 31
+  },
+  "arcade_cab_5": {
+   "file": "props/arcade_cab_5.png",
+   "h": 64,
+   "w": 31
+  },
   "arch": {
    "file": "props/arch.png",
    "h": 62,
@@ -82737,6 +82822,11 @@
    "frames": 2,
    "h": 32,
    "w": 60
+  },
+  "claw_machine": {
+   "file": "props/claw_machine.png",
+   "h": 76,
+   "w": 50
   },
   "cliff_gap_l": {
    "file": "props/cliff_gap_l.png",
@@ -90658,6 +90748,11 @@
    "file": "props/silo2.png",
    "h": 112,
    "w": 67
+  },
+  "skee_ball": {
+   "file": "props/skee_ball.png",
+   "h": 72,
+   "w": 49
   },
   "skeleton": {
    "file": "props/skeleton.png",

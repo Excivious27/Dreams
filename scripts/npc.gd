@@ -156,11 +156,11 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 			place = cf
 	if raining and not npc_id in ["finn", "rook", "sal"] and not place in ["home", "work", "inn", "chapel", "school", "clinic"] and not place in Commons.rain_spots():
 		place = "home"
-	return place
+	return RecCenter.visit(npc_id, place)  # an evening at the Rec Center
 
 
 static func is_indoors(place: String) -> bool:
-	return place in ["", "home", "work", "inn", "chapel", "school", "clinic", "library", "hall"]
+	return place in ["", "home", "work", "inn", "chapel", "school", "clinic", "library", "hall", "rec"]
 
 
 var _path: Array = []

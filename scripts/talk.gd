@@ -28,6 +28,7 @@ static func line(id: String) -> Array:
 		for l in d.get("festival", []):
 			pool.append(str(l))
 	pool.append_array(Commons.talk_pool(id))  # the community farm's progress
+	pool.append_array(RecCenter.talk_pool(id))
 	if arc == "gangsters" and Racket.heat() >= 3:
 		for l in d.get("heat", []):
 			pool.append(str(l))

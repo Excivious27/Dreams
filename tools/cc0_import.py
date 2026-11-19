@@ -37,6 +37,9 @@ MAP = {
     "step_mud": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*mud-steps-01*", "fantasy-sound-effects-tinysized-sfx/*mud-steps-02*", "fantasy-sound-effects-tinysized-sfx/*mud-steps-03*"], {"cap": 0.5}),
     "step_gravel": ("sfx", ["different-steps-on-wood-stone-leaves-gravel-and-mud/*gravel*", "42-snow-and-gravel-footsteps/*gravel_02*", "42-snow-and-gravel-footsteps/*gravel_05*"], {"cap": 0.5}),
     "step_leaves": ("sfx", ["20-rustles-dry-leaves/*rustle04*", "20-rustles-dry-leaves/*rustle07*", "20-rustles-dry-leaves/*rustle09*"], {"cap": 0.5}),
+    # --- Rec Center bowling (round 13) ---------------------------------------
+    "bowl_roll": ("sfx", ["30-cc0-sfx-loops/sfx_loops_x/rolling.ogg"], {"cap": 2.2}),
+    "pin_crash": ("sfx", ["68-workshop-sounds/workshop_x/workshop/workshop - wood clatter.wav", "68-workshop-sounds/workshop_x/workshop/workshop - loud clatter.wav", "68-workshop-sounds/workshop_x/workshop/workshop - clatter.wav"], {"cap": 1.6}),
     # --- combat ------------------------------------------------------------
     "swing": ("sfx", ["swishes-sound-pack/swish-1.*", "swishes-sound-pack/swish-2.*", "swishes-sound-pack/swish-3.*"], {"cap": 0.5}),
     "swing_heavy": ("sfx", ["swish-bamboo-stick-weapon-swhoshes/*swosh-05*", "swish-bamboo-stick-weapon-swhoshes/*swosh-12*", "swish-bamboo-stick-weapon-swhoshes/*swosh-20*"], {"cap": 0.7}),

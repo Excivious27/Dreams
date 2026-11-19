@@ -33,6 +33,7 @@ func build() -> void:
 
 func after_ready() -> void:
 	_place_props()
+	RecCenter.dress_house(self)  # prize decor from the Rec Center
 	if int(GameState.run["time"]) <= GameState.DAY_START + 5:
 		hud.toast("%s today · %s tomorrow" % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()], Color(0.9, 0.95, 1.0))
 		if GameState.festival_today() != "":

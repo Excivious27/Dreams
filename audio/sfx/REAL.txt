@@ -352,3 +352,7 @@ ui_tap_3
 heartbeat
 whimper
 whimper_2
+bowl_roll
+pin_crash
+pin_crash_2
+pin_crash_3

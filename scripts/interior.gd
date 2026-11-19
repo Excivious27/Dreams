@@ -107,13 +107,15 @@ func build() -> void:
 	I = all.get(interior_id, all.get("store", {}))
 	cols = int(I.get("cols", 14))
 	rows = int(I.get("rows", 11))
+	if bool(I.get("rec", false)):
+		I = RecCenter.build_room(self, I)  # arc skin, lane cells
 	exact_footprints = true
 	has_sky = false
 	has_pet = bool(I.get("pet", false))
 	music_track = str(I.get("music", "house"))
 	block_rect(1, 1, cols - 2, 1)  # back wall
 	var d: Array = I.get("door", [cols / 2, rows - 2])
-	set_thing(int(d[0]), int(d[1]), {"type": "exit", "hint": "A: go outside"}, false)
+	set_thing(int(d[0]), int(d[1]), {"type": "exit", "hint": str(I.get("door_hint", "A: go outside"))}, false)
 	for t in I.get("things", []):
 		var c: Array = t["cell"]
 		var dd := {}
@@ -124,6 +126,8 @@ func build() -> void:
 
 
 func after_ready() -> void:
+	if bool(I.get("rec", false)):
+		RecCenter.dress(self, interior_id)
 	for p in I.get("props", []):
 		var c := Vector2i(int(p["cell"][0]), int(p["cell"][1]))
 		var g := str(p.get("group", "furniture"))
@@ -198,6 +202,8 @@ func after_ready() -> void:
 	var listed := {}
 	for n in I.get("npcs", []):
 		listed[str(n["id"])] = Vector2i(int(n["cell"][0]), int(n["cell"][1]))
+	if bool(I.get("rec", false)):
+		listed.merge(RecCenter.stand_cells(interior_id), true)  # visitors at lanes and cabinets
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(interior_id) + int(GameState.run["day"])
 	var used := {}
@@ -264,6 +270,7 @@ func _interior_matches(place: String, npc_id := "") -> bool:
 		"clinic": return interior_id == "clinic"
 		"library": return interior_id == "library"
 		"hall": return interior_id == "hall"
+		"rec": return interior_id == RecCenter.floor_of(npc_id)
 	return false
 
 
@@ -274,8 +281,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 	match str(thing.get("type", "")):
 		"exit":
-			var back: Array = I.get("back", ["town", 13, 11])
-			go_to(str(back[0]), Vector2(float(back[1]) * TILE + 8, float(back[2]) * TILE + 4), "down")
+			_leave()
+			return true
+		"rec":
+			later(RecCenter.use.bind(self, thing, c))
 			return true
 		"counter":
 			later(_counter.bind(str(thing.get("shop", ""))))
@@ -356,7 +365,9 @@ func _talk(n: Npc) -> void:
 		player.frozen = false
 		return
 	var hl := Hearts.daily(n.id)
-	if hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(n.id)) % 2 == 0:
+	if bool(I.get("rec", false)) and str(data.get("work", "")) != interior_id:
+		await say(RecCenter.chat(n.id))  # out for the evening: they talk about the games
+	elif hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(n.id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])
 	elif lines.is_empty():
 		await say(Talk.line(n.id))
@@ -651,7 +662,7 @@ func draw_map() -> void:
 		draw_texture_rect_region(wt, Rect2(int(p["x"]) * TILE + 8 - sz.x / 2.0, 2 * TILE - 3 - sz.y, sz.x, sz.y), src)
 	var d: Array = I.get("door", [cols / 2, rows - 2])
 	draw_rect(Rect2(int(d[0]) * TILE, int(d[1]) * TILE, TILE, TILE), Color("3a2412"))
-	Art.draw_prop(self, "furniture", "door_wood_open", Vector2(int(d[0]) * TILE + 8, (int(d[1]) + 1) * TILE))
+	Art.draw_prop(self, "furniture", str(I.get("door_prop", "door_wood_open")), Vector2(int(d[0]) * TILE + 8, (int(d[1]) + 1) * TILE))
 
 
 func _counter(shop: String) -> void:
@@ -802,6 +813,19 @@ func _bank() -> void:
 			hud.toast("Withdrew ◆%d." % bal)
 
 
+## Out the door: back to the map named in "back" (["in_<id>", x, y] is another room,
+## e.g. the Rec Center's upstairs comes down its stairs to the ground floor).
+func _leave() -> void:
+	var back: Array = I.get("back", ["town", 13, 11])
+	var to := str(back[0])
+	var at := Vector2(float(back[1]) * TILE + 8, float(back[2]) * TILE + 4)
+	if to.begins_with("in_"):
+		GameMap.next_interior = to.trim_prefix("in_")
+		go_to("interior", at, "down")
+	else:
+		go_to(to, at, "down")
+
+
 ## Walking down onto the doorway takes you outside (no need to press A there).
 var _walked_out := false
 
@@ -813,5 +837,4 @@ func _process(delta: float) -> void:
 	var d: Array = I.get("door", [cols / 2, rows - 2])
 	if player.cell() == Vector2i(int(d[0]), int(d[1])) and Input.is_action_pressed("down"):
 		_walked_out = true
-		var back: Array = I.get("back", ["town", 13, 11])
-		go_to(str(back[0]), Vector2(float(back[1]) * TILE + 8, float(back[2]) * TILE + 4), "down")
+		_leave()
