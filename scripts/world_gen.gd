@@ -38,6 +38,11 @@ static func _hash01(x: int, y: int, seed_v: int) -> float:
 	return float(h % 10007) / 10007.0
 
 
+## Looks that mean "forage you can pick": decor never draws these, every forage
+## thing uses one of them (forest, region, meadow and this file).
+const FORAGE_LOOKS := ["mushrooms_fall", "wildflowers2"]
+
+
 static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
@@ -63,7 +68,7 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 					if season == "fall" and rng.randf() < 0.03 and GameState.skill_level("foraging") >= 5:
 						item = "truffle"
 					m.set_thing(x, y, {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}, false)
-					var nm: String = {"flower": "wildflowers2", "wild_herb": "gdeco_clover", "mushroom": "mushrooms_fall", "truffle": "mushrooms_fall", "wild_leek": "gdeco_tuft_a"}.get(item, "flowers")
+					var nm: String = {"flower": "wildflowers2", "wild_herb": "wildflowers2", "mushroom": "mushrooms_fall", "truffle": "mushrooms_fall", "wild_leek": "gdeco_tuft_a"}.get(item, "flowers")
 					m.prop("nature", nm if Art.has("nature", nm) else "flowers", c, 0, 0.0, false)
 				continue
 			if season == "spring" or season == "summer":
@@ -82,7 +87,10 @@ static func draw_ground_detail(m: GameMap, seed_v: int, density := 0.12, avoid: 
 				if r < density * 0.6:
 					(later.get_or_add("flowers_fall", []) as Array).append(at + Vector2(8, 16))
 				else:
-					(later.get_or_add("mushrooms_fall", []) as Array).append(at + Vector2(8, 16))
+					# Never mushrooms_fall here: that look means "forage, pick me" (FORAGE_LOOKS).
+					var fd: Array = ["grass_tuft_fall", "grass_tuft_fall", "fd_acorns", "fd_pinecones"]
+					var fnm: String = fd[rng.randi_range(0, fd.size() - 1)]
+					(later.get_or_add(fnm if Art.has("nature", fnm) else "flowers_fall", []) as Array).append(at + Vector2(8, 16))
 			else:
 				if Art.has("nature", "grass_tuft_winter") and rng.randf() < 0.5:
 					(later.get_or_add("grass_tuft_winter" if rng.randf() < 0.7 else "grass_tuft_frost", []) as Array).append(at + Vector2(8, 16))
@@ -220,17 +228,44 @@ static func scatter_props(m: GameMap, rect: Rect2i, seed_v: int, count: int, avo
 static func add_critters(m: GameMap, rect: Rect2i, seed_v: int, count: int, kinds: Array = []) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
+	var pool: Array = kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"]
+	var wet: Array[Vector2i] = []  # water cells in the rect, for fish (never on land)
 	for i in count:
 		var c := Vector2i(rng.randi_range(rect.position.x, rect.end.x - 1), rng.randi_range(rect.position.y, rect.end.y - 1))
-		if m.blocked.has(c):
+		var kind: String = pool[rng.randi_range(0, pool.size() - 1)]
+		if kind in WATER_CRITTERS:
+			if wet.is_empty():
+				for y in range(rect.position.y, rect.end.y):
+					for x in range(rect.position.x, rect.end.x):
+						if _deep_water(m, Vector2i(x, y)):
+							wet.append(Vector2i(x, y))
+				if wet.is_empty():
+					wet.append(Vector2i(-9999, -9999))  # none here: skip fish
+			c = wet[rng.randi_range(0, wet.size() - 1)]
+			if c.x == -9999:
+				continue
+		elif m.blocked.has(c) or m.is_water_cell(c):
 			continue
 		var cr := Critter.new()
 		cr.map = m
-		var pool: Array = kinds if not kinds.is_empty() else ["sparrow", "sparrow", "butterfly_orange", "butterfly_blue", "rabbit", "squirrel", "bee"]
-		cr.kind = pool[rng.randi_range(0, pool.size() - 1)]
+		cr.kind = kind
 		cr.position = m.cell_center(c)
 		cr.home = cr.position
 		m.add_child(cr)
+
+
+## Kinds that live in water only: spawned on water cells and kept there.
+const WATER_CRITTERS := ["fish_jump"]  # (jungle jellies float in the air: flyers)
+
+
+## A water cell with water on all four sides (a fish never sits on the shore line).
+static func _deep_water(m: GameMap, c: Vector2i) -> bool:
+	if not m.is_water_cell(c) or m.hard.has(c):
+		return false
+	for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+		if not m.is_water_cell(c + d):
+			return false
+	return true
 
 
 ## A painted sky strip behind the map (parallax), plus distant hills.
@@ -260,7 +295,7 @@ class Critter:
 
 	func _ready() -> void:
 		var g := "wildlife/" + kind
-		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "heron"]
+		_flyer = kind in ["sparrow", "crow", "seagull", "bat", "owl", "bee", "firefly", "dragonfly", "butterfly_orange", "butterfly_blue", "butterfly_yellow", "butterfly", "crystal_fish", "heron", "jelly"]
 		if Art.has(g, "idle"):
 			_anim = AnimatedSprite2D.new()
 			var anims := {"idle": "idle"}
@@ -312,7 +347,13 @@ class Critter:
 			position = np
 			if position.distance_to(home) > 400.0:
 				queue_free()
-		elif map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))):
+		elif kind in WorldGen.WATER_CRITTERS:
+			# Fish stay in deep water: a step that would reach the shore is refused.
+			if map and WorldGen._deep_water(map, map.world_to_cell(np - Vector2(0, 2))):
+				position = np
+			else:
+				_dir = Vector2.ZERO
+		elif map and not map.rect_blocked(Rect2(np + Vector2(-2, -2), Vector2(4, 2))) and not map.is_water_cell(map.world_to_cell(np - Vector2(0, 2))):
 			position = np
 		if _anim:
 			var moving := _dir != Vector2.ZERO
