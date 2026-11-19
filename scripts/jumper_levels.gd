@@ -201,7 +201,11 @@ static func extend(lv: Dictionary, to_x: float) -> void:
 		# respawn never drops you straight onto an obstacle.
 		var flag := gx + run >= float(lv["next_check"]) and gx + run < float(lv["length"]) - 200.0
 		if flag:
-			run = maxf(run, sp * CHECK_CALM + 24.0)
+			# From the flag (gx + 24): CHECK_CALM seconds at the speed reached at the end of
+			# the runway, plus a block's width of margin before the next obstacle.
+			var sp_end := speed_at(lv, gx + 48.0 + sp * CHECK_CALM)
+			sp_end = speed_at(lv, gx + 48.0 + sp_end * CHECK_CALM)
+			run = maxf(run, 24.0 + sp_end * CHECK_CALM + 24.0)
 		_ground(lv, gx, run, gy)
 		if r.randf() < 0.5:
 			_coin_line(lv, gx + 16.0, gx + run - 16.0, gy - 8.0, 20.0)

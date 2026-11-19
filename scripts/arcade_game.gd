@@ -548,7 +548,7 @@ var _deck_geo := {}  # which buttons are down -> [idx, pts, cols]: the deck's sh
 func _draw_deck(c: Control) -> void:
 	var sig := ""
 	for b: Dictionary in _deck:
-		sig += "1" if _down(b) else "0"
+		sig += "x" if _dead(b) else ("1" if _down(b) else "0")
 	if not _deck_geo.has(sig):
 		if _deck_geo.size() > 24:
 			_deck_geo.clear()
@@ -556,7 +556,7 @@ func _draw_deck(c: Control) -> void:
 		for i in 16:  # speaker-grille dots
 			tb.circle(Vector2(140 + (i % 4) * 6, 362 + (i / 4) * 6), 1.2, Color(0, 0, 0, 0.35))
 		for b: Dictionary in _deck:
-			_button_shapes(tb, b, _down(b))
+			_button_shapes(tb, b, _down(b), _dead(b))
 		_deck_geo[sig] = [tb.idx, tb.pts, tb.cols]
 	var g: Array = _deck_geo[sig]
 	RenderingServer.canvas_item_add_triangle_array(c.get_canvas_item(), g[0], g[1], g[2])
@@ -568,12 +568,21 @@ func _down(b: Dictionary) -> bool:
 	return held(str(b["action"])) or Input.is_action_pressed(str(b["action"]))
 
 
+## A button that does nothing right now (drawn dimmed, grey). Games override it,
+## e.g. Block Jumper's d-pad while running (only ▼ and JUMP count there).
+func _dead(_b: Dictionary) -> bool:
+	return false
+
+
 ## One arcade button drawn in code (the ui btn_* sheets carry icons of their own).
-func _button_shapes(tb: TriBatch, b: Dictionary, down: bool) -> void:
+func _button_shapes(tb: TriBatch, b: Dictionary, down: bool, dead := false) -> void:
 	var r: Rect2 = b["rect"]
 	var ctr := r.get_center()
 	var rad := minf(r.size.x, r.size.y) * 0.5
 	var col: Color = SKIN_COL.get(str(b.get("skin", "blue")), Color.GRAY)
+	if dead:
+		col = Color(0.32, 0.3, 0.38)
+		down = false
 	var press := Vector2(0, 2) if down else Vector2.ZERO
 	tb.circle(ctr + Vector2(0, 3), rad, Color(0, 0, 0, 0.35))
 	tb.circle(ctr + Vector2(0, 2), rad, col.darkened(0.55))
@@ -595,12 +604,13 @@ static func _aa_arc(tb: TriBatch, ctr: Vector2, rad: float, from: float, to: flo
 ## A button's label and hint (its shapes come from _draw_deck's batch).
 func _draw_button(c: Control, b: Dictionary) -> void:
 	var r: Rect2 = b["rect"]
-	var down := _down(b)
+	var dead := _dead(b)
+	var down := _down(b) and not dead
 	var ctr := r.get_center()
 	var fs := 14 if str(b["label"]).length() <= 1 else 8
-	text_outline(c, Vector2(r.position.x - 10, ctr.y + fs * 0.35 + (2 if down else 0)), str(b["label"]), r.size.x + 20, fs, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+	text_outline(c, Vector2(r.position.x - 10, ctr.y + fs * 0.35 + (2 if down else 0)), str(b["label"]), r.size.x + 20, fs, Color(1, 1, 1, 0.35) if dead else Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	var hint := str(b.get("hint", ""))
-	if hint != "":
+	if hint != "" and not dead:
 		text(c, Vector2(r.position.x - 14, r.end.y + 7), hint, r.size.x + 28, 6, Color(1, 1, 1, 0.55), HORIZONTAL_ALIGNMENT_CENTER)
 
 

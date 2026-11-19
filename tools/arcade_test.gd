@@ -263,6 +263,28 @@ func _run() -> void:
 	_frames(j2, 8)
 	check(not j2.play_tile(0) and j2.state == "select" and ArcadeHub.money() == 3, "no money, no game")
 	j2.close()
+	await process_frame
+	# Freed without close() (a scene change under the cabinet): the modal rect comes back.
+	Hud.modal_rect = Rect2()
+	var j3 := _open("jumper") as BlockJumper
+	_frames(j3, 4)
+	check(Hud.modal_rect.has_area(), "a cabinet owns the screen while open")
+	j3.queue_free()
+	await process_frame
+	check(not Hud.modal_rect.has_area(), "a cabinet freed without close() gives the screen back")
+	paused = false
+	# Dead d-pad buttons dim while running (only duck, JUMP and B work there).
+	var j4 := _open("jumper") as BlockJumper
+	_frames(j4, 8)
+	var btn := {}
+	for b: Dictionary in j4._deck:
+		btn[str(b["action"])] = b
+	check(not j4._dead(btn["left"]), "d-pad live on the level picker")
+	GameState.run["crystals"] = 2000
+	j4.play_tile(0)
+	_frames(j4, 4)
+	check(j4.state != "play" or (j4._dead(btn["left"]) and j4._dead(btn["up"]) and not j4._dead(btn["down"]) and not j4._dead(btn["a"])), "while running: ◀ ▶ ▲ dim, ▼ and JUMP live (state %s)" % j4.state)
+	j4.close()
 	check(ArcadeHub.milestone("all_games"), "every cabinet played: all_games milestone")
 	GameState.run["arc"] = "gangsters"
 	check(ArcadeHub.money_word() == "cash", "gangster arc pays cash")

@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 fix P6: arcade and bowling
+- **Bowling feel merged (c2_01)** with main's newer work: RecAudio's rolling/pin/pit/return sounds, ScreenCover, TapInput (no double taps; drag ignores the emulated mouse copy), payout caps.
+- **One villager system:** a bowler's lane ("Challenge X") and talking to a bowler both start a real versus game (`RecCenter.bowl_with` -> `Bowling.play(map, lane, id)`): they bowl each frame on their own rack. Strength comes from ONE table, gen_rec `BOWL_AVG` (Tobin 95, Juniper 115, Theo/Ivy 135, Finn 150, Gideon 175, Maple 195), turned into a release skill by `Bowling.SKILL_AVG` (measured with `tools/bowl_audit.gd -- skills`). The win bonus goes through `Tickets.payout("bowling", ...)` with the game's tickets (cap 60); friendship once a day per villager; the villager's line after the game names both scores.
+- Fallen and tilted pins draw through TriBatch (one draw call per run of them instead of ~25 each). rec_shot's versus card is captured steady.
+- **Block Jumper:** checkpoint runways measured from the flag at the speed reached at the end of the runway (a calm 1.2 s plus a block's margin); the d-pad buttons that do nothing while running (◀ ▶ ▲) dim. Plans re-solved.
+- Arcade cabinets freed without close() (a scene change) hand the screen back (Hud.modal_rect).
 ## 2026-11-19 — CONDUCT 2 (c2_13): gangster flavour of the Rec Hall, arcade and Westside Lot Garden
 - Rec Hall: every adult visitor now has gangster-arc lines there (Gideon, Maple, Finn, Lumi, Theo, Ivy, Juniper, Posy, Benno, Hazel, Rook + Alder/Sal); front desk greets with the hall's rule; Tobin's bowling bet no longer has Dad "putting up stakes"; the quest text says "the rec" (fits both arcs).
 - Prizes: Penguin Plush and Top Hat are penguin-arc only; the gangster counter (and claw machine) has Fuzzy Dice and a Pinstripe Fedora instead (`Tickets.arc_ok`, lock_text "Not on this counter."). Item texts no longer name the Rec Center/commons or say "high roller"; Commons Stew is Community Stew.
