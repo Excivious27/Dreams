@@ -55,6 +55,8 @@ var _floats: Array = []
 var _shake := 0.0
 var _was_paused := false
 var _prev_track := ""
+var _prev_modal := Rect2()   # the picker's modal rect while a cabinet runs on top of it
+var _rects_on := false
 var draw_off := Vector2.ZERO  # this frame's shake offset (reset transforms to it)
 
 
@@ -67,6 +69,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
 	get_tree().paused = true
+	_prev_modal = Hud.modal_rect
 	Hud.modal_rect = Rect2(0, 0, W, H)
 	_font = ThemeDB.fallback_font
 	_canvas = Control.new()
@@ -80,6 +83,7 @@ func _ready() -> void:
 	_deck = _deck_buttons()
 	for b: Dictionary in _deck:
 		Hud.extra_rects.append(b["rect"])
+	_rects_on = true
 	_opened()
 
 
@@ -120,6 +124,11 @@ func _input(ev: InputEvent) -> void:
 		elif _touch.has(st.index):
 			Input.action_release(str(_touch[st.index]))
 			_touch.erase(st.index)
+		else:
+			# A finger that went down before the cabinet opened (the USE press that
+			# opened it, a thumb on the stick): let TouchControls see it lift, or
+			# its action stays held in here and on the map afterwards.
+			return
 		get_viewport().set_input_as_handled()
 	elif ev is InputEventScreenDrag:
 		var sd := ev as InputEventScreenDrag
@@ -294,18 +303,28 @@ func close() -> void:
 		return
 	for a in ACTIONS:
 		Input.action_release(a)
-	for b: Dictionary in _deck:
-		Hud.extra_rects.erase(b["rect"])
+	_touch.clear()
+	_mouse_action = ""
+	_unregister()
 	get_tree().paused = _was_paused
 	if _prev_track != "":
 		Music.instance(get_tree()).play(_prev_track)
-	Hud.modal_rect = Rect2()
+	Hud.modal_rect = _prev_modal  # back to the picker's (or nothing on the map)
 	Dialogue.block_input(0.3)
 	closed.emit()
 	queue_free()
 
 
 func _exit_tree() -> void:
+	_unregister()
+
+
+## Takes this screen's deck rects out of Hud.extra_rects (once: the picker under a
+## cabinet registers the same rects, and a second erase would drop the picker's).
+func _unregister() -> void:
+	if not _rects_on:
+		return
+	_rects_on = false
 	for b: Dictionary in _deck:
 		Hud.extra_rects.erase(b["rect"])
 

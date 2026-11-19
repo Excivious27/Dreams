@@ -158,7 +158,7 @@ func _ready() -> void:
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	bg.mouse_filter = Control.MOUSE_FILTER_STOP
 	bg.gui_input.connect(func(ev: InputEvent) -> void:
-		if (ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed) or (ev is InputEventScreenTouch and (ev as InputEventScreenTouch).pressed):
+		if TapInput.press_pos(ev) != Vector2.INF:  # one slide per tap (not the emulated mouse copy too)
 			_next())
 	add_child(bg)
 	_title = Label.new()

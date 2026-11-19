@@ -153,6 +153,7 @@ func _refresh() -> void:
 		for c in ["All"] + cats:
 			var cb := _btn(str(c), func() -> void: _cat = "" if c == "All" else str(c); _refresh())
 			cb.add_theme_font_size_override("font_size", 7)
+			cb.custom_minimum_size = Vector2(22, 20)  # finger-sized on the phone (was 17x19)
 			cb.modulate = Color(1, 0.9, 0.5) if (c == "All" and _cat == "") or str(c) == _cat else Color(0.8, 0.8, 0.8)
 			_cats.add_child(cb)
 	var known := 0

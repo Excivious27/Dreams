@@ -2,6 +2,11 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_12): full-screen UI touch input
+- **One tap = one action:** on a phone Godot hands a Control the touch AND an emulated mouse copy, so drawn screens reading both fired twice: a prize tapped once was picked and bought (BUY bought two), bowling's quit X asked and left in one tap, spin moved two steps, a hack arrow counted twice, the endings slideshow skipped slides. New `TapInput` (scripts/tap_input.gd) drops the copy; PrizeScreen, Bowling, HackGame, Epilogue and CampaignScreen use it.
+- **Cabinets:** the USE finger that opens a cabinet (or a thumb on the stick) now lifts cleanly: before, the arcade swallowed its release, so A stayed held (the first INSERT COIN tap did nothing), the stick kept steering and the pad showed buttons stuck down after closing. TouchControls lets go of everything when a full-screen panel opens. Closing a cabinet launched from the picker no longer clears the picker's modal/deck rects.
+- **Hack terminal** has an on-screen UNPLUG button (B was unreachable on a phone under the panel; the "joystick" hint was wrong). Dead touch buttons are no longer drawn under full-screen panels (CHECK/MENU peeked out under chest/craft). Craft category chips are finger-sized (20 px).
+- Tests: new `tools/touch_ui_test.gd` (check.sh) plays every cabinet, the picker, prizes, bowling, hack, chest and craft in the Rec Center with real touch events (two fingers, slides, edge taps; nothing held or moved afterwards). `tools/phone_ui_test.gd` now also audits every cabinet (title/play), jumper select, bowling aim/power, every prize shelf, the hack terminal and chest/craft inside the rec, plus tap targets of drawn screens.
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.

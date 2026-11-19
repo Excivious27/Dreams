@@ -73,10 +73,18 @@ func _notification(what: int) -> void:
 
 
 var _redraw_t := 0.0
+var _modal_was := false
 var _last_sig := ""
 
 
 func _process(delta: float) -> void:
+	# A full-screen panel just opened (arcade, bowling, prizes, chest...): let go of
+	# the stick and any held button, so nothing walks or swings underneath it and
+	# its own controls start clean. (Panels played with the stick set stick_ok.)
+	var modal := Hud.modal_rect.has_area()
+	if modal and not _modal_was and not Hud.stick_ok and not _held.is_empty():
+		release_all()
+	_modal_was = modal
 	_canvas.visible = visible_controls
 	if not visible_controls:
 		return
@@ -325,6 +333,11 @@ func _release(action: String) -> void:
 
 func _on_draw() -> void:
 	var font := ThemeDB.fallback_font
+	# A full-screen panel (chest, crafting, arcade...) takes every tap: don't show
+	# dead buttons peeking out under it. Dialogue over it still uses the pad.
+	var dlg_on := Dialogue.instance(get_tree()).active
+	if not dlg_on and Hud.modal_rect.encloses(Rect2(0, 0, 270, 480)):
+		return
 	var base := Color(1, 1, 1, 0.16)
 	var edge := Color(1, 1, 1, 0.45)
 	var lit := Color(1, 1, 1, 0.5)
@@ -404,6 +417,8 @@ func _on_draw() -> void:
 		var br := Settings.button_at(b["pos"], float(b["r"]))
 		var p: Vector2 = br[0]
 		var r := float(br[1])
+		if not dlg_on and Hud.modal_rect.has_point(p):
+			continue  # under a panel (bowling's lane): it can't be pressed, so it isn't drawn
 		var on := _held.has(action)
 		var sk: Array = SKINS.get(action, [])
 		var bname := ""
