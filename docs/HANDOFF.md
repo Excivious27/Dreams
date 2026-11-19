@@ -2,6 +2,24 @@
 
 The shared memory between Tom's two Claude accounts (Team and personal). Tom switches between them when one hits a usage limit, without warning and without telling either chat, so every session keeps this file current on its own (rules in `CLAUDE.md`). Read it at the start of every session, after `CLAUDE.md`; for depth, `reference/BRIEF.md`, the top of `docs/STATUS.md` and the newest guide in `docs/guides/`.
 
+## Tom's deliverables (every account, every time; Tom 2026-11-19)
+
+Tom judges progress only by these. The Team account always gave them; the other account must too.
+
+**Every reply** ends with: the play link https://excivious27.github.io/Dreams/ (after a push it auto-deploys), what changed, what to test, and at most one question, placed last. Phone-length.
+
+**During long jobs (CONDUCT, agent rounds):** send Tom a short check-in (SendUserMessage) at least every 60 minutes: what finished, what's running, any problem (restarts, failures), the ETA. Watchdog every 30 minutes (see CONDUCT).
+
+**At the end of every completed piece of work (each CONDUCT, each round, each big fix), the full package, sent as FILES in the chat (SendUserFile) and not only as repo links:**
+1. **The complete all-in-one guide**: `docs/guides/GUIDE-NN.md` (next number). It must be **100% complete on its own**: every single thing still needed from Tom to finish the whole game, not only this round's delta. That includes taste calls, open story questions, accounts, uploads, art prompts still needed (or "none"), and how to test the latest changes. Carry over every still-open item from earlier guides.
+2. **The progress spreadsheet** (.xlsx, Arial, header row styled): an Overview tab with **% complete for the whole game and % remaining**, plus % per area. A tab per system (from docs/inventory.csv: area, system, status, % done, % remaining, tests, notes). A tab for this round (area / found / fixed / test). A tab "Still needed from Tom". Template: tools/package/Dreams-Progress-CONDUCT-1.xlsx (built inline; tools/package/build_progress.py is the older builder).
+3. **The report**: `docs/reports/CONDUCT-N.md` (or ROUND-N.md): found/fixed table, tests, what's left.
+4. **Every art prompt file still needed** (max 2-3 images per prompt). Usually none, because the image tool makes the art; then say "no art prompts needed".
+5. **The artifact page** (one hosted page with tabs: progress, guide, prompts, report): tools/package/build_final_page.py + page_template.html. Publish with the Artifact tool. Each account owns its own page: Team page `67cf3116-3dba-4920-801d-e0ebd5f7c947`. The personal account creates one on first use and records its id here.
+6. The play link.
+
+Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current.
+
 ## Baton (update on every push)
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
@@ -19,6 +37,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19: Both accounts give Tom the same deliverables: a play link every reply, check-ins at least hourly on long jobs, and after every completed piece of work the full package (complete guide, progress xlsx with % done/% remaining, report, art prompts or 'none', updated artifact page) as files in the chat. See "Tom's deliverables".
 - 2026-11-19: Watchdog: during every CONDUCT (and any agent/bot job), check all agents and bots every 30 minutes and restart anything stopped or stuck (details under CONDUCT).
 - 2026-11-18: Default move speed stays as it is (Tom withdrew "twice as fast"); speed comes from gear, potions, foods, mounts and skills.
 - 2026-11-18: Fishing only with the rod in hand.

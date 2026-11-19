@@ -11,6 +11,7 @@
   - When a piece of work ends, add one line to the HANDOFF log (newest first; keep 30 lines, roll older ones into STATUS.md).
   - Tom may still send **HANDOFF**: then also reply with a 3-line summary. He doesn't have to.
 - **CONDUCT** (Tom's command): run the full cycle in `docs/HANDOFF.md` → Tom's commands → CONDUCT (fresh 20-agent audit, 20-bot playtest, do every fix AND all open work Claude can do alone (all art, all audio, any work identified as needed anywhere), re-verify, then deliver progress report + every art prompt still needed + the full guide as files in the chat). Never a lighter version. While agents or bots run, check on all of them every 30 minutes (scheduled message) and restart anything stopped or stuck (the Watchdog rule in HANDOFF.md).
+- **Tom's deliverables** (HANDOFF.md section of that name) are mandatory for both accounts: a play link every reply; check-ins at least hourly on long jobs; after every completed piece of work the full package as files in the chat (100%-complete guide, progress xlsx with % done/% remaining, report, art prompts or "none", updated artifact page). Builders in tools/package/.
 - Godot 4.5.1, GDScript, portrait 270×480, `canvas_items` / `keep`, nearest filter. Character strips are 2x detail, drawn at 0.5 scale (`CharacterLibrary`).
 - Input goes through actions `up/down/left/right/a/b/menu` (`InputSetup`); `TouchControls` presses the same actions.
 - Saves go to `user://` (`SaveGame`).
