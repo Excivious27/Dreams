@@ -55,6 +55,42 @@ func _deck_buttons() -> Array:
 	]
 
 
+## While running, the whole play area is a second JUMP button: a thumb
+## anywhere on the picture jumps (hold for higher), so you never miss the
+## gold button while watching the level.
+var _play_touch := {}
+
+
+func _input(ev: InputEvent) -> void:
+	if ev is InputEventScreenTouch:
+		var tch := ev as InputEventScreenTouch
+		if tch.pressed and state == "play" and PLAY.has_point(tch.position) and _deck_at(tch.position) == "":
+			_play_touch[tch.index] = true
+			Input.action_press("a")
+			get_viewport().set_input_as_handled()
+			return
+		if not tch.pressed and _play_touch.has(tch.index):
+			_play_touch.erase(tch.index)
+			if _play_touch.is_empty() and not _touch.values().has("a"):
+				Input.action_release("a")
+			get_viewport().set_input_as_handled()
+			return
+	elif ev is InputEventMouseButton and ev.device != InputEvent.DEVICE_ID_EMULATION and (ev as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
+		var mb := ev as InputEventMouseButton
+		if mb.pressed and state == "play" and PLAY.has_point(mb.position) and _deck_at(mb.position) == "":
+			_play_touch[-1] = true
+			Input.action_press("a")
+			get_viewport().set_input_as_handled()
+			return
+		if not mb.pressed and _play_touch.has(-1):
+			_play_touch.erase(-1)
+			if _play_touch.is_empty() and _mouse_action != "a":
+				Input.action_release("a")
+			get_viewport().set_input_as_handled()
+			return
+	super(ev)
+
+
 # --- progress ----------------------------------------------------------------
 
 static func _jd() -> Dictionary:
@@ -267,7 +303,7 @@ func _checkpoints(x: float) -> void:
 			check_i = i
 			respawn = cpos
 			sfx("j_confirm", "unlock")
-			float_text(Vector2(cpos.x, cpos.y - 40), "CHECKPOINT", Color(0.6, 1, 0.6))
+			float_text(Vector2(x + 50.0, cpos.y - 44), "CHECKPOINT", Color(0.6, 1, 0.6))  # ahead of you: the flag is already sliding off-screen
 			burst(Vector2(cpos.x, cpos.y - 26), Color(0.5, 1, 0.5), 12, 60.0)
 
 
@@ -283,7 +319,7 @@ func _die() -> void:
 
 
 func _respawn() -> void:
-	st = JumperLevels.new_state(respawn.x, respawn.y)
+	st = JumperLevels.respawn_state(lv, respawn.x, respawn.y)
 	intro_t = 0.9
 	rot = 0.0
 	squash = Vector2(1.3, 0.7)
@@ -475,8 +511,10 @@ func _draw_world(c: Control, th: Array, x0: float, x1: float) -> void:
 		if v.size.x <= 0.0:
 			continue
 		if r.position.y < 0.0:
-			# Low ceiling: dark block with hazard stripes along its underside.
-			c.draw_rect(v, body.darkened(0.45))
+			# Low ceiling: a hanging slab of the level's own rock (shaded), with
+			# hazard stripes along its underside.
+			if not _ceiling_body(c, r, v):
+				c.draw_rect(v, body.darkened(0.45))
 			var by := r.end.y
 			c.draw_rect(Rect2(v.position.x, by - 6, v.size.x, 6), Color(0.15, 0.12, 0.1))
 			var sx := floorf(v.position.x / 8.0) * 8.0
@@ -607,6 +645,36 @@ func _ground_tiles(c: Control, r: Rect2, v: Rect2) -> bool:
 		c.draw_rect(Rect2(r.position.x, r.position.y, 1, v.end.y - r.position.y), Color(0, 0, 0, 0.35))
 	if r.end.x <= v.end.x:
 		c.draw_rect(Rect2(r.end.x - 1, r.position.y, 1, v.end.y - r.position.y), Color(0, 0, 0, 0.35))
+	return true
+
+
+## A ceiling's body from the theme's ground tiles, darker toward the top, with
+## shaded side edges so it reads as a slab hanging into the run.
+func _ceiling_body(c: Control, r: Rect2, v: Rect2) -> bool:
+	var tx := ArcadeGame.tex("ground_body_%d" % _theme_i())
+	if tx == null:
+		return false
+	var bsz := Vector2(tx.get_size())
+	var by := r.end.y
+	var cx := floorf(v.position.x / 32.0) * 32.0
+	while cx < v.end.x:
+		var x0 := maxf(cx, v.position.x)
+		var x1 := minf(cx + 32.0, v.end.x)
+		if x1 > x0:
+			var sx := (x0 - cx) * bsz.x / 32.0
+			var sw := (x1 - x0) * bsz.x / 32.0
+			var y := by
+			while y > v.position.y:
+				var y0 := maxf(y - 16.0, v.position.y)
+				var k := clampf((by - y) / 160.0, 0.0, 1.0)
+				var col := Color(0.62, 0.6, 0.68).lerp(Color(0.3, 0.28, 0.36), k)
+				c.draw_texture_rect_region(tx, Rect2(x0, y0, x1 - x0, y - y0), Rect2(sx, 0, sw, (y - y0) * bsz.y / 16.0), col)
+				y -= 16.0
+		cx += 32.0
+	if r.position.x >= v.position.x:
+		c.draw_rect(Rect2(r.position.x, v.position.y, 2, by - v.position.y), Color(0, 0, 0, 0.4))
+	if r.end.x <= v.end.x:
+		c.draw_rect(Rect2(r.end.x - 2, v.position.y, 2, by - v.position.y), Color(0, 0, 0, 0.4))
 	return true
 
 
@@ -815,7 +883,7 @@ func _draw_select(c: Control) -> void:
 		info = "Clear level %d to unlock" % (maxi(1, n2 - 1))
 	text(c, Vector2(0, 312), info, W, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	text(c, Vector2(0, 326), "Double jump: ON (A in mid-air)" if double_jump() else "Clear level 4 for a double jump", W, 7, Color(0.7, 0.9, 1), HORIZONTAL_ALIGNMENT_CENTER)
-	text(c, Vector2(0, 338), "Hold A to jump higher · DOWN ducks", W, 7, Color(0.7, 0.75, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
+	text(c, Vector2(0, 338), "Tap JUMP or the picture · hold = higher · ▼ ducks", W, 7, Color(0.7, 0.75, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _lock(c: Control, p: Vector2) -> void:

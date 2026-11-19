@@ -24,6 +24,8 @@ const GY0 := 248.0          # usual ground top
 const GY_MIN := 184.0
 const GY_MAX := 288.0
 const CEIL_GAP := 10.0      # a ceiling's underside sits this far above the ground
+const CHECK_SECS := 8.0     # seconds of running between checkpoints
+const CHECK_CALM := 1.2     # seconds of flat ground after a checkpoint flag
 
 # State array slots (an Array so the solver can copy thousands cheaply).
 const X := 0
@@ -42,22 +44,22 @@ const DOWNP := 12  # down held last frame
 
 ## The eight levels. kinds = chunk weights; run = runway between chunks (px).
 const LEVELS := [
-	{"name": "Meadow Dash", "theme": 0, "speed0": 92.0, "speed1": 108.0, "length": 2400.0, "seed": 11, "diff": 0.0,
+	{"name": "Meadow Dash", "theme": 0, "speed0": 92.0, "speed1": 106.0, "length": 2400.0, "seed": 11, "diff": 0.0,
 		"kinds": {"gap": 3, "spikes": 3, "block": 2}, "run": [110, 170]},
-	{"name": "Pebble Path", "theme": 1, "speed0": 98.0, "speed1": 118.0, "length": 2800.0, "seed": 23, "diff": 0.15,
+	{"name": "Pebble Path", "theme": 1, "speed0": 98.0, "speed1": 116.0, "length": 2900.0, "seed": 23, "diff": 0.15,
 		"kinds": {"gap": 3, "spikes": 3, "block": 2, "step": 3}, "run": [96, 150]},
-	{"name": "Duck & Run", "theme": 2, "speed0": 104.0, "speed1": 124.0, "length": 3000.0, "seed": 37, "diff": 0.25,
+	{"name": "Duck & Run", "theme": 2, "speed0": 104.0, "speed1": 122.0, "length": 3400.0, "seed": 37, "diff": 0.25,
 		"kinds": {"gap": 2, "spikes": 2, "block": 2, "step": 2, "ceiling": 4}, "run": [90, 140]},
-	{"name": "Cloud Hops", "theme": 3, "speed0": 108.0, "speed1": 130.0, "length": 3200.0, "seed": 41, "diff": 0.35,
+	{"name": "Cloud Hops", "theme": 3, "speed0": 108.0, "speed1": 128.0, "length": 3900.0, "seed": 41, "diff": 0.38,
 		"kinds": {"gap": 2, "spikes": 2, "step": 1, "ceiling": 2, "plats": 4}, "run": [84, 130]},
-	{"name": "Gear Works", "theme": 4, "speed0": 114.0, "speed1": 138.0, "length": 3400.0, "seed": 53, "diff": 0.45,
-		"kinds": {"gap": 2, "spikes": 2, "block": 1, "ceiling": 2, "plats": 2, "mover": 4}, "run": [80, 124]},
-	{"name": "Spike Garden", "theme": 5, "speed0": 120.0, "speed1": 146.0, "length": 3600.0, "seed": 67, "diff": 0.6,
-		"kinds": {"gap": 2, "spikes": 4, "block": 1, "step": 1, "ceiling": 2, "plats": 1, "mover": 2, "pit": 4}, "run": [76, 118]},
-	{"name": "Night Rush", "theme": 6, "speed0": 130.0, "speed1": 156.0, "length": 3800.0, "seed": 79, "diff": 0.78,
-		"kinds": {"gap": 3, "spikes": 3, "block": 2, "step": 2, "ceiling": 3, "plats": 2, "mover": 3, "pit": 3}, "run": [70, 108]},
-	{"name": "Star Gauntlet", "theme": 7, "speed0": 140.0, "speed1": 170.0, "length": 4200.0, "seed": 97, "diff": 1.0,
-		"kinds": {"gap": 3, "spikes": 3, "block": 2, "step": 2, "ceiling": 3, "plats": 3, "mover": 3, "pit": 3}, "run": [66, 100]},
+	{"name": "Gear Works", "theme": 4, "speed0": 114.0, "speed1": 136.0, "length": 4500.0, "seed": 53, "diff": 0.5,
+		"kinds": {"gap": 2, "spikes": 2, "block": 1, "ceiling": 2, "plats": 2, "mover": 4, "combo": 1}, "run": [78, 120]},
+	{"name": "Spike Garden", "theme": 5, "speed0": 120.0, "speed1": 144.0, "length": 5100.0, "seed": 67, "diff": 0.64,
+		"kinds": {"gap": 2, "spikes": 4, "block": 1, "step": 1, "ceiling": 2, "plats": 1, "mover": 2, "pit": 4, "combo": 2}, "run": [72, 112]},
+	{"name": "Night Rush", "theme": 6, "speed0": 128.0, "speed1": 154.0, "length": 5800.0, "seed": 79, "diff": 0.8,
+		"kinds": {"gap": 3, "spikes": 3, "block": 2, "step": 2, "ceiling": 3, "plats": 2, "mover": 3, "pit": 3, "combo": 3}, "run": [66, 104]},
+	{"name": "Star Gauntlet", "theme": 7, "speed0": 138.0, "speed1": 166.0, "length": 6600.0, "seed": 97, "diff": 1.0,
+		"kinds": {"gap": 3, "spikes": 3, "block": 2, "step": 2, "ceiling": 3, "plats": 3, "mover": 3, "pit": 3, "combo": 4}, "run": [60, 96]},
 ]
 const ENDLESS := {"name": "Endless Run", "theme": -1, "speed0": 105.0, "speed1": 105.0, "length": 1.0e9, "seed": 0, "diff": 0.0,
 	"kinds": {"gap": 3, "spikes": 3, "block": 2, "step": 2, "ceiling": 2, "plats": 2, "mover": 2, "pit": 2}, "run": [80, 140]}
@@ -103,7 +105,9 @@ static func build(n: int, dbl := false, seed_override := -1) -> Dictionary:
 	_ground(lv, -200.0, 720.0, GY0)
 	_coin_line(lv, 200.0, 440.0, GY0 - 8.0, 48.0)
 	lv["gx"] = 520.0
-	lv["next_check"] = float(d["length"]) / 4.0 if n > 0 else 1600.0
+	# A checkpoint about every 8 seconds of running (endless: every 1600 px).
+	lv["check_every"] = (float(d["speed0"]) + float(d["speed1"])) * 0.5 * CHECK_SECS if n > 0 else 1600.0
+	lv["next_check"] = float(lv["check_every"])
 	if n > 0:
 		extend(lv, float(d["length"]))
 		_finish(lv)
@@ -116,6 +120,33 @@ static func speed_at(lv: Dictionary, x: float) -> float:
 	if int(lv["n"]) <= 0:
 		return minf(105.0 + maxf(x, 0.0) * 0.0055, 190.0)
 	return lerpf(float(lv["speed0"]), float(lv["speed1"]), clampf(x / float(lv["length"]), 0.0, 1.0))
+
+
+## The run is on rails: x after k frames is the same on every try, so the
+## clock (which drives the moving platforms) is a function of x. A respawn
+## state at x (snapped to the frame grid) with the same clock as a straight
+## run, so movers are always in the phase the level was solved with.
+static func respawn_state(lv: Dictionary, x: float, y: float) -> Array:
+	var fx := _frame_at(lv, x)
+	var st := new_state(float(fx[0]), y)
+	st[T] = int(fx[1]) / 60.0
+	return st
+
+
+## Seconds into a straight run when the player reaches x.
+static func time_at(lv: Dictionary, x: float) -> float:
+	return int(_frame_at(lv, x)[1]) / 60.0
+
+
+## [x on the frame grid at or past x, frames to get there].
+static func _frame_at(lv: Dictionary, x: float) -> Array:
+	var px := 0.0
+	var k := 0
+	var dt := 1.0 / 60.0
+	while px < x - 0.001 and k < 60 * 3600:
+		px += speed_at(lv, px) * dt
+		k += 1
+	return [px, k]
 
 
 static func diff_at(lv: Dictionary, x: float) -> float:
@@ -162,15 +193,21 @@ static func extend(lv: Dictionary, to_x: float) -> void:
 		var run := r.randf_range(float(run_r[0]), float(run_r[1]))
 		if int(lv["n"]) <= 0:
 			run = lerpf(150.0, 70.0, dd) * r.randf_range(0.85, 1.2)
-		run = maxf(run, sp * 0.5)
+		# Harder levels leave less room between obstacles (quicker rhythm).
+		run = maxf(run, sp * lerpf(0.5, 0.4, dd))
 		var gx := float(lv["gx"])
 		var gy := float(lv["gy"])
+		# A checkpoint flag stands at the start of a long calm runway, so a
+		# respawn never drops you straight onto an obstacle.
+		var flag := gx + run >= float(lv["next_check"]) and gx + run < float(lv["length"]) - 200.0
+		if flag:
+			run = maxf(run, sp * CHECK_CALM + 24.0)
 		_ground(lv, gx, run, gy)
 		if r.randf() < 0.5:
 			_coin_line(lv, gx + 16.0, gx + run - 16.0, gy - 8.0, 20.0)
-		if gx + run * 0.5 >= float(lv["next_check"]) and run >= 60.0:
-			(lv["checks"] as Array).append(Vector2(gx + run * 0.5, gy))
-			lv["next_check"] = float(lv["next_check"]) + (float(lv["length"]) / 4.0 if int(lv["n"]) > 0 else 1600.0)
+		if flag:
+			(lv["checks"] as Array).append(Vector2(gx + 24.0, gy))
+			lv["next_check"] = gx + 24.0 + float(lv["check_every"])
 		lv["gx"] = gx + run
 
 
@@ -184,6 +221,8 @@ static func _endless_kinds(dd: float) -> Dictionary:
 		k["mover"] = 2
 	if dd > 0.5:
 		k["pit"] = 2
+	if dd > 0.6:
+		k["combo"] = 2
 	return k
 
 
@@ -214,7 +253,7 @@ static func _chunk(lv: Dictionary, kind: String) -> void:
 				dy = -16.0
 			elif roll < 0.45 and gy + 32.0 <= GY_MAX:
 				dy = [16.0, 32.0][r.randi() % 2]
-			var w := r.randf_range(0.3, lerpf(0.5, 0.78, dd)) * rf + 12.0
+			var w := r.randf_range(lerpf(0.3, 0.42, dd), lerpf(0.5, 0.8, dd)) * rf + 12.0
 			if dy < 0.0:
 				w *= 0.8
 			w = maxf(w, 28.0)
@@ -281,13 +320,44 @@ static func _chunk(lv: Dictionary, kind: String) -> void:
 			var mw := 48.0
 			var amp := r.randf_range(14.0, 26.0) if vertical else r.randf_range(14.0, 22.0)
 			var g1 := r.randf_range(0.25, 0.42) * rf + 12.0
+			var per := r.randf_range(1.8, 2.6)
+			var ph0 := r.randf()
+			# Timed to the run (the clock is a function of x): a sliding
+			# platform swings in toward you as you reach the edge, a lift is
+			# level with the ground while you're in the air.
+			var ta := time_at(lv, x) + (0.3 if not vertical else 0.25) + (ph0 - 0.5) * 0.2
+			var ph := -PI * 0.5 - TAU * ta / per if not vertical else -TAU * ta / per
 			var mv := {"x": x + g1 + (0.0 if vertical else amp), "y": gy, "w": mw, "ax": 0.0 if vertical else amp,
-				"ay": amp if vertical else 0.0, "per": r.randf_range(1.8, 2.6), "ph": r.randf() * TAU}
+				"ay": amp if vertical else 0.0, "per": per, "ph": ph}
 			_add(lv, "movers", mv)
 			var g3 := r.randf_range(0.25, 0.42) * rf + 12.0
 			var end := float(mv["x"]) + mw + float(mv["ax"]) + g3
 			_add(lv, "coins", Vector2(float(mv["x"]) + mw * 0.5, gy - 14.0))
 			lv["gx"] = end
+		"combo":
+			# Two moves back to back: a gap whose landing pad leads straight
+			# into spikes (jump again) or a low ceiling (duck at once).
+			var wg := r.randf_range(0.4, lerpf(0.55, 0.72, dd)) * rf + 12.0
+			_coin_arc(lv, x, x + wg, gy, gy)
+			var pad := r.randf_range(0.42, 0.6) * rf
+			var cx3 := x + wg
+			var spiky := r.randf() < 0.55
+			if not spiky:
+				pad = maxf(pad, 0.62 * rf)
+			_ground(lv, cx3, pad, gy)
+			if spiky:
+				var ns := 1 + int(r.randf() < dd * 0.7)
+				_ground(lv, cx3 + pad, ns * 16.0, gy)
+				for i in ns:
+					_add(lv, "spikes", Rect2(cx3 + pad + i * 16.0, gy - 12.0, 16.0, 12.0))
+				_coin_arc(lv, cx3 + pad - 8.0, cx3 + pad + ns * 16.0 + 8.0, gy, gy)
+				lv["gx"] = cx3 + pad + ns * 16.0
+			else:
+				var wc := r.randf_range(32.0, 56.0)
+				_ground(lv, cx3 + pad, wc, gy)
+				_add(lv, "solids", Rect2(cx3 + pad, -400.0, wc, 400.0 + gy - CEIL_GAP))
+				_add(lv, "coins", Vector2(cx3 + pad + wc * 0.5, gy - 4.0))
+				lv["gx"] = cx3 + pad + wc
 		"pit":
 			var w4 := r.randf_range(64.0, 96.0 + dd * 48.0)
 			var lead := r.randf_range(16.0, 24.0)
@@ -555,8 +625,10 @@ static func step(st: Array, lv: Dictionary, a: bool, down: bool, dt := 1.0 / 60.
 ## Breadth-first over every frame's input (nothing / hold A / hold down), merging
 ## states that match, to prove the level can be finished. Returns
 ## {"ok", "x" (furthest), "frames", "plan" (A/down per frame when ok)}.
-static func solve(lv: Dictionary, from_x := 0.0, beam := 150) -> Dictionary:
-	var start := new_state(from_x, GY0)
+## from_x/from_y: start there (a checkpoint) on the straight run's clock;
+## to_x: stop once past it (the next checkpoint) instead of at the goal.
+static func solve(lv: Dictionary, from_x := 0.0, beam := 150, from_y := GY0, to_x := INF) -> Dictionary:
+	var start := respawn_state(lv, from_x, from_y)
 	var sup := _support(lv, start)
 	if float(sup[0]) != INF:
 		start[Y] = float(sup[0])
@@ -576,7 +648,7 @@ static func solve(lv: Dictionary, from_x := 0.0, beam := 150) -> Dictionary:
 				if ev == "dead":
 					continue
 				var link := [ai, node[1]]
-				if ev == "win":
+				if ev == "win" or float(st[X]) >= to_x:
 					var plan: Array = []
 					var l: Variant = link
 					while l != null:
@@ -649,11 +721,25 @@ static func stored_plan(n: int) -> Array:
 
 
 ## Plays a plan through the real physics: "win", "dead" or "short".
-static func replay(lv: Dictionary, plan: Array) -> String:
-	var st := new_state(0.0, GY0)
+## From a checkpoint: start (x, y) and stop at to_x ("win" once past it).
+static func replay(lv: Dictionary, plan: Array, start := Vector2(0.0, GY0), to_x := INF) -> String:
+	var st := respawn_state(lv, start.x, start.y)
 	var acts := [[false, false], [true, false], [false, true]]
 	for a: int in plan:
 		var ev := step(st, lv, bool(acts[a][0]), bool(acts[a][1]))
 		if ev == "win" or ev == "dead":
 			return ev
+		if float(st[X]) >= to_x:
+			return "win"
 	return "short"
+
+
+## Stored plan from checkpoint i of level n (key "n@i"; [] if none).
+static func stored_check_plan(n: int, i: int) -> Array:
+	if not FileAccess.file_exists(PLANS):
+		return []
+	var d: Variant = JSON.parse_string(FileAccess.get_file_as_string(PLANS))
+	var key := "%d@%d" % [n, i]
+	if not (d is Dictionary) or not (d as Dictionary).has(key):
+		return []
+	return unrle((d as Dictionary)[key])

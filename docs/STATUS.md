@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_02): Block Jumper levels, checkpoints, touch (partial)
+- **Difficulty curve:** levels now get longer in time as well as faster (L1 ~26 s ... L8 ~45 s; lengths 2400 to 6600), tighter gaps/shorter runways with difficulty, and a new "combo" chunk on levels 5-8 + late Endless (gap whose landing pad runs straight into spikes or a low ceiling).
+- **Checkpoints:** one about every 8 s of running, each at the start of a calm runway (1.2 s of flat ground), so a respawn never lands you on an obstacle. Respawn uses `JumperLevels.respawn_state`: the run's clock is a function of x, so moving platforms are in the same phase as a clean run (before, the clock restarted at 0 and a mover could be unreachable after a respawn).
+- **Moving platforms** are timed to the run (sliding ones swing toward you as you reach the edge).
+- **Solver:** plans are proven from the start and from every checkpoint (keys `n` and `n@i`, 36 segments); a wider beam retry when the narrow one prunes the only way through; `--levels`, `--seeds`.
+- **Touch:** the whole play area is a second JUMP button while running (hold for higher).
+- **Looks:** low ceilings are a hanging slab of the level's rock instead of a flat grey pillar; CHECKPOINT text floats ahead of the player.
+- **Tools/tests:** tools/jumper_test.gd (coyote, buffer, hold height, curve, calm checkpoints, respawn clock, play-area jump; wired in check.sh), tools/jumper_audit.gd (take-off window per jump), jumper_dump.gd / jumper_probe.gd (debug).
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.
