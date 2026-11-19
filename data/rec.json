@@ -38,6 +38,7 @@
   {
    "id": "stack",
    "name": "Crystal Stack",
+   "gang_name": "Neon Stack",
    "sprite": "arcade_cab_5",
    "cell": [
     9,
@@ -585,6 +586,50 @@
   "sal": [
    "Late at the Rec Hall's the quiet part. Nobody's looking for anybody in there.",
    "I don't do prizes. I do high scores. Initials and everything."
+  ],
+  "gideon": [
+   "Bowling's just smithing with a ball. Weight, line, follow through. Same as anything you mean to land.",
+   "Maple's beaten me eleven league nights straight. That doesn't leave this hall."
+  ],
+  "maple": [
+   "League night's the one night nobody in this town talks business. House rule, and I enforce it.",
+   "I bowl with my grandmother's ball, dear. It's seen rougher streets than these."
+  ],
+  "finn": [
+   "Bowling's like casting. Pick a line, trust it, don't look back.",
+   "Lane four pulls left. Everybody knows. Nobody fixes it. That's this town all over."
+  ],
+  "lumi": [
+   "Pink neon on old brick. Only honest light in town. I've filled a sketchbook.",
+   "A rainy afternoon at the {hall}. Nobody watching anybody. Best kind of quiet."
+  ],
+  "theo": [
+   "I've charted the pin physics. Theory says 300. The lanes say 74.",
+   "Every cabinet has a pattern. Learn it and the machine works for you. Rare thing, in this town."
+  ],
+  "ivy": [
+   "Tickets earn no interest and nobody can fake them. Cleanest money in the valley.",
+   "I keep score on paper. Machines get fixed. Paper remembers."
+  ],
+  "juniper": [
+   "Bend your knees when you bowl. Half my Monday patients didn't.",
+   "One night off a week, and I spend it on lane one. Nobody here needs patching up. Usually."
+  ],
+  "posy": [
+   "I bring cookies at the weekend. Even the tough kids say thank you. Mostly.",
+   "The cotton candy is a crime against baking. I had three. Don't tell the crews."
+  ],
+  "benno": [
+   "The horses don't care for the pins. I come alone, back lane, nobody bothers me.",
+   "Rolled a 140 once. It's chalked on the house wall. Only record of mine I'll ever want."
+  ],
+  "hazel": [
+   "Rain on the lot, so I'm at the {hall}. Even gardeners get a night off.",
+   "I don't bowl. I watch who sits with who. You learn a lot that way."
+  ],
+  "rook": [
+   "A bowling ball only goes one way. Easiest thing in town to track.",
+   "Quiet up there on a weeknight. The pins cover any conversation you'd rather keep."
   ]
  },
  "house_decor": {

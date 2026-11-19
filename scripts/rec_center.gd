@@ -305,6 +305,9 @@ static func build_room(m: GameMap, I: Dictionary) -> Dictionary:
 	if not GameState.is_penguins() and I.get("gangsters") is Dictionary:
 		I = I.duplicate(true)
 		I.merge(I["gangsters"], true)
+		for th: Dictionary in I.get("things", []):  # cabinet hints use this arc's names (Neon Stack)
+			if str(th.get("act", "")) == "cabinet":
+				th["hint"] = "A: play " + Tickets.game_name(str(th.get("game", "")))
 	if bool(I.get("lanes", false)):
 		var top := int(data().get("lane_top", 3))
 		var foul := int(data().get("lane_foul", 11))
@@ -383,7 +386,7 @@ static func _cabinet(m: GameMap, game: String) -> void:
 	if hub != null and hub.has_method("open"):
 		hub.call("open", m, game)  # ArcadeHub.open(map, game_id): agent a2's games
 		return
-	var nm := str((Tickets.prizes().get("game_names", {}) as Dictionary).get(game, game.capitalize()))
+	var nm := Tickets.game_name(game)
 	m.hud.toast("%s: coming soon. The screen says INSERT COIN, then giggles." % nm, Color(0.8, 0.95, 1))
 	Music.instance(m.get_tree()).sfx("beep", "ui_tap")
 
@@ -446,7 +449,7 @@ static func tickets_for(score: int, strikes: int, spares: int) -> int:
 static func _desk(m: GameMap) -> void:
 	var d := Dialogue.instance(m.get_tree())
 	var opts := ["Tickets & scores", "What's here?", "Leave"]
-	d.say([{"who": "Front desk", "text": "Welcome to the %s! You have %d tickets.%s" % [name(), Tickets.count(), "  Tonight is LEAGUE NIGHT." if is_league_night() else ""], "choice": opts, "key": ""}])
+	d.say([{"who": "Front desk", "text": ("Welcome to the %s! You have %d tickets.%s" if GameState.is_penguins() else "%s. No heat past the door, everybody plays. You have %d tickets.%s") % [name(), Tickets.count(), "  Tonight is LEAGUE NIGHT." if is_league_night() else ""], "choice": opts, "key": ""}])
 	await d.finished
 	if d.last_choice == 0:
 		await _scores(m)
@@ -460,7 +463,7 @@ static func _scores(m: GameMap) -> void:
 	var names: Dictionary = Tickets.prizes().get("game_names", {})
 	for g in names:  # every cabinet, the claw and skee-ball you've played
 		if str(g) != "bowling" and Tickets.plays(str(g)) > 0:
-			lines.append("%s: %d" % [str(names[g]), Tickets.best_score(str(g))])
+			lines.append("%s: %d" % [Tickets.game_name(str(g)), Tickets.best_score(str(g))])
 	lines.append("Tickets: %d on hand, %d won in all." % [Tickets.count(), Tickets.earned()])
 	var house := {"bowling": 0}
 	for id in data().get("visitors", {}):
@@ -531,7 +534,8 @@ static func _claw(m: GameMap) -> void:
 	f["claw_tries"] = int(f.get("claw_tries", 0)) + 1
 	if randf() < odds or int(f["claw_tries"]) >= 12:  # a pity win after a long dry run
 		f["claw_tries"] = 0
-		var pick: String = ["rp_teddy", "rp_penguin_plush", "rp_cat_plush"][randi() % 3]
+		var plush: Array = ["rp_teddy", "rp_penguin_plush", "rp_fuzzy_dice", "rp_cat_plush"].filter(Tickets.arc_ok)
+		var pick: String = plush[randi() % plush.size()]
 		await m.say([{"who": "", "text": "The claw wobbles... and holds! Down the chute it comes."}])
 		Music.instance(m.get_tree()).sfx("j_treasure", "levelup")
 		m.give(pick, 1)

@@ -2597,7 +2597,7 @@
   {
    "id": "rec_bowl_120",
    "giver": "tobin",
-   "text": "Tobin bets you can't bowl 120 or more at the Rec Center.",
+   "text": "Tobin bets you can't bowl 120 or more upstairs at the rec.",
    "when": {
     "flag": "rec_open"
    },

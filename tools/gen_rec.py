@@ -40,7 +40,7 @@ BUILDING = {
 # ids are ArcadeHub.GAMES). The claw machine prop opens ArcadeHub's "claw" game.
 CABINETS = [
     {"id": "jumper", "name": "Block Jumper", "sprite": "arcade_cab_0", "cell": [8, 2]},
-    {"id": "stack", "name": "Crystal Stack", "sprite": "arcade_cab_5", "cell": [9, 2]},
+    {"id": "stack", "name": "Crystal Stack", "gang_name": "Neon Stack", "sprite": "arcade_cab_5", "cell": [9, 2]},
     {"id": "whack", "name": "Whack-a-Grump", "sprite": "arcade_cab_whack", "cell": [11, 2]},
     {"id": "gallery", "name": "Duck Pond", "sprite": "arcade_cab_gallery", "cell": [12, 2]},
 ]
@@ -133,16 +133,18 @@ def room_up():
 
 # ---------------------------------------------------------------- items & prizes
 ITEMS = {
-    "rp_fizzy_pop": {"name": "Fizzy Pop", "type": "food", "value": 20, "rarity": "common", "tier": 1, "energy": 25, "icon": "soda", "desc": "From the Rec Center machine. Fizzes up your nose."},
+    "rp_fizzy_pop": {"name": "Fizzy Pop", "type": "food", "value": 20, "rarity": "common", "tier": 1, "energy": 25, "icon": "soda", "desc": "From the vending machine at the rec. Fizzes up your nose."},
     "rp_cotton_candy": {"name": "Cotton Candy", "type": "food", "value": 35, "rarity": "common", "tier": 1, "energy": 30, "buff": {"kind": "speed", "minutes": 60, "amount": 1}, "icon": "cloud_cotton", "desc": "Pure sugar cloud. A spring in your step for an hour."},
     "rp_ribbon": {"name": "Lucky Ribbon", "type": "gift", "value": 40, "rarity": "common", "tier": 1, "icon": "ribbon_red", "desc": "A prize-counter ribbon. Nice to give."},
     "rp_kite": {"name": "Kite", "type": "gift", "value": 90, "rarity": "uncommon", "tier": 2, "icon": "kite", "desc": "Diamond kite with a long tail. The kids would love it."},
     "rp_teddy": {"name": "Teddy Bear", "type": "gift", "value": 120, "rarity": "uncommon", "tier": 2, "icon": "teddy_bear", "desc": "The prize every kid points at first."},
-    "rp_penguin_plush": {"name": "Penguin Plush", "type": "gift", "value": 140, "rarity": "uncommon", "tier": 2, "icon": "penguin_figurine", "desc": "Squishy, round, suspiciously familiar."},
+    "rp_penguin_plush": {"name": "Penguin Plush", "type": "gift", "value": 140, "rarity": "uncommon", "tier": 2, "icon": "penguin_figurine", "arc": "penguins", "desc": "Squishy, round, suspiciously familiar."},
+    "rp_fuzzy_dice": {"name": "Fuzzy Dice", "type": "gift", "value": 140, "rarity": "uncommon", "tier": 2, "icon": "dice", "arc": "gangsters", "desc": "A pair of fuzzy dice for a rear-view mirror. Every getaway car deserves some."},
     "rp_cat_plush": {"name": "Lucky Cat", "type": "gift", "value": 140, "rarity": "uncommon", "tier": 2, "icon": "cat_figurine", "desc": "Waves one paw forever. For luck."},
-    "rp_bowling_cap": {"name": "Bowling Cap", "type": "equip", "slot": "head", "value": 150, "rarity": "uncommon", "tier": 2, "stats": {"luck": 1}, "sprite": "cap", "icon": "cap", "desc": "Rec Center league cap."},
+    "rp_bowling_cap": {"name": "Bowling Cap", "type": "equip", "slot": "head", "value": 150, "rarity": "uncommon", "tier": 2, "stats": {"luck": 1}, "sprite": "cap", "icon": "cap", "desc": "League cap from the lanes at the rec."},
     "rp_neon_cap": {"name": "Neon Cap", "type": "equip", "slot": "head", "value": 180, "rarity": "uncommon", "tier": 2, "stats": {"speed": 1}, "sprite": "cap", "icon": "neon_hat", "desc": "Glows faintly in the dark."},
-    "rp_top_hat": {"name": "Top Hat", "type": "equip", "slot": "head", "value": 400, "rarity": "rare", "tier": 3, "stats": {"luck": 2}, "sprite": "tophat", "icon": "tophat", "desc": "For the high roller of the lanes."},
+    "rp_top_hat": {"name": "Top Hat", "type": "equip", "slot": "head", "value": 400, "rarity": "rare", "tier": 3, "stats": {"luck": 2}, "sprite": "tophat", "icon": "tophat", "arc": "penguins", "desc": "For the sharpest bowler on the lanes."},
+    "rp_lane_fedora": {"name": "Pinstripe Fedora", "type": "equip", "slot": "head", "value": 400, "rarity": "rare", "tier": 3, "stats": {"luck": 2}, "sprite": "cowboy", "icon": "fedora", "arc": "gangsters", "desc": "Only bowlers who've rolled a 150 at the Rec Hall wear the stripe. People make room."},
     "rp_star_cape": {"name": "Star Cape", "type": "equip", "slot": "back", "value": 600, "rarity": "rare", "tier": 3, "stats": {"speed": 1, "luck": 1}, "icon": "cape_star", "desc": "Only bowlers who've rolled a 200 wear this."},
     "rp_music_box": {"name": "Music Box", "type": "decor", "value": 200, "rarity": "uncommon", "tier": 2, "icon": "music_box", "desc": "Decor: it sits in your house and plays a little tune."},
     "rp_painting": {"name": "Neon Painting", "type": "decor", "value": 250, "rarity": "uncommon", "tier": 2, "icon": "painting_abstract", "desc": "Decor: hangs in your house."},
@@ -164,6 +166,7 @@ PRIZES = [
     ("rp_kite", 60, 2, {}),
     ("rp_teddy", 80, 2, {}),
     ("rp_penguin_plush", 90, 2, {}),
+    ("rp_fuzzy_dice", 90, 2, {}),
     ("rp_cat_plush", 90, 2, {}),
     ("rp_bowling_cap", 120, 2, {"plays": {"bowling": 2}, "once": True}),
     ("rp_neon_cap", 140, 2, {"arcade": {"plays": 3}, "once": True}),
@@ -172,6 +175,7 @@ PRIZES = [
     ("growth_elixir", 400, 3, {"earned": 150}),
     ("rp_trophy_bronze", 200, 3, {"best": {"bowling": 100}, "once": True}),
     ("rp_top_hat", 300, 3, {"best": {"bowling": 150}, "once": True}),
+    ("rp_lane_fedora", 300, 3, {"best": {"bowling": 150}, "once": True}),
     ("rp_trophy_silver", 350, 3, {"best": {"bowling": 160}, "once": True}),
     ("rp_arcade_medal", 300, 3, {"arcade": {"games": 4}, "once": True}),
     ("rp_star_cape", 450, 4, {"best": {"bowling": 200}, "once": True}),
@@ -269,14 +273,25 @@ CHAT = {
     "hazel": ["Rain on the fields, so I'm at the {hall}. Don't look at me like that.", "I don't bowl. I watch. It's the same thing with less effort."],
     "rook": ["Tracking a bowling ball's easy. It only goes one way.", "Quiet up there on a weeknight. I like the thunder of it."],
 }
-CHAT_GANG = {  # gangster-arc swaps
+CHAT_GANG = {  # gangster-arc swaps: same people, the town they live in now (serious, cool, all ages)
     "alder": ["A town needs a place to gather where nobody asks questions. The Rec Hall's that place.", "No heat inside. That's the rule. Even the President's people bowl badly."],
     "sal": ["Late at the Rec Hall's the quiet part. Nobody's looking for anybody in there.", "I don't do prizes. I do high scores. Initials and everything."],
+    "gideon": ["Bowling's just smithing with a ball. Weight, line, follow through. Same as anything you mean to land.", "Maple's beaten me eleven league nights straight. That doesn't leave this hall."],
+    "maple": ["League night's the one night nobody in this town talks business. House rule, and I enforce it.", "I bowl with my grandmother's ball, dear. It's seen rougher streets than these."],
+    "finn": ["Bowling's like casting. Pick a line, trust it, don't look back.", "Lane four pulls left. Everybody knows. Nobody fixes it. That's this town all over."],
+    "lumi": ["Pink neon on old brick. Only honest light in town. I've filled a sketchbook.", "A rainy afternoon at the {hall}. Nobody watching anybody. Best kind of quiet."],
+    "theo": ["I've charted the pin physics. Theory says 300. The lanes say 74.", "Every cabinet has a pattern. Learn it and the machine works for you. Rare thing, in this town."],
+    "ivy": ["Tickets earn no interest and nobody can fake them. Cleanest money in the valley.", "I keep score on paper. Machines get fixed. Paper remembers."],
+    "juniper": ["Bend your knees when you bowl. Half my Monday patients didn't.", "One night off a week, and I spend it on lane one. Nobody here needs patching up. Usually."],
+    "posy": ["I bring cookies at the weekend. Even the tough kids say thank you. Mostly.", "The cotton candy is a crime against baking. I had three. Don't tell the crews."],
+    "benno": ["The horses don't care for the pins. I come alone, back lane, nobody bothers me.", "Rolled a 140 once. It's chalked on the house wall. Only record of mine I'll ever want."],
+    "hazel": ["Rain on the lot, so I'm at the {hall}. Even gardeners get a night off.", "I don't bowl. I watch who sits with who. You learn a lot that way."],
+    "rook": ["A bowling ball only goes one way. Easiest thing in town to track.", "Quiet up there on a weeknight. The pins cover any conversation you'd rather keep."],
 }
 
 # ---------------------------------------------------------------- quests
 QUESTS = [
-    {"id": "rec_bowl_120", "giver": "tobin", "text": "Tobin bets you can't bowl 120 or more at the Rec Center.", "when": {"flag": "rec_open"},
+    {"id": "rec_bowl_120", "giver": "tobin", "text": "Tobin bets you can't bowl 120 or more upstairs at the rec.", "when": {"flag": "rec_open"},
      "done_when": {"flag": "bowl_120"}, "reward": {"crystals": 150, "friend": ["tobin", 15]}},
     {"id": "rec_teddy", "giver": "mabel", "text": "Mabel wants the Teddy Bear from the prize counter (80 tickets).", "when": {"flag": "rec_open", "day": 9},
      "done_when": {"item": ["rp_teddy", 1]}, "take": True, "reward": {"item": ["rp_kite", 1], "friend": ["mabel", 20]}},
@@ -292,7 +307,7 @@ QUEST_LINES = {
                   "done": ["You got him! He's softer than I thought! He's PERFECT.", "Here, the kite's yours. I mean it. Bears are better than kites."]},
 }
 QUEST_LINES_GANG = {
-    "rec_bowl_120@gangsters": {"offer": ["You been up the Rec Hall? Bet you can't bowl a hundred and twenty.", "I'll get Dad to put up the stakes. He likes a bet. Mum says he can't, but bowling's different."],
+    "rec_bowl_120@gangsters": {"offer": ["You been up the Rec Hall? Bet you can't bowl a hundred and twenty.", "Do it and Dad pays you. He says everybody in this town owes somebody. Now he owes you."],
                                "done": ["You did NOT. ...The chalk wall says you did.", "Fine. Dad, pay up. A deal's a deal."]},
     "rec_teddy@gangsters": {"offer": ["The Teddy Bear. At the Rec Hall counter. With the bow.", "I need eighty tickets and I have four. Win him for me? I'll give you my kite."]},
 }
@@ -322,7 +337,8 @@ def main():
         names[c["id"]] = c["name"]
     names["claw"] = "Claw Machine"
     names["skee_ball"] = "Skee-Ball"
-    pz = {"_": "Generated by tools/gen_rec.py", "game_names": names, "order": [p[0] for p in PRIZES], "prizes": {}}
+    gang = {c["id"]: c["gang_name"] for c in CABINETS if "gang_name" in c}  # gangster-arc cabinet names (Tickets.game_name)
+    pz = {"_": "Generated by tools/gen_rec.py", "game_names": names, "game_names_gang": gang, "order": [p[0] for p in PRIZES], "prizes": {}}
     for item, cost, tier, need in PRIZES:
         pz["prizes"][item] = {"item": item, "cost": cost, "tier": tier, "need": need}
     save("prizes.json", pz)

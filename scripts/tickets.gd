@@ -112,6 +112,20 @@ static func prize(prize_id: String) -> Dictionary:
 	return (prizes().get("prizes", {}) as Dictionary).get(prize_id, {})
 
 
+## A game's name as the player reads it (gangster arc: data "game_names_gang" wins).
+static func game_name(game: String) -> String:
+	var names: Dictionary = prizes().get("game_names", {})
+	if not GameState.is_penguins():
+		names = names.merged(prizes().get("game_names_gang", {}), true)
+	return str(names.get(game, game.capitalize()))
+
+
+## False for an item that belongs to the other arc (the counter, claw and machines skip it).
+static func arc_ok(item: String) -> bool:
+	var a := str(GameState.items.get(item, {}).get("arc", ""))
+	return a == "" or a == str(GameState.run.get("arc", ""))
+
+
 ## "need" in a prize: {"best": {game: score}, "plays": {game: n}, "earned": n}.
 static func unlocked(prize_id: String) -> bool:
 	return lock_text(prize_id) == ""
@@ -122,14 +136,15 @@ static func lock_text(prize_id: String) -> String:
 	var p := prize(prize_id)
 	if p.is_empty():
 		return "Unknown prize."
+	if not arc_ok(str(p.get("item", prize_id))):
+		return "Not on this counter."
 	var need: Dictionary = p.get("need", {})
-	var names: Dictionary = prizes().get("game_names", {})
 	for g in (need.get("best", {}) as Dictionary):
 		if best_score(str(g)) < int(need["best"][g]):
-			return "Score %d in %s" % [int(need["best"][g]), str(names.get(g, g))]
+			return "Score %d in %s" % [int(need["best"][g]), game_name(str(g))]
 	for g in (need.get("plays", {}) as Dictionary):
 		if plays(str(g)) < int(need["plays"][g]):
-			return "Play %s %d times" % [str(names.get(g, g)), int(need["plays"][g])]
+			return "Play %s %d times" % [game_name(str(g)), int(need["plays"][g])]
 	if need.has("earned") and earned() < int(need["earned"]):
 		return "Win %d tickets in all" % int(need["earned"])
 	var arc: Dictionary = need.get("arcade", {})

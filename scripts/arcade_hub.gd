@@ -142,7 +142,7 @@ static func set_milestone(id: String) -> bool:
 	ms[id] = true
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree and tree.current_scene is GameMap and (tree.current_scene as GameMap).hud:
-		(tree.current_scene as GameMap).hud.toast("Arcade milestone: " + str(MILESTONES.get(id, id)), Color(1, 0.85, 0.4))
+		(tree.current_scene as GameMap).hud.toast("Arcade milestone: " + str(MILESTONES.get(id, id)).replace("Crystal Stack", Tickets.game_name("stack")), Color(1, 0.85, 0.4))
 	return true
 
 
@@ -267,7 +267,7 @@ func _draw_play(c: Control) -> void:
 		var ic := Rect2(r.position + Vector2(6, 6), Vector2(40, 40))
 		c.draw_rect(ic, Color(0.04, 0.02, 0.07))
 		draw_icon(c, str(g["id"]), ic, t)
-		text_outline(c, r.position + Vector2(54, 17), str(g["name"]), 190, 10, Color.WHITE)
+		text_outline(c, r.position + Vector2(54, 17), Tickets.game_name(str(g["id"])), 190, 10, Color.WHITE)
 		text(c, r.position + Vector2(54, 30), str(g["blurb"]), 190, 7, Color(0.9, 0.88, 1))
 		var cabinet := make_info(str(g["id"]))
 		text(c, r.position + Vector2(54, 44), "%s · best %d" % [Money.amount(int(cabinet["fee"])), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))

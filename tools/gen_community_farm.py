@@ -165,28 +165,35 @@ TALK_OWN = [
 ]
 # What a volunteer says when you talk to them at the farm, by activity.
 AT_WORK = {
-    "farm": P(["Weeds don't take days off, so neither do I.", "Look at these roots! Healthy as anything.", "Mind the edges, the seedlings are shy."]),
-    "haul": P(["One more load and I'll sit down. Probably.", "Heavy, but good heavy.", "Everything here gets carried twice. Once in, once out as dinner."]),
-    "work": P(["Hinges, handles, the odd broken rake. Somebody has to.", "Tools last forever if you clean them. Nobody cleans them."]),
-    "market": P(["Fresh today! Well, fresh-ish.", "Prices are low because the soil works for free.", "Take a look, everything's from the beds behind me."]),
-    "picnic": P(["Lunch tastes better outside. That's science.", "Sit down a minute. The beds will still be there."]),
-    "talk": P(["The board says what's next. Read it, then help me make it happen.", "I like to see the plan with my own eyes."]),
-    "sit": P(["I come here to think. And to watch the bees.", "Best bench in the valley. Don't tell the park."]),
+    "farm": P(["Weeds don't take days off, so neither do I.", "Look at these roots! Healthy as anything.", "Mind the edges, the seedlings are shy."],
+              ["Weeds don't take days off. Neither do I.", "Look at these roots. Ground was junk a season ago.", "Mind the edges. Took us a month to get these going."]),
+    "haul": P(["One more load and I'll sit down. Probably.", "Heavy, but good heavy.", "Everything here gets carried twice. Once in, once out as dinner."],
+              ["One more load, then I sit. Probably.", "Heavy, but honest heavy.", "Everything here gets carried twice. Once in as junk, once out as dinner."]),
+    "work": P(["Hinges, handles, the odd broken rake. Somebody has to.", "Tools last forever if you clean them. Nobody cleans them."],
+              ["Hinges, handles, the odd bent rake. Somebody has to.", "Tools come back clean or they don't come back. Shed rule."]),
+    "market": P(["Fresh today! Well, fresh-ish.", "Prices are low because the soil works for free.", "Take a look, everything's from the beds behind me."],
+                ["Fresh today. Grown fifty steps from here.", "Prices are low because the soil doesn't pay rent.", "Take a look. Everything's from the beds behind me."]),
+    "picnic": P(["Lunch tastes better outside. That's science.", "Sit down a minute. The beds will still be there."],
+                ["Lunch tastes better on a lot you cleared yourself.", "Sit a minute. The beds aren't going anywhere."]),
+    "talk": P(["The board says what's next. Read it, then help me make it happen.", "I like to see the plan with my own eyes."],
+              ["The board says what's next. Read it, then help me make it happen.", "Plans on paper, pinned where everyone can see. No secrets on this lot."]),
+    "sit": P(["I come here to think. And to watch the bees.", "Best bench in the valley. Don't tell the park."],
+             ["I come here to think. Nobody looks for you on a garden bench.", "Best seat on the block. Quiet, and you can see who's coming."]),
 }
 
 # ---- items and recipes -------------------------------------------------------------
 ITEMS = {
-    "commons_stew": {"name": "Commons Stew", "type": "food", "value": 120, "rarity": "uncommon", "tier": 2, "heal": 4, "energy": 70, "icon": "soup_vegetable",
+    "commons_stew": {"name": "Community Stew", "type": "food", "value": 120, "rarity": "uncommon", "tier": 2, "heal": 4, "energy": 70, "icon": "soup_vegetable",
                      "desc": "Whatever came up first in the community beds, simmered all afternoon."},
     "harvest_cobbler": {"name": "Harvest Cobbler", "type": "food", "value": 150, "rarity": "uncommon", "tier": 2, "heal": 3, "energy": 60, "icon": "fruit_tart",
                         "buff": {"kind": "luck", "minutes": 180, "amount": 1}, "desc": "Hazel's cobbler: orchard fruit under a golden crust. Feels lucky."},
     "harvest_basket": {"name": "Harvest Basket", "type": "gift", "value": 90, "rarity": "uncommon", "tier": 2, "friend": 30, "icon": "fruit_basket",
                        "desc": "A basket of the community farm's best. Everybody loves one."},
     "green_thumb_charm": {"name": "Green Thumb Charm", "type": "equip", "slot": "charm", "value": 600, "rarity": "rare", "tier": 3, "stats": {"luck": 1, "energy": 20},
-                          "icon": "charm_root", "desc": "Carved from the commons' first orchard prune, from everyone who helped."},
+                          "icon": "charm_root", "desc": "Carved from the garden's first orchard prune. A gift from everyone who helped."},
 }
 RECIPES = [
-    {"id": "commons_stew", "name": "Commons Stew", "need": {"#veg": 3, "#herb": 1}, "give": "commons_stew", "tier": 1, "flag": "cf_rec_stew", "flag_hint": "learn it at the community farm"},
+    {"id": "commons_stew", "name": "Community Stew", "need": {"#veg": 3, "#herb": 1}, "give": "commons_stew", "tier": 1, "flag": "cf_rec_stew", "flag_hint": "learn it at the community farm"},
     {"id": "harvest_cobbler", "name": "Harvest Cobbler", "need": {"#fruit": 2, "flour": 1, "egg": 1}, "give": "harvest_cobbler", "tier": 1, "flag": "cf_rec_cobbler", "flag_hint": "learn it at the community farm"},
 ]
 

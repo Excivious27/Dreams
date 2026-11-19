@@ -9413,7 +9413,7 @@
   "desc": "Adds 12 bag slots for different items. Used the moment you buy it."
  },
  "commons_stew": {
-  "name": "Commons Stew",
+  "name": "Community Stew",
   "type": "food",
   "value": 120,
   "rarity": "uncommon",
@@ -9461,7 +9461,7 @@
    "energy": 20
   },
   "icon": "charm_root",
-  "desc": "Carved from the commons' first orchard prune, from everyone who helped."
+  "desc": "Carved from the garden's first orchard prune. A gift from everyone who helped."
  },
  "rp_fizzy_pop": {
   "name": "Fizzy Pop",
@@ -9471,7 +9471,7 @@
   "tier": 1,
   "energy": 25,
   "icon": "soda",
-  "desc": "From the Rec Center machine. Fizzes up your nose.",
+  "desc": "From the vending machine at the rec. Fizzes up your nose.",
   "rec": true
  },
  "rp_cotton_candy": {
@@ -9527,6 +9527,7 @@
   "rarity": "uncommon",
   "tier": 2,
   "icon": "penguin_figurine",
+  "arc": "penguins",
   "desc": "Squishy, round, suspiciously familiar.",
   "rec": true
  },
@@ -9552,7 +9553,7 @@
   },
   "sprite": "cap",
   "icon": "cap",
-  "desc": "Rec Center league cap.",
+  "desc": "League cap from the lanes at the rec.",
   "rec": true
  },
  "rp_neon_cap": {
@@ -9582,7 +9583,8 @@
   },
   "sprite": "tophat",
   "icon": "tophat",
-  "desc": "For the high roller of the lanes.",
+  "arc": "penguins",
+  "desc": "For the sharpest bowler on the lanes.",
   "rec": true
  },
  "rp_star_cape": {
@@ -10053,5 +10055,32 @@
   "stats": {
    "luck": 3
   }
+ },
+ "rp_fuzzy_dice": {
+  "name": "Fuzzy Dice",
+  "type": "gift",
+  "value": 45,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "dice",
+  "arc": "gangsters",
+  "desc": "A pair of fuzzy dice for a rear-view mirror. Every getaway car deserves some.",
+  "rec": true
+ },
+ "rp_lane_fedora": {
+  "name": "Pinstripe Fedora",
+  "type": "equip",
+  "slot": "head",
+  "value": 150,
+  "rarity": "rare",
+  "tier": 3,
+  "stats": {
+   "luck": 2
+  },
+  "sprite": "cowboy",
+  "icon": "fedora",
+  "arc": "gangsters",
+  "desc": "Only bowlers who've rolled a 150 at the Rec Hall wear the stripe. People make room.",
+  "rec": true
  }
 }

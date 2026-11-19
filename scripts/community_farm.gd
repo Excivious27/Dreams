@@ -552,7 +552,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if _s() >= 2:
 				tell([{"text": "Rakes on hooks, hoes in a row, a chalk list of who borrowed what. %s's handwriting: 'BRING IT BACK CLEAN.'" % Commons.keeper_name()}])
 			else:
-				tell([{"text": "Half a roof, one and a half walls. The tools inside have rusted into one sculpture."}])
+				tell([{"text": "Half a roof, one and a half walls. The tools inside have rusted into one sculpture." if not _gang() else "Stripped for scrap twice: half a roof, one and a half walls, and a padlock with nothing left to guard."}])
 			return true
 		"cf_greenhouse":
 			var frames := 0
@@ -691,7 +691,7 @@ func _talk(n: Npc) -> void:
 			await say([{"who": name, "text": str(Commons.tx(Commons.data()["intro"]))}])
 			Commons.sync_quest()
 		elif Commons.complete():
-			await say([{"who": name, "text": "Look at it. Every bed full, the trees fruiting, half the town here on market day. Thank you, really." if not Commons.market_day() else "Market day! Go see what Posy brought. And sell at the stand, folks pay well today."}])
+			await say([{"who": name, "text": ("Look at it. Every bed full, the trees fruiting, half the town here on market day. Thank you, really." if not _gang() else "Look at it. Every bed full, fruit on the trees, the whole block here on market day. I won't forget who did this.") if not Commons.market_day() else "Market day! Go see what Posy brought. And sell at the stand, folks pay well today."}])
 		else:
 			var lines := Commons.need_lines()
 			await say([{"who": name, "text": "Next up: %s. %s" % [Commons.stage_name(_s()).to_lower(), ("Still need: " + "; ".join(lines.slice(0, 3))) if not lines.is_empty() else ""]}])

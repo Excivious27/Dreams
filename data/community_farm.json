@@ -932,9 +932,9 @@
     "Mind the edges, the seedlings are shy."
    ],
    "gangsters": [
-    "Weeds don't take days off, so neither do I.",
-    "Look at these roots! Healthy as anything.",
-    "Mind the edges, the seedlings are shy."
+    "Weeds don't take days off. Neither do I.",
+    "Look at these roots. Ground was junk a season ago.",
+    "Mind the edges. Took us a month to get these going."
    ]
   },
   "haul": {
@@ -944,9 +944,9 @@
     "Everything here gets carried twice. Once in, once out as dinner."
    ],
    "gangsters": [
-    "One more load and I'll sit down. Probably.",
-    "Heavy, but good heavy.",
-    "Everything here gets carried twice. Once in, once out as dinner."
+    "One more load, then I sit. Probably.",
+    "Heavy, but honest heavy.",
+    "Everything here gets carried twice. Once in as junk, once out as dinner."
    ]
   },
   "work": {
@@ -955,8 +955,8 @@
     "Tools last forever if you clean them. Nobody cleans them."
    ],
    "gangsters": [
-    "Hinges, handles, the odd broken rake. Somebody has to.",
-    "Tools last forever if you clean them. Nobody cleans them."
+    "Hinges, handles, the odd bent rake. Somebody has to.",
+    "Tools come back clean or they don't come back. Shed rule."
    ]
   },
   "market": {
@@ -966,9 +966,9 @@
     "Take a look, everything's from the beds behind me."
    ],
    "gangsters": [
-    "Fresh today! Well, fresh-ish.",
-    "Prices are low because the soil works for free.",
-    "Take a look, everything's from the beds behind me."
+    "Fresh today. Grown fifty steps from here.",
+    "Prices are low because the soil doesn't pay rent.",
+    "Take a look. Everything's from the beds behind me."
    ]
   },
   "picnic": {
@@ -977,8 +977,8 @@
     "Sit down a minute. The beds will still be there."
    ],
    "gangsters": [
-    "Lunch tastes better outside. That's science.",
-    "Sit down a minute. The beds will still be there."
+    "Lunch tastes better on a lot you cleared yourself.",
+    "Sit a minute. The beds aren't going anywhere."
    ]
   },
   "talk": {
@@ -988,7 +988,7 @@
    ],
    "gangsters": [
     "The board says what's next. Read it, then help me make it happen.",
-    "I like to see the plan with my own eyes."
+    "Plans on paper, pinned where everyone can see. No secrets on this lot."
    ]
   },
   "sit": {
@@ -997,8 +997,8 @@
     "Best bench in the valley. Don't tell the park."
    ],
    "gangsters": [
-    "I come here to think. And to watch the bees.",
-    "Best bench in the valley. Don't tell the park."
+    "I come here to think. Nobody looks for you on a garden bench.",
+    "Best seat on the block. Quiet, and you can see who's coming."
    ]
   }
  }

@@ -9,6 +9,9 @@
   "claw": "Claw Machine",
   "skee_ball": "Skee-Ball"
  },
+ "game_names_gang": {
+  "stack": "Neon Stack"
+ },
  "order": [
   "candy",
   "rp_fizzy_pop",
@@ -17,6 +20,7 @@
   "rp_kite",
   "rp_teddy",
   "rp_penguin_plush",
+  "rp_fuzzy_dice",
   "rp_cat_plush",
   "rp_bowling_cap",
   "rp_neon_cap",
@@ -25,6 +29,7 @@
   "growth_elixir",
   "rp_trophy_bronze",
   "rp_top_hat",
+  "rp_lane_fedora",
   "rp_trophy_silver",
   "rp_arcade_medal",
   "rp_star_cape",
@@ -72,6 +77,12 @@
   },
   "rp_penguin_plush": {
    "item": "rp_penguin_plush",
+   "cost": 90,
+   "tier": 2,
+   "need": {}
+  },
+  "rp_fuzzy_dice": {
+   "item": "rp_fuzzy_dice",
    "cost": 90,
    "tier": 2,
    "need": {}
@@ -141,6 +152,17 @@
   },
   "rp_top_hat": {
    "item": "rp_top_hat",
+   "cost": 300,
+   "tier": 3,
+   "need": {
+    "best": {
+     "bowling": 150
+    },
+    "once": true
+   }
+  },
+  "rp_lane_fedora": {
+   "item": "rp_lane_fedora",
    "cost": 300,
    "tier": 3,
    "need": {

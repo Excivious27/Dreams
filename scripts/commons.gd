@@ -417,7 +417,7 @@ static func open_stand(m: GameMap) -> void:
 			acts.append("sell")
 		opts.append("Leave")
 		acts.append("leave")
-		var head := "%s stand. %s  (you have ◆%d)" % [place_name(), "Market day! The whole town's here." if market_day() else ("Fresh from the beds." if kinds > 0 else "Nothing ripe yet: donations welcome."), int(GameState.run["crystals"])]
+		var head := "%s stand. %s  (you have ◆%d)" % [place_name(), ("Market day! The whole town's here." if arc() == "penguins" else "Market day. The whole block's out.") if market_day() else ("Fresh from the beds." if kinds > 0 else "Nothing ripe yet: donations welcome."), int(GameState.run["crystals"])]
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": "Stand", "text": head, "choice": opts, "key": ""}])
 		await d.finished
@@ -468,7 +468,7 @@ static func _buy(m: GameMap, stock: Dictionary) -> void:
 
 static func _donate(m: GameMap) -> void:
 	if Net.visiting():
-		m.hud.toast("This is your host's valley: give to your own commons.", Color(1, 0.85, 0.7))
+		m.hud.toast("This is your host's valley: give to your own %s." % short_name(), Color(1, 0.85, 0.7))
 		return
 	var ids := _bag_produce()
 	if ids.is_empty():

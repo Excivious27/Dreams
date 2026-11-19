@@ -12,7 +12,7 @@ const CHUTE := Rect2(18, 236, 44, 60)
 const TOP_Y := 58.0
 const AIM_T := 12.0
 ## Prize item ids and weights (all existing items; plush shapes are just looks).
-const POOL := [["rp_teddy", 14], ["rp_penguin_plush", 14], ["rp_cat_plush", 14], ["candy", 16], ["toy", 12], ["gift_red", 8], ["old_coin", 8], ["map_scrap", 5], ["fossil", 4], ["pearl", 2], ["amethyst", 2], ["gift_gold", 1]]
+const POOL := [["rp_teddy", 14], ["rp_penguin_plush", 14], ["rp_fuzzy_dice", 14], ["rp_cat_plush", 14], ["candy", 16], ["toy", 12], ["gift_red", 8], ["old_coin", 8], ["map_scrap", 5], ["fossil", 4], ["pearl", 2], ["amethyst", 2], ["gift_gold", 1]]
 const LOOKS := ["bear", "penguin", "star", "duck", "blob", "bunny"]
 const LOOK_COL := {"bear": Color(0.75, 0.52, 0.32), "penguin": Color(0.2, 0.22, 0.3), "star": Color(1, 0.85, 0.3), "duck": Color(1, 0.9, 0.35), "blob": Color(0.55, 0.85, 1.0), "bunny": Color(1, 0.75, 0.85)}
 
@@ -57,11 +57,11 @@ func _fill_pile() -> void:
 func _roll_item() -> String:
 	var tot := 0
 	for p: Array in POOL:
-		if GameState.items.has(str(p[0])):
+		if GameState.items.has(str(p[0])) and Tickets.arc_ok(str(p[0])):
 			tot += int(p[1])
 	var v := rng.randi_range(1, tot)
 	for p: Array in POOL:
-		if not GameState.items.has(str(p[0])):
+		if not GameState.items.has(str(p[0])) or not Tickets.arc_ok(str(p[0])):
 			continue
 		v -= int(p[1])
 		if v <= 0:

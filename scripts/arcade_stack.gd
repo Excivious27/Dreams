@@ -40,13 +40,18 @@ var best_combo := 0
 var tetras := 0
 
 
+## The four-row clear's shout (the gangster arc's cabinet is Neon Stack).
+static func _crush() -> String:
+	return "CRYSTAL CRUSH!" if GameState.is_penguins() else "NEON CRUSH!"
+
+
 func _init() -> void:
 	super()
 	game_id = "stack"
-	title = "Crystal Stack"
+	title = Tickets.game_name("stack")  # Neon Stack in the gangster arc
 	fee = 10
 	accent = Color(0.78, 0.5, 1.0)
-	howto = ["◀ ▶ move · A turn · ▼ faster · ▲ slam", "Fill a row with gems to clear it.", "4 rows at once: CRYSTAL CRUSH!", "Faster every 8 rows."]
+	howto = ["◀ ▶ move · A turn · ▼ faster · ▲ slam", "Fill a row with gems to clear it.", "4 rows at once: %s" % _crush(), "Faster every 8 rows."]
 
 
 func _deck_buttons() -> Array:
@@ -222,7 +227,7 @@ func _lock() -> void:
 	if n == 4:
 		tetras += 1
 		ArcadeHub.set_milestone("stack_tetra")
-		say("CRYSTAL CRUSH!")
+		say(_crush())
 		shake(5.0)
 		sfx("j_treasure", "levelup")
 	else:

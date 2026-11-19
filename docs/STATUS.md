@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_13): gangster flavour of the Rec Hall, arcade and Westside Lot Garden
+- Rec Hall: every adult visitor now has gangster-arc lines there (Gideon, Maple, Finn, Lumi, Theo, Ivy, Juniper, Posy, Benno, Hazel, Rook + Alder/Sal); front desk greets with the hall's rule; Tobin's bowling bet no longer has Dad "putting up stakes"; the quest text says "the rec" (fits both arcs).
+- Prizes: Penguin Plush and Top Hat are penguin-arc only; the gangster counter (and claw machine) has Fuzzy Dice and a Pinstripe Fedora instead (`Tickets.arc_ok`, lock_text "Not on this counter."). Item texts no longer name the Rec Center/commons or say "high roller"; Commons Stew is Community Stew.
+- Arcade: Crystal Stack is Neon Stack in the gangster arc (`Tickets.game_name`, prizes.json game_names_gang; cabinet hints, hub list, milestones, NEON CRUSH!).
+- Lot Garden: gangster-arc volunteer work lines, market-stand and shed lines, "your own lot garden".
+- Test: tools/gang_flavour_test.gd (in check.sh): names, swaps, claw pool, hints, every hall visitor's lines, all-ages word check over every gangster text in rec/commons/quest lines.
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.

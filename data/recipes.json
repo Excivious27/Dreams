@@ -348,7 +348,7 @@
   },
   {
    "id": "commons_stew",
-   "name": "Commons Stew",
+   "name": "Community Stew",
    "need": {
     "#veg": 3,
     "#herb": 1

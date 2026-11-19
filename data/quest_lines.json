@@ -1115,7 +1115,7 @@
  "rec_bowl_120@gangsters": {
   "offer": [
    "You been up the Rec Hall? Bet you can't bowl a hundred and twenty.",
-   "I'll get Dad to put up the stakes. He likes a bet. Mum says he can't, but bowling's different."
+   "Do it and Dad pays you. He says everybody in this town owes somebody. Now he owes you."
   ],
   "done": [
    "You did NOT. ...The chalk wall says you did.",
