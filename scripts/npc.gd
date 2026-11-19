@@ -149,7 +149,12 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 			place = str(entry[1])
 	if day % 7 == 0 and hour >= 9.0 and hour < 12.0 and place != "work":
 		place = "chapel_front"
-	if raining and not npc_id in ["finn", "rook", "sal"] and not place in ["home", "work", "inn", "chapel", "school", "clinic"]:
+	elif place != "work":
+		# Volunteering at the community farm (Commons): there, not in town.
+		var cf := Commons.slot(npc_id, hour)
+		if cf != "":
+			place = cf
+	if raining and not npc_id in ["finn", "rook", "sal"] and not place in ["home", "work", "inn", "chapel", "school", "clinic"] and not place in Commons.rain_spots():
 		place = "home"
 	return place
 
@@ -165,7 +170,8 @@ var _chat_partner: Npc = null
 var _bubble: Label = null
 var _bubble_sprite: Sprite2D = null
 var _bubble_i := 0
-var activity := ""  # what the current spot is for: "work" | "sit" | "fish" | "garden" | "talk" | ""
+var activity := ""  # what the current spot is for: "work" | "sit" | "fish" | "garden" | "talk" | "farm" | "haul" | "market" | "picnic" | ""
+var spots_only := false  # only ever seen at one of `spots` (the community farm map); hidden otherwise
 
 ## What people do at each kind of spot (drives poses and chatter).
 const SPOT_ACTIVITY := {"store_front": "work", "smith_front": "work", "bakery_front": "work", "hall_front": "work", "clinic_front": "work", "library_front": "work", "lodge_front": "work", "inn_front": "work", "market": "work", "stable": "work", "mansion_front": "garden", "wren_garden": "garden", "finn_garden": "garden", "lumi_garden": "garden", "hazel_yard": "garden", "orchard": "garden", "river_n": "fish", "river_s": "fish", "pond": "fish", "bridge": "look", "fountain": "sit", "plaza": "talk", "plaza_e": "talk", "park": "sit", "bench_nw": "sit", "bench_ne": "sit", "bench_sw": "sit", "bench_se": "sit", "well": "work", "school_yard": "play", "chapel_front": "talk", "beach_road": "look", "gate_n": "look", "gate_s": "look", "bandstand": "sit", "clock": "look"}
@@ -177,15 +183,15 @@ func _apply_routine(snap := false) -> void:
 		return
 	_place = place
 	_pose = ""
-	if is_indoors(place) and not routine.is_empty():
-		visible = false
+	if (is_indoors(place) and not routine.is_empty()) or (place.begins_with("cf_") != spots_only and not spots.has(place)) or (spots_only and not spots.has(place)):
+		visible = false  # indoors, away at the community farm, or (on the farm map) not volunteering now
 		_path.clear()
 		return
 	var spot: Vector2i = spots.get(place, Vector2i(-1, -1))
 	if spot == Vector2i(-1, -1) or map == null:
 		visible = true
 		return
-	activity = str(SPOT_ACTIVITY.get(place, ""))
+	activity = str(SPOT_ACTIVITY.get(place, Commons.spot_activity(place)))
 	var at := map.cell_center(spot)
 	home = at
 	_target = at
@@ -219,7 +225,7 @@ func _process(delta: float) -> void:
 				_target = home
 	elif _wander_t <= 0.0 and position.distance_to(home) < 48.0 and _chat_partner == null:
 		_wander_t = randf_range(4.0, 11.0)
-		if randf() < 0.6 and activity in ["talk", "garden", "work", "play", "look"]:
+		if randf() < 0.6 and activity in ["talk", "garden", "work", "play", "look", "farm", "haul"]:
 			var wc := map.world_to_cell(home + Vector2(randf_range(-wander, wander), randf_range(-wander / 2.0, wander / 2.0)))
 			if map.in_content(wc) and not map.blocked.has(wc):
 				_target = map.cell_center(wc)
@@ -290,6 +296,10 @@ func _process(delta: float) -> void:
 					"talk": want = ["talk", "wave", "", ""][randi() % 4]
 					"look": want = ["", "wave"][randi() % 2]
 					"play": want = ["wave", "dance", ""][randi() % 3]
+					"farm": want = ["work", "work_2", "work", "carry", "wave"][randi() % 5]
+					"haul": want = ["carry", "carry", "work_2", ""][randi() % 4]
+					"market": want = ["talk", "talk_2", "wave", "laugh", "counter"][randi() % 5]
+					"picnic": want = ["eat", "sit", "laugh", "talk"][randi() % 4]
 			set_pose(want)
 	else:
 		_idle_t = 0.0

@@ -11,6 +11,7 @@ extends GameMap
 const FARM_EXIT := Rect2i(38, 0, 6, 2)
 const BEACH_EXIT := Rect2i(38, 94, 6, 2)
 const MOUNTAIN_EXIT := Rect2i(82, 46, 2, 4)
+const COMMONS_EXIT := Rect2i(0, 46, 1, 4)  # the west road to the community farm (Commons)
 const AVENUE_X := Rect2i(38, 0, 6, 96)
 const AVENUE_Y := Rect2i(0, 45, 84, 6)
 const PLAZA_C := Vector2(40.5, 47.5)
@@ -59,6 +60,7 @@ func build() -> void:
 	add_exit(FARM_EXIT, "farm", Vector2(36 * TILE, 56 * TILE), "up", "▲ farm")
 	add_exit(BEACH_EXIT, "beach", Vector2(32 * TILE, 3 * TILE), "down", "▼ beach")
 	add_exit(MOUNTAIN_EXIT, "mountain", Vector2(2 * TILE, 39 * TILE + 8), "right", "mountain ▶")
+	add_exit(COMMONS_EXIT, "community_farm", Vector2(49 * TILE, 19 * TILE + 8), "left", "◀ " + Commons.short_name())
 	# Plaza and river cells (the river blocks except on the bridges).
 	for y in range(36, 60):
 		for x in range(29, 53):
@@ -907,7 +909,7 @@ func draw_map() -> void:
 	draw_grass(3)
 	WorldGen.draw_ground_detail(self, 31, 0.08)
 	# Avenues: cobbles with grass edges. Side lanes to the districts are dirt.
-	var roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0)])  # cobbles run on through the band
+	var roads := cells_of([AVENUE_X, AVENUE_Y, FARM_EXIT.grow_individual(0, pad, 0, 0), BEACH_EXIT.grow_individual(0, 0, 0, pad), MOUNTAIN_EXIT.grow_individual(0, 0, pad, 0), COMMONS_EXIT.grow_individual(pad, 1, 0, 1)])  # cobbles run on through the band
 	for c in _plaza:
 		roads.erase(c)
 	draw_ground("cobble", roads)

@@ -345,6 +345,31 @@
    },
    "give": "wishfruit_cake",
    "tier": 5
+  },
+  {
+   "id": "commons_stew",
+   "name": "Commons Stew",
+   "need": {
+    "#veg": 3,
+    "#herb": 1
+   },
+   "give": "commons_stew",
+   "tier": 1,
+   "flag": "cf_rec_stew",
+   "flag_hint": "learn it at the community farm"
+  },
+  {
+   "id": "harvest_cobbler",
+   "name": "Harvest Cobbler",
+   "need": {
+    "#fruit": 2,
+    "flour": 1,
+    "egg": 1
+   },
+   "give": "harvest_cobbler",
+   "tier": 1,
+   "flag": "cf_rec_cobbler",
+   "flag_hint": "learn it at the community farm"
   }
  ],
  "mill": [

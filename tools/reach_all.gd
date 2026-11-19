@@ -1,5 +1,5 @@
 extends SceneTree
-const MAPS := ["farm", "town", "meadow", "beach", "mountain", "forest", "lake", "crystal_meadow", "orchard_hills", "highlands", "ruins", "quarry", "marsh", "riverlands",
+const MAPS := ["farm", "town", "meadow", "beach", "mountain", "forest", "lake", "community_farm", "crystal_meadow", "orchard_hills", "highlands", "ruins", "quarry", "marsh", "riverlands",
 	"wastes", "hideout", "docks", "neon", "uptown", "underground", "countryside", "sky", "station", "jungle", "moon", "mine",
 	"colony_coral", "colony_kelp", "colony_ice", "colony_ember", "bf_frostfield", "bf_shattered_vale", "bf_rail_yards", "bf_dockside"]
 

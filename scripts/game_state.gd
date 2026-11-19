@@ -2526,6 +2526,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
 	_sprinklers_water()
 	Project.overnight(report)
+	Commons.overnight(report)
 	for key in run["farm"].keys():
 		var tile: Dictionary = run["farm"][key]
 		var crop_id := str(tile.get("crop", ""))

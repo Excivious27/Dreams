@@ -9411,5 +9411,56 @@
   "rarity": "rare",
   "tier": 3,
   "desc": "Adds 12 bag slots for different items. Used the moment you buy it."
+ },
+ "commons_stew": {
+  "name": "Commons Stew",
+  "type": "food",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 4,
+  "energy": 70,
+  "icon": "soup_vegetable",
+  "desc": "Whatever came up first in the community beds, simmered all afternoon."
+ },
+ "harvest_cobbler": {
+  "name": "Harvest Cobbler",
+  "type": "food",
+  "value": 150,
+  "rarity": "uncommon",
+  "tier": 2,
+  "heal": 3,
+  "energy": 60,
+  "icon": "fruit_tart",
+  "buff": {
+   "kind": "luck",
+   "minutes": 180,
+   "amount": 1
+  },
+  "desc": "Hazel's cobbler: orchard fruit under a golden crust. Feels lucky."
+ },
+ "harvest_basket": {
+  "name": "Harvest Basket",
+  "type": "gift",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "friend": 30,
+  "icon": "fruit_basket",
+  "desc": "A basket of the community farm's best. Everybody loves one."
+ },
+ "green_thumb_charm": {
+  "name": "Green Thumb Charm",
+  "type": "equip",
+  "slot": "charm",
+  "value": 600,
+  "rarity": "rare",
+  "tier": 3,
+  "stats": {
+   "luck": 1,
+   "energy": 20
+  },
+  "icon": "charm_root",
+  "desc": "Carved from the commons' first orchard prune, from everyone who helped."
  }
 }
