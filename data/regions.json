@@ -317,7 +317,7 @@
      14
     ],
     "facing": "right",
-    "label": "docks ▶"
+    "label": "city bus ▶"
    },
    {
     "rect": [
@@ -772,7 +772,7 @@
      21.5
     ],
     "facing": "left",
-    "label": "◀ hideout"
+    "label": "◀ bus home"
    },
    {
     "rect": [
