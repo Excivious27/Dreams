@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 1 (16): community farm + round-13 world fixes, regression pass
+- All round-13 world checks pass (commons_test, r13_world_test, exit_edge_check, door_check, invisible walls on mountain/moon).
+- **Farm terrace invisible wall:** the north track's soft edge painted over the terrace's west rock wall (x38), so the raised north-east grass looked walkable from the path but wasn't. The track now runs one column west (x36) and the wall shows.
+- **Day-1 visit to the commons:** walking west before Hazel's letter used to find an empty lot (she only volunteers once the place is known). The first visit now makes it known, so she's there on her morning schedule to greet you, and no "come and help" letter arrives after you've already met her.
+- **HUD place names:** the community farm reads "Dreamhollow Commons" / "Westside Lot Garden" (was "Community Farm" in both arcs); the rec rooms read the rec center's name (were "Rec" / "Rec Up" after the stairs or a reload). `PlaceNames.for_id(id)` added for tests.
+- `tools/invisible_walls.gd` now also lists community_farm and no longer crashes on freed props (gangster outskirts). Tests extended: commons_test (day-1 visit), r13_world_test (labels, both arcs).
+
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.

@@ -154,6 +154,9 @@ func _run() -> void:
 				var ledge = m.get("_ledge")
 				if ledge is Dictionary and (ledge as Dictionary).has(c):
 					continue
+				var ledge2 = m.get("_ledge_cells")  # the farm terrace: painted cliff face and side wall
+				if ledge2 is Dictionary and (ledge2 as Dictionary).has(c):
+					continue
 				bad.append(c)
 			# Open cells the spawn can't reach (sealed off by a wall you can't see).
 			var start := m.player.cell()
