@@ -28,15 +28,6 @@ static func unread() -> int:
 
 
 ## Something waits in the farm mailbox: the opening story letters (farm._mailbox) or unread mail.
-static func waiting() -> bool:
-	if GameState.run.is_empty():
-		return false
-	var fl: Dictionary = GameState.run["flags"]
-	if not fl.has("mail_1") or (int(GameState.run["day"]) >= 3 and not fl.has("mail_2")):
-		return true
-	return unread() > 0
-
-
 static func send(from: String, text: String, kind := "chat", extra := {}) -> void:
 	var m := {"id": "%d_%d" % [int(GameState.run["day"]), list().size() + randi() % 1000], "day": int(GameState.run["day"]), "from": from, "text": text, "kind": kind, "read": false}
 	m.merge(extra, true)
@@ -57,6 +48,62 @@ static func _known() -> Array:
 	return out
 
 
+## Letters that need reading or acting on (what GameMap.read_mail shows).
+static func pending() -> int:
+	var n := 0
+	for m: Dictionary in list():
+		if not bool(m.get("read", false)) or (str(m.get("kind", "")) == "favour" and not bool(m.get("done", false))) or (str(m.get("kind", "")) == "gift" and not bool(m.get("got", false))):
+			n += 1
+	return n
+
+
+## The story's own letters waiting in the farm mailbox (read there, in order):
+## [{flag, who, text, give: [item, n], quest: [id, text]}].
+static func story_due() -> Array:
+	if GameState.run.is_empty():
+		return []
+	var flags: Dictionary = GameState.run["flags"]
+	var day := int(GameState.run["day"])
+	var out: Array = []
+	if GameState.is_penguins():
+		if not flags.has("mail_1"):
+			out.append({"flag": "mail_1", "who": "Letter", "text": "Welcome to %s! Here are a few strawberry seeds to start you off: they fruit again every few days once they're up. Stop by the general store when you can. - Maple" % GameState.names()["town"], "give": ["strawberry_seed", 3]})
+		if day >= 3 and not flags.has("mail_2"):
+			out.append({"flag": "mail_2", "who": "Letter", "text": "Dear neighbor, something has been howling from the east meadow at night. Mayor Alder says it's nothing. It is not nothing. - Wren", "quest": ["clear_meadow", "Find out what's howling in the east meadow."]})
+	else:
+		# The first letter was read (and burned or kept) in the opening; M. writes again next morning.
+		if day >= 2 and not flags.has("mail_1"):
+			out.append({"flag": "mail_1", "who": "Letter", "text": "A second envelope, same careful hand, three packets of strawberry seed inside: 'Strawberries pay better than turnips, and nobody remembers a strawberry farmer. Maple at the store sells seeds and asks nothing. The man on the bench by the town gate has been places; he's worth a word. Burn this. - M.'", "give": ["strawberry_seed", 3]})
+		if day >= 3 and not flags.has("mail_2"):
+			out.append({"flag": "mail_2", "who": "Letter", "text": "A man came through town asking about a face like yours. He went east, toward the meadow. Be careful. - M.", "quest": ["clear_meadow", "Someone is asking about you. Check the east meadow."]})
+	return out
+
+
+## Everything waiting at the farm mailbox (the bobbing letter over it).
+static func waiting() -> int:
+	return story_due().size() + pending()
+
+
+## The first week's letters, so the mailbox isn't empty while nobody knows you
+## yet: a welcome with the town's hours (day 2) and a loaf from Posy (day 5).
+## The story's own letters come on days 1-3 and Hazel's commons letter on day 4.
+static func _first_week(day: int) -> void:
+	var flags: Dictionary = GameState.run["flags"]
+	var town := str(GameState.names()["town"])
+	if day >= 2 and day <= 4 and not flags.has("wmail_2"):
+		flags["wmail_2"] = true
+		if GameState.is_penguins():
+			send("Mayor Alder", "Welcome to %s, neighbour! What nobody tells new folk: the shops keep seven to nine (the bank eight to five), the community board on the plaza pins paid jobs every morning, and Bram's inn never closes. My office in the hall is always open to you. - Mayor Alder" % town, "news")
+		else:
+			send("Maple", "Saw a light on at the old plot. The store's open seven till nine: seeds in the back, bread by the door. The board on the plaza pays for errands, no questions asked, and Bram's inn never shuts. Come by. - Maple", "news")
+	if day >= 5 and day <= 7 and not flags.has("wmail_5"):
+		flags["wmail_5"] = true
+		if GameState.is_penguins():
+			send("Posy", "Two loaves for the new farmer, still warm when I wrapped them. Eat before you work; Juniper says I'm to tell everyone that. The bakery's open seven till nine. - Posy", "gift", {"npc": "posy", "item": "bread", "n": 2})
+		else:
+			send("Posy", "Two loaves. Don't argue. You've been out in that field from dawn and you're thinner than when you came. The bakery's open seven till nine. - Posy", "gift", {"npc": "posy", "item": "bread", "n": 2})
+
+
 ## Called once each morning. Returns how many letters arrived.
 static func morning() -> int:
 	if GameState.run.is_empty():
@@ -71,6 +118,7 @@ static func morning() -> int:
 			m["done"] = true
 			m["lapsed"] = true
 	_news(rng)
+	_first_week(day)
 	RecCenter.morning()
 	var known := _known()
 	# A favour about every third day, only from people you've met.

@@ -586,7 +586,7 @@ func _process(delta: float) -> void:
 		_mail_t += delta
 		_mail_mark.position.y = cell_center(MAILBOX).y - 30.0 - absf(sin(_mail_t * 3.0)) * 3.0
 		if int(_mail_t * 2.0) != int((_mail_t - delta) * 2.0):
-			_mail_mark.visible = bool(GameState.run.get("intro_done", false)) and Mail.waiting()
+			_mail_mark.visible = bool(GameState.run.get("intro_done", false)) and Mail.waiting() > 0
 	if _crystal:
 		_crystal_t += delta
 		_crystal.position.y = cell_center(CRYSTAL_SPOT).y - 3.0 - sin(_crystal_t * 1.5) * 2.0
@@ -1154,44 +1154,18 @@ func _sellbox(sel: String) -> void:
 
 
 func _mailbox() -> void:
-	var flags: Dictionary = GameState.run["flags"]
-	var day := int(GameState.run["day"])
-	if GameState.is_penguins():
-		if not flags.has("mail_1"):
-			flags["mail_1"] = true
-			await say([
-				{"who": "Letter", "text": "Welcome to %s! Here are a few strawberry seeds to start you off: they fruit again every few days once they're up. Stop by the general store when you can. - Maple" % GameState.names()["town"]},
-			])
-			give("strawberry_seed", 3)
-			await _more_mail()
-			return
-		if day >= 3 and not flags.has("mail_2"):
-			flags["mail_2"] = true
-			await say([{"who": "Letter", "text": "Dear neighbor, something has been howling from the east meadow at night. Mayor Alder says it's nothing. It is not nothing. - Wren"}])
-			GameState.add_quest("clear_meadow", "Find out what's howling in the east meadow.")
-			await _more_mail()
-			return
-	else:
-		# Night one's letter from M. was read in the intro; the next one comes in the morning.
-		if day < 2 and not flags.has("mail_1"):
-			await read_mail()
-			return
-		if not flags.has("mail_1"):
-			flags["mail_1"] = true
-			await say([
-				{"who": "Letter", "text": "A second envelope, same careful hand. Inside, three packets of strawberry seed and a note:"},
-				{"who": "Letter", "text": "Strawberries pay better than turnips, and nobody remembers a strawberry farmer. Maple at the store sells seeds and asks nothing. The man on the bench by the town gate has been places; he's worth a word. Burn this. - M."},
-			])
-			give("strawberry_seed", 3)
-			await _more_mail()
-			return
-		if day >= 3 and not flags.has("mail_2"):
-			flags["mail_2"] = true
-			await say([{"who": "Letter", "text": "A man came through town asking about a face like yours. He went east, toward the meadow. Be careful. - M."}])
-			GameState.add_quest("clear_meadow", "Someone is asking about you. Check the east meadow.")
-			await _more_mail()
-			return
-	await read_mail()
+	# The story's letters first, then everything else, all in one visit.
+	var story: Array = Mail.story_due()
+	for sl: Dictionary in story:
+		GameState.run["flags"][str(sl["flag"])] = true
+		await say([{"who": str(sl["who"]), "text": str(sl["text"])}])
+		if sl.has("give"):
+			give(str(sl["give"][0]), int(sl["give"][1]))
+		if sl.has("quest"):
+			GameState.add_quest(str(sl["quest"][0]), str(sl["quest"][1]))
+			hud.toast("New quest: " + str(sl["quest"][1]), Color(1, 0.9, 0.4))
+	if Mail.pending() > 0 or story.is_empty():
+		await read_mail()
 
 
 ## After a story letter, any letters waiting in the mail list come too (one tap reads the box).

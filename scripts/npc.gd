@@ -154,9 +154,21 @@ static func place_now(routine_list: Array, npc_id: String) -> String:
 		var cf := Commons.slot(npc_id, hour)
 		if cf != "":
 			place = cf
-	if raining and not npc_id in ["finn", "rook", "sal"] and not place in ["home", "work", "inn", "chapel", "school", "clinic"] and not place in Commons.rain_spots():
+	if raining and not rain_walker(npc_id) and not place in ["home", "work", "inn", "chapel", "school", "clinic"] and not place in Commons.rain_spots():
 		place = "home"
 	return RecCenter.visit(npc_id, place)  # an evening at the Rec Center
+
+
+## Who keeps their outdoor plans in the wet: Finn, Rook and Sal always; in a
+## plain shower (not a storm or blizzard) a different few grown-ups each day
+## go out under an umbrella, so a rainy town still has people in it (the
+## gangster arc's first day is always rain). Kids stay in.
+static func rain_walker(npc_id: String) -> bool:
+	if npc_id in ["finn", "rook", "sal"]:
+		return true
+	if GameState.weather_today() != "rain" or npc_id in ["pip", "wren_jr", "tobin", "mabel"]:
+		return false
+	return absi(hash(npc_id + ":" + str(GameState.run.get("day", 1)))) % 5 < 2
 
 
 static func is_indoors(place: String) -> bool:
@@ -177,7 +189,56 @@ var spots_only := false  # only ever seen at one of `spots` (the community farm 
 const SPOT_ACTIVITY := {"store_front": "work", "smith_front": "work", "bakery_front": "work", "hall_front": "work", "clinic_front": "work", "library_front": "work", "lodge_front": "work", "inn_front": "work", "market": "work", "stable": "work", "mansion_front": "garden", "wren_garden": "garden", "finn_garden": "garden", "lumi_garden": "garden", "hazel_yard": "garden", "orchard": "garden", "river_n": "fish", "river_s": "fish", "pond": "fish", "bridge": "look", "fountain": "sit", "plaza": "talk", "plaza_e": "talk", "park": "sit", "bench_nw": "sit", "bench_ne": "sit", "bench_sw": "sit", "bench_se": "sit", "well": "work", "school_yard": "play", "chapel_front": "talk", "beach_road": "look", "gate_n": "look", "gate_s": "look", "bandstand": "sit", "clock": "look"}
 
 
+## A scene has them (the town tour walks the speaker up to you): the routine waits.
+var hold := false
+var _leaving := false
+
+
+## Walk in from `from` to stand at `to` (a scene's speaker). The routine waits until walk_off().
+func step_in(from: Vector2, to: Vector2) -> void:
+	hold = true
+	_leaving = false
+	if _chat_partner != null:
+		_end_chat()
+	visible = true
+	position = from
+	home = to
+	_target = to
+	_wander_t = 999.0
+	_path = map.find_path(cell(), map.world_to_cell(to)) if map else []
+
+
+## After the scene: head for wherever the routine wants them (their door if
+## they're due indoors), and only then go back to the routine.
+func walk_off() -> void:
+	if map == null:
+		hold = false
+		return
+	var place := place_now(routine, id)
+	var goal := Vector2i(-1, -1)
+	if spots.has(place):
+		goal = spots[place]
+	else:
+		var d: Dictionary = GameState.npcs.get(id, {})
+		var want := str(d.get("work", "")) if place == "work" else (str(d.get("home", "")) if place == "home" else place)
+		for c: Vector2i in map.things:
+			var t: Dictionary = map.things[c]
+			if str(t.get("type", "")) in ["door", "shop", "hall"] and str(t.get("interior", "")) == want:
+				goal = c + Vector2i(0, 1)
+				break
+	_wander_t = randf_range(3.0, 6.0)
+	if goal == Vector2i(-1, -1):
+		hold = false
+		return
+	_leaving = true
+	home = map.cell_center(goal)
+	_target = home
+	_path = map.find_path(cell(), goal)
+
+
 func _apply_routine(snap := false) -> void:
+	if hold:
+		return
 	var place := place_now(routine, id)
 	if place == _place and not snap:
 		return
@@ -214,6 +275,11 @@ func _process(delta: float) -> void:
 		_apply_routine()
 	if not visible:
 		return
+	if _leaving and _path.is_empty() and (position.distance_to(_target) < 3.0 or _stuck > 3.0):
+		_leaving = false
+		hold = false
+		_place = "~"  # re-apply now: indoors hides them at their door, outdoors walks on
+		_apply_routine()
 	_wander_t -= delta
 	# Follow the planned path; when it's done, idle near the spot with small wanders.
 	if not _path.is_empty():
@@ -281,7 +347,7 @@ func _process(delta: float) -> void:
 		_idle_t += delta
 		if _idle_t > 1.2 and _pose == "":
 			var want := ""
-			if GameState.is_wet() and id in ["finn", "rook", "sal"]:
+			if GameState.is_wet() and activity != "fish" and map and map.scene_id() != "interior":
 				want = "umbrella"
 			elif GameState.weather_today() in ["snow", "blizzard"]:
 				want = "shiver"

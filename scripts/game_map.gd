@@ -2639,7 +2639,7 @@ func read_mail() -> void:
 			if err != "":
 				hud.toast(err, Color(1, 0.8, 0.6))
 			elif str(m["kind"]) == "gift":
-				hud.toast("+1 %s" % GameState.item_name(str(m["item"])), Color(0.85, 1, 0.85))
+				hud.toast("+%d %s" % [int(m.get("n", 1)), GameState.item_name(str(m["item"]))], Color(0.85, 1, 0.85))
 			else:
 				hud.toast("Sent. +◆%d" % int(m["pay"]), Color(1, 0.9, 0.5))
 

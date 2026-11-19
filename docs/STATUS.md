@@ -97,6 +97,18 @@
 - **No Marked ambush** (Atlas "Tiny" in the outskirts) before the Hideout's arrival scene.
 - **Gangster wording** for the first two quests (meet_town, first_harvest); Rolled Bills say what they're for.
 - Test: `tools/gang_start_test.gd` (in check.sh) plays new game -> day 3 -> meadow -> Sal -> Hideout -> Deuce with checks; screenshots with a dir under xvfb.
+## 2026-11-19 — CONDUCT 1 (c1_11): first visits to town
+
+- **Door hours** (`TownHours`, scripts/town_hours.gd): shops lock their front door outside hours with a sign giving the hours (7am to 9pm; library 8 to 8, bank 8 to 5 like Ivy, school till 6); homes stop answering after 10pm unless you have 4+ hearts with someone living there; the inn, chapel and Rec Center keep their own rules; crew shops follow their "closed" fronts. Counters (`Interior._counter`, region keepers too) read the same table.
+- **First meetings** (`Intros`, scripts/intros.gd): every town villager introduces themselves on the first talk (who, what, where and when to find them), in both arcs, indoors or out. A story beat on that first talk counts as the meeting.
+- **Town tour**: Mayor Alder / Sal now walks up the avenue to you for the welcome, then walks back off to their day (`Npc.step_in/walk_off`).
+- **Sal** is a man everywhere now (the gangster arrival text and a hint said "woman"); the arrival text says where he spends the day.
+- **Rain**: on a plain rainy day (the gangster arc's day 1 is always rain) a different few grown-ups go out under umbrellas, so the town isn't empty (`Npc.rain_walker`); no umbrellas indoors.
+- **Mail, days 1-5**: a welcome letter with the town's hours on day 2 (Alder / Maple) and two loaves from Posy on day 5; the story letters live in `Mail.story_due()` and all waiting letters are read in one visit; a sealed letter bobs over the farm mailbox while anything waits (`MailFlag`); the morning "check the mailbox" toast only shows when there is a story letter. The gangster arc's second M. letter comes on day 2 (the first one was read in the opening). Mail gifts toast the real count.
+- **Community board**: no job pays less than 12 + 4 per item (day-1 "3 stone for 6" is gone); crop orders only ask for crops whose seeds the town sells today or you already grow (`Shops.growable_now`); strangers on the board show their job ("Posy (baker)"); an empty board says so.
+- Hazel's warehouse lock text no longer promises it opens.
+- Test: tools/town_first_test.gd (both arcs; in check.sh).
+
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.
