@@ -125,3 +125,12 @@ After CONDUCT 15, then the final package and artifact. A sophisticated evaluatio
 After CONDUCT 16, then the final package and artifact. A full review of the whole game engine so co-op is enjoyable, smooth and seamless: every system checked for host/guest sync, saves, joining mid-session, shared vs personal progress, latency on phones.
 - Some activities become real two-player (or more) experiences: challenge each other at bowling, Skee-Ball and arcade games (versus and co-op modes, shared high scores), plus co-op farming, mining, fights, campaigns and festivals where it fits. Not everything has to be multiplayer.
 - When this is done, Tom sets up a ~$4/month server for the relay (server/ in the repo); Claude then writes the exact step-by-step setup in the guide and turns online co-op on, and Tom starts testing with friends.
+
+
+## Game controller support (Tom, 2026-11-19 15:49-15:50)
+
+Fully working game controller support (Xbox-layout mapping; also PlayStation, Switch Pro and generic pads through Godot's joypad mapping), single player and multiplayer, on a computer AND on a phone (a Bluetooth controller paired to Android or iPhone; the web build reads it through the browser Gamepad API).
+- CONDUCT 9 (release readiness) builds it: every action mapped (move on left stick + d-pad, A use/confirm, B back/cancel, X/Y tool and item shortcuts, LB/RB toolbar, LT/RT secondary actions, Start menu, View/Back map), analog movement with deadzone, menu/grid/cursor navigation with focus highlights in every screen (inventory, chests, crafting, shops, skill trees, campaign board, arcade games, bowling aim/power, prize counter, dialogue choices), on-screen button prompts that switch between touch/keyboard/controller, rumble where supported, hot-plugging, remapping in Options; touch controls hide while a controller is in use (also on phones) and come back on a tap.
+- Phone specifics: test the Gamepad API path in mobile Chrome/Safari (first button press activates it), portrait and landscape with a controller, and that the phone screen layout still works.
+- CONDUCT 17 (multiplayer) checks controllers per player in co-op and versus (each player's own pad), plus local couch play if it fits.
+- Tests: a headless controller test that drives every screen with simulated joypad events.
