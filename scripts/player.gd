@@ -351,6 +351,58 @@ static func horizontal_wins(v: Vector2) -> bool:
 	return absf(v.x) > absf(v.y) + 0.001
 
 
+# ---- facing while moving / stopping (CONDUCT 2 P2) ---------------------------
+## Releasing a diagonal is never simultaneous: one key (or the stick's thumb
+## roll) lets go a few frames before the other. A single-axis input that follows
+## a diagonal within FACE_GRACE seconds doesn't turn you: stop then and you keep
+## facing the way you walked.
+const FACE_GRACE := 0.14
+var move8 := Vector2i.ZERO        # last non-zero 8-way move input (kept after you stop)
+var _cur8 := Vector2i.ZERO        # this frame's 8-way input (ZERO when standing)
+var _cur8_t := 0.0                # how long the input has stayed at _cur8
+var _prev8 := Vector2i.ZERO       # the input before _cur8
+var _prev8_t := 0.0               # how long that one lasted
+
+
+static func dir8(v: Vector2) -> Vector2i:
+	if v.length() < 0.2:
+		return Vector2i.ZERO
+	var n := v.normalized()
+	return Vector2i(int(signf(n.x)) if absf(n.x) > 0.38 else 0, int(signf(n.y)) if absf(n.y) > 0.38 else 0)
+
+
+func _track_input(dir: Vector2, delta: float) -> void:
+	var d8 := Player.dir8(dir)
+	if d8 == _cur8:
+		_cur8_t += delta
+		return
+	if _cur8 != Vector2i.ZERO:
+		_prev8 = _cur8
+		_prev8_t = _cur8_t
+	elif d8 != Vector2i.ZERO:
+		_prev8 = Vector2i.ZERO
+	_cur8 = d8
+	_cur8_t = 0.0
+	if d8 != Vector2i.ZERO:
+		move8 = d8
+
+
+## The facing a move vector asks for, with hysteresis: exact diagonals face
+## up/down (vertical wins ties); once facing up/down, sideways needs a clear lead
+## (a drifting thumb doesn't flicker); a key let go a moment before the other one
+## at the end of a diagonal doesn't turn you sideways.
+func facing_for(v: Vector2) -> String:
+	var cur_h := facing in ["left", "right"]
+	var h := absf(v.x) > absf(v.y) + 0.001 if cur_h else absf(v.x) > absf(v.y) * 1.15 + 0.001
+	var want := ("left" if v.x < 0 else "right") if h else ("up" if v.y < 0 else "down")
+	if want != facing and _cur8_t < FACE_GRACE and _prev8.x != 0 and _prev8.y != 0 and _prev8_t >= 0.05:
+		var d8 := Player.dir8(v)
+		var part := (d8.x == 0 or d8.x == _prev8.x) and (d8.y == 0 or d8.y == _prev8.y)
+		if part and Player.dir8(facing_dir()) in [Vector2i(_prev8.x, 0), Vector2i(0, _prev8.y)]:
+			return facing  # still the tail of the diagonal
+	return want
+
+
 func facing_dir() -> Vector2:
 	match facing:
 		"up": return Vector2.UP
@@ -372,7 +424,70 @@ var _hold_t := 0.0
 func facing_cell() -> Vector2i:
 	if aim_cell != Vector2i(-1, -1):
 		return aim_cell
-	return cell() + Vector2i(facing_dir())
+	return target_cell()
+
+
+## Stardew-style target (CONDUCT 2 P2): the cell in front of you when it holds
+## something to use; otherwise, in this order, the diagonal you were walking
+## toward, the front cell on the side your feet lean to (you're half a cell off
+## the row), and the side cell you were walking toward. Nothing there: the front.
+func target_cell() -> Vector2i:
+	var me := cell()
+	var fd := Vector2i(facing_dir())
+	var front := me + fd
+	if map == null:
+		return front
+	if _ww_on or cell_has_target(front):
+		return front  # a work row (hoe/can held + a direction) stays strictly on its line
+	for c: Vector2i in target_candidates(me, fd):
+		if cell_has_target(c):
+			return c
+	return front
+
+
+## The fallback cells target_cell() tries after the front one, in order.
+func target_candidates(me: Vector2i, fd: Vector2i) -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	var side_axis := Vector2i(1, 0) if fd.y != 0 else Vector2i(0, 1)
+	# The sideways part of the last move (walking up-right: right).
+	var ms := Vector2i(move8.x * side_axis.x, move8.y * side_axis.y)
+	var ahead := (move8.x * fd.x + move8.y * fd.y) >= 0  # the move wasn't away from the facing
+	if ms != Vector2i.ZERO and ahead:
+		out.append(me + fd + ms)
+	# Feet off the cell's middle on the side axis: the neighbour front cell on that side.
+	# (cell() reads the feet 2 px up, so a cell spans position.y top+2..top+18;
+	# the usual standing spot, cell_center, is top+16: call top+12 the middle.)
+	var off := position - (map.cell_pos(me.x, me.y) + Vector2(GameMap.TILE / 2.0, GameMap.TILE * 0.75))
+	var lean_v := off.x if fd.y != 0 else off.y
+	if absf(lean_v) >= GameMap.TILE * 0.3:
+		var ls := side_axis * (1 if lean_v > 0 else -1)
+		if not out.has(me + fd + ls):
+			out.append(me + fd + ls)
+	if ms != Vector2i.ZERO and ahead:
+		out.append(me + ms)
+	return out
+
+
+## Does this cell hold something USE/CHECK (or the held tool) can act on?
+func cell_has_target(c: Vector2i) -> bool:
+	if map == null:
+		return false
+	var held := GameState.held_tool()
+	var thing: Dictionary = map.things.get(c, {})
+	if not thing.is_empty():
+		var t := str(thing.get("type", ""))
+		if t in ["water", "sea"]:
+			if held in ["rod", "can"]:
+				return true
+		elif map.hint_for(c, thing) != "" or t in ["plot", "grass", "weeds", "crop", "door", "idoor", "exit", "npc", "sign", "chest", "counter", "shop", "bed"]:
+			return true
+	if map.scene_id() == "farm":
+		var ft: Dictionary = (GameState.run.get("farm", {}) as Dictionary).get("%d,%d" % [c.x, c.y], {})
+		if not ft.is_empty() and held in ["can", "hoe", "scythe", "pickaxe", ""]:
+			return true
+		if held == "hoe" and map.can_till(c):
+			return true
+	return map.has_npc_at(c)
 
 
 func update_aim() -> void:
@@ -541,6 +656,7 @@ func _physics_process(delta: float) -> void:
 			_show_idle()
 		return
 	var dir := Input.get_vector("left", "right", "up", "down")
+	_track_input(dir, delta)
 	if dir != Vector2.ZERO:
 		auto_target = Vector2.INF
 		auto_cell = Vector2i(-1, -1)
@@ -672,6 +788,8 @@ func _physics_process(delta: float) -> void:
 		else:
 			dir = to.normalized()
 			auto = true
+			if Player.dir8(dir) != Vector2i.ZERO:
+				move8 = Player.dir8(dir)
 
 	var running := Input.is_action_pressed("b") or TouchControls.run_toggle or (auto and auto_target.distance_to(position) > 48.0)
 	var spd_mult := 1.0 + 0.08 * GameState.gear_stat("speed") + 0.15 * GameState.buff("speed") + GameState.move_bonus()
@@ -746,6 +864,10 @@ func _physics_process(delta: float) -> void:
 		return
 
 	var move_dir := dir if dir != Vector2.ZERO else velocity.normalized()
+	# Facing follows the input; while you slow to a stop (no input) it stays the
+	# way you were going, never re-read from a sliding velocity.
+	if dir != Vector2.ZERO:
+		facing = facing_for(dir)
 	var is_run := speed > WALK_SPEED * 1.15
 	var pre := ""
 	if swimming and has_anim("swim") and float(vehicle_def().get("water", 0.0)) <= 0.0:
@@ -753,24 +875,20 @@ func _physics_process(delta: float) -> void:
 	elif mounted and has_anim("ride"):
 		pre = "ride"
 	if pre != "":
-		if Player.horizontal_wins(move_dir):
-			facing = "left" if move_dir.x < 0 else "right"
-			_apply("ride_run" if pre == "ride" and is_run and has_anim("ride_run") else pre, move_dir.x < 0)
+		if facing in ["left", "right"]:
+			_apply("ride_run" if pre == "ride" and is_run and has_anim("ride_run") else pre, facing == "left")
 		else:
-			facing = "up" if move_dir.y < 0 else "down"
 			_apply(pre + "_" + facing if has_anim(pre + "_" + facing) else pre, false)
 		if _anim:
 			_anim.speed_scale = 1.0
 		return
-	if Player.horizontal_wins(move_dir):
-		facing = "left" if move_dir.x < 0 else "right"
+	if facing in ["left", "right"]:
 		_sprite.position.y = 0
 		_sprite.rotation = 0.0
-		_apply("run" if is_run else "walk", move_dir.x < 0)
+		_apply("run" if is_run else "walk", facing == "left")
 	else:
 		# Vertical wins ties: a diagonal (or a thumb that drifts a little) shows
 		# the character walking toward / away from you, never sideways.
-		facing = "up" if move_dir.y < 0 else "down"
 		var vert := ("run_" if is_run else "walk_") + facing
 		if is_run and not _moving_anim(vert):
 			vert = "walk_" + facing
@@ -781,7 +899,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			# No toward/away walk strip (the penguin, some villagers): the front/back
 			# view waddles and bobs instead of showing the sideways walk.
-			var still := vert if has_anim(vert) else ("view_back" if move_dir.y < 0 else "view_front")
+			var still := vert if has_anim(vert) else ("view_back" if facing == "up" else "view_front")
 			_apply(still, false)
 			_bob += delta * speed * 0.16
 			_sprite.position.y = -absf(sin(_bob)) * 2.0
@@ -922,6 +1040,12 @@ func do_action(mode := "a") -> void:
 		return
 	if swimming:
 		return  # no tools in the water
+	# The target is a side cell you walked toward: turn to it, so the swing and
+	# the hit agree (a diagonal target keeps the facing you have).
+	if map and aim_cell == Vector2i(-1, -1):
+		var tdc := target_cell() - cell()
+		if absi(tdc.x) + absi(tdc.y) == 1 and tdc != Vector2i(facing_dir()):
+			face_toward(map.cell_center(cell() + tdc))
 	if mounted and mode != "action":
 		if map and map.try_interact(facing_cell()):
 			return
@@ -990,19 +1114,23 @@ func do_action(mode := "a") -> void:
 func _swing() -> void:
 	if _attack_cd > 0.0:
 		return
-	# Aim assist: snap to an enemy that's close and roughly in front.
+	# Aim assist: snap to an enemy that's close and in front of you or where you
+	# were walking (a diagonal approach counts); the hit goes straight at it.
+	_aim_dir = Vector2.ZERO
 	if map:
 		var best: Enemy = null
 		var bd := 26.0
 		for e in map.enemies:
-			if not is_instance_valid(e):
+			if not is_instance_valid(e) or not e._alive:
 				continue
 			var d: Vector2 = e.position - position
-			if d.length() < bd and d.normalized().dot(facing_dir()) > 0.3:
+			if d.length() < bd and _foe_ahead(d):
 				best = e
 				bd = d.length()
 		if best:
 			face_toward(best.position)
+			var to := best.position - position
+			_aim_dir = to.normalized() if to.length() > 1.0 else facing_dir()
 	GameState.spend_for("sword")  # a little energy per swing (fists and tools too)
 	_busy = true
 	_busy_t = 0.0
@@ -1107,10 +1235,10 @@ func _update_wade() -> void:
 func _attack_hit() -> void:
 	_attack_hit_done = true
 	if map:
-		var center := position + facing_dir() * 12.0 + Vector2(0, -6)
+		var center := position + hit_dir() * 12.0 + Vector2(0, -6)
 		var aim := GameState.status_aim()
 		if aim > 0.0:
-			center += facing_dir().orthogonal() * randf_range(-aim, aim)
+			center += hit_dir().orthogonal() * randf_range(-aim, aim)
 		var wd: Dictionary = GameState.items.get(GameState.held_tool(), {})
 		if wd.has("range"):
 			if GameState.count("rounds") > 0:
@@ -1144,7 +1272,7 @@ func _fire(wd: Dictionary, aim: float) -> void:
 	if CharacterLibrary.unarmed_attack(char_id):
 		HeldSwing.spawn(self, GameState.held_tool(), "aim", 0.16, facing)
 	_dry_told = false
-	var dir := facing_dir()
+	var dir := hit_dir()
 	var muzzle := position + dir * 10.0 + Vector2(0, -8)
 	var reach := float(wd.get("range", 100.0))
 	var dmg := maxi(1, GameState.sword_damage() + GameState.status_damage_mod() + int(GameState.bonus("hustle", "gun_damage")))
@@ -1195,7 +1323,7 @@ func _swing_arc(center: Vector2) -> void:
 	fx.position = center
 	fx.z_index = 2
 	var age := [0.0]
-	var ang := facing_dir().angle()
+	var ang := hit_dir().angle()
 	fx.draw.connect(func() -> void:
 		var a: float = age[0]
 		var col := Color(1, 1, 0.85, 0.8 * (1.0 - a))
@@ -1345,10 +1473,31 @@ func _on_animation_finished() -> void:
 func _enemy_in_front(dist: float) -> bool:
 	if map == null:
 		return false
-	var fd := facing_dir()
 	for e in map.enemies:
 		if is_instance_valid(e) and e._alive:
 			var to: Vector2 = e.position - position
-			if to.length() <= dist and (to.length() < 6.0 or to.normalized().dot(fd) > 0.3):
+			if to.length() <= dist and _foe_ahead(to):
 				return true
+	return false
+
+
+var _aim_dir := Vector2.ZERO  # set by _swing: straight at the foe it snapped to
+
+
+## Where this swing/shot goes: at the snapped foe, else the way you face.
+func hit_dir() -> Vector2:
+	return _aim_dir if _aim_dir != Vector2.ZERO else facing_dir()
+
+
+## A foe at offset `to` counts as "in front": within the facing cone, or along
+## the way you last walked (walking up-right into a foe on your right) as long
+## as it isn't behind you.
+func _foe_ahead(to: Vector2) -> bool:
+	if to.length() < 6.0:
+		return true
+	var n := to.normalized()
+	if n.dot(facing_dir()) > 0.3:
+		return true
+	if move8 != Vector2i.ZERO and n.dot(Vector2(move8).normalized()) > 0.6 and n.dot(facing_dir()) > -0.2:
+		return true
 	return false
