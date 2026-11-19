@@ -2,6 +2,11 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 1: cash words in the gangster arc (Round 13 systems)
+- **Arcade:** the picker, Block Jumper and every cabinet read "40 cash" / "INSERT 40 CASH" / "You have 40"; now "$40", "INSERT $10", "You have $75", "Not enough cash ($10)". Arcade and mega-map text is drawn by hand (no Translation), so their text helpers now pass through `Money.t`, as does the HUD held-item/hint line. `ArcadeHub.money_word()` defers to `Money.word()`; new `Money.amount(n)` ("40 crystals" / "$40") and `Money.num(n)` ("40" / "$40"). Penguin arc text is unchanged.
+- **Mega regions:** Rahim (Sunscorch) "pay you in shade. And crystals." now says cash.
+- **Test:** `tools/cash_test.gd` also scans rec, prizes, community farm, battles/campaigns, colonies, mega regions, hub travel, regions, interiors, epilogue data, and checks the arcade picker, Block Jumper, rec center/stand lines, commons stage rewards, campaign muster lines, mega hook rewards, shops and mail in cash, plus the penguin arc unchanged (54,770 strings, 0 failures).
+
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.

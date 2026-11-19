@@ -245,7 +245,7 @@ var _over_t := 0.0
 ## Insert coin and start a round. False (with a message) when you can't pay.
 func start() -> bool:
 	if not ArcadeHub.charge(fee):
-		say("Not enough %s (%d)." % [ArcadeHub.money_word(), fee])
+		say("Not enough %s (%s)." % [Money.word(), Money.num(fee)])
 		sfx("nope", "locked")
 		return false
 	sfx("coin")
@@ -403,11 +403,13 @@ func draw_fx(c: Control, off := Vector2.ZERO) -> void:
 
 # --- drawing -----------------------------------------------------------------
 
+## Drawn text skips the cash Translation, so it goes through Money.t here.
 func text(c: Control, p: Vector2, s: String, w: float, size: int, col: Color, align := HORIZONTAL_ALIGNMENT_LEFT) -> void:
-	c.draw_string(_font, p, s, align, w, size, col)
+	c.draw_string(_font, p, Money.t(s), align, w, size, col)
 
 
 func text_outline(c: Control, p: Vector2, s: String, w: float, size: int, col: Color, align := HORIZONTAL_ALIGNMENT_LEFT) -> void:
+	s = Money.t(s)
 	c.draw_string_outline(_font, p, s, align, w, size, 3, Color(0.05, 0.03, 0.08, col.a))
 	c.draw_string(_font, p, s, align, w, size, col)
 
@@ -559,8 +561,8 @@ func _draw_title(c: Control) -> void:
 	var blink := fmod(t, 1.0) < 0.65
 	panel(c, Rect2(55, 284, 160, 24), Color(0.1, 0.05, 0.12), accent)
 	if blink:
-		text_outline(c, Vector2(55, 300), "A: INSERT %d %s" % [fee, ArcadeHub.money_word().to_upper()], 160, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
-	text(c, Vector2(0, 322), "You have %d · B: leave" % ArcadeHub.money(), W, 8, Color(0.8, 0.8, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
+		text_outline(c, Vector2(55, 300), "A: INSERT %s" % Money.amount(fee).to_upper(), 160, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+	text(c, Vector2(0, 322), "You have %s · B: leave" % Money.num(ArcadeHub.money()), W, 8, Color(0.8, 0.8, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _draw_over(c: Control) -> void:

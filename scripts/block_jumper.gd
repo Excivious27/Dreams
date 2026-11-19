@@ -353,7 +353,7 @@ func _good_tickets() -> int:
 
 func _top_right() -> String:
 	if state == "select":
-		return "%d %s" % [ArcadeHub.money(), ArcadeHub.money_word()]
+		return Money.amount(ArcadeHub.money())
 	if level <= 0:
 		return "%d m" % int(best_x / 16.0)
 	return "%d%%" % (clampi(int(best_x / maxf(1.0, float(lv.get("finish", 1.0))) * 100.0), 0, 100))
@@ -810,7 +810,7 @@ func _draw_select(c: Control) -> void:
 			if lvc > 0:
 				text_outline(c, r.position + Vector2(3, 10), "●%d" % lvc, 40, 7, Color(1, 0.85, 0.3))
 	var n2 := level_for_tile(sel)
-	var info := "A: play · %d %s" % [fee, ArcadeHub.money_word()]
+	var info := "A: play · %s" % Money.amount(fee)
 	if not is_unlocked(n2):
 		info = "Clear level %d to unlock" % (maxi(1, n2 - 1))
 	text(c, Vector2(0, 312), info, W, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)

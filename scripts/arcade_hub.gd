@@ -97,7 +97,7 @@ static func game_ids() -> Array:
 # --- money -------------------------------------------------------------------
 
 static func money_word() -> String:
-	return "cash" if str(GameState.run.get("arc", "")) == "gangsters" else "crystals"
+	return Money.word()
 
 
 static func money() -> int:
@@ -183,7 +183,7 @@ func _deck_buttons() -> Array:
 
 
 func _top_right() -> String:
-	return "%d %s" % [money(), money_word()]
+	return Money.amount(money())
 
 
 func _card(i: int) -> Rect2:
@@ -264,7 +264,7 @@ func _draw_play(c: Control) -> void:
 		text_outline(c, r.position + Vector2(54, 17), str(g["name"]), 190, 10, Color.WHITE)
 		text(c, r.position + Vector2(54, 30), str(g["blurb"]), 190, 7, Color(0.9, 0.88, 1))
 		var cabinet := make_info(str(g["id"]))
-		text(c, r.position + Vector2(54, 44), "%d %s · best %d" % [int(cabinet["fee"]), money_word(), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))
+		text(c, r.position + Vector2(54, 44), "%s · best %d" % [Money.amount(int(cabinet["fee"])), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))
 
 
 ## Fee per game (kept here so the picker needn't build every screen).

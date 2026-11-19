@@ -159,6 +159,7 @@ static func draw_region(m: Control, id: String) -> void:
 static func _text(m: Control, font: Font, p: Vector2, s: String, size: int, col: Color, width: float) -> void:
 	var align := HORIZONTAL_ALIGNMENT_CENTER if width > 0 else HORIZONTAL_ALIGNMENT_LEFT
 	var dark := col.get_luminance() > 0.5
+	s = Money.t(s)  # drawn text skips the cash Translation
 	m.draw_string_outline(font, p, s, align, width, size, 3, Color(0, 0, 0, 0.85) if dark else Color(1, 0.97, 0.88, 0.9))
 	m.draw_string(font, p, s, align, width, size, col)
 
