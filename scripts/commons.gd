@@ -110,7 +110,8 @@ static func spot_open(spot: String) -> bool:
 static func market_day() -> bool:
 	if GameState.run.is_empty() or not complete():
 		return false
-	return GameState.day_of_season() % 7 == 0 or int(GameState.run["flags"].get("cf_market_day", -1)) == int(GameState.run["day"])
+	# The 14th is the season festival: everyone is in town, so no market that day.
+	return (GameState.day_of_season() % 7 == 0 and GameState.day_of_season() != GameState.FESTIVAL_DAY) or int(GameState.run["flags"].get("cf_market_day", -1)) == int(GameState.run["day"])
 
 
 static func rain_spots() -> Array:
@@ -579,7 +580,7 @@ static func open_board(m: GameMap) -> void:
 		var acts: Array = []
 		var text := ""
 		if complete():
-			text = "%s · all %d stages done.\nMarket every 7th day of the season%s." % [place_name(), stages().size(), " (today!)" if market_day() else ""]
+			text = "%s · all %d stages done.\nMarket on the 7th, 21st and 28th%s." % [place_name(), stages().size(), " (today!)" if market_day() else ""]
 			if not ask().is_empty():
 				text += "\n%s: \"%s\" (you carry %d)" % [keeper_name(), str(tx(data().get("ask_text", ""))).format({"need": ask_need()}), have_of(str(ask()["key"]))]
 				opts.append("Give for the ask")
