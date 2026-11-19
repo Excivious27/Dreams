@@ -129158,6 +129158,11 @@
    "h": 16,
    "w": 17
   },
+  "tele_strike": {
+   "file": "ui/tele_strike.png",
+   "h": 16,
+   "w": 17
+  },
   "tele_summon": {
    "file": "ui/tele_summon.png",
    "h": 16,

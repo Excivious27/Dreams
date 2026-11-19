@@ -390,7 +390,7 @@ func _process(delta: float) -> void:
 			_sprite.flip_h = to.x < 0
 		var tint := Color(1, 1, 1)
 		if _windup > 0.0 or _lunge_tele > 0.0:
-			tint = Color(1.0, 0.75, 0.7)
+			tint = Color(1.0, 0.62, 0.55)
 		if _shield > 0.0:
 			tint = Color(0.6, 0.8, 1.0)
 		elif _enraged:
@@ -403,7 +403,7 @@ func _process(delta: float) -> void:
 	var flags := int(_shield > 0.0) | int(_lunge_tele > 0.0 or _lunge > 0.0) << 1 | int(_range_tele > 0.0) << 2 | int(_stomp_tele > 0.0) << 3 \
 		| int(_enraged) << 4 | int(_hit_flash > 0.0) << 5 | int(_since_hit < 0.3) << 6 | int(is_guardian) << 7
 	var sig := (clampi(hp, 0, 0xFFFF)) | (clampi(max_hp, 0, 0xFFFF) << 16) | (flags << 32) | (clampi(tier, 0, 15) << 40) \
-		| (clampi(int(round(_shadow_r * 10.0)), 0, 255) << 44) | ((int(_tele_flash > 0.0) * 2 + int(abilities.has("regen") and _since_hit > 3.0 and hp < max_hp)) << 52)
+		| (clampi(int(round(_shadow_r * 10.0)), 0, 255) << 44) | ((int(_windup > 0.0) * 4 + int(_tele_flash > 0.0) * 2 + int(abilities.has("regen") and _since_hit > 3.0 and hp < max_hp)) << 52)
 	if _sprite == null or sig != _draw_sig:
 		_draw_sig = sig
 		queue_redraw()
@@ -766,6 +766,8 @@ func _draw() -> void:
 		tele = "ranged"
 	elif _stomp_tele > 0.0:
 		tele = "stomp"
+	elif _windup > 0.0:
+		tele = "strike"  # a plain hit is coming: step back or ROLL
 	elif _tele_flash > 0.0:
 		tele = _tele_name
 	elif abilities.has("regen") and _since_hit > 3.0 and hp < max_hp:

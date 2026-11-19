@@ -2407,7 +2407,7 @@ func player_down(reason := "hurt") -> void:
 			mult = 0.5
 		if Settings.easy() or Perks.flag("no_clinic_fee"):
 			mult = 0.0
-		fee = mini(cr, int(round(mini(750, int(cr * 0.08) + 20 + 4 * floor_no) * mult)))
+		fee = Faint.clinic_fee(cr, floor_no, mult)
 	elif not Settings.easy():
 		fee = mini(300, int(ceil(cr * 0.05)))
 	# A Marked who beat you won't come at you again today.
@@ -2432,7 +2432,7 @@ func player_down(reason := "hurt") -> void:
 	if clinic:
 		var where := "in the mines" if mines else "out there"
 		var cause := "You'd pushed yourself past empty" if reason == "tired" else ("It was far too late to be down there" if reason == "late" else "You were hurt badly")
-		var bill := ("Clinic bill: ◆%d." % fee) if fee > 0 else "No charge this time."
+		var bill := ("Clinic bill: ◆%d." % fee) if fee > 0 else Faint.free_line()
 		# Shown by the HUD when the clinic loads (Hud._show_clinic_note).
 		var finder := "A miner" if mines else "A passer-by"
 		var nurse := "the night nurse" if GameState.run["flags"].has("juniper_gone") or evening else "Juniper"

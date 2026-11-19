@@ -71,8 +71,9 @@ static func dig_pool(m: GameMap) -> Array:
 static func tick(pt: Pet, delta: float) -> void:
 	if pt._carry_item == "" and pt._target == null:
 		maybe_forage(pt, delta)
-	elif pt._carry_item == "fetch" and pt._carry_find == "mine":
-		# Rock in the way: after a few seconds it digs wherever it got to.
+	elif pt._carry_item == "fetch" and pt._carry_find == "mine" and pt._target == null:
+		# Rock in the way: after a few seconds it digs wherever it got to
+		# (the clock stops while it fights: no digging with a foe on you).
 		var t := float(pt.get_meta("forage_run", 0.0)) + delta
 		pt.set_meta("forage_run", t)
 		if t > 4.0:

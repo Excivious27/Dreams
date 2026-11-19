@@ -2,6 +2,16 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 1 (c1_12): pup intro, first fights, clinic
+- **Audit** (`tools/early_fight_audit.gd`, scripted "naive" and "careful" fighters vs every early foe, both arcs): meadow foes and mine floors 1-4 are gentle (0 health lost), but the meadow's first boss took 96/100 from a player who never dodges (penguins) and knocked out the gangster player (it hit for 36 once enraged). The floor-1 keeper takes ~half from a naive fighter, ~12 from a careful one: kept.
+- **First boss** (Big Grump / The President's Man) now hits for 12, 24 once enraged: naive fighter keeps ~half, careful loses ~25-35.
+- **Telegraphs:** a foe winding up a plain hit shows a new claw-mark icon over its head (`ui/tele_strike`, image tool, `tools/slice_r13_c1_12.py`) and a stronger red tint; lunge/stomp/shot keep their own icons.
+- **Pup intro:** the first fight (meadow, or the mine if first) explains the red flash, what the pup does, its order buttons (ATK/HEEL/STAY/CALL) and how to heal/revive it (`PupIntro`). A one-time "Health low! ... MENU > Items > Eat" tip at a third of your health.
+- **Sword feel:** the third swing of a combo (+1 damage) lands with the slash crescent.
+- **Clinic:** the first knockout of a run is free (the note says so and how to avoid the next); after that the flat part of the bill is capped at a tenth of your purse (50 crystals: 13, was 28).
+- **PupMine:** the pup's dig clock pauses while it fights (it used to stop mid-fight to dig).
+- Test: `tools/early_combat_test.gd` (in check.sh).
+
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.

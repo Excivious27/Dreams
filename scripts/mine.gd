@@ -827,7 +827,7 @@ func after_ready() -> void:
 			{"text": "Cold air, and the smell of wet stone. Something drips. Something else squelches."},
 			{"text": "Swing your pickaxe at rocks (tap USE): stone, copper, iron, and now and then a crystal shard."},
 			{"text": "There's no ladder down. The old miners said the way opens for whoever digs long enough to wake what guards it. Down is worse, and pays better."},
-		])
+		] + PupIntro.lines())
 		player.frozen = false
 
 

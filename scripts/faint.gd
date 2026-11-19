@@ -21,3 +21,27 @@ static func to_evening(reason: String) -> bool:
 	r["en_warn"] = 0
 	r["flags"]["fainted_day"] = int(r["day"])
 	return true
+
+
+## The clinic's bill. The first knockout of a run is free (a new player learns
+## the rule without losing their seed money); after that ~8% of what you carry
+## plus a small flat part that never takes more than a tenth of a thin purse,
+## and a little more per mine floor. `mult` is the Juniper/easy discount.
+static func clinic_fee(cr: int, floor_no: int, mult: float) -> int:
+	var fl: Dictionary = GameState.run["flags"]
+	if not fl.has("clinic_used"):
+		fl["clinic_used"] = 1
+		fl["clinic_first_free"] = true
+		return 0
+	fl["clinic_used"] = int(fl["clinic_used"]) + 1
+	var base := int(cr * 0.08) + mini(20, int(cr * 0.1)) + 4 * floor_no
+	return mini(cr, int(round(mini(750, base) * mult)))
+
+
+## The clinic note's last words when there is nothing to pay.
+static func free_line() -> String:
+	var fl: Dictionary = GameState.run["flags"]
+	if fl.has("clinic_first_free"):
+		fl.erase("clinic_first_free")
+		return "First visit's on the house. Next time there's a bill: eat when your health runs low, and ROLL away from a red flash."
+	return "No charge this time."
