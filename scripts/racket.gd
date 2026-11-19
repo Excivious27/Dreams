@@ -34,7 +34,7 @@ static func add_heat(m: GameMap, n: int) -> void:
 		m.hud.toast("Heat %d/5. %s" % [heat(), "Lie low a while." if heat() < 3 else "The President's collectors will be looking."], Color(1, 0.6, 0.4))
 		if not GameState.run["flags"].has("heat_explained"):
 			GameState.run["flags"]["heat_explained"] = true
-			m.tell([{"who": "Sal", "text": "That flame by your hearts is heat: how much the President's people have noticed you. Passing bills, forged papers, heists and some crew jobs raise it. It cools a step most nights. At 3 or more, his collectors come looking."}])
+			m.tell([{"who": "Sal", "text": "Those five pips under the clock are heat: how much the President's people have noticed you. Passing bills, forged papers, heists and some crew jobs raise it. It cools a step most nights. At 3 or more, his collectors come looking."}])
 
 
 ## Chance this bill gets noticed right now.
@@ -220,7 +220,10 @@ static func laundromat(m: GameMap) -> void:
 				ids.append(id)
 				opts.append("Wash %s  (have %d · pays ◆%d each tomorrow)" % [GameState.item_name(id), GameState.count(id), int(int(GameState.items[id]["face"]) * minf(0.92, float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(GameState.items[id].get("tier", 1)), 0, 4)]) + GameState.bonus("hustle", "wash_bonus")))])  # same rate overnight() pays
 		opts.append("Leave")
-		d.say([{"who": str(Builds.current_def("laundromat").get("name", "Laundromat")), "text": "%d of %d in the wash. Paid out clean in the morning, no risk. Heat: %d/5." % [inside, int(WASH_CAP[lt]), heat()], "choice": opts, "key": ""}])
+		var note := ""
+		if ids.is_empty():
+			note = " The wash is full for tonight." if room <= 0 else (" No bills on you. Print them at the Back-Room Press." if Builds.is_built("print_shop") else " No bills on you. A Back-Room Press (Plans, on your farm) prints them.")
+		d.say([{"who": str(Builds.current_def("laundromat").get("name", "Laundromat")), "text": "%d of %d in the wash. Paid out clean in the morning, no risk. Heat: %d/5.%s" % [inside, int(WASH_CAP[lt]), heat(), note], "choice": opts, "key": ""}])
 		await d.finished
 		if d.last_choice < 0 or d.last_choice >= ids.size():
 			return

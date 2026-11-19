@@ -266,9 +266,48 @@ func _show_arcs() -> void:
 		panel.add_child(v)
 		v.add_child(_label(str(arc["title"]), 12))
 		v.add_child(_label(str(arc["tagline"]), 8))
+		v.add_child(_arc_faces(arc_id, arc.get("faces", [])))
+		if arc.has("feel"):
+			var fl := _label(str(arc["feel"]), 8)
+			fl.add_theme_color_override("font_color", Color(1, 0.88, 0.55))
+			v.add_child(fl)
+		for line in arc.get("pitch", []):
+			v.add_child(_label("•  " + str(line), 8, false))
 		v.add_child(_button("Choose", func() -> void: _arc = arc_id; _show_characters()))
 		_page.add_child(panel)
+	_page.add_child(_label("Both paths share the farm, the town and its people. Each save slot keeps its own path, so you can play the other one later.", 7))
 	_page.add_child(_button("Back", _show_title))
+
+
+## A row of the path's heroes on the arc card, so the choice shows who you'll be.
+func _arc_faces(arc_id: String, pids: Array) -> Control:
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	for pid in pids:
+		var sprite_id := GameState.sprite_for_playable(str(pid), arc_id)
+		if sprite_id == "":
+			continue
+		var tex: Texture2D = null
+		if arc_id == "gangsters" and Art.has("portraits/" + sprite_id, "neutral"):
+			tex = Art.tex("portraits/" + sprite_id, "neutral")
+		else:
+			var sf := CharacterLibrary.frames_for(sprite_id)
+			for a in ["view_front", "idle", "walk_down"]:
+				if sf.has_animation(a) and sf.get_frame_count(a) > 0:
+					tex = sf.get_frame_texture(a, 0)
+					break
+		if tex == null:
+			continue
+		var tr := TextureRect.new()
+		tr.texture = tex
+		tr.custom_minimum_size = Vector2(34, 40)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(tr)
+	return row
 
 
 ## The gangster path is told at night: the picker goes dark with it.

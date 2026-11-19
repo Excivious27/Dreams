@@ -85,6 +85,10 @@ func _run() -> void:
 		m = await _mine("gangsters", hero)
 		var p: Player = m.player
 		check(p.char_id.ends_with("_gang"), "%s plays the gang outfit (%s)" % [hero, p.char_id])
+		for x in m.enemies.duplicate():  # a foe in front turns USE into a punch
+			if is_instance_valid(x):
+				x.queue_free()
+		m.enemies.clear()
 		_at_rock(m)
 		GameState.select_slot((GameState.run["toolbar"] as Array).find("pickaxe"))
 		p.do_action("tool")
@@ -144,7 +148,7 @@ func _run() -> void:
 		pt._target = null
 		var t0 := Time.get_ticks_msec()
 		var got := false
-		while Time.get_ticks_msec() - t0 < 15000:  # a busy machine runs slow frames
+		while Time.get_ticks_msec() - t0 < 20000:  # wall clock: a loaded CI box runs few frames a second
 			await process_frame
 			if pt._carry_item == "" and pt._carry_find == "":
 				pt.set_meta("forage_t", 999.0)  # no open cell picked this try: look again now

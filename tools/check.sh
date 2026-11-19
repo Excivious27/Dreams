@@ -175,6 +175,13 @@ if ! echo "$sout" | grep -q "station_test: 0 failures"; then
   echo "Station test failed"; exit 1
 fi
 
+echo "== arcs: path cards, arc building intros, locked-plan hints =="
+arcout="$("$GODOT" --headless --path . -s res://tools/arc_intro_test.gd 2>&1)"
+echo "$arcout" | grep -E "FAIL|SCRIPT ERROR|arc_intro_test" || true
+if ! echo "$arcout" | grep -q "arc_intro_test: 0 failures"; then
+  echo "Arc intro test failed"; exit 1
+fi
+
 echo "== allies: enemies fight back, pup commands =="
 aout="$("$GODOT" --headless --path . -s res://tools/ally_test.gd 2>&1)"
 echo "$aout" | grep -E "FAIL|ally_test" || true

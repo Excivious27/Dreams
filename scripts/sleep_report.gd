@@ -27,7 +27,7 @@ static func lines(report: Dictionary) -> Array:
 	if int(report.get("earned", 0)) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report.get("sold", [])), int(report.get("earned", 0))]})
 	if int(report.get("left", 0)) > 0:
-		lines.append({"text": "Something was left for you in the night. Check the pool and the burrow."})
+		lines.append({"text": Sanctuary.morning_line()})
 	if int(report.get("washed", 0)) > 0:
 		lines.append({"who": "Laundromat", "text": "Clean and folded: ◆%d." % int(report["washed"])})
 	if int(report.get("grown", 0)) > 0:

@@ -14,6 +14,11 @@ func _run() -> void:
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(out + "/title.png")
 	var t := current_scene
+	t.call("_show_arcs")
+	for i in 10:
+		await process_frame
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(out + "/arcs.png")
 	for arc in ["penguins", "gangsters"]:
 		t.set("_arc", arc)
 		t.call("_show_characters")
