@@ -116,6 +116,8 @@ static func why_locked(station: String, tier: int, rc: Dictionary) -> String:
 		return "needs %s" % str(td.get("name", "%s tier %d" % [label(station), need]))
 	if rt > skill_tier(station):
 		return "needs %s Lv %d" % [skill_of(station).capitalize(), (rt - 1) * 2 + 1]
+	if rc.has("flag") and not GameState.run["flags"].has(str(rc["flag"])):
+		return str(rc.get("flag_hint", "not learned yet"))
 	if rc.has("skill") and GameState.skill_level(str(rc["skill"][0])) < int(rc["skill"][1]):
 		return "needs %s Lv %d" % [str(rc["skill"][0]).capitalize(), int(rc["skill"][1])]
 	return ""

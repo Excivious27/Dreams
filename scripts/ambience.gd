@@ -25,7 +25,7 @@ const SEA_MAPS := ["beach", "docks", "bf_dockside", "colony_coral", "colony_kelp
 const WINDY_MAPS := ["mountain", "highlands", "sky", "station", "colony_ice", "quarry"]
 const CITY_MAPS := ["neon", "uptown", "docks", "hideout", "bf_neon_block"]
 const CAVE_MAPS := ["mine", "underground", "hollow_heart"]  # the quarry is an open pit: wind, not a cave drone
-const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake"]
+const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake", "community_farm"]
 const BIRDY_MAPS := ["forest", "orchard_hills", "meadow"]
 ## Outdoors but no birds, crickets or frogs: the underground country, dead or hot lands, space.
 const QUIET_MAPS := ["hollow_heart", "wastes", "colony_ember", "moon", "station", "sky"]
@@ -161,6 +161,12 @@ func _evaluate() -> Dictionary:
 				out["town_day"] = -20.0
 		if gang and id in CITY_MAPS:
 			out["city_hum"] = -18.0
+		if id == "community_farm" and not wet and ph in ["day", "dusk"]:
+			# Market day draws a crowd; otherwise the volunteers' campfire crackles in the picnic corner.
+			if Commons.market_day() and ph == "day":
+				out["crowd"] = -16.0
+			elif Commons.stage() >= 1 and ph == "dusk":
+				out["campfire"] = -22.0
 	else:
 		if id in ["house", "interior"]:
 			if GameState.is_wet():
@@ -278,7 +284,7 @@ func _spots(delta: float) -> void:
 	if outdoors and calm and id in SEA_MAPS and ph != "night":
 		rules.append(["gull", 10.0, 26.0, -12.0])
 		rules.append(["wave", 7.0, 16.0, -14.0])
-	if outdoors and calm and ph == "day" and id in ["farm", "countryside", "orchard_hills", "meadow"] and GameState.look_se() != "winter":
+	if outdoors and calm and ph == "day" and id in ["farm", "countryside", "orchard_hills", "meadow", "community_farm"] and GameState.look_se() != "winter":
 		rules.append(["crow", 30.0, 70.0, -14.0])
 	if outdoors and ph in ["dusk", "night"] and id in ["marsh", "lake", "bf_bog_crossing"]:
 		rules.append(["frog", 6.0, 16.0, -12.0])

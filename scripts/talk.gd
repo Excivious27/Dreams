@@ -27,6 +27,7 @@ static func line(id: String) -> Array:
 	if GameState.festival_today() != "":
 		for l in d.get("festival", []):
 			pool.append(str(l))
+	pool.append_array(Commons.talk_pool(id))  # the community farm's progress
 	if arc == "gangsters" and Racket.heat() >= 3:
 		for l in d.get("heat", []):
 			pool.append(str(l))

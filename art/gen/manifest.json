@@ -58724,6 +58724,11 @@
    "h": 29,
    "w": 32
   },
+  "commons_stew": {
+   "file": "items/commons_stew.png",
+   "h": 31,
+   "w": 32
+  },
   "compass": {
    "file": "items/compass.png",
    "h": 32,
@@ -61429,6 +61434,11 @@
    "h": 26,
    "w": 32
   },
+  "green_thumb_charm": {
+   "file": "items/green_thumb_charm.png",
+   "h": 32,
+   "w": 23
+  },
   "grey_feather": {
    "file": "items/grey_feather.png",
    "h": 30,
@@ -61613,6 +61623,16 @@
    "file": "items/harvest_ale.png",
    "h": 32,
    "w": 29
+  },
+  "harvest_basket": {
+   "file": "items/harvest_basket.png",
+   "h": 30,
+   "w": 32
+  },
+  "harvest_cobbler": {
+   "file": "items/harvest_cobbler.png",
+   "h": 24,
+   "w": 32
   },
   "harvest_potion": {
    "file": "items/harvest_potion.png",
@@ -82576,6 +82596,61 @@
    "file": "props/cdeco_9.png",
    "h": 22,
    "w": 32
+  },
+  "cf_bed_frame": {
+   "file": "props/cf_bed_frame.png",
+   "h": 55,
+   "w": 232
+  },
+  "cf_cold_frame": {
+   "file": "props/cf_cold_frame.png",
+   "h": 106,
+   "w": 136
+  },
+  "cf_compost": {
+   "file": "props/cf_compost.png",
+   "h": 61,
+   "w": 72
+  },
+  "cf_crates": {
+   "file": "props/cf_crates.png",
+   "h": 70,
+   "w": 76
+  },
+  "cf_donation_box": {
+   "file": "props/cf_donation_box.png",
+   "h": 60,
+   "w": 44
+  },
+  "cf_hole": {
+   "file": "props/cf_hole.png",
+   "h": 29,
+   "w": 34
+  },
+  "cf_mural_wall": {
+   "file": "props/cf_mural_wall.png",
+   "h": 75,
+   "w": 210
+  },
+  "cf_picnic_table": {
+   "file": "props/cf_picnic_table.png",
+   "h": 62,
+   "w": 104
+  },
+  "cf_sapling": {
+   "file": "props/cf_sapling.png",
+   "h": 60,
+   "w": 31
+  },
+  "cf_shed_ruin": {
+   "file": "props/cf_shed_ruin.png",
+   "h": 90,
+   "w": 92
+  },
+  "cf_well_broken": {
+   "file": "props/cf_well_broken.png",
+   "h": 59,
+   "w": 52
   },
   "chain_broken": {
    "file": "props/chain_broken.png",

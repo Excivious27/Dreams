@@ -7,7 +7,7 @@ var fails := 0
 const SCENES := ["farm", "town", "forest", "lake", "meadow", "crystal_meadow", "mine", "mountain", "beach", "moon",
 	"countryside", "docks", "hideout", "neon", "uptown", "underground", "highlands", "jungle", "marsh",
 	"orchard_hills", "quarry", "riverlands", "ruins", "sky", "station", "wastes", "house",
-	"bf_dockside", "bf_frostfield", "bf_rail_yards", "bf_shattered_vale", "colony_coral", "colony_ember", "colony_ice", "colony_kelp", "hollow_heart"]
+	"community_farm", "bf_dockside", "bf_frostfield", "bf_rail_yards", "bf_shattered_vale", "colony_coral", "colony_ember", "colony_ice", "colony_kelp", "hollow_heart"]
 
 func _initialize() -> void:
 	Campaign.bypass = true  # tests walk into every region

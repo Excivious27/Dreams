@@ -106,6 +106,8 @@ func _sleep() -> void:
 		if GameState.run["flags"].has("basket_full_" + kind):
 			GameState.run["flags"].erase("basket_full_" + kind)
 			lines.append({"text": "The %s basket is full. Empty it, or the gifts stop." % kind})
+	for l in report.get("cfarm", []):
+		lines.append({"who": Commons.keeper_name(), "text": str(l)})
 	if report.has("crew_jobs"):
 		lines.append({"who": "HQ", "text": "Overnight:\n" + "\n".join(report["crew_jobs"])})
 	if report.has("relic"):

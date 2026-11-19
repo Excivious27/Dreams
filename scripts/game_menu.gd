@@ -1268,10 +1268,10 @@ const PINS := {"farm": Vector2(0.44, 0.47), "house": Vector2(0.40, 0.44), "town"
 	"meadow": Vector2(0.66, 0.46), "crystal_meadow": Vector2(0.86, 0.40), "mine": Vector2(0.72, 0.20), "mountain": Vector2(0.74, 0.70), "beach": Vector2(0.40, 0.90), "moon": Vector2(0.90, 0.08),
 	"wastes": Vector2(0.95, 0.26), "hideout": Vector2(0.95, 0.52), "docks": Vector2(0.86, 0.84), "neon": Vector2(0.72, 0.92), "uptown": Vector2(0.58, 0.96), "underground": Vector2(0.70, 0.98), "countryside": Vector2(0.98, 0.66),
 	"sky": Vector2(0.28, 0.06), "station": Vector2(0.80, 0.03), "jungle": Vector2(0.66, 0.04),
-	"orchard_hills": Vector2(0.24, 0.12), "highlands": Vector2(0.50, 0.12), "ruins": Vector2(0.60, 0.30), "quarry": Vector2(0.58, 0.84), "marsh": Vector2(0.22, 0.86), "riverlands": Vector2(0.08, 0.62)}
+	"orchard_hills": Vector2(0.24, 0.12), "highlands": Vector2(0.50, 0.12), "ruins": Vector2(0.60, 0.30), "quarry": Vector2(0.58, 0.84), "marsh": Vector2(0.22, 0.86), "riverlands": Vector2(0.08, 0.62), "community_farm": Vector2(0.36, 0.72)}
 const PIN_ICON := {"farm": "pin_farm", "house": "pin_farm", "town": "pin_town", "forest": "pin_forest", "lake": "pin_lake", "meadow": "pin_meadow", "crystal_meadow": "pin_meadow", "mine": "pin_mine", "mountain": "pin_mountain", "beach": "pin_beach", "moon": "pin_moon",
 	"wastes": "pin_wastes", "hideout": "pin_docks", "docks": "pin_docks", "neon": "pin_tower", "uptown": "pin_tower", "underground": "pin_mine", "countryside": "pin_farm", "sky": "pin_mountain", "station": "pin_moon", "jungle": "pin_forest",
-	"orchard_hills": "pin_farm", "highlands": "pin_mountain", "ruins": "pin_wastes", "quarry": "pin_mine", "marsh": "pin_lake", "riverlands": "pin_lake"}
+	"orchard_hills": "pin_farm", "highlands": "pin_mountain", "ruins": "pin_wastes", "quarry": "pin_mine", "marsh": "pin_lake", "riverlands": "pin_lake", "community_farm": "pin_farm"}
 const SEEN_FLAG := {"crystal_meadow": "cm_seen"}
 
 
@@ -1328,7 +1328,7 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 	m.draw_texture_rect(tex, Rect2(org, sz), false)
 	var here := str(GameState.run["scene"])
 	var seen: Dictionary = GameState.run["flags"]
-	var names := {"crystal_meadow": "East" if GameState.is_penguins() else "Outskirts", "underground": "Pit", "countryside": "Highway"}
+	var names := {"crystal_meadow": "East" if GameState.is_penguins() else "Outskirts", "underground": "Pit", "countryside": "Highway", "community_farm": "Commons" if GameState.is_penguins() else "Lot Garden"}
 	for k: String in PINS:
 		if MegaRegion.region_of(k) != "":
 			continue  # a mega region's areas live on its own map tab
