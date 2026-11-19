@@ -144,7 +144,8 @@ func _refit() -> void:
 	var nv := BASE
 	if not is_phone() and s.x > 0 and s.y > 0 and float(s.x) / float(s.y) > BASE.x / BASE.y + 0.01:
 		nv = Vector2(clampf(roundf(BASE.y * float(s.x) / float(s.y)), BASE.x, MAX_W), BASE.y)
-	if force == 0:
+	# Headless runs (tests, bots) have no real window: the phone view unless a test forces desktop.
+	if force == 0 or (force < 0 and DisplayServer.get_name() == "headless"):
 		nv = BASE
 	_last_size = s
 	var was := view

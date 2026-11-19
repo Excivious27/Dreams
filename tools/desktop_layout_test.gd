@@ -84,7 +84,7 @@ func _case(label: String, force: int, size: Vector2i) -> void:
 		check(absf(v.x - want) < 1.0 and v.y == 480.0, "%s: view widened to %dx480 (%s)" % [label, int(want), v])
 		check(absf(DisplayMode.cx - floorf((v.x - 270) / 2.0)) < 0.5, "%s: column centred (cx %d)" % [label, int(DisplayMode.cx)])
 	# Touch pad: hidden on a computer, shown on a phone.
-	check(TouchControls.visible_controls == phone, "%s: touch controls %s" % [label, "shown" if phone else "hidden"])
+	check(TouchControls.visible_controls == (force == 0), "%s: touch controls %s" % [label, "shown" if force == 0 else "hidden"])
 	# HUD pieces: the clock box right edge and the energy bar sit at the visible right edge.
 	var ex := DisplayMode.extra()
 	var clock := Rect2(166 + ex, 2, 100, 28)
@@ -169,6 +169,8 @@ func _run() -> void:
 	if h:
 		var cam := h.get_viewport().get_camera_2d()
 		check(cam != null and cam.limit_right - cam.limit_left >= int(DisplayMode.view.x) - 1, "house: camera limits cover the wide view")
+		await frames(3)
+		check(Hud.y_offset == 0.0, "house: HUD stays at the top on a wide view (no phone bottom block)")
 		await shot("desk1080_house")
 	await _set_mode(0, Vector2i(270, 480))
 	_finish()

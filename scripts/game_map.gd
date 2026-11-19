@@ -1926,7 +1926,7 @@ func fit_camera(cam: Camera2D) -> void:
 	var mh := (rows + 2 * pad) * TILE
 	var ox := maxi(0, (vw - mw) / 2)
 	# Indoors the HUD sits across the bottom (Hud.INTERIOR_SHIFT): fit the room above it.
-	var view_h := int(Hud.INTERIOR_SHIFT) if scene_id() in ["house", "interior"] else 480
+	var view_h := int(Hud.INTERIOR_SHIFT) if scene_id() in ["house", "interior"] and not DisplayMode.wide() else 480
 	var oy := maxi(0, (view_h - mh) / 2)
 	cam.limit_left = -ox
 	cam.limit_top = -oy

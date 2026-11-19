@@ -94,6 +94,11 @@ sys.exit(1 if bad else 0)
 PY
 # Phone UI at 270x480: every menu tab, dialogue, toasts, chest, craft, prizes, campaign board, arcade, bowling;
 # also every printed symbol has a glyph without system fonts (the web build has none).
+dout="$("$GODOT" --headless --path . -s res://tools/desktop_layout_test.gd 2>&1)"
+echo "$dout" | grep -E "FAIL|^DESKTOP LAYOUT" || true
+if ! echo "$dout" | grep -q "DESKTOP LAYOUT: PASS"; then
+  echo "desktop_layout_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/phone_ui_test.gd 2>&1)"
 echo "$cout" | grep -E "^ISSUE|^phone_ui_test:|^glyphs" || true
 if ! echo "$cout" | grep -q "phone_ui_test: 0 issue"; then
