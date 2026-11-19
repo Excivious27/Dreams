@@ -18,7 +18,7 @@ const REASONS := [
 	[["noodle", "ramen", "karaoke", "arcade", "dragon", "neon_bar"], "Closed: shutters down till the district wakes up. A sign says 'back after dark, maybe'."],
 	[["shop", "store", "stall", "market", "cafe", "diner", "bar", "bakery", "hotel"], "Closed: a card in the window says the keeper is away. Come back once folk know you better."],
 	[["bank"], "Locked: the vault door is shut and the teller's window is dark."],
-	[["warehouse", "factory", "garage", "depot", "container", "office", "hq_"], "Locked: some crew runs this place. It opens to whoever holds this block.", "Locked: Hazel's feed store, padlocked until the harvest comes in."],
+	[["warehouse", "factory", "garage", "depot", "container", "office", "hq_"], "Locked: some crew runs this place. It opens to whoever holds this block.", "Locked: Hazel's feed store. She keeps the only key; hay and feed are sold at Maple's."],
 	[["clock"], "Locked: the clock works, and Theo has the only key. He's very particular about it."],
 	[["lighthouse_rust"], "Locked: the old harbour light. The door's rusted shut and the lamp's been dead for years."],
 	[["tower", "lighthouse", "temple", "shrine", "ruin", "president"], "Locked: the door is barred from the inside. Nobody's gone in for years."],

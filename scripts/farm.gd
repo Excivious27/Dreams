@@ -472,6 +472,7 @@ func after_ready() -> void:
 		_partner_scene.call_deferred()
 	WorldGen.add_backdrop(self, "hills")
 	_place_props()
+	MailFlag.attach(self, MAILBOX)  # a letter bobs over the mailbox while mail waits
 	WorldGen.dress_band(self, 5150)
 	WorldGen.clear_stairs.call_deferred(self)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
@@ -1018,34 +1019,18 @@ func _sellbox(sel: String) -> void:
 
 
 func _mailbox() -> void:
-	var flags: Dictionary = GameState.run["flags"]
-	var day := int(GameState.run["day"])
-	if GameState.is_penguins():
-		if not flags.has("mail_1"):
-			flags["mail_1"] = true
-			await say([
-				{"who": "Letter", "text": "Welcome to %s! Stop by the general store when you can. First bag of seeds is on me. - Maple" % GameState.names()["town"]},
-			])
-			give("strawberry_seed", 3)
-			return
-		if day >= 3 and not flags.has("mail_2"):
-			flags["mail_2"] = true
-			await say([{"who": "Letter", "text": "Dear neighbor, something has been howling from the east meadow at night. Mayor Alder says it's nothing. It is not nothing. - Wren"}])
-			GameState.add_quest("clear_meadow", "Find out what's howling in the east meadow.")
-			return
-	else:
-		if not flags.has("mail_1"):
-			flags["mail_1"] = true
-			await say([
-				{"who": "Letter", "text": "The plot is yours under the name on the deed. Nobody here knows your real one. Keep it that way. Earn your keep and don't draw eyes. - M."},
-			])
-			return
-		if day >= 3 and not flags.has("mail_2"):
-			flags["mail_2"] = true
-			await say([{"who": "Letter", "text": "A man came through town asking about a face like yours. He went east, toward the meadow. Be careful. - M."}])
-			GameState.add_quest("clear_meadow", "Someone is asking about you. Check the east meadow.")
-			return
-	await read_mail()
+	# The story's letters first, then everything else, all in one visit.
+	var story: Array = Mail.story_due()
+	for sl: Dictionary in story:
+		GameState.run["flags"][str(sl["flag"])] = true
+		await say([{"who": str(sl["who"]), "text": str(sl["text"])}])
+		if sl.has("give"):
+			give(str(sl["give"][0]), int(sl["give"][1]))
+		if sl.has("quest"):
+			GameState.add_quest(str(sl["quest"][0]), str(sl["quest"][1]))
+			hud.toast("New quest: " + str(sl["quest"][1]), Color(1, 0.9, 0.4))
+	if Mail.pending() > 0 or story.is_empty():
+		await read_mail()
 
 
 func _talk_crystal() -> void:

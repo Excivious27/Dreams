@@ -47,6 +47,62 @@ static func _known() -> Array:
 	return out
 
 
+## Letters that need reading or acting on (what GameMap.read_mail shows).
+static func pending() -> int:
+	var n := 0
+	for m: Dictionary in list():
+		if not bool(m.get("read", false)) or (str(m.get("kind", "")) == "favour" and not bool(m.get("done", false))) or (str(m.get("kind", "")) == "gift" and not bool(m.get("got", false))):
+			n += 1
+	return n
+
+
+## The story's own letters waiting in the farm mailbox (read there, in order):
+## [{flag, who, text, give: [item, n], quest: [id, text]}].
+static func story_due() -> Array:
+	if GameState.run.is_empty():
+		return []
+	var flags: Dictionary = GameState.run["flags"]
+	var day := int(GameState.run["day"])
+	var out: Array = []
+	if GameState.is_penguins():
+		if not flags.has("mail_1"):
+			out.append({"flag": "mail_1", "who": "Letter", "text": "Welcome to %s! Stop by the general store when you can. First bag of seeds is on me. - Maple" % GameState.names()["town"], "give": ["strawberry_seed", 3]})
+		if day >= 3 and not flags.has("mail_2"):
+			out.append({"flag": "mail_2", "who": "Letter", "text": "Dear neighbor, something has been howling from the east meadow at night. Mayor Alder says it's nothing. It is not nothing. - Wren", "quest": ["clear_meadow", "Find out what's howling in the east meadow."]})
+	else:
+		# The first letter was read (and burned or kept) in the opening; M. writes again next morning.
+		if day >= 2 and not flags.has("mail_1"):
+			out.append({"flag": "mail_1", "who": "Letter", "text": "Same hand as the first, no stamp: 'The plot is yours under the name on the deed. Nobody here knows your real one. Keep it that way. Earn your keep and don't draw eyes. - M.'"})
+		if day >= 3 and not flags.has("mail_2"):
+			out.append({"flag": "mail_2", "who": "Letter", "text": "A man came through town asking about a face like yours. He went east, toward the meadow. Be careful. - M.", "quest": ["clear_meadow", "Someone is asking about you. Check the east meadow."]})
+	return out
+
+
+## Everything waiting at the farm mailbox (the bobbing letter over it).
+static func waiting() -> int:
+	return story_due().size() + pending()
+
+
+## The first week's letters, so the mailbox isn't empty while nobody knows you
+## yet: a welcome with the town's hours (day 2) and a loaf from Posy (day 5).
+## The story's own letters come on days 1-3 and Hazel's commons letter on day 4.
+static func _first_week(day: int) -> void:
+	var flags: Dictionary = GameState.run["flags"]
+	var town := str(GameState.names()["town"])
+	if day >= 2 and day <= 4 and not flags.has("wmail_2"):
+		flags["wmail_2"] = true
+		if GameState.is_penguins():
+			send("Mayor Alder", "Welcome to %s, neighbour! What nobody tells new folk: the shops keep seven to nine (the bank eight to five), the community board on the plaza pins paid jobs every morning, and Bram's inn never closes. My office in the hall is always open to you. - Mayor Alder" % town, "news")
+		else:
+			send("Maple", "Saw a light on at the old plot. The store's open seven till nine: seeds in the back, bread by the door. The board on the plaza pays for errands, no questions asked, and Bram's inn never shuts. Come by. - Maple", "news")
+	if day >= 5 and day <= 7 and not flags.has("wmail_5"):
+		flags["wmail_5"] = true
+		if GameState.is_penguins():
+			send("Posy", "Two loaves for the new farmer, still warm when I wrapped them. Eat before you work; Juniper says I'm to tell everyone that. The bakery's open seven till nine. - Posy", "gift", {"npc": "posy", "item": "bread", "n": 2})
+		else:
+			send("Posy", "Two loaves. Don't argue. You've been out in that field from dawn and you're thinner than when you came. The bakery's open seven till nine. - Posy", "gift", {"npc": "posy", "item": "bread", "n": 2})
+
+
 ## Called once each morning. Returns how many letters arrived.
 static func morning() -> int:
 	if GameState.run.is_empty():
@@ -61,6 +117,7 @@ static func morning() -> int:
 			m["done"] = true
 			m["lapsed"] = true
 	_news(rng)
+	_first_week(day)
 	RecCenter.morning()
 	var known := _known()
 	# A favour about every third day, only from people you've met.

@@ -152,6 +152,7 @@ func _town_tour() -> void:
 	var pen := GameState.is_penguins()
 	var who := "Mayor Alder" if pen else "Sal"
 	player.frozen = true
+	var guide := await _tour_guide_in("alder" if pen else "sal")
 	await say([
 		{"who": who, "text": ("Welcome! I'm Alder, mayor of %s. Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools." if pen else "Before you go knocking on doors in %s: Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools.") % GameState.names()["town"]},
 		{"who": who, "text": ("The rest of us you'll meet. Your journal keeps a list (MENU > Quests)." if pen else "The rest you'll meet. Your journal keeps a list (MENU > Quests).")},
@@ -160,10 +161,53 @@ func _town_tour() -> void:
 		return
 	if GameState.complete_quest("meet_town"):
 		hud.toast(GameMap.quest_done_text("meet_town"), Color(1, 0.9, 0.4))
+	Intros.mark("alder" if pen else "sal")  # they just introduced themselves
+	if guide:
+		guide.walk_off()
 	player.frozen = false
 	for h in ["Maple's store (north of the plaza): seeds, fertiliser, bread.", "Gideon's forge (next to Maple): tool upgrades, smelting, weapons.", "Building: the Plans board by your house; Granite's quarry sells stone and brick; Orla's mill for flour; Benno's stable for horses.", "Wren (potions) and Juniper (clinic) are south and east of the plaza; the plaza board has paid jobs.", "Hazel (south-west lane) knows crops; Bram's inn has hot meals; people write to your mailbox once they know you."] + (["The town hall is where the Crystal Ward gets built."] if pen else []):
 		GameState.add_hint(h)
 	GameState.notify("Town guide saved: MENU → Quests → Things people said.")
+
+
+## The tour's speaker walks up the avenue to you (wherever their routine had
+## them), so the welcome comes from someone standing there.
+func _tour_guide_in(id: String) -> Npc:
+	var g: Npc = null
+	for n: Npc in npcs:
+		if n.id == id:
+			g = n
+	if g == null or player == null:
+		return null
+	var pc := world_to_cell(player.position)
+	var to := Vector2i(-1, -1)
+	var from := Vector2i(-1, -1)
+	for off: Vector2i in [Vector2i(0, 2), Vector2i(1, 2), Vector2i(-1, 2), Vector2i(1, 1), Vector2i(-1, 1), Vector2i(0, -2)]:
+		var c := pc + off
+		if in_content(c) and not blocked.has(c) and not things.has(c):
+			to = c
+			break
+	for dy in range(8, 3, -1):
+		var c := pc + Vector2i(0, dy)
+		if in_content(c) and not blocked.has(c):
+			from = c
+			break
+	if to == Vector2i(-1, -1) or from == Vector2i(-1, -1):
+		return null
+	g.step_in(cell_center(from) if not g.visible or g.position.distance_to(player.position) > 140.0 else g.position, cell_center(to))
+	var t0 := Time.get_ticks_msec()
+	while Time.get_ticks_msec() - t0 < 5000:  # up to 5 s on foot, then they're simply there
+		if not is_inside_tree():
+			return g
+		if g.position.distance_to(g.home) < 4.0:
+			break
+		await get_tree().process_frame
+	g._path.clear()
+	g.position = g.home
+	g._target = g.home
+	g.face(player.position)
+	player.facing = "down" if g.position.y > player.position.y + 4 else ("up" if g.position.y < player.position.y - 4 else player.facing)
+	return g
 
 
 var _doors: Array[Vector2i] = []
@@ -400,9 +444,15 @@ func _board() -> void:
 	var ch: Array = []
 	for j in jobs:
 		var taken := GameState.has_quest(str(j["id"]))
-		ch.append("%s%s: %d %s · ◆%d" % ["✓ " if taken else "", str(GameState.npcs[str(j["npc"])]["name"]), int(j["n"]), GameState.item_name(str(j["item"])), int(j["crystals"])])
+		var poster := str(GameState.npcs[str(j["npc"])]["name"])
+		if not Intros.met(str(j["npc"])) and str(GameState.npcs[str(j["npc"])].get("role", "")) != "":
+			poster += " (%s)" % str(GameState.npcs[str(j["npc"])]["role"]).to_lower()  # who's that? the board says
+		ch.append("%s%s: %d %s · ◆%d" % ["✓ " if taken else "", poster, int(j["n"]), GameState.item_name(str(j["item"])), int(j["crystals"])])
 	ch.append("Close")
-	d.say([{"who": "Community Board", "text": "Pinned today (%s %d). Bring the goods to whoever posted it: a week for goods, two for crop orders." % [GameState.season().capitalize(), GameState.day_of_season()], "choice": ch, "key": ""}])
+	var head := "Pinned today (%s %d). Bring the goods to whoever posted it: a week for goods, two for crop orders." % [GameState.season().capitalize(), GameState.day_of_season()]
+	if jobs.is_empty():
+		head = "Nothing pinned today (%s %d). New jobs go up every morning." % [GameState.season().capitalize(), GameState.day_of_season()]
+	d.say([{"who": "Community Board", "text": head, "choice": ch, "key": ""}])
 	await d.finished
 	if d.last_choice >= 0 and d.last_choice < jobs.size():
 		var j: Dictionary = jobs[d.last_choice]
@@ -714,7 +764,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 	match str(thing.get("type", "")):
 		"shop", "hall", "door":
-			if RecCenter.door_closed(self, thing):
+			if RecCenter.door_closed(self, thing) or TownHours.door_closed(self, thing):
 				return true
 			var id := str(thing.get("interior", thing.get("shop", "hall")))
 			GameMap.next_interior = id
@@ -773,6 +823,10 @@ func _talk(n: Npc) -> void:
 		_heart_unlock(id, before0)
 	# Main story beats first, then hearts, side quests, and only then a gift.
 	if await Story.talk(self, id):
+		Intros.mark(id)  # a story beat was the meeting
+		player.frozen = false
+		return
+	if await Intros.talk(self, id):
 		player.frozen = false
 		return
 	if await Hearts.talk(self, id):

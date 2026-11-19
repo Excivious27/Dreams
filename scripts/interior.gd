@@ -337,9 +337,13 @@ func _talk(n: Npc) -> void:
 		GameState.run["talked_today"][n.id] = true
 		GameState.add_friend(n.id, 5)
 	if await Story.talk(self, n.id):
+		Intros.mark(n.id)  # a story beat was the meeting
 		player.frozen = false
 		return
-	# Sal joins after the meadow wherever you find her (the inn too).
+	if not (n.id == "sal" and GameState.quest_done("clear_meadow")) and await Intros.talk(self, n.id):
+		player.frozen = false
+		return
+	# Sal joins after the meadow wherever you find him (the inn too).
 	if n.id == "sal" and not GameState.is_penguins() and GameState.quest_done("clear_meadow") and not GameState.run["flags"].has("sal_recruited"):
 		GameState.run["flags"]["sal_recruited"] = true
 		GameState.add_quest("gang", "Recruit your first crew in Hideout town, past the meadow outskirts. (Sal is in. The rest is up to you.)")
@@ -667,12 +671,9 @@ func draw_map() -> void:
 
 func _counter(shop: String) -> void:
 	# Shops close for the night (7am to 9pm) and on festival days the town's at the plaza.
-	var t := int(GameState.run["time"]) % (24 * 60)
-	if shop != "" and (t < 7 * 60 or t >= 21 * 60):
-		hud.toast("Closed for the night. Opens at 7am.", Color(1, 0.85, 0.7))
-		return
-	if shop != "" and shop != "hall" and GameState.festival_today() != "" and t >= 9 * 60 and t < 18 * 60:
-		hud.toast("Closed today: everyone's at the %s on the plaza." % GameState.festival_name(GameState.festival_today()), Color(1, 0.85, 0.7))
+	var shut := TownHours.counter_shut(shop)  # same table as the town doors
+	if shut != "":
+		hud.toast(shut, Color(1, 0.85, 0.7))
 		return
 	# The keeper is out (Maple at her market stall...): say so, and serve yourself.
 	var keeper_out := false

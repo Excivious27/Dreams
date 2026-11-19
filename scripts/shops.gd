@@ -32,6 +32,21 @@ static func _seeds(keep: Callable, n: int, salt: int) -> Array:
 	return out
 
 
+## Crop ids whose seeds the town sells today (Maple, Tam) or that you already
+## hold seeds or harvest of: board crop orders only ask for these.
+static func growable_now() -> Dictionary:
+	var out := {}
+	var sids: Array = offers("store") + offers("tam")
+	for sid in GameState.items:
+		var it: Dictionary = GameState.items[sid]
+		if str(it.get("type", "")) == "seed" and (sid in sids or GameState.count(str(sid)) > 0):
+			out[str(it.get("crop", ""))] = true
+	for cid in GameState.crops:
+		if GameState.count(str(GameState.crops[cid].get("yield", ""))) > 0:
+			out[str(cid)] = true
+	return out
+
+
 static func offers(shop: String) -> Array:
 	match shop:
 		"bait":

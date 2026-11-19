@@ -1508,11 +1508,11 @@
       },
       {
        "who": "",
-       "text": "A store, a smith, a clinic, a town hall with a bell tower and no bell. A woman on the bench by the gate who watches the road the way you watch it. Sal."
+       "text": "A store, a smith, a clinic, a town hall with a bell tower and no bell. A man with a bad knee who watches the road the way you watch it, from the bridge in the morning and the bench by the south gate after lunch. Sal."
       }
      ],
      "effects": {
-      "hint": "Sal on the bench by the south gate has been places. Maple sells seeds and asks no questions."
+      "hint": "Sal (the bridge in the morning, the south-gate bench after lunch) has been places. Maple sells seeds and asks no questions."
      }
     },
     {
@@ -1573,7 +1573,7 @@
         "Get through the gate to Hideout town and find a place to work from."
        ]
       ],
-      "hint": "Sal says the hideout gate is past the meadow outskirts. Talk to her first."
+      "hint": "Sal says the hideout gate is past the meadow outskirts. Talk to him first."
      }
     },
     {

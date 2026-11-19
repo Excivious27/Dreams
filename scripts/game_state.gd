@@ -2033,13 +2033,15 @@ static func board_today() -> Array:
 		var n := rng.randi_range(2, 4 + tier * 2)
 		var val := maxi(2, item_value(item))
 		var pay := int(val * n * (1.15 if item in BOARD_SHOP_GOODS else 1.6)) + 20 * tier  # shop goods: pay for the errand, not a markup
+		pay = maxi(pay, 12 + 4 * n)  # a walk across town is worth more than 3 stones' price
 		jobs.append({"id": "board_%d_%d" % [int(run["day"]), i], "npc": who, "item": item, "n": n, "crystals": pay, "friend": 8 + tier * 2})
 	# Plus one order for something growing this season (any farmer's crop counts).
 	var se := season()
 	var crop_pool: Array = []
+	var growable := Shops.growable_now()  # only crops you can get seeds for (or already grow)
 	for cid in crops:
 		var cd: Dictionary = crops[cid]
-		if str(cd.get("season", "any")) in [se, "any"] and int(cd.get("tier", 1)) <= tier + 1 and items.has(str(cd["yield"])) \
+		if growable.has(str(cid)) and str(cd.get("season", "any")) in [se, "any"] and int(cd.get("tier", 1)) <= tier + 1 and items.has(str(cd["yield"])) \
 				and not bool(cd.get("tree", false)) and (is_penguins() or not str(cid).begins_with("crystal")) \
 				and int(cd.get("days", 4)) <= 12 and (str(cd.get("season", "any")) == "any" or int(cd.get("days", 4)) <= DAYS_PER_SEASON - day_of_season()):
 			crop_pool.append(str(cd["yield"]))

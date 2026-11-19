@@ -141,11 +141,9 @@ func _sleep() -> void:
 
 
 func _morning_events() -> void:
-	var day := int(GameState.run["day"])
-	if day == 2:
-		hud.toast("Check the mailbox.", Color(1, 0.9, 0.4))
-	if day == 3:
-		hud.toast("New mail.", Color(1, 0.9, 0.4))
+	# Only when there's really something there (sleep() already counts the ordinary letters).
+	if not Mail.story_due().is_empty():
+		hud.toast("There's a letter in the mailbox.", Color(1, 0.9, 0.4))
 
 
 func _journal() -> void:
