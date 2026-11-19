@@ -2,6 +2,17 @@
 
 Written 2026-11-18 so Tom's personal Claude account can do the same work as the Team account. Read this after `CLAUDE.md`, `reference/BRIEF.md`, the top of `docs/STATUS.md` and the newest guide in `docs/guides/`.
 
+## Baton (update on every push)
+
+Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`.
+
+- **Last update:** 2026-11-18 22:30 PT, Team account
+- **In progress:** Team game chat's art run through dreams-image (building redraws w494+ into `art/incoming/`); not yet sliced.
+- **Next step:** finish the art run, slice it (`tools/slice_world5.py` and post-steps), check.sh, push, update STATUS.
+- **Jobs running elsewhere:** none recorded.
+- **WIP branches:** none.
+- **Open questions for Tom:** none.
+
 ## Where everything lives
 
 | What | Where |

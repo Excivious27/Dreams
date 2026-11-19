@@ -1,6 +1,13 @@
 # Dreams: notes for Claude
 
 - Project brief: `reference/BRIEF.md` (Tom works only from his phone; short replies ending with play link, what changed, what to test; one question max, last).
+- **Two Claude accounts take turns on this repo** (Tom's Team and personal). Chat history and memory are NOT shared; this repo is the only shared memory. So:
+  - Start of every session: read `docs/HANDOFF.md` (Tom's rules + the **Baton**) before anything else, and pick up the Baton's "next step".
+  - Any rule, preference or decision Tom gives in chat goes into `docs/HANDOFF.md` (Tom's working rules) in the next push, not only into memory.
+  - Push small and often (each finished step), and update the Baton in the same push: never leave work only in the chat or the sandbox (`/home/claude/work` is lost on a switch). Work that fails check.sh goes to a `wip/<topic>` branch, named in the Baton.
+  - Write down jobs still running elsewhere in the Baton: ACE song ids not yet imported, image paths not yet sliced.
+  - **HANDOFF** (Tom's command): finish or park the current step, push, fill in the Baton fully, reply with a 3-line summary. Tom sends it before he switches accounts.
+  - If the Baton says the other account is mid-step, finish that step first; only one account works at a time.
 - Godot 4.5.1, GDScript, portrait 270×480, `canvas_items` / `keep`, nearest filter. Character strips are 2x detail, drawn at 0.5 scale (`CharacterLibrary`).
 - Input goes through actions `up/down/left/right/a/b/menu` (`InputSetup`); `TouchControls` presses the same actions.
 - Saves go to `user://` (`SaveGame`).
