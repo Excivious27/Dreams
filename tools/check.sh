@@ -225,6 +225,11 @@ echo "$msout" | grep -E "FAIL|SCRIPT ERROR|music_stream_test" || true
 if ! echo "$msout" | grep -q "music_stream_test: 0 failures"; then
   echo "Music stream test failed"; exit 1
 fi
+dmout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/danger_music_test.gd 2>&1)"
+echo "$dmout" | grep -E "FAIL|SCRIPT ERROR|danger_music_test" || true
+if ! echo "$dmout" | grep -q "danger_music_test: 0 failures"; then
+  echo "Combat music test failed"; exit 1
+fi
 
 fsout="$("$GODOT" --headless --path . -s res://tools/footstep_test.gd 2>&1)"
 echo "$fsout" | grep -E "FAIL|SCRIPT ERROR|footstep_test" || true
