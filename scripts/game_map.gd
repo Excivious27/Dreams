@@ -212,6 +212,7 @@ func _ready() -> void:
 	Story.restore_spawns(self)
 	Racket.on_enter(self)
 	Marked.on_enter(self)
+	MegaRegion.on_enter.call_deferred(self)  # mega region unlocks, name banner, map tab
 	_fill_extension()
 	_place_signposts()
 	_place_waiting_horse()

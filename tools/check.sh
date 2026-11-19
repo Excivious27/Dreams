@@ -165,3 +165,10 @@ echo "$tout" | grep -E "FAIL|STORY DONE" || true
 if ! echo "$tout" | grep -q "STORY DONE, failures: 0"; then
   echo "Story test failed"; exit 1
 fi
+
+echo "== mega regions: map tabs, unlocks, travel =="
+megaout="$("$GODOT" --headless --path . -s res://tools/mega_region_test.gd 2>&1)"
+echo "$megaout" | grep -E "FAIL|SCRIPT ERROR|mega_region_test" || true
+if ! echo "$megaout" | grep -q "mega_region_test: 0 failures"; then
+  echo "Mega region test failed"; exit 1
+fi
