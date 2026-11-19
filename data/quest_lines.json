@@ -1085,5 +1085,47 @@
    "Good fizz. Good fizz!",
    "Here. And a slice of festival pie for you on the night, saved from the council."
   ]
+ },
+ "rec_bowl_120": {
+  "offer": [
+   "You've been to the Rec Center? Bet you can't bowl a hundred and twenty.",
+   "I'll give you my whole allowance if you do. Okay, Dad's whole allowance. Okay, Dad will pay."
+  ],
+  "yes": "Ha! Lane two's luckiest. Everybody knows that.",
+  "no": "Scared of the pins. Classic.",
+  "wait": "A hundred and twenty! Not a hundred and nineteen. I'll know.",
+  "done": [
+   "You did NOT. ...You did? The board says you did.",
+   "Fine. Dad, pay up. A deal's a deal."
+  ]
+ },
+ "rec_teddy": {
+  "offer": [
+   "The Teddy Bear. At the prize counter. With the bow.",
+   "I need eighty tickets and I have four. Could you win it for me? Please? I'll give you my kite. I'll win another kite."
+  ],
+  "yes": "THANK YOU. Name him something good.",
+  "no": "...He'll still be there. Probably. Unless Pip gets him.",
+  "wait": "Is he still there? The bear? With the bow?",
+  "done": [
+   "You got him! He's softer than I thought! He's PERFECT.",
+   "Here, the kite's yours. I mean it. Bears are better than kites."
+  ]
+ },
+ "rec_bowl_120@gangsters": {
+  "offer": [
+   "You been up the Rec Hall? Bet you can't bowl a hundred and twenty.",
+   "I'll get Dad to put up the stakes. He likes a bet. Mum says he can't, but bowling's different."
+  ],
+  "done": [
+   "You did NOT. ...The chalk wall says you did.",
+   "Fine. Dad, pay up. A deal's a deal."
+  ]
+ },
+ "rec_teddy@gangsters": {
+  "offer": [
+   "The Teddy Bear. At the Rec Hall counter. With the bow.",
+   "I need eighty tickets and I have four. Win him for me? I'll give you my kite."
+  ]
  }
 }

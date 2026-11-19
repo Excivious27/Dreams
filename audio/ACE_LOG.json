@@ -2108,6 +2108,43 @@
    }
   ]
  },
+ "rec_center": {
+  "chosen": "so_f9ed45a79ce543719af3ed18",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/rec_center__so_f9ed45a79ce543719af3ed18.mp3",
+    "id": "so_f9ed45a79ce543719af3ed18",
+    "page": "https://acemusic.ai/song/kv8pmgk64bhe",
+    "score": {
+     "dur": 149.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/rec_center__so_f9ed45a79ce543719af3ed18.mp3",
+     "holes": 0,
+     "lvl_diff": 2.5,
+     "peak": 1.425,
+     "score": 95.54,
+     "seam": 0.994
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/rec_center__so_4fc72b2e249a4a07b56e304d.mp3",
+    "id": "so_4fc72b2e249a4a07b56e304d",
+    "page": "https://acemusic.ai/song/72wh8s7thd9q",
+    "score": {
+     "dur": 142.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/rec_center__so_4fc72b2e249a4a07b56e304d.mp3",
+     "holes": 0,
+     "lvl_diff": 4.5,
+     "peak": 1.414,
+     "score": 90.85,
+     "seam": 0.976
+    }
+   }
+  ]
+ },
  "ruins": {
   "chosen": "so_a16f6c1312b348ba992997a1",
   "kind": "music",

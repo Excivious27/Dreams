@@ -198,6 +198,8 @@ func _evaluate() -> Dictionary:
 			out["boiling"] = -22.0
 		if "smith" in kind or "forge" in kind or "workshop" in kind:
 			out["machines"] = -24.0
+		if kind in ["rec", "rec_up"]:
+			out["rec_alley"] = -16.0 if kind == "rec_up" else -24.0  # rolling balls, pins, chatter
 	# Keep the loudest few.
 	if out.size() > MAX_BEDS:
 		var ks := out.keys()

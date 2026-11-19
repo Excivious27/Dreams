@@ -114,6 +114,7 @@ const SKILL_VER := 8
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
 static func _migrate() -> void:
+	Tickets._st()  # Rec Center tickets / arcade bests (old saves start at zero)
 	if not (run.get("skills") is Dictionary):
 		run["skills"] = {}
 	for sk in (run["skills"] as Dictionary).keys():
@@ -1668,7 +1669,7 @@ static func friend_perk_at(npc: String, hearts: int) -> String:
 
 ## Friendship a gift earns: loved +20 (+bonus), liked +8, neutral +3, hated -8.
 ## Gifts: one per villager per day, and never tools, seeds, story keys or gear.
-const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle"]
+const NO_GIFT_TYPES := ["tool", "seed", "key", "equip", "petgear", "placeable", "outfit", "vehicle", "decor"]
 
 
 static func can_gift(npc: String, item: String) -> bool:
