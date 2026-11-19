@@ -15762,6 +15762,11 @@
    "h": 224,
    "w": 592
   },
+  "lighthouse_broken": {
+   "file": "buildings/lighthouse_broken.png",
+   "h": 224,
+   "w": 148
+  },
   "lighthouse_rust": {
    "file": "buildings/lighthouse_rust.png",
    "h": 126,

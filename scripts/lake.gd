@@ -32,7 +32,7 @@ func build() -> void:
 	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}
 	music_track = "lake"
 	add_exit(FARM_EXIT, "farm", Vector2(3 * TILE, 30 * TILE + 8), "right", "farm ▶")
-	add_exit(FOREST_EXIT, "forest", Vector2(2 * TILE, 22 * TILE + 8), "right", "▲ forest")
+	add_exit(FOREST_EXIT, "forest", Vector2(7 * TILE + 8, 46 * TILE + 8), "up", "▲ forest")
 	add_exit(Rect2i(0, 4, 1, 3), "riverlands", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ riverlands")
 	# The lake: a wobbly disc plus a northern inlet (the waterfall) and the
 	# southern outlet stream that runs to the border water past the mill.
@@ -211,12 +211,50 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 	var w_cells := maxi(1, int(round(fw / float(TILE))))
 	var h_cells := maxi(1, int(round(fh / float(TILE))))
 	var base := Vector2i(c.x, c.y + h_cells - 1)
-	if animated and int(info.get("frames", 1)) > 1:
+	if name == "lighthouse" and int(info.get("frames", 1)) > 1 and not GameState.run["flags"].has("lighthouse_lit"):
+		# Dark for years until Marlowe's quest relights it: the derelict lighthouse
+		# (boarded windows, cracked lamp, no beam; tools/slice_r13_a9.py), drawn in
+		# the lit strip's frame size so it stands exactly where the lit one will.
+		var dk := Sprite2D.new()
+		if Art.has("buildings", "lighthouse_broken"):
+			dk.texture = Art.tex("buildings", "lighthouse_broken")
+		else:  # the strip's dim-lamp frame, no beam
+			var at := AtlasTexture.new()
+			at.atlas = Art.tex("buildings", name)
+			var fr := int(info["frames"])
+			at.region = Rect2(fw * (fr - 1), 0, fw, fh)
+			dk.texture = at
+		dk.offset = Vector2(0, -fh / 2.0)
+		dk.position = cell_pos(c.x + w_cells / 2.0, base.y + 1)
+		dk.name = "LighthouseDark"
+		add_child(dk)
+		# Relit while you're here (Marlowe's lens quest): swap to the turning lamp.
+		var tm := Timer.new()
+		tm.wait_time = 0.5
+		tm.autostart = true
+		tm.timeout.connect(func() -> void:
+			if GameState.run["flags"].has("lighthouse_lit") and is_instance_valid(dk):
+				var a := AnimatedSprite2D.new()
+				a.sprite_frames = Art.frames("buildings", {"idle": name}, {"idle": 4.0})
+				a.animation = "idle"
+				a.position = dk.position
+				a.offset = dk.offset
+				a.name = "LighthouseLit"
+				add_child(a)
+				a.play("idle")
+				dk.queue_free()
+				tm.queue_free()
+				Music.instance(get_tree()).sfx("power_up", "sparkle")
+				hud.toast("Out on the rock, the lighthouse lamp flickers... and turns.", Color(1, 0.92, 0.6)))
+		add_child(tm)
+	elif animated and int(info.get("frames", 1)) > 1:
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("buildings", {"idle": name}, {"idle": 4.0})
 		a.animation = "idle"
 		a.position = cell_pos(c.x + w_cells / 2.0, base.y + 1)
 		a.offset = Vector2(0, -fh / 2.0)
+		if name == "lighthouse":
+			a.name = "LighthouseLit"
 		add_child(a)
 		a.play("idle")
 	else:

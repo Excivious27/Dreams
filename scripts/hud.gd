@@ -88,9 +88,32 @@ func _show_clinic_note() -> void:
 		return
 	m.player.frozen = true
 	m.player.facing = "down"
+	Music.instance(get_tree()).sfx("heal")
 	await m.say([{"text": note}, {"text": "Rest up, eat something, and don't push past empty. Exhausted (a red, flashing bar) means it's time to head home."}])
 	if is_instance_valid(m) and m.player:
 		m.player.frozen = false
+
+
+## The region (or building) you're in, small, under the hearts' row and left of
+## the clock box; it stays up for as long as you're there (PlaceNames).
+var place_name := ""
+var _place_done := false
+
+
+func _draw_place(c: Control) -> void:
+	if not _place_done:
+		_place_done = true
+		place_name = PlaceNames.of(get_parent() as GameMap)
+	if place_name == "":
+		return
+	var fs := 8
+	var maxw := 72.0
+	while fs > 6 and _font.get_string_size(place_name, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > maxw:
+		fs -= 1
+	var w := minf(maxw, _font.get_string_size(place_name, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x)
+	var p := Vector2(162.0 - w, 23.0)
+	c.draw_string_outline(_font, p, place_name, HORIZONTAL_ALIGNMENT_LEFT, maxw, fs, 3, Color(0.05, 0.03, 0.02, 0.85))
+	c.draw_string(_font, p, place_name, HORIZONTAL_ALIGNMENT_LEFT, maxw, fs, Color(1.0, 0.95, 0.78))
 
 
 func set_hint(text: String) -> void:
@@ -270,6 +293,7 @@ func _draw_hud() -> void:
 		c.draw_texture_rect(Art.tex("ui", "buff2_haste"), Rect2(bx, 24, 9, 9), false); bx += 11
 	if int(r["flags"].get("glow_day", -1)) == int(r["day"]) and Art.has("ui", "buff2_glow"):
 		c.draw_texture_rect(Art.tex("ui", "buff2_glow"), Rect2(bx, 24, 9, 9), false); bx += 11
+	_draw_place(c)
 	# Clock box (top right)
 	var box := Rect2(166, 2, 100, 28)
 	_panel(c, "panel_parchment", box)

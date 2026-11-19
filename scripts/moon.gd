@@ -46,7 +46,7 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "moon")
-	prop("props", "landing_pad", Vector2i(11, 21), 2)
+	prop("props", "landing_pad", Vector2i(11, 21), 2, 0.0, false)  # you walk up onto the pad (it was a wall across its steps)
 	if Art.has("props", "warp_pad"):
 		var wp := AnimatedSprite2D.new()
 		wp.sprite_frames = Art.frames("props", {"idle": "warp_pad"}, {"idle": 6.0})
@@ -56,7 +56,7 @@ func after_ready() -> void:
 		wp.offset = Vector2(0, -float(Art.info("props", "warp_pad").get("cell_h", 64)) / 2.0 + 14)
 		to_under(wp)
 		wp.play("idle")
-	prop("props", "rocket_house", Vector2i(3, 6), 4)
+	prop("props", "rocket_house", Vector2i(3, 6), 3)  # footprint = the art (4 cells), no invisible cell beside it
 	if Art.has("buildings", "greenhouse_dome"):
 		prop("buildings", "greenhouse_dome", Vector2i(24, 5), 4)
 		prop("props", "radio_dish", Vector2i(15, 3), 1)
@@ -89,6 +89,9 @@ func after_ready() -> void:
 	var t := prop("props", "teleporter", Vector2i(23, 20), 2)
 	if t:
 		t.queue_free()
+		props.erase(Vector2i(23, 20))
+		blocked.erase(Vector2i(23, 20))  # the 2-cell teleporter is drawn over 24-25
+		hard.erase(Vector2i(23, 20))
 		var a := AnimatedSprite2D.new()
 		a.sprite_frames = Art.frames("props", {"idle": "teleporter"}, {"idle": 2.0})
 		a.animation = "idle"

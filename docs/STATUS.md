@@ -2,6 +2,17 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: world, maps and time (Tom's playtest)
+- **Exits line up:** the lake's top-edge road now comes up into the bottom-left of the forest (new road mouth at the forest's south edge, path spur and signpost), facing up; the forest's old west-edge lake exit is gone. New `tools/exit_edge_check.gd` (in check.sh) checks every edge exit of every map: leave by one edge, arrive near the opposite edge of the next map, facing inward, with the way back on that edge and a matching label arrow.
+- **Every building answers:** `BuildingAccess` (scripts/building_access.gd) gives each building with no way in a short reason on its door ("Private home: ...", "Locked: ...", "Closed: ...") and points every wall cell of it at its door or reason, so USE anywhere along the front works. Region building props and animated region buildings are covered too. door_check.gd now walks every map and fails on any silent front wall (104 buildings checked).
+- **Buildings at town size:** region buildings carry a `scale` in regions.json (town size, about 1.0) and the streets of the Docks, Hideout, Neon District and Uptown are re-laid out around them; also the Wastes, Highway, Sky Islands, Orchard Hills, Highlands, Ruins, Quarry, Marsh and Riverlands huts/towers, the forest woodcutter's hut and the beach hut.
+- **Region name on screen:** a small label left of the clock box names where you are (`PlaceNames`: regions, battlefields, colonies, mine floor, and inside buildings the name on the door you came through).
+- **Moon (the rocket region):** the landing pad no longer walls off its own steps; the rocket house and teleporter footprints match their art. `tools/invisible_walls.gd` (in check.sh for mountain + moon) finds blocked cells with nothing solid drawn on them and walk-on pads that block.
+- **Lighthouse:** dark and derelict (new art: boarded windows, cracked lamp, no beam; `tools/slice_r13_a9.py`) until Marlowe's lens quest lights it, then the turning lamp (swaps live with a sound).
+- **Fainting:** collapse before 10pm and you come round at 10pm the same day (clinic, or your bed when just tired), patched up with enough energy to get home; the night after still costs the quarter bar. After 10pm or at 2am it's next morning as before (`Faint`).
+- **Mornings:** no more night-dark dawns: before sunrise it's a soft rose dawn (at most 0.42 dark), then an orange-gold light that fades to plain day 2.5 hours after sunrise, following the season's sunrise (`GameState.morning_glow`, `GameMap.sky_tint`); sunrise sky strip on the backdrop.
+- Tests: tools/r13_world_test.gd (faint timing, dawn/glow in all seasons, place names), exit_edge_check, invisible_walls, extended door_check, all in check.sh. area_shot.gd takes `scene:x:y:minutes:flag`.
+
 ## 2026-11-18 — Round 12: art complete (image tool)
 - **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
 - **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):

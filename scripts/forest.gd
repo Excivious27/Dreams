@@ -1,9 +1,9 @@
 extends GameMap
 ## The north forest: dense trees, winding path, forage, a woodcutter's clearing,
-## a hidden pond, and a shrine. Enemies at dusk. Exits: farm (south), lake (west).
+## a hidden pond, and a shrine. Enemies at dusk. Exits: farm (south), lake (south-west), orchard hills (north).
 
 const FARM_EXIT := Rect2i(35, 49, 3, 1)
-const LAKE_EXIT := Rect2i(0, 20, 1, 3)
+const LAKE_EXIT := Rect2i(6, 49, 3, 1)  # bottom edge: the lake's top-edge road comes up into here
 const SHRINE := Vector2i(12, 9)
 
 
@@ -22,7 +22,7 @@ func build() -> void:
 	border = "trees"
 	music_track = "meadow"
 	add_exit(FARM_EXIT, "farm", Vector2(36 * TILE, 3 * TILE + 8), "down", "▼ farm")
-	add_exit(LAKE_EXIT, "lake", Vector2(45 * TILE, 2 * TILE + 8), "down", "◀ lake")
+	add_exit(LAKE_EXIT, "lake", Vector2(45 * TILE + 8, 2 * TILE + 8), "down", "▼ lake")
 	add_exit(Rect2i(22, 0, 4, 1), "orchard_hills", Vector2(26 * TILE, 41 * TILE + 8), "up", "▲ orchard hills")
 	set_thing(SHRINE.x, SHRINE.y, {"type": "shrine", "hint": "A: forest shrine"})
 	# Groves: dense tree masses with dark floor; clearings between them stay open.
@@ -67,7 +67,7 @@ func build() -> void:
 		things[c] = {"type": "forage", "key": key, "item": item, "hint": "A: pick %s" % GameState.item_name(item)}
 
 
-const CLEARINGS := [[16, 6, 7], [24, 27, 6], [8, 32, 5], [36, 14, 6], [38, 40, 5], [16, 42, 5]]  # x, y, radius
+const CLEARINGS := [[16, 6, 7], [27, 25, 7], [8, 32, 5], [36, 14, 6], [38, 40, 5], [16, 42, 5]]  # x, y, radius
 var _grove := {}
 
 
@@ -136,10 +136,10 @@ func after_ready() -> void:
 	else:
 		prop("nature", "forest_shrine", SHRINE, 0, 2.0)
 	if Art.has("buildings", "woodcutter_hut"):
-		prop("buildings", "woodcutter_hut", Vector2i(22, 25), 4)
-		prop("nature", "stump_axe", Vector2i(27, 27))
-		prop("nature", "giant_log", Vector2i(24, 30), 3)
-		set_thing(23, 27, {"type": "note", "text": "The woodcutter's hut. Axe in the stump, kettle on, nobody home. A list on the door: 'oak 40, pine 20, birch 10' with the first line crossed out.", "hint": "A: the hut"}, false)
+		prop("buildings", "woodcutter_hut", Vector2i(26, 24), 4, 0.0, true, 0.85)  # town-sized (Rook's lodge is the same hut at 1.25)
+		prop("nature", "stump_axe", Vector2i(33, 26))
+		prop("nature", "giant_log", Vector2i(27, 29), 3)
+		set_thing(28, 25, {"type": "note", "text": "The woodcutter's hut. Axe in the stump, kettle on, nobody home. A list on the door: 'oak 40, pine 20, birch 10' with the first line crossed out.", "hint": "A: the hut"}, false)
 	if Art.has("props", "stone_circle"):
 		prop("props", "stone_circle", Vector2i(34, 13), 5)
 		set_thing(36, 14, {"type": "note", "text": "Standing stones, older than the town, each carved with a spiral. Stand in the middle and the wind stops.", "hint": "A: the stones"}, false)
@@ -190,7 +190,7 @@ func _path_cells() -> Array[Vector2i]:
 		return _path_cache
 	# A hand-laid winding route: farm exit -> pond clearing -> woodcutter -> stones -> great tree, with a spur to the lake.
 	var pts := [Vector2i(36, 49), Vector2i(36, 44), Vector2i(32, 40), Vector2i(28, 34), Vector2i(24, 30), Vector2i(20, 24), Vector2i(22, 18), Vector2i(28, 14), Vector2i(24, 10), Vector2i(18, 8), Vector2i(16, 10)]
-	var spur := [Vector2i(20, 24), Vector2i(14, 26), Vector2i(8, 28), Vector2i(3, 24), Vector2i(0, 21)]
+	var spur := [Vector2i(20, 24), Vector2i(14, 26), Vector2i(10, 30), Vector2i(10, 36), Vector2i(8, 42), Vector2i(7, 49)]
 	var north := [Vector2i(24, 10), Vector2i(24, 4), Vector2i(23, 0)]  # to the orchard-hills exit
 	for seq in [pts, spur, north]:
 		for i in range(seq.size() - 1):

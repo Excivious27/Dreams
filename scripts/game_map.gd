@@ -454,7 +454,7 @@ func try_interact(c: Vector2i, check := false) -> bool:
 		# Anywhere along the front wall counts as knocking on the door (painted
 		# doors aren't always dead centre).
 		if player and player.cell().y >= door.y - 1 and things.has(door):
-			return interact(door, things[door])
+			return interact(door, things[door]) or interact_common(door, things[door])
 		hud.toast("The way in is round the front (%s)." % ("below you" if player and player.cell().y < door.y else "this side"), Color(0.95, 0.9, 0.8))
 		return true
 	return false
@@ -1278,49 +1278,9 @@ func walk_over(sp: Sprite2D, rows: int) -> void:
 var _bprops: Array = []
 
 
-## Every building you can't go into says why, instead of ignoring you.
-## Open structures that are not buildings you go into.
-const LOCK_SKIP := ["well", "bandstand", "gazebo", "mailbox", "fountain", "statue", "stall", "tent", "kiosk", "booth"]
-## First match wins: the more specific words come first.
-const LOCK_REASONS := [
-	[["shop", "store", "stall", "market", "cafe", "diner", "bar", "bakery"], "Closed. A card in the window says the keeper is away; come back once the town knows you better."],
-	[["warehouse", "factory", "garage", "depot", "container", "office"], "Locked tight. Some crew runs this place: it opens to whoever holds this block.", "Hazel's feed store. Padlocked until the harvest comes in."],
-	[["clock"], "The clock works. Theo has the only key, and he's very particular about it."],
-	[["tower", "lighthouse", "temple", "shrine", "ruin"], "The door is barred from the inside. Nobody's gone in for years."],
-	[["barn", "coop", "shed", "silo", "mill", "greenhouse", "stable"], "Empty and padlocked. Nothing in there needs you today."],
-	[["house", "cottage", "home", "hut", "cabin", "manor", "villa"], "Nobody answers. Whoever lives here is out, and folks round here keep their doors shut to strangers."],
-]
-
-
+## Every building you can't go into says why, instead of ignoring you (BuildingAccess).
 func _lock_untouched_buildings() -> void:
-	if scene_id() in ["farm", "house", "interior"]:
-		return
-	for bp in _bprops:
-		var nm := str(bp[0])
-		if LOCK_SKIP.any(func(k: String) -> bool: return nm.contains(k)):
-			continue
-		var base: Vector2i = bp[1]
-		var w := int(bp[2]) + 1
-		var door := Vector2i(base.x + w / 2, base.y + 1)
-		var has_door := false
-		for dy in range(-1, 3):
-			for dx in range(-w, w + 1):
-				var t := str(things.get(door + Vector2i(dx, dy), {}).get("type", ""))
-				if t in ["door", "idoor", "shop", "hall", "hut", "exit", "station", "ferry", "npc", "counter", "wreck", "project"]:
-					has_door = true
-		if has_door or things.has(door) or blocked.has(door) or not in_content(door):
-			continue
-		var reason := "Locked. It doesn't look like anyone's using it."
-		var picked := false
-		for rr in LOCK_REASONS:
-			if picked:
-				break
-			for kw: String in rr[0]:
-				if nm.contains(kw):
-					reason = str(rr[2]) if rr.size() > 2 and GameState.is_penguins() else str(rr[1])
-					picked = true
-					break
-		set_thing(door.x, door.y, {"type": "locked", "text": reason, "hint": "A: knock"}, false)
+	BuildingAccess.apply(self)
 
 
 ## Interiors lay furniture out by its declared width; big kit art must not wall
@@ -1477,6 +1437,14 @@ func sky_tint(t: int) -> Color:
 	var day_col := Color(0.84, 0.86, 0.93) if gang else Color(1, 1, 1)
 	var dusk_col := Color(1.0, 0.84, 0.70) if not gang else Color(0.92, 0.76, 0.70)
 	var night_col := Color(0.28, 0.30, 0.52) if gang else Color(0.36, 0.40, 0.66)
+	var glow := GameState.morning_glow(t) * Settings.night_strength()
+	if glow > 0.0:
+		# Sunrise: a soft rose dawn before the sun, then orange-gold light that
+		# fades to plain day by mid-morning. Never night-dark.
+		var gold := Color(1.0, 0.82, 0.60) if not gang else Color(0.98, 0.78, 0.64)
+		var dawn := Color(0.80, 0.66, 0.72) if not gang else Color(0.70, 0.60, 0.70)
+		var col := day_col.lerp(gold, glow * 0.85)
+		return col.lerp(dawn, clampf(dark / GameState.DAWN_DARK, 0.0, 1.0) * 0.85)
 	if dark < 0.35:
 		return day_col.lerp(dusk_col, dark / 0.35)
 	return dusk_col.lerp(night_col, (dark - 0.35) / 0.65)
@@ -1509,7 +1477,7 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 				glow.lights.append([s, 34.0, s.texture.get_height() * scale * 0.7])
 				break
 	if group == "buildings":
-		_bprops.append([name, c, extra_w])
+		_bprops.append([name, c, extra_w, s])
 	if solid:
 		# Base row always; big structures (buildings, barns, huts) also block the
 		# rows their body covers so you can't walk "into" them. Trees stay 1 row.
@@ -2447,20 +2415,27 @@ func player_down(reason := "hurt") -> void:
 		GameState.run["flags"]["guest_out_day"] = int(GameState.run["day"])
 		GameState.run["energy"] = int(GameState.run["max_energy"]) / 2
 		GameState.run["hp"] = maxi(int(GameState.run["hp"]), int(GameState.run["max_hp"]) / 2)
-	else:
-		GameState.sleep(true)
+	var evening := false
+	if not Net.visiting():
+		evening = Faint.to_evening(reason)  # before 10pm: come round at 10pm, same day
+		if not evening:
+			GameState.sleep(true)
 	if clinic:
 		var where := "in the mines" if mines else "out there"
 		var cause := "You'd pushed yourself past empty" if reason == "tired" else ("It was far too late to be down there" if reason == "late" else "You were hurt badly")
 		var bill := ("Clinic bill: ◆%d." % fee) if fee > 0 else "No charge this time."
 		# Shown by the HUD when the clinic loads (Hud._show_clinic_note).
 		var finder := "A miner" if mines else "A passer-by"
-		var nurse := "the night nurse" if GameState.run["flags"].has("juniper_gone") else "Juniper"
-		GameState.run["flags"]["clinic_note"] = "%s %s. %s found you and carried you to the clinic, where %s kept you overnight. %s" % [cause, where, finder, nurse, bill]
+		var nurse := "the night nurse" if GameState.run["flags"].has("juniper_gone") or evening else "Juniper"
+		var kept := "patched you up. It's 10pm now: get home to bed" if evening else "kept you overnight"
+		GameState.run["flags"]["clinic_note"] = "%s %s. %s found you and carried you to the clinic, where %s %s. %s" % [cause, where, finder, nurse, kept, bill]
 		GameMap.next_interior = "clinic"
 		go_to("interior", CLINIC_SPAWN, "down", true)
 		return
-	GameState.run["flags"]["wake_note"] = ("Someone found you and carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "Someone found you and carried you home to bed."
+	if evening:
+		GameState.run["flags"]["wake_note"] = ("You come round on your own bed at 10pm, aching. Someone carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "You come round on your own bed at 10pm, aching. Someone carried you home. Get some proper sleep."
+	else:
+		GameState.run["flags"]["wake_note"] = ("Someone found you and carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "Someone found you and carried you home to bed."
 	go_to("house", Vector2(5 * TILE + 8, 5 * TILE), "down", true)
 
 
@@ -2827,6 +2802,8 @@ func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> v
 	if not force and Campaign.blocks(self, scene):
 		return
 	_transitioning = true
+	if scene == "interior":
+		PlaceNames.entering(self)  # the HUD labels the room as its door read
 	# A creak only for real doors (in or out of a building, a mine), not road edges or ferries.
 	if not force and (scene.contains("house") or scene.contains("interior") or scene.contains("mine") or scene_id() in ["house", "interior", "mine"]):
 		Music.instance(get_tree()).sfx("door")
