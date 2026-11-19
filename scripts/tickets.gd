@@ -12,6 +12,10 @@ extends RefCounted
 ##   Tickets.payout(game, n)       what a play that scored n tickets really pays (soft cap
 ##                                 and cap per game from tools/gen_rec.py PAYOUT)
 ##   Tickets.claw_pool(fallback)   the claw machine's [item, weight] list (gen_rec CLAW_POOL)
+##   Tickets.cond_ok(when)         quest/event condition keys for the rec (GameState._cond_ok):
+##       "arcade_ms": id or [ids]   ArcadeHub milestones reached
+##       "rec_best": [game, score]  best score in a game (bowling, stack, whack...)
+##       "tickets_won": n           tickets won in all (every source)
 ##
 ## Lives in run["arcade"] = {"tickets": int, "best": {game: score},
 ##   "earned": {source: total}, "plays": {game: n}, "bought": {prize: n}}.
@@ -181,8 +185,11 @@ static func lock_text(prize_id: String) -> String:
 		return "Play %d arcade games (%d/%d)" % [int(arc["plays"]), arcade_plays(), int(arc["plays"])]
 	if arc.has("games") and arcade_games() < int(arc["games"]):
 		return "Try %d different cabinets (%d/%d)" % [int(arc["games"]), arcade_games(), int(arc["games"])]
-	if need.has("ms") and not ArcadeHub.milestone(str(need["ms"])):
-		return str(ArcadeHub.MILESTONES.get(str(need["ms"]), str(need["ms"])))
+		return "Try %d different cabinets" % int(arc["games"])
+	var ms: Variant = need.get("ms", [])
+	for id in (ms if ms is Array else [ms]):
+		if not ArcadeHub.milestone(str(id)):
+			return str(ArcadeHub.MILESTONES.get(str(id), str(id)))
 	if need.has("once") and bought(prize_id) > 0:
 		return "Already yours"
 	if need.has("weekly") and int((_st()["week"] as Dictionary).get(prize_id, [-1, 0])[0]) == week() \
@@ -190,6 +197,22 @@ static func lock_text(prize_id: String) -> String:
 		var left := 7 - (maxi(0, int(GameState.run.get("day", 1)) - 1) % 7)
 		return "Sold out this week (more in %d day%s)" % [left, "" if left == 1 else "s"]
 	return ""
+
+
+## The rec's condition keys (GameState._cond_ok asks here; keys it doesn't know pass).
+static func cond_ok(when: Dictionary) -> bool:
+	if when.has("arcade_ms"):
+		var ms: Variant = when["arcade_ms"]
+		for id in (ms if ms is Array else [ms]):
+			if not ArcadeHub.milestone(str(id)):
+				return false
+	if when.has("rec_best"):
+		var rb: Array = when["rec_best"]
+		if best_score(str(rb[0])) < int(rb[1]):
+			return false
+	if when.has("tickets_won") and earned() < int(when["tickets_won"]):
+		return false
+	return true
 
 
 static func bought(prize_id: String) -> int:

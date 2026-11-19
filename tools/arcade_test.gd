@@ -215,6 +215,7 @@ func _run() -> void:
 
 	# --- Duck Pond ---------------------------------------------------------
 	var gl := _open("gallery") as ArcadeGallery
+	gl.rng.seed = 4242  # fixed ducks: an unseeded run could put a frog in front of an aimed cork
 	_frames(gl, 8)
 	_tap_action(gl, "a")
 	check(gl.state == "play", "gallery starts")

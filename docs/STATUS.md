@@ -49,6 +49,14 @@
 - **Ground floor:** carpet under the cabinets and pinballs with a brass (Hall: violet) trim; posters beside the window; joystick and star neon in the gaps between cabinets (steady hum, the odd flicker); new pieces placed off every stand and usable cell.
 - **Light:** `RecGlow` (scripts/rec_glow.gd) throws coloured pools and halos from cabinets, claw, jukebox, vending, pinballs, booth, counters, neon and the lane pin decks (blacklight down the lanes in the Rec Hall); faint by day, full after dark, while `GameMap.sky_tint` dims the rec rooms to a cool tint (`RecGlow.tint`) instead of the lamplit house tint. Town lot: lit windows, doors and sign after dark (NightGlow).
 - Test: `tools/rec_test.gd` checks decor art, decor off stands/things, the light layer, day/night tint and neon off the window.
+## 2026-11-19 — CONDUCT 2 (c2_14): rec/arcade integration
+- **Arcade feeds quests:** six new villager quests (Pip: Block Jumper level 3; Theo: Crystal Stack 3,000; Wren jr: Duck Pond 300; Sal: Whack-a-Grump 400; Maple: league night 150 after Tobin's bet; Alder: try every cabinet), offered after your first visit. New condition keys `arcade_ms` / `rec_best` / `tickets_won` (`Tickets.cond_ok`, read by `GameState._cond_ok`) and a `tickets` quest reward (named in the quest toast). Gangster wording for Sal and Alder.
+- **Hearts:** Tobin ♥2 and Pip ♥8 weekly gifts now add arcade tickets (5 / 10; `#tickets` in gen_heart_perks.py, only once the rec is open).
+- **Mail:** Maple's league-night letter three days after you first visit; the front desk writes when a prize you earned (score, plays, tickets, milestone) comes out at the counter, once per prize.
+- **Festivals:** joining a festival event gives +15 tickets once the rec is open (`RecCenter.festival_bonus`).
+- **Board:** the town community board pins what's on (league night / rec open / opening soon, community farm market day).
+- **High score board:** two pages; Block Jumper shown in levels cleared; arcade milestones x/21 with the next one named. Prizes can now be locked on milestones (`need.ms`).
+- **Saves:** `_migrate` creates run.arcade_hub too. Test: tools/rec_links_test.gd (in check.sh).
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.

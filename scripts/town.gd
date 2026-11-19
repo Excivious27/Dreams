@@ -430,6 +430,7 @@ func _festival_event(fest: String) -> void:
 				if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone"):
 					GameState.add_friend(str(id), 10)
 			hud.toast("Everyone you know +10 friendship", Color(1, 0.8, 0.9))
+	RecCenter.festival_bonus(self, key)  # joined in: the rec chips in tickets
 	player.frozen = false
 
 
@@ -455,6 +456,9 @@ func _board() -> void:
 	var head := "Pinned today (%s %d). Bring the goods to whoever posted it: a week for goods, two for crop orders." % [GameState.season().capitalize(), GameState.day_of_season()]
 	if jobs.is_empty():
 		head = "Nothing pinned today (%s %d). New jobs go up every morning." % [GameState.season().capitalize(), GameState.day_of_season()]
+	var notes := RecCenter.board_notes()  # what's on at the rec / community farm
+	if notes != "":
+		head += "\nAlso pinned: " + notes
 	d.say([{"who": "Community Board", "text": head, "choice": ch, "key": ""}])
 	await d.finished
 	if d.last_choice >= 0 and d.last_choice < jobs.size():

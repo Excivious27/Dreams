@@ -276,9 +276,10 @@
   },
   "8": {
    "weekly": {
-    "seashell": 3
+    "seashell": 3,
+    "#tickets": 10
    },
-   "text": "Pip's gang brings you shells each week"
+   "text": "Pip's gang brings shells and arcade tickets: 3 shells, 10 tickets a week"
   },
   "10": {
    "give": {
@@ -322,9 +323,10 @@
  "tobin": {
   "2": {
    "weekly": {
-    "seashell": 3
+    "seashell": 3,
+    "#tickets": 5
    },
-   "text": "Tobin trades shells: 3 each week"
+   "text": "Tobin trades shells and arcade tickets: 3 shells, 5 tickets a week"
   },
   "4": {
    "give": {

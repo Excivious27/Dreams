@@ -5,6 +5,7 @@ Also rewrites those perk texts in data/npcs.json to say exactly what happens.
 
 Each entry: text, and any of
   give   {item: n}   handed over once, when the heart level is first reached
+                     (#gold crystals/cash, #seedpack, #tickets Rec Center tickets)
   weekly {item: n}   arrives every Monday morning (day % 7 == 1) from then on
   season {item: n}   arrives on the first day of each season
   bonus  {hp|energy|mana: n}  one-time permanent max bonus
@@ -57,14 +58,14 @@ P = {
  "pip": {"2": ("Pip finds you coins: ◆20 each week", {"weekly": {"#gold": 20}}),
          "4": ("Pip's treasure map: a Map Scrap", {"give": {"map_scrap": 1}}),
          "6": ("Pip's secret: the fountain wish works (a Luck Potion)", {"give": {"luck_potion": 1}}),
-         "8": ("Pip's gang brings you shells each week", {"weekly": {"seashell": 3}}),
+         "8": ("Pip's gang brings shells and arcade tickets: 3 shells, 10 tickets a week", {"weekly": {"seashell": 3, "#tickets": 10}}),
          "10": ("Pip's lucky charm", {"give": {"paw_charm": 1}})},
  "wren_jr": {"2": ("Wren jr shares forage spots: a Tea Leaf each week", {"weekly": {"tea_leaf": 2}}),
              "4": ("A frog friend (it eats the bugs: +10 max energy)", {"bonus": {"energy": 10}}),
              "6": ("Wren jr's garden: a seed pack each week", {"weekly": {"#seedpack": 1}}),
              "8": ("Wren jr's potion lesson: 2 Mana Potions", {"give": {"mana_potion": 2}}),
              "10": ("Wren jr's wish: 2 Wishfruit", {"give": {"wishfruit": 2}})},
- "tobin": {"2": ("Tobin trades shells: 3 each week", {"weekly": {"seashell": 3}}),
+ "tobin": {"2": ("Tobin trades shells and arcade tickets: 3 shells, 5 tickets a week", {"weekly": {"seashell": 3, "#tickets": 5}}),
            "4": ("Tobin's beach map: a Map Scrap", {"give": {"map_scrap": 1}}),
            "6": ("Tobin's kite day: +10 max energy", {"bonus": {"energy": 10}}),
            "8": ("Tobin's crew finds you ◆30 a week", {"weekly": {"#gold": 30}}),
