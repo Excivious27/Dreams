@@ -6,7 +6,7 @@ The shared memory between Tom's two Claude accounts (Team and personal). Tom swi
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`. Times in Pacific.
 
-- **Last update:** 2026-11-18 22:40 PT, Team account (helper chat: CONDUCT spelled out; no game files touched)
+- **Last update:** 2026-11-18 22:42 PT, Team account (helper chat: CONDUCT step 3 widened per Tom; no game files touched)
 - **In progress:** the Team game chat is mid-way through Round 13 (art run through dreams-image plus new features; see the top of `docs/STATUS.md`). From its next push on, it keeps this Baton current itself.
 - **Next step:** finish Round 13 as recorded in STATUS.md (slice and wire the new art, check.sh, push).
 - **Jobs running elsewhere:** none recorded.
@@ -18,6 +18,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-18: CONDUCT step 3 = every fix AND all open work Claude can do alone: all art, all audio, any work identified as needed anywhere.
 - 2026-11-18: CONDUCT spelled out in full under Tom's commands; both accounts run it the same way.
 - 2026-11-18: Handoffs are automatic; Tom never writes or sends one. Each chat keeps this file current itself.
 - 2026-11-18: Both accounts use the same Claude Project instructions (below) so every new chat starts on Dreams.
@@ -84,7 +85,7 @@ When Tom sends **CONDUCT** (alone or with a focus), run the whole cycle below to
 
 1. **Fresh 20-agent audit.** Start 20 new sub-agents (never reuse earlier findings), each auditing a different part of the game: systems, story and writing (both arcs), balance and economy, UI and controls vs Stardew, maps vs Sun Haven openness, art consistency and missing art, audio, performance on phone and web, multiplayer, saves and migrations, bugs and crashes. Each lists concrete work or fixes Claude can do.
 2. **20-bot playtest.** Run the bot harness (`tools/bots.sh`, 20 bots) plus the scripted playtests (`tools/playtest.gd`, story, co-op), look at the screenshots, and add every failure and oddity to the list.
-3. **Do all of it.** Complete every recommended fix and piece of work Claude can do alone: code, data, writing, balance. Generate and wire in the art and audio the work needs (dreams-image, ACE Music, CC0) so nothing is left outstanding. Push in small steps, check.sh before every push, Baton updated each time.
+3. **Do every fix AND all open work Claude can do alone:** all art work, all audio work, and any and all work identified as needed on the game in any way (from the audit, the bots, the Baton, STATUS.md, the guides, MISSING-ART.md, plans agreed but not started). That includes code, data, writing, balance, and generating and wiring in art and audio (dreams-image, ACE Music, CC0), so nothing Claude can do is left outstanding. Push in small steps, check.sh before every push, Baton updated each time.
 4. **Re-verify.** Rerun check.sh, the playtests and the bots on the finished code; fix what they find; confirm the web deploy is live.
 5. **Deliver the full package, 100% complete and up to date,** as one artifact and as files sent directly in the chat (not only repo links):
     - progress report file (what the audit and bots found, what was fixed, what is still open and why);

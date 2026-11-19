@@ -9,7 +9,7 @@
   - Record what the other account would need to know, in the same push: any rule, preference, decision, answer or idea Tom gives in chat (→ Tom's working rules or Decisions), jobs still running elsewhere (ACE song ids not yet imported, images not yet sliced, deploys), plans agreed but not started, and anything Tom is waiting on.
   - When a piece of work ends, add one line to the HANDOFF log (newest first; keep 30 lines, roll older ones into STATUS.md).
   - Tom may still send **HANDOFF**: then also reply with a 3-line summary. He doesn't have to.
-- **CONDUCT** (Tom's command): run the full cycle in `docs/HANDOFF.md` → Tom's commands → CONDUCT (fresh 20-agent audit, 20-bot playtest, do every fix Claude can, generate and wire in needed art/audio, re-verify, then deliver progress report + every art prompt still needed + the full guide as files in the chat). Never a lighter version.
+- **CONDUCT** (Tom's command): run the full cycle in `docs/HANDOFF.md` → Tom's commands → CONDUCT (fresh 20-agent audit, 20-bot playtest, do every fix AND all open work Claude can do alone (all art, all audio, any work identified as needed anywhere), re-verify, then deliver progress report + every art prompt still needed + the full guide as files in the chat). Never a lighter version.
 - Godot 4.5.1, GDScript, portrait 270×480, `canvas_items` / `keep`, nearest filter. Character strips are 2x detail, drawn at 0.5 scale (`CharacterLibrary`).
 - Input goes through actions `up/down/left/right/a/b/menu` (`InputSetup`); `TouchControls` presses the same actions.
 - Saves go to `user://` (`SaveGame`).
