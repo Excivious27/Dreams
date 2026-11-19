@@ -134,3 +134,5 @@ Fully working game controller support (Xbox-layout mapping; also PlayStation, Sw
 - Phone specifics: test the Gamepad API path in mobile Chrome/Safari (first button press activates it), portrait and landscape with a controller, and that the phone screen layout still works.
 - CONDUCT 17 (multiplayer) checks controllers per player in co-op and versus (each player's own pad), plus local couch play if it fits.
 - Tests: a headless controller test that drives every screen with simulated joypad events.
+
+- Steam Deck (Tom 15:52): when the game is ready to publish, it must be Steam Deck compatible (aim for "Verified"): Linux build (or Proton-clean Windows build), 1280x800 landscape layout (DisplayMode wide view), all text readable at that size (min ~9 px font at 800 tall), full controller play with Steam Deck button prompts and no keyboard/mouse needed (on-screen keyboard for text entry via Steam), default controller config, suspend/resume safe, good performance at 30-60 fps on the Deck. Built in CONDUCT 9 with the controller work; checked again with the Steam build.
