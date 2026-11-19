@@ -27,6 +27,14 @@ var _anim_t := 0.0
 var _knock := Vector2.ZERO
 var _alive := true
 var _attacking := 0.0
+var _power_t := 0.0  # a Gift move's power pose is playing (Marked: "power" strip)
+
+
+## A Gift move's tell: play the "power" strip once (no-op without one).
+func play_power() -> void:
+	if _sprite and _sprite.sprite_frames.has_animation("power"):
+		_power_t = _sprite.sprite_frames.get_frame_count("power") / maxf(1.0, _sprite.sprite_frames.get_animation_speed("power"))
+		_sprite.play("power")
 var _sprite: AnimatedSprite2D
 var _shadow_r := 5.0
 var _stun := 0.0        # staggered after a hit: no AI, no attacks
@@ -190,7 +198,9 @@ func setup(k: String, tier_override := -1) -> void:
 			anims["attack"] = "special"
 		if Art.has(group, "die"):
 			anims["die"] = "die"
-		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0, "die": 10.0}, {"attack": false, "hurt": false, "die": false})
+		if ed.has("gift") and Art.has(group, "power"):
+			anims["power"] = "power"
+		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0, "die": 10.0, "power": 10.0}, {"attack": false, "hurt": false, "die": false, "power": false})
 		_sprite.animation = "idle"
 		var s := 1.1 if group == "enemies/grump" and k == "big_grump" else 0.5  # the old stand-in was the little grump scaled up
 		_art_scale = float(ed.get("scale", 1.0))  # regional bosses can stand taller (data "scale")
@@ -378,8 +388,9 @@ func _process(delta: float) -> void:
 			_sprite.play("attack")
 		_attacking = 0.45
 	_attacking = maxf(0.0, _attacking - delta)
+	_power_t = maxf(0.0, _power_t - delta)
 	if _sprite:
-		var want := "hurt" if _hit_flash > 0.0 else ("attack" if _attacking > 0.0 else ("walk" if _dir != Vector2.ZERO and not stunned else "idle"))
+		var want := "hurt" if _hit_flash > 0.0 else ("power" if _power_t > 0.0 else ("attack" if _attacking > 0.0 else ("walk" if _dir != Vector2.ZERO and not stunned else "idle")))
 		if not _sprite.sprite_frames.has_animation(want):
 			want = "idle" if want != "attack" or not _sprite.sprite_frames.has_animation("walk") else "walk"
 		if _sprite.animation != want:
