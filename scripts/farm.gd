@@ -22,6 +22,14 @@ const LAKE_EXIT := Rect2i(0, 28, 2, 4)
 ## Animal pens (kept clear of debris; the barn pen stops short of the cliff at x38).
 const COOP_PEN := Rect2i(26, 9, 6, 3)
 const BARN_PEN := Rect2i(32, 6, 5, 3)
+## The river: in from the west edge, under the footbridge (the house path's line)
+## and the stone bridge (the town road), past the pond and out the east edge.
+const RIVER_PTS := [Vector2(0, 40), Vector2(18, 45), Vector2(36, 48), Vector2(50, 52), Vector2(71, 45)]
+const BRIDGE_X := [12, 35]   # left column of each 2-wide bridge deck
+const RIVER_FISH := ["minnow", "trout", "carp", "catfish", "salmon", "eel"]
+## Raised ground: the old terrace gets a second, higher tier; a knoll by the pond.
+const UPPER_C := Vector2(62.0, 5.0)
+const KNOLL_C := Vector2(63.5, 36.0)
 ## Buildable things: name -> {cell, w, h, cost, group, sprite, thing}
 const BUILDS := {
 	"workbench": {"cell": Vector2i(6, 13), "w": 1, "h": 1, "cost": {"wood": 20}, "group": "props", "sprite": "workbench3", "thing": "workbench", "label": "Workbench (20 wood)"},
@@ -45,6 +53,9 @@ const BUILDS := {
 var _pond_cells := {}
 var _ledge_cells := {}
 var _path_cells := {}
+var _river := {}         # every river cell (the water under the bridges too)
+var _bridge_cells := {}  # walkable deck cells over the river
+var _stair_keep := {}    # plateau stairs and the cells around them: kept clear
 var _crystal: Node2D
 var _fishing := false
 var _crystal_t := 0.0
@@ -63,7 +74,7 @@ func build() -> void:
 	cols = 72
 	rows = 60
 	pad = 6
-	border = {"n": "trees", "s": "trees", "w": "trees", "e": "cliff"}
+	border = "trees"  # a forest ring all round (the old east rock band read as grey slabs)
 	music_track = "farm"
 	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 3 * TILE), "down", "▼ town")
 	add_exit(MEADOW_EXIT, "meadow", Vector2(2 * TILE, 10 * TILE), "right", "meadow ▶")
@@ -104,6 +115,8 @@ func build() -> void:
 	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(37, 2, 1, 10), Rect2i(36, 12, 2, 18), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
 	for c: Vector2i in _pond_cells:
 		_path_cells.erase(c)
+	_make_river()
+	_make_heights()
 	# Everything you've built so far.
 	var builds: Dictionary = GameState.run.get("builds", {})
 	for id: String in builds:
@@ -141,6 +154,168 @@ func build() -> void:
 	_place_debris()
 
 
+func _river_y(x: float) -> float:
+	var y: float = RIVER_PTS[0].y
+	for i in RIVER_PTS.size() - 1:
+		var a: Vector2 = RIVER_PTS[i]
+		var b: Vector2 = RIVER_PTS[i + 1]
+		if x <= b.x or i == RIVER_PTS.size() - 2:
+			y = lerpf(a.y, b.y, clampf((x - a.x) / (b.x - a.x), 0.0, 1.0))
+			break
+	return y + 2.2 * sin(x * 0.17 + 1.1) + 1.0 * sin(x * 0.41 + 0.3)
+
+
+## The river's shape: a winding centre line with a width that breathes, run
+## straight and narrow across each bridge. Deterministic, same on every visit.
+func _make_river() -> void:
+	var centre := func(x: float) -> float:
+		var y := _river_y(x)
+		for bx: int in BRIDGE_X:
+			var d := absf(x - (bx + 1.0))
+			if d < 4.0:
+				var t := maxf(0.0, (d - 2.0) / 2.0)
+				y = lerpf(_river_y(bx + 1.0), y, t)
+		return y
+	var keep_out := {}  # never under a building (built or not yet), the house, pens, the pond's bank or the track
+	keep_out.merge(cells_of([HOUSE.grow(2), COOP_PEN.grow(1), BARN_PEN.grow(1), GameState.GREENHOUSE_PLOT.grow(1), Rect2i(0, 28, cols, 4)]))
+	for bid: String in Builds.all():
+		var bd: Dictionary = Builds.all()[bid]
+		if bd.has("cell"):
+			var bc := Vector2i(int(bd["cell"][0]), int(bd["cell"][1]))
+			var bh := int(bd.get("h", 1))
+			keep_out.merge(cells_of([Rect2i(bc.x - 1, bc.y - bh, int(bd.get("w", 0)) + 3, bh + 2)]))
+	for pc: Vector2i in _pond_cells:
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				keep_out[pc + Vector2i(dx, dy)] = true
+	var cells := {}
+	var x := -1.0
+	while x < cols + 1.0:
+		var y0: float = centre.call(x)
+		var hw := 1.75 + 0.35 * sin(x * 0.29 + 2.0)
+		for bx: int in BRIDGE_X:
+			if absf(x - (bx + 1.0)) < 4.0:
+				hw = minf(hw, 1.5)
+		for cy in range(int(y0 - hw - 1.0), int(y0 + hw + 2.0)):
+			for cx in range(int(x - hw - 1.0), int(x + hw + 2.0)):
+				if cx < 0 or cy < 0 or cx >= cols or cy >= rows:
+					continue
+				if Vector2(cx + 0.5 - x, cy + 0.5 - y0).length() <= hw:
+					cells[Vector2i(cx, cy)] = true
+		x += 0.25
+	for c: Vector2i in cells.keys():
+		if keep_out.has(c):
+			cells.erase(c)
+	_river = WorldGen.smooth_cells(cells)
+	# Bridge decks: the two columns under each bridge are walkable planks/stone.
+	for bx: int in BRIDGE_X:
+		for c: Vector2i in _river:
+			if c.x == bx or c.x == bx + 1:
+				_bridge_cells[c] = true
+	for c: Vector2i in _river:
+		_path_cells.erase(c)
+		if _bridge_cells.has(c):
+			blocked.erase(c)
+			continue
+		set_thing(c.x, c.y, {"type": "water", "river": true, "hint": "A: fish" if GameState.has_tool("rod") else ""})
+	# One body of water with the band: the river runs on out through the trees.
+	border_water_extra = _river.duplicate()
+	border_water_shore = "river"
+
+
+## Old saves: a field, sprinkler or chest that now sits in the river (or on a new
+## hill's rim, rock face or stairs). Crops give
+## their seed back; placed things move to the nearest dry, free cell (a chest's
+## contents go with it). Buildings never stand there (the river avoids them).
+func _migrate_river() -> void:
+	if Net.visiting():
+		return  # the host's farm is the host's to migrate
+	var farm: Dictionary = GameState.run["farm"]
+	# New solid ground: the river, and the hills' rims and rock faces.
+	var solid := _river.duplicate()
+	for p: Dictionary in plateaus:
+		for pc: Vector2i in p["cells"]:
+			for c2: Vector2i in [pc, pc + Vector2i(0, 1)]:
+				if blocked.has(c2):
+					solid[c2] = true
+		for st: Vector2i in p["stairs"]:
+			solid[st] = true  # no soil or sprinkler on a flight of stairs
+	for c: Vector2i in solid:
+		if farm.has("%d,%d" % [c.x, c.y]):
+			_clear_tile(c)  # a crop's seed comes back
+	var placed: Dictionary = GameState.run.get("placed", {})
+	for pk in placed.keys():
+		var xy := str(pk).split(",")
+		var pc := Vector2i(int(xy[0]), int(xy[1]))
+		if not solid.has(pc):
+			continue
+		var to := Vector2i(-1, -1)
+		for rad in range(1, 12):
+			for dy in range(-rad, rad + 1):
+				for dx in range(-rad, rad + 1):
+					var n := pc + Vector2i(dx, dy)
+					if to.x < 0 and in_content(n) and not solid.has(n) and not blocked.has(n) and not things.has(n) and not placed.has("%d,%d" % [n.x, n.y]) and not _path_cells.has(n) and str(farm.get("%d,%d" % [n.x, n.y], {}).get("crop", "")) == "":
+						to = n
+			if to.x >= 0:
+				break
+		if to.x < 0:
+			continue
+		var nk := "%d,%d" % [to.x, to.y]
+		placed[nk] = placed[pk]
+		placed.erase(pk)
+		farm.erase(nk)  # (never a crop: the pick above skips planted cells)
+		var chests: Dictionary = GameState.run.get("chests", {})
+		if chests.has("p:" + str(pk)):
+			chests["p:" + nk] = chests["p:" + str(pk)]
+			chests.erase("p:" + str(pk))
+
+
+## Tiered ground: a second, higher tier on the north-east terrace and a knoll
+## by the pond, each with stairs on its south face.
+func _make_heights() -> void:
+	var up := WorldGen.mesa(self, UPPER_C, 6.5, 3.4, 611, 2)
+	var room := {}
+	for c: Vector2i in up:
+		if c.x >= LEDGE_X0 + 3 and c.y <= LEDGE_Y - 3:
+			room[c] = true  # its face and stairs land on the terrace top (y 9-10 stay open)
+	up = WorldGen.smooth_cells(room)
+	var up_ramps := [Vector2i(int(UPPER_C.x) - 1, 0), Vector2i(int(UPPER_C.x), 0)]
+	_add_hill(up, up_ramps)
+	var knoll := WorldGen.mesa(self, KNOLL_C, 5.0, 3.4, 612, 2)
+	for c: Vector2i in knoll.keys():
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				var n := c + Vector2i(dx, dy)
+				if _river.has(n) or _pond_cells.has(n) or _path_cells.has(n):
+					knoll.erase(c)
+	knoll = WorldGen.smooth_cells(knoll)
+	_add_hill(knoll, [Vector2i(int(KNOLL_C.x) - 1, 0), Vector2i(int(KNOLL_C.x), 0)])
+	_migrate_river()
+
+
+## add_plateau with the stairs put on the lowest south-edge cells of the given
+## columns (ramps' y is found here), and their landing kept clear of debris.
+func _add_hill(cells: Dictionary, ramp_cols: Array) -> void:
+	if cells.size() < 10:
+		return
+	var ramps: Array = []
+	for rc: Vector2i in ramp_cols:
+		var best := -1
+		for c: Vector2i in cells:
+			if c.x == rc.x and not cells.has(c + Vector2i(0, 1)):
+				best = maxi(best, c.y)
+		if best >= 0:
+			ramps.append(Vector2i(rc.x, best))
+	if ramps.size() != 2 or (ramps[0] as Vector2i).y != (ramps[1] as Vector2i).y:
+		ramps = WorldGen.pick_ramps(self, cells)  # a stepped edge: the best flat pair
+	add_plateau(cells, ramps)
+	var p: Dictionary = plateaus[plateaus.size() - 1]
+	for s: Vector2i in p["stairs"]:
+		for dy in range(-2, 3):
+			for dx in range(-1, 2):
+				_stair_keep[s + Vector2i(dx, dy)] = true
+
+
 ## Nothing grows under a building or the plans board: a crop there gives its seed back.
 func _clear_tile(c: Vector2i) -> void:
 	var pk := "%d,%d" % [c.x, c.y]
@@ -158,6 +333,12 @@ func _place_debris() -> void:
 	var keep_clear := {}
 	for kc: Vector2i in cells_of([Rect2i(PLANS.x - 2, PLANS.y - 1, 5, 4)]):
 		keep_clear[kc] = true  # the plans board stays in view
+	keep_clear.merge(_stair_keep)  # every flight of stairs and its landing
+	for kc: Vector2i in cells_of([Rect2i(STAIRS_X - 1, LEDGE_Y - 2, 4, 5)]):
+		keep_clear[kc] = true  # the terrace stairs
+	for bc: Vector2i in _bridge_cells:
+		for dy in range(-2, 3):
+			keep_clear[bc + Vector2i(0, dy)] = true  # both ends of each bridge
 	for bid: String in GameState.run.get("builds", {}):
 		var bb := _build_rec(bid)
 		if not bb.is_empty():
@@ -291,6 +472,8 @@ func after_ready() -> void:
 		_partner_scene.call_deferred()
 	WorldGen.add_backdrop(self, "hills")
 	_place_props()
+	WorldGen.dress_band(self, 5150)
+	WorldGen.clear_stairs.call_deferred(self)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		_make_crystal()
 	if not bool(GameState.run["intro_done"]):
@@ -337,7 +520,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"water":
 			if GameState.held_tool() == "rod" and not _fishing:
 				# The farm pond uses the same fishing as everywhere else.
-				later(_pond_fish.bind(c))
+				later(_pond_fish.bind(c, bool(thing.get("river", false))))
 			elif GameState.has_tool("rod"):
 				hud.toast("Hold the fishing rod.")
 			return true
@@ -451,7 +634,7 @@ func _build_rec(id: String) -> Dictionary:
 
 
 func _tillable(c: Vector2i) -> bool:
-	if not in_content(c) or blocked.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
+	if not in_content(c) or blocked.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c) or _river.has(c) or _stair_keep.has(c):
 		return false
 	if c.y <= LEDGE_Y and c.x >= LEDGE_X0:
 		return false  # the terrace is for later
@@ -1078,10 +1261,11 @@ func _resonator(sel: String) -> void:
 
 # ---- fishing -----------------------------------------------------------------
 
-func _pond_fish(c: Vector2i) -> void:
+func _pond_fish(c: Vector2i, river := false) -> void:
 	_fishing = true
 	# The pond keeps the common fish; the rare ones live in the lake, the sea and at night.
-	await fish_at(c, ["minnow", "sunfish", "carp", "bass", "trout", "catfish"])
+	# The river runs cold and quick: trout and salmon, an eel at the bottom.
+	await fish_at(c, RIVER_FISH if river else ["minnow", "sunfish", "carp", "bass", "trout", "catfish"])
 	_fishing = false
 
 
@@ -1206,22 +1390,29 @@ func draw_map() -> void:
 		av[Vector2i(int(kp[0]), int(kp[1]))] = true
 	for pc: Vector2i in _path_cells:
 		av[pc] = true
+	av.merge(_bridge_cells)
 	if Builds.is_built("greenhouse"):
 		for gc: Vector2i in cells_of([GameState.GREENHOUSE_PLOT]):
 			av[gc] = true
 	WorldGen.draw_ground_detail(self, 21, 0.05, av)
 	draw_ground("dirt", _path_cells)
 	# Terrace: a lighter, drier grass up top and a cliff lip along the ledge.
-	draw_ground("stone", cells_of([Rect2i(LEDGE_X0 + 1, 1, 6, 3)]))
+	# (an old paved yard: soft-edged, not a hard grey box)
+	var yard := cells_of([Rect2i(LEDGE_X0 + 1, 1, 6, 3)])
+	for yc: Vector2i in [Vector2i(LEDGE_X0 + 1, 1), Vector2i(LEDGE_X0 + 6, 3)]:
+		yard.erase(yc)
+	if not soft_ground(yard, "ruin_floor"):
+		draw_ground("stone", yard)
 	draw_water(_pond_cells, "grass")
 	if Art.has("tiles", "t_cliffg"):
+		# The top runs on under the border band (no rim drawn along the map edge);
+		# the blocked west column belongs to it, so its rock wall sits on that column.
 		var top := {}
-		for y in range(0, LEDGE_Y):
-			for x in range(LEDGE_X0 + 1, cols):
+		for y in range(-pad, LEDGE_Y):
+			for x in range(LEDGE_X0, cols + pad):
 				top[Vector2i(x, y)] = true
-		for y in range(0, 3):
-			top[Vector2i(LEDGE_X0, y)] = true
 		draw_plateau(top, "cliffg", {Vector2i(STAIRS_X, LEDGE_Y): true, Vector2i(STAIRS_X + 1, LEDGE_Y): true})
+	draw_plateaus()  # the terrace's upper tier and the knoll
 	if not Art.has("tiles", "t_cliffg"):
 		Art.draw_prop(self, "props", "cliff_stairs_down", Vector2((STAIRS_X + 1) * TILE, (LEDGE_Y + 1) * TILE))
 	draw_exits()
@@ -1364,13 +1555,66 @@ func _place_props() -> void:
 	# Background life only: birds, butterflies, a rabbit. No livestock until you build for it.
 	WorldGen.add_critters(self, Rect2i(2, 2, cols - 4, rows - 4), 15, 14, ["sparrow", "sparrow", "butterfly_orange", "butterfly_yellow", "bee", "rabbit", "squirrel", "pigeon"])
 	# Stray pieces of the old world: a few boulders and a dead tree on the terrace.
-	WorldGen.fruit_trees(self, Rect2i(40, 3, 30, 6), 44, 4)
+	WorldGen.fruit_trees(self, Rect2i(40, 3, 30, 6), 44, 4, _stair_keep)
 	prop("nature", "rock_l", Vector2i(44, 5))
-	prop("nature", "rock_m", Vector2i(60, 7))
-	prop("nature", "tree_bare" if GameState.season() == "winter" else "dead_tree_m", Vector2i(66, 4))
+	for rp: Vector2i in [Vector2i(58, 4), Vector2i(66, 4)]:
+		if not blocked.has(rp) and not things.has(rp) and not _stair_keep.has(rp):
+			prop("nature", "rock_m" if rp.x == 58 else ("tree_bare" if GameState.season() == "winter" else "dead_tree_m"), rp)
+	_place_river_props()
 	prop("props", "signpost_1" if Art.has("props", "signpost_1") else "signpost", Vector2i(32, 56))
 	if Art.has("props", "abandoned_cart"):
 		prop("props", "abandoned_cart", Vector2i(60, 50), 2)
+
+
+## Bridges over the river, reeds and cattails along its banks, lily pads in the
+## slack water, and the river's wildlife.
+func _place_river_props() -> void:
+	for bx: int in BRIDGE_X:
+		var ys: Array = []
+		for c: Vector2i in _bridge_cells:
+			if c.x == bx:
+				ys.append(c.y)
+		if ys.is_empty():
+			continue
+		ys.sort()
+		var y0: int = ys[0]
+		var y1: int = ys[ys.size() - 1]
+		var stone := bx == BRIDGE_X[1]  # the town road gets the stone bridge
+		var nm := "bridge3_ns_3" if stone else "foot3_ns_a"
+		if not Art.has("props", nm):
+			nm = "bridge_wood2" if Art.has("props", "bridge_wood2") else "bridge"
+		var tex := Art.tex("props", nm)
+		if tex == null:
+			continue
+		# Sized so the deck is the path's width (2 cells) and spans the water bank to bank.
+		var sc := maxf(float(y1 - y0 + 3) * TILE / float(tex.get_height()), (4.3 if stone else 3.7) * TILE / float(tex.get_width()))
+		var rows_h := ceili(tex.get_height() * sc / TILE)
+		var sp := prop("props", nm, Vector2i(bx, y1 + 1), 1, 0.0, false, sc)
+		if sp:
+			walk_over(sp, rows_h)  # drawn under the player (y-sort from the top bank)
+	if GameState.look_se() == "winter":
+		return  # reeds die back; the river runs dark between snowy banks
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7171
+	for c: Vector2i in _river:
+		if _bridge_cells.has(c) or not in_content(c):
+			continue
+		var edge := false
+		for d: Vector2i in [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]:
+			if not _river.has(c + d):
+				edge = true
+		var r := rng.randf()
+		if edge and r < 0.16:
+			var nm: String = ["mk_reeds_2", "mk_reeds_3", "mk_cattail_1", "mk_cattail_2", "reeds2_0", "reeds2_2"][rng.randi_range(0, 5)]
+			if Art.has("props", nm):
+				prop("props", nm, c, 0, 2.0, false, 0.32)
+			elif Art.has("nature", nm):
+				prop("nature", nm, c, 0, 2.0, false)
+		elif not edge and r < 0.05 and Art.has("nature", "lily2_0"):
+			var lp := prop("nature", "lily2_%d" % rng.randi_range(0, 3), c, 0, -2.0, false)
+			if lp:
+				to_under(lp)
+	WorldGen.add_critters(self, Rect2i(2, 38, cols - 4, 18), 7172, 8, ["dragonfly", "frog", "heron", "duck", "dragonfly", "butterfly_blue"])
 
 
 func _animal(kind: String, c: Vector2i, pen: Rect2i = Rect2i(), is_baby := false, nm := "") -> void:

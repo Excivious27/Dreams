@@ -35,6 +35,23 @@ func build() -> void:
 			var n := WorldGen.fbm(float(x), float(y), sd, 7.0)
 			if n > 0.18:
 				_grove[c] = true
+	# A two-tier hill in the east clearing: the groves part round it.
+	var hav := {}
+	for pc0: Vector2i in _path_cells():
+		hav[pc0] = true
+	hav.merge(cells_of([Rect2i(SHRINE.x - 3, SHRINE.y - 3, 7, 7)]))
+	for e in exits:
+		hav.merge(cells_of([(e["rect"] as Rect2i).grow(3)]))
+	var hill: Array = WorldGen.tiered_hill(self, Vector2(38.5, 15.0), 6.5, 5.0, 6301, hav)
+	for c: Vector2i in hill[0]:
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				_grove.erase(c + Vector2i(dx, dy))
+	for p0: Dictionary in plateaus:
+		for st: Vector2i in p0["stairs"]:
+			for dy in range(0, 4):
+				_grove.erase(st + Vector2i(0, dy))  # the foot of each flight opens onto the clearing
+				_grove.erase(st + Vector2i(1, dy))
 	# Forage: a few per clearing, respawning (region pools + rarity).
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 61 + int(GameState.run["day"]) / 7
@@ -67,6 +84,7 @@ func _on_path(c: Vector2i) -> bool:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "forest")
+	WorldGen.clear_stairs.call_deferred(self)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 64
 	# Grove trees: every other cell, mix of mid trees, bigger ones in the middle of a mass.
@@ -247,6 +265,7 @@ func draw_map() -> void:
 	draw_ground("dirt", pc)
 	draw_water(_pond, "grass")
 	draw_tileset_rect("stone", Rect2i(10, 8, 5, 3), Color("9a9aa6"))
+	draw_plateaus()
 	draw_exits()
 	if not Art.has("nature", "forest_shrine"):
 		var p := cell_center(SHRINE)

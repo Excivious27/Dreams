@@ -23,7 +23,7 @@ const MAX_BEDS := 4
 
 const SEA_MAPS := ["beach", "docks", "bf_dockside", "colony_coral", "colony_kelp"]
 const WINDY_MAPS := ["mountain", "highlands", "sky", "station", "colony_ice", "quarry"]
-const CITY_MAPS := ["neon", "uptown", "docks", "hideout"]
+const CITY_MAPS := ["neon", "uptown", "docks", "hideout", "bf_neon_block"]
 const CAVE_MAPS := ["mine", "underground", "hollow_heart"]  # the quarry is an open pit: wind, not a cave drone
 const OWL_MAPS := ["farm", "forest", "meadow", "orchard_hills", "countryside", "lake"]
 const BIRDY_MAPS := ["forest", "orchard_hills", "meadow"]
@@ -134,7 +134,7 @@ func _evaluate() -> Dictionary:
 				out["birds_day"] = -16.0 - (4.0 if se == "fall" else 0.0)
 			if ph in ["dusk", "night"] and se in ["spring", "summer", "fall"] and not wet and id not in CITY_MAPS:
 				out["crickets"] = -14.0 - (4.0 if se == "spring" else 0.0)
-			if ph == "night" and se in ["spring", "summer"] and (near > 0.3 or id == "marsh"):
+			if ph == "night" and se in ["spring", "summer"] and (near > 0.3 or id in ["marsh", "bf_bog_crossing"]):
 				out["frogs"] = -16.0 + 6.0 * (near - 1.0)
 		if (se == "winter" and not deep) or id in WINDY_MAPS or w == "wind":
 			out["wind_soft"] = -10.0 if w == "wind" else -14.0

@@ -129,9 +129,16 @@ static func frames_for(id: String) -> SpriteFrames:
 			_alias(gsf, "walk", "walk_down" if gsf.has_animation("walk_down") else "idle")
 		if not gsf.has_animation("run"):
 			_alias(gsf, "run", "walk")
-		for pair in [["walk_down", "walk"], ["walk_up", "walk_down"], ["run_down", "run"], ["run_up", "run_down"], ["idle_down", "idle"], ["idle_up", "idle_down"], ["attack_down", "attack"], ["attack_up", "attack_down"], ["hurt", "idle"]]:
-			if not gsf.has_animation(str(pair[0])):
-				_alias(gsf, str(pair[0]), str(pair[1]))
+		# Toward/away walks never borrow the SIDE walk (that showed the penguin
+		# walking sideways while it moved down): they fall back to the front/back
+		# views, which the walker bobs (Player._moving_anim tells a 1-frame stand-in).
+		for pair in [["walk_down", ["view_front", "idle_down", "idle"]], ["walk_up", ["view_back", "idle_up", "walk_down"]], ["run_down", ["walk_down"]], ["run_up", ["walk_up"]], ["idle_down", ["idle"]], ["idle_up", ["view_back", "idle_down"]], ["attack_down", ["attack"]], ["attack_up", ["attack_down"]], ["hurt", ["idle"]]]:
+			if gsf.has_animation(str(pair[0])):
+				continue
+			for src: String in pair[1]:
+				if gsf.has_animation(src):
+					_alias(gsf, str(pair[0]), src)
+					break
 		if not gsf.has_animation("attack"):
 			_alias(gsf, "attack", "idle")
 		if not gsf.has_animation("view_front"):

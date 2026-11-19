@@ -257,7 +257,7 @@ func _process(delta: float) -> void:
 			_figure.scale.x = -1.0 if to.x < 0 else 1.0
 		elif _anim:
 			var a := "walk"
-			if absf(to.y) > absf(to.x):
+			if absf(to.y) >= absf(to.x):
 				var want := "walk_up" if to.y < 0 else "walk_down"
 				if _anim.sprite_frames.has_animation(want):
 					a = want

@@ -2,6 +2,7 @@ extends SceneTree
 ## Dev helper: 1:1 screenshots of a scene at given cells.
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/area_shot.gd -- /tmp/out scene:x:y [scene:x:y ...]
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 func _run() -> void:

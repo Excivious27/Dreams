@@ -336,6 +336,17 @@ func has_anim(a: String) -> bool:
 	return _anim != null and _anim.sprite_frames.has_animation(a)
 
 
+## A real walk cycle (2+ frames), not a one-frame stand-in alias.
+func _moving_anim(a: String) -> bool:
+	return has_anim(a) and _anim.sprite_frames.get_frame_count(a) > 1
+
+
+## Facing rule for every walker: sideways only when the horizontal part clearly
+## dominates; straight down, straight up and exact diagonals face down/up.
+static func horizontal_wins(v: Vector2) -> bool:
+	return absf(v.x) > absf(v.y) + 0.001
+
+
 func facing_dir() -> Vector2:
 	match facing:
 		"up": return Vector2.UP
@@ -534,8 +545,7 @@ func _physics_process(delta: float) -> void:
 	if TouchControls.dodge_pressed or (InputMap.has_action("dodge") and Input.is_action_just_pressed("dodge")):
 		TouchControls.dodge_pressed = false
 		if _dodge_cd <= 0.0 and _dodge_t <= 0.0 and not Dialogue.input_blocked() and map:
-			if GameState.run["energy"] >= 3:
-				GameState.run["energy"] = int(GameState.run["energy"]) - 2
+			if GameState.spend_for("dodge"):
 				_dodge_dir = (dir if dir != Vector2.ZERO else facing_dir()).normalized()
 				_dodge_t = 0.22
 				_dodge_cd = 0.6
@@ -561,6 +571,9 @@ func _physics_process(delta: float) -> void:
 	else:
 		_busy_t = 0.0
 
+	# Hoe / can held with a direction held: work a row (Stardew / Sun Haven).
+	if _work_walk(dir, delta):
+		return
 	if not Dialogue.input_blocked():
 		# Stardew keys: C/left click = tool, X/right click = check. "a" is the generic
 		# touch button (check first, tool otherwise). A press during a swing is buffered.
@@ -634,7 +647,7 @@ func _physics_process(delta: float) -> void:
 		elif anim_name.begins_with("hoe_") or anim_name.begins_with("water_") or anim_name.begins_with("axe_") or anim_name.begins_with("pickaxe_") or anim_name.begins_with("cast_") or anim_name.begins_with("reel_") or anim_name.begins_with("hold_") or anim_name.begins_with("eat_"):
 			# Tools: the work is done on the press; the swing can be walked out of
 			# after a third of a second so a row of tiles doesn't feel like treacle.
-			if _anim and _anim.is_playing() and not (_busy_t > 0.3 and dir != Vector2.ZERO and not anim_name.begins_with("cast_") and not anim_name.begins_with("reel_")):
+			if _anim and _anim.is_playing() and not (_busy_t > 0.3 and dir != Vector2.ZERO and not _ww_on and not anim_name.begins_with("cast_") and not anim_name.begins_with("reel_")):
 				return
 			_busy = false
 		else:
@@ -662,8 +675,8 @@ func _physics_process(delta: float) -> void:
 		spd_mult *= 1.3
 	if GameState.weather_today() in ["snow", "blizzard"] and map and map.has_sky:
 		spd_mult *= 0.9
-	if int(GameState.run["energy"]) < int(GameState.run["max_energy"]) * 0.12:
-		spd_mult *= 0.75  # running on empty
+	if GameState.exhausted():
+		spd_mult *= 0.85  # exhausted (under 15%): heavy feet, the HUD bar flashes red
 	var vd := vehicle_def()
 	if _veh and vehicle != "":
 		_veh_face()
@@ -685,7 +698,7 @@ func _physics_process(delta: float) -> void:
 		_swim_t += delta
 		if _swim_t > 2.0 and not Companion.has_ability("tail"):
 			_swim_t = 0.0
-			if not GameState.spend_energy(1):
+			if not GameState.spend_for("swim"):
 				map.player_down("tired")
 	elif mounted:
 		spd_mult *= (1.8 if running else 1.5) * (1.1 if Perks.flag("ride_fast") else 1.0) * (1.1 if Builds.is_built("stable") else 1.0)
@@ -724,6 +737,7 @@ func _physics_process(delta: float) -> void:
 	if dir == Vector2.ZERO and speed < 4.0:
 		velocity = Vector2.ZERO
 		_sprite.position.y = 0
+		_sprite.rotation = 0.0
 		_show_idle()
 		return
 
@@ -735,7 +749,7 @@ func _physics_process(delta: float) -> void:
 	elif mounted and has_anim("ride"):
 		pre = "ride"
 	if pre != "":
-		if absf(move_dir.x) >= absf(move_dir.y) * 0.9:
+		if Player.horizontal_wins(move_dir):
 			facing = "left" if move_dir.x < 0 else "right"
 			_apply("ride_run" if pre == "ride" and is_run and has_anim("ride_run") else pre, move_dir.x < 0)
 		else:
@@ -744,21 +758,30 @@ func _physics_process(delta: float) -> void:
 		if _anim:
 			_anim.speed_scale = 1.0
 		return
-	if absf(move_dir.x) >= absf(move_dir.y) * 0.9:
+	if Player.horizontal_wins(move_dir):
 		facing = "left" if move_dir.x < 0 else "right"
 		_sprite.position.y = 0
+		_sprite.rotation = 0.0
 		_apply("run" if is_run else "walk", move_dir.x < 0)
 	else:
+		# Vertical wins ties: a diagonal (or a thumb that drifts a little) shows
+		# the character walking toward / away from you, never sideways.
 		facing = "up" if move_dir.y < 0 else "down"
 		var vert := ("run_" if is_run else "walk_") + facing
-		if has_anim(vert):
+		if is_run and not _moving_anim(vert):
+			vert = "walk_" + facing
+		if _moving_anim(vert):
 			_sprite.position.y = 0
+			_sprite.rotation = 0.0
 			_apply(vert, false)
 		else:
-			# No toward/away art for this character: front/back view with a bob.
-			_apply("view_back" if move_dir.y < 0 else "view_front", false)
+			# No toward/away walk strip (the penguin, some villagers): the front/back
+			# view waddles and bobs instead of showing the sideways walk.
+			var still := vert if has_anim(vert) else ("view_back" if move_dir.y < 0 else "view_front")
+			_apply(still, false)
 			_bob += delta * speed * 0.16
 			_sprite.position.y = -absf(sin(_bob)) * 2.0
+			_sprite.rotation = sin(_bob) * 0.07
 	if _anim:
 		_anim.speed_scale = clampf(speed / (RUN_SPEED if is_run else WALK_SPEED), 0.6, 1.3)
 
@@ -793,6 +816,77 @@ func _do_action() -> void:
 	do_action("a")
 
 
+## Work-walking: hold a direction and USE (or the tool key) with the hoe or the
+## watering can. Each stroke lands on the cell ahead; when the swing finishes you
+## take one step along the row and swing again at the next cell. Let go of USE to
+## walk normally; let go of the direction to keep working in place.
+var _ww_on := false          # a work row is in progress
+var _ww_dir := Vector2i.ZERO # the row's direction (one axis)
+var _ww_target := Vector2.INF  # cell centre we're stepping to between strokes
+var _ww_need_step := false   # the last stroke is done: step before the next one
+var _ww_cd := 0.0
+
+
+func _work_held() -> bool:
+	return Input.is_action_pressed("tool") or Input.is_action_pressed("a") or mouse_held
+
+
+func _work_walk(dir: Vector2, delta: float) -> bool:
+	_ww_cd = maxf(0.0, _ww_cd - delta)
+	var tool := GameState.held_tool()
+	var want := dir != Vector2.ZERO and tool in ["hoe", "can"] and _work_held() and not Dialogue.input_blocked() and not swimming and not mounted and vehicle == "" and map != null and auto_target == Vector2.INF
+	if not want:
+		if _ww_on:
+			_ww_on = false
+			_ww_target = Vector2.INF
+			_ww_need_step = false
+		return false
+	var dv := Vector2i(int(signf(dir.x)), 0) if Player.horizontal_wins(dir) else Vector2i(0, int(signf(dir.y)))
+	if not _ww_on:
+		_ww_on = true
+		_ww_need_step = false
+		_ww_target = Vector2.INF
+		_ww_cd = 0.0
+	if dv != _ww_dir:
+		# Turned: work the new way from where you stand.
+		_ww_dir = dv
+		_ww_target = Vector2.INF
+		_ww_need_step = false
+	facing = {Vector2i(1, 0): "right", Vector2i(-1, 0): "left", Vector2i(0, -1): "up"}.get(dv, "down")
+	if _busy:
+		return true  # let the stroke finish (the busy block below plays it out)
+	if _ww_target != Vector2.INF:
+		var to := _ww_target - position
+		if to.length() < 1.5:
+			position = _ww_target
+			_ww_target = Vector2.INF
+			velocity = Vector2.ZERO
+		else:
+			velocity = to.normalized() * WALK_SPEED * 0.9
+			var before := position
+			_move(velocity * delta)
+			_apply(("walk_" + facing) if facing in ["up", "down"] and has_anim("walk_" + facing) else "walk", facing == "left")
+			if position.distance_to(before) < 0.05:
+				_ww_target = Vector2.INF  # something in the way: work from here
+			return true
+	if _ww_need_step:
+		_ww_need_step = false
+		var nc := cell() + dv
+		var fc := nc + dv
+		# Step only onto open ground with something workable (or open) beyond it.
+		if not map.blocked.has(nc) and map.in_content(nc) and not map.blocked.has(fc) and not map._exit_at(nc):
+			_ww_target = map.cell_center(nc)
+			return true
+	if _ww_cd > 0.0:
+		_show_idle()
+		return true
+	_ww_cd = 0.12
+	aim_cell = Vector2i(-1, -1)
+	do_action("tool")
+	_ww_need_step = true
+	return true
+
+
 ## mode: "a" = check then tool (touch button), "tool" = tool/sword only (C),
 ## "action" = check/talk/eat only (X).
 func do_action(mode := "a") -> void:
@@ -821,7 +915,8 @@ func do_action(mode := "a") -> void:
 	if mode != "action" and (held in ["sword", ""] or (held != "rod" and held != "can" and GameState.has_tool(held))) and _enemy_in_front(26.0):
 		_swing()
 		return
-	if map and map.try_interact(facing_cell()):
+	# Only CHECK (mode "action") may open the pup's menu: USE never does.
+	if map and map.try_interact(facing_cell(), mode == "action"):
 		velocity = Vector2.ZERO
 		if not _busy:
 			_show_idle()
@@ -830,6 +925,15 @@ func do_action(mode := "a") -> void:
 	if map and map.things.has(cell()) and str(map.things[cell()].get("type", "")) in ["door", "idoor", "exit", "mine", "cave", "pad"] and map.try_interact(cell()):
 		velocity = Vector2.ZERO
 		return
+	# A ladder / shaft down on your cell or any of the 8 around it: no need to
+	# line up exactly, USE takes it (GameMap.descent_near).
+	if map:
+		var dc: Vector2i = map.descent_near(cell())
+		if dc != Vector2i(-1, -1):
+			face_toward(map.cell_center(dc))
+			velocity = Vector2.ZERO
+			map.try_interact(dc)
+			return
 	if mode == "action":
 		# Point the pup at an enemy.
 		var e := map.nearest_enemy_to(position + facing_dir() * 16.0, 24.0)
@@ -863,6 +967,7 @@ func _swing() -> void:
 				bd = d.length()
 		if best:
 			face_toward(best.position)
+	GameState.spend_for("sword")  # a little energy per swing (fists and tools too)
 	_busy = true
 	_busy_t = 0.0
 	_attack_cd = 0.3 * GameState.status_swing() * float(GameState.items.get(GameState.held_tool(), {}).get("cd", 1.0))

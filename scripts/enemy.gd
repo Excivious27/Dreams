@@ -193,11 +193,13 @@ func setup(k: String, tier_override := -1) -> void:
 		_sprite.animation = "idle"
 		var s := 0.5 if k != "big_grump" else 1.1
 		_sprite.scale = Vector2(s, s)
-		_sprite.frame_changed.connect(func() -> void:
-			var tex := _sprite.sprite_frames.get_frame_texture(_sprite.animation, _sprite.frame)
-			if tex:
-				_sprite.offset = Vector2(0, -tex.get_height() / 2.0))
+		# Feet on the node: offset by half the frame height. Set now too (not only
+		# on frame_changed), or the first frame drew centred on the feet with its
+		# top half poking up past the hp bar and crest.
+		_sprite.frame_changed.connect(_fit_sprite)
+		_sprite.animation_changed.connect(_fit_sprite)
 		_sprite.play("idle")
+		_fit_sprite()
 		add_child(_sprite)
 		_shadow_r = 6.0 * s * 2.0
 		var sh := load("res://shaders/flash.gdshader")
@@ -213,6 +215,28 @@ func setup(k: String, tier_override := -1) -> void:
 
 
 var _burn_t := 0.0
+var _sprite_h := 0.0   # drawn height of the current frame (px), for the hp bar / crest
+
+
+func _fit_sprite() -> void:
+	if _sprite == null or _sprite.sprite_frames == null or not _sprite.sprite_frames.has_animation(_sprite.animation):
+		return
+	var tex := _sprite.sprite_frames.get_frame_texture(_sprite.animation, _sprite.frame)
+	if tex:
+		_sprite.offset = Vector2(0, -tex.get_height() / 2.0)
+		var h := tex.get_height() * absf(_sprite.scale.y)
+		if absf(h - _sprite_h) > 0.5:
+			_sprite_h = maxf(_sprite_h, h)   # never shrink: the bar would jitter between anims
+			queue_redraw()
+
+
+## Where the hp bar sits: above the sprite's head (a tall keeper's crest and
+## bar used to sit on its forehead).
+func _bar_top() -> float:
+	var top := -30.0 if base_hp < 30 else -60.0
+	if _sprite_h > 0.0:
+		top = minf(top, -_sprite_h - 4.0)
+	return top
 
 
 func _process(delta: float) -> void:
@@ -718,7 +742,7 @@ func _walk_clear(a: Vector2, b: Vector2) -> bool:
 func _draw() -> void:
 	draw_circle(Vector2(0, 0), _shadow_r, Color(0, 0, 0, 0.2))
 	if max_hp > 3 and _alive:
-		var top := -30.0 if base_hp < 30 else -60.0
+		var top := _bar_top()
 		draw_rect(Rect2(-10, top, 20, 3), Color(0, 0, 0, 0.6))
 		draw_rect(Rect2(-10, top, 20.0 * hp / max_hp, 3), Color(0.9, 0.2, 0.2) if _shield <= 0.0 else Color(0.5, 0.7, 1.0))
 		if tier > 0 and Art.has("ui", "tier_pip_%d" % tier):
@@ -744,13 +768,13 @@ func _draw() -> void:
 		tele = "enrage"
 	if tele != "" and Art.has("ui", "tele_" + tele):
 		var tt := Art.tex("ui", "tele_" + tele)
-		draw_texture(tt, Vector2(-tt.get_width() / 2.0, (-34.0 if base_hp < 30 else -66.0) - tt.get_height()))
+		draw_texture(tt, Vector2(-tt.get_width() / 2.0, _bar_top() - 4.0 - tt.get_height()))
 	if is_guardian and Art.has("ui", "guardian_crown"):
 		var cr := Art.tex("ui", "guardian_crown")
-		draw_texture_rect(cr, Rect2(-6, (-30.0 if base_hp < 30 else -60.0) - 40, 12, 10), false)
+		draw_texture_rect(cr, Rect2(-6, _bar_top() - 40, 12, 10), false)
 	if is_guardian and Art.has("ui", "keeper_crest_0"):
 		var kc := Art.tex("ui", "keeper_crest_%d" % clampi(tier, 0, 5))
-		draw_texture_rect(kc, Rect2(-8, (-30.0 if base_hp < 30 else -60.0) - 22, 16, 16), false)
+		draw_texture_rect(kc, Rect2(-8, _bar_top() - 22, 16, 16), false)
 	if _sprite:
 		return
 	# Procedural fallback: a stormy little cloud.

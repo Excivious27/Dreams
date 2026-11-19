@@ -69,33 +69,86 @@ func _try_more(n: int) -> void:
 				d.erase(ok)   # a new day: yesterday's counts go
 	d[k] = int(d.get(k, 0)) + n
 	GameState.run["mine_tried"] = d
-	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
+	if _keeper_due():
 		_summoning = true
 		call_deferred("_summon_guardian")
-	elif not _way_open and _guardian == null and floor_no <= 2:
-		if _tried() % 2 == 0:
-			hud.toast("The rock shifts (%d/%d)" % [_tried(), _threshold()], Color(0.8, 0.75, 0.9))
-	elif not _way_open and _guardian == null and _tried() >= _threshold() / 2 and _tried() - n < _threshold() / 2:
-		hud.toast("Something below is listening.", Color(0.8, 0.75, 0.9))
+	elif not _way_open and _guardian == null and not _summoning:
+		var t := _tried()
+		var thr := _threshold()
+		if t >= thr:
+			if t - n < thr:
+				hud.toast("The floor trembles... something is coming up. Keep at it.", Color(0.9, 0.75, 0.9))
+		elif floor_no <= 3 and (t % 4 == 0 or t - n < thr / 2 and t >= thr / 2):
+			hud.toast("The rock shifts (%d/%d)" % [t, thr], Color(0.8, 0.75, 0.9))
+		elif t >= thr / 2 and t - n < thr / 2:
+			hud.toast("Something below is listening.", Color(0.8, 0.75, 0.9))
 
 
-## How much digging and fighting wakes the keeper: random per floor and day.
-## Usually a good while; now and then it comes up almost at once.
+## Tom: the floor-1 keeper came up far too easily. It needs real progress now:
+## enough digging/fighting (a share of the floor's rocks; kills count 3) AND
+## some time spent on the floor. Both are kept per floor and day.
+func _keeper_due() -> bool:
+	return not _way_open and _guardian == null and not _summoning and _tried() >= _threshold() and _secs() >= _min_secs()
+
+
+## Seconds spent on this floor today (across visits).
+func _secs() -> float:
+	return float(GameState.run.get("mine_secs", {}).get("%d_%d" % [floor_no, int(GameState.run["day"])], 0.0)) + _secs_live
+
+
+var _secs_live := 0.0   # not yet written to the save
+
+
+func _bank_secs() -> void:
+	if _secs_live <= 0.0:
+		return
+	var day := int(GameState.run["day"])
+	var k := "%d_%d" % [floor_no, day]
+	var old: Dictionary = GameState.run.get("mine_secs", {})
+	var d := {}
+	for ok in old:
+		if str(ok).ends_with("_%d" % day):
+			d[ok] = old[ok]
+	d[k] = float(d.get(k, 0.0)) + _secs_live
+	_secs_live = 0.0
+	GameState.run["mine_secs"] = d
+
+
+func _min_secs() -> float:
+	if floor_no == 1:
+		return 100.0
+	if floor_no == 2:
+		return 75.0
+	if floor_no <= 10:
+		return 45.0
+	return 25.0
+
+
+## How much digging and fighting wakes the keeper: random per floor and day,
+## and on the first floors a real share of the rock on the floor.
 func _threshold() -> int:
 	var day := int(GameState.run["day"])
 	var key := "%d_%d" % [floor_no, day]
 	var old: Dictionary = GameState.run.get("mine_thresh", {})
+	if floor_no <= 3:
+		# A share of this floor's rock (rocks 1, crates 1, kills 3): this layout's.
+		var share: float = [0.0, 0.17, 0.15, 0.13][floor_no]
+		var lo: int = [0, 22, 20, 18][floor_no]
+		lo = mini(lo, int(_rock_total * 0.4) + 6)   # a small, rock-poor layout still opens
+		return clampi(int(_rock_total * share), lo, lo + 14)
 	if not old.has(key):
 		var base := 14.0 + minf(60.0, floor_no * 0.4)
 		var r := randf()
-		var mult := randf_range(0.3, 0.5) if r < 0.15 else (randf_range(0.75, 1.0) if r < 0.4 else randf_range(1.0, 1.7))
-		var d := {key: int(round(base * mult))}
+		var mult := randf_range(0.5, 0.7) if r < 0.15 else (randf_range(0.8, 1.0) if r < 0.4 else randf_range(1.0, 1.6))
+		var v := int(round(base * mult))
+		var d := {key: v}
 		for k in old:
 			if str(k).ends_with("_%d" % day):
 				d[k] = old[k]
 		GameState.run["mine_thresh"] = d
 		old = d
-	return 8 if floor_no <= 2 else maxi(10 if floor_no <= 10 else (7 if floor_no <= 20 else 4), int(old[key]))
+	# Never more than this layout can give (Mer's grotto floods half its rock).
+	return mini(maxi(12 if floor_no <= 10 else (8 if floor_no <= 20 else 5), int(old[key])), int(_rock_total * 0.7) + 10)
 
 
 func scene_id() -> String:
@@ -114,30 +167,61 @@ func build() -> void:
 	has_sky = false
 	has_pet = false
 	music_track = "mine"
-	# A fresh layout every day, different on every floor.
+	# Tom: floor 1 should rarely be the same twice. A fresh layout every time you
+	# enter or go down: seeded by how many floors you've walked into, the floor
+	# and the clock (not the floor alone). The style comes from a big catalogue
+	# (scripts/mine_layouts.gd), never one of the last few you saw.
+	theme = theme.duplicate(true)
 	var rng := RandomNumberGenerator.new()
-	rng.seed = floor_no * 7919 + int(GameState.run["day"]) * 104729
-	# Tom: levels should be quite a bit larger (was ~40-78 x 32-57).
-	cols = 64 + mini(floor_no, 40) / 2 + clampi(floor_no - 40, 0, 60) / 4 + rng.randi_range(0, 22)
-	rows = 52 + mini(floor_no, 40) / 3 + clampi(floor_no - 40, 0, 60) / 6 + rng.randi_range(0, 16)
+	_seed = _layout_seed()
+	rng.seed = _seed
+	var recent: Array = (GameState.run.get("mine_recent", []) as Array).duplicate()
+	_style = MineLayouts.pick(floor_no, rng, recent)
+	for i in 12:
+		if floor_no != 5 or not _style.has("haz"):
+			break
+		_style = MineLayouts.pick(floor_no, rng, recent)   # Mer's grotto floods its own way
+	if floor_no == 5 and _style.has("haz"):
+		_style = MineLayouts.style("caverns")
+	if force_style != "":
+		_style = MineLayouts.style(force_style)   # tools/tests
+	_dress = MineLayouts.pick_dress(_style, rng)
+	recent.append(str(_style["id"]))
+	while recent.size() > 5:
+		recent.pop_front()
+	GameState.run["mine_recent"] = recent
+	# Same cave look, but a nudge of colour each visit.
+	var tint: Array = theme.get("tint", [1.0, 1.0, 1.0])
+	var tj := rng.randf_range(-0.06, 0.06)
+	theme["tint"] = [clampf(float(tint[0]) + tj + rng.randf_range(-0.04, 0.04), 0.7, 1.2), clampf(float(tint[1]) + rng.randf_range(-0.04, 0.04), 0.7, 1.2), clampf(float(tint[2]) - tj + rng.randf_range(-0.04, 0.04), 0.7, 1.2)]
+	# Gentle and smaller at the top, bigger the deeper you go.
+	var sz := float(_style.get("size", 1.0))
+	cols = int((54 + mini(floor_no, 40) * 0.7 + clampi(floor_no - 40, 0, 60) / 4.0 + rng.randi_range(0, 18)) * sz)
+	rows = int((46 + mini(floor_no, 40) / 2.5 + clampi(floor_no - 40, 0, 60) / 6.0 + rng.randi_range(0, 14)) * sz)
 	mine_tier = GameState.mine_tier(floor_no)
-	_carve(rng)
-	# Some days the dice carve a cramped cave: re-carve fuller until it's roomy.
-	var tries := 0
-	while _open.size() < int(cols * rows * 0.32) and tries < 6:
-		tries += 1
-		_carve(rng, 0.03 * tries)
-	# Way in: the open cell nearest the top-left; way down: the farthest open cell from it.
-	_entry = _nearest_open(Vector2i(4, 9))  # a little down from the top, so the toolbar never hides the ladder
-	_ladder = _farthest_open(_entry)
+	var lava_ok: bool = "lava" in theme.get("feat", [])
+	var lay := {}
+	for tries in 4:
+		var sid := str(_style["id"]) if tries < 3 else "caverns"
+		lay = MineLayouts.carve(sid, cols, rows, rng, floor_no, lava_ok)
+		var walk := (lay["open"] as Dictionary).size() - (lay["water"] as Dictionary).size() - (lay["chasm"] as Dictionary).size() - (lay["lava"] as Dictionary).size()
+		if walk >= maxi(int(cols * rows * 0.17), 650 + mini(floor_no, 100) * 6):
+			break
+		if tries == 2:
+			_style = MineLayouts.style("caverns")
+	_open = lay["open"]
 	for c in range(0, cols * rows):
 		var cc := Vector2i(c % cols, c / cols)
 		if not _open.has(cc):
 			blocked[cc] = true
+	_layout_hazards(lay)
+	# Way in: the walkable cell nearest the top-left; way down: the farthest by walking.
+	_entry = _nearest_walk(Vector2i(4, 9))  # a little down from the top, so the toolbar never hides the ladder
+	_ladder = _farthest_open(_entry)
 	set_thing(_entry.x, _entry.y, {"type": "up", "hint": "A: climb out"})
 	_way_open = GameState.run["flags"].has("mine_open_%d" % floor_no)
 	if _way_open:
-		things[_ladder] = {"type": "down", "hint": ("A: the long lift down to the Hollow Heart" if floor_no >= MAX_FLOOR else "A: climb down to floor %d" % (floor_no + 1))}
+		things[_ladder] = {"type": "down", "hint": ("A: the long lift down to the Hollow Heart" if floor_no >= MAX_FLOOR else "Step in or tap USE: climb down to floor %d" % (floor_no + 1))}
 	# The lift: once you've opened floor 5, Granite's cart takes you straight to
 	# any floor you've opened the way to (every 5th).
 	if (floor_no == 1 or floor_no % 5 == 0) and _deepest() >= 5:
@@ -197,14 +281,14 @@ func build() -> void:
 				var pc := _roomy_open(wl[(pi * 7 + 3) % wl.size()])
 				if pc != mc and not props.has(pc) and not is_water_cell(pc):
 					prop("props", "grotto_pool_" + "ab"[pi], pc, 0, 0.0, true, 0.35)
-	# Rock: about one open cell in seven, more on deeper floors.
-	var open_list: Array = _open.keys()
-	var count := int(open_list.size() * (0.06 + 0.0003 * mini(floor_no, 100)))
+	# Rock: a share of the walkable floor (the layout style sets how rocky), more deeper.
+	var open_list: Array = _open.keys().filter(func(q: Vector2i) -> bool: return not blocked.has(q))
+	var count := int(open_list.size() * (0.06 + 0.0003 * mini(floor_no, 100)) * float(_style.get("rocks", 1.0)))
 	for i in count:
 		if _grotto and i > count / 2:
 			break
 		var c: Vector2i = open_list[rng.randi() % open_list.size()]
-		if c.distance_to(_entry) < 3 or c.distance_to(_ladder) < 2 or things.has(c) or props.has(c):
+		if c.distance_to(_entry) < 3 or c.distance_to(_ladder) < 2 or things.has(c) or props.has(c) or blocked.has(c) or _bridge.has(c):
 			continue
 		var roll := rng.randf()
 		var ore := "stone"
@@ -212,8 +296,8 @@ func build() -> void:
 		var ores: Array = pool[mini(mine_tier, pool.size() - 1)] if not pool.is_empty() else ["stone", "copper"]
 		# Half stone, the rest spread over the tier's ores (rarest last, least common).
 		# Tom: ore was too plentiful; now about one rock in six carries ore.
-		if roll > 0.92 and ores.size() > 1:
-			var r2 := (roll - 0.92) / 0.08
+		if roll > 0.9 and ores.size() > 1:
+			var r2 := (roll - 0.9) / 0.1
 			var idx := 1
 			var acc := 0.0
 			var weights: Array = []
@@ -238,10 +322,14 @@ func build() -> void:
 		set_thing(c.x, c.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
 		if ore != "stone":
 			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-				if rng.randf() < (0.2 if floor_no <= 10 else 0.35) and _open.has(c + d) and not things.has(c + d) and not props.has(c + d) and (c + d).distance_to(_entry) >= 3 and (c + d).distance_to(_ladder) >= 2:
+				if rng.randf() < 0.2 and _open.has(c + d) and not blocked.has(c + d) and not things.has(c + d) and not props.has(c + d) and (c + d).distance_to(_entry) >= 3 and (c + d).distance_to(_ladder) >= 2:
 					set_thing(c.x + d.x, c.y + d.y, {"type": "rock", "ore": ore, "hp": hard, "hint": "A: mine"})
 	_features(rng)
 	_findables(rng)
+	_rock_total = 0
+	for k in things:
+		if str(things[k].get("type", "")) == "rock":
+			_rock_total += 1
 
 
 ## Ores with no node_<ore> sprite borrow a look-alike, so ore never reads as plain stone.
@@ -251,54 +339,158 @@ var _open := {}          # walkable cave floor
 var _entry := Vector2i(2, 2)
 
 
-## Cellular-automata cave: random fill, smoothed, then only the biggest connected
-## cavern is kept so every part of the floor can be reached.
-var _fill := 0.56
+## Layout state: which catalogue style and dressing this visit rolled.
+const MineLayouts := preload("res://scripts/mine_layouts.gd")
+var _style: Dictionary = {}
+var _dress := "plain"
+var _seed := 0
+var _layout_haz := false     # the layout brought its own water/chasm/lava
+var _bridge := {}            # Vector2i -> "chasm"/"lava"/"water": a crossing cut through a hazard
+var _rock_total := 0
+static var force_style := ""   # tools/tests: carve this style every time
 
 
-func _carve(rng: RandomNumberGenerator, boost := 0.0) -> void:
-	_fill = rng.randf_range(0.52, 0.6) + boost
-	var passes := rng.randi_range(4, 6)
-	var g := {}
-	for y in range(1, rows - 1):
-		for x in range(1, cols - 1):
-			# Bias toward open in the middle, rock at the rim: no straight edges.
-			var edge := minf(minf(x, cols - 1 - x), minf(y, rows - 1 - y))
-			var p := _fill if edge > 4 else (0.42 if edge > 2 else 0.2)
-			if rng.randf() < p:
-				g[Vector2i(x, y)] = true
-	for pass_i in passes:
-		var nxt := {}
-		for y in range(1, rows - 1):
-			for x in range(1, cols - 1):
-				var n := 0
-				for dy in range(-1, 2):
-					for dx in range(-1, 2):
-						if (dx != 0 or dy != 0) and g.has(Vector2i(x + dx, y + dy)):
-							n += 1
-				var here := g.has(Vector2i(x, y))
-				if (here and n >= 4) or (not here and n >= 5):
-					nxt[Vector2i(x, y)] = true
-		g = nxt
-	# Keep the largest connected region.
+## A new seed on every build: visits walked into, the floor, the day and the clock.
+func _layout_seed() -> int:
+	var visits := int(GameState.run.get("mine_visits", 0)) + 1
+	GameState.run["mine_visits"] = visits
+	var h := hash([visits, floor_no, int(GameState.run["day"]), Time.get_unix_time_from_system(), Time.get_ticks_usec()])
+	return h & 0x7fffffff
+
+
+## Water / chasm / lava from the layout onto the map, then every cut-off pocket
+## of floor bigger than a nook gets a crossing (planks over chasms and lava,
+## stepping stones through water) so the whole floor can be walked.
+func _layout_hazards(lay: Dictionary) -> void:
+	for c: Vector2i in lay["water"]:
+		set_thing(c.x, c.y, {"type": "water", "hint": ""}, true)
+	for c: Vector2i in lay["chasm"]:
+		_chasm[c] = true
+		blocked[c] = true
+	for c: Vector2i in lay["lava"]:
+		_lava[c] = true
+		blocked[c] = true
+	_layout_haz = not ((lay["water"] as Dictionary).is_empty() and (lay["chasm"] as Dictionary).is_empty() and (lay["lava"] as Dictionary).is_empty())
+	if _layout_haz:
+		_connect_pockets()
+		# Nooks left as islands: no entry, ladder or anything else out there.
+		var comps := _components()
+		if comps.size() > 1:
+			_main.clear()
+			for c: Vector2i in comps[0]:
+				_main[c] = true
+
+
+func _is_haz(c: Vector2i) -> bool:
+	return _chasm.has(c) or _lava.has(c) or (things.has(c) and str(things[c].get("type", "")) == "water")
+
+
+func _walkable(c: Vector2i) -> bool:
+	return _open.has(c) and not _is_haz(c)
+
+
+const _D4: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+
+
+func _components() -> Array:
 	var seen := {}
-	var best := {}
-	for c: Vector2i in g:
-		if seen.has(c):
+	var comps: Array = []
+	for c: Vector2i in _open:
+		if seen.has(c) or not _walkable(c):
 			continue
-		var region := {}
-		var stack: Array = [c]
-		while not stack.is_empty():
-			var q: Vector2i = stack.pop_back()
-			if seen.has(q) or not g.has(q):
-				continue
-			seen[q] = true
-			region[q] = true
-			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-				stack.append(q + d)
-		if region.size() > best.size():
-			best = region
-	_open = best
+		var comp: Array = []
+		var st: Array = [c]
+		seen[c] = true
+		while not st.is_empty():
+			var q: Vector2i = st.pop_back()
+			comp.append(q)
+			for d in _D4:
+				var n := q + d
+				if not seen.has(n) and _walkable(n):
+					seen[n] = true
+					st.append(n)
+		comps.append(comp)
+	comps.sort_custom(func(a: Array, b: Array) -> bool: return a.size() > b.size())
+	return comps
+
+
+func _connect_pockets() -> void:
+	for round_i in 14:
+		var comps := _components()
+		if comps.size() <= 1:
+			return
+		var main := {}
+		for c: Vector2i in comps[0]:
+			main[c] = true
+		# The next pocket worth reaching (nooks under 12 cells stay islands).
+		var target: Array = []
+		for i in range(1, comps.size()):
+			if (comps[i] as Array).size() >= 12:
+				target = comps[i]
+				break
+		if target.is_empty():
+			return
+		var tset := {}
+		for c: Vector2i in target:
+			tset[c] = true
+		# 0-1 BFS from the pocket across hazard cells (cost 1) and floor (cost 0) to the main cave.
+		var dist := {}
+		var par := {}
+		var dq: Array = []
+		for c: Vector2i in target:
+			dist[c] = 0
+			dq.append(c)
+		var hit := Vector2i(-1, -1)
+		var head := 0
+		var guard := 0
+		while head < dq.size() and guard < 200000:
+			guard += 1
+			var q: Vector2i = dq[head]
+			head += 1
+			if main.has(q):
+				hit = q
+				break
+			for d in _D4:
+				var n := q + d
+				if not _open.has(n):
+					continue
+				var w := 1 if _is_haz(n) else 0
+				var nd := int(dist[q]) + w
+				if not dist.has(n) or nd < int(dist[n]):
+					dist[n] = nd
+					par[n] = q
+					if w == 0:
+						dq.insert(head, n)   # 0-cost edges go to the front
+					else:
+						dq.append(n)
+		if hit.x < 0:
+			return
+		var c := hit
+		while par.has(c):
+			if _is_haz(c):
+				var kind := "chasm" if _chasm.has(c) else ("lava" if _lava.has(c) else "water")
+				_chasm.erase(c)
+				_lava.erase(c)
+				if things.has(c) and str(things[c].get("type", "")) == "water":
+					things.erase(c)
+					hard.erase(c)
+				blocked.erase(c)
+				_bridge[c] = kind
+			c = par[c]
+
+
+var _main := {}   # the main walkable cave when hazards leave islands (empty = all of it)
+
+
+func _nearest_walk(c: Vector2i) -> Vector2i:
+	var bestc := c
+	var bd := 1e9
+	for o: Vector2i in _open:
+		var d := float((o - c).length_squared())
+		if d < bd and not things.has(o) and not blocked.has(o) and not _bridge.has(o) and (_main.is_empty() or _main.has(o)):
+			bd = d
+			bestc = o
+	return bestc
 
 
 ## Theme hazards: pools, lava and chasms on open floor away from the paths in
@@ -311,13 +503,16 @@ var _reach := {}
 func _features(rng: RandomNumberGenerator) -> void:
 	_reach = _open.duplicate()
 	var feat: Array = theme.get("feat", [])
-	var seed := floor_no * 13 + int(GameState.run["day"])
-	for c: Vector2i in _open:
+	var seed := _seed % 100000 + floor_no * 13
+	# A layout with its own water/chasms skips the theme's (no clutter); the first
+	# floors get only small pools.
+	var bump := 0.08 if floor_no <= 3 else 0.0
+	for c: Vector2i in (_open if not _layout_haz else {}):
 		# Rocks were placed first: hazards swallow them (no rocks stranded in lava/pools).
-		if (things.has(c) and str(things[c].get("type", "")) != "rock") or c.distance_to(_entry) < 6 or c.distance_to(_ladder) < 4:
+		if (things.has(c) and str(things[c].get("type", "")) != "rock") or c.distance_to(_entry) < 6 or c.distance_to(_ladder) < 4 or _bridge.has(c) or blocked.has(c) and not things.has(c):
 			continue
 		var n := WorldGen.fbm(float(c.x), float(c.y), seed, 10.0 if "lava" in feat else 6.0)
-		if "water" in feat and not _grotto and n > 0.38:
+		if "water" in feat and not _grotto and n > 0.38 + bump:
 			set_thing(c.x, c.y, {"type": "water", "hint": ""}, true)
 		elif "lava" in feat and n > 0.42:
 			things.erase(c)
@@ -366,7 +561,7 @@ func _features(rng: RandomNumberGenerator) -> void:
 				things.erase(q3)
 				blocked.erase(q3)
 				hard.erase(q3)
-	if "water" in feat and not _grotto:
+	if ("water" in feat or _layout_haz) and not _grotto:
 		swim_ok = Colony.has_ability("tideswim") or Companion.has_ability("tail")
 	# Keep the way down reachable: clear any hazard that cuts entry from ladder.
 	var reach := {_entry: true}
@@ -485,7 +680,7 @@ func _nearest_open(c: Vector2i) -> Vector2i:
 	var bd := 1e9
 	for o: Vector2i in _open:
 		var d := float((o - c).length_squared())
-		if d < bd and not things.has(o):
+		if d < bd and not things.has(o) and not blocked.has(o):
 			bd = d
 			bestc = o
 	return bestc
@@ -515,17 +710,36 @@ func _roomy_open(c: Vector2i) -> Vector2i:
 func _farthest_open(from: Vector2i) -> Vector2i:
 	var dist := {from: 0}
 	var queue: Array = [from]
+	var head := 0
 	var far := from
-	while not queue.is_empty():
-		var q: Vector2i = queue.pop_front()
+	while head < queue.size():
+		var q: Vector2i = queue[head]
+		head += 1
 		if int(dist[q]) > int(dist[far]):
 			far = q
-		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+		for d: Vector2i in _D4:
 			var n := q + d
-			if _open.has(n) and not dist.has(n):
+			if _open.has(n) and not dist.has(n) and not blocked.has(n) and not _bridge.has(n):
 				dist[n] = int(dist[q]) + 1
 				queue.append(n)
-	return far
+	# Among the far cells (85%+ of the longest walk), the roomiest: the shaft
+	# should sit in open floor you can walk all round, not in a crack.
+	var mx := int(dist[far])
+	var best := far
+	var best_room := -1
+	for c: Vector2i in dist:
+		if int(dist[c]) < int(mx * 0.85):
+			continue
+		var room := 0
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				var n := c + Vector2i(dx, dy)
+				if _open.has(n) and not blocked.has(n):
+					room += 1
+		if room > best_room or (room == best_room and int(dist[c]) > int(dist[best])):
+			best_room = room
+			best = c
+	return best
 
 
 ## Steps from a to b over floor you can walk or mine, or -1 if more than max_steps.
@@ -549,7 +763,7 @@ func _walk_dist(a: Vector2i, b: Vector2i, max_steps: int) -> int:
 func after_ready() -> void:
 	if CHUNKED:
 		_make_chunks()
-	hud.toast("Floor %d · %s" % [floor_no, str(theme.get("name", ""))], Color(0.9, 0.85, 1.0))
+	hud.toast("Floor %d · %s · %s" % [floor_no, str(theme.get("name", "")), str(_style.get("name", ""))], Color(0.9, 0.85, 1.0))
 	# Ore Sense (magic): ore and crystals glimmer through rock within 6 cells.
 	if GameState.bonus("magic", "ore_sense") > 0.0:
 		var t := Timer.new()
@@ -558,7 +772,7 @@ func after_ready() -> void:
 		t.timeout.connect(_ore_glimmer)
 		add_child(t)
 	var rng := RandomNumberGenerator.new()
-	rng.seed = 2000 + floor_no * 7919 + int(GameState.run["day"]) * 104729  # no (f+1,d-1) collisions
+	rng.seed = _seed ^ 0x2d2d
 	_place_props()
 	_place_find_props()
 	# Fewer enemies, scaled to cave size (bigger caves no longer mean more crowds);
@@ -590,9 +804,11 @@ func after_ready() -> void:
 		if me and me._gift:
 			me._gift.queue_free()
 			me._gift = null
-	if not _way_open and _guardian == null and not _summoning and _tried() >= _threshold():
+	if _keeper_due():
 		_summoning = true
 		call_deferred("_summon_guardian")
+	_dress_floor()
+	_make_down_ui()
 	if not GameState.run["flags"].has("mine_tier_seen_%d" % mine_tier) and mine_tier > 0:
 		GameState.run["flags"]["mine_tier_seen_%d" % mine_tier] = true
 		hud.toast("%s depths. Everything down here hits harder." % GameState.tier_name(mine_tier), Color(0.9, 0.8, 1.0))
@@ -1002,6 +1218,43 @@ func _draw_ground() -> void:
 	if not _lava.is_empty() and not Art.has("tiles", "lava"):
 		for c: Vector2i in _cells_in(_lava, _clip):
 			_ci.draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.9, 0.35, 0.1))
+	_draw_bridges()
+
+
+## Crossings the layout needed: plank bridges over chasms and lava, stepping
+## stones through water. Boards run across the way you walk.
+func _draw_bridges() -> void:
+	for c: Vector2i in _cells_in(_bridge, _clip):
+		var o := Vector2(c * TILE)
+		var kind := str(_bridge[c])
+		var across := _bridge.has(c + Vector2i(1, 0)) or _bridge.has(c + Vector2i(-1, 0)) or _is_haz(c + Vector2i(0, -1)) or _is_haz(c + Vector2i(0, 1))
+		if kind == "water":
+			_ci.draw_rect(Rect2(o, Vector2(TILE, TILE)), Color(0.16, 0.3, 0.42, 0.55))
+			var h := absi(c.x * 31 + c.y * 17)
+			for i in 2:
+				var sp := o + Vector2(4 + (h >> i) % 3 + i * 7, 4 + (h >> (i + 2)) % 4 + i * 4)
+				_ci.draw_circle(sp + Vector2(0, 1.5), 3.6, Color(0.05, 0.08, 0.1, 0.5))
+				_ci.draw_circle(sp, 3.4, Color(0.55, 0.53, 0.5))
+				_ci.draw_circle(sp + Vector2(-1, -1), 1.6, Color(0.72, 0.7, 0.66))
+			continue
+		var under := Color(0.02, 0.0, 0.03) if kind == "chasm" else Color(0.35, 0.08, 0.02)
+		_ci.draw_rect(Rect2(o, Vector2(TILE, TILE)), under)
+		var wood := Color(0.52, 0.36, 0.2)
+		var dark := Color(0.28, 0.18, 0.1)
+		if across:
+			for i in 4:
+				var x := o.x + i * 4
+				_ci.draw_rect(Rect2(x, o.y + 1, 3.5, TILE - 2), wood.darkened(0.08 * (i % 2)))
+				_ci.draw_rect(Rect2(x + 3, o.y + 1, 0.8, TILE - 2), dark)
+			_ci.draw_rect(Rect2(o.x, o.y + 1, TILE, 1.5), dark)
+			_ci.draw_rect(Rect2(o.x, o.y + TILE - 2.5, TILE, 1.5), dark)
+		else:
+			for i in 4:
+				var y := o.y + i * 4
+				_ci.draw_rect(Rect2(o.x + 1, y, TILE - 2, 3.5), wood.darkened(0.08 * (i % 2)))
+				_ci.draw_rect(Rect2(o.x + 1, y + 3, TILE - 2, 0.8), dark)
+			_ci.draw_rect(Rect2(o.x + 1, o.y, 1.5, TILE), dark)
+			_ci.draw_rect(Rect2(o.x + TILE - 2.5, o.y, 1.5, TILE), dark)
 
 
 func _draw_things() -> void:
@@ -1181,7 +1434,7 @@ func _place_props() -> void:
 				if sp and sp.texture and ore == "stone":
 					sp.scale = Vector2.ONE * clampf(22.0 / sp.texture.get_width(), 0.5, 1.0)
 		var rng := RandomNumberGenerator.new()
-		rng.seed = 4100 + floor_no
+		rng.seed = _seed ^ 0x4100
 		var ndec := 0
 		while Art.has("props", "mine_%s_decal_%d" % [ts, ndec]):
 			ndec += 1
@@ -1250,7 +1503,7 @@ func _place_props() -> void:
 			prop("props", nm, k)
 		if deep:
 			var rng2 := RandomNumberGenerator.new()
-			rng2.seed = 4000 + floor_no
+			rng2.seed = _seed ^ 0x4000
 			var okeys2: Array = _open.keys()
 			for i in maxi(3, _open.size() / 400):
 				var c := _roomy_open(okeys2[rng2.randi() % okeys2.size()])
@@ -1278,7 +1531,7 @@ func _place_props() -> void:
 				blocked[sc] = true
 				set_thing(sc.x, sc.y, {"type": "skeleton", "hint": "A: an old miner's pack"})
 		var rng := RandomNumberGenerator.new()
-		rng.seed = 3000 + floor_no
+		rng.seed = _seed ^ 0x3000
 		for i in 4:
 			var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
 			if not things.has(c) and not blocked.has(c):
@@ -1295,6 +1548,104 @@ func _place_props() -> void:
 		if str(t.get("type", "")) != "rock":
 			continue
 		prop("nature", "rock_m", k)
+
+
+## The visit's dressing (MineLayouts.DRESSINGS): what the floor is decorated
+## with, on top of the cave look. Solid pieces only go where floor is open all
+## round, never near the ladders.
+func _dress_floor() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = _seed ^ 0xd5d5
+	var cells: Array = _reach.keys().filter(func(q: Vector2i) -> bool: return not blocked.has(q) and not things.has(q) and not props.has(q) and not _bridge.has(q) and q.distance_to(_entry) >= 4 and q.distance_to(_ladder) >= 3)
+	if cells.is_empty():
+		return
+	var n := clampi(cells.size() / 140, 6, 36)
+	var put := func(group: String, nm: String, solid: bool, sc: float, glow_r: float) -> void:
+		if not Art.has(group, nm):
+			return
+		var c: Vector2i = cells[rng.randi() % cells.size()]
+		if solid:
+			c = _roomy_open(c)
+		if things.has(c) or props.has(c) or blocked.has(c) or _bridge.has(c) or c.distance_to(_entry) < 4 or c.distance_to(_ladder) < 3:
+			return
+		var sp := prop(group, nm, c, 0, 0.0, solid, sc)
+		if sp == null:
+			return
+		if not solid:
+			props.erase(c)   # decoration: the cell stays free for rocks/findables bookkeeping
+		if glow_r > 0.0 and glow:
+			glow.lights.append([sp, glow_r, 8.0])
+	match _dress:
+		"mossy":
+			for i in n * 2:
+				put.call("props", "ri_mossy_%d" % rng.randi_range(0, 15), false, 0.42, 0.0)
+			for i in n:
+				put.call("props", "cave_moss", false, 0.5, 0.0)
+		"glowshroom":
+			for i in maxi(3, n / 2):
+				put.call("props", "mushroom_tree_a" if rng.randf() < 0.6 else "mushroom_tree_b", true, 0.42, 40.0)
+			for i in n:
+				put.call("props", ["gmush_blue", "gmush_purple", "gmush_red"][rng.randi() % 3], false, 0.32, 18.0)
+		"crystal":
+			for i in n:
+				put.call("props", "ri_crystal_" + ["blue", "green", "pink", "purple", "yellow"][rng.randi() % 5], false, 0.45, 20.0)
+			for i in maxi(2, n / 3):
+				put.call("props", "ccrystal_%d" % rng.randi_range(2, 4), true, 0.4, 30.0)
+		"old_works":
+			_lay_rails(rng)
+			for i in maxi(2, n / 3):
+				put.call("props", ["beam_b", "beam_c", "beam_d"][rng.randi() % 3], true, 0.5, 26.0)
+			for i in maxi(1, n / 6):
+				put.call("props", "abandoned_cart", true, 0.45, 0.0)
+		"rockfall":
+			for i in maxi(2, n / 3):
+				put.call("props", "rockslide", true, 0.42, 0.0)
+			for i in n:
+				put.call("props", "ri_wet_rock_%d" % rng.randi_range(0, 1), false, 0.38, 0.0)
+		"dripstone":
+			var before := props.size()
+			for i in maxi(3, n / 2):
+				put.call("props", ["cave_stalag_s", "cave_stalag_m"][rng.randi() % 2], true, 0.4, 0.0)
+			# The dripstone art is icy blue: warm it to the cave's own stone outside ice/crystal caves.
+			if str(theme.get("cave", "")) in ["earth", "stone"] and props.size() > before:
+				for c in props:
+					var sp2 := props[c] as Sprite2D
+					if sp2 and sp2.texture and "cave_stalag_" in sp2.texture.resource_path:
+						sp2.modulate = Color(0.85, 0.7, 0.58) if str(theme.get("cave", "")) == "earth" else Color(0.7, 0.68, 0.75)
+			# Stalactites hang from the rock face above a floor cell.
+			var hang := cells.filter(func(q: Vector2i) -> bool: return not _open.has(q + Vector2i(0, -1)))
+			for i in mini(n, hang.size()):
+				var c: Vector2i = hang[rng.randi() % hang.size()]
+				if Art.has("props", "cave_stalactite_b") and not props.has(c):
+					var sp := prop("props", "cave_stalactite_b" if rng.randf() < 0.6 else "cave_stalactite_a", c, 0, -10.0, false, 0.3)
+					if sp:
+						props.erase(c)
+		_:
+			for i in maxi(2, n / 4):
+				put.call("props", "ri_wet_rock_%d" % rng.randi_range(0, 1), false, 0.38, 0.0)
+
+
+## Old mine-cart rails along a long straight run of open floor.
+func _lay_rails(rng: RandomNumberGenerator) -> void:
+	if not Art.has("props", "rail_h") or not Art.has("props", "rail_v"):
+		return
+	var keys: Array = _reach.keys()
+	for tries in 40:
+		var c: Vector2i = keys[rng.randi() % keys.size()]
+		var horiz := rng.randf() < 0.6
+		var d := Vector2i(1, 0) if horiz else Vector2i(0, 1)
+		var run: Array = []
+		var q := c
+		while _open.has(q) and not blocked.has(q) and not things.has(q) and not _bridge.has(q) and q.distance_to(_entry) >= 3 and q.distance_to(_ladder) >= 3 and run.size() < 18:
+			run.append(q)
+			q += d
+		if run.size() >= 7:
+			for r: Vector2i in run:
+				var sp := prop("props", "rail_h" if horiz else "rail_v", r, 0, 0.0, false, 0.5)
+				if sp:
+					props.erase(r)
+					to_under(sp)
+			return
 
 
 const FORAGE_PROP := {"cave_mushroom": "cave_mush_orange", "mushroom": "cave_mushroom", "mushroom_spore": "cave_mush_purple", "cave_fig": "cluster_green",
@@ -1339,6 +1690,16 @@ func _place_find_props() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+	if player and not get_tree().paused:
+		_secs_live += delta
+		_bank_t += delta
+		if _bank_t >= 5.0:
+			_bank_t = 0.0
+			_bank_secs()
+			if _keeper_due():
+				_summoning = true
+				call_deferred("_summon_guardian")
+		_descend_tick(delta)
 	# The keeper can't be boxed in: its ground slam breaks every rock around it.
 	if _guardian != null and is_instance_valid(_guardian) and _guardian._alive and not get_tree().paused:
 		_gsmash_t -= delta
@@ -1365,6 +1726,155 @@ func _process(delta: float) -> void:
 				if _slam_redraw:
 					_slam_redraw = false
 					redraw_cells(Rect2i(gc - Vector2i(2, 2), Vector2i(5, 5)))
+
+
+var _bank_t := 0.0
+
+# ------------------------------------------------------------ going down
+## Tom: after the keeper you had to stand in exactly the right spot to USE the
+## shaft. Now: a glowing marker over it; stepping onto the shaft takes you down;
+## USE anywhere next to it (diagonals too, whatever you're holding) takes you
+## down; tapping the shaft or the big "Climb down" button takes you down.
+const DOWN_RECT := Rect2(70, 316, 130, 30)
+var _down_layer: CanvasLayer = null
+var _down_btn: Button = null
+var _marker: Node2D = null
+var _marker_t := 0.0
+var _last_cell := Vector2i(-99, -99)
+var _descending := false
+
+
+func _make_down_ui() -> void:
+	_marker = Node2D.new()
+	_marker.name = "ShaftMarker"
+	_marker.position = cell_center(_ladder)
+	_marker.z_index = 3
+	_marker.draw.connect(_draw_marker)
+	_marker.visible = _way_open
+	add_child(_marker)
+	if glow:
+		glow.lights.append([_marker, 46.0, 6.0])
+	_down_layer = CanvasLayer.new()
+	_down_layer.layer = 6
+	add_child(_down_layer)
+	_down_btn = Button.new()
+	_down_btn.position = DOWN_RECT.position
+	_down_btn.size = DOWN_RECT.size
+	_down_btn.focus_mode = Control.FOCUS_NONE
+	_down_btn.add_theme_font_size_override("font_size", 10)
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.16, 0.1, 0.05, 0.88)
+	sb.border_color = Color(1.0, 0.82, 0.4)
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(6)
+	_down_btn.add_theme_stylebox_override("normal", sb)
+	var sb2 := sb.duplicate() as StyleBoxFlat
+	sb2.bg_color = Color(0.3, 0.2, 0.08, 0.95)
+	_down_btn.add_theme_stylebox_override("hover", sb2)
+	_down_btn.add_theme_stylebox_override("pressed", sb2)
+	_down_btn.add_theme_color_override("font_color", Color(1.0, 0.93, 0.7))
+	_down_btn.text = _down_label()
+	_down_btn.visible = false
+	_down_btn.pressed.connect(_descend)
+	_down_layer.add_child(_down_btn)
+
+
+func _down_label() -> String:
+	if floor_no >= MAX_FLOOR:
+		return "▼ Down to the Hollow Heart"
+	return "▼ Climb down to floor %d" % (floor_no + 1)
+
+
+func _exit_tree() -> void:
+	_bank_secs()
+	Hud.extra_rects.erase(DOWN_RECT)
+
+
+func _near_shaft(r := 1.6) -> bool:
+	return _way_open and player != null and things.has(_ladder) and player.position.distance_to(cell_center(_ladder)) <= r * TILE
+
+
+func _descend_tick(delta: float) -> void:
+	if _marker:
+		_marker.visible = _way_open
+		if _way_open:
+			_marker_t += delta
+			_marker.queue_redraw()
+	var show := _way_open and not _descending and player != null and player.position.distance_to(cell_center(_ladder)) <= 7.0 * TILE and not player.frozen
+	if _down_btn and _down_btn.visible != show:
+		_down_btn.visible = show
+		if show:
+			if not Hud.extra_rects.has(DOWN_RECT):
+				Hud.extra_rects.append(DOWN_RECT)
+		else:
+			Hud.extra_rects.erase(DOWN_RECT)
+	if not _way_open or _descending or player == null or player.frozen or _changing:
+		return
+	var pc := world_to_cell(player.position)
+	# Walked onto the shaft (only on arriving at the cell, so a refusal doesn't repeat).
+	if pc == _ladder and _last_cell != _ladder:
+		_last_cell = pc
+		_descend()
+		return
+	_last_cell = pc
+	if _near_shaft() and Input.is_action_just_pressed("a") and not Dialogue.input_blocked() and not Dialogue.instance(get_tree()).active:
+		_descend()
+
+
+func _descend() -> void:
+	if _descending or not _way_open or not things.has(_ladder):
+		return
+	if _grotto and not GameState.run["flags"].has("grotto_done"):
+		interact(_ladder, things[_ladder])   # says why not
+		return
+	_descending = true
+	if _down_btn:
+		_down_btn.visible = false
+	Hud.extra_rects.erase(DOWN_RECT)
+	player.frozen = true
+	fx("sparkle", cell_center(_ladder) + Vector2(0, -8), 12.0, 0.6)
+	interact(_ladder, things[_ladder])
+
+
+## USE next to the shaft goes down, whatever you hold (the sword used to swing instead).
+func try_interact(c: Vector2i, check := false) -> bool:
+	if _near_shaft() and (c == _ladder or c.distance_to(_ladder) <= 1.5):
+		_descend()
+		return true
+	return super(c, check)
+
+
+func action_word(c: Vector2i) -> String:
+	if _near_shaft():
+		return "Down"
+	return super(c)
+
+
+## Tapping the shaft (a generous 2-cell target) goes down once you're close.
+func handle_tap(pos: Vector2) -> void:
+	if _way_open and player and not player.frozen and not get_tree().paused:
+		var world := get_canvas_transform().affine_inverse() * pos
+		if world.distance_to(cell_center(_ladder) + Vector2(0, -6)) <= 2.0 * TILE and player.position.distance_to(cell_center(_ladder)) <= 7.0 * TILE:
+			_descend()
+			return
+	super(pos)
+
+
+## A pulsing ring of light round the shaft and a bobbing arrow over it.
+func _draw_marker() -> void:
+	var t := _marker_t
+	var pulse := 0.5 + 0.5 * sin(t * 4.0)
+	for i in 3:
+		var k := fmod(t * 0.8 + i / 3.0, 1.0)
+		_marker.draw_arc(Vector2(0, -2), 10.0 + k * 16.0, 0, TAU, 32, Color(1.0, 0.85, 0.4, (1.0 - k) * 0.55), 2.0)
+	_marker.draw_circle(Vector2(0, -2), 9.0, Color(1.0, 0.8, 0.35, 0.12 + 0.1 * pulse))
+	var y := -34.0 - 4.0 * sin(t * 5.0)
+	var col := Color(1.0, 0.9, 0.45, 0.95)
+	var pts := PackedVector2Array([Vector2(-7, y), Vector2(7, y), Vector2(0, y + 9)])
+	_marker.draw_colored_polygon(PackedVector2Array([Vector2(-8, y - 1), Vector2(8, y - 1), Vector2(0, y + 10)]), Color(0.15, 0.08, 0.02, 0.9))
+	_marker.draw_colored_polygon(pts, col)
+	_marker.draw_rect(Rect2(-3, y - 7, 6, 7), Color(0.15, 0.08, 0.02, 0.9))
+	_marker.draw_rect(Rect2(-2, y - 6, 4, 6), col)
 
 
 ## The HUD points here: the awake keeper first, then the open way down.
@@ -1440,6 +1950,15 @@ func _summon_guardian() -> void:
 	_guardian.set_meta("boss_name", "Keeper of floor %d" % floor_no)
 	var into := mini(5, ((floor_no - 1) % 25) / 5)
 	_guardian.max_hp = int(_guardian.max_hp * minf(2.0, 1.3 + 0.08 * into))
+	if floor_no <= 4:
+		# Tom: once it's up, the first keeper should be a fight: tougher, quicker
+		# on its feet (it was easy to kite), and it lunges as well as stomps.
+		_guardian.max_hp = int(_guardian.max_hp * 1.45)
+		_guardian.speed = maxf(_guardian.speed, 27.0)
+		if not _guardian.abilities.has("lunge"):
+			_guardian.abilities.append("lunge")
+		if not _guardian.abilities.has("stomp"):
+			_guardian.abilities.append("stomp")
 	_guardian.hp = _guardian.max_hp
 	var extra: Array = ["lunge", "stomp", "ranged", "shield", "summon", "regen"]
 	for i in into:
@@ -1459,7 +1978,7 @@ func _summon_guardian() -> void:
 func _open_way() -> void:
 	GameState.run["flags"]["mine_open_%d" % floor_no] = true
 	_way_open = true
-	things[_ladder] = {"type": "down", "hint": ("A: the long lift down to the Hollow Heart" if floor_no >= MAX_FLOOR else "A: climb down to floor %d" % (floor_no + 1))}
+	things[_ladder] = {"type": "down", "hint": ("A: the long lift down to the Hollow Heart" if floor_no >= MAX_FLOOR else "Step in or tap USE: climb down to floor %d" % (floor_no + 1))}
 	blocked.erase(_ladder)
 	hard.erase(_ladder)
 	if props.has(_ladder):
@@ -1468,7 +1987,9 @@ func _open_way() -> void:
 	shake(4.0)
 	fx("rock_m_break", cell_center(_ladder), 14.0, 0.8)
 	redraw_cell(_ladder)
-	hud.toast("The rock splits. A shaft leads down!", Color(0.8, 1.0, 0.8))
+	hud.toast("The rock splits. A shaft leads down! Step onto it to climb down.", Color(0.8, 1.0, 0.8))
+	if _marker:
+		_marker.visible = true
 	GameState.add_hint("The way down to floor %d is open." % (floor_no + 1))
 	if floor_no % 5 == 0:
 		hud.toast("The lift can reach floor %d now." % floor_no, Color(0.8, 0.9, 1.0))

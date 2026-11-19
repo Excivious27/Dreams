@@ -200,3 +200,7 @@ p29raw = open(f"{D}/src/ART-PROMPTS-29-raw.md").read()
 f29 = build(p29raw, "29", f"{D}/ART-PROMPTS-29.md", "what the loop-10 audit found",
             "WHAT THIS COVERS, most important first: everyday poses (sit, sleep, eat, dance, umbrella...) for 15 villagers so they stay the same person as their face; seasonal outfits for 10 villagers drawn in their new look; then three optional sheets (Marlowe and Benno with their hats, lamps for the deep mines, snowy groves) and a fallback for two cut-off icon rows.")
 print("29:", f29)
+p30raw = open(f"{D}/src/ART-PROMPTS-30-raw.md").read()
+f30 = build(p30raw, "30", f"{D}/ART-PROMPTS-30.md", "what the loop-11 audit found",
+            "WHAT THIS COVERS, most important first: the town's houses and shops redrawn sharp with night versions (they were drawn small and stretched, so they look blurry on a phone); a real mine entrance on the meadow; forest walls and distant hills for the map edges; curved cliffs and two-tier plateaus with switchback stairs and long ramps (both arcs); bridges and waterfalls for a river through the farm; the lake's three buildings; farm buildings at a real size with a farmhouse that grows at each upgrade; the gangster districts' buildings at a real size.")
+print("30:", f30)

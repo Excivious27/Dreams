@@ -268,7 +268,35 @@ func build() -> void:
 					nx.erase(c)
 			pc = nx
 		if lane_cells.is_empty():
-			add_plateau(pc, pl.get("ramps", []))
+			if not pl.has("upper"):
+				add_plateau(pc, pl.get("ramps", []))
+				continue
+			# Tiered hills (new layouts): kept off exits, paths and placed things,
+			# with a cell of room, so every road, door and pickup stays reachable.
+			var b0: Dictionary = pl["blobs"][0]
+			pc = WorldGen.mesa(self, Vector2(float(b0["c"][0]), float(b0["c"][1])), float(b0.get("r", 6)), float(b0.get("ry", float(b0.get("r", 6)) * 0.8)), int(b0.get("seed", 7)), 3)
+			var keep := {}
+			for e in exits:
+				keep.merge(cells_of([(e["rect"] as Rect2i).grow(3)]))
+			for pr in R.get("paths", []):
+				keep.merge(cells_of([Rect2i(int(pr[0]) - 2, int(pr[1]) - 2, int(pr[2]) + 4, int(pr[3]) + 4)]))
+			for t in R.get("things", []):
+				keep.merge(cells_of([Rect2i(int(t["cell"][0]) - 2, int(t["cell"][1]) - 2, 5, 5)]))
+			for c: Vector2i in _water_cells:
+				keep.merge(cells_of([Rect2i(c.x - 1, c.y - 1, 3, 3)]))
+			var sp0: Array = R.get("spawn", [2, 2])
+			keep.merge(cells_of([Rect2i(int(sp0[0]) - 3, int(sp0[1]) - 3, 7, 7)]))
+			for c: Vector2i in keep:
+				pc.erase(c)
+			pc = WorldGen.smooth_cells(pc)
+			var big := {}
+			for part: Dictionary in _components(pc):
+				if part.size() > big.size():
+					big = part
+			if big.size() >= 12:
+				var rmp: Array = pl.get("ramps", []).filter(func(r: Array) -> bool: return big.has(Vector2i(int(r[0]), int(r[1]))))
+				add_plateau(big, rmp if not rmp.is_empty() else WorldGen.pick_ramps(self, big))
+				_upper_tier(big, pl)
 			continue
 		for c: Vector2i in lane_cells:
 			pc.erase(c)
@@ -279,6 +307,9 @@ func build() -> void:
 				add_plateau(part, pl.get("ramps", []).filter(func(r: Array) -> bool: return part.has(Vector2i(int(r[0]), int(r[1])))))
 	if int(R.get("fruit", 0 if region_id in NO_FRUIT else 3)) > 0:
 		var pav := {}  # keep fruit trees off the paths (and one cell either side)
+		for pl: Dictionary in plateaus:
+			for st: Vector2i in pl["stairs"]:
+				pav.merge(cells_of([Rect2i(st.x - 1, st.y - 2, 3, 5)]))
 		for pr in R.get("paths", []):
 			for y in range(int(pr[1]) - 1, int(pr[1]) + int(pr[3]) + 1):
 				for x in range(int(pr[0]) - 1, int(pr[0]) + int(pr[2]) + 1):
@@ -291,6 +322,30 @@ func build() -> void:
 			if not k in ["cell", "solid"]:
 				d[k] = t[k]
 		set_thing(int(c[0]), int(c[1]), d, bool(t.get("solid", true)))
+
+
+## A second, higher tier on a plateau ("upper": [blobs], optional "upper_ramps").
+## It sits inset on the lower top (2 cells in from the sides and north, 4 from
+## the south) so its rock face and stairs land on open ground, not on the rim.
+func _upper_tier(low: Dictionary, pl: Dictionary) -> void:
+	var ups: Array = pl.get("upper", [])
+	if ups.is_empty() or low.is_empty():
+		return
+	var room := WorldGen.inset(low, 2, 4)
+	var up := {}
+	for bl in ups:
+		var cx := float(bl["c"][0]); var cy := float(bl["c"][1]); var rad := float(bl.get("r", 4)); var sdv := int(bl.get("seed", 9))
+		for c: Vector2i in WorldGen.mesa(self, Vector2(cx, cy), rad, float(bl.get("ry", rad * 0.8)), sdv, 3):
+			if room.has(c):
+				up[c] = true
+	up = WorldGen.smooth_cells(up)
+	var best := {}
+	for part: Dictionary in _components(up):
+		if part.size() > best.size():
+			best = part
+	if best.size() >= 8:
+		var urmp: Array = pl.get("upper_ramps", [])
+		add_plateau(best, urmp if not urmp.is_empty() else WorldGen.pick_ramps(self, best))
 
 
 ## 4-connected pieces of a cell set.
@@ -319,6 +374,9 @@ var battle: Battle = null
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, str(R.get("backdrop", "hills")))
+	WorldGen.clear_stairs.call_deferred(self)
+	if not R.has("battle"):
+		WorldGen.dress_band(self, hash(region_id) % 1000 + 9)  # undergrowth along the forest edge: no bare blocked cells
 	if R.has("battle"):
 		battle = Battle.start(self, region_id, R["battle"])
 	place_project_site()
@@ -392,6 +450,9 @@ func after_ready() -> void:
 	var gen: Dictionary = R.get("gen", {})
 	var inner := Rect2i(2, 2, cols - 4, rows - 4)
 	var avoid := {}
+	for pl: Dictionary in plateaus:  # every flight of stairs and its landings stay clear
+		for st: Vector2i in pl["stairs"]:
+			avoid.merge(cells_of([Rect2i(st.x - 1, st.y - 2, 3, 5)]))
 	for b in R.get("blocks", []):
 		for y in range(int(b[1]) - 1, int(b[1]) + int(b[3]) + 1):
 			for x in range(int(b[0]) - 1, int(b[0]) + int(b[2]) + 1):
@@ -756,6 +817,12 @@ func _feature_cells(fb: Dictionary) -> Dictionary:
 			elif not cells.has(c) and nb >= 3 and c.x >= 0 and c.y >= 0 and c.x < cols and c.y < rows:
 				next[c] = true
 		cells = next
+	# Soft feature patches draw over the map canvas: keep them off plateaus, their
+	# rims and their rock faces (they buried tiered hills' cliffs and stairs).
+	for pl: Dictionary in plateaus:
+		for pc2: Vector2i in pl["cells"]:
+			for d2: Vector2i in [Vector2i(0, 0), Vector2i(0, 1), Vector2i(0, 2), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, -1)]:
+				cells.erase(pc2 + d2)
 	return cells
 
 

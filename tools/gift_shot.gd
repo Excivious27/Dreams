@@ -2,6 +2,7 @@ extends SceneTree
 ## Dev helper: a few Marked mid-fight, as PNGs.
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/gift_shot.gd -- /tmp/shots
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 func _run() -> void:

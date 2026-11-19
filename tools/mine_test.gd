@@ -7,6 +7,7 @@ var fails := 0
 
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 
@@ -38,8 +39,17 @@ func _run() -> void:
 		if str(m.things[k].get("type", "")) == "down":
 			downs += 1
 	check(downs == 0, "no shaft on a fresh floor")
-	# Dig: break rocks via interact until the keeper wakes (pickaxe in hand).
+	check(str((m.get("_style") as Dictionary).get("id", "")) != "", "layout style rolled: %s / %s" % [str((m.get("_style") as Dictionary).get("id", "")), str(m.get("_dress"))])
+	# Floor 1's keeper needs real progress AND time: lots of digging alone, at once, isn't enough.
 	GameState.select_slot((GameState.run["toolbar"] as Array).find("pickaxe"))
+	GameState.run["mine_tried"] = {"1_%d" % int(GameState.run["day"]): 999}
+	m.call("_try_more", 1)
+	await frames(2)
+	check(m.get("_guardian") == null and not bool(m.get("_summoning")), "keeper waits for time on the floor (needs %.0f s)" % float(m.call("_min_secs")))
+	GameState.run["mine_tried"] = {}
+	check(int(m.call("_threshold")) >= 12, "floor 1 threshold is meaningful (%d, rocks %d)" % [int(m.call("_threshold")), int(m.get("_rock_total"))])
+	m.set("_secs_live", 999.0)
+	# Dig: break rocks via interact until the keeper wakes (pickaxe in hand).
 	var broke := 0
 	for k in m.things.keys():
 		var t: Dictionary = m.things.get(k, {})
@@ -76,13 +86,40 @@ func _run() -> void:
 		if str(m.things[k].get("type", "")) == "down":
 			downs += 1
 	check(downs == 1 and GameState.run["flags"].has("mine_open_1"), "shaft opened after the keeper fell")
-	# Take it.
-	for k in m.things.keys():
-		if str(m.things[k].get("type", "")) == "down":
-			m.interact(k, m.things[k])
-	await frames(40)
+	# Take it: just walk onto the shaft (no USE, no exact spot).
+	var lad: Vector2i = m.get("_ladder")
+	m.player.position = m.cell_center(lad + Vector2i(1, 0))
+	await frames(3)
+	check(str(m.call("action_word", lad)) == "Down", "USE says Down beside the shaft")
+	m.player.position = m.cell_center(lad)
+	var tw1 := Time.get_ticks_msec()
+	while Time.get_ticks_msec() - tw1 < 4000 and (current_scene == m or current_scene == null):
+		await frames(1)
 	m = current_scene as GameMap
-	check(m != null and m.scene_id() == "mine" and int(GameState.run["mine_floor"]) == 2, "descended to floor 2")
+	check(m != null and m.scene_id() == "mine" and int(GameState.run["mine_floor"]) == 2, "stepping onto the shaft descended to floor 2")
+	# Variety: floor 1 entered again and again rarely repeats.
+	var seen := {}
+	var sizes := {}
+	for i in 5:
+		GameState.run["mine_floor"] = 1
+		change_scene_to_file("res://scenes/mine.tscn")
+		await frames(8)
+		var mm := current_scene as GameMap
+		seen[str((mm.get("_style") as Dictionary).get("id", ""))] = true
+		sizes["%dx%d" % [mm.cols, mm.rows]] = true
+		var rocks := 0
+		var ores := 0
+		for k in mm.things:
+			if str(mm.things[k].get("type", "")) == "rock":
+				rocks += 1
+				if str(mm.things[k].get("ore", "stone")) != "stone":
+					ores += 1
+		check(rocks > 20 and ores * 3 <= rocks, "floor 1 entry %d: %s, %d rocks, %d ore" % [i, str((mm.get("_style") as Dictionary).get("id", "")), rocks, ores])
+	check(seen.size() >= 4 and sizes.size() >= 4, "5 entries to floor 1: %d styles %s, %d sizes" % [seen.size(), str(seen.keys()), sizes.size()])
+	GameState.run["mine_floor"] = 2
+	change_scene_to_file("res://scenes/mine.tscn")
+	await frames(10)
+	m = current_scene as GameMap
 	# Tier scaling: a slime at tier 3 has more hp than at tier 0.
 	var e0 := m.spawn_enemy("slime", m.cell_center(Vector2i(8, 8)), 0)
 	var e3 := m.spawn_enemy("slime", m.cell_center(Vector2i(9, 9)), 3)

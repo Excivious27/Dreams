@@ -4,6 +4,7 @@ extends SceneTree
 ## godot --headless -s res://tools/walls.gd -- farm town ...
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 

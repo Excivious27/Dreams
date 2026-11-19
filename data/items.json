@@ -928,7 +928,7 @@
   "rarity": "common",
   "tier": 1,
   "heal": 1,
-  "energy": 15
+  "energy": 25
  },
  "salad": {
   "name": "Garden Salad",
@@ -6627,7 +6627,7 @@
   "value": 22,
   "rarity": "common",
   "tier": 1,
-  "energy": 12,
+  "energy": 20,
   "desc": "From the coop."
  },
  "milk": {
@@ -6636,7 +6636,7 @@
   "value": 36,
   "rarity": "common",
   "tier": 1,
-  "energy": 18,
+  "energy": 25,
   "desc": "From the barn."
  },
  "cheese": {
@@ -6664,7 +6664,7 @@
   "value": 10,
   "rarity": "common",
   "tier": 1,
-  "energy": 8,
+  "energy": 12,
   "desc": "The kids will do anything for this."
  },
  "shell": {
@@ -6765,7 +6765,7 @@
   "value": 56,
   "rarity": "common",
   "tier": 1,
-  "energy": 15,
+  "energy": 20,
   "desc": "Juniper's cure for most things.",
   "family": "herb"
  },
@@ -7150,7 +7150,7 @@
   "value": 40,
   "rarity": "common",
   "tier": 1,
-  "energy": 30,
+  "energy": 32,
   "heal": 0
  },
  "mushroom_stew": {
@@ -8731,7 +8731,7 @@
   "value": 20,
   "rarity": "common",
   "tier": 1,
-  "energy": 12,
+  "energy": 15,
   "arc": "penguins"
  },
  "toasted_marshmallow": {

@@ -6,6 +6,7 @@ extends SceneTree
 var fails := 0
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 func _run() -> void:

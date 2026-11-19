@@ -2,7 +2,9 @@ extends SceneTree
 ## Story walk: for each arc, every beat in data/story.json can be reached and
 ## plays without errors; talk targets exist in their maps; crew recruit flow.
 var fails := 0
-func _initialize() -> void: _run.call_deferred()
+func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
+	_run.call_deferred()
 func check(ok: bool, what: String) -> void:
 	print(("  ok   " if ok else "  FAIL ") + what)
 	if not ok: fails += 1

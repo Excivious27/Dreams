@@ -7,6 +7,7 @@ var _fails := 0
 
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 

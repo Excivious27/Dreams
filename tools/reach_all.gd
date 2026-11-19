@@ -4,6 +4,7 @@ const MAPS := ["farm", "town", "meadow", "beach", "mountain", "forest", "lake", 
 	"colony_coral", "colony_kelp", "colony_ice", "colony_ember", "bf_frostfield", "bf_shattered_vale", "bf_rail_yards", "bf_dockside"]
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	InputSetup.ensure_actions()
 	GameState.load_data()
 	_run.call_deferred()

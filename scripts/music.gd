@@ -103,7 +103,11 @@ func play(track: String) -> void:
 
 func _load_sfx(name: String) -> AudioStream:
 	if not _sfx_cache.has(name):
+		# A real recording/ACE jingle (.ogg) wins over the generated placeholder (.wav).
+		var real := "res://audio/sfx/%s.ogg" % name
 		var path := "res://audio/sfx/%s.wav" % name
+		if ResourceLoader.exists(real):
+			path = real
 		_sfx_cache[name] = load(path) if ResourceLoader.exists(path) else null
 	return _sfx_cache[name]
 

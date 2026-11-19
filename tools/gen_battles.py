@@ -17,15 +17,20 @@ PROP_SETS = {"bf_frostfield": ["rock_snow_l", "rock_snow_m", "rock_snow_s", "bou
              "bf_shattered_vale": ["boulder_l", "boulder_m", "crystal_rock", "mine_crystal_rock_1", "cave_stalag_m", "stalagmite_a"],
              "bf_rail_yards": ["drums", "tyres", "crates_a", "oil_drums"],
              "bf_dockside": ["crates_a", "crates_pallet", "barrel_a", "oil_drums"]}
-def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="battle"):
+def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="battle", **kw):
     exits = [{"rect": [cols // 2 - 2, rows - 1, 4, 1], "scene": back[0], "spawn": back[1:], "facing": "down", "label": "▼ fall back"}]
-    R[rid] = {"cols": cols, "rows": rows, "music": music, "backdrop": "mountains" if "snow" in patch or "frost" in rid else "hills", "ground": ground,
+    R[rid] = {"cols": cols, "rows": rows, "music": music, "backdrop": "mountains" if "snow" in (patch or "") or "frost" in rid else "hills", "ground": ground,
               "path": path, "spawn": [cols // 2, rows - 9], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
               "exits": exits, "paths": [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
               "water_blobs": water, "plateaus": plateaus, "props": props, "patch_set": patch, "ground_threshold": 0.15, "fruit": 0,
               "gen": {"clumps": 10, "scatter": 110, "region_props": PROP_SETS[rid], "region_count": 90, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
               "battle": {"title": title, "who": who, "brief": brief, "win": win, "lose": lose, "points": points, "enemies": enemies,
                          "tickets": 150, "supply": 15, "wave_every": 7.0, "enemy_cap": 16, "tier_bonus": max(0, tier - 2), "reward": reward, "back": back}}
+    if patch is None:
+        del R[rid]["patch_set"]
+    for k in ("backdrop", "border", "ground_threshold", "ground_seam"):
+        if k in kw:
+            R[rid][k] = kw[k]
     if rid in BOSSES:
         R[rid]["battle"]["boss"] = BOSSES[rid]
     B[rid] = {"title": title, "arc": arc, "tier": tier, "blurb": brief.split(".")[0] + "."}
@@ -88,6 +93,345 @@ battle("bf_dockside", "Dockside War", "gangsters", 4, 116, 90, "grass", "ruinflo
        "The docks are where the President's money comes in. Six points, four of his crews. Bring drones, bring the crew, and hold the water.",
        "Marlene", "The harbour lights come on one by one, and every one of them is yours.", "The tide's against us. Back to the trawler.",
        {"crystals": 1000, "items": {"crystal_battery": 2, "tommy_gun": 1}}, ["hideout", 26, 38])
-json.dump(R, open(D + "/data/regions.json", "w"), indent=1, ensure_ascii=False)
-json.dump(B, open(D + "/data/battles.json", "w"), indent=1, ensure_ascii=False)
-print("battles:", list(B))
+# ---- campaign fields (round 11): any arc can fight here ------------------------
+def _rprops(region, extra=()):
+    return list((R.get(region, {}).get("gen") or {}).get("region_props") or []) + list(extra)
+
+PROP_SETS["bf_orchard_line"] = _rprops("orchard_hills") or ["boulder_m", "stump"]
+PROP_SETS["bf_bog_crossing"] = _rprops("marsh") or ["boulder_m"]
+PROP_SETS["bf_ash_wastes"] = _rprops("wastes") or ["boulder_m"]
+PROP_SETS["bf_neon_block"] = _rprops("neon") or ["crates_a", "oil_drums"]
+battle("bf_orchard_line", "The Orchard Line", "both", 1, 104, 84, "grass", "track", "dirt",
+       [{"blobs": [{"c": [20, 22], "r": 10, "seed": 301}, {"c": [28, 16], "r": 6, "seed": 302}]},
+        {"blobs": [{"c": [84, 22], "r": 10, "seed": 303}]},
+        {"blobs": [{"c": [52, 50], "r": 7, "seed": 304}]}],
+       [{"c": [86, 58], "r": 6, "seed": 305, "fish": ["trout"]}],
+       [{"id": "a", "name": "Cider Press", "cell": [20, 20], "owner": "enemy"}, {"id": "b", "name": "Windbreak Row", "cell": [52, 28], "owner": "neutral"},
+        {"id": "c", "name": "Old Granary", "cell": [84, 20], "owner": "enemy"}, {"id": "d", "name": "Beehive Hollow", "cell": [52, 50], "owner": "neutral"},
+        {"id": "e", "name": "Wagon Camp", "cell": [52, 74], "owner": "ally"}],
+       ["hill_wolf", "grump", "soldier", "archer"],
+       [{"name": "stone_circle", "cell": [50, 26], "w": 4, "h": 2}],
+       ["rabbit", "sparrow", "crow"],
+       "Grumps have dug in among the apple rows. Take the press and the granary and the orchard is ours again.",
+       "Catkins", "The orchard rows are quiet. Somebody's already picking apples.", "Back to the wagons. The apples will keep.",
+       {"crystals": 300, "items": {"potion": 3, "copper_bar": 6}}, ["town", 40, 60], music="battle")
+battle("bf_bog_crossing", "Bog Crossing", "both", 2, 108, 86, "grass", "bog", "dirt",
+       [{"blobs": [{"c": [22, 24], "r": 9, "seed": 311}]}, {"blobs": [{"c": [88, 24], "r": 10, "seed": 312}]},
+        {"blobs": [{"c": [86, 60], "r": 7, "seed": 313}]}],
+       [{"c": [40, 44], "r": 8, "seed": 314, "fish": ["catfish"]}, {"c": [72, 42], "r": 7, "seed": 315, "fish": ["eel"]}, {"c": [14, 72], "r": 6, "seed": 316}],
+       [{"id": "a", "name": "Witchlight Isle", "cell": [22, 22], "owner": "enemy"}, {"id": "b", "name": "Heron Causeway", "cell": [54, 30], "owner": "neutral"},
+        {"id": "c", "name": "Drowned Mill", "cell": [88, 22], "owner": "enemy"}, {"id": "d", "name": "Frog Chorus", "cell": [24, 58], "owner": "neutral"},
+        {"id": "e", "name": "Reed Fort", "cell": [86, 60], "owner": "neutral"}, {"id": "f", "name": "Raft Camp", "cell": [54, 76], "owner": "ally"}],
+       ["mud_slime", "bog_hag", "river_serpent", "drip_crawler", "lantern_moth"],
+       [{"name": "stone_circle", "cell": [52, 28], "w": 4, "h": 2}],
+       ["frog", "heron", "dragonfly"],
+       "The bog has more mouths than paths. Hold the causeways and the reeds, and the mire lets you through.",
+       "Catkins", "The fog lifts off the bog like a lid. The frogs start singing again.", "The mire wins today. Back to the rafts.",
+       {"crystals": 500, "items": {"greater_potion": 2, "iron_bar": 5}}, ["town", 40, 60])
+battle("bf_ash_wastes", "The Ashen Flats", "both", 3, 110, 86, "dead_grass", None, "cracked_earth",
+       [{"blobs": [{"c": [24, 20], "r": 11, "seed": 321}]}, {"blobs": [{"c": [90, 22], "r": 11, "seed": 322}, {"c": [98, 30], "r": 5, "seed": 323}]},
+        {"blobs": [{"c": [56, 50], "r": 8, "seed": 324}]}],
+       [{"c": [24, 62], "r": 5, "seed": 325}],
+       [{"id": "a", "name": "Spike Gate", "cell": [24, 18], "owner": "enemy"}, {"id": "b", "name": "Glass Dunes", "cell": [56, 26], "owner": "neutral"},
+        {"id": "c", "name": "Burnt Watchtower", "cell": [90, 20], "owner": "enemy"}, {"id": "d", "name": "Dry Well", "cell": [56, 50], "owner": "neutral"},
+        {"id": "e", "name": "Lantern Camp", "cell": [56, 76], "owner": "ally"}],
+       ["soldier", "archer", "wisp", "ash_hound"],
+       [{"name": "stone_circle", "cell": [54, 48], "w": 4, "h": 2}],
+       ["crow", "snake"],
+       "Nothing grows on the Ashen Flats but trouble. Take the gate and the watchtower and the wind changes.",
+       "Catkins", "The ash settles. Under it, something green is already trying.", "Pull back to the lanterns. The flats aren't going anywhere.",
+       {"crystals": 700, "items": {"gold_bar": 3, "amethyst": 2}}, ["town", 40, 60],
+       backdrop="night", border={"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"}, ground_seam="ash")
+battle("bf_neon_block", "The Neon Block", "gangsters", 3, 104, 84, "wet_asphalt_0", None, "neon_sidewalk",
+       [{"blobs": [{"c": [22, 20], "r": 9, "seed": 331}]}, {"blobs": [{"c": [84, 20], "r": 9, "seed": 332}]},
+        {"blobs": [{"c": [52, 48], "r": 6, "seed": 333}]}],
+       [{"c": [86, 58], "r": 5, "seed": 334}],
+       [{"id": "a", "name": "Dragon Sign", "cell": [22, 18], "owner": "enemy"}, {"id": "b", "name": "Night Market", "cell": [52, 26], "owner": "neutral"},
+        {"id": "c", "name": "Pachinko Hall", "cell": [84, 18], "owner": "enemy"}, {"id": "d", "name": "The Overpass", "cell": [52, 48], "owner": "neutral"},
+        {"id": "e", "name": "Laundromat Lot", "cell": [20, 60], "owner": "neutral"}, {"id": "f", "name": "Getaway Van", "cell": [52, 74], "owner": "ally"}],
+       ["thug_speedster", "thug_gambler", "thug_cyber", "thug_flame", "thug_brute"],
+       [{"name": "container_red", "cell": [36, 38], "w": 2, "h": 1}, {"name": "container_blue", "cell": [68, 38], "w": 2, "h": 1}],
+       ["rat", "pigeon"],
+       "Every sign on this block belongs to the President's crews. Switch them off one by one and the street is yours.",
+       "Halo", "The block hums under your colours. The night market reopens before you've even left.", "Too hot tonight. Back to the van.",
+       {"crystals": 700, "items": {"data_chip": 3, "servo": 6}}, ["hideout", 26, 38],
+       backdrop="night", border={"n": "cliff", "s": "cliff", "w": "trees", "e": "cliff"}, ground_seam="pavement")
+
+# ---- campaigns: every major region is opened by a strategic campaign -----------
+# A board of 5-7 territories with branching routes; each battle node is a fight
+# on a bf_* field with its own objective, points, waves and rewards; camps and
+# caches are resolved on the board. Scripts: Campaign (rules, save under
+# run["campaign"]), CampaignScreen (the board), Battle (node objectives).
+import random
+EN = json.load(open(D + "/data/enemies.json"))["enemies"]
+COL = json.load(open(D + "/data/colonies.json"))
+IT = json.load(open(D + "/data/items.json"))
+IT = IT.get("items", IT)
+
+def _kinds(region):
+    out = []
+    for e in R.get(region, {}).get("enemies", []):
+        k = e if isinstance(e, str) else e.get("kind")
+        if k in EN and not k.startswith(("lt_", "marked_", "cboss_")) and int(EN[k].get("hp", 0)) < 45 and k not in out:
+            out.append(k)
+    return out
+
+# Regions that each arc reaches (secrets.gd lists): penguins never see gang turf and vice versa.
+PENG_ONLY = ["sky", "station", "jungle"]
+GANG_ONLY = ["docks", "neon", "uptown", "underground", "countryside"]
+SPEAK = {"penguins": "Catkins", "gangsters": "Halo"}
+REWARD_ITEMS = {1: {"potion": 3, "copper_bar": 5}, 2: {"greater_potion": 2, "iron_bar": 5}, 3: {"gold_bar": 3, "crystal_refined": 3},
+                4: {"crystal_battery": 2, "ruby": 1, "sapphire": 1}, 5: {"crystal_battery": 3, "gold_bar": 6, "emerald": 1}}
+ARC_ITEMS = {"penguins": {"crystal_refined": 2}, "gangsters": {"servo": 4, "data_chip": 1}}
+# (region, tier, after, title, fields, boss, start camp, names[7], intro, won)
+CAMPS = [
+    ("orchard_hills", 1, [], "The Orchard Road", ["bf_orchard_line"], "big_grump", "Forest Edge Camp",
+     ["Bramble Gap", "Fallen Fence", "Honey Cellars", "Picker's Rest", "Crab-Apple Ridge", "Long Barn", "The Cider Press"],
+     "The road north runs through the orchards, and the orchards are full of grumps. Push them out row by row.",
+     "The orchard road is open. The trees seem to stand a little straighter."),
+    ("highlands", 2, ["orchard_hills"], "Highland March", {"penguins": ["bf_frostfield", "bf_orchard_line"], "gangsters": ["bf_orchard_line", "bf_rail_yards"]}, "hill_wolf", "Hilltop Bivouac",
+     ["Wolf Run", "Cairn Field", "Shepherd's Hut", "Windy Saddle", "Frostbite Ledge", "Howling Tor", "The High Gate"],
+     "The highland passes are held by wolves and winter wisps. Climb, hold the ledges, and the high country opens.",
+     "The highland gate swings open. The wind up here sounds almost friendly now."),
+    ("quarry", 2, [], "Quarry Breakers", {"penguins": ["bf_shattered_vale", "bf_ash_wastes"], "gangsters": ["bf_rail_yards", "bf_ash_wastes"]}, "quarry_golem", "Beach Road Camp",
+     ["Rubble Gate", "Crane Pit", "Echo Shaft", "Foreman's Hut", "Slag Hill", "Crab Steps", "The Deep Cut"],
+     "Golems have taken the quarry roads. Break their lines and the old cutters' paths are ours.",
+     "The quarry falls quiet. Somewhere below, a golem sets its hammer down."),
+    ("marsh", 2, [], "Into the Mire", ["bf_bog_crossing"], "bog_hag", "Dune Grass Camp",
+     ["Reedbank", "Lily Causeway", "Witch's Larder", "Dry Hummock", "Sunken Chapel", "Mosswater", "Witchlight Isle"],
+     "Fog, frogs and bog hags. Find firm ground, hold it, and walk the causeways into the marsh.",
+     "The marsh mists part. The frogs sing you through."),
+    ("riverlands", 2, ["marsh"], "Riverlands Run", ["bf_bog_crossing", "bf_orchard_line"], "river_serpent", "Marsh Ferry Camp",
+     ["Ferry Steps", "Willow Bend", "Otter Holt", "Ford of Stones", "Mill Race", "Serpent Pool", "The Weir"],
+     "River serpents have the fords. Escort the ferry stores, take the weir, and the river is ours to cross.",
+     "The weir is open and the river runs easy. Fish jump all the way upstream."),
+    ("ruins", 3, ["quarry"], "Ruin Siege", {"penguins": ["bf_shattered_vale", "bf_ash_wastes"], "gangsters": ["bf_ash_wastes", "bf_rail_yards"]}, "ruin_guardian", "Meadow Gate Camp",
+     ["Broken Stair", "Moss Court", "Hall of Pillars", "Scribes' Rest", "Toppled Arch", "Guardian Walk", "The Star Arch"],
+     "The ruins have guardians, and the guardians have never let anyone in. Be the first.",
+     "The guardians lower their stone heads. The arch is open."),
+    ("wastes", 1, [], "Across the Wastes", ["bf_ash_wastes"], "obsidian_sentinel", "Standing Stones Camp",
+     ["Dead Tree Line", "Spike Field", "Lantern Well", "Bone-Dry Gully", "Rusted Outpost", "Ash Ridge", "The Wastes Gate"],
+     "Past the standing stones the land goes grey. Soldiers hold the old outposts. Take the gate and the wastes are open.",
+     "The wastes gate creaks open. The grey land waits, quieter than before."),
+    ("sky", 4, ["wastes"], "The Cloud Stair", ["bf_frostfield", "bf_shattered_vale"], "knight", "Summit Camp",
+     ["Cloudfoot", "Ice Ladder", "Prism Shelf", "Finargle Roost", "Star Ledge", "Thin Air Fort", "The Sky Stair"],
+     "Above the clouds the mountain keeps climbing. Archers and wisps hold every ledge. Climb it battle by battle.",
+     "The sky stair is yours. The clouds part under your feet like a carpet."),
+    ("station", 4, ["sky"], "Station Approach", ["bf_shattered_vale", "bf_frostfield"], "geode_golem", "Moonlit Pad",
+     ["Docking Ring", "Airlock Row", "Hydro Bay", "Crew Galley", "Solar Wing", "Reactor Walk", "The Command Deck"],
+     "The station drifts dark, and shards crawl its corridors. Take it ring by ring.",
+     "The station lights come on, one deck at a time. Somebody left the radio playing."),
+    ("jungle", 4, ["station"], "Green Planet Landing", ["bf_bog_crossing", "bf_shattered_vale"], "shard_spider", "Landing Zone",
+     ["Fern Wall", "Glow Pool", "Vine Bridge", "Flower Canopy", "Spore Hollow", "Root Temple", "The Heart Grove"],
+     "The green planet's jungle is thick with shards. Cut a way in, one clearing at a time.",
+     "The jungle opens. The giant flowers turn to watch you pass, and they seem pleased."),
+    ("colony_coral", 2, [], "Reef Rescue", {"penguins": ["bf_bog_crossing"], "gangsters": ["bf_dockside", "bf_bog_crossing"]}, "river_serpent", "Boat Landing",
+     ["Shell Beach", "Tide Pools", "Crab Kingdom", "Pearl Cove", "Coral Arch", "Wreck Point", "The Reef Gate"],
+     "The coral colony is cut off by crabs and serpents. Fight your way across the reef to reach them.",
+     "The reef gate opens. The merkitties are waving from the shore."),
+    ("colony_kelp", 3, ["colony_coral"], "Kelp Forest Crossing", {"penguins": ["bf_bog_crossing", "bf_frostfield"], "gangsters": ["bf_dockside", "bf_bog_crossing"]}, "void_eel", "Driftwood Raft",
+     ["Kelp Edge", "Bubble Field", "Sunken Bell", "Eel Narrows", "Glow Shallows", "Black Tide Bar", "The Kelp Gate"],
+     "The kelp forest is dark and full of eels. Light a path through and the colony can breathe.",
+     "The kelp sways open. Little lights blink on all along the path."),
+    ("colony_ice", 4, ["colony_kelp"], "Frozen Isle Landing", ["bf_frostfield"], "geode_golem", "Ice Floe Camp",
+     ["Snowdrift Beach", "Seal Rocks", "Frost Chapel", "Aurora Field", "Glacier Mouth", "Winter Den", "The Ice Gate"],
+     "Hollow Winter has frozen the island solid. Break the ice walls and reach the colony.",
+     "The ice gate cracks and melts. The colony sends out hot cocoa."),
+    ("colony_ember", 5, ["colony_ice"], "Ember Isle Assault", ["bf_ash_wastes"], "ash_hound", "Cinder Cove",
+     ["Ash Shore", "Smoke Hollow", "Lava Bridge", "Ember Market", "Cinder Cone", "Hound Kennels", "The Ember Gate"],
+     "The ember island smoulders. Ash hounds patrol the bridges. Cross, hold, and reach the last colony.",
+     "The smoke clears from the ember isle. Above it, real stars."),
+    ("countryside", 1, [], "The Highway Job", ["bf_orchard_line", "bf_rail_yards"], "thug_brute", "Motel Lot",
+     ["Billboard Bend", "Gas Station", "Truck Stop", "Diner Booth", "Toll Booth", "Overpass", "The Long Highway"],
+     "The highway out of the hideout is watched by the President's lookouts. Take the road back, stop by stop.",
+     "The highway is clear. A trucker honks twice as he passes. That means thank you."),
+    ("docks", 2, [], "Dockside Push", ["bf_dockside", "bf_rail_yards"], "rust_knight", "Back Alley",
+     ["Fish Market", "Net Lofts", "Bonded Store", "Tugboat Yard", "Pier Six", "Customs Shed", "The Harbour Gate"],
+     "The docks are the President's front door. Every pier is guarded. Take them one by one.",
+     "The harbour gate is yours. The gulls sound like they're laughing at somebody else for once."),
+    ("neon", 3, ["docks"], "Neon Nights", ["bf_neon_block", "bf_rail_yards"], "thug_flame", "Harbour Stairs",
+     ["Noodle Row", "Arcade Alley", "Karaoke Box", "Rooftop Garden", "Signal Bridge", "Dragon Court", "The Neon Gate"],
+     "Neon belongs to whoever holds the signs. Right now that's not you. Switch them off one by one.",
+     "The neon gate flickers to your colours. The whole street hums along."),
+    ("uptown", 3, ["neon"], "Uptown Assault", ["bf_neon_block", "bf_dockside"], "thug_enforcer", "Neon Overpass",
+     ["Lawn Terrace", "Fountain Plaza", "Gallery Steps", "Valet Ramp", "Glass Atrium", "Tower Gardens", "The Tower Gate"],
+     "Uptown is all lawns, glass and guards. Take the plazas and the tower road opens.",
+     "The tower gate stands open. Up close, the tower looks smaller."),
+    ("underground", 4, ["neon"], "Down the Manhole", ["bf_neon_block", "bf_rail_yards"], "drip_crawler", "Manhole Camp",
+     ["Drip Tunnel", "Pipe Junction", "Old Platform", "Rat King's Hall", "Pump Room", "Sluice Gate", "The Pit Door"],
+     "Under Neon the tunnels go on for miles. Crawlers and the President's crews hold every junction.",
+     "The pit door grinds open. Down here, your name echoes."),
+]
+
+# Board layouts: [x, y] in 0..1 on the board, then links. Slot 0 is the start camp.
+LAYOUTS = {
+    5: {"pos": [[0.5, 0.92], [0.22, 0.70], [0.78, 0.70], [0.5, 0.50], [0.26, 0.28], [0.56, 0.09]],
+        "links": [[0, 1], [0, 2], [1, 3], [2, 3], [3, 4], [3, 5], [4, 5]], "layer": [0, 1, 1, 2, 3, 4]},
+    6: {"pos": [[0.5, 0.92], [0.24, 0.72], [0.76, 0.72], [0.18, 0.48], [0.66, 0.50], [0.40, 0.28], [0.60, 0.08]],
+        "links": [[0, 1], [0, 2], [1, 3], [1, 4], [2, 4], [3, 5], [4, 5], [4, 6], [5, 6]], "layer": [0, 1, 1, 2, 2, 3, 4]},
+    7: {"pos": [[0.5, 0.93], [0.18, 0.74], [0.5, 0.70], [0.82, 0.74], [0.24, 0.47], [0.76, 0.47], [0.5, 0.29], [0.5, 0.08]],
+        "links": [[0, 1], [0, 2], [0, 3], [1, 4], [2, 4], [2, 5], [3, 5], [4, 6], [5, 6], [6, 7], [5, 7]], "layer": [0, 1, 1, 1, 2, 2, 3, 4]},
+}
+# Node type pools by layer (the last layer is always the gate: a siege with a boss).
+POOL = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["siege", "defend", "escort", "camp", "boss"], 3: ["camp", "cache", "defend", "boss", "siege"]}
+STEP = {1: 0, 2: 0, 3: 1, 4: 1}
+BRIEF = {
+    "skirmish": "A quick clash at %s. Take the points and their line breaks.",
+    "siege": "%s is dug in and fortified: their points take twice as long to turn. Bring helpers and a plan.",
+    "escort": "Our supply %s has to reach %s. Walk with it: it only rolls with friends beside it and no foes on it.",
+    "defend": "Hold %s. Their gates keep pouring foes out; keep at least one point until the timer runs out.",
+    "boss": "Their captain holds %s. Bring the captain down and the rest will scatter.",
+    "gate": "%s: the last wall before the region. Every point fortified, and their commander takes the field.",
+}
+
+def _field_points(fid):
+    return [dict(p) for p in R[fid]["battle"]["points"]]
+
+def _cfg(fid, typ, side, rng, name):
+    pts = _field_points(fid)
+    camp = [p for p in pts if p["owner"] == "ally"][0]
+    others = [p for p in pts if p is not camp]
+    cx = camp["cell"][0]
+    def dist(p):
+        return abs(p["cell"][0] - camp["cell"][0]) + abs(p["cell"][1] - camp["cell"][1])
+    cfg = {"field": fid}
+    if typ in ("skirmish", "boss"):
+        half = [p for p in others if (p["cell"][0] < cx) == (side < 0.5) or p["cell"][0] == cx]
+        if len(half) < 2:
+            half = sorted(others, key=dist)[:3]
+        use = [camp] + sorted(half, key=dist)[:3]
+        for p in use[1:]:
+            p["owner"] = "neutral" if dist(p) == min(dist(q) for q in use[1:]) else "enemy"
+        cfg["points"] = use
+    elif typ in ("siege", "gate"):
+        for p in others:
+            p["owner"] = "enemy"
+            p["efort"] = True
+        cfg["points"] = [camp] + others
+    elif typ == "escort":
+        side_pts = [p for p in others if (p["cell"][0] <= cx) == (side < 0.5)] or others
+        target = max(side_pts, key=dist)
+        mid = min([p for p in others if p is not target], key=lambda p: abs(p["cell"][0] - (camp["cell"][0] + target["cell"][0]) / 2) + abs(p["cell"][1] - (camp["cell"][1] + target["cell"][1]) / 2))
+        target["owner"] = "enemy"
+        mid["owner"] = "neutral"
+        extra = [p for p in others if p is not target and p is not mid]
+        use = [camp, mid, target] + extra[:1]
+        cfg["points"] = use
+        cfg["convoy"] = [camp["id"], mid["id"], target["id"]]
+    elif typ == "defend":
+        far = sorted(others, key=dist, reverse=True)[:2]
+        for p in others:
+            p["owner"] = "ally"
+        for p in far:
+            p["owner"] = "enemy"
+            p["gate"] = True
+        cfg["points"] = [camp] + others
+    return cfg
+
+def _reward(tier, typ, arc, rng):
+    base = {"skirmish": 120, "siege": 220, "escort": 180, "defend": 200, "boss": 240, "gate": 0}[typ]
+    r = {"crystals": int(base * (0.6 + 0.4 * tier)), "supply": {"skirmish": 10, "siege": 6, "escort": 18, "defend": 8, "boss": 8, "gate": 0}[typ],
+         "morale": {"skirmish": 8, "siege": 12, "escort": 10, "defend": 10, "boss": 15, "gate": 0}[typ], "items": {}}
+    pick = list(REWARD_ITEMS[tier].items())
+    k, n = pick[rng.randrange(len(pick))]
+    r["items"][k] = max(1, n // 2)
+    return r
+
+C = {}
+for (region, tier, after, title, fields, boss, start_name, names, intro, won) in CAMPS:
+    cid = "c_" + region
+    rng = random.Random(cid)
+    arc = "penguins" if region in PENG_ONLY else ("gangsters" if region in GANG_ONLY else "both")
+    arcs = ["penguins", "gangsters"] if arc == "both" else [arc]
+    fl = fields if isinstance(fields, dict) else {a: fields for a in arcs}
+    n = 5 if tier <= 1 else (6 if tier <= 3 else 7)
+    L = LAYOUTS[n]
+    nm = list(names)
+    nodes = []
+    used = {}
+    for i, (pos, layer) in enumerate(zip(L["pos"], L["layer"])):
+        nid = "n%d" % i
+        if i == 0:
+            nodes.append({"id": nid, "name": start_name, "type": "start", "x": pos[0], "y": pos[1], "layer": 0})
+            continue
+        last = i == len(L["pos"]) - 1
+        if last:
+            typ = "gate"
+            name = nm[-1]
+        else:
+            pool = [t for t in POOL[min(layer, 3)] if used.get(t, 0) < (2 if t in ("skirmish", "siege") else 1)] or ["skirmish"]
+            # never two non-battles on one layer, at most one camp and one cache, and
+            # a 5-node board keeps its hub (every route passes it) a fight
+            if any(nn["layer"] == layer and nn["type"] in ("camp", "cache") for nn in nodes) or (n == 5 and layer == 2) \
+                    or sum(1 for nn in nodes if nn["type"] in ("camp", "cache")) >= (1 if n == 5 else 2):
+                pool = [t for t in pool if t not in ("camp", "cache")]
+            typ = pool[rng.randrange(len(pool))]
+            name = nm[(i - 1) % (len(nm) - 1)]
+        used[typ] = used.get(typ, 0) + 1
+        node = {"id": nid, "name": name, "type": typ, "x": pos[0], "y": pos[1], "layer": layer, "step": STEP[layer]}
+        if typ in ("camp", "cache"):
+            node["brief"] = {"camp": "A sheltered spot to rest. Morale recovers here, and a camp you hold lets you rest again tomorrow.",
+                             "cache": "Abandoned stores. Take the supplies for the next fight, or share them with the locals for morale."}[typ]
+            node["loot"] = {"supply": 20 + 4 * tier, "morale": 15, "crystals": 60 * tier, "items": dict([list(REWARD_ITEMS[tier].items())[0]])}
+        else:
+            cfgs = {}
+            for a in arcs:
+                fs = fl[a]
+                fid = fs[(i - 1) % len(fs)]
+                cfg = _cfg(fid, typ, pos[0], rng, name)
+                ek = _kinds(region) + [k for k in R[fid]["battle"]["enemies"] if k in EN and int(EN[k].get("hp", 0)) < 45]
+                if a == "penguins":
+                    ek = [k for k in ek if not k.startswith("thug_")] or ek
+                if a == "gangsters" and region in GANG_ONLY:
+                    ek = [k for k in ek if k.startswith("thug_") or k in ("soldier", "archer", "rust_knight")] or ek
+                seen = []
+                for k in ek:
+                    if k not in seen:
+                        seen.append(k)
+                cfg["enemies"] = seen[:6]
+                cfgs[a] = cfg
+            node["cfg"] = cfgs
+            if typ in ("boss", "gate"):
+                node["boss"] = boss
+            if typ == "escort":
+                node["convoy_hp"] = 60 + 20 * tier
+            if typ == "defend":
+                node["hold"] = 120 + 15 * tier
+            node["enemy_tickets"] = {"skirmish": 70, "siege": 150, "escort": 400, "defend": 999, "boss": 110, "gate": 170}[typ] + 10 * tier
+            node["tickets"] = {"skirmish": 110, "siege": 150, "escort": 130, "defend": 140, "boss": 130, "gate": 170}[typ]
+            node["wave_every"] = {"skirmish": 7.0, "siege": 6.5, "escort": 6.0, "defend": 5.0, "boss": 7.0, "gate": 6.0}[typ]
+            node["enemy_cap"] = {"skirmish": 10, "siege": 14, "escort": 12, "defend": 16, "boss": 10, "gate": 16}[typ] + tier
+            if typ == "escort":
+                cv = node["cfg"][arcs[0]]["convoy"]
+                pn = {p["id"]: p["name"] for p in node["cfg"][arcs[0]]["points"]}
+                node["brief"] = BRIEF["escort"] % ("wagon" if arc != "gangsters" else "truck", pn[cv[-1]])
+            else:
+                node["brief"] = BRIEF[typ] % name
+            node["reward"] = _reward(tier, typ, arc, rng)
+        nodes.append(node)
+    links = [["n%d" % a, "n%d" % b] for a, b in L["links"]]
+    for nd in nodes:
+        nd["links"] = sorted({b if a == nd["id"] else a for a, b in links if nd["id"] in (a, b)})
+    big = {"crystals": 500 + 400 * tier, "items": dict(REWARD_ITEMS[tier]), "arc_items": ARC_ITEMS, "strategist": 250 + 100 * tier}
+    C[cid] = {"id": cid, "region": region, "title": title, "arc": arc, "tier": tier, "after": ["c_" + a for a in after], "min_pt": max(0, tier - 2),
+              "who": SPEAK if arc == "both" else {arc: SPEAK[arc]}, "intro": intro, "won": won, "reward": big, "nodes": nodes, "links": links,
+              "region_name": COL.get(region, {}).get("name") or R.get(region, {}).get("name") or region.replace("_", " ").title()}
+    # sanity: every reward item exists, every enemy exists, every field exists
+    for nd in nodes:
+        for k in list(nd.get("reward", {}).get("items", {})) + list(nd.get("loot", {}).get("items", {})):
+            assert k in IT, (cid, k)
+        for a, cf in nd.get("cfg", {}).items():
+            assert cf["field"] in R and cf["enemies"], (cid, nd["id"], a)
+            assert all(k in EN for k in cf["enemies"]), (cid, cf["enemies"])
+        if "boss" in nd:
+            assert nd["boss"] in EN, nd["boss"]
+    for k in big["items"]:
+        assert k in IT, k
+
+B["_campaigns"] = {"title": "Campaigns", "arc": "none", "tier": 0, "list": C}
+OUT = os.environ.get("DRY_OUT", D + "/data")  # DRY_OUT=/tmp/x: write the JSON elsewhere to compare
+json.dump(R, open(OUT + "/regions.json", "w"), indent=1, ensure_ascii=False)
+json.dump(B, open(OUT + "/battles.json", "w"), indent=1, ensure_ascii=False)
+print("battles:", [b for b in B if not b.startswith("_")])
+print("campaigns:", len(C), sum(len(c["nodes"]) - 1 for c in C.values()), "nodes")
+

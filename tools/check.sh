@@ -120,6 +120,18 @@ if ! echo "$kout" | grep -q "campaign_test: 0 failures"; then
   echo "Campaign test failed"; exit 1
 fi
 
+echo "== region campaigns: boards, locks, convoy =="
+mout2="$("$GODOT" --headless --path . -s res://tools/campaign_map_test.gd 2>&1)"
+echo "$mout2" | grep -E "FAIL|SCRIPT ERROR|campaign_map_test" | head -n 40 || true
+if ! echo "$mout2" | grep -q "campaign_map_test: 0 fails"; then
+  echo "Campaign map test failed"; exit 1
+fi
+sout2="$("$GODOT" --headless --path . -s res://tools/campaign_story_test.gd 2>&1)"
+echo "$sout2" | grep -E "FAIL|SCRIPT ERROR|campaign_story_test" || true
+if ! echo "$sout2" | grep -q "campaign_story_test: 0 fails"; then
+  echo "Campaign story test failed"; exit 1
+fi
+
 echo "== settings, slots, quality, discovery, perks, birthdays =="
 yout="$("$GODOT" --headless --path . -s res://tools/systems_test.gd 2>&1)"
 echo "$yout" | grep -E "FAIL|systems_test" || true

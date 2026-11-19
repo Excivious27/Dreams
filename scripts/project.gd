@@ -150,6 +150,8 @@ static func open(m: GameMap) -> void:
 				acts.append(["give", bi])
 		else:
 			text = "%s is complete." % str(pd["name"])
+		opts.append("Campaign map: open new regions")
+		acts.append(["campaign", 0])
 		if has("war_table"):
 			opts.append("⚔ War table: battles")
 			acts.append(["war", 0])
@@ -174,6 +176,9 @@ static func open(m: GameMap) -> void:
 				await _check_stage(m)
 			"war":
 				await war_table(m)
+				return
+			"campaign":
+				CampaignScreen.open(m)
 				return
 			"jobs":
 				await jobs_menu(m)
@@ -202,8 +207,8 @@ static func _check_stage(m: GameMap) -> void:
 
 static func war_table(m: GameMap) -> void:
 	var all: Dictionary = GameState.load_json("res://data/battles.json")
-	var opts: Array = []
-	var ids: Array = []
+	var opts: Array = ["Campaign map (open new regions)"]
+	var ids: Array = [["_campaign", true]]
 	for bid in all:
 		var b: Dictionary = all[bid]
 		if str(b.get("arc", "both")) not in ["both", str(GameState.run.get("arc", ""))]:
@@ -217,6 +222,9 @@ static func war_table(m: GameMap) -> void:
 	await d.finished
 	var i := d.last_choice
 	if i < 0 or i >= ids.size():
+		return
+	if str(ids[i][0]) == "_campaign":
+		CampaignScreen.open(m)
 		return
 	if not bool(ids[i][1]):
 		m.hud.toast("Not yet: get further in the story first.", Color(1, 0.85, 0.6))

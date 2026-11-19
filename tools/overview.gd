@@ -2,6 +2,7 @@ extends SceneTree
 ## Dev helper: whole-map overviews (zoomed out) for layout review. Args: out dir, scene names...
 var out := "/tmp"
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()

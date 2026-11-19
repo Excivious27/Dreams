@@ -41,6 +41,13 @@ func build() -> void:
 		var has := int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
 		things[m] = {"type": "shroom", "key": key, "has": has, "hint": "A: pick mushroom" if has else ""}
 	extend(18, 14)
+	# A two-tier hill in the opened-up south: climb the stairs for the view over the valley.
+	var hav := cells_of([Rect2i(14, 18, 9, 8)])  # the tall-grass corner stays as it is
+	hav.merge(_ext_paths)
+	for e in exits:
+		hav.merge(cells_of([(e["rect"] as Rect2i).grow(3)]))
+	hav.merge(cells_of([Rect2i(cols - 10, rows - 11, 6, 6), Rect2i(5, rows - 9, 7, 6)]))  # watchtower, scarecrow field
+	WorldGen.tiered_hill(self, Vector2(27.0, 34.0), 6.5, 4.6, 5101, hav)
 
 
 func after_ready() -> void:
@@ -51,6 +58,7 @@ func after_ready() -> void:
 	if Art.has("props", "scarecrow_field"):
 		prop("props", "scarecrow_field", Vector2i(8, rows - 6))
 	_place_props()
+	WorldGen.clear_stairs.call_deferred(self)
 	var avoid := {}
 	for y in range(3, 9):
 		for x in range(30, 35):
@@ -261,6 +269,7 @@ func draw_map() -> void:
 			if not blocked.has(c):
 				Art.draw_tile(self, "tiles", "g_tall", Vector2(c * TILE), 4)
 	draw_ground("dirt", cells_of([Rect2i(15, 0, 2, 10), Rect2i(1, 9, 30, 3), Rect2i(28, 9, 3, 6), Rect2i(28, 14, 7, 3), FARM_EXIT, EAST_EXIT]))
+	draw_plateaus()
 	draw_exits()
 	if not Art.has("nature", "oak"):
 		for k in things:
@@ -276,8 +285,8 @@ func draw_map() -> void:
 						var p := cell_center(k)
 						draw_rect(Rect2(p.x - 4, p.y - 8, 8, 3), Color("c9452f"))
 	# Mine entrance in a rocky hill.
-	if not soft_ground(cells_of([Rect2i(30, 2, 5, 7)]), "ruin_floor", Color(0.12, 0.1, 0.08, 0.3)):
-		draw_ground("stone", cells_of([Rect2i(30, 2, 5, 7)]))
+	if not soft_ground(cells_of([Rect2i(30, 3, 5, 6)]), "ruin_floor", Color(0.12, 0.1, 0.08, 0.3)):
+		draw_ground("stone", cells_of([Rect2i(30, 3, 5, 6)]))
 	if not Art.has("props", "mine_entrance"):
 		draw_rect(Rect2(MINE_DOOR.x * TILE + 2, MINE_DOOR.y * TILE, 12, 16), Color("111"))
 	if pad == 0:
@@ -297,9 +306,7 @@ func _place_props() -> void:
 			"shroom":
 				if bool(t.get("has", false)):
 					prop("nature", "mushrooms_fall" if Art.has("nature", "mushrooms_fall") else "flowers", k, 0, 0.0, false)  # deco_5 is an opaque grass square
-	if Art.has("props", "mine_entrance"):
-		prop("props", "mine_entrance", Vector2i(31, 6), 2)
-	else:
-		for c: Vector2i in [Vector2i(31, 7), Vector2i(33, 4)]:
-			prop("nature", "rock_l", c)
+	# The mine mouth: a big timbered portal dressed with rocks, lanterns, rails and
+	# an ore cart (falls back to the small prop when the portal art is missing).
+	preload("res://scripts/mine_entrance.gd").dress(self, MINE_DOOR)
 	prop("nature", "log", Vector2i(6, 13), 1)

@@ -125,7 +125,7 @@ for rid, c in COL.items():
               "border": {"n": "water", "s": "water", "w": "water", "e": "water"},
               "exits": [{"rect": [38, 63, 4, 1], "scene": "beach", "spawn": [12, 22], "facing": "down", "label": "▼ ferry home"}],
               "paths": [[39, 44, 2, 20], [42, 34, 32, 2], [40, 50, 32, 2], [18, 22, 2, 20], [18, 41, 24, 2]], "islands": isl, "island_shore": "sand",
-              "plateaus": [{"blobs": [{"c": [34, 32], "r": 7, "seed": 41}]}, {"blobs": [{"c": [74, 22], "r": 5, "seed": 42}]}],
+              "plateaus": [{"blobs": [{"c": [34, 32], "r": 7, "seed": 41}], "upper": [{"c": [34, 30], "r": 3.5, "seed": 43}]}, {"blobs": [{"c": [74, 22], "r": 5, "seed": 42}]}],
               "patch_set": "sand", "ground_threshold": -0.05, "fruit": 0, "forage": 6,
               "gen": {"clumps": 2, "scatter": 18, "critters": ["seagull", "crab", "sparrow"], "critter_count": 8},
               "things": things, "enemies": [{"kind": k, "count": 3, "colony": True} for k in c["enemies"]], "npcs": [],

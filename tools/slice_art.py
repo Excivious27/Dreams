@@ -418,3 +418,11 @@ if __name__ == "__main__":
             print("FAIL", name, repr(e))
     with open(os.path.join(OUT, "manifest.json"), "w") as f:
         json.dump(manifest, f, indent=1, sort_keys=True)
+    # The golem row sits off the sheet's even grid: re-cut it between its own rule
+    # lines, or every reslice brings back the keeper's cut-off head.
+    if not only or "enemies" in only:
+        try:
+            import fix_keeper_art
+            fix_keeper_art.main()
+        except Exception as e:
+            print("FAIL golem fix", repr(e))

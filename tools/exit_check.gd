@@ -10,6 +10,7 @@ const SCENES := ["farm", "town", "forest", "lake", "meadow", "crystal_meadow", "
 	"bf_dockside", "bf_frostfield", "bf_rail_yards", "bf_shattered_vale", "colony_coral", "colony_ember", "colony_ice", "colony_kelp", "hollow_heart"]
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 func _load(scene: String, spawn: Vector2) -> GameMap:

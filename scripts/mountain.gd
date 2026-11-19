@@ -251,7 +251,14 @@ func draw_map() -> void:
 	draw_ground("stone", cells_of([Rect2i(20, 1, 18, 8)]))
 	# One continuous switchback: west gate → up the left stairs → across → up the
 	# middle stairs → the top terrace. Every stair gap has the path running through it.
-	draw_ground("dirt", cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 27, 3, 14), Rect2i(10, 29, 18, 2), Rect2i(25, 13, 3, 18), Rect2i(25, 8, 3, 6), Rect2i(13, 1, 2, 3), Rect2i(13, 3, 8, 2), Rect2i(27, 29, 16, 2), Rect2i(41, 29, 2, 16)]))  # + the quarry exit  # + the highlands exit
+	var trail := cells_of([Rect2i(1, 38, 10, 3), Rect2i(10, 27, 3, 14), Rect2i(10, 29, 18, 2), Rect2i(25, 13, 3, 18), Rect2i(25, 8, 3, 6), Rect2i(13, 1, 2, 3), Rect2i(13, 3, 8, 2), Rect2i(27, 29, 16, 2), Rect2i(41, 29, 2, 16)])  # + the quarry exit  # + the highlands exit
+	# The trail stops at each stair set (soft ground draws over the map, so it
+	# would bury the steps) and carries on at its foot and top.
+	for l in LEDGES:
+		for x in range(int(l[1]) - 1, int(l[2]) + 2):
+			for yy in range(int(l[0]) - 2, int(l[0]) + 1):
+				trail.erase(Vector2i(x, yy))
+	draw_ground("dirt", trail)
 	if Art.has("tiles", "t_cliffg"):
 		var stairs := {}
 		for l in LEDGES:

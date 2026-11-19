@@ -2,7 +2,9 @@ extends SceneTree
 ## Heart arcs: every villager's five milestones play in order when talked to,
 ## the ♥6 quest is offered, daily lines change.
 var fails := 0
-func _initialize() -> void: _run.call_deferred()
+func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
+	_run.call_deferred()
 func check(ok: bool, what: String) -> void:
 	print(("  ok   " if ok else "  FAIL ") + what)
 	if not ok: fails += 1

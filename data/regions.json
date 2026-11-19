@@ -3876,7 +3876,32 @@
   ],
   "patch_set": "track",
   "ground_threshold": 0.32,
-  "deco_keep": []
+  "deco_keep": [],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       14,
+       34
+      ],
+      "r": 7,
+      "seed": 81
+     }
+    ],
+    "upper": [
+     {
+      "c": [
+       14,
+       32
+      ],
+      "r": 3.8,
+      "ry": 3,
+      "seed": 82
+     }
+    ]
+   }
+  ]
  },
  "highlands": {
   "cols": 52,
@@ -4246,7 +4271,54 @@
   ],
   "patch_set": "snowpatch",
   "ground_threshold": 0.0,
-  "deco_keep": []
+  "deco_keep": [],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       12,
+       10
+      ],
+      "r": 7,
+      "seed": 71
+     }
+    ],
+    "upper": [
+     {
+      "c": [
+       12,
+       8
+      ],
+      "r": 3.8,
+      "ry": 2.8,
+      "seed": 72
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       12,
+       33
+      ],
+      "r": 6,
+      "seed": 73
+     }
+    ],
+    "upper": [
+     {
+      "c": [
+       12,
+       31
+      ],
+      "r": 3,
+      "seed": 74
+     }
+    ]
+   }
+  ]
  },
  "ruins": {
   "cols": 48,
@@ -5086,7 +5158,45 @@
   ],
   "patch_set": "ruinfloor",
   "ground_threshold": 0.12,
-  "deco_keep": []
+  "deco_keep": [],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       11,
+       33
+      ],
+      "r": 7,
+      "seed": 91
+     }
+    ],
+    "upper": [
+     {
+      "c": [
+       11,
+       31
+      ],
+      "r": 3.8,
+      "ry": 3,
+      "seed": 92
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       40,
+       35
+      ],
+      "r": 6,
+      "seed": 93
+     }
+    ],
+    "upper": []
+   }
+  ]
  },
  "marsh": {
   "cols": 52,
@@ -6867,6 +6977,16 @@
       "r": 7,
       "seed": 41
      }
+    ],
+    "upper": [
+     {
+      "c": [
+       34,
+       30
+      ],
+      "r": 3.5,
+      "seed": 43
+     }
     ]
    },
    {
@@ -7143,6 +7263,16 @@
       ],
       "r": 7,
       "seed": 41
+     }
+    ],
+    "upper": [
+     {
+      "c": [
+       34,
+       30
+      ],
+      "r": 3.5,
+      "seed": 43
      }
     ]
    },
@@ -7422,6 +7552,16 @@
       ],
       "r": 7,
       "seed": 41
+     }
+    ],
+    "upper": [
+     {
+      "c": [
+       34,
+       30
+      ],
+      "r": 3.5,
+      "seed": 43
      }
     ]
    },
@@ -7711,6 +7851,16 @@
       ],
       "r": 7,
       "seed": 41
+     }
+    ],
+    "upper": [
+     {
+      "c": [
+       34,
+       30
+      ],
+      "r": 3.5,
+      "seed": 43
      }
     ]
    },
@@ -8338,5 +8488,940 @@
    "The lift goes down past where the rope should run out, and then it stops, and there is a whole country under the world.",
    "Moss that glows teal, rivers that run with light, mushrooms as tall as houses, and far off, in a geode the size of the town hall, something beating like a heart."
   ]
+ },
+ "bf_orchard_line": {
+  "cols": 104,
+  "rows": 84,
+  "music": "battle",
+  "backdrop": "hills",
+  "ground": "grass",
+  "path": "dirt",
+  "spawn": [
+   52,
+   75
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "trees",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     50,
+     83,
+     4,
+     1
+    ],
+    "scene": "town",
+    "spawn": [
+     40,
+     60
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    51,
+    42,
+    2,
+    41
+   ],
+   [
+    6,
+    42,
+    92,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     86,
+     58
+    ],
+    "r": 6,
+    "seed": 305,
+    "fish": [
+     "trout"
+    ]
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       20,
+       22
+      ],
+      "r": 10,
+      "seed": 301
+     },
+     {
+      "c": [
+       28,
+       16
+      ],
+      "r": 6,
+      "seed": 302
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       84,
+       22
+      ],
+      "r": 10,
+      "seed": 303
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       52,
+       50
+      ],
+      "r": 7,
+      "seed": 304
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "stone_circle",
+    "cell": [
+     50,
+     26
+    ],
+    "w": 4,
+    "h": 2
+   }
+  ],
+  "patch_set": "track",
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 10,
+   "scatter": 110,
+   "region_props": [
+    "r_orchard_04",
+    "r_orchard_05",
+    "r_orchard_07",
+    "r_orchard_08",
+    "r_orchard_10",
+    "r_orchard_11",
+    "r_orchard_12",
+    "r_orchard_13",
+    "r_orchard_14",
+    "r_orchard_15",
+    "r_orchard_19",
+    "r_orchard_22",
+    "r_orchard_40",
+    "r_orchard_44"
+   ],
+   "region_count": 90,
+   "critters": [
+    "rabbit",
+    "sparrow",
+    "crow"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "battle": {
+   "title": "The Orchard Line",
+   "who": "Catkins",
+   "brief": "Grumps have dug in among the apple rows. Take the press and the granary and the orchard is ours again.",
+   "win": "The orchard rows are quiet. Somebody's already picking apples.",
+   "lose": "Back to the wagons. The apples will keep.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Cider Press",
+     "cell": [
+      20,
+      20
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Windbreak Row",
+     "cell": [
+      52,
+      28
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Old Granary",
+     "cell": [
+      84,
+      20
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "Beehive Hollow",
+     "cell": [
+      52,
+      50
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Wagon Camp",
+     "cell": [
+      52,
+      74
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "hill_wolf",
+    "grump",
+    "soldier",
+    "archer"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 0,
+   "reward": {
+    "crystals": 300,
+    "items": {
+     "potion": 3,
+     "copper_bar": 6
+    }
+   },
+   "back": [
+    "town",
+    40,
+    60
+   ]
+  }
+ },
+ "bf_bog_crossing": {
+  "cols": 108,
+  "rows": 86,
+  "music": "battle",
+  "backdrop": "hills",
+  "ground": "grass",
+  "path": "dirt",
+  "spawn": [
+   54,
+   77
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "trees",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     52,
+     85,
+     4,
+     1
+    ],
+    "scene": "town",
+    "spawn": [
+     40,
+     60
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    53,
+    43,
+    2,
+    42
+   ],
+   [
+    6,
+    43,
+    96,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     40,
+     44
+    ],
+    "r": 8,
+    "seed": 314,
+    "fish": [
+     "catfish"
+    ]
+   },
+   {
+    "c": [
+     72,
+     42
+    ],
+    "r": 7,
+    "seed": 315,
+    "fish": [
+     "eel"
+    ]
+   },
+   {
+    "c": [
+     14,
+     72
+    ],
+    "r": 6,
+    "seed": 316
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       22,
+       24
+      ],
+      "r": 9,
+      "seed": 311
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       88,
+       24
+      ],
+      "r": 10,
+      "seed": 312
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       86,
+       60
+      ],
+      "r": 7,
+      "seed": 313
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "stone_circle",
+    "cell": [
+     52,
+     28
+    ],
+    "w": 4,
+    "h": 2
+   }
+  ],
+  "patch_set": "bog",
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 10,
+   "scatter": 110,
+   "region_props": [
+    "r_marsh_05",
+    "r_marsh_101",
+    "r_marsh_102",
+    "r_marsh_13",
+    "r_marsh_15",
+    "r_marsh_20",
+    "r_marsh_21",
+    "r_marsh_22",
+    "r_marsh_92",
+    "r_marsh_94",
+    "r_marsh_95",
+    "r_marsh_96"
+   ],
+   "region_count": 90,
+   "critters": [
+    "frog",
+    "heron",
+    "dragonfly"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "battle": {
+   "title": "Bog Crossing",
+   "who": "Catkins",
+   "brief": "The bog has more mouths than paths. Hold the causeways and the reeds, and the mire lets you through.",
+   "win": "The fog lifts off the bog like a lid. The frogs start singing again.",
+   "lose": "The mire wins today. Back to the rafts.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Witchlight Isle",
+     "cell": [
+      22,
+      22
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Heron Causeway",
+     "cell": [
+      54,
+      30
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Drowned Mill",
+     "cell": [
+      88,
+      22
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "Frog Chorus",
+     "cell": [
+      24,
+      58
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Reed Fort",
+     "cell": [
+      86,
+      60
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "f",
+     "name": "Raft Camp",
+     "cell": [
+      54,
+      76
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "mud_slime",
+    "bog_hag",
+    "river_serpent",
+    "drip_crawler",
+    "lantern_moth"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 0,
+   "reward": {
+    "crystals": 500,
+    "items": {
+     "greater_potion": 2,
+     "iron_bar": 5
+    }
+   },
+   "back": [
+    "town",
+    40,
+    60
+   ]
+  }
+ },
+ "bf_ash_wastes": {
+  "cols": 110,
+  "rows": 86,
+  "music": "battle",
+  "backdrop": "night",
+  "ground": "dead_grass",
+  "path": "cracked_earth",
+  "spawn": [
+   55,
+   77
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "trees",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     53,
+     85,
+     4,
+     1
+    ],
+    "scene": "town",
+    "spawn": [
+     40,
+     60
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    54,
+    43,
+    2,
+    42
+   ],
+   [
+    6,
+    43,
+    98,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     24,
+     62
+    ],
+    "r": 5,
+    "seed": 325
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       24,
+       20
+      ],
+      "r": 11,
+      "seed": 321
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       90,
+       22
+      ],
+      "r": 11,
+      "seed": 322
+     },
+     {
+      "c": [
+       98,
+       30
+      ],
+      "r": 5,
+      "seed": 323
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       56,
+       50
+      ],
+      "r": 8,
+      "seed": 324
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "stone_circle",
+    "cell": [
+     54,
+     48
+    ],
+    "w": 4,
+    "h": 2
+   }
+  ],
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 10,
+   "scatter": 110,
+   "region_props": [
+    "dead_tree_s",
+    "dead_tree_m",
+    "dead_tree_l",
+    "dspike_1",
+    "dspike_2",
+    "wdeco_0",
+    "wdeco_1",
+    "wdeco_2",
+    "wdeco_5",
+    "wdeco_6"
+   ],
+   "region_count": 90,
+   "critters": [
+    "crow",
+    "snake"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "battle": {
+   "title": "The Ashen Flats",
+   "who": "Catkins",
+   "brief": "Nothing grows on the Ashen Flats but trouble. Take the gate and the watchtower and the wind changes.",
+   "win": "The ash settles. Under it, something green is already trying.",
+   "lose": "Pull back to the lanterns. The flats aren't going anywhere.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Spike Gate",
+     "cell": [
+      24,
+      18
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Glass Dunes",
+     "cell": [
+      56,
+      26
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Burnt Watchtower",
+     "cell": [
+      90,
+      20
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "Dry Well",
+     "cell": [
+      56,
+      50
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Lantern Camp",
+     "cell": [
+      56,
+      76
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "soldier",
+    "archer",
+    "wisp",
+    "ash_hound"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 1,
+   "reward": {
+    "crystals": 700,
+    "items": {
+     "gold_bar": 3,
+     "amethyst": 2
+    }
+   },
+   "back": [
+    "town",
+    40,
+    60
+   ]
+  },
+  "ground_seam": "ash"
+ },
+ "bf_neon_block": {
+  "cols": 104,
+  "rows": 84,
+  "music": "battle",
+  "backdrop": "night",
+  "ground": "wet_asphalt_0",
+  "path": "neon_sidewalk",
+  "spawn": [
+   52,
+   75
+  ],
+  "pad": 7,
+  "border": {
+   "n": "cliff",
+   "s": "cliff",
+   "w": "trees",
+   "e": "cliff"
+  },
+  "exits": [
+   {
+    "rect": [
+     50,
+     83,
+     4,
+     1
+    ],
+    "scene": "hideout",
+    "spawn": [
+     26,
+     38
+    ],
+    "facing": "down",
+    "label": "▼ fall back"
+   }
+  ],
+  "paths": [
+   [
+    51,
+    42,
+    2,
+    41
+   ],
+   [
+    6,
+    42,
+    92,
+    2
+   ]
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     86,
+     58
+    ],
+    "r": 5,
+    "seed": 334
+   }
+  ],
+  "plateaus": [
+   {
+    "blobs": [
+     {
+      "c": [
+       22,
+       20
+      ],
+      "r": 9,
+      "seed": 331
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       84,
+       20
+      ],
+      "r": 9,
+      "seed": 332
+     }
+    ]
+   },
+   {
+    "blobs": [
+     {
+      "c": [
+       52,
+       48
+      ],
+      "r": 6,
+      "seed": 333
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "container_red",
+    "cell": [
+     36,
+     38
+    ],
+    "w": 2,
+    "h": 1
+   },
+   {
+    "name": "container_blue",
+    "cell": [
+     68,
+     38
+    ],
+    "w": 2,
+    "h": 1
+   }
+  ],
+  "ground_threshold": 0.15,
+  "fruit": 0,
+  "gen": {
+   "clumps": 10,
+   "scatter": 110,
+   "region_props": [
+    "lamp2_short_3",
+    "vend_red",
+    "vend_blue",
+    "payphone2",
+    "crates_a",
+    "oil_drums",
+    "bench_green"
+   ],
+   "region_count": 90,
+   "critters": [
+    "rat",
+    "pigeon"
+   ],
+   "critter_count": 6
+  },
+  "forage": 0,
+  "things": [],
+  "enemies": [],
+  "npcs": [],
+  "battle": {
+   "title": "The Neon Block",
+   "who": "Halo",
+   "brief": "Every sign on this block belongs to the President's crews. Switch them off one by one and the street is yours.",
+   "win": "The block hums under your colours. The night market reopens before you've even left.",
+   "lose": "Too hot tonight. Back to the van.",
+   "points": [
+    {
+     "id": "a",
+     "name": "Dragon Sign",
+     "cell": [
+      22,
+      18
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "b",
+     "name": "Night Market",
+     "cell": [
+      52,
+      26
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "c",
+     "name": "Pachinko Hall",
+     "cell": [
+      84,
+      18
+     ],
+     "owner": "enemy"
+    },
+    {
+     "id": "d",
+     "name": "The Overpass",
+     "cell": [
+      52,
+      48
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "e",
+     "name": "Laundromat Lot",
+     "cell": [
+      20,
+      60
+     ],
+     "owner": "neutral"
+    },
+    {
+     "id": "f",
+     "name": "Getaway Van",
+     "cell": [
+      52,
+      74
+     ],
+     "owner": "ally"
+    }
+   ],
+   "enemies": [
+    "thug_speedster",
+    "thug_gambler",
+    "thug_cyber",
+    "thug_flame",
+    "thug_brute"
+   ],
+   "tickets": 150,
+   "supply": 15,
+   "wave_every": 7.0,
+   "enemy_cap": 16,
+   "tier_bonus": 1,
+   "reward": {
+    "crystals": 700,
+    "items": {
+     "data_chip": 3,
+     "servo": 6
+    }
+   },
+   "back": [
+    "hideout",
+    26,
+    38
+   ]
+  },
+  "ground_seam": "pavement"
  }
 }

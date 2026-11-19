@@ -40706,28 +40706,28 @@
  },
  "enemies/golem": {
   "hurt": {
-   "cell_h": 70,
-   "cell_w": 87,
+   "cell_h": 84,
+   "cell_w": 82,
    "file": "enemies/golem/hurt.png",
    "frames": 2,
-   "h": 70,
-   "w": 174
+   "h": 84,
+   "w": 164
   },
   "idle": {
-   "cell_h": 70,
-   "cell_w": 85,
+   "cell_h": 84,
+   "cell_w": 80,
    "file": "enemies/golem/idle.png",
    "frames": 4,
-   "h": 70,
-   "w": 340
+   "h": 84,
+   "w": 320
   },
   "walk": {
-   "cell_h": 70,
-   "cell_w": 85,
+   "cell_h": 84,
+   "cell_w": 82,
    "file": "enemies/golem/walk.png",
    "frames": 4,
-   "h": 70,
-   "w": 340
+   "h": 84,
+   "w": 328
   }
  },
  "enemies/golem_king": {

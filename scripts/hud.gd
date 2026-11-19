@@ -65,6 +65,32 @@ func _ready() -> void:
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_fade.visible = false  # an invisible full-screen rect still costs a blended full-screen pass every frame
 	add_child(_fade)
+	_show_clinic_note.call_deferred()
+
+
+## Waking in the clinic after passing out (GameMap.player_down): say what happened and the bill.
+func _show_clinic_note() -> void:
+	if GameState.run.is_empty():
+		return
+	var note := str(GameState.run.get("flags", {}).get("clinic_note", ""))
+	var m := get_parent() as GameMap
+	if note == "" or m == null or m.scene_id() != "interior":
+		return
+	GameState.run["flags"].erase("clinic_note")
+	await get_tree().create_timer(0.6).timeout
+	# Let the room's own greeting finish first.
+	var dl := Dialogue.instance(get_tree())
+	for i in 600:
+		if not dl.active:
+			break
+		await get_tree().process_frame
+	if not is_instance_valid(m) or m.player == null:
+		return
+	m.player.frozen = true
+	m.player.facing = "down"
+	await m.say([{"text": note}, {"text": "Rest up, eat something, and don't push past empty. Exhausted (a red, flashing bar) means it's time to head home."}])
+	if is_instance_valid(m) and m.player:
+		m.player.frozen = false
 
 
 func set_hint(text: String) -> void:
@@ -124,6 +150,17 @@ func _process(delta: float) -> void:
 ## Toasts: under the goal line outdoors, above the HUD block indoors, above the dialogue box while one is open.
 func _place_toasts() -> void:
 	var y := (108.0 if _boss_on else 89.0) if y_offset == 0.0 else 199.0  # under the goal (and the boss bar)
+	var sc := get_tree().current_scene
+	# The campaign board has its own message line: toasts wait under it, unseen.
+	var board := false
+	if sc:
+		for n in sc.get_children():
+			if n is CampaignScreen:
+				board = true
+				break
+	_toasts.visible = not board
+	if sc and sc.get("battle") != null and y_offset == 0.0:
+		y = 150.0 if _boss_on else 142.0  # under the battle bar (tickets, supply, objective)
 	var d := Dialogue.instance(get_tree())
 	if d.active:
 		var h := 0.0
@@ -352,9 +389,15 @@ func _draw_hud() -> void:
 	# (the pup commands take the right edge).
 	var lh := Settings.left_handed()
 	var e := float(r["energy"]) / float(r["max_energy"])
+	var tired := GameState.exhausted()
+	# Exhausted (under 15%): the bar pulses red and says so, Stardew-style.
+	var pulse := 0.5 + 0.5 * sin(Time.get_ticks_msec() / 160.0)
 	if y_offset > 0.0:
 		# Indoors: a short horizontal bar in the HUD block, off the room.
 		_draw_energy_h(c, e)
+		if tired:
+			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 3, Color(0, 0, 0, 0.8))
+			c.draw_string(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(1, 0.35 + 0.4 * pulse, 0.3))
 		return
 	if Dialogue.instance(get_tree()).active:
 		return  # it would poke out past the dialogue box
@@ -381,6 +424,13 @@ func _draw_hud() -> void:
 		var bolt := Art.tex("ui", "bolt_full")
 		if bolt:
 			c.draw_texture_rect(bolt, Rect2(bar.position.x - 2, bar.position.y - 14, 13, 13), false)
+	if tired:
+		var glow := Rect2(250, 186, 20, 150) if Art.has("ui", "ebar_empty") else bar.grow(2)
+		c.draw_rect(glow.grow(1), Color(1, 0.2, 0.15, 0.25 + 0.45 * pulse), false, 2.0)
+		var tlw := 44.0
+		var tx := bar.position.x - tlw + 9 if not lh else bar.position.x - 2
+		c.draw_string_outline(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, 3, Color(0, 0, 0, 0.85))
+		c.draw_string(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, Color(1, 0.4 + 0.4 * pulse, 0.3))
 	if lh:
 		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 7, Color(1, 1, 0.9))
 	else:
@@ -408,6 +458,8 @@ const ICON_NEAR := {"crystal_bloom": "cave_bloom", "strawberry_wine": "fruit_win
 
 
 static func icon_for(id: String) -> String:
+	if not GameState.TOOL_KINDS.has(id) and Art.has("items", id):
+		return id  # weapons with their own art (six_shooter, crowbar...) keep it
 	if GameState.TOOL_KINDS.has(id) or GameState.is_sword(id):
 		var ti := GameState.tool_icon(id)
 		if Art.has("items", ti):

@@ -10,6 +10,7 @@ var fails := 0
 
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	InputSetup.ensure_actions()
 	GameState.load_data()
 	GameState.new_run("penguins", "man", "Tester", "Dreamhollow", "Pip")

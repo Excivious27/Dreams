@@ -5,7 +5,7 @@ extends CanvasLayer
 ## tap a backpack item to swap it into the selected toolbar slot.
 ## Pauses the game while open.
 
-const TABS := ["Items", "Skills", "Pup", "Party", "Social", "Map", "Quests", "Options"]
+const TABS := ["Items", "Hero", "Skills", "Pup", "Party", "Social", "Map", "Quests", "Options"]
 const SLOT := 34
 
 var _panel: PanelContainer
@@ -38,14 +38,18 @@ func _ready() -> void:
 	for t: String in TABS:
 		var b := Button.new()
 		var tab_icon := "tab_" + t.to_lower()
+		var tab_group := "ui"
 		if t == "Party" and not Art.has("ui", tab_icon):
 			tab_icon = "crew_badge_dice" if not GameState.is_penguins() else "icon_party_merry"  # no tab_party art yet
-		var has_icon := Art.has("ui", tab_icon)
+		if t == "Hero" and not Art.has("ui", tab_icon):
+			tab_group = "items"  # no tab_hero art yet: a helmet
+			tab_icon = Hud.icon_for("iron_helm")
+		var has_icon := Art.has(tab_group, tab_icon)
 		if has_icon:
 			# A fixed icon box: wide banners and round faces sit at the same height,
 			# so every tab name lines up underneath.
 			var ir := TextureRect.new()
-			ir.texture = Art.tex("ui", tab_icon)
+			ir.texture = Art.tex(tab_group, tab_icon)
 			ir.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			ir.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			ir.set_anchors_preset(Control.PRESET_TOP_WIDE)
@@ -75,6 +79,8 @@ func _ready() -> void:
 					sbx = sbx.duplicate()
 					sbx.content_margin_top = 16
 					sbx.content_margin_bottom = 1
+					sbx.content_margin_left = 1  # nine tabs share 246 px
+					sbx.content_margin_right = 1
 					b.add_theme_stylebox_override(st_name, sbx)
 	var scroll := ScrollContainer.new()
 	scroll.custom_minimum_size = Vector2(0, 246)
@@ -370,6 +376,7 @@ func _refresh() -> void:
 					var st: Dictionary = itd.get("stats", {})
 					_line("  " + ", ".join(st.keys().map(func(k: String) -> String: return "%s +%d" % [k, int(st[k])])), 8, Color(0.8, 0.9, 1.0))
 					_button("Equip (%s)" % str(itd.get("slot", "")), func() -> void: GameState.equip(sel); _refresh_player(); _refresh())
+			_button("Character, stats & gear ›", func() -> void: _tab = "Hero"; _refresh())
 			_line("Wearing", 8, Color(0.9, 0.85, 0.7))
 			for eslot: String in GameState.SLOTS:
 				var eid := GameState.equipped(eslot)
@@ -380,6 +387,8 @@ func _refresh() -> void:
 			var gs := "def %d  spd %d  luck %d  dmg %d  energy +%d" % [GameState.gear_stat("defense"), GameState.gear_stat("speed"), GameState.gear_stat("luck"), GameState.gear_stat("damage"), GameState.gear_stat("energy")]
 			_line("  " + gs, 8, Color(0.8, 0.9, 1.0))
 			_line("Tools: " + ", ".join(r["tools"].map(func(t: String) -> String: return GameState.item_name(t))), 8, Color(0.8, 0.8, 0.8))
+		"Hero":
+			CharSheet.build(self, _body)
 		"Skills":
 			_skills_tab()
 		"Pup":
@@ -501,6 +510,17 @@ func _refresh() -> void:
 				var info := "   Birthday %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
 				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
 		"Map":
+			# Region campaigns: the board that opens new regions (locked pins show a padlock).
+			var ready_c := 0
+			for cid: String in Campaign.for_arc():
+				if not Campaign.is_won(cid) and Campaign.why_locked(cid) == "":
+					ready_c += 1
+			_button("Campaign map%s" % (" (%d ready)" % ready_c if ready_c > 0 else ""), func() -> void:
+				var gm := get_tree().current_scene as GameMap
+				if gm == null or gm.scene_id().begins_with("bf_"):
+					return
+				toggle()  # close the menu (unpauses), then the board pauses again
+				CampaignScreen.open(gm))
 			var m := Control.new()
 			m.custom_minimum_size = Vector2(228, 246 if Art.has("ui", "world_map") else 190)
 			m.draw.connect(func() -> void: _draw_map(m))
@@ -1304,9 +1324,17 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		var visited := k in ["farm", "house", "town", "meadow"] or seen.has(k + "_seen") or seen.has(str(SEEN_FLAG.get(k, "-")))
 		if k == "house" and here != "house":
 			continue  # sits on the Farm pin; only shown while you're inside
-		if not visited:
+		var held := Campaign.gate_of(k) != "" and not Campaign.region_open(k)
+		if not visited and not (held and Campaign.why_locked(Campaign.gate_of(k)) == ""):
 			continue
 		var p: Vector2 = org + (PINS[k] as Vector2) * sz
+		if held:
+			_draw_lock(m, p + Vector2(0, -5))
+			if not visited:
+				var cn := str(Campaign.get_c(Campaign.gate_of(k)).get("region_name", k.capitalize()))
+				m.draw_string_outline(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, 6, 3, Color(1, 0.95, 0.8, 0.8))
+				m.draw_string(font, p + Vector2(-24, 7), cn, HORIZONTAL_ALIGNMENT_CENTER, 48, 6, Color(0.35, 0.1, 0.05))
+				continue
 		var icon := str(PIN_ICON.get(k, ""))
 		if icon != "" and Art.has("ui", icon):
 			var it := Art.tex("ui", icon)
@@ -1321,6 +1349,14 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		var p: Vector2 = org + (PINS[here] as Vector2) * sz
 		m.draw_circle(p + Vector2(0, -6), 3.0, Color(1, 0.2, 0.2))
 		m.draw_arc(p + Vector2(0, -6), 4.5, 0, TAU, 16, Color.WHITE, 1.0)
+
+
+## A small padlock over a map pin: the region is held until its campaign is won.
+func _draw_lock(m: Control, c: Vector2) -> void:
+	m.draw_arc(c + Vector2(0, -2), 2.2, PI, TAU, 8, Color(0.15, 0.1, 0.05), 1.6)
+	m.draw_rect(Rect2(c + Vector2(-3.5, -1.5), Vector2(7, 5.5)), Color(0.15, 0.1, 0.05))
+	m.draw_rect(Rect2(c + Vector2(-2.5, -0.5), Vector2(5, 3.5)), Color(0.95, 0.75, 0.3))
+	m.draw_rect(Rect2(c + Vector2(-0.5, 0.3), Vector2(1, 1.6)), Color(0.15, 0.1, 0.05))
 
 
 ## The crew roster (Gangster's Paradise): everyone recruited, their loyalty

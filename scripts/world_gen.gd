@@ -512,3 +512,254 @@ static func fruit_trees(m: GameMap, rect: Rect2i, seed_v: int, count: int, avoid
 			continue
 		fruit_tree(m, c, str(kinds[rng.randi_range(0, kinds.size() - 1)]))
 		placed += 1
+
+
+## Inner edge of the organic border band: wherever a band cell touches open
+## ground and has no tree of its own, put undergrowth there (shrubs, ferns, a
+## young tree), so the band reads as a living forest edge, never as an empty
+## blocked cell. Decorative (the band is already solid). Call from after_ready.
+static func dress_band(m: GameMap, seed_v: int) -> void:
+	var rng := RandomNumberGenerator.new()
+	var se := GameState.look_se()
+	var shrubs: Array = {"spring": ["bush", "bush2_green", "bush2_flower", "ferns", "hedge", "bush_white"], "summer": ["bush", "bush2_green", "ferns", "hedge", "bush2_yellow", "sunflower_bush"], "fall": ["bush_fall_orange", "bush_fall_red", "ferns", "bush2_red", "hedge"], "winter": ["bush_snow", "bush_bare_snow", "bush_snow", "hedge"]}.get(se, ["bush"])
+	var young: Array = {"spring": ["mid_oak_b", "mid_birch_b", "mid_pine_b", "mid_cherry_b"], "summer": ["mid_oak_b", "mid_birch_b", "mid_pine_b", "mid_willow_b"], "fall": ["mid_maple_b", "mid_oak_b", "mid_pine_b"], "winter": ["mid_snowpine_b", "mid_dead_b", "mid_snowpine"]}.get(se, ["mid_oak_b"])
+	for c: Vector2i in m._border_cells:
+		if str(m._border_cells[c]) != "tree" or m.props.has(c):
+			continue
+		var open_side := false
+		for d: Vector2i in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)]:
+			var n := c + d
+			if m.in_content(n) and not m.blocked.has(n):
+				open_side = true
+				break
+		if not open_side:
+			continue
+		rng.seed = hash(Vector3i(seed_v, c.x, c.y))
+		var r := rng.randf()
+		var nm: String
+		if r < 0.22 and Art.has("nature", str(young[0])):
+			nm = str(young[rng.randi_range(0, young.size() - 1)])
+		else:
+			nm = str(shrubs[rng.randi_range(0, shrubs.size() - 1)])
+		if not Art.has("nature", nm):
+			nm = GameState.bush_sprite(false)
+		var sp := m.prop("nature", nm, c, 0, 0.0, false, 0.5)
+		if sp:
+			sp.position.x += rng.randf_range(-3.0, 3.0)
+
+
+## A noise-edged blob of cells (no one-cell notches), clipped to the content
+## with `margin` cells spare. rx/ry are radii in cells.
+static func blob(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int, margin := 2, rough := 0.22) -> Dictionary:
+	var cells := {}
+	for y in range(int(center.y - ry - 2), int(center.y + ry + 3)):
+		for x in range(int(center.x - rx - 2), int(center.x + rx + 3)):
+			if x < margin or y < margin or x >= m.cols - margin or y >= m.rows - margin:
+				continue
+			var n := fbm(float(x), float(y), seed_v, 5.0)
+			var d := Vector2((x + 0.5 - center.x) / rx, (y + 0.5 - center.y) / ry).length()
+			if d + n * rough <= 1.0:
+				cells[Vector2i(x, y)] = true
+	return smooth_cells(cells)
+
+
+## Drop cells with 0-1 neighbours and fill cells with 3-4 (twice): cliff faces
+## and shores then never show broken one-cell pieces.
+static func smooth_cells(cells: Dictionary, passes := 2) -> Dictionary:
+	var pc := cells.duplicate()
+	for i in passes:
+		var nx := pc.duplicate()
+		var cand := {}
+		for c: Vector2i in pc:
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				cand[c + d] = true
+			cand[c] = true
+		for c: Vector2i in cand:
+			var nb := 0
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				if pc.has(c + d):
+					nb += 1
+			if pc.has(c) and nb <= 1:
+				nx.erase(c)
+			elif not pc.has(c) and nb >= 3:
+				nx[c] = true
+		pc = nx
+	return pc
+
+
+## The cells of `outer` at least `side` cells from its west/east/north edge and
+## `south` cells from its south edge: room for an upper tier whose cliff face and
+## stairs land on the lower tier's open top, never on its rim.
+static func inset(outer: Dictionary, side := 2, south := 4) -> Dictionary:
+	var out := {}
+	for c: Vector2i in outer:
+		var ok := true
+		for k in range(1, side + 1):
+			if not outer.has(c + Vector2i(k, 0)) or not outer.has(c + Vector2i(-k, 0)) or not outer.has(c + Vector2i(0, -k)):
+				ok = false
+				break
+		if ok:
+			for k in range(1, south + 1):
+				if not outer.has(c + Vector2i(0, k)):
+					ok = false
+					break
+		if ok:
+			out[c] = true
+	return out
+
+
+## A hill with a second, higher tier: a lower plateau and, inset on it, an upper
+## one. Both get their stairs cut in the middle of their south edge (the upper
+## flight lands on the lower top). Cells in `avoid` (paths, exits, doors, water)
+## are kept off, with a cell of room. Call from build(); the map's draw_map must
+## call draw_plateaus(). Returns [lower, upper] (upper may be empty).
+static func tiered_hill(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int, avoid: Dictionary = {}, two_tiers := true) -> Array:
+	var low := mesa(m, center, rx, ry, seed_v, 3)  # long straight runs: clean cliff faces and rims
+	for c: Vector2i in low.keys():
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				var n := c + Vector2i(dx, dy)
+				if avoid.has(n) or m.things.has(n) or m.is_water_cell(n):
+					low.erase(c)
+	low = smooth_cells(low)
+	# The biggest piece only (avoid can split it).
+	var best := {}
+	for part: Dictionary in _parts(low):
+		if part.size() > best.size():
+			best = part
+	low = best
+	if low.size() < 12:
+		return [{}, {}]
+	m.add_plateau(low, pick_ramps(m, low))
+	var up := {}
+	if two_tiers:
+		var room := inset(low, 2, 4)
+		var cu := Vector2(center.x, center.y - ry * 0.25)
+		var ub := mesa(m, cu, rx * 0.55, ry * 0.5, seed_v + 5, 3)
+		for c: Vector2i in ub:
+			if room.has(c):
+				up[c] = true
+		up = smooth_cells(up)
+		var ubest := {}
+		for part: Dictionary in _parts(up):
+			if part.size() > ubest.size():
+				ubest = part
+		up = ubest
+		if up.size() >= 8:
+			m.add_plateau(up, pick_ramps(m, up))
+		else:
+			up = {}
+	return [low, up]
+
+
+static func _parts(cells: Dictionary) -> Array:
+	var out: Array = []
+	var seen := {}
+	for c: Vector2i in cells:
+		if seen.has(c):
+			continue
+		var part := {}
+		var st: Array = [c]
+		while not st.is_empty():
+			var q: Vector2i = st.pop_back()
+			if seen.has(q) or not cells.has(q):
+				continue
+			seen[q] = true
+			part[q] = true
+			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				st.append(q + d)
+		out.append(part)
+	return out
+
+
+## After a map is dressed: nothing placed by the scatterers may stand on a
+## flight of stairs or the cells just above/below it (call_deferred from
+## after_ready, so it also runs after GameMap's extension filler).
+static func clear_stairs(m: GameMap) -> void:
+	if not is_instance_valid(m):
+		return
+	for pl: Dictionary in m.plateaus:
+		for st: Vector2i in pl["stairs"]:
+			for dy in range(-1, 3):
+				var c := st + Vector2i(0, dy)
+				var t := str(m.things.get(c, {}).get("type", ""))
+				if t in ["tree", "rock", "log", "stump", "bush", "weeds", "forage", "grove"] or (t == "" and m.props.has(c) and m.blocked.has(c) and dy != -1):
+					m.things.erase(c)
+					if dy >= 0 or t != "":
+						m.blocked.erase(c)
+						m.hard.erase(c)
+					var sp: Node = m.props.get(c, null)
+					m.props.erase(c)
+					if sp:
+						sp.queue_free()
+
+
+## Two side-by-side south-edge cells for a plateau's stairs: both on the same
+## row with open ground under the flight, nearest the middle of the plateau.
+## (add_plateau's own pick can land on a stepped edge, where the second stair
+## ends up under the plateau's own rim.) Empty if no such pair.
+static func pick_ramps(m: GameMap, cells: Dictionary) -> Array:
+	var cx := 0.0
+	for c: Vector2i in cells:
+		cx += c.x
+	cx /= maxf(1.0, cells.size())
+	var best: Array = []
+	var best_score := INF
+	for c: Vector2i in cells:
+		var r := c + Vector2i(1, 0)
+		if cells.has(c + Vector2i(0, 1)) or not cells.has(r) or cells.has(r + Vector2i(0, 1)):
+			continue
+		var ok := true
+		for k in [c, r]:
+			for dy in range(1, 3):
+				var n: Vector2i = k + Vector2i(0, dy)
+				if not m.in_content(n) or cells.has(n) or m.is_water_cell(n) or m.hard.has(n):
+					ok = false
+			# Sides of the flight stay rim: both neighbours on the row must be plateau.
+		if not cells.has(c + Vector2i(-1, 0)) or not cells.has(r + Vector2i(1, 0)):
+			ok = false
+		if not ok:
+			continue
+		var score := absf(c.x + 0.5 - cx) - c.y * 0.5
+		if score < best_score:
+			best_score = score
+			best = [c, r]
+	return best
+
+
+## A mesa: a raised block with long straight runs and few, gentle steps (each
+## side moves in or out by one cell at most every 3 rows, corners chamfered).
+## Cliff faces, rims and stairs draw cleanly on shapes like this; round noise
+## blobs step every row and the rim reads as a ring of boxes.
+static func mesa(m: GameMap, center: Vector2, rx: float, ry: float, seed_v: int, margin := 2) -> Dictionary:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var cells := {}
+	var y0 := roundi(center.y - ry)
+	var y1 := roundi(center.y + ry)
+	var ol := 0
+	var orr := 0
+	var hold_l := 0
+	var hold_r := 0
+	for y in range(y0, y1 + 1):
+		var cham := 0
+		if y == y0:
+			cham = 2
+		elif y == y0 + 1:
+			cham = 1
+		elif y == y1:
+			cham = 1
+		if hold_l <= 0:
+			ol = clampi(ol + rng.randi_range(-1, 1), -1, 2)
+			hold_l = rng.randi_range(3, 5)
+		if hold_r <= 0:
+			orr = clampi(orr + rng.randi_range(-1, 1), -1, 2)
+			hold_r = rng.randi_range(3, 5)
+		hold_l -= 1
+		hold_r -= 1
+		var xa := roundi(center.x - rx) + maxi(ol, 0) + cham
+		var xb := roundi(center.x + rx) - maxi(orr, 0) - cham
+		for x in range(xa, xb + 1):
+			if x >= margin and y >= margin and x < m.cols - margin and y < m.rows - margin:
+				cells[Vector2i(x, y)] = true
+	return smooth_cells(cells)

@@ -363,11 +363,21 @@ func _process(delta: float) -> void:
 				map.emote(self, "angry", 1.0)
 				anim.play("howl" if anim.sprite_frames.has_animation("howl") else "bark")
 				map.shake(2.0)
-	var goal := player.position + Vector2(-14, 4)
-	var stop := 22.0
+	# Heel spot: behind you and a little to the side (never on the cell you face),
+	# further back while a fight is on so a tap on the foe never lands on the pup.
+	var fd: Vector2 = player.facing_dir()
+	var fighting := map.nearest_enemy_to(player.position, 5.0 * GameMap.TILE) != null
+	var back := 22.0 if fighting else 16.0
+	var goal: Vector2 = player.position - fd * back + fd.orthogonal() * (8.0 if fighting else 6.0)
+	var stop := 10.0 if fighting else 14.0
 	if _target != null:
-		goal = _target.position
-		stop = 12.0
+		# Flank the foe: come at it from the side, not between you and it.
+		var axis: Vector2 = (_target.position - player.position)
+		var side := axis.normalized().orthogonal() if axis.length() > 1.0 else Vector2.RIGHT
+		if side.dot(position - _target.position) < 0.0:
+			side = -side
+		goal = _target.position + side * 10.0
+		stop = 6.0
 	elif mode == "wait" or mode == "guard":
 		var w: Array = st.get("wait", [])
 		if w.size() >= 3:
@@ -408,13 +418,14 @@ func _process(delta: float) -> void:
 				if alt != Vector2.ZERO and not map.rect_blocked_player(Rect2(position + alt + Vector2(-3, -2), Vector2(6, 2)), self):
 					position += alt
 					break
+		_keep_clear(delta)
 		var running := dist > (34.0 if anim.animation.begins_with("run") else 48.0) or _target != null
 		var a: String
-		# Keep the current facing axis until the other one clearly wins (1.4x),
-		# so a diagonal walk doesn't flip between side and up/down every frame.
-		if _axis_h and absf(_vel.y) > absf(_vel.x) * 1.4:
+		# Vertical wins ties (diagonals face toward / away), with a small lead
+		# needed to switch so it doesn't flicker on a near-perfect diagonal.
+		if _axis_h and absf(_vel.y) >= absf(_vel.x):
 			_axis_h = false
-		elif not _axis_h and absf(_vel.x) > absf(_vel.y) * 1.4:
+		elif not _axis_h and absf(_vel.x) > absf(_vel.y) * 1.15:
 			_axis_h = true
 		if _axis_h:
 			a = "run" if running else "walk"
@@ -433,6 +444,8 @@ func _process(delta: float) -> void:
 			anim.play("fetch")
 	else:
 		_vel = Vector2.ZERO
+		if _target == null:
+			_keep_clear(delta)
 		if _target != null:
 			_bite(_target)
 		elif _carry_item == "bring":
@@ -495,3 +508,22 @@ func _dig() -> void:
 		GameState.add_xp("pup", 3)
 		map.hud.toast("%s dug up a %s!" % [name_of(), GameState.item_name(found)], Color(0.8, 1, 0.8))
 		map.fx("dust_puff", position, 12.0, 0.4)
+
+
+## Stay out from under the player's feet in a fight: off the cell they face and
+## a pace away, so USE / taps on a foe never land on the pup.
+func _keep_clear(delta: float) -> void:
+	if map == null or map.player == null:
+		return
+	var player: Player = map.player
+	var fc := map.cell_center(player.cell() + Vector2i(player.facing_dir()))
+	var push := Vector2.ZERO
+	if position.distance_to(fc) < 10.0:
+		push += (position - fc).normalized() if position != fc else player.facing_dir().orthogonal()
+	if position.distance_to(player.position) < 9.0:
+		push += (position - player.position).normalized() if position != player.position else -player.facing_dir()
+	if push == Vector2.ZERO:
+		return
+	var np := position + push.normalized() * 70.0 * delta
+	if not map.rect_blocked_player(Rect2(np + Vector2(-3, -2), Vector2(6, 2)), self):
+		position = np

@@ -56,7 +56,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"crystals": 50 if arc == "penguins" else 60,
 		"day": 1,
 		"time": DAY_START,
-		"energy": 100, "max_energy": 100,
+		"energy": ENERGY_BASE, "max_energy": ENERGY_BASE, "en_ver": 11,
 		"hp": 100, "max_hp": 100, "mana": 20, "max_mana": 20, "hp_scale": 100,
 		"skills": skills,
 		"flags": {},
@@ -220,7 +220,13 @@ static func _migrate() -> void:
 		if not run["skills"].has(id):
 			run["skills"][id] = {"level": 1, "xp": 0, "nodes": {}}
 	Storage._all()  # moves an old flags.chest stash into the farm chest now
+	var old_max := int(run.get("max_energy", 100))
 	_apply_max_stats()
+	if int(run.get("en_ver", 0)) < 11:
+		# Round 11 energy revamp: the bigger bar arrives with its extra room filled.
+		run["en_ver"] = 11
+		run["energy"] = mini(int(run["max_energy"]), int(run.get("energy", 0)) + maxi(0, int(run["max_energy"]) - old_max))
+		run["en_frac"] = 0.0
 
 
 static func save() -> void:
@@ -335,6 +341,7 @@ static func guest_morning() -> Dictionary:
 	run["sellbox"] = {}
 	run["sold_today"] = {}
 	run["crystals"] = int(run["crystals"]) + total
+	run["earned_total"] = int(run.get("earned_total", 0)) + total
 	report["earned"] = total
 	run["energy"] = int(run["max_energy"])
 	run["fed_en"] = 0
@@ -1234,19 +1241,35 @@ static func gear_stat(stat: String) -> int:
 		var id := equipped(slot)
 		if id != "":
 			total += int(items.get(id, {}).get("stats", {}).get(stat, 0))
+	total += CharSheet.set_bonus(stat)  # armour set bonuses (4 / 8 pieces of one set)
 	return total
 
 
 ## ---- Vitals: health 100-scale, energy weighted per task, mana for spells ----
 ## Health: 100 base, +8 per combat level, Tough +20, Warrior +40, gear "hp".
-## Energy: 100 base, +3 per level in every skill (a seasoned farmer lasts
-##   longer), Stamina +25, gear "energy". Tasks cost by ENERGY_COST, reduced
-##   8% per tool tier (15% for hoe, can and planting), never below 30%.
 ## Mana: 20 base, +12 per magic level, gear "mana"; regenerates slowly, fully
 ##   on sleep. Spells live in data/spells.json.
-## Stardew-tuned: a fresh 100-bar covers ~50 hoe strokes or ~35 axe swings
-## before food; tool tiers and perks stretch that further.
-const ENERGY_COST := {"hoe": 3, "can": 2, "axe": 3, "pickaxe": 3, "scythe": 1, "rod": 3, "hammer": 2, "sword": 0, "weed": 1, "forage": 0, "plant": 1}
+##
+## Energy (round 11 revamp, Stardew / Sun Haven feel):
+##   Max: 120 to start, +3 per level in every skill (up to +120), skill-tree
+##   "energy" nodes, gear "energy", friend perks, and +4 for every 5 mine floors
+##   reached (up to +40). A seasoned farmer ends near 300.
+##   Cost per action = base (ENERGY_COST) x skill factor x tool factor, kept as
+##   a fraction (run["en_frac"]) so 0.6 really is 0.6 on average, never random.
+##     skill factor: -3.5% per level in the task's skill (ENERGY_SKILL), floor 0.6
+##     tool factor:  -12%/tier for hoe/can/scythe/plant, -8%/tier otherwise
+##     together never below 25% of base; tree perks (farm_energy, mine_energy) on top.
+##   Walking and running are free; swimming costs a little; sword swings and
+##   dodges cost a little. Below 15% you're Exhausted: a warning, a red bar and
+##   slower feet (costs don't climb, so there's no death spiral). At 0 you pass
+##   out (GameMap.player_down("tired")).
+##   Day-1 check (120 bar, level 1, wood tools): mine floors 1-3 (~10 rocks x 2
+##   swings x 0.6 + ~40 sword swings x 0.15 + 4 dodges x 0.8 = ~21 a floor, ~63)
+##   plus hoeing, planting and watering 15 tiles (12 + 2 + 9 = 23) leaves ~34.
+const ENERGY_COST := {"hoe": 0.8, "can": 0.6, "axe": 1.0, "pickaxe": 0.6, "scythe": 0.2, "rod": 1.2, "hammer": 0.8, "sword": 0.15, "weed": 0.25, "forage": 0.0, "plant": 0.15, "dodge": 0.8, "swim": 0.5}
+const ENERGY_SKILL := {"hoe": "farming", "can": "farming", "plant": "farming", "scythe": "farming", "weed": "foraging", "axe": "foraging", "pickaxe": "mining", "rod": "fishing", "sword": "combat", "dodge": "combat", "hammer": "building"}
+const ENERGY_BASE := 120
+const EXHAUSTED_FRAC := 0.15
 const HEART_HP := 20
 
 static func _apply_max_stats() -> void:
@@ -1263,7 +1286,7 @@ static func _apply_max_stats() -> void:
 			tree_hp += int(bonus(str(sk), "hp"))
 			tree_en += int(bonus(str(sk), "energy"))
 	var base_hp := 100 + 8 * (skill_level("combat") - 1) + tree_hp + gear_stat("hp")
-	var base_en := 100 + 3 * mini(levels, 40) + tree_en + gear_stat("energy")  # level-ups add up to +120; nodes and gear do the rest
+	var base_en := ENERGY_BASE + 3 * mini(levels, 40) + tree_en + gear_stat("energy") + energy_milestones()
 	var base_mana := 20 + 12 * (skill_level("magic") - 1) + int(bonus("magic", "mana")) + gear_stat("mana") + (int(bonus(arc_sk, "mana")) if arc_sk != "" else 0)
 	if has_friend_perk("juniper", 4):
 		base_hp += 20
@@ -1278,32 +1301,82 @@ static func _apply_max_stats() -> void:
 	run["energy"] = mini(int(run.get("energy", base_en)), int(run["max_energy"]))
 
 
-## Energy a tool use costs right now (tier and perks applied).
-static func energy_cost(task: String) -> int:
-	var base := int(ENERGY_COST.get(task, 2))
-	if base == 0:
-		return 0
-	var tier := tool_tier(task) if TOOL_KINDS.has(task) else 0
+## Progress-based stamina: +4 max energy for every 5 mine floors you've reached (up to +40).
+static func energy_milestones() -> int:
+	var deepest := int(run.get("flags", {}).get("mine_deepest", 1))
+	return mini(40, 4 * (deepest / 5))
+
+
+## Exact (fractional) energy a task costs right now: skill level, tool tier and perks applied.
+static func energy_cost_f(task: String) -> float:
+	var base := float(ENERGY_COST.get(task, 1.0))
+	if base <= 0.0:
+		return 0.0
+	var sk := str(ENERGY_SKILL.get(task, ""))
+	var skill_mult := 1.0
+	if sk != "" and run.has("skills"):
+		skill_mult = maxf(0.6, 1.0 - 0.035 * float(skill_level(sk) - 1))
+	var tier := 0
+	if task in ["sword", "dodge"]:
+		tier = 0  # a better blade hits harder; it doesn't swing lighter
+	elif TOOL_KINDS.has(task):
+		tier = tool_tier(task)
+	elif task == "plant":
+		tier = tool_tier("hoe")
 	# Better hoes and cans save more (they are the everyday tools).
-	var mult := maxf(0.3, 1.0 - (0.15 if task in ["hoe", "can", "plant"] else 0.08) * tier)  # never free (Moon tier)
+	var tool_mult := 1.0 - (0.12 if task in ["hoe", "can", "plant", "scythe"] else 0.08) * tier
+	var mult := maxf(0.25, skill_mult * tool_mult)
 	if task in ["hoe", "can", "plant"]:
 		mult *= 1.0 - bonus("farming", "farm_energy")
 	elif task == "pickaxe":
 		mult *= 1.0 - bonus("mining", "mine_energy")
-	if int(run["energy"]) < int(run["max_energy"]) * 0.15:
-		mult *= 1.25  # exhausted: everything is harder
-	if weather_today() == "sun" and task != "can":
-		mult *= 1.2  # heat wave
-	# Fractional costs average out: a 1.6 cost is 1 most swings, 2 sometimes.
-	var v := base * mult
-	return maxi(0, int(v) + (1 if randf() < v - floorf(v) else 0))
+	if weather_today() == "sun" and task in ["hoe", "axe", "pickaxe"]:
+		mult *= 1.1  # heat wave: heavy work is a little harder
+	return base * mult
 
 
+## Whole-number view of energy_cost_f (menus, sims). Small actions can show 0.
+static func energy_cost(task: String) -> int:
+	return int(round(energy_cost_f(task)))
+
+
+## Pay for one action. Works while you have any energy at all (Stardew: you can
+## push yourself to 0 and pass out); returns false only on an empty bar.
 static func spend_for(task: String) -> bool:
-	var ok := spend_energy(energy_cost(task))
-	if not ok and Engine.get_main_loop() is SceneTree:
-		Music.instance(Engine.get_main_loop() as SceneTree).sfx("nope")  # "Too tired." is heard, not just read
-	return ok
+	if int(run["energy"]) <= 0:
+		if Engine.get_main_loop() is SceneTree:
+			Music.instance(Engine.get_main_loop() as SceneTree).sfx("nope")  # "Too tired." is heard, not just read
+		return false
+	var fr := float(run.get("en_frac", 0.0)) + energy_cost_f(task)
+	var whole := int(floor(fr))
+	run["en_frac"] = fr - whole
+	if whole > 0:
+		run["energy"] = maxi(0, int(run["energy"]) - whole)
+		energy_warn()
+	return true
+
+
+static func exhausted() -> bool:
+	return int(run.get("energy", 1)) < int(ceil(float(run.get("max_energy", 100)) * EXHAUSTED_FRAC))
+
+
+## One warning when you cross 15% (Exhausted) and one at 5% (about to pass out).
+## run["en_warn"]: 0 fine, 1 warned at 15%, 2 warned at 5%; drops back as you refill.
+static func energy_warn() -> void:
+	var e := int(run["energy"])
+	var m := maxi(1, int(run["max_energy"]))
+	var lvl := int(run.get("en_warn", 0))
+	var now := 0
+	if e <= int(ceil(m * 0.05)):
+		now = 2
+	elif e < int(ceil(m * EXHAUSTED_FRAC)):
+		now = 1
+	if now > lvl:
+		if now == 1:
+			notify("You're exhausted. Eat something, rest, or head home: at zero energy you'll pass out.")
+		else:
+			notify("You can barely stand. One more push and you'll pass out!")
+	run["en_warn"] = now
 
 
 static func spend_mana(n: int) -> bool:
@@ -1417,6 +1490,7 @@ static func spend_energy(n: int) -> bool:
 	if int(run["energy"]) < n:
 		return false
 	run["energy"] = int(run["energy"]) - n
+	energy_warn()
 	return true
 
 
@@ -1446,11 +1520,11 @@ static func consume(id: String) -> Dictionary:
 	var mh := Crew.perk_level("meal_heal")
 	heal(int(round(int(it.get("heal", 0)) * (1.0 + (0.1 if mh == 1 else (0.25 if mh >= 2 else 0.0))))))
 	# Cooked food refills energy from its heal (x8); raw catch, crops and forage
-	# only a little (x2), so eating the cheap catch isn't an endless energy loop
+	# less (x5: a berry or a parsnip is a real snack early on, round 11), so eating the cheap catch isn't an endless energy loop
 	# (audit 12#1). Potions heal but give no energy from it (only an explicit
 	# "energy"), so a healing item isn't the cheapest energy drink.
 	var ty := str(it.get("type", ""))
-	var en_mult := 8 if ty in ["food", "consumable", "tonic", "gift"] else (0 if ty == "potion" else 2)
+	var en_mult := 8 if ty in ["food", "consumable", "tonic", "gift"] else (0 if ty == "potion" else 5)
 	# Food energy is capped at one full bar a day (fed_en resets on sleep), so
 	# bought food can't turn the clock into the only limit on fishing.
 	var en_gain := int(it.get("energy", 0)) + int(it.get("heal", 0)) * en_mult
@@ -1546,6 +1620,8 @@ static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) ->
 
 static func restore_energy(n: int) -> void:
 	run["energy"] = mini(int(run["energy"]) + n, int(run["max_energy"]))
+	if n > 0:
+		energy_warn()  # refilling re-arms the warnings
 
 
 ## Energy from food, rest spots and perk meals: together at most one full bar a day
@@ -2443,6 +2519,7 @@ static func sleep(passed_out := false) -> Dictionary:
 		add_xp("bartering", mini(total / 15, 20 + 5 * skill_level("bartering")))
 	run["sold_today"] = {}
 	run["crystals"] = int(run["crystals"]) + total
+	run["earned_total"] = int(run.get("earned_total", 0)) + total
 	report["earned"] = total
 	run["sellbox"] = {}
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
@@ -2539,7 +2616,10 @@ static func sleep(passed_out := false) -> Dictionary:
 			run["flags"]["bitter_left"] = true
 			add_hint("%s was seen on the east road at night, heading for the dark." % str(Companion.defs().get(cid, {}).get("name", cid)))
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
-	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) / 2
+	# Passing out costs a quarter of tomorrow's bar (Stardew-style), not half.
+	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) * 3 / 4
+	run["en_frac"] = 0.0
+	run["en_warn"] = 0
 	run["fed_en"] = 0
 	run["rest_en"] = 0
 	run["kills_today"] = {}  # per-map paid kills (game_map: re-entry respawns don't pay forever)
@@ -2900,6 +2980,9 @@ static func next_step() -> String:
 	for i in range(qs.size() - 1, -1, -1):
 		var q: Dictionary = qs[i]
 		if not bool(q.get("done", false)) and mains.has(str(q.get("id", ""))):
+			var cp := Campaign.story_pointer(str(q.get("id", "")))
+			if cp != "" and not (str(q.get("id", "")) == "sky_stair" and not (run["flags"].has("campfire_done") and run["flags"].has("babies_done"))):
+				return cp  # the story's next region is held: point at its campaign
 			if str(q.get("id", "")) == "sky_stair" and run["flags"].has("campfire_done") and run["flags"].has("babies_done"):
 				return "Climb the great tree in the forest: the stair goes above the clouds."
 			return _first_crop_step() if str(q.get("id", "")) == "first_harvest" else str(q.get("text", ""))

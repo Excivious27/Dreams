@@ -2,6 +2,7 @@ extends SceneTree
 ## Dev helper: renders a set of situations and saves PNGs to the path after "--".
 var out := "/tmp"
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 func _run() -> void:
 	if OS.get_cmdline_user_args().size() > 0:

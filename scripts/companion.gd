@@ -402,7 +402,7 @@ func _process(delta: float) -> void:
 		if not anim.sprite_frames.has_animation(a):
 			a = "walk"
 		# Axis stickiness: only switch between side and up/down views on a clear lead.
-		var vertical := absf(to.y) > absf(to.x) * (0.7 if _vert else 1.4)
+		var vertical := absf(to.y) >= absf(to.x) * (0.87 if _vert else 1.0)
 		_vert = vertical
 		if vertical and anim.sprite_frames.has_animation(a + ("_up" if to.y < 0 else "_down")):
 			a = a + ("_up" if to.y < 0 else "_down")

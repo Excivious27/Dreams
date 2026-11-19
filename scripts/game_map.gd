@@ -103,6 +103,7 @@ func _ready() -> void:
 			for x in range(r.position.x, r.end.x):
 				blocked.erase(Vector2i(x, y))
 				hard.erase(Vector2i(x, y))
+		_exit_zone(e)  # the whole road mouth, out through the border band
 	if has_sky:
 		sky = Scenery.new()
 		sky.weather = GameState.weather_today()  # (gangster day 1 is real rain in weather_for)
@@ -280,12 +281,12 @@ const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "
 func action_word(c: Vector2i) -> String:
 	if player == null:
 		return ""
-	if _pup_at(c):
-		return "Pup"
 	if has_npc_at(c):
 		return "Talk"
 	if nearest_enemy_to(player.position, 22.0) != null:
 		return "Fight"
+	if descent_near(player.cell()) != Vector2i(-1, -1):
+		return "Down"
 	if _exit_at(c):
 		return "Go"
 	var thing: Dictionary = things.get(c, {})
@@ -420,8 +421,23 @@ func _pup_at(c: Vector2i) -> bool:
 	return pet != null and is_instance_valid(pet) and pet.visible and pet is Pet and (pet.position.distance_to(cell_center(c)) < 13.0 or (player and pet.position.distance_to(player.position) < 16.0 and world_to_cell(pet.position) == c))
 
 
-func try_interact(c: Vector2i) -> bool:
-	if _pup_at(c) and not _npc_near(c):
+## May the pup's menu open now? Never mid-fight: not with a foe within ~5
+## tiles, and not while a sword or tool swing is still playing.
+func pup_menu_allowed() -> bool:
+	if player == null:
+		return false
+	if player._busy or player._attack_cd > 0.0 or player.anim_name.begins_with("attack"):
+		return false
+	for e in enemies:
+		if is_instance_valid(e) and e._alive and e.position.distance_to(player.position) < 5.0 * TILE:
+			return false
+	return true
+
+
+## `check`: the CHECK button (the hand) / right click. Only a check opens the
+## pup's menu; USE on the pup falls through to whatever else is there.
+func try_interact(c: Vector2i, check := false) -> bool:
+	if check and _pup_at(c) and not _npc_near(c) and pup_menu_allowed():
 		later(_pup_menu)
 		return true
 	var thing: Dictionary = things.get(c, {})
@@ -801,6 +817,11 @@ func _fill_extension() -> void:
 	for e in exits:
 		for c in cells_of([(e["rect"] as Rect2i).grow(2)]):
 			avoid[c] = true
+	# Stairs, the rim cell above them and two cells below their foot stay clear.
+	for pl: Dictionary in plateaus:
+		for st: Vector2i in pl["stairs"]:
+			for dy in range(-1, 3):
+				avoid[st + Vector2i(0, dy)] = true
 	var seed_v := hash(scene_id()) % 1000
 	# Only the added strips: the old area is dressed by the map itself, and its own paths
 	# (drawn later, so not in ground_word yet) got trees and stumps on them (lake north road).
@@ -1098,14 +1119,116 @@ func add_exit(r: Rect2i, scene: String, spawn: Vector2, facing: String, label_te
 		for x in range(r.position.x, r.end.x):
 			blocked.erase(Vector2i(x, y))
 			hard.erase(Vector2i(x, y))
+## The trigger area of an exit (round 11): the declared strip widened along the
+## map edge over the open road mouth (at least the border corridor's extra cell
+## each side, up to 3), and stretched outward through the whole border band, so
+## stepping anywhere into the mouth leaves; no need to find the signpost's cell.
+## Exits away from the edge keep their own rect. Cached in e["zone"].
+func _exit_zone(e: Dictionary) -> Rect2i:
+	if e.has("zone"):
+		return e["zone"]
+	var r: Rect2i = e["rect"]
+	var z := r
+	var far := pad + 2
+	if r.position.x <= 0 or r.end.x >= cols:
+		var ex := 0 if r.position.x <= 0 else cols - 1
+		var lo := r.position.y - _mouth_run(Vector2i(ex, r.position.y), Vector2i(0, -1))
+		var hi := r.end.y + _mouth_run(Vector2i(ex, r.end.y - 1), Vector2i(0, 1))
+		if r.position.x <= 0:
+			z = Rect2i(-far, lo, r.end.x + far, hi - lo)
+		else:
+			z = Rect2i(r.position.x, lo, cols + far - r.position.x, hi - lo)
+	elif r.position.y <= 0 or r.end.y >= rows:
+		var ey := 0 if r.position.y <= 0 else rows - 1
+		var lo := r.position.x - _mouth_run(Vector2i(r.position.x, ey), Vector2i(-1, 0))
+		var hi := r.end.x + _mouth_run(Vector2i(r.end.x - 1, ey), Vector2i(1, 0))
+		if r.position.y <= 0:
+			z = Rect2i(lo, -far, hi - lo, r.end.y + far)
+		else:
+			z = Rect2i(lo, r.position.y, hi - lo, rows + far - r.position.y)
+	e["zone"] = z
+	# Open nooks of the border band right beside the mouth count too (the band's
+	# edge meanders), so there's no spot by the road where you stand and don't go.
+	var extra := {}
+	if z != r:
+		var near := z.grow(3)
+		for y in range(near.position.y, near.end.y):
+			for x in range(near.position.x, near.end.x):
+				var c := Vector2i(x, y)
+				if not z.has_point(c) and not in_content(c) and not blocked.has(c):
+					extra[c] = true
+	e["zone_x"] = extra
+	return z
+
+
+## Is cell `c` inside exit `e`'s trigger area?
+func in_exit(e: Dictionary, c: Vector2i) -> bool:
+	return _exit_zone(e).has_point(c) or (e.get("zone_x", {}) as Dictionary).has(c)
+
+
+## How many open edge cells continue the road mouth past `from` along `step`
+## (at least 1: the border keeps a corridor one cell wider than the strip).
+func _mouth_run(from: Vector2i, step: Vector2i) -> int:
+	var n := 1
+	for i in range(2, 4):
+		var c := from + step * i
+		if not in_content(c) or blocked.has(c) or things.has(c):
+			break
+		n = i
+	return n
+
+
+## Ladders / shafts down: walking onto one (or USE next to it) takes it.
+const DESCENT_TYPES := ["down", "shaft", "hole"]
+var _exit_grace := {}        # exit index -> true while you stand in it on arrival
+var _exit_init := false
+var _desc_armed := false     # false until you've stepped off a descent cell
+
+
+## A way down on `c` or any of the 8 cells around it (own cell first), or (-1, -1).
+func descent_near(c: Vector2i) -> Vector2i:
+	if things.has(c) and str(things[c].get("type", "")) in DESCENT_TYPES:
+		return c
+	for d: Vector2i in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(1, 1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(-1, -1)]:
+		var n := c + d
+		if things.has(n) and str(things[n].get("type", "")) in DESCENT_TYPES:
+			return n
+	return Vector2i(-1, -1)
+
+
 func check_exits() -> void:
-	if player == null or player.frozen or _changing:
+	if player == null or _changing:
 		return
 	var c := player.cell()
-	for e in exits:
-		if (e["rect"] as Rect2i).has_point(c):
+	if not _exit_init:
+		# Arriving inside an exit's zone (a spawn near the edge) doesn't bounce you back.
+		# Taken on the first frame even while frozen (a fade or greeting), so the
+		# grace is about where you arrived, not where you are when it ends.
+		_exit_init = true
+		for i in exits.size():
+			if in_exit(exits[i], c):
+				_exit_grace[i] = true
+		_desc_armed = not (things.has(c) and str(things[c].get("type", "")) in DESCENT_TYPES)
+	if player.frozen:
+		return
+	for i in exits.size():
+		var e: Dictionary = exits[i]
+		if in_exit(e, c):
+			if _exit_grace.has(i):
+				continue
+			if Campaign.blocks(self, str(e["scene"])):
+				_exit_grace[i] = true  # stay put; step out of the strip and back in to be asked again
+				continue
 			go_to(str(e["scene"]), e["spawn"], str(e["facing"]))
 			return
+		_exit_grace.erase(i)
+	# Walk into an open ladder / shaft: down you go (the map's interact handles it).
+	var on_desc := things.has(c) and str(things[c].get("type", "")) in DESCENT_TYPES
+	if on_desc and _desc_armed and player.auto_target == Vector2.INF and not Dialogue.instance(get_tree()).active:
+		_desc_armed = false
+		try_interact(c)
+	elif not on_desc:
+		_desc_armed = true
 
 
 func draw_exits() -> void:
@@ -2185,8 +2308,22 @@ func nearest_enemy_to(p: Vector2, within: float) -> Enemy:
 	return best
 
 
-## Out of health: you wake in the clinic, and the nurse keeps 10% of your crystals.
-## Out of time (2am) or energy: someone carries you home, and keeps 5% for the trouble.
+## Passing out (round 11):
+##   Out of health anywhere, or out of energy / time in the mines: carried to the
+##   town clinic. The bill is 8% of your crystals + 20 + 4 per mine floor, capped
+##   at 750 (never more than you have). Juniper's perks halve / waive it; easy
+##   mode and the no-fee perk waive it.
+##   Out of energy (or up past 2am) anywhere else: someone carries you home and
+##   5% of your crystals goes missing, capped at 300.
+##   Either way you wake next morning with 3/4 energy (GameState.sleep(true)).
+const CLINIC_SPAWN := Vector2(3 * 16 + 8, 4 * 16 + 12)  # beside the first bed (interiors.json clinic), clear of the nurse
+const MINE_SCENES := ["mine", "hollow_heart", "underground"]
+
+
+func in_mines() -> bool:
+	return scene_id() in MINE_SCENES or scene_id().begins_with("cave")
+
+
 func player_down(reason := "hurt") -> void:
 	if _changing:
 		return
@@ -2205,22 +2342,29 @@ func player_down(reason := "hurt") -> void:
 	_changing = true
 	player.frozen = true
 	var cr := int(GameState.run["crystals"])
-	var rate := 0.10 if reason == "hurt" else 0.05
-	if reason == "hurt":
+	var mines := in_mines()
+	var clinic := (reason == "hurt" or mines) and not Net.visiting()
+	var fee := 0
+	if clinic:
+		var floor_no := int(GameState.run.get("mine_floor", 1)) if mines else 0
+		var mult := 1.0
 		if GameState.run["flags"].has("juniper_gone"):
 			pass  # she left: no clinic perks
 		elif GameState.has_friend_perk("juniper", 6):
-			rate = 0.0
+			mult = 0.0
 		elif GameState.has_friend_perk("juniper", 2):
-			rate = 0.05
-	if Settings.easy() or (reason == "hurt" and Perks.flag("no_clinic_fee")):
-		rate = 0.0
-	var fee := int(ceil(cr * rate))
+			mult = 0.5
+		if Settings.easy() or Perks.flag("no_clinic_fee"):
+			mult = 0.0
+		fee = mini(cr, int(round(mini(750, int(cr * 0.08) + 20 + 4 * floor_no) * mult)))
+	elif not Settings.easy():
+		fee = mini(300, int(ceil(cr * 0.05)))
 	# A Marked who beat you won't come at you again today.
 	for e in enemies:
 		if is_instance_valid(e) and e.has_meta("marked"):
 			Marked.mark_try(str(e.get_meta("marked")))
-	hud.toast("You collapsed..." if reason == "hurt" else "You pass out...", Color(1, 0.6, 0.6))
+	var why := "You collapsed..." if reason == "hurt" else ("Too tired to go on... you pass out." if reason == "tired" else "It's so late... you pass out.")
+	hud.toast(why, Color(1, 0.6, 0.6))
 	Music.instance(get_tree()).sfx("die" if reason == "hurt" else "sleep")
 	await hud.fade_out(1.0)
 	GameState.run["crystals"] = maxi(0, cr - fee)
@@ -2231,7 +2375,18 @@ func player_down(reason := "hurt") -> void:
 		GameState.run["hp"] = maxi(int(GameState.run["hp"]), int(GameState.run["max_hp"]) / 2)
 	else:
 		GameState.sleep(true)
-	GameState.run["flags"]["wake_note"] = ("Nurse Ada patched you up at the clinic. Fee: ◆%d (10%%)." % fee) if reason == "hurt" else ("Someone found you and carried you home. ◆%d (5%%) went missing on the way." % fee)
+	if clinic:
+		var where := "in the mines" if mines else "out there"
+		var cause := "You'd pushed yourself past empty" if reason == "tired" else ("It was far too late to be down there" if reason == "late" else "You were hurt badly")
+		var bill := ("Clinic bill: ◆%d." % fee) if fee > 0 else "No charge this time."
+		# Shown by the HUD when the clinic loads (Hud._show_clinic_note).
+		var finder := "A miner" if mines else "A passer-by"
+		var nurse := "the night nurse" if GameState.run["flags"].has("juniper_gone") else "Juniper"
+		GameState.run["flags"]["clinic_note"] = "%s %s. %s found you and carried you to the clinic, where %s kept you overnight. %s" % [cause, where, finder, nurse, bill]
+		GameMap.next_interior = "clinic"
+		go_to("interior", CLINIC_SPAWN, "down", true)
+		return
+	GameState.run["flags"]["wake_note"] = ("Someone found you and carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "Someone found you and carried you home to bed."
 	go_to("house", Vector2(5 * TILE + 8, 5 * TILE), "down", true)
 
 
@@ -2291,7 +2446,7 @@ func can_till(_c: Vector2i) -> bool:
 
 func _exit_at(c: Vector2i) -> bool:
 	for e in exits:
-		if (e["rect"] as Rect2i).has_point(c):
+		if in_exit(e, c):
 			return true
 	return false
 
@@ -2314,7 +2469,7 @@ func handle_tap(pos: Vector2) -> void:
 				break
 	var e := nearest_enemy_to(world, 14.0)
 	# An enemy under your finger wins over the pup biting it; the pup needs a close tap.
-	if e == null and pet != null and is_instance_valid(pet) and pet.visible and world.distance_to(pet.position + Vector2(0, -6)) < 9.0:
+	if e == null and pet != null and is_instance_valid(pet) and pet.visible and world.distance_to(pet.position + Vector2(0, -6)) < 9.0 and pup_menu_allowed():
 		if player.position.distance_to(pet.position) < 40.0:
 			later(_pup_menu)
 		else:
@@ -2593,6 +2748,9 @@ var _transitioning := false
 func go_to(scene: String, spawn: Vector2, facing := "down", force := false) -> void:
 	# One transition at a time. player_down passes force (it set _changing itself).
 	if _transitioning or (_changing and not force):
+		return
+	# Regions held by a campaign stay shut until it's won (Campaign offers the board).
+	if not force and Campaign.blocks(self, scene):
 		return
 	_transitioning = true
 	# A creak only for real doors (in or out of a building, a mine), not road edges or ferries.
@@ -3358,8 +3516,11 @@ func cliff_style() -> Array:
 	var sc := scene_id()
 	if sc in ["mountain", "highlands"] or sc == "colony_ice" or sc == "bf_frostfield":
 		return ["snow", "stair_snow"]
-	if sc.begins_with("colony_") or sc in ["wastes", "beach", "quarry"]:
+	if sc in ["wastes", "beach", "colony_ember"]:
 		return ["sand", "stair_wood"]
+	if sc.begins_with("colony_") or sc == "quarry":
+		# Grassy tops: grass faces (a sand fringe read as a yellow outline on green).
+		return ["grass", "stair_wood"]
 	if sc in ["hideout", "docks", "neon", "uptown", "underground", "bf_rail_yards", "bf_dockside"]:
 		return ["grass", "stair_iron"]
 	if sc in ["crystal_meadow", "bf_shattered_vale", "hollow_heart"]:
@@ -3367,68 +3528,14 @@ func cliff_style() -> Array:
 	return ["grass", "stair_stone"]
 
 
-## Big one-piece cliff faces and stair sets, when the art is in.
+## Big one-piece cliff faces and stair sets, when the art is in: organic outline
+## (rounded corners, smooth slopes on stepped edges), painted faces on the front,
+## rock side walls, rims in the ground's own colour (CliffPainter).
 func _draw_plateau_painted(cells: Dictionary, stairs: Dictionary) -> bool:
 	var st := cliff_style()
-	var strip := Art.tex("cliffs", str(st[0]) + "_strip")
-	if strip == null or not Art.has("stairs", str(st[1])):
+	if Art.tex("cliffs", str(st[0]) + "_strip") == null or not Art.has("stairs", str(st[1])):
 		return false
-	# Grass caps only on grassy styles: ash, sand and snow plateaus get stone rims.
-	var cap := "cliff" if str(st[0]) == "grass" and scene_id() != "hollow_heart" else "cliff_stone"
-	if not Art.has("tiles", cap + "_top_0"):
-		cap = "cliff"
-	if (cap == "cliff" or scene_id() == "hollow_heart") and Art.has("tiles", cap + "_top_0"):
-		# Stone rims on snow/sand/ash read as pale boxes: those plateaus show their own
-		# ground, edged by the painted face.
-		Art.draw_blob(self, cells, cap, 16.0, 1)
-	else:
-		# No cap: give the blocked rim a lip so the ledge's sides read as a wall.
-		for c: Vector2i in cells:
-			for d: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1)]:
-				if cells.has(c + d):
-					continue
-				var p := Vector2(c * TILE) + Vector2(TILE - 3 if d.x == 1 else 0, 0)
-				var sz := Vector2(3, TILE) if d.x != 0 else Vector2(TILE, 3)
-				draw_rect(Rect2(p, sz), Color(0.08, 0.06, 0.12, 0.5))
-				var hp := p + (Vector2(1, 0) if d.x == -1 else (Vector2(-1, 0) if d.x == 1 else Vector2(0, 2)))
-				draw_rect(Rect2(hp, Vector2(1, TILE) if d.x != 0 else Vector2(TILE, 1)), Color(1, 1, 1, 0.22))
-	# The face: a window of the painted strip under every southern edge cell.
-	var face_h := TILE * 1.6
-	var src_w := float(strip.get_height()) * TILE / face_h   # strip px per cell, keeping the strip's aspect
-	var period := maxi(1, int(strip.get_width() / src_w))
-	for c: Vector2i in cells:
-		var below := c + Vector2i(0, 1)
-		if cells.has(below) or stairs.has(below):
-			continue
-		var sx := float(posmod(c.x, period)) * src_w
-		draw_texture_rect_region(strip, Rect2(below.x * TILE, below.y * TILE - TILE * 0.35, TILE, face_h), Rect2(sx, 0, src_w, strip.get_height()))
-	# Stairs: one painted set per run of stair cells, not a patch of small tiles.
-	var done := {}
-	for b: Vector2i in stairs:
-		if done.has(b):
-			continue
-		var run := [b]
-		var x := b.x + 1
-		while stairs.has(Vector2i(x, b.y)):
-			run.append(Vector2i(x, b.y))
-			x += 1
-		x = b.x - 1
-		while stairs.has(Vector2i(x, b.y)):
-			run.push_front(Vector2i(x, b.y))
-			x -= 1
-		for rc in run:
-			done[rc] = true
-		var nm := str(st[1])
-		if run.size() >= 3 and Art.has("stairs", nm + "_wide"):
-			nm += "_wide"
-		elif run.size() >= 3 and nm == "stair_stone":
-			nm = "stair_stone_wide"
-		var t := Art.tex("stairs", nm)
-		var w := run.size() * TILE + 10.0
-		var h := w * float(t.get_height()) / float(t.get_width())
-		var left: Vector2i = run[0]
-		draw_texture_rect(t, Rect2(left.x * TILE - 5.0, (left.y + 1) * TILE + 2.0 - h, w, h), false)
-	return true
+	return CliffPainter.draw(self, cells, stairs, {"style": str(st[0]), "stair_set": str(st[1])})
 
 
 func draw_plateau(cells: Dictionary, prefix := "cliffg", stairs: Dictionary = {}) -> void:
@@ -3556,6 +3663,38 @@ func _draw_blob_edges(ci: CanvasItem, cells: Dictionary, edge_cells: Dictionary,
 
 ## A mass of raised rock (map edges, mountain walls): stone fill with a grassy
 ## lip facing the open ground and painted cliff faces on the sides that face south.
+## A cliff border band as raised wooded ground: the map's own ground on top (it is
+## drawn under the band), an organic painted face along its inner edge (inside the
+## band, so the face never hangs over walkable cells), rock side walls, shade
+## deepening outward and a few boulders and shrubs on the top.
+func _draw_band_cliff(cells: Dictionary) -> bool:
+	var st := cliff_style()
+	if Art.tex("cliffs", str(st[0]) + "_strip") == null:
+		return false
+	# Shade: the deeper into the band, the darker (no hard line at the pad edge).
+	for c: Vector2i in cells:
+		var dd := _band_depth(c)
+		if dd >= 2:
+			draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.04, 0.05, 0.08, minf(0.32, 0.07 * dd)))
+	# Face along the inner edge: drawn on the band's own last row.
+	if not CliffPainter.draw(self, cells, {}, {"style": str(st[0]), "skip_rect": Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), "inset": true}):
+		return false
+	# Top dressing: boulders, shrubs and ferns, deterministic per cell.
+	var se := GameState.look_se()
+	var pool: Array = ["rock_m", "bush", "ferns", "rock_s", "rock_l"]
+	if se == "winter":
+		pool = ["rock_snow_l", "bush_snow", "rock_s", "rock_m"]
+	for c: Vector2i in cells:
+		if not cells.has(c + Vector2i(0, 1)) or _band_depth(c) < 2:
+			continue
+		var h := absi((c.x * 73856093) ^ (c.y * 19349663)) % 100
+		if h < 14:
+			var nm: String = pool[h % pool.size()]
+			if Art.has("nature", nm):
+				Art.draw_prop(self, "nature", nm, Vector2(c * TILE) + Vector2(TILE / 2.0, TILE - 2))
+	return true
+
+
 func draw_rock_mass(cells: Dictionary) -> void:
 	var wall: String = {"marsh": "wall_marsh", "highlands": "wall_highlands", "ruins": "wall_ruins", "quarry": "wall_ruins", "riverlands": "wall_river", "hollow_heart": "mine_heart_wall"}.get(scene_id(), "")
 	if wall != "" and Art.has("tiles", wall + "_0"):
@@ -3600,6 +3739,9 @@ func draw_rock_mass(cells: Dictionary) -> void:
 				if cap:
 					draw_texture_rect(cap, Rect2(c.x * TILE, c.y * TILE - TILE, TILE, TILE * 2), false)
 		return
+	var stone_band := scene_id() in ["neon", "uptown", "docks", "hideout", "countryside", "moon", "wastes", "hollow_heart"]
+	if not stone_band and _draw_band_cliff(cells):
+		return
 	if Art.has("tiles", "cliff_top_0"):
 		# Raised rock plateau with real edges on every side (W28 cliff set), so a
 		# blocked cliff band always reads as a wall, never as floor.
@@ -3607,7 +3749,7 @@ func draw_rock_mass(cells: Dictionary) -> void:
 		# (No rdeco_quarry "decals" here: they are opaque tan ground tiles and showed as boxes in the rock.)
 		for c: Vector2i in cells:
 			Art.draw_tile(self, "tiles", fill, Vector2(c * TILE), 4)
-		var cset := "cliff_stone" if scene_id() in ["neon", "uptown", "docks", "hideout", "countryside", "moon", "wastes", "hollow_heart"] and Art.has("tiles", "cliff_stone_top_0") else "cliff"
+		var cset := "cliff_stone" if stone_band and Art.has("tiles", "cliff_stone_top_0") else "cliff"
 		Art.draw_blob(self, cells, cset, 16.0, 1)
 		return
 	var fill := "mf_stone" if Art.has("tiles", "mf_stone") else "g_gravel"
@@ -3852,19 +3994,48 @@ func draw_border() -> void:
 		draw_water(body, border_water_shore if border_water_shore != "" else ("sand" if scene_id() == "beach" else "grass"))
 	if not cliff.is_empty():
 		draw_rock_mass(cliff)
-	# Forest floor only under the deep part of the tree mass, with a soft edge.
+	# Forest floor only under the deep part of the tree mass, with a soft, rounded
+	# edge in two layers (a faint outer ring, then the full floor), and shade that
+	# deepens toward the map's outer edge: layered woods, no square steps.
+	var ff := Art.tex("seamless", "forest_floor")
+	var ring := {}
+	var deep := {}
 	for c: Vector2i in treec:
-		if _band_depth(c) >= 3:
-			# Seamless window: joins across cells, so no lone brown boxes.
-			if not seam_cell(self, "forest_floor", c, Color(1, 1, 1, 0.9)):
-				if not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
-					draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
+		var dd := _band_depth(c)
+		if dd >= 2:
+			ring[c] = true
+		if dd >= 3:
+			deep[c] = true
+	if ff != null:
+		CliffPainter.draw_rounded_cells(self, ring, ff, SEAM_PERIOD, Color(1, 1, 1, 0.4))
+		CliffPainter.draw_rounded_cells(self, deep, ff, SEAM_PERIOD, Color(1, 1, 1, 0.85))
+	else:
+		for c: Vector2i in deep:
+			if not Art.draw_tile(self, "tiles", "forest_floor", Vector2(c * TILE), 4):
+				draw_rect(Rect2(c * TILE, Vector2i(TILE, TILE)), Color(0.2, 0.35, 0.18, 0.6))
+	var shade := {}
+	for c: Vector2i in deep:
+		if _band_depth(c) >= 4:
+			shade[c] = true
+	_draw_soft_shade(shade, Color(0.03, 0.06, 0.05, 0.22))
 	if _painter_of != null:
 		_border_stripes()
 		return
 	for item: Array in _border_draw:
 		var c: Vector2i = item[0]
 		Art.draw_prop(self, str(item[1]), str(item[2]), Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE))
+
+
+## A flat shade over a cell set with rounded edges (deep woods, band depth).
+func _draw_soft_shade(cells: Dictionary, col: Color) -> void:
+	if cells.is_empty():
+		return
+	for lp: PackedVector2Array in CliffPainter.loops(cells):
+		if CliffPainter.is_hole(lp):
+			continue
+		var poly := CliffPainter.smooth(lp, 1.2)
+		if poly.size() >= 3 and not Geometry2D.triangulate_polygon(poly).is_empty():
+			draw_colored_polygon(poly, col)
 
 
 ## Painter only: the border trees (hundreds of sprites, a draw call each) go into
@@ -4070,9 +4241,13 @@ func add_plateau(cells: Dictionary, ramps: Array = []) -> void:
 		if not cells.has(c + Vector2i(0, 1)):
 			south.append(c)
 	if ramps.is_empty() and not south.is_empty():
-		south.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.x < b.x)
-		var mid: Vector2i = south[south.size() / 2]
-		ramps = [mid, mid + Vector2i(1, 0)]
+		# A pair of side-by-side cells on one straight south run (a stepped edge's
+		# middle could put the second stair under the plateau's own rim).
+		ramps = WorldGen.pick_ramps(self, cells)
+		if ramps.is_empty():
+			south.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.x < b.x)
+			var mid: Vector2i = south[south.size() / 2]
+			ramps = [mid, mid + Vector2i(1, 0)]
 	var ramp_set := {}
 	for r in ramps:
 		var rc := Vector2i(int(r[0]), int(r[1])) if r is Array else r as Vector2i

@@ -10,6 +10,7 @@ var shots := 0
 
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 
@@ -70,6 +71,9 @@ func _run() -> void:
 	check(bool(GameState.run["farm"][key].get("watered", false)), "watered the tile")
 	GameState.select_slot(0)
 	await shot("04_farming")
+
+	# ---- Round 11: facing, pup menu, work-walking, energy ----
+	await _r11_farm(farm, p, d)
 
 	# Run test (keyboard path): hold B + right and check speed.
 	for x in range(3, 24):
@@ -203,10 +207,35 @@ func _run() -> void:
 	await frames(45)  # past the day-change fade
 	await shot("07_morning")
 
-	# Go to town directly.
+	# Go to town through the farm's south road: step into the widened exit zone
+	# (beside the old strip, not on it), no signpost needed.
 	GameMap.next_spawn = Vector2.ZERO
-	change_scene_to_file("res://scenes/town.tscn")
-	await frames(40)
+	change_scene_to_file("res://scenes/farm.tscn")
+	await frames(30)
+	var f2 := current_scene as GameMap
+	var zone_cell := Vector2i(-999, -999)
+	for e in f2.exits:
+		if str(e["scene"]) == "town":
+			var r: Rect2i = e["rect"]
+			for c: Vector2i in [Vector2i(r.position.x - 1, r.position.y), Vector2i(r.end.x, r.position.y), Vector2i(r.position.x, r.end.y), Vector2i(r.position.x - 1, r.end.y)]:
+				if f2.in_exit(e, c) and not r.has_point(c) and not f2.blocked.has(c):
+					zone_cell = c
+					break
+	check(zone_cell != Vector2i(-999, -999), "farm's town exit is wider than its strip")
+	if zone_cell != Vector2i(-999, -999):
+		f2.player.position = f2.cell_center(zone_cell)
+	# The map change fades out first: give it up to ~3 s on a busy machine.
+	for _w in 18:
+		await frames(10)
+		if current_scene is GameMap and (current_scene as GameMap).scene_id() == "town":
+			break
+	if not (current_scene is GameMap and (current_scene as GameMap).scene_id() == "town"):
+		check(false, "stepping into the exit zone beside the strip leaves for town")
+		GameMap.next_spawn = Vector2.ZERO
+		change_scene_to_file("res://scenes/town.tscn")
+		await frames(40)
+	else:
+		check(true, "stepping into the exit zone beside the strip leaves for town")
 	var town := current_scene
 	check(town != null and town.scene_id() == "town", "in town")
 	for i in 10:
@@ -424,8 +453,142 @@ func _run() -> void:
 	check(GameState.tool_tier("axe") == 1 and GameState.count("copper_bar") == 0, "upgrade consumed the bars (tier %d)" % GameState.tool_tier("axe"))
 	check(Hud.icon_for("axe") == "axe_copper" and Art.has("items", "axe_copper"), "copper axe has its own icon (%s)" % Hud.icon_for("axe"))
 	check(GameState.item_name("axe") == "Copper Axe", "upgraded tool is named by tier (%s)" % GameState.item_name("axe"))
+	await _r11_passout()
 	print("PLAYTEST DONE, failures: ", fails, ", screenshots: ", shots)
 	quit(1 if fails > 0 else 0)
+
+
+## Round 11 checks on the farm: facing on diagonals, the pup menu only on CHECK,
+## work-walking with the hoe, and the energy costs.
+func _r11_farm(farm: GameMap, p: Player, d: Dialogue) -> void:
+	# Facing: an exact diagonal (and straight down) faces down, never sideways.
+	for x in range(18, 30):
+		for y in range(16, 30):
+			farm.clear_cell(Vector2i(x, y))
+	p.position = farm.cell_center(Vector2i(20, 18))
+	p.auto_target = Vector2.INF
+	Dialogue.block_until_ms = 0
+	await frames(3)
+	Input.action_press("down"); Input.action_press("right")
+	await frames(20)
+	check(p.facing == "down", "moving down-right (a true diagonal) faces down (%s)" % p.facing)
+	Input.action_release("right")
+	await frames(10)
+	check(p.facing == "down" and not p.anim_name.begins_with("walk") or p.anim_name in ["walk_down", "run_down", "view_front"], "moving down shows the toward-you walk (%s)" % p.anim_name)
+	Input.action_release("down")
+	await frames(10)
+	var pf := CharacterLibrary.frames_for("penguin")
+	check(pf.has_animation("walk_down") and pf.get_frame_texture("walk_down", 0) != pf.get_frame_texture("walk", 0), "penguin's walk_down is not the sideways walk")
+	await shot("r11_facing_down")
+	# Pup: USE on the pup never opens its menu; CHECK does when it's calm.
+	if farm.pet and farm.pet.visible:
+		p.facing = "right"
+		var fc := p.facing_cell()
+		farm.pet.position = farm.cell_center(fc)
+		GameState.select_slot(4)  # sword
+		p.do_action("a")
+		await frames(4)
+		check(not d.active, "USE with the pup in front swings, no pup menu")
+		await frames(30)
+		farm.pet.position = farm.cell_center(fc)
+		p._attack_cd = 0.0
+		p._busy = false
+		check(farm.try_interact(fc, true), "CHECK on the pup opens its menu when no foe is near")
+		await frames(4)
+		check(d.active, "pup menu is up")
+		for i in 8:
+			if not d.active:
+				break
+			await press("a", 2)
+			await frames(6)
+		await frames(20)
+		var foe := farm.spawn_enemy("grump", p.position + Vector2(48, 0))
+		await frames(2)
+		farm.pet.position = farm.cell_center(fc)
+		check(not farm.try_interact(fc, true) or not d.active, "CHECK on the pup with a foe 3 tiles away doesn't open the menu")
+		await frames(4)
+		check(not d.active, "no pup menu mid-fight")
+		if is_instance_valid(foe):
+			farm.enemies.erase(foe)
+			foe.queue_free()
+		await frames(5)
+	# Work-walking: hold down + USE with the hoe; it tills a row, stepping each time.
+	GameState.select_slot(0)
+	GameState.run["energy"] = int(GameState.run["max_energy"])
+	p.position = farm.cell_center(Vector2i(24, 18))
+	p.facing = "down"
+	await frames(5)
+	var before := 0
+	for y in range(19, 28):
+		if GameState.run["farm"].has("24,%d" % y):
+			before += 1
+	Input.action_press("down"); Input.action_press("a")
+	await frames(240)
+	Input.action_release("a"); Input.action_release("down")
+	await frames(20)
+	var tilled := 0
+	for y in range(19, 28):
+		if GameState.run["farm"].has("24,%d" % y):
+			tilled += 1
+	check(tilled - before >= 3, "holding down + USE with the hoe tills a row while stepping (%d tiles)" % (tilled - before))
+	await shot("r11_hoe_row")
+	# Energy: fractional costs, cheap small actions, a clear 15% line.
+	var e0 := int(GameState.run["energy"])
+	GameState.run["en_frac"] = 0.0
+	for i in 10:
+		GameState.spend_for("pickaxe")
+	var used := e0 - int(GameState.run["energy"])
+	check(used >= 4 and used <= 8, "10 pickaxe swings cost ~6 energy at level 1 (%d)" % used)
+	check(GameState.energy_cost_f("sword") > 0.0 and GameState.energy_cost_f("sword") < 0.3, "a sword swing costs a little (%.2f)" % GameState.energy_cost_f("sword"))
+	check(int(GameState.run["max_energy"]) >= 120, "a new farmer starts with 120 energy (%d)" % int(GameState.run["max_energy"]))
+	GameState.run["energy"] = int(int(GameState.run["max_energy"]) * 0.1)
+	check(GameState.exhausted(), "under 15%% is Exhausted")
+	await frames(10)
+	await shot("r11_exhausted_hud")
+	GameState.run["energy"] = int(GameState.run["max_energy"])
+	GameState.run["en_warn"] = 0
+
+
+## Round 11: out of health -> the clinic, with a capped bill and a note.
+func _r11_passout() -> void:
+	var m := current_scene as GameMap
+	if m == null:
+		return
+	var d := Dialogue.instance(self)
+	for i in 10:
+		if not d.active:
+			break
+		await press("a", 2)
+		await frames(6)
+	GameState.run["crystals"] = 1000
+	var day0 := int(GameState.run["day"])
+	m.player_down("hurt")
+	await frames(150)
+	var c := current_scene as GameMap
+	check(c != null and c.scene_id() == "interior" and str(GameState.run.get("interior", "")) == "clinic", "collapsing wakes you in the clinic (%s)" % (c.scene_id() if c else "?"))
+	check(int(GameState.run["day"]) == day0 + 1, "it's the next morning")
+	check(int(GameState.run["crystals"]) == 1000 - 100, "clinic bill is 8%% + 20 (%d left)" % int(GameState.run["crystals"]))
+	await frames(40)
+	var told := false
+	for i in 40:
+		if d.active and d._full.contains("carried you to the clinic"):
+			told = true
+			break
+		if d.active:
+			await press("a", 2)
+			await frames(8)
+		else:
+			await frames(10)
+	check(told, "the clinic explains what happened")
+	await frames(30)
+	await shot("r11_clinic")
+	for i in 10:
+		if not d.active:
+			break
+		await press("a", 2)
+		await frames(6)
+	if c:
+		check(not c.blocked.has(c.player.cell()), "clinic wake spot is open floor")
 
 
 func check(ok: bool, what: String) -> void:

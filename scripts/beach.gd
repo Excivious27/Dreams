@@ -23,7 +23,7 @@ func build() -> void:
 	cols = 64
 	rows = 36
 	pad = 7
-	border = {"n": "trees", "s": "water", "w": "trees", "e": "cliff"}
+	border = {"n": "trees", "s": "water", "w": "trees", "e": "trees"}  # (the east rock band was buried under the sand: an invisible wall)
 	music_track = "beach"
 	add_exit(TOWN_EXIT, "town", Vector2(40 * TILE, 92 * TILE), "up", "▲ town")
 	add_exit(MARSH_EXIT, "marsh", Vector2(49 * TILE, 22 * TILE + 8), "left", "◀ marsh")
@@ -89,6 +89,8 @@ func build() -> void:
 
 func after_ready() -> void:
 	WorldGen.add_backdrop(self, "sea")
+	_palm_band()
+	WorldGen.dress_band(self, 812)
 	if Art.has("props", "campsite"):
 		var cs := AnimatedSprite2D.new()
 		cs.sprite_frames = Art.frames("props", {"idle": "campsite"}, {"idle": 6.0})
@@ -120,6 +122,40 @@ func after_ready() -> void:
 		player.frozen = true
 		await say([{"text": "Salt wind. Gulls. The sea goes on until it becomes the sky. Half a boat lies in the sand like something the water spat out."}])
 		player.frozen = false
+
+
+## The side bands over the sand. The soft sand patch draws above the baked ground,
+## so band trees baked under it vanished and left blocked, empty sand: the
+## invisible walls down the left (and right) of the beach. Over sand the band is
+## a palm grove of real sprites instead (above the sand), every edge cell dressed.
+func _palm_band() -> void:
+	var on_sand := func(c: Vector2i) -> bool:
+		return c.y >= 8 and _sand.has(Vector2i(clampi(c.x, 0, cols - 1), clampi(c.y, 0, rows - 1)))
+	var keep: Array = []
+	for item: Array in _border_draw:
+		if not on_sand.call(item[0] as Vector2i):
+			keep.append(item)
+	_border_draw.clear()
+	_border_draw.append_array(keep)
+	var rng := RandomNumberGenerator.new()
+	var low := ["bk_dune_s", "bk_dune_m", "bush2_green", "ferns", "rock_m"]
+	for c: Vector2i in _border_cells:
+		if str(_border_cells[c]) != "tree" or not on_sand.call(c) or props.has(c):
+			continue
+		rng.seed = hash(Vector3i(911, c.x, c.y))
+		var depth := _band_depth(c)
+		var r := rng.randf()
+		if depth <= 1 or r < (0.55 if depth == 2 else 0.7):
+			if r < 0.6 or depth >= 2:
+				var sp := prop("nature", "palm", c, 0, 0.0, false, rng.randf_range(0.42, 0.55))
+				if sp:
+					sp.position.x += rng.randf_range(-4.0, 4.0)
+					sp.flip_h = rng.randf() < 0.5
+			else:
+				var nm: String = low[rng.randi_range(0, low.size() - 1)]
+				var g := "props" if nm.begins_with("bk_") else "nature"
+				if Art.has(g, nm):
+					prop(g, nm, c, 0, 0.0, false, 0.3 if g == "props" else 0.5)
 
 
 func interact(c: Vector2i, thing: Dictionary) -> bool:

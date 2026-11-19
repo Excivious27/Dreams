@@ -121,7 +121,10 @@ def write_wav(path, buf):
         w.writeframes((buf * 32767).astype("<i2").tobytes())
 
 # Tracks Tom has replaced with real music. Never overwrite these with placeholders.
-REAL_TRACKS = {"title", "arc_gangsters", "arc_penguins"}  # title.ogg = "Dreams" (ACE Music), original in audio/incoming/title-dreams.mp3
+REAL_TRACKS = {"title", "arc_gangsters", "arc_penguins"}
+_rl = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "audio", "music", "REAL.txt")
+if os.path.exists(_rl):  # tracks imported from ACE Music (tools/ace_import.py)
+    REAL_TRACKS |= {l.strip() for l in open(_rl) if l.strip() and not l.startswith("#")}  # title.ogg = "Dreams" (ACE Music), original in audio/incoming/title-dreams.mp3
 
 def write_track(name, buf):
     if name in REAL_TRACKS:

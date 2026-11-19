@@ -12,6 +12,7 @@ func check(ok: bool, what: String) -> void:
 
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 

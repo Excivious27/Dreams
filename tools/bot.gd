@@ -39,6 +39,7 @@ const PROGRESS := [
 
 
 func _initialize() -> void:
+	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 
 
@@ -304,7 +305,7 @@ func _sleep_and_roundtrip() -> void:
 		_fail("save/load roundtrip lost the run")
 		return
 	for k in keys_before:
-		if not GameState.run.has(k):
+		if not GameState.run.has(k) and str(k) != "story_pending":  # load drops it on purpose: a beat cut off mid-play replays
 			_fail("save/load dropped key " + str(k))
 	if typeof(GameState.run["day"]) != TYPE_INT and typeof(GameState.run["day"]) != TYPE_FLOAT:
 		_fail("day has wrong type after load")
