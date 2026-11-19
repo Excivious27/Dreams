@@ -92,6 +92,12 @@ echo "$cout" | grep -E "^ISSUE|^phone_ui_test:|^glyphs" || true
 if ! echo "$cout" | grep -q "phone_ui_test: 0 issue"; then
   echo "phone_ui_test failed"; exit 1
 fi
+echo "== performance guards (batched cliffs, texture cache) =="
+pout="$("$GODOT" --headless --path . -s res://tools/perf_test.gd 2>&1)"
+echo "$pout" | grep -E "FAIL|SCRIPT ERROR|perf_test" || true
+if ! echo "$pout" | grep -q "perf_test: 0 failures"; then
+  echo "perf_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
