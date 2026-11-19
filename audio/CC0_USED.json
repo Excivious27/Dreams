@@ -271,6 +271,9 @@
   "cure-magic/curemagic_x/Cure3.wav",
   "magic-words-healing-sound-effect/health_restore.wav"
  ],
+ "heartbeat": [
+  "heartbeat-single-sound/heartbeat.flac"
+ ],
  "hearth": [
   "fireplace-sound-loop/fire.wav"
  ],
@@ -509,13 +512,13 @@
  ],
  "step_dirt": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/soil-steps-01.wav",
-  "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep03.ogg",
-  "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep05.ogg"
+  "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_01.ogg",
+  "100-cc0-sfx-2/sfx_100_v2_x/sfx100v2_footstep_02.ogg"
  ],
  "step_grass": [
   "different-steps-on-wood-stone-leaves-gravel-and-mud/%5Bkdd%5DDifferentSteps_0_x/leaves01.ogg",
   "different-steps-on-wood-stone-leaves-gravel-and-mud/%5Bkdd%5DDifferentSteps_0_x/leaves02.ogg",
-  "50-rpg-sound-effects/RPGsounds_Kenney_x/OGG/footstep01.ogg"
+  "fantozzis-footsteps-grasssand-stone/Fantozzi-footsteps_x/Fantozzi-footsteps/flac/Fantozzi-SandR1.flac"
  ],
  "step_gravel": [
   "different-steps-on-wood-stone-leaves-gravel-and-mud/%5Bkdd%5DDifferentSteps_0_x/gravel.ogg",
@@ -644,6 +647,10 @@
   "beach-ocean-waves/wave_02_cc0-18363__jasinski__alkaibeach.flac",
   "beach-ocean-waves/wave_03_cc0-18363__jasinski__alkaibeach.flac",
   "beach-ocean-waves/wave_04_cc0-18363__jasinski__alkaibeach.flac"
+ ],
+ "whimper": [
+  "dog-sounds-pauliuw/sad_dog.wav",
+  "dog-sounds-pauliuw/sad_dog_1.wav"
  ],
  "wind_soft": [
   "park-ambiences/park_ambience_wind.wav"

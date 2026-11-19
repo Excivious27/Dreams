@@ -44,6 +44,7 @@ var border_water_extra := {}
 var border_water_shore := ""
 ## Footstep word per cell for soft ground patches (paths, sand, groves); player._ground_word reads it.
 var ground_word := {}
+var step_word := {}  # cell -> footstep word of tile paths (Footsteps.mark); soft patches use ground_word
 var ground_seam := {}  # cell -> seam of the soft patch drawn there (exit corridors join the path's own body)
 var _ext := Rect2i()          # area added by extend()
 var _ext_paths := {}          # dirt connecting moved exits
@@ -3135,6 +3136,7 @@ func _fbm_grid(sd: int, scale: float) -> PackedFloat32Array:
 ## kind: "dirt" | "sand" | "stone". Falls back to draw_tileset_rect.
 func draw_ground(kind: String, cells_in: Dictionary) -> void:
 	var tset := "t_" + kind
+	Footsteps.mark(self, widen_path(cells_in), Footsteps.path_word(kind))
 	var fill: String = {"dirt": "dirt", "sand": "sand", "stone": "g_gravel"}.get(kind, "dirt")
 	var blob: String = {"dirt": "path_dirt", "sand": "path_sand", "stone": "path_cobble", "cobble": "path_cobble", "snow": "path_snow"}.get(kind, "")
 	# Prompts 10 clean path sets (smooth rims, seamless fills) when sliced.
@@ -3453,8 +3455,10 @@ func soft_ground(cells: Dictionary, seam: String, lip := Color(0.2, 0.14, 0.07, 
 		return false
 	var gw_host: GameMap = _painter_of if _painter_of != null else self
 	var gw := "sand" if "sand" in seam else ("stone" if ("ruin" in seam or "stone" in seam or "cobble" in seam or "pave" in seam) else ("grass" if ("grass" in seam or "moss" in seam) else "dirt"))
+	var sw := Footsteps.seam_word(seam)
 	for gc in cells:
 		gw_host.ground_word[gc] = gw
+		gw_host.step_word[gc] = sw
 		gw_host.ground_seam[gc] = seam
 	if not Art.has("seamless", seam):
 		return false

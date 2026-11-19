@@ -26,7 +26,7 @@
   - new beds: river, jungle, marsh, neon street, festival fire, kitchen and workshop rooms;
   - new spots: gulls, waves, crows, frogs, cicadas and insects.
 - **Checks:** `tools/sfx_audit.py` runs in check.sh. It fails the build if any sound or song the game asks for is missing.
-- **Phone size:** 57 songs stream on demand (data/music_stream.json) and are cached after first play. Only the title, farm, house and music-box songs are in the first download.
+- **Phone size:** 57 songs stream on demand (data/music_stream.json) and are cached after first play. (Round 13: fixed. The fetch used a relative URL, which Godot refuses, so these songs never played on the web. Songs now stream from the full address, with a packed stand-in until each one arrives.) Only the title, farm, house and music-box songs are in the first download.
 - **Credits:** about 280 of 988 used.
 
 ## 1. The connection is ready

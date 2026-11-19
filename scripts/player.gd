@@ -1007,32 +1007,8 @@ func _gun_sound() -> String:
 
 
 func _ground_word() -> String:
-	var map := get_parent() as GameMap
-	if map == null:
-		return "grass"
-	var id := map.scene_id()
-	if id in ["house", "interior", "docks", "bf_dockside"]:
-		return "wood"
-	if id in ["mine", "underground", "quarry", "hollow_heart", "moon", "station"]:
-		return "stone"
-	if id in ["beach"]:
-		return "sand"
-	if GameState.look_se() == "winter" and map.has_sky:
-		return "snow"
-	if swimming or map.is_water_cell(map.world_to_cell(position)):
-		return "water"
-	if id in ["marsh", "bf_bog_crossing"]:
-		return "mud"
-	var gw := str(map.ground_word.get(map.world_to_cell(position), ""))
-	if gw != "":
-		return gw
-	if GameState.look_se() == "fall" and id in ["forest", "orchard_hills", "meadow"]:
-		return "leaves"
-	if id in ["quarry", "wastes", "highlands"]:
-		return "gravel"
-	if id in ["town", "neon", "uptown"]:
-		return "stone"
-	return "grass"
+	var m := get_parent() as GameMap
+	return Footsteps.word(m, m.world_to_cell(position) if m else Vector2i.ZERO, swimming)
 
 
 func _move(step: Vector2) -> void:

@@ -54,7 +54,7 @@ func _ready() -> void:
 		_sfx.append(p)
 	_steps = AudioStreamPlayer.new()
 	_steps.bus = "SFX"
-	_steps.volume_db = -14.0
+	_steps.volume_db = STEP_DB
 	add_child(_steps)
 	_muted = bool(SaveGame.get_value("muted", false))
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), _muted)
@@ -68,8 +68,9 @@ func _ready() -> void:
 var _pending := ""
 ## Tracks that play once (endings, credits, the lullaby scene) instead of looping.
 const ONCE := ["ending_penguin", "ending_gangster", "credits", "merkitty_song"]
-## Loudness by kind of effect, on top of each file's own level (dB).
-const GROUP_DB := {"ui_": -9.0, "menu_": -8.0, "page": -6.0, "equip": -6.0, "talk_blip": -10.0, "keypress": -10.0,
+## Loudness by kind of effect, on top of each file's own level (dB). Files are
+## levelled by tools/sfx_soften.py (UI and steps already sit lower), so these are small.
+const GROUP_DB := {"ui_": -5.0, "menu_": -4.5, "page": -3.5, "equip": -5.0, "talk_blip": -5.5, "keypress": -10.0,
 	"step_": 0.0, "coin": -3.0, "pickup": -3.0, "j_": 0.0, "levelup": 0.0, "quest_done": 0.0}
 
 
@@ -358,6 +359,11 @@ func sfx(name: String, fallback := "") -> void:
 	pick.play()
 
 
+## Footstep level, and per ground on top: grass and leaves are a soft swish.
+const STEP_DB := -14.0
+const STEP_GROUND_DB := {"grass": -4.0, "leaves": -3.0, "sand": -2.0, "snow": -2.0, "gravel": -2.0, "mud": -2.0, "dirt": -1.0, "stone": -1.0, "wood": -1.5, "water": -1.0}
+
+
 ## Footsteps get their own voice so they never block hits.
 func step(ground: String) -> void:
 	if _muted or _steps == null or _steps.playing:
@@ -368,7 +374,9 @@ func step(ground: String) -> void:
 	if st == null:
 		return
 	_steps.stream = st
-	_steps.pitch_scale = randf_range(0.85, 1.15)
+	# Small drift only: wide pitch swings made some steps boom like boots.
+	_steps.pitch_scale = randf_range(0.95, 1.05)
+	_steps.volume_db = STEP_DB + float(STEP_GROUND_DB.get(ground, 0.0)) + randf_range(-0.8, 0.8)
 	_steps.play()
 
 

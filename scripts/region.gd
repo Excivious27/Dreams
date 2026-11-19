@@ -1029,6 +1029,7 @@ func _process(delta: float) -> void:
 ## Tile-set paths (asphalt, neon sidewalk, polished road, docks...): the set's
 ## plain cells, never its edge pieces.
 func _draw_path_tiles(pcs: Dictionary, path_kind: String) -> void:
+	Footsteps.mark(self, pcs, Footsteps.path_word(path_kind))
 	for c: Vector2i in pcs:
 		var pi := posmod(c.y, 3) * 3 + posmod(c.x, 3) if path_kind in VARIANT_SETS else 4
 		if path_kind == "asphalt2":

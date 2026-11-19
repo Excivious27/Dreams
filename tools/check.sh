@@ -92,6 +92,12 @@ if ! echo "$msout" | grep -q "music_stream_test: 0 failures"; then
   echo "Music stream test failed"; exit 1
 fi
 
+fsout="$("$GODOT" --headless --path . -s res://tools/footstep_test.gd 2>&1)"
+echo "$fsout" | grep -E "FAIL|SCRIPT ERROR|footstep_test" || true
+if ! echo "$fsout" | grep -q "footstep_test: 0 failures"; then
+  echo "Footstep test failed"; exit 1
+fi
+
 echo "== workshop: stations at run time =="
 sout="$("$GODOT" --headless --path . -s res://tools/station_test.gd 2>&1)"
 echo "$sout" | grep -E "FAIL|station_test" || true

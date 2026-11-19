@@ -919,6 +919,7 @@ func draw_map() -> void:
 	lanes.merge(_door_paths)
 	draw_ground("dirt", lanes)
 	# The plaza: flagstones in a circle, a ring of brick at the edge.
+	Footsteps.mark(self, _plaza, "stone")
 	if Art.has("tiles", "flagstone"):
 		for ring in [false, true]:  # flagstones, then the brick ring: each tile is its own cell, so two batches
 			for c: Vector2i in _plaza:

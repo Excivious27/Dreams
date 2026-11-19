@@ -80,9 +80,11 @@ Every pack below is CC0 (public domain), or dual-licensed with CC0 as one choice
 | [10 Impact/Shield Blocks](https://opengameart.org/content/10-impactshield-blocks) | StarNinjas | CC0 | block, crit |
 | [100 CC0 metal and wood SFX](https://opengameart.org/content/100-cc0-metal-and-wood-sfx) | rubberduck | CC0 | anvil, chop, crate_break, gate, hammer, keys, timber, tools, unlock |
 | [100 CC0 SFX](https://opengameart.org/content/100-cc0-sfx) | rubberduck | CC0 | chest_open, glass, mail |
-| [100 CC0 SFX #2](https://opengameart.org/content/100-cc0-sfx-2) | rubberduck | CC0 | pick, rock_break, step_water, step_wood, thunder |
+| [100 CC0 SFX #2](https://opengameart.org/content/100-cc0-sfx-2) | rubberduck | CC0 | pick, rock_break, step_dirt, step_water, step_wood, thunder |
 | [150 Combat Sound Effects](https://opengameart.org/content/150-combat-sound-effects) | untamedpixels | CC0 | crit, emp, laser, spell_earth, spell_fire, spell_ice, spell_lightning, spell_nature, stun, zap |
 | [2 Gun Reloads](https://opengameart.org/content/2-gun-reloads) | StarNinjas | CC0 | reload |
+| [Dog sounds](https://opengameart.org/content/dog-sounds) | pauliuw | CC0 | whimper |
+| [Heartbeat (single sound)](https://opengameart.org/content/heartbeat-single-sound) | Independent.nu (submitted by qubodup) | CC0 | heartbeat |
 | [20 Rustles of dry leaves](https://opengameart.org/content/20-rustles-dry-leaves) | qubodup | CC0 | harvest, plant, step_leaves |
 | [20 Sword Sound Effects (Attacks and Clashes)](https://opengameart.org/content/20-sword-sound-effects-attacks-and-clashes) | StarNinjas | CC0 | sword_clash |
 | [202 More Sound Effects](https://opengameart.org/content/202-more-sound-effects) | OwlishMedia | CC0 | cash, cloth, drink |
@@ -97,7 +99,7 @@ Every pack below is CC0 (public domain), or dual-licensed with CC0 as one choice
 | [42 Snow and Gravel Footsteps](https://opengameart.org/content/42-snow-and-gravel-footsteps) | qubodup | CC0 | step_gravel |
 | [50 CC0 retro / synth SFX](https://opengameart.org/content/50-cc0-retro-synth-sfx) | rubberduck | CC0 | power_up |
 | [50 CC0 Sci-Fi SFX](https://opengameart.org/content/50-cc0-sci-fi-sfx) | rubberduck | CC0 | beep, teleport, terminal |
-| [50 RPG sound effects](https://opengameart.org/content/50-rpg-sound-effects) | Kenney | CC0 | book, chop, dry_click, pot, step_dirt, step_grass |
+| [50 RPG sound effects](https://opengameart.org/content/50-rpg-sound-effects) | Kenney | CC0 | book, chop, dry_click, pot |
 | [58 Random Sound Effects](https://opengameart.org/content/58-random-sound-effects) | TokyoGeisha | CC0 | cards, clap, stink |
 | [6 Short water splashes](https://opengameart.org/content/6-short-water-splashes) | qubodup | CC0 | splash |
 | [60 CC0 Sci-Fi SFX](https://opengameart.org/content/60-cc0-sci-fi-sfx) | rubberduck | CC0 | servo |
@@ -136,7 +138,7 @@ Every pack below is CC0 (public domain), or dual-licensed with CC0 as one choice
 | [Energy Drain](https://opengameart.org/content/energy-drain) | qubodup | CC0 | drain |
 | [Fantasy Sound Effects (Tinysized SFX)](https://opengameart.org/content/fantasy-sound-effects-tinysized-sfx) | Vehicle | CC0 | dig, drip, drop, step_dirt, step_mud, twig, water |
 | [Fantasy Weapons and Apparel SFX Library](https://opengameart.org/content/fantasy-weapons-and-apparel-sfx-library) | Vehicle | CC0 | equip |
-| [Fantozzi's Footsteps (Grass/Sand & Stone)](https://opengameart.org/content/fantozzis-footsteps-grasssand-stone) | qubodup | CC0 | step_sand, step_stone |
+| [Fantozzi's Footsteps (Grass/Sand & Stone)](https://opengameart.org/content/fantozzis-footsteps-grasssand-stone) | qubodup | CC0 | step_grass, step_sand, step_stone |
 | [Fire Crackling](https://opengameart.org/content/fire-crackling) | AntumDeluge | CC0 | campfire |
 | [Fireplace Sound loop](https://opengameart.org/content/fireplace-sound-loop) | PagDev | CC0 | hearth |
 | [Freeze Spell](https://opengameart.org/content/freeze-spell-0) | artisticdude | CC0 | freeze |

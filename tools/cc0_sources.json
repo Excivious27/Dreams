@@ -710,6 +710,15 @@
   "page": "https://opengameart.org/content/different-steps-on-wood-stone-leaves-gravel-and-mud",
   "title": "Different steps on wood, stone, leaves, gravel and mud"
  },
+ "dog-sounds-pauliuw": {
+  "author": "pauliuw",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/dog-sounds",
+  "title": "Dog sounds"
+ },
  "door-lock-sounds": {
   "author": "Cough-E",
   "cc0": true,
@@ -889,6 +898,15 @@
   ],
   "page": "https://opengameart.org/content/hammer-on-anvil",
   "title": "Hammer on Anvil"
+ },
+ "heartbeat-single-sound": {
+  "author": "Independent.nu (submitted by qubodup)",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/heartbeat-single-sound",
+  "title": "Heartbeat (single sound)"
  },
  "high-traffic-road-sounds": {
   "author": "IgnasD",
