@@ -429,7 +429,7 @@ static func finish_game(m: GameMap, res: Dictionary) -> int:
 			m.hud.toast("Game abandoned. No tickets.", Color(1, 0.8, 0.7))
 		return 0
 	var score := int(res.get("score", 0))
-	var t := tickets_for(score, int(res.get("strikes", 0)), int(res.get("spares", 0)))
+	var t := Tickets.payout("bowling", tickets_for(score, int(res.get("strikes", 0)), int(res.get("spares", 0))))
 	var best := Tickets.set_best("bowling", score)
 	Tickets.add(t, "bowling")
 	if score >= 120:
@@ -443,7 +443,7 @@ static func finish_game(m: GameMap, res: Dictionary) -> int:
 
 
 static func tickets_for(score: int, strikes: int, spares: int) -> int:
-	return 3 + score / 10 + strikes * 2 + spares
+	return 5 + score / 8 + strikes * 2 + spares  # economy: tools/gen_rec.py (payout caps, --sim)
 
 
 static func _desk(m: GameMap) -> void:
@@ -566,7 +566,7 @@ static func _skee(m: GameMap) -> void:
 		total += pts
 		rolls.append(str(pts))
 		Music.instance(m.get_tree()).sfx("thud", "block")
-	var t := maxi(1, total / 20)
+	var t := Tickets.payout("skee_ball", maxi(1, total / 20))
 	Tickets.set_best("skee_ball", total)
 	Tickets.add(t, "skee_ball")
 	await m.say([{"who": "", "text": "Thunk, thunk, thunk: %s. Score %d!  +%d tickets." % [" + ".join(rolls), total, t]}])

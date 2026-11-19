@@ -118,10 +118,10 @@ func _run() -> void:
 	ok(Tickets.buy("rp_teddy") == "" and GameState.count("rp_teddy") == 1 and Tickets.count() == tk - 80, "buy the teddy for 80")
 	ok(Tickets.buy("rp_trophy_bronze") == "" and Tickets.buy("rp_trophy_bronze") != "", "once-only prize can't be bought twice")
 	ok(not GameState.can_gift("mabel", "rp_trophy_bronze") and GameState.can_gift("mabel", "rp_teddy"), "decor isn't a gift; the teddy is")
-	ok(Tickets.lock_text("rp_arcade_medal") != "", "arcade medal needs four cabinets")
-	for gid in ["a", "b", "c", "d"]:
-		Tickets.set_best(gid, 1)
-	ok(Tickets.unlocked("rp_arcade_medal"), "arcade medal opens after four cabinets")
+	ok(Tickets.lock_text("rp_arcade_medal") != "", "arcade medal needs every cabinet")
+	for gid in ArcadeHub.game_ids():
+		ArcadeHub.mark_played(str(gid))
+	ok(Tickets.unlocked("rp_arcade_medal"), "arcade medal opens after every cabinet (all_games)")
 	for id in Tickets.prizes().get("prizes", {}):
 		var item := str(Tickets.prize(str(id)).get("item", id))
 		ok(GameState.items.has(item), "prize item exists: " + item)

@@ -55,12 +55,13 @@ func _fill_pile() -> void:
 
 
 func _roll_item() -> String:
+	var pool := Tickets.claw_pool(POOL)  # the economy's list (tools/gen_rec.py CLAW_POOL)
 	var tot := 0
-	for p: Array in POOL:
+	for p: Array in pool:
 		if GameState.items.has(str(p[0])) and Tickets.arc_ok(str(p[0])):
 			tot += int(p[1])
 	var v := rng.randi_range(1, tot)
-	for p: Array in POOL:
+	for p: Array in pool:
 		if not GameState.items.has(str(p[0])) or not Tickets.arc_ok(str(p[0])):
 			continue
 		v -= int(p[1])

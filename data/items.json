@@ -9466,7 +9466,7 @@
  "rp_fizzy_pop": {
   "name": "Fizzy Pop",
   "type": "food",
-  "value": 7,
+  "value": 2,
   "rarity": "common",
   "tier": 1,
   "energy": 25,
@@ -9477,7 +9477,7 @@
  "rp_cotton_candy": {
   "name": "Cotton Candy",
   "type": "food",
-  "value": 12,
+  "value": 3,
   "rarity": "common",
   "tier": 1,
   "energy": 30,
@@ -9493,7 +9493,7 @@
  "rp_ribbon": {
   "name": "Lucky Ribbon",
   "type": "gift",
-  "value": 15,
+  "value": 3,
   "rarity": "common",
   "tier": 1,
   "icon": "ribbon_red",
@@ -9503,7 +9503,7 @@
  "rp_kite": {
   "name": "Kite",
   "type": "gift",
-  "value": 30,
+  "value": 7,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "kite",
@@ -9513,7 +9513,7 @@
  "rp_teddy": {
   "name": "Teddy Bear",
   "type": "gift",
-  "value": 40,
+  "value": 10,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "teddy_bear",
@@ -9523,7 +9523,7 @@
  "rp_penguin_plush": {
   "name": "Penguin Plush",
   "type": "gift",
-  "value": 45,
+  "value": 11,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "penguin_figurine",
@@ -9534,7 +9534,7 @@
  "rp_cat_plush": {
   "name": "Lucky Cat",
   "type": "gift",
-  "value": 45,
+  "value": 11,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "cat_figurine",
@@ -9545,7 +9545,7 @@
   "name": "Bowling Cap",
   "type": "equip",
   "slot": "head",
-  "value": 60,
+  "value": 15,
   "rarity": "uncommon",
   "tier": 2,
   "stats": {
@@ -9560,7 +9560,7 @@
   "name": "Neon Cap",
   "type": "equip",
   "slot": "head",
-  "value": 70,
+  "value": 17,
   "rarity": "uncommon",
   "tier": 2,
   "stats": {
@@ -9575,7 +9575,7 @@
   "name": "Top Hat",
   "type": "equip",
   "slot": "head",
-  "value": 150,
+  "value": 37,
   "rarity": "rare",
   "tier": 3,
   "stats": {
@@ -9591,7 +9591,7 @@
   "name": "Star Cape",
   "type": "equip",
   "slot": "back",
-  "value": 225,
+  "value": 75,
   "rarity": "rare",
   "tier": 3,
   "stats": {
@@ -9605,7 +9605,7 @@
  "rp_music_box": {
   "name": "Music Box",
   "type": "decor",
-  "value": 75,
+  "value": 18,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "music_box",
@@ -9615,7 +9615,7 @@
  "rp_painting": {
   "name": "Neon Painting",
   "type": "decor",
-  "value": 100,
+  "value": 25,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "painting_abstract",
@@ -9625,7 +9625,7 @@
  "rp_trophy_bronze": {
   "name": "Bronze Bowling Trophy",
   "type": "decor",
-  "value": 100,
+  "value": 25,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "trophy_bronze",
@@ -9635,7 +9635,7 @@
  "rp_trophy_silver": {
   "name": "Silver Bowling Trophy",
   "type": "decor",
-  "value": 175,
+  "value": 43,
   "rarity": "rare",
   "tier": 3,
   "icon": "trophy_silver",
@@ -9645,7 +9645,7 @@
  "rp_trophy_gold": {
   "name": "Gold Bowling Trophy",
   "type": "decor",
-  "value": 350,
+  "value": 112,
   "rarity": "epic",
   "tier": 4,
   "icon": "trophy_gold",
@@ -9655,7 +9655,7 @@
  "rp_golden_pin": {
   "name": "Golden Pin",
   "type": "decor",
-  "value": 600,
+  "value": 187,
   "rarity": "legendary",
   "tier": 5,
   "icon": "trophy_master",
@@ -9665,7 +9665,7 @@
  "rp_arcade_medal": {
   "name": "Arcade Medal",
   "type": "decor",
-  "value": 150,
+  "value": 37,
   "rarity": "rare",
   "tier": 3,
   "icon": "medal_gold",
@@ -9675,7 +9675,7 @@
  "rp_jukebox": {
   "name": "Jukebox",
   "type": "decor",
-  "value": 300,
+  "value": 112,
   "rarity": "epic",
   "tier": 4,
   "icon": "music_box2",
@@ -9685,7 +9685,7 @@
  "rp_arcade_cab": {
   "name": "Home Arcade Cabinet",
   "type": "decor",
-  "value": 400,
+  "value": 150,
   "rarity": "epic",
   "tier": 4,
   "icon": "token_star",
@@ -10056,10 +10056,32 @@
    "luck": 3
   }
  },
+ "rp_candy": {
+  "name": "Prize Candy",
+  "type": "food",
+  "value": 2,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 12,
+  "icon": "candy",
+  "desc": "A paper twist of prize-counter candy. The kids will trade anything for it.",
+  "rec": true
+ },
+ "rp_sprout_fizz": {
+  "name": "Sprout Fizz",
+  "type": "consumable",
+  "effect": "growth",
+  "value": 37,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "harvest_potion",
+  "desc": "Prize-counter plant tonic: pour it out and every crop on your farm grows a day. One a week.",
+  "rec": true
+ },
  "rp_fuzzy_dice": {
   "name": "Fuzzy Dice",
   "type": "gift",
-  "value": 45,
+  "value": 11,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "dice",
@@ -10071,7 +10093,7 @@
   "name": "Pinstripe Fedora",
   "type": "equip",
   "slot": "head",
-  "value": 150,
+  "value": 37,
   "rarity": "rare",
   "tier": 3,
   "stats": {

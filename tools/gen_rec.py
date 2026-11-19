@@ -133,6 +133,8 @@ def room_up():
 
 # ---------------------------------------------------------------- items & prizes
 ITEMS = {
+    "rp_candy": {"name": "Prize Candy", "type": "food", "value": 2, "rarity": "common", "tier": 1, "energy": 12, "icon": "candy", "desc": "A paper twist of prize-counter candy. The kids will trade anything for it."},
+    "rp_sprout_fizz": {"name": "Sprout Fizz", "type": "consumable", "effect": "growth", "value": 50, "rarity": "rare", "tier": 3, "icon": "harvest_potion", "desc": "Prize-counter plant tonic: pour it out and every crop on your farm grows a day. One a week."},
     "rp_fizzy_pop": {"name": "Fizzy Pop", "type": "food", "value": 20, "rarity": "common", "tier": 1, "energy": 25, "icon": "soda", "desc": "From the vending machine at the rec. Fizzes up your nose."},
     "rp_cotton_candy": {"name": "Cotton Candy", "type": "food", "value": 35, "rarity": "common", "tier": 1, "energy": 30, "buff": {"kind": "speed", "minutes": 60, "amount": 1}, "icon": "cloud_cotton", "desc": "Pure sugar cloud. A spring in your step for an hour."},
     "rp_ribbon": {"name": "Lucky Ribbon", "type": "gift", "value": 40, "rarity": "common", "tier": 1, "icon": "ribbon_red", "desc": "A prize-counter ribbon. Nice to give."},
@@ -157,9 +159,10 @@ ITEMS = {
     "rp_arcade_cab": {"name": "Home Arcade Cabinet", "type": "decor", "value": 1000, "rarity": "epic", "tier": 4, "icon": "token_star", "desc": "Decor: your own cabinet at home. It blinks all night."},
 }
 
-# need: {"best": {game: score}, "plays": {game: n}, "earned": n, "arcade": {"plays": n, "games": n}, "once": true}
+# need: {"best": {game: score}, "plays": {game: n}, "earned": n, "arcade": {"plays": n, "games": n},
+#        "ms": ArcadeHub milestone id, "once": true, "weekly": n (n per week, resets every 7 days)}
 PRIZES = [
-    ("candy", 15, 1, {}),
+    ("rp_candy", 15, 1, {}),
     ("rp_fizzy_pop", 15, 1, {}),
     ("rp_cotton_candy", 25, 1, {}),
     ("rp_ribbon", 30, 1, {}),
@@ -172,17 +175,17 @@ PRIZES = [
     ("rp_neon_cap", 140, 2, {"arcade": {"plays": 3}, "once": True}),
     ("rp_music_box", 150, 2, {"once": True}),
     ("rp_painting", 200, 3, {"once": True}),
-    ("growth_elixir", 400, 3, {"earned": 150}),
+    ("rp_sprout_fizz", 300, 3, {"earned": 150, "weekly": 1}),
     ("rp_trophy_bronze", 200, 3, {"best": {"bowling": 100}, "once": True}),
     ("rp_top_hat", 300, 3, {"best": {"bowling": 150}, "once": True}),
     ("rp_lane_fedora", 300, 3, {"best": {"bowling": 150}, "once": True}),
     ("rp_trophy_silver", 350, 3, {"best": {"bowling": 160}, "once": True}),
-    ("rp_arcade_medal", 300, 3, {"arcade": {"games": 4}, "once": True}),
-    ("rp_star_cape", 450, 4, {"best": {"bowling": 200}, "once": True}),
-    ("rp_jukebox", 600, 4, {"earned": 400, "once": True}),
-    ("rp_trophy_gold", 700, 4, {"best": {"bowling": 220}, "once": True}),
-    ("rp_arcade_cab", 800, 4, {"earned": 600, "arcade": {"plays": 15}, "once": True}),
-    ("rp_golden_pin", 1200, 4, {"best": {"bowling": 270}, "once": True}),
+    ("rp_arcade_medal", 300, 3, {"ms": "all_games", "once": True}),
+    ("rp_star_cape", 600, 4, {"best": {"bowling": 200}, "once": True}),
+    ("rp_jukebox", 900, 4, {"earned": 800, "once": True}),
+    ("rp_trophy_gold", 900, 4, {"best": {"bowling": 220}, "once": True}),
+    ("rp_arcade_cab", 1200, 4, {"earned": 1500, "arcade": {"plays": 25}, "once": True}),
+    ("rp_golden_pin", 1500, 4, {"best": {"bowling": 270}, "once": True}),
 ]
 
 # Where owned decor shows up in your house (House calls RecCenter.dress_house).
@@ -313,16 +316,166 @@ QUEST_LINES_GANG = {
 }
 
 
+# ---------------------------------------------------------------- the ticket economy
+# Tickets are won with crystals ($ in the gangster arc) and spent on prizes; prizes sell
+# back for a sliver, so the counter is a sink, never a crystal machine. The numbers here
+# are checked by check_economy() every time this runs (it refuses to write a loop), and
+# `python3 tools/gen_rec.py --sim` prints how long each prize takes three kinds of player.
+
+# What one play costs (mirrors the games' own fees; tools/ticket_econ_test.gd checks them).
+FEES = {"bowling": 25, "jumper": 10, "stack": 10, "whack": 10, "gallery": 10, "claw": 20, "skee_ball": 5}
+# Per-play payout (Tickets.payout): full up to "soft", half rate above it, never past "cap".
+# Sources not listed (welcome gift, quests) pay as given.
+PAYOUT = {
+    "bowling": {"soft": 40, "cap": 60},
+    "jumper": {"soft": 24, "cap": 34},
+    "stack": {"soft": 24, "cap": 34},
+    "whack": {"soft": 24, "cap": 34},
+    "gallery": {"soft": 24, "cap": 34},
+    "claw": {"soft": 14, "cap": 20},
+    "skee_ball": {"soft": 15, "cap": 15},
+}
+RESALE = 8        # a counter prize sells for 1/RESALE of its ticket cost (floor 2)
+MAX_SELL = 2.15   # best stacked sell multiplier (festival 1.1 x bartering/Alder 1.4 x skill 1.2 x Deuce 1.15)
+CLAW_WIN = 0.8    # a keen player's first claw try of the day (the grip loosens after each win)
+
+# What the claw machine's plushes hide: [item, weight]. Mostly counter prizes; a few small
+# treasures keep it exciting, but its average prize stays under what a go costs.
+CLAW_POOL = [["rp_teddy", 18], ["rp_penguin_plush", 16], ["rp_fuzzy_dice", 16], ["rp_cat_plush", 16], ["rp_candy", 22],
+             ["rp_ribbon", 12], ["rp_cotton_candy", 10], ["old_coin", 3], ["toy", 2], ["fossil", 1]]
+
+
+def payout(game, n):
+    p = PAYOUT.get(game)
+    if not p or n <= p["soft"]:
+        return max(0, n) if not p else n
+    return min(p["cap"], p["soft"] + (n - p["soft"]) // 2)
+
+
 def balance_values():
-    """Prize items sell for about half their ticket cost (a ticket costs a crystal or more
-    to win), so the counter is never a crystal machine: buy-and-sell always loses."""
+    """Prize items sell for 1/RESALE of their ticket cost (see check_economy)."""
     for item, cost, tier, need in PRIZES:
         if item in ITEMS:
-            ITEMS[item]["value"] = max(5, cost // 2)
+            ITEMS[item]["value"] = max(2, cost // RESALE)
+
+
+def _value(item, items):
+    return int((ITEMS.get(item) or items.get(item, {})).get("value", 0))
+
+
+def check_economy(items):
+    """Refuse any number that would turn the rec into a crystal machine."""
+    errs = []
+    worst_ticket = MAX_SELL / RESALE  # crystals one ticket can come back as, at best
+    for g, fee in FEES.items():
+        cap = PAYOUT[g]["cap"]
+        if cap * worst_ticket >= fee:
+            errs.append("%s: %d tickets can sell back for %.1f >= the %d fee" % (g, cap, cap * worst_ticket, fee))
+    for item, cost, tier, need in PRIZES:
+        v = _value(item, items)
+        if v * RESALE > max(cost, 2 * RESALE):
+            errs.append("%s: worth %d for %d tickets" % (item, v, cost))
+        if not item.startswith("rp_"):
+            errs.append("%s: counter prizes must be rp_ items (their value is set here)" % item)
+    tw = sum(w for _, w in CLAW_POOL)
+    avg = sum(_value(i, items) * w for i, w in CLAW_POOL) / float(tw)
+    tickets = min(PAYOUT["claw"]["cap"], 10 + int(avg) // 10)
+    ev = CLAW_WIN * (avg * MAX_SELL + tickets * worst_ticket) + (1 - CLAW_WIN) * 2 * worst_ticket
+    if ev >= FEES["claw"]:
+        errs.append("claw: a go is worth %.1f at best (fee %d); average prize %.1f" % (ev, FEES["claw"], avg))
+    for i, _ in CLAW_POOL:
+        if i not in ITEMS and i not in items:
+            errs.append("claw pool: no item " + i)
+    if errs:
+        raise SystemExit("gen_rec: ticket economy loop(s):\n  " + "\n  ".join(errs))
+    return {"claw_avg": round(avg, 1), "claw_ev_best": round(ev, 1)}
+
+
+# ---------------------------------------------------------------- pacing simulation
+# Three players over 12 weeks. Ticket formulas mirror the games (bowling RecCenter.tickets_for,
+# arcade _tickets_for) at a typical score for that skill; payout() applies the caps.
+def _raw_tickets(game, skill):
+    S = {  # casual, regular, keen
+        "bowling": [(70, 1, 2), (120, 3, 3), (180, 6, 3)],     # score, strikes, spares
+        "whack": [120, 200, 380], "gallery": [200, 420, 750],
+        "stack": [(1500, 8), (4000, 20), (15000, 60)],          # score, lines
+        "jumper": [1, 4, 8],                                    # level cleared
+        "skee_ball": [90, 100, 120], "claw": [0.3, 0.55, 0.75],  # claw: win chance
+    }[game][skill]
+    if game == "bowling":
+        return 5 + S[0] // 8 + S[1] * 2 + S[2]
+    if game == "whack":
+        return S // 12
+    if game == "gallery":
+        return S // 15
+    if game == "stack":
+        return S[0] // 250 + S[1] // 2
+    if game == "jumper":
+        return 6 + 4 * S + 3
+    if game == "skee_ball":
+        return max(1, S // 20)
+    return S * 11 + (1 - S) * 2
+
+
+PLAYERS = {  # visits a week, plays per visit {game: n}
+    "casual": (0, 1, {"bowling": 1, "whack": 1, "skee_ball": 2}),
+    "regular": (1, 2, {"bowling": 2, "whack": 1, "gallery": 1, "jumper": 1, "stack": 1, "claw": 1, "skee_ball": 1}),
+    "keen": (2, 4, {"bowling": 3, "whack": 2, "gallery": 2, "jumper": 2, "stack": 2, "claw": 1, "skee_ball": 2}),
+}
+
+
+def simulate(weeks=12, verbose=True):
+    """Each player buys the cheapest unlocked prize they don't own yet whenever they can
+    (keepsakes first, then each toy once, Sprout Fizz weekly). Returns {player: {prize: week bought}}."""
+    out = {}
+    for name, (skill, visits, plays) in PLAYERS.items():
+        tk, earned, spent, got = 20, 0, 0, {}
+        per_visit = sum(payout(g, _raw_tickets(g, skill)) * n for g, n in plays.items())
+        cost_visit = sum(FEES[g] * n for g, n in plays.items())
+        best = {"bowling": [90, 150, 220][skill]}  # best game so far, not the typical one
+        arcade_plays = 0
+        for wk in range(1, weeks + 1):
+            fizz_week = False
+            for v in range(visits):
+                tk += per_visit
+                earned += per_visit
+                spent += cost_visit
+                arcade_plays += sum(n for g, n in plays.items() if g != "bowling")
+                # Keepsakes first (cheapest open one), then a toy or the weekly tonic.
+                for item, cost, tier, need in sorted(PRIZES, key=lambda p: (not p[3].get("once"), p[1])):
+                    if item in got and not need.get("weekly"):
+                        continue
+                    if need.get("weekly") and fizz_week:
+                        continue
+                    ok = all(best.get(g, 0) >= s for g, s in need.get("best", {}).items())
+                    ok = ok and earned >= need.get("earned", 0) and arcade_plays >= need.get("arcade", {}).get("plays", 0)
+                    ok = ok and (need.get("ms") != "all_games" or len([g for g in plays if g not in ("bowling", "skee_ball")]) >= 5)
+                    if ok and tk < cost and need.get("once"):
+                        break  # saving up for this keepsake
+                    if ok and tk >= cost:
+                        tk -= cost
+                        got.setdefault(item, wk)
+                        if need.get("weekly"):
+                            fizz_week = True
+        out[name] = got
+        if verbose:
+            once = [p for p in PRIZES if p[3].get("once")]
+            have = len([p for p in once if p[0] in got])
+            print("%-8s %d visits/wk, %d tickets/visit for %d crystals; after %d weeks: %d/%d keepsakes, %d crystals spent"
+                  % (name, visits, per_visit, cost_visit, weeks, have, len(once), spent))
+            for item, cost, tier, need in PRIZES:
+                if need.get("once"):
+                    print("    %-18s %4d  %s" % (item, cost, ("week %d" % got[item]) if item in got else "-"))
+    return out
 
 
 def main():
+    import sys
     balance_values()
+    econ = check_economy(load("items.json"))
+    if "--sim" in sys.argv:
+        simulate()
+        return
     rec = {
         "_": "Generated by tools/gen_rec.py",
         "building": BUILDING, "cabinets": CABINETS, "lanes": LANES, "lane_top": LANE_TOP, "lane_foul": LANE_FOUL,
@@ -338,7 +491,8 @@ def main():
     names["claw"] = "Claw Machine"
     names["skee_ball"] = "Skee-Ball"
     gang = {c["id"]: c["gang_name"] for c in CABINETS if "gang_name" in c}  # gangster-arc cabinet names (Tickets.game_name)
-    pz = {"_": "Generated by tools/gen_rec.py", "game_names": names, "game_names_gang": gang, "order": [p[0] for p in PRIZES], "prizes": {}}
+    pz = {"_": "Generated by tools/gen_rec.py", "game_names": names, "game_names_gang": gang, "order": [p[0] for p in PRIZES], "prizes": {},
+          "fees": FEES, "payout": PAYOUT, "resale": RESALE, "max_sell": MAX_SELL, "claw_pool": CLAW_POOL, "check": econ}
     for item, cost, tier, need in PRIZES:
         pz["prizes"][item] = {"item": item, "cost": cost, "tier": tier, "need": need}
     save("prizes.json", pz)
