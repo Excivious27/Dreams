@@ -80,6 +80,7 @@ func build() -> void:
 	for key: String in _cells:
 		var p := key.split(",")
 		things[Vector2i(int(p[0]), int(p[1]))] = {"type": "cf_plot", "key": key, "hint": "A: the bed"}
+		keep_off[Vector2i(int(p[0]), int(p[1]))] = true  # volunteers walk round the beds, never across
 	for c in cells_of(_paths()):
 		_busy[c] = true
 	for b: Array in Commons.data().get("beds", []) + Commons.data().get("frames", []):
@@ -963,7 +964,7 @@ func _reveal() -> void:
 	else:
 		Music.instance(get_tree()).play("festival")
 		lines.append({"who": "Mayor Alder" if not _gang() else "Sal", "text": "Friends! Neighbours! Not long ago this was brambles and fallen logs. Today it feeds us. Eat, buy, trade, and come back next week." if not _gang() else "Listen up. This block used to be where things got dumped. Now it's where we eat. Every week. Spread the word."})
-		lines.append({"who": Commons.keeper_name(), "text": "From now on, the 7th, 14th, 21st and 28th are market days. Sell at the stand: folks pay a quarter over the shipping box."})
+		lines.append({"who": Commons.keeper_name(), "text": "From now on, the 7th, 21st and 28th are market days (the 14th is the festival, everyone's in town). Sell at the stand: folks pay a quarter over the shipping box."})
 	await say(lines)
 	GameState.save()
 	player.frozen = false

@@ -304,7 +304,7 @@ func _process(delta: float) -> void:
 		_wander_t = randf_range(4.0, 11.0)
 		if randf() < 0.6 and activity in ["talk", "garden", "work", "play", "look", "farm", "haul"]:
 			var wc := map.world_to_cell(home + Vector2(randf_range(-wander, wander), randf_range(-wander / 2.0, wander / 2.0)))
-			if map.in_content(wc) and not map.blocked.has(wc):
+			if map.in_content(wc) and not map.blocked.has(wc) and not map.keep_off.has(wc):
 				_target = map.cell_center(wc)
 				_pose = ""
 	var to := _target - position

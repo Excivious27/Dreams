@@ -158,7 +158,7 @@ func after_ready() -> void:
 	for k in things.keys():
 		if str(things[k].get("type", "")) == "forage":
 			var it := str(things[k]["item"])
-			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else "flowers"
+			var nm := "mushrooms_fall" if it in ["mushroom", "glowcap", "truffle"] and Art.has("nature", "mushrooms_fall") else ("wildflowers2" if Art.has("nature", "wildflowers2") else "flowers")
 			prop("nature", nm, k)
 	# Sparse, purposeful ground props only in clearings.
 	var avoid := _grove.duplicate()

@@ -68,8 +68,8 @@ STAGES = [
     {"id": "market", "name": P("Host the harvest market"), "need": {"#veg": 25, "#fruit": 10, "#flower": 5},
      "desc": P("Stalls, bunting and a table full of everything we've grown. Bring produce for the opening day and the whole town will come.",
                "Stalls, bunting, a table full of everything we grew. Bring produce for opening day and the whole block will come."),
-     "done": P("The whole town came. The WHOLE town. From now on it's a market every week, the 7th, 14th, 21st and 28th. This is for you, from all of us.",
-               "The whole block showed up. Even the crews kept it civil. Market every week now, 7th, 14th, 21st, 28th. This is from all of us."),
+     "done": P("The whole town came. The WHOLE town. From now on it's a market on the 7th, 21st and 28th. The 14th is festival day, so we'll all be in town. This is for you, from all of us.",
+               "The whole block showed up. Even the crews kept it civil. Market on the 7th, 21st and 28th now. The 14th is festival day: whole block's in town. This is from all of us."),
      "crystals": 500, "give": {"green_thumb_charm": 1, "harvest_basket": 3}, "friend": {"hazel": 30, "alder": 20, "maple": 15, "posy": 15, "bram": 15, "lumi": 15, "theo": 10, "finn": 15, "benno": 15, "rook": 15, "wren": 15, "juniper": 15, "gideon": 10, "sal": 15}},
 ]
 

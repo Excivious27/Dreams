@@ -34,6 +34,62 @@ def W(p, v):
         pass
 
 MAN = json.load(open(f"{D}/art/gen/manifest.json"))
+_ALPHA = {}
+
+
+def open_cells(p):
+    """Footprint cells (offsets from the prop cell) that the art leaves see-through.
+
+    Mirrors region.gd's footprint (art size * scale, clamped to w/h, tall props keep
+    their lower 62%) and drops cells under ~20% opaque (3 of 16 samples), so a round plaza or a hut's
+    corner is never an invisible wall (C2 world sweep)."""
+    if not p.get("solid", True) or p.get("group", "props") == "buildings":
+        return []
+    g = p.get("group", "props")
+    info = MAN.get(g, {}).get(p["name"])
+    if not info:
+        return []
+    from PIL import Image
+    key = info["file"]
+    if key not in _ALPHA:
+        im = Image.open(f"{D}/art/gen/{key}").convert("RGBA")
+        cw = int(info.get("cell_w", info.get("w", im.width)))
+        _ALPHA[key] = im.crop((0, 0, min(cw, im.width), im.height)).getchannel("A")
+    a = _ALPHA[key]
+    psc = float(p.get("scale", 0.5))
+    w = int(p.get("w", 0))
+    h = int(p.get("h", 1))
+    aw = int(math.floor(float(info.get("cell_w", info.get("w", (w + 1) * 32))) * psc / 16 + 0.4))
+    ah = int(math.floor(float(info.get("cell_h", info.get("h", h * 32))) * psc / 16 + 0.4))
+    if "scale" in p:
+        bw, bh = max(aw, 1), max(ah, 1)
+    else:
+        bw, bh = min(max(aw, 1), w + 1), min(max(ah, 1), h)
+    if bh >= 3 and g != "nature":
+        bh = max(2, int(math.ceil(bh * 0.62)))
+    cx, cy = p["cell"]
+    x0 = cx + (w + 1 - bw) // 2
+    # The sprite: centred on (cx + (w+1)/2) cells, feet on the bottom of row cy.
+    sw, sh = a.width * psc, a.height * psc
+    left = (cx + (w + 1) / 2.0) * 16 - sw / 2.0
+    top = (cy + 1) * 16 - sh
+    out = []
+    for yy in range(cy - bh + 1, cy + 1):
+        for xx in range(x0, x0 + bw):
+            # Sample the cell in a 4x4 grid of art pixels.
+            hit = n = 0
+            for sy in range(4):
+                for sx in range(4):
+                    wx = xx * 16 + 2 + sx * 4
+                    wy = yy * 16 + 2 + sy * 4
+                    px, py = int((wx - left) / psc), int((wy - top) / psc)
+                    n += 1
+                    if 0 <= px < a.width and 0 <= py < a.height and a.getpixel((px, py)) > 128:
+                        hit += 1
+            corner = xx in (x0, x0 + bw - 1) and yy in (cy - bh + 1, cy) and bw > 1
+            if (hit == 0 or (hit <= 3 and corner)) and not (g == "nature" and yy == cy):  # under ~20%; a tree keeps its trunk row
+                out.append([xx - cx, yy - cy])
+    return out
 def has_art(g, n): return n in MAN.get(g, {})
 
 # ---------------------------------------------------------------- items
@@ -931,6 +987,10 @@ def build_area(aid, mega, spec, links_geom):
                     best = (sc, c)
         if best:
             npcs.append({"id": nid, "name": nm, "sprite": sprite, "role": BY_ID[mega]["name"], "cell": list(best[1]), "lines": lines, "wander": 10.0})
+    for p in props:
+        oc = open_cells(p)
+        if oc:
+            p["open"] = oc
     R["props"] = props
     R["things"] = things
     R["npcs"] = npcs

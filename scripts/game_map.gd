@@ -1652,11 +1652,16 @@ func door_for_cell(c: Vector2i) -> Vector2i:
 ## Grid path (BFS, 4-neighbour) between content cells, avoiding blocked cells and
 ## water. Returns the cells to walk through (excluding `from`), or [] if none
 ## within `max_cells` steps. Cheap enough for villagers to call on a schedule change.
+## Cells villagers' paths and idle wanders stay off (crop beds); the player is unaffected.
+var keep_off := {}
+
+
 func find_path(from: Vector2i, to: Vector2i, max_cells := 6000) -> Array:
 	if from == to:
 		return []
+	var ko := keep_off if not keep_off.has(from) and not keep_off.has(to) else {}
 	var ok := func(c: Vector2i) -> bool:
-		return in_content(c) and not blocked.has(c) and not is_water_cell(c)
+		return in_content(c) and not blocked.has(c) and not is_water_cell(c) and not ko.has(c)
 	# Snap an unwalkable goal to its nearest walkable neighbour.
 	var goal := to
 	if not ok.call(goal):
