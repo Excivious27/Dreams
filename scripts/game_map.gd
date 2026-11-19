@@ -186,17 +186,10 @@ func _ready() -> void:
 			Net._send({"t": "scene", "scene": scene_id()}))
 
 	var cam := Camera2D.new()
-	# Rooms smaller than the screen sit in the middle of it, not pinned top-left.
-	var mw := (cols + 2 * pad) * TILE
-	var mh := (rows + 2 * pad) * TILE
-	var ox := maxi(0, (270 - mw) / 2)
-	# Indoors the HUD sits across the bottom (Hud.INTERIOR_SHIFT): fit the room above it.
-	var view_h := int(Hud.INTERIOR_SHIFT) if scene_id() in ["house", "interior"] else 480
-	var oy := maxi(0, (view_h - mh) / 2)
-	cam.limit_left = -ox
-	cam.limit_top = -oy
-	cam.limit_right = maxi(mw, 270) - ox
-	cam.limit_bottom = maxi(mh, view_h) - oy + (480 - view_h)
+	fit_camera(cam)
+	# A desktop window resized (or fullscreen toggled): refit to the new view width.
+	if DisplayMode.svc():
+		DisplayMode.svc().changed.connect(func() -> void: if is_instance_valid(cam): fit_camera(cam))
 	cam.position_smoothing_enabled = true
 	cam.position_smoothing_speed = 7.0
 	player.add_child(cam)
@@ -1947,6 +1940,22 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF, whoosh := true) -> bo
 
 
 var _shake_tw: Tween
+
+
+## Camera limits: rooms smaller than the view sit in the middle of it, not
+## pinned top-left. The view is 270 wide on phones, wider on a desktop (DisplayMode).
+func fit_camera(cam: Camera2D) -> void:
+	var vw := int(DisplayMode.view.x)
+	var mw := (cols + 2 * pad) * TILE
+	var mh := (rows + 2 * pad) * TILE
+	var ox := maxi(0, (vw - mw) / 2)
+	# Indoors the HUD sits across the bottom (Hud.INTERIOR_SHIFT): fit the room above it.
+	var view_h := int(Hud.INTERIOR_SHIFT) if scene_id() in ["house", "interior"] else 480
+	var oy := maxi(0, (view_h - mh) / 2)
+	cam.limit_left = -ox
+	cam.limit_top = -oy
+	cam.limit_right = maxi(mw, vw) - ox
+	cam.limit_bottom = maxi(mh, view_h) - oy + (480 - view_h)
 
 
 ## Camera nudge on a hit (more on a kill or crit).

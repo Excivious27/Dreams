@@ -3,7 +3,7 @@ extends RefCounted
 ## Player settings that live outside any one save: volumes, button size,
 ## left-handed layout, easy mode. Stored with SaveGame's global values.
 
-const DEFAULTS := {"music_vol": 8, "sfx_vol": 8, "amb_vol": 7, "btn_size": 1, "left_handed": false, "easy": false, "night": 2, "shake": true}
+const DEFAULTS := {"music_vol": 8, "sfx_vol": 8, "amb_vol": 7, "btn_size": 1, "left_handed": false, "easy": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false}
 const NIGHT_NAMES := ["off", "soft", "full"]
 const BTN_SCALES := [0.85, 1.0, 1.2]
 const BTN_NAMES := ["small", "normal", "large"]

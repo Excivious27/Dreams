@@ -593,7 +593,7 @@ func _input(event: InputEvent) -> void:
 		pos = (event as InputEventScreenTouch).position
 	elif event is InputEventMouseButton and (event as InputEventMouseButton).pressed and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and event.device != InputEvent.DEVICE_ID_EMULATION:
 		pos = (event as InputEventMouseButton).position
-	if pos != Vector2.INF and _skip_btn and _skip_btn.visible and Rect2(_skip_btn.position, SKIP_SIZE).grow(4).has_point(pos):
+	if pos != Vector2.INF and _skip_btn and _skip_btn.visible and Rect2(_skip_btn.position, SKIP_SIZE).grow(4).has_point(DisplayMode.ui(pos)):
 		return  # the Skip button takes it
 	if pos != Vector2.INF and pos.y < TouchControls.TOP_OF_CONTROLS:
 		_advance()

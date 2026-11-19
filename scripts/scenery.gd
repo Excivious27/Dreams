@@ -48,6 +48,7 @@ func _overlay() -> Texture2D:
 
 func _ready() -> void:
 	layer = 3 if overhead else -1
+	_w = DisplayMode.view.x
 	_canvas = Node2D.new()
 	_canvas.draw.connect(_on_draw)
 	add_child(_canvas)
@@ -63,6 +64,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_w = DisplayMode.view.x  # wide desktop view: weather and clouds span it
 	_t += delta
 	_ov_t += delta
 	for c: Dictionary in _clouds:

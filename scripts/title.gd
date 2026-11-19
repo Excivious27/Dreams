@@ -26,7 +26,7 @@ func _ready() -> void:
 	InputSetup.ensure_actions()
 	_arcs = GameState.load_json("res://data/arcs.json")
 	_playables = GameState.load_json("res://data/playable.json")
-	var bg := Art.tex("ui", "title_portrait") if Art.has("ui", "title_portrait") else (Art.tex("ui", "title_keyart") if Art.has("ui", "title_keyart") else Art.tex("ui", "title_bg"))
+	var bg := Art.tex("ui", "title_keyart") if DisplayMode.wide() and Art.has("ui", "title_keyart") else Art.tex("ui", "title_portrait") if Art.has("ui", "title_portrait") else (Art.tex("ui", "title_keyart") if Art.has("ui", "title_keyart") else Art.tex("ui", "title_bg"))
 	if bg:
 		var tr := TextureRect.new()
 		tr.texture = bg
@@ -45,6 +45,11 @@ func _ready() -> void:
 	var scroll := ScrollContainer.new()
 	_scroll = scroll
 	scroll.set_anchors_preset(PRESET_FULL_RECT)
+	# Wide (desktop) view: the page stays a phone-width column in the middle.
+	scroll.anchor_left = 0.5
+	scroll.anchor_right = 0.5
+	scroll.offset_left = -DisplayMode.BASE.x / 2.0
+	scroll.offset_right = DisplayMode.BASE.x / 2.0
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	add_child(scroll)
 	var margin := MarginContainer.new()
