@@ -146,9 +146,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 	match str(thing.get("type", "")):
 		"mrock":
 			if GameState.held_tool() != "pickaxe":
-				if GameState.has_tool("pickaxe"):
-					hud.toast("Use the pickaxe.")
-				return GameState.has_tool("pickaxe")
+				return ToolHint.need(self, "pickaxe", "to break it")
 			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
 			if ob != "":
 				player.play_tool("pickaxe")

@@ -521,8 +521,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if GameState.held_tool() == "rod" and not _fishing:
 				# The farm pond uses the same fishing as everywhere else.
 				later(_pond_fish.bind(c, bool(thing.get("river", false))))
-			elif GameState.has_tool("rod"):
-				hud.toast("Hold the fishing rod.")
+			elif not _fishing:
+				ToolHint.need(self, "rod", "to fish")
 			return true
 		"well":
 			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
@@ -816,8 +816,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			xp("farming", 2)
 			_soil.queue_redraw() if _soil else queue_redraw()
 			return true
-		if not bool(tile.get("watered", false)) and not GameState.sky_waters():
-			return _water(tile, key)
+		if not bool(tile.get("watered", false)) and not GameState.sky_waters() and GameState.held_tool() in ["can", "hoe"]:
+			return _water(tile, key)  # the hoe on empty soil: a quiet swing (work rows)
 		hud.toast("Pick seeds on your toolbar to plant here.")
 		return true
 	var cd: Dictionary = GameState.crops[crop]
@@ -888,9 +888,9 @@ func _seed_for(crop: String) -> String:
 
 func _water(tile: Dictionary, key := "") -> bool:
 	if GameState.held_tool() != "can":
-		if GameState.has_tool("can") and str(GameState.run["selected"]) == "":
-			hud.toast("Hold the watering can.")
-		return false
+		if GameState.held_tool() == "hoe":
+			return false  # a hoe row over planted soil stays quiet
+		return ToolHint.need(self, "can", "to water it")
 	if not GameState.spend_for("can"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return true
@@ -1056,7 +1056,7 @@ func _talk_crystal() -> void:
 	if not GameState.quest_done("first_harvest"):
 		await say([
 			{"who": "Star Crystal", "text": "Tend the soil, %s. Every living thing you raise feeds the Meow Pow Wow a little." % GameState.names()["character"]},
-			{"who": "Star Crystal", "text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each day. The sell box pays you in crystals overnight."},
+			{"who": "Star Crystal", "text": "Tap the hoe on your toolbar, face grass and tap USE to till. Then pick the seeds and tap USE to plant. Water each day with the can. The sell box pays you in crystals overnight."},
 		])
 	elif not GameState.quest_done("clear_meadow"):
 		await say([
@@ -1372,7 +1372,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 	await say([
 		{"text": "%s shakes the rain off and looks up at you like all of this is normal. Maybe for a while it can be." % pet_name},
 		{"text": "You'll need money to move on anyone. Money means crops. Crops mean dirt under your nails. Fine."},
-		{"text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each morning. Sell at the box. Don't draw eyes."},
+		{"text": "Tap the hoe on the toolbar, face grass, tap USE to till. Pick the seeds, USE to plant. The can every morning. Sell at the box. Don't draw eyes."},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop. Sell it at the box by the house.")
 	GameState.add_quest("meet_town", "Go south. Learn who in %s can be bought, and who is watching." % town)

@@ -588,7 +588,10 @@ func _clear_debris(c: Vector2i, thing: Dictionary) -> void:
 	var tool := str(j[2])
 	var held := GameState.held_tool()
 	if tool != "" and held != tool:
-		hud.toast("That needs the %s in your hand." % tool, Color(1, 0.85, 0.7))
+		ToolHint.need(self, tool, "to clear it")
+		return
+	if tool == "" and ToolHint.is_soft(held):
+		ToolHint.say(self, "Clear it by hand or with a blade.")
 		return
 	if not GameState.spend_for(tool if tool != "" else "weed"):
 		return

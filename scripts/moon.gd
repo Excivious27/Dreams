@@ -159,8 +159,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				tell([{"text": "The pad glows faintly and does nothing. A panel beside it wants Refined Crystals. Three. (You have %d.)" % GameState.count("crystal_refined")}])
 			return true
 		"mrock":
-			if not GameState.has_tool("pickaxe"):
-				return false
+			if GameState.held_tool() != "pickaxe":
+				return ToolHint.need(self, "pickaxe", "to break it")
 			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
 			if ob != "":
 				player.play_tool("pickaxe")
