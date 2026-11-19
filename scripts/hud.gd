@@ -89,9 +89,12 @@ func _show_clinic_note() -> void:
 	m.player.frozen = true
 	m.player.facing = "down"
 	Music.instance(get_tree()).sfx("heal")
-	await m.say([{"text": note}, {"text": "Rest up, eat something, and don't push past empty. Exhausted (a red, flashing bar) means it's time to head home."}])
+	var kept := SleepReport.take_kept()  # a pass-out night: what sold, grew, arrived
+	await m.say([{"text": note}, {"text": "Rest up, eat something, and don't push past empty. Exhausted (a red, flashing bar) means it's time to head home."}] + kept)
 	if is_instance_valid(m) and m.player:
 		m.player.frozen = false
+		if not kept.is_empty():
+			Story.on_morning(m)
 
 
 ## The region (or building) you're in, small, under the hearts' row and left of
