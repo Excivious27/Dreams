@@ -66,6 +66,7 @@ static func lines(report: Dictionary) -> Array:
 		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())
 	brief += " Sunset about %s." % GameState.clock_of(GameState.sunset())
 	lines.push_front({"text": "Day %d. %s" % [int(GameState.run["day"]), brief]})
+	_open_due()  # today's new main steps (day-gated) first, so Next: matches the goal line
 	var nxt := GameState.next_step()
 	if nxt != "":
 		lines.append({"text": "Next: " + nxt})
@@ -74,3 +75,13 @@ static func lines(report: Dictionary) -> Array:
 	if bool(report.get("short", false)):
 		lines.insert(1, {"text": "Collapsing takes it out of you: you wake on three quarters of your energy. Get to bed before you drop (and before 2am) and you wake full."})
 	return lines
+
+
+## Opens main quests whose day (or other condition) came round overnight, the
+## way GameState.tick_quests would on the next map tick, quietly.
+static func _open_due() -> void:
+	if GameState.run.is_empty():
+		return
+	for q: Dictionary in GameState.quests_data.get("main", []):
+		if str(q.get("arc", "both")) in ["both", str(GameState.run["arc"])] and not GameState.has_quest(str(q["id"])) and GameState._cond_ok(q.get("when", {})):
+			GameState.add_quest(str(q["id"]), str(q["text"]))

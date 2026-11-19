@@ -50,6 +50,8 @@ static func text(qid: String) -> String:
 				if left > 0:
 					return ("Beat %d more Grumps here: something bigger is behind them." if pen else "Drop %d more lookouts here: whoever sent them will show.") % left
 				return "Beat the Big Grump!" if pen else "Beat the President's Man!"
+			if letter_first():
+				return "A letter waits in your mailbox, by the house. Read it."
 			return "Find out what's howling in the east meadow (the farm's east gate)." if pen else "Someone is asking about you. Check the east meadow (the farm's east gate)."
 		"cattopia":
 			if _scene() == "crystal_meadow":
@@ -77,6 +79,18 @@ static func text(qid: String) -> String:
 				return "Recruit your first crew in Hideout town: the outskirts gate, east past the meadow."
 			return "Recruit your first crew: Deuce at his table or Mama Rosa at the kitchen door. Each wants a favour."
 	return ""
+
+
+## The meadow step opens on day 3 with a story letter (Mail.story_due mail_2):
+## until it's read, the goal is the mailbox, not a quest the player hasn't been told.
+static func letter_first() -> bool:
+	var r := GameState.run
+	if r.is_empty() or r["flags"].has("mail_2") or r["flags"].has("meadow_seen") or int(r.get("meadow_kills", 0)) > 0 or _scene() == "meadow":
+		return false
+	for sl: Dictionary in Mail.story_due():
+		if str(sl.get("flag", "")) == "mail_2":
+			return true
+	return false
 
 
 ## A ripe first crop comes before anything else (one tap, and it's the tutorial).
@@ -112,7 +126,7 @@ static func goal_place() -> Array:
 		"meet_town":
 			return ["town", ""]
 		"clear_meadow":
-			return ["meadow", ""]
+			return ["farm", "thing:mailbox"] if letter_first() else ["meadow", ""]
 		"cattopia":
 			return ["crystal_meadow", "npc:catkins"]
 		"spark":
@@ -168,7 +182,8 @@ static func target(m: GameMap) -> Vector2:
 		if str(e.get("scene", "")) != hop:
 			continue
 		var rc: Rect2i = e["rect"]
-		var p := (Vector2(rc.position) + Vector2(rc.size) * 0.5) * GameMap.TILE
+		# Exit rects are content cells: cell_pos adds the map's border pad.
+		var p := m.cell_pos(rc.position.x + rc.size.x * 0.5, rc.position.y + rc.size.y * 0.5)
 		if best_e == Vector2.ZERO or p.distance_to(m.player.position) < best_e.distance_to(m.player.position):
 			best_e = p
 	return best_e

@@ -76,6 +76,13 @@ if ! echo "$fwout" | grep -q "first_week_test: 0 failures"; then
   echo "First week test failed"; exit 1
 fi
 
+echo "== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) =="
+fhout="$("$GODOT" --headless --path . -s res://tools/first_hours_test.gd 2>&1)"
+echo "$fhout" | grep -E "FAIL|first_hours_test|SCRIPT ERROR" || true
+if ! echo "$fhout" | grep -q "first_hours_test: 0 failures"; then
+  echo "First hours test failed"; exit 1
+fi
+
 echo "== crops wired in =="
 # Every interior's way back names its scene: ["scene", x, y].
 python3 - <<'PY' || { echo "interior back check failed"; exit 1; }

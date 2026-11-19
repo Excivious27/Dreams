@@ -25,6 +25,10 @@ func _run() -> void:
 	change_scene_to_file("res://scenes/farm.tscn")
 	await frames(30)
 	await talk_through("intro")
+	for i in 40:  # the gangster opening fades between its parts: play them all
+		if bool(GameState.run["intro_done"]):
+			break
+		await talk_through("intro")
 	await frames(20)
 	await shot("after_intro")
 	goal("after intro")

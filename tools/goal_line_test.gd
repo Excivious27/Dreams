@@ -81,6 +81,10 @@ func _run() -> void:
 		check(g.begins_with("Water"), "%s: day 2 asks to water again" % a)
 		GameState.run["farm"]["10,10"]["watered"] = true
 		next_day()
+		g = goal("day 3 morning (a letter about the meadow waits)")
+		check(g.find("mailbox") >= 0, "%s: day 3 sends you to the letter before the meadow" % a)
+		check(GoalLine.goal_place() == ["farm", "thing:mailbox"], "%s: the arrow leads to the mailbox" % a)
+		GameState.run["flags"]["mail_2"] = true  # read it (farm._mailbox sets the flag)
 		g = goal("day 3 morning (howl)")
 		check(g.find("meadow") >= 0 and g.find("east gate") >= 0, "%s: day 3 points at the east meadow and says how" % a)
 		check(GoalLine.goal_place()[0] == "meadow", "%s: the arrow leads to the meadow" % a)
