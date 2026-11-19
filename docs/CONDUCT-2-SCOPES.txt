@@ -1,0 +1,20 @@
+01 Bowling feel: aim/power/spin controls on a phone, pin physics believability, scoring display, frame-by-frame flow, difficulty vs villager opponents, results and tickets. Make it feel great, Stardew-minigame polish.
+02 Block Jumper: level design of all 8 levels + endless, difficulty curve, jump feel (coyote time, buffering), touch deck, checkpoints, juice. Keep tools/jumper_solve.gd plans valid (re-solve if levels/physics change).
+03 Crystal Stack and Whack-a-Grump: controls, speed curves, scoring, readability, sound/feedback, game-over flow.
+04 Claw Machine, Duck Pond, Skee-Ball and the snack bar: feel, odds/curves, presentation, payouts.
+05 Ticket economy and prize tiers: payouts per game vs prize prices, milestone unlocks, progress pacing over weeks; simulate a player's ticket income; balance without money loops; prize screen clarity.
+06 Rec Center building and NPC hub: both floors' layout and flow, villager visit schedules (who comes when), their dialogue and chatter at the rec, playing alongside villagers, crowding/blocking, hours, rest days.
+07 Rec Center visuals: interiors, cabinets, lanes, signs, lighting day/night, decor density vs Stardew/Sun Haven polish; screenshot every room and fix with art (image tool) where needed.
+08 Rec Center audio: arcade hall and bowling songs, jukebox record variety, ball roll/pin crash/cabinet sounds, ambience levels; make or import whatever is missing.
+09 Community farm stages and quest line: stage requirements, rewards, pacing over the first seasons, story beats per stage, save/migration, what the player actually does there each visit.
+10 Community farm volunteers: NPC work schedules and visible work animations, chatter, helping tasks the player can join, crowding, rain days.
+11 Community farm map and art: layout, props and crops per stage, paths, edges, how it grows visually stage by stage; screenshots; art via the image tool where needed.
+12 Full-screen UI touch input: every arcade game, bowling, prize screen, chest/craft from the rec: pause/resume, Hud.extra_rects, B to leave, no input bleeding into the map, two-finger/edge taps; extend tools/phone_ui_test.gd to cover the new screens.
+13 Gangster-arc flavour of the rec/arcade/community farm: names (Rec Hall, Westside Lot Garden), characters present, lines, prizes, cash; tone serious/cool, all-ages.
+14 Integration: rec/arcade/commons links to quests, hearts and perks, mail, festivals, the board, high-score board, milestones, save migration; make sure each feeds the rest of the game and is discoverable.
+15 REGRESSION C1 first hours, both arcs: re-run the new-game flows to day 3 (newgame_penguin_test, gang_start_test, goal_line_test, town_first_test, farm_week_test, first_week_test) and play them by script + screenshots; fix anything the C1 merges broke (mail, goal line, tool hints, tour, mailbox marker).
+16 REGRESSION UI/softlocks: run softlock/phone_ui tests, bots with Dialogue.audit, look for menus without a way out or overlapping toasts (known: a weapon tip toast overlaps the boss name card; battle toasts over pup buttons) and fix.
+17 TEST HARDENING: flaky tests under load (gang_play_test wall-clock waits, campaign_test "way down is a real walk" depends on random mine layout, any other test using real time): make them deterministic (frame counts, fixed seeds) without weakening them.
+18 REGRESSION world + mega regions: screenshot sweep of every valley map and mega hub after C1 (farm track move, invisible walls, travel points), check exits/doors/music tests, fix.
+19 PERFORMANCE: rec center floors, arcade games, community farm, battles (load 0.5-1.2 s): frame time, load time, allocations; fix the worst without changing looks.
+20 INVENTORY (docs only): update docs/INVENTORY.md + docs/inventory.csv for the rec/arcade/commons systems after this run's merges are known (read other worktrees' commits at the end if helpful), and draft the C2 report table (area / found / fixed / test) in docs/reports/CONDUCT-2-draft.md.

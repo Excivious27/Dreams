@@ -8,9 +8,9 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 - **Last update:** 2026-11-19 09:40 PT, Team account (game chat)
 - **Done:** Round 13. CONDUCT 1 of 9: all 20 agent branches merged, check.sh rc 0, pushed (see PROJECT-MEMORY section 5).
-- **In progress:** CONDUCT 1 bots + playtest done and fixed (20 bots 0 crashes; playtest 0 fails). Next: package, then CONDUCT 2.
+- **In progress:** CONDUCT 2 of 9 (rec center, arcade, community farm): 20 agents launched 09:45 PT in the Team sandbox (/home/claude/wt/c2_NN, branches c2/NN, local). Watchdog checks every 30 min.
 - **Next step:** finish CONDUCT 1 (bots, playtest, fix, package), then CONDUCT 2 (rec/arcade/community farm) and CONDUCT 3 (campaigns), wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package. Plan: docs/CONDUCT-PLAN.md.
-- **Jobs running elsewhere:** none.
+- **Jobs running elsewhere:** CONDUCT 2 agents (Team sandbox, local branches). If lost: redo CONDUCT 2 from docs/CONDUCT-PLAN.md.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs, then the fully updated artifact.

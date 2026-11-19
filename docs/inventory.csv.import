@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://ljioa7thp0r1"
+
+[deps]
+
+files=["res://docs/inventory.System / feature.translation", "res://docs/inventory.Status.translation", "res://docs/inventory.Percent.translation", "res://docs/inventory.Tests.translation", "res://docs/inventory.Notes.translation"]
+
+source_file="res://docs/inventory.csv"
+dest_files=["res://docs/inventory.System / feature.translation", "res://docs/inventory.Status.translation", "res://docs/inventory.Percent.translation", "res://docs/inventory.Tests.translation", "res://docs/inventory.Notes.translation"]
+
+[params]
+
+compress=true
+delimiter=0
