@@ -83,4 +83,5 @@ Runs after CONDUCT 10 (then the final package and artifact). Goal: a massively s
 - Exotics bought, imported or earned through quests: ostriches (ostrich eggs), Komodo dragons, and fantastic creatures from mega regions and story places (moon/space creatures, Merkitty Islands creatures, etc.); gangster arc: genetically modified creatures from the cyber/robotics side (all-ages).
 - Products and processing (eggs, milk, wool, feathers, scales, exotic goods) feeding cooking, crafting, shops, quests and festivals; animal care, mood, friendship, breeding, rare variants/colours, shows/competitions.
 - A full Ranching skill tree (gen_skill_trees.py) with abilities like the others; heart perks, quests, mail, villagers (Hazel, Tam, Benno...) tied in; saves migrated.
+- Some raised animals can occasionally be trained to join your team as companions, like Pup (Tom 14:06): training path, fighting/helping abilities, a team slot, unified with the companion/party system.
 - Art via the image tool for every creature (walk/idle/produce animations) and building; audio for each creature.
