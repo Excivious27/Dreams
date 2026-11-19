@@ -55,6 +55,11 @@ func _deck_buttons() -> Array:
 	]
 
 
+## While running only ▼ (duck), JUMP and B do anything: the rest of the d-pad dims.
+func _dead(b: Dictionary) -> bool:
+	return state == "play" and str(b["action"]) in ["left", "right", "up"]
+
+
 ## While running, the whole play area is a second JUMP button: a thumb
 ## anywhere on the picture jumps (hold for higher), so you never miss the
 ## gold button while watching the level.

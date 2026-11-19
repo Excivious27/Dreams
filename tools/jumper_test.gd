@@ -112,7 +112,7 @@ func _run() -> void:
 			while cx < c.x + sp * 1.0:
 				var s2 := JumperLevels.new_state(cx, c.y)
 				var sup := JumperLevels._support(lvn, s2)
-				if float(sup[0]) != c.y or JumperLevels._solid_hit(lvn, cx, c.y - 1.0, JumperLevels.H_STAND) or not JumperLevels.near(lvn, "spikes", cx - 8.0, cx + 8.0).is_empty():
+				if float(sup[0]) != c.y or JumperLevels._solid_hit(lvn, cx, c.y - 1.0, JumperLevels.H_STAND) or _spike_near(lvn, cx - 8.0, cx + 8.0):
 					calm = false
 					break
 				cx += 4.0
@@ -194,3 +194,13 @@ func _run() -> void:
 
 	print("jumper_test: %d failures" % fails)
 	quit(1 if fails else 0)
+
+
+## A spike actually overlapping x0..x1 (near() returns whole 64 px buckets).
+func _spike_near(lv: Dictionary, x0: float, x1: float) -> bool:
+	var sp: Array = lv["spikes"]
+	for i: int in JumperLevels.near(lv, "spikes", x0, x1):
+		var r: Rect2 = sp[i]
+		if r.position.x < x1 and r.end.x > x0:
+			return true
+	return false

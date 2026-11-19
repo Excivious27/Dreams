@@ -262,11 +262,14 @@ STANDS = {
                "lobby": [[6, 14], [9, 14], [8, 13], [14, 15], [12, 15], [7, 15]]},
 }
 
-# How well each villager bowls (their average; a game with you lands within about 25 of it).
+# How well each villager bowls: their average game. The ONE villager-strength table:
+# Bowling.opponent() turns it into a release skill (Bowling.SKILL_AVG curve), a hook and a
+# win bonus; they really bowl their frames in a challenge (tools/bowl_audit.gd -- skills
+# prints target vs what they bowl).
 BOWL_AVG = {
-    "maple": 182, "gideon": 168, "benno": 118, "finn": 142, "ivy": 131, "juniper": 124, "rook": 147,
-    "theo": 74, "tobin": 66, "wren_jr": 58, "pip": 61, "mabel": 55, "sal": 120, "alder": 96,
-    "lumi": 88, "hazel": 79, "posy": 92,
+    "maple": 195, "gideon": 175, "benno": 118, "finn": 150, "ivy": 135, "juniper": 115, "rook": 147,
+    "theo": 135, "tobin": 95, "wren_jr": 70, "pip": 72, "mabel": 66, "sal": 120, "alder": 102,
+    "lumi": 98, "hazel": 88, "posy": 104,
 }
 
 # What people say about the place. {best} = your best game, {tickets} = tickets on hand,

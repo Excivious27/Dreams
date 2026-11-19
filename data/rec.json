@@ -517,23 +517,23 @@
   }
  },
  "bowl_avg": {
-  "maple": 182,
-  "gideon": 168,
+  "maple": 195,
+  "gideon": 175,
   "benno": 118,
-  "finn": 142,
-  "ivy": 131,
-  "juniper": 124,
+  "finn": 150,
+  "ivy": 135,
+  "juniper": 115,
   "rook": 147,
-  "theo": 74,
-  "tobin": 66,
-  "wren_jr": 58,
-  "pip": 61,
-  "mabel": 55,
+  "theo": 135,
+  "tobin": 95,
+  "wren_jr": 70,
+  "pip": 72,
+  "mabel": 66,
   "sal": 120,
-  "alder": 96,
-  "lumi": 88,
-  "hazel": 79,
-  "posy": 92
+  "alder": 102,
+  "lumi": 98,
+  "hazel": 88,
+  "posy": 104
  },
  "chat_spot": {
   "cab": [

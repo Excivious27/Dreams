@@ -210,7 +210,7 @@ func _phase_changed(from: String, to: String) -> void:
 	elif from == "roll":
 		_flush()
 		_fade_roll(0.2)
-	if to == "line" and from == "result" and not (game.rolls as Array).is_empty():
+	if to == "line" and from in ["result", "sweep", "opp"] and not (game.rolls as Array).is_empty():
 		shot("ball_return", RETURN_DB)  # the ball rumbles back up the return
 
 
