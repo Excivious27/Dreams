@@ -5,8 +5,8 @@ extends CanvasLayer
 ##   2) Aim: the arrow swings. USE locks it.   3) Power: the meter pulses. USE throws.
 ## Ten frames, real scoring (strikes, spares, the 10th frame's bonus balls), a
 ## score sheet on the overhead monitor, pins with simple 2D physics (Sim) drawn
-## in perspective down the lane. Touch: on-screen ◀ ▶ / spin / GO buttons, or the
-## stick + USE. B (or MENU, or the X button) twice leaves the game.
+## in perspective down the lane. Touch: on-screen ◀ ▶ / spin / GO buttons (or a tap
+## on the lane), or USE. B (or MENU, or the X button) twice leaves the game.
 ##
 ##   var res := await Bowling.play(map, lane)   # {"done", "score", "strikes", "spares", "rolls"}
 
@@ -550,18 +550,13 @@ func _finish() -> void:
 
 
 func _tap(ev: InputEvent) -> void:
-	var p := Vector2.INF
-	var pressed := false
-	if ev is InputEventMouseButton:
-		p = (ev as InputEventMouseButton).position
-		pressed = (ev as InputEventMouseButton).pressed
-	elif ev is InputEventScreenTouch:
-		p = (ev as InputEventScreenTouch).position
-		pressed = (ev as InputEventScreenTouch).pressed
-	else:
-		return
-	if not pressed:
+	# One tap, one action: a phone sends the touch AND an emulated mouse copy
+	# (that copy used to arm and fire the quit button in one tap).
+	if TapInput.is_release(ev):
 		_hold = 0
+		return
+	var p := TapInput.press_pos(ev)
+	if p == Vector2.INF or _arm < 8:
 		return
 	if BTN_QUIT.has_point(p):
 		_ask_quit()

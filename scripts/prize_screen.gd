@@ -160,12 +160,9 @@ func _tab_rect(i: int) -> Rect2:
 
 
 func _tap(ev: InputEvent) -> void:
-	var p := Vector2.INF
-	if ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed:
-		p = (ev as InputEventMouseButton).position
-	elif ev is InputEventScreenTouch and (ev as InputEventScreenTouch).pressed:
-		p = (ev as InputEventScreenTouch).position
-	if p == Vector2.INF:
+	# One tap, one action (a phone sends the touch and an emulated mouse copy).
+	var p := TapInput.press_pos(ev)
+	if p == Vector2.INF or _arm < 8:
 		return
 	if BTN_CLOSE.has_point(p):
 		_close()

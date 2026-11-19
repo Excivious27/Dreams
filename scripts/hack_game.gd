@@ -9,6 +9,8 @@ var quit := false
 
 const DIRS := ["up", "right", "down", "left"]
 const GLYPH := {"up": "▲", "right": "▶", "down": "▼", "left": "◀"}
+## On-screen way out: under a full-screen panel the touch B button is hidden.
+const BTN_UNPLUG := Rect2(85, 436, 100, 28)
 const POS := {"up": Vector2(135, 200), "right": Vector2(185, 250), "down": Vector2(135, 300), "left": Vector2(85, 250)}
 
 var tier := 1
@@ -99,12 +101,14 @@ func _process(delta: float) -> void:
 
 
 func _tap(ev: InputEvent) -> void:
-	var p := Vector2.INF
-	if ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed:
-		p = (ev as InputEventMouseButton).position
-	elif ev is InputEventScreenTouch and (ev as InputEventScreenTouch).pressed:
-		p = (ev as InputEventScreenTouch).position
-	if p == Vector2.INF or _showing:
+	var p := TapInput.press_pos(ev)  # the touch, not also its emulated mouse copy
+	if p == Vector2.INF or _arm < 8:
+		return
+	if BTN_UNPLUG.grow(2).has_point(p):
+		quit = true
+		_finish()
+		return
+	if _showing:
 		return
 	for d in DIRS:
 		if p.distance_to(POS[d]) < 26.0:
@@ -176,4 +180,7 @@ func _draw_it() -> void:
 	for i in _seq.size():
 		var c := Color(0.4, 1, 0.85) if i < _at else Color(0.2, 0.4, 0.4)
 		_canvas.draw_circle(Vector2(135 - _seq.size() * 6 + i * 12 + 6, 350), 4.0, c)
-	_canvas.draw_string(f, Vector2(0, 420), "Joystick or tap the arrows · B to unplug", HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(0.5, 0.8, 0.75))
+	_canvas.draw_string(f, Vector2(0, 420), "Tap the arrows (or arrow keys) · B to unplug", HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(0.5, 0.8, 0.75))
+	_canvas.draw_rect(BTN_UNPLUG, Color(0.05, 0.2, 0.2, 0.9))
+	_canvas.draw_rect(BTN_UNPLUG, Color(0.4, 1, 0.85), false, 1.0)
+	_canvas.draw_string(f, Vector2(BTN_UNPLUG.position.x, BTN_UNPLUG.position.y + 18), "UNPLUG", HORIZONTAL_ALIGNMENT_CENTER, BTN_UNPLUG.size.x, 10, Color(0.5, 1, 0.9))

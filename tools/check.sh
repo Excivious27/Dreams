@@ -92,6 +92,12 @@ echo "$cout" | grep -E "^ISSUE|^phone_ui_test:|^glyphs" || true
 if ! echo "$cout" | grep -q "phone_ui_test: 0 issue"; then
   echo "phone_ui_test failed"; exit 1
 fi
+# Full-screen UIs with real touch events: arcade decks, picker, prizes, bowling, hack, chest/craft in the rec.
+tout="$("$GODOT" --headless --path . -s res://tools/touch_ui_test.gd 2>&1)"
+echo "$tout" | grep -E "FAIL|SCRIPT ERROR|touch_ui_test" || true
+if ! echo "$tout" | grep -q "touch_ui_test: 0 failures"; then
+  echo "touch_ui_test failed"; exit 1
+fi
 echo "== performance guards (batched cliffs, texture cache) =="
 pout="$("$GODOT" --headless --path . -s res://tools/perf_test.gd 2>&1)"
 echo "$pout" | grep -E "FAIL|SCRIPT ERROR|perf_test" || true

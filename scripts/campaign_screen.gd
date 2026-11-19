@@ -463,11 +463,7 @@ func _flash_msg(t: String) -> void:
 func _on_board_input(ev: InputEvent) -> void:
 	if cid == "" or _brief.visible:
 		return
-	var pos := Vector2.INF
-	if ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed and (ev as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
-		pos = (ev as InputEventMouseButton).position
-	elif ev is InputEventScreenTouch and (ev as InputEventScreenTouch).pressed:
-		pos = (ev as InputEventScreenTouch).position
+	var pos := TapInput.press_pos(ev)
 	if pos == Vector2.INF:
 		return
 	var best := ""

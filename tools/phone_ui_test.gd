@@ -2,6 +2,8 @@ extends SceneTree
 ## Phone UI audit (270x480): opens every menu tab and sub-tab, dialogue (plain,
 ## portrait, long text, long choice list, a shop), toasts, the chest, a craft
 ## screen, the prize counter, the arcade picker, bowling and the campaign board,
+## every arcade cabinet (title + play), jumper select, bowling aim/power, every
+## prize shelf, the hack terminal, chest and craft inside the Rec Center,
 ## in both arcs, and runs UiAudit on each (off-screen, spills out of a panel,
 ## buttons too small to tap, cut-off text, tiny fonts). Fails on any issue.
 ##   godot --headless --path . -s res://tools/phone_ui_test.gd
@@ -220,3 +222,122 @@ func _arc_pass() -> void:
 	await _frames(6)
 	paused = false
 	await _clear_dialogue()
+	await _fullscreen_pass(m)
+
+
+## CONDUCT 2 (c2_12): every drawn full-screen screen — each cabinet's title card and
+## a round in play, the jumper level select, bowling's aim/power, every prize shelf,
+## the hack terminal — plus the chest and a craft screen inside the Rec Center (HUD
+## at the bottom there). Drawn screens get a tap-target audit of their own buttons
+## (inside the screen, >= 20 px, no two overlapping); the shots are the visual check.
+func _fullscreen_pass(m: GameMap) -> void:
+	for id: String in ArcadeHub.game_ids():
+		var g := ArcadeHub.make(id)
+		g.manual = true
+		m.add_child(g)
+		for i in 10:
+			g.t += 1.0 / 60.0
+			g.frame()
+		_taps("arcade_" + id, g._deck.map(func(b: Dictionary) -> Rect2: return b["rect"]))
+		g._canvas.queue_redraw()
+		await _check("arcade_%s_title" % id, g)
+		if id == "jumper":
+			g.state = "select"
+			g._canvas.queue_redraw()
+			await _check("arcade_jumper_select", g)
+			(g as BlockJumper).play_tile(0)
+		else:
+			g.start()
+		for i in 90:
+			g.t += 1.0 / 60.0
+			g.frame()
+		g._canvas.queue_redraw()
+		await _check("arcade_%s_play" % id, g)
+		g.close()
+		await _frames(3)
+	var bw := Bowling.new()
+	bw.lane = 1
+	m.add_child(bw)
+	await _frames(10)
+	_taps("bowling", [Bowling.BTN_L, Bowling.BTN_R, Bowling.BTN_SPIN_L, Bowling.BTN_SPIN_R, Bowling.BTN_GO, Bowling.BTN_QUIT])
+	for ph in ["aim", "power"]:
+		bw.phase = ph
+		await _check("bowling_" + ph, bw)
+	bw._finish()
+	await _frames(4)
+	paused = false
+	GameState.run["time"] = 12 * 60
+	PrizeScreen.open(m)
+	await _frames(6)
+	var ps := _child(m, "PrizeScreen") as PrizeScreen
+	if ps:
+		var tabs: Array = []
+		for i in PrizeScreen.TIERS.size():
+			tabs.append(ps._tab_rect(i))
+		_taps("prizes", tabs + [PrizeScreen.BTN_BUY, PrizeScreen.BTN_CLOSE])
+		for i in PrizeScreen.TIERS.size():
+			ps._tier(i)
+			var rows_end := PrizeScreen.LIST_Y + ps._rows.size() * PrizeScreen.ROW_H
+			if rows_end > 342.0:
+				issues.append("off|%s_prizes_%d|%d prizes run under the detail box (rows end at %d)" % [arc.left(1), i, ps._rows.size(), rows_end])
+			await _check("prizes_%s" % str(PrizeScreen.TIERS[i]).to_lower(), ps)
+		ps._close()
+	await _frames(4)
+	paused = false
+	HackGame.play(m, 1)
+	await _frames(6)
+	var hg := _child(m, "HackGame") as HackGame
+	if hg:
+		var arrows: Array = []
+		for d: String in HackGame.DIRS:
+			arrows.append(Rect2(HackGame.POS[d] - Vector2(22, 22), Vector2(44, 44)))
+		_taps("hack", arrows + [HackGame.BTN_UNPLUG])
+		await _check("hack", hg)
+		hg._finish()
+	await _frames(4)
+	paused = false
+	await _clear_dialogue()
+	# Chest and craft inside the Rec Center (indoors the HUD sits at the bottom).
+	GameState.run["flags"]["rec_open"] = 1
+	GameState.run["flags"]["rec_visited"] = true
+	GameMap.next_interior = "rec"
+	GameMap.next_spawn = Vector2.ZERO
+	change_scene_to_file("res://scenes/interior.tscn")
+	await _frames(30)
+	await _clear_dialogue()
+	var r := current_scene as GameMap
+	if r == null:
+		issues.append("load|%s_rec|the rec interior didn't load" % arc.left(1))
+		return
+	await _check("rec_hud")
+	ChestScreen.open(r, "chest", "Chest")
+	await _frames(10)
+	var cs := _child(r, "ChestScreen")
+	await _check("rec_chest", cs)
+	if cs:
+		cs.close()
+	await _frames(4)
+	Crafting.run(r, "workbench")
+	await _frames(10)
+	var cr := _child(r, "CraftScreen") as CraftScreen
+	await _check("rec_craft", cr)
+	if cr:
+		cr.close()
+	await _frames(4)
+	paused = false
+	await _clear_dialogue()
+
+
+## Tap targets of a drawn screen: on screen, finger-sized, not on top of each other.
+func _taps(screen: String, rects: Array) -> void:
+	var nm := arc.left(1) + "_" + screen
+	for i in rects.size():
+		var a: Rect2 = rects[i]
+		if a.position.x < 0 or a.position.y < 0 or a.end.x > 270 or a.end.y > 480:
+			issues.append("off|%s|button %s leaves the screen" % [nm, a])
+		if minf(a.size.x, a.size.y) < UiAudit.MIN_TAP:
+			issues.append("tap|%s|button %s is under %d px" % [nm, a, UiAudit.MIN_TAP])
+		for j in range(i + 1, rects.size()):
+			var b: Rect2 = rects[j]
+			if a.intersects(b):
+				issues.append("overlap|%s|buttons %s and %s overlap" % [nm, a, b])
