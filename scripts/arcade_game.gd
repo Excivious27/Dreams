@@ -33,6 +33,7 @@ var new_best := false
 var over_lines: Array = []  # extra lines on the results card
 var message := ""
 var message_t := 0.0
+var message_rect := Rect2(20, 318, 230, 22)  # the message banner (games may move it off their play field)
 var manual := false         # tests drive tick() themselves
 var bot: Dictionary = {}    # tests: action -> held
 var t := 0.0                # seconds since open (draw animation clock)
@@ -485,8 +486,8 @@ func _draw_all() -> void:
 	_draw_frame(c)
 	if message_t > 0.0 and message != "":
 		var a := clampf(message_t * 3.0, 0.0, 1.0)
-		panel(c, Rect2(20, 318, 230, 22), Color(0.08, 0.05, 0.14, 0.92 * a), Color(accent, a))
-		text(c, Vector2(20, 333), message, 230, 9, Color(1, 1, 1, a), HORIZONTAL_ALIGNMENT_CENTER)
+		panel(c, message_rect, Color(0.08, 0.05, 0.14, 0.92 * a), Color(accent, a))
+		text(c, message_rect.position + Vector2(0, 15), message, message_rect.size.x, 9, Color(1, 1, 1, a), HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _draw_frame(c: Control) -> void:

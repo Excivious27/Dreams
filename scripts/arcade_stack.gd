@@ -1,7 +1,11 @@
 class_name ArcadeStack
 extends ArcadeGame
 ## Crystal Stack: falling gem blocks. ◀ ▶ move, A turns, ▼ drops faster,
-## ▲ slams it down. Fill a row to clear it; every 8 rows the gems fall faster.
+## ▲ slams it down. Fill a row to clear it; every 8 rows the gems fall faster
+## (a gentle curve: 0.8 s a row at level 1, about 0.4 s at 5, 0.17 s at 10,
+## never quicker than 0.07 s). B pauses (ArcadePause). Holding ▼ only speeds up
+## the piece it was pressed for; a new piece waits for ▼ to be pressed again.
+## Topping out greys the well row by row before the results card.
 
 const COLS := 10
 const ROWS := 18
@@ -38,6 +42,11 @@ var clearing: Array = []   # rows flashing
 var clear_t := 0.0
 var best_combo := 0
 var tetras := 0
+var down_lock := false     # ▼ still held from the last piece: no soft drop yet
+var flash_cells: Array = []  # cells of the piece that just locked (white flash)
+var flash_t := 0.0
+var topout_t := 0.0        # top-out animation clock (state "topout")
+const TOPOUT_SECS := 1.1
 
 
 func _init() -> void:
@@ -46,17 +55,18 @@ func _init() -> void:
 	title = "Crystal Stack"
 	fee = 10
 	accent = Color(0.78, 0.5, 1.0)
-	howto = ["◀ ▶ move · A turn · ▼ faster · ▲ slam", "Fill a row with gems to clear it.", "4 rows at once: CRYSTAL CRUSH!", "Faster every 8 rows."]
+	howto = ["◀ ▶ move · TURN spins · ▼ faster · ▲ slam", "Fill a row with gems to clear it.", "4 rows at once: CRYSTAL CRUSH!", "Faster every 8 rows. B pauses."]
+	message_rect = Rect2(18, 150, 148, 22)  # banners across the middle of the well, clear of its floor and the side panel
 
 
 func _deck_buttons() -> Array:
 	return [
 		{"action": "left", "rect": Rect2(8, 392, 40, 40), "label": "◀", "skin": "blue"},
 		{"action": "right", "rect": Rect2(92, 392, 40, 40), "label": "▶", "skin": "blue"},
-		{"action": "up", "rect": Rect2(50, 358, 40, 36), "label": "▲", "skin": "blue", "hint": ""},
+		{"action": "up", "rect": Rect2(50, 358, 40, 36), "label": "▲", "skin": "blue"},
 		{"action": "down", "rect": Rect2(50, 430, 40, 36), "label": "▼", "skin": "blue"},
 		{"action": "a", "rect": Rect2(196, 378, 64, 64), "label": "TURN", "skin": "gold"},
-		{"action": "b", "rect": Rect2(150, 430, 40, 40), "label": "B", "skin": "red", "hint": "quit"},
+		{"action": "b", "rect": Rect2(150, 430, 40, 40), "label": "B", "skin": "red", "hint": "pause"},
 	]
 
 
@@ -73,6 +83,10 @@ func _setup_round() -> void:
 	clearing = []
 	best_combo = 0
 	tetras = 0
+	flash_cells = []
+	flash_t = 0.0
+	topout_t = 0.0
+	down_lock = false
 	_spawn()
 
 
@@ -95,10 +109,9 @@ func _spawn() -> void:
 	fall_t = 0.0
 	lock_t = 0.0
 	lock_moves = 0
+	down_lock = held("down")
 	if not _fits(cells, pos):
-		cur = ""
-		shake(4.0)
-		game_over(["!STACKED OUT", "Rows %d · Level %d" % [lines, lvl]])
+		_top_out()
 
 
 func _fits(cs: Array, p: Vector2i) -> bool:
@@ -111,13 +124,58 @@ func _fits(cs: Array, p: Vector2i) -> bool:
 	return true
 
 
+## Seconds per row at the current level.
+static func gravity_for(level: int) -> float:
+	return maxf(0.07, 0.8 * pow(0.84, level - 1))
+
+
 func gravity() -> float:
-	return maxf(0.05, 0.8 - (lvl - 1) * 0.075)
+	return gravity_for(lvl)
+
+
+func _result_lines(head: String) -> Array:
+	var out := [head, "Rows %d · Level %d" % [lines, lvl]]
+	if tetras > 0:
+		out.append("Crystal Crushes: %d" % tetras)
+	return out
+
+
+## The well is full: grey it out from the bottom up, then the results card.
+func _top_out() -> void:
+	cur = ""
+	clearing = []
+	topout_t = 0.0
+	state = "topout"
+	say("STACKED OUT!", TOPOUT_SECS)
+	shake(4.0)
+	sfx("cave_in", "thud")
+
+
+func _step_state(st: String, dt: float) -> void:
+	if st == "paused":
+		if ArcadePause.step(self, dt):
+			game_over(_result_lines("!GAME ENDED"))
+	elif st == "topout":
+		topout_t += dt
+		flash_t = maxf(0.0, flash_t - dt)
+		if topout_t >= TOPOUT_SECS:
+			game_over(_result_lines("!STACKED OUT"))
+
+
+func frame() -> void:
+	super()
+	ArcadePause.hint(self, _deck)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and state == "play" and not manual:
+		ArcadePause.pause(self)
 
 
 func _step(dt: float) -> void:
+	flash_t = maxf(0.0, flash_t - dt)
 	if pressed("b"):
-		game_over(["!GAME ENDED", "Rows %d · Level %d" % [lines, lvl]])
+		ArcadePause.pause(self)
 		return
 	if not clearing.is_empty():
 		clear_t -= dt
@@ -164,8 +222,11 @@ func _step(dt: float) -> void:
 		_lock()
 		return
 	# Fall.
+	if not held("down"):
+		down_lock = false
+	var soft := held("down") and not down_lock
 	var g := gravity()
-	if held("down"):
+	if soft:
 		g = minf(g, 0.04)
 	fall_t += dt
 	if fall_t >= g:
@@ -173,7 +234,7 @@ func _step(dt: float) -> void:
 		if _fits(cells, pos + Vector2i(0, 1)):
 			pos.y += 1
 			lock_t = 0.0
-			if held("down"):
+			if soft:
 				score += 1
 	if not _fits(cells, pos + Vector2i(0, 1)):
 		lock_t += dt
@@ -196,12 +257,15 @@ func _touch_lock() -> void:
 
 func _lock() -> void:
 	for c: Vector2i in cells:
-		var q := c + pos
-		if q.y < 0:
-			cur = ""
-			game_over(["!STACKED OUT", "Rows %d · Level %d" % [lines, lvl]])
+		if (c + pos).y < 0:
+			_top_out()
 			return
+	flash_cells = []
+	for c: Vector2i in cells:
+		var q := c + pos
 		board[q.y][q.x] = cur
+		flash_cells.append(q)
+	flash_t = 0.12
 	sfx("block", "thud")
 	cur = ""
 	clearing = []
@@ -225,6 +289,7 @@ func _lock() -> void:
 		say("CRYSTAL CRUSH!")
 		shake(5.0)
 		sfx("j_treasure", "levelup")
+		float_text(ORIGIN + Vector2(80, clearing[0] * CELL), "+%d" % (800 * lvl), Color(0.85, 0.7, 1.0))
 	else:
 		sfx("gem", "sparkle")
 		float_text(ORIGIN + Vector2(80, clearing[0] * CELL), "+%d" % ([0, 100, 300, 500, 800][n] * lvl))
@@ -242,8 +307,9 @@ func _remove_rows() -> void:
 	lines += clearing.size()
 	lvl = 1 + lines / 8
 	if lvl > before:
-		say("LEVEL %d" % lvl)
+		say("LEVEL %d · FASTER!" % lvl)
 		sfx("levelup", "power_up")
+		burst(ORIGIN + Vector2(COLS * CELL * 0.5, ROWS * CELL * 0.5), accent, 18, 110.0, 2.0, 60.0)
 	clearing = []
 
 
@@ -270,7 +336,12 @@ func _draw_play(c: Control) -> void:
 		var p := Vector2(fposmod(i * 71.0, 270.0), 30.0 + fposmod(i * 113.0, 310.0))
 		c.draw_colored_polygon(PackedVector2Array([p, p + Vector2(4, -10), p + Vector2(8, 0)]), Color(0.6, 0.4, 1.0, 0.08))
 	var well := Rect2(ORIGIN, Vector2(COLS * CELL, ROWS * CELL))
-	c.draw_rect(well.grow(3), Color(0.35, 0.25, 0.5))
+	var rim := Color(0.35, 0.25, 0.5)
+	var top_row := _top_filled()
+	if top_row < 5 and state != "over":
+		# The stack is near the top: the rim pulses red as a warning.
+		rim = rim.lerp(Color(1.0, 0.25, 0.3), 0.45 + 0.35 * sin(t * 9.0))
+	c.draw_rect(well.grow(3), rim)
 	c.draw_rect(well.grow(1), Color(0.02, 0.01, 0.05))
 	c.draw_rect(well, Color(0.05, 0.03, 0.1, 0.88))
 	for x in range(1, COLS):
@@ -279,6 +350,10 @@ func _draw_play(c: Control) -> void:
 		c.draw_rect(Rect2(ORIGIN.x, ORIGIN.y + y * CELL, well.size.x, 1), Color(1, 1, 1, 0.03))
 	if board.is_empty():
 		return
+	# Top-out: rows turn to grey stone from the bottom up.
+	var grey_from := ROWS
+	if state == "topout" or state == "over":
+		grey_from = ROWS - int(ceil(clampf(topout_t / (TOPOUT_SECS * 0.8), 0.0, 1.0) * ROWS))
 	for r in ROWS:
 		var flash := clearing.has(r)
 		for cx in COLS:
@@ -288,7 +363,13 @@ func _draw_play(c: Control) -> void:
 			var col: Color = COLORS[k]
 			if flash:
 				col = col.lerp(Color.WHITE, 0.5 + 0.5 * sin(t * 40.0))
+			if r >= grey_from:
+				col = Color(0.42, 0.4, 0.48).lerp(col, 0.15)
 			_gem(c, ORIGIN + Vector2(cx * CELL, r * CELL), col)
+	if flash_t > 0.0:
+		for q: Vector2i in flash_cells:
+			if q.y >= 0:
+				c.draw_rect(Rect2(ORIGIN + Vector2(q.x * CELL, q.y * CELL), Vector2(CELL, CELL)), Color(1, 1, 1, flash_t / 0.12 * 0.6))
 	if cur != "":
 		# Ghost.
 		var gp := pos
@@ -297,7 +378,9 @@ func _draw_play(c: Control) -> void:
 		for cc: Vector2i in cells:
 			var q := cc + gp
 			if q.y >= 0:
-				c.draw_rect(Rect2(ORIGIN + Vector2(q.x * CELL + 1, q.y * CELL + 1), Vector2(CELL - 2, CELL - 2)), Color(COLORS[cur], 0.35), false, 1.0)
+				var gr := Rect2(ORIGIN + Vector2(q.x * CELL + 1, q.y * CELL + 1), Vector2(CELL - 2, CELL - 2))
+				c.draw_rect(gr, Color(COLORS[cur], 0.12))
+				c.draw_rect(gr, Color(COLORS[cur], 0.55), false, 1.0)
 		for cc: Vector2i in cells:
 			var q2 := cc + pos
 			if q2.y >= 0:
@@ -317,7 +400,31 @@ func _draw_play(c: Control) -> void:
 		var y := 170 + i * 36
 		text(c, Vector2(sp.position.x, y), rows[i][0], sp.size.x, 7, Color(0.75, 0.7, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 		text_outline(c, Vector2(sp.position.x, y + 14), rows[i][1], sp.size.x, 11, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+		if i == 1:
+			# Progress to the next speed-up (8 rows a level).
+			var bar := Rect2(sp.position.x + 10, y + 19, sp.size.x - 20, 4)
+			c.draw_rect(bar, Color(0, 0, 0, 0.45))
+			c.draw_rect(Rect2(bar.position, Vector2(bar.size.x * float(lines % 8) / 8.0, bar.size.y)), accent)
 	draw_fx(c)
+	if state == "paused":
+		ArcadePause.draw(self, c)
+
+
+## Highest row holding a gem (ROWS when the well is empty).
+func _top_filled() -> int:
+	if board.size() < ROWS:
+		return ROWS
+	for r in ROWS:
+		if _row_has_gem(r):
+			return r
+	return ROWS
+
+
+func _row_has_gem(r: int) -> bool:
+	for cx in COLS:
+		if str(board[r][cx]) != "":
+			return true
+	return false
 
 
 func _gem(c: Control, p: Vector2, col: Color, s := CELL) -> void:

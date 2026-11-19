@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_03): Crystal Stack + Whack-a-Grump polish
+- **No more lost coins on a stray B:** B during a round pauses both games (`ArcadePause` card: A keep playing / B end the round); switching apps or a phone call pauses too. The round clock stands still while paused. The B caption under the button says pause / end / leave as it changes.
+- **Crystal Stack:** gentler speed curve (0.8 s a row at level 1, ~0.4 s at 5, ~0.17 s at 10, never under 0.07 s; it used to fall linearly to 0.05 s by level 11). Holding ▼ no longer rushes the next piece (press it again). Topping out now plays a "STACKED OUT!" beat where the well turns to grey stone from the bottom up before the results; results list Crystal Crushes. Danger rim pulses red when the stack nears the top; a locked piece flashes; the ghost is easier to see; a level progress bar sits under LEVEL; banners sit across the well instead of over its floor and the side panel; CRUSH shows its +800.
+- **Whack-a-Grump:** READY / GO! lead-in before the clock starts; last five seconds tick with a big countdown and a flashing bar, seconds left on the bar. A bopped critter stays up dizzy for a beat and a second tap on it is no longer a combo-breaking miss. Taps hit by the box around each hole (head included), not a small circle. Gold grumps stay up at least 0.5 s. Combo shows its multiplier; "COMBO x2!" banner; "combo lost" when a 10+ streak breaks. Results add "Got away".
+- **Whack scoring rebalanced:** a scripted sharp player made ~2,250 points (186 tickets a coin) because x3 combos ran all round. Now grump 5 / gold 15 / helmet 10 / bunny -10, double points from 10 in a row (no x3): sharp ~730 (60 tickets), casual ~360 (29 tickets).
+- Test: `tools/stack_whack_test.gd` (in check.sh); shots: `tools/stack_whack_shot.gd`.
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.
