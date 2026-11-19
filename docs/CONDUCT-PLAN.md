@@ -118,3 +118,10 @@ After CONDUCT 14. Each season uniquely built out, both arcs: its own festivals, 
 After CONDUCT 15, then the final package and artifact. A sophisticated evaluation of pacing across every way to play (farming, ranching, mining, combat, campaigns, crafting, fishing, foraging, arcade/rec, commons, relationships, story, mega regions, decor/cosmetics, money in both arcs) so everything ties together and nothing progresses too fast.
 - Unlocks of areas, regions, events, systems and big rewards take real time and effort; a deliberate spread of quick, moderate and long goals; some of the most interesting and rewarding elements only open in year 2 or 3.
 - Simulate several player styles over 3 in-game years (scripted bots + spreadsheets): income, XP, unlock days, item/region access; tune gates, prices, drop rates and requirements; document the intended unlock timeline (docs/PROGRESSION.md) and add tests that guard it.
+
+
+## CONDUCT 17 — Multiplayer (Tom, 2026-11-19 15:13)
+
+After CONDUCT 16, then the final package and artifact. A full review of the whole game engine so co-op is enjoyable, smooth and seamless: every system checked for host/guest sync, saves, joining mid-session, shared vs personal progress, latency on phones.
+- Some activities become real two-player (or more) experiences: challenge each other at bowling, Skee-Ball and arcade games (versus and co-op modes, shared high scores), plus co-op farming, mining, fights, campaigns and festivals where it fits. Not everything has to be multiplayer.
+- When this is done, Tom sets up a ~$4/month server for the relay (server/ in the repo); Claude then writes the exact step-by-step setup in the guide and turns online co-op on, and Tom starts testing with friends.
