@@ -140,6 +140,8 @@ static func use_ability(m: GameMap, p: Player) -> void:
 	if Art.has("fx", "ability_" + sprite_id):
 		m.fx("ability_" + sprite_id, p.position + Vector2(0, -10), 10.0, 0.6)
 	if ab.begins_with("gift:"):
+		if m.companion:
+			m.companion.play_power()
 		Gift.cast(m, p, ab.trim_prefix("gift:"))
 		return
 	match ab:
@@ -367,12 +369,22 @@ func _fit_offset() -> void:
 
 var _moving := false
 var _vert := false
+var _power_t := 0.0  # the power pose is playing: walk/idle wait for it
+
+
+## A Marked partner strikes their power pose (their "power" strip) once.
+func play_power() -> void:
+	if anim and anim.sprite_frames and anim.sprite_frames.has_animation("power"):
+		_power_t = anim.sprite_frames.get_frame_count("power") / maxf(1.0, anim.sprite_frames.get_animation_speed("power"))
+		anim.flip_h = map != null and map.player != null and map.player.position.x < position.x
+		anim.play("power")
 var _rest_face := "down"
 
 
 func _process(delta: float) -> void:
 	if map == null or map.player == null or anim == null or map.get_tree().paused:
 		return
+	_power_t = maxf(0.0, _power_t - delta)
 	var goal := map.player.position + Vector2(14, 6)
 	if map.pet and map.pet.visible:
 		goal = map.player.position + Vector2(16, -4)
@@ -411,7 +423,7 @@ func _process(delta: float) -> void:
 			anim.flip_h = false
 		else:
 			anim.flip_h = to.x < 0
-		if anim.animation != a:
+		if anim.animation != a and _power_t <= 0.0:
 			anim.play(a)
 		_rest_face = ("up" if to.y < 0 else "down") if vertical else "side"
 		_idle = 0.0
@@ -428,7 +440,7 @@ func _process(delta: float) -> void:
 			anim.flip_h = false  # a front idle: no mirror
 		if map.player.swimming and anim.sprite_frames.has_animation("swim"):
 			want = "swim"
-		if anim.animation != want and anim.sprite_frames.has_animation(want):
+		if anim.animation != want and anim.sprite_frames.has_animation(want) and _power_t <= 0.0:
 			anim.play(want)
 		# Mend (Mom): 1 health every 10 s while she's close.
 		if Companion.has_ability("mend"):

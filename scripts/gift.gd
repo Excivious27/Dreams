@@ -289,6 +289,7 @@ func _do(mv: Dictionary, p: Player) -> void:
 	var t := str(mv.get("type", "ring"))
 	var gf := fx_for(gid)
 	Music.instance(get_tree()).sfx("tell", "spell")  # the move's tell (not the player's cast sound)
+	e.play_power()
 	if gf != "" and t != "roll":
 		e.map.fx(gf, e.position + Vector2(0, -4), 14.0, 0.6)
 	if t == "roll":
