@@ -353,6 +353,11 @@ echo "$swout" | grep -E "FAIL|SCRIPT ERROR|stack_whack_test" || true
 if ! echo "$swout" | grep -q "stack_whack_test: 0 failures"; then
   echo "Crystal Stack / Whack-a-Grump test failed"; exit 1
 fi
+rgout="$("$GODOT" --headless --path . -s res://tools/rec_games_test.gd 2>&1)"
+echo "$rgout" | grep -E "FAIL|SCRIPT ERROR|rec_games_test" || true
+if ! echo "$rgout" | grep -q "rec_games_test: 0 failures"; then
+  echo "Rec games test failed"; exit 1
+fi
 echo "== softlocks: every menu/screen leaves on B, dialogues always finish =="
 slout="$("$GODOT" --headless --path . -s res://tools/softlock_test.gd 2>&1)"
 echo "$slout" | grep -E "FAIL|SCRIPT ERROR|softlock_test" || true

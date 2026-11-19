@@ -41,6 +41,14 @@ BUILDING = {
     "soda": 12,                 # vending machine price
     "hours": [9, 24],           # doors open 9am to midnight (closed 9am-6pm on festival days)
     "house_lane": 4,            # lane villagers never take: always free for a walk-in
+    # Upstairs snack bar (RecCenter._snack): item, price, what the menu says it does.
+    # Item values stay well under the price, so buying to sell always loses.
+    "snacks": [
+        ["rp_popcorn", 10, "lucky hands, 90 min"],
+        ["rp_pretzel", 20, "big energy"],
+        ["rp_cotton_candy", 15, "quick feet, 60 min"],
+        ["rp_fizzy_pop", 12, "a pick-me-up"],
+    ],
 }
 
 # Arcade cabinets on the ground floor: ArcadeHub.open(map, id) plays one (a2's games;
@@ -152,7 +160,9 @@ ITEMS = {
     "rp_candy": {"name": "Prize Candy", "type": "food", "value": 2, "rarity": "common", "tier": 1, "energy": 12, "icon": "candy", "desc": "A paper twist of prize-counter candy. The kids will trade anything for it."},
     "rp_sprout_fizz": {"name": "Sprout Fizz", "type": "consumable", "effect": "growth", "value": 50, "rarity": "rare", "tier": 3, "icon": "harvest_potion", "desc": "Prize-counter plant tonic: pour it out and every crop on your farm grows a day. One a week."},
     "rp_fizzy_pop": {"name": "Fizzy Pop", "type": "food", "value": 20, "rarity": "common", "tier": 1, "energy": 25, "icon": "soda", "desc": "From the vending machine at the rec. Fizzes up your nose."},
-    "rp_cotton_candy": {"name": "Cotton Candy", "type": "food", "value": 35, "rarity": "common", "tier": 1, "energy": 30, "buff": {"kind": "speed", "minutes": 60, "amount": 1}, "icon": "cloud_cotton", "desc": "Pure sugar cloud. A spring in your step for an hour."},
+    "rp_cotton_candy": {"name": "Cotton Candy", "type": "food", "value": 35, "rarity": "common", "tier": 1, "energy": 30, "buff": {"kind": "speed", "minutes": 60, "amount": 1}, "icon": "snack_cotton_candy", "desc": "Pure sugar cloud. A spring in your step for an hour."},
+    "rp_popcorn": {"name": "Lucky Popcorn", "type": "food", "value": 6, "rarity": "common", "tier": 1, "energy": 15, "buff": {"kind": "luck", "minutes": 90, "amount": 1}, "icon": "snack_popcorn", "desc": "A striped bucket of buttery popcorn. Regulars swear it steadies your hand at the claw and the skee lanes."},
+    "rp_pretzel": {"name": "Hot Pretzel", "type": "food", "value": 10, "rarity": "common", "tier": 1, "energy": 45, "icon": "snack_pretzel", "desc": "Warm, salty, as big as your face. Bowling fuel."},
     "rp_ribbon": {"name": "Lucky Ribbon", "type": "gift", "value": 40, "rarity": "common", "tier": 1, "icon": "ribbon_red", "desc": "A prize-counter ribbon. Nice to give."},
     "rp_kite": {"name": "Kite", "type": "gift", "value": 90, "rarity": "uncommon", "tier": 2, "icon": "kite", "desc": "Diamond kite with a long tail. The kids would love it."},
     "rp_teddy": {"name": "Teddy Bear", "type": "gift", "value": 120, "rarity": "uncommon", "tier": 2, "icon": "teddy_bear", "desc": "The prize every kid points at first."},
@@ -423,7 +433,7 @@ QUEST_LINES_GANG = {
 # `python3 tools/gen_rec.py --sim` prints how long each prize takes three kinds of player.
 
 # What one play costs (mirrors the games' own fees; tools/ticket_econ_test.gd checks them).
-FEES = {"bowling": 25, "jumper": 10, "stack": 10, "whack": 10, "gallery": 10, "claw": 20, "skee_ball": 5}
+FEES = {"bowling": 25, "jumper": 10, "stack": 10, "whack": 10, "gallery": 10, "claw": 20, "skee_ball": 10}
 # Per-play payout (Tickets.payout): full up to "soft", half rate above it, never past "cap".
 # Sources not listed (welcome gift, quests) pay as given.
 PAYOUT = {
@@ -433,7 +443,7 @@ PAYOUT = {
     "whack": {"soft": 24, "cap": 34},
     "gallery": {"soft": 24, "cap": 34},
     "claw": {"soft": 14, "cap": 20},
-    "skee_ball": {"soft": 15, "cap": 15},
+    "skee_ball": {"soft": 24, "cap": 34},
 }
 RESALE = 8        # a counter prize sells for 1/RESALE of its ticket cost (floor 2)
 MAX_SELL = 2.15   # best stacked sell multiplier (festival 1.1 x bartering/Alder 1.4 x skill 1.2 x Deuce 1.15)

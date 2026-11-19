@@ -37,6 +37,8 @@ const MILESTONES := {
 	"claw_5": "Claw Machine: win 5 prizes",
 	"gallery_300": "Duck Pond: 300 points",
 	"gallery_800": "Duck Pond: 800 points",
+	"skee_300": "Skee-Ball: 300 in one game",
+	"skee_cup": "Skee-Ball: sink a corner cup",
 	"all_games": "Play every cabinet once",
 }
 
@@ -45,6 +47,7 @@ const SCORE_MS := {
 	"stack": [[3000, "stack_3000"], [15000, "stack_15000"]],
 	"whack": [[150, "whack_150"], [400, "whack_400"]],
 	"gallery": [[300, "gallery_300"], [800, "gallery_800"]],
+	"skee_ball": [[300, "skee_300"]],
 }
 
 var _sel := 0
@@ -83,6 +86,8 @@ static func make(game_id: String) -> ArcadeGame:
 			return ArcadeClaw.new()
 		"gallery":
 			return ArcadeGallery.new()
+		"skee_ball":
+			return ArcadeSkee.new()  # the rec's skee lane (not a picker cabinet)
 	push_warning("ArcadeHub: no game " + game_id)
 	return null
 
@@ -280,6 +285,8 @@ static func make_info(id: String) -> Dictionary:
 			return {"fee": ArcadeClaw.FEE}
 		"jumper":
 			return {"fee": BlockJumper.FEE}
+		"skee_ball":
+			return {"fee": ArcadeSkee.FEE}
 	return {"fee": 10}
 
 

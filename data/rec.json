@@ -28,7 +28,29 @@
    9,
    24
   ],
-  "house_lane": 4
+  "house_lane": 4,
+  "snacks": [
+   [
+    "rp_popcorn",
+    10,
+    "lucky hands, 90 min"
+   ],
+   [
+    "rp_pretzel",
+    20,
+    "big energy"
+   ],
+   [
+    "rp_cotton_candy",
+    15,
+    "quick feet, 60 min"
+   ],
+   [
+    "rp_fizzy_pop",
+    12,
+    "a pick-me-up"
+   ]
+  ]
  },
  "cabinets": [
   {
