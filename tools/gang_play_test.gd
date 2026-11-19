@@ -144,8 +144,10 @@ func _run() -> void:
 		pt._target = null
 		var t0 := Time.get_ticks_msec()
 		var got := false
-		while Time.get_ticks_msec() - t0 < 8000:
+		while Time.get_ticks_msec() - t0 < 15000:  # a busy machine runs slow frames
 			await process_frame
+			if pt._carry_item == "" and pt._carry_find == "":
+				pt.set_meta("forage_t", 999.0)  # no open cell picked this try: look again now
 			var now := 0
 			for id in GameState.run["inventory"]:
 				now += int(GameState.run["inventory"][id])
