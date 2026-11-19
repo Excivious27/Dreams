@@ -90,7 +90,7 @@ func _sleep() -> void:
 	if int(report["earned"]) > 0:
 		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report["sold"]), int(report["earned"])]})
 	if int(report.get("left", 0)) > 0:
-		lines.append({"text": "Something was left for you in the night. Check the pool and the burrow."})
+		lines.append({"text": Sanctuary.morning_line()})
 	if int(report.get("washed", 0)) > 0:
 		lines.append({"who": "Laundromat", "text": "Clean and folded: ◆%d." % int(report["washed"])})
 	if int(report["grown"]) > 0:
@@ -113,7 +113,7 @@ func _sleep() -> void:
 		lines.append({"who": "HQ", "text": "Overnight:\n" + "\n".join(report["crew_jobs"])})
 	if report.has("relic"):
 		lines.append({"who": "Marlene", "text": "A little something from the tower. Don't ask. (%s)" % GameState.item_name(str(report["relic"]))})
-	if Racket.on():
+	if Racket.on() and (Racket.heat() > 0 or GameState.run["flags"].has("heat_told")):  # no "Heat 0/5" before heat means anything
 		var raids: bool = Racket.heat() >= 3 and not GameState.run["flags"].has("president_freed")  # no collectors once the stone is broken
 		lines.append({"text": "Heat %d/5.%s" % [Racket.heat(), " Collectors may be out." if raids else ""]})
 		if raids and Crew.perk_level("raid_warning") >= 1:

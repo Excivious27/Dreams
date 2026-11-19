@@ -2093,7 +2093,7 @@
     },
     "permit": 0,
     "days": 0,
-    "desc": "1 job at once, normal speed, recipes up to tier 2. Crude bills. Risky.",
+    "desc": "1 job at once, normal speed, recipes up to tier 2. Crude bills: hold one and USE it in town to pass it. Risky: a noticed bill raises heat.",
     "price": 860,
     "art_missing": false
    },
@@ -2883,7 +2883,8 @@
     "price": 570,
     "art_missing": false,
     "unlock": {
-     "flag": "merkitty_done"
+     "flag": "merkitty_done",
+     "hint": "meet the merkitties at the lake shore"
     }
    },
    {
@@ -2965,7 +2966,8 @@
     "art_missing": false,
     "unlock": {
      "progress": 2,
-     "flag": "babies_done"
+     "flag": "babies_done",
+     "hint": "turn back the crystal babies on the mountain"
     }
    },
    {
@@ -3047,7 +3049,8 @@
     "art_missing": false,
     "unlock": {
      "progress": 1,
-     "flag": "meow_taught"
+     "flag": "meow_taught",
+     "hint": "learn the Meow Pow Wow from Catkins"
     }
    },
    {

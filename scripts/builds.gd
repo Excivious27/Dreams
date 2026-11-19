@@ -51,9 +51,9 @@ static func gate(id: String) -> String:
 	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
 		return "%s level %d" % [str(ul["skill"][0]).capitalize(), int(ul["skill"][1])]
 	if ul.has("flag") and not GameState.run["flags"].has(str(ul["flag"])):
-		return "story first"
+		return str(ul.get("hint", "story first"))
 	if ul.has("quest") and not GameState.quest_done(str(ul["quest"])):
-		return "story first"
+		return str(ul.get("hint", "story first"))
 	if ul.has("friend") and GameState.friend_hearts(str(ul["friend"][0])) < int(ul["friend"][1]):
 		return "%s ♥%d" % [str(GameState.npcs[str(ul["friend"][0])]["name"]), int(ul["friend"][1])]
 	if int(nd.get("permit", 0)) > 0 and permitted(id) < int(nd["tier"]):

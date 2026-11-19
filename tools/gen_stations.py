@@ -222,7 +222,7 @@ for t, pr in zip(B['launchpad']['tiers'], [1, 2, 3, 3]): t.setdefault('unlock', 
 B['launchpad']['tiers'][0]['unlock']['skill'] = ['building', 4]
 # ---- gangster arc only ---------------------------------------------------------
 station('print_shop', 'Back-Room Press', 'operation', [9, 24], 'bartering', 'Print', 'Specs', [
- ('Back-Room Press', ['press_1'], {'plank': 16, 'nails': 8, 'copper_bar': 2}, d(0, 'Crude bills. Risky.')),
+ ('Back-Room Press', ['press_1'], {'plank': 16, 'nails': 8, 'copper_bar': 2}, d(0, 'Crude bills: hold one and USE it in town to pass it. Risky: a noticed bill raises heat.')),
  ('Offset Press', ['press_2'], {'gear': 6, 'iron_bar': 6, 'linen': 10}, d(1, 'Passable bills, forged permits.')),
  ('Engraving Press', ['press_3'], {'plating': 4, 'spring': 6, 'fine_fabric': 4}, d(2, 'Fine bills.')),
  ('The Mint', ['press_4'], {'dark_bar': 4, 'gold_bar': 6, 'crystal_glass': 4}, d(3, 'Perfect bills.'))], arc='gangsters', book='print')
@@ -295,6 +295,10 @@ for t in B['pool']['tiers']: t.setdefault('unlock', {})
 B['pool']['tiers'][0]['unlock']['flag'] = 'merkitty_done'
 B['burrow']['tiers'][0]['unlock']['flag'] = 'babies_done'
 B['shrine']['tiers'][0]['unlock']['flag'] = 'meow_taught'
+# Locked plans say what opens them (Builds.gate shows "hint" instead of "story first").
+B['pool']['tiers'][0]['unlock']['hint'] = 'meet the merkitties at the lake shore'
+B['burrow']['tiers'][0]['unlock']['hint'] = 'turn back the crystal babies on the mountain'
+B['shrine']['tiers'][0]['unlock']['hint'] = 'learn the Meow Pow Wow from Catkins'
 B['mill']['thing'] = 'station'; B['mill']['station'] = {'skill': 'farming', 'verb': 'Mill', 'book': 'mill'}; B['mill']['cat'] = 'pantry'
 for k, v in B.items():
     if isinstance(v, dict) and 'cat' not in v: v['cat'] = 'farm'

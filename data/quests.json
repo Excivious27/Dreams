@@ -542,7 +542,7 @@
    "id": "sal_cash",
    "giver": "sal",
    "arc": "gangsters",
-   "text": "Sal says rolled bills buy silence. Bring 5.",
+   "text": "Sal says rolled bills buy silence. Bring 5 (the President's thugs carry them).",
    "when": {
     "quest": "hideout"
    },

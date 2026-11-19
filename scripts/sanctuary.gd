@@ -55,6 +55,19 @@ static func overnight(report: Dictionary) -> void:
 		report["left"] = n
 
 
+## The morning report's line: names only the places that hold something.
+static func morning_line() -> String:
+	var at: Array = []
+	var gifts: Dictionary = GameState.run.get("gifts", {})
+	if not (gifts.get("pool", {}) as Dictionary).is_empty():
+		at.append("the merkitties left gifts in the pool")
+	if not (gifts.get("burrow", {}) as Dictionary).is_empty():
+		at.append("the babies dug something up in the burrow")
+	if at.is_empty():
+		return "Something was left for you in the night."
+	return "Overnight, %s. Go and collect them." % " and ".join(at)
+
+
 static func collect(m: GameMap, kind: String) -> void:
 	var box: Dictionary = GameState.run.get("gifts", {}).get(kind, {})
 	var who := "The merkitties" if kind == "pool" else "The babies"

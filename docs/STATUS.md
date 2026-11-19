@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 1 (c1_14): the arc choice and each arc's early systems explain themselves
+- **Path cards:** "Choose your path" now shows three heroes of each path, a tone line and three lines of how it plays (penguins: Star Crystal, Meow Pow Wow, overnight gifts; gangsters: lie low, crew/fronts/bills/heat, take the districts back), plus a note that each save slot keeps its own path. Data: `feel`/`pitch`/`faces` in data/arcs.json.
+- **First use of an arc building** (press, laundromat, training center, soda cart, pool, burrow, shrine, litter tray, campfire) plays one short intro from whoever it belongs to (`ArcIntro`, scripts/arc_intro.gd). A crew member you haven't recruited yet leaves a note instead of speaking.
+- **Locked plans say what opens them:** pool, burrow and shrine said "story first"; now "meet the merkitties at the lake shore", "turn back the crystal babies on the mountain", "learn the Meow Pow Wow from Catkins" (`unlock.hint`, gen_stations.py). The Operation and Sanctuary plan lists open with a line on what they're for. The press plan says how bills are used.
+- **Racket:** the laundromat says where bills come from when you have none (or that the wash is full); Sal's heat speech points at the real HUD pips (it said "a flame by your hearts"); the morning report no longer says "Heat 0/5" before heat has ever come up; Rolled Bills (thug cash) read as real money, and Sal's quest says thugs carry them.
+- **Sanctuary:** the morning report names only the place that holds gifts (it always said "check the pool and the burrow", even with one built).
+- **Test:** tools/arc_intro_test.gd (in check.sh).
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.

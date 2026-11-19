@@ -3,12 +3,18 @@
     "title": "The Two Too Powerful Penguins",
     "tagline": "Complete the Meow Pow Wow. Defeat the Dark Crystal.",
     "tone": "wholesome",
+    "feel": "Bright, funny and all heart.",
+    "pitch": ["Farm with a talking Star Crystal in your yard.", "Turn monsters back with love: the Meow Pow Wow, more than the sword.", "Befriend Cat-topia, merkitties and crystal babies. They leave you gifts overnight."],
+    "faces": ["penguin_m", "penguin_f", "big_jim"],
     "playable": ["penguin_m", "penguin_f", "dad", "mom", "pax", "kairi", "june", "rafe", "nia", "ollie", "marisol", "bo", "merry", "coco", "mer", "coldy", "big_jim", "custom"]
   },
   "gangsters": {
     "title": "Gangster's Paradise",
     "tagline": "Hide. Farm. Build a gang. Take back your life.",
     "tone": "serious",
+    "feel": "Moody, told at night, with a wink.",
+    "pitch": ["Lie low on a farm under a name that isn't yours.", "Recruit a crew, open fronts, print bills and keep the heat down.", "Take the districts back from the President's thugs."],
+    "faces": ["dad", "june", "rafe"],
     "playable": ["dad", "pax", "june", "rafe", "nia", "ollie", "marisol", "bo", "custom"]
   }
 }

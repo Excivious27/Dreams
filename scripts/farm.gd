@@ -697,7 +697,12 @@ func _plans() -> void:
 			opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
 			ids.append(id)
 		opts.append("← Back")
-		d.say([{"who": "Plans", "text": "🔒 = not open yet · ✗ = missing materials (you can still buy it)", "choice": opts, "key": ""}])
+		var legend := "🔒 = not open yet · ✗ = missing materials (you can still buy it)"
+		if cat == "operation":
+			legend = "Your racket: print bills, wash them clean, run fronts, arm and train the crew. Heat rises when a bill gets noticed.\n" + legend
+		elif cat == "sanctuary":
+			legend = "Cat-topia's crafts, and homes for friends you turn back: pool, burrow and shrine open as you meet who they're for.\n" + legend
+		d.say([{"who": "Plans", "text": legend, "choice": opts, "key": ""}])
 		await d.finished
 		var i := d.last_choice
 		if i < 0 or i >= ids.size() or str(ids[i]) == "":
@@ -1075,6 +1080,7 @@ func _talk_crystal() -> void:
 # ---- crafting ----------------------------------------------------------------
 
 func _station(id: String) -> void:
+	await ArcIntro.first(self, id)  # first use of an arc building says what it's for
 	match id:
 		"launchpad":
 			await _launchpad()
