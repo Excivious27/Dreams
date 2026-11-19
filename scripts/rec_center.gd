@@ -664,34 +664,35 @@ static func _cabinet(m: GameMap, game: String) -> void:
 
 static func _lane(m: GameMap, lane: int) -> void:
 	var taken := lanes_taken()
-	if taken.has(lane):
-		var tid := str(taken[lane])
-		var who := str(GameState.npcs.get(tid, {}).get("name", "Someone"))
-		var dj := Dialogue.instance(m.get_tree())
-		dj.say([{"who": "", "text": "%s is bowling on lane %d. Lane %d is the house lane, always kept free." % [who, lane, house_lane()],
-			"choice": ["Bowl with %s" % who, "Not now"], "key": ""}])
-		await dj.finished
-		if dj.last_choice == 0:
-			await bowl_with(m, tid, lane)
-		return
 	var free := bool(GameState.run["flags"].get("rec_free_game", false))
 	var cost := 0 if free else fee()
 	var d := Dialogue.instance(m.get_tree())
 	var best := Tickets.best_score("bowling")
-	var txt := ("Lane %d. First game's on the house!" % lane) if free else ("Lane %d. One game, ten frames: ◆%d.  (you have ◆%d)" % [lane, cost, int(GameState.run["crystals"])])
-	if best > 0:
-		txt += "  Your best: %d." % best
-	d.say([{"who": "", "text": txt, "choice": ["Bowl", "How to play", "Not now"], "key": ""}])
+	var versus := ""
+	if taken.has(lane):
+		# A villager's lane: challenge them to a game (they bowl each frame after you).
+		versus = str(taken[lane])
+		var who := str(GameState.npcs.get(versus, {}).get("name", "Someone"))
+		var txt_v := "%s is bowling on lane %d. Challenge them to a game? (%s)  Lane %d is the house lane, always kept free." % [who, lane, "first game's free" if free else Money.amount(cost), house_lane()]
+		d.say([{"who": "", "text": txt_v, "choice": ["Challenge %s" % who, "How to play", "Not now"], "key": ""}])
+	else:
+		var txt := ("Lane %d. First game's on the house!" % lane) if free else ("Lane %d. One game, ten frames: ◆%d.  (you have ◆%d)" % [lane, cost, int(GameState.run["crystals"])])
+		if best > 0:
+			txt += "  Your best: %d." % best
+		d.say([{"who": "", "text": txt, "choice": ["Bowl", "How to play", "Not now"], "key": ""}])
 	await d.finished
 	if d.last_choice == 1:
-		await m.say([{"who": "", "text": "1) LEFT/RIGHT moves you along the line. UP/DOWN sets the spin (the ball hooks late). Press USE."},
-			{"who": "", "text": "2) The aim arrow swings: USE to lock it.  3) The power meter rises and falls: USE to throw. Aim for the pocket, just right of the head pin."},
-			{"who": "", "text": "Strikes and spares score extra, like real bowling. Tickets by score at the end: trade them at the prize counter downstairs."}])
+		await m.say([{"who": "", "text": "1) Drag the ball (or LEFT/RIGHT) along the foul line. The spin buttons (or UP/DOWN) set the hook: it bites late, on the dry end of the lane. Then GO."},
+			{"who": "", "text": "2) The dotted path sweeps across the lane: tap when it ends in the pocket, just right of the head pin.  3) Stop the power bar in the gold band for a clean release."},
+			{"who": "", "text": "Strikes and spares score extra, like real bowling. Tickets by score at the end, more for beating a villager: trade them at the prize counter downstairs."}])
 		return
 	if d.last_choice != 0:
 		return
+	if versus != "":
+		await bowl_with(m, versus, lane)
+		return
 	if int(GameState.run["crystals"]) < cost:
-		m.hud.toast("Not enough crystals for a game.", Color(1, 0.7, 0.7))
+		m.hud.toast("Not enough crystals for a game (%s)." % Money.amount(cost), Color(1, 0.7, 0.7))
 		return
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
 	GameState.run["flags"].erase("rec_free_game")
@@ -703,17 +704,16 @@ static func house_lane() -> int:
 	return int(data().get("building", {}).get("house_lane", 4))
 
 
-## A villager's score for today's game with you (steady for the day: their average
-## give or take 25, so a rematch tomorrow can go the other way).
-static func rival_score(npc_id: String) -> int:
-	var avg := int(data().get("bowl_avg", {}).get(npc_id, 100))
-	var swing := absi(hash("%s:%d" % [npc_id, int(GameState.run.get("day", 1))])) % 51 - 25
-	return clampi(avg + swing, 30, 279)
+## How well a villager bowls: their average game (gen_rec BOWL_AVG, the one strength
+## table; Bowling.opponent turns it into a release skill, hook and win bonus).
+static func bowl_avg(npc_id: String) -> int:
+	return int(data().get("bowl_avg", {}).get(npc_id, 120))
 
 
-## A game side by side with a villager on their lane: you pay as usual, they bowl
-## their game, and afterwards you compare cards. Bowling together is a good evening:
-## friendship once a day per villager (more if you win), and a few bonus tickets for a win.
+## A game against a villager on their lane (lane dialogue "Challenge X", or talking to
+## them there): you pay as usual, they bowl each frame on their own rack after yours
+## (Bowling versus mode), then a word about the result. finish_game pays the tickets
+## (win bonus inside the bowling payout cap) and the friendship (once a day each).
 static func bowl_with(m: GameMap, npc_id: String, lane: int) -> void:
 	if why_closed() != "":
 		m.hud.toast(why_closed(), Color(1, 0.9, 0.6))
@@ -726,39 +726,33 @@ static func bowl_with(m: GameMap, npc_id: String, lane: int) -> void:
 		return
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
 	GameState.run["flags"].erase("rec_free_game")
-	var res: Dictionary = await Bowling.play(m, lane)
+	var res: Dictionary = await Bowling.play(m, lane, npc_id)
 	finish_game(m, res)
 	if res.is_empty() or not bool(res.get("done", false)):
 		await m.say([{"who": who, "text": "Leaving already? I'll finish the frame for you."}])
 		return
-	await m.say(together_result(npc_id, int(res.get("score", 0)), m))
+	await m.say(together_result(npc_id, int(res.get("score", 0)), int(res.get("opp_score", 0))))
 
 
-## The talk after a game together (and its rewards). Shared with the headless test.
-static func together_result(npc_id: String, you: int, m: GameMap = null) -> Array:
+## The villager's word after a game together (gen_rec CHAT_RESULT). Shared with the tests.
+static func together_result(npc_id: String, you: int, them: int) -> Array:
 	var who := str(GameState.npcs.get(npc_id, {}).get("name", npc_id.capitalize()))
-	var them := rival_score(npc_id)
 	var res: Dictionary = data().get("chat_result", {})
 	var said: Array = res.get(npc_id, res.get("_", ["", "", ""]))
 	var k := 0 if you > them else (1 if you < them else 2)
-	var text := str(said[k]).replace("{you}", str(you)).replace("{them}", str(them))
+	return [{"who": who, "text": str(said[k]).replace("{you}", str(you)).replace("{them}", str(them))}]
+
+
+## Friendship for a game with a villager: once a day each (+8 for a win, +5 otherwise).
+static func bowl_friend(npc_id: String, won: bool) -> int:
 	var f: Dictionary = GameState.run["flags"]
 	var key := "rec_bowled_" + npc_id
-	var gain := 0
-	if int(f.get(key, -1)) != int(GameState.run["day"]):
-		f[key] = int(GameState.run["day"])
-		gain = 8 if k == 0 else 5
-		GameState.add_friend(npc_id, gain)
-	if k == 0:
-		Tickets.add(10, "rival")
-	if m:
-		var note := "%s bowled %d · you %d" % [who, them, you]
-		if gain > 0:
-			note += " · %s +%d" % [who, gain]
-		if k == 0:
-			note += " · +10 tickets"
-		m.hud.toast(note, Color(1, 0.85, 0.95))
-	return [{"who": who, "text": text}]
+	if int(f.get(key, -1)) == int(GameState.run["day"]):
+		return 0
+	f[key] = int(GameState.run["day"])
+	var gain := 8 if won else 5
+	GameState.add_friend(npc_id, gain)
+	return gain
 
 
 ## Pays out a finished (or abandoned) game. Shared with the headless test.
@@ -768,7 +762,15 @@ static func finish_game(m: GameMap, res: Dictionary) -> int:
 			m.hud.toast("Game abandoned. No tickets.", Color(1, 0.8, 0.7))
 		return 0
 	var score := int(res.get("score", 0))
-	var t := Tickets.payout("bowling", tickets_for(score, int(res.get("strikes", 0)), int(res.get("spares", 0))))
+	# Every ticket goes through the bowling payout (c2_05 economy): the win bonus too.
+	var t := Tickets.payout("bowling", tickets_for(score, int(res.get("strikes", 0)), int(res.get("spares", 0))) + int(res.get("bonus", 0)))
+	var opp := str(res.get("opponent", ""))
+	var gain := 0
+	if opp != "":
+		# A friendly game counts as time together (once a day); a win gets talked about.
+		gain = bowl_friend(opp, bool(res.get("won", false)))
+		if bool(res.get("won", false)):
+			GameState.run["flags"]["bowl_beat_" + opp] = true
 	var best := Tickets.set_best("bowling", score)
 	Tickets.add(t, "bowling")
 	if score >= 120:
@@ -776,7 +778,11 @@ static func finish_game(m: GameMap, res: Dictionary) -> int:
 	if score >= 300:
 		GameState.run["flags"]["bowl_perfect"] = true
 	if m:
-		m.hud.toast("Score %d%s · +%d tickets" % [score, "  NEW BEST!" if best else "", t], Color(1, 0.9, 0.4))
+		var vs := ""
+		if opp != "":
+			var who := str(GameState.npcs.get(opp, {}).get("name", opp))
+			vs = "  vs %s: %d-%d%s%s" % [who, score, int(res.get("opp_score", 0)), " (win!)" if bool(res.get("won", false)) else "", ("  %s +%d" % [who, gain]) if gain > 0 else ""]
+		m.hud.toast("Score %d%s · +%d tickets%s" % [score, "  NEW BEST!" if best else "", t, vs], Color(1, 0.9, 0.4))
 		Music.instance(m.get_tree()).sfx("j_victory" if best else "coin", "coin")
 	return t
 

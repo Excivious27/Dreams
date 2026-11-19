@@ -1,14 +1,19 @@
 class_name Bowling
 extends CanvasLayer
 ## Ten-pin bowling at the Rec Center: a full-screen mini-game.
-##   1) Line up: LEFT/RIGHT moves along the foul line, UP/DOWN sets spin. USE.
-##   2) Aim: the arrow swings. USE locks it.   3) Power: the meter pulses. USE throws.
-## Ten frames, real scoring (strikes, spares, the 10th frame's bonus balls), a
-## score sheet on the overhead monitor, pins with simple 2D physics (Sim) drawn
-## in perspective down the lane. Touch: on-screen ◀ ▶ / spin / GO buttons (or a tap
-## on the lane), or USE. B (or MENU, or the X button) twice leaves the game.
+##   1) Line up: drag the ball (or LEFT/RIGHT) along the foul line, UP/DOWN or the
+##      spin buttons set the hook. GO (or a tap on the lane).
+##   2) Aim: the predicted path sweeps across the lane; tap to lock it.
+##   3) Power: the bar rises and falls; stop it in the gold band for a clean release
+##      (outside it the ball wanders, and a slow ball hooks more than the preview).
+## Ten frames, real scoring (strikes, spares, the 10th frame's bonus balls), a score
+## sheet on the overhead monitor, a pinsetter sweep between balls, pins with simple
+## 2D physics (Sim: fallen pins lie down as sticks and take out their neighbours).
+## Challenge a villager on their lane: they bowl each frame on their own rack
+## (RecCenter.bowl_avg -> opponent(): skill, hook, ticket bonus). B (or MENU, or ✕) twice leaves the game.
 ##
-##   var res := await Bowling.play(map, lane)   # {"done", "score", "strikes", "spares", "rolls"}
+##   var res := await Bowling.play(map, lane, "gideon")
+##   # {"done", "score", "strikes", "spares", "rolls"[, "opponent", "opp_score", "won", "bonus"]}
 
 signal closed
 
@@ -160,7 +165,9 @@ static func frame_marks(rolls: Array, frame: int) -> Array:
 # ---- the pin physics ----------------------------------------------------------------
 
 ## Inches. x across the lane (0 = middle board, + = right), y down the lane (0 = foul
-## line, 720 = head pin). Ball and pins are discs; collisions are impulses.
+## line, 720 = head pin). Ball and standing pins are discs; a pin that falls lies down as
+## a 15-inch stick that sweeps the deck (that's where strikes come from); a pin brushed
+## too softly to fall wobbles, and a hard wobble may still tip over. Collisions are impulses.
 class Sim:
 	const LANE_HALF := 20.5
 	const GUTTER_X := 23.5
@@ -169,15 +176,21 @@ class Sim:
 	const KICK_X := 25.5
 	const BALL_R := 4.3
 	const PIN_R := 2.4
+	const PIN_LEN := 15.0
+	const LIE_R := 1.7
 	const BALL_M := 7.0
 	const PIN_M := 1.6
 	const FALL_SPEED := 14.0
+	const WOB_SPEED := 4.0
 	const HOOK_FROM := 430.0
+	const DT := 1.0 / 240.0
 	static var BALL_E := 0.7
-	static var PIN_E := 0.8
-	static var DOWN_DEC := 80.0
+	static var PIN_E := 0.9
+	static var DOWN_DEC := 50.0
+	static var KICK_E := 0.65      # how hard the kickbacks throw pins back across the deck
+	static var SCATTER := 0.15     # random spread (radians) on pin-on-pin hits: pins tumble, they don't bounce like pool balls
 
-	var pins: Array = []        # {"p": Vector2, "v": Vector2, "down": bool, "gone": bool, "fall": 0..1, "dir": Vector2, "home": Vector2}
+	var pins: Array = []        # {"p", "v", "down", "gone", "fall" 0..1, "dir", "home", "wob", "wdir", "teeter"}
 	var ball_p := Vector2.ZERO
 	var ball_v := Vector2.ZERO
 	var spin := 0.0             # -1..1, + hooks left
@@ -186,6 +199,7 @@ class Sim:
 	var t := 0.0
 	var done := false
 	var quiet := 0.0
+	var aim_noise := 0.12       # degrees of random release error (the game sets it from the power bar)
 	var rng := RandomNumberGenerator.new()
 
 	func rack() -> void:
@@ -193,12 +207,15 @@ class Sim:
 		for row in 4:
 			for i in row + 1:
 				var p := Vector2((i - row / 2.0) * 12.0, HEAD_Y + row * 10.39)
-				pins.append({"p": p, "v": Vector2.ZERO, "down": false, "gone": false, "fall": 0.0, "dir": Vector2.UP, "home": p})
+				pins.append({"p": p, "v": Vector2.ZERO, "down": false, "gone": false, "fall": 0.0, "dir": Vector2.UP, "home": p,
+					"wob": 0.0, "wdir": Vector2.UP, "teeter": -1.0})
 
 	## Fallen pins are swept off; standing ones stay where they are.
 	func sweep() -> void:
 		for p: Dictionary in pins:
 			p["v"] = Vector2.ZERO
+			p["wob"] = 0.0
+			p["teeter"] = -1.0
 			if bool(p["down"]):
 				p["gone"] = true
 
@@ -209,9 +226,72 @@ class Sim:
 				n += 1
 		return n
 
+	## Indices (0-9, pin number - 1) of the pins still up.
+	func standing_ids() -> Array:
+		var out: Array = []
+		for i in pins.size():
+			var p: Dictionary = pins[i]
+			if not bool(p["down"]) and not bool(p["gone"]):
+				out.append(i)
+		return out
+
+	## One step of the ball on the lane (shared with the aim preview): the back end
+	## is dry, so the spin bites there (slower balls hook more).
+	static func ball_move(p: Vector2, v: Vector2, spin_in: float, dt: float, hooking: bool) -> Array:
+		if hooking and p.y > HOOK_FROM:
+			var k := 330.0 / maxf(180.0, v.length())
+			v.x -= spin_in * 26.0 * k * dt
+		p += v * dt
+		v *= 1.0 - 0.02 * dt
+		return [p, v]
+
+	## The ball's path with no pins and no release error: points every ~24 in, stopping
+	## at the head pin, or where it drops into a gutter.
+	static func path(x0: float, angle_deg: float, speed: float, spin_in: float) -> PackedVector2Array:
+		var out := PackedVector2Array()
+		var p := Vector2(clampf(x0, -LANE_HALF + BALL_R, LANE_HALF - BALL_R), 0.0)
+		var a := deg_to_rad(angle_deg)
+		var v := Vector2(sin(a), cos(a)) * speed
+		out.append(p)
+		var next := 24.0
+		var n := 0
+		while p.y < HEAD_Y and n < 2000:
+			var r := ball_move(p, v, clampf(spin_in, -1, 1), DT, true)
+			p = r[0]
+			v = r[1]
+			n += 1
+			if absf(p.x) > LANE_HALF:
+				out.append(p)
+				return out
+			if p.y >= next:
+				out.append(p)
+				next += 24.0
+		out.append(p)
+		return out
+
+	## Where the ball crosses the head-pin line (no release error); +-99 in a gutter.
+	static func entry_x(x0: float, angle_deg: float, speed: float, spin_in: float) -> float:
+		var pts := path(x0, angle_deg, speed, spin_in)
+		var last := pts[pts.size() - 1]
+		if absf(last.x) > LANE_HALF:
+			return 99.0 * signf(last.x)
+		return last.x
+
+	## The aim (degrees) that brings the ball to target_x at the head pin.
+	static func aim_for(target_x: float, x0: float, speed: float, spin_in: float) -> float:
+		var lo := -4.0
+		var hi := 4.0
+		for k in 22:
+			var mid := (lo + hi) / 2.0
+			if entry_x(x0, mid, speed, spin_in) < target_x:
+				lo = mid
+			else:
+				hi = mid
+		return (lo + hi) / 2.0
+
 	func throw(x0: float, angle_deg: float, speed: float, spin_in: float) -> void:
 		ball_p = Vector2(clampf(x0, -LANE_HALF + BALL_R, LANE_HALF - BALL_R), 0.0)
-		var a := deg_to_rad(angle_deg + rng.randf_range(-0.12, 0.12))
+		var a := deg_to_rad(angle_deg + rng.randfn(0.0, aim_noise * 0.6) if aim_noise > 0.0 else angle_deg)
 		ball_v = Vector2(sin(a), cos(a)) * speed
 		spin = clampf(spin_in, -1.0, 1.0)
 		gutter = false
@@ -220,17 +300,34 @@ class Sim:
 		done = false
 		quiet = 0.0
 
+	## The lying stick of a fallen pin, base to head (ground plane).
+	static func stick(p: Dictionary) -> Array:
+		var a: Vector2 = p["p"]
+		return [a, a + (p["dir"] as Vector2) * PIN_LEN * 0.9 * float(p["fall"])]
+
+	static func closest(a: Vector2, b: Vector2, q: Vector2) -> Vector2:
+		var ab := b - a
+		var l2 := ab.length_squared()
+		if l2 < 0.0001:
+			return a
+		return a + ab * clampf((q - a).dot(ab) / l2, 0.0, 1.0)
+
+	func _knock(p: Dictionary, d: Vector2) -> void:
+		if bool(p["down"]):
+			return
+		p["down"] = true
+		p["dir"] = d.normalized() if d.length() > 0.1 else Vector2.UP
+		p["wob"] = 0.0
+		p["teeter"] = -1.0
+
 	func step(dt: float) -> Array:
-		## Returns events: "hit" (first pin contact), "gutter", "pit".
+		## Returns events: "hit" (first pin contact), "gutter", "pit", "clatter" (a fallen pin takes down another).
 		var ev: Array = []
 		t += dt
 		if ball_p.y < PIT_Y + 30.0:
-			if not gutter and not hit_any and ball_p.y > HOOK_FROM:
-				# Back end: the lane is dry, the spin bites (slower balls hook more).
-				var k := 330.0 / maxf(180.0, ball_v.length())
-				ball_v.x -= spin * 26.0 * k * dt
-			ball_p += ball_v * dt
-			ball_v *= 1.0 - 0.02 * dt
+			var r := ball_move(ball_p, ball_v, spin, dt, not gutter and not hit_any)
+			ball_p = r[0]
+			ball_v = r[1]
 			if not gutter and absf(ball_p.x) > LANE_HALF and ball_p.y < HEAD_Y - 10.0:
 				gutter = true
 				ball_p.x = signf(ball_p.x) * GUTTER_X
@@ -242,9 +339,16 @@ class Sim:
 			for p: Dictionary in pins:
 				if bool(p["gone"]):
 					continue
-				var d: Vector2 = p["p"] - ball_p
+				var lying := bool(p["down"]) and float(p["fall"]) > 0.2
+				var touch: Vector2 = p["p"]
+				var rad := PIN_R
+				if lying:
+					var s := stick(p)
+					touch = closest(s[0], s[1], ball_p)
+					rad = LIE_R
+				var d: Vector2 = touch - ball_p
 				var dist := d.length()
-				if dist < BALL_R + PIN_R and dist > 0.001:
+				if dist < BALL_R + rad and dist > 0.001:
 					var n := d / dist
 					var vrel := (ball_v - (p["v"] as Vector2)).dot(n)
 					if vrel > 0.0:
@@ -254,28 +358,46 @@ class Sim:
 						if not hit_any:
 							hit_any = true
 							ev.append("hit")
-					var over := BALL_R + PIN_R - dist
+					var over := BALL_R + rad - dist
 					p["p"] = (p["p"] as Vector2) + n * over * 0.8
 					ball_p -= n * over * 0.2
-		# Pins against pins.
+		# Pins against pins: standing discs, and fallen sticks sweeping into standing pins.
 		for a in pins.size():
 			var pa: Dictionary = pins[a]
 			if bool(pa["gone"]):
 				continue
+			var a_lying := bool(pa["down"]) and float(pa["fall"]) > 0.2
 			for b in range(a + 1, pins.size()):
 				var pb: Dictionary = pins[b]
 				if bool(pb["gone"]):
 					continue
-				var d2: Vector2 = pb["p"] - pa["p"]
+				var b_lying := bool(pb["down"]) and float(pb["fall"]) > 0.2
+				if a_lying and b_lying:
+					continue  # dead wood on dead wood: let it slide
+				var ca: Vector2 = pa["p"]
+				var cb: Vector2 = pb["p"]
+				var ra := LIE_R if a_lying else PIN_R
+				var rb := LIE_R if b_lying else PIN_R
+				if a_lying:
+					var sa := stick(pa)
+					ca = closest(sa[0], sa[1], cb)
+				elif b_lying:
+					var sb := stick(pb)
+					cb = closest(sb[0], sb[1], ca)
+				var d2: Vector2 = cb - ca
 				var dist2 := d2.length()
-				if dist2 < PIN_R * 2.0 and dist2 > 0.001:
+				if dist2 < ra + rb and dist2 > 0.001:
 					var n2 := d2 / dist2
 					var vrel2 := ((pa["v"] as Vector2) - (pb["v"] as Vector2)).dot(n2)
 					if vrel2 > 0.0:
+						if SCATTER > 0.0:
+							n2 = n2.rotated(rng.randfn(0.0, SCATTER))
 						var j2 := (1.0 + PIN_E) * vrel2 / 2.0
 						pa["v"] = (pa["v"] as Vector2) - n2 * j2
 						pb["v"] = (pb["v"] as Vector2) + n2 * j2
-					var ov := (PIN_R * 2.0 - dist2) / 2.0
+						if (a_lying or b_lying) and j2 > FALL_SPEED * 0.5 and not ev.has("clatter"):
+							ev.append("clatter")
+					var ov := (ra + rb - dist2) / 2.0
 					pa["p"] = (pa["p"] as Vector2) - n2 * ov
 					pb["p"] = (pb["p"] as Vector2) + n2 * ov
 		var moving := false
@@ -284,21 +406,35 @@ class Sim:
 				continue
 			var v: Vector2 = p["v"]
 			var sp := v.length()
-			if sp > FALL_SPEED and not bool(p["down"]):
-				p["down"] = true
-				p["dir"] = v.normalized()
-			if not bool(p["down"]) and ((p["p"] as Vector2) - (p["home"] as Vector2)).length() > 3.2:
-				p["down"] = true
-				p["dir"] = v.normalized() if sp > 0.1 else Vector2.UP
+			if not bool(p["down"]):
+				if sp > FALL_SPEED:
+					_knock(p, v)
+				elif ((p["p"] as Vector2) - (p["home"] as Vector2)).length() > 3.2:
+					_knock(p, v)
+				elif sp > WOB_SPEED and float(p["wob"]) < sp / FALL_SPEED:
+					# Brushed: it rocks. A hard rock can still go over after a moment.
+					p["wob"] = sp / FALL_SPEED
+					p["wdir"] = v.normalized()
+					if float(p["teeter"]) < 0.0 and sp > 9.0 and rng.randf() < (sp - 9.0) / 5.0 * 0.6:
+						p["teeter"] = 0.45 + rng.randf() * 0.4
+			if not bool(p["down"]) and float(p["wob"]) > 0.0:
+				p["wob"] = maxf(0.0, float(p["wob"]) - dt * 0.9)
+				if float(p["teeter"]) > 0.0:
+					p["teeter"] = float(p["teeter"]) - dt
+					if float(p["teeter"]) <= 0.0:
+						_knock(p, p["wdir"])
+						p["v"] = (p["wdir"] as Vector2) * 20.0
+				if float(p["wob"]) > 0.04:
+					moving = true
 			if bool(p["down"]):
 				p["fall"] = minf(1.0, float(p["fall"]) + dt * 4.0)
 			# Tumbling pins slow fast; kickbacks throw them back in; the pit swallows them.
 			var dec := DOWN_DEC if bool(p["down"]) else 600.0
-			v = v.move_toward(Vector2.ZERO, dec * dt)
+			v = (p["v"] as Vector2).move_toward(Vector2.ZERO, dec * dt)
 			var np: Vector2 = (p["p"] as Vector2) + v * dt
 			if np.y > HEAD_Y - 6.0 and absf(np.x) > KICK_X:
 				np.x = signf(np.x) * KICK_X
-				v.x = -v.x * 0.45
+				v.x = -v.x * KICK_E
 			if np.y > PIT_Y or np.y < HEAD_Y - 60.0 or absf(np.x) > KICK_X + 1.0:
 				p["down"] = true
 				p["gone"] = true
@@ -313,23 +449,143 @@ class Sim:
 				done = true
 		else:
 			quiet = 0.0
-		if t > 8.0:
+		if t > 9.0:
 			done = true
 		return ev
 
-	## Runs a whole throw (tests). Returns pins knocked.
+	## Runs a whole throw (tests, villagers). Returns pins knocked.
 	func run_throw(x0: float, angle_deg: float, speed: float, spin_in: float) -> int:
 		var before := standing()
 		throw(x0, angle_deg, speed, spin_in)
 		var n := 0
 		while not done and n < 4000:
-			step(1.0 / 240.0)
+			step(DT)
 			n += 1
 		return before - standing()
 
 
+# ---- bowlers: villagers and the test bot ----------------------------------------------
+
+## Villager strength comes from ONE table: their average game (gen_rec BOWL_AVG, read by
+## RecCenter.bowl_avg). SKILL_AVG maps release skill (0..1) to the average game it bowls
+## (measured by tools/bowl_audit.gd -- skills; re-measure after touching Sim or choose()).
+const SKILL_AVG := [[0.05, 30.0], [0.95, 270.0]]  # placeholder, set below by the audit
+const POCKET := 2.75         # entry point (in, right of the head pin) for a ball hooking left
+const SWEET := Vector2(0.68, 0.88)  # the power bar's sweet band
+
+
+static func opponent(id: String) -> Dictionary:
+	var avg := float(RecCenter.bowl_avg(id))
+	return {"avg": int(avg), "skill": skill_for(avg), "spin": 0 if avg < 80.0 else (1 if avg < 125.0 else (2 if avg < 170.0 else 3)),
+		"bonus": clampi(4 + int(avg) / 15, 6, 20)}
+
+
+## Release skill that bowls this average (linear between SKILL_AVG points).
+static func skill_for(avg: float) -> float:
+	var pts: Array = SKILL_AVG
+	if avg <= float(pts[0][1]):
+		return float(pts[0][0])
+	for i in range(1, pts.size()):
+		var a: Array = pts[i - 1]
+		var b: Array = pts[i]
+		if avg <= float(b[1]):
+			return lerpf(float(a[0]), float(b[0]), (avg - float(a[1])) / maxf(1.0, float(b[1]) - float(a[1])))
+	return float(pts.back()[0])
+
+
+## A villager's (or the bot's) choice for the next ball on this rack:
+## {"x0", "aim", "power", "spin", "noise"}. skill 0..1.
+static func choose(sim_in: Sim, skill: float, spin_steps: int, rng: RandomNumberGenerator) -> Dictionary:
+	var ids := sim_in.standing_ids()
+	var full := ids.size() == 10
+	var power := clampf((SWEET.x + SWEET.y) / 2.0 + rng.randfn(0.0, (1.0 - skill) * 0.16), 0.0, 1.0)
+	var speed := 230.0 + 140.0 * power
+	var spin := spin_steps / 3.0
+	var x0 := 6.0 if spin > 0.0 else 2.0
+	var target := POCKET if spin > 0.0 else 1.5
+	if not full and not ids.is_empty():
+		# Spare: straight at the middle of what's left, from across the lane.
+		var sx := 0.0
+		for i in ids:
+			sx += ((sim_in.pins[i] as Dictionary)["p"] as Vector2).x
+		target = sx / ids.size()
+		spin = 0.0
+		x0 = clampf(-target * 0.7, -14.0, 14.0)
+	# Line error in inches at the pins: spares (one target, no carry to help) need more care,
+	# and a shaky bowler sometimes just throws a wild one.
+	var miss := rng.randfn(0.0, pow(1.0 - skill, 1.2) * 9.0 if not full else pow(1.0 - skill, 1.5) * 12.0)
+	if rng.randf() < pow(1.0 - skill, 1.5) * 0.7:
+		miss += rng.randf_range(10.0, 22.0) * (1.0 if rng.randf() < 0.5 else -1.0)
+	var aim := Sim.aim_for(target + miss, x0, speed, spin)
+	# Stand where the swing can reach it (the aim arrow only sweeps +-AIM_MAX).
+	for k in 8:
+		if absf(aim) <= AIM_MAX * 0.9:
+			break
+		x0 = clampf(x0 + signf(aim) * 4.0, -16.0, 16.0)
+		aim = Sim.aim_for(target + miss, x0, speed, spin)
+	return {"x0": x0, "aim": aim, "power": power, "spin": spin, "noise": release_noise(power)}
+
+
+## Release error (degrees) for where the power bar was stopped: tiny in the sweet band.
+static func release_noise(power: float) -> float:
+	var off := maxf(SWEET.x - power, power - SWEET.y)
+	return 0.03 if off <= 0.0 else 0.03 + off * 0.9
+
+
+## A whole frame for a villager on their own rack; appends to rolls_out.
+static func bowl_frame(sim_in: Sim, rolls_out: Array, skill: float, spin_steps: int) -> void:
+	var f := int(next_state(rolls_out)["frame"])
+	var guard := 0
+	while guard < 4:
+		guard += 1
+		var ns := next_state(rolls_out)
+		if bool(ns["over"]) or int(ns["frame"]) != f:
+			return
+		if bool(ns["reset"]):
+			sim_in.rack()
+		else:
+			sim_in.sweep()
+		var c := choose(sim_in, skill, spin_steps, sim_in.rng)
+		sim_in.aim_noise = float(c["noise"])
+		rolls_out.append(sim_in.run_throw(float(c["x0"]), float(c["aim"]), 230.0 + 140.0 * float(c["power"]), float(c["spin"])))
+
+
+## Name for a leave after the first ball: "7-10 split", "Split", "" (none).
+static func split_name(ids: Array) -> String:
+	if ids.size() < 2 or ids.has(0):
+		return ""
+	var homes: Array = []
+	for row in 4:
+		for i in row + 1:
+			homes.append(Vector2((i - row / 2.0) * 12.0, row * 10.39))
+	var seen := {}
+	var groups := 0
+	for s in ids:
+		if seen.has(s):
+			continue
+		groups += 1
+		var stack: Array = [s]
+		seen[s] = true
+		while not stack.is_empty():
+			var c: int = stack.pop_back()
+			for o in ids:
+				if not seen.has(o) and (homes[c] as Vector2).distance_to(homes[o]) < 12.5:
+					seen[o] = true
+					stack.append(o)
+	if groups < 2:
+		return ""
+	var nums: Array = []
+	for s in ids:
+		nums.append(int(s) + 1)
+	nums.sort()
+	if nums.size() == 2:
+		return "%d-%d split" % [nums[0], nums[1]]
+	return "Split"
+
+
 # ---- the game screen ------------------------------------------------------------------
 
+const TriBatch := preload("res://scripts/tri_batch.gd")  # tilted pins: one draw call
 const F := 330.0       # focal length (px)
 const CAM_H := 42.0    # camera height (in)
 const HZ := 214.0      # horizon (screen y)
@@ -339,12 +595,20 @@ const BTN_R := Rect2(54, 398, 42, 34)
 const BTN_SPIN_L := Rect2(8, 438, 42, 28)
 const BTN_SPIN_R := Rect2(54, 438, 42, 28)
 const BTN_GO := Rect2(102, 398, 48, 68)
-const BTN_QUIT := Rect2(6, 72, 30, 24)  # finger-sized (was 28x18)
+const AIM_MAX := 1.0        # degrees each side the aim arrow swings
+const AIM_PERIOD := 3.2     # seconds for a full swing there and back
+const POWER_PERIOD := 1.5   # seconds for the power bar to rise and fall
 
 var lane := 1
+var opp_id := ""             # villager challenged ("" = solo)
+var manual := false          # tests: drive tick() by hand
+var bot := -1.0              # tests: >= 0 plays itself at this skill
 var sim := Sim.new()
+var opp_sim := Sim.new()
+var _tb := TriBatch.new()
 var rolls: Array = []
-var phase := "line"          # line, aim, power, roll, result, over
+var opp_rolls: Array = []
+var phase := "line"          # line, aim, power, roll, result, sweep, opp, over
 var x0 := 6.0
 var spin_step := 1           # -3..3
 var aim := 0.0
@@ -352,7 +616,9 @@ var power := 0.0
 var _osc := 0.0
 var _cam_y := -100.0
 var _msg := ""
+var _msg_sub := ""
 var _msg_t := 0.0
+var _msg_age := 0.0
 var _knocked := 0
 var _before := 10
 var _quit_arm := 0.0
@@ -364,11 +630,25 @@ var _was_down: Array = []
 var result := {}
 var _slowmo := 1.0
 var _tap_go := false
+var _drag_from := Vector2.INF
+var _dragged := false
+var _phase_t := 0.0
+var _sweep_full := false
+var _drop_t := 1.0           # 0..1 a fresh rack lowering onto the deck
+var _parts: Array = []       # confetti: [pos, vel, colour, life]
+var _streak := 0             # strikes in a row
+var _quality := ""           # last release: "great", "ok", "wild"
+var _opp_show := 0           # opp balls revealed on the card
+var _opp_from := 0           # opp_rolls index where the shown frame starts
+var _clatters := 0
+var _bot_rng := RandomNumberGenerator.new()
+var _btn_quit := Rect2(6, 72, 30, 24)
 
 
-static func play(m: GameMap, lane_no: int) -> Dictionary:
+static func play(m: GameMap, lane_no: int, versus := "") -> Dictionary:
 	var g := Bowling.new()
 	g.lane = lane_no
+	g.opp_id = versus
 	m.add_child(g)
 	await g.closed
 	return g.result
@@ -378,12 +658,16 @@ func _ready() -> void:
 	layer = 70
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_font = ThemeDB.fallback_font
+	_btn_quit = Rect2(6, _sheet_rect().end.y + 6, 30, 24)
 	Hud.modal_rect = MODAL
-	for r in [BTN_L, BTN_R, BTN_SPIN_L, BTN_SPIN_R, BTN_GO, BTN_QUIT]:
+	for r in _rects():
 		Hud.extra_rects.append(r)
 	get_tree().paused = true
 	_covered = ScreenCover.cover(get_parent())  # the opaque screen hides the map: don't render it
-	sim.rng.seed = int(GameState.run.get("day", 1)) * 977 + lane * 31 + int(GameState.run.get("time", 0))
+	var seed_v := int(GameState.run.get("day", 1)) * 977 + lane * 31 + int(GameState.run.get("time", 0))
+	sim.rng.seed = seed_v
+	opp_sim.rng.seed = seed_v + 5
+	_bot_rng.seed = seed_v + 9
 	sim.rack()
 	_canvas = Control.new()
 	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -393,16 +677,27 @@ func _ready() -> void:
 	add_child(_canvas)
 	RecAudio.attach_bowling(self)
 	_new_ball()
+	_cam_y = -100.0
 
 
 var _covered: CanvasItem = null
 
 
+func _rects() -> Array:
+	return [BTN_L, BTN_R, BTN_SPIN_L, BTN_SPIN_R, BTN_GO, _btn_quit]
+
+
 func _exit_tree() -> void:
 	ScreenCover.uncover(_covered)
 	_covered = null
-	for r in [BTN_L, BTN_R, BTN_SPIN_L, BTN_SPIN_R, BTN_GO, BTN_QUIT]:
+	for r in _rects():
 		Hud.extra_rects.erase(r)
+
+
+func opp_name() -> String:
+	if opp_id == "":
+		return ""
+	return str(GameState.npcs.get(opp_id, {}).get("name", opp_id.capitalize()))
 
 
 func _new_ball() -> void:
@@ -412,63 +707,93 @@ func _new_ball() -> void:
 		return
 	if bool(ns["reset"]):
 		sim.rack()
+		_drop_t = 0.0
 	phase = "line"
-	_cam_y = -100.0
+	_phase_t = 0.0
+	_quality = ""
 	_before = sim.standing()
 	_was_down.clear()
 	for p: Dictionary in sim.pins:
 		_was_down.append(bool(p["down"]) or bool(p["gone"]))
+	if int(ns["ball"]) > 0 and not bool(ns["reset"]):
+		var leave := split_name(sim.standing_ids())
+		if leave != "":
+			_say(leave + "!", "Pick your line for the spare.", 1.4)
 	sim.ball_p = Vector2(x0, -8.0)
 	sim.ball_v = Vector2.ZERO
 	sim.gutter = false
 
 
 func _process(delta: float) -> void:
+	if not manual:
+		tick(delta)
+
+
+## One frame of the game (tests call this directly with manual = true).
+func tick(delta: float) -> void:
 	_arm += 1
+	_phase_t += delta
 	_msg_t = maxf(0.0, _msg_t - delta)
+	_msg_age += delta
 	_quit_arm = maxf(0.0, _quit_arm - delta)
-	_canvas.queue_redraw()
+	_drop_t = minf(1.0, _drop_t + delta * 3.0)
+	_tick_parts(delta)
+	if _canvas:
+		_canvas.queue_redraw()
 	if _arm < 8:
 		return
-	if (Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu")) and phase != "over":
+	var live := not manual
+	if live and (Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu")) and phase != "over":
 		_ask_quit()
 		return
-	var go := Input.is_action_just_pressed("a") or Input.is_action_just_pressed("action") or _tap_go
+	var go := _tap_go or (live and (Input.is_action_just_pressed("a") or Input.is_action_just_pressed("action")))
 	_tap_go = false
+	if bot >= 0.0 and phase not in ["aim", "power"]:
+		go = _bot_go()
 	match phase:
 		"line":
 			var dir := _hold
-			if Input.is_action_pressed("left"):
+			if live and Input.is_action_pressed("left"):
 				dir = -1
-			elif Input.is_action_pressed("right"):
+			elif live and Input.is_action_pressed("right"):
 				dir = 1
 			x0 = clampf(x0 + dir * 16.0 * delta, -16.0, 16.0)
-			if Input.is_action_just_pressed("up"):
-				spin_step = mini(3, spin_step + 1)
-			elif Input.is_action_just_pressed("down"):
-				spin_step = maxi(-3, spin_step - 1)
+			if live and Input.is_action_just_pressed("up"):
+				_spin(1)
+			elif live and Input.is_action_just_pressed("down"):
+				_spin(-1)
 			sim.ball_p = Vector2(x0, -8.0)
-			if go:
+			_cam_y = lerpf(_cam_y, -100.0, minf(1.0, delta * 5.0))
+			if go and _phase_t > 0.15:
 				phase = "aim"
 				_osc = 0.0
+				aim = 0.0
+				_cam_y = -100.0
 				Music.instance(get_tree()).sfx("ui_tap", "pickup")
 		"aim":
 			_osc += delta
-			aim = sin(_osc * TAU / 1.7) * 1.7
+			# A steady sweep (triangle wave), so the timing is learnable.
+			var ph := fmod(_osc / AIM_PERIOD + 0.25, 1.0)
+			aim = AIM_MAX * (4.0 * ph - 1.0 if ph < 0.5 else 3.0 - 4.0 * ph)
+			if bot >= 0.0:
+				go = _bot_go()
 			if go:
 				phase = "power"
 				_osc = 0.0
+				power = 0.0
 				Music.instance(get_tree()).sfx("ui_tap", "pickup")
 		"power":
 			_osc += delta
-			var ph := fmod(_osc / 1.1, 2.0)
-			power = ph if ph <= 1.0 else 2.0 - ph
+			var pp := fmod(_osc / (POWER_PERIOD / 2.0), 2.0)
+			power = pp if pp <= 1.0 else 2.0 - pp
+			if bot >= 0.0:
+				go = _bot_go()
 			if go:
 				_throw()
 		"roll":
 			var steps := int(ceil(delta * 240.0 * _slowmo))
 			for i in mini(steps, 12):
-				for e in sim.step(1.0 / 240.0):
+				for e in sim.step(Sim.DT):
 					_on_event(str(e))
 				if sim.done:
 					break
@@ -478,29 +803,96 @@ func _process(delta: float) -> void:
 			if sim.done:
 				_scored()
 		"result":
-			if _msg_t <= 0.0 or go:
+			if _phase_t > 0.35 and (_msg_t <= 0.0 or go):
+				_start_sweep()
+		"sweep":
+			# The pinsetter's bar comes down and rakes the deck: fallen pins ride it
+			# into the pit (after a closed frame, the standing ones too).
+			var by := lerpf(700.0, 770.0, clampf((_phase_t / 0.75 - 0.25) / 0.6, 0.0, 1.0))
+			for p: Dictionary in sim.pins:
+				if bool(p["gone"]) or (p["p"] as Vector2).y >= by:
+					continue
+				if bool(p["down"]):
+					p["p"] = Vector2((p["p"] as Vector2).x, by)
+				elif _sweep_full and by > 702.0:
+					p["gone"] = true
+			if _phase_t >= 0.75 or (go and _phase_t > 0.2):
 				sim.sweep()
+				if _frame_done():
+					if opp_id != "":
+						_start_opp()
+						return
+				_new_ball()
+		"opp":
+			var shown := opp_rolls.size() - _opp_from
+			if _opp_show < shown and _phase_t > 0.55 * (_opp_show + 1):
+				_opp_show += 1
+				var v := int(opp_rolls[_opp_from + _opp_show - 1])
+				Music.instance(get_tree()).sfx("pin_crash" if v >= 7 else ("bowl_roll" if v > 0 else "nope"), "thud")
+			if _opp_show >= shown and (go or _phase_t > 0.55 * (shown + 1) + 1.1):
 				_new_ball()
 		"over":
-			if go or Input.is_action_just_pressed("b"):
+			if go or (live and Input.is_action_just_pressed("b")):
 				_finish()
+
+
+func _spin(d: int) -> void:
+	spin_step = clampi(spin_step + d, -3, 3)
+	Music.instance(get_tree()).sfx("ui_tap", "pickup")
+
+
+## Is the player's frame finished (the last ball closed it, or the game)?
+func _frame_done() -> bool:
+	var before := next_state(rolls.slice(0, rolls.size() - 1))
+	var now := next_state(rolls)
+	return bool(now["over"]) or int(now["frame"]) != int(before["frame"])
+
+
+func _start_sweep() -> void:
+	phase = "sweep"
+	_phase_t = 0.0
+	var ns := next_state(rolls)
+	_sweep_full = bool(ns["reset"]) or bool(ns["over"])
+	Music.instance(get_tree()).sfx("servo", "thud")
+
+
+## The villager bowls the same frame on their own rack.
+func _start_opp() -> void:
+	var o := opponent(opp_id)
+	_opp_from = opp_rolls.size()
+	if not bool(next_state(opp_rolls)["over"]):
+		bowl_frame(opp_sim, opp_rolls, float(o["skill"]), int(o["spin"]))
+	_opp_show = 0
+	phase = "opp"
+	_phase_t = 0.0
+	if opp_rolls.size() == _opp_from:
+		_new_ball()
 
 
 func _throw() -> void:
 	phase = "roll"
+	_phase_t = 0.0
+	_clatters = 0
 	var speed := 230.0 + 140.0 * power
+	sim.aim_noise = release_noise(power)
+	_quality = "great" if power >= SWEET.x and power <= SWEET.y else ("ok" if sim.aim_noise < 0.15 else "wild")
 	sim.throw(x0, aim, speed, spin_step / 3.0)
 	_slowmo = 1.0
 	Music.instance(get_tree()).sfx("swing_heavy", "swing")
+	if _quality == "great":
+		_say("Smooth release", "", 0.7)
+	elif _quality == "wild":
+		_say("Wobbly release...", "", 0.7)
 
 
 func _on_event(e: String) -> void:
 	match e:
 		"hit":
 			pass  # RecAudio plays the roll, the pins (sized to how many fall), the pit and the return
+		"clatter":
+			_clatters += 1
 		"gutter":
-			Music.instance(get_tree()).sfx("nope", "thud")
-			_say("Gutter...", 1.0)
+			_say("Gutter...", "", 1.0)
 
 
 func _scored() -> void:
@@ -510,30 +902,69 @@ func _scored() -> void:
 	var last := frame_marks(rolls, int(next_state(rolls.slice(0, rolls.size() - 1))["frame"]))
 	var mark := str(last.back()) if not last.is_empty() else ""
 	if mark == "X":
-		_say("STRIKE!", 1.6)
+		_streak += 1
+		var words := {2: "DOUBLE!", 3: "TURKEY!", 4: "HAMBONE!"}
+		_say(str(words.get(_streak, "STRIKE!" if _streak < 5 else "%d IN A ROW!" % _streak)), "", 1.6)
+		_burst(36)
 		Music.instance(get_tree()).sfx("j_treasure", "levelup")
 		Music.instance(get_tree()).sfx("clap", "pickup")
 	elif mark == "/":
-		_say("SPARE!", 1.4)
+		_streak = 0
+		_say("SPARE!", "", 1.4)
+		_burst(18)
 		Music.instance(get_tree()).sfx("sparkle", "pickup")
-	elif _knocked == 0:
-		_say("Missed them all." if not sim.gutter else "Gutter ball.", 1.1)
 	else:
-		_say("%d pin%s" % [_knocked, "" if _knocked == 1 else "s"], 1.0)
+		_streak = 0
+		if _knocked == 0:
+			_say("Missed them all." if not sim.gutter else "Gutter ball.", "", 1.1)
+		elif _before == 10 and _knocked == 9:
+			_say("9 pins", "So close!", 1.1)
+		else:
+			_say("%d pin%s" % [_knocked, "" if _knocked == 1 else "s"], "", 1.0)
 	phase = "result"
+	_phase_t = 0.0
 	if bool(ns["over"]):
 		_msg_t = maxf(_msg_t, 1.2)
 
 
-func _say(t: String, secs: float) -> void:
+func _say(t: String, sub: String, secs: float) -> void:
 	_msg = t
+	_msg_sub = sub
 	_msg_t = secs
+	_msg_age = 0.0
+
+
+func _burst(n: int) -> void:
+	var cols := [Color("f5486e"), Color("3fa9f5"), Color("f5c842"), Color("3fdc8c"), Color.WHITE]
+	for i in n:
+		var a := randf_range(-PI * 0.95, -PI * 0.05)
+		var sp := randf_range(60.0, 170.0)
+		_parts.append([Vector2(135, 200), Vector2(cos(a), sin(a)) * sp, cols[i % cols.size()], randf_range(0.8, 1.4)])
+
+
+func _tick_parts(delta: float) -> void:
+	for p: Array in _parts:
+		p[1] = (p[1] as Vector2) + Vector2(0, 160.0) * delta
+		p[0] = (p[0] as Vector2) + (p[1] as Vector2) * delta
+		p[3] = float(p[3]) - delta
+	_parts = _parts.filter(func(p: Array) -> bool: return float(p[3]) > 0.0)
 
 
 func _game_over() -> void:
 	phase = "over"
+	_phase_t = 0.0
 	var mk := count_marks(rolls)
-	result = {"done": true, "score": score_of(rolls), "strikes": int(mk["strikes"]), "spares": int(mk["spares"]), "rolls": rolls.duplicate()}
+	var sc := score_of(rolls)
+	result = {"done": true, "score": sc, "strikes": int(mk["strikes"]), "spares": int(mk["spares"]), "rolls": rolls.duplicate()}
+	if opp_id != "":
+		var os := score_of(opp_rolls)
+		result["opponent"] = opp_id
+		result["opp_score"] = os
+		result["won"] = sc > os
+		result["bonus"] = int(opponent(opp_id)["bonus"]) if sc > os else (2 if sc == os else 0)
+	if GameState.run.size() > 0 and sc > Tickets.best_score("bowling"):
+		_burst(48)
+	Music.instance(get_tree()).sfx("j_victory" if bool(result.get("won", true)) else "j_page", "coin")
 
 
 func _ask_quit() -> void:
@@ -542,7 +973,7 @@ func _ask_quit() -> void:
 		_finish()
 	else:
 		_quit_arm = 2.0
-		_say("Press again to leave (no tickets).", 2.0)
+		_say("Tap ✕ again to leave", "(no tickets)", 2.0)
 
 
 func _finish() -> void:
@@ -557,25 +988,76 @@ func _finish() -> void:
 
 func _tap(ev: InputEvent) -> void:
 	# One tap, one action: a phone sends the touch AND an emulated mouse copy
-	# (that copy used to arm and fire the quit button in one tap).
+	# (that copy used to arm and fire the quit button in one tap). TapInput drops it.
+	if TapInput.is_echo(ev):
+		return
+	if ev is InputEventMouseMotion or ev is InputEventScreenDrag:
+		# Drag the ball along the foul line while lining up.
+		var pos: Vector2 = ev.position
+		if phase == "line" and _drag_from != Vector2.INF:
+			var dx := pos.x - _drag_from.x
+			if absf(dx) > 3.0 or _dragged:
+				_dragged = true
+				x0 = clampf(x0 + dx / 3.3, -16.0, 16.0)
+				_drag_from = pos
+		return
 	if TapInput.is_release(ev):
 		_hold = 0
+		# A tap on the lane (not a drag) is GO.
+		if _drag_from != Vector2.INF and not _dragged:
+			_tap_go = true
+		_drag_from = Vector2.INF
+		_dragged = false
 		return
 	var p := TapInput.press_pos(ev)
 	if p == Vector2.INF or _arm < 8:
 		return
-	if BTN_QUIT.has_point(p):
+	if _btn_quit.has_point(p):
 		_ask_quit()
 	elif phase == "line" and BTN_L.has_point(p):
 		_hold = -1
 	elif phase == "line" and BTN_R.has_point(p):
 		_hold = 1
 	elif phase == "line" and BTN_SPIN_L.has_point(p):
-		spin_step = maxi(-3, spin_step - 1)
+		_spin(1)
 	elif phase == "line" and BTN_SPIN_R.has_point(p):
-		spin_step = mini(3, spin_step + 1)
-	elif BTN_GO.has_point(p) or (MODAL.has_point(p) and p.y > 90):
+		_spin(-1)
+	elif BTN_GO.has_point(p):
 		_tap_go = true
+	elif MODAL.has_point(p) and p.y > _btn_quit.end.y:
+		if phase == "line":
+			_drag_from = p
+			_dragged = false
+		else:
+			_tap_go = true
+
+
+## Test bot: plays the screen itself at skill `bot` (taps when the bars are where it wants).
+var _bot_plan := {}
+var _bot_prev := INF
+func _bot_go() -> bool:
+	match phase:
+		"line":
+			if _bot_plan.is_empty():
+				_bot_plan = choose(sim, bot, 2, _bot_rng)
+				x0 = float(_bot_plan["x0"])
+				spin_step = int(round(float(_bot_plan["spin"]) * 3.0))
+			return _phase_t > 0.2
+		"aim":
+			var d := aim - float(_bot_plan.get("aim", 0.0))
+			var hit := (_bot_prev != INF and signf(d) != signf(_bot_prev)) or _osc > AIM_PERIOD * 3.0
+			_bot_prev = INF if hit else d
+			return hit
+		"power":
+			var d2 := power - float(_bot_plan.get("power", 0.78))
+			var hit2 := (_bot_prev != INF and signf(d2) != signf(_bot_prev)) or _osc > POWER_PERIOD * 3.0
+			_bot_prev = INF if hit2 else d2
+			if hit2:
+				_bot_plan = {}
+			return hit2
+		"result", "sweep", "opp", "over":
+			return _phase_t > 0.3
+	return false
 
 
 # ---- drawing -------------------------------------------------------------------------
@@ -600,6 +1082,10 @@ func _quad(x0q: float, x1q: float, y0q: float, y1q: float, c: Color, h := 0.0) -
 	_canvas.draw_colored_polygon(PackedVector2Array([_p2(x0q, ya, h), _p2(x1q, ya, h), _p2(x1q, y1q, h), _p2(x0q, y1q, h)]), c)
 
 
+func _sheet_rect() -> Rect2:
+	return Rect2(4, 4, 262, 62 if opp_id == "" else 90)
+
+
 func _draw_it() -> void:
 	var c := _canvas
 	var gang := not GameState.is_penguins()
@@ -608,7 +1094,6 @@ func _draw_it() -> void:
 	# The far wall: ceiling lamps and the mural over the pin decks, in perspective.
 	var wall := Art.tex("backdrops", "bowling_wall")
 	if wall:
-		# Sized like a backdrop (it grows a little as you near the pins, never fills the view).
 		var base := _proj(0.0, 790.0, 0.0)
 		if base.z > 0:
 			var ww := clampf(1000.0 * base.z, 300.0, 420.0)
@@ -636,9 +1121,14 @@ func _draw_it() -> void:
 		var fb := _p2(26.0, 0.0)
 		c.draw_line(fa, fb, Color("d23a3a"), maxf(1.0, _proj(0, 0).z * 2.0))
 	_quad(-Sim.LANE_HALF, Sim.LANE_HALF, 708.0, 762.0, Color(1, 1, 1, 0.1))
+	# Pin spots on the deck (where each pin stands in a fresh rack).
+	if _proj(0, 720.0).z > 0:
+		for row in 4:
+			for i in row + 1:
+				var sp := _p2((i - row / 2.0) * 12.0, Sim.HEAD_Y + row * 10.39)
+				c.draw_circle(sp, maxf(0.6, _proj(0, 720.0).z * 1.2), Color(0.45, 0.3, 0.15, 0.35))
 	# The pit and the masking unit behind the pins.
 	_quad(-26.0, 26.0, 762.0, 790.0, Color("0a0a10"))
-	# The dark opening over the pin deck, with the lane's number lit above it.
 	var mu_a := _p2(-30.0, 790.0, 0.0)
 	var mu_b := _p2(30.0, 790.0, 22.0)
 	c.draw_rect(Rect2(mu_a.x, mu_b.y, mu_b.x - mu_a.x, mu_a.y - mu_b.y), Color("120c10") if not gang else Color("0a0412"))
@@ -652,67 +1142,92 @@ func _draw_it() -> void:
 		var k2 := _p2(sx * 26.0, 790.0, 18.0)
 		var k3 := _p2(sx * 26.0, 700.0, 18.0)
 		if _proj(0, 700.0).z > 0:
-			c.draw_colored_polygon(PackedVector2Array([k0, k1, k2, k3]), Color("3a2e44"))
+			c.draw_colored_polygon(PackedVector2Array([k0, k1, k2, k3]), Color("3a2e44") if not gang else Color("2a1a40"))
+			c.draw_line(k3, k2, Color(1, 1, 1, 0.12), 1.0)
 	# Pins and ball, far to near.
 	var objs: Array = []
 	for i in sim.pins.size():
 		var p: Dictionary = sim.pins[i]
 		if not bool(p["gone"]):
 			objs.append([(p["p"] as Vector2).y, "pin", i])
-	if phase != "over":
+	if phase not in ["over", "opp"]:
 		objs.append([sim.ball_p.y, "ball", 0])
 	objs.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) > float(b[0]))
+	var lift := (1.0 - _drop_t) * 24.0
 	for o: Array in objs:
 		if str(o[1]) == "pin":
-			_draw_pin(sim.pins[int(o[2])])
+			_draw_pin(sim.pins[int(o[2])], lift)
 		else:
+			_tb.flush(c)
 			_draw_ball()
-	# Aim guide.
-	if phase in ["line", "aim"]:
-		var a2 := deg_to_rad(aim)
-		var hook := spin_step / 3.0
-		var prev := _p2(x0, 0.0, 0.5)
-		for k in range(1, 26):
-			var yy := k * 28.0
-			var xx := x0 + tan(a2) * yy
-			if yy > Sim.HOOK_FROM:
-				xx -= 0.5 * hook * 28.6 * pow((yy - Sim.HOOK_FROM) / 300.0, 2.0)
-			var cur := _p2(xx, yy, 0.5)
+	_tb.flush(c)  # tilted/fallen pins (~25 discs each) go out as one draw call per run of them
+	if phase == "sweep":
+		_draw_sweep_bar()
+	# Aim guide: the ball's real path (no release error) at a sweet-band throw.
+	if phase in ["line", "aim", "power"]:
+		var pw := (SWEET.x + SWEET.y) / 2.0 if phase != "power" else power
+		var pts := Sim.path(x0, aim if phase != "line" else 0.0, 230.0 + 140.0 * pw, spin_step / 3.0)
+		var alpha := 0.3 if phase == "line" else 0.7
+		for k in range(1, pts.size()):
 			if k % 2 == 0:
-				c.draw_line(prev, cur, Color(1, 1, 0.6, 0.65 if phase == "aim" else 0.3), 1.5)
-			prev = cur
-		if phase == "aim":
-			var tip := _p2(x0 + tan(a2) * 120.0, 120.0, 0.5)
-			c.draw_circle(tip, 3.0, Color(1, 0.9, 0.3))
+				var a2 := _p2(pts[k - 1].x, pts[k - 1].y, 0.5)
+				var b2 := _p2(pts[k].x, pts[k].y, 0.5)
+				var hot := pts[k].y > Sim.HOOK_FROM and spin_step != 0
+				c.draw_line(a2, b2, Color(1, 0.75, 0.4, alpha) if hot else Color(1, 1, 0.6, alpha), 1.5)
+		if phase != "line":
+			var end := pts[pts.size() - 1]
+			if absf(end.x) <= Sim.LANE_HALF:
+				var e2 := _p2(end.x, end.y, 0.5)
+				c.draw_circle(e2, 2.5, Color(1, 0.9, 0.3))
+	_draw_parts()
 	_draw_sheet()
 	_draw_pin_chart()
 	_draw_controls()
 	if _msg_t > 0.0 and _msg != "":
 		var big := _msg.ends_with("!")
-		var sz := 22 if big else 12
-		c.draw_string_outline(_font, Vector2(0, 190), _msg, HORIZONTAL_ALIGNMENT_CENTER, 270, sz, 5, Color(0, 0, 0, 0.8))
-		c.draw_string(_font, Vector2(0, 190), _msg, HORIZONTAL_ALIGNMENT_CENTER, 270, sz, Color(1, 0.85, 0.3) if big else Color.WHITE)
+		var pop := 1.0 + 0.5 * maxf(0.0, 1.0 - _msg_age * 6.0)
+		var sz := int((22 if big else 12) * pop)
+		var fade := clampf(_msg_t * 3.0, 0.0, 1.0)
+		var y := 196.0
+		c.draw_string_outline(_font, Vector2(0, y), _msg, HORIZONTAL_ALIGNMENT_CENTER, 270, sz, 5, Color(0, 0, 0, 0.8 * fade))
+		c.draw_string(_font, Vector2(0, y), _msg, HORIZONTAL_ALIGNMENT_CENTER, 270, sz, Color(Color(1, 0.85, 0.3) if big else Color.WHITE, fade))
+		if _msg_sub != "":
+			c.draw_string_outline(_font, Vector2(0, y + 16), _msg_sub, HORIZONTAL_ALIGNMENT_CENTER, 270, 9, 4, Color(0, 0, 0, 0.8 * fade))
+			c.draw_string(_font, Vector2(0, y + 16), _msg_sub, HORIZONTAL_ALIGNMENT_CENTER, 270, 9, Color(0.9, 0.9, 1, fade))
+	if phase == "opp":
+		_draw_opp_card()
 	if phase == "over":
 		_draw_final()
 
 
-func _draw_pin(p: Dictionary) -> void:
+## A pin: standing (profile), rocking, or tipping over and lying along its fall direction.
+func _draw_pin(p: Dictionary, lift := 0.0) -> void:
 	var pos: Vector2 = p["p"]
 	var base := _proj(pos.x, pos.y, 0.0)
 	if base.z <= 0:
 		return
 	var s := base.z
 	var c := _canvas
-	c.draw_circle(Vector2(base.x, base.y), maxf(1.0, 2.6 * s), Color(0, 0, 0, 0.25))
 	var fall := float(p["fall"])
-	if fall <= 0.01:
+	var wob := float(p.get("wob", 0.0))
+	var lifted := not bool(p["down"]) and lift > 0.1
+	var standing := fall <= 0.01 and wob < 0.04
+	if standing:
+		_tb.flush(c)  # keep the y-sorted order: earlier batched pins first
+	if not lifted:
+		if standing:
+			c.draw_circle(Vector2(base.x, base.y), maxf(1.0, 2.6 * s), Color(0, 0, 0, 0.25))
+		else:
+			_tb.circle(Vector2(base.x, base.y), maxf(1.0, 2.6 * s), Color(0, 0, 0, 0.25))
+	if standing:
 		# Standing: a pin profile, belly, neck and head, with the red stripes.
 		var prof := [[0.0, 1.1], [2.0, 1.9], [4.5, 2.4], [7.0, 2.0], [9.5, 1.0], [11.0, 0.9], [13.2, 1.25], [15.0, 0.4]]
 		var left := PackedVector2Array()
 		var right := PackedVector2Array()
+		var lh := lift if not bool(p["down"]) else 0.0
 		for q: Array in prof:
-			left.append(_p2(pos.x - float(q[1]), pos.y, float(q[0])))
-			right.append(_p2(pos.x + float(q[1]), pos.y, float(q[0])))
+			left.append(_p2(pos.x - float(q[1]), pos.y, float(q[0]) + lh))
+			right.append(_p2(pos.x + float(q[1]), pos.y, float(q[0]) + lh))
 		right.reverse()
 		var poly := left + right
 		if Geometry2D.triangulate_polygon(poly).is_empty():
@@ -720,38 +1235,39 @@ func _draw_pin(p: Dictionary) -> void:
 		c.draw_colored_polygon(poly, Color(0.97, 0.96, 0.93))
 		c.draw_polyline(poly + PackedVector2Array([poly[0]]), Color(0.5, 0.5, 0.55, 0.6), maxf(0.5, s * 0.6))
 		for band in [9.3, 10.4]:
-			var b0 := _p2(pos.x - 1.0, pos.y, band)
-			var b1 := _p2(pos.x + 1.0, pos.y, band)
+			var b0 := _p2(pos.x - 1.0, pos.y, band + lh)
+			var b1 := _p2(pos.x + 1.0, pos.y, band + lh)
 			c.draw_line(b0, b1, Color("d23a3a"), maxf(1.0, s * 0.9))
-		var hl := _p2(pos.x - 0.9, pos.y, 5.5)
+		var hl := _p2(pos.x - 0.9, pos.y, 5.5 + lh)
 		c.draw_circle(hl, maxf(0.6, s * 0.6), Color(1, 1, 1, 0.8))
 		return
-	# Tipping over / lying down along its fall direction.
-	var d: Vector2 = p["dir"]
+	# Tilted (rocking or falling): a chain of discs along the pin's axis, so it reads
+	# as a solid pin from any angle, even pointing straight down the lane.
+	var d: Vector2 = p["dir"] if fall > 0.01 else p["wdir"]
 	if d.length() < 0.1:
 		d = Vector2.UP
 	var th := fall * PI / 2.0
-	var axis_h := cos(th)
-	var axis_g := sin(th)
-	var perp := Vector2(-d.y, d.x)
-	var pts := PackedVector2Array()
-	var prof2 := [[0.0, 1.1], [4.5, 2.4], [9.5, 1.0], [13.2, 1.25], [15.0, 0.4]]
-	var side_a := PackedVector2Array()
-	var side_b := PackedVector2Array()
+	if fall <= 0.01:
+		th = sin(Time.get_ticks_msec() / 45.0) * wob * 0.35
+	var prof2 := [[0.0, 1.1], [1.5, 1.7], [3.0, 2.2], [4.5, 2.4], [6.0, 2.2], [7.5, 1.7], [9.0, 1.1], [10.2, 0.9], [11.5, 1.05], [13.0, 1.25], [14.4, 0.8]]
+	var rest := 2.0 * sin(absf(th))  # a lying pin rests on its belly
+	var pts: Array = []
 	for q: Array in prof2:
 		var along := float(q[0])
-		var r := float(q[1])
-		var gp := pos + d * along * axis_g
-		var hh := along * axis_h + r * axis_g * 0.8
-		side_a.append(_p2(gp.x + perp.x * r, gp.y + perp.y * r, hh))
-		side_b.append(_p2(gp.x - perp.x * r, gp.y - perp.y * r, hh))
-	side_b.reverse()
-	pts = side_a + side_b
-	if Geometry2D.triangulate_polygon(pts).is_empty():
-		c.draw_polyline(side_a, Color(0.9, 0.89, 0.86), maxf(1.0, s * 2.4))
-		return
-	c.draw_colored_polygon(pts, Color(0.9, 0.89, 0.86))
-	c.draw_polyline(pts + PackedVector2Array([pts[0]]), Color(0.45, 0.45, 0.5, 0.6), maxf(0.5, s * 0.5))
+		var gp := pos + d * along * sin(th)
+		var hh := along * cos(th) + rest * (1.0 - along / 15.0)
+		var sp3 := _proj(gp.x, gp.y, maxf(0.0, hh))
+		if sp3.z <= 0:
+			return
+		pts.append([Vector2(sp3.x, sp3.y), float(q[1]) * sp3.z, along])
+	for q: Array in pts:
+		_tb.circle(q[0], float(q[1]) + maxf(0.5, s * 0.5), Color(0.42, 0.42, 0.48))
+	for q: Array in pts:
+		var along2 := float(q[2])
+		var col := Color("d23a3a") if (along2 > 9.0 and along2 < 10.6) else Color(0.95, 0.94, 0.9)
+		_tb.circle(q[0], float(q[1]), col)
+	var belly: Array = pts[3]
+	_tb.circle((belly[0] as Vector2) + Vector2(-0.35, -0.35) * float(belly[1]), maxf(0.6, float(belly[1]) * 0.35), Color(1, 1, 1, 0.75))
 
 
 func _draw_ball() -> void:
@@ -767,53 +1283,93 @@ func _draw_ball() -> void:
 	var col := Color("2f6fd6") if GameState.is_penguins() else Color("e03aa0")
 	c.draw_circle(Vector2(ctr.x, ctr.y), r, col)
 	c.draw_circle(Vector2(ctr.x, ctr.y), r, col.darkened(0.4), false, maxf(0.8, r * 0.08))
-	# Finger holes roll with the ball.
+	# Finger holes roll with the ball (and turn with the spin).
 	var rot := b.y * 0.12
+	var tilt := sim.spin * 0.6 if phase == "roll" else spin_step / 5.0
 	for k in 3:
 		var ang := rot + k * 0.45
-		var hp := Vector2(ctr.x, ctr.y) + Vector2(cos(ang) * 0.35, sin(ang) * 0.5 - 0.1) * r
+		var hp := Vector2(ctr.x, ctr.y) + Vector2(cos(ang + tilt) * 0.35, sin(ang) * 0.5 - 0.1) * r
 		if sin(ang) < 0.7:
 			c.draw_circle(hp, maxf(0.8, r * 0.13), Color(0.05, 0.05, 0.1, 0.85))
 	c.draw_circle(Vector2(ctr.x - r * 0.35, ctr.y - r * 0.4), maxf(0.8, r * 0.22), Color(1, 1, 1, 0.45))
 
 
-## The overhead monitor: ten frames, marks and running totals.
+## The pinsetter: a bar drops in front of the deck and rakes the fallen pins away.
+func _draw_sweep_bar() -> void:
+	var t := clampf(_phase_t / 0.75, 0.0, 1.0)
+	var down := clampf(t * 4.0, 0.0, 1.0)
+	var push := clampf((t - 0.25) / 0.6, 0.0, 1.0)
+	var y := lerpf(700.0, 770.0, push)
+	var h := lerpf(26.0, 1.0, down)
+	var a := _p2(-25.0, y, h + 5.0)
+	var b := _p2(25.0, y, h)
+	if _proj(0, y).z <= 0:
+		return
+	_canvas.draw_rect(Rect2(a.x, a.y, b.x - a.x, maxf(2.0, b.y - a.y)), Color("2a2a34"))
+	_canvas.draw_rect(Rect2(a.x, a.y, b.x - a.x, maxf(2.0, b.y - a.y)), Color(1, 0.8, 0.3, 0.6), false, 1.0)
+
+
+func _draw_parts() -> void:
+	for p: Array in _parts:
+		var life := float(p[3])
+		_canvas.draw_rect(Rect2(p[0] as Vector2, Vector2(2.5, 2.5)), Color(p[2] as Color, clampf(life * 2.0, 0.0, 1.0)))
+
+
+## The overhead monitor: ten frames, marks and running totals (and the villager's line).
 func _draw_sheet() -> void:
 	var c := _canvas
-	var r := Rect2(4, 4, 262, 62)
+	var r := _sheet_rect()
 	c.draw_rect(r, Color("1b1b26"))
 	c.draw_rect(r, Color("5a5a70"), false, 1.0)
 	var pname := str(GameState.run.get("names", {}).get("character", "You")) if GameState.run.size() > 0 else "You"
-	c.draw_string(_font, Vector2(9, 15), "%s · LANE %d" % [pname.to_upper(), lane], HORIZONTAL_ALIGNMENT_LEFT, 150, 8, Color(0.75, 0.9, 1))
 	var best := Tickets.best_score("bowling") if GameState.run.size() > 0 else 0
-	c.draw_string(_font, Vector2(110, 15), "BEST %d" % best, HORIZONTAL_ALIGNMENT_LEFT, 80, 8, Color(1, 0.85, 0.4))
-	var totals := frame_totals(rolls)
 	var cur := int(next_state(rolls)["frame"]) if phase != "over" else -1
+	if opp_id == "":
+		c.draw_string(_font, Vector2(9, 15), "%s · LANE %d" % [pname.to_upper(), lane], HORIZONTAL_ALIGNMENT_LEFT, 120, 8, Color(0.75, 0.9, 1))
+		c.draw_string(_font, Vector2(130, 15), "BEST %d" % best, HORIZONTAL_ALIGNMENT_LEFT, 60, 8, Color(1, 0.85, 0.4))
+		_sheet_row(rolls, 20, 40, cur, true)
+	else:
+		c.draw_string(_font, Vector2(9, 15), "LANE %d · VS %s" % [lane, opp_name().to_upper()], HORIZONTAL_ALIGNMENT_LEFT, 170, 8, Color(0.75, 0.9, 1))
+		c.draw_string(_font, Vector2(180, 15), "BEST %d" % best, HORIZONTAL_ALIGNMENT_RIGHT, 80, 8, Color(1, 0.85, 0.4))
+		var shown_opp := opp_rolls
+		if phase == "opp":
+			shown_opp = opp_rolls.slice(0, _opp_from + _opp_show)
+		_sheet_row(rolls, 19, 34, cur, true)
+		_sheet_row(shown_opp, 54, 34, -1, false, opp_name().left(4).to_upper())
+
+
+func _sheet_row(rs: Array, top: float, h: float, cur: int, frame_nums: bool, tag := "") -> void:
+	var c := _canvas
+	var totals := frame_totals(rs)
 	var x := 8.0
+	var bg := Color("262636") if frame_nums else Color("1f2a36")
 	for f in 10:
 		var w := 24.0 if f < 9 else 34.0
-		var box := Rect2(x, 20, w, 40)
-		c.draw_rect(box, Color("262636") if f != cur else Color("34345a"))
+		var box := Rect2(x, top, w, h)
+		c.draw_rect(box, bg if f != cur else Color("34345a"))
 		c.draw_rect(box, Color("6a6a88"), false, 1.0)
-		c.draw_string(_font, Vector2(x, 27), str(f + 1), HORIZONTAL_ALIGNMENT_CENTER, w, 6, Color(0.6, 0.6, 0.75))
-		var marks := frame_marks(rolls, f)
+		if frame_nums:
+			c.draw_string(_font, Vector2(x, top + 7), str(f + 1), HORIZONTAL_ALIGNMENT_CENTER, w, 6, Color(0.6, 0.6, 0.75))
+		elif f == 0 and tag != "":
+			c.draw_string(_font, Vector2(x + 1, top + 7), tag, HORIZONTAL_ALIGNMENT_LEFT, w, 6, Color(0.6, 0.85, 1))
+		var marks := frame_marks(rs, f)
 		var nbox := 2 if f < 9 else 3
 		for k in nbox:
-			var mb := Rect2(x + w - (nbox - k) * 10.0, 29, 10, 10)
+			var mb := Rect2(x + w - (nbox - k) * 10.0, top + 9, 10, 10)
 			c.draw_rect(mb, Color(0, 0, 0, 0.25))
 			c.draw_rect(mb, Color("6a6a88"), false, 1.0)
 			if k < marks.size() and str(marks[k]) != "":
 				var mc := Color(1, 0.4, 0.4) if str(marks[k]) == "X" else (Color(0.5, 0.85, 1) if str(marks[k]) == "/" else Color.WHITE)
 				c.draw_string(_font, Vector2(mb.position.x, mb.end.y - 2), str(marks[k]), HORIZONTAL_ALIGNMENT_CENTER, 10, 8, mc)
 		if f < totals.size() and int(totals[f]) >= 0:
-			c.draw_string(_font, Vector2(x, 56), str(int(totals[f])), HORIZONTAL_ALIGNMENT_CENTER, w, 9, Color(1, 1, 0.85))
+			c.draw_string(_font, Vector2(x, top + h - 4), str(int(totals[f])), HORIZONTAL_ALIGNMENT_CENTER, w, 9, Color(1, 1, 0.85))
 		x += w + 0.5
 
 
 ## The ten-pin chart (standing / down) beside the lane.
 func _draw_pin_chart() -> void:
 	var c := _canvas
-	var o := Vector2(242, 92)
+	var o := Vector2(242, _sheet_rect().end.y + 26)
 	c.draw_rect(Rect2(o.x - 22, o.y - 18, 44, 40), Color(0, 0, 0, 0.45))
 	var k := 0
 	for row in 4:
@@ -838,11 +1394,10 @@ func _draw_controls() -> void:
 	var c := _canvas
 	var tip := ""
 	match phase:
-		"line": tip = "◀ ▶ line up · ▲▼ spin · USE"
-		"aim": tip = "USE to lock the aim"
-		"power": tip = "USE to throw!"
-		"roll": tip = ""
-		"result": tip = ""
+		"line": tip = "Drag the ball or ◀ ▶ · ↶ ↷ spin · then GO"
+		"aim": tip = "Tap when the line hits the pocket"
+		"power": tip = "Tap in the gold band for a clean release"
+		"opp": tip = "Tap to carry on"
 	c.draw_rect(Rect2(0, 372, 270, 108), Color(0.05, 0.04, 0.08, 0.9))
 	if tip != "":
 		c.draw_string(_font, Vector2(0, 388), tip, HORIZONTAL_ALIGNMENT_CENTER, 270, 8, Color(0.85, 0.85, 1))
@@ -851,38 +1406,135 @@ func _draw_controls() -> void:
 	_btn(BTN_R, "▶", line)
 	_btn(BTN_SPIN_L, "↶", line)
 	_btn(BTN_SPIN_R, "↷", line)
-	_btn(BTN_GO, "GO" if phase in ["line", "aim", "power"] else "OK", phase != "roll", phase in ["aim", "power"])
-	_btn(BTN_QUIT, "✕", true)
+	var go_txt := "GO" if phase == "line" else ("LOCK" if phase == "aim" else ("ROLL" if phase == "power" else "OK"))
+	_btn(BTN_GO, go_txt, phase != "roll", phase in ["aim", "power"])
+	_btn(_btn_quit, "✕", true, _quit_arm > 0.0)
+	# Frame and ball, and the score so far.
+	var ns := next_state(rolls)
+	var info := Rect2(156, 398, 108, 68)
+	c.draw_rect(info, Color(0.1, 0.1, 0.16, 0.6))
+	c.draw_rect(info, Color(1, 1, 1, 0.2), false, 1.0)
+	if not bool(ns["over"]):
+		c.draw_string(_font, Vector2(info.position.x, 412), "FRAME %d" % (int(ns["frame"]) + 1), HORIZONTAL_ALIGNMENT_CENTER, info.size.x, 10, Color(1, 0.9, 0.6))
+		c.draw_string(_font, Vector2(info.position.x, 424), "ball %d · %d pin%s up" % [int(ns["ball"]) + 1, sim.standing(), "" if sim.standing() == 1 else "s"], HORIZONTAL_ALIGNMENT_CENTER, info.size.x, 8, Color(0.85, 0.85, 1, 0.8))
+	c.draw_string(_font, Vector2(info.position.x, 446), str(score_of(rolls)), HORIZONTAL_ALIGNMENT_CENTER, info.size.x, 18, Color.WHITE)
+	if opp_id != "":
+		var diff := score_of(rolls) - score_of(opp_rolls.slice(0, _opp_from + _opp_show) if phase == "opp" else opp_rolls)
+		var lead := "level" if diff == 0 else ("+%d" % diff if diff > 0 else "%d" % diff)
+		c.draw_string(_font, Vector2(info.position.x, 461), "vs %s: %s" % [opp_name(), lead], HORIZONTAL_ALIGNMENT_CENTER, info.size.x, 8, Color(0.6, 1, 0.6) if diff > 0 else (Color(1, 0.6, 0.6) if diff < 0 else Color(0.85, 0.85, 1)))
 	# Spin dial.
 	var sc := Vector2(52, 474)
 	for s in range(-3, 4):
-		var dx := sc.x + s * 6.0
+		var dx := sc.x - s * 6.0
 		c.draw_rect(Rect2(dx - 2, sc.y - 3, 4, 3), Color(1, 0.8, 0.3) if s == spin_step else Color(1, 1, 1, 0.2))
-	# Power meter on the right of the lane.
-	if phase in ["power", "roll", "result"]:
-		var pr := Rect2(250, 140, 12, 120)
+	var spin_txt := "straight" if spin_step == 0 else ("hook %s %d" % ["◀" if spin_step > 0 else "▶", absi(spin_step)])
+	c.draw_string(_font, Vector2(98, 476), spin_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 1, 1, 0.6))
+	# Power meter on the right of the lane, with the sweet band.
+	if phase in ["aim", "power", "roll", "result"]:
+		var pr := Rect2(250, 150, 12, 120)
 		c.draw_rect(pr, Color(0, 0, 0, 0.6))
-		var h := pr.size.y * power
-		var pc := Color(0.3, 1, 0.4).lerp(Color(1, 0.3, 0.2), power)
+		var band := Rect2(pr.position.x + 1, pr.end.y - pr.size.y * SWEET.y, pr.size.x - 2, pr.size.y * (SWEET.y - SWEET.x))
+		c.draw_rect(band, Color(1, 0.8, 0.25, 0.35))
+		var shown := power if phase != "aim" else 0.0
+		var h := pr.size.y * shown
+		var good := shown >= SWEET.x and shown <= SWEET.y
+		var pc := Color(1, 0.85, 0.3) if good else Color(0.3, 1, 0.4).lerp(Color(1, 0.3, 0.2), shown)
 		c.draw_rect(Rect2(pr.position.x + 2, pr.end.y - h, pr.size.x - 4, h), pc)
+		c.draw_rect(band, Color(1, 0.85, 0.3, 0.9), false, 1.0)
 		c.draw_rect(pr, Color(1, 1, 1, 0.5), false, 1.0)
 		c.draw_string(_font, Vector2(pr.position.x - 10, pr.end.y + 10), "POWER", HORIZONTAL_ALIGNMENT_CENTER, 32, 6, Color(1, 1, 1, 0.7))
-	var spin_txt := "straight" if spin_step == 0 else ("hook %s %d" % ["◀" if spin_step > 0 else "▶", absi(spin_step)])
-	c.draw_string(_font, Vector2(150, 474), "spin: " + spin_txt, HORIZONTAL_ALIGNMENT_LEFT, 120, 7, Color(1, 1, 1, 0.6))
+
+
+## The villager's frame, ball by ball.
+func _draw_opp_card() -> void:
+	var c := _canvas
+	var r := Rect2(24, 150, 222, 96)
+	c.draw_rect(r, Color(0.08, 0.06, 0.12, 0.95))
+	c.draw_rect(r, Color(0.55, 0.8, 1, 0.9), false, 2.0)
+	var pid := Dialogue.portrait_for(opp_name())
+	var tex: Texture2D = Art.tex("portraits/" + pid, "neutral") if pid != "" else null
+	if tex:
+		c.draw_texture_rect(tex, Rect2(r.position.x + 8, r.position.y + 10, 48, 48), false)
+	var tx := r.position.x + (64 if tex else 10)
+	var tw := r.end.x - tx - 8
+	var f := int(next_state(opp_rolls.slice(0, _opp_from))["frame"])
+	c.draw_string(_font, Vector2(tx, r.position.y + 20), "%s · frame %d" % [opp_name(), f + 1], HORIZONTAL_ALIGNMENT_LEFT, tw, 10, Color(0.75, 0.9, 1))
+	var marks := frame_marks(opp_rolls.slice(0, _opp_from + _opp_show), f)
+	var x := tx
+	for k in marks.size():
+		var m := str(marks[k])
+		if m == "":
+			continue
+		var mc := Color(1, 0.4, 0.4) if m == "X" else (Color(0.5, 0.85, 1) if m == "/" else Color.WHITE)
+		c.draw_rect(Rect2(x, r.position.y + 28, 22, 22), Color(0, 0, 0, 0.4))
+		c.draw_string(_font, Vector2(x, r.position.y + 45), m, HORIZONTAL_ALIGNMENT_CENTER, 22, 16, mc)
+		x += 26
+	var line := ""
+	if _opp_show >= opp_rolls.size() - _opp_from:
+		var last := str(marks.back()) if not marks.is_empty() else ""
+		line = "Strike! The whole rec hears it." if last == "X" else ("Picks up the spare." if last == "/" else "Leaves a few standing.")
+		var diff := score_of(rolls) - score_of(opp_rolls)
+		var lead := "All square." if diff == 0 else ("You lead by %d." % diff if diff > 0 else "%s leads by %d." % [opp_name(), -diff])
+		c.draw_string(_font, Vector2(r.position.x + 8, r.end.y - 22), line, HORIZONTAL_ALIGNMENT_LEFT, r.size.x - 16, 9, Color(1, 1, 1, 0.85))
+		c.draw_string(_font, Vector2(r.position.x + 8, r.end.y - 9), lead, HORIZONTAL_ALIGNMENT_LEFT, r.size.x - 16, 9, Color(1, 0.85, 0.4))
+	else:
+		c.draw_string(_font, Vector2(r.position.x + 8, r.end.y - 9), "...", HORIZONTAL_ALIGNMENT_LEFT, r.size.x - 16, 10, Color(1, 1, 1, 0.6))
 
 
 func _draw_final() -> void:
 	var c := _canvas
-	var r := Rect2(30, 120, 210, 170)
+	var vs := opp_id != ""
+	var r := Rect2(26, 112, 218, 196 if vs else 178)
 	c.draw_rect(r, Color(0.08, 0.06, 0.12, 0.96))
 	c.draw_rect(r, Color(1, 0.85, 0.3, 0.9), false, 2.0)
 	var sc := int(result.get("score", 0))
 	var best := Tickets.best_score("bowling") if GameState.run.size() > 0 else 0
-	c.draw_string(_font, Vector2(r.position.x, r.position.y + 24), "GAME OVER", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 14, Color(1, 0.85, 0.3))
-	c.draw_string(_font, Vector2(r.position.x, r.position.y + 62), str(sc), HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 32, Color.WHITE)
-	c.draw_string(_font, Vector2(r.position.x, r.position.y + 84), "%d strikes · %d spares" % [int(result.get("strikes", 0)), int(result.get("spares", 0))], HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 9, Color(0.8, 0.85, 1))
-	var t := Tickets.payout("bowling", RecCenter.tickets_for(sc, int(result.get("strikes", 0)), int(result.get("spares", 0))))
-	c.draw_string(_font, Vector2(r.position.x, r.position.y + 108), "+%d tickets" % t, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 12, Color(1, 0.7, 0.9))
+	var y := r.position.y + 22
+	var title := "GAME OVER"
+	if vs:
+		var os := int(result.get("opp_score", 0))
+		title = "YOU WIN!" if sc > os else ("A TIE!" if sc == os else "%s WINS" % opp_name().to_upper())
+	c.draw_string(_font, Vector2(r.position.x, y), title, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 14, Color(1, 0.85, 0.3))
+	y += 38
+	if vs:
+		c.draw_string(_font, Vector2(r.position.x, y), "%d" % sc, HORIZONTAL_ALIGNMENT_CENTER, r.size.x / 2.0, 28, Color.WHITE)
+		c.draw_string(_font, Vector2(r.position.x + r.size.x / 2.0, y), "%d" % int(result.get("opp_score", 0)), HORIZONTAL_ALIGNMENT_CENTER, r.size.x / 2.0, 28, Color(0.75, 0.9, 1))
+		c.draw_string(_font, Vector2(r.position.x, y + 12), "you", HORIZONTAL_ALIGNMENT_CENTER, r.size.x / 2.0, 8, Color(1, 1, 1, 0.6))
+		c.draw_string(_font, Vector2(r.position.x + r.size.x / 2.0, y + 12), opp_name(), HORIZONTAL_ALIGNMENT_CENTER, r.size.x / 2.0, 8, Color(0.75, 0.9, 1, 0.7))
+		y += 30
+	else:
+		c.draw_string(_font, Vector2(r.position.x, y), str(sc), HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 32, Color.WHITE)
+		y += 22
+	c.draw_string(_font, Vector2(r.position.x, y), "%d strike%s · %d spare%s" % [int(result.get("strikes", 0)), "" if int(result.get("strikes", 0)) == 1 else "s", int(result.get("spares", 0)), "" if int(result.get("spares", 0)) == 1 else "s"], HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 9, Color(0.8, 0.85, 1))
+	y += 16
+	# Ticket breakdown.
+	var t := RecCenter.tickets_for(sc, int(result.get("strikes", 0)), int(result.get("spares", 0)))
+	var bonus := int(result.get("bonus", 0))
+	c.draw_string(_font, Vector2(r.position.x, y + 8), "+%d tickets" % (t + bonus), HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 13, Color(1, 0.7, 0.9))
+	y += 22
+	if bonus > 0:
+		c.draw_string(_font, Vector2(r.position.x, y), "(%d for the game, %d for %s)" % [t, bonus, "beating " + opp_name() if bool(result.get("won", false)) else "the tie"], HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 8, Color(1, 0.8, 0.95, 0.75))
+		y += 13
 	if sc > best:
-		c.draw_string(_font, Vector2(r.position.x, r.position.y + 128), "NEW PERSONAL BEST!", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 10, Color(1, 0.9, 0.3, 0.6 + 0.4 * sin(Time.get_ticks_msec() / 150.0)))
-	c.draw_string(_font, Vector2(r.position.x, r.end.y - 12), "USE to finish", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 8, Color(1, 1, 1, 0.7))
+		c.draw_string(_font, Vector2(r.position.x, y + 4), "NEW PERSONAL BEST!", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 10, Color(1, 0.9, 0.3, 0.6 + 0.4 * sin(Time.get_ticks_msec() / 150.0)))
+		y += 14
+		var unlocked := _prize_unlock(best, sc)
+		if unlocked != "":
+			c.draw_string(_font, Vector2(r.position.x, y + 4), unlocked, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 8, Color(0.6, 1, 0.7))
+	c.draw_string(_font, Vector2(r.position.x, r.end.y - 10), "Tap to finish", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 8, Color(1, 1, 1, 0.7))
+	_draw_parts()
+
+
+## "Prize counter: Top Hat unlocked!" when this score opens a new high-score prize.
+func _prize_unlock(old_best: int, sc: int) -> String:
+	if GameState.run.is_empty():
+		return ""
+	var names: Array = []
+	var ps: Dictionary = Tickets.prizes().get("prizes", {})
+	for id in ps:
+		var need := int(((ps[id] as Dictionary).get("need", {}) as Dictionary).get("best", {}).get("bowling", 0))
+		if need > old_best and need <= sc:
+			names.append(str(GameState.items.get(str((ps[id] as Dictionary).get("item", id)), {}).get("name", id)))
+	if names.is_empty():
+		return ""
+	return "Prize counter: %s unlocked!" % ", ".join(names)

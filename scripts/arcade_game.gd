@@ -312,18 +312,26 @@ func close() -> void:
 	if _prev_track != "":
 		Music.instance(get_tree()).play(_prev_track)
 	Hud.modal_rect = _prev_modal  # back to the picker's (or nothing on the map)
+	_closed = true
 	Dialogue.block_input(0.3)
 	closed.emit()
 	queue_free()
 
 
 var _covered: CanvasItem = null
+var _closed := false
 
 
 func _exit_tree() -> void:
 	ScreenCover.uncover(_covered)
 	_covered = null
 	_unregister()
+	# Freed without close() (a scene change under the cabinet): give the screen back
+	# if the modal rect is still ours. A picker under us does the same as it leaves,
+	# so in either order nothing is left blocking the HUD.
+	if not _closed and Hud.modal_rect == Rect2(0, 0, W, H):
+		Hud.modal_rect = _prev_modal
+	_closed = true
 
 
 ## Takes this screen's deck rects out of Hud.extra_rects (once: the picker under a

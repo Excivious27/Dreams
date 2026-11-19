@@ -380,17 +380,20 @@ func _c2_06_checks() -> void:
 			d._choose("", 1)
 		for k in 4:
 			await process_frame
-	# Bowling together: a result line, friendship once a day, tickets for a win.
+	# Bowling together (one villager system with the versus mode): finish_game pays the
+	# win bonus inside the payout cap and friendship once a day; the after-game line.
 	var f0 := int(GameState.run["friendship"].get("gideon", 0))
+	var vres := {"done": true, "score": 150, "strikes": 3, "spares": 3, "rolls": [], "opponent": "gideon", "opp_score": 130, "won": true, "bonus": int(Bowling.opponent("gideon")["bonus"])}
 	var t0 := Tickets.count()
-	var them := RecCenter.rival_score("gideon")
-	ok(them >= 140 and them <= 195, "Gideon bowls near his average (%d)" % them)
-	var r := RecCenter.together_result("gideon", them + 20)
-	ok(str(r[0]["text"]).contains(str(them)), "result line names his score: %s" % str(r[0]["text"]))
-	ok(int(GameState.run["friendship"]["gideon"]) > f0 and Tickets.count() == t0 + 10, "a win: friendship and +10 tickets")
+	var got := RecCenter.finish_game(null, vres)
+	ok(got == Tickets.payout("bowling", RecCenter.tickets_for(150, 3, 3) + int(vres["bonus"])) and Tickets.count() == t0 + got, "a win: bonus tickets through the bowling payout (%d)" % got)
+	ok(int(GameState.run["friendship"]["gideon"]) > f0 and bool(GameState.run["flags"].get("bowl_beat_gideon", false)), "a win: friendship and the beat flag")
 	var f1 := int(GameState.run["friendship"]["gideon"])
-	RecCenter.together_result("gideon", them - 20)
+	RecCenter.finish_game(null, vres)
 	ok(int(GameState.run["friendship"]["gideon"]) == f1, "friendship from bowling together once a day")
+	var r := RecCenter.together_result("gideon", 150, 130)
+	ok(str(r[0]["text"]).contains("130"), "result line names his score: %s" % str(r[0]["text"]))
+	ok(RecCenter.bowl_avg("gideon") >= 165 and RecCenter.bowl_avg("gideon") <= 185, "Gideon's average from gen_rec (%d)" % RecCenter.bowl_avg("gideon"))
 	# Closed: nobody visits, lanes and cabinets refuse.
 	GameState.run["time"] = 30
 	ok(RecCenter.slot_now("sal").is_empty() and RecCenter.lanes_taken().is_empty(), "after midnight: nobody at the rec")
