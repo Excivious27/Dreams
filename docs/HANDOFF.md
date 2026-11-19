@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 14:10 PT, personal account.
-- **Done:** Round 13, CONDUCT 1. CONDUCT 2 phase 1: all 20 c2 agents committed; 19 branches merged in the personal sandbox's local main (not pushed yet; c2_01 bowling is merged by fix package P6).
-- **In progress:** CONDUCT 2 fix packages (new process): 7 fix agents in /home/claude/wt/c2f_p1..p7 (branches conduct2/fix_p1..p7, local to the personal sandbox): P1 mines/combat, P2 movement/facing/targeting/pup, P3 combat music, P4 world/maps, P5 wording/skills/penguin name/Meow Pow Wow, P6 arcade/bowling, P7 art quality. They cover Tom's playtest notes (docs/TOM-PLAYTEST-2026-11-19.md). Then one merge, one check.sh, bots, playtest, push, package.
-- **Next step:** finish CONDUCT 2 as above and deliver its package (report docs/reports/CONDUCT-2.md, GUIDE-26 complete on its own, progress xlsx with % done/% remaining, art prompts or "none", your own artifact page with its id recorded here). Then CONDUCT 3 (battle campaigns) with the new process, wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package. If the c2 worktrees are lost (account switch), run CONDUCT 2 again with the new process from docs/CONDUCT-2-SCOPES.txt.
-- **Jobs running elsewhere:** CONDUCT 2 agents in the personal sandbox (see In progress). The Team chat may fire one stale watchdog reminder; ignore.
+- **Last update:** 2026-11-19 16:30 PT, personal account.
+- **Done:** Round 13, CONDUCT 1, CONDUCT 2 (merged and pushed: 20 area agents + 8 fix packages covering Tom's 21 playtest notes; check.sh rc 0, 20 bots clean, playtest 0 failures; report docs/reports/CONDUCT-2.md, guide docs/guides/GUIDE-26.md, progress xlsx + artifact page sent in chat).
+- **In progress:** nothing between CONDUCTs; CONDUCT 3 (battle campaigns) starts next with the new process.
+- **Next step:** CONDUCT 3 (battle campaigns): 20 read-only auditors + 20 bots -> 5-6 fix packages (include C2 leftovers that fit: see docs/reports/CONDUCT-2.md "Still open") -> merge, check.sh, bots, playtest, push -> package (artifact + files). Then wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9, then CONDUCT 10-17 (docs/CONDUCT-PLAN.md), then the final package. Tom's playtest notes: docs/TOM-PLAYTEST-2026-11-19.md.
+- **Jobs running elsewhere:** none.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression) and CONDUCT 17 (multiplayer), then the fully updated artifact.
@@ -67,6 +67,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 One line per finished piece of work: date, account, what was done.
 
+- 2026-11-19, personal: CONDUCT 2 merged and pushed (rec/arcade/commons + 8 fix packages: mines, movement, combat music, world, wording/skills/Meow Pow Wow, arcade/bowling, art crispness, desktop full screen).
 - 2026-11-19, Team: handoff to personal account; CONDUCT 1 package delivered; CONDUCT tooling + brief committed (tools/conduct/, docs/CONDUCT-BRIEF.md).
 - 2026-11-19, Team: CONDUCT 1 merged and pushed (20 agents: first 3 hours both arcs, phone UI font, performance batching, softlocks, saves, goal line, town, tools).
 - 2026-11-19, Team: docs/PROJECT-MEMORY.md (full project context) + tools/setup_sandbox.sh; handoff rule: every push keeps PROJECT-MEMORY current.

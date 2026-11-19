@@ -24,3 +24,4 @@ Every item here must be done before the 9-CONDUCT plan ends. Column "When" says 
 | 18 | Mines: arrow to the way down doesn't reliably point right. Fix 100%. | C2 |
 | 19 | Penguins: day 2 the penguin can use the Meow Pow Wow with no explanation; the ability should be earned in the story, like Tom's book. | C7 (start C2) |
 | 20 | Fix the name: "The Two Too Powerful Penguins". | C2 |
+| 21 | Desktop: the game shows in the phone format and doesn't size to the screen; make full-screen play on a computer work properly. | C2 (P8) |
