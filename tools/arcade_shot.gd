@@ -1,7 +1,7 @@
 extends SceneTree
 ## Screenshots of every arcade cabinet mid-game (and the picker, level select,
 ## results card).
-##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/arcade_shot.gd -- /tmp/arcade
+##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/arcade_shot.gd -- /tmp/arcade  (ARC=gangsters for cash)
 var out := "/tmp/arcade"
 
 
@@ -41,7 +41,7 @@ func _run() -> void:
 		out = args[0]
 	DirAccess.make_dir_recursive_absolute(out)
 	InputSetup.ensure_actions()
-	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	GameState.new_run(OS.get_environment("ARC") if OS.get_environment("ARC") != "" else "penguins", "kairi", "T", "Town", "Pup")
 	GameState.run["crystals"] = 5000
 	var bg := ColorRect.new()
 	bg.color = Color.BLACK

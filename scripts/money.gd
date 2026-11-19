@@ -22,6 +22,8 @@ const PHRASES := [
 	["Crystals for goods. Goods for crystals.", "Cash for goods. Goods for cash."],
 	["small ◆ fee", "small cash fee"],
 	["crystals in hand", "cash in hand"],
+	["in shade. And crystals.", "in shade. And cash."],
+	["Not enough crystals (", "Not enough cash ("],
 ]
 ## Exact whole-string labels.
 const EXACT := {"Crystals": "Cash"}
@@ -52,6 +54,16 @@ static func fmt(n: int) -> String:
 
 static func word() -> String:
 	return "cash" if cash() else "crystals"
+
+
+## An amount as words: "40 crystals" / "$40" (arcade tops, fees, prices).
+static func amount(n: int) -> String:
+	return ("$%d" % n) if cash() else ("%d crystals" % n)
+
+
+## A bare amount: "40" in the penguin arc (the word is around it), "$40" in cash.
+static func num(n: int) -> String:
+	return ("$%d" % n) if cash() else str(n)
 
 
 static func t(s: String) -> String:

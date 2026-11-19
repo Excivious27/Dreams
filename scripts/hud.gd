@@ -373,7 +373,7 @@ func _draw_hud() -> void:
 	if held != "":
 		line = GameState.item_name(held)
 	if _hint != "":
-		line = (line + "   " if line != "" else "") + _hint
+		line = Money.t((line + "   " if line != "" else "") + _hint)
 	var lw := 180 if Racket.on() or y_offset > 0.0 else 240
 	c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, 3, Color(0, 0, 0, 0.7))  # reads on white sky ground
 	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, Color(1, 1, 0.9))
