@@ -230,6 +230,10 @@ func _place_buildings() -> void:
 	else:
 		_door("stable", Vector2i(27, 85), "stable", "A: Stable", 1.25)
 	building("bandstand", Vector2i(6, 33))
+	# South-east, past the library: the Rec Center (Rec Hall in the gangster arc).
+	var rd := RecCenter.place_town(self)
+	if rd != Vector2i(-1, -1):
+		_doors.append(rd)
 	# Across the river: clinic, chapel, Rook's lodge.
 	if GameState.run["flags"].has("shop_3") and Art.has("buildings", "gang_shop_doc"):
 		_door(_gang("gang_shop_doc"), Vector2i(74, 32), "clinic", "A: Doc's back-room clinic", 0.6)
@@ -562,7 +566,7 @@ func _place_props() -> void:
 	_fence_rect(Rect2i(74, 65, 8, 5), Vector2i(78, 65))
 	# Wild bits: tree clumps and scatter where nothing else is.
 	var avoid := {}
-	for r: Rect2i in [Rect2i(8, 14, 60, 30), AVENUE_X.grow(2), AVENUE_Y.grow(2), Rect2i(44, 52, 24, 24), Rect2i(6, 50, 26, 44), Rect2i(72, 30, 12, 50), Rect2i(66, 0, 8, 96), Rect2i(5, 31, 24, 12), Rect2i(72, 4, 12, 28), Rect2i(6, 3, 16, 12), Rect2i(24, 3, 14, 12)]:
+	for r: Rect2i in [Rect2i(8, 14, 60, 30), AVENUE_X.grow(2), AVENUE_Y.grow(2), Rect2i(44, 52, 24, 24), Rect2i(6, 50, 26, 44), Rect2i(72, 30, 12, 50), Rect2i(66, 0, 8, 96), Rect2i(5, 31, 24, 12), Rect2i(72, 4, 12, 28), Rect2i(6, 3, 16, 12), Rect2i(24, 3, 14, 12), RecCenter.lot_rect()]:
 		for c in cells_of([r]):
 			avoid[c] = true
 	for c in _plaza:
@@ -708,6 +712,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 	match str(thing.get("type", "")):
 		"shop", "hall", "door":
+			if RecCenter.door_closed(self, thing):
+				return true
 			var id := str(thing.get("interior", thing.get("shop", "hall")))
 			GameMap.next_interior = id
 			go_to("interior", Vector2.ZERO, "up")
@@ -911,7 +917,7 @@ func draw_map() -> void:
 	for c in _plaza:
 		roads.erase(c)
 	draw_ground("cobble", roads)
-	var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2)])
+	var lanes_base := cells_of([Rect2i(10, 29, 28, 2), Rect2i(44, 26, 18, 2), Rect2i(60, 23, 2, 4), Rect2i(53, 42, 2, 3), Rect2i(44, 62, 20, 2), Rect2i(62, 61, 2, 2), Rect2i(49, 72, 2, 2), Rect2i(60, 71, 2, 2), Rect2i(44, 73, 18, 2), Rect2i(13, 59, 25, 2), Rect2i(23, 66, 2, 2), Rect2i(13, 73, 2, 2), Rect2i(13, 75, 25, 2), Rect2i(24, 84, 14, 2), Rect2i(32, 92, 6, 2), Rect2i(73, 39, 6, 2), Rect2i(78, 39, 2, 6), Rect2i(78, 51, 2, 13), Rect2i(73, 63, 6, 2), Rect2i(78, 63, 2, 15), Rect2i(73, 77, 6, 2), Rect2i(10, 41, 28, 2), RecCenter.lane_rect()])
 	var all_roads := roads.duplicate()
 	all_roads.merge(lanes_base)
 	_carve_door_paths(all_roads)

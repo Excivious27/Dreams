@@ -61,6 +61,7 @@ static func morning() -> int:
 			m["done"] = true
 			m["lapsed"] = true
 	_news(rng)
+	RecCenter.morning()
 	var known := _known()
 	# A favour about every third day, only from people you've met.
 	if not known.is_empty() and rng.randf() < 0.35:

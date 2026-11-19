@@ -2575,6 +2575,50 @@
     ]
    },
    "arc": "gangsters"
+  },
+  {
+   "id": "rec_bowl_120",
+   "giver": "tobin",
+   "text": "Tobin bets you can't bowl 120 or more at the Rec Center.",
+   "when": {
+    "flag": "rec_open"
+   },
+   "done_when": {
+    "flag": "bowl_120"
+   },
+   "reward": {
+    "crystals": 150,
+    "friend": [
+     "tobin",
+     15
+    ]
+   }
+  },
+  {
+   "id": "rec_teddy",
+   "giver": "mabel",
+   "text": "Mabel wants the Teddy Bear from the prize counter (80 tickets).",
+   "when": {
+    "flag": "rec_open",
+    "day": 9
+   },
+   "done_when": {
+    "item": [
+     "rp_teddy",
+     1
+    ]
+   },
+   "take": true,
+   "reward": {
+    "item": [
+     "rp_kite",
+     1
+    ],
+    "friend": [
+     "mabel",
+     20
+    ]
+   }
   }
  ]
 }

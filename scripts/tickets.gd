@@ -72,6 +72,26 @@ static func plays(game_id: String) -> int:
 	return int(_st()["plays"].get(game_id, 0))
 
 
+## Plays of every game except bowling (the arcade cabinets).
+static func arcade_plays() -> int:
+	var t := 0
+	var p: Dictionary = _st()["plays"]
+	for g in p:
+		if str(g) != "bowling":
+			t += int(p[g])
+	return t
+
+
+## How many different arcade games have been played at least once.
+static func arcade_games() -> int:
+	var t := 0
+	var p: Dictionary = _st()["plays"]
+	for g in p:
+		if str(g) != "bowling" and int(p[g]) > 0:
+			t += 1
+	return t
+
+
 static func earned(source := "") -> int:
 	var a := _st()
 	if source != "":
@@ -112,6 +132,11 @@ static func lock_text(prize_id: String) -> String:
 			return "Play %s %d times" % [str(names.get(g, g)), int(need["plays"][g])]
 	if need.has("earned") and earned() < int(need["earned"]):
 		return "Win %d tickets in all" % int(need["earned"])
+	var arc: Dictionary = need.get("arcade", {})
+	if arc.has("plays") and arcade_plays() < int(arc["plays"]):
+		return "Play %d arcade games" % int(arc["plays"])
+	if arc.has("games") and arcade_games() < int(arc["games"]):
+		return "Try %d different cabinets" % int(arc["games"])
 	if need.has("once") and bought(prize_id) > 0:
 		return "Already yours"
 	return ""

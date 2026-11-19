@@ -9411,5 +9411,232 @@
   "rarity": "rare",
   "tier": 3,
   "desc": "Adds 12 bag slots for different items. Used the moment you buy it."
+ },
+ "rp_fizzy_pop": {
+  "name": "Fizzy Pop",
+  "type": "food",
+  "value": 20,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 25,
+  "icon": "soda",
+  "desc": "From the Rec Center machine. Fizzes up your nose.",
+  "rec": true
+ },
+ "rp_cotton_candy": {
+  "name": "Cotton Candy",
+  "type": "food",
+  "value": 35,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 30,
+  "buff": {
+   "kind": "speed",
+   "minutes": 60,
+   "amount": 1
+  },
+  "icon": "cloud_cotton",
+  "desc": "Pure sugar cloud. A spring in your step for an hour.",
+  "rec": true
+ },
+ "rp_ribbon": {
+  "name": "Lucky Ribbon",
+  "type": "gift",
+  "value": 40,
+  "rarity": "common",
+  "tier": 1,
+  "icon": "ribbon_red",
+  "desc": "A prize-counter ribbon. Nice to give.",
+  "rec": true
+ },
+ "rp_kite": {
+  "name": "Kite",
+  "type": "gift",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "kite",
+  "desc": "Diamond kite with a long tail. The kids would love it.",
+  "rec": true
+ },
+ "rp_teddy": {
+  "name": "Teddy Bear",
+  "type": "gift",
+  "value": 120,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "teddy_bear",
+  "desc": "The prize every kid points at first.",
+  "rec": true
+ },
+ "rp_penguin_plush": {
+  "name": "Penguin Plush",
+  "type": "gift",
+  "value": 140,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "penguin_figurine",
+  "desc": "Squishy, round, suspiciously familiar.",
+  "rec": true
+ },
+ "rp_cat_plush": {
+  "name": "Lucky Cat",
+  "type": "gift",
+  "value": 140,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "cat_figurine",
+  "desc": "Waves one paw forever. For luck.",
+  "rec": true
+ },
+ "rp_bowling_cap": {
+  "name": "Bowling Cap",
+  "type": "equip",
+  "slot": "head",
+  "value": 150,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "luck": 1
+  },
+  "sprite": "cap",
+  "icon": "cap",
+  "desc": "Rec Center league cap.",
+  "rec": true
+ },
+ "rp_neon_cap": {
+  "name": "Neon Cap",
+  "type": "equip",
+  "slot": "head",
+  "value": 180,
+  "rarity": "uncommon",
+  "tier": 2,
+  "stats": {
+   "speed": 1
+  },
+  "sprite": "cap",
+  "icon": "neon_hat",
+  "desc": "Glows faintly in the dark.",
+  "rec": true
+ },
+ "rp_top_hat": {
+  "name": "Top Hat",
+  "type": "equip",
+  "slot": "head",
+  "value": 400,
+  "rarity": "rare",
+  "tier": 3,
+  "stats": {
+   "luck": 2
+  },
+  "sprite": "tophat",
+  "icon": "tophat",
+  "desc": "For the high roller of the lanes.",
+  "rec": true
+ },
+ "rp_star_cape": {
+  "name": "Star Cape",
+  "type": "equip",
+  "slot": "back",
+  "value": 600,
+  "rarity": "rare",
+  "tier": 3,
+  "stats": {
+   "speed": 1,
+   "luck": 1
+  },
+  "icon": "cape_star",
+  "desc": "Only bowlers who've rolled a 200 wear this.",
+  "rec": true
+ },
+ "rp_music_box": {
+  "name": "Music Box",
+  "type": "decor",
+  "value": 200,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "music_box",
+  "desc": "Decor: it sits in your house and plays a little tune.",
+  "rec": true
+ },
+ "rp_painting": {
+  "name": "Neon Painting",
+  "type": "decor",
+  "value": 250,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "painting_abstract",
+  "desc": "Decor: hangs in your house.",
+  "rec": true
+ },
+ "rp_trophy_bronze": {
+  "name": "Bronze Bowling Trophy",
+  "type": "decor",
+  "value": 250,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "trophy_bronze",
+  "desc": "Decor: for your first 100 game.",
+  "rec": true
+ },
+ "rp_trophy_silver": {
+  "name": "Silver Bowling Trophy",
+  "type": "decor",
+  "value": 450,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "trophy_silver",
+  "desc": "Decor: for a 160 game.",
+  "rec": true
+ },
+ "rp_trophy_gold": {
+  "name": "Gold Bowling Trophy",
+  "type": "decor",
+  "value": 900,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "trophy_gold",
+  "desc": "Decor: for a 220 game. The house record wall knows your name.",
+  "rec": true
+ },
+ "rp_golden_pin": {
+  "name": "Golden Pin",
+  "type": "decor",
+  "value": 1500,
+  "rarity": "legendary",
+  "tier": 5,
+  "icon": "trophy_master",
+  "desc": "Decor: for a 270 game. People will ask.",
+  "rec": true
+ },
+ "rp_arcade_medal": {
+  "name": "Arcade Medal",
+  "type": "decor",
+  "value": 400,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "medal_gold",
+  "desc": "Decor: for playing every cabinet in the hall.",
+  "rec": true
+ },
+ "rp_jukebox": {
+  "name": "Jukebox",
+  "type": "decor",
+  "value": 800,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "music_box2",
+  "desc": "Decor: a real jukebox for your house.",
+  "rec": true
+ },
+ "rp_arcade_cab": {
+  "name": "Home Arcade Cabinet",
+  "type": "decor",
+  "value": 1000,
+  "rarity": "epic",
+  "tier": 4,
+  "icon": "token_star",
+  "desc": "Decor: your own cabinet at home. It blinks all night.",
+  "rec": true
  }
 }

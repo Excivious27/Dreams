@@ -47,7 +47,7 @@ def cells_of(p):
 
 added = 0
 for rid, R in I.items():
-    if rid.startswith("_") or not isinstance(R, dict):
+    if rid.startswith("_") or not isinstance(R, dict) or R.get("no_furnish"):
         continue
     R["props"] = [p for p in R.get("props", []) if not p.get("auto")]
     cols, rows = int(R.get("cols", 14)), int(R.get("rows", 11))
