@@ -122,6 +122,13 @@ static func frames_for(id: String) -> SpriteFrames:
 			if Art.has(g, a) and int(Art.info(g, a).get("h", 99)) >= 16:  # tiny strips are empty slots
 				anims[a] = a
 		var gsf := Art.frames(g, anims, FPS, LOOPS)
+		# The 12B hero sheets (Coldy, Big Jim, the penguins, the cats) drew "idle"
+		# as a SIDE view: everyone resting faced right. Their front idle is
+		# idle_down; the side one stays as idle_side (used for left/right rests).
+		if list == HERO12_ANIMS and gsf.has_animation("idle") and gsf.has_animation("idle_down"):
+			_alias(gsf, "idle_side", "idle")
+			gsf.remove_animation("idle")
+			_alias(gsf, "idle", "idle_down")
 		# Fallbacks so every character can idle/walk even with a partial set.
 		if not gsf.has_animation("idle") and gsf.has_animation("view_front"):
 			_alias(gsf, "idle", "view_front")
@@ -147,9 +154,8 @@ static func frames_for(id: String) -> SpriteFrames:
 			_alias(gsf, "view_back", "idle_up" if gsf.has_animation("idle_up") else "idle")
 		if not gsf.has_animation("view_right"):
 			_alias(gsf, "view_right", "idle_side" if gsf.has_animation("idle_side") else "idle")
-		for v in ["view_left"]:
-			if not gsf.has_animation(v):
-				_alias(gsf, v, "view_right")
+		# No view_left alias: Player._apply mirrors view_right when view_left is
+		# missing (an unflipped copy made left-facing rests look right).
 		# A redrawn (underworld) hero keeps their own look for every action: tool
 		# swings use their attack frames until tool poses are cut for them.
 		if id.ends_with("_gang") and Art.has(g, "swim") and Art.has(g, "ride"):
@@ -239,8 +245,12 @@ static func make_sprite(id: String) -> AnimatedSprite2D:
 		sc = target / float(h)
 	s.scale = Vector2(sc, sc)
 	# Frames from different strips have different cell heights; keep feet planted.
-	s.frame_changed.connect(func() -> void:
+	# animation_changed too: a swap that lands on frame 0 from frame 0 emits no
+	# frame_changed, which left the feet at the old strip's height for a frame.
+	var fit := func() -> void:
 		var tex := s.sprite_frames.get_frame_texture(s.animation, s.frame)
 		if tex:
-			s.offset = Vector2(0, -tex.get_height() / 2.0))
+			s.offset = Vector2(0, -tex.get_height() / 2.0)
+	s.frame_changed.connect(fit)
+	s.animation_changed.connect(fit)
 	return s

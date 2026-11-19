@@ -142,10 +142,13 @@ func _ready() -> void:
 			var ps := clampf(17.0 / maxf(20.0, ih), 0.12, 0.5)
 			_pet_anim.scale = Vector2(ps, ps)
 			_pet_anim.animation = "idle"
-			_pet_anim.frame_changed.connect(func() -> void:
-				var tex := _pet_anim.sprite_frames.get_frame_texture(_pet_anim.animation, _pet_anim.frame)
+			var pa := _pet_anim
+			var fit := func() -> void:
+				var tex := pa.sprite_frames.get_frame_texture(pa.animation, pa.frame)
 				if tex:
-					_pet_anim.offset = Vector2(0, -tex.get_height() / 2.0))
+					pa.offset = Vector2(0, -tex.get_height() / 2.0)
+			_pet_anim.frame_changed.connect(fit)
+			_pet_anim.animation_changed.connect(fit)  # frame 0 -> frame 0 swaps too
 		else:
 			_pet_anim = CharacterLibrary.make_sprite("dog")
 		pt.anim = _pet_anim

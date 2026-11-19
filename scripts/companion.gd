@@ -342,6 +342,7 @@ func setup(cid: String, m: GameMap) -> void:
 		anim.sprite_frames = Art.frames("animals/" + sprite, {"idle": "idle", "walk": "walk", "run": "run"}, {"idle": 2.0, "walk": 8.0, "run": 12.0})
 		anim.scale = Vector2(0.5, 0.5)
 		anim.frame_changed.connect(_fit_offset)
+		anim.animation_changed.connect(_fit_offset)
 	elif CharacterLibrary.has_character(sprite):
 		anim = CharacterLibrary.make_sprite(sprite)
 	else:
@@ -366,6 +367,7 @@ func _fit_offset() -> void:
 
 var _moving := false
 var _vert := false
+var _rest_face := "down"
 
 
 func _process(delta: float) -> void:
@@ -411,10 +413,19 @@ func _process(delta: float) -> void:
 			anim.flip_h = to.x < 0
 		if anim.animation != a:
 			anim.play(a)
+		_rest_face = ("up" if to.y < 0 else "down") if vertical else "side"
 		_idle = 0.0
 	else:
 		_idle += delta
+		# Rest facing the way we last walked (side views keep their flip).
 		var want := "idle"
+		if _rest_face == "side" and anim.sprite_frames.has_animation("view_right"):
+			want = "view_right"
+		elif _rest_face == "up" and anim.sprite_frames.has_animation("view_back"):
+			want = "view_back"
+			anim.flip_h = false
+		elif _rest_face != "side" and anim.sprite_frames.has_animation("idle_down"):
+			anim.flip_h = false  # a front idle: no mirror
 		if map.player.swimming and anim.sprite_frames.has_animation("swim"):
 			want = "swim"
 		if anim.animation != want and anim.sprite_frames.has_animation(want):
