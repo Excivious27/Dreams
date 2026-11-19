@@ -180,6 +180,7 @@ func _run() -> void:
 				ok(vis.size() >= 2, "%s league night: villagers at the lanes (%d)" % [arc, vis.size()])
 				ok(not RecCenter.lanes_taken().is_empty(), "%s: some lanes taken" % arc)
 			ok(str(m.get("music_track")) == ("rec_center" if arc == "penguins" else "neon"), "%s/%s music" % [arc, room])
+			_c2_07_checks(m, room, arc)
 	await _c1_15_checks()
 	print("rec_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
@@ -261,3 +262,36 @@ func _c1_15_checks() -> void:
 		ok(mus.wanted() != rec1 and m.area_track() == mus.wanted(), "%s jukebox: next record %s" % [arc, mus.wanted()])
 		GameState.run["day"] = 14
 		ok(m.area_track() == house, "%s jukebox resets the next day" % arc)
+
+
+## CONDUCT 2 (c2_07): the rooms' dressing and light. Every decor piece's art exists and
+## sits off the stands and the things you use; the coloured light layer is there and
+## the house lights dim (cooler, not lamplit) after dark.
+func _c2_07_checks(m: GameMap, room: String, arc: String) -> void:
+	var I: Dictionary = m.get("I")
+	var gl: Array = m.get_children().filter(func(n: Node) -> bool: return n is RecGlow)
+	ok(gl.size() == 1 and (gl[0] as RecGlow).lights.size() >= 8, "%s/%s: rec light layer (%d lights)" % [arc, room, (gl[0] as RecGlow).lights.size() if gl.size() > 0 else 0])
+	var tint: Color = m.sky_tint(21 * 60)
+	ok(tint.b > tint.r and tint.r < 0.9, "%s/%s: night tint is the cool rec dim (%s)" % [arc, room, tint])
+	ok(m.sky_tint(13 * 60).is_equal_approx(Color(1, 1, 1)), "%s/%s: full lights by day" % [arc, room])
+	for wp: Dictionary in I.get("wall_props", []):
+		ok(Art.has("furniture", str(wp["name"])), "%s: wall art %s" % [room, wp["name"]])
+	var used := {}
+	for t: Dictionary in I.get("things", []):
+		used[Vector2i(int(t["cell"][0]), int(t["cell"][1]))] = true
+	var stands: Dictionary = RecCenter.data().get("stands", {}).get(room, {})
+	for k: String in stands:
+		for c: Array in stands[k]:
+			used[Vector2i(int(c[0]), int(c[1]))] = true
+	for p: Dictionary in I.get("props", []):
+		var nm := str(p["name"])
+		if not nm.begins_with("rec_"):
+			continue
+		ok(Art.has(str(p.get("group", "furniture")), nm), "%s: decor art %s" % [room, nm])
+		for i in int(p.get("w", 0)) + 1:
+			var c := Vector2i(int(p["cell"][0]) + i, int(p["cell"][1]))
+			ok(not used.has(c), "%s: %s at %s keeps clear of stands and things" % [room, nm, c])
+	if room == "rec":
+		ok(Art.has("tiles", "rec_carpet") and Art.has("tiles", "rec_carpet_gang"), "arcade carpet art")
+		for s: Array in RecDecor.WALL_NEON:
+			ok(Art.has("props", str(s[1])) and not (int(s[0]) in m.call("window_cols")), "wall neon %s off the window" % s[1])

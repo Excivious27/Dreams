@@ -4933,6 +4933,56 @@
    },
    {
     "group": "props",
+    "name": "rec_air_hockey",
+    "cell": [
+     7,
+     8
+    ],
+    "w": 1
+   },
+   {
+    "group": "props",
+    "name": "rec_pinball_a",
+    "cell": [
+     12,
+     6
+    ]
+   },
+   {
+    "group": "props",
+    "name": "rec_pinball_b",
+    "cell": [
+     13,
+     6
+    ]
+   },
+   {
+    "group": "props",
+    "name": "rec_capsule",
+    "cell": [
+     5,
+     3
+    ]
+   },
+   {
+    "group": "props",
+    "name": "rec_photo_booth",
+    "cell": [
+     1,
+     10
+    ]
+   },
+   {
+    "group": "props",
+    "name": "rec_stool_table",
+    "cell": [
+     2,
+     13
+    ],
+    "w": 1
+   },
+   {
+    "group": "props",
     "name": "arcade_cab_0",
     "cell": [
      8,
@@ -4962,6 +5012,16 @@
      12,
      2
     ]
+   }
+  ],
+  "wall_props": [
+   {
+    "name": "rec_poster_0",
+    "x": 3
+   },
+   {
+    "name": "rec_poster_2",
+    "x": 5
    }
   ],
   "things": [
@@ -5215,6 +5275,16 @@
      16
     ],
     "w": 1
+   }
+  ],
+  "wall_props": [
+   {
+    "name": "rec_poster_1",
+    "x": 1
+   },
+   {
+    "name": "rec_poster_3",
+    "x": 14
    }
   ],
   "things": [

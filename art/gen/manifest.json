@@ -48538,6 +48538,26 @@
    "h": 54,
    "w": 98
   },
+  "rec_poster_0": {
+   "file": "furniture/rec_poster_0.png",
+   "h": 52,
+   "w": 38
+  },
+  "rec_poster_1": {
+   "file": "furniture/rec_poster_1.png",
+   "h": 52,
+   "w": 38
+  },
+  "rec_poster_2": {
+   "file": "furniture/rec_poster_2.png",
+   "h": 52,
+   "w": 38
+  },
+  "rec_poster_3": {
+   "file": "furniture/rec_poster_3.png",
+   "h": 52,
+   "w": 38
+  },
   "reed_mat_a": {
    "file": "furniture/reed_mat_a.png",
    "h": 72,
@@ -91641,6 +91661,56 @@
    "h": 96,
    "w": 352
   },
+  "rec_air_hockey": {
+   "file": "props/rec_air_hockey.png",
+   "h": 42,
+   "w": 64
+  },
+  "rec_capsule": {
+   "file": "props/rec_capsule.png",
+   "h": 54,
+   "w": 26
+  },
+  "rec_neon_0": {
+   "file": "props/rec_neon_0.png",
+   "h": 40,
+   "w": 40
+  },
+  "rec_neon_1": {
+   "file": "props/rec_neon_1.png",
+   "h": 40,
+   "w": 40
+  },
+  "rec_neon_2": {
+   "file": "props/rec_neon_2.png",
+   "h": 40,
+   "w": 40
+  },
+  "rec_neon_3": {
+   "file": "props/rec_neon_3.png",
+   "h": 40,
+   "w": 40
+  },
+  "rec_photo_booth": {
+   "file": "props/rec_photo_booth.png",
+   "h": 78,
+   "w": 54
+  },
+  "rec_pinball_a": {
+   "file": "props/rec_pinball_a.png",
+   "h": 66,
+   "w": 43
+  },
+  "rec_pinball_b": {
+   "file": "props/rec_pinball_b.png",
+   "h": 66,
+   "w": 44
+  },
+  "rec_stool_table": {
+   "file": "props/rec_stool_table.png",
+   "h": 42,
+   "w": 46
+  },
   "recycler": {
    "file": "props/recycler.png",
    "h": 56,
@@ -105912,6 +105982,16 @@
    "file": "tiles/rdeco_ruins_9.png",
    "h": 32,
    "w": 32
+  },
+  "rec_carpet": {
+   "file": "tiles/rec_carpet.png",
+   "h": 96,
+   "w": 96
+  },
+  "rec_carpet_gang": {
+   "file": "tiles/rec_carpet_gang.png",
+   "h": 96,
+   "w": 96
   },
   "redge_highlands_0": {
    "file": "tiles/redge_highlands_0.png",

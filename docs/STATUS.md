@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_07): Rec Center visuals
+- Audited both floors and the town lot, both arcs, afternoon and night (`tools/rec_vis_shot.gd`). Ground floor read empty and flat: neon signs were faint, flickered to near-invisible and sat over the window; the arcade carpet was procedural confetti; nothing changed after dark inside; the lot had no lit windows at night; the sign carried 3 px text no phone can read.
+- **New art (3 renders, `tools/slice_c2_07.py`):** air hockey table, two pinball machines, capsule machine, photo booth, stool and cafe table (props/rec_*), four framed game posters (furniture/rec_poster_*, wall_props on both floors), four neon pictogram signs (props/rec_neon_*), seamless arcade carpet in daylight and blacklight versions (tiles/rec_carpet, rec_carpet_gang).
+- **Ground floor:** carpet under the cabinets and pinballs with a brass (Hall: violet) trim; posters beside the window; joystick and star neon in the gaps between cabinets (steady hum, the odd flicker); new pieces placed off every stand and usable cell.
+- **Light:** `RecGlow` (scripts/rec_glow.gd) throws coloured pools and halos from cabinets, claw, jukebox, vending, pinballs, booth, counters, neon and the lane pin decks (blacklight down the lanes in the Rec Hall); faint by day, full after dark, while `GameMap.sky_tint` dims the rec rooms to a cool tint (`RecGlow.tint`) instead of the lamplit house tint. Town lot: lit windows, doors and sign after dark (NightGlow).
+- Test: `tools/rec_test.gd` checks decor art, decor off stands/things, the light layer, day/night tint and neon off the window.
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.

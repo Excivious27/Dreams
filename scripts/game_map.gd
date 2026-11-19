@@ -1455,6 +1455,8 @@ func sky_tint(t: int) -> Color:
 		dark *= 0.3
 	dark *= Settings.night_strength()
 	if not has_sky:
+		if RecCenter.is_rec(self):
+			return RecGlow.tint(dark)
 		if scene_id() in ["house", "interior"]:
 			return Color(1, 1, 1).lerp(Color(1.0, 0.9, 0.78), dark)
 		return Color(1, 1, 1)
