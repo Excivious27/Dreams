@@ -8,7 +8,22 @@ var fails := 0
 
 func _initialize() -> void:
 	Campaign.bypass = true  # tests walk into every region
+	seed(4242)  # the game's own randf/randi rolls (keeper wake, drops) repeat every run
 	_run.call_deferred()
+
+
+## The game seeds each floor from the clock; tests build fixed layouts (0 = clock).
+func _layout(sd: int) -> void:
+	(load("res://scripts/mine.gd") as Variant).force_seed = sd
+
+
+## Wait up to `t` seconds of GAME time (summed frame deltas; check.sh runs this
+## with --fixed-fps 60, so it is a fixed frame count) while `busy` says so.
+func _wait(t: float, busy: Callable) -> void:
+	var gt := 0.0
+	while gt < t and busy.call():
+		await process_frame
+		gt += root.get_process_delta_time()
 
 
 func check(ok: bool, what: String) -> void:
@@ -30,6 +45,7 @@ func _run() -> void:
 	GameState.run["energy"] = 999
 	GameState.run["max_energy"] = 999
 	GameMap.next_spawn = Vector2.ZERO
+	_layout(4242)
 	change_scene_to_file("res://scenes/mine.tscn")
 	await frames(15)
 	var m := current_scene as GameMap
@@ -64,11 +80,9 @@ func _run() -> void:
 		await frames(1)
 		if m.get("_guardian") != null or bool(m.get("_summoning")):
 			break
-	# The keeper surfaces after a 0.4-0.9 s wake timer: wait on real time
-	# (headless frames can be very fast).
-	var tw0 := Time.get_ticks_msec()
-	while m.get("_guardian") == null and Time.get_ticks_msec() - tw0 < 3000:
-		await frames(1)
+	# The keeper surfaces after a 0.4-0.9 s wake timer: wait on game time
+	# (headless frames can be very fast or, on a loaded box, very slow).
+	await _wait(3.0, func() -> bool: return m.get("_guardian") == null)
 	var g: Enemy = m.get("_guardian")
 	check(g != null, "keeper woke after %d rocks (threshold %d)" % [broke, m.call("_threshold")])
 	if g:
@@ -92,16 +106,18 @@ func _run() -> void:
 	await frames(3)
 	check(str(m.call("action_word", lad)) == "Down", "USE says Down beside the shaft")
 	m.player.position = m.cell_center(lad)
-	var tw1 := Time.get_ticks_msec()
-	while Time.get_ticks_msec() - tw1 < 4000 and (current_scene == m or current_scene == null):
-		await frames(1)
+	await _wait(4.0, func() -> bool: return current_scene == m or current_scene == null)
 	m = current_scene as GameMap
 	check(m != null and m.scene_id() == "mine" and int(GameState.run["mine_floor"]) == 2, "stepping onto the shaft descended to floor 2")
 	# Variety: floor 1 entered again and again rarely repeats.
+	# Fixed seeds keep the run repeatable; the style rotation (never one of the
+	# last five) is the game's own. Then two clock-seeded entries prove the live
+	# game rolls a new layout seed each time.
 	var seen := {}
 	var sizes := {}
 	for i in 5:
 		GameState.run["mine_floor"] = 1
+		_layout(101 + i)
 		change_scene_to_file("res://scenes/mine.tscn")
 		await frames(8)
 		var mm := current_scene as GameMap
@@ -116,6 +132,15 @@ func _run() -> void:
 					ores += 1
 		check(rocks > 20 and ores * 3 <= rocks, "floor 1 entry %d: %s, %d rocks, %d ore" % [i, str((mm.get("_style") as Dictionary).get("id", "")), rocks, ores])
 	check(seen.size() >= 4 and sizes.size() >= 4, "5 entries to floor 1: %d styles %s, %d sizes" % [seen.size(), str(seen.keys()), sizes.size()])
+	_layout(0)
+	var seeds := {}
+	for i in 2:
+		GameState.run["mine_floor"] = 1
+		change_scene_to_file("res://scenes/mine.tscn")
+		await frames(8)
+		seeds[int((current_scene as GameMap).get("_seed"))] = true
+	check(seeds.size() == 2, "the live game seeds every floor-1 entry afresh (%s)" % str(seeds.keys()))
+	_layout(4243)
 	GameState.run["mine_floor"] = 2
 	change_scene_to_file("res://scenes/mine.tscn")
 	await frames(10)

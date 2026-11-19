@@ -16,6 +16,7 @@ func check(ok: bool, what: String) -> void:
 
 func _initialize() -> void:
 	Campaign.bypass = true
+	seed(1101)  # the game's own randf/randi rolls repeat every run
 	_run.call_deferred()
 
 
@@ -99,11 +100,12 @@ func _arc(arc: String) -> void:
 	var near := false
 	said.clear()
 	var d := Dialogue.instance(self)
-	var t0 := Time.get_ticks_msec()
+	var gt := 0.0  # game time (summed deltas; a fixed frame count under --fixed-fps), not the wall clock
 	var i := 0
-	while Time.get_ticks_msec() - t0 < 40000:  # real time: the guide walks up on the clock
+	while gt < 40.0:  # the guide walks up on the game clock
 		i += 1
 		await process_frame
+		gt += root.get_process_delta_time()
 		var g := _npc(m, guide_id)
 		if d.active and g and g.hold and g.visible and g.position.distance_to(m.player.position) < 48.0:
 			near = true

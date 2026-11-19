@@ -5,6 +5,14 @@ extends SceneTree
 ## fetches finds).
 ##   godot --headless --path . -s res://tools/gang_play_test.gd
 var fails := 0
+var _layout := 1700
+
+
+## The next mine load builds a fixed layout (a new one each load, the same list
+## every run): the game seeds floors from the clock.
+func _next_layout() -> void:
+	_layout += 1
+	(load("res://scripts/mine.gd") as Variant).force_seed = _layout
 
 
 func check(ok: bool, what: String) -> void:
@@ -15,6 +23,7 @@ func check(ok: bool, what: String) -> void:
 
 func _initialize() -> void:
 	Campaign.bypass = true
+	seed(1717)  # the game's own randf/randi rolls (drops, pup picks) repeat every run
 	_run.call_deferred()
 
 
@@ -23,10 +32,14 @@ func frames(n: int) -> void:
 		await process_frame
 
 
+## Wait `t` seconds of GAME time (summed frame deltas), never the wall clock:
+## check.sh runs this with --fixed-fps 60, so every wait is the same frame count
+## however loaded the box is.
 func secs(t: float) -> void:
-	var t0 := Time.get_ticks_msec()
-	while Time.get_ticks_msec() - t0 < int(t * 1000.0):
+	var gt := 0.0
+	while gt < t:
 		await process_frame
+		gt += root.get_process_delta_time()
 
 
 func _mine(arc: String, hero: String) -> GameMap:
@@ -36,6 +49,7 @@ func _mine(arc: String, hero: String) -> GameMap:
 	GameState.run["energy"] = 999
 	GameState.run["max_energy"] = 999
 	GameMap.next_spawn = Vector2.ZERO
+	_next_layout()
 	change_scene_to_file("res://scenes/mine.tscn")
 	await frames(12)
 	return current_scene as GameMap
@@ -65,11 +79,12 @@ func _swings(m: GameMap, t: float) -> int:
 	GameState.select_slot((GameState.run["toolbar"] as Array).find("pickaxe"))
 	var n := 0
 	var hp := int(m.things[rk]["hp"])
-	var t0 := Time.get_ticks_msec()
-	while Time.get_ticks_msec() - t0 < int(t * 1000.0):
+	var gt := 0.0
+	while gt < t:
 		if not m.player._busy:
 			m.player.do_action("tool")
 		await process_frame
+		gt += root.get_process_delta_time()
 		if int(m.things[rk]["hp"]) != hp:
 			hp = int(m.things[rk]["hp"])
 			n += 1
@@ -146,10 +161,11 @@ func _run() -> void:
 		await frames(2)
 		pt.set_meta("forage_t", 999.0)
 		pt._target = null
-		var t0 := Time.get_ticks_msec()
+		var gt := 0.0
 		var got := false
-		while Time.get_ticks_msec() - t0 < 20000:  # wall clock: a loaded CI box runs few frames a second
+		while gt < 30.0:  # game seconds (fixed frames under --fixed-fps)
 			await process_frame
+			gt += root.get_process_delta_time()
 			if pt._carry_item == "" and pt._carry_find == "":
 				pt.set_meta("forage_t", 999.0)  # no open cell picked this try: look again now
 			var now := 0
@@ -158,10 +174,11 @@ func _run() -> void:
 			if now > before:
 				got = true
 				break
-		check(got, "the pup digs up a find and brings it back (state %s/%s, %.0f px from you)" % [pt._carry_item, pt._carry_find, pt.position.distance_to(m.player.position)])
+		check(got, "the pup digs up a find and brings it back (state %s/%s, %.0f px from you, %.1f game s)" % [pt._carry_item, pt._carry_find, pt.position.distance_to(m.player.position), gt])
 		# Commands across floors: told to stay, it waits by the lift on the new layout.
 		pt.set_mode("wait")
 		GameMap.next_spawn = Vector2.ZERO
+		_next_layout()
 		change_scene_to_file("res://scenes/mine.tscn")
 		await frames(12)
 		m = current_scene as GameMap
@@ -173,6 +190,7 @@ func _run() -> void:
 			check(not m.blocked.has(m.world_to_cell(pt2.position - Vector2(0, 4))), "and on open floor")
 			pt2.set_mode("follow")
 			GameMap.next_spawn = Vector2.ZERO
+			_next_layout()
 			change_scene_to_file("res://scenes/mine.tscn")
 			await frames(12)
 			m = current_scene as GameMap

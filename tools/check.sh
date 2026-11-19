@@ -119,7 +119,7 @@ echo "$cout" | grep -E "FAIL|cash_test" || true
 if ! echo "$cout" | grep -q "cash_test: scanned [0-9]* strings, 0 failures"; then
   echo "cash_test failed"; exit 1
 fi
-cout="$("$GODOT" --headless --path . -s res://tools/gang_play_test.gd 2>&1)"
+cout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/gang_play_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|gang_play_test" || true
 if ! echo "$cout" | grep -q "gang_play_test: 0 failures"; then
   echo "gang_play_test failed"; exit 1
@@ -162,7 +162,7 @@ echo "$cout" | grep -E "FAIL|SCRIPT ERROR|early_gating_test" || true
 if ! echo "$cout" | grep -q "early_gating_test: PASS"; then
   echo "Early gating test failed"; exit 1
 fi
-cout="$("$GODOT" --headless --path . -s res://tools/town_first_test.gd 2>&1)"
+cout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/town_first_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|town_first_test" || true
 if ! echo "$cout" | grep -q "town_first_test: 0 failures"; then
   echo "Town first-visit test failed"; exit 1
@@ -222,7 +222,7 @@ if ! echo "$gout" | grep -q "gift_test: 0 failures"; then
 fi
 
 echo "== mine: keeper, shaft, tiers =="
-mout="$("$GODOT" --headless --path . -s res://tools/mine_test.gd 2>&1)"
+mout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/mine_test.gd 2>&1)"
 echo "$mout" | grep -E "FAIL|MINE DONE" || true
 if ! echo "$mout" | grep -q "MINE DONE, failures: 0"; then
   echo "Mine test failed"; exit 1
@@ -243,7 +243,7 @@ if ! echo "$cout" | grep -q "compile_all: 0 bad"; then
 fi
 
 echo "== campaign: battles, projects, colonies, big mines =="
-kout="$("$GODOT" --headless --path . -s res://tools/campaign_test.gd 2>&1)"
+kout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/campaign_test.gd 2>&1)"
 echo "$kout" | grep -E "FAIL|campaign_test" || true
 if ! echo "$kout" | grep -q "campaign_test: 0 failures"; then
   echo "Campaign test failed"; exit 1
@@ -297,7 +297,7 @@ if ! echo "$tout" | grep -q "STORY DONE, failures: 0"; then
   echo "Story test failed"; exit 1
 fi
 echo "== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) =="
-npout="$("$GODOT" --headless --path . -s res://tools/newgame_penguin_test.gd 2>&1)"
+npout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/newgame_penguin_test.gd 2>&1)"
 echo "$npout" | grep -E "FAIL|SCRIPT ERROR|newgame_penguin_test" || true
 if ! echo "$npout" | grep -q "newgame_penguin_test: 0 failures"; then
   echo "New-game penguin test failed"; exit 1
