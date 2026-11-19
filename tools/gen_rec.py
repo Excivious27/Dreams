@@ -34,6 +34,8 @@ BUILDING = {
     "open_day": 7,              # opens on the first morning from this day once the town intro is done
     "fee": 25,                  # crystals for one game of bowling
     "soda": 12,                 # vending machine price
+    "hours": [9, 24],           # doors open 9am to midnight (closed 9am-6pm on festival days)
+    "house_lane": 4,            # lane villagers never take: always free for a walk-in
 }
 
 # Arcade cabinets on the ground floor: ArcadeHub.open(map, id) plays one (a2's games;
@@ -219,20 +221,28 @@ VISITORS = {
     "ivy": {"slots": [[[5], 17, 19, "rec_up"], ["league", 19, 21, "rec_up"]], "spot": "lane"},
     "alder": {"slots": [[[0], 15, 17, "rec"]], "spot": "lobby"},
     "juniper": {"slots": [[[1], 19, 21, "rec_up"]], "spot": "lane"},
-    "posy": {"slots": [[[6], 14, 16, "rec"]], "spot": "lobby"},
+    "posy": {"slots": [[[6], 17, 19, "rec"]], "spot": "lobby"},
     "benno": {"slots": [[[4], 18, 20, "rec_up"], ["league", 20, 22, "rec_up"]], "spot": "lane"},
     "hazel": {"slots": [["rain", 15, 18, "rec"]], "spot": "lobby"},
     "rook": {"slots": [[[2], 19, 21, "rec_up"]], "spot": "lane"},
 }
 
-# Where visitors stand: per floor, ordered (lanes: the approach cells; cabinets: in front of each).
+# Where visitors stand: per floor, ordered (lanes: on the approach of lanes 1-3, then a
+# partner behind each; lane 4 is the house lane and stays free; cabinets: in front of each).
 STANDS = {
     # cab: two players, then watchers in the gaps (beside a pair, by the claw), then the
     # last two cabinets. A visitor at a cabinet steps aside when you ask for a go.
     "rec": {"cab": [[8, 3], [11, 3], [10, 3], [13, 3], [9, 3], [12, 3]],
             "lobby": [[5, 10], [9, 13], [9, 10], [4, 12], [10, 7], [6, 6]]},
-    "rec_up": {"lane": [[3, 12], [6, 12], [10, 12], [13, 12], [2, 13], [5, 13], [9, 13], [12, 13]],
-               "lobby": [[6, 14], [9, 14], [2, 15], [12, 15]]},
+    "rec_up": {"lane": [[3, 12], [6, 12], [10, 12], [2, 13], [5, 13], [9, 13]],
+               "lobby": [[6, 14], [9, 14], [8, 13], [14, 15], [12, 15], [7, 15]]},
+}
+
+# How well each villager bowls (their average; a game with you lands within about 25 of it).
+BOWL_AVG = {
+    "maple": 182, "gideon": 168, "benno": 118, "finn": 142, "ivy": 131, "juniper": 124, "rook": 147,
+    "theo": 74, "tobin": 66, "wren_jr": 58, "pip": 61, "mabel": 55, "sal": 120, "alder": 96,
+    "lumi": 88, "hazel": 79, "posy": 92,
 }
 
 # What people say about the place. {best} = your best game, {tickets} = tickets on hand,
@@ -291,6 +301,38 @@ CHAT_GANG = {  # gangster-arc swaps: same people, the town they live in now (ser
     "hazel": ["Rain on the lot, so I'm at the {hall}. Even gardeners get a night off.", "I don't bowl. I watch who sits with who. You learn a lot that way."],
     "rook": ["A bowling ball only goes one way. Easiest thing in town to track.", "Quiet up there on a weeknight. The pins cover any conversation you'd rather keep."],
 }
+
+# Where they are and what they're doing: lines by spot ({game} = the cabinet in front of them).
+CHAT_SPOT = {
+    "cab": ["Shh. I'm on a streak. {game} can smell fear.", "One more go on {game} and then I'll go home. That was four goes ago.",
+            "If you want {game}, just ask. I'll watch. I'm a great watcher."],
+    "lane": ["Lane's warm. Want to bowl a game together? Loser buys the Fizzy Pop.", "Bowling's better with company. Grab a ball and join me.",
+             "I'm just practising. ...Okay, I'm losing to myself."],
+    "lobby": ["I came for the games. I'm staying for the sofa.", "Best seat in the house is right here. You see everyone's face when they miss.",
+              "Somebody won the big teddy last week. The whole room clapped."],
+}
+# League night (upstairs): every league bowler, plus a few of their own.
+CHAT_LEAGUE = ["League night! Two to a lane, and lane four's kept for walk-ins.", "League's friendly. Mostly. Gideon keeps a notebook.",
+               "Bowl a game with us if you like. No dues, just bragging rights."]
+CHAT_LEAGUE_OWN = {
+    "gideon": ["League night. Maple's ahead by six pins. Six. I counted twice.", "Steady hands, steady line. Same as the anvil."],
+    "maple": ["League night, dear. I'm defending the cup. Again.", "Gideon thinks I can't hear him counting. I can."],
+    "finn": ["League's like a good tide. Comes round every week whether you're ready or not."],
+    "ivy": ["I've got everyone's averages on paper. Mine's improving. Slowly. Measurably."],
+    "benno": ["League night's the one night the horses go to bed without me."],
+}
+# Rain brings them in: lines for a rainy afternoon.
+CHAT_RAIN = ["Rain all day, so here we all are. Best roof in town.", "Listen to it hammering on the roof! Nobody's going home till it stops.",
+             "Rainy days are rec days. Everybody knows that."]
+# After a game together: [you won, you lost, a tie]. {you}/{them} = scores.
+CHAT_RESULT = {
+    "_": ["{you} to {them}! You win this one. I want a rematch.", "{them} to your {you}. Good game though. Same time next week?", "{you} each! A dead heat. That never happens."],
+    "maple": ["{you} to {them}... well. Don't tell Gideon, dear.", "{them} to {you}. The cup stays on my shelf. Lovely game.", "A tie! I'll take it. Gideon won't."],
+    "gideon": ["{you} to {them}. Hm. Good line. I'll be practising.", "{them} to {you}. Weight, line, follow through. You'll get there.", "Even at {you}. Like two halves of a horseshoe."],
+    "tobin": ["{you} to {them}?! The lane was SLANTED.", "{them} to {you}! I WON! Tell everyone. Tell Pip.", "Same score! That means I win. That's the rule."],
+}
+# The front desk's board: who's in when (shown by "What's on today?").
+DAY_WORDS = {"rest": "a rest day (the 6th and 7th of each week)", "league": "league night (the 3rd, 10th, 17th and 24th)"}
 
 # ---------------------------------------------------------------- quests
 QUESTS = [
@@ -480,6 +522,8 @@ def main():
         "_": "Generated by tools/gen_rec.py",
         "building": BUILDING, "cabinets": CABINETS, "lanes": LANES, "lane_top": LANE_TOP, "lane_foul": LANE_FOUL,
         "visitors": VISITORS, "stands": STANDS,
+        "bowl_avg": BOWL_AVG, "chat_spot": CHAT_SPOT, "chat_league": CHAT_LEAGUE, "chat_league_own": CHAT_LEAGUE_OWN,
+        "chat_rain": CHAT_RAIN, "chat_result": CHAT_RESULT, "day_words": DAY_WORDS,
         "chat_any": CHAT_ANY, "chat_soon": CHAT_SOON, "chat_soon_gang": CHAT_SOON_GANG, "chat_score": CHAT_SCORE, "chat": CHAT, "chat_gang": CHAT_GANG,
         "house_decor": HOUSE_DECOR,
     }

@@ -181,6 +181,7 @@ func _run() -> void:
 				ok(not RecCenter.lanes_taken().is_empty(), "%s: some lanes taken" % arc)
 			ok(str(m.get("music_track")) == ("rec_center" if arc == "penguins" else "neon"), "%s/%s music" % [arc, room])
 	await _c1_15_checks()
+	await _c2_06_checks()
 	print("rec_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -261,3 +262,133 @@ func _c1_15_checks() -> void:
 		ok(mus.wanted() != rec1 and m.area_track() == mus.wanted(), "%s jukebox: next record %s" % [arc, mus.wanted()])
 		GameState.run["day"] = 14
 		ok(m.area_track() == house, "%s jukebox resets the next day" % arc)
+
+
+## CONDUCT 2 (c2_06): opening hours, the weekly visit schedule (every slot really
+## happens, the house lane stays free, no floor overflows its stands), league night
+## upstairs (every bowler at their lane), chatter, the desk board, bowling together.
+func _c2_06_checks() -> void:
+	var rd := RecCenter.data()
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	GameState.run["intro_done"] = true
+	GameState.run["flags"]["rec_open"] = 1
+	GameState.run["day"] = 22
+	GameState.run["time"] = 3 * 60
+	ok(RecCenter.why_closed() != "", "closed at 3am")
+	GameState.run["time"] = 8 * 60 + 30
+	ok(RecCenter.why_closed() != "", "closed at 8:30am")
+	GameState.run["time"] = 10 * 60
+	ok(RecCenter.why_closed() == "", "open at 10am")
+	GameState.run["time"] = 23 * 60 + 59
+	ok(RecCenter.why_closed() == "", "open at 11:59pm")
+	GameState.run["day"] = 14  # festival
+	GameState.run["time"] = 12 * 60
+	ok(RecCenter.why_closed().contains("Festival"), "closed for the festival (%s)" % RecCenter.why_closed())
+	GameState.run["time"] = 19 * 60
+	ok(RecCenter.why_closed() == "", "open after the festival")
+	# The week, clear and wet: every visit slot really happens on some day of it.
+	var stands: Dictionary = rd["stands"]
+	var cap := {"rec": 0, "rec_up": 0}
+	for fl in cap:
+		var seen := {}
+		for kind in stands[fl]:
+			for c in stands[fl][kind]:
+				seen[str(c)] = true
+		cap[fl] = seen.size()
+	var happened := {}
+	for wet in [false, true]:
+		for wd in 7:
+			var day := 15 + wd + (28 if wet else 0)
+			GameState.run["day"] = day
+			GameState.run["weather"] = {str(day): "rain" if wet else "clear"}
+			for hh in range(18, 48):
+				GameState.run["time"] = hh * 30
+				var on := {"rec": 0, "rec_up": 0}
+				for id in rd["visitors"]:
+					var s := RecCenter.slot_now(str(id))
+					if s.is_empty():
+						continue
+					if Npc.place_now(GameState.npcs[id].get("routine", []), str(id)) == "rec":
+						on[str(s[3])] += 1
+						happened["%s:%s" % [id, str(s)]] = true
+				for fl in on:
+					ok(int(on[fl]) <= int(cap[fl]), "day %d %.1fh: %s holds %d (stands %d)" % [day, hh / 2.0, fl, on[fl], cap[fl]])
+				ok(not RecCenter.lanes_taken().has(RecCenter.house_lane()), "house lane free day %d %.1fh" % [day, hh / 2.0])
+	for id in rd["visitors"]:
+		for s in rd["visitors"][id]["slots"]:
+			ok(happened.has("%s:%s" % [id, str(s)]), "%s's visit %s happens (not at work then)" % [id, str(s)])
+	# League night upstairs: every bowler on a lane (two to a lane), lane 4 free.
+	GameState.run["day"] = 24
+	GameState.run["weather"] = {"24": "clear"}
+	GameState.run["time"] = 20 * 60 + 15
+	var tv := RecCenter.today_visits()
+	var up_ids: Array = tv["rec_up"].map(func(e: Array) -> String: return str(e[0]))
+	ok(up_ids.has("gideon") and up_ids.has("maple"), "desk board: Gideon and Maple bowl tonight (%s)" % str(up_ids))
+	var board := RecCenter.today_lines()
+	ok(str(board[0]["text"]).contains("league") and str(board[2]["text"]).contains("Gideon"), "desk board words league night")
+	GameMap.next_interior = "rec_up"
+	GameMap.next_spawn = Vector2.ZERO
+	change_scene_to_file("res://scenes/interior.tscn")
+	for i in 10:
+		await process_frame
+	var m := current_scene as GameMap
+	var d := Dialogue.instance(self)
+	for k in 6:
+		if d.active:
+			d._advance()
+		await process_frame
+	var want := RecCenter.stand_cells("rec_up")
+	var got := {}
+	for n: Npc in m.get("npcs"):
+		if is_instance_valid(n):
+			got[n.id] = n.cell()
+	for id in want:
+		ok(got.has(id), "league night: %s is upstairs" % id)
+		ok(got.get(id, Vector2i(-1, -1)) == want[id], "league night: %s stands at %s (at %s)" % [id, str(want[id]), str(got.get(id, "-"))])
+	var lt := RecCenter.lanes_taken()
+	print("  league night upstairs: %s, lanes %s" % [str(got), str(lt)])
+	ok(lt.size() >= 2 and not lt.has(RecCenter.house_lane()), "league night: lanes %s taken, house lane free" % str(lt.keys()))
+	for id in want:
+		var line := str(RecCenter.chat(str(id))[0]["text"])
+		ok(not line.contains("{") and line.length() > 8, "%s says something filled in: %s" % [id, line])
+		if str(id) == "gideon":
+			ok(not line.contains("before Gideon"), "Gideon doesn't talk about himself in the third person")
+	# A taken lane offers a game with its bowler (and a way out); talking to a bowler too.
+	var taken_lane := int(lt.keys()[0])
+	RecCenter._lane(m, taken_lane)
+	await process_frame
+	ok(d.active and d._choices.get_child_count() == 2 and str((d._choices.get_child(0) as Button).text).begins_with("Bowl with"), "a taken lane offers a game with its bowler")
+	if d.active and d._choices.get_child_count() > 0:
+		d._choose("", d._choices.get_child_count() - 1)
+	for k in 4:
+		await process_frame
+	ok(not d.active and get_root().get_tree().paused == false, "Not now closes it")
+	var bowler: Npc = null
+	for n: Npc in m.get("npcs"):
+		if is_instance_valid(n) and RecCenter.lane_of(n.id) > 0:
+			bowler = n
+	if bowler:
+		RecCenter.visitor_talk(m, bowler)
+		await process_frame
+		while d.active and d._choices.get_child_count() == 0:
+			d._advance()
+			await process_frame
+		ok(d.active and d._choices.get_child_count() == 2 and Dialogue.is_way_out(str((d._choices.get_child(1) as Button).text)), "a bowler offers a game together, with a way out")
+		if d.active and d._choices.get_child_count() > 0:
+			d._choose("", 1)
+		for k in 4:
+			await process_frame
+	# Bowling together: a result line, friendship once a day, tickets for a win.
+	var f0 := int(GameState.run["friendship"].get("gideon", 0))
+	var t0 := Tickets.count()
+	var them := RecCenter.rival_score("gideon")
+	ok(them >= 140 and them <= 195, "Gideon bowls near his average (%d)" % them)
+	var r := RecCenter.together_result("gideon", them + 20)
+	ok(str(r[0]["text"]).contains(str(them)), "result line names his score: %s" % str(r[0]["text"]))
+	ok(int(GameState.run["friendship"]["gideon"]) > f0 and Tickets.count() == t0 + 10, "a win: friendship and +10 tickets")
+	var f1 := int(GameState.run["friendship"]["gideon"])
+	RecCenter.together_result("gideon", them - 20)
+	ok(int(GameState.run["friendship"]["gideon"]) == f1, "friendship from bowling together once a day")
+	# Closed: nobody visits, lanes and cabinets refuse.
+	GameState.run["time"] = 30
+	ok(RecCenter.slot_now("sal").is_empty() and RecCenter.lanes_taken().is_empty(), "after midnight: nobody at the rec")

@@ -141,7 +141,7 @@ func gravity() -> float:
 func _result_lines(head: String) -> Array:
 	var out := [head, "Rows %d · Level %d" % [lines, lvl]]
 	if tetras > 0:
-		out.append("Crystal Crushes: %d" % tetras)
+		out.append("%s: %d" % ["Crystal Crushes" if GameState.is_penguins() else "Neon Crushes", tetras])
 	return out
 
 
