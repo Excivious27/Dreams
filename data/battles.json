@@ -545,6 +545,10 @@
      "supply": 15
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "Branches creak where there's no wind, and small grumpy eyes blink from every orchard row.",
+     "gangsters": "A car with its lights off sits at the top of the orchard road. Then you spot a second one."
+    },
     "region_name": "Orchard Hills"
    },
    "c_highlands": {
@@ -1314,6 +1318,10 @@
      "supply": 20
     },
     "min_battles": 3,
+    "sense": {
+     "penguins": "A howl rolls down off the ridge, and the heather lies flat as if something huge just lay down on it.",
+     "gangsters": "Engines idle up on the ridge. Someone has a lookout on every switchback."
+    },
     "region_name": "Highlands"
    },
    "c_quarry": {
@@ -2035,6 +2043,10 @@
      "supply": 20
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "The ground rumbles. Rocks shift on their own, and something in the dust is breathing.",
+     "gangsters": "A rock crusher starts up with nobody at the controls. The quarry's taken, and they don't want visitors."
+    },
     "region_name": "Quarry"
    },
    "c_marsh": {
@@ -2838,6 +2850,10 @@
      "supply": 20
     },
     "min_battles": 3,
+    "sense": {
+     "penguins": "Fog rolls over your boots and a hundred frogs stop singing at once. Something in the reeds is waiting.",
+     "gangsters": "Headlights blink twice across the bog, then go dark. That's a signal, and it isn't for you."
+    },
     "region_name": "Marsh"
    },
    "c_riverlands": {
@@ -3538,6 +3554,10 @@
      "supply": 20
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "For a moment the river runs the wrong way. Grump tracks line both banks.",
+     "gangsters": "Every bridge has a car parked across it with the engine running."
+    },
     "region_name": "Riverlands"
    },
    "c_ruins": {
@@ -4227,6 +4247,10 @@
      "supply": 25
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "The old stones hum with a cold purple light. Whatever guards the ruins is wide awake.",
+     "gangsters": "Floodlights sweep the old ruins. Somebody has turned them into a fortress."
+    },
     "region_name": "Ruins"
    },
    "c_wastes": {
@@ -4840,6 +4864,10 @@
      "supply": 15
     },
     "min_battles": 3,
+    "sense": {
+     "penguins": "The air tastes of ash and the black stones hum. Out there, Grumps march in rows like soldiers.",
+     "gangsters": "Dust devils, and inside them, motorbikes. The President's patrols ride the Wastes."
+    },
     "region_name": "Wastes"
    },
    "c_sky": {
@@ -5327,6 +5355,9 @@
      "supply": 30
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "The wind up the cloud stair sings a warning, and armour glints on every step."
+    },
     "region_name": "Sky"
    },
    "c_station": {
@@ -5891,6 +5922,9 @@
      "supply": 30
     },
     "min_battles": 3,
+    "sense": {
+     "penguins": "A cold hum comes down from the station, and its lights blink in Grump colours."
+    },
     "region_name": "Station"
    },
    "c_jungle": {
@@ -6469,6 +6503,9 @@
      "supply": 30
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "The green planet's trees lean toward you, and the shadows under them move."
+    },
     "region_name": "Jungle"
    },
    "c_colony_coral": {
@@ -7288,6 +7325,10 @@
      "supply": 20
     },
     "min_battles": 3,
+    "sense": {
+     "penguins": "The reef glows the wrong colour, and every fish has gone quiet.",
+     "gangsters": "Speedboats circle the reef, slowly, the way sharks do."
+    },
     "region_name": "Coral Reach"
    },
    "c_colony_kelp": {
@@ -8030,6 +8071,10 @@
      "supply": 25
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "The kelp sways against the tide. Something big is hiding in it.",
+     "gangsters": "Searchlights cut through the kelp. Someone is guarding a shipment out there."
+    },
     "region_name": "Kelp Hollow"
    },
    "c_colony_ice": {
@@ -8833,6 +8878,10 @@
      "supply": 30
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "Frost cracks across the water toward you, and the ice groans like a giant waking up.",
+     "gangsters": "Floodlit ice, a fence of oil drums, and guards stamping their feet to keep warm."
+    },
     "region_name": "Frostfin Isle"
    },
    "c_colony_ember": {
@@ -9706,6 +9755,10 @@
      "supply": 35
     },
     "min_battles": 2,
+    "sense": {
+     "penguins": "Smoke hangs over the atoll and the sea hisses where lava meets it. Grump drums, far off.",
+     "gangsters": "Smoke, sirens, and a flag you don't like on the atoll's highest rock."
+    },
     "region_name": "Emberclaw Atoll"
    },
    "c_countryside": {
@@ -10104,6 +10157,9 @@
      "supply": 15
     },
     "min_battles": 3,
+    "sense": {
+     "gangsters": "A roadblock of parked trucks. Somebody whistles, and three more doors open."
+    },
     "region_name": "Countryside"
    },
    "c_docks": {
@@ -10552,6 +10608,9 @@
      "supply": 20
     },
     "min_battles": 3,
+    "sense": {
+     "gangsters": "Crates move with nobody carrying them, and every crane on the docks has a lookout."
+    },
     "region_name": "Docks"
    },
    "c_neon": {
@@ -11015,6 +11074,9 @@
      "supply": 25
     },
     "min_battles": 2,
+    "sense": {
+     "gangsters": "The neon flickers in a pattern. Someone is telling the whole district you're coming."
+    },
     "region_name": "Neon"
    },
    "c_uptown": {
@@ -11500,6 +11562,9 @@
      "supply": 25
     },
     "min_battles": 2,
+    "sense": {
+     "gangsters": "Private security on every corner, and every earpiece turns your way."
+    },
     "region_name": "Uptown"
    },
    "c_underground": {
@@ -12062,6 +12127,9 @@
      "supply": 30
     },
     "min_battles": 2,
+    "sense": {
+     "gangsters": "Water drips, and under it, footsteps that stop whenever yours do."
+    },
     "region_name": "Underground"
    }
   },

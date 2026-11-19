@@ -24,7 +24,7 @@ multiplayer. Phone-first, played in portrait.
 - Decisions branch the game: which arc you pick, which character, and good/bad choices
   during play all change what unfolds.
 
-## Arc 1: The Too Two Powerful Penguins (wholesome)
+## Arc 1: The Two Too Powerful Penguins (wholesome)
 - A Light Crystal from a far-off galaxy granted penguins a power, the **Meow Pow Wow**.
 - The Light Crystal sensed the penguins are the chosen ones: the universe's last hope
   against the **Dark Crystal**, a corrupted crystal that corrupted others into the

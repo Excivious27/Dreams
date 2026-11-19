@@ -17,7 +17,11 @@
    "ability": "meow_pow_wow",
    "ability_name": "Meow Pow Wow",
    "ability_desc": "A penguin-cat purr-wave: grumps caught in it turn back into what they were (rank 1: little ones; each rank reaches bigger ones).",
-   "join": "Fine. But I'm the one who talks to the cats."
+   "join": "Fine. But I'm the one who talks to the cats.",
+   "ability_name_wait": "Meow Pow Wow (not yet)",
+   "ability_desc_wait": "Nova feels the star crystal's warmth, but nobody has shown her how to let it out. Catkins, in the crystal meadow, can teach it.",
+   "wait_line": "Nova: 'It's in here, warm, like a purr. But it won't come out. That purring past the east meadow: whoever it is knows how.'",
+   "wait_line_old": "Nova: 'What I did before was an accident, and now it's gone quiet. I need someone to teach me properly. That purring in the crystal meadow...'"
   },
   "dad": {
    "name": "Dad",
@@ -234,7 +238,11 @@
     },
     {
      "who": "",
-     "text": "Penguins. Too Powerful Penguins, by the look of the frost on the gate."
+     "text": "Penguins. The Two Too Powerful Penguins, by the look of the frost on the gate."
+    },
+    {
+     "who": "",
+     "text": "The air around them hums faintly, like a purr you feel more than hear. Whatever power the crystal gave them, nobody has taught them to use all of it yet."
     }
    ],
    "ask": "Who stays with you?"

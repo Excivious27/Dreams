@@ -180,6 +180,40 @@ def _kinds(region):
 PENG_ONLY = ["sky", "station", "jungle"]
 GANG_ONLY = ["docks", "neon", "uptown", "underground", "countryside"]
 SPEAK = {"penguins": "Catkins", "gangsters": "Halo"}
+# What you sense at the edge of a region its campaign still holds (Campaign.gate_words
+# adds the step that's actually next). One line per arc that reaches the region.
+SENSE = {
+    "orchard_hills": {"penguins": "Branches creak where there's no wind, and small grumpy eyes blink from every orchard row.",
+                      "gangsters": "A car with its lights off sits at the top of the orchard road. Then you spot a second one."},
+    "highlands": {"penguins": "A howl rolls down off the ridge, and the heather lies flat as if something huge just lay down on it.",
+                  "gangsters": "Engines idle up on the ridge. Someone has a lookout on every switchback."},
+    "quarry": {"penguins": "The ground rumbles. Rocks shift on their own, and something in the dust is breathing.",
+               "gangsters": "A rock crusher starts up with nobody at the controls. The quarry's taken, and they don't want visitors."},
+    "marsh": {"penguins": "Fog rolls over your boots and a hundred frogs stop singing at once. Something in the reeds is waiting.",
+              "gangsters": "Headlights blink twice across the bog, then go dark. That's a signal, and it isn't for you."},
+    "riverlands": {"penguins": "For a moment the river runs the wrong way. Grump tracks line both banks.",
+                   "gangsters": "Every bridge has a car parked across it with the engine running."},
+    "ruins": {"penguins": "The old stones hum with a cold purple light. Whatever guards the ruins is wide awake.",
+              "gangsters": "Floodlights sweep the old ruins. Somebody has turned them into a fortress."},
+    "wastes": {"penguins": "The air tastes of ash and the black stones hum. Out there, Grumps march in rows like soldiers.",
+               "gangsters": "Dust devils, and inside them, motorbikes. The President's patrols ride the Wastes."},
+    "sky": {"penguins": "The wind up the cloud stair sings a warning, and armour glints on every step."},
+    "station": {"penguins": "A cold hum comes down from the station, and its lights blink in Grump colours."},
+    "jungle": {"penguins": "The green planet's trees lean toward you, and the shadows under them move."},
+    "colony_coral": {"penguins": "The reef glows the wrong colour, and every fish has gone quiet.",
+                     "gangsters": "Speedboats circle the reef, slowly, the way sharks do."},
+    "colony_kelp": {"penguins": "The kelp sways against the tide. Something big is hiding in it.",
+                    "gangsters": "Searchlights cut through the kelp. Someone is guarding a shipment out there."},
+    "colony_ice": {"penguins": "Frost cracks across the water toward you, and the ice groans like a giant waking up.",
+                   "gangsters": "Floodlit ice, a fence of oil drums, and guards stamping their feet to keep warm."},
+    "colony_ember": {"penguins": "Smoke hangs over the atoll and the sea hisses where lava meets it. Grump drums, far off.",
+                     "gangsters": "Smoke, sirens, and a flag you don't like on the atoll's highest rock."},
+    "countryside": {"gangsters": "A roadblock of parked trucks. Somebody whistles, and three more doors open."},
+    "docks": {"gangsters": "Crates move with nobody carrying them, and every crane on the docks has a lookout."},
+    "neon": {"gangsters": "The neon flickers in a pattern. Someone is telling the whole district you're coming."},
+    "uptown": {"gangsters": "Private security on every corner, and every earpiece turns your way."},
+    "underground": {"gangsters": "Water drips, and under it, footsteps that stop whenever yours do."},
+}
 REWARD_ITEMS = {1: {"potion": 3, "copper_bar": 5}, 2: {"greater_potion": 2, "iron_bar": 5}, 3: {"gold_bar": 3, "crystal_refined": 3},
                 4: {"crystal_battery": 2, "ruby": 1, "sapphire": 1}, 5: {"crystal_battery": 3, "gold_bar": 6, "emerald": 1}}
 ARC_ITEMS = {"penguins": {"crystal_refined": 2}, "gangsters": {"servo": 4, "data_chip": 1}}
@@ -454,7 +488,7 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
     big = {"crystals": 500 + 400 * tier, "items": dict(REWARD_ITEMS[tier]), "arc_items": ARC_ITEMS, "strategist": 250 + 100 * tier}
     C[cid] = {"id": cid, "region": region, "title": title, "arc": arc, "tier": tier, "after": ["c_" + a for a in after], "min_pt": max(0, tier - 2),
               "who": SPEAK if arc == "both" else {arc: SPEAK[arc]}, "intro": intro, "won": won, "reward": big, "nodes": nodes, "links": links,
-              "need": NEED[tier], "min_battles": best[gate_id],
+              "need": NEED[tier], "min_battles": best[gate_id], "sense": {a: SENSE[region][a] for a in arcs},
               "region_name": COL.get(region, {}).get("name") or R.get(region, {}).get("name") or region.replace("_", " ").title()}
     # sanity: every reward item exists, every enemy exists, every field exists
     for nd in nodes:

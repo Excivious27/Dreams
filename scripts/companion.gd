@@ -78,13 +78,46 @@ static func meow_rank() -> int:
 ## something it can turn back. Otherwise B-hold uses the active partner's ability.
 static func ability_for(m: GameMap, p: Player) -> String:
 	var partner := str(defs().get(active_id(), {}).get("ability", ""))
-	if GameState.is_penguins() and (GameState.run["flags"].has("meow_taught") or partner == "meow_pow_wow"):
+	if partner == "meow_pow_wow" and not meow_known():
+		return "meow_wait"
+	if GameState.is_penguins() and meow_known():
 		for e in m.enemies.duplicate():
 			if is_instance_valid(e) and e.position.distance_to(p.position) <= 70.0 and (REVERT.has(e.kind) or e.kind == "knight"):
 				return "meow_pow_wow"
 		if partner == "":
 			return "meow_pow_wow"
 	return partner
+
+
+## The Meow Pow Wow is earned in the story: Catkins teaches it in Cat-topia
+## (flag meow_taught, story beat p2_catkins). Until then Nova feels it but can't
+## let it out, and her ability says so.
+static func meow_known() -> bool:
+	return not GameState.run.is_empty() and GameState.run.get("flags", {}).has("meow_taught")
+
+
+## Ability name/description as shown for `cid` right now (Nova's waits for Catkins).
+static func ability_name(cid: String) -> String:
+	var cd: Dictionary = defs().get(cid, {})
+	if str(cd.get("ability", "")) == "meow_pow_wow" and not meow_known():
+		return str(cd.get("ability_name_wait", "Meow Pow Wow (not yet)"))
+	return str(cd.get("ability_name", ""))
+
+
+static func ability_desc(cid: String) -> String:
+	var cd: Dictionary = defs().get(cid, {})
+	if str(cd.get("ability", "")) == "meow_pow_wow" and not meow_known():
+		return str(cd.get("ability_desc_wait", cd.get("ability_desc", "")))
+	return str(cd.get("ability_desc", ""))
+
+
+## What Nova says when you ask for the Meow Pow Wow before Catkins has taught it.
+static func meow_wait_line() -> String:
+	var cd: Dictionary = defs().get("penguin_f", {})
+	var fl: Dictionary = GameState.run.get("flags", {})
+	if int(fl.get("reverted", 0)) > 0:
+		return str(cd.get("wait_line_old", cd.get("wait_line", "")))
+	return str(cd.get("wait_line", ""))
 
 
 ## Seconds between uses of each partner ability (gifts cost mana instead).
@@ -118,6 +151,13 @@ static func use_ability(m: GameMap, p: Player) -> void:
 			Music.instance(m.get_tree()).sfx("nope", "thud")
 			return
 		_ready_at[ab] = Time.get_ticks_msec() / 1000.0 + 8.0
+	if ab == "meow_wait":
+		# Not earned yet: Nova explains, and points at Catkins (no cooldown, no XP).
+		m.hud.toast(meow_wait_line(), Color(0.95, 0.85, 1.0))
+		if not GameState.run["flags"].has("meow_wait_hint"):
+			GameState.run["flags"]["meow_wait_hint"] = true
+			GameState.add_hint("Nova's Meow Pow Wow must be taught first: find Catkins in the crystal meadow (past the east meadow).")
+		return
 	if ab in ["haul", "tail"]:
 		# Passive helpers: the button only reminds you (no XP, no heal, no cooldown).
 		m.hud.toast("Dad: 'Just point at the tree.' (Trees fall in one swing while he's with you.)" if ab == "haul" else "Mer: 'The water's right there.'", Color(0.9, 0.95, 1.0))

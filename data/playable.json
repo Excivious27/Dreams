@@ -26,13 +26,13 @@
   "color": "7a4aa0"
  },
  "penguin_m": {
-  "name": "Pip-Pip (Too Powerful Penguin)",
+  "name": "Pip-Pip (one of The Two Too Powerful Penguins)",
   "sprite": "penguin_king",
   "placeholder": false,
   "color": "1f2a44"
  },
  "penguin_f": {
-  "name": "Nova (Too Powerful Penguin)",
+  "name": "Nova (one of The Two Too Powerful Penguins)",
   "sprite": "penguin_wizard",
   "placeholder": false,
   "color": "3b2a55"

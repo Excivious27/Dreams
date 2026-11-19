@@ -15,6 +15,7 @@ var _open := false
 var _tab := "Items"
 var _skill_open := ""
 var _tab_buttons := {}
+const SkillGlow := preload("res://scripts/skill_glow.gd")
 var _scroll_key := ""  # tab (and skill tree) last shown: a new one opens at the top
 
 
@@ -321,6 +322,8 @@ func _refresh() -> void:
 	_panel.call_deferred("set_size", Vector2(258, 320))
 	for t in _tab_buttons:
 		(_tab_buttons[t] as Button).modulate = Color(1, 0.9, 0.5) if t == _tab or (t == "Options" and _tab == "Keys") or (t == "Quests" and _tab in ["FieldLog", "Workshop", "Foes", "Messages", "Mail"]) else Color(0.85, 0.85, 0.85)
+	if _tab_buttons.has("Skills"):
+		SkillGlow.set_glow(_tab_buttons["Skills"] as Control, SkillGlow.total_free())
 	var r := GameState.run
 	match _tab:
 		"Items":
@@ -461,13 +464,13 @@ func _refresh() -> void:
 					nm.add_theme_font_size_override("font_size", 8)
 					col.add_child(nm)
 					var ab := Label.new()
-					ab.text = "%s: %s" % [str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))]
+					ab.text = "%s: %s" % [Companion.ability_name(cid), Companion.ability_desc(cid)]
 					ab.add_theme_font_size_override("font_size", 6)
 					ab.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 					ab.modulate = Color(0.85, 0.85, 0.8)
 					col.add_child(ab)
 					continue
-				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), str(cd.get("ability_name", "")), str(cd.get("ability_desc", ""))], pick)
+				var b := _button("%s %s — %s: %s" % ["▶" if cid == act else "  ", str(cd.get("name", cid)), Companion.ability_name(cid), Companion.ability_desc(cid)], pick)
 				b.add_theme_font_size_override("font_size", 7)
 			if act != "":
 				_line("  Tap the ♥ button to use the active partner's ability.", 8, Color(0.8, 0.8, 0.8))
@@ -820,14 +823,15 @@ func _skills_tab() -> void:
 	for k in shown:
 		var tb := Button.new()
 		var pf := GameState.points_free(str(k))
-		tb.text = str(GameState.skills_data[k]["name"]) + (" •%d" % pf if pf > 0 else "")
+		tb.text = str(GameState.skills_data[k]["name"]) + ("  +%d" % pf if pf > 0 else "")
 		tb.add_theme_font_size_override("font_size", 7)
 		tb.custom_minimum_size = Vector2(0, 20)
 		tb.focus_mode = Control.FOCUS_NONE
-		tb.modulate = Color(1, 0.88, 0.45) if k == sk else Color(0.78, 0.78, 0.78)
+		tb.modulate = Color(1, 0.88, 0.45) if k == sk else (Color(1, 0.97, 0.85) if pf > 0 else Color(0.78, 0.78, 0.78))
 		var kk := str(k)
 		tb.pressed.connect(func() -> void: _skill_open = kk; _node_sel = ""; _reset_arm = ""; _refresh())
 		tabs.add_child(tb)
+		SkillGlow.set_glow(tb, pf, false)
 	# Level / points / EXP panel
 	var lvl := GameState.skill_level(sk)
 	var xp := int(GameState.run["skills"].get(sk, {}).get("xp", 0))
@@ -872,6 +876,8 @@ func _skills_tab() -> void:
 	l3.text = "%s EXP %d / %d" % [str(sd["name"]), xp, need]
 	l3.add_theme_font_size_override("font_size", 6)
 	hv.add_child(l3)
+	if free > 0:
+		SkillGlow.points_banner(_body, free, str(sd["name"]))
 	var sel_at := _body.get_child_count()
 	# The grid
 	var by_cell := {}

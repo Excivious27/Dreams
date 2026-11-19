@@ -319,6 +319,21 @@ echo "$gout3" | grep -E "FAIL|SCRIPT ERROR|campaign_gate_test" || true
 if ! echo "$gout3" | grep -q "campaign_gate_test: 0 fails"; then
   echo "Campaign gate test (gangsters) failed"; exit 1
 fi
+p5out="$("$GODOT" --headless --path . -s res://tools/campaign_words_test.gd 2>&1)"
+echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|campaign_words_test" || true
+if ! echo "$p5out" | grep -q "campaign_words_test: 0 fails"; then
+  echo "Campaign gate words test failed"; exit 1
+fi
+p5out="$("$GODOT" --headless --path . -s res://tools/meow_gate_test.gd 2>&1)"
+echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|meow_gate_test" || true
+if ! echo "$p5out" | grep -q "meow_gate_test: 0 fails"; then
+  echo "Meow Pow Wow gate test failed"; exit 1
+fi
+p5out="$("$GODOT" --headless --path . -s res://tools/skill_glow_test.gd 2>&1)"
+echo "$p5out" | grep -E "FAIL|SCRIPT ERROR|skill_glow_test" || true
+if ! echo "$p5out" | grep -q "skill_glow_test: 0 fails"; then
+  echo "Skill points glow test failed"; exit 1
+fi
 
 echo "== settings, slots, quality, discovery, perks, birthdays =="
 yout="$("$GODOT" --headless --path . -s res://tools/systems_test.gd 2>&1)"

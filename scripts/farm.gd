@@ -453,7 +453,7 @@ func _partner_scene() -> void:
 	var ch: Array = []
 	for c in pool:
 		var cd: Dictionary = Companion.defs()[c]
-		ch.append("%s — %s" % [str(cd["name"]), str(cd["ability_name"])])
+		ch.append("%s — %s" % [str(cd["name"]), Companion.ability_name(c)])
 	ch.append("Nobody, for now")
 	d.say([{"who": "", "text": str(cfg.get("ask", "Who comes with you?")), "choice": ch, "key": "partner"}])
 	await d.finished
@@ -471,7 +471,10 @@ func _partner_scene() -> void:
 			companion.position = stay_at
 		var cname := str(Companion.defs()[cid]["name"])
 		var ab := str(Companion.defs()[cid]["ability_name"])
-		await say([{"who": cname, "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party and follows you around. Tap %s's round button (bottom of the screen, left of CHECK) to use %s. Change partners in MENU > Party." % [cname, cname, ab]}])
+		var how := "Tap %s's round button (bottom of the screen, left of CHECK) to use %s." % [cname, ab]
+		if str(Companion.defs()[cid].get("ability", "")) == "meow_pow_wow" and not Companion.meow_known():
+			how = "%s can't use the Meow Pow Wow yet: someone has to teach it. Catkins, in the crystal meadow past the east meadow, can." % cname
+		await say([{"who": cname, "text": str(Companion.defs()[cid]["join"])}, {"text": "%s joined your party and follows you around. %s Change partners in MENU > Party." % [cname, how]}])
 		GameState.add_hint("Partners: tap %s's round button (bottom, left of CHECK) to use %s. Others who asked may take it badly if you keep saying no." % [cname, ab])
 	else:
 		for other in pool:
@@ -1172,7 +1175,8 @@ func _mailbox() -> void:
 		await say([{"who": str(sl["who"]), "text": str(sl["text"])}])
 		if sl.has("give"):
 			give(str(sl["give"][0]), int(sl["give"][1]))
-		if sl.has("quest"):
+		if sl.has("quest") and not GameState.has_quest(str(sl["quest"][0])):
+			# Day-gated quests may already be open (opened quietly at wake-up): only announce new ones.
 			GameState.add_quest(str(sl["quest"][0]), str(sl["quest"][1]))
 			hud.toast("New quest: " + str(sl["quest"][1]), Color(1, 0.9, 0.4))
 	if Mail.pending() > 0 or story.is_empty():

@@ -518,14 +518,14 @@ static func story_pointer(qid: String) -> String:
 	if started(cid) and taken_count(cid) > 1:
 		held = " (%d/%d held)" % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1]
 	if GameState.progress_tier() < int(c.get("min_pt", 0)):
-		return "%s is held. Get further in the story, then win \"%s\"." % [str(get_c(gate_of(reg))["region_name"]), str(c["title"])]
+		return "%s is guarded. Get further in the story, then win \"%s\"." % [str(get_c(gate_of(reg))["region_name"]), str(c["title"])]
 	var first: String = CampaignGate.next_step(cid)
 	if first != "" and CampaignGate.story_ok() and not CampaignGate.trained() and not started(cid):
 		first = "Training with %s on the campaign map (Menu > Map)." % CampaignGate.trainer()
 	if first != "":
 		# The step comes first: the HUD shows two short lines, and the tail is what gets cut.
 		var where := "" if first.contains("campaign map") else " (campaign map, Menu > Map)"
-		return "%s is held. First: %s Then win \"%s\"%s." % [str(c["region_name"]), first.left(1).to_lower() + first.substr(1), str(c["title"]), where]
+		return "%s is guarded. First: %s Then win \"%s\"%s." % [str(c["region_name"]), first.left(1).to_lower() + first.substr(1), str(c["title"]), where]
 	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s." % [str(c["region_name"]), str(c["title"]), held]
 
 
@@ -544,20 +544,81 @@ static func offer(m: GameMap, cid: String) -> void:
 	var c := get_c(cid)
 	if c.is_empty() or not is_instance_valid(m):
 		return
-	var why := why_locked(cid)
-	var prog := " Muster for it on the campaign map." if not started(cid) else " You hold %d of %d territories." % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1]
+	var gw := gate_words(cid)
+	var lines: Array = []
+	for t in gw["lines"]:
+		lines.append({"who": "", "text": str(t)})
 	var dl := Dialogue.instance(m.get_tree())
-	if why != "":
-		dl.say([{"who": "", "text": "%s is held against you. Win the %s campaign to open the way. %s" % [str(c["region_name"]), str(c["title"]), why]}])
+	if not bool(gw["board"]):
+		dl.say(lines)
 		await dl.finished
 		_last_offer = Time.get_ticks_msec()
 		return
-	dl.say([{"who": "", "text": "%s is held against you. Win the %s campaign to open the way.%s" % [str(c["region_name"]), str(c["title"]), prog],
-		"choice": ["Open the campaign map", "Not now"], "key": ""}])
+	lines[lines.size() - 1]["choice"] = ["Open the campaign map", "Not now"]
+	lines[lines.size() - 1]["key"] = ""
+	dl.say(lines)
 	await dl.finished
 	_last_offer = Time.get_ticks_msec()
 	if dl.last_choice == 0 and is_instance_valid(m):
 		CampaignScreen.open(m, cid)
+
+
+## What you sense walking up to a region campaign `cid` still holds, and the one
+## true next step, checking the same conditions as why_locked (story and
+## training first, as they're what to do next). {"stage", "lines": [sense, step], "board": offer the
+## campaign map}. Stages: story, train, after (an earlier region first), later
+## (story tier), gather (team/provisions), ready, under_way.
+static func gate_words(cid: String) -> Dictionary:
+	var c := get_c(cid)
+	var a := arc()
+	var pen := a == "penguins"
+	var reg := str(c.get("region_name", "That way"))
+	var sense := str((c.get("sense", {}) as Dictionary).get(a, ""))
+	if sense == "":
+		sense = "You hear a low rumbling ahead, and every hair on your neck stands up." if pen else "The street goes quiet ahead. Too quiet."
+	sense += " It doesn't feel safe to go on yet." if pen else " You'd be walking in alone. Not yet."
+	var lead := CampaignGate.trainer()
+	var out := {"stage": "", "lines": [sense], "board": false}
+	if started(cid):
+		out["stage"] = "under_way"
+		out["board"] = true
+		out["lines"].append("Your banners are already moving: you hold %d of %d territories. Win \"%s\" on the campaign map to break through to %s." % [taken_count(cid) - 1, (c["nodes"] as Array).size() - 1, str(c["title"]), reg])
+		return out
+	if not CampaignGate.story_ok():
+		out["stage"] = "story"
+		var met_meadow := GameState.quest_done("clear_meadow")
+		if pen:
+			out["lines"].append("Find Catkins by the cat statue in the crystal meadow. She'll know what to do." if met_meadow
+				else "Something is howling in the east meadow. Find out what it is. Past it, a cat called Catkins is purring, and she'll know what to do.")
+		else:
+			out["lines"].append("Get through the outskirts gate to Hideout town first. Sal knows these roads and will find you there." if met_meadow
+				else "Someone's been asking about you in the east meadow. Go and see who. Sal knows these roads.")
+		return out
+	if not CampaignGate.trained():
+		out["stage"] = "train"
+		out["board"] = true
+		out["lines"].append(("Catkins says one brave farmer can't take a valley alone. Drill with her first: MENU > Map > Campaign map > Training." if pen
+			else "Sal says you don't take a road with one pair of fists. Drill with Sal first: MENU > Map > Campaign map > Training.") if lead in ["Catkins", "Sal"]
+			else "Drill with %s first: MENU > Map > Campaign map > Training." % lead)
+		return out
+	for pre in c.get("after", []):
+		if all().has(pre) and str(all()[pre].get("arc", "both")) in ["both", a] and not region_open(str(all()[pre]["region"])):
+			out["stage"] = "after"
+			out["lines"].append("The only way into %s runs through %s, and that's held too. %s will lead you there first: win \"%s\" on the campaign map." % [reg, str(all()[pre]["region_name"]), lead, str(all()[pre]["title"])])
+			return out
+	if GameState.progress_tier() < int(c.get("min_pt", 0)):
+		out["stage"] = "later"
+		out["lines"].append("Even %s says it's too soon for %s. Follow the story further (your goal line shows the next step), then come back." % [lead, reg])
+		return out
+	var short := CampaignGate.short_text(cid)
+	out["board"] = true
+	if short != "":
+		out["stage"] = "gather"
+		out["lines"].append("%s is ready to lead you in, but an army needs more first. %s Then muster for \"%s\" on the campaign map." % [lead, short, str(c["title"])])
+		return out
+	out["stage"] = "ready"
+	out["lines"].append("%s has the team and the provisions ready. Muster for \"%s\" on the campaign map, win it, and the way to %s opens." % [lead, str(c["title"]), reg])
+	return out
 
 
 ## After a campaign fight: once back on the map, open the board again.
