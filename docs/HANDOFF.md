@@ -37,6 +37,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19 13:36: Tom: keep going through ALL nine CONDUCTs start to finish (and the final package/artifact) without stopping. His phone playtest notes (20 items) are in docs/TOM-PLAYTEST-2026-11-19.md; each is assigned to a CONDUCT and must be done.
 - 2026-11-19: CONDUCT process changed (standing rule): 20 read/play-only auditors (no code changes, no check.sh) → synthesize into 5-6 file-disjoint fix packages → 5-6 fix agents in parallel with targeted tests only (60-75 min cap) → one merge, one full check.sh, bots, playtest → full package. Target about 2-2.5 h per CONDUCT. Agents that were mid-run under the old process switch now (see Baton).
 - 2026-11-19: Both accounts give Tom the same deliverables: a play link every reply, check-ins at least hourly on long jobs, and after every completed piece of work the full package (complete guide, progress xlsx with % done/% remaining, report, art prompts or 'none', updated artifact page) as files in the chat. See "Tom's deliverables".
 - 2026-11-19: Watchdog: during every CONDUCT (and any agent/bot job), check all agents and bots every 30 minutes and restart anything stopped or stuck (details under CONDUCT).
