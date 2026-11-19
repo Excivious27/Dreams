@@ -29,9 +29,10 @@ var _idle_t := 0.0
 var map: GameMap
 
 
-## Villagers whose life-pose row (w157/w158) was drawn as a different person from
-## their walker: they keep the walker's idle until matching poses are drawn.
-const LIFE_SKIP := ["orla", "benno", "tam", "ivy"]
+## Villagers whose life-pose row was drawn as a different person from their
+## walker: they keep the walker's idle until matching poses are drawn
+## (ivy, tam and benno were redrawn in Round 12, w486/w490).
+const LIFE_SKIP: Array[String] = []
 
 
 ## Life poses (w156-158): a single-frame strip under characters/<base>/<pose>.

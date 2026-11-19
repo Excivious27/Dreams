@@ -171,7 +171,7 @@ func setup(k: String, tier_override := -1) -> void:
 		hp_scale = maxf(1.0, hp_scale * 0.6)
 	hp = int(round(hp * hp_scale))
 	max_hp = hp
-	var art_kind := str(ed.get("art", "grump" if k == "big_grump" else k))
+	var art_kind := str(ed.get("art", k if k != "big_grump" or Art.has("enemies/big_grump", "idle") else "grump"))
 	var group := "enemies/" + art_kind
 	if ed.has("char"):
 		group = "characters/" + str(ed["char"])
@@ -191,7 +191,7 @@ func setup(k: String, tier_override := -1) -> void:
 			anims["die"] = "die"
 		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0, "die": 10.0}, {"attack": false, "hurt": false, "die": false})
 		_sprite.animation = "idle"
-		var s := 0.5 if k != "big_grump" else 1.1
+		var s := 1.1 if group == "enemies/grump" and k == "big_grump" else 0.5  # the old stand-in was the little grump scaled up
 		_sprite.scale = Vector2(s, s)
 		# Feet on the node: offset by half the frame height. Set now too (not only
 		# on frame_changed), or the first frame drew centred on the feet with its
@@ -391,7 +391,8 @@ func _process(delta: float) -> void:
 		elif _enraged:
 			tint = Color(1.0, 0.55, 0.5)
 		_sprite.modulate = tint
-		_sprite.scale = Vector2(0.5 * (1.0 + _squash * 0.25), 0.5 * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(1.1, 1.1)
+		var bs := 1.1 if kind == "big_grump" and not Art.has("enemies/big_grump", "idle") else 0.5
+		_sprite.scale = Vector2(bs * (1.0 + _squash * 0.25), bs * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(bs, bs)
 	# Redraw (hp bar, shadow, telegraph icon) only when what it shows changes.
 	# Packed into one int (no per-frame string format): hp, max_hp, 8 flags, tier, shadow, telegraph/regen.
 	var flags := int(_shield > 0.0) | int(_lunge_tele > 0.0 or _lunge > 0.0) << 1 | int(_range_tele > 0.0) << 2 | int(_stomp_tele > 0.0) << 3 \

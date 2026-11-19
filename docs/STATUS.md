@@ -2,6 +2,22 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-18 — Round 12: art complete (image tool)
+- **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
+- **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):
+  - 21 + 32 + 14 item icons;
+  - portraits: Marlowe, Orla, Ivy, Tam, Benno and Sel (12 moods), winter faces for 9 villagers, 12 minor characters, Big Grump and the Commander, 8 hero outfits, the President (and his tall card), Biscuit, Grandfather Auk, the Hollow Heart trio and Pip the ferry-cat;
+  - villager life poses for 17 villagers (LIFE_SKIP is now empty), 10 seasonal walkers, and Mabel's own walker;
+  - thug walk/attack/hurt/KO sets for 6 thugs plus the Lookout (now his own sprite);
+  - attack frames for 9 foes, a Big Grump boss sheet, three colony bosses (with defeat frames);
+  - dog fight, play, fetch, beg and dig strips for 8 pets; new pup strips; pet gear overlays;
+  - 50 buildings redrawn in place on the same footprint (town, lake, farm, neon district, docks, roadside), with `_night` versions saved for later;
+  - 8 orchard trees in 6 stages, 10 ores, crystal trees, the pylon, sprinkler sprays, silo, incubator, ferry, fountain, storm puddles, glow sprites;
+  - boss banners, party cards, hero cards, gate scenes, 12 story panels, 4 ending panels, the app icon, partner-ability icons, unlock-node icons and all 8 skill-icon sheets.
+- **Kits for later rounds:**
+  - blob edge sets (river, pond, shore, snow, bog, cave, paths, tilled soil, colony shores; `tiles/<set>_<role>_<n>`) and 60 new seamless textures, ready for the map round;
+  - generic pieces (cliff kits, interiors, river and marsh dressing, UI kits) in art/gen/kits/, which is left out of the web export until a map uses them.
+
 ## 2026-11-18 — Audio project (ACE Music + CC0)
 - **Music:** 61 real tracks from ACE Music replace every placeholder. Every area, room, colony and battle mood has one. Bosses get music by kind, with the arc themes reused for the boss and ending songs. Also: chase and danger music, both endings with the credits after, a music-box title and a sung merkitty lullaby.
 - **Jingles and effects:**
