@@ -71,3 +71,7 @@ mega_gilt
 bowling_alley
 jukebox_oldie
 mega_iron
+combat_light
+combat_light_gang
+combat_elite
+combat_elite_gang

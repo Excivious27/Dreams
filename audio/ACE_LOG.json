@@ -739,6 +739,154 @@
    }
   ]
  },
+ "combat_elite": {
+  "chosen": "so_4e87e93ac62648d9aa689ced",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/combat_elite__so_4e87e93ac62648d9aa689ced.mp3",
+    "id": "so_4e87e93ac62648d9aa689ced",
+    "page": "https://acemusic.ai/song/dpv5t3s2jnw6",
+    "score": {
+     "dur": 106.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_elite__so_4e87e93ac62648d9aa689ced.mp3",
+     "holes": 0,
+     "lvl_diff": 4.800000190734863,
+     "peak": 1.21,
+     "score": 91.59,
+     "seam": 0.988
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/combat_elite__so_931840c6750b475a8d6c7d9a.mp3",
+    "id": "so_931840c6750b475a8d6c7d9a",
+    "page": "https://acemusic.ai/song/6kpbcq59sk7s",
+    "score": {
+     "dur": 108.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_elite__so_931840c6750b475a8d6c7d9a.mp3",
+     "holes": 0,
+     "lvl_diff": 4.900000095367432,
+     "peak": 0.998,
+     "score": 90.72,
+     "seam": 0.981
+    }
+   }
+  ]
+ },
+ "combat_elite_gang": {
+  "chosen": "so_f5ee560659ce4e24a1bdc4d9",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/combat_elite_gang__so_f5ee560659ce4e24a1bdc4d9.mp3",
+    "id": "so_f5ee560659ce4e24a1bdc4d9",
+    "page": "https://acemusic.ai/song/gj7xzuxzri9r",
+    "score": {
+     "dur": 107.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_elite_gang__so_f5ee560659ce4e24a1bdc4d9.mp3",
+     "holes": 0,
+     "lvl_diff": 4.0,
+     "peak": 1.325,
+     "score": 92.76,
+     "seam": 0.987
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/combat_elite_gang__so_748b08ebbb4d4a35b455fef9.mp3",
+    "id": "so_748b08ebbb4d4a35b455fef9",
+    "page": "https://acemusic.ai/song/r4wz3vaffrnu",
+    "score": {
+     "dur": 109.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_elite_gang__so_748b08ebbb4d4a35b455fef9.mp3",
+     "holes": 0,
+     "lvl_diff": 2.9000000953674316,
+     "peak": 1.331,
+     "score": 91.41,
+     "seam": 0.957
+    }
+   }
+  ]
+ },
+ "combat_light": {
+  "chosen": "so_3efa36ff28454ce28ba0b183",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/combat_light__so_3efa36ff28454ce28ba0b183.mp3",
+    "id": "so_3efa36ff28454ce28ba0b183",
+    "page": "https://acemusic.ai/song/jgmidfb5px58",
+    "score": {
+     "dur": 98.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_light__so_3efa36ff28454ce28ba0b183.mp3",
+     "holes": 0,
+     "lvl_diff": 3.5999999046325684,
+     "peak": 1.366,
+     "score": 94.38,
+     "seam": 0.998
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/combat_light__so_e616f10fc7aa422296c138f6.mp3",
+    "id": "so_e616f10fc7aa422296c138f6",
+    "page": "https://acemusic.ai/song/x8rk9q7v2r26",
+    "score": {
+     "dur": 97.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_light__so_e616f10fc7aa422296c138f6.mp3",
+     "holes": 0,
+     "lvl_diff": 5.0,
+     "peak": 1.127,
+     "score": 91.44,
+     "seam": 0.989
+    }
+   }
+  ]
+ },
+ "combat_light_gang": {
+  "chosen": "so_e1e8eccd82c248dbb4cfa46a",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/combat_light_gang__so_37513ad16ec64be286506818.mp3",
+    "id": "so_37513ad16ec64be286506818",
+    "page": "https://acemusic.ai/song/zpsucximm7cx",
+    "score": {
+     "dur": 97.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_light_gang__so_37513ad16ec64be286506818.mp3",
+     "holes": 0,
+     "lvl_diff": 3.700000047683716,
+     "peak": 1.404,
+     "score": 93.63,
+     "seam": 0.991
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/combat_light_gang__so_e1e8eccd82c248dbb4cfa46a.mp3",
+    "id": "so_e1e8eccd82c248dbb4cfa46a",
+    "page": "https://acemusic.ai/song/ku25xzsdp2me",
+    "score": {
+     "dur": 98.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/combat_light_gang__so_e1e8eccd82c248dbb4cfa46a.mp3",
+     "holes": 0,
+     "lvl_diff": 2.0999999046325684,
+     "peak": 1.374,
+     "score": 96.65,
+     "seam": 0.997
+    }
+   }
+  ]
+ },
  "countryside": {
   "chosen": "so_acc5a9e73f8643a6bce02097",
   "kind": "music",

@@ -74,13 +74,15 @@ const GROUP_DB := {"ui_": -5.0, "menu_": -4.5, "page": -3.5, "equip": -5.0, "tal
 	"step_": 0.0, "coin": -3.0, "pickup": -3.0, "j_": 0.0, "levelup": 0.0, "quest_done": 0.0}
 
 
-func play(track: String) -> void:
+## `fade`: crossfade seconds (DangerMusic cuts in quicker and fades out slower).
+func play(track: String, fade := FADE) -> void:
 	if _player == null:
 		_pending = track
 		return
 	if track == _current:
 		return
 	_current = track
+	_fade = fade
 	var stream := _stream_for(track)
 	if stream != null:
 		_start(stream, track)
@@ -107,6 +109,9 @@ func wanted() -> String:
 	return _current
 
 
+var _fade := FADE
+
+
 func _start(stream: AudioStream, name: String) -> void:
 	if stream is AudioStreamOggVorbis:
 		(stream as AudioStreamOggVorbis).loop = not (name in ONCE)
@@ -124,14 +129,14 @@ func _start(stream: AudioStream, name: String) -> void:
 		_player = _fading
 		_fading = old
 		_tw_out = create_tween()
-		_tw_out.tween_property(old, "volume_db", -40.0, FADE)
+		_tw_out.tween_property(old, "volume_db", -40.0, maxf(0.05, _fade))
 		_tw_out.tween_callback(old.stop)
 	_player.stream = stream
 	_player.volume_db = -30.0
 	if not _muted:
 		_player.play()
 		_tw_in = create_tween()
-		_tw_in.tween_property(_player, "volume_db", MUSIC_DB + _duck, FADE)
+		_tw_in.tween_property(_player, "volume_db", MUSIC_DB + _duck, maxf(0.05, _fade))
 
 
 ## A song we can play right now: packed, already downloaded, or in the cache.
@@ -184,8 +189,8 @@ static var stream_base := ""
 static var retry_delays: Array = [2.0, 5.0, 12.0, 30.0, 60.0]
 ## Songs heard often, fetched quietly one by one once the first song is in.
 const PREFETCH := ["night", "rain", "town", "meadow", "forest", "lake", "winter", "farm_fall"]
-const PREFETCH_GANG := ["arc_gangsters", "countryside", "hideout", "neon", "docks"]
-const PREFETCH_PENGUIN := ["arc_penguins", "cattopia", "beach", "mountain"]
+const PREFETCH_GANG := ["arc_gangsters", "combat_light_gang", "raid", "countryside", "boss_gang", "hideout", "neon", "docks", "combat_elite_gang"]
+const PREFETCH_PENGUIN := ["arc_penguins", "combat_light", "danger", "cattopia", "boss_penguin", "beach", "mountain", "combat_elite"]
 
 
 static func _stream_list() -> Array:
