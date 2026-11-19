@@ -36,9 +36,9 @@ func _words(arc: String, cid: String, want: String, must: Array) -> Dictionary:
 	var wl := Campaign.why_locked(cid)
 	match want:
 		"story":
-			check(not CampaignGate.story_ok() and wl == CampaignGate.story_need(), "%s/%s: story lock is real" % [arc, cid])
+			check(not CampaignGate.story_ok() and CampaignGate.lock(cid) == CampaignGate.story_need() and wl != "", "%s/%s: story lock is real" % [arc, cid])
 		"train":
-			check(CampaignGate.story_ok() and not CampaignGate.trained() and wl.begins_with("Train"), "%s/%s: training lock is real" % [arc, cid])
+			check(CampaignGate.story_ok() and not CampaignGate.trained() and CampaignGate.lock(cid).begins_with("Train") and wl != "", "%s/%s: training lock is real" % [arc, cid])
 		"after":
 			check(wl.begins_with("Open "), "%s/%s: an earlier region really comes first (%s)" % [arc, cid, wl])
 		"later":
