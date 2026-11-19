@@ -4,15 +4,15 @@ The shared memory between Tom's two Claude accounts (Team and personal). Tom swi
 
 ## Baton (update on every push)
 
-Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`. Times in Pacific.
+Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 05:55 PT, Team account (game chat)
-- **Done:** Round 13 complete (all 10 jobs merged: rec center/bowling, arcade, community farm, campaign gating + drill + briefings, mega regions framework + 5 new regions + Ironline, audio fixes, animation fixes, world fixes, gangster cash/redraws/mining/pup in mines). Art and audio outstanding: zero. Axe fishing fixed (rod must be held).
-- **In progress:** CONDUCT 1 of 9 (focus: new-player first 3 hours, both arcs). 20 agents in worktrees `/home/claude/wt/c1_NN`, branches `c1/NN` (local only; scopes in that machine's /home/claude/wt/C1_SCOPES.txt, also summarised in STATUS.md). Merged so far: c1/20 inventory, c1/10 farming week, c1/06 early gating, c1/12 early combat. The other 16 were resumed after a server restart.
-- **Next step:** merge the remaining c1 branches, check.sh, push; 20-bot playtest (`tools/bots.sh 3 DIR`); fix; guide + spreadsheet + artifact. Then CONDUCT 2 (rec/arcade/community farm) and 3 (campaigns); wait 5 h (send_later); CONDUCT 4-6 (mega regions, home world look, audio); wait 5 h; CONDUCT 7-9 (story, economy, release readiness) and the full package. Plan: docs/CONDUCT-PLAN.md.
-- **Jobs running elsewhere:** the c1 agents (Team account sandbox only). If the other account picks up, those branches are lost: redo CONDUCT 1 from the plan.
+- **Last update:** 2026-11-19 08:20 PT, Team account (game chat)
+- **Done:** Round 13 (pushed). CONDUCT 1 of 9: 19 of 20 agent branches merged into the Team sandbox's local main (not pushed yet; see PROJECT-MEMORY section 5 for what they contain).
+- **In progress (Team sandbox only):** finishing CONDUCT 1: two gangster goal-line checks fail after merging (c1/02 changed the post-meadow flow; agent c1_03 is reconciling), c1/04 (held-tool rules) still running. Then full check.sh, push, 20-bot playtest, package.
+- **Next step:** if the Team chat is gone and these merges never reached GitHub, redo CONDUCT 1 from docs/CONDUCT-PLAN.md (the scopes are listed there). Otherwise: CONDUCT 2 (rec/arcade/community farm) and 3 (campaigns), wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package.
+- **Jobs running elsewhere:** CONDUCT 1 agents in the Team sandbox (/home/claude/wt/c1_NN, branches c1/NN, local only).
 - **WIP branches:** none on GitHub.
-- **Open questions for Tom:** keep 3 potato seeds in M.'s first letter (gangster)? Hide arc stations on the Plans board until the arc intro? Is the softened first boss right? Mayor Alder's birthday shows in the gangster arc (to check).
+- **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs, then the fully updated artifact.
 
 ## Decisions (newest first)
@@ -36,6 +36,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 One line per finished piece of work: date, account, what was done.
 
+- 2026-11-19, Team: docs/PROJECT-MEMORY.md (full project context) + tools/setup_sandbox.sh; handoff rule: every push keeps PROJECT-MEMORY current.
 - 2026-11-19, Team: CONDUCT 1 first merges (inventory, farm week, early gating, early combat).
 - 2026-11-18, Team: Round 13 finished and pushed (10 jobs, bots + playtest clean).
 - 2026-11-18, Team: handoff made automatic (CLAUDE.md rules, Baton, Decisions, Log, Project instructions).
@@ -131,4 +132,5 @@ Optional: finish or park the current step, push, fill in the Baton, reply with a
 4. Customize → Connectors → + Add → Add custom connector: `ace-music`, `https://acemusic.ai/mcp`, OAuth → Connect → Allow (same ACE account).
 5. Render → dreams-image-mcp → Environment → copy `MCP_AUTH_TOKEN`. Add custom connector: `dreams-image`, `https://dreams-image-mcp.onrender.com/mcp`, no sign-in, header `Authorization: Bearer <token>` (or URL `.../mcp/<token>` if no header field; keep it secret) → Connect.
 6. Set the dreams-image and ACE tools to Always allow; turn all three on in the chat's + menu.
+6b. First message in a new sandbox, Claude runs `bash tools/setup_sandbox.sh` itself (installs Godot 4.5.1 headless and Python deps, first import); Tom does nothing.
 7. Create a Project called "Dreams" and paste the Claude Project instructions above into it. Start every Dreams chat inside that Project; no first message is needed beyond what Tom wants done.
