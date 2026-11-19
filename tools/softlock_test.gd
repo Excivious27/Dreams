@@ -85,7 +85,7 @@ func _run() -> void:
 	# Go one level in (first category), then B out twice.
 	await press("a")
 	await frames(14)
-	check(d.active and d._text.text.begins_with("🔒"), "plans category list opens")
+	check(d.active and d._text.text.contains("not open yet"), "plans category list opens")
 	for i in 4:
 		if not d.active:
 			break
