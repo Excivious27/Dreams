@@ -350,8 +350,8 @@ func _process(delta: float) -> void:
 				_carry_item = "fetch"
 				break
 	# Mines: dig runs between fights (PupMine).
-	if _carry_item == "" and mode == "follow" and _target == null and PupMine.active(map):
-		PupMine.maybe_forage(self, delta)
+	if mode == "follow" and PupMine.active(map):
+		PupMine.tick(self, delta)
 	# Pick a target.
 	if mode in ["attack", "follow", "guard"]:
 		if _target != null and (not is_instance_valid(_target) or not _target._alive):
@@ -394,7 +394,7 @@ func _process(delta: float) -> void:
 		stop = 4.0
 	elif _carry_item != "":
 		goal = _carry_from if _carry_item == "fetch" else player.position
-		stop = 6.0
+		stop = 6.0 if _carry_item == "fetch" else 12.0  # bringing: _keep_clear holds it ~9 px off you
 	var to := goal - position
 	var dist := to.length()
 	# Start moving a little past the stop distance, stop at it: no flicker

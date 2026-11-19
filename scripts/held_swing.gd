@@ -38,7 +38,7 @@ func _ready() -> void:
 	_spr.texture = tex
 	_spr.centered = false
 	_spr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	var s := 12.0 / maxf(1.0, maxf(tex.get_width(), tex.get_height()))
+	var s := (15.0 if kind == "sweep" else 12.0) / maxf(1.0, maxf(tex.get_width(), tex.get_height()))
 	if kind == "aim":
 		s = 10.0 / maxf(1.0, maxf(tex.get_width(), tex.get_height()))
 	_spr.scale = Vector2(s, s)

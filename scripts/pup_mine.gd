@@ -23,15 +23,20 @@ static func settle(m: GameMap) -> void:
 	var st := Pet.state()
 	var w: Array = st.get("wait", [])
 	var waiting := w.size() >= 3 and str(w[0]) == "mine"
-	var want: Vector2 = m.player.position + Vector2(-14, 4)
-	var c := open_cell_near(m, m.world_to_cell(want), m.world_to_cell(m.player.position))
-	pt.position = m.cell_center(c) + Vector2(0, 4)
+	var want: Vector2 = m.player.position + Vector2(-14, 0)
+	var c := open_cell_near(m, feet_cell(m, want), feet_cell(m, m.player.position))
+	pt.position = m.cell_center(c) + Vector2(0, -2)  # feet just inside the cell
 	if waiting:
 		# The cave it waited in has shifted: it waited by the lift instead.
 		st["wait"] = ["mine", pt.position.x, pt.position.y]
 		if not bool(m.get_meta("pup_told", false)):
 			m.set_meta("pup_told", true)
 			m.hud.toast("%s waited by the lift (%s)." % [Pet.name_of(), str(st.get("mode", "wait"))], Color(0.85, 1.0, 0.85))
+
+
+## The cell under a feet position (cell_center() is a cell's bottom edge).
+static func feet_cell(m: GameMap, p: Vector2) -> Vector2i:
+	return m.world_to_cell(p - Vector2(0, 4))
 
 
 ## Nearest walkable, empty cell to `c` (never the player's own cell).
@@ -62,7 +67,19 @@ static func dig_pool(m: GameMap) -> Array:
 	return pool.filter(func(id: String) -> bool: return GameState.items.has(id))
 
 
-## Called from Pet._process while following with nothing to do.
+## Called from Pet._process every frame while following in the mine.
+static func tick(pt: Pet, delta: float) -> void:
+	if pt._carry_item == "" and pt._target == null:
+		maybe_forage(pt, delta)
+	elif pt._carry_item == "fetch" and pt._carry_find == "mine":
+		# Rock in the way: after a few seconds it digs wherever it got to.
+		var t := float(pt.get_meta("forage_run", 0.0)) + delta
+		pt.set_meta("forage_run", t)
+		if t > 4.0:
+			pt._carry_item = "digging"
+			dig_find(pt)
+
+
 static func maybe_forage(pt: Pet, delta: float) -> void:
 	var m := pt.map
 	var t := float(pt.get_meta("forage_t", 0.0)) + delta
@@ -70,7 +87,7 @@ static func maybe_forage(pt: Pet, delta: float) -> void:
 	if t < FORAGE_EVERY or m.nearest_enemy_to(m.player.position, 6.0 * GameMap.TILE) != null:
 		return
 	pt.set_meta("forage_t", randf_range(-6.0, 0.0))
-	var pc := m.world_to_cell(m.player.position)
+	var pc := feet_cell(m, m.player.position)
 	var best := Vector2i(-1, -1)
 	for i in 12:
 		var q := pc + Vector2i(randi_range(-FORAGE_REACH, FORAGE_REACH), randi_range(-FORAGE_REACH, FORAGE_REACH))
@@ -79,9 +96,10 @@ static func maybe_forage(pt: Pet, delta: float) -> void:
 			break
 	if best == Vector2i(-1, -1):
 		return
-	pt._carry_from = m.cell_center(best) + Vector2(0, 4)
+	pt._carry_from = m.cell_center(best) + Vector2(0, -2)
 	pt._carry_item = "fetch"
 	pt._carry_find = "mine"
+	pt.set_meta("forage_run", 0.0)
 	m.emote(pt, "surprise", 0.6)
 	Music.instance(pt.get_tree()).sfx("bark")
 

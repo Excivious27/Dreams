@@ -62,6 +62,16 @@ echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
   echo "storage_test failed"; exit 1
 fi
+cout="$("$GODOT" --headless --path . -s res://tools/cash_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|cash_test" || true
+if ! echo "$cout" | grep -q "cash_test: scanned [0-9]* strings, 0 failures"; then
+  echo "cash_test failed"; exit 1
+fi
+cout="$("$GODOT" --headless --path . -s res://tools/gang_play_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|gang_play_test" || true
+if ! echo "$cout" | grep -q "gang_play_test: 0 failures"; then
+  echo "gang_play_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/coop_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|coop_test" || true
 if ! echo "$cout" | grep -q "coop_test: 0 failures"; then

@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: gangster arc cash, underworld look, gang mining/swings, pup in the mines
+- **Cash, not crystals (gangster arc):** `Money` (scripts/money.gd) is the one arc-aware money name/symbol (`sym/fmt/word/t`). `MoneyHook` (autoload) installs `Money.t` as a Translation, so every Label/Button shows `$` and "cash" in the gangster arc (shops, rewards, toasts, mail, quests, sell box, bank, crafting fees, story choices); Dialogue, the HUD goal line and the campaign board's drawn text convert too. HUD shows a cash icon (art/gen/ui/cash); mine cash loot flies in as a bundle (ui/cash_bundle). Coin clinks become bill sounds (`cash_pickup`), the morning sell-box payout rings the register (`cash_register`) — CC0 Money/purchase packs. Penguin arc unchanged. Test: tools/cash_test.gd scans every gangster-arc data/script string for crystal money.
+- **Underworld redesign (29 renders, art/incoming/r13/):** the six thugs + lookout, all eight lieutenants (sprites, portraits, boss cards), the twelve crew (sprites, portraits, badges, signs), the ten Marked and all eight gang heroes were redrawn darker and cyberpunk (night-city coats, neon trims, implants, hard faces, ages ~15–30; Vance, Mags, Pike, Mama Rosa, Doc, Marlene now young). Same sheet layouts, cut by the original slicers via `slice_world5.py` steps `r13_heroes`, `r13_dark`, `r13_marked`, `r13_cash`.
+- **Gang mining and tools:** the six gang heroes that had no tool poses now have hand-picked hoe/axe/pickaxe/water poses (`GANG_TOOL_ROWS` in slice_world5.py). Every work swing takes the same time for every hero (`Player.TOOL_TIME`), so the gang side no longer mines faster; a hero with no pose for a tool swings its attack frames with the tool drawn over (`HeldSwing`).
+- **Sword on gangster:** gang attack frames are empty-handed, so a held sword/club is drawn sweeping over the swing; guns are held out when fired.
+- **Pup in the mines:** the pup follows you down (`PupMine`), stands on open floor of each new layout, keeps stay/guard (waits by the lift), fights, and between fights runs off to dig finds from the floor's ore pool and carries them back. Test: tools/gang_play_test.gd.
+
 ## 2026-11-18 — Round 12: art complete (image tool)
 - **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
 - **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):
