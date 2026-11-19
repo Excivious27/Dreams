@@ -2,6 +2,11 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (fix P8): desktop / full-screen play
+- On a computer (desktop browser or native run) with a landscape window the view widens instead of showing a thin portrait strip: height stays 480, width follows the window (up to 960, e.g. 853x480 at 16:9), so the camera shows more of the map. Phones and portrait windows are exactly as before (270x480).
+- HUD spreads to the screen: hearts/toolbar/goal top-left, clock box, place name, heat and the energy bar at the right edge, boss bar centred, edge arrow uses the whole view. Menus, dialogue and every full-screen panel (chest, craft, arcade, bowling, prizes, campaign board, epilogue, hack) stay a 270-px column in the middle; dim side curtains cover the world while one is open. Title screen: landscape key art, centred column.
+- Fullscreen: F11 / Alt+Enter, Menu > Options > Fullscreen (remembered; the web build asks the browser on the first click when it is on). On-screen touch controls: hidden on computers by default; Options > On-screen controls auto/always/never. Native desktop runs open in a 1280x720 window.
+- Test: tools/desktop_layout_test.gd (1920x1080, 1366x768, 2560x1440, ultrawide, portrait, phone 1080x1920 and 270x480; screenshots under xvfb).
 ## 2026-11-19 — CONDUCT 2 (c2_13): gangster flavour of the Rec Hall, arcade and Westside Lot Garden
 - Rec Hall: every adult visitor now has gangster-arc lines there (Gideon, Maple, Finn, Lumi, Theo, Ivy, Juniper, Posy, Benno, Hazel, Rook + Alder/Sal); front desk greets with the hall's rule; Tobin's bowling bet no longer has Dad "putting up stakes"; the quest text says "the rec" (fits both arcs).
 - Prizes: Penguin Plush and Top Hat are penguin-arc only; the gangster counter (and claw machine) has Fuzzy Dice and a Pinstripe Fedora instead (`Tickets.arc_ok`, lock_text "Not on this counter."). Item texts no longer name the Rec Center/commons or say "high roller"; Commons Stew is Community Stew.

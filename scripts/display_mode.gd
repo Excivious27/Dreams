@@ -94,7 +94,7 @@ func _ready() -> void:
 		r.visible = false
 		_curtain.add_child(r)
 		_sides.append(r)
-	if not is_phone() and DisplayServer.get_name() != "headless":
+	if not is_phone() and DisplayServer.get_name() != "headless" and not _tool_run():
 		# Desktop: no on-screen pad unless asked for.
 		TouchControls.visible_controls = int(Settings.get_v("touch_ui")) == 1
 		if not OS.has_feature("web") and force < 0:
@@ -102,6 +102,12 @@ func _ready() -> void:
 	elif int(Settings.get_v("touch_ui")) == 2:
 		TouchControls.visible_controls = false
 	_refit()
+
+
+## Test/shot tools (-s script, or a forced --resolution) keep the window they asked for.
+static func _tool_run() -> bool:
+	var a := OS.get_cmdline_args()
+	return a.has("-s") or a.has("--script") or a.has("--resolution")
 
 
 ## Native desktop runs open in a landscape window (the project's window override

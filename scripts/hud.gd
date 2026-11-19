@@ -25,7 +25,7 @@ static var stick_ok := false
 
 static func hud_rect_blocks(p: Vector2) -> bool:
 	for r: Rect2 in extra_rects:
-		if r.has_point(p):
+		if r.has_point(DisplayMode.ui(p)):  # registered by centred layers (column coords)
 			return true
 	return p.y >= y_offset and p.y < y_offset + TOOLBAR_BOTTOM
 
