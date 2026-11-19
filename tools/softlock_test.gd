@@ -143,5 +143,34 @@ func _run() -> void:
 	await frames(3)
 	check(not d.active and int(GameState.run["decisions"].get("t_softlock", -1)) == 0, "A answers it")
 
+	# 9. (CONDUCT 2) A screen opened over a dialogue keeps the dialogue's pause; once both
+	# are gone nothing is left on screen, and the game must not stay frozen.
+	await frames(20)
+	d.say([{"text": "Open the chest?"}])
+	await frames(5)
+	ChestScreen.open(m, "chest", "Chest")
+	await frames(5)
+	d._close()
+	await frames(10)
+	await press("b")  # closes the chest (restores the pause it found)
+	await frames(40)
+	check(not paused and not d.active, "no frozen game after chest-over-dialogue (paused=%s)" % paused)
+	check(Hud.modal_rect.size == Vector2.ZERO, "chest cleared modal_rect")
+
+	# 10. MENU with a screen opened from the menu on top: the screen keeps the game paused.
+	if menu:
+		await frames(20)
+		menu.toggle()
+		await frames(10)
+		ChestScreen.open(m, "chest", "Chest")
+		await frames(12)
+		await press("menu")  # the chest closes on MENU; the menu under it must stay open
+		await frames(5)
+		check(menu._open and paused, "menu still open and paused after MENU closed the chest over it")
+		await frames(10)
+		await press("b")
+		await frames(5)
+		check(not menu._open and not paused, "then B closes the menu")
+
 	print("softlock_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

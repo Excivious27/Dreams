@@ -1719,6 +1719,7 @@ func boss_card(kind: String, title := "") -> void:
 		return
 	var layer := CanvasLayer.new()
 	layer.layer = 11
+	layer.add_to_group("toast_hold")  # Hud: toasts wait until the card is gone
 	var tr := TextureRect.new()
 	tr.texture = Art.tex("ui", nm)
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE

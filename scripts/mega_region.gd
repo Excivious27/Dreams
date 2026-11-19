@@ -236,6 +236,7 @@ static func banner(m: GameMap, id: String, sid: String, line: String) -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = 8
 	layer.name = "MegaBanner"
+	layer.add_to_group("toast_under")  # Hud: toasts sit under the card
 	layer.process_mode = Node.PROCESS_MODE_ALWAYS  # an arrival intro pauses the tree; the card still fades
 	m.add_child(layer)
 	var r := get_r(id)

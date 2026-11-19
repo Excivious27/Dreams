@@ -147,6 +147,7 @@ func _process(delta: float) -> void:
 	if want != y_offset:
 		y_offset = want
 		_canvas.queue_redraw()
+	_pause_watch(sc)
 	if get_tree().paused:
 		# Dialogue and menus pause the tree: the HUD only changes when a menu equips
 		# or spends something, so 10 Hz (it redrew every frame of every dialogue).
@@ -174,6 +175,31 @@ func _process(delta: float) -> void:
 		_canvas.queue_redraw()
 
 
+var _orphan_pause := 0
+
+
+## Softlock guard: every pauser shows something (a dialogue, the menu, or a
+## full-screen UI that sets `modal_rect`). A pause left behind with none of them
+## (a screen that restored a pause its opener had already dropped) would freeze
+## the game for good with nothing to press, so it is let go after a moment.
+func _pause_watch(sc: Node) -> void:
+	if not get_tree().paused or not (sc is GameMap) or (sc as GameMap)._changing:
+		_orphan_pause = 0
+		return
+	if Dialogue.instance(get_tree()).active or modal_rect.size != Vector2.ZERO:
+		_orphan_pause = 0
+		return
+	for n in sc.get_children():
+		if n is GameMenu and (n as GameMenu)._open:
+			_orphan_pause = 0
+			return
+	_orphan_pause += 1
+	if _orphan_pause >= 20:
+		_orphan_pause = 0
+		push_warning("Hud: the game was paused with nothing on screen; resuming")
+		get_tree().paused = false
+
+
 ## Toasts: under the goal line outdoors, above the HUD block indoors, above the dialogue box while one is open.
 func _place_toasts() -> void:
 	var y := (108.0 if _boss_on else 89.0) if y_offset == 0.0 else 199.0  # under the goal (and the boss bar)
@@ -187,7 +213,15 @@ func _place_toasts() -> void:
 			if n is CampaignScreen:
 				board = true
 				break
-	_toasts.visible = not board
+	# A boss intro card holds the toasts (paused, unseen) until it slides away;
+	# a region name card pushes them under itself.
+	var hold := board or not get_tree().get_nodes_in_group("toast_hold").is_empty()
+	_toasts.visible = not hold
+	_hold_toasts(hold)
+	for n in get_tree().get_nodes_in_group("toast_under"):
+		for cc in n.get_children():
+			if cc is Control and (cc as Control).visible:
+				y = maxf(y, (cc as Control).position.y + (cc as Control).size.y + 3.0)
 	if sc and sc.get("battle") != null and y_offset == 0.0:
 		y = 178.0 if _boss_on else 168.0  # under the battle bar (tickets, objective, RALLY)
 		var bt0: Variant = sc.get("battle")
@@ -200,6 +234,52 @@ func _place_toasts() -> void:
 			h += (c as Control).size.y + 1.0
 		y = maxf((4.0 if y_offset > 0.0 else TOOLBAR_Y + SLOT + 8.0), minf(y, d.panel_top() - h - 4.0))  # indoors the toolbar isn't at the top
 	_toasts.position.y = y
+	# The pup command strip runs down one screen edge: a stack that reaches it
+	# steps in beside the buttons instead of sitting over them.
+	# The energy bar (outdoors, other edge, from y 186) gets the same room.
+	var hh := 0.0
+	for c in _toasts.get_children():
+		hh += (c as Control).size.y + 1.0
+	var inset := _pup_strip_on(sc) and y + hh > TouchControls.PUP_Y0 - TouchControls.PUP_R - 6.0
+	var bar := y_offset == 0.0 and not d.active and y + hh > 184.0
+	var w := TOAST_W - (PUP_INSET if inset else 0.0) - (BAR_INSET if bar else 0.0)
+	var lh := Settings.left_handed()
+	_toasts.position.x = 6.0 + ((PUP_INSET if inset else 0.0) if not lh else (BAR_INSET if bar else 0.0))
+	if w != _toast_w:
+		_toast_w = w
+		_toasts.size.x = w
+		for c in _toasts.get_children():
+			if c is Label:
+				(c as Label).custom_minimum_size.x = _fit_w((c as Label).text)
+
+
+const TOAST_W := 258.0
+const PUP_INSET := 26.0  # the strip: centre 15, radius 11, labels to x 30
+const BAR_INSET := 22.0  # the energy bar frame: x 250-270
+var _toast_w := TOAST_W
+
+
+func _fit_w(text: String) -> float:
+	return minf(_toast_w, _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x + 12.0)
+
+
+## The pup strip is drawn (TouchControls): pup with you outdoors, pad shown, game running.
+func _pup_strip_on(sc: Node) -> bool:
+	if not TouchControls.visible_controls or get_tree().paused or y_offset > 0.0 or not (sc is GameMap):
+		return false
+	var pt: Variant = (sc as GameMap).pet
+	return pt != null and is_instance_valid(pt)
+
+
+## Toasts wait while a card holds them: their fade tweens pause, then pick up again.
+func _hold_toasts(hold: bool) -> void:
+	for c in _toasts.get_children():
+		var tw: Variant = c.get_meta("tw") if c.has_meta("tw") else null
+		if tw is Tween and (tw as Tween).is_valid():
+			if hold and (tw as Tween).is_running():
+				(tw as Tween).pause()
+			elif not hold and not (tw as Tween).is_running():
+				(tw as Tween).play()
 
 
 func _input(event: InputEvent) -> void:
@@ -607,9 +687,9 @@ func toast(text: String, color := Color.WHITE) -> void:
 			var k := int(c.get_meta("count", 1)) + 1
 			c.set_meta("count", k)
 			(c as Label).text = "%s  ×%d" % [text, k]
-			(c as Label).custom_minimum_size.x = minf(258.0, _font.get_string_size((c as Label).text, HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x + 12.0)
+			(c as Label).custom_minimum_size.x = _fit_w((c as Label).text)
 			# Restart its fade, so a pile of "+1 Wood ×5" stays up for the last copy.
-			var otw: Variant = c.get_meta("tw", null)
+			var otw: Variant = c.get_meta("tw") if c.has_meta("tw") else null
 			if otw is Tween and (otw as Tween).is_valid():
 				(otw as Tween).kill()
 			(c as Label).modulate.a = 1.0
@@ -660,7 +740,7 @@ func toast(text: String, color := Color.WHITE) -> void:
 	sb.content_margin_bottom = 1
 	l.add_theme_stylebox_override("normal", sb)
 	l.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	l.custom_minimum_size = Vector2(minf(258.0, _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x + 12.0), 0)
+	l.custom_minimum_size = Vector2(_fit_w(text), 0)
 	_toasts.add_child(l)
 	_place_toasts()
 	var tw := l.create_tween()
