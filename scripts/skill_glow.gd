@@ -72,6 +72,8 @@ static func set_glow(b: Control, n: int, badge := true) -> void:
 		bl.offset_top = 0
 		bl.offset_bottom = 10
 		holder.add_child(bl)
+	if not holder.is_inside_tree():
+		return
 	var tw := holder.create_tween().set_loops()
 	tw.tween_property(frame, "modulate:a", 0.35, 0.55).set_trans(Tween.TRANS_SINE)
 	tw.parallel().tween_method(func(t: float) -> void:
@@ -104,6 +106,8 @@ static func points_banner(body: Control, n: int, tree_name: String) -> PanelCont
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	pc.add_child(l)
 	body.add_child(pc)
+	if not pc.is_inside_tree():
+		return pc
 	var tw := pc.create_tween().set_loops()
 	tw.tween_property(pc, "modulate", Color(1.15, 1.1, 0.9), 0.6).set_trans(Tween.TRANS_SINE)
 	tw.tween_property(pc, "modulate", Color(1, 1, 1), 0.6).set_trans(Tween.TRANS_SINE)

@@ -828,10 +828,10 @@ func _skills_tab() -> void:
 		tb.custom_minimum_size = Vector2(0, 20)
 		tb.focus_mode = Control.FOCUS_NONE
 		tb.modulate = Color(1, 0.88, 0.45) if k == sk else (Color(1, 0.97, 0.85) if pf > 0 else Color(0.78, 0.78, 0.78))
-		SkillGlow.set_glow(tb, pf, false)
 		var kk := str(k)
 		tb.pressed.connect(func() -> void: _skill_open = kk; _node_sel = ""; _reset_arm = ""; _refresh())
 		tabs.add_child(tb)
+		SkillGlow.set_glow(tb, pf, false)
 	# Level / points / EXP panel
 	var lvl := GameState.skill_level(sk)
 	var xp := int(GameState.run["skills"].get(sk, {}).get("xp", 0))
