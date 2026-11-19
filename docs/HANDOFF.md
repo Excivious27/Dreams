@@ -6,18 +6,25 @@ The shared memory between Tom's two Claude accounts (Team and personal). Tom swi
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`. Times in Pacific.
 
-- **Last update:** 2026-11-18 22:42 PT, Team account (helper chat: CONDUCT step 3 widened per Tom; no game files touched)
-- **In progress:** the Team game chat is mid-way through Round 13 (art run through dreams-image plus new features; see the top of `docs/STATUS.md`). From its next push on, it keeps this Baton current itself.
-- **Next step:** finish Round 13 as recorded in STATUS.md (slice and wire the new art, check.sh, push).
-- **Jobs running elsewhere:** none recorded.
-- **WIP branches:** none.
-- **Open questions for Tom:** none.
-- **Tom is waiting on:** nothing recorded.
+- **Last update:** 2026-11-19 05:55 PT, Team account (game chat)
+- **Done:** Round 13 complete (all 10 jobs merged: rec center/bowling, arcade, community farm, campaign gating + drill + briefings, mega regions framework + 5 new regions + Ironline, audio fixes, animation fixes, world fixes, gangster cash/redraws/mining/pup in mines). Art and audio outstanding: zero. Axe fishing fixed (rod must be held).
+- **In progress:** CONDUCT 1 of 9 (focus: new-player first 3 hours, both arcs). 20 agents in worktrees `/home/claude/wt/c1_NN`, branches `c1/NN` (local only; scopes in that machine's /home/claude/wt/C1_SCOPES.txt, also summarised in STATUS.md). Merged so far: c1/20 inventory, c1/10 farming week, c1/06 early gating, c1/12 early combat. The other 16 were resumed after a server restart.
+- **Next step:** merge the remaining c1 branches, check.sh, push; 20-bot playtest (`tools/bots.sh 3 DIR`); fix; guide + spreadsheet + artifact. Then CONDUCT 2 (rec/arcade/community farm) and 3 (campaigns); wait 5 h (send_later); CONDUCT 4-6 (mega regions, home world look, audio); wait 5 h; CONDUCT 7-9 (story, economy, release readiness) and the full package. Plan: docs/CONDUCT-PLAN.md.
+- **Jobs running elsewhere:** the c1 agents (Team account sandbox only). If the other account picks up, those branches are lost: redo CONDUCT 1 from the plan.
+- **WIP branches:** none on GitHub.
+- **Open questions for Tom:** keep 3 potato seeds in M.'s first letter (gangster)? Hide arc stations on the Plans board until the arc intro? Is the softened first boss right? Mayor Alder's birthday shows in the gangster arc (to check).
+- **Tom is waiting on:** the nine CONDUCT runs, then the fully updated artifact.
 
 ## Decisions (newest first)
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-18: Default move speed stays as it is (Tom withdrew "twice as fast"); speed comes from gear, potions, foods, mounts and skills.
+- 2026-11-18: Fishing only with the rod in hand.
+- 2026-11-18: After Round 13: CONDUCT x3, wait 5 h, CONDUCT x3, wait 5 h, CONDUCT x3, each run aimed at specific parts of the game; then the fully updated artifact.
+- 2026-11-18: Battle campaigns open only after natural lead-in (story chapter 2, training drill, team, provisions) with a clear briefing at the start.
+- 2026-11-18: All art and all audio for every job must be generated and integrated: nothing outstanding at the end.
+- 2026-11-18: Gangster arc uses cash, not crystals; gangster characters look serious, cool, dark underworld/cyberpunk, ages ~15-30, all-ages content.
 - 2026-11-18: CONDUCT step 3 = every fix AND all open work Claude can do alone: all art, all audio, any work identified as needed anywhere.
 - 2026-11-18: CONDUCT spelled out in full under Tom's commands; both accounts run it the same way.
 - 2026-11-18: Handoffs are automatic; Tom never writes or sends one. Each chat keeps this file current itself.
@@ -29,6 +36,8 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 One line per finished piece of work: date, account, what was done.
 
+- 2026-11-19, Team: CONDUCT 1 first merges (inventory, farm week, early gating, early combat).
+- 2026-11-18, Team: Round 13 finished and pushed (10 jobs, bots + playtest clean).
 - 2026-11-18, Team: handoff made automatic (CLAUDE.md rules, Baton, Decisions, Log, Project instructions).
 - 2026-11-18, Team: HANDOFF.md created; dreams-image server deployed and connected; ACE Music connected.
 
