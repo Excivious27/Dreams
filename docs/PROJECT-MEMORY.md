@@ -25,6 +25,7 @@ Read order for a new chat: CLAUDE.md → docs/HANDOFF.md (Baton) → this file �
 - **Rounds** of work, each ending with: check.sh green → push → bots/playtest → the **package** (see 6).
 - Big rounds use **sub-agents in git worktrees**: `/home/claude/wt/<id>` on branch `<round>/<id>`, heavy dirs (art/, audio/, reference/, build/, .godot) hardlinked from the main checkout (`/home/claude/wt/mkwt.sh <id> <branch>` in the Team sandbox; recreate if missing). Agents commit locally, never push; the main chat merges, runs check.sh, pushes. Rules every agent gets: never write a hardlinked file in place (rm then write), wrap every godot run in `flock /tmp/godot.lock`, fresh `XDG_DATA_HOME`, run full check.sh once at the end.
 - Merge lessons: JSON conflicts → union merge (keep both sides' keys/list items); never auto-resolve shell/code files with a "keep both lines" script (it dropped `fi` lines in check.sh once); new `class_name` scripts need `godot --headless --import` before tests see them; `.godot` class cache is shared through the hardlinks.
+- **Watchdog:** while agents/bots run, check all of them every 30 minutes (send_later) and resume/restart anything stopped or stuck (Tom, 2026-11-19).
 - The machine has 2 CPUs; 20 agents queue on the godot lock. Expect a full check.sh to take 10–30 min under load.
 - `tools/gang_play_test.gd` has wall-clock waits that can flake under load (pup dig); re-run before assuming a real failure.
 

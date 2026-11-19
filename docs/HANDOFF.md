@@ -19,6 +19,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19: Watchdog: during every CONDUCT (and any agent/bot job), check all agents and bots every 30 minutes and restart anything stopped or stuck (details under CONDUCT).
 - 2026-11-18: Default move speed stays as it is (Tom withdrew "twice as fast"); speed comes from gear, potions, foods, mounts and skills.
 - 2026-11-18: Fishing only with the rod in hand.
 - 2026-11-18: After Round 13: CONDUCT x3, wait 5 h, CONDUCT x3, wait 5 h, CONDUCT x3, each run aimed at specific parts of the game; then the fully updated artifact.
@@ -103,6 +104,8 @@ When Tom sends **CONDUCT** (alone or with a focus), run the whole cycle below to
     - every art prompt file still needed (only what the image tool couldn't make; at most 2-3 images per prompt, each labeled and separated, nothing left out);
     - the complete all-in-one guide of everything Claude needs from Tom (next `docs/guides/GUIDE-NN.md`).
 6. Short reply ending with the play link, what changed and what to test.
+
+**Watchdog (Tom, 2026-11-19):** while any agents or bots run (in a CONDUCT or any other job), check on every one of them **every 30 minutes**: is it still working (recent tool use, commits, log output), stuck, or stopped (for example after a server restart)? Resume stopped agents from their transcript (or re-create them with the same scope if they can't be resumed), restart dead bot/test runs, and note it in the Baton. Use the session's scheduled-message tool (send_later, 30 minutes) to wake yourself for each check, and schedule the next one at every check until all agents are done. Never let avoidable downtime build up.
 
 If a usage limit ends the chat mid-CONDUCT, the Baton says which step it reached; the next chat (either account) carries on from there.
 
