@@ -635,7 +635,9 @@ func _refresh() -> void:
 			_button("Screen shake: %s" % ("on" if bool(Settings.get_v("shake")) else "off"), func() -> void: Settings.set_v("shake", not bool(Settings.get_v("shake"))); _refresh())
 			_button("Controls: %s-handed" % ("left" if Settings.left_handed() else "right"), func() -> void: Settings.set_v("left_handed", not Settings.left_handed()); _refresh())
 			_button("Easy mode: %s" % ("on (foes hit softer, no fee when you faint)" if Settings.easy() else "off"), func() -> void: Settings.set_v("easy", not Settings.easy()); _refresh())
-			_button("On-screen controls: %s" % ("shown" if TouchControls.visible_controls else "hidden"), func() -> void: TouchControls.visible_controls = not TouchControls.visible_controls; _refresh())
+			_button("On-screen controls: %s" % {"auto": "auto (%s)" % ("shown" if TouchControls.visible_controls else "hidden"), "on": "always", "off": "never"}[DisplayMode.touch_mode_name()], func() -> void: DisplayMode.cycle_touch_mode(); _refresh())
+			if not DisplayMode.is_phone():
+				_button("Fullscreen: %s  (F11)" % ("on" if DisplayMode.is_fullscreen() else "off"), func() -> void: DisplayMode.toggle_fullscreen(); _refresh.call_deferred())
 			_button("Key bindings…", func() -> void: _tab = "Keys"; _refresh())
 			if r["flags"].has("epilogue_done"):
 				_button("Replay the ending", func() -> void:

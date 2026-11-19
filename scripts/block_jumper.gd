@@ -64,7 +64,7 @@ var _play_touch := {}
 func _input(ev: InputEvent) -> void:
 	if ev is InputEventScreenTouch:
 		var tch := ev as InputEventScreenTouch
-		if tch.pressed and state == "play" and PLAY.has_point(tch.position) and _deck_at(tch.position) == "":
+		if tch.pressed and state == "play" and PLAY.has_point(DisplayMode.ui(tch.position)) and _deck_at(DisplayMode.ui(tch.position)) == "":
 			_play_touch[tch.index] = true
 			Input.action_press("a")
 			get_viewport().set_input_as_handled()
@@ -77,7 +77,7 @@ func _input(ev: InputEvent) -> void:
 			return
 	elif ev is InputEventMouseButton and ev.device != InputEvent.DEVICE_ID_EMULATION and (ev as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
 		var mb := ev as InputEventMouseButton
-		if mb.pressed and state == "play" and PLAY.has_point(mb.position) and _deck_at(mb.position) == "":
+		if mb.pressed and state == "play" and PLAY.has_point(DisplayMode.ui(mb.position)) and _deck_at(DisplayMode.ui(mb.position)) == "":
 			_play_touch[-1] = true
 			Input.action_press("a")
 			get_viewport().set_input_as_handled()

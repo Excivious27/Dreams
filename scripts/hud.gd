@@ -25,7 +25,7 @@ static var stick_ok := false
 
 static func hud_rect_blocks(p: Vector2) -> bool:
 	for r: Rect2 in extra_rects:
-		if r.has_point(p):
+		if r.has_point(DisplayMode.ui(p)):  # registered by centred layers (column coords)
 			return true
 	return p.y >= y_offset and p.y < y_offset + TOOLBAR_BOTTOM
 
@@ -406,6 +406,9 @@ func _draw_hud() -> void:
 		c.draw_texture_rect(Art.tex("ui", "buff2_haste"), Rect2(bx, 24, 9, 9), false); bx += 11
 	if int(r["flags"].get("glow_day", -1)) == int(r["day"]) and Art.has("ui", "buff2_glow"):
 		c.draw_texture_rect(Art.tex("ui", "buff2_glow"), Rect2(bx, 24, 9, 9), false); bx += 11
+	# A wide (desktop) view: the clock box, place name and heat sit at the right edge (DisplayMode).
+	var ex := DisplayMode.extra()
+	c.draw_set_transform(Vector2(ex, y_offset))
 	_draw_place(c)
 	# Clock box (top right)
 	var box := Rect2(166, 2, 100, 28)
@@ -434,6 +437,7 @@ func _draw_hud() -> void:
 		c.draw_texture_rect(crystal, Rect2(cx - tw - 11, box.position.y + 9, 9, 9), false)
 	else:
 		c.draw_string(_font, Vector2(cx - tw - 10, box.position.y + 17), "◆", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
+	c.draw_set_transform(Vector2(0, y_offset))
 	# Toolbar
 	var tb: Array = r["toolbar"]
 	var slot := int(r["slot"])
@@ -513,7 +517,7 @@ func _draw_hud() -> void:
 		if not r["flags"].has("heat_told"):
 			r["flags"]["heat_told"] = true
 			toast.call_deferred("Heat: how closely the President's people are watching you.", Color(1, 0.75, 0.6))
-		var hx := 196.0
+		var hx := 196.0 + ex
 		var hy := TOOLBAR_Y + SLOT + 5.0
 		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 2, Color(0, 0, 0, 0.8))
 		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(1, 0.75, 0.6))
@@ -522,7 +526,9 @@ func _draw_hud() -> void:
 			c.draw_circle(pc, 3.2, Color(0, 0, 0, 0.6))
 			if i < Racket.heat():
 				c.draw_circle(pc, 2.6, Color(1, 0.35 + 0.1 * (4 - i), 0.2))
+	c.draw_set_transform(Vector2(DisplayMode.cx, y_offset))
 	_draw_boss_bar(c)
+	c.draw_set_transform(Vector2(0, y_offset))
 	_draw_pointer(c)
 	# Energy bar (vertical, right side, Stardew style)
 	# The energy bar stays on the right edge; indoors (HUD at the bottom) it
@@ -536,6 +542,7 @@ func _draw_hud() -> void:
 	var pulse := 0.5 + 0.5 * sin(Time.get_ticks_msec() / 160.0)
 	if y_offset > 0.0:
 		# Indoors: a short horizontal bar in the HUD block, off the room.
+		c.draw_set_transform(Vector2(ex, y_offset))
 		_draw_energy_h(c, e)
 		if tired:
 			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 3, Color(0, 0, 0, 0.8))
@@ -543,7 +550,7 @@ func _draw_hud() -> void:
 		return
 	if Dialogue.instance(get_tree()).active:
 		return  # it would poke out past the dialogue box
-	c.draw_set_transform(Vector2(-248.0 if lh else 0.0, 0.0))
+	c.draw_set_transform(Vector2(-248.0 if lh else ex, 0.0))
 	var bar := Rect2(256, 200, 9, 130)
 	var fill_h := bar.size.y * e
 	var col := Color("7ad35a") if e > 0.5 else (Color("f2c84b") if e > 0.25 else Color("e86a3a"))
@@ -798,7 +805,7 @@ func _draw_pointer(c: CanvasItem) -> void:
 	if tgt == Vector2.ZERO:
 		return
 	var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt
-	var view := Rect2(18, 112, 222, 244)
+	var view := Rect2(18, 112, DisplayMode.view.x - 48.0, 244)
 	if view.has_point(sp):
 		return
 	var ctr := view.get_center()

@@ -117,12 +117,12 @@ func _input(ev: InputEvent) -> void:
 	if ev is InputEventScreenTouch:
 		var st := ev as InputEventScreenTouch
 		if st.pressed:
-			var a := _deck_at(st.position)
+			var a := _deck_at(DisplayMode.ui(st.position))
 			if a != "":
 				_touch[st.index] = a
 				Input.action_press(a)
-			elif PLAY.has_point(st.position):
-				_tap(st.position)
+			elif PLAY.has_point(DisplayMode.ui(st.position)):
+				_tap(DisplayMode.ui(st.position))
 		elif _touch.has(st.index):
 			Input.action_release(str(_touch[st.index]))
 			_touch.erase(st.index)
@@ -136,7 +136,7 @@ func _input(ev: InputEvent) -> void:
 		var sd := ev as InputEventScreenDrag
 		# Sliding a thumb from one deck button to another (◀ to ▶) follows it.
 		if _touch.has(sd.index):
-			var a2 := _deck_at(sd.position)
+			var a2 := _deck_at(DisplayMode.ui(sd.position))
 			if a2 != "" and a2 != str(_touch[sd.index]):
 				Input.action_release(str(_touch[sd.index]))
 				_touch[sd.index] = a2
@@ -147,12 +147,12 @@ func _input(ev: InputEvent) -> void:
 		if mb.button_index != MOUSE_BUTTON_LEFT:
 			return
 		if mb.pressed:
-			var a3 := _deck_at(mb.position)
+			var a3 := _deck_at(DisplayMode.ui(mb.position))
 			if a3 != "":
 				_mouse_action = a3
 				Input.action_press(a3)
-			elif PLAY.has_point(mb.position):
-				_tap(mb.position)
+			elif PLAY.has_point(DisplayMode.ui(mb.position)):
+				_tap(DisplayMode.ui(mb.position))
 		elif _mouse_action != "":
 			Input.action_release(_mouse_action)
 			_mouse_action = ""
