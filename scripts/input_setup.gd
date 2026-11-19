@@ -112,7 +112,9 @@ static func key_label(action: String) -> String:
 	var map := keys()
 	var parts: Array = []
 	for k in map.get(action, []):
-		parts.append(OS.get_keycode_string(DisplayServer.keyboard_get_keycode_from_physical(int(k) as Key)))
+		# The layout lookup needs a real display (headless test runs print an error per key).
+		var kc := int(k) as Key if DisplayServer.get_name() == "headless" else DisplayServer.keyboard_get_keycode_from_physical(int(k) as Key)
+		parts.append(OS.get_keycode_string(kc))
 	return " / ".join(parts) if not parts.is_empty() else "—"
 
 

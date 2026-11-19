@@ -148,9 +148,15 @@ func _play_scene(sc: String) -> void:
 				elif roll < 0.9: await _swing()
 				else: await _random_button()
 			"menus":
-				if roll < 0.5: await _menu_crawl(m)
-				elif roll < 0.8: await _walk()
-				else: await _random_button()
+				if roll < 0.5:
+					_last_act = "menu_crawl"
+					await _menu_crawl(m)
+				elif roll < 0.8:
+					_last_act = "walk"
+					await _walk()
+				else:
+					_last_act = "random_button"
+					await _random_button()
 			_:
 				if roll < 0.55: await _walk()
 				elif roll < 0.8: await _random_button()
@@ -175,6 +181,8 @@ func _play_scene(sc: String) -> void:
 					var said := ""
 					if dl.active and dl._text:
 						said = " (dialogue up: \"%s\")" % dl._text.text.left(80)
+					if froz:
+						said += " story_pending=%s" % str(GameState.run.get("story_pending", ""))
 					_warn("player boxed in at %s, frozen=%s paused=%s%s" % [where, str(froz), str(paused), said])
 				stuck_frames = 0
 		if current_scene != null and str(current_scene.scene_file_path).get_file().get_basename() != sc and not (current_scene is GameMap):
@@ -222,7 +230,22 @@ func _clear_screens() -> void:
 			return
 	var open: Array = []
 	_modal_names(root, open)
-	_fail("screen won't close on B/MENU in %s: %s" % [_scene_name(), ", ".join(open)])
+	var why := ""
+	if current_scene:
+		for ch in current_scene.get_children():
+			if ch is GameMenu:
+				why = " [menu open=%s panel=%s tab=%s rebind='%s' was_paused=%s modal=%s]" % [ch._open, ch._panel.visible, ch._tab, ch._rebinding, ch._was_paused, Hud.modal_rect]
+	var layers: Array = []
+	for n in [root, current_scene]:
+		if n:
+			for ch in n.get_children():
+				if ch is CanvasLayer and (ch as CanvasLayer).visible and ch.get_child_count() > 0:
+					var kids: Array = []
+					for k in ch.get_children():
+						var ks: Script = k.get_script()
+						kids.append("%s:%s%s" % [k.name, k.get_class(), (":" + ks.resource_path.get_file()) if ks else ""])
+					layers.append("%s(%d)%s" % [ch.name, ch.layer, kids])
+	_fail("screen won't close on B/MENU in %s: %s%s layers=%s last=%s act=%s" % [_scene_name(), ", ".join(open), why, layers, _last_press, _last_act])
 	# Unstick so the run carries on.
 	paused = false
 	Hud.modal_rect = Rect2()
@@ -298,7 +321,13 @@ func _random_button() -> void:
 	var acts := ["a", "b", "tool", "action"]
 	var act: String = acts[rng.randi_range(0, acts.size() - 1)]
 	if InputMap.has_action(act):
+		var m := current_scene as GameMap
+		if m and m.player:
+			var fc := m.player.facing_cell()
+			_last_press = "%s held=%s at %s facing %s thing=%s" % [act, GameState.held_tool(), str(m.player.cell()), str(fc), str(m.things.get(fc, {})).left(80)]
 		await press(act, rng.randi_range(1, 4))
+		if paused and not Dialogue.instance(self).active:
+			print("BOT PAUSE after ", _last_press)
 	if rng.randf() < 0.3:
 		GameState.select_slot(rng.randi_range(0, 11))
 	await frames(3)
@@ -329,6 +358,7 @@ func _menu_crawl(m: GameMap) -> void:
 			if not btns.is_empty() and rng.randf() < 0.5:
 				var b: BaseButton = btns[rng.randi_range(0, btns.size() - 1)]
 				if is_instance_valid(b) and not b.disabled:
+					_last_press = "%s > %s" % [t, str(b.get("text"))]
 					b.pressed.emit()
 					await frames(3)
 	if paused and is_instance_valid(menu) and menu._open:
@@ -338,6 +368,10 @@ func _menu_crawl(m: GameMap) -> void:
 		# a sub-dialog may have opened; clear it
 		await press("menu", 2)
 		await frames(3)
+
+
+var _last_press := ""
+var _last_act := ""
 
 
 func _collect_buttons(n: Node, out: Array) -> void:

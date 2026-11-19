@@ -135,6 +135,8 @@ func _process(_delta: float) -> void:
 	if _open and Input.is_action_just_pressed("b") and Engine.get_process_frames() - _opened_frame > 6 and Hud.modal_rect.size == Vector2.ZERO:
 		toggle()  # B backs out of the menu too (phones: no hunting for the MENU key)
 		return
+	if _open and Hud.modal_rect.size != Vector2.ZERO:
+		return  # a screen opened from the menu sits on top: MENU/B are its own (closing under it unpaused the game)
 	if Input.is_action_just_pressed("menu"):
 		if not _open:
 			_tab = "Items"

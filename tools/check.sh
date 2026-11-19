@@ -333,3 +333,9 @@ echo "$slout" | grep -E "FAIL|SCRIPT ERROR|softlock_test" || true
 if ! echo "$slout" | grep -q "softlock_test: 0 failures"; then
   echo "Softlock test failed"; exit 1
 fi
+echo "== toasts: never over a boss card, a region card, the pup strip or the energy bar =="
+tlout="$("$GODOT" --headless --path . -s res://tools/toast_layout_test.gd 2>&1)"
+echo "$tlout" | grep -E "FAIL|SCRIPT ERROR|toast_layout_test" || true
+if ! echo "$tlout" | grep -q "toast_layout_test: 0 failures"; then
+  echo "Toast layout test failed"; exit 1
+fi
