@@ -6,11 +6,11 @@ The shared memory between Tom's two Claude accounts (Team and personal). Tom swi
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 09:35 PT, Team account (game chat), HANDOFF to the personal account (Team near its usage limit).
-- **Done:** Round 13 and CONDUCT 1 of 9 (merged, check.sh rc 0, bots + playtest clean, pushed; report docs/reports/CONDUCT-1.md, guide docs/guides/GUIDE-25.md, spreadsheet sent to Tom).
-- **In progress:** nothing. CONDUCT 2 had just been launched and was STOPPED within minutes for this handoff; no work from it exists. Start CONDUCT 2 fresh.
-- **Next step:** CONDUCT 2 (rec center, arcade, community farm). Scopes: docs/CONDUCT-2-SCOPES.txt (20 lines). Agent brief: docs/CONDUCT-BRIEF.md (copy to /home/claude/wt/BRIEF_CONDUCT.md; set worktree ids c2_NN). Tooling: tools/conduct/mkwt.sh `<id> <branch>` makes a hardlinked worktree under /home/claude/wt (copy the scripts to /home/claude/wt first; they use absolute paths /home/claude/dreams and /home/claude/wt), tools/conduct/merge_c.sh merges branches and only auto-resolves CLAUDE.md/STATUS.md/HANDOFF.md, json_merge.py for JSON conflicts (check both sides on string conflicts: it keeps "ours"). Watchdog every 30 min (send_later). After CONDUCT 2: CONDUCT 3 (battle campaigns), then wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package and a new artifact page on the personal account (record its id in PROJECT-MEMORY).
-- **Jobs running elsewhere:** none (the Team chat may still fire one stale watchdog reminder in its own session; ignore).
+- **Last update:** 2026-11-19 09:50 PT, personal account (game chat).
+- **Done:** Round 13 and CONDUCT 1 of 9 (report docs/reports/CONDUCT-1.md, guide docs/guides/GUIDE-25.md).
+- **In progress:** CONDUCT 2 (rec center, arcade, community farm) on the PERSONAL account, started 09:50 PT: 20 agents in /home/claude/wt/c2_01..c2_20 on branches conduct2/c2_NN (local to the personal sandbox, not pushed), plus the 20-bot playtest. If you are the Team account and this is under ~2 h old, the personal account is likely still working: ask Tom before pushing.
+- **Next step:** merge the c2 branches (tools/conduct/merge_c.sh), check.sh, push, re-verify, deliver the CONDUCT 2 package (report docs/reports/CONDUCT-2.md, GUIDE-26, spreadsheet). Then CONDUCT 3 (battle campaigns), then wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package and a new artifact page on the personal account (record its id in PROJECT-MEMORY). If the c2 worktrees are lost (account switch), restart CONDUCT 2 from scratch with docs/CONDUCT-2-SCOPES.txt.
+- **Jobs running elsewhere:** CONDUCT 2 agents in the personal sandbox (see In progress). The Team chat may fire one stale watchdog reminder; ignore.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs, then the fully updated artifact.
