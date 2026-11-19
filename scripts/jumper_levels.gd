@@ -207,6 +207,7 @@ static func extend(lv: Dictionary, to_x: float) -> void:
 			sp_end = speed_at(lv, gx + 48.0 + sp_end * CHECK_CALM)
 			run = maxf(run, 24.0 + sp_end * CHECK_CALM + 24.0)
 		_ground(lv, gx, run, gy)
+		lv["last_run"] = run
 		if r.randf() < 0.5:
 			_coin_line(lv, gx + 16.0, gx + run - 16.0, gy - 8.0, 20.0)
 		if flag:
@@ -257,7 +258,12 @@ static func _chunk(lv: Dictionary, kind: String) -> void:
 				dy = -16.0
 			elif roll < 0.45 and gy + 32.0 <= GY_MAX:
 				dy = [16.0, 32.0][r.randi() % 2]
-			var w := r.randf_range(lerpf(0.3, 0.42, dd), lerpf(0.5, 0.8, dd)) * rf + 12.0
+			# A wide gap needs a well-timed take-off: not straight after a short runway
+			# (no time to line it up) nor as the very first obstacle.
+			var hi := lerpf(0.5, 0.8, dd)
+			if float(lv.get("last_run", 999.0)) < sp * 0.6 or x <= 520.0:
+				hi = minf(hi, 0.62)
+			var w := r.randf_range(lerpf(0.3, 0.42, dd), hi) * rf + 12.0
 			if dy < 0.0:
 				w *= 0.8
 			w = maxf(w, 28.0)

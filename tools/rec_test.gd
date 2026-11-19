@@ -384,9 +384,9 @@ func _c2_06_checks() -> void:
 	# win bonus inside the payout cap and friendship once a day; the after-game line.
 	var f0 := int(GameState.run["friendship"].get("gideon", 0))
 	var vres := {"done": true, "score": 150, "strikes": 3, "spares": 3, "rolls": [], "opponent": "gideon", "opp_score": 130, "won": true, "bonus": int(Bowling.opponent("gideon")["bonus"])}
-	var t0 := Tickets.count()
-	var got := RecCenter.finish_game(null, vres)
-	ok(got == Tickets.payout("bowling", RecCenter.tickets_for(150, 3, 3) + int(vres["bonus"])) and Tickets.count() == t0 + got, "a win: bonus tickets through the bowling payout (%d)" % got)
+	var vt0 := Tickets.count()
+	var vgot := RecCenter.finish_game(null, vres)
+	ok(vgot == Tickets.payout("bowling", RecCenter.tickets_for(150, 3, 3) + int(vres["bonus"])) and Tickets.count() == vt0 + vgot, "a win: bonus tickets through the bowling payout (%d)" % vgot)
 	ok(int(GameState.run["friendship"]["gideon"]) > f0 and bool(GameState.run["flags"].get("bowl_beat_gideon", false)), "a win: friendship and the beat flag")
 	var f1 := int(GameState.run["friendship"]["gideon"])
 	RecCenter.finish_game(null, vres)

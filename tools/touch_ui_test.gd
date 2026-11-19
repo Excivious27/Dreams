@@ -276,9 +276,9 @@ func _bowling() -> void:
 	var s0 := bw.spin_step
 	await _tap(Bowling.BTN_SPIN_R.get_center())
 	ok(bw.spin_step == mini(3, s0 + 1), "bowling: one spin tap = one step (%d -> %d)" % [s0, bw.spin_step])
-	await _tap(Bowling.BTN_QUIT.get_center())
+	await _tap(bw._btn_quit.get_center())
 	ok(not _gone(bw), "bowling: one tap on X only asks")
-	await _tap(Bowling.BTN_QUIT.get_center())
+	await _tap(bw._btn_quit.get_center())
 	await _wait(0.1)
 	ok(_gone(bw), "bowling: a second tap on X leaves")
 	await _clean("bowling")

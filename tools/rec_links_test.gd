@@ -65,7 +65,7 @@ func _run() -> void:
 	Tickets.set_best("stack", 3200)
 	ok(GameState._cond_ok({"rec_best": ["stack", 3000]}), "rec_best true after")
 	ok(not GameState._cond_ok({"tickets_won": 50}), "tickets_won false before")
-	Tickets.add(60, "whack")
+	Tickets.add(60, "quest")  # one whack play is capped at 34 (c2_05 payout)
 	ok(GameState._cond_ok({"tickets_won": 50}), "tickets_won true after")
 	ok(GameState._cond_ok({"day": 1}), "other keys unaffected")
 

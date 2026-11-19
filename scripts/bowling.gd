@@ -469,14 +469,16 @@ class Sim:
 ## Villager strength comes from ONE table: their average game (gen_rec BOWL_AVG, read by
 ## RecCenter.bowl_avg). SKILL_AVG maps release skill (0..1) to the average game it bowls
 ## (measured by tools/bowl_audit.gd -- skills; re-measure after touching Sim or choose()).
-const SKILL_AVG := [[0.05, 30.0], [0.95, 270.0]]  # placeholder, set below by the audit
+## Smoothed from 24 games a step (spin 0 below skill 0.3, 2 above), 2026-11-19.
+const SKILL_AVG := [[0.1, 92.0], [0.2, 112.0], [0.35, 130.0], [0.45, 140.0], [0.5, 152.0], [0.6, 180.0], [0.7, 195.0], [0.8, 224.0], [0.9, 256.0]]
 const POCKET := 2.75         # entry point (in, right of the head pin) for a ball hooking left
 const SWEET := Vector2(0.68, 0.88)  # the power bar's sweet band
 
 
 static func opponent(id: String) -> Dictionary:
 	var avg := float(RecCenter.bowl_avg(id))
-	return {"avg": int(avg), "skill": skill_for(avg), "spin": 0 if avg < 80.0 else (1 if avg < 125.0 else (2 if avg < 170.0 else 3)),
+	var sk := skill_for(avg)
+	return {"avg": int(avg), "skill": sk, "spin": 0 if sk < 0.3 else 2,  # as SKILL_AVG was measured
 		"bonus": clampi(4 + int(avg) / 15, 6, 20)}
 
 
