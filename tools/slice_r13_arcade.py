@@ -191,7 +191,29 @@ def patch_claw(img):
     return Image.fromarray(a)
 
 
-STEPS = [backdrops, jumper_sprites, ground, whack, claw_gallery, cabinets, stages]
+def cab_props():
+    """Rec Center props for the cabinets a1's cabinet row didn't have (31x64 like
+    props/arcade_cab_*). These two do go in the manifest (props are placed by name);
+    the manifest is hardlinked, so it is rewritten as a new file."""
+    import json
+    mpath = os.path.join(S.OUT, "manifest.json")
+    man = json.load(open(mpath))
+    for n in ["whack", "gallery"]:
+        im = Image.open(os.path.join(OUT, "cabinet_%s.png" % n)).convert("RGBA")
+        im = S.scale_to(im, height=64)
+        p = os.path.join(S.OUT, "props", "arcade_cab_%s.png" % n)
+        if os.path.exists(p):
+            os.remove(p)
+        im.save(p)
+        man.setdefault("props", {})["arcade_cab_" + n] = {"file": "props/arcade_cab_%s.png" % n, "w": im.width, "h": im.height}
+    tmp = mpath + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(man, f, indent=1, sort_keys=True)
+    os.remove(mpath)
+    os.rename(tmp, mpath)
+
+
+STEPS = [backdrops, jumper_sprites, ground, whack, claw_gallery, cabinets, stages, cab_props]
 
 if __name__ == "__main__":
     only = sys.argv[1:]

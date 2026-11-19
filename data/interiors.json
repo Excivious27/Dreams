@@ -4941,7 +4941,7 @@
    },
    {
     "group": "props",
-    "name": "arcade_cab_1",
+    "name": "arcade_cab_5",
     "cell": [
      9,
      2
@@ -4949,15 +4949,7 @@
    },
    {
     "group": "props",
-    "name": "arcade_cab_2",
-    "cell": [
-     10,
-     2
-    ]
-   },
-   {
-    "group": "props",
-    "name": "arcade_cab_3",
+    "name": "arcade_cab_whack",
     "cell": [
      11,
      2
@@ -4965,17 +4957,9 @@
    },
    {
     "group": "props",
-    "name": "arcade_cab_4",
+    "name": "arcade_cab_gallery",
     "cell": [
      12,
-     2
-    ]
-   },
-   {
-    "group": "props",
-    "name": "arcade_cab_5",
-    "cell": [
-     13,
      2
     ]
    }
@@ -5074,7 +5058,7 @@
    {
     "type": "rec",
     "act": "cabinet",
-    "game": "block_jumper",
+    "game": "jumper",
     "cell": [
      8,
      2
@@ -5085,56 +5069,34 @@
    {
     "type": "rec",
     "act": "cabinet",
-    "game": "star_blaster",
+    "game": "stack",
     "cell": [
      9,
      2
     ],
-    "hint": "A: play Star Blaster",
+    "hint": "A: play Crystal Stack",
     "solid": true
    },
    {
     "type": "rec",
     "act": "cabinet",
-    "game": "fish_frenzy",
-    "cell": [
-     10,
-     2
-    ],
-    "hint": "A: play Fish Frenzy",
-    "solid": true
-   },
-   {
-    "type": "rec",
-    "act": "cabinet",
-    "game": "maze_muncher",
+    "game": "whack",
     "cell": [
      11,
      2
     ],
-    "hint": "A: play Maze Muncher",
+    "hint": "A: play Whack-a-Grump",
     "solid": true
    },
    {
     "type": "rec",
     "act": "cabinet",
-    "game": "sky_hopper",
+    "game": "gallery",
     "cell": [
      12,
      2
     ],
-    "hint": "A: play Sky Hopper",
-    "solid": true
-   },
-   {
-    "type": "rec",
-    "act": "cabinet",
-    "game": "crystal_drop",
-    "cell": [
-     13,
-     2
-    ],
-    "hint": "A: play Crystal Drop",
+    "hint": "A: play Duck Pond",
     "solid": true
    }
   ],

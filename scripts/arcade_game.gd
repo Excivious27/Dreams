@@ -263,14 +263,14 @@ func start() -> bool:
 
 
 ## End the round: pay tickets, record the best score, show results.
-func game_over(extra_lines: Array = []) -> void:
+func game_over(extra_lines: Array = [], best_value := -1) -> void:
 	if state == "over":
 		return
 	over_lines = extra_lines
 	won_tickets = maxi(0, _tickets_for(score))
 	if won_tickets > 0:
 		Tickets.add(won_tickets, game_id)
-	new_best = Tickets.set_best(game_id, score)
+	new_best = Tickets.set_best(game_id, score if best_value < 0 else best_value)
 	ArcadeHub.check_milestones(game_id, score, self)
 	_over_t = 0.0
 	state = "over"

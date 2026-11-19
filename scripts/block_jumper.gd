@@ -59,10 +59,23 @@ func _deck_buttons() -> Array:
 
 static func _jd() -> Dictionary:
 	var d: Dictionary = ArcadeHub._data()["jumper"]
-	for k in ["clear", "coins"]:
+	for k in ["clear", "coins", "best"]:
 		if not (d.get(k) is Dictionary):
 			d[k] = {}
 	return d
+
+
+## Best distance on a level (%; 0 = endless, in metres). Kept here: Tickets'
+## best/plays are per cabinet, and the levels are one cabinet.
+static func best(n: int) -> int:
+	return int(_jd()["best"].get(str(n), 0))
+
+
+static func _set_level_best(n: int, v: int) -> bool:
+	if v > best(n):
+		_jd()["best"][str(n)] = v
+		return true
+	return false
 
 
 static func cleared(n: int) -> bool:
@@ -317,10 +330,11 @@ func _end_run(done: bool) -> void:
 			ArcadeHub.set_milestone("jumper_endless_300")
 		if score >= 1000:
 			ArcadeHub.set_milestone("jumper_endless_1000")
-	var keep := game_id
-	game_id = "jumper_%d" % level if level > 0 else "jumper_endless"
-	game_over(lines)
-	game_id = keep
+	var lvl_best := _set_level_best(level, score)
+	# The cabinet's own high score (Tickets): campaign progress, 100 per level.
+	var cab := (level - 1) * 100 + score if level > 0 else score
+	game_over(lines, cab)
+	new_best = lvl_best
 
 
 func _tickets_for(_s: int) -> int:
@@ -786,8 +800,8 @@ func _draw_select(c: Control) -> void:
 		text_outline(c, Vector2(r.position.x, r.position.y + 28), big, r.size.x, 22, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 		var nm := str(JumperLevels.level_def(n)["name"])
 		text_outline(c, Vector2(r.position.x, r.position.y + 42), nm, r.size.x, 7, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
-		var best := Tickets.best_score("jumper_%d" % n if n > 0 else "jumper_endless")
-		var line := ("%d%%" % best if n > 0 else "%d m" % best) if best > 0 else "new"
+		var bst := best(n)
+		var line := ("%d%%" % bst if n > 0 else "%d m" % bst) if bst > 0 else "new"
 		text_outline(c, Vector2(r.position.x, r.end.y - 4), line, r.size.x, 8, Color(1, 0.95, 0.6), HORIZONTAL_ALIGNMENT_CENTER)
 		if n > 0 and cleared(n):
 			_star(c, r.position + Vector2(r.size.x - 10, 9), Color(1, 0.85, 0.2))

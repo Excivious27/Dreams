@@ -78,7 +78,7 @@ func _run() -> void:
 	check(Tickets.count() > tk, "level clear pays tickets (%d)" % (Tickets.count() - tk))
 	check(BlockJumper.cleared(1) and BlockJumper.is_unlocked(2) and BlockJumper.is_unlocked(0), "clearing 1 unlocks 2 and endless")
 	check(ArcadeHub.milestone("jumper_1"), "milestone jumper_1")
-	check(Tickets.best_score("jumper_1") == 100, "best distance for level 1 is 100%")
+	check(BlockJumper.best(1) == 100 and Tickets.best_score("jumper") == 100, "best distance for level 1 is 100%")
 	_frames(j, 40)
 	_tap_action(j, "a")
 	check(j.state == "select" and j.sel == 1, "A after a clear returns to select on level 2")
@@ -86,7 +86,7 @@ func _run() -> void:
 	check(j.play_tile(1), "level 2 starts")
 	_frames(j, 60 * 40)
 	check(j.state == "over" and j.lives <= 0, "doing nothing loses all lives (state %s lives %d)" % [j.state, j.lives])
-	check(Tickets.best_score("jumper_2") > 0 and Tickets.best_score("jumper_2") < 100, "partial distance recorded (%d%%)" % Tickets.best_score("jumper_2"))
+	check(BlockJumper.best(2) > 0 and BlockJumper.best(2) < 100, "partial distance recorded (%d%%)" % BlockJumper.best(2))
 	_frames(j, 40)
 	_tap_action(j, "a")
 	# Endless: jump now and then, run a while.
@@ -97,7 +97,7 @@ func _run() -> void:
 			break
 		_frames(j, 1, {"a": i % 50 < 12})
 	_frames(j, 60 * 10)
-	check(j.state == "over" and Tickets.best_score("jumper_endless") > 0, "endless ends with a distance (%d m)" % Tickets.best_score("jumper_endless"))
+	check(j.state == "over" and BlockJumper.best(0) > 0, "endless ends with a distance (%d m)" % BlockJumper.best(0))
 	_frames(j, 40)
 	_tap_action(j, "b")
 	check(not is_instance_valid(j) or j.is_queued_for_deletion(), "B on results leaves")
@@ -248,6 +248,12 @@ func _run() -> void:
 	await process_frame
 	check(not is_instance_valid(hub), "B leaves the arcade")
 	check(Hud.extra_rects.is_empty(), "deck buttons unregistered (%d left)" % Hud.extra_rects.size())
+	# The Rec Center's call: ArcadeHub.open(map, id).
+	var viamap := ArcadeHub.open(root, "whack")
+	check(viamap is ArcadeWhack and viamap.get_parent() == root, "open(map, id) puts the cabinet on the map")
+	viamap.close()
+	await process_frame
+	check(ArcadeHub.open("nope_game") == null, "unknown id opens nothing")
 	GameState.run["crystals"] = 3
 	var j2 := _open("jumper") as BlockJumper
 	_frames(j2, 8)

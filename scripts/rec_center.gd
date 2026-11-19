@@ -417,6 +417,11 @@ static func _jukebox(m: GameMap) -> void:
 
 ## The claw machine: ◆10 a go, a plush now and then (better luck with Luck).
 static func _claw(m: GameMap) -> void:
+	# The full claw game (agent a2's ArcadeClaw) when it is there.
+	for g in ProjectSettings.get_global_class_list():
+		if str(g.get("class", "")) == "ArcadeHub":
+			await (load(str(g.get("path", ""))).call("open", m, "claw") as CanvasLayer).closed
+			return
 	var price := 10
 	var d := Dialogue.instance(m.get_tree())
 	d.say([{"who": "", "text": "CLAW MACHINE · ◆%d a go. A teddy bear stares at you through the glass.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["Try it", "Leave"], "key": ""}])

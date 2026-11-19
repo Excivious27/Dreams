@@ -51,12 +51,19 @@ var _sel := 0
 var _child: ArcadeGame
 
 
-static func open(game_id: String) -> ArcadeGame:
+## ArcadeHub.open(map, "jumper") (the Rec Center's cabinets) or ArcadeHub.open("jumper").
+static func open(map_or_id: Variant, game_id := "") -> ArcadeGame:
+	var parent: Node = null
+	if map_or_id is Node:
+		parent = map_or_id
+	else:
+		game_id = str(map_or_id)
 	var g := make(game_id)
 	if g == null:
 		return null
 	var tree := Engine.get_main_loop() as SceneTree
-	var parent: Node = tree.current_scene if tree.current_scene != null else tree.root
+	if parent == null:
+		parent = tree.current_scene if tree.current_scene != null else tree.root
 	parent.add_child(g)
 	return g
 
@@ -107,9 +114,10 @@ static func charge(n: int) -> bool:
 # --- progress ----------------------------------------------------------------
 
 static func _data() -> Dictionary:
-	if not (GameState.run.get("arcade") is Dictionary):
-		GameState.run["arcade"] = {}
-	var d: Dictionary = GameState.run["arcade"]
+	# run["arcade"] belongs to Tickets; the cabinets keep their own block.
+	if not (GameState.run.get("arcade_hub") is Dictionary):
+		GameState.run["arcade_hub"] = {}
+	var d: Dictionary = GameState.run["arcade_hub"]
 	for k in ["ms", "played", "jumper"]:
 		if not (d.get(k) is Dictionary):
 			d[k] = {}
@@ -256,7 +264,7 @@ func _draw_play(c: Control) -> void:
 		text_outline(c, r.position + Vector2(54, 17), str(g["name"]), 190, 10, Color.WHITE)
 		text(c, r.position + Vector2(54, 30), str(g["blurb"]), 190, 7, Color(0.9, 0.88, 1))
 		var cabinet := make_info(str(g["id"]))
-		text(c, r.position + Vector2(54, 44), "%d %s · best %d" % [int(cabinet["fee"]), money_word(), Tickets.best_score(str(g["id"]) if str(g["id"]) != "jumper" else "jumper_endless")], 190, 7, Color(1, 0.85, 0.5))
+		text(c, r.position + Vector2(54, 44), "%d %s · best %d" % [int(cabinet["fee"]), money_word(), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))
 
 
 ## Fee per game (kept here so the picker needn't build every screen).

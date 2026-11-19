@@ -27,7 +27,7 @@
  },
  "cabinets": [
   {
-   "id": "block_jumper",
+   "id": "jumper",
    "name": "Block Jumper",
    "sprite": "arcade_cab_0",
    "cell": [
@@ -36,47 +36,29 @@
    ]
   },
   {
-   "id": "star_blaster",
-   "name": "Star Blaster",
-   "sprite": "arcade_cab_1",
+   "id": "stack",
+   "name": "Crystal Stack",
+   "sprite": "arcade_cab_5",
    "cell": [
     9,
     2
    ]
   },
   {
-   "id": "fish_frenzy",
-   "name": "Fish Frenzy",
-   "sprite": "arcade_cab_2",
-   "cell": [
-    10,
-    2
-   ]
-  },
-  {
-   "id": "maze_muncher",
-   "name": "Maze Muncher",
-   "sprite": "arcade_cab_3",
+   "id": "whack",
+   "name": "Whack-a-Grump",
+   "sprite": "arcade_cab_whack",
    "cell": [
     11,
     2
    ]
   },
   {
-   "id": "sky_hopper",
-   "name": "Sky Hopper",
-   "sprite": "arcade_cab_4",
+   "id": "gallery",
+   "name": "Duck Pond",
+   "sprite": "arcade_cab_gallery",
    "cell": [
     12,
-    2
-   ]
-  },
-  {
-   "id": "crystal_drop",
-   "name": "Crystal Drop",
-   "sprite": "arcade_cab_5",
-   "cell": [
-    13,
     2
    ]
   }
@@ -404,11 +386,7 @@
      3
     ],
     [
-     10,
-     3
-    ],
-    [
-     12,
+     11,
      3
     ],
     [
@@ -416,11 +394,15 @@
      3
     ],
     [
-     11,
+     12,
      3
     ],
     [
      13,
+     3
+    ],
+    [
+     10,
      3
     ]
    ],

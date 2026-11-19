@@ -56,9 +56,9 @@ func _run() -> void:
 	# Unlock a few jumper levels so the select screen shows progress.
 	for n in [1, 2, 3, 4, 5]:
 		BlockJumper._jd()["clear"][str(n)] = true
-		Tickets.set_best("jumper_%d" % n, 100)
+		BlockJumper._jd()["best"][str(n)] = 100
 		BlockJumper._jd()["coins"][str(n)] = 20 + n
-	Tickets.set_best("jumper_6", 47)
+	BlockJumper._jd()["best"]["6"] = 47
 	var j := _open("jumper") as BlockJumper
 	_frames(j, 30)
 	await _shot("01_jumper_select")
