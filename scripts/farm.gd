@@ -5,9 +5,13 @@ extends GameMap
 ## added later from the plans board. Farming works on any open grass cell.
 ## Exits: forest (north), meadow (east), town (south), lake (west).
 
-const HOUSE := Rect2i(10, 6, 6, 5)
+## The farmhouse: drawn at 2/3 of its 2x art (128x116 px, 8 cells wide, ~4.5 heroes
+## tall; it was 0.5 and read as a doll's house, C2). Solid over its walls and lower
+## roof; the upper roof is walk-behind (it fades).
+const HOUSE := Rect2i(9, 6, 8, 5)
+const HOUSE_SCALE := 0.667
 const DOOR := Vector2i(13, 10)
-const MAILBOX := Vector2i(16, 10)
+const MAILBOX := Vector2i(16, 11)  # in the front yard (the wider house fills x9-16)
 const SELLBOX := Vector2i(8, 10)
 const PLANS := Vector2i(17, 13)  # outside the greenhouse plot Rect2i(17,7,9,6)
 const CRYSTAL_SPOT := Vector2i(12, 14)
@@ -1564,7 +1568,7 @@ func draw_map() -> void:
 
 func _place_props() -> void:
 	if Art.has("buildings", "house"):
-		prop("buildings", "house", Vector2i(HOUSE.position.x, HOUSE.end.y - 1), HOUSE.size.x - 1)
+		prop("buildings", "house", Vector2i(HOUSE.position.x, HOUSE.end.y - 1), HOUSE.size.x - 1, 0.0, false, HOUSE_SCALE)
 		prop("buildings", "mailbox", MAILBOX)
 		prop("buildings", "sellbox", SELLBOX)
 	prop("props", "notice_board", PLANS)

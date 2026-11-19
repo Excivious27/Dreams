@@ -228,6 +228,7 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		dk.position = cell_pos(c.x + w_cells / 2.0, base.y + 1)
 		dk.name = "LighthouseDark"
 		add_child(dk)
+		_canopies.append(dk)  # fades when you walk behind the tower
 		# Relit while you're here (Marlowe's lens quest): swap to the turning lamp.
 		var tm := Timer.new()
 		tm.wait_time = 0.5
@@ -259,9 +260,19 @@ func _shore_building(name: String, c: Vector2i, interior: String, hint: String, 
 		a.play("idle")
 	else:
 		prop("buildings", name, base, w_cells - 1, 0.0, false, 1.0)
-	for y in range(c.y + h_cells / 3, base.y + 1):
-		for x in range(c.x, c.x + w_cells):
-			blocked[Vector2i(x, y)] = true
+	if name == "lighthouse":
+		# Only the rock island and the tower's foot are solid (the old box ran ten rows up
+		# the tower and walled off open ground round it, C2): the lamp rises over you.
+		for k in 6:
+			var lo := 0 if k < 4 else (1 if k == 4 else 3)
+			var hi := w_cells - 1 if k < 4 else (w_cells - 2)
+			for x in range(c.x + lo, c.x + hi + 1):
+				blocked[Vector2i(x, base.y - k)] = true
+				hard[Vector2i(x, base.y - k)] = true
+	else:
+		for y in range(c.y + h_cells / 3, base.y + 1):
+			for x in range(c.x, c.x + w_cells):
+				blocked[Vector2i(x, y)] = true
 	_dock(door)
 	if name != "fishing_hut":
 		# The sprite's own water/rock skirt: make those cells water so the shore wraps it.

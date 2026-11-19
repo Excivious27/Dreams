@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 fix P4: world and map fixes
+- **Fish on land (Tom):** `fish_jump` critters (lake, riverlands) spawned on any open cell, so a jumping fish sat on the grass. Fish now spawn on deep-water cells only and swim only there (`WorldGen.WATER_CRITTERS`, `_deep_water`); ground critters never walk into water; jungle jellies float (flyers). Test: tools/critter_water_test.gd (every outdoor map, both arcs, at spawn and after 6 s).
+- **Lighthouse wall (Tom):** the lake lighthouse blocked a 9x10 box up its tower; now only the rock island and the tower foot are solid, and the derelict tower fades when you walk behind it.
+- **Mushrooms (Tom):** fall ground decor drew `mushrooms_fall`, the same picture as the pickable mushrooms. Decor now uses fall tufts, acorns and pinecones; the forage looks (`WorldGen.FORAGE_LOOKS`: mushrooms_fall, wildflowers2) mean "pick me" everywhere (wild herbs no longer look like decor clover; forest forage flowers use wildflowers2).
+- **Farmhouse (Tom):** drawn at 2/3 of its art (128x116 px, was 96x87): door the hero's width, about 4.5 heroes tall. Solid rect Rect2i(9,6,8,5); mailbox moved to the front yard (16,11).
+- **Hubs:** prop corners the art leaves see-through are listed as `"open"` by `gen_mega_new.open_cells` (alpha sampling) and unblocked by region.gd (Gilt plaza tables, Iron Junction plaza, Frosthold stilt hut, Breezehaven cloud tree, Mirage Post camp...). Fairy ring entry moved to open ground (forest 24,38). Gilt City entry is "the black limousine".
+- **Community farm:** volunteers never path or wander across beds (`GameMap.keep_off`); no market on the 14th (festival), texts say 7th, 21st and 28th.
+
 ## 2026-11-19 — CONDUCT 2 (c2_13): gangster flavour of the Rec Hall, arcade and Westside Lot Garden
 - Rec Hall: every adult visitor now has gangster-arc lines there (Gideon, Maple, Finn, Lumi, Theo, Ivy, Juniper, Posy, Benno, Hazel, Rook + Alder/Sal); front desk greets with the hall's rule; Tobin's bowling bet no longer has Dad "putting up stakes"; the quest text says "the rec" (fits both arcs).
 - Prizes: Penguin Plush and Top Hat are penguin-arc only; the gangster counter (and claw machine) has Fuzzy Dice and a Pinstripe Fedora instead (`Tickets.arc_ok`, lock_text "Not on this counter."). Item texts no longer name the Rec Center/commons or say "high roller"; Commons Stew is Community Stew.
