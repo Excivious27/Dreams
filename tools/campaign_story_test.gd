@@ -3,6 +3,8 @@ extends SceneTree
 ## campaign gets a goal-line pointer to that campaign, the campaign (and the
 ## chain before it) can be fought at that point in the story, and winning it
 ## opens the region. Locks are real here (Campaign.bypass stays false).
+## The lead-in is simulated as a player would meet it: chapter 2 comes before
+## the first held story region, then training, a team and provisions.
 var fails := 0
 
 
@@ -22,6 +24,9 @@ func _initialize() -> void:
 		GameState.new_run(arc, "kairi" if arc == "penguins" else "pax", "Hero", "Dreamhollow", "Biscuit")
 		GameState.run["quests"] = []
 		check(not Campaign.region_open("wastes"), "%s: a new game starts with the Wastes held" % arc)
+		GameState.run["party"] = {}
+		for cid0: String in Campaign.for_arc():
+			check(Campaign.why_locked(cid0) != "", "%s: %s can't be fought on day one" % [arc, cid0])
 		for qid: String in orders[arc]:
 			var def := GameState._quest_def(qid)
 			if def.is_empty():
@@ -34,6 +39,7 @@ func _initialize() -> void:
 					GameState.run["flags"]["babies_done"] = true
 				var ptr := GameState.next_step()
 				check(ptr.contains("campaign map"), "%s/%s: goal line points at the campaign: %s" % [arc, qid, ptr])
+				check(CampaignGate.story_ok(), "%s/%s: chapter 2 comes before the first held story region" % [arc, qid])
 				# Win the chain, first campaign first, as the pointer leads.
 				var guard := 0
 				while not Campaign.region_open(reg) and guard < 6:
@@ -45,7 +51,25 @@ func _initialize() -> void:
 					check(named != "", "%s/%s: pointer names a campaign of this arc" % [arc, qid])
 					if named == "":
 						break
+					# The lead-in, as the goal line asks for it: train, gather a team, bring provisions.
+					if not CampaignGate.trained():
+						check(ptr.contains("Train"), "%s/%s: the goal line sends you to training first: %s" % [arc, qid, ptr])
+						GameState.run["flags"][CampaignGate.TRAINED] = true
+					var tries := 0
+					while CampaignGate.team_short(named) > 0 and tries < 12:
+						tries += 1
+						var pool: Array = ["dad", "mom", "pax", "mer", "penguin_f", "coldy"] if arc == "penguins" else ["sal", "dad", "mom", "pax", "mer", "big_jim"]
+						for cc: String in pool:
+							if not cc in (Companion.party()["known"] as Array) and cc != str(GameState.run.get("playable", "")):
+								Companion.recruit(cc, false)
+								break
+					check(CampaignGate.team_short(named) == 0, "%s/%s: a team can be gathered for %s" % [arc, qid, named])
+					var nd: Dictionary = CampaignGate.need(named)
+					for it: String in nd.get("items", {}):
+						GameState.add_item(it, int(nd["items"][it]))
+					GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) + int(nd.get("crystals", 0))
 					check(Campaign.why_locked(named) == "", "%s/%s: %s can be fought now (%s)" % [arc, qid, named, Campaign.why_locked(named)])
+					check(CampaignGate.muster(named) != "", "%s/%s: %s musters" % [arc, qid, named])
 					Campaign._unlock(named)
 					ptr = GameState.next_step()
 				check(Campaign.region_open(reg), "%s/%s: %s is open after its campaign" % [arc, qid, reg])
@@ -53,6 +77,11 @@ func _initialize() -> void:
 			for q in GameState.run["quests"]:
 				if str(q["id"]) == qid:
 					q["done"] = true
+			# Story flags that finishing these quests sets in play.
+			if qid == "cattopia":
+				GameState.run["flags"]["meow_taught"] = true
+			if qid == "hideout":
+				GameState.run["flags"]["hideout_seen"] = true
 		# Region locks never trap a finished story: every story region is open.
 		for qid: String in Campaign.STORY_REGION:
 			var r := str(Campaign.STORY_REGION[qid])

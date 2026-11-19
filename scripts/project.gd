@@ -213,8 +213,8 @@ static func war_table(m: GameMap) -> void:
 		var b: Dictionary = all[bid]
 		if str(b.get("arc", "both")) not in ["both", str(GameState.run.get("arc", ""))]:
 			continue
-		var ready := GameState.progress_tier() + 1 >= int(b.get("tier", 1))
-		opts.append("%s%s%s" % ["✓ " if GameState.run["flags"].has("battle_" + str(bid)) else "", str(b["title"]), "" if ready else " (needs more story)"])
+		var ready := GameState.progress_tier() + 1 >= int(b.get("tier", 1)) and CampaignGate.trained()
+		opts.append("%s%s%s" % ["✓ " if GameState.run["flags"].has("battle_" + str(bid)) else "", str(b["title"]), "" if ready else (" (needs more story)" if CampaignGate.trained() else " (train first)")])
 		ids.append([str(bid), ready])
 	opts.append("Not now")
 	var d := Dialogue.instance(m.get_tree())
@@ -227,7 +227,7 @@ static func war_table(m: GameMap) -> void:
 		CampaignScreen.open(m)
 		return
 	if not bool(ids[i][1]):
-		m.hud.toast("Not yet: get further in the story first.", Color(1, 0.85, 0.6))
+		m.hud.toast("Not yet: get further in the story first." if CampaignGate.trained() else "Not yet: finish Training on the campaign map first.", Color(1, 0.85, 0.6))
 		return
 	var R: Dictionary = GameState.load_json("res://data/regions.json").get(str(ids[i][0]), {})
 	var sp: Array = R.get("spawn", [10, 10])

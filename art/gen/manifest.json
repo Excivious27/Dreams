@@ -121933,6 +121933,16 @@
    "h": 177,
    "w": 267
   },
+  "cut_drill_catkins": {
+   "file": "ui/cut_drill_catkins.png",
+   "h": 333,
+   "w": 500
+  },
+  "cut_drill_sal": {
+   "file": "ui/cut_drill_sal.png",
+   "h": 333,
+   "w": 500
+  },
   "cut_letter": {
    "file": "ui/cut_letter.png",
    "h": 177,
@@ -121992,6 +122002,11 @@
    "file": "ui/cut_uphill_stream.png",
    "h": 177,
    "w": 267
+  },
+  "cut_war_table": {
+   "file": "ui/cut_war_table.png",
+   "h": 333,
+   "w": 500
   },
   "dark_touched": {
    "file": "ui/dark_touched.png",
@@ -123093,6 +123108,11 @@
    "h": 45,
    "w": 48
   },
+  "icon_objective": {
+   "file": "ui/icon_objective.png",
+   "h": 40,
+   "w": 39
+  },
   "icon_party_big_jim": {
    "file": "ui/icon_party_big_jim.png",
    "h": 29,
@@ -123127,6 +123147,16 @@
    "file": "ui/icon_party_penguin_wizard.png",
    "h": 29,
    "w": 32
+  },
+  "icon_supply": {
+   "file": "ui/icon_supply.png",
+   "h": 40,
+   "w": 38
+  },
+  "icon_whistle": {
+   "file": "ui/icon_whistle.png",
+   "h": 40,
+   "w": 42
   },
   "ingredient_chip": {
    "file": "ui/ingredient_chip.png",
@@ -123642,6 +123672,36 @@
    "file": "ui/mining_up.png",
    "h": 23,
    "w": 24
+  },
+  "mode_boss": {
+   "file": "ui/mode_boss.png",
+   "h": 48,
+   "w": 48
+  },
+  "mode_defend": {
+   "file": "ui/mode_defend.png",
+   "h": 48,
+   "w": 48
+  },
+  "mode_escort": {
+   "file": "ui/mode_escort.png",
+   "h": 48,
+   "w": 48
+  },
+  "mode_gate": {
+   "file": "ui/mode_gate.png",
+   "h": 48,
+   "w": 48
+  },
+  "mode_siege": {
+   "file": "ui/mode_siege.png",
+   "h": 48,
+   "w": 48
+  },
+  "mode_skirmish": {
+   "file": "ui/mode_skirmish.png",
+   "h": 48,
+   "w": 48
   },
   "moon_touched": {
    "file": "ui/moon_touched.png",
@@ -126147,6 +126207,21 @@
    "file": "ui/quest_scroll.png",
    "h": 31,
    "w": 32
+  },
+  "rally_follow": {
+   "file": "ui/rally_follow.png",
+   "h": 40,
+   "w": 40
+  },
+  "rally_guard": {
+   "file": "ui/rally_guard.png",
+   "h": 40,
+   "w": 39
+  },
+  "rally_send": {
+   "file": "ui/rally_send.png",
+   "h": 40,
+   "w": 40
   },
   "rank_1": {
    "file": "ui/rank_1.png",

@@ -2,6 +2,15 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: battle campaigns overhaul
+- **No campaigns on day one.** The campaign map, board and war-table battles open through a lead-in (`CampaignGate`, scripts/campaign_gate.gd): chapter 2 of the story (Catkins teaches you / you reach Hideout town), then a guided training drill with a veteran (Catkins or Sal invite you in story beats, data/campaign_story.json), then per campaign a team (partners, crew, Marked friends, villagers at ♥2) and tiered provisions (wood/stone → copper → iron → gold → refined crystal, plus ◆). Mustering pays the provisions and turns them into starting supply. Messages say exactly what's missing ("Recruit 2 more allies and bring 20 Wood, 10 Stone."), and the goal line adds it after the campaign pointer.
+- **Training drill** (`BattleDrill`): six short steps on the orchard field with live checks and a step card: take a point, build a helper, RALLY follow, the point menu, RALLY to a point, capture and win. Foes only come in the last step. Pays once and trains you.
+- **Briefing cards:** every campaign battle and the drill open with a card (`BattleBrief`: kind badge, objective, how to win/lose, your army, controls). It pauses the game, stays up a moment the first time, and each kind can be hidden after that. Every campaign board opens with its own briefing (war-table panel, how it works, length, a ticked list of what it asks); "?" shows it again.
+- **Battles are less clunky:** an objective banner is always on screen (TAKE ALL 4 POINTS (2/4), SIEGE, HOLD, CONVOY, CAPTAIN), a RALLY button with painted icons and a helper count, a pulsing RALLY marker on the target point (or round you when they follow), a rally menu that marks the current choice and each point's owner, and toasts moved below the bar.
+- **Shorter, measured campaigns** (tools/gen_battles.py): 4 territories at tier 1 (no sieges/defends before the gate), 5 at tiers 2-3, 6 at tier 4, 7 at tier 5; enemy tickets, hold timers and foe caps scale with tier; each board records its fewest battles to the gate.
+- **Art:** 5 image-tool renders (art/incoming/r13_a4/, `tools/slice_r13_a4.py`): Catkins' and Sal's training panels, the war table, 6 battle-kind badges (also the board tokens) and 6 HUD icons (rally guard/follow/send, objective, whistle, supply). Audio reuses existing cues (sfx_audit: 0 missing).
+- Tests: tools/campaign_gate_test.gd (new, in check.sh), campaign_map_test and campaign_story_test updated for the lead-in.
+
 ## 2026-11-18 — Round 12: art complete (image tool)
 - **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
 - **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):
