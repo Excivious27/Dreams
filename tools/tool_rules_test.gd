@@ -222,9 +222,9 @@ func _farm(arc: String) -> void:
 		check(str(GameState.run["farm"].get(key, {}).get("crop", "")) != "", "[%s] seeds plant in tilled soil" % tag)
 		if not GameState.sky_waters():
 			var dt := await _use(m, st, c, "axe")
-			check(dt.contains("Watering Can") and not bool(GameState.run["farm"][key].get("watered", false)), "[%s] dry crop with the axe: can hint (%s)" % [tag, dt])
+			check((dt.contains("Watering Can") or dt.contains("with the can")) and not bool(GameState.run["farm"][key].get("watered", false)), "[%s] dry crop with the axe: can hint (%s)" % [tag, dt])
 			var ht := await _use(m, st, c, "hoe")
-			check(ht == "", "[%s] dry crop with the hoe: quiet (work rows) (%s)" % [tag, ht])
+			check(ht == "" or ht.contains("more day"), "[%s] dry crop with the hoe: quiet in rows, reads on a tap (%s)" % [tag, ht])
 			await _use(m, st, c, "can")
 			check(bool(GameState.run["farm"][key].get("watered", false)), "[%s] the can waters" % tag)
 		(GameState.run["farm"] as Dictionary).erase(key)

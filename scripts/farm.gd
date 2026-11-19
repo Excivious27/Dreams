@@ -988,6 +988,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		return _water(tile, key)
 	if _hand_item(sel):
 		return false  # a growth tonic in hand: use it, don't read the crop
+	if GameState.held_tool() == "hoe" and player and player._hold_t > 0.25:
+		return true  # hold-to-till rows run over crops: stay quiet (a fresh tap still reads it)
 	toast_growth(tile, cd, left, thirsty)
 	return true
 
