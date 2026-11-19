@@ -211,8 +211,7 @@ func _boss_down() -> void:
 		])
 	else:
 		await say([
-			{"text": "He goes down hard and stays down. In his coat: sixty crystals and a folded note. The handwriting on it has loops on the W and a hard press on the K."},
-			{"text": "Sal, back in town, will want to hear about this."},
+			{"text": "He goes down hard. When he gets up, he isn't interested in you any more. He's interested in the rocks, and the road, and anywhere that isn't here."},
 		])
 	GameState.save()
 	player.frozen = false

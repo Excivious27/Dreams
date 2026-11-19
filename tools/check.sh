@@ -266,6 +266,13 @@ if ! echo "$npout" | grep -q "newgame_penguin_test: 0 failures"; then
   echo "New-game penguin test failed"; exit 1
 fi
 
+echo "== gangster first hours: intro, day 2, meadow, Hideout, first crew =="
+gsout="$("$GODOT" --headless --path . -s res://tools/gang_start_test.gd 2>&1)"
+echo "$gsout" | grep -E "FAIL|SCRIPT ERROR|gang_start_test" || true
+if ! echo "$gsout" | grep -q "gang_start_test: 0 failures"; then
+  echo "Gang start test failed"; exit 1
+fi
+
 echo "== mega regions: map tabs, unlocks, travel =="
 megaout="$("$GODOT" --headless --path . -s res://tools/mega_region_test.gd 2>&1)"
 echo "$megaout" | grep -E "FAIL|SCRIPT ERROR|mega_region_test" || true

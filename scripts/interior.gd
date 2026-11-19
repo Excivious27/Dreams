@@ -339,10 +339,10 @@ func _talk(n: Npc) -> void:
 	if await Story.talk(self, n.id):
 		player.frozen = false
 		return
-	# Sal joins after the meadow wherever you find her (the inn too).
+	# Sal joins after the meadow wherever you find him (the inn too).
 	if n.id == "sal" and not GameState.is_penguins() and GameState.quest_done("clear_meadow") and not GameState.run["flags"].has("sal_recruited"):
 		GameState.run["flags"]["sal_recruited"] = true
-		GameState.add_quest("gang", "Recruit your first crew in Hideout town, past the meadow outskirts. (Sal is in. The rest is up to you.)")
+		GameState.add_quest("gang", "Recruit your first crew in Hideout town: Deuce at his card table, Mama Rosa at the kitchen door.")
 		await say([
 			{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running."},
 			{"who": "Sal", "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent."},

@@ -56,7 +56,7 @@ static func lines(report: Dictionary) -> Array:
 		lines.append({"who": "HQ", "text": "Overnight:\n" + "\n".join(report["crew_jobs"])})
 	if report.has("relic"):
 		lines.append({"who": "Marlene", "text": "A little something from the tower. Don't ask. (%s)" % GameState.item_name(str(report["relic"]))})
-	if Racket.on():
+	if Racket.on() and (Racket.heat() > 0 or GameState.run["flags"].has("heat_told")):  # "Heat 0/5" means nothing before it's explained
 		var raids: bool = Racket.heat() >= 3 and not GameState.run["flags"].has("president_freed")  # no collectors once the stone is broken
 		lines.append({"text": "Heat %d/5.%s" % [Racket.heat(), " Collectors may be out." if raids else ""]})
 		if raids and Crew.perk_level("raid_warning") >= 1:

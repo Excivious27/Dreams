@@ -1163,27 +1163,41 @@ func _mailbox() -> void:
 				{"who": "Letter", "text": "Welcome to %s! Here are a few strawberry seeds to start you off: they fruit again every few days once they're up. Stop by the general store when you can. - Maple" % GameState.names()["town"]},
 			])
 			give("strawberry_seed", 3)
+			await _more_mail()
 			return
 		if day >= 3 and not flags.has("mail_2"):
 			flags["mail_2"] = true
 			await say([{"who": "Letter", "text": "Dear neighbor, something has been howling from the east meadow at night. Mayor Alder says it's nothing. It is not nothing. - Wren"}])
 			GameState.add_quest("clear_meadow", "Find out what's howling in the east meadow.")
+			await _more_mail()
 			return
 	else:
+		# Night one's letter from M. was read in the intro; the next one comes in the morning.
+		if day < 2 and not flags.has("mail_1"):
+			await read_mail()
+			return
 		if not flags.has("mail_1"):
 			flags["mail_1"] = true
 			await say([
-				{"who": "Letter", "text": "The plot is yours under the name on the deed. Nobody here knows your real one. Keep it that way. Earn your keep and don't draw eyes. - M."},
-				{"text": "Folded inside: a twist of potato seeds and a note. \"Spring dirt. Plant them, water them, sell them. A farmer is the last thing anyone looks at.\""},
+				{"who": "Letter", "text": "A second envelope, same careful hand. Inside, three packets of strawberry seed and a note:"},
+				{"who": "Letter", "text": "Strawberries pay better than turnips, and nobody remembers a strawberry farmer. Maple at the store sells seeds and asks nothing. The man on the bench by the town gate has been places; he's worth a word. Burn this. - M."},
 			])
-			give("potato_seed", 3)
+			give("strawberry_seed", 3)
+			await _more_mail()
 			return
 		if day >= 3 and not flags.has("mail_2"):
 			flags["mail_2"] = true
 			await say([{"who": "Letter", "text": "A man came through town asking about a face like yours. He went east, toward the meadow. Be careful. - M."}])
 			GameState.add_quest("clear_meadow", "Someone is asking about you. Check the east meadow.")
+			await _more_mail()
 			return
 	await read_mail()
+
+
+## After a story letter, any letters waiting in the mail list come too (one tap reads the box).
+func _more_mail() -> void:
+	if Mail.unread() > 0:
+		await read_mail()
 
 
 func _talk_crystal() -> void:
