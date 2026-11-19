@@ -80,6 +80,18 @@ python3 tools/prompt_size_check.py || { echo "Prompt size check failed"; exit 1;
 echo "== every sound the game asks for exists =="
 python3 tools/sfx_audit.py || { echo "Sound audit failed"; exit 1; }
 
+echo "== music: every map has a song; web streaming works offline =="
+mmout="$("$GODOT" --headless --path . -s res://tools/music_map_test.gd 2>&1)"
+echo "$mmout" | grep -E "FAIL|SCRIPT ERROR|music_map_test" | head -n 40 || true
+if ! echo "$mmout" | grep -q "music_map_test: .* 0 failures"; then
+  echo "Music map test failed"; exit 1
+fi
+msout="$("$GODOT" --headless --path . -s res://tools/music_stream_test.gd 2>&1)"
+echo "$msout" | grep -E "FAIL|SCRIPT ERROR|music_stream_test" || true
+if ! echo "$msout" | grep -q "music_stream_test: 0 failures"; then
+  echo "Music stream test failed"; exit 1
+fi
+
 echo "== workshop: stations at run time =="
 sout="$("$GODOT" --headless --path . -s res://tools/station_test.gd 2>&1)"
 echo "$sout" | grep -E "FAIL|station_test" || true

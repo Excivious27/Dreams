@@ -58,6 +58,7 @@ func _ready() -> void:
 	add_child(_steps)
 	_muted = bool(SaveGame.get_value("muted", false))
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), _muted)
+	get_tree().create_timer(4.0, true).timeout.connect(_prefetch_next)
 	if _pending != "":
 		var t := _pending
 		_pending = ""
@@ -79,22 +80,36 @@ func play(track: String) -> void:
 	if track == _current:
 		return
 	_current = track
-	var path := "res://audio/music/%s.ogg" % track
-	var stream: AudioStream = null
-	if ResourceLoader.exists(path):
-		stream = load(path) as AudioStream
-	elif _streamed.has(track):
-		stream = _streamed[track]
-	elif track in _stream_list():
-		# Web build: this song isn't in the download; fetch it (or read our cached copy), then play.
-		_player.stop()
+	var stream := _stream_for(track)
+	if stream != null:
+		_start(stream, track)
+		return
+	# Not in the pack (web build streams most songs): fetch it, and keep music
+	# going meanwhile: the song already playing carries on, or a packed stand-in
+	# starts; the real song crossfades in when it arrives.
+	if track in _stream_list():
 		_fetch(track)
-		return
-	if stream == null:
-		_player.stop()
-		return
+	if _now == "" or not _player.playing:
+		var s := _standin(track)
+		var st := _stream_for(s)
+		if st != null:
+			_start(st, s)
+
+
+## The song actually heard (a stand-in while the wanted one downloads).
+func now_playing() -> String:
+	return _now
+
+
+## The song the game asked for.
+func wanted() -> String:
+	return _current
+
+
+func _start(stream: AudioStream, name: String) -> void:
 	if stream is AudioStreamOggVorbis:
-		(stream as AudioStreamOggVorbis).loop = not (track in ONCE)
+		(stream as AudioStreamOggVorbis).loop = not (name in ONCE)
+	_now = name
 	# Crossfade: the old track fades out on the spare player while the new one fades in.
 	# A second change mid-fade must not let the first fade's stop() land on the
 	# new track: kill both tweens first.
@@ -118,10 +133,58 @@ func play(track: String) -> void:
 		_tw_in.tween_property(_player, "volume_db", MUSIC_DB + _duck, FADE)
 
 
+## A song we can play right now: packed, already downloaded, or in the cache.
+func _stream_for(track: String) -> AudioStream:
+	if track == "":
+		return null
+	if not (force_stream and track in _stream_list()):
+		var path := "res://audio/music/%s.ogg" % track
+		if ResourceLoader.exists(path):
+			var st := load(path) as AudioStream
+			if st != null:
+				return st
+	if _streamed.has(track):
+		return _streamed[track]
+	var cache := "user://mcache/%s.ogg" % track
+	if FileAccess.file_exists(cache):
+		var st2 := AudioStreamOggVorbis.load_from_buffer(FileAccess.get_file_as_bytes(cache))
+		if st2 != null:
+			_streamed[track] = st2
+			return st2
+		DirAccess.remove_absolute(cache)  # broken download: fetch it again
+	return null
+
+
+## A packed song that suits the wanted one, to play until it arrives.
+func _standin(track: String) -> String:
+	var t := track
+	if t in ["house", "shop", "shop_gang", "inn", "chapel", "clinic", "hideout", "merkitty_song", "credits"] or t.begins_with("ending"):
+		t = "house"
+	else:
+		t = "farm"
+	for c: String in [t, "farm", "house", "title"]:
+		if _stream_for(c) != null:
+			return c
+	return ""
+
+
 # ---- streamed music (web): data/music_stream.json lists songs kept outside the pack ----
 var _streamed := {}
 var _fetching := {}
+var _tries := {}
+var _now := ""
 static var _stream_names: Array = []
+## Tests: treat streamed songs as missing from the pack (acts like the web build).
+static var force_stream := false
+## Where streamed songs live ("<base><name>.ogg"). The web build works it out
+## from the page address; tests point it at a local server.
+static var stream_base := ""
+## Seconds before each retry of a failed download (the last one repeats).
+static var retry_delays: Array = [2.0, 5.0, 12.0, 30.0, 60.0]
+## Songs heard often, fetched quietly one by one once the first song is in.
+const PREFETCH := ["night", "rain", "town", "meadow", "forest", "lake", "winter", "farm_fall"]
+const PREFETCH_GANG := ["arc_gangsters", "countryside", "hideout", "neon", "docks"]
+const PREFETCH_PENGUIN := ["arc_penguins", "cattopia", "beach", "mountain"]
 
 
 static func _stream_list() -> Array:
@@ -137,39 +200,98 @@ static func has_track(t: String) -> bool:
 	return ResourceLoader.exists("res://audio/music/%s.ogg" % t) or t in _stream_list()
 
 
+## Absolute address of the streamed songs. HTTPRequest refuses relative URLs
+## ("Invalid URL scheme"), which silenced every streamed song on the web build.
+static func _base_url() -> String:
+	if stream_base != "":
+		return stream_base
+	var env := OS.get_environment("DREAMS_MUSIC_URL")
+	if env != "":
+		stream_base = env if env.ends_with("/") else env + "/"
+		return stream_base
+	if OS.has_feature("web"):
+		var u: Variant = JavaScriptBridge.eval("new URL('music/', document.baseURI).href", true)
+		if u is String and str(u).begins_with("http"):
+			stream_base = str(u)
+	return stream_base
+
+
 func _fetch(track: String) -> void:
-	var cache := "user://mcache/%s.ogg" % track
-	if FileAccess.file_exists(cache):
-		_got(track, FileAccess.get_file_as_bytes(cache), false)
+	if _fetching.has(track) or _streamed.has(track):
 		return
-	if _fetching.has(track):
+	var base := _base_url()
+	if base == "":
 		return
 	var rq := HTTPRequest.new()
+	rq.timeout = 45.0
 	add_child(rq)
 	_fetching[track] = rq
 	rq.request_completed.connect(func(result: int, code: int, _h: PackedStringArray, body: PackedByteArray) -> void:
 		_fetching.erase(track)
 		rq.queue_free()
-		if result == HTTPRequest.RESULT_SUCCESS and code == 200 and body.size() > 1000:
-			_got(track, body, true))
-	if rq.request("music/%s.ogg" % track) != OK:
+		if result == HTTPRequest.RESULT_SUCCESS and code == 200 and body.size() > 1000 and _got(track, body, true):
+			return
+		_failed(track))
+	if rq.request(base + track + ".ogg") != OK:
 		_fetching.erase(track)
 		rq.queue_free()
+		_failed(track)
 
 
-func _got(track: String, bytes: PackedByteArray, save: bool) -> void:
+func _failed(track: String) -> void:
+	var n := int(_tries.get(track, 0))
+	_tries[track] = n + 1
+	var d: float = float(retry_delays[mini(n, retry_delays.size() - 1)])
+	if track == _prefetching and track != _current:
+		_prefetching = ""  # a quiet prefetch moves on; the song is tried again when wanted
+		get_tree().create_timer(d, true).timeout.connect(_prefetch_next)
+		return
+	get_tree().create_timer(d, true).timeout.connect(func() -> void:
+		# Keep trying while the song is still wanted.
+		if track == _current:
+			_fetch(track))
+
+
+## How many times a song's download failed (tests).
+func tries(track: String) -> int:
+	return int(_tries.get(track, 0))
+
+
+func _got(track: String, bytes: PackedByteArray, save: bool) -> bool:
 	var st := AudioStreamOggVorbis.load_from_buffer(bytes)
 	if st == null:
-		return
+		return false
 	_streamed[track] = st
 	if save:
 		DirAccess.make_dir_recursive_absolute("user://mcache")
 		var f := FileAccess.open("user://mcache/%s.ogg" % track, FileAccess.WRITE)
 		if f:
 			f.store_buffer(bytes)
-	if _current == track:
-		_current = ""
-		play(track)
+	if _prefetching == track:
+		_prefetching = ""
+	if _current == track and _now != track:
+		_start(st, track)
+	_prefetch_next.call_deferred()
+	return true
+
+
+var _prefetching := ""
+
+
+func _prefetch_next() -> void:
+	if _prefetching != "" or not _fetching.is_empty() or _base_url() == "":
+		return
+	var list: Array = []
+	if not GameState.run.is_empty():
+		list.append_array(PREFETCH_PENGUIN if GameState.is_penguins() else PREFETCH_GANG)
+	list.append_array(PREFETCH)
+	for t: String in list:
+		if t in _stream_list() and not _streamed.has(t) and int(_tries.get(t, 0)) < 2:
+			if _stream_for(t) != null:
+				continue  # cached from an earlier visit
+			_prefetching = t
+			_fetch(t)
+			return
 
 
 func _load_sfx(name: String) -> AudioStream:
@@ -280,6 +402,7 @@ func stop_all() -> void:
 		_player.stop()
 		_fading.stop()
 	_current = ""
+	_now = ""
 
 
 func toggle_mute() -> bool:
