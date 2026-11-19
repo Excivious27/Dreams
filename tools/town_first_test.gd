@@ -126,8 +126,9 @@ func _arc(arc: String) -> void:
 	if g3 and g3._leaving:
 		g3.position = g3.home  # skip the walk: at their door / spot
 		g3._path.clear()
+		g3._target = g3.home
 		await _frames(10)
-	check(g3 != null and not g3.hold, "[%s] the guide is back on their routine" % tag)
+	check(g3 != null and not g3.hold, "[%s] the guide is back on their routine (leaving=%s vis=%s pos=%s home=%s target=%s path=%d pm=%s)" % [tag, g3._leaving, g3.visible, g3.position, g3.home, g3._target, g3._path.size(), g3.process_mode])
 	_toast_texts(m)
 
 	# Intros: first talk says who they are; the second is ordinary chatter.
