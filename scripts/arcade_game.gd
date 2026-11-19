@@ -245,7 +245,7 @@ var _over_t := 0.0
 ## Insert coin and start a round. False (with a message) when you can't pay.
 func start() -> bool:
 	if not ArcadeHub.charge(fee):
-		say("Not enough %s (%d)." % [ArcadeHub.money_word(), fee])
+		say("Not enough %s (%s)." % [ArcadeHub.money_word(), ArcadeHub.price(fee)])
 		sfx("nope", "locked")
 		return false
 	sfx("coin")
@@ -559,7 +559,7 @@ func _draw_title(c: Control) -> void:
 	var blink := fmod(t, 1.0) < 0.65
 	panel(c, Rect2(55, 284, 160, 24), Color(0.1, 0.05, 0.12), accent)
 	if blink:
-		text_outline(c, Vector2(55, 300), "A: INSERT %d %s" % [fee, ArcadeHub.money_word().to_upper()], 160, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+		text_outline(c, Vector2(55, 300), "A: INSERT %s" % ArcadeHub.price(fee).to_upper(), 160, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	text(c, Vector2(0, 322), "You have %d · B: leave" % ArcadeHub.money(), W, 8, Color(0.8, 0.8, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 
 

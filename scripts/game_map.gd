@@ -1340,6 +1340,7 @@ func area_track() -> String:
 		t = str(INTERIOR_MUSIC.get(iid, music_track if music_track != "town" else "house"))
 		if t == "shop" and Racket.on():
 			t = "shop_gang"
+		t = RecCenter.music_for(self, t)  # today's jukebox record
 	if id == "mine" and int(get("floor_no") if get("floor_no") != null else 1) > 30:
 		t = "mine_deep"
 	if id.begins_with("bf_") and get("battle") != null and is_instance_valid(get("battle")):

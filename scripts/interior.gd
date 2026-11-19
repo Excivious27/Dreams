@@ -366,7 +366,7 @@ func _talk(n: Npc) -> void:
 		return
 	var hl := Hearts.daily(n.id)
 	if bool(I.get("rec", false)) and str(data.get("work", "")) != interior_id:
-		await say(RecCenter.chat(n.id))  # out for the evening: they talk about the games
+		await RecCenter.visitor_talk(self, n)  # out for the evening: they talk about the games (and let you at their cabinet)
 	elif hl != "" and (int(GameState.run["day"]) + GameState.friend_hearts(n.id)) % 2 == 0:
 		await say([{"who": name, "text": hl}])
 	elif lines.is_empty():

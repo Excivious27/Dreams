@@ -9466,7 +9466,7 @@
  "rp_fizzy_pop": {
   "name": "Fizzy Pop",
   "type": "food",
-  "value": 20,
+  "value": 7,
   "rarity": "common",
   "tier": 1,
   "energy": 25,
@@ -9477,7 +9477,7 @@
  "rp_cotton_candy": {
   "name": "Cotton Candy",
   "type": "food",
-  "value": 35,
+  "value": 12,
   "rarity": "common",
   "tier": 1,
   "energy": 30,
@@ -9493,7 +9493,7 @@
  "rp_ribbon": {
   "name": "Lucky Ribbon",
   "type": "gift",
-  "value": 40,
+  "value": 15,
   "rarity": "common",
   "tier": 1,
   "icon": "ribbon_red",
@@ -9503,7 +9503,7 @@
  "rp_kite": {
   "name": "Kite",
   "type": "gift",
-  "value": 90,
+  "value": 30,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "kite",
@@ -9513,7 +9513,7 @@
  "rp_teddy": {
   "name": "Teddy Bear",
   "type": "gift",
-  "value": 120,
+  "value": 40,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "teddy_bear",
@@ -9523,7 +9523,7 @@
  "rp_penguin_plush": {
   "name": "Penguin Plush",
   "type": "gift",
-  "value": 140,
+  "value": 45,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "penguin_figurine",
@@ -9533,7 +9533,7 @@
  "rp_cat_plush": {
   "name": "Lucky Cat",
   "type": "gift",
-  "value": 140,
+  "value": 45,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "cat_figurine",
@@ -9544,7 +9544,7 @@
   "name": "Bowling Cap",
   "type": "equip",
   "slot": "head",
-  "value": 150,
+  "value": 60,
   "rarity": "uncommon",
   "tier": 2,
   "stats": {
@@ -9559,7 +9559,7 @@
   "name": "Neon Cap",
   "type": "equip",
   "slot": "head",
-  "value": 180,
+  "value": 70,
   "rarity": "uncommon",
   "tier": 2,
   "stats": {
@@ -9574,7 +9574,7 @@
   "name": "Top Hat",
   "type": "equip",
   "slot": "head",
-  "value": 400,
+  "value": 150,
   "rarity": "rare",
   "tier": 3,
   "stats": {
@@ -9589,7 +9589,7 @@
   "name": "Star Cape",
   "type": "equip",
   "slot": "back",
-  "value": 600,
+  "value": 225,
   "rarity": "rare",
   "tier": 3,
   "stats": {
@@ -9603,7 +9603,7 @@
  "rp_music_box": {
   "name": "Music Box",
   "type": "decor",
-  "value": 200,
+  "value": 75,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "music_box",
@@ -9613,7 +9613,7 @@
  "rp_painting": {
   "name": "Neon Painting",
   "type": "decor",
-  "value": 250,
+  "value": 100,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "painting_abstract",
@@ -9623,7 +9623,7 @@
  "rp_trophy_bronze": {
   "name": "Bronze Bowling Trophy",
   "type": "decor",
-  "value": 250,
+  "value": 100,
   "rarity": "uncommon",
   "tier": 2,
   "icon": "trophy_bronze",
@@ -9633,7 +9633,7 @@
  "rp_trophy_silver": {
   "name": "Silver Bowling Trophy",
   "type": "decor",
-  "value": 450,
+  "value": 175,
   "rarity": "rare",
   "tier": 3,
   "icon": "trophy_silver",
@@ -9643,7 +9643,7 @@
  "rp_trophy_gold": {
   "name": "Gold Bowling Trophy",
   "type": "decor",
-  "value": 900,
+  "value": 350,
   "rarity": "epic",
   "tier": 4,
   "icon": "trophy_gold",
@@ -9653,7 +9653,7 @@
  "rp_golden_pin": {
   "name": "Golden Pin",
   "type": "decor",
-  "value": 1500,
+  "value": 600,
   "rarity": "legendary",
   "tier": 5,
   "icon": "trophy_master",
@@ -9663,7 +9663,7 @@
  "rp_arcade_medal": {
   "name": "Arcade Medal",
   "type": "decor",
-  "value": 400,
+  "value": 150,
   "rarity": "rare",
   "tier": 3,
   "icon": "medal_gold",
@@ -9673,7 +9673,7 @@
  "rp_jukebox": {
   "name": "Jukebox",
   "type": "decor",
-  "value": 800,
+  "value": 300,
   "rarity": "epic",
   "tier": 4,
   "icon": "music_box2",
@@ -9683,7 +9683,7 @@
  "rp_arcade_cab": {
   "name": "Home Arcade Cabinet",
   "type": "decor",
-  "value": 1000,
+  "value": 400,
   "rarity": "epic",
   "tier": 4,
   "icon": "token_star",
