@@ -419,12 +419,18 @@ func play_power() -> void:
 		anim.flip_h = map != null and map.player != null and map.player.position.x < position.x
 		anim.play("power")
 var _rest_face := "down"
+var _paddle: Paddle  # in water a partner swims too (legs under a water band)
 
 
 func _process(delta: float) -> void:
 	if map == null or map.player == null or anim == null or map.get_tree().paused:
 		return
 	_power_t = maxf(0.0, _power_t - delta)
+	if _paddle == null:
+		var spr := str(defs().get(id, {}).get("sprite", ""))
+		var beast := spr.begins_with("cat_") or spr.begins_with("dog_")
+		_paddle = Paddle.attach(self, anim, map, 6.5 if beast else 6.0, 6.0 if beast else 9.0)
+	var wet := _paddle.update(delta)
 	var goal := map.player.position + Vector2(14, 6)
 	if map.pet and map.pet.visible:
 		goal = map.player.position + Vector2(16, -4)
@@ -452,7 +458,9 @@ func _process(delta: float) -> void:
 				if alt != Vector2.ZERO and not map.rect_blocked_player(Rect2(position + alt + Vector2(-3, -2), Vector2(6, 2)), self):
 					position += alt
 					break
-		var a := "walk" if dist < 48.0 else "run"
+		var a := "walk" if dist < 48.0 or wet else "run"
+		if wet and anim.sprite_frames.has_animation("swim"):
+			a = "swim"
 		if not anim.sprite_frames.has_animation(a):
 			a = "walk"
 		# Axis stickiness: only switch between side and up/down views on a clear lead.
@@ -465,6 +473,7 @@ func _process(delta: float) -> void:
 			anim.flip_h = to.x < 0
 		if anim.animation != a and _power_t <= 0.0:
 			anim.play(a)
+		anim.speed_scale = 0.6 if wet and a.begins_with("walk") else 1.0
 		_rest_face = ("up" if to.y < 0 else "down") if vertical else "side"
 		_idle = 0.0
 	else:
@@ -478,8 +487,11 @@ func _process(delta: float) -> void:
 			anim.flip_h = false
 		elif _rest_face != "side" and anim.sprite_frames.has_animation("idle_down"):
 			anim.flip_h = false  # a front idle: no mirror
-		if map.player.swimming and anim.sprite_frames.has_animation("swim"):
-			want = "swim"
+		if wet:
+			want = "float" if anim.sprite_frames.has_animation("float") else ("swim" if anim.sprite_frames.has_animation("swim") else "walk")
+			anim.speed_scale = 0.35 if want == "walk" else 1.0
+		else:
+			anim.speed_scale = 1.0
 		if anim.animation != want and anim.sprite_frames.has_animation(want) and _power_t <= 0.0:
 			anim.play(want)
 		# Mend (Mom): 1 health every 10 s while she's close.

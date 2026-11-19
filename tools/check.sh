@@ -173,6 +173,12 @@ if ! echo "$cout" | grep -q "anim_test: 0 failures"; then
   echo "Animation test failed"; exit 1
 fi
 
+cout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/move_target_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|move_target_test" || true
+if ! echo "$cout" | grep -q "move_target_test: 0 failures"; then
+  echo "Movement/targeting test failed"; exit 1
+fi
+
 cout="$("$GODOT" --headless --path . -s res://tools/commons_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|commons_test" || true
 if ! echo "$cout" | grep -q "commons_test: 0 failures"; then

@@ -80,9 +80,10 @@ var _last_sig := ""
 func _process(delta: float) -> void:
 	# A full-screen panel just opened (arcade, bowling, prizes, chest...): let go of
 	# the stick and any held button, so nothing walks or swings underneath it and
-	# its own controls start clean. (Panels played with the stick set stick_ok.)
+	# its own controls start clean. (No panel is played with the stick: HackGame
+	# has its own on-screen arrows and the keys.)
 	var modal := Hud.modal_rect.has_area()
-	if modal and not _modal_was and not Hud.stick_ok and not _held.is_empty():
+	if modal and not _modal_was and not _held.is_empty():
 		release_all()
 	_modal_was = modal
 	_canvas.visible = visible_controls
@@ -278,8 +279,8 @@ func _set_vec(dir: Vector2, running: bool) -> void:
 	# Paused (a full-screen menu is open): the stick does nothing, and never presses B.
 	if get_tree().paused:
 		running = false  # never press B by pushing the stick far while something is open
-		if not Dialogue.instance(get_tree()).active and not Hud.stick_ok:
-			dir = Vector2.ZERO  # dialogue choices (and HackGame) still use the stick; other menus don't
+		if not Dialogue.instance(get_tree()).active:
+			dir = Vector2.ZERO  # dialogue choices still use a held stick; menus don't
 	_stick_vec = dir
 	for action: String in DIRS:
 		var want := dir.dot(DIRS[action]) > 0.5

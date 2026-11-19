@@ -18,9 +18,6 @@ static var y_offset := 0.0
 static var extra_rects: Array = []
 ## Set by full-screen panels while open; touch buttons ignore taps inside it.
 static var modal_rect := Rect2()
-## A paused full-screen UI that reads directions (HackGame) sets this while open,
-## so the touch stick still works under the pause.
-static var stick_ok := false
 
 
 static func hud_rect_blocks(p: Vector2) -> bool:

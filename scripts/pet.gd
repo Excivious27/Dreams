@@ -27,6 +27,8 @@ var _down_t := -1.0       # seconds left to revive a downed pup (-1: not down)
 var _moving := false
 var _axis_h := true       # facing sideways (vs up/down); kept until the other axis clearly wins
 var _vel := Vector2.ZERO
+var _paddle: Paddle       # in water the pup swims (Paddle): legs under, bob, slow paddle
+var swimming := false
 const DOWN_WINDOW := 120.0
 
 
@@ -320,6 +322,9 @@ func _process(delta: float) -> void:
 	_hurt_t = maxf(0.0, _hurt_t - delta)
 	_bite_cd = maxf(0.0, _bite_cd - delta)
 	_sync_gear()
+	if _paddle == null:
+		_paddle = Paddle.attach(self, anim, map, 6.5, 6.0)
+	swimming = _paddle.update(delta)
 	var st := state()
 	var mode := str(st.get("mode", "follow"))
 	var player := map.player
@@ -442,8 +447,11 @@ func _process(delta: float) -> void:
 			var vert := ("run_" if running else "walk_") + ("up" if _vel.y < 0 else "down")
 			a = vert if anim.sprite_frames.has_animation(vert) else ("run" if running else "walk")
 			anim.flip_h = false
+		if swimming:
+			a = "walk"  # paddling: the walk, slowed, under the water band
 		if anim.animation != a:
 			anim.play(a)
+		anim.speed_scale = 0.6 if swimming else 1.0
 		_idle = 0.0
 		if _carry_item == "fetch" and dist < 10.0:
 			_carry_item = "bring"
@@ -474,10 +482,13 @@ func _process(delta: float) -> void:
 			want = "sit"
 		elif _idle > 3.0 and anim.sprite_frames.has_animation("sit"):
 			want = "sit"
+		if swimming:
+			want = "walk"  # treading water: never sits or lies on the surface
 		var one_shot := anim.animation in ["dig", "bark", "bite", "hurt", "howl", "play", "fetch", "beg"]
 		if anim.animation != want and not (one_shot and anim.is_playing()):
 			anim.play(want)
-		if _idle > 14.0 and mode != "wait":
+		anim.speed_scale = 0.35 if swimming else 1.0
+		if _idle > 14.0 and mode != "wait" and not swimming:
 			_idle = randf_range(-6.0, 0.0)
 			_dig()
 
