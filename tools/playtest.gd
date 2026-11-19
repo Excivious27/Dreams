@@ -562,11 +562,15 @@ func _r11_passout() -> void:
 		await frames(6)
 	GameState.run["crystals"] = 1000
 	var day0 := int(GameState.run["day"])
+	var t0 := int(GameState.run["time"])
 	m.player_down("hurt")
 	await frames(150)
 	var c := current_scene as GameMap
 	check(c != null and c.scene_id() == "interior" and str(GameState.run.get("interior", "")) == "clinic", "collapsing wakes you in the clinic (%s)" % (c.scene_id() if c else "?"))
-	check(int(GameState.run["day"]) == day0 + 1, "it's the next morning")
+	if t0 < Faint.WAKE:  # Tom: a faint before 10pm wakes you at 10pm the same day
+		check(int(GameState.run["day"]) == day0 and int(GameState.run["time"]) >= Faint.WAKE, "you wake at 10pm the same day (day %d, %d)" % [int(GameState.run["day"]) - day0, int(GameState.run["time"])])
+	else:
+		check(int(GameState.run["day"]) == day0 + 1, "it's the next morning")
 	check(int(GameState.run["crystals"]) == 1000 - 100, "clinic bill is 8%% + 20 (%d left)" % int(GameState.run["crystals"]))
 	await frames(40)
 	var told := false

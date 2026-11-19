@@ -173,6 +173,8 @@ func _process(delta: float) -> void:
 ## Toasts: under the goal line outdoors, above the HUD block indoors, above the dialogue box while one is open.
 func _place_toasts() -> void:
 	var y := (108.0 if _boss_on else 89.0) if y_offset == 0.0 else 199.0  # under the goal (and the boss bar)
+	if not is_inside_tree():
+		return
 	var sc := get_tree().current_scene
 	# The campaign board has its own message line: toasts wait under it, unseen.
 	var board := false
