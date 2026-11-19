@@ -60,3 +60,7 @@ finargle
 shop_gang
 credits
 merkitty_song
+mega_gloam
+mega_desert
+mega_frost
+mega_wind

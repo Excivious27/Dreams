@@ -292,7 +292,7 @@ func _draw_hud() -> void:
 	var tw := _font.get_string_size(ctext, HORIZONTAL_ALIGNMENT_RIGHT, -1, 8).x
 	c.draw_string(_font, Vector2(cx - tw, box.position.y + 17), ctext, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
 	if Money.cash():
-		MoneyIcon.draw(c, Rect2(cx - tw - 13, box.position.y + 10, 11, 7))
+		MoneyIcon.draw(c, Rect2(cx - tw - 13, box.position.y + 8, 11, 11))
 	elif crystal:
 		c.draw_texture_rect(crystal, Rect2(cx - tw - 11, box.position.y + 9, 9, 9), false)
 	else:

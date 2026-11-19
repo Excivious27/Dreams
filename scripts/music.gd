@@ -210,6 +210,8 @@ var _last_sfx := {}
 func sfx(name: String, fallback := "") -> void:
 	if _muted or _sfx.is_empty():
 		return
+	# Gangster arc: money is cash, so coin clinks become bills (Money.SFX).
+	name = Money.sfx_name(name)
 	# The same sound twice within 70 ms is one sound (a burst of pickups mustn't eat every voice).
 	var now := Time.get_ticks_msec()
 	if now - int(_last_sfx.get(name, -1000)) < 70:

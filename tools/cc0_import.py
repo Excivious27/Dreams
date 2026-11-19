@@ -186,6 +186,9 @@ MAP = {
     "boiling": ("bed", ["boiling-water-loops/cooking_with_cover*"], {}),
     "machines": ("bed", ["30-cc0-sfx-loops/machine_03*"], {}),
     "purr_loop": ("bed", ["cat-purr-meow/cat_purrsleepy_loop*"], {}),
+    # --- gangster arc money (Round 13): bills, not crystal chimes ------------
+    "cash_pickup": ("sfx", ["202-more-sound-effects/Money_20*", "202-more-sound-effects/Money_22*", "202-more-sound-effects/Money_24*"], {"cap": 0.6}),
+    "cash_register": ("sfx", ["purchasing-sound-effect/*", "202-more-sound-effects/Money_36*", "202-more-sound-effects/Money_18*"], {"cap": 1.3}),
 }
 
 SOURCES = os.path.join(ROOT, "tools", "cc0_sources.json")
@@ -268,13 +271,22 @@ def make_bed(srcs, dst, join, xf=2.5, maxlen=48.0):
     run("ffmpeg", "-hide_banner", "-y", "-i", loop, "-af", "loudnorm=I=-26:TP=-3:LRA=11", "-ar", "32000", "-c:a", "libvorbis", "-q:a", "1", dst)
 
 
-def add_real(path, names):
-    have = set()
+def _replace(path, text):
+    """Write via a temp file + rename: audio/ files may be hardlinked elsewhere."""
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        f.write(text)
     if os.path.exists(path):
-        have = {l.strip() for l in open(path) if l.strip() and not l.startswith("#")}
-    with open(path, "a") as f:
-        for n in sorted(set(names) - have):
-            f.write(n + "\n")
+        os.remove(path)
+    os.rename(tmp, path)
+
+
+def add_real(path, names):
+    old = open(path).read() if os.path.exists(path) else ""
+    have = {l.strip() for l in old.splitlines() if l.strip() and not l.startswith("#")}
+    new = sorted(set(names) - have)
+    if new:
+        _replace(path, old + ("" if old.endswith("\n") or not old else "\n") + "".join(n + "\n" for n in new))
 
 
 def main():
@@ -316,7 +328,10 @@ def main():
     if not a.dry:
         add_real(os.path.join(ROOT, "audio", "sfx", "REAL.txt"), done_sfx)
         add_real(os.path.join(ROOT, "audio", "amb", "REAL.txt"), done_amb)
-        json.dump(used, open(os.path.join(ROOT, "audio", "CC0_USED.json"), "w"), indent=1, sort_keys=True)
+        up = os.path.join(ROOT, "audio", "CC0_USED.json")
+        allused = json.load(open(up)) if os.path.exists(up) else {}
+        allused.update(used)  # --only runs keep every other sound's record
+        _replace(up, json.dumps(allused, indent=1, sort_keys=True))
     print(f"sfx {len(done_sfx)}  amb {len(done_amb)}  missing: {missing}")
 
 

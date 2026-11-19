@@ -349,3 +349,9 @@ tell
 ui_tap
 ui_tap_2
 ui_tap_3
+cash_pickup
+cash_pickup_2
+cash_pickup_3
+cash_register
+cash_register_2
+cash_register_3

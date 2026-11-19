@@ -800,8 +800,13 @@ func play_tool(action: String, restart := true) -> bool:
 		a = action + "_right"
 	if not has_anim(a) and has_anim(action + "_down"):
 		a = action + "_down"
+	var drawn := has_anim(a) and not CharacterLibrary.is_alias(_anim.sprite_frames, a)
 	if not has_anim(a):
-		return false
+		# No pose for this tool at all: swing the attack frames and draw the tool.
+		if not _tool_overlay(action) or not has_anim("attack"):
+			return false
+		a = "attack_down" if facing == "down" and has_anim("attack_down") else ("attack_up" if facing == "up" and has_anim("attack_up") else "attack")
+		_attack_hit_done = true  # a work swing, not a blow
 	_busy = true
 	_busy_t = 0.0
 	velocity = Vector2.ZERO
@@ -809,7 +814,26 @@ func play_tool(action: String, restart := true) -> bool:
 	_apply(a, facing == "left", restart)
 	if _anim:
 		_anim.speed_scale = 1.35
+		# Work swings take the same time for every hero (frame counts differ
+		# from sheet to sheet): a pickaxe blow is a pickaxe blow.
+		if TOOL_TIME.has(action) and _anim.sprite_frames.has_animation(a):
+			var n := _anim.sprite_frames.get_frame_count(a)
+			var fps := maxf(1.0, _anim.sprite_frames.get_animation_speed(a))
+			_anim.speed_scale = clampf((n / fps) / float(TOOL_TIME[action]), 0.3, 3.0)
+	if not drawn and _tool_overlay(action):
+		var tool := GameState.held_tool()
+		if tool == "" or not (GameState.TOOL_KINDS.has(tool) or GameState.items.has(tool)):
+			tool = {"water": "can"}.get(action, action)
+		HeldSwing.spawn(self, tool, "pour" if action == "water" else "chop", float(TOOL_TIME.get(action, 0.4)), facing)
 	return true
+
+
+## How long one work swing takes (seconds), for every hero alike.
+const TOOL_TIME := {"pickaxe": 0.46, "axe": 0.46, "hoe": 0.4, "water": 0.5}
+
+
+static func _tool_overlay(action: String) -> bool:
+	return action in ["pickaxe", "axe", "hoe", "water"]
 
 
 func _do_action() -> void:
@@ -985,6 +1009,10 @@ func _swing() -> void:
 	_apply(atk, facing == "left" and atk == "attack", true)
 	if _anim:
 		_anim.speed_scale = 1.6
+	# Empty-handed attack frames (the gangster outfits): draw the blade or club.
+	var hw := GameState.held_tool()
+	if CharacterLibrary.unarmed_attack(char_id) and hw != "" and GameState.is_sword(hw) and not GameState.items.get(hw, {}).has("range"):
+		HeldSwing.spawn(self, hw, "sweep", 0.2, facing)
 	_attack_hit()
 	if _anim == null:
 		_busy = false
@@ -1125,6 +1153,8 @@ var _dry_told := false
 ## scattergun). A flash, a tracer and a puff of dust; nothing graphic.
 func _fire(wd: Dictionary, aim: float) -> void:
 	GameState.add_item("rounds", -1)
+	if CharacterLibrary.unarmed_attack(char_id):
+		HeldSwing.spawn(self, GameState.held_tool(), "aim", 0.16, facing)
 	_dry_told = false
 	var dir := facing_dir()
 	var muzzle := position + dir * 10.0 + Vector2(0, -8)

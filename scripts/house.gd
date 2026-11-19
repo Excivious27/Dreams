@@ -127,7 +127,7 @@ func _sleep() -> void:
 		lines.append({"who": "", "text": "A note under the door, in a hand you know: '%s went east. Didn't say why. You know why.'" % str(nm)})
 	await hud.fade_in(0.8)
 	if int(report.get("earned", 0)) > 0:
-		Music.instance(get_tree()).sfx("coin", "pickup")
+		Music.instance(get_tree()).sfx("cash_register" if Money.cash() else "coin", "pickup")
 	if not (report.get("built", []) as Array).is_empty():
 		Music.instance(get_tree()).sfx("craft_done", "levelup")
 	await say(lines)

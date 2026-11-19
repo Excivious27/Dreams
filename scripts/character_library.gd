@@ -211,10 +211,26 @@ static func frames_for(id: String) -> SpriteFrames:
 	return sf
 
 
+## True when `anim` is a borrowed stand-in (not drawn for this action).
+static func is_alias(sf: SpriteFrames, anim: String) -> bool:
+	return sf != null and (sf.get_meta("aliased", {}) as Dictionary).has(anim)
+
+
+## Heroes whose attack frames are empty-handed (punches, jabs, a cane): a held
+## sword or club is drawn over the swing. Every gangster-arc outfit is.
+static func unarmed_attack(id: String) -> bool:
+	return id.ends_with("_gang")
+
+
 ## Sprite anchored at its feet (bottom-center), like the strips.
 static func _alias(sf: SpriteFrames, new_name: String, from: String) -> void:
 	if not sf.has_animation(from):
 		return
+	# Remember stand-ins: a tool swing drawn with someone's punch frames gets the
+	# tool itself drawn over it (HeldSwing).
+	var al: Dictionary = sf.get_meta("aliased", {})
+	al[new_name] = from
+	sf.set_meta("aliased", al)
 	sf.add_animation(new_name)
 	sf.set_animation_speed(new_name, sf.get_animation_speed(from))
 	sf.set_animation_loop(new_name, sf.get_animation_loop(from))

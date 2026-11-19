@@ -20,6 +20,7 @@ var _aura_t := 0.0
 var _bark_t := 0.0
 var _carry_item := ""
 var _carry_from := Vector2.ZERO
+var _carry_find := ""     # mines: "mine" while running to dig, then the item it carries back (PupMine)
 var _howled := false
 var _hp_bar: Node2D
 var _down_t := -1.0       # seconds left to revive a downed pup (-1: not down)
@@ -172,6 +173,9 @@ func set_mode(mode: String) -> void:
 	st["mode"] = mode
 	_target = null
 	_howled = false
+	if _carry_item != "digging":
+		_carry_item = ""
+		_carry_find = ""
 	if mode == "wait":
 		st["wait"] = [map.scene_id(), position.x, position.y]
 		GameState.run["flags"]["pup_stay_used"] = true
@@ -345,6 +349,9 @@ func _process(delta: float) -> void:
 				_carry_from = (d as Node2D).position
 				_carry_item = "fetch"
 				break
+	# Mines: dig runs between fights (PupMine).
+	if _carry_item == "" and mode == "follow" and _target == null and PupMine.active(map):
+		PupMine.maybe_forage(self, delta)
 	# Pick a target.
 	if mode in ["attack", "follow", "guard"]:
 		if _target != null and (not is_instance_valid(_target) or not _target._alive):
@@ -440,6 +447,10 @@ func _process(delta: float) -> void:
 		_idle = 0.0
 		if _carry_item == "fetch" and dist < 10.0:
 			_carry_item = "bring"
+			if _carry_find == "mine":
+				_carry_item = "digging"
+				PupMine.dig_find(self)
+				return
 		if _carry_item == "bring" and anim.sprite_frames.has_animation("fetch") and a != "fetch":
 			anim.play("fetch")
 	else:
@@ -451,6 +462,10 @@ func _process(delta: float) -> void:
 		elif _carry_item == "bring":
 			_carry_item = ""
 			map.emote(self, "heart", 0.8)
+			PupMine.deliver(self)
+		elif _carry_item == "fetch" and _carry_find == "mine" and dist <= stop + 10.0:
+			_carry_item = "digging"  # stopped just short of the spot: dig here
+			PupMine.dig_find(self)
 		_idle += delta
 		var want := "idle"
 		if mode == "guard" and anim.sprite_frames.has_animation("guard"):
@@ -501,6 +516,10 @@ func _dig() -> void:
 			pool += ["copper", "wild_herb", "bone"]
 		if GameState.bonus("pup", "dig_rare") > 0.0 and randf() < 0.25:
 			pool = ["truffle", "old_coin", "ruby", "shard", "fossil"]
+		if PupMine.active(map):
+			pool = PupMine.dig_pool(map)
+			if pool.is_empty():
+				pool = ["stone"]
 		var found: String = pool[randi() % pool.size()]
 		if not GameState.items.has(found):
 			found = "fiber"

@@ -86,6 +86,16 @@
   "202-more-sound-effects/MoreSounds_x/Money/Money_01.wav",
   "202-more-sound-effects/MoreSounds_x/Money/Money_05.wav"
  ],
+ "cash_pickup": [
+  "202-more-sound-effects/MoreSounds_x/Money/Money_20.wav",
+  "202-more-sound-effects/MoreSounds_x/Money/Money_22.wav",
+  "202-more-sound-effects/MoreSounds_x/Money/Money_24.wav"
+ ],
+ "cash_register": [
+  "purchasing-sound-effect/snd_purchase_0.wav",
+  "202-more-sound-effects/MoreSounds_x/Money/Money_36.wav",
+  "202-more-sound-effects/MoreSounds_x/Money/Money_18.wav"
+ ],
  "cast": [
   "swish-bamboo-stick-weapon-swhoshes/swoshes_x/swosh-10.flac",
   "swish-bamboo-stick-weapon-swhoshes/swoshes_x/swosh-15.flac"

@@ -26,9 +26,16 @@ const PHRASES := [
 ## Exact whole-string labels.
 const EXACT := {"Crystals": "Cash"}
 
+## Sound swaps in the gangster arc (Music.sfx runs every name through sfx_name).
+const SFX := {"coin": "cash_pickup"}
+
 static var _re_num_sym: RegEx
 static var _re_sym: RegEx
 static var _re_num_word: RegEx
+
+
+static func sfx_name(name: String) -> String:
+	return str(SFX.get(name, name)) if cash() else name
 
 
 static func cash() -> bool:
