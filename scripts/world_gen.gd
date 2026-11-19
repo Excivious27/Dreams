@@ -112,14 +112,33 @@ static func weather_dressing(m: GameMap, seed_v: int, avoid: Dictionary = {}) ->
 		var c := Vector2i(rng.randi_range(2, m.cols - 3), rng.randi_range(2, m.rows - 3))
 		if m.blocked.has(c) or m.things.has(c) or avoid.has(c) or m.is_water_cell(c):
 			continue
-		if wet and Art.has("props", "puddle_0"):
-			# Storm puddles once real 3-frame art lands (today's puddle_storm_N is one magenta blob).
-			if GameState.weather_today() == "storm" and int(Art.info("props", "puddle_storm_0").get("frames", 1)) > 1:
-				m.anim_prop("props", "puddle_storm_%d" % rng.randi_range(0, 3), c, 0, 3.0)
-			else:
-				m.anim_prop("props", "puddle_%d" % rng.randi_range(0, 5), c, 0, 3.0)
+		if wet and Art.has("props", "puddle_storm_0") and int(Art.info("props", "puddle_storm_0").get("frames", 1)) > 1:
+			_puddle(m, c, rng, GameState.weather_today() == "storm")
 		elif winter and Art.has("props", "snowdrift_0"):
 			m.prop("props", "snowdrift_%d" % rng.randi_range(0, 5), c, 0, 0.0, false)
+
+
+## One rain puddle, flat on the ground. Uses the redrawn 3-frame storm puddles
+## for every wet day (the old puddle_0..5 cuts held a different, rock-ringed
+## pond in every frame, so they popped): smaller in plain rain, a bigger, quicker
+## ripple in storms. Needs its neighbours free too, so a puddle never spills
+## onto a building, fence or the water's edge; each starts on its own frame and
+## pace so a field of puddles never pulses in step.
+static func _puddle(m: GameMap, c: Vector2i, rng: RandomNumberGenerator, storm: bool) -> void:
+	for d: Vector2i in [Vector2i(-1, 0), Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1)]:
+		var n := c + d
+		if m.blocked.has(n) or m.is_water_cell(n) or (m.things.has(n) and str((m.things[n] as Dictionary).get("type", "")) != "pet_animal"):
+			return
+	var a := m.anim_prop("props", "puddle_storm_%d" % rng.randi_range(0, 3), c, 0, 2.6 if storm else 2.0, false, 0.3 if storm else 0.22)
+	if a == null:
+		return
+	a.position = m.cell_center(c) + Vector2(rng.randf_range(-3, 3), rng.randf_range(-2, 2))
+	a.offset = Vector2.ZERO  # flat decal: centred on its cell, not stood on its feet
+	a.flip_h = rng.randf() < 0.5
+	a.frame = rng.randi_range(0, 2)
+	a.speed_scale = rng.randf_range(0.8, 1.15)
+	a.modulate = Color(1, 1, 1, 0.9)
+	m.to_under(a)
 
 
 ## Place a tree line along a rectangle's edge (inside it), leaving gaps at `gaps`.
@@ -246,17 +265,28 @@ class Critter:
 			_anim = AnimatedSprite2D.new()
 			var anims := {"idle": "idle"}
 			anims["walk"] = "walk" if Art.has(g, "walk") else "idle"
-			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0, "walk": 8.0})
+			_anim.sprite_frames = Art.frames(g, anims, {"idle": 4.0 if _flyer else 3.0, "walk": 8.0})
+			# Ground animals' idle strips are separate poses, not a loop: hold
+			# the first pose and only now and then glance about (no twitching).
+			var sf := _anim.sprite_frames
+			if not _flyer and sf.has_animation("idle") and sf.get_frame_count("idle") > 1:
+				sf.set_frame("idle", 0, sf.get_frame_texture("idle", 0), 9.0)
 			_anim.animation = "idle"
 			# True-to-world sizes: the hero is ~16px wide, so a duck is a third of that.
 			var sz: float = {"sparrow": 0.2, "robin": 0.2, "finch": 0.2, "blue_jay": 0.22, "crow": 0.26, "pigeon": 0.22, "seagull": 0.26, "owl": 0.3, "hawk": 0.32, "bat": 0.24, "duck": 0.26, "heron": 0.38, "rabbit": 0.26, "squirrel": 0.22, "hedgehog": 0.24, "frog": 0.18, "turtle": 0.26, "mouse": 0.16, "rat": 0.2, "snake": 0.26, "butterfly_orange": 0.16, "butterfly_blue": 0.16, "butterfly_yellow": 0.16, "butterfly_purple": 0.16, "butterfly": 0.16, "bee": 0.12, "firefly": 0.12, "dragonfly": 0.16, "ladybug": 0.12, "grasshopper": 0.14, "snail": 0.16, "crab": 0.22, "deer": 0.5, "fox": 0.4, "boar": 0.46, "goat": 0.44, "raccoon": 0.34, "badger": 0.36, "otter": 0.34, "beaver": 0.34, "cat_grey": 0.36, "cat_orange": 0.36, "cat_black": 0.36, "stray_dog": 0.42, "jelly": 0.4, "six_deer": 0.5, "eagle": 0.36, "crystal_fish": 0.26, "fish_jump": 0.26}.get(kind, 0.3)
 			_anim.scale = Vector2(sz, sz)
-			_anim.frame_changed.connect(func() -> void:
-				var tex := _anim.sprite_frames.get_frame_texture(_anim.animation, _anim.frame)
-				if tex:
-					_anim.offset = Vector2(0, -tex.get_height() / 2.0))
+			# Feet on the ground for every frame, including the first frame after
+			# an idle/walk swap (strips have different cell heights: no pop).
+			_anim.frame_changed.connect(_fit)
+			_anim.animation_changed.connect(_fit)
 			add_child(_anim)
 			_anim.play("idle")
+			_fit()
+
+	func _fit() -> void:
+		var tex := _anim.sprite_frames.get_frame_texture(_anim.animation, _anim.frame)
+		if tex:
+			_anim.offset = Vector2(0, -tex.get_height() / 2.0)
 
 	func _process(delta: float) -> void:
 		_t += delta
@@ -289,7 +319,11 @@ class Critter:
 			var want := "walk" if moving else "idle"
 			if _anim.animation != want:
 				_anim.play(want)
-			if _dir.x != 0.0:
+			# Legs keep pace with the ground (no sliding at a stroll, no
+			# scrabbling in place): the walk strip is tuned for ~28 px/s.
+			_anim.speed_scale = clampf(spd / 28.0, 0.5, 2.0) if moving and not _flyer else 1.0
+			# Turn only on a clear sideways lead (no flip-flicker on near-vertical moves).
+			if absf(_dir.x) > 0.25:
 				_anim.flip_h = _dir.x < 0
 			_anim.position.y = -14.0 - sin(_t * 10.0) * 2.0 if _flyer and _flee else (-6.0 - sin(_t * 4.0) * 2.0 if _flyer else 0.0)
 		else:

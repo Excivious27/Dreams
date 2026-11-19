@@ -13,6 +13,9 @@ var _rng := RandomNumberGenerator.new()
 
 
 var baby := false
+## Babies whose own strips are unusable: [parent kind, strip, size]. (The calf
+## has its own redrawn strips since round 13.)
+const BABY_OF := {"chick": ["chicken2", "baby", 1.0]}
 var _at := Vector2i(-999, -999)  # the cell that holds this animal's interact thing
 
 
@@ -23,17 +26,29 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	name = "%s_%d_%d" % [k, c.x, c.y]  # stable: petting is once per animal per day
 	pen = p if p.size != Vector2i.ZERO else Rect2i(c.x - 1, c.y - 1, 3, 3)
 	var g := "animals/" + k
+	var sc := 0.5
 	var anims := {"idle": "baby" if is_baby and Art.has(g, "baby") and not Art.has(g, "idle") else "idle"}
 	var fps := {"idle": 3.0}
-	for a in (["walk"] if is_baby else ["walk", "eat"]):
-		if Art.has(g, a):
-			anims[a] = a
-			fps[a] = 6.0 if a == "walk" else 3.0
+	if BABY_OF.has(k):
+		# The chick cut is an unusable scrap: a hatchling from the hen's baby strip.
+		var b: Array = BABY_OF[k]
+		g = "animals/" + str(b[0])
+		sc *= float(b[2])
+		anims = {"idle": str(b[1]), "walk": str(b[1]) if str(b[1]) != "idle" else "walk"}
+		fps = {"idle": 3.0, "walk": 6.0}
+	else:
+		for a in (["walk"] if is_baby else ["walk", "eat"]):
+			if Art.has(g, a):
+				anims[a] = a
+				fps[a] = 6.0 if a == "walk" else 3.0
 	sprite_frames = Art.frames(g, anims, fps)
 	animation = "idle"
-	scale = Vector2(0.5, 0.5)
+	scale = Vector2(sc, sc)
 	position = m.cell_center(c)
-	offset = Vector2(0, -float(Art.info(g, "idle").get("cell_h", 36)) / 2.0 + 2.0)
+	# Feet on the ground for every strip (walk/eat cells differ from idle's).
+	frame_changed.connect(_fit)
+	animation_changed.connect(_fit)
+	_fit()
 	_rng.seed = hash(k) + c.x * 31 + c.y
 	_target = position
 	z_index = 0
@@ -55,7 +70,8 @@ func _process(delta: float) -> void:
 			_play("idle")
 		else:
 			position += d.normalized() * 10.0 * delta
-			flip_h = d.x < 0
+			if absf(d.x) > 0.5:
+				flip_h = d.x < 0
 	elif _wait <= 0.0:
 		var r := _rng.randf()
 		if r < 0.45:
@@ -103,3 +119,11 @@ func _play(a: String) -> void:
 	if sprite_frames.has_animation(a) and animation != a:
 		animation = a
 		play(a)
+		# A stroll at 10 px/s: slower legs than the strip's default (no sliding feet).
+		speed_scale = 0.7 if a == "walk" else 1.0
+
+
+func _fit() -> void:
+	var tex := sprite_frames.get_frame_texture(animation, frame) if sprite_frames else null
+	if tex:
+		offset = Vector2(0, -tex.get_height() / 2.0 + 2.0)

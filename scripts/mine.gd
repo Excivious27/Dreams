@@ -1100,7 +1100,10 @@ func _build_layers() -> void:
 				var glow := 0.3 + 0.15 * sin(Time.get_ticks_msec() / 400.0)
 				for c: Vector2i in _on_screen(lava):
 					if not lava.has(c + Vector2i(0, -1)):
-						ci.draw_rect(Rect2(Vector2(c * TILE) + Vector2(2, 0), Vector2(TILE - 4, 3)), Color(1, 0.5, 0.15, glow * 0.5)))
+						# Soft round glow, not a hard bar (the shore itself is curved).
+						var gp := Vector2(c * TILE) + Vector2(TILE / 2.0, 2.0)
+						ci.draw_circle(gp, 7.0, Color(1, 0.5, 0.15, glow * 0.18))
+						ci.draw_circle(gp, 4.0, Color(1, 0.55, 0.2, glow * 0.22)))
 	elif not lava.is_empty() and Art.has("tiles", "lava") and _anim_layer:
 		_anim_layer.jobs.append(func(ci: CanvasItem) -> void:
 			var frame := int(Time.get_ticks_msec() / 300) % 4

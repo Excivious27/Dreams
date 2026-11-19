@@ -2,6 +2,17 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: animation and visual fixes
+- **Heroes rest facing the way they walked.** The 12B sheets (Pip-Pip, Nova, Coldy, Big Jim, Merry, Coco, Mer) drew "idle" as a side view, so every rest turned right; `CharacterLibrary` now makes their front pose `idle` (side kept as `idle_side`), and left rests mirror `view_right` instead of an unflipped copy. Companions rest facing their last walk too.
+- **Penguin walk fixed.** `tools/reslice_hero12.py` re-cuts the 12B movement strips with one scale per sheet, torso-centred frames and no neighbour slivers: the old penguin walk turned to face you mid-stride (now redrawn, below); both penguins get views in their own design (Nova's were the old green-hat look).
+- **Feet stay planted on every animation swap** (offset refit on `animation_changed` for heroes, pets, partners, critters, farm animals).
+- **Animals:** `tools/reslice_wildlife.py` re-cuts the ground and medium wildlife (the deer's walk was half a deer plus a scrap) and the town cats (their idle blinked between grey/orange/black cats: the "flashing cat"). `tools/align_strips.py` centres every animal frame on its body and drops neighbour scraps (horses, foals, donkeys, pup...). Critters' legs keep pace with their speed, idle holds a pose instead of twitching, no flip-flicker. Hatchlings use the hen's chick strip.
+- **Redrawn with the image tool** (5 sheets, `art/incoming/r13/a8_*`, sliced by `tools/slice_r13_a8.py`): the deer (6-frame walk, 4-frame graze), a real calf (idle, walk, eat), fox/squirrel/turtle walks with whole tails, and both penguins' walks (6 side, 4 toward, 4 away; the king had no toward/away walk before).
+- **Rain puddles:** the old puddle_0..5 showed a different rock-ringed pond every frame; every wet day now uses the redrawn 3-frame puddles, flat on the ground layer, smaller in rain, never spilling onto buildings, each on its own frame and pace.
+- **Props:** `tools/steady_props.py` stops warp pads, teleporter, holo table, hot spring, enchanting table, coffee pot and cauldron from swelling and shrinking each frame; `tools/unbox_props.py` fades the square backings of sunflowers and bulbs and clears neon-sign edge bars; mine lava glow is soft blobs, not bars.
+- **Walk speed -10%** (52/96 from 58/108); footsteps match.
+- Tests: `tools/anim_test.gd` (in check.sh). Dev shots: `tools/anim_shot.gd` (hero walk/rest close-ups), `tools/seq_shot.gd` (timed sequence of a spot, FOCUS=<animal>, WEATHER=rain).
+
 ## 2026-11-18 — Round 12: art complete (image tool)
 - **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
 - **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):

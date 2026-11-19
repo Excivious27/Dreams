@@ -6,8 +6,10 @@ extends Node2D
 ## world (or clicking with the mouse) walks there and uses what's in your hand
 ## on it when you arrive, Stardew-mobile style.
 
-const WALK_SPEED := 58.0
-const RUN_SPEED := 108.0
+# Round 13: ~10% slower (Tom: "moves slightly too fast"); mounts, vehicles and
+# skill bonuses multiply these, so they slow by the same share.
+const WALK_SPEED := 52.0
+const RUN_SPEED := 96.0
 const ACCEL := 560.0
 const DECEL := 760.0
 const PLAY_TIME := 1.5
@@ -190,7 +192,7 @@ static func dress_penguin(parent: Node2D, anim: AnimatedSprite2D, look: Dictiona
 				ov.scale = anim.scale
 				ov.position = anim.position
 				ov.offset = Vector2(0, -t.get_height() / 2.0)
-				ov.flip_h = an == "view_left"
+				ov.flip_h = an == "view_left" or (an == "view_right" and anim.flip_h)
 				ov.modulate = anim.modulate
 		anim.frame_changed.connect(upd)
 		anim.animation_changed.connect(upd)
@@ -214,14 +216,16 @@ static func dress_penguin(parent: Node2D, anim: AnimatedSprite2D, look: Dictiona
 		hs.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 		holder.add_child(hs)
 		PaperDoll.place_hat_simple(hs, hat, sprite_h * 0.8, -sprite_h, false, 1.0)
-	anim.frame_changed.connect(func() -> void:
+	var follow := func() -> void:
 		if not is_instance_valid(holder):
 			return
 		holder.position = anim.position
 		var flip := anim.flip_h
 		for ch in holder.get_children():
 			if ch is Sprite2D:
-				(ch as Sprite2D).flip_h = flip)
+				(ch as Sprite2D).flip_h = flip
+	anim.frame_changed.connect(follow)
+	anim.animation_changed.connect(follow)
 
 
 ## Rebuild the doll (after equipping a costume or restyling at the dresser).
@@ -717,7 +721,7 @@ func _physics_process(delta: float) -> void:
 	if dir != Vector2.ZERO and position.distance_to(before) > 0.1:
 		_step_t -= delta
 		if _step_t <= 0.0:
-			_step_t = 0.22 if running else 0.3
+			_step_t = 0.25 if running else 0.33  # footsteps keep pace with the slower stride
 			if swimming:
 				_step_t = 0.7
 				Music.instance(get_tree()).sfx("splash")
