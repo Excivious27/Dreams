@@ -1196,6 +1196,19 @@ func _swing_arc(center: Vector2) -> void:
 	var tw := fx.create_tween()
 	tw.tween_method(func(v: float) -> void: age[0] = v; fx.queue_redraw(), 0.0, 1.0, 0.18)
 	tw.tween_callback(fx.queue_free)
+	# The third swing of a combo (+1 damage) lands with a full crescent, so the
+	# rhythm USE-USE-USE reads on screen.
+	if _combo == 0 and Art.has("fx", "slash"):
+		var sl := AnimatedSprite2D.new()
+		sl.sprite_frames = Art.frames("fx", {"slash": "slash"}, {"slash": 32.0}, {"slash": false})
+		sl.animation = "slash"
+		sl.position = center
+		sl.rotation = ang
+		sl.scale = Vector2(0.42, 0.42)
+		sl.z_index = 3
+		get_parent().add_child(sl)
+		sl.play("slash")
+		sl.animation_finished.connect(sl.queue_free)
 
 
 func take_damage(n: int, from: Vector2) -> void:
@@ -1231,6 +1244,7 @@ func take_damage(n: int, from: Vector2) -> void:
 	_last_stand()
 	if int(GameState.run["hp"]) > 0 and int(GameState.run["hp"]) < int(GameState.run.get("max_hp", 100)) / 4:
 		Music.instance(get_tree()).sfx("heartbeat")
+	PupIntro.low_hp_tip(map)  # once per run: how to heal
 	velocity = (position - from).normalized() * (60.0 if Crew.perk_level("defence") >= 3 else 120.0)
 	auto_target = Vector2.INF
 	# Doc patches you mid-fight once per map when you're in trouble.

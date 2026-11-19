@@ -83,12 +83,12 @@ func _first_visit() -> void:
 		await say([
 			{"text": "The meadow should be quiet. It isn't. Small grey shapes grumble in the grass, and the flowers near them have gone the colour of old dishwater."},
 			{"text": "Grumps. The Star Crystal wasn't exaggerating. Tap USE to swing, ROLL to dodge. Run if it goes badly."},
-		])
+		] + PupIntro.lines())
 	else:
 		await say([
 			{"text": "Whoever came through here brought company. Small, ugly, and organized. The President's cheapest kind of muscle."},
 			{"text": "Tap USE to swing, ROLL to dodge. Nobody's watching, so there's no shame in it."},
-		])
+		] + PupIntro.lines())
 	# Put the sword in your hand: the hoe doesn't hurt anything.
 	var tb: Array = GameState.run["toolbar"]
 	for i in tb.size():
@@ -182,8 +182,11 @@ func _summon_boss() -> void:
 	var bat := free_spot_near(player.position + Vector2(48 * side, -32))
 	_boss = spawn_enemy("big_grump" if GameState.is_penguins() else "thug_brute", bat, -1 if GameState.is_penguins() else 1)
 	_boss.set_meta("boss_name", "Big Grump" if GameState.is_penguins() else "The President's Man")
-	if not GameState.is_penguins():
-		_boss.damage = mini(_boss.damage, 2)  # the first boss of the arc hits like the penguin one
+	# The first boss of either arc: a new player with the starter sword and 100
+	# health should lose about half of it standing toe to toe, and little if
+	# they step back from the red flash. Hits for 12, 24 once it's enraged
+	# (tools/early_fight_audit.gd measures this).
+	_boss.damage = 1
 	boss_card("big_grump" if GameState.is_penguins() else "thug_brute", "Big Grump" if GameState.is_penguins() else "The President's Man")
 	Music.instance(get_tree()).play(boss_music)
 	player.frozen = false
