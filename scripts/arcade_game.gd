@@ -71,6 +71,7 @@ func _ready() -> void:
 	_was_paused = get_tree().paused
 	get_tree().paused = true
 	_prev_modal = Hud.modal_rect
+	_covered = ScreenCover.cover(get_parent())  # the opaque cabinet hides the map: don't render it
 	Hud.modal_rect = Rect2(0, 0, W, H)
 	_font = ThemeDB.fallback_font
 	_canvas = Control.new()
@@ -316,7 +317,12 @@ func close() -> void:
 	queue_free()
 
 
+var _covered: CanvasItem = null
+
+
 func _exit_tree() -> void:
+	ScreenCover.uncover(_covered)
+	_covered = null
 	_unregister()
 
 
@@ -520,30 +526,69 @@ func _draw_frame(c: Control) -> void:
 	# Control deck.
 	c.draw_rect(Rect2(0, DECK, W, H - DECK), Color(0.14, 0.09, 0.22))
 	c.draw_rect(Rect2(0, DECK, W, 2), accent)
-	for i in 16:  # speaker-grille dots
-		c.draw_circle(Vector2(140 + (i % 4) * 6, 362 + (i / 4) * 6), 1.2, Color(0, 0, 0, 0.35))
+	_draw_deck(c)
+
+
+const SKIN_COL := {"gold": Color(0.95, 0.72, 0.18), "red": Color(0.9, 0.3, 0.3), "blue": Color(0.3, 0.55, 0.95), "green": Color(0.35, 0.8, 0.4)}
+const TriBatch := preload("res://scripts/tri_batch.gd")
+var _deck_geo := {}  # which buttons are down -> [idx, pts, cols]: the deck's shapes as one draw call
+
+
+## The control deck: grille dots and every button's shapes in ONE triangle array
+## (cached per pressed-state; was ~60 draw calls a frame), then the labels on top
+## (buttons never overlap, so shapes-then-labels is the same picture).
+func _draw_deck(c: Control) -> void:
+	var sig := ""
+	for b: Dictionary in _deck:
+		sig += "1" if _down(b) else "0"
+	if not _deck_geo.has(sig):
+		if _deck_geo.size() > 24:
+			_deck_geo.clear()
+		var tb := TriBatch.new()
+		for i in 16:  # speaker-grille dots
+			tb.circle(Vector2(140 + (i % 4) * 6, 362 + (i / 4) * 6), 1.2, Color(0, 0, 0, 0.35))
+		for b: Dictionary in _deck:
+			_button_shapes(tb, b, _down(b))
+		_deck_geo[sig] = [tb.idx, tb.pts, tb.cols]
+	var g: Array = _deck_geo[sig]
+	RenderingServer.canvas_item_add_triangle_array(c.get_canvas_item(), g[0], g[1], g[2])
 	for b: Dictionary in _deck:
 		_draw_button(c, b)
 
 
-const SKIN_COL := {"gold": Color(0.95, 0.72, 0.18), "red": Color(0.9, 0.3, 0.3), "blue": Color(0.3, 0.55, 0.95), "green": Color(0.35, 0.8, 0.4)}
+func _down(b: Dictionary) -> bool:
+	return held(str(b["action"])) or Input.is_action_pressed(str(b["action"]))
 
 
-func _draw_button(c: Control, b: Dictionary) -> void:
+## One arcade button drawn in code (the ui btn_* sheets carry icons of their own).
+func _button_shapes(tb: TriBatch, b: Dictionary, down: bool) -> void:
 	var r: Rect2 = b["rect"]
-	var down := held(str(b["action"])) or Input.is_action_pressed(str(b["action"]))
-	var skin := str(b.get("skin", "blue"))
 	var ctr := r.get_center()
 	var rad := minf(r.size.x, r.size.y) * 0.5
-	# Arcade buttons drawn in code (the ui btn_* sheets carry icons of their own).
-	var col: Color = SKIN_COL.get(skin, Color.GRAY)
+	var col: Color = SKIN_COL.get(str(b.get("skin", "blue")), Color.GRAY)
 	var press := Vector2(0, 2) if down else Vector2.ZERO
-	c.draw_circle(ctr + Vector2(0, 3), rad, Color(0, 0, 0, 0.35))
-	c.draw_circle(ctr + Vector2(0, 2), rad, col.darkened(0.55))
-	c.draw_circle(ctr + press, rad - 1.0, col.darkened(0.25) if down else col)
-	c.draw_circle(ctr + press + Vector2(0, -rad * 0.12), rad * 0.78, (col.darkened(0.15) if down else col.lightened(0.18)))
-	c.draw_arc(ctr + press + Vector2(-rad * 0.2, -rad * 0.25), rad * 0.45, PI * 1.05, PI * 1.6, 10, Color(1, 1, 1, 0.45), 2.0, true)
-	c.draw_arc(ctr + press, rad - 1.0, 0, TAU, 32, col.darkened(0.6), 1.0, true)
+	tb.circle(ctr + Vector2(0, 3), rad, Color(0, 0, 0, 0.35))
+	tb.circle(ctr + Vector2(0, 2), rad, col.darkened(0.55))
+	tb.circle(ctr + press, rad - 1.0, col.darkened(0.25) if down else col)
+	tb.circle(ctr + press + Vector2(0, -rad * 0.12), rad * 0.78, (col.darkened(0.15) if down else col.lightened(0.18)))
+	_aa_arc(tb, ctr + press + Vector2(-rad * 0.2, -rad * 0.25), rad * 0.45, PI * 1.05, PI * 1.6, 10, Color(1, 1, 1, 0.45), 2.0)
+	_aa_arc(tb, ctr + press, rad - 1.0, 0, TAU, 32, col.darkened(0.6), 1.0)
+
+
+## draw_arc(..., antialiased = true) as feathered segments.
+static func _aa_arc(tb: TriBatch, ctr: Vector2, rad: float, from: float, to: float, n: int, col: Color, w: float) -> void:
+	var prev := ctr + Vector2.from_angle(from) * rad
+	for i in range(1, n + 1):
+		var nx := ctr + Vector2.from_angle(lerpf(from, to, float(i) / n)) * rad
+		tb.line(prev, nx, col, w)
+		prev = nx
+
+
+## A button's label and hint (its shapes come from _draw_deck's batch).
+func _draw_button(c: Control, b: Dictionary) -> void:
+	var r: Rect2 = b["rect"]
+	var down := _down(b)
+	var ctr := r.get_center()
 	var fs := 14 if str(b["label"]).length() <= 1 else 8
 	text_outline(c, Vector2(r.position.x - 10, ctr.y + fs * 0.35 + (2 if down else 0)), str(b["label"]), r.size.x + 20, fs, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	var hint := str(b.get("hint", ""))
@@ -566,9 +611,11 @@ func _ticket_icon(c: Control, p: Vector2) -> void:
 func _draw_title(c: Control) -> void:
 	# Attract-mode backdrop: slow diagonal stripes in the cabinet colour.
 	c.draw_rect(PLAY, accent.darkened(0.82))
+	var tb := TriBatch.new()  # one draw call for the stripes
 	for i in 14:
 		var x := fmod(i * 40.0 + t * 12.0, 560.0) - 280.0
-		c.draw_colored_polygon(PackedVector2Array([Vector2(x, 352), Vector2(x + 20, 352), Vector2(x + 300, 24), Vector2(x + 280, 24)]), Color(accent, 0.05))
+		tb.fan(PackedVector2Array([Vector2(x, 352), Vector2(x + 20, 352), Vector2(x + 300, 24), Vector2(x + 280, 24)]), PackedColorArray([Color(accent, 0.05)]))
+	tb.flush(c)
 	var mr := Rect2(35, 44, 200, 110)
 	panel(c, mr.grow(3), Color(0.05, 0.03, 0.08), accent)
 	_draw_marquee(c, mr)

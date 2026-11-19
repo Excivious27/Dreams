@@ -65,6 +65,39 @@ func line(a: Vector2, b: Vector2, col: Color, w: float) -> void:
 			idx.append(base + k)
 
 
+## draw_rect(r, col) (filled).
+func rect(r: Rect2, col: Color) -> void:
+	fan(PackedVector2Array([r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]), PackedColorArray([col]))
+
+
+## draw_circle(c, rad, col) (filled); fewer segments for small circles (sub-pixel same).
+func circle(c: Vector2, rad: float, col: Color) -> void:
+	var n := clampi(int(rad * 4.0), 12, 64)
+	var p := PackedVector2Array()
+	p.resize(n)
+	for i in n:
+		p[i] = c + Vector2.from_angle(TAU * i / n) * rad
+	fan(p, PackedColorArray([col]))
+
+
+## draw_line(a, b, col, w) without antialiasing: just the w-wide quad.
+func seg(a: Vector2, b: Vector2, col: Color, w: float) -> void:
+	var d := b - a
+	if d.length_squared() < 0.000001:
+		return
+	var t := d.orthogonal().normalized() * w * 0.5
+	fan(PackedVector2Array([a + t, b + t, b - t, a - t]), PackedColorArray([col]))
+
+
+## draw_arc(c, rad, from, to, n, col, w) without antialiasing, as n quads.
+func arc(c: Vector2, rad: float, from: float, to: float, n: int, col: Color, w: float) -> void:
+	var prev := c + Vector2.from_angle(from) * rad
+	for i in range(1, n + 1):
+		var nx := c + Vector2.from_angle(lerpf(from, to, float(i) / n)) * rad
+		seg(prev, nx, col, w)
+		prev = nx
+
+
 ## One draw command for everything collected; then starts empty again.
 func flush(ci: CanvasItem, tex: Texture2D = null) -> void:
 	if idx.is_empty():

@@ -264,9 +264,11 @@ func _top_right() -> String:
 func _draw_play(c: Control) -> void:
 	c.draw_rect(PLAY, Color(0.2, 0.08, 0.18))
 	# Cabinet lights.
+	var tb := TriBatch.new()  # one draw call for the 18 bulbs
 	for i in 18:
 		var on := int(t * 6.0 + i) % 3 == 0
-		c.draw_circle(Vector2(12 + i * 14.5, 34), 2.5, Color(1, 0.85, 0.4) if on else Color(0.5, 0.3, 0.3))
+		tb.circle(Vector2(12 + i * 14.5, 34), 2.5, Color(1, 0.85, 0.4) if on else Color(0.5, 0.3, 0.3))
+	tb.flush(c)
 	panel(c, BOX.grow(4), Color(0.12, 0.05, 0.12), accent)
 	if not cover(c, "stage_clawbox", BOX, 0.8):
 		c.draw_rect(BOX, Color(0.55, 0.75, 0.95, 0.22))
