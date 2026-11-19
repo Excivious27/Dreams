@@ -86,10 +86,36 @@ func _run() -> void:
 		if b.phase == "result":
 			break
 	await _shot(a + "_bowl_hit")
+	b._start_sweep()
+	for k in 14:
+		await process_frame
+	await _shot(a + "_bowl_sweep")
 	b.rolls = [10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1]
 	b._game_over()
 	await _shot(a + "_bowl_over")
 	b._finish()
+	for k in 5:
+		await process_frame
+	# Versus a villager: their frame card, then the result.
+	var bv := Bowling.new()
+	bv.lane = 3
+	bv.opp_id = "gideon"
+	m.add_child(bv)
+	for k in 12:
+		await process_frame
+	bv.rolls = [10, 7, 3, 9, 0, 10]
+	bv.opp_rolls = [9, 1, 10, 8, 1, 7, 3]
+	bv._opp_from = 5
+	bv._opp_show = 2
+	bv._phase_t = 3.0
+	bv.phase = "opp"
+	bv.manual = true
+	await _shot(a + "_bowl_vs_card")
+	bv.rolls = [10, 7, 3, 9, 0, 10, 0, 8, 8, 2, 0, 6, 10, 10, 10, 8, 1]
+	bv.opp_rolls = [9, 1, 10, 8, 1, 7, 3, 10, 9, 0, 8, 2, 7, 2, 10, 9, 1, 8]
+	bv._game_over()
+	await _shot(a + "_bowl_vs_over")
+	bv._finish()
 	for k in 5:
 		await process_frame
 	var ps := PrizeScreen.new()

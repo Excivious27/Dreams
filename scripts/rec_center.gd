@@ -390,23 +390,27 @@ static func _cabinet(m: GameMap, game: String) -> void:
 
 static func _lane(m: GameMap, lane: int) -> void:
 	var taken := lanes_taken()
-	if taken.has(lane):
-		var who := str(GameState.npcs.get(str(taken[lane]), {}).get("name", "Someone"))
-		m.hud.toast("%s is bowling on lane %d. Try another lane." % [who, lane], Color(1, 0.9, 0.7))
-		return
 	var free := bool(GameState.run["flags"].get("rec_free_game", false))
 	var cost := 0 if free else fee()
 	var d := Dialogue.instance(m.get_tree())
 	var best := Tickets.best_score("bowling")
-	var txt := ("Lane %d. First game's on the house!" % lane) if free else ("Lane %d. One game, ten frames: ◆%d.  (you have ◆%d)" % [lane, cost, int(GameState.run["crystals"])])
-	if best > 0:
-		txt += "  Your best: %d." % best
-	d.say([{"who": "", "text": txt, "choice": ["Bowl", "How to play", "Not now"], "key": ""}])
+	var versus := ""
+	if taken.has(lane):
+		# A villager's lane: challenge them to a game (they bowl each frame after you).
+		versus = str(taken[lane])
+		var who := str(GameState.npcs.get(versus, {}).get("name", "Someone"))
+		var txt_v := "%s is bowling on lane %d. Challenge them to a game? (%s)" % [who, lane, "first game's free" if free else "◆%d" % cost]
+		d.say([{"who": "", "text": txt_v, "choice": ["Challenge %s" % who, "How to play", "Not now"], "key": ""}])
+	else:
+		var txt := ("Lane %d. First game's on the house!" % lane) if free else ("Lane %d. One game, ten frames: ◆%d.  (you have ◆%d)" % [lane, cost, int(GameState.run["crystals"])])
+		if best > 0:
+			txt += "  Your best: %d." % best
+		d.say([{"who": "", "text": txt, "choice": ["Bowl", "How to play", "Not now"], "key": ""}])
 	await d.finished
 	if d.last_choice == 1:
-		await m.say([{"who": "", "text": "1) LEFT/RIGHT moves you along the line. UP/DOWN sets the spin (the ball hooks late). Press USE."},
-			{"who": "", "text": "2) The aim arrow swings: USE to lock it.  3) The power meter rises and falls: USE to throw. Aim for the pocket, just right of the head pin."},
-			{"who": "", "text": "Strikes and spares score extra, like real bowling. Tickets by score at the end: trade them at the prize counter downstairs."}])
+		await m.say([{"who": "", "text": "1) Drag the ball (or LEFT/RIGHT) along the foul line. The spin buttons (or UP/DOWN) set the hook: it bites late, on the dry end of the lane. Then GO."},
+			{"who": "", "text": "2) The dotted path sweeps across the lane: tap when it ends in the pocket, just right of the head pin.  3) Stop the power bar in the gold band for a clean release."},
+			{"who": "", "text": "Strikes and spares score extra, like real bowling. Tickets by score at the end, more for beating a villager: trade them at the prize counter downstairs."}])
 		return
 	if d.last_choice != 0:
 		return
@@ -415,7 +419,7 @@ static func _lane(m: GameMap, lane: int) -> void:
 		return
 	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
 	GameState.run["flags"].erase("rec_free_game")
-	var res: Dictionary = await Bowling.play(m, lane)
+	var res: Dictionary = await Bowling.play(m, lane, versus)
 	finish_game(m, res)
 
 
@@ -426,7 +430,13 @@ static func finish_game(m: GameMap, res: Dictionary) -> int:
 			m.hud.toast("Game abandoned. No tickets.", Color(1, 0.8, 0.7))
 		return 0
 	var score := int(res.get("score", 0))
-	var t := tickets_for(score, int(res.get("strikes", 0)), int(res.get("spares", 0)))
+	var t := tickets_for(score, int(res.get("strikes", 0)), int(res.get("spares", 0))) + int(res.get("bonus", 0))
+	var opp := str(res.get("opponent", ""))
+	if opp != "":
+		# A friendly game counts as time together; a win gets talked about.
+		GameState.add_friend(opp, 8 if bool(res.get("won", false)) else 5)
+		if bool(res.get("won", false)):
+			GameState.run["flags"]["bowl_beat_" + opp] = true
 	var best := Tickets.set_best("bowling", score)
 	Tickets.add(t, "bowling")
 	if score >= 120:
@@ -434,7 +444,11 @@ static func finish_game(m: GameMap, res: Dictionary) -> int:
 	if score >= 300:
 		GameState.run["flags"]["bowl_perfect"] = true
 	if m:
-		m.hud.toast("Score %d%s · +%d tickets" % [score, "  NEW BEST!" if best else "", t], Color(1, 0.9, 0.4))
+		var vs := ""
+		if opp != "":
+			var who := str(GameState.npcs.get(opp, {}).get("name", opp))
+			vs = "  vs %s: %d-%d%s" % [who, score, int(res.get("opp_score", 0)), " (win!)" if bool(res.get("won", false)) else ""]
+		m.hud.toast("Score %d%s · +%d tickets%s" % [score, "  NEW BEST!" if best else "", t, vs], Color(1, 0.9, 0.4))
 		Music.instance(m.get_tree()).sfx("j_victory" if best else "coin", "coin")
 	return t
 

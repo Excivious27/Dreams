@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_01): bowling feel
+- **Phone controls:** drag the ball along the foul line (or ◀ ▶), spin buttons set the hook, a tap on the lane is GO. The aim is a steady sweep (no more fast sine whip) of the ball's *real* predicted path, hook included; tap to lock. The power bar has a gold sweet band: stop in it for a clean release, outside it the ball wanders (and a slow ball hooks more than the preview). Buttons read GO / LOCK / ROLL.
+- **Pin physics:** fallen pins lie down as 15-inch sticks that sweep the deck and take out neighbours (messenger pins), kickbacks throw pins back across, pins tumble with a little scatter, a brushed pin rocks and a hard rock can still tip over late. Pocket hits (2.75 in right of the head pin) strike ~85% of the time, a board off ~40-60%, wide hits rarely: a bell, not a coin toss (`tools/bowl_audit.gd` maps it).
+- **Frame flow:** result pop, then the pinsetter bar rakes the deck, a fresh rack lowers in, the camera glides back. Split leaves are named ("7-10 split!"), Double/Turkey/Hambone streaks, confetti on strikes and spares, "9 pins: so close". Frame/ball/pins-up and the running score sit in the control bar.
+- **Villager opponents:** a villager bowling on a lane can be challenged (lane dialogue). They bowl each frame on their own rack after yours, shown on a portrait card; a second row on the score sheet; lead/trail shown live. Nine bowlers with skills from Tobin (~95) to Maple (~200); beating them pays a ticket bonus (6-20), any game is +5 friendship (+8 on a win), flag `bowl_beat_<id>`.
+- **Results:** win/lose/tie card with both scores, ticket breakdown, new personal best, and which high-score prize it just unlocked at the counter.
+- Test: `tools/bowling_test.gd` (in check.sh): preview matches the roll, strike window shape, villager skill order, splits, a full versus game played by the screen's own bot through every phase, ticket bonus. Shots: tools/rec_shot.gd adds sweep and versus card/result.
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.
