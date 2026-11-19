@@ -95,6 +95,12 @@ func _sleep() -> void:
 		lines.append({"who": "Laundromat", "text": "Clean and folded: ◆%d." % int(report["washed"])})
 	if int(report["grown"]) > 0:
 		lines.append({"text": "%d watered crop%s grew overnight." % [int(report["grown"]), "" if int(report["grown"]) == 1 else "s"]})
+	if int(report.get("dry", 0)) > 0:
+		lines.append({"text": "%d crop%s went without water and didn't grow. Water each one with the can every day (rain does it for you)." % [int(report["dry"]), "" if int(report["dry"]) == 1 else "s"]})
+	if int(report.get("ripe", 0)) > 0 and GameState.quest_done("first_harvest"):  # before that the Next: line says it
+		lines.append({"text": "%d crop%s ripe: face %s and tap USE to harvest." % [int(report["ripe"]), " is" if int(report["ripe"]) == 1 else "s are", "it" if int(report["ripe"]) == 1 else "them"]})
+	if GameState.sky_waters() and not (GameState.run["farm"] as Dictionary).values().filter(func(t: Variant) -> bool: return t is Dictionary and str(t.get("crop", "")) != "").is_empty():
+		lines.append({"text": "The %s waters the field today: no need for the can." % ("snow" if GameState.weather_today() in ["snow", "blizzard"] else "rain")})
 	if int(report.get("crows", 0)) > 0:
 		lines.append({"text": "Crows got into the field overnight and ate %d crop%s. A scarecrow covers about 8 steps around it." % [int(report["crows"]), "" if int(report["crows"]) == 1 else "s"]})
 	if int(report.get("died", 0)) > 0:

@@ -103,6 +103,11 @@ echo "$cout" | grep -E "FAIL|coop_test" || true
 if ! echo "$cout" | grep -q "coop_test: 0 failures"; then
   echo "coop_test failed"; exit 1
 fi
+cout="$("$GODOT" --headless --path . -s res://tools/farm_week_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|farm_week_test" || true
+if ! echo "$cout" | grep -q "farm_week_test: OK"; then
+  echo "farm_week_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/crop_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|crop_test" || true
 if ! echo "$cout" | grep -q "crop_test: 0 failures"; then

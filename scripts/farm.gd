@@ -816,8 +816,19 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			xp("farming", 2)
 			_soil.queue_redraw() if _soil else queue_redraw()
 			return true
-		if not bool(tile.get("watered", false)) and not GameState.sky_waters():
+		if not bool(tile.get("watered", false)) and not GameState.sky_waters() and GameState.held_tool() == "can":
 			return _water(tile, key)
+		if GameState.held_tool() == "hoe":
+			# Hold-to-repeat tills rows over soil that's already done: say it once, then stay quiet.
+			if not GameState.run["flags"].has("told_tilled"):
+				GameState.run["flags"]["told_tilled"] = true
+				hud.toast("Already tilled. Pick seeds on the toolbar and USE here to plant.")
+			return true
+		if GameState.held_tool() == "can":
+			hud.toast("%s Pick seeds on the toolbar to plant." % (("The %s has the soil wet." % ("snow" if GameState.weather_today() in ["snow", "blizzard"] else "rain")) if GameState.sky_waters() else "Watered."))
+			return true
+		if _hand_item(sel):
+			return false  # a tonic in hand: it goes on to be used
 		hud.toast("Pick seeds on your toolbar to plant here.")
 		return true
 	var cd: Dictionary = GameState.crops[crop]
@@ -839,12 +850,12 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		var silver_p := gold_p + 0.05 * flv + (0.20 if fert else 0.0)
 		if qr < gold_p:
 			GameState.add_quality(str(cd["yield"]), "g", n)
-			hud.toast("★ Gold-star %s!" % GameState.item_name(str(cd["yield"])), Color(1, 0.85, 0.3))
+			hud.toast("★ Gold-star %s! Sells for half again as much." % GameState.item_name(str(cd["yield"])), Color(1, 0.85, 0.3))
 			Music.instance(get_tree()).sfx("crit", "coin")
 			fx("sparkle", cell_center(c) + Vector2(0, -10), 14.0, 0.6)
 		elif qr < silver_p:
 			GameState.add_quality(str(cd["yield"]), "s", n)
-			hud.toast("☆ Silver-star %s" % GameState.item_name(str(cd["yield"])), Color(0.85, 0.9, 1.0))
+			hud.toast("☆ Silver-star %s: sells for a quarter more." % GameState.item_name(str(cd["yield"])), Color(0.85, 0.9, 1.0))
 		if GameState.log_grown(crop):
 			hud.toast("Field log: first %s! (%d of %d crops grown)" % [str(cd["name"]), (GameState.run["grown"] as Dictionary).size(), GameState.crops.size()], Color(0.8, 1, 0.7))
 		if randf() < GameState.bonus("farming", "seed_back"):
@@ -869,11 +880,39 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		_check_first_harvest()
 		_soil.queue_redraw() if _soil else queue_redraw()
 		return true
-	if not bool(tile.get("watered", false)) and not GameState.sky_waters():
-		return _water(tile, key)
 	var left := int(cd["days"]) - int(tile["days"])
-	hud.toast("%s%s: %d more day%s." % [("The sky has it. " if GameState.sky_waters() else "Already watered. ") if GameState.held_tool() == "can" else "", cd["name"], left, "" if left == 1 else "s"])
+	var thirsty := not bool(tile.get("watered", false)) and not GameState.sky_waters()
+	if thirsty and GameState.held_tool() == "can":
+		return _water(tile, key)
+	if _hand_item(sel):
+		return false  # a growth tonic in hand: use it, don't read the crop
+	toast_growth(tile, cd, left, thirsty)
 	return true
+
+
+## A tonic in hand (growth potion, forged papers...): USE uses it even facing the
+## field. Plain food doesn't: tapping a crop with a snack in hand reads the crop
+## instead of eating (eat facing grass or anywhere off the beds).
+func _hand_item(sel: String) -> bool:
+	if sel == "" or GameState.held_tool() != "" or GameState.count(sel) <= 0 or sel == "fertilizer":
+		return false
+	var it: Dictionary = GameState.items.get(sel, {})
+	return str(it.get("effect", "")) != "" or str(it.get("type", "")) == "vehicle"
+
+
+## The growth text for a crop that isn't ripe: days left, and whether it's had
+## its water today (a crop only grows on nights it was watered).
+func toast_growth(tile: Dictionary, cd: Dictionary, left: int, thirsty: bool) -> void:
+	var nm := str(cd["name"])
+	var days := "%d more day%s" % [left, "" if left == 1 else "s"]
+	if thirsty:
+		hud.toast("%s: %s. Thirsty: water it with the can or it won't grow tonight." % [nm, days], Color(1, 0.9, 0.7))
+	elif GameState.sky_waters():
+		hud.toast("%s: %s. The %s is watering it today." % [nm, days, "snow" if GameState.weather_today() in ["snow", "blizzard"] else "rain"])
+	elif bool(tile.get("fert", false)):
+		hud.toast("%s: %s. Watered and fertilised." % [nm, days])
+	else:
+		hud.toast("%s: %s. Watered today." % [nm, days])
 
 
 func _seed_for(crop: String) -> String:
@@ -986,7 +1025,7 @@ func _sellbox(sel: String) -> void:
 		GameState.add_item(sel, -n)
 		net_act({"a": "sellbox", "id": sel, "n": n})
 		var est := GameState.sell_price(sel, prev + n) - GameState.sell_price(sel, prev) + GameState.quality_bonus_value({sel: tq})
-		hud.toast("Put %d %s in the sell box (about ◆%d tonight%s)." % [n, GameState.item_name(sel), est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
+		hud.toast("Put %s x%d in the sell box (about ◆%d tonight%s)." % [GameState.item_name(sel), n, est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
 		Music.instance(get_tree()).sfx("coin", "pickup")
 		return
 	if box.is_empty():
@@ -1024,7 +1063,7 @@ func _mailbox() -> void:
 		if not flags.has("mail_1"):
 			flags["mail_1"] = true
 			await say([
-				{"who": "Letter", "text": "Welcome to %s! Stop by the general store when you can. First bag of seeds is on me. - Maple" % GameState.names()["town"]},
+				{"who": "Letter", "text": "Welcome to %s! Here are a few strawberry seeds to start you off: they fruit again every few days once they're up. Stop by the general store when you can. - Maple" % GameState.names()["town"]},
 			])
 			give("strawberry_seed", 3)
 			return
@@ -1038,7 +1077,9 @@ func _mailbox() -> void:
 			flags["mail_1"] = true
 			await say([
 				{"who": "Letter", "text": "The plot is yours under the name on the deed. Nobody here knows your real one. Keep it that way. Earn your keep and don't draw eyes. - M."},
+				{"text": "Folded inside: a twist of potato seeds and a note. \"Spring dirt. Plant them, water them, sell them. A farmer is the last thing anyone looks at.\""},
 			])
+			give("potato_seed", 3)
 			return
 		if day >= 3 and not flags.has("mail_2"):
 			flags["mail_2"] = true
@@ -1056,7 +1097,7 @@ func _talk_crystal() -> void:
 	if not GameState.quest_done("first_harvest"):
 		await say([
 			{"who": "Star Crystal", "text": "Tend the soil, %s. Every living thing you raise feeds the Meow Pow Wow a little." % GameState.names()["character"]},
-			{"who": "Star Crystal", "text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each day. The sell box pays you in crystals overnight."},
+			{"who": "Star Crystal", "text": "Hold the hoe and tap USE on grass to till. Pick seeds on the toolbar and tap USE to plant. Water each day with the can: a crop only grows on nights it was watered. The sell box pays you in crystals overnight."},
 		])
 	elif not GameState.quest_done("clear_meadow"):
 		await say([
@@ -1372,7 +1413,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 	await say([
 		{"text": "%s shakes the rain off and looks up at you like all of this is normal. Maybe for a while it can be." % pet_name},
 		{"text": "You'll need money to move on anyone. Money means crops. Crops mean dirt under your nails. Fine."},
-		{"text": "Till with USE. Pick seeds on the toolbar and tap USE to plant. Water each morning. Sell at the box. Don't draw eyes."},
+		{"text": "Hold the hoe and tap USE on grass to till. Pick the seeds on the toolbar and tap USE to plant. Water each morning with the can. Sell at the box by the house. Don't draw eyes."},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop. Sell it at the box by the house.")
 	GameState.add_quest("meet_town", "Go south. Learn who in %s can be bought, and who is watching." % town)
