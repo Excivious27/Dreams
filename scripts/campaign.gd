@@ -520,7 +520,13 @@ static func story_pointer(qid: String) -> String:
 	if GameState.progress_tier() < int(c.get("min_pt", 0)):
 		return "%s is held. Get further in the story, then win \"%s\"." % [str(get_c(gate_of(reg))["region_name"]), str(c["title"])]
 	var first: String = CampaignGate.next_step(cid)
-	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s.%s" % [str(c["region_name"]), str(c["title"]), held, (" First: " + first.left(1).to_lower() + first.substr(1)) if first != "" else ""]
+	if first != "" and CampaignGate.story_ok() and not CampaignGate.trained() and not started(cid):
+		first = "Training with %s on the campaign map (Menu > Map)." % CampaignGate.trainer()
+	if first != "":
+		# The step comes first: the HUD shows two short lines, and the tail is what gets cut.
+		var where := "" if first.contains("campaign map") else " (campaign map, Menu > Map)"
+		return "%s is held. First: %s Then win \"%s\"%s." % [str(c["region_name"]), first.left(1).to_lower() + first.substr(1), str(c["title"]), where]
+	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s." % [str(c["region_name"]), str(c["title"]), held]
 
 
 ## True (and offers the campaign) when `scene` is still held by a campaign.

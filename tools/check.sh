@@ -223,6 +223,11 @@ echo "$sout2" | grep -E "FAIL|SCRIPT ERROR|campaign_story_test" || true
 if ! echo "$sout2" | grep -q "campaign_story_test: 0 fails"; then
   echo "Campaign story test failed"; exit 1
 fi
+glout="$("$GODOT" --headless --path . -s res://tools/goal_line_test.gd 2>&1)"
+echo "$glout" | grep -E "FAIL|SCRIPT ERROR|goal_line_test" || true
+if ! echo "$glout" | grep -q "goal_line_test: 0 fails"; then
+  echo "Goal line test failed"; exit 1
+fi
 gout2="$("$GODOT" --headless --path . -s res://tools/campaign_gate_test.gd 2>&1)"
 echo "$gout2" | grep -E "FAIL|SCRIPT ERROR|campaign_gate_test" || true
 if ! echo "$gout2" | grep -q "campaign_gate_test: 0 fails"; then

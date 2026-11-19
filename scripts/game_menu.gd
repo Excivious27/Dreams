@@ -561,10 +561,15 @@ func _refresh() -> void:
 			if r["quests"].is_empty():
 				_line("No quests yet.")
 			var mains: Array = GameState.quests_data.get("main", []).map(func(q: Dictionary) -> String: return str(q["id"]))
+			# The same next step the HUD goal line shows, so the two never disagree.
+			var now := GameState.next_step()
+			if now != "":
+				_line("▸ Now: " + now, 9, Color(1, 0.92, 0.6))
 			_line("Story", 9, Color(1, 0.9, 0.5))
-			for q in r["quests"]:
-				if str(q["id"]) in mains or not GameState._quest_def(str(q["id"])).has("giver"):
-					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
+			for done_pass: bool in [false, true]:  # open steps first, finished ones after
+				for q in r["quests"]:
+					if bool(q["done"]) == done_pass and (str(q["id"]) in mains or not GameState._quest_def(str(q["id"])).has("giver")):
+						_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
 			_line("Townsfolk", 9, Color(0.7, 0.9, 1.0))
 			var any := false
 			for q in r["quests"]:

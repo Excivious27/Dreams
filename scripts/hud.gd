@@ -683,9 +683,10 @@ func fade_in(seconds := 0.4) -> void:
 ## Big maps (the mines): an arrow at the screen edge toward the open shaft or the awake keeper.
 func _draw_pointer(c: CanvasItem) -> void:
 	var m := get_tree().current_scene as GameMap
-	if m == null or m.player == null or y_offset != 0.0 or not m.has_method("pointer_target"):
+	if m == null or m.player == null or y_offset != 0.0 or Dialogue.instance(get_tree()).active or m.get("battle") != null:
 		return
-	var tgt: Vector2 = m.call("pointer_target")
+	# Maps with their own target (mine ladder/guardian) first; else the goal line's place.
+	var tgt: Vector2 = m.call("pointer_target") if m.has_method("pointer_target") else GoalLine.target(m)
 	if tgt == Vector2.ZERO:
 		return
 	var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt

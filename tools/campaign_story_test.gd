@@ -53,7 +53,7 @@ func _initialize() -> void:
 						break
 					# The lead-in, as the goal line asks for it: train, gather a team, bring provisions.
 					if not CampaignGate.trained():
-						check(ptr.contains("Train"), "%s/%s: the goal line sends you to training first: %s" % [arc, qid, ptr])
+						check(ptr.to_lower().contains("train"), "%s/%s: the goal line sends you to training first: %s" % [arc, qid, ptr])
 						GameState.run["flags"][CampaignGate.TRAINED] = true
 					var tries := 0
 					while CampaignGate.team_short(named) > 0 and tries < 12:
@@ -82,6 +82,8 @@ func _initialize() -> void:
 				GameState.run["flags"]["meow_taught"] = true
 			if qid == "hideout":
 				GameState.run["flags"]["hideout_seen"] = true
+			if qid == "clear_meadow" and arc == "gangsters":
+				GameState.run["flags"]["sal_recruited"] = true  # the gang quest only opens once Sal is in
 		# Region locks never trap a finished story: every story region is open.
 		for qid: String in Campaign.STORY_REGION:
 			var r := str(Campaign.STORY_REGION[qid])
