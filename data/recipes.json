@@ -370,6 +370,72 @@
    "tier": 1,
    "flag": "cf_rec_cobbler",
    "flag_hint": "learn it at the community farm"
+  },
+  {
+   "id": "echo_pudding",
+   "name": "Gloam Pudding",
+   "need": {
+    "wisp_spark": 1,
+    "milk": 1,
+    "honey": 1
+   },
+   "give": "echo_pudding",
+   "tier": 2
+  },
+  {
+   "id": "sun_loaf",
+   "name": "Sun Loaf",
+   "need": {
+    "dune_date": 2,
+    "spice": 1,
+    "wheat": 2
+   },
+   "give": "sun_loaf",
+   "tier": 3
+  },
+  {
+   "id": "stew_beef",
+   "name": "Stoker's Stew",
+   "need": {
+    "meat": 1,
+    "potato": 2,
+    "charcoal": 1
+   },
+   "give": "stew_beef",
+   "tier": 3
+  },
+  {
+   "id": "frost_sorbet",
+   "name": "Frost Sorbet",
+   "need": {
+    "frost": 1,
+    "milk": 1,
+    "edelweiss": 1
+   },
+   "give": "frost_sorbet",
+   "tier": 4
+  },
+  {
+   "id": "cloud_souffle",
+   "name": "Cloud Souffle",
+   "need": {
+    "storm_fluff": 1,
+    "egg": 2,
+    "milk": 1
+   },
+   "give": "cloud_souffle",
+   "tier": 4
+  },
+  {
+   "id": "sun_flan",
+   "name": "Gilded Flan",
+   "need": {
+    "gold_bundle": 1,
+    "egg": 2,
+    "milk": 1
+   },
+   "give": "sun_flan",
+   "tier": 4
   }
  ],
  "mill": [

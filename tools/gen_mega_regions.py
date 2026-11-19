@@ -37,6 +37,10 @@ Fields (runtime: scripts/mega_region.gd `MegaRegion`, map tab: scripts/mega_map.
 """
 import json
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from mega_regions_new import MEGA, IRONLINE, EXTRA  # the five new regions + the rail frontier (tools/gen_mega_new.py builds them)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -122,83 +126,24 @@ REGIONS = [
         "entries": [{"from": "forest", "to": "sky", "how": "great tree stair", "label": "Great tree"}],
         "unlock": {"any": [{"seen": "sky"}, {"quest": "sky_stair"}, {"campaign_ready": "c_sky"}]},
     },
-    # ---------------------------------------------------------------- new (agent a6 builds the areas)
-    {
-        "id": "sunken", "name": "Sunken City", "short": "Sunken", "arc": "both", "status": "planned",
-        "blurb": "A drowned city of domes and lantern-fish streets, reached by diving bell.",
-        "travel": "The diving bell sinks into green light. Bubbles, then lamps: streets under the sea.",
-        "leave": "The bell breaks the surface into sunshine.",
-        "theme": {"style": "deep", "bg": [0.04, 0.2, 0.28], "land": [0.2, 0.42, 0.44], "accent": [0.4, 1.0, 0.85], "ink": [0.9, 1.0, 0.98]},
-        "areas": [
-            {"id": "sunken_gate", "name": "Bell Landing", "pos": [0.3, 0.8], "icon": "pin_beach", "blurb": "Where the diving bell sets down."},
-            {"id": "sunken_plaza", "name": "Drowned Plaza", "pos": [0.55, 0.5], "icon": "pin_town", "blurb": "Domes, statues and lantern fish."},
-            {"id": "sunken_vaults", "name": "Pearl Vaults", "pos": [0.7, 0.2], "icon": "pin_mine", "blurb": "The old treasury, sealed for a reason."},
-        ],
-        "links": [["sunken_gate", "sunken_plaza"], ["sunken_plaza", "sunken_vaults"]],
-        "entries": [{"from": "beach", "to": "sunken_gate", "how": "diving bell", "label": "Beach"}],
-        "unlock": {"any": [{"seen": "sunken_gate"}, {"all": [{"tier": 3}, {"seen": "beach"}]}]},
-    },
-    {
-        "id": "north", "name": "Frozen North", "short": "North", "arc": "both", "status": "planned",
-        "blurb": "Past the highlands: snowfields, an aurora village and halls cut into a glacier.",
-        "travel": "The sled train climbs into white. The wind bites, and the aurora rolls overhead.",
-        "leave": "The sled train rattles down out of the snow into green hills.",
-        "theme": {"style": "ice", "bg": [0.72, 0.84, 0.94], "land": [0.95, 0.97, 1.0], "accent": [0.45, 0.95, 0.75], "ink": [0.1, 0.16, 0.28]},
-        "areas": [
-            {"id": "north_pass", "name": "Frost Pass", "pos": [0.25, 0.78], "icon": "pin_mountain", "blurb": "Where the sled train stops."},
-            {"id": "north_village", "name": "Aurora Village", "pos": [0.55, 0.5], "icon": "pin_town", "blurb": "Warm lodges under the lights."},
-            {"id": "north_glacier", "name": "Glacier Halls", "pos": [0.75, 0.2], "icon": "pin_mine", "blurb": "Blue ice halls, something frozen inside."},
-        ],
-        "links": [["north_pass", "north_village"], ["north_village", "north_glacier"]],
-        "entries": [{"from": "highlands", "to": "north_pass", "how": "sled train", "label": "Highlands"}],
-        "unlock": {"any": [{"seen": "north_pass"}, {"all": [{"tier": 3}, {"seen": "highlands"}]}]},
-    },
-    {
-        "id": "desert", "name": "Desert Bazaar", "short": "Desert", "arc": "both", "status": "planned",
-        "blurb": "Beyond the wastes: a caravan road, a great bazaar and a canyon of glass.",
-        "travel": "The caravan sways over the dunes for a day and a night. Then lanterns, music, spice: the bazaar.",
-        "leave": "The caravan winds back across the dunes to the edge of the wastes.",
-        "theme": {"style": "desert", "bg": [0.9, 0.74, 0.45], "land": [0.98, 0.86, 0.6], "accent": [0.95, 0.4, 0.25], "ink": [0.25, 0.14, 0.08]},
-        "areas": [
-            {"id": "desert_road", "name": "Dune Road", "pos": [0.22, 0.75], "icon": "pin_wastes", "blurb": "Caravan tracks and wind-carved rock."},
-            {"id": "desert_bazaar", "name": "The Bazaar", "pos": [0.52, 0.48], "icon": "pin_town", "blurb": "A market under a hundred awnings."},
-            {"id": "desert_canyon", "name": "Glass Canyon", "pos": [0.78, 0.22], "icon": "pin_mountain", "blurb": "Sand fused to glass by something hot."},
-        ],
-        "links": [["desert_road", "desert_bazaar"], ["desert_bazaar", "desert_canyon"]],
-        "entries": [{"from": "wastes", "to": "desert_road", "how": "caravan", "label": "Wastes"}],
-        "unlock": {"any": [{"seen": "desert_road"}, {"all": [{"tier": 2}, {"seen": "wastes"}]}]},
-    },
-    {
-        "id": "clockwork", "name": "Clockwork Isles", "short": "Clockwork", "arc": "penguins", "status": "planned",
-        "blurb": "Brass islands that tick, wound by merkitty tinkerers. The airship sails from the Sky Isles.",
-        "travel": "The airship's propellers whirr. Below, islands of brass turn slowly, like a clock with no hands.",
-        "leave": "The airship sets you down among the clouds of the Sky Isles.",
-        "theme": {"style": "clockwork", "bg": [0.32, 0.22, 0.14], "land": [0.78, 0.6, 0.3], "accent": [1.0, 0.82, 0.4], "ink": [0.98, 0.93, 0.8]},
-        "areas": [
-            {"id": "clock_harbor", "name": "Cog Harbour", "pos": [0.25, 0.75], "icon": "pin_docks", "blurb": "Airship moorings on a turning dock."},
-            {"id": "clock_works", "name": "The Gearworks", "pos": [0.55, 0.48], "icon": "pin_town", "blurb": "Tinkerer workshops and a great spring."},
-            {"id": "clock_spire", "name": "Spire of Hours", "pos": [0.75, 0.18], "icon": "pin_tower", "blurb": "The clock at the centre of it all."},
-        ],
-        "links": [["clock_harbor", "clock_works"], ["clock_works", "clock_spire"]],
-        "entries": [{"from": "sky", "to": "clock_harbor", "how": "airship", "label": "Sky Isles"}],
-        "unlock": {"any": [{"seen": "clock_harbor"}, {"all": [{"seen": "sky"}, {"tier": 4}]}]},
-    },
-    {
-        "id": "megacity", "name": "Chrome Megacity", "short": "Megacity", "arc": "gangsters", "status": "planned",
-        "blurb": "The maglev from Uptown runs to a city of chrome towers, where the President's money really lives.",
-        "travel": "The maglev slides out of Uptown without a sound. Towers of chrome and light rise out of the haze.",
-        "leave": "The maglev glides back into Uptown's marble station.",
-        "theme": {"style": "chrome", "bg": [0.08, 0.1, 0.16], "land": [0.42, 0.48, 0.58], "accent": [0.3, 0.9, 1.0], "ink": [0.9, 0.97, 1.0]},
-        "areas": [
-            {"id": "mega_terminal", "name": "Maglev Terminal", "pos": [0.22, 0.78], "icon": "pin_docks", "blurb": "Glass halls and security drones."},
-            {"id": "mega_market", "name": "Chrome Market", "pos": [0.5, 0.5], "icon": "pin_tower", "blurb": "Holo-signs and street tech."},
-            {"id": "mega_arcology", "name": "The Arcology", "pos": [0.76, 0.18], "icon": "pin_tower", "blurb": "A tower city behind locked gates."},
-        ],
-        "links": [["mega_terminal", "mega_market"], ["mega_market", "mega_arcology"]],
-        "entries": [{"from": "uptown", "to": "mega_terminal", "how": "maglev", "label": "Uptown"}],
-        "unlock": {"any": [{"seen": "mega_terminal"}, {"campaign_won": "c_uptown"}]},
-    },
+    # ---------------------------------------------------------------- new: built by tools/gen_mega_new.py (a6)
 ]
+REGIONS += MEGA
+
+
+# The Ironline rail frontier is part of the President's city: its areas join the Cities tab.
+_cities = next(r for r in REGIONS if r["id"] == "cities")
+_cities["areas"] += IRONLINE["areas"]
+_cities["links"] += IRONLINE["links"]
+_cities["entries"] += IRONLINE["entries"]
+_cities["unlock"] = {"any": [_cities["unlock"], IRONLINE["unlock"]]}
+# Second areas for the Hollow Heart and the Sky Isles (gen_mega_new.py builds them).
+for _x in EXTRA:
+    _r = next(r for r in REGIONS if r["id"] == _x["id"])
+    for _a in _x["areas"]:
+        _r["areas"].append({k: _a[k] for k in ("id", "name", "pos", "icon", "blurb")})
+        for _l in _a["links"]:
+            _r["links"].append([_l, _a["id"]])
 
 
 def main() -> None:

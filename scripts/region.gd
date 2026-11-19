@@ -67,6 +67,8 @@ func _boss_markers() -> void:
 		sp.offset = Vector2(0, -tex.get_height() / 2.0)
 		sp.position = cell_center(c)
 		sp.modulate = Color(0.55, 0.5, 0.65, 0.9)
+		if ed.has("tint"):
+			sp.self_modulate = Color(str(ed["tint"]))
 		add_child(sp)
 		if t.get("hint", "") == "":
 			t["hint"] = "A: face it"
@@ -84,6 +86,13 @@ func _spawn_tier(kind: String) -> int:
 
 func scene_id() -> String:
 	return region_id
+
+
+## Regions can name their cliff and stair look ("cliff_style": ["snow", "stair_snow"]).
+func cliff_style() -> Array:
+	if R.has("cliff_style"):
+		return R["cliff_style"]
+	return super()
 
 
 func default_spawn() -> Vector2:
@@ -446,7 +455,7 @@ func after_ready() -> void:
 	# Villagers who live out here (regions.json "npcs": [{"id", "cell", "lines": [...]}]).
 	for n in R.get("npcs", []):
 		var id := str(n["id"])
-		var data: Dictionary = GameState.npcs.get(id, {"name": id.capitalize()})
+		var data: Dictionary = GameState.npcs.get(id, n if n.has("name") else {"name": id.capitalize()})  # regional folk carry their own name/sprite
 		var npc := Npc.new()
 		npc.map = self
 		npc.setup(id, data, cell_center(Vector2i(int(n["cell"][0]), int(n["cell"][1]))))
@@ -628,6 +637,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"boss":
 			later(_boss.bind(thing))
 			return true
+		"mega_gate":
+			later(MegaTravel.gate.bind(self, thing))
+			return true
 		"door":
 			go_to(str(thing["scene"]), Vector2(float(thing["spawn"][0]) * TILE + 8, float(thing["spawn"][1]) * TILE + 4), str(thing.get("facing", "down")))
 			return true
@@ -751,6 +763,9 @@ func _talk_npc(n: Npc) -> void:
 	n.face(player.position)
 	var id := n.id
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
+	for nd0 in R.get("npcs", []):
+		if str(nd0["id"]) == id and not GameState.npcs.has(id):
+			name = str(nd0.get("name", name))
 	var fr: Dictionary = GameState.run["friendship"]
 	var sel := str(GameState.run["selected"])
 	var it: Dictionary = GameState.items.get(sel, {})
@@ -847,7 +862,7 @@ func draw_map() -> void:
 	if ground == "grass":
 		draw_grass(hash(region_id) % 100)
 		WorldGen.draw_ground_detail(self, hash(region_id) % 100 + 1, float(R.get("detail", 0.1)))
-	elif Art.has("tiles", ground):
+	elif Art.has("tiles", ground) or Art.has("seamless", str(R.get("ground_seam", ""))):
 		# A seamless ground where the region names one; otherwise the set's variants
 		# in turn, so the 16px grid doesn't show.
 		var gseam := str(R.get("ground_seam", ""))
@@ -1015,6 +1030,8 @@ func draw_map() -> void:
 		pass  # soft cracked road on the ash, not a tile band
 	elif path_kind.begins_with("bio_path") and soft_ground(widen_path(pcs), "cave_stone_floor", Color(0.1, 0.05, 0.15, 0.3), Color(0.85, 1.0, 0.95)):
 		pass  # one soft paved path (the blue crystal floor read as a river)
+	elif Art.has("seamless", path_kind) and soft_ground(widen_path(pcs), path_kind, Color(str(R.get("path_lip", "33221a48")))):
+		pass  # any seamless texture as a soft path (mega regions: snow_trodden, cobble_warm, ballast...)
 	else:
 		_draw_path_tiles(pcs, path_kind)
 	for wsh in _rect_water:
@@ -1070,6 +1087,8 @@ func draw_corridor(cells: Dictionary) -> void:
 		pass  # matches the soft wastes road
 	elif k.begins_with("bio_path") and soft_ground(widen_path(cells), "cave_stone_floor", Color(0.1, 0.05, 0.15, 0.3), Color(0.85, 1.0, 0.95)):
 		pass  # matches the soft jungle path
+	elif Art.has("seamless", k) and soft_ground(widen_path(_pcs).merged(cells), k, Color(str(R.get("path_lip", "33221a48")))):
+		pass  # a seamless soft path runs on through the band as one shape
 	else:
 		_draw_path_tiles(cells, k)
 

@@ -33,7 +33,8 @@ func _overlay() -> Texture2D:
 	var nm := str(OVERLAYS.get(weather, ""))
 	if nm == "":
 		return null
-	if weather in ["fireflies", "snow"] and Art.has("fx", "firefly" if weather == "fireflies" else "snowflake"):
+	var pk := "firefly" if weather == "fireflies" else "snowflake"
+	if weather in ["fireflies", "snow"] and Art.has("fx", pk) and int(Art.info("fx", pk).get("h", 0)) <= 48:  # (fx/firefly is a mis-cut 393x137 slab: use the overlay strip)
 		return null  # drifting particles; a tiled frame reads as a grid
 	var nm2 := nm.replace("ov_", "ov2_").replace("ov2_heavy_rain", "ov2_storm")
 	# These ov2 strips cut their shapes at the 128-px frame edges (a grid of half

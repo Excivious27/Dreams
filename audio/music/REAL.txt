@@ -61,3 +61,8 @@ shop_gang
 credits
 merkitty_song
 rec_center
+mega_gloam
+mega_desert
+mega_frost
+mega_wind
+mega_gilt

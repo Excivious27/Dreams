@@ -314,5 +314,257 @@
    "moonwort",
    12
   ]
+ ],
+ "gloam_violet_glade": [
+  [
+   "wild_herb",
+   0.4
+  ],
+  [
+   "mushroom",
+   0.4
+  ],
+  [
+   "glowcap",
+   0.2
+  ],
+  [
+   "flower",
+   0.3
+  ],
+  [
+   "cave_bloom",
+   0.08
+  ]
+ ],
+ "gloam_crystal_thicket": [
+  [
+   "crystal_bloom",
+   0.15
+  ],
+  [
+   "glowcap",
+   0.3
+  ],
+  [
+   "wild_herb",
+   0.3
+  ],
+  [
+   "mushroom",
+   0.3
+  ]
+ ],
+ "gloam_moonpool": [
+  [
+   "glowcap",
+   0.3
+  ],
+  [
+   "mushroom",
+   0.4
+  ],
+  [
+   "cave_bloom",
+   0.12
+  ],
+  [
+   "wild_herb",
+   0.3
+  ]
+ ],
+ "desert_dune_sea": [
+  [
+   "spice",
+   0.3
+  ],
+  [
+   "dune_date",
+   0.4
+  ],
+  [
+   "fiber",
+   0.3
+  ],
+  [
+   "flower",
+   0.1
+  ]
+ ],
+ "desert_glass_canyon": [
+  [
+   "spice",
+   0.2
+  ],
+  [
+   "fiber",
+   0.4
+  ],
+  [
+   "dune_date",
+   0.2
+  ]
+ ],
+ "desert_sunken_temple": [
+  [
+   "spice",
+   0.2
+  ],
+  [
+   "fiber",
+   0.3
+  ]
+ ],
+ "iron_freight_yards": [
+  [
+   "fiber",
+   0.4
+  ],
+  [
+   "wild_herb",
+   0.2
+  ]
+ ],
+ "iron_mill_district": [
+  [
+   "fiber",
+   0.4
+  ]
+ ],
+ "iron_tunnels": [
+  [
+   "mushroom",
+   0.3
+  ],
+  [
+   "fiber",
+   0.3
+  ]
+ ],
+ "frost_glacier": [
+  [
+   "edelweiss",
+   0.4
+  ],
+  [
+   "wild_herb",
+   0.2
+  ],
+  [
+   "fiber",
+   0.2
+  ]
+ ],
+ "frost_caverns": [
+  [
+   "mushroom",
+   0.3
+  ],
+  [
+   "cave_bloom",
+   0.1
+  ]
+ ],
+ "frost_falls": [
+  [
+   "edelweiss",
+   0.3
+  ],
+  [
+   "wild_herb",
+   0.3
+  ]
+ ],
+ "frost_summit": [
+  [
+   "edelweiss",
+   0.4
+  ]
+ ],
+ "wind_sunrise_shelf": [
+  [
+   "star_dust",
+   0.15
+  ],
+  [
+   "flower",
+   0.3
+  ],
+  [
+   "wild_herb",
+   0.3
+  ]
+ ],
+ "wind_storm_shelf": [
+  [
+   "star_dust",
+   0.1
+  ],
+  [
+   "wild_herb",
+   0.2
+  ]
+ ],
+ "wind_starfall_garden": [
+  [
+   "star_dust",
+   0.2
+  ],
+  [
+   "flower",
+   0.3
+  ]
+ ],
+ "gilt_casino_row": [
+  [
+   "flower",
+   0.3
+  ]
+ ],
+ "gilt_gardens": [
+  [
+   "dark_rose",
+   0.2
+  ],
+  [
+   "flower",
+   0.4
+  ],
+  [
+   "wild_herb",
+   0.2
+  ]
+ ],
+ "hollow_deeps": [
+  [
+   "cave_bloom",
+   0.3
+  ],
+  [
+   "glowcap",
+   0.3
+  ],
+  [
+   "mushroom",
+   0.3
+  ],
+  [
+   "crystal_bloom",
+   0.1
+  ]
+ ],
+ "sky_reaches": [
+  [
+   "star_dust",
+   0.15
+  ],
+  [
+   "flower",
+   0.3
+  ],
+  [
+   "wild_herb",
+   0.3
+  ]
  ]
 }

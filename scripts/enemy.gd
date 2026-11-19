@@ -7,6 +7,7 @@ extends Node2D
 var hp := 3
 var max_hp := 3
 var base_hp := 3        # HP before any scaling: size checks (bars, stun, boss) use this
+var _art_scale := 1.0  # data "scale": drawn size multiplier
 var _flash_sent := -1.0
 var _draw_sig := -1
 var hp_scale := 1.0     # how much the home-tier scaling multiplied HP (allies hit harder by the same)
@@ -165,7 +166,7 @@ func setup(k: String, tier_override := -1) -> void:
 	armor = maxi(0, int(tw.get("armor", 0)) - int(nw.get("armor", 0)))
 	kb_resist = maxf(0.0, float(tw.get("kb_resist", 0.0)) - float(nw.get("kb_resist", 0.0)))
 	base_hp = hp
-	bossy = ed.has("gift") or k.begins_with("marked_") or k.begins_with("lt_") or k.begins_with("cboss_") or k in ["big_grump", "president", "golem_king", "ruin_warden", "dark_crystal", "marsh_witch"]
+	bossy = bool(ed.get("boss", false)) or ed.has("gift") or k.begins_with("marked_") or k.begins_with("lt_") or k.begins_with("cboss_") or k in ["big_grump", "president", "golem_king", "ruin_warden", "dark_crystal", "marsh_witch"]
 	hp_scale = float((BOSS_HP if bossy else NATIVE_HP)[clampi(mini(native, tier), 0, 5)])  # run below home: scale for the tier you meet it at
 	if Settings.easy():
 		hp_scale = maxf(1.0, hp_scale * 0.6)
@@ -192,6 +193,8 @@ func setup(k: String, tier_override := -1) -> void:
 		_sprite.sprite_frames = Art.frames(group, anims, {"idle": 5.0, "walk": 8.0, "hurt": 8.0, "attack": 10.0, "die": 10.0}, {"attack": false, "hurt": false, "die": false})
 		_sprite.animation = "idle"
 		var s := 1.1 if group == "enemies/grump" and k == "big_grump" else 0.5  # the old stand-in was the little grump scaled up
+		_art_scale = float(ed.get("scale", 1.0))  # regional bosses can stand taller (data "scale")
+		s *= _art_scale
 		_sprite.scale = Vector2(s, s)
 		# Feet on the node: offset by half the frame height. Set now too (not only
 		# on frame_changed), or the first frame drew centred on the feet with its
@@ -201,6 +204,8 @@ func setup(k: String, tier_override := -1) -> void:
 		_sprite.play("idle")
 		_fit_sprite()
 		add_child(_sprite)
+		if ed.has("tint"):
+			_sprite.self_modulate = Color(str(ed["tint"]))  # recoloured kin (data "tint"): status tints still use modulate
 		_shadow_r = 6.0 * s * 2.0
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
@@ -391,7 +396,7 @@ func _process(delta: float) -> void:
 		elif _enraged:
 			tint = Color(1.0, 0.55, 0.5)
 		_sprite.modulate = tint
-		var bs := 1.1 if kind == "big_grump" and not Art.has("enemies/big_grump", "idle") else 0.5
+		var bs := 1.1 if kind == "big_grump" and not Art.has("enemies/big_grump", "idle") else 0.5 * _art_scale
 		_sprite.scale = Vector2(bs * (1.0 + _squash * 0.25), bs * (1.0 - _squash * 0.3)) if kind != "big_grump" else Vector2(bs, bs)
 	# Redraw (hp bar, shadow, telegraph icon) only when what it shows changes.
 	# Packed into one int (no per-frame string format): hp, max_hp, 8 flags, tier, shadow, telegraph/regen.

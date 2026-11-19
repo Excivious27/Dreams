@@ -9689,5 +9689,369 @@
   "icon": "token_star",
   "desc": "Decor: your own cabinet at home. It blinks all night.",
   "rec": true
+ },
+ "wisp_thread": {
+  "name": "Wisp Thread",
+  "type": "material",
+  "value": 120,
+  "tier": 2,
+  "rarity": "uncommon",
+  "desc": "Spun by the glade wisps. Warm to the touch."
+ },
+ "wisp_spark": {
+  "name": "Wisp Spark",
+  "type": "material",
+  "value": 160,
+  "tier": 3,
+  "rarity": "rare",
+  "desc": "A wisp's light, caught before it could fade."
+ },
+ "luna_moth": {
+  "name": "Luna Moth",
+  "type": "treasure",
+  "value": 240,
+  "tier": 3,
+  "rarity": "rare",
+  "desc": "Sleeps all day on the lantern posts of Lanternfall."
+ },
+ "ghost_fish": {
+  "name": "Ghostfish",
+  "type": "fish",
+  "value": 150,
+  "tier": 2,
+  "rarity": "uncommon"
+ },
+ "echo_pudding": {
+  "name": "Gloam Pudding",
+  "type": "food",
+  "value": 260,
+  "tier": 3,
+  "rarity": "rare",
+  "heal": 5,
+  "energy": 95
+ },
+ "charm_root": {
+  "name": "Thornroot Charm",
+  "type": "equip",
+  "value": 1400,
+  "tier": 3,
+  "rarity": "epic",
+  "slot": "charm",
+  "stats": {
+   "luck": 2,
+   "mana": 10
+  },
+  "desc": "The Thornmother's last bud, closed tight."
+ },
+ "ring_glow": {
+  "name": "Glowmoss Ring",
+  "type": "equip",
+  "value": 900,
+  "tier": 3,
+  "rarity": "rare",
+  "slot": "ring",
+  "stats": {
+   "luck": 2
+  }
+ },
+ "sunstone": {
+  "name": "Sunstone",
+  "type": "ore",
+  "value": 210,
+  "tier": 3,
+  "rarity": "rare",
+  "desc": "Holds the day's heat long after dark."
+ },
+ "sun_scarab": {
+  "name": "Sun Scarab",
+  "type": "treasure",
+  "value": 280,
+  "tier": 3,
+  "rarity": "rare",
+  "desc": "A golden beetle carved by the temple builders."
+ },
+ "spice": {
+  "name": "Desert Saffron",
+  "type": "forage",
+  "value": 120,
+  "tier": 3,
+  "rarity": "uncommon"
+ },
+ "sun_trout": {
+  "name": "Sun Trout",
+  "type": "fish",
+  "value": 140,
+  "tier": 3,
+  "rarity": "uncommon"
+ },
+ "sun_loaf": {
+  "name": "Sun Loaf",
+  "type": "food",
+  "value": 240,
+  "tier": 3,
+  "rarity": "rare",
+  "heal": 5,
+  "energy": 100
+ },
+ "charm_sun": {
+  "name": "Colossus Charm",
+  "type": "equip",
+  "value": 1800,
+  "tier": 4,
+  "rarity": "epic",
+  "slot": "charm",
+  "stats": {
+   "damage": 1,
+   "defense": 2
+  },
+  "desc": "A chip of the Colossus's heart. Still warm."
+ },
+ "tin": {
+  "name": "Coalbrook Tin",
+  "type": "ore",
+  "value": 120,
+  "tier": 3,
+  "rarity": "uncommon"
+ },
+ "oil": {
+  "name": "Engine Oil",
+  "type": "material",
+  "value": 90,
+  "tier": 3,
+  "rarity": "uncommon"
+ },
+ "chain_link": {
+  "name": "Rail Chain",
+  "type": "material",
+  "value": 110,
+  "tier": 3,
+  "rarity": "uncommon"
+ },
+ "charcoal": {
+  "name": "Firebox Charcoal",
+  "type": "material",
+  "value": 60,
+  "tier": 2,
+  "rarity": "common"
+ },
+ "stew_beef": {
+  "name": "Stoker's Stew",
+  "type": "food",
+  "value": 230,
+  "tier": 3,
+  "rarity": "rare",
+  "heal": 5,
+  "energy": 100
+ },
+ "pocket_watch": {
+  "name": "Baron's Pocket Watch",
+  "type": "equip",
+  "value": 2000,
+  "tier": 4,
+  "rarity": "epic",
+  "slot": "charm",
+  "stats": {
+   "speed": 2,
+   "energy": 15
+  },
+  "desc": "Runs eight minutes fast. Every train in Ironline ran by it."
+ },
+ "ring_steel": {
+  "name": "Rivet Ring",
+  "type": "equip",
+  "value": 950,
+  "tier": 3,
+  "rarity": "rare",
+  "slot": "ring",
+  "stats": {
+   "defense": 2
+  }
+ },
+ "frost": {
+  "name": "Rime Crystal",
+  "type": "ore",
+  "value": 240,
+  "tier": 4,
+  "rarity": "rare",
+  "desc": "Ice that has forgotten how to melt."
+ },
+ "glass_frosted": {
+  "name": "Glacier Glass",
+  "type": "material",
+  "value": 200,
+  "tier": 4,
+  "rarity": "rare"
+ },
+ "ice_pike": {
+  "name": "Glacier Pike",
+  "type": "fish",
+  "value": 210,
+  "tier": 4,
+  "rarity": "rare"
+ },
+ "frost_sorbet": {
+  "name": "Frost Sorbet",
+  "type": "food",
+  "value": 380,
+  "tier": 4,
+  "rarity": "epic",
+  "heal": 6,
+  "energy": 115
+ },
+ "charm_frost": {
+  "name": "Rimewyrm Charm",
+  "type": "equip",
+  "value": 2600,
+  "tier": 5,
+  "rarity": "legendary",
+  "slot": "charm",
+  "stats": {
+   "defense": 3,
+   "speed": 1
+  },
+  "desc": "One scale of the Rime Wyrm, frosted over for good."
+ },
+ "ring_warmth": {
+  "name": "Hearth Ring",
+  "type": "equip",
+  "value": 1300,
+  "tier": 4,
+  "rarity": "rare",
+  "slot": "ring",
+  "stats": {
+   "defense": 1,
+   "energy": 15
+  }
+ },
+ "storm_glass": {
+  "name": "Storm Glass",
+  "type": "ore",
+  "value": 300,
+  "tier": 5,
+  "rarity": "epic",
+  "desc": "Lightning, cooled into crystal."
+ },
+ "storm_fluff": {
+  "name": "Storm Fluff",
+  "type": "material",
+  "value": 230,
+  "tier": 5,
+  "rarity": "rare"
+ },
+ "sky_fish": {
+  "name": "Skyfin",
+  "type": "fish",
+  "value": 240,
+  "tier": 5,
+  "rarity": "rare"
+ },
+ "cloud_souffle": {
+  "name": "Cloud Souffle",
+  "type": "food",
+  "value": 460,
+  "tier": 5,
+  "rarity": "epic",
+  "heal": 7,
+  "energy": 130
+ },
+ "storm_eye": {
+  "name": "Eye of the Storm",
+  "type": "treasure",
+  "value": 1200,
+  "tier": 5,
+  "rarity": "legendary",
+  "desc": "Perfectly calm inside. Listen closely and it hums."
+ },
+ "charm_storm": {
+  "name": "Roc-feather Charm",
+  "type": "equip",
+  "value": 3000,
+  "tier": 5,
+  "rarity": "legendary",
+  "slot": "charm",
+  "stats": {
+   "speed": 2,
+   "luck": 2
+  }
+ },
+ "charm_sky": {
+  "name": "Windward Charm",
+  "type": "equip",
+  "value": 1600,
+  "tier": 5,
+  "rarity": "rare",
+  "slot": "charm",
+  "stats": {
+   "speed": 1
+  }
+ },
+ "lucky_coin": {
+  "name": "Lucky Coin",
+  "type": "treasure",
+  "value": 260,
+  "tier": 5,
+  "rarity": "rare"
+ },
+ "gambler_chip": {
+  "name": "Gilt Chip",
+  "type": "material",
+  "value": 180,
+  "tier": 5,
+  "rarity": "uncommon",
+  "desc": "House chips from the Gilt casinos. Good as cash on Casino Row."
+ },
+ "platinum": {
+  "name": "Platinum Ore",
+  "type": "ore",
+  "value": 320,
+  "tier": 5,
+  "rarity": "epic"
+ },
+ "pearl_necklace": {
+  "name": "Pearl Necklace",
+  "type": "treasure",
+  "value": 900,
+  "tier": 5,
+  "rarity": "epic"
+ },
+ "gold_bundle": {
+  "name": "Gold Leaf",
+  "type": "material",
+  "value": 280,
+  "tier": 5,
+  "rarity": "rare"
+ },
+ "sun_flan": {
+  "name": "Gilded Flan",
+  "type": "food",
+  "value": 480,
+  "tier": 5,
+  "rarity": "epic",
+  "heal": 7,
+  "energy": 130
+ },
+ "ring_platinum": {
+  "name": "Aurum Signet",
+  "type": "equip",
+  "value": 3200,
+  "tier": 5,
+  "rarity": "legendary",
+  "slot": "ring",
+  "stats": {
+   "damage": 2,
+   "luck": 2
+  },
+  "desc": "Madame Aurum's seal. Doors open for whoever wears it."
+ },
+ "golden_dice": {
+  "name": "Loaded Dice",
+  "type": "equip",
+  "value": 1700,
+  "tier": 5,
+  "rarity": "rare",
+  "slot": "charm",
+  "stats": {
+   "luck": 3
+  }
  }
 }

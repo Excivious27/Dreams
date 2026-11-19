@@ -72,6 +72,10 @@ for b in beds:
 for s in spots:
     if not have("amb", "spot_" + s):
         bad.append(f"spot {s}")
+for v in json.load(open(os.path.join(ROOT, "data", "regions.json"))).values():  # regions' own beds ("amb")
+    for b in (v.get("amb", {}) if isinstance(v, dict) else {}):
+        if not os.path.exists(os.path.join(A, "amb", b + ".ogg")):
+            bad.append(f"region bed {b}")
 
 real_sfx = {os.path.basename(p).rsplit(".", 1)[0] for p in glob.glob(os.path.join(A, "sfx", "*.ogg"))}
 real_music = {l.strip() for l in open(os.path.join(A, "music", "REAL.txt")) if l.strip() and not l.startswith("#")}

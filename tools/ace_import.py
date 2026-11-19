@@ -61,8 +61,11 @@ def add_real(listfile, name):
     if os.path.exists(listfile):
         have = {l.strip() for l in open(listfile) if l.strip() and not l.startswith("#")}
     if name not in have:
-        with open(listfile, "a") as f:
-            f.write(name + "\n")
+        old = open(listfile).read() if os.path.exists(listfile) else ""
+        if os.path.exists(listfile):
+            os.remove(listfile)  # audio/ is hardlinked across worktrees: never append in place
+        with open(listfile, "w") as f:
+            f.write(old + ("" if old.endswith("\n") or not old else "\n") + name + "\n")
 
 
 def main():
