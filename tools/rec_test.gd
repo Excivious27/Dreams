@@ -359,7 +359,7 @@ func _c2_06_checks() -> void:
 	var taken_lane := int(lt.keys()[0])
 	RecCenter._lane(m, taken_lane)
 	await process_frame
-	ok(d.active and d._choices.get_child_count() == 2 and str((d._choices.get_child(0) as Button).text).begins_with("Bowl with"), "a taken lane offers a game with its bowler")
+	ok(d.active and d._choices.get_child_count() == 3 and str((d._choices.get_child(0) as Button).text).begins_with("Challenge ") and Dialogue.is_way_out(str((d._choices.get_child(2) as Button).text)), "a taken lane offers a challenge with its bowler (and a way out)")
 	if d.active and d._choices.get_child_count() > 0:
 		d._choose("", d._choices.get_child_count() - 1)
 	for k in 4:
