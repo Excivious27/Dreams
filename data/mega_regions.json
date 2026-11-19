@@ -322,7 +322,9 @@
       0.4
      ],
      "icon": "pin_town",
-     "blurb": "Rail town; every train CANCELLED."
+     "blurb": "Rail town; every train CANCELLED.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     },
     {
      "id": "iron_freight_yards",
@@ -332,7 +334,9 @@
       0.16
      ],
      "icon": "pin_docks",
-     "blurb": "Rail bots and rusting freight."
+     "blurb": "Rail bots and rusting freight.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     },
     {
      "id": "iron_mill_district",
@@ -342,7 +346,9 @@
       0.22
      ],
      "icon": "pin_tower",
-     "blurb": "Brick mills and the Baron's silo."
+     "blurb": "Brick mills and the Baron's silo.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     },
     {
      "id": "iron_tunnels",
@@ -352,7 +358,9 @@
       0.06
      ],
      "icon": "pin_mine",
-     "blurb": "Old rail tunnels and the Baron's car."
+     "blurb": "Old rail tunnels and the Baron's car.",
+     "travel": "The night train hauls out of town, coal smoke and sparks, and rolls into Junction City at dawn.",
+     "leave": "The night train brakes beside the ticket booth. Town lamps, quiet streets, crickets again."
     }
    ],
    "links": [

@@ -103,16 +103,16 @@ func _covered(m: GameMap) -> Dictionary:
 func _run() -> void:
 	InputSetup.ensure_actions()
 	var only := OS.get_environment("MAPS")
+	# MAPS may name any scene (valley or mega region), not only the default list.
+	var list: Array = Array(only.split(",")) if only != "" else MAPS
 	for arc in ["penguins", "gangsters"]:
 		GameState.new_run(arc, "kairi", "T", "Town", "Pup")
 		GameState.run["intro_done"] = true
-		for s in MAPS:
+		for s in list:
 			GameState.run["flags"][s + "_seen"] = true
 		for f in ["cm_seen", "mine_open_1", "meow_taught", "moon_seen", "mine_seen"]:
 			GameState.run["flags"][f] = true
-		for s: String in MAPS:
-			if only != "" and not (s in only.split(",")):
-				continue
+		for s: String in list:
 			GameMap.next_spawn = Vector2.ZERO
 			GameState.run["scene"] = s
 			change_scene_to_file("res://scenes/%s.tscn" % s)
