@@ -95,7 +95,7 @@ func _ready() -> void:
 	_acts = HBoxContainer.new()
 	_acts.add_theme_constant_override("separation", 2)
 	_acts.custom_minimum_size = Vector2(0, 22)  # the row appearing never moves the grids
-	_bot = _scroll_grid(v, 168)  # keeps the panel and its tip line on the 480 screen
+	_bot = _scroll_grid(v, 158)  # keeps the panel and its tip line on the 480 screen
 	(_bot.get_parent() as ScrollContainer).size_flags_vertical = Control.SIZE_EXPAND_FILL  # bag fills the panel, no dead band
 	v.add_child(_acts)  # under the bag, so its empty band isn't between the label and the grid
 	var tip := _label("Tap: move across.  Hold: pick up, lock, trash, move half.", 7, Color(0.8, 0.75, 0.65))
@@ -163,6 +163,7 @@ func _btn(text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
 	b.add_theme_font_size_override("font_size", 8)
+	b.custom_minimum_size = Vector2(0, 22)  # finger-sized
 	b.pressed.connect(cb)
 	b.focus_mode = Control.FOCUS_NONE
 	return b

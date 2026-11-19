@@ -85,6 +85,13 @@ bad = [k for k, v in I.items() if isinstance(v, dict) and "back" in v and not (i
 print("interior_back:", len(bad), "bad", bad[:5])
 sys.exit(1 if bad else 0)
 PY
+# Phone UI at 270x480: every menu tab, dialogue, toasts, chest, craft, prizes, campaign board, arcade, bowling;
+# also every printed symbol has a glyph without system fonts (the web build has none).
+cout="$("$GODOT" --headless --path . -s res://tools/phone_ui_test.gd 2>&1)"
+echo "$cout" | grep -E "^ISSUE|^phone_ui_test:|^glyphs" || true
+if ! echo "$cout" | grep -q "phone_ui_test: 0 issue"; then
+  echo "phone_ui_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then

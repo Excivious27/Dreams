@@ -171,17 +171,22 @@ func _show_list() -> void:
 		c.queue_free()
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 3)
-	v.custom_minimum_size = Vector2(246, 0)
+	v.custom_minimum_size = Vector2(242, 0)  # room for the scroll bar
 	_list.add_child(v)
-	v.add_child(_label("Each new region is held. Win its campaign, battle by battle across the board, and the way opens.", 7, Color(0.9, 0.88, 0.8)))
+	var intro := _label("Each new region is held. Win its campaign, battle by battle across the board, and the way opens.", 7, Color(0.9, 0.88, 0.8))
+	intro.custom_minimum_size.x = 236
+	v.add_child(intro)
 	# The lead-in: the story, then training with the veteran.
 	var tr := CampaignGate.trainer()
 	if not CampaignGate.story_ok():
-		v.add_child(_label("✕ Campaigns aren't open yet. %s Then %s will train you." % [CampaignGate.story_need(), tr], 8, Color(1, 0.8, 0.6)))
+		var gate := _label("✕ Campaigns aren't open yet. %s Then %s will train you." % [CampaignGate.story_need(), tr], 8, Color(1, 0.8, 0.6))
+		gate.custom_minimum_size.x = 236
+		v.add_child(gate)
 	var tb := _btn("%s  Training: First Muster\n%s · %s" % ["✓" if CampaignGate.trained() else "★", tr,
 		"done (drill again any time)" if CampaignGate.trained() else ("locked · after chapter 2" if CampaignGate.drill_lock() != "" else "ready · a short guided battle")], _start_drill)
 	tb.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	tb.custom_minimum_size = Vector2(246, 30)
+	tb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # the lock reason is long: it ran off the screen
+	tb.custom_minimum_size = Vector2(242, 30)
 	tb.icon = Art.tex("ui", "icon_whistle")
 	tb.expand_icon = true
 	tb.add_theme_constant_override("icon_max_width", 22)
@@ -211,7 +216,7 @@ func _show_list() -> void:
 			tag = "gathering"
 		var b := _btn("%s  %s\n%s · Tier %d · %d territories · %s" % ["✓" if Campaign.is_won(id) else ("⚔" if why == "" else ("⚑" if plan == "" else "✕")), str(c["title"]), str(c["region_name"]), int(c["tier"]), (c["nodes"] as Array).size() - 1, tag + ("" if why == "" or Campaign.is_won(id) else " · " + why)], _show_board.bind(id))
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		b.custom_minimum_size = Vector2(246, 30)
+		b.custom_minimum_size = Vector2(242, 30)
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		b.add_theme_font_size_override("font_size", 7)
 		if plan != "" and not Campaign.is_won(id):

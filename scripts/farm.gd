@@ -776,7 +776,7 @@ func _plans() -> void:
 			var label := str(Builds.data()[id]["label"])
 			if not uc.is_empty():
 				var dl := int(uc["done_day"]) - int(GameState.run["day"])
-				opts.append("⌛ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
+				opts.append("◷ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
 				ids.append("")
 				continue
 			if nd.is_empty():
@@ -785,7 +785,7 @@ func _plans() -> void:
 				continue
 			var g := Builds.gate(id)
 			var why := Builds.blocker(id)
-			var mark := "" if why == "" else ("🔒 " if g != "" else "✗ ")
+			var mark := "" if why == "" else ("⊘ " if g != "" else "✗ ")
 			var tag := ""
 			if g == "permit":
 				tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
@@ -794,7 +794,7 @@ func _plans() -> void:
 			opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
 			ids.append(id)
 		opts.append("← Back")
-		var legend := "🔒 = not open yet · ✗ = missing materials (you can still buy it)"
+		var legend := "⊘ = not open yet · ✗ = missing materials (you can still buy it)"
 		if cat == "operation":
 			legend = "Your racket: print bills, wash them clean, run fronts, arm and train the crew. Heat rises when a bill gets noticed.\n" + legend
 		elif cat == "sanctuary":

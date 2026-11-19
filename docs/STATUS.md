@@ -116,6 +116,14 @@
 - **Racket:** the laundromat says where bills come from when you have none (or that the wash is full); Sal's heat speech points at the real HUD pips (it said "a flame by your hearts"); the morning report no longer says "Heat 0/5" before heat has ever come up; Rolled Bills (thug cash) read as real money, and Sal's quest says thugs carry them.
 - **Sanctuary:** the morning report names only the place that holds gifts (it always said "check the pool and the burrow", even with one built).
 - **Test:** tools/arc_intro_test.gd (in check.sh).
+## 2026-11-19 — CONDUCT 1 (07): phone UI at 270x480
+- **Symbols on the web build:** the default font (Open Sans) has no ◆ ♥ ★ ✓ ▶ ⚔ ☂ arrows etc., and the web build has no system fonts to borrow them from, so they printed as empty boxes on the phone (shop prices, hearts, quality stars, weather, campaign list). `fonts/symbols.ttf` (111 glyphs, 17 KB, cut from DejaVu Sans by `tools/make_symbol_font.py`, licence in fonts/LICENSE-symbols.txt) is now a fallback of the default font (`SymbolFont` autoload). 🔒 ⏱ ⌛ 〰 had no glyph anywhere: now ⊘ ◷ ◷ ∿.
+- **Campaign list ran off the right edge** (penguin arc: the training lock line didn't wrap); the scroll bar no longer covers the rows.
+- **Finger-sized buttons:** menu rows, Close, skill tabs, hero rows, chest buttons, craft − / + / Max / MAKE (MAKE is gold when it can run), bowling ✕.
+- **Toolbar counts** are outlined and sit inside their slot (white on the light slot art was hard to read).
+- **Prize counter:** descriptions were cut mid-word; rows now end at a word with "…" and the picked prize shows its full text.
+- Test: `tools/phone_ui_test.gd` (in check.sh; `UiAudit` in tools/ui_audit.gd) opens every screen in both arcs with system fonts off and fails on off-screen/spilled controls, buttons under 20 px, cut text, tiny fonts or missing glyphs; with a dir under xvfb it saves screenshots.
+
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.
