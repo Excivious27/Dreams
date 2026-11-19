@@ -668,7 +668,8 @@ static func overnight(report: Dictionary) -> void:
 	if not flags.has("cf_letter") and int(GameState.run["day"]) >= 3:
 		flags["cf_letter"] = true
 		flags["cf_known"] = true
-		Mail.send(keeper(), str(tx(data()["letter"])), "chat")
+		if not flags.has("cf_met"):  # already met her out there: no "come and help" letter
+			Mail.send(keeper(), str(tx(data()["letter"])), "chat")
 		sync_quest()
 	if stage() < 4:
 		return

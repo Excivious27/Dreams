@@ -46,6 +46,14 @@ func _initialize() -> void:
 	# Region names.
 	for id: String in PlaceNames.NAMES:
 		_ok(str(PlaceNames.NAMES[id]) != "", "name for " + id)
+	_ok(PlaceNames.for_id("community_farm") == "Dreamhollow Commons", "community farm label (%s)" % PlaceNames.for_id("community_farm"))
+	r["interior"] = "rec"
+	_ok(PlaceNames.for_id("interior") == RecCenter.name(), "rec center label (%s)" % PlaceNames.for_id("interior"))
+	r["interior"] = "rec_up"
+	_ok(PlaceNames.for_id("interior").begins_with(RecCenter.name()), "rec lanes label (%s)" % PlaceNames.for_id("interior"))
 	_ok(PlaceNames._title("deuce's arcade") == "Deuce's Arcade", "door hint titled (%s)" % PlaceNames._title("deuce's arcade"))
+	GameState.new_run("gangsters", "kairi", "T", "Town", "Pup")
+	_ok(PlaceNames.for_id("community_farm") == "Westside Lot Garden", "lot garden label (%s)" % PlaceNames.for_id("community_farm"))
+	_ok(PlaceNames.for_id("crystal_meadow") == "The Outskirts", "outskirts label")
 	print("r13_world_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

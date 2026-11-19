@@ -97,11 +97,34 @@ func _run() -> void:
 	if shots != "":
 		DirAccess.make_dir_recursive_absolute(shots)
 	InputSetup.ensure_actions()
+	await _early()
 	for arc in ["penguins", "gangsters"]:
 		await _arc(arc)
 	check(arcs_done == 2, "both arcs ran to the end (%d)" % arcs_done)
 	print("commons_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
+
+
+## Walking west on day 1, before Hazel's letter: she's there on her morning
+## schedule to greet you (the visit itself makes the place known).
+func _early() -> void:
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	GameState.run["intro_done"] = true
+	for f in ["town_seen", "town_tour", "partner_scene"]:
+		GameState.run["flags"][f] = true
+	GameState.run["day"] = 1
+	GameState.run["time"] = 7 * 60
+	var m := await _load(Vector2.ZERO)
+	var hz := false
+	for n in m.npcs:
+		hz = hz or ((n as Npc).id == "hazel" and (n as Npc).visible)
+	check(hz, "[early] Hazel is at the lot on a day-1 visit")
+	check(Commons.known() and GameState.run["flags"].has("cf_met"), "[early] the first visit introduces Hazel")
+	check(GameState.has_quest(Commons.QUEST), "[early] the first visit starts the farm quest")
+	var mails := Mail.list().size()
+	GameState.run["day"] = 3
+	Commons.overnight({})
+	check(Mail.list().size() == mails, "[early] no invitation letter after meeting her")
 
 
 func _arc(arc: String) -> void:

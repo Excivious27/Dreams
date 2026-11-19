@@ -112,7 +112,8 @@ func build() -> void:
 		_ledge_cells[c] = true
 		blocked[c] = true
 	# Paths (dirt): door to south exit, and the east-west track.
-	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(37, 2, 1, 10), Rect2i(36, 12, 2, 18), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
+	# (the north track runs on x36: its soft edge would paint over the terrace's rock wall on x38)
+	_path_cells = cells_of([Rect2i(13, 11, 1, 20), Rect2i(13, 30, 24, 2), Rect2i(35, 30, 2, 28), Rect2i(2, 29, 70, 2), Rect2i(36, 2, 1, 10), Rect2i(36, 12, 2, 18), TOWN_EXIT, MEADOW_EXIT, FOREST_EXIT, LAKE_EXIT])
 	for c: Vector2i in _pond_cells:
 		_path_cells.erase(c)
 	_make_river()

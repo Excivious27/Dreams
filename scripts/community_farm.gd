@@ -243,6 +243,8 @@ func _bed_tile(ci: CanvasItem, name: String, c: Vector2i, tilled: Dictionary) ->
 # ---- building the place ------------------------------------------------------------
 
 func after_ready() -> void:
+	if not GameState.run["flags"].has("cf_intro"):
+		GameState.run["flags"]["cf_known"] = true  # walked in before the letter: Hazel's here on schedule to greet you
 	WorldGen.add_backdrop(self, "hills")
 	var s := _s()
 	_plots = Node2D.new()

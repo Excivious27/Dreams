@@ -26,7 +26,11 @@ const INTERIORS := {
 static func of(m: GameMap) -> String:
 	if m == null:
 		return ""
-	var id := m.scene_id()
+	return for_id(m.scene_id(), m)
+
+
+## The label for scene `id` (m, if given, supplies the mine floor).
+static func for_id(id: String, m: GameMap = null) -> String:
 	var r := GameState.run
 	match id:
 		"title":
@@ -35,14 +39,20 @@ static func of(m: GameMap) -> String:
 			var iid := str(r.get("interior", ""))
 			if str(r.get("interior_name_for", "")) == iid and str(r.get("interior_name", "")) != "":
 				return str(r["interior_name"])
+			if iid == "rec":
+				return RecCenter.name()
+			if iid == "rec_up":
+				return RecCenter.name() + " · Lanes"
 			return str(INTERIORS.get(iid, iid.capitalize()))
 		"town":
 			var tn := str(r.get("names", {}).get("town", ""))
 			return tn if tn != "" else "Town"
+		"community_farm":
+			return Commons.place_name()
 		"crystal_meadow":
 			return "Crystal Meadow" if GameState.is_penguins() else "The Outskirts"
 		"mine":
-			var f = m.get("floor_no")
+			var f = m.get("floor_no") if m != null else null
 			return "The Mine · Floor %d" % int(f) if f != null else "The Mine"
 	if id.begins_with("bf_"):
 		var b: Dictionary = GameState.load_json("res://data/battles.json").get(id, {})
