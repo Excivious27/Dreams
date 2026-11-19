@@ -54,6 +54,7 @@ func _run() -> void:
 	rng.seed = seed_
 	seed(seed_)
 	InputSetup.ensure_actions()
+	Dialogue.audit = true
 	GameState.new_run(arc, playable, "Bot%d" % seed_, "Bottown", "Pup")
 	GameState.run["intro_done"] = true
 	_apply_progress()
@@ -65,6 +66,8 @@ func _run() -> void:
 			await _go(sc)
 			await _play_scene(sc)
 		await _sleep_and_roundtrip()
+	for t in Dialogue.audit_log:
+		_warn("menu B can't leave: " + str(t))
 	print("BOT %d done: %d fails, %d warns, %d steps, scenes %s, day %d, ◆%d" % [seed_, fails, warns, steps, str(scenes_visited.keys()), int(GameState.run["day"]), int(GameState.run["crystals"])])
 	quit(1 if fails > 0 else 0)
 
@@ -164,11 +167,16 @@ func _play_scene(sc: String) -> void:
 				stuck_frames = 0
 			last_pos = m.player.position
 			if stuck_frames == 25:
-				var dl := Dialogue.instance(self)
-				var said := ""
-				if dl.active and dl._text:
-					said = " (dialogue up: \"%s\")" % dl._text.text.left(80)
-				_warn("player hasn't moved for 25 steps in %s at cell %s, frozen=%s%s" % [sc, str(m.player.cell()), str(m.player.frozen), said])
+				# Only a real trap counts: probe all four ways before warning.
+				var where := "%s at cell %s" % [_scene_name(), str(m.player.cell())]
+				var froz := m.player.frozen
+				if await _boxed_in(m):
+					var dl := Dialogue.instance(self)
+					var said := ""
+					if dl.active and dl._text:
+						said = " (dialogue up: \"%s\")" % dl._text.text.left(80)
+					_warn("player boxed in at %s, frozen=%s paused=%s%s" % [where, str(froz), str(paused), said])
+				stuck_frames = 0
 		if current_scene != null and str(current_scene.scene_file_path).get_file().get_basename() != sc and not (current_scene is GameMap):
 			pass
 
@@ -176,9 +184,20 @@ func _play_scene(sc: String) -> void:
 func _dialogue_tick() -> void:
 	var d := Dialogue.instance(self)
 	var guard := 0
+	var rounds := 0
 	while d.active and guard < 60:
 		guard += 1
 		if d._in_choice:
+			rounds += 1
+			# A real player leaves menus: after a pick or two, take the way out (B).
+			# Loops like the farm Plans board otherwise keep a bot browsing forever.
+			if rounds > 2 or rng.randf() < 0.3:
+				var before_text := d._text.text if d._text else ""
+				await press("b", 2)
+				await frames(4)
+				if not d.active or not d._in_choice or (d._text and d._text.text != before_text):
+					continue
+				# No way out on B: a story question; pick an answer.
 			var k := rng.randi_range(0, 2)
 			for j in k:
 				await press("down", 1)
@@ -188,6 +207,57 @@ func _dialogue_tick() -> void:
 		await frames(4)
 	if d.active:
 		_warn("dialogue still open after 60 presses: %s" % (d._text.text.left(80) if d._text else ""))
+	await _clear_screens()
+
+
+## A paused tree with no dialogue is a full-screen UI (menu, craft, chest, prize,
+## bowling...). Every one must close on B (or MENU); one that doesn't is a softlock.
+func _clear_screens() -> void:
+	if not paused or Dialogue.instance(self).active:
+		return
+	for i in 4:
+		await press("b" if i < 3 else "menu", 2)
+		await frames(6)
+		if not paused or Dialogue.instance(self).active:
+			return
+	var open: Array = []
+	_modal_names(root, open)
+	_fail("screen won't close on B/MENU in %s: %s" % [_scene_name(), ", ".join(open)])
+	# Unstick so the run carries on.
+	paused = false
+	Hud.modal_rect = Rect2()
+
+
+func _modal_names(n: Node, out: Array) -> void:
+	for c in n.get_children():
+		var sc: Script = c.get_script()
+		var shown: bool = (c as CanvasLayer).visible if c is CanvasLayer else ((c as CanvasItem).visible if c is CanvasItem else true)
+		if sc and shown and (c is CanvasLayer or c is Control):
+			var nm := str(sc.get_global_name())
+			if nm != "" and nm not in ["Hud", "TouchControls", "Dialogue"]:
+				out.append(nm)
+		if out.size() < 8:
+			_modal_names(c, out)
+
+
+func _scene_name() -> String:
+	var m := current_scene as GameMap
+	if m and m.has_method("scene_id"):
+		return m.scene_id()
+	return str(current_scene.scene_file_path).get_file().get_basename() if current_scene else "?"
+
+
+## Is the player boxed in? Try each direction; true if none moves.
+func _boxed_in(m: GameMap) -> bool:
+	for dname in ["up", "down", "left", "right"]:
+		if not is_instance_valid(m) or current_scene != m:
+			return false
+		var before := m.player.position
+		await press(dname, 16)
+		await _dialogue_tick()
+		if not is_instance_valid(m) or current_scene != m or m.player.position.distance_to(before) > 2.0:
+			return false
+	return true
 
 
 func _walk() -> void:

@@ -28,6 +28,19 @@ func _ready() -> void:
 	_build()
 
 
+var _cancel_armed := 0
+
+
+func _process(_delta: float) -> void:
+	# The dresser can be left with B (the press that opened it doesn't count).
+	if not _show_cancel or not is_visible_in_tree():
+		return
+	_cancel_armed += 1
+	if _cancel_armed > 6 and Input.is_action_just_pressed("b"):
+		_cancel_armed = -999
+		cancelled.emit()
+
+
 func _draw() -> void:
 	# Prompts-12C creator panel behind everything (drawn by the container itself).
 	if Art.has("ui_creator2", "panel"):

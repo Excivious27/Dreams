@@ -173,6 +173,11 @@ var _choice_scroll: ScrollContainer
 
 
 func say(lines: Array) -> void:
+	if lines.is_empty() and not active:
+		# Nothing to say: still answer `await finished` (next frame, once the caller
+		# is waiting), or a caller holding the player frozen would wait forever.
+		_finish_empty.call_deferred()
+		return
 	_queue.append_array(lines)
 	if not active:
 		active = true
@@ -180,6 +185,12 @@ func say(lines: Array) -> void:
 		get_tree().paused = true
 		_panel.visible = true
 		_next()
+
+
+func _finish_empty() -> void:
+	if not active:
+		last_choice = -1
+		finished.emit()
 
 
 func _next() -> void:
@@ -310,7 +321,14 @@ func _show_choice(line: Dictionary) -> void:
 	_typing = false
 	_hint.visible = false
 	var opts: Array = line["choice"]
+	if opts.is_empty():
+		opts = ["Close"]  # an empty list would leave no way out of the box
 	var key := str(line.get("key", ""))
+	_choice_key = key
+	if audit and key == "" and not is_way_out(str(opts[opts.size() - 1])):
+		var tag := "%s: %s [%s]" % [str(line.get("who", "")), str(line.get("text", "")).left(50), str(opts[opts.size() - 1])]
+		if tag not in audit_log:
+			audit_log.append(tag)
 	_choice_focus = 0
 	for i in opts.size():
 		var b := Button.new()
@@ -443,6 +461,31 @@ func _process(delta: float) -> void:
 
 
 var _choice_opened := 0
+var _choice_key := ""
+## Tests/bots: record menus (no stored key) that B can't leave.
+static var audit := false
+static var audit_log: Array = []
+
+const WAY_OUT := ["leave", "back", "←", "cancel", "never mind", "nevermind", "not now", "no thanks", "close", "done"]
+# Menus (no stored decision) also back out on softer refusals: "Stay", "Not yet", "Later"...
+const WAY_OUT_MENU := ["stay", "just ", "not ", "nobody", "later", "maybe later", "nothing", "skip", "goodbye", "bye", "keep it", "exit", "stop"]
+
+
+## True when an option reads as "leave this menu" (B picks it). Story decisions
+## (a stored key) only accept the plain words, so B never answers for the player.
+static func is_way_out(text: String, menu := true) -> bool:
+	var t := text.strip_edges().to_lower()
+	for w in WAY_OUT:
+		if t.begins_with(w):
+			return true
+	if not menu:
+		return false
+	if t == "no" or t == "no." or t.begins_with("no,"):
+		return true
+	for w in WAY_OUT_MENU:
+		if t.begins_with(w):
+			return true
+	return false
 
 
 func _process_input() -> void:
@@ -468,11 +511,8 @@ func _process_input() -> void:
 		elif Input.is_action_just_pressed("b"):
 			# B backs out when the last option is a way out.
 			var last := _choices.get_child(n - 1) as Button
-			var t := last.text.strip_edges().to_lower()
-			for w in ["leave", "back", "←", "cancel", "never mind", "nevermind", "not now", "no thanks", "close", "done"]:
-				if t.begins_with(w):
-					last.pressed.emit()
-					break
+			if is_way_out(last.text, _choice_key == ""):
+				last.pressed.emit()
 		return
 	if InputSetup.confirm_pressed():
 		_advance()
