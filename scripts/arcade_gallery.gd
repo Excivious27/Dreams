@@ -33,6 +33,16 @@ func _init() -> void:
 	howto = ["Aim with the arrows (or tap) · A pop", "Back lane 30 · middle 20 · front 10", "Golden duck 60 · frog -20", "40 corks, 45 seconds."]
 
 
+func _deck_buttons() -> Array:
+	var d := super()
+	for b: Dictionary in d:
+		if b["action"] == "a":
+			b["label"] = "POP"
+		elif b["action"] == "b":
+			b["hint"] = "quit"
+	return d
+
+
 func _setup_round() -> void:
 	ducks = []
 	sight = Vector2(135, 190)

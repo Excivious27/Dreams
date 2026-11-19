@@ -511,17 +511,19 @@ func _draw_button(c: Control, b: Dictionary) -> void:
 	var r: Rect2 = b["rect"]
 	var down := held(str(b["action"])) or Input.is_action_pressed(str(b["action"]))
 	var skin := str(b.get("skin", "blue"))
-	var tex := Art.tex("ui", "btn_%s%s" % [skin, "_down" if down else ""]) if Art.has("ui", "btn_" + skin) else null
 	var ctr := r.get_center()
 	var rad := minf(r.size.x, r.size.y) * 0.5
-	if tex:
-		c.draw_texture_rect(tex, Rect2(ctr - Vector2(rad, rad), Vector2(rad, rad) * 2), false)
-	else:
-		var col: Color = SKIN_COL.get(skin, Color.GRAY)
-		c.draw_circle(ctr + Vector2(0, 2), rad, col.darkened(0.5))
-		c.draw_circle(ctr + (Vector2(0, 2) if down else Vector2.ZERO), rad - 1, col.darkened(0.2) if down else col)
+	# Arcade buttons drawn in code (the ui btn_* sheets carry icons of their own).
+	var col: Color = SKIN_COL.get(skin, Color.GRAY)
+	var press := Vector2(0, 2) if down else Vector2.ZERO
+	c.draw_circle(ctr + Vector2(0, 3), rad, Color(0, 0, 0, 0.35))
+	c.draw_circle(ctr + Vector2(0, 2), rad, col.darkened(0.55))
+	c.draw_circle(ctr + press, rad - 1.0, col.darkened(0.25) if down else col)
+	c.draw_circle(ctr + press + Vector2(0, -rad * 0.12), rad * 0.78, (col.darkened(0.15) if down else col.lightened(0.18)))
+	c.draw_arc(ctr + press + Vector2(-rad * 0.2, -rad * 0.25), rad * 0.45, PI * 1.05, PI * 1.6, 10, Color(1, 1, 1, 0.45), 2.0, true)
+	c.draw_arc(ctr + press, rad - 1.0, 0, TAU, 32, col.darkened(0.6), 1.0, true)
 	var fs := 14 if str(b["label"]).length() <= 1 else 8
-	text_outline(c, Vector2(r.position.x - 10, ctr.y + fs * 0.35 + (1 if down else 0)), str(b["label"]), r.size.x + 20, fs, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+	text_outline(c, Vector2(r.position.x - 10, ctr.y + fs * 0.35 + (2 if down else 0)), str(b["label"]), r.size.x + 20, fs, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
 	var hint := str(b.get("hint", ""))
 	if hint != "":
 		text(c, Vector2(r.position.x - 14, r.end.y + 7), hint, r.size.x + 28, 6, Color(1, 1, 1, 0.55), HORIZONTAL_ALIGNMENT_CENTER)
