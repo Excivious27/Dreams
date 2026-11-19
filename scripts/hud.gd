@@ -143,7 +143,7 @@ func _process(delta: float) -> void:
 		Music.instance(get_tree()).sfx("thud", "nope")
 		GameState.overflow_note = ""
 	var sc := get_tree().current_scene
-	var want := INTERIOR_SHIFT if sc is GameMap and (sc as GameMap).scene_id() in ["house", "interior"] else 0.0
+	var want := INTERIOR_SHIFT if sc is GameMap and (sc as GameMap).scene_id() in ["house", "interior"] and not DisplayMode.wide() else 0.0  # wide view: the room has room beside the HUD
 	if want != y_offset:
 		y_offset = want
 		_canvas.queue_redraw()
