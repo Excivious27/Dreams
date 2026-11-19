@@ -6,12 +6,12 @@ The shared memory between Tom's two Claude accounts (Team and personal). Tom swi
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 08:20 PT, Team account (game chat)
-- **Done:** Round 13 (pushed). CONDUCT 1 of 9: 19 of 20 agent branches merged into the Team sandbox's local main (not pushed yet; see PROJECT-MEMORY section 5 for what they contain).
-- **In progress (Team sandbox only):** finishing CONDUCT 1: two gangster goal-line checks fail after merging (c1/02 changed the post-meadow flow; agent c1_03 is reconciling), c1/04 (held-tool rules) still running. Then full check.sh, push, 20-bot playtest, package.
-- **Next step:** if the Team chat is gone and these merges never reached GitHub, redo CONDUCT 1 from docs/CONDUCT-PLAN.md (the scopes are listed there). Otherwise: CONDUCT 2 (rec/arcade/community farm) and 3 (campaigns), wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package.
-- **Jobs running elsewhere:** CONDUCT 1 agents in the Team sandbox (/home/claude/wt/c1_NN, branches c1/NN, local only).
-- **WIP branches:** none on GitHub.
+- **Last update:** 2026-11-19 09:40 PT, Team account (game chat)
+- **Done:** Round 13. CONDUCT 1 of 9: all 20 agent branches merged, check.sh rc 0, pushed (see PROJECT-MEMORY section 5).
+- **In progress:** CONDUCT 1 step 2: 20-bot playtest + scripted playtest on the merged build, then fixes and the package.
+- **Next step:** finish CONDUCT 1 (bots, playtest, fix, package), then CONDUCT 2 (rec/arcade/community farm) and CONDUCT 3 (campaigns), wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package. Plan: docs/CONDUCT-PLAN.md.
+- **Jobs running elsewhere:** none.
+- **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs, then the fully updated artifact.
 
@@ -36,6 +36,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 One line per finished piece of work: date, account, what was done.
 
+- 2026-11-19, Team: CONDUCT 1 merged and pushed (20 agents: first 3 hours both arcs, phone UI font, performance batching, softlocks, saves, goal line, town, tools).
 - 2026-11-19, Team: docs/PROJECT-MEMORY.md (full project context) + tools/setup_sandbox.sh; handoff rule: every push keeps PROJECT-MEMORY current.
 - 2026-11-19, Team: CONDUCT 1 first merges (inventory, farm week, early gating, early combat).
 - 2026-11-18, Team: Round 13 finished and pushed (10 jobs, bots + playtest clean).
