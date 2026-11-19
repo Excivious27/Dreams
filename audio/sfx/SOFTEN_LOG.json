@@ -95,6 +95,22 @@
   "md5": "b188880b72d01ae7296212d672f3718b",
   "shelf_db": -4.5
  },
+ "ball_return": {
+  "after": {
+   "hf": 0.0,
+   "peak": -3.5,
+   "rms": -16.8
+  },
+  "before": {
+   "hf": 0.0,
+   "peak": -2.9,
+   "rms": -17.0
+  },
+  "gain_db": 1.65,
+  "lowpass": 14000,
+  "md5": "43141497db9b9a413b4ee43355b60418",
+  "shelf_db": -1.5
+ },
  "bark": {
   "after": {
    "hf": 0.0,
@@ -381,6 +397,54 @@
   "gain_db": -3.9,
   "lowpass": 14000,
   "md5": "56dee459efa1a3efceecb9d70f4bd283",
+  "shelf_db": -1.5
+ },
+ "bowl_gutter": {
+  "after": {
+   "hf": 0.0,
+   "peak": -5.3,
+   "rms": -14.8
+  },
+  "before": {
+   "hf": 0.0,
+   "peak": -3.8,
+   "rms": -10.9
+  },
+  "gain_db": -3.38,
+  "lowpass": 14000,
+  "md5": "7748e1d2c3c361ed5bcae23e77854f15",
+  "shelf_db": -1.5
+ },
+ "bowl_pit": {
+  "after": {
+   "hf": 0.0,
+   "peak": -6.4,
+   "rms": -14.0
+  },
+  "before": {
+   "hf": 0.0,
+   "peak": -2.7,
+   "rms": -7.6
+  },
+  "gain_db": -5.78,
+  "lowpass": 14000,
+  "md5": "0e14cd62510bf8515d54d1199ac5bde7",
+  "shelf_db": -1.5
+ },
+ "bowl_rumble": {
+  "after": {
+   "hf": 0.0,
+   "peak": -4.3,
+   "rms": -15.4
+  },
+  "before": {
+   "hf": 0.0,
+   "peak": -2.1,
+   "rms": -13.6
+  },
+  "gain_db": -1.73,
+  "lowpass": 14000,
+  "md5": "dba690a4b4464bde1cffec95f7c56cca",
   "shelf_db": -1.5
  },
  "bubble": {
@@ -2207,6 +2271,22 @@
   "md5": "6059cdcf269cc2b2b051f9f2ede289c2",
   "shelf_db": -3.0
  },
+ "juke_needle": {
+  "after": {
+   "hf": 0.0,
+   "peak": -1.3,
+   "rms": -18.2
+  },
+  "before": {
+   "hf": 0.0,
+   "peak": -2.6,
+   "rms": -19.5
+  },
+  "gain_db": 1.8,
+  "lowpass": 14000,
+  "md5": "4f6f6e440f5383e3083486e0b799502c",
+  "shelf_db": -1.5
+ },
  "keypress": {
   "after": {
    "hf": 0.074,
@@ -2782,6 +2862,86 @@
   "lowpass": 8500,
   "md5": "e46767816049701b26ad1010106761eb",
   "shelf_db": -6.0
+ },
+ "pin_strike": {
+  "after": {
+   "hf": 0.115,
+   "peak": -4.4,
+   "rms": -14.7
+  },
+  "before": {
+   "hf": 0.13,
+   "peak": -0.7,
+   "rms": -10.0
+  },
+  "gain_db": -4.27,
+  "lowpass": 14000,
+  "md5": "08dc387335a9cc407bb001e86b236ad0",
+  "shelf_db": -1.5
+ },
+ "pin_strike_2": {
+  "after": {
+   "hf": 0.066,
+   "peak": -5.6,
+   "rms": -14.1
+  },
+  "before": {
+   "hf": 0.081,
+   "peak": 0.1,
+   "rms": -7.9
+  },
+  "gain_db": -5.93,
+  "lowpass": 14000,
+  "md5": "b8d541c48986977a3aaca6efec22b5ec",
+  "shelf_db": -1.5
+ },
+ "pin_tap": {
+  "after": {
+   "hf": 0.03,
+   "peak": -2.0,
+   "rms": -19.0
+  },
+  "before": {
+   "hf": 0.036,
+   "peak": -3.3,
+   "rms": -20.6
+  },
+  "gain_db": 2.1,
+  "lowpass": 14000,
+  "md5": "5c24d15c0912a7789e1c3b3b50a2488a",
+  "shelf_db": -1.5
+ },
+ "pin_tap_2": {
+  "after": {
+   "hf": 0.783,
+   "peak": -7.7,
+   "rms": -21.9
+  },
+  "before": {
+   "hf": 0.966,
+   "peak": -4.0,
+   "rms": -18.8
+  },
+  "gain_db": 6.0,
+  "lowpass": 8500,
+  "md5": "c5b67303ea24c85e05f8eef8630b7ea3",
+  "shelf_db": -6.0
+ },
+ "pin_tap_3": {
+  "after": {
+   "hf": 0.077,
+   "peak": -3.8,
+   "rms": -16.0
+  },
+  "before": {
+   "hf": 0.095,
+   "peak": -3.7,
+   "rms": -14.9
+  },
+  "gain_db": -0.75,
+  "lowpass": 14000,
+  "md5": "b720309f465a979725b92e7fc6ce3cf5",
+  "shelf_db": -1.5
  },
  "plant": {
   "after": {

@@ -362,3 +362,13 @@ cash_pickup_3
 cash_register
 cash_register_2
 cash_register_3
+bowl_rumble
+bowl_gutter
+bowl_pit
+ball_return
+pin_tap
+pin_tap_2
+pin_tap_3
+pin_strike
+pin_strike_2
+juke_needle

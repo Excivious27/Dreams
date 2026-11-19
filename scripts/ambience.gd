@@ -205,7 +205,7 @@ func _evaluate() -> Dictionary:
 		if "smith" in kind or "forge" in kind or "workshop" in kind:
 			out["machines"] = -24.0
 		if kind in ["rec", "rec_up"]:
-			out["rec_alley"] = -16.0 if kind == "rec_up" else -24.0  # rolling balls, pins, chatter
+			out.merge(RecAudio.beds(kind), true)  # arcade cabinets downstairs, rolling balls and pins upstairs
 	# Regions can name their own beds (regions.json "amb": {bed: dB}, the mega regions).
 	var rd: Variant = m.get("R")
 	if rd is Dictionary and (rd as Dictionary).has("amb"):
@@ -300,6 +300,8 @@ func _spots(delta: float) -> void:
 		rules.append(["cicada", 20.0, 45.0, -16.0])
 	if outdoors and calm and id in ["jungle", "marsh"]:
 		rules.append(["insect", 12.0, 30.0, -16.0])
+	if id == "interior" and m.get("interior_id") != null:
+		rules.append_array(RecAudio.spots(str(m.get("interior_id"))))  # pins through the ceiling, a cabinet win
 	for r: Array in rules:
 		var k := str(r[0])
 		_spot_t[k] = float(_spot_t.get(k, randf_range(float(r[1]), float(r[2])))) - delta

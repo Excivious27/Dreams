@@ -406,6 +406,43 @@
    }
   ]
  },
+ "bowling_alley": {
+  "chosen": "so_ac0310e63a2549a0874c57fe",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/bowling_alley__so_ac0310e63a2549a0874c57fe.mp3",
+    "id": "so_ac0310e63a2549a0874c57fe",
+    "page": "https://acemusic.ai/song/wru8ipndzama",
+    "score": {
+     "dur": 115.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/bowling_alley__so_ac0310e63a2549a0874c57fe.mp3",
+     "holes": 0,
+     "lvl_diff": 0.20000000298023224,
+     "peak": 1.223,
+     "score": 99.0,
+     "seam": 0.993
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/bowling_alley__so_9154b65e83144c8d8e299804.mp3",
+    "id": "so_9154b65e83144c8d8e299804",
+    "page": "https://acemusic.ai/song/tuzijuerp9jm",
+    "score": {
+     "dur": 118.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/bowling_alley__so_9154b65e83144c8d8e299804.mp3",
+     "holes": 0,
+     "lvl_diff": 3.0999999046325684,
+     "peak": 1.384,
+     "score": 94.27,
+     "seam": 0.989
+    }
+   }
+  ]
+ },
  "campaign_map": {
   "chosen": "so_39ca20eebbfe4007a138e33e",
   "kind": "music",
@@ -1401,6 +1438,43 @@
      "peak": 1.104,
      "score": 57.33,
      "seam": 0.813
+    }
+   }
+  ]
+ },
+ "jukebox_oldie": {
+  "chosen": "so_35796f80160a485dadb643fd",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/jukebox_oldie__so_35796f80160a485dadb643fd.mp3",
+    "id": "so_35796f80160a485dadb643fd",
+    "page": "https://acemusic.ai/song/t5jqvugac8y9",
+    "score": {
+     "dur": 108.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jukebox_oldie__so_35796f80160a485dadb643fd.mp3",
+     "holes": 0,
+     "lvl_diff": 1.7000000476837158,
+     "peak": 1.392,
+     "score": 96.4,
+     "seam": 0.99
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/jukebox_oldie__so_851c919414594b98a2f01a8b.mp3",
+    "id": "so_851c919414594b98a2f01a8b",
+    "page": "https://acemusic.ai/song/nhbihbv29mz5",
+    "score": {
+     "dur": 109.0,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/jukebox_oldie__so_851c919414594b98a2f01a8b.mp3",
+     "holes": 0,
+     "lvl_diff": 4.300000190734863,
+     "peak": 1.419,
+     "score": 92.36,
+     "seam": 0.988
     }
    }
   ]

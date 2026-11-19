@@ -390,6 +390,7 @@ func _ready() -> void:
 	_canvas.draw.connect(_draw_it)
 	_canvas.gui_input.connect(_tap)
 	add_child(_canvas)
+	RecAudio.attach_bowling(self)
 	_new_ball()
 
 
@@ -485,13 +486,12 @@ func _throw() -> void:
 	sim.throw(x0, aim, speed, spin_step / 3.0)
 	_slowmo = 1.0
 	Music.instance(get_tree()).sfx("swing_heavy", "swing")
-	Music.instance(get_tree()).sfx("bowl_roll", "thud")
 
 
 func _on_event(e: String) -> void:
 	match e:
 		"hit":
-			Music.instance(get_tree()).sfx("pin_crash", "thud")
+			pass  # RecAudio plays the roll, the pins (sized to how many fall), the pit and the return
 		"gutter":
 			Music.instance(get_tree()).sfx("nope", "thud")
 			_say("Gutter...", 1.0)

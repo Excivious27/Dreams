@@ -179,7 +179,8 @@ func _run() -> void:
 			if room == "rec_up":
 				ok(vis.size() >= 2, "%s league night: villagers at the lanes (%d)" % [arc, vis.size()])
 				ok(not RecCenter.lanes_taken().is_empty(), "%s: some lanes taken" % arc)
-			ok(str(m.get("music_track")) == ("rec_center" if arc == "penguins" else "neon"), "%s/%s music" % [arc, room])
+			var want := "bowling_alley" if room == "rec_up" else ("rec_center" if arc == "penguins" else "neon")  # the lanes have their own song (c2_08)
+			ok(str(m.get("music_track")) == want, "%s/%s music" % [arc, room])
 			_c2_07_checks(m, room, arc)
 	await _c1_15_checks()
 	await _c2_06_checks()
