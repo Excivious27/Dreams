@@ -510,6 +510,9 @@ func _refresh() -> void:
 				var info := "   Birthday %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
 				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
 		"Map":
+			# Mega region tabs (MegaMap): Valley + one per unlocked region; hidden until unlocked.
+			MegaRegion.check_unlocks()
+			var mtab := MegaMap.tab_row(_body, _refresh)
 			# Region campaigns: the board that opens new regions (locked pins show a padlock).
 			var ready_c := 0
 			for cid: String in Campaign.for_arc():
@@ -521,11 +524,17 @@ func _refresh() -> void:
 					return
 				toggle()  # close the menu (unpauses), then the board pauses again
 				CampaignScreen.open(gm))
+			if mtab != "valley":
+				_body.add_child(MegaMap.make_map(mtab))
+				_line(str(MegaRegion.get_r(mtab).get("blurb", "")), 8, Color(0.85, 0.85, 0.8))
+				_line(MegaMap.where_line(), 8)
+				_pass_drags(_body)
+				return
 			var m := Control.new()
 			m.custom_minimum_size = Vector2(228, 246 if Art.has("ui", "world_map") else 190)
 			m.draw.connect(func() -> void: _draw_map(m))
 			_body.add_child(m)
-			_line("You are in: %s" % str(r["scene"]).capitalize(), 8)
+			_line(MegaMap.where_line(), 8)
 		"Quests":
 			if r["quests"].is_empty():
 				_line("No quests yet.")
@@ -1321,6 +1330,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 	var seen: Dictionary = GameState.run["flags"]
 	var names := {"crystal_meadow": "East" if GameState.is_penguins() else "Outskirts", "underground": "Pit", "countryside": "Highway"}
 	for k: String in PINS:
+		if MegaRegion.region_of(k) != "":
+			continue  # a mega region's areas live on its own map tab
 		var visited := k in ["farm", "house", "town", "meadow"] or seen.has(k + "_seen") or seen.has(str(SEEN_FLAG.get(k, "-")))
 		if k == "house" and here != "house":
 			continue  # sits on the Farm pin; only shown while you're inside
@@ -1345,7 +1356,8 @@ func _draw_painted_map(m: Control, font: Font) -> void:
 		var nm := str(names.get(k, k.capitalize()))
 		m.draw_string_outline(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, 3, Color(1, 0.95, 0.8, 0.9))
 		m.draw_string(font, p + Vector2(-20, 9), nm, HORIZONTAL_ALIGNMENT_CENTER, 40, 6, Color(0.1, 0.08, 0.05))
-	if PINS.has(here):
+	MegaMap.valley_gates(m, font, PINS, org, sz)
+	if PINS.has(here) and MegaRegion.region_of(here) == "":
 		var p: Vector2 = org + (PINS[here] as Vector2) * sz
 		m.draw_circle(p + Vector2(0, -6), 3.0, Color(1, 0.2, 0.2))
 		m.draw_arc(p + Vector2(0, -6), 4.5, 0, TAU, 16, Color.WHITE, 1.0)

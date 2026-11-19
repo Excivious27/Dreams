@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: mega regions (framework + conversions)
+- **Mega regions:** ten big separate worlds, data in data/mega_regions.json (written by `tools/gen_mega_regions.py`). Five are the existing clusters, converted: **Space** (moon, star station, green planet), **Merkitty Colonies** (the four islands, penguins), **Lieutenant Cities** (docks, Neon, Uptown, the Pit, gangsters), **The Hollow Heart** and the **Sky Isles** (penguins). Five are planned for the next round: Sunken City, Frozen North, Desert Bazaar (both arcs), Clockwork Isles (penguins), Chrome Megacity (gangsters).
+- **Map tabs:** Menu > Map has a tab row: Valley plus one tab per unlocked region. Locked regions get no tab (a fresh run shows no tab row at all). Each region tab draws its own themed map (stars and planets, sea lanes and islands, city blocks, crystal cave, cloud banks) with its areas, the routes between them, the way back to the Valley, campaign padlocks and your spot. The Valley map shows a small gate badge where each open region is entered and no longer pins mega-region areas.
+- **Crossing over:** going into a region shows its name banner, the area name and a travel line (rocket, ferry, night bus, deep lift, great tree stair); coming home shows a welcome-home banner. The hideout's docks exit is now the "city bus".
+- **Unlocks:** each region opens once its condition holds (launching from the pad, reaching the beach after chapter 1, reaching the hideout with the docks campaign open, the Hollow Heart lift, the sky stair quest) or when you arrive in one of its areas. Old saves are migrated quietly from what they've already seen.
+- Test: tools/mega_region_test.gd (in check.sh): tabs hidden until unlocked, unlocking shows them, rocket/ferry/bus travel, banners, save round trip, migration.
+
 ## 2026-11-18 — Round 12: art complete (image tool)
 - **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
 - **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):

@@ -1,472 +1,1160 @@
 {
- "_": "Mega regions (map tabs). Written by tools/gen_mega_regions.py.",
- "regions": [
-  {
+ "_note": "Written by tools/gen_mega_regions.py: edit that, not this file.",
+ "order": [
+  "space",
+  "colonies",
+  "cities",
+  "hollow",
+  "sky",
+  "gloamwood",
+  "sunscorch",
+  "frostpeak",
+  "windward",
+  "giltcity"
+ ],
+ "list": {
+  "space": {
    "id": "space",
    "name": "Space",
+   "short": "Space",
    "arc": "both",
-   "theme": "space",
-   "placeholder": true,
+   "status": "built",
+   "blurb": "Past the sky: the moon, the old star station and the green planet beyond it.",
+   "travel": "The engines roar, the blue goes black, and the Valley shrinks to a green coin below.",
+   "leave": "Down through the clouds, and the Valley smells of grass again.",
+   "theme": {
+    "style": "space",
+    "bg": [
+     0.06,
+     0.05,
+     0.16
+    ],
+    "land": [
+     0.55,
+     0.52,
+     0.66
+    ],
+    "accent": [
+     0.75,
+     0.6,
+     1.0
+    ],
+    "ink": [
+     0.95,
+     0.92,
+     1.0
+    ]
+   },
    "areas": [
     {
-     "id": "moon"
+     "id": "moon",
+     "name": "The Moon",
+     "pos": [
+      0.3,
+      0.74
+     ],
+     "icon": "pin_moon",
+     "blurb": "Grey dust, low gravity, a crystal spire."
     },
     {
-     "id": "station"
+     "id": "station",
+     "name": "Star Station",
+     "pos": [
+      0.58,
+      0.42
+     ],
+     "icon": "pin_moon",
+     "blurb": "An empty station humming in orbit."
     },
     {
-     "id": "sky"
-    },
-    {
-     "id": "jungle"
+     "id": "jungle",
+     "name": "Green Planet",
+     "pos": [
+      0.76,
+      0.14
+     ],
+     "icon": "pin_forest",
+     "blurb": "Teal moss and glowing mushrooms."
     }
-   ]
+   ],
+   "links": [
+    [
+     "moon",
+     "station"
+    ],
+    [
+     "station",
+     "jungle"
+    ]
+   ],
+   "entries": [
+    {
+     "from": "mountain",
+     "to": "moon",
+     "how": "landing pad",
+     "label": "Mountain pad"
+    },
+    {
+     "from": "farm",
+     "to": "moon",
+     "how": "rocket",
+     "label": "Rocket Yard"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "moon"
+     },
+     {
+      "seen": "station"
+     },
+     {
+      "seen": "jungle"
+     },
+     {
+      "flag": "moon_unlocked"
+     },
+     {
+      "flag": "rocket_flown"
+     },
+     {
+      "built": [
+       "launchpad",
+       3
+      ]
+     }
+    ]
+   }
   },
-  {
-   "id": "merkitty_colonies",
+  "colonies": {
+   "id": "colonies",
    "name": "Merkitty Colonies",
+   "short": "Colonies",
    "arc": "penguins",
-   "theme": "sea",
-   "placeholder": true,
+   "status": "built",
+   "blurb": "Four island colonies, each kept alive by a star crystal. Pip's ferry sails from the beach pier.",
+   "travel": "Pip's ferry rocks out past the breakers. Salt spray, gulls, and the Valley falls behind the waves.",
+   "leave": "The ferry bumps the pier. Home sand under your boots.",
+   "theme": {
+    "style": "sea",
+    "bg": [
+     0.16,
+     0.42,
+     0.62
+    ],
+    "land": [
+     0.86,
+     0.78,
+     0.52
+    ],
+    "accent": [
+     0.55,
+     0.9,
+     1.0
+    ],
+    "ink": [
+     0.1,
+     0.12,
+     0.18
+    ]
+   },
    "areas": [
     {
-     "id": "colony_coral"
+     "id": "colony_coral",
+     "name": "Coral Reach",
+     "pos": [
+      0.26,
+      0.66
+     ],
+     "icon": "pin_beach",
+     "blurb": "Warm shallows and coral huts."
     },
     {
-     "id": "colony_kelp"
+     "id": "colony_kelp",
+     "name": "Kelp Hollow",
+     "pos": [
+      0.72,
+      0.62
+     ],
+     "icon": "pin_lake",
+     "blurb": "A village in the kelp forest."
     },
     {
-     "id": "colony_ice"
+     "id": "colony_ice",
+     "name": "Frostfin Isle",
+     "pos": [
+      0.28,
+      0.22
+     ],
+     "icon": "pin_mountain",
+     "blurb": "Snow, ice floes, frostfin cats."
     },
     {
-     "id": "colony_ember"
+     "id": "colony_ember",
+     "name": "Emberclaw Atoll",
+     "pos": [
+      0.74,
+      0.18
+     ],
+     "icon": "pin_wastes",
+     "blurb": "Black sand and a smoking peak."
     }
-   ]
+   ],
+   "links": [],
+   "hub": [
+    0.5,
+    0.92
+   ],
+   "entries": [
+    {
+     "from": "beach",
+     "to": "colony_coral",
+     "how": "ferry",
+     "label": "Beach pier"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "colony_coral"
+     },
+     {
+      "seen": "colony_kelp"
+     },
+     {
+      "seen": "colony_ice"
+     },
+     {
+      "seen": "colony_ember"
+     },
+     {
+      "all": [
+       {
+        "tier": 1
+       },
+       {
+        "seen": "beach"
+       }
+      ]
+     }
+    ]
+   }
   },
-  {
-   "id": "lieutenant_cities",
+  "cities": {
+   "id": "cities",
    "name": "Lieutenant Cities",
+   "short": "Cities",
    "arc": "gangsters",
-   "theme": "city",
-   "placeholder": true,
-   "areas": [
-    {
-     "id": "docks"
-    },
-    {
-     "id": "neon"
-    },
-    {
-     "id": "uptown"
-    },
-    {
-     "id": "underground"
-    }
-   ]
-  },
-  {
-   "id": "hollow_heart",
-   "name": "The Hollow Heart",
-   "arc": "both",
-   "theme": "cave",
-   "placeholder": true,
-   "areas": [
-    {
-     "id": "hollow_heart"
-    }
-   ]
-  },
-  {
-   "id": "gloamwood",
-   "name": "Gloamwood",
-   "arc": "both",
-   "theme": "gloam",
-   "color": "7a5ab8",
-   "entry": {
-    "scene": "forest",
-    "cell": [
-     26,
-     41
+   "status": "built",
+   "blurb": "The President's city: every district run by one of his lieutenants.",
+   "travel": "The night bus hisses into the city. Neon on wet glass, sirens far off, and the Valley is a rumour.",
+   "leave": "The last bus rattles out past the billboards. Crickets again.",
+   "theme": {
+    "style": "city",
+    "bg": [
+     0.1,
+     0.09,
+     0.15
     ],
-    "prop": "fairy_ring",
-    "label": "step into the fairy ring"
-   },
-   "unlock": {
-    "tier": 1,
-    "quest": "mega_gloamwood_hook",
-    "flag": "mega_gloamwood_open"
-   },
-   "hub": "gloam_lanternfall",
-   "areas": [
-    {
-     "id": "gloam_lanternfall",
-     "scene": "gloam_lanternfall",
-     "name": "Lanternfall",
-     "links": [
-      "gloam_violet_glade",
-      "gloam_crystal_thicket"
-     ],
-     "tier": 2,
-     "hub": true
-    },
-    {
-     "id": "gloam_violet_glade",
-     "scene": "gloam_violet_glade",
-     "name": "Violet Glade",
-     "links": [
-      "gloam_lanternfall",
-      "gloam_moonpool"
-     ],
-     "tier": 2
-    },
-    {
-     "id": "gloam_crystal_thicket",
-     "scene": "gloam_crystal_thicket",
-     "name": "Crystal Thicket",
-     "links": [
-      "gloam_lanternfall"
-     ],
-     "tier": 3
-    },
-    {
-     "id": "gloam_moonpool",
-     "scene": "gloam_moonpool",
-     "name": "The Moonpool",
-     "links": [
-      "gloam_violet_glade"
-     ],
-     "tier": 3
-    }
-   ]
-  },
-  {
-   "id": "sunscorch",
-   "name": "Sunscorch Expanse",
-   "arc": "both",
-   "theme": "desert",
-   "color": "d8a048",
-   "entry": {
-    "scene": "beach",
-    "cell": [
-     24,
-     14
+    "land": [
+     0.28,
+     0.26,
+     0.34
     ],
-    "prop": "cart_covered",
-    "label": "the sand-sailors' caravan"
-   },
-   "unlock": {
-    "tier": 2,
-    "quest": "mega_sunscorch_hook",
-    "flag": "mega_sunscorch_open"
-   },
-   "hub": "desert_mirage_post",
-   "areas": [
-    {
-     "id": "desert_mirage_post",
-     "scene": "desert_mirage_post",
-     "name": "Mirage Post",
-     "links": [
-      "desert_dune_sea",
-      "desert_glass_canyon"
-     ],
-     "tier": 3,
-     "hub": true
-    },
-    {
-     "id": "desert_dune_sea",
-     "scene": "desert_dune_sea",
-     "name": "The Dune Sea",
-     "links": [
-      "desert_mirage_post"
-     ],
-     "tier": 3
-    },
-    {
-     "id": "desert_glass_canyon",
-     "scene": "desert_glass_canyon",
-     "name": "Glass Canyon",
-     "links": [
-      "desert_mirage_post",
-      "desert_sunken_temple"
-     ],
-     "tier": 3
-    },
-    {
-     "id": "desert_sunken_temple",
-     "scene": "desert_sunken_temple",
-     "name": "Sunken Temple",
-     "links": [
-      "desert_glass_canyon"
-     ],
-     "tier": 4
-    }
-   ]
-  },
-  {
-   "id": "ironline",
-   "name": "Ironline Frontier",
-   "arc": "gangsters",
-   "theme": "rail",
-   "color": "8a6a4a",
-   "entry": {
-    "scene": "town",
-    "cell": [
-     50,
-     4
+    "accent": [
+     1.0,
+     0.35,
+     0.75
     ],
-    "prop": "ticket_booth",
-    "label": "the night train booth"
+    "ink": [
+     0.95,
+     0.9,
+     1.0
+    ]
    },
-   "unlock": {
-    "tier": 2,
-    "quest": "mega_ironline_hook",
-    "flag": "mega_ironline_open"
-   },
-   "hub": "iron_junction",
    "areas": [
+    {
+     "id": "docks",
+     "name": "The Docks",
+     "pos": [
+      0.22,
+      0.7
+     ],
+     "icon": "pin_docks",
+     "blurb": "Harbourmaster Vance's cranes and crates."
+    },
+    {
+     "id": "neon",
+     "name": "Neon",
+     "pos": [
+      0.52,
+      0.46
+     ],
+     "icon": "pin_tower",
+     "blurb": "Lucia's rain-soaked strip."
+    },
+    {
+     "id": "uptown",
+     "name": "Uptown",
+     "pos": [
+      0.78,
+      0.2
+     ],
+     "icon": "pin_tower",
+     "blurb": "Silas Crane's marble and the tower."
+    },
+    {
+     "id": "underground",
+     "name": "The Pit",
+     "pos": [
+      0.6,
+      0.78
+     ],
+     "icon": "pin_mine",
+     "blurb": "Brock's fight club under the streets."
+    },
     {
      "id": "iron_junction",
-     "scene": "iron_junction",
      "name": "Junction City",
-     "links": [
-      "iron_freight_yards",
-      "iron_mill_district"
+     "pos": [
+      0.12,
+      0.4
      ],
-     "tier": 3,
-     "hub": true
+     "icon": "pin_town",
+     "blurb": "Rail town; every train CANCELLED."
     },
     {
      "id": "iron_freight_yards",
-     "scene": "iron_freight_yards",
      "name": "Freight Yards",
-     "links": [
-      "iron_junction"
+     "pos": [
+      0.08,
+      0.16
      ],
-     "tier": 3
+     "icon": "pin_docks",
+     "blurb": "Rail bots and rusting freight."
     },
     {
      "id": "iron_mill_district",
-     "scene": "iron_mill_district",
      "name": "Mill District",
-     "links": [
-      "iron_junction",
-      "iron_tunnels"
+     "pos": [
+      0.3,
+      0.22
      ],
-     "tier": 3
+     "icon": "pin_tower",
+     "blurb": "Brick mills and the Baron's silo."
     },
     {
      "id": "iron_tunnels",
-     "scene": "iron_tunnels",
      "name": "Coalbrook Tunnels",
-     "links": [
-      "iron_mill_district"
+     "pos": [
+      0.36,
+      0.06
      ],
-     "tier": 4
+     "icon": "pin_mine",
+     "blurb": "Old rail tunnels and the Baron's car."
     }
-   ]
+   ],
+   "links": [
+    [
+     "docks",
+     "neon"
+    ],
+    [
+     "neon",
+     "uptown"
+    ],
+    [
+     "neon",
+     "underground"
+    ],
+    [
+     "iron_junction",
+     "iron_freight_yards"
+    ],
+    [
+     "iron_junction",
+     "iron_mill_district"
+    ],
+    [
+     "iron_mill_district",
+     "iron_tunnels"
+    ]
+   ],
+   "entries": [
+    {
+     "from": "hideout",
+     "to": "docks",
+     "how": "night bus",
+     "label": "Hideout"
+    },
+    {
+     "from": "town",
+     "to": "iron_junction",
+     "how": "night train",
+     "label": "Town"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "any": [
+       {
+        "seen": "docks"
+       },
+       {
+        "seen": "neon"
+       },
+       {
+        "seen": "uptown"
+       },
+       {
+        "seen": "underground"
+       },
+       {
+        "all": [
+         {
+          "seen": "hideout"
+         },
+         {
+          "campaign_ready": "c_docks"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "any": [
+       {
+        "seen": "iron_junction"
+       },
+       {
+        "flag": "mega_ironline_open"
+       }
+      ]
+     }
+    ]
+   }
   },
-  {
+  "hollow": {
+   "id": "hollow",
+   "name": "The Hollow Heart",
+   "short": "Hollow",
+   "arc": "both",
+   "status": "built",
+   "blurb": "Under the deepest mine floor, a whole country lit by crystal.",
+   "travel": "The long lift sinks for minutes. The air turns warm, and crystal light comes up to meet you.",
+   "leave": "The lift climbs and climbs, and at last there is daylight in the shaft.",
+   "theme": {
+    "style": "cave",
+    "bg": [
+     0.1,
+     0.06,
+     0.14
+    ],
+    "land": [
+     0.36,
+     0.26,
+     0.44
+    ],
+    "accent": [
+     0.7,
+     0.45,
+     1.0
+    ],
+    "ink": [
+     0.95,
+     0.9,
+     1.0
+    ]
+   },
+   "areas": [
+    {
+     "id": "hollow_heart",
+     "name": "Hollow Heart",
+     "pos": [
+      0.5,
+      0.5
+     ],
+     "icon": "pin_mine",
+     "blurb": "Crystal caverns and the heart below."
+    }
+   ],
+   "links": [],
+   "entries": [
+    {
+     "from": "mine",
+     "to": "hollow_heart",
+     "how": "deep lift",
+     "label": "Mine (deepest floor)"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "hollow_heart"
+     },
+     {
+      "flag": "hollow_heart_open"
+     }
+    ]
+   }
+  },
+  "sky": {
+   "id": "sky",
+   "name": "Sky Isles",
+   "short": "Sky",
+   "arc": "penguins",
+   "status": "built",
+   "blurb": "Islands floating on cloud above the great tree. Something enormous swims beneath them.",
+   "travel": "Up the stair inside the great tree, until there is no tree: only cloud underfoot and sky all round.",
+   "leave": "Down the great tree's stair, ring after ring, back to the forest floor.",
+   "theme": {
+    "style": "sky",
+    "bg": [
+     0.55,
+     0.75,
+     0.95
+    ],
+    "land": [
+     0.96,
+     0.97,
+     1.0
+    ],
+    "accent": [
+     1.0,
+     0.85,
+     0.4
+    ],
+    "ink": [
+     0.12,
+     0.16,
+     0.3
+    ]
+   },
+   "areas": [
+    {
+     "id": "sky",
+     "name": "Cloud Isles",
+     "pos": [
+      0.5,
+      0.48
+     ],
+     "icon": "pin_mountain",
+     "blurb": "Floating islands and the knight's stair."
+    }
+   ],
+   "links": [],
+   "entries": [
+    {
+     "from": "forest",
+     "to": "sky",
+     "how": "great tree stair",
+     "label": "Great tree"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "sky"
+     },
+     {
+      "quest": "sky_stair"
+     },
+     {
+      "campaign_ready": "c_sky"
+     }
+    ]
+   }
+  },
+  "gloamwood": {
+   "id": "gloamwood",
+   "name": "Gloamwood",
+   "short": "Gloam",
+   "arc": "both",
+   "status": "built",
+   "blurb": "A forest of lanterns and violet moss, past a fairy ring in the woods.",
+   "travel": "The ring hums, the forest folds up like paper, and lanterns bloom around you.",
+   "leave": "The ring lets go, and it's plain old daylight in the forest again.",
+   "theme": {
+    "style": "cave",
+    "bg": [
+     0.12,
+     0.08,
+     0.2
+    ],
+    "land": [
+     0.42,
+     0.3,
+     0.6
+    ],
+    "accent": [
+     1.0,
+     0.6,
+     0.9
+    ],
+    "ink": [
+     0.95,
+     0.9,
+     1.0
+    ]
+   },
+   "areas": [
+    {
+     "id": "gloam_lanternfall",
+     "name": "Lanternfall",
+     "pos": [
+      0.45,
+      0.72
+     ],
+     "icon": "pin_town",
+     "blurb": "Lanterns on mushrooms, and a pond that glows."
+    },
+    {
+     "id": "gloam_violet_glade",
+     "name": "Violet Glade",
+     "pos": [
+      0.42,
+      0.4
+     ],
+     "icon": "pin_forest",
+     "blurb": "Teal moss, wisps and sleepy moths."
+    },
+    {
+     "id": "gloam_crystal_thicket",
+     "name": "Crystal Thicket",
+     "pos": [
+      0.8,
+      0.62
+     ],
+     "icon": "pin_mine",
+     "blurb": "Crystal trees that ring in the wind."
+    },
+    {
+     "id": "gloam_moonpool",
+     "name": "The Moonpool",
+     "pos": [
+      0.4,
+      0.12
+     ],
+     "icon": "pin_lake",
+     "blurb": "Black water, and the Thornmother beneath."
+    }
+   ],
+   "links": [
+    [
+     "gloam_lanternfall",
+     "gloam_violet_glade"
+    ],
+    [
+     "gloam_lanternfall",
+     "gloam_crystal_thicket"
+    ],
+    [
+     "gloam_violet_glade",
+     "gloam_moonpool"
+    ]
+   ],
+   "entries": [
+    {
+     "from": "forest",
+     "to": "gloam_lanternfall",
+     "how": "fairy ring",
+     "label": "Forest"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "gloam_lanternfall"
+     },
+     {
+      "flag": "mega_gloamwood_open"
+     }
+    ]
+   }
+  },
+  "sunscorch": {
+   "id": "sunscorch",
+   "name": "Sunscorch Expanse",
+   "short": "Sunscorch",
+   "arc": "both",
+   "status": "built",
+   "blurb": "Past the dunes: an oasis post, a glass canyon and a temple with a giant at the door.",
+   "travel": "The caravan's sails fill. Three days of gold dunes, then palms and a well: Mirage Post.",
+   "leave": "The caravan beaches on your own coast, sand in everything.",
+   "theme": {
+    "style": "desert",
+    "bg": [
+     0.9,
+     0.74,
+     0.45
+    ],
+    "land": [
+     0.98,
+     0.86,
+     0.6
+    ],
+    "accent": [
+     0.95,
+     0.4,
+     0.25
+    ],
+    "ink": [
+     0.25,
+     0.14,
+     0.08
+    ]
+   },
+   "areas": [
+    {
+     "id": "desert_mirage_post",
+     "name": "Mirage Post",
+     "pos": [
+      0.62,
+      0.7
+     ],
+     "icon": "pin_town",
+     "blurb": "The last well before the Expanse."
+    },
+    {
+     "id": "desert_dune_sea",
+     "name": "The Dune Sea",
+     "pos": [
+      0.22,
+      0.66
+     ],
+     "icon": "pin_wastes",
+     "blurb": "Dunes, a buried bus, and singing sand."
+    },
+    {
+     "id": "desert_glass_canyon",
+     "name": "Glass Canyon",
+     "pos": [
+      0.64,
+      0.4
+     ],
+     "icon": "pin_mountain",
+     "blurb": "Red rock and lightning glass."
+    },
+    {
+     "id": "desert_sunken_temple",
+     "name": "Sunken Temple",
+     "pos": [
+      0.66,
+      0.12
+     ],
+     "icon": "pin_tower",
+     "blurb": "The Sun Colossus guards the door."
+    }
+   ],
+   "links": [
+    [
+     "desert_mirage_post",
+     "desert_dune_sea"
+    ],
+    [
+     "desert_mirage_post",
+     "desert_glass_canyon"
+    ],
+    [
+     "desert_glass_canyon",
+     "desert_sunken_temple"
+    ]
+   ],
+   "entries": [
+    {
+     "from": "beach",
+     "to": "desert_mirage_post",
+     "how": "sand-sail caravan",
+     "label": "Beach"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "desert_mirage_post"
+     },
+     {
+      "flag": "mega_sunscorch_open"
+     }
+    ]
+   }
+  },
+  "frostpeak": {
    "id": "frostpeak",
    "name": "Frostpeak Reach",
+   "short": "Frostpeak",
    "arc": "both",
-   "theme": "snow",
-   "color": "9ac8e8",
-   "entry": {
-    "scene": "mountain",
-    "cell": [
-     7,
-     35
+   "status": "built",
+   "blurb": "Above the mountain: a snow village, glaciers, ice caves and the Summit.",
+   "travel": "The sled climbs past the clouds into white. Smoke from chimneys: Hearthhold.",
+   "leave": "The sled shoots down out of the snow, and the valley is green and warm.",
+   "theme": {
+    "style": "ice",
+    "bg": [
+     0.72,
+     0.84,
+     0.94
     ],
-    "prop": "veh_crystal_sled_side",
-    "label": "the sled run up to Frostpeak"
+    "land": [
+     0.95,
+     0.97,
+     1.0
+    ],
+    "accent": [
+     0.45,
+     0.95,
+     0.75
+    ],
+    "ink": [
+     0.1,
+     0.16,
+     0.28
+    ]
    },
-   "unlock": {
-    "tier": 3,
-    "quest": "mega_frostpeak_hook",
-    "flag": "mega_frostpeak_open"
-   },
-   "hub": "frost_hearthhold",
    "areas": [
     {
      "id": "frost_hearthhold",
-     "scene": "frost_hearthhold",
      "name": "Hearthhold",
-     "links": [
-      "frost_glacier",
-      "frost_caverns",
-      "frost_falls"
+     "pos": [
+      0.5,
+      0.72
      ],
-     "tier": 4,
-     "hub": true
+     "icon": "pin_town",
+     "blurb": "Snow-domed houses and a hot spring."
     },
     {
      "id": "frost_glacier",
-     "scene": "frost_glacier",
      "name": "Glacier Fields",
-     "links": [
-      "frost_hearthhold",
-      "frost_summit"
+     "pos": [
+      0.5,
+      0.42
      ],
-     "tier": 4
+     "icon": "pin_mountain",
+     "blurb": "White fields, frost wolves, rime golems."
     },
     {
      "id": "frost_caverns",
-     "scene": "frost_caverns",
      "name": "Rime Caverns",
-     "links": [
-      "frost_hearthhold"
+     "pos": [
+      0.16,
+      0.7
      ],
-     "tier": 4
+     "icon": "pin_mine",
+     "blurb": "Blue ice caves that hum."
     },
     {
      "id": "frost_falls",
-     "scene": "frost_falls",
      "name": "Frozen Falls",
-     "links": [
-      "frost_hearthhold"
+     "pos": [
+      0.84,
+      0.7
      ],
-     "tier": 4
+     "icon": "pin_lake",
+     "blurb": "A waterfall frozen mid-pour; pike below."
     },
     {
      "id": "frost_summit",
-     "scene": "frost_summit",
      "name": "The Summit",
-     "links": [
-      "frost_glacier"
+     "pos": [
+      0.52,
+      0.12
      ],
-     "tier": 5
+     "icon": "pin_mountain",
+     "blurb": "Where the Rime Wyrm sleeps."
     }
-   ]
+   ],
+   "links": [
+    [
+     "frost_hearthhold",
+     "frost_glacier"
+    ],
+    [
+     "frost_hearthhold",
+     "frost_caverns"
+    ],
+    [
+     "frost_hearthhold",
+     "frost_falls"
+    ],
+    [
+     "frost_glacier",
+     "frost_summit"
+    ]
+   ],
+   "entries": [
+    {
+     "from": "mountain",
+     "to": "frost_hearthhold",
+     "how": "sled run",
+     "label": "Mountain"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "frost_hearthhold"
+     },
+     {
+      "flag": "mega_frostpeak_open"
+     }
+    ]
+   }
   },
-  {
+  "windward": {
    "id": "windward",
    "name": "Windward Isles",
+   "short": "Windward",
    "arc": "penguins",
-   "theme": "sky",
-   "color": "b8d8f8",
-   "entry": {
-    "scene": "meadow",
-    "cell": [
-     42,
-     24
+   "status": "built",
+   "blurb": "Islands above the sky islands, where the Storm Roc nests.",
+   "travel": "The balloon lifts through the last cloud into blue, and islands float by like stepping stones.",
+   "leave": "The balloon bumps down in the east meadow. Grass, at last.",
+   "theme": {
+    "style": "sky",
+    "bg": [
+     0.55,
+     0.75,
+     0.95
     ],
-    "prop": "veh_balloon",
-    "label": "Captain Zephyr's balloon"
+    "land": [
+     0.96,
+     0.97,
+     1.0
+    ],
+    "accent": [
+     1.0,
+     0.85,
+     0.4
+    ],
+    "ink": [
+     0.12,
+     0.16,
+     0.3
+    ]
    },
-   "unlock": {
-    "tier": 4,
-    "quest": "mega_windward_hook",
-    "flag": "mega_windward_open"
-   },
-   "hub": "wind_breezehaven",
    "areas": [
     {
      "id": "wind_breezehaven",
-     "scene": "wind_breezehaven",
      "name": "Breezehaven",
-     "links": [
-      "wind_sunrise_shelf",
-      "wind_storm_shelf"
+     "pos": [
+      0.6,
+      0.72
      ],
-     "tier": 5,
-     "hub": true
+     "icon": "pin_town",
+     "blurb": "Windmill isles and a penguin captain."
     },
     {
      "id": "wind_sunrise_shelf",
-     "scene": "wind_sunrise_shelf",
      "name": "Sunrise Shelf",
-     "links": [
-      "wind_breezehaven"
+     "pos": [
+      0.2,
+      0.64
      ],
-     "tier": 5
+     "icon": "pin_meadow",
+     "blurb": "Always just sunrise."
     },
     {
      "id": "wind_storm_shelf",
-     "scene": "wind_storm_shelf",
      "name": "Storm Shelf",
-     "links": [
-      "wind_breezehaven",
-      "wind_starfall_garden"
+     "pos": [
+      0.6,
+      0.4
      ],
-     "tier": 5
+     "icon": "pin_mountain",
+     "blurb": "Lightning in black cloud."
     },
     {
      "id": "wind_starfall_garden",
-     "scene": "wind_starfall_garden",
      "name": "Starfall Garden",
-     "links": [
-      "wind_storm_shelf"
+     "pos": [
+      0.6,
+      0.12
      ],
-     "tier": 5
+     "icon": "pin_moon",
+     "blurb": "Stars close enough to touch; the Roc's nest."
     }
-   ]
+   ],
+   "links": [
+    [
+     "wind_breezehaven",
+     "wind_sunrise_shelf"
+    ],
+    [
+     "wind_breezehaven",
+     "wind_storm_shelf"
+    ],
+    [
+     "wind_storm_shelf",
+     "wind_starfall_garden"
+    ]
+   ],
+   "entries": [
+    {
+     "from": "meadow",
+     "to": "wind_breezehaven",
+     "how": "balloon",
+     "label": "Meadow"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "wind_breezehaven"
+     },
+     {
+      "flag": "mega_windward_open"
+     }
+    ]
+   }
   },
-  {
+  "giltcity": {
    "id": "giltcity",
    "name": "Gilt City",
+   "short": "Gilt City",
    "arc": "gangsters",
-   "theme": "gilt",
-   "color": "e8c048",
-   "entry": {
-    "scene": "farm",
-    "cell": [
-     40,
-     31
+   "status": "built",
+   "blurb": "Madame Aurum's city of casinos, gardens and vaults.",
+   "travel": "The limousine purrs through the night. At dawn: gold stone, statues, and a hundred lit windows.",
+   "leave": "The limo drops you at the farm gate and glides away without a sound.",
+   "theme": {
+    "style": "city",
+    "bg": [
+     0.14,
+     0.11,
+     0.06
     ],
-    "spawn": [
-     40,
-     29
+    "land": [
+     0.5,
+     0.42,
+     0.22
     ],
-    "prop": "limo",
-    "label": "the gold limousine"
+    "accent": [
+     1.0,
+     0.85,
+     0.3
+    ],
+    "ink": [
+     1.0,
+     0.95,
+     0.8
+    ]
    },
-   "unlock": {
-    "tier": 4,
-    "quest": "mega_giltcity_hook",
-    "flag": "mega_giltcity_open"
-   },
-   "hub": "gilt_grand_plaza",
    "areas": [
     {
      "id": "gilt_grand_plaza",
-     "scene": "gilt_grand_plaza",
      "name": "Grand Plaza",
-     "links": [
-      "gilt_casino_row",
-      "gilt_gardens"
+     "pos": [
+      0.5,
+      0.66
      ],
-     "tier": 5,
-     "hub": true
+     "icon": "pin_town",
+     "blurb": "Gold stone, statues, a hundred windows."
     },
     {
      "id": "gilt_casino_row",
-     "scene": "gilt_casino_row",
      "name": "Casino Row",
-     "links": [
-      "gilt_grand_plaza",
-      "gilt_vaults"
+     "pos": [
+      0.8,
+      0.5
      ],
-     "tier": 5
+     "icon": "pin_tower",
+     "blurb": "Neon on gold."
     },
     {
      "id": "gilt_gardens",
-     "scene": "gilt_gardens",
      "name": "Gilded Gardens",
-     "links": [
-      "gilt_grand_plaza"
+     "pos": [
+      0.2,
+      0.5
      ],
-     "tier": 5
+     "icon": "pin_meadow",
+     "blurb": "Hedges clipped into crowns."
     },
     {
      "id": "gilt_vaults",
-     "scene": "gilt_vaults",
      "name": "The Vaults",
-     "links": [
-      "gilt_casino_row"
+     "pos": [
+      0.8,
+      0.16
      ],
-     "tier": 5
+     "icon": "pin_mine",
+     "blurb": "Madame Aurum's gold, stacked to the ceiling."
     }
-   ]
+   ],
+   "links": [
+    [
+     "gilt_grand_plaza",
+     "gilt_casino_row"
+    ],
+    [
+     "gilt_grand_plaza",
+     "gilt_gardens"
+    ],
+    [
+     "gilt_casino_row",
+     "gilt_vaults"
+    ]
+   ],
+   "entries": [
+    {
+     "from": "farm",
+     "to": "gilt_grand_plaza",
+     "how": "gold limousine",
+     "label": "Farm"
+    }
+   ],
+   "unlock": {
+    "any": [
+     {
+      "seen": "gilt_grand_plaza"
+     },
+     {
+      "flag": "mega_giltcity_open"
+     }
+    ]
+   }
   }
- ]
+ },
+ "area_of": {
+  "moon": "space",
+  "station": "space",
+  "jungle": "space",
+  "colony_coral": "colonies",
+  "colony_kelp": "colonies",
+  "colony_ice": "colonies",
+  "colony_ember": "colonies",
+  "docks": "cities",
+  "neon": "cities",
+  "uptown": "cities",
+  "underground": "cities",
+  "iron_junction": "cities",
+  "iron_freight_yards": "cities",
+  "iron_mill_district": "cities",
+  "iron_tunnels": "cities",
+  "hollow_heart": "hollow",
+  "sky": "sky",
+  "gloam_lanternfall": "gloamwood",
+  "gloam_violet_glade": "gloamwood",
+  "gloam_crystal_thicket": "gloamwood",
+  "gloam_moonpool": "gloamwood",
+  "desert_mirage_post": "sunscorch",
+  "desert_dune_sea": "sunscorch",
+  "desert_glass_canyon": "sunscorch",
+  "desert_sunken_temple": "sunscorch",
+  "frost_hearthhold": "frostpeak",
+  "frost_glacier": "frostpeak",
+  "frost_caverns": "frostpeak",
+  "frost_falls": "frostpeak",
+  "frost_summit": "frostpeak",
+  "wind_breezehaven": "windward",
+  "wind_sunrise_shelf": "windward",
+  "wind_storm_shelf": "windward",
+  "wind_starfall_garden": "windward",
+  "gilt_grand_plaza": "giltcity",
+  "gilt_casino_row": "giltcity",
+  "gilt_gardens": "giltcity",
+  "gilt_vaults": "giltcity"
+ }
 }

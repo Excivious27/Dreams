@@ -84,3 +84,89 @@ REGIONS = [
 ]
 
 BY_ID = {r["id"]: r for r in REGIONS}
+
+# ---------------------------------------------------------------- map tabs (a5's schema)
+# tools/gen_mega_regions.py imports MEGA (five regions of their own) and IRONLINE (areas
+# added to the Lieutenant Cities tab: the rail frontier is part of the President's city).
+PIN = {"hub": "pin_town"}
+MAP = {  # area: (pos on the region map, pin icon, one line)
+    "gloam_lanternfall": ([0.45, 0.72], "pin_town", "Lanterns on mushrooms, and a pond that glows."),
+    "gloam_violet_glade": ([0.42, 0.40], "pin_forest", "Teal moss, wisps and sleepy moths."),
+    "gloam_crystal_thicket": ([0.80, 0.62], "pin_mine", "Crystal trees that ring in the wind."),
+    "gloam_moonpool": ([0.40, 0.12], "pin_lake", "Black water, and the Thornmother beneath."),
+    "desert_mirage_post": ([0.62, 0.70], "pin_town", "The last well before the Expanse."),
+    "desert_dune_sea": ([0.22, 0.66], "pin_wastes", "Dunes, a buried bus, and singing sand."),
+    "desert_glass_canyon": ([0.64, 0.40], "pin_mountain", "Red rock and lightning glass."),
+    "desert_sunken_temple": ([0.66, 0.12], "pin_tower", "The Sun Colossus guards the door."),
+    "frost_hearthhold": ([0.50, 0.72], "pin_town", "Snow-domed houses and a hot spring."),
+    "frost_glacier": ([0.50, 0.42], "pin_mountain", "White fields, frost wolves, rime golems."),
+    "frost_caverns": ([0.16, 0.70], "pin_mine", "Blue ice caves that hum."),
+    "frost_falls": ([0.84, 0.70], "pin_lake", "A waterfall frozen mid-pour; pike below."),
+    "frost_summit": ([0.52, 0.12], "pin_mountain", "Where the Rime Wyrm sleeps."),
+    "wind_breezehaven": ([0.60, 0.72], "pin_town", "Windmill isles and a penguin captain."),
+    "wind_sunrise_shelf": ([0.20, 0.64], "pin_meadow", "Always just sunrise."),
+    "wind_storm_shelf": ([0.60, 0.40], "pin_mountain", "Lightning in black cloud."),
+    "wind_starfall_garden": ([0.60, 0.12], "pin_moon", "Stars close enough to touch; the Roc's nest."),
+    "gilt_grand_plaza": ([0.50, 0.66], "pin_town", "Gold stone, statues, a hundred windows."),
+    "gilt_casino_row": ([0.80, 0.50], "pin_tower", "Neon on gold."),
+    "gilt_gardens": ([0.20, 0.50], "pin_meadow", "Hedges clipped into crowns."),
+    "gilt_vaults": ([0.80, 0.16], "pin_mine", "Madame Aurum's gold, stacked to the ceiling."),
+    "iron_junction": ([0.12, 0.40], "pin_town", "Rail town; every train CANCELLED."),
+    "iron_freight_yards": ([0.08, 0.16], "pin_docks", "Rail bots and rusting freight."),
+    "iron_mill_district": ([0.30, 0.22], "pin_tower", "Brick mills and the Baron's silo."),
+    "iron_tunnels": ([0.36, 0.06], "pin_mine", "Old rail tunnels and the Baron's car."),
+}
+TABS = {  # region: short, style, colours, blurb, travel, leave, how
+    "gloamwood": ("Gloam", "cave", [0.12, 0.08, 0.2], [0.42, 0.3, 0.6], [1.0, 0.6, 0.9], [0.95, 0.9, 1.0], "fairy ring",
+                  "A forest of lanterns and violet moss, past a fairy ring in the woods.",
+                  "The ring hums, the forest folds up like paper, and lanterns bloom around you.",
+                  "The ring lets go, and it's plain old daylight in the forest again."),
+    "sunscorch": ("Sunscorch", "desert", [0.9, 0.74, 0.45], [0.98, 0.86, 0.6], [0.95, 0.4, 0.25], [0.25, 0.14, 0.08], "sand-sail caravan",
+                  "Past the dunes: an oasis post, a glass canyon and a temple with a giant at the door.",
+                  "The caravan's sails fill. Three days of gold dunes, then palms and a well: Mirage Post.",
+                  "The caravan beaches on your own coast, sand in everything."),
+    "frostpeak": ("Frostpeak", "ice", [0.72, 0.84, 0.94], [0.95, 0.97, 1.0], [0.45, 0.95, 0.75], [0.1, 0.16, 0.28], "sled run",
+                  "Above the mountain: a snow village, glaciers, ice caves and the Summit.",
+                  "The sled climbs past the clouds into white. Smoke from chimneys: Hearthhold.",
+                  "The sled shoots down out of the snow, and the valley is green and warm."),
+    "windward": ("Windward", "sky", [0.55, 0.75, 0.95], [0.96, 0.97, 1.0], [1.0, 0.85, 0.4], [0.12, 0.16, 0.3], "balloon",
+                 "Islands above the sky islands, where the Storm Roc nests.",
+                 "The balloon lifts through the last cloud into blue, and islands float by like stepping stones.",
+                 "The balloon bumps down in the east meadow. Grass, at last."),
+    "giltcity": ("Gilt City", "city", [0.14, 0.11, 0.06], [0.5, 0.42, 0.22], [1.0, 0.85, 0.3], [1.0, 0.95, 0.8], "gold limousine",
+                 "Madame Aurum's city of casinos, gardens and vaults.",
+                 "The limousine purrs through the night. At dawn: gold stone, statues, and a hundred lit windows.",
+                 "The limo drops you at the farm gate and glides away without a sound."),
+}
+
+def _area(a):
+    pos, icon, blurb = MAP[a["id"]]
+    return {"id": a["id"], "name": a["name"], "pos": pos, "icon": icon, "blurb": blurb}
+
+def _links(r):
+    out = []
+    for a in r["areas"]:
+        for b in a["links"]:
+            if [b, a["id"]] not in out:
+                out.append([a["id"], b])
+    return out
+
+def _unlock(r):
+    return {"any": [{"seen": r["hub"]}, {"flag": r["unlock"]["flag"]}]}
+
+MEGA = []
+for _r in REGIONS:
+    if _r["id"] == "ironline":
+        continue
+    sh, style, bg, land, acc, ink, how, blurb, travel, leave = TABS[_r["id"]]
+    MEGA.append({"id": _r["id"], "name": _r["name"], "short": sh, "arc": _r["arc"], "status": "built",
+                 "blurb": blurb, "travel": travel, "leave": leave,
+                 "theme": {"style": style, "bg": bg, "land": land, "accent": acc, "ink": ink},
+                 "areas": [_area(a) for a in _r["areas"]], "links": _links(_r),
+                 "entries": [{"from": _r["entry"]["scene"], "to": _r["hub"], "how": how, "label": _r["entry"]["scene"].capitalize()}],
+                 "unlock": _unlock(_r)})
+
+_I = BY_ID["ironline"]
+IRONLINE = {"areas": [_area(a) for a in _I["areas"]], "links": _links(_I),
+            "entries": [{"from": _I["entry"]["scene"], "to": _I["hub"], "how": "night train", "label": "Town"}],
+            "unlock": _unlock(_I)}
