@@ -10,6 +10,7 @@ func check(ok: bool, what: String) -> void:
 
 func _initialize() -> void:
 	Campaign.bypass = true  # tests walk into every region
+	seed(2626)  # the game's own randf/randi rolls (battle spawns, drops) repeat every run
 	_run.call_deferred()
 
 func _go(sc: String, at := Vector2.ZERO) -> GameMap:
@@ -38,6 +39,25 @@ func _drain() -> void:
 		await process_frame
 
 
+## Steps from a to b over cave floor: rock can be mined through, lava, chasms
+## and pools can't (mine.gd keeps the ladder reachable this way). -1 = no way.
+func _walk_steps(m: GameMap, a: Vector2i, b: Vector2i) -> int:
+	var dist := {a: 0}
+	var q: Array = [a]
+	var h := 0
+	while h < q.size():
+		var c: Vector2i = q[h]
+		h += 1
+		if c == b:
+			return int(dist[c])
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var n: Vector2i = c + d
+			if m._open.has(n) and not dist.has(n) and not m._lava.has(n) and not m._chasm.has(n) and not (m.things.has(n) and str(m.things[n].get("type", "")) == "water"):
+				dist[n] = int(dist[c]) + 1
+				q.append(n)
+	return -1
+
+
 func _run() -> void:
 	InputSetup.ensure_actions()
 	# --- mines: big and organic
@@ -46,10 +66,21 @@ func _run() -> void:
 	GameState.run["flags"]["partner_scene"] = true
 	GameState.run["mine_floor"] = 3
 	print("mine")
-	var m := await _go("mine")
-	check(m.cols >= 40 and m.rows >= 32, "mine floor is large (%dx%d)" % [m.cols, m.rows])
-	check(m._open.size() > 500, "mine has a big open cavern (%d cells)" % m._open.size())
-	check(m._ladder.distance_to(m._entry) > 15, "the way down is a real walk from the entrance")
+	# Fixed layout seeds (the game seeds from the clock), so every run checks the
+	# same floors. 37 and 59 are a maze and a spiral whose ladder sits close to the
+	# entrance as the crow flies but a long walk round: the old straight-line check
+	# failed on those at random.
+	var ms: Variant = load("res://scripts/mine.gd")
+	var m: GameMap
+	for sd in [37, 59, 3, 11, 20]:
+		ms.force_seed = sd
+		m = await _go("mine")
+		var tag := "seed %d, %s" % [sd, str(m._style.get("id", ""))]
+		check(m.cols >= 40 and m.rows >= 32, "mine floor is large (%dx%d, %s)" % [m.cols, m.rows, tag])
+		check(m._open.size() > 500, "mine has a big open cavern (%d cells, %s)" % [m._open.size(), tag])
+		var walk := _walk_steps(m, m._entry, m._ladder)
+		check(walk >= 30, "the way down is a real walk from the entrance (%d steps, %s)" % [walk, tag])
+	ms.force_seed = 0
 	# --- colony
 	GameState.run["quests"].append({"id": "clear_meadow", "text": "", "done": true})
 	print("colony")
@@ -82,9 +113,10 @@ func _run() -> void:
 	Colony._restore(m, "colony_coral")
 	await _drain()
 	# Restoring reloads the region (lit crystal, open stall): wait for the new map.
-	var t0 := Time.get_ticks_msec()
-	while (current_scene == old_m or not (current_scene is GameMap)) and Time.get_ticks_msec() - t0 < 4000:
+	var gt := 0.0  # game time, not the wall clock: a loaded box runs few frames a second
+	while (current_scene == old_m or not (current_scene is GameMap)) and gt < 6.0:
 		await process_frame
+		gt += root.get_process_delta_time()
 	for i in 12:
 		await process_frame
 	await _drain()

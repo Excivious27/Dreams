@@ -349,12 +349,15 @@ var _layout_haz := false     # the layout brought its own water/chasm/lava
 var _bridge := {}            # Vector2i -> "chasm"/"lava"/"water": a crossing cut through a hazard
 var _rock_total := 0
 static var force_style := ""   # tools/tests: carve this style every time
+static var force_seed := 0     # tools/tests: build from this seed (0 = the clock), so a test sees the same layout every run
 
 
 ## A new seed on every build: visits walked into, the floor, the day and the clock.
 func _layout_seed() -> int:
 	var visits := int(GameState.run.get("mine_visits", 0)) + 1
 	GameState.run["mine_visits"] = visits
+	if force_seed != 0:
+		return hash([force_seed, floor_no]) & 0x7fffffff
 	var h := hash([visits, floor_no, int(GameState.run["day"]), Time.get_unix_time_from_system(), Time.get_ticks_usec()])
 	return h & 0x7fffffff
 
