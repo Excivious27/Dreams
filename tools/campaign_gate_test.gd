@@ -8,6 +8,8 @@ extends SceneTree
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/campaign_gate_test.gd -- /tmp/shots
 var fails := 0
 var out := ""
+## ARC=gangsters runs the same lead-in for the gangster arc (Sal, Hideout town).
+var arc := "penguins"
 
 
 func check(ok: bool, what: String) -> void:
@@ -82,7 +84,10 @@ func _run() -> void:
 		DirAccess.make_dir_recursive_absolute(out)
 	InputSetup.ensure_actions()
 	Campaign.bypass = false
-	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
+	if OS.get_environment("ARC") == "gangsters":
+		arc = "gangsters"
+	print("arc: " + arc)
+	GameState.new_run(arc, "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameState.run["intro_done"] = true
 	GameState.run["flags"]["partner_scene"] = true
 	GameState.run["hp"] = 999
@@ -107,13 +112,15 @@ func _run() -> void:
 	scr.close()
 	await process_frame
 	# ---- chapter 2: the veteran's invite and the drill ---------------------------------
-	GameState.run["flags"]["meow_taught"] = true
+	check(CampaignGate.story_need() != "", "the lock says which story step opens it")
+	GameState.run["flags"]["meow_taught" if arc == "penguins" else "hideout_seen"] = true
 	check(CampaignGate.story_ok() and CampaignGate.drill_lock() == "", "chapter 2 opens the drill")
+	check(CampaignGate.trainer() == ("Catkins" if arc == "penguins" else "Sal"), "the veteran is %s" % CampaignGate.trainer())
 	var invite := false
 	for b in Story.beats():
-		if str(b["id"]) == "bt_invite_p" and Story._ready_beat(b, m):
+		if str(b["id"]) == ("bt_invite_p" if arc == "penguins" else "bt_invite_g") and Story._ready_beat(b, m):
 			invite = true
-	check(invite, "Catkins' invite beat is ready after the Meow Pow Wow")
+	check(invite, "the veteran's invite beat is ready at chapter 2")
 	check(Campaign.why_locked("c_orchard_hills").contains("Train"), "campaigns now wait for training")
 	CampaignScreen.open(m, "")
 	await process_frame
