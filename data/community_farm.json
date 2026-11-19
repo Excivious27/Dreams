@@ -41,7 +41,14 @@
    "friend": {
     "hazel": 25,
     "sal": 10
-   }
+   },
+   "beat": [
+    "sal",
+    {
+     "penguins": "I'll keep hauling. First time anybody ever thanked me for it.",
+     "gangsters": "I'll keep hauling. First honest sweat I've had in years. Feels alright."
+    }
+   ]
   },
   {
    "id": "shed",
@@ -70,7 +77,23 @@
     "hazel": 15,
     "gideon": 15,
     "sal": 15
-   }
+   },
+   "build": true,
+   "tonight": {
+    "penguins": "That's everything. Gideon and Sal are coming after supper with lanterns: we'll have a roof on it by morning. Go home, get some sleep.",
+    "gangsters": "That's the lot. Gideon and Sal are coming after dark with work lights. Roof and lock by morning. Go get some sleep."
+   },
+   "night": {
+    "penguins": "The crew worked by lantern light: the commons shed has a roof. Come and see.",
+    "gangsters": "The crew worked under work lights: the garden shed has a roof and a lock. Come and see."
+   },
+   "beat": [
+    "gideon",
+    {
+     "penguins": "Hinges oiled, door hung true. If it ever squeaks, it isn't my work.",
+     "gangsters": "That lock's mine. Nobody's stripping this shed again."
+    }
+   ]
   },
   {
    "id": "beds",
@@ -98,7 +121,23 @@
    "friend": {
     "hazel": 20,
     "finn": 15
-   }
+   },
+   "build": true,
+   "tonight": {
+    "penguins": "Planks, stone, twine: all here. Finn's bringing his cousins tonight. Four beds by sunrise, you'll see.",
+    "gangsters": "That's all of it. Finn's bringing his cousins tonight. Four beds by sunrise."
+   },
+   "night": {
+    "penguins": "Four raised beds went up at the commons overnight. Finn says he only argued twice.",
+    "gangsters": "Four raised beds went up at the lot overnight. Finn says he only argued twice."
+   },
+   "beat": [
+    "finn",
+    {
+     "penguins": "I've claimed the sunny one. Hazel says nobody claims anything. We'll see.",
+     "gangsters": "Bed number two's mine. The score of the century."
+    }
+   ]
   },
   {
    "id": "seeds",
@@ -128,7 +167,14 @@
     "wren": 15,
     "wren_jr": 10,
     "mabel": 10
-   }
+   },
+   "beat": [
+    "wren",
+    {
+     "penguins": "Plant them shallow, water them often, and talk to them. Don't laugh, it works.",
+     "gangsters": "Shallow, water often, talk to them. Don't laugh. It works."
+    }
+   ]
   },
   {
    "id": "well",
@@ -155,7 +201,23 @@
     "benno": 20,
     "gideon": 10,
     "hazel": 10
-   }
+   },
+   "build": true,
+   "tonight": {
+    "penguins": "Stone, copper, rope. Benno and Gideon will rebuild the wall and seat the pump tonight. Mind you're thirsty tomorrow.",
+    "gangsters": "Stone, copper, rope. Benno and Gideon do the wall and the pump tonight. Come thirsty tomorrow."
+   },
+   "night": {
+    "penguins": "The commons well is rebuilt: new wall, new pump, cold water. Benno wants you to taste it.",
+    "gangsters": "The lot's well is rebuilt: new wall, new pump, cold water. Benno wants you to taste it."
+   },
+   "beat": [
+    "benno",
+    {
+     "penguins": "Taste that. Cold as the bottom of the river, and none of the fish.",
+     "gangsters": "Taste that. No meter, no bill, no rust."
+    }
+   ]
   },
   {
    "id": "orchard",
@@ -185,7 +247,23 @@
     "rook": 20,
     "tobin": 10,
     "hazel": 15
-   }
+   },
+   "build": true,
+   "tonight": {
+    "penguins": "Rook's heeling the trees in tonight while the ground's cool. They'll be in the ground by morning.",
+    "gangsters": "Rook's planting the trees tonight while it's cool. They'll be in by morning."
+   },
+   "night": {
+    "penguins": "Eight young fruit trees stand along the commons lane, staked and watered.",
+    "gangsters": "Eight young fruit trees stand along the lot's back fence, staked and watered."
+   },
+   "beat": [
+    "rook",
+    {
+     "penguins": "Three summers and you'll be climbing these for cherries. Trees don't hurry.",
+     "gangsters": "Three summers and there'll be fruit on a vacant lot. Trees don't hurry."
+    }
+   ]
   },
   {
    "id": "greenhouse",
@@ -212,7 +290,23 @@
     "juniper": 15,
     "wren": 20,
     "hazel": 15
-   }
+   },
+   "build": true,
+   "tonight": {
+    "penguins": "Glass, iron, benches. This one's a big job: the whole crew's staying late. Don't come by till morning, it'll be a mess of panes.",
+    "gangsters": "Glass, iron, benches. Whole crew's staying late on this one. Come by in the morning."
+   },
+   "night": {
+    "penguins": "The greenhouse is up! Every pane in, the cold frames dug out front. Come and feel how warm it is.",
+    "gangsters": "The greenhouse is up. Every pane in, cold frames out front. Come feel how warm it is."
+   },
+   "beat": [
+    "juniper",
+    {
+     "penguins": "My herbs have never had it so good. Come winter, this is the warmest room in the valley.",
+     "gangsters": "My herbs have never had it so good. Warmer than my clinic in January."
+    }
+   ]
   },
   {
    "id": "market",
@@ -1001,5 +1095,87 @@
     "Best bench in the valley. Don't tell the park."
    ]
   }
+ },
+ "asks": {
+  "spring": [
+   [
+    "turnip",
+    15
+   ],
+   [
+    "potato",
+    12
+   ],
+   [
+    "cabbage",
+    6
+   ],
+   [
+    "carrot",
+    15
+   ]
+  ],
+  "summer": [
+   [
+    "tomato",
+    12
+   ],
+   [
+    "corn",
+    12
+   ],
+   [
+    "melon",
+    4
+   ],
+   [
+    "blueberry",
+    20
+   ]
+  ],
+  "fall": [
+   [
+    "pumpkin",
+    5
+   ],
+   [
+    "beet",
+    15
+   ],
+   [
+    "cranberry",
+    20
+   ],
+   [
+    "garlic",
+    12
+   ]
+  ],
+  "winter": [
+   [
+    "@fish",
+    10
+   ],
+   [
+    "#mushroom",
+    8
+   ],
+   [
+    "@forage",
+    15
+   ]
+  ]
+ },
+ "ask_reward": {
+  "crystals": 250,
+  "give": {
+   "seed_packet": 5
+  },
+  "friend": 15,
+  "goodwill": 200
+ },
+ "ask_text": {
+  "penguins": "Market's going strong, but the soup kitchen runs short this time of year. If you can spare it, bring {need}. The whole commons will thank you.",
+  "gangsters": "Market's doing fine, but the block's short this time of year. Bring {need} if you can spare it. Everybody eats."
  }
 }

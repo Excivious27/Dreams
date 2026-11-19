@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_09): community farm stages and quest line
+- **Overnight builds:** the shed, raised beds, well, orchard and greenhouse now go up overnight, Stardew-style. Filling the bundle gets Hazel's "tonight" line, the materials stack on the spot (new build-site props: lumber on sawhorses, cut stone, a barrow of saplings, a crate of glass panes), the journal says "building tonight", the sleep report says it's up, and the next visit plays the reveal with Hazel's line. A stage can't land the same day its bundle fills, so the line paces over more days. Clearing the lot, the seeds and the market still finish on the spot.
+- **One volunteer speaks in each reveal** (Sal, Gideon, Finn, Wren, Benno, Rook, Juniper), in both arcs.
+- **Your seeds grow:** the beds now plant the kinds you donated (two rows in three, while they suit the season) instead of ignoring them.
+- **After the market opens:** the board carries one ask per season (crops in spring to fall, any fish / mushrooms / forage in winter), paying 250 crystals ($250), 5 seed packets, friendship and goodwill. Morning report flags market days and the new season's ask. Hazel's lines at the finished farm now differ by arc.
+- **Fixes:** a softlock if the app closed during Hazel's "lot cleared" scene (the save had every pile gone but stage 0, with nothing left to finish it: the next visit now finishes it, and the board offers it too); the compost never dropped fertilizer before the seeds stage although the shed promised it; the morning line said "0 beds harvested" and repeated the share-crate note every night (now only when something new came in); the opening speech said "a year ago" even in the first season.
+- **Saves:** old cfarm blocks gain `pending` and `asks`. Test: commons_test walks every build stage through the night (site, journal, report, reveal) in both arcs and checks compost, donated seeds, asks and the recovery.
+
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.

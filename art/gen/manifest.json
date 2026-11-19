@@ -84217,6 +84217,26 @@
    "h": 90,
    "w": 92
   },
+  "cf_site_glass": {
+   "file": "props/cf_site_glass.png",
+   "h": 69,
+   "w": 64
+  },
+  "cf_site_lumber": {
+   "file": "props/cf_site_lumber.png",
+   "h": 55,
+   "w": 64
+  },
+  "cf_site_saplings": {
+   "file": "props/cf_site_saplings.png",
+   "h": 77,
+   "w": 64
+  },
+  "cf_site_stone": {
+   "file": "props/cf_site_stone.png",
+   "h": 54,
+   "w": 64
+  },
   "cf_well_broken": {
    "file": "props/cf_well_broken.png",
    "h": 59,

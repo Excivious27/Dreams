@@ -73,6 +73,67 @@ STAGES = [
      "crystals": 500, "give": {"green_thumb_charm": 1, "harvest_basket": 3}, "friend": {"hazel": 30, "alder": 20, "maple": 15, "posy": 15, "bram": 15, "lumi": 15, "theo": 10, "finn": 15, "benno": 15, "rook": 15, "wren": 15, "juniper": 15, "gideon": 10, "sal": 15}},
 ]
 
+# Building stages the crew raises overnight (Robin-style): the board takes the last
+# bundle, Hazel says "tonight", a build site sits on the spot, the sleep report says
+# it's up, and the next visit plays the reveal (with Hazel's "done" line then).
+#   tonight: what Hazel says when the bundle is full; night: the sleep-report line.
+BUILD = {
+    "shed": {"tonight": P("That's everything. Gideon and Sal are coming after supper with lanterns: we'll have a roof on it by morning. Go home, get some sleep.",
+                          "That's the lot. Gideon and Sal are coming after dark with work lights. Roof and lock by morning. Go get some sleep."),
+             "night": P("The crew worked by lantern light: the commons shed has a roof. Come and see.",
+                        "The crew worked under work lights: the garden shed has a roof and a lock. Come and see.")},
+    "beds": {"tonight": P("Planks, stone, twine: all here. Finn's bringing his cousins tonight. Four beds by sunrise, you'll see.",
+                          "That's all of it. Finn's bringing his cousins tonight. Four beds by sunrise."),
+             "night": P("Four raised beds went up at the commons overnight. Finn says he only argued twice.",
+                        "Four raised beds went up at the lot overnight. Finn says he only argued twice.")},
+    "well": {"tonight": P("Stone, copper, rope. Benno and Gideon will rebuild the wall and seat the pump tonight. Mind you're thirsty tomorrow.",
+                          "Stone, copper, rope. Benno and Gideon do the wall and the pump tonight. Come thirsty tomorrow."),
+             "night": P("The commons well is rebuilt: new wall, new pump, cold water. Benno wants you to taste it.",
+                        "The lot's well is rebuilt: new wall, new pump, cold water. Benno wants you to taste it.")},
+    "orchard": {"tonight": P("Rook's heeling the trees in tonight while the ground's cool. They'll be in the ground by morning.",
+                             "Rook's planting the trees tonight while it's cool. They'll be in by morning."),
+                "night": P("Eight young fruit trees stand along the commons lane, staked and watered.",
+                           "Eight young fruit trees stand along the lot's back fence, staked and watered.")},
+    "greenhouse": {"tonight": P("Glass, iron, benches. This one's a big job: the whole crew's staying late. Don't come by till morning, it'll be a mess of panes.",
+                                "Glass, iron, benches. Whole crew's staying late on this one. Come by in the morning."),
+                   "night": P("The greenhouse is up! Every pane in, the cold frames dug out front. Come and feel how warm it is.",
+                              "The greenhouse is up. Every pane in, cold frames out front. Come feel how warm it is.")},
+}
+# One volunteer's word in each stage's reveal: [npc, line].
+BEAT = {
+    "clear": ["sal", P("I'll keep hauling. First time anybody ever thanked me for it.", "I'll keep hauling. First honest sweat I've had in years. Feels alright.")],
+    "shed": ["gideon", P("Hinges oiled, door hung true. If it ever squeaks, it isn't my work.", "That lock's mine. Nobody's stripping this shed again.")],
+    "beds": ["finn", P("I've claimed the sunny one. Hazel says nobody claims anything. We'll see.", "Bed number two's mine. The score of the century.")],
+    "seeds": ["wren", P("Plant them shallow, water them often, and talk to them. Don't laugh, it works.", "Shallow, water often, talk to them. Don't laugh. It works.")],
+    "well": ["benno", P("Taste that. Cold as the bottom of the river, and none of the fish.", "Taste that. No meter, no bill, no rust.")],
+    "orchard": ["rook", P("Three summers and you'll be climbing these for cherries. Trees don't hurry.", "Three summers and there'll be fruit on a vacant lot. Trees don't hurry.")],
+    "greenhouse": ["juniper", P("My herbs have never had it so good. Come winter, this is the warmest room in the valley.", "My herbs have never had it so good. Warmer than my clinic in January.")],
+}
+for _s in STAGES:
+    if _s["id"] in BUILD:
+        _s["build"] = True
+        _s["tonight"] = BUILD[_s["id"]]["tonight"]
+        _s["night"] = BUILD[_s["id"]]["night"]
+    if _s["id"] in BEAT:
+        _s["beat"] = BEAT[_s["id"]]
+
+# Once the market is open: one ask per season on the board (picked by year), so there's
+# always something to bring. [item, n] options per season; a reward each time.
+ASKS = {
+    "spring": [["turnip", 15], ["potato", 12], ["cabbage", 6], ["carrot", 15]],
+    "summer": [["tomato", 12], ["corn", 12], ["melon", 4], ["blueberry", 20]],
+    "fall": [["pumpkin", 5], ["beet", 15], ["cranberry", 20], ["garlic", 12]],
+    "winter": [["@fish", 10], ["#mushroom", 8], ["@forage", 15]],  # "@type" = any item of that type
+}
+_C = json.load(open(os.path.join(D, "crops.json")))
+for _se, _rows in ASKS.items():
+    for _k, _n in _rows:
+        assert _k[0] in "#@" or (_k in _C and _C[_k].get("season") in (_se, "any")), (_se, _k)
+ASK_REWARD = {"crystals": 250, "give": {"seed_packet": 5}, "friend": 15, "goodwill": 200}
+ASK_TEXT = P("Market's going strong, but the soup kitchen runs short this time of year. If you can spare it, bring {need}. The whole commons will thank you.",
+             "Market's doing fine, but the block's short this time of year. Bring {need} if you can spare it. Everybody eats.")
+
+
 # ---- the map's places (cells in the community farm map) ---------------------------
 SPOTS = {
     "cf_lot": [16, 18, "haul"], "cf_beds_a": [8, 18, "farm"], "cf_beds_b": [17, 22, "farm"],
@@ -202,6 +263,7 @@ out = {
     "stages": STAGES, "spots": SPOTS, "spot_stage": SPOT_STAGE, "beds": BEDS, "frames": FRAMES, "orchard": ORCHARD, "plant": PLANT,
     "schedule": SCHEDULE, "market_day": MARKET_DAY, "winter_spots": WINTER_SPOTS, "rain_spots": RAIN_SPOTS,
     "talk_any": TALK_ANY, "talk_own": TALK_OWN, "at_work": AT_WORK,
+    "asks": ASKS, "ask_reward": ASK_REWARD, "ask_text": ASK_TEXT,
 }
 for s in STAGES:
     for k in s.get("give", {}):

@@ -101,6 +101,7 @@ func _run() -> void:
 	for arc in ["penguins", "gangsters"]:
 		await _arc(arc)
 	check(arcs_done == 2, "both arcs ran to the end (%d)" % arcs_done)
+	await _extras()
 	print("commons_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -206,8 +207,37 @@ func _arc(arc: String) -> void:
 			return
 		if s == 3:
 			await _shot(m, "%s_3_before_seeds" % tag, Vector2i(14, 20))
-		Commons.finish_stage(m)
-		m = await _wait_reload(m)
+		if Commons.is_build(s):
+			# A building stage: the crew raises it overnight.
+			Commons.bundle_full(m)
+			m = await _wait_reload(m)
+			check(Commons.pending() == s and Commons.stage() == s, "[%s] stage %d waits for the night (pending %d)" % [tag, s, Commons.pending()])
+			check(Commons.contribute() == 0 and not Commons.stage_ready(), "[%s] stage %d: the board takes nothing more tonight" % [tag, s])
+			var site := 0
+			for c in m.props:
+				if is_instance_valid(m.props[c]) and str((m.props[c] as Sprite2D).texture.resource_path).contains("cf_site_"):
+					site += 1
+			check(site > 0, "[%s] stage %d: build site on the map (%d)" % [tag, s, site])
+			var jt := ""
+			for q in GameState.run["quests"]:
+				if str(q["id"]) == Commons.QUEST:
+					jt = str(q["text"])
+			check(jt.contains("tonight"), "[%s] journal says the crew builds tonight (%s)" % [tag, jt])
+			await _shot(m, "%s_%d_site" % [tag, s], cam.get(s + 1, Vector2i(28, 20)))
+			var rep := {}
+			GameState.run["day"] = int(GameState.run["day"]) + 1
+			Commons.overnight(rep)
+			check(Commons.stage() == s + 1 and Commons.pending() == -1, "[%s] stage %d built overnight" % [tag, s])
+			check(not (rep.get("cfarm", []) as Array).is_empty() and str(rep["cfarm"][0]) == str(Commons.tx(Commons.stages()[s]["night"])), "[%s] sleep report tells of the build (%s)" % [tag, str(rep.get("cfarm", []))])
+			check(GameState.run["flags"].has("cf_reveal") and GameState.run["flags"].has("cf_reveal_done"), "[%s] the reveal waits for the next visit" % tag)
+			m.go_to(Commons.SCENE, m.player.position - m.offset())
+			m = await _wait_reload(m)
+			await _frames(40)
+			await _drain()
+			check(not GameState.run["flags"].has("cf_reveal") and not GameState.run["flags"].has("cf_reveal_done"), "[%s] stage %d reveal played on the visit" % [tag, s])
+		else:
+			Commons.finish_stage(m)
+			m = await _wait_reload(m)
 		check(Commons.stage() == s + 1, "[%s] stage %d done" % [tag, s])
 		if expect.has(s + 1):
 			check(_count(m, expect[s + 1]) > 0, "[%s] stage %d shows %s" % [tag, s + 1, expect[s + 1]])
@@ -292,3 +322,73 @@ func _arc(arc: String) -> void:
 	GameState.run = {}
 	check(GameState.has_run() and Commons.stage() == st_saved and Commons.complete(), "[%s] stage survives save/load" % tag)
 	arcs_done += 1
+
+
+## CONDUCT 2 (c2_09): compost before the beds, your seeds in the beds, the seasonal
+## ask, the lot-cleared recovery, an old save without overnight builds.
+func _extras() -> void:
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	GameState.run["intro_done"] = true
+	for f in ["town_seen", "town_tour", "partner_scene", "cf_known", "cf_met", "cf_intro", "community_farm_seen", "cf_letter"]:
+		GameState.run["flags"][f] = true
+	# An old save: no pending/asks keys.
+	GameState.run["cfarm"] = {"stage": 2, "given": {}, "cleared": {}, "plots": {}, "stock": {}, "share": {}}
+	check(Commons.pending() == -1 and Commons.st()["asks"] is Dictionary, "[x] old cfarm block gains pending/asks")
+	# The shed's compost drops fertilizer before the beds are planted.
+	GameState.run["day"] = 6
+	var rep := {}
+	Commons.overnight(rep)
+	check(int(Commons.st()["share"].get("fertilizer", 0)) == 1 and str(rep.get("cfarm", [""])[0]).contains("compost"), "[x] compost works from stage 2 (%s)" % str(rep))
+	rep = {}
+	GameState.run["day"] = 7
+	Commons.overnight(rep)
+	check(not rep.has("cfarm"), "[x] a quiet night says nothing (%s)" % str(rep))
+	# Seeds stage: what you give is what grows.
+	Commons.st()["stage"] = 3
+	GameState.run["day"] = 2
+	GameState.add_item("pea_seed", 10, true)
+	GameState.add_item("radish_seed", 8, true)
+	GameState.add_item("kale_seed", 6, true)
+	Commons.contribute()
+	check(Commons.stage_ready() and not Commons.is_build(3), "[x] seeds bundle filled")
+	Commons.finish_stage(null, false)
+	Commons.overnight({})
+	var kinds := {}
+	for k in Commons.plot_cells():
+		kinds[str(Commons.plot(k).get("crop", ""))] = int(kinds.get(str(Commons.plot(k).get("crop", "")), 0)) + 1
+	var mine := int(kinds.get("pea", 0)) + int(kinds.get("radish", 0)) + int(kinds.get("kale", 0))
+	check(mine * 2 >= Commons.plot_cells().size(), "[x] most beds grow the seeds you gave (%s)" % str(kinds))
+	# The seasonal ask once the market is open.
+	Commons.st()["stage"] = Commons.stages().size()
+	GameState.run["day"] = 3
+	var a := Commons.ask()
+	check(not a.is_empty() and GameState.crops.has(str(a["key"])), "[x] spring ask (%s)" % str(a))
+	check(Commons.give_ask() == "", "[x] the ask waits until you carry enough")
+	GameState.add_item(str(a["key"]), int(a["n"]), true)
+	var cr := int(GameState.run["crystals"])
+	check(Commons.give_ask() != "" and int(GameState.run["crystals"]) > cr and GameState.count(str(a["key"])) == 0, "[x] ask answered and paid")
+	check(Commons.ask().is_empty(), "[x] one ask a season")
+	GameState.run["day"] = 3 * 28 + 2
+	var wa := Commons.ask()
+	check(not wa.is_empty() and (str(wa.get("key", "")).begins_with("@") or str(wa.get("key", "")).begins_with("#")), "[x] winter ask is a kind (%s)" % str(wa))
+	GameState.add_item("trout", 6, true)
+	GameState.add_item("carp", 6, true)
+	if str(wa.get("key", "")) == "@fish":
+		check(Commons.have_of("@fish") >= 12 and Commons.give_ask() != "", "[x] any fish answers the winter ask")
+	# The last pile went, but the stage never closed (app shut mid-scene): the visit finishes it.
+	Commons.st()["stage"] = 0
+	Commons.st()["pending"] = -1
+	var cl := {}
+	for d: Array in preload("res://scripts/community_farm.gd").DEBRIS:
+		cl["%d,%d" % [int(d[0]), int(d[1])]] = true
+	Commons.st()["cleared"] = cl
+	GameState.run["day"] = 4
+	GameState.run["time"] = 9 * 60
+	var m := await _load(Vector2.ZERO)
+	for i in 60:
+		await process_frame
+		if Commons.stage() >= 1:
+			break
+		Dialogue.instance(self)._advance()
+	m = await _wait_reload(m)
+	check(Commons.stage() == 1, "[x] lot-cleared recovery finishes stage 1 (%d)" % Commons.stage())
