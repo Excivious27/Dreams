@@ -218,6 +218,10 @@
        "text": "Hands make a heart at your chest. Hold it. Rainbow hearts and cat paws will fly out of you. Try. ...Yes. YES. A-meow-zing."
       },
       {
+       "who": "Catkins",
+       "text": "Use it near a Grump and it turns back into whatever it was before the Dark Crystal squeezed it: a rabbit, a frog, a deer. Little ones first. It grows as you grow, and as your friends do. And if a penguin walks with you: that warm hum they've been feeling? Now they know how to let it out too."
+      },
+      {
        "who": "",
        "text": "Something warm goes out of your chest in colours you don't have names for. Across the cave a very old cat stops frowning for the first time in years."
       }
@@ -911,7 +915,7 @@
       },
       {
        "who": "",
-       "text": "*The Dark Crystal has promised me I will be queen of this mountain once he has defeated the two too powerful penguins. He says he wants to make the universe a perfect paradise. Why do you fight him?*",
+       "text": "*The Dark Crystal has promised me I will be queen of this mountain once he has defeated the Two Too Powerful Penguins. He says he wants to make the universe a perfect paradise. Why do you fight him?*",
        "choice": [
         "Tell her the truth: what he does to the ones he promises things to.",
         "Tell her nothing. Look for a way out."
