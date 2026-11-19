@@ -40,7 +40,7 @@
    },
    "quest": "mega_gloamwood_hook",
    "keeper": "Liesl",
-   "keeper_sprite": "npc_lumen",
+   "keeper_sprite": "mg_liesl",
    "lines": {
     "locked": "The ring's asleep, love. It wakes when the valley's had a proper fright and come through it. Come back when the east meadow's quiet again.",
     "offer": [
@@ -85,7 +85,7 @@
      24,
      14
     ],
-    "prop": "cart_covered",
+    "prop": "ds_sand_caravan",
     "label": "the sand-sailors' caravan",
     "w": 0,
     "keeper_at": [
@@ -103,7 +103,7 @@
    },
    "quest": "mega_sunscorch_hook",
    "keeper": "Sefa",
-   "keeper_sprite": "npc_drifter",
+   "keeper_sprite": "mg_sefa",
    "lines": {
     "locked": "The dune winds are wrong this season. We sail when the valley's had two good stories told about it. Not before.",
     "offer": [
@@ -166,7 +166,7 @@
    },
    "quest": "mega_ironline_hook",
    "keeper": "Conductor Hollis",
-   "keeper_sprite": "man_gang",
+   "keeper_sprite": "mg_hollis",
    "lines": {
     "locked": "Night train's not running. Line's tied up in somebody's paperwork. When your name means something in this valley, come back and we'll talk tickets.",
     "offer": [
@@ -212,7 +212,7 @@
      7,
      35
     ],
-    "prop": "veh_crystal_sled_side",
+    "prop": "fr_sled_station",
     "label": "the sled run up to Frostpeak",
     "w": 0,
     "keeper_at": [
@@ -230,7 +230,7 @@
    },
    "quest": "mega_frostpeak_hook",
    "keeper": "Brannoch",
-   "keeper_sprite": "npc_hunter",
+   "keeper_sprite": "mg_brannoch",
    "lines": {
     "locked": "Up there? Not yet. The Reach is no place for someone who hasn't seen a few hard winters of trouble. Come back later on in your story.",
     "offer": [
@@ -275,7 +275,7 @@
      42,
      24
     ],
-    "prop": "veh_balloon",
+    "prop": "wi_mooring_tower",
     "label": "Captain Zephyr's balloon",
     "w": 0,
     "keeper_at": [
@@ -293,7 +293,7 @@
    },
    "quest": "mega_windward_hook",
    "keeper": "Captain Zephyr",
-   "keeper_sprite": "penguin",
+   "keeper_sprite": "mg_zephyr",
    "lines": {
     "locked": "Too much weather up there for a passenger, I'm afraid. When the Star Crystal's nearly whole again the winds will calm. Then we fly.",
     "offer": [
@@ -356,7 +356,7 @@
    },
    "quest": "mega_giltcity_hook",
    "keeper": "Mister Pell",
-   "keeper_sprite": "gambler",
+   "keeper_sprite": "mg_pell",
    "lines": {
     "locked": "Madame Aurum doesn't send the car for just anyone. Make a bigger name for yourself, then I'll come back with the engine running.",
     "offer": [

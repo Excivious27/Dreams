@@ -40,7 +40,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from mega_regions_new import MEGA, IRONLINE  # the five new regions + the rail frontier (tools/gen_mega_new.py builds them)
+from mega_regions_new import MEGA, IRONLINE, EXTRA  # the five new regions + the rail frontier (tools/gen_mega_new.py builds them)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -137,6 +137,13 @@ _cities["areas"] += IRONLINE["areas"]
 _cities["links"] += IRONLINE["links"]
 _cities["entries"] += IRONLINE["entries"]
 _cities["unlock"] = {"any": [_cities["unlock"], IRONLINE["unlock"]]}
+# Second areas for the Hollow Heart and the Sky Isles (gen_mega_new.py builds them).
+for _x in EXTRA:
+    _r = next(r for r in REGIONS if r["id"] == _x["id"])
+    for _a in _x["areas"]:
+        _r["areas"].append({k: _a[k] for k in ("id", "name", "pos", "icon", "blurb")})
+        for _l in _a["links"]:
+            _r["links"].append([_l, _a["id"]])
 
 
 def main() -> None:

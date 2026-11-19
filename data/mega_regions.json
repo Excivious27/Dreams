@@ -478,9 +478,24 @@
      ],
      "icon": "pin_mine",
      "blurb": "Crystal caverns and the heart below."
+    },
+    {
+     "id": "hollow_deeps",
+     "name": "The Glowing Deeps",
+     "pos": [
+      0.78,
+      0.36
+     ],
+     "icon": "pin_mine",
+     "blurb": "Crystal rivers east of the Heart, where the old miners camped."
     }
    ],
-   "links": [],
+   "links": [
+    [
+     "hollow_heart",
+     "hollow_deeps"
+    ]
+   ],
    "entries": [
     {
      "from": "mine",
@@ -542,9 +557,24 @@
      ],
      "icon": "pin_mountain",
      "blurb": "Floating islands and the knight's stair."
+    },
+    {
+     "id": "sky_reaches",
+     "name": "Whale Reaches",
+     "pos": [
+      0.5,
+      0.14
+     ],
+     "icon": "pin_mountain",
+     "blurb": "High cloud where the sky whale circles."
     }
    ],
-   "links": [],
+   "links": [
+    [
+     "sky",
+     "sky_reaches"
+    ]
+   ],
    "entries": [
     {
      "from": "forest",
@@ -605,7 +635,7 @@
      "name": "Lanternfall",
      "pos": [
       0.45,
-      0.72
+      0.56
      ],
      "icon": "pin_town",
      "blurb": "Lanterns on mushrooms, and a pond that glows."
@@ -614,8 +644,8 @@
      "id": "gloam_violet_glade",
      "name": "Violet Glade",
      "pos": [
-      0.42,
-      0.4
+      0.35,
+      0.31
      ],
      "icon": "pin_forest",
      "blurb": "Teal moss, wisps and sleepy moths."
@@ -624,8 +654,8 @@
      "id": "gloam_crystal_thicket",
      "name": "Crystal Thicket",
      "pos": [
-      0.8,
-      0.62
+      0.81,
+      0.47
      ],
      "icon": "pin_mine",
      "blurb": "Crystal trees that ring in the wind."
@@ -634,8 +664,8 @@
      "id": "gloam_moonpool",
      "name": "The Moonpool",
      "pos": [
-      0.4,
-      0.12
+      0.44,
+      0.1
      ],
      "icon": "pin_lake",
      "blurb": "Black water, and the Thornmother beneath."
@@ -672,7 +702,8 @@
       "flag": "mega_gloamwood_open"
      }
     ]
-   }
+   },
+   "map_art": "ui/map_gloamwood"
   },
   "sunscorch": {
    "id": "sunscorch",
@@ -711,8 +742,8 @@
      "id": "desert_mirage_post",
      "name": "Mirage Post",
      "pos": [
-      0.62,
-      0.7
+      0.68,
+      0.65
      ],
      "icon": "pin_town",
      "blurb": "The last well before the Expanse."
@@ -721,8 +752,8 @@
      "id": "desert_dune_sea",
      "name": "The Dune Sea",
      "pos": [
-      0.22,
-      0.66
+      0.14,
+      0.53
      ],
      "icon": "pin_wastes",
      "blurb": "Dunes, a buried bus, and singing sand."
@@ -731,8 +762,8 @@
      "id": "desert_glass_canyon",
      "name": "Glass Canyon",
      "pos": [
-      0.64,
-      0.4
+      0.62,
+      0.33
      ],
      "icon": "pin_mountain",
      "blurb": "Red rock and lightning glass."
@@ -741,8 +772,8 @@
      "id": "desert_sunken_temple",
      "name": "Sunken Temple",
      "pos": [
-      0.66,
-      0.12
+      0.72,
+      0.08
      ],
      "icon": "pin_tower",
      "blurb": "The Sun Colossus guards the door."
@@ -779,7 +810,8 @@
       "flag": "mega_sunscorch_open"
      }
     ]
-   }
+   },
+   "map_art": "ui/map_sunscorch"
   },
   "frostpeak": {
    "id": "frostpeak",
@@ -818,8 +850,8 @@
      "id": "frost_hearthhold",
      "name": "Hearthhold",
      "pos": [
-      0.5,
-      0.72
+      0.52,
+      0.68
      ],
      "icon": "pin_town",
      "blurb": "Snow-domed houses and a hot spring."
@@ -829,7 +861,7 @@
      "name": "Glacier Fields",
      "pos": [
       0.5,
-      0.42
+      0.38
      ],
      "icon": "pin_mountain",
      "blurb": "White fields, frost wolves, rime golems."
@@ -838,8 +870,8 @@
      "id": "frost_caverns",
      "name": "Rime Caverns",
      "pos": [
-      0.16,
-      0.7
+      0.13,
+      0.53
      ],
      "icon": "pin_mine",
      "blurb": "Blue ice caves that hum."
@@ -848,8 +880,8 @@
      "id": "frost_falls",
      "name": "Frozen Falls",
      "pos": [
-      0.84,
-      0.7
+      0.88,
+      0.51
      ],
      "icon": "pin_lake",
      "blurb": "A waterfall frozen mid-pour; pike below."
@@ -859,7 +891,7 @@
      "name": "The Summit",
      "pos": [
       0.52,
-      0.12
+      0.1
      ],
      "icon": "pin_mountain",
      "blurb": "Where the Rime Wyrm sleeps."
@@ -900,7 +932,8 @@
       "flag": "mega_frostpeak_open"
      }
     ]
-   }
+   },
+   "map_art": "ui/map_frostpeak"
   },
   "windward": {
    "id": "windward",
@@ -939,8 +972,8 @@
      "id": "wind_breezehaven",
      "name": "Breezehaven",
      "pos": [
-      0.6,
-      0.72
+      0.7,
+      0.73
      ],
      "icon": "pin_town",
      "blurb": "Windmill isles and a penguin captain."
@@ -950,7 +983,7 @@
      "name": "Sunrise Shelf",
      "pos": [
       0.2,
-      0.64
+      0.5
      ],
      "icon": "pin_meadow",
      "blurb": "Always just sunrise."
@@ -959,8 +992,8 @@
      "id": "wind_storm_shelf",
      "name": "Storm Shelf",
      "pos": [
-      0.6,
-      0.4
+      0.61,
+      0.38
      ],
      "icon": "pin_mountain",
      "blurb": "Lightning in black cloud."
@@ -969,8 +1002,8 @@
      "id": "wind_starfall_garden",
      "name": "Starfall Garden",
      "pos": [
-      0.6,
-      0.12
+      0.62,
+      0.1
      ],
      "icon": "pin_moon",
      "blurb": "Stars close enough to touch; the Roc's nest."
@@ -1007,7 +1040,8 @@
       "flag": "mega_windward_open"
      }
     ]
-   }
+   },
+   "map_art": "ui/map_windward"
   },
   "giltcity": {
    "id": "giltcity",
@@ -1047,7 +1081,7 @@
      "name": "Grand Plaza",
      "pos": [
       0.5,
-      0.66
+      0.55
      ],
      "icon": "pin_town",
      "blurb": "Gold stone, statues, a hundred windows."
@@ -1056,8 +1090,8 @@
      "id": "gilt_casino_row",
      "name": "Casino Row",
      "pos": [
-      0.8,
-      0.5
+      0.88,
+      0.43
      ],
      "icon": "pin_tower",
      "blurb": "Neon on gold."
@@ -1066,8 +1100,8 @@
      "id": "gilt_gardens",
      "name": "Gilded Gardens",
      "pos": [
-      0.2,
-      0.5
+      0.14,
+      0.39
      ],
      "icon": "pin_meadow",
      "blurb": "Hedges clipped into crowns."
@@ -1076,8 +1110,8 @@
      "id": "gilt_vaults",
      "name": "The Vaults",
      "pos": [
-      0.8,
-      0.16
+      0.85,
+      0.08
      ],
      "icon": "pin_mine",
      "blurb": "Madame Aurum's gold, stacked to the ceiling."
@@ -1114,7 +1148,8 @@
       "flag": "mega_giltcity_open"
      }
     ]
-   }
+   },
+   "map_art": "ui/map_giltcity"
   }
  },
  "area_of": {
@@ -1134,7 +1169,9 @@
   "iron_mill_district": "cities",
   "iron_tunnels": "cities",
   "hollow_heart": "hollow",
+  "hollow_deeps": "hollow",
   "sky": "sky",
+  "sky_reaches": "sky",
   "gloam_lanternfall": "gloamwood",
   "gloam_violet_glade": "gloamwood",
   "gloam_crystal_thicket": "gloamwood",

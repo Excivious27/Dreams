@@ -20,7 +20,7 @@ walks every area to prove it.   Run: python3 tools/gen_mega_new.py
 import json, os, sys, math, random
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(D, "tools"))
-from mega_regions_new import REGIONS, BY_ID
+from mega_regions_new import REGIONS, BY_ID, EXTRA, EXTERNAL
 
 def J(p): return json.load(open(f"{D}/data/{p}"))
 def W(p, v):
@@ -109,21 +109,31 @@ ENEMIES = {
     "sun_colossus": ("ruin_warden", "#ffd868", 190, 4, "The Sun Colossus", [["sunstone", 1.0, 4], ["sun_scarab", 1.0, 1]], {"boss": True, "scale": 1.15}),
     "rail_bot": ("rust_knight", "#c89060", 26, 3, "Rail Bot", [["chain_link", 0.4, 1], ["gear", 0.15, 1], ["oil", 0.25, 1]], {}),
     "coal_crawler": ("drip_crawler", "#8a8a8a", 20, 3, "Coal Crawler", [["charcoal", 0.6, 2], ["coal", 0.4, 1]], {}),
-    "baron_coalbrook": ("thug_enforcer", "#e0b890", 210, 4, "Baron Coalbrook", [["thug_cash", 1.0, 6], ["chain_link", 1.0, 3]], {"boss": True, "char": "enforcer", "scale": 1.15}),
+    "baron_coalbrook": ("thug_enforcer", "", 210, 4, "Baron Coalbrook", [["thug_cash", 1.0, 6], ["chain_link", 1.0, 3]], {"boss": True, "char": "mg_coalbrook", "scale": 1.15}),
     "frost_wolf": ("hill_wolf", "#dcf2ff", 28, 4, "Frost Wolf", [["pelt", 0.5, 1], ["frost", 0.08, 1]], {}),
     "rime_golem": ("golem", "#acdcff", 40, 4, "Rime Golem", [["frost", 0.35, 1], ["stone", 1.0, 3], ["glass_frosted", 0.15, 1]], {}),
     "frost_spider": ("shard_spider", "#c4ecff", 30, 4, "Frost Spider", [["glass_frosted", 0.2, 1], ["silver", 0.2, 1]], {}),
-    "rime_wyrm": ("river_serpent", "#a4e4ff", 230, 5, "The Rime Wyrm", [["frost", 1.0, 4], ["glass_frosted", 1.0, 2]], {"boss": True, "scale": 1.3}),
+    "rime_wyrm": ("river_serpent", "", 230, 5, "The Rime Wyrm", [["frost", 1.0, 4], ["glass_frosted", 1.0, 2]], {"boss": True, "scale": 1.2, "art": "rime_wyrm"}),
     "gale_finargle": ("finargle", "#d4f2ff", 36, 5, "Gale Finargle", [["storm_fluff", 0.35, 1], ["finargle_fuzz", 0.3, 1]], {"art": "finargle"}),
     "storm_wisp": ("prism_wisp", "#b4bcff", 30, 5, "Storm Wisp", [["storm_glass", 0.12, 1], ["wisp_spark", 0.2, 1]], {}),
     "cloud_knight": ("knight", "#f2f8ff", 46, 5, "Cloud Knight", [["storm_fluff", 0.3, 1], ["silver", 0.3, 1]], {}),
-    "storm_roc": ("finargle_elder", "#9898ff", 260, 5, "The Storm Roc", [["storm_glass", 1.0, 3], ["storm_fluff", 1.0, 3]], {"boss": True, "scale": 1.3, "art": "fennimore"}),
+    "storm_roc": ("finargle_elder", "", 260, 5, "The Storm Roc", [["storm_glass", 1.0, 3], ["storm_fluff", 1.0, 3]], {"boss": True, "scale": 1.15, "art": "storm_roc"}),
     "gilt_guard": ("knight", "#ffe488", 48, 5, "Gilt Guard", [["gambler_chip", 0.5, 2], ["gold", 0.2, 1]], {}),
     "gilded_mirror": ("mirror", "#ffe070", 40, 5, "Gilded Mirror", [["gold_bundle", 0.15, 1], ["glass", 0.5, 1]], {}),
-    "madame_aurum": ("thug_gambler", "#ffe078", 260, 5, "Madame Aurum", [["gambler_chip", 1.0, 8], ["lucky_coin", 1.0, 2]], {"boss": True, "char": "gambler", "scale": 1.15}),
+    "madame_aurum": ("thug_gambler", "", 260, 5, "Madame Aurum", [["gambler_chip", 1.0, 8], ["lucky_coin", 1.0, 2]], {"boss": True, "char": "mg_aurum", "scale": 1.15}),
 }
 
 # ---------------------------------------------------------------- looks
+AMB = {  # ambience beds per look (Ambience reads regions.json "amb")
+    "gloam": {"crickets": -15.0, "crystal_hum": -26.0}, "desert": {"wind_soft": -13.0}, "rail": {"city_hum": -19.0, "machines": -24.0},
+    "snow": {"wind_soft": -12.0}, "sky": {"wind_soft": -11.0}, "gilt": {"town_day": -20.0},
+}
+AREA_AMB = {"gloam_moonpool": {"marsh": -16.0, "frogs": -18.0}, "gloam_crystal_thicket": {"crystal_hum": -18.0}, "desert_mirage_post": {"campfire": -22.0, "town_day": -22.0},
+            "desert_sunken_temple": {"cave": -20.0}, "iron_tunnels": {"cave": -14.0, "basement_drips": -18.0}, "iron_freight_yards": {"machines": -18.0},
+            "frost_hearthhold": {"campfire": -20.0}, "frost_caverns": {"cave": -14.0, "crystal_hum": -22.0}, "frost_falls": {"river": -15.0},
+            "frost_summit": {"wind_strong": -8.0}, "gilt_casino_row": {"neon_street": -15.0, "crowd": -20.0}, "gilt_vaults": {"cave": -18.0, "basement_drips": -22.0},
+            "gilt_gardens": {"birds_day": -16.0}, "wind_starfall_garden": {"crystal_hum": -22.0}}
+
 LOOKS = {
     "gloam": {"ground": "grass", "ground_seam": "violet_moss", "path": "flagstone", "border": "trees", "backdrop": "night", "weather": "fireflies",
               "gen": {"region_props": ["gmush_blue", "gmush_purple", "gmush_red", "starflower_blue", "starflower_pink", "spiral_fern", "cave_mush_blue", "cave_mush_purple", "fd_mush_purple", "fd_mush_blue", "crystal_tree_pink"], "region_count": 34,
@@ -152,7 +162,7 @@ CONTENT = {}
 
 # ---- Gloamwood (both arcs, opens at chapter 2) -------------------------------------
 CONTENT["gloamwood"] = {
-    "keeper": "Liesl", "keeper_sprite": "npc_lumen", "keeper_at": [-2, 0], "home_name": "the forest", "hub_name": "Lanternfall", "sfx": "sparkle",
+    "keeper": "Liesl", "keeper_sprite": "mg_liesl", "keeper_at": [-2, 0], "home_name": "the forest", "hub_name": "Lanternfall", "sfx": "sparkle",
     "hook": {"text": "Liesl the moth-keeper needs 6 flowers and 3 wild herbs to wake the fairy ring.", "items": [["flower", 6], ["wild_herb", 3]], "crystals": 60},
     "lines": {
         "locked": "The ring's asleep, love. It wakes when the valley's had a proper fright and come through it. Come back when the east meadow's quiet again.",
@@ -168,7 +178,7 @@ CONTENT["gloamwood"] = {
 }
 # ---- Sunscorch (both, chapter 3) ---------------------------------------------------
 CONTENT["sunscorch"] = {
-    "keeper": "Sefa", "keeper_sprite": "npc_drifter", "keeper_at": [-2, 0], "home_name": "the beach", "hub_name": "Mirage Post", "sfx": "door",
+    "keeper": "Sefa", "keeper_sprite": "mg_sefa", "keeper_at": [-2, 0], "home_name": "the beach", "hub_name": "Mirage Post", "sfx": "door",
     "hook": {"text": "Sefa the sand-sailor needs 4 bread and 3 rope before the caravan can cross.", "items": [["bread", 4], ["rope", 3]], "crystals": 90},
     "lines": {
         "locked": "The dune winds are wrong this season. We sail when the valley's had two good stories told about it. Not before.",
@@ -184,7 +194,7 @@ CONTENT["sunscorch"] = {
 }
 # ---- Ironline (gangsters, chapter 3) -----------------------------------------------
 CONTENT["ironline"] = {
-    "keeper": "Conductor Hollis", "keeper_sprite": "man_gang", "keeper_at": [-2, 0], "home_name": "town", "hub_name": "Junction City", "sfx": "door",
+    "keeper": "Conductor Hollis", "keeper_sprite": "mg_hollis", "keeper_at": [-2, 0], "home_name": "town", "hub_name": "Junction City", "sfx": "door",
     "hook": {"text": "Conductor Hollis needs 10 coal and 3 iron bars to run the night train to Ironline.", "items": [["coal", 10], ["iron_bar", 3]], "crystals": 120},
     "lines": {
         "locked": "Night train's not running. Line's tied up in somebody's paperwork. When your name means something in this valley, come back and we'll talk tickets.",
@@ -200,7 +210,7 @@ CONTENT["ironline"] = {
 }
 # ---- Frostpeak (both, chapter 4) ----------------------------------------------------
 CONTENT["frostpeak"] = {
-    "keeper": "Brannoch", "keeper_sprite": "npc_hunter", "keeper_at": [-2, 0], "home_name": "the mountain", "hub_name": "Hearthhold", "sfx": "door",
+    "keeper": "Brannoch", "keeper_sprite": "mg_brannoch", "keeper_at": [-2, 0], "home_name": "the mountain", "hub_name": "Hearthhold", "sfx": "door",
     "hook": {"text": "Brannoch the guide needs 4 wool and 6 coal before he'll take you up to Frostpeak.", "items": [["sheep_wool", 4], ["coal", 6]], "crystals": 150},
     "lines": {
         "locked": "Up there? Not yet. The Reach is no place for someone who hasn't seen a few hard winters of trouble. Come back later on in your story.",
@@ -216,7 +226,7 @@ CONTENT["frostpeak"] = {
 }
 # ---- Windward (penguins, chapter 5) ------------------------------------------------
 CONTENT["windward"] = {
-    "keeper": "Captain Zephyr", "keeper_sprite": "penguin", "keeper_at": [-2, 0], "home_name": "the meadow", "hub_name": "Breezehaven", "sfx": "sparkle",
+    "keeper": "Captain Zephyr", "keeper_sprite": "mg_zephyr", "keeper_at": [-2, 0], "home_name": "the meadow", "hub_name": "Breezehaven", "sfx": "sparkle",
     "hook": {"text": "Captain Zephyr needs 4 cloth and a Refined Crystal to patch the balloon and lift it.", "items": [["cloth", 4], ["crystal_refined", 1]], "crystals": 200},
     "lines": {
         "locked": "Too much weather up there for a passenger, I'm afraid. When the Star Crystal's nearly whole again the winds will calm. Then we fly.",
@@ -232,7 +242,7 @@ CONTENT["windward"] = {
 }
 # ---- Gilt City (gangsters, chapter 5) ----------------------------------------------
 CONTENT["giltcity"] = {
-    "keeper": "Mister Pell", "keeper_sprite": "gambler", "keeper_at": [-2, 0], "home_name": "the farm", "hub_name": "Grand Plaza", "sfx": "door",
+    "keeper": "Mister Pell", "keeper_sprite": "mg_pell", "keeper_at": [-2, 0], "home_name": "the farm", "hub_name": "Grand Plaza", "sfx": "door",
     "hook": {"text": "Mister Pell wants 12 thug cash and a gold bar for the invitation to Gilt City.", "items": [["thug_cash", 12], ["gold_bar", 1]], "crystals": 250},
     "lines": {
         "locked": "Madame Aurum doesn't send the car for just anyone. Make a bigger name for yourself, then I'll come back with the engine running.",
@@ -254,23 +264,23 @@ AREAS = {}
 def A(aid, **kw): AREAS[aid] = kw
 
 # Gloamwood ------------------------------------------------------------------
-A("gloam_lanternfall", cols=42, rows=38, music="sanctuary", look="gloam", links={"gloam_violet_glade": ("n", 19), "gloam_crystal_thicket": ("e", 15)},
+A("gloam_lanternfall", cols=42, rows=38, music="mega_gloam", look="gloam", links={"gloam_violet_glade": ("n", 19), "gloam_crystal_thicket": ("e", 15)},
   plaza="flagstone", weather="fireflies",
-  structs=[("props/mushroom_tree_a", 2, 2, (8, 10)), ("props/mushroom_tree_b", 2, 2, (31, 27)), ("props/hermit_hut", 5, 3, (9, 19)), ("nature/hollow_tree", 6, 3, (30, 9)),
-           ("nature/forest_shrine", 4, 2, (16, 9)), ("props/lanterns_pink", 3, 1, (24, 14)), ("props/lanterns_cyan", 3, 1, (13, 26)), ("props/giant_flower", 5, 2, (32, 19)),
-           ("props/crystal_tree_pink", 1, 1, (6, 28)), ("props/lantern_lit", 0, 1, (17, 22)), ("props/lantern_lit", 0, 1, (25, 22))],
+  structs=[("props/gl_mush_house_a", 3, 3, (9, 12)), ("props/gl_mush_house_b", 3, 3, (31, 11)), ("props/gl_mush_house_a", 3, 3, (9, 26)), ("props/gl_moth_shrine", 2, 2, (16, 9)),
+           ("props/gl_lantern_posts", 2, 1, (25, 9)), ("props/mushroom_tree_b", 2, 2, (31, 27)), ("props/lanterns_pink", 3, 1, (24, 14)), ("props/lanterns_cyan", 3, 1, (13, 26)), ("props/giant_flower", 5, 2, (32, 19)),
+           ("props/crystal_tree_pink", 1, 1, (6, 30)), ("props/gl_lantern_posts", 2, 1, (16, 23)), ("props/gl_lantern_posts", 2, 1, (26, 23))],
   shop=("props/plaza_04", 4, 2, (26, 18), {"who": "Fenn the lamp-seller", "greet": "Moth-light, glow-jam, things that hum. What'll it be?",
         "items": [["echo_pudding", 330], ["wisp_thread", 160], ["ring_glow", 1150], ["mana_potion", 80], ["potion", 40]]}),
   heal=("props/glow_pond", 4, 2, (14, 17), {"hp": 4, "energy": 60, "msg": "You dip your hands in the glowing pond. Everything aches a little less."}),
   gate=("nature/fairy_ring", 1, 1, "spawn"),
   notes=[("A: read the lantern board", "Lantern board: 'Violet Glade, north. Crystal Thicket, east. The Moonpool is past the glade, and the Thornmother sleeps under it. Please don't wake her. (Someone has written underneath: SOMEONE HAS TO.)'")],
-  npcs=[("mg_liesl", "Liesl", "npc_lumen", ["Every lantern here has a moth, and every moth has a name. That one's Gerald.", "The Thornmother wasn't always thorns. Once she was the garden.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."]),
-        ("mg_fenn", "Fenn", "npc_shopkeeper", ["Glowmoss grows on the north side of everything. Even me, if I stand still.", "The Crystal Thicket chimes when the wind's right.", "Honey and wisp-light. That's the trick to a Gloam Pudding."]),
-        ("mg_bramble", "Bramble", "npc_child_girl_a", ["Did you see the giant flower? It sneezed on me.", "I'm not scared of the dark. The dark is scared of my lantern.", "The ghostfish in the Moonpool can see you even with their eyes closed."])],
+  npcs=[("mg_liesl", "Liesl", "mg_liesl", ["Every lantern here has a moth, and every moth has a name. That one's Gerald.", "The Thornmother wasn't always thorns. Once she was the garden.", "Wisp Sparks keep a pudding light. Bring one back and cook something nice."]),
+        ("mg_fenn", "Fenn", "mg_fenn", ["Glowmoss grows on the north side of everything. Even me, if I stand still.", "The Crystal Thicket chimes when the wind's right.", "Honey and wisp-light. That's the trick to a Gloam Pudding."]),
+        ("mg_bramble", "Bramble", "mg_bramble", ["Did you see the giant flower? It sneezed on me.", "I'm not scared of the dark. The dark is scared of my lantern.", "The ghostfish in the Moonpool can see you even with their eyes closed."])],
   job={"giver": "mg_liesl", "text": "Liesl wants 5 Wisp Thread to mend the lantern nets.", "items": [["wisp_thread", 5]], "reward": {"crystals": 300, "item": ["luna_moth", 1], "friend": ["mg_liesl", 15]},
        "lines": {"offer": ["The moth nets are fraying and the moths keep wandering off to the Glade.", "Five Wisp Thread would mend them. The glade wisps leave it everywhere."], "yes": "You're a dear. Mind the slimes, they're sticky.", "done": ["Perfect. Gerald says thank you. Gerald is the moth."]}},
   intro=["The ring lets go of you in a hush of moth-wings. Lanterns everywhere, hung from mushrooms taller than houses, and the moss underfoot is violet and soft.", "This is Lanternfall. Somebody waves. Somebody is always waving here."])
-A("gloam_violet_glade", cols=50, rows=44, music="jungle", look="gloam", ground_seam="teal_moss_dense", links={"gloam_lanternfall": ("s", 23), "gloam_moonpool": ("n", 30)},
+A("gloam_violet_glade", cols=50, rows=44, music="mega_gloam", look="gloam", ground_seam="teal_moss_dense", links={"gloam_lanternfall": ("s", 23), "gloam_moonpool": ("n", 30)},
   water=[(4, 11)], hills=[(5, 33)], gen_extra={"clumps": 2},
   structs=[("props/mushroom_tree_a", 2, 2, (12, 12)), ("props/mushroom_tree_b", 2, 2, (38, 30)), ("props/giant_flower", 5, 2, (36, 12)), ("props/carnivore_plant", 1, 1, (14, 32))],
   things=[("loot", {"item": "wisp_spark", "n": 1, "every": 3, "hint": "A: a spark caught in a web", "sprite": "props/spiral_fern"}),
@@ -286,7 +296,7 @@ A("gloam_crystal_thicket", cols=48, rows=42, music="hollow_heart", look="gloam",
   structs=[("props/crystal_tree", 3, 2, (16, 12)), ("props/crystal_tree_pink", 1, 1, (28, 30)), ("props/grotto_crystal_a", 3, 2, (22, 33)), ("props/crystal_arch_a", 3, 2, (40, 20)),
            ("props/crystal_tree_sway", 1, 1, (10, 30))],
   things=[("mrock", {"ore": "amethyst", "hp": 3, "n": 1, "sprite": "props/ore_amethyst"}), ("mrock", {"ore": "amethyst", "hp": 3, "n": 1, "sprite": "props/ore_amethyst_1"}),
-          ("mrock", {"ore": "crystal_ore", "hp": 4, "n": 1, "sprite": "props/ore_crystal"}), ("mrock", {"ore": "silver", "hp": 3, "n": 1, "sprite": "props/ore_silver"}),
+          ("mrock", {"ore": "shard", "hp": 4, "n": 2, "sprite": "props/ore_crystal"}), ("mrock", {"ore": "silver", "hp": 3, "n": 1, "sprite": "props/ore_silver"}),
           ("loot", {"item": "wisp_spark", "n": 2, "every": 4, "hint": "A: sparks humming in the crystals", "sprite": "props/ccrystal_2"}),
           ("note", {"hint": "A: listen to the chimes", "text": "The crystals ring a note when you touch them. Touch them in a row and it's almost a song. Almost the song Liesl hums."})],
   enemies=[("gloom_spider", 3), ("glade_wisp", 3), ("prism_wisp", 1)],
@@ -294,7 +304,7 @@ A("gloam_crystal_thicket", cols=48, rows=42, music="hollow_heart", look="gloam",
   intro=["Crystal grass, crystal trees, a wind that rings like a hundred tiny bells. Every step is a chord."])
 A("gloam_moonpool", cols=48, rows=44, music="marsh", look="gloam", ground_seam="teal_moss_wet", weather="fog", links={"gloam_violet_glade": ("s", 20)},
   water=[(10, 26), (37, 28)], boss_at=(23, 9),
-  structs=[("props/grotto_pool_a", 4, 2, (32, 14)), ("props/mushroom_tree_b", 2, 2, (12, 12)), ("nature/hollow_tree", 6, 3, (36, 36)), ("props/vines_a", 2, 1, (16, 7)), ("props/vines_b", 2, 1, (31, 7))],
+  structs=[("props/gl_thorn_rose", 1, 1, (27, 6)), ("props/grotto_pool_a", 4, 2, (32, 14)), ("props/mushroom_tree_b", 2, 2, (12, 12)), ("nature/hollow_tree", 6, 3, (36, 36)), ("props/vines_a", 2, 1, (16, 7)), ("props/vines_b", 2, 1, (31, 7))],
   things=[("loot", {"item": "luna_moth", "n": 1, "every": 7, "hint": "A: moths circling a stump", "sprite": "nature/stump2_1"}),
           ("heal", {"hp": 4, "energy": 50, "msg": "Moonlight off the water settles on you like a blanket.", "hint": "A: sit by the moonlit water"}),
           ("note", {"hint": "A: read the old sign", "text": "An old garden sign, nearly swallowed by thorns: 'MOTHER'S GARDEN. PLEASE DO NOT PICK THE ROSES. SHE WILL KNOW.'"})],
@@ -307,24 +317,25 @@ A("gloam_moonpool", cols=48, rows=44, music="marsh", look="gloam", ground_seam="
   intro=["Mist on black water, and a moon in it that isn't the moon in the sky. Somewhere under the thorns something is sleeping very lightly."])
 
 # Sunscorch --------------------------------------------------------------------
-A("desert_mirage_post", cols=44, rows=40, music="countryside", look="desert", links={"desert_dune_sea": ("w", 18), "desert_glass_canyon": ("n", 21)},
+A("desert_mirage_post", cols=44, rows=40, music="mega_desert", look="desert", links={"desert_dune_sea": ("w", 18), "desert_glass_canyon": ("n", 21)},
   plaza="cobble_warm", water=[(9, 9)],
-  structs=[("props/campsite", 2, 2, (12, 25)), ("props/campsite", 2, 2, (33, 27)), ("props/black_market", 4, 3, (31, 12)), ("props/plaza_00", 4, 2, (14, 14)),
+  structs=[("props/ds_house_a", 3, 3, (12, 25)), ("props/ds_house_b", 3, 3, (33, 27)), ("props/ds_bazaar_tent", 4, 3, (31, 12)), ("props/ds_sun_obelisk", 2, 2, (17, 9)),
+           ("props/ds_house_a", 3, 3, (36, 20)), ("props/plaza_00", 4, 2, (14, 14)),
            ("props/plaza_03", 4, 2, (29, 20)), ("props/water_tower", 2, 2, (37, 31)), ("nature/palm", 1, 1, (6, 14)), ("nature/palm", 1, 1, (14, 6)),
-           ("props/well_stone", 2, 1, (24, 12)), ("props/cart_covered", 3, 1, (8, 29))],
+           ("props/well_stone", 2, 1, (24, 12)), ("props/campsite", 2, 2, (8, 30))],
   shop=("props/plaza_07", 4, 2, (23, 26), {"who": "Old Rahim", "greet": "Shade, water, and whatever the caravans dropped off. Look around.",
         "items": [["sun_loaf", 300], ["spice", 160], ["dune_date", 60], ["greater_potion", 260], ["potion", 40]]}),
   heal=("props/well_stone", 2, 1, (18, 26), {"hp": 4, "energy": 60, "msg": "Cold well water, the best thing you've ever tasted."}),
-  gate=("props/cart_covered", 3, 1, "spawn"),
+  gate=("props/ds_sand_caravan", 2, 1, "spawn"),
   notes=[("A: read the caravan board", "Caravan board: 'DUNE SEA west. GLASS CANYON north, and past it the SUNKEN TEMPLE, where the Colossus walks at noon. Water before you go. Water after you go.'")],
-  npcs=[("mg_sefa", "Sefa", "npc_drifter", ["The dunes move a little every night. The map moves with them.", "Desert Saffron grows where the crabs dig. Funny, that.", "Sun Loaf keeps three days in a saddlebag. Learned that the hard way."]),
-        ("mg_rahim", "Rahim", "npc_shopkeeper", ["Fifty years at this well. Never once seen it run dry.", "The temple builders drew suns on everything. Even the spoons.", "Bring me sunstones and I'll pay you in shade. And crystals."]),
-        ("mg_nadia", "Nadia", "npc_scholar", ["The Colossus isn't evil. It's a guard that nobody told the war was over.", "The Glass Canyon was a lake once. Lightning turned the sand to glass.", "I'd give a lot for a scarab from the temple. For science."])],
+  npcs=[("mg_sefa", "Sefa", "mg_sefa", ["The dunes move a little every night. The map moves with them.", "Desert Saffron grows where the crabs dig. Funny, that.", "Sun Loaf keeps three days in a saddlebag. Learned that the hard way."]),
+        ("mg_rahim", "Rahim", "mg_rahim", ["Fifty years at this well. Never once seen it run dry.", "The temple builders drew suns on everything. Even the spoons.", "Bring me sunstones and I'll pay you in shade. And crystals."]),
+        ("mg_nadia", "Nadia", "mg_nadia", ["The Colossus isn't evil. It's a guard that nobody told the war was over.", "The Glass Canyon was a lake once. Lightning turned the sand to glass.", "I'd give a lot for a scarab from the temple. For science."])],
   job={"giver": "mg_nadia", "text": "Nadia the scholar wants 2 Sun Scarabs from the Sunken Temple.", "items": [["sun_scarab", 2]], "reward": {"crystals": 700, "item": ["greater_potion", 2], "friend": ["mg_nadia", 15]},
        "lines": {"offer": ["The Sunken Temple's full of carved scarabs. Gold ones. They're the key to the whole script.", "Two would do. I'd go myself but I'm a scholar, not a hero."], "yes": "Wonderful! Mind the glass golems. They don't mind you.", "done": ["Look at the wings! It's a calendar. The whole beetle is a calendar."]}},
   intro=["The caravan rolls in under a white sky. Tents, a stone well, palms leaning over a little green oasis, and beyond it nothing but gold in every direction.", "Mirage Post. The last well before the Sunscorch Expanse."])
-A("desert_dune_sea", cols=54, rows=46, music="wastes", look="desert", weather="dust", links={"desert_mirage_post": ("e", 20)},
-  hills=[(14, 12), (16, 34)], water=[(38, 36)],
+A("desert_dune_sea", cols=54, rows=46, music="mega_desert", look="desert", weather="dust", links={"desert_mirage_post": ("e", 20)},
+  hills=[(14, 12)], water=[(38, 36)],
   structs=[("props/broken_bus", 6, 2, (28, 10)), ("props/bk_dune_l", 6, 2, (40, 12)), ("props/skeleton", 1, 1, (24, 30)), ("props/rusted_car", 3, 1, (8, 24)), ("nature/dead_giant", 4, 2, (32, 32))],
   things=[("loot", {"item": "spice", "n": 2, "every": 2, "hint": "A: saffron in a hollow", "sprite": "nature/dune_9"}),
           ("loot", {"item": "dune_date", "n": 3, "every": 2, "hint": "A: a date palm's drop", "sprite": "nature/palm"}),
@@ -335,7 +346,7 @@ A("desert_dune_sea", cols=54, rows=46, music="wastes", look="desert", weather="d
   forage=[["spice", 0.3], ["dune_date", 0.4], ["fiber", 0.3], ["flower", 0.1]],
   intro=["Dunes like frozen waves, as far as you can see. Somewhere out here a bus is half buried, and something under the sand is singing."])
 A("desert_glass_canyon", cols=50, rows=44, music="quarry", look="desert", ground_seam="cave_earth_floor", links={"desert_mirage_post": ("s", 22), "desert_sunken_temple": ("n", 22)},
-  hills=[(10, 14), (38, 12), (38, 32)], feature=("grass_dry", [(12, 34, 5)]),
+  hills=[(10, 14), (38, 12)], feature=("grass_dry", [(12, 34, 5)]),
   structs=[("props/stone_head", 6, 3, (12, 26)), ("props/toppled_statue", 4, 2, (34, 22)), ("props/standing_stones", 5, 2, (32, 34))],
   things=[("mrock", {"ore": "sunstone", "hp": 3, "n": 1, "sprite": "props/boulder2_m_b"}), ("mrock", {"ore": "sunstone", "hp": 3, "n": 1, "sprite": "props/boulder2_l_a"}),
           ("mrock", {"ore": "gold", "hp": 4, "n": 1, "sprite": "props/ore_gold"}), ("mrock", {"ore": "copper", "hp": 2, "n": 2, "sprite": "props/ore_copper"}),
@@ -347,7 +358,7 @@ A("desert_glass_canyon", cols=50, rows=44, music="quarry", look="desert", ground
   intro=["Red rock walls and a floor of sand fused into glass in long, lightning-shaped streaks. It crunches. The golems here are made of it."])
 A("desert_sunken_temple", cols=46, rows=42, music="ruins", look="desert", ground_seam="pale_stone", path="flagstone", border="cliff", links={"desert_glass_canyon": ("s", 20)},
   boss_at=(21, 9), plaza=None,
-  structs=[("props/r_ruins_45", 4, 3, (13, 12)), ("props/r_ruins_46", 4, 3, (31, 12)), ("props/r_ruins_14", 5, 2, (12, 28)), ("props/r_ruins_33", 7, 3, (32, 30)),
+  structs=[("props/ds_sun_obelisk", 2, 2, (16, 9)), ("props/ds_sun_obelisk", 2, 2, (28, 9)), ("props/r_ruins_45", 4, 3, (13, 12)), ("props/r_ruins_46", 4, 3, (31, 12)), ("props/r_ruins_14", 5, 2, (12, 28)), ("props/r_ruins_33", 7, 3, (32, 30)),
            ("props/r_ruins_41", 1, 1, (17, 7)), ("props/r_ruins_42", 1, 1, (27, 7)), ("props/r_ruins_24", 2, 1, (8, 20)), ("props/r_ruins_19", 2, 1, (38, 20)),
            ("props/r_ruins_01", 1, 1, (16, 20)), ("props/r_ruins_02", 1, 1, (28, 20)), ("props/r_ruins_07", 2, 1, (22, 34))],
   things=[("loot", {"item": "sun_scarab", "n": 1, "every": 5, "hint": "A: a gold scarab in a niche", "sprite": "props/r_ruins_48"}),
@@ -367,21 +378,21 @@ A("desert_sunken_temple", cols=46, rows=42, music="ruins", look="desert", ground
 A("iron_junction", cols=44, rows=40, music="docks", look="rail", links={"iron_freight_yards": ("w", 17), "iron_mill_district": ("n", 21)},
   plaza="city_pavement", ground_seam="brick_herring",
   structs=[("buildings/station", 13, 4, (14, 12)), ("props/train_engine", 7, 2, (31, 14)), ("buildings/warehouse_b", 10, 5, (32, 30)), ("props/water_tower", 2, 2, (8, 29)),
-           ("props/floodlight_on", 0, 1, (17, 24)), ("props/floodlight_on", 0, 1, (27, 24)), ("props/bus_stop", 4, 2, (12, 25)), ("props/payphone", 0, 1, (27, 11)), ("props/radio_tower_a", 1, 1, (37, 8))],
+           ("props/floodlight_on", 0, 1, (17, 24)), ("props/floodlight_on", 0, 1, (27, 24)), ("props/bus_stop", 4, 2, (12, 25)), ("props/payphone", 0, 1, (27, 11)), ("props/ir_signal_tower", 1, 2, (37, 8)), ("props/ir_coal_hopper", 2, 2, (7, 20))],
   shop=("props/plaza_70", 4, 2, (24, 27), {"who": "Dot's Dining Car", "greet": "Coffee's hot, stew's hotter. Cash only, sugar.",
         "items": [["stew_beef", 290], ["coffee", 90], ["ring_steel", 1200], ["greater_potion", 260], ["potion", 40]]}),
   heal=("props/bench2_iron_a", 2, 1, (17, 27), {"hp": 4, "energy": 60, "msg": "You sit a while and watch the trains not come. It's nicer than it sounds."}),
   gate=("props/ticket_booth", 3, 1, "spawn"),
   notes=[("A: read the timetable", "Timetable, all trains CANCELLED by order of BARON COALBROOK. Underneath, in chalk: 'FREIGHT YARDS WEST. MILL NORTH. THE BARON HIDES IN THE TUNNELS PAST THE MILL. SOMEBODY DO SOMETHING.'")],
-  npcs=[("mg_hollis", "Hollis", "man_gang", ["Every rail in this valley runs through Junction. That's why the Baron wants it.", "Rail Chain, Engine Oil, Tin. Junction runs on all three.", "My engine's the last one he hasn't bought. She stays mine."]),
-        ("mg_dot", "Dot", "woman", ["You want the stew? Everybody wants the stew.", "Charcoal from the firebox, that's the secret. Smoky.", "The Baron eats here. Tips terribly."]),
-        ("mg_skip", "Skip", "npc_child_boy_a", ["Paper! Baron cancels all trains! Read all about it!", "I sold a paper to a rail bot once. It tried to eat it.", "The tunnels go under the whole city. I've seen like, half."])],
+  npcs=[("mg_hollis", "Hollis", "mg_hollis", ["Every rail in this valley runs through Junction. That's why the Baron wants it.", "Rail Chain, Engine Oil, Tin. Junction runs on all three.", "My engine's the last one he hasn't bought. She stays mine."]),
+        ("mg_dot", "Dot", "mg_dot", ["You want the stew? Everybody wants the stew.", "Charcoal from the firebox, that's the secret. Smoky.", "The Baron eats here. Tips terribly."]),
+        ("mg_skip", "Skip", "mg_skip", ["Paper! Baron cancels all trains! Read all about it!", "I sold a paper to a rail bot once. It tried to eat it.", "The tunnels go under the whole city. I've seen like, half."])],
   job={"giver": "mg_hollis", "text": "Hollis needs 4 Rail Chain and 2 Engine Oil to fix the yard switch.", "items": [["chain_link", 4], ["oil", 2]], "reward": {"crystals": 650, "item": ["gear", 2], "friend": ["mg_hollis", 15]},
        "lines": {"offer": ["The Baron's bots wrecked the yard switch. No switch, no trains, no Junction.", "Four Rail Chain and two cans of Engine Oil. The bots carry both."], "yes": "Good. Hit 'em where the rivets are.", "done": ["She switches! Hear that clunk? That's freedom, that is."]}},
   intro=["The night train screeches into Junction City under a sky the colour of an old penny. Coal smoke, brick, and every timetable on the station wall says CANCELLED.", "Somebody here runs the rails. Somebody here is about to have a very bad week."])
 A("iron_freight_yards", cols=54, rows=44, music="underground", look="rail", ground_seam="ballast", path="dock_concrete", links={"iron_junction": ("e", 18)},
   feature=("curb_road", [(14, 12, 5), (40, 34, 5)]),
-  structs=[("props/crane", 2, 2, (12, 30)), ("props/container_red", 3, 1, (30, 10)), ("props/container_blue", 3, 1, (36, 12)), ("props/cargo_yellow", 2, 1, (20, 32)),
+  structs=[("props/ir_coal_hopper", 2, 2, (20, 12)), ("props/ir_signal_tower", 1, 2, (46, 30)), ("props/crane", 2, 2, (12, 30)), ("props/container_red", 3, 1, (30, 10)), ("props/container_blue", 3, 1, (36, 12)), ("props/cargo_yellow", 2, 1, (20, 32)),
            ("props/forklift", 2, 1, (40, 26)), ("props/container_green", 3, 1, (8, 12)), ("props/train_car", 5, 2, (28, 32)), ("props/water_tower", 2, 2, (44, 9))],
   things=[("loot", {"item": "oil", "n": 2, "every": 2, "hint": "A: a leaky oil drum", "sprite": "props/oil_drums"}),
           ("loot", {"item": "chain_link", "n": 2, "every": 3, "hint": "A: chain on a broken coupling", "sprite": "props/crates_pallet"}),
@@ -404,7 +415,7 @@ A("iron_mill_district", cols=50, rows=44, music="hideout", look="rail", ground_s
   intro=["Brick mills with every window lit, chimneys coughing, and a great silo with the Baron's crest painted on it twice as tall as a house."])
 A("iron_tunnels", cols=46, rows=42, music="underground", look="rail", ground_seam="cave_stone_floor", path="ballast", border="cliff", backdrop="night", weather="clear",
   links={"iron_mill_district": ("s", 21)}, boss_at=(21, 9),
-  structs=[("props/cave_rail", 2, 1, (12, 14)), ("props/cave_rail_bend", 2, 1, (33, 14)), ("props/cave_cart", 1, 1, (14, 28)), ("props/mine_dark_lamp_0", 0, 1, (17, 7)),
+  structs=[("props/ir_baron_car", 7, 2, (27, 7)), ("props/cave_rail", 2, 1, (12, 14)), ("props/cave_rail_bend", 2, 1, (33, 14)), ("props/cave_cart", 1, 1, (14, 28)), ("props/mine_dark_lamp_0", 0, 1, (17, 7)),
            ("props/mine_dark_lamp_1", 0, 1, (26, 7)), ("props/cave_stalag_l", 1, 1, (8, 22)), ("props/cave_stalag_m", 1, 1, (38, 24)), ("props/cave_ore_crate", 1, 1, (32, 30))],
   things=[("mrock", {"ore": "tin", "hp": 3, "n": 2, "sprite": "props/mrock_stone_0"}), ("mrock", {"ore": "gold", "hp": 4, "n": 1, "sprite": "props/ore_gold_1"}),
           ("mrock", {"ore": "coal", "hp": 2, "n": 3, "sprite": "props/ore_coal_1"}),
@@ -419,22 +430,22 @@ A("iron_tunnels", cols=46, rows=42, music="underground", look="rail", ground_sea
   intro=["Under the mills the old rail tunnels run in the dark, lamps flickering along the walls. Far ahead, a private rail car is parked with all its lights on."])
 
 # Frostpeak ---------------------------------------------------------------------
-A("frost_hearthhold", cols=44, rows=40, music="winter", look="snow", links={"frost_glacier": ("n", 21), "frost_caverns": ("w", 17), "frost_falls": ("e", 17)},
+A("frost_hearthhold", cols=44, rows=40, music="mega_frost", look="snow", links={"frost_glacier": ("n", 21), "frost_caverns": ("w", 17), "frost_falls": ("e", 17)},
   plaza="snow_paving",
-  structs=[("props/ice_house_1", 6, 3, (12, 12)), ("props/ice_house_2", 6, 3, (31, 12)), ("props/fishing_hut_stilts_winter", 5, 3, (32, 29)), ("props/crystal_tree_frost", 2, 2, (8, 26)),
-           ("nature/lamp_snow", 0, 1, (17, 24)), ("nature/lamp_snow", 0, 1, (27, 24)), ("nature/big_snowpine_a", 1, 2, (6, 9)), ("nature/big_snowpine_b", 1, 2, (38, 9)), ("props/lookout_tower", 2, 2, (37, 22))],
+  structs=[("props/fr_lodge", 3, 3, (12, 12)), ("props/fr_cabin", 2, 2, (31, 12)), ("props/fr_hearth", 3, 2, (22, 9)), ("props/fr_bell_tower", 2, 3, (37, 20)), ("props/fr_lodge", 3, 3, (36, 30)), ("props/fishing_hut_stilts_winter", 5, 3, (32, 29)), ("props/crystal_tree_frost", 2, 2, (8, 26)),
+           ("nature/lamp_snow", 0, 1, (17, 24)), ("nature/lamp_snow", 0, 1, (27, 24)), ("nature/big_snowpine_a", 1, 2, (6, 9)), ("nature/big_snowpine_b", 1, 2, (38, 9)), ("props/fr_cabin", 2, 2, (8, 18))],
   shop=("props/ice_stall_open", 7, 2, (21, 28), {"who": "Ingrid's Stall", "greet": "Warm things for cold people. Everything's knitted, even the sorbet. Not really.",
         "items": [["frost_sorbet", 460], ["ring_warmth", 1600], ["hot_chocolate", 120], ["greater_potion", 260], ["potion", 40]]}),
   heal=("props/hot_spring", 2, 2, (12, 27), {"hp": 5, "energy": 80, "msg": "You sink into the hot spring up to your chin. Somewhere a snowflake lands on your nose and gives up."}),
-  gate=("props/veh_crystal_sled_side", 2, 1, "spawn"),
+  gate=("props/fr_sled_station", 2, 2, "spawn"),
   notes=[("A: read the guide's board", "Guide's board: 'GLACIER FIELDS north, then the SUMMIT. RIME CAVERNS west. FROZEN FALLS east, good fishing. Something big sleeps on the Summit. Don't sing near it.'")],
-  npcs=[("mg_brannoch", "Brannoch", "npc_hunter", ["Hearthhold's been here as long as the snow. Longer, some say.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.", "The Wyrm on the Summit wakes every hundred years. Lucky you."]),
-        ("mg_ingrid", "Ingrid", "npc_baker", ["Edelweiss, milk and a Rime Crystal. That's a sorbet that never melts.", "My grandmother knitted the first igloo. Don't ask how.", "Glacier Glass makes the best windows. You can see next week through it."]),
-        ("mg_tove", "Tove", "npc_child_girl_b", ["I named the pike in the falls. They're all called Pike.", "The caverns sing when the wind goes through. I sing back.", "Brannoch says I can go to the Summit when I'm nine hundred."])],
+  npcs=[("mg_brannoch", "Brannoch", "mg_brannoch", ["Hearthhold's been here as long as the snow. Longer, some say.", "Rime Crystal won't melt in a forge. Freeze it into a sorbet instead.", "The Wyrm on the Summit wakes every hundred years. Lucky you."]),
+        ("mg_ingrid", "Ingrid", "mg_ingrid", ["Edelweiss, milk and a Rime Crystal. That's a sorbet that never melts.", "My grandmother knitted the first igloo. Don't ask how.", "Glacier Glass makes the best windows. You can see next week through it."]),
+        ("mg_tove", "Tove", "mg_tove", ["I named the pike in the falls. They're all called Pike.", "The caverns sing when the wind goes through. I sing back.", "Brannoch says I can go to the Summit when I'm nine hundred."])],
   job={"giver": "mg_ingrid", "text": "Ingrid wants 3 Rime Crystals and 2 Glacier Glass for her new window.", "items": [["frost", 3], ["glass_frosted", 2]], "reward": {"crystals": 1100, "max_energy": 10, "friend": ["mg_ingrid", 15]},
        "lines": {"offer": ["I want a window that never frosts over. Rime Crystal for the frame, Glacier Glass for the pane.", "Three crystals and two glass. The Caverns and the Glacier have both."], "yes": "Wrap up warm. The golems don't feel the cold, but you do.", "done": ["Look at that view. I can see the Summit from my stove! Here, something for your trouble."]}},
   intro=["The sled tips you out in front of a village of snow-domed houses with smoke curling from every chimney. Lanterns on poles, a steaming spring, and the peaks all round like a crown.", "Hearthhold. Even the snow seems friendly here."])
-A("frost_glacier", cols=52, rows=44, music="mountain", look="snow", ground_seam="frost_grass", links={"frost_hearthhold": ("s", 24), "frost_summit": ("n", 30)},
+A("frost_glacier", cols=52, rows=44, music="mega_frost", look="snow", ground_seam="frost_grass", links={"frost_hearthhold": ("s", 24), "frost_summit": ("n", 30)},
   hills=[(10, 12), (40, 30)], feature=("cave_ice", [(36, 12, 5), (12, 32, 4)]), gen_extra={"clumps": 2},
   structs=[("props/crystal_tree_frost", 2, 2, (20, 30)), ("props/ice_crystal_lit", 3, 3, (30, 22)), ("nature/big_snowpine_a", 1, 2, (8, 24))],
   things=[("mrock", {"ore": "frost", "hp": 4, "n": 1, "sprite": "props/mrock_ice_0"}), ("mrock", {"ore": "frost", "hp": 4, "n": 1, "sprite": "props/mrock_ice_1"}),
@@ -456,8 +467,8 @@ A("frost_caverns", cols=46, rows=42, music="mine_deep", look="snow", ground_seam
   enemies=[("frost_spider", 3), ("rime_golem", 2), ("ice_wisp", 2)],
   forage=[["mushroom", 0.3], ["cave_bloom", 0.1]],
   intro=["Blue ice overhead, blue ice underfoot, and your breath hangs in the air like it's afraid to leave. The walls hum one long, low note."])
-A("frost_falls", cols=48, rows=42, music="colony_ice", look="snow", ground_seam="snow_smooth", links={"frost_hearthhold": ("w", 17)},
-  water=[(30, 24), (12, 30)], hills=[(36, 8)],
+A("frost_falls", cols=48, rows=42, music="mega_frost", look="snow", ground_seam="snow_smooth", links={"frost_hearthhold": ("w", 17)},
+  water=[(30, 24), (12, 30)],
   structs=[("props/waterfall_pool", 5, 2, (32, 13)), ("props/fishing_hut_stilts_winter", 5, 3, (14, 13)), ("nature/big_snowpine_b", 1, 2, (8, 22))],
   things=[("loot", {"item": "ice_pike", "n": 1, "every": 4, "hint": "A: a pike frozen in the edge ice", "sprite": "props/icicles_1"}),
           ("heal", {"hp": 4, "energy": 50, "msg": "The falls roar under the ice. Somehow it's peaceful.", "hint": "A: watch the frozen falls"}),
@@ -467,7 +478,7 @@ A("frost_falls", cols=48, rows=42, music="colony_ice", look="snow", ground_seam=
   forage=[["edelweiss", 0.3], ["wild_herb", 0.3]],
   intro=["A waterfall frozen halfway down, still pouring under its skin of ice. The pools below are open and dark, and full of pike."])
 A("frost_summit", cols=44, rows=40, music="colony_ice", look="snow", ground_seam="snow_smooth", weather="blizzard", links={"frost_glacier": ("s", 20)}, boss_at=(20, 8),
-  hills=[(8, 22), (36, 24)],
+  hills=[(8, 22)],
   structs=[("props/ice_crystal_lit", 3, 3, (11, 9)), ("props/ice_crystal_lit", 3, 3, (30, 9)), ("props/crystal_tree_frost", 2, 2, (14, 32)), ("props/snowdrift_3", 2, 1, (30, 32))],
   things=[("mrock", {"ore": "frost", "hp": 4, "n": 2, "sprite": "props/mrock_ice_0"}),
           ("loot", {"item": "glass_frosted", "n": 2, "every": 4, "hint": "A: wind-polished ice", "sprite": "props/icicles_2"}),
@@ -481,22 +492,23 @@ A("frost_summit", cols=44, rows=40, music="colony_ice", look="snow", ground_seam
   intro=["The top of the world. Wind like knives, sky like glass, and in the middle of the snowfield a long shape under the snow, breathing."])
 
 # Windward ------------------------------------------------------------------------
-A("wind_breezehaven", cols=44, rows=40, music="sky", look="sky", links={"wind_sunrise_shelf": ("w", 17), "wind_storm_shelf": ("n", 21)},
+A("wind_breezehaven", cols=44, rows=40, music="mega_wind", look="sky", links={"wind_sunrise_shelf": ("w", 17), "wind_storm_shelf": ("n", 21)},
   plaza="float_stone",
-  structs=[("props/sky_temple", 9, 3, (14, 11)), ("props/windmill3", 3, 3, (33, 12)), ("props/balloon", 3, 2, (8, 27)), ("nature/cloud_tree_a", 2, 2, (36, 26)),
-           ("nature/cloud_tree_b", 2, 2, (30, 31)), ("props/stall2_blue", 3, 1, (28, 22)), ("props/sky_stairs", 5, 3, (36, 33))],
-  shop=("props/stall2_white", 3, 1, (14, 27), {"who": "Gull's Goods", "greet": "Feathers, fluff, and food that floats! Mind it doesn't float off.",
+  structs=[("props/sky_temple", 9, 3, (14, 11)), ("props/windmill3", 3, 3, (33, 12)), ("props/wi_prop_cottage", 2, 2, (8, 26)), ("props/wi_prop_cottage", 2, 2, (34, 21)),
+           ("props/wi_wind_shrine", 2, 2, (27, 9)), ("nature/cloud_tree_a", 2, 2, (36, 26)),
+           ("nature/cloud_tree_b", 2, 2, (30, 31)), ("props/sky_stairs", 5, 3, (36, 33))],
+  shop=("props/wi_cloud_stall", 2, 1, (14, 27), {"who": "Gull's Goods", "greet": "Feathers, fluff, and food that floats! Mind it doesn't float off.",
         "items": [["cloud_souffle", 560], ["charm_sky", 1900], ["storm_fluff", 300], ["greater_potion", 260], ["wonder_elixir", 900]]}),
   heal=("props/glow_pool_moon", 2, 1, (24, 26), {"hp": 5, "energy": 80, "msg": "You lie back on a cloud. It's exactly as comfortable as you always hoped."}),
-  gate=("props/veh_balloon", 3, 2, "spawn"),
+  gate=("props/wi_mooring_tower", 2, 2, "spawn"),
   notes=[("A: read the wind vane", "Wind vane board: 'SUNRISE SHELF west, gentle. STORM SHELF north, not gentle. STARFALL GARDEN past the storm, where the Roc nests. Hold on to your hat. Hold on to your penguin.'")],
-  npcs=[("mg_zephyr", "Zephyr", "penguin", ["Breezehaven! Where penguins fly, technically, in baskets.", "Storm Glass comes from where lightning lands. Don't be where lightning lands.", "The Roc thinks the whole sky is its nest. It isn't wrong."]),
-        ("mg_gull", "Gull", "npc_fisherman", ["You can fish off the edge of the island. Skyfin bite at dawn.", "Storm Fluff makes a souffle rise like a cloud. Because it is one.", "I came up in a balloon forty years ago. Never found the way down. Never looked."]),
-        ("mg_nimbus", "Nimbus", "penguin_wizard", ["The Star Crystal's light reaches all the way up here. The clouds love it.", "The Storm Shelf was calm, once. The Roc changed that.", "Bring me Storm Glass and I'll teach you to bottle a breeze. Well. Pay you, anyway."])],
+  npcs=[("mg_zephyr", "Zephyr", "mg_zephyr", ["Breezehaven! Where penguins fly, technically, in baskets.", "Storm Glass comes from where lightning lands. Don't be where lightning lands.", "The Roc thinks the whole sky is its nest. It isn't wrong."]),
+        ("mg_gull", "Gull", "mg_gull", ["You can fish off the edge of the island. Skyfin bite at dawn.", "Storm Fluff makes a souffle rise like a cloud. Because it is one.", "I came up in a balloon forty years ago. Never found the way down. Never looked."]),
+        ("mg_nimbus", "Nimbus", "mg_nimbus", ["The Star Crystal's light reaches all the way up here. The clouds love it.", "The Storm Shelf was calm, once. The Roc changed that.", "Bring me Storm Glass and I'll teach you to bottle a breeze. Well. Pay you, anyway."])],
   job={"giver": "mg_nimbus", "text": "Nimbus wants 3 Storm Glass and 2 Storm Fluff to calm the winds.", "items": [["storm_glass", 3], ["storm_fluff", 2]], "reward": {"crystals": 1500, "max_hp": 20, "friend": ["mg_nimbus", 15]},
        "lines": {"offer": ["The winds are getting wilder every day. I can calm them, with the right weather in a jar.", "Three Storm Glass and two Storm Fluff. The Storm Shelf has plenty."], "yes": "Splendid. Don't hold anything metal up there.", "done": ["Feel that? A breeze. Just a breeze. Take this, you'll need it on the Shelf."]}},
   intro=["The balloon drifts up through the last cloud and into blue. Islands float in it like stepping stones, one with a windmill, one with a temple, one with a penguin waving both flippers.", "Breezehaven. The wind here smells of rain that hasn't happened yet."])
-A("wind_sunrise_shelf", cols=50, rows=44, music="sky", look="sky", ground_seam="cloud", links={"wind_breezehaven": ("e", 18)},
+A("wind_sunrise_shelf", cols=50, rows=44, music="mega_wind", look="sky", ground_seam="cloud", links={"wind_breezehaven": ("e", 18)},
   water=[(12, 30)], hills=[(34, 12)],
   structs=[("props/sky_bridge", 10, 2, (22, 31)), ("nature/cloud_tree_c", 2, 2, (12, 12)), ("nature/cloud_tree_a", 2, 2, (38, 32))],
   things=[("loot", {"item": "storm_fluff", "n": 1, "every": 3, "hint": "A: a tuft of storm cloud", "sprite": "props/skydeco_5"}),
@@ -508,7 +520,7 @@ A("wind_sunrise_shelf", cols=50, rows=44, music="sky", look="sky", ground_seam="
   intro=["Pink cloud and gold light. The Shelf is always just at sunrise, no matter what time it is down below."])
 A("wind_storm_shelf", cols=48, rows=42, music="danger", look="sky", ground_seam="starry_cloud", weather="storm", links={"wind_breezehaven": ("s", 22), "wind_starfall_garden": ("n", 22)},
   hills=[(10, 12), (38, 30)],
-  structs=[("props/lightning_rod", 0, 1, (16, 20)), ("props/lightning_rod", 0, 1, (32, 22)), ("props/moon_crystal_blue", 2, 2, (36, 12)), ("props/moon_crystal_pink", 2, 2, (12, 32))],
+  structs=[("props/wi_storm_vane", 1, 1, (24, 12)), ("props/lightning_rod", 0, 1, (16, 20)), ("props/lightning_rod", 0, 1, (32, 22)), ("props/moon_crystal_blue", 2, 2, (36, 12)), ("props/moon_crystal_pink", 2, 2, (12, 32))],
   things=[("mrock", {"ore": "storm_glass", "hp": 4, "n": 1, "sprite": "props/moon_crystal_blue_s"}), ("mrock", {"ore": "storm_glass", "hp": 4, "n": 1, "sprite": "props/moon_crystal_pink_s"}),
           ("mrock", {"ore": "gold", "hp": 4, "n": 1, "sprite": "props/ore_gold"}),
           ("loot", {"item": "storm_fluff", "n": 2, "every": 3, "hint": "A: storm fluff snagged on a rod", "sprite": "props/skydeco_5"}),
@@ -516,7 +528,7 @@ A("wind_storm_shelf", cols=48, rows=42, music="danger", look="sky", ground_seam=
   enemies=[("storm_wisp", 3), ("cloud_knight", 2), ("gale_finargle", 2)],
   forage=[["star_dust", 0.1], ["wild_herb", 0.2]],
   intro=["Black cloud underfoot, lightning in it like veins. The rods hum. Your hair stands up. So does the pup's."])
-A("wind_starfall_garden", cols=46, rows=42, music="moon", look="sky", ground_seam="starry_cloud", path="float_stone", links={"wind_storm_shelf": ("s", 21)}, boss_at=(21, 9),
+A("wind_starfall_garden", cols=46, rows=42, music="mega_wind", look="sky", ground_seam="starry_cloud", path="float_stone", links={"wind_storm_shelf": ("s", 21)}, boss_at=(21, 9),
   water=[(36, 28)],
   structs=[("props/observatory", 6, 4, (12, 30)), ("props/star_crater", 3, 2, (32, 14)), ("props/moon_crystal_pink_t", 1, 1, (14, 12)), ("props/moon_crystal_blue", 2, 2, (28, 32))],
   things=[("loot", {"item": "star_dust", "n": 2, "every": 3, "hint": "A: a crater full of glitter", "sprite": "props/skydeco_2"}),
@@ -532,23 +544,23 @@ A("wind_starfall_garden", cols=46, rows=42, music="moon", look="sky", ground_sea
   intro=["Above the storm, the sky goes dark and full of stars, close enough to touch. Flowers glow in the cloud. In the middle of it all, a nest the size of a barn."])
 
 # Gilt City ----------------------------------------------------------------------
-A("gilt_grand_plaza", cols=44, rows=40, music="uptown", look="gilt", ground_seam="cobble_warm", path="plaza_tiles", links={"gilt_casino_row": ("e", 17), "gilt_gardens": ("w", 17)},
+A("gilt_grand_plaza", cols=44, rows=40, music="mega_gilt", look="gilt", ground_seam="cobble_warm", path="plaza_tiles", links={"gilt_casino_row": ("e", 17), "gilt_gardens": ("w", 17)},
   plaza="plaza_tiles",
-  structs=[("buildings/mansion", 12, 4, (21, 11)), ("props/gold_fountain", 3, 2, (12, 15)), ("props/plaza_49", 4, 3, (31, 15)), ("props/plaza_16", 0, 1, (17, 24)),
-           ("props/plaza_17", 0, 1, (27, 24)), ("props/plaza_67", 4, 2, (10, 27)), ("props/plaza_68", 4, 2, (33, 27)), ("props/lux_car_red", 3, 1, (36, 33)), ("buildings/clock_tower", 4, 4, (7, 9))],
+  structs=[("buildings/mansion", 12, 4, (21, 11)), ("props/gold_fountain", 3, 2, (12, 15)), ("props/gc_aurum_statue", 1, 2, (31, 15)), ("props/plaza_16", 0, 1, (17, 24)),
+           ("props/plaza_17", 0, 1, (27, 24)), ("props/plaza_67", 4, 2, (10, 27)), ("props/plaza_68", 4, 2, (33, 27)), ("props/lux_car_red", 3, 1, (36, 33))],
   shop=("props/plaza_05", 4, 2, (24, 27), {"who": "Maison Dorée", "greet": "Only the finest. Prices on request. Requests are discouraged.",
         "items": [["sun_flan", 600], ["golden_dice", 2100], ["fine_wine", 0], ["greater_potion", 260], ["wonder_elixir", 900]]}),
   heal=("props/fountain2", 6, 3, (19, 30), {"hp": 5, "energy": 80, "msg": "You sit on the fountain's edge. The spray is cool and smells faintly of money."}),
   gate=("props/limo", 4, 1, "spawn"),
   notes=[("A: read the brass plaque", "Brass plaque: 'GILT CITY. CASINO ROW east, and beneath it THE VAULTS. GILDED GARDENS west. By order of MADAME AURUM, everything here is hers. Including this plaque.'")],
-  npcs=[("mg_pell", "Pell", "gambler", ["Madame owns the casinos, the gardens, the Vaults, and the fountain. The water is rented.", "Gilt Chips spend like cash on the Row.", "She'll see you in the Vaults. She sees everyone in the Vaults, eventually."]),
-        ("mg_odette", "Odette", "npc_artist", ["I paint the statues. Madame keeps asking me to make them look more like her.", "Gold leaf on a flan. Disgusting. Delicious.", "The gardens are the only place in Gilt City that's free. Don't tell her."]),
-        ("mg_cass", "Cass", "speedster", ["Fastest legs in Gilt. Madame's guards can't catch me.", "There's a lucky coin under every third bench. I've checked.", "I'd steal her crown, but it's glued on."])],
+  npcs=[("mg_pell", "Pell", "mg_pell", ["Madame owns the casinos, the gardens, the Vaults, and the fountain. The water is rented.", "Gilt Chips spend like cash on the Row.", "She'll see you in the Vaults. She sees everyone in the Vaults, eventually."]),
+        ("mg_odette", "Odette", "mg_odette", ["I paint the statues. Madame keeps asking me to make them look more like her.", "Gold leaf on a flan. Disgusting. Delicious.", "The gardens are the only place in Gilt City that's free. Don't tell her."]),
+        ("mg_cass", "Cass", "mg_cass", ["Fastest legs in Gilt. Madame's guards can't catch me.", "There's a lucky coin under every third bench. I've checked.", "I'd steal her crown, but it's glued on."])],
   job={"giver": "mg_odette", "text": "Odette wants 3 Gold Leaf and a Pearl Necklace for her masterpiece.", "items": [["gold_bundle", 3], ["pearl_necklace", 1]], "reward": {"crystals": 2000, "item": ["wonder_elixir", 1], "friend": ["mg_odette", 15]},
        "lines": {"offer": ["I'm painting Gilt City as it really is. For that I need real gold leaf and a real pearl.", "Three Gold Leaf and one Pearl Necklace. The Vaults have both, if you're brave."], "yes": "Wonderful. Wear something dark, the guards hate that.", "done": ["Perfect. Look at it shine! She'll hate it. Here, for you."]}},
   intro=["The limousine purrs into a plaza paved with gold-veined stone. Statues, fountains, a mansion with a hundred windows, and every lamp post has a little crown on top.", "Gilt City. Everything glitters. Everything has a price."])
 A("gilt_casino_row", cols=50, rows=42, music="neon", look="gilt", ground_seam="city_pavement", path="brick_herring", links={"gilt_grand_plaza": ("w", 17), "gilt_vaults": ("n", 24)},
-  structs=[("buildings/neon_hotel", 9, 4, (14, 12)), ("buildings/penthouse", 6, 4, (36, 12)), ("props/spotlight_pink", 1, 1, (24, 9)), ("props/spotlight_cyan", 1, 1, (30, 30)),
+  structs=[("props/gc_casino", 8, 4, (24, 12)), ("buildings/neon_hotel", 9, 4, (10, 30)), ("buildings/penthouse", 6, 4, (36, 12)), ("props/spotlight_pink", 1, 1, (24, 9)), ("props/spotlight_cyan", 1, 1, (30, 30)),
            ("props/betting_booth", 3, 2, (12, 30)), ("props/lux_car_black", 3, 1, (36, 32)), ("props/neon_sign_2", 2, 1, (8, 22)), ("props/neon_sign_5", 2, 1, (40, 22))],
   things=[("loot", {"item": "gambler_chip", "n": 3, "every": 2, "hint": "A: chips under a table", "sprite": "props/card_table"}),
           ("loot", {"item": "lucky_coin", "n": 1, "every": 4, "hint": "A: a coin in the fountain", "sprite": "props/plaza_06"}),
@@ -557,7 +569,7 @@ A("gilt_casino_row", cols=50, rows=42, music="neon", look="gilt", ground_seam="c
   enemies=[("thug_gambler", 2), ("thug_speedster", 2), ("gilt_guard", 2)],
   forage=[["flower", 0.3]],
   intro=["Neon on gold. Every door is a casino, every window shows somebody winning, and none of them look happy about it."])
-A("gilt_gardens", cols=50, rows=44, music="orchard", look="gilt", ground_seam="meadow_grass", path="cobble_moss", border="trees", links={"gilt_grand_plaza": ("e", 18)},
+A("gilt_gardens", cols=50, rows=44, music="mega_gilt", look="gilt", ground_seam="meadow_grass", path="cobble_moss", border="trees", links={"gilt_grand_plaza": ("e", 18)},
   water=[(14, 30), (36, 12)],
   structs=[("props/hedge2_arch", 5, 2, (24, 12)), ("props/plaza_50", 4, 3, (14, 13)), ("props/plaza_51", 4, 3, (36, 30)), ("props/plaza_29", 3, 1, (22, 30)), ("props/plaza_31", 3, 1, (30, 26)),
            ("props/plaza_45", 2, 1, (8, 22)), ("props/topiary_a", 1, 1, (40, 22)), ("props/hedge2_tree", 1, 1, (28, 35))],
@@ -569,7 +581,7 @@ A("gilt_gardens", cols=50, rows=44, music="orchard", look="gilt", ground_seam="m
   forage=[["dark_rose", 0.2], ["flower", 0.4], ["wild_herb", 0.2]],
   intro=["Hedges clipped into crowns, roses in perfect rows, gold-fish in gold ponds. Even the bees look expensive."])
 A("gilt_vaults", cols=46, rows=42, music="underground", look="gilt", ground_seam="floor_checker", path="plaza_tiles", border="cliff", backdrop="night", links={"gilt_casino_row": ("s", 21)}, boss_at=(21, 9),
-  structs=[("props/gold_fence_a", 2, 1, (12, 14)), ("props/gold_fence_b", 2, 1, (32, 14)), ("props/gold_gate", 1, 1, (16, 7)), ("props/gold_gate", 1, 1, (27, 7)),
+  structs=[("props/gc_vault_door", 5, 3, (28, 8)), ("props/gold_fence_a", 2, 1, (12, 14)), ("props/gold_fence_b", 2, 1, (32, 14)), ("props/gold_gate", 1, 1, (16, 7)), ("props/gold_gate", 1, 1, (27, 7)),
            ("props/treasure", 2, 1, (12, 28)), ("props/statue2_founder", 3, 2, (34, 28)), ("props/plaza_51", 4, 3, (24, 33))],
   things=[("loot", {"item": "gold_bundle", "n": 1, "every": 3, "hint": "A: a stack of gold leaf", "sprite": "props/chest_open"}),
           ("loot", {"item": "pearl_necklace", "n": 1, "every": 8, "hint": "A: a velvet case", "sprite": "props/chest_closed"}),
@@ -582,6 +594,32 @@ A("gilt_vaults", cols=46, rows=42, music="underground", look="gilt", ground_seam
   enemies=[("gilt_guard", 3), ("gilded_mirror", 2), ("thug_enforcer", 1)],
   forage=[],
   intro=["Under the casinos, the Vaults: gold in stacks to the ceiling, fences of gold, and the soft tick of somebody counting."])
+
+# Second areas for converted regions --------------------------------------------
+A("hollow_deeps", cols=50, rows=44, music="hollow_heart", look="gloam", ground_seam="cave_crystal_floor", path="cave_stone_floor", border="cliff", backdrop="night", weather="clear",
+  links={"hollow_heart": ("w", 20)}, water=[(34, 30), (16, 12)], feature=("cave_water", [(36, 12, 4)]),
+  structs=[("props/mushroom_tree_a", 2, 2, (12, 30)), ("props/mushroom_tree_b", 2, 2, (40, 22)), ("props/grotto_crystal_a", 3, 2, (26, 10)), ("props/cave_lamp", 0, 1, (20, 22)),
+           ("props/cave_cart", 1, 1, (30, 22)), ("props/mine_crystal_bigrock_1", 2, 2, (8, 22)), ("props/geode_chamber", 6, 3, (38, 36))],
+  things=[("mrock", {"ore": "sapphire", "hp": 4, "n": 1, "sprite": "props/mine_crystal_ore_a_0"}), ("mrock", {"ore": "amethyst", "hp": 4, "n": 1, "sprite": "props/mine_crystal_ore_b_0"}),
+          ("mrock", {"ore": "shard", "hp": 3, "n": 2, "sprite": "props/mine_crystal_ore_a_1"}), ("mrock", {"ore": "gold", "hp": 4, "n": 1, "sprite": "props/ore_gold_2"}),
+          ("loot", {"item": "crystal_refined", "n": 1, "every": 4, "hint": "A: a crystal glowing in the moss", "sprite": "props/ccrystal_3"}),
+          ("loot", {"item": "cave_bloom", "n": 2, "every": 2, "hint": "A: blooms by the glowing water", "sprite": "props/cave_mush_blue"}),
+          ("heal", {"hp": 5, "energy": 60, "msg": "You sit by the glowing water. The light goes right through you, warm.", "hint": "A: rest by the glow"}),
+          ("note", {"hint": "A: read the miners' slate", "text": "A miners' slate, chalk still sharp: 'Camp 9. Water here glows. Drank it. Feel fine. Feel BETTER than fine. Do not tell the foreman.'"}),
+          ("note", {"hint": "A: read the old map", "text": "An old map pinned to a crate: the Heart in the middle, and around it a ring of caverns marked 'DEEPS', 'DEEPER', and one just marked 'NO'."})],
+  enemies=[("prism_wisp", 3), ("obsidian_sentinel", 2), ("void_eel", 2), ("gloom_spider", 2)], fish=["mooncarp", "ghost_fish", "eel"],
+  forage=[["cave_bloom", 0.3], ["glowcap", 0.3], ["mushroom", 0.3], ["crystal_bloom", 0.1]],
+  intro=["East of the Heart the caverns open into rivers of light: crystal floors, glowing pools, and the cold ashes of a miners' camp nobody ever came back for."])
+A("sky_reaches", cols=48, rows=42, music="sky", look="sky", ground_seam="cloud", links={"sky": ("s", 22)}, water=[(12, 14)],
+  structs=[("nature/cloud_tree_a", 2, 2, (10, 28)), ("nature/cloud_tree_b", 2, 2, (36, 30)), ("props/sky_bridge", 10, 2, (24, 20)), ("props/wi_wind_shrine", 2, 2, (30, 8))],
+  things=[("loot", {"item": "star_dust", "n": 2, "every": 3, "hint": "A: dust shaken off a passing whale", "sprite": "props/skydeco_2"}),
+          ("loot", {"item": "storm_fluff", "n": 1, "every": 4, "hint": "A: a curl of storm cloud", "sprite": "props/skydeco_5"}),
+          ("mrock", {"ore": "silver", "hp": 3, "n": 2, "sprite": "props/moon_crystal_blue_s"}), ("mrock", {"ore": "star_dust", "hp": 4, "n": 1, "sprite": "props/moon_crystal_pink_s"}),
+          ("heal", {"hp": 4, "energy": 50, "msg": "The whale's song rolls through the cloud. You feel lighter.", "hint": "A: listen to the whale"}),
+          ("note", {"hint": "A: read the knight's carving", "text": "Carved into a floating stone: 'THE WHALE IS NOT LOST. IT IS WAITING FOR SOMEONE WHO WILL LISTEN.'"})],
+  enemies=[("finargle", 3), ("wisp", 2), ("archer", 1), ("gale_finargle", 1)], fish=["sky_fish", "mooncarp"],
+  forage=[["star_dust", 0.15], ["flower", 0.3], ["wild_herb", 0.3]],
+  intro=["Above the Cloud Isles the air thins and sings. A shadow the size of a town slides under the clouds below you: the sky whale, circling, circling."])
 
 # ---------------------------------------------------------------- layout engine
 OPP = {"n": "s", "s": "n", "w": "e", "e": "w"}
@@ -647,13 +685,17 @@ def build_area(aid, mega, spec, links_geom):
     L = dict(LOOKS[spec["look"]])
     cols, rows = spec["cols"], spec["rows"]
     tier = next(a["tier"] for a in BY_ID[mega]["areas"] if a["id"] == aid)
-    is_hub = aid == BY_ID[mega]["hub"]
+    is_hub = aid == BY_ID[mega].get("hub")
     R = {"cols": cols, "rows": rows, "music": spec["music"], "tier": tier, "pad": 6, "fruit": 0,
          "mega": mega, "area_name": spec.get("name", "")}
     for k in ("ground", "ground_seam", "path", "border", "backdrop", "weather", "season", "cliff_style", "pet"):
         v = spec.get(k, L.get(k))
         if v is not None:
             R[k] = v
+    R["path_lip"] = {"snow": "8a9ab030", "sky": "c0d0e020", "desert": "8a5a2a38", "gloam": "2a1a3a50", "rail": "2a2a2a48", "gilt": "6a4a1a40"}[spec["look"]]
+    R["ground"] = R["ground_seam"]  # not "grass": that would draw the valley's grass instead of the seamless ground
+    R["amb"] = dict(AMB.get(spec["look"], {}))
+    R["amb"].update(AREA_AMB.get(aid, {}))
     R["gen"] = json.loads(json.dumps(L["gen"]))
     R["gen"].update(spec.get("gen_extra", {}))
     if is_hub:
@@ -666,8 +708,9 @@ def build_area(aid, mega, spec, links_geom):
     for to, (side, p) in spec["links"].items():
         rect, end, spawn, facing = exit_geom(side, p, cols, rows)
         tside, tp = links_geom[(to, aid)]
-        trect, tend, tspawn, tfacing = exit_geom(tside, tp, AREAS[to]["cols"], AREAS[to]["rows"])
-        exits.append({"rect": rect, "scene": to, "spawn": tspawn, "facing": tfacing, "label": "%s %s" % (ARROW[side], AREAS[to].get("name") or area_name(to))})
+        tdim = AREAS.get(to) or EXTERNAL[to]
+        trect, tend, tspawn, tfacing = exit_geom(tside, tp, tdim["cols"], tdim["rows"])
+        exits.append({"rect": rect, "scene": to, "spawn": tspawn, "facing": tfacing, "label": "%s %s" % (ARROW[side], (AREAS.get(to) or {}).get("name") or EXT_NAME.get(to) or area_name(to))})
         paths += route((cx, cy), end, "hv" if side in "ns" else "vh")
         G.mark(cells_of([rect]), "X", 4)
     spawn = None
@@ -899,8 +942,27 @@ def build_area(aid, mega, spec, links_geom):
         R["intro"] = spec["intro"]
     return R
 
+EXT_NAME = {"hollow_heart": "the Hollow Heart", "sky": "the Cloud Isles"}
+# The side/position of the new exit on each existing map (their way to the second area).
+EXT_LINKS = {("hollow_heart", "hollow_deeps"): ("e", 29), ("sky", "sky_reaches"): ("n", 14)}
+
+def patch_external(regs):
+    """Give the existing maps their exit (and a lane to it) to their new second area."""
+    for (ext, aid), (side, p) in EXT_LINKS.items():
+        R = regs[ext]
+        rect, end, spawn, facing = exit_geom(side, p, R["cols"], R["rows"])
+        mside, mp = AREAS[aid]["links"][ext]
+        mrect, mend, mspawn, mfacing = exit_geom(mside, mp, AREAS[aid]["cols"], AREAS[aid]["rows"])
+        R["exits"] = [e for e in R.get("exits", []) if e.get("scene") != aid]
+        R["exits"].append({"rect": rect, "scene": aid, "spawn": mspawn, "facing": mfacing, "label": "%s %s" % (ARROW[side], AREAS[aid]["name"])})
+        lane = EXT_LANES[ext]
+        if lane not in R["paths"]:
+            R["paths"].append(lane)
+
+EXT_LANES = {"hollow_heart": [66, 30, 10, 2], "sky": [15, 0, 2, 4]}
+
 def area_name(aid):
-    for r in REGIONS:
+    for r in REGIONS + EXTRA:
         for a in r["areas"]:
             if a["id"] == aid:
                 return a["name"]
@@ -914,6 +976,7 @@ def main():
     for aid, spec in AREAS.items():
         for to, sp in spec["links"].items():
             links_geom[(aid, to)] = sp
+    links_geom.update(EXT_LINKS)
     for (a, b), (side, p) in list(links_geom.items()):
         if (b, a) not in links_geom:
             sys.exit("one-way link %s -> %s" % (a, b))
@@ -923,12 +986,13 @@ def main():
     owned = {aid for aid in AREAS}
     for aid in owned:
         regs.pop(aid, None)
-    for r in REGIONS:
+    for r in REGIONS + EXTRA:
         for a in r["areas"]:
             if a["id"] not in AREAS:
                 sys.exit("no layout for " + a["id"])
             regs[a["id"]] = build_area(a["id"], r["id"], AREAS[a["id"]], links_geom)
             open(f"{D}/scenes/{a['id']}.tscn", "w").write('[gd_scene load_steps=2 format=3]\n\n[ext_resource type="Script" path="res://scripts/region.gd" id="1"]\n\n[node name="%s" type="Node2D"]\nscript = ExtResource("1")\nregion_id = "%s"\n' % (a["id"], a["id"]))
+    patch_external(regs)
     W("regions.json", regs)
     # items
     I = J("items.json")
@@ -943,7 +1007,9 @@ def main():
     for k, (base, tint, hp, tier, nm, drops, extra) in ENEMIES.items():
         b = E["enemies"][base]
         d = {"hp": hp, "dmg": max(1, int(b.get("dmg", 2)) + (1 if tier >= 4 else 0)), "speed": b.get("speed", 30), "xp": max(4, hp // 3), "tier": tier,
-             "abilities": list(b.get("abilities", [])), "name": nm, "tint": tint, "art": extra.get("art", b.get("art", base))}
+             "abilities": list(b.get("abilities", [])), "name": nm, "art": extra.get("art", b.get("art", base))}
+        if tint:
+            d["tint"] = tint
         if base.startswith("thug_"):
             d.pop("art")
         if b.get("status"):

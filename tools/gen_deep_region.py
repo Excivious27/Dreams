@@ -10,8 +10,9 @@ raw = open(p).read(); regs = json.loads(raw)
 regs["hollow_heart"] = {
     "cols": 76, "rows": 64, "music": "hollow_heart", "backdrop": "night", "ground": "teal_moss", "ground_seam": "teal_moss", "path": "stone", "pet": True, "weather": "clear",
     "spawn": [38, 60], "pad": 7, "border": {"n": "cliff", "s": "cliff", "w": "cliff", "e": "cliff"},
-    "exits": [{"rect": [36, 63, 4, 1], "scene": "meadow", "spawn": [31, 9], "facing": "down", "label": "▼ the long lift up"}],
-    "paths": [[37, 8, 2, 54], [10, 30, 56, 2], [10, 12, 2, 20], [64, 12, 2, 20], [10, 12, 56, 2]],
+    "exits": [{"rect": [36, 63, 4, 1], "scene": "meadow", "spawn": [31, 9], "facing": "down", "label": "▼ the long lift up"},
+              {"rect": [75, 29, 1, 4], "scene": "hollow_deeps", "spawn": [2.5, 22], "facing": "right", "label": "▶ The Glowing Deeps"}],  # (gen_mega_new.py keeps this in step)
+    "paths": [[37, 8, 2, 54], [10, 30, 56, 2], [10, 12, 2, 20], [64, 12, 2, 20], [10, 12, 56, 2], [66, 30, 10, 2]],
     "water_blobs": [{"c": [18, 46], "r": 6, "seed": 151, "fish": ["mooncarp", "eel", "puffer"]}, {"c": [58, 46], "r": 5, "seed": 152, "fish": ["mooncarp", "catfish"]},
                     {"c": [24, 20], "r": 4, "seed": 153, "fish": ["mooncarp"]}],
     "props": [{"name": "geode_chamber", "cell": [34, 4], "w": 6, "h": 4}, {"name": "mushroom_tree_a", "cell": [14, 38], "w": 2, "h": 2},

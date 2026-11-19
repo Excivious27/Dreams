@@ -198,6 +198,12 @@ func _evaluate() -> Dictionary:
 			out["boiling"] = -22.0
 		if "smith" in kind or "forge" in kind or "workshop" in kind:
 			out["machines"] = -24.0
+	# Regions can name their own beds (regions.json "amb": {bed: dB}, the mega regions).
+	var rd: Variant = m.get("R")
+	if rd is Dictionary and (rd as Dictionary).has("amb"):
+		for k: String in rd["amb"]:
+			if ph != "night" or not str(k).begins_with("birds"):
+				out[k] = float(rd["amb"][k])
 	# Keep the loudest few.
 	if out.size() > MAX_BEDS:
 		var ks := out.keys()

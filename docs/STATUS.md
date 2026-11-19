@@ -2,6 +2,21 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: mega regions, the new worlds
+- **Five new mega regions** fill the five planned slots (each a hub town + 3-4 areas, its own tab and painted map):
+  - **Gloamwood** (both arcs, chapter 2): fairy ring in the forest → Lanternfall (mushroom-cap houses, lantern posts, moth shrine), Violet Glade, Crystal Thicket, the Moonpool. Boss: the Thornmother.
+  - **Sunscorch Expanse** (both, chapter 3): sand-sail caravan on the beach → Mirage Post (oasis, bazaar tent, adobe houses, sun obelisk), Dune Sea, Glass Canyon, Sunken Temple. Boss: the Sun Colossus.
+  - **Frostpeak Reach** (both, chapter 4): sled station on the mountain → Hearthhold (log lodges, village hearth, bell tower, hot spring), Glacier Fields, Rime Caverns, Frozen Falls, the Summit. Boss: the Rime Wyrm.
+  - **Windward Isles** (penguins, chapter 5): Captain Zephyr's balloon in the meadow → Breezehaven (propeller cottages, wind shrine, mooring tower), Sunrise Shelf, Storm Shelf, Starfall Garden. Boss: the Storm Roc.
+  - **Gilt City** (gangsters, chapter 5): the gold limousine at the farm → Grand Plaza (Madame Aurum's statue), Casino Row, Gilded Gardens, the Vaults. Boss: Madame Aurum.
+  - **Ironline rail frontier** (gangsters, chapter 3) joins the Cities tab: night-train booth in town → Junction City, Freight Yards, Mill District, Coalbrook Tunnels. Boss: Baron Coalbrook.
+- **Getting there:** each travel point has a keeper who writes to you when the story is far enough along and asks for a short hook quest (supplies for the trip). Done, the way stays open; every hub's vehicle takes you home or on to any other hub you've opened.
+- **Reasons to go back:** regional ores, loot spots, forage tables and fishing (Glacier Pike, Sun Trout, Skyfin, Ghostfish), a shop per hub (regional dish, ring or charm), a hub job per region, a unique charm or ring from each boss (+1 heart), and six kitchen recipes that need regional ingredients (Gloam Pudding, Sun Loaf, Stoker's Stew, Frost Sorbet, Cloud Souffle, Gilded Flan).
+- **Foes:** 18 native kinds (recoloured kin of existing foes) plus 6 bosses; the Storm Roc and Rime Wyrm, Madame Aurum and Baron Coalbrook have their own new sprites.
+- **Art (image tool, 17 renders):** 26 landmark/hub props, 20 villagers with walk cycles, 2 boss sheets, 5 painted region maps (tools/slice_r13_a6.py).
+- **Music:** five new ACE themes (mega_gloam, mega_desert, mega_frost, mega_wind, mega_gilt); every area also gets its own ambience beds (regions.json "amb").
+- Generators: tools/mega_regions_new.py + tools/gen_mega_new.py. Test: tools/mega_regions_test.gd (in check.sh): every area in each arc that can reach it, spawns, exits, things, villagers, bosses, exit landings, home travel points, hook quests, the way home.
+
 ## 2026-11-19 — Round 13: mega regions (framework + conversions)
 - **Mega regions:** ten big separate worlds, data in data/mega_regions.json (written by `tools/gen_mega_regions.py`). Five are the existing clusters, converted: **Space** (moon, star station, green planet), **Merkitty Colonies** (the four islands, penguins), **Lieutenant Cities** (docks, Neon, Uptown, the Pit, gangsters), **The Hollow Heart** and the **Sky Isles** (penguins). Five are planned for the next round: Sunken City, Frozen North, Desert Bazaar (both arcs), Clockwork Isles (penguins), Chrome Megacity (gangsters).
 - **Map tabs:** Menu > Map has a tab row: Valley plus one tab per unlocked region. Locked regions get no tab (a fresh run shows no tab row at all). Each region tab draws its own themed map (stars and planets, sea lanes and islands, city blocks, crystal cave, cloud banks) with its areas, the routes between them, the way back to the Valley, campaign padlocks and your spot. The Valley map shows a small gate badge where each open region is entered and no longer pins mega-region areas.

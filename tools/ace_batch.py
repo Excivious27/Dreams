@@ -18,7 +18,10 @@ def load_log():
     return json.load(open(LOG)) if os.path.exists(LOG) else {}
 
 def save_log(l):
-    json.dump(l, open(LOG, "w"), indent=1, sort_keys=True, default=float)
+    data = json.dumps(l, indent=1, sort_keys=True, default=float)
+    if os.path.exists(LOG):
+        os.remove(LOG)  # hardlinked across worktrees: never write in place
+    open(LOG, "w").write(data)
 
 def imp(name, kind, path):
     if kind in ("music", "once"):

@@ -154,3 +154,9 @@ echo "$megaout" | grep -E "FAIL|SCRIPT ERROR|mega_region_test" || true
 if ! echo "$megaout" | grep -q "mega_region_test: 0 failures"; then
   echo "Mega region test failed"; exit 1
 fi
+echo "== mega regions: the new worlds walk end to end =="
+mnout="$("$GODOT" --headless --path . -s res://tools/mega_regions_test.gd 2>&1)"
+echo "$mnout" | grep -E "FAIL|SCRIPT ERROR|mega_regions_test" || true
+if ! echo "$mnout" | grep -q "mega_regions_test: 0 failures"; then
+  echo "Mega regions (new) test failed"; exit 1
+fi

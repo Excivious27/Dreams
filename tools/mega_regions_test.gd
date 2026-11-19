@@ -141,75 +141,84 @@ func _run() -> void:
 				var sp := Vector2.ZERO
 				if hub:
 					sp = Vector2((float(r["hub_spawn"][0]) + 0.5) * 16, (float(r["hub_spawn"][1]) + 0.5) * 16)
-				var m: GameMap = await _load(aid, sp)
-				if m == null:
-					fail("%s didn't load" % aid)
-					continue
-				var start := m.player.cell()
-				if m.blocked.has(start) or m.is_water_cell(start):
-					fail("[%s] %s: spawn %s blocked" % [arc, aid, start])
-					continue
-				var seen := _flood(m, start)
-				var open := 0
-				for y in m.rows:
-					for x in m.cols:
-						if not m.blocked.has(Vector2i(x, y)) and not m.is_water_cell(Vector2i(x, y)):
-							open += 1
-				for ex in m.exits:
-					var ok := false
-					for c in m.cells_of([ex["rect"]]):
-						if seen.has(c):
-							ok = true
-					if not ok:
-						fail("[%s] %s: exit to %s unreachable" % [arc, aid, ex["scene"]])
-				for c: Vector2i in m.things:
-					var t := str(m.things[c].get("type", ""))
-					if t in ["water", "forage", "tree", "rock", "bush", "log", "stump", "weed", "grass"]:
-						continue
-					if not _near(seen, c):
-						fail("[%s] %s: %s at %s unreachable (%s)" % [arc, aid, t, c, str(m.things[c].get("hint", ""))])
-				for n in m.get_children():
-					if n is Npc and (m.blocked.has((n as Npc).cell()) or not _near(seen, (n as Npc).cell())):
-						fail("[%s] %s: villager %s stuck at %s" % [arc, aid, (n as Npc).id, (n as Npc).cell()])
-				if hub:
-					var g := false
-					for c: Vector2i in m.things:
-						if str(m.things[c].get("type", "")) == "mega_gate" and bool(m.things[c].get("home", false)):
-							g = true
-					if not g:
-						fail("%s: no way home" % aid)
-					if not m.enemies.is_empty():
-						fail("%s: hub has foes" % aid)
-				elif m.enemies.is_empty():
-					fail("[%s] %s: no foes" % [arc, aid])
-				print("[%s] %s ok: reach %d/%d things=%d foes=%d" % [arc, aid, seen.size(), open, m.things.size(), m.enemies.size()])
-				if hub and shots != "" and arc == ("penguins" if str(r["arc"]) != "gangsters" else "gangsters"):
-					for en in m.enemies:
-						if is_instance_valid(en):
-							en.queue_free()
-					for k in 20:
-						await process_frame
-					await RenderingServer.frame_post_draw
-					root.get_texture().get_image().save_png("%s/%s.png" % [shots, aid])
-				# Where each exit lands.
-				for ex in m.exits:
-					var dst := str(ex["scene"])
-					if not regs.has(dst):
-						continue
-					var m2: GameMap = await _load(dst, ex["spawn"])
-					var c2 := m2.player.cell()
-					var why := ""
-					if m2.blocked.has(c2):
-						why = "blocked"
-					elif m2.is_water_cell(c2):
-						why = "water"
-					else:
-						for e2 in m2.exits:
-							if (e2["rect"] as Rect2i).has_point(c2):
-								why = "inside an exit"
-					if why != "":
-						fail("%s -> %s lands %s (%s)" % [aid, dst, c2, why])
+				await _area(arc, aid, hub, sp, regs, shots, hub and arc == ("penguins" if str(r["arc"]) != "gangsters" else "gangsters"))
+		# Second areas of the converted regions (Hollow Heart, Sky Isles).
+		for aid: String in ["hollow_deeps", "sky_reaches"]:
+			if aid == "sky_reaches" and arc != "penguins":
+				continue
+			await _area(arc, aid, false, Vector2.ZERO, regs, shots, arc == "penguins")
 	if arcs_seen["penguins"] < 4 or arcs_seen["gangsters"] < 4:
 		fail("arc coverage %s" % str(arcs_seen))
 	print("mega_regions_test: %d failures" % fails)
 	quit()
+
+
+func _area(arc: String, aid: String, hub: bool, sp: Vector2, regs: Dictionary, shots: String, shoot: bool) -> void:
+	var m: GameMap = await _load(aid, sp)
+	if m == null:
+		fail("%s didn't load" % aid)
+		return
+	var start := m.player.cell()
+	if m.blocked.has(start) or m.is_water_cell(start):
+		fail("[%s] %s: spawn %s blocked" % [arc, aid, start])
+		return
+	var seen := _flood(m, start)
+	var open := 0
+	for y in m.rows:
+		for x in m.cols:
+			if not m.blocked.has(Vector2i(x, y)) and not m.is_water_cell(Vector2i(x, y)):
+				open += 1
+	for ex in m.exits:
+		var ok := false
+		for c in m.cells_of([ex["rect"]]):
+			if seen.has(c):
+				ok = true
+		if not ok:
+			fail("[%s] %s: exit to %s unreachable" % [arc, aid, ex["scene"]])
+	for c: Vector2i in m.things:
+		var t := str(m.things[c].get("type", ""))
+		if t in ["water", "forage", "tree", "rock", "bush", "log", "stump", "weed", "grass"]:
+			continue
+		if not _near(seen, c):
+			fail("[%s] %s: %s at %s unreachable (%s)" % [arc, aid, t, c, str(m.things[c].get("hint", ""))])
+	for n in m.get_children():
+		if n is Npc and (m.blocked.has((n as Npc).cell()) or not _near(seen, (n as Npc).cell())):
+			fail("[%s] %s: villager %s stuck at %s" % [arc, aid, (n as Npc).id, (n as Npc).cell()])
+	if hub:
+		var g := false
+		for c: Vector2i in m.things:
+			if str(m.things[c].get("type", "")) == "mega_gate" and bool(m.things[c].get("home", false)):
+				g = true
+		if not g:
+			fail("%s: no way home" % aid)
+		if not m.enemies.is_empty():
+			fail("%s: hub has foes" % aid)
+	elif m.enemies.is_empty():
+		fail("[%s] %s: no foes" % [arc, aid])
+	print("[%s] %s ok: reach %d/%d things=%d foes=%d" % [arc, aid, seen.size(), open, m.things.size(), m.enemies.size()])
+	if shots != "" and shoot:
+		for en in m.enemies:
+			if is_instance_valid(en):
+				en.queue_free()
+		for k in 20:
+			await process_frame
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png("%s/%s.png" % [shots, aid])
+	# Where each exit lands.
+	for ex in m.exits:
+		var dst := str(ex["scene"])
+		if not regs.has(dst):
+			continue
+		var m2: GameMap = await _load(dst, ex["spawn"])
+		var c2 := m2.player.cell()
+		var why := ""
+		if m2.blocked.has(c2):
+			why = "blocked"
+		elif m2.is_water_cell(c2):
+			why = "water"
+		else:
+			for e2 in m2.exits:
+				if (e2["rect"] as Rect2i).has_point(c2):
+					why = "inside an exit"
+		if why != "":
+			fail("%s -> %s lands %s (%s)" % [aid, dst, c2, why])

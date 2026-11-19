@@ -76,7 +76,9 @@ for key in sorted(k for k in m if k.startswith("characters/")):
                 cell = im.crop((i * cw, 0, (i + 1) * cw, ch))
                 dy = max(-b[1], int(mf - b[3]))
                 out.paste(cell, (j * cw, dy), cell)
-            out.save("art/gen/%s/%s.png" % (key, name))
+            _p = "art/gen/%s/%s.png" % (key, name)
+            os.remove(_p)  # art/ is hardlinked across worktrees: never save in place
+            out.save(_p)
             if len(keep) != n:
                 m[key][name]["frames"] = len(keep); m[key][name]["w"] = cw * len(keep)
                 changed = True
@@ -112,9 +114,12 @@ if fix and not only:
                 or (sz[i] < 0.35 * sz.max() and (sl[1].start <= 1 or sl[1].stop >= w - 1) and (sl[1].stop - sl[1].start) <= 0.35 * w)]  # a narrow piece on the left/right edge = the next icon's sliver
         if drop:
             im[np.isin(lab, drop), 3] = 0
+            os.remove(p)  # hardlinked: never save in place
             Image.fromarray(im).save(p)
             n_bits += 1
     print("item icons: stray edge bits cleared on", n_bits)
 if fix and changed:
-    json.dump(m, open("art/gen/manifest.json", "w"), indent=1, sort_keys=True)
+    _d = json.dumps(m, indent=1, sort_keys=True)
+    os.remove("art/gen/manifest.json")  # hardlinked: never write in place
+    open("art/gen/manifest.json", "w").write(_d)
     print("manifest updated")

@@ -534,5 +534,37 @@
    "wild_herb",
    0.2
   ]
+ ],
+ "hollow_deeps": [
+  [
+   "cave_bloom",
+   0.3
+  ],
+  [
+   "glowcap",
+   0.3
+  ],
+  [
+   "mushroom",
+   0.3
+  ],
+  [
+   "crystal_bloom",
+   0.1
+  ]
+ ],
+ "sky_reaches": [
+  [
+   "star_dust",
+   0.15
+  ],
+  [
+   "flower",
+   0.3
+  ],
+  [
+   "wild_herb",
+   0.3
+  ]
  ]
 }

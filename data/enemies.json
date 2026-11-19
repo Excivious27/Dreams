@@ -1975,8 +1975,8 @@
     "blink"
    ],
    "name": "Gloom Moth",
-   "tint": "#c8a0ff",
    "art": "lantern_moth",
+   "tint": "#c8a0ff",
    "status": "blind"
   },
   "thorn_slime": {
@@ -1987,8 +1987,8 @@
    "tier": 2,
    "abilities": [],
    "name": "Thorn Slime",
-   "tint": "#b878e0",
    "art": "mud_slime",
+   "tint": "#b878e0",
    "status": "slow"
   },
   "glade_wisp": {
@@ -2001,8 +2001,8 @@
     "blink"
    ],
    "name": "Glade Wisp",
-   "tint": "#ffa8e8",
    "art": "wisp",
+   "tint": "#ffa8e8",
    "status": "weak"
   },
   "gloom_spider": {
@@ -2015,8 +2015,8 @@
     "lunge"
    ],
    "name": "Gloom Spider",
-   "tint": "#9878f0",
    "art": "shard_spider",
+   "tint": "#9878f0",
    "status": "poison"
   },
   "thornmother": {
@@ -2033,8 +2033,8 @@
     "lunge"
    ],
    "name": "The Thornmother",
-   "tint": "#c898ff",
    "art": "marsh_witch",
+   "tint": "#c898ff",
    "status": "poison",
    "boss": true,
    "scale": 1.2
@@ -2049,8 +2049,8 @@
     "shield"
    ],
    "name": "Dune Crab",
-   "tint": "#f4d898",
-   "art": "rock_crab"
+   "art": "rock_crab",
+   "tint": "#f4d898"
   },
   "sand_hound": {
    "hp": 22,
@@ -2063,8 +2063,8 @@
     "lunge"
    ],
    "name": "Sand Hound",
-   "tint": "#e8c080",
    "art": "ash_hound",
+   "tint": "#e8c080",
    "status": "burn"
   },
   "sun_moth": {
@@ -2077,8 +2077,8 @@
     "blink"
    ],
    "name": "Sun Moth",
-   "tint": "#ffc860",
    "art": "lantern_moth",
+   "tint": "#ffc860",
    "status": "blind"
   },
   "glass_golem": {
@@ -2092,8 +2092,8 @@
     "regen"
    ],
    "name": "Glass Golem",
-   "tint": "#a8f0ff",
-   "art": "quarry_golem"
+   "art": "quarry_golem",
+   "tint": "#a8f0ff"
   },
   "sun_colossus": {
    "hp": 190,
@@ -2110,8 +2110,8 @@
     "lunge"
    ],
    "name": "The Sun Colossus",
-   "tint": "#ffd868",
    "art": "ruin_warden",
+   "tint": "#ffd868",
    "status": "weak",
    "boss": true,
    "scale": 1.15
@@ -2127,8 +2127,8 @@
     "lunge"
    ],
    "name": "Rail Bot",
-   "tint": "#c89060",
-   "art": "rust_knight"
+   "art": "rust_knight",
+   "tint": "#c89060"
   },
   "coal_crawler": {
    "hp": 20,
@@ -2140,8 +2140,8 @@
     "ranged"
    ],
    "name": "Coal Crawler",
-   "tint": "#8a8a8a",
    "art": "drip_crawler",
+   "tint": "#8a8a8a",
    "status": "poison"
   },
   "baron_coalbrook": {
@@ -2157,10 +2157,9 @@
     "lunge"
    ],
    "name": "Baron Coalbrook",
-   "tint": "#e0b890",
    "boss": true,
    "scale": 1.15,
-   "char": "enforcer"
+   "char": "mg_coalbrook"
   },
   "frost_wolf": {
    "hp": 28,
@@ -2172,8 +2171,8 @@
     "lunge"
    ],
    "name": "Frost Wolf",
-   "tint": "#dcf2ff",
-   "art": "hill_wolf"
+   "art": "hill_wolf",
+   "tint": "#dcf2ff"
   },
   "rime_golem": {
    "hp": 40,
@@ -2185,8 +2184,8 @@
     "stomp"
    ],
    "name": "Rime Golem",
-   "tint": "#acdcff",
-   "art": "golem"
+   "art": "golem",
+   "tint": "#acdcff"
   },
   "frost_spider": {
    "hp": 30,
@@ -2198,8 +2197,8 @@
     "lunge"
    ],
    "name": "Frost Spider",
-   "tint": "#c4ecff",
    "art": "shard_spider",
+   "tint": "#c4ecff",
    "status": "poison"
   },
   "rime_wyrm": {
@@ -2213,11 +2212,10 @@
     "enrage"
    ],
    "name": "The Rime Wyrm",
-   "tint": "#a4e4ff",
-   "art": "river_serpent",
+   "art": "rime_wyrm",
    "status": "poison",
    "boss": true,
-   "scale": 1.3
+   "scale": 1.2
   },
   "gale_finargle": {
    "hp": 36,
@@ -2230,8 +2228,8 @@
     "ranged"
    ],
    "name": "Gale Finargle",
-   "tint": "#d4f2ff",
    "art": "finargle",
+   "tint": "#d4f2ff",
    "status": "blind"
   },
   "storm_wisp": {
@@ -2246,8 +2244,8 @@
     "ranged"
    ],
    "name": "Storm Wisp",
-   "tint": "#b4bcff",
    "art": "prism_wisp",
+   "tint": "#b4bcff",
    "status": "blind"
   },
   "cloud_knight": {
@@ -2261,8 +2259,8 @@
     "lunge"
    ],
    "name": "Cloud Knight",
-   "tint": "#f2f8ff",
-   "art": "knight"
+   "art": "knight",
+   "tint": "#f2f8ff"
   },
   "storm_roc": {
    "hp": 260,
@@ -2279,11 +2277,10 @@
     "lunge"
    ],
    "name": "The Storm Roc",
-   "tint": "#9898ff",
-   "art": "fennimore",
+   "art": "storm_roc",
    "status": "blind",
    "boss": true,
-   "scale": 1.3
+   "scale": 1.15
   },
   "gilt_guard": {
    "hp": 48,
@@ -2296,8 +2293,8 @@
     "lunge"
    ],
    "name": "Gilt Guard",
-   "tint": "#ffe488",
-   "art": "knight"
+   "art": "knight",
+   "tint": "#ffe488"
   },
   "gilded_mirror": {
    "hp": 40,
@@ -2311,8 +2308,8 @@
     "enrage"
    ],
    "name": "Gilded Mirror",
-   "tint": "#ffe070",
    "art": "mirror",
+   "tint": "#ffe070",
    "status": "weak"
   },
   "madame_aurum": {
@@ -2328,11 +2325,10 @@
     "lunge"
    ],
    "name": "Madame Aurum",
-   "tint": "#ffe078",
    "status": "blind",
    "boss": true,
    "scale": 1.15,
-   "char": "gambler"
+   "char": "mg_aurum"
   }
  }
 }

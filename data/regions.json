@@ -2658,7 +2658,23 @@
    16,
    26
   ],
-  "exits": [],
+  "exits": [
+   {
+    "rect": [
+     14,
+     0,
+     4,
+     1
+    ],
+    "scene": "sky_reaches",
+    "spawn": [
+     24,
+     39.5
+    ],
+    "facing": "up",
+    "label": "▲ Whale Reaches"
+   }
+  ],
   "paths": [
    [
     15,
@@ -2677,6 +2693,12 @@
     20,
     20,
     2
+   ],
+   [
+    15,
+    0,
+    2,
+    4
    ]
   ],
   "layers": [],
@@ -8057,6 +8079,21 @@
     ],
     "facing": "down",
     "label": "▼ the long lift up"
+   },
+   {
+    "rect": [
+     75,
+     29,
+     1,
+     4
+    ],
+    "scene": "hollow_deeps",
+    "spawn": [
+     2.5,
+     22
+    ],
+    "facing": "right",
+    "label": "▶ The Glowing Deeps"
    }
   ],
   "paths": [
@@ -8088,6 +8125,12 @@
     10,
     12,
     56,
+    2
+   ],
+   [
+    66,
+    30,
+    10,
     2
    ]
   ],
@@ -9427,18 +9470,23 @@
  "gloam_lanternfall": {
   "cols": 42,
   "rows": 38,
-  "music": "sanctuary",
+  "music": "mega_gloam",
   "tier": 2,
   "pad": 6,
   "fruit": 0,
   "mega": "gloamwood",
   "area_name": "Lanternfall",
-  "ground": "grass",
+  "ground": "violet_moss",
   "ground_seam": "violet_moss",
   "path": "flagstone",
   "border": "trees",
   "backdrop": "night",
   "weather": "fireflies",
+  "path_lip": "2a1a3a50",
+  "amb": {
+   "crickets": -15.0,
+   "crystal_hum": -26.0
+  },
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -9585,13 +9633,49 @@
     "h": 2
    },
    {
-    "name": "mushroom_tree_a",
+    "name": "gl_mush_house_a",
+    "cell": [
+     4,
+     12
+    ],
+    "w": 3,
+    "h": 3
+   },
+   {
+    "name": "gl_mush_house_b",
+    "cell": [
+     31,
+     11
+    ],
+    "w": 3,
+    "h": 3
+   },
+   {
+    "name": "gl_mush_house_a",
     "cell": [
      7,
+     25
+    ],
+    "w": 3,
+    "h": 3
+   },
+   {
+    "name": "gl_moth_shrine",
+    "cell": [
+     15,
      8
     ],
     "w": 2,
     "h": 2
+   },
+   {
+    "name": "gl_lantern_posts",
+    "cell": [
+     24,
+     8
+    ],
+    "w": 2,
+    "h": 1
    },
    {
     "name": "mushroom_tree_b",
@@ -9601,35 +9685,6 @@
     ],
     "w": 2,
     "h": 2
-   },
-   {
-    "name": "hermit_hut",
-    "cell": [
-     6,
-     23
-    ],
-    "w": 5,
-    "h": 3
-   },
-   {
-    "name": "hollow_tree",
-    "cell": [
-     27,
-     8
-    ],
-    "w": 6,
-    "h": 3,
-    "group": "nature"
-   },
-   {
-    "name": "forest_shrine",
-    "cell": [
-     14,
-     8
-    ],
-    "w": 4,
-    "h": 2,
-    "group": "nature"
    },
    {
     "name": "lanterns_pink",
@@ -9643,7 +9698,7 @@
    {
     "name": "lanterns_cyan",
     "cell": [
-     11,
+     13,
      26
     ],
     "w": 3,
@@ -9668,21 +9723,21 @@
     "h": 1
    },
    {
-    "name": "lantern_lit",
+    "name": "gl_lantern_posts",
     "cell": [
-     17,
-     25
+     5,
+     20
     ],
-    "w": 0,
+    "w": 2,
     "h": 1
    },
    {
-    "name": "lantern_lit",
+    "name": "gl_lantern_posts",
     "cell": [
      28,
      23
     ],
-    "w": 0,
+    "w": 2,
     "h": 1
    }
   ],
@@ -9746,7 +9801,7 @@
    {
     "type": "note",
     "cell": [
-     13,
+     12,
      21
     ],
     "hint": "A: read the lantern board",
@@ -9759,11 +9814,11 @@
    {
     "id": "mg_liesl",
     "name": "Liesl",
-    "sprite": "npc_lumen",
+    "sprite": "mg_liesl",
     "role": "Gloamwood",
     "cell": [
-     22,
-     18
+     19,
+     17
     ],
     "lines": [
      "Every lantern here has a moth, and every moth has a name. That one's Gerald.",
@@ -9775,11 +9830,11 @@
    {
     "id": "mg_fenn",
     "name": "Fenn",
-    "sprite": "npc_shopkeeper",
+    "sprite": "mg_fenn",
     "role": "Gloamwood",
     "cell": [
-     17,
-     17
+     24,
+     18
     ],
     "lines": [
      "Glowmoss grows on the north side of everything. Even me, if I stand still.",
@@ -9791,11 +9846,11 @@
    {
     "id": "mg_bramble",
     "name": "Bramble",
-    "sprite": "npc_child_girl_a",
+    "sprite": "mg_bramble",
     "role": "Gloamwood",
     "cell": [
      19,
-     23
+     22
     ],
     "lines": [
      "Did you see the giant flower? It sneezed on me.",
@@ -9819,18 +9874,23 @@
  "gloam_violet_glade": {
   "cols": 50,
   "rows": 44,
-  "music": "jungle",
+  "music": "mega_gloam",
   "tier": 2,
   "pad": 6,
   "fruit": 0,
   "mega": "gloamwood",
   "area_name": "Violet Glade",
-  "ground": "grass",
+  "ground": "teal_moss_dense",
   "ground_seam": "teal_moss_dense",
   "path": "flagstone",
   "border": "trees",
   "backdrop": "night",
   "weather": "fireflies",
+  "path_lip": "2a1a3a50",
+  "amb": {
+   "crickets": -15.0,
+   "crystal_hum": -26.0
+  },
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -9944,7 +10004,7 @@
      32.5
     ],
     "r": 5,
-    "seed": 564,
+    "seed": 872,
     "fish": [
      "carp",
      "trout",
@@ -9963,7 +10023,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 214
+      "seed": 798
      }
     ],
     "upper": []
@@ -10017,15 +10077,23 @@
    {
     "name": "gmush_purple",
     "cell": [
-     29,
-     11
+     9,
+     23
     ],
     "solid": false
    },
    {
     "name": "gmush_blue",
     "cell": [
-     17,
+     22,
+     35
+    ],
+    "solid": false
+   },
+   {
+    "name": "mrock_moss",
+    "cell": [
+     10,
      34
     ],
     "solid": false
@@ -10033,16 +10101,8 @@
    {
     "name": "mrock_moss",
     "cell": [
-     27,
-     36
-    ],
-    "solid": false
-   },
-   {
-    "name": "mrock_moss",
-    "cell": [
-     29,
-     24
+     34,
+     15
     ],
     "solid": false
    }
@@ -10063,8 +10123,8 @@
    {
     "type": "loot",
     "cell": [
-     29,
-     11
+     9,
+     23
     ],
     "item": "luna_moth",
     "n": 1,
@@ -10075,8 +10135,8 @@
    {
     "type": "loot",
     "cell": [
-     17,
-     34
+     22,
+     35
     ],
     "item": "glowcap",
     "n": 2,
@@ -10087,8 +10147,8 @@
    {
     "type": "note",
     "cell": [
-     9,
-     14
+     34,
+     6
     ],
     "hint": "A: read the carved stone",
     "text": "A stone, carved with roots: 'The Glade remembers every footstep. Walk kindly.'",
@@ -10098,8 +10158,8 @@
    {
     "type": "mrock",
     "cell": [
-     27,
-     36
+     10,
+     34
     ],
     "ore": "amethyst",
     "hp": 3,
@@ -10109,8 +10169,8 @@
    {
     "type": "mrock",
     "cell": [
-     29,
-     24
+     34,
+     15
     ],
     "ore": "stone",
     "hp": 2,
@@ -10151,12 +10211,17 @@
   "fruit": 0,
   "mega": "gloamwood",
   "area_name": "Crystal Thicket",
-  "ground": "grass",
+  "ground": "crystal_grass",
   "ground_seam": "crystal_grass",
   "path": "flagstone",
   "border": "trees",
   "backdrop": "night",
   "weather": "fireflies",
+  "path_lip": "2a1a3a50",
+  "amb": {
+   "crickets": -15.0,
+   "crystal_hum": -18.0
+  },
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -10242,7 +10307,7 @@
      32.5
     ],
     "r": 3,
-    "seed": 339,
+    "seed": 495,
     "fish": [
      "carp",
      "trout",
@@ -10261,7 +10326,7 @@
       ],
       "r": 4,
       "ry": 3.0,
-      "seed": 175
+      "seed": 159
      }
     ],
     "upper": []
@@ -10316,39 +10381,39 @@
    {
     "name": "ore_amethyst",
     "cell": [
-     20,
-     17
+     33,
+     30
     ],
     "solid": false
    },
    {
     "name": "ore_amethyst_1",
     "cell": [
-     38,
-     22
+     37,
+     9
     ],
     "solid": false
    },
    {
     "name": "ore_crystal",
     "cell": [
-     38,
-     33
+     11,
+     22
     ],
     "solid": false
    },
    {
     "name": "ore_silver",
     "cell": [
-     38,
-     12
+     35,
+     18
     ],
     "solid": false
    },
    {
     "name": "ccrystal_2",
     "cell": [
-     10,
+     21,
      22
     ],
     "solid": false
@@ -10358,8 +10423,8 @@
    {
     "type": "mrock",
     "cell": [
-     20,
-     17
+     33,
+     30
     ],
     "ore": "amethyst",
     "hp": 3,
@@ -10369,30 +10434,30 @@
    {
     "type": "mrock",
     "cell": [
-     38,
+     37,
+     9
+    ],
+    "ore": "amethyst",
+    "hp": 3,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     11,
      22
     ],
-    "ore": "amethyst",
-    "hp": 3,
-    "n": 1,
-    "hint": "A: mine it"
-   },
-   {
-    "type": "mrock",
-    "cell": [
-     38,
-     33
-    ],
-    "ore": "crystal_ore",
+    "ore": "shard",
     "hp": 4,
-    "n": 1,
+    "n": 2,
     "hint": "A: mine it"
    },
    {
     "type": "mrock",
     "cell": [
-     38,
-     12
+     35,
+     18
     ],
     "ore": "silver",
     "hp": 3,
@@ -10402,7 +10467,7 @@
    {
     "type": "loot",
     "cell": [
-     10,
+     21,
      22
     ],
     "item": "wisp_spark",
@@ -10414,8 +10479,8 @@
    {
     "type": "note",
     "cell": [
-     29,
-     18
+     21,
+     13
     ],
     "hint": "A: listen to the chimes",
     "text": "The crystals ring a note when you touch them. Touch them in a row and it's almost a song. Almost the song Liesl hums.",
@@ -10456,12 +10521,19 @@
   "fruit": 0,
   "mega": "gloamwood",
   "area_name": "The Moonpool",
-  "ground": "grass",
+  "ground": "teal_moss_wet",
   "ground_seam": "teal_moss_wet",
   "path": "flagstone",
   "border": "trees",
   "backdrop": "night",
   "weather": "fog",
+  "path_lip": "2a1a3a50",
+  "amb": {
+   "crickets": -15.0,
+   "crystal_hum": -26.0,
+   "marsh": -16.0,
+   "frogs": -18.0
+  },
   "gen": {
    "region_props": [
     "gmush_blue",
@@ -10559,7 +10631,7 @@
      20.5
     ],
     "r": 5,
-    "seed": 377,
+    "seed": 231,
     "fish": [
      "ghost_fish",
      "ghost_fish",
@@ -10574,7 +10646,7 @@
      30.5
     ],
     "r": 3,
-    "seed": 848,
+    "seed": 481,
     "fish": [
      "ghost_fish",
      "ghost_fish",
@@ -10586,10 +10658,19 @@
   ],
   "props": [
    {
+    "name": "gl_thorn_rose",
+    "cell": [
+     27,
+     6
+    ],
+    "w": 1,
+    "h": 1
+   },
+   {
     "name": "grotto_pool_a",
     "cell": [
-     30,
-     9
+     29,
+     10
     ],
     "w": 4,
     "h": 2
@@ -10625,8 +10706,8 @@
    {
     "name": "vines_b",
     "cell": [
-     30,
-     5
+     17,
+     9
     ],
     "w": 2,
     "h": 1
@@ -10634,8 +10715,8 @@
    {
     "name": "stump2_1",
     "cell": [
-     13,
-     17
+     26,
+     26
     ],
     "solid": false,
     "group": "nature"
@@ -10662,8 +10743,8 @@
    {
     "type": "loot",
     "cell": [
-     13,
-     17
+     26,
+     26
     ],
     "item": "luna_moth",
     "n": 1,
@@ -10674,8 +10755,8 @@
    {
     "type": "heal",
     "cell": [
-     26,
-     28
+     21,
+     16
     ],
     "hp": 4,
     "energy": 50,
@@ -10686,8 +10767,8 @@
    {
     "type": "note",
     "cell": [
-     26,
-     17
+     9,
+     24
     ],
     "hint": "A: read the old sign",
     "text": "An old garden sign, nearly swallowed by thorns: 'MOTHER'S GARDEN. PLEASE DO NOT PICK THE ROSES. SHE WILL KNOW.'",
@@ -10722,13 +10803,13 @@
  "desert_mirage_post": {
   "cols": 44,
   "rows": 40,
-  "music": "countryside",
+  "music": "mega_desert",
   "tier": 3,
   "pad": 6,
   "fruit": 0,
   "mega": "sunscorch",
   "area_name": "Mirage Post",
-  "ground": "grass",
+  "ground": "sand",
   "ground_seam": "sand",
   "path": "cobble_warm",
   "border": "cliff",
@@ -10738,6 +10819,12 @@
    "sand",
    "stair_wood"
   ],
+  "path_lip": "8a5a2a38",
+  "amb": {
+   "wind_soft": -13.0,
+   "campfire": -22.0,
+   "town_day": -22.0
+  },
   "gen": {
    "region_props": [
     "dune_0",
@@ -10862,7 +10949,7 @@
      9.5
     ],
     "r": 4,
-    "seed": 892,
+    "seed": 601,
     "fish": [
      "carp",
      "trout",
@@ -10873,12 +10960,12 @@
   ],
   "props": [
    {
-    "name": "cart_covered",
+    "name": "ds_sand_caravan",
     "cell": [
-     15,
+     16,
      34
     ],
-    "w": 3,
+    "w": 2,
     "h": 1
    },
    {
@@ -10900,30 +10987,48 @@
     "h": 1
    },
    {
-    "name": "campsite",
+    "name": "ds_house_a",
     "cell": [
-     11,
+     10,
      25
     ],
-    "w": 2,
-    "h": 2
+    "w": 3,
+    "h": 3
    },
    {
-    "name": "campsite",
+    "name": "ds_house_b",
     "cell": [
      35,
      27
     ],
-    "w": 2,
-    "h": 2
+    "w": 3,
+    "h": 3
    },
    {
-    "name": "black_market",
+    "name": "ds_bazaar_tent",
     "cell": [
      29,
      12
     ],
     "w": 4,
+    "h": 3
+   },
+   {
+    "name": "ds_sun_obelisk",
+    "cell": [
+     18,
+     9
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "ds_house_a",
+    "cell": [
+     35,
+     20
+    ],
+    "w": 3,
     "h": 3
    },
    {
@@ -10938,8 +11043,8 @@
    {
     "name": "plaza_03",
     "cell": [
-     29,
-     17
+     26,
+     31
     ],
     "w": 4,
     "h": 2
@@ -10967,7 +11072,7 @@
     "name": "palm",
     "cell": [
      17,
-     6
+     12
     ],
     "w": 1,
     "h": 1,
@@ -10976,20 +11081,20 @@
    {
     "name": "well_stone",
     "cell": [
-     18,
-     12
+     25,
+     7
     ],
     "w": 2,
     "h": 1
    },
    {
-    "name": "cart_covered",
+    "name": "campsite",
     "cell": [
-     11,
-     17
+     26,
+     35
     ],
-    "w": 3,
-    "h": 1
+    "w": 2,
+    "h": 2
    }
   ],
   "things": [
@@ -11052,8 +11157,8 @@
    {
     "type": "note",
     "cell": [
-     6,
-     22
+     10,
+     17
     ],
     "hint": "A: read the caravan board",
     "text": "Caravan board: 'DUNE SEA west. GLASS CANYON north, and past it the SUNKEN TEMPLE, where the Colossus walks at noon. Water before you go. Water after you go.'",
@@ -11065,7 +11170,7 @@
    {
     "id": "mg_sefa",
     "name": "Sefa",
-    "sprite": "npc_drifter",
+    "sprite": "mg_sefa",
     "role": "Sunscorch Expanse",
     "cell": [
      21,
@@ -11081,7 +11186,7 @@
    {
     "id": "mg_rahim",
     "name": "Rahim",
-    "sprite": "npc_shopkeeper",
+    "sprite": "mg_rahim",
     "role": "Sunscorch Expanse",
     "cell": [
      20,
@@ -11097,10 +11202,10 @@
    {
     "id": "mg_nadia",
     "name": "Nadia",
-    "sprite": "npc_scholar",
+    "sprite": "mg_nadia",
     "role": "Sunscorch Expanse",
     "cell": [
-     26,
+     16,
      18
     ],
     "lines": [
@@ -11125,13 +11230,13 @@
  "desert_dune_sea": {
   "cols": 54,
   "rows": 46,
-  "music": "wastes",
+  "music": "mega_desert",
   "tier": 3,
   "pad": 6,
   "fruit": 0,
   "mega": "sunscorch",
   "area_name": "The Dune Sea",
-  "ground": "grass",
+  "ground": "sand",
   "ground_seam": "sand",
   "path": "cobble_warm",
   "border": "cliff",
@@ -11141,6 +11246,10 @@
    "sand",
    "stair_wood"
   ],
+  "path_lip": "8a5a2a38",
+  "amb": {
+   "wind_soft": -13.0
+  },
   "gen": {
    "region_props": [
     "dune_0",
@@ -11227,7 +11336,7 @@
      34.5
     ],
     "r": 5,
-    "seed": 244,
+    "seed": 44,
     "fish": [
      "sun_trout",
      "carp",
@@ -11246,7 +11355,7 @@
       ],
       "r": 4,
       "ry": 3.0,
-      "seed": 167
+      "seed": 201
      }
     ],
     "upper": []
@@ -11302,8 +11411,8 @@
    {
     "name": "dune_9",
     "cell": [
-     10,
-     20
+     44,
+     19
     ],
     "solid": false,
     "group": "nature"
@@ -11311,8 +11420,8 @@
    {
     "name": "palm",
     "cell": [
-     9,
-     33
+     32,
+     19
     ],
     "solid": false,
     "group": "nature"
@@ -11320,8 +11429,8 @@
    {
     "name": "dune_6",
     "cell": [
-     41,
-     24
+     9,
+     31
     ],
     "solid": false,
     "group": "nature"
@@ -11329,16 +11438,16 @@
    {
     "name": "boulder2_m_a",
     "cell": [
-     20,
-     25
+     9,
+     13
     ],
     "solid": false
    },
    {
     "name": "boulder2_s_a",
     "cell": [
-     23,
-     10
+     9,
+     22
     ],
     "solid": false
    }
@@ -11347,8 +11456,8 @@
    {
     "type": "loot",
     "cell": [
-     10,
-     20
+     44,
+     19
     ],
     "item": "spice",
     "n": 2,
@@ -11359,8 +11468,8 @@
    {
     "type": "loot",
     "cell": [
-     9,
-     33
+     32,
+     19
     ],
     "item": "dune_date",
     "n": 3,
@@ -11371,8 +11480,8 @@
    {
     "type": "loot",
     "cell": [
-     41,
-     24
+     9,
+     31
     ],
     "item": "old_coin",
     "n": 2,
@@ -11383,8 +11492,8 @@
    {
     "type": "mrock",
     "cell": [
-     20,
-     25
+     9,
+     13
     ],
     "ore": "sunstone",
     "hp": 3,
@@ -11394,8 +11503,8 @@
    {
     "type": "mrock",
     "cell": [
-     23,
-     10
+     9,
+     22
     ],
     "ore": "stone",
     "hp": 2,
@@ -11405,8 +11514,8 @@
    {
     "type": "note",
     "cell": [
-     30,
-     19
+     19,
+     10
     ],
     "hint": "A: read the bleached sign",
     "text": "A sign, sand-scoured almost blank: '...ASIS 2 DAYS. DO NOT FOLLOW THE SINGING.'",
@@ -11447,7 +11556,7 @@
   "fruit": 0,
   "mega": "sunscorch",
   "area_name": "Glass Canyon",
-  "ground": "grass",
+  "ground": "cave_earth_floor",
   "ground_seam": "cave_earth_floor",
   "path": "cobble_warm",
   "border": "cliff",
@@ -11457,6 +11566,10 @@
    "sand",
    "stair_wood"
   ],
+  "path_lip": "8a5a2a38",
+  "amb": {
+   "wind_soft": -13.0
+  },
   "gen": {
    "region_props": [
     "dune_0",
@@ -11573,7 +11686,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 207
+      "seed": 438
      }
     ],
     "upper": []
@@ -11587,7 +11700,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 88
+      "seed": 159
      }
     ],
     "upper": []
@@ -11603,7 +11716,7 @@
        34
       ],
       "r": 5,
-      "seed": 427
+      "seed": 478
      }
     ]
    }
@@ -11639,40 +11752,40 @@
    {
     "name": "boulder2_m_b",
     "cell": [
-     28,
-     19
+     27,
+     28
     ],
     "solid": false
    },
    {
     "name": "boulder2_l_a",
     "cell": [
-     21,
-     32
+     36,
+     29
     ],
     "solid": false
    },
    {
     "name": "ore_gold",
     "cell": [
-     37,
-     34
+     21,
+     8
     ],
     "solid": false
    },
    {
     "name": "ore_copper",
     "cell": [
-     40,
-     11
+     21,
+     19
     ],
     "solid": false
    },
    {
     "name": "crystal_rock",
     "cell": [
-     26,
-     8
+     37,
+     10
     ],
     "solid": false
    }
@@ -11681,8 +11794,19 @@
    {
     "type": "mrock",
     "cell": [
-     28,
-     19
+     27,
+     28
+    ],
+    "ore": "sunstone",
+    "hp": 3,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     36,
+     29
     ],
     "ore": "sunstone",
     "hp": 3,
@@ -11693,18 +11817,7 @@
     "type": "mrock",
     "cell": [
      21,
-     32
-    ],
-    "ore": "sunstone",
-    "hp": 3,
-    "n": 1,
-    "hint": "A: mine it"
-   },
-   {
-    "type": "mrock",
-    "cell": [
-     37,
-     34
+     8
     ],
     "ore": "gold",
     "hp": 4,
@@ -11714,8 +11827,8 @@
    {
     "type": "mrock",
     "cell": [
-     40,
-     11
+     21,
+     19
     ],
     "ore": "copper",
     "hp": 2,
@@ -11725,8 +11838,8 @@
    {
     "type": "loot",
     "cell": [
-     26,
-     8
+     37,
+     10
     ],
     "item": "glass",
     "n": 3,
@@ -11737,8 +11850,8 @@
    {
     "type": "heal",
     "cell": [
-     40,
-     22
+     21,
+     38
     ],
     "hp": 3,
     "energy": 40,
@@ -11749,8 +11862,8 @@
    {
     "type": "note",
     "cell": [
-     29,
-     29
+     35,
+     19
     ],
     "hint": "A: read the carving",
     "text": "Carved over the canyon path: a sun, a giant with a spear, and rows of tiny people bowing. Someone has added a moustache to the giant.",
@@ -11791,7 +11904,7 @@
   "fruit": 0,
   "mega": "sunscorch",
   "area_name": "Sunken Temple",
-  "ground": "grass",
+  "ground": "pale_stone",
   "ground_seam": "pale_stone",
   "path": "flagstone",
   "border": "cliff",
@@ -11801,6 +11914,11 @@
    "sand",
    "stair_wood"
   ],
+  "path_lip": "8a5a2a38",
+  "amb": {
+   "wind_soft": -13.0,
+   "cave": -20.0
+  },
   "gen": {
    "region_props": [
     "dune_0",
@@ -11894,10 +12012,28 @@
   ],
   "props": [
    {
+    "name": "ds_sun_obelisk",
+    "cell": [
+     15,
+     9
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "ds_sun_obelisk",
+    "cell": [
+     27,
+     9
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
     "name": "r_ruins_45",
     "cell": [
      11,
-     12
+     14
     ],
     "w": 4,
     "h": 3
@@ -11906,7 +12042,7 @@
     "name": "r_ruins_46",
     "cell": [
      28,
-     12
+     14
     ],
     "w": 4,
     "h": 3
@@ -11933,7 +12069,7 @@
     "name": "r_ruins_41",
     "cell": [
      16,
-     7
+     5
     ],
     "w": 1,
     "h": 1
@@ -11942,7 +12078,7 @@
     "name": "r_ruins_42",
     "cell": [
      26,
-     7
+     5
     ],
     "w": 1,
     "h": 1
@@ -11995,7 +12131,7 @@
    {
     "name": "r_ruins_48",
     "cell": [
-     35,
+     31,
      23
     ],
     "solid": false
@@ -12003,16 +12139,16 @@
    {
     "name": "r_ruins_51",
     "cell": [
-     34,
-     33
+     19,
+     28
     ],
     "solid": false
    },
    {
     "name": "r_ruins_06",
     "cell": [
-     19,
-     24
+     31,
+     33
     ],
     "solid": false
    }
@@ -12038,7 +12174,7 @@
    {
     "type": "loot",
     "cell": [
-     35,
+     31,
      23
     ],
     "item": "sun_scarab",
@@ -12050,8 +12186,8 @@
    {
     "type": "loot",
     "cell": [
-     34,
-     33
+     19,
+     28
     ],
     "item": "gold",
     "n": 2,
@@ -12062,8 +12198,8 @@
    {
     "type": "mrock",
     "cell": [
-     19,
-     24
+     31,
+     33
     ],
     "ore": "sunstone",
     "hp": 3,
@@ -12074,7 +12210,7 @@
     "type": "note",
     "cell": [
      37,
-     14
+     9
     ],
     "hint": "A: read the tablet",
     "text": "A tablet: 'THE SUN SET ITS GUARD AT THE DOOR AND SAID: KEEP THEM OUT UNTIL I RETURN. THE SUN DID NOT RETURN.'",
@@ -12085,7 +12221,7 @@
     "type": "note",
     "cell": [
      19,
-     33
+     17
     ],
     "hint": "A: read the rune stone",
     "text": "Runes glow faintly as you pass. They spell, as far as you can tell, 'WELCOME'. Then, smaller: 'MOSTLY'.",
@@ -12126,7 +12262,7 @@
   "fruit": 0,
   "mega": "ironline",
   "area_name": "Junction City",
-  "ground": "grass",
+  "ground": "brick_herring",
   "ground_seam": "brick_herring",
   "path": "city_pavement",
   "border": "cliff",
@@ -12136,6 +12272,11 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "2a2a2a48",
+  "amb": {
+   "city_hum": -19.0,
+   "machines": -24.0
+  },
   "gen": {
    "region_props": [
     "fire_barrel",
@@ -12352,13 +12493,22 @@
     "h": 1
    },
    {
-    "name": "radio_tower_a",
+    "name": "ir_signal_tower",
     "cell": [
      37,
      13
     ],
     "w": 1,
-    "h": 1
+    "h": 2
+   },
+   {
+    "name": "ir_coal_hopper",
+    "cell": [
+     6,
+     16
+    ],
+    "w": 2,
+    "h": 2
    }
   ],
   "things": [
@@ -12421,8 +12571,8 @@
    {
     "type": "note",
     "cell": [
-     25,
-     10
+     29,
+     17
     ],
     "hint": "A: read the timetable",
     "text": "Timetable, all trains CANCELLED by order of BARON COALBROOK. Underneath, in chalk: 'FREIGHT YARDS WEST. MILL NORTH. THE BARON HIDES IN THE TUNNELS PAST THE MILL. SOMEBODY DO SOMETHING.'",
@@ -12434,7 +12584,7 @@
    {
     "id": "mg_hollis",
     "name": "Hollis",
-    "sprite": "man_gang",
+    "sprite": "mg_hollis",
     "role": "Ironline Frontier",
     "cell": [
      21,
@@ -12450,7 +12600,7 @@
    {
     "id": "mg_dot",
     "name": "Dot",
-    "sprite": "woman",
+    "sprite": "mg_dot",
     "role": "Ironline Frontier",
     "cell": [
      20,
@@ -12466,7 +12616,7 @@
    {
     "id": "mg_skip",
     "name": "Skip",
-    "sprite": "npc_child_boy_a",
+    "sprite": "mg_skip",
     "role": "Ironline Frontier",
     "cell": [
      26,
@@ -12500,7 +12650,7 @@
   "fruit": 0,
   "mega": "ironline",
   "area_name": "Freight Yards",
-  "ground": "grass",
+  "ground": "ballast",
   "ground_seam": "ballast",
   "path": "dock_concrete",
   "border": "cliff",
@@ -12510,6 +12660,11 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "2a2a2a48",
+  "amb": {
+   "city_hum": -19.0,
+   "machines": -18.0
+  },
   "gen": {
    "region_props": [
     "fire_barrel",
@@ -12595,7 +12750,7 @@
        12
       ],
       "r": 5,
-      "seed": 714
+      "seed": 233
      },
      {
       "c": [
@@ -12603,12 +12758,30 @@
        34
       ],
       "r": 5,
-      "seed": 223
+      "seed": 140
      }
     ]
    }
   ],
   "props": [
+   {
+    "name": "ir_coal_hopper",
+    "cell": [
+     19,
+     10
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "ir_signal_tower",
+    "cell": [
+     45,
+     26
+    ],
+    "w": 1,
+    "h": 2
+   },
    {
     "name": "crane",
     "cell": [
@@ -12684,8 +12857,8 @@
    {
     "name": "oil_drums",
     "cell": [
-     15,
-     15
+     20,
+     24
     ],
     "solid": false
    },
@@ -12700,24 +12873,24 @@
    {
     "name": "cargo_yellow",
     "cell": [
-     14,
-     33
+     24,
+     10
     ],
     "solid": false
    },
    {
     "name": "boulder2_m_a",
     "cell": [
-     45,
-     17
+     9,
+     34
     ],
     "solid": false
    },
    {
     "name": "ore_iron",
     "cell": [
-     9,
-     24
+     42,
+     22
     ],
     "solid": false
    }
@@ -12726,8 +12899,8 @@
    {
     "type": "loot",
     "cell": [
-     15,
-     15
+     20,
+     24
     ],
     "item": "oil",
     "n": 2,
@@ -12750,8 +12923,8 @@
    {
     "type": "loot",
     "cell": [
-     14,
-     33
+     24,
+     10
     ],
     "item": "charcoal",
     "n": 3,
@@ -12762,8 +12935,8 @@
    {
     "type": "mrock",
     "cell": [
-     45,
-     17
+     9,
+     34
     ],
     "ore": "tin",
     "hp": 3,
@@ -12773,8 +12946,8 @@
    {
     "type": "mrock",
     "cell": [
-     9,
-     24
+     42,
+     22
     ],
     "ore": "iron",
     "hp": 3,
@@ -12784,8 +12957,8 @@
    {
     "type": "note",
     "cell": [
-     24,
-     10
+     12,
+     15
     ],
     "hint": "A: read the manifest",
     "text": "A shipping manifest: '400 crates TIN to BARON. 300 crates COAL to BARON. 1 crate TEDDY BEARS to BARON (personal).'",
@@ -12826,7 +12999,7 @@
   "fruit": 0,
   "mega": "ironline",
   "area_name": "Mill District",
-  "ground": "grass",
+  "ground": "brick_herring",
   "ground_seam": "brick_herring",
   "path": "cobble_warm",
   "border": "cliff",
@@ -12836,6 +13009,11 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "2a2a2a48",
+  "amb": {
+   "city_hum": -19.0,
+   "machines": -24.0
+  },
   "gen": {
    "region_props": [
     "fire_barrel",
@@ -12999,32 +13177,32 @@
    {
     "name": "fire_barrel2",
     "cell": [
-     9,
-     31
+     19,
+     24
     ],
     "solid": false
    },
    {
     "name": "crates_b",
     "cell": [
-     19,
-     19
+     14,
+     13
     ],
     "solid": false
    },
    {
     "name": "boulder2_s_b",
     "cell": [
-     23,
-     6
+     16,
+     34
     ],
     "solid": false
    },
    {
     "name": "ore_coal",
     "cell": [
-     18,
-     34
+     28,
+     23
     ],
     "solid": false
    }
@@ -13033,8 +13211,8 @@
    {
     "type": "loot",
     "cell": [
-     9,
-     31
+     19,
+     24
     ],
     "item": "charcoal",
     "n": 2,
@@ -13045,8 +13223,8 @@
    {
     "type": "loot",
     "cell": [
-     19,
-     19
+     14,
+     13
     ],
     "item": "gear",
     "n": 1,
@@ -13057,8 +13235,8 @@
    {
     "type": "mrock",
     "cell": [
-     23,
-     6
+     16,
+     34
     ],
     "ore": "tin",
     "hp": 3,
@@ -13068,8 +13246,8 @@
    {
     "type": "mrock",
     "cell": [
-     18,
-     34
+     28,
+     23
     ],
     "ore": "coal",
     "hp": 2,
@@ -13079,8 +13257,8 @@
    {
     "type": "heal",
     "cell": [
-     9,
-     17
+     27,
+     38
     ],
     "hp": 3,
     "energy": 40,
@@ -13092,7 +13270,7 @@
     "type": "note",
     "cell": [
      28,
-     22
+     9
     ],
     "hint": "A: read the poster",
     "text": "A poster: 'WORK HARDER. THE BARON IS WATCHING.' Someone has drawn him a very small hat.",
@@ -13133,7 +13311,7 @@
   "fruit": 0,
   "mega": "ironline",
   "area_name": "Coalbrook Tunnels",
-  "ground": "grass",
+  "ground": "cave_stone_floor",
   "ground_seam": "cave_stone_floor",
   "path": "ballast",
   "border": "cliff",
@@ -13143,6 +13321,13 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "2a2a2a48",
+  "amb": {
+   "city_hum": -19.0,
+   "machines": -24.0,
+   "cave": -14.0,
+   "basement_drips": -18.0
+  },
   "gen": {
    "region_props": [
     "fire_barrel",
@@ -13232,6 +13417,15 @@
   ],
   "props": [
    {
+    "name": "ir_baron_car",
+    "cell": [
+     25,
+     7
+    ],
+    "w": 7,
+    "h": 2
+   },
+   {
     "name": "cave_rail",
     "cell": [
      13,
@@ -13271,7 +13465,7 @@
     "name": "mine_dark_lamp_1",
     "cell": [
      26,
-     7
+     10
     ],
     "w": 0,
     "h": 1
@@ -13306,32 +13500,32 @@
    {
     "name": "mrock_stone_0",
     "cell": [
-     14,
-     33
+     25,
+     36
     ],
     "solid": false
    },
    {
     "name": "ore_gold_1",
     "cell": [
-     33,
-     9
+     30,
+     18
     ],
     "solid": false
    },
    {
     "name": "ore_coal_1",
     "cell": [
-     26,
-     23
+     19,
+     18
     ],
     "solid": false
    },
    {
     "name": "cave_ore_crate",
     "cell": [
-     37,
-     20
+     9,
+     33
     ],
     "solid": false
    }
@@ -13357,8 +13551,8 @@
    {
     "type": "mrock",
     "cell": [
-     14,
-     33
+     25,
+     36
     ],
     "ore": "tin",
     "hp": 3,
@@ -13368,8 +13562,8 @@
    {
     "type": "mrock",
     "cell": [
-     33,
-     9
+     30,
+     18
     ],
     "ore": "gold",
     "hp": 4,
@@ -13379,8 +13573,8 @@
    {
     "type": "mrock",
     "cell": [
-     26,
-     23
+     19,
+     18
     ],
     "ore": "coal",
     "hp": 2,
@@ -13390,8 +13584,8 @@
    {
     "type": "loot",
     "cell": [
-     37,
-     20
+     9,
+     33
     ],
     "item": "thug_cash",
     "n": 3,
@@ -13402,8 +13596,8 @@
    {
     "type": "note",
     "cell": [
-     25,
-     36
+     20,
+     27
     ],
     "hint": "A: read the Baron's ledger",
     "text": "The Baron's ledger: every station, every rail, every penny of Ironline, and in the margin, 'buy the moon??'",
@@ -13438,13 +13632,13 @@
  "frost_hearthhold": {
   "cols": 44,
   "rows": 40,
-  "music": "winter",
+  "music": "mega_frost",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
   "mega": "frostpeak",
   "area_name": "Hearthhold",
-  "ground": "grass",
+  "ground": "snow_packed",
   "ground_seam": "snow_packed",
   "path": "snow_trodden",
   "border": "trees",
@@ -13455,6 +13649,11 @@
    "snow",
    "stair_snow"
   ],
+  "path_lip": "8a9ab030",
+  "amb": {
+   "wind_soft": -12.0,
+   "campfire": -20.0
+  },
   "gen": {
    "region_props": [
     "snowdrift_0",
@@ -13599,13 +13798,13 @@
   ],
   "props": [
    {
-    "name": "veh_crystal_sled_side",
+    "name": "fr_sled_station",
     "cell": [
      16,
      34
     ],
     "w": 2,
-    "h": 1
+    "h": 2
    },
    {
     "name": "ice_stall_open",
@@ -13626,28 +13825,55 @@
     "h": 2
    },
    {
-    "name": "ice_house_1",
+    "name": "fr_lodge",
     "cell": [
-     9,
+     10,
      12
     ],
-    "w": 6,
+    "w": 3,
     "h": 3
    },
    {
-    "name": "ice_house_2",
+    "name": "fr_cabin",
     "cell": [
-     28,
+     30,
      12
     ],
-    "w": 6,
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "fr_hearth",
+    "cell": [
+     17,
+     9
+    ],
+    "w": 3,
+    "h": 2
+   },
+   {
+    "name": "fr_bell_tower",
+    "cell": [
+     35,
+     23
+    ],
+    "w": 2,
+    "h": 3
+   },
+   {
+    "name": "fr_lodge",
+    "cell": [
+     28,
+     30
+    ],
+    "w": 3,
     "h": 3
    },
    {
     "name": "fishing_hut_stilts_winter",
     "cell": [
      28,
-     29
+     35
     ],
     "w": 5,
     "h": 3
@@ -13664,8 +13890,8 @@
    {
     "name": "lamp_snow",
     "cell": [
-     17,
-     31
+     24,
+     26
     ],
     "w": 0,
     "h": 1,
@@ -13685,7 +13911,7 @@
     "name": "big_snowpine_a",
     "cell": [
      6,
-     16
+     12
     ],
     "w": 1,
     "h": 2,
@@ -13695,17 +13921,17 @@
     "name": "big_snowpine_b",
     "cell": [
      36,
-     16
+     12
     ],
     "w": 1,
     "h": 2,
     "group": "nature"
    },
    {
-    "name": "lookout_tower",
+    "name": "fr_cabin",
     "cell": [
-     35,
-     22
+     7,
+     16
     ],
     "w": 2,
     "h": 2
@@ -13771,8 +13997,8 @@
    {
     "type": "note",
     "cell": [
-     20,
-     12
+     36,
+     16
     ],
     "hint": "A: read the guide's board",
     "text": "Guide's board: 'GLACIER FIELDS north, then the SUMMIT. RIME CAVERNS west. FROZEN FALLS east, good fishing. Something big sleeps on the Summit. Don't sing near it.'",
@@ -13784,7 +14010,7 @@
    {
     "id": "mg_brannoch",
     "name": "Brannoch",
-    "sprite": "npc_hunter",
+    "sprite": "mg_brannoch",
     "role": "Frostpeak Reach",
     "cell": [
      21,
@@ -13800,7 +14026,7 @@
    {
     "id": "mg_ingrid",
     "name": "Ingrid",
-    "sprite": "npc_baker",
+    "sprite": "mg_ingrid",
     "role": "Frostpeak Reach",
     "cell": [
      20,
@@ -13816,7 +14042,7 @@
    {
     "id": "mg_tove",
     "name": "Tove",
-    "sprite": "npc_child_girl_b",
+    "sprite": "mg_tove",
     "role": "Frostpeak Reach",
     "cell": [
      26,
@@ -13844,13 +14070,13 @@
  "frost_glacier": {
   "cols": 52,
   "rows": 44,
-  "music": "mountain",
+  "music": "mega_frost",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
   "mega": "frostpeak",
   "area_name": "Glacier Fields",
-  "ground": "grass",
+  "ground": "frost_grass",
   "ground_seam": "frost_grass",
   "path": "snow_trodden",
   "border": "trees",
@@ -13861,6 +14087,10 @@
    "snow",
    "stair_snow"
   ],
+  "path_lip": "8a9ab030",
+  "amb": {
+   "wind_soft": -12.0
+  },
   "gen": {
    "region_props": [
     "snowdrift_0",
@@ -13976,7 +14206,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 859
+      "seed": 794
      }
     ],
     "upper": []
@@ -13990,7 +14220,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 418
+      "seed": 42
      }
     ],
     "upper": []
@@ -14006,7 +14236,7 @@
        12
       ],
       "r": 5,
-      "seed": 274
+      "seed": 288
      },
      {
       "c": [
@@ -14014,7 +14244,7 @@
        32
       ],
       "r": 4,
-      "seed": 777
+      "seed": 359
      }
     ]
    }
@@ -14051,40 +14281,40 @@
    {
     "name": "mrock_ice_0",
     "cell": [
-     11,
-     10
+     22,
+     19
     ],
     "solid": false
    },
    {
     "name": "mrock_ice_1",
     "cell": [
-     25,
-     19
+     29,
+     8
     ],
     "solid": false
    },
    {
     "name": "ore_silver_1",
     "cell": [
-     29,
-     5
+     12,
+     24
     ],
     "solid": false
    },
    {
     "name": "icicles_1",
     "cell": [
-     22,
-     34
+     34,
+     18
     ],
     "solid": false
    },
    {
     "name": "rock_snow_m",
     "cell": [
-     10,
-     24
+     23,
+     34
     ],
     "solid": false,
     "group": "nature"
@@ -14094,18 +14324,7 @@
    {
     "type": "mrock",
     "cell": [
-     11,
-     10
-    ],
-    "ore": "frost",
-    "hp": 4,
-    "n": 1,
-    "hint": "A: mine it"
-   },
-   {
-    "type": "mrock",
-    "cell": [
-     25,
+     22,
      19
     ],
     "ore": "frost",
@@ -14117,7 +14336,18 @@
     "type": "mrock",
     "cell": [
      29,
-     5
+     8
+    ],
+    "ore": "frost",
+    "hp": 4,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     12,
+     24
     ],
     "ore": "silver",
     "hp": 3,
@@ -14127,8 +14357,8 @@
    {
     "type": "loot",
     "cell": [
-     22,
-     34
+     34,
+     18
     ],
     "item": "glass_frosted",
     "n": 1,
@@ -14139,8 +14369,8 @@
    {
     "type": "loot",
     "cell": [
-     10,
-     24
+     23,
+     34
     ],
     "item": "edelweiss",
     "n": 2,
@@ -14151,7 +14381,7 @@
    {
     "type": "note",
     "cell": [
-     12,
+     13,
      34
     ],
     "hint": "A: read the cairn",
@@ -14193,7 +14423,7 @@
   "fruit": 0,
   "mega": "frostpeak",
   "area_name": "Rime Caverns",
-  "ground": "grass",
+  "ground": "cave_ice_floor",
   "ground_seam": "cave_ice_floor",
   "path": "snow_paving",
   "border": "cliff",
@@ -14204,6 +14434,12 @@
    "snow",
    "stair_snow"
   ],
+  "path_lip": "8a9ab030",
+  "amb": {
+   "wind_soft": -12.0,
+   "cave": -14.0,
+   "crystal_hum": -22.0
+  },
   "gen": {
    "region_props": [
     "snowdrift_0",
@@ -14291,7 +14527,7 @@
        12
       ],
       "r": 4,
-      "seed": 233
+      "seed": 91
      },
      {
       "c": [
@@ -14299,7 +14535,7 @@
        32
       ],
       "r": 4,
-      "seed": 154
+      "seed": 267
      }
     ]
    }
@@ -14362,40 +14598,40 @@
    {
     "name": "mrock_ice_0",
     "cell": [
-     20,
-     18
+     28,
+     22
     ],
     "solid": false
    },
    {
     "name": "mrock_ice_1",
     "cell": [
-     36,
-     17
+     17,
+     14
     ],
     "solid": false
    },
    {
     "name": "ore_crystal_1",
     "cell": [
-     10,
-     14
+     19,
+     23
     ],
     "solid": false
    },
    {
     "name": "ore_silver",
     "cell": [
-     8,
-     24
+     39,
+     22
     ],
     "solid": false
    },
    {
     "name": "icicles_2",
     "cell": [
-     11,
-     33
+     8,
+     20
     ],
     "solid": false
    }
@@ -14404,8 +14640,8 @@
    {
     "type": "mrock",
     "cell": [
-     20,
-     18
+     28,
+     22
     ],
     "ore": "frost",
     "hp": 4,
@@ -14415,8 +14651,8 @@
    {
     "type": "mrock",
     "cell": [
-     36,
-     17
+     17,
+     14
     ],
     "ore": "frost",
     "hp": 4,
@@ -14426,8 +14662,8 @@
    {
     "type": "mrock",
     "cell": [
-     10,
-     14
+     19,
+     23
     ],
     "ore": "sapphire",
     "hp": 4,
@@ -14437,8 +14673,8 @@
    {
     "type": "mrock",
     "cell": [
-     8,
-     24
+     39,
+     22
     ],
     "ore": "silver",
     "hp": 3,
@@ -14448,8 +14684,8 @@
    {
     "type": "loot",
     "cell": [
-     11,
-     33
+     8,
+     20
     ],
     "item": "glass_frosted",
     "n": 2,
@@ -14460,8 +14696,8 @@
    {
     "type": "note",
     "cell": [
-     20,
-     9
+     13,
+     32
     ],
     "hint": "A: read the frozen journal",
     "text": "A journal frozen into the ice, readable through it: 'The caverns hum the same note as the Summit. I think the Wyrm is snoring.'",
@@ -14496,13 +14732,13 @@
  "frost_falls": {
   "cols": 48,
   "rows": 42,
-  "music": "colony_ice",
+  "music": "mega_frost",
   "tier": 4,
   "pad": 6,
   "fruit": 0,
   "mega": "frostpeak",
   "area_name": "Frozen Falls",
-  "ground": "grass",
+  "ground": "snow_smooth",
   "ground_seam": "snow_smooth",
   "path": "snow_trodden",
   "border": "trees",
@@ -14513,6 +14749,11 @@
    "snow",
    "stair_snow"
   ],
+  "path_lip": "8a9ab030",
+  "amb": {
+   "wind_soft": -12.0,
+   "river": -15.0
+  },
   "gen": {
    "region_props": [
     "snowdrift_0",
@@ -14597,7 +14838,7 @@
      30.5
     ],
     "r": 5,
-    "seed": 51,
+    "seed": 427,
     "fish": [
      "ice_pike",
      "ice_pike",
@@ -14612,7 +14853,7 @@
      10.5
     ],
     "r": 3,
-    "seed": 610,
+    "seed": 726,
     "fish": [
      "ice_pike",
      "ice_pike",
@@ -14654,16 +14895,16 @@
    {
     "name": "icicles_1",
     "cell": [
-     26,
-     14
+     35,
+     9
     ],
     "solid": false
    },
    {
     "name": "mrock_ice_1",
     "cell": [
-     10,
-     16
+     12,
+     21
     ],
     "solid": false
    }
@@ -14672,8 +14913,8 @@
    {
     "type": "loot",
     "cell": [
-     26,
-     14
+     35,
+     9
     ],
     "item": "ice_pike",
     "n": 1,
@@ -14684,8 +14925,8 @@
    {
     "type": "heal",
     "cell": [
-     38,
-     33
+     26,
+     18
     ],
     "hp": 4,
     "energy": 50,
@@ -14696,8 +14937,8 @@
    {
     "type": "mrock",
     "cell": [
-     10,
-     16
+     12,
+     21
     ],
     "ore": "frost",
     "hp": 4,
@@ -14707,8 +14948,8 @@
    {
     "type": "note",
     "cell": [
-     38,
-     13
+     33,
+     28
     ],
     "hint": "A: read the fishing log",
     "text": "Fishing log, Tove (age 8): 'Monday: Pike. Tuesday: Pike. Wednesday: a different Pike.'",
@@ -14749,7 +14990,7 @@
   "fruit": 0,
   "mega": "frostpeak",
   "area_name": "The Summit",
-  "ground": "grass",
+  "ground": "snow_smooth",
   "ground_seam": "snow_smooth",
   "path": "snow_trodden",
   "border": "trees",
@@ -14760,6 +15001,11 @@
    "snow",
    "stair_snow"
   ],
+  "path_lip": "8a9ab030",
+  "amb": {
+   "wind_soft": -12.0,
+   "wind_strong": -8.0
+  },
   "gen": {
    "region_props": [
     "snowdrift_0",
@@ -14859,7 +15105,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 470
+      "seed": 678
      }
     ],
     "upper": []
@@ -14905,16 +15151,16 @@
    {
     "name": "mrock_ice_0",
     "cell": [
-     19,
-     32
+     13,
+     17
     ],
     "solid": false
    },
    {
     "name": "icicles_2",
     "cell": [
-     17,
-     22
+     24,
+     29
     ],
     "solid": false
    }
@@ -14940,8 +15186,8 @@
    {
     "type": "mrock",
     "cell": [
-     19,
-     32
+     13,
+     17
     ],
     "ore": "frost",
     "hp": 4,
@@ -14951,8 +15197,8 @@
    {
     "type": "loot",
     "cell": [
-     17,
-     22
+     24,
+     29
     ],
     "item": "glass_frosted",
     "n": 2,
@@ -14964,7 +15210,7 @@
     "type": "note",
     "cell": [
      7,
-     13
+     26
     ],
     "hint": "A: read the summit flag",
     "text": "A ragged flag on a pole. Under it, a tin with notes from everyone who made it. The newest says: 'SHHH. IT'S SLEEPING.'",
@@ -14999,19 +15245,23 @@
  "wind_breezehaven": {
   "cols": 44,
   "rows": 40,
-  "music": "sky",
+  "music": "mega_wind",
   "tier": 5,
   "pad": 6,
   "fruit": 0,
   "mega": "windward",
   "area_name": "Breezehaven",
-  "ground": "grass",
+  "ground": "cloud_top",
   "ground_seam": "cloud_top",
   "path": "float_stone",
   "border": "none",
   "backdrop": "hills",
   "weather": "wind",
   "pet": false,
+  "path_lip": "c0d0e020",
+  "amb": {
+   "wind_soft": -11.0
+  },
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -15130,21 +15380,21 @@
   ],
   "props": [
    {
-    "name": "veh_balloon",
+    "name": "wi_mooring_tower",
     "cell": [
-     15,
+     16,
      34
     ],
-    "w": 3,
+    "w": 2,
     "h": 2
    },
    {
-    "name": "stall2_white",
+    "name": "wi_cloud_stall",
     "cell": [
-     15,
+     16,
      27
     ],
-    "w": 3,
+    "w": 2,
     "h": 1
    },
    {
@@ -15175,12 +15425,30 @@
     "h": 3
    },
    {
-    "name": "balloon",
+    "name": "wi_prop_cottage",
     "cell": [
-     6,
+     7,
      25
     ],
-    "w": 3,
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "wi_prop_cottage",
+    "cell": [
+     35,
+     21
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "wi_wind_shrine",
+    "cell": [
+     26,
+     9
+    ],
+    "w": 2,
     "h": 2
    },
    {
@@ -15202,15 +15470,6 @@
     "w": 2,
     "h": 2,
     "group": "nature"
-   },
-   {
-    "name": "stall2_blue",
-    "cell": [
-     29,
-     17
-    ],
-    "w": 3,
-    "h": 1
    },
    {
     "name": "sky_stairs",
@@ -15282,7 +15541,7 @@
    {
     "type": "note",
     "cell": [
-     10,
+     9,
      16
     ],
     "hint": "A: read the wind vane",
@@ -15295,11 +15554,11 @@
    {
     "id": "mg_zephyr",
     "name": "Zephyr",
-    "sprite": "penguin",
+    "sprite": "mg_zephyr",
     "role": "Windward Isles",
     "cell": [
-     21,
-     17
+     20,
+     20
     ],
     "lines": [
      "Breezehaven! Where penguins fly, technically, in baskets.",
@@ -15311,11 +15570,11 @@
    {
     "id": "mg_gull",
     "name": "Gull",
-    "sprite": "npc_fisherman",
+    "sprite": "mg_gull",
     "role": "Windward Isles",
     "cell": [
-     20,
-     22
+     21,
+     15
     ],
     "lines": [
      "You can fish off the edge of the island. Skyfin bite at dawn.",
@@ -15327,11 +15586,11 @@
    {
     "id": "mg_nimbus",
     "name": "Nimbus",
-    "sprite": "penguin_wizard",
+    "sprite": "mg_nimbus",
     "role": "Windward Isles",
     "cell": [
-     26,
-     18
+     25,
+     21
     ],
     "lines": [
      "The Star Crystal's light reaches all the way up here. The clouds love it.",
@@ -15355,19 +15614,23 @@
  "wind_sunrise_shelf": {
   "cols": 50,
   "rows": 44,
-  "music": "sky",
+  "music": "mega_wind",
   "tier": 5,
   "pad": 6,
   "fruit": 0,
   "mega": "windward",
   "area_name": "Sunrise Shelf",
-  "ground": "grass",
+  "ground": "cloud",
   "ground_seam": "cloud",
   "path": "float_stone",
   "border": "none",
   "backdrop": "hills",
   "weather": "wind",
   "pet": false,
+  "path_lip": "c0d0e020",
+  "amb": {
+   "wind_soft": -11.0
+  },
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -15453,7 +15716,7 @@
      32.5
     ],
     "r": 5,
-    "seed": 503,
+    "seed": 143,
     "fish": [
      "sky_fish",
      "sky_fish",
@@ -15472,7 +15735,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 141
+      "seed": 609
      }
     ],
     "upper": []
@@ -15511,32 +15774,32 @@
    {
     "name": "skydeco_5",
     "cell": [
-     9,
-     25
+     30,
+     22
     ],
     "solid": false
    },
    {
     "name": "skydeco_2",
     "cell": [
-     27,
-     13
+     16,
+     15
     ],
     "solid": false
    },
    {
     "name": "moon_crystal_blue_s",
     "cell": [
-     9,
-     15
+     14,
+     30
     ],
     "solid": false
    },
    {
     "name": "ore_silver",
     "cell": [
-     38,
-     22
+     43,
+     17
     ],
     "solid": false
    }
@@ -15545,8 +15808,8 @@
    {
     "type": "loot",
     "cell": [
-     9,
-     25
+     30,
+     22
     ],
     "item": "storm_fluff",
     "n": 1,
@@ -15557,8 +15820,8 @@
    {
     "type": "loot",
     "cell": [
-     27,
-     13
+     16,
+     15
     ],
     "item": "star_dust",
     "n": 1,
@@ -15569,8 +15832,8 @@
    {
     "type": "mrock",
     "cell": [
-     9,
-     15
+     14,
+     30
     ],
     "ore": "storm_glass",
     "hp": 4,
@@ -15580,8 +15843,8 @@
    {
     "type": "mrock",
     "cell": [
-     38,
-     22
+     43,
+     17
     ],
     "ore": "silver",
     "hp": 3,
@@ -15591,8 +15854,8 @@
    {
     "type": "note",
     "cell": [
-     27,
-     22
+     26,
+     10
     ],
     "hint": "A: read the sky-stone",
     "text": "A stone that floats, carved: 'FIRST LIGHT FALLS HERE FIRST.' The carving glows faintly pink.",
@@ -15633,13 +15896,17 @@
   "fruit": 0,
   "mega": "windward",
   "area_name": "Storm Shelf",
-  "ground": "grass",
+  "ground": "starry_cloud",
   "ground_seam": "starry_cloud",
   "path": "float_stone",
   "border": "none",
   "backdrop": "hills",
   "weather": "storm",
   "pet": false,
+  "path_lip": "c0d0e020",
+  "amb": {
+   "wind_soft": -11.0
+  },
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -15755,7 +16022,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 202
+      "seed": 597
      }
     ],
     "upper": []
@@ -15769,13 +16036,22 @@
       ],
       "r": 4,
       "ry": 3.0,
-      "seed": 295
+      "seed": 282
      }
     ],
     "upper": []
    }
   ],
   "props": [
+   {
+    "name": "wi_storm_vane",
+    "cell": [
+     26,
+     12
+    ],
+    "w": 1,
+    "h": 1
+   },
    {
     "name": "lightning_rod",
     "cell": [
@@ -15815,7 +16091,7 @@
    {
     "name": "moon_crystal_blue_s",
     "cell": [
-     14,
+     26,
      28
     ],
     "solid": false
@@ -15823,7 +16099,7 @@
    {
     "name": "moon_crystal_pink_s",
     "cell": [
-     8,
+     13,
      12
     ],
     "solid": false
@@ -15831,15 +16107,15 @@
    {
     "name": "ore_gold",
     "cell": [
-     26,
-     18
+     14,
+     28
     ],
     "solid": false
    },
    {
     "name": "skydeco_5",
     "cell": [
-     21,
+     26,
      5
     ],
     "solid": false
@@ -15849,7 +16125,7 @@
    {
     "type": "mrock",
     "cell": [
-     14,
+     26,
      28
     ],
     "ore": "storm_glass",
@@ -15860,7 +16136,7 @@
    {
     "type": "mrock",
     "cell": [
-     8,
+     13,
      12
     ],
     "ore": "storm_glass",
@@ -15871,8 +16147,8 @@
    {
     "type": "mrock",
     "cell": [
-     26,
-     18
+     14,
+     28
     ],
     "ore": "gold",
     "hp": 4,
@@ -15882,7 +16158,7 @@
    {
     "type": "loot",
     "cell": [
-     21,
+     26,
      5
     ],
     "item": "storm_fluff",
@@ -15895,7 +16171,7 @@
     "type": "note",
     "cell": [
      26,
-     27
+     19
     ],
     "hint": "A: read the warning sign",
     "text": "A sign, scorched: 'DO NOT STAND HERE DURING STORMS. (IT IS ALWAYS STORMING.)'",
@@ -15930,19 +16206,24 @@
  "wind_starfall_garden": {
   "cols": 46,
   "rows": 42,
-  "music": "moon",
+  "music": "mega_wind",
   "tier": 5,
   "pad": 6,
   "fruit": 0,
   "mega": "windward",
   "area_name": "Starfall Garden",
-  "ground": "grass",
+  "ground": "starry_cloud",
   "ground_seam": "starry_cloud",
   "path": "float_stone",
   "border": "none",
   "backdrop": "hills",
   "weather": "wind",
   "pet": false,
+  "path_lip": "c0d0e020",
+  "amb": {
+   "wind_soft": -11.0,
+   "crystal_hum": -22.0
+  },
   "gen": {
    "region_props": [
     "skydeco_0",
@@ -16040,7 +16321,7 @@
      28.5
     ],
     "r": 3,
-    "seed": 495,
+    "seed": 593,
     "fish": [
      "sky_fish",
      "mooncarp"
@@ -16088,7 +16369,7 @@
    {
     "name": "skydeco_2",
     "cell": [
-     20,
+     25,
      23
     ],
     "solid": false
@@ -16096,8 +16377,8 @@
    {
     "name": "ri_nest",
     "cell": [
-     31,
-     23
+     37,
+     18
     ],
     "solid": false
    }
@@ -16123,7 +16404,7 @@
    {
     "type": "loot",
     "cell": [
-     20,
+     25,
      23
     ],
     "item": "star_dust",
@@ -16135,8 +16416,8 @@
    {
     "type": "loot",
     "cell": [
-     31,
-     23
+     37,
+     18
     ],
     "item": "storm_eye",
     "n": 1,
@@ -16147,8 +16428,8 @@
    {
     "type": "heal",
     "cell": [
-     19,
-     33
+     34,
+     9
     ],
     "hp": 5,
     "energy": 60,
@@ -16159,7 +16440,7 @@
    {
     "type": "note",
     "cell": [
-     8,
+     25,
      32
     ],
     "hint": "A: read the star chart",
@@ -16195,13 +16476,13 @@
  "gilt_grand_plaza": {
   "cols": 44,
   "rows": 40,
-  "music": "uptown",
+  "music": "mega_gilt",
   "tier": 5,
   "pad": 6,
   "fruit": 0,
   "mega": "giltcity",
   "area_name": "Grand Plaza",
-  "ground": "grass",
+  "ground": "cobble_warm",
   "ground_seam": "cobble_warm",
   "path": "plaza_tiles",
   "border": "cliff",
@@ -16211,6 +16492,10 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "6a4a1a40",
+  "amb": {
+   "town_day": -20.0
+  },
   "gen": {
    "region_props": [
     "planter2_0",
@@ -16372,13 +16657,13 @@
     "h": 2
    },
    {
-    "name": "plaza_49",
+    "name": "gc_aurum_statue",
     "cell": [
      30,
      15
     ],
-    "w": 4,
-    "h": 3
+    "w": 1,
+    "h": 2
    },
    {
     "name": "plaza_16",
@@ -16486,8 +16771,8 @@
    {
     "type": "note",
     "cell": [
-     7,
-     21
+     35,
+     16
     ],
     "hint": "A: read the brass plaque",
     "text": "Brass plaque: 'GILT CITY. CASINO ROW east, and beneath it THE VAULTS. GILDED GARDENS west. By order of MADAME AURUM, everything here is hers. Including this plaque.'",
@@ -16499,7 +16784,7 @@
    {
     "id": "mg_pell",
     "name": "Pell",
-    "sprite": "gambler",
+    "sprite": "mg_pell",
     "role": "Gilt City",
     "cell": [
      21,
@@ -16515,7 +16800,7 @@
    {
     "id": "mg_odette",
     "name": "Odette",
-    "sprite": "npc_artist",
+    "sprite": "mg_odette",
     "role": "Gilt City",
     "cell": [
      20,
@@ -16531,7 +16816,7 @@
    {
     "id": "mg_cass",
     "name": "Cass",
-    "sprite": "speedster",
+    "sprite": "mg_cass",
     "role": "Gilt City",
     "cell": [
      26,
@@ -16565,7 +16850,7 @@
   "fruit": 0,
   "mega": "giltcity",
   "area_name": "Casino Row",
-  "ground": "grass",
+  "ground": "city_pavement",
   "ground_seam": "city_pavement",
   "path": "brick_herring",
   "border": "cliff",
@@ -16575,6 +16860,12 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "6a4a1a40",
+  "amb": {
+   "town_day": -20.0,
+   "neon_street": -15.0,
+   "crowd": -20.0
+  },
   "gen": {
    "region_props": [
     "planter2_0",
@@ -16679,10 +16970,19 @@
   ],
   "props": [
    {
+    "name": "gc_casino",
+    "cell": [
+     14,
+     12
+    ],
+    "w": 8,
+    "h": 4
+   },
+   {
     "name": "neon_hotel",
     "cell": [
-     9,
-     12
+     6,
+     25
     ],
     "w": 9,
     "h": 4,
@@ -16702,7 +17002,7 @@
     "name": "spotlight_pink",
     "cell": [
      22,
-     9
+     6
     ],
     "w": 1,
     "h": 1
@@ -16719,8 +17019,8 @@
    {
     "name": "betting_booth",
     "cell": [
-     10,
-     25
+     18,
+     27
     ],
     "w": 3,
     "h": 2
@@ -16738,7 +17038,7 @@
     "name": "neon_sign_2",
     "cell": [
      7,
-     21
+     16
     ],
     "w": 2,
     "h": 1
@@ -16755,24 +17055,24 @@
    {
     "name": "card_table",
     "cell": [
-     29,
-     14
+     40,
+     11
     ],
     "solid": false
    },
    {
     "name": "plaza_06",
     "cell": [
-     17,
-     21
+     22,
+     14
     ],
     "solid": false
    },
    {
     "name": "ore_gold",
     "cell": [
-     35,
-     28
+     28,
+     5
     ],
     "solid": false
    }
@@ -16781,8 +17081,8 @@
    {
     "type": "loot",
     "cell": [
-     29,
-     14
+     40,
+     11
     ],
     "item": "gambler_chip",
     "n": 3,
@@ -16793,8 +17093,8 @@
    {
     "type": "loot",
     "cell": [
-     17,
-     21
+     22,
+     14
     ],
     "item": "lucky_coin",
     "n": 1,
@@ -16805,8 +17105,8 @@
    {
     "type": "mrock",
     "cell": [
-     35,
-     28
+     28,
+     5
     ],
     "ore": "gold",
     "hp": 4,
@@ -16817,7 +17117,7 @@
     "type": "note",
     "cell": [
      40,
-     14
+     32
     ],
     "hint": "A: read the house rules",
     "text": "House rules: 1. The house always wins. 2. See rule 1. 3. No running. (Someone has crossed out 3 and written CASS WAS HERE.)",
@@ -16852,13 +17152,13 @@
  "gilt_gardens": {
   "cols": 50,
   "rows": 44,
-  "music": "orchard",
+  "music": "mega_gilt",
   "tier": 5,
   "pad": 6,
   "fruit": 0,
   "mega": "giltcity",
   "area_name": "Gilded Gardens",
-  "ground": "grass",
+  "ground": "meadow_grass",
   "ground_seam": "meadow_grass",
   "path": "cobble_moss",
   "border": "trees",
@@ -16868,6 +17168,11 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "6a4a1a40",
+  "amb": {
+   "town_day": -20.0,
+   "birds_day": -16.0
+  },
   "gen": {
    "region_props": [
     "planter2_0",
@@ -16950,7 +17255,7 @@
      32.5
     ],
     "r": 5,
-    "seed": 346,
+    "seed": 497,
     "fish": [
      "carp",
      "ember_koi",
@@ -16964,7 +17269,7 @@
      11.5
     ],
     "r": 3,
-    "seed": 740,
+    "seed": 854,
     "fish": [
      "carp",
      "ember_koi",
@@ -17049,16 +17354,16 @@
    {
     "name": "hedge2_ball",
     "cell": [
-     9,
-     14
+     33,
+     17
     ],
     "solid": false
    },
    {
     "name": "flowerbed_red",
     "cell": [
-     29,
-     22
+     15,
+     19
     ],
     "solid": false
    }
@@ -17067,8 +17372,8 @@
    {
     "type": "loot",
     "cell": [
-     9,
-     14
+     33,
+     17
     ],
     "item": "pearl_necklace",
     "n": 1,
@@ -17079,8 +17384,8 @@
    {
     "type": "loot",
     "cell": [
-     29,
-     22
+     15,
+     19
     ],
     "item": "dark_rose",
     "n": 2,
@@ -17091,8 +17396,8 @@
    {
     "type": "heal",
     "cell": [
-     27,
-     13
+     42,
+     17
     ],
     "hp": 4,
     "energy": 60,
@@ -17104,7 +17409,7 @@
     "type": "note",
     "cell": [
      9,
-     32
+     31
     ],
     "hint": "A: read the gardener's note",
     "text": "Gardener's note: 'Madame wants the roses gold. Roses do not come in gold. I have explained this nine times.'",
@@ -17145,7 +17450,7 @@
   "fruit": 0,
   "mega": "giltcity",
   "area_name": "The Vaults",
-  "ground": "grass",
+  "ground": "floor_checker",
   "ground_seam": "floor_checker",
   "path": "plaza_tiles",
   "border": "cliff",
@@ -17155,6 +17460,12 @@
    "grass",
    "stair_iron"
   ],
+  "path_lip": "6a4a1a40",
+  "amb": {
+   "town_day": -20.0,
+   "cave": -18.0,
+   "basement_drips": -22.0
+  },
   "gen": {
    "region_props": [
     "planter2_0",
@@ -17244,6 +17555,15 @@
   ],
   "props": [
    {
+    "name": "gc_vault_door",
+    "cell": [
+     25,
+     8
+    ],
+    "w": 5,
+    "h": 3
+   },
+   {
     "name": "gold_fence_a",
     "cell": [
      13,
@@ -17274,7 +17594,7 @@
     "name": "gold_gate",
     "cell": [
      26,
-     7
+     11
     ],
     "w": 1,
     "h": 1
@@ -17309,32 +17629,32 @@
    {
     "name": "chest_open",
     "cell": [
-     19,
-     20
+     32,
+     9
     ],
     "solid": false
    },
    {
     "name": "chest_closed",
     "cell": [
-     32,
-     16
+     8,
+     31
     ],
     "solid": false
    },
    {
     "name": "ore_silver_2",
     "cell": [
-     20,
-     35
+     19,
+     23
     ],
     "solid": false
    },
    {
     "name": "ore_silver_1",
     "cell": [
-     8,
-     31
+     35,
+     23
     ],
     "solid": false
    }
@@ -17360,8 +17680,8 @@
    {
     "type": "loot",
     "cell": [
-     19,
-     20
+     32,
+     9
     ],
     "item": "gold_bundle",
     "n": 1,
@@ -17372,8 +17692,8 @@
    {
     "type": "loot",
     "cell": [
-     32,
-     16
+     8,
+     31
     ],
     "item": "pearl_necklace",
     "n": 1,
@@ -17384,8 +17704,8 @@
    {
     "type": "mrock",
     "cell": [
-     20,
-     35
+     19,
+     23
     ],
     "ore": "platinum",
     "hp": 5,
@@ -17395,8 +17715,8 @@
    {
     "type": "mrock",
     "cell": [
-     8,
-     31
+     35,
+     23
     ],
     "ore": "platinum",
     "hp": 5,
@@ -17406,8 +17726,8 @@
    {
     "type": "note",
     "cell": [
-     31,
-     23
+     20,
+     33
     ],
     "hint": "A: read the vault ledger",
     "text": "Vault ledger: 'Gold: yes. Pearls: yes. Friends: (blank).'",
@@ -17437,6 +17757,678 @@
   ],
   "intro": [
    "Under the casinos, the Vaults: gold in stacks to the ceiling, fences of gold, and the soft tick of somebody counting."
+  ]
+ },
+ "hollow_deeps": {
+  "cols": 50,
+  "rows": 44,
+  "music": "hollow_heart",
+  "tier": 5,
+  "pad": 6,
+  "fruit": 0,
+  "mega": "hollow",
+  "area_name": "The Glowing Deeps",
+  "ground": "cave_crystal_floor",
+  "ground_seam": "cave_crystal_floor",
+  "path": "cave_stone_floor",
+  "border": "cliff",
+  "backdrop": "night",
+  "weather": "clear",
+  "path_lip": "2a1a3a50",
+  "amb": {
+   "crickets": -15.0,
+   "crystal_hum": -26.0
+  },
+  "gen": {
+   "region_props": [
+    "gmush_blue",
+    "gmush_purple",
+    "gmush_red",
+    "starflower_blue",
+    "starflower_pink",
+    "spiral_fern",
+    "cave_mush_blue",
+    "cave_mush_purple",
+    "fd_mush_purple",
+    "fd_mush_blue",
+    "crystal_tree_pink"
+   ],
+   "region_count": 34,
+   "critters": [
+    "firefly",
+    "butterfly_blue",
+    "owl",
+    "firefly"
+   ],
+   "critter_count": 8
+  },
+  "paths": [
+   [
+    24,
+    21,
+    2,
+    2
+   ],
+   [
+    0,
+    21,
+    26,
+    2
+   ],
+   [
+    24,
+    21,
+    15,
+    2
+   ],
+   [
+    37,
+    12,
+    2,
+    11
+   ],
+   [
+    24,
+    21,
+    2,
+    12
+   ],
+   [
+    24,
+    31,
+    15,
+    2
+   ]
+  ],
+  "exits": [
+   {
+    "rect": [
+     0,
+     20,
+     1,
+     4
+    ],
+    "scene": "hollow_heart",
+    "spawn": [
+     73.5,
+     31
+    ],
+    "facing": "left",
+    "label": "◀ the Hollow Heart"
+   }
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     16.5,
+     30.5
+    ],
+    "r": 3,
+    "seed": 629,
+    "fish": [
+     "mooncarp",
+     "ghost_fish",
+     "eel"
+    ],
+    "shore": "grass"
+   },
+   {
+    "c": [
+     16.5,
+     12.5
+    ],
+    "r": 3,
+    "seed": 386,
+    "fish": [
+     "mooncarp",
+     "ghost_fish",
+     "eel"
+    ],
+    "shore": "grass"
+   }
+  ],
+  "feature_blobs": [
+   {
+    "set": "cave_water",
+    "blobs": [
+     {
+      "c": [
+       36,
+       12
+      ],
+      "r": 4,
+      "seed": 3
+     }
+    ]
+   }
+  ],
+  "props": [
+   {
+    "name": "mushroom_tree_a",
+    "cell": [
+     7,
+     28
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "mushroom_tree_b",
+    "cell": [
+     40,
+     22
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "grotto_crystal_a",
+    "cell": [
+     28,
+     10
+    ],
+    "w": 3,
+    "h": 2
+   },
+   {
+    "name": "cave_lamp",
+    "cell": [
+     20,
+     19
+    ],
+    "w": 0,
+    "h": 1
+   },
+   {
+    "name": "cave_cart",
+    "cell": [
+     29,
+     24
+    ],
+    "w": 1,
+    "h": 1
+   },
+   {
+    "name": "mine_crystal_bigrock_1",
+    "cell": [
+     7,
+     19
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "geode_chamber",
+    "cell": [
+     35,
+     36
+    ],
+    "w": 6,
+    "h": 3
+   },
+   {
+    "name": "mine_crystal_ore_a_0",
+    "cell": [
+     40,
+     16
+    ],
+    "solid": false
+   },
+   {
+    "name": "mine_crystal_ore_b_0",
+    "cell": [
+     22,
+     26
+    ],
+    "solid": false
+   },
+   {
+    "name": "mine_crystal_ore_a_1",
+    "cell": [
+     39,
+     29
+    ],
+    "solid": false
+   },
+   {
+    "name": "ore_gold_2",
+    "cell": [
+     11,
+     24
+    ],
+    "solid": false
+   },
+   {
+    "name": "ccrystal_3",
+    "cell": [
+     31,
+     19
+    ],
+    "solid": false
+   },
+   {
+    "name": "cave_mush_blue",
+    "cell": [
+     30,
+     29
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "mrock",
+    "cell": [
+     40,
+     16
+    ],
+    "ore": "sapphire",
+    "hp": 4,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     22,
+     26
+    ],
+    "ore": "amethyst",
+    "hp": 4,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     39,
+     29
+    ],
+    "ore": "shard",
+    "hp": 3,
+    "n": 2,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     11,
+     24
+    ],
+    "ore": "gold",
+    "hp": 4,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "loot",
+    "cell": [
+     31,
+     19
+    ],
+    "item": "crystal_refined",
+    "n": 1,
+    "every": 4,
+    "hint": "A: a crystal glowing in the moss",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     30,
+     29
+    ],
+    "item": "cave_bloom",
+    "n": 2,
+    "every": 2,
+    "hint": "A: blooms by the glowing water",
+    "solid": false
+   },
+   {
+    "type": "heal",
+    "cell": [
+     22,
+     34
+    ],
+    "hp": 5,
+    "energy": 60,
+    "msg": "You sit by the glowing water. The light goes right through you, warm.",
+    "hint": "A: rest by the glow",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     18,
+     19
+    ],
+    "hint": "A: read the miners' slate",
+    "text": "A miners' slate, chalk still sharp: 'Camp 9. Water here glows. Drank it. Feel fine. Feel BETTER than fine. Do not tell the foreman.'",
+    "solid": false,
+    "who": ""
+   },
+   {
+    "type": "note",
+    "cell": [
+     39,
+     10
+    ],
+    "hint": "A: read the old map",
+    "text": "An old map pinned to a crate: the Heart in the middle, and around it a ring of caverns marked 'DEEPS', 'DEEPER', and one just marked 'NO'.",
+    "solid": false,
+    "who": ""
+   }
+  ],
+  "npcs": [],
+  "enemies": [
+   {
+    "kind": "prism_wisp",
+    "count": 3
+   },
+   {
+    "kind": "obsidian_sentinel",
+    "count": 2
+   },
+   {
+    "kind": "void_eel",
+    "count": 2
+   },
+   {
+    "kind": "gloom_spider",
+    "count": 2
+   }
+  ],
+  "forage": 8,
+  "spawn": [
+   2,
+   22
+  ],
+  "intro": [
+   "East of the Heart the caverns open into rivers of light: crystal floors, glowing pools, and the cold ashes of a miners' camp nobody ever came back for."
+  ]
+ },
+ "sky_reaches": {
+  "cols": 48,
+  "rows": 42,
+  "music": "sky",
+  "tier": 4,
+  "pad": 6,
+  "fruit": 0,
+  "mega": "sky",
+  "area_name": "Whale Reaches",
+  "ground": "cloud",
+  "ground_seam": "cloud",
+  "path": "float_stone",
+  "border": "none",
+  "backdrop": "hills",
+  "weather": "wind",
+  "pet": false,
+  "path_lip": "c0d0e020",
+  "amb": {
+   "wind_soft": -11.0
+  },
+  "gen": {
+   "region_props": [
+    "skydeco_0",
+    "skydeco_1",
+    "skydeco_2",
+    "skydeco_3",
+    "skydeco_4",
+    "skydeco_5",
+    "skydeco_6",
+    "skydeco_7",
+    "cloud_tree_a",
+    "cloud_tree_b",
+    "cloud_tree_c",
+    "starflower_blue",
+    "starflower_yellow"
+   ],
+   "region_count": 34,
+   "critters": [
+    "eagle",
+    "butterfly_blue"
+   ],
+   "critter_count": 5
+  },
+  "paths": [
+   [
+    23,
+    20,
+    2,
+    2
+   ],
+   [
+    23,
+    20,
+    2,
+    22
+   ],
+   [
+    10,
+    20,
+    15,
+    2
+   ],
+   [
+    10,
+    11,
+    2,
+    11
+   ],
+   [
+    23,
+    11,
+    2,
+    11
+   ],
+   [
+    23,
+    11,
+    14,
+    2
+   ]
+  ],
+  "exits": [
+   {
+    "rect": [
+     22,
+     41,
+     4,
+     1
+    ],
+    "scene": "sky",
+    "spawn": [
+     16,
+     2.5
+    ],
+    "facing": "down",
+    "label": "▼ the Cloud Isles"
+   }
+  ],
+  "water_blobs": [
+   {
+    "c": [
+     35.5,
+     23.5
+    ],
+    "r": 5,
+    "seed": 294,
+    "fish": [
+     "sky_fish",
+     "mooncarp"
+    ],
+    "shore": "grass"
+   }
+  ],
+  "props": [
+   {
+    "name": "cloud_tree_a",
+    "cell": [
+     9,
+     27
+    ],
+    "w": 2,
+    "h": 2,
+    "group": "nature"
+   },
+   {
+    "name": "cloud_tree_b",
+    "cell": [
+     30,
+     34
+    ],
+    "w": 2,
+    "h": 2,
+    "group": "nature"
+   },
+   {
+    "name": "sky_bridge",
+    "cell": [
+     19,
+     9
+    ],
+    "w": 10,
+    "h": 2
+   },
+   {
+    "name": "wi_wind_shrine",
+    "cell": [
+     32,
+     8
+    ],
+    "w": 2,
+    "h": 2
+   },
+   {
+    "name": "skydeco_2",
+    "cell": [
+     8,
+     16
+    ],
+    "solid": false
+   },
+   {
+    "name": "skydeco_5",
+    "cell": [
+     38,
+     12
+    ],
+    "solid": false
+   },
+   {
+    "name": "moon_crystal_blue_s",
+    "cell": [
+     26,
+     33
+    ],
+    "solid": false
+   },
+   {
+    "name": "moon_crystal_pink_s",
+    "cell": [
+     26,
+     22
+    ],
+    "solid": false
+   }
+  ],
+  "things": [
+   {
+    "type": "loot",
+    "cell": [
+     8,
+     16
+    ],
+    "item": "star_dust",
+    "n": 2,
+    "every": 3,
+    "hint": "A: dust shaken off a passing whale",
+    "solid": false
+   },
+   {
+    "type": "loot",
+    "cell": [
+     38,
+     12
+    ],
+    "item": "storm_fluff",
+    "n": 1,
+    "every": 4,
+    "hint": "A: a curl of storm cloud",
+    "solid": false
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     26,
+     33
+    ],
+    "ore": "silver",
+    "hp": 3,
+    "n": 2,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     26,
+     22
+    ],
+    "ore": "star_dust",
+    "hp": 4,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "heal",
+    "cell": [
+     21,
+     12
+    ],
+    "hp": 4,
+    "energy": 50,
+    "msg": "The whale's song rolls through the cloud. You feel lighter.",
+    "hint": "A: listen to the whale",
+    "solid": false
+   },
+   {
+    "type": "note",
+    "cell": [
+     17,
+     23
+    ],
+    "hint": "A: read the knight's carving",
+    "text": "Carved into a floating stone: 'THE WHALE IS NOT LOST. IT IS WAITING FOR SOMEONE WHO WILL LISTEN.'",
+    "solid": false,
+    "who": ""
+   }
+  ],
+  "npcs": [],
+  "enemies": [
+   {
+    "kind": "finargle",
+    "count": 3
+   },
+   {
+    "kind": "wisp",
+    "count": 2
+   },
+   {
+    "kind": "archer",
+    "count": 1
+   },
+   {
+    "kind": "gale_finargle",
+    "count": 1
+   }
+  ],
+  "forage": 8,
+  "spawn": [
+   24,
+   39
+  ],
+  "intro": [
+   "Above the Cloud Isles the air thins and sings. A shadow the size of a town slides under the clouds below you: the sky whale, circling, circling."
   ]
  }
 }
