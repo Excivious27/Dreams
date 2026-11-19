@@ -86,14 +86,19 @@ func _run() -> void:
 	var g: Enemy = m.get("_guardian")
 	check(g != null, "keeper woke after %d rocks (threshold %d)" % [broke, m.call("_threshold")])
 	if g:
-		check(g.is_guardian and g.tier >= 0 and g.max_hp >= 8, "keeper is a guardian with real hp (kind %s, hp %d)" % [g.kind, g.max_hp])
+		var tot := 0
+		for k: Enemy in m.call("keepers_left"):
+			tot += k.max_hp
+		check(g.is_guardian and g.tier >= 0 and tot >= 8, "keeper encounter %s has real hp (lead %s, total hp %d)" % [str((m.get("encounter") as Dictionary).get("id", "")), g.kind, tot])
 		# Knock it around: by the third hit it should telegraph a lunge if it has one.
 		var had_lunge := g.abilities.has("lunge")
 		for i in 3:
 			g.hit(1, g.position + Vector2(-10, 0))
 			await frames(2)
 		check(not had_lunge or float(g.get("_lunge_tele")) > 0.0 or float(g.get("_lunge")) > 0.0 or float(g.get("_lunge_cd")) > 0.0, "juggled keeper answers with a lunge")
-		g.hit(9999, g.position + Vector2(-10, 0))
+		for k: Enemy in m.call("keepers_left"):
+			k.hit(9999, k.position + Vector2(-10, 0))
+			await frames(3)
 		await frames(20)
 	downs = 0
 	for k in m.things:

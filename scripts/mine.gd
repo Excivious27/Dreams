@@ -114,14 +114,34 @@ func _bank_secs() -> void:
 	GameState.run["mine_secs"] = d
 
 
+## Tom (CONDUCT 2): the keeper came after about the same time every floor. Each
+## floor and day now rolls a pace (MineKeepers.PACES: quick / normal / long /
+## marathon): the seconds you must spend here and a multiplier on the digging.
 func _min_secs() -> float:
-	if floor_no == 1:
-		return 100.0
-	if floor_no == 2:
-		return 75.0
-	if floor_no <= 10:
-		return 45.0
-	return 25.0
+	return float(_pace()["secs"])
+
+
+func _pace() -> Dictionary:
+	var day := int(GameState.run["day"])
+	var key := "%d_%d" % [floor_no, day]
+	var old: Dictionary = GameState.run.get("mine_pace", {})
+	if old.has(key):
+		return old[key]
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	var last: Array = GameState.run.get("mine_pace_last", [])
+	var p := MineKeepers.roll_pace(floor_no, rng, last)
+	var d := {key: p}
+	for k in old:
+		if str(k).ends_with("_%d" % day):
+			d[k] = old[k]
+	GameState.run["mine_pace"] = d
+	last = last.duplicate()
+	last.append(str(p["pace"]))
+	while last.size() > 4:
+		last.pop_front()
+	GameState.run["mine_pace_last"] = last
+	return p
 
 
 ## How much digging and fighting wakes the keeper: random per floor and day,
@@ -135,12 +155,11 @@ func _threshold() -> int:
 		var share: float = [0.0, 0.17, 0.15, 0.13][floor_no]
 		var lo: int = [0, 22, 20, 18][floor_no]
 		lo = mini(lo, int(_rock_total * 0.4) + 6)   # a small, rock-poor layout still opens
-		return clampi(int(_rock_total * share), lo, lo + 14)
+		var m3 := float(_pace()["thr"])
+		return mini(clampi(int(_rock_total * share * m3), int(lo * minf(1.0, m3)), int((lo + 14) * maxf(1.0, m3))), int(_rock_total * 0.7) + 10)
 	if not old.has(key):
 		var base := 14.0 + minf(60.0, floor_no * 0.4)
-		var r := randf()
-		var mult := randf_range(0.5, 0.7) if r < 0.15 else (randf_range(0.8, 1.0) if r < 0.4 else randf_range(1.0, 1.6))
-		var v := int(round(base * mult))
+		var v := int(round(base * float(_pace()["thr"]) * randf_range(0.9, 1.1)))
 		var d := {key: v}
 		for k in old:
 			if str(k).ends_with("_%d" % day):
@@ -148,7 +167,7 @@ func _threshold() -> int:
 		GameState.run["mine_thresh"] = d
 		old = d
 	# Never more than this layout can give (Mer's grotto floods half its rock).
-	return mini(maxi(12 if floor_no <= 10 else (8 if floor_no <= 20 else 5), int(old[key])), int(_rock_total * 0.7) + 10)
+	return mini(maxi(4, int(old[key])), int(_rock_total * 0.7) + 10)
 
 
 func scene_id() -> String:
@@ -894,29 +913,24 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"crate":
 			if ToolHint.is_soft(GameState.held_tool()):
-				ToolHint.say(self, "Smash crates with a blade, axe or pickaxe.")
+				ToolHint.say(self, "Smash crates and barrels with a sword, axe or pickaxe (or bare fists).")
+				return true
+			var held := GameState.held_tool()
+			if held == "" or GameState.is_sword(held) or GameState.items.get(held, {}).has("range"):
+				# A blade or fists: a real swing (it spends its own energy); attack_at
+				# lands it on the crate, or this does if the swing's box missed.
+				if player._attack_cd > 0.0:
+					return true
+				player._swing()
+				if not bool(thing.get("_hit_this_swing", false)) and things.get(c) == thing:
+					hit_crate(c, thing)
+				thing.erase("_hit_this_swing")
 				return true
 			if not GameState.spend_for("axe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
-			player.play_tool("pickaxe" if GameState.held_tool() == "pickaxe" else "axe")
-			thing["hp"] = int(thing["hp"]) - 1
-			Music.instance(get_tree()).sfx("crate_break", "chop")
-			if int(thing["hp"]) <= 0:
-				things.erase(c)
-				blocked.erase(c)
-				hard.erase(c)
-				if props.has(c):
-					(props[c] as Node).queue_free()
-					props.erase(c)
-				fx("poof", cell_center(c), 12.0, 0.4)
-				if thing.has("key"):
-					GameState.run["flags"][str(thing["key"])] = true
-				if randf() < 0.4:
-					_give_loot(c, _loot(false))
-				else:
-					pop_items(cell_center(c), "plank" if GameState.items.has("plank") else "wood", 1)
-				_try_more(1)
+			player.play_tool("pickaxe" if held == "pickaxe" else "axe")
+			hit_crate(c, thing)
 			return true
 		"mchest", "bigchest":
 			var big := str(thing["type"]) == "bigchest"
@@ -1851,6 +1865,14 @@ func try_interact(c: Vector2i, check := false) -> bool:
 	if _near_shaft() and (c == _ladder or c.distance_to(_ladder) <= 1.5):
 		_descend()
 		return true
+	# Standing a little off a crate/chest (barrel art overhangs its cell): the
+	# cells beside the faced one count too, so USE never whiffs past it.
+	if not things.has(c) and player:
+		var fd := Vector2i(player.facing_dir())
+		var side := Vector2i(fd.y, fd.x)
+		for n: Vector2i in [c + side, c - side]:
+			if str(things.get(n, {}).get("type", "")) in ["crate", "mchest", "bigchest"]:
+				return super(n, check)
 	return super(c, check)
 
 
@@ -1887,13 +1909,124 @@ func _draw_marker() -> void:
 	_marker.draw_rect(Rect2(-2, y - 6, 4, 6), col)
 
 
-## The HUD points here: the awake keeper first, then the open way down.
+## The HUD points here: the nearest standing keeper first, then the open way down.
+## Tom (CONDUCT 2): the arrow didn't reliably point the right way. It pointed as
+## the crow flies, straight through walls, and only at the lead keeper. Now
+## `pointer_target` is the real goal (the actual shaft cell on this layout, or
+## the nearest keeper), `pointer_aim` is a spot a few cells along the walking
+## route there (Hud aims the arrow at it) and `pointer_dist` the route length.
 func pointer_target() -> Vector2:
+	var ks := keepers_left()
+	if not ks.is_empty() and player:
+		var best: Enemy = ks[0]
+		for k: Enemy in ks:
+			if k.position.distance_to(player.position) < best.position.distance_to(player.position):
+				best = k
+		return best.position
 	if _guardian != null and is_instance_valid(_guardian) and _guardian._alive:
 		return _guardian.position
-	if _way_open:
+	if _way_open and things.has(_ladder):
 		return cell_center(_ladder)
 	return Vector2.ZERO
+
+
+var _flow := {}                      # cell -> route cost to the pointer goal
+var _flow_goal := Vector2i(-999, -999)
+var _flow_t := 0.0                   # msec of the last build
+const ROCK_STEP := 5                 # a rock or crate on the route costs this many steps (you dig through)
+
+
+func _route_ok(c: Vector2i) -> bool:
+	if not in_content(c):
+		return false
+	if _lava.has(c) or _chasm.has(c):
+		return false
+	if is_water_cell(c):
+		return swim_ok
+	if not _open.has(c):
+		return false
+	if blocked.has(c):
+		var t := str(things.get(c, {}).get("type", ""))
+		return t in ["rock", "crate", "down"]
+	return true
+
+
+## Route costs from `goal` to every reachable cell (Dial's buckets: steps 1, rocks ROCK_STEP).
+func _route_build(goal: Vector2i) -> void:
+	_flow = {goal: 0}
+	_flow_goal = goal
+	_flow_t = Time.get_ticks_msec()
+	var buckets := {0: [goal]}
+	var cur := 0
+	var left := 1
+	while left > 0 and cur < 200000:
+		var bk: Array = buckets.get(cur, [])
+		while not bk.is_empty():
+			var c: Vector2i = bk.pop_back()
+			left -= 1
+			if int(_flow[c]) != cur:
+				continue
+			for d: Vector2i in _D4:
+				var n := c + d
+				if not _route_ok(n):
+					continue
+				var step := ROCK_STEP if (things.has(n) and str(things[n].get("type", "")) in ["rock", "crate"]) else 1
+				var nd := cur + step
+				if not _flow.has(n) or int(_flow[n]) > nd:
+					_flow[n] = nd
+					if not buckets.has(nd):
+						buckets[nd] = []
+					(buckets[nd] as Array).append(n)
+					left += 1
+		buckets.erase(cur)
+		cur += 1
+
+
+func _flow_for(goal_pos: Vector2) -> void:
+	var goal := world_to_cell(goal_pos - Vector2(0, 2))
+	# Rebuild when the goal moves (a keeper walks) or every 2 s (rocks get mined).
+	var age := Time.get_ticks_msec() - _flow_t
+	if goal != _flow_goal and age > 300 or age > 2000:
+		_route_build(goal)
+
+
+## A point a few cells along the walking route to the target (the arrow aims here).
+func pointer_aim() -> Vector2:
+	var tgt := pointer_target()
+	if tgt == Vector2.ZERO or player == null:
+		return tgt
+	_flow_for(tgt)
+	var c := world_to_cell(player.position - Vector2(0, 2))
+	if not _flow.has(c):
+		# Standing just off the route grid (a bridge edge): the nearest routed cell.
+		for d: Vector2i in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(1, 1), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(-1, -1)]:
+			if _flow.has(c + d):
+				c = c + d
+				break
+	if not _flow.has(c):
+		return tgt
+	for i in 6:
+		var best := c
+		for d: Vector2i in _D4:
+			var n := c + d
+			if _flow.has(n) and int(_flow[n]) < int(_flow[best]):
+				best = n
+		if best == c:
+			break
+		c = best
+	if c == _flow_goal:
+		return tgt
+	return cell_pos(c.x + 0.5, c.y + 0.5)
+
+
+## Route length to the target in cells (rocks count as several), -1 if no route.
+func pointer_dist() -> int:
+	var tgt := pointer_target()
+	if tgt == Vector2.ZERO or player == null:
+		return -1
+	_flow_for(tgt)
+	var c := world_to_cell(player.position - Vector2(0, 2))
+	return int(_flow.get(c, int(player.position.distance_to(tgt) / TILE)))
 
 
 func _deepest() -> int:
@@ -1920,20 +2053,36 @@ func on_enemy_died(e: Enemy) -> void:
 	super(e)
 	if e.has_meta("minion"):
 		return  # summoned helpers don't count toward the guardian
-	if e == _guardian:
+	if _keepers.has(e):
+		_keepers.erase(e)
+		var left := keepers_left()
+		_keepers = left
+		if left.is_empty():
+			_guardian = null
+			_open_way()
+		else:
+			if e == _guardian:
+				_guardian = left[0]
+			if left.size() <= 2:
+				hud.toast("%d left!" % left.size(), Color(1, 0.8, 0.7))
+	elif e == _guardian:
 		_guardian = null
 		_open_way()
 	else:
 		_try_more(3)
 
 
-## The floor's gatekeeper: the tier's guardian kind, run at this floor's tier,
-## one more ability per floor into the tier, and more hp the deeper you are.
+## The floor's keepers (Tom, CONDUCT 2: never the same encounter twice running):
+## MineKeepers.pick rolls one big keeper, an elder brute, a pack, a swarm, twin
+## keepers... themed by cave and depth. The lead is `_guardian` (boss bar, slam,
+## HUD arrow colour); every unit is in `_keepers`; the shaft opens when all fall.
+var _keepers: Array = []
+var encounter := {}   # the last rolled encounter (tests read it)
+
+
 func _summon_guardian() -> void:
-	if _guardian != null or _way_open:
+	if _guardian != null or _way_open or not _keepers.is_empty():
 		return
-	var kinds: Array = GameState.tier_data.get("mine", {}).get("guardians", ["golem"])
-	var kind := str(kinds[mini(mine_tier, kinds.size() - 1)])
 	var at := cell_center(_ladder)
 	if _grotto:
 		at = cell_center(_nearest_open(Vector2i(cols / 2, rows / 2)))
@@ -1947,42 +2096,85 @@ func _summon_guardian() -> void:
 			if dd < bd and not things.has(q) and not blocked.has(q) and q.distance_to(pc) >= 4.0:
 				bd = dd
 				at = cell_center(q)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = randi()
+	var recent: Array = (GameState.run.get("mine_keeper_recent", []) as Array).duplicate()
+	encounter = MineKeepers.pick(floor_no, mine_tier, clampi((floor_no - 1) / 10, 0, THEMES.size() - 1), rng, recent)
+	recent.append(str(encounter["id"]))
+	while recent.size() > 6:
+		recent.pop_front()
+	GameState.run["mine_keeper_recent"] = recent
 	shake(3.0)
 	fx("keeper_wake" if Art.has("fx", "keeper_wake") else "boss_shockwave", at, 12.0, 0.8)
 	await get_tree().create_timer(0.9 if Art.has("fx", "keeper_wake") else 0.4, false).timeout
 	if not is_inside_tree():
 		return
-	# Never weaker than its native tier; floor 1's golem is still a golem.
-	# The first floors' keeper meets you at the floor's own tier; deeper ones never go below their home tier.
-	_guardian = spawn_enemy(kind, at, mine_tier)
-	_guardian.is_guardian = true
-	_depth_scale(_guardian)
-	_guardian.set_meta("boss_name", "Keeper of floor %d" % floor_no)
+	var units: Array = encounter["units"]
+	var single := units.size() == 1
 	var into := mini(5, ((floor_no - 1) % 25) / 5)
-	_guardian.max_hp = int(_guardian.max_hp * minf(2.0, 1.3 + 0.08 * into))
-	if floor_no <= 4:
-		# Tom: once it's up, the first keeper should be a fight: tougher, quicker
-		# on its feet (it was easy to kite), and it lunges as well as stomps.
-		_guardian.max_hp = int(_guardian.max_hp * 1.45)
-		_guardian.speed = maxf(_guardian.speed, 27.0)
-		if not _guardian.abilities.has("lunge"):
-			_guardian.abilities.append("lunge")
-		if not _guardian.abilities.has("stomp"):
-			_guardian.abilities.append("stomp")
-	_guardian.hp = _guardian.max_hp
-	var extra: Array = ["lunge", "stomp", "ranged", "shield", "summon", "regen"]
-	for i in into:
-		for a in extra:
-			if not _guardian.abilities.has(a):
-				_guardian.abilities.append(a)
-				break
-	_guardian.reward *= 3
-	if Art.has("ui", "card_keeper_%d" % mine_tier):
+	var lead: Enemy = null
+	for i in units.size():
+		var u: Dictionary = units[i]
+		var spot := at
+		if i > 0:
+			var ang := TAU * float(i) / float(units.size()) + rng.randf_range(-0.3, 0.3)
+			spot = at + Vector2(cos(ang), sin(ang)) * rng.randf_range(18.0, 30.0)
+		var e := spawn_enemy(str(u["kind"]), spot, mine_tier)
+		if e == null:
+			continue
+		var is_lead := bool(u["lead"]) and lead == null
+		e.is_guardian = is_lead
+		_depth_scale(e)
+		e.max_hp = maxi(1, int(round(e.max_hp * float(u["hp"]))))
+		MineKeepers.resize(e, float(u["scale"]))
+		if str(u.get("tint", "")) != "" and e._sprite:
+			e._sprite.self_modulate = Color(str(u["tint"]))
+		if is_lead:
+			lead = e
+			e.set_meta("boss_name", str(encounter["name"]) if str(encounter["id"]) != "keeper" else "Keeper of floor %d" % floor_no)
+			e.max_hp = int(e.max_hp * minf(2.0, 1.3 + 0.08 * into) * (1.0 if single else 0.8))
+			if floor_no <= 4 and single:
+				# Tom: once it's up, the first keeper should be a fight: tougher, quicker
+				# on its feet (it was easy to kite), and it lunges as well as stomps.
+				e.max_hp = int(e.max_hp * 1.45)
+				e.speed = maxf(e.speed, 27.0)
+				for a in ["lunge", "stomp"]:
+					if not e.abilities.has(a):
+						e.abilities.append(a)
+			var extra: Array = ["lunge", "stomp", "ranged", "shield", "summon", "regen"]
+			for k in (into if single else into / 2):
+				for a in extra:
+					if not e.abilities.has(a):
+						e.abilities.append(a)
+						break
+			e.reward *= 3
+		else:
+			e.set_meta("keeper_kin", true)
+			if e._gift:
+				e._gift.queue_free()
+				e._gift = null
+			e.reward *= 2
+		e.hp = e.max_hp
+		_keepers.append(e)
+	if _keepers.is_empty():
+		_summoning = false
+		_open_way()
+		return
+	_guardian = lead if lead != null else _keepers[0]
+	if str(encounter["id"]) == "keeper" and Art.has("ui", "card_keeper_%d" % mine_tier):
 		boss_card("card:card_keeper_%d" % mine_tier, ["The Stone Fist", "The Quarrymaster", "The Cracked Helm", "The Crystal King", "The Dark Warden", "The Heart's Shadow"][mine_tier])
 	else:
-		boss_card(kind, "Keeper of floor %d" % floor_no)
-	hud.toast("The keeper of floor %d wakes!" % floor_no, Color(1, 0.7, 0.7))
+		boss_card(_guardian.kind, str(encounter["name"]))
+	if single:
+		hud.toast("The keeper of floor %d wakes: %s!" % [floor_no, str(encounter["name"])] if str(encounter["id"]) != "keeper" else "The keeper of floor %d wakes!" % floor_no, Color(1, 0.7, 0.7))
+	else:
+		hud.toast("%s guards floor %d: beat all %d!" % [str(encounter["name"]), floor_no, _keepers.size()], Color(1, 0.7, 0.7))
 	Music.instance(get_tree()).sfx("alert", "thud")
+
+
+## Keepers still standing.
+func keepers_left() -> Array:
+	return _keepers.filter(func(k: Variant) -> bool: return is_instance_valid(k) and (k as Enemy)._alive)
 
 
 func _open_way() -> void:
@@ -2004,6 +2196,87 @@ func _open_way() -> void:
 	if floor_no % 5 == 0:
 		hud.toast("The lift can reach floor %d now." % floor_no, Color(0.8, 0.9, 1.0))
 
+
+
+## Tom (CONDUCT 2): crates and barrels didn't reliably break and sometimes made
+## no sound. Every blow lands here, from USE (any tool but the rod/can) or a
+## sword/fist swing that sweeps the crate (attack_at): one hit counted, a knock
+## sound + wobble + chips every time, the break sound and loot on the last.
+func hit_crate(c: Vector2i, thing: Dictionary) -> void:
+	var held := GameState.held_tool()
+	var dmg := 1
+	if held == "axe" or held == "pickaxe" or GameState.is_sword(held):
+		dmg = 1 + (GameState.tool_tier(held) + 1) / 3
+	thing["hp"] = int(thing.get("hp", 2)) - dmg
+	crate_hits += 1
+	wobble(c, 0.12)
+	shake(0.8)
+	hitstop = maxf(hitstop, 0.03)
+	fx("wood_chips" if Art.has("fx", "wood_chips") else "stone_chips", cell_center(c) + Vector2(0, -8), 14.0, 0.4)
+	if int(thing["hp"]) > 0:
+		Music.instance(get_tree()).sfx("chop", "thud")
+		return
+	Music.instance(get_tree()).sfx("crate_break", "chop")
+	things.erase(c)
+	blocked.erase(c)
+	hard.erase(c)
+	if props.has(c):
+		(props[c] as Node).queue_free()
+		props.erase(c)
+	fx("poof", cell_center(c), 12.0, 0.4)
+	if thing.has("key"):
+		GameState.run["flags"][str(thing["key"])] = true
+	if randf() < 0.4:
+		_give_loot(c, _loot(false))
+	else:
+		pop_items(cell_center(c), "plank" if GameState.items.has("plank") else "wood", 1)
+	_try_more(1)
+
+
+var crate_hits := 0   # every blow that landed on a crate (tests)
+var _rock_told := 0
+
+
+## A sword or fist swing also smashes the crate (or opens the chest) it sweeps:
+## holding USE with a blade used to whoosh at barrels forever.
+func attack_at(r: Rect2, damage: int, from := Vector2.INF, whoosh := true) -> bool:
+	var hit := super(r, damage, from, whoosh)
+	if not whoosh or player == null or from != player.position:
+		return hit   # shots and other sources leave crates alone
+	var best := Vector2i(-1, -1)
+	var bd := 1e9
+	for c: Vector2i in _swing_cells(r):
+		var t := str(things.get(c, {}).get("type", ""))
+		if t in ["crate", "mchest", "bigchest"]:
+			var dd := r.get_center().distance_to(cell_pos(c.x + 0.5, c.y + 0.5))
+			if dd < bd:
+				bd = dd
+				best = c
+	if best.x >= 0:
+		var th: Dictionary = things[best]
+		if str(th["type"]) == "crate":
+			th["_hit_this_swing"] = true
+			hit_crate(best, th)
+		else:
+			interact(best, th)
+		return true
+	if not hit and Time.get_ticks_msec() - _rock_told > 6000:
+		for c: Vector2i in _swing_cells(r):
+			if str(things.get(c, {}).get("type", "")) == "rock":
+				_rock_told = Time.get_ticks_msec()
+				ToolHint.need(self, "pickaxe", "to break rock")
+				break
+	return hit
+
+
+func _swing_cells(r: Rect2) -> Array:
+	var out: Array = []
+	var a := world_to_cell(r.position)
+	var b := world_to_cell(r.end)
+	for y in range(a.y, b.y + 1):
+		for x in range(a.x, b.x + 1):
+			out.append(Vector2i(x, y))
+	return out
 
 
 func _use_lift() -> void:

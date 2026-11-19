@@ -1252,11 +1252,15 @@ func _attack_hit() -> void:
 		var dmg := GameState.sword_damage() + (1 if _combo == 0 else 0) + GameState.status_damage_mod()
 		if wd.has("range"):
 			dmg = int(dmg / 2)  # swung like a club
+		dmg = GameState.tool_fight_damage(GameState.held_tool(), dmg)  # Tom: a pickaxe is no sword
 		var hit := map.attack_at(box, maxi(1, dmg), position)
 		if hit and _combo == 0 and Crew.perk_level("sword") >= 3:
 			map.attack_at(box, maxi(1, dmg), position, false)  # Vic's twin strike (one whoosh)
 		if hit:
 			_last_hit_enemy = map.nearest_enemy_to(center, 22.0)
+			if GameState.tool_fight_damage(GameState.held_tool(), 10) < 10 and not GameState.run["flags"].has("tip_tool_fight"):
+				GameState.run["flags"]["tip_tool_fight"] = true
+				ToolHint.say(map, "Tools only scratch foes: hold your sword to fight.")
 		_swing_arc(center)
 		if hit:
 			map.hitstop = maxf(map.hitstop, 0.05)  # attack_at already shook the camera
