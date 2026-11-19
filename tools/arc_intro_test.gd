@@ -93,6 +93,8 @@ func _run() -> void:
 	# Play the first use on the farm: the intro runs once, then the building's own menu.
 	GameMap.next_spawn = Vector2.ZERO
 	GameState.run["scene"] = "farm"
+	if not GameState.run.has("builds"):
+		GameState.run["builds"] = {}
 	GameState.run["builds"]["laundromat"] = 1
 	change_scene_to_file("res://scenes/farm.tscn")
 	for i in 8:
@@ -107,7 +109,7 @@ func _run() -> void:
 	var seen := ""
 	for k in 60:
 		if d.active:
-			seen += d._full + "\n"
+			seen += (d._text.text if d._in_choice else d._full) + "\n"
 			if d._in_choice:
 				d._choose("", d._choices.get_child_count() - 1)
 			else:
