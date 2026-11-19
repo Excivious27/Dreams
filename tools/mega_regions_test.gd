@@ -179,6 +179,8 @@ func _area(arc: String, aid: String, hub: bool, sp: Vector2, regs: Dictionary, s
 		var t := str(m.things[c].get("type", ""))
 		if t in ["water", "forage", "tree", "rock", "bush", "log", "stump", "weed", "grass"]:
 			continue
+		if t == "locked" and m._building_doors.keys().any(func(w: Vector2i) -> bool: return m._building_doors[w] == c and _near(seen, w)):
+			continue  # any wall cell of the building answers with the knock
 		if not _near(seen, c):
 			fail("[%s] %s: %s at %s unreachable (%s)" % [arc, aid, t, c, str(m.things[c].get("hint", ""))])
 	for n in m.get_children():
