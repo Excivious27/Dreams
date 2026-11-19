@@ -55,7 +55,8 @@ func _run() -> void:
 	# Songs the game picks by situation.
 	for t: String in ["night", "rain", "winter", "farm_fall", "festival", "danger", "raid", "mine_deep", "battle",
 			"battle_siege", "battle_escort", "campaign_map", "title", "title_musicbox", "arc_gangsters", "arc_penguins",
-			"ending_gangster", "ending_penguin", "credits", "merkitty_song", "shop", "shop_gang"] + GameMap.BOSS_TRACKS:
+			"ending_gangster", "ending_penguin", "credits", "merkitty_song", "shop", "shop_gang",
+			"combat_light", "combat_light_gang", "combat_elite", "combat_elite_gang"] + GameMap.BOSS_TRACKS + DangerMusic.PER_BOSS.values():
 		_check_track("situation", t)
 	for k: String in GameMap.AREA_MUSIC:
 		_check_track("AREA_MUSIC[%s]" % k, str(GameMap.AREA_MUSIC[k]))

@@ -1381,9 +1381,7 @@ func area_track() -> String:
 		return "winter"
 	if id == "farm" and GameState.season() == "fall" and Music.has_track("farm_fall"):
 		return "farm_fall"
-	if has_sky and id not in ["farm", "town", "house", "interior"] and not id.begins_with("bf_") and _danger_near():
-		return "danger"
-	return t
+	return t  # combat/danger music: DangerMusic
 
 
 ## The President's collectors are on this map and close: chase music.
@@ -1392,36 +1390,6 @@ func _collectors_near() -> bool:
 		return false
 	for e in enemies:
 		if is_instance_valid(e) and e._alive and e.has_meta("collector") and e.position.distance_to(player.position) < 220.0:
-			return true
-	return false
-
-
-## Three or more foes awake around you in the wild: the tense track (with a little
-## hysteresis so it doesn't flicker as one wanders in and out).
-var _danger_on := false
-
-
-func _danger_near() -> bool:
-	if player == null or not Music.has_track("danger"):
-		return false
-	var n := 0
-	for e in enemies:
-		if is_instance_valid(e) and e._alive and not e.has_meta("decoy") and e.position.distance_to(player.position) < (170.0 if _danger_on else 120.0):
-			n += 1
-	_danger_on = n >= (2 if _danger_on else 3)
-	return _danger_on
-
-
-var _music_t := 0.0
-
-
-## A boss fight's music keeps going while any big foe still stands.
-func _boss_playing() -> bool:
-	var mu := Music._inst
-	if mu == null or not is_instance_valid(mu) or not (mu._current in BOSS_TRACKS):
-		return false
-	for e in enemies:
-		if is_instance_valid(e) and (e.bossy or e._gift != null or e.has_meta("boss_name")):
 			return true
 	return false
 
@@ -1717,7 +1685,8 @@ func clear_cell(c: Vector2i) -> void:
 ## Boss intro card (ui/card_<kind>): slides in over the screen for a couple of seconds.
 func boss_card(kind: String, title := "") -> void:
 	boss_music = boss_track(kind)
-	Music.instance(get_tree()).play(boss_music)  # every boss, mine keepers too (_boss_playing keeps it up)
+	Music.instance(get_tree()).play(boss_music, DangerMusic.FADE_IN)  # every boss, mine keepers too
+	DangerMusic.boss_started(self, boss_music)  # held while the boss fights, then a grace period
 	var nm: String = {"big_grump": "card_big_grump", "thug_brute": "card_thug_brute", "president": "card_president", "marsh_witch": "card_marsh_witch", "golem_king": "card_golem_king", "dark_crystal": "card_dark_crystal", "ruin_warden": "card_ruin_warden", "commander": "card_president" if not GameState.is_penguins() else ""}.get(kind, "")
 	if kind.begins_with("card:"):
 		nm = kind.trim_prefix("card:")
@@ -2721,11 +2690,7 @@ func _process(delta: float) -> void:
 		hitstop -= delta
 	if _night:
 		_night.color = sky_tint(int(GameState.run["time"]))
-	_music_t -= delta
-	if _music_t <= 0.0:
-		_music_t = 3.0
-		if not get_tree().paused and not _boss_playing():
-			Music.instance(get_tree()).play(area_track())
+	DangerMusic.tick(self, delta)  # area song, or combat music while foes fight or chase you
 	_fade_t -= delta
 	if _fade_t <= 0.0 and player:
 		_fade_t = 0.1
