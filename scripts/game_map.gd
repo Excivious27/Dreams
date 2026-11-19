@@ -2395,21 +2395,7 @@ func player_down(reason := "hurt") -> void:
 	var cr := int(GameState.run["crystals"])
 	var mines := in_mines()
 	var clinic := (reason == "hurt" or mines) and not Net.visiting()
-	var fee := 0
-	if clinic:
-		var floor_no := int(GameState.run.get("mine_floor", 1)) if mines else 0
-		var mult := 1.0
-		if GameState.run["flags"].has("juniper_gone"):
-			pass  # she left: no clinic perks
-		elif GameState.has_friend_perk("juniper", 6):
-			mult = 0.0
-		elif GameState.has_friend_perk("juniper", 2):
-			mult = 0.5
-		if Settings.easy() or Perks.flag("no_clinic_fee"):
-			mult = 0.0
-		fee = mini(cr, int(round(mini(750, int(cr * 0.08) + 20 + 4 * floor_no) * mult)))
-	elif not Settings.easy():
-		fee = mini(300, int(ceil(cr * 0.05)))
+	var fee := Faint.fee(clinic, int(GameState.run.get("mine_floor", 1)) if mines else 0)
 	# A Marked who beat you won't come at you again today.
 	for e in enemies:
 		if is_instance_valid(e) and e.has_meta("marked"):
@@ -2428,11 +2414,11 @@ func player_down(reason := "hurt") -> void:
 	if not Net.visiting():
 		evening = Faint.to_evening(reason)  # before 10pm: come round at 10pm, same day
 		if not evening:
-			GameState.sleep(true)
+			GameState.run["flags"]["wake_report"] = SleepReport.keep(GameState.sleep(true))
 	if clinic:
 		var where := "in the mines" if mines else "out there"
 		var cause := "You'd pushed yourself past empty" if reason == "tired" else ("It was far too late to be down there" if reason == "late" else "You were hurt badly")
-		var bill := ("Clinic bill: ◆%d." % fee) if fee > 0 else "No charge this time."
+		var bill := ("Clinic bill: ◆%d." % fee) if fee > 0 else ("No charge: Juniper doesn't bill anyone in their first week in town." if Faint.in_grace() else "No charge this time.")
 		# Shown by the HUD when the clinic loads (Hud._show_clinic_note).
 		var finder := "A miner" if mines else "A passer-by"
 		var nurse := "the night nurse" if GameState.run["flags"].has("juniper_gone") or evening else "Juniper"
@@ -2768,6 +2754,10 @@ func _process(delta: float) -> void:
 			for note in Crafting.newly_done():
 				hud.toast(str(note), Color(1, 0.9, 0.5))
 	var t := int(GameState.run["time"])
+	if t >= 24 * 60 and not _changing:
+		var bn := Faint.bedtime_note()
+		if bn != "":
+			hud.toast(bn, Color(1, 0.75, 0.55))
 	if t >= GameState.DAY_END and not _changing and not (Net.visiting() and int(GameState.run["flags"].get("guest_out_day", -1)) == int(GameState.run["day"])):  # a guest already out tonight waits for the host's morning
 		player_down("late")
 	elif int(GameState.run["energy"]) <= 0 and not _changing and not player.frozen:

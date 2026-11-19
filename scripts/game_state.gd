@@ -2637,6 +2637,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			report["gone"] = report.get("gone", []) + [str(Companion.defs().get(cid, {}).get("name", cid))]
 	# Passing out costs a quarter of tomorrow's bar (Stardew-style), not half.
 	run["energy"] = int(run["max_energy"]) if not passed_out or has_friend_perk("juniper", 8) else int(run["max_energy"]) * 3 / 4
+	report["short"] = int(run["energy"]) < int(run["max_energy"])  # SleepReport says why
 	run["en_frac"] = 0.0
 	run["en_warn"] = 0
 	run["fed_en"] = 0

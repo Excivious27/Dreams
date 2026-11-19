@@ -42,11 +42,15 @@ func after_ready() -> void:
 		if nx != "":
 			hud.toast("Next: " + nx, Color(1, 0.95, 0.7))
 	var note := str(GameState.run["flags"].get("wake_note", ""))
-	if note != "":
+	var kept := SleepReport.take_kept()  # a pass-out night: what sold, grew, arrived
+	if note != "" or not kept.is_empty():
 		GameState.run["flags"].erase("wake_note")
 		player.frozen = true
-		await say([{"text": note}])
+		await say(([{"text": note}] if note != "" else []) + kept)
 		player.frozen = false
+		if not kept.is_empty():
+			_morning_events()
+			Story.on_morning(self)
 
 
 func interact(_c: Vector2i, thing: Dictionary) -> bool:
@@ -86,48 +90,7 @@ func _sleep() -> void:
 	var report := GameState.sleep()
 	if Net.online():
 		Net.i().clear_beds()
-	var lines: Array = []
-	if int(report["earned"]) > 0:
-		lines.append({"who": "Sell box", "text": "%s\nTotal: ◆%d" % ["\n".join(report["sold"]), int(report["earned"])]})
-	if int(report.get("left", 0)) > 0:
-		lines.append({"text": "Something was left for you in the night. Check the pool and the burrow."})
-	if int(report.get("washed", 0)) > 0:
-		lines.append({"who": "Laundromat", "text": "Clean and folded: ◆%d." % int(report["washed"])})
-	if int(report["grown"]) > 0:
-		lines.append({"text": "%d watered crop%s grew overnight." % [int(report["grown"]), "" if int(report["grown"]) == 1 else "s"]})
-	if int(report.get("crows", 0)) > 0:
-		lines.append({"text": "Crows got into the field overnight and ate %d crop%s. A scarecrow covers about 8 steps around it." % [int(report["crows"]), "" if int(report["crows"]) == 1 else "s"]})
-	if int(report.get("died", 0)) > 0:
-		lines.append({"text": "%s took %d crop%s. Crops only live through their own season (or under the greenhouse glass)." % [GameState.season().capitalize(), int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
-	for nm in report.get("built", []):
-		lines.append({"who": "Hazel", "text": "Crew's done with the %s. Go have a look." % str(nm)})
-	if int(report.get("wash_back", 0)) > 0:
-		lines.append({"who": "Laundromat", "text": "%d bill%s came back unwashed: the machines only take so much face value a night." % [int(report["wash_back"]), "" if int(report["wash_back"]) == 1 else "s"]})
-	for kind in ["pool", "burrow"]:
-		if GameState.run["flags"].has("basket_full_" + kind):
-			GameState.run["flags"].erase("basket_full_" + kind)
-			lines.append({"text": "The %s basket is full. Empty it, or the gifts stop." % kind})
-	for l in report.get("cfarm", []):
-		lines.append({"who": Commons.keeper_name(), "text": str(l)})
-	if report.has("crew_jobs"):
-		lines.append({"who": "HQ", "text": "Overnight:\n" + "\n".join(report["crew_jobs"])})
-	if report.has("relic"):
-		lines.append({"who": "Marlene", "text": "A little something from the tower. Don't ask. (%s)" % GameState.item_name(str(report["relic"]))})
-	if Racket.on():
-		var raids: bool = Racket.heat() >= 3 and not GameState.run["flags"].has("president_freed")  # no collectors once the stone is broken
-		lines.append({"text": "Heat %d/5.%s" % [Racket.heat(), " Collectors may be out." if raids else ""]})
-		if raids and Crew.perk_level("raid_warning") >= 1:
-			lines.append({"who": "Ladder", "text": "Word from the roofs: the President's collectors are walking the districts today. Stay off the main streets, or bring friends."})
-	var brief := "%s today, %s tomorrow." % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()]
-	if GameState.festival_today() != "":
-		brief += " It's the %s: head to the plaza." % GameState.festival_name(GameState.festival_today())
-	brief += " Sunset about %s." % GameState.clock_of(GameState.sunset())
-	lines.push_front({"text": "Day %d. %s" % [int(GameState.run["day"]), brief]})
-	var nxt := GameState.next_step()
-	if nxt != "":
-		lines.append({"text": "Next: " + nxt})
-	for nm in report.get("gone", []):
-		lines.append({"who": "", "text": "A note under the door, in a hand you know: '%s went east. Didn't say why. You know why.'" % str(nm)})
+	var lines := SleepReport.lines(report)
 	await hud.fade_in(0.8)
 	if int(report.get("earned", 0)) > 0:
 		Music.instance(get_tree()).sfx("cash_register" if Money.cash() else "coin", "pickup")

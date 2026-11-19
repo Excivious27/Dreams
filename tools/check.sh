@@ -69,6 +69,13 @@ if ! echo "$wout" | grep -q "r13_world_test: 0 failures"; then
   echo "World/time test failed"; exit 1
 fi
 
+echo "== first week pacing, faint/clinic/sleep =="
+fwout="$("$GODOT" --headless --path . -s res://tools/first_week_test.gd 2>&1)"
+echo "$fwout" | grep -E "FAIL|first_week_test|SCRIPT ERROR" || true
+if ! echo "$fwout" | grep -q "first_week_test: 0 failures"; then
+  echo "First week test failed"; exit 1
+fi
+
 echo "== crops wired in =="
 # Every interior's way back names its scene: ["scene", x, y].
 python3 - <<'PY' || { echo "interior back check failed"; exit 1; }
