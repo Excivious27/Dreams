@@ -200,8 +200,8 @@ static func pick(floor_no: int, tier: int, theme_idx: int, rng: RandomNumberGene
 		fresh = opts
 	var tot := 0.0
 	var ws: Array = []
-	for id in fresh:
-		var en := by_id(id)
+	for fid in fresh:
+		var en := by_id(fid)
 		var w := float(en.get("w", 5))
 		if (en.get("themes", []) as Array).has(theme_idx):
 			w *= 2.5

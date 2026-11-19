@@ -203,6 +203,7 @@ func _crates_live() -> void:
 	p._busy = false
 	p._attack_cd = 0.0
 	p._combo = 1
+	p.facing = "right"
 	p._last_swing_ms = Time.get_ticks_msec()
 	p.do_action("tool")
 	await frames(2)
@@ -210,6 +211,9 @@ func _crates_live() -> void:
 	e.hp = 999
 	await frames(30)
 	GameState.select_slot(tb.find("pickaxe"))
+	e.position = p.position + Vector2(14, 0)
+	e._shield = 0.0
+	p.facing = "right"
 	p._busy = false
 	p._attack_cd = 0.0
 	p._last_swing_ms = Time.get_ticks_msec()
@@ -251,14 +255,14 @@ func _pack_live() -> void:
 ## Follow the arrow's aim point from the entry; it must arrive at the real shaft.
 func _arrow_live() -> void:
 	var styles: Array = []
-	for st: Dictionary in MineLayouts.STYLES:
+	for st: Dictionary in (load("res://scripts/mine_layouts.gd") as Variant).STYLES:
 		styles.append(str(st["id"]))
 	var ok := 0
 	var bad: Array = []
 	var i := 0
 	for sid in styles:
 		i += 1
-		var f := [1, 4, 9, 17, 33, 61, 95, 140][i % 8]
+		var f: int = [1, 4, 9, 17, 33, 61, 95, 140][i % 8]
 		var m := await _enter(f, 9000 + i * 13, str(sid))
 		m.call("_open_way")
 		var lad: Vector2i = m.get("_ladder")

@@ -1952,7 +1952,7 @@ func _route_ok(c: Vector2i) -> bool:
 
 
 ## Route costs from `goal` to every reachable cell (Dial's buckets: steps 1, rocks ROCK_STEP).
-func _build_flow(goal: Vector2i) -> void:
+func _route_build(goal: Vector2i) -> void:
 	_flow = {goal: 0}
 	_flow_goal = goal
 	_flow_t = Time.get_ticks_msec()
@@ -1987,7 +1987,7 @@ func _flow_for(goal_pos: Vector2) -> void:
 	# Rebuild when the goal moves (a keeper walks) or every 2 s (rocks get mined).
 	var age := Time.get_ticks_msec() - _flow_t
 	if goal != _flow_goal and age > 300 or age > 2000:
-		_build_flow(goal)
+		_route_build(goal)
 
 
 ## A point a few cells along the walking route to the target (the arrow aims here).
@@ -2245,7 +2245,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF, whoosh := true) -> bo
 		return hit   # shots and other sources leave crates alone
 	var best := Vector2i(-1, -1)
 	var bd := 1e9
-	for c: Vector2i in _cells_in(r):
+	for c: Vector2i in _swing_cells(r):
 		var t := str(things.get(c, {}).get("type", ""))
 		if t in ["crate", "mchest", "bigchest"]:
 			var dd := r.get_center().distance_to(cell_pos(c.x + 0.5, c.y + 0.5))
@@ -2261,7 +2261,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF, whoosh := true) -> bo
 			interact(best, th)
 		return true
 	if not hit and Time.get_ticks_msec() - _rock_told > 6000:
-		for c: Vector2i in _cells_in(r):
+		for c: Vector2i in _swing_cells(r):
 			if str(things.get(c, {}).get("type", "")) == "rock":
 				_rock_told = Time.get_ticks_msec()
 				ToolHint.need(self, "pickaxe", "to break rock")
@@ -2269,7 +2269,7 @@ func attack_at(r: Rect2, damage: int, from := Vector2.INF, whoosh := true) -> bo
 	return hit
 
 
-func _cells_in(r: Rect2) -> Array:
+func _swing_cells(r: Rect2) -> Array:
 	var out: Array = []
 	var a := world_to_cell(r.position)
 	var b := world_to_cell(r.end)
