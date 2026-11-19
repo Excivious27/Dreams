@@ -18,17 +18,19 @@ const WELL := Vector2i(28, 19)
 const GREENHOUSE := Vector2i(38, 10)
 const STAND := Vector2i(41, 26)
 ## Stage 0: what's piled on the lot. [x, y, penguin kind, gangster kind]
-const DEBRIS := [[7, 15, "bramble", "tyres"], [10, 14, "boulder", "rubble"], [16, 15, "log", "crates"], [19, 16, "bramble", "weeds"],
+const DEBRIS := [[7, 15, "bramble", "tyres"], [10, 14, "boulder", "rubble"], [16, 15, "log", "crates"], [19, 16, "weeds", "weeds"],
 	[6, 24, "stump", "drums"], [11, 23, "bramble", "tyres"], [16, 24, "boulder", "cart"], [20, 25, "bramble", "weeds"],
 	[25, 17, "log", "crates"], [32, 23, "boulder", "rubble"], [12, 33, "stump", "drums"], [24, 33, "bramble", "weeds"],
-	[38, 27, "log", "cart"], [44, 29, "bramble", "tyres"]]
-## kind -> [art group, art name, tool ("" = hands), hits, item, n]
+	[38, 27, "log", "cart"], [44, 29, "weeds", "scrap"]]
+## kind -> [art group, art name, tool ("" = hands), hits, item, n]. The cf_junk_* art
+## (tools/slice_r13_c2_11.py) reads as clutter to clear, not as a berry bush or a field rock.
 const JUNK := {
-	"bramble": ["nature", "bramble", "", 1, "fiber", 2], "boulder": ["nature", "rock_m", "pickaxe", 3, "stone", 3],
-	"log": ["nature", "log", "axe", 3, "wood", 4], "stump": ["nature", "stump", "axe", 2, "wood", 2],
-	"tyres": ["props", "tyres", "", 2, "", 8], "rubble": ["props", "boulder_m", "pickaxe", 3, "stone", 3],
-	"crates": ["props", "crates_c", "axe", 2, "wood", 3], "weeds": ["nature", "bramble", "", 1, "fiber", 2],
+	"bramble": ["props", "cf_junk_bramble", "", 1, "fiber", 2], "boulder": ["props", "cf_junk_stones", "pickaxe", 3, "stone", 3],
+	"log": ["props", "cf_junk_branches", "axe", 3, "wood", 4], "stump": ["props", "cf_junk_stump", "axe", 2, "wood", 2],
+	"tyres": ["props", "cf_junk_tyres", "", 2, "", 8], "rubble": ["props", "cf_junk_rubble", "pickaxe", 3, "stone", 3],
+	"crates": ["props", "crates_c", "axe", 2, "wood", 3], "weeds": ["props", "cf_junk_weeds", "", 1, "fiber", 2],
 	"drums": ["props", "oil_drums", "", 2, "copper", 2], "cart": ["props", "abandoned_cart", "", 3, "nails", 4],
+	"scrap": ["props", "cf_junk_scrap", "", 2, "nails", 3],
 }
 
 var npcs: Array = []
@@ -36,6 +38,7 @@ var _plots: Node2D
 var _cells := {}          # plot key "x,y" -> cold frame?
 var crew: CfVolunteers    # the volunteers at work (scripts/cf_volunteers.gd)
 var _busy := {}           # cells kept clear of trees and scatter
+var _wood := {}           # the organic woodland edge: cell -> "tree" | "shrub" (see _edge_wood)
 
 
 func scene_id() -> String:
@@ -82,12 +85,13 @@ func build() -> void:
 	for b: Array in Commons.data().get("beds", []) + Commons.data().get("frames", []):
 		for c in cells_of([Rect2i(int(b[0]) - 1, int(b[1]) - 1, int(b[2]) + 2, int(b[3]) + 2)]):
 			_busy[c] = true
-	for c in cells_of([Rect2i(20, 3, 26, 9), Rect2i(31, 22, 20, 16), Rect2i(2, 30, 36, 9), Rect2i(41, 14, 8, 6)]):
+	for c in cells_of([Rect2i(20, 3, 26, 9), Rect2i(31, 22, 20, 16), Rect2i(2, 30, 36, 8), Rect2i(41, 14, 8, 6)]):
 		_busy[c] = true
+	_wood = _edge_wood()
 
 
 func _junk_name(kind: String) -> String:
-	return {"bramble": "brambles", "boulder": "boulder", "log": "fallen log", "stump": "stump", "tyres": "old tyres", "rubble": "rubble", "crates": "broken crates", "weeds": "weeds", "drums": "oil drums", "cart": "wrecked cart"}.get(kind, kind)
+	return {"bramble": "brambles", "boulder": "boulder", "log": "fallen log", "stump": "stump", "tyres": "old tyres", "rubble": "rubble", "crates": "broken crates", "weeds": "weeds", "drums": "oil drums", "cart": "wrecked cart", "scrap": "scrap pile"}.get(kind, kind)
 
 
 ## Paths that exist at this stage (only the road in until the lot is cleared).
@@ -96,7 +100,7 @@ func _paths() -> Array:
 	if _s() >= 1:
 		out += [Rect2i(3, 19, 33, 2), Rect2i(28, 8, 2, 11), Rect2i(28, 21, 2, 11), Rect2i(3, 31, 36, 2), Rect2i(39, 11, 2, 8)]
 	if _s() >= 3:
-		out.append(Rect2i(33, 27, 15, 2))
+		out.append(Rect2i(30, 27, 18, 2))  # the market lane, joined to the south path
 	return out
 
 
@@ -118,12 +122,25 @@ func draw_map() -> void:
 	WorldGen.draw_ground_detail(self, 171, 0.14, avoid)
 	if _gang():
 		# The old lot's asphalt shows through where nothing grows.
+		# Old slab paving (not road asphalt: no lane lines on a lot).
 		var lot := WorldGen.blob(self, Vector2(40.0, 28.0), 9.0, 6.0, 1717, 1, 0.3)
-		lot.merge(_plaza())
-		soft_ground(lot, "asphalt", Color(0.1, 0.1, 0.1, 0.25))
+		if s >= 1:
+			for c in _plaza():
+				lot.erase(c)
+		else:
+			lot.merge(_plaza())
+		soft_ground(lot, "pavement", Color(0.1, 0.1, 0.1, 0.25))
+		if s >= 1:
+			soft_ground(_plaza(), "brick_herring", Color(0.2, 0.08, 0.05, 0.3))  # relaid in reclaimed brick
 	if s == 0:
-		var wild := WorldGen.blob(self, Vector2(16.0, 21.0), 15.0, 13.0, 1718, 2, 0.28)
-		soft_ground(wild, "dry_grass", Color(0.2, 0.16, 0.05, 0.15))
+		# Gone-over ground in patches (rough-edged, grass between), not one flat blot.
+		var wild := WorldGen.blob(self, Vector2(15.0, 20.0), 12.0, 10.0, 1718, 2, 0.5)
+		wild.merge(WorldGen.blob(self, Vector2(22.0, 31.0), 8.0, 5.0, 1719, 2, 0.5))
+		wild.merge(WorldGen.blob(self, Vector2(38.0, 26.0), 6.0, 4.0, 1720, 2, 0.5))
+		for c in wild.keys():
+			if WorldGen.fbm(float(c.x), float(c.y), 1721, 4.0) > 0.28:
+				wild.erase(c)
+		soft_ground(WorldGen.smooth_cells(wild), "dry_grass", Color(0.2, 0.16, 0.05, 0.15))
 	else:
 		if not _gang():
 			soft_ground(_plaza(), "cobble_warm", Color(0.15, 0.1, 0.05, 0.3))
@@ -136,6 +153,20 @@ func draw_map() -> void:
 		if s < 7:
 			# The greenhouse footings.
 			soft_ground(cells_of([Rect2i(37, 6, 6, 5)]), "old_stone", Color(0.1, 0.1, 0.1, 0.25))
+	var under := {}
+	for c: Vector2i in _wood:
+		if str(_wood[c]) == "tree":
+			under[c] = true
+	if _gang():
+		soft_ground(WorldGen.smooth_cells(under), "pavement", Color(0.08, 0.08, 0.1, 0.25))
+		# The city round the lot: alleys and back yards between the buildings.
+		var city := {}
+		for c: Vector2i in _border_cells:
+			if str(_border_cells[c]) == "city":
+				city[c] = true
+		soft_ground(city, "pavement", Color(0.05, 0.05, 0.07, 0.35), Color(0.62, 0.62, 0.7))
+	else:
+		soft_ground(WorldGen.smooth_cells(under), "forest_floor", Color(0.12, 0.1, 0.04, 0.2))
 	var ways := {}
 	var plaza := _plaza() if s >= 1 or _gang() else {}
 	for c in cells_of(_paths()):
@@ -258,7 +289,7 @@ func after_ready() -> void:
 		var t: Dictionary = things[c]
 		if str(t.get("type", "")) == "cf_debris":
 			var j: Array = JUNK[str(t["kind"])]
-			var sc := 0.5 if str(j[0]) == "nature" else 0.42
+			var sc := 0.58 if str(j[1]).begins_with("cf_junk") else (0.5 if str(j[0]) == "nature" else 0.42)
 			prop(str(j[0]), str(j[1]), c, 0, 0.0, true, sc)
 	_place_board()
 	_place_shed(s)
@@ -321,7 +352,7 @@ func _place_board() -> void:
 
 func _place_shed(s: int) -> void:
 	if s >= 2:
-		prop("props", "shed", SHED, 2)
+		prop("props", "shed", SHED, 2, 0.0, true, 0.66)  # a real tool shed, no smaller than its ruin
 		prop("props", "cf_compost", Vector2i(23, 8))
 		set_thing(23, 8, {"type": "cf_compost", "hint": "A: the compost"})
 		prop("props", "chest_closed", Vector2i(31, 8))
@@ -338,7 +369,7 @@ func _place_shed(s: int) -> void:
 
 
 func _place_well(s: int) -> void:
-	prop("props", "well_roofed" if s >= 5 else "cf_well_broken", WELL, 1)
+	prop("props", "well_roofed" if s >= 5 else "cf_well_broken", WELL, 1, 0.0, true, 0.6)
 	for x in range(WELL.x, WELL.x + 2):
 		set_thing(x, WELL.y, {"type": "cf_well", "hint": "A: drink from the well" if s >= 5 else "A: the old well"})
 	if s >= 5:
@@ -369,11 +400,11 @@ func _place_market(s: int) -> void:
 		prop("props", "flower_cart", Vector2i(47, 25), 1, 0.0, true, 0.4)
 		prop("props", "bunting_green", Vector2i(38, 23), 2, 0.0, false, 0.45)
 		prop("props", "lanterns_pink" if _gang() else "lanterns_red", Vector2i(46, 23), 1, -18.0, false)
-		prop("props", "apple_bucket2", Vector2i(46, 27), 0, 0.0, true, 0.28)
+		prop("props", "apple_bucket2", Vector2i(46, 29), 0, 0.0, true, 0.28)  # beside the lane, not on it
 		prop("props", "hay", Vector2i(33, 29))
 		if Commons.market_day():
 			prop("props", "wheat_sheaf", Vector2i(40, 29), 0, 0.0, true, 0.28)
-			prop("props", "carrot_bunch", Vector2i(32, 27), 0, 0.0, true, 0.26)
+			prop("props", "carrot_bunch", Vector2i(36, 29), 0, 0.0, true, 0.26)
 			prop("props", "bunting_red", Vector2i(32, 23), 2, 0.0, false, 0.45)
 	if s >= 3:
 		prop("props", "cf_donation_box", Vector2i(48, 27))
@@ -429,8 +460,184 @@ func _place_extras(s: int) -> void:
 			prop("props", "flowerbed_yellow" if c.x > 30 else "flowerbed_pink", c, 0, 0.0, true, 0.4)
 
 
+## The lot's edge: woodland bays and points wandering 1-6 cells in from the
+## border band (Sun Haven style: an open middle, soft organic edges), never on
+## the paths, beds, yards, exits, gathering spots, debris or the orchard row.
+## Pure function of the layout, so the painter twin gets the same cells.
+func _edge_wood() -> Dictionary:
+	var keep := _busy.duplicate()
+	for e in exits:
+		for c in cells_of([(e["rect"] as Rect2i).grow(4)]):
+			keep[c] = true
+	for sp: Vector2i in Commons.spots().values():
+		for c in cells_of([Rect2i(sp.x - 1, sp.y - 1, 3, 3)]):
+			keep[c] = true
+	for o: Array in Commons.data().get("orchard", []):
+		for c in cells_of([Rect2i(int(o[0]) - 1, int(o[1]) - 1, 3, 3)]):
+			keep[c] = true
+	for d: Array in DEBRIS:
+		for c in cells_of([Rect2i(int(d[0]) - 1, int(d[1]) - 1, 3, 3)]):
+			keep[c] = true
+	if _gang():
+		for c in cells_of([Rect2i(0, 0, cols, 4)]):
+			keep[c] = true  # the brick wall along the back
+	var out := {}
+	for y in rows:
+		for x in cols:
+			var d := mini(mini(x, y), mini(cols - 1 - x, rows - 1 - y))
+			if d > 6:
+				continue
+			# Depth wanders along the edge: low-frequency noise, so bays and points alternate.
+			var t := 0.6 + 5.4 * clampf(WorldGen.fbm(float(x), float(y), 1751, 7.0) + 0.3, 0.0, 1.0)
+			var c := Vector2i(x, y)
+			if float(d) >= t or keep.has(c) or things.has(c):
+				continue
+			out[c] = "tree" if float(d) < t - 1.2 else "shrub"
+	return out
+
+
+## Trees (spaced, choppable) and undergrowth on the woodland edge.
+func _plant_wood(avoid: Dictionary) -> void:
+	var se := GameState.look_se()
+	var mids: Array = {"spring": ["mid_oak", "mid_birch", "mid_cherry", "mid_pine"], "summer": ["mid_oak", "mid_birch", "mid_willow", "mid_pine"], "fall": ["mid_maple", "mid_oak", "mid_maple_b", "mid_pine"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b"]}.get(se, ["mid_oak"])
+	var shrubs: Array = {"spring": ["bush2_green", "ferns", "bush2_flower", "bush_white"], "summer": ["bush2_green", "ferns", "bush2_yellow", "hedge"], "fall": ["bush_fall_orange", "bush_fall_red", "ferns"], "winter": ["bush_snow", "bush_bare_snow"]}.get(se, ["bush"])
+	var rng := RandomNumberGenerator.new()
+	for c: Vector2i in _wood:
+		if avoid.has(c) or things.has(c) or blocked.has(c) or props.has(c):
+			continue
+		rng.seed = hash(Vector3i(1752, c.x, c.y))
+		var r := rng.randf()
+		if _gang():
+			# The lot's fringe: a street tree here and there, planters, pallets, tufts of weed.
+			if str(_wood[c]) == "tree" and (c.x + c.y) % 2 == 0:
+				if r < 0.16:
+					prop("props", "city_street_tree", c)
+				elif r < 0.24:
+					prop("props", "city_planter", c, 1 if not things.has(c + Vector2i(1, 0)) else 0)
+				elif r < 0.29:
+					prop("props", "city_pallets", c, 1 if not things.has(c + Vector2i(1, 0)) else 0)
+			elif r < 0.22:
+				var tf := prop("nature", "grass_tuft_" + ("summer" if se in ["spring", "summer"] else ("frost" if se == "winter" else "fall")), c, 0, 0.0, false, 0.5)
+				if tf:
+					tf.position.x += rng.randf_range(-4.0, 4.0)
+			continue
+		if str(_wood[c]) == "tree":
+			if (c.x + c.y) % 2 == 1 or r < 0.25 or is_cleared(c):
+				continue  # spaced out: a wood you can see into, not a hedge
+			var nm := str(mids[rng.randi_range(0, mids.size() - 1)]) if r < 0.6 else GameState.tree_sprite(rng.randi_range(0, 2))
+			if not Art.has("nature", nm):
+				nm = GameState.tree_sprite(rng.randi_range(0, 2))
+			set_thing(c.x, c.y, {"type": "tree", "hp": 4, "hint": "A: chop"})
+			prop("nature", nm, c)
+		elif r < 0.4:
+			var sh := str(shrubs[rng.randi_range(0, shrubs.size() - 1)])
+			var sp := prop("nature", sh if Art.has("nature", sh) else GameState.bush_sprite(false), c, 0, 0.0, false, 0.5)
+			if sp:
+				sp.position.x += rng.randf_range(-4.0, 4.0)
+
+
+## Gangster arc: the Westside Lot Garden sits inside a city block, so the
+## border band becomes buildings instead of blossom woods: brick tenements and
+## walk-ups facing the lot along the meandering inner edge, flat roofs, garages
+## and shops behind and to the south, alley mouths, back walls and chain-link in
+## the gaps, street trees, planters and utility poles. Everything stays on band
+## cells (already solid), so the walkable lot is unchanged. Deterministic (seeded).
+const CITY_BIG := ["city_apartment", "city_tenement", "city_walkup", "city_shop", "city_garage", "city_roof_a", "city_roof_b"]
+const CITY_GAP := ["city_alley", "city_brickwall", "city_chainlink"]
+const CITY_SMALL := ["city_street_tree", "city_pole", "city_planter", "city_pallets"]
+
+
+func _city_edge() -> void:
+	var band := {}
+	for c: Vector2i in _border_cells:
+		if str(_border_cells[c]) == "tree":
+			band[c] = true
+			_border_cells[c] = "city"  # draw_border: no forest floor, no trees
+			if props.has(c):
+				(props[c] as Node).queue_free()  # the band's inner-edge trees
+				props.erase(c)
+	_border_draw.clear()
+	var occ := {}
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1761
+	# Anchors nearest the lot first (facades line the edge), then the deeper fill.
+	var order: Array = band.keys()
+	order.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		var da := _city_depth(a)
+		var db := _city_depth(b)
+		return da < db or (da == db and (hash(a) % 1000) < (hash(b) % 1000)))
+	for ac: Vector2i in order:
+		if occ.has(ac):
+			continue
+		var picks := CITY_BIG.duplicate()
+		for i in range(picks.size() - 1, 0, -1):  # seeded shuffle
+			var j := rng.randi_range(0, i)
+			var t: Variant = picks[i]
+			picks[i] = picks[j]
+			picks[j] = t
+		for nm: String in picks:
+			if _city_try(nm, ac, band, occ, 0.55):
+				break
+	# Gaps along the inner edge: alley mouths, back walls, fences; then small things.
+	for ac: Vector2i in order:
+		if occ.has(ac) or _city_depth(ac) > 2:
+			continue
+		var nm: String = CITY_GAP[rng.randi_range(0, CITY_GAP.size() - 1)]
+		if not _city_try(nm, ac, band, occ, 0.6):
+			_city_try(str(CITY_SMALL[rng.randi_range(0, CITY_SMALL.size() - 1)]), ac, band, occ, 0.6)
+	for ac: Vector2i in order:
+		if not occ.has(ac) and rng.randf() < 0.3:
+			_city_try(str(CITY_SMALL[rng.randi_range(0, CITY_SMALL.size() - 1)]), ac, band, occ, 0.5)
+	_border_draw.sort_custom(func(a: Array, b: Array) -> bool: return (a[0] as Vector2i).y < (b[0] as Vector2i).y)
+
+
+## How far a band cell is from the open lot (1 = touching it).
+func _city_depth(c: Vector2i) -> int:
+	for d in range(1, pad + 4):
+		for off: Vector2i in [Vector2i(d, 0), Vector2i(-d, 0), Vector2i(0, d), Vector2i(0, -d)]:
+			var n := c + off
+			if in_content(n) and not _border_cells.has(n):
+				return d
+	return pad + 4
+
+
+## Place a city piece with its bottom centre on cell `ac` if its whole picture
+## stays on band cells (or past the map edge) and it covers enough new ground.
+func _city_try(nm: String, ac: Vector2i, band: Dictionary, occ: Dictionary, fresh: float) -> bool:
+	var t := Art.tex("props", nm)
+	if t == null:
+		return false
+	var wc := t.get_width() * 0.5 / TILE
+	var hc := t.get_height() * 0.5 / TILE
+	var x0 := ac.x + 0.5 - wc / 2.0
+	var y0 := ac.y + 1.0 - hc
+	var cells: Array[Vector2i] = []
+	var total := 0
+	var new := 0
+	for y in range(floori(y0 + 0.35), ac.y + 1):
+		for x in range(floori(x0 + 0.25), ceili(x0 + wc - 0.25)):
+			var c := Vector2i(x, y)
+			var outside := x < -pad or y < -pad or x >= cols + pad or y >= rows + pad
+			if outside:
+				continue
+			if not band.has(c):
+				return false
+			total += 1
+			if not occ.has(c):
+				new += 1
+			cells.append(c)
+	if total == 0 or float(new) / float(total) < fresh:
+		return false
+	for c in cells:
+		occ[c] = true
+	_border_draw.append([ac, "props", nm, 0.0])
+	return true
+
+
 ## Trees and undergrowth round the edges (never on the beds, paths or yards).
 func _dress() -> void:
+	if _gang():
+		_city_edge()
 	var avoid := _busy.duplicate()
 	for e in exits:
 		for c in cells_of([(e["rect"] as Rect2i).grow(3)]):
@@ -438,12 +645,10 @@ func _dress() -> void:
 	for sp: Vector2i in Commons.spots().values():
 		for c in cells_of([Rect2i(sp.x - 1, sp.y - 1, 3, 3)]):
 			avoid[c] = true
-	WorldGen.tree_clumps(self, Rect2i(0, 0, 20, 12), 1741, 5, avoid)
-	WorldGen.tree_clumps(self, Rect2i(44, 0, 8, 14), 1742, 3, avoid)
-	WorldGen.tree_clumps(self, Rect2i(0, 26, 4, 14), 1743, 2, avoid)
-	WorldGen.tree_clumps(self, Rect2i(46, 30, 6, 10), 1744, 3, avoid)
+	_plant_wood(avoid)
 	WorldGen.scatter_props(self, Rect2i(0, 0, cols, rows), 1745, 12, avoid)
-	WorldGen.dress_band(self, 1746)
+	if not _gang():
+		WorldGen.dress_band(self, 1746)
 	var kinds := ["butterfly_orange", "butterfly_blue", "butterfly_yellow", "bee", "sparrow"]
 	kinds += ["rabbit"] if not _gang() else ["sparrow"]
 	if _s() >= 6:

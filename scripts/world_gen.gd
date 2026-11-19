@@ -515,13 +515,15 @@ static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
 		if season == "winter":
 			st = "snow" if kind != "cherry" else "bare"
 		elif di == 0:
-			st = "fruit" if ripe else "late"
+			# In season: fruit until shaken, then plain leaves (no "late" autumn look mid-summer).
+			st = "fruit" if ripe else ("green" if Art.has("nature", "ftree_%s_green" % kind) else "late")
 		elif di == 3:
 			st = "blossom"  # the season before fruiting
 		elif di == 1:
 			st = "late" if kind != "cherry" else "green"
 		else:
-			st = "bare" if kind != "cherry" else "fall"
+			# Two seasons before fruiting (apples in spring): in leaf, not bare.
+			st = "fall" if kind == "cherry" else ("green" if Art.has("nature", "ftree_%s_green" % kind) else "bare")
 		if not Art.has("nature", "ftree_%s_%s" % [kind, st]):
 			st = "fruit"
 		sprite = "ftree_%s_%s" % [kind, st]

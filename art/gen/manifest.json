@@ -76038,6 +76038,11 @@
    "h": 128,
    "w": 110
   },
+  "ftree_apple_green": {
+   "file": "nature/ftree_apple_green.png",
+   "h": 128,
+   "w": 110
+  },
   "ftree_apple_late": {
    "file": "nature/ftree_apple_late.png",
    "h": 128,
@@ -76104,6 +76109,11 @@
    "h": 128,
    "w": 116
   },
+  "ftree_orange_green": {
+   "file": "nature/ftree_orange_green.png",
+   "h": 128,
+   "w": 109
+  },
   "ftree_orange_late": {
    "file": "nature/ftree_orange_late.png",
    "h": 128,
@@ -76136,6 +76146,11 @@
    "file": "nature/ftree_plum_fruit.png",
    "h": 128,
    "w": 115
+  },
+  "ftree_plum_green": {
+   "file": "nature/ftree_plum_green.png",
+   "h": 128,
+   "w": 107
   },
   "ftree_plum_late": {
    "file": "nature/ftree_plum_late.png",
@@ -84232,6 +84247,51 @@
    "h": 29,
    "w": 34
   },
+  "cf_junk_bramble": {
+   "file": "props/cf_junk_bramble.png",
+   "h": 60,
+   "w": 46
+  },
+  "cf_junk_branches": {
+   "file": "props/cf_junk_branches.png",
+   "h": 54,
+   "w": 45
+  },
+  "cf_junk_rubble": {
+   "file": "props/cf_junk_rubble.png",
+   "h": 56,
+   "w": 51
+  },
+  "cf_junk_scrap": {
+   "file": "props/cf_junk_scrap.png",
+   "h": 56,
+   "w": 58
+  },
+  "cf_junk_slab": {
+   "file": "props/cf_junk_slab.png",
+   "h": 64,
+   "w": 42
+  },
+  "cf_junk_stones": {
+   "file": "props/cf_junk_stones.png",
+   "h": 54,
+   "w": 43
+  },
+  "cf_junk_stump": {
+   "file": "props/cf_junk_stump.png",
+   "h": 64,
+   "w": 48
+  },
+  "cf_junk_tyres": {
+   "file": "props/cf_junk_tyres.png",
+   "h": 60,
+   "w": 34
+  },
+  "cf_junk_weeds": {
+   "file": "props/cf_junk_weeds.png",
+   "h": 56,
+   "w": 34
+  },
   "cf_mural_wall": {
    "file": "props/cf_mural_wall.png",
    "h": 75,
@@ -84357,6 +84417,76 @@
    "frames": 2,
    "h": 32,
    "w": 60
+  },
+  "city_alley": {
+   "file": "props/city_alley.png",
+   "h": 126,
+   "w": 112
+  },
+  "city_apartment": {
+   "file": "props/city_apartment.png",
+   "h": 280,
+   "w": 200
+  },
+  "city_brickwall": {
+   "file": "props/city_brickwall.png",
+   "h": 69,
+   "w": 128
+  },
+  "city_chainlink": {
+   "file": "props/city_chainlink.png",
+   "h": 68,
+   "w": 128
+  },
+  "city_garage": {
+   "file": "props/city_garage.png",
+   "h": 163,
+   "w": 128
+  },
+  "city_pallets": {
+   "file": "props/city_pallets.png",
+   "h": 43,
+   "w": 72
+  },
+  "city_planter": {
+   "file": "props/city_planter.png",
+   "h": 43,
+   "w": 64
+  },
+  "city_pole": {
+   "file": "props/city_pole.png",
+   "h": 112,
+   "w": 66
+  },
+  "city_roof_a": {
+   "file": "props/city_roof_a.png",
+   "h": 179,
+   "w": 176
+  },
+  "city_roof_b": {
+   "file": "props/city_roof_b.png",
+   "h": 167,
+   "w": 128
+  },
+  "city_shop": {
+   "file": "props/city_shop.png",
+   "h": 225,
+   "w": 96
+  },
+  "city_street_tree": {
+   "file": "props/city_street_tree.png",
+   "h": 96,
+   "w": 50
+  },
+  "city_tenement": {
+   "file": "props/city_tenement.png",
+   "h": 301,
+   "w": 120
+  },
+  "city_walkup": {
+   "file": "props/city_walkup.png",
+   "h": 250,
+   "w": 160
   },
   "claw_machine": {
    "file": "props/claw_machine.png",
