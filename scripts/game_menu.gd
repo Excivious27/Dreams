@@ -119,6 +119,11 @@ func _process(_delta: float) -> void:
 	if Dialogue.instance(get_tree()).active:
 		return
 	if _rebinding != "":
+		# Touch buttons press actions with no key event: B or MENU there cancels the rebind
+		# (a real key press is caught by _input first and becomes the new binding).
+		if Input.is_action_just_pressed("b") or Input.is_action_just_pressed("menu"):
+			_rebinding = ""
+			_refresh()
 		return
 	# Stardew hotkeys: E/Esc toggles the menu (Items tab when opening), M opens
 	# straight to the Map, F to the Journal; pressing the same key again closes.

@@ -153,6 +153,9 @@ func _town_tour() -> void:
 	var who := "Mayor Alder" if pen else "Sal"
 	player.frozen = true
 	var guide := await _tour_guide_in("alder" if pen else "sal")
+	if not is_inside_tree():
+		GameState.run["flags"].erase("town_tour")  # left mid-walk: the tour plays next visit
+		return
 	await say([
 		{"who": who, "text": ("Welcome! I'm Alder, mayor of %s. Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools." if pen else "Sal. I sit on this bench and watch the road, same as you would. Before you go knocking on doors in %s: Maple's store north of the plaza sells seeds and asks no questions; Gideon's forge next door fixes tools.") % GameState.names()["town"]},
 		{"who": who, "text": ("The rest of us you'll meet. Your journal keeps a list (MENU > Quests)." if pen else "The rest you'll meet. Your journal keeps a list (MENU > Quests). And keep your hood up. Whoever you're hiding from, people like that have friends who travel.")},

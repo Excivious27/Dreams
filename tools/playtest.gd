@@ -213,6 +213,14 @@ func _run() -> void:
 	change_scene_to_file("res://scenes/farm.tscn")
 	await frames(30)
 	var f2 := current_scene as GameMap
+	# Day 2 brings the partner scene (penguins) and morning notes: let them play out first.
+	var dd := Dialogue.instance(self)
+	for _i in 80:
+		await frames(8)
+		if not dd.active and not f2.player.frozen:
+			break
+		if dd.active:
+			await press("a", 2)
 	var zone_cell := Vector2i(-999, -999)
 	for e in f2.exits:
 		if str(e["scene"]) == "town":
@@ -266,11 +274,14 @@ func _run() -> void:
 	town.player.facing = pick[1]
 	await frames(20)
 	# A story beat may still be open from arriving in town: finish it first.
-	for i in 30:
-		if not d.active:
+	for i in 90:  # the town tour (the guide walks up, then talks) can still be running
+		if not d.active and not town.player.frozen:
 			break
-		await press("a", 2)
-		await frames(4)
+		if d.active:
+			await press("a", 2)
+		await frames(6)
+	town.player.position = maple.position + pick[0]
+	town.player.facing = pick[1]
 	await frames(30)
 	Dialogue.block_until_ms = 0
 	await press("a", 3)
@@ -571,7 +582,10 @@ func _r11_passout() -> void:
 		check(int(GameState.run["day"]) == day0 and int(GameState.run["time"]) >= Faint.WAKE, "you wake at 10pm the same day (day %d, %d)" % [int(GameState.run["day"]) - day0, int(GameState.run["time"])])
 	else:
 		check(int(GameState.run["day"]) == day0 + 1, "it's the next morning")
-	check(int(GameState.run["crystals"]) == 1000 - 100, "clinic bill is 8%% + 20 (%d left)" % int(GameState.run["crystals"]))
+	if Faint.in_grace():  # week 1: Juniper doesn't bill a newcomer
+		check(int(GameState.run["crystals"]) == 1000, "no clinic bill in the first week (%d left)" % int(GameState.run["crystals"]))
+	else:
+		check(int(GameState.run["crystals"]) <= 1000, "clinic bill never more than you carry (%d left)" % int(GameState.run["crystals"]))
 	await frames(40)
 	var told := false
 	for i in 40:
