@@ -332,7 +332,7 @@ static func launch(m: GameMap, cid: String, nid: String) -> void:
 		return
 	var at := m.player.position - m.offset() if m.player else Vector2.ZERO
 	st()["fight"] = {"cid": cid, "nid": nid, "field": fid, "day": int(GameState.run.get("day", 1)), "back": [m.scene_id(), at.x, at.y]}
-	var R: Dictionary = GameState.load_json("res://data/regions.json").get(fid, {})
+	var R: Dictionary = RegionData.region(fid)
 	var sp: Array = R.get("spawn", [10, 10])
 	m.go_to(fid, Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
 

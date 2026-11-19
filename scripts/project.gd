@@ -229,7 +229,7 @@ static func war_table(m: GameMap) -> void:
 	if not bool(ids[i][1]):
 		m.hud.toast("Not yet: get further in the story first." if CampaignGate.trained() else "Not yet: finish Training on the campaign map first.", Color(1, 0.85, 0.6))
 		return
-	var R: Dictionary = GameState.load_json("res://data/regions.json").get(str(ids[i][0]), {})
+	var R: Dictionary = RegionData.region(str(ids[i][0]))
 	var sp: Array = R.get("spawn", [10, 10])
 	m.go_to(str(ids[i][0]), Vector2(float(sp[0]) * GameMap.TILE + 8, float(sp[1]) * GameMap.TILE + 8), "up")
 

@@ -191,9 +191,11 @@ func _draw_play(c: Control) -> void:
 		c.draw_texture_rect_region(booth, PLAY, Rect2(0, 88.0 * k, bs.x, PLAY.size.y * 2.0 * k))
 	else:
 		c.draw_rect(PLAY, Color(0.95, 0.88, 0.7))
+	var tb := TriBatch.new()  # the awning: one draw call (was 20)
 	for i in 10:
-		c.draw_rect(Rect2(i * 27, TOP, 27, 22), Color(0.9, 0.25, 0.3) if i % 2 == 0 else Color(1, 0.97, 0.9))
-		c.draw_circle(Vector2(i * 27 + 13.5, TOP + 22), 13.5, Color(0.9, 0.25, 0.3) if i % 2 == 0 else Color(1, 0.97, 0.9))
+		tb.rect(Rect2(i * 27, TOP, 27, 22), Color(0.9, 0.25, 0.3) if i % 2 == 0 else Color(1, 0.97, 0.9))
+		tb.circle(Vector2(i * 27 + 13.5, TOP + 22), 13.5, Color(0.9, 0.25, 0.3) if i % 2 == 0 else Color(1, 0.97, 0.9))
+	tb.flush(c)
 	var left := clampf(1.0 - play_t / ROUND, 0.0, 1.0) if state == "play" else 1.0
 	c.draw_rect(Rect2(10, 64, 250, 5), Color(0, 0, 0, 0.2))
 	c.draw_rect(Rect2(10, 64, 250 * left, 5), Color(0.3, 0.6, 1.0))

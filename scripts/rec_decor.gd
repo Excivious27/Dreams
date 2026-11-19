@@ -6,12 +6,14 @@ extends Node2D
 ##   mode: "lanes" | "floor" | "wall" | "board" | "sign" | "house_wall"
 
 const T := 16.0
+const TriBatch := preload("res://scripts/tri_batch.gd")
 
 var mode := ""
 var map: GameMap = null
 var label := ""
 var _t := 0.0
 var _redraw_t := 0.0
+var _tb := TriBatch.new()
 var _lanes := {}  # lane n -> {"phase", "t", "x", "hook", "down": [bool x10], "who"}
 
 
@@ -25,7 +27,7 @@ func _process(delta: float) -> void:
 	if mode == "lanes":
 		_tick_lanes(delta)
 		queue_redraw()
-	elif mode in ["wall", "board", "floor"] and _redraw_t <= 0.0:
+	elif mode in ["wall", "board"] and _redraw_t <= 0.0:
 		_redraw_t = 0.12
 		queue_redraw()
 
@@ -47,45 +49,49 @@ func _lane_defs() -> Array:
 
 
 func _draw_lanes() -> void:
+	# Everything here is flat colour: one TriBatch, one draw call (was ~130 a frame).
+	var tb := _tb
 	var foul := float(RecCenter.data().get("lane_foul", 11)) + 1.0
 	var gang := not GameState.is_penguins()
 	var wood := Color("d9b07a") if not gang else Color("2a2140")
 	var wood_line := Color(0.55, 0.38, 0.2, 0.35) if not gang else Color(0.6, 0.3, 1.0, 0.25)
 	var gutter := Color("4a4a58")
 	# Under everything in the lane zone: the dark deck and the divider strip.
-	draw_rect(Rect2(T, 2 * T, (map.cols - 2) * T, (foul - 2) * T), Color("2b2230") if not gang else Color("120c1e"))
+	tb.rect(Rect2(T, 2 * T, (map.cols - 2) * T, (foul - 2) * T), Color("2b2230") if not gang else Color("120c1e"))
 	# The centre divider: a carpet runner with the house logo.
-	draw_rect(Rect2(7 * T + 2, 2 * T, 2 * T - 4, (foul - 2) * T), Color("6b2a3a") if not gang else Color("3a1460"))
+	tb.rect(Rect2(7 * T + 2, 2 * T, 2 * T - 4, (foul - 2) * T), Color("6b2a3a") if not gang else Color("3a1460"))
 	for i in 6:
 		var y := 3.0 * T + i * 22.0
-		draw_circle(Vector2(8 * T, y), 3.0, Color(1, 0.85, 0.4, 0.55) if not gang else Color(0.3, 1, 0.9, 0.5 + 0.3 * sin(_t * 3.0 + i)))
+		tb.circle(Vector2(8 * T, y), 3.0, Color(1, 0.85, 0.4, 0.55) if not gang else Color(0.3, 1, 0.9, 0.5 + 0.3 * sin(_t * 3.0 + i)))
 	for ln in _lane_defs():
 		var x0 := float(ln["x"]) * T
 		var r := Rect2(x0, 2 * T, 2 * T, (foul - 2) * T)
-		draw_rect(r, gutter)
-		draw_rect(Rect2(x0 + 1, r.position.y, 2, r.size.y), Color(0, 0, 0, 0.35))
-		draw_rect(Rect2(x0 + 2 * T - 3, r.position.y, 2, r.size.y), Color(0, 0, 0, 0.35))
+		tb.rect(r, gutter)
+		tb.rect(Rect2(x0 + 1, r.position.y, 2, r.size.y), Color(0, 0, 0, 0.35))
+		tb.rect(Rect2(x0 + 2 * T - 3, r.position.y, 2, r.size.y), Color(0, 0, 0, 0.35))
 		var bed := Rect2(x0 + 4, r.position.y, 2 * T - 8, r.size.y)
-		draw_rect(bed, wood)
+		tb.rect(bed, wood)
 		for bx in range(1, 8):
-			draw_line(Vector2(bed.position.x + bx * 3, bed.position.y), Vector2(bed.position.x + bx * 3, bed.end.y), wood_line, 1.0)
+			tb.seg(Vector2(bed.position.x + bx * 3, bed.position.y), Vector2(bed.position.x + bx * 3, bed.end.y), wood_line, 1.0)
 		# Pin deck (a lighter square at the far end), arrows and dots.
-		draw_rect(Rect2(bed.position.x, 2 * T, bed.size.x, 22), Color(1, 1, 1, 0.12))
+		tb.rect(Rect2(bed.position.x, 2 * T, bed.size.x, 22), Color(1, 1, 1, 0.12))
 		for k in 5:
 			var ax := bed.position.x + 2 + k * 4.5
 			var ay := (foul - 3.2) * T + absf(k - 2) * 3.0
-			draw_colored_polygon(PackedVector2Array([Vector2(ax, ay - 3), Vector2(ax - 1.5, ay + 1), Vector2(ax + 1.5, ay + 1)]), Color(0.3, 0.15, 0.1, 0.7) if not gang else Color(0.9, 0.3, 1, 0.9))
-		draw_rect(Rect2(x0, foul * T - 1, 2 * T, 2), Color("d23a3a"))
+			tb.fan(PackedVector2Array([Vector2(ax, ay - 3), Vector2(ax - 1.5, ay + 1), Vector2(ax + 1.5, ay + 1)]), PackedColorArray([Color(0.3, 0.15, 0.1, 0.7) if not gang else Color(0.9, 0.3, 1, 0.9)]))
+		tb.rect(Rect2(x0, foul * T - 1, 2 * T, 2), Color("d23a3a"))
 		_draw_lane_action(int(ln["n"]), bed)
 	# Approach: lighter boards and dots.
-	draw_rect(Rect2(T, foul * T + 1, (map.cols - 2) * T, T - 1), Color(1, 1, 1, 0.07))
+	tb.rect(Rect2(T, foul * T + 1, (map.cols - 2) * T, T - 1), Color(1, 1, 1, 0.07))
 	for ln in _lane_defs():
 		for k in 3:
-			draw_circle(Vector2(float(ln["x"]) * T + 8 + k * 8, foul * T + 8), 1.0, Color(0.2, 0.1, 0.05, 0.6))
+			tb.circle(Vector2(float(ln["x"]) * T + 8 + k * 8, foul * T + 8), 1.0, Color(0.2, 0.1, 0.05, 0.6))
+	tb.flush(self)
 
 
 ## Pins at the far end, and a villager's ball rolling up when the lane is theirs.
 func _draw_lane_action(n: int, bed: Rect2) -> void:
+	var tb := _tb
 	var st: Dictionary = _lanes.get(n, {})
 	var down: Array = st.get("down", [])
 	var cx := bed.position.x + bed.size.x / 2.0
@@ -101,20 +107,20 @@ func _draw_lane_action(n: int, bed: Rect2) -> void:
 				var a := clampf(float(st.get("t", 0.0)) / 0.7, 0.0, 1.0)
 				var dir := Vector2(px - cx + (0.7 if k % 2 == 0 else -0.7), -3.0).normalized()
 				var p := Vector2(px, py) + dir * a * 7.0
-				draw_line(p, p + Vector2(3.0 * signf(dir.x + 0.01), 1.0), Color(1, 1, 1, 1.0 - a), 2.0)
+				tb.seg(p, p + Vector2(3.0 * signf(dir.x + 0.01), 1.0), Color(1, 1, 1, 1.0 - a), 2.0)
 			elif not gone or phase == "roll":
-				draw_circle(Vector2(px, py + 1.5), 1.8, Color(0, 0, 0, 0.25))
-				draw_rect(Rect2(px - 1.2, py - 3.0, 2.4, 4.5), Color(0.97, 0.96, 0.92))
-				draw_rect(Rect2(px - 1.2, py - 2.0, 2.4, 0.9), Color(0.85, 0.15, 0.15))
+				tb.circle(Vector2(px, py + 1.5), 1.8, Color(0, 0, 0, 0.25))
+				tb.rect(Rect2(px - 1.2, py - 3.0, 2.4, 4.5), Color(0.97, 0.96, 0.92))
+				tb.rect(Rect2(px - 1.2, py - 2.0, 2.4, 0.9), Color(0.85, 0.15, 0.15))
 			k += 1
 	if phase == "roll":
 		var foul := float(RecCenter.data().get("lane_foul", 11)) + 1.0
 		var a2 := clampf(float(st.get("t", 0.0)) / 1.5, 0.0, 1.0)
 		var y := lerpf(foul * T - 4, head_y + 2, a2)
 		var x := cx + float(st.get("x", 0.0)) * (1.0 - a2) + float(st.get("hook", 0.0)) * a2 * a2
-		draw_circle(Vector2(x, y + 1), 3.6, Color(0, 0, 0, 0.3))
-		draw_circle(Vector2(x, y), 3.4, st.get("ball", Color("3a7be0")))
-		draw_circle(Vector2(x - 1, y - 1), 1.0, Color(1, 1, 1, 0.55))
+		tb.circle(Vector2(x, y + 1), 3.6, Color(0, 0, 0, 0.3))
+		tb.circle(Vector2(x, y), 3.4, st.get("ball", Color("3a7be0")))
+		tb.circle(Vector2(x - 1, y - 1), 1.0, Color(1, 1, 1, 0.55))
 
 
 func _tick_lanes(delta: float) -> void:
@@ -168,10 +174,11 @@ func _cheer(who: String) -> void:
 # ---- ground floor -------------------------------------------------------------------
 
 func _draw_floor() -> void:
-	# Arcade carpet under the cabinets: deep blue with confetti.
+	# Arcade carpet under the cabinets: deep blue with confetti (one TriBatch: was ~70 draw calls).
+	var tb := _tb
 	var gang := not GameState.is_penguins()
 	var r := Rect2(7 * T, 2 * T, 7 * T, 3 * T)
-	draw_rect(r, Color("1c2048") if not gang else Color("140a24"))
+	tb.rect(r, Color("1c2048") if not gang else Color("140a24"))
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 77
 	var cols := [Color("f5c842"), Color("f5486e"), Color("3fdc8c"), Color("3fa9f5"), Color("a46cf5")]
@@ -179,11 +186,12 @@ func _draw_floor() -> void:
 		var p := Vector2(rng.randf_range(r.position.x + 2, r.end.x - 2), rng.randf_range(r.position.y + 2, r.end.y - 2))
 		var c: Color = cols[i % cols.size()]
 		if i % 3 == 0:
-			draw_rect(Rect2(p, Vector2(2, 2)), c)
+			tb.rect(Rect2(p, Vector2(2, 2)), c)
 		elif i % 3 == 1:
-			draw_line(p, p + Vector2(3, -1), c, 1.0)
+			tb.seg(p, p + Vector2(3, -1), c, 1.0)
 		else:
-			draw_arc(p, 1.5, 0, PI, 4, c, 1.0)
+			tb.arc(p, 1.5, 0, PI, 4, c, 1.0)
+	tb.flush(self)
 	draw_rect(r, Color(1, 1, 1, 0.12), false, 1.0)
 
 
@@ -192,15 +200,18 @@ func _draw_wall() -> void:
 	var pulse := 0.75 + 0.25 * sin(_t * 2.3)
 	if lanes:
 		# Masking units over the pin decks: lane numbers in neon.
+		# The units never overlap: every box and neon bar in one batch, then the numbers.
 		var f := ThemeDB.fallback_font
 		for ln in _lane_defs():
 			var x0 := float(ln["x"]) * T
 			var r := Rect2(x0, 8, 2 * T, 24)
-			draw_rect(r, Color("1a1424"))
-			draw_rect(Rect2(r.position.x, r.end.y - 3, r.size.x, 3), Color(0, 0, 0, 0.4))
-			var c := [Color("f5486e"), Color("3fa9f5"), Color("f5c842"), Color("3fdc8c")][(int(ln["n"]) - 1) % 4] as Color
-			draw_string(f, Vector2(x0, 23), str(int(ln["n"])), HORIZONTAL_ALIGNMENT_CENTER, 2 * T, 12, Color(c, pulse))
-			draw_line(Vector2(x0 + 3, 27), Vector2(x0 + 2 * T - 3, 27), Color(c, 0.6 * pulse), 1.0)
+			_tb.rect(r, Color("1a1424"))
+			_tb.rect(Rect2(r.position.x, r.end.y - 3, r.size.x, 3), Color(0, 0, 0, 0.4))
+			_tb.seg(Vector2(x0 + 3, 27), Vector2(x0 + 2 * T - 3, 27), Color(_lane_col(ln), 0.6 * pulse), 1.0)
+		_tb.flush(self)
+		for ln in _lane_defs():
+			var x0 := float(ln["x"]) * T
+			draw_string(f, Vector2(x0, 23), str(int(ln["n"])), HORIZONTAL_ALIGNMENT_CENTER, 2 * T, 12, Color(_lane_col(ln), pulse))
 		var tx := Art.tex("props", "neon_sign_0")
 		if tx:
 			draw_texture_rect(tx, Rect2(7 * T + 6, 6, 20, 17), false, Color(1, 1, 1, pulse))
@@ -216,6 +227,10 @@ func _draw_wall() -> void:
 		if fmod(_t * (0.9 + i * 0.3), 7.0) < 0.12:
 			on = 0.25  # the odd flicker
 		draw_texture_rect(tx2, Rect2(float(s[0]) * T, 2, 22, 18), false, Color(1, 1, 1, on))
+
+
+func _lane_col(ln: Dictionary) -> Color:
+	return [Color("f5486e"), Color("3fa9f5"), Color("f5c842"), Color("3fdc8c")][(int(ln["n"]) - 1) % 4]
 
 
 ## The high-score board on legs (ground floor).

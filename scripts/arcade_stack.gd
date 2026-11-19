@@ -266,9 +266,11 @@ func _draw_play(c: Control) -> void:
 		var sx := fposmod(t * 6.0, sz.x - sw)
 		c.draw_texture_rect_region(cave, PLAY, Rect2(sx, 0, sw, sz.y), Color(0.85, 0.85, 0.95))
 	# Cave backdrop: faint crystals.
+	var tb := TriBatch.new()  # one draw call for the crystals
 	for i in 14:
 		var p := Vector2(fposmod(i * 71.0, 270.0), 30.0 + fposmod(i * 113.0, 310.0))
-		c.draw_colored_polygon(PackedVector2Array([p, p + Vector2(4, -10), p + Vector2(8, 0)]), Color(0.6, 0.4, 1.0, 0.08))
+		tb.fan(PackedVector2Array([p, p + Vector2(4, -10), p + Vector2(8, 0)]), PackedColorArray([Color(0.6, 0.4, 1.0, 0.08)]))
+	tb.flush(c)
 	var well := Rect2(ORIGIN, Vector2(COLS * CELL, ROWS * CELL))
 	c.draw_rect(well.grow(3), Color(0.35, 0.25, 0.5))
 	c.draw_rect(well.grow(1), Color(0.02, 0.01, 0.05))

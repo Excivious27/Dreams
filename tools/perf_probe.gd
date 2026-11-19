@@ -2,6 +2,9 @@ extends SceneTree
 ## Performance probe: load time, frame time, nodes, draw calls and memory per map.
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/perf_probe.gd -- [scene ...]
 ## (headless works too: no draw calls then). ARC=gangsters for the other arc. FRAMES=n (default 180).
+## BREAKDOWN=1 lists the nodes costing the most draw calls.
+## arcade:<id> probes a cabinet game (jumper stack whack claw gallery).
+## in_<interior> probes an interior (in_rec, in_rec_up); REC=1 opens the Rec Center on league night.
 ## Each line: scene, load ms (change_scene -> first frame), median/p95/max frame ms while
 ## the player walks a square, nodes, draw calls, static memory MB, texture MB.
 const DEFAULT := ["title", "farm", "town", "meadow", "forest", "beach", "mountain", "community_farm",
@@ -24,17 +27,32 @@ func _run() -> void:
 	GameState.new_run(arc, "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameState.run["intro_done"] = true
 	GameState.run["flags"]["partner_scene"] = true
+	if OS.get_environment("REC") != "":  # league night at an open Rec Center: visitors on both floors
+		GameState.run["flags"]["rec_open"] = 1
+		GameState.run["day"] = 10
+		GameState.run["time"] = 19 * 60 + 30
 	print("perf_probe: arc=%s frames=%d" % [arc, frames])
 	print("%-22s %8s %7s %7s %7s %6s %6s %6s %7s %7s %6s %6s" % ["scene", "load", "med", "p95", "max", "nodes", "draws", "dmax", "memMB", "texMB", "bake", "bakems"])
 	for sc in scenes:
-		GameState.run["flags"][sc + "_seen"] = true
+		if sc.begins_with("arcade:"):
+			await _arcade(sc.trim_prefix("arcade:"), frames)
+			continue
+		var file: String = sc
+		if sc.begins_with("in_"):  # in_<interior id>: an interior (in_rec, in_rec_up...)
+			GameMap.next_interior = sc.trim_prefix("in_")
+			GameState.run["flags"]["int_" + sc.trim_prefix("in_")] = true
+			file = "interior"
+		GameState.run["flags"][file + "_seen"] = true
 		GameMap.next_spawn = Vector2.ZERO
 		var t0 := Time.get_ticks_usec()
-		change_scene_to_file("res://scenes/%s.tscn" % sc)
-		await process_frame
-		await process_frame
-		var t1 := Time.get_ticks_usec()
-		for k in 20:
+		change_scene_to_file("res://scenes/%s.tscn" % file)
+		var fts: Array = []
+		for k in 4:
+			await process_frame
+			fts.append(Time.get_ticks_usec())
+		var t1: int = fts[1]
+		print("  %s load frames: %.0f / %.0f / %.0f / %.0f ms" % [sc, _ms(t0, fts[0]), _ms(fts[0], fts[1]), _ms(fts[1], fts[2]), _ms(fts[2], fts[3])])
+		for k in 18:
 			await process_frame
 		var d := Dialogue.instance(self)
 		for k in 8:
@@ -77,6 +95,22 @@ func _run() -> void:
 			await process_frame
 			bake_ms = _ms(tb, Time.get_ticks_usec())
 			bake_draws = int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)) - base
+		# A full ground redraw (the painter's _draw in GDScript + the visible chunks): what a
+		# map pays on its first frame and on every season/tilling redraw.
+		var redraw_ms := 0.0
+		if m and m.get("_painter") != null:
+			await process_frame
+			var tq := Time.get_ticks_usec()
+			await process_frame
+			var plain := _ms(tq, Time.get_ticks_usec())
+			tq = Time.get_ticks_usec()
+			m.queue_redraw()
+			await process_frame
+			await process_frame
+			redraw_ms = _ms(tq, Time.get_ticks_usec()) - 2.0 * plain
+			print("  %s full redraw %.0f ms (plain frame %.0f ms)" % [sc, redraw_ms, plain])
+		if OS.get_environment("BREAKDOWN") != "" and m:
+			await _breakdown(m)
 		var n := times.size()
 		print("%-22s %8.0f %7.1f %7.1f %7.1f %6d %6d %6d %7.0f %7.0f %6d %6.0f" % [sc, _ms(t0, t1), times[n / 2], times[int(n * 0.95)], times[n - 1],
 			int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)), dl[dl.size() / 2], draws,
@@ -84,3 +118,77 @@ func _run() -> void:
 			Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED) / 1048576.0, bake_draws, bake_ms])
 	print("perf_probe: done")
 	quit()
+
+
+## arcade:<id> (jumper, stack, whack, claw, gallery): the cabinet over the Rec Center
+## floor, started with a coin, mashed by a bot; open ms, frame ms, draws.
+func _arcade(id: String, frames: int) -> void:
+	if not (current_scene is GameMap and current_scene.get("interior_id") == "rec"):
+		GameMap.next_interior = "rec"
+		GameState.run["flags"]["int_rec"] = true
+		change_scene_to_file("res://scenes/interior.tscn")
+		for k in 20:
+			await process_frame
+	GameState.run["crystals"] = 99999
+	var t0 := Time.get_ticks_usec()
+	var g := ArcadeHub.open(current_scene, id)
+	await process_frame
+	var t1 := Time.get_ticks_usec()
+	for k in 10:
+		await process_frame
+	if id == "jumper":
+		g.call("play_tile", 0)
+	else:
+		g.start()
+	var times: Array = []
+	var dl: Array = []
+	var last := Time.get_ticks_usec()
+	var acts := ["a", "left", "right", "up", "down"]
+	for k in frames:
+		g.bot = {acts[(k / 7) % acts.size()]: k % 3 != 0}
+		await process_frame
+		var now := Time.get_ticks_usec()
+		times.append(_ms(last, now))
+		dl.append(int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)))
+		last = now
+		if not is_instance_valid(g):
+			break
+	times.sort()
+	dl.sort()
+	var n := times.size()
+	print("%-22s %8.0f %7.1f %7.1f %7.1f %6d %6d %6d" % ["arcade:" + id, _ms(t0, t1), times[n / 2], times[int(n * 0.95)], times[n - 1],
+		int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)), dl[dl.size() / 2], dl[dl.size() - 1]])
+	if is_instance_valid(g):
+		g.close()
+	for k in 5:
+		await process_frame
+
+
+func _dc() -> int:
+	await process_frame
+	await process_frame
+	return int(Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME))
+
+
+## BREAKDOWN=1: hide each visible CanvasItem under the map (two levels deep) in turn and
+## print what it costs in draw calls (largest first): where a scene's draws go.
+func _breakdown(m: Node) -> void:
+	var base := await _dc()
+	var rows: Array = []
+	var items: Array = []
+	for c in m.get_children():
+		items.append(c)
+		for g in c.get_children():
+			items.append(g)
+	for c in items:
+		if not (c is CanvasItem) or not (c as CanvasItem).visible:
+			continue
+		(c as CanvasItem).visible = false
+		var dc := await _dc()
+		(c as CanvasItem).visible = true
+		if base - dc >= 3:
+			rows.append([base - dc, "%s (%s%s)" % [c.name, c.get_class(), (" " + str(c.get("mode"))) if c.get("mode") != null else ""]])
+	rows.sort_custom(func(a, b): return a[0] > b[0])
+	print("  breakdown (%d draws):" % base)
+	for r in rows.slice(0, 12):
+		print("    %5d  %s" % [r[0], r[1]])

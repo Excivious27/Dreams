@@ -382,6 +382,7 @@ func _ready() -> void:
 	for r in [BTN_L, BTN_R, BTN_SPIN_L, BTN_SPIN_R, BTN_GO, BTN_QUIT]:
 		Hud.extra_rects.append(r)
 	get_tree().paused = true
+	_covered = ScreenCover.cover(get_parent())  # the opaque screen hides the map: don't render it
 	sim.rng.seed = int(GameState.run.get("day", 1)) * 977 + lane * 31 + int(GameState.run.get("time", 0))
 	sim.rack()
 	_canvas = Control.new()
@@ -393,7 +394,12 @@ func _ready() -> void:
 	_new_ball()
 
 
+var _covered: CanvasItem = null
+
+
 func _exit_tree() -> void:
+	ScreenCover.uncover(_covered)
+	_covered = null
 	for r in [BTN_L, BTN_R, BTN_SPIN_L, BTN_SPIN_R, BTN_GO, BTN_QUIT]:
 		Hud.extra_rects.erase(r)
 
