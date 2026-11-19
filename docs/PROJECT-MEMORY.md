@@ -40,7 +40,7 @@ Read order for a new chat: CLAUDE.md → docs/HANDOFF.md (Baton) → this file �
 | Sound effects | CC0 packs from OpenGameArt via `tools/cc0_import.py` (licences in `tools/cc0_sources.json`, credits `docs/AUDIO-CREDITS.md`), then `tools/sfx_soften.py`. `tools/sfx_audit.py` must report 0 missing. |
 | Godot | `bash tools/setup_sandbox.sh` installs Godot 4.5.1 to `/home/claude/tools`; `export PATH=$PATH:/home/claude/tools`. |
 | Tests | `bash tools/check.sh` (40+ headless tests; must be rc 0 before any push). `tools/playtest.gd` (scripted playthrough + screenshots, under xvfb). `bash tools/bots.sh 3 DIR` (20 random bots × 3 days, both arcs). Many focused tests (see CLAUDE.md). |
-| Artifact page | The progress page artifact `67cf3116-3dba-4920-801d-e0ebd5f7c947` (Team account's artifact; the personal account can't edit it — make a new one there and note its id here). Built by a page script from the guide + spreadsheet. |
+| Artifact page | The progress page artifact `67cf3116-3dba-4920-801d-e0ebd5f7c947` (Team account's artifact; the personal account can't edit it — make a new one there and note its id here). Personal account page: `020b3d87-1157-464f-ade4-cc0bd58ebe1c`, builders tools/package/build_page_c2.py and build_progress_c2.py. Built by a page script from the guide + spreadsheet. |
 
 ## 5. What has been built (rounds, newest first)
 

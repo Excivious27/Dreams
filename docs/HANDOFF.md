@@ -15,7 +15,7 @@ Tom judges progress only by these. The Team account always gave them; the other 
 2. **The progress spreadsheet** (.xlsx, Arial, header row styled): an Overview tab with **% complete for the whole game and % remaining**, plus % per area. A tab per system (from docs/inventory.csv: area, system, status, % done, % remaining, tests, notes). A tab for this round (area / found / fixed / test). A tab "Still needed from Tom". Template: tools/package/Dreams-Progress-CONDUCT-1.xlsx (built inline; tools/package/build_progress.py is the older builder).
 3. **The report**: `docs/reports/CONDUCT-N.md` (or ROUND-N.md): found/fixed table, tests, what's left.
 4. **Every art prompt file still needed** (max 2-3 images per prompt). Usually none, because the image tool makes the art; then say "no art prompts needed".
-5. **The artifact page** (one hosted page with tabs: progress, guide, prompts, report): tools/package/build_final_page.py + page_template.html. Publish with the Artifact tool. Each account owns its own page: Team page `67cf3116-3dba-4920-801d-e0ebd5f7c947`. The personal account creates one on first use and records its id here.
+5. **The artifact page** (one hosted page with tabs: progress, guide, prompts, report): tools/package/build_final_page.py + page_template.html. Publish with the Artifact tool. Each account owns its own page: Team page `67cf3116-3dba-4920-801d-e0ebd5f7c947`. The personal account creates one on first use and records its id here. Personal account page: `020b3d87-1157-464f-ade4-cc0bd58ebe1c` (https://claude.ai/artifact/1Fe3QCxpCddzt5oDP2jZAs), built by tools/package/build_page_c2.py (arg = CONDUCT number; reads the guide, report, inventory.csv, plan.md and the playtest notes) + tools/package/build_progress_c2.py (xlsx; recalc with soffice for cached values).
 6. The play link.
 
 Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current.
@@ -24,9 +24,9 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 16:30 PT, personal account.
+- **Last update:** 2026-11-19 15:45 PT, personal account.
 - **Done:** Round 13, CONDUCT 1, CONDUCT 2 (merged and pushed: 20 area agents + 8 fix packages covering Tom's 21 playtest notes; check.sh rc 0, 20 bots clean, playtest 0 failures; report docs/reports/CONDUCT-2.md, guide docs/guides/GUIDE-26.md, progress xlsx + artifact page sent in chat).
-- **In progress:** nothing between CONDUCTs; CONDUCT 3 (battle campaigns) starts next with the new process.
+- **In progress:** CONDUCT 3 (battle campaigns) starting 15:45 PT on the personal account: 20 read-only auditors in /home/claude/wt/c3_NN (personal sandbox).
 - **Next step:** CONDUCT 3 (battle campaigns): 20 read-only auditors + 20 bots -> 5-6 fix packages (include C2 leftovers that fit: see docs/reports/CONDUCT-2.md "Still open") -> merge, check.sh, bots, playtest, push -> package (artifact + files). Then wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9, then CONDUCT 10-17 (docs/CONDUCT-PLAN.md), then the final package. Tom's playtest notes: docs/TOM-PLAYTEST-2026-11-19.md.
 - **Jobs running elsewhere:** none.
 - **WIP branches:** none.
