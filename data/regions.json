@@ -9802,7 +9802,7 @@
     "type": "note",
     "cell": [
      36,
-     19
+     14
     ],
     "hint": "A: read the lantern board",
     "text": "Lantern board: 'Violet Glade, north. Crystal Thicket, east. The Moonpool is past the glade, and the Thornmother sleeps under it. Please don't wake her. (Someone has written underneath: SOMEONE HAS TO.)'",
@@ -9834,7 +9834,7 @@
     "role": "Gloamwood",
     "cell": [
      20,
-     13
+     23
     ],
     "lines": [
      "Glowmoss grows on the north side of everything. Even me, if I stand still.",
@@ -9849,8 +9849,8 @@
     "sprite": "mg_bramble",
     "role": "Gloamwood",
     "cell": [
-     20,
-     23
+     15,
+     18
     ],
     "lines": [
      "Did you see the giant flower? It sneezed on me.",
@@ -10004,7 +10004,7 @@
      32.5
     ],
     "r": 5,
-    "seed": 669,
+    "seed": 649,
     "fish": [
      "carp",
      "trout",
@@ -10023,7 +10023,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 266
+      "seed": 14
      }
     ],
     "upper": []
@@ -10069,31 +10069,23 @@
    {
     "name": "spiral_fern",
     "cell": [
-     29,
-     11
+     27,
+     36
     ],
     "solid": false
    },
    {
     "name": "gmush_purple",
     "cell": [
-     29,
-     24
+     25,
+     19
     ],
     "solid": false
    },
    {
     "name": "gmush_blue",
     "cell": [
-     9,
-     20
-    ],
-    "solid": false
-   },
-   {
-    "name": "mrock_moss",
-    "cell": [
-     18,
+     16,
      19
     ],
     "solid": false
@@ -10101,8 +10093,16 @@
    {
     "name": "mrock_moss",
     "cell": [
-     11,
+     14,
      29
+    ],
+    "solid": false
+   },
+   {
+    "name": "mrock_moss",
+    "cell": [
+     29,
+     5
     ],
     "solid": false
    }
@@ -10111,8 +10111,8 @@
    {
     "type": "loot",
     "cell": [
-     29,
-     11
+     27,
+     36
     ],
     "item": "wisp_spark",
     "n": 1,
@@ -10123,8 +10123,8 @@
    {
     "type": "loot",
     "cell": [
-     29,
-     24
+     25,
+     19
     ],
     "item": "luna_moth",
     "n": 1,
@@ -10135,8 +10135,8 @@
    {
     "type": "loot",
     "cell": [
-     9,
-     20
+     16,
+     19
     ],
     "item": "glowcap",
     "n": 2,
@@ -10147,8 +10147,8 @@
    {
     "type": "note",
     "cell": [
-     27,
-     37
+     34,
+     17
     ],
     "hint": "A: read the carved stone",
     "text": "A stone, carved with roots: 'The Glade remembers every footstep. Walk kindly.'",
@@ -10158,8 +10158,8 @@
    {
     "type": "mrock",
     "cell": [
-     18,
-     19
+     14,
+     29
     ],
     "ore": "amethyst",
     "hp": 3,
@@ -10169,8 +10169,8 @@
    {
     "type": "mrock",
     "cell": [
-     11,
-     29
+     29,
+     5
     ],
     "ore": "stone",
     "hp": 2,
@@ -10307,7 +10307,7 @@
      32.5
     ],
     "r": 3,
-    "seed": 712,
+    "seed": 889,
     "fish": [
      "carp",
      "trout",
@@ -10326,7 +10326,7 @@
       ],
       "r": 4,
       "ry": 3.0,
-      "seed": 779
+      "seed": 575
      }
     ],
     "upper": []
@@ -10381,8 +10381,8 @@
    {
     "name": "ore_amethyst",
     "cell": [
-     32,
-     23
+     30,
+     14
     ],
     "solid": false
    },
@@ -10397,24 +10397,24 @@
    {
     "name": "ore_crystal",
     "cell": [
-     37,
-     9
+     7,
+     22
     ],
     "solid": false
    },
    {
     "name": "ore_silver",
     "cell": [
-     16,
-     22
+     21,
+     14
     ],
     "solid": false
    },
    {
     "name": "ccrystal_2",
     "cell": [
-     21,
-     11
+     30,
+     23
     ],
     "solid": false
    }
@@ -10423,8 +10423,8 @@
    {
     "type": "mrock",
     "cell": [
-     32,
-     23
+     30,
+     14
     ],
     "ore": "amethyst",
     "hp": 3,
@@ -10445,8 +10445,8 @@
    {
     "type": "mrock",
     "cell": [
-     37,
-     9
+     7,
+     22
     ],
     "ore": "shard",
     "hp": 4,
@@ -10456,8 +10456,8 @@
    {
     "type": "mrock",
     "cell": [
-     16,
-     22
+     21,
+     14
     ],
     "ore": "silver",
     "hp": 3,
@@ -10467,8 +10467,8 @@
    {
     "type": "loot",
     "cell": [
-     21,
-     11
+     30,
+     23
     ],
     "item": "wisp_spark",
     "n": 2,
@@ -10479,8 +10479,8 @@
    {
     "type": "note",
     "cell": [
-     6,
-     17
+     38,
+     25
     ],
     "hint": "A: listen to the chimes",
     "text": "The crystals ring a note when you touch them. Touch them in a row and it's almost a song. Almost the song Liesl hums.",
@@ -10631,7 +10631,7 @@
      20.5
     ],
     "r": 5,
-    "seed": 731,
+    "seed": 301,
     "fish": [
      "ghost_fish",
      "ghost_fish",
@@ -10646,7 +10646,7 @@
      30.5
     ],
     "r": 3,
-    "seed": 575,
+    "seed": 419,
     "fish": [
      "ghost_fish",
      "ghost_fish",
@@ -10715,8 +10715,8 @@
    {
     "name": "stump2_1",
     "cell": [
-     19,
-     33
+     8,
+     13
     ],
     "solid": false,
     "group": "nature"
@@ -10743,8 +10743,8 @@
    {
     "type": "loot",
     "cell": [
-     19,
-     33
+     8,
+     13
     ],
     "item": "luna_moth",
     "n": 1,
@@ -10755,8 +10755,8 @@
    {
     "type": "heal",
     "cell": [
-     8,
-     17
+     19,
+     38
     ],
     "hp": 4,
     "energy": 50,
@@ -10768,7 +10768,7 @@
     "type": "note",
     "cell": [
      38,
-     29
+     32
     ],
     "hint": "A: read the old sign",
     "text": "An old garden sign, nearly swallowed by thorns: 'MOTHER'S GARDEN. PLEASE DO NOT PICK THE ROSES. SHE WILL KNOW.'",
@@ -10949,7 +10949,7 @@
      9.5
     ],
     "r": 4,
-    "seed": 178,
+    "seed": 752,
     "fish": [
      "carp",
      "trout",
@@ -11157,8 +11157,8 @@
    {
     "type": "note",
     "cell": [
-     14,
-     17
+     25,
+     9
     ],
     "hint": "A: read the caravan board",
     "text": "Caravan board: 'DUNE SEA west. GLASS CANYON north, and past it the SUNKEN TEMPLE, where the Colossus walks at noon. Water before you go. Water after you go.'",
@@ -11189,8 +11189,8 @@
     "sprite": "mg_rahim",
     "role": "Sunscorch Expanse",
     "cell": [
-     26,
-     19
+     21,
+     24
     ],
     "lines": [
      "Fifty years at this well. Never once seen it run dry.",
@@ -11205,8 +11205,8 @@
     "sprite": "mg_nadia",
     "role": "Sunscorch Expanse",
     "cell": [
-     21,
-     24
+     16,
+     19
     ],
     "lines": [
      "The Colossus isn't evil. It's a guard that nobody told the war was over.",
@@ -11336,7 +11336,7 @@
      34.5
     ],
     "r": 5,
-    "seed": 559,
+    "seed": 408,
     "fish": [
      "sun_trout",
      "carp",
@@ -11355,7 +11355,7 @@
       ],
       "r": 4,
       "ry": 3.0,
-      "seed": 638
+      "seed": 176
      }
     ],
     "upper": []
@@ -11411,8 +11411,8 @@
    {
     "name": "dune_9",
     "cell": [
-     24,
-     20
+     14,
+     10
     ],
     "solid": false,
     "group": "nature"
@@ -11420,8 +11420,8 @@
    {
     "name": "palm",
     "cell": [
-     48,
-     19
+     22,
+     20
     ],
     "solid": false,
     "group": "nature"
@@ -11429,8 +11429,8 @@
    {
     "name": "dune_6",
     "cell": [
-     9,
-     28
+     42,
+     24
     ],
     "solid": false,
     "group": "nature"
@@ -11438,16 +11438,16 @@
    {
     "name": "boulder2_m_a",
     "cell": [
-     23,
-     10
+     9,
+     26
     ],
     "solid": false
    },
    {
     "name": "boulder2_s_a",
     "cell": [
-     37,
-     24
+     32,
+     19
     ],
     "solid": false
    }
@@ -11456,8 +11456,8 @@
    {
     "type": "loot",
     "cell": [
-     24,
-     20
+     14,
+     10
     ],
     "item": "spice",
     "n": 2,
@@ -11468,8 +11468,8 @@
    {
     "type": "loot",
     "cell": [
-     48,
-     19
+     22,
+     20
     ],
     "item": "dune_date",
     "n": 3,
@@ -11480,8 +11480,8 @@
    {
     "type": "loot",
     "cell": [
-     9,
-     28
+     42,
+     24
     ],
     "item": "old_coin",
     "n": 2,
@@ -11492,8 +11492,8 @@
    {
     "type": "mrock",
     "cell": [
-     23,
-     10
+     9,
+     26
     ],
     "ore": "sunstone",
     "hp": 3,
@@ -11503,8 +11503,8 @@
    {
     "type": "mrock",
     "cell": [
-     37,
-     24
+     32,
+     19
     ],
     "ore": "stone",
     "hp": 2,
@@ -11515,7 +11515,7 @@
     "type": "note",
     "cell": [
      12,
-     15
+     36
     ],
     "hint": "A: read the bleached sign",
     "text": "A sign, sand-scoured almost blank: '...ASIS 2 DAYS. DO NOT FOLLOW THE SINGING.'",
@@ -11686,7 +11686,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 310
+      "seed": 569
      }
     ],
     "upper": []
@@ -11700,7 +11700,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 655
+      "seed": 367
      }
     ],
     "upper": []
@@ -11716,7 +11716,7 @@
        34
       ],
       "r": 5,
-      "seed": 861
+      "seed": 491
      }
     ]
    }
@@ -11753,12 +11753,20 @@
     "name": "boulder2_m_b",
     "cell": [
      26,
-     34
+     13
     ],
     "solid": false
    },
    {
     "name": "boulder2_l_a",
+    "cell": [
+     40,
+     13
+    ],
+    "solid": false
+   },
+   {
+    "name": "ore_gold",
     "cell": [
      30,
      24
@@ -11766,26 +11774,18 @@
     "solid": false
    },
    {
-    "name": "ore_gold",
-    "cell": [
-     21,
-     22
-    ],
-    "solid": false
-   },
-   {
     "name": "ore_copper",
     "cell": [
      40,
-     30
+     33
     ],
     "solid": false
    },
    {
     "name": "crystal_rock",
     "cell": [
-     40,
-     18
+     26,
+     34
     ],
     "solid": false
    }
@@ -11795,7 +11795,18 @@
     "type": "mrock",
     "cell": [
      26,
-     34
+     13
+    ],
+    "ore": "sunstone",
+    "hp": 3,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
+     40,
+     13
     ],
     "ore": "sunstone",
     "hp": 3,
@@ -11807,17 +11818,6 @@
     "cell": [
      30,
      24
-    ],
-    "ore": "sunstone",
-    "hp": 3,
-    "n": 1,
-    "hint": "A: mine it"
-   },
-   {
-    "type": "mrock",
-    "cell": [
-     21,
-     22
     ],
     "ore": "gold",
     "hp": 4,
@@ -11828,7 +11828,7 @@
     "type": "mrock",
     "cell": [
      40,
-     30
+     33
     ],
     "ore": "copper",
     "hp": 2,
@@ -11838,8 +11838,8 @@
    {
     "type": "loot",
     "cell": [
-     40,
-     18
+     26,
+     34
     ],
     "item": "glass",
     "n": 3,
@@ -11851,7 +11851,7 @@
     "type": "heal",
     "cell": [
      21,
-     9
+     22
     ],
     "hp": 3,
     "energy": 40,
@@ -11862,8 +11862,8 @@
    {
     "type": "note",
     "cell": [
-     35,
-     10
+     40,
+     23
     ],
     "hint": "A: read the carving",
     "text": "Carved over the canyon path: a sun, a giant with a spear, and rows of tiny people bowing. Someone has added a moustache to the giant.",
@@ -12131,16 +12131,16 @@
    {
     "name": "r_ruins_48",
     "cell": [
-     32,
-     9
+     19,
+     18
     ],
     "solid": false
    },
    {
     "name": "r_ruins_51",
     "cell": [
-     25,
-     27
+     32,
+     33
     ],
     "solid": false
    },
@@ -12148,7 +12148,7 @@
     "name": "r_ruins_06",
     "cell": [
      19,
-     17
+     31
     ],
     "solid": false
    }
@@ -12174,8 +12174,8 @@
    {
     "type": "loot",
     "cell": [
-     32,
-     9
+     19,
+     18
     ],
     "item": "sun_scarab",
     "n": 1,
@@ -12186,8 +12186,8 @@
    {
     "type": "loot",
     "cell": [
-     25,
-     27
+     32,
+     33
     ],
     "item": "gold",
     "n": 2,
@@ -12199,7 +12199,7 @@
     "type": "mrock",
     "cell": [
      19,
-     17
+     31
     ],
     "ore": "sunstone",
     "hp": 3,
@@ -12209,7 +12209,7 @@
    {
     "type": "note",
     "cell": [
-     32,
+     31,
      18
     ],
     "hint": "A: read the tablet",
@@ -12220,8 +12220,8 @@
    {
     "type": "note",
     "cell": [
-     37,
-     28
+     36,
+     9
     ],
     "hint": "A: read the rune stone",
     "text": "Runes glow faintly as you pass. They spell, as far as you can tell, 'WELCOME'. Then, smaller: 'MOSTLY'.",
@@ -12571,8 +12571,8 @@
    {
     "type": "note",
     "cell": [
-     25,
-     8
+     8,
+     21
     ],
     "hint": "A: read the timetable",
     "text": "Timetable, all trains CANCELLED by order of BARON COALBROOK. Underneath, in chalk: 'FREIGHT YARDS WEST. MILL NORTH. THE BARON HIDES IN THE TUNNELS PAST THE MILL. SOMEBODY DO SOMETHING.'",
@@ -12603,7 +12603,7 @@
     "sprite": "mg_dot",
     "role": "Ironline Frontier",
     "cell": [
-     16,
+     26,
      19
     ],
     "lines": [
@@ -12619,8 +12619,8 @@
     "sprite": "mg_skip",
     "role": "Ironline Frontier",
     "cell": [
-     26,
-     19
+     21,
+     24
     ],
     "lines": [
      "Paper! Baron cancels all trains! Read all about it!",
@@ -12750,7 +12750,7 @@
        12
       ],
       "r": 5,
-      "seed": 534
+      "seed": 423
      },
      {
       "c": [
@@ -12758,7 +12758,7 @@
        34
       ],
       "r": 5,
-      "seed": 854
+      "seed": 269
      }
     ]
    }
@@ -12857,40 +12857,40 @@
    {
     "name": "oil_drums",
     "cell": [
-     18,
-     19
+     41,
+     17
     ],
     "solid": false
    },
    {
     "name": "crates_pallet",
     "cell": [
-     48,
-     22
+     9,
+     25
     ],
     "solid": false
    },
    {
     "name": "cargo_yellow",
     "cell": [
-     29,
-     14
+     20,
+     24
     ],
     "solid": false
    },
    {
     "name": "boulder2_m_a",
     "cell": [
-     9,
-     21
+     16,
+     15
     ],
     "solid": false
    },
    {
     "name": "ore_iron",
     "cell": [
-     38,
-     22
+     29,
+     13
     ],
     "solid": false
    }
@@ -12899,8 +12899,8 @@
    {
     "type": "loot",
     "cell": [
-     18,
-     19
+     41,
+     17
     ],
     "item": "oil",
     "n": 2,
@@ -12911,8 +12911,8 @@
    {
     "type": "loot",
     "cell": [
-     48,
-     22
+     9,
+     25
     ],
     "item": "chain_link",
     "n": 2,
@@ -12923,8 +12923,8 @@
    {
     "type": "loot",
     "cell": [
-     29,
-     14
+     20,
+     24
     ],
     "item": "charcoal",
     "n": 3,
@@ -12935,8 +12935,8 @@
    {
     "type": "mrock",
     "cell": [
-     9,
-     21
+     16,
+     15
     ],
     "ore": "tin",
     "hp": 3,
@@ -12946,8 +12946,8 @@
    {
     "type": "mrock",
     "cell": [
-     38,
-     22
+     29,
+     13
     ],
     "ore": "iron",
     "hp": 3,
@@ -12957,8 +12957,8 @@
    {
     "type": "note",
     "cell": [
-     12,
-     10
+     29,
+     24
     ],
     "hint": "A: read the manifest",
     "text": "A shipping manifest: '400 crates TIN to BARON. 300 crates COAL to BARON. 1 crate TEDDY BEARS to BARON (personal).'",
@@ -13177,32 +13177,32 @@
    {
     "name": "fire_barrel2",
     "cell": [
-     28,
-     11
+     23,
+     8
     ],
     "solid": false
    },
    {
     "name": "crates_b",
     "cell": [
-     15,
-     19
+     14,
+     14
     ],
     "solid": false
    },
    {
     "name": "boulder2_s_b",
     "cell": [
-     28,
-     23
+     9,
+     33
     ],
     "solid": false
    },
    {
     "name": "ore_coal",
     "cell": [
-     20,
-     34
+     13,
+     24
     ],
     "solid": false
    }
@@ -13211,8 +13211,8 @@
    {
     "type": "loot",
     "cell": [
-     28,
-     11
+     23,
+     8
     ],
     "item": "charcoal",
     "n": 2,
@@ -13223,8 +13223,8 @@
    {
     "type": "loot",
     "cell": [
-     15,
-     19
+     14,
+     14
     ],
     "item": "gear",
     "n": 1,
@@ -13235,8 +13235,8 @@
    {
     "type": "mrock",
     "cell": [
-     28,
-     23
+     9,
+     33
     ],
     "ore": "tin",
     "hp": 3,
@@ -13246,8 +13246,8 @@
    {
     "type": "mrock",
     "cell": [
-     20,
-     34
+     13,
+     24
     ],
     "ore": "coal",
     "hp": 2,
@@ -13257,7 +13257,7 @@
    {
     "type": "heal",
     "cell": [
-     11,
+     20,
      34
     ],
     "hp": 3,
@@ -13269,8 +13269,8 @@
    {
     "type": "note",
     "cell": [
-     9,
-     12
+     23,
+     18
     ],
     "hint": "A: read the poster",
     "text": "A poster: 'WORK HARDER. THE BARON IS WATCHING.' Someone has drawn him a very small hat.",
@@ -13500,32 +13500,32 @@
    {
     "name": "mrock_stone_0",
     "cell": [
-     37,
-     20
+     32,
+     16
     ],
     "solid": false
    },
    {
     "name": "ore_gold_1",
     "cell": [
-     19,
-     16
+     8,
+     28
     ],
     "solid": false
    },
    {
     "name": "ore_coal_1",
     "cell": [
-     25,
-     35
+     18,
+     28
     ],
     "solid": false
    },
    {
     "name": "cave_ore_crate",
     "cell": [
-     10,
-     28
+     19,
+     18
     ],
     "solid": false
    }
@@ -13551,8 +13551,8 @@
    {
     "type": "mrock",
     "cell": [
-     37,
-     20
+     32,
+     16
     ],
     "ore": "tin",
     "hp": 3,
@@ -13562,8 +13562,8 @@
    {
     "type": "mrock",
     "cell": [
-     19,
-     16
+     8,
+     28
     ],
     "ore": "gold",
     "hp": 4,
@@ -13573,8 +13573,8 @@
    {
     "type": "mrock",
     "cell": [
-     25,
-     35
+     18,
+     28
     ],
     "ore": "coal",
     "hp": 2,
@@ -13584,8 +13584,8 @@
    {
     "type": "loot",
     "cell": [
-     10,
-     28
+     19,
+     18
     ],
     "item": "thug_cash",
     "n": 3,
@@ -13596,8 +13596,8 @@
    {
     "type": "note",
     "cell": [
-     37,
-     10
+     20,
+     36
     ],
     "hint": "A: read the Baron's ledger",
     "text": "The Baron's ledger: every station, every rail, every penny of Ironline, and in the margin, 'buy the moon??'",
@@ -13997,7 +13997,7 @@
    {
     "type": "note",
     "cell": [
-     31,
+     32,
      16
     ],
     "hint": "A: read the guide's board",
@@ -14206,7 +14206,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 624
+      "seed": 900
      }
     ],
     "upper": []
@@ -14220,7 +14220,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 432
+      "seed": 634
      }
     ],
     "upper": []
@@ -14236,7 +14236,7 @@
        12
       ],
       "r": 5,
-      "seed": 551
+      "seed": 556
      },
      {
       "c": [
@@ -14244,7 +14244,7 @@
        32
       ],
       "r": 4,
-      "seed": 615
+      "seed": 18
      }
     ]
    }
@@ -14281,40 +14281,40 @@
    {
     "name": "mrock_ice_0",
     "cell": [
-     34,
-     17
+     28,
+     37
     ],
     "solid": false
    },
    {
     "name": "mrock_ice_1",
     "cell": [
-     14,
-     24
+     34,
+     5
     ],
     "solid": false
    },
    {
     "name": "ore_silver_1",
     "cell": [
-     17,
-     34
+     14,
+     13
     ],
     "solid": false
    },
    {
     "name": "icicles_1",
     "cell": [
-     9,
-     15
+     23,
+     24
     ],
     "solid": false
    },
    {
     "name": "rock_snow_m",
     "cell": [
-     28,
-     31
+     10,
+     34
     ],
     "solid": false,
     "group": "nature"
@@ -14324,8 +14324,19 @@
    {
     "type": "mrock",
     "cell": [
+     28,
+     37
+    ],
+    "ore": "frost",
+    "hp": 4,
+    "n": 1,
+    "hint": "A: mine it"
+   },
+   {
+    "type": "mrock",
+    "cell": [
      34,
-     17
+     5
     ],
     "ore": "frost",
     "hp": 4,
@@ -14336,18 +14347,7 @@
     "type": "mrock",
     "cell": [
      14,
-     24
-    ],
-    "ore": "frost",
-    "hp": 4,
-    "n": 1,
-    "hint": "A: mine it"
-   },
-   {
-    "type": "mrock",
-    "cell": [
-     17,
-     34
+     13
     ],
     "ore": "silver",
     "hp": 3,
@@ -14357,8 +14357,8 @@
    {
     "type": "loot",
     "cell": [
-     9,
-     15
+     23,
+     24
     ],
     "item": "glass_frosted",
     "n": 1,
@@ -14369,8 +14369,8 @@
    {
     "type": "loot",
     "cell": [
-     28,
-     31
+     10,
+     34
     ],
     "item": "edelweiss",
     "n": 2,
@@ -14381,8 +14381,8 @@
    {
     "type": "note",
     "cell": [
-     29,
-     7
+     34,
+     20
     ],
     "hint": "A: read the cairn",
     "text": "A cairn with a plaque: 'FOR THE CLIMBERS WHO TURNED BACK. YOU WERE RIGHT.'",
@@ -14527,7 +14527,7 @@
        12
       ],
       "r": 4,
-      "seed": 460
+      "seed": 886
      },
      {
       "c": [
@@ -14535,7 +14535,7 @@
        32
       ],
       "r": 4,
-      "seed": 808
+      "seed": 732
      }
     ]
    }
@@ -14598,39 +14598,39 @@
    {
     "name": "mrock_ice_0",
     "cell": [
-     31,
-     17
+     13,
+     33
     ],
     "solid": false
    },
    {
     "name": "mrock_ice_1",
     "cell": [
-     10,
-     33
+     40,
+     22
     ],
     "solid": false
    },
    {
     "name": "ore_crystal_1",
     "cell": [
-     8,
-     9
+     17,
+     18
     ],
     "solid": false
    },
    {
     "name": "ore_silver",
     "cell": [
-     40,
-     17
+     8,
+     19
     ],
     "solid": false
    },
    {
     "name": "icicles_2",
     "cell": [
-     18,
+     9,
      9
     ],
     "solid": false
@@ -14640,8 +14640,8 @@
    {
     "type": "mrock",
     "cell": [
-     31,
-     17
+     13,
+     33
     ],
     "ore": "frost",
     "hp": 4,
@@ -14651,8 +14651,8 @@
    {
     "type": "mrock",
     "cell": [
-     10,
-     33
+     40,
+     22
     ],
     "ore": "frost",
     "hp": 4,
@@ -14662,8 +14662,8 @@
    {
     "type": "mrock",
     "cell": [
-     8,
-     9
+     17,
+     18
     ],
     "ore": "sapphire",
     "hp": 4,
@@ -14673,8 +14673,8 @@
    {
     "type": "mrock",
     "cell": [
-     40,
-     17
+     8,
+     19
     ],
     "ore": "silver",
     "hp": 3,
@@ -14684,7 +14684,7 @@
    {
     "type": "loot",
     "cell": [
-     18,
+     9,
      9
     ],
     "item": "glass_frosted",
@@ -14696,8 +14696,8 @@
    {
     "type": "note",
     "cell": [
-     17,
-     18
+     28,
+     22
     ],
     "hint": "A: read the frozen journal",
     "text": "A journal frozen into the ice, readable through it: 'The caverns hum the same note as the Summit. I think the Wyrm is snoring.'",
@@ -14838,7 +14838,7 @@
      30.5
     ],
     "r": 5,
-    "seed": 203,
+    "seed": 407,
     "fish": [
      "ice_pike",
      "ice_pike",
@@ -14853,7 +14853,7 @@
      10.5
     ],
     "r": 3,
-    "seed": 126,
+    "seed": 657,
     "fish": [
      "ice_pike",
      "ice_pike",
@@ -14895,8 +14895,8 @@
    {
     "name": "icicles_1",
     "cell": [
-     19,
-     16
+     30,
+     18
     ],
     "solid": false
    },
@@ -14904,7 +14904,7 @@
     "name": "mrock_ice_1",
     "cell": [
      38,
-     28
+     33
     ],
     "solid": false
    }
@@ -14913,8 +14913,8 @@
    {
     "type": "loot",
     "cell": [
-     19,
-     16
+     30,
+     18
     ],
     "item": "ice_pike",
     "n": 1,
@@ -14925,8 +14925,8 @@
    {
     "type": "heal",
     "cell": [
-     38,
-     18
+     27,
+     9
     ],
     "hp": 4,
     "energy": 50,
@@ -14938,7 +14938,7 @@
     "type": "mrock",
     "cell": [
      38,
-     28
+     33
     ],
     "ore": "frost",
     "hp": 4,
@@ -14948,8 +14948,8 @@
    {
     "type": "note",
     "cell": [
-     5,
-     21
+     13,
+     16
     ],
     "hint": "A: read the fishing log",
     "text": "Fishing log, Tove (age 8): 'Monday: Pike. Tuesday: Pike. Wednesday: a different Pike.'",
@@ -15105,7 +15105,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 589
+      "seed": 363
      }
     ],
     "upper": []
@@ -15152,7 +15152,7 @@
     "name": "mrock_ice_0",
     "cell": [
      7,
-     25
+     9
     ],
     "solid": false
    },
@@ -15160,7 +15160,7 @@
     "name": "icicles_2",
     "cell": [
      24,
-     23
+     15
     ],
     "solid": false
    }
@@ -15187,7 +15187,7 @@
     "type": "mrock",
     "cell": [
      7,
-     25
+     9
     ],
     "ore": "frost",
     "hp": 4,
@@ -15198,7 +15198,7 @@
     "type": "loot",
     "cell": [
      24,
-     23
+     15
     ],
     "item": "glass_frosted",
     "n": 2,
@@ -15209,8 +15209,8 @@
    {
     "type": "note",
     "cell": [
-     19,
-     34
+     12,
+     22
     ],
     "hint": "A: read the summit flag",
     "text": "A ragged flag on a pole. Under it, a tin with notes from everyone who made it. The newest says: 'SHHH. IT'S SLEEPING.'",
@@ -15541,8 +15541,8 @@
    {
     "type": "note",
     "cell": [
-     20,
-     9
+     9,
+     16
     ],
     "hint": "A: read the wind vane",
     "text": "Wind vane board: 'SUNRISE SHELF west, gentle. STORM SHELF north, not gentle. STARFALL GARDEN past the storm, where the Roc nests. Hold on to your hat. Hold on to your penguin.'",
@@ -15716,7 +15716,7 @@
      32.5
     ],
     "r": 5,
-    "seed": 324,
+    "seed": 560,
     "fish": [
      "sky_fish",
      "sky_fish",
@@ -15735,7 +15735,7 @@
       ],
       "r": 5,
       "ry": 3.75,
-      "seed": 483
+      "seed": 231
      }
     ],
     "upper": []
@@ -15774,32 +15774,32 @@
    {
     "name": "skydeco_5",
     "cell": [
-     41,
-     22
+     20,
+     15
     ],
     "solid": false
    },
    {
     "name": "skydeco_2",
     "cell": [
-     11,
-     15
+     9,
+     19
     ],
     "solid": false
    },
    {
     "name": "moon_crystal_blue_s",
     "cell": [
-     19,
-     24
+     29,
+     17
     ],
     "solid": false
    },
    {
     "name": "ore_silver",
     "cell": [
-     9,
-     30
+     40,
+     22
     ],
     "solid": false
    }
@@ -15808,8 +15808,8 @@
    {
     "type": "loot",
     "cell": [
-     41,
-     22
+     20,
+     15
     ],
     "item": "storm_fluff",
     "n": 1,
@@ -15820,8 +15820,8 @@
    {
     "type": "loot",
     "cell": [
-     11,
-     15
+     9,
+     19
     ],
     "item": "star_dust",
     "n": 1,
@@ -15832,8 +15832,8 @@
    {
     "type": "mrock",
     "cell": [
-     19,
-     24
+     29,
+     17
     ],
     "ore": "storm_glass",
     "hp": 4,
@@ -15843,8 +15843,8 @@
    {
     "type": "mrock",
     "cell": [
-     9,
-     30
+     40,
+     22
     ],
     "ore": "silver",
     "hp": 3,
@@ -15854,8 +15854,8 @@
    {
     "type": "note",
     "cell": [
-     27,
-     12
+     9,
+     10
     ],
     "hint": "A: read the sky-stone",
     "text": "A stone that floats, carved: 'FIRST LIGHT FALLS HERE FIRST.' The carving glows faintly pink.",
@@ -16022,7 +16022,7 @@
       ],
       "r": 6,
       "ry": 4.5,
-      "seed": 362
+      "seed": 447
      }
     ],
     "upper": []
@@ -16036,7 +16036,7 @@
       ],
       "r": 4,
       "ry": 3.0,
-      "seed": 394
+      "seed": 649
      }
     ],
     "upper": []
@@ -16091,32 +16091,32 @@
    {
     "name": "moon_crystal_blue_s",
     "cell": [
-     21,
-     26
+     15,
+     23
     ],
     "solid": false
    },
    {
     "name": "moon_crystal_pink_s",
     "cell": [
-     8,
-     17
+     26,
+     8
     ],
     "solid": false
    },
    {
     "name": "ore_gold",
     "cell": [
-     21,
-     5
+     13,
+     10
     ],
     "solid": false
    },
    {
     "name": "skydeco_5",
     "cell": [
-     26,
-     14
+     17,
+     33
     ],
     "solid": false
    }
@@ -16125,8 +16125,8 @@
    {
     "type": "mrock",
     "cell": [
-     21,
-     26
+     15,
+     23
     ],
     "ore": "storm_glass",
     "hp": 4,
@@ -16136,8 +16136,8 @@
    {
     "type": "mrock",
     "cell": [
-     8,
-     17
+     26,
+     8
     ],
     "ore": "storm_glass",
     "hp": 4,
@@ -16147,8 +16147,8 @@
    {
     "type": "mrock",
     "cell": [
-     21,
-     5
+     13,
+     10
     ],
     "ore": "gold",
     "hp": 4,
@@ -16158,8 +16158,8 @@
    {
     "type": "loot",
     "cell": [
-     26,
-     14
+     17,
+     33
     ],
     "item": "storm_fluff",
     "n": 2,
@@ -16170,8 +16170,8 @@
    {
     "type": "note",
     "cell": [
-     11,
-     28
+     26,
+     26
     ],
     "hint": "A: read the warning sign",
     "text": "A sign, scorched: 'DO NOT STAND HERE DURING STORMS. (IT IS ALWAYS STORMING.)'",
@@ -16321,7 +16321,7 @@
      28.5
     ],
     "r": 3,
-    "seed": 167,
+    "seed": 121,
     "fish": [
      "sky_fish",
      "mooncarp"
@@ -16369,16 +16369,16 @@
    {
     "name": "skydeco_2",
     "cell": [
-     24,
-     18
+     20,
+     23
     ],
     "solid": false
    },
    {
     "name": "ri_nest",
     "cell": [
-     25,
-     27
+     37,
+     13
     ],
     "solid": false
    }
@@ -16404,8 +16404,8 @@
    {
     "type": "loot",
     "cell": [
-     24,
-     18
+     20,
+     23
     ],
     "item": "star_dust",
     "n": 2,
@@ -16416,8 +16416,8 @@
    {
     "type": "loot",
     "cell": [
-     25,
-     27
+     37,
+     13
     ],
     "item": "storm_eye",
     "n": 1,
@@ -16428,7 +16428,7 @@
    {
     "type": "heal",
     "cell": [
-     8,
+     15,
      33
     ],
     "hp": 5,
@@ -16440,8 +16440,8 @@
    {
     "type": "note",
     "cell": [
-     37,
-     14
+     25,
+     34
     ],
     "hint": "A: read the star chart",
     "text": "A star chart, with one star circled again and again: the one that fell on the valley. Next to it: 'IT'S COMING HOME.'",
@@ -16771,8 +16771,8 @@
    {
     "type": "note",
     "cell": [
-     33,
-     16
+     6,
+     21
     ],
     "hint": "A: read the brass plaque",
     "text": "Brass plaque: 'GILT CITY. CASINO ROW east, and beneath it THE VAULTS. GILDED GARDENS west. By order of MADAME AURUM, everything here is hers. Including this plaque.'",
@@ -16803,8 +16803,8 @@
     "sprite": "mg_odette",
     "role": "Gilt City",
     "cell": [
-     21,
-     24
+     16,
+     19
     ],
     "lines": [
      "I paint the statues. Madame keeps asking me to make them look more like her.",
@@ -16819,8 +16819,8 @@
     "sprite": "mg_cass",
     "role": "Gilt City",
     "cell": [
-     16,
-     19
+     21,
+     24
     ],
     "lines": [
      "Fastest legs in Gilt. Madame's guards can't catch me.",
@@ -17055,8 +17055,8 @@
    {
     "name": "card_table",
     "cell": [
-     32,
-     14
+     15,
+     16
     ],
     "solid": false
    },
@@ -17071,8 +17071,8 @@
    {
     "name": "ore_gold",
     "cell": [
-     40,
-     32
+     32,
+     14
     ],
     "solid": false
    }
@@ -17081,8 +17081,8 @@
    {
     "type": "loot",
     "cell": [
-     32,
-     14
+     15,
+     16
     ],
     "item": "gambler_chip",
     "n": 3,
@@ -17105,8 +17105,8 @@
    {
     "type": "mrock",
     "cell": [
-     40,
-     32
+     32,
+     14
     ],
     "ore": "gold",
     "hp": 4,
@@ -17116,8 +17116,8 @@
    {
     "type": "note",
     "cell": [
-     22,
-     14
+     33,
+     23
     ],
     "hint": "A: read the house rules",
     "text": "House rules: 1. The house always wins. 2. See rule 1. 3. No running. (Someone has crossed out 3 and written CASS WAS HERE.)",
@@ -17255,7 +17255,7 @@
      32.5
     ],
     "r": 5,
-    "seed": 674,
+    "seed": 48,
     "fish": [
      "carp",
      "ember_koi",
@@ -17269,7 +17269,7 @@
      11.5
     ],
     "r": 3,
-    "seed": 298,
+    "seed": 210,
     "fish": [
      "carp",
      "ember_koi",
@@ -17354,7 +17354,7 @@
    {
     "name": "hedge2_ball",
     "cell": [
-     9,
+     10,
      15
     ],
     "solid": false
@@ -17362,8 +17362,8 @@
    {
     "name": "flowerbed_red",
     "cell": [
-     27,
-     13
+     41,
+     17
     ],
     "solid": false
    }
@@ -17372,7 +17372,7 @@
    {
     "type": "loot",
     "cell": [
-     9,
+     10,
      15
     ],
     "item": "pearl_necklace",
@@ -17384,8 +17384,8 @@
    {
     "type": "loot",
     "cell": [
-     27,
-     13
+     41,
+     17
     ],
     "item": "dark_rose",
     "n": 2,
@@ -17396,8 +17396,8 @@
    {
     "type": "heal",
     "cell": [
-     9,
-     28
+     21,
+     15
     ],
     "hp": 4,
     "energy": 60,
@@ -17408,8 +17408,8 @@
    {
     "type": "note",
     "cell": [
-     39,
-     17
+     9,
+     24
     ],
     "hint": "A: read the gardener's note",
     "text": "Gardener's note: 'Madame wants the roses gold. Roses do not come in gold. I have explained this nine times.'",
@@ -17629,32 +17629,32 @@
    {
     "name": "chest_open",
     "cell": [
-     25,
-     29
+     20,
+     35
     ],
     "solid": false
    },
    {
     "name": "chest_closed",
     "cell": [
-     37,
-     10
+     9,
+     33
     ],
     "solid": false
    },
    {
     "name": "ore_silver_2",
     "cell": [
-     8,
-     33
+     37,
+     12
     ],
     "solid": false
    },
    {
     "name": "ore_silver_1",
     "cell": [
-     26,
-     18
+     25,
+     24
     ],
     "solid": false
    }
@@ -17680,8 +17680,8 @@
    {
     "type": "loot",
     "cell": [
-     25,
-     29
+     20,
+     35
     ],
     "item": "gold_bundle",
     "n": 1,
@@ -17692,8 +17692,8 @@
    {
     "type": "loot",
     "cell": [
-     37,
-     10
+     9,
+     33
     ],
     "item": "pearl_necklace",
     "n": 1,
@@ -17704,8 +17704,8 @@
    {
     "type": "mrock",
     "cell": [
-     8,
-     33
+     37,
+     12
     ],
     "ore": "platinum",
     "hp": 5,
@@ -17715,8 +17715,8 @@
    {
     "type": "mrock",
     "cell": [
-     26,
-     18
+     25,
+     24
     ],
     "ore": "platinum",
     "hp": 5,
@@ -17726,7 +17726,7 @@
    {
     "type": "note",
     "cell": [
-     37,
+     35,
      23
     ],
     "hint": "A: read the vault ledger",
@@ -17864,7 +17864,7 @@
      30.5
     ],
     "r": 3,
-    "seed": 836,
+    "seed": 349,
     "fish": [
      "mooncarp",
      "ghost_fish",
@@ -17878,7 +17878,7 @@
      12.5
     ],
     "r": 3,
-    "seed": 116,
+    "seed": 131,
     "fish": [
      "mooncarp",
      "ghost_fish",
@@ -17897,7 +17897,7 @@
        12
       ],
       "r": 4,
-      "seed": 294
+      "seed": 838
      }
     ]
    }
@@ -17969,48 +17969,48 @@
    {
     "name": "mine_crystal_ore_a_0",
     "cell": [
-     22,
-     32
+     15,
+     24
     ],
     "solid": false
    },
    {
     "name": "mine_crystal_ore_b_0",
     "cell": [
-     38,
-     10
+     40,
+     31
     ],
     "solid": false
    },
    {
     "name": "mine_crystal_ore_a_1",
     "cell": [
-     12,
-     24
+     25,
+     34
     ],
     "solid": false
    },
    {
     "name": "ore_gold_2",
     "cell": [
-     34,
-     24
+     40,
+     14
     ],
     "solid": false
    },
    {
     "name": "ccrystal_3",
     "cell": [
-     32,
-     34
+     25,
+     19
     ],
     "solid": false
    },
    {
     "name": "cave_mush_blue",
     "cell": [
-     22,
-     19
+     5,
+     24
     ],
     "solid": false
    }
@@ -18019,8 +18019,8 @@
    {
     "type": "mrock",
     "cell": [
-     22,
-     32
+     15,
+     24
     ],
     "ore": "sapphire",
     "hp": 4,
@@ -18030,8 +18030,8 @@
    {
     "type": "mrock",
     "cell": [
-     38,
-     10
+     40,
+     31
     ],
     "ore": "amethyst",
     "hp": 4,
@@ -18041,8 +18041,8 @@
    {
     "type": "mrock",
     "cell": [
-     12,
-     24
+     25,
+     34
     ],
     "ore": "shard",
     "hp": 3,
@@ -18052,8 +18052,8 @@
    {
     "type": "mrock",
     "cell": [
-     34,
-     24
+     40,
+     14
     ],
     "ore": "gold",
     "hp": 4,
@@ -18063,8 +18063,8 @@
    {
     "type": "loot",
     "cell": [
-     32,
-     34
+     25,
+     19
     ],
     "item": "crystal_refined",
     "n": 1,
@@ -18075,8 +18075,8 @@
    {
     "type": "loot",
     "cell": [
-     22,
-     19
+     5,
+     24
     ],
     "item": "cave_bloom",
     "n": 2,
@@ -18087,8 +18087,8 @@
    {
     "type": "heal",
     "cell": [
-     40,
-     32
+     35,
+     24
     ],
     "hp": 5,
     "energy": 60,
@@ -18099,8 +18099,8 @@
    {
     "type": "note",
     "cell": [
-     5,
-     19
+     22,
+     27
     ],
     "hint": "A: read the miners' slate",
     "text": "A miners' slate, chalk still sharp: 'Camp 9. Water here glows. Drank it. Feel fine. Feel BETTER than fine. Do not tell the foreman.'",
@@ -18110,8 +18110,8 @@
    {
     "type": "note",
     "cell": [
-     40,
-     17
+     32,
+     34
     ],
     "hint": "A: read the old map",
     "text": "An old map pinned to a crate: the Heart in the middle, and around it a ring of caverns marked 'DEEPS', 'DEEPER', and one just marked 'NO'.",
@@ -18252,7 +18252,7 @@
      23.5
     ],
     "r": 5,
-    "seed": 477,
+    "seed": 364,
     "fish": [
      "sky_fish",
      "mooncarp"
@@ -18302,16 +18302,16 @@
    {
     "name": "skydeco_2",
     "cell": [
-     20,
-     18
+     21,
+     16
     ],
     "solid": false
    },
    {
     "name": "skydeco_5",
     "cell": [
-     38,
-     10
+     21,
+     25
     ],
     "solid": false
    },
@@ -18319,15 +18319,15 @@
     "name": "moon_crystal_blue_s",
     "cell": [
      8,
-     20
+     19
     ],
     "solid": false
    },
    {
     "name": "moon_crystal_pink_s",
     "cell": [
-     26,
-     36
+     30,
+     14
     ],
     "solid": false
    }
@@ -18336,8 +18336,8 @@
    {
     "type": "loot",
     "cell": [
-     20,
-     18
+     21,
+     16
     ],
     "item": "star_dust",
     "n": 2,
@@ -18348,8 +18348,8 @@
    {
     "type": "loot",
     "cell": [
-     38,
-     10
+     21,
+     25
     ],
     "item": "storm_fluff",
     "n": 1,
@@ -18361,7 +18361,7 @@
     "type": "mrock",
     "cell": [
      8,
-     20
+     19
     ],
     "ore": "silver",
     "hp": 3,
@@ -18371,8 +18371,8 @@
    {
     "type": "mrock",
     "cell": [
-     26,
-     36
+     30,
+     14
     ],
     "ore": "star_dust",
     "hp": 4,
@@ -18382,8 +18382,8 @@
    {
     "type": "heal",
     "cell": [
-     13,
-     9
+     21,
+     36
     ],
     "hp": 4,
     "energy": 50,
@@ -18394,8 +18394,8 @@
    {
     "type": "note",
     "cell": [
-     29,
-     14
+     10,
+     9
     ],
     "hint": "A: read the knight's carving",
     "text": "Carved into a floating stone: 'THE WHALE IS NOT LOST. IT IS WAITING FOR SOMEONE WHO WILL LISTEN.'",

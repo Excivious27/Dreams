@@ -17,10 +17,13 @@ landmarks beside them, water and hills in the open, things on path-side cells) s
 every door, shop, boss and pickup sits next to a road. tools/mega_regions_test.gd
 walks every area to prove it.   Run: python3 tools/gen_mega_new.py
 """
-import json, os, sys, math, random
+import json, os, sys, math, random, zlib
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(D, "tools"))
 from mega_regions_new import REGIONS, BY_ID, EXTRA, EXTERNAL
+
+def shash(t):  # stable across runs (Python's hash() is salted per process)
+    return zlib.crc32(t.encode())
 
 def J(p): return json.load(open(f"{D}/data/{p}"))
 def W(p, v):
@@ -743,7 +746,7 @@ def build_area(aid, mega, spec, links_geom):
         R["layers"] = [{"tile": spec["plaza"], "rect": [cx - 5, cy - 4, 12, 10]}]
         G.mark(cells_of([[cx - 5, cy - 4, 12, 10]]), "P", 1)
     props, things, npcs = [], [], []
-    rng = random.Random(hash(aid) % 100000)
+    rng = random.Random(shash(aid) % 100000)
 
     def edge_ok(x, y, m=5):
         return m <= x < cols - m and m <= y < rows - m
@@ -842,7 +845,7 @@ def build_area(aid, mega, spec, links_geom):
         if at is None:
             at = blob_spot(near, 3, "W"); r = 3
         if at:
-            wb.append({"c": [at[0] + 0.5, at[1] + 0.5], "r": r, "seed": hash(aid + str(i)) % 900 + 11, "fish": fish, "shore": spec.get("shore", "sand" if spec["look"] == "desert" else "grass")})
+            wb.append({"c": [at[0] + 0.5, at[1] + 0.5], "r": r, "seed": shash(aid + str(i)) % 900 + 11, "fish": fish, "shore": spec.get("shore", "sand" if spec["look"] == "desert" else "grass")})
         else:
             print("  (no room for water near %s in %s)" % (near, aid))
     if wb:
@@ -858,14 +861,14 @@ def build_area(aid, mega, spec, links_geom):
             if at is None:
                 at = blob_spot(near, rr, "H"); r = rr
         if at:
-            pl.append({"blobs": [{"c": [at[0], at[1]], "r": r, "ry": r * 0.75, "seed": hash(aid + "h" + str(i)) % 900 + 7}], "upper": []})
+            pl.append({"blobs": [{"c": [at[0], at[1]], "r": r, "ry": r * 0.75, "seed": shash(aid + "h" + str(i)) % 900 + 7}], "upper": []})
         else:
             print("  (no room for a hill near %s in %s)" % (near, aid))
     if pl:
         R["plateaus"] = pl
     if spec.get("feature"):
         setn, blobs = spec["feature"]
-        R["feature_blobs"] = [{"set": setn, "blobs": [{"c": [x, y], "r": r, "seed": hash(aid + setn + str(i)) % 900 + 3} for i, (x, y, r) in enumerate(blobs)]}]
+        R["feature_blobs"] = [{"set": setn, "blobs": [{"c": [x, y], "r": r, "seed": shash(aid + setn + str(i)) % 900 + 3} for i, (x, y, r) in enumerate(blobs)]}]
     # things beside the roads
     cand = [(x, y) for y in range(rows) for x in range(cols) if dist[(x, y)] == 2 and edge_ok(x, y) and G.free((x, y))]
     placed = [tuple(t["cell"]) for t in things]
