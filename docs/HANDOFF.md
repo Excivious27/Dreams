@@ -31,12 +31,13 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 - **Jobs running elsewhere:** none.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
-- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression) and CONDUCT 17 (multiplayer), then the fully updated artifact.
+- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer) and CONDUCT 18 (cutscenes), then the fully updated artifact.
 
 ## Decisions (newest first)
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19 15:54: Tom added CONDUCT 18: cutscenes across the whole game (art panels + staged NPC scenes, great writing), incl. an intro before the player starts showing Crystopia's backstory (the Dark Crystal, the corruption) for the penguin arc; quirky/funny side-quest scenes; big openings (arcade/Rec Center etc.). Order: C2-C9 (5 h waits), C10-C18, then the final package and artifact.
 - 2026-11-19 15:52: Tom: Steam Deck compatible when published (aim for Verified); planned in CONDUCT 9 with controller support and the Steam build.
 - 2026-11-19 15:50: Tom: full game controller support (Xbox layout) on computer and on phone (Bluetooth pad), single player and multiplayer; built in CONDUCT 9, checked per player in CONDUCT 17 (docs/CONDUCT-PLAN.md).
 - 2026-11-19 15:16: Tom: the report, guide, progress sheet etc. must always be shared as an artifact in the chat (the published artifact page with every part), in addition to the files.

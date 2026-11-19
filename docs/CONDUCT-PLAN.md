@@ -136,3 +136,12 @@ Fully working game controller support (Xbox-layout mapping; also PlayStation, Sw
 - Tests: a headless controller test that drives every screen with simulated joypad events.
 
 - Steam Deck (Tom 15:52): when the game is ready to publish, it must be Steam Deck compatible (aim for "Verified"): Linux build (or Proton-clean Windows build), 1280x800 landscape layout (DisplayMode wide view), all text readable at that size (min ~9 px font at 800 tall), full controller play with Steam Deck button prompts and no keyboard/mouse needed (on-screen keyboard for text entry via Steam), default controller config, suspend/resume safe, good performance at 30-60 fps on the Deck. Built in CONDUCT 9 with the controller work; checked again with the Steam build.
+
+
+## CONDUCT 18 — Cutscenes (Tom, 2026-11-19 15:54)
+
+After CONDUCT 17, then the final package and artifact. Sole purpose: cutscenes throughout the whole game, built from art imagery (image-tool story panels and staged in-engine scenes with NPCs moving and talking), with extremely well-crafted creative text.
+- **Intro cutscene before the player even starts (penguin arc):** the backstory of Crystopia (spelled C-R-Y-S-T-O-P-I-A): the Dark Crystal, the corruption, what happened to Crystopia, leading into the Star Crystal landing on your farm; matching the game's genre and tone and Tom's book *The Two Too Powerful Penguins*. The gangster arc gets its own matching intro (why you are hiding out under a fake name, M., the President).
+- **Placed strategically:** chapter openings and endings, key quests, boss arrivals and defeats, big achievements and openings (the Rec Center/arcade opening, the community farm's market opening, first campaign win, new mega region, house upgrades, festivals), heart events; plus quirky and funny ones tied to side quests and villagers.
+- Skippable (Dialogue.begin_skippable), replayable from a gallery once seen, consistent with progress and saves (play once, flags), music and sound cues per scene, phone and desktop layouts, both arcs.
+- Auditors map every place a cutscene belongs and write the scripts; fix agents make the art (image tool), build the scenes and add tests.
