@@ -87,6 +87,7 @@ cout="$("$GODOT" --headless --path . -s res://tools/rec_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|rec_test" || true
 if ! echo "$cout" | grep -q "rec_test: 0 failures"; then
   echo "rec_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/cash_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|cash_test" || true
 if ! echo "$cout" | grep -q "cash_test: scanned [0-9]* strings, 0 failures"; then
@@ -228,6 +229,7 @@ mnout="$("$GODOT" --headless --path . -s res://tools/mega_regions_test.gd 2>&1)"
 echo "$mnout" | grep -E "FAIL|SCRIPT ERROR|mega_regions_test" || true
 if ! echo "$mnout" | grep -q "mega_regions_test: 0 failures"; then
   echo "Mega regions (new) test failed"; exit 1
+fi
 echo "== arcade: cabinets play, pay tickets; every jumper level can be finished =="
 jout="$("$GODOT" --headless --path . -s res://tools/jumper_solve.gd 2>&1)"
 echo "$jout" | grep -E "FAIL|jumper_solve" || true

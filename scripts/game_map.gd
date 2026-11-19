@@ -4145,6 +4145,10 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		if not pool.has(f):
 			pool.append(f)
 	pool.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) < GameState.item_value(b))
+	if GameState.held_tool() != "rod":
+		# Only the rod in hand fishes (an axe or a hoe at the water does nothing).
+		hud.toast("Hold your fishing rod to fish." if GameState.has_tool("rod") else "You need a fishing rod.")
+		return
 	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return
