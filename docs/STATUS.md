@@ -13,6 +13,13 @@
 - **Tutorial texts:** the gangster intro and the Star Crystal now say to hold the hoe and the can, and that a crop only grows on nights it was watered. Maple's letter no longer clashes with her first-timer's bundle; M.'s first letter now carries 3 potato seeds, so both arcs start with a second crop.
 - Sell toast reads "Put Turnip x3 in the sell box".
 - **Test:** `tools/farm_week_test.gd` (in check.sh) plays the first week in both arcs through the farm's own USE path: till, plant, water, thirsty text, rain day 1 (gangsters), morning dry/ripe counts, harvest with the hoe, first-harvest quest, sell box, overnight pay.
+## 2026-11-19 — CONDUCT 1 (06): early-game gating
+- Audited day 1-14 in both arcs (scripted sleeps, tools/early_gating_test.gd): Rec Center/Hall + arcade open day 7 after the town intro, community farm letter day 4, campaigns locked until chapter 2 + drill (invite beats already in place), mega keepers locked with a line + "Opens at story chapter N", no map tabs. Day 1 Plans: 13/34 (penguins), 15/36 (gangsters) tiers open, all material-gated.
+- **Rec lead-in:** from day 3 until the opening, villagers talk about the works at the old hotel (rec.json chat_soon / chat_soon_gang from tools/gen_rec.py); the door banner still counts down.
+- **Hazel's commons letter** was signed "hazel" (raw id); now her name.
+- **Plans board:** story-gated tiers said a bare "story first"; they now name the step (e.g. "story chapter 4 first (the Merkitties)", "after the east meadow story").
+- Test: tools/early_gating_test.gd (in check.sh).
+
 ## 2026-11-19 — Round 13: audio fixes (music on the web, softer effects, grass steps)
 - **Why most areas had no music on the web:** the game fetched streamed songs with a relative address ("music/neon.ogg"), and Godot's HTTPRequest refuses those ("Invalid URL scheme"). So 57 of 61 songs, including both arc themes, never loaded; only title, farm, house and music box played. `Music` now builds the full address from the page (`new URL('music/', document.baseURI)`).
 - **Music never goes silent:** while a song downloads, the song already playing carries on, or a packed stand-in starts (farm outdoors, house indoors), and the real song crossfades in when it arrives. Failed downloads retry (2, 5, 12, 30, 60 s). Broken cached copies are thrown away and fetched again. Songs you hear often (night, rain, town, meadow and the arc's own areas) are fetched quietly in the background, one at a time.

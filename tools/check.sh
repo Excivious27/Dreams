@@ -125,6 +125,12 @@ if ! echo "$cout" | grep -q "commons_test: 0 failures"; then
   echo "Community farm test failed"; exit 1
 fi
 
+cout="$("$GODOT" --headless --path . -s res://tools/early_gating_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|early_gating_test" || true
+if ! echo "$cout" | grep -q "early_gating_test: PASS"; then
+  echo "Early gating test failed"; exit 1
+fi
+
 echo "== workshop: no dead ends =="
 python3 tools/station_check.py || { echo "Station check failed"; exit 1; }
 echo "== art prompts: at most 3 images each =="

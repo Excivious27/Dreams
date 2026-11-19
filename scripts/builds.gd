@@ -6,6 +6,13 @@ class_name Builds
 
 static var _data: Dictionary = {}
 static var _by_arc: Dictionary = {}
+## Story gates in words a player can act on (gate() falls back to "story first").
+const STORY_WORDS := {
+	"clear_meadow": "after the east meadow story",
+	"meow_taught": "story chapter 2 first (Catkins)",
+	"babies_done": "story chapter 3 first (the crystal babies)",
+	"merkitty_done": "story chapter 4 first (the Merkitties)",
+}
 
 
 ## Every building and station in the file, whatever the arc.
@@ -51,9 +58,9 @@ static func gate(id: String) -> String:
 	if ul.has("skill") and GameState.skill_level(str(ul["skill"][0])) < int(ul["skill"][1]):
 		return "%s level %d" % [str(ul["skill"][0]).capitalize(), int(ul["skill"][1])]
 	if ul.has("flag") and not GameState.run["flags"].has(str(ul["flag"])):
-		return "story first"
+		return str(STORY_WORDS.get(str(ul["flag"]), "story first"))
 	if ul.has("quest") and not GameState.quest_done(str(ul["quest"])):
-		return "story first"
+		return str(STORY_WORDS.get(str(ul["quest"]), "story first"))
 	if ul.has("friend") and GameState.friend_hearts(str(ul["friend"][0])) < int(ul["friend"][1]):
 		return "%s ♥%d" % [str(GameState.npcs[str(ul["friend"][0])]["name"]), int(ul["friend"][1])]
 	if int(nd.get("permit", 0)) > 0 and permitted(id) < int(nd["tier"]):
