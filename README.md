@@ -1,5 +1,7 @@
 # Dreams
 
+> **Claude:** start every session with `CLAUDE.md`, then `docs/HANDOFF.md` (shared memory between Tom's two Claude accounts). Keep HANDOFF.md current on every push, unasked.
+
 A 2D phone-first game made in Godot 4.
 
 **Play the latest build:** https://excivious27.github.io/Dreams/

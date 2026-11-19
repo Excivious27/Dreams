@@ -1,13 +1,14 @@
 # Dreams: notes for Claude
 
 - Project brief: `reference/BRIEF.md` (Tom works only from his phone; short replies ending with play link, what changed, what to test; one question max, last).
-- **Two Claude accounts take turns on this repo** (Tom's Team and personal). Chat history and memory are NOT shared; this repo is the only shared memory. So:
-  - Start of every session: read `docs/HANDOFF.md` (Tom's rules + the **Baton**) before anything else, and pick up the Baton's "next step".
-  - Any rule, preference or decision Tom gives in chat goes into `docs/HANDOFF.md` (Tom's working rules) in the next push, not only into memory.
-  - Push small and often (each finished step), and update the Baton in the same push: never leave work only in the chat or the sandbox (`/home/claude/work` is lost on a switch). Work that fails check.sh goes to a `wip/<topic>` branch, named in the Baton.
-  - Write down jobs still running elsewhere in the Baton: ACE song ids not yet imported, image paths not yet sliced.
-  - **HANDOFF** (Tom's command): finish or park the current step, push, fill in the Baton fully, reply with a 3-line summary. Tom sends it before he switches accounts.
-  - If the Baton says the other account is mid-step, finish that step first; only one account works at a time.
+- **Two Claude accounts take turns on this repo, automatically** (Tom's Team and personal; he switches when one hits a usage limit, without warning and without telling either chat). Chat history and memory are NOT shared; `docs/HANDOFF.md` in this repo is the only shared memory. Tom never writes handoffs: keeping it current is your job, every session, unasked.
+  - **On start, before anything else:** `git pull`, read `docs/HANDOFF.md` (Tom's rules, the Baton, the log). If the Baton's last update is under 30 minutes old and says a step is in progress, the other account may still be working: say so in one line and ask before pushing. Otherwise carry on from the Baton's next step, unless Tom asked for something else.
+  - **Sync your memory once per session:** anything your own memory holds about Dreams (rules, preferences, decisions) that `HANDOFF.md` lacks goes into it.
+  - **Every push updates the Baton in the same commit** (time, what's done, what's in progress, exact next step, open questions). Assume any message could be your last: a usage limit can end the chat mid-task.
+  - Push small and often: every finished step, and at least every ~30 minutes of work. Nothing may live only in the chat or the sandbox (`/home/claude/work` is lost on a switch). Work that fails check.sh goes to a `wip/<topic>` branch, named in the Baton.
+  - Record what the other account would need to know, in the same push: any rule, preference, decision, answer or idea Tom gives in chat (→ Tom's working rules or Decisions), jobs still running elsewhere (ACE song ids not yet imported, images not yet sliced, deploys), plans agreed but not started, and anything Tom is waiting on.
+  - When a piece of work ends, add one line to the HANDOFF log (newest first; keep 30 lines, roll older ones into STATUS.md).
+  - Tom may still send **HANDOFF**: then also reply with a 3-line summary. He doesn't have to.
 - Godot 4.5.1, GDScript, portrait 270×480, `canvas_items` / `keep`, nearest filter. Character strips are 2x detail, drawn at 0.5 scale (`CharacterLibrary`).
 - Input goes through actions `up/down/left/right/a/b/menu` (`InputSetup`); `TouchControls` presses the same actions.
 - Saves go to `user://` (`SaveGame`).
