@@ -2,28 +2,9 @@
 
 Everything below shows a code-drawn stand-in today.
 
-## Item icons (20)
+## Item icons (0)
 
-- rp_fizzy_pop
-- rp_cotton_candy
-- rp_ribbon
-- rp_kite
-- rp_teddy
-- rp_penguin_plush
-- rp_cat_plush
-- rp_bowling_cap
-- rp_neon_cap
-- rp_top_hat
-- rp_star_cape
-- rp_music_box
-- rp_painting
-- rp_trophy_bronze
-- rp_trophy_silver
-- rp_trophy_gold
-- rp_golden_pin
-- rp_arcade_medal
-- rp_jukebox
-- rp_arcade_cab
+- none
 
 ## Enemy sprites (0)
 
