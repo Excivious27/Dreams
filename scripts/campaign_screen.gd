@@ -560,8 +560,8 @@ func _dashed(cv: Control, a: Vector2, b: Vector2, col: Color, w: float, off: flo
 
 
 func _text(cv: Control, f: Font, p: Vector2, t: String, size: int, col: Color, width := -1.0, al := HORIZONTAL_ALIGNMENT_LEFT) -> void:
-	cv.draw_string_outline(f, p, t, al, width, size, 3, Color(0, 0, 0, 0.8))
-	cv.draw_string(f, p, t, al, width, size, col)
+	cv.draw_string_outline(f, p, Money.t(t), al, width, size, 3, Color(0, 0, 0, 0.8))
+	cv.draw_string(f, p, Money.t(t), al, width, size, col)
 
 
 # ---- closing ------------------------------------------------------------------------

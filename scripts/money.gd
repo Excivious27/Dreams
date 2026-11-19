@@ -1,0 +1,80 @@
+class_name Money
+extends RefCounted
+## Arc-aware money. The penguin arc pays in crystals (◆); the gangster arc pays
+## in CASH ($). Code keeps storing the amount in run["crystals"] (one number for
+## both arcs); everything the player reads goes through here:
+##  - Money.sym()/fmt(n)/word() for new strings,
+##  - Money.t(text) rewrites any finished string (◆ -> $, "40 crystals" -> "$40"...),
+##  - MoneyHook (autoload) installs Money.t as a Translation, so every Label,
+##    Button and RichTextLabel shows cash in the gangster arc without each
+##    caller remembering to convert. Custom draw_string calls use Money.t.
+
+const PHRASES := [
+	["a crystal a dozen", "a dime a dozen"],
+	["Not enough crystals", "Not enough cash"],
+	["not enough crystals", "not enough cash"],
+	["paid in crystals", "paid in cash"],
+	["pays you in crystals", "pays you in cash"],
+	["interest on crystals", "interest on cash"],
+	["dice: crystals", "dice: cash"],
+	["I have crystals. Take them.", "I have cash. Take it."],
+	["forty crystals", "forty bucks"],
+	["Crystals for goods. Goods for crystals.", "Cash for goods. Goods for cash."],
+	["small ◆ fee", "small cash fee"],
+	["crystals in hand", "cash in hand"],
+]
+## Exact whole-string labels.
+const EXACT := {"Crystals": "Cash"}
+
+static var _re_num_sym: RegEx
+static var _re_sym: RegEx
+static var _re_num_word: RegEx
+
+
+static func cash() -> bool:
+	return str(GameState.run.get("arc", "")) == "gangsters"
+
+
+static func sym() -> String:
+	return "$" if cash() else "◆"
+
+
+static func fmt(n: int) -> String:
+	return sym() + str(n)
+
+
+static func word() -> String:
+	return "cash" if cash() else "crystals"
+
+
+static func t(s: String) -> String:
+	if not cash():
+		return s
+	return to_cash(s)
+
+
+## The conversion itself (arc-independent, for tests).
+static func to_cash(s: String) -> String:
+	if s.is_empty() or (not s.contains("◆") and not s.contains("rystal")):
+		return s
+	if EXACT.has(s):
+		return str(EXACT[s])
+	if _re_num_sym == null:
+		_re_num_sym = RegEx.create_from_string("(%d|%s|\\d+)\\s?◆")
+		_re_sym = RegEx.create_from_string("◆\\s?")
+		_re_num_word = RegEx.create_from_string("(\\+?)(\\d+|%d) crystals\\b")
+	var out := s
+	for p in PHRASES:
+		out = out.replace(str(p[0]), str(p[1]))
+	out = _re_num_sym.sub(out, "$$$1", true)
+	out = _re_sym.sub(out, "$$", true)
+	out = _re_num_word.sub(out, "$1$$$2", true)
+	return out
+
+
+## True when text still talks about crystals as money (used by tools/cash_test.gd).
+static func looks_like_crystal_money(s: String) -> bool:
+	if s.contains("◆"):
+		return true
+	var re := RegEx.create_from_string("(?i)(\\d+|%d|forty|enough|paid in|pays you in|interest on|dice:) crystals\\b|crystals (overnight|in hand|for goods)|\\bcrystal a dozen")
+	return re.search(s) != null
