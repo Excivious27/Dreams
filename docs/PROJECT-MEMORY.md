@@ -23,7 +23,7 @@ Read order for a new chat: CLAUDE.md → docs/HANDOFF.md (Baton) → this file �
 ## 3. How the work happens (process)
 
 - **Rounds** of work, each ending with: check.sh green → push → bots/playtest → the **package** (see 6).
-- Big rounds use **sub-agents in git worktrees**: `/home/claude/wt/<id>` on branch `<round>/<id>`, heavy dirs (art/, audio/, reference/, build/, .godot) hardlinked from the main checkout (`/home/claude/wt/mkwt.sh <id> <branch>` in the Team sandbox; recreate if missing). Agents commit locally, never push; the main chat merges, runs check.sh, pushes. Rules every agent gets: never write a hardlinked file in place (rm then write), wrap every godot run in `flock /tmp/godot.lock`, fresh `XDG_DATA_HOME`, run full check.sh once at the end.
+- Big rounds use **sub-agents in git worktrees**: `/home/claude/wt/<id>` on branch `<round>/<id>`, heavy dirs (art/, audio/, reference/, build/, .godot) hardlinked from the main checkout (`tools/conduct/mkwt.sh <id> <branch>`; copy tools/conduct/* to /home/claude/wt/ first; agent brief docs/CONDUCT-BRIEF.md). Agents commit locally, never push; the main chat merges, runs check.sh, pushes. Rules every agent gets: never write a hardlinked file in place (rm then write), wrap every godot run in `flock /tmp/godot.lock`, fresh `XDG_DATA_HOME`, run full check.sh once at the end.
 - Merge lessons: JSON conflicts → union merge (keep both sides' keys/list items); never auto-resolve shell/code files with a "keep both lines" script (it dropped `fi` lines in check.sh once); new `class_name` scripts need `godot --headless --import` before tests see them; `.godot` class cache is shared through the hardlinks.
 - **Watchdog:** while agents/bots run, check all of them every 30 minutes (send_later) and resume/restart anything stopped or stuck (Tom, 2026-11-19).
 - The machine has 2 CPUs; 20 agents queue on the godot lock. Expect a full check.sh to take 10–30 min under load.
@@ -59,7 +59,7 @@ Tom wants, every time, sent as **files in the chat** (not only repo links) and o
 ## 7. Current big plan (Tom, 2026-11-18)
 
 After Round 13: **CONDUCT ×3 → wait 5 h → CONDUCT ×3 → wait 5 h → CONDUCT ×3**, each run aimed at specific aspects (docs/CONDUCT-PLAN.md):
-- Wave 1: C1 first 3 hours (done except merge/push), C2 rec center/arcade/community farm, C3 battle campaigns.
+- Wave 1: C1 first 3 hours (DONE 2026-11-19), C2 rec center/arcade/community farm, C3 battle campaigns.
 - Wave 2: C4 mega regions, C5 home-world look and feel, C6 audio and music.
 - Wave 3: C7 story/quests/writing, C8 economy/progression/balance (incl. speed boosts from gear/potions/foods/mounts/skills), C9 release readiness → full package + artifact.
 Use the session's scheduled-message tool for the 5 h waits. If the other account picks this up mid-way, continue from the Baton.

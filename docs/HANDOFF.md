@@ -6,11 +6,11 @@ The shared memory between Tom's two Claude accounts (Team and personal). Tom swi
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 09:40 PT, Team account (game chat)
-- **Done:** Round 13. CONDUCT 1 of 9: all 20 agent branches merged, check.sh rc 0, pushed (see PROJECT-MEMORY section 5).
-- **In progress:** CONDUCT 2 of 9 (rec center, arcade, community farm): 20 agents launched 09:45 PT in the Team sandbox (/home/claude/wt/c2_NN, branches c2/NN, local). Watchdog checks every 30 min.
-- **Next step:** finish CONDUCT 1 (bots, playtest, fix, package), then CONDUCT 2 (rec/arcade/community farm) and CONDUCT 3 (campaigns), wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package. Plan: docs/CONDUCT-PLAN.md.
-- **Jobs running elsewhere:** CONDUCT 2 agents (Team sandbox, local branches). If lost: redo CONDUCT 2 from docs/CONDUCT-PLAN.md.
+- **Last update:** 2026-11-19 09:35 PT, Team account (game chat), HANDOFF to the personal account (Team near its usage limit).
+- **Done:** Round 13 and CONDUCT 1 of 9 (merged, check.sh rc 0, bots + playtest clean, pushed; report docs/reports/CONDUCT-1.md, guide docs/guides/GUIDE-25.md, spreadsheet sent to Tom).
+- **In progress:** nothing. CONDUCT 2 had just been launched and was STOPPED within minutes for this handoff; no work from it exists. Start CONDUCT 2 fresh.
+- **Next step:** CONDUCT 2 (rec center, arcade, community farm). Scopes: docs/CONDUCT-2-SCOPES.txt (20 lines). Agent brief: docs/CONDUCT-BRIEF.md (copy to /home/claude/wt/BRIEF_CONDUCT.md; set worktree ids c2_NN). Tooling: tools/conduct/mkwt.sh `<id> <branch>` makes a hardlinked worktree under /home/claude/wt (copy the scripts to /home/claude/wt first; they use absolute paths /home/claude/dreams and /home/claude/wt), tools/conduct/merge_c.sh merges branches and only auto-resolves CLAUDE.md/STATUS.md/HANDOFF.md, json_merge.py for JSON conflicts (check both sides on string conflicts: it keeps "ours"). Watchdog every 30 min (send_later). After CONDUCT 2: CONDUCT 3 (battle campaigns), then wait 5 h, CONDUCT 4-6, wait 5 h, CONDUCT 7-9 + full package and a new artifact page on the personal account (record its id in PROJECT-MEMORY).
+- **Jobs running elsewhere:** none (the Team chat may still fire one stale watchdog reminder in its own session; ignore).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs, then the fully updated artifact.
@@ -37,6 +37,7 @@ Anything Tom decided or answered in chat that the other account needs, one line 
 
 One line per finished piece of work: date, account, what was done.
 
+- 2026-11-19, Team: handoff to personal account; CONDUCT 1 package delivered; CONDUCT tooling + brief committed (tools/conduct/, docs/CONDUCT-BRIEF.md).
 - 2026-11-19, Team: CONDUCT 1 merged and pushed (20 agents: first 3 hours both arcs, phone UI font, performance batching, softlocks, saves, goal line, town, tools).
 - 2026-11-19, Team: docs/PROJECT-MEMORY.md (full project context) + tools/setup_sandbox.sh; handoff rule: every push keeps PROJECT-MEMORY current.
 - 2026-11-19, Team: CONDUCT 1 first merges (inventory, farm week, early gating, early combat).
