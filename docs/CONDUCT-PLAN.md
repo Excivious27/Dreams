@@ -107,3 +107,14 @@ After CONDUCT 12. Builds on C6 (audio and music).
 After CONDUCT 13, then the final package and artifact. Builds on C5 (home-world look and feel) and C4 (mega regions).
 - Strictly the look and feel of the design: graphics quality (no fuzzy or mismatched art), smooth-looking edges and transitions between ground types, water and cliffs, region map layouts, natural boundaries (no boxy walls), explorability (hidden paths, vistas, secrets, reasons to wander), interesting geography (rivers, hills, caves, ruins, landmarks), lighting and colour harmony, density of detail vs Stardew/Sun Haven.
 - Auditors screenshot every map in every season/time and rank problems; fix agents redraw art (image tool), reshape maps and edges, and add landmarks and secrets.
+
+
+## CONDUCT 15 — Seasons (Tom, 2026-11-19 14:32)
+
+After CONDUCT 14. Each season uniquely built out, both arcs: its own festivals, holidays and events (calendar on the board), seasonal-only items, crops, forage, fish, creatures, shop stock, decor and recipes; unique seasonal quests and story/villager events; seasonal map dressing, weather, music hooks; year-to-year variety (some events only in year 2+). Tests that each season's calendar, availability and events fire correctly.
+
+## CONDUCT 16 — Progression and balance across the whole game (Tom, 2026-11-19 14:32)
+
+After CONDUCT 15, then the final package and artifact. A sophisticated evaluation of pacing across every way to play (farming, ranching, mining, combat, campaigns, crafting, fishing, foraging, arcade/rec, commons, relationships, story, mega regions, decor/cosmetics, money in both arcs) so everything ties together and nothing progresses too fast.
+- Unlocks of areas, regions, events, systems and big rewards take real time and effort; a deliberate spread of quick, moderate and long goals; some of the most interesting and rewarding elements only open in year 2 or 3.
+- Simulate several player styles over 3 in-game years (scripted bots + spreadsheets): income, XP, unlock days, item/region access; tune gates, prices, drop rates and requirements; document the intended unlock timeline (docs/PROGRESSION.md) and add tests that guard it.
