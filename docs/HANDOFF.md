@@ -6,7 +6,7 @@ The shared memory between Tom's two Claude accounts (Team and personal). Tom swi
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`. Times in Pacific.
 
-- **Last update:** 2026-11-18 22:35 PT, Team account (handoff made automatic)
+- **Last update:** 2026-11-18 22:40 PT, Team account (helper chat: CONDUCT spelled out; no game files touched)
 - **In progress:** the Team game chat is mid-way through Round 13 (art run through dreams-image plus new features; see the top of `docs/STATUS.md`). From its next push on, it keeps this Baton current itself.
 - **Next step:** finish Round 13 as recorded in STATUS.md (slice and wire the new art, check.sh, push).
 - **Jobs running elsewhere:** none recorded.
@@ -18,6 +18,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-18: CONDUCT spelled out in full under Tom's commands; both accounts run it the same way.
 - 2026-11-18: Handoffs are automatic; Tom never writes or sends one. Each chat keeps this file current itself.
 - 2026-11-18: Both accounts use the same Claude Project instructions (below) so every new chat starts on Dreams.
 - 2026-11-18: dreams-image default quality is high; 300 images/day through Nov 25, then 60.
@@ -75,6 +76,28 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 - OpenAI is billed from Tom's linked ChatGPT balance; organization verification was still in review.
 - Open items: image commits each trigger the test workflow (a skip-CI tag would save Actions minutes); relay not deployed (Render Starter is an option); OpenAI verification.
 
+## Tom's commands
+
+### CONDUCT
+
+When Tom sends **CONDUCT** (alone or with a focus), run the whole cycle below to the end without stopping to ask, then deliver. It is the same on both accounts.
+
+1. **Fresh 20-agent audit.** Start 20 new sub-agents (never reuse earlier findings), each auditing a different part of the game: systems, story and writing (both arcs), balance and economy, UI and controls vs Stardew, maps vs Sun Haven openness, art consistency and missing art, audio, performance on phone and web, multiplayer, saves and migrations, bugs and crashes. Each lists concrete work or fixes Claude can do.
+2. **20-bot playtest.** Run the bot harness (`tools/bots.sh`, 20 bots) plus the scripted playtests (`tools/playtest.gd`, story, co-op), look at the screenshots, and add every failure and oddity to the list.
+3. **Do all of it.** Complete every recommended fix and piece of work Claude can do alone: code, data, writing, balance. Generate and wire in the art and audio the work needs (dreams-image, ACE Music, CC0) so nothing is left outstanding. Push in small steps, check.sh before every push, Baton updated each time.
+4. **Re-verify.** Rerun check.sh, the playtests and the bots on the finished code; fix what they find; confirm the web deploy is live.
+5. **Deliver the full package, 100% complete and up to date,** as one artifact and as files sent directly in the chat (not only repo links):
+    - progress report file (what the audit and bots found, what was fixed, what is still open and why);
+    - every art prompt file still needed (only what the image tool couldn't make; at most 2-3 images per prompt, each labeled and separated, nothing left out);
+    - the complete all-in-one guide of everything Claude needs from Tom (next `docs/guides/GUIDE-NN.md`).
+6. Short reply ending with the play link, what changed and what to test.
+
+If a usage limit ends the chat mid-CONDUCT, the Baton says which step it reached; the next chat (either account) carries on from there.
+
+### HANDOFF
+
+Optional: finish or park the current step, push, fill in the Baton, reply with a 3-line summary. Handoffs happen automatically anyway.
+
 ## Tom's working rules (from the Team account's memory)
 
 - Tom works only from his phone, never a computer. Short replies ending with the play link, what changed and what to test; one question max, last. Never ask him to run commands.
@@ -87,7 +110,6 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 - Every craft station and building is crafted or purchased by the player, gated by tier; none given free.
 - Music comes from ACE Music: Claude sends song prompts after Tom approves, fetches the songs and places them.
 - All art and audio a piece of work needs is generated (dreams-image, ACE Music, CC0) and integrated by Claude, with nothing left outstanding.
-- **CONDUCT** = a fresh 20-agent audit, then a 20-bot playtest, then all recommended work Claude can do alone, then complete art prompt files for anything still needed plus a complete guide of what Claude needs from Tom.
 - After every completed piece of work: deliver the full, up-to-date package (progress report, every art prompt file still needed, the complete all-in-one guide) as files sent directly in the chat, not only as repo links.
 - Tom likes results details as a spreadsheet in the chat.
 
