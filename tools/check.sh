@@ -267,6 +267,13 @@ if ! echo "$mout" | grep -q "MINE DONE, failures: 0"; then
   echo "Mine test failed"; exit 1
 fi
 
+echo "== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route =="
+mkout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/mine_keeper_test.gd 2>&1)"
+echo "$mkout" | grep -E "FAIL|MINE KEEPER DONE" || true
+if ! echo "$mkout" | grep -q "MINE KEEPER DONE, failures: 0"; then
+  echo "Mine keeper test failed"; exit 1
+fi
+
 echo "== early combat: clinic, pup lesson, telegraph, first boss =="
 ecout="$("$GODOT" --headless --path . -s res://tools/early_combat_test.gd 2>&1)"
 echo "$ecout" | grep -E "FAIL|early_combat_test" || true
