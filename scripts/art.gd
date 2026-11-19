@@ -31,12 +31,22 @@ static func info(group: String, name: String) -> Dictionary:
 
 static func tex(group: String, name: String) -> Texture2D:
 	var key := group + "/" + name
+	_used[key] = true
 	if _tex.has(key):
 		return _tex[key]
 	var path := ROOT + key + ".png"
 	var t: Texture2D = load(path) if ResourceLoader.exists(path) else null
 	_tex[key] = t
+	if t != null:
+		var b := t.get_width() * t.get_height() * 4  # uploaded as RGBA8
+		_bytes[key] = b
+		_total += b
 	return t
+
+
+static var _used: Dictionary = {}   # keys asked for since the last trim (= the last scene)
+static var _bytes: Dictionary = {}  # key -> estimated texture memory
+static var _total := 0
 
 
 ## SpriteFrames built from one or more strips: {"anim_name": "strip_name", ...}.
@@ -76,10 +86,30 @@ static func draw_ring(ci: CanvasItem, c: Vector2, r: float, w: float, col: Color
 	ci.draw_texture_rect(ring_tex(w / r), Rect2(c - Vector2(h, h), Vector2(h, h) * 2.0), false, col)
 
 
+## Called when a map loads. Textures pile up as you travel (a phone browser has
+## little memory), so past a memory budget the ones the last scene never used are
+## let go; what it used (hero, HUD, the place you came from) stays, so walking
+## back and forth doesn't reload it. Everything goes only past a hard ceiling.
+const CACHE_BUDGET := 64 * 1048576
+const CACHE_CEILING := 160 * 1048576
+
+
 static func trim_cache(budget := 1500) -> void:
-	if _tex.size() <= budget:
+	if _total <= CACHE_BUDGET and _tex.size() <= budget:
+		_used.clear()
 		return
-	_tex.clear()
+	if _total > CACHE_CEILING:
+		_tex.clear()
+		_bytes.clear()
+		_total = 0
+	else:
+		for key: String in _tex.keys():
+			if not _used.has(key):
+				_total -= int(_bytes.get(key, 0))
+				_bytes.erase(key)
+				_tex.erase(key)
+	_used.clear()
+	# SpriteFrames hold their strips: rebuilt on use (from the textures still cached).
 	_frames.clear()
 	CharacterLibrary._frames_cache.clear()
 
@@ -87,6 +117,8 @@ static func trim_cache(budget := 1500) -> void:
 static func frames(group: String, anims: Dictionary, fps: Dictionary = {}, loops: Dictionary = {}) -> SpriteFrames:
 	var key := group + ":" + str(anims) + str(fps) + str(loops)
 	if _frames.has(key):
+		for anim: String in anims:
+			_used[group + "/" + str(anims[anim])] = true
 		return _frames[key]
 	var sf := SpriteFrames.new()
 	sf.remove_animation("default")

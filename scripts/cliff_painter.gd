@@ -12,6 +12,7 @@ extends RefCounted
 ## The top itself is the map's own ground, so the rim always matches the ground
 ## colour (no pale cap ring). Winter swaps grass pieces for the snow pieces.
 
+const TriBatch := preload("res://scripts/tri_batch.gd")  # one draw call for many polygons/lines
 const T := 16.0
 const FACE_H := T * 1.6      # painted face height in world px
 const FACE_TOP := 5.0        # the strip's grass fringe overlaps the rim by this much
@@ -196,34 +197,44 @@ static func draw(ci: CanvasItem, cells: Dictionary, stairs: Dictionary, opts: Di
 				sides.append([a, b, nrm])
 			else:
 				backs.append([a, b, nrm])
+	# Every pass goes out as one triangle array (TriBatch): a polygon or thick line
+	# each was a draw call of its own, thousands per map, re-issued per baked chunk.
+	# Same pieces, same order within each pass.
 	# 1. Soft shadow at the foot of every face (and a faint one beside the side walls).
+	var tb := TriBatch.new()
+	var sh0 := Color(0.05, 0.04, 0.08, 0.32)
+	var sh1 := Color(0.05, 0.04, 0.08, 0.0)
 	if not opts.get("no_front", false):
 		for f: Array in fronts:
 			var a: Vector2 = f[0] + Vector2(0, FACE_H - FACE_TOP - 1.0 - lift)
 			var b: Vector2 = f[1] + Vector2(0, FACE_H - FACE_TOP - 1.0 - lift)
-			ci.draw_polygon(PackedVector2Array([a, b, b + Vector2(0, 5), a + Vector2(0, 5)]),
-				PackedColorArray([Color(0.05, 0.04, 0.08, 0.32), Color(0.05, 0.04, 0.08, 0.32), Color(0.05, 0.04, 0.08, 0.0), Color(0.05, 0.04, 0.08, 0.0)]))
+			tb.fan(PackedVector2Array([a, b, b + Vector2(0, 5), a + Vector2(0, 5)]), PackedColorArray([sh0, sh0, sh1, sh1]))
+	var ss0 := Color(0.05, 0.04, 0.08, 0.22)
 	for s: Array in sides:
 		var a: Vector2 = s[0]
 		var b: Vector2 = s[1]
 		var nrm: Vector2 = s[2]
-		ci.draw_polygon(PackedVector2Array([a, b, b + nrm * 4.0, a + nrm * 4.0]),
-			PackedColorArray([Color(0.05, 0.04, 0.08, 0.22), Color(0.05, 0.04, 0.08, 0.22), Color(0.05, 0.04, 0.08, 0.0), Color(0.05, 0.04, 0.08, 0.0)]))
+		tb.fan(PackedVector2Array([a, b, b + nrm * 4.0, a + nrm * 4.0]), PackedColorArray([ss0, ss0, sh1, sh1]))
+	tb.flush(ci)
 	# 2. Back rims: a dark line just outside, a light lip just inside.
+	var lip_hi := Color(lip.r * 1.1, lip.g * 1.1, lip.b * 1.1, 0.55)
 	for bk: Array in backs:
 		var a: Vector2 = bk[0]
 		var b: Vector2 = bk[1]
 		var nrm: Vector2 = bk[2]
-		ci.draw_line(a + nrm * 1.0, b + nrm * 1.0, Color(0.06, 0.05, 0.1, 0.4), 2.0, true)
-		ci.draw_line(a - nrm * 1.0, b - nrm * 1.0, Color(lip.r * 1.1, lip.g * 1.1, lip.b * 1.1, 0.55), 1.0, true)
+		tb.line(a + nrm * 1.0, b + nrm * 1.0, Color(0.06, 0.05, 0.1, 0.4), 2.0)
+		tb.line(a - nrm * 1.0, b - nrm * 1.0, lip_hi, 1.0)
+	tb.flush(ci)
 	# 3. Side walls: rock from the side piece, inside the rim, with a lip on top.
 	if side_l != null and side_r != null:
+		var walls := {side_l: TriBatch.new(), side_r: TriBatch.new()}
+		var rims := TriBatch.new()
+		var white := PackedColorArray([Color.WHITE])
 		for s: Array in sides:
 			var a: Vector2 = s[0]
 			var b: Vector2 = s[1]
 			var nrm: Vector2 = s[2]
 			var tex: Texture2D = side_r if nrm.x > 0 else side_l
-			var tw := float(tex.get_width())
 			var th := float(tex.get_height())
 			# Rock part of the piece (below its grass cap), repeating every ~2 cells.
 			var v_top := th * 0.32
@@ -243,14 +254,18 @@ static func draw(ci: CanvasItem, cells: Dictionary, stairs: Dictionary, opts: Di
 			var o0 := 0.0 if nrm.x < 0 else 1.0
 			var uo := lerpf(u0, u1, o0)
 			var ui := lerpf(u0, u1, 1.0 - o0)
-			ci.draw_polygon(PackedVector2Array([top_a, top_b, top_b + inner, top_a + inner]),
-				PackedColorArray([Color.WHITE]),
-				PackedVector2Array([Vector2(uo, va / th), Vector2(uo, vb / th), Vector2(ui, vb / th), Vector2(ui, va / th)]), tex)
-			ci.draw_line(a + inner, b + inner, Color(0.08, 0.06, 0.1, 0.25), 1.0, true)
-			ci.draw_line(a + inner * 1.15, b + inner * 1.15, lip, 1.6, true)
+			(walls[tex] as TriBatch).fan(PackedVector2Array([top_a, top_b, top_b + inner, top_a + inner]), white,
+				PackedVector2Array([Vector2(uo, va / th), Vector2(uo, vb / th), Vector2(ui, vb / th), Vector2(ui, va / th)]))
+			rims.line(a + inner, b + inner, Color(0.08, 0.06, 0.1, 0.25), 1.0)
+			rims.line(a + inner * 1.15, b + inner * 1.15, lip, 1.6)
+		# (the two walls face apart and never overlap; each rim line lies on its own wall)
+		(walls[side_l] as TriBatch).flush(ci, side_l)
+		(walls[side_r] as TriBatch).flush(ci, side_r)
+		rims.flush(ci)
 	# 4. Faces: the painted strip, sampled by world x so straight runs never repeat
 	#    a seam, hanging from the (curved) front outline.
 	if not opts.get("no_front", false):
+		var white4 := PackedColorArray([Color.WHITE])
 		for f: Array in fronts:
 			var a: Vector2 = f[0]
 			var b: Vector2 = f[1]
@@ -260,10 +275,10 @@ static func draw(ci: CanvasItem, cells: Dictionary, stairs: Dictionary, opts: Di
 				u0 = 0.0
 				u1 = (b.x - a.x) * k
 			var ta := a - Vector2(0, FACE_TOP + lift)
-			var tb := b - Vector2(0, FACE_TOP + lift)
-			ci.draw_polygon(PackedVector2Array([ta, tb, tb + Vector2(0, FACE_H), ta + Vector2(0, FACE_H)]),
-				PackedColorArray([Color.WHITE]),
-				PackedVector2Array([Vector2(u0 / sw, 0), Vector2(u1 / sw, 0), Vector2(u1 / sw, 1), Vector2(u0 / sw, 1)]), strip)
+			var tb2 := b - Vector2(0, FACE_TOP + lift)
+			tb.fan(PackedVector2Array([ta, tb2, tb2 + Vector2(0, FACE_H), ta + Vector2(0, FACE_H)]), white4,
+				PackedVector2Array([Vector2(u0 / sw, 0), Vector2(u1 / sw, 0), Vector2(u1 / sw, 1), Vector2(u0 / sw, 1)]))
+		tb.flush(ci, strip)
 	# 5. Stairs: one painted set per run, fitted to the face height, with cheeks.
 	var nm0 := str(opts.get("stair_set", ""))
 	if pset == "snow" and nm0 == "stair_stone" and Art.has("stairs", "stair_snow"):
@@ -326,6 +341,16 @@ static func draw_rounded_cells(ci: CanvasItem, cells: Dictionary, tex: Texture2D
 	if tex == null:
 		return
 	var r := T * 0.5
+	# Inner cells first as plain rects (they batch on their own), then every rounded
+	# edge piece and fillet as one triangle array: no cell overlaps another, so the
+	# order between them doesn't show.
+	var tb := TriBatch.new()
+	var tsz := tex.get_size()
+	for c: Vector2i in cells:
+		if cells.has(c + Vector2i(0, -1)) and cells.has(c + Vector2i(0, 1)) and cells.has(c + Vector2i(-1, 0)) and cells.has(c + Vector2i(1, 0)):
+			var o0 := Vector2(c) * T
+			var base := Vector2(fposmod(o0.x, period), fposmod(o0.y, period))
+			ci.draw_texture_rect_region(tex, Rect2(o0, Vector2(T, T)), Rect2(base / period * tsz, Vector2(T, T) / period * tsz), col)
 	for c: Vector2i in cells:
 		var n := cells.has(c + Vector2i(0, -1))
 		var s := cells.has(c + Vector2i(0, 1))
@@ -333,8 +358,7 @@ static func draw_rounded_cells(ci: CanvasItem, cells: Dictionary, tex: Texture2D
 		var e := cells.has(c + Vector2i(1, 0))
 		var o := Vector2(c) * T
 		if n and s and w and e:
-			_seam_poly(ci, tex, PackedVector2Array([o, o + Vector2(T, 0), o + Vector2(T, T), o + Vector2(0, T)]), o, period, col)
-			continue
+			continue  # drawn above
 		# Round a corner where both of its sides are open.
 		var pts := PackedVector2Array()
 		var corners := [[Vector2(0, 0), not n and not w, Vector2(0, 1), Vector2(1, 0)], [Vector2(T, 0), not n and not e, Vector2(-1, 0), Vector2(0, 1)], [Vector2(T, T), not s and not e, Vector2(0, -1), Vector2(-1, 0)], [Vector2(0, T), not s and not w, Vector2(1, 0), Vector2(0, -1)]]
@@ -348,7 +372,7 @@ static func draw_rounded_cells(ci: CanvasItem, cells: Dictionary, tex: Texture2D
 					pts.append(o + p0.lerp(p, t).lerp(p.lerp(p2, t), t))
 			else:
 				pts.append(o + p)
-		_seam_poly(ci, tex, pts, o, period, col)
+		_seam_poly(tb, pts, o, period, col)
 	# Fillets in concave corners: three cells of a 2x2 filled, the fourth (the
 	# hole) gets a small curved wedge in the corner they share.
 	var fil := {}
@@ -371,14 +395,15 @@ static func draw_rounded_cells(ci: CanvasItem, cells: Dictionary, tex: Texture2D
 			for st in 7:
 				var t := st / 6.0
 				fan.append(p0.lerp(cp, t).lerp(cp.lerp(p2, t), t))
-			_seam_poly(ci, tex, fan, ho, period, col)
+			_seam_poly(tb, fan, ho, period, col)
+	tb.flush(ci, tex)
 
 
 ## A polygon inside one cell (cell origin `o`) filled from a seamless texture of
 ## `period` world px; uvs stay inside the texture (cell windows never straddle).
-static func _seam_poly(ci: CanvasItem, tex: Texture2D, pts: PackedVector2Array, o: Vector2, period: float, col: Color) -> void:
+static func _seam_poly(tb: TriBatch, pts: PackedVector2Array, o: Vector2, period: float, col: Color) -> void:
 	var base := Vector2(fposmod(o.x, period), fposmod(o.y, period))
 	var uvs := PackedVector2Array()
 	for p in pts:
 		uvs.append((base + (p - o)) / period)
-	ci.draw_polygon(pts, PackedColorArray([col]), uvs, tex)
+	tb.fan(pts, PackedColorArray([col]), uvs)

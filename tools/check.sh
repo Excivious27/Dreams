@@ -78,6 +78,12 @@ bad = [k for k, v in I.items() if isinstance(v, dict) and "back" in v and not (i
 print("interior_back:", len(bad), "bad", bad[:5])
 sys.exit(1 if bad else 0)
 PY
+echo "== performance guards (batched cliffs, texture cache) =="
+pout="$("$GODOT" --headless --path . -s res://tools/perf_test.gd 2>&1)"
+echo "$pout" | grep -E "FAIL|SCRIPT ERROR|perf_test" || true
+if ! echo "$pout" | grep -q "perf_test: 0 failures"; then
+  echo "perf_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
