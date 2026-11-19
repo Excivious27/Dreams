@@ -514,8 +514,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						sh.queue_free()
 						if is_instance_valid(old):
 							old.visible = true
-							if old is Sprite2D and Art.has("nature", "ftree_%s_late" % kind):
-								(old as Sprite2D).texture = Art.tex("nature", "ftree_%s_late" % kind))
+							var after := "ftree_%s_green" % kind if Art.has("nature", "ftree_%s_green" % kind) else "ftree_%s_late" % kind
+							if old is Sprite2D and Art.has("nature", after):
+								(old as Sprite2D).texture = Art.tex("nature", after))
 			else:
 				wobble(c, 0.08)
 			var n := 1 + (1 if randf() < GameState.bonus("foraging", "forage_bonus") * 0.06 else 0)
