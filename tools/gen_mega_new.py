@@ -915,7 +915,7 @@ def build_area(aid, mega, spec, links_geom):
         for y in range(rows):
             for x in range(cols):
                 c = (x, y)
-                if dist[c] != 1 or not edge_ok(x, y, 6) or c in G.occ and G.occ[c] not in ("P",):
+                if dist[c] != 0 or not edge_ok(x, y, 6):  # on the road itself: scatter and secrets keep off it
                     continue
                 if any(max(abs(c[0] - n["cell"][0]), abs(c[1] - n["cell"][1])) < 5 for n in npcs):
                     continue
