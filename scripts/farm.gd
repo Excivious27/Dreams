@@ -486,17 +486,21 @@ func _partner_visitors(pool: Array) -> Dictionary:
 		if spr_id == "" or not CharacterLibrary.has_character(spr_id):
 			continue
 		var spr := CharacterLibrary.make_sprite(spr_id)
-		var to := player.position + Vector2((i - (n - 1) / 2.0) * 22.0, 30.0)
-		spr.position = to + Vector2(0, 40)
+		# Beside you, level with you: below would be under the dialogue box.
+		var side := -1.0 if i % 2 == 0 else 1.0
+		var to := player.position + Vector2(side * (26.0 + 22.0 * floorf(i / 2.0)), 2.0)
+		spr.position = to + Vector2(side * 60.0, 0)
 		spr.z_index = 2
 		spr.set_meta("partner_visitor", true)
-		spr.play("walk_up" if spr.sprite_frames.has_animation("walk_up") else "idle")
+		spr.flip_h = side > 0.0  # walking in toward you
+		spr.play("walk" if spr.sprite_frames.has_animation("walk") else "idle")
 		add_child(spr)
 		var tw := spr.create_tween()
 		tw.tween_property(spr, "position", to, 0.9)
 		tw.tween_callback(func() -> void:
 			if is_instance_valid(spr):
-				spr.play("idle_up" if spr.sprite_frames.has_animation("idle_up") else "idle"))
+				spr.flip_h = false
+				spr.play("idle"))
 		out[cid] = spr
 	return out
 
