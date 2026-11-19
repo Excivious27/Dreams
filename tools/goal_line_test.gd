@@ -68,7 +68,7 @@ func _run() -> void:
 		check(g.begins_with("Pick Turnip"), "%s: tilled -> plant" % a)
 		GameState.run["farm"]["10,10"]["crop"] = "turnip"
 		g = goal("planted")
-		check(g.begins_with("Water"), "%s: planted -> water" % a)
+		check(g.begins_with("Water") or (not pen and g.begins_with("The rain")), "%s: planted -> water (or rain)" % a)
 		if not pen:
 			check(g.begins_with("The rain waters it"), "gang: the rainy first night says the rain waters the crop")
 		GameState.run["farm"]["10,10"]["watered"] = true
@@ -149,7 +149,7 @@ func _run() -> void:
 			print("      log: %s %s" % ["[x]" if q["done"] else "[ ]", q["text"]])
 		next_day()
 		next_day()
-		g = goal("day 5")
+		g = goal("two days on")
 	# The arrow's route through the scene graph.
 	check(GoalLine.next_hop("town", "meadow") == "farm", "route: town -> farm -> meadow")
 	check(GoalLine.next_hop("beach", "crystal_meadow") == "town", "route: beach -> town first")
