@@ -32,7 +32,7 @@ static func _scene() -> String:
 
 
 ## The main quest the goal line should NOT show yet, because an earlier step
-## still stands in front of it (the gangster docks wait for Sal and a first recruit).
+## still stands in front of it (the gangster docks wait for a first recruit).
 static func defer(qid: String) -> bool:
 	if qid == "docks" and not GameState.is_penguins():
 		return GameState.has_quest("gang") and not GameState.quest_done("gang")
@@ -70,15 +70,12 @@ static func text(qid: String) -> String:
 			return "Refine a crystal: hold 3 Crystal Shards, USE on the Resonator by your house."
 		"hideout":
 			if not r["flags"].has("sal_recruited"):
-				return "Show Sal in town the note from the meadow. Then the outskirts gate, east past the meadow."
-			return "Hideout town: the gate at the far east of the outskirts (east past the meadow)."
+				return "Tell Sal in town about the President's man. Then the outskirts gate, east past the meadow."
+			return "Hideout town: the outskirts gate, east past the meadow. Find a place to work from."
 		"gang":
 			if not r["flags"].has("hideout_seen"):
 				return "Recruit your first crew in Hideout town: the outskirts gate, east past the meadow."
 			return "Recruit your first crew: Deuce at his table or Mama Rosa at the kitchen door. Each wants a favour."
-		"docks":
-			if not r["flags"].has("sal_recruited"):
-				return "Show Sal in town the note from the meadow."
 	return ""
 
 
@@ -122,11 +119,12 @@ static func goal_place() -> Array:
 			if not Builds.is_built("resonator"):
 				return ["farm", "thing:plans"] if GameState.count("stone") >= 10 and GameState.count("shard") >= 1 else ["", ""]
 			return ["farm", "build:resonator"] if GameState.count("shard") >= 3 else ["", ""]
-		"hideout", "gang", "docks":
+		"hideout", "gang":
+			if r["flags"].has("hideout_seen"):
+				return ["", ""]
 			if not r["flags"].has("sal_recruited"):
-				return ["town", "npc:sal"]
-			if not r["flags"].has("hideout_seen"):
-				return ["crystal_meadow", "thing:gate"]
+				return ["town", "npc:sal"]  # Sal first (optional, but the story asks for it)
+			return ["crystal_meadow", "thing:gate"]
 	return ["", ""]
 
 
