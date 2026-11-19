@@ -62,3 +62,6 @@ The 20 audit agents in each run:
 
 ## Timing
 After C3 finishes, schedule a message in this session for 5 h later (`send_later`), and the same after C6.
+
+## CONDUCT 1 agent scopes (as run 2026-11-19)
+01 penguin new game → end of day 2 · 02 gangster new game → end of day 2 · 03 goal line + quest pointers days 1-5 · 04 held-tool rules on every interaction · 05 gangster money words in Round 13 systems · 06 early-game gating · 07 phone UI at 270x480 · 08 softlocks and stuck spots · 09 energy, faint, pacing, money curve · 10 farming first week · 11 town first visits · 12 pup intro, early combat, first mine floors · 13 saves, slots, migration · 14 arc choice + arc systems intros · 15 regression rec/bowling/arcade · 16 regression community farm + world fixes · 17 regression animation/audio · 18 regression mega regions + campaigns · 19 performance phone/web · 20 progress inventory (docs only).
