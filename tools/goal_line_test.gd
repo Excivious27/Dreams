@@ -124,17 +124,18 @@ func _run() -> void:
 			g = goal("meadow boss down")
 			check(g.find("Sal") >= 0, "gang: after the meadow -> Sal")
 			check(GoalLine.goal_place() == ["town", "npc:sal"], "gang: arrow -> Sal in town")
-			# Skipping Sal: Hideout first, then the docks open; the goal still asks for Sal.
+			# Skipping Sal is allowed: in Hideout the crew comes next, and the arrow stops pointing at Sal.
 			var save_q: Array = (GameState.run["quests"] as Array).duplicate(true)
 			GameState.run["flags"]["hideout_seen"] = true
 			g = goal("(skipped Sal) arrived in Hideout town")
-			check(g.find("Sal") >= 0 and g.find("campaign") < 0, "gang: docks wait for Sal")
+			check(g.find("Deuce") >= 0 and g.find("campaign") < 0, "gang: skipped Sal -> recruit crew, no campaign yet")
+			check(GoalLine.goal_place() == ["", ""], "gang: skipped Sal -> no arrow back to town")
 			GameState.run["flags"].erase("hideout_seen")
 			GameState.run["quests"] = save_q
 			GameState.run["flags"]["sal_recruited"] = true
 			beat("g1_sal")
 			g = goal("talked to Sal")
-			check(g.find("Hideout") >= 0 and g.find("outskirts gate") >= 0, "gang: after Sal -> Hideout town, and how")
+			check(g.begins_with("Hideout town") and g.find("outskirts gate") >= 0, "gang: after Sal -> Hideout town, and how")
 			check(GoalLine.goal_place() == ["crystal_meadow", "thing:gate"], "gang: arrow -> the outskirts gate")
 			GameState.run["flags"]["hideout_seen"] = true
 			beat("g2_arrive")
