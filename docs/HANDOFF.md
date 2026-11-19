@@ -1,17 +1,42 @@
 # Dreams: Handoff (any Claude account)
 
-Written 2026-11-18 so Tom's personal Claude account can do the same work as the Team account. Read this after `CLAUDE.md`, `reference/BRIEF.md`, the top of `docs/STATUS.md` and the newest guide in `docs/guides/`.
+The shared memory between Tom's two Claude accounts (Team and personal). Tom switches between them when one hits a usage limit, without warning and without telling either chat, so every session keeps this file current on its own (rules in `CLAUDE.md`). Read it at the start of every session, after `CLAUDE.md`; for depth, `reference/BRIEF.md`, the top of `docs/STATUS.md` and the newest guide in `docs/guides/`.
 
 ## Baton (update on every push)
 
-Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`.
+Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`. Times in Pacific.
 
-- **Last update:** 2026-11-18 22:30 PT, Team account
-- **In progress:** Team game chat's art run through dreams-image (building redraws w494+ into `art/incoming/`); not yet sliced.
-- **Next step:** finish the art run, slice it (`tools/slice_world5.py` and post-steps), check.sh, push, update STATUS.
+- **Last update:** 2026-11-18 22:42 PT, Team account (helper chat: CONDUCT step 3 widened per Tom; no game files touched)
+- **In progress:** the Team game chat is mid-way through Round 13 (art run through dreams-image plus new features; see the top of `docs/STATUS.md`). From its next push on, it keeps this Baton current itself.
+- **Next step:** finish Round 13 as recorded in STATUS.md (slice and wire the new art, check.sh, push).
 - **Jobs running elsewhere:** none recorded.
 - **WIP branches:** none.
 - **Open questions for Tom:** none.
+- **Tom is waiting on:** nothing recorded.
+
+## Decisions (newest first)
+
+Anything Tom decided or answered in chat that the other account needs, one line each with the date.
+
+- 2026-11-18: CONDUCT step 3 = every fix AND all open work Claude can do alone: all art, all audio, any work identified as needed anywhere.
+- 2026-11-18: CONDUCT spelled out in full under Tom's commands; both accounts run it the same way.
+- 2026-11-18: Handoffs are automatic; Tom never writes or sends one. Each chat keeps this file current itself.
+- 2026-11-18: Both accounts use the same Claude Project instructions (below) so every new chat starts on Dreams.
+- 2026-11-18: dreams-image default quality is high; 300 images/day through Nov 25, then 60.
+- 2026-11-18: Multiplayer relay may go on Render (second Starter service); not decided or deployed.
+
+## Log (newest first, 30 lines max)
+
+One line per finished piece of work: date, account, what was done.
+
+- 2026-11-18, Team: handoff made automatic (CLAUDE.md rules, Baton, Decisions, Log, Project instructions).
+- 2026-11-18, Team: HANDOFF.md created; dreams-image server deployed and connected; ACE Music connected.
+
+## Claude Project instructions (same on both accounts)
+
+Tom puts this text in a claude.ai Project called "Dreams" on each account, so every new chat in it starts on the game without him saying anything:
+
+> This project is my game Dreams, GitHub repo Excivious27/Dreams. At the start of every chat, attach that repo (and Excivious27/dreams-image-mcp when the image server is involved), git pull, and follow CLAUDE.md, starting with docs/HANDOFF.md. Two Claude accounts take turns on this game without warning, so keep docs/HANDOFF.md current on every push as CLAUDE.md says, without being asked. Then do what I ask, or continue from the Baton's next step if I don't ask for anything specific.
 
 ## Where everything lives
 
@@ -52,6 +77,28 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 - OpenAI is billed from Tom's linked ChatGPT balance; organization verification was still in review.
 - Open items: image commits each trigger the test workflow (a skip-CI tag would save Actions minutes); relay not deployed (Render Starter is an option); OpenAI verification.
 
+## Tom's commands
+
+### CONDUCT
+
+When Tom sends **CONDUCT** (alone or with a focus), run the whole cycle below to the end without stopping to ask, then deliver. It is the same on both accounts.
+
+1. **Fresh 20-agent audit.** Start 20 new sub-agents (never reuse earlier findings), each auditing a different part of the game: systems, story and writing (both arcs), balance and economy, UI and controls vs Stardew, maps vs Sun Haven openness, art consistency and missing art, audio, performance on phone and web, multiplayer, saves and migrations, bugs and crashes. Each lists concrete work or fixes Claude can do.
+2. **20-bot playtest.** Run the bot harness (`tools/bots.sh`, 20 bots) plus the scripted playtests (`tools/playtest.gd`, story, co-op), look at the screenshots, and add every failure and oddity to the list.
+3. **Do every fix AND all open work Claude can do alone:** all art work, all audio work, and any and all work identified as needed on the game in any way (from the audit, the bots, the Baton, STATUS.md, the guides, MISSING-ART.md, plans agreed but not started). That includes code, data, writing, balance, and generating and wiring in art and audio (dreams-image, ACE Music, CC0), so nothing Claude can do is left outstanding. Push in small steps, check.sh before every push, Baton updated each time.
+4. **Re-verify.** Rerun check.sh, the playtests and the bots on the finished code; fix what they find; confirm the web deploy is live.
+5. **Deliver the full package, 100% complete and up to date,** as one artifact and as files sent directly in the chat (not only repo links):
+    - progress report file (what the audit and bots found, what was fixed, what is still open and why);
+    - every art prompt file still needed (only what the image tool couldn't make; at most 2-3 images per prompt, each labeled and separated, nothing left out);
+    - the complete all-in-one guide of everything Claude needs from Tom (next `docs/guides/GUIDE-NN.md`).
+6. Short reply ending with the play link, what changed and what to test.
+
+If a usage limit ends the chat mid-CONDUCT, the Baton says which step it reached; the next chat (either account) carries on from there.
+
+### HANDOFF
+
+Optional: finish or park the current step, push, fill in the Baton, reply with a 3-line summary. Handoffs happen automatically anyway.
+
 ## Tom's working rules (from the Team account's memory)
 
 - Tom works only from his phone, never a computer. Short replies ending with the play link, what changed and what to test; one question max, last. Never ask him to run commands.
@@ -64,7 +111,6 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 - Every craft station and building is crafted or purchased by the player, gated by tier; none given free.
 - Music comes from ACE Music: Claude sends song prompts after Tom approves, fetches the songs and places them.
 - All art and audio a piece of work needs is generated (dreams-image, ACE Music, CC0) and integrated by Claude, with nothing left outstanding.
-- **CONDUCT** = a fresh 20-agent audit, then a 20-bot playtest, then all recommended work Claude can do alone, then complete art prompt files for anything still needed plus a complete guide of what Claude needs from Tom.
 - After every completed piece of work: deliver the full, up-to-date package (progress report, every art prompt file still needed, the complete all-in-one guide) as files sent directly in the chat, not only as repo links.
 - Tom likes results details as a spreadsheet in the chat.
 
@@ -76,4 +122,4 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 4. Customize → Connectors → + Add → Add custom connector: `ace-music`, `https://acemusic.ai/mcp`, OAuth → Connect → Allow (same ACE account).
 5. Render → dreams-image-mcp → Environment → copy `MCP_AUTH_TOKEN`. Add custom connector: `dreams-image`, `https://dreams-image-mcp.onrender.com/mcp`, no sign-in, header `Authorization: Bearer <token>` (or URL `.../mcp/<token>` if no header field; keep it secret) → Connect.
 6. Set the dreams-image and ACE tools to Always allow; turn all three on in the chat's + menu.
-7. First message: "Work on my game Dreams in GitHub repo Excivious27/Dreams (also attach Excivious27/dreams-image-mcp). Read CLAUDE.md, docs/HANDOFF.md, reference/BRIEF.md, the top of docs/STATUS.md and the newest guide in docs/guides/. Save the working rules from HANDOFF.md to memory. Check the connectors with free calls only: ACE Music get_account, and dreams-image list_images on art/incoming. Then tell me you're ready, in a short reply."
+7. Create a Project called "Dreams" and paste the Claude Project instructions above into it. Start every Dreams chat inside that Project; no first message is needed beyond what Tom wants done.
