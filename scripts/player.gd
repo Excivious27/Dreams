@@ -969,6 +969,14 @@ func do_action(mode := "a") -> void:
 			(map.pet as Pet).set_mode("attack")
 			(map.pet as Pet)._target = e
 		return
+	if held == "rod":
+		# The rod only casts into water: say so instead of a cast at the grass.
+		ToolHint.say(map, "Face water and tap USE to cast.")
+		return
+	if held == "" and str(GameState.items.get(str(GameState.run["selected"]), {}).get("type", "")) == "seed" and GameState.count(str(GameState.run["selected"])) > 0:
+		# Seeds in hand: never a punch. Point at tilled soil instead.
+		ToolHint.say(map, "Seeds go in tilled soil: till grass on your farm with the hoe first." if map and map.scene_id() == "farm" else "Seeds go in tilled soil on your farm.")
+		return
 	if held in ["hoe", "can", "axe", "pickaxe", "rod", "scythe"]:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
 		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]

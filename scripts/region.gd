@@ -602,11 +602,11 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			tell([{"who": str(thing.get("who", "")), "text": str(thing.get("text", "...")), "mood": str(thing.get("mood", "neutral"))}])
 			return true
 		"water":
-			if GameState.has_tool("rod"):
-				var pool: Array = thing.get("pool", [])
-				if pool.is_empty():
-					pool = ["carp", "bass", "catfish", "salmon", "eel"]
-				fish_at(c, pool)
+			# fish_at casts with the rod in hand, else says how to get it there
+			var pool: Array = thing.get("pool", [])
+			if pool.is_empty():
+				pool = ["carp", "bass", "catfish", "salmon", "eel"]
+			fish_at(c, pool)
 			return true
 		"shop":
 			later(_shop.bind(thing))
@@ -649,9 +649,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"mrock":
 			if GameState.held_tool() != "pickaxe":
-				if GameState.has_tool("pickaxe"):
-					hud.toast("Hold the pickaxe.")
-				return GameState.has_tool("pickaxe")
+				return ToolHint.need(self, "pickaxe", "to break it")
 			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
 			if ob != "":
 				player.play_tool("pickaxe")

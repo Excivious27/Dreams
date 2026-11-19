@@ -212,8 +212,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			_shrine()
 			return true
 		"water":
-			if GameState.has_tool("rod"):
-				fish_at(c, ["minnow", "trout", "carp"])
+			# fish_at casts with the rod in hand, else says how to get it there
+			fish_at(c, ["minnow", "trout", "carp"])
 			return true
 		"great_tree":
 			if GameState.is_penguins() and (GameState.quest_done("commander") or GameState.has_quest("sky_stair")) and not GameState.run["flags"].has("campfire_done"):

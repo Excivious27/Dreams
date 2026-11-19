@@ -103,6 +103,12 @@ echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
   echo "storage_test failed"; exit 1
 fi
+echo "== held-tool rules: right tool acts, wrong tool hints =="
+trout="$("$GODOT" --headless --path . -s res://tools/tool_rules_test.gd 2>&1)"
+echo "$trout" | grep -E "FAIL|SCRIPT ERROR|tool_rules_test" || true
+if ! echo "$trout" | grep -q "tool_rules_test: 0 failures"; then
+  echo "Tool rules test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/rec_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|rec_test" || true
 if ! echo "$cout" | grep -q "rec_test: 0 failures"; then

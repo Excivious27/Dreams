@@ -890,6 +890,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			go_to("mine", Vector2.ZERO)
 			return true
 		"crate":
+			if ToolHint.is_soft(GameState.held_tool()):
+				ToolHint.say(self, "Smash crates with a blade, axe or pickaxe.")
+				return true
 			if not GameState.spend_for("axe"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
@@ -943,10 +946,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"rock":
 			if GameState.held_tool() != "pickaxe":
-				if GameState.has_tool("pickaxe"):
-					hud.toast("Hold the pickaxe.")
-					return true
-				return false
+				return ToolHint.need(self, "pickaxe", "to break it")
 			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
 			if ob != "":
 				player.play_tool("pickaxe")

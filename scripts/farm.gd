@@ -618,8 +618,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			if GameState.held_tool() == "rod" and not _fishing:
 				# The farm pond uses the same fishing as everywhere else.
 				later(_pond_fish.bind(c, bool(thing.get("river", false))))
-			elif GameState.has_tool("rod"):
-				hud.toast("Hold the fishing rod.")
+			elif not _fishing:
+				ToolHint.need(self, "rod", "to fish")
 			return true
 		"well":
 			if int(GameState.run["energy"]) >= int(GameState.run["max_energy"]):
@@ -1029,9 +1029,9 @@ func _seed_for(crop: String) -> String:
 
 func _water(tile: Dictionary, key := "") -> bool:
 	if GameState.held_tool() != "can":
-		if GameState.has_tool("can") and str(GameState.run["selected"]) == "":
-			hud.toast("Hold the watering can.")
-		return false
+		if GameState.held_tool() == "hoe":
+			return false  # a hoe row over planted soil stays quiet
+		return ToolHint.need(self, "can", "to water it")
 	if not GameState.spend_for("can"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))
 		return true
@@ -1510,7 +1510,7 @@ func _intro_gangsters(n: Dictionary) -> void:
 	await say([
 		{"text": "%s shakes the rain off and looks up at you like all of this is normal. Maybe for a while it can be." % pet_name},
 		{"text": "You'll need money to move on anyone. Money means crops. Crops mean dirt under your nails. Fine."},
-		{"text": "Hold the hoe and tap USE on grass to till. Pick the seeds on the toolbar and tap USE to plant. Water each morning with the can. Sell at the box by the house. Don't draw eyes.", "keep": true},
+		{"text": "Tap the hoe on your toolbar, face grass and tap USE to till. Pick the seeds on the toolbar and tap USE to plant. Water each morning with the can. Sell at the box by the house. Don't draw eyes.", "keep": true},
 	])
 	GameState.add_quest("first_harvest", "Grow and harvest your first crop. Sell it at the box by the house.")
 	GameState.add_quest("meet_town", "Go south. Learn who in %s can be bought, and who is watching." % town)

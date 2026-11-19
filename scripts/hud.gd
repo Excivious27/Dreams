@@ -163,6 +163,7 @@ func _process(delta: float) -> void:
 			GameState.select_slot(i)
 	if Input.is_action_just_pressed("cycle_tool") and not Dialogue.input_blocked():
 		GameState.select_slot((int(GameState.run["slot"]) + 1) % 12)
+	ToolHint.first_pick(self)  # first time each tool is in hand: one line on what it does
 	# Redraw when what's shown changes, and at 10 Hz for the rest (boss bar, buffs, pointer).
 	var r := GameState.run
 	var sig := "%d|%d|%d|%d|%d|%d|%s|%s" % [int(r["hp"]), int(r["energy"]), int(r.get("mana", 0)), int(r["crystals"]), int(r["slot"]), int(r["time"]), str(r["toolbar"][int(r["slot"])]), Dialogue.instance(get_tree()).active]

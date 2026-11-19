@@ -164,8 +164,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"sea":
-			if GameState.has_tool("rod"):
-				_fish(c)
+			# fish_at casts with the rod in hand, else says how to get it there
+			_fish(c)
 			return true
 		"hut":
 			tell([{"text": "A thatched hut with surfboards leaning on it. Closed. A sign says 'back when the fish are'."}])

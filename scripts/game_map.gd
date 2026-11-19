@@ -484,6 +484,18 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
 		return true
 	match t:
+		"grove":
+			# The forest's old wood (the dense border stands): never chopped.
+			if GameState.held_tool() == "axe":
+				hud.toast("The old wood is too thick to chop. Try a lone tree.", Color(0.9, 0.9, 0.9))
+				return true
+			return false
+		"stone":
+			# Standing stones (crystal meadow): the pickaxe only rings off them.
+			if GameState.held_tool() == "pickaxe":
+				hud.toast("The standing stone won't chip. Old magic, or just very hard rock.", Color(0.9, 0.9, 0.9))
+				return true
+			return false
 		"fruit":
 			if not bool(thing.get("ripe", false)):
 				hud.toast("Nothing on it today." if GameState.season() != "winter" else "Bare till spring.", Color(0.9, 0.9, 0.9))
@@ -586,7 +598,11 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 							GameState.add_quality(prod, q, n)
 			return true
 		"weeds":
-			# Weeds come out by hand (or any tool): fiber, Stardew-style.
+			# Weeds come out by hand (or any tool that swings): fiber, Stardew-style.
+			# The can and the rod don't pull weeds (a watering row must not weed).
+			if ToolHint.is_soft(GameState.held_tool()):
+				ToolHint.say(self, "Pull weeds by hand or with a blade, hoe or scythe.")
+				return true
 			if not GameState.spend_for("weed"):
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
@@ -615,9 +631,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"tree", "log", "stump":
 			if GameState.held_tool() != "axe":
-				if GameState.has_tool("axe"):
-					hud.toast("Use the axe for that.")
-				return GameState.has_tool("axe")
+				return ToolHint.need(self, "axe", "to chop it")
 			var tb := GameState.tree_block(thing)
 			if tb != "":
 				player.play_tool("axe")
@@ -679,9 +693,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			return true
 		"rock":
 			if GameState.held_tool() != "pickaxe":
-				if GameState.has_tool("pickaxe"):
-					hud.toast("Use the pickaxe for that.")
-				return GameState.has_tool("pickaxe")
+				return ToolHint.need(self, "pickaxe", "to break it")
 			var ob := GameState.ore_block(str(thing.get("ore", "stone")))
 			if ob != "":
 				player.play_tool("pickaxe")
@@ -715,6 +727,9 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				break_rock(c, 1 + (1 if randf() < 0.5 else 0) + int(GameState.bonus("mining", "stone_bonus") / 3.0), extra, en, "m" if big else "")
 			return true
 		"bush":
+			if not bool(thing.get("berries", false)):
+				hud.toast("No berries on it right now." if GameState.season() != "winter" else "Bare till spring.", Color(0.9, 0.9, 0.9))
+				return true
 			if bool(thing.get("berries", false)):
 				thing["berries"] = false
 				thing["hint"] = ""
@@ -4138,7 +4153,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 	pool.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) < GameState.item_value(b))
 	if GameState.held_tool() != "rod":
 		# Only the rod in hand fishes (an axe or a hoe at the water does nothing).
-		hud.toast("Hold your fishing rod to fish." if GameState.has_tool("rod") else "You need a fishing rod.")
+		ToolHint.need(self, "rod", "to fish")
 		return
 	if not GameState.spend_for("rod"):
 		hud.toast("Too tired.", Color(1, 0.7, 0.7))

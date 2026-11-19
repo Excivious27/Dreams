@@ -206,8 +206,8 @@ func interact(_c: Vector2i, thing: Dictionary) -> bool:
 		return true
 	match str(thing.get("type", "")):
 		"water":
-			if GameState.has_tool("rod"):
-				fish_at(_c, ["minnow", "sunfish", "carp", "trout", "goldfish", "mooncarp"])
+			# fish_at casts with the rod in hand, else says how to get it there
+			fish_at(_c, ["minnow", "sunfish", "carp", "trout", "goldfish", "mooncarp"])
 			return true
 		"note":
 			tell([{"text": str(thing.get("text", "..."))}])

@@ -301,8 +301,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			tell([{"text": str(thing.get("text", "..."))}])
 			return true
 		"water":
-			if GameState.has_tool("rod"):
-				_fish(c)
+			# fish_at casts with the rod in hand, else says how to get it there
+			_fish(c)
 			return true
 		"door":
 			GameMap.next_interior = str(thing["interior"])
