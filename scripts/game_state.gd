@@ -2978,9 +2978,10 @@ static func _first_crop_step() -> String:
 	var left := 99
 	for t: Dictionary in planted:
 		left = mini(left, int(crops.get(str(t["crop"]), {}).get("days", 1)) - int(t.get("days", 0)))
+	var w := "The rain waters it today." if sky_waters() else "Watered."
 	if left <= 1:
-		return "Watered. Sleep, and it's ripe tomorrow."
-	return "Watered. Ripe in %d nights: water it each morning." % left
+		return w + " Sleep, and it's ripe tomorrow."
+	return w + " Ripe in %d nights: water it each dry morning." % left
 
 
 static func next_step() -> String:
@@ -2991,6 +2992,9 @@ static func next_step() -> String:
 		for q in run.get("quests", []):
 			if not bool(q.get("done", false)) and str(q["id"]) == pinned:
 				return str(q.get("text", ""))
+	var ripe := GoalLine.ripe_first()
+	if ripe != "":
+		return ripe
 	# The main story first (newest step), then everything else in order.
 	var mains := {}
 	for mq in quests_data.get("main", []):
@@ -2998,13 +3002,16 @@ static func next_step() -> String:
 	var qs: Array = run.get("quests", [])
 	for i in range(qs.size() - 1, -1, -1):
 		var q: Dictionary = qs[i]
-		if not bool(q.get("done", false)) and mains.has(str(q.get("id", ""))):
+		if not bool(q.get("done", false)) and mains.has(str(q.get("id", ""))) and not GoalLine.defer(str(q.get("id", ""))):
+			var gl := GoalLine.text(str(q.get("id", "")))
+			if gl != "" and Campaign.STORY_REGION.has(str(q.get("id", ""))):
+				return gl  # a story step still stands before the campaign
 			var cp := Campaign.story_pointer(str(q.get("id", "")))
 			if cp != "" and not (str(q.get("id", "")) == "sky_stair" and not (run["flags"].has("campfire_done") and run["flags"].has("babies_done"))):
 				return cp  # the story's next region is held: point at its campaign
 			if str(q.get("id", "")) == "sky_stair" and run["flags"].has("campfire_done") and run["flags"].has("babies_done"):
 				return "Climb the great tree in the forest: the stair goes above the clouds."
-			return _first_crop_step() if str(q.get("id", "")) == "first_harvest" else str(q.get("text", ""))
+			return _first_crop_step() if str(q.get("id", "")) == "first_harvest" else (gl if gl != "" else str(q.get("text", "")))
 	for q in run.get("quests", []):
 		if not bool(q.get("done", false)):
 			return str(q.get("text", ""))
