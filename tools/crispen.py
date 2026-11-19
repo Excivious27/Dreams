@@ -21,11 +21,10 @@ def is_crisp(img, colors=48):
     return len(op) == 0 or len(np.unique(op.view(np.dtype((np.void, 3))))) <= colors * 2 + 2
 
 
-def crispen(img, colors=24, outline=True, sharpen=80, alpha_cut=110):
+def crispen(img, colors=28, outline=True, sharpen=110, alpha_cut=110):
     img = img.convert("RGBA")
     a = np.asarray(img).astype(np.int32)
     m = a[..., 3] >= alpha_cut
-    m = ndimage.binary_opening(m, iterations=1) | (m & ndimage.binary_erosion(m, iterations=0 or 1))
     rgb = Image.fromarray(a[..., :3].astype(np.uint8))
     if sharpen:
         rgb = rgb.filter(ImageFilter.UnsharpMask(radius=1.0, percent=sharpen, threshold=2))
@@ -51,9 +50,8 @@ def crispen(img, colors=24, outline=True, sharpen=80, alpha_cut=110):
         c = np.where(m[..., None], q, c)
     if outline:
         # darken the rim toward a deep version of its own colour (a clean 1px outline)
-        dark = (c * 0.32 + np.array([10, 6, 16]) * 0.68 * 0.5).astype(np.int32)
-        lum = c.sum(-1)
-        c = np.where((rim & (lum > 150))[..., None], dark, c)
+        dark = (c * 0.28 + np.array([16, 12, 22]) * 0.72).astype(np.int32)
+        c = np.where(rim[..., None], dark, c)
     out = np.zeros_like(a)
     out[..., :3] = np.clip(c, 0, 255)
     out[..., 3] = np.where(m, 255, 0)

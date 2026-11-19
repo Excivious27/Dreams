@@ -1508,6 +1508,8 @@ func prop(group: String, name: String, c: Vector2i, extra_w := 0, dy := 0.0, sol
 				break
 	if group == "buildings":
 		_bprops.append([name, c, extra_w, s])
+	if group in ["buildings", "props", "nature"]:
+		CrispArt.apply(s)  # crisp when the phone magnifies 2x-detail art (shaders/sharp_pixel)
 	if solid:
 		# Base row always; big structures (buildings, barns, huts) also block the
 		# rows their body covers so you can't walk "into" them. Trees stay 1 row.

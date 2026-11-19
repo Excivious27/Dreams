@@ -7,8 +7,9 @@ Steps (run after the other slicers):  python3 tools/slice_r13_c2_p7.py [step ...
                   showed a bald man in a fur coat that matched nothing in the game.
   mine_rocks      crispens every mine stone/ore prop (tools/crispen.py): hard alpha,
                   magenta fringe removed, small palette, 1px dark outline, light unsharp.
-  buildings       crispens the worst-scoring buildings from tools/fuzz_audit.py
-                  (CRISP_BUILDINGS below; footprint and canvas size unchanged).
+Buildings are NOT crispened here: the palette step drops glow hues and hard alpha
+cuts their light beams; their softness came from magnification (fixed in code by
+CrispArt). Re-render the docs/FUZZY-ART.md list with the image tool instead.
 Every output file is removed before it is written (art/gen files are hardlinked).
 """
 import json, os, sys
@@ -61,22 +62,7 @@ def mine_rocks():
         _replace(C.crispen(im), "props", name)
 
 
-# Worst buildings by tools/fuzz_audit.py (docs/FUZZY-ART.md), crispened in place.
-CRISP_BUILDINGS = []
-
-
-def buildings():
-    for name in CRISP_BUILDINGS:
-        p = os.path.join(S.OUT, "buildings", name + ".png")
-        if not os.path.exists(p):
-            continue
-        im = Image.open(p).convert("RGBA")
-        if C.is_crisp(im):
-            continue
-        _replace(C.crispen(im, colors=48, outline=False), "buildings", name)
-
-
-STEPS = [card_big_grump, mine_rocks, buildings]
+STEPS = [card_big_grump, mine_rocks]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

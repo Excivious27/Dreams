@@ -2,6 +2,12 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 fix P7: art quality (Big Grump card, mine rocks, fuzz audit)
+- Big Grump boss card (ui/card_big_grump) showed a bald man in a fur coat; now the purple storm-cloud Grump in the gold boss frame, matching its sprite and portrait (image-tool edit, tools/slice_r13_c2_p7.py card_big_grump).
+- Mine stones/ore (55 props: mine_*_rock/bigrock/ore, node_*) crispened by tools/crispen.py: hard alpha (no magenta-tinted soft fringe), clean dark 1px outline, small palette, light unsharp. Same canvas sizes.
+- Code-side blur: phones draw the 270x480 canvas at 3-4x, so LINEAR smeared every 2x-detail texel (buildings are drawn at scale 1.0 = 1 texel per game pixel, worst hit). New `CrispArt` + shaders/sharp_pixel.gdshader (sharp-bilinear: solid texels, 1-pixel blended seams; plain bilinear at 1:1/minified) on every buildings/props/nature sprite from GameMap.prop().
+- tools/fuzz_audit.py scores all art/gen images (soft rim, detail under 2x shrink, mushy steps, colour counts) -> docs/FUZZY-ART.md, the ranked to-do (buildings first) for CONDUCT 5.
+- Test: tools/crisp_art_test.gd (card, shader on town buildings, mine rocks hard-alpha).
 ## 2026-11-19 — CONDUCT 2 (c2_13): gangster flavour of the Rec Hall, arcade and Westside Lot Garden
 - Rec Hall: every adult visitor now has gangster-arc lines there (Gideon, Maple, Finn, Lumi, Theo, Ivy, Juniper, Posy, Benno, Hazel, Rook + Alder/Sal); front desk greets with the hall's rule; Tobin's bowling bet no longer has Dad "putting up stakes"; the quest text says "the rec" (fits both arcs).
 - Prizes: Penguin Plush and Top Hat are penguin-arc only; the gangster counter (and claw machine) has Fuzzy Dice and a Pinstripe Fedora instead (`Tickets.arc_ok`, lock_text "Not on this counter."). Item texts no longer name the Rec Center/commons or say "high roller"; Commons Stew is Community Stew.
