@@ -65,3 +65,56 @@ After C3 finishes, schedule a message in this session for 5 h later (`send_later
 
 ## CONDUCT 1 agent scopes (as run 2026-11-19)
 01 penguin new game → end of day 2 · 02 gangster new game → end of day 2 · 03 goal line + quest pointers days 1-5 · 04 held-tool rules on every interaction · 05 gangster money words in Round 13 systems · 06 early-game gating · 07 phone UI at 270x480 · 08 softlocks and stuck spots · 09 energy, faint, pacing, money curve · 10 farming first week · 11 town first visits · 12 pup intro, early combat, first mine floors · 13 saves, slots, migration · 14 arc choice + arc systems intros · 15 regression rec/bowling/arcade · 16 regression community farm + world fixes · 17 regression animation/audio · 18 regression mega regions + campaigns · 19 performance phone/web · 20 progress inventory (docs only).
+
+
+## CONDUCT 10 — Decor and cosmetics ecosystem (Tom, 2026-11-19 13:46)
+
+Runs after CONDUCT 9 (then the final package and artifact). Goal: make the game appealing on another level with an extraordinarily large, progressive collection.
+- Categories: furniture, wall art, decor, wallpaper, flooring, house exterior styles (siding, roofs, doors, windows, fences), outdoor and farm decor (paths, lamps, planters, statues, fountains), apparel (hats, tops, bottoms, outfits, accessories) and footwear; both arcs get their own flavour (penguin whimsy; gangster underworld/cyberpunk, all-ages).
+- Sources: shops (tiered by progress), crafting stations, quests and heart perks, festivals, the rec prize counter, mines/regions/mega regions loot and secrets, bosses, collections, rare world finds.
+- Rarity: common, uncommon, rare, epic, legendary, mythic, and unique one-of-a-kind items (only one in the game); drop/price curves to match.
+- The auditors' job: identify every place in the game the need can be filled and how it should plug into existing systems (house/interior placement, farm placement, wardrobe/character sheet, shops, quests, loot tables, saves), then the fix agents build it with art from the image tool, a catalog/collection screen, tests, and save migration.
+
+
+## CONDUCT 11 — Ranching and livestock ecosystem (Tom, 2026-11-19 14:05)
+
+Runs after CONDUCT 10 (then the final package and artifact). Goal: a massively sophisticated, progressively tiered ranching system, seamlessly part of the game.
+- Classic: chickens and coops, cows and barns, goats, sheep, pigs, ducks, rabbits, bees; buildings upgrade by tier (coop → big coop → deluxe), feeders, incubators, auto-water, pastures and fencing.
+- Exotics bought, imported or earned through quests: ostriches (ostrich eggs), Komodo dragons, and fantastic creatures from mega regions and story places (moon/space creatures, Merkitty Islands creatures, etc.); gangster arc: genetically modified creatures from the cyber/robotics side (all-ages).
+- Products and processing (eggs, milk, wool, feathers, scales, exotic goods) feeding cooking, crafting, shops, quests and festivals; animal care, mood, friendship, breeding, rare variants/colours, shows/competitions.
+- A full Ranching skill tree (gen_skill_trees.py) with abilities like the others; heart perks, quests, mail, villagers (Hazel, Tam, Benno...) tied in; saves migrated.
+- Some raised animals can occasionally be trained to join your team as companions, like Pup (Tom 14:06): training path, fighting/helping abilities, a team slot, unified with the companion/party system.
+- Art via the image tool for every creature (walk/idle/produce animations) and building; audio for each creature.
+
+
+## CONDUCT 12 — Writing, story and dialogue (Tom, 2026-11-19 14:13)
+
+A very thorough pass, after CONDUCT 11 (so it covers the decor and ranching content too), then the final package and artifact. C7's story work comes first; C12 makes all writing rich, robust, well-worded and seamless across the whole game, both arcs, start to finish.
+- Every line of text: main story beats, side quests, villager dialogue (first meetings, daily, hearts, gifts, birthdays, festivals, weather, rec/commons/ranch chatter), mail, item and quest descriptions, tutorials and hints, locked-area messages, boss intros, endings.
+- Cohesion: each NPC's voice is consistent; what villagers say matches the player's real progress, quests, relationships and story state (no contradictions or references to things not yet seen); storylines reference each other; both arcs feel complete and distinct (penguins from Tom's book *The Two Too Powerful Penguins*; gangster arc serious, cool, all-ages).
+- Auditors read and play all writing by area/NPC/arc and cross-check continuity with a script (who mentions what, when); fix agents rewrite and fill gaps, add progression-aware variants, and add tests that check dialogue conditions match game state.
+
+
+## CONDUCT 13 — Audio depth (Tom, 2026-11-19 14:27)
+
+After CONDUCT 12. Builds on C6 (audio and music).
+- Every area gets alternate soundtracks (several songs per area, rotated by time of day, weather, story state, day of week) and every season gets many alternates (spring/summer/fall/winter sets per area, both arcs), made with ACE Music.
+- Full audit of every sound effect and song pairing: per quest, story beat, area, interior, event, festival, boss, minigame, UI screen; each one plays the right thing, at the right loudness, at the right moment, with no silence, clashes, repeats or wrong-arc sounds; web streaming checked.
+- Tests that map every place/state to its music and every action to its sound (extending music_map_test and sfx_audit).
+
+## CONDUCT 14 — Aesthetic quality of the world (Tom, 2026-11-19 14:27)
+
+After CONDUCT 13, then the final package and artifact. Builds on C5 (home-world look and feel) and C4 (mega regions).
+- Strictly the look and feel of the design: graphics quality (no fuzzy or mismatched art), smooth-looking edges and transitions between ground types, water and cliffs, region map layouts, natural boundaries (no boxy walls), explorability (hidden paths, vistas, secrets, reasons to wander), interesting geography (rivers, hills, caves, ruins, landmarks), lighting and colour harmony, density of detail vs Stardew/Sun Haven.
+- Auditors screenshot every map in every season/time and rank problems; fix agents redraw art (image tool), reshape maps and edges, and add landmarks and secrets.
+
+
+## CONDUCT 15 — Seasons (Tom, 2026-11-19 14:32)
+
+After CONDUCT 14. Each season uniquely built out, both arcs: its own festivals, holidays and events (calendar on the board), seasonal-only items, crops, forage, fish, creatures, shop stock, decor and recipes; unique seasonal quests and story/villager events; seasonal map dressing, weather, music hooks; year-to-year variety (some events only in year 2+). Tests that each season's calendar, availability and events fire correctly.
+
+## CONDUCT 16 — Progression and balance across the whole game (Tom, 2026-11-19 14:32)
+
+After CONDUCT 15, then the final package and artifact. A sophisticated evaluation of pacing across every way to play (farming, ranching, mining, combat, campaigns, crafting, fishing, foraging, arcade/rec, commons, relationships, story, mega regions, decor/cosmetics, money in both arcs) so everything ties together and nothing progresses too fast.
+- Unlocks of areas, regions, events, systems and big rewards take real time and effort; a deliberate spread of quick, moderate and long goals; some of the most interesting and rewarding elements only open in year 2 or 3.
+- Simulate several player styles over 3 in-game years (scripted bots + spreadsheets): income, XP, unlock days, item/region access; tune gates, prices, drop rates and requirements; document the intended unlock timeline (docs/PROGRESSION.md) and add tests that guard it.
