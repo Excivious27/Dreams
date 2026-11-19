@@ -440,6 +440,13 @@ func after_ready() -> void:
 				bh = maxi(2, int(ceil(bh * 0.62)))
 			var x0 := c.x + (w + 1 - bw) / 2
 			block_rect(x0, c.y - bh + 1, bw, bh)
+			# "open": footprint cells (offsets from the prop's cell) the art doesn't cover,
+			# measured from its alpha by the generator: no see-through walls at round corners.
+			for oc: Array in p.get("open", []):
+				var ocell := c + Vector2i(int(oc[0]), int(oc[1]))
+				if not things.has(ocell):
+					blocked.erase(ocell)
+					hard.erase(ocell)
 	for mc: Vector2i in things:
 		if str(things[mc].get("type", "")) == "mrock" and not props.has(mc):
 			prop("props", "mrock_stone_%d" % (absi(mc.x + mc.y) % 2), mc)  # every ore rock shows

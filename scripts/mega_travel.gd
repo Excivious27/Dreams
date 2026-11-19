@@ -3,7 +3,7 @@ extends RefCounted
 ## Travel points to the Round 13 mega regions (data/mega_travel.json, written by
 ## tools/gen_mega_new.py from tools/mega_regions_new.py). Each region has one
 ## way in from the home world (a sled, a caravan, a fairy ring, a balloon, a night
-## train, a gold limo) with a keeper who opens it with a short hook quest once the
+## train, a black limo) with a keeper who opens it with a short hook quest once the
 ## story is far enough along. Every hub has the same vehicle waiting to take you
 ## home, or on to any other mega hub you have opened.
 

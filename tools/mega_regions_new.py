@@ -21,7 +21,7 @@ Fields
 
 REGIONS = [
     {"id": "gloamwood", "name": "Gloamwood", "arc": "both", "theme": "gloam", "color": "7a5ab8",
-     "entry": {"scene": "forest", "cell": [26, 41], "prop": "fairy_ring", "group": "nature", "label": "step into the fairy ring"},
+     "entry": {"scene": "forest", "cell": [24, 38], "prop": "fairy_ring", "group": "nature", "label": "step into the fairy ring"},
      "unlock": {"tier": 1, "quest": "mega_gloamwood_hook", "flag": "mega_gloamwood_open"},
      "hub": "gloam_lanternfall",
      "areas": [
@@ -72,7 +72,7 @@ REGIONS = [
          {"id": "wind_starfall_garden", "scene": "wind_starfall_garden", "name": "Starfall Garden", "links": ["wind_storm_shelf"], "tier": 5},
      ]},
     {"id": "giltcity", "name": "Gilt City", "arc": "gangsters", "theme": "gilt", "color": "e8c048",
-     "entry": {"scene": "farm", "cell": [40, 31], "spawn": [40, 29], "prop": "limo", "label": "the gold limousine"},
+     "entry": {"scene": "farm", "cell": [40, 31], "spawn": [40, 29], "prop": "limo", "label": "the black limousine"},
      "unlock": {"tier": 4, "quest": "mega_giltcity_hook", "flag": "mega_giltcity_open"},
      "hub": "gilt_grand_plaza",
      "areas": [
@@ -133,7 +133,7 @@ TABS = {  # region: short, style, colours, blurb, travel, leave, how
                  "Islands above the sky islands, where the Storm Roc nests.",
                  "The balloon lifts through the last cloud into blue, and islands float by like stepping stones.",
                  "The balloon bumps down in the east meadow. Grass, at last."),
-    "giltcity": ("Gilt City", "city", [0.14, 0.11, 0.06], [0.5, 0.42, 0.22], [1.0, 0.85, 0.3], [1.0, 0.95, 0.8], "gold limousine",
+    "giltcity": ("Gilt City", "city", [0.14, 0.11, 0.06], [0.5, 0.42, 0.22], [1.0, 0.85, 0.3], [1.0, 0.95, 0.8], "black limousine",
                  "Madame Aurum's city of casinos, gardens and vaults.",
                  "The limousine purrs through the night. At dawn: gold stone, statues, and a hundred lit windows.",
                  "The limo drops you at the farm gate and glides away without a sound."),

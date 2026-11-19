@@ -19,8 +19,8 @@
    "entry": {
     "scene": "forest",
     "cell": [
-     26,
-     41
+     24,
+     38
     ],
     "prop": "fairy_ring",
     "group": "nature",
@@ -32,8 +32,8 @@
     ],
     "home_name": "the forest",
     "spawn": [
-     26,
-     43
+     24,
+     40
     ]
    },
    "unlock": {
@@ -344,7 +344,7 @@
      29
     ],
     "prop": "limo",
-    "label": "the gold limousine",
+    "label": "the black limousine",
     "w": 0,
     "keeper_at": [
      -2,
