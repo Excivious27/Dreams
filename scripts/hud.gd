@@ -779,6 +779,12 @@ func _draw_pointer(c: CanvasItem) -> void:
 		return
 	var ctr := view.get_center()
 	var d := (sp - ctr)
+	# Maps with a walking route (the mines) aim the arrow along it, not through walls.
+	if m.has_method("pointer_aim"):
+		var aim: Vector2 = m.call("pointer_aim")
+		var ct := m.get_viewport().get_canvas_transform()
+		if aim != tgt and aim != Vector2.ZERO:
+			d = (ct * aim - ct * m.player.position) * 100.0
 	var k := minf(absf((view.size.x * 0.5) / maxf(0.001, absf(d.x))), absf((view.size.y * 0.5) / maxf(0.001, absf(d.y))))
 	var at := ctr + d * k
 	var dir := d.normalized()
@@ -788,7 +794,7 @@ func _draw_pointer(c: CanvasItem) -> void:
 	var pts2 := PackedVector2Array([at + dir * 8.0, at - dir * 4.5 + dir.orthogonal() * 5.3, at - dir * 4.5 - dir.orthogonal() * 5.3])
 	c.draw_colored_polygon(pts2, col)
 	# How far, in cells, so 10 and 80 don't look the same.
-	var dist := str(int(m.player.position.distance_to(tgt) / 16.0))
+	var dist := str(int(m.call("pointer_dist")) if m.has_method("pointer_dist") else int(m.player.position.distance_to(tgt) / 16.0))
 	var tp := at - dir * 14.0 + Vector2(-10, 3)
 	c.draw_string_outline(_font, tp, dist, HORIZONTAL_ALIGNMENT_CENTER, 20, 6, 2, Color(0, 0, 0, 0.8))
 	c.draw_string(_font, tp, dist, HORIZONTAL_ALIGNMENT_CENTER, 20, 6, col)

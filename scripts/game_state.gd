@@ -913,6 +913,18 @@ static func add_tool(id: String) -> void:
 				tb[free] = id
 
 
+## Tom (CONDUCT 2): in the mines the pickaxe hit as hard as a sword (sword_damage
+## falls back to your best blade). Farm tools swung at a foe deal TOOL_FIGHT of
+## that (about 30%, at least 1): usable in a pinch, never a weapon.
+const TOOL_FIGHT := 0.3
+
+
+static func tool_fight_damage(held: String, dmg: int) -> int:
+	if held == "" or is_sword(held) or items.get(held, {}).has("range"):
+		return dmg
+	return maxi(1, int(round(dmg * TOOL_FIGHT)))
+
+
 static func sword_damage() -> int:
 	var held := held_tool()
 	var best := int(items.get(held, {}).get("damage", 0))
