@@ -370,6 +370,8 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 				e.hit(99999, e.position, true)
 	if fx.has("toast"):
 		m.hud.toast(str(fx["toast"]), Color(1, 0.9, 0.6))
+		if str(fx["toast"]).find("joined the crew") >= 0:
+			_explain_crew(m, fx)
 		if str(fx["toast"]).find("joined the crew") >= 0 and Art.has("ui", "crew_joined"):
 			var sp := Art.sprite("ui", "crew_joined")
 			if sp:
@@ -476,3 +478,23 @@ static func journal() -> Dictionary:
 		return {}
 	var ch: Dictionary = chs[clampi(n - 1, 0, chs.size() - 1)]
 	return {"chapter": n, "title": str(ch.get("title", "")), "summary": str(ch.get("summary", ""))}
+
+
+## The first crew member ever: say once what a crew is for and where to see it.
+static func _explain_crew(m: GameMap, fx: Dictionary) -> void:
+	if GameState.is_penguins() or GameState.run["flags"].has("crew_explained"):
+		return
+	var who := ""
+	for f in fx.get("flags", []):
+		if str(f).begins_with("crew_") and Crew.members().has(str(f).trim_prefix("crew_")):
+			who = str(f).trim_prefix("crew_")
+	if who == "":
+		return
+	GameState.run["flags"]["crew_explained"] = true
+	var mdef: Dictionary = Crew.members()[who]
+	var perks: Array = mdef.get("perks", [])
+	var perk := str(perks[0]) if not perks.is_empty() else ""
+	var text := "Your first crew member. Everyone you recruit brings a perk%s. Talk to them at the Hideout every few days: loyalty grows, and so does the perk. Your roster is in MENU > Party." % ((" (%s: %s)" % [str(mdef.get("name", who)), perk.substr(0, 1).to_lower() + perk.substr(1)]) if perk != "" else "")
+	GameState.add_hint(text)
+	m.tell([{"text": text}])
+

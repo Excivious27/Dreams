@@ -1508,7 +1508,7 @@
       },
       {
        "who": "",
-       "text": "A store, a smith, a clinic, a town hall with a bell tower and no bell. A woman on the bench by the gate who watches the road the way you watch it. Sal."
+       "text": "A store, a smith, a clinic, a town hall with a bell tower and no bell. A man on the bench by the gate who watches the road the way you watch it. Sal."
       }
      ],
      "effects": {
@@ -1573,7 +1573,7 @@
         "Get through the gate to Hideout town and find a place to work from."
        ]
       ],
-      "hint": "Sal says the hideout gate is past the meadow outskirts. Talk to her first."
+      "hint": "Tell Sal (the bench by the town gate) about the President's man. The Hideout gate is past the meadow, east through the outskirts."
      }
     },
     {
@@ -1633,7 +1633,7 @@
      "lines": [
       {
        "who": "",
-       "text": "Up close: the motel's half-lit sign, the diner's burnt coffee smell, the drive-in screen with a crown painted on it. Everybody here came from somewhere they can't go back to, which makes you a local."
+       "text": "Up close it smells of the diner's burnt coffee, and somebody has painted a crown on the drive-in screen. Everybody here came from somewhere they can't go back to, which makes you a local."
       },
       {
        "who": "",

@@ -2,7 +2,7 @@
  "main": [
   {
    "id": "meet_town",
-   "arc": "both",
+   "arc": "penguins",
    "text": "Visit the town and meet the people.",
    "when": {},
    "reward": {
@@ -10,9 +10,27 @@
    }
   },
   {
+   "id": "meet_town",
+   "arc": "gangsters",
+   "text": "Go south to town. Learn who can be bought, and who is watching.",
+   "when": {},
+   "reward": {
+    "crystals": 20
+   }
+  },
+  {
    "id": "first_harvest",
-   "arc": "both",
+   "arc": "penguins",
    "text": "Harvest your first crop.",
+   "when": {},
+   "reward": {
+    "crystals": 25
+   }
+  },
+  {
+   "id": "first_harvest",
+   "arc": "gangsters",
+   "text": "Grow and harvest your first crop. Sell it at the box by the house.",
    "when": {},
    "reward": {
     "crystals": 25
@@ -168,7 +186,7 @@
   {
    "id": "hideout",
    "arc": "gangsters",
-   "text": "Get through the gate to Hideout town and find a place to lie low.",
+   "text": "Get through the outskirts gate to Hideout town and find a place to work from.",
    "when": {
     "quest": "clear_meadow"
    },
@@ -184,7 +202,7 @@
    "arc": "gangsters",
    "text": "The docks move everything. Take them from the dock boss.",
    "when": {
-    "quest": "hideout"
+    "quest": "gang"
    },
    "done_when": {
     "flag": "boss_docks"
@@ -262,9 +280,9 @@
   {
    "id": "gang",
    "arc": "gangsters",
-   "text": "Recruit your first crew in Hideout town, past the meadow outskirts. (Sal is in. The rest is up to you.)",
+   "text": "Recruit your first crew in Hideout town: Deuce at his card table, Mama Rosa at the kitchen door.",
    "when": {
-    "flag": "sal_recruited"
+    "quest": "hideout"
    },
    "done_when": {
     "crew_any": 1

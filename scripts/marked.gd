@@ -27,8 +27,8 @@ static func met() -> int:
 static func on_enter(m: GameMap) -> void:
 	if not Racket.on() or m.player == null:
 		return
-	if m.scene_id() == "hideout" and not GameState.run["flags"].has("st_g2_arrive"):
-		return  # not during the first walk into town
+	if not GameState.run["flags"].has("st_g2_arrive"):
+		return  # not before the Hideout's own arrival scene: a new player meets the crew story first
 	for id: String in all():
 		var d: Dictionary = all()[id]
 		if str(d["scene"]) != m.scene_id() or state(id) != "":

@@ -153,8 +153,8 @@ func _town_tour() -> void:
 	var who := "Mayor Alder" if pen else "Sal"
 	player.frozen = true
 	await say([
-		{"who": who, "text": ("Welcome! I'm Alder, mayor of %s. Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools." if pen else "Before you go knocking on doors in %s: Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools.") % GameState.names()["town"]},
-		{"who": who, "text": ("The rest of us you'll meet. Your journal keeps a list (MENU > Quests)." if pen else "The rest you'll meet. Your journal keeps a list (MENU > Quests).")},
+		{"who": who, "text": ("Welcome! I'm Alder, mayor of %s. Maple's store north of the plaza has seeds; Gideon's forge next door fixes tools." if pen else "Sal. I sit on this bench and watch the road, same as you would. Before you go knocking on doors in %s: Maple's store north of the plaza sells seeds and asks no questions; Gideon's forge next door fixes tools.") % GameState.names()["town"]},
+		{"who": who, "text": ("The rest of us you'll meet. Your journal keeps a list (MENU > Quests)." if pen else "The rest you'll meet. Your journal keeps a list (MENU > Quests). And keep your hood up. Whoever you're hiding from, people like that have friends who travel.")},
 	])
 	if not is_inside_tree():
 		return
@@ -670,21 +670,6 @@ func _place_people() -> void:
 		npcs.append(n)
 
 
-func _arrival() -> void:
-	player.frozen = true
-	var town: String = GameState.names()["town"]
-	if GameState.is_penguins():
-		await say([
-			{"text": "%s. Cobbles, a river with two bridges, the smell of bread from Posy's, and a fountain everybody pretends they don't make wishes at. People look up when you pass. Not unkindly." % town},
-		])
-	else:
-		await say([
-			{"text": "%s. Big enough to get lost in, small enough that a new face is news. You keep your hood up and your hands in your pockets." % town},
-			{"text": "There's a man by the fountain who doesn't look up when you pass. That's the one to watch."},
-		])
-	player.frozen = false
-
-
 func update_enemies(delta: float) -> void:
 	super(delta)
 	if _orchard_watch:
@@ -897,7 +882,7 @@ func _lines(id: String, friend: int) -> Array:
 			if meadow_done and not peng:
 				if not r["flags"].has("sal_recruited"):
 					r["flags"]["sal_recruited"] = true
-					GameState.add_quest("gang", "Recruit your first crew in Hideout town, past the meadow outskirts. (Sal is in. The rest is up to you.)")
+					GameState.add_quest("gang", "Recruit your first crew in Hideout town: Deuce at his card table, Mama Rosa at the kitchen door.")
 					return [
 						{"who": "Sal", "text": "That was the President's man in the meadow. Not a good one, but one of his. You sent him running."},
 						{"who": "Sal", "text": "I used to run with a crew in the river cities, before. If you're building something... I'm in. Call it rent."},
