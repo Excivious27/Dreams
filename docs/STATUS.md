@@ -2,6 +2,15 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — Round 13: the Rec Center (Rec Hall in the gangster arc)
+- **A new building in town**, south-east of the library, with a lane to the avenue and a sign. It opens on the first morning from day 7, once you've met the town. A letter (Alder / Sal), a journal step and a hint announce it; your first game is free and your first visit gives 20 tickets. Before that the door shows the opening banner. New art: a timber Rec Center and a brick-and-neon Rec Hall.
+- **Two floors.** Ground floor: lobby, prize counter, front desk, high-score board, jukebox (changes the song), vending machine, claw machine (plushies, with a pity win after 12 tries), skee-ball, and six arcade cabinets (`ArcadeHub.open(map, game_id)`; agent a2's games plug in there). Upstairs: four bowling lanes with ball returns, score consoles, a snack bar, shoe rental and a trophy case.
+- **Bowling you can play** (`Bowling`, full screen): line up, spin, aim and power, then a perspective lane with simple pin physics and slow motion at the pins. Ten frames with real scoring (strikes, spares, the 10th frame), an overhead score sheet and a pin chart. A game costs ◆25 and pays tickets for score, strikes and spares. Touch buttons, or the stick and USE.
+- **Tickets** (`Tickets`, run["arcade"], old saves migrated) and the **prize counter** (`PrizeScreen`): 22 prizes on 4 shelves. Some prizes open at milestones (a 100/160/200/220/270 game, arcade plays, tickets won). Decor prizes (trophies on a shelf, music box, painting, jukebox, home arcade cabinet) show up in your house.
+- **A hub for villagers:** 17 of them have visit slots (evenings, rest days, rainy days, league night every third day of the week). They stand at lanes and cabinets, bowl on their lanes (with a cheer on a strike), and talk about the place and your best score. Two side quests: Tobin bets you can't bowl 120; Mabel wants the Teddy Bear.
+- **Audio:** a new ACE song "Lane Two Is Lucky" (`rec_center`; the gangster Rec Hall keeps `neon`); CC0 sounds for the ball roll and pin crashes; a bowling-alley ambience bed (`rec_alley`).
+- Data: `python3 tools/gen_rec.py`. Art: `python3 tools/slice_r13_a1.py`. Test: tools/rec_test.gd (in check.sh). Screenshots: tools/rec_shot.gd.
+
 ## 2026-11-18 — Round 12: art complete (image tool)
 - **Every outstanding art prompt is drawn:** 179 renders from the dreams-image server, plus 12 redraws (wrong-person rows, missing frames, matching enemies), which fills Prompts 17-30. Nothing is left in docs/MISSING-ART.md.
 - **Sliced and live in the game** (`tools/slice_world5.py` + `tools/slice_comp.py`, which find pieces as magenta-separated blobs):

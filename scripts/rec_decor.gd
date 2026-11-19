@@ -1,15 +1,14 @@
 class_name RecDecor
 extends Node2D
-## Hand-drawn pieces of the Rec Center: the bowling lanes (with villagers bowling
-## on the lanes they hold), arcade cabinets, neon on the walls, the high-score
-## board, the town sign, and prize decor in your house.
-##   mode: "lanes" | "floor" | "wall" | "cabinet" | "board" | "sign" | "house_wall"
+## Drawn pieces of the Rec Center: the bowling lanes (with villagers bowling on
+## the lanes they hold), the arcade carpet, neon on the walls, the high-score
+## board, the town sign, and a prize painting in your house.
+##   mode: "lanes" | "floor" | "wall" | "board" | "sign" | "house_wall"
 
 const T := 16.0
 
 var mode := ""
 var map: GameMap = null
-var color := Color("3fa9f5")
 var label := ""
 var _t := 0.0
 var _redraw_t := 0.0
@@ -26,7 +25,7 @@ func _process(delta: float) -> void:
 	if mode == "lanes":
 		_tick_lanes(delta)
 		queue_redraw()
-	elif mode in ["cabinet", "wall", "board", "floor"] and _redraw_t <= 0.0:
+	elif mode in ["wall", "board", "floor"] and _redraw_t <= 0.0:
 		_redraw_t = 0.12
 		queue_redraw()
 
@@ -36,7 +35,6 @@ func _draw() -> void:
 		"lanes": _draw_lanes()
 		"floor": _draw_floor()
 		"wall": _draw_wall()
-		"cabinet": _draw_cabinet()
 		"board": _draw_board()
 		"sign": _draw_sign()
 		"house_wall": _draw_house_wall()
@@ -79,15 +77,6 @@ func _draw_lanes() -> void:
 			draw_colored_polygon(PackedVector2Array([Vector2(ax, ay - 3), Vector2(ax - 1.5, ay + 1), Vector2(ax + 1.5, ay + 1)]), Color(0.3, 0.15, 0.1, 0.7) if not gang else Color(0.9, 0.3, 1, 0.9))
 		draw_rect(Rect2(x0, foul * T - 1, 2 * T, 2), Color("d23a3a"))
 		_draw_lane_action(int(ln["n"]), bed)
-	# Ball returns between the outer lanes.
-	for rx in [4, 11]:
-		var rr := Rect2(rx * T + 2, (foul - 2.2) * T, T - 4, 2.2 * T)
-		draw_rect(rr, Color("3a3a48"))
-		draw_rect(Rect2(rr.position.x + 2, rr.position.y + 2, rr.size.x - 4, rr.size.y - 8), Color("1d1d26"))
-		var cols := [Color("e04848"), Color("3a7be0"), Color("e0b040"), Color("40c080")]
-		for k in 3:
-			draw_circle(Vector2(rr.position.x + rr.size.x / 2.0, rr.end.y - 5 - k * 7), 3.2, cols[(k + rx) % cols.size()])
-			draw_circle(Vector2(rr.position.x + rr.size.x / 2.0 - 1, rr.end.y - 6 - k * 7), 1.0, Color(1, 1, 1, 0.6))
 	# Approach: lighter boards and dots.
 	draw_rect(Rect2(T, foul * T + 1, (map.cols - 2) * T, T - 1), Color(1, 1, 1, 0.07))
 	for ln in _lane_defs():
@@ -160,7 +149,7 @@ func _tick_lanes(delta: float) -> void:
 					st["down"] = down
 					st["phase"] = "scatter"
 					st["t"] = 0.0
-					Music.instance(get_tree()).sfx("thud", "block")
+					Music.instance(get_tree()).sfx("pin_crash", "thud")
 					if hits == 10:
 						_cheer(str(st.get("who", "")))
 			"scatter":
@@ -227,39 +216,6 @@ func _draw_wall() -> void:
 		if fmod(_t * (0.9 + i * 0.3), 7.0) < 0.12:
 			on = 0.25  # the odd flicker
 		draw_texture_rect(tx2, Rect2(float(s[0]) * T, 2, 22, 18), false, Color(1, 1, 1, on))
-
-
-## A cabinet standing on its feet (position = bottom centre of its cell).
-func _draw_cabinet() -> void:
-	var dark := Color("17151f")
-	var side := color.darkened(0.45)
-	# Floor glow.
-	draw_circle(Vector2(0, -1), 9.0, Color(color, 0.12 + 0.05 * sin(_t * 3.0)))
-	# Body: side panels, front, marquee.
-	draw_rect(Rect2(-7, -27, 14, 27), side)
-	draw_rect(Rect2(-6, -26, 12, 25), dark)
-	draw_rect(Rect2(-7, -28, 14, 5), color)
-	draw_rect(Rect2(-6, -27, 12, 3), color.lightened(0.35))
-	draw_rect(Rect2(-5, -26.5, 10, 1), Color(1, 1, 1, 0.6))
-	# Screen with a little looping picture.
-	var scr := Rect2(-5, -21, 10, 8)
-	draw_rect(scr, Color("061018"))
-	var ph := int(_t * 6.0)
-	for k in 4:
-		var px := scr.position.x + 1 + float((ph + k * 3) % 8)
-		var py := scr.position.y + 1 + float((k * 5 + ph / 2) % 6)
-		draw_rect(Rect2(px, py, 1.5, 1.5), color.lightened(0.3 + 0.15 * k))
-	draw_rect(Rect2(scr.position.x, scr.end.y - 2, scr.size.x, 1), Color(color, 0.6))
-	draw_rect(scr, Color(1, 1, 1, 0.08 + 0.04 * sin(_t * 9.0)))
-	# Control panel: stick and two buttons.
-	draw_rect(Rect2(-7, -12, 14, 4), side.lightened(0.1))
-	draw_line(Vector2(-3, -11), Vector2(-3, -14), Color("bbbbbb"), 1.0)
-	draw_circle(Vector2(-3, -14.5), 1.4, Color("e03a3a"))
-	draw_circle(Vector2(2, -10.5), 1.1, Color("f5c842"))
-	draw_circle(Vector2(4.5, -10.5), 1.1, Color("3fa9f5"))
-	# Coin door.
-	draw_rect(Rect2(-2, -6, 4, 3), Color("2a2a34"))
-	draw_rect(Rect2(-0.5, -5.5, 1, 2), Color(1, 0.6, 0.2, 0.6 + 0.4 * sin(_t * 4.0)))
 
 
 ## The high-score board on legs (ground floor).

@@ -28,8 +28,8 @@ def save(n, obj):
 # Town lot: south-east of the library, east of the beach road (town.gd places it).
 BUILDING = {
     "cell": [47, 78],
-    "penguins": {"sprite": "house_2", "scale": 0.8, "name": "Rec Center"},
-    "gangsters": {"sprite": "neon_hotel", "scale": 0.85, "name": "Rec Hall"},
+    "penguins": {"sprite": "rec_center", "scale": 0.75, "name": "Rec Center"},
+    "gangsters": {"sprite": "rec_hall", "scale": 0.75, "name": "Rec Hall"},
     "lane": [44, 87, 12, 2],   # dirt lane from the avenue to the door
     "open_day": 7,              # opens on the first morning from this day once the town intro is done
     "fee": 25,                  # crystals for one game of bowling
@@ -39,12 +39,12 @@ BUILDING = {
 # Arcade cabinets on the ground floor. ArcadeHub.open(id) plays one (agent a2's games);
 # until a game exists the cabinet says "Coming soon". Edit ids/names to match ArcadeHub.
 CABINETS = [
-    {"id": "block_jumper", "name": "Block Jumper", "color": "3fa9f5", "cell": [8, 2]},
-    {"id": "star_blaster", "name": "Star Blaster", "color": "f5486e", "cell": [9, 2]},
-    {"id": "fish_frenzy", "name": "Fish Frenzy", "color": "3fdc8c", "cell": [10, 2]},
-    {"id": "maze_muncher", "name": "Maze Muncher", "color": "f5c842", "cell": [11, 2]},
-    {"id": "sky_hopper", "name": "Sky Hopper", "color": "a46cf5", "cell": [12, 2]},
-    {"id": "crystal_drop", "name": "Crystal Drop", "color": "45e0e6", "cell": [13, 2]},
+    {"id": "block_jumper", "name": "Block Jumper", "sprite": "arcade_cab_0", "cell": [8, 2]},
+    {"id": "star_blaster", "name": "Star Blaster", "sprite": "arcade_cab_1", "cell": [9, 2]},
+    {"id": "fish_frenzy", "name": "Fish Frenzy", "sprite": "arcade_cab_2", "cell": [10, 2]},
+    {"id": "maze_muncher", "name": "Maze Muncher", "sprite": "arcade_cab_3", "cell": [11, 2]},
+    {"id": "sky_hopper", "name": "Sky Hopper", "sprite": "arcade_cab_4", "cell": [12, 2]},
+    {"id": "crystal_drop", "name": "Crystal Drop", "sprite": "arcade_cab_5", "cell": [13, 2]},
 ]
 
 LANES = [  # upper floor: left cell of each 2-wide lane; pins at the top, foul line at y 11
@@ -62,13 +62,17 @@ def room_ground():
         {"type": "rec", "act": "jukebox", "cell": [14, 5], "hint": "A: jukebox", "solid": True},
         {"type": "rec", "act": "soda", "cell": [14, 8], "hint": "A: vending machine", "solid": True},
         {"type": "rec", "act": "scores", "cell": [6, 2], "hint": "A: high scores", "solid": True},
+        {"type": "rec", "act": "claw", "cell": [14, 2], "hint": "A: claw machine", "solid": True},
+        {"type": "rec", "act": "skee", "cell": [2, 11], "hint": "A: skee-ball", "solid": True},
     ]
+    cabs = []
     for c in CABINETS:
         things.append({"type": "rec", "act": "cabinet", "game": c["id"], "cell": c["cell"], "hint": "A: play " + c["name"], "solid": True})
+        cabs.append({"group": "props", "name": c["sprite"], "cell": c["cell"]})
     return {
         "rec": True, "no_furnish": True,
         "cols": 16, "rows": 16, "floor": "fl_wood_light", "wall": "wl_panel",
-        "door": [8, 15], "back": ["town", 54, 87], "music": "festival",
+        "door": [8, 15], "back": ["town", 54, 87], "music": "rec_center",
         "windows": [4], "pet": False,
         "props": [
             {"name": "stairs_up", "cell": [1, 3], "w": 1, "solid": True},
@@ -77,14 +81,16 @@ def room_ground():
             {"group": "props", "name": "jukebox_a", "cell": [14, 5], "anim": False},
             {"group": "props", "name": "vend_red", "cell": [14, 8]},
             {"group": "props", "name": "vend_blue", "cell": [14, 9]},
-            {"name": "sofa_red", "cell": [5, 12], "w": 2},
-            {"name": "low_table", "cell": [6, 11]},
+            {"group": "props", "name": "claw_machine", "cell": [14, 2]},
+            {"group": "props", "name": "skee_ball", "cell": [2, 11], "w": 1},
+            {"name": "trophy_case", "cell": [14, 11]},
+            {"name": "sofa_red", "cell": [5, 13], "w": 2},
+            {"name": "low_table", "cell": [6, 12]},
             {"name": "plant2_a", "cell": [1, 14]},
             {"name": "plant2_b", "cell": [14, 14]},
             {"name": "plant2_c", "cell": [7, 2]},
-            {"name": "lamp_floor", "cell": [1, 10]},
-            {"name": "rug2_runner", "cell": [7, 9], "w": 2, "solid": False},
-        ],
+            {"name": "lamp_floor", "cell": [1, 8]},
+        ] + cabs,
         "things": things,
         "npcs": [],
         "intro": "Bright lights, the clatter of pins upstairs, a wall of cabinets blinking for attention. The prize counter glitters like a dragon's hoard.",
@@ -98,19 +104,26 @@ def room_up():
     for ln in LANES:
         for dx in (0, 1):
             things.append({"type": "rec", "act": "lane", "lane": ln["n"], "cell": [ln["x"] + dx, LANE_FOUL + 1], "hint": "A: bowl (lane %d)" % ln["n"], "solid": False})
-    things.append({"type": "rec", "act": "shoes", "cell": [13, 14], "hint": "A: shoe rental", "solid": True})
+    things.append({"type": "rec", "act": "shoes", "cell": [13, 16], "hint": "A: shoe rental", "solid": True})
+    things.append({"type": "rec", "act": "snack", "cell": [10, 16], "hint": "A: snack bar", "solid": True})
+    things.append({"type": "rec", "act": "trophies", "cell": [1, 13], "hint": "A: trophy case", "solid": True})
     return {
         "rec": True, "no_furnish": True, "lanes": True,
         "cols": 16, "rows": 18, "floor": "fl_parquet", "wall": "wl_panel",
         "door": [8, 17], "back": ["in_rec", 2, 4], "door_prop": "stairs_down", "door_hint": "A: downstairs",
-        "music": "festival", "windows": [], "pet": False,
+        "music": "rec_center", "windows": [], "pet": False,
         "props": [
-            {"name": "sofa_red", "cell": [2, 15], "w": 2},
-            {"name": "sofa_blue", "cell": [5, 15], "w": 2},
-            {"name": "counter_plain", "cell": [12, 13], "w": 2},
-            {"name": "plant2_a", "cell": [1, 16]},
-            {"name": "plant2_d", "cell": [14, 16]},
-            {"name": "lamp_floor", "cell": [10, 16]},
+            {"name": "ball_return", "cell": [4, 10]},
+            {"name": "ball_return", "cell": [11, 10]},
+            {"name": "ball_rack", "cell": [7, 10], "w": 1},
+            {"name": "score_console", "cell": [3, 14], "w": 1},
+            {"name": "score_console", "cell": [11, 14], "w": 1},
+            {"name": "trophy_case", "cell": [1, 13]},
+            {"name": "pin_statue", "cell": [14, 13]},
+            {"name": "sofa_red", "cell": [2, 16], "w": 2},
+            {"name": "sofa_blue", "cell": [5, 16], "w": 1},
+            {"name": "snack_counter", "cell": [10, 16], "w": 1},
+            {"name": "shoe_counter", "cell": [13, 16], "w": 1},
         ],
         "things": things,
         "npcs": [],
@@ -172,15 +185,16 @@ PRIZES = [
 
 # Where owned decor shows up in your house (House calls RecCenter.dress_house).
 HOUSE_DECOR = {
-    "rp_music_box": {"group": "items", "name": "music_box", "cell": [6, 8], "scale": 0.45},
+    "rp_music_box": {"shelf": [11, 8], "slot": 1, "name": "music_box"},
     "rp_painting": {"wall": "painting_abstract", "x": 8},
-    "rp_trophy_bronze": {"group": "items", "name": "trophy_bronze", "cell": [12, 5], "scale": 0.4},
-    "rp_trophy_silver": {"group": "items", "name": "trophy_silver", "cell": [12, 6], "scale": 0.4},
-    "rp_trophy_gold": {"group": "items", "name": "trophy_gold", "cell": [12, 7], "scale": 0.45},
-    "rp_golden_pin": {"group": "items", "name": "trophy_master", "cell": [11, 5], "scale": 0.45},
-    "rp_arcade_medal": {"group": "items", "name": "medal_gold", "cell": [11, 6], "scale": 0.4},
+    # Trophies stand on a trophy shelf (shelf: [cell x, y], slot 0-2 across its top).
+    "rp_trophy_bronze": {"shelf": [11, 6], "slot": 0, "name": "trophy_bronze"},
+    "rp_trophy_silver": {"shelf": [11, 6], "slot": 1, "name": "trophy_silver"},
+    "rp_trophy_gold": {"shelf": [11, 6], "slot": 2, "name": "trophy_gold"},
+    "rp_golden_pin": {"shelf": [11, 8], "slot": 0, "name": "trophy_master"},
+    "rp_arcade_medal": {"shelf": [11, 8], "slot": 2, "name": "medal_gold"},
     "rp_jukebox": {"group": "props", "name": "jukebox_b", "cell": [1, 5], "solid": True},
-    "rp_arcade_cab": {"cabinet": True, "cell": [1, 7], "color": "f5486e"},
+    "rp_arcade_cab": {"group": "props", "name": "arcade_cab_1", "cell": [1, 7], "solid": True},
 }
 
 # ---------------------------------------------------------------- villagers
@@ -209,9 +223,9 @@ VISITORS = {
 # Where visitors stand: per floor, ordered (lanes: the approach cells; cabinets: in front of each).
 STANDS = {
     "rec": {"cab": [[8, 3], [10, 3], [12, 3], [9, 3], [11, 3], [13, 3]],
-            "lobby": [[5, 10], [7, 13], [9, 11], [3, 12], [10, 7], [6, 6]]},
+            "lobby": [[5, 10], [9, 13], [9, 10], [4, 12], [10, 7], [6, 6]]},
     "rec_up": {"lane": [[3, 12], [6, 12], [10, 12], [13, 12], [2, 13], [5, 13], [9, 13], [12, 13]],
-               "lobby": [[4, 14], [7, 14], [9, 15], [11, 15]]},
+               "lobby": [[6, 14], [9, 14], [2, 15], [12, 15]]},
 }
 
 # What people say about the place. {best} = your best game, {tickets} = tickets on hand,

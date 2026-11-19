@@ -161,7 +161,7 @@ func _tap(ev: InputEvent) -> void:
 func _draw_it() -> void:
 	var c := _canvas
 	var gang := not GameState.is_penguins()
-	c.draw_rect(Rect2(0, 0, 270, 480), Color(0.07, 0.04, 0.1, 0.96) if gang else Color(0.16, 0.07, 0.1, 0.96))
+	c.draw_rect(Rect2(0, 0, 270, 480), Color(0.07, 0.04, 0.1) if gang else Color(0.16, 0.07, 0.1))
 	# Striped awning like the prize counter's.
 	for i in 14:
 		c.draw_rect(Rect2(i * 20.0, 0, 10, 14), Color("c8323c") if not gang else Color("b02aa0"))

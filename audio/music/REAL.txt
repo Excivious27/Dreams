@@ -60,3 +60,4 @@ finargle
 shop_gang
 credits
 merkitty_song
+rec_center

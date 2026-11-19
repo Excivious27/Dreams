@@ -339,7 +339,7 @@ const BTN_R := Rect2(54, 398, 42, 34)
 const BTN_SPIN_L := Rect2(8, 438, 42, 28)
 const BTN_SPIN_R := Rect2(54, 438, 42, 28)
 const BTN_GO := Rect2(102, 398, 48, 68)
-const BTN_QUIT := Rect2(236, 50, 28, 18)
+const BTN_QUIT := Rect2(6, 72, 28, 18)
 
 var lane := 1
 var sim := Sim.new()
@@ -485,12 +485,13 @@ func _throw() -> void:
 	sim.throw(x0, aim, speed, spin_step / 3.0)
 	_slowmo = 1.0
 	Music.instance(get_tree()).sfx("swing_heavy", "swing")
+	Music.instance(get_tree()).sfx("bowl_roll", "thud")
 
 
 func _on_event(e: String) -> void:
 	match e:
 		"hit":
-			Music.instance(get_tree()).sfx("crate_break", "thud")
+			Music.instance(get_tree()).sfx("pin_crash", "thud")
 		"gutter":
 			Music.instance(get_tree()).sfx("nope", "thud")
 			_say("Gutter...", 1.0)
@@ -505,6 +506,7 @@ func _scored() -> void:
 	if mark == "X":
 		_say("STRIKE!", 1.6)
 		Music.instance(get_tree()).sfx("j_treasure", "levelup")
+		Music.instance(get_tree()).sfx("clap", "pickup")
 	elif mark == "/":
 		_say("SPARE!", 1.4)
 		Music.instance(get_tree()).sfx("sparkle", "pickup")
@@ -601,11 +603,16 @@ func _draw_it() -> void:
 	var c := _canvas
 	var gang := not GameState.is_penguins()
 	# Room: ceiling and back wall.
-	c.draw_rect(Rect2(0, 0, 270, 480), Color("120e18") if not gang else Color("0a0614"))
-	for i in 5:
-		var lx := 30.0 + i * 52.0
-		c.draw_rect(Rect2(lx - 10, 86, 20, 3), Color(1, 0.95, 0.8, 0.5) if not gang else Color(1, 0.3, 0.9, 0.5))
-		c.draw_circle(Vector2(lx, 90), 14.0, Color(1, 0.95, 0.8, 0.04))
+	c.draw_rect(Rect2(0, 0, 270, 480), Color("1e140e") if not gang else Color("0a0614"))
+	# The far wall: ceiling lamps and the mural over the pin decks, in perspective.
+	var wall := Art.tex("backdrops", "bowling_wall")
+	if wall:
+		# Sized like a backdrop (it grows a little as you near the pins, never fills the view).
+		var base := _proj(0.0, 790.0, 0.0)
+		if base.z > 0:
+			var ww := clampf(1000.0 * base.z, 300.0, 420.0)
+			var wh := ww * wall.get_height() / wall.get_width()
+			c.draw_texture_rect(wall, Rect2(base.x - ww / 2.0, base.y - wh, ww, wh), false, Color(1, 1, 1) if not gang else Color(0.75, 0.55, 1.0))
 	# Neighbouring lanes, dimmer.
 	for off in [-48.0, 48.0]:
 		_quad(off - 20.5, off + 20.5, -60.0, 770.0, Color("6b4e30") if not gang else Color("1e1830"))
@@ -630,12 +637,13 @@ func _draw_it() -> void:
 	_quad(-Sim.LANE_HALF, Sim.LANE_HALF, 708.0, 762.0, Color(1, 1, 1, 0.1))
 	# The pit and the masking unit behind the pins.
 	_quad(-26.0, 26.0, 762.0, 790.0, Color("0a0a10"))
+	# The dark opening over the pin deck, with the lane's number lit above it.
 	var mu_a := _p2(-30.0, 790.0, 0.0)
-	var mu_b := _p2(30.0, 790.0, 40.0)
-	c.draw_rect(Rect2(mu_a.x, mu_b.y, mu_b.x - mu_a.x, mu_a.y - mu_b.y), Color("231a30") if not gang else Color("150828"))
+	var mu_b := _p2(30.0, 790.0, 22.0)
+	c.draw_rect(Rect2(mu_a.x, mu_b.y, mu_b.x - mu_a.x, mu_a.y - mu_b.y), Color("120c10") if not gang else Color("0a0412"))
 	var lc := [Color("f5486e"), Color("3fa9f5"), Color("f5c842"), Color("3fdc8c")][(lane - 1) % 4] as Color
-	var fsz := clampi(int((mu_a.y - mu_b.y) * 0.45), 6, 28)
-	c.draw_string(_font, Vector2(mu_a.x, mu_b.y + (mu_a.y - mu_b.y) * 0.62), RecCenter.name().to_upper() if GameState.run.size() > 0 else "REC", HORIZONTAL_ALIGNMENT_CENTER, mu_b.x - mu_a.x, fsz, Color(lc, 0.9))
+	var fsz := clampi(int((mu_a.y - mu_b.y) * 0.5), 5, 20)
+	c.draw_string(_font, Vector2(mu_a.x, mu_b.y + fsz * 0.9), str(lane), HORIZONTAL_ALIGNMENT_CENTER, mu_b.x - mu_a.x, fsz, Color(lc, 0.9))
 	# Kickbacks (side walls by the pins).
 	for sx in [-1.0, 1.0]:
 		var k0 := _p2(sx * 26.0, 700.0, 0.0)
@@ -706,6 +714,8 @@ func _draw_pin(p: Dictionary) -> void:
 			right.append(_p2(pos.x + float(q[1]), pos.y, float(q[0])))
 		right.reverse()
 		var poly := left + right
+		if Geometry2D.triangulate_polygon(poly).is_empty():
+			return
 		c.draw_colored_polygon(poly, Color(0.97, 0.96, 0.93))
 		c.draw_polyline(poly + PackedVector2Array([poly[0]]), Color(0.5, 0.5, 0.55, 0.6), maxf(0.5, s * 0.6))
 		for band in [9.3, 10.4]:
@@ -736,6 +746,9 @@ func _draw_pin(p: Dictionary) -> void:
 		side_b.append(_p2(gp.x - perp.x * r, gp.y - perp.y * r, hh))
 	side_b.reverse()
 	pts = side_a + side_b
+	if Geometry2D.triangulate_polygon(pts).is_empty():
+		c.draw_polyline(side_a, Color(0.9, 0.89, 0.86), maxf(1.0, s * 2.4))
+		return
 	c.draw_colored_polygon(pts, Color(0.9, 0.89, 0.86))
 	c.draw_polyline(pts + PackedVector2Array([pts[0]]), Color(0.45, 0.45, 0.5, 0.6), maxf(0.5, s * 0.5))
 

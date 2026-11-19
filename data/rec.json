@@ -6,13 +6,13 @@
    78
   ],
   "penguins": {
-   "sprite": "house_2",
-   "scale": 0.8,
+   "sprite": "rec_center",
+   "scale": 0.75,
    "name": "Rec Center"
   },
   "gangsters": {
-   "sprite": "neon_hotel",
-   "scale": 0.85,
+   "sprite": "rec_hall",
+   "scale": 0.75,
    "name": "Rec Hall"
   },
   "lane": [
@@ -29,7 +29,7 @@
   {
    "id": "block_jumper",
    "name": "Block Jumper",
-   "color": "3fa9f5",
+   "sprite": "arcade_cab_0",
    "cell": [
     8,
     2
@@ -38,7 +38,7 @@
   {
    "id": "star_blaster",
    "name": "Star Blaster",
-   "color": "f5486e",
+   "sprite": "arcade_cab_1",
    "cell": [
     9,
     2
@@ -47,7 +47,7 @@
   {
    "id": "fish_frenzy",
    "name": "Fish Frenzy",
-   "color": "3fdc8c",
+   "sprite": "arcade_cab_2",
    "cell": [
     10,
     2
@@ -56,7 +56,7 @@
   {
    "id": "maze_muncher",
    "name": "Maze Muncher",
-   "color": "f5c842",
+   "sprite": "arcade_cab_3",
    "cell": [
     11,
     2
@@ -65,7 +65,7 @@
   {
    "id": "sky_hopper",
    "name": "Sky Hopper",
-   "color": "a46cf5",
+   "sprite": "arcade_cab_4",
    "cell": [
     12,
     2
@@ -74,7 +74,7 @@
   {
    "id": "crystal_drop",
    "name": "Crystal Drop",
-   "color": "45e0e6",
+   "sprite": "arcade_cab_5",
    "cell": [
     13,
     2
@@ -430,15 +430,15 @@
      10
     ],
     [
-     7,
+     9,
      13
     ],
     [
      9,
-     11
+     10
     ],
     [
-     3,
+     4,
      12
     ],
     [
@@ -488,19 +488,19 @@
    ],
    "lobby": [
     [
-     4,
-     14
-    ],
-    [
-     7,
+     6,
      14
     ],
     [
      9,
+     14
+    ],
+    [
+     2,
      15
     ],
     [
-     11,
+     12,
      15
     ]
    ]
@@ -597,62 +597,56 @@
  },
  "house_decor": {
   "rp_music_box": {
-   "group": "items",
-   "name": "music_box",
-   "cell": [
-    6,
+   "shelf": [
+    11,
     8
    ],
-   "scale": 0.45
+   "slot": 1,
+   "name": "music_box"
   },
   "rp_painting": {
    "wall": "painting_abstract",
    "x": 8
   },
   "rp_trophy_bronze": {
-   "group": "items",
-   "name": "trophy_bronze",
-   "cell": [
-    12,
-    5
+   "shelf": [
+    11,
+    6
    ],
-   "scale": 0.4
+   "slot": 0,
+   "name": "trophy_bronze"
   },
   "rp_trophy_silver": {
-   "group": "items",
-   "name": "trophy_silver",
-   "cell": [
-    12,
+   "shelf": [
+    11,
     6
    ],
-   "scale": 0.4
+   "slot": 1,
+   "name": "trophy_silver"
   },
   "rp_trophy_gold": {
-   "group": "items",
-   "name": "trophy_gold",
-   "cell": [
-    12,
-    7
-   ],
-   "scale": 0.45
-  },
-  "rp_golden_pin": {
-   "group": "items",
-   "name": "trophy_master",
-   "cell": [
-    11,
-    5
-   ],
-   "scale": 0.45
-  },
-  "rp_arcade_medal": {
-   "group": "items",
-   "name": "medal_gold",
-   "cell": [
+   "shelf": [
     11,
     6
    ],
-   "scale": 0.4
+   "slot": 2,
+   "name": "trophy_gold"
+  },
+  "rp_golden_pin": {
+   "shelf": [
+    11,
+    8
+   ],
+   "slot": 0,
+   "name": "trophy_master"
+  },
+  "rp_arcade_medal": {
+   "shelf": [
+    11,
+    8
+   ],
+   "slot": 2,
+   "name": "medal_gold"
   },
   "rp_jukebox": {
    "group": "props",
@@ -664,12 +658,13 @@
    "solid": true
   },
   "rp_arcade_cab": {
-   "cabinet": true,
+   "group": "props",
+   "name": "arcade_cab_1",
    "cell": [
     1,
     7
    ],
-   "color": "f5486e"
+   "solid": true
   }
  }
 }

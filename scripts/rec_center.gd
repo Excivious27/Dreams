@@ -265,14 +265,6 @@ static func dress(m: GameMap, interior_id: String) -> void:
 		bd.map = m
 		bd.position = m.cell_pos(6.5, 3)
 		m.add_child(bd)
-		for cab in data().get("cabinets", []):
-			var n := RecDecor.new()
-			n.mode = "cabinet"
-			n.map = m
-			n.color = Color(str(cab.get("color", "3fa9f5")))
-			n.label = str(cab.get("name", ""))
-			n.position = m.cell_pos(int(cab["cell"][0]) + 0.5, int(cab["cell"][1]) + 1)
-			m.add_child(n)
 	if not GameState.run["flags"].has("rec_visited"):
 		GameState.run["flags"]["rec_visited"] = true
 		if GameState.has_quest("rec_visit") and GameState.complete_quest("rec_visit"):
@@ -302,6 +294,14 @@ static func use(m: GameMap, thing: Dictionary, c: Vector2i) -> void:
 			await m.say([{"who": "", "text": "Rental shoes in every size, sprayed fresh. Somebody has written YOUR SIZE on a pair, in your handwriting. Spooky."}])
 		"cabinet":
 			_cabinet(m, str(thing.get("game", "")))
+		"claw":
+			await _claw(m)
+		"skee":
+			await _skee(m)
+		"snack":
+			await _snack(m)
+		"trophies":
+			await _trophies(m)
 		"lane":
 			await _lane(m, int(thing.get("lane", 1)))
 
@@ -401,7 +401,7 @@ static func _scores(m: GameMap) -> void:
 	await m.say([{"who": "High scores", "text": "\n".join(lines)}])
 
 
-const JUKEBOX := ["festival", "neon", "inn", "town", "beach", "uptown", "countryside"]
+const JUKEBOX := ["rec_center", "neon", "festival", "inn", "town", "beach", "uptown", "countryside"]
 
 
 static func _jukebox(m: GameMap) -> void:
@@ -413,6 +413,85 @@ static func _jukebox(m: GameMap) -> void:
 			Music.instance(m.get_tree()).play(t)
 			m.hud.toast("♪ The jukebox clunks and spins a new record.", Color(0.9, 0.85, 1))
 			return
+
+
+## The claw machine: ◆10 a go, a plush now and then (better luck with Luck).
+static func _claw(m: GameMap) -> void:
+	var price := 10
+	var d := Dialogue.instance(m.get_tree())
+	d.say([{"who": "", "text": "CLAW MACHINE · ◆%d a go. A teddy bear stares at you through the glass.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["Try it", "Leave"], "key": ""}])
+	await d.finished
+	if d.last_choice != 0:
+		return
+	if int(GameState.run["crystals"]) < price:
+		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+		return
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
+	Music.instance(m.get_tree()).sfx("servo", "ui_tap")
+	var odds := 0.12 + 0.02 * GameState.gear_stat("luck")
+	var f: Dictionary = GameState.run["flags"]
+	f["claw_tries"] = int(f.get("claw_tries", 0)) + 1
+	if randf() < odds or int(f["claw_tries"]) >= 12:  # a pity win after a long dry run
+		f["claw_tries"] = 0
+		var pick: String = ["rp_teddy", "rp_penguin_plush", "rp_cat_plush"][randi() % 3]
+		await m.say([{"who": "", "text": "The claw wobbles... and holds! Down the chute it comes."}])
+		Music.instance(m.get_tree()).sfx("j_treasure", "levelup")
+		m.give(pick, 1)
+	elif randf() < 0.45:
+		m.give("candy", 1, true)
+		m.hud.toast("The claw drops it... and knocks a candy loose.", Color(1, 0.9, 0.7))
+	else:
+		m.hud.toast("So close! The claw lets go at the last second.", Color(1, 0.85, 0.7))
+
+
+## Skee-ball: ◆5 for three balls, timed rolls up the ramp; tickets by the rings hit.
+static func _skee(m: GameMap) -> void:
+	var price := 5
+	var d := Dialogue.instance(m.get_tree())
+	d.say([{"who": "", "text": "SKEE-BALL · ◆%d for three balls. Rings pay 10 to 50; the corner cup pays 100.  (you have ◆%d)" % [price, int(GameState.run["crystals"])], "choice": ["Roll", "Leave"], "key": ""}])
+	await d.finished
+	if d.last_choice != 0:
+		return
+	if int(GameState.run["crystals"]) < price:
+		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+		return
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - price
+	var total := 0
+	var rolls: Array = []
+	for i in 3:
+		var r := randf() + 0.03 * GameState.gear_stat("luck")
+		var pts := 100 if r > 0.95 else (50 if r > 0.82 else (40 if r > 0.65 else (30 if r > 0.45 else (20 if r > 0.25 else 10))))
+		total += pts
+		rolls.append(str(pts))
+		Music.instance(m.get_tree()).sfx("thud", "block")
+	var t := maxi(1, total / 20)
+	Tickets.set_best("skee_ball", total)
+	Tickets.add(t, "skee_ball")
+	await m.say([{"who": "", "text": "Thunk, thunk, thunk: %s. Score %d!  +%d tickets." % [" + ".join(rolls), total, t]}])
+
+
+static func _snack(m: GameMap) -> void:
+	var price := 15
+	var d := Dialogue.instance(m.get_tree())
+	d.say([{"who": "", "text": "SNACK BAR · Cotton candy ◆%d, Fizzy Pop ◆%d.  (you have ◆%d)" % [price, int(data().get("building", {}).get("soda", 12)), int(GameState.run["crystals"])], "choice": ["Cotton candy", "Fizzy Pop", "Leave"], "key": ""}])
+	await d.finished
+	if d.last_choice < 0 or d.last_choice > 1:
+		return
+	var cost := price if d.last_choice == 0 else int(data().get("building", {}).get("soda", 12))
+	if int(GameState.run["crystals"]) < cost:
+		m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+		return
+	GameState.run["crystals"] = int(GameState.run["crystals"]) - cost
+	Music.instance(m.get_tree()).sfx("cash", "coin")
+	m.give("rp_cotton_candy" if d.last_choice == 0 else "rp_fizzy_pop", 1)
+
+
+static func _trophies(m: GameMap) -> void:
+	var best := Tickets.best_score("bowling")
+	var next := 100 if best < 100 else (160 if best < 160 else (220 if best < 220 else (270 if best < 270 else 300)))
+	var txt := "The house trophies gleam: league cups, a golden pin, a photo of Gideon looking smug."
+	txt += ("  A card: \"Bowl %d to see your name here.\"" % next) if best < 300 else "  Your name is on the top shelf. A perfect game."
+	await m.say([{"who": "", "text": txt}])
 
 
 static func _soda(m: GameMap) -> void:
@@ -435,6 +514,7 @@ static func _soda(m: GameMap) -> void:
 ## House.after_ready hook: prize decor you own shows up at home.
 static func dress_house(m: GameMap) -> void:
 	var deco: Dictionary = data().get("house_decor", {})
+	var shelves := {}
 	for id in deco:
 		if GameState.count(str(id)) < 1:
 			continue
@@ -446,16 +526,21 @@ static func dress_house(m: GameMap) -> void:
 			w.position = Vector2(int(d["x"]) * GameMap.TILE + 8, 2 * GameMap.TILE - 3)
 			m.add_child(w)
 			continue
-		var c := Vector2i(int(d["cell"][0]), int(d["cell"][1]))
-		if bool(d.get("cabinet", false)):
-			var n := RecDecor.new()
-			n.mode = "cabinet"
-			n.map = m
-			n.color = Color(str(d.get("color", "f5486e")))
-			n.position = m.cell_pos(c.x + 0.5, c.y + 1)
-			m.add_child(n)
-			m.blocked[c] = true
+		if d.has("shelf"):
+			# A trophy shelf (once per spot) with the piece standing on its top.
+			var sc := Vector2i(int(d["shelf"][0]), int(d["shelf"][1]))
+			if not shelves.has(sc) and Art.has("furniture", "trophy_shelf"):
+				shelves[sc] = m.prop("furniture", "trophy_shelf", sc, 1, 0.0, true, 0.5)
+			var t := Art.sprite("items", str(d["name"]))
+			if t:
+				var tw := float(t.texture.get_height()) if t.texture else 32.0
+				var ts := 13.0 / maxf(1.0, tw)
+				t.scale = Vector2(ts, ts)
+				t.position = m.cell_pos(sc.x + 0.35 + 0.65 * int(d.get("slot", 0)), sc.y + 1) + Vector2(0, -15)
+				t.offset = Vector2(0, -t.texture.get_height() / 2.0) if t.texture else Vector2.ZERO
+				m.add_child(t)
 			continue
+		var c := Vector2i(int(d["cell"][0]), int(d["cell"][1]))
 		var g := str(d.get("group", "items"))
 		var nm := str(d.get("name", ""))
 		if Art.has(g, nm):

@@ -4806,7 +4806,7 @@
    54,
    87
   ],
-  "music": "festival",
+  "music": "rec_center",
   "windows": [
    4
   ],
@@ -4865,10 +4865,34 @@
     ]
    },
    {
+    "group": "props",
+    "name": "claw_machine",
+    "cell": [
+     14,
+     2
+    ]
+   },
+   {
+    "group": "props",
+    "name": "skee_ball",
+    "cell": [
+     2,
+     11
+    ],
+    "w": 1
+   },
+   {
+    "name": "trophy_case",
+    "cell": [
+     14,
+     11
+    ]
+   },
+   {
     "name": "sofa_red",
     "cell": [
      5,
-     12
+     13
     ],
     "w": 2
    },
@@ -4876,7 +4900,7 @@
     "name": "low_table",
     "cell": [
      6,
-     11
+     12
     ]
    },
    {
@@ -4904,17 +4928,56 @@
     "name": "lamp_floor",
     "cell": [
      1,
-     10
+     8
     ]
    },
    {
-    "name": "rug2_runner",
+    "group": "props",
+    "name": "arcade_cab_0",
     "cell": [
-     7,
-     9
-    ],
-    "w": 2,
-    "solid": false
+     8,
+     2
+    ]
+   },
+   {
+    "group": "props",
+    "name": "arcade_cab_1",
+    "cell": [
+     9,
+     2
+    ]
+   },
+   {
+    "group": "props",
+    "name": "arcade_cab_2",
+    "cell": [
+     10,
+     2
+    ]
+   },
+   {
+    "group": "props",
+    "name": "arcade_cab_3",
+    "cell": [
+     11,
+     2
+    ]
+   },
+   {
+    "group": "props",
+    "name": "arcade_cab_4",
+    "cell": [
+     12,
+     2
+    ]
+   },
+   {
+    "group": "props",
+    "name": "arcade_cab_5",
+    "cell": [
+     13,
+     2
+    ]
    }
   ],
   "things": [
@@ -4986,6 +5049,26 @@
      2
     ],
     "hint": "A: high scores",
+    "solid": true
+   },
+   {
+    "type": "rec",
+    "act": "claw",
+    "cell": [
+     14,
+     2
+    ],
+    "hint": "A: claw machine",
+    "solid": true
+   },
+   {
+    "type": "rec",
+    "act": "skee",
+    "cell": [
+     2,
+     11
+    ],
+    "hint": "A: skee-ball",
     "solid": true
    },
    {
@@ -5083,15 +5166,67 @@
   ],
   "door_prop": "stairs_down",
   "door_hint": "A: downstairs",
-  "music": "festival",
+  "music": "rec_center",
   "windows": [],
   "pet": false,
   "props": [
    {
+    "name": "ball_return",
+    "cell": [
+     4,
+     10
+    ]
+   },
+   {
+    "name": "ball_return",
+    "cell": [
+     11,
+     10
+    ]
+   },
+   {
+    "name": "ball_rack",
+    "cell": [
+     7,
+     10
+    ],
+    "w": 1
+   },
+   {
+    "name": "score_console",
+    "cell": [
+     3,
+     14
+    ],
+    "w": 1
+   },
+   {
+    "name": "score_console",
+    "cell": [
+     11,
+     14
+    ],
+    "w": 1
+   },
+   {
+    "name": "trophy_case",
+    "cell": [
+     1,
+     13
+    ]
+   },
+   {
+    "name": "pin_statue",
+    "cell": [
+     14,
+     13
+    ]
+   },
+   {
     "name": "sofa_red",
     "cell": [
      2,
-     15
+     16
     ],
     "w": 2
    },
@@ -5099,38 +5234,25 @@
     "name": "sofa_blue",
     "cell": [
      5,
-     15
-    ],
-    "w": 2
-   },
-   {
-    "name": "counter_plain",
-    "cell": [
-     12,
-     13
-    ],
-    "w": 2
-   },
-   {
-    "name": "plant2_a",
-    "cell": [
-     1,
      16
-    ]
+    ],
+    "w": 1
    },
    {
-    "name": "plant2_d",
-    "cell": [
-     14,
-     16
-    ]
-   },
-   {
-    "name": "lamp_floor",
+    "name": "snack_counter",
     "cell": [
      10,
      16
-    ]
+    ],
+    "w": 1
+   },
+   {
+    "name": "shoe_counter",
+    "cell": [
+     13,
+     16
+    ],
+    "w": 1
    }
   ],
   "things": [
@@ -5227,9 +5349,29 @@
     "act": "shoes",
     "cell": [
      13,
-     14
+     16
     ],
     "hint": "A: shoe rental",
+    "solid": true
+   },
+   {
+    "type": "rec",
+    "act": "snack",
+    "cell": [
+     10,
+     16
+    ],
+    "hint": "A: snack bar",
+    "solid": true
+   },
+   {
+    "type": "rec",
+    "act": "trophies",
+    "cell": [
+     1,
+     13
+    ],
+    "hint": "A: trophy case",
     "solid": true
    }
   ],

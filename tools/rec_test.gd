@@ -179,6 +179,6 @@ func _run() -> void:
 			if room == "rec_up":
 				ok(vis.size() >= 2, "%s league night: villagers at the lanes (%d)" % [arc, vis.size()])
 				ok(not RecCenter.lanes_taken().is_empty(), "%s: some lanes taken" % arc)
-			ok(str(m.get("music_track")) == ("festival" if arc == "penguins" else "neon"), "%s/%s music" % [arc, room])
+			ok(str(m.get("music_track")) == ("rec_center" if arc == "penguins" else "neon"), "%s/%s music" % [arc, room])
 	print("rec_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
