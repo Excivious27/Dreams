@@ -109,7 +109,7 @@ def room_up():
         "rec": True, "no_furnish": True, "lanes": True,
         "cols": 16, "rows": 18, "floor": "fl_parquet", "wall": "wl_panel",
         "door": [8, 17], "back": ["in_rec", 2, 4], "door_prop": "stairs_down", "door_hint": "A: downstairs",
-        "music": "rec_center", "windows": [], "pet": False,
+        "music": "bowling_alley", "windows": [], "pet": False,  # its own lane song (c2_08)
         "props": [
             {"name": "ball_return", "cell": [4, 10]},
             {"name": "ball_return", "cell": [11, 10]},
@@ -126,7 +126,7 @@ def room_up():
         "things": things,
         "npcs": [],
         "intro": "Four lanes of polished maple run to four perfect triangles of pins. Somewhere a ball thunders home and the whole floor hums.",
-        "gangsters": {"floor": "fl_concrete", "wall": "wl_concrete", "music": "neon",
+        "gangsters": {"floor": "fl_concrete", "wall": "wl_concrete", "music": "bowling_alley",
                       "intro": "Four lanes under blacklight, pins glowing like teeth. Somebody's put a chalk line on the wall: HOUSE RECORD."},
     }
 

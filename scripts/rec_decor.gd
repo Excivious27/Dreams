@@ -132,6 +132,7 @@ func _tick_lanes(delta: float) -> void:
 				if float(st["t"]) <= 0.0 and taken.has(n):
 					st["phase"] = "roll"
 					st["t"] = 0.0
+					RecAudio.lane_sound(self, Vector2((float(ln["x"]) + 1.0) * T, 2 * T + 18.0), "roll")
 					st["x"] = randf_range(-6.0, 6.0)
 					st["hook"] = randf_range(-5.0, 5.0)
 					st["ball"] = [Color("e04848"), Color("3a7be0"), Color("e0b040"), Color("9a50e0"), Color("40c080")][randi() % 5]
@@ -149,7 +150,7 @@ func _tick_lanes(delta: float) -> void:
 					st["down"] = down
 					st["phase"] = "scatter"
 					st["t"] = 0.0
-					Music.instance(get_tree()).sfx("pin_crash", "thud")
+					RecAudio.lane_sound(self, Vector2((float(ln["x"]) + 1.0) * T, 2 * T + 18.0), "hit", hits)
 					if hits == 10:
 						_cheer(str(st.get("who", "")))
 			"scatter":

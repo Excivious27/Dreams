@@ -91,8 +91,13 @@ Every pack below is CC0 (public domain), or dual-licensed with CC0 as one choice
 | [25 CC0 bang / firework SFX](https://opengameart.org/content/25-cc0-bang-firework-sfx) | rubberduck | CC0 | boom, cannon, fireworks, shot, shot_shotgun |
 | [3 dark magic spells](https://opengameart.org/content/3-dark-magic-spells) | qubodup | CC0 | spell_dark |
 | [3 Pop Sounds](https://opengameart.org/content/3-pop-sounds) | wubitog | CC0 | die, pop |
-| [30 CC0 SFX loops](https://opengameart.org/content/30-cc0-sfx-loops) | rubberduck | CC0 | alarm, machines, bowl_roll, rec_alley |
-| [35 wooden cracks/hits/destructions](https://opengameart.org/content/35-wooden-crackshitsdestructions) | qubodup | CC0 | crate_break, thud |
+| [Bowling Ball Rolling](https://opengameart.org/content/bowling-ball-rolling) | qubodup (submitted by newfloss) | CC0 | bowl_rumble, bowl_gutter, ball_return |
+| [Vinyl](https://opengameart.org/content/vinyl) | OpenGameArt user (vinylstart.mp3) | CC0 | juke_needle |
+| [50 CC0 retro / synth SFX](https://opengameart.org/content/50-cc0-retro-synth-sfx) | Snabisch | CC0 | arcade_floor |
+| [The Essential Retro Video Game Sound Effects Collection (512 sounds)](https://opengameart.org/content/512-sound-effects-8-bit-style) | Juhani Junkala (submitted by DezrasDragons) | CC0 | arcade_floor, spot_cabinet_win |
+| [Crowd Shouting/Speaking Ambience](https://opengameart.org/content/crowd-shoutingspeaking-ambience) | StarNinjas | CC0 | arcade_floor (murmur, low-passed) |
+| [30 CC0 SFX loops](https://opengameart.org/content/30-cc0-sfx-loops) | rubberduck | CC0 | alarm, machines, bowl_roll, rec_alley, bowl_pit |
+| [35 wooden cracks/hits/destructions](https://opengameart.org/content/35-wooden-crackshitsdestructions) | qubodup | CC0 | crate_break, thud, bowl_pit, pin_tap, pin_strike |
 | [37 hits/punches](https://opengameart.org/content/37-hitspunches) | qubodup | CC0 | hit, hurt |
 | [4 dry snow steps](https://opengameart.org/content/4-dry-snow-steps) | qubodup | CC0 | step_snow |
 | [40 CC0 water / splash / slime SFX](https://opengameart.org/content/40-cc0-water-splash-slime-sfx) | rubberduck | CC0 | bubble, fish_escape, splash |
@@ -103,7 +108,7 @@ Every pack below is CC0 (public domain), or dual-licensed with CC0 as one choice
 | [58 Random Sound Effects](https://opengameart.org/content/58-random-sound-effects) | TokyoGeisha | CC0 | cards, clap, stink |
 | [6 Short water splashes](https://opengameart.org/content/6-short-water-splashes) | qubodup | CC0 | splash |
 | [60 CC0 Sci-Fi SFX](https://opengameart.org/content/60-cc0-sci-fi-sfx) | rubberduck | CC0 | servo |
-| [68 Workshop Sounds](https://opengameart.org/content/68-workshop-sounds) | bart | CC0 | drill, reel, tools, pin_crash, rec_alley |
+| [68 Workshop Sounds](https://opengameart.org/content/68-workshop-sounds) | bart | CC0 | drill, reel, tools, pin_crash, rec_alley, pin_tap, pin_strike, ball_return, spot_pins_far, spot_pins_near |
 | [7 Eating Crunches](https://opengameart.org/content/7-eating-crunches) | StarNinjas | CC0 | eat |
 | [80 CC0 creature SFX](https://opengameart.org/content/80-cc0-creature-sfx) | rubberduck | CC0 | bark, bug, critter, grunt, snore |
 | [80 CC0 creture SFX #2](https://opengameart.org/content/80-cc0-creture-sfx-2) | rubberduck | CC0 | snore, stomp |

@@ -269,6 +269,15 @@
   "page": "https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks",
   "title": "51 UI sound effects (buttons, switches and clicks)"
  },
+ "512-sound-effects-8-bit-style": {
+  "author": "Juhani Junkala (DezrasDragons)",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/512-sound-effects-8-bit-style",
+  "title": "The Essential Retro Video Game Sound Effects Collection [512 sounds]"
+ },
  "58-random-sound-effects": {
   "author": "TokyoGeisha",
   "cc0": true,
@@ -538,6 +547,15 @@
   ],
   "page": "https://opengameart.org/content/book-flip-sounds",
   "title": "Book Flip Sounds"
+ },
+ "bowling-ball-rolling": {
+  "author": "qubodup (newfloss)",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/bowling-ball-rolling",
+  "title": "Bowling Ball Rolling"
  },
  "breaking-rock": {
   "author": "themightyglider",
@@ -1195,6 +1213,15 @@
   ],
   "page": "https://opengameart.org/content/typing-soundeffect",
   "title": "typing soundeffect"
+ },
+ "vinyl": {
+  "author": "OpenGameArt",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/vinyl",
+  "title": "Vinyl"
  },
  "walking-on-snow-sound": {
   "author": "IgnasD",

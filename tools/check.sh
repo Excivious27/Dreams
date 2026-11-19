@@ -114,6 +114,11 @@ echo "$cout" | grep -E "FAIL|SCRIPT ERROR|rec_test" || true
 if ! echo "$cout" | grep -q "rec_test: 0 failures"; then
   echo "rec_test failed"; exit 1
 fi
+raout="$("$GODOT" --headless --path . -s res://tools/rec_audio_test.gd 2>&1)"
+echo "$raout" | grep -E "FAIL|SCRIPT ERROR|rec_audio_test" || true
+if ! echo "$raout" | grep -q "rec_audio_test: 0 failures"; then
+  echo "rec_audio_test failed"; exit 1
+fi
 cout="$("$GODOT" --headless --path . -s res://tools/cash_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|cash_test" || true
 if ! echo "$cout" | grep -q "cash_test: scanned [0-9]* strings, 0 failures"; then

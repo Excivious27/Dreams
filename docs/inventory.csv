@@ -28,7 +28,7 @@ Systems,"Workshop stations, CraftScreen, recipe books, cyber stations",done,90,s
 Systems,"Skill trees: 13 trees, unlock nodes, caps, renames",done,85,systems_test,Muscle row names undecided
 Systems,"Hero tab, gear sets, energy revamp",done,85,char_sheet_test (not in check.sh),
 Systems,"Shops, economy, money (gangster cash), kill-crystal cap",done,80,cash_test,Balance sheet docs/economy.xlsx
-Systems,"Rec Center: bowling, 5 arcade cabinets, tickets, prizes",done,85,"rec_test, arcade_test",New in round 13
+Systems,"Rec Center: bowling, 5 arcade cabinets, tickets, prizes",done,85,"rec_test, arcade_test, rec_audio_test","New in round 13; own bowling song, 11-record jukebox, graded lane sound, arcade-floor ambience (c2_08)"
 Systems,"Community farm (Commons), 8 stages, volunteers",done,85,commons_test,New in round 13
 Systems,"Collections: museum, shipping log, fish log, achievements",missing,0,none,Stardew-grade milestone layer absent (audit 17b W11); Claude can build
 Systems,Haptics (phone vibration),missing,0,none,Audit 17b W7; Claude can build

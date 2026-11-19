@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 2 (c2_08): Rec Center audio
+- **Bowling floor has its own song:** "Ten Pin Strut" (ACE, `bowling_alley`, retro surf-lounge shuffle) upstairs in both arcs; the arcade floor keeps the house song (neon in the gangster arc).
+- **Jukebox:** 11 records (new ACE 50s boogie record "Nickel Record" `jukebox_oldie`, plus the bowling song and the cabinet hall loop); the toast names the record ("drops a record: \"Nickel Record\""), and a real needle-drop sound plays instead of a UI tap.
+- **Bowling lane sound** (`RecAudio`, scripts/rec_audio.gd): a 4 s real rolling-ball rumble that follows the ball (louder/brighter when fast, pitch drops in the slow-motion finish, fades at the pins), a hollow gutter rumble, pins sized to how many fall (tap / crash / one big strike crash), the pit drop and the ball return clunk before the next ball. Before: one 1 s roll and the same small clatter on first contact for a 1-pin tap and a strike alike.
+- **Villager lanes** roll and crash from where the lane is (positional, quieter across the room, strike crash on their strikes) instead of a full-volume clatter anywhere in the room.
+- **Ambience:** the downstairs arcade had only the bowling bed at -24 dB (about -52 LUFS: inaudible). Now a new `arcade_floor` bed (cabinets in attract mode, coins, low murmur, built from CC0 retro packs) with the lanes muffled through the ceiling; upstairs the lane bed is up front and the arcade a murmur. Spots: strikes through the ceiling and far cabinet wins downstairs, other lanes' strikes upstairs.
+- Sounds built by `python3 tools/make_rec_audio.py` (CC0 packs; credits/sources/CC0_USED updated), then sfx_soften. `tools/sfx_audit.py` now also checks RecAudio's beds/spots/records. Test: tools/rec_audio_test.gd (in check.sh).
 ## 2026-11-19 — CONDUCT 1: inventory (docs)
 - `docs/INVENTORY.md` + `docs/inventory.csv`: 37 systems with status (27 done, 5 rough, 5 missing; average 73%), game size counts, art/audio outstanding (both zero, verified), test coverage (26 of 32 tests in check.sh; char_sheet/creator/hearts tests pass outside it), open work Claude can do alone, and a draft "What Claude needs from Tom" list.
 - `tools/missing_art.py` honours an item's own `icon` alias (as the Hud does): the 20 Rec Center prizes it listed were false positives; MISSING-ART.md is now all zero.

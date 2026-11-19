@@ -66,6 +66,16 @@ for t in sorted(tracks):
 amb = src.get(os.path.join(ROOT, "scripts", "ambience.gd"), "")
 beds = set(re.findall(r'out\["([a-z_0-9]+)"\]', amb))
 spots = set(re.findall(r'rules\.append\(\["([a-z_0-9]+)"', amb)) | set(re.findall(r'_spot\("([a-z_0-9]+)"', amb))
+# Rec Center rooms (scripts/rec_audio.gd BEDS / SPOTS / RECORDS).
+rec = src.get(os.path.join(ROOT, "scripts", "rec_audio.gd"), "")
+for blk in re.findall(r'const BEDS := \{(.*?)\n\}', rec, re.S):
+    beds |= set(re.findall(r'"([a-z_0-9]+)": -', blk))
+for blk in re.findall(r'const SPOTS := \{(.*?)\n\}', rec, re.S):
+    spots |= set(re.findall(r'\["([a-z_0-9]+)", ', blk))
+for blk in re.findall(r'const RECORDS := \{(.*?)\n\}', rec, re.S):
+    for t in re.findall(r'"([a-z_0-9]+)": "', blk):
+        if not os.path.exists(os.path.join(A, "music", t + ".ogg")):
+            bad.append(f"jukebox record {t}")
 for b in beds:
     if not os.path.exists(os.path.join(A, "amb", b + ".ogg")):
         bad.append(f"bed {b}")

@@ -41,3 +41,7 @@ wind_strong
 crystal_hum
 space
 rec_alley
+arcade_floor
+spot_pins_far
+spot_cabinet_win
+spot_pins_near

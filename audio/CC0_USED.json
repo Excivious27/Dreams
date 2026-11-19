@@ -8,6 +8,35 @@
   "blacksmiths-hammer/blacksmithhammer.wav",
   "100-cc0-metal-and-wood-sfx/100-CC0-wood-metal-SFX_x/metal_hit_01.ogg"
  ],
+ "arcade_floor": [
+  "50-cc0-retro-synth-sfx/power_up_02.ogg",
+  "50-cc0-retro-synth-sfx/retro_coin_01.ogg",
+  "50-cc0-retro-synth-sfx/retro_misc_02.ogg",
+  "50-cc0-retro-synth-sfx/retro_misc_04.ogg",
+  "50-cc0-retro-synth-sfx/synth_beep_01.ogg",
+  "50-cc0-retro-synth-sfx/synth_misc_05.ogg",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_cluster3.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_double2.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_single1.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_single4.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Fanfares/sfx_sounds_fanfare2.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Interactions/sfx_sounds_interaction11.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Interactions/sfx_sounds_interaction19.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Interactions/sfx_sounds_interaction4.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Menu Sounds/sfx_menu_move2.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Menu Sounds/sfx_menu_select3.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Positive Sounds/sfx_sounds_powerup12.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Positive Sounds/sfx_sounds_powerup3.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Positive Sounds/sfx_sounds_powerup7.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Simple Bleeps/sfx_sounds_Blip2.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Simple Bleeps/sfx_sounds_Blip5.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Simple Bleeps/sfx_sounds_Blip9.wav",
+  "crowd-shoutingspeaking-ambience/crowd_shouting_0.ogg"
+ ],
+ "ball_return": [
+  "68-workshop-sounds/workshop_x/workshop/workshop - wood on concrete.wav",
+  "bowling-ball-rolling/qubodup-bowling-roll/qubodup-bowling_roll-nofadeout.ogg"
+ ],
  "bark": [
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/barking_01.ogg",
   "80-cc0-creature-sfx/80-CC0-creature-SFX_0_x/barking_02.ogg"
@@ -52,8 +81,18 @@
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/bang_04.ogg",
   "25-cc0-bang-firework-sfx/25-CC0-bang-sfx_x/bang_07.ogg"
  ],
+ "bowl_gutter": [
+  "bowling-ball-rolling/qubodup-bowling-roll/qubodup-bowling_roll-nofadeout.ogg"
+ ],
+ "bowl_pit": [
+  "30-cc0-sfx-loops/sfx_loops_x/rolling.ogg",
+  "35-wooden-crackshitsdestructions/x/wood_impact/impactwood05.mp3.flac"
+ ],
  "bowl_roll": [
   "30-cc0-sfx-loops/sfx_loops_x/rolling.ogg"
+ ],
+ "bowl_rumble": [
+  "bowling-ball-rolling/qubodup-bowling-roll/qubodup-bowling_roll-nofadeout.ogg"
  ],
  "bubble": [
   "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/bubble_01.ogg",
@@ -310,6 +349,9 @@
   "insect-sounds/insect_x/insect1.ogg",
   "insect-sounds/insect_x/insect3.ogg"
  ],
+ "juke_needle": [
+  "vinyl/vinylstart.mp3"
+ ],
  "jungle_insects": [
   "swamp-environment-audio/swamp_sounds_x/cicada_1.ogg",
   "swamp-environment-audio/swamp_sounds_x/bug_1.ogg",
@@ -388,6 +430,16 @@
   "68-workshop-sounds/workshop_x/workshop/workshop - wood clatter.wav",
   "68-workshop-sounds/workshop_x/workshop/workshop - loud clatter.wav",
   "68-workshop-sounds/workshop_x/workshop/workshop - clatter.wav"
+ ],
+ "pin_strike": [
+  "35-wooden-crackshitsdestructions/x/wood_impact/impactwood01.mp3.flac",
+  "68-workshop-sounds/workshop_x/workshop/workshop - loud clatter.wav",
+  "68-workshop-sounds/workshop_x/workshop/workshop - wood clatter.wav"
+ ],
+ "pin_tap": [
+  "35-wooden-crackshitsdestructions/x/wood_impact/impactwood09.mp3.flac",
+  "68-workshop-sounds/workshop_x/workshop/workshop - clatter.wav",
+  "68-workshop-sounds/workshop_x/workshop/workshop - wood clap.wav"
  ],
  "plant": [
   "20-rustles-dry-leaves/qubodup-rustle_x/rustle/rustle01.flac",
@@ -532,6 +584,10 @@
   "6-short-water-splashes/ezwa-water_splash_x/ezwa-water_splash/water_splash-01.flac",
   "6-short-water-splashes/ezwa-water_splash_x/ezwa-water_splash/water_splash-03.flac",
   "40-cc0-water-splash-slime-sfx/water-splash-slime-sfx_x/splash_02.ogg"
+ ],
+ "spot_cabinet_win": [
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Coins/sfx_coin_cluster6.wav",
+  "512-sound-effects-8-bit-style/The Essential Retro Video Game Sound Effects Collection [512 sounds] By Juhani Junkala/General Sounds/Fanfares/sfx_sounds_fanfare1.wav"
  ],
  "step_dirt": [
   "fantasy-sound-effects-tinysized-sfx/tinysized_x/sfx-cc0/soil-steps-01.wav",

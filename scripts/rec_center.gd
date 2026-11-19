@@ -469,7 +469,8 @@ static func _scores(m: GameMap) -> void:
 	await m.say([{"who": "High scores", "text": "\n".join(lines)}])
 
 
-const JUKEBOX := ["rec_center", "neon", "festival", "inn", "town", "beach", "uptown", "countryside"]
+## The jukebox's records, in the order A steps through them (names in RecAudio.RECORDS).
+static var JUKEBOX: Array = RecAudio.records()
 
 
 ## The record the jukebox is playing today ("" = the house song). It lasts the day,
@@ -503,8 +504,8 @@ static func _jukebox(m: GameMap) -> void:
 		GameState.run["flags"]["rec_juke"] = t
 		GameState.run["flags"]["rec_juke_day"] = int(GameState.run["day"])
 		mus.play(t)
-		mus.sfx("ui_tap", "ui_tap")
-		m.hud.toast("♪ The jukebox clunks and spins a new record.", Color(0.9, 0.85, 1))
+		mus.sfx("juke_needle", "ui_tap")
+		m.hud.toast("♪ The jukebox clunks and drops a record: \"%s\"." % RecAudio.record_name(t), Color(0.9, 0.85, 1))
 		return
 
 

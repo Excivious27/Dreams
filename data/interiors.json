@@ -5128,7 +5128,7 @@
   ],
   "door_prop": "stairs_down",
   "door_hint": "A: downstairs",
-  "music": "rec_center",
+  "music": "bowling_alley",
   "windows": [],
   "pet": false,
   "props": [
@@ -5342,7 +5342,7 @@
   "gangsters": {
    "floor": "fl_concrete",
    "wall": "wl_concrete",
-   "music": "neon",
+   "music": "bowling_alley",
    "intro": "Four lanes under blacklight, pins glowing like teeth. Somebody's put a chalk line on the wall: HOUSE RECORD."
   }
  }
