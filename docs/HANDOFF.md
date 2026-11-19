@@ -31,12 +31,13 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 - **Jobs running elsewhere:** CONDUCT 2 agents in the personal sandbox (see In progress). The Team chat may fire one stale watchdog reminder; ignore.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
-- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching) and CONDUCT 12 (writing), then the fully updated artifact.
+- **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth) and CONDUCT 14 (aesthetics), then the fully updated artifact.
 
 ## Decisions (newest first)
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19 14:27: Tom added CONDUCT 13 (audio depth: alternate area soundtracks, many seasonal alternates, full audit of every sound/song pairing) and CONDUCT 14 (aesthetic quality: graphics, region maps, boundaries, explorability, geography, smooth edges). Order: C2-C9 (5 h waits), C10 decor, C11 ranching, C12 writing, C13 audio, C14 aesthetics, then the final package and artifact.
 - 2026-11-19 14:13: Tom added CONDUCT 12: a very thorough writing/story/dialogue pass across the whole game, both arcs, all lines cohesive with progress, NPCs, quests and storylines (docs/CONDUCT-PLAN.md). Order: C2-C9 (with the 5 h waits), C10 decor, C11 ranching, C12 writing, then the final package and artifact.
 - 2026-11-19 14:06: Tom: some raised animals can be trained to join the team like Pup (part of CONDUCT 11).
 - 2026-11-19 14:05: Tom: a massively sophisticated ranching/livestock ecosystem (coops, barns, classic animals plus bought/quest-earned exotics and fantastic creatures; gangster arc: genetically modified creatures), progressively tiered, with its own skill tree, unified with the whole game. Planned as CONDUCT 11 (see docs/CONDUCT-PLAN.md).

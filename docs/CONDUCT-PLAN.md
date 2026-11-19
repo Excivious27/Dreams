@@ -93,3 +93,17 @@ A very thorough pass, after CONDUCT 11 (so it covers the decor and ranching cont
 - Every line of text: main story beats, side quests, villager dialogue (first meetings, daily, hearts, gifts, birthdays, festivals, weather, rec/commons/ranch chatter), mail, item and quest descriptions, tutorials and hints, locked-area messages, boss intros, endings.
 - Cohesion: each NPC's voice is consistent; what villagers say matches the player's real progress, quests, relationships and story state (no contradictions or references to things not yet seen); storylines reference each other; both arcs feel complete and distinct (penguins from Tom's book *The Two Too Powerful Penguins*; gangster arc serious, cool, all-ages).
 - Auditors read and play all writing by area/NPC/arc and cross-check continuity with a script (who mentions what, when); fix agents rewrite and fill gaps, add progression-aware variants, and add tests that check dialogue conditions match game state.
+
+
+## CONDUCT 13 — Audio depth (Tom, 2026-11-19 14:27)
+
+After CONDUCT 12. Builds on C6 (audio and music).
+- Every area gets alternate soundtracks (several songs per area, rotated by time of day, weather, story state, day of week) and every season gets many alternates (spring/summer/fall/winter sets per area, both arcs), made with ACE Music.
+- Full audit of every sound effect and song pairing: per quest, story beat, area, interior, event, festival, boss, minigame, UI screen; each one plays the right thing, at the right loudness, at the right moment, with no silence, clashes, repeats or wrong-arc sounds; web streaming checked.
+- Tests that map every place/state to its music and every action to its sound (extending music_map_test and sfx_audit).
+
+## CONDUCT 14 — Aesthetic quality of the world (Tom, 2026-11-19 14:27)
+
+After CONDUCT 13, then the final package and artifact. Builds on C5 (home-world look and feel) and C4 (mega regions).
+- Strictly the look and feel of the design: graphics quality (no fuzzy or mismatched art), smooth-looking edges and transitions between ground types, water and cliffs, region map layouts, natural boundaries (no boxy walls), explorability (hidden paths, vistas, secrets, reasons to wander), interesting geography (rivers, hills, caves, ruins, landmarks), lighting and colour harmony, density of detail vs Stardew/Sun Haven.
+- Auditors screenshot every map in every season/time and rank problems; fix agents redraw art (image tool), reshape maps and edges, and add landmarks and secrets.
