@@ -4,15 +4,30 @@ extends ArcadeGame
 ## Tap a hole, or steer the mallet with the arrows and press A.
 ## Gold grumps are worth more, helmet grumps take two bops, and never bop a
 ## bunny. 40 seconds; it gets faster and busier as the clock runs down.
+## A READY / GO! card runs first (the clock waits), the last five seconds count
+## down out loud, a bopped grump stays up dizzy for a beat (a second tap on it
+## is free, not a miss), and B pauses (ArcadePause).
 
 const ROUND := 40.0
+const LEAD := 1.3          # READY / GO! before the clock starts
+const DIZZY := 0.3         # a bopped critter stays up this long before ducking
+const HIT_T := 0.55        # total hit display (dizzy hold + duck)
 const HOLE := [Vector2(55, 118), Vector2(135, 118), Vector2(215, 118), Vector2(55, 200), Vector2(135, 200), Vector2(215, 200), Vector2(55, 282), Vector2(135, 282), Vector2(215, 282)]
 const KINDS := {
-	"grump": {"pts": 10, "hp": 1, "col": Color(0.62, 0.45, 0.88)},
-	"gold": {"pts": 30, "hp": 1, "col": Color(1.0, 0.82, 0.25)},
-	"helmet": {"pts": 20, "hp": 2, "col": Color(0.5, 0.75, 0.4)},
-	"bunny": {"pts": -15, "hp": 1, "col": Color(0.98, 0.96, 0.95)},
+	"grump": {"pts": 5, "hp": 1, "col": Color(0.62, 0.45, 0.88)},
+	"gold": {"pts": 15, "hp": 1, "col": Color(1.0, 0.82, 0.25)},
+	"helmet": {"pts": 10, "hp": 2, "col": Color(0.5, 0.75, 0.4)},
+	"bunny": {"pts": -10, "hp": 1, "col": Color(0.98, 0.96, 0.95)},
 }
+## Bops in a row for double points (no higher step: a near-perfect streak at
+## x3 pushed scores to ~1000 and tickets to ~80 a coin). Tuned so a casual
+## player lands near 150-350 and a sharp one around 400-800
+## (tools/stack_whack_test.gd -- -v prints the bands).
+const COMBO_STEP := 10
+
+
+static func mult_for(c: int) -> int:
+	return 2 if c >= COMBO_STEP else 1
 
 var holes: Array = []
 var cursor := 4
@@ -24,6 +39,8 @@ var bunnies := 0
 var escaped := 0
 var mallet_t := 0.0
 var mallet_at := 4
+var last_tick := -1        # last countdown second announced
+var go_said := false
 
 
 func _init() -> void:
@@ -32,7 +49,7 @@ func _init() -> void:
 	title = "Whack-a-Grump"
 	fee = 10
 	accent = Color(0.55, 0.88, 0.35)
-	howto = ["Tap a hole, or aim with the arrows + A.", "Grump 10 · Gold 30 · Helmet 20 (two bops)", "Don't bop the bunnies! (-15)", "Bop in a row for a combo. 40 seconds."]
+	howto = ["Tap a grump, or aim with the arrows + BOP.", "Grump 5 · Gold 15 · Helmet 10 (two bops)", "Don't bop the bunnies! (-10)", "10 in a row: double points. B pauses."]
 
 
 func _deck_buttons() -> Array:
@@ -42,7 +59,7 @@ func _deck_buttons() -> Array:
 		{"action": "up", "rect": Rect2(50, 358, 40, 36), "label": "▲", "skin": "blue"},
 		{"action": "down", "rect": Rect2(50, 430, 40, 36), "label": "▼", "skin": "blue"},
 		{"action": "a", "rect": Rect2(196, 378, 64, 64), "label": "BOP", "skin": "gold"},
-		{"action": "b", "rect": Rect2(150, 430, 40, 40), "label": "B", "skin": "red", "hint": "quit"},
+		{"action": "b", "rect": Rect2(150, 430, 40, 40), "label": "B", "skin": "red", "hint": "pause"},
 	]
 
 
@@ -57,28 +74,59 @@ func _setup_round() -> void:
 	hits = 0
 	bunnies = 0
 	escaped = 0
+	last_tick = -1
+	go_said = false
+	mallet_t = 0.0
+	sfx("tab", "ui_tap")
+
+
+## Seconds on the round clock (it waits through READY / GO!).
+func clock() -> float:
+	return maxf(0.0, play_t - LEAD)
+
+
+func time_left() -> float:
+	return maxf(0.0, ROUND - clock())
 
 
 func _pace() -> float:
-	return clampf(play_t / ROUND, 0.0, 1.0)
+	return clampf(clock() / ROUND, 0.0, 1.0)
+
+
+func _step_state(st: String, dt: float) -> void:
+	if st == "paused" and ArcadePause.step(self, dt):
+		_finish()
+
+
+func frame() -> void:
+	super()
+	ArcadePause.hint(self, _deck)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and state == "play" and not manual:
+		ArcadePause.pause(self)
 
 
 func _step(dt: float) -> void:
 	if pressed("b"):
-		_finish()
+		ArcadePause.pause(self)
 		return
-	if play_t >= ROUND:
+	if clock() >= ROUND:
 		_finish()
 		return
 	mallet_t = maxf(0.0, mallet_t - dt)
-	if pressed("left") and cursor % 3 > 0:
-		cursor -= 1
-	if pressed("right") and cursor % 3 < 2:
-		cursor += 1
-	if pressed("up") and cursor >= 3:
-		cursor -= 3
-	if pressed("down") and cursor < 6:
-		cursor += 3
+	if play_t < LEAD:
+		_steer()
+		return  # READY: you can line up the mallet, nothing pops yet
+	if not go_said:
+		go_said = true
+		sfx("j_confirm", "pop")
+	var left_s := int(ceil(time_left()))
+	if left_s <= 5 and left_s != last_tick and left_s > 0:
+		last_tick = left_s
+		sfx("scroll_tick", "ui_tap")
+	_steer()
 	if pressed("a"):
 		whack(cursor)
 	var pace := _pace()
@@ -104,10 +152,22 @@ func _step(dt: float) -> void:
 			if str(h["kind"]) != "bunny" and float(h["hit"]) <= 0.0:
 				escaped += 1
 				combo = 0
-		if not bool(h["out"]):
+		# A bopped critter holds still, dizzy, before it ducks.
+		if not bool(h["out"]) and float(h["hit"]) <= HIT_T - DIZZY:
 			h["up"] = maxf(0.0, float(h["up"]) - dt * 8.0)
 			if float(h["up"]) <= 0.0:
 				h["kind"] = ""
+
+
+func _steer() -> void:
+	if pressed("left") and cursor % 3 > 0:
+		cursor -= 1
+	if pressed("right") and cursor % 3 < 2:
+		cursor += 1
+	if pressed("up") and cursor >= 3:
+		cursor -= 3
+	if pressed("down") and cursor < 6:
+		cursor += 3
 
 
 func _pop() -> void:
@@ -127,35 +187,43 @@ func _pop() -> void:
 		kind = "bunny"
 	elif roll < 0.34 + pace * 0.12:
 		kind = "helmet"
-	var life := lerpf(1.25, 0.6, pace) * (0.65 if kind == "gold" else 1.0) * (1.3 if kind == "helmet" else 1.0)
+	var life := lerpf(1.25, 0.6, pace) * (1.3 if kind == "helmet" else 1.0)
+	if kind == "gold":
+		life = maxf(0.5, life * 0.65)  # quick, but still catchable with a thumb
 	holes[i] = {"kind": kind, "life": life, "up": 0.0, "hp": int(KINDS[kind]["hp"]), "hit": 0.0, "out": true}
 	sfx("pop", "ui_tap")
 
 
 ## Swing at hole i (tap or A). Returns the points it scored.
 func whack(i: int) -> int:
-	if state != "play" or i < 0 or i > 8:
+	if state != "play" or i < 0 or i > 8 or play_t < LEAD:
 		return 0
 	cursor = i
 	mallet_t = 0.18
 	mallet_at = i
 	var h: Dictionary = holes[i]
+	if str(h["kind"]) != "" and float(h["hit"]) > 0.0:
+		# Already bopped (dizzy or ducking): a double tap is not a miss.
+		sfx("swing", "ui_tap")
+		return 0
 	if str(h["kind"]) == "" or not bool(h["out"]) or float(h["up"]) < 0.35:
+		if combo >= COMBO_STEP:
+			float_text(HOLE[i] + Vector2(0, -14), "combo lost", Color(0.85, 0.85, 0.95))
 		sfx("swing", "ui_tap")
 		combo = 0
 		return 0
 	var k := str(h["kind"])
 	var p: Vector2 = HOLE[i] + Vector2(0, -14)
 	if k == "bunny":
-		score = maxi(0, score - 15)
+		score = maxi(0, score - 10)
 		bunnies += 1
 		combo = 0
 		h["out"] = false
-		h["hit"] = 0.4
+		h["hit"] = HIT_T
 		sfx("whimper", "nope")
-		float_text(p, "-15", Color(1, 0.5, 0.5))
+		float_text(p, "-10", Color(1, 0.5, 0.5))
 		shake(2.0)
-		return -15
+		return -10
 	h["hp"] = int(h["hp"]) - 1
 	sfx("hit", "thud")
 	shake(2.0)
@@ -167,30 +235,43 @@ func whack(i: int) -> int:
 	combo += 1
 	best_combo = maxi(best_combo, combo)
 	hits += 1
-	var mult := 1 + mini(combo / 4, 2)
+	var mult := mult_for(combo)
 	var pts := int(KINDS[k]["pts"]) * mult
 	score += pts
 	h["out"] = false
-	h["hit"] = 0.4
+	h["hit"] = HIT_T
 	burst(p, KINDS[k]["col"], 12, 90.0)
 	burst(p, Color(1, 1, 0.7), 6, 50.0, 2.0, 0.0)
 	float_text(p, ("+%d" % pts) + (" x%d" % mult if mult > 1 else ""), Color(1, 0.95, 0.5) if k != "gold" else Color(1, 0.8, 0.2))
 	if k == "gold":
 		sfx("coin")
+	if combo == COMBO_STEP:
+		say("COMBO x%d!" % mult, 1.0)
+		sfx("sparkle", "gem")
 	return pts
+
+
+## The hole a tap at p means: each hole owns a box covering its critter's
+## whole height (head included), so no part of the lawn between holes is dead.
+static func hole_at(p: Vector2) -> int:
+	if p.y < 60.0 or p.y > 310.0 or p.x < 10.0 or p.x > 260.0:
+		return -1
+	var col := clampi(int((p.x - 15.0) / 80.0), 0, 2)
+	var row := clampi(int((p.y - 60.0) / 82.0), 0, 2)
+	return row * 3 + col
 
 
 func _tap(p: Vector2) -> void:
 	if state != "play":
 		return
-	for i in 9:
-		if p.distance_to(HOLE[i] + Vector2(0, -10)) < 36.0:
-			whack(i)
-			return
+	var i := hole_at(p)
+	if i >= 0:
+		whack(i)
 
 
 func _finish() -> void:
-	game_over(["!TIME!" if play_t >= ROUND else "!GAME ENDED", "Bops %d · best combo %d" % [hits, best_combo], "Bunnies bopped: %d" % bunnies])
+	var lines := ["!TIME!" if clock() >= ROUND else "!GAME ENDED", "Bops %d · best combo %d" % [hits, best_combo], "Got away %d · bunnies bopped %d" % [escaped, bunnies]]
+	game_over(lines)
 
 
 func _tickets_for(s: int) -> int:
@@ -210,12 +291,20 @@ func _draw_play(c: Control) -> void:
 	spr(c, "whack_bush", Rect2(-14, 318, 50, 40))
 	spr(c, "whack_bush", Rect2(236, 320, 46, 36), Color.WHITE, true)
 	# Timer bar.
-	var left := clampf(1.0 - play_t / ROUND, 0.0, 1.0) if state == "play" else 1.0
+	var live := state == "play" or state == "paused"
+	var left := clampf(time_left() / ROUND, 0.0, 1.0) if live else (0.0 if state == "over" else 1.0)
+	var bar_col := Color(0.5, 0.9, 0.4).lerp(Color(1, 0.35, 0.3), 1.0 - left)
+	if live and time_left() <= 5.0 and fmod(t, 0.5) < 0.25:
+		bar_col = Color(1, 0.9, 0.5)
 	c.draw_rect(Rect2(12, 32, 246, 8), Color(0, 0, 0, 0.4))
-	c.draw_rect(Rect2(12, 32, 246 * left, 8), Color(0.5, 0.9, 0.4).lerp(Color(1, 0.35, 0.3), 1.0 - left))
+	c.draw_rect(Rect2(12, 32, 246 * left, 8), bar_col)
+	if live:
+		text(c, Vector2(12, 39), "%ds" % int(ceil(time_left())), 244, 7, Color(1, 1, 1, 0.9), HORIZONTAL_ALIGNMENT_RIGHT)
 	text_outline(c, Vector2(12, 58), "Score %d" % score, 120, 10, Color.WHITE)
 	if combo >= 2:
-		text_outline(c, Vector2(140, 58), "Combo %d" % combo, 118, 10, Color(1, 0.9, 0.4), HORIZONTAL_ALIGNMENT_RIGHT)
+		var mult := mult_for(combo)
+		var ctext := "Combo %d" % combo + ("  x%d" % mult if mult > 1 else "")
+		text_outline(c, Vector2(120, 58), ctext, 138, 10, Color(1, 0.9, 0.4) if mult == 1 else Color(1, 0.65, 0.25), HORIZONTAL_ALIGNMENT_RIGHT)
 	if holes.is_empty():
 		for i in 9:
 			_hole(c, i, null)
@@ -234,7 +323,7 @@ func _draw_play(c: Control) -> void:
 			var ms := Vector2(mtx.get_size()) * 0.42
 			c.draw_texture_rect(mtx, Rect2(-ms.x * 0.75, -ms.y * 0.8, ms.x, ms.y), false)
 			c.draw_set_transform(draw_off)
-			draw_fx(c)
+			_draw_overlays(c)
 			return
 		c.draw_set_transform(mp + draw_off, ang, Vector2.ONE)
 		c.draw_rect(Rect2(-2, -2, 4, 26), Color(0.6, 0.4, 0.2))
@@ -242,7 +331,26 @@ func _draw_play(c: Control) -> void:
 		c.draw_rect(Rect2(-11, -10, 22, 3), Color(1, 0.55, 0.5))
 		c.draw_rect(Rect2(-11, -10, 22, 12), Color(0.35, 0.08, 0.08), false, 1.0)
 		c.draw_set_transform(draw_off)
+	_draw_overlays(c)
+
+
+## Particles, the READY / GO! card, the final countdown and the pause card.
+func _draw_overlays(c: Control) -> void:
 	draw_fx(c)
+	if state == "play" and play_t < LEAD + 0.5:
+		var word := "READY..." if play_t < LEAD else "GO!"
+		var col := Color(1, 0.95, 0.6) if play_t < LEAD else Color(0.6, 1, 0.45)
+		var a := 1.0 if play_t < LEAD else clampf((LEAD + 0.5 - play_t) * 3.0, 0.0, 1.0)
+		c.draw_rect(Rect2(0, 176, W, 44), Color(0.05, 0.03, 0.08, 0.6 * a))
+		text_outline(c, Vector2(0, 207), word, W, 22, Color(col, a), HORIZONTAL_ALIGNMENT_CENTER)
+	elif state == "play" and time_left() <= 5.0 and time_left() > 0.0:
+		var n := int(ceil(time_left()))
+		var frac := time_left() - floorf(time_left())
+		# Big ticking number in the top strip, clear of the holes.
+		var sz := 16 + int(frac * 8.0)
+		text_outline(c, Vector2(0, 62), str(n), W, sz, Color(1, 0.55, 0.4, 0.6 + 0.4 * frac), HORIZONTAL_ALIGNMENT_CENTER)
+	if state == "paused":
+		ArcadePause.draw(self, c)
 
 
 const SPRITE := {"grump": "whack_grump", "gold": "whack_gold", "helmet": "whack_helmet", "bunny": "whack_bunny"}

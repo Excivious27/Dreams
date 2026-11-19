@@ -154,7 +154,10 @@ func _run() -> void:
 			inp["up"] = true
 		_frames(s, 1, inp)
 	if s.state == "play":
-		_tap_action(s, "b")
+		_tap_action(s, "b")  # B pauses (ArcadePause) ...
+		_frames(s, 12)
+		_tap_action(s, "b")  # ... and B again ends the round
+	_frames(s, 90)  # a top-out greys the well before the results card
 	check(s.state == "over", "stack ends")
 	check(Tickets.best_score("stack") > 0, "stack best score saved")
 	s.close()
@@ -165,7 +168,7 @@ func _run() -> void:
 	tk = Tickets.count()
 	_tap_action(w, "a")
 	check(w.state == "play", "whack starts")
-	for i in 60 * 42:
+	for i in 60 * 44:
 		if w.state != "play":
 			break
 		for h in 9:
