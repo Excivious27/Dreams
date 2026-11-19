@@ -267,7 +267,7 @@ func game_over(extra_lines: Array = [], best_value := -1) -> void:
 	if state == "over":
 		return
 	over_lines = extra_lines
-	won_tickets = maxi(0, _tickets_for(score))
+	won_tickets = Tickets.payout(game_id, maxi(0, _tickets_for(score)))
 	if won_tickets > 0:
 		Tickets.add(won_tickets, game_id)
 	new_best = Tickets.set_best(game_id, score if best_value < 0 else best_value)

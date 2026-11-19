@@ -880,7 +880,7 @@ func _draw_final() -> void:
 	c.draw_string(_font, Vector2(r.position.x, r.position.y + 24), "GAME OVER", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 14, Color(1, 0.85, 0.3))
 	c.draw_string(_font, Vector2(r.position.x, r.position.y + 62), str(sc), HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 32, Color.WHITE)
 	c.draw_string(_font, Vector2(r.position.x, r.position.y + 84), "%d strikes · %d spares" % [int(result.get("strikes", 0)), int(result.get("spares", 0))], HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 9, Color(0.8, 0.85, 1))
-	var t := RecCenter.tickets_for(sc, int(result.get("strikes", 0)), int(result.get("spares", 0)))
+	var t := Tickets.payout("bowling", RecCenter.tickets_for(sc, int(result.get("strikes", 0)), int(result.get("spares", 0))))
 	c.draw_string(_font, Vector2(r.position.x, r.position.y + 108), "+%d tickets" % t, HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 12, Color(1, 0.7, 0.9))
 	if sc > best:
 		c.draw_string(_font, Vector2(r.position.x, r.position.y + 128), "NEW PERSONAL BEST!", HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 10, Color(1, 0.9, 0.3, 0.6 + 0.4 * sin(Time.get_ticks_msec() / 150.0)))

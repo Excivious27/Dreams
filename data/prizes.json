@@ -10,7 +10,7 @@
   "skee_ball": "Skee-Ball"
  },
  "order": [
-  "candy",
+  "rp_candy",
   "rp_fizzy_pop",
   "rp_cotton_candy",
   "rp_ribbon",
@@ -22,7 +22,7 @@
   "rp_neon_cap",
   "rp_music_box",
   "rp_painting",
-  "growth_elixir",
+  "rp_sprout_fizz",
   "rp_trophy_bronze",
   "rp_top_hat",
   "rp_trophy_silver",
@@ -34,8 +34,8 @@
   "rp_golden_pin"
  ],
  "prizes": {
-  "candy": {
-   "item": "candy",
+  "rp_candy": {
+   "item": "rp_candy",
    "cost": 15,
    "tier": 1,
    "need": {}
@@ -120,12 +120,13 @@
     "once": true
    }
   },
-  "growth_elixir": {
-   "item": "growth_elixir",
-   "cost": 400,
+  "rp_sprout_fizz": {
+   "item": "rp_sprout_fizz",
+   "cost": 300,
    "tier": 3,
    "need": {
-    "earned": 150
+    "earned": 150,
+    "weekly": 1
    }
   },
   "rp_trophy_bronze": {
@@ -166,15 +167,13 @@
    "cost": 300,
    "tier": 3,
    "need": {
-    "arcade": {
-     "games": 4
-    },
+    "ms": "all_games",
     "once": true
    }
   },
   "rp_star_cape": {
    "item": "rp_star_cape",
-   "cost": 450,
+   "cost": 600,
    "tier": 4,
    "need": {
     "best": {
@@ -185,16 +184,16 @@
   },
   "rp_jukebox": {
    "item": "rp_jukebox",
-   "cost": 600,
+   "cost": 900,
    "tier": 4,
    "need": {
-    "earned": 400,
+    "earned": 800,
     "once": true
    }
   },
   "rp_trophy_gold": {
    "item": "rp_trophy_gold",
-   "cost": 700,
+   "cost": 900,
    "tier": 4,
    "need": {
     "best": {
@@ -205,19 +204,19 @@
   },
   "rp_arcade_cab": {
    "item": "rp_arcade_cab",
-   "cost": 800,
+   "cost": 1200,
    "tier": 4,
    "need": {
-    "earned": 600,
+    "earned": 1500,
     "arcade": {
-     "plays": 15
+     "plays": 25
     },
     "once": true
    }
   },
   "rp_golden_pin": {
    "item": "rp_golden_pin",
-   "cost": 1200,
+   "cost": 1500,
    "tier": 4,
    "need": {
     "best": {
@@ -226,5 +225,88 @@
     "once": true
    }
   }
+ },
+ "fees": {
+  "bowling": 25,
+  "jumper": 10,
+  "stack": 10,
+  "whack": 10,
+  "gallery": 10,
+  "claw": 20,
+  "skee_ball": 5
+ },
+ "payout": {
+  "bowling": {
+   "soft": 40,
+   "cap": 60
+  },
+  "jumper": {
+   "soft": 24,
+   "cap": 34
+  },
+  "stack": {
+   "soft": 24,
+   "cap": 34
+  },
+  "whack": {
+   "soft": 24,
+   "cap": 34
+  },
+  "gallery": {
+   "soft": 24,
+   "cap": 34
+  },
+  "claw": {
+   "soft": 14,
+   "cap": 20
+  },
+  "skee_ball": {
+   "soft": 15,
+   "cap": 15
+  }
+ },
+ "resale": 8,
+ "max_sell": 2.15,
+ "claw_pool": [
+  [
+   "rp_teddy",
+   18
+  ],
+  [
+   "rp_penguin_plush",
+   16
+  ],
+  [
+   "rp_cat_plush",
+   16
+  ],
+  [
+   "rp_candy",
+   22
+  ],
+  [
+   "rp_ribbon",
+   12
+  ],
+  [
+   "rp_cotton_candy",
+   10
+  ],
+  [
+   "old_coin",
+   3
+  ],
+  [
+   "toy",
+   2
+  ],
+  [
+   "fossil",
+   1
+  ]
+ ],
+ "check": {
+  "claw_avg": 9.4,
+  "claw_ev_best": 18.4
  }
 }

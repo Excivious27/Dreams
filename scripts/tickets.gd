@@ -9,6 +9,9 @@ extends RefCounted
 ##   Tickets.best_score(game_id)   best score of a game (0 if never played)
 ##   Tickets.set_best(game_id, s)  record a score; returns true if it is a new best
 ##   Tickets.unlocked(prize_id)    the prize's milestone is met (data/prizes.json)
+##   Tickets.payout(game, n)       what a play that scored n tickets really pays (soft cap
+##                                 and cap per game from tools/gen_rec.py PAYOUT)
+##   Tickets.claw_pool(fallback)   the claw machine's [item, weight] list (gen_rec CLAW_POOL)
 ##
 ## Lives in run["arcade"] = {"tickets": int, "best": {game: score},
 ##   "earned": {source: total}, "plays": {game: n}, "bought": {prize: n}}.
@@ -27,13 +30,18 @@ static func _st() -> Dictionary:
 	if not a.has("tickets"):
 		a["tickets"] = int(r.get("tickets", 0))
 		r.erase("tickets")
-	for k in ["best", "earned", "plays", "bought"]:
+	for k in ["best", "earned", "plays", "bought", "week"]:
 		if not (a.get(k) is Dictionary):
 			a[k] = {}
 	return a
 
 
+## Awards tickets. Games pass their raw count through payout() first (and show that);
+## add() itself still holds a game source to its cap, so no play can pay past it.
 static func add(n: int, source := "") -> void:
+	var cap: Variant = ((prizes().get("payout", {}) as Dictionary).get(source, {}) as Dictionary).get("cap")
+	if cap != null:
+		n = mini(n, int(cap))
 	if n <= 0:
 		return
 	var a := _st()
@@ -102,6 +110,26 @@ static func earned(source := "") -> int:
 	return t
 
 
+## Per-play payout: full tickets up to the game's "soft" mark, half rate above it, never
+## past its "cap" (the caps keep tickets from ever selling back for more than a play costs).
+static func payout(game_id: String, n: int) -> int:
+	var p: Dictionary = (prizes().get("payout", {}) as Dictionary).get(game_id, {})
+	if p.is_empty() or n <= int(p.get("soft", n)):
+		return maxi(0, n)
+	var soft := int(p["soft"])
+	return mini(int(p.get("cap", n)), soft + (n - soft) / 2)
+
+
+static func claw_pool(fallback: Array) -> Array:
+	var cp: Variant = prizes().get("claw_pool", [])
+	return cp if cp is Array and not (cp as Array).is_empty() else fallback
+
+
+## The current shop week (day 1-7 = week 0) for "weekly" prizes.
+static func week() -> int:
+	return maxi(0, int(GameState.run.get("day", 1)) - 1) / 7
+
+
 static func prizes() -> Dictionary:
 	if _prizes.is_empty():
 		_prizes = GameState.load_json(PRIZES_PATH)
@@ -126,19 +154,26 @@ static func lock_text(prize_id: String) -> String:
 	var names: Dictionary = prizes().get("game_names", {})
 	for g in (need.get("best", {}) as Dictionary):
 		if best_score(str(g)) < int(need["best"][g]):
-			return "Score %d in %s" % [int(need["best"][g]), str(names.get(g, g))]
+			var b := best_score(str(g))
+			return "Score %d in %s%s" % [int(need["best"][g]), str(names.get(g, g)), (" (best %d)" % b) if b > 0 else ""]
 	for g in (need.get("plays", {}) as Dictionary):
 		if plays(str(g)) < int(need["plays"][g]):
-			return "Play %s %d times" % [str(names.get(g, g)), int(need["plays"][g])]
+			return "Play %s %d times (%d/%d)" % [str(names.get(g, g)), int(need["plays"][g]), plays(str(g)), int(need["plays"][g])]
 	if need.has("earned") and earned() < int(need["earned"]):
-		return "Win %d tickets in all" % int(need["earned"])
+		return "Win %d tickets in all (%d so far)" % [int(need["earned"]), earned()]
 	var arc: Dictionary = need.get("arcade", {})
 	if arc.has("plays") and arcade_plays() < int(arc["plays"]):
-		return "Play %d arcade games" % int(arc["plays"])
+		return "Play %d arcade games (%d/%d)" % [int(arc["plays"]), arcade_plays(), int(arc["plays"])]
 	if arc.has("games") and arcade_games() < int(arc["games"]):
-		return "Try %d different cabinets" % int(arc["games"])
+		return "Try %d different cabinets (%d/%d)" % [int(arc["games"]), arcade_games(), int(arc["games"])]
+	if need.has("ms") and not ArcadeHub.milestone(str(need["ms"])):
+		return str(ArcadeHub.MILESTONES.get(str(need["ms"]), str(need["ms"])))
 	if need.has("once") and bought(prize_id) > 0:
 		return "Already yours"
+	if need.has("weekly") and int((_st()["week"] as Dictionary).get(prize_id, [-1, 0])[0]) == week() \
+			and int(_st()["week"][prize_id][1]) >= int(need["weekly"]):
+		var left := 7 - (maxi(0, int(GameState.run.get("day", 1)) - 1) % 7)
+		return "Sold out this week (more in %d day%s)" % [left, "" if left == 1 else "s"]
 	return ""
 
 
@@ -158,5 +193,8 @@ static func buy(prize_id: String) -> String:
 	if not spend(cost):
 		return "Not enough tickets."
 	_st()["bought"][prize_id] = bought(prize_id) + 1
+	if (p.get("need", {}) as Dictionary).has("weekly"):
+		var wk: Array = (_st()["week"] as Dictionary).get(prize_id, [-1, 0])
+		_st()["week"][prize_id] = [week(), (int(wk[1]) if int(wk[0]) == week() else 0) + 1]
 	GameState.add_item(str(p.get("item", prize_id)), int(p.get("n", 1)))
 	return ""

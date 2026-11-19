@@ -63,7 +63,34 @@ func _fill() -> void:
 		if it.has("arc") and str(it["arc"]) != str(GameState.run.get("arc", "")):
 			continue
 		_rows.append(str(id))
+	# Keepsakes you already own sink to the bottom of the shelf.
+	var owned := _rows.filter(func(r: String) -> bool: return Tickets.lock_text(r) == "Already yours")
+	_rows = _rows.filter(func(r: String) -> bool: return not owned.has(r)) + owned
 	sel = clampi(sel, 0, maxi(0, _rows.size() - 1))
+
+
+## Something on shelf t can be bought right now (the tab gets a dot).
+static func shelf_ready(t: int) -> bool:
+	var all: Dictionary = Tickets.prizes().get("prizes", {})
+	for id in all:
+		var p: Dictionary = all[id]
+		if int(p.get("tier", 1)) == t + 1 and Tickets.lock_text(str(id)) == "" and Tickets.count() >= int(p.get("cost", 0)):
+			return true
+	return false
+
+
+## The row's second line: why it's locked, how many tickets are missing, or what it is.
+static func row_note(id: String) -> String:
+	var p := Tickets.prize(id)
+	var lock := Tickets.lock_text(id)
+	if lock == "Already yours":
+		return "Yours! " + ("It's in your house." if RecCenter.data().get("house_decor", {}).has(str(p.get("item", id))) else "")
+	if lock != "":
+		return lock
+	var short := int(p.get("cost", 0)) - Tickets.count()
+	if short > 0:
+		return "%d more ticket%s" % [short, "" if short == 1 else "s"]
+	return str(GameState.items.get(str(p.get("item", id)), {}).get("desc", ""))
 
 
 func _process(delta: float) -> void:
@@ -108,8 +135,9 @@ func _buy() -> void:
 		_flash = "Got it: %s!" % GameState.item_name(item)
 		_flash_good = true
 		Music.instance(get_tree()).sfx("j_buy", "coin")
-		if str(GameState.items.get(item, {}).get("type", "")) == "decor":
+		if RecCenter.data().get("house_decor", {}).has(item):
 			_flash += "  (It's in your house now.)"
+		_fill()
 	else:
 		_flash = why
 		_flash_good = false
@@ -167,11 +195,14 @@ func _draw_it() -> void:
 		c.draw_rect(Rect2(i * 20.0, 0, 10, 14), Color("c8323c") if not gang else Color("b02aa0"))
 		c.draw_rect(Rect2(i * 20.0 + 10, 0, 10, 14), Color("f2e6c8") if not gang else Color("2a1840"))
 	c.draw_string(_font, Vector2(0, 36), "PRIZE COUNTER", HORIZONTAL_ALIGNMENT_CENTER, 270, 16, Color(1, 0.85, 0.35))
-	c.draw_string(_font, Vector2(0, 56), "♦ %d tickets" % Tickets.count(), HORIZONTAL_ALIGNMENT_CENTER, 270, 11, Color(1, 0.7, 0.9))
+	c.draw_string(_font, Vector2(0, 52), "♦ %d tickets" % Tickets.count(), HORIZONTAL_ALIGNMENT_CENTER, 270, 11, Color(1, 0.7, 0.9))
+	c.draw_string(_font, Vector2(0, 62), "%d won in all · every game pays tickets" % Tickets.earned(), HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.45))
 	for i in TIERS.size():
 		var r := _tab_rect(i)
 		c.draw_rect(r, Color(1, 0.85, 0.35, 0.95) if i == tier else Color(1, 1, 1, 0.1))
 		c.draw_string(_font, Vector2(r.position.x, r.position.y + 15), TIERS[i], HORIZONTAL_ALIGNMENT_CENTER, r.size.x, 9, Color(0.15, 0.08, 0.05) if i == tier else Color(1, 1, 1, 0.8))
+		if shelf_ready(i):
+			c.draw_circle(Vector2(r.end.x - 5, r.position.y + 5), 3.0, Color(0.5, 1, 0.55) if i != tier else Color(0.1, 0.55, 0.2))
 	if _rows.is_empty():
 		c.draw_string(_font, Vector2(0, LIST_Y + 30), "Nothing on this shelf.", HORIZONTAL_ALIGNMENT_CENTER, 270, 9, Color(1, 1, 1, 0.6))
 	for i in _rows.size():
@@ -191,16 +222,23 @@ func _draw_it() -> void:
 			var sz := Vector2(ic.get_width(), ic.get_height()) * s
 			c.draw_texture_rect(ic, Rect2(Vector2(26, y + ROW_H / 2.0 - 1.5) - sz / 2.0, sz), false, Color(1, 1, 1, 1.0 if lock == "" or lock == "Already yours" else 0.35))
 		c.draw_string(_font, Vector2(44, y + 13), GameState.item_name(item), HORIZONTAL_ALIGNMENT_LEFT, 150, 9, Color.WHITE if lock == "" else Color(1, 1, 1, 0.5))
-		var sub := lock if lock != "" else str(GameState.items.get(item, {}).get("desc", ""))
-		sub = _fit(("Locked: " if lock != "" and lock != "Already yours" else "") + sub, 148.0, 7)
-		c.draw_string(_font, Vector2(44, y + 25), sub, HORIZONTAL_ALIGNMENT_LEFT, 150, 7, Color(1, 0.75, 0.6) if lock != "" else Color(0.8, 0.8, 0.9))
-		c.draw_string(_font, Vector2(196, y + 18), "♦%d" % int(p.get("cost", 0)), HORIZONTAL_ALIGNMENT_RIGHT, 60, 10, Color(1, 0.85, 0.35) if can else Color(1, 1, 1, 0.4))
+		var owned := lock == "Already yours"
+		var short := lock == "" and not can
+		var sub := _fit(("Locked: " if lock != "" and not owned and not lock.begins_with("Sold out") else "") + row_note(id), 148.0, 7)
+		var sub_col := Color(0.6, 1, 0.65) if owned else (Color(1, 0.75, 0.6) if lock != "" else (Color(1, 0.85, 0.5) if short else Color(0.8, 0.8, 0.9)))
+		c.draw_string(_font, Vector2(44, y + 25), sub, HORIZONTAL_ALIGNMENT_LEFT, 150, 7, sub_col)
+		if owned:
+			c.draw_string(_font, Vector2(196, y + 18), "OWNED", HORIZONTAL_ALIGNMENT_RIGHT, 60, 8, Color(0.6, 1, 0.65, 0.8))
+		else:
+			c.draw_string(_font, Vector2(196, y + 18), "♦%d" % int(p.get("cost", 0)), HORIZONTAL_ALIGNMENT_RIGHT, 60, 10, Color(1, 0.85, 0.35) if can else Color(1, 1, 1, 0.4))
 	# The picked prize in full (rows cut long text to one line).
 	if sel >= 0 and sel < _rows.size():
 		var pid: String = _rows[sel]
 		var pit := str(Tickets.prize(pid).get("item", pid))
 		var plock := Tickets.lock_text(pid)
-		var full := str(GameState.items.get(pit, {}).get("desc", "")) if plock == "" or plock == "Already yours" else "Locked: " + plock
+		var full := str(GameState.items.get(pit, {}).get("desc", ""))
+		if plock != "" and plock != "Already yours":
+			full = ("%s. %s" if plock.begins_with("Sold out") else "Locked: %s. %s") % [plock, full]
 		if full != "":
 			c.draw_rect(Rect2(10, 342, 250, 34), Color(0, 0, 0, 0.35))
 			c.draw_multiline_string(_font, Vector2(16, 355), full, HORIZONTAL_ALIGNMENT_LEFT, 238, 8, 2, Color(0.9, 0.88, 0.95) if plock == "" or plock == "Already yours" else Color(1, 0.78, 0.65))
