@@ -82442,6 +82442,16 @@
    "h": 64,
    "w": 31
   },
+  "arcade_cab_gallery": {
+   "file": "props/arcade_cab_gallery.png",
+   "h": 64,
+   "w": 25
+  },
+  "arcade_cab_whack": {
+   "file": "props/arcade_cab_whack.png",
+   "h": 64,
+   "w": 25
+  },
   "arch": {
    "file": "props/arch.png",
    "h": 62,

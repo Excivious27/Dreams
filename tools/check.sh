@@ -219,4 +219,14 @@ mnout="$("$GODOT" --headless --path . -s res://tools/mega_regions_test.gd 2>&1)"
 echo "$mnout" | grep -E "FAIL|SCRIPT ERROR|mega_regions_test" || true
 if ! echo "$mnout" | grep -q "mega_regions_test: 0 failures"; then
   echo "Mega regions (new) test failed"; exit 1
+echo "== arcade: cabinets play, pay tickets; every jumper level can be finished =="
+jout="$("$GODOT" --headless --path . -s res://tools/jumper_solve.gd 2>&1)"
+echo "$jout" | grep -E "FAIL|jumper_solve" || true
+if ! echo "$jout" | grep -q "jumper_solve: 0 failures"; then
+  echo "Jumper level check failed"; exit 1
+fi
+aout2="$("$GODOT" --headless --path . -s res://tools/arcade_test.gd 2>&1)"
+echo "$aout2" | grep -E "FAIL|SCRIPT ERROR|arcade_test" || true
+if ! echo "$aout2" | grep -q "arcade_test: 0 failures"; then
+  echo "Arcade test failed"; exit 1
 fi

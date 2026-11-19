@@ -73,6 +73,80 @@
    }
   ]
  },
+ "arcade_hall": {
+  "chosen": "so_82526e027a0e4b558fb566e4",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/arcade_hall__so_7cca7409506444efaab8c624.mp3",
+    "id": "so_7cca7409506444efaab8c624",
+    "page": "https://acemusic.ai/song/jt3g4zxu9p8b",
+    "score": {
+     "dur": 96.5,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/arcade_hall__so_7cca7409506444efaab8c624.mp3",
+     "holes": 0,
+     "lvl_diff": 2.4000000953674316,
+     "peak": 1.428,
+     "score": 94.86,
+     "seam": 0.985
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/arcade_hall__so_82526e027a0e4b558fb566e4.mp3",
+    "id": "so_82526e027a0e4b558fb566e4",
+    "page": "https://acemusic.ai/song/rdqqmx6iybpx",
+    "score": {
+     "dur": 97.2,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/arcade_hall__so_82526e027a0e4b558fb566e4.mp3",
+     "holes": 0,
+     "lvl_diff": 0.20000000298023224,
+     "peak": 1.359,
+     "score": 99.31,
+     "seam": 0.996
+    }
+   }
+  ]
+ },
+ "arcade_jumper": {
+  "chosen": "so_c20d117af7f24cb688a69f03",
+  "kind": "music",
+  "note": "",
+  "versions": [
+   {
+    "file": "/home/claude/work/ace_raw/arcade_jumper__so_cd54cd2c227a419382013761.mp3",
+    "id": "so_cd54cd2c227a419382013761",
+    "page": "https://acemusic.ai/song/pv9yy489rfyz",
+    "score": {
+     "dur": 98.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/arcade_jumper__so_cd54cd2c227a419382013761.mp3",
+     "holes": 0,
+     "lvl_diff": 2.5999999046325684,
+     "peak": 1.309,
+     "score": 95.0,
+     "seam": 0.989
+    }
+   },
+   {
+    "file": "/home/claude/work/ace_raw/arcade_jumper__so_c20d117af7f24cb688a69f03.mp3",
+    "id": "so_c20d117af7f24cb688a69f03",
+    "page": "https://acemusic.ai/song/8ar5jhqydzs5",
+    "score": {
+     "dur": 98.7,
+     "fade": 0.0,
+     "file": "/home/claude/work/ace_raw/arcade_jumper__so_c20d117af7f24cb688a69f03.mp3",
+     "holes": 0,
+     "lvl_diff": 1.899999976158142,
+     "peak": 1.342,
+     "score": 96.98,
+     "seam": 0.999
+    }
+   }
+  ]
+ },
  "battle": {
   "chosen": "so_9ce316cdadc9465381710a96",
   "kind": "music",
