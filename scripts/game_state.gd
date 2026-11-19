@@ -2601,10 +2601,16 @@ static func sleep(passed_out := false) -> Dictionary:
 				if rate > 0.0 and randf() < bonus("farming", "extra_day"):
 					tile["days"] = int(tile.get("days", 0)) + 1
 				if rate > 0.0: report["grown"] += 1
+			else:
+				report["dry"] = int(report.get("dry", 0)) + 1  # planted but never watered: no growth tonight
 			tile["watered"] = false
 		else:
 			tile["watered"] = false
 	_crows(report)
+	for k3 in run["farm"].keys():
+		var t3: Dictionary = run["farm"][k3]
+		if str(t3.get("crop", "")) != "" and crops.has(str(t3["crop"])) and int(t3.get("days", 0)) >= int(crops[str(t3["crop"])]["days"]):
+			report["ripe"] = int(report.get("ripe", 0)) + 1
 	# Sprinklers and Hazel water again so the morning starts with wet soil.
 	_sprinklers_water()
 	if hazel_waters:
