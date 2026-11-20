@@ -3,6 +3,14 @@ name: Build and deploy web
 on:
   push:
     branches: [main]
+    # Uploads, handoffs and reports don't change the game: no deploy (C9 P4).
+    paths-ignore:
+      - "docs/**"
+      - "reference/**"
+      - "art/incoming/**"
+      - "audio/incoming/**"
+      - "ci/**"
+      - "*.md"
   workflow_dispatch:
 
 permissions:
@@ -10,9 +18,11 @@ permissions:
   pages: write
   id-token: write
 
+# A running deploy always finishes; newer pushes wait and only the latest
+# waiting one runs next (C9 P4: 94 of 100 deploys were being cancelled).
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   GODOT_VERSION: "4.5.1"
@@ -64,8 +74,24 @@ jobs:
 
       - name: Python deps (numpy for the music/sfx checks)
         run: pip install --quiet numpy && (command -v ffmpeg >/dev/null || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null))
+      # The full tools/check.sh gates merges on the CONDUCT CI shards
+      # (.github/workflows/conduct-ci.yml); the deploy only needs a clean
+      # import and the smoke test, so it can't be blocked by a slow or
+      # order-dependent test (C9 P4).
       - name: Import project and run smoke test
-        run: bash tools/check.sh
+        shell: bash
+        run: |
+          set -o pipefail
+          godot --headless --path . --import 2>&1 | tail -n 20
+          out="$(godot --headless --path . -s res://tools/smoke_test.gd 2>&1)"; code=$?
+          echo "$out" | tail -n 40
+          test $code -eq 0 || { echo "smoke test exited $code"; exit 1; }
+          echo "$out" | grep -q "SMOKE DONE, failures: 0" || { echo "smoke test did not pass"; exit 1; }
+          if echo "$out" | grep -vE "still in use at exit|leaked at exit|_free_rids|resource.cpp|renderer_canvas_cull" | grep -qE "SCRIPT ERROR|Parse Error"; then
+            echo "$out" | grep -E "SCRIPT ERROR|Parse Error" | sort | uniq -c | sort -rn | head -n 20; exit 1
+          fi
+          python3 tools/web_head.py --check
+          python3 tools/music_stream.py --check
 
       - name: Export web build
         shell: bash

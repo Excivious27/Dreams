@@ -67,6 +67,13 @@ func _ready() -> void:
 	add_child(_fading)
 	_player.finished.connect(_on_finished.bind(_player))
 	_fading.finished.connect(_on_finished.bind(_fading))
+	# Web: songs play as streams, not Web Audio samples (a sample is the whole
+	# song decoded to PCM in page memory, ~50 MB each, and skips the Music bus
+	# limiter). Short sfx stay samples (C9 P4).
+	if OS.has_feature("web"):
+		_player.playback_type = AudioServer.PLAYBACK_TYPE_STREAM
+		_fading.playback_type = AudioServer.PLAYBACK_TYPE_STREAM
+		cache_cap = WEB_CACHE_CAP
 	for i in 6:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -4.0
@@ -346,6 +353,12 @@ func _stream_for(track: String) -> AudioStream:
 ## A packed song that suits the wanted one, to play until it arrives.
 func _standin(track: String) -> String:
 	var t := track
+	# A fight never sounds calm: each arc's fight loop is packed (music_stream.py EMBED).
+	if _is_fight_song(t):
+		var fight := "combat_light_gang" if (t.ends_with("_gang") or str(GameState.run.get("arc", "")) == "gangsters") else "combat_light"
+		for c: String in [fight, "combat_light", "combat_light_gang"]:
+			if _stream_for(c) != null:
+				return c
 	if t in ["house", "shop", "shop_gang", "inn", "chapel", "clinic", "hideout", "merkitty_song", "credits"] or t.begins_with("ending"):
 		t = "house"
 	else:
@@ -381,6 +394,8 @@ static var stall_secs := 20.0
 const STREAMED_KEEP := 4
 ## user://mcache size cap (bytes); least recently used songs go first.
 static var cache_cap := 40 * 1024 * 1024
+## On the web user:// is held in page memory (IDBFS), so the cache stays small there.
+const WEB_CACHE_CAP := 16 * 1024 * 1024
 ## Songs heard often, fetched quietly one by one once the first song is in.
 const PREFETCH := ["night", "rain", "town", "meadow", "forest", "lake", "winter", "farm_fall"]
 const PREFETCH_GANG := ["combat_light_gang", "raid", "countryside", "boss_gang", "hideout", "neon", "docks", "combat_elite_gang"]
@@ -761,6 +776,8 @@ var _last_sfx := {}
 
 
 func sfx(name: String, fallback := "") -> void:
+	# Big moments buzz even with the sound off (Haptics.JINGLES whitelist, C9 P4).
+	Haptics.from_sfx(name)
 	if _muted or _sfx.is_empty():
 		return
 	# Gangster arc: money is cash, so coin clinks become bills (Money.SFX).
