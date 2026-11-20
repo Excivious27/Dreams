@@ -2749,9 +2749,7 @@
     "lunge"
    ],
    "name": "Gilt Guard",
-   "art": "gilt_guard",
-   "art_fallback": "knight",
-   "fallback_tint": "#ffe488",
+   "art": "casino_guard",
    "reward": 29
   },
   "gilded_mirror": {
@@ -3230,8 +3228,7 @@
     "lunge"
    ],
    "name": "Rosa Thorne",
-   "char": "gambler",
-   "tint": "#c898ff",
+   "art": "gang_boss_gloam",
    "status": "poison",
    "boss": true,
    "scale": 1.15,
@@ -3248,8 +3245,7 @@
     "enrage"
    ],
    "name": "Dune King Vasco",
-   "char": "brute",
-   "tint": "#e8b060",
+   "art": "gang_boss_desert",
    "status": "burn",
    "boss": true,
    "scale": 1.15,
@@ -3311,8 +3307,7 @@
     "lunge"
    ],
    "name": "Big Ike Frost",
-   "char": "enforcer",
-   "tint": "#a8d8ff",
+   "art": "gang_boss_frost",
    "status": "chill",
    "boss": true,
    "scale": 1.2,

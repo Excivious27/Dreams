@@ -198,6 +198,10 @@ ENEMIES = {
     "madame_aurum": ("thug_gambler", "", 140, 5, "Madame Aurum", [["gambler_chip", 1.0, 8], ["lucky_coin", 1.0, 2]], {"boss": True, "char": "mg_aurum", "scale": 1.15}),
 }
 # Kinds with their own sheet coming from CONDUCT 4 P5 (enemies/<kind>): tint only on the fallback.
+# OWN_ART kinds whose sheet was sliced under another name (C5 P6: the gang bosses and the
+# Gilt Guard were drawn as enemies/gang_boss_* and enemies/casino_guard).
+ART_AS = {"garden_boss": "gang_boss_gloam", "smuggler_king": "gang_boss_desert", "ice_hauler": "gang_boss_frost",
+          "gilt_guard": "casino_guard"}
 OWN_ART = ["thornmother", "sun_colossus", "garden_boss", "smuggler_king", "ice_hauler", "dune_crab", "sand_hound", "sun_moth", "glass_golem", "gilt_guard", "rail_bot"]
 BOSS_REWARD = {3: 350, 4: 550, 5: 850}
 NATIVE_HP = [1.5, 2.2, 2.8, 3.5, 4.0, 5.0]  # mirrors Enemy.NATIVE_HP (rewards only)
@@ -1228,9 +1232,10 @@ def main():
         b = E["enemies"][base]
         d = {"hp": hp, "dmg": max(1, int(b.get("dmg", 2)) + (1 if tier >= 4 else 0)), "speed": b.get("speed", 30), "xp": max(4, hp // 3), "tier": tier,
              "abilities": list(b.get("abilities", [])), "name": nm}
-        own = k in OWN_ART and os.path.isdir(f"{D}/art/gen/enemies/{k}")
+        ak = ART_AS.get(k, k)
+        own = k in OWN_ART and os.path.isdir(f"{D}/art/gen/enemies/{ak}")
         if own:  # P5's sheet is in: no char, no tint
-            d["art"] = k
+            d["art"] = ak
         elif extra.get("char"):
             d["char"] = extra["char"]
             if tint:

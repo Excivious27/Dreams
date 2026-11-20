@@ -124292,6 +124292,11 @@
    "h": 56,
    "w": 57
   },
+  "card_baron_coalbrook": {
+   "file": "ui/card_baron_coalbrook.png",
+   "h": 322,
+   "w": 764
+  },
   "card_big_grump": {
    "file": "ui/card_big_grump.png",
    "h": 322,
@@ -124339,6 +124344,11 @@
   },
   "card_gang_boss_gloam": {
    "file": "ui/card_gang_boss_gloam.png",
+   "h": 322,
+   "w": 764
+  },
+  "card_garden_boss": {
+   "file": "ui/card_garden_boss.png",
    "h": 322,
    "w": 764
   },
@@ -124522,6 +124532,11 @@
    "h": 100,
    "w": 83
   },
+  "card_ice_hauler": {
+   "file": "ui/card_ice_hauler.png",
+   "h": 322,
+   "w": 764
+  },
   "card_keeper_0": {
    "file": "ui/card_keeper_0.png",
    "h": 62,
@@ -124602,6 +124617,11 @@
    "h": 200,
    "w": 312
   },
+  "card_madame_aurum": {
+   "file": "ui/card_madame_aurum.png",
+   "h": 322,
+   "w": 764
+  },
   "card_marsh_witch": {
    "file": "ui/card_marsh_witch.png",
    "h": 241,
@@ -124617,10 +124637,25 @@
    "h": 387,
    "w": 300
   },
+  "card_rime_wyrm": {
+   "file": "ui/card_rime_wyrm.png",
+   "h": 322,
+   "w": 764
+  },
   "card_ruin_warden": {
    "file": "ui/card_ruin_warden.png",
    "h": 237,
    "w": 1174
+  },
+  "card_smuggler_king": {
+   "file": "ui/card_smuggler_king.png",
+   "h": 322,
+   "w": 764
+  },
+  "card_storm_roc": {
+   "file": "ui/card_storm_roc.png",
+   "h": 322,
+   "w": 764
   },
   "card_sun_colossus": {
    "file": "ui/card_sun_colossus.png",
