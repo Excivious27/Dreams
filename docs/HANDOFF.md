@@ -37,6 +37,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-19 16:17: Tom: NO 5-hour waits unless he says otherwise. Run all queued CONDUCTs (3 through 18) back to back without pause, then the final package.
 - 2026-11-19 15:54: Tom added CONDUCT 18: cutscenes across the whole game (art panels + staged NPC scenes, great writing), incl. an intro before the player starts showing Crystopia's backstory (the Dark Crystal, the corruption) for the penguin arc; quirky/funny side-quest scenes; big openings (arcade/Rec Center etc.). Order: C2-C9 (5 h waits), C10-C18, then the final package and artifact.
 - 2026-11-19 15:52: Tom: Steam Deck compatible when published (aim for Verified); planned in CONDUCT 9 with controller support and the Steam build.
 - 2026-11-19 15:50: Tom: full game controller support (Xbox layout) on computer and on phone (Bluetooth pad), single player and multiplayer; built in CONDUCT 9, checked per player in CONDUCT 17 (docs/CONDUCT-PLAN.md).
