@@ -2,7 +2,7 @@
 
 Every system in the game with its state, what is still outstanding, test coverage, and what Claude needs from Tom. `docs/inventory.csv` is the source (edit it, then run `python3 tools/inventory_md.py`). Percentages are estimates against Tom's bar ("100% = Stardew-grade commercial release").
 
-**Summary:** 61 systems: 42 done, 9 rough, 9 missing. Average 72%.
+**Summary:** 63 systems: 45 done, 9 rough, 8 missing. Average 74%.
 
 **Live counts:** 19,401 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 112 headless tests, 106 in check.sh.
 
@@ -17,11 +17,14 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Combat | Battles, campaigns, drills, briefings, convoy, helpers | done | 92 | campaign_c3_test, battle_win_test, bf_themes_test, campaign_gate/words/map/story tests | C3: Grump variants + captains, per-campaign leaders, Crystal Kin, team on the field, 19 themed fields, easy early wins, resume, boss music |
 | Combat | Weapons, guns (no blood), spells, bosses, Gifts and the ten Marked | done | 85 | gift_test, ally_test | Kills-past-cap XP undecided |
 | Core | Engine, portrait 270x480, touch D-pad + A/B/MENU, input actions | done | 95 | smoke_test, desktop_layout_test, touch_ui_test | C2: desktop/landscape fills the screen (DisplayMode), F11/fullscreen, touch controls auto-hide on computers; phones unchanged |
+| Core | Saves, 3 slots, migrations, save codes/files (export/import) | done | 95 | systems_test, storage_test, save_test, save_transfer_test | C9 P5: DRM2 codes with version + check, save/load files, confirm before overwrite, Restore kept, honest write errors, back up all farms |
+| Core | Controllers: pad bindings, remap API, device prompts, PadFocus/PadCursor, analog walk | done | 92 | pad_test, menu_pad_test, screens_pad_test | C9 P1-P3: every action on a pad, hot-plug, remap page, device prompts, analog walk; menus, chest, craft, campaign board, prizes, map pins, arcade and bowling all playable by pad/keys |
+| Core | Web build + PWA, deploy on push | done | 92 | CI runs check.sh; deploy gate (smoke, web_head, music_stream --check) | C9 P4: deploys fixed (no cancels, skip unchanged builds), offline launch, maskable icons, Android back, phone fullscreen, music streamed. Pack still ~105 MB (target 80) |
 | Core | Title, character creator, outfits, hair colours | done | 90 | creator_test (not in check.sh) | 19 playable characters (data/playable.json) |
-| Core | Saves, 3 slots, migrations, settings page | done | 90 | systems_test, storage_test | No save export/import yet (audit 17b deferred) |
-| Core | Web build + PWA, deploy on push | done | 90 | CI runs check.sh | Pack size/memory and loading bar still open (audit 17b F12, W15/W16) |
 | Core | Desktop / full-screen play | done | 90 | desktop_layout_test | C2 P8 |
-| Core | Controllers: pad bindings, remap API, device prompts, PadFocus/PadCursor, analog walk | in progress | 75 | pad_test | C9 P1: every action on a pad, hot-plug, touch pad hides on a pad; menus/chest/craft/title pad navigation lands with P2/P3/P5 (PadFocus/PadCursor hooks) |
+| Core | Haptics (vibration on phones and pads) | done | 88 | haptics_test | Web Vibration API on Android; iPhone browsers cannot vibrate (Options says so). Hooks beyond Music.sfx names (tool fx, story shakes, arcade) can be added with one Haptics.buzz line. |
+| Core | Accessibility and Options: text size/speed, message time, reduced motion, colour-blind cues, timing help, grouped Options | done | 88 | menu_pad_test, phone_ui_test, toast_layout_test | C9 P2: Options grouped (Sound / Display and controls / This farm), Larger text, instant text, rarity dots, framed ally bars, fish timing x1.5, Save and quit on computers |
+| Core | Steam Deck / Linux native build | partial | 60 | haptics_test, deploy linux job | Linux preset + CI export, fullscreen, touch auto, cursor hide, focus pause. Open: UI scale for 1280x800, physics interpolation, Steam art (docs/STEAM-DECK.md). |
 | Core | Steam build (export, achievements, Steam networking) | missing | 0 | none | Planned last ('QA/Steam' depth round); needs Tom's Steamworks account |
 | Farm | Stardew start: empty house, overgrown field, debris | done | 96 | crop_test, playtest.gd | C3: debris regrows by rarity, seasonal weeds/tall grass, hay+fiber (decided; Tom may still change) |
 | Farm | Farming: 134 crops, seasons, watering, soil layer, star quality | done | 90 | crop_test | Quality stars via farming skill |
@@ -34,7 +37,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Look | Seasonal looks: trees/bushes/tiles per season, winter snow, region look_season | done | 85 | r13_world_test | Region season pins (desert/sky summer, frost winter) |
 | Look | Interiors: furnish.py dressing, props fitted to footprint, rec rooms glow | done | 85 | interior_reach, rec_test | C2 rec visuals |
 | Look | NPC and animal animation: walk/idle strips, aligned wildlife, tool poses | rough | 78 | anim_test, gang_play_test | C5 c5_15: 12B heroes still lack side/up tool strips |
-| Multiplayer | Co-op up to 8 through relay (host-authoritative) | rough | 55 | coop_test, net_test (needs relay, not in check.sh) | Relay not deployed; audit 17b net findings F1-F11 partly fixed |
+| Multiplayer | Co-op up to 8 through relay (host-authoritative) | rough | 68 | coop_test, net_test (needs relay, not in check.sh) | C9 P6: guest sees host world keys (romance/dates, spouse, cfarm, mega, tickets), relay overwrite guard, world sync as deltas; coop_test covers C3-C8. Relay host still not deployed (Tom) |
 | People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 90 | hearts_test, hearts_content_test | 10-heart endings and best-friend ceremony are story defaults not built |
 | People | Dating/marriage | done | 85 | romance_test | C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12 |
 | People | Pet/pup: perks, hunter perk, mines | rough | 78 | systems_test, move_target_test | C2: pup swims (Paddle) instead of walking on water |
@@ -62,7 +65,6 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Systems | Earned fast travel network (mine carts, ferries, trains, planes, clouds, cars/subway, currents) | missing | 10 |  | Tom 17:39; mega hub vehicles exist; built in C14, paced C16 |
 | Systems | Decor and cosmetics ecosystem (furniture, wallpaper, floors, exteriors, outdoor decor, apparel, footwear; rarity to one-of-a-kind) | missing | 5 | none | Tom: CONDUCT 10 |
 | Systems | Helper automation (assign recruits/helpers/animals to farm, combat, forage, chests; levels, energy) | missing | 5 |  | Tom 17:12; base = battle team helpers (C3); full in C11 |
-| Systems | Haptics (phone vibration) | missing | 0 | none | Audit 17b W7; Claude can build |
 | Systems | Trading cards (packs, binder, regional sets, trading with NPCs/players, card game) | missing | 0 |  | Tom 17:21; CONDUCT 19 |
 | Systems | Casino side arc (gangster; tiered build-up against NPC pushback, staff) | missing | 0 |  | Tom 17:12; CONDUCT 10. Tom 20:03: real betting allowed, all-ages tone (no drinking: wines are trade goods) |
 | Systems | The General Store side arc | missing | 0 |  | CONDUCT 21 |

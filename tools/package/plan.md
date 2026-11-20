@@ -6,12 +6,12 @@
 | 2 | Rec Center, arcade, community farm + your playtest notes | done |
 | 3 | Battle campaigns | done |
 | 4 | Mega regions + difficulty modes (combat/battles) + day length option | done |
-| 5 | Home-world look and feel (fuzzy buildings, distinctive gangster heroes) | next |
-| 6 | Audio and music | |
-| 7 | Story, quests, writing + dating and marriage | |
-| 8 | Economy, progression, balance + collections (museum, shipping, fish logs) | |
-| 9 | Release readiness, controllers, Steam Deck, haptics, save export/import | |
-| 10a | Decor and cosmetics: catalogue, rarity, placing indoors, wardrobe | |
+| 5 | Home-world look and feel (fuzzy buildings, distinctive gangster heroes) | done |
+| 6 | Audio and music | done |
+| 7 | Story, quests, writing + dating and marriage | done |
+| 8 | Economy, progression, balance + collections (museum, shipping, fish logs) | done |
+| 9 | Release readiness, controllers, Steam Deck, haptics, save export/import | done |
+| 10a | Decor and cosmetics: catalogue, rarity, placing indoors, wardrobe | next |
 | 10b | Decor: exteriors and outdoor decor, the casino side arc, art for the catalogue | |
 | 11a | Ranching: classic animals, pens, breeding, animal skills, trainable team animals | |
 | 11b | Ranching: exotics and fantastic creatures, ranch tiers, full helper automation | |
