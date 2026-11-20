@@ -1313,7 +1313,7 @@ var exact_footprints := false
 ## town, a quiet night piece outdoors after dark, and a winter piece on the farm.
 const AREA_MUSIC := {"forest": "forest", "wastes": "wastes", "uptown": "uptown", "neon": "neon", "hideout": "hideout",
 	"docks": "docks", "underground": "underground", "countryside": "countryside", "orchard_hills": "orchard", "highlands": "mountain",
-	"ruins": "ruins", "quarry": "quarry", "riverlands": "lake", "sky": "sky", "station": "sky", "moon": "moon",
+	"ruins": "ruins", "quarry": "quarry", "riverlands": "lake", "sky": "sky", "station": "mega_station", "moon": "moon",
 	"jungle": "jungle", "marsh": "marsh", "bf_frostfield": "battle", "bf_shattered_vale": "battle", "bf_rail_yards": "battle",
 	"bf_dockside": "battle", "bf_orchard_line": "battle", "bf_bog_crossing": "battle", "bf_ash_wastes": "battle", "bf_neon_block": "battle",
 	"colony_coral": "colony_coral", "colony_kelp": "colony_kelp", "colony_ice": "colony_ice",
@@ -1323,7 +1323,15 @@ const INTERIOR_MUSIC := {"store": "shop", "smith": "shop", "potions": "shop", "b
 	"inn": "inn", "bakery": "inn", "lodge": "inn", "hall": "inn", "clinic": "clinic", "library": "chapel", "chapel": "chapel",
 	"school": "chapel", "mansion": "chapel", "lighthouse": "house", "water_mill": "house", "fishing_hut": "house"}
 ## Every track that counts as boss music (it keeps playing while the fight lasts).
-const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid"]
+const BOSS_TRACKS := ["boss", "boss_gang", "boss_penguin", "keeper", "marked", "raid",
+	"boss_thornmother", "boss_colossus", "boss_wyrm", "boss_roc", "boss_coalbrook", "boss_aurum", "boss_light_eater"]
+## Mega bosses' own themes (C4): by kind (a gangster variant may share the stem), then by the
+## region the fight is in, so a reskinned boss still gets its region's theme.
+const MEGA_BOSS := {"thornmother": "boss_thornmother", "sun_colossus": "boss_colossus", "colossus": "boss_colossus",
+	"rime_wyrm": "boss_wyrm", "wyrm": "boss_wyrm", "storm_roc": "boss_roc", "baron_coalbrook": "boss_coalbrook",
+	"coalbrook": "boss_coalbrook", "madame_aurum": "boss_aurum", "aurum": "boss_aurum", "light_eater": "boss_light_eater"}
+const MEGA_REGION_BOSS := {"gloamwood": "boss_thornmother", "sunscorch": "boss_colossus", "frostpeak": "boss_wyrm",
+	"windward": "boss_roc", "ironline": "boss_coalbrook", "giltcity": "boss_aurum"}
 var boss_music := "boss"
 
 
@@ -1332,6 +1340,18 @@ var boss_music := "boss"
 func boss_track(kind: String) -> String:
 	var k := kind.to_lower()
 	var t := "boss"
+	var mt := ""
+	for stem: String in MEGA_BOSS:
+		if k == stem or k.begins_with(stem + "_") or k.ends_with("_" + stem):
+			mt = str(MEGA_BOSS[stem])
+			break
+	if mt == "" and not (k.begins_with("marked") or k.begins_with("mk_")):
+		var sid := scene_id()
+		mt = str(MEGA_REGION_BOSS.get(MegaTravel.region_of(sid), ""))
+		if mt == "" and sid == "hollow_deeps":
+			mt = "boss_light_eater"
+	if mt != "" and Music.has_track(mt):
+		return mt
 	if k.begins_with("marked") or k.begins_with("mk_"):
 		t = "marked"
 	elif "golem" in k or "keeper" in k or scene_id() == "mine":

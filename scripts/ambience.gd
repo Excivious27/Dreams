@@ -30,6 +30,35 @@ const BIRDY_MAPS := ["forest", "orchard_hills", "meadow"]
 ## Outdoors but no birds, crickets or frogs: the underground country, dead or hot lands, space.
 const QUIET_MAPS := ["hollow_heart", "wastes", "colony_ember", "moon", "station", "sky"]
 var _quick_t := 0.0
+## Mega areas that are caves or vaults even before regions.json says "cave": true (C4 c4_12 #2).
+const MEGA_CAVES := ["frost_caverns", "gilt_vaults", "iron_tunnels", "desert_sunken_temple", "hollow_deeps"]
+## Mega regions with no birds, crickets or frogs anywhere (dry desert); regions.json "quiet": true adds more.
+const QUIET_REGIONS := ["sunscorch"]
+const WILD_BEDS := ["birds_dawn", "birds_day", "crickets", "frogs"]
+
+
+## The map's region data (regions.json entry), or {}.
+static func _rd(m: GameMap) -> Dictionary:
+	var rd: Variant = m.get("R")
+	return rd if rd is Dictionary else {}
+
+
+## A cave-like map: the Valley's caves, or a region area flagged "cave" (default list MEGA_CAVES).
+static func is_cave(m: GameMap) -> bool:
+	var id := m.scene_id()
+	if id in CAVE_MAPS:
+		return true
+	var rd := _rd(m)
+	return bool(rd.get("cave", id in MEGA_CAVES))
+
+
+## Outdoors but no wildlife sounds: QUIET_MAPS, caves, regions marked quiet / dry.
+static func is_quiet(m: GameMap) -> bool:
+	var id := m.scene_id()
+	if id in QUIET_MAPS or is_cave(m):
+		return true
+	var rd := _rd(m)
+	return bool(rd.get("quiet", str(rd.get("mega", "")) in QUIET_REGIONS))
 
 
 static func instance(tree: SceneTree) -> Ambience:
@@ -117,14 +146,15 @@ func _evaluate() -> Dictionary:
 	var w := GameState.weather_today()
 	if m.sky and m.has_sky:
 		w = m.sky.weather
-	var deep := id == "hollow_heart"  # underground country: no surface weather, wind or night sky
+	var cave := is_cave(m)
+	var deep := id == "hollow_heart" or (cave and id not in CAVE_MAPS)  # underground: no surface weather, wind or night sky
 	if deep:
 		w = "clear"
 	var wet := w in ["rain", "storm"]
 	var snowy := w in ["snow", "blizzard"]
 	var outdoors := m.has_sky and id not in ["house", "interior"]
 	var gang := Racket.on()
-	var wild := outdoors and id not in QUIET_MAPS
+	var wild := outdoors and not is_quiet(m)
 	if outdoors:
 		var near := _water_near(m)
 		if wild:
@@ -150,8 +180,8 @@ func _evaluate() -> Dictionary:
 			out["water_lap"] = -14.0 + 10.0 * (near - 1.0)
 		if id == "colony_ember":
 			out["lava"] = -18.0
-		if id == "wastes":
-			out["wind_soft"] = -12.0
+		if id == "wastes" or (str(_rd(m).get("mega", "")) in QUIET_REGIONS and not cave):
+			out["wind_soft"] = -12.0  # dry lands: a hot wind instead of birds
 		if w == "leaves" or (se == "fall" and id == "forest"):
 			out["leaves"] = -18.0
 		if id == "town" and t >= 8 * 60 and t < (23 * 60 if GameState.festival_today() != "" else 20 * 60) and not wet:
@@ -173,7 +203,7 @@ func _evaluate() -> Dictionary:
 				out["rain_roof"] = -16.0
 			if se in ["fall", "winter"] or ph == "night":
 				out["hearth"] = -18.0
-	if id in CAVE_MAPS:
+	if cave:
 		out["cave"] = -14.0
 		var th: Dictionary = m.get("theme") if m.get("theme") is Dictionary else {}
 		var feat := str(th.get("feat", ""))
@@ -207,11 +237,26 @@ func _evaluate() -> Dictionary:
 		if kind in ["rec", "rec_up"]:
 			out.merge(RecAudio.beds(kind), true)  # arcade cabinets downstairs, rolling balls and pins upstairs
 	# Regions can name their own beds (regions.json "amb": {bed: dB}, the mega regions).
-	var rd: Variant = m.get("R")
-	if rd is Dictionary and (rd as Dictionary).has("amb"):
-		for k: String in rd["amb"]:
-			if ph != "night" or not str(k).begins_with("birds"):
-				out[k] = float(rd["amb"][k])
+	# "amb_day" / "amb_night" (C4) take over from "amb" by time of day (a casino street is busy by
+	# day and quiet at night); caves and quiet lands never take birds, crickets or frogs.
+	var rdd := _rd(m)
+	var night := ph in ["dusk", "night"]
+	var bed_key := "amb"
+	if night and rdd.has("amb_night"):
+		bed_key = "amb_night"
+	elif not night and rdd.has("amb_day"):
+		bed_key = "amb_day"
+	if rdd.get(bed_key) is Dictionary:
+		var quiet := is_quiet(m)
+		for k: String in rdd[bed_key]:
+			if ph == "night" and str(k).begins_with("birds"):
+				continue
+			if quiet and k in WILD_BEDS:
+				continue
+			var db := float(rdd[bed_key][k])
+			if night and bed_key == "amb" and k in ["crowd", "town_day"]:
+				db -= 10.0  # no night list: the streets thin out after dark
+			out[k] = db
 	# Keep the loudest few.
 	if out.size() > MAX_BEDS:
 		var ks := out.keys()
@@ -283,11 +328,11 @@ func _spots(delta: float) -> void:
 	var rules := []  # [spot, min_s, max_s, dB]
 	if outdoors and calm and ph == "night" and id in OWL_MAPS:
 		rules.append(["owl", 25.0, 60.0, -8.0])
-	if outdoors and calm and id not in QUIET_MAPS and GameState.look_se() == "winter" and ph == "day":
+	if outdoors and calm and not is_quiet(m) and GameState.look_se() == "winter" and ph == "day":
 		rules.append(["bird_chirp", 8.0, 20.0, -12.0])
 	if id == "crystal_meadow" and GameState.is_penguins():
 		rules.append(["penguin_chatter", 10.0, 25.0, -10.0])
-	if id in CAVE_MAPS:
+	if is_cave(m):
 		rules.append(["drip", 3.0, 9.0, -10.0])
 	if outdoors and calm and id in SEA_MAPS and ph != "night":
 		rules.append(["gull", 10.0, 26.0, -12.0])
