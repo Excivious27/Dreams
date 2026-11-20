@@ -198,6 +198,7 @@ func _ready() -> void:
 		comp.position = player.position + Vector2(14, 6)
 		add_child(comp)
 		companion = comp
+	TeamBeast.spawn_all(self)  # C11a P4: trained team animals walk with you outdoors
 
 	if Net.online():
 		Net.peers_changed.connect(_sync_puppets)

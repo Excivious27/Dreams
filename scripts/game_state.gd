@@ -1398,6 +1398,8 @@ static func has_team() -> bool:
 	# The pup counts only while it's actually out with you and on its feet.
 	var t := Engine.get_main_loop() as SceneTree
 	var m: GameMap = t.current_scene as GameMap if t and t.current_scene is GameMap else null
+	if m != null and t.get_nodes_in_group("allies").any(func(n: Node) -> bool: return n is TeamBeast):
+		return true  # C11a P4: a team animal out with you counts as a team
 	return m != null and m.pet != null and is_instance_valid(m.pet) and m.pet.visible and not Pet.resting() and int(Pet.state().get("hp", 0)) > 0 and str(Pet.state().get("mode", "follow")) != "wait"
 
 

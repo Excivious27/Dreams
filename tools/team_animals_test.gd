@@ -234,6 +234,23 @@ func _menu_pages() -> void:
 			break
 	await frames(2)
 	check(TeamAnimals.on_team(g), "team toggle works")
+	# The follower: spawns outdoors, counts as a team, rests when downed.
+	var gm := current_scene as GameMap
+	var beasts := TeamBeast.spawn_all(gm)
+	await frames(10)
+	check(beasts.size() == 1 and gm.allies().has(beasts[0]), "team animal walks with you (allies)")
+	check(GameState.has_team(), "a team animal counts as a team")
+	if beasts.size() == 1:
+		var b: TeamBeast = beasts[0]
+		check(b.position.distance_to(gm.player.position) < 80.0, "follower stays near you")
+		b.take_damage(3, b.position)
+		b.heal(1)
+		check(b.hp == b.max_hp - 2, "take_damage/heal")
+		b.take_damage(9999, b.position)
+		await frames(3)
+		check(not is_instance_valid(b) and TeamBeast.out_today().is_empty(), "downed animal rests till morning")
+		GameState.run["day"] = int(GameState.run["day"]) + 1
+		check(TeamBeast.out_today().size() == 1, "back out next day")
 	m._tab = "Chores"
 	Chores._open = "animal:" + g
 	m._refresh()
