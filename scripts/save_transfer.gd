@@ -18,6 +18,8 @@ const ARCS := ["penguins", "gangsters"]
 const FILE_EXT := "dreams"
 const UNZIP_MAX := 32 * 1024 * 1024
 const SLOTS := [1, 2, 3]
+const INVISIBLE := [0x200b, 0x200c, 0x200d, 0xfeff, 0x00a0]
+const CURLY_QUOTES := [0x201c, 0x201d, 0x2018, 0x2019]
 ## Keys that must hold this type when present (null is fine: _migrate rebuilds it).
 const TYPED := {
 	"names": TYPE_DICTIONARY, "inventory": TYPE_DICTIONARY, "flags": TYPE_DICTIONARY,
@@ -123,11 +125,13 @@ static func file_name(code: String) -> String:
 ## zero-width), no quote marks, prefix upper-cased.
 static func clean(text: String) -> String:
 	var t := text
-	for z in ["​", "‌", "‍", "﻿", " "]:
-		t = t.replace(z, "")
+	for z in INVISIBLE:  # zero-width spaces, BOM, no-break space (by code: no odd glyphs in source)
+		t = t.replace(String.chr(z), "")
 	t = RegEx.create_from_string("\\s+").sub(t, "", true)
-	for q in ["\"", "'", "`", ">", "“", "”", "‘", "’", "<", "*"]:
+	for q in ["\"", "'", "`", ">", "<", "*"]:
 		t = t.replace(q, "")
+	for z in CURLY_QUOTES:
+		t = t.replace(String.chr(z), "")
 	var at := t.to_upper().find("DRM")
 	if at < 0:
 		return t

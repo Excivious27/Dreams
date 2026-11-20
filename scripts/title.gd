@@ -77,10 +77,17 @@ func _clear() -> void:
 func _focus_first() -> void:
 	if DisplayServer.is_touchscreen_available() and not Input.get_connected_joypads().size() > 0:
 		return
+	var first: Button = null
 	for b in _page.find_children("*", "Button", true, false):
-		if not b.is_queued_for_deletion() and (b as Button).visible and not (b as Button).disabled:
-			(b as Button).grab_focus()
-			return
+		if b.is_queued_for_deletion() or not (b as Button).visible or (b as Button).disabled:
+			continue
+		if (b as Button).text.begins_with("Continue") or (b as Button).text == "Start":
+			first = b  # the page's main step (names keep their defaults)
+			break
+		if first == null:
+			first = b
+	if first != null:
+		first.grab_focus()
 
 
 func _process(_dt: float) -> void:
