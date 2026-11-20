@@ -86,6 +86,9 @@ func _process(delta: float) -> void:
 	if modal and not _modal_was and not _held.is_empty():
 		release_all()
 	_modal_was = modal
+	# Pup command from keys/pad (C9): cycles the mode without the touch strip.
+	if InputMap.has_action("pup") and Input.is_action_just_pressed("pup") and not get_tree().paused and not Dialogue.input_blocked():
+		_pup_next()
 	_canvas.visible = visible_controls
 	if not visible_controls:
 		return
@@ -112,9 +115,22 @@ func release_all() -> void:
 		_canvas.queue_redraw()
 
 
+## Options > On-screen controls: 0 auto (follow the device), 1 always, 2 never.
+static func mode() -> int:
+	return int(Settings.get_v("touch_ui"))
+
+
 func _input(event: InputEvent) -> void:
-	# Desktop detection: a real key or mouse motion hides the pad; a real touch shows it.
-	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
+	if PadCursor.sending:
+		return  # the controller's virtual pointer is not a mouse (no hide, no aim)
+	var md := TouchControls.mode()
+	if md == 1:
+		visible_controls = true
+	elif md == 2:
+		visible_controls = false
+	# Desktop detection (auto only): a real key or mouse motion hides the pad;
+	# a real touch shows it; a controller hides it (PadInput).
+	elif event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:
 		# Typing a name on the phone's on-screen keyboard isn't "desktop".
 		if not (get_viewport().gui_get_focus_owner() is LineEdit):
 			visible_controls = false
@@ -123,6 +139,8 @@ func _input(event: InputEvent) -> void:
 		Player.last_mouse_motion_ms = Time.get_ticks_msec()
 	elif event is InputEventScreenTouch and DisplayServer.is_touchscreen_available():
 		visible_controls = true
+	if event is InputEventMouseMotion and md != 0 and (event as InputEventMouseMotion).relative != Vector2.ZERO and event.device != InputEvent.DEVICE_ID_EMULATION and not DisplayServer.is_touchscreen_available():
+		Player.last_mouse_motion_ms = Time.get_ticks_msec()
 	if not visible_controls:
 		return
 	if event.device == InputEvent.DEVICE_ID_EMULATION:
@@ -180,7 +198,59 @@ func _input(event: InputEvent) -> void:
 
 
 func _pup_x() -> float:
-	return 270.0 - PUP_X if Settings.left_handed() else PUP_X
+	return 270.0 - PUP_X + DisplayMode.extra() if Settings.left_handed() else PUP_X
+
+
+## Pup strip sizes follow Options > Button size (C9 c9_07).
+static func pup_r() -> float:
+	return PUP_R * Settings.btn_scale()
+
+
+static func pup_step() -> float:
+	return maxf(PUP_STEP, PUP_STEP * Settings.btn_scale())
+
+
+static func stick_r() -> float:
+	return STICK_R * Settings.btn_scale()
+
+
+## A button's centre/radius after size + handedness, with the right-hand
+## cluster kept at the right edge of a wide (desktop/Deck) view.
+static func button_place(b: Dictionary) -> Array:
+	var br := Settings.button_at(b["pos"], float(b["r"]))
+	var p: Vector2 = br[0]
+	if p.x > 135.0:
+		p.x += DisplayMode.extra()
+	return [p, br[1]]
+
+
+## Cycle the pup's command from the "pup" action (keyboard G / pad R3):
+## heel -> attack -> stay (-> guard with the skill); away: call it back.
+static func pup_cycle(tree: SceneTree) -> void:
+	for n in tree.root.get_children():
+		if n is TouchControls:
+			(n as TouchControls)._pup_next()
+			return
+	var m := tree.current_scene
+	if m:
+		for n in m.get_children():
+			if n is TouchControls:
+				(n as TouchControls)._pup_next()
+				return
+
+
+func _pup_next() -> void:
+	var pt := _pet()
+	if pt == null:
+		return
+	if not pt.visible:
+		_pup_cmd("recall")
+		return
+	var order := ["follow", "attack", "wait"]
+	if GameState.bonus("pup", "guard") > 0.0:
+		order.append("guard")
+	var cur := str(Pet.state().get("mode", "follow"))
+	_pup_cmd(str(order[(order.find(cur) + 1) % order.size()]))
 
 
 func _foe_near() -> bool:
@@ -221,7 +291,7 @@ func _pup_cmd(cmd: String) -> void:
 	elif not pt.visible:
 		var m0 := get_tree().current_scene as GameMap
 		if m0 and m0.hud:
-			m0.hud.toast("%s isn't here. Tap CALL first." % Pet.name_of(), Color(1, 0.85, 0.6))
+			m0.hud.toast(PadInput.words("%s isn't here. Tap CALL first." % Pet.name_of()), Color(1, 0.85, 0.6))
 		return
 	elif cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
 		var m := get_tree().current_scene as GameMap
@@ -246,7 +316,7 @@ func _hit(pos: Vector2) -> String:
 		for i in PUP_CMDS.size():
 			if str(PUP_CMDS[i][0]) == "guard" and GameState.bonus("pup", "guard") <= 0.0:
 				continue  # locked until the Guard Dog skill: not shown
-			if pos.distance_to(Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)) <= PUP_R * 1.25:
+			if pos.distance_to(Vector2(_pup_x(), PUP_Y0 + pup_step() * i)) <= pup_r() * 1.25:
 				return "pup:" + str(PUP_CMDS[i][0])
 	for action: String in BUTTONS:
 		if action == "ability" and not _has_ability():
@@ -254,7 +324,7 @@ func _hit(pos: Vector2) -> String:
 		if action == "dodge" and not _foe_near():
 			continue
 		var b: Dictionary = BUTTONS[action]
-		var br := Settings.button_at(b["pos"], float(b["r"]))
+		var br := button_place(b)
 		if pos.distance_to(br[0]) <= float(br[1]) * 1.35:
 			return action
 	return ""
@@ -262,12 +332,13 @@ func _hit(pos: Vector2) -> String:
 
 func _update_stick(pos: Vector2) -> void:
 	var v := pos - _stick_origin
+	var sr := stick_r()
 	# The stick base follows your thumb if you push well past its edge (floating).
-	if v.length() > STICK_R * 1.6:
-		_stick_origin = pos - v.normalized() * STICK_R * 1.6
+	if v.length() > sr * 1.6:
+		_stick_origin = pos - v.normalized() * sr * 1.6
 		v = pos - _stick_origin
 	_stick_pos = pos
-	var mag := clampf(v.length() / STICK_R, 0.0, 1.0)
+	var mag := clampf(v.length() / sr, 0.0, 1.0)
 	if mag < 0.18:
 		_set_vec(Vector2.ZERO, false)
 		return
@@ -345,16 +416,19 @@ func _on_draw() -> void:
 	var edge := Color(1, 1, 1, 0.45)
 	var lit := Color(1, 1, 1, 0.5)
 	# Joystick: faint resting ring bottom-left until you touch; then it floats under your thumb.
-	var origin := _stick_origin if _stick_active else Vector2(212 if Settings.left_handed() else 58, 412)
+	var origin := _stick_origin if _stick_active else Vector2(212.0 + DisplayMode.extra() if Settings.left_handed() else 58.0, 412.0)
+	var sr := stick_r()
+	var pr := pup_r()
+	var ps := pup_step()
 	var jb := Art.tex("ui", "joy_base_a")
 	var jk := Art.tex("ui", "joy_knob_light")
 	if jb:
-		_canvas.draw_texture_rect(jb, Rect2(origin - Vector2(STICK_R + 4, STICK_R + 4), Vector2(STICK_R + 4, STICK_R + 4) * 2), false, Color(1, 1, 1, 0.75 if _stick_active else 0.45))
+		_canvas.draw_texture_rect(jb, Rect2(origin - Vector2(sr + 4, sr + 4), Vector2(sr + 4, sr + 4) * 2), false, Color(1, 1, 1, 0.75 if _stick_active else 0.45))
 	else:
-		_canvas.draw_circle(origin, STICK_R, base if not _stick_active else Color(1, 1, 1, 0.22))
-		_canvas.draw_arc(origin, STICK_R, 0, TAU, 48, edge, 1.5, true)
+		_canvas.draw_circle(origin, sr, base if not _stick_active else Color(1, 1, 1, 0.22))
+		_canvas.draw_arc(origin, sr, 0, TAU, 48, edge, 1.5, true)
 	if _stick_active:
-		var knob := origin + (_stick_pos - origin).limit_length(STICK_R)
+		var knob := origin + (_stick_pos - origin).limit_length(sr)
 		if jk:
 			_canvas.draw_texture_rect(jk, Rect2(knob - Vector2(14, 14), Vector2(28, 28)), false, Color(1, 1, 1, 0.95 if _running else 0.8))
 		else:
@@ -363,7 +437,7 @@ func _on_draw() -> void:
 	elif jb == null:
 		for action: String in DIRS:
 			var d: Vector2 = DIRS[action]
-			var c := origin + d * STICK_R * 0.62
+			var c := origin + d * sr * 0.62
 			var tip := c + d * 6.0
 			var side := d.orthogonal() * 6.0
 			_canvas.draw_colored_polygon(PackedVector2Array([tip, c - d * 4.0 + side, c - d * 4.0 - side]), edge)
@@ -378,21 +452,21 @@ func _on_draw() -> void:
 				var cmd := str(PUP_CMDS[i][0])
 				if cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0:
 					continue  # locked until the Guard Dog skill (the others keep their spots)
-				var cp := Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i)
+				var cp := Vector2(_pup_x(), PUP_Y0 + ps * i)
 				var active := cmd == mode
 				if pass_i == 0:
-					Art.draw_disc(_canvas, cp, PUP_R, Color(0.12, 0.09, 0.05, 0.62))
+					Art.draw_disc(_canvas, cp, pr, Color(0.12, 0.09, 0.05, 0.62))
 				elif pass_i == 1:
-					Art.draw_ring(_canvas, cp, PUP_R, 2.0 if active else 1.0, Color(1, 0.85, 0.35, 0.95) if active else Color(1, 1, 1, 0.35))
+					Art.draw_ring(_canvas, cp, pr, 2.0 if active else 1.0, Color(1, 0.85, 0.35, 0.95) if active else Color(1, 1, 1, 0.35))
 				elif pass_i == 2:
 					var dim := (cmd == "guard" and GameState.bonus("pup", "guard") <= 0.0) or (not pt.visible and cmd != "recall")
 					var ic := str(PUP_CMDS[i][1])
 					if Art.has("ui", ic):
 						_canvas.draw_texture_rect(Art.tex("ui", ic), Rect2(cp - Vector2(8, 8), Vector2(16, 16)), false, Color(1, 1, 1, 0.4 if dim else (1.0 if active else 0.85)))
 					else:
-						_canvas.draw_string(font, cp + Vector2(-PUP_R, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0, 7, Color(1, 1, 1, 0.9))
+						_canvas.draw_string(font, cp + Vector2(-pr, 2), str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0, 7, Color(1, 1, 1, 0.9))
 				elif _held.has("pup:" + cmd):
-					Art.draw_disc(_canvas, cp, PUP_R, Color(1, 1, 1, 0.25))
+					Art.draw_disc(_canvas, cp, pr, Color(1, 1, 1, 0.25))
 		if int(GameState.run.get("day", 1)) <= 3:
 			# Early days: name each command under its icon (all outlines, then all fills: fewer batch breaks).
 			for pass_i in 2:
@@ -402,11 +476,11 @@ func _on_draw() -> void:
 						continue
 					if not Art.has("ui", str(PUP_CMDS[i][1])):
 						continue
-					var lp := Vector2(_pup_x(), PUP_Y0 + PUP_STEP * i) + Vector2(-PUP_R - 4, PUP_R + 5)
+					var lp := Vector2(_pup_x(), PUP_Y0 + ps * i) + Vector2(-pr - 4, pr + 5)
 					if pass_i == 0:
-						_canvas.draw_string_outline(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 7, 2, Color(0, 0, 0, 0.8))
+						_canvas.draw_string_outline(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0 + 8, 7, 2, Color(0, 0, 0, 0.8))
 					else:
-						_canvas.draw_string(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, PUP_R * 2.0 + 8, 7, Color(1, 1, 1, 0.95))
+						_canvas.draw_string(font, lp, str(PUP_CMDS[i][2]), HORIZONTAL_ALIGNMENT_CENTER, pr * 2.0 + 8, 7, Color(1, 1, 1, 0.95))
 	# Buttons
 	var btn := Art.tex("ui", "button")
 	var btn_down := Art.tex("ui", "button_pressed")
@@ -417,7 +491,7 @@ func _on_draw() -> void:
 		if action == "dodge" and not _foe_near():
 			continue
 		var b: Dictionary = BUTTONS[action]
-		var br := Settings.button_at(b["pos"], float(b["r"]))
+		var br := button_place(b)
 		var p: Vector2 = br[0]
 		var r := float(br[1])
 		if not dlg_on and Hud.modal_rect.has_point(p):
