@@ -78,7 +78,7 @@ static func offers(shop: String) -> Array:
 				base += rare[se] + ["dream_seed"]
 			return base + Romance.shop_extra("store")
 		"smith":
-			return ["iron_sword", "coal", "copper_ring"]
+			return ["iron_sword", "coal", "copper_ring"] + grown("smith")
 		"potions":
 			return ["potion", "energy_tea", "herb_remedy"]
 		"orla":
@@ -105,6 +105,51 @@ static func offers(shop: String) -> Array:
 	return []
 
 
+## Stock that arrives as you progress (C8 P6, c8_14_07): shop -> [[progress tier, ids]].
+## Arc-only items (items.json "arc") are left out of the other arc's shop.
+const GROWN := {
+	"smith": [[2, ["silver_ring", "iron_helm", "leather_vest", "running_shoes"]], [3, ["steel_sword", "ruby_ring", "iron_mail", "iron_greaves"]], [4, ["crystal_sword", "ring_warmth"]], [5, ["moon_ring", "ring_platinum"]]],
+	"potions": [[3, ["dream_tonic"]]],
+	"granite": [[3, ["silver", "tin"]]],
+}
+
+
+static func grown(shop: String) -> Array:
+	var out: Array = []
+	var arc := str(GameState.run.get("arc", ""))
+	for row: Array in GROWN.get(shop, []):
+		if GameState.progress_tier() < int(row[0]):
+			continue
+		for id: String in row[1]:
+			var a := str(GameState.items.get(id, {}).get("arc", ""))
+			if GameState.items.has(id) and (a == "" or a == arc):
+				out.append(id)
+	return out
+
+
+## The shop-list line: name · price, and for seeds what the crop does (C8 P6,
+## c8_01-16): grow days, what one harvest sells for, regrowth, "!" when it won't
+## ripen before the season ends.
+static func line(id: String) -> String:
+	var it: Dictionary = GameState.items.get(id, {})
+	var cd: Dictionary = GameState.crops.get(str(it.get("crop", "")), {})
+	if cd.is_empty():
+		return "%s · %s" % [GameState.item_name(id), Money.fmt(price(id))]
+	var nm := GameState.item_name(id).trim_suffix(" Seeds").trim_suffix(" Seed")
+	var days := int(cd.get("days", 0))
+	var bits := "%s · %s · %dd" % [nm, Money.fmt(price(id)), days]
+	var y := str(cd.get("yield", ""))
+	if GameState.items.has(y):
+		bits += " · sells %s" % Money.fmt(GameState.item_value(y))
+	if int(cd.get("regrow", 0)) > 0:
+		bits += " · again %dd" % int(cd["regrow"])
+	var cs := str(cd.get("season", "any"))
+	var left := GameState.DAYS_PER_SEASON - GameState.day_of_season() + 1
+	if cs != "any" and (cs != GameState.season() or days > left):
+		bits += " !"
+	return bits
+
+
 static func run(m: GameMap, shop: String, absent := false) -> void:
 	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins"}.get(shop, "Shop")
 	var greet: String = {
@@ -115,7 +160,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		"lodge": "Meat's from the hills. Don't ask which hill.",
 		"orla": "Flour's fresh. Wheat seed if you want to grow your own.",
 		"marlowe": "Oil for lamps. Bait for fish. Coffee for me, but I'll share.",
-		"tam": "Wool, cider, apples. The sheep did most of the work.",
+		"tam": "Wool, hay, and saplings for the orchard. The sheep did most of the work.",
 		"old_moss": "Jars. Don't ask what's in the ones at the back.",
 		"granite": "Ore from the walls. Dynamite if you've got the nerve.",
 		"sel": "Relics. Real ones. Mostly.",
@@ -139,8 +184,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		for id in offers:
 			if GameState.has_tool(id):
 				continue
-			var cd: Dictionary = GameState.crops.get(str(GameState.items.get(id, {}).get("crop", "")), {})
-			opts.append("%s · ◆%d%s" % [GameState.item_name(id), price(id), (" · %d days" % int(cd.get("days", 0))) if not cd.is_empty() else ""])
+			opts.append(line(id))
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": keeper, "text": "%s  (you have ◆%d)" % [greet, int(GameState.run["crystals"])], "choice": opts, "key": ""}])
@@ -154,11 +198,20 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		var qty := 1
 		if str(GameState.items[id].get("type", "")) == "seed":
 			var dq := Dialogue.instance(m.get_tree())
-			dq.say([{"who": keeper, "text": "%s, ◆%d each. How many?  (you have ◆%d)" % [GameState.item_name(id), price, int(GameState.run["crystals"])], "choice": ["1", "5", "10", "Back"], "key": ""}])
+			var most := mini(MAX_SEEDS, int(GameState.run["crystals"]) / maxi(1, price))
+			var qs: Array = [1, 5, 10]
+			var qo: Array = ["1", "5", "10"]
+			if most > 10:
+				qs.append(most)
+				qo.append("%d (all you can afford)" % most)
+			qo.append("Back")
+			var cdq: Dictionary = GameState.crops.get(str(GameState.items[id].get("crop", "")), {})
+			var how := (" Comes back every %d days after the first picking." % int(cdq["regrow"])) if int(cdq.get("regrow", 0)) > 0 else " One harvest per seed."
+			dq.say([{"who": keeper, "text": "%s, %s each.%s How many?  (you have %s)" % [GameState.item_name(id), Money.fmt(price), how, Money.fmt(int(GameState.run["crystals"]))], "choice": qo, "key": ""}])
 			await dq.finished
-			if dq.last_choice < 0 or dq.last_choice > 2:
+			if dq.last_choice < 0 or dq.last_choice >= qs.size():
 				continue
-			qty = [1, 5, 10][dq.last_choice]
+			qty = int(qs[dq.last_choice])
 		price *= qty
 		if int(GameState.run["crystals"]) < price:
 			m.hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
@@ -176,6 +229,9 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			m.give(id, qty)
 		m.xp("bartering", 1)
 		greet = "Anything else?" if not absent else "(The till's honesty jar clinks.)"
+
+
+const MAX_SEEDS := 99
 
 
 static func price(id: String) -> int:

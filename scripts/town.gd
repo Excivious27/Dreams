@@ -8,6 +8,7 @@ extends GameMap
 ## the river, an orchard on the far bank. Buildings are drawn at 0.8 scale so a
 ## house is a house next to a 26 px hero. Villagers follow routines (npcs.json).
 
+const FOUNTAIN_LUCK_MIN := 120  # the plaza fountain's daily luck (C8 P6)
 const FARM_EXIT := Rect2i(38, 0, 6, 2)
 const BEACH_EXIT := Rect2i(38, 94, 6, 2)
 const MOUNTAIN_EXIT := Rect2i(82, 46, 2, 4)
@@ -949,9 +950,17 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 		"fountain":
 			if int(GameState.run["crystals"]) >= 1:
 				GameState.run["crystals"] = int(GameState.run["crystals"]) - 1
-				hud.toast("Plink. You feel a little luckier.")
 				GameState.run["flags"]["fountain"] = int(GameState.run["flags"].get("fountain", 0)) + 1
 				Music.instance(get_tree()).sfx("pickup")
+				# C8 P6 (c8_14_10): the day's first toss really is lucky for a while.
+				if int(GameState.run["flags"].get("fountain_day", 0)) != int(GameState.run["day"]):
+					GameState.run["flags"]["fountain_day"] = int(GameState.run["day"])
+					GameState.run["buffs"] = GameState.run.get("buffs", {})
+					if GameState.buff("luck") < 1.0:
+						GameState.run["buffs"]["luck"] = {"until": GameState.now_abs() + FOUNTAIN_LUCK_MIN, "amount": 1.0}
+					hud.toast("Plink. You feel a little luckier.")
+				else:
+					hud.toast("Plink. One wish a day, the old folks say.")
 			return true
 	return false
 

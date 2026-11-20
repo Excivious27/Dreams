@@ -23,7 +23,7 @@
   ],
   "open_day": 7,
   "fee": 25,
-  "soda": 12,
+  "soda": 30,
   "hours": [
    9,
    24
@@ -36,22 +36,22 @@
   "snacks": [
    [
     "rp_popcorn",
-    10,
+    25,
     "lucky hands, 90 min"
    ],
    [
     "rp_pretzel",
-    20,
+    55,
     "big energy"
    ],
    [
     "rp_cotton_candy",
-    15,
+    45,
     "quick feet, 60 min"
    ],
    [
     "rp_fizzy_pop",
-    12,
+    30,
     "a pick-me-up"
    ]
   ]

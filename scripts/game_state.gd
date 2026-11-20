@@ -642,6 +642,16 @@ static func saturation(id: String, n_more := 0) -> float:
 
 
 static func sell_price(id: String, n := 1) -> int:
+	var unit := sell_unit(id)
+	var total := 0.0
+	for i in n:
+		total += unit * saturation(id, i)
+	return int(round(total))
+
+
+## One piece's sell price with demand and every perk, before today's saturation
+## (C8 P6: shop floors read this, so dumping a stack never cheapens a shop).
+static func sell_unit(id: String) -> float:
 	var unit := item_value(id) * demand(id) * sell_multiplier() * (1.0 + minf(0.20, 0.02 * (skill_level("bartering") - 1))) * (1.0 + 0.05 * Crew.perk_level("sell_bonus"))
 	if family(id) != "":
 		unit *= 1.0 + bonus("farming", "crop_value")
@@ -649,22 +659,21 @@ static func sell_price(id: String, n := 1) -> int:
 		unit *= 1.0 + bonus("fishing", "fish_value")
 	if Crew.perk_level("fence") >= 1 and str(items.get(id, {}).get("type", "")) in ["drop", "treasure", "junk"] and str(run.get("arc", "")) == "gangsters":
 		unit *= 1.2
-	var total := 0.0
-	for i in n:
-		total += unit * saturation(id, i)
-	return int(round(total))
+	return unit
 
 
 ## A hand-priced stall can be cheap, but never cheaper than what the item sells for.
 static func shop_price(id: String, listed: int) -> int:
-	return maxi(listed, int(ceil(sell_price(id, 1) * 1.15)))
+	return maxi(listed, int(ceil(sell_unit(id) * Money.RESALE_FLOOR)))
 
 
 static func buy_price(id: String) -> int:
 	var base := item_value(id)
 	var it: Dictionary = items.get(id, {})
 	var tier := int(it.get("tier", 1))
-	var m := 1.5 * buy_multiplier()
+	if str(it.get("type", "")) == "seed" and crops.has(str(it.get("crop", ""))):
+		tier = int(crops[str(it["crop"])].get("tier", tier))  # a seed costs what its crop is worth (C8 P6)
+	var m := Money.BUY_MARKUP
 	# Goods above your progress cost extra: the shops know what you can afford to break.
 	if tier > progress_tier() + 1:
 		m *= 1.0 + 0.25 * (tier - progress_tier() - 1)
@@ -674,10 +683,16 @@ static func buy_price(id: String) -> int:
 				var cs := str(crops[cid].get("season", "any"))
 				if cs != "any" and cs != season():
 					m *= 0.85  # off-season seed is a little cheaper, and a gamble
+	var novice := base * m  # what a player with no discounts pays
+	m *= buy_multiplier()
 	m *= [1.0, 0.95, 0.9, 0.9][clampi(Crew.perk_level("shop_discount"), 0, 3)]  # Specs knows the till codes
 	# Never cheaper than you could sell it back for (demand, fence and every perk
-	# included): shops are not a money machine.
-	return maxi(1, int(ceil(maxf(base * m, sell_price(id, 1) * 1.15))))
+	# included; today's saturation not, C8 P6): shops are not a money machine.
+	var p := maxf(base * m, sell_unit(id) * Money.RESALE_FLOOR)
+	# ...and never dearer than a novice pays (C8 P6): levelling Bartering or
+	# selling perks can't raise a price above the bare one.
+	p = minf(p, maxf(novice, base * demand(id) * Money.RESALE_FLOOR))
+	return maxi(1, int(ceil(p)))
 
 
 static func count(id: String) -> int:
@@ -2203,7 +2218,7 @@ static func crop_in_season(item: String) -> bool:
 
 
 ## Board items any shop sells at 1.5x value: no markup on them, or buy-and-hand-in is free money.
-const BOARD_SHOP_GOODS := ["coal", "copper", "iron", "stone", "brick", "old_coin", "book", "meat", "bait", "flour", "hay", "bread", "coffee"]
+const BOARD_SHOP_GOODS := ["coal", "copper", "iron", "stone", "brick", "old_coin", "book", "meat", "bait", "flour", "hay", "bread", "coffee", "slime_goo"]
 
 
 static func board_today() -> Array:
@@ -2853,7 +2868,12 @@ static func sleep(passed_out := false) -> Dictionary:
 	if int(run.get("bank", 0)) > 0 and has_friend_perk("ivy", 2):
 		# Interest: 1% (2% with Ivy 6), capped so it's a nest egg, not a printer.
 		var rate := 0.02 if has_friend_perk("ivy", 6) else 0.01
-		run["bank"] = int(run["bank"]) + mini(int(round(int(run["bank"]) * rate)), 40 + 40 * progress_tier())
+		var interest := mini(int(round(int(run["bank"]) * rate)), 40 + 40 * progress_tier())
+		run["bank"] = int(run["bank"]) + interest
+		run["earned_total"] = int(run.get("earned_total", 0)) + interest  # C8 P6: interest is earnings
+		var eb: Dictionary = run.get("earned_by", {})
+		eb["interest"] = int(eb.get("interest", 0)) + interest
+		run["earned_by"] = eb
 	run["day"] = int(run["day"]) + 1
 	run["time"] = DAY_START
 	# Decisions that matter: a bitter companion leaves for the east after day 20.

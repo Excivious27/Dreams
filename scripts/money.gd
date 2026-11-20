@@ -35,6 +35,12 @@ const SFX := {"coin": "cash_pickup"}
 ## The crystal arc pays in crystals: banknote/register cues become the coin chime.
 const CRYSTAL_SFX := {"cash": "coin", "cash_register": "coin", "cash_pickup": "coin"}
 
+## Shop price rules (C8 P6; GameState.buy_price/shop_price read them):
+## a novice pays BUY_MARKUP x value; no shop sells below RESALE_FLOOR x what the
+## piece sells for (perks and demand in, today's saturation out).
+const BUY_MARKUP := 1.5
+const RESALE_FLOOR := 1.15
+
 static var _re_num_sym: RegEx
 static var _re_sym: RegEx
 static var _re_num_word: RegEx
@@ -55,7 +61,18 @@ static func sym() -> String:
 
 
 static func fmt(n: int) -> String:
-	return sym() + str(n)
+	return sym() + group(n)
+
+
+## 1234567 -> "1,234,567" (year-2/3 sums stay readable; C8 P6).
+static func group(n: int) -> String:
+	var neg := n < 0
+	var d := str(absi(n))
+	var out := ""
+	while d.length() > 3:
+		out = "," + d.substr(d.length() - 3) + out
+		d = d.substr(0, d.length() - 3)
+	return ("-" if neg else "") + d + out
 
 
 static func word() -> String:
@@ -64,12 +81,12 @@ static func word() -> String:
 
 ## An amount as words: "40 crystals" / "$40" (arcade tops, fees, prices).
 static func amount(n: int) -> String:
-	return ("$%d" % n) if cash() else ("%d crystals" % n)
+	return ("$" + group(n)) if cash() else (group(n) + " crystals")
 
 
 ## A bare amount: "40" in the penguin arc (the word is around it), "$40" in cash.
 static func num(n: int) -> String:
-	return ("$%d" % n) if cash() else str(n)
+	return ("$" + group(n)) if cash() else group(n)
 
 
 static func t(s: String) -> String:
@@ -87,7 +104,7 @@ static func to_cash(s: String) -> String:
 	if _re_num_sym == null:
 		_re_num_sym = RegEx.create_from_string("(%d|%s|\\d+)\\s?◆")
 		_re_sym = RegEx.create_from_string("◆\\s?")
-		_re_num_word = RegEx.create_from_string("(\\+?)(\\d+|%d) crystals\\b")
+		_re_num_word = RegEx.create_from_string("(\\+?)(\\d{1,3}(?:,\\d{3})+|\\d+|%d) crystals\\b")
 	var out := s
 	for p in PHRASES:
 		out = out.replace(str(p[0]), str(p[1]))

@@ -62,9 +62,11 @@ func build() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 91
 	var placed := 0
-	while placed < 22:
+	var tries := 0
+	while placed < MROCKS and tries < 4000:
+		tries += 1
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
-		if things.has(c) or blocked.has(c) or Rect2i(22, 1, 14, 8).has_point(c) or SPRING.grow(2).has_point(c) or is_cleared(c):
+		if things.has(c) or blocked.has(c) or Rect2i(22, 1, 14, 8).has_point(c) or SPRING.grow(2).has_point(c):
 			continue
 		var near_stairs := false
 		for l in LEDGES:
@@ -74,8 +76,12 @@ func build() -> void:
 			continue
 		var roll := rng.randf()
 		var ore := "stone" if roll < 0.5 else ("copper" if roll < 0.78 else ("iron" if roll < 0.94 else "shard"))
-		set_thing(c.x, c.y, {"type": "mrock", "ore": ore, "hp": 2 if ore == "stone" else 3, "hint": "A: mine"})
 		placed += 1
+		# C8 P6 (c8_02): the cells and ores are fixed by the seed; a broken rock
+		# stays gone for its regrow days and comes back as the same ore.
+		if is_cleared(c, mrock_regrow(ore)):
+			continue
+		set_thing(c.x, c.y, {"type": "mrock", "ore": ore, "hp": 2 if ore == "stone" else 3, "hint": "A: mine"})
 	for y in range(SPRING.position.y, SPRING.end.y):
 		for x in range(SPRING.position.x, SPRING.end.x):
 			set_thing(x, y, {"type": "spring", "hint": "A: soak in the hot spring"})
@@ -173,12 +179,14 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			hitstop = maxf(hitstop, 0.025)
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			thing["hp"] = int(thing["hp"]) - 1
+			GameState.toughen(thing, "pickaxe")  # same early pace as the mine (C8 P6)
+			thing["hp"] = int(thing["hp"]) - pick_damage()
 			if int(thing["hp"]) <= 0:
 				hitstop = maxf(hitstop, 0.05)
 				Music.instance(get_tree()).sfx("rock_break", "crate_break")
 				fx("poof", cell_center(c) + Vector2(0, -6), 12.0, 0.4)
 				var ore := str(thing["ore"])
+				_mark_cleared(c)
 				things.erase(c)
 				blocked.erase(c)
 				hard.erase(c)
@@ -230,10 +238,11 @@ func _pad() -> void:
 
 func _camp() -> void:
 	var d := Dialogue.instance(get_tree())
-	var picks := [[_blade(), 90], ["potion", GameState.shop_price("potion", 20)], ["energy_tea", GameState.shop_price("energy_tea", 60)]]
+	# C8 P6 (c8_07): the blade is a back-alley discount on the smithy's price, not 70% off.
+	var picks := [[_blade(), int(ceil(GameState.buy_price(_blade()) * CAMP_DISCOUNT))], ["potion", GameState.shop_price("potion", 20)], ["energy_tea", GameState.shop_price("energy_tea", 60)]]
 	var ch: Array = []
 	for pk in picks:
-		ch.append("%s  ◆%d" % [GameState.item_name(str(pk[0])), int(pk[1])])
+		ch.append("%s  %s%s" % [GameState.item_name(str(pk[0])), Money.fmt(int(pk[1])), "  (owned)" if GameState.has_tool(str(pk[0])) else ""])
 	# The gangster road to Space (CONDUCT 4): the smugglers run a cargo rocket to the
 	# moon, and once you've ridden it the farm's launchpad has a beacon to fly to.
 	# C5 c5_17 #2: the moon's foes are tier 4, so the run waits for the gang arc's
@@ -269,13 +278,17 @@ func _camp() -> void:
 			return
 		if int(GameState.run["crystals"]) < price:
 			hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
+			Music.instance(get_tree()).sfx("nope", "thud")
 			return
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
+		Music.instance(get_tree()).sfx("cash", "coin")
+		xp("bartering", 1)
 		if id == _blade():
 			GameState.add_tool(id)
 			hud.toast("Got the %s." % GameState.item_name(id), Color(1, 0.9, 0.4))
 		else:
 			give(id)
+		await _camp()  # the stall stays open: buy another, or leave
 
 
 func draw_map() -> void:
@@ -332,5 +345,20 @@ func draw_map() -> void:
 
 ## The vendor's weapon: an Iron Sword, or in the gangster arc a Crowbar (the
 ## gang arc's blade-free equivalent, same punch; C4 P6).
+## Mountain rocks (C8 P6): how many, and the days a broken one stays gone.
+const MROCKS := 22
+const CAMP_DISCOUNT := 0.9  # the smugglers undercut the smithy a little
+const MROCK_REGROW := {"stone": 3, "copper": 4, "iron": 5, "shard": 6}
+
+
+static func mrock_regrow(ore: String) -> int:
+	return int(MROCK_REGROW.get(ore, 4))
+
+
+## One swing's damage: the pick's tier and Mining's power, like GameState.hits_for.
+static func pick_damage() -> int:
+	return 1 + (GameState.tool_tier("pickaxe") + 1) / 2 + int(GameState.bonus("mining", "mine_power"))
+
+
 static func _blade() -> String:
 	return "crowbar" if GameState.street_bat() else "iron_sword"

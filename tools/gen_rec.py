@@ -38,17 +38,19 @@ BUILDING = {
     "lane": [44, 87, 12, 2],   # dirt lane from the avenue to the door
     "open_day": 7,              # opens on the first morning from this day once the town intro is done
     "fee": 25,                  # crystals for one game of bowling
-    "soda": 12,                 # vending machine price
+    "soda": 30,                 # vending machine price (C8 P6: priced like the snack bar)
     "hours": [9, 24],           # doors open 9am to midnight (closed 9am-6pm on festival days)
     "hours_gang": [9, 26],      # gangster Rec Hall: 9am to 2am (Tom, Guide 26 #5); past 24 = after midnight
     "house_lane": 4,            # lane villagers never take: always free for a walk-in
     # Upstairs snack bar (RecCenter._snack): item, price, what the menu says it does.
     # Item values stay well under the price, so buying to sell always loses.
+    # C8 P6 (c8_06): energy per crystal sits on the shop curve (~0.8; bread 0.9,
+    # energy tea 0.6), buffs priced on top, so town food still matters after day 7.
     "snacks": [
-        ["rp_popcorn", 10, "lucky hands, 90 min"],
-        ["rp_pretzel", 20, "big energy"],
-        ["rp_cotton_candy", 15, "quick feet, 60 min"],
-        ["rp_fizzy_pop", 12, "a pick-me-up"],
+        ["rp_popcorn", 25, "lucky hands, 90 min"],
+        ["rp_pretzel", 55, "big energy"],
+        ["rp_cotton_candy", 45, "quick feet, 60 min"],
+        ["rp_fizzy_pop", 30, "a pick-me-up"],
     ],
 }
 
@@ -505,13 +507,16 @@ PAYOUT = {
     "skee_ball": {"soft": 24, "cap": 34},
 }
 RESALE = 8        # a counter prize sells for 1/RESALE of its ticket cost (floor 2)
-MAX_SELL = 2.15   # best stacked sell multiplier (festival 1.1 x bartering/Alder 1.4 x skill 1.2 x Deuce 1.15)
+MAX_SELL = 2.23   # best stacked sell multiplier (festival 1.1 x bartering/Alder 1.4 x skill 1.2 x Deuce 1.15 x Lucky Day 1.05; C8 P6)
+FENCE = 1.2       # Marlene's fence on treasure/drop/junk (gangster arc), on top of MAX_SELL
+FENCED = ("treasure", "drop", "junk")
+SNACK_ENERGY_PER_CRYSTAL = (0.55, 1.0)  # snack bar energy per crystal must sit on the shop curve
 CLAW_WIN = 0.8    # a keen player's first claw try of the day (the grip loosens after each win)
 
 # What the claw machine's plushes hide: [item, weight]. Mostly counter prizes; a few small
 # treasures keep it exciting, but its average prize stays under what a go costs.
 CLAW_POOL = [["rp_teddy", 18], ["rp_penguin_plush", 16], ["rp_fuzzy_dice", 16], ["rp_cat_plush", 16], ["rp_candy", 22],
-             ["rp_ribbon", 12], ["rp_cotton_candy", 10], ["old_coin", 3], ["toy", 2], ["fossil", 1]]
+             ["rp_ribbon", 12], ["rp_cotton_candy", 10], ["old_coin", 2], ["toy", 2], ["fossil", 1]]
 
 
 def payout(game, n):
@@ -532,6 +537,10 @@ def _value(item, items):
     return int((ITEMS.get(item) or items.get(item, {})).get("value", 0))
 
 
+def _type(item, items):
+    return str((ITEMS.get(item) or items.get(item, {})).get("type", ""))
+
+
 def check_economy(items):
     """Refuse any number that would turn the rec into a crystal machine."""
     errs = []
@@ -548,13 +557,26 @@ def check_economy(items):
             errs.append("%s: counter prizes must be rp_ items (their value is set here)" % item)
     tw = sum(w for _, w in CLAW_POOL)
     avg = sum(_value(i, items) * w for i, w in CLAW_POOL) / float(tw)
+    # Sell-back worth with the fence on loot (C8 P6): the true best case.
+    avg_fenced = sum(_value(i, items) * w * (FENCE if _type(i, items) in FENCED else 1.0) for i, w in CLAW_POOL) / float(tw)
     tickets = min(PAYOUT["claw"]["cap"], 10 + int(avg) // 10)
-    ev = CLAW_WIN * (avg * MAX_SELL + tickets * worst_ticket) + (1 - CLAW_WIN) * 2 * worst_ticket
+    ev = CLAW_WIN * (avg_fenced * MAX_SELL + tickets * worst_ticket) + (1 - CLAW_WIN) * 2 * worst_ticket
     if ev >= FEES["claw"]:
         errs.append("claw: a go is worth %.1f at best (fee %d); average prize %.1f" % (ev, FEES["claw"], avg))
     for i, _ in CLAW_POOL:
         if i not in ITEMS and i not in items:
             errs.append("claw pool: no item " + i)
+    # Snack bar and vending machine (C8 P6): never a buy-and-ship loop, and energy
+    # priced like the town's food.
+    stalls = [(sn[0], sn[1]) for sn in BUILDING["snacks"]] + [("rp_fizzy_pop", BUILDING["soda"])]
+    for sid, price in stalls:
+        v = _value(sid, items)
+        if v * MAX_SELL >= price:
+            errs.append("snack %s: sells back for %.1f >= its %d price" % (sid, v * MAX_SELL, price))
+        en = int((ITEMS.get(sid) or items.get(sid, {})).get("energy", 0))
+        lo, hi = SNACK_ENERGY_PER_CRYSTAL
+        if en and not (lo <= en / float(price) <= hi):
+            errs.append("snack %s: %.2f energy per crystal (shop curve %.2f-%.2f)" % (sid, en / float(price), lo, hi))
     if errs:
         raise SystemExit("gen_rec: ticket economy loop(s):\n  " + "\n  ".join(errs))
     return {"claw_avg": round(avg, 1), "claw_ev_best": round(ev, 1)}
