@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 21:05 PT, personal account.
-- **Done:** CONDUCT 1-4 pushed (C4 report docs/reports/CONDUCT-4.md, Guide 28). CONDUCT CI optimisation done: `bash tools/conduct/ci_run.sh <label> 3` runs check.sh in 6 shards + 20 bots on GitHub Actions (~10 min, verify3 PASS); see HANDOFF CONDUCT section + PROJECT-MEMORY 3.
-- **In progress:** CONDUCT 5 (home-world look and feel). 20 auditor reports: /home/claude/wt/c5_reports/*.md (copy in docs/reports/c5_audit/ when merged). 6 fix agents launched 20:55 (plan /home/claude/wt/C5_PACKAGES.md, worktrees /home/claude/wt/c5f_p1..p6, branches c5f/p1..p6, reports /home/claude/wt/c5f_reports/pN.md + .done); cap ~22:10.
-- **Next step:** C4 package to Tom; when C5 agents finish: merge (merge_c.sh), local smoke, ci_run.sh c5, fix, push, C5 package; start C6 auditors (audio) at the C5 merge.
-- **Jobs running elsewhere:** 6 C5 fix agents in the personal sandbox (lost on a switch: relaunch from C5_PACKAGES.md, which is also committed as docs/reports/C5-PACKAGES.md).
+- **Last update:** 2026-11-19 22:52 PT, personal account.
+- **Done:** CONDUCT 1-5 (C5 merged, CI c5b PASS: 6 shards + 20 bots + playtest). Report docs/reports/CONDUCT-5.md, Guide 29.
+- **In progress:** PAUSED for usage optimization (Tom 22:49, OPTIMIZE CONDUCT USAGE: effort by role, shared code map, tight briefs, lean main chat, adaptive watchdog). C6: 14 focus auditors done (/home/claude/wt/c6_reports/*.jsonl); fix plan /home/claude/wt/C6_PACKAGES.md (P1-P7, copy docs/reports/C6-PACKAGES.md); regression/perf/inventory auditors 15-20 not started.
+- **Next step:** finish the usage changes, then C5 package to Tom, C6 auditors 15-20 (low effort, checklists), C6 code map, launch C6 fix agents P1-P7 (medium).
+- **Jobs running elsewhere:** none.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.

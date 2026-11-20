@@ -1,0 +1,21 @@
+01 Music map, penguin arc: walk every home map, region, interior, mega area and battlefield (tools/music_map_test.gd + area_track/AREA_MUSIC/INTERIOR_MUSIC); every place has a fitting song, night/festival/winter variants switch, no song restarts on map change when it should continue; list wrong/missing/repetitive picks.
+02 Music map, gangster arc: same as 01 for ARC=gangsters (_gang tracks, cash-arc places, hideout, neon, uptown, docks, gang battles); list every place that falls back to a penguin song that should have its own.
+03 Web streaming path: Music._base_url, music_stream.json, cache in user://mcache, first-play latency, offline/failed fetch fallback, export excludes (tools/music_stream_test.gd, a web export dry-run if possible); report anything that would play silence on the real site.
+04 Song quality pass: listen-proxy by analysis (tools/ace_pick.py metrics, loudness, loop seams, abrupt endings, clipping) for all audio/music/*.ogg; rank the 15 weakest songs with a concrete re-render brief each (style caption).
+05 SFX harshness: loudness/brightness audit of audio/sfx (GROUP_DB, SOFTEN_LOG), worst 30 sounds by peak/harsh high end, repeated takes that sound identical; propose fixes (soften/replace with CC0).
+06 Footsteps: Footsteps.word per ground on every map (paths, soft ground, wood, stone, sand, snow, water edges, interiors, mega grounds); missing or wrong words, volume vs music, cadence vs walk speed.
+07 Ambience: Ambience beds/spots by place, time, season, weather (cave/quiet flags, rec, mines, mega areas, battlefields); wrong beds (wind in caves, town hum in forests), gaps, bed loops audible, night insects in winter.
+08 Combat audio: DangerMusic tiers and switches, boss intros/endings (boss_started/boss_ended), hit/hurt/die sfx per enemy family, gun sounds (gangster rounds), spell sfx; missing cues, harsh repeats, sudden cuts.
+09 UI audio: menu clicks, toasts, mail, quest done, level up, tickets, shop buy/sell (coin vs cash_pickup), dialogue talk blips per speaker (Music.blip), pause/resume; missing cues and annoying ones.
+10 Farm/home cues: tools (hoe, water, axe, pickaxe, scythe, fishing cast/reel/bite), crops, animals (each species, babies, feeding), pet, sleep/morning, chests/storage, crafting stations; missing or wrong cues.
+11 New C3-C5 systems: campaigns/battles (muster, convoy, turrets, Crystal Kin), mega travel rides, hidden pockets/secret ways, rec renovations/cup, community farm builds, difficulty/day length UI, C5 look changes (weather, lighting); every action without a sound.
+12 Arcade and rec: every arcade game, bowling, skee, claw, jukebox records, prize counter, rec rooms beds (RecAudio); levels and repeats.
+13 Story and cutscene audio: story beats, heart scenes, festivals, endings/epilogue (ONCE tracks, queue_after credits), arc intros; music fits the mood, transitions don't cut mid-line.
+14 Mix and settings: music/sfx/ambience volume sliders, mute, defaults, ducking under dialogue/jingles, loudness consistency between songs (-16 LUFS target), phone speaker check (low end loss); propose mix fixes.
+15 REGRESSION CONDUCT 5 (farm/home/world): house tiers + greenhouse move, fences, animal sizes, lighting windows, weather particles, seasons/withering, interiors per tier; both arcs, saves from before C5.
+16 REGRESSION CONDUCT 5 (characters/UI): crew/thug redraws and scale, penguin tool poses, villager walkers/portraits, CrispArt on characters, HUD text sizes, money box, campaign board, alcohol as trade goods, hidden pockets stable.
+17 REGRESSION CONDUCT 5 (data/bots): gen_mega_new / gen_stations / gen_battles changes, bots difficulty/day length coverage, pause owners, inventory docs.
+18 Bugs and crashes sweep after C5: focused single bot runs (tools/bot.gd) on home maps and C5-touched content; softlocks, script errors, stuck spots, ownerless pauses.
+19 Performance after C5: perf_probe farm/town/forest/lake/mine (load ms, median/p95 frame, nodes, draws, tex MB) vs the C5 audit numbers (c5_16); regressions from new art/particles.
+20 Docs/inventory: audio rows in inventory.csv (songs count, sfx count, CC0 credits), docs/AUDIO-PLAN.md accuracy, AUDIO-CREDITS completeness, CONDUCT-5 "Still open". Report only.
+Note: 01-14 start on a snapshot of origin/main when the C5 merge starts; 15-20 after the C5 merge is pushed.
