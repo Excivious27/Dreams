@@ -491,7 +491,8 @@ func _process(delta: float) -> void:
 		if dist <= 3.0 and not _sniffed:
 			_sniffed = true
 			if map.pet != null and is_instance_valid(map.pet) and map.pet.visible:
-				map.hud.toast("Your pup sniffs at something nearby...", Color(0.9, 0.95, 1.0))
+				var cat := str(GameState.look_d().get("pet", "")).begins_with("cat")
+				map.hud.toast("Your cat sniffs at something nearby..." if cat else "Your pup sniffs at something nearby...", Color(0.9, 0.95, 1.0))
 		if (twilight or dist <= 4.0) and randf() < 0.35:
 			map.fx("sparkle" if Art.has("fx", "sparkle") else "poof", map.cell_center(c) + Vector2(randf_range(-5, 5), -8 - randf() * 6), 10.0, 0.6)
 
@@ -528,7 +529,7 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 				m.player.play_tool("pickaxe")
 				Music.instance(m.get_tree()).sfx("crate_break", "thud")
 				m.fx("stone_chips" if Art.has("fx", "stone_chips") else "poof", m.cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			else:
+			elif str(thing.get("kind", "")) == "vine":  # the sun door has its own grind above
 				Music.instance(m.get_tree()).sfx("step_grass", "step")
 				m.fx("leaf_burst" if Art.has("fx", "leaf_burst") else "poof", m.cell_center(c) + Vector2(0, -8), 14.0, 0.5)
 			GameState.run["flags"][str(thing["key"])] = true

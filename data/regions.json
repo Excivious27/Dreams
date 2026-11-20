@@ -16012,7 +16012,6 @@
   ],
   "path_lip": "8a5a2a38",
   "amb": {
-   "wind_soft": -13.0,
    "cave": -20.0
   },
   "gen": {
@@ -17496,7 +17495,6 @@
   ],
   "path_lip": "2a2a2a48",
   "amb": {
-   "city_hum": -19.0,
    "machines": -24.0,
    "cave": -14.0,
    "basement_drips": -18.0
@@ -18679,7 +18677,6 @@
   ],
   "path_lip": "8a9ab030",
   "amb": {
-   "wind_soft": -12.0,
    "cave": -14.0,
    "crystal_hum": -22.0
   },
@@ -21955,7 +21952,6 @@
   ],
   "path_lip": "6a4a1a40",
   "amb": {
-   "town_day": -20.0,
    "cave": -18.0,
    "basement_drips": -22.0
   },

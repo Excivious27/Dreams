@@ -38,6 +38,10 @@ const WILD_BEDS := ["birds_dawn", "birds_day", "crickets", "frogs"]
 
 
 ## The map's region data (regions.json entry), or {}.
+## Region beds a deep cave never plays (they belong above ground).
+const SURFACE_BEDS := ["wind_soft", "wind_strong", "town_day", "crowd", "city_hum", "neon_street", "birds_day", "birds_dawn", "waves", "leaves", "rain_light", "rain_heavy"]
+
+
 static func _rd(m: GameMap) -> Dictionary:
 	var rd: Variant = m.get("R")
 	return rd if rd is Dictionary else {}
@@ -253,6 +257,8 @@ func _evaluate() -> Dictionary:
 				continue
 			if quiet and k in WILD_BEDS:
 				continue
+			if deep and k in SURFACE_BEDS:
+				continue  # C5: a mega cave's region beds (wind, streets) stay on the surface
 			var db := float(rdd[bed_key][k])
 			if night and bed_key == "amb" and k in ["crowd", "town_day"]:
 				db -= 10.0  # no night list: the streets thin out after dark

@@ -882,7 +882,7 @@ func on_enemy_died(e: Enemy) -> void:
 	if _boss_node != null and e == _boss_node:
 		_boss_node = null
 		GameState.run["flags"]["boss_%s" % region_id] = true
-		Music.instance(get_tree()).play(area_track())
+		DangerMusic.boss_ended(self)  # wind-down + victory sting, then the area song (C5)
 		player.frozen = true
 		var win: Variant = _boss_thing.get("win_reverted", _boss_thing.get("win", "It's over.")) if e.has_meta("reverted") else _boss_thing.get("win", "It's over.")
 		if not GameState.is_penguins() and _boss_thing.has("win_gangsters"):

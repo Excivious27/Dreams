@@ -826,6 +826,9 @@ def build_area(aid, mega, spec, links_geom):
     R["ground"] = R["ground_seam"]  # not "grass": that would draw the valley's grass instead of the seamless ground
     R["amb"] = dict(AMB.get(spec["look"], {}))
     R["amb"].update(AREA_AMB.get(aid, {}))
+    if aid in CAVE:  # C5: underground areas drop the look's surface beds (wind, streets); Ambience skips them too
+        for k in ("wind_soft", "wind_strong", "town_day", "crowd", "city_hum", "neon_street", "birds_day", "birds_dawn", "waves", "leaves"):
+            R["amb"].pop(k, None)
     R["gen"] = json.loads(json.dumps(L["gen"]))
     R["gen"].update(spec.get("gen_extra", {}))
     if spec["look"] in THEME:
