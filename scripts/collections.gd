@@ -193,6 +193,11 @@ static func record_make(_station: String, rid: String, n := 1) -> bool:
 	return first
 
 
+## A recipe that belongs to a log and was never made (CraftScreen marks it "new").
+static func never_made(rid: String) -> bool:
+	return (in_log("cooking", rid) or in_log("crafting", rid)) and not st()["made"].has(rid)
+
+
 # ---- the museum ------------------------------------------------------------------------
 
 static func museum_open() -> bool:

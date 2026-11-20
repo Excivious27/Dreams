@@ -217,6 +217,7 @@ func _card(rc: Dictionary, why: String, disc: bool) -> Control:
 	else:
 		var n := int(rc.get("n", 1))
 		var top := "%s%s%s" % ["✓ " if Crafting._owned(rc) else "", str(rc["name"]), " ×%d" % n if n > 1 else ""]
+		top += " • new" if Collections.never_made(str(rc.get("id", ""))) else ""  # not yet in the cookbook/crafting log (C8 P3)
 		var bot := Crafting.have_short(rc)
 		if why != "":
 			bot = "Locked: " + why

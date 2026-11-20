@@ -73,7 +73,9 @@ func _run() -> void:
 		# --- cooking / crafting via Crafting.collect ---
 		var rid := str((Collections.entries("cooking")[0] as Dictionary)["recipe"])
 		var st := str((Collections.entries("cooking")[0] as Dictionary)["station"])
+		ok(Collections.never_made(rid), arc + ": recipe marked new before the first cook")
 		ok(Collections.record_make(st, rid, 1), arc + ": first cook")
+		ok(not Collections.never_made(rid), arc + ": no longer new")
 		var crid := str((Collections.entries("crafting")[0] as Dictionary)["recipe"])
 		Collections.record_make("x", crid, 2)
 		ok(Collections.amount_of("crafting", crid) == 2 and Collections.count("cooking") == 1, arc + ": crafting/cookbook counts")
