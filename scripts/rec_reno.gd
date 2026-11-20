@@ -162,6 +162,7 @@ static func cup_score(game: String, score: int) -> int:
 	won[str(c["key"])] = int(GameState.run["day"])
 	f["rec_cup_won"] = won
 	Tickets.add(int(c["tickets"]), "cup")
+	if won.size() == 1: DecorSources.grant(null, DecorSources.granted_for("rec:cup"), 1, "cup")  # C10b P1: the first cup brings a trophy home
 	GameState.notify("Rec Cup won! %s %d: +%d tickets" % [Tickets.game_name(game), score, int(c["tickets"])])
 	# The season's top arcade prize gets its own fanfare (the note itself is silent).
 	var tree := Engine.get_main_loop() as SceneTree

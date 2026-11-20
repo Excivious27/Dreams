@@ -166,6 +166,8 @@ static func _fits(id: String) -> bool:
 		return false
 	if taken(id):
 		return false
+	if is_wear(id) and held(id) > 0:
+		return false  # c10b_10_22: no second copy of clothes you already own
 	return Decor.price(id) > 0
 
 
