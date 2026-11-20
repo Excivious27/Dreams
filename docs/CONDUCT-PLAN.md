@@ -152,3 +152,13 @@ After CONDUCT 17, then the final package and artifact. Sole purpose: cutscenes t
 - Casino side arc (gangster arc): bring a casino to town against NPC pushback, tiered expansion, hiring staff, tied to the tier system; all-ages (chips/tickets). Built in CONDUCT 10 (with decor/build tiers), balanced in C16.
 - Exploration everywhere (hidden areas, secret passages, ways up/down) and underwater caverns on the merkitty islands: C14 (aesthetics/exploration) with island content in C7/C12.
 - Story spine: Tom's book is canon for the penguin arc; Grumps = converted Crystopia crystals (+ some other creatures); Catkins' monastic guardian line; Nova's universe-of-happiness dream; gangster origin (fighting gangs, corrupted, redeemable). C7/C12 rebuild with no plot holes; C18 intro cutscene shows the Star Crystal visiting the hero.
+
+## CONDUCT 19: Trading cards (added 2026-11-19 17:21)
+An extremely sophisticated collectible card system, unified with the game's tiers:
+- Cards for creatures, villagers, places, Grumps/crystals, gangster crew, bosses, items; per-region sets that unlock as regions open; rarity tiers common to one-of-a-kind (foil/alt-art/numbered); art from the image tool in a consistent card frame per arc.
+- Booster packs bought in shops (prices/odds tuned in a generator with an economy check like gen_rec), plus packs earned from quests, campaigns, festivals, arcade prizes; region/seasonal packs.
+- Binder/collection UI on the phone (sets, completion %, rewards for finishing sets), card shop / card counter NPC, a duplicate/dust or trade-in system.
+- Trading: with villagers (each has wants/haves, heart-gated rare trades), traveling traders by region, and with other players over the co-op net layer (trade window, both confirm; works with C17 multiplayer).
+- Optional card mini-game (simple, all-ages) used for friendly matches and a league ladder; ties to tiers so big sets/cards take into year 2-3 (C16 rules).
+- Tests: economy check, pack odds sim, trade test (solo + net), binder UI phone audit.
+Order: C3..C18, then C19, then the final package and artifact.
