@@ -2698,6 +2698,10 @@ func _pup_menu() -> void:
 			Music.instance(get_tree()).sfx("eat", "pickup")
 		"pet":
 			emote(pt, "heart", 1.0)
+			# P5's pup voice (Pet.say) once merged; guarded so this works without it.
+			var pet_script: Variant = load("res://scripts/pet.gd")
+			if (pet_script as Script).get_script_method_list().any(func(md: Dictionary) -> bool: return str(md.get("name", "")) == "say"):
+				pet_script.call("say", get_tree(), "happy")
 			if pt.anim.sprite_frames.has_animation("play"):
 				pt.anim.play("play")
 			if int(st.get("petted_day", -1)) != int(GameState.run["day"]):

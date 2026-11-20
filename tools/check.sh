@@ -151,6 +151,13 @@ fi
 
 
 
+echo "== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise =="
+tpout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/tom_playtest_c6_test.gd 2>&1)"
+echo "$tpout" | grep -E "FAIL|SCRIPT ERROR|tom_playtest_c6_test|tier [0-9]" || true
+if ! echo "$tpout" | grep -q "tom_playtest_c6_test: OK"; then
+  echo "tom_playtest_c6_test failed"; exit 1
+fi
+
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
