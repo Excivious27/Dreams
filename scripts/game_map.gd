@@ -1360,6 +1360,8 @@ func area_track() -> String:
 			t = "battle_siege"
 		elif md in ["escort", "supply"]:
 			t = "battle_escort"
+		if not GameState.is_penguins() and Music.has_track(t + "_gang"):
+			t += "_gang"  # gangster battles: gritty funk/noir variants (battle_gang, battle_siege_gang)
 	if Racket.on() and _collectors_near():
 		return "raid"
 	if not Music.has_track(t):

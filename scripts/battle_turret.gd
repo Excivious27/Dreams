@@ -7,6 +7,8 @@ extends Bot
 var hp := 40
 var max_hp := 40
 var _hurt := 0.0
+var _frames: Array = []   # penguin pylon: props/crystal_pylon_0..3 (0-1 glow, 2-3 zap beam to the right)
+var _ft := 0.0
 
 
 static func make_at(m: GameMap, at: Vector2, it: Dictionary) -> Bot:
@@ -22,7 +24,12 @@ static func make_at(m: GameMap, at: Vector2, it: Dictionary) -> Bot:
 	b.position = HelperUnit.free_spot(m, at)
 	b.z_index = 1
 	var tex: Texture2D = null
-	if GameState.is_penguins():
+	if GameState.is_penguins() and Art.has("props", "crystal_pylon_0"):
+		for k in 4:
+			if Art.has("props", "crystal_pylon_%d" % k):
+				b._frames.append(Art.tex("props", "crystal_pylon_%d" % k))
+		tex = b._frames[0]
+	elif GameState.is_penguins():
 		tex = Art.tex("props", "crystal_pylon") if Art.has("props", "crystal_pylon") else Art.tex("battle", "pylon")
 	elif Art.has("props", "bot_guard_bot"):
 		tex = Art.tex("props", "bot_guard_bot")
@@ -33,6 +40,9 @@ static func make_at(m: GameMap, at: Vector2, it: Dictionary) -> Bot:
 		var sc := hgt / float(tex.get_height())
 		b._spr.scale = Vector2(sc, sc)
 		b._spr.offset = Vector2(0, -tex.get_height() / 2.0)
+		if not b._frames.is_empty():
+			# Frames are wide (the beam runs right); the body is the left ~half: centre it.
+			b._spr.offset.x = tex.get_width() / 2.0 - tex.get_height() * 0.32
 		b.add_child(b._spr)
 	b.add_to_group("allies")
 	m.add_child(b)
@@ -57,6 +67,14 @@ func provoke(_by: Node2D) -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+	if not _frames.is_empty() and _spr and is_instance_valid(_spr):
+		_ft += delta
+		var zap := _zap_t > 0.0 and _frames.size() >= 4
+		var i := (2 + int(_ft * 12.0) % 2) if zap else int(_ft * 3.0) % mini(2, _frames.size())
+		_spr.texture = _frames[i]
+		var left := zap and _zap_to != Vector2.INF and _zap_to.x < position.x
+		_spr.flip_h = left
+		_spr.offset.x = absf(_spr.offset.x) * (-1.0 if left else 1.0)
 	if _hurt > 0.0:
 		_hurt -= delta
 		if _hurt <= 0.0 and _spr:

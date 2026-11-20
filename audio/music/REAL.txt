@@ -75,3 +75,5 @@ combat_light
 combat_light_gang
 combat_elite
 combat_elite_gang
+battle_gang
+battle_siege_gang
