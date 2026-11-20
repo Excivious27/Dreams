@@ -1,10 +1,10 @@
-# Dreams: inventory (regenerated 2026-11-19 by tools/inventory_md.py)
+# Dreams: inventory (regenerated 2026-11-20 by tools/inventory_md.py)
 
 Every system in the game with its state, what is still outstanding, test coverage, and what Claude needs from Tom. `docs/inventory.csv` is the source (edit it, then run `python3 tools/inventory_md.py`). Percentages are estimates against Tom's bar ("100% = Stardew-grade commercial release").
 
-**Summary:** 58 systems: 35 done, 11 rough, 12 missing. Average 66%.
+**Summary:** 58 systems: 39 done, 9 rough, 10 missing. Average 70%.
 
-**Live counts:** 19,268 sliced art pieces in 661 groups; 91 music tracks, 434 sfx files, 58 ambience beds; 81 headless tests, 74 in check.sh.
+**Live counts:** 19,379 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 99 headless tests, 93 in check.sh.
 
 ## Systems
 
@@ -12,8 +12,8 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 | Area | System / feature | Status | Percent | Tests | Notes |
 |---|---|---|---|---|---|
-| Art | 19,268 sliced pieces in 661 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
-| Audio | 91 music tracks (ACE), 434 sfx files, 58 ambience beds | done | 93 | music_map_test, danger_music_test, sfx_audit | C2: combat/danger music system (4 tiers, chase-aware) + 4 combat songs; Tom C13: many alternate area/season soundtracks |
+| Art | 19,379 sliced pieces in 653 groups; Prompts 17-30 drawn | rough | 88 | crisp_art_test, art_audit | C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs |
+| Audio | 105 music tracks (ACE), 467 sfx files, 61 ambience beds | done | 97 | music_map_test, danger_music_test, sfx_audit | C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground |
 | Combat | Battles, campaigns, drills, briefings, convoy, helpers | done | 92 | campaign_c3_test, battle_win_test, bf_themes_test, campaign_gate/words/map/story tests | C3: Grump variants + captains, per-campaign leaders, Crystal Kin, team on the field, 19 themed fields, easy early wins, resume, boss music |
 | Combat | Weapons, guns (no blood), spells, bosses, Gifts and the ten Marked | done | 85 | gift_test, ally_test | Kills-past-cap XP undecided |
 | Core | Engine, portrait 270x480, touch D-pad + A/B/MENU, input actions | done | 95 | smoke_test, desktop_layout_test, touch_ui_test | C2: desktop/landscape fills the screen (DisplayMode), F11/fullscreen, touch controls auto-hide on computers; phones unchanged |
@@ -34,15 +34,15 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Look | Interiors: furnish.py dressing, props fitted to footprint, rec rooms glow | done | 85 | interior_reach, rec_test | C2 rec visuals |
 | Look | NPC and animal animation: walk/idle strips, aligned wildlife, tool poses | rough | 78 | anim_test, gang_play_test | C5 c5_15: 12B heroes still lack side/up tool strips |
 | Multiplayer | Co-op up to 8 through relay (host-authoritative) | rough | 55 | coop_test, net_test (needs relay, not in check.sh) | Relay not deployed; audit 17b net findings F1-F11 partly fixed |
-| People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 85 | hearts_test (not in check.sh), gift lines | 10-heart endings and best-friend ceremony are story defaults not built |
+| People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 90 | hearts_test, hearts_content_test | 10-heart endings and best-friend ceremony are story defaults not built |
+| People | Dating/marriage | done | 85 | romance_test | C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12 |
 | People | Pet/pup: perks, hunter perk, mines | rough | 78 | systems_test, move_target_test | C2: pup swims (Paddle) instead of walking on water |
-| People | Dating/marriage | missing | 0 | none | Tom chose G-rated dating/marriage; built in C7, writing C12 |
-| QA | Headless tests, bots, playtest | done | 85 | 81 *_test.gd; 74 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
-| Story | Endings + epilogue slideshow | done | 80 | story_test | Third ending (Clean Break) pending Tom |
-| Story | Penguin arc: 5 chapters, sanctuary, colonies | rough | 72 | story_test, meow_gate_test | C2: Meow Pow Wow earned from Catkins; name fixed; deeper story pass C7/C12 |
-| Story | Gangster arc: 5 chapters, Racket, heat, turf, heists, crew | rough | 70 | story_test, gang_play_test, cash_test | Clean Break ending, Inspector Hale, Marked scenes not built |
-| Story | Festivals: Egg, Lantern, Harvest, Star (scenes in town) | rough | 60 | none dedicated | Scripted scenes exist; full mini-games are a story default (Guide 11 Q28) |
-| Story | Side stories (crystal babies, Big Jim's brother, Coldy's key, Wastes Commander, Rosa, The Kid, Specs) | missing | 5 | none | Defaults ready; Tom: answers or 'write the defaults' |
+| QA | Headless tests, bots, playtest | done | 85 | 99 *_test.gd; 93 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
+| Story | Endings + epilogue slideshow | done | 90 | story_test, epilogue_test | Third ending (Clean Break) pending Tom |
+| Story | Penguin arc: 5 chapters, sanctuary, colonies | done | 85 | story_test, meow_gate_test | C7: canon (Crystopia crystals, 21-year bell timeline, Catkins guardian line, Nova dream, Fennimore beats, elders at the finale), beat flow fixes, story_flow_test |
+| Story | Gangster arc: 5 chapters, Racket, heat, turf, heists, crew | done | 85 | story_test, gang_play_test, cash_test | C7: origin + redemption path, Winter Kade, Inspector Hale, Clean Break ending, loyalty in the finale (data/story_gang.json) |
+| Story | Side stories (crystal babies, Big Jim's brother, Coldy's key, Wastes Commander, Rosa, The Kid, Specs) | done | 75 | none | C7 P4: 7 chains x 3 scenes (data/side_stories.json via tools/gen_side_stories.py, SideStory). Still to hook: baby helpers, highland cave, hall vault, Tomas as villager |
+| Story | Festivals: Egg, Lantern, Harvest, Star (scenes in town) | rough | 75 | none dedicated | C7 P4: lantern float (wish + steer past snags), crop contest (pick entry, rival entries), star-wish (wish + send a star). Full action mini-games still to come |
 | Systems | Community farm (Commons), 8 stages, volunteers | done | 95 | commons_test, cf_volunteer_test, cf_layout_test | C2: overnight builds, seasonal asks, working volunteers, lend-a-hand, woodland edge / gangster city-block edge; C3: builds take 2-4 nights with half-built pieces |
 | Systems | Rec Center: bowling, 5 arcade cabinets, tickets, prizes | done | 94 | rec_test, bowling_test, ticket_econ_test, rec_links_test, rec_audio_test | C2: hours, house lane, villager versus bowling, real phone controls and pin physics, economy without loops, quests/mail/perks links, new decor + RecGlow, bowling song + jukebox; C3: renovations to ~day 125 + seasonal Rec Cup, gang 2am, ticket stub |
 | Systems | Arcade: Block Jumper, Neon/Crystal Stack, Whack-a-Grump, Claw, Duck Pond, Skee-Ball | done | 92 | arcade_test, jumper_test, stack_whack_test, rec_games_test, touch_ui_test | C2: pause card, curves, scoring, real Skee-Ball, checkpoints/respawn, tap-to-jump |
@@ -80,7 +80,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 1. **Co-op relay host account** (blocks: online co-op on the live site). Sign up for Render (second Starter service) or Fly.io; Claude gives tap-by-tap steps and deploys server/. Until then co-op only works in tests.
 2. **Story answers, or say 'write the defaults'** (blocks: side stories, third ending, colony/Marked scenes). Guide 11 Part 3: 31 questions. Not built yet: finargle queen scene, four merkitty verses, one story per colony, Clean Break ending + Inspector Hale, one scene per Marked, 10-heart villager endings, side stories 20-26, festival mini-games.
-3. **Dating/marriage or friendship only** (blocks: 10-heart villager endings). Tom chose G-rated dating/marriage; built in C7, writing C12
+3. **Dating/marriage or friendship only** (blocks: done). C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12
 4. **Your daughter's ideas** (blocks: nothing (optional)). Guide 11 Q29: a creature, place, joke or character she wants.
 5. **Tone check, both arcs** (blocks: nothing (defaults running)). Guide 11 Q30-31; default keep sad scenes gentle and the gangster arc as is.
 6. **Gameplay calls** (blocks: nothing (defaults running)). Muscle skill row names; pup Hunter perk; full XP past the kill cap?; story regions held until their campaign is won (on now).
@@ -91,4 +91,4 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 ## Tests outside check.sh
 
-char_sheet_test, creator_test, day_length_test, difficulty_test, hearts_test, net_test, reach_test
+char_sheet_test, creator_test, day_length_test, difficulty_test, net_test, reach_test

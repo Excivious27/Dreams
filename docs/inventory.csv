@@ -14,13 +14,13 @@ World,67 regions (regions.json) incl. campaign-gated story regions,done,85,"r13_
 World,"Mega regions: 10 worlds, own map tabs, travel hooks",done,88,"mega_region_test, mega_regions_test","Five built round 13; new and least played; C4: balance/rewards/unlocks per arc, pin cards, mega quest tracker, boss themes, hidden pockets + secret ways, gangster Space, new boss/foe art"
 World,"Mines: 26 layouts, chunks, pup in mines, Hollow Heart",done,90,"mine_test, mine_keeper_test","C2: 35 varied guardian encounters, varied wake pace, route-following arrow, reliable crates/barrels, tools 30% of sword in fights"
 World,"Day/night, seasons, weather, dawn glow, faint at 10pm",done,90,"r13_world_test, day_length_test (not in check.sh)","Day length 15/20/30/40 min built (C4 P1); C5: desert/sky looks always summer, caves fixed darkness (light 0.5)"
-People,"26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks",done,85,"hearts_test (not in check.sh), gift lines",10-heart endings and best-friend ceremony are story defaults not built
-People,Dating/marriage,missing,0,none,"Tom chose G-rated dating/marriage; built in C7, writing C12"
+People,"26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks",done,90,"hearts_test, hearts_content_test",10-heart endings and best-friend ceremony are story defaults not built
+People,Dating/marriage,done,85,romance_test,"C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12"
 People,"Pet/pup: perks, hunter perk, mines",rough,78,"systems_test, move_target_test",C2: pup swims (Paddle) instead of walking on water
-Story,"Penguin arc: 5 chapters, sanctuary, colonies",rough,72,"story_test, meow_gate_test",C2: Meow Pow Wow earned from Catkins; name fixed; deeper story pass C7/C12
-Story,"Gangster arc: 5 chapters, Racket, heat, turf, heists, crew",rough,70,"story_test, gang_play_test, cash_test","Clean Break ending, Inspector Hale, Marked scenes not built"
-Story,"Side stories (crystal babies, Big Jim's brother, Coldy's key, Wastes Commander, Rosa, The Kid, Specs)",rough,60,none,"C7 P4: 7 chains x 3 scenes (data/side_stories.json via tools/gen_side_stories.py, SideStory). Still to hook: baby helpers, highland cave, hall vault, Tomas as villager"
-Story,Endings + epilogue slideshow,done,80,story_test,Third ending (Clean Break) pending Tom
+Story,"Penguin arc: 5 chapters, sanctuary, colonies",done,85,"story_test, meow_gate_test","C7: canon (Crystopia crystals, 21-year bell timeline, Catkins guardian line, Nova dream, Fennimore beats, elders at the finale), beat flow fixes, story_flow_test"
+Story,"Gangster arc: 5 chapters, Racket, heat, turf, heists, crew",done,85,"story_test, gang_play_test, cash_test","C7: origin + redemption path, Winter Kade, Inspector Hale, Clean Break ending, loyalty in the finale (data/story_gang.json)"
+Story,"Side stories (crystal babies, Big Jim's brother, Coldy's key, Wastes Commander, Rosa, The Kid, Specs)",done,75,none,"C7 P4: 7 chains x 3 scenes (data/side_stories.json via tools/gen_side_stories.py, SideStory). Still to hook: baby helpers, highland cave, hall vault, Tomas as villager"
+Story,Endings + epilogue slideshow,done,90,"story_test, epilogue_test",Third ending (Clean Break) pending Tom
 Story,"Festivals: Egg, Lantern, Harvest, Star (scenes in town)",rough,75,none dedicated,"C7 P4: lantern float (wish + steer past snags), crop contest (pick entry, rival entries), star-wish (wish + send a star). Full action mini-games still to come"
 Combat,"Weapons, guns (no blood), spells, bosses, Gifts and the ten Marked",done,85,"gift_test, ally_test",Kills-past-cap XP undecided
 Combat,"Battles, campaigns, drills, briefings, convoy, helpers",done,92,"campaign_c3_test, battle_win_test, bf_themes_test, campaign_gate/words/map/story tests","C3: Grump variants + captains, per-campaign leaders, Crystal Kin, team on the field, 19 themed fields, easy early wins, resume, boss music"
@@ -33,9 +33,9 @@ Systems,"Community farm (Commons), 8 stages, volunteers",done,95,"commons_test, 
 Systems,"Collections: museum, shipping log, fish log, achievements",missing,0,none,Stardew-grade milestone layer absent (audit 17b W11); Claude can build
 Systems,Haptics (phone vibration),missing,0,none,Audit 17b W7; Claude can build
 Multiplayer,Co-op up to 8 through relay (host-authoritative),rough,55,"coop_test, net_test (needs relay, not in check.sh)",Relay not deployed; audit 17b net findings F1-F11 partly fixed
-Art,"19,268 sliced pieces in 661 groups; Prompts 17-30 drawn",rough,88,"crisp_art_test, art_audit",C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs
-Audio,"91 music tracks (ACE), 434 sfx files, 58 ambience beds",done,93,"music_map_test, danger_music_test, sfx_audit","C2: combat/danger music system (4 tiers, chase-aware) + 4 combat songs; Tom C13: many alternate area/season soundtracks"
-QA,"Headless tests, bots, playtest",done,85,81 *_test.gd; 74 run in check.sh,char_sheet/creator/hearts/ui/reach/net tests run outside check.sh
+Art,"19,379 sliced pieces in 653 groups; Prompts 17-30 drawn",rough,88,"crisp_art_test, art_audit",C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs
+Audio,"105 music tracks (ACE), 467 sfx files, 61 ambience beds",done,97,"music_map_test, danger_music_test, sfx_audit","C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground"
+QA,"Headless tests, bots, playtest",done,85,99 *_test.gd; 93 run in check.sh,char_sheet/creator/hearts/ui/reach/net tests run outside check.sh
 Systems,"Arcade: Block Jumper, Neon/Crystal Stack, Whack-a-Grump, Claw, Duck Pond, Skee-Ball",done,92,"arcade_test, jumper_test, stack_whack_test, rec_games_test, touch_ui_test","C2: pause card, curves, scoring, real Skee-Ball, checkpoints/respawn, tap-to-jump"
 Systems,"Decor and cosmetics ecosystem (furniture, wallpaper, floors, exteriors, outdoor decor, apparel, footwear; rarity to one-of-a-kind)",missing,5,none,Tom: CONDUCT 10
 Systems,"Seasonal content (festivals, holidays, seasonal items/quests per season, year-2+ events)",rough,45,none,Tom: CONDUCT 15
@@ -63,7 +63,7 @@ Audio,Missing sounds,0,,tools/sfx_audit.py,2026-11-19
 Needs Tom,Item,Blocks,,,
 Tom,Co-op relay host account,online co-op on the live site,,,Sign up for Render (second Starter service) or Fly.io; Claude gives tap-by-tap steps and deploys server/. Until then co-op only works in tests.
 Tom,"Story answers, or say 'write the defaults'","side stories, third ending, colony/Marked scenes",,,"Guide 11 Part 3: 31 questions. Not built yet: finargle queen scene, four merkitty verses, one story per colony, Clean Break ending + Inspector Hale, one scene per Marked, 10-heart villager endings, side stories 20-26, festival mini-games."
-Tom,Dating/marriage or friendship only,10-heart villager endings,,,"Tom chose G-rated dating/marriage; built in C7, writing C12"
+Tom,Dating/marriage or friendship only,done,85,romance_test,"C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12"
 Tom,Your daughter's ideas,nothing (optional),,,"Guide 11 Q29: a creature, place, joke or character she wants."
 Tom,"Tone check, both arcs",nothing (defaults running),,,Guide 11 Q30-31; default keep sad scenes gentle and the gangster arc as is.
 Tom,Gameplay calls,nothing (defaults running),,,Muscle skill row names; pup Hunter perk; full XP past the kill cap?; story regions held until their campaign is won (on now).

@@ -646,3 +646,24 @@ echo "$uaout" | grep -E "FAIL|SCRIPT ERROR|ui_audio_test" || true
 if ! echo "$uaout" | grep -q "ui_audio_test: 0 failures"; then
   echo "UI audio test failed"; exit 1
 fi
+
+echo "== C7 P5: colony stories and crew =="
+c5out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c7_colony_crew_test.gd 2>&1)"
+echo "$c5out" | grep -E "FAIL|c7_colony_crew_test" || true
+if ! echo "$c5out" | grep -q "c7_colony_crew_test: PASS"; then
+  echo "C7 colony/crew test failed"; exit 1
+fi
+
+echo "== C7 P3: endings and epilogue =="
+epout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/epilogue_test.gd 2>&1)"
+echo "$epout" | grep -E "FAIL|epilogue_test" || true
+if ! echo "$epout" | grep -q "epilogue_test: 0 fails"; then
+  echo "Epilogue test failed"; exit 1
+fi
+
+echo "== C7 P4: heart scene content =="
+hcout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/hearts_content_test.gd 2>&1)"
+echo "$hcout" | grep -E "FAIL|hearts_content_test" || true
+if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
+  echo "Heart content test failed"; exit 1
+fi
