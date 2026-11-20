@@ -68,8 +68,8 @@
    ],
    "howto": [
     "UP and DOWN pick a bet, LEFT and RIGHT the stake.",
-    "A spins the wheel. Single zero.",
-    "Zero loses every outside bet."
+    "On One number, X and Y pick the number.",
+    "A spins. Single zero: zero loses outside bets."
    ]
   },
   {
@@ -109,8 +109,8 @@
     0.95
    ],
    "howto": [
-    "Five cards. Tap cards (or A) to hold them.",
-    "DEAL draws new cards for the rest.",
+    "Five cards. Tap cards (or X) to hold them.",
+    "A draws new cards for the rest. Y shows a hint.",
     "Jacks or better pays. Paytable 8/5."
    ]
   }

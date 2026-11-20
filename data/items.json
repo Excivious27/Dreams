@@ -10068,7 +10068,7 @@
   "desc": "Madame Aurum's seal. Doors open for whoever wears it."
  },
  "golden_dice": {
-  "name": "Loaded Dice",
+  "name": "Golden Dice",
   "type": "equip",
   "value": 1700,
   "tier": 5,

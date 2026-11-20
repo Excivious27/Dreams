@@ -351,13 +351,13 @@ TABLES = [   # id, name, short how-to (3 lines, button words through PadInput.wo
     {"id": "slots", "name": "Gilded Slots", "accent": [0.95, 0.72, 0.18],
      "howto": ["Set your bet with LEFT and RIGHT.", "A spins. One payline across the middle.", "Every win pays at least twice your bet."]},
     {"id": "roulette", "name": "Roulette", "accent": [0.9, 0.3, 0.3],
-     "howto": ["UP and DOWN pick a bet, LEFT and RIGHT the stake.", "A spins the wheel. Single zero.", "Zero loses every outside bet."]},
+     "howto": ["UP and DOWN pick a bet, LEFT and RIGHT the stake.", "On One number, X and Y pick the number.", "A spins. Single zero: zero loses outside bets."]},
     {"id": "blackjack", "name": "Blackjack", "accent": [0.35, 0.8, 0.4],
      "howto": ["Get closer to 21 than the dealer.", "A hits, X stands, Y doubles your bet.", "Dealer stands on all 17s. Blackjack pays 6 to 5."]},
     {"id": "dice", "name": "Big or Small", "accent": [0.3, 0.55, 0.95],
      "howto": ["Three dice. Small is 4-10, Big is 11-17.", "UP and DOWN pick, A rolls.", "Any triple: the house wins."]},
     {"id": "poker", "name": "Video Poker", "accent": [0.75, 0.45, 0.95],
-     "howto": ["Five cards. Tap cards (or A) to hold them.", "DEAL draws new cards for the rest.", "Jacks or better pays. Paytable 8/5."]},
+     "howto": ["Five cards. Tap cards (or X) to hold them.", "A draws new cards for the rest. Y shows a hint.", "Jacks or better pays. Paytable 8/5."]},
 ]
 
 BANNED = ["blood", "drug", "drunk", "beer", "booze", "whisk", "cigar", "smok", "kill", "dead", "debt", "loan",
