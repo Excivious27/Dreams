@@ -226,6 +226,51 @@ def sheep():
     print("sheep_woolly")
 
 
+def _line_px(a):
+    """Pink (magenta rule) or bright-green (sheet grid) pixels."""
+    r, g, b = a[..., 0].astype(int), a[..., 1].astype(int), a[..., 2].astype(int)
+    op = a[..., 3] > 0
+    return op & (((r - g > 50) & (b - g > 30)) | ((g - r > 35) & (g - b > 25)))
+
+
+def tile_lines(pattern=("path2_cobble*", "path_cobble*")):
+    """Town plaza grid lines (c5_05 #5): the cobble path tiles carry pink and
+    green sheet-rule pixels in their 3-px border; paint them over with their
+    clean neighbours' colour (the stones have no pink or bright green)."""
+    n_files = 0
+    for pat in pattern:
+        for path in sorted(glob.glob(os.path.join(S.OUT, "tiles", pat + ".png"))):
+            a = np.asarray(Image.open(path).convert("RGBA")).copy()
+            bad = _line_px(a)
+            edge = np.zeros(bad.shape, bool)
+            edge[:3] = edge[-3:] = True
+            edge[:, :3] = edge[:, -3:] = True
+            bad &= edge
+            if not bad.any():
+                continue
+            good = (a[..., 3] > 0) & ~_line_px(a)
+            for _ in range(6):
+                if not bad.any():
+                    break
+                acc = np.zeros(a.shape[:2] + (3,), float)
+                cnt = np.zeros(a.shape[:2], float)
+                for dy in (-1, 0, 1):
+                    for dx in (-1, 0, 1):
+                        if dy == 0 and dx == 0:
+                            continue
+                        sh = np.roll(np.roll(a[..., :3].astype(float), dy, 0), dx, 1)
+                        gm = np.roll(np.roll(good, dy, 0), dx, 1)
+                        acc += sh * gm[..., None]
+                        cnt += gm
+                fill = bad & (cnt > 0)
+                a[..., :3][fill] = (acc[fill] / cnt[fill][:, None]).astype(np.uint8)
+                good |= fill
+                bad &= ~fill
+            _write(Image.fromarray(a), path)
+            n_files += 1
+    print("tile lines cleaned in", n_files, "tiles")
+
+
 def poses():
     """Redraws of the cells Npc.BAD_CELLS used to hide (c5_08 #2)."""
     for src, sheet, names, ref in POSE_FIX:
@@ -362,7 +407,7 @@ def blobs(names=None):
             print(group, nm, "dropped", dropped, "size", im.size)
 
 
-STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix, sheep]
+STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix, sheep, tile_lines]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")
