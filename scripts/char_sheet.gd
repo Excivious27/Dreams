@@ -682,6 +682,7 @@ static func _card(body: Control, title := "") -> VBoxContainer:
 		var tl := Label.new()
 		tl.text = title
 		tl.add_theme_font_size_override("font_size", Settings.font(9))  # Options > Text size (C9)
+		tl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		tl.add_theme_color_override("font_color", Color(1, 0.88, 0.55))
 		tl.add_theme_constant_override("outline_size", 2)
 		tl.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.03))
@@ -702,7 +703,9 @@ static func _card(body: Control, title := "") -> VBoxContainer:
 static func _lab(parent: Control, text: String, size := 8, color := INK) -> Label:
 	var l := Label.new()
 	l.text = text
-	l.add_theme_font_size_override("font_size", Settings.font(size))
+	# Text size grows lines in a column only; side-by-side cells (stat rows, slot
+	# captions) keep their size so the 270-px sheet never widens.
+	l.add_theme_font_size_override("font_size", Settings.font(size) if parent is VBoxContainer and not parent.get_parent() is HBoxContainer else size)
 	l.add_theme_color_override("font_color", color)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -777,7 +780,7 @@ static func _fill(b: Control) -> HBoxContainer:
 static func _small_btn(parent: Control, text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.add_theme_font_size_override("font_size", Settings.font(8))
+	b.add_theme_font_size_override("font_size", Settings.font(8) if parent is VBoxContainer else 8)
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	b.focus_mode = Control.FOCUS_NONE
 	b.custom_minimum_size = Vector2(0, 22)  # finger-sized at 270 wide
