@@ -112,8 +112,10 @@ static func note_event(ev: InputEvent, vp: Viewport = null) -> void:
 		_set_active(true)
 		if int(Settings.get_v("touch_ui")) == 0:
 			TouchControls.visible_controls = false
-		# A Button that took focus from a tap must not catch pad A in the field.
-		if vp != null:
+		# A Button that took focus from a tap must not catch pad A in the field
+		# (only in open play: menus and screens keep whatever focus they set).
+		var tree := vp.get_tree() if vp != null else null
+		if vp != null and tree != null and tree.current_scene is GameMap and not tree.paused and not Hud.modal_rect.has_area():
 			var f := vp.gui_get_focus_owner()
 			if f != null and f is BaseButton and not PadFocus.owns(f):
 				f.release_focus()
