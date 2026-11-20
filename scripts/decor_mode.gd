@@ -1048,6 +1048,7 @@ var _player_was := false
 var _hud_was := true
 var _esc_frame := -1
 var _hidden_node: Node2D
+var _surf_room := ""     # the room wallpaper/flooring go on ("" = the room under the cursor)
 
 
 ## Why decorate mode can't open right now ("" = it can): fights, scenes, menus, riding.
@@ -1362,8 +1363,21 @@ func _fill_list() -> void:
 	var ids := box_ids()
 	var pages := maxi(1, ceili(ids.size() / float(PAGE_ROWS)))
 	list_page = clampi(list_page, 0, pages - 1)
+	# Room picker for wallpaper/flooring: name the room instead of walking the cursor there (c10b_09-20).
+	var rooms: Dictionary = _map_call(map, "decor_rooms", {})
+	if rooms.size() > 1 and list_filter in ["all", "surface"]:
+		var rr := HBoxContainer.new()
+		rr.add_theme_constant_override("separation", 2)
+		_list_head.add_child(rr)
+		var cur_room := _surf_room if rooms.has(_surf_room) else room_at(cursor)
+		for rm in rooms:
+			var rid := str(rm)
+			var rb := _small(rr, ("• " if rid == cur_room else "") + rid.capitalize(), func() -> void:
+				_surf_room = rid
+				_fill_list(), 250.0 / rooms.size() - 2.0)
+			rb.set_meta("pc_key", "room:" + rid)
 	var head := Label.new()
-	var room_line := "" if outdoor(map) else "  ·  Rooms: wallpaper/flooring go on the %s" % room_at(cursor)
+	var room_line := "" if outdoor(map) else "  ·  Rooms: wallpaper/flooring go on the %s" % (_surf_room if rooms.has(_surf_room) else room_at(cursor))
 	head.text = "%d kinds%s%s" % [ids.size(), ("  ·  page %d/%d" % [list_page + 1, pages]) if pages > 1 else "", room_line]
 	head.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	head.custom_minimum_size = Vector2(246, 0)
@@ -1445,7 +1459,8 @@ func _choose(id: String) -> void:
 	_list_cur.enabled = false
 	_status.text = ""
 	if is_surface(id):
-		var room := room_at(cursor)
+		var rooms: Dictionary = _map_call(map, "decor_rooms", {})
+		var room := _surf_room if rooms.has(_surf_room) else room_at(cursor)
 		var why := set_surface(map, room, id)
 		if why == "":
 			Music.instance(get_tree()).sfx("cloth", "ui_tap")
