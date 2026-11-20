@@ -44,7 +44,9 @@ static func on_enter(m: GameMap) -> void:
 		if e:
 			m.hud.toast("%s, \"%s\": %s" % [str(d["name"]), str(d["epithet"]), str(d["intro"])], Color(str(Gift.def(str(d["gift"])).get("colour", "ffffff"))))
 			Music.instance(m.get_tree()).sfx("alert")
-			Music.instance(m.get_tree()).play("marked" if Music.has_track("marked") else "boss")  # _boss_playing keeps it until they yield
+			var mt := "marked" if Music.has_track("marked") else "boss"
+			Music.instance(m.get_tree()).play(mt)
+			DangerMusic.boss_started(m, mt)  # DangerMusic holds it until they yield (c6_08_13)
 		return
 
 
@@ -75,7 +77,9 @@ static func yield_to(m: GameMap, e: Enemy) -> void:
 	GameState.add_money(e.reward, "kills")
 	m.hud.toast("+%d crystals" % e.reward, Color(0.7, 0.9, 1))
 	m.xp("combat", int(GameState.enemy_data["enemies"]["marked_" + id].get("xp", 40)))
-	Music.instance(m.get_tree()).sfx("boss_down")
+	# One victory sting now, and the theme winds down under the talk (c6_08_02/03).
+	Music.instance(m.get_tree()).sfx("j_victory", "quest_done")
+	DangerMusic.boss_ended(m, true, false)
 	m.fx("sparkle", e.position + Vector2(0, -10), 16.0, 0.8)
 	var who := str(d.get("name", id))
 	var first := met() == 0

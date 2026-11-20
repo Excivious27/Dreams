@@ -73,11 +73,14 @@ func vehicle_def() -> Dictionary:
 	return GameState.items.get(vehicle, {}) if vehicle != "" else {}
 
 
-func ride(id: String) -> void:
+func ride(id: String, quiet := false) -> void:
 	if mounted:
 		dismount()
 	vehicle = id
 	GameState.run["flags"]["vehicle"] = id
+	# Hopping on (c6_06): each vehicle its own cue.
+	if not quiet and is_inside_tree():
+		Music.instance(get_tree()).sfx(str(VEH_ON.get(id, "cloth")), "pickup")
 	if _veh == null:
 		_veh = Sprite2D.new()
 		_veh.show_behind_parent = true
@@ -107,7 +110,14 @@ func _veh_face() -> void:
 	_veh.position = Vector2(0, -tex.get_height() * sc * 0.5 + 4)
 
 
-func unride() -> void:
+## Hop-on cue and moving tick (step-voice word) per vehicle.
+const VEH_ON := {"getaway_car": "car_door", "scooter": "keys", "motor_scooter": "car_start", "crystal_sled": "sled_bells", "rowboat": "step_water", "balloon": "airship_whoosh"}
+const VEH_TICK := {"rowboat": ["water", 0.6], "crystal_sled": ["snow", 0.45], "scooter": ["wheels", 0.5], "motor_scooter": ["wheels", 0.4], "getaway_car": ["wheels", 0.4]}
+
+
+func unride(quiet := false) -> void:
+	if vehicle != "" and not quiet and is_inside_tree():
+		Music.instance(get_tree()).sfx("thud")
 	vehicle = ""
 	GameState.run["flags"].erase("vehicle")
 	if _veh:
@@ -332,9 +342,9 @@ func set_character(id: String) -> void:
 	mounted = GameState.run.get("flags", {}).has("mounted") and has_anim("ride")
 	var vid := str(GameState.run.get("flags", {}).get("vehicle", ""))
 	if vid != "" and GameState.count(vid) > 0 and map and map.has_sky:
-		ride(vid)
+		ride(vid, true)  # carried over from the last map: no hop-on sound
 	elif vehicle != "":
-		unride()
+		unride(true)
 	_show_idle()
 
 
@@ -846,7 +856,10 @@ func _physics_process(delta: float) -> void:
 	if dir != Vector2.ZERO and position.distance_to(before) > 0.1:
 		_step_t -= delta
 		if _step_t <= 0.0:
-			_step_t = 0.25 if running else 0.33  # footsteps keep pace with the slower stride
+			# Footsteps follow the real speed (buffs, gear, exhaustion, swimming), not a fixed beat (c6_06).
+			var base_spd := RUN_SPEED if running else WALK_SPEED
+			var pace := clampf(position.distance_to(before) / maxf(0.0001, delta) / base_spd, 0.5, 1.8)
+			_step_t = (0.25 if running else 0.33) / pace
 			if swimming:
 				# Strokes are a soft paddle on the step voice; the big splash is for jumping in (c6_10-17).
 				_step_t = 0.7
@@ -857,6 +870,11 @@ func _physics_process(delta: float) -> void:
 				Music.instance(get_tree()).step(step_or(get_tree(), "hoof", _ground_word()))
 			elif vehicle == "":
 				Music.instance(get_tree()).step(_ground_word())
+			elif VEH_TICK.has(vehicle):
+				var vt: Array = VEH_TICK[vehicle]
+				_step_t = float(vt[1])
+				var w := str(vt[0])
+				Music.instance(get_tree()).step(step_or(get_tree(), w, "gravel") if w == "wheels" else w)
 	if auto:
 		# Give up if a wall stops us.
 		if position.distance_to(before) < 0.2:
@@ -1060,6 +1078,11 @@ func _work_walk(dir: Vector2, delta: float) -> bool:
 			var before := position
 			_move(velocity * delta)
 			_apply(("walk_" + facing) if facing in ["up", "down"] and has_anim("walk_" + facing) else "walk", facing == "left")
+			# Work-walking steps too (c6_06).
+			_step_t -= delta
+			if _step_t <= 0.0:
+				_step_t = 0.36
+				Music.instance(get_tree()).step(_ground_word())
 			if position.distance_to(before) < 0.05:
 				_ww_target = Vector2.INF  # something in the way: work from here
 			return true
