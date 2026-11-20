@@ -133,8 +133,7 @@ func _draw_place(c: Control) -> void:
 func set_hint(text: String) -> void:
 	# Name the buttons of the device in use: USE/CHECK on the phone, the keys
 	# on a keyboard, the pad's own buttons (A / Cross / B...) on a controller.
-	if TouchControls.visible_controls or PadInput.using_pad():
-		text = text.replace("A: ", InputSetup.prompt("a") + ": ").replace("B: ", InputSetup.prompt("action") + ": ")
+	text = text.replace("A: ", InputSetup.prompt("a") + ": ").replace("B: ", InputSetup.prompt("action") + ": ")
 	if text != _hint:
 		_hint = text
 		if _canvas:

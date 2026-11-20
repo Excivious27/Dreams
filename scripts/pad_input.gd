@@ -110,6 +110,8 @@ static func note_event(ev: InputEvent, vp: Viewport = null) -> void:
 			device = ev.device
 			kind = kind_of(Input.get_joy_name(device))
 		_set_active(true)
+		if int(Settings.get_v("touch_ui")) == 0:
+			TouchControls.visible_controls = false
 		# A Button that took focus from a tap must not catch pad A in the field.
 		if vp != null:
 			var f := vp.gui_get_focus_owner()

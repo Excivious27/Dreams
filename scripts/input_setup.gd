@@ -125,6 +125,7 @@ static func keys() -> Dictionary:
 static func apply(map: Dictionary, pad_map := {}) -> void:
 	if pad_map.is_empty():
 		pad_map = pads()
+	_prompts.clear()
 	for action: String in map:
 		if not InputMap.has_action(action):
 			InputMap.add_action(action, 0.2)
@@ -248,8 +249,18 @@ static func pad_label(action: String, kind := "") -> String:
 
 ## The word to show for an action on the device in use: the touch pad's label,
 ## the first key, or the pad button. Hints and tips go through this.
+static var _prompts := {}  # "dev|kind|action" -> word (cleared by apply)
+
+
 static func prompt(action: String) -> String:
 	var dev := PadInput.device_kind()
+	var ck := "%s|%s|%s" % [dev, PadInput.kind, action]
+	if not _prompts.has(ck):
+		_prompts[ck] = _prompt_for(dev, action)
+	return str(_prompts[ck])
+
+
+static func _prompt_for(dev: String, action: String) -> String:
 	if dev == "pad":
 		return pad_label(action)
 	if dev == "touch":

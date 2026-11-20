@@ -99,6 +99,7 @@ func _send_motion(rel: Vector2) -> void:
 	ev.button_mask = MOUSE_BUTTON_MASK_LEFT if _held else 0
 	sending = true
 	Input.parse_input_event(ev)
+	Input.flush_buffered_events()  # dispatch now, while `sending` marks it as ours
 	sending = false
 
 
@@ -112,6 +113,7 @@ func _click(down: bool) -> void:
 	ev.button_mask = MOUSE_BUTTON_MASK_LEFT if down else 0
 	sending = true
 	Input.parse_input_event(ev)
+	Input.flush_buffered_events()  # dispatch now, while `sending` marks it as ours
 	sending = false
 	# A clicked FOCUS_ALL button keeps focus; the cursor is the selection here.
 	var f := get_viewport().gui_get_focus_owner()
