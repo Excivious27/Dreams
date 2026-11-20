@@ -106,7 +106,7 @@ static func ripe_first() -> String:
 ## Where the current goal is: [scene, what to point at there] ("" = no arrow).
 static func goal_place() -> Array:
 	var r := GameState.run
-	if r.is_empty() or str(r.get("pinned_quest", "")) != "":
+	if r.is_empty() or (str(r.get("pinned_quest", "")) != "" and not QuestTracker.is_main(str(r.get("pinned_quest", "")))):
 		return ["", ""]
 	if ripe_first() != "":
 		return ["farm", ""]
@@ -174,7 +174,12 @@ static func target(m: GameMap) -> Vector2:
 			if cell.size() >= 2:
 				return m.cell_center(Vector2i(int(cell[0]), int(cell[1])))
 		return Vector2.ZERO
-	var hop := next_hop(here, goal)
+	return exit_toward(m, goal)
+
+
+## The nearest exit on map m that leads toward scene `goal` (Vector2.ZERO = none).
+static func exit_toward(m: GameMap, goal: String) -> Vector2:
+	var hop := next_hop(m.scene_id(), goal)
 	if hop == "":
 		return Vector2.ZERO
 	var best_e := Vector2.ZERO

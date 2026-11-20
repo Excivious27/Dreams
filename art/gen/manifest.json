@@ -59156,6 +59156,16 @@
    "h": 22,
    "w": 32
   },
+  "bat_copper": {
+   "file": "items/bat_copper.png",
+   "h": 32,
+   "w": 17
+  },
+  "bat_crystal": {
+   "file": "items/bat_crystal.png",
+   "h": 32,
+   "w": 17
+  },
   "bat_fang": {
    "file": "items/bat_fang.png",
    "h": 32,
@@ -59165,6 +59175,16 @@
    "file": "items/bat_fur.png",
    "h": 31,
    "w": 32
+  },
+  "bat_gold": {
+   "file": "items/bat_gold.png",
+   "h": 32,
+   "w": 17
+  },
+  "bat_iron": {
+   "file": "items/bat_iron.png",
+   "h": 32,
+   "w": 17
   },
   "bat_king_wing": {
    "file": "items/bat_king_wing.png",
@@ -59176,10 +59196,30 @@
    "h": 32,
    "w": 31
   },
+  "bat_moon": {
+   "file": "items/bat_moon.png",
+   "h": 32,
+   "w": 17
+  },
+  "bat_silver": {
+   "file": "items/bat_silver.png",
+   "h": 32,
+   "w": 17
+  },
+  "bat_steel": {
+   "file": "items/bat_steel.png",
+   "h": 32,
+   "w": 17
+  },
   "bat_wing": {
    "file": "items/bat_wing.png",
    "h": 24,
    "w": 32
+  },
+  "bat_wood": {
+   "file": "items/bat_wood.png",
+   "h": 32,
+   "w": 17
   },
   "beam": {
    "file": "items/beam.png",
@@ -77008,6 +77048,26 @@
    "h": 32,
    "w": 30
   },
+  "tgrass_fall": {
+   "file": "nature/tgrass_fall.png",
+   "h": 35,
+   "w": 34
+  },
+  "tgrass_spring": {
+   "file": "nature/tgrass_spring.png",
+   "h": 36,
+   "w": 34
+  },
+  "tgrass_summer": {
+   "file": "nature/tgrass_summer.png",
+   "h": 36,
+   "w": 34
+  },
+  "tgrass_winter": {
+   "file": "nature/tgrass_winter.png",
+   "h": 36,
+   "w": 34
+  },
   "tree_bare": {
    "file": "nature/tree_bare.png",
    "h": 128,
@@ -77077,6 +77137,26 @@
    "file": "nature/treeline_stream.png",
    "h": 64,
    "w": 122
+  },
+  "weed_fall": {
+   "file": "nature/weed_fall.png",
+   "h": 33,
+   "w": 34
+  },
+  "weed_spring": {
+   "file": "nature/weed_spring.png",
+   "h": 33,
+   "w": 34
+  },
+  "weed_summer": {
+   "file": "nature/weed_summer.png",
+   "h": 31,
+   "w": 34
+  },
+  "weed_winter": {
+   "file": "nature/weed_winter.png",
+   "h": 36,
+   "w": 34
   },
   "wheat": {
    "file": "nature/wheat.png",

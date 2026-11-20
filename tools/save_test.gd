@@ -146,6 +146,7 @@ func _run() -> void:
 	await _milestones(1, "penguins")
 	await _milestones(2, "gangsters")
 	_corrupt_file()
+	_battlefield_save()
 	await _migration()
 	print("save_test: %d checks, %d failures" % [checks, fails])
 	quit()
@@ -345,6 +346,23 @@ func _corrupt_file() -> void:
 	reboot()
 	check(GameState.has_run() and str(GameState.run["names"]["character"]) == nm, "a cut-off save file falls back to the backup")
 	check(FileAccess.file_exists("user://save.bad.json"), "the cut-off file is kept aside")
+
+
+## C3 F1/F2: a save on a battlefield with no fight under way reopens where the
+## fight was launched from (or the farm), never a free battle.
+func _battlefield_save() -> void:
+	GameState.use_slot(1)
+	GameState.has_run()
+	Campaign.st()["fight"] = {"cid": "nope", "nid": "n1", "field": "bf_orchard", "day": 1, "back": ["town", 320.0, 200.0]}
+	GameState.run["scene"] = "bf_orchard"
+	GameState.save()
+	reboot()
+	check(str(GameState.run["scene"]) == "town" and (GameState.run["spawn"] as Array).size() >= 2 and float(GameState.run["spawn"][0]) == 320.0, "battlefield save without a fight reopens at the launch spot (%s)" % str(GameState.run["scene"]))
+	check((Campaign.st().get("fight", {}) as Dictionary).is_empty(), "the stale fight record is dropped")
+	GameState.run["scene"] = "bf_orchard"
+	GameState.save()
+	reboot()
+	check(str(GameState.run["scene"]) == "farm", "no launch spot: back to the farm")
 
 
 # ---- an old save meets Round 13 ---------------------------------------------------

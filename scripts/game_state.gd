@@ -100,7 +100,30 @@ static func has_run() -> bool:
 				run["flags"].erase("st_" + str(run["story_pending"]))
 				run.erase("story_pending")
 			board_restore()
+			battle_resume_fix()
 	return not run.is_empty()
+
+
+## C3 (saves F1/F2/F4): a save made on a battlefield (Save & title mid-fight, or
+## the app closed during the win/loss lines) must not reopen a free battle.
+## Only a fight or drill still under way resumes there; otherwise the run goes
+## back where the fight was launched from (its record's "back"), or the farm.
+static func battle_resume_fix() -> void:
+	var sc := str(run.get("scene", ""))
+	if not sc.begins_with("bf_"):
+		return
+	if not Campaign.fight_for(sc).is_empty() or not CampaignGate.drill_for(sc).is_empty():
+		return
+	var f: Dictionary = (run.get("campaign", {}) as Dictionary).get("fight", {}) if run.get("campaign", {}) is Dictionary else {}
+	var back: Array = f.get("back", []) if f.get("back", []) is Array else []
+	if back.size() >= 3 and str(back[0]) != "" and not str(back[0]).begins_with("bf_") and ResourceLoader.exists("res://scenes/%s.tscn" % str(back[0])):
+		run["scene"] = str(back[0])
+		run["spawn"] = [float(back[1]), float(back[2]), "down"] if float(back[1]) > 0.0 else []
+	else:
+		run["scene"] = "farm"
+		run["spawn"] = []
+	if run.get("campaign", {}) is Dictionary:
+		(run["campaign"] as Dictionary)["fight"] = {}  # the fight is over (or was left)
 
 
 ## Unlock ids are name slugs: add an entry whenever an unlock is renamed.
@@ -342,8 +365,7 @@ static func guest_morning() -> Dictionary:
 	run["sellbox_q"] = {}
 	run["sellbox"] = {}
 	run["sold_today"] = {}
-	run["crystals"] = int(run["crystals"]) + total
-	run["earned_total"] = int(run.get("earned_total", 0)) + total
+	add_money(total, "sales")
 	report["earned"] = total
 	run["energy"] = int(run["max_energy"])
 	run["fed_en"] = 0
@@ -396,6 +418,8 @@ static func sprite_for_playable(playable_id: String, arc := "") -> String:
 # ---- items -------------------------------------------------------------------
 
 static func item_name(id: String) -> String:
+	if id == "sword" and street_bat():
+		return ("%s Street Bat" % TOOL_TIERS[tool_tier(id)].capitalize()) if tool_tier(id) > 0 else "Street Bat"
 	if TOOL_KINDS.has(id) and tool_tier(id) > 0:
 		return "%s %s" % [TOOL_TIERS[tool_tier(id)].capitalize(), str(items.get(id, {}).get("name", id.capitalize()))]
 	return str(items.get(id, {}).get("name", id.capitalize()))
@@ -469,7 +493,21 @@ static func tool_icon(kind: String) -> String:
 	var k := "sword" if is_sword(kind) else kind
 	if not TOOL_KINDS.has(k):
 		return kind
+	if kind == "sword" and street_bat():
+		return "bat_%s" % TOOL_TIERS[tool_tier(k)]
 	return "%s_%s" % [k, TOOL_TIERS[tool_tier(k)]]
+
+
+## Tom (Guide 26 #1): the gangster arc starts with a Street Bat, not a sword.
+## It is the same starter weapon underneath (id "sword": tiers, Gideon's bench,
+## damage), only named and drawn as a bat (items/bat_<tier>).
+static func street_bat() -> bool:
+	return not run.is_empty() and str(run.get("arc", "")) == "gangsters"
+
+
+## The starter weapon's word for hints ("sword" / "bat").
+static func weapon_word() -> String:
+	return "bat" if street_bat() else "sword"
 
 
 ## Gideon's friendship knocks crystals off an upgrade (10/20/30%).
@@ -2210,9 +2248,23 @@ static func _cond_ok(when: Dictionary) -> bool:
 	return true
 
 
+## Money in (C3 c3_08 #9): every payout counts in earned_total ("earned in
+## all" on the Hero tab), with a tally per source in run.earned_by (sales,
+## quest, campaign, kills, ...). Spending stays a plain subtraction.
+static func add_money(n: int, source := "other") -> void:
+	if run.is_empty() or n == 0:
+		return
+	run["crystals"] = int(run.get("crystals", 0)) + n
+	if n > 0:
+		run["earned_total"] = int(run.get("earned_total", 0)) + n
+		if not (run.get("earned_by") is Dictionary):
+			run["earned_by"] = {}
+		run["earned_by"][source] = int(run["earned_by"].get(source, 0)) + n
+
+
 static func _give_reward(rw: Dictionary) -> void:
 	if rw.has("crystals"):
-		run["crystals"] = int(run["crystals"]) + int(rw["crystals"])
+		add_money(int(rw["crystals"]), "quest")
 	for k in ["max_hp", "max_energy", "max_mana"]:
 		if rw.has(k):
 			grow_vital(k.trim_prefix("max_"), int(rw[k]))
@@ -2531,7 +2583,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	_apply_max_stats()
 	var report := {"earned": 0, "sold": [], "grown": 0}
 	if bonus("bartering", "interest") > 0.0:
-		run["crystals"] = int(run["crystals"]) + mini(int(int(run["crystals"]) * bonus("bartering", "interest")), 50 + 50 * progress_tier())
+		add_money(mini(int(int(run["crystals"]) * bonus("bartering", "interest")), 50 + 50 * progress_tier()), "interest")
 	var total := 0
 	# sold_today still holds the day's sales to Sal's fence, so the box saturates on top of them.
 	if not (run.get("sold_today") is Dictionary):
@@ -2555,8 +2607,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	if total > 0:
 		add_xp("bartering", mini(total / 15, 20 + 5 * skill_level("bartering")))
 	run["sold_today"] = {}
-	run["crystals"] = int(run["crystals"]) + total
-	run["earned_total"] = int(run.get("earned_total", 0)) + total
+	add_money(total, "sales")
 	report["earned"] = total
 	run["sellbox"] = {}
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
@@ -3014,7 +3065,7 @@ static func next_step() -> String:
 	if run.is_empty():
 		return ""
 	var pinned := str(run.get("pinned_quest", ""))
-	if pinned != "":
+	if pinned != "" and not QuestTracker.is_main(pinned):
 		for q in run.get("quests", []):
 			if not bool(q.get("done", false)) and str(q["id"]) == pinned:
 				return str(q.get("text", ""))

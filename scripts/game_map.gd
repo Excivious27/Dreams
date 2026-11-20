@@ -609,7 +609,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			Music.instance(get_tree()).sfx("chop")
 			xp("foraging", 1)
 			# Cut with the scythe, weeds and tall grass make hay for the animals.
-			if ht == "scythe" and randf() < 0.5:
+			if ht == "scythe" and randf() < float(thing.get("hay", 0.5)):  # farm tall grass: always hay
 				if not (not Net.visiting() and Builds.silo_add(1)):  # a built silo takes it straight in (host's silo)
 					pop_items(cell_center(c), "hay", 1)
 			# Now and then a weed's roots hold a packet of wild seed.

@@ -169,6 +169,11 @@ func _ready() -> void:
 	_choice_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_choice_scroll.add_child(_choices)
 	v.add_child(_choice_scroll)
+	# C3: a long list pins its way-out row here, below the scroll, so it is
+	# never clipped at the panel's foot (the row in the list hides; same button).
+	_pin = VBoxContainer.new()
+	_pin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	v.add_child(_pin)
 	_hint = Label.new()
 	_hint.text = "▼"
 	_hint.add_theme_font_size_override("font_size", 8)
@@ -190,6 +195,7 @@ func _ready() -> void:
 
 
 var _choice_scroll: ScrollContainer
+var _pin: VBoxContainer
 
 
 ## owner: the scene playing it; if it leaves the tree mid-scene, Skip goes too.
@@ -250,6 +256,9 @@ func _finish_empty() -> void:
 func _next() -> void:
 	for c in _choices.get_children():
 		_choices.remove_child(c)
+		c.queue_free()
+	for c in _pin.get_children():
+		_pin.remove_child(c)
 		c.queue_free()
 	_choice_scroll.custom_minimum_size = Vector2.ZERO
 	_in_choice = false
@@ -425,8 +434,17 @@ func _show_choice(line: Dictionary) -> void:
 		want += maxf(20.0, maxf(bb.get_combined_minimum_size().y, lines * lh + 8.0)) + 2.0
 	# Up to the space between the toolbar block and the touch controls (about 8 rows).
 	var cap := maxf(7 * 22.0, TouchControls.TOP_OF_CONTROLS - 6.0 - 84.0 - BOX_H)
+	var n_opts := _choices.get_child_count()
+	if want > cap and n_opts > 2 and is_way_out(str(opts[n_opts - 1]), key == ""):
+		# Too long to show whole: the way out stays in view under the scroll.
+		var orig := _choices.get_child(n_opts - 1) as Button
+		var pin := orig.duplicate(0) as Button  # no signals: only the one press below
+		pin.pressed.connect(func() -> void: orig.pressed.emit())
+		orig.visible = false
+		_pin.add_child(pin)
+		cap -= 22.0
 	_choice_scroll.custom_minimum_size = Vector2(0, minf(want, cap))
-	_panel.size.y = BOX_H + minf(want, cap)
+	_panel.size.y = BOX_H + minf(want, cap) + (22.0 if _pin.get_child_count() > 0 else 0.0)
 	# Keep the choices above the touch controls.
 	_panel.position.y = minf(BOX_Y, TouchControls.TOP_OF_CONTROLS - _panel.size.y - 6)
 	_refresh_focus()
@@ -441,8 +459,15 @@ func _refresh_focus() -> void:
 			if sb:
 				sb.border_color = Color(0.95, 0.7, 0.15) if on else Color(0.45, 0.3, 0.15)
 				sb.set_border_width_all(2 if on else 1)
-		if i == _choice_focus and _choice_scroll:
+		if i == _choice_focus and _choice_scroll and (c as Button).visible:
 			_scroll_to_choice.call_deferred(c)
+		if not (c as Button).visible and _pin and _pin.get_child_count() > 0:
+			var pb := _pin.get_child(0) as Button  # the pinned copy shows the focus
+			for st in ["normal", "hover", "focus"]:
+				var psb := pb.get_theme_stylebox(st) as StyleBoxFlat
+				if psb:
+					psb.border_color = Color(0.95, 0.7, 0.15) if on else Color(0.45, 0.3, 0.15)
+					psb.set_border_width_all(2 if on else 1)
 		i += 1
 
 

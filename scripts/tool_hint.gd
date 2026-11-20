@@ -85,6 +85,8 @@ static func first_pick(hud: Node) -> void:
 		return
 	if Dialogue.instance(hud.get_tree()).active or hud.get_tree().paused:
 		return  # try again once the talk is over
+	if not tip_fits_here(k, hud.get_tree().current_scene):
+		return  # wait for a place where it makes sense (no flag set: it shows there)
 	_tip_last = k
 	if k == "" or GameState.run["flags"].has("tip_" + k):
 		return
@@ -94,3 +96,14 @@ static func first_pick(hud: Node) -> void:
 		var id := str(GameState.run["toolbar"][int(GameState.run["slot"])])
 		txt = ("%s: tap USE to fire at foes. It uses rounds." if GameState.items.get(id, {}).has("range") else "%s: tap USE to swing at foes.") % GameState.item_name(id)
 	hud.toast(txt, Color(0.85, 0.95, 1.0))
+
+
+## C3: a tool tip only where it makes sense: none on battlefields (the battle
+## bar talks), farm-tool and seed tips only on the farm.
+static func tip_fits_here(k: String, sc: Node) -> bool:
+	var id: String = (sc as GameMap).scene_id() if sc is GameMap else ""
+	if id.begins_with("bf_") or (sc != null and sc.get("battle") != null):
+		return false
+	if k in ["hoe", "can", "seed"]:
+		return id == "farm"
+	return true

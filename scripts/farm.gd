@@ -386,18 +386,30 @@ func _place_debris() -> void:
 			if dist < 9.0:
 				chance = 0.03
 			var r := _rng.randf()
-			if r > chance:
-				continue
 			# Never on soil you've tilled.
 			if GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
+				continue
+			if r > chance:
+				# Tall-grass meadows: patches of cuttable grass (fiber, hay) that
+				# move with the seasons, out past the house ring.
+				if dist >= 11.0 and r < chance + _meadow(c) and not is_cleared(c, regrow_days("grass", c)) and not _by_soil(c):
+					things[c] = {"type": "weeds", "grass": true, "hay": 1.0, "hint": "A: cut grass (a scythe makes hay)"}
+					blocked[c] = true
 				continue
 			var k := _rng.randf()
 			if dist < 9.0:
 				k = k * 0.4  # by the house: only weeds, so the first plot is quick to clear
-			if is_cleared(c, 14 if k < 0.40 else 0):
-				continue  # weeds come back in two weeks; rocks, logs and trees you cleared stay gone
+			# Tom (Guide 26 #23): debris regrows, tiered by rarity (REGROW), and the
+			# weeds/tall grass shift with the season. Rocks, logs and trees never
+			# come back near the house or beside your soil and builds.
+			var kind := _debris_kind(k)
+			if is_cleared(c, regrow_days(kind, c)):
+				continue
 			if k < 0.40:
-				things[c] = {"type": "weeds", "hint": "A: pull weeds"}
+				var gk := _grass_or_weed(c)
+				if gk == "":
+					continue  # this season leaves it bare (winter thins the weeds)
+				things[c] = {"type": "weeds", "grass": true, "hay": 1.0, "hint": "A: cut grass (a scythe makes hay)"} if gk == "grass" else {"type": "weeds", "hint": "A: pull weeds"}
 				blocked[c] = true
 			elif k < 0.62:
 				things[c] = {"type": "rock", "hp": 2, "hint": "A: break rock"}
@@ -413,6 +425,56 @@ func _place_debris() -> void:
 				var has := GameState.respawned(key, 3)  # every 3 days, like the wild bushes
 				things[c] = {"type": "bush", "key": key, "berries": has, "hint": "A: pick berries" if has else ""}
 				blocked[c] = true
+
+
+## Days before cleared farm debris grows back, by how common it is (Tom, Guide 26
+## #23): grass and weeds fast, stone and wood slower, trees slowest. 0 = never.
+const REGROW := {"grass": 4, "weeds": 7, "rock": 28, "log": 21, "stump": 21, "tree": 56, "bush": 0}
+## Share of the old weed spots that are tall grass, and how lush the meadows run, per season.
+const GRASS_SHARE := {"spring": 0.45, "summer": 0.6, "fall": 0.45, "winter": 0.2}
+const MEADOW := {"spring": 0.12, "summer": 0.18, "fall": 0.1, "winter": 0.03}
+
+
+func _debris_kind(k: float) -> String:
+	return "weeds" if k < 0.40 else ("rock" if k < 0.62 else ("log" if k < 0.76 else ("tree" if k < 0.94 else "bush")))
+
+
+## Regrowth days for a kind of debris at cell c (inner ring and soil-side cells: never for stone/wood).
+func regrow_days(kind: String, c: Vector2i) -> int:
+	var d := int(REGROW.get(kind, 0))
+	if d == 0 or kind in ["grass", "weeds"]:
+		return d
+	if Vector2(c).distance_to(Vector2(DOOR)) < 14.0 or _by_soil(c):
+		return 0
+	return d
+
+
+## Tilled soil or a placed thing next to c (regrowth never boxes your field in).
+func _by_soil(c: Vector2i) -> bool:
+	var farm: Dictionary = GameState.run.get("farm", {})
+	var placed: Dictionary = GameState.run.get("placed", {})
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			var key := "%d,%d" % [c.x + dx, c.y + dy]
+			if farm.has(key) or placed.has(key):
+				return true
+	return false
+
+
+## An old weed spot this season: "grass", "weed" or "" (bare).
+func _grass_or_weed(c: Vector2i) -> String:
+	var se := GameState.season()
+	var h := absi(hash("%s:%d:%d:%d" % [se, (int(GameState.run.get("day", 1)) - 1) / (GameState.DAYS_PER_SEASON * 4), c.x, c.y])) % 1000 / 1000.0
+	if se == "winter" and h > 0.7:
+		return ""
+	return "grass" if h < float(GRASS_SHARE.get(se, 0.4)) else "weed"
+
+
+## How likely an open cell is tall grass this season: clumped in 5-cell patches.
+func _meadow(c: Vector2i) -> float:
+	var se := GameState.season()
+	var h := absi(hash("m:%s:%d:%d" % [se, c.x / 5, c.y / 5])) % 1000 / 1000.0
+	return float(MEADOW.get(se, 0.1)) if h < 0.4 else 0.0
 
 
 ## Chapter 1 partner scene: the characters you didn't pick turn up at the gate.
@@ -1684,7 +1746,8 @@ func _place_props() -> void:
 		var t: Dictionary = things[c]
 		match str(t.get("type", "")):
 			"weeds":
-				prop("nature", "bush_bare_snow" if season == "winter" and Art.has("nature", "bush_bare_snow") else ("fdeco_%d" % ((c.x * 3 + c.y) % 4) if Art.has("nature", "fdeco_0") else "bush"), c)
+				var wn := "%s_%s" % ["tgrass" if bool(t.get("grass", false)) else "weed", season]
+				prop("nature", wn if Art.has("nature", wn) else ("fdeco_%d" % ((c.x * 3 + c.y) % 4) if Art.has("nature", "fdeco_0") else "bush"), c)
 			"rock":
 				var nm := "rock_s" if (c.x + c.y) % 3 != 0 else "rock_m"
 				if season == "winter" and Art.has("nature", nm.replace("rock_", "rock_snow_")):
@@ -1809,7 +1872,7 @@ func on_world_sync(d: Dictionary) -> void:
 		_cleared_sig = csig
 		for c: Vector2i in things.keys():
 			var ty := str(things[c].get("type", ""))
-			if ty in ["weeds", "rock", "log", "stump", "tree"] and is_cleared(c, 14 if ty == "weeds" else 0):
+			if ty in ["weeds", "rock", "log", "stump", "tree"] and is_cleared(c, regrow_days("grass" if bool(things[c].get("grass", false)) else ty, c)):
 				clear_cell(c)  # the other player cleared it
 	var placed: Dictionary = GameState.run.get("placed", {})
 	var psig := hash(placed)

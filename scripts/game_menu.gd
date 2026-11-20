@@ -211,8 +211,13 @@ func _line(text: String, size := 9, color := Color(1, 0.96, 0.85)) -> Label:
 	return l
 
 
+## The last menu button pressed (Hud names it when a pause is left with no owner).
+static var last_press := ""
+
+
 func _button(text: String, cb: Callable) -> Button:
 	var b := Button.new()
+	b.pressed.connect(func() -> void: last_press = "%s > %s" % [_tab, text])
 	b.text = text
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", 9)
@@ -571,31 +576,37 @@ func _refresh() -> void:
 		"Quests":
 			if r["quests"].is_empty():
 				_line("No quests yet.")
-			var mains: Array = GameState.quests_data.get("main", []).map(func(q: Dictionary) -> String: return str(q["id"]))
 			# The same next step the HUD goal line shows, so the two never disagree.
 			var now := GameState.next_step()
 			if now != "":
 				_line("▸ Now: " + now, 9, Color(1, 0.92, 0.6))
+			# The quest tracker (QuestTracker): tick the quest the corner compass follows.
+			var trk: String = QuestTracker.tracked()
+			_line("Tick a quest: the compass by the clock points the way.", 8, Color(0.85, 0.85, 0.8))
 			_line("Story", 9, Color(1, 0.9, 0.5))
-			for done_pass: bool in [false, true]:  # open steps first, finished ones after
-				for q in r["quests"]:
-					if bool(q["done"]) == done_pass and (str(q["id"]) in mains or not GameState._quest_def(str(q["id"])).has("giver")):
-						_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
-			_line("Townsfolk", 9, Color(0.7, 0.9, 1.0))
 			var any := false
-			for q in r["quests"]:
-				var dq := GameState._quest_def(str(q["id"]))
-				if dq.has("giver"):
+			for oq: Dictionary in QuestTracker.open_quests():
+				if oq["main"] or str(oq["giver"]) == "":
+					_body.add_child(QuestTracker.checkbox_row(str(oq["text"]), trk == "" or trk == str(oq["id"]), false, "", func() -> void:
+						r["pinned_quest"] = ""
+						_refresh()))
+			_line("Townsfolk", 9, Color(0.7, 0.9, 1.0))
+			for oq: Dictionary in QuestTracker.open_quests():
+				if not (oq["main"] or str(oq["giver"]) == ""):
 					any = true
-					_line(("✓ " if q["done"] else "• ") + str(q["text"]), 9, Color(0.7, 0.9, 0.7) if q["done"] else Color(1, 0.96, 0.85))
-					if not q["done"]:
-						var qid := str(q["id"])
-						var pinned := str(r.get("pinned_quest", "")) == qid
-						_button("   %s" % ("Unpin from the goal line" if pinned else "Pin to the goal line"), func() -> void:
-							r["pinned_quest"] = "" if pinned else qid
-							_refresh())
+					var qid := str(oq["id"])
+					var who := str(GameState.npcs.get(str(oq["giver"]), {}).get("name", ""))
+					var sub := "ready" if bool(oq["ready"]) else QuestTracker.progress(qid)
+					_body.add_child(QuestTracker.checkbox_row(("%s: " % who if who != "" and not str(oq["text"]).begins_with(who) else "") + str(oq["text"]), trk == qid, false, sub, func() -> void:
+						QuestTracker.track(qid)
+						_refresh()))
 			if not any:
 				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 8, Color(0.7, 0.7, 0.7))
+			var fin: Array = r["quests"].filter(func(q: Dictionary) -> bool: return bool(q["done"]))
+			if not fin.is_empty():
+				_line("Finished (%d)" % fin.size(), 9, Color(0.7, 0.9, 0.7))
+				for q: Dictionary in fin.slice(maxi(0, fin.size() - 8)):
+					_line("✓ " + str(q["text"]), 8, Color(0.7, 0.9, 0.7))
 			var ws := Crafting.summary()
 			var busy := 0
 			for w in ws:
