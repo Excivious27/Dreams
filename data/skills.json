@@ -343,12 +343,12 @@
     {
      "id": "farming_2_9",
      "name": "Stamina",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -591,12 +591,12 @@
     {
      "id": "mining_0_9",
      "name": "Stamina",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -710,18 +710,13 @@
     {
      "id": "mining_1_9",
      "name": "Endurance",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 12
-     },
-     "aka": [
-      "Early Riser",
-      "Rich Seams",
-      "Stamina"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "mining_2_0",
@@ -873,40 +868,34 @@
     {
      "id": "mining_3_3",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Cave Sense"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "mining_3_4",
      "name": "Sturdy Frame",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Cool Head"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "mining_3_5",
      "name": "Early Riser",
-     "desc": "+6 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -923,23 +912,23 @@
     {
      "id": "mining_3_7",
      "name": "Tough Hide",
-     "desc": "+8 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 7,
      "row": 3,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
      "id": "mining_3_8",
      "name": "Stamina II",
-     "desc": "+6 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -1190,16 +1179,13 @@
     {
      "id": "foraging_1_9",
      "name": "Stamina",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 12
-     },
-     "aka": [
-      "Endurance"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "foraging_2_0",
@@ -1297,53 +1283,45 @@
     {
      "id": "foraging_2_8",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 2,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Amber Drops",
-      "Early Riser"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "foraging_2_9",
      "name": "Early Riser",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
      "id": "foraging_3_0",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Quiet Steps",
-      "Sturdy Frame"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "foraging_3_1",
      "name": "Sturdy Frame",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 3,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -1357,17 +1335,13 @@
     {
      "id": "foraging_3_3",
      "name": "Tough Hide",
-     "desc": "+8 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Good Health",
-      "Moss Sense"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "night_eyes",
@@ -1383,12 +1357,12 @@
     {
      "id": "foraging_3_5",
      "name": "Deep Breath",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "energy": 4
+      "energy": 2
      }
     },
     {
@@ -1413,16 +1387,13 @@
     {
      "id": "foraging_3_8",
      "name": "Good Health",
-     "desc": "+4 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 8,
      "row": 3,
      "effect": {
-      "hp": 4
-     },
-     "aka": [
-      "Hardy II"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "foraging_u_domino_fall",
@@ -1629,12 +1600,12 @@
     {
      "id": "fishing_1_5",
      "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -1651,45 +1622,35 @@
     {
      "id": "fishing_1_7",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 1,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Early Riser",
-      "Iron Line"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "fishing_1_8",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Double Hook"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "fishing_1_9",
      "name": "Sturdy Frame",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Fighting Spirit"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "fishing_2_0",
@@ -1705,16 +1666,13 @@
     {
      "id": "fishing_2_1",
      "name": "Tough Hide",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Shiny Scales"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "angler",
@@ -1730,23 +1688,23 @@
     {
      "id": "fishing_2_3",
      "name": "Early Riser",
-     "desc": "+6 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 3,
      "row": 2,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
      "id": "fishing_2_4",
      "name": "Deep Breath",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 4,
      "row": 2,
      "effect": {
-      "energy": 4
+      "energy": 2
      }
     },
     {
@@ -1819,12 +1777,12 @@
     {
      "id": "fishing_3_1",
      "name": "Good Health",
-     "desc": "+4 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "hp": 4
+      "hp": 2
      }
     },
     {
@@ -2147,12 +2105,12 @@
     {
      "id": "combat_1_9",
      "name": "Hardy",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "hp": 16
+      "hp": 3
      }
     },
     {
@@ -2192,12 +2150,12 @@
     {
      "id": "combat_2_3",
      "name": "Deep Breaths",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -2230,12 +2188,12 @@
     {
      "id": "combat_2_6",
      "name": "Runner",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 2,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -2640,12 +2598,12 @@
     {
      "id": "bartering_2_1",
      "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 2,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -2662,12 +2620,12 @@
     {
      "id": "bartering_2_3",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -2729,42 +2687,34 @@
     {
      "id": "bartering_2_9",
      "name": "Hardy",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Best Neighbour",
-      "Sturdy Frame"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "bartering_3_0",
      "name": "Sturdy Frame",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Piggy Bank",
-      "Tough Hide"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "bartering_3_1",
      "name": "Tough Hide",
-     "desc": "+8 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -2778,34 +2728,34 @@
     {
      "id": "bartering_3_3",
      "name": "Good Health",
-     "desc": "+8 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
      "id": "bartering_3_4",
      "name": "Early Riser",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 4,
      "row": 3,
      "effect": {
-      "energy": 4
+      "energy": 2
      }
     },
     {
      "id": "bartering_3_5",
      "name": "Hardy II",
-     "desc": "+4 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 5,
      "row": 3,
      "effect": {
-      "hp": 4
+      "hp": 2
      }
     },
     {
@@ -2923,16 +2873,13 @@
     {
      "id": "building_0_5",
      "name": "Stamina",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 0,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Joinery"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "bridgewright",
@@ -2948,16 +2895,13 @@
     {
      "id": "building_0_7",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 0,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Beam Lore"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "building_0_8",
@@ -3084,16 +3028,13 @@
     {
      "id": "building_1_9",
      "name": "Hardy",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "hp": 16
-     },
-     "aka": [
-      "Sturdy Frame"
-     ]
+      "hp": 3
+     }
     },
     {
      "id": "building_2_0",
@@ -3213,56 +3154,56 @@
     {
      "id": "building_2_9",
      "name": "Sturdy Frame",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "hp": 16
+      "hp": 3
      }
     },
     {
      "id": "building_3_0",
      "name": "Tough Hide",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 3,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
      "id": "building_3_1",
      "name": "Early Riser",
-     "desc": "+6 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 1,
      "row": 3,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
      "id": "building_3_2",
      "name": "Deep Breath",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 2,
      "row": 3,
      "effect": {
-      "energy": 4
+      "energy": 2
      }
     },
     {
      "id": "building_3_3",
      "name": "Good Health",
-     "desc": "+4 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 4
+      "hp": 2
      }
     },
     {
@@ -3541,12 +3482,12 @@
     {
      "id": "magic_1_9",
      "name": "Stamina",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -3658,12 +3599,12 @@
     {
      "id": "magic_2_9",
      "name": "Endurance",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -3749,31 +3690,24 @@
     {
      "id": "magic_3_6",
      "name": "Early Riser",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Endurance",
-      "Overflow"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "magic_3_7",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Old Song"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "magic_u_twin_cast",
@@ -4037,16 +3971,13 @@
     {
      "id": "pup_1_9",
      "name": "Stamina",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 12
-     },
-     "aka": [
-      "Endurance"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "pup_2_0",
@@ -4141,17 +4072,13 @@
     {
      "id": "pup_2_7",
      "name": "Endurance",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 7,
      "row": 2,
      "effect": {
-      "energy": 6
-     },
-     "aka": [
-      "Early Riser",
-      "Sharp Turns"
-     ]
+      "energy": 2
+     }
     },
     {
      "id": "dream_hound",
@@ -4168,12 +4095,12 @@
     {
      "id": "pup_2_9",
      "name": "Early Riser",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -4212,17 +4139,13 @@
     {
      "id": "pup_3_3",
      "name": "Hardy",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Sniffer",
-      "Sturdy Frame"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "truffle_nose",
@@ -4272,27 +4195,23 @@
     {
      "id": "pup_3_8",
      "name": "Sturdy Frame",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "hp": 8
-     },
-     "aka": [
-      "Good Nose",
-      "Tough Hide"
-     ]
+      "hp": 2
+     }
     },
     {
      "id": "pup_3_9",
      "name": "Tough Hide",
-     "desc": "+16 max health",
+     "desc": "+3 max health",
      "ranks": 1,
      "tier": 9,
      "row": 3,
      "effect": {
-      "hp": 16
+      "hp": 3
      }
     }
    ]
@@ -4410,16 +4329,13 @@
     {
      "id": "strategist_0_9",
      "name": "Stamina",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 0,
      "effect": {
-      "energy": 12
-     },
-     "aka": [
-      "Endurance"
-     ]
+      "energy": 3
+     }
     },
     {
      "id": "strategist_1_0",
@@ -5145,12 +5061,12 @@
     {
      "id": "leadership_3_4",
      "name": "Field Promotions",
-     "desc": "+4% skill XP while a partner is with you (per rank)",
+     "desc": "+2 health healed each time you use a partner power (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 3,
      "effect": {
-      "team_xp": 0.04
+      "team_heal": 2
      }
     },
     {
@@ -5167,12 +5083,12 @@
     {
      "id": "leadership_3_6",
      "name": "Chain of Command",
-     "desc": "+4% skill XP while a partner is with you (per rank)",
+     "desc": "+2 health healed each time you use a partner power (per rank)",
      "ranks": 2,
      "tier": 6,
      "row": 3,
      "effect": {
-      "team_xp": 0.04
+      "team_heal": 2
      }
     },
     {
@@ -5189,12 +5105,12 @@
     {
      "id": "leadership_3_8",
      "name": "Legend of the Crew",
-     "desc": "+4% skill XP while a partner is with you (per rank)",
+     "desc": "+2 health healed each time you use a partner power (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "team_xp": 0.04
+      "team_heal": 2
      }
     },
     {
@@ -5346,12 +5262,12 @@
     {
      "id": "hustle_1_1",
      "name": "Spin Cycle",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 1,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5391,12 +5307,12 @@
     {
      "id": "hustle_1_5",
      "name": "Fat Envelope",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 5,
      "row": 1,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5435,12 +5351,12 @@
     {
      "id": "hustle_1_9",
      "name": "Empire Ledger",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -5550,12 +5466,12 @@
     {
      "id": "hustle_2_9",
      "name": "Second Wind",
-     "desc": "+12 max energy",
+     "desc": "+3 max energy",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 12
+      "energy": 3
      }
     },
     {
@@ -5650,12 +5566,12 @@
     {
      "id": "hustle_3_8",
      "name": "War Room",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 3,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -5696,12 +5612,12 @@
     {
      "id": "harmony_0_1",
      "name": "Trust",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5719,12 +5635,12 @@
     {
      "id": "harmony_0_3",
      "name": "Side by Side",
-     "desc": "+8 max health (per rank)",
+     "desc": "+2 max health (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 0,
      "effect": {
-      "hp": 8
+      "hp": 2
      }
     },
     {
@@ -5796,12 +5712,12 @@
     {
      "id": "harmony_1_0",
      "name": "Hum",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 1,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -5818,12 +5734,12 @@
     {
      "id": "harmony_1_2",
      "name": "Meow Chorus",
-     "desc": "+6 max energy (per rank)",
+     "desc": "+2 max energy (per rank)",
      "ranks": 3,
      "tier": 2,
      "row": 1,
      "effect": {
-      "energy": 6
+      "energy": 2
      }
     },
     {
@@ -5905,12 +5821,12 @@
     {
      "id": "harmony_1_9",
      "name": "Hardy",
-     "desc": "+12 max health",
+     "desc": "+2 max health",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "hp": 12
+      "hp": 2
      }
     },
     {
@@ -5985,12 +5901,12 @@
     {
      "id": "harmony_2_6",
      "name": "Stamina",
-     "desc": "+4 max energy",
+     "desc": "+2 max energy",
      "ranks": 1,
      "tier": 6,
      "row": 2,
      "effect": {
-      "energy": 4
+      "energy": 2
      }
     },
     {

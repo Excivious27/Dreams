@@ -162,7 +162,18 @@ FALLBACK = {"farming": ["growth", "seed_back", "animal_yield"], "mining": ["ston
 # Generator-only caps, tighter than GameState.BONUS_CAPS (CONDUCT 8 P5): gems and
 # treasure were worth more than the ore/fish they ride on (c8_02, c8_03-14).
 # Tree totals: mining gems 0.12 + Sorcery 0.04; fishing treasure 0.15.
-GEN_CAPS = {"mining": {"gem_chance": 0.12}, "magic": {"gem_chance": 0.04}, "fishing": {"chest_chance": 0.15}}
+GEN_CAPS = {"mining": {"gem_chance": 0.12}, "magic": {"gem_chance": 0.04}, "fishing": {"chest_chance": 0.15},
+            "leadership": {"team_xp": 0.25}}
+# Cross-tree totals GameState applies at run time (P1, C8): mirrored here so the
+# filler hp/energy nodes of one arc add up to the cap instead of past it (nodes
+# past a total cap would be dead picks). Base nodes keep their values; only the
+# filler nodes' amounts are scaled (rounded, at least TOTAL_FLOOR, so an arc can
+# end a little over the cap: the last few ranks bought are then dead). Keep in step with
+# GameState.TREE_HP_CAP / TREE_EN_CAP / TEAM_XP_CAP (MAX_LEVEL 100; level effects
+# stop at level 20 via GameState.skill_level_eff).
+TREE_TOTAL_CAPS = {"hp": 200, "energy": 120}
+TOTAL_FLOOR = {"hp": 2, "energy": 2}  # a scaled filler rank never drops below this (a +1 node reads as junk)
+TEAM_XP_CAP = 0.25
 # Columns from here on never get "faster levelling": by then it buys nothing (c8_05).
 NO_XP_FROM = 9
 # Movement: exactly five +5% nodes per arc (farming, foraging, combat, pup, arc tree)
@@ -318,6 +329,37 @@ for sk, sd in base["skills"].items():
         out["skills"][sk]["arc"] = "gangsters" if sk == "hustle" else "penguins"
     if sk == "magic":
         out["skills"][sk]["branch_keys"] = sd.get("branches", {})
+def _arc_trees(arc):
+    return [sk for sk, sd in out["skills"].items() if sd.get("arc", arc) == arc]
+
+
+for key, cap in TREE_TOTAL_CAPS.items():
+    worst = 1.0
+    for arc in ("penguins", "gangsters"):
+        base_t = fill_t = 0.0
+        for sk in _arc_trees(arc):
+            for n in out["skills"][sk]["nodes"]:
+                v = (n.get("effect") or {}).get(key)
+                if isinstance(v, (int, float)):
+                    if re.match(r"^%s_\d+_\d+$" % sk, str(n["id"])):
+                        fill_t += v * int(n.get("ranks", 1))
+                    else:
+                        base_t += v * int(n.get("ranks", 1))
+        if fill_t > 0 and base_t + fill_t > cap:
+            worst = min(worst, max(0.0, cap - base_t) / fill_t)
+    if worst < 1.0:
+        for sk, sd in out["skills"].items():
+            for n in sd["nodes"]:
+                v = (n.get("effect") or {}).get(key)
+                if isinstance(v, (int, float)) and re.match(r"^%s_\d+_\d+$" % sk, str(n["id"])):
+                    nv = max(TOTAL_FLOOR.get(key, 1), int(v * worst + 0.5))
+                    n["effect"] = {key: nv}
+                    n["desc"] = fmt(key, nv) + (" (per rank)" if int(n.get("ranks", 1)) > 1 else "")
+for arc in ("penguins", "gangsters"):
+    for key, cap in list(TREE_TOTAL_CAPS.items()) + [("team_xp", TEAM_XP_CAP)]:
+        t = sum(float((n.get("effect") or {}).get(key, 0)) * int(n.get("ranks", 1)) for sk in _arc_trees(arc) for n in out["skills"][sk]["nodes"])
+        print("  %s %s total %g (run-time cap %g)" % (arc, key, round(t, 3), cap))
+
 # "aka": earlier names of a node whose effect and ranks did not change, so a
 # rename alone never refunds an old save's ranks (GameState._migrate reads it).
 # A node whose effect or ranks change loses its aka list (its old ranks refund).
