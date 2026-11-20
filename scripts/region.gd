@@ -179,7 +179,21 @@ func cliff_style() -> Array:
 
 func default_spawn() -> Vector2:
 	var s: Array = R.get("spawn", [2, 2])
-	return cell_center(Vector2i(int(s[0]), int(s[1])))
+	var c := Vector2i(int(s[0]), int(s[1]))
+	# At least 3 cells inside any exit strip, so arriving never sits on a way out.
+	for step in 4:
+		var moved := false
+		for e in exits:
+			var er: Rect2i = e["rect"]
+			if not er.grow(2).has_point(c):
+				continue
+			var inw := Vector2i(1 if er.position.x <= 0 else (-1 if er.end.x >= cols else 0), 1 if er.position.y <= 0 else (-1 if er.end.y >= rows else 0))
+			if inw != Vector2i.ZERO and not blocked.has(c + inw):
+				c += inw
+				moved = true
+		if not moved:
+			break
+	return cell_center(c)
 
 
 func build() -> void:
@@ -419,6 +433,24 @@ func build() -> void:
 ## A second, higher tier on a plateau ("upper": [blobs], optional "upper_ramps").
 ## It sits inset on the lower top (2 cells in from the sides and north, 4 from
 ## the south) so its rock face and stairs land on open ground, not on the rim.
+## Exit strip cells with a path within 3 cells inward (GameMap._build_border opens
+## only these through a void band).
+func exit_lanes(r: Rect2i) -> Rect2i:
+	var pcs := {}
+	for pr in R.get("paths", []):
+		for y in range(int(pr[1]), int(pr[1]) + int(pr[3])):
+			for x in range(int(pr[0]), int(pr[0]) + int(pr[2])):
+				pcs[Vector2i(x, y)] = true
+	var inw := Vector2i(1 if r.position.x <= 0 else (-1 if r.end.x >= cols else 0), 1 if r.position.y <= 0 else (-1 if r.end.y >= rows else 0))
+	var out := Rect2i()
+	for c: Vector2i in cells_of([r]):
+		for k in range(0, 4):
+			if pcs.has(c + inw * k):
+				out = Rect2i(c, Vector2i.ONE) if out.size.x == 0 else out.merge(Rect2i(c, Vector2i.ONE))
+				break
+	return out
+
+
 func mrock_key(c: Vector2i) -> String:
 	return "mrock_%s_%d_%d" % [region_id, c.x, c.y]
 
@@ -621,8 +653,11 @@ func after_ready() -> void:
 				continue
 			var tx := Art.tex(g, nm)
 			prop(g, nm, c, 0, 0.0, tx != null and tx.get_width() * tx.get_height() >= 1000)  # ankle-high decals don't block
-	if gen.has("critters"):
-		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, int(gen.get("critter_count", 6)), gen["critters"])
+	if gen.has("critters") and not bool(R.get("cave", false)):  # caves: no surface critters
+		var ccount := int(gen.get("critter_count", 6))
+		if MegaRegion.region_of(region_id) != "":
+			ccount = mini(ccount, 5)  # mega maps: a few critters read as life; dozens cost frames
+		WorldGen.add_critters(self, inner, hash(region_id) % 1000 + 4, ccount, gen["critters"])
 	var colony_kinds := 0
 	for e0 in R.get("enemies", []):
 		if bool(e0.get("colony", false)):
