@@ -269,6 +269,14 @@ if ! echo "$cout" | grep -q "farm_look_test: PASS"; then
   echo "farm_look_test failed"; exit 1
 fi
 
+python3 tools/make_house_parts.py --check
+
+cout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/house_exterior_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|house exterior test" || true
+if ! echo "$cout" | grep -q "house exterior test: PASS"; then
+  echo "house_exterior_test failed"; exit 1
+fi
+
 cout="$("$GODOT" --headless --path . -s res://tools/crop_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|crop_test" || true
 if ! echo "$cout" | grep -q "crop_test: 0 failures"; then

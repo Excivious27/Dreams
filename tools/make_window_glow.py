@@ -7,7 +7,10 @@ day picture: windows, lanterns, shop fronts) and write them as
 art/gen/buildings/<name>_lit.png (night colour, alpha = how lit) + a manifest
 entry. NightGlow draws these additively over the building, faded by darkness.
 
-    python3 tools/make_window_glow.py [--check]
+    python3 tools/make_window_glow.py [--check] [--only a,b]
+
+A night picture a few px off the day size (the farmhouse house_2/house_3 nights are
+slightly scaled copies, c10b_01-25) is resized to the day size before masking.
 
 Never writes over an existing file in place (rm first: art is hardlinked).
 """
@@ -56,15 +59,23 @@ def main():
     man = json.load(open(MAN))
     b = man.setdefault("buildings", {})
     made = []
+    only = None
+    for i, a in enumerate(sys.argv):
+        if a == "--only" and i + 1 < len(sys.argv):
+            only = set(sys.argv[i + 1].split(","))
     for fn in sorted(os.listdir(BDIR)):
         if not fn.endswith("_night.png"):
             continue
         name = fn[: -len("_night.png")]
+        if only is not None and name not in only:
+            continue
         dayp = os.path.join(BDIR, name + ".png")
         if not os.path.exists(dayp):
             continue
         day = Image.open(dayp).convert("RGBA")
         night = Image.open(os.path.join(BDIR, fn)).convert("RGBA")
+        if day.size != night.size and abs(day.size[0] - night.size[0]) <= max(4, day.size[0] // 50) and abs(day.size[1] - night.size[1]) <= 4:
+            night = night.resize(day.size, Image.LANCZOS)  # scaled copy: align to the day picture
         if day.size != night.size:
             print("skip %s: size %s vs %s" % (name, day.size, night.size))
             continue

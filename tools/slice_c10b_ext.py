@@ -27,6 +27,9 @@ SHEETS = [
     {"file": "ext_porch.png", "kind": "porch", "h": 48,
      "names": ["fern", "bench", "mat", "lamp_post", "sunflowers", "penguin_lamp", "crates", "birdbath"],
      "prompt": "8 small porch decorations, 2 rows of 4, top-down 3/4, matching buildings/house.png (edit_image source)"},
+    {"file": "ext_mailboxes.png", "kind": "mailbox", "h": 40,
+     "names": ["white", "green", "birdhouse", "copper", "barn", "iron", "ice", "steel"],
+     "prompt": "8 mailboxes on posts, flag down, no mail, 2 rows of 4, matching buildings/mailbox.png + house.png (edit_image sources)"},
 ]
 
 

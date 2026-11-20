@@ -16085,6 +16085,12 @@
    "h": 158,
    "w": 306
   },
+  "house_2_lit": {
+   "file": "buildings/house_2_lit.png",
+   "glow_mask": true,
+   "h": 158,
+   "w": 306
+  },
   "house_2_night": {
    "file": "buildings/house_2_night.png",
    "h": 158,
@@ -16097,6 +16103,12 @@
   },
   "house_3": {
    "file": "buildings/house_3.png",
+   "h": 201,
+   "w": 392
+  },
+  "house_3_lit": {
+   "file": "buildings/house_3_lit.png",
+   "glow_mask": true,
    "h": 201,
    "w": 392
   },

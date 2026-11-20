@@ -108,6 +108,7 @@ func _run() -> void:
 	HouseExterior.choose("door", "ext_door_dutch_blue")
 	HouseExterior.choose("porch", "ext_porch_fern")
 	HouseExterior.choose("fence", "ext_fence_stone")
+	HouseExterior.choose("mailbox", "ext_mailbox_birdhouse")
 	Decor.st()["house"]["glass"] = "ext_glass_bogus"  # a renamed id in an old save
 	check(not HouseExterior.look().has("glass"), "unknown ids fall back to the original")
 
@@ -116,6 +117,8 @@ func _run() -> void:
 		m = await load_farm()
 		sp = m._house_sprite
 		var hl: Dictionary = m.call("house_look", tier)
+		var mb: Sprite2D = m.get_meta("ext_mailbox") if m.has_meta("ext_mailbox") else null
+		check(mb != null and str(mb.texture.resource_path).ends_with("mailbox_birdhouse.png"), "tier %d mailbox wears the Birdhouse Box" % tier)
 		check(m.door_c == hl["door"] and m.house_r == hl["rect"] and m.mail_c == hl["mail"], "tier %d door/rect/mailbox unchanged" % tier)
 		var mat := sp.material as ShaderMaterial
 		check(mat != null and str(mat.shader.resource_path).ends_with("house_palette.gdshader"), "tier %d palette material on the house" % tier)
@@ -154,6 +157,25 @@ func _run() -> void:
 	sp = m._house_sprite
 	check(sp.get_node_or_null("HouseExterior") != null and sp.material is ShaderMaterial, "winter house still styled")
 	await shot(m, "winter")
+	# winter night (c10b_01-05): the snowy house stays, dimmed, windows lit
+	for tier in [1, 3]:
+		GameState.run["builds"] = {"house": tier}
+		GameState.run["time"] = 22 * 60
+		m = await load_farm()
+		sp = m._house_sprite
+		var ex := sp.get_node_or_null("HouseExterior") as HouseExterior
+		check(str(sp.texture.resource_path).contains("_snow"), "tier %d winter night keeps the snowy roof (%s)" % [tier, sp.texture.resource_path.get_file()])
+		check(ex != null and ex._glow != null and ex._glow.visible, "tier %d winter night windows glow" % tier)
+		check(sp.self_modulate != Color.WHITE, "tier %d snowy house dimmed at night" % tier)
+		await frames(130)
+		var dup := false
+		for w: Array in m.glow.windows:
+			dup = dup or w[0] == sp
+		check(not dup, "tier %d farmhouse not double-lit by NightGlow" % tier)
+		await shot(m, "winter_night_t%d" % tier)
+	GameState.run["time"] = 6 * 60
+	GameState.run["builds"] = {"house": 3}
+	m = await load_farm()
 
 	# --- picker opens, previews, closes back to the saved look ---
 	var was_paused := paused

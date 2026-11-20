@@ -20,8 +20,8 @@ extends Node2D
 ## picker `HouseExterior.open(map)` (Plans board > Restyle the farmhouse), pen fence
 ## names `HouseExterior.fence_set()` (farm._plan_fences).
 
-const PARTS := ["roof", "siding", "glass", "stone", "door", "porch", "fence"]
-const PART_WORDS := {"roof": "Roof", "siding": "Walls", "glass": "Windows", "stone": "Stonework", "door": "Door", "porch": "Porch", "fence": "Pen fence"}
+const PARTS := ["roof", "siding", "glass", "stone", "door", "porch", "mailbox", "fence"]
+const PART_WORDS := {"roof": "Roof", "siding": "Walls", "glass": "Windows", "stone": "Stonework", "door": "Door", "porch": "Porch", "mailbox": "Mailbox", "fence": "Pen fence"}
 const PART_ID := {"roof": 1, "siding": 2, "glass": 3, "stone": 4}
 const DIR := "res://art/gen/house_parts/"
 ## Prices are one-time (owning a style lets you switch back for free); arc-only
@@ -79,6 +79,16 @@ const STYLES := {
 		{"id": "ext_porch_penguin_lamp", "name": "Penguin Lantern", "price": 900, "arc": "penguins", "art": "porch_penguin_lamp", "h": 20, "glow": true},
 		{"id": "ext_porch_crates", "name": "Crate Planter", "price": 400, "arc": "gangsters", "art": "porch_crates", "h": 20},
 	],
+	"mailbox": [
+		{"id": "ext_mailbox_white", "name": "White Post Box", "price": 250, "art": "mailbox_white"},
+		{"id": "ext_mailbox_green", "name": "Log Post Box", "price": 250, "art": "mailbox_green"},
+		{"id": "ext_mailbox_birdhouse", "name": "Birdhouse Box", "price": 450, "art": "mailbox_birdhouse"},
+		{"id": "ext_mailbox_copper", "name": "Copper on Stone", "price": 700, "art": "mailbox_copper"},
+		{"id": "ext_mailbox_barn", "name": "Little Barn Box", "price": 500, "art": "mailbox_barn"},
+		{"id": "ext_mailbox_iron", "name": "Wrought Iron Box", "price": 800, "art": "mailbox_iron"},
+		{"id": "ext_mailbox_ice", "name": "Snowcap Box", "price": 600, "arc": "penguins", "art": "mailbox_ice"},
+		{"id": "ext_mailbox_steel", "name": "City Steel Box", "price": 400, "arc": "gangsters", "art": "mailbox_steel"},
+	],
 	"fence": [
 		{"id": "ext_fence_wood", "name": "Farm Rail", "price": 300, "fence": ["fence2_wood_h", "fence2_wood_end", "fence2_wood_gate_open"]},
 		{"id": "ext_fence_stone", "name": "Fieldstone Wall", "price": 900, "fence": ["fence2_stone_h", "fence2_stone_end", "fence2_stone_gate_open"]},
@@ -89,6 +99,11 @@ const STYLES := {
 ## Chimney tops (day-picture px) per house picture, for the smoke.
 const CHIMNEYS := {"house": [Vector2(150, 20)], "house_2": [Vector2(162, 8), Vector2(262, 19)], "house_3": [Vector2(84, 9), Vector2(309, 9)]}
 const NIGHT_TINT := Color(0.62, 0.6, 0.78)
+## Winter nights (c10b_01-05): there is no snowy night picture, so the snowy house
+## stays up after dark, dimmed, with its windows lit by buildings/<house>_lit
+## (make_window_glow.py) drawn additively. The tier-1 snowy picture sits 4 px higher.
+const SNOW_NIGHT_TINT := Color(0.5, 0.52, 0.72)
+const SNOW_LIT_DY := {"house": -4.0}
 
 static var _meta: Dictionary = {}
 static var _parts_tex: Dictionary = {}
@@ -99,6 +114,8 @@ var _host: Sprite2D
 var _tex: Texture2D
 var _kids: Array = []  # [node, day_px Vector2, size_px Vector2 (0 = native height)]
 var _smoke: Array = []
+var _map: Node
+var _glow: Sprite2D
 
 
 # --- data ---------------------------------------------------------------------
@@ -230,11 +247,39 @@ static func apply(map: Node, sprite: Sprite2D, override: Variant = null) -> Hous
 	n.base = b
 	n.look_now = lk
 	n._host = sprite
+	n._map = map
 	n.process_mode = Node.PROCESS_MODE_ALWAYS  # refit even under a pause (picker, dialogue)
 	sprite.add_child(n)
 	n._set_material()
 	n._build()
+	n._mailbox.call_deferred(map)  # the farm places the mailbox right after the house
 	return n
+
+
+## The farm's mailbox prop wears the chosen box (same height as buildings/mailbox,
+## so it stands on the same spot); "Original" puts the painted one back.
+func _mailbox(map: Node) -> void:
+	if map == null or not is_inside_tree() or not is_instance_valid(map):
+		return
+	var orig := Art.tex("buildings", "mailbox")
+	var want := orig
+	var mk := str(look_now.get("mailbox", ""))
+	if mk != "":
+		var t := _load(str(style(mk).get("art", "")))
+		if t:
+			want = t
+	var box: Sprite2D = map.get_meta("ext_mailbox") if map.has_meta("ext_mailbox") else null
+	if box == null or not is_instance_valid(box):
+		box = null
+		for c: Node in map.find_children("*", "Sprite2D", true, false):
+			if (c as Sprite2D).texture == orig:
+				box = c
+				break
+		if box == null:
+			return
+		map.set_meta("ext_mailbox", box)
+	if box.texture != want:
+		box.texture = want
 
 
 static func _base_name(map: Node, sprite: Sprite2D) -> String:
@@ -368,7 +413,9 @@ func _smoke_show() -> void:
 func _refit() -> void:
 	if _host == null or _host.texture == null:
 		return
+	_winter_night()
 	_tex = _host.texture
+	_drop_from_glow()
 	var day: Texture2D = Art.tex("buildings", base)
 	var dw := float(day.get_width()) if day else float(_tex.get_width())
 	var dh := float(day.get_height()) if day else float(_tex.get_height())
@@ -387,12 +434,12 @@ func _refit() -> void:
 		var fw := 40.0
 		a.scale = Vector2(0.6, 0.6)
 		a.position = origin + Vector2(c.x * kx - fw * 0.3 + 6.0, c.y * ky - 24.0 * 0.6 - 1.0)
-	var night := _tex.resource_path.contains("_night")
+	var night := _tex.resource_path.contains("_night") or (_host.self_modulate != Color.WHITE)
 	for e: Array in _kids:
 		(e[0] as CanvasItem).modulate = NIGHT_TINT if night else Color.WHITE
 
 
-var _t := 0.0
+var _t := 1.9  # first tick soon after the map's NightGlow registers its windows
 
 
 func _process(delta: float) -> void:
@@ -404,6 +451,44 @@ func _process(delta: float) -> void:
 	if _t > 2.0:
 		_t = 0.0
 		_smoke_show()
+		_drop_from_glow()
+		if _host.texture != null and GameState.is_night() != (_host.self_modulate != Color.WHITE) and _host.texture.resource_path.contains("_snow"):
+			_refit()  # dusk/dawn on the snowy picture
+
+
+## The farmhouse's window light is the painted _night picture (or the snowy glow
+## below): NightGlow's day-registered house_lit would stack on it (c10b_01-12).
+func _drop_from_glow() -> void:
+	if _map and "glow" in _map and _map.glow is NightGlow:
+		var nl: NightGlow = _map.glow
+		nl.windows = nl.windows.filter(func(w: Array) -> bool: return w[0] != _host)
+
+
+## Swap the plain night picture for the snowy one in winter (dimmed, windows lit).
+func _winter_night() -> void:
+	var path := _host.texture.resource_path
+	var snow := base + "_snow"
+	if path.ends_with("/" + base + "_night.png") and GameState.look_se() == "winter" and Art.has("buildings", snow):
+		_host.texture = Art.tex("buildings", snow)
+		if _map and _map.has_method("_fit_house_pic"):
+			_map.call("_fit_house_pic")
+		path = _host.texture.resource_path
+	var snowy_night := path.ends_with("/" + snow + ".png") and GameState.is_night()
+	_host.self_modulate = SNOW_NIGHT_TINT if snowy_night else Color.WHITE
+	if snowy_night and _glow == null and Art.has("buildings", base + "_lit"):
+		_glow = Sprite2D.new()
+		_glow.texture = Art.tex("buildings", base + "_lit")
+		_glow.centered = false
+		var cm := CanvasItemMaterial.new()
+		cm.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+		_glow.material = cm
+		_glow.modulate = Color(2.6, 2.3, 1.8)  # the map's night CanvasModulate dims it again
+		add_child(_glow)
+		move_child(_glow, 0)
+	if _glow:
+		_glow.visible = snowy_night
+		var t := _host.texture
+		_glow.position = _host.offset - (Vector2(t.get_width(), t.get_height()) * 0.5 if _host.centered else Vector2.ZERO) + Vector2(0, float(SNOW_LIT_DY.get(base, 0.0)))
 
 
 # --- picker -------------------------------------------------------------------
