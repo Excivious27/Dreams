@@ -1,0 +1,14 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 58.0}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 24.9}
+{"step": 12, "name": "crops wired in", "rc": 0, "secs": 4.9}
+{"step": 18, "name": "rec_test", "rc": 0, "secs": 4.5}
+{"step": 24, "name": "cash_test", "rc": 0, "secs": 2.7}
+{"step": 30, "name": "move_target_test", "rc": 0, "secs": 10.3}
+{"step": 36, "name": "town_first_test", "rc": 0, "secs": 3.2}
+{"step": 42, "name": "danger_music_test", "rc": 0, "secs": 16.4}
+{"step": 48, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 3.5}
+{"step": 54, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 6.6}
+{"step": 60, "name": "campaign_gate_test", "rc": 0, "secs": 5.2}
+{"step": 66, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 2.4}
+{"step": 72, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 4.5}
+{"step": 78, "name": "stack_whack_test", "rc": 0, "secs": 2.9}

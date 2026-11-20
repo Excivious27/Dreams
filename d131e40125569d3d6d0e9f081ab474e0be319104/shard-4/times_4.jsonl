@@ -1,0 +1,14 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 68.6}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 30.1}
+{"step": 11, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 44.8}
+{"step": 17, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 22.0}
+{"step": 23, "name": "bowling_test", "rc": 0, "secs": 9.8}
+{"step": 29, "name": "anim_test", "rc": 0, "secs": 1.9}
+{"step": 35, "name": "early_gating_test", "rc": 0, "secs": 1.7}
+{"step": 41, "name": "music_stream_test", "rc": 0, "secs": 7.0}
+{"step": 47, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 5.5}
+{"step": 53, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 5.0}
+{"step": 59, "name": "farm_debris_test", "rc": 0, "secs": 2.9}
+{"step": 65, "name": "skill_glow_test", "rc": 0, "secs": 2.7}
+{"step": 71, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 7.0}
+{"step": 77, "name": "arcade_test", "rc": 0, "secs": 1.9}

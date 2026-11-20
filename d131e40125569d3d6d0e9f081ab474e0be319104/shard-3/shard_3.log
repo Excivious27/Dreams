@@ -1,0 +1,94 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  82% ] [90m[1mreimport[22m | cloudstone_side_l.png[39m[0m
+[  83% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  84% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  84% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  85% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  86% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  87% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  88% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  89% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  90% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  91% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  92% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  92% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  93% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  94% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  95% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  96% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | hurt.png[39m[0m
+[  98% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (112 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 131.5s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (106 buildings answer)
+#### step 4 building doors: PASS in 11.8s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 1.8s
+
+#### step 16: storage_test (shard 3/6)
+storage_test: 0 failures
+#### step 16 storage_test: PASS in 1.8s
+
+#### step 22: rec_audio_test (shard 3/6)
+rec_audio_test: 0 failures
+#### step 22 rec_audio_test: PASS in 1.8s
+
+#### step 28: crop_test (shard 3/6)
+crop_test: 0 failures
+#### step 28 crop_test: PASS in 3.3s
+
+#### step 34: cf_layout_test (shard 3/6)
+cf_layout_test: 0 failures
+#### step 34 cf_layout_test: PASS in 6.6s
+
+#### step 40: music: every map has a song; web streaming works offline (shard 3/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 585 songs checked, 0 failures
+#### step 40 music: every map has a song; web streaming works offline: PASS in 23.7s
+
+#### step 46: allies: enemies fight back, pup commands (shard 3/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 46 allies: enemies fight back, pup commands: PASS in 2.7s
+
+#### step 52: campaign: battles, projects, colonies, big mines (shard 3/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 52 campaign: battles, projects, colonies, big mines: PASS in 4.4s
+
+#### step 58: street_bat_test (shard 3/6)
+street_bat_test: 0 fails
+#### step 58 street_bat_test: PASS in 1.7s
+
+#### step 64: meow_gate_test (shard 3/6)
+meow_gate_test: 0 fails
+#### step 64 meow_gate_test: PASS in 2.3s
+
+#### step 70: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 3/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 70 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 35.9s
+
+#### step 76: jumper_test (shard 3/6)
+jumper_test: 0 failures
+#### step 76 jumper_test: PASS in 1.8s
+
+#### shard 3/6 done in 231s: PASS
