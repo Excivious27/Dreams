@@ -472,6 +472,13 @@ static func migrate() -> void:
 		if leg.has(old) and is_decor(str(leg[old])):
 			_absorb(str(leg[old]), int(d["box"][old]))
 			(d["box"] as Dictionary).erase(old)
+	# Once per save: uniques whose event this save already passed (decor.json "backgrant" {id: flag}).
+	if int(d.get("mig", 0)) < MIGRATION:
+		var fl: Variant = r.get("flags", {})
+		var bg: Dictionary = data().get("backgrant", {})
+		for id in bg:
+			if fl is Dictionary and (fl as Dictionary).has(str(bg[id])) and is_decor(str(id)) and total(str(id)) == 0:
+				give(str(id), 1, "backgrant")
 	d["mig"] = MIGRATION
 
 

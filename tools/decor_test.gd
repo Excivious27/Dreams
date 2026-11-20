@@ -173,6 +173,7 @@ func _run() -> void:
 	GameState.run["inventory"]["dc_tt_vase"] = 2
 	(GameState.run["toolbar"] as Array)[3] = "rp_jukebox"
 	GameState.run["chests"] = {"chest": {"items": {"rp_trophy_gold": 1, "turnip": 4}}}
+	GameState.run["flags"]["lighthouse_lit"] = true
 	var txt := JSON.stringify(GameState.run)
 	GameState.run = JSON.parse_string(txt)
 	GameState._migrate()
@@ -181,6 +182,7 @@ func _run() -> void:
 	check(Decor.owned("rp_trophy_gold") == 1 and not (GameState.run["chests"]["chest"]["items"] as Dictionary).has("rp_trophy_gold"), "chest decor -> box")
 	check(int(GameState.run["chests"]["chest"]["items"]["turnip"]) == 4, "other chest goods untouched")
 	check(not (GameState.run["toolbar"] as Array).has("rp_jukebox"), "toolbar slot freed")
+	check(Decor.owned("dc_u_lighthouse_lamp") == 1, "old save past the lighthouse gets its unique once")
 	check(int(GameState.run["save_ver"]) == GameState.SAVE_VERSION and GameState.SAVE_VERSION >= 10, "save version bumped")
 	var once := JSON.stringify(JSON.parse_string(JSON.stringify(GameState.run["decor"])))
 	GameState.run = JSON.parse_string(JSON.stringify(GameState.run))
@@ -189,6 +191,15 @@ func _run() -> void:
 	GameState.run["decor"] = null
 	GameState._migrate()
 	check(Decor.st()["box"] is Dictionary, "null decor block rebuilt")
+	# --- save size budget: a full house stays small ------------------------------------------
+	var big: Array = []
+	for i in 300:
+		big.append({"id": "dc_sofa_red", "cell": [i % 24, i / 24], "rot": 0})
+	GameState.run["decor"]["placed"]["house"] = big
+	var bytes := JSON.stringify(GameState.run["decor"]).length()
+	check(bytes < 20000, "300 placed pieces cost %d bytes" % bytes)
+	GameState.run["decor"]["placed"].erase("house")
+	check((Decor.st()["pity"] as Dictionary).size() <= (Decor.data()["pools"] as Dictionary).size(), "pity keeps one counter per pool")
 	# --- gangster arc filter ---------------------------------------------------------------------
 	var gang_ok := false
 	for id in Decor.stock_all("crew_goods", 9):

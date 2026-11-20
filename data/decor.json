@@ -1,4 +1,7 @@
 {
+ "backgrant": {
+  "dc_u_lighthouse_lamp": "lighthouse_lit"
+ },
  "cats": [
   "furniture",
   "wall_art",

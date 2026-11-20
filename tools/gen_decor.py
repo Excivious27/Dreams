@@ -638,6 +638,9 @@ def _res(tier, cols):
         out += [[17, 9, 2, 2, 'cellar'], [17, 3, 2, 1, 'study'], [23, 3, 1, 1, 'bath']]
     return out
 HOUSE_RESERVED = {str(t): _res(t, c) for t, c in {1: 16, 2: 20, 3: 26}.items()}
+# Old saves that already passed a unique's event get it once at migration (Decor.migrate; c10_06):
+# {id: run.flags key}. Only events whose flag already exists in the game are listed.
+BACKGRANT = {'dc_u_lighthouse_lamp': 'lighthouse_lit'}
 LEGACY = {'museum_trophy': 'dc_tt_trophy_crystal', 'fish_trophy': 'dc_tt_trophy_fish_a'}
 
 # ---- self-checks ---------------------------------------------------------------------------------------
@@ -704,7 +707,8 @@ if fails:
 # ---- write ---------------------------------------------------------------------------------------------
 out = {'rarity': RARITY, 'cats': CATS, 'sell_share': SELL_SHARE, 'reorder_fee': REORDER_FEE, 'reorder_min': REORDER_MIN,
        'pity': PITY, 'luck_step': LUCK_STEP, 'items': ENTRIES, 'sets': SETS, 'shops': SHOPS, 'shop_slots': SHOP_SLOTS,
-       'shop_days': SHOP_DAYS, 'pools': POOLS, 'recipes': RECIPES, 'house_reserved': HOUSE_RESERVED, 'legacy': LEGACY}
+       'shop_days': SHOP_DAYS, 'pools': POOLS, 'recipes': RECIPES, 'house_reserved': HOUSE_RESERVED, 'legacy': LEGACY,
+       'backgrant': {k: v for k, v in BACKGRANT.items() if k in ENTRIES}}
 with open(os.path.join(D, 'decor.json'), 'w') as f:
     json.dump(out, f, indent=1, ensure_ascii=False, sort_keys=True)
     f.write('\n')
