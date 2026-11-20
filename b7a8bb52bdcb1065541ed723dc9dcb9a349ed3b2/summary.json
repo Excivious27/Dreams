@@ -1,0 +1,591 @@
+{
+ "sha": "b7a8bb52bdcb1065541ed723dc9dcb9a349ed3b2",
+ "ref": "ci/c8-e71dc188",
+ "run": "44740153259",
+ "finished": 1795181896.2531145,
+ "pass": false,
+ "playtest": {
+  "rc": 0,
+  "secs": 62,
+  "shots": 21,
+  "fails": [
+   "SCRIPT ERROR: Parse Error: Could not resolve class \"Secrets\", because of a parser error.",
+   "SCRIPT ERROR: Parse Error: Could not resolve class \"Secrets\", because of a parser error.",
+   "SCRIPT ERROR: Parse Error: Could not resolve class \"Secrets\", because of a parser error.",
+   "SCRIPT ERROR: Parse Error: Could not resolve class \"Secrets\", because of a parser error.",
+   "SCRIPT ERROR: Parse Error: Could not resolve class \"Secrets\", because of a parser error.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts."
+  ]
+ },
+ "playtest_pass": true,
+ "check_pass": false,
+ "bots_pass": false,
+ "max_job_secs": 2031,
+ "shards": [
+  {
+   "shard": 1,
+   "rc": 1,
+   "secs": 1267,
+   "failed_steps": [
+    "smoke test",
+    "night lighting: windows, festival fires, underground, mines (c5_10)",
+    "music_stream_test",
+    "campaign_gate_test"
+   ]
+  },
+  {
+   "shard": 3,
+   "rc": 1,
+   "secs": 1523,
+   "failed_steps": [
+    "campaign: battles, projects, colonies, big mines",
+    "story: every chapter plays to the end",
+    "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4",
+    "hidden areas stay put day to day (C5)"
+   ]
+  },
+  {
+   "shard": 6,
+   "rc": 1,
+   "secs": 2031,
+   "failed_steps": [
+    "themed battlefields (points open and reachable, themes, grump/kin/pylo",
+    "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)",
+    "music: every map has a song; web streaming works offline",
+    "campaign_gate_test",
+    "move_speed_test",
+    "C8 P4: fishing rules, mining curve, reward tables"
+   ]
+  }
+ ],
+ "bots": [
+  {
+   "bot": 1,
+   "spec": "1 penguins kairi wander 0 0 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 39,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 140 steps, 0 kills, 0 ownerless pauses, scenes [\"marsh\", \"wastes\", \"jung"
+  },
+  {
+   "bot": 2,
+   "spec": "2 penguins penguin_f story 1 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 68,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"mountain\", \"mine\", \"far"
+  },
+  {
+   "bot": 3,
+   "spec": "3 penguins penguin_m fighter 2 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 77,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 280 steps, 2 kills, 0 ownerless pauses, scenes [\"ruins\", \"mine\", \"meadow"
+  },
+  {
+   "bot": 4,
+   "spec": "4 penguins merry farmer 0 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 48,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 350 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"desert_dune_sea"
+  },
+  {
+   "bot": 5,
+   "spec": "5 penguins coco menus 1 1 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 50,
+   "done": true,
+   "script_errors": 90,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 200 steps, 0 kills, 0 ownerless pauses, scenes [\"meadow\", \"highlands\", \""
+  },
+  {
+   "bot": 6,
+   "spec": "6 penguins mer story 3 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 69,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 350 steps, 0 kills, 0 ownerless pauses, scenes [\"lake\", \"colony_ember\", "
+  },
+  {
+   "bot": 7,
+   "spec": "7 penguins coldy fighter 4 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 48,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 140 steps, 0 kills, 0 ownerless pauses, scenes [\"ruins\", \"mine\", \"wind_s"
+  },
+  {
+   "bot": 8,
+   "spec": "8 penguins big_jim wander 5 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 58,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 280 steps, 0 kills, 0 ownerless pauses, scenes [\"highlands\", \"desert_sun"
+  },
+  {
+   "bot": 9,
+   "spec": "9 penguins custom farmer 2 1 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 61,
+   "done": true,
+   "script_errors": 28,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"house\", \"farm\", \"town\"]"
+  },
+  {
+   "bot": 10,
+   "spec": "10 penguins pax story 5 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 77,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 490 steps, 0 kills, 0 ownerless pauses, scenes [\"crystal_meadow\", \"moon\""
+  },
+  {
+   "bot": 11,
+   "spec": "11 gangsters dad wander 0 0 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 40,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 140 steps, 0 kills, 0 ownerless pauses, scenes [\"moon\", \"iron_freight_ya"
+  },
+  {
+   "bot": 12,
+   "spec": "12 gangsters mom story 1 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 78,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 488 steps, 0 kills, 0 ownerless pauses, scenes [\"lake\", \"mine\", \"hideout"
+  },
+  {
+   "bot": 13,
+   "spec": "13 gangsters june fighter 2 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 96,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 296 steps, 2 kills, 0 ownerless pauses, scenes [\"desert_sunken_temple\", "
+  },
+  {
+   "bot": 14,
+   "spec": "14 gangsters rafe farmer 0 1 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 57,
+   "done": true,
+   "script_errors": 28,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"farm\"], day 4, "
+  },
+  {
+   "bot": 15,
+   "spec": "15 gangsters nia menus 3 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 34,
+   "done": true,
+   "script_errors": 59,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 1,
+   "line": "0 fails, 0 warns, 80 steps, 0 kills, 1 ownerless pauses, scenes [\"uptown\", \"station\", \"doc"
+  },
+  {
+   "bot": 16,
+   "spec": "16 gangsters ollie story 4 2 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 71,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes [\"town\", \"farm\", \"lake\", "
+  },
+  {
+   "bot": 17,
+   "spec": "17 gangsters marisol fighter 5 3 40",
+   "days": 3,
+   "rc": 0,
+   "secs": 59,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 140 steps, 1 kills, 0 ownerless pauses, scenes [\"jungle\", \"bf_rail_yards"
+  },
+  {
+   "bot": 18,
+   "spec": "18 gangsters bo wander 3 2 20",
+   "days": 3,
+   "rc": 0,
+   "secs": 50,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 210 steps, 0 kills, 0 ownerless pauses, scenes [\"highlands\", \"moon\", \"wa"
+  },
+  {
+   "bot": 19,
+   "spec": "19 gangsters custom story 2 1 30",
+   "days": 3,
+   "rc": 0,
+   "secs": 64,
+   "done": true,
+   "script_errors": 33,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 350 steps, 0 kills, 0 ownerless pauses, scenes [\"sky\", \"countryside\", \"b"
+  },
+  {
+   "bot": 20,
+   "spec": "20 gangsters pax menus 5 2 15",
+   "days": 3,
+   "rc": 0,
+   "secs": 51,
+   "done": true,
+   "script_errors": 91,
+   "fails": 0,
+   "warns": 0,
+   "pauses": 0,
+   "line": "0 fails, 0 warns, 189 steps, 0 kills, 0 ownerless pauses, scenes [\"meadow\", \"town\", \"quarr"
+  }
+ ],
+ "errors": [
+  [
+   "SCRIPT ERROR: Compile Error: Failed to compile depended scripts.",
+   1396
+  ],
+  [
+   "SCRIPT ERROR: Parse Error: Could not resolve class \"Secrets\", because of a parser error.",
+   418
+  ],
+  [
+   "SCRIPT ERROR: Invalid call. Nonexistent function 'build' in base 'GDScript'.",
+   141
+  ],
+  [
+   "SCRIPT ERROR: Parse Error: Cannot infer the type of \"lt\" variable because the value doesn't have a set type.",
+   28
+  ],
+  [
+   "SCRIPT ERROR: Invalid access to property or key 'things' on a base object of type 'Nil'.",
+   5
+  ],
+  [
+   "FAIL the drill is fought on the orchard field",
+   2
+  ],
+  [
+   "SCRIPT ERROR: Cannot call method 'get' on a null value.",
+   2
+  ],
+  [
+   "FAIL prefetched boss song cached",
+   1
+  ],
+  [
+   "FAIL a prefetched boss song starts at once (farm)",
+   1
+  ],
+  [
+   "FAIL cached neon plays with no server (farm)",
+   1
+  ],
+  [
+   "FAIL stall watch on",
+   1
+  ],
+  [
+   "FAIL colony map loads",
+   1
+  ],
+  [
+   "FAIL penguins: scene sky for p3_sky",
+   1
+  ],
+  [
+   "FAIL penguins: scene sky for p3_knight_nova",
+   1
+  ],
+  [
+   "FAIL penguins: scene sky for p4_prison",
+   1
+  ],
+  [
+   "FAIL penguins: scene sky for p4_fennimore_sky",
+   1
+  ],
+  [
+   "FAIL penguins: scene hideout for bt_invite_g_late",
+   1
+  ],
+  [
+   "FAIL penguins: all 43 beats played",
+   1
+  ],
+  [
+   "FAIL gangsters: scene hideout for g2_arrive",
+   1
+  ],
+  [
+   "FAIL gangsters: scene neon for g4_arrive",
+   1
+  ],
+  [
+   "FAIL gangsters: scene neon for g4_hale",
+   1
+  ],
+  [
+   "FAIL gangsters: scene uptown for g5_president",
+   1
+  ],
+  [
+   "FAIL gangsters: scene uptown for g5_crew_help",
+   1
+  ],
+  [
+   "FAIL gangsters: scene uptown for g5_twins_doors",
+   1
+  ],
+  [
+   "FAIL gangsters: scene uptown for g5_ladder_spot",
+   1
+  ],
+  [
+   "FAIL gangsters: scene uptown for g5_win_clean",
+   1
+  ],
+  [
+   "FAIL gangsters: scene uptown for g5_win",
+   1
+  ],
+  [
+   "FAIL gangsters: scene hideout for bt_invite_g_late",
+   1
+  ],
+  [
+   "FAIL gangsters: all 49 beats played",
+   1
+  ],
+  [
+   "SCRIPT ERROR: Cannot call method 'get_children' on a null value.",
+   1
+  ],
+  [
+   "FAIL Lanternfall loads",
+   1
+  ],
+  [
+   "FAIL gloam_violet_glade: nothing hidden placed",
+   1
+  ],
+  [
+   "FAIL desert_dune_sea: nothing hidden placed",
+   1
+  ],
+  [
+   "FAIL frost_caverns: nothing hidden placed",
+   1
+  ],
+  [
+   "FAIL gilt_gardens: nothing hidden placed",
+   1
+  ],
+  [
+   "FAIL desert_sunken_temple: nothing hidden placed",
+   1
+  ],
+  [
+   "FAIL only 0 areas checked",
+   1
+  ],
+  [
+   "FAIL maxed farming still has raw points (0)",
+   1
+  ],
+  [
+   "SCRIPT ERROR: Parse Error: Cannot infer the type of \"c\" variable because the value doesn't have a set type.",
+   1
+  ],
+  [
+   "SCRIPT ERROR: Parse Error: Cannot infer the type of \"peng\" variable because the value doesn't have a set type.",
+   1
+  ]
+ ],
+ "slowest_steps": [
+  {
+   "step": 79,
+   "name": "campaign_gate_test",
+   "rc": 1,
+   "secs": 1858.3
+  },
+  {
+   "step": 80,
+   "name": "campaign_gate_test",
+   "rc": 1,
+   "secs": 1046.6
+  },
+  {
+   "step": 88,
+   "name": "story: every chapter plays to the end",
+   "rc": 1,
+   "secs": 863.8
+  },
+  {
+   "step": 72,
+   "name": "region campaigns: boards, locks, convoy",
+   "rc": 1,
+   "secs": 432.3
+  },
+  {
+   "step": 70,
+   "name": "campaign: battles, projects, colonies, big mines",
+   "rc": 1,
+   "secs": 392.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 150.6
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 128.8
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 98.9
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 80.5
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 78.1
+  },
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 77.7
+  },
+  {
+   "step": 2,
+   "name": "smoke test",
+   "rc": 1,
+   "secs": 41.7
+  },
+  {
+   "step": 13,
+   "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)",
+   "rc": 0,
+   "secs": 41.1
+  },
+  {
+   "step": 40,
+   "name": "commons_test",
+   "rc": 0,
+   "secs": 40.2
+  },
+  {
+   "step": 16,
+   "name": "touch_ui_test",
+   "rc": 0,
+   "secs": 39.2
+  }
+ ]
+}

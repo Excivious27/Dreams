@@ -1,0 +1,724 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | bubble.png[39m[0m
+[  99% ] [90m[1mreimport[22m | loiter.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sit.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down_vv.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2410 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 78.1s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+          at: GDScript::reload (res://tools/bf_themes_test.gd:0)
+ERROR: Failed to load script "res://tools/bf_themes_test.gd" with error "Compilation failed".
+              [0] _run (res://tools/bf_themes_test.gd:43)
+              [0] _run (res://tools/bf_themes_test.gd:43)
+              [0] _run (res://tools/bf_themes_test.gd:43)
+              [0] _run (res://tools/bf_themes_test.gd:43)
+              [0] _run (res://tools/bf_themes_test.gd:43)
+       [0] _run (res://tools/bf_themes_test.gd:43)
+BF FAIL bf_frostfield did not load
+BF FAIL bf_shattered_vale did not load
+BF FAIL bf_rail_yards did not load
+BF FAIL bf_dockside did not load
+BF FAIL bf_orchard_line did not load
+BF FAIL bf_bog_crossing did not load
+BF FAIL bf_ash_wastes did not load
+BF FAIL bf_neon_block did not load
+BF FAIL bf_highland_pass did not load
+BF FAIL bf_quarry_cut did not load
+BF FAIL bf_river_ford did not load
+BF FAIL bf_ruin_court did not load
+BF FAIL bf_cloud_stair did not load
+BF FAIL bf_station_deck did not load
+BF FAIL bf_jungle_grove did not load
+BF FAIL bf_reef_shallows did not load
+BF FAIL bf_kelp_beds did not load
+BF FAIL bf_uptown_plaza did not load
+BF FAIL bf_sewer_works did not load
+bf_themes_test: 19 fields, 19 failures
+Battlefield theme test failed
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: FAIL rc=1 in 1.9s
+
+#### step 13: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 6/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/first_hours_test.gd:0)
+ERROR: Failed to load script "res://tools/first_hours_test.gd" with error "Compilation failed".
+first_hours_test: 0 failures
+#### step 13 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 41.1s
+
+#### step 19: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 6/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+ROMANCE DONE, failures: 0
+romance_test failed
+#### step 19 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): FAIL rc=1 in 2.3s
+
+#### step 25: rec_test (shard 6/6)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/rec_test.gd:0)
+ERROR: Failed to load script "res://tools/rec_test.gd" with error "Compilation failed".
+rec_test: 0 failures
+#### step 25 rec_test: PASS in 4.0s
+
+#### step 31: cash_test (shard 6/6)
+          at: GDScript::reload (res://tools/cash_test.gd:0)
+ERROR: Failed to load script "res://tools/cash_test.gd" with error "Compilation failed".
+cash_test: scanned 68021 strings, 0 failures
+#### step 31 cash_test: PASS in 2.5s
+
+#### step 37: anim_test (shard 6/6)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/anim_test.gd:0)
+ERROR: Failed to load script "res://tools/anim_test.gd" with error "Compilation failed".
+anim_test: 0 failures
+#### step 37 anim_test: PASS in 2.0s
+
+#### step 43: gang_flavour_test (shard 6/6)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/gang_flavour_test.gd:0)
+ERROR: Failed to load script "res://tools/gang_flavour_test.gd" with error "Compilation failed".
+gang_flavour_test: 0 failures
+#### step 43 gang_flavour_test: PASS in 1.7s
+
+#### step 49: every sound the game asks for exists (shard 6/6)
+== every sound the game asks for exists ==
+unused sfx (11, warning): alarm beat_tick cannon cave_in drain j_birthday j_skill monster save_done shop_bell unsheathe
+sfx asked for: 141 names, real recordings/ACE files: 467
+music: 79 tracks wired, 105/105 real (ACE)
+ambience: 32 beds, 17 spots
+sfx_audit: 0 missing
+#### step 49 every sound the game asks for exists: PASS in 2.5s
+
+#### step 55: music: every map has a song; web streaming works offline (shard 6/6)
+== music: every map has a song; web streaming works offline ==
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/music_map_test.gd:0)
+ERROR: Failed to load script "res://tools/music_map_test.gd" with error "Compilation failed".
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+              [0] _run (res://tools/music_map_test.gd:113)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "lt" variable because the value doesn't have a set type.
+              [0] _run (res://tools/music_map_test.gd:113)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+              [0] _run (res://tools/music_map_test.gd:113)
+Music map test failed
+#### step 55 music: every map has a song; web streaming works offline: FAIL rc=1 in 10.9s
+
+#### step 61: workshop: stations at run time (shard 6/6)
+== workshop: stations at run time ==
+          at: GDScript::reload (res://tools/station_test.gd:0)
+ERROR: Failed to load script "res://tools/station_test.gd" with error "Compilation failed".
+station_test: 0 failures
+#### step 61 workshop: stations at run time: PASS in 2.8s
+
+#### step 67: mine keepers: tool damage, crates, keeper variety/pace, way-down arrow (shard 6/6)
+== mine keepers: tool damage, crates, keeper variety/pace, way-down arrow route ==
+MINE KEEPER DONE, failures: 0
+#### step 67 mine keepers: tool damage, crates, keeper variety/pace, way-down arrow: PASS in 6.3s
+
+#### step 73: campaign_story_test (shard 6/6)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/campaign_story_test.gd:0)
+ERROR: Failed to load script "res://tools/campaign_story_test.gd" with error "Compilation failed".
+campaign_story_test: 0 fails
+#### step 73 campaign_story_test: PASS in 1.8s
+
+#### step 79: campaign_gate_test (shard 6/6)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/campaign_gate_test.gd:0)
+ERROR: Failed to load script "res://tools/campaign_gate_test.gd" with error "Compilation failed".
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Cannot infer the type of "lt" variable because the value doesn't have a set type.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+  FAIL the drill is fought on the orchard field
+SCRIPT ERROR: Cannot call method 'get' on a null value.
+          at: _run (res://tools/campaign_gate_test.gd:132)
+              [0] _run (res://tools/campaign_gate_test.gd:132)
+              [1] _arrive (res://tools/campaign_gate_test.gd:78)
+Campaign gate test failed
+#### step 79 campaign_gate_test: FAIL rc=1 in 1858.3s
+
+#### step 85: move_speed_test (shard 6/6)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/move_speed_test.gd:0)
+ERROR: Failed to load script "res://tools/move_speed_test.gd" with error "Compilation failed".
+  FAIL maxed farming still has raw points (0)
+move_speed_test: 1 fails
+Move speed ladder test failed
+#### step 85 move_speed_test: FAIL rc=1 in 3.0s
+
+#### step 91: villager heart arcs (2-10 hearts, 6-heart quests, daily lines) (shard 6/6)
+== villager heart arcs (2-10 hearts, 6-heart quests, daily lines) ==
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+HEARTS DONE, failures: 0
+#### step 91 villager heart arcs (2-10 hearts, 6-heart quests, daily lines): PASS in 4.8s
+
+#### step 97: crisp art shader on buildings/props (C2 P7) (shard 6/6)
+== crisp art shader on buildings/props (C2 P7) ==
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/crisp_art_test.gd:0)
+ERROR: Failed to load script "res://tools/crisp_art_test.gd" with error "Compilation failed".
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+         [0] _run (res://tools/crisp_art_test.gd:83)
+crisp_art_test: OK
+#### step 97 crisp art shader on buildings/props (C2 P7): PASS in 2.4s
+
+#### step 103: arcade_test (shard 6/6)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/arcade_test.gd:0)
+ERROR: Failed to load script "res://tools/arcade_test.gd" with error "Compilation failed".
+         [2] _run (res://tools/arcade_test.gd:260)
+arcade_test: 0 failures
+#### step 103 arcade_test: PASS in 2.0s
+
+#### step 109: seasons/weather looks: no drifts on paths, summer regions stay green,  (shard 6/6)
+== seasons/weather looks: no drifts on paths, summer regions stay green, leaf particles, no storm flocks ==
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/season_look_test.gd:0)
+ERROR: Failed to load script "res://tools/season_look_test.gd" with error "Compilation failed".
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+              [0] _load (res://tools/season_look_test.gd:36)
+              [1] _run (res://tools/season_look_test.gd:81)
+              [2] _load (res://tools/season_look_test.gd:39)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "lt" variable because the value doesn't have a set type.
+              [0] _load (res://tools/season_look_test.gd:36)
+              [1] _run (res://tools/season_look_test.gd:81)
+              [2] _load (res://tools/season_look_test.gd:39)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+              [0] _load (res://tools/season_look_test.gd:36)
+              [1] _run (res://tools/season_look_test.gd:81)
+              [2] _load (res://tools/season_look_test.gd:39)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+              [0] _load (res://tools/season_look_test.gd:36)
+              [1] _run (res://tools/season_look_test.gd:81)
+              [2] _load (res://tools/season_look_test.gd:39)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+              [0] _load (res://tools/season_look_test.gd:36)
+              [1] _run (res://tools/season_look_test.gd:81)
+              [2] _load (res://tools/season_look_test.gd:39)
+       [0] _load (res://tools/season_look_test.gd:36)
+       [1] _run (res://tools/season_look_test.gd:81)
+       [2] _load (res://tools/season_look_test.gd:39)
+season_look_test: PASS (0 fails)
+#### step 109 seasons/weather looks: no drifts on paths, summer regions stay green, : PASS in 2.9s
+
+#### step 115: C8 P4: fishing rules, mining curve, reward tables (shard 6/6)
+== C8 P4: fishing rules, mining curve, reward tables ==
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:101)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "c" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:101)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:103)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:103)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:104)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:104)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:105)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:106)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "peng" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:106)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:108)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "gang" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:108)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:110)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:111)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:113)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:114)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://tools/c8_p4_test.gd:117)
+ERROR: Failed to load script "res://tools/c8_p4_test.gd" with error "Parse error".
+C8 P4 test failed
+#### step 115 C8 P4: fishing rules, mining curve, reward tables: FAIL rc=1 in 0.2s
+
+#### shard 6/6 done in 2031s: FAIL (themed battlefields (points open and reachable, themes, grump/kin/pylo, dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1), music: every map has a song; web streaming works offline, campaign_gate_test, move_speed_test, C8 P4: fishing rules, mining curve, reward tables)

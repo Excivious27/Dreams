@@ -1,0 +1,92 @@
+CONDUCT CI FAIL  b7a8bb52bd  (ci/c8-e71dc188, run 44740153259)
+
+check shards (3/6):
+  shard 1: FAIL  1267s  failed: smoke test, night lighting: windows, festival fires, underground, mines (c5_10), music_stream_test, campaign_gate_test
+  shard 3: FAIL  1523s  failed: campaign: battles, projects, colonies, big mines, story: every chapter plays to the end, mega UI: map pins, travel letters, mega quests, boss themes, caves (C4, hidden areas stay put day to day (C5)
+  shard 6: FAIL  2031s  failed: themed battlefields (points open and reachable, themes, grump/kin/pylo, dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1), music: every map has a song; web streaming works offline, campaign_gate_test, move_speed_test, C8 P4: fishing rules, mining curve, reward tables
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       FAIL errors=33 fails=0 warns=0 pauses=0 39s  0 fails, 0 warns, 140 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "wastes", "jung
+  bot2  2 penguins penguin_f story 1 2 20    FAIL errors=33 fails=0 warns=0 pauses=0 68s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  FAIL errors=33 fails=0 warns=0 pauses=0 77s  0 fails, 0 warns, 280 steps, 2 kills, 0 ownerless pauses, scenes ["ruins", "mine", "meadow
+  bot4  4 penguins merry farmer 0 2 30       FAIL errors=33 fails=0 warns=0 pauses=0 48s  0 fails, 0 warns, 350 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         FAIL errors=90 fails=0 warns=0 pauses=0 50s  0 fails, 0 warns, 200 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "highlands", "
+  bot6  6 penguins mer story 3 2 20          FAIL errors=33 fails=0 warns=0 pauses=0 69s  0 fails, 0 warns, 350 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", 
+  bot7  7 penguins coldy fighter 4 3 40      FAIL errors=33 fails=0 warns=0 pauses=0 48s  0 fails, 0 warns, 140 steps, 0 kills, 0 ownerless pauses, scenes ["ruins", "mine", "wind_s
+  bot8  8 penguins big_jim wander 5 2 30     FAIL errors=33 fails=0 warns=0 pauses=0 58s  0 fails, 0 warns, 280 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "desert_sun
+  bot9  9 penguins custom farmer 2 1 20      FAIL errors=28 fails=0 warns=0 pauses=0 61s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm", "town"]
+  bot10 10 penguins pax story 5 2 15         FAIL errors=33 fails=0 warns=0 pauses=0 77s  0 fails, 0 warns, 490 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       FAIL errors=33 fails=0 warns=0 pauses=0 40s  0 fails, 0 warns, 140 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        FAIL errors=33 fails=0 warns=0 pauses=0 78s  0 fails, 0 warns, 488 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "hideout
+  bot13 13 gangsters june fighter 2 3 40     FAIL errors=33 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 296 steps, 2 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      FAIL errors=28 fails=0 warns=0 pauses=0 57s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm"], day 4, 
+  bot15 15 gangsters nia menus 3 2 15        FAIL errors=59 fails=0 warns=0 pauses=1 34s  0 fails, 0 warns, 80 steps, 0 kills, 1 ownerless pauses, scenes ["uptown", "station", "doc
+  bot16 16 gangsters ollie story 4 2 30      FAIL errors=33 fails=0 warns=0 pauses=0 71s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "lake", 
+  bot17 17 gangsters marisol fighter 5 3 40  FAIL errors=33 fails=0 warns=0 pauses=0 59s  0 fails, 0 warns, 140 steps, 1 kills, 0 ownerless pauses, scenes ["jungle", "bf_rail_yards
+  bot18 18 gangsters bo wander 3 2 20        FAIL errors=33 fails=0 warns=0 pauses=0 50s  0 fails, 0 warns, 210 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "moon", "wa
+  bot19 19 gangsters custom story 2 1 30     FAIL errors=33 fails=0 warns=0 pauses=0 64s  0 fails, 0 warns, 350 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "countryside", "b
+  bot20 20 gangsters pax menus 5 2 15        FAIL errors=91 fails=0 warns=0 pauses=0 51s  0 fails, 0 warns, 189 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "town", "quarr
+playtest: PASS  62s  21 screenshots (results playtest/shots/)
+  SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+  SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+  SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+  SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+  SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+
+longest job: 2031s
+slowest check steps: campaign_gate_test 1858.3s; campaign_gate_test 1046.6s; story: every chapter plays to the end 863.8s; region campaigns: boards, locks, convoy 432.3s; campaign: battles, projects, colonies, big mines 392.5s; import 150.6s; import 128.8s; import 98.9s
+distinct errors/fails/warns:
+  1396  SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+  418  SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+  141  SCRIPT ERROR: Invalid call. Nonexistent function 'build' in base 'GDScript'.
+   28  SCRIPT ERROR: Parse Error: Cannot infer the type of "lt" variable because the value doesn't have a set type.
+    5  SCRIPT ERROR: Invalid access to property or key 'things' on a base object of type 'Nil'.
+    2  FAIL the drill is fought on the orchard field
+    2  SCRIPT ERROR: Cannot call method 'get' on a null value.
+    1  FAIL prefetched boss song cached
+    1  FAIL a prefetched boss song starts at once (farm)
+    1  FAIL cached neon plays with no server (farm)
+    1  FAIL stall watch on
+    1  FAIL colony map loads
+    1  FAIL penguins: scene sky for p3_sky
+    1  FAIL penguins: scene sky for p3_knight_nova
+    1  FAIL penguins: scene sky for p4_prison
+    1  FAIL penguins: scene sky for p4_fennimore_sky
+    1  FAIL penguins: scene hideout for bt_invite_g_late
+    1  FAIL penguins: all 43 beats played
+    1  FAIL gangsters: scene hideout for g2_arrive
+    1  FAIL gangsters: scene neon for g4_arrive
+    1  FAIL gangsters: scene neon for g4_hale
+    1  FAIL gangsters: scene uptown for g5_president
+    1  FAIL gangsters: scene uptown for g5_crew_help
+    1  FAIL gangsters: scene uptown for g5_twins_doors
+    1  FAIL gangsters: scene uptown for g5_ladder_spot
+    1  FAIL gangsters: scene uptown for g5_win_clean
+    1  FAIL gangsters: scene uptown for g5_win
+    1  FAIL gangsters: scene hideout for bt_invite_g_late
+    1  FAIL gangsters: all 49 beats played
+    1  SCRIPT ERROR: Cannot call method 'get_children' on a null value.
+    1  FAIL Lanternfall loads
+    1  FAIL gloam_violet_glade: nothing hidden placed
+    1  FAIL desert_dune_sea: nothing hidden placed
+    1  FAIL frost_caverns: nothing hidden placed
+    1  FAIL gilt_gardens: nothing hidden placed
+    1  FAIL desert_sunken_temple: nothing hidden placed
+    1  FAIL only 0 areas checked
+    1  FAIL maxed farming still has raw points (0)
+    1  SCRIPT ERROR: Parse Error: Cannot infer the type of "c" variable because the value doesn't have a set type.
+    1  SCRIPT ERROR: Parse Error: Cannot infer the type of "peng" variable because the value doesn't have a set type.

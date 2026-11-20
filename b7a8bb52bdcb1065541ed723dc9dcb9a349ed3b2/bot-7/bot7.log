@@ -1,0 +1,96 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/collection_screen.gd:84)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/collection_screen.gd:84)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/collection_screen.gd:84)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/collection_screen.gd:84)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/collection_screen.gd:84)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/game_menu.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/companion.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/dialogue.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/romance.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/npc.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/crew.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/racket.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/marked.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/gift.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/enemy.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/danger_music.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/music.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/settings.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/display_mode.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/hud.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/net.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/net_api.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/difficulty.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/game_state.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/wear_layer.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/player.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://scripts/game_map.gd:0)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+          at: GDScript::reload (res://tools/bot.gd:0)
+ERROR: Failed to load script "res://tools/bot.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript.cpp:3041)
+BOT 7 start arc=penguins hero=coldy style=fighter progress=4 difficulty=3 day_len=40
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/region.gd:35)
+          GDScript backtrace (most recent call first):
+              [0] _go (res://tools/bot.gd:155)
+              [1] _run (res://tools/bot.gd:80)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "lt" variable because the value doesn't have a set type.
+          at: GDScript::reload (res://scripts/region.gd:35)
+          GDScript backtrace (most recent call first):
+              [0] _go (res://tools/bot.gd:155)
+              [1] _run (res://tools/bot.gd:80)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/region.gd:36)
+          GDScript backtrace (most recent call first):
+              [0] _go (res://tools/bot.gd:155)
+              [1] _run (res://tools/bot.gd:80)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/region.gd:39)
+          GDScript backtrace (most recent call first):
+              [0] _go (res://tools/bot.gd:155)
+              [1] _run (res://tools/bot.gd:80)
+SCRIPT ERROR: Parse Error: Could not resolve class "Secrets", because of a parser error.
+          at: GDScript::reload (res://scripts/region.gd:731)
+          GDScript backtrace (most recent call first):
+              [0] _go (res://tools/bot.gd:155)
+              [1] _run (res://tools/bot.gd:80)
+ERROR: Failed to load script "res://scripts/region.gd" with error "Parse error".
+   at: load (modules/gdscript/gdscript.cpp:3041)
+   GDScript backtrace (most recent call first):
+       [0] _go (res://tools/bot.gd:155)
+       [1] _run (res://tools/bot.gd:80)
+BOT 7 done: 0 fails, 0 warns, 140 steps, 0 kills, 0 ownerless pauses, scenes ["ruins", "mine", "wind_starfall_garden", "frost_falls", "sky", "wind_storm_shelf"], day 4, ◆5565
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)
+ERROR: 2 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:795)

@@ -1,0 +1,12 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 77.7}
+{"step": 5, "name": "exits and spawns", "rc": 1, "secs": 19.0}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 2.2}
+{"step": 17, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.1}
+{"step": 23, "name": "storage_test", "rc": 0, "secs": 2.2}
+{"step": 29, "name": "rec_audio_test", "rc": 0, "secs": 2.3}
+{"step": 35, "name": "farm_look_test", "rc": 0, "secs": 3.8}
+{"step": 41, "name": "shop_econ_test", "rc": 0, "secs": 2.5}
+{"step": 47, "name": "workshop: no dead ends", "rc": 0, "secs": 2.2}
+{"step": 53, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 59, "name": "ambience_test", "rc": 1, "secs": 3.7}
+{"step": 65, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 4.0}
