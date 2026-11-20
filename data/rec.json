@@ -72,8 +72,8 @@
     "gangsters": "the back room"
    },
    "start": {
-    "penguins": "Big news: the boarded-up back of the arcade is getting two new cabinets. Workers start tomorrow; that corner's taped off for three days. Keep your tickets warm! - The {hall} front desk",
-    "gangsters": "Word from the {hall}: the back room's getting two new cabinets. Crew starts tomorrow, that corner's taped off three days. Keep your tickets warm. - Front desk"
+    "penguins": "Big news: the boarded-up back of the arcade is getting two new cabinets. Workers start today; that corner's taped off for three days. Keep your tickets warm! - The {hall} front desk",
+    "gangsters": "Word from the {hall}: the back room's getting two new cabinets. Crew's in from today, that corner's taped off three days. Keep your tickets warm. - Front desk"
    },
    "done": {
     "penguins": "The arcade wing is open! {games} are plugged in and waiting. First one to top the board gets their name on the wall. - The {hall} front desk",

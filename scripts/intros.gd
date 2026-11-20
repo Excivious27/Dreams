@@ -15,7 +15,8 @@ const LINES := {
 		"gang": ["New face. I'm Maple, I run the Mercantile north of the plaza. Seeds in the back, bread by the door, and I don't ask names.", "Open seven till nine. If I'm not at the till, leave the money on it. People here are honest. Mostly."],
 	},
 	"gideon": {
-		"both": ["Gideon. Forge, next to Maple's. I fix tools, sharpen blades, and smelt ore if you bring it.", "Copper bars and a few crystals and your hoe comes back a better hoe. Next morning, not while you wait. Seven till nine; knock loud, I can't hear over the anvil."],
+		"pen": ["Gideon. Forge, next to Maple's. I fix tools, sharpen blades, and smelt ore if you bring it.", "Copper bars and a few crystals and your hoe comes back a better hoe. Next morning, not while you wait. Seven till nine; knock loud, I can't hear over the anvil."],
+		"gang": ["Gideon. Forge, next to Maple's. I fix tools, sharpen blades, and smelt ore if you bring it.", "Copper bars and a little cash and your hoe comes back a better hoe. Next morning, not while you wait. Seven till nine; knock loud, I can't hear over the anvil."],
 	},
 	"wren": {
 		"pen": ["You're new. And you've been near something odd: you've got a shimmer on you. I'm Wren. Potion shop, south-east of the plaza, the one that smells like burnt sugar.", "Red bottles mend you, green tea wakes you up. I'm in the shop from eight; afternoons I'm in my garden by the cottage, or at the pond."],

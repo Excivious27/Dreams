@@ -37,7 +37,6 @@
  "ivy": {
   "always": [
    "Deposits, withdrawals, and a good long gossip. That's banking in {town}.",
-   "I count coins in my sleep. Sometimes I dream I'm short one.",
    "Interest is just money being patient. You could learn from it."
   ],
   "spring": [
@@ -54,10 +53,12 @@
   ],
   "gangsters": [
    "Someone tried to pay off a loan in very fresh bills yesterday. Very fresh. Still damp.",
-   "If you're ever carrying more than you'd like to explain, the bank's safer than your boot."
+   "If you're ever carrying more than you'd like to explain, the bank's safer than your boot.",
+   "I count cash in my sleep. Sometimes I dream I'm short a dollar."
   ],
   "penguins": [
-   "A merkitty tried to open an account with a shell. I gave her one. Policy is policy."
+   "A merkitty tried to open an account with a shell. I gave her one. Policy is policy.",
+   "I count crystals in my sleep. Sometimes I dream I'm short one."
   ],
   "festival": [
    "The bank's closed for the festival. I'm still doing sums in my head."
@@ -69,7 +70,7 @@
  "orla": {
   "always": [
    "Flour on everything. Flour in my hair. You get used to it.",
-   "The mill wheel's been turning since my grandmother's grandmother. I just keep it fed.",
+   "My husband built that wheel and my son rebuilt it. I just keep it fed.",
    "Bring me grain and I'll bring you flour. That's the whole deal, and it's a good one."
   ],
   "spring": [
@@ -94,14 +95,14 @@
  "bram": {
   "always": [
    "A warm room, a hot stew, and nobody asks your business. That's an inn.",
-   "Half the stories in {town} start at my bar. The other half end there.",
+   "Half the stories in {town} start at my fireside. The other half end there.",
    "Sit, sit. You look like a person who's walked a long way."
   ],
   "rain": [
    "Rainy days are full-house days. Everyone wants a fire and a story."
   ],
   "winter": [
-   "Mulled cider, no charge, for anyone who shovelled the square."
+   "Hot cocoa, no charge, for anyone who shovelled the square."
   ],
   "gangsters": [
    "The back booth's yours, boss, any night. I keep it clear."
@@ -280,7 +281,7 @@
  "theo": {
   "always": [
    "Did you know the valley used to be a lake? The stones remember.",
-   "I've read every book in the library twice. The third time is where it gets interesting.",
+   "I've read nearly every book in the library twice. The third time is where it gets interesting.",
    "Knowledge is a lamp, {name}. You don't hoard a lamp; you hold it up.",
    "Ask me anything. If I don't know, I'll know someone dead who did."
   ],
@@ -348,7 +349,7 @@
  "pip": {
   "always": [
    "When I'm mayor, the fountain will be lemonade. Write that down.",
-   "I rang the town bell once. ONE time. Nobody lets me forget it.",
+   "I climbed the bell tower once. ONE time. Nobody lets me forget it.",
    "I'm nine and three quarters. The quarters count.",
    "Do you need an assistant? I'm very assisting."
   ],
@@ -394,8 +395,8 @@
  },
  "marlowe": {
   "always": [
-   "The lamp's been lit every night for forty years. Mostly by me.",
-   "Ships haven't come in a while. I keep it lit anyway. Habit, or hope.",
+   "Thirty years I kept that lamp. Mostly by myself.",
+   "Ships haven't come in a while. I'd light it anyway, if it had oil. Habit, or hope.",
    "Storm or calm, the sea's always talking. You just have to sit long enough.",
    "Gulls are terrible company and I'd miss them dreadfully."
   ],
@@ -419,7 +420,7 @@
    "These runes are older than the town. Older than the valley, maybe.",
    "Every ruin is a sentence. I'm still learning the grammar.",
    "The deeper you go, the older the stories get.",
-   "I came here for a week, eleven years ago."
+   "I came here for a week, four years ago."
   ],
   "penguins": [
    "The star that fell here didn't fall by accident. The ruins say it was sent."
@@ -444,7 +445,7 @@
    "My dog does the real work. I just carry the snacks."
   ],
   "fall": [
-   "Apple season! Cider soon. Bring a jug."
+   "Apple season! Pressing day soon. Bring a basket."
   ]
  }
 }

@@ -432,6 +432,9 @@ func _talk(n: Npc) -> void:
 	if await Romance.talk(self, n.id):
 		player.frozen = false
 		return
+	if await SideStory.talk(self, n.id):  # C7 P4 side stories
+		player.frozen = false
+		return
 	if await Quests.talk(self, n.id, name):
 		player.frozen = false
 		return

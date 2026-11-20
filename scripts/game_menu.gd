@@ -518,8 +518,8 @@ func _refresh() -> void:
 			var hearts_def: Dictionary = GameState.load_json("res://data/hearts.json").get("villagers", {})
 			for id in GameState.npcs:
 				var d: Dictionary = GameState.npcs[id]
-				# Only people you can actually befriend (Catkins and co. have no heart arc yet).
-				if not hearts_def.has(str(id)) and not Crew.members().has(str(id)) and not Perks.data().has(str(id)):
+				# Only people you can actually befriend in this arc (a heart arc with "arc" belongs to that arc only).
+				if (not hearts_def.has(str(id)) and not Crew.members().has(str(id)) and not Perks.data().has(str(id))) or str((hearts_def.get(str(id), {}) as Dictionary).get("arc", "")) not in ["", str(GameState.run.get("arc", ""))]:
 					continue
 				var pts := int(fr.get(id, 0))
 				var h := HBoxContainer.new()
@@ -569,7 +569,9 @@ func _refresh() -> void:
 						nxt = "♥%d: %s" % [hh, GameState.friend_perk_at(str(id), hh)]
 						break
 				var info := "   Birthday %s %d%s · loves: %s%s%s" % [str(bd[0]).capitalize() if bd.size() == 2 else "?", int(bd[1]) if bd.size() == 2 else 0, " (TODAY!)" if GameState.is_birthday(str(id)) else "", ", ".join(loves) if not loves.is_empty() else "? (give gifts to find out)", ("  · dislikes: " + ", ".join(hates)) if not hates.is_empty() else "", ("\n   next " + nxt) if nxt != "" else ""]
-				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) else Color(0.8, 0.8, 0.75))
+				# A heart scene waiting, and (after ♥10) what they'd do for you (C7 P4).
+				info += ("\n   ♥%d scene waiting: go and talk to them" % Hearts.due(str(id))) if Hearts.due(str(id)) > 0 else ("\n   If the town fell: " + str(Hearts.data()[str(id)].get("fall", ""))) if Hearts.seen_level(str(id)) >= 10 and str(Hearts.data().get(str(id), {}).get("fall", "")) != "" else ""
+				_line(info, 8, Color(1, 0.9, 0.55) if GameState.is_birthday(str(id)) or Hearts.due(str(id)) > 0 else Color(0.8, 0.8, 0.75))
 				if Romance.social_line(str(id)) != "": _line(Romance.social_line(str(id)), 8, Color(1, 0.7, 0.85))
 		"Map":
 			# Mega region tabs (MegaMap): Valley + one per unlocked region; hidden until unlocked.

@@ -119,7 +119,7 @@ static func board_notes() -> String:
 		if left > 0 and left <= 3:
 			out.append("Something is opening south-east of the library soon.")
 	if Commons.known() and Commons.market_day():
-		out.append("Market day at the %s." % Commons.short_name())
+		out.append("Market day at %s." % Commons.short_name())
 	return " ".join(out)
 
 
