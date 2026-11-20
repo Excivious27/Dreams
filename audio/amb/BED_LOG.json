@@ -1,0 +1,200 @@
+{
+ "arcade_floor": {
+  "lufs": -26.0,
+  "md5": "64e4f12c6bdd7a8c4976ecbd2c3a493e",
+  "secs": 47.0,
+  "target": -26.0
+ },
+ "basement_drips": {
+  "lufs": -27.1,
+  "md5": "3cedbdf9cbdc33d72ed3220736305662",
+  "secs": 32.7,
+  "target": -26.0
+ },
+ "birds_dawn": {
+  "lufs": -25.6,
+  "md5": "9da53a25eb8065eeaf9800c1a711a771",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "birds_day": {
+  "lufs": -25.8,
+  "md5": "343531a85dc0b7b633e5bdc5757dfe50",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "boiling": {
+  "lufs": -26.7,
+  "md5": "956a9f91617f12ddbf63327874a715c7",
+  "secs": 24.1,
+  "target": -26.0
+ },
+ "campfire": {
+  "lufs": -26.1,
+  "md5": "abf600863268d657a16384e247fb0c00",
+  "secs": 36.7,
+  "target": -26.0
+ },
+ "cave": {
+  "lufs": -26.1,
+  "md5": "67c3bb453922057e21c91c3630ab9dfe",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "city_hum": {
+  "lufs": -26.0,
+  "md5": "cfde5293fad9fbbc6cca397e6957ad22",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "crickets": {
+  "lufs": -26.5,
+  "md5": "d9560ab20abdd300e67d87874016a96b",
+  "secs": 45.2,
+  "target": -26.0
+ },
+ "crowd": {
+  "lufs": -26.0,
+  "md5": "63d8f59f889c6cd0bcbc354a3934d1a1",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "crystal_hum": {
+  "lufs": -26.0,
+  "md5": "51754be420090351e330674bb1e49d42",
+  "secs": 42.0,
+  "target": -26.0
+ },
+ "frogs": {
+  "lufs": -26.0,
+  "md5": "68bedb629d145c43e48e2c9617bc4f56",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "hearth": {
+  "lufs": -25.9,
+  "md5": "b1c95b8c5809bb7585b897f1709c4b04",
+  "secs": 27.8,
+  "target": -26.0
+ },
+ "jungle_insects": {
+  "lufs": -26.1,
+  "md5": "5dde2f8a199aacdb3247d7acba5c3920",
+  "secs": 20.6,
+  "target": -26.0
+ },
+ "lava": {
+  "lufs": -26.0,
+  "md5": "49d7576a53c7127833ecea61e9a741d1",
+  "secs": 26.8,
+  "target": -26.0
+ },
+ "leaves": {
+  "lufs": -25.9,
+  "md5": "93a220ca3995cc9b97700f1d58fe8b25",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "machines": {
+  "lufs": -25.9,
+  "md5": "0c8a8b45b32cce9db23ee3e03080de71",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "marsh": {
+  "lufs": -26.5,
+  "md5": "b073184d9014286e380b435c1245e5ac",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "neon_street": {
+  "lufs": -26.0,
+  "md5": "077bd4adc97e241af943ac29f2b99a4f",
+  "secs": 27.8,
+  "target": -26.0
+ },
+ "purr_loop": {
+  "lufs": -25.9,
+  "md5": "ac22fd4333ed2a0bed7a77a6e5d04bde",
+  "secs": 32.8,
+  "target": -26.0
+ },
+ "rain_heavy": {
+  "lufs": -25.3,
+  "md5": "fe44bdb1c5c490c5a305448c4ad77d1b",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "rain_light": {
+  "lufs": -25.4,
+  "md5": "79c9689849c946709f548b96d60023a7",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "rain_roof": {
+  "lufs": -25.9,
+  "md5": "80f5d1c64d67c743bd994671e93d7c0c",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "rec_alley": {
+  "lufs": -26.0,
+  "md5": "8cac4ced622c8ae4879d1d65f4852b0a",
+  "secs": 28.9,
+  "target": -26.0
+ },
+ "river": {
+  "lufs": -25.8,
+  "md5": "da584d60647833552c4dfb957d644301",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "room_chapel": {
+  "lufs": -26.0,
+  "md5": "0c9d0cf3df2dfdff5f6fc2b9d721621d",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "room_shop": {
+  "lufs": -26.0,
+  "md5": "650c02cbba51814b506022a36479373c",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "space": {
+  "lufs": -26.0,
+  "md5": "5031a37d34435d6becc3c0c12d8c952c",
+  "secs": 42.0,
+  "target": -26.0
+ },
+ "town_day": {
+  "lufs": -26.3,
+  "md5": "cd8333a2efc2c57e5cda8c368bcba96c",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "water_lap": {
+  "lufs": -25.9,
+  "md5": "45a87343d3eed0fa1b7520e3415657d7",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "waves": {
+  "lufs": -25.9,
+  "md5": "c44e49ebee907f97fda2ce7c599c1658",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "wind_soft": {
+  "lufs": -25.7,
+  "md5": "0bf4427d53d5a11771ea2616ef88e1d6",
+  "secs": 46.5,
+  "target": -26.0
+ },
+ "wind_strong": {
+  "lufs": -25.9,
+  "md5": "f0ae463915237ef8f10e05330657fca0",
+  "secs": 46.5,
+  "target": -26.0
+ }
+}

@@ -36,11 +36,11 @@ MAP = {
     "step_gravel": ("sfx", ["different-steps-on-wood-stone-leaves-gravel-and-mud/*gravel*", "42-snow-and-gravel-footsteps/*gravel_02*", "42-snow-and-gravel-footsteps/*gravel_05*"], {"cap": 0.5}),
     "step_leaves": ("sfx", ["20-rustles-dry-leaves/*rustle04*", "20-rustles-dry-leaves/*rustle07*", "20-rustles-dry-leaves/*rustle09*"], {"cap": 0.5}),
     # --- combat ------------------------------------------------------------
-    "swing": ("sfx", ["swishes-sound-pack/swish-1.*", "swishes-sound-pack/swish-2.*", "swishes-sound-pack/swish-3.*"], {"cap": 0.5}),
+    "swing": ("sfx", ["bigsoundbank/0128", "swish-bamboo-stick-weapon-swhoshes/*swosh-03*", "swish-bamboo-stick-weapon-swhoshes/*swosh-08*"], {"cap": 0.45, "slice": True, "min": 0.08, "floor": -26}),  # C6: real air swishes with 1-6 kHz body (old swishes were 96% sub-350 Hz)
     "swing_heavy": ("sfx", ["swish-bamboo-stick-weapon-swhoshes/*swosh-05*", "swish-bamboo-stick-weapon-swhoshes/*swosh-12*", "swish-bamboo-stick-weapon-swhoshes/*swosh-20*"], {"cap": 0.7}),
     "hit": ("sfx", ["37-hitspunches/hit01*", "37-hitspunches/hit04*", "37-hitspunches/hit07*"], {"cap": 0.5}),
-    "crit": ("sfx", ["150-combat-sound-effects/*Impact_01*", "150-combat-sound-effects/*Impact_02*", "10-impactshield-blocks/impact.1.*"], {"cap": 0.8}),
-    "hurt": ("sfx", ["37-hitspunches/hit12*", "37-hitspunches/hit15*", "37-hitspunches/hit18*"], {"cap": 0.5}),
+    "crit": ("sfx", ["150-combat-sound-effects/*Impact_01*", "37-hitspunches/hit24*", "10-impactshield-blocks/impact.1.*"], {"cap": 0.8}),
+    "hurt": ("sfx", ["12-wet-towel-hittingfallingpunching-floor-sounds/*"], {"cap": 0.45, "slice": True, "af": "highpass=f=180,equalizer=f=1800:t=o:w=1.5:g=4"}),  # C6: soft bonk, not the strike pack
     "block": ("sfx", ["10-impactshield-blocks/impact.2.*", "10-impactshield-blocks/impact.3.*", "10-impactshield-blocks/impact.4.*"], {"cap": 0.6}),
     "sword_clash": ("sfx", ["20-sword-sound-effects-attacks-and-clashes/sword_clash.1.*", "20-sword-sound-effects-attacks-and-clashes/sword_clash.2.*", "20-sword-sound-effects-attacks-and-clashes/sword_clash.3.*"], {"cap": 0.8}),
     "unsheathe": ("sfx", ["rpg-sound-pack/sword-unsheathe.*", "rpg-sound-pack/sword-unsheathe2.*", "rpg-sound-pack/sword-unsheathe3.*"], {"cap": 0.8}),
@@ -81,18 +81,18 @@ MAP = {
     "drain": ("sfx", ["energy-drain/*"], {"cap": 1.6}),
     # --- tools, farm, world -------------------------------------------------
     "chop": ("sfx", ["50-rpg-sound-effects/chop*", "100-cc0-metal-and-wood-sfx/wood_hit_01*", "100-cc0-metal-and-wood-sfx/wood_hit_04*"], {"cap": 0.6}),
-    "timber": ("sfx", ["tree-chop-fall-thud/*", "100-cc0-metal-and-wood-sfx/wood_falling_01*"], {"cap": 2.5}),
+    "timber": ("sfx", ["tree-chop-fall-thud/*", "bigsoundbank/2750"], {"cap": 2.5, "slice": True, "takes": 2, "gap": 0.4, "floor": -28, "min": 0.8}),  # C6: both takes are a real tree fall
     "pick": ("sfx", ["80-cc0-rpg-sfx/stones_01*", "80-cc0-rpg-sfx/stones_02*", "100-cc0-sfx-2/*stones_01*"], {"cap": 0.6}),
     "rock_break": ("sfx", ["breaking-rock/*", "100-cc0-sfx-2/*stones_02*", "100-cc0-sfx-2/*stones_03*"], {"cap": 1.0}),
     "dig": ("sfx", ["shovel-sound/*", "fantasy-sound-effects-tinysized-sfx/*soil-steps-01*"], {"cap": 0.8}),
     "plant": ("sfx", ["20-rustles-dry-leaves/*rustle01*", "20-rustles-dry-leaves/*rustle02*", "20-rustles-dry-leaves/*rustle03*"], {"cap": 0.5}),
     "harvest": ("sfx", ["20-rustles-dry-leaves/*rustle10*", "20-rustles-dry-leaves/*rustle12*", "20-rustles-dry-leaves/*rustle15*"], {"cap": 0.6}),
-    "water": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*water-pour-01*", "fantasy-sound-effects-tinysized-sfx/*water-vial-fill-01*"], {"cap": 1.2}),
+    "water": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*water-pour-01*", "40-cc0-water-splash-slime-sfx/loop_water_02*"], {"cap": 1.2}),
     "drop": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*water-drop-01*", "fantasy-sound-effects-tinysized-sfx/*water-drop-02*", "fantasy-sound-effects-tinysized-sfx/*water-drop-03*"], {"cap": 0.6}),
     "splash": ("sfx", ["6-short-water-splashes/*01*", "6-short-water-splashes/*03*", "40-cc0-water-splash-slime-sfx/splash_02*"], {"cap": 1.0}),
     "fish_escape": ("sfx", ["40-cc0-water-splash-slime-sfx/splash_10*", "40-cc0-water-splash-slime-sfx/splash_12*"], {"cap": 1.0}),
     "cast": ("sfx", ["swish-bamboo-stick-weapon-swhoshes/*swosh-10*", "swish-bamboo-stick-weapon-swhoshes/*swosh-15*"], {"cap": 0.7}),
-    "reel": ("sfx", ["68-workshop-sounds/*ratchet1*", "68-workshop-sounds/*ratchet2*"], {"cap": 0.8}),
+    "reel": ("sfx", ["bigsoundbank/1437", "bigsoundbank/1436"], {"cap": 0.7, "slice": True, "chunk": True, "takes": 2}),  # C6: a real fishing reel, softer than the ratchet
     "bubble": ("sfx", ["40-cc0-water-splash-slime-sfx/bubble_01*", "40-cc0-water-splash-slime-sfx/bubble_02*", "40-cc0-water-splash-slime-sfx/bubble_03*"], {"cap": 0.8}),
     "crate_break": ("sfx", ["35-wooden-crackshitsdestructions/crack01*", "35-wooden-crackshitsdestructions/crack04*", "100-cc0-metal-and-wood-sfx/wood_breaking_01*"], {"cap": 1.0}),
     "twig": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*wood-twigs-break-01*", "fantasy-sound-effects-tinysized-sfx/*wood-twigs-break-02*"], {"cap": 0.6}),
@@ -100,7 +100,8 @@ MAP = {
     "door_close": ("sfx", ["door-open-door-close-set/*DoorClose01*", "door-open-door-close-set/*DoorClose03*", "door-open-door-close-set/*DoorClose05*"], {"cap": 1.2}),
     "locked": ("sfx", ["door-lock-sounds/LockedDoorHandleJiggle*"], {"cap": 1.0}),
     "unlock": ("sfx", ["door-lock-sounds/UnlockDoor*", "100-cc0-metal-and-wood-sfx/lock_open_01*"], {"cap": 1.0}),
-    "chest_open": ("sfx", ["100-cc0-sfx/wooded_box_open*", "80-cc0-rpg-sfx/lock_01*"], {"cap": 1.2}),
+    "chest_open": ("sfx", ["100-cc0-sfx/wooded_box_open*", "open-chest-sfx/*"], {"cap": 1.2}),
+    "chest_close": ("sfx", ["bigsoundbank/0053"], {"cap": 0.7, "slice": True, "takes": 2, "min": 0.1}),
     "gate": ("sfx", ["100-cc0-metal-and-wood-sfx/metal_open_01*", "100-cc0-metal-and-wood-sfx/wood_squeak_01*"], {"cap": 1.4}),
     "keys": ("sfx", ["100-cc0-metal-and-wood-sfx/keys_01*", "100-cc0-metal-and-wood-sfx/keys_03*"], {"cap": 1.0}),
     "glass": ("sfx", ["100-cc0-sfx/glass_01*", "100-cc0-sfx/glass_02*", "100-cc0-sfx/glass_03*"], {"cap": 1.0}),
@@ -118,26 +119,45 @@ MAP = {
     "mail": ("sfx", ["100-cc0-sfx/paper_01*", "100-cc0-sfx/paper_02*"], {"cap": 0.8}),
     "hammer": ("sfx", ["100-cc0-metal-and-wood-sfx/wood_hammer_01*", "100-cc0-metal-and-wood-sfx/wood_hammer_02*", "100-cc0-metal-and-wood-sfx/hammer_01*"], {"cap": 0.6}),
     "anvil": ("sfx", ["hammer-on-anvil/*", "blacksmiths-hammer/blacksmithhammer.*", "100-cc0-metal-and-wood-sfx/metal_hit_01*"], {"cap": 1.0}),
-    "tools": ("sfx", ["68-workshop-sounds/*tool clatter*", "68-workshop-sounds/*tool rummaging*", "100-cc0-metal-and-wood-sfx/tools_01*"], {"cap": 1.2}),
+    "tools": ("sfx", ["68-workshop-sounds/*tool clatter*", "100-cc0-metal-and-wood-sfx/wood_hammer_02*", "100-cc0-metal-and-wood-sfx/tools_05*"], {"cap": 1.2}),
     "drill": ("sfx", ["68-workshop-sounds/*drill short 1*", "68-workshop-sounds/*drill short 2*"], {"cap": 1.2}),
     "pot": ("sfx", ["50-rpg-sound-effects/metalPot1*", "50-rpg-sound-effects/metalPot2*", "50-rpg-sound-effects/metalPot3*"], {"cap": 0.8}),
     "cooking": ("sfx", ["boiling-water-loops/cooking_without_cover*"], {"cap": 2.0}),
     "fireworks": ("sfx", ["25-cc0-bang-firework-sfx/fw_01*", "25-cc0-bang-firework-sfx/fw_03*", "25-cc0-bang-firework-sfx/fw_05*"], {"cap": 2.5}),
-    "pop": ("sfx", ["3-pop-sounds/pop1*", "3-pop-sounds/pop2*", "bubbles-pop/*"], {"cap": 0.5}),
-    "stink": ("sfx", ["58-random-sound-effects/Fizz_01*", "58-random-sound-effects/Fizz_02*"], {"cap": 1.2}),
+    "pop": ("sfx", ["3-pop-sounds/pop1*", "3-pop-sounds/pop2*", "3-pop-sounds/pop3*"], {"cap": 0.5}),
+    "stink": ("sfx", ["40-cc0-water-splash-slime-sfx/slime_04*", "40-cc0-water-splash-slime-sfx/slime_09*"], {"cap": 1.0}),  # C6: squelch with mid body, not filtered hiss
     "cave_in": ("sfx", ["cave-in/*"], {"cap": 3.0}),
     "typing": ("sfx", ["keyboard-soundpack-1-typing-and-single-keystrokes/*human_vel-001*", "keyboard-soundpack-1-typing-and-single-keystrokes/*human_vel-004*"], {"cap": 1.2}),
     "keypress": ("sfx", ["keyboard-soundpack-1-typing-and-single-keystrokes/*keypress-001*", "keyboard-soundpack-1-typing-and-single-keystrokes/*keypress-005*", "keyboard-soundpack-1-typing-and-single-keystrokes/*keypress-009*"], {"cap": 0.3}),
     "terminal": ("sfx", ["50-cc0-sci-fi-sfx/terminal_01*", "50-cc0-sci-fi-sfx/terminal_02*", "50-cc0-sci-fi-sfx/terminal_03*"], {"cap": 1.0}),
     "beep": ("sfx", ["50-cc0-sci-fi-sfx/beep_01*", "50-cc0-sci-fi-sfx/beep_02*", "50-cc0-sci-fi-sfx/beep_03*"], {"cap": 0.6}),
-    "servo": ("sfx", ["quick-drill-fix/*", "60-cc0-sci-fi-sfx/sfx_05a*"], {"cap": 1.0}),
+    "servo": ("sfx", ["60-cc0-sci-fi-sfx/sfx_05a*", "60-cc0-sci-fi-sfx/sfx_05b*"], {"cap": 0.6}),  # C6: two motor takes (the old 12 kHz whine take is gone)
     "power_off": ("sfx", ["machine-shutting-down/*"], {"cap": 2.0}),
     "power_up": ("sfx", ["50-cc0-retro-synth-sfx/power_up_01*", "50-cc0-retro-synth-sfx/power_up_03*"], {"cap": 1.2}),
     "car_door": ("sfx", ["cardoorsfx/door_closing*", "cardoorsfx/door_opening*"], {"cap": 1.2}),
     "car_start": ("sfx", ["car-engine-start-01/generic_car_startengine.*"], {"cap": 2.5}),
     "siren": ("sfx", ["sirens-and-alarm-noise/*"], {"cap": 3.0}),
     "alarm": ("sfx", ["alarm-2/*", "30-cc0-sfx-loops/alarm_01*"], {"cap": 2.0}),
-    "horn": ("sfx", ["bicycle-horn/*"], {"cap": 1.0}),
+    "horn": ("sfx", ["bicycle-horn/*"], {"cap": 1.0}),  # comic honk only: battle entrances use war_horn, cars car_horn
+    "war_horn": ("sfx", ["their-coming-generic-horn-sound/*theircoming_0*", "their-coming-generic-horn-sound/*theircoming3*"], {"cap": 2.4}),
+    "war_horn_gang": ("sfx", ["bigsoundbank/2721"], {"cap": 1.4, "slice": True, "takes": 1, "min": 0.3}),
+    "car_horn": ("sfx", ["bigsoundbank/0558", "bigsoundbank/2721"], {"cap": 0.9, "slice": True, "min": 0.15}),
+    "war_drum": ("sfx", ["horde-war-drums-loop/*"], {"cap": 2.2}),
+    "beat_tick": ("sfx", ["bigsoundbank/0007"], {"cap": 0.2, "slice": True, "takes": 2, "min": 0.01, "af": "highpass=f=300"}),
+    "dice_roll": ("sfx", ["bigsoundbank/0581", "bigsoundbank/0582"], {"cap": 1.1, "slice": True, "gap": 0.25, "min": 0.3}),
+    "shot_smg": ("sfx", ["bigsoundbank/0437", "bigsoundbank/0482"], {"cap": 0.28, "slice": True, "min": 0.03, "af": "highpass=f=90"}),
+    "knockout": ("sfx", ["bigsoundbank/0551"], {"cap": 0.5, "slice": True, "min": 0.03}),
+    "boss_down": ("sfx", ["muffled-distant-explosion/*", "cave-in/*"], {"cap": 0.9}),
+    "whistle": ("sfx", ["bigsoundbank/1170"], {"cap": 1.0, "slice": True, "takes": 2, "min": 0.2}),
+    "town_bell": ("sfx", ["bigsoundbank/0830"], {"cap": 5.5, "slice": True, "takes": 1, "gap": 1.5, "min": 1.0, "floor": -40}),
+    "town_bell_far": ("sfx", ["bigsoundbank/0830"], {"cap": 5.5, "slice": True, "takes": 1, "gap": 1.5, "min": 1.0, "floor": -40, "post": "lowpass=f=1600,aecho=0.8:0.7:180|420:0.35|0.22,volume=-6dB"}),
+    "fairy_ring": ("sfx", ["bigsoundbank/0040"], {"cap": 2.4, "slice": True, "takes": 1, "gap": 0.5, "min": 0.8, "af": "asetrate=29400,aresample=44100,highpass=f=400"}),
+    "sparkle": ("sfx", ["bigsoundbank/0040"], {"cap": 0.6, "slice": True, "gap": 0.03, "min": 0.08, "af": "asetrate=14700,aresample=44100,highpass=f=500"}),  # ~1.6 octaves down: shimmer centred 2-5 kHz  # C6: real chimes (the ACE bell cuts had no shimmer)
+    "heartbeat": ("sfx", ["bigsoundbank/0218"], {"cap": 0.9, "slice": True, "takes": 1, "gap": 0.25, "min": 0.2, "post": "highpass=f=60,equalizer=f=1500:t=o:w=1.5:g=8"}),  # C6: audible on a phone
+    "saw": ("sfx", ["bigsoundbank/0559", "bigsoundbank/0016"], {"cap": 1.6, "slice": True, "gap": 0.2, "min": 0.3}),
+    "scythe": ("sfx", ["bigsoundbank/0127"], {"cap": 0.4, "slice": True, "min": 0.06}),
+    "harvest_pluck": ("sfx", ["bigsoundbank/1074"], {"cap": 0.3, "slice": True, "min": 0.02}),
+    "swim": ("sfx", ["bigsoundbank/1514"], {"cap": 0.8, "slice": True, "gap": 0.15, "min": 0.2}),
     "cards": ("sfx", ["58-random-sound-effects/Card_Swipe_01*", "58-random-sound-effects/Cards_Riffle_Shuffle_01*"], {"cap": 1.2}),
     "clap": ("sfx", ["58-random-sound-effects/Hand_Clap_01*", "58-random-sound-effects/Hand_Clap_02*"], {"cap": 0.6}),
     # --- animals -------------------------------------------------------------
@@ -150,6 +170,26 @@ MAP = {
     "frog": ("sfx", ["frog-croaks/croak_02*", "frog-croaks/croak_03*", "frog-croaks/croak_04*"], {"cap": 1.0}),
     "seagull": ("sfx", ["solo-seagull-sound-effects/*Ambient%201*", "solo-seagull-sound-effects/*Ambient%203*", "solo-seagull-sound-effects/*Ambient%205*"], {"cap": 1.6}),
     "horse": ("sfx", ["horse-trotting/*"], {"cap": 2.0}),
+    # C6 P5 cue names (calls made before the files existed)
+    "horse_whinny": ("sfx", ["bigsoundbank/0460"], {"cap": 2.0, "slice": True, "takes": 1, "gap": 0.3, "min": 0.4}),
+    "step_hoof": ("sfx", ["bigsoundbank/1854"], {"cap": 0.22, "slice": True, "min": 0.03, "gap": 0.03}),
+    "step_swim": ("sfx", ["bigsoundbank/1514"], {"cap": 0.6, "slice": True, "gap": 0.15, "min": 0.2, "af": "volume=-4dB"}),
+    "step_wheels": ("sfx", ["bigsoundbank/1634"], {"cap": 0.8, "slice": True, "chunk": True, "takes": 2, "af": "lowpass=f=5000"}),
+    "beast_down": ("sfx", ["80-cc0-creture-sfx-2/die_01*", "80-cc0-creture-sfx-2/die_02*", "80-cc0-creture-sfx-2/die_03*"], {"cap": 1.0}),
+    "boss_fall": ("sfx", ["bigsoundbank/1022", "cave-in/*"], {"cap": 1.6, "slice": True, "takes": 2, "gap": 0.3, "min": 0.4}),
+    "status_tick": ("sfx", ["bigsoundbank/0007"], {"cap": 0.15, "slice": True, "takes": 2, "min": 0.01, "af": "highpass=f=600,volume=-6dB"}),
+    "stone_grind": ("sfx", ["bigsoundbank/0580"], {"cap": 2.0, "slice": True, "takes": 1, "gap": 0.4, "min": 0.6, "af": "lowpass=f=4000"}),
+    "plant_pat": ("sfx", ["fantasy-sound-effects-tinysized-sfx/*soil-steps-01*", "shovel-sound/*"], {"cap": 0.3, "slice": True, "min": 0.04}),
+    "yawn": ("sfx", ["80-cc0-creature-sfx/breath*", "80-cc0-creture-sfx-2/breath_02*"], {"cap": 1.4}),
+    "bow": ("sfx", ["bigsoundbank/0549", "bigsoundbank/0548"], {"cap": 0.5, "slice": True, "gap": 0.1, "min": 0.05}),
+    "whinny": ("sfx", ["bigsoundbank/0460"], {"cap": 2.0, "slice": True, "takes": 1, "gap": 0.3, "min": 0.4}),
+    "hoof": ("sfx", ["bigsoundbank/1854"], {"cap": 0.22, "slice": True, "min": 0.03, "gap": 0.03}),
+    "rooster": ("sfx", ["bigsoundbank/0283", "bigsoundbank/0104"], {"cap": 2.6, "slice": True, "takes": 2, "gap": 0.35, "min": 0.6}),
+    "moo": ("sfx", ["bigsoundbank/0845"], {"cap": 1.8, "slice": True, "gap": 0.3, "min": 0.4}),
+    "cluck": ("sfx", ["bigsoundbank/0978", "bigsoundbank/1039", "bigsoundbank/0453"], {"cap": 0.9, "slice": True, "gap": 0.12, "min": 0.1}),
+    "peep": ("sfx", ["bigsoundbank/0430", "bigsoundbank/0431", "bigsoundbank/0672"], {"cap": 0.5, "slice": True, "gap": 0.05, "min": 0.05}),
+    "quack": ("sfx", ["bigsoundbank/0276"], {"cap": 0.8, "slice": True, "gap": 0.1, "min": 0.1}),
+    "bleat": ("sfx", ["bigsoundbank/0880", "bigsoundbank/1377"], {"cap": 1.4, "slice": True, "gap": 0.2, "min": 0.3}),
     # --- mega travel (C4 P4): derived mixes of the CC0 bell dings + the air whoosh ---
     "airship_whoosh": ("sfx", ["air-whoosh/whoosh2_0.*"], {"cap": 2.6}),
     "sled_bells": ("sfx", ["bell-dingschimes/sled_jingle.*"], {"cap": 2.2}),
@@ -162,8 +202,12 @@ MAP = {
     "owl": ("spot", ["birdcricketfrog-and-mosquito-sounds/birdNight*"], {"cap": 2.5}),
     "penguin_chatter": ("spot", ["penguin-sounds/penguin_02*"], {"cap": 2.5}),
     "gull": ("spot", ["solo-seagull-sound-effects/*Ambient%202*", "solo-seagull-sound-effects/*Ambient%204*"], {"cap": 2.0}),
-    "crow": ("spot", ["crow-caw/*"], {"cap": 1.6}),
-    "frog": ("spot", ["frog-croaks/croak_01*", "frog-croaks/croak_03*"], {"cap": 1.2}),
+    "crow@spot": ("spot", ["crow-caw/*"], {"cap": 1.6}),
+    "frog@spot": ("spot", ["frog-croaks/croak_01*", "frog-croaks/croak_03*"], {"cap": 1.2}),
+    "rooster@spot": ("spot", ["bigsoundbank/0283", "bigsoundbank/0104"], {"cap": 2.6, "slice": True, "takes": 2, "gap": 0.35, "min": 0.6}),
+    "hens": ("spot", ["bigsoundbank/0282", "bigsoundbank/0978"], {"cap": 3.5, "slice": True, "takes": 2, "gap": 0.6, "min": 1.0, "floor": -34}),
+    "cow": ("spot", ["bigsoundbank/3221"], {"cap": 3.0, "slice": True, "takes": 2, "gap": 0.5, "min": 0.8}),
+    "town_bell@spot": ("spot", ["bigsoundbank/0830"], {"cap": 6.0, "slice": True, "takes": 1, "gap": 1.5, "min": 1.0, "floor": -40, "post": "lowpass=f=2400"}),
     "cicada": ("spot", ["swamp-environment-audio/cicada_1*", "swamp-environment-audio/cicada_2*"], {"cap": 4.0}),
     "insect": ("spot", ["insect-sounds/insect1*", "insect-sounds/insect3*"], {"cap": 2.5}),
     "wave": ("spot", ["beach-ocean-waves/wave_01*", "beach-ocean-waves/wave_03*"], {"cap": 6.0}),
@@ -171,25 +215,33 @@ MAP = {
     "rain_light": ("bed", ["amb-rain-loop-1/amb_rain_loop_1.*"], {}),
     "rain_heavy": ("bed", ["amb-rain-loop-2/amb_rain2.*"], {}),
     "birds_day": ("bed", ["park-ambiences/park_ambience_birds*"], {}),
-    "birds_dawn": ("bed", ["bird-chirping-sounds/birdchirping071414.*"], {}),
-    "crickets": ("bed", ["crickets-ambient-noise-loopable/*"], {}),
+    "birds_dawn": ("bed", ["bigsoundbank/0100"], {}),  # C6: 48 s forest dawn chorus (was a 1.3 s loop)
+    "crickets": ("bed", ["crickets-ambient-noise-loopable/*", "bigsoundbank/1020"], {"join": True}),
     "frogs": ("bed", ["swamp-environment-audio/swamp.*"], {}),
     "wind_soft": ("bed", ["park-ambiences/park_ambience_wind*"], {}),
-    "wind_strong": ("bed", ["wind-whoosh-loop/*"], {}),
+    "wind_strong": ("bed", ["bigsoundbank/0625"], {}),
     "cave": ("bed", ["loopable-dungeon-ambience/*"], {}),
     "hearth": ("bed", ["fireplace-sound-loop/*"], {}),
-    "campfire": ("bed", ["fire-crackling/fire-1.*"], {}),
+    "campfire": ("bed", ["bigsoundbank/3322", "fire-crackling/fire-1.*"], {"join": True}),
     "water_lap": ("bed", ["park-ambiences/park_ambience_river*"], {}),
     "river": ("bed", ["sea-and-river-wave-sounds/Vistula.*"], {}),
-    "waves": ("bed", ["beach-ocean-waves/wave_01*", "beach-ocean-waves/wave_02*", "beach-ocean-waves/wave_03*", "beach-ocean-waves/wave_04*"], {"join": True}),
+    "waves": ("bed", ["bigsoundbank/0266"], {}),
     "city_hum": ("bed", ["high-traffic-road-sounds/*"], {}),
     "neon_street": ("bed", ["scifi-city-ambient-loop/busy_cyberworld.*"], {}),
     "jungle_insects": ("bed", ["swamp-environment-audio/cicada_1*", "swamp-environment-audio/bug_1*", "swamp-environment-audio/cricket_1*"], {"join": True}),
-    "marsh": ("bed", ["swamp-environment-audio/atmosphere_1*"], {}),
+    "marsh": ("bed", ["bigsoundbank/0691"], {}),
     "basement_drips": ("bed", ["dripping-water-loop/*"], {}),
-    "boiling": ("bed", ["boiling-water-loops/cooking_with_cover*"], {}),
-    "machines": ("bed", ["30-cc0-sfx-loops/machine_03*"], {}),
-    "purr_loop": ("bed", ["cat-purr-meow/cat_purrsleepy_loop*"], {}),
+    "boiling": ("bed", ["bigsoundbank/0149", "bigsoundbank/0492"], {"join": True}),
+    "machines": ("bed", ["bigsoundbank/0502", "30-cc0-sfx-loops/machine_03*"], {}),
+    "purr_loop": ("bed", ["bigsoundbank/0436", "cat-purr-meow/cat_purrsleepy_loop*"], {"join": True}),
+    # C6: real recordings for the last synth placeholders, plus room tones
+    "town_day": ("bed", ["bigsoundbank/3542"], {"af": "lowpass=f=5000"}),
+    "crowd": ("bed", ["bigsoundbank/0825"], {}),
+    "rain_roof": ("bed", ["bigsoundbank/1293", "bigsoundbank/1294"], {"join": True, "af": "lowpass=f=3200"}),
+    "leaves": ("bed", ["bigsoundbank/0904"], {}),
+    "lava": ("bed", ["bigsoundbank/0491", "bigsoundbank/0149"], {"join": True, "af": "asetrate=30870,aresample=44100,lowpass=f=4000"}),
+    "room_shop": ("bed", ["bigsoundbank/2561"], {"af": "lowpass=f=6000"}),
+    "room_chapel": ("bed", ["bigsoundbank/0506"], {"af": "lowpass=f=3000,volume=-4dB"}),
     # --- gangster arc money (Round 13): bills, not crystal chimes ------------
     "cash_pickup": ("sfx", ["202-more-sound-effects/Money_20*", "202-more-sound-effects/Money_22*", "202-more-sound-effects/Money_24*"], {"cap": 0.6}),
     "cash_register": ("sfx", ["purchasing-sound-effect/*", "202-more-sound-effects/Money_36*", "202-more-sound-effects/Money_18*"], {"cap": 1.3}),
@@ -218,16 +270,21 @@ def files_for(root, pats):
     for p in pats:
         # match the pack folder plus anything below it (archives unpack into <pack>/<zip>_x/...)
         pack, rest = p.split("/", 1)
+        if pack == "bigsoundbank":
+            f = "bigsoundbank/" + rest[:4] + ".ogg"
+            if f in allf and f not in out:
+                out.append(f)
+            continue
         hits = sorted(f for f in allf if f.split("/")[0] == pack and fnmatch.fnmatch(os.path.basename(f), rest.split("/")[-1]))
         if hits and hits[0] not in out:
             out.append(hits[0])
     return out
 
 
-def make_sfx(src, dst, cap, mono=True, lufs=None):
+def make_sfx(src, dst, cap, mono=True, lufs=None, af_pre=""):
     d = dur(src)
     tmp = dst + ".tmp.wav"
-    trim = "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse"
+    trim = (af_pre + "," if af_pre else "") + "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse"
     run("ffmpeg", "-hide_banner", "-y", "-i", src, "-af", trim, "-ac", "1" if mono else "2", "-ar", "44100", tmp)
     d = dur(tmp)
     fo = min(0.08, d / 4) if d <= cap else 0.15
@@ -244,35 +301,235 @@ def make_sfx(src, dst, cap, mono=True, lufs=None):
         af += f",volume={-1.0 - mx:.2f}dB"
     else:
         af += f",loudnorm=I={lufs}:TP=-2:LRA=11"
-    run("ffmpeg", "-hide_banner", "-y", "-i", tmp, "-af", af, "-c:a", "libvorbis", "-q:a", "4", dst)
+    out = dst + ".new.ogg"
+    run("ffmpeg", "-hide_banner", "-y", "-i", tmp, "-af", af, "-c:a", "libvorbis", "-q:a", "4", out)
     os.remove(tmp)
+    if os.path.exists(dst):
+        os.remove(dst)  # hardlinked across worktrees: never write through
+    os.rename(out, dst)
 
 
-def make_bed(srcs, dst, join, xf=2.5, maxlen=48.0):
-    t = tempfile.mkdtemp(prefix="bed_")
+SR = 44100
+BED_LUFS = -26.0      # every bed lands here (K-weighted, so sub-bass counts for little)
+BED_MIN = 24.0        # beds shorter than this are rebuilt from shuffled slices
+BED_MAX = 48.0
+# phone speakers roll off under ~200 Hz: cut the rumble, lift presence a little
+BED_SHAPE = "highpass=f=120:p=2,equalizer=f=2500:t=o:w=2:g=2.5"
+
+
+def load(path, af="", ch=1, sr=SR):
+    import numpy as np
+    cmd = ["ffmpeg", "-v", "quiet", "-i", path]
+    if af:
+        cmd += ["-af", af]
+    cmd += ["-ac", str(ch), "-ar", str(sr), "-f", "f32le", "-"]
+    x = np.frombuffer(subprocess.run(cmd, capture_output=True, check=True).stdout, np.float32).copy()
+    return x.reshape(-1, ch) if ch > 1 else x
+
+
+def save(x, dst, ch=1, sr=SR, q=4, af=""):
+    """numpy float32 -> ogg through a temp file; removes dst first (hardlinks)."""
+    import numpy as np
+    tmp = dst + ".tmp.ogg"
+    cmd = ["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ac", str(ch), "-ar", str(sr), "-i", "-"]
+    if af:
+        cmd += ["-af", af]
+    cmd += ["-c:a", "libvorbis", "-q:a", str(q), tmp]
+    subprocess.run(cmd, input=np.ascontiguousarray(x, np.float32).tobytes(), check=True, capture_output=True)
+    if os.path.exists(dst):
+        os.remove(dst)
+    os.rename(tmp, dst)
+
+
+def lufs(path):
+    """Integrated loudness (ffmpeg ebur128)."""
+    e = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af", "ebur128", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    val = -70.0
+    for line in e.splitlines():
+        line = line.strip()
+        if line.startswith("I:") and "LUFS" in line:
+            val = float(line.split()[1])
+    return val
+
+
+def events(x, sr=SR, floor_db=-30.0, gap=0.08, min_len=0.05, pre=0.004):
+    """Onsets in a mono take: [(start, end, peak)] of stretches louder than floor_db under the file's peak."""
+    import numpy as np
+    w = max(1, int(sr * 0.01))
+    env = np.sqrt(np.convolve(x.astype(np.float64) ** 2, np.ones(w) / w, "same"))
+    pk = env.max() + 1e-12
+    on = env > pk * 10 ** (floor_db / 20)
+    out, i, n = [], 0, len(x)
+    while i < n:
+        if not on[i]:
+            i += 1
+            continue
+        j = i
+        while j < n:
+            k = j
+            while k < n and on[k]:
+                k += 1
+            nxt = k
+            while nxt < n and not on[nxt] and nxt - k < gap * sr:
+                nxt += 1
+            j = k
+            if nxt >= n or not on[nxt]:
+                break
+            j = nxt
+        if (j - i) / sr >= min_len:
+            out.append((max(0, i - int(pre * sr)), min(n, j + int(0.03 * sr)), float(env[i:j].max())))
+        i = j + 1
+    return out
+
+
+def fade(x, fin=0.004, fout=0.08, sr=SR):
+    import numpy as np
+    x = x.copy()
+    a, b = min(len(x) // 4, int(fin * sr)), min(len(x) // 3, int(fout * sr))
+    if a:
+        x[:a] *= np.linspace(0, 1, a)
+    if b:
+        x[-b:] *= np.linspace(1, 0, b)[:, None] if x.ndim > 1 else np.linspace(1, 0, b)
+    return x
+
+
+def peak_norm(x, db=-1.0):
+    import numpy as np
+    m = float(np.max(np.abs(x))) + 1e-9
+    return (x * (10 ** (db / 20) / m)).astype(np.float32)
+
+
+def sliced_takes(full, opt, n=3):
+    """Cut up to n separate takes (single calls/hits) out of longer recordings.
+    Picks the loudest events, round-robin over the source files so takes differ."""
+    import numpy as np
+    cap = float(opt.get("cap", 1.5))
+    lo = float(opt.get("min", 0.08))
+    per = []
+    for f in full:
+        x = load(f, opt.get("af", ""))
+        if "seg" in opt:
+            x = x[int(opt["seg"][0] * SR):int(opt["seg"][1] * SR)]
+        if opt.get("chunk"):
+            # continuous sounds (a reel, a motor): the loudest cap-long windows, not onsets
+            w = int(cap * SR)
+            ev = [(i, i + w, float(np.sqrt(np.mean(x[i:i + w] ** 2)))) for i in range(0, max(1, len(x) - w), w)]
+        else:
+            ev = [e for e in events(x, floor_db=float(opt.get("floor", -30.0)), gap=float(opt.get("gap", 0.08)), min_len=min(lo, 0.02))
+                  if (e[1] - e[0]) / SR >= lo]
+        ev.sort(key=lambda e: -e[2])
+        top = ev[0][2] if ev else 0
+        ev = [e for e in ev if e[2] > top * 0.3]  # skip the faint background ones
+        per.append([(x, e) for e in ev])
+    takes, k = [], 0
+    while len(takes) < n and any(per):
+        lst = per[k % len(per)]
+        if lst:
+            x, (s0, s1, _) = lst.pop(0)
+            seg = x[s0:min(s1, s0 + int(cap * SR))]
+            takes.append(peak_norm(fade(seg, fout=min(0.08, len(seg) / SR / 3) if s1 - s0 <= cap * SR else 0.12)))
+        k += 1
+    return takes
+
+
+def seamless(x, xf):
+    """Equal-power tail-into-head loop: the result's end flows straight into its start."""
+    import numpy as np
+    n, k = len(x), int(xf * SR)
+    k = min(k, n // 4)
+    t = np.linspace(0, np.pi / 2, k)
+    fi, fo = np.sin(t), np.cos(t)
+    if x.ndim > 1:
+        fi, fo = fi[:, None], fo[:, None]
+    y = x[k:].copy()
+    y[-k:] = x[n - k:] * fo + x[:k] * fi
+    return y
+
+
+def make_bed(srcs, dst, join, xf=1.5, af="", maxlen=BED_MAX, minlen=BED_MIN, seed=7):
+    """Seamless loop of at least `minlen` s: join every source (or slice and shuffle a short one),
+    shape for phone speakers, level to BED_LUFS."""
+    import numpy as np
+    rng = np.random.default_rng(seed)
     parts = []
-    for i, s in enumerate(srcs if join else srcs[:1]):
-        p = os.path.join(t, f"p{i}.wav")
-        run("ffmpeg", "-hide_banner", "-y", "-i", s, "-ac", "2", "-ar", "44100", "-af",
-            "silenceremove=start_periods=1:start_threshold=-60dB,areverse,silenceremove=start_periods=1:start_threshold=-60dB,areverse", p)
-        parts.append(p)
-    cur = parts[0]
-    for i, p in enumerate(parts[1:]):
-        nxt = os.path.join(t, f"j{i}.wav")
-        x = min(xf, dur(cur) / 3, dur(p) / 3)
-        run("ffmpeg", "-hide_banner", "-y", "-i", cur, "-i", p, "-filter_complex", f"acrossfade=d={x}:c1=tri:c2=tri", nxt)
-        cur = nxt
-    d = dur(cur)
-    if d > maxlen:
-        c2 = os.path.join(t, "cut.wav")
-        run("ffmpeg", "-hide_banner", "-y", "-i", cur, "-af", f"atrim=0:{maxlen}", c2)
-        cur, d = c2, maxlen
-    x = min(xf, d / 4)
-    loop = os.path.join(t, "loop.wav")
-    flt = (f"[0:a]atrim=0:{x},asetpts=PTS-STARTPTS[h];[0:a]atrim={x}:{d - x},asetpts=PTS-STARTPTS[b];"
-           f"[0:a]atrim={d - x}:{d},asetpts=PTS-STARTPTS[tl];[tl][h]acrossfade=d={x}:c1=tri:c2=tri[j];[b][j]concat=n=2:v=0:a=1[o]")
-    run("ffmpeg", "-hide_banner", "-y", "-i", cur, "-filter_complex", flt, "-map", "[o]", loop)
-    run("ffmpeg", "-hide_banner", "-y", "-i", loop, "-af", "loudnorm=I=-26:TP=-3:LRA=11", "-ar", "32000", "-c:a", "libvorbis", "-q:a", "1", dst)
+    for s in (srcs if join else srcs[:1]):
+        x = load(s, ",".join(f for f in (af, BED_SHAPE) if f), ch=2)
+        e = np.abs(x).max(axis=1)
+        nz = np.nonzero(e > e.max() * 0.003)[0]
+        if len(nz):
+            x = x[nz[0]:nz[-1] + 1]
+        parts.append(x)
+    total = sum(len(p) for p in parts) / SR
+
+    def xjoin(a, b, d=0.5):
+        k = min(int(d * SR), len(a) // 3, len(b) // 3)
+        t = np.linspace(0, np.pi / 2, k)[:, None]
+        return np.concatenate([a[:-k], a[-k:] * np.cos(t) + b[:k] * np.sin(t), b[k:]])
+
+    if total >= minlen:
+        cur = parts[0]
+        for p in parts[1:]:
+            cur = xjoin(cur, p, 1.5)
+        if len(cur) > maxlen * SR:
+            off = int(min(len(cur) - maxlen * SR, len(cur) * 0.1))
+            cur = cur[off:off + int(maxlen * SR)]
+    else:
+        # short pack: shuffled 4-8 s slices (each from a random spot) crossfaded into a 30 s bed
+        cur = None
+        while cur is None or len(cur) < 30 * SR:
+            p = parts[int(rng.integers(len(parts)))]
+            L = min(len(p), int(rng.uniform(4, 8) * SR))
+            o = int(rng.integers(0, max(1, len(p) - L)))
+            seg = p[o:o + L]
+            cur = seg if cur is None else xjoin(cur, seg, min(0.6, len(seg) / SR / 4))
+    y = seamless(cur, min(xf, len(cur) / SR / 6))
+    y = peak_norm(y, -3.0)
+    tmp = dst + ".lv.ogg"
+    save(y, tmp, ch=2, q=2)
+    g = BED_LUFS - lufs(tmp)
+    os.remove(tmp)
+    y = y * 10 ** (g / 20)
+    m = float(np.max(np.abs(y)))
+    if m > 0.7:  # true-peak headroom: soft-limit the rare spike instead of dropping the bed
+        y = np.tanh(y / 0.7) * 0.7
+    save(y.astype(np.float32), dst, ch=2, sr=SR, q=1, af="aresample=32000")
+    secs = round(len(y) / SR, 1)
+    bed_log(os.path.basename(dst)[:-4], dst, secs)
+    return secs
+
+
+BED_LOG = os.path.join(ROOT, "audio", "amb", "BED_LOG.json")
+
+
+def bed_log(name, path, secs):
+    import hashlib
+    log = json.load(open(BED_LOG)) if os.path.exists(BED_LOG) else {}
+    log[name] = {"secs": secs, "lufs": round(lufs(path), 1), "target": BED_LUFS,
+                 "md5": hashlib.md5(open(path, "rb").read()).hexdigest()}
+    _replace(BED_LOG, json.dumps(log, indent=1, sort_keys=True))
+
+
+def level_beds():
+    """Gain-only pass for beds that cc0_import did not build (make_ambience / make_rec_audio):
+    bring each to BED_LUFS so Ambience's dB offsets mean the same thing for every bed."""
+    import glob, hashlib
+    import numpy as np
+    log = json.load(open(BED_LOG)) if os.path.exists(BED_LOG) else {}
+    for p in sorted(glob.glob(os.path.join(ROOT, "audio", "amb", "*.ogg"))):
+        name = os.path.basename(p)[:-4]
+        if name.startswith("spot_"):
+            continue
+        if name in log and log[name].get("md5") == hashlib.md5(open(p, "rb").read()).hexdigest():
+            continue
+        x = seamless(load(p, ch=2), 1.0)  # the generated beds were cut, not crossfaded: one tail-into-head pass
+        g = BED_LUFS - lufs(p)
+        y = x * 10 ** (g / 20)
+        if float(np.max(np.abs(y))) > 0.7:
+            y = np.tanh(y / 0.7) * 0.7
+        save(y.astype(np.float32), p, ch=2, q=1, af="aresample=32000")
+        bed_log(name, p, round(len(y) / SR, 1))
+        print(f"  levelled bed {name}: {g:+.1f} dB, {len(y) / SR:.1f} s")
 
 
 def _replace(path, text):
@@ -293,13 +550,132 @@ def add_real(path, names):
         _replace(path, old + ("" if old.endswith("\n") or not old else "\n") + "".join(n + "\n" for n in new))
 
 
+def fetch(dst, packs):
+    """Download each pack's files from its OpenGameArt page (cc0_sources.json) into dst/<pack>/,
+    unpacking archives into <pack>/<archive>_x/. Packs already present are skipped."""
+    import re, urllib.request, urllib.parse, zipfile
+    src = json.load(open(SOURCES))
+    bsb = sorted(p for p in packs if p.startswith("bigsoundbank/"))
+    if bsb:
+        out = os.path.join(dst, "bigsoundbank")
+        os.makedirs(out, exist_ok=True)
+        for p in bsb:
+            sid = p.split("/", 1)[1][:4]
+            fn = os.path.join(out, sid + ".ogg")
+            if os.path.exists(fn):
+                continue
+            try:
+                urllib.request.urlretrieve(f"https://bigsoundbank.com/UPLOAD/ogg/{sid}.ogg", fn)
+            except Exception as e:  # noqa: BLE001
+                print("  bigsoundbank failed", sid, e)
+        print(f"  bigsoundbank: {len(bsb)} sounds")
+    for pack in sorted(p for p in packs if "/" not in p):
+        info = src.get(pack)
+        if not info or not info.get("cc0"):
+            print("  no cc0 source for", pack)
+            continue
+        out = os.path.join(dst, pack)
+        if os.path.isdir(out) and os.listdir(out):
+            continue
+        os.makedirs(out, exist_ok=True)
+        try:
+            html = urllib.request.urlopen(info["page"], timeout=60).read().decode("utf-8", "replace")
+        except Exception as e:  # noqa: BLE001
+            print("  page failed", pack, e)
+            continue
+        links = []
+        for m in re.finditer(r'href="(https://opengameart\.org/sites/default/files/[^"]+)"', html):
+            u = m.group(1)
+            if re.search(r"\.(zip|7z|ogg|wav|mp3|flac|tar\.gz)$", u, re.I) and u not in links:
+                links.append(u)
+        for u in links:
+            fn = os.path.join(out, urllib.parse.unquote(u.rsplit("/", 1)[1]))
+            try:
+                with urllib.request.urlopen(u, timeout=300) as r, open(fn, "wb") as fh:
+                    fh.write(r.read())
+            except Exception as e:  # noqa: BLE001
+                print("  download failed", u, e)
+                continue
+            low = fn.lower()
+            try:
+                if low.endswith(".zip"):
+                    zipfile.ZipFile(fn).extractall(fn[:-4] + "_x")
+                elif low.endswith(".7z"):
+                    import py7zr
+                    py7zr.SevenZipFile(fn).extractall(fn[:-3] + "_x")
+                elif low.endswith(".tar.gz"):
+                    import tarfile
+                    tarfile.open(fn).extractall(fn[:-7] + "_x")
+            except Exception as e:  # noqa: BLE001
+                print("  unpack failed", fn, e)
+        print(f"  fetched {pack}: {len(links)} files")
+
+
+def write_credits():
+    """Rebuild docs/AUDIO-CREDITS.md from audio/ACE_LOG.json, audio/CC0_USED.json, tools/cc0_sources.json
+    and tools/bsb_titles.json, so every shipped sound has a row."""
+    import glob
+    ace = json.load(open(os.path.join(ROOT, "audio", "ACE_LOG.json")))
+    used = json.load(open(os.path.join(ROOT, "audio", "CC0_USED.json")))
+    src = json.load(open(SOURCES))
+    bsbt = json.load(open(os.path.join(ROOT, "tools", "bsb_titles.json")))
+    music = {os.path.basename(p)[:-4] for p in glob.glob(os.path.join(ROOT, "audio", "music", "*.ogg"))}
+    L = ["# Dreams: audio sources", "",
+         "This file is generated by `python3 tools/cc0_import.py --credits` (from audio/ACE_LOG.json, audio/CC0_USED.json, tools/cc0_sources.json). Edit those, then rerun.", "",
+         "## Music, jingles and instrument sounds: ACE Music", "",
+         "Made for Dreams with ACE Music (acemusic.ai) on Tom's account. Each track lists the version used; the other version is kept in audio/ACE_LOG.json and can be swapped with `python3 tools/ace_batch.py --swap <name>`.", "",
+         "| Game name | Kind | ACE song page |", "|---|---|---|"]
+    for name in sorted(ace):
+        e = ace[name]
+        page = next((v.get("page", "") for v in e.get("versions", []) if v.get("id") == e.get("chosen")), "")
+        L.append(f"| {name} | {e.get('kind', 'music')} | {page} |")
+    tom = sorted(m for m in music if m not in ace and m in ("title", "arc_penguins", "arc_gangsters"))
+    if tom:
+        L += ["", "Title and arc themes (" + ", ".join(tom) + "): Tom's own uploads (made with ACE Music; originals in audio/incoming/)."]
+    other = sorted(m for m in music if m not in ace and m not in tom)
+    if other:
+        L += ["", "Other music files (placeholders from tools/make_audio.py until a render replaces them): " + ", ".join(other) + "."]
+    L += ["", "## Recorded sound effects and ambience: CC0", "",
+          "Every source below is CC0 (public domain), or dual-licensed with CC0 as one choice. No credit is required; it is given anyway.", "",
+          "| Source | Author | Licence | Used for |", "|---|---|---|---|"]
+    by_pack, bsb = {}, {}
+    for name, files in used.items():
+        for f in files:
+            pack = f.split("/")[0]
+            if pack == "bigsoundbank":
+                bsb.setdefault(f.split("/")[1][:4], set()).add(name)
+            else:
+                by_pack.setdefault(pack, set()).add(name)
+    for pack in sorted(by_pack, key=lambda k: src.get(k, {}).get("title", k).lower()):
+        i = src.get(pack, {})
+        lic = "/".join(i.get("licenses", ["CC0"]))
+        L.append(f"| [{i.get('title', pack)}]({i.get('page', '')}) | {i.get('author', '?')} | {lic} | {', '.join(sorted(by_pack[pack]))} |")
+    for sid in sorted(bsb):
+        t, page = (bsbt.get(sid) or [f"#{sid}", "https://bigsoundbank.com/"])
+        L.append(f"| [BigSoundBank #{sid} {t}]({page}) | Joseph Sardin | CC0 | {', '.join(sorted(bsb[sid]))} |")
+    _replace(os.path.join(ROOT, "docs", "AUDIO-CREDITS.md"), "\n".join(L) + "\n")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default="/tmp/cc0/dl")
     ap.add_argument("--dry", default="")
     ap.add_argument("--only", default="")
+    ap.add_argument("--fetch", action="store_true", help="download the packs MAP needs first")
+    ap.add_argument("--level-beds", action="store_true", help="only level the beds not built here to -26 LUFS")
+    ap.add_argument("--credits", action="store_true", help="only rebuild docs/AUDIO-CREDITS.md")
     a = ap.parse_args()
+    if a.credits:
+        write_credits()
+        return
+    if a.level_beds:
+        level_beds()
+        return
     src = json.load(open(SOURCES))
+    if a.fetch:
+        packs = {(p if p.startswith("bigsoundbank/") else p.split("/")[0]) for n, (_, pats, _) in MAP.items()
+                 if not a.only or n in a.only.split(",") for p in pats}
+        fetch(a.src, packs)
     ace = set()
     acef = os.path.join(ROOT, "audio", "sfx", "ACE.txt")
     if os.path.exists(acef):
@@ -319,16 +695,25 @@ def main():
             continue
         full = [os.path.join(a.src, f) for f in fs]
         if kind == "bed":
-            make_bed(full, os.path.join(amb_dir, f"{name}.ogg"), opt.get("join", False))
+            secs = make_bed(full, os.path.join(amb_dir, f"{name}.ogg"), opt.get("join", False), af=opt.get("af", ""))
+            print(f"  bed {name}: {secs} s")
             done_amb.append(name)
         else:
-            base = name if kind == "sfx" else "spot_" + name
+            base = (name if kind == "sfx" else "spot_" + name.split("@")[0])
+            base = base.split("@")[0]
             out_dir = sfx_dir if kind == "sfx" else amb_dir
-            for i, f in enumerate(full[:3]):
-                nm = base if i == 0 else f"{base}_{i + 1}"
-                make_sfx(f, os.path.join(out_dir, nm + ".ogg"), float(opt.get("cap", 1.5)))
-                (done_sfx if kind == "sfx" else done_amb).append(nm)
-        used[name] = fs
+            if opt.get("slice"):
+                takes = sliced_takes(full, opt, int(opt.get("takes", 3)))
+                for i, x in enumerate(takes):
+                    nm = base if i == 0 else f"{base}_{i + 1}"
+                    save(x, os.path.join(out_dir, nm + ".ogg"), af=opt.get("post", ""))
+                    (done_sfx if kind == "sfx" else done_amb).append(nm)
+            else:
+                for i, f in enumerate(full[:3]):
+                    nm = base if i == 0 else f"{base}_{i + 1}"
+                    make_sfx(f, os.path.join(out_dir, nm + ".ogg"), float(opt.get("cap", 1.5)), af_pre=opt.get("af", ""))
+                    (done_sfx if kind == "sfx" else done_amb).append(nm)
+        used[name.replace("@", "_")] = fs
     if not a.dry:
         add_real(os.path.join(ROOT, "audio", "sfx", "REAL.txt"), done_sfx)
         add_real(os.path.join(ROOT, "audio", "amb", "REAL.txt"), done_amb)
@@ -336,6 +721,7 @@ def main():
         allused = json.load(open(up)) if os.path.exists(up) else {}
         allused.update(used)  # --only runs keep every other sound's record
         _replace(up, json.dumps(allused, indent=1, sort_keys=True))
+        write_credits()
     print(f"sfx {len(done_sfx)}  amb {len(done_amb)}  missing: {missing}")
 
 

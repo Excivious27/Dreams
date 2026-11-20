@@ -71,6 +71,15 @@
   "page": "https://opengameart.org/content/12-coin-sound-effects",
   "title": "12 Coin Sound Effects"
  },
+ "12-wet-towel-hittingfallingpunching-floor-sounds": {
+  "author": "qubodup",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/12-wet-towel-hittingfallingpunching-floor-sounds",
+  "title": "12 wet towel hitting/falling/punching floor sounds"
+ },
  "150-combat-sound-effects": {
   "author": "untamedpixels",
   "cc0": true,
@@ -502,6 +511,16 @@
   ],
   "page": "https://opengameart.org/content/bicycle-horn",
   "title": "Bicycle Horn"
+ },
+ "bigsoundbank": {
+  "author": "Joseph Sardin (BigSoundBank.com)",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://bigsoundbank.com/",
+  "per_file": "https://bigsoundbank.com/UPLOAD/ogg/{id}.ogg",
+  "title": "BigSoundBank (per-sound pages bigsoundbank.com/<slug>-sNNNN.html, every file used is marked CC0 (public domain))"
  },
  "bird-chirping-sounds": {
   "author": "syncopika",
@@ -935,6 +954,15 @@
   "page": "https://opengameart.org/content/high-traffic-road-sounds",
   "title": "High traffic road sounds"
  },
+ "horde-war-drums-loop": {
+  "author": "William Hector",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/horde-war-drums-loop",
+  "title": "Horde War Drums loop"
+ },
  "horse-trotting": {
   "author": "EZduzziteh",
   "cc0": true,
@@ -1024,6 +1052,24 @@
   ],
   "page": "https://opengameart.org/content/medieval-sound-effects-weapon-impacts",
   "title": "Medieval sound effects - Weapon impacts"
+ },
+ "muffled-distant-explosion": {
+  "author": "NenadSimic",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/muffled-distant-explosion",
+  "title": "Muffled Distant Explosion"
+ },
+ "open-chest-sfx": {
+  "author": "Oiboo",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/open-chest-sfx",
+  "title": "open chest SFX"
  },
  "opening-and-closing-a-map-sounds": {
   "author": "Spring Spring",
@@ -1195,6 +1241,15 @@
   ],
   "page": "https://opengameart.org/content/swishes-sound-pack",
   "title": "Swishes Sound Pack"
+ },
+ "their-coming-generic-horn-sound": {
+  "author": "StumpyStrust",
+  "cc0": true,
+  "licenses": [
+   "CC0"
+  ],
+  "page": "https://opengameart.org/content/their-coming-generic-horn-sound",
+  "title": "Their Coming (generic horn sound)"
  },
  "tree-chop-fall-thud": {
   "author": "kheetor",
