@@ -433,53 +433,130 @@ func _festival_event(fest: String) -> void:
 				hud.toast("%d eggs hidden. Go!" % found, Color(1, 0.9, 0.4))
 				GameState.run["flags"][key] = true
 		"lantern":
-			await say([{"who": "Lumi", "text": "Write a wish, light a lantern, let it go on the river. I won't look."}, {"text": "Your lantern drifts out under the bridge with the others. The sky fills."}])
-			GameState.run["flags"][key] = true
-			Music.instance(get_tree()).sfx("fireworks", "levelup")
-			GameState.grow_vital("mana", 5)
-			hud.toast("Max mana +5", Color(0.8, 0.9, 1.0))
-			fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.6)
+			await _lantern_float(key)
 		"harvest":
-			var best := ""
-			var bv := 0
-			for id in GameState.run["inventory"].keys():
-				var it: Dictionary = GameState.items.get(id, {})
-				if (str(it.get("type", "")) == "crop" or str(it.get("family", "")) != "") and not GameState.is_locked(str(id)) and GameState.item_value(str(id)) > bv:
-					bv = GameState.item_value(str(id))
-					best = str(id)
-			if best == "":
-				await say([{"who": "Mayor Alder", "text": "Bring a crop to enter the fair! Biggest, brightest, rarest wins."}])
-			else:
-				var dc := Dialogue.instance(get_tree())
-				dc.say([{"who": "Mayor Alder", "text": "Enter your %s in the fair? (Lock an item in your bag to keep it out.)" % GameState.item_name(best), "choice": ["Enter it", "Not now"], "key": ""}])
-				await dc.finished
-				if dc.last_choice != 0:
-					player.frozen = false
-					return
-				GameState.add_item(best, -1)
-				# The judges also weigh how many kinds of crop you've ever grown (field log).
-				var grown := (GameState.run.get("grown", {}) as Dictionary).size()
-				var score := bv + grown * 4
-				var place := 1 if score >= 100 else (2 if score >= 40 else 3)
-				var art := ItemWords.with_article(GameState.item_name(best))
-				await say([{"who": "Mayor Alder", "text": "%s! %s" % [art.substr(0, 1).to_upper() + art.substr(1), ["First prize! The blue ribbon and %s." % Money.amount(300), "Second prize! The red ribbon and %s." % Money.amount(150), "Third prize! The yellow ribbon and %s." % Money.amount(50)][place - 1]]}])
-				GameState.add_money([300, 150, 50][place - 1], "festival")
-				GameState.run["flags"][key] = true
-				Music.instance(get_tree()).sfx("quest_done", "coin")
-				hud.toast("+%d crystals" % [300, 150, 50][place - 1], Color(0.7, 0.9, 1))
-				xp("farming", 40)
+			await _crop_contest(key)
 		"star":
-			await say([{"who": "Bram" if GameState.run["flags"].has("posy_gone") else "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
-			var gift: String = ["heart_fruit", "stamina_root", "mana_berry", "cake", "wine", "gold_bar"][int(GameState.run["day"]) % 6]
-			give(gift)
-			GameState.run["flags"][key] = true
-			# Everyone you know, who's still here.
-			for id in GameState.npcs:
-				if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone"):
-					GameState.add_friend(str(id), 10)
-			hud.toast("Everyone you know +10 friendship", Color(1, 0.8, 0.9))
+			await _star_wish(key)
 	RecCenter.festival_bonus(self, key)  # joined in: the rec chips in tickets
 	player.frozen = false
+
+
+## Festival mini-games (C7 P4, Tom's #28 defaults). One try per festival day (key).
+## Lantern float: pick a wish, then steer your lantern past two snags on the river.
+func _lantern_float(key: String) -> void:
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "Lumi", "text": "Write a wish, light a lantern, let it go on the river. I won't look. What are you wishing for?", "choice": ["To stay strong (health)", "To keep going (energy)", "To see more magic (mana)", "Not now"], "key": ""}])
+	await d.finished
+	if d.last_choice < 0 or d.last_choice > 2:
+		return
+	var wish: String = ["hp", "energy", "mana"][d.last_choice]
+	GameState.run["flags"][key] = true
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(GameState.run["day"]) * 31 + 7
+	var clear := 0
+	for snag in ["a floating branch", "the old bridge post"]:
+		var safe := rng.randi() % 2
+		var c := Dialogue.instance(get_tree())
+		c.say([{"text": "Your lantern bobs toward %s. The current tugs it..." % snag, "choice": ["Nudge it left", "Nudge it right", "Let it drift"], "key": ""}])
+		await c.finished
+		if c.last_choice == safe or (c.last_choice == 2 and rng.randf() < 0.5):
+			clear += 1
+			hud.toast("Clear!", Color(1, 0.95, 0.6))
+		else:
+			hud.toast("Bump! It wobbles on.", Color(1, 0.8, 0.6))
+	var lines := ["Your lantern spins once and drifts on, a little lower.", "Your lantern slips past and sails on with the others.", "Your lantern glides through both and leads the whole river of lights out under the bridge. People clap."]
+	await say([{"text": lines[clear] + " The sky fills."}])
+	Music.instance(get_tree()).sfx("fireworks", "levelup")
+	var gain := 3 + clear
+	GameState.grow_vital(wish, gain)
+	hud.toast("Max %s +%d" % [{"hp": "health", "energy": "energy", "mana": "mana"}[wish], gain], Color(0.8, 0.9, 1.0))
+	fx("sparkle", player.position + Vector2(0, -14), 14.0, 0.6)
+
+
+## Crop contest: you pick the entry; judges weigh value, quality and how many
+## kinds you've grown; two villagers' entries are shown beside yours.
+func _crop_contest(key: String) -> void:
+	var opts: Array = []
+	for id in GameState.run["inventory"].keys():
+		var it: Dictionary = GameState.items.get(id, {})
+		if (str(it.get("type", "")) == "crop" or str(it.get("family", "")) != "") and not GameState.is_locked(str(id)) and GameState.count(str(id)) > 0:
+			opts.append(str(id))
+	if opts.is_empty():
+		await say([{"who": "Mayor Alder", "text": "Bring a crop to enter the fair! Biggest, brightest, rarest wins."}])
+		return
+	opts.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) > GameState.item_value(b))
+	opts = opts.slice(0, 4)
+	var names: Array = []
+	for id: String in opts:
+		names.append(GameState.item_name(id))
+	names.append("Not now")
+	var dc := Dialogue.instance(get_tree())
+	dc.say([{"who": "Mayor Alder", "text": "Which crop are you entering? The judges look at size, colour and rarity.", "choice": names, "key": ""}])
+	await dc.finished
+	if dc.last_choice < 0 or dc.last_choice >= opts.size():
+		return
+	var best: String = opts[dc.last_choice]
+	GameState.add_item(best, -1)
+	var q: Dictionary = GameState.quality_of(best)
+	var qb := 30 if int(q.get("i", 0)) > 0 else (20 if int(q.get("g", 0)) > 0 else (10 if int(q.get("s", 0)) > 0 else 0))
+	var grown := (GameState.run.get("grown", {}) as Dictionary).size()
+	var score := GameState.item_value(best) + qb + grown * 4
+	# The other entries this year (seeded by the day so they don't change on reload).
+	var rivals := [["Hazel", "pumpkin", 95], ["Maple", "turnip", 45], ["Tam", "melon", 120], ["Granite", "potato", 55], ["Orla", "wheat", 70]]
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(GameState.run["day"]) * 13
+	var a: Array = rivals[rng.randi() % rivals.size()]
+	var b: Array = rivals[(rivals.find(a) + 1 + rng.randi() % (rivals.size() - 1)) % rivals.size()]
+	var better := int(int(a[2]) > score) + int(int(b[2]) > score)
+	var place := 1 + better
+	var art := ItemWords.with_article(GameState.item_name(best))
+	await say([{"text": "The table is crowded: %s's %s, %s's %s, and your %s, polished till it shines." % [a[0], GameState.item_name(str(a[1])), b[0], GameState.item_name(str(b[1])), GameState.item_name(best)]},
+		{"who": "Mayor Alder", "text": "%s! %s" % [art.substr(0, 1).to_upper() + art.substr(1), ["First prize! The blue ribbon and %s." % Money.amount(300), "Second prize! The red ribbon and %s." % Money.amount(150), "Third prize! The yellow ribbon and %s." % Money.amount(50)][place - 1]]}])
+	GameState.add_money([300, 150, 50][place - 1], "festival")
+	GameState.run["flags"][key] = true
+	Music.instance(get_tree()).sfx("quest_done", "coin")
+	hud.toast("+%s" % Money.amount([300, 150, 50][place - 1]), Color(0.7, 0.9, 1))
+	xp("farming", 40)
+
+
+## Star-wish: a small gift box, a wish for a lasting little boon, and a star sent
+## to one villager (a big friendship boost); everyone you know still gets +10.
+func _star_wish(key: String) -> void:
+	await say([{"who": "Bram" if GameState.run["flags"].has("posy_gone") else "Posy", "text": "Star Festival! Everyone gives one gift. Here's yours."}, {"text": "A small box. Inside: something somebody thought you'd like."}])
+	var gift: String = ["heart_fruit", "stamina_root", "mana_berry", "cake", "wine", "gold_bar"][int(GameState.run["day"]) % 6]
+	give(gift)
+	GameState.run["flags"][key] = true
+	var d := Dialogue.instance(get_tree())
+	d.say([{"who": "Mayor Alder", "text": "Now look up and make a star-wish. Just one. The sky's listening tonight.", "choice": ["For good health", "For tireless days", "For a little more magic", "No wish this year"], "key": ""}])
+	await d.finished
+	if d.last_choice >= 0 and d.last_choice <= 2:
+		var v: String = ["hp", "energy", "mana"][d.last_choice]
+		GameState.grow_vital(v, 5)
+		hud.toast("A star falls for you. Max %s +5" % {"hp": "health", "energy": "energy", "mana": "mana"}[v], Color(0.9, 0.9, 1))
+	var known: Array = []
+	for id in GameState.npcs:
+		if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone") and Hearts.data().has(str(id)) and str(Hearts.data()[str(id)].get("arc", "")) in ["", str(GameState.run.get("arc", ""))]:
+			known.append(str(id))
+	known.sort_custom(func(a: String, b: String) -> bool: return int(GameState.run["friendship"].get(a, 0)) > int(GameState.run["friendship"].get(b, 0)))
+	known = known.slice(0, 4)
+	if not known.is_empty():
+		var nm: Array = []
+		for id: String in known:
+			nm.append(str(GameState.npcs[id]["name"]))
+		nm.append("Keep it for myself")
+		var s2 := Dialogue.instance(get_tree())
+		s2.say([{"text": "Your paper star is in your hand. Who should it go to?", "choice": nm, "key": ""}])
+		await s2.finished
+		if s2.last_choice >= 0 and s2.last_choice < known.size():
+			var who: String = known[s2.last_choice]
+			GameState.add_friend(who, 30)
+			hud.toast("%s +30: they'll keep that star." % str(GameState.npcs[who]["name"]), Color(1, 0.8, 0.9))
+	# Everyone you know, who's still here.
+	for id in GameState.npcs:
+		if int(GameState.run["friendship"].get(str(id), 0)) > 0 and not GameState.run["flags"].has(str(id) + "_gone"):
+			GameState.add_friend(str(id), 10)
+	hud.toast("Everyone you know +10 friendship", Color(1, 0.8, 0.9))
 
 
 ## Tall iron lamps on the avenues (Prompts 09 plaza sheet), the old lamp otherwise.
@@ -896,6 +973,9 @@ func _talk(n: Npc) -> void:
 	if await Hearts.talk(self, id):
 		if GameState.can_gift(id, sel):
 			hud.toast("Talk to %s again to give the %s." % [name, GameState.item_name(sel)], Color(1, 0.85, 0.9))
+		player.frozen = false
+		return
+	if await SideStory.talk(self, id):  # C7 P4 side stories
 		player.frozen = false
 		return
 	if await Quests.talk(self, id, name):

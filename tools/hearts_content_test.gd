@@ -123,5 +123,44 @@ func _run() -> void:
 	GameState.run["friendship"] = {"maple": 30}
 	check(Mail._birthday_tipster("gideon") == "maple" or Mail._birthday_tipster("gideon") == "", "birthday tip from a known villager")
 	check(Mail._birthday_tipster("maple") != "maple", "nobody tips you off about themselves")
+	# --- side stories ---
+	_side_stories()
 	print("hearts_content_test: ", "OK" if fails == 0 else "%d FAILED" % fails)
 	quit(1 if fails > 0 else 0)
+
+
+func _side_stories() -> void:
+	var cs := SideStory.chains()
+	check(cs.size() == 7, "7 side stories (%d)" % cs.size())
+	var story: Dictionary = GameState.load_json("res://data/story.json")
+	var beat_flags := {"boss_wastes": true}
+	for arc in ["penguins", "gangsters"]:
+		for ch: Dictionary in story.get(arc, []):
+			for b: Dictionary in ch.get("beats", []):
+				beat_flags["st_" + str(b.get("id", ""))] = true
+	for c: Dictionary in cs:
+		check(beat_flags.has(str(c["when"].get("flag", ""))), "%s starts on a real flag" % c["id"])
+		check((c["steps"] as Array).size() >= 3, "%s has 3+ scenes" % c["id"])
+		for st: Dictionary in c["steps"]:
+			var g := str(st["giver"])
+			check(GameState.npcs.has(g) or Crew.members().has(g), "%s giver %s exists" % [c["id"], g])
+			for k in ["need", "give"]:
+				if st.has(k):
+					check(GameState.items.has(str(st[k][0])), "%s %s item %s exists" % [c["id"], k, st[k][0]])
+			if st.has("choice"):
+				var o: Array = st["choice"]["options"]
+				check(Dialogue.is_way_out(str(o[o.size() - 1])), "%s choice has a way out" % c["id"])
+	# Gating: penguin chains wait for their story flag, one step a day, givers in order.
+	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
+	check(SideStory.due("granite").is_empty(), "Big Jim's brother waits for the campfire")
+	GameState.run["flags"]["st_p3_campfire"] = true
+	var d := SideStory.due("granite")
+	check(not d.is_empty() and str(d[0]["id"]) == "jim_brother" and int(d[1]) == 0, "Granite starts Big Jim's brother")
+	check(SideStory.due("sel").is_empty(), "Sel's step waits for Granite's")
+	GameState.run["flags"]["ss_jim_brother_0"] = true
+	GameState.run["flags"]["ss_jim_brother_day"] = int(GameState.run["day"])
+	check(SideStory.due("sel").is_empty(), "next scene waits for tomorrow")
+	GameState.run["day"] = int(GameState.run["day"]) + 1
+	check(not SideStory.due("sel").is_empty(), "Sel's step is due the next day")
+	check(SideStory.due("mama_rosa").is_empty(), "gangster chains stay out of the penguin arc")
+	check(SideStory.progress()[1] == 4, "4 penguin side stories")

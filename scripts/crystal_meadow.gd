@@ -190,6 +190,9 @@ func _talk_catkins() -> void:
 	if await Hearts.talk(self, "catkins"):
 		player.frozen = false
 		return
+	if await SideStory.talk(self, "catkins"):  # C7 P4 side stories
+		player.frozen = false
+		return
 	if not GameState.run["talked_today"].has("catkins"):
 		GameState.run["talked_today"]["catkins"] = true
 		GameState.add_friend("catkins", 5)

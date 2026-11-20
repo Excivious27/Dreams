@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 7 fix P4: villagers, hearts, mail, board, talk
+- Heart scenes: every ♥8 and ♥10 (all 25 villagers) now opens with a narrated staging line and ends with the villager's own closing words; Catkins has a full penguin-only heart arc (Star Crystal kitten, guardian line, four elements, monastery). Social tab: "♥N scene waiting" and, after ♥10, "If the town fell". Community farm talk plays heart scenes; a held gift after a heart scene gets a "talk again" toast.
+- Side stories (Guide 11 #20-26): `SideStory` + data/side_stories.json (tools/gen_side_stories.py), 7 chains x 3 scenes, one step a day, journal hints; hooked in town/interior/region/lake/crystal meadow talk.
+- Festivals: lantern float (wish + two snags), crop contest (you pick the entry, rival entries, quality counts, cash in the gang arc), star-wish (wish + send a star to a villager).
+- Words: `ItemWords` ("3 Turnips", "an Apple", "some Turnip Seeds") in gift lines, favour letters, board rows/toasts, board quest text. Mail: season-aware favours, no wool/honey without the source, mid-day letters toast, the cap never drops unread letters/untaken gifts, per-villager gift/chat notes without repeats, birthday tips from someone you know, festival/storm/blizzard/hall-hours wording. Text: Bram's wine kept unopened (penguin), Wren is Wren jr's mother, Pip/bell, Marlowe/Sel/Theo/Orla facts, Ivy counts the arc's money, Gideon's gangster intro pays cash, rec/mega letter fixes.
+- Test: tools/hearts_content_test.gd.
+
 ## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
 
 - Music mix: even 3 dB volume steps (`Settings._db`, defaults music 9 / sound 8 / nature 7, `BUS_TRIM`), MUSIC_DB -2 (songs ~5 dB up), a hard limiter on Master (`Settings.ensure_limiter`, ceiling -1 dB), jingles trimmed (GROUP_DB j_ -2) and the song ducks -10 dB under every jingle; a -3 dB dip while a dialogue box is open; night/storm duck skipped during combat/boss songs. Duck layers (`Music.set_duck_layer(owner, db, attack, release, hold)`) so Ambience's `set_duck` can't undo a battle/jingle dip.

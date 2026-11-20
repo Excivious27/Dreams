@@ -336,6 +336,9 @@ func _talk_marlowe() -> void:
 	if await Hearts.talk(self, "marlowe"):
 		player.frozen = false
 		return
+	if await SideStory.talk(self, "marlowe"):  # C7 P4 side stories
+		player.frozen = false
+		return
 	if await Quests.talk(self, "marlowe", "Marlowe"):
 		player.frozen = false
 		return
