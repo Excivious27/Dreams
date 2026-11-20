@@ -394,6 +394,9 @@ python3 tools/slice_c10b.py check || { echo "C10b outdoor decor art check failed
 echo "== C11a ranch art: species strips, building looks, icons, stations =="
 python3 tools/slice_c11a.py check || { echo "C11a ranch art check failed"; exit 1; }
 
+echo "== C11b ranch art: exotic/fantastic/lab strips, team poses, habitats, icons, violet guard =="
+python3 tools/slice_c11b.py check || { echo "C11b ranch art check failed"; exit 1; }
+
 echo "== economy: no money loops, crops and brews inside their bands =="
 python3 tools/econ_check.py || { echo "Economy check failed"; exit 1; }
 

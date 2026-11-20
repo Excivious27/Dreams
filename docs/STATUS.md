@@ -2,6 +2,8 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — C11b art lane: 30 renders sliced by new tools/slice_c11b.py into 32 exotic/fantastic/lab species (adult, baby, variant, 8 uniques), 12 team pose sets, 16 habitat buildings x day/snow/night, 46 item icons, 8 stations, 24 interior pieces + 6 floors, 32 UI badges; table art/gen/animals/_ranch_art_c11b.json.
+
 ## 2026-11-20 — CONDUCT 11a fix P1: Ranch core (data + runtime)
 - tools/gen_ranch.py -> data/ranch.json: 9 classic species both arcs (chicken incl. rooster/golden looks, duck, cow, sheep, goat, llama, pig, rabbit, bees), 5 homes with tiers (coop/barn 1-3, hutch/sty 1-2, apiary 1-3: cap, adds feeder/incubator/auto_water/heater/breeding, pen rects), products, rules, names, legacy table, processing, planned v2 exotics. Writes feather/rabbit_fur/beeswax items and the hay text; self-checks art, items, tiers, pen space, rehome loops, banned words. In regen_data.sh after gen_skill_trees.
 - scripts/ranch.gd: care loop (hay by hand/trough/silo feeder/graze/spouse, pet, mood, friendship 0-1000), overnight goods with quality from friendship+mood, pigs dig outdoors only, extra goods (feathers, beeswax), breeding without gender checks + genetics-lite variants, incubator, growing up, naming/rename, rehome (lives on at Tam's pasture; young ones pay 0), source_ok, tap()/hint()/need()/art_for() for the farm, migrate() from builds/run.animals/coop_hatch (SAVE_VERSION 12, "ranch" in RUN_BLOCKS).

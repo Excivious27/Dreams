@@ -1,0 +1,2667 @@
+{
+ "_buildings": {
+  "aviary": {
+   "1": {
+    "group": "buildings",
+    "night": "aviary_1_night",
+    "snow": "aviary_1_snow",
+    "sprite": "aviary_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "aviary_2_night",
+    "snow": "aviary_2_snow",
+    "sprite": "aviary_2"
+   }
+  },
+  "barn": {
+   "4": {
+    "group": "buildings",
+    "night": "barn_4_night",
+    "snow": "barn_4_snow",
+    "sprite": "barn_4"
+   }
+  },
+  "bio_dome": {
+   "1": {
+    "group": "buildings",
+    "night": "bio_dome_1_night",
+    "snow": "bio_dome_1_snow",
+    "sprite": "bio_dome_1"
+   }
+  },
+  "drone_loft": {
+   "1": {
+    "group": "buildings",
+    "night": "drone_loft_1_night",
+    "snow": "drone_loft_1_snow",
+    "sprite": "drone_loft_1"
+   }
+  },
+  "ember_pit": {
+   "1": {
+    "group": "buildings",
+    "night": "ember_pit_1_night",
+    "snow": "ember_pit_1_snow",
+    "sprite": "ember_pit_1"
+   }
+  },
+  "enclosure": {
+   "1": {
+    "group": "buildings",
+    "night": "enclosure_1_night",
+    "snow": "enclosure_1_snow",
+    "sprite": "enclosure_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "enclosure_2_night",
+    "snow": "enclosure_2_snow",
+    "sprite": "enclosure_2"
+   }
+  },
+  "grow_tank": {
+   "1": {
+    "group": "buildings",
+    "night": "grow_tank_1_night",
+    "snow": "grow_tank_1_snow",
+    "sprite": "grow_tank_1"
+   }
+  },
+  "lab_barn": {
+   "4": {
+    "group": "buildings",
+    "night": "lab_barn_4_night",
+    "snow": "lab_barn_4_snow",
+    "sprite": "lab_barn_4"
+   }
+  },
+  "ranch_hut": {
+   "1": {
+    "group": "buildings",
+    "night": "ranch_hut_1_night",
+    "snow": "ranch_hut_1_snow",
+    "sprite": "ranch_hut_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "ranch_hut_2_night",
+    "snow": "ranch_hut_2_snow",
+    "sprite": "ranch_hut_2"
+   }
+  },
+  "star_dome": {
+   "1": {
+    "group": "buildings",
+    "night": "star_dome_1_night",
+    "snow": "star_dome_1_snow",
+    "sprite": "star_dome_1"
+   }
+  },
+  "terrarium": {
+   "1": {
+    "group": "buildings",
+    "night": "terrarium_1_night",
+    "snow": "terrarium_1_snow",
+    "sprite": "terrarium_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "terrarium_2_night",
+    "snow": "terrarium_2_snow",
+    "sprite": "terrarium_2"
+   }
+  },
+  "tide_pool": {
+   "1": {
+    "group": "buildings",
+    "night": "tide_pool_1_night",
+    "snow": "tide_pool_1_snow",
+    "sprite": "tide_pool_1"
+   }
+  }
+ },
+ "_gang_look": {
+  "aviary": "drone_loft",
+  "barn_4": "lab_barn_4",
+  "enclosure": "bio_dome",
+  "terrarium": "grow_tank"
+ },
+ "_interior": {
+  "furniture": [
+   "rn_perch_tree",
+   "rn_nest_ledge",
+   "rn_seed_tray",
+   "rn_bird_bath",
+   "rn_heat_rock",
+   "rn_basking_lamp",
+   "rn_sand_patch",
+   "rn_little_pool",
+   "rn_hay_rack_big",
+   "rn_mineral_lick",
+   "rn_hand_bunk",
+   "rn_tool_board",
+   "rn_chore_board",
+   "rn_lunch_table",
+   "rn_boot_rack",
+   "rn_lantern_hook",
+   "rn_coral_rock",
+   "rn_ember_vent",
+   "rn_moon_rock",
+   "rn_lab_pod",
+   "rn_cable_crate",
+   "rn_nutrient_dispenser",
+   "rn_steel_feeder",
+   "rn_server_rack"
+  ],
+  "seamless": [
+   "rn_sand_floor",
+   "rn_aviary_floor",
+   "rn_terrarium_moss",
+   "rn_lab_steel",
+   "rn_hut_planks",
+   "rn_tide_tile"
+  ]
+ },
+ "_items": [
+  "ostrich_egg",
+  "emu_egg",
+  "plume",
+  "alpaca_fleece",
+  "shed_scale",
+  "yak_wool",
+  "peacock_feather",
+  "shell_moss",
+  "buffalo_milk",
+  "moon_fluff",
+  "moon_milk",
+  "sea_milk",
+  "ember_scale",
+  "roc_egg",
+  "roc_feather",
+  "glow_silk",
+  "crystal_egg",
+  "star_wool",
+  "aurora_tuft",
+  "circuit_egg",
+  "glow_wool",
+  "coolant",
+  "static_fluff",
+  "alloy_egg",
+  "grand_omelette",
+  "fine_yarn",
+  "scale_charm",
+  "plume_hat",
+  "drake_chow",
+  "moon_cheese",
+  "glow_yarn",
+  "yak_cheese",
+  "buffalo_mozzarella",
+  "star_yarn",
+  "cloud_yarn",
+  "ember_charm",
+  "pearl_necklace",
+  "feather_fan",
+  "synth_milk",
+  "giant_egg_custard",
+  "moss_tea_blend",
+  "exotic_feed",
+  "lab_pod",
+  "chrome_hen_pod",
+  "tune_up_kit",
+  "heat_lamp_bulb",
+  "scale_brush",
+  "static_scale"
+ ],
+ "_stations": [
+  "exotic_hatchery",
+  "carding_mill",
+  "star_loom",
+  "gene_splicer",
+  "cheese_vat",
+  "scale_polisher",
+  "pearl_tumbler",
+  "feed_mixer"
+ ],
+ "_ui": [
+  "ribbon_1st",
+  "ribbon_2nd",
+  "ribbon_3rd",
+  "rosette_champion",
+  "trophy_best_in_show",
+  "ribbon_participant",
+  "show_badge",
+  "judge_card",
+  "ab_kick",
+  "ab_spit",
+  "ab_tail_swipe",
+  "ab_pounce",
+  "ab_ember_puff",
+  "ab_headbutt",
+  "ab_bubble_shot",
+  "ab_charge",
+  "ab_zap",
+  "ab_shell_guard",
+  "ab_dash_kick",
+  "call_whistle",
+  "task_water",
+  "task_harvest",
+  "task_feed",
+  "task_pet",
+  "task_forage",
+  "task_guard",
+  "task_haul",
+  "task_rest",
+  "add_tide_pool",
+  "add_moon_lamp",
+  "add_perch",
+  "add_terrarium"
+ ],
+ "alpaca": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "",
+  "baby": "alpaca_baby",
+  "family": "exotics",
+  "height": {
+   "alpaca": 26,
+   "alpaca_baby": 14,
+   "alpaca_brown": 26,
+   "alpaca_midnight": 26,
+   "alpaca_white": 26
+  },
+  "kind": "alpaca",
+  "kind_anims": {
+   "alpaca": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "alpaca_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "alpaca_brown": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "alpaca_midnight": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "alpaca_white": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [
+   "alpaca_midnight"
+  ],
+  "shorn": "",
+  "special": "spit",
+  "team": true,
+  "variants": [
+   "alpaca_brown",
+   "alpaca_white"
+  ]
+ },
+ "aurora_fox": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "aurora_fox_baby",
+  "family": "fantastic",
+  "height": {
+   "aurora_fox": 15,
+   "aurora_fox_amber": 15,
+   "aurora_fox_baby": 8,
+   "aurora_fox_sunfire": 15
+  },
+  "kind": "aurora_fox",
+  "kind_anims": {
+   "aurora_fox": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "aurora_fox_amber": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "aurora_fox_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "aurora_fox_sunfire": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [
+   "aurora_fox_sunfire"
+  ],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "aurora_fox_amber"
+  ]
+ },
+ "buffalo": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "",
+  "baby": "buffalo_baby",
+  "family": "exotics",
+  "height": {
+   "buffalo": 28,
+   "buffalo_baby": 15,
+   "buffalo_umber": 28
+  },
+  "kind": "buffalo",
+  "kind_anims": {
+   "buffalo": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "buffalo_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "buffalo_umber": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "buffalo_umber"
+  ]
+ },
+ "chrome_hen": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "gangsters",
+  "baby": "chrome_hen_baby",
+  "family": "lab",
+  "height": {
+   "chrome_hen": 12,
+   "chrome_hen_amber": 12,
+   "chrome_hen_baby": 7,
+   "chrome_hen_gold": 12
+  },
+  "kind": "chrome_hen",
+  "kind_anims": {
+   "chrome_hen": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chrome_hen_amber": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chrome_hen_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chrome_hen_gold": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [
+   "chrome_hen_gold"
+  ],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "chrome_hen_amber"
+  ]
+ },
+ "chrome_runner": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "gangsters",
+  "baby": "chrome_runner_baby",
+  "family": "lab",
+  "height": {
+   "chrome_runner": 34,
+   "chrome_runner_amber": 34,
+   "chrome_runner_baby": 19
+  },
+  "kind": "chrome_runner",
+  "kind_anims": {
+   "chrome_runner": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "chrome_runner_amber": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "chrome_runner_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "dash_kick",
+  "team": true,
+  "variants": [
+   "chrome_runner_amber"
+  ]
+ },
+ "circuit_cow": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "gangsters",
+  "baby": "circuit_cow_baby",
+  "family": "lab",
+  "height": {
+   "circuit_cow": 28,
+   "circuit_cow_amber": 28,
+   "circuit_cow_baby": 15,
+   "circuit_cow_gold": 28
+  },
+  "kind": "circuit_cow",
+  "kind_anims": {
+   "circuit_cow": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "circuit_cow_amber": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "circuit_cow_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "circuit_cow_gold": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [
+   "circuit_cow_gold"
+  ],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "circuit_cow_amber"
+  ]
+ },
+ "circuit_goat": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "gangsters",
+  "baby": "circuit_goat_baby",
+  "family": "lab",
+  "height": {
+   "circuit_goat": 20,
+   "circuit_goat_baby": 11,
+   "circuit_goat_teal": 20
+  },
+  "kind": "circuit_goat",
+  "kind_anims": {
+   "circuit_goat": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "circuit_goat_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "circuit_goat_teal": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "headbutt",
+  "team": true,
+  "variants": [
+   "circuit_goat_teal"
+  ]
+ },
+ "cloud_sheep": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "cloud_sheep_baby",
+  "family": "fantastic",
+  "height": {
+   "cloud_sheep": 20,
+   "cloud_sheep_baby": 11,
+   "cloud_sheep_dusk": 20
+  },
+  "kind": "cloud_sheep",
+  "kind_anims": {
+   "cloud_sheep": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "cloud_sheep_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "cloud_sheep_dusk": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "cloud_sheep_dusk"
+  ]
+ },
+ "coral_seahorse": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "penguins",
+  "baby": "coral_seahorse_baby",
+  "family": "fantastic",
+  "height": {
+   "coral_seahorse": 18,
+   "coral_seahorse_baby": 10,
+   "coral_seahorse_sunny": 18
+  },
+  "kind": "coral_seahorse",
+  "kind_anims": {
+   "coral_seahorse": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "coral_seahorse_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "coral_seahorse_sunny": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "bubble_shot",
+  "team": true,
+  "variants": [
+   "coral_seahorse_sunny"
+  ]
+ },
+ "crystal_hen": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "crystal_hen_baby",
+  "family": "fantastic",
+  "height": {
+   "crystal_hen": 12,
+   "crystal_hen_baby": 7,
+   "crystal_hen_rose": 12
+  },
+  "kind": "crystal_hen",
+  "kind_anims": {
+   "crystal_hen": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "crystal_hen_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "crystal_hen_rose": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "crystal_hen_rose"
+  ]
+ },
+ "deep_glowworm": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "deep_glowworm_baby",
+  "family": "fantastic",
+  "height": {
+   "deep_glowworm": 9,
+   "deep_glowworm_baby": 5,
+   "deep_glowworm_lime": 9
+  },
+  "kind": "deep_glowworm",
+  "kind_anims": {
+   "deep_glowworm": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "deep_glowworm_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "deep_glowworm_lime": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": true,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "deep_glowworm_lime"
+  ]
+ },
+ "drone_hog": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "gangsters",
+  "baby": "drone_hog_baby",
+  "family": "lab",
+  "height": {
+   "drone_hog": 17,
+   "drone_hog_baby": 9,
+   "drone_hog_teal": 17
+  },
+  "kind": "drone_hog",
+  "kind_anims": {
+   "drone_hog": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "drone_hog_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "drone_hog_teal": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "charge",
+  "team": true,
+  "variants": [
+   "drone_hog_teal"
+  ]
+ },
+ "ember_newt": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "ember_newt_baby",
+  "family": "fantastic",
+  "height": {
+   "ember_newt": 10,
+   "ember_newt_baby": 6,
+   "ember_newt_gold": 10
+  },
+  "kind": "ember_newt",
+  "kind_anims": {
+   "ember_newt": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "ember_newt_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "ember_newt_gold": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": true,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "ember_newt_gold"
+  ]
+ },
+ "emu": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "",
+  "baby": "emu_baby",
+  "family": "exotics",
+  "height": {
+   "emu": 30,
+   "emu_baby": 16,
+   "emu_blueneck": 30
+  },
+  "kind": "emu",
+  "kind_anims": {
+   "emu": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "emu_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "emu_blueneck": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "kick",
+  "team": true,
+  "variants": [
+   "emu_blueneck"
+  ]
+ },
+ "frost_otter": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "penguins",
+  "baby": "frost_otter_baby",
+  "family": "fantastic",
+  "height": {
+   "frost_otter": 12,
+   "frost_otter_baby": 7,
+   "frost_otter_sable": 12
+  },
+  "kind": "frost_otter",
+  "kind_anims": {
+   "frost_otter": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "frost_otter_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "frost_otter_sable": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "pounce",
+  "team": true,
+  "variants": [
+   "frost_otter_sable"
+  ]
+ },
+ "frost_wyrmling": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "penguins",
+  "baby": "frost_wyrmling_baby",
+  "family": "fantastic",
+  "height": {
+   "frost_wyrmling": 18,
+   "frost_wyrmling_baby": 10,
+   "frost_wyrmling_jade": 18
+  },
+  "kind": "frost_wyrmling",
+  "kind_anims": {
+   "frost_wyrmling": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "frost_wyrmling_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "frost_wyrmling_jade": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "frost_breath",
+  "team": true,
+  "variants": [
+   "frost_wyrmling_jade"
+  ]
+ },
+ "glow_gecko": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "glow_gecko_baby",
+  "family": "fantastic",
+  "height": {
+   "glow_gecko": 9,
+   "glow_gecko_aqua": 9,
+   "glow_gecko_baby": 5
+  },
+  "kind": "glow_gecko",
+  "kind_anims": {
+   "glow_gecko": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "glow_gecko_aqua": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "glow_gecko_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": true,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "glow_gecko_aqua"
+  ]
+ },
+ "glow_sheep": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "gangsters",
+  "baby": "glow_sheep_baby",
+  "family": "lab",
+  "height": {
+   "glow_sheep": 20,
+   "glow_sheep_amber": 20,
+   "glow_sheep_baby": 11
+  },
+  "kind": "glow_sheep",
+  "kind_anims": {
+   "glow_sheep": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "glow_sheep_amber": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "glow_sheep_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "glow_sheep_amber"
+  ]
+ },
+ "kelp_calf": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "kelp_calf_baby",
+  "family": "fantastic",
+  "height": {
+   "kelp_calf": 18,
+   "kelp_calf_baby": 10,
+   "kelp_calf_teal": 18
+  },
+  "kind": "kelp_calf",
+  "kind_anims": {
+   "kelp_calf": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "kelp_calf_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "kelp_calf_teal": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "kelp_calf_teal"
+  ]
+ },
+ "komodo": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "",
+  "baby": "komodo_baby",
+  "family": "exotics",
+  "height": {
+   "komodo": 14,
+   "komodo_baby": 8,
+   "komodo_gold": 14,
+   "komodo_teal": 14
+  },
+  "kind": "komodo",
+  "kind_anims": {
+   "komodo": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "komodo_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "komodo_gold": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "komodo_teal": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": true,
+  "rare": [
+   "komodo_gold"
+  ],
+  "shorn": "",
+  "special": "tail_swipe",
+  "team": true,
+  "variants": [
+   "komodo_teal"
+  ]
+ },
+ "lantern_moth": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "lantern_moth_baby",
+  "family": "fantastic",
+  "height": {
+   "lantern_moth": 14,
+   "lantern_moth_baby": 8,
+   "lantern_moth_mint": 14
+  },
+  "kind": "lantern_moth",
+  "kind_anims": {
+   "lantern_moth": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "lantern_moth_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "lantern_moth_mint": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "lantern_moth_mint"
+  ]
+ },
+ "moon_cow": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "moon_cow_baby",
+  "family": "fantastic",
+  "height": {
+   "moon_cow": 26,
+   "moon_cow_baby": 14,
+   "moon_cow_mint": 26
+  },
+  "kind": "moon_cow",
+  "kind_anims": {
+   "moon_cow": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "moon_cow_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "moon_cow_mint": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "moon_cow_mint"
+  ]
+ },
+ "moon_hare": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "moon_hare_baby",
+  "family": "fantastic",
+  "height": {
+   "moon_hare": 10,
+   "moon_hare_baby": 6,
+   "moon_hare_rose": 10
+  },
+  "kind": "moon_hare",
+  "kind_anims": {
+   "moon_hare": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "moon_hare_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "moon_hare_rose": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "moon_hare_rose"
+  ]
+ },
+ "ostrich": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "",
+  "baby": "ostrich_baby",
+  "family": "exotics",
+  "height": {
+   "ostrich": 34,
+   "ostrich_baby": 19,
+   "ostrich_crystal": 34,
+   "ostrich_tawny": 34
+  },
+  "kind": "ostrich",
+  "kind_anims": {
+   "ostrich": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "ostrich_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "ostrich_crystal": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "ostrich_tawny": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [
+   "ostrich_crystal"
+  ],
+  "shorn": "",
+  "special": "kick",
+  "team": true,
+  "variants": [
+   "ostrich_tawny"
+  ]
+ },
+ "peacock": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "",
+  "baby": "peacock_baby",
+  "family": "exotics",
+  "height": {
+   "peacock": 18,
+   "peacock_albino": 18,
+   "peacock_baby": 10,
+   "peacock_emerald": 18
+  },
+  "kind": "peacock",
+  "kind_anims": {
+   "peacock": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "peacock_albino": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "peacock_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "peacock_emerald": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [
+   "peacock_albino"
+  ],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "peacock_emerald"
+  ]
+ },
+ "snow_yak": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "",
+  "baby": "snow_yak_baby",
+  "family": "exotics",
+  "height": {
+   "snow_yak": 28,
+   "snow_yak_baby": 15,
+   "snow_yak_brown": 28
+  },
+  "kind": "snow_yak",
+  "kind_anims": {
+   "snow_yak": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "snow_yak_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "snow_yak_brown": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "snow_yak_brown"
+  ]
+ },
+ "star_jelly": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "star_jelly_baby",
+  "family": "fantastic",
+  "height": {
+   "star_jelly": 14,
+   "star_jelly_amber": 14,
+   "star_jelly_baby": 8
+  },
+  "kind": "star_jelly",
+  "kind_anims": {
+   "star_jelly": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "star_jelly_amber": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "star_jelly_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "star_jelly_amber"
+  ]
+ },
+ "star_sheep": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "penguins",
+  "baby": "star_sheep_baby",
+  "family": "fantastic",
+  "height": {
+   "star_sheep": 20,
+   "star_sheep_baby": 11,
+   "star_sheep_mint": 20,
+   "star_sheep_rainbow": 20
+  },
+  "kind": "star_sheep",
+  "kind_anims": {
+   "star_sheep": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "star_sheep_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "star_sheep_mint": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "star_sheep_rainbow": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [
+   "star_sheep_rainbow"
+  ],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "star_sheep_mint"
+  ]
+ },
+ "storm_roc": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "penguins",
+  "baby": "storm_roc_baby",
+  "family": "fantastic",
+  "height": {
+   "storm_roc": 26,
+   "storm_roc_baby": 14,
+   "storm_roc_sunset": 26
+  },
+  "kind": "storm_roc",
+  "kind_anims": {
+   "storm_roc": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "storm_roc_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "storm_roc_sunset": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "wing_gust",
+  "team": true,
+  "variants": [
+   "storm_roc_sunset"
+  ]
+ },
+ "tortoise": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "",
+  "baby": "tortoise_baby",
+  "family": "exotics",
+  "height": {
+   "tortoise": 14,
+   "tortoise_baby": 8,
+   "tortoise_olive": 14
+  },
+  "kind": "tortoise",
+  "kind_anims": {
+   "tortoise": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "tortoise_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "tortoise_olive": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": true,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "tortoise_olive"
+  ]
+ },
+ "turbo_bunny": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "arc": "gangsters",
+  "baby": "turbo_bunny_baby",
+  "family": "lab",
+  "height": {
+   "turbo_bunny": 10,
+   "turbo_bunny_baby": 6,
+   "turbo_bunny_lime": 10
+  },
+  "kind": "turbo_bunny",
+  "kind_anims": {
+   "turbo_bunny": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "turbo_bunny_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "turbo_bunny_lime": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "long_low": false,
+  "rare": [],
+  "shorn": "",
+  "special": "",
+  "team": false,
+  "variants": [
+   "turbo_bunny_lime"
+  ]
+ },
+ "volt_gecko": {
+  "alias": {},
+  "anims": [
+   "attack",
+   "cheer",
+   "downed",
+   "eat",
+   "getup",
+   "guard",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_down",
+   "idle_up",
+   "produce",
+   "run",
+   "sad",
+   "sleep",
+   "special",
+   "walk",
+   "walk_down",
+   "walk_up"
+  ],
+  "arc": "gangsters",
+  "baby": "volt_gecko_baby",
+  "family": "lab",
+  "height": {
+   "volt_gecko": 13,
+   "volt_gecko_baby": 7,
+   "volt_gecko_cyan": 13
+  },
+  "kind": "volt_gecko",
+  "kind_anims": {
+   "volt_gecko": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ],
+   "volt_gecko_baby": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "volt_gecko_cyan": [
+    "attack",
+    "cheer",
+    "downed",
+    "eat",
+    "getup",
+    "guard",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_down",
+    "idle_up",
+    "produce",
+    "run",
+    "sad",
+    "sleep",
+    "special",
+    "walk",
+    "walk_down",
+    "walk_up"
+   ]
+  },
+  "long_low": true,
+  "rare": [],
+  "shorn": "",
+  "special": "zap",
+  "team": true,
+  "variants": [
+   "volt_gecko_cyan"
+  ]
+ }
+}
