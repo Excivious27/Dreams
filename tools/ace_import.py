@@ -225,7 +225,7 @@ LOOPS = os.path.join(ROOT, "data", "music_loops.json")
 
 def set_loop(name, sec):
     import fcntl
-    with open(LOOPS + ".lock", "w") as lk:
+    with open("/tmp/dreams_music_loops.lock", "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
         _set_loop(name, sec)
 

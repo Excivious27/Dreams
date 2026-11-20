@@ -2727,6 +2727,7 @@
  "mega_desert_canyon": {
   "chosen": "so_44e09d481cba4ec38f8d3860",
   "kind": "music",
+  "no_offset": true,
   "note": "",
   "versions": [
    {

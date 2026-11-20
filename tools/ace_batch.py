@@ -24,11 +24,11 @@ def save_log(l):
         os.remove(LOG)
     os.rename(LOG + ".tmp", LOG)
 
-def imp(name, kind, path):
+def imp(name, kind, path, extra=()):
     if not os.path.isabs(path):
         path = os.path.join(ROOT, path)  # Tom's uploads are logged repo-relative
     if kind in ("music", "once"):
-        subprocess.run([sys.executable, os.path.join(HERE, "ace_import.py"), name, path] + (["--once"] if kind == "once" else []), check=True)
+        subprocess.run([sys.executable, os.path.join(HERE, "ace_import.py"), name, path] + (["--once"] if kind == "once" else []) + list(extra), check=True)
 
 def main():
     os.makedirs(RAW, exist_ok=True)
@@ -47,7 +47,9 @@ def main():
             if e["kind"] not in ("music", "once") or (args and nm not in args):
                 continue
             v = [x for x in e["versions"] if x["id"] == e["chosen"]][0]
-            (todo if os.path.exists(v["file"]) else missing).append((nm, e["kind"], v["file"]))
+            # an entry may carry "no_offset": true (loop to 0: its intro point clicks)
+            ex = ("--no-offset",) if e.get("no_offset") else ()
+            (todo if os.path.exists(v["file"]) else missing).append((nm, e["kind"], v["file"], ex))
         failed = []
         def one(t):
             try:
