@@ -179,8 +179,18 @@ func _flow(arc: String, body: String) -> void:
 	var got := {}
 	var watered_ok := true
 	var saw_water := false
-	for i in 24:
-		GameState.run["farm"]["9,9"] = {"crop": "turnip", "days": 0, "watered": false}
+	for i in 80:
+		if i >= 7 and saw_water and got.size() >= 2:
+			break
+		seed(1000 + i)  # each night's chore roll is fixed (other systems also draw randf)
+		# a crop that lives through tonight (a season change would wither a turnip)
+		var crop_now := "turnip"
+		for cid: String in GameState.crops:
+			var cdd: Dictionary = GameState.crops[cid]
+			if not bool(cdd.get("tree", false)) and GameState.crop_fits_season(cdd, GameState.season()) and GameState.crop_fits_season(cdd, GameState.season_of(int(GameState.run["day"]) + 1)):
+				crop_now = cid
+				break
+		GameState.run["farm"]["9,9"] = {"crop": crop_now, "days": 0, "watered": false}
 		var rep := GameState.sleep()
 		if rep.has("spouse"):
 			var ch := str(rep["spouse"]["chore"])
