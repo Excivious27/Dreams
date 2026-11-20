@@ -18338,11 +18338,11 @@
   },
   "walk_down": {
    "cell_h": 112,
-   "cell_w": 70,
+   "cell_w": 74,
    "file": "characters/dice/walk_down.png",
    "frames": 4,
    "h": 112,
-   "w": 280
+   "w": 296
   },
   "walk_up": {
    "cell_h": 112,
@@ -18524,11 +18524,11 @@
   },
   "walk_down": {
    "cell_h": 112,
-   "cell_w": 69,
+   "cell_w": 71,
    "file": "characters/doc/walk_down.png",
    "frames": 4,
    "h": 112,
-   "w": 276
+   "w": 284
   },
   "walk_up": {
    "cell_h": 112,
@@ -19791,11 +19791,11 @@
   },
   "walk_down": {
    "cell_h": 112,
-   "cell_w": 72,
+   "cell_w": 74,
    "file": "characters/halo/walk_down.png",
    "frames": 4,
    "h": 112,
-   "w": 288
+   "w": 296
   },
   "walk_up": {
    "cell_h": 112,
@@ -23737,11 +23737,11 @@
   },
   "walk_down": {
    "cell_h": 112,
-   "cell_w": 69,
+   "cell_w": 70,
    "file": "characters/marlene/walk_down.png",
    "frames": 4,
    "h": 112,
-   "w": 276
+   "w": 280
   },
   "walk_up": {
    "cell_h": 112,
@@ -36865,11 +36865,11 @@
   },
   "walk_down": {
    "cell_h": 112,
-   "cell_w": 68,
+   "cell_w": 72,
    "file": "characters/sasha/walk_down.png",
    "frames": 4,
    "h": 112,
-   "w": 272
+   "w": 288
   },
   "walk_up": {
    "cell_h": 112,
@@ -37855,11 +37855,11 @@
   },
   "walk_down": {
    "cell_h": 112,
-   "cell_w": 67,
+   "cell_w": 70,
    "file": "characters/the_kid/walk_down.png",
    "frames": 4,
    "h": 112,
-   "w": 268
+   "w": 280
   },
   "walk_up": {
    "cell_h": 112,
@@ -38024,11 +38024,11 @@
   },
   "view_front": {
    "cell_h": 112,
-   "cell_w": 72,
+   "cell_w": 68,
    "file": "characters/val/view_front.png",
    "frames": 1,
    "h": 112,
-   "w": 72
+   "w": 68
   },
   "view_left": {
    "cell_h": 112,
@@ -38225,11 +38225,11 @@
   },
   "view_front": {
    "cell_h": 112,
-   "cell_w": 72,
+   "cell_w": 68,
    "file": "characters/vic/view_front.png",
    "frames": 1,
    "h": 112,
-   "w": 72
+   "w": 68
   },
   "view_left": {
    "cell_h": 112,
@@ -38257,11 +38257,11 @@
   },
   "walk_down": {
    "cell_h": 112,
-   "cell_w": 67,
+   "cell_w": 68,
    "file": "characters/vic/walk_down.png",
    "frames": 4,
    "h": 112,
-   "w": 268
+   "w": 272
   },
   "walk_up": {
    "cell_h": 112,
