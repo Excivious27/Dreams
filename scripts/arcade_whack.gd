@@ -227,7 +227,11 @@ func whack(i: int) -> int:
 		shake(2.0)
 		return -10
 	h["hp"] = int(h["hp"]) - 1
-	sfx("hit", "thud")
+	# A helmet takes the first bop: CLANK on the screen, a clank in the ear.
+	if int(h["hp"]) <= 0:
+		sfx("hit", "thud")
+	else:
+		sfx("anvil", "sword_clash")
 	shake(2.0)
 	if int(h["hp"]) > 0:
 		burst(p, Color(0.8, 0.8, 0.85), 6, 60.0)
@@ -246,7 +250,7 @@ func whack(i: int) -> int:
 	burst(p, Color(1, 1, 0.7), 6, 50.0, 2.0, 0.0)
 	float_text(p, ("+%d" % pts) + (" x%d" % mult if mult > 1 else ""), Color(1, 0.95, 0.5) if k != "gold" else Color(1, 0.8, 0.2))
 	if k == "gold":
-		sfx("coin")
+		point_sfx()
 	if combo == COMBO_STEP:
 		say("COMBO x%d!" % mult, 1.0)
 		sfx("sparkle", "gem")

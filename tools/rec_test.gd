@@ -257,6 +257,7 @@ func _c1_15_checks() -> void:
 		var house := m.area_track()
 		ok(house == ("rec_center" if arc == "penguins" else "neon"), "%s house song %s" % [arc, house])
 		mus.play(house)
+		RecCenter.juke_now = true
 		RecCenter._jukebox(m)
 		var rec1 := mus.wanted()
 		ok(rec1 != house and m.area_track() == rec1, "%s jukebox: new record %s kept by area_track (%s)" % [arc, rec1, m.area_track()])

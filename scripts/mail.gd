@@ -207,7 +207,26 @@ static func _gift_item(who: String, rng: RandomNumberGenerator) -> String:
 
 
 ## Take a gift's item, or send a favour's items. "" on success, else why not.
+## Plays its own cue (pickup for a gift, coin for a paid favour, nope on a refusal).
 static func act(m: Dictionary) -> String:
+	var err := _act(m)
+	var kind := str(m.get("kind", ""))
+	if err != "":
+		_cue("nope", "thud")
+	elif kind == "gift":
+		_cue("pickup", "")
+	elif kind == "favour":
+		_cue("coin", "pickup")
+	return err
+
+
+static func _cue(name: String, fallback: String) -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree:
+		Music.instance(tree).sfx(name, fallback)
+
+
+static func _act(m: Dictionary) -> String:
 	match str(m.get("kind", "")):
 		"gift":
 			if bool(m.get("got", false)):

@@ -164,8 +164,12 @@ static func play(m: GameMap, b: Dictionary) -> void:
 		m.hud.toast("The Tower Plan: the whole crew has your back. Full health, full mana, a shield.", Color(1, 0.9, 0.5))
 	m.player.frozen = true
 	m.player.velocity = Vector2.ZERO
+	# A scene owns the moment: a boss victory sting still waiting must not land after it.
+	_cancel_sting()
+	_prefetch_for(m, b)
 	if b.has("chapter_title") and str(b.get("chapter_title", "")) != "" and bool(b.get("title_card", false)):
 		m.hud.toast(str(b["chapter_title"]), Color(1, 0.9, 0.6))
+		Music.instance(m.get_tree()).sfx("j_region", "j_page")
 	var lines: Array = _fill(b.get("lines", []))
 	if str(b["id"]) == "g5_win" and not GameState.is_penguins():
 		# The crew were with you the whole way up: each one gets a line.
@@ -325,6 +329,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 			continue
 		GameState.add_quest(str(q[0]), str(q[1]))
 		m.hud.toast("New quest: %s" % str(q[1]), Color(1, 0.9, 0.4))
+		Music.instance(m.get_tree()).sfx("new_item", "pickup")
 	for q in fx.get("complete", []):
 		if GameState.complete_quest(str(q)):
 			m.hud.toast(GameMap.quest_done_text(str(q)), Color(1, 0.9, 0.4))
@@ -383,7 +388,7 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 				tw.tween_property(sp, "modulate:a", 0.0, 1.2)
 				tw.tween_callback(sp.queue_free)
 	if fx.has("sfx"):
-		Music.instance(m.get_tree()).sfx("quest_done" if str(fx["sfx"]) == "levelup" else str(fx["sfx"]), "levelup")
+		Music.instance(m.get_tree()).sfx(beat_sfx(str(fx["sfx"])), str(fx.get("sfx_fallback", "levelup")))
 	if fx.has("heal"):
 		GameState.run["hp"] = int(GameState.run["max_hp"])
 	if fx.has("grow"):
@@ -404,8 +409,10 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 		GameState.run["ending"] = str(fx["ending"])
 		GameState.run["flags"]["ending_" + str(fx["ending"])] = true
 		m.hud.toast("THE END (for now): %s" % str(fx.get("ending_title", fx["ending"])), Color(1, 0.95, 0.7))
-	if fx.has("music"):
-		Music.instance(m.get_tree()).play(str(fx["music"]))
+	# boss_card already starts the arc's boss theme (and DangerMusic holds it): a
+	# generic "music" next to it would override the theme built from Tom's melody.
+	if fx.has("music") and not fx.has("boss_card"):
+		Dialogue.line_music(m.get_tree(), str(fx["music"]))
 	if fx.has("shake"):
 		m.shake(float(fx["shake"]))
 	if fx.has("fx"):
@@ -414,6 +421,49 @@ static func _apply(m: GameMap, fx: Dictionary) -> void:
 	if fx.has("scene_to"):
 		var s: Array = fx["scene_to"]
 		m.go_to(str(s[0]), Vector2(float(s[1]) * GameMap.TILE, float(s[2]) * GameMap.TILE), str(s[3]) if s.size() > 3 else "down")
+
+
+## DangerMusic.cancel_sting (P1's engine) when it exists: a static on a script class.
+static func _cancel_sting() -> void:
+	var sc: Script = load("res://scripts/danger_music.gd")
+	for md in sc.get_script_method_list():
+		if str(md.get("name", "")) == "cancel_sting":
+			sc.call("cancel_sting")
+			return
+
+
+## Story effect "sfx": "levelup" is the old word for the quest fanfare; any other
+## name plays as written (soft beats use j_heart / j_page, ominous ones alert).
+static func beat_sfx(name: String) -> String:
+	return "quest_done" if name == "levelup" else name
+
+
+## Songs a beat is about to need (streamed on the phone build): queue them early
+## so the final fight, the ending and the credits start on cue (Music.prefetch).
+const PREFETCH_AFTER := {
+	"p4_bell_rung": ["boss_penguin", "finargle", "ending_penguin", "credits", "title_musicbox"],
+	"p5_spire": ["ending_penguin", "credits", "title_musicbox"],
+	"g4_sasha": ["boss_gang", "ending_gangster", "credits", "title_musicbox"],
+	"g5_president": ["ending_gangster", "credits", "title_musicbox"],
+	"p4_merkitties": ["merkitty_song"],
+}
+
+
+static func _prefetch_for(m: GameMap, b: Dictionary) -> void:
+	var mu := Music.instance(m.get_tree())
+	if mu == null or not mu.has_method("prefetch"):
+		return
+	var want: Array = []
+	var id := str(b.get("id", ""))
+	want.append_array(PREFETCH_AFTER.get(id, []))
+	for l in b.get("lines", []):
+		if l is Dictionary and (l as Dictionary).has("music"):
+			want.append(str(l["music"]))
+	var fxm := str((b.get("effects", {}) as Dictionary).get("music", ""))
+	if fxm != "" and fxm != "area":
+		want.append(fxm)
+	if not want.is_empty():
+		mu.call("prefetch", want)
 
 
 static func _spawn_list(m: GameMap, spawns: Array) -> void:

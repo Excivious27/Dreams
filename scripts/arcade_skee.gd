@@ -164,7 +164,7 @@ func throw(lu: float, p: float) -> void:
 	flash_zone = int(z[1])
 	sink = _sink_for(land, flash_zone)
 	ball = Vector2(512 + shot_u * ramp_hw(START_Y), START_Y)
-	sfx("bowl_roll", "drop")
+	sfx("skee_roll", "bowl_roll")
 	_set_phase("roll")
 
 
@@ -282,7 +282,7 @@ func _score_ball() -> void:
 		ArcadeHub.set_milestone("skee_cup")
 	elif pts >= 50:
 		burst(at, Color(1, 0.9, 0.4), 16, 90.0)
-		sfx("coin")
+		point_sfx()
 	else:
 		burst(at, Color(1, 0.95, 0.8), 6, 50.0)
 		sfx("drop", "thud")
@@ -302,8 +302,14 @@ func _tickets_for(s: int) -> int:
 	return s / 20 + int(counts.get(100, 0)) + (3 if s >= 300 else 0)
 
 
+## A lane in the room: the room's song (the jukebox record) plays on.
+func _start_music() -> void:
+	pass
+
+
+## A good Skee game pays about 8 (s/20 + cups; gen_rec's pacing sim: 4-6 typical).
 func _good_tickets() -> int:
-	return 20
+	return 8
 
 
 func _tap(p: Vector2) -> void:

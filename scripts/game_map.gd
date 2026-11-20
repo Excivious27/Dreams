@@ -492,6 +492,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 	if t == "mega_gate":
 		later(MegaTravel.gate.bind(self, thing))
 		return true
+	if t == "rec_home":  # prize decor at home (RecCenter.home_use)
+		return RecCenter.home_use(self, thing)
 	if t in ["elder", "beacon", "star_crystal", "colony_shop"]:
 		return Colony.interact(self, scene_id(), thing)
 	if not resources_here and t in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
@@ -1479,7 +1481,7 @@ func area_track() -> String:
 		t = str(INTERIOR_MUSIC.get(iid, music_track if music_track != "town" else "house"))
 		if t == "shop" and Racket.on():
 			t = "shop_gang"
-		t = RecCenter.music_for(self, t)  # today's jukebox record
+	t = RecCenter.music_for(self, t)  # today's jukebox record (rec), the home jukebox/music box (house)
 	if id == "mine" and int(get("floor_no") if get("floor_no") != null else 1) > 30:
 		t = "mine_deep"
 	# Countryside and the community farm: the harmonica Americana is the gang arc's; the penguin

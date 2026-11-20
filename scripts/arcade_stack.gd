@@ -153,7 +153,7 @@ func _top_out() -> void:
 	state = "topout"
 	say("STACKED OUT!", TOPOUT_SECS)
 	shake(4.0)
-	sfx("cave_in", "thud")
+	sfx("block_fall", "thud")  # short: the 3 s cave-in rumbled under the results jingle
 
 
 func _step_state(st: String, dt: float) -> void:
@@ -323,7 +323,7 @@ func _tickets_for(s: int) -> int:
 
 
 func _good_tickets() -> int:
-	return 12
+	return 10
 
 
 func _draw_play(c: Control) -> void:

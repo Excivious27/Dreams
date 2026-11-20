@@ -217,6 +217,13 @@ func _line(text: String, size := 9, color := Color(1, 0.96, 0.85)) -> Label:
 static var last_press := ""
 
 
+static func _has_static(sc: Script, fn: String) -> bool:
+	for md in sc.get_script_method_list():
+		if str(md.get("name", "")) == fn:
+			return true
+	return false
+
+
 func _button(text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.pressed.connect(func() -> void: last_press = "%s > %s" % [_tab, text])
@@ -227,6 +234,10 @@ func _button(text: String, cb: Callable) -> Button:
 	# fire it (press mode fired "Save & back to title" when you scrolled Options).
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
+	# A greyed-out row answers a tap with a soft refusal instead of silence.
+	b.gui_input.connect(func(ev: InputEvent) -> void:
+		if b.disabled and TapInput.is_release(ev):
+			Music.instance(get_tree()).sfx("nope", "thud"))
 	b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.custom_minimum_size = Vector2(0, 22)  # finger-sized rows (18 was under 5 mm on a phone)
@@ -657,22 +668,27 @@ func _refresh() -> void:
 		"Options":
 			var arc_title: String = GameState.arcs.get(r["arc"], {}).get("title", "")
 			_line("%s of %s · Pet: %s\n%s\nDay %d" % [r["names"]["character"], r["names"]["town"], r["names"]["pet"], arc_title, int(r["day"])])
-			_button("All sound: %s" % ("off" if bool(SaveGame.get_value("muted", false)) else "on"), func() -> void: Music.instance(get_tree()).toggle_mute(); _refresh())
-			for vk: String in ["music_vol", "sfx_vol", "amb_vol"]:
-				var row := HBoxContainer.new()
-				_body.add_child(row)
-				var vl := Label.new()
-				vl.text = "%s volume  %d/10" % [{"music_vol": "Music", "sfx_vol": "Sound", "amb_vol": "Nature"}[vk], int(Settings.get_v(vk))]
-				vl.add_theme_font_size_override("font_size", 8)
-				vl.custom_minimum_size = Vector2(110, 0)
-				row.add_child(vl)
-				for step: int in [-1, 1]:
-					var bt := Button.new()
-					bt.text = " − " if step < 0 else " + "
-					bt.custom_minimum_size = Vector2(34, 22)
-					bt.pressed.connect(func() -> void: last_press = "%s > %s %+d" % [_tab, vk, step])
-					bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("ui_tap", "pickup"); _refresh())
-					row.add_child(bt)
+			# Sound rows are shared with the title screen (Settings.audio_rows, C6 P1) when present.
+			var settings_sc: Script = load("res://scripts/settings.gd")
+			if _has_static(settings_sc, "audio_rows"):
+				settings_sc.call("audio_rows", _body, get_tree(), _refresh)
+			else:
+				_button("All sound: %s" % ("off" if bool(SaveGame.get_value("muted", false)) else "on"), func() -> void: Music.instance(get_tree()).toggle_mute(); _refresh())
+				for vk: String in ["music_vol", "sfx_vol", "amb_vol"]:
+					var row := HBoxContainer.new()
+					_body.add_child(row)
+					var vl := Label.new()
+					vl.text = "%s volume  %d/10" % [{"music_vol": "Music", "sfx_vol": "Sound", "amb_vol": "Nature"}[vk], int(Settings.get_v(vk))]
+					vl.add_theme_font_size_override("font_size", 8)
+					vl.custom_minimum_size = Vector2(110, 0)
+					row.add_child(vl)
+					for step: int in [-1, 1]:
+						var bt := Button.new()
+						bt.text = " − " if step < 0 else " + "
+						bt.custom_minimum_size = Vector2(34, 22)
+						bt.pressed.connect(func() -> void: last_press = "%s > %s %+d" % [_tab, vk, step])
+						bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("ui_tap", "pickup"); _refresh())
+						row.add_child(bt)
 			_button("Night darkness: %s" % Settings.NIGHT_NAMES[clampi(int(Settings.get_v("night")), 0, 2)], func() -> void: Settings.set_v("night", (int(Settings.get_v("night")) + 1) % 3); _refresh())
 			_button("Button size: %s" % Settings.BTN_NAMES[clampi(int(Settings.get_v("btn_size")), 0, 2)], func() -> void: Settings.set_v("btn_size", (int(Settings.get_v("btn_size")) + 1) % 3); _refresh())
 			_button("Text size: %s" % Settings.TEXT_NAMES[Settings.text_bonus()], func() -> void: Settings.set_v("text_size", (Settings.text_bonus() + 1) % Settings.TEXT_NAMES.size()); _refresh())

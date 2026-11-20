@@ -40,6 +40,9 @@ func _init() -> void:
 	state = "select"
 
 
+var _air_t := 0.0  # seconds off the ground (landing cue weight)
+
+
 func _start_music() -> void:
 	Music.instance(get_tree()).play("arcade_jumper")
 
@@ -242,6 +245,7 @@ func _step(dt: float) -> void:
 	if level <= 0:
 		JumperLevels.extend(lv, float(st[JumperLevels.X]) + 700.0)
 	var was_ground := int(st[JumperLevels.GND]) == 1
+	_air_t = 0.0 if was_ground else _air_t + dt
 	var ev := JumperLevels.step(st, lv, held("a"), held("down"), dt)
 	var x := float(st[JumperLevels.X])
 	var y := float(st[JumperLevels.Y])
@@ -258,7 +262,11 @@ func _step(dt: float) -> void:
 		"land":
 			squash = Vector2(1.35, 0.7)
 			rot = 0.0
-			sfx("thud", "step_wood")
+			# A light step for a hop; the heavy thud only after a real fall.
+			if _air_t > 0.45:
+				sfx("thud", "step_wood")
+			else:
+				sfx("step_wood", "pop")
 			burst(Vector2(x, y), _theme()[5].lightened(0.3), 6, 40.0, 2.0, 200.0)
 		"bonk":
 			sfx("block", "thud")
@@ -296,7 +304,7 @@ func _collect(x: float, y: float) -> void:
 		var cp: Vector2 = coins[i]
 		if absf(cp.x - ctr.x) < 11.0 and absf(cp.y - ctr.y) < 6.0 + h * 0.5 + 3.0:
 			coins_got[i] = true
-			sfx("coin")
+			point_sfx()
 			burst(cp, Color(1, 0.85, 0.3), 6, 50.0, 2.0, 60.0)
 
 

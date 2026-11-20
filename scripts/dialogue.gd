@@ -266,8 +266,14 @@ func _next() -> void:
 	_choice_scroll.custom_minimum_size = Vector2.ZERO
 	_in_choice = false
 	if skipping:
+		var skipped_music := ""
 		while not _queue.is_empty() and not (_queue[0] as Dictionary).has("choice") and not bool((_queue[0] as Dictionary).get("keep", false)):
-			_queue.pop_front()
+			var sk: Dictionary = _queue.pop_front()
+			if sk.has("music"):
+				skipped_music = str(sk["music"])
+		# Skipped lines drop their sounds, but the scene's song still ends up right.
+		if skipped_music != "":
+			line_music(get_tree(), skipped_music)
 	if _queue.is_empty():
 		_close()
 		return
@@ -282,13 +288,71 @@ func _next() -> void:
 	_who.visible = _who.text != ""
 	_full = Money.t(str(line.get("text", "")))
 	if is_inside_tree():
-		Music.instance(get_tree()).blip(str(line.get("who", "")))
+		line_cues(get_tree(), line)
 	_shown = 0.0
 	_typing = true
 	_text.text = ""
 	_hint.visible = false
 	_panel.size.y = BOX_H
 	_panel.position.y = BOX_Y
+
+
+## Per-line cues (CONDUCT 6): "sfx" plays as the line shows, "music" starts a song
+## (slow fade, held by the scene: Music.play_held when the engine has it). Letters,
+## notes, boards and journals have no voice: a paper sound instead of a talk blip.
+static func line_cues(tree: SceneTree, line: Dictionary) -> void:
+	var mu := Music.instance(tree)
+	if mu == null:
+		return
+	if line.has("music"):
+		line_music(tree, str(line["music"]))
+	if line.has("sfx"):
+		mu.sfx(str(line["sfx"]), str(line.get("sfx_fallback", "pickup")))
+	var who := str(line.get("who", ""))
+	if bool(line.get("silent", false)):
+		return
+	if is_paper(who):
+		if not line.has("sfx"):
+			mu.sfx("page", "mail")
+		return
+	mu.blip(who)
+
+
+## Speakers that are paper, not people (no talk blip).
+static func is_paper(who: String) -> bool:
+	for w in PAPER:
+		if who.begins_with(w):
+			return true
+	return false
+
+
+const PAPER := ["Letter", "Note", "Journal", "Board", "Community Board", "Sell box", "Sign", "Notice", "Poster", "Page"]
+
+
+## A song a scene line asks for. "area" = the map's own song again. "stop" = silence.
+static func line_music(tree: SceneTree, track: String) -> void:
+	var mu := Music.instance(tree)
+	if mu == null:
+		return
+	var m := tree.current_scene as GameMap
+	if track == "area":
+		if mu.has_method("release_hold"):
+			mu.call("release_hold")
+		if m:
+			mu.play(m.area_track(), 2.0)
+		return
+	if track == "stop":
+		mu.stop_all()
+		return
+	# A scene's song is held (Music.play_held, C6 P1): DangerMusic's calm re-ask
+	# leaves it alone until the map changes or another song is asked for.
+	if mu.has_method("play_held"):
+		mu.call("play_held", track, 2.0)
+	else:
+		mu.play(track, 2.0)
+	# A play-once song (merkitty_song, an ending) hands back to the map's song.
+	if track in Music.ONCE and m:
+		mu.queue_after(m.area_track())
 
 
 ## A portrait set that was sliced into a usable picture (a mis-cut sheet gives 1 px slivers).
@@ -622,9 +686,11 @@ func _process_input() -> void:
 		if Input.is_action_just_pressed("down"):
 			_choice_focus = (_choice_focus + 1) % n
 			_refresh_focus()
+			Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
 		elif Input.is_action_just_pressed("up"):
 			_choice_focus = (_choice_focus - 1 + n) % n
 			_refresh_focus()
+			Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
 		elif Input.is_action_just_pressed("b"):
 			# B backs out when the last option is a way out (even while settling:
 			# B never skips text, so it can't be a stray skip tap; C4 P6).

@@ -71,6 +71,14 @@ static func open(map_or_id: Variant, game_id := "") -> ArcadeGame:
 	return g
 
 
+## The home Arcade Cabinet prize: the picker in free practice (no fee, no tickets).
+static func open_home(map: Node) -> ArcadeGame:
+	var g := open(map, "")
+	if g:
+		g.free_play = true
+	return g
+
+
 ## A screen for a game id ("" = the picker), not yet in the tree.
 static func make(game_id: String) -> ArcadeGame:
 	match game_id:
@@ -146,6 +154,8 @@ static func set_milestone(id: String) -> bool:
 		return false
 	ms[id] = true
 	var tree := Engine.get_main_loop() as SceneTree
+	if tree and Music.instance(tree):
+		Music.instance(tree).sfx("j_secret", "sparkle")
 	if tree and tree.current_scene is GameMap and (tree.current_scene as GameMap).hud:
 		(tree.current_scene as GameMap).hud.toast("Arcade milestone: " + str(MILESTONES.get(id, id)).replace("Crystal Stack", Tickets.game_name("stack")), Color(1, 0.85, 0.4))
 	return true
@@ -233,6 +243,7 @@ func launch(i: int) -> ArcadeGame:
 	sfx("j_confirm", "ui_tap")
 	_child = make(str(GAMES[i]["id"]))
 	_child.manual = manual
+	_child.free_play = free_play
 	visible = false
 	get_parent().add_child(_child)
 	_child.closed.connect(_child_closed)
@@ -275,7 +286,7 @@ func _draw_play(c: Control) -> void:
 		text_outline(c, r.position + Vector2(54, 17), Tickets.game_name(str(g["id"])), 190, 10, Color.WHITE)
 		text(c, r.position + Vector2(54, 30), str(g["blurb"]), 190, 7, Color(0.9, 0.88, 1))
 		var cabinet := make_info(str(g["id"]))
-		text(c, r.position + Vector2(54, 44), "%s · best %d" % [Money.amount(int(cabinet["fee"])), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))
+		text(c, r.position + Vector2(54, 44), "%s · best %d" % [("free play" if free_play else Money.amount(int(cabinet["fee"]))), (Tickets.best_score(str(g["id"])) if str(g["id"]) != "jumper" else BlockJumper.best(0))], 190, 7, Color(1, 0.85, 0.5))
 
 
 ## Fee per game (kept here so the picker needn't build every screen).

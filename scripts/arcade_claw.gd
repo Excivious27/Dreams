@@ -124,14 +124,14 @@ func _step(dt: float) -> void:
 			aim_left -= dt
 			var dir := (1.0 if held("right") else 0.0) - (1.0 if held("left") else 0.0)
 			claw.x = clampf(claw.x + dir * 70.0 * dt, BOX.position.x + 14.0, BOX.end.x - 14.0)
-			if dir != 0.0 and int(phase_t * 10.0) % 3 == 0:
-				sfx("servo", "ui_tap")
+			_motor(dt, dir != 0.0)
 			if pressed("a") or aim_left <= 0.0:
 				_set_phase("drop")
-				sfx("servo", "drop")
+				_motor_t = 0.0
 			elif pressed("b"):
 				close()
 		"drop":
+			_motor(dt, true)
 			claw.y += 90.0 * dt
 			var hit := _prize_under()
 			var stop_y := FLOOR_Y - 10.0
@@ -155,12 +155,14 @@ func _step(dt: float) -> void:
 					open_amt = 0.15 if held_i >= 0 else 0.0
 				_set_phase("lift")
 		"lift":
+			_motor(dt, true)
 			claw.y -= 70.0 * dt
 			_carry(dt)
 			if claw.y <= TOP_Y:
 				claw.y = TOP_Y
 				_set_phase("carry")
 		"carry":
+			_motor(dt, true)
 			claw.x = move_toward(claw.x, CHUTE.get_center().x, 60.0 * dt)
 			_carry(dt)
 			if absf(claw.x - CHUTE.get_center().x) < 0.5:
@@ -186,6 +188,22 @@ func _step(dt: float) -> void:
 			claw.y = maxf(TOP_Y, claw.y - 70.0 * dt)
 			if held_i < 0 and claw.y <= TOP_Y and phase_t > 0.6:
 				_lose()
+
+
+## The claw's motor: one whirr on the first frame of a move, then once per take
+## length while it keeps moving (never the old 80 ms stutter that ate voices).
+var _motor_t := 0.0
+const MOTOR_EVERY := 0.45
+
+
+func _motor(dt: float, moving: bool) -> void:
+	if not moving:
+		_motor_t = 0.0
+		return
+	_motor_t -= dt
+	if _motor_t <= 0.0:
+		sfx("claw_motor", "servo")
+		_motor_t = MOTOR_EVERY
 
 
 func _set_phase(p: String) -> void:
@@ -234,6 +252,7 @@ func _win(i: int) -> void:
 		ArcadeHub.set_milestone("claw_5")
 	burst(Vector2(CHUTE.get_center().x, CHUTE.position.y), Color(1, 0.85, 0.4), 24, 110.0)
 	sfx("j_treasure", "j_victory")
+	result_cue_done = true  # one win jingle: game_over must not stack j_victory on it
 	# The plush is only the wrapping: say what was inside, never "(bear plush)" after candy.
 	var inside := "" if won_item.begins_with("rp_") else "Tucked inside the %s plush." % str(p["look"])
 	var lines: Array = ["!YOU WON!", GameState.item_name(won_item)]
@@ -251,6 +270,11 @@ func _lose() -> void:
 
 func _tickets_for(_s: int) -> int:
 	return 10 + score / 10 if won_item != "" else 2
+
+
+## A machine standing in the room: the room's song (the jukebox record) plays on.
+func _start_music() -> void:
+	pass
 
 
 func _good_tickets() -> int:

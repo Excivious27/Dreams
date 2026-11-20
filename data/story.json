@@ -46,7 +46,9 @@
      "lines": [
       {
        "who": "",
-       "text": "The sky over the east meadow goes a dark, dark red. Lightning, with no thunder after it. Then a howl: not a wolf. Lower, and sadder, and somehow angrier for being sad."
+       "text": "The sky over the east meadow goes a dark, dark red. Lightning, with no thunder after it. Then a howl: not a wolf. Lower, and sadder, and somehow angrier for being sad.",
+       "sfx": "howl_far",
+       "sfx_fallback": "roar"
       },
       {
        "who": "Star Crystal",
@@ -148,7 +150,7 @@
         "Find the purring in the crystal meadow: talk to Catkins by the cat statue."
        ]
       ],
-      "sfx": "levelup"
+      "sfx": "j_page"
      }
     }
    ]
@@ -244,7 +246,7 @@
        5
       ],
       "toast": "Meow Pow Wow learned: tap ♥ near a Grump to turn it back. It's yours now, whoever walks with you.",
-      "sfx": "levelup"
+      "sfx": "j_heart"
      }
     },
     {
@@ -389,7 +391,9 @@
          ],
          "hint": "The locket stays in your pack, humming to itself."
         }
-       }
+       },
+       "sfx": "locket_hum",
+       "sfx_fallback": "sparkle"
       }
      ],
      "effects": {
@@ -452,7 +456,7 @@
        "finn_told"
       ],
       "hint": "Finn knows now. He took the locket, and he's glad it was you who brought it.",
-      "sfx": "levelup"
+      "sfx": "j_heart"
      }
     }
    ]
@@ -899,7 +903,8 @@
      "lines": [
       {
        "who": "",
-       "text": "You don't see it happen. A small black shape in a crack of shadow; purple light from two eyes; and you can't move a muscle. A flash. And you are somewhere else: a room of crystal, no door, and your friends beside you, blinking."
+       "text": "You don't see it happen. A small black shape in a crack of shadow; purple light from two eyes; and you can't move a muscle. A flash. And you are somewhere else: a room of crystal, no door, and your friends beside you, blinking.",
+       "music": "finargle"
       },
       {
        "who": "Coldy",
@@ -1002,7 +1007,8 @@
       },
       {
        "who": "",
-       "text": "Everyone into the pool. The merkitties swim a circle around you, singing, and their necklaces glow, and all at once you have a tail. Mer: \"You can become a mermaid now, any time you enter water.\" Big Jim screams. He screams for some time. Everyone wears earplugs until he stops."
+       "text": "Everyone into the pool. The merkitties swim a circle around you, singing, and their necklaces glow, and all at once you have a tail. Mer: \"You can become a mermaid now, any time you enter water.\" Big Jim screams. He screams for some time. Everyone wears earplugs until he stops.",
+       "music": "merkitty_song"
       }
      ],
      "effects": {
@@ -1019,7 +1025,7 @@
       "companion": "mer",
       "toast": "The merkitties' gift: you grow a tail in any water. Swim anywhere.",
       "hint": "You can swim and dive anywhere now. The way to the top is the mountain pad now.",
-      "sfx": "levelup",
+      "sfx": "sparkle",
       "fx": [
        "merkitty_ring",
        0,
@@ -1065,7 +1071,9 @@
      "lines": [
       {
        "who": "",
-       "text": "The bell rings. Twenty-one years of rust come off it in one note, and the note goes out over the fields and the lake and the mine and comes back smaller and nicer."
+       "text": "The bell rings. Twenty-one years of rust come off it in one note, and the note goes out over the fields and the lake and the mine and comes back smaller and nicer.",
+       "sfx": "town_bell",
+       "sfx_fallback": "j_page"
       },
       {
        "who": "Alder",
@@ -1088,7 +1096,7 @@
        "gideon": 10
       },
       "hint": "The bell rang, and the whole town came to the plaza. (If the fight on the moon is still ahead, they will remember it there.)",
-      "sfx": "levelup"
+      "sfx": "j_heart"
      }
     },
     {
@@ -1162,7 +1170,6 @@
       }
      ],
      "effects": {
-      "music": "boss",
       "boss_card": "dark_crystal",
       "spawn": [
        [
@@ -1240,7 +1247,9 @@
      "lines": [
       {
        "who": "",
-       "text": "From very far away, carried on nothing at all: a bell. One note, twenty-one years of rust, and then voices under it. The whole town, in the plaza, saying your name."
+       "text": "From very far away, carried on nothing at all: a bell. One note, twenty-one years of rust, and then voices under it. The whole town, in the plaza, saying your name.",
+       "sfx": "town_bell_far",
+       "sfx_fallback": "j_page"
       },
       {
        "who": "Dark Crystal",
@@ -1257,7 +1266,7 @@
       ],
       "toast": "The Dark Crystal's shell cracks: it's half as strong.",
       "heal": true,
-      "sfx": "levelup",
+      "sfx": "j_heart",
       "weaken": [
        "boss_dark_crystal",
        0.5
@@ -1366,7 +1375,8 @@
          },
          {
           "who": "",
-          "text": "The dark goes grey. The grey goes glass. The glass goes bright, bright, BRIGHT — and there are two crystals on the top of the mountain, and they are both crying, if crystals can."
+          "text": "The dark goes grey. The grey goes glass. The glass goes bright, bright, BRIGHT — and there are two crystals on the top of the mountain, and they are both crying, if crystals can.",
+          "sfx": "j_heart"
          },
          {
           "who": "Dark Crystal",
@@ -1386,7 +1396,9 @@
         "1": [
          {
           "who": "",
-          "text": "You let the light go the other way. The dark comes apart the way ice goes on a pond in spring: all at once, and then quietly, for a long time."
+          "text": "You let the light go the other way. The dark comes apart the way ice goes on a pond in spring: all at once, and then quietly, for a long time.",
+          "sfx": "glass",
+          "sfx_fallback": "thud"
          },
          {
           "who": "Star Crystal",
@@ -1430,7 +1442,7 @@
       }
      ],
      "effects": {
-      "music": "meadow",
+      "music": "title_musicbox",
       "flags": [
        "final_done",
        "boss_fennimore"
@@ -1454,7 +1466,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Morning. The field. The Star Crystal is in the middle of it, half-buried, like it's been planted. She has."
+       "text": "Morning. The field. The Star Crystal is in the middle of it, half-buried, like it's been planted. She has.",
+       "music": "title_musicbox"
       },
       {
        "who": "Star Crystal",
@@ -1485,7 +1498,7 @@
       ],
       "toast": "Thank you for playing. The farm goes on.",
       "hint": "The story is done. The merkitty islands, the mine's deep floors and the green planet past the station are still out there.",
-      "sfx": "levelup"
+      "sfx": "j_heart"
      }
     }
    ]
@@ -2457,7 +2470,7 @@
        "crew_the_kid"
       ],
       "toast": "The Kid joined the crew.",
-      "sfx": "levelup"
+      "sfx": "j_heart"
      }
     },
     {
@@ -2556,7 +2569,7 @@
        "crew_sasha"
       ],
       "toast": "Sasha follows the crew.",
-      "sfx": "levelup"
+      "sfx": "alert"
      }
     },
     {
@@ -2946,7 +2959,6 @@
       }
      ],
      "effects": {
-      "music": "boss",
       "boss_card": "president",
       "spawn": [
        [
@@ -3019,7 +3031,8 @@
         "0": [
          {
           "who": "",
-          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new."
+          "text": "It comes loose with a sound like a cork. He gasps, once, and then he's just an old man in a bad suit on a cold floor, looking at his hands like they're new.",
+          "sfx": "pop"
          },
          {
           "who": "The President",
@@ -3027,11 +3040,14 @@
          },
          {
           "who": "",
-          "text": "You put the stone on the marble and you break it with your heel, and the whisper stops, and somewhere above the city a very old bell that was never going to ring again rings once anyway."
+          "text": "You put the stone on the marble and you break it with your heel, and the whisper stops, and somewhere above the city a very old bell that was never going to ring again rings once anyway.",
+          "sfx": "glass"
          },
          {
           "who": "",
-          "text": "All over the city the splinters go quiet. A girl on the docks watches the flame in her palm gutter, and then, slowly, come back smaller, and steadier, and hers."
+          "text": "All over the city the splinters go quiet. A girl on the docks watches the flame in her palm gutter, and then, slowly, come back smaller, and steadier, and hers.",
+          "sfx": "town_bell_far",
+          "sfx_fallback": "j_page"
          },
          {
           "who": "",
@@ -3041,7 +3057,8 @@
         "1": [
          {
           "who": "",
-          "text": "It's warm. That's the surprise. It's warm, and it's grateful, and it's got so many plans."
+          "text": "It's warm. That's the surprise. It's warm, and it's grateful, and it's got so many plans.",
+          "sfx": "alert"
          },
          {
           "who": "",
@@ -3072,7 +3089,7 @@
       }
      ],
      "effects": {
-      "music": "meadow",
+      "music": "title_musicbox",
       "flags": [
        "final_done"
       ],
@@ -3091,7 +3108,8 @@
      "lines": [
       {
        "who": "",
-       "text": "Morning. Rain again, the collar kind. The deed on the table still has the wrong name on it, and you find you don't mind; names are things you can grow into."
+       "text": "Morning. Rain again, the collar kind. The deed on the table still has the wrong name on it, and you find you don't mind; names are things you can grow into.",
+       "music": "title_musicbox"
       },
       {
        "who": "",
@@ -3112,7 +3130,7 @@
       ],
       "toast": "Thank you for playing. The farm goes on.",
       "hint": "The story is done. The farm, the crew and every block you haven't walked yet are still yours.",
-      "sfx": "levelup"
+      "sfx": "j_heart"
      }
     }
    ]

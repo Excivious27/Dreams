@@ -30,6 +30,8 @@ const EXACT := {"Crystals": "Cash"}
 
 ## Sound swaps in the gangster arc (Music.sfx runs every name through sfx_name).
 const SFX := {"coin": "cash_pickup"}
+## The crystal arc pays in crystals: banknote/register cues become the coin chime.
+const CRYSTAL_SFX := {"cash": "coin", "cash_register": "coin", "cash_pickup": "coin"}
 
 static var _re_num_sym: RegEx
 static var _re_sym: RegEx
@@ -37,7 +39,9 @@ static var _re_num_word: RegEx
 
 
 static func sfx_name(name: String) -> String:
-	return str(SFX.get(name, name)) if cash() else name
+	if GameState.run.is_empty():
+		return name
+	return str(SFX.get(name, name)) if cash() else str(CRYSTAL_SFX.get(name, name))
 
 
 static func cash() -> bool:

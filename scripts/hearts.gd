@@ -110,6 +110,8 @@ static func talk(m: GameMap, id: String) -> bool:
 				l["text"] = str(l["if_done"])
 	var name := str(GameState.npcs.get(id, {}).get("name", id.capitalize()))
 	m.hud.toast("%s ♥%d" % [name, n], Color(1, 0.8, 0.9))
+	# Every heart scene opens on a soft cue; ♥10 keeps its full j_heart after the scene.
+	Music.instance(m.get_tree()).sfx("j_page" if n < 10 else "sparkle", "sparkle")
 	await m.say(lines)
 	GameState.run["flags"][_flag(id, n)] = true
 	if n == 6:
@@ -124,6 +126,7 @@ static func talk(m: GameMap, id: String) -> bool:
 			if not d.is_empty() and not late and GameState._cond_ok(d.get("when", {})):
 				GameState.add_quest(q, str(d.get("text", q)))
 				m.hud.toast("New quest: %s" % str(d.get("text", q)), Color(1, 0.9, 0.4))
+				Music.instance(m.get_tree()).sfx("new_item", "pickup")
 				var yes := Quests._as_lines(name, Quests.lines(q).get("yes", ""))
 				if not yes.is_empty():
 					await m.say(yes)
