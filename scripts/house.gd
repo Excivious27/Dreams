@@ -488,7 +488,6 @@ func decor_reset() -> int:
 		var id := _starter_id(str(pr[0]))
 		if id != "" and Decor.owned(id) > 0 and DecorMode.place(self, id, pr[1]) == "":
 			n += 1
-	DecorMode.undo_stack.clear()
 	return n
 
 
@@ -646,7 +645,7 @@ func _entry_button() -> void:
 func _draw_shell() -> void:
 	var I0: Variant = load("res://scripts/interior.gd")
 	var wid := DecorMode.surface_of("wall", "main")
-	var wa := DecorMode.art_of(wid) if wid != "" else ["tiles", "wl_floral", false]
+	var wa := DecorMode.surface_art(wid) if wid != "" else ["tiles", "wl_floral", false]
 	var trim := Art.tex("tiles", str(wa[1]) + "_m") if str(wa[0]) == "tiles" else null
 	if trim == null:
 		trim = Art.tex("tiles", "wl_floral_m")
@@ -690,7 +689,7 @@ func floor_at(c: Vector2i) -> String:
 		if c.x >= rr.position.x and c.x < rr.end.x:
 			var id := DecorMode.surface_of("floor", str(room))
 			if id != "":
-				var a := str(DecorMode.art_of(id)[1])
+				var a := str(DecorMode.surface_art(id)[1])
 				for w: Array in [["stone", "stone"], ["tile", "stone"], ["marble", "stone"], ["carpet", "grass"], ["rug", "grass"]]:
 					if str(w[0]) in a:
 						return str(w[1])
