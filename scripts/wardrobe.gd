@@ -216,7 +216,7 @@ static func sync_unlocks() -> Array:
 	var have: Array = []
 	for slot in GameState.SLOTS:
 		have.append(GameState.equipped(slot))
-	for iid: String in GameState.run.get("inv", {}):
+	for iid: String in GameState.run.get("inventory", {}):
 		have.append(iid)
 	var seen: Dictionary = Decor.st()["got"]
 	for iid in have:

@@ -109,6 +109,15 @@ func _run() -> void:
 	check(PaperDoll.body_for(GameState.run["look"]) == "outfit_farmer", "no wardrobe piece worn: the look's outfit as before (old saves unchanged)")
 	check(Wardrobe.choices("outfit").has("wr_neon_jacket") and not Wardrobe.choices("outfit").has("wr_ceremony_coat"), "arc filter on starters")
 	check(not Wardrobe.put_on("wr_pinstripe_suit"), "can't wear what you don't own")
+	# owning gear whose costume is a wardrobe outfit unlocks that look
+	GameState.items["_probe_suit"] = {"name": "Probe Suit", "slot": "body", "costume": "outfit_vest"}
+	GameState.run["inventory"]["_probe_suit"] = 1
+	var unl := Wardrobe.sync_unlocks()
+	check(unl.has("wr_padded_vest") and Decor.owned("wr_padded_vest") == 1, "gear costume unlocks the wardrobe look: %s" % [unl])
+	check(Wardrobe.sync_unlocks().is_empty(), "unlock happens once")
+	GameState.run["inventory"].erase("_probe_suit")
+	GameState.items.erase("_probe_suit")
+	Decor.take("wr_padded_vest")
 	var before := _gear_totals()
 	Decor.give("wr_pinstripe_suit")
 	Decor.give("wr_padded_vest")
