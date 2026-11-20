@@ -1,0 +1,128 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | bubble.png[39m[0m
+[  99% ] [90m[1mreimport[22m | loiter.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sit.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | special.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_back.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_front.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_left.png[39m[0m
+[  99% ] [90m[1mreimport[22m | view_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down_vv.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (2410 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 117.4s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 14.3s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 2.3s
+
+#### step 16: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 16 touch_ui_test: PASS in 38.6s
+
+#### step 22: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 22 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 3.4s
+
+#### step 28: rec_reno_test (shard 3/6)
+rec_reno_test: 0 failures
+#### step 28 rec_reno_test: PASS in 2.1s
+
+#### step 34: farm_week_test (shard 3/6)
+farm_week_test: OK (0 fails)
+#### step 34 farm_week_test: PASS in 4.7s
+
+#### step 40: commons_test (shard 3/6)
+commons_test: 0 failures
+#### step 40 commons_test: PASS in 36.5s
+
+#### step 46: town_first_test (shard 3/6)
+town_first_test: 0 failures
+#### step 46 town_first_test: PASS in 3.4s
+
+#### step 52: text size floors (7 px) (shard 3/6)
+== text size floors (7 px) ==
+text floors: 0 under 7 px
+#### step 52 text size floors (7 px): PASS in 0.0s
+
+#### step 58: mix_test (shard 3/6)
+mix_test: 0 failures
+#### step 58 mix_test: PASS in 4.0s
+
+#### step 64: gifts: the Marked and boss powers (shard 3/6)
+== gifts: the Marked and boss powers ==
+gift_test: 0 failures
+#### step 64 gifts: the Marked and boss powers: PASS in 6.2s
+
+#### step 70: campaign: battles, projects, colonies, big mines (shard 3/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 70 campaign: battles, projects, colonies, big mines: PASS in 5.6s
+
+#### step 76: street_bat_test (shard 3/6)
+street_bat_test: 0 fails
+#### step 76 street_bat_test: PASS in 2.1s
+
+#### step 82: campaign_c3_test (shard 3/6)
+campaign_c3_test: 0 fails
+#### step 82 campaign_c3_test: PASS in 2.2s
+
+#### step 88: story: every chapter plays to the end (shard 3/6)
+== story: every chapter plays to the end ==
+STORY DONE, failures: 0
+#### step 88 story: every chapter plays to the end: PASS in 10.8s
+
+#### step 94: mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 (shard 3/6)
+== mega UI: map pins, travel letters, mega quests, boss themes, caves (C4 P4) ==
+mega_ui_test: PASS (0 fails)
+#### step 94 mega UI: map pins, travel letters, mega quests, boss themes, caves (C4: PASS in 4.4s
+
+#### step 100: hidden areas stay put day to day (C5) (shard 3/6)
+== hidden areas stay put day to day (C5) ==
+hidden_stable_test: OK (0 fails)
+#### step 100 hidden areas stay put day to day (C5): PASS in 4.4s
+
+#### step 106: softlocks: every menu/screen leaves on B, dialogues always finish (shard 3/6)
+== softlocks: every menu/screen leaves on B, dialogues always finish ==
+softlock_test: 0 failures
+#### step 106 softlocks: every menu/screen leaves on B, dialogues always finish: PASS in 6.5s
+
+#### step 112: C7 P3: endings and epilogue (shard 3/6)
+== C7 P3: endings and epilogue ==
+epilogue_test: 0 fails
+#### step 112 C7 P3: endings and epilogue: PASS in 2.3s
+
+#### shard 3/6 done in 271s: PASS

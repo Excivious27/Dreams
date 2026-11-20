@@ -1,0 +1,36 @@
+CONDUCT CI PASS  baa026ed45  (ci/c8c-27fae58c, run 44746485182)
+
+check shards (6/6):
+  shard 1: PASS  253s
+  shard 2: PASS  368s
+  shard 3: PASS  271s
+  shard 4: PASS  176s
+  shard 5: PASS  256s
+  shard 6: PASS  241s
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 170s  0 fails, 0 warns, 630 steps, 8 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 60s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=1 90s  0 fails, 0 warns, 360 steps, 0 kills, 1 ownerless pauses, scenes ["meadow", "station", "fo
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 97s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", 
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 164s  0 fails, 0 warns, 630 steps, 13 kills, 0 ownerless pauses, scenes ["ruins", "wastes", "mea
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 98s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 60s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm", "town"]
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 95s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "iron_freight_ya
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "moon", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 142s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=0 pauses=0 57s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "hollow_
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 77s  0 fails, 0 warns, 330 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "neon", "docks
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "lake", 
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 183s  0 fails, 0 warns, 630 steps, 6 kills, 0 ownerless pauses, scenes ["jungle", "quarry", "rui
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 90s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 94s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mead
+  bot20 20 gangsters pax menus 5 2 15        OK   errors=0 fails=0 warns=0 pauses=0 80s  0 fails, 0 warns, 299 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "marsh", "neon
+playtest: PASS  50s  21 screenshots (results playtest/shots/)
+
+longest job: 368s
+slowest check steps: import 258.2s; import 117.4s; import 97.7s; import 88.9s; import 86.8s; import 79.7s; smoke test 53.4s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 42.3s
+distinct errors/fails/warns:
+    1  paused with nothing on screen; resuming (scene meadow, layers @CanvasLayer@71192, @CanvasLayer@71195, @CanvasLayer@71205, @CanvasLayer@71210, @CanvasLayer@71212
