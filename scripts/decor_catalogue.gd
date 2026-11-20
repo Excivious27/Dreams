@@ -149,6 +149,25 @@ static func progress() -> Array:
 	return [got, all.size()]
 
 
+## Kinds got since the catalogue was last looked at (Book tab glow, "• New!" on the hub row).
+static func new_count() -> int:
+	var d := Decor.st()
+	var seen_v: Dictionary = d.get("viewed", {}) if d.get("viewed", null) is Dictionary else {}
+	var n := 0
+	for id in d["got"]:
+		if not seen_v.has(id) and Decor.is_decor(str(id)):
+			n += 1
+	return n
+
+
+static func clear_new() -> void:
+	var d := Decor.st()
+	if not (d.get("viewed", null) is Dictionary):
+		d["viewed"] = {}
+	for id in d["got"]:
+		d["viewed"][id] = true
+
+
 static func _set_ids() -> Array:
 	var out := []
 	var sets: Dictionary = Decor.data()["sets"]
@@ -623,6 +642,7 @@ func _pad_alt(c: Control) -> void:
 
 
 func _grid_view() -> void:
+	clear_new()
 	var chips := HBoxContainer.new()
 	chips.add_theme_constant_override("separation", 2)
 	_body.add_child(chips)

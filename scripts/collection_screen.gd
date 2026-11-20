@@ -117,7 +117,7 @@ static func _hub(gm: Node) -> void:
 	var drow := HBoxContainer.new()
 	gm._body.add_child(drow)
 	_badge(gm, drow, "medal_collector", int(dp[1]) > 0 and int(dp[0]) >= int(dp[1]))
-	var db: Button = gm._button("Decor catalogue  %d/%d · sets %d/%d ›" % [dp[0], dp[1], ds[0], ds[1]], func() -> void: open_catalogue(gm))
+	var db: Button = gm._button("Decor catalogue%s  %d/%d · sets %d/%d ›" % ["  • New!" if DecorCatalogue.new_count() > 0 else "", dp[0], dp[1], ds[0], ds[1]], func() -> void: open_catalogue(gm))
 	db.set_meta("pc_key", "book:decor")
 	gm._body.remove_child(db)
 	drow.add_child(db)

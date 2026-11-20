@@ -183,6 +183,35 @@ func _run() -> void:
 					if ch2 is GridContainer:
 						cells += ch2.get_child_count()
 				ok(cells > 0 and cells <= 60, "Book %s grid cells %d" % [cat, cells])
+			# C10a P3: a tapped cell's card sits right under its own row, not after the whole grid.
+			CollectionScreen.open("shipping")
+			gm._refresh()
+			var first_key := ""
+			for ch3 in gm._body.get_children():
+				if ch3 is GridContainer and ch3.get_child_count() > 0:
+					first_key = str((ch3.get_child(0) as Control).get_meta("pc_key", "")).trim_prefix("cell:")
+					break
+			CollectionScreen.sel = first_key
+			gm._refresh()
+			var kids := gm._body.get_children()
+			var gi := -1
+			for k in kids.size():
+				if kids[k] is GridContainer:
+					gi = k
+					break
+			ok(gi >= 0 and gi + 1 < kids.size() and kids[gi + 1] is Label, "card right under the tapped row")
+			var nf := 0
+			for ch4 in gm._body.get_children():
+				if ch4 is GridContainer:
+					for b in ch4.get_children():
+						if (b as Control).focus_mode != Control.FOCUS_NONE:
+							nf += 1
+			ok(nf == 0, "Book cells never take focus")
 			CollectionScreen.open("")
+	# C10a P3: decor milestones live beside the Book, never as a cat.
+	var dm: Array = Collections.data().get("decor_milestones", [])
+	ok(dm.size() >= 3, "decor milestones in collections.json")
+	ok(not Collections.cats().any(func(c: Dictionary) -> bool: return str(c["id"]) == "decor"), "decor is not a Book cat")
+	ok(str(Collections.data()["legends"]["legendary_koi"].get("first_decor", "")).begins_with("dc_"), "koi leaves a keepsake id")
 	print("collections_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

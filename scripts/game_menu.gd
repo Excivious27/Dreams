@@ -415,7 +415,7 @@ func _refresh() -> void:
 	if _tab_buttons.has("Skills"):
 		SkillGlow.set_glow(_tab_buttons["Skills"] as Control, SkillGlow.total_free())
 	if _tab_buttons.has("Book"):
-		SkillGlow.set_glow(_tab_buttons["Book"] as Control, Collections.new_count())  # new log entries
+		SkillGlow.set_glow(_tab_buttons["Book"] as Control, Collections.new_count() + DecorCatalogue.new_count())  # new log entries + new decor kinds
 	var r := GameState.run
 	match _tab:
 		"Book":
