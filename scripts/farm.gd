@@ -9,9 +9,9 @@ extends GameMap
 ## tall; it was 0.5 and read as a doll's house, C2). Solid over its walls and lower
 ## roof; the upper roof is walk-behind (it fades).
 const HOUSE := Rect2i(9, 6, 8, 5)
-## Harvest economy (C8 P2): level terms stop at lv_cap so yield and quality can't run away;
+## Harvest economy (C8 P2): level terms stop at lv_cap (20, same as P1's GameState.skill_level_eff) so yield and quality can't run away;
 ## star_chance is gold-star odds only; XP scales with how long the crop took.
-const HARVEST := {"lv_cap": 10, "extra_per_lv": 0.025, "star_gold_share": 0.5, "gold_per_lv": 0.015, "silver_per_lv": 0.05,
+const HARVEST := {"lv_cap": 20, "extra_per_lv": 0.012, "star_gold_share": 0.5, "gold_per_lv": 0.0075, "silver_per_lv": 0.025,
 	"fert_gold": 0.10, "fert_silver": 0.20, "xp_base": 2, "xp_per_day": 0.8, "xp_per_tier": 2}
 const HOUSE_SCALE := 0.667
 const DOOR := Vector2i(13, 10)
