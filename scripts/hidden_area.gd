@@ -491,8 +491,8 @@ func _process(delta: float) -> void:
 		if dist <= 3.0 and not _sniffed:
 			_sniffed = true
 			if map.pet != null and is_instance_valid(map.pet) and map.pet.visible:
-				var cat := str(GameState.look_d().get("pet", "")).begins_with("cat")
-				map.hud.toast("Your cat sniffs at something nearby..." if cat else "Your pup sniffs at something nearby...", Color(0.9, 0.95, 1.0))
+				map.hud.toast("%s sniffs at something nearby..." % Pet.name_of(), Color(0.9, 0.95, 1.0))
+				Pet.say(map.get_tree(), "call")
 		if (twilight or dist <= 4.0) and randf() < 0.35:
 			map.fx("sparkle" if Art.has("fx", "sparkle") else "poof", map.cell_center(c) + Vector2(randf_range(-5, 5), -8 - randf() * 6), 10.0, 0.6)
 
@@ -516,9 +516,10 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 		"hidden_mouth":
 			if str(thing.get("kind", "")) == "door":
 				if str(thing.get("need", "")) != "" and not GameState.run["flags"].has(str(thing["need"])):
+					Music.instance(m.get_tree()).sfx("locked", "nope")
 					m.tell([{"text": str(thing.get("shut", "Sealed."))}])
 					return true
-				Music.instance(m.get_tree()).sfx("crate_break", "thud")
+				Music.instance(m.get_tree()).sfx("stone_grind", "bowl_rumble")
 				m.fx("poof", m.cell_center(c) + Vector2(0, -8), 16.0, 0.6)
 			if str(thing.get("kind", "")) == "crack" and GameState.held_tool() != "pickaxe":
 				return ToolHint.need(m, "pickaxe", "to break through")
@@ -527,10 +528,10 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 					m.hud.toast("Too tired.", Color(1, 0.7, 0.7))
 					return true
 				m.player.play_tool("pickaxe")
-				Music.instance(m.get_tree()).sfx("crate_break", "thud")
+				Music.instance(m.get_tree()).sfx("rock_break", "thud")
 				m.fx("stone_chips" if Art.has("fx", "stone_chips") else "poof", m.cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			elif str(thing.get("kind", "")) == "vine":  # the sun door has its own grind above
-				Music.instance(m.get_tree()).sfx("step_grass", "step")
+				Music.instance(m.get_tree()).sfx("step_leaves", "twig")
 				m.fx("leaf_burst" if Art.has("fx", "leaf_burst") else "poof", m.cell_center(c) + Vector2(0, -8), 14.0, 0.5)
 			GameState.run["flags"][str(thing["key"])] = true
 			m.things.erase(c)
@@ -563,6 +564,8 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			if first:
 				m.hud.toast("A secret way!" + ("  Up you go." if str(thing.get("kind", "")) == "stairs" else "  It runs a long way."), Color(1, 0.95, 0.6))
 				Music.instance(m.get_tree()).sfx("j_secret", "j_treasure")
+			else:
+				Music.instance(m.get_tree()).sfx("teleport" if str(thing.get("kind", "")) not in ["stairs", "tunnel"] else "step_stone", "pop")
 			m.fx("poof", m.player.position + Vector2(0, -6), 12.0, 0.4)
 			var dest := m.free_spot_near(m.cell_center(to))
 			m.player.position = dest

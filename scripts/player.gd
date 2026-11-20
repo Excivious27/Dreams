@@ -121,12 +121,14 @@ func mount() -> void:
 		return
 	mounted = true
 	GameState.run["flags"]["mounted"] = true
+	Music.instance(get_tree()).sfx("horse_whinny", "horse")
 	_show_idle()
 
 
 func dismount() -> void:
 	mounted = false
 	GameState.run["flags"].erase("mounted")
+	Music.instance(get_tree()).sfx("thud")
 	if map:
 		map.hud.toast("%s waits here." % str(GameState.run.get("names", {}).get("horse", "Your horse")))
 		var c: Vector2i = cell()
@@ -624,6 +626,11 @@ func _physics_process(delta: float) -> void:
 			GameState.run["hp"] = int(GameState.run["hp"]) - sdmg
 			_flash = 0.6
 			map.damage_number(position + Vector2(0, -22), sdmg, Color(0.6, 0.9, 0.4))
+			# A quiet tick so poison/burn isn't silent; at most one a second (c6_08_25).
+			var tk := Time.get_ticks_msec()
+			if tk - _status_sfx_ms > 1000:
+				_status_sfx_ms = tk
+				Music.instance(get_tree()).sfx("status_tick", "scroll_tick")
 			_last_stand()
 			if int(GameState.run["hp"]) <= 0:
 				map.player_down("hurt")
@@ -841,8 +848,15 @@ func _physics_process(delta: float) -> void:
 		if _step_t <= 0.0:
 			_step_t = 0.25 if running else 0.33  # footsteps keep pace with the slower stride
 			if swimming:
+				# Strokes are a soft paddle on the step voice; the big splash is for jumping in (c6_10-17).
 				_step_t = 0.7
-				Music.instance(get_tree()).sfx("splash")
+				var mu := Music.instance(get_tree())
+				mu.step("swim" if mu.has_sfx("step_swim") else "water")
+			elif mounted:
+				# Hooves, not boots (c6_10-25): a slower canter on the step voice.
+				_step_t = 0.3 if running else 0.4
+				var mh := Music.instance(get_tree())
+				mh.step("hoof" if mh.has_sfx("step_hoof") else _ground_word())
 			elif vehicle == "":
 				Music.instance(get_tree()).step(_ground_word())
 	if auto:
@@ -1141,6 +1155,11 @@ func do_action(mode := "a") -> void:
 		# Swinging a farm tool at nothing: show the swing anyway, it reads as "nothing here".
 		var act: String = {"hoe": "hoe", "can": "water", "axe": "axe", "pickaxe": "pickaxe", "rod": "cast", "scythe": "axe"}[held]  # scythe -> sweep in play_tool
 		if play_tool(act):
+			# A light whoosh (a dribble for the can) so the empty swing isn't silent (c6_10-09).
+			if held == "can":
+				Music.instance(get_tree()).step("water")
+			else:
+				Music.instance(get_tree()).sfx("scythe" if held == "scythe" else "swing", "swing")
 			return
 		return
 	if held == "" or GameState.is_sword(held):
@@ -1205,7 +1224,9 @@ static func gun_sound(id: String) -> String:
 	var w := id.to_lower()
 	if "shotgun" in w or "blunder" in w or "scatter" in w:
 		return "shot_shotgun"
-	if "rifle" in w or "sniper" in w or "long" in w or "tommy" in w:
+	if "tommy" in w or "smg" in w:
+		return "shot_smg"  # short bursts: a 1 s rifle tail at 5 shots/s ate every voice (c6_08_17)
+	if "rifle" in w or "sniper" in w or "long" in w:
 		return "shot_rifle"
 	if "laser" in w or "ray" in w or "plasma" in w:
 		return "laser"
@@ -1267,9 +1288,10 @@ func _move(step: Vector2) -> void:
 	_update_wade()
 	if swimming and not was:
 		map.fx("splash", position, 12.0, 0.5)
-		Music.instance(get_tree()).sfx("splash", "bite")
+		Music.instance(get_tree()).sfx("splash", "step_water")
 	elif was and not swimming:
 		map.fx("splash", position, 12.0, 0.4)
+		Music.instance(get_tree()).step("water")
 
 
 var _wade: Node2D
@@ -1424,6 +1446,9 @@ func _swing_arc(center: Vector2) -> void:
 		sl.animation_finished.connect(sl.queue_free)
 
 
+var _status_sfx_ms := -10000
+
+
 func take_damage(n: int, from: Vector2) -> void:
 	if invuln > 0.0:
 		return
@@ -1431,7 +1456,7 @@ func take_damage(n: int, from: Vector2) -> void:
 		invuln = 0.4
 		if map:
 			map.hud.toast("Blocked!", Color(0.8, 0.9, 1.0))
-			Music.instance(get_tree()).sfx("dry_click", "thud")
+			Music.instance(get_tree()).sfx("block", "thud")
 		return
 	if int(GameState.run["flags"].get("shield", 0)) > 0:
 		GameState.run["flags"]["shield"] = int(GameState.run["flags"]["shield"]) - 1

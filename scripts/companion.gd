@@ -296,7 +296,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 					m.give("wood", 3)
 				m.fx("stone_chips" if tt in ["rock", "mrock"] else "wood_chips", m.cell_center(fc) + Vector2(0, -8), 16.0, 0.5)
 				m.shake(3.0)
-				Music.instance(m.get_tree()).sfx("crate_break", "thud")
+				Music.instance(m.get_tree()).sfx("rock_break" if tt in ["rock", "mrock"] else "timber", "thud")
 				m.hud.toast("Big Jim: 'Next.'", Color(1, 0.9, 0.8))
 			else:
 				m.hud.toast("Big Jim: 'Point me at something.'", Color(1, 0.9, 0.8))
