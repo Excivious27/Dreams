@@ -16,6 +16,7 @@ void fragment() {
 	vec2 d = max(fwidth(px), vec2(1e-5));
 	vec2 seam = floor(px + 0.5);
 	vec2 sharp = seam + clamp((px - seam) / d, -0.5, 0.5);
-	vec2 p = mix(sharp, px, step(vec2(0.9), d));
+	// ease from crisp to plain bilinear near 1:1 (no hard switch at one zoom level)
+	vec2 p = mix(sharp, px, smoothstep(vec2(0.8), vec2(1.0), d));
 	COLOR = texture(TEXTURE, p / ts) * vcol;
 }

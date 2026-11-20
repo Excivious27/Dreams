@@ -74,6 +74,7 @@ func _ready() -> void:
 		set_process_unhandled_input(false)
 		return
 	GameState.look_season = ""
+	_crisp_hook()
 	CliffPainter.memo.clear()  # recorded cliff/forest-floor drawing belongs to one map
 	Art.trim_cache()
 	InputSetup.ensure_actions()
@@ -4795,7 +4796,7 @@ func _bake_make(k: Vector2i) -> void:
 	sp.region_rect = Rect2(BAKE_MARGIN, BAKE_MARGIN, px, px)
 	sp.scale = Vector2.ONE / BAKE_SCALE
 	sp.position = origin - _bake_layer.position
-	sp.material = _bake_mat
+	sp.material = CrispArt.material_premul() if CrispArt.on() else _bake_mat
 	_bake_layer.add_child(sp)
 	_bake[k] = [sv, sp, false]
 	_bake_n += 1
@@ -4811,3 +4812,20 @@ func _bake_free(k: Vector2i) -> void:
 		return
 	(ch[1] as Node).queue_free()
 	(ch[0] as Node).queue_free()
+
+
+## Every AnimatedSprite2D under the map (villagers, pup, animals, critters, crows)
+## gets the crisp sampling the buildings have (c5_05 #4); sprites that bring
+## their own material (hero/foe flash shader, which samples crisply itself) keep it.
+func _crisp_hook() -> void:
+	if not CrispArt.on():
+		return
+	get_tree().node_added.connect(_crisp_added)
+	(func() -> void:
+		for n in find_children("*", "AnimatedSprite2D", true, false):
+			CrispArt.apply_anim(n)).call_deferred()
+
+
+func _crisp_added(n: Node) -> void:
+	if n is AnimatedSprite2D and is_ancestor_of(n):
+		CrispArt.apply_anim.call_deferred(n)
