@@ -1,0 +1,23 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 110.8}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 5.7}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 3.4}
+{"step": 15, "name": "phone_ui_test", "rc": 0, "secs": 12.2}
+{"step": 21, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 3.2}
+{"step": 27, "name": "rec_test", "rc": 0, "secs": 6.3}
+{"step": 33, "name": "cash_test", "rc": 0, "secs": 4.0}
+{"step": 39, "name": "house_exterior_test", "rc": 0, "secs": 7.0}
+{"step": 45, "name": "shop_econ_test", "rc": 0, "secs": 3.4}
+{"step": 51, "name": "town_first_test", "rc": 0, "secs": 5.0}
+{"step": 57, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 63, "name": "music_stream_test", "rc": 0, "secs": 9.7}
+{"step": 69, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 4.6}
+{"step": 75, "name": "early combat: clinic, pup lesson, telegraph, first boss", "rc": 0, "secs": 8.9}
+{"step": 81, "name": "goal_line_test", "rc": 0, "secs": 3.2}
+{"step": 87, "name": "campaign_gate_test", "rc": 0, "secs": 6.7}
+{"step": 93, "name": "settings, slots, quality, discovery, perks, birthdays", "rc": 0, "secs": 3.9}
+{"step": 99, "name": "C7 text: gift articles, plurals, quest wording", "rc": 0, "secs": 3.0}
+{"step": 105, "name": "fish critters only in deep water (C2 P4)", "rc": 0, "secs": 12.0}
+{"step": 111, "name": "stack_whack_test", "rc": 0, "secs": 3.7}
+{"step": 117, "name": "UI/arcade/rec/story audio cues (CONDUCT 6 P6)", "rc": 0, "secs": 3.4}
+{"step": 123, "name": "C9 P1: controller bindings and field play", "rc": 0, "secs": 4.1}
+{"step": 129, "name": "C9 P6: forest border buckets", "rc": 0, "secs": 4.9}

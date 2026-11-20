@@ -1,0 +1,135 @@
+{
+ "sha": "dd5f68f1f40e0fe43ced0d7d627e97553227793f",
+ "ref": "ci/r3sub2-2ddce23c",
+ "run": "44821501706",
+ "finished": 1795210992.2018256,
+ "pass": true,
+ "playtest": {
+  "rc": 0,
+  "secs": 47,
+  "shots": 21,
+  "fails": [],
+  "attempts": 1,
+  "first_rc": null,
+  "first_fail": ""
+ },
+ "playtest_pass": true,
+ "check_pass": true,
+ "bots_pass": true,
+ "flaky": [],
+ "params": {
+  "days": 3,
+  "focus": "",
+  "base": "2ddce23ccfed973365a49f791994f9336d36244e",
+  "label": "r3sub2",
+  "branch": "main",
+  "shards": [
+   2
+  ],
+  "bots": false,
+  "playtest": true
+ },
+ "max_job_secs": 229,
+ "shards": [
+  {
+   "shard": 2,
+   "rc": 0,
+   "secs": 229,
+   "failed_steps": []
+  }
+ ],
+ "bots": [],
+ "errors": [],
+ "slowest_steps": [
+  {
+   "step": 1,
+   "name": "import",
+   "rc": 0,
+   "secs": 110.8
+  },
+  {
+   "step": 15,
+   "name": "phone_ui_test",
+   "rc": 0,
+   "secs": 12.2
+  },
+  {
+   "step": 105,
+   "name": "fish critters only in deep water (C2 P4)",
+   "rc": 0,
+   "secs": 12.0
+  },
+  {
+   "step": 63,
+   "name": "music_stream_test",
+   "rc": 0,
+   "secs": 9.7
+  },
+  {
+   "step": 75,
+   "name": "early combat: clinic, pup lesson, telegraph, first boss",
+   "rc": 0,
+   "secs": 8.9
+  },
+  {
+   "step": 39,
+   "name": "house_exterior_test",
+   "rc": 0,
+   "secs": 7.0
+  },
+  {
+   "step": 87,
+   "name": "campaign_gate_test",
+   "rc": 0,
+   "secs": 6.7
+  },
+  {
+   "step": 27,
+   "name": "rec_test",
+   "rc": 0,
+   "secs": 6.3
+  },
+  {
+   "step": 3,
+   "name": "interior reachability",
+   "rc": 0,
+   "secs": 5.7
+  },
+  {
+   "step": 51,
+   "name": "town_first_test",
+   "rc": 0,
+   "secs": 5.0
+  },
+  {
+   "step": 129,
+   "name": "C9 P6: forest border buckets",
+   "rc": 0,
+   "secs": 4.9
+  },
+  {
+   "step": 69,
+   "name": "arcs: path cards, arc building intros, locked-plan hints",
+   "rc": 0,
+   "secs": 4.6
+  },
+  {
+   "step": 123,
+   "name": "C9 P1: controller bindings and field play",
+   "rc": 0,
+   "secs": 4.1
+  },
+  {
+   "step": 33,
+   "name": "cash_test",
+   "rc": 0,
+   "secs": 4.0
+  },
+  {
+   "step": 93,
+   "name": "settings, slots, quality, discovery, perks, birthdays",
+   "rc": 0,
+   "secs": 3.9
+  }
+ ]
+}

@@ -1,0 +1,10 @@
+CONDUCT CI PASS  dd5f68f1f4  (ci/r3sub2-2ddce23c, run 44821501706)
+
+subset run: shards [2], bots off, playtest on
+check shards (1/1):
+  shard 2: PASS  229s
+playtest: PASS  47s  21 screenshots (results playtest/shots/)
+
+longest job: 229s
+slowest check steps: import 110.8s; phone_ui_test 12.2s; fish critters only in deep water (C2 P4) 12.0s; music_stream_test 9.7s; early combat: clinic, pup lesson, telegraph, first boss 8.9s; house_exterior_test 7.0s; campaign_gate_test 6.7s; rec_test 6.3s
+distinct errors/fails/warns:
