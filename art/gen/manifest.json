@@ -134808,6 +134808,166 @@
    "h": 43,
    "w": 48
   },
+  "node_ranching_rancher": {
+   "file": "ui/node_ranching_rancher.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_0": {
+   "file": "ui/node_ranching_ranching_0_0.png",
+   "h": 48,
+   "w": 42
+  },
+  "node_ranching_ranching_0_1": {
+   "file": "ui/node_ranching_ranching_0_1.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_2": {
+   "file": "ui/node_ranching_ranching_0_2.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_3": {
+   "file": "ui/node_ranching_ranching_0_3.png",
+   "h": 48,
+   "w": 42
+  },
+  "node_ranching_ranching_0_6": {
+   "file": "ui/node_ranching_ranching_0_6.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_7": {
+   "file": "ui/node_ranching_ranching_0_7.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_8": {
+   "file": "ui/node_ranching_ranching_0_8.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_9": {
+   "file": "ui/node_ranching_ranching_0_9.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_1_0": {
+   "file": "ui/node_ranching_ranching_1_0.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_1_1": {
+   "file": "ui/node_ranching_ranching_1_1.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_1_3": {
+   "file": "ui/node_ranching_ranching_1_3.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_1_4": {
+   "file": "ui/node_ranching_ranching_1_4.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_1_5": {
+   "file": "ui/node_ranching_ranching_1_5.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_1_7": {
+   "file": "ui/node_ranching_ranching_1_7.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_1_8": {
+   "file": "ui/node_ranching_ranching_1_8.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_2_0": {
+   "file": "ui/node_ranching_ranching_2_0.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_2_1": {
+   "file": "ui/node_ranching_ranching_2_1.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_2_2": {
+   "file": "ui/node_ranching_ranching_2_2.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_2_4": {
+   "file": "ui/node_ranching_ranching_2_4.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_2_5": {
+   "file": "ui/node_ranching_ranching_2_5.png",
+   "h": 44,
+   "w": 48
+  },
+  "node_ranching_ranching_2_6": {
+   "file": "ui/node_ranching_ranching_2_6.png",
+   "h": 44,
+   "w": 48
+  },
+  "node_ranching_ranching_2_8": {
+   "file": "ui/node_ranching_ranching_2_8.png",
+   "h": 44,
+   "w": 48
+  },
+  "node_ranching_ranching_2_9": {
+   "file": "ui/node_ranching_ranching_2_9.png",
+   "h": 44,
+   "w": 48
+  },
+  "node_ranching_ranching_3_0": {
+   "file": "ui/node_ranching_ranching_3_0.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_ranching_ranching_3_1": {
+   "file": "ui/node_ranching_ranching_3_1.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_ranching_ranching_3_3": {
+   "file": "ui/node_ranching_ranching_3_3.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_ranching_ranching_3_4": {
+   "file": "ui/node_ranching_ranching_3_4.png",
+   "h": 43,
+   "w": 48
+  },
+  "node_ranching_ranching_3_5": {
+   "file": "ui/node_ranching_ranching_3_5.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_3_6": {
+   "file": "ui/node_ranching_ranching_3_6.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_3_7": {
+   "file": "ui/node_ranching_ranching_3_7.png",
+   "h": 45,
+   "w": 48
+  },
+  "node_ranching_ranching_3_9": {
+   "file": "ui/node_ranching_ranching_3_9.png",
+   "h": 45,
+   "w": 48
+  },
   "node_star": {
    "file": "ui/node_star.png",
    "h": 24,
@@ -136151,6 +136311,11 @@
   "skill3_pup": {
    "file": "ui/skill3_pup.png",
    "h": 46,
+   "w": 48
+  },
+  "skill3_ranching": {
+   "file": "ui/skill3_ranching.png",
+   "h": 45,
    "w": 48
   },
   "skill_bartering": {

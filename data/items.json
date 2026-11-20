@@ -286,7 +286,9 @@
   "heal": 1,
   "rarity": "uncommon",
   "tier": 2,
-  "ranch": true
+  "ranch": true,
+  "desc": "From your beehives, or found in the Meadow.",
+  "energy": 20
  },
  "wheat": {
   "name": "Wheat",
@@ -651,7 +653,8 @@
   "rarity": "rare",
   "tier": 3,
   "family": "mushroom",
-  "ranch": true
+  "ranch": true,
+  "desc": "Dug up by happy pigs, or found in old forests."
  },
  "glowcap": {
   "name": "Glow-cap",
@@ -7079,7 +7082,8 @@
   "value": 25,
   "rarity": "common",
   "tier": 1,
-  "ranch": true
+  "ranch": true,
+  "desc": "Shorn from a happy sheep or llama. Spin it into yarn at the Loom."
  },
  "lamp_oil": {
   "name": "Lamp Oil",
@@ -7130,7 +7134,8 @@
   "rarity": "uncommon",
   "tier": 2,
   "energy": 40,
-  "heal": 1
+  "heal": 1,
+  "desc": "Straight from the hive. Spin it at the Honey Extractor for honey and beeswax."
  },
  "cider": {
   "name": "Cider",
@@ -7158,7 +7163,8 @@
   "energy": 32,
   "heal": 0,
   "family": "milk",
-  "ranch": true
+  "ranch": true,
+  "desc": "From the barn goats."
  },
  "mushroom_stew": {
   "name": "Mushroom Stew",
@@ -8138,9 +8144,10 @@
  "yarn": {
   "name": "Yarn",
   "type": "craft",
-  "value": 27,
+  "value": 34,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "desc": "Soft and warm. Spun from wool or rabbit fur at the Loom."
  },
  "linen": {
   "name": "Linen",
@@ -8159,14 +8166,14 @@
  "fine_fabric": {
   "name": "Fine Fabric",
   "type": "craft",
-  "value": 230,
+  "value": 239,
   "rarity": "rare",
   "tier": 3
  },
  "moonweave": {
   "name": "Moonweave",
   "type": "craft",
-  "value": 702,
+  "value": 723,
   "rarity": "epic",
   "tier": 4
  },
@@ -8218,7 +8225,8 @@
   "value": 70,
   "rarity": "common",
   "tier": 1,
-  "energy": 20
+  "energy": 20,
+  "desc": "Churned from fresh milk."
  },
  "cooking_oil": {
   "name": "Cooking Oil",
@@ -10267,7 +10275,7 @@
   "value": 34,
   "rarity": "common",
   "tier": 1,
-  "energy": 14,
+  "energy": 26,
   "family": "egg",
   "desc": "Big, rich and blue-green.",
   "ranch": true
@@ -20907,6 +20915,74 @@
   "tier": 1,
   "sprite": "wax",
   "desc": "From the hives, now and then, with the honey.",
-  "ranch": true
+  "ranch": true,
+  "icon": "wax"
+ },
+ "mayonnaise": {
+  "name": "Mayonnaise",
+  "type": "food",
+  "value": 60,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 30,
+  "desc": "Whipped from fresh eggs in the Mayo Machine."
+ },
+ "duck_mayonnaise": {
+  "name": "Duck Mayonnaise",
+  "type": "food",
+  "value": 90,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "icon": "mayonnaise",
+  "desc": "Rich and golden, from duck eggs."
+ },
+ "honey_jar": {
+  "name": "Jar of Honey",
+  "type": "food",
+  "value": 198,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 60,
+  "heal": 2,
+  "desc": "Clear, golden honey, sealed in glass."
+ },
+ "beeswax_candle": {
+  "name": "Beeswax Candle",
+  "type": "craft",
+  "value": 75,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "candle",
+  "desc": "Burns long and smells of summer."
+ },
+ "cream": {
+  "name": "Cream",
+  "type": "food",
+  "value": 60,
+  "rarity": "common",
+  "tier": 1,
+  "energy": 25,
+  "desc": "Skimmed from fresh milk."
+ },
+ "yogurt": {
+  "name": "Honey Yogurt",
+  "type": "food",
+  "value": 110,
+  "rarity": "uncommon",
+  "tier": 2,
+  "energy": 40,
+  "heal": 1,
+  "icon": "yogurt",
+  "desc": "Thick, tangy and sweetened with honey."
+ },
+ "truffle_oil": {
+  "name": "Truffle Oil",
+  "type": "craft",
+  "value": 320,
+  "rarity": "rare",
+  "tier": 3,
+  "icon": "cooking_oil",
+  "desc": "A few drops make any dish taste rich."
  }
 }

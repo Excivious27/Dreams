@@ -175,7 +175,7 @@ const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_
 ## Renames that only apply when the old node was bought under this name.
 const NODE_RENAME_NAME := {"combat_2_8": "Iron Gut"}
 ## Bump when gen_skill_trees.py changes what existing filler nodes do: old saves get those points back.
-const SKILL_VER := 9  # 9: C11a animal nodes moved from Farming to the Ranching tree (positional ranks refunded once)
+const SKILL_VER := 9  # 9: C11a Ranching tree (P3); animal nodes moved out of Farming (positional ranks refunded once)
 
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
@@ -1357,7 +1357,8 @@ const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "cri
 	"wood_bonus": 8.0, "stone_bonus": 6.0, "seed_back": 0.5, "smelt_discount": 1.0, "chop_bonus": 4.0, "wash_bonus": 0.05, "job_pay": 0.5, "chop_power": 2.0, "mine_power": 2.0,
 	"xp_gain": 0.5, "energy": 40.0, "hp": 60.0, "mana": 60.0, "start_supply": 30.0, "helper_hp": 40.0, "pet_hp": 60.0, "move_speed": 0.1,
 	"regrowth": 2.0, "last_stand": 1.0, "free_cast": 0.15,
-	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 12.0}
+	"wide_water": 1.0, "timber": 1.0, "tremor": 1.0, "tidecall": 1.0, "quick_build": 1.0, "jackpot": 0.05, "pet_dmg": 24.0, "gun_damage": 12.0,
+	"ani_double": 0.3, "ani_quality": 3.0, "ranch_value": 0.35, "breed_chance": 0.3, "grow_fast": 3.0, "ani_friend": 0.3, "hand_work": 0.5, "care_grace": 1.0, "hatch_fast": 1.0, "hand_slot": 2.0, "feeder": 1.0}
 ## Per-tree overrides of BONUS_CAPS (Combat's own nodes give 120 hp: Tough,
 ## Warrior, Legend). tools/gen_skill_trees.py reads this too.
 const SKILL_CAPS := {"combat": {"hp": 140.0, "energy": 60.0}}
