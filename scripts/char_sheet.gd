@@ -1,5 +1,13 @@
 class_name CharSheet
 extends RefCounted
+
+const RARITY_RANK := {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
+const RANK_DOT := 2  # px per rarity dot on a slot
+
+
+## 0 common .. 4 legendary (slot dots; ChestScreen may use it too).
+static func rarity_rank(id: String) -> int:
+	return int(RARITY_RANK.get(str(GameState.items.get(id, {}).get("rarity", "common")), 0))
 ## The Character tab of the pause menu (Stardew's inventory doll + Sun Haven's
 ## stat sheet): the hero card, title/rank from progression, a paper-doll of the
 ## ten gear slots (tap one to compare and swap what's in your bag), weapons and
@@ -673,7 +681,7 @@ static func _card(body: Control, title := "") -> VBoxContainer:
 	if title != "":
 		var tl := Label.new()
 		tl.text = title
-		tl.add_theme_font_size_override("font_size", 9)
+		tl.add_theme_font_size_override("font_size", Settings.font(9))  # Options > Text size (C9)
 		tl.add_theme_color_override("font_color", Color(1, 0.88, 0.55))
 		tl.add_theme_constant_override("outline_size", 2)
 		tl.add_theme_color_override("font_outline_color", Color(0.15, 0.08, 0.03))
@@ -694,7 +702,7 @@ static func _card(body: Control, title := "") -> VBoxContainer:
 static func _lab(parent: Control, text: String, size := 8, color := INK) -> Label:
 	var l := Label.new()
 	l.text = text
-	l.add_theme_font_size_override("font_size", size)
+	l.add_theme_font_size_override("font_size", Settings.font(size))
 	l.add_theme_color_override("font_color", color)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -769,7 +777,7 @@ static func _fill(b: Control) -> HBoxContainer:
 static func _small_btn(parent: Control, text: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.add_theme_font_size_override("font_size", 8)
+	b.add_theme_font_size_override("font_size", Settings.font(8))
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
 	b.focus_mode = Control.FOCUS_NONE
 	b.custom_minimum_size = Vector2(0, 22)  # finger-sized at 270 wide
@@ -902,13 +910,21 @@ static func _slot_cell(slot: String) -> Control:
 			pl.position = Vector2(19, 1)
 			pl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			b.add_child(pl)
-		# A rarity pip in the corner.
-		var pip := ColorRect.new()
-		pip.color = GameState.rarity_color(id)
-		pip.size = Vector2(4, 4)
-		pip.position = Vector2(5, 23)
-		pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		b.add_child(pip)
+		# Rarity in the corner: one dot per rank in the rarity colour, so colour-blind
+		# players read it by count (C9 c9_07: uncommon/legendary and rare/epic collapsed).
+		for di in rarity_rank(id):
+			var pip := ColorRect.new()
+			pip.color = GameState.rarity_color(id)
+			pip.size = Vector2(RANK_DOT, RANK_DOT)
+			pip.position = Vector2(4 + di * (RANK_DOT + 1), 24)
+			pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			var back := ColorRect.new()
+			back.color = Color(0, 0, 0, 0.8)
+			back.size = Vector2(RANK_DOT + 2, RANK_DOT + 2)
+			back.position = pip.position - Vector2.ONE
+			back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			b.add_child(back)
+			b.add_child(pip)
 	else:
 		var el := Label.new()
 		el.text = str(SLOT_NAMES.get(slot, slot))

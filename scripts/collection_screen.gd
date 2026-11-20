@@ -73,7 +73,7 @@ static func _hub(gm: Node) -> void:
 	_badge(gm, head, "medal_champion", badges == all_b)
 	var hl := Label.new()
 	hl.text = "Collections · %d%% · Badges %d/%d" % [Collections.percent(), badges, all_b]
-	hl.add_theme_font_size_override("font_size", 9)
+	hl.add_theme_font_size_override("font_size", Settings.font(9))
 	hl.add_theme_color_override("font_color", Color(1, 0.9, 0.6))
 	head.add_child(hl)
 	for c: Dictionary in Collections.cats():

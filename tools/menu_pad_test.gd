@@ -163,6 +163,19 @@ func _run() -> void:
 	check(Settings.reduced_motion(), "reduced motion follows the shake key")
 	Settings.set_v("shake", true)
 	check(Settings.timing_factor() == 1.0, "timing help off by default")
+	var w0 := Fishing.window_for("minnow")
+	Settings.set_v("timing_help", true)
+	check(is_equal_approx(Fishing.window_for("minnow"), w0 * Settings.TIMING_HELP_WINDOW), "timing help widens the bite window")
+	Settings.set_v("timing_help", false)
+	# Rarity reads by dot count, not colour alone.
+	var ranks := {}
+	for id in GameState.items:
+		ranks[str(GameState.items[id].get("rarity", "common"))] = CharSheet.rarity_rank(str(id))
+	for rn in ["uncommon", "rare", "epic", "legendary"]:
+		if ranks.has(rn):
+			check(int(ranks[rn]) == int(CharSheet.RARITY_RANK[rn]), "rarity %s has %d dots" % [rn, int(CharSheet.RARITY_RANK[rn])])
+	# Fullscreen row: never on iOS; the help text names keys and the controller.
+	check("Controller:" in GameMenu.help_text(), "help names the controller buttons")
 	_end()
 
 

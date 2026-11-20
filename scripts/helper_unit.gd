@@ -407,8 +407,7 @@ func _draw() -> void:
 			draw_line(Vector2(sx - 3, y - 5), Vector2(sx + 3, y - 5), Color(0.8, 0.85, 0.9, 0.7), 1.0)
 		draw_circle(Vector2(0, y), 1.6, c)
 	if hp < max_hp:
-		draw_rect(Rect2(-6, y - 13, 12, 1.5), Color(0, 0, 0, 0.6))
-		draw_rect(Rect2(-6, y - 13, 12.0 * hp / max_hp, 1.5), Color(0.4, 1, 0.5))
+		_ally_bar(Rect2(-6, y - 13, 12, 1.5))
 	if _zap_t > 0.0 and _zap_to != Vector2.INF:
 		var to := _zap_to - position
 		draw_line(Vector2(0, y), to, Color(1, 1, 1, 0.9), 1.5)
@@ -424,9 +423,20 @@ func _draw_team(c: Color) -> void:
 	draw_string_outline(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, 6, 3, Color(0, 0, 0, 0.8))
 	draw_string(f, Vector2(-30, top - 2), team_name, HORIZONTAL_ALIGNMENT_CENTER, 60, 6, Color(0.75, 0.95, 1.0))
 	if hp < max_hp:
-		draw_rect(Rect2(-7, top, 14, 1.5), Color(0, 0, 0, 0.6))
-		draw_rect(Rect2(-7, top, 14.0 * hp / max_hp, 1.5), Color(0.4, 1, 0.5))
+		_ally_bar(Rect2(-7, top, 14, 1.5))
 	if _zap_t > 0.0 and _zap_to != Vector2.INF:
 		var to := _zap_to - position
 		draw_line(Vector2(0, -12), to, Color(1, 1, 1, 0.9), 1.5)
 		draw_line(Vector2(0, -12), to, c, 0.8)
+
+
+## Ally health: the battle's "us" cyan inside a light frame, so it never reads as a
+## foe's red bar for colour-blind players (shape and hue both differ, C9 c9_07).
+const ALLY_BAR := Color(0.5, 0.9, 1.0)
+const ALLY_FRAME := Color(0.9, 0.97, 1.0, 0.85)
+
+
+func _ally_bar(r: Rect2) -> void:
+	draw_rect(r.grow(1.0), ALLY_FRAME, false, 1.0)
+	draw_rect(r, Color(0, 0, 0, 0.6))
+	draw_rect(Rect2(r.position, Vector2(r.size.x * float(hp) / float(max_hp), r.size.y)), ALLY_BAR)
