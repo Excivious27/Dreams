@@ -58,6 +58,7 @@ func _care(arc: String) -> void:
 	check(Ranch.rename(cow, "  Clover!! ") and str(Ranch.animal(cow)["name"]) == "Clover", "%s: rename cleans the name" % arc)
 	# Hungry: no goods, a hungry line.
 	check(Ranch.hint(cow) == "A: Clover (hungry)" and Ranch.need(cow) == "hungry", "%s: hungry hint (%s)" % [arc, Ranch.hint(cow)])
+	GameState.run["weather"] = {str(int(GameState.run["day"])): "rain"}  # wet day: no pasture (RanchFarm.graze_day)
 	var lines := night()
 	check(Ranch.ready(cow).is_empty() and _has(lines, "went hungry"), "%s: an unfed cow gives nothing and the morning says so" % arc)
 	# Hand-fed with hay + petted -> milk in the morning.

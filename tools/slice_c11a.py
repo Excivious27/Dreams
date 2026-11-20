@@ -431,6 +431,24 @@ def bee_idle(man):
     print("bee idle", g["idle"])
 
 
+NODE_ALIAS = {"node_farming_farming_2_4": "node_foraging_foraging_1_7"}  # Farming's new "Experience" filler (C11a P3 row move)
+
+
+def node_alias(man):
+    """New skill-node icons that reuse an existing node's picture (written as NEW files)."""
+    for new, src in NODE_ALIAS.items():
+        if src not in man.get("ui", {}):
+            continue
+        rel = f"ui/{new}.png"
+        dst = os.path.join(GEN, rel)
+        if os.path.exists(dst):
+            os.remove(dst)
+        with open(os.path.join(GEN, man["ui"][src]["file"]), "rb") as fi, open(dst, "wb") as fo:
+            fo.write(fi.read())
+        man["ui"][new] = dict(man["ui"][src], file=rel)
+        print("node alias", new, "<-", src)
+
+
 def team(man):
     """Follower poses for trainable animals (c11a_09/-18): pup-style strip names, scaled so idle_down
     runs as tall as the kind's side walk. Run after `animals` (it rebuilds the C11 kinds)."""
@@ -577,7 +595,7 @@ def doc():
     print("wrote", p)
 
 
-STEPS = ["animals", "bee_idle", "team", "buildings", "items", "stations", "interior", "nodes", "fixes", "meta"]
+STEPS = ["animals", "bee_idle", "team", "buildings", "items", "stations", "interior", "nodes", "node_alias", "fixes", "meta"]
 
 if __name__ == "__main__":
     man = json.load(open(MAN))

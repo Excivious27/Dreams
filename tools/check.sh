@@ -776,6 +776,13 @@ if ! echo "$rp3out" | grep -q "ranch_p3_test: OK"; then
   echo "Ranch P3 test failed"; exit 1
 fi
 
+echo "== C11a integration: one care path, ranching keys, incubator, farm hands, P6 art =="
+ciout="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c11a_integ_test.gd 2>&1)"
+echo "$ciout" | grep -E "FAIL|SCRIPT ERROR|c11a_integ_test" || true
+if ! echo "$ciout" | grep -q "c11a_integ_test: [0-9]* checks, 0 failures"; then
+  echo "C11a integration test failed"; exit 1
+fi
+
 echo "== C8 P4: fishing rules, mining curve, reward tables =="
 p4out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c8_p4_test.gd 2>&1)"
 echo "$p4out" | grep -E "FAIL|SCRIPT ERROR|c8_p4_test" || true

@@ -77,7 +77,17 @@ except Exception:
 art_meta = {}
 if os.path.exists(f"{R}/art/gen/animals/_ranch_art.json"):
     art_meta = json.load(open(f"{R}/art/gen/animals/_ranch_art.json"))
-species = ranch.get("species") if isinstance(ranch.get("species"), dict) and ranch.get("species") else {k: v for k, v in art_meta.items() if not k.startswith("_")}
+species = {k: v for k, v in art_meta.items() if not k.startswith("_")}  # P6 kinds: the full pose set
+# ranch.json species (gen_ranch schema: art.adult, art.variants[].art, art.baby [kind, strip], art.shorn): idle strips.
+for sp, d in sorted((ranch.get("species") or {}).items() if isinstance(ranch.get("species"), dict) else []):
+    art = d.get("art", {}) if isinstance(d, dict) else {}
+    ks = [art.get("adult")] + [v.get("art") for v in art.get("variants", []) if isinstance(v, dict)] + [art.get("shorn")]
+    for k in [x for x in ks if x]:
+        if "idle" not in man.get(f"animals/{k}", {}):
+            miss.append(f"{sp}: animals/{k} lacks idle (ranch.json)")
+    b = art.get("baby")
+    if isinstance(b, list) and len(b) == 2 and b[1] not in man.get(f"animals/{b[0]}", {}):
+        miss.append(f"{sp}: animals/{b[0]} lacks {b[1]} (ranch.json baby)")
 for sp, d in sorted(species.items()):
     kinds = [d.get("kind", sp)] + list(d.get("variants", [])) + list(d.get("rare", [])) + [d.get(k) for k in ("baby", "baby_kind", "shorn") if d.get(k)]
     for k in kinds:
