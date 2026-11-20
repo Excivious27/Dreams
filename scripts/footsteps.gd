@@ -152,3 +152,25 @@ static func word(m: GameMap, c: Vector2i, swimming := false) -> String:
 	if GameState.look_se() == "winter" and gw in SNOW_OVER and can_snow(m) and not FLOOR.has(id):
 		return "snow"
 	return gw
+
+
+## Seconds between steps (c6_06): follows the actual speed (horse, buffs, exhaustion, swim) instead of
+## a fixed 0.33/0.25 s. speed_ratio = current speed / base walk (or run) speed.
+static func interval(running: bool, speed_ratio: float, swimming := false, mounted := false) -> float:
+	if swimming:
+		return 0.7 / clampf(speed_ratio, 0.5, 1.5)  # strokes
+	if mounted:
+		return 0.2 / clampf(speed_ratio, 0.6, 2.0)  # hoof beats
+	return (0.25 if running else 0.33) / clampf(speed_ratio, 0.5, 2.0)
+
+
+## Play one stride for the player: water strokes on the step voice (step_water, quiet), hoof hits
+## when mounted (P3's "hoof", falling back to a stone step), else the ground's footstep.
+static func stride(tree: SceneTree, m: GameMap, c: Vector2i, swimming := false, mounted := false) -> void:
+	var mu := Music.instance(tree)
+	if swimming:
+		mu.step("water")
+	elif mounted:
+		mu.sfx("hoof", "step_stone")
+	else:
+		mu.step(word(m, c))

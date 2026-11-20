@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 6 fix P4: where music and ambience play
+- Songs by place/arc (`GameMap.area_track`): penguin countryside/community farm get the pastoral song (gang arc keeps the harmonica); community farm joins NIGHT_OK; the Outskirts play `outskirts` (fallback hideout), penguin Crystal Meadow plays `sanctuary` after dark; festival song only 8:00-23:00 (`festival_night` after dark when it exists); gang arc valley nights use `night_gang` when it exists; snow days outdoors use `winter`; town hall keeps the town song, mansion is quiet; battlefields pick `<track>_penguin` / `_gang` variants (new battle_penguin, battle_siege_penguin).
+- Bosses (`boss_track`): the gang arc never hears boss_penguin (big_grump etc. and every bf_ captain -> boss_gang), gang mega rivals (Rosa, Vasco, Big Ike) -> boss_gang, keeper drums only in the mine, `finargle` is a boss track.
+- New mega area songs: mega_frost_summit, mega_frost_caverns, mega_hollow_deeps, mega_sky_reaches (each with music_fallback); casino row/mill district/freight yards no longer borrow neon/hideout/underground.
+- `GameMap.notify(text, sfx)` queues a toast with its own cue; heart notes no longer stack levelup on j_heart. Rocks shatter with rock_break; petted/fed animals speak (`GameMap.animal_voice`).
+- Footsteps: seamless region ground gives its own word (sand, snow, ballast, cave floors), winter snow only on soft natural ground of maps that draw winter, piers/docks are wood, interiors by floor, mines by theme (earth dirt, ice snow, plank crossings wood), marsh paths not all mud; `Footsteps.interval/stride` helpers for speed-paced steps, water strokes and hooves.
+- Ambience: lava/crystal/water mine floors fixed, caves drop surface beds, region beds follow time/season/weather (`Ambience.wild_ok`), themed battlefield beds (`BF_AMB`), city mega areas without wildlife (`is_urban`), casino row busier at night, region spot lists ("spots"), hearth only in fireplace rooms, storms indoors louder + muffled thunder, spot takes rotate with pitch jitter and quieter levels, epilogue un-ducks, seasonal gates on frog/insect spots and festival campfire. Test: tools/ambience_test.gd (40 checks).
+- gen_mega_new.py writes per-area "light" itself (no duplicate keys; reruns are byte-stable).
 ## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
 
 - Farmhouse upgrades show their own art (house / house_2 / house_3, day + night pictures swapped at dusk), with the solid rect, door, mailbox and exit spawn following the tier (`farm.HOUSE_TIERS`, `house_look(tier)`); the Manor stands where the old greenhouse plot was.
