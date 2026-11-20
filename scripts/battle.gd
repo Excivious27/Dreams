@@ -1207,12 +1207,11 @@ func _goal_text() -> String:
 
 ## The fight's over: the song drops under the jingle and the closing lines.
 func _duck_music() -> void:
+	# Dip the music 9 dB for 4 s so the win/loss jingle cuts through: a named duck
+	# layer (P1's Music.set_duck_layer) that Ambience can't undo.
 	var mu := Music.instance(get_tree())
-	var was: float = mu._duck
-	mu.set_duck(was - 9.0)
-	get_tree().create_timer(4.0).timeout.connect(func() -> void:
-		if is_instance_valid(mu) and is_equal_approx(mu._duck, was - 9.0):
-			mu.set_duck(was))
+	if mu.has_method("set_duck_layer"):
+		mu.call("set_duck_layer", "battle", -9.0, 0.12, 0.8, 4.0)
 
 
 ## The drill can't hurt you: knocked out, worn out or up too late, the trainer
