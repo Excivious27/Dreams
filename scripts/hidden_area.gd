@@ -118,6 +118,75 @@ static func _reach(m: GameMap, from: Vector2i, more: Array = []) -> Dictionary:
 	return seen
 
 
+## ---- remembered spots (C5 c5_17 #1) -------------------------------------------
+## The first placement in a run is kept in run["hidden_at"][key] so pockets, ways and
+## the Secrets chest stay where they were found: day-varying things (forage, ore,
+## rocks, regrown trees) change the candidates, so a fresh search moves them.
+const CLEARABLE := ["forage", "rock", "ore", "stump", "log", "bush", "fruit", "tree", "weeds"]
+
+
+static func recall(key: String) -> Dictionary:
+	var all: Variant = GameState.run.get("hidden_at", {})
+	return (all as Dictionary).get(key, {}) if all is Dictionary else {}
+
+
+static func remember(key: String, d: Dictionary) -> void:
+	if not GameState.run.get("hidden_at") is Dictionary:
+		GameState.run["hidden_at"] = {}
+	GameState.run["hidden_at"][key] = d
+
+
+static func v2(a: Variant) -> Vector2i:
+	return Vector2i(int(a[0]), int(a[1])) if a is Array and (a as Array).size() >= 2 else Vector2i(-1, -1)
+
+
+## Makes a remembered cell usable again: a day-varying thing on it goes. False if
+## something that must stay (a door, a sign, a structure, water) is there now.
+static func free_cell(m: GameMap, c: Vector2i) -> bool:
+	if not m.in_content(c) or m.is_water_cell(c) or m.hard.has(c):
+		return false
+	if m.things.has(c):
+		if not str(m.things[c].get("type", "")) in CLEARABLE:
+			return false
+		m.things.erase(c)
+		m.blocked.erase(c)
+		if m.props.has(c):
+			var pn: Variant = m.props[c]
+			if pn is Node and is_instance_valid(pn):
+				(pn as Node).queue_free()
+			m.props.erase(c)
+	return not m.blocked.has(c)
+
+
+## Rebuilds a remembered pocket (same shape as the search makes), or {} if it no longer fits.
+static func _recall_pocket(m: GameMap, mem: Dictionary) -> Dictionary:
+	var e := v2(mem.get("e"))
+	var d := v2(mem.get("d"))
+	if e.x < 0 or absi(d.x) + absi(d.y) != 1:
+		return {}
+	var mouth := e + d
+	var side := Vector2i(d.y, d.x)
+	var inner := {}
+	for k in range(1, 3):
+		for j in range(-1, 2):
+			inner[mouth + d * k + side * j] = true
+	var added: Array = []
+	for a: Variant in mem.get("added", []):
+		added.append(v2(a))
+	for c: Vector2i in [e] + inner.keys():
+		if not free_cell(m, c):
+			return {}
+	free_cell(m, mouth)  # the mouth sits in the wall: it may be blocked, it gets the vine/crack anyway
+	if m.things.has(mouth) or m.hard.has(mouth) or m.is_water_cell(mouth):
+		return {}
+	for c: Vector2i in added:
+		if c != mouth and not free_cell(m, c) and m.things.has(c):
+			return {}
+	if not mouth in added:
+		added.append(mouth)
+	return {"e": e, "mouth": mouth, "inner": inner, "added": added, "d": d}
+
+
 ## Cells that must stay as they are: paths, exits (+2), spawn (+3), stairs, things.
 static func _keep(m: GameMap) -> Dictionary:
 	var keep := {}
@@ -141,10 +210,13 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 	var best: Dictionary = {}
 	var best_score := -1.0
 	var dirs: Array = [Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1)]
+	var mem_key := rid + tag
 	var cand: Array = reach.keys()
-	if cand.is_empty():
+	if not recall(mem_key).is_empty():
+		best = _recall_pocket(m, recall(mem_key))
+	if best.is_empty() and cand.is_empty():
 		return {}
-	for tries in 260:
+	for tries in (0 if not best.is_empty() else 260):
 		var e: Vector2i = cand[rng.randi() % cand.size()]  # where you stand to open it
 		if keep.has(e) or (near.x >= 0 and e.distance_to(near) > 7.0):
 			continue
@@ -212,6 +284,12 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 		best_score = score
 	if best.is_empty():
 		return {}
+	var added_mem: Array = []
+	for c: Vector2i in best["added"]:
+		added_mem.append([c.x, c.y])
+	var be: Vector2i = best["e"]
+	var bd: Vector2i = best["d"]
+	remember(mem_key, {"e": [be.x, be.y], "d": [bd.x, bd.y], "added": added_mem})
 	var key := "hidden_open_" + rid + tag
 	var open: bool = GameState.run["flags"].has(key)
 	var walls: Array = WALL_PROPS.get(theme, WALL_PROPS["cave"])
@@ -257,6 +335,13 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 ## A secret way: two hidden ends. Up a hill (stairs onto a plateau top) when the
 ## area has one, else a crack across to a far, quiet corner.
 static func _place_way(m: GameMap, rid: String, theme: String, rng: RandomNumberGenerator, reach: Dictionary, pocket: Dictionary, node: HiddenArea) -> void:
+	var mem := recall("way_" + rid)
+	if not mem.is_empty():
+		var ma := v2(mem.get("a"))
+		var mb := v2(mem.get("b"))
+		if ma.x >= 0 and mb.x >= 0 and free_cell(m, ma) and free_cell(m, mb):
+			_set_way(m, rid, theme, str(mem.get("kind", "crack")), ma, mb, node)
+			return
 	var keep := _keep(m)
 	var near_wall := func(c: Vector2i) -> bool:
 		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
@@ -300,6 +385,11 @@ static func _place_way(m: GameMap, rid: String, theme: String, rng: RandomNumber
 				break
 	if a.x < 0:
 		return
+	remember("way_" + rid, {"a": [a.x, a.y], "b": [b.x, b.y], "kind": kind})
+	_set_way(m, rid, theme, kind, a, b, node)
+
+
+static func _set_way(m: GameMap, rid: String, theme: String, kind: String, a: Vector2i, b: Vector2i, node: HiddenArea) -> void:
 	var key := "hidden_way_" + rid
 	var found: bool = GameState.run["flags"].has(key)
 	for pair: Array in [[a, b], [b, a]]:

@@ -88,10 +88,10 @@ BY_ID = {r["id"]: r for r in REGIONS}
 # What the locked travel point says (CONDUCT 4, c4_11 #3): the real story step per arc for each
 # GameState.progress_tier() value, not "chapter N". Unlock tier = the region's first area tier - 1
 # (its boss area waits for the hub job). mega_travel.json carries it as unlock.hint {arc: text}.
-TIER_STEP = {
-    1: {"penguins": "after you find out what's howling in the east meadow", "gangsters": "after you settle things in the east meadow"},
-    2: {"penguins": "after you build the Crystal Resonator", "gangsters": "after you take the docks from the dock boss"},
-    3: {"penguins": "after you climb the sky stair", "gangsters": "after you put out Flame in the neon district"},
+TIER_STEP = {  # keep in step with MegaTravel.TIER_STEPS (the tier counts either step: "or")
+    1: {"penguins": "after you find what's howling in the east meadow", "gangsters": "after you check out the east meadow"},
+    2: {"penguins": "after you build the Crystal Resonator or beat the Grump Commander", "gangsters": "after you beat the Docks boss"},
+    3: {"penguins": "after you climb the great tree in the forest", "gangsters": "after you put out Flame in the neon district"},
     4: {"penguins": "after you power the moon teleporter", "gangsters": "after you beat the President's Enforcer"},
 }
 

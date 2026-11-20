@@ -281,7 +281,7 @@ def gang_kind(k):
 # them, proving your purpose (a gift, or Meow Pow Wow) turns them into a helper
 # kind you can raise at spawners. HelperUnit reads "_helper_kinds" generically.
 KIN = {"crystal_kin": {"crystal": "Crystal Kin", "drone": "Crystal Kin", "hp": 30, "colour": "9fe8ff", "act": "striker", "arc": "penguins",
-               "flag": "crystal_kin", "art": "enemies/crystal_baby", "cost": 10, "does": "stomps foes"}}
+               "flag": "crystal_kin", "art": "enemies/crystal_baby", "cost": 20, "does": "stomps foes"}}
 KIN_GIFT = {"item": "crystal_refined", "n": 2}
 
 def _write_grumps():

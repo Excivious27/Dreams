@@ -468,6 +468,14 @@ echo "$haout" | grep -E "FAIL|SCRIPT ERROR|hidden_area_test" || true
 if ! echo "$haout" | grep -q "hidden_area_test: PASS"; then
   echo "Hidden area test failed"; exit 1
 fi
+
+echo "== hidden areas stay put day to day (C5) =="
+hsout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/hidden_stable_test.gd 2>&1)"
+echo "$hsout" | grep -E "FAIL|SCRIPT ERROR|hidden_stable_test" || true
+if ! echo "$hsout" | grep -q "hidden_stable_test: OK"; then
+  echo "Hidden stable test failed"; exit 1
+fi
+
 echo "== arcade: cabinets play, pay tickets; every jumper level can be finished =="
 jout="$("$GODOT" --headless --path . -s res://tools/jumper_solve.gd 2>&1)"
 echo "$jout" | grep -E "FAIL|jumper_solve" || true

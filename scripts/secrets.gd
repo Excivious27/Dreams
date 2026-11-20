@@ -125,12 +125,24 @@ const CACHE := [["copper", 4], ["iron", 3], ["gold", 2], ["fossil", 1], ["amethy
 static func place(m: GameMap, rid: String, tier: int) -> void:
 	if rid.begins_with("bf_"):
 		return
+	# C5 c5_17 #1: the first placement in a run is remembered (HiddenArea.recall), so the
+	# chest and caches don't move when the day's forage/ore change the path-side cells.
+	var picks: Array = []
+	var mem := HiddenArea.recall("secrets_" + rid)
+	for a: Variant in mem.get("picks", []):
+		var mc := HiddenArea.v2(a)
+		if mc.x < 0 or not HiddenArea.free_cell(m, mc):
+			picks.clear()
+			break
+		picks.append(mc)
+	if not picks.is_empty():
+		_put(m, rid, tier, picks)
+		return
 	var cands := _path_side_cells(m)
 	if cands.size() < 6:
 		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(rid + "_secrets")
-	var picks: Array = []
 	# The chest likes a tucked-away spot: walled in on most sides (behind a rock,
 	# in a hedge corner, at a dead end), not in plain view by the road.
 	var tucked: Array = cands.filter(func(c: Vector2i) -> bool: return _walls(m, c) >= 4)
@@ -148,6 +160,11 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 			picks.append(c)
 	if picks.is_empty():
 		return
+	HiddenArea.remember("secrets_" + rid, {"picks": picks.map(func(c: Vector2i) -> Array: return [c.x, c.y])})
+	_put(m, rid, tier, picks)
+
+
+static func _put(m: GameMap, rid: String, tier: int, picks: Array) -> void:
 	var t := clampi(tier, 0, 5)
 	# The chest.
 	var ck := "secret_chest_" + rid

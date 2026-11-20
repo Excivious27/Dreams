@@ -39,8 +39,8 @@
    "unlock": {
     "tier": 1,
     "hint": {
-     "penguins": "Opens after you find out what's howling in the east meadow.",
-     "gangsters": "Opens after you settle things in the east meadow."
+     "penguins": "Opens after you find what's howling in the east meadow.",
+     "gangsters": "Opens after you check out the east meadow."
     }
    },
    "quest": "mega_gloamwood_hook",
@@ -106,8 +106,8 @@
    "unlock": {
     "tier": 2,
     "hint": {
-     "penguins": "Opens after you build the Crystal Resonator.",
-     "gangsters": "Opens after you take the docks from the dock boss."
+     "penguins": "Opens after you build the Crystal Resonator or beat the Grump Commander.",
+     "gangsters": "Opens after you beat the Docks boss."
     }
    },
    "quest": "mega_sunscorch_hook",
@@ -173,8 +173,8 @@
    "unlock": {
     "tier": 2,
     "hint": {
-     "penguins": "Opens after you build the Crystal Resonator.",
-     "gangsters": "Opens after you take the docks from the dock boss."
+     "penguins": "Opens after you build the Crystal Resonator or beat the Grump Commander.",
+     "gangsters": "Opens after you beat the Docks boss."
     }
    },
    "quest": "mega_ironline_hook",
@@ -241,7 +241,7 @@
    "unlock": {
     "tier": 3,
     "hint": {
-     "penguins": "Opens after you climb the sky stair.",
+     "penguins": "Opens after you climb the great tree in the forest.",
      "gangsters": "Opens after you put out Flame in the neon district."
     }
    },
@@ -308,7 +308,7 @@
    "unlock": {
     "tier": 3,
     "hint": {
-     "penguins": "Opens after you climb the sky stair.",
+     "penguins": "Opens after you climb the great tree in the forest.",
      "gangsters": "Opens after you put out Flame in the neon district."
     }
    },
@@ -375,7 +375,7 @@
    "unlock": {
     "tier": 3,
     "hint": {
-     "penguins": "Opens after you climb the sky stair.",
+     "penguins": "Opens after you climb the great tree in the forest.",
      "gangsters": "Opens after you put out Flame in the neon district."
     }
    },
