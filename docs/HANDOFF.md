@@ -24,11 +24,11 @@ Update docs/INVENTORY.md and docs/inventory.csv first so the numbers are current
 
 Whoever works next starts here. Keep it short and current; history goes in `docs/STATUS.md`; the whole project's context is in `docs/PROJECT-MEMORY.md`. Times in Pacific.
 
-- **Last update:** 2026-11-19 18:50 PT, personal account.
+- **Last update:** 2026-11-19 19:01 PT, personal account.
 - **Done:** Round 13, CONDUCT 1, CONDUCT 2, CONDUCT 3 merged (6 fix packages c3f/p1..p6; full check.sh rc 0 at 18:49 PT). Report docs/reports/CONDUCT-3.md, guide docs/guides/GUIDE-27.md, plan docs/reports/C3-PACKAGES.md.
-- **In progress:** CONDUCT 3 wrap-up: 20 bots + scripted playtest on the merged tree, then the package (xlsx via tools/package/build_progress_c3.py, page via build_page_c2.py 3, artifact).
-- **Next step:** after the C3 package: CONDUCT 4 (mega regions) + the extra package Tom asked for (difficulty Very easy/Easy/Default/Hard for combat/battles only; day length 15/20/30/40 min in the new-game menu). Then C5..C22 back to back (docs/CONDUCT-PLAN.md), then the final package.
-- **Jobs running elsewhere:** none (C3 fix worktrees merged).
+- **In progress:** CONDUCT 4 (mega regions + difficulty modes + day length): 20 auditors launched 19:00 PT in the personal sandbox (/home/claude/wt/c4_NN; scopes docs/reports/C4-SCOPES.txt). C3 package delivered (files + artifact). C3 bots 20/20 0 fails, playtest 0 failures.
+- **Next step:** collect the 20 C4 audit reports -> 5-6 fix packages (include difficulty Very easy/Easy/Default/Hard for combat+battles only, day length 15/20/30/40 in the new-game menu, bot 16 Plans-menu dialogue stuck, ownerless pause after Options/Pup menu) -> merge, check.sh, bots, playtest, push -> C4 package. Then C5..C23 back to back, then the final package.
+- **Jobs running elsewhere:** 20 C4 auditors in the personal sandbox (lost on a switch: relaunch from docs/reports/C4-SCOPES.txt).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.

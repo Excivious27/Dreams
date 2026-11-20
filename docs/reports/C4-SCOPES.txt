@@ -1,0 +1,20 @@
+01 Mega region unlocks and travel: every region's unlock conditions (MegaRegion.cond), entry points (MegaTravel gates, hub vehicles), both arcs; is each reachable in a normal playthrough, discoverable, and timed well; dead conditions.
+02 Mega map UI: Menu > Map tab row, region maps, pins, Valley gate badges, touch on 270x480 and desktop; readability; what to do next.
+03 Gloamwood: walk every area (reach_all/area_shot), visuals, edges, props, enemies/bosses, forage, NPCs, quests, music; fuzzy art; Sun Haven openness.
+04 Sunscorch: same as 03.
+05 Frostpeak: same as 03.
+06 Windward: same as 03 (check the C3 notch fix).
+07 Gilt City + the Ironline rail frontier: same as 03, gangster and penguin wording.
+08 The original mega regions (space/moon, sea/colonies, cities, caves, sky, deep, ice, desert, clockwork, chrome — whatever exists in data/mega_regions.json): same as 03, list every area.
+09 Mega enemies and bosses: tiers, HP scaling, tint/scale art quality, boss fights, drops, difficulty vs home tier; both arcs.
+10 Mega economy: items, forage, recipes, shops, rewards vs the rest of the game; dead items, loops.
+11 Mega quests and story hooks: keeper hook quests, hub quests, chains; wording both arcs; broken links; goal line/quest tracker.
+12 Mega audio: every area's song (music_map_test), ambience, travel sounds, boss themes; missing cues.
+13 Mega performance: load/redraw/chunk draws per mega area (perf_probe), worst offenders, fixes.
+14 Exploration feel in mega regions: secrets (Secrets), hidden areas, paths, dead ends, invisible walls (tools/invisible_walls.gd), exits edge-to-edge.
+15 Difficulty modes design (Tom 18:24/18:25): Very easy/Easy/Default/Hard for combat and battle campaigns ONLY. Read every place combat numbers live (Enemy HP/damage, bosses, Battle tickets/waves/boss_hp, DangerMusic irrelevant, faint fees in fights, mines keepers, Marked, colonies) and propose exact multipliers per mode, the settings plumbing (new-game menu, Settings, per slot via GameState/Settings) and tests. Report only.
+16 Day length option design (Tom): 15/20/30/40 real minutes per in-game day in the new-game menu and Settings. Read the clock (GameState time advance, sunset/sunrise, schedules, crop growth is per day, rec hours, energy) and propose exact plumbing, what must scale and what must not, tests. Report only.
+17 REGRESSION CONDUCT 3 battles: play campaigns in both arcs after the merge (fields, Grump variants, team helpers, Crystal Kin, drill, resume, boss music); anything broken or awkward.
+18 REGRESSION CONDUCT 3 other: quest tracker compass + menu, Street Bat, gun sounds, farm regrowth/grass, rec renovations, community farm multi-day builds, save redirect; both arcs.
+19 Bugs and crashes sweep across mega regions: focused bots/reach_all, softlocks, script errors, stuck spots; report every failure. Known from C3 bots (/tmp/c3_bots2): bot 16 story 'dialogue still open after 60 presses' on the Plans/build menu (Barn, Iron Stove, Windmill, legend line) — find why B/way-out doesn't close it.
+20 Docs: inventory rows for mega regions + C3 systems accuracy (read code), CONDUCT-3 "Still open" accuracy, and the 5 bot "ownerless pause" source (GameMenu.last_press logs in /tmp/c3_bots2: after 'Options > Button size: small' and 'Pup > Guard here [needs Guard Dog]' — find who pauses). Report only.
