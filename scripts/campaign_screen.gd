@@ -120,7 +120,7 @@ func _ready() -> void:
 	# The briefing card over the board.
 	_brief = PanelContainer.new()
 	var bsb := sb.duplicate() as StyleBoxFlat
-	bsb.bg_color.a = 0.97
+	bsb.bg_color.a = 1.0
 	_brief.add_theme_stylebox_override("panel", bsb)
 	_brief.position = Vector2(10, 40)
 	_brief.custom_minimum_size = Vector2(250, 0)
@@ -233,7 +233,6 @@ func _show_board(id: String) -> void:
 	(_card.get_parent() as Control).visible = true
 	_top_btns[1].visible = true
 	_top_btns[2].visible = true
-	var fresh := not Campaign.started(id)
 	var s := Campaign.cs(id)
 	sel = str(s["at"])
 	# Pick the first node you can attack, so the card shows what's next.
@@ -245,7 +244,7 @@ func _show_board(id: String) -> void:
 	# The briefing opens by itself the first time you look at a campaign, and
 	# whenever it isn't mustered yet; ? shows it again.
 	var key := "cb_seen_" + id
-	if fresh or not GameState.run["flags"].has(key):
+	if not GameState.run["flags"].has(key):  # once; the ? button shows it again
 		GameState.run["flags"][key] = true
 		_show_brief()
 	else:
@@ -264,7 +263,7 @@ func _refresh() -> void:
 	var stars := Campaign.stars(cid, sel)
 	if stars > 0:
 		st_txt = " · " + "★".repeat(stars) + "☆".repeat(5 - stars) + " " + ["easy", "fair", "hard", "very hard"][Campaign.danger(cid, sel) + 1]
-	var state := "yours" if Campaign.taken(cid, sel) else ("can attack" if Campaign.can_attack(cid, sel) else "out of reach")
+	var state := "yours" if Campaign.taken(cid, sel) else ("can attack" if Campaign.can_attack(cid, sel) else ("march, then attack" if Campaign.staging(cid, sel) != "" else "out of reach"))
 	if str(Campaign.cs(cid)["at"]) == sel:
 		state = "your %s is here" % Campaign.force_word()
 	_sub.text = "%s%s · %s" % [str(Campaign.TYPE_NAME.get(typ, typ)), st_txt, state]
@@ -546,6 +545,12 @@ func _process(delta: float) -> void:
 
 # ---- drawing -----------------------------------------------------------------------
 
+## Board backdrop centres where the world map doesn't show the region (islands
+## out at sea, highland peaks rather than the sky islands above them).
+const BOARD_PIN := {"colony_coral": Vector2(0.22, 0.80), "colony_kelp": Vector2(0.18, 0.86), "colony_ice": Vector2(0.30, 0.88),
+	"colony_ember": Vector2(0.26, 0.84), "highlands": Vector2(0.70, 0.24), "sky": Vector2(0.30, 0.10)}
+
+
 func _draw_board() -> void:
 	var f := ThemeDB.fallback_font
 	var cv := _board
@@ -570,14 +575,14 @@ func _draw_board() -> void:
 	_text(cv, f, Vector2(8, y + 16), "Morale %d %s" % [mo, Campaign.morale_word(mo)], 7, mcol)
 	_text(cv, f, Vector2(110, y + 7), "◇ %d supply" % int(s["supply"]), 8, Color(1, 0.95, 0.7))
 	_text(cv, f, Vector2(110, y + 16), "⚑ %d/%d held" % [Campaign.taken_count(cid) - 1, (c["nodes"] as Array).size() - 1], 7, Color(0.7, 0.92, 1))
-	_text(cv, f, Vector2(186, y + 7), "W%d L%d" % [int(s.get("wins", 0)), int(s.get("losses", 0))], 8, Color(0.9, 0.9, 0.9))
-	_text(cv, f, Vector2(186, y + 16), "★ = foe level", 6, Color(0.7, 0.7, 0.75))
+	_text(cv, f, Vector2(186, y + 7), "%d won · %d lost" % [int(s.get("wins", 0)), int(s.get("losses", 0))], 7, Color(0.9, 0.9, 0.9))
+	_text(cv, f, Vector2(186, y + 16), "★ = foe level", 7, Color(0.7, 0.7, 0.75))
 	# Board backdrop: this region's corner of the world map, under a tint.
 	var br := BOARD
 	cv.draw_rect(br.grow(2), Color(0.3, 0.2, 0.1) if peng else Color(0.5, 0.2, 0.45))
 	var wm := Art.tex("ui", "world_map")
 	if wm:
-		var pin: Vector2 = GameMenu.PINS.get(str(c["region"]), Vector2(0.5, 0.5))
+		var pin: Vector2 = BOARD_PIN.get(str(c["region"]), GameMenu.PINS.get(str(c["region"]), Vector2(0.5, 0.5)))
 		var zw := wm.get_width() * 0.42
 		var zh := zw * br.size.y / br.size.x
 		var src := Rect2(clampf(pin.x * wm.get_width() - zw / 2, 0, wm.get_width() - zw), clampf(pin.y * wm.get_height() - zh / 2, 0, wm.get_height() - zh), zw, zh)
