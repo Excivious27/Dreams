@@ -1,0 +1,14 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 20 start arc=gangsters hero=pax style=menus progress=5 difficulty=2 day_len=15
+WARNING: Hud: the game was paused with nothing on screen; resuming (scene farm, layers @CanvasLayer@37995, @CanvasLayer@37998, @CanvasLayer@38008, @CanvasLayer@38013, @CanvasLayer@38015, last menu press: Items > slot , paused by: GameMenu 32 frames ago)
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _pause_watch (res://scripts/hud.gd:252)
+         [1] _process (res://scripts/hud.gd:161)
+WARNING: Hud: the game was paused with nothing on screen; resuming (scene town, layers @CanvasLayer@121678, @CanvasLayer@121681, @CanvasLayer@121691, @CanvasLayer@121696, @CanvasLayer@121698, last menu press: , paused by: GameMenu 26 frames ago)
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _pause_watch (res://scripts/hud.gd:252)
+         [1] _process (res://scripts/hud.gd:161)
+BOT 20 done: 0 fails, 0 warns, 269 steps, 0 kills, 2 ownerless pauses, scenes ["meadow", "lake", "town", "wastes", "mountain", "bf_dockside", "docks", "neon"], day 4, ◆4015

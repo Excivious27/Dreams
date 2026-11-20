@@ -1,0 +1,16 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 97.7}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 17.6}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 2.4}
+{"step": 16, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 2.9}
+{"step": 22, "name": "ticket_econ_test", "rc": 0, "secs": 2.2}
+{"step": 28, "name": "gang_play_test", "rc": 0, "secs": 17.0}
+{"step": 34, "name": "npc_anim_test", "rc": 0, "secs": 2.3}
+{"step": 40, "name": "early_gating_test", "rc": 0, "secs": 2.2}
+{"step": 46, "name": "all ages: alcohol is a trade good, never drunk", "rc": 0, "secs": 0.0}
+{"step": 52, "name": "arcs: path cards, arc building intros, locked-plan hints", "rc": 0, "secs": 3.5}
+{"step": 58, "name": "every script compiles", "rc": 0, "secs": 3.1}
+{"step": 64, "name": "quest_tracker_test", "rc": 0, "secs": 3.3}
+{"step": 70, "name": "campaign_c3_test", "rc": 0, "secs": 2.3}
+{"step": 76, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 3.9}
+{"step": 82, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.2}
+{"step": 88, "name": "arcade_test", "rc": 0, "secs": 2.8}

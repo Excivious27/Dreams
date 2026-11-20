@@ -1,0 +1,104 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  98% ] [90m[1mreimport[22m | cast_right.png[39m[0m
+[  98% ] [90m[1mreimport[22m | burst.png[39m[0m
+[  98% ] [90m[1mreimport[22m | axe_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | axe_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | axe_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | attack.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | run.png[39m[0m
+[  99% ] [90m[1mreimport[22m | ride.png[39m[0m
+[  99% ] [90m[1mreimport[22m | reel_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | powerup.png[39m[0m
+[  99% ] [90m[1mreimport[22m | pickaxe_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | pickaxe_right.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_up.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle_down.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (1787 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 93.1s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 40.2s
+
+#### step 11: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 4/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 11 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 46.0s
+
+#### step 17: night lighting: windows, festival fires, underground, mines (c5_10) (shard 4/6)
+== night lighting: windows, festival fires, underground, mines (c5_10) ==
+night_light_test: 0 failures
+#### step 17 night lighting: windows, festival fires, underground, mines (c5_10): PASS in 3.6s
+
+#### step 23: rec_links_test (shard 4/6)
+rec_links_test: 0 failures
+#### step 23 rec_links_test: PASS in 2.2s
+
+#### step 29: coop_test (shard 4/6)
+coop_test: 0 failures
+#### step 29 coop_test: PASS in 2.2s
+
+#### step 35: move_target_test (shard 4/6)
+move_target_test: 0 failures
+#### step 35 move_target_test: PASS in 11.5s
+
+#### step 41: town_first_test (shard 4/6)
+town_first_test: 0 failures
+#### step 41 town_first_test: PASS in 3.8s
+
+#### step 47: music: every map has a song; web streaming works offline (shard 4/6)
+== music: every map has a song; web streaming works offline ==
+music_map_test: 585 songs checked, 0 failures
+#### step 47 music: every map has a song; web streaming works offline: PASS in 34.7s
+
+#### step 53: allies: enemies fight back, pup commands (shard 4/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 53 allies: enemies fight back, pup commands: PASS in 3.5s
+
+#### step 59: campaign: battles, projects, colonies, big mines (shard 4/6)
+== campaign: battles, projects, colonies, big mines ==
+campaign_test: 0 failures
+#### step 59 campaign: battles, projects, colonies, big mines: PASS in 5.9s
+
+#### step 65: street_bat_test (shard 4/6)
+street_bat_test: 0 fails
+#### step 65 street_bat_test: PASS in 2.2s
+
+#### step 71: meow_gate_test (shard 4/6)
+meow_gate_test: 0 fails
+#### step 71 meow_gate_test: PASS in 3.1s
+
+#### step 77: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 4/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 77 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 37.2s
+
+#### step 83: fish critters only in deep water (C2 P4) (shard 4/6)
+== fish critters only in deep water (C2 P4) ==
+critter_water_test: PASS (0 fails)
+#### step 83 fish critters only in deep water (C2 P4): PASS in 9.7s
+
+#### step 89: stack_whack_test (shard 4/6)
+stack_whack_test: 0 failures
+#### step 89 stack_whack_test: PASS in 2.9s
+
+#### shard 4/6 done in 302s: PASS
