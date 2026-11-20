@@ -137,7 +137,7 @@ func _draw_hand(c: Control, cards: Array, y: float, shown: int) -> void:
 
 func _draw_play(c: Control) -> void:
 	draw_felt(c)
-	text(c, Vector2(0, 54), "BLACKJACK PAYS 6 TO 5 · DEALER STANDS ON ALL 17s", W, 7, Color(FELT_EDGE, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
+	text(c, Vector2(0, 54), "BLACKJACK PAYS 6 TO 5 · DEALER PEEKS · STANDS ON ALL 17s", W, 7, Color(FELT_EDGE, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 	if player.is_empty():
 		text(c, Vector2(0, 160), "Set your bet, then A to deal.", W, 9, Color(1, 1, 1, 0.75), HORIZONTAL_ALIGNMENT_CENTER)
 	else:

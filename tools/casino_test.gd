@@ -36,6 +36,7 @@ func _run() -> void:
 	_region()
 	_wash()
 	_coop()
+	_confirm()
 	print("casino_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -305,3 +306,18 @@ func _coop() -> void:
 	check(not "casino" in NetNode.WORLD_KEYS, "casino is never a co-op world key")
 	n._solo_backup = {}
 	GameState.run["day"] = 40
+
+
+func _confirm() -> void:
+	GameState.run["day"] = int(GameState.run["day"]) + 1
+	GameState.run["crystals"] = 199
+	var g := Casino.make("dice")
+	g.manual = true
+	root.add_child(g)
+	g.practice = false
+	g.state = "bet"
+	g.stake = 50
+	var p0 := Casino.purse()
+	check(not g.place() and Casino.purse() == p0, "a bet over a quarter of the purse asks first")
+	check(g.place() and Casino.purse() == p0 - 50, "A again puts it down")
+	g.queue_free()

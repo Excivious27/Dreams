@@ -27,6 +27,7 @@ var leave_after := false
 var practice := false      # the first hand at a table is free (how-to)
 var _result_t := 0.0
 var _bet_from := ""
+var _confirm_stake := 0    # a bet over a quarter of the purse asks once (c10b_05_29)
 
 const FELT := Color(0.09, 0.32, 0.2)
 const FELT_EDGE := Color(0.84, 0.66, 0.24)
@@ -234,6 +235,10 @@ func place() -> bool:
 			say(why, 2.6)
 			sfx("nope", "locked")
 			return false
+	if not practice and not free_play and stake * 4 > Casino.purse() and _confirm_stake != stake:
+		_confirm_stake = stake
+		say("That's a big share of your cash. A again to bet %s, or change it." % Money.amount(stake), 3.0)
+		return false
 	if not Casino.take(stake, table, practice or free_play):
 		say("The table can't take that bet.")
 		return false
@@ -315,6 +320,21 @@ func hit_rects() -> Array:
 
 
 # --- drawing -------------------------------------------------------------------
+
+## With a pad the drawn deck hides: a one-line legend of what each button does now.
+func _draw_deck(c: Control) -> void:
+	if not deck_hidden():
+		super._draw_deck(c)
+		return
+	var parts: Array = []
+	for a in ["a", "tool", "action", "b"]:
+		var l := _label_for(a)
+		if l != "":
+			parts.append("%s %s" % [InputSetup.prompt(a), l.capitalize()])
+	if state == "bet":
+		parts.insert(1, "%s/%s Bet" % [InputSetup.prompt("left"), InputSetup.prompt("right")])
+	c.draw_multiline_string(_font, Vector2(10, DECK + 40), Money.t("   ".join(parts)), HORIZONTAL_ALIGNMENT_CENTER, W - 20, 9, 3, Color(1, 1, 1, 0.8))
+
 
 func _draw_frame(c: Control) -> void:
 	c.draw_rect(Rect2(0, 0, W, TOP), Color(0.12, 0.05, 0.08))
