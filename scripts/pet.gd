@@ -105,6 +105,8 @@ static func say(tree: SceneTree, moment := "call") -> void:
 		return
 	var dog: String = {"hurt": "whimper"}.get(moment, "bark")
 	Music.instance(tree).sfx(voice(moment), dog)
+	if moment == "happy":
+		Haptics.buzz("purr")  # a pat on the pup/cat: a soft flutter (C9 P4)
 
 
 const GEAR_OVERLAYS := false

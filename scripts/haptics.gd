@@ -135,7 +135,9 @@ static func pattern_for(kind: String, str_level := -1) -> Array:
 
 ## Buzz for a game moment. force = a preview (Options) that ignores the gates
 ## except the device check.
-static func buzz(kind: String, force := false) -> bool:
+## scripted = a result or scripted rumble (story shake, arcade shake, finished
+## craft) that may buzz while a screen owns the pause.
+static func buzz(kind: String, force := false, scripted := false) -> bool:
 	if not PATTERNS.has(kind):
 		push_warning("Haptics: unknown kind " + kind)
 		return false
@@ -146,7 +148,7 @@ static func buzz(kind: String, force := false) -> bool:
 			return false
 		if flags == "ui" and not taps_on():
 			return false
-		if flags == "" and in_menu():
+		if flags == "" and not scripted and in_menu():
 			return false
 	var now := _now()
 	if not force:
@@ -177,10 +179,10 @@ static func from_sfx(name: String) -> void:
 
 
 ## A screen-shake strength (ArcadeGame.shake, story effects) as a buzz.
-static func buzz_amount(a: float) -> bool:
+static func buzz_amount(a: float, scripted := true) -> bool:
 	if a <= 0.0:
 		return false
-	return buzz("hit" if a < 2.0 else ("hit_big" if a < 3.5 else "boss"))
+	return buzz("hit" if a < 2.0 else ("hit_big" if a < 3.5 else "boss"), false, scripted)
 
 
 ## The JS array literal for navigator.vibrate.

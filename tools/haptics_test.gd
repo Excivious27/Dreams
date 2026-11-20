@@ -78,6 +78,8 @@ func _run() -> void:
 	paused = true
 	_ok(not Haptics.buzz("tool_hit"), "tool_hit inside a menu")
 	_ok(Haptics.buzz("level_up"), "level_up is a result: buzzes in a menu")
+	Haptics.clock_override += 500
+	_ok(Haptics.buzz_amount(4.0), "scripted shake buzzes under a full-screen game")
 	paused = false
 
 	# 6. a muted Music still buzzes on a bite (Music.sfx hooks before the mute check)
@@ -101,7 +103,6 @@ func _run() -> void:
 	_ok(int(light[1]) == 40, "gaps don't scale")
 	_ok(int(Haptics.pattern_for("block", 0)[0]) >= Haptics.MIN_PULSE, "min pulse floor")
 	_ok(Haptics.web_array([50, 40, 50]) == "[50,40,50]", "web array")
-	_ok(Haptics.buzz_amount(4.0) or true, "buzz_amount runs")
 
 	# 8. game-time clock: stops while paused
 	var t0 := PlayClock.now()
