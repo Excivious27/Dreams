@@ -33,6 +33,7 @@ func _place_secrets() -> void:
 		for dc: Vector2i in Secrets.undug(self):
 			ha.spots.append([dc, "cache"])
 	_settle_enemies()
+	_fix_access.call_deferred()
 	_boss_markers()
 	# Doors that are a hole or a ladder in the ground show it (manhole, sewer ladder).
 	for c: Vector2i in things.keys():
@@ -40,6 +41,55 @@ func _place_secrets() -> void:
 			var ds := prop("props", str(things[c]["sprite"]), c, 0, 0.0, false)
 			if ds and str(things[c]["sprite"]).begins_with("manhole"):
 				to_under(ds)
+
+
+## Doors and "locked" reasons you can't reach get their front cell cleared, and a
+## villager standing in a wall steps to the nearest open cell (CONDUCT 4).
+func _fix_access() -> void:
+	if player == null:
+		return
+	var start := world_to_cell(default_spawn() - Vector2(0, 2))
+	var reach := HiddenArea._reach(self, start)
+	if reach.size() < 8:
+		return
+	var near := func(c: Vector2i) -> bool:
+		for d: Vector2i in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)]:
+			if reach.has(c + d):
+				return true
+		return false
+	var changed := false
+	for c: Vector2i in things.keys():
+		if not str(things[c].get("type", "")) in ["locked", "door", "idoor", "shop"] or near.call(c) or reach.has(c):
+			continue
+		# Open the way straight down from the door to the nearest reachable cell (<= 3).
+		for k in range(1, 4):
+			var f := c + Vector2i(0, k)
+			if not in_content(f) or is_water_cell(f) or things.has(f):
+				break
+			if reach.has(f):
+				for j in range(1, k):
+					blocked.erase(c + Vector2i(0, j))
+					hard.erase(c + Vector2i(0, j))
+				changed = true
+				break
+	if changed:
+		_flows.clear()
+		reach = HiddenArea._reach(self, start)
+	for n: Npc in npcs:
+		var nc := n.cell()
+		if reach.has(nc) or near.call(nc):
+			continue
+		var best := Vector2i(-1, -1)
+		var bd := INF
+		for c: Vector2i in reach:
+			var dd := float((c - nc).length_squared())
+			if dd < bd and not things.has(c):
+				bd = dd
+				best = c
+		if best.x >= 0:
+			n.position = cell_center(best)
+			if n.get("home") != null and n.get("home") is Vector2:
+				n.set("home", n.position)
 
 
 ## Every foe stands where you can reach it: one spawned in a wall, a pond, a

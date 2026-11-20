@@ -98,6 +98,20 @@ func _run() -> void:
 					continue
 				var start := m.world_to_cell(m.default_spawn() - Vector2(0, 2))
 				var seen := _flood(m, start)
+				# Access (CONDUCT 4): foes, doors/locked reasons and villagers can be reached.
+				var seen_sw := HiddenArea._reach(m, start)  # (swimmable water counts as reachable for foes)
+				for e in m.enemies:
+					if is_instance_valid(e) and not (e as Node2D).has_meta("boss"):
+						var ec := m.world_to_cell((e as Node2D).position - Vector2(0, 2))
+						if not seen_sw.has(ec) and not _near(seen_sw, ec):
+							fail("%s (%s): foe %s stuck at %s" % [scene, arc, (e as Enemy).kind, ec])
+				for c: Vector2i in m.things:
+					if str(m.things[c].get("type", "")) in ["locked", "door", "idoor"] and not _near(seen_sw, c) and not seen_sw.has(c):
+						fail("%s (%s): %s at %s can't be reached" % [scene, arc, m.things[c]["type"], c])
+				for n in m.get("npcs"):
+					var nc: Vector2i = (n as Npc).cell()
+					if not seen_sw.has(nc) and not _near(seen_sw, nc):
+						fail("%s (%s): villager %s stands in a wall at %s" % [scene, arc, (n as Npc).id, nc])
 				var mouth := Vector2i(-1, -1)
 				var wayc: Array = []
 				var chest := Vector2i(-1, -1)
