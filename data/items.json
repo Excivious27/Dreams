@@ -6651,12 +6651,11 @@
  },
  "wine": {
   "name": "Wine",
-  "type": "food",
+  "type": "gift",
   "value": 140,
   "rarity": "uncommon",
   "tier": 3,
-  "energy": 20,
-  "desc": "From the keg. Saved for toasts at the fair."
+  "desc": "From the keg. Saved for toasts at the fair. A trade good: sold and gifted, never drunk."
  },
  "candy": {
   "name": "Candy",
@@ -7831,31 +7830,27 @@
  },
  "fruit_wine": {
   "name": "Fruit Wine",
-  "type": "food",
+  "type": "gift",
   "value": 110,
   "rarity": "common",
   "tier": 2,
-  "energy": 30,
-  "desc": "Whatever the orchard gave, given time."
+  "desc": "Whatever the orchard gave, given time. A trade good: sold and gifted, never drunk."
  },
  "fine_wine": {
   "name": "Fine Wine",
-  "type": "food",
+  "type": "gift",
   "value": 240,
   "rarity": "uncommon",
   "tier": 3,
-  "energy": 35,
-  "desc": "Alder keeps one bottle back for the fair toast."
+  "desc": "Alder keeps one bottle back for the fair toast. A trade good: sold and gifted, never drunk."
  },
  "starlight_wine": {
   "name": "Starlight Wine",
-  "type": "food",
+  "type": "gift",
   "value": 600,
   "rarity": "rare",
   "tier": 4,
-  "energy": 60,
-  "heal": 2,
-  "desc": "It glows a little in the glass."
+  "desc": "It glows a little in the glass. A trade good: sold and gifted, never drunk."
  },
  "pickles": {
   "name": "Pickles",
@@ -10134,16 +10129,6 @@
   "desc": "Warm, salty, as big as your face. Bowling fuel.",
   "rec": true
  },
- "grape_cordial": {
-  "name": "Sparkling Grape Cordial",
-  "type": "food",
-  "value": 240,
-  "tier": 4,
-  "rarity": "uncommon",
-  "energy": 40,
-  "icon": "soda",
-  "desc": "Fizzy, purple and served in a crystal glass. The Maison's house toast."
- },
  "ember_koi": {
   "name": "Ember Koi",
   "type": "fish",
@@ -10151,5 +10136,14 @@
   "tier": 5,
   "rarity": "rare",
   "desc": "Fire-gold scales. The Gilded Gardens' pond keeps it warm all winter."
+ },
+ "sparkling_wine": {
+  "name": "Sparkling Wine",
+  "type": "gift",
+  "value": 260,
+  "tier": 4,
+  "rarity": "uncommon",
+  "icon": "fine_wine",
+  "desc": "A gold-foiled bottle from the Maison. For selling, gifting and fancy shelves, never for drinking."
  }
 }

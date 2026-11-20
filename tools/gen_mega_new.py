@@ -141,7 +141,7 @@ ITEMS = {
     "gold_bundle": ("Gold Leaf", "material", 280, 5, {"rarity": "rare"}),
     "sun_flan": ("Gilded Flan", "food", 480, 5, {"rarity": "epic", "heal": 7, "energy": 130}),
     "ring_platinum": ("Aurum Signet", "equip", 3200, 5, {"rarity": "legendary", "slot": "ring", "stats": {"damage": 3, "luck": 3}, "desc": "Madame Aurum's seal. Doors open for whoever wears it."}),
-    "grape_cordial": ("Sparkling Grape Cordial", "food", 240, 4, {"rarity": "uncommon", "energy": 40, "icon": "soda", "desc": "Fizzy, purple and served in a crystal glass. The Maison's house toast."}),
+    "sparkling_wine": ("Sparkling Wine", "gift", 260, 4, {"rarity": "uncommon", "icon": "fine_wine", "desc": "A gold-foiled bottle from the Maison. For selling, gifting and fancy shelves, never for drinking."}),
     "ember_koi": ("Ember Koi", "fish", 260, 5, {"rarity": "rare", "desc": "Fire-gold scales. The Gilded Gardens' pond keeps it warm all winter."}),
     "golden_dice": ("Loaded Dice", "equip", 1700, 5, {"rarity": "rare", "slot": "charm", "stats": {"luck": 3}}),
 }
@@ -673,7 +673,7 @@ A("gilt_grand_plaza", cols=44, rows=40, music="mega_gilt", look="gilt", ground_s
   structs=[("buildings/mansion", 12, 4, (21, 11)), ("props/gold_fountain", 3, 2, (12, 15)), ("props/gc_aurum_statue", 1, 2, (31, 15)), ("props/plaza_16", 0, 1, (17, 24)),
            ("props/plaza_17", 0, 1, (27, 24)), ("props/plaza_67", 4, 2, (10, 27)), ("props/plaza_68", 4, 2, (33, 27)), ("props/lux_car_red", 3, 1, (36, 33))],
   shop=("props/plaza_05", 4, 2, (24, 27), {"who": "Maison Dorée", "greet": "Only the finest. Prices on request. Requests are discouraged.",
-        "items": [["sun_flan", 600], ["golden_dice", 2100], ["grape_cordial", 320], ["greater_potion", 260], ["wonder_elixir", 900]]}),
+        "items": [["sun_flan", 600], ["golden_dice", 2100], ["sparkling_wine", 340], ["greater_potion", 260], ["wonder_elixir", 900]]}),
   heal=("props/fountain2", 6, 3, (19, 30), {"hp": 5, "energy": 80, "msg": "You sit on the fountain's edge. The spray is cool and smells faintly of money."}),
   gate=("props/limo", 4, 1, "spawn"),
   notes=[("A: read the brass plaque", "Brass plaque: 'GILT CITY. CASINO ROW east, and beneath it THE VAULTS. GILDED GARDENS west. By order of MADAME AURUM, everything here is hers. Including this plaque.'")],
