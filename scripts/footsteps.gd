@@ -137,6 +137,8 @@ static func word(m: GameMap, c: Vector2i, swimming := false) -> String:
 		return deck
 	if id == "interior":
 		return interior_word(m)
+	if m.has_method("floor_at"):
+		return str(m.call("floor_at", c))  # the house's per-room flooring (C10a P2)
 	if id == "mine":
 		return mine_word(m, c)
 	var gw := str(m.step_word.get(c, m.ground_word.get(c, "")))

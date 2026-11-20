@@ -124,6 +124,12 @@ func _run() -> void:
 	check(Decor.owned("t_wall") == 0, "the roll left the box")
 	check(DecorMode.set_surface(m, "main", "t_floor") == "" and DecorMode.surface_of("floor", "main") == "t_floor", "flooring on the main room")
 	check(DecorMode.undo(m) and DecorMode.surface_of("floor", "main") == "" and Decor.owned("t_floor") == 1, "undo the flooring")
+	items["t_marble"] = _ent("Marble", "flooring", [1, 1], "tiles/fl_marble")
+	Decor.give("t_marble", 1)
+	DecorMode.set_surface(m, "main", "t_marble")
+	check(Footsteps.word(m, Vector2i(5, 6)) == "stone", "footsteps follow the room's flooring (%s)" % Footsteps.word(m, Vector2i(5, 6)))
+	DecorMode.undo(m)
+	check(Footsteps.word(m, Vector2i(5, 6)) == "wood", "and back to wood")
 	await frames(3)
 	# 11. Uniques are never lost by storing.
 	Decor.give("t_star", 1)
