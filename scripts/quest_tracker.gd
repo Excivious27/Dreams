@@ -81,10 +81,6 @@ static func progress(id: String) -> String:
 	if (dw as Dictionary).has("rec_best"):
 		var rb: Array = dw["rec_best"]
 		return "best %d/%d" % [mini(Tickets.best_score(str(rb[0])), int(rb[1])), int(rb[1])]
-	if id.begins_with("colony_"):
-		var cs := _colony_short(id.substr(7))
-		if cs != "":
-			return cs
 	if (dw as Dictionary).has("items"):
 		# Several kinds (mega hooks/jobs, C4): all done = the total; else the first one still short, by name.
 		var have := 0
@@ -101,18 +97,6 @@ static func progress(id: String) -> String:
 	return ""
 
 
-## A colony quest's steps in a few words ("" when the colony isn't known). Read-only on Colony.
-static func _colony_short(cid: String) -> String:
-	if not Colony.data().has(cid):
-		return ""
-	var c: Dictionary = Colony.data()[cid]
-	var st: Dictionary = Colony.st(cid)
-	if Colony.ready_to_wake(cid):
-		return "wake the crystal"
-	return "%s %d/%d, beacons %d/%d%s" % [str(c.get("foe_word", "foes")), mini(int(st.get("kills", 0)), int(c.get("kills", 0))), int(c.get("kills", 0)),
-		(st.get("beacons", {}) as Dictionary).size(), int(c.get("beacons", 3)), "" if bool(st.get("gave", false)) else ", supplies"]
-
-
 static var _npc_home := {}
 
 
@@ -123,8 +107,8 @@ static func npc_scene(npc: String) -> String:
 		for k: String in regs:
 			if regs[k] is Dictionary:
 				for n in (regs[k] as Dictionary).get("npcs", []):
-					if n is Dictionary:
-						_npc_home[str(n.get("id", ""))] = k
+					if n is Dictionary and not _npc_home.has(str(n.get("id", ""))):
+						_npc_home[str(n.get("id", ""))] = k  # C9: the first area listed (Sel: the Ruins, not the Hollow)
 		_npc_home["_"] = ""
 	if _npc_home.has(npc):
 		return str(_npc_home[npc])
@@ -168,7 +152,7 @@ static func target(m: GameMap) -> Vector2:
 		return Colony.pointer(m, id)  # colony quests: ferry, elder, beacons, crystal, kits (C7 P5)
 	var tg := _giver_target(m, str(GameState._quest_def(id).get("giver", "")), id)
 	if tg == Vector2.ZERO and str(GameState._quest_def(id).get("giver", "")) == "" and job_place(id).is_empty():
-		return GoalLine.target(m)  # a tracked quest with no place: follow the story's arrow
+		return GoalLine.target(m, true)  # a tracked quest with no place: follow the story's arrow
 	return tg
 
 
@@ -195,6 +179,12 @@ static func _giver_target(m: GameMap, giver: String, qid: String = "") -> Vector
 		return _toward(m, str(e.get("scene", "")))
 	# A region villager (mg_*, Tam, Granite...) or a Valley villager who lives out of town
 	# (Marlowe, Orla at the lake): their area, or the way there.
+	# C9: a spouse off work is at home on the farm, not in town.
+	if Romance.spouse_place(giver) == "farm_home":
+		if here == "farm":
+			var dc: Variant = m.get("door_c")
+			return m.cell_center(dc) if dc is Vector2i else Vector2.ZERO
+		return Vector2.ZERO if here == "house" else _toward(m, "farm")
 	var home := npc_scene(giver)
 	if home != "":
 		return _door_of(m, giver, "home") if home == here else _toward(m, home)
@@ -299,11 +289,39 @@ static func caption(m: GameMap, tgt: Vector2) -> String:
 	if id != "" and not is_main(id):
 		var d := GameState._quest_def(id)
 		if not (d.has("done_when") and GameState._cond_ok(d["done_when"])):
-			return progress(id)
+			var sp := short_progress(progress(id))
+			if sp != "":
+				return sp
+		if tgt == Vector2.ZERO:
+			# C9: never a silent compass for a tracked job: say where to look.
+			var g := str(d.get("giver", ""))
+			if g != "" and GameState.npcs.has(g) and npc_scene(g) == "":
+				return "indoors" if m.scene_id() == "town" else "in town"
+			return "ask around"
 	if tgt == Vector2.ZERO:
 		return ""
 	var dist := int(m.call("pointer_dist")) if m.has_method("pointer_dist") else -1
 	return "%dm" % (dist if dist >= 0 else int(m.player.position.distance_to(tgt) / 16.0))  # C5: a unit, not a bare number
+
+
+## The compass caption's short form (it sits beside the goal line, CAPTION_W wide):
+## the first count still short ("0/2", "2400/3000"), else the last count, else the
+## first word ("wake", "bring"). The Quests tab keeps the long form.
+const CAPTION_W := 40
+const CAPTION_CHARS := 9
+
+
+static func short_progress(p: String) -> String:
+	if p == "":
+		return ""
+	var found := RegEx.create_from_string("(\\d+)/(\\d+)").search_all(p)
+	if not found.is_empty():
+		for mt: RegExMatch in found:
+			if int(mt.get_string(1)) < int(mt.get_string(2)):
+				return mt.get_string(0)
+		return (found[found.size() - 1] as RegExMatch).get_string(0)
+	var w := p.strip_edges().split(" ")[0].trim_suffix(".").trim_suffix(",").to_lower()
+	return w.substr(0, CAPTION_CHARS)
 
 
 ## The compass, drawn by the Hud (outdoors, no dialogue, no battle). Returns true when drawn.
@@ -330,10 +348,13 @@ static func draw(c: CanvasItem, m: GameMap, font: Font) -> bool:
 	if tgt != Vector2.ZERO:
 		var ct := m.get_viewport().get_canvas_transform()
 		var d := ct * tgt - ct * m.player.position
+		var aim := Vector2.ZERO
 		if m.has_method("pointer_aim"):  # walk the route, not through walls
-			var aim: Vector2 = m.call("pointer_aim")
-			if aim != Vector2.ZERO and aim != tgt:
-				d = ct * aim - ct * m.player.position
+			aim = m.call("pointer_aim")
+		else:
+			aim = route_aim(m, tgt)  # C9: outdoors too, round rivers and walls
+		if aim != Vector2.ZERO and aim != tgt:
+			d = ct * aim - ct * m.player.position
 		if d.length() < 10.0:
 			# Right here: a pulsing dot instead of a needle.
 			var p := 0.5 + 0.5 * sin(Time.get_ticks_msec() / 180.0)
@@ -348,9 +369,9 @@ static func draw(c: CanvasItem, m: GameMap, font: Font) -> bool:
 		c.draw_circle(ctr, 1.6, Color(rim, 0.6))
 	if cap != "":
 		# Left of the badge (toasts start right under it, so nothing hangs below).
-		var tp := ctr + Vector2(-R - 32, 2.5)
-		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 30, 7, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 30, 7, needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
+		var tp := ctr + Vector2(-R - 2 - CAPTION_W, 2.5)
+		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, CAPTION_W, 7, 3, Color(0, 0, 0, 0.85))
+		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, CAPTION_W, 7, needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
 	# On screen: a small bobbing chevron over the spot itself (Stardew's quest mark).
 	if tgt != Vector2.ZERO and not m.has_method("pointer_aim"):
 		var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt
@@ -362,7 +383,40 @@ static func draw(c: CanvasItem, m: GameMap, font: Font) -> bool:
 	return true
 
 
+## C9: a point a few cells along the walkable route to tgt (GameMap.flow_dir's
+## cached field), so the needle bends round water and walls. Throttled; ZERO when
+## the target is close or there's no route (the needle then points straight).
+const ROUTE_STEPS := 5
+const ROUTE_EVERY := 0.25
+const ROUTE_MIN := 64.0
+static var _route := {"t": -1.0, "tgt": Vector2i(-999, -999), "from": Vector2i(-999, -999), "aim": Vector2.ZERO}
+
+
+static func route_aim(m: GameMap, tgt: Vector2) -> Vector2:
+	if m.player == null or not m.has_method("flow_dir") or m.player.position.distance_to(tgt) < ROUTE_MIN:
+		return Vector2.ZERO
+	var now := Time.get_ticks_msec() / 1000.0
+	var tc := m.world_to_cell(tgt)
+	var fc := m.world_to_cell(m.player.position)
+	if _route["tgt"] == tc and _route["from"] == fc and now - float(_route["t"]) < ROUTE_EVERY * 8.0:
+		return _route["aim"]
+	if _route["tgt"] == tc and now - float(_route["t"]) < ROUTE_EVERY:
+		return _route["aim"]
+	var p := m.player.position
+	for i in ROUTE_STEPS:
+		var dv: Vector2 = m.flow_dir(p, tgt)
+		if dv == Vector2.ZERO:
+			break
+		p += dv * 16.0
+	_route = {"t": now, "tgt": tc, "from": fc, "aim": p if p.distance_to(m.player.position) > 8.0 else Vector2.ZERO}
+	return _route["aim"]
+
+
 ## A checkbox row for the Quests tab: tap to follow it (tap again: back to the story).
+const SUB_COL_MAX := 50.0
+const SUB_LINE := 10
+
+
 static func checkbox_row(text: String, checked: bool, done: bool, sub: String, cb: Callable) -> Button:
 	var b := Button.new()
 	b.text = text
@@ -380,9 +434,13 @@ static func checkbox_row(text: String, checked: bool, done: bool, sub: String, c
 	pad.set_border_width_all(1)
 	pad.set_corner_radius_all(3)
 	pad.content_margin_left = 22
-	pad.content_margin_right = 30 if sub != "" else 6
+	# C9: a short sub sits in its own right column; a long one gets a line of its own
+	# under the text (draw_string never clips, so it used to run over the quest text).
+	var sub_w := ceilf(b.get_theme_default_font().get_string_size(sub, HORIZONTAL_ALIGNMENT_LEFT, -1, 7).x) if sub != "" else 0.0
+	var sub_below := sub_w > SUB_COL_MAX
+	pad.content_margin_right = (sub_w + 8.0) if sub != "" and not sub_below else 6.0
 	pad.content_margin_top = 3
-	pad.content_margin_bottom = 3
+	pad.content_margin_bottom = 3 + (SUB_LINE if sub_below else 0)
 	for st in ["normal", "hover", "pressed", "focus", "disabled"]:
 		b.add_theme_stylebox_override(st, pad)
 	b.add_theme_color_override("font_color", Color(0.72, 0.85, 0.7) if done else Color(1, 0.96, 0.85))
@@ -400,6 +458,9 @@ static func checkbox_row(text: String, checked: bool, done: bool, sub: String, c
 			b.draw_polyline(PackedVector2Array([box.position + Vector2(2, 5), box.position + Vector2(4.2, 7.6), box.position + Vector2(8.4, 2.2)]), col, 1.8, true)
 		if sub != "":
 			var f := b.get_theme_default_font()
-			b.draw_string(f, Vector2(b.size.x - 28, y + 3), sub, HORIZONTAL_ALIGNMENT_RIGHT, 24, 7, Color(1, 0.86, 0.5)))
+			if sub_below:
+				b.draw_string(f, Vector2(22, b.size.y - 4), sub, HORIZONTAL_ALIGNMENT_RIGHT, b.size.x - 28, 7, Color(1, 0.86, 0.5))
+			else:
+				b.draw_string(f, Vector2(b.size.x - 4 - sub_w, y + 3), sub, HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.86, 0.5)))
 	b.pressed.connect(cb)
 	return b

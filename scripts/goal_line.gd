@@ -30,6 +30,7 @@ const VIA := {
 	"sky": {"forest": "door"},
 	"underground": {"neon": "door"},
 	"moon": {"mountain": "pad"},
+	"meadow": {"hollow_heart": "mine"},  # C9: the Hollow Heart is reached down the mine (floor 150)
 }
 
 
@@ -197,9 +198,9 @@ static func ripe_first() -> String:
 
 
 ## Where the current goal is: [scene, what to point at there] ("" = no arrow).
-static func goal_place() -> Array:
+static func goal_place(ignore_pin := false) -> Array:
 	var r := GameState.run
-	if r.is_empty() or (str(r.get("pinned_quest", "")) != "" and not QuestTracker.is_main(str(r.get("pinned_quest", "")))):
+	if r.is_empty() or (not ignore_pin and str(r.get("pinned_quest", "")) != "" and not QuestTracker.is_main(str(r.get("pinned_quest", "")))):
 		return ["", ""]
 	if ripe_first() != "":
 		return ["farm", ""]
@@ -274,12 +275,17 @@ static func story_place(qid: String) -> Array:
 
 
 ## The HUD arrow's target on map m (Vector2.ZERO = none).
-static func target(m: GameMap) -> Vector2:
-	var gp := goal_place()
+## ignore_pin: follow the story even while a side quest is tracked (QuestTracker's
+## fallback for a tracked quest with no place of its own).
+static func target(m: GameMap, ignore_pin := false) -> Vector2:
+	var gp := goal_place(ignore_pin)
 	var goal := str(gp[0])
 	var here := m.scene_id()
-	if goal == "" or adj(here).is_empty():
+	if goal == "":
 		return Vector2.ZERO
+	if adj(here).is_empty() or (here != goal and next_hop(here, goal) == ""):
+		# C9: the mega regions are their own islands: walk to the hub, its ride goes home.
+		return QuestTracker._toward(m, goal) if MegaTravel.region_of(here) != "" else Vector2.ZERO
 	if here == goal:
 		var what := str(gp[1])
 		if what.begins_with("npc:"):

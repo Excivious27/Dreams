@@ -24,8 +24,16 @@ func _run() -> void:
 	InputSetup.ensure_actions()
 	for arc in ["penguins", "gangsters"]:
 		await _pass(arc)
+		await _settle()
 	print("HEARTS DONE, failures: %d" % fails)
+	# C9 (rc134 flake): quit with no live map (bake SubViewports, audio players
+	# mid-free) so engine work never touches /root while the tree goes down.
+	unload_current_scene()
+	await _settle()
 	quit(1 if fails > 0 else 0)
+## Let deferred frees, bakes and finished-audio frees run out before a scene change or quit.
+func _settle() -> void:
+	await frames(5)
 ## One arc's walk through every villager's five milestones (C7: both arcs).
 func _pass(arc: String) -> void:
 	GameState.new_run(arc, "kairi" if arc == "penguins" else "pax", "Hero", "Dreamhollow", "Biscuit")

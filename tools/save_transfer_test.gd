@@ -131,6 +131,15 @@ func _run() -> void:
 	check(not RecCenter.is_open(), "the Rec opening waits when today's intros are spent")
 	GameState.run["day"] = 61
 	check(Mail.intro_ok(), "next day there is room again")
+	# Co-op: romance/cfarm day stamps move with shift_clock (there and back).
+	var rs := Romance.st()
+	rs["invite_day"] = 40
+	rs["ex"] = {"mabel": 40}
+	rs["date"] = {"day": 40}
+	var cfs := Commons.st()
+	cfs["drank"] = 40
+	GameState.shift_clock(-35 * 1440, -35)
+	check(int(rs["invite_day"]) == 5 and int(rs["ex"]["mabel"]) == 5 and int(rs["date"]["day"]) == 5 and int(cfs["drank"]) == 5, "romance and commons stamps shift back to the guest's own days")
 	# SaveGame.flush reports success.
 	check(SaveGame.flush() and SaveGame.last_ok, "flush reports a landed write")
 	print("SAVE TRANSFER DONE %d" % fails)

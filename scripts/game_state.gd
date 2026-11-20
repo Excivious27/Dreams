@@ -1941,6 +1941,10 @@ static func now_abs() -> int:
 ## Co-op: switching between our own clock and a host's moves timers set on the other clock.
 ## dd: the real day gap (callers pass it, so time of day doesn't round into it);
 ## into: shift this run copy instead of the live run (save_view).
+## Day stamps in run.romance that shift_clock moves (C9 co-op).
+const ROMANCE_DAYS := ["since", "engaged_day", "wedding_day", "married_day", "talk_day", "chore_day", "invite_day"]
+
+
 static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) -> void:
 	var r: Dictionary = run if into == null else into
 	if r.is_empty():
@@ -1984,6 +1988,27 @@ static func shift_clock(dm: int, dd_in: Variant = null, into: Variant = null) ->
 		var pd: Variant = r.get("passed_day", null)
 		if pd is Dictionary and (pd as Dictionary).has("day"):
 			pd["day"] = int(pd["day"]) + dd
+		# C9 (c9_11): romance and community-farm day stamps made while visiting are the host's days.
+		var ro: Variant = r.get("romance", null)
+		if ro is Dictionary:
+			for k in ROMANCE_DAYS:
+				if (ro as Dictionary).get(k) is int or (ro as Dictionary).get(k) is float:
+					if int(ro[k]) > 0:
+						ro[k] = int(ro[k]) + dd
+			if ro.get("ex") is Dictionary:
+				for id in (ro["ex"] as Dictionary).keys():
+					ro["ex"][id] = int(ro["ex"][id]) + dd
+			if ro.get("date") is Dictionary and (ro["date"] as Dictionary).has("day"):
+				ro["date"]["day"] = int(ro["date"]["day"]) + dd
+		var cf: Variant = r.get("cfarm", null)
+		if cf is Dictionary:
+			if int((cf as Dictionary).get("drank", -1)) > 0:
+				cf["drank"] = int(cf["drank"]) + dd
+			if cf.get("gw_day") is Array and (cf["gw_day"] as Array).size() > 0 and int(cf["gw_day"][0]) > 0:
+				cf["gw_day"][0] = int(cf["gw_day"][0]) + dd
+			if cf.get("helped") is Dictionary:
+				for id in (cf["helped"] as Dictionary).keys():
+					cf["helped"][id] = int(cf["helped"][id]) + dd
 		# Board jobs carry their pin day in the id (the host's day if pinned while visiting): keep it on the quest.
 		for q: Variant in r.get("quests", []):
 			if q is Dictionary and not bool(q.get("done", false)) and str(q.get("id", "")).begins_with("board_") and str(q["id"]).get_slice("_", 1).is_valid_int():

@@ -3,6 +3,7 @@ extends Control
 ## Built from plain Controls so it works with touch and keyboard on the web build.
 
 const FARM_SCENE := "res://scenes/farm.tscn"
+const IOS_NOTE_TIMES := 5  # the iPhone Safari note shows on this many title visits
 
 var _arc := ""
 var _playable := ""
@@ -68,6 +69,30 @@ func _clear() -> void:
 	for c in _page.get_children():
 		c.queue_free()
 	_preview = null
+	_focus_first.call_deferred()
+
+
+## C9: a pad or keyboard can play the title: the page's first button takes focus
+## (not on touch screens, where a focus ring would just look odd), B = Back.
+func _focus_first() -> void:
+	if DisplayServer.is_touchscreen_available() and not Input.get_connected_joypads().size() > 0:
+		return
+	for b in _page.find_children("*", "Button", true, false):
+		if not b.is_queued_for_deletion() and (b as Button).visible and not (b as Button).disabled:
+			(b as Button).grab_focus()
+			return
+
+
+func _process(_dt: float) -> void:
+	if _page == null or not Input.is_action_just_pressed("b"):
+		return
+	if get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
+		get_viewport().gui_get_focus_owner().release_focus()  # B leaves a text field first
+		return
+	for b in _page.find_children("*", "Button", true, false):
+		if not b.is_queued_for_deletion() and (b as Button).text == "Back":
+			(b as Button).pressed.emit()
+			return
 
 
 func _label(text: String, size: int = 10, center := true) -> Label:
@@ -90,12 +115,23 @@ func _button(text: String, on_press: Callable, big := false) -> Button:
 	b.add_theme_stylebox_override("normal", Hud.panel_stylebox("panel_wood"))
 	b.add_theme_stylebox_override("hover", Hud.panel_stylebox("panel_wood"))
 	b.add_theme_stylebox_override("pressed", Hud.panel_stylebox("panel_parchment"))
+	b.add_theme_stylebox_override("focus", _focus_box())
 	b.custom_minimum_size = Vector2(0, 30 if big else 24)
 	b.size_flags_horizontal = SIZE_EXPAND_FILL
 	b.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	b.pressed.connect(func() -> void: Music.instance(get_tree()).sfx("ui_tap"))
 	b.pressed.connect(on_press)
 	return b
+
+
+## A gold outline drawn over a focused button (pad/keyboard), so the pick is obvious.
+func _focus_box() -> StyleBoxFlat:
+	var f := StyleBoxFlat.new()
+	f.draw_center = false
+	f.border_color = Color(1, 0.85, 0.35)
+	f.set_border_width_all(2)
+	f.set_corner_radius_all(4)
+	return f
 
 
 func _show_title() -> void:
@@ -133,7 +169,13 @@ func _show_title() -> void:
 		var pn := str((prev as Dictionary).get("names", {}).get("character", "?"))
 		_page.add_child(_button("Restore %s (day %d)" % [pn, int((prev as Dictionary).get("day", 1))], _restore_prev))
 	_page.add_child(_button("Save slots (slot %d)" % GameState.slot(), _show_slots))
-	_page.add_child(_button("Sound", _show_sound))
+	if SaveTransfer.ios_tab() and int(SaveGame.get_value("ios_note", 0)) < IOS_NOTE_TIMES:
+		# C9: Safari may clear a tab's storage after a week away; the Home Screen app keeps it.
+		SaveGame.set_value("ios_note", int(SaveGame.get_value("ios_note", 0)) + 1)
+		_page.add_child(_label("Playing in Safari? Add Dreams to your Home Screen (Share > Add to Home Screen) so your farm is kept, and back it up in Save slots.", 8, false))
+	_page.add_child(_button("Sound and options", _show_sound))
+	if not OS.has_feature("web") and not OS.has_feature("mobile"):
+		_page.add_child(_button("Quit", func() -> void: get_tree().quit()))  # C9: native builds (Deck/desktop) need a way out
 	if OS.is_debug_build():
 		_page.add_child(_button("Character test map", func() -> void: get_tree().change_scene_to_file("res://scenes/test_map.tscn")))
 
@@ -147,6 +189,15 @@ func _show_sound() -> void:
 	box.size_flags_horizontal = SIZE_EXPAND_FILL
 	_page.add_child(box)
 	Settings.audio_rows(box, get_tree(), _show_sound)
+	# C9: the other packages' shared rows, when present (P2 general options, P4 vibration).
+	for sp: Array in [["res://scripts/settings.gd", "general_rows"], ["res://scripts/haptics.gd", "rows"]]:
+		if ResourceLoader.exists(str(sp[0])):
+			var sc: Script = load(str(sp[0]))
+			if sc != null and sc.has_method(str(sp[1])):
+				if str(sp[1]) == "rows":
+					sc.call("rows", box)
+				else:
+					sc.call(str(sp[1]), box, get_tree(), _show_sound)
 	_page.add_child(_button("Back", _show_title))
 
 
@@ -717,9 +768,10 @@ func _show_names() -> void:
 	_clear()
 	_page.add_child(_label("Name things", 16))
 	var pname := "Hero" if bool(_playables[_playable].get("custom", false)) else str(_playables[_playable].get("name", "Hero")).get_slice(" (", 0)
-	_name_edit = _edit("Your name", pname)
-	_town_edit = _edit("Town name", "Dreamhollow")
-	_pet_edit = _edit("Pet name", "Kitty" if str(_look_full.get("pet", "")).begins_with("cat_") else "Pup")
+	_name_edit = _edit("Your name", pname, "hero")
+	_town_edit = _edit("Town name", "Dreamhollow", "town")
+	var cat := str(_look_full.get("pet", "")).begins_with("cat_")
+	_pet_edit = _edit("Pet name", "Kitty" if cat else "Pup", "kitty" if cat else "pet")
 	# C4: difficulty (fights only) and day length, kept with this save slot.
 	var diff_btn := _button("Difficulty: " + Difficulty.name_of(_new_diff), func() -> void: pass)
 	var diff_note := _label(Difficulty.words(_new_diff), 7, false)
@@ -754,17 +806,44 @@ func _field_style(c: Control) -> void:
 	c.add_theme_color_override("font_placeholder_color", Color(0.4, 0.3, 0.2, 0.8))
 
 
-func _edit(label_text: String, default_text: String) -> LineEdit:
+func _edit(label_text: String, default_text: String, pool: String = "") -> LineEdit:
 	_page.add_child(_label(label_text, 9, false))
 	var e := LineEdit.new()
 	e.text = default_text
 	e.max_length = 16
 	e.add_theme_font_size_override("font_size", 11)
 	e.custom_minimum_size = Vector2(0, 28)
+	e.size_flags_horizontal = SIZE_EXPAND_FILL
 	_field_style(e)
 	e.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_page.add_child(e)
+	if pool == "" or not RANDOM_NAMES.has(pool):
+		_page.add_child(e)
+		return e
+	# C9: a Random button beside the field, so a controller (or a player who
+	# doesn't want to type) never needs a keyboard.
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+	row.add_child(e)
+	var dice := _button("Random", func() -> void:
+		var names: Array = RANDOM_NAMES[pool]
+		var pick := e.text
+		while pick == e.text and names.size() > 1:
+			pick = str(names[randi() % names.size()])
+		e.text = pick)
+	dice.size_flags_horizontal = SIZE_SHRINK_END
+	dice.custom_minimum_size = Vector2(56, 28)
+	row.add_child(dice)
+	_page.add_child(row)
 	return e
+
+
+## Name ideas for the Random buttons (all ages, original).
+const RANDOM_NAMES := {
+	"hero": ["Ash", "Robin", "Juniper", "Sky", "Rowan", "Wren", "Milo", "Ivy", "Quinn", "Sage", "Remy", "Nova", "Ellis", "Poppy", "Jasper", "Kit"],
+	"town": ["Dreamhollow", "Willowmere", "Brightbrook", "Mossford", "Starfall", "Honeyvale", "Lanternby", "Cobble Cove", "Fernwick", "Sunmeadow"],
+	"pet": ["Pup", "Biscuit", "Pepper", "Scout", "Maple", "Pickles", "Comet", "Waffles", "Bean", "Rusty"],
+	"kitty": ["Kitty", "Mittens", "Pepper", "Luna", "Biscuit", "Socks", "Whiskers", "Clover", "Pumpkin", "Noodle"],
+}
 
 
 var _new_diff := Difficulty.DEFAULT   # new-game page choices
