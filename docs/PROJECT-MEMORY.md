@@ -91,3 +91,5 @@ Run every queued CONDUCT back to back, no waits (docs/CONDUCT-PLAN.md has each o
 - Never delete Tom's uploads (`reference/`, `art/incoming/`). Original characters and art only — no copyrighted characters or brands.
 - Never ask Tom to run commands; he has only a phone.
 - Never leave work only in the chat or the sandbox: push, or a `wip/<topic>` branch named in the Baton.
+
+- 2026-11-20 Tom: C16 also covers tiered progression ecosystems per skill (player and allies; fishing as the flagship) and a Stardew-style museum donation/reward track built on the C8 Collections museum. See HANDOFF Decisions.
