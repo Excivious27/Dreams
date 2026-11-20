@@ -210,6 +210,8 @@ static func gate(m: GameMap, thing: Dictionary) -> void:
 		if GameState.complete_quest(qid):
 			m.hud.toast(GameMap.quest_done_text(qid), Color(1, 0.9, 0.4))
 	GameState.run["flags"]["mega_%s_open" % id] = true  # (the quest reward sets it too)
+	for nid in MegaRegion.check_unlocks():  # its map tab opens now, not on arrival (c4_11)
+		m.hud.toast("New map tab: %s (Menu > Map)" % str(MegaRegion.get_r(str(nid)).get("name", nid)), Color(0.85, 0.95, 1.0))
 	await _travel_menu(m, id)
 
 
@@ -222,10 +224,26 @@ static func _travel_menu(m: GameMap, id: String) -> void:
 		go_hub(m, id)
 
 
+## The ride's sound, both ways (C4 c4_12 #5): data "sfx_go"/"sfx_back" win, else these.
+const TRAVEL_SFX := {"gloamwood": ["sparkle", "sparkle"], "sunscorch": ["horse", "horse"], "ironline": ["train_depart", "train_depart"],
+	"frostpeak": ["sled_bells", "sled_bells"], "windward": ["airship_whoosh", "airship_whoosh"], "giltcity": ["car_start", "car_door"]}
+
+
+static func travel_sfx(id: String, back: bool) -> String:
+	var r := reg(id)
+	var key := "sfx_back" if back else "sfx_go"
+	if r.has(key):
+		return str(r[key])
+	var pair: Array = TRAVEL_SFX.get(id, [])
+	if not pair.is_empty():
+		return str(pair[1 if back else 0])
+	return str(r.get("sfx", "door"))
+
+
 static func go_hub(m: GameMap, id: String) -> void:
 	var r := reg(id)
 	var sp: Array = r.get("hub_spawn", [10, 10])
-	Music.instance(m.get_tree()).sfx(str(r.get("sfx", "door")), "door")
+	Music.instance(m.get_tree()).sfx(travel_sfx(id, false), "door")
 	m.go_to(hub_of(id), Vector2((float(sp[0]) + 0.5) * GameMap.TILE, (float(sp[1]) + 0.5) * GameMap.TILE), "up")
 
 
@@ -250,4 +268,5 @@ static func _hub_gate(m: GameMap, id: String) -> void:
 		go_hub(m, str(dests[i]))
 		return
 	var hs: Array = e.get("spawn", [e["cell"][0], int(e["cell"][1]) + 2])
+	Music.instance(m.get_tree()).sfx(travel_sfx(id, true), "door")
 	m.go_to(str(e["scene"]), Vector2((float(hs[0]) + 0.5) * GameMap.TILE, (float(hs[1]) + 0.5) * GameMap.TILE), "down")

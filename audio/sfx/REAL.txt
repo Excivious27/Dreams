@@ -372,3 +372,6 @@ pin_tap_3
 pin_strike
 pin_strike_2
 juke_needle
+airship_whoosh
+sled_bells
+train_depart
