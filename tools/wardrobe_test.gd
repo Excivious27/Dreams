@@ -201,6 +201,17 @@ func _run() -> void:
 	await process_frame
 	check(get_root().get_tree().paused, "wardrobe pauses")
 	await _shot("1_custom_gang")
+	# pad/keyboard: the cursor reaches the rows and A puts a piece on
+	await process_frame
+	check(ws._cursor != null and ws._cursor.items().size() >= 6, "screen cursor sees the buttons")
+	ws.slot = "outfit"
+	ws._build()
+	await process_frame
+	check(ws._cursor.select_key("w_wr_padded_vest"), "cursor reaches a wardrobe row")
+	ws._cursor.press()
+	await process_frame
+	check(Decor.worn("outfit") == "wr_padded_vest", "A on a row puts it on")
+	Wardrobe.put_on("wr_pinstripe_suit")
 	ws.slot = "hat"
 	ws._build()
 	await _shot("2_custom_hats")
