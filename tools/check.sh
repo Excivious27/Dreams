@@ -674,3 +674,10 @@ echo "$hcout" | grep -E "FAIL|hearts_content_test" || true
 if ! echo "$hcout" | grep -q "hearts_content_test: OK"; then
   echo "Heart content test failed"; exit 1
 fi
+
+echo "== C8 P4: fishing rules, mining curve, reward tables =="
+p4out="$("$GODOT" --headless --fixed-fps 60 --path . -s res://tools/c8_p4_test.gd 2>&1)"
+echo "$p4out" | grep -E "FAIL|SCRIPT ERROR|c8_p4_test" || true
+if echo "$p4out" | grep -q "SCRIPT ERROR" || ! echo "$p4out" | grep -q "c8_p4_test: PASS"; then
+  echo "C8 P4 test failed"; exit 1
+fi

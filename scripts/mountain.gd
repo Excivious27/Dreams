@@ -64,7 +64,10 @@ func build() -> void:
 	var placed := 0
 	while placed < 22:
 		var c := Vector2i(rng.randi_range(2, cols - 3), rng.randi_range(2, rows - 3))
-		if things.has(c) or blocked.has(c) or Rect2i(22, 1, 14, 8).has_point(c) or SPRING.grow(2).has_point(c) or is_cleared(c):
+		if is_cleared(c) and not things.has(c):
+			placed += 1  # C8 P4 hook: a broken ore rock keeps its slot until it regrows
+			continue
+		if things.has(c) or blocked.has(c) or Rect2i(22, 1, 14, 8).has_point(c) or SPRING.grow(2).has_point(c):
 			continue
 		var near_stairs := false
 		for l in LEDGES:
@@ -185,6 +188,7 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if props.has(c):
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
+				_mark_cleared(c)  # C8 P4 hook: broken rocks stay broken until they regrow
 				give(ore, 1 if ore != "stone" else 2)
 				xp("mining", 2 if ore == "stone" else 5)
 			return true
