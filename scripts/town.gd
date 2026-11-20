@@ -354,10 +354,12 @@ func _place_buildings() -> void:
 		for y in range(b.position.y, b.end.y, 2):
 			walk_over(prop("props", nm if Art.has("props", nm) else "bridge", Vector2i(b.position.x, y + 1), b.size.x - 1, 0.0, false), 3)
 	# The fountain itself (animated, 4 frames) over its blocked cells.
-	if Art.has("props", "fountain2"):
+	if WorldGen.winter_look("props", "fountain2") != "fountain2":  # frozen in winter (single frame)
+		prop("props", WorldGen.winter_look("props", "fountain2"), Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 1), 4)
+	elif Art.has("props", "fountain2"):
 		anim_prop("props", "fountain2", Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 1), 4, 5.0)
 	elif Art.has("props", "fountain"):
-		prop("props", "fountain", Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 2), 4)
+		prop("props", WorldGen.winter_look("props", "fountain"), Vector2i(FOUNTAIN_C.x, FOUNTAIN_C.y + 2), 4)
 
 
 ## Festival day: the plaza fills with the season's decor, the fountain is the
@@ -522,6 +524,7 @@ func _board() -> void:
 ## is missing from the manifest.
 func _dress_buildings() -> void:
 	var pl := func(name: String, c: Vector2i, w := 0, solid := true) -> void:
+		name = WorldGen.winter_look("props", name)  # winter planters
 		if Art.has("props", name) and not things.has(c) and not _door_paths.has(c) and not _river.has(c) and not _river.has(c + Vector2i(w, 0)):
 			if int(Art.info("props", name).get("frames", 1)) > 1:
 				anim_prop("props", name, c, w, 4.0, solid)
@@ -617,7 +620,7 @@ func _place_props() -> void:
 	if Art.has("props", "planter2_0"):
 		i = 0
 		for c: Vector2i in [Vector2i(33, 38), Vector2i(47, 38), Vector2i(33, 58), Vector2i(47, 58)]:
-			prop("props", "planter2_%d" % (i % 4), c)
+			prop("props", WorldGen.winter_look("props", "planter2_%d" % (i % 4)), c)
 			i += 1
 	if Art.has("props", "bunting_red"):
 		i = 0
