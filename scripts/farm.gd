@@ -2780,9 +2780,9 @@ func _entry_button() -> void:
 	bt.text = "Decorate yard"
 	bt.add_theme_font_size_override("font_size", Settings.font(7))
 	bt.clip_text = true
-	bt.position = Vector2(196, 64)
-	bt.size = Vector2(70, 18)
-	bt.custom_minimum_size = Vector2(70, 18)
+	bt.position = Vector2(4, 344)  # under the pup strip, clear of the goal line, toasts and energy bar
+	bt.size = Vector2(72, 22)
+	bt.custom_minimum_size = Vector2(72, 22)  # >= 20 px tap target
 	bt.focus_mode = Control.FOCUS_NONE
 	bt.pressed.connect(func() -> void:
 		if not get_tree().paused and not Dialogue.instance(get_tree()).active:
