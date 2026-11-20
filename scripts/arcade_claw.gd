@@ -246,7 +246,8 @@ func _win(i: int) -> void:
 	held_i = -1
 	ArcadeHub._data()["claw_today"] = [int(GameState.run.get("day", 0)), wins_today() + 1]
 	ArcadeHub._data()["claw_dry"] = 0
-	GameState.add_item(won_item, 1)
+	if not DecorSources.grant(null, won_item, 1, "claw"):  # C10a P4 hook: plush decor to the decor box
+		GameState.add_item(won_item, 1)
 	score = maxi(1, GameState.item_value(won_item)) if GameState.items.has(won_item) else 10
 	var d: Dictionary = ArcadeHub._data()
 	d["claw_wins"] = int(d.get("claw_wins", 0)) + 1
