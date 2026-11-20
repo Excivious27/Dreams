@@ -87,7 +87,7 @@ for b in bots:
              ("FLAKY" if b.get("flaky") else "OK  ") if b["done"] and not b["fails"] and not b["script_errors"] else "FAIL",
              b["script_errors"], b["fails"], b["warns"], b["pauses"], b["secs"], b["line"]))
 L.append("playtest: %s  %ss  %s screenshots (results playtest/shots/)" % (
-    ("PASS (FLAKY: passed on retry)" if pt.get("flaky") else "PASS") if pt["rc"] == 0 else ("SKIPPED" if not want_pt else ("MISSING" if pt["rc"] == -1 else "FAIL")),
+    ("PASS (FLAKY: passed on retry)" if pt.get("flaky") else "PASS") if pt["rc"] == 0 else ("SKIPPED" if not want_pt else ("MISSING" if pt["rc"] == -1 else ("FAIL (twice in a row)" if pt.get("attempts", 1) > 1 else "FAIL"))),
     pt["secs"], pt["shots"]))
 for f in pt["fails"]:
     L.append("  " + f)
