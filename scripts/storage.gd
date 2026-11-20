@@ -62,6 +62,10 @@ static func deposit(key: String, id: String, n: int) -> int:
 	# Keys and quest items stay in the bag: doors and quests only look there.
 	if str(GameState.items.get(id, {}).get("type", "")) in ["key", "quest"]:
 		return 0
+	# Decor and wearables never go in a chest: Rec decor shows in the house only while
+	# you hold it, and catalogue decor lives in the decor box (C10a, c10_02/c10_13).
+	if is_decor_item(id):
+		return 0
 	n = mini(n, mini(GameState.count(id), room_for(key, id)))
 	if n <= 0:
 		return 0
@@ -110,12 +114,19 @@ static func withdraw(key: String, id: String, n: int) -> int:
 	return n
 
 
+## Decor/wear (items type decor/wear or a catalogue id): kept out of chests and Deposit All.
+static func is_decor_item(id: String) -> bool:
+	return str(GameState.items.get(id, {}).get("type", "")) in ["decor", "wear"] or Decor.is_decor(id)
+
+
 static func _keep(id: String) -> bool:
 	# Deposit All leaves these in the bag: tools, keys, locked items, the selected item and
 	# usable things on the toolbar (seeds, food, potions...). Materials that merely landed on
 	# the bar when first picked up still go in.
 	var t := str(GameState.items.get(id, {}).get("type", ""))
 	var usable := t in ["seed", "food", "tonic", "potion", "consumable", "placeable", "magic", "equip", "petgear"]
+	if is_decor_item(id):
+		return true
 	return GameState.has_tool(id) or t in ["tool", "key", "quest", "vehicle"] or ((GameState.run["toolbar"] as Array).has(id) and usable) \
 		or id == str(GameState.run.get("selected", "")) or GameState.is_locked(id)
 
@@ -176,19 +187,21 @@ static func nearby(m: GameMap, radius := 10.0) -> Array:
 	var pc := m.player.cell()
 	for c: Vector2i in m.things:
 		var t: Dictionary = m.things[c]
-		var k := key_of(t, c)
+		var k := key_of(t, c, m.scene_id())
 		if k != "" and Vector2(c - pc).length() <= radius:
 			out.append([Vector2(c - pc).length(), k])
 	out.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
 	return out.map(func(a: Array) -> String: return str(a[1]))
 
 
-static func key_of(t: Dictionary, c: Vector2i) -> String:
+## A chest's storage key. Placed chests carry their map off the farm ("p:<scene>:x,y"),
+## so an indoor chest never shares contents with the farm cell of the same number.
+static func key_of(t: Dictionary, c: Vector2i, scene := "farm") -> String:
 	var ty := str(t.get("type", ""))
 	if ty == "chest" and t.has("build"):
 		return str(t["build"])
 	if ty == "placed" and str(t.get("kind", "")) == "chest":
-		return "p:%d,%d" % [c.x, c.y]
+		return "p:%d,%d" % [c.x, c.y] if scene in ["", "farm"] else "p:%s:%d,%d" % [scene, c.x, c.y]
 	return ""
 
 

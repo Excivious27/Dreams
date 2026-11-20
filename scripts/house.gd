@@ -54,6 +54,20 @@ func after_ready() -> void:
 		_romance_props()
 		spouse_refresh()
 		RecCenter.dress_house(self)  # prize decor from the Rec Center
+	DecorMode.fixed_blocked(self)  # what the house itself blocks, before any placed decor
+	if not GameState.visiting():
+		_seed_starters()  # the starting furniture becomes your own movable decor (C10a)
+		var gone: Array = DecorMode.relayout(self)  # e.g. the house grew: pieces on new rooms' fixtures go back to the box
+		if not gone.is_empty():
+			hud.toast("The house changed: %s went back to your decor box." % ", ".join(gone), Color(1, 0.9, 0.7))
+	DecorMode.dress(self)
+	_night_was = GameState.is_night()
+	var tm := Timer.new()
+	tm.wait_time = 1.0
+	tm.timeout.connect(_dusk_watch)
+	add_child(tm)
+	tm.start()
+	_entry_button()
 	if int(GameState.run["time"]) <= GameState.DAY_START + 5:
 		hud.toast("%s today · %s tomorrow" % [GameState.weather_name(GameState.weather_today()), GameState.weather_name(GameState.forecast()).to_lower()], Color(0.9, 0.95, 1.0))
 		if GameState.festival_today() != "":
@@ -197,23 +211,21 @@ func draw_map() -> void:
 	draw_rect(Rect2(0, 0, cols * TILE, rows * TILE), Color("1a1410"))
 	if Art.has("tiles", "fl_wood"):
 		draw_tileset_rect("fl_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
-		if Art.has("furniture", "rug_rect_red"):
+		_draw_room_floors()
+		if _starter_id("rug_rect_red") != "":
+			pass  # the rug is your own decor now (placed by DecorMode)
+		elif Art.has("furniture", "rug_rect_red"):
 			# A bordered 2:1 rug (the carpet tile's inside is a flat colour block).
 			draw_texture_rect(Art.tex("furniture", "rug_rect_red"), Rect2(6 * TILE, 6 * TILE + 8, 4 * TILE, 2 * TILE), false)
 		else:
 			_draw_rug("fl_carpet_red", Rect2i(6, 6, 4, 3), Color("b03a2e"))
-		for x in range(1, cols - 1):
-			var idx := 0 if x == 1 else (2 if x == cols - 2 else 1)
-			var nm: String = ["wl_floral_l", "wl_floral_m", "wl_floral_r"][idx]
-			var t := Art.tex("tiles", nm)
-			if t:
-				draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
+		_draw_room_walls()
 		var night := GameState.is_night()
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(6 * TILE + 8, 2 * TILE))
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(10 * TILE + 8, 2 * TILE))
 		for wx: int in ([14] if tier() == 2 else ([15, 21] if tier() >= 3 else [])):
 			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(wx * TILE + 8, 2 * TILE))
-		if tier() >= 3 and Art.has("furniture", "rug_rect_red"):
+		if tier() >= 3 and Art.has("furniture", "rug_rect_red") and _starter_id("rug_rect_red") == "":
 			draw_texture_rect(Art.tex("furniture", "rug_rect_red"), Rect2(19 * TILE, 6 * TILE + 8, 4 * TILE, 2 * TILE), false)
 	elif Art.has("tiles", "floor_wood"):
 		draw_tileset_rect("floor_wood", Rect2i(1, 2, cols - 2, rows - 3), Color("a07a4c"))
@@ -233,7 +245,10 @@ func draw_map() -> void:
 		draw_rect(Rect2(TILE, TILE, (cols - 2) * TILE, TILE), Color("c9b08a"))
 		draw_rect(Rect2(BED.x * TILE, BED.y * TILE, 2 * TILE, TILE + 4), Color("6b3b2a"))
 		draw_rect(Rect2(BED.x * TILE + 2, BED.y * TILE + 2, 2 * TILE - 4, TILE), Color("d8536a"))
+	if Art.has("tiles", "fl_wood"):
+		_draw_shell()
 	draw_rect(Rect2(DOOR.x * TILE, DOOR.y * TILE, TILE, TILE), Color("3a2412"))
+	DecorMode.draw_flat(self)  # your rugs and wall art, baked with the room
 
 
 func _place_props() -> void:
@@ -251,20 +266,20 @@ func _place_props() -> void:
 			["chair_down", Vector2i(3, 7), 0], ["plant2_a", Vector2i(1, 11), 0], ["plant_a", Vector2i(14, 11), 0]]:
 		if str(pr[0]) == "bookshelf" and tier() >= 2:
 			continue  # it stood on the old east wall; the bigger rooms have their own shelves
-		if Art.has("furniture", str(pr[0])):
+		if Art.has("furniture", str(pr[0])) and _starter_id(str(pr[0])) == "":
 			prop("furniture", str(pr[0]), pr[1], int(pr[2]))
 	# The bigger tiers' rooms (east of x15): the Farmhouse's pantry corner, the
 	# Manor's cellar, study and bath.
 	var more: Array = []
 	if tier() == 2:
-		more = [["shelf_jars", Vector2i(16, 2), 1], ["barrel", Vector2i(18, 2), 0], ["table_round_cloth", Vector2i(16, 7), 1], ["chair_down", Vector2i(16, 6), 0], ["plant2_b", Vector2i(18, 11), 0]]
+		more = [["shelf_jars", Vector2i(16, 2), 1], ["barrel", Vector2i(15, 2), 0], ["table_round_cloth", Vector2i(16, 7), 1], ["chair_down", Vector2i(16, 6), 0], ["plant2_b", Vector2i(18, 11), 0]]
 	elif tier() >= 3:
 		more = [["study_desk", STUDY, 2], ["bookcase3_a", Vector2i(15, 2), 0], ["lamp_floor_b", Vector2i(20, 2), 0],
-			["cellar_hatch", CELLAR, 1], ["keg_wall", CELLAR + Vector2i(2, 0), 1], ["shelf_jars", Vector2i(22, 10), 1],
+			["cellar_hatch", CELLAR, 1], ["keg_wall", CELLAR + Vector2i(2, 0), 1], ["shelf_jars", Vector2i(21, 11), 1],
 			["bathtub", BATH, 1], ["sink", Vector2i(21, 3), 0], ["plant2_c", Vector2i(24, 6), 0],
 			["table_round_cloth", Vector2i(20, 7), 1], ["chair_down", Vector2i(20, 6), 0], ["plant2_b", Vector2i(24, 11), 0]]
 	for pr: Array in more:
-		if Art.has("furniture", str(pr[0])):
+		if Art.has("furniture", str(pr[0])) and (str(pr[0]) in FIXED_ART or _starter_id(str(pr[0])) == ""):
 			var sp := prop("furniture", str(pr[0]), pr[1], int(pr[2]), 0.0, str(pr[0]) != "cellar_hatch")
 			if str(pr[0]) == "cellar_hatch" and sp:
 				to_under(sp)  # a trapdoor lies in the floor
@@ -276,11 +291,16 @@ func _dresser() -> void:
 	var pdata: Dictionary = GameState.playables.get(str(GameState.run.get("playable", "")), {})
 	var sprite_id := GameState.sprite_for_playable(str(GameState.run.get("playable", "")))
 	var can_look := (bool(pdata.get("custom", false)) and PaperDoll.available()) or sprite_id == "penguin"
-	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": ["Journal", "Change my look", "Close"] if can_look else ["Journal", "Close"], "key": ""}])
+	var opts: Array = ["Journal", "Change my look", "Decorate", "Close"] if can_look else ["Journal", "Decorate", "Close"]
+	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": opts, "key": ""}])
 	await d.finished
-	if d.last_choice == 0:
+	var pickd := str(opts[d.last_choice]) if d.last_choice >= 0 and d.last_choice < opts.size() else "Close"
+	if pickd == "Decorate":
+		DecorMode.open(self)
+		return
+	if pickd == "Journal":
 		_journal()
-	elif d.last_choice == 1 and can_look:
+	elif pickd == "Change my look" and can_look:
 		player.frozen = true
 		var layer := CanvasLayer.new()
 		layer.layer = 12
@@ -390,3 +410,289 @@ func _romance_props() -> void:
 			prop("props", "wedding_heart_sign", Vector2i(DOOR.x + 2, DOOR.y - 1))
 	if tier() == 2 and Art.has("props", "wedding_bench"):
 		prop("props", "wedding_bench", Vector2i(17, 9), 1)
+
+
+# ---- decorating (CONDUCT 10a P2: DecorMode) --------------------------------------
+
+## Rooms per tier for wallpaper/flooring (x ranges; the Farmhouse pantry, the Manor's study and bath).
+const ROOMS_BY_TIER := {1: {"main": Rect2i(1, 0, 14, 13)},
+	2: {"main": Rect2i(1, 0, 14, 13), "pantry": Rect2i(15, 0, 4, 13)},
+	3: {"main": Rect2i(1, 0, 14, 13), "study": Rect2i(15, 0, 6, 13), "bath": Rect2i(21, 0, 4, 13)}}
+## Pieces with a job (they carry things/hooks): never decor, never moved.
+const FIXED_ART := ["study_desk", "cellar_hatch", "keg_wall", "bathtub", "sink"]
+## The movable starting furniture per tier [art, cell, extra_w]: once the catalogue
+## knows the art (decor.json entry with art "furniture/<name>") it is seeded into
+## run.decor.placed["house"] as your own decor; until then it is drawn as before.
+const STARTERS := {
+	1: [["lamp_floor", Vector2i(1, 2), 0], ["bookshelf", Vector2i(14, 5), 0], ["table_round_cloth", Vector2i(3, 8), 1],
+		["chair_down", Vector2i(3, 7), 0], ["plant2_a", Vector2i(1, 11), 0], ["plant_a", Vector2i(14, 11), 0], ["rug_rect_red", Vector2i(6, 7), 3]],
+	2: [["shelf_jars", Vector2i(16, 2), 1], ["barrel", Vector2i(15, 2), 0], ["table_round_cloth", Vector2i(16, 7), 1],
+		["chair_down", Vector2i(16, 6), 0], ["plant2_b", Vector2i(18, 11), 0]],
+	3: [["bookcase3_a", Vector2i(15, 2), 0], ["lamp_floor_b", Vector2i(20, 2), 0], ["shelf_jars", Vector2i(21, 11), 1],
+		["plant2_c", Vector2i(24, 6), 0], ["table_round_cloth", Vector2i(20, 7), 1], ["chair_down", Vector2i(20, 6), 0],
+		["plant2_b", Vector2i(24, 11), 0], ["rug_rect_red", Vector2i(19, 7), 3]]}
+
+static var _art_ids := {}
+
+
+## The catalogue id whose art is furniture/<art> ("" = not in the catalogue yet).
+static func _starter_id(art: String) -> String:
+	if _art_ids.is_empty() or int(_art_ids.get("_n", -1)) != (Decor.data()["items"] as Dictionary).size():
+		_art_ids = {"_n": (Decor.data()["items"] as Dictionary).size()}
+		for id in Decor.data()["items"]:
+			var a := str(Decor.entry(str(id)).get("art", ""))
+			if a.begins_with("furniture/") and not _art_ids.has(a.get_slice("/", 1)):
+				_art_ids[a.get_slice("/", 1)] = str(id)
+	return str(_art_ids.get(art, ""))
+
+
+## Seed the starting furniture as placed decor: each starter once (keyed art@x,y in
+## run.decor.seeded.house), as soon as the catalogue knows its art; a bigger tier's new
+## pieces join when the house grows; a starter that doesn't fit goes to the box.
+func _seed_starters() -> void:
+	var d := Decor.st()
+	if not (d.get("seeded", null) is Dictionary):
+		d["seeded"] = {}
+	if not (d["seeded"].get("house", null) is Dictionary):
+		d["seeded"]["house"] = {}
+	var done: Dictionary = d["seeded"]["house"]
+	var t := tier()
+	var want: Array = STARTERS[1].duplicate() + (STARTERS.get(t, []) if t > 1 else [])
+	if t >= 2:
+		want = want.filter(func(pr: Array) -> bool: return str(pr[0]) != "bookshelf")
+	var list: Array = DecorMode._own_placed("house")
+	for pr: Array in want:
+		var c: Vector2i = pr[1]
+		var key := "%s@%d,%d" % [str(pr[0]), c.x, c.y]
+		var id := _starter_id(str(pr[0]))
+		if id == "" or done.has(key):
+			continue
+		done[key] = int(GameState.run.get("day", 1))
+		if DecorMode.why_not(self, id, c) == "":
+			list.append({"id": id, "cell": [c.x, c.y], "rot": 0})
+		else:
+			DecorMode._box_back(id)
+		if not (d["got"] as Dictionary).has(id):
+			d["got"][id] = int(GameState.run.get("day", 1))
+
+
+## "Starting layout": every starter you still own goes back to its first spot
+## (DecorMode stores the room first; pieces come out of the box, never new copies).
+func decor_reset() -> int:
+	var t := tier()
+	var want: Array = STARTERS[1].duplicate() + (STARTERS.get(t, []) if t > 1 else [])
+	if t >= 2:
+		want = want.filter(func(pr: Array) -> bool: return str(pr[0]) != "bookshelf")
+	var n := 0
+	for pr: Array in want:
+		var id := _starter_id(str(pr[0]))
+		if id != "" and Decor.owned(id) > 0 and DecorMode.place(self, id, pr[1]) == "":
+			n += 1
+	DecorMode.undo_stack.clear()
+	return n
+
+
+func decor_bounds() -> Rect2i:
+	return Rect2i(1, 2, cols - 2, rows - 3)
+
+
+func decor_wall_row() -> int:
+	return 1
+
+
+func decor_door() -> Vector2i:
+	return DOOR + Vector2i(0, -1)
+
+
+func decor_rooms() -> Dictionary:
+	return ROOMS_BY_TIER[tier()]
+
+
+func decor_windows() -> Array:
+	return [6, 10] + ([14] if tier() == 2 else ([15, 21] if tier() >= 3 else []))
+
+
+## Cells a floor piece may not cover, with why (shown on the ghost).
+func decor_reserved() -> Dictionary:
+	var r := {}
+	var t := tier()
+	r[CHEST + Vector2i(0, 1)] = "the dresser"
+	r[DOOR] = "the door"
+	r[DOOR + Vector2i(0, -1)] = "the door"
+	r[Vector2i(13, 10)] = "the stove"
+	# The spouse spots are fixed for every hour (job days included): keep them free always.
+	for sc: Vector2i in [Vector2i(BED.x + 2, BED.y + 1), Vector2i(11, 9), SPOUSE_CORNER[t] + Vector2i(0, 2), Vector2i(4, 9)]:
+		r[sc] = "a family spot"
+	if Romance.is_married():
+		for dx in 2:
+			r[SPOUSE_CORNER[t] + Vector2i(dx, 0)] = "the spouse's corner"
+	if t == 2:
+		for dx in 2:
+			r[Vector2i(17 + dx, 9)] = "the bench"
+	if t >= 3:
+		for dx in 2:
+			r[CELLAR + Vector2i(dx, 0)] = "the cellar hatch"
+			r[CELLAR + Vector2i(2 + dx, 0)] = "the keg rack"
+			r[BATH + Vector2i(dx, 0)] = "the bath"
+		for dx in 3:
+			r[STUDY + Vector2i(dx, 0)] = "the study desk"
+			r[STUDY + Vector2i(dx, 1)] = "the study desk"
+		r[Vector2i(21, 3)] = "the sink"
+	return r
+
+
+func decor_must_reach() -> Array:
+	var out: Array = [BED + Vector2i(0, 1), CHEST, Vector2i(13, 9)]
+	if tier() >= 3:
+		out += [CELLAR, STUDY + Vector2i(1, 0), BATH, Vector2i(21, 3)]
+	return out
+
+
+func decor_changed() -> void:
+	queue_redraw()  # walls/floors are part of the baked map drawing
+
+
+## Guests: the host changed the house's look.
+func on_world_sync(d: Dictionary) -> void:
+	super.on_world_sync(d)
+	if d.has("decor_home") or d.has("decor_home_d"):
+		DecorMode.dress(self)
+		queue_redraw()
+
+
+## Each room's flooring from run.decor.floor (missing = the house's own wood).
+func _draw_room_floors() -> void:
+	var rooms: Dictionary = ROOMS_BY_TIER[tier()]
+	for room in rooms:
+		var id := DecorMode.surface_of("floor", str(room))
+		if id == "":
+			continue
+		var rr: Rect2i = rooms[room]
+		for y in range(2, rows - 1):
+			for x in range(maxi(1, rr.position.x), mini(cols - 1, rr.end.x)):
+				DecorMode.draw_floor_cell(self, id, Vector2i(x, y))
+	# A thin threshold where one room meets the next, so each room reads as its own.
+	for room in rooms:
+		var rr2: Rect2i = rooms[room]
+		if rr2.position.x > 1:
+			draw_rect(Rect2(rr2.position.x * TILE - 1, 2 * TILE, 2, (rows - 3) * TILE), Color(0.18, 0.12, 0.08, 0.55))
+
+
+## Each room's stretch of back wall: its wallpaper (run.decor.wall) or the house floral,
+## with end pieces at the room's edges (the floral's tiling middle is _m2, c10_03).
+func _draw_room_walls() -> void:
+	var rooms: Dictionary = ROOMS_BY_TIER[tier()]
+	for room in rooms:
+		var rr: Rect2i = rooms[room]
+		var x0 := maxi(1, rr.position.x)
+		var x1 := mini(cols - 2, rr.end.x - 1)
+		var id := DecorMode.surface_of("wall", str(room))
+		for x in range(x0, x1 + 1):
+			var part := "_l" if x == x0 else ("_r" if x == x1 else "_m")
+			if id != "" and DecorMode.draw_wall_col(self, id, x, part):
+				continue
+			var nm: String = "wl_floral" + (part if part != "_m" else "_m2")
+			var t := Art.tex("tiles", nm) if Art.has("tiles", nm) else Art.tex("tiles", "wl_floral_m")
+			if t:
+				draw_texture_rect(t, Rect2(x * TILE, 0, TILE, TILE * 2), false)
+
+
+var _night_was := false
+
+
+## Windows follow dusk and dawn while you stay inside (they were fixed at entry).
+func _dusk_watch() -> void:
+	var n := GameState.is_night()
+	if n != _night_was:
+		_night_was = n
+		queue_redraw()
+
+
+var _decor_btn: Button = null
+
+
+## A small "Decorate" button under the room (also on the dresser).
+func _entry_button() -> void:
+	if GameState.visiting() or not is_instance_valid(hud):
+		return
+	var ly := CanvasLayer.new()
+	ly.layer = 5
+	var bt := Button.new()
+	bt.text = "Decorate"
+	bt.add_theme_font_size_override("font_size", Settings.font(8))
+	bt.position = Vector2(206, 252)  # the dark band under the room, clear of the furniture and the HUD
+	bt.size = Vector2(60, 22)
+	bt.focus_mode = Control.FOCUS_NONE
+	bt.pressed.connect(func() -> void:
+		if not get_tree().paused and not Dialogue.instance(get_tree()).active:
+			DecorMode.open(self))
+	ly.add_child(bt)
+	add_child(ly)
+	_decor_btn = bt
+	var hide_t := Timer.new()  # hidden while decorate mode or a menu owns the screen
+	hide_t.wait_time = 0.25
+	hide_t.process_mode = Node.PROCESS_MODE_ALWAYS
+	hide_t.timeout.connect(func() -> void:
+		if is_instance_valid(bt):
+			bt.visible = not get_tree().paused)
+	ly.add_child(hide_t)
+	hide_t.start()
+	Hud.extra_rects.append(Rect2(bt.position, bt.size))
+	tree_exiting.connect(func() -> void: Hud.extra_rects.erase(Rect2(bt.position, bt.size)))
+
+
+## Side walls, the front lip and the back wall's floor shadow, like the town interiors'
+## (the house floated on black, c10_03), in the main room's wall colours.
+func _draw_shell() -> void:
+	var I0: Variant = load("res://scripts/interior.gd")
+	var wid := DecorMode.surface_of("wall", "main")
+	var wa := DecorMode.art_of(wid) if wid != "" else ["tiles", "wl_floral", false]
+	var trim := Art.tex("tiles", str(wa[1]) + "_m") if str(wa[0]) == "tiles" else null
+	if trim == null:
+		trim = Art.tex("tiles", "wl_floral_m")
+	var ty := float(I0.first_opaque_row(trim)) if trim else 0.0
+	var sx := 12.0
+	var gq: Vector2i = I0.wall_gap(trim) if trim else Vector2i.ZERO
+	if gq != Vector2i.ZERO and gq.x < 20 and gq.y > 12:
+		sx = 2.0 if gq.x >= 10 else float(gq.y) + 1.0
+	var rim := Color("3a2a1c")
+	for side in [0, cols - 1]:
+		var x0 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
+		for y in range(2, rows - 1):
+			var r := Rect2(x0, y * TILE, 8, TILE)
+			if trim:
+				draw_texture_rect_region(trim, r, Rect2(sx, 26, 8, 16), Color(0.62, 0.56, 0.5))
+			else:
+				draw_rect(r, rim)
+	for side in [0, cols - 1]:
+		var x1 := float(side * TILE) + (TILE - 8.0 if side == 0 else 0.0)
+		for y in range(2, rows - 1):
+			draw_rect(Rect2(x1 + (8.0 if side == 0 else -4.0), y * TILE, 4, TILE), Color(0, 0, 0, 0.28))
+	for x in range(0, cols):
+		if x == DOOR.x:
+			continue
+		var r2 := Rect2(x * TILE, (rows - 1) * TILE, TILE, 8)
+		if x == 0:
+			r2 = Rect2(TILE - 8, (rows - 1) * TILE, 8, 8)
+		elif x == cols - 1:
+			r2 = Rect2((cols - 1) * TILE, (rows - 1) * TILE, 8, 8)
+		if trim:
+			draw_texture_rect_region(trim, r2, Rect2(sx, ty + 2, 8, 8), Color(0.8, 0.75, 0.7))
+		else:
+			draw_rect(r2, rim)
+	draw_rect(Rect2(TILE, 2 * TILE, (cols - 2) * TILE, 3), Color(0, 0, 0, 0.22))
+
+
+## The floor word under a cell (footsteps): the room's flooring id, else "wood".
+func floor_at(c: Vector2i) -> String:
+	for room in ROOMS_BY_TIER[tier()]:
+		var rr: Rect2i = ROOMS_BY_TIER[tier()][room]
+		if c.x >= rr.position.x and c.x < rr.end.x:
+			var id := DecorMode.surface_of("floor", str(room))
+			if id != "":
+				var a := str(DecorMode.art_of(id)[1])
+				for w: Array in [["stone", "stone"], ["tile", "stone"], ["marble", "stone"], ["carpet", "grass"], ["rug", "grass"]]:
+					if str(w[0]) in a:
+						return str(w[1])
+			return "wood"
+	return "wood"

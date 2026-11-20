@@ -192,6 +192,13 @@ if ! echo "$dcout" | grep -q "decor_test: [0-9]* checks, 0 failures"; then
   echo "decor_test failed"; exit 1
 fi
 
+echo "== decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2) =="
+dmout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/decor_mode_test.gd 2>&1)"
+echo "$dmout" | grep -E "FAIL|decor_mode_test" || true
+if ! echo "$dmout" | grep -q "decor_mode_test: OK"; then
+  echo "decor_mode_test failed"; exit 1
+fi
+
 echo "== held-tool rules: right tool acts, wrong tool hints =="
 trout="$("$GODOT" --headless --path . -s res://tools/tool_rules_test.gd 2>&1)"
 echo "$trout" | grep -E "FAIL|SCRIPT ERROR|tool_rules_test" || true

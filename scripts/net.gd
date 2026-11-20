@@ -110,10 +110,17 @@ func leave(why := "left") -> void:
 	disconnected.emit(why)
 
 
+const LOOK_EVERY := 2.0
+var _look_hash := 0
+var _look_t := 0.0
+
+
 func _my_look() -> Dictionary:
 	var lk: Variant = GameState.run.get("look", {})
 	var eq: Variant = GameState.run.get("equip", {})
-	return {"playable": GameState.run.get("playable", ""), "arc": str(GameState.run.get("arc", "")), "look": lk if lk is Dictionary else {}, "equip": eq if eq is Dictionary else {}}
+	var dv: Variant = GameState.run.get("decor", {})
+	var wr: Variant = (dv as Dictionary).get("wear", {}) if dv is Dictionary else {}
+	return {"playable": GameState.run.get("playable", ""), "arc": str(GameState.run.get("arc", "")), "look": lk if lk is Dictionary else {}, "equip": eq if eq is Dictionary else {}, "wear": wr if wr is Dictionary else {}}
 
 
 func _send(o: Dictionary) -> void:
@@ -188,6 +195,7 @@ func _process(delta: float) -> void:
 func _on_msg(m: Dictionary) -> void:
 	match str(m.get("t", "")):
 		"joined":
+			_look_hash = 0
 			my_id = int(m["id"])
 			room = str(m["room"])
 			_last_room = room
@@ -218,6 +226,7 @@ func _on_msg(m: Dictionary) -> void:
 		"no_room":
 			leave("No game with that code. Check the code with your host.")
 		"peer_joined":
+			_look_hash = 0  # the newcomer gets our look with the next state packet
 			var p: Dictionary = m["peer"]
 			peers[int(p["id"])] = p
 			if str(p.get("arc", "")) != str(GameState.run["arc"]):
@@ -276,7 +285,17 @@ func _broadcast_state() -> void:
 	if not (m is GameMap) or (m as GameMap).player == null:
 		return
 	var p := (m as GameMap).player
-	send_all({"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false, "look": _my_look()})
+	var st := {"k": "state", "pos": [snappedf(p.position.x, 0.5), snappedf(p.position.y, 0.5)], "scene": (m as GameMap).scene_id(), "anim": p.anim_name, "flip": p._anim.flip_h if p._anim else false}
+	# The look (and wardrobe) rides along only when it changed, or every LOOK_EVERY s for
+	# late joiners: receivers keep the last one (c10_10: it was sent whole 10x a second).
+	var lk := _my_look()
+	var h := hash(lk)
+	_look_t += TICK
+	if h != _look_hash or _look_t >= LOOK_EVERY:
+		_look_hash = h
+		_look_t = 0.0
+		st["look"] = lk
+	send_all(st)
 
 
 # ---- world sync (host -> guests) ---------------------------------------------
@@ -284,13 +303,17 @@ func _broadcast_state() -> void:
 ## (run.opts), weather and farm. Each player
 ## keeps their own money, bank, sell box, quests, story flags and friendships
 ## (overwriting those from the host let guests copy crystals and replay story).
-const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts"]
+## "decor_home" is the host's house look (DecorMode.home_view: placed pieces, wallpaper,
+## flooring; never the decor box or wardrobe), so guests in the house see the host's decor.
+const WORLD_KEYS := ["day", "time", "weather", "farm", "builds", "construction", "permits", "cleared", "placed", "day_len", "opts", "decor_home"]
 
 
 func _push_world(to_id := -1) -> void:
 	var d := {}
 	for k in WORLD_KEYS:
-		if GameState.run.has(k):
+		if k == "decor_home":
+			d[k] = DecorMode.home_view()  # derived from run.decor, never stored in the host's run
+		elif GameState.run.has(k):
 			d[k] = GameState.run[k]
 	if to_id > 0:
 		_send({"t": "to", "id": to_id, "d": {"k": "world", "d": d}})  # a new guest gets everything
@@ -325,6 +348,18 @@ static func world_delta(old: Dictionary, now: Dictionary) -> Dictionary:
 				if not nf.has(t):
 					fd[t] = null
 			out["farm_d"] = fd
+		elif k == "decor_home" and old.get(k) is Dictionary and now[k] is Dictionary:
+			# Per room: only the rooms whose pieces changed (a full house is ~41 B a piece).
+			var op: Dictionary = (old[k] as Dictionary).get("placed", {})
+			var np: Dictionary = (now[k] as Dictionary).get("placed", {})
+			var pd := {}
+			for r in np:
+				if not op.has(r) or op[r] != np[r]:
+					pd[r] = np[r]
+			for r in op:
+				if not np.has(r):
+					pd[r] = null
+			out["decor_home_d"] = {"placed": pd, "wall": (now[k] as Dictionary).get("wall", {}), "floor": (now[k] as Dictionary).get("floor", {})}
 		else:
 			out[k] = now[k]
 	for k in old:
@@ -349,6 +384,23 @@ static func merge_delta(run: Dictionary, d: Dictionary) -> void:
 				(farm as Dictionary).erase(t)
 			else:
 				farm[t] = fv[t]
+	var dh: Variant = d.get("decor_home_d", null)
+	if dh is Dictionary:
+		var home: Variant = run.get("decor_home", null)
+		if not (home is Dictionary):
+			home = {"placed": {}, "wall": {}, "floor": {}}
+			run["decor_home"] = home
+		if not ((home as Dictionary).get("placed", null) is Dictionary):
+			home["placed"] = {}
+		var pv: Variant = (dh as Dictionary).get("placed", {})
+		if pv is Dictionary:
+			for r in pv:
+				if pv[r] == null:
+					(home["placed"] as Dictionary).erase(r)
+				else:
+					home["placed"][r] = pv[r]
+		home["wall"] = (dh as Dictionary).get("wall", {})
+		home["floor"] = (dh as Dictionary).get("floor", {})
 	var gv: Variant = d.get("_gone", [])
 	if gv is Array:
 		for k in gv:
@@ -389,7 +441,7 @@ func _apply_world(d: Dictionary) -> void:
 		GameState.run[k] = d[k]
 	if not _host:
 		# A full world from the host: keys it doesn't have aren't ours to show (ours are in _solo_backup).
-		for k in ["builds", "construction", "permits", "cleared", "weather", "placed"]:
+		for k in ["builds", "construction", "permits", "cleared", "weather", "placed", "decor_home"]:
 			if not d.has(k):
 				GameState.run.erase(k)
 	if not _host and host_day == 0:
