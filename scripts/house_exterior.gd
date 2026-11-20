@@ -202,8 +202,21 @@ static func choose(part: String, id: String) -> String:
 			return "poor"
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
 		d["house_own"][id] = true
+		_first_note()
 	d["house"][part] = id
 	return "ok"
+
+
+## The first restyle gets noticed (c10b_01-35): a friendly letter, once per save.
+static func _first_note() -> void:
+	var fl: Dictionary = GameState.run.get("flags", {})
+	if bool(fl.get("ext_noticed", false)):
+		return
+	fl["ext_noticed"] = true
+	if GameState.is_penguins():
+		Mail.send("Hazel", "Saw your farmhouse from the road this morning. A fresh look suits it! Folks in town have been asking who did the work. Come by if you ever want more ideas. - Hazel")
+	else:
+		Mail.send("Sal", "Drove past your place. New look, huh? Classy. Nobody's gonna mistake it for the old shack now. Keep it sharp. - Sal")
 
 
 ## Pen fence pieces [h, v, gate_open] for farm._plan_fences, or [] = the arc default.

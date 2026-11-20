@@ -49,12 +49,14 @@ func new_run(arc := "penguins") -> void:
 	GameState.run["quests"] = [{"id": "clear_meadow", "text": "x", "done": true}]
 
 
-func shot(m: GameMap, name: String) -> void:
+func shot(m: GameMap, name: String, frame := true) -> void:
 	if out == "":
 		return
 	var sp: Sprite2D = m._house_sprite
 	var cam := root.get_viewport().get_camera_2d()
-	if cam and sp:
+	if not frame:
+		await frames(6)
+	elif cam and sp:
 		cam.offset = Vector2.ZERO
 		cam.global_position = sp.global_position + Vector2(0, -50)
 		await frames(6)
@@ -100,11 +102,14 @@ func _run() -> void:
 	GameState.run["crystals"] = 5000
 	check(HouseExterior.choose("roof", "ext_roof_slate") == "ok", "buy Slate Blue roof")
 	check(int(GameState.run["crystals"]) == 5000 - 600, "charged the roof price once")
+	var notes := Mail.list().filter(func(x: Dictionary) -> bool: return str(x.get("from", "")) == "Hazel" and str(x.get("text", "")).contains("farmhouse"))
+	check(notes.size() == 1, "first restyle brings Hazel's letter")
 	HouseExterior.choose("roof", "")
 	check(HouseExterior.choose("roof", "ext_roof_slate") == "ok" and int(GameState.run["crystals"]) == 4400, "switching back to an owned style is free")
 	check(HouseExterior.choose("roof", "ext_door_oak") == "bad", "a door id can't go on the roof")
 	check(HouseExterior.choose("door", "ext_door_steel") == "bad", "gangster-only door refused in the penguin arc")
 	HouseExterior.choose("siding", "ext_siding_white")
+	check(Mail.list().filter(func(x: Dictionary) -> bool: return str(x.get("text", "")).contains("Saw your farmhouse")).size() == 1, "the letter comes only once")
 	HouseExterior.choose("door", "ext_door_dutch_blue")
 	HouseExterior.choose("porch", "ext_porch_fern")
 	HouseExterior.choose("fence", "ext_fence_stone")
@@ -186,7 +191,7 @@ func _run() -> void:
 	pk.call("_step", 1)
 	await frames(2)
 	check(str(HouseExterior.look().get("roof", "")) == "ext_roof_slate", "preview doesn't change the saved look")
-	await shot(m, "picker")
+	await shot(m, "picker", false)
 	pk.call("_close")
 	await frames(3)
 	check(paused == was_paused, "picker closes and restores the pause state (%s)" % was_paused)

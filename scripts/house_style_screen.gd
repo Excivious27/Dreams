@@ -169,6 +169,8 @@ func _build() -> void:
 		info = "You own this style: switching is free."
 	else:
 		info = "%s once, then free to switch back any time." % Money.amount(int(s.get("price", 0)))
+	if part == "roof" and GameState.look_se() == "winter":
+		info += " Snow hides most of the roof until spring."
 	if part == "fence":
 		info += " Pen fences change next time you come to the farm."
 	_lab(v, info, 8, INK_SOFT).custom_minimum_size = Vector2(246, 0)
