@@ -56,7 +56,7 @@ static func entry(id: String) -> Dictionary:
 
 
 static func is_decor(id: String) -> bool:
-	return id != "" and not entry(id).is_empty()
+	return id != "" and (data()["items"] as Dictionary).has(id)  # hot: GameState.count/add_item call it
 
 
 static func is_wear(id: String) -> bool:
