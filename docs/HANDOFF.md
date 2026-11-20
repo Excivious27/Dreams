@@ -28,7 +28,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 - **Done:** CONDUCT 1-10b (all packages sent; C10b CI c10b2 PASS).
 - **In progress:** C11a fix agents P1-P6 (resumed after a 2nd server restart; worktrees /home/claude/wt/c11af_pN, reports /home/claude/wt/c11af_reports). C11b auditors 01-14 running in parallel (B1; worktrees /home/claude/wt/c11b_NN, findings /home/claude/wt/c11b_reports/*.jsonl; scopes /home/claude/wt/C11b_SCOPES.txt, 15-20 run low after the C11a push).
 - **Next step:** rolling-merge C11a packages as they finish (mrg.sh), regen_data, ci_run c11a, build_package.py 11a, push, package to Tom; then synthesize C11b findings into packages and launch fixes.
-- **Jobs running elsewhere:** subagents only. Images used today: ~150 of 300 (limit drops to 60/day on Nov 25). ACE credits: 664 until Dec 1.
+- **Jobs running elsewhere:** subagents only. Images used today: ~276 (limit now 1000/day, Tom 15:29). ACE credits: 664 until Dec 1.
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
@@ -37,6 +37,7 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 Anything Tom decided or answered in chat that the other account needs, one line each with the date.
 
+- 2026-11-20 15:29 Tom: daily art limit raised to 1000 images/day (permanent; replaces the 300-until-Nov-25-then-60 budget). dreams-image-mcp server: DAILY_IMAGE_LIMIT/BOOST 1000 in render.yaml and a code floor MIN_DAILY_LIMIT=1000 (commit 77510fe; Render redeploys on push).
 - 2026-11-20 14:34 Tom: add to a CONDUCT (planned in C16 progression, with C14 for new areas): every skill the player AND recruits/allies/team mates can advance gets a progressive tiered ecosystem of quests, exploring, creativity, rewards, gear and challenges. Flagship example: fishing (unique areas, common->ultra-rare tiers, rewards, advanced rods/tackle/bait, challenges, legendaries). Also a Stardew-style museum: donate items, unlock rewards at milestones (build on the C8 Collections museum room; audit what exists, then finish it). C16 auditors get one scope per skill tree + one for allies + one for the museum.
 - 2026-11-20 11:08 Tom: the furniture/decor seller is a NEW NPC (a carpenter), not Hazel. Built in C10b P1.
 - 2026-11-20 08:04 Tom: never ask him for permission to update a schedule (changing the device-bound watchdog scheduled task makes him approve it and pauses the work). Do not edit or create device-bound scheduled tasks; use in-session reminders (send_later) for watchdog check-ins, and keep working to completion.
@@ -143,7 +144,7 @@ In the game now: farm, town, beach, mountain, forest, lake, meadow, crystal mead
 ## State on 2026-11-18
 
 - The Team account's game chat was running an art pass (building redraws w494+) through dreams-image. Only one account should push to `main` at a time.
-- dreams-image: OpenAI image generation/editing that commits PNGs to `art/incoming/` (never overwrites). Default quality high. Limit 300 images/day through 2026-11-25, then 60/day; the limit is per server, shared by both accounts. Each result reports OpenAI usage.
+- dreams-image: OpenAI image generation/editing that commits PNGs to `art/incoming/` (never overwrites). Default quality high. Limit 1000 images/day (Tom 2026-11-20); the limit is per server, shared by both accounts. Each result reports OpenAI usage.
 - OpenAI is billed from Tom's linked ChatGPT balance; organization verification was still in review.
 - Open items: image commits each trigger the test workflow (a skip-CI tag would save Actions minutes); relay not deployed (Render Starter is an option); OpenAI verification.
 
@@ -175,7 +176,7 @@ Everything needed to run a CONDUCT from this section alone. Target: **1 h 35 m t
 
 **Lean reads**: briefs point to the code map and docs/TOOLS.md; agents grep and read line ranges, never whole big files; auditors reply only "done, N findings"; the conductor reads cluster.py output and CI summary.txt only. STATUS.md holds 2 days (older in docs/STATUS-ARCHIVE.md, `python3 tools/status_add.py "<line>"`, `--rotate 2` weekly). CLAUDE.md is a slim core (~15 KB); the full catalog is docs/TOOLS.md.
 
-**Art lane and music budget**: image limit 300/day until Nov 25, then 60/day: before Nov 25 front-load art for queued art-heavy CONDUCTs (C11b creatures, C14 aesthetics/marina/town, C18 cutscenes, C23 art direction) where designs are known; from Nov 25 fix agents never block on images: missing renders go to docs/ART-QUEUE.md and a daily low-effort art agent works through it within the limit; wiring happens when art lands. Track images used per day in the Baton. ACE music: 664 credits until Dec 1; first reuse the unused second take of every existing song (audio/ACE_LOG.json) as alternates (C13 especially); new songs only where no take fits; check get_account before C13.
+**Art lane and music budget**: image limit 1000/day (Tom 2026-11-20 15:29; was 300 then 60): still front-load art for queued art-heavy CONDUCTs (C11b creatures, C14 aesthetics/marina/town, C18 cutscenes, C23 art direction) where designs are known; from Nov 25 fix agents never block on images: missing renders go to docs/ART-QUEUE.md and a daily low-effort art agent works through it within the limit; wiring happens when art lands. Track images used per day in the Baton. ACE music: 664 credits until Dec 1; first reuse the unused second take of every existing song (audio/ACE_LOG.json) as alternates (C13 especially); new songs only where no take fits; check get_account before C13.
 
 **Godot locks:** fix agents share /tmp/godot.lock; auditors use their own /tmp/godot_audit.lock (C11b: 20 agents on one lock starved auditors of play runs).
 
