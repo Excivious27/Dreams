@@ -1128,6 +1128,380 @@
     1.0,
     2
    ]
+  ],
+  "grump_crystal": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "grump_storm": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "grump_frost": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "grump_coral": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "grump_ember": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "grump_moss": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "grump_brute": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "grump_wisp": [
+   [
+    "grump_dust",
+    0.7,
+    1
+   ],
+   [
+    "shard",
+    0.25,
+    1
+   ],
+   [
+    "fiber",
+    0.2,
+    1
+   ]
+  ],
+  "gcap_orchard_hills": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_highlands": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_quarry": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_marsh": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_riverlands": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_ruins": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_wastes": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_sky": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_station": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_jungle": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_colony_coral": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_colony_kelp": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_colony_ice": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
+  ],
+  "gcap_colony_ember": [
+   [
+    "grump_dust",
+    1.0,
+    3
+   ],
+   [
+    "shard",
+    1.0,
+    2
+   ],
+   [
+    "light_mote",
+    0.3,
+    1
+   ]
   ]
  },
  "enemies": {
@@ -2329,6 +2703,433 @@
    "boss": true,
    "scale": 1.15,
    "char": "mg_aurum"
+  },
+  "grump_crystal": {
+   "hp": 18,
+   "dmg": 2,
+   "speed": 24,
+   "xp": 9,
+   "tier": 2,
+   "abilities": [
+    "ranged",
+    "shield"
+   ],
+   "name": "Crystal Grump",
+   "reward": 8,
+   "art": "grump_crystal",
+   "art_fallback": "grump",
+   "fallback_tint": "#9fe8ff",
+   "grump": true,
+   "scale": 1.15
+  },
+  "grump_storm": {
+   "hp": 12,
+   "dmg": 2,
+   "speed": 34,
+   "xp": 9,
+   "tier": 2,
+   "abilities": [
+    "ranged",
+    "blink"
+   ],
+   "name": "Storm Grump",
+   "reward": 8,
+   "art": "grump_storm",
+   "art_fallback": "grump",
+   "fallback_tint": "#b47cff",
+   "grump": true,
+   "status": "weak"
+  },
+  "grump_frost": {
+   "hp": 10,
+   "dmg": 1,
+   "speed": 30,
+   "xp": 6,
+   "tier": 1,
+   "abilities": [
+    "lunge"
+   ],
+   "name": "Frost Grump",
+   "reward": 5,
+   "art": "grump_frost",
+   "art_fallback": "grump",
+   "fallback_tint": "#cdeeff",
+   "grump": true,
+   "status": "slow"
+  },
+  "grump_coral": {
+   "hp": 11,
+   "dmg": 1,
+   "speed": 30,
+   "xp": 6,
+   "tier": 1,
+   "abilities": [
+    "regen",
+    "lunge"
+   ],
+   "name": "Coral Grump",
+   "reward": 5,
+   "art": "grump_coral",
+   "art_fallback": "grump",
+   "fallback_tint": "#ff9a8a",
+   "grump": true
+  },
+  "grump_ember": {
+   "hp": 12,
+   "dmg": 2,
+   "speed": 34,
+   "xp": 9,
+   "tier": 2,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Ember Grump",
+   "reward": 8,
+   "art": "grump_ember",
+   "art_fallback": "grump",
+   "fallback_tint": "#ff8a3d",
+   "grump": true,
+   "status": "burn"
+  },
+  "grump_moss": {
+   "hp": 9,
+   "dmg": 1,
+   "speed": 28,
+   "xp": 6,
+   "tier": 1,
+   "abilities": [
+    "blink",
+    "stomp"
+   ],
+   "name": "Moss Grump",
+   "reward": 5,
+   "art": "grump_moss",
+   "art_fallback": "grump",
+   "fallback_tint": "#86c86e",
+   "grump": true,
+   "status": "slow"
+  },
+  "grump_brute": {
+   "hp": 30,
+   "dmg": 3,
+   "speed": 20,
+   "xp": 12,
+   "tier": 3,
+   "abilities": [
+    "stomp",
+    "enrage",
+    "shield"
+   ],
+   "name": "Brute Grump",
+   "reward": 11,
+   "art": "grump_brute",
+   "art_fallback": "grump",
+   "fallback_tint": "#9a86c0",
+   "grump": true,
+   "scale": 1.6
+  },
+  "grump_wisp": {
+   "hp": 5,
+   "dmg": 1,
+   "speed": 58,
+   "xp": 6,
+   "tier": 1,
+   "abilities": [
+    "blink"
+   ],
+   "name": "Wisp Grump",
+   "reward": 5,
+   "art": "grump_wisp",
+   "art_fallback": "grump",
+   "fallback_tint": "#efe6ff",
+   "grump": true,
+   "scale": 0.85
+  },
+  "gcap_orchard_hills": {
+   "hp": 22,
+   "dmg": 2,
+   "speed": 24,
+   "xp": 20,
+   "tier": 1,
+   "abilities": [
+    "blink",
+    "stomp",
+    "enrage"
+   ],
+   "name": "Captain Bramblesnout",
+   "reward": 14,
+   "boss": true,
+   "art": "grump_moss",
+   "art_fallback": "grump",
+   "fallback_tint": "#86c86e",
+   "scale": 1.35,
+   "grump": true,
+   "status": "slow"
+  },
+  "gcap_highlands": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 26,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Frostjaw",
+   "reward": 20,
+   "boss": true,
+   "art": "grump_frost",
+   "art_fallback": "grump",
+   "fallback_tint": "#cdeeff",
+   "scale": 1.35,
+   "grump": true,
+   "status": "slow"
+  },
+  "gcap_quarry": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 20,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "ranged",
+    "shield",
+    "enrage"
+   ],
+   "name": "Old Shardback",
+   "reward": 20,
+   "boss": true,
+   "art": "grump_crystal",
+   "art_fallback": "grump",
+   "fallback_tint": "#9fe8ff",
+   "scale": 1.55,
+   "grump": true
+  },
+  "gcap_marsh": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 24,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "blink",
+    "stomp",
+    "enrage"
+   ],
+   "name": "Mirewhisker",
+   "reward": 20,
+   "boss": true,
+   "art": "grump_moss",
+   "art_fallback": "grump",
+   "fallback_tint": "#86c86e",
+   "scale": 1.35,
+   "grump": true,
+   "status": "slow"
+  },
+  "gcap_riverlands": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 26,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "regen",
+    "lunge",
+    "enrage"
+   ],
+   "name": "Tidegrudge",
+   "reward": 20,
+   "boss": true,
+   "art": "grump_coral",
+   "art_fallback": "grump",
+   "fallback_tint": "#ff9a8a",
+   "scale": 1.35,
+   "grump": true
+  },
+  "gcap_ruins": {
+   "hp": 38,
+   "dmg": 3,
+   "speed": 30,
+   "xp": 36,
+   "tier": 3,
+   "abilities": [
+    "ranged",
+    "blink",
+    "enrage"
+   ],
+   "name": "Gloomcrown",
+   "reward": 26,
+   "boss": true,
+   "art": "grump_storm",
+   "art_fallback": "grump",
+   "fallback_tint": "#b47cff",
+   "scale": 1.35,
+   "grump": true,
+   "status": "weak"
+  },
+  "gcap_wastes": {
+   "hp": 22,
+   "dmg": 2,
+   "speed": 30,
+   "xp": 20,
+   "tier": 1,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Cinderhowl",
+   "reward": 14,
+   "boss": true,
+   "art": "grump_ember",
+   "art_fallback": "grump",
+   "fallback_tint": "#ff8a3d",
+   "scale": 1.35,
+   "grump": true,
+   "status": "burn"
+  },
+  "gcap_sky": {
+   "hp": 38,
+   "dmg": 3,
+   "speed": 30,
+   "xp": 36,
+   "tier": 3,
+   "abilities": [
+    "ranged",
+    "blink",
+    "enrage"
+   ],
+   "name": "Stormcrest",
+   "reward": 26,
+   "boss": true,
+   "art": "grump_storm",
+   "art_fallback": "grump",
+   "fallback_tint": "#b47cff",
+   "scale": 1.35,
+   "grump": true,
+   "status": "weak"
+  },
+  "gcap_station": {
+   "hp": 46,
+   "dmg": 3,
+   "speed": 20,
+   "xp": 44,
+   "tier": 4,
+   "abilities": [
+    "ranged",
+    "shield",
+    "enrage"
+   ],
+   "name": "Prismjaw",
+   "reward": 32,
+   "boss": true,
+   "art": "grump_crystal",
+   "art_fallback": "grump",
+   "fallback_tint": "#9fe8ff",
+   "scale": 1.55,
+   "grump": true
+  },
+  "gcap_jungle": {
+   "hp": 46,
+   "dmg": 3,
+   "speed": 24,
+   "xp": 44,
+   "tier": 4,
+   "abilities": [
+    "blink",
+    "stomp",
+    "enrage"
+   ],
+   "name": "Thornmaw",
+   "reward": 32,
+   "boss": true,
+   "art": "grump_moss",
+   "art_fallback": "grump",
+   "fallback_tint": "#86c86e",
+   "scale": 1.35,
+   "grump": true,
+   "status": "slow"
+  },
+  "gcap_colony_coral": {
+   "hp": 30,
+   "dmg": 2,
+   "speed": 26,
+   "xp": 28,
+   "tier": 2,
+   "abilities": [
+    "regen",
+    "lunge",
+    "enrage"
+   ],
+   "name": "Reefgrudge",
+   "reward": 20,
+   "boss": true,
+   "art": "grump_coral",
+   "art_fallback": "grump",
+   "fallback_tint": "#ff9a8a",
+   "scale": 1.35,
+   "grump": true
+  },
+  "gcap_colony_kelp": {
+   "hp": 38,
+   "dmg": 3,
+   "speed": 26,
+   "xp": 36,
+   "tier": 3,
+   "abilities": [
+    "regen",
+    "lunge",
+    "enrage"
+   ],
+   "name": "Murkfin",
+   "reward": 26,
+   "boss": true,
+   "art": "grump_coral",
+   "art_fallback": "grump",
+   "fallback_tint": "#ff9a8a",
+   "scale": 1.35,
+   "grump": true
+  },
+  "gcap_colony_ice": {
+   "hp": 46,
+   "dmg": 3,
+   "speed": 20,
+   "xp": 44,
+   "tier": 4,
+   "abilities": [
+    "stomp",
+    "enrage",
+    "shield"
+   ],
+   "name": "Hailbrute",
+   "reward": 32,
+   "boss": true,
+   "art": "grump_brute",
+   "art_fallback": "grump",
+   "fallback_tint": "#9a86c0",
+   "scale": 2.16,
+   "grump": true
+  },
+  "gcap_colony_ember": {
+   "hp": 54,
+   "dmg": 4,
+   "speed": 30,
+   "xp": 52,
+   "tier": 5,
+   "abilities": [
+    "lunge",
+    "enrage"
+   ],
+   "name": "Ashmaw",
+   "reward": 38,
+   "boss": true,
+   "art": "grump_ember",
+   "art_fallback": "grump",
+   "fallback_tint": "#ff8a3d",
+   "scale": 1.35,
+   "grump": true,
+   "status": "burn"
   }
  }
 }

@@ -177,9 +177,103 @@ def _kinds(region):
     return out
 
 # Regions that each arc reaches (secrets.gd lists): penguins never see gang turf and vice versa.
-PENG_ONLY = ["sky", "station", "jungle"]
+# Tom 2026-11-19: the Wastes and the four island colonies are penguin-only.
+PENG_ONLY = ["sky", "station", "jungle", "wastes", "colony_coral", "colony_kelp", "colony_ice", "colony_ember"]
 GANG_ONLY = ["docks", "neon", "uptown", "underground", "countryside"]
 SPEAK = {"penguins": "Catkins", "gangsters": "Halo"}
+# Who leads each campaign (Tom C3: Catkins is not the voice of every campaign).
+# A list of fallbacks; Campaign.who() picks the first one you have met ("pal" =
+# whichever of Pip-Pip / Nova you are not playing). The order follows the book.
+LEAD = {
+    "orchard_hills": {"penguins": ["pal"], "gangsters": ["Sal"]},
+    "highlands": {"penguins": ["Big Jim", "pal"], "gangsters": ["Sal"]},
+    "quarry": {"penguins": ["pal"], "gangsters": ["Sal"]},
+    "marsh": {"penguins": ["pal"], "gangsters": ["Sal"]},
+    "riverlands": {"penguins": ["pal"], "gangsters": ["Halo", "Sal"]},
+    "ruins": {"penguins": ["Catkins", "pal"], "gangsters": ["Halo", "Sal"]},
+    "wastes": {"penguins": ["pal"]},
+    "sky": {"penguins": ["Big Jim", "Coldy", "pal"]},
+    "station": {"penguins": ["Coldy", "pal"]},
+    "jungle": {"penguins": ["Catkins", "pal"]},
+    "colony_coral": {"penguins": ["Grandmother Brine"]},
+    "colony_kelp": {"penguins": ["Old Tidewhisker"]},
+    "colony_ice": {"penguins": ["Coldy", "Captain Icewhisker"]},
+    "colony_ember": {"penguins": ["Lady Cinderpaw"]},
+    "countryside": {"gangsters": ["Sal"]},
+    "docks": {"gangsters": ["Sal"]},
+    "neon": {"gangsters": ["Halo", "Sal"]},
+    "underground": {"gangsters": ["Halo", "Sal"]},
+    "uptown": {"gangsters": ["Halo", "Sal"]},
+}
+
+# ---- Grumps: the penguin campaigns' foes (Tom C3) -----------------------------------
+# Grumps were once Crystopia crystals that the Dark Crystal turned. Each variant
+# has its own build from the shared enemy behaviours. Art "enemies/grump_<v>" (P4);
+# until a sheet exists the plain grump is drawn with "fallback_tint" (Enemy).
+GRUMPS = {
+    "grump_crystal": {"name": "Crystal Grump", "hp": 18, "dmg": 2, "speed": 24, "tier": 2, "abilities": ["ranged", "shield"], "tint": "#9fe8ff", "scale": 1.15, "blurb": "tough, fires shard volleys"},
+    "grump_storm": {"name": "Storm Grump", "hp": 12, "dmg": 2, "speed": 34, "tier": 2, "abilities": ["ranged", "blink"], "status": "weak", "tint": "#b47cff", "blurb": "violet lightning zaps"},
+    "grump_frost": {"name": "Frost Grump", "hp": 10, "dmg": 1, "speed": 30, "tier": 1, "abilities": ["lunge"], "status": "slow", "tint": "#cdeeff", "blurb": "its bite slows you"},
+    "grump_coral": {"name": "Coral Grump", "hp": 11, "dmg": 1, "speed": 30, "tier": 1, "abilities": ["regen", "lunge"], "tint": "#ff9a8a", "blurb": "mends itself when left alone"},
+    "grump_ember": {"name": "Ember Grump", "hp": 12, "dmg": 2, "speed": 34, "tier": 2, "abilities": ["lunge", "enrage"], "status": "burn", "tint": "#ff8a3d", "blurb": "burns, and flares up when hurt"},
+    "grump_moss": {"name": "Moss Grump", "hp": 9, "dmg": 1, "speed": 28, "tier": 1, "abilities": ["blink", "stomp"], "status": "slow", "tint": "#86c86e", "blurb": "ambushes and roots you"},
+    "grump_brute": {"name": "Brute Grump", "hp": 30, "dmg": 3, "speed": 20, "tier": 3, "abilities": ["stomp", "enrage", "shield"], "tint": "#9a86c0", "scale": 1.6, "blurb": "big, slow, hits hard"},
+    "grump_wisp": {"name": "Wisp Grump", "hp": 5, "dmg": 1, "speed": 58, "tier": 1, "abilities": ["blink"], "tint": "#efe6ff", "scale": 0.85, "blurb": "fast flyer"},
+}
+# Grump variants per penguin campaign region (first = most common), plus the
+# other creatures that are simply native there.
+GRUMP_AT = {
+    "orchard_hills": ["grump", "grump_moss", "crystal_baby"], "highlands": ["grump_frost", "grump_wisp", "crystal_baby"],
+    "quarry": ["grump_crystal", "grump_moss", "crystal_baby"], "marsh": ["grump_moss", "grump_coral"],
+    "riverlands": ["grump_coral", "grump_storm"], "ruins": ["grump_crystal", "grump_storm", "grump_brute"],
+    "wastes": ["grump_ember", "grump", "grump_crystal"], "sky": ["grump_storm", "grump_wisp", "grump_frost"],
+    "station": ["grump_crystal", "grump_storm", "grump_wisp"], "jungle": ["grump_moss", "grump_coral", "grump_ember"],
+    "colony_coral": ["grump_coral", "grump_wisp"], "colony_kelp": ["grump_coral", "grump_moss", "grump_storm"],
+    "colony_ice": ["grump_frost", "grump_crystal", "grump_brute"], "colony_ember": ["grump_ember", "grump_brute", "grump_storm"],
+}
+# Named grump captains, one per penguin campaign (boss and gate nodes).
+CAPTAINS = {
+    "orchard_hills": ("Captain Bramblesnout", "grump_moss"), "highlands": ("Frostjaw", "grump_frost"),
+    "quarry": ("Old Shardback", "grump_crystal"), "marsh": ("Mirewhisker", "grump_moss"),
+    "riverlands": ("Tidegrudge", "grump_coral"), "ruins": ("Gloomcrown", "grump_storm"),
+    "wastes": ("Cinderhowl", "grump_ember"), "sky": ("Stormcrest", "grump_storm"),
+    "station": ("Prismjaw", "grump_crystal"), "jungle": ("Thornmaw", "grump_moss"),
+    "colony_coral": ("Reefgrudge", "grump_coral"), "colony_kelp": ("Murkfin", "grump_coral"),
+    "colony_ice": ("Hailbrute", "grump_brute"), "colony_ember": ("Ashmaw", "grump_ember"),
+}
+# Penguin campaigns never field the gangster-world soldiers.
+NOT_PENGUIN = ("soldier", "archer", "knight")
+# Crystal Kin (Tom C3): crystal babies start as foes; after a campaign battle with
+# them, proving your purpose (a gift, or Meow Pow Wow) turns them into a helper
+# kind you can raise at spawners. HelperUnit reads "_helper_kinds" generically.
+KIN = {"kin": {"crystal": "Crystal Kin", "drone": "Crystal Kin", "hp": 30, "colour": "9fe8ff", "act": "striker", "arc": "penguins",
+               "flag": "crystal_kin", "art": "enemies/crystal_baby", "cost": 10, "does": "stomps foes"}}
+KIN_GIFT = {"item": "crystal_refined", "n": 2}
+
+def _write_grumps():
+    EJ = json.load(open(D + "/data/enemies.json"))
+    E = EJ["enemies"]
+    for k, g in GRUMPS.items():
+        e = {"hp": g["hp"], "dmg": g["dmg"], "speed": g["speed"], "xp": 3 + 3 * g["tier"], "tier": g["tier"], "abilities": list(g["abilities"]),
+             "name": g["name"], "reward": 2 + 3 * g["tier"], "art": k, "art_fallback": "grump", "fallback_tint": g["tint"], "grump": True}
+        if g.get("status"):
+            e["status"] = g["status"]
+        if g.get("scale"):
+            e["scale"] = g["scale"]
+        E[k] = e
+        EJ["drops"][k] = [["grump_dust", 0.7, 1], ["shard", 0.25, 1], ["fiber", 0.2, 1]]
+    for reg, (nm, base) in CAPTAINS.items():
+        g = GRUMPS[base]
+        t = next(c[1] for c in CAMPS if c[0] == reg)
+        ab = list(dict.fromkeys(g["abilities"] + ["enrage"]))
+        e = {"hp": 14 + 8 * t, "dmg": 1 + (t + 1) // 2, "speed": max(20, g["speed"] - 4), "xp": 12 + 8 * t, "tier": t, "abilities": ab, "name": nm,
+             "reward": 8 + 6 * t, "boss": True, "art": base, "art_fallback": "grump", "fallback_tint": g["tint"], "scale": round(g.get("scale", 1.0) * 1.35, 2), "grump": True}
+        if g.get("status"):
+            e["status"] = g["status"]
+        E["gcap_" + reg] = e
+        EJ["drops"]["gcap_" + reg] = [["grump_dust", 1.0, 3], ["shard", 1.0, 2], ["light_mote", 0.3, 1]]
+    json.dump(EJ, open(os.environ.get("DRY_OUT", D + "/data") + "/enemies.json", "w"), indent=1, ensure_ascii=False)
+    return E
 # What you sense at the edge of a region its campaign still holds (Campaign.gate_words
 # adds the step that's actually next). One line per arc that reaches the region.
 SENSE = {
@@ -217,6 +311,8 @@ SENSE = {
 REWARD_ITEMS = {1: {"potion": 3, "copper_bar": 5}, 2: {"greater_potion": 2, "iron_bar": 5}, 3: {"gold_bar": 3, "crystal_refined": 3},
                 4: {"crystal_battery": 2, "ruby": 1, "sapphire": 1}, 5: {"crystal_battery": 3, "gold_bar": 6, "emerald": 1}}
 ARC_ITEMS = {"penguins": {"crystal_refined": 2}, "gangsters": {"servo": 4, "data_chip": 1}}
+# Tier-3 node rewards: refined crystal is a penguin thing; gangsters get parts.
+GANG_SWAP = {"crystal_refined": "data_chip"}
 # (region, tier, after, title, fields, boss, start camp, names[7], intro, won)
 CAMPS = [
     ("orchard_hills", 1, [], "The Orchard Road", ["bf_orchard_line"], "big_grump", "Forest Edge Camp",
@@ -245,11 +341,11 @@ CAMPS = [
      "The guardians lower their stone heads. The arch is open."),
     ("wastes", 1, [], "Across the Wastes", ["bf_ash_wastes"], "obsidian_sentinel", "Standing Stones Camp",
      ["Dead Tree Line", "Spike Field", "Lantern Well", "Bone-Dry Gully", "Rusted Outpost", "Ash Ridge", "The Wastes Gate"],
-     "Past the standing stones the land goes grey. Soldiers hold the old outposts. Take the gate and the wastes are open.",
+     "Past the standing stones the land goes grey. Ember Grumps march in rows from the old outposts. Free the gate and the wastes are open.",
      "The wastes gate creaks open. The grey land waits, quieter than before."),
-    ("sky", 4, ["wastes"], "The Cloud Stair", ["bf_frostfield", "bf_shattered_vale"], "knight", "Summit Camp",
+    ("sky", 3, ["wastes", "highlands"], "The Cloud Stair", ["bf_frostfield", "bf_shattered_vale"], "knight", "Summit Camp",
      ["Cloudfoot", "Ice Ladder", "Prism Shelf", "Finargle Roost", "Star Ledge", "Thin Air Fort", "The Sky Stair"],
-     "Above the clouds the mountain keeps climbing. Archers and wisps hold every ledge. Climb it battle by battle.",
+     "Above the clouds the mountain keeps climbing. Storm Grumps crackle on every ledge. Climb it battle by battle, and bring them home.",
      "The sky stair is yours. The clouds part under your feet like a carpet."),
     ("station", 4, ["sky"], "Station Approach", ["bf_shattered_vale", "bf_frostfield"], "geode_golem", "Moonlit Pad",
      ["Docking Ring", "Airlock Row", "Hydro Bay", "Crew Galley", "Solar Wing", "Reactor Walk", "The Command Deck"],
@@ -275,19 +371,19 @@ CAMPS = [
      ["Ash Shore", "Smoke Hollow", "Lava Bridge", "Ember Market", "Cinder Cone", "Hound Kennels", "The Ember Gate"],
      "The ember island smoulders. Ash hounds patrol the bridges. Cross, hold, and reach the last colony.",
      "The smoke clears from the ember isle. Above it, real stars."),
-    ("countryside", 1, [], "The Highway Job", ["bf_orchard_line", "bf_rail_yards"], "thug_brute", "Motel Lot",
+    ("countryside", 1, [], "The Highway Job", ["bf_orchard_line", "bf_rail_yards"], "thug_speedster", "Motel Lot",
      ["Billboard Bend", "Gas Station", "Truck Stop", "Diner Booth", "Toll Booth", "Overpass", "The Long Highway"],
      "The highway out of the hideout is watched by the President's lookouts. Take the road back, stop by stop.",
      "The highway is clear. A trucker honks twice as he passes. That means thank you."),
-    ("docks", 2, [], "Dockside Push", ["bf_dockside", "bf_rail_yards"], "rust_knight", "Back Alley",
+    ("docks", 2, ["countryside"], "Dockside Push", ["bf_dockside", "bf_rail_yards"], "rust_knight", "Back Alley",
      ["Fish Market", "Net Lofts", "Bonded Store", "Tugboat Yard", "Pier Six", "Customs Shed", "The Harbour Gate"],
      "The docks are the President's front door. Every pier is guarded. Take them one by one.",
      "The harbour gate is yours. The gulls sound like they're laughing at somebody else for once."),
     ("neon", 3, ["docks"], "Neon Nights", ["bf_neon_block", "bf_rail_yards"], "thug_flame", "Harbour Stairs",
      ["Noodle Row", "Arcade Alley", "Karaoke Box", "Rooftop Garden", "Signal Bridge", "Dragon Court", "The Neon Gate"],
-     "Neon belongs to whoever holds the signs. Right now that's not you. Switch them off one by one.",
+     "Every block in Neon answers to a sign, and every sign answers to the President. Take the blocks back, street by street.",
      "The neon gate flickers to your colours. The whole street hums along."),
-    ("uptown", 3, ["neon"], "Uptown Assault", ["bf_neon_block", "bf_dockside"], "thug_enforcer", "Neon Overpass",
+    ("uptown", 4, ["underground"], "Uptown Assault", ["bf_neon_block", "bf_dockside"], "thug_enforcer", "Neon Overpass",
      ["Lawn Terrace", "Fountain Plaza", "Gallery Steps", "Valet Ramp", "Glass Atrium", "Tower Gardens", "The Tower Gate"],
      "Uptown is all lawns, glass and guards. Take the plazas and the tower road opens.",
      "The tower gate stands open. Up close, the tower looks smaller."),
@@ -296,6 +392,36 @@ CAMPS = [
      "Under Neon the tunnels go on for miles. Crawlers and the President's crews hold every junction.",
      "The pit door grinds open. Down here, your name echoes."),
 ]
+
+# Gangster lines for the campaigns both arcs share (the CAMPS text is the penguin one).
+GANG_TEXT = {
+    "orchard_hills": ("The President's lookouts have the orchard road. Every row of trees hides a parked car. Push them out, row by row.",
+                      "The orchard road is ours. The lookouts drove off in a hurry, and the pickers are waving from the ladders."),
+    "highlands": ("Up on the ridge the President's crews watch every switchback. Climb, take the lookouts, and the high country is open.",
+                  "The high gate is ours. Up here the radio finally gets a signal, and it's playing our song."),
+    "quarry": ("A crew runs the quarry like a fort: crushers, floodlights, guards on every ledge. Shut it down, pit by pit.",
+               "The crushers go quiet. The quarry workers come back to their own jobs, and nobody takes a cut."),
+    "marsh": ("Smugglers run boats through the marsh at night. Find their landings, take them, and the causeways are ours.",
+              "The marsh landings are ours. The frogs are louder than the outboard motors now."),
+    "riverlands": ("Every bridge over the river has a car parked across it. Clear the bridges and the river roads open.",
+                   "The bridges are clear. Trucks roll across the river again, and nobody pays a toll."),
+    "ruins": ("Someone turned the old ruins into a fortress: floodlights, fences, a guard at every arch. Get in where nobody has.",
+              "The floodlights go dark one by one. The ruins are quiet, and they belong to everyone again."),
+}
+# Point names per arc / region, where a battlefield's own names don't fit.
+POINT_NAMES = {
+    ("gangsters", "*", "bf_orchard_line"): {"a": "Old Silo", "c": "Feed Store", "d": "Pump House", "e": "Pickup Camp"},
+    ("gangsters", "countryside", "bf_orchard_line"): {"a": "Billboard Hill", "b": "Overpass Row", "c": "Gas Station", "d": "Truck Stop", "e": "Motel Lot"},
+    ("gangsters", "*", "bf_bog_crossing"): {"a": "Bait Shack Isle", "c": "Old Boathouse", "f": "Airboat Camp"},
+    ("penguins", "*", "bf_frostfield"): {"e": "Igloo Camp"},
+    ("penguins", "*", "bf_ash_wastes"): {"a": "Cinder Gate"},
+}
+def _name_points(cfg, arc, region):
+    m = dict(POINT_NAMES.get((arc, "*", cfg["field"]), {}))
+    m.update(POINT_NAMES.get((arc, region, cfg["field"]), {}))
+    for p in cfg["points"]:
+        if p["id"] in m:
+            p["name"] = m[p["id"]]
 
 # Board layouts: [x, y] in 0..1 on the board, then links. Slot 0 is the start camp.
 LAYOUTS = {
@@ -311,18 +437,18 @@ LAYOUTS = {
 # Node type pools by layer (the last layer is always the gate: a siege with a boss).
 POOL = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["siege", "defend", "escort", "camp", "boss"], 3: ["camp", "cache", "defend", "boss", "siege"]}
 # Tier 1 boards teach the basics: no sieges or defends before the gate.
-POOL_T1 = {1: ["skirmish", "skirmish", "escort", "cache"], 2: ["skirmish", "boss", "escort"], 3: ["camp", "boss", "skirmish"]}
+POOL_T1 = {1: ["skirmish", "skirmish", "skirmish", "cache"], 2: ["skirmish", "boss", "escort"], 3: ["camp", "boss", "skirmish"]}
 # Board size by tier: short early campaigns, growing modestly (territories, camp excluded).
 SIZE = {1: 4, 2: 5, 3: 5, 4: 6, 5: 7}
 # Battle length and pressure by tier: early fights are short and gentle.
 TICKET_K = {1: 0.6, 2: 0.8, 3: 1.0, 4: 1.15, 5: 1.3}
 # What a campaign asks before you can muster for it (CampaignGate): allies on your
 # team, and provisions that become the army's starting supply.
-NEED = {1: {"team": 2, "items": {"wood": 20, "stone": 10}, "crystals": 100, "supply": 15},
-        2: {"team": 3, "items": {"wood": 30, "copper_bar": 3}, "crystals": 250, "supply": 20},
-        3: {"team": 4, "items": {"iron_bar": 4, "stone": 40}, "crystals": 500, "supply": 25},
-        4: {"team": 5, "items": {"gold_bar": 2, "iron_bar": 6}, "crystals": 900, "supply": 30},
-        5: {"team": 6, "items": {"gold_bar": 5, "crystal_refined": 2}, "crystals": 1400, "supply": 35}}
+NEED = {1: {"team": 2, "items": {"wood": 20, "stone": 10}, "crystals": 100, "supply": 25},
+        2: {"team": 3, "items": {"wood": 30, "copper_bar": 3}, "crystals": 250, "supply": 30},
+        3: {"team": 4, "items": {"iron_bar": 4, "stone": 40}, "crystals": 500, "supply": 35},
+        4: {"team": 5, "items": {"gold_bar": 2, "iron_bar": 6}, "crystals": 900, "supply": 40},
+        5: {"team": 6, "items": {"gold_bar": 5, "crystal_refined": 2}, "crystals": 1400, "supply": 45}}
 # The training drill (CampaignGate / BattleDrill): a short guided fight on the
 # orchard field with three points close to the camp.
 DRILL = {"field": "bf_orchard_line", "who": {"penguins": "Catkins", "gangsters": "Sal"},
@@ -392,8 +518,11 @@ def _reward(tier, typ, arc, rng):
     pick = list(REWARD_ITEMS[tier].items())
     k, n = pick[rng.randrange(len(pick))]
     r["items"][k] = max(1, n // 2)
+    if arc == "gangsters" and k in GANG_SWAP:
+        r["items"] = {GANG_SWAP[k]: max(1, n // 2)}
     return r
 
+EN = _write_grumps()
 C = {}
 for (region, tier, after, title, fields, boss, start_name, names, intro, won) in CAMPS:
     cid = "c_" + region
@@ -418,6 +547,8 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
             name = nm[-1]
         else:
             pool = [t for t in pools[min(layer, 3)] if used.get(t, 0) < (2 if t in ("skirmish", "siege") else 1)] or ["skirmish"]
+            if tier <= 2 and layer == 1:  # early boards open with an easy win, never an escort
+                pool = [t for t in pool if t != "escort"] or ["skirmish"]
             # never two non-battles on one layer, at most one camp and one cache, and
             # a 5-node board keeps its hub (every route passes it) a fight
             if any(nn["layer"] == layer and nn["type"] in ("camp", "cache") for nn in nodes) or (n <= 5 and layer == 2) \
@@ -437,9 +568,22 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                 fs = fl[a]
                 fid = fs[(i - 1) % len(fs)]
                 cfg = _cfg(fid, typ, pos[0], rng, name)
+                _name_points(cfg, a, region)
                 ek = _kinds(region) + [k for k in R[fid]["battle"]["enemies"] if k in EN and int(EN[k].get("hp", 0)) < 45]
                 if a == "penguins":
-                    ek = [k for k in ek if not k.startswith("thug_")] or ek
+                    # grumps first (the variants of this region), then a few natives
+                    ek = [k for k in GRUMP_AT.get(region, ["grump"]) if k in EN and (k != "crystal_baby" or layer >= 2)] + \
+                         [k for k in ek if not k.startswith("thug_") and k not in NOT_PENGUIN and not k.startswith("grump")][:2]
+                    if typ in ("boss", "gate") and region in CAPTAINS:
+                        cfg["boss"] = "gcap_" + region
+                    if typ == "escort":
+                        cfg["vehicle"] = "wagon"
+                elif typ == "escort":
+                    cfg["vehicle"] = "truck"
+                if typ in ("siege", "gate"):
+                    # Sieges pay for their size: every extra fortified point is time.
+                    ne = sum(1 for p in cfg["points"] if p["owner"] == "enemy")
+                    cfg["tickets"] = {"siege": 150, "gate": 170}[typ] + 40 * max(0, ne - 3)
                 if a == "gangsters" and region in GANG_ONLY:
                     ek = [k for k in ek if k.startswith("thug_") or k in ("soldier", "archer", "rust_knight")] or ek
                 seen = []
@@ -452,19 +596,23 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
             if typ in ("boss", "gate"):
                 node["boss"] = boss
             if typ == "escort":
-                node["convoy_hp"] = 60 + 20 * tier
+                node["convoy_hp"] = 80 + 25 * tier
             if typ == "defend":
                 node["hold"] = 75 + 20 * tier
             k = TICKET_K[tier]
             et = {"skirmish": 80, "siege": 150, "escort": 400, "defend": 999, "boss": 110, "gate": 170}[typ]
-            node["enemy_tickets"] = et if typ in ("escort", "defend") else int(round(et * k / 5.0)) * 5
+            node["enemy_tickets"] = et if typ == "defend" else int(round(et * k / 5.0)) * 5
             node["tickets"] = {"skirmish": 110, "siege": 150, "escort": 130, "defend": 140, "boss": 130, "gate": 170}[typ]
-            node["wave_every"] = {"skirmish": 7.0, "siege": 6.5, "escort": 6.0, "defend": 5.0, "boss": 7.0, "gate": 6.0}[typ] + max(0, 3 - tier) * 0.75
-            node["enemy_cap"] = {"skirmish": 8, "siege": 11, "escort": 10, "defend": 12, "boss": 8, "gate": 12}[typ] + 2 * (tier - 1)
+            node["wave_every"] = {"skirmish": 7.0, "siege": 6.5, "escort": 7.5, "defend": 5.0, "boss": 7.0, "gate": 6.0}[typ] + max(0, 3 - tier) * 0.75
+            node["enemy_cap"] = {"skirmish": 8, "siege": 11, "escort": 8, "defend": 12, "boss": 8, "gate": 12}[typ] + 2 * (tier - 1) + max(0, tier - 2)
             if typ == "escort":
-                cv = node["cfg"][arcs[0]]["convoy"]
-                pn = {p["id"]: p["name"] for p in node["cfg"][arcs[0]]["points"]}
-                node["brief"] = BRIEF["escort"] % ("wagon" if arc != "gangsters" else "truck", pn[cv[-1]])
+                node["brief"] = {}
+                for a in arcs:
+                    cv = node["cfg"][a]["convoy"]
+                    pn = {p["id"]: p["name"] for p in node["cfg"][a]["points"]}
+                    node["brief"][a] = BRIEF["escort"] % (node["cfg"][a]["vehicle"], pn[cv[-1]])
+                if len(arcs) == 1:
+                    node["brief"] = node["brief"][arcs[0]]
             else:
                 node["brief"] = BRIEF[typ] % name
             node["reward"] = _reward(tier, typ, arc, rng)
@@ -486,8 +634,14 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
                 heapq.heappush(hq, (w, l))
     gate_id = [nd["id"] for nd in nodes if nd["type"] == "gate"][0]
     big = {"crystals": 500 + 400 * tier, "items": dict(REWARD_ITEMS[tier]), "arc_items": ARC_ITEMS, "strategist": 250 + 100 * tier}
+    if arc == "gangsters":
+        big["items"] = {GANG_SWAP.get(k, k): v for k, v in big["items"].items()}
+    if arc == "both":
+        gi, gw = GANG_TEXT[region]
+        intro, won = {"penguins": intro, "gangsters": gi}, {"penguins": won, "gangsters": gw}
+    lead = {a: LEAD[region][a] for a in arcs}
     C[cid] = {"id": cid, "region": region, "title": title, "arc": arc, "tier": tier, "after": ["c_" + a for a in after], "min_pt": max(0, tier - 2),
-              "who": SPEAK if arc == "both" else {arc: SPEAK[arc]}, "intro": intro, "won": won, "reward": big, "nodes": nodes, "links": links,
+              "who": {a: lead[a][0] for a in arcs}, "lead": lead, "intro": intro, "won": won, "reward": big, "nodes": nodes, "links": links,
               "need": NEED[tier], "min_battles": best[gate_id], "sense": {a: SENSE[region][a] for a in arcs},
               "region_name": COL.get(region, {}).get("name") or R.get(region, {}).get("name") or region.replace("_", " ").title()}
     # sanity: every reward item exists, every enemy exists, every field exists
@@ -497,6 +651,9 @@ for (region, tier, after, title, fields, boss, start_name, names, intro, won) in
         for a, cf in nd.get("cfg", {}).items():
             assert cf["field"] in R and cf["enemies"], (cid, nd["id"], a)
             assert all(k in EN for k in cf["enemies"]), (cid, cf["enemies"])
+            assert a != "gangsters" or not any(k.startswith(("grump_", "gcap_")) for k in cf["enemies"]), (cid, cf["enemies"])
+            assert a != "penguins" or not any(k in NOT_PENGUIN or k.startswith("thug_") for k in cf["enemies"]), (cid, cf["enemies"])
+            assert cf.get("boss", "x") == "x" or cf["boss"] in EN, cf["boss"]
         if "boss" in nd:
             assert nd["boss"] in EN, nd["boss"]
     for k in big["items"]:
@@ -506,7 +663,8 @@ for k in [k for nd in NEED.values() for k in nd["items"]] + list(DRILL["reward"]
     assert k in IT, k
 for a, ks in DRILL["enemies"].items():
     assert all(k in EN for k in ks), ks
-B["_campaigns"] = {"title": "Campaigns", "arc": "none", "tier": 0, "list": C, "drill": DRILL}
+B["_campaigns"] = {"title": "Campaigns", "arc": "none", "tier": 0, "list": C, "drill": DRILL, "kin_gift": KIN_GIFT}
+B["_helper_kinds"] = KIN
 OUT = os.environ.get("DRY_OUT", D + "/data")  # DRY_OUT=/tmp/x: write the JSON elsewhere to compare
 json.dump(R, open(OUT + "/regions.json", "w"), indent=1, ensure_ascii=False)
 json.dump(B, open(OUT + "/battles.json", "w"), indent=1, ensure_ascii=False)
