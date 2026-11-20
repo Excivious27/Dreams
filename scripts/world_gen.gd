@@ -648,6 +648,12 @@ static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
 	var season := GameState.look_se()
 	var key := "fruit_%s_%d_%d" % [m.scene_id(), c.x, c.y]
 	var ripe := str(info[0]) == season and int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"])
+	# Early spring is blossom time for cherries and apples (c5_14 #7): cherries
+	# fruit from day 8 of spring.
+	var sday := (int(GameState.run.get("day", 1)) - 1) % GameState.DAYS_PER_SEASON + 1
+	var blossoming := season == "spring" and sday <= 7 and kind in ["cherry", "apple"] and Art.has("nature", "ftree_%s_blossom" % kind)
+	if blossoming:
+		ripe = false
 	var sprite := str(info[1])
 	if Art.has("nature", "ftree_%s_fruit" % kind):
 		# Prompts 10 painted fruit trees: bare / blossom / fruit / late / snow.
@@ -667,6 +673,8 @@ static func fruit_tree(m: GameMap, c: Vector2i, kind: String) -> void:
 		else:
 			# Two seasons before fruiting (apples in spring): in leaf, not bare.
 			st = "fall" if kind == "cherry" else ("green" if Art.has("nature", "ftree_%s_green" % kind) else "bare")
+		if blossoming:
+			st = "blossom"
 		if not Art.has("nature", "ftree_%s_%s" % [kind, st]):
 			st = "fruit"
 		sprite = "ftree_%s_%s" % [kind, st]
@@ -872,10 +880,10 @@ static func clear_stairs(m: GameMap) -> void:
 		return
 	for pl: Dictionary in m.plateaus:
 		for st: Vector2i in pl["stairs"]:
-			for dy in range(-1, 3):
+			for dy in range(-2, 3):  # two rows up too: the landing at the stair top (c5_12 #3)
 				var c := st + Vector2i(0, dy)
 				var t := str(m.things.get(c, {}).get("type", ""))
-				if t in ["tree", "rock", "log", "stump", "bush", "weeds", "forage", "grove"] or (t == "" and m.props.has(c) and m.blocked.has(c) and dy != -1):
+				if t in ["tree", "rock", "log", "stump", "bush", "weeds", "forage", "grove"] or (t == "" and m.props.has(c) and m.blocked.has(c) and (dy >= 0 or _small_prop(m.props[c]))):
 					m.things.erase(c)
 					if dy >= 0 or t != "":
 						m.blocked.erase(c)
@@ -884,6 +892,14 @@ static func clear_stairs(m: GameMap) -> void:
 					m.props.erase(c)
 					if sp:
 						sp.queue_free()
+
+
+## A boulder/crate-sized scatter prop (not a building or big structure).
+static func _small_prop(n: Variant) -> bool:
+	if not (n is Sprite2D) or (n as Sprite2D).texture == null:
+		return false
+	var sp := n as Sprite2D
+	return sp.texture.get_width() * sp.scale.x <= 40.0
 
 
 ## Two side-by-side south-edge cells for a plateau's stairs: both on the same

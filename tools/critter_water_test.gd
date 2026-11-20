@@ -26,9 +26,12 @@ func _check(m: GameMap, s: String, when: String) -> int:
 			if not m.is_water_cell(c):
 				fails += 1
 				print("FAIL %s %s: %s on land at %s" % [s, when, cr.kind, c])
-		elif not cr._flyer and m.is_water_cell(c):
+		elif not cr._flyer and not cr._lifts and m.is_water_cell(c):
 			fails += 1
 			print("FAIL %s %s: %s standing in water at %s" % [s, when, cr.kind, c])
+		if cr._lifts and not cr._flee and cr._anim and cr._anim.animation == "walk":
+			fails += 1
+			print("FAIL %s %s: calm %s shows its flight strip" % [s, when, cr.kind])
 	return fish
 
 
