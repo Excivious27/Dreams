@@ -164,7 +164,7 @@ func draw_map() -> void:
 		var night := GameState.is_night()
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(6 * TILE + 8, 2 * TILE))
 		Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(10 * TILE + 8, 2 * TILE))
-		for wx: int in ([16] if tier() == 2 else ([15, 21] if tier() >= 3 else [])):
+		for wx: int in ([14] if tier() == 2 else ([15, 21] if tier() >= 3 else [])):
 			Art.draw_prop(self, "furniture", "window_night" if night else "window_day", Vector2(wx * TILE + 8, 2 * TILE))
 		if tier() >= 3 and Art.has("furniture", "rug_rect_red"):
 			draw_texture_rect(Art.tex("furniture", "rug_rect_red"), Rect2(19 * TILE, 6 * TILE + 8, 4 * TILE, 2 * TILE), false)
