@@ -1035,6 +1035,11 @@ static func _doll(body: Control) -> void:
 	if not worn.is_empty():
 		var lk := _lab(mid, "Look: " + ", ".join(worn) + ("" if Wardrobe.hero_kind() != "doll" else ("  (armour shown)" if Wardrobe.show_armor() else "")), 7, INK_SOFT)
 		lk.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var dp := DecorCatalogue.progress()
+	if int(dp[1]) > 0:  # C10a: decor catalogue progress (P3's numbers)
+		var dsc := DecorCatalogue.set_counts()
+		var dl := _lab(mid, "Decor: %d/%d kinds · sets %d/%d" % [int(dp[0]), int(dp[1]), int(dsc[0]), int(dsc[1])], 7, INK_SOFT)
+		dl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var gs: Array = []
 	for k: String in ["defense", "speed", "luck", "energy", "damage", "mana"]:
 		var n := GameState.gear_stat(k)

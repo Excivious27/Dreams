@@ -245,7 +245,7 @@ tex_sheet("floors_both.png", "both", "flooring", [
     ("dc_fl_moss_carpet", "Moss Carpet", C, "soft moss green wall-to-wall carpet")])
 tex_sheet("floors_gang.png", "gangsters", "flooring", [
     ("dc_fl_checker_gold", "Black-Gold Checker", RA, "black and gold checkerboard marble floor"),
-    ("dc_fl_casino_carpet", "Casino Carpet", U, "busy red and gold patterned casino carpet"),
+    ("dc_fl_casino_carpet", "Lucky Red Carpet", U, "busy red and gold patterned casino carpet"),
     ("dc_fl_metal_grid", "Glow Grid Floor", E, "dark metal floor plates with thin glowing violet seams"),
     ("dc_fl_dark_parquet", "Dark Walnut Floor", C, "dark walnut wood plank floor")])
 tex_sheet("floors_penguin.png", "penguins", "flooring", [

@@ -1,6 +1,6 @@
 # Decor art coverage (written by tools/gen_decor.py; do not edit)
 
-Entries: 862 (decor 736, wear 126). P6 renders merged: 373.
+Entries: 863 (decor 737, wear 126). P6 renders merged: 373.
 
 | sub | have | target | gap |
 |---|---|---|---|
@@ -17,7 +17,7 @@ Entries: 862 (decor 736, wear 126). P6 renders merged: 373.
 | decor | 27 | 0 | 0 |
 | farmhouse_rustic | 10 | 0 | 0 |
 | fireplace | 6 | 6 | 0 |
-| flooring | 46 | 40 | 0 |
+| flooring | 47 | 40 | 0 |
 | furniture | 59 | 0 | 0 |
 | gilt_deco | 9 | 0 | 0 |
 | hat | 22 | 0 | 0 |
@@ -55,9 +55,6 @@ Entries: 862 (decor 736, wear 126). P6 renders merged: 373.
 | wallpaper | 36 | 30 | 0 |
 | window | 16 | 16 | 0 |
 
-By category: acc 63, bottom 1, decor 92, flooring 46, furniture 362, hat 22, light 34, outfit 14, rug 33, shoes 20, top 6, wall_art 133, wallpaper 36
-By rarity: common 351, uncommon 264, rare 150, epic 62, legendary 18, mythic 6, unique 11
-By arc:  573, gangsters 165, penguins 124
-
-P6 entries skipped:
-- dc_fl_casino_carpet: name 'Casino Carpet' has an arc/all-ages word
+By category: acc 63, bottom 1, decor 92, flooring 47, furniture 362, hat 22, light 34, outfit 14, rug 33, shoes 20, top 6, wall_art 133, wallpaper 36
+By rarity: common 351, uncommon 265, rare 150, epic 62, legendary 18, mythic 6, unique 11
+By arc:  573, gangsters 166, penguins 124

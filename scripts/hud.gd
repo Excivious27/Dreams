@@ -673,6 +673,9 @@ static func icon_for(id: String) -> String:
 	var own := str(GameState.items.get(id, {}).get("icon", ""))
 	if own != "" and Art.has("items", own):
 		return own
+	var dic := str(Decor.entry(id).get("icon", "")) if Decor.is_decor(id) else ""
+	if dic.begins_with("items/") and Art.has("items", dic.substr(6)):
+		return dic.substr(6)  # C10a: decor with an item-group icon (other groups: DecorSources.icon_tex)
 	var near := str(ICON_NEAR.get(id, ""))
 	if near != "" and Art.has("items", near):
 		return near

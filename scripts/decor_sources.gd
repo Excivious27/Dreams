@@ -82,6 +82,8 @@ static func taken(id: String) -> bool:
 ## One-of-a-kind items must never be sold, shipped, trashed or gifted (callers refuse).
 ## Covers catalogue uniques and Rec "once" prizes that are still bag items.
 static func keeps(id: String) -> bool:
+	if GameState.keeps(id):
+		return true  # keep-flagged items, story keys, vehicles, decor uniques (P1)
 	if Decor.is_decor(id) and Decor.is_unique(id):
 		return true
 	if str(GameState.items.get(id, {}).get("rarity", "")) == "unique":

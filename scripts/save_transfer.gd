@@ -25,6 +25,7 @@ const TYPED := {
 	"names": TYPE_DICTIONARY, "inventory": TYPE_DICTIONARY, "flags": TYPE_DICTIONARY,
 	"skills": TYPE_DICTIONARY, "farm": TYPE_DICTIONARY, "friendship": TYPE_DICTIONARY,
 	"equip": TYPE_DICTIONARY, "quests": TYPE_ARRAY, "tools": TYPE_ARRAY, "toolbar": TYPE_ARRAY,
+	"decor": TYPE_DICTIONARY,  # C10a run.decor (box, placed, wear...)
 }
 ## What makes two saves "the same farm at the same moment" (same_farm).
 const SAME_KEYS := ["names", "arc", "playable", "day", "time", "crystals", "inventory", "kills", "farm"]

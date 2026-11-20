@@ -56,6 +56,8 @@ func _ready() -> void:
 
 func _fill() -> void:
 	_rows = DecorSources.today(shop)
+	for id in _rows:
+		DecorCatalogue.mark_seen(str(id))  # c10_08: a piece on a shelf counts as seen
 	sel = clampi(sel, 0, maxi(0, _rows.size() - 1))
 	_keep_in_view()
 

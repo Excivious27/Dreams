@@ -3419,7 +3419,7 @@
    "set": "",
    "sets": [],
    "size": [
-    2,
+    1,
     1
    ],
    "sources": [
@@ -7603,6 +7603,36 @@
    "style": "decor/dc_fl_blue_tile",
    "sub": "flooring",
    "tier": 1
+  },
+  "dc_fl_casino_carpet": {
+   "arc": "gangsters",
+   "art": "decor/dc_fl_casino_carpet",
+   "cat": "flooring",
+   "comfort": 2,
+   "desc": "Flooring for one room.",
+   "glow": false,
+   "icon": "decor/dc_fl_casino_carpet_icon",
+   "layer": "under",
+   "name": "Lucky Red Carpet",
+   "price": 620,
+   "rarity": "uncommon",
+   "rot": 1,
+   "sell": 93,
+   "set": "",
+   "sets": [],
+   "size": [
+    1,
+    1
+   ],
+   "sources": [
+    {
+     "kind": "shop",
+     "ref": "crew_goods"
+    }
+   ],
+   "style": "decor/dc_fl_casino_carpet",
+   "sub": "flooring",
+   "tier": 2
   },
   "dc_fl_checker_gold": {
    "arc": "gangsters",
@@ -17885,8 +17915,8 @@
    "set": "",
    "sets": [],
    "size": [
-    2,
-    1
+    4,
+    2
    ],
    "sources": [
     {
@@ -19803,8 +19833,8 @@
    "set": "",
    "sets": [],
    "size": [
-    3,
-    2
+    2,
+    1
    ],
    "sources": [
     {
@@ -21150,7 +21180,7 @@
    "set": "",
    "sets": [],
    "size": [
-    1,
+    2,
     1
    ],
    "sources": [
@@ -43112,6 +43142,7 @@
      "dc_chrome_screen",
      "dc_chrome_server",
      "dc_chrome_terminal",
+     "dc_fl_casino_carpet",
      "dc_gart_cash_frame",
      "dc_gart_neon_cat",
      "dc_gart_neon_diamond",
@@ -43714,6 +43745,7 @@
      "dc_chrome_chair",
      "dc_chrome_server",
      "dc_chrome_terminal",
+     "dc_fl_casino_carpet",
      "dc_floor_s_flagstone",
      "dc_floor_s_stone_tiles",
      "dc_gilt_cabinet",
@@ -44107,6 +44139,7 @@
      "dc_chrome_server",
      "dc_chrome_terminal",
      "dc_cradle",
+     "dc_fl_casino_carpet",
      "dc_gilt_cabinet",
      "dc_gilt_lamp",
      "dc_glight_lava",
@@ -45108,6 +45141,7 @@
     [
      "dc_arc_dance_pad",
      "dc_fest_cornucopia",
+     "dc_fl_casino_carpet",
      "dc_fl_herringbone",
      "dc_floor_carpet_blue",
      "dc_floor_carpet_green",
@@ -45779,6 +45813,7 @@
      "dc_chrome_chair",
      "dc_chrome_server",
      "dc_chrome_terminal",
+     "dc_fl_casino_carpet",
      "dc_floor_s_stone_tiles",
      "dc_floor_tile",
      "dc_gilt_cabinet",

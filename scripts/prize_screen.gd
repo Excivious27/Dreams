@@ -67,6 +67,7 @@ func _fill() -> void:
 		if it.has("arc") and str(it["arc"]) != str(GameState.run.get("arc", "")):
 			continue
 		_rows.append(str(id))
+		DecorCatalogue.mark_seen(str(p.get("item", id)))  # c10_08: catalogue prizes count as seen
 	# Keepsakes you already own sink to the bottom of the shelf.
 	var owned := _rows.filter(func(r: String) -> bool: return Tickets.lock_text(r) == "Already yours")
 	_rows = _rows.filter(func(r: String) -> bool: return not owned.has(r)) + owned

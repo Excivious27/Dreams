@@ -19094,5 +19094,16 @@
   "icon": "decor/dc_wp_star_navy_icon",
   "desc": "Wallpaper for one room.",
   "decor": true
+ },
+ "dc_fl_casino_carpet": {
+  "name": "Lucky Red Carpet",
+  "type": "decor",
+  "value": 93,
+  "rarity": "uncommon",
+  "tier": 2,
+  "icon": "decor/dc_fl_casino_carpet_icon",
+  "desc": "Flooring for one room.",
+  "decor": true,
+  "arc": "gangsters"
  }
 }

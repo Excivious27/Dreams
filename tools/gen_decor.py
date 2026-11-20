@@ -272,6 +272,18 @@ for k in ('dc_chair2_a_down', 'dc_chair2_b_down'):
         ENTRIES[k]['rot'] = 4
         ENTRIES[k]['rot_art'] = [ENTRIES[k]['art'].replace('_down', s) for s in ('_down', '_right', '_up', '_left')]
 
+# The farmhouse's movable starting furniture (house.gd STARTERS, seeded by art furniture/<name>) keeps the
+# footprint it had as fixed furniture (extra_w + 1 wide; the rug lies under, 4x2) so seeding never collides.
+STARTER_FP = {'lamp_floor': [1, 1], 'bookshelf': [1, 1], 'table_round_cloth': [2, 1], 'chair_down': [1, 1], 'plant2_a': [1, 1],
+              'plant_a': [1, 1], 'rug_rect_red': [4, 2], 'shelf_jars': [2, 1], 'barrel': [1, 1], 'plant2_b': [1, 1],
+              'bookcase3_a': [1, 1], 'lamp_floor_b': [1, 1], 'plant2_c': [1, 1]}
+for n, fp in STARTER_FP.items():
+    e = ENTRIES.get('dc_' + n)
+    assert e and e['art'] == 'furniture/' + n, 'starter furniture missing from the catalogue: ' + n
+    e['size'] = fp
+    if n.startswith('rug'):
+        e['layer'] = 'under'
+
 # ---- 2) props (gangster + whimsy pieces that live indoors) --------------------------------------------
 PROPS = [  # art, name, cat, sub, layer, rarity, tier, arc, glow, name_gang
     ('neon_sign_0', 'Neon Sign: Moon', 'light', 'neon', 'wall', 'rare', 2, 'gangsters', True),
