@@ -47,14 +47,24 @@ static func ferry(m: GameMap) -> void:
 	for id in data():
 		var c: Dictionary = data()[id]
 		var ok := GameState.progress_tier() >= int(c.get("tier", 1)) or Project.has("sky_lens")
-		opts.append("%s%s%s" % ["✓ " if bool(st(str(id))["done"]) else "", str(c["name"]), "" if ok else " (rough seas until story chapter %d)" % (int(c.get("tier", 1)) + 1)])
-		ids.append([str(id), ok])
+		var held := not Campaign.region_open(str(id))  # the island's campaign comes first
+		var why := ""
+		if held:
+			why = " (held: campaign map)"
+		elif not ok:
+			why = " (rough seas until story chapter %d)" % (int(c.get("tier", 1)) + 1)
+		opts.append("%s%s%s" % ["✓ " if bool(st(str(id))["done"]) else "", str(c["name"]), why])
+		ids.append([str(id), ok, held])
 	opts.append("Stay ashore")
 	var d := Dialogue.instance(m.get_tree())
 	d.say([{"who": "Ferry", "text": "Pip the ferry-cat flicks an ear. 'Four colonies out there, and every one of them is going dark. Where to?'", "choice": opts, "key": ""}])
 	await d.finished
 	var i := d.last_choice
 	if i < 0 or i >= ids.size():
+		return
+	if bool(ids[i][2]):
+		# Same words and next step as walking into a held region (Campaign.gate_words).
+		Campaign.offer(m, Campaign.gate_of(str(ids[i][0])))
 		return
 	if not bool(ids[i][1]):
 		m.hud.toast("Pip: 'Not in this weather. The sea calms as the story goes on.'", Color(1, 0.85, 0.6))

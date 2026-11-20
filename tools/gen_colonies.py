@@ -19,7 +19,7 @@ def item(id, name, typ, val, tier, **kw):
     d = {"name": name, "type": typ, "value": val, "rarity": "rare" if tier >= 3 else "uncommon", "tier": tier, "arc": "penguins"}
     d.update(kw); I[id] = d
 
-item("colony_light", "Colony Light", "key", 0, 4, desc="The steady glow of a saved colony's star crystal. The Crystal Ward wants four.")
+item("colony_light", "Colony Light", "key", 0, 4, desc="The steady glow of a saved colony's star crystal. The Aurora Dome of the Crystal Ward wants four.")
 item("coral_charm", "Coral Charm", "equip", 900, 3, slot="charm", stats={"defense": 2, "luck": 1}, desc="Grown, not carved. Warm in your hand.")
 item("tide_pearl", "Tide Pearl", "equip", 1400, 3, slot="ring", stats={"mana": 15, "speed": 1}, desc="You can hear the sea in it.")
 item("kelp_wrap", "Kelp Wrap", "food", 120, 2, energy=40, heal=2)

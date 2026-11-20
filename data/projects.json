@@ -88,7 +88,7 @@
       }
      ],
      "grant": "prism_array",
-     "desc": "Light bends over the farm: crops within the ward grow a little faster and your mana refills in the morning."
+     "desc": "Light bends over the farm: every watered crop grows a quarter faster."
     },
     {
      "name": "The Sky Lens",
@@ -109,7 +109,7 @@
       }
      ],
      "grant": "sky_lens",
-     "desc": "The lens catches the colonies' crystal light across the sea. Ferry passes to the merkitty islands are yours."
+     "desc": "The lens charts calm water to the merkitty islands: the ferry sails in any weather, and island campaigns muster with +20 supply."
     },
     {
      "name": "The Aurora Dome",
@@ -137,7 +137,7 @@
       }
      ],
      "grant": "aurora_dome",
-     "desc": "An aurora settles over the valley and stays. The fog of the dark lifts from every region; foes there are weaker."
+     "desc": "An aurora settles over the valley and stays. The dark thins everywhere: foes hit you softer."
     },
     {
      "name": "The Star Beacon",

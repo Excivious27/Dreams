@@ -150,8 +150,9 @@ static func open(m: GameMap) -> void:
 				acts.append(["give", bi])
 		else:
 			text = "%s is complete." % str(pd["name"])
-		opts.append("Campaign map: open new regions")
-		acts.append(["campaign", 0])
+		if not has("war_table"):  # the war table lists the campaign map first: no second entry
+			opts.append("Campaign map: open new regions")
+			acts.append(["campaign", 0])
 		if has("war_table"):
 			opts.append("⚔ War table: battles")
 			acts.append(["war", 0])
@@ -290,8 +291,12 @@ static func jobs_menu(m: GameMap) -> void:
 static func overnight(report: Dictionary) -> void:
 	if has("ward_stone"):
 		GameState.add_item("shard", 1)
+		report["ward_shard"] = true
 	if has("hq_safehouse"):
-		Racket.set_heat(Racket.heat() - 1)
+		var h0 := Racket.heat()
+		Racket.set_heat(h0 - 1)
+		if Racket.heat() < h0:
+			report["safehouse"] = true
 	if has("star_beacon"):  # the beacon gathers a little starlight every night
 		GameState.add_item("star_dust", 1)
 		report["star_beacon"] = true

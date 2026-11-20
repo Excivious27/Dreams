@@ -176,7 +176,7 @@ static func muster(cid: String) -> String:
 	GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) - int(nd.get("crystals", 0))
 	var s := Campaign.cs(cid)
 	s["mustered"] = true
-	s["supply"] = mini(Campaign.SUPPLY_CAP, int(s["supply"]) + int(nd.get("supply", 10)))
+	s["supply"] = mini(Campaign.SUPPLY_CAP, int(s["supply"]) + int(nd.get("supply", 10)) + (20 if cid.begins_with("c_colony_") and Project.has("sky_lens") else 0))
 	s["started"] = int(GameState.run.get("day", 1))
 	GameState.add_xp("strategist", 20)
 	return "%d allies answer the call. The provisions are loaded: supply ◇%d. Pick a territory next to your camp and attack." % [team().size(), int(s["supply"])]

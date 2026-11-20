@@ -54,6 +54,16 @@ static func lines(report: Dictionary) -> Array:
 		lines.append({"who": Commons.keeper_name(), "text": str(l)})
 	if report.has("crew_jobs"):
 		lines.append({"who": "HQ", "text": "Overnight:\n" + "\n".join(report["crew_jobs"])})
+	# Arc project effects that work overnight (Project.overnight).
+	var proj: Array = []
+	if report.has("ward_shard"):
+		proj.append("The Ward Stone left a crystal shard for you.")
+	if report.has("star_beacon"):
+		proj.append("The Star Beacon gathered a pinch of star dust.")
+	if report.has("safehouse"):
+		proj.append("The safehouse kept things quiet: heat cooled a notch.")
+	if not proj.is_empty():
+		lines.append({"text": "\n".join(proj)})
 	if report.has("relic"):
 		lines.append({"who": "Marlene", "text": "A little something from the tower. Don't ask. (%s)" % GameState.item_name(str(report["relic"]))})
 	if Racket.on() and (Racket.heat() > 0 or GameState.run["flags"].has("heat_told")):  # "Heat 0/5" means nothing before it's explained
