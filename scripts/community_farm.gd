@@ -915,6 +915,8 @@ func _plot_action(c: Vector2i, thing: Dictionary) -> void:
 		_plots.queue_redraw()
 		return
 	if GameState.held_tool() == "can" and not cd.is_empty() and not bool(p.get("w", false)) and not GameState.sky_waters() and _s() < 5:
+		if Commons.guest_blocked(self, "beds"):
+			return
 		if not GameState.spend_for("can"):
 			return
 		player.play_tool("water")

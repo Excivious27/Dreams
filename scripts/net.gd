@@ -34,6 +34,10 @@ var _retries := 0
 var _retry_t := 0.0
 var _last_room := ""
 const MAX_RETRIES := 3
+const BUFFER_BYTES := 1 << 20     # WebSocket buffers (the relay allows the host 1 MB frames)
+const SAVE_EVERY := 10.0          # host_save (late joiners' snapshot): at most this often while only the clock moves
+var _pushed := {}                 # host: the world as last broadcast (deltas are against this)
+var _save_t := 0.0
 ## A stable id for this device, so a reconnect replaces our old socket on the
 ## relay instead of leaving a ghost (and keeps the host role).
 var _token := ""
@@ -59,6 +63,8 @@ func _connect(u: String) -> bool:
 	if url == "":
 		return false
 	ws = WebSocketPeer.new()
+	ws.inbound_buffer_size = BUFFER_BYTES   # a late farm's world is bigger than the 64 KB default
+	ws.outbound_buffer_size = BUFFER_BYTES
 	var err := ws.connect_to_url(url)
 	if err != OK:
 		ws = null
@@ -79,6 +85,7 @@ func _tok() -> String:
 
 func host(u: String) -> void:
 	_host = true
+	_pushed = {}
 	_pending_join = {"t": "join", "room": "", "token": _tok(), "name": GameState.names()["character"], "look": _my_look(), "arc": GameState.run["arc"]}
 	_connect(u)
 
@@ -157,6 +164,7 @@ func _process(delta: float) -> void:
 				_t = 0.0
 				_broadcast_state()
 			if _host:
+				_save_t += delta
 				_world_t += delta
 				if _world_t >= 2.0:
 					_world_t = 0.0
@@ -253,9 +261,11 @@ func _on_msg(m: Dictionary) -> void:
 						_handle_action(from, d)
 				"world":
 					var wd: Variant = d.get("d", {})
-					if not _host and wd is Dictionary:
+					if not _host and wd is Dictionary and bool(m.get("host", false)):  # only the host's world counts
 						_apply_world(wd)
 				"toast":
+					if not bool(m.get("host", false)):
+						return
 					var m2 := get_tree().current_scene
 					if m2 is GameMap:
 						(m2 as GameMap).hud.toast(str(d.get("text", "")), Color(0.8, 0.9, 1.0))
@@ -283,14 +293,86 @@ func _push_world(to_id := -1) -> void:
 		if GameState.run.has(k):
 			d[k] = GameState.run[k]
 	if to_id > 0:
-		_send({"t": "to", "id": to_id, "d": {"k": "world", "d": d}})
-	else:
-		send_all({"k": "world", "d": d})
-		_send({"t": "host_save", "d": d})
+		_send({"t": "to", "id": to_id, "d": {"k": "world", "d": d}})  # a new guest gets everything
+		return
+	# Everyone else gets only what changed since the last push (a late farm's full
+	# world passes the 64 KB frame size; the clock alone is a few bytes).
+	var delta := world_delta(_pushed, d)
+	_pushed = d.duplicate(true)
+	if delta.size() > 2 or not (delta["_gone"] as Array).is_empty():
+		send_all({"k": "world", "d": delta})
+	var busy := delta.keys().any(func(k): return not (k in ["_delta", "_gone", "time"]))
+	if busy or _save_t >= SAVE_EVERY:
+		_save_t = 0.0
+		_send({"t": "host_save", "d": d})  # the relay keeps a full copy for late joiners
+
+
+## What changed between two worlds: changed keys whole, the farm per tile
+## ("farm_d": key -> tile or null), removed keys in "_gone".
+static func world_delta(old: Dictionary, now: Dictionary) -> Dictionary:
+	var out := {"_delta": true, "_gone": []}
+	for k in now:
+		if old.has(k) and old[k] == now[k]:
+			continue
+		if k == "farm" and old.get("farm") is Dictionary and now[k] is Dictionary:
+			var fd := {}
+			var of: Dictionary = old["farm"]
+			var nf: Dictionary = now["farm"]
+			for t in nf:
+				if not of.has(t) or of[t] != nf[t]:
+					fd[t] = nf[t]
+			for t in of:
+				if not nf.has(t):
+					fd[t] = null
+			out["farm_d"] = fd
+		else:
+			out[k] = now[k]
+	for k in old:
+		if not now.has(k):
+			out["_gone"].append(k)
+	return out
+
+
+## A delta from world_delta merged into run (guests).
+static func merge_delta(run: Dictionary, d: Dictionary) -> void:
+	for k in d:
+		if k in WORLD_KEYS:
+			run[k] = d[k]
+	var fv: Variant = d.get("farm_d", null)
+	if fv is Dictionary:
+		var farm: Variant = run.get("farm", null)
+		if not (farm is Dictionary):
+			farm = {}
+			run["farm"] = farm
+		for t in fv:
+			if fv[t] == null:
+				(farm as Dictionary).erase(t)
+			else:
+				farm[t] = fv[t]
+	var gv: Variant = d.get("_gone", [])
+	if gv is Array:
+		for k in gv:
+			if str(k) in WORLD_KEYS:
+				run.erase(str(k))
 
 
 func _apply_world(d: Dictionary) -> void:
 	if d.is_empty():
+		return
+	if bool(d.get("_delta", false)):
+		if _last_world.is_empty():
+			return  # a delta before our first full world: wait for the full one
+		var day_was := int(GameState.run.get("day", 0))
+		merge_delta(GameState.run, d)
+		if int(GameState.run.get("day", 0)) > day_was and not _host:
+			var rep := GameState.guest_morning()
+			var m1 := get_tree().current_scene
+			if m1 is GameMap and int(rep.get("earned", 0)) > 0:
+				(m1 as GameMap).hud.toast("Morning! Your sell box paid ◆%d." % int(rep["earned"]), Color(1, 0.95, 0.6))
+		_last_world = {"day": int(GameState.run.get("day", 0))}
+		var md := get_tree().current_scene
+		if md is GameMap and md.has_method("on_world_sync"):
+			md.call("on_world_sync", d)
 		return
 	var scene_changed := false
 	# The host's day we last saw (0 = first world since joining): only a real rollover is a morning.
@@ -375,6 +457,7 @@ func clear_beds() -> void:
 ## We now own the world, so saves write it from here on. Our own farm
 ## (kept aside while visiting) goes to Restore instead of being lost.
 func _became_host() -> void:
+	_pushed = {}
 	if not _solo_backup.is_empty() and not GameState.run.is_empty():
 		var keep := GameState.run.duplicate(true)
 		for k in _solo_backup:
@@ -425,6 +508,25 @@ func _toast(text: String, col := Color.WHITE) -> void:
 ## A guest on someone else's world, also while reconnecting (the host's world is still loaded).
 func visiting() -> bool:
 	return not _host and not _solo_backup.is_empty()
+
+
+## Our OWN builds: while visiting, run.builds is the host's, ours are kept aside.
+## Use this wherever a guest must not borrow the host's progress (station tiers,
+## region unlocks). Static so script-mode tests without the autoload work.
+static func own_builds() -> Dictionary:
+	var n := Net.i()
+	var v: Variant = GameState.run.get("builds", {})
+	if n != null and n.visiting():
+		v = n._solo_backup.get("builds", {})
+	return v if v is Dictionary else {}
+
+
+## Tier of one of OUR builds (Builds.built_tier semantics, but never the host's).
+static func own_tier(id: String) -> int:
+	var v: Variant = own_builds().get(id, 0)
+	if v is bool:
+		v = 1 if v else 0
+	return maxi(1, int(v)) if id == "house" else int(v)
 
 
 ## What to write to the save file: while visiting as a guest, your own world.

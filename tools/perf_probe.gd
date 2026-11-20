@@ -2,7 +2,7 @@ extends SceneTree
 ## Performance probe: load time, frame time, nodes, draw calls and memory per map.
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/perf_probe.gd -- [scene ...]
 ## (headless works too: no draw calls then). ARC=gangsters for the other arc. FRAMES=n (default 180).
-## BREAKDOWN=1 lists the nodes costing the most draw calls.
+## BREAKDOWN=1 lists the nodes costing the most draw calls. WIDE=1 probes the desktop/Deck view. Exits are off while walking (EXITS=1 to allow).
 ## arcade:<id> probes a cabinet game (jumper stack whack claw gallery).
 ## in_<interior> probes an interior (in_rec, in_rec_up); REC=1 opens the Rec Center on league night.
 ## Each line: scene, load ms (change_scene -> first frame), median/p95/max frame ms while
@@ -23,6 +23,11 @@ func _run() -> void:
 	var scenes: Array = Array(args) if args.size() > 0 else DEFAULT
 	var frames := int(OS.get_environment("FRAMES")) if OS.get_environment("FRAMES") != "" else 180
 	InputSetup.ensure_actions()
+	GameMap.exits_off = OS.get_environment("EXITS") == ""  # stay on the probed map (EXITS=1: old behaviour)
+	if OS.get_environment("WIDE") != "":  # the desktop / Steam Deck view (run with --resolution 1280x800)
+		DisplayMode.force = 1
+		DisplayMode.test_size = Vector2i(1280, 800)
+		DisplayMode.refit()
 	var arc := OS.get_environment("ARC") if OS.get_environment("ARC") != "" else "penguins"
 	GameState.new_run(arc, "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameState.run["intro_done"] = true
@@ -60,6 +65,7 @@ func _run() -> void:
 		var fmax := 0.0
 		for k in range(1, fts.size()):
 			fmax = maxf(fmax, _ms(fts[k - 1], fts[k]))
+		print("  %s _ready phases ms: %s" % [sc, ", ".join(GameMap.ready_ms.keys().map(func(k): return "%s %.0f" % [k, GameMap.ready_ms[k]]))])
 		print("  %s load frames: %.0f / %.0f / %.0f / %.0f ms; longest load frame after the first %.0f ms; cover lifts at frame %d (%.0f ms)" % [sc, _ms(t0, fts[0]), _ms(fts[0], fts[1]), _ms(fts[1], fts[2]), _ms(fts[2], fts[3]), fmax, uncover, _ms(t0, fts[maxi(uncover, 0)])])
 		for k in 18:
 			await process_frame
@@ -68,6 +74,7 @@ func _run() -> void:
 			if d.active:
 				d._advance(); await process_frame; await process_frame
 		var m := current_scene as GameMap
+		var nodes0 := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))  # at rest on arrival (C9 P6)
 		var times: Array = []
 		var dirs := ["right", "down", "left", "up"]
 		var last := Time.get_ticks_usec()
@@ -90,6 +97,12 @@ func _run() -> void:
 			last = now
 		for a in dirs:
 			Input.action_release(a)
+		var left_to := ""
+		if not is_instance_valid(m) or current_scene != m:
+			# The square walk went through an exit: the numbers below mix two maps
+			# (the change_scene frame is the "hitch"). Say so instead of blaming this map.
+			left_to = (current_scene as GameMap).scene_id() if current_scene is GameMap else "?"
+		print("  %s nodes: %d on arrival, %d after the walk%s" % [sc, nodes0, int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT)), (" (walked out to %s: frame/node numbers mix both maps)" % left_to) if left_to != "" else ""])
 		times.sort()
 		dl.sort()
 		# One baked-ground chunk re-rendered on its own: the painter's whole draw list.

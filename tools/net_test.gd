@@ -67,6 +67,16 @@ func _run() -> void:
 	print("  %s   %s sees a puppet" % ["ok" if seen else "FAIL", role])
 	if role == "guest":
 		print("  %s   guest received host world (day %d time %d)" % ["ok" if synced else "FAIL", int(GameState.run["day"]), int(GameState.run["time"])])
+		# C9: later worlds are deltas (time only, a few bytes): the clock keeps following the host.
+		var t_sync := int(GameState.run["time"])
+		var moved := false
+		var t_end := Time.get_ticks_msec() + 12000  # the host pushes every 2 s of real time
+		while Time.get_ticks_msec() < t_end:
+			await process_frame
+			if int(GameState.run["time"]) >= 14 * 60:
+				moved = true
+				break
+		print("  %s   guest follows the host's clock through world deltas (%d -> %d)" % ["ok" if moved else "FAIL", t_sync, int(GameState.run["time"])])
 		# guest tills a tile: host should get it
 		GameState.run["farm"]["5,5"] = {"watered": true, "crop": "turnip", "days": 1}
 		(current_scene as GameMap).net_act({"a": "farm_tile", "key": "5,5", "tile": GameState.run["farm"]["5,5"]})
@@ -74,9 +84,14 @@ func _run() -> void:
 			await process_frame
 	else:
 		var got := false
-		for i in 900:
+		var t0 := Time.get_ticks_msec()
+		var bumped := false
+		while Time.get_ticks_msec() - t0 < 15000:
 			await process_frame
-			if GameState.run["farm"].has("5,5"):
+			if not bumped and Time.get_ticks_msec() - t0 > 3000:
+				bumped = true
+				GameState.run["time"] = 14 * 60  # the host's clock moves after the guest synced: guests get it as a delta
+			if GameState.run["farm"].has("5,5") and bumped and Time.get_ticks_msec() - t0 > 6000:
 				got = true
 				break
 		print("  %s   host received the guest's farm action" % ("ok" if got else "FAIL"))

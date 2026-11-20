@@ -731,6 +731,9 @@ static func chain_left(cid: String) -> int:
 
 
 ## True (and offers the campaign) when `scene` is still held by a campaign.
+const VISIT_GATE := "This border is held in your own story. You can open it from your own farm; while you visit, it stays shut."
+
+
 static func blocks(m: GameMap, scene: String) -> bool:
 	if bypass or m == null or scene == m.scene_id() or GameState.run.is_empty() or region_open(scene):
 		return false
@@ -750,8 +753,10 @@ static func offer(m: GameMap, cid: String) -> void:
 	var lines: Array = []
 	for t in gw["lines"]:
 		lines.append({"who": "", "text": str(t)})
+	if Net.visiting():  # the board's Muster/Attack wait until home: no dead-end offer on a friend's world
+		lines = [{"who": "", "text": VISIT_GATE}]
 	var dl := Dialogue.instance(m.get_tree())
-	if not bool(gw["board"]):
+	if not bool(gw["board"]) or Net.visiting():
 		dl.say(lines)
 		await dl.finished
 		_last_offer = Time.get_ticks_msec()

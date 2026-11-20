@@ -237,6 +237,8 @@ static func lock_text(prize_id: String) -> String:
 			return str(ArcadeHub.MILESTONES.get(str(id), str(id)))
 	if need.has("once") and bought(prize_id) > 0:
 		return "Already yours"
+	if need.has("weekly") and Net.visiting():
+		return "Weekly prizes wait for your own Rec Center"  # the host's week isn't ours (its stamp would skip or repeat a week at home)
 	if need.has("weekly") and int((_st()["week"] as Dictionary).get(prize_id, [-1, 0])[0]) == week() \
 			and int(_st()["week"][prize_id][1]) >= int(need["weekly"]):
 		var left := 7 - (maxi(0, int(GameState.run.get("day", 1)) - 1) % 7)

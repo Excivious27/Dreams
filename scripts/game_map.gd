@@ -9,6 +9,9 @@ const TILE := 16
 static var next_spawn := Vector2.ZERO
 static var next_facing := "down"
 static var next_interior := ""
+static var exits_off := false
+static var ready_ms := {}  # last map's _ready phases in ms (perf_probe prints them)
+var _rt := 0  # probes (perf_probe) walk without leaving the map
 
 var cols := 20
 var rows := 30
@@ -104,7 +107,10 @@ func _ready() -> void:
 	if not GameState.has_run():
 		GameState.new_run("penguins", "dad", "Hero", "Dreamhollow", "Pup")
 	GameState.run["scene"] = scene_id()
+	ready_ms = {}
+	_rt = Time.get_ticks_usec()
 	build()
+	_phase("build")
 	# build() is where subclasses set pad; the animated layer must follow it.
 	_anim_layer.position = offset()
 	# Outer ring is always solid; with a pad the organic border fills the rest.
@@ -116,6 +122,7 @@ func _ready() -> void:
 		blocked[Vector2i(cols + pad - 1, y)] = true
 	if pad > 0:
 		_build_border()
+	_phase("border")
 	for e in exits:
 		var r: Rect2i = e["rect"]
 		for y in range(r.position.y, r.end.y):
@@ -214,15 +221,19 @@ func _ready() -> void:
 	player.add_child(cam)
 	cam.make_current()
 
+	_phase("actors")
 	hud = Hud.new()
 	add_child(hud)
 	add_child(TouchControls.new())
 	add_child(GameMenu.new())
+	_phase("hud")
 	Music.instance(get_tree()).play(area_track())
 	Ambience.instance(get_tree()).scene_changed()
 	queue_redraw()
+	_clear_stale_pause()  # a pause owned by the last scene (menu opened in the fade) must not freeze this one (c9_10)
 	_fade_in_when_baked()
 	after_ready()
+	_phase("after_ready")
 	_lock_untouched_buildings()
 	Story.restore_spawns(self)
 	Racket.on_enter(self)
@@ -1278,7 +1289,7 @@ func descent_near(c: Vector2i) -> Vector2i:
 
 
 func check_exits() -> void:
-	if player == null or _changing:
+	if player == null or _changing or exits_off:
 		return
 	var c := player.cell()
 	if not _exit_init:
@@ -2128,6 +2139,21 @@ func fit_camera(cam: Camera2D) -> void:
 	cam.limit_top = -oy
 	cam.limit_right = maxi(mw, vw) - ox
 	cam.limit_bottom = maxi(mh, view_h) - oy + (480 - view_h)
+
+
+func _phase(n: String) -> void:
+	var now := Time.get_ticks_usec()
+	ready_ms[n] = (now - _rt) / 1000.0
+	_rt = now
+
+
+## Arrival: a pause whose owner stayed in the previous scene (a menu opened
+## during the transition fade) has no one here to lift it. Nothing in this scene
+## has paused yet at _ready, so any pause now is left over.
+func _clear_stale_pause() -> void:
+	var t := get_tree()
+	if t != null and t.paused and not Hud.keep_paused(t) and Hud.modal_rect.size == Vector2.ZERO:
+		t.paused = false
 
 
 ## Camera nudge on a hit (more on a kill or crit).
@@ -3655,6 +3681,10 @@ const WATER_LOOK := {
 }
 
 
+const WINTER_SHORE_SOFT := 0.13
+const WINTER_SHORE_WOBBLE := 0.5
+
+
 func _water_mask(cells: Dictionary, shore: String) -> bool:
 	if cells.is_empty():
 		return false
@@ -3668,6 +3698,10 @@ func _water_mask(cells: Dictionary, shore: String) -> bool:
 	if GameState.look_se() == "winter" and shore in ["grass", "river"]:
 		opts["bank"] = Color(0.9, 0.93, 0.98, 0.9)
 		opts["tint"] = Color(0.78, 0.86, 1.0)
+		# Ice against snow is high contrast: a wider, noisier edge so the cell
+		# steps of the blob never read as stairs (c9_13).
+		opts["soft"] = WINTER_SHORE_SOFT
+		opts["wobble"] = WINTER_SHORE_WOBBLE
 	for k in ["foam", "tint", "drift"]:
 		if look.has(k) and not opts.has(k):
 			opts[k] = look[k]
@@ -4205,8 +4239,8 @@ func _build_border() -> void:
 	var rng := _border_rng
 	var has_big := Art.has("nature", "big_oak_a")
 	var season := GameState.look_se()
-	var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
-	var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
+	var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_pine", "mid_birch", "mid_oak", "mid_pine", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
+	var bigs: Array = {"spring": ["big_oak_a", "big_pine_a", "big_oak_b", "big_pine_b", "big_birch_a", "big_pine_a", "big_oak_c", "big_cherry_a"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
 	if scene_id() == "wastes" and Art.has("nature", "mid_dead"):
 		mids = ["mid_dead", "mid_dead_b"]  # a corrupted wasteland, not a blossom ring
 		bigs = ["big_dead_a", "big_dead_b"]
@@ -4231,7 +4265,7 @@ func _build_border() -> void:
 		if depth <= 1 and in_content(c + Vector2i(0, 1)) and not _border_cells.has(c + Vector2i(0, 1)):
 			prop(bg, nm, c, 0, 0.0, false)  # inner-edge trees are props so you walk behind the canopy
 		else:
-			_border_draw.append([c, bg, nm, rng.randf_range(-3.0, 3.0)])
+			_border_draw.append([c, bg, nm, rng.randf_range(-3.0, 3.0), depth])
 	_border_draw.sort_custom(func(a: Array, b: Array) -> bool: return (a[0] as Vector2i).y < (b[0] as Vector2i).y)
 
 
@@ -4302,10 +4336,19 @@ func draw_border() -> void:
 	var water: Dictionary = bg["water"]
 	var cliff: Dictionary = bg["cliff"]
 	var treec: Dictionary = bg["tree"]
+	# Void past the map edge: space stays dark; a region's "void_color" (sky isles:
+	# the cloud bank) fades in toward the outside instead of a black band (c9_14).
+	var vrd = get("R")
+	var vcs := str((vrd as Dictionary).get("void_color", "")) if vrd is Dictionary else ""
 	for c: Vector2i in bg["void"]:
 		var vr := Rect2(c * TILE, Vector2i(TILE, TILE))
-		if not Art.clipped(vr):
+		if Art.clipped(vr):
+			continue
+		if vcs == "":
 			draw_rect(vr, Color(0.05, 0.05, 0.08))
+			continue
+		var dep := maxi(maxi(-c.x, c.x - (cols - 1)), maxi(-c.y, c.y - (rows - 1)))  # cells past the content edge
+		draw_rect(vr, Color(vcs, 0.55 if dep < pad else 0.85))
 	# Exit corridors through the band match the map's own paths (dirt on grass maps).
 	if not _border_open.is_empty():
 		# Each exit's corridor is as wide as the exit (not the grown band opening), and on
@@ -4374,7 +4417,14 @@ func draw_border() -> void:
 		return
 	for item: Array in _border_draw:
 		var c: Vector2i = item[0]
-		Art.draw_prop(self, str(item[1]), str(item[2]), Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE))
+		var t := Art.tex(str(item[1]), str(item[2]))
+		if t == null:
+			continue
+		var feet := Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE)
+		var sz := Vector2(t.get_width(), t.get_height()) * 0.5
+		var tr := Rect2(feet - Vector2(sz.x / 2.0, sz.y), sz)
+		if not Art.clipped(tr):
+			draw_texture_rect(t, tr, false, band_tint(int(item[4]) if item.size() > 4 else 1))
 
 
 ## A flat shade over a cell set with rounded edges (deep woods, band depth).
@@ -4408,30 +4458,61 @@ var _bake_stripes := {}
 
 
 func _border_stripes() -> void:
-	# One Sprite2D per border tree under a y-sorted holder: a chunk render then draws
-	# only the trees that touch it (Godot culls each sprite), still in y order.
+	# Border trees as a few canvas items: one per (tile row, 256 px column) bucket that
+	# draws its trees itself (C9 P6: was one Sprite2D per tree, ~1000 nodes on the forest
+	# for the whole visit). Rows go top to bottom so the y order holds; trees in one row
+	# share a y (their order was free before too), and Godot still culls each bucket
+	# against the chunk being rendered.
 	var holder: Node2D = _bake_stripes.get("trees")
-	if holder != null and holder.get_child_count() == _border_draw.size():
+	var sig := _border_draw.size()
+	if holder != null and int(holder.get_meta("sig", -1)) == sig:
 		return  # the band never changes after _build_border
 	if holder == null:
 		holder = Node2D.new()
-		holder.y_sort_enabled = true
 		holder.texture_filter = texture_filter
 		add_child(holder)
 		_bake_stripes["trees"] = holder
 	for ch in holder.get_children():
 		holder.remove_child(ch)
 		ch.free()
+	holder.set_meta("sig", sig)
+	var buckets := {}  # Vector2i(col bucket, row) -> BorderBucket
+	var order: Array[Vector2i] = []
 	for item: Array in _border_draw:
 		var t := Art.tex(str(item[1]), str(item[2]))
-		var s := Sprite2D.new()
-		if t != null:
-			s.texture = t
-			s.centered = false
-			s.scale = Vector2(0.5, 0.5)
-			s.offset = Vector2(-t.get_width() / 2.0, -t.get_height())
-		s.position = offset() + Vector2((item[0] as Vector2i) * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE)
-		holder.add_child(s)
+		if t == null:
+			continue
+		var c: Vector2i = item[0]
+		var base := offset() + Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE)
+		var sz := Vector2(t.get_width(), t.get_height()) * 0.5
+		var key := Vector2i(floori(base.x / BORDER_BUCKET_W), c.y)
+		var b: BorderBucket = buckets.get(key)
+		if b == null:
+			b = BorderBucket.new()
+			buckets[key] = b
+			order.append(key)
+		b.items.append([t, Rect2(base - Vector2(sz.x / 2.0, sz.y), sz), band_tint(int(item[4]) if item.size() > 4 else 1)])
+	order.sort_custom(func(a: Vector2i, b2: Vector2i) -> bool: return a.y < b2.y or (a.y == b2.y and a.x < b2.x))
+	for key in order:
+		holder.add_child(buckets[key])
+
+
+const BORDER_BUCKET_W := 256.0  # px: border-tree bucket width (one bake chunk)
+## Border trees deeper in the band are drawn darker and calmer (layered woods; the
+## spring band's bright yellow-greens and blossoms no longer shout, c9_13).
+const BAND_TINT := [Color(1, 1, 1), Color(0.93, 0.96, 0.92), Color(0.84, 0.9, 0.84), Color(0.76, 0.83, 0.77), Color(0.7, 0.77, 0.72)]
+
+
+static func band_tint(depth: int) -> Color:
+	return BAND_TINT[clampi(depth - 1, 0, BAND_TINT.size() - 1)]
+
+
+## A bucket of border trees on one tile row: one canvas item, drawn in one go.
+class BorderBucket extends Node2D:
+	var items: Array = []  # [Texture2D, Rect2, Color]
+	func _draw() -> void:
+		for it: Array in items:
+			draw_texture_rect(it[0], it[1], false, it[2])
 
 
 ## Shared fishing minigame: cast, wait for the bite, press A. `pool` is the

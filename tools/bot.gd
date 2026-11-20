@@ -420,13 +420,13 @@ func _menu_crawl(m: GameMap) -> void:
 	if not is_instance_valid(menu):
 		return
 	for t in menu._tab_buttons.keys():
-		if not is_instance_valid(menu):
-			return
+		if not is_instance_valid(menu) or not menu.is_inside_tree():
+			return  # valid until the queued free: a menu that left the tree is done (c9_10)
 		if rng.randf() < 0.6 and is_instance_valid(menu._tab_buttons.get(t)):
 			(menu._tab_buttons[t] as Button).pressed.emit()
 			await frames(3)
 			# press a random button in the body
-			if not is_instance_valid(menu):
+			if not is_instance_valid(menu) or not menu.is_inside_tree():
 				return
 			var btns: Array = []
 			_collect_buttons(menu._body, btns)

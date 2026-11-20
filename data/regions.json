@@ -2953,7 +2953,8 @@
   "pad": 6,
   "border": "none",
   "fruit": 0,
-  "season": "summer"
+  "season": "summer",
+  "void_color": "eef0ff"
  },
  "station": {
   "cols": 42,
@@ -6142,6 +6143,7 @@
   "battle": {
    "title": "Frostfield Front",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "The Dark Crystal's grumps hold the high ground over Frostfield. Take the ridges, raise crystal spires, and push them off the plateaus.",
    "win": "Frostfield breathes again. The spires hum like a choir that finally found its note.",
    "lose": "Back to camp. The ridges will still be there tomorrow.",
@@ -6414,6 +6416,7 @@
   "battle": {
    "title": "Shattered Vale",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "The Vale broke when the Dark Crystal fell through it. Its shards still march. Hold the six points and the shards will stop answering it.",
    "win": "The shards in the Vale go quiet, then warm. Some of them follow your spires home.",
    "lose": "The Vale is too loud today. Rest and come back.",
@@ -6679,6 +6682,7 @@
   "battle": {
    "title": "The Rail Yards",
    "who": "Halo",
+   "who_gangsters": "Halo",
    "brief": "The President's people run the freight through the rail yards. Take the towers, set up drone bays, and the trains run for you.",
    "win": "The yard's yours. The night freight blows its whistle twice as it passes your boxcar.",
    "lose": "Pull back to the boxcar. We regroup.",
@@ -6972,6 +6976,7 @@
   "battle": {
    "title": "Dockside War",
    "who": "Marlene",
+   "who_gangsters": "Marlene",
    "brief": "The docks are where the President's money comes in. Six points, four of his crews. Bring drones, bring the crew, and hold the water.",
    "win": "The harbour lights come on one by one, and every one of them is yours.",
    "lose": "The tide's against us. Back to the trawler.",
@@ -9037,6 +9042,7 @@
   "battle": {
    "title": "The Orchard Line",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "Grumps have dug in among the apple rows. Take the press and the granary and the orchard is ours again.",
    "win": "The orchard rows are quiet. Somebody's already picking apples.",
    "lose": "Back to the wagons. The apples will keep.",
@@ -9285,6 +9291,7 @@
   "battle": {
    "title": "Bog Crossing",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "The bog has more mouths than paths. Hold the causeways and the reeds, and the mire lets you through.",
    "win": "The fog lifts off the bog like a lid. The frogs start singing again.",
    "lose": "The mire wins today. Back to the rafts.",
@@ -9534,6 +9541,7 @@
   "battle": {
    "title": "The Ashen Flats",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "Nothing grows on the Ashen Flats but trouble. Take the gate and the watchtower and the wind changes.",
    "win": "The ash settles. Under it, something green is already trying.",
    "lose": "Pull back to the lanterns. The flats aren't going anywhere.",
@@ -9778,6 +9786,7 @@
   "battle": {
    "title": "The Neon Block",
    "who": "Halo",
+   "who_gangsters": "Halo",
    "brief": "Every sign on this block belongs to the President's crews. Switch them off one by one and the street is yours.",
    "win": "The block hums under your colours. The night market reopens before you've even left.",
    "lose": "Too hot tonight. Back to the van.",
@@ -10102,6 +10111,7 @@
   "battle": {
    "title": "Highland Pass",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "The highland pass climbs in steps of stone and snow. Hold the cairns and the ridge, and the high road is yours.",
    "win": "The pass is open. Somewhere a goat bell rings like it's cheering.",
    "lose": "The wind wins this one. Back down to camp.",
@@ -10412,6 +10422,7 @@
   "battle": {
    "title": "The Deep Cut",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "The quarry's terraces ring a deep pit. Take the cranes and the high terrace, and the golems lose their footing.",
    "win": "The cranes swing your way. The golems set down their hammers.",
    "lose": "Too much rock, too few friends. Back to the gate.",
@@ -10828,6 +10839,7 @@
   "battle": {
    "title": "The River Ford",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "The river splits the field in two. Cross at the fords, take the weir, and the far bank falls.",
    "win": "The weir opens and the river runs easy. Fish leap all the way upstream.",
    "lose": "The river's against us today. Back to the ferry.",
@@ -11131,6 +11143,7 @@
   "battle": {
    "title": "The Pillared Court",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "An old court of pillars around a raised dais. The guardians hold the dais; take the colonnades and climb.",
    "win": "The guardians bow their stone heads. The court is quiet and warm in the sun.",
    "lose": "The stones are stubborn today. Back to the stair.",
@@ -11377,6 +11390,7 @@
   "battle": {
    "title": "The Cloud Stair",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "Up here the ground is cloud and the walls are sky. Hold the star pillars and the grumps fall back down the stair.",
    "win": "The clouds part under your feet. The pillars hum a bright, clean note.",
    "lose": "Too high, too windy. Back to the summit camp.",
@@ -11624,6 +11638,7 @@
   "battle": {
    "title": "Station Deck",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "The station's decks circle a dark reactor ring. Shards crawl the corridors; take the wings and power it back up.",
    "win": "The deck lights come on one row at a time. Somebody left the radio playing.",
    "lose": "The air's thin and the shards are thick. Back to the dock.",
@@ -12019,6 +12034,7 @@
   "battle": {
    "title": "Glowroot Grove",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "A glowing river cuts the grove. Shards hold the far bank; cross on the roots and take the temple.",
    "win": "The giant flowers turn to watch you pass, and they seem pleased.",
    "lose": "The jungle closes in. Back to the landing.",
@@ -12459,6 +12475,7 @@
   "battle": {
    "title": "Reef Shallows",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "A tidal channel splits the reef. Wade the sandbars, take the coral arch, and the colony can see you coming.",
    "win": "The merkitties wave from the shore. The reef glows pink and gold.",
    "lose": "The tide turns. Back to the boats.",
@@ -12793,6 +12810,7 @@
   "battle": {
    "title": "Kelp Beds",
    "who": "Catkins",
+   "who_gangsters": "Halo",
    "brief": "Kelp and black water everywhere. Hold the dry humps between the pools and light a path to the colony.",
    "win": "The kelp sways open. Little lights blink on all along the path.",
    "lose": "The eels have the water today. Back to the raft.",
@@ -13107,6 +13125,7 @@
   "battle": {
    "title": "Fountain Plaza",
    "who": "Halo",
+   "who_gangsters": "Halo",
    "brief": "Uptown's plaza rings a raised fountain terrace. The guards hold the terrace; take the lawns and walk up.",
    "win": "The fountain's yours. Up close the tower looks smaller.",
    "lose": "Too many suits on the lawn. Back to the terrace.",
@@ -13455,6 +13474,7 @@
   "battle": {
    "title": "The Sewer Works",
    "who": "Halo",
+   "who_gangsters": "Halo",
    "brief": "The sewer works run along one long channel. Crawlers and crews hold the outfalls; cross the walkways and take the pumps.",
    "win": "The pumps thump in time. Down here your name echoes.",
    "lose": "It stinks and they know it. Back up the ladder.",
@@ -19831,6 +19851,7 @@
   "ground_seam": "cloud_top",
   "path": "float_stone",
   "border": "none",
+  "void_color": "eef0ff",
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",
@@ -20231,6 +20252,7 @@
   "ground_seam": "cloud",
   "path": "float_stone",
   "border": "none",
+  "void_color": "eef0ff",
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",
@@ -20535,6 +20557,7 @@
   "ground_seam": "starry_cloud",
   "path": "float_stone",
   "border": "none",
+  "void_color": "eef0ff",
   "backdrop": "hills",
   "weather": "storm",
   "season": "summer",
@@ -20885,6 +20908,7 @@
   "ground_seam": "starry_cloud",
   "path": "float_stone",
   "border": "none",
+  "void_color": "eef0ff",
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",
@@ -22994,6 +23018,7 @@
   "ground_seam": "cloud",
   "path": "float_stone",
   "border": "none",
+  "void_color": "eef0ff",
   "backdrop": "hills",
   "weather": "wind",
   "season": "summer",

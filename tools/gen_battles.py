@@ -18,6 +18,9 @@ PROP_SETS = {"bf_frostfield": ["rock_snow_l", "rock_snow_m", "rock_snow_s", "bou
              "bf_shattered_vale": ["boulder_l", "boulder_m", "crystal_rock", "mine_crystal_rock_1", "cave_stalag_m", "stalagmite_a"],
              "bf_rail_yards": ["drums", "tyres", "crates_a", "oil_drums"],
              "bf_dockside": ["crates_a", "crates_pallet", "barrel_a", "oil_drums"]}
+# Catkins is penguin-only (Hearts.in_arc): a free field's brief in the gangster arc is
+# spoken by the crew's own voice (Battle reads "who_<arc>" first; c9_14).
+GANG_SPEAKER = {"Catkins": "Halo"}
 def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="battle", **kw):
     exits = [{"rect": [cols // 2 - 2, rows - 1, 4, 1], "scene": back[0], "spawn": back[1:], "facing": "down", "label": "▼ fall back"}]
     kept = {k: R[rid][k] for k in ("light",) if k in R.get(rid, {})}  # C5: hand/other-package keys (P2's fixed darkness) survive a rerun
@@ -26,7 +29,7 @@ def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, wat
               "exits": exits, "paths": kw.get("lanes") or [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
               "water_blobs": water, "plateaus": plateaus, "props": props, "patch_set": patch, "ground_threshold": 0.15, "fruit": 0,
               "gen": {"clumps": 10, "scatter": 110, "region_props": [n.split("/")[-1] for n in (kw.get("scatter") or PROP_SETS.get(rid) or ["boulder_m"])], "region_count": 90, "critters": crit, "critter_count": 6}, "forage": 0, "things": [], "enemies": [], "npcs": [],
-              "battle": {"title": title, "who": who, "brief": brief, "win": win, "lose": lose, "points": points, "enemies": enemies,
+              "battle": {"title": title, "who": who, "who_gangsters": GANG_SPEAKER.get(who, who), "brief": brief, "win": win, "lose": lose, "points": points, "enemies": enemies,
                          "tickets": 150, "supply": 15, "wave_every": 7.0, "enemy_cap": 16, "tier_bonus": max(0, tier - 2), "reward": reward, "back": back}}
     if patch is None:
         del R[rid]["patch_set"]

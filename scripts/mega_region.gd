@@ -182,7 +182,7 @@ static func cond(c: Dictionary) -> bool:
 	if c.has("tier"):
 		return GameState.progress_tier() >= int(c["tier"])
 	if c.has("built"):
-		return Builds.built_tier(str(c["built"][0])) >= int(c["built"][1])
+		return NetNode.own_tier(str(c["built"][0])) >= int(c["built"][1])  # a guest never earns a region from the host's builds
 	if c.has("campaign_ready"):
 		var cid := str(c["campaign_ready"])
 		if Campaign.get_c(cid).is_empty() or str(Campaign.get_c(cid).get("arc", "both")) not in ["both", _arc()]:

@@ -3406,6 +3406,13 @@
     "arc": ""
    },
    {
+    "recipe": "goat_cheese",
+    "station": "press",
+    "item": "goat_cheese",
+    "name": "Goat Cheese",
+    "arc": ""
+   },
+   {
     "recipe": "jam",
     "station": "press",
     "item": "jam",

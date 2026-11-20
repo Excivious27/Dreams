@@ -126,6 +126,7 @@ func build() -> void:
 			var d := Vector2((x - POND_C.x) / 7.0, (y - POND_C.y) / 4.5).length()
 			if d + _rng.randf_range(-0.12, 0.12) < 1.0:
 				_pond_cells[Vector2i(x, y)] = true
+	_pond_cells = _round_blob(_pond_cells)  # no one-cell spurs or notches: the shore reads as a curve (c9_13)
 	# Pond cells need to be a solid shape with no 1-wide bits for the autotiler.
 	for c: Vector2i in _pond_cells.keys():
 		set_thing(c.x, c.y, {"type": "water", "hint": "A: fish" if GameState.has_tool("rod") else ""})
@@ -295,6 +296,30 @@ func _migrate_layout() -> void:
 		if farm.has("%d,%d" % [c.x, c.y]):
 			_clear_tile(c)
 	_move_placed_off(solid)
+
+
+## Rounds a cell blob: drops cells with few same neighbours (spurs, stair tips) and
+## fills deep notches, twice. Old saves' soil/placed things on new cells are moved by
+## _migrate_layout (it clears every blocked cell).
+static func _round_blob(cells: Dictionary) -> Dictionary:
+	var cur := cells.duplicate()
+	for it in 2:
+		var cand := {}
+		for c: Vector2i in cur:
+			for dy in range(-1, 2):
+				for dx in range(-1, 2):
+					cand[c + Vector2i(dx, dy)] = true
+		var nxt := {}
+		for c: Vector2i in cand:
+			var n := 0
+			for dy in range(-1, 2):
+				for dx in range(-1, 2):
+					if (dx != 0 or dy != 0) and cur.has(c + Vector2i(dx, dy)):
+						n += 1
+			if (cur.has(c) and n >= 4) or (not cur.has(c) and n >= 6):
+				nxt[c] = true
+		cur = nxt
+	return cur
 
 
 static func house_look(tier: int) -> Dictionary:
@@ -1479,8 +1504,7 @@ func _sellbox(sel: String) -> void:
 			bq["g"] = int(bq.get("g", 0)) + int(tq["g"])
 			bq["s"] = int(bq.get("s", 0)) + int(tq["s"])
 			GameState.run["sellbox_q"][sel] = bq
-		GameState.add_item(sel, -n)
-		net_act({"a": "sellbox", "id": sel, "n": n})
+		GameState.add_item(sel, -n)  # the sell box is our own (guest_morning pays a guest); nothing to send the host
 		var est := GameState.sell_price(sel, prev + n) - GameState.sell_price(sel, prev) + GameState.quality_bonus_value({sel: tq})
 		hud.toast("Put %s x%d in the sell box (about ◆%d tonight%s)." % [GameState.item_name(sel), n, est, ", in demand" if GameState.demand(sel) > 1.1 else ""])
 		Music.instance(get_tree()).sfx("coin", "pickup")
@@ -1583,6 +1607,9 @@ func _station(id: String) -> void:
 
 ## The rocket yard: build parts here; from tier 3 it flies.
 func _launchpad() -> void:
+	if Net.visiting():  # the host's rocket: flying it would earn the guest rocket_flown and Space
+		hud.toast("Your host's rocket. Ask them to fly it; yours waits on your own farm.", Color(1, 0.85, 0.6))
+		return
 	var t := Builds.built_tier("launchpad")
 	var opts: Array = ["Build rocket parts"]
 	var dests: Array = []
