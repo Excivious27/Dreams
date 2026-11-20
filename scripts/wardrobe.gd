@@ -104,8 +104,8 @@ static func choices(slot: String) -> Array:
 
 
 static func worn_id(slot: String) -> String:
-	if slot == "":
-		return ""
+	if slot == "" or GameState.run.is_empty() or not (GameState.run.get("decor", null) is Dictionary):
+		return ""  # title screen / no run yet: never create run.decor from a read
 	return Decor.worn(slot)
 
 
