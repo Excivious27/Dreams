@@ -731,6 +731,11 @@ func scythe_sweep(c: Vector2i) -> void:
 		for i in 2:
 			_leaf(cell_center(sc) + Vector2(randf_range(-6, 6), -8))
 		pop_items(cell_center(sc), "fiber", 1)
+		# C5 c5_18 #5: side cells count too, at half the main cut's rolls (free swing, no extra energy)
+		if randf() < 0.5:
+			xp("foraging", 1)
+		if randf() < (0.06 + 0.01 * GameState.skill_level("foraging")) * 0.5:
+			pop_items(cell_center(sc), "seed_packet", 1)
 
 
 # ---- interaction -------------------------------------------------------------
