@@ -324,7 +324,7 @@ func _draw_rug(nm: String, r: Rect2i, fallback: Color) -> void:
 var _spouse: Npc = null
 
 ## Their corner piece per tier (east rooms): tier 2 Farmhouse, tier 3 Manor.
-const SPOUSE_CORNER := {1: Vector2i(14, 5), 2: Vector2i(18, 5), 3: Vector2i(23, 8)}
+const SPOUSE_CORNER := {1: Vector2i(14, 5), 2: Vector2i(17, 4), 3: Vector2i(23, 8)}
 
 
 ## Where the spouse stands now (Vector2i(-1,-1) = out: at work on a job day).
