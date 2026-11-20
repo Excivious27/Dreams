@@ -123,6 +123,10 @@ func _build() -> void:
 	v.add_child(top)
 	var t := _lab(top, "Wardrobe", 12)
 	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if map is GameMap:
+		_btn(top, "Order clothes", func() -> void:
+			_order_flow(map, slot)
+			_close(), 0).set_meta("pc_key", "order")
 	_btn(top, "Close", _close, 44).set_meta("pc_key", "close")
 	# Preview
 	var pv := Control.new()
@@ -369,6 +373,15 @@ func _preview(holder: Node2D) -> void:
 	holder.add_child(sp)
 	sp.play("walk_down" if sp.sprite_frames.has_animation("walk_down") else "idle")
 	Wardrobe.dress_hero(holder, sp, spr)
+
+
+## The clothes catalogue: the decor "wardrobe" shelf (rotating stock, mail order), then
+## back to the wardrobe on the same tab (c10b_11-25: the shelf had no counter).
+static func _order_flow(m: GameMap, tab: String) -> void:
+	await m.get_tree().process_frame
+	await DecorSources.shelf(m, "wardrobe", "Clothes catalogue")
+	if is_instance_valid(m) and m.is_inside_tree():
+		WardrobeScreen.open(m, tab)
 
 
 func _changed() -> void:
