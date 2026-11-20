@@ -24,6 +24,8 @@ const TYPED := {
 	"skills": TYPE_DICTIONARY, "farm": TYPE_DICTIONARY, "friendship": TYPE_DICTIONARY,
 	"equip": TYPE_DICTIONARY, "quests": TYPE_ARRAY, "tools": TYPE_ARRAY, "toolbar": TYPE_ARRAY,
 }
+## What makes two saves "the same farm at the same moment" (same_farm).
+const SAME_KEYS := ["names", "arc", "playable", "day", "time", "crystals", "inventory", "kills", "farm"]
 const NUMBERS := ["day", "time", "energy", "max_energy", "hp", "max_hp", "crystals"]
 
 const WHY := {
@@ -225,12 +227,19 @@ static func validate(d: Variant) -> String:
 	return ""
 
 
-## Same farm? (compared through JSON so ints and floats from a code match).
+## Same farm? (through JSON so ints and floats from a code match).
 static func same_farm(a: Dictionary, b: Dictionary) -> bool:
 	if a.is_empty() or b.is_empty():
 		return false
-	var ja := JSON.stringify(JSON.parse_string(JSON.stringify(a)), "", true)
-	var jb := JSON.stringify(JSON.parse_string(JSON.stringify(b)), "", true)
+	# Loading migrates a farm (new keys, fixed values), so compare the parts that
+	# say which farm and which moment it is, not every key.
+	var pa := {}
+	var pb := {}
+	for k in SAME_KEYS:
+		pa[k] = a.get(k)
+		pb[k] = b.get(k)
+	var ja := JSON.stringify(JSON.parse_string(JSON.stringify(pa)), "", true)
+	var jb := JSON.stringify(JSON.parse_string(JSON.stringify(pb)), "", true)
 	return ja == jb
 
 
