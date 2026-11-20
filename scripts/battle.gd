@@ -55,6 +55,7 @@ var is_drill := false
 var _briefing := false   # the briefing card is up: no waves, clocks wait
 var _wave_n := 0         # waves sent (every SQUAD_EVERY-th one is a squad)
 var team: Array = []     # the mustered allies on the field (HelperUnit)
+var _guest := false      # started as a co-op guest: being sent home is no retreat
 const BattleTurretS := preload("res://scripts/battle_turret.gd")
 const SQUAD_EVERY := 4
 const TEAM_MAX := 4      # mustered allies who take the field at once
@@ -109,7 +110,9 @@ func _setup() -> void:
 	if camp != "" or is_drill:
 		_campaign_setup()
 	if camp != "":
+		_resume(cf)
 		map.later(_field_team)
+	_guest = Net.visiting()
 	var layer := CanvasLayer.new()
 	layer.layer = 5
 	map.add_child(layer)
@@ -228,7 +231,7 @@ func _rally_toast(text: String) -> void:
 
 
 func _exit_tree() -> void:
-	if camp != "" and not _over:
+	if camp != "" and not _over and not _guest and not Net.visiting():
 		Campaign.retreat(supply)  # walked off the field mid-fight
 	elif is_drill and not _over:
 		CampaignGate.drill_quit()
@@ -428,6 +431,8 @@ func _tick() -> void:
 			Music.instance(get_tree()).sfx("horn", "alert")
 			Music.instance(get_tree()).play(bt, 0.4)
 			DangerMusic.boss_started(map, bt)
+	if camp != "":
+		_keep()
 	if int(tickets["ally"]) <= 0:
 		_end(false)
 		return
@@ -1018,6 +1023,42 @@ func _campaign_setup() -> void:
 				wp.append(p["pos"])
 		if wp.size() >= 2:
 			convoy = CampaignConvoy.make(map, wp, int(d.get("convoy_hp", 80)))
+
+
+## The fight's state, kept in the campaign fight record every second, so a
+## game closed mid-fight and reopened carries on where it was (not afresh).
+func _keep() -> void:
+	var f: Dictionary = Campaign.st().get("fight", {})
+	if f.is_empty() or str(f.get("cid", "")) != camp:
+		return
+	f["state"] = {"tickets": tickets.duplicate(), "supply": supply, "hold": _hold, "elapsed": _elapsed,
+		"boss_out": _boss_out, "points": points.map(func(p: Dictionary) -> Array: return [str(p["id"]), str(p["owner"]), float(p["prog"]), str(p["spawner"]), int(p.get("lvl", 1)), bool(p.get("fort", false))])}
+
+
+func _resume(cf: Dictionary) -> void:
+	var stt: Dictionary = cf.get("state", {})
+	if stt.is_empty():
+		return
+	var tk: Dictionary = stt.get("tickets", {})
+	tickets = {"ally": int(tk.get("ally", tickets["ally"])), "enemy": int(tk.get("enemy", tickets["enemy"]))}
+	supply = int(stt.get("supply", supply))
+	_hold = float(stt.get("hold", _hold))
+	_elapsed = float(stt.get("elapsed", 0.0))
+	for rec: Array in stt.get("points", []):
+		var p := point(str(rec[0]))
+		if p.is_empty():
+			continue
+		p["owner"] = str(rec[1])
+		p["prog"] = float(rec[2])
+		p["spawner"] = str(rec[3]) if p["owner"] == "ally" else ""
+		p["lvl"] = int(rec[4])
+		p["fort"] = bool(rec[5])
+		p["t"] = 10.0
+	# A commander already out comes back for the rest of the fight.
+	if bool(stt.get("boss_out", false)) and d.has("boss"):
+		d["boss_at"] = "start"
+		_elapsed = maxf(_elapsed, 7.0)
+	map.hud.toast("The fight picks up where you left it.", Color(0.8, 0.95, 1.0))
 
 
 func _goal_text() -> String:

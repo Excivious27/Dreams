@@ -240,6 +240,26 @@ func _run() -> void:
 		check(b._over and Campaign.taken("c_highlands", en), "an arrived convoy wins")
 		await settle()
 
+	# --- a fight reopened from a save resumes (tickets, supply, point owners)
+	var sn := node_of("c_highlands", "skirmish")
+	b = await fight("c_highlands", sn)
+	if b:
+		b.tickets = {"ally": 77, "enemy": 33}
+		b.supply = 41
+		b.points[0]["owner"] = "ally"
+		b.points[0]["prog"] = 1.0
+		b._keep()
+		var f: Dictionary = Campaign.st()["fight"].duplicate(true)
+		b._over = true  # leave without a retreat (as if the game closed)
+		Campaign.st()["fight"] = f
+		var m2 := await go(str(f["field"]))
+		var b2: Battle = m2.get("battle") if m2 else null
+		check(b2 != null and int(b2.tickets["ally"]) == 77 and int(b2.tickets["enemy"]) == 33 and b2.supply == 41, "reopened fight keeps tickets and supply (%s)" % (str(b2.tickets) + " " + str(b2.supply) if b2 else "none"))
+		check(b2 != null and str(b2.points[0]["owner"]) == "ally", "reopened fight keeps who holds the points")
+		if b2:
+			b2._over = true
+		Campaign.st()["fight"] = {}
+
 	# --- gangster battles play their own funk/noir variants
 	GameState.new_run("gangsters", "dad", "T", "Town", "Pup")
 	GameState.run["flags"]["proj_war_table"] = true
