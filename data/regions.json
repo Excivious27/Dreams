@@ -7692,7 +7692,22 @@
   ],
   "colony": "colony_kelp",
   "ground_seam": "teal_moss",
-  "weather": "fog"
+  "weather": "fog",
+  "water_blobs": [
+   {
+    "c": [
+     66,
+     50
+    ],
+    "r": 4,
+    "seed": 77,
+    "shore": "sand",
+    "fish": [
+     "catfish",
+     "sunfish"
+    ]
+   }
+  ]
  },
  "colony_ice": {
   "cols": 96,

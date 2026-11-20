@@ -297,7 +297,7 @@ MIRROR = ("colony_kelp", "colony_ember")
 
 def _mirror(r, cols):
     fx = lambda x: cols - 1 - x
-    for k in ("islands",):
+    for k in ("islands", "water_blobs"):
         for b in r.get(k, []):
             b["c"][0] = fx(b["c"][0])
     for pl in r.get("plateaus", []):
@@ -336,11 +336,11 @@ for rid, c in COL.items():
               "intro": [c["arrive"]], "colony": rid}
     # Each island looks and feels like itself.
     LOOK = {"colony_coral": {"music": "colony_coral", "critters": ["seagull", "crab", "turtle"]},
-            "colony_kelp": {"music": "colony_kelp", "ground": "teal_moss", "ground_seam": "teal_moss", "patch_set": "bog", "critters": ["frog", "heron", "dragonfly"], "weather": "fog"},
+            "colony_kelp": {"water_blobs": [{"c": [29, 50], "r": 4, "seed": 77, "shore": "sand", "fish": ["catfish", "sunfish"]}], "music": "colony_kelp", "ground": "teal_moss", "ground_seam": "teal_moss", "patch_set": "bog", "critters": ["frog", "heron", "dragonfly"], "weather": "fog"},
             "colony_ice": {"music": "colony_ice", "season": "winter", "patch_set": "snowpatch", "critters": ["seagull", "otter", "moon_rabbit"], "weather": "snow"},
             "colony_ember": {"music": "colony_ember", "ground": "dead_grass", "ground_seam": "ash", "patch_set": "sand", "critters": ["firefly", "crow", "snake"]}}
     lk = LOOK.get(rid, {})
-    for key in ("music", "ground", "ground_seam", "patch_set", "weather", "season"):
+    for key in ("music", "ground", "ground_seam", "patch_set", "weather", "season", "water_blobs"):
         if key in lk:
             R[rid][key] = lk[key]
     if "critters" in lk:

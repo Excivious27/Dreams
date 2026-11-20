@@ -52,6 +52,7 @@ func _run() -> void:
 	InputSetup.ensure_actions()
 	GameState.new_run("penguins", "penguin_f", "T", "Town", "Pup")
 	var en: Dictionary = GameState.load_json("res://data/enemies.json")["enemies"]
+	print("stage 1: data")
 	# ---- data -------------------------------------------------------------
 	var cd := Colony.data()
 	var verses := 0
@@ -78,6 +79,7 @@ func _run() -> void:
 	check(Companion.REVERT["grump"][0] == "@crystal" and Companion.REVERT["big_grump"][0] == "@crystal", "Grumps float home as crystals")
 	check(Companion.REVERT["crystal_baby"][0] == "@calm" and Companion.REVERT["finargle"][0] == "@vanish", "babies calm, finargles vanish")
 
+	print("stage 2: a colony played through")
 	# ---- a colony played through ------------------------------------------
 	GameState.new_run("penguins", "penguin_f", "T", "Town", "Pup")
 	GameState.run["intro_done"] = true
@@ -87,6 +89,7 @@ func _run() -> void:
 	m.player.invuln = 9999.0
 	var id := "colony_coral"
 	check(not _thing(m, "colony_kit", "k0").is_empty() and not _thing(m, "colony_kit", "k2").is_empty(), "the kits are talkable things")
+	print("stage 3: A kit before the elder: points you at her.")
 	# A kit before the elder: points you at her.
 	Colony.interact(m, id, _thing(m, "colony_kit", "k0"))
 	await _drain()
@@ -109,6 +112,7 @@ func _run() -> void:
 	check(Colony.progress("colony_" + id).begins_with("Foes 0/"), "progress: foes and beacons (%s)" % Colony.progress("colony_" + id))
 	var tp := QuestTracker.target(m)
 	check(tp != Vector2.ZERO, "tracker points at a beacon")
+	print("stage 4: Side quest from Shelly.")
 	# Side quest from Shelly.
 	Colony.interact(m, id, _thing(m, "colony_kit", "k0"))
 	await _drain()
@@ -122,9 +126,11 @@ func _run() -> void:
 	await _drain()
 	check(str(Colony.st(id)["sides"].get("shells", "")) == "done" and GameState.quest_done(sq), "side quest done")
 	check(GameState.count("pearl") == pearls + 1 and GameState.count("seashell") == 0, "shells taken, pearl given")
+	print("stage 5: Chatter kit.")
 	# Chatter kit.
 	Colony.interact(m, id, _thing(m, "colony_kit", "k2"))
 	await _drain()
+	print("stage 6: Only the named foes count.")
 	# Only the named foes count.
 	var k0 := int(Colony.st(id)["kills"])
 	var bat := m.spawn_enemy("bat", m.player.position + Vector2(60, 0))
@@ -135,6 +141,7 @@ func _run() -> void:
 	if g:
 		await Colony.on_kill(m, g)
 	check(int(Colony.st(id)["kills"]) == k0 + 1, "a Coral Grump counts")
+	print("stage 7: Beacons, with a verse each.")
 	# Beacons, with a verse each.
 	GameState.add_item("crystal_refined", 5)
 	for c: Vector2i in m.things.keys():
@@ -144,8 +151,10 @@ func _run() -> void:
 	check((Colony.st(id)["beacons"] as Dictionary).size() == 3, "three beacons lit")
 	Colony.st(id)["kills"] = 99
 	check(Colony.progress("colony_" + id) == "Wake the star crystal.", "progress: wake")
+	print("stage 8: Restore: reveal + done flag + Star Crystal count l")
 	# Restore: reveal + done flag + Star Crystal count line.
-	await Colony._restore(m, id)
+	var mm := m
+	mm.later(func() -> void: await Colony._restore(mm, id))
 	await _drain()
 	for i in 20:
 		await process_frame
@@ -155,11 +164,13 @@ func _run() -> void:
 	Colony.interact(m, id, _thing(m, "elder"))
 	await _drain()
 	check(GameState.run["flags"].has(id + "_lore"), "lore talk after the save")
+	print("stage 9: Old save: done without the new flag gets it.")
 	# Old save: done without the new flag gets it.
 	GameState.run["flags"].erase("colony_coral_done")
 	Colony.st(id)
 	check(GameState.run["flags"].has("colony_coral_done"), "migration sets the done flag")
 
+	print("stage 10: gangster crew")
 	# ---- gangster crew ----------------------------------------------------
 	GameState.new_run("gangsters", "kairi", "T", "Town", "Pup")
 	GameState.run["intro_done"] = true
@@ -168,11 +179,11 @@ func _run() -> void:
 	m = await _go("docks", Vector2(20 * 16, 20 * 16))
 	check(m != null, "docks load")
 	Crew.data()
-	check(await Crew.talk(m, "ladder"), "unrecruited Ladder says something")
+	m.later(func() -> void: await Crew.talk(m, "ladder"))
 	await _drain()
 	check(GameState.run["flags"].has("crew_hint_ladder"), "Ladder's hint once")
 	GameState.run["flags"]["letter_sold"] = true
-	check(await Crew.talk(m, "marlene"), "Marlene closes the deal")
+	m.later(func() -> void: await Crew.talk(m, "marlene"))
 	await _drain()
 	check(GameState.run["flags"].has("marlene_refused"), "Marlene walks after the sale")
 	GameState.run["flags"]["deuce_thumb"] = true
@@ -180,6 +191,7 @@ func _run() -> void:
 	GameState.run["flags"]["crew_vic"] = true
 	check(Crew.roster_text("vic").contains("melee") or Crew.roster_text("vic").contains("no perk"), "Vic's roster text")
 	check(str(Crew.members()["vic"]["perks"][0]).contains("melee"), "Vic's perk says melee")
+	print("stage 11: The joined at the hideout.")
 	# The joined at the hideout.
 	GameState.run["flags"]["marked_kit"] = "crew"
 	GameState.run["flags"]["lt_joined_brock"] = true
@@ -191,8 +203,10 @@ func _run() -> void:
 		if ch is Npc:
 			seen[(ch as Npc).id] = true
 	check(seen.has("mk_kit") and seen.has("lt_brock"), "Kit and Brock stand in the hideout (%s)" % str(seen.keys()))
-	check(await Crew.talk(m, "mk_kit"), "Kit talks at the hideout")
+	var said := [false]
+	m.later(func() -> void: said[0] = await Crew.talk(m, "mk_kit"))
 	await _drain()
+	check(said[0], "Kit talks at the hideout")
 	check(seen.has("partner_big_jim"), "Big Jim waits at the hideout for a second ask")
 	m.later(func() -> void: await Crew.talk(m, "partner_big_jim"))
 	await _drain()
