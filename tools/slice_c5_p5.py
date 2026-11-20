@@ -211,6 +211,21 @@ def w490_fix():
         print("w490", who, len(pieces))
 
 
+def sheep():
+    """sheep_woolly redrawn with whole legs (c5_09 #8): idle 4, walk 5, eat 2;
+    baby = the idle (the farm scales babies down)."""
+    rgba = _load_keep_alpha("c5/p5_sheep_woolly.png")
+    rgba, rows = C.sheet_rows(None, merge=4, min_area=1500, rgba=rgba)
+    rows = [r for r in rows if len(r) >= 2]
+    assert [len(r) for r in rows] == [4, 5, 2], [len(r) for r in rows]
+    g = "animals/sheep_woolly"
+    f = 36.0 / C.med_h(rows[0] + rows[1])
+    for nm, r in [("idle", rows[0]), ("walk", rows[1]), ("eat", rows[2]), ("baby", rows[0])]:
+        _rm(g, nm)
+        S.strip([C.piece(rgba, b, factor=f) for b in r], g, nm)
+    print("sheep_woolly")
+
+
 def poses():
     """Redraws of the cells Npc.BAD_CELLS used to hide (c5_08 #2)."""
     for src, sheet, names, ref in POSE_FIX:
@@ -347,7 +362,7 @@ def blobs(names=None):
             print(group, nm, "dropped", dropped, "size", im.size)
 
 
-STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix]
+STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix, sheep]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

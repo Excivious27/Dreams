@@ -3294,36 +3294,36 @@
  },
  "animals/sheep_woolly": {
   "baby": {
-   "cell_h": 36,
-   "cell_w": 59,
+   "cell_h": 35,
+   "cell_w": 47,
    "file": "animals/sheep_woolly/baby.png",
    "frames": 4,
-   "h": 36,
-   "w": 236
+   "h": 35,
+   "w": 188
   },
   "eat": {
-   "cell_h": 36,
-   "cell_w": 62,
+   "cell_h": 31,
+   "cell_w": 47,
    "file": "animals/sheep_woolly/eat.png",
    "frames": 2,
-   "h": 36,
-   "w": 124
+   "h": 31,
+   "w": 94
   },
   "idle": {
-   "cell_h": 36,
-   "cell_w": 59,
+   "cell_h": 35,
+   "cell_w": 47,
    "file": "animals/sheep_woolly/idle.png",
    "frames": 4,
-   "h": 36,
-   "w": 236
+   "h": 35,
+   "w": 188
   },
   "walk": {
    "cell_h": 36,
-   "cell_w": 59,
+   "cell_w": 48,
    "file": "animals/sheep_woolly/walk.png",
    "frames": 5,
    "h": 36,
-   "w": 295
+   "w": 240
   }
  },
  "animals_ref": {
