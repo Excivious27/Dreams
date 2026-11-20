@@ -158,6 +158,12 @@ func _run() -> void:
 	for sc: Vector2i in [Vector2i(5, 3), Vector2i(11, 9), Vector2i(23, 10), Vector2i(4, 9)]:
 		check(not m.blocked.has(sc), "the Manor's spouse spot %s is free floor" % str(sc))
 	check((DecorMode.placed("house") as Array).all(func(p: Dictionary) -> bool: return DecorMode.why_not(m, str(p["id"]), Vector2i(int(p["cell"][0]), int(p["cell"][1])), int(p.get("rot", 0)), DecorMode.placed("house").find(p)) == ""), "every placed piece is valid in the Manor")
+	# 13b. Starting layout: the starters you own go back to their first spots (no new copies).
+	var lamp_n := Decor.owned("t_lamp") + Decor.placed_count("t_lamp")
+	var back := DecorMode.reset_layout(m)
+	check(back >= 1 and DecorMode.piece_at(m, Vector2i(1, 2)) >= 0, "starting layout puts the lamp back (%d)" % back)
+	check(Decor.owned("t_lamp") + Decor.placed_count("t_lamp") == lamp_n, "starting layout makes no new copies")
+	check(DecorMode.surface_of("wall", "main") == "", "starting layout clears the wallpaper (back in the box)")
 	# 14. The screen: opens, pauses, places with A, closes.
 	var dm := DecorMode.open(m)
 	await frames(2)

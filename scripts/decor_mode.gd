@@ -416,6 +416,14 @@ static func store_all(m: GameMap) -> int:
 	return n
 
 
+## Store the room, then let the map put its starting pieces back (map.decor_reset()).
+static func reset_layout(m: GameMap) -> int:
+	if not can_edit() or not m.has_method("decor_reset"):
+		return 0
+	store_all(m)
+	return int(m.call("decor_reset"))
+
+
 ## A piece going back to the box: through Decor.give, except a unique (give()
 ## refuses a unique that is "already owned", and a placed one counted as owned).
 static func _box_back(id: String) -> void:
@@ -865,6 +873,21 @@ func _toggle_list() -> void:
 		_list_panel.visible = false
 		_say("%d pieces back in your decor box." % n))
 	_list_box.add_child(st)
+	if map.has_method("decor_reset"):
+		var rs := Button.new()
+		rs.text = "Starting layout"
+		rs.custom_minimum_size = Vector2(236, 24)
+		rs.add_theme_font_size_override("font_size", Settings.font(8))
+		rs.focus_mode = Control.FOCUS_NONE
+		var armed := [false]
+		rs.pressed.connect(func() -> void:
+			if not armed[0]:
+				armed[0] = true
+				rs.text = "Tap again: back to the starting layout"
+				return
+			_list_panel.visible = false
+			_say("Starting layout: %d pieces back in place." % reset_layout(map)))
+		_list_box.add_child(rs)
 	_btn(_list_box, "Close", _toggle_list, 236)
 
 

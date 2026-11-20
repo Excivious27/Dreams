@@ -476,6 +476,22 @@ func _seed_starters() -> void:
 			d["got"][id] = int(GameState.run.get("day", 1))
 
 
+## "Starting layout": every starter you still own goes back to its first spot
+## (DecorMode stores the room first; pieces come out of the box, never new copies).
+func decor_reset() -> int:
+	var t := tier()
+	var want: Array = STARTERS[1].duplicate() + (STARTERS.get(t, []) if t > 1 else [])
+	if t >= 2:
+		want = want.filter(func(pr: Array) -> bool: return str(pr[0]) != "bookshelf")
+	var n := 0
+	for pr: Array in want:
+		var id := _starter_id(str(pr[0]))
+		if id != "" and Decor.owned(id) > 0 and DecorMode.place(self, id, pr[1]) == "":
+			n += 1
+	DecorMode.undo_stack.clear()
+	return n
+
+
 func decor_bounds() -> Rect2i:
 	return Rect2i(1, 2, cols - 2, rows - 3)
 
