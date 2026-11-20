@@ -65,6 +65,12 @@ func _run() -> void:
 	InputSetup.ensure_actions()
 	GameState.load_data()
 	# --- data and art ---------------------------------------------------------
+	# P1's decor.json wins on shared ids; our render fields fill the gaps
+	Decor.data()
+	(Decor._data["items"] as Dictionary)["wr_fedora"] = {"name": "Crew Fedora", "cat": "hat", "rarity": "rare", "layer": "wear"}
+	Wardrobe.register()
+	check(str(Decor.entry("wr_fedora").get("name", "")) == "Crew Fedora" and Decor.entry("wr_fedora").has("doll"), "register keeps P1's entry and adds render fields")
+	(Decor._data["items"] as Dictionary).erase("wr_fedora")
 	var items: Dictionary = Wardrobe.data()["items"]
 	check(items.size() >= 40, "wardrobe pieces: %d" % items.size())
 	Wardrobe.register()
@@ -100,6 +106,7 @@ func _run() -> void:
 	var m := await _start("gangsters", "custom")
 	check(m != null and m.player != null, "farm with custom hero")
 	check(Wardrobe.hero_kind() == "doll", "custom hero is a doll")
+	check(PaperDoll.body_for(GameState.run["look"]) == "outfit_farmer", "no wardrobe piece worn: the look's outfit as before (old saves unchanged)")
 	check(Wardrobe.choices("outfit").has("wr_neon_jacket") and not Wardrobe.choices("outfit").has("wr_ceremony_coat"), "arc filter on starters")
 	check(not Wardrobe.put_on("wr_pinstripe_suit"), "can't wear what you don't own")
 	var before := _gear_totals()
