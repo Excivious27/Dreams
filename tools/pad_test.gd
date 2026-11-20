@@ -186,6 +186,8 @@ func _run() -> void:
 	ok(InputSetup.prompt("a") == "B", "switch bottom button -> B")
 	PadInput.kind = "xbox"
 	ok(PadInput.words("Sword: tap USE to swing at foes.") == "Sword: press A to swing at foes.", "words on a pad: %s" % PadInput.words("Sword: tap USE to swing at foes."))
+	ok(PadInput.words("!!!  Tap USE!") == "!!!  Press A!", "fishing bite words on a pad")
+	ok(PadInput.words("Swing your pickaxe at rocks (tap USE): stone") == "Swing your pickaxe at rocks (press A): stone", "words in brackets")
 	ok(PadInput.kind_of("Sony DualSense Wireless Controller") == "ps" and PadInput.kind_of("Xbox Series Controller") == "xbox" and PadInput.kind_of("Nintendo Switch Pro Controller") == "switch", "kind_of")
 	await _touch(true)
 	await _touch(false)

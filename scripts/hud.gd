@@ -551,7 +551,7 @@ func _draw_hud() -> void:
 	c.draw_string_outline(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, 3, Color(0, 0, 0, 0.7 * la))  # reads on white sky ground
 	c.draw_string(_font, Vector2(TOOLBAR_X, TOOLBAR_Y + SLOT + 11), line, HORIZONTAL_ALIGNMENT_LEFT, lw, 8, Color(1, 1, 0.9, la))
 	# The goal, always on screen (one line, small).
-	var nxt := Money.t(GameState.next_step())
+	var nxt := PadInput.words(Money.t(GameState.next_step()))
 	var sc0 := get_tree().current_scene
 	if sc0 and sc0.get("battle") != null:
 		nxt = ""  # the battle bar says what matters
@@ -794,6 +794,7 @@ static func toast_hold(text: String) -> float:
 
 
 func toast(text: String, color := Color.WHITE) -> void:
+	text = PadInput.words(text)  # "Tap USE!" names the keys / pad buttons off the phone (C9 c9_03)
 	# The same message again: bump a counter instead of stacking a copy.
 	for c in _toasts.get_children():
 		if c is Label and c.has_meta("base") and str(c.get_meta("base")) == text and not c.is_queued_for_deletion():
