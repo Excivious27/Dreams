@@ -844,7 +844,7 @@ func _physics_process(delta: float) -> void:
 			unride()  # wheels don't float
 			if map:
 				map.hud.toast("You hop off at the water's edge.")
-		spd_mult *= 1.0 if Companion.has_ability("tail") else 0.55
+		spd_mult *= 1.25 if Colony.has_ability("tideswim") else (1.0 if Companion.has_ability("tail") else 0.55)  # Kelp Hollow's Tideswim (C7 P5)
 		running = false
 		_swim_t += delta
 		if _swim_t > 2.0 and not Companion.has_ability("tail"):

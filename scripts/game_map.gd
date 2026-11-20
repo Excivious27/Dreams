@@ -295,7 +295,7 @@ func default_spawn() -> Vector2:
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
 ## One short verb for what USE / CHECK would do on this cell (shown on the button).
-const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "mega_gate": "Travel", "elder": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
+const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "mega_gate": "Travel", "elder": "Talk", "colony_kit": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
 
 
 func action_word(c: Vector2i) -> String:
@@ -494,7 +494,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 		return true
 	if t == "rec_home":  # prize decor at home (RecCenter.home_use)
 		return RecCenter.home_use(self, thing)
-	if t in ["elder", "beacon", "star_crystal", "colony_shop"]:
+	if t in ["elder", "beacon", "star_crystal", "colony_shop", "colony_kit"]:
 		return Colony.interact(self, scene_id(), thing)
 	if not resources_here and t in ["tree", "rock", "log", "stump", "bush"] and not bool(thing.get("harvest", false)):
 		hud.toast("That's part of the town.", Color(0.9, 0.9, 0.9))
@@ -2891,7 +2891,7 @@ func _lieutenant_choice(id: String, nm: String) -> void:
 				GameState._apply_max_stats()
 				hud.toast("Old Mags joins: +20 max energy (her back roads save your legs).", Color(1, 0.9, 0.5))
 			return
-		d.say([{"who": nm, "text": "Work for you? I'd rather walk. Don't worry. I'm done with him too."}])
+		d.say([{"who": nm, "text": str(Gift.data().get("lieutenants", {}).get(id, {}).get("refuse", "Work for you? I'd rather walk. Don't worry. I'm done with him too."))}])
 		await d.finished
 	GameState.run["flags"]["lt_spared_" + id] = true
 

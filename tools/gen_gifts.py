@@ -110,6 +110,20 @@ MARKED = [
  ('atlas', 'Atlas Novak', 30, 'Tiny', 'gravity', 'crystal_meadow', 2, 80, 4, 20, 4, ['enforcer', 'brute'],
   "Everything comes to me in the end. Rocks. Coins. You.", "Huh. You stayed away. Lonely way to win.", "I carried crates for a man in a grey suit. One of them was full of black stones. I kept one. Now everything's heavy but me."),
 ]
+# C7 (c7_14): each Marked's own words when they join or go home, and what they
+# say at the hideout once they're crew.
+MARKED_LINES = {
+ 'kit': ("Okay. But I'm not slow. You're slow.", "Mum's going to be so cross with me. ...Good. I missed that.", ["The wind's quieter in here. I like it.", "Race you to the roof. No? Slow.", "Mum sent a jumper. Don't laugh."]),
+ 'ember': ("Nothing burns unless you say so. Deal.", "They're rebuilding our house. Maybe I can carry bricks instead of matches.", ["I lit the stove for Rosa. Just the stove. I'm proud of that.", "Warm in here. The right kind of warm.", "Nobody's scared of me at this table."]),
+ 'dahlia': ("Fine. I'll keep your roads open instead of shut.", "I think I'll open the shop again. Small. Just roses.", ["I potted a fern for the hideout. It's behaving.", "You went round, that day. I still think about that.", "Things grow slower here. Better."]),
+ 'juno': ("I'll keep your lights on. All of them.", "My gran's porch light's been broken for a year. I'll start there.", ["Specs and I rewired the kettle. It's faster now. Too fast.", "Every bulb in here is on because I like you.", "Three. You counted to three. I'm still annoyed."]),
+ 'rio': ("I'll keep time for you. Nobody falls out of step.", "I'm going back to busking. Just music, this time.", ["Listen. Everyone in this room is calm. That's new.", "I wrote you a song. It's mostly drums.", "Your heartbeat's steady. Good. Keep it."]),
+ 'mei': ("Heads, I'm in. Tails, also in.", "I'm going to call heads for someone who needs the luck more.", ["I flipped for who does dishes. I won. I always win.", "Three rolls. I'm still annoyed you knew.", "Lucky's a funny word for what I had."]),
+ 'bruno': ("You waited for me. I'll wait for you.", "Foundry's hiring again. Without the stone, this time.", ["Hit me if you need practice. I don't mind.", "Rosa's stew is the best thing that's happened to me this year.", "I'm learning to say no. It's hard."]),
+ 'tomas': ("Okay. Somebody should look out for you from forty floors up.", "I'm going back to windows. Clean ones. I want to see out of them.", ["I can see myself in the hideout windows. Just one of me. Good.", "You found me. I keep thinking about that.", "People see me here. It's strange. It's nice."]),
+ 'sable': ("I'll drive. Quietly. You'll never hear me coming, and neither will they.", "I think I'll cast a shadow for a while. See how it feels.", ["I have a shadow again. I keep checking.", "You turned round, that day. Nobody turns round.", "Quiet in here. The good kind."]),
+ 'atlas': ("Fine. Everything comes to me in the end. Even friends, apparently.", "Lonely way to win. I'll go and find some people.", ["Things don't fall toward me in here. I don't know why. Maybe they don't need to.", "Carried Rosa's pots. All of them. At once.", "Turns out heavy is easier with help."]),
+}
 def pick(cands):
     for c in cands:
         if 'idle' in M.get('characters/' + c, {}): return c
@@ -119,12 +133,14 @@ comp = C['companions']
 for (mid, name, age, epi, gift, scene, prog, hp, dmg, speed, tier, art, intro, yld, origin) in MARKED:
     own = 'mk_' + mid
     char = own if 'idle' in M.get('characters/' + own, {}) else pick(art)
-    marked[mid] = {'name': name, 'age': age, 'epithet': epi, 'gift': gift, 'scene': scene, 'progress': prog, 'intro': intro, 'yield': yld, 'origin': origin, 'char': char}
+    jl, hl, hd = MARKED_LINES[mid]
+    marked[mid] = {'name': name, 'age': age, 'epithet': epi, 'gift': gift, 'scene': scene, 'progress': prog, 'intro': intro, 'yield': yld, 'origin': origin, 'char': char,
+                   'join_line': jl, 'home_line': hl, 'hideout': hd}
     E['enemies']['marked_' + mid] = {'hp': hp, 'dmg': dmg, 'speed': speed, 'xp': 30 + 20 * tier, 'tier': tier, 'abilities': [], 'gift': gift, 'char': char, 'reward': 60 * tier}
     E['drops']['marked_' + mid] = []
     g = GIFTS[gift]
     comp[own] = {'name': name.split(' ')[0], 'sprite': char, 'arc': 'gangsters', 'ability': 'gift:' + gift, 'ability_name': g['name'], 'ability_desc': 'Tap the ♥ partner button: ' + g['lend_desc'] + ' (%d mana)' % g['mana'],
-                 'join': origin, 'desc': '"%s", %d. %s' % (epi, age, g['name'])}
+                 'join': jl, 'desc': '"%s", %d. %s' % (epi, age, g['name'])}
 NAMES = {'big_grump': 'Big Grump', 'commander': 'The Commander', 'golem_king': 'The Golem King', 'ruin_warden': 'The Ruin Warden', 'marsh_witch': 'The Marsh Witch',
          'president': 'The President', 'dark_crystal': 'The Dark Crystal', 'finargle_elder': 'The Finargle Elder', 'obsidian_sentinel': 'Obsidian Sentinel', 'mirror': 'The Mirror', 'light_eater': 'The Light Eater'}
 for kind, gid in BOSS.items():
@@ -160,6 +176,20 @@ LT = [
   {'name': 'The Ledger', 'colour': 'ffd24a', 'gap': 2.6, 'clones': {'n': 2, 'at': [0.6, 0.3]}, 'moves': [{'type': 'roll', 'of': ['ring', 'lines', 'zones', 'heal']}, {'type': 'veil', 'secs': 1.5}],
    'rule': {'type': 'window', 'after': 'never', 'rolls': 3, 'secs': 3.5, 'closed': 0.2, 'open': 2.4}, 'tip': 'Her luck lasts three rolls. Count them. At low health only one of her has a shadow.'}),
 ]
+# C7 (c7_14): each lieutenant's own answer to 'Come with us' (the six who refuse)
+# and the hideout lines of the two who can join.
+LT_REFUSE = {
+ 'vance': "Work for you? I've worked for one boss too many. I'll take a boat. A small one.",
+ 'lucia': "Join you? No. I'll find a street with no signs on it and learn to sleep in the dark.",
+ 'silas': "Thank you, no. I'll write my own resignation. It's overdue.",
+ 'surveyor': "My maps are finished. I'll go and see the places on them instead.",
+ 'pike': "Last train out of the yards. I'm on it. Don't wave.",
+ 'ostrova': "I'll count someone else's money now. Honestly, for once. It'll be a change.",
+}
+LT_HIDEOUT = {
+ 'brock': ["Forty-one fights. One loss. Best thing that ever happened to me.", "Sparring at dawn. Bring your bat.", "Sasha carried me out of that pit. I owe her a lot of breakfasts."],
+ 'mags': ["Back roads are clear, sugar.", "Hedges are quiet. I told them to be.", "I've been mean a long time. Trying something else."],
+}
 LIEUTENANTS = {}
 for (lid, name, title, where, hp, dmg, speed, tier, art, gid, gdef, ) in LT:
     GIFTS[gid] = gdef
@@ -169,7 +199,11 @@ for (lid, name, title, where, hp, dmg, speed, tier, art, gid, gdef, ) in LT:
         char = kind
     E['enemies'][kind] = {'hp': hp, 'dmg': dmg, 'speed': speed, 'xp': 60 + 15 * tier, 'tier': tier, 'abilities': ['shield'] if tier >= 4 else [], 'gift': gid, 'char': char, 'name': name, 'reward': 120 * tier}
     E['drops'][kind] = [['crystal_refined', 0.8, 2]] + ([['dream_essence', 1.0, 2]] if lid == 'surveyor' else [])
-    LIEUTENANTS[lid] = {'name': name, 'title': title, 'where': where, 'kind': kind}
+    LIEUTENANTS[lid] = {'name': name, 'title': title, 'where': where, 'kind': kind, 'char': char}
+    if lid in LT_REFUSE:
+        LIEUTENANTS[lid]['refuse'] = LT_REFUSE[lid]
+    if lid in LT_HIDEOUT:
+        LIEUTENANTS[lid]['hideout'] = LT_HIDEOUT[lid]
 
 try:
     _old = json.load(open(D + 'gifts.json')).get('gifts', {})

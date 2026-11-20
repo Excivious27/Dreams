@@ -22,6 +22,9 @@ static func st(id: String) -> Dictionary:
 	GameState.run["colonies"] = all
 	if not all.has(id):
 		all[id] = {"met": false, "gave": false, "kills": 0, "beacons": {}, "done": false}
+	# C7: a saved colony also sets colony_<id>_done (finale/epilogue key); old saves get it here.
+	if bool(all[id].get("done", false)) and GameState.run.has("flags") and not GameState.run["flags"].has(id + "_done"):
+		GameState.run["flags"][id + "_done"] = true
 	return all[id]
 
 
@@ -57,7 +60,7 @@ static func ferry(m: GameMap) -> void:
 		ids.append([str(id), ok, held])
 	opts.append("Stay ashore")
 	var d := Dialogue.instance(m.get_tree())
-	d.say([{"who": "Ferry", "text": "Pip the ferry-cat flicks an ear. 'Four colonies out there, and every one of them is going dark. Where to?'", "choice": opts, "key": ""}])
+	d.say([{"who": "Ferry", "text": "Skipper Barnacle, the ferry-cat, flicks an ear. 'Four colonies out there, and every one of them is going dark. Where to?'", "choice": opts, "key": ""}])
 	await d.finished
 	var i := d.last_choice
 	if i < 0 or i >= ids.size():
@@ -67,7 +70,7 @@ static func ferry(m: GameMap) -> void:
 		Campaign.offer(m, Campaign.gate_of(str(ids[i][0])))
 		return
 	if not bool(ids[i][1]):
-		m.hud.toast("Pip: 'Not in this weather. The sea calms as the story goes on.'", Color(1, 0.85, 0.6))
+		m.hud.toast("Skipper Barnacle: 'Not in this weather. The sea calms as the story goes on.'", Color(1, 0.85, 0.6))
 		return
 	var R: Dictionary = RegionData.region(str(ids[i][0]))
 	var sp: Array = R.get("spawn", [10, 10])
@@ -107,7 +110,12 @@ static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 					bc = tc
 					break
 			m.fx("levelup", m.cell_center(bc) + Vector2(0, -12), 10.0, 0.6)
-			m.hud.toast("Beacon lit (%d/%d)." % [(s["beacons"] as Dictionary).size(), int(c.get("beacons", 3))], Color(0.7, 0.95, 1))
+			var lit_n := (s["beacons"] as Dictionary).size()
+			m.hud.toast("Beacon lit (%d/%d)." % [lit_n, int(c.get("beacons", 3))], Color(0.7, 0.95, 1))
+			var verses: Array = c.get("beacon_lines", [])
+			if lit_n >= 1 and lit_n <= verses.size():
+				m.tell([{"text": str(verses[lit_n - 1])}])
+			sync_quest(region_id)
 			# Swap the lantern for its lit picture now, not on the next visit.
 			var on := "%s_beacon_on" % str(region_id).trim_prefix("colony_")
 			var onn := on if Art.has("props", on) else "lantern_lit"
@@ -118,6 +126,9 @@ static func interact(m: GameMap, region_id: String, thing: Dictionary) -> bool:
 			return true
 		"star_crystal":
 			m.later(func() -> void: await _crystal(m, region_id))
+			return true
+		"colony_kit":
+			m.later(func() -> void: await _kit(m, region_id, str(thing.get("key", "k0"))))
 			return true
 		"colony_shop":
 			m.later(func() -> void: await _shop(m, region_id))
@@ -130,14 +141,15 @@ static func _elder(m: GameMap, id: String) -> void:
 	var s := st(id)
 	var who := str(c["elder"])
 	if bool(s["done"]):
-		await m.say([{"who": who, "text": str(c["thanks"])}])
+		await m.say(_after_lines(id))
 		return
 	if not bool(s["met"]):
 		s["met"] = true
-		GameState.add_quest("colony_" + id, "%s: help %s save the colony's star crystal." % [str(c["name"]), who])
-		var lines: Array = []
-		for t in c["intro"]:
-			lines.append({"who": who, "text": str(t)})
+		GameState.add_quest("colony_" + id, _quest_text(id))
+		var lines: Array = _lines(who, c["intro"])
+		var mer := "intro_mer" if GameState.run["flags"].has("mermaid_gift") else "intro_nomer"
+		if c.has(mer):
+			lines.insert(mini(2, lines.size()), {"who": who, "text": str(c[mer])})
 		await m.say(lines)
 		return
 	if not bool(s["gave"]):
@@ -150,7 +162,9 @@ static func _elder(m: GameMap, id: String) -> void:
 			for k in need:
 				_take(str(k), int(need[k]))
 			s["gave"] = true
-			await m.say([{"who": who, "text": str(c["need_thanks"])}])
+			sync_quest(id)
+			var ag: Array = c.get("after_gave", [str(c["need_thanks"])])
+			await m.say(_lines(who, ag))
 		else:
 			var parts: Array = []
 			for k in need:
@@ -158,6 +172,196 @@ static func _elder(m: GameMap, id: String) -> void:
 			await m.say([{"who": who, "text": "%s\nWe need: %s." % [str(c["need_text"]), ", ".join(parts)]}])
 		return
 	await m.say([{"who": who, "text": _status(id)}])
+
+
+## Data lines: plain strings are the speaker's; {text} dicts are narration.
+static func _lines(who: String, src: Array) -> Array:
+	var out: Array = []
+	for t in src:
+		if t is Dictionary:
+			out.append((t as Dictionary).duplicate())
+		else:
+			out.append({"who": who, "text": str(t)})
+	return out
+
+
+## After the save: the lore talk once (flag colony_<id>_lore), then a rotating
+## line, sometimes news of another colony you've saved.
+static func _after_lines(id: String) -> Array:
+	var c: Dictionary = data()[id]
+	var who := str(c["elder"])
+	var f: Dictionary = GameState.run["flags"]
+	if not f.has(id + "_lore") and c.has("lore"):
+		f[id + "_lore"] = true
+		return _lines(who, c["lore"])
+	var pool: Array = (c.get("after", [str(c["thanks"])]) as Array).duplicate()
+	for oid in data():
+		if str(oid) != id and bool(st(str(oid)).get("done", false)):
+			var en := str(data()[oid]["elder"])
+			pool.append("Word came on the tide: %s is saved too. %s will be insufferable about it." % [str(data()[oid]["name"]), en.substr(en.rfind(" ") + 1)])
+	var day := int(GameState.run.get("day", 1))
+	return [{"who": who, "text": str(pool[day % pool.size()])}]
+
+
+## The journal line (the step you're on shows under it: QuestTracker.progress -> progress()).
+static func _quest_text(id: String) -> String:
+	var c: Dictionary = data()[id]
+	return "%s: help %s save the colony's star crystal." % [str(c["name"]), str(c["elder"])]
+
+
+## Short progress for the Quests tab / tracker: "supplies ✗, foes 3/8, beacons 1/3".
+static func progress(id: String) -> String:
+	if id.begins_with("colony_side_"):
+		var parts := id.trim_prefix("colony_side_").split(":")
+		var kits: Array = data().get(parts[0], {}).get("kits", [])
+		var i := int(parts[1].trim_prefix("k")) if parts.size() > 1 else -1
+		if i < 0 or i >= kits.size() or not (kits[i] as Dictionary).has("quest"):
+			return ""
+		var need: Dictionary = kits[i]["quest"]["need"]
+		var have := 0
+		var total := 0
+		for k in need:
+			have += mini(Project.have_of(str(k)), int(need[k]))
+			total += int(need[k])
+		return "%d/%d" % [have, total]
+	var key := id.trim_prefix("colony_")
+	if not key.begins_with("colony_"):
+		key = "colony_" + key
+	if not data().has(key):
+		return ""
+	var c: Dictionary = data()[key]
+	var s := st(key)
+	if bool(s["done"]):
+		return "Saved."
+	if not bool(s["gave"]):
+		return "Bring the supplies."
+	if ready_to_wake(key):
+		return "Wake the star crystal."
+	return "Foes %d/%d, beacons %d/%d." % [mini(int(s["kills"]), int(c["kills"])), int(c["kills"]), (s["beacons"] as Dictionary).size(), int(c.get("beacons", 3))]
+
+
+## Refresh the journal text of a colony quest.
+static func sync_quest(id: String) -> void:
+	for q in GameState.run.get("quests", []):
+		if str(q.get("id", "")) == "colony_" + id and not bool(q.get("done", false)):
+			q["text"] = _quest_text(id)
+
+
+## QuestTracker compass for a colony quest (main or a kit's side quest): off the
+## island, the way to the beach ferry; on it, the elder until the supplies are in,
+## then the nearest unlit beacon, then the star crystal (a side quest: its kit).
+static func pointer(m: GameMap, qid: String) -> Vector2:
+	var rid := ""
+	var kit := ""
+	if qid.begins_with("colony_side_"):
+		var parts := qid.trim_prefix("colony_side_").split(":")
+		rid = parts[0]
+		kit = parts[1] if parts.size() > 1 else ""
+	else:
+		rid = qid.trim_prefix("colony_")
+	if not data().has(rid):
+		return Vector2.ZERO
+	var here := m.scene_id()
+	if here != rid:
+		if here == "beach":
+			for c: Vector2i in m.things:
+				if str((m.things[c] as Dictionary).get("type", "")) == "ferry":
+					return m.cell_center(c)
+		return GoalLine.exit_toward(m, "beach")
+	var s := st(rid)
+	var want := "elder"
+	if kit != "":
+		want = "colony_kit"
+	elif bool(s["gave"]) and not ready_to_wake(rid):
+		want = "beacon"
+	elif bool(s["gave"]):
+		want = "star_crystal"
+	var best := Vector2.ZERO
+	var bd := INF
+	for c: Vector2i in m.things:
+		var t: Dictionary = m.things[c]
+		if str(t.get("type", "")) != want:
+			continue
+		if want == "beacon" and (s["beacons"] as Dictionary).has(str(t.get("key", ""))):
+			continue
+		if want == "colony_kit" and str(t.get("key", "")) != kit:
+			continue
+		var p := m.cell_center(c)
+		var dd := p.distance_to(m.player.position) if m.player else 0.0
+		if dd < bd:
+			bd = dd
+			best = p
+	if best == Vector2.ZERO and want == "beacon":
+		for c: Vector2i in m.things:
+			if str((m.things[c] as Dictionary).get("type", "")) == "elder":
+				return m.cell_center(c)  # beacons lit, foes left: the elder has the count
+	return best
+
+
+## A talkable kit (things "colony_kit", key k0..k2): their side quest, else chatter.
+static func _kit(m: GameMap, id: String, key: String) -> void:
+	var c: Dictionary = data()[id]
+	var kits: Array = c.get("kits", [])
+	var i := int(key.trim_prefix("k"))
+	if i < 0 or i >= kits.size():
+		return
+	var k: Dictionary = kits[i]
+	var nm := str(k["name"])
+	var s := st(id)
+	var day := int(GameState.run.get("day", 1))
+	if not k.has("quest"):
+		var ls: Array = k.get("lines", ["..."])
+		await m.say([{"who": nm, "text": str(ls[(day + i) % ls.size()])}])
+		return
+	if not bool(s["met"]):
+		await m.say([{"who": nm, "text": str(k.get("wait", "Talk to the elder first."))}])
+		return
+	var q: Dictionary = k["quest"]
+	var qid := "colony_side_%s:%s" % [id, key]
+	var sides: Dictionary = s.get("sides", {})
+	s["sides"] = sides
+	var state := str(sides.get(str(q["id"]), ""))
+	if state == "done":
+		var al: Array = k.get("after", [str(q["thanks"])])
+		await m.say([{"who": nm, "text": str(al[day % al.size()])}])
+		return
+	var need: Dictionary = q["need"]
+	if state == "":
+		sides[str(q["id"])] = "open"
+		GameState.add_quest(qid, "%s (%s): %s" % [str(q["title"]), str(c["name"]), _need_words(need)])
+		await m.say([{"who": nm, "text": str(q["ask"])}])
+		return
+	var ok := true
+	for it in need:
+		if Project.have_of(str(it)) < int(need[it]):
+			ok = false
+	if not ok:
+		await m.say([{"who": nm, "text": "%s\nStill need: %s." % [str(q["ask"]).split(". ")[0] + ".", _need_words(need, true)]}])
+		return
+	for it in need:
+		_take(str(it), int(need[it]))
+	sides[str(q["id"])] = "done"
+	GameState.complete_quest(qid)
+	await m.say([{"who": nm, "text": str(q["thanks"])}])
+	var rw: Dictionary = q.get("reward", {})
+	for it in rw:
+		if str(it) == "crystals":
+			GameState.add_money(int(rw[it]), "quests")
+			m.hud.toast("+%s" % Money.amount(int(rw[it])), Color(1, 0.9, 0.5))
+		elif int(rw[it]) > 0:
+			m.give(str(it), int(rw[it]))
+	GameState.add_arc_xp(25)
+	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
+
+
+static func _need_words(need: Dictionary, have := false) -> String:
+	var parts: Array = []
+	for k in need:
+		if have:
+			parts.append("%d %s (you have %d)" % [int(need[k]), Project.need_name(str(k)), Project.have_of(str(k))])
+		else:
+			parts.append("%d %s" % [int(need[k]), Project.need_name(str(k))])
+	return ", ".join(parts)
 
 
 static func _status(id: String) -> String:
@@ -221,10 +425,16 @@ static func on_kill(m: GameMap, e: Enemy) -> void:
 		m.remove_meta("colony_boss")
 		await _restore(m, rid)
 		return
+	var kinds: Array = data()[rid].get("foe_kinds", [])
+	if not e.has_meta("colony_foe") and not kinds.has(e.kind):
+		return  # only the foes the elder named count
 	s["kills"] = int(s["kills"]) + 1
+	sync_quest(rid)
 	var need := int(data()[rid]["kills"])
 	if int(s["kills"]) == need:
 		m.hud.toast("The %s are driven off." % str(data()[rid]["foe_word"]).to_lower(), Color(0.7, 1, 0.8))
+		if data()[rid].has("kills_line"):
+			m.tell([{"text": str(data()[rid]["kills_line"])}])
 
 
 static func _restore(m: GameMap, id: String) -> void:
@@ -234,6 +444,7 @@ static func _restore(m: GameMap, id: String) -> void:
 	GameState.add_arc_xp(120)
 	GameState.complete_quest("colony_" + id)
 	GameState.run["flags"]["colony_" + str(c["ability"])] = true
+	GameState.run["flags"][id + "_done"] = true  # C7: finale/epilogue key per colony
 	GameState.add_item("colony_light", 1)
 	for sp in c.get("spells", []):
 		GameState.run["skills"]["magic"] = GameState.run["skills"].get("magic", {"level": 1, "xp": 0, "nodes": {}})
@@ -249,10 +460,17 @@ static func _restore(m: GameMap, id: String) -> void:
 	Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 	m.shake(3.0)
 	Music.instance(m.get_tree()).play(m.music_track)
-	var lines: Array = [{"text": str(c["crystal_restored"])}, {"who": str(c["elder"]), "text": str(c["thanks"])},
-		{"text": "New ability: %s. %s" % [str(c["ability_name"]), str(c["ability_desc"])]}]
-	if saved() == 4:
-		lines.append({"who": "Star Crystal", "text": "Four colonies, four lights. I can feel them all the way from your field. The Dark Crystal can feel them too, and it's afraid."})
+	var lines: Array = [{"text": str(c["crystal_restored"])}]
+	lines.append_array(_lines(str(c["elder"]), c.get("reveal", [])))
+	lines.append({"who": str(c["elder"]), "text": str(c["thanks"])})
+	lines.append({"text": "New ability: %s. %s" % [str(c["ability_name"]), str(c["ability_desc"])]})
+	var star: Array = ["One colony glowing again. I felt it from your field, like a window lighting up across the sea.",
+		"Two lights out on the water now. They're humming the same tune. I think I used to know it.",
+		"Three. One more, and the old song will be whole again.",
+		"Four colonies, four lights. I can feel them all the way from your field. The Dark Crystal can feel them too, and it's afraid."]
+	var n := saved()
+	if n >= 1 and n <= 4:
+		lines.append({"who": "Star Crystal", "text": star[n - 1]})
 	await m.say(lines)
 	GameState.save()
 	# Reload the region so the lit crystal, open stall and cleared blight show now.

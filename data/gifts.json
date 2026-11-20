@@ -1031,7 +1031,14 @@
    "intro": "You're the one everyone's whispering about? You're slow.",
    "yield": "Okay. OKAY. You caught the wind. Nobody catches the wind.",
    "origin": "I got it the night a man in a grey suit gave me a little black stone and said I'd never be cold again. He lied about the cold.",
-   "char": "mk_kit"
+   "char": "mk_kit",
+   "join_line": "Okay. But I'm not slow. You're slow.",
+   "home_line": "Mum's going to be so cross with me. ...Good. I missed that.",
+   "hideout": [
+    "The wind's quieter in here. I like it.",
+    "Race you to the roof. No? Slow.",
+    "Mum sent a jumper. Don't laugh."
+   ]
   },
   "ember": {
    "name": "Ember Reyes",
@@ -1043,7 +1050,14 @@
    "intro": "The docks are mine. Everything here burns if I say so.",
    "yield": "...It's out. I've never had it go out before.",
    "origin": "A man in a grey suit handed me a black stone the day they boarded up our house. It was warm. I thought that meant something.",
-   "char": "mk_ember"
+   "char": "mk_ember",
+   "join_line": "Nothing burns unless you say so. Deal.",
+   "home_line": "They're rebuilding our house. Maybe I can carry bricks instead of matches.",
+   "hideout": [
+    "I lit the stove for Rosa. Just the stove. I'm proud of that.",
+    "Warm in here. The right kind of warm.",
+    "Nobody's scared of me at this table."
+   ]
   },
   "dahlia": {
    "name": "Dahlia Okafor",
@@ -1055,7 +1069,14 @@
    "intro": "This road grows shut behind people I don't like.",
    "yield": "You went round. Nobody goes round. They all push.",
    "origin": "I was a florist. A customer in a grey suit paid with a black stone. Things grew after that. Too many things.",
-   "char": "mk_dahlia"
+   "char": "mk_dahlia",
+   "join_line": "Fine. I'll keep your roads open instead of shut.",
+   "home_line": "I think I'll open the shop again. Small. Just roses.",
+   "hideout": [
+    "I potted a fern for the hideout. It's behaving.",
+    "You went round, that day. I still think about that.",
+    "Things grow slower here. Better."
+   ]
   },
   "juno": {
    "name": "Juno Park",
@@ -1067,7 +1088,14 @@
    "intro": "Every sign on this street is on because of me. Watch.",
    "yield": "Three. You counted to three. Ugh.",
    "origin": "I fixed a neon sign for a man in a grey suit. He tipped with a black stone. I haven't needed a socket since.",
-   "char": "mk_juno"
+   "char": "mk_juno",
+   "join_line": "I'll keep your lights on. All of them.",
+   "home_line": "My gran's porch light's been broken for a year. I'll start there.",
+   "hideout": [
+    "Specs and I rewired the kettle. It's faster now. Too fast.",
+    "Every bulb in here is on because I like you.",
+    "Three. You counted to three. I'm still annoyed."
+   ]
   },
   "rio": {
    "name": "Rio Santos",
@@ -1079,7 +1107,14 @@
    "intro": "Hear that? That's your heartbeat. I'm about to borrow it.",
    "yield": "You came in on the off-beat. That's my move. That's MY move.",
    "origin": "I was busking. A grey suit dropped a black stone in my hat. I could suddenly hear everyone's pulse.",
-   "char": "mk_rio"
+   "char": "mk_rio",
+   "join_line": "I'll keep time for you. Nobody falls out of step.",
+   "home_line": "I'm going back to busking. Just music, this time.",
+   "hideout": [
+    "Listen. Everyone in this room is calm. That's new.",
+    "I wrote you a song. It's mostly drums.",
+    "Your heartbeat's steady. Good. Keep it."
+   ]
   },
   "mei": {
    "name": "Mei Tanaka",
@@ -1091,7 +1126,14 @@
    "intro": "Heads I win. Tails, also me. Want to see?",
    "yield": "Three rolls. It's always three. How did you know it was three?",
    "origin": "A man in a grey suit flipped me a black stone for calling heads. Only time I think he let me be right.",
-   "char": "mk_mei"
+   "char": "mk_mei",
+   "join_line": "Heads, I'm in. Tails, also in.",
+   "home_line": "I'm going to call heads for someone who needs the luck more.",
+   "hideout": [
+    "I flipped for who does dishes. I won. I always win.",
+    "Three rolls. I'm still annoyed you knew.",
+    "Lucky's a funny word for what I had."
+   ]
   },
   "bruno": {
    "name": "Bruno Castellan",
@@ -1103,7 +1145,14 @@
    "intro": "Hit me. Go on. Everyone gets one.",
    "yield": "...Fair. You waited. Nobody waits.",
    "origin": "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. The rest threw theirs in the furnace. I kept mine.",
-   "char": "mk_bruno"
+   "char": "mk_bruno",
+   "join_line": "You waited for me. I'll wait for you.",
+   "home_line": "Foundry's hiring again. Without the stone, this time.",
+   "hideout": [
+    "Hit me if you need practice. I don't mind.",
+    "Rosa's stew is the best thing that's happened to me this year.",
+    "I'm learning to say no. It's hard."
+   ]
   },
   "tomas": {
    "name": "Teo Vela",
@@ -1115,7 +1164,14 @@
    "intro": "Which one of us are you looking at? Wrong.",
    "yield": "You found me. People don't. Even I don't, some days.",
    "origin": "I cleaned windows uptown. Found a black stone on a sill, forty floors up. I looked into it and it looked back.",
-   "char": "mk_tomas"
+   "char": "mk_tomas",
+   "join_line": "Okay. Somebody should look out for you from forty floors up.",
+   "home_line": "I'm going back to windows. Clean ones. I want to see out of them.",
+   "hideout": [
+    "I can see myself in the hideout windows. Just one of me. Good.",
+    "You found me. I keep thinking about that.",
+    "People see me here. It's strange. It's nice."
+   ]
   },
   "sable": {
    "name": "Sable Marchetti",
@@ -1127,7 +1183,14 @@
    "intro": "You won't hear me. Nobody does. It's restful.",
    "yield": "You turned round. People never turn round.",
    "origin": "I was a getaway driver who wanted to disappear. A grey suit said he could arrange it. He gave me a black stone and I haven't cast a shadow at noon since.",
-   "char": "mk_sable"
+   "char": "mk_sable",
+   "join_line": "I'll drive. Quietly. You'll never hear me coming, and neither will they.",
+   "home_line": "I think I'll cast a shadow for a while. See how it feels.",
+   "hideout": [
+    "I have a shadow again. I keep checking.",
+    "You turned round, that day. Nobody turns round.",
+    "Quiet in here. The good kind."
+   ]
   },
   "atlas": {
    "name": "Atlas Novak",
@@ -1139,7 +1202,14 @@
    "intro": "Everything comes to me in the end. Rocks. Coins. You.",
    "yield": "Huh. You stayed away. Lonely way to win.",
    "origin": "I carried crates for a man in a grey suit. One of them was full of black stones. I kept one. Now everything's heavy but me.",
-   "char": "mk_atlas"
+   "char": "mk_atlas",
+   "join_line": "Fine. Everything comes to me in the end. Even friends, apparently.",
+   "home_line": "Lonely way to win. I'll go and find some people.",
+   "hideout": [
+    "Things don't fall toward me in here. I don't know why. Maybe they don't need to.",
+    "Carried Rosa's pots. All of them. At once.",
+    "Turns out heavy is easier with help."
+   ]
   }
  },
  "bosses": {
@@ -1160,49 +1230,73 @@
    "name": "Harbourmaster Vance",
    "title": "Lieutenant of the Docks",
    "where": "docks",
-   "kind": "lt_vance"
+   "kind": "lt_vance",
+   "char": "lt_vance",
+   "refuse": "Work for you? I've worked for one boss too many. I'll take a boat. A small one."
   },
   "lucia": {
    "name": "Lucia \"Flame\" Ardent",
    "title": "Lieutenant of Neon",
    "where": "neon",
-   "kind": "lt_lucia"
+   "kind": "lt_lucia",
+   "char": "lt_lucia",
+   "refuse": "Join you? No. I'll find a street with no signs on it and learn to sleep in the dark."
   },
   "brock": {
    "name": "Brock the Unbroken",
    "title": "Pit Champion",
    "where": "underground",
-   "kind": "lt_brock"
+   "kind": "lt_brock",
+   "char": "lt_brock",
+   "hideout": [
+    "Forty-one fights. One loss. Best thing that ever happened to me.",
+    "Sparring at dawn. Bring your bat.",
+    "Sasha carried me out of that pit. I owe her a lot of breakfasts."
+   ]
   },
   "silas": {
    "name": "Silas Crane",
    "title": "The Enforcer of Uptown",
    "where": "uptown",
-   "kind": "lt_silas"
+   "kind": "lt_silas",
+   "char": "lt_silas",
+   "refuse": "Thank you, no. I'll write my own resignation. It's overdue."
   },
   "mags": {
    "name": "Old Mags",
    "title": "Queen of the Country Roads",
    "where": "countryside",
-   "kind": "lt_mags"
+   "kind": "lt_mags",
+   "char": "lt_mags",
+   "hideout": [
+    "Back roads are clear, sugar.",
+    "Hedges are quiet. I told them to be.",
+    "I've been mean a long time. Trying something else."
+   ]
   },
   "surveyor": {
    "name": "The Surveyor",
    "title": "Keeper of the Wastes",
    "where": "wastes",
-   "kind": "lt_surveyor"
+   "kind": "lt_surveyor",
+   "char": "lt_surveyor",
+   "refuse": "My maps are finished. I'll go and see the places on them instead."
   },
   "pike": {
    "name": "Conductor Pike",
    "title": "Master of the Rail Yards",
    "where": "bf_rail_yards",
-   "kind": "lt_pike"
+   "kind": "lt_pike",
+   "char": "lt_pike",
+   "refuse": "Last train out of the yards. I'm on it. Don't wave."
   },
   "ostrova": {
    "name": "Madame Ostrova",
    "title": "The President's Banker",
    "where": "bf_dockside",
-   "kind": "lt_ostrova"
+   "kind": "lt_ostrova",
+   "char": "lt_ostrova",
+   "refuse": "I'll count someone else's money now. Honestly, for once. It'll be a change."
   }
  }
 }

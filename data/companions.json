@@ -8,7 +8,7 @@
    "ability": "powerup",
    "ability_name": "Power Pose",
    "ability_desc": "Tap ♥: a crystal aura that stuns grumps nearby and lifts your mana by 5.",
-   "join": "I was going to find the crystal on my own. Together is faster. And warmer."
+   "join": "I touched it first. Nova says she did. Together is warmer. And I'll carry the snacks."
   },
   "penguin_f": {
    "name": "Nova",
@@ -16,7 +16,7 @@
    "arc": "penguins",
    "ability": "meow_pow_wow",
    "ability_name": "Meow Pow Wow",
-   "ability_desc": "A penguin-cat purr-wave: grumps caught in it turn back into what they were (rank 1: little ones; each rank reaches bigger ones).",
+   "ability_desc": "A penguin-cat purr-wave: Grumps caught in it remember they were crystals and float home; other creatures he squeezed turn back into what they were (rank 1: little ones; each rank reaches bigger ones).",
    "join": "Fine. But I'm the one who talks to the cats.",
    "ability_name_wait": "Meow Pow Wow (not yet)",
    "ability_desc_wait": "Nova feels the star crystal's warmth, but nobody has shown her how to let it out. Catkins, in the crystal meadow, can teach it.",
@@ -98,7 +98,10 @@
     "idle": [
      "Bee bop boo baby. That means: be careful.",
      "Quiet. Finargles in these hills.",
-     "Mountain is tall. Top is in space. We walk."
+     "Mountain is tall. Top is in space. We walk.",
+     "Finargle not bad because fuzzy. Finargle bad because listen to wrong voice.",
+     "Old finargles sing to mountain. Mountain sing back. Now quiet.",
+     "If eyes in dark, Coldy stamp. Finargle hate stamp."
     ],
     "gate": "I hold the key. Key goes where you go."
    },
@@ -111,7 +114,7 @@
    "ability": "gift:gale",
    "ability_name": "Gale Gift",
    "ability_desc": "Tap the ♥ partner button: Blows everything back and puts the wind at your heels. (6 mana)",
-   "join": "I got it the night a man in a grey suit gave me a little black stone and said I'd never be cold again. He lied about the cold.",
+   "join": "Okay. But I'm not slow. You're slow.",
    "desc": "\"Feather\", 15. Gale Gift"
   },
   "mk_ember": {
@@ -121,7 +124,7 @@
    "ability": "gift:cinder",
    "ability_name": "Cinder Gift",
    "ability_desc": "Tap the ♥ partner button: A ring of fire: burns everything close. (8 mana)",
-   "join": "A man in a grey suit handed me a black stone the day they boarded up our house. It was warm. I thought that meant something.",
+   "join": "Nothing burns unless you say so. Deal.",
    "desc": "\"Matchstick\", 19. Cinder Gift"
   },
   "mk_dahlia": {
@@ -131,7 +134,7 @@
    "ability": "gift:bramble",
    "ability_name": "Bramble Gift",
    "ability_desc": "Tap the ♥ partner button: Roots hold everything near in place. (7 mana)",
-   "join": "I was a florist. A customer in a grey suit paid with a black stone. Things grew after that. Too many things.",
+   "join": "Fine. I'll keep your roads open instead of shut.",
    "desc": "\"Thorn\", 24. Bramble Gift"
   },
   "mk_juno": {
@@ -141,7 +144,7 @@
    "ability": "gift:volt",
    "ability_name": "Volt Gift",
    "ability_desc": "Tap the ♥ partner button: A bolt down the line you face. (8 mana)",
-   "join": "I fixed a neon sign for a man in a grey suit. He tipped with a black stone. I haven't needed a socket since.",
+   "join": "I'll keep your lights on. All of them.",
    "desc": "\"Static\", 22. Volt Gift"
   },
   "mk_rio": {
@@ -151,7 +154,7 @@
    "ability": "gift:beat",
    "ability_name": "Tempo Gift",
    "ability_desc": "Tap the ♥ partner button: Two pulses, on the beat, through everything near. (7 mana)",
-   "join": "I was busking. A grey suit dropped a black stone in my hat. I could suddenly hear everyone's pulse.",
+   "join": "I'll keep time for you. Nobody falls out of step.",
    "desc": "\"Tempo\", 20. Tempo Gift"
   },
   "mk_mei": {
@@ -161,7 +164,7 @@
    "ability": "gift:fortune",
    "ability_name": "Fortune Gift",
    "ability_desc": "Tap the ♥ partner button: A roll of the dice: crystals, health, or a hard hit. (6 mana)",
-   "join": "A man in a grey suit flipped me a black stone for calling heads. Only time I think he let me be right.",
+   "join": "Heads, I'm in. Tails, also in.",
    "desc": "\"Lucky\", 23. Fortune Gift"
   },
   "mk_bruno": {
@@ -171,7 +174,7 @@
    "ability": "gift:iron",
    "ability_name": "Iron Gift",
    "ability_desc": "Tap the ♥ partner button: Iron skin: hits land much softer for a while. (8 mana)",
-   "join": "I worked the foundry. The owner, grey suit, gave every man on the night shift a black stone. The rest threw theirs in the furnace. I kept mine.",
+   "join": "You waited for me. I'll wait for you.",
    "desc": "\"Anvil\", 28. Iron Gift"
   },
   "mk_tomas": {
@@ -181,7 +184,7 @@
    "ability": "gift:mirror",
    "ability_name": "Mirror Gift",
    "ability_desc": "Tap the ♥ partner button: A flash of mirrors: everything near is dazed. (7 mana)",
-   "join": "I cleaned windows uptown. Found a black stone on a sill, forty floors up. I looked into it and it looked back.",
+   "join": "Okay. Somebody should look out for you from forty floors up.",
    "desc": "\"Glass\", 17. Mirror Gift"
   },
   "mk_sable": {
@@ -191,7 +194,7 @@
    "ability": "gift:shade",
    "ability_name": "Shade Gift",
    "ability_desc": "Tap the ♥ partner button: Step into shadow: nothing can touch you for three seconds. (9 mana)",
-   "join": "I was a getaway driver who wanted to disappear. A grey suit said he could arrange it. He gave me a black stone and I haven't cast a shadow at noon since.",
+   "join": "I'll drive. Quietly. You'll never hear me coming, and neither will they.",
    "desc": "\"Hush\", 26. Shade Gift"
   },
   "mk_atlas": {
@@ -201,7 +204,7 @@
    "ability": "gift:gravity",
    "ability_name": "Gravity Gift",
    "ability_desc": "Tap the ♥ partner button: Drags everything near to your feet and hits it. (8 mana)",
-   "join": "I carried crates for a man in a grey suit. One of them was full of black stones. I kept one. Now everything's heavy but me.",
+   "join": "Fine. Everything comes to me in the end. Even friends, apparently.",
    "desc": "\"Tiny\", 30. Gravity Gift"
   }
  },
@@ -218,22 +221,22 @@
     },
     {
      "who": "Pip-Pip",
-     "text": "We followed the light. From very far. It stopped over YOUR field, so.",
+     "text": "We touched it. Last night. In YOUR field, while everybody else hid. Now everything hums.",
      "not_hero": "penguin_m"
     },
     {
      "who": "Nova",
-     "text": "He means: can we stay. One of us, anyway. The other keeps watch on the mountain.",
+     "text": "He means: can we stay. One of us, anyway. The other keeps watch over the island, in case the red sky comes back.",
      "not_hero": "penguin_f"
     },
     {
      "who": "Nova",
-     "text": "Pip-Pip's on the mountain, keeping watch. Someone here needs a hand. Can I stay?",
+     "text": "Pip-Pip's keeping watch over the island, in case the red sky comes back. Someone here needs a hand. Can I stay?",
      "only_hero": "penguin_m"
     },
     {
      "who": "Pip-Pip",
-     "text": "Nova's on the mountain, keeping watch. I'm the other one. I'm also the better one. Can I stay?",
+     "text": "Nova's keeping watch over the island. I'm the other one. I'm also the better one. Can I stay?",
      "only_hero": "penguin_f"
     },
     {

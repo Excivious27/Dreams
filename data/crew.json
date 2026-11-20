@@ -1,5 +1,5 @@
 {
- "_": "Recruitable gangsters (Gangster's Paradise). `before`: where they stand until recruited (story beats in story.json recruit them, flag crew_<id>). `home`: where they hang at the hideout once in. Loyalty 0-3 rises one step per loyalty scene (talk to them at the hideout, one per 3 days). `perk` by loyalty level. Sprites from Art Prompts 11 Batch 3 (w213-w218).",
+ "_": "Recruitable gangsters (Gangster's Paradise). `before`: where they stand until recruited (story beats in story.json recruit them, flag crew_<id>). `home`: where they hang at the hideout once in. Loyalty 0-3 rises one step per loyalty scene (talk to them at the hideout, one per 3 days). `perk` by loyalty level. Sprites from Art Prompts 11 Batch 3 (w213-w218). 'waiting' = lines (or {text} narration) before a member is recruited; 'waiting_hint' = toast once (flag crew_hint_<id>); marlene 'sold' plays once after letter_sold, then marlene_refused.",
  "members": {
   "deuce": {
    "name": "Deuce",
@@ -45,7 +45,10 @@
      }
     ]
    ],
-   "finale": "Deuce shows the lobby guards a card trick they can't walk away from."
+   "finale": "Deuce shows the lobby guards a card trick they can't walk away from.",
+   "waiting": [
+    "Pick a card. Any card. ...Later, then. I'll keep it warm."
+   ]
   },
   "mama_rosa": {
    "name": "Mama Rosa",
@@ -87,7 +90,10 @@
      }
     ]
    ],
-   "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the lobby."
+   "finale": "Mama Rosa's stew is the reason nobody in the crew goes down before the lobby.",
+   "waiting": [
+    "Sit, sit. We talk business when you've got time to eat."
+   ]
   },
   "specs": {
    "name": "Specs",
@@ -129,7 +135,12 @@
      }
     ]
    ],
-   "finale": "Specs cuts the tower's lights from sub-basement three."
+   "finale": "Specs cuts the tower's lights from sub-basement three.",
+   "waiting": [
+    "No paper, no talk. Somebody on these docks keeps a shipping manifest. Find it.",
+    "I don't talk to people without paper. It's nothing personal. It's a policy."
+   ],
+   "waiting_hint": "Specs wants a shipping manifest. Somebody on the docks keeps one."
   },
   "ladder": {
    "name": "Ladder",
@@ -171,7 +182,12 @@
      }
     ]
    ],
-   "finale": "Ladder calls every guard's position from the crane before you reach the steps."
+   "finale": "Ladder calls every guard's position from the crane before you reach the steps.",
+   "waiting": [
+    "Dock boss owns the crane. Move him and come up.",
+    "Four hundred and... don't interrupt. Come back when the docks are yours."
+   ],
+   "waiting_hint": "Ladder will talk once the dock boss is beaten."
   },
   "vic": {
    "name": "Vic",
@@ -189,8 +205,8 @@
     20
    ],
    "perks": [
-    "+1 sword damage",
-    "+2 sword damage",
+    "+1 melee damage",
+    "+2 melee damage",
     "Twin strike: every third hit lands twice"
    ],
    "loyalty": [
@@ -217,7 +233,12 @@
      }
     ]
    ],
-   "finale": "Vic and Val take the right side of the lobby and hold it."
+   "finale": "Vic and Val take the right side of the lobby and hold it.",
+   "waiting": [
+    "Pit first.",
+    "Win the pit. Then we talk. Both of us."
+   ],
+   "waiting_hint": "Vic and Val will talk once you win the pit fights."
   },
   "val": {
    "name": "Val",
@@ -259,7 +280,12 @@
      }
     ]
    ],
-   "finale": "Val holds the right side of the lobby with Vic."
+   "finale": "Val holds the right side of the lobby with Vic.",
+   "waiting": [
+    "Vic says pit first. Vic's right.",
+    "You haven't won anything down here yet."
+   ],
+   "waiting_hint": "Vic and Val will talk once you win the pit fights."
   },
   "halo": {
    "name": "Halo",
@@ -301,7 +327,12 @@
      }
     ]
    ],
-   "finale": "Halo's car is idling at the tower steps when the doors open."
+   "finale": "Halo's car is idling at the tower steps when the doors open.",
+   "waiting": [
+    "Nobody races on these docks while the boss is watching. Fix that.",
+    "Engine's warm. You're not ready. Come back when the docks are free."
+   ],
+   "waiting_hint": "Halo will talk once the dock boss is beaten."
   },
   "dice": {
    "name": "Dice",
@@ -343,7 +374,12 @@
      }
     ]
    ],
-   "finale": "Dice carries the word down to the town: it's over."
+   "finale": "Dice carries the word down to the town: it's over.",
+   "waiting": [
+    "Can't talk, can't talk. Neon's boss has eyes everywhere.",
+    "Not while Neon's boss is up. Ask me after. Please. After."
+   ],
+   "waiting_hint": "Dice is too scared to talk while the Neon boss runs the street."
   },
   "the_kid": {
    "name": "The Kid",
@@ -389,7 +425,16 @@
      }
     ]
    ],
-   "finale": "The Kid finds the stairwell nobody else could; it goes all the way up."
+   "finale": "The Kid finds the stairwell nobody else could; it goes all the way up.",
+   "waiting": [
+    {
+     "text": "The Kid points at the boss's big sign, then at you, then shrugs and skates a slow circle."
+    },
+    {
+     "text": "The Kid flips the board, catches it, and looks at the boss's sign again. Not yet, then."
+    }
+   ],
+   "waiting_hint": "The Kid won't talk while the Neon boss runs the street."
   },
   "doc": {
    "name": "Doc",
@@ -431,7 +476,12 @@
      }
     ]
    ],
-   "finale": "Doc keeps the crew breathing in the lobby."
+   "finale": "Doc keeps the crew breathing in the lobby.",
+   "waiting": [
+    "I don't sign on with anyone while Neon's boss is running this street.",
+    "Come and see me when Neon is quiet. Mind that cut."
+   ],
+   "waiting_hint": "Doc will talk once the Neon boss is beaten."
   },
   "marlene": {
    "name": "Marlene",
@@ -473,7 +523,25 @@
      }
     ]
    ],
-   "finale": "Marlene has the real deed waiting when you come home."
+   "finale": "Marlene has the real deed waiting when you come home.",
+   "waiting": [
+    "I only deal with people who run the docks. Run them, then come back.",
+    "Not today, farmer. Today I'm busy being expensive."
+   ],
+   "waiting_hint": "Marlene deals with whoever runs the docks. Beat the dock boss first.",
+   "sold": [
+    {
+     "who": "Marlene",
+     "text": "You sold me the paper. Business is business, and our business is done."
+    },
+    {
+     "who": "Marlene",
+     "text": "I don't keep partners who sell what they're carrying. Nothing personal. Good luck, farmer."
+    },
+    {
+     "text": "Marlene tucks her ledger under her arm and walks off down the docks without looking back."
+    }
+   ]
   },
   "sasha": {
    "name": "Sasha",
@@ -515,7 +583,12 @@
      }
     ]
    ],
-   "finale": "Sasha walks point across the marble, and nothing in the lobby gets past her."
+   "finale": "Sasha walks point across the marble, and nothing in the lobby gets past her.",
+   "waiting": [
+    "The champion's still standing. Fix that, then talk to me.",
+    "Win the pit first."
+   ],
+   "waiting_hint": "Sasha will talk once the underground boss is beaten."
   }
  }
 }

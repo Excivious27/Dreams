@@ -1607,7 +1607,6 @@ func _crew_tab() -> void:
 		_line("  Nobody yet. People in the hideout and the districts want something before they'll join.", 8, Color(0.7, 0.7, 0.7))
 		return
 	for id in ids:
-		var mdef: Dictionary = Crew.members()[id]
 		var lv := Crew.loyalty(id)
 		var h := HBoxContainer.new()
 		h.add_theme_constant_override("separation", 4)
@@ -1628,8 +1627,7 @@ func _crew_tab() -> void:
 			bd.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 			h.add_child(bd)
 		var l := Label.new()
-		var perks: Array = mdef.get("perks", [])
-		l.text = "%s — %s\n%s" % [str(mdef["name"]), str(mdef.get("role", "")), str(perks[lv - 1]) if lv > 0 and lv <= perks.size() else "no perk yet: talk at the hideout"]
+		l.text = Crew.roster_text(id)  # perk incl. Training Center drill (C7 P5)
 		l.add_theme_font_size_override("font_size", 7)
 		l.custom_minimum_size = Vector2(120, 0)
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1651,4 +1649,6 @@ func _crew_tab() -> void:
 			rk.custom_minimum_size = Vector2(14, 12)
 			rk.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			h.add_child(rk)
+	for t: String in Crew.also_with_you():  # joined Marked / lieutenants (C7 P5)
+		_line("  Also with you: " + t, 7, Color(0.85, 0.85, 1))
 	_line("")

@@ -4,16 +4,19 @@
   "tier": 1,
   "elder": "Grandmother Brine",
   "intro": [
-   "You came by the ferry? Then the sea still lets some through. Good.",
+   {
+    "text": "A merkitty with a white muzzle and a coral comb in her fur flips backwards off the jetty, comes up laughing, and hauls herself out beside you."
+   },
+   "Eight hundred and twelve, and I still beat my grandkits to the buoy. You're the one who broke the crabs' line at the Reef Gate! The kits haven't stopped talking about it.",
    "Our star crystal sits in the reef shrine. It's fading, and the reef is turning grey and grabbing at us.",
-   "We need food for the little ones, the grey crabs chased off, and the three tide beacons lit so the shoals come home. Then wake the crystal."
+   "Food for the little ones, the grey crabs and Grumps chased off, and the three tide beacons lit so the shoals come home. Then we wake the crystal together."
   ],
   "need": {
    "#fish": 6
   },
   "need_text": "The little ones haven't eaten properly in days.",
   "need_thanks": "Oh, the kits will eat tonight. Bless you.",
-  "foe_word": "Grey crabs",
+  "foe_word": "Grey Grumps and crabs",
   "kills": 8,
   "beacons": 3,
   "boss": "cboss_coral",
@@ -46,16 +49,116 @@
     "starfish_snack",
     90
    ]
-  ]
+  ],
+  "intro_mer": "And you carry Mer's song on you. That girl always did wander. Good. She chose well.",
+  "intro_nomer": "No tail on you yet? Never mind. The ferry brought you, and the sea doesn't do that for just anyone.",
+  "after_gave": [
+   "The kits ate, and then they sang. Badly. Wonderfully.",
+   "Shelly says the reef started whispering after a black pearl washed up on the shrine steps. Whispering! Reefs hum, dear. They don't whisper. Keep your ears open."
+  ],
+  "beacon_lines": [
+   "The beacon catches. From the shrine, faintly, Brine sings: 'Pink for the morning, the tide coming in...'",
+   "'...gold for the noon, when the shoals turn and spin...'",
+   "'...blue for the night, and the star we hold in.' Out on the reef, something grey shudders."
+  ],
+  "kills_line": "The grey crabs scuttle off sideways and don't come back. One of them, you'd swear, looked relieved.",
+  "reveal": [
+   {
+    "text": "Where the Grey Reef stood, a black pearl lies cracked in two. Inside it, a splinter of dark crystal goes dull and crumbles to sand."
+   },
+   "So that's what was whispering. His seed, dropped in our shrine like a stone down a well. Clever. Rude, but clever.",
+   "The grey coral wasn't wicked, you know. It was our crystal's little ones, listening to the wrong voice. Look at them now. Pink as sunrise."
+  ],
+  "lore": [
+   "When the star broke, four pieces fell into the sea. We were the cats who caught them. We've been young ever since. That's what holding a star does.",
+   "Catkins of the meadow keeps the old ways on land; we keep them in the water. She sends her regards by gull, about twice a century.",
+   "Every colony keeps one verse of the old song. You've heard ours. Hear the other three and the sea will remember you."
+  ],
+  "after": [
+   "The shoals came home. I've eaten so much fish I may never swim again. I'll swim this afternoon.",
+   "Shelly wants to be a shrine-keeper now. She keeps polishing the crystal with her tail.",
+   "If you find a bottle on the islet, read it. The sea writes to us sometimes.",
+   "Grey coral is coming back pink right up to the ferry posts. Mind your step; it's ticklish."
+  ],
+  "kits": [
+   {
+    "name": "Shelly",
+    "wait": "Talk to Grandmother Brine first! She's the one in the coral comb, doing backflips.",
+    "quest": {
+     "id": "shells",
+     "title": "Shell Collector",
+     "ask": "I'm making Grandmother a shell necklace for her eight-hundred-and-thirteenth birthday. I need five seashells. The mainland beach has loads!",
+     "need": {
+      "seashell": 5
+     },
+     "thanks": "Perfect! Don't tell her. She'll know anyway. She always knows.",
+     "reward": {
+      "pearl": 1,
+      "crystals": 200
+     }
+    },
+    "after": [
+     "Grandmother wore the necklace to bed. And to breakfast. And swimming.",
+     "I'm going to be a shrine-keeper. I've already polished the crystal four times today."
+    ]
+   },
+   {
+    "name": "Barnaby",
+    "wait": "Grandmother Brine's the one to see. I'm busy being sad about my raft.",
+    "quest": {
+     "id": "raft",
+     "title": "Barnaby's Raft",
+     "ask": "My raft fell apart. Again. If you bring me six driftwood and two rope, I'll name the next one after you.",
+     "need": {
+      "driftwood": 6,
+      "rope": 2
+     },
+     "thanks": "She floats! I've called her the Land-Walker. She's very brave and only a bit wonky.",
+     "reward": {
+      "starfish_snack": 3,
+      "crystals": 250
+     }
+    },
+    "after": [
+     "The Land-Walker hasn't sunk once. Well. Once.",
+     "I rowed all the way round the islet. Twice. My arms are noodles."
+    ]
+   },
+   {
+    "name": "Pebble",
+    "lines": [
+     "Grandmother says I can swim to the buoy when I'm a hundred.",
+     "Did you know crabs walk sideways because forwards is boring?",
+     "I'm guarding the jetty. From what? From everything."
+    ]
+   }
+  ],
+  "foe_kinds": [
+   "grump_coral",
+   "rock_crab",
+   "grump_wisp"
+  ],
+  "deep_todo": {
+   "name": "Rainbow Reef Grotto",
+   "forage": [
+    "sun_coral",
+    "moon_coral",
+    "rainbow_anemone"
+   ],
+   "hook": "the reef shrine's underside; Shelly's 'Coral Garden' replant quest"
+  }
  },
  "colony_kelp": {
   "name": "Kelp Hollow",
   "tier": 2,
   "elder": "Old Tidewhisker",
   "intro": [
-   "The forest under the water is dying, and it was the only home we had.",
-   "The crystal in the kelp temple feeds the kelp. The dark is feeding on the crystal.",
-   "Bring us plank and rope to shore up the stilt-houses, chase the shadow serpents out, light the beacons, and wake the crystal."
+   {
+    "text": "An old merkitty is juggling pearls on a hut rail. He doesn't drop one when he sees you."
+   },
+   "I was old when the kelp was young, and I'll be young when it's old again. That's how it goes. You lit the path through the Sunken Bell shallows, didn't you? I heard it ring.",
+   "The forest under the water is dying, and it was the only home we had. The crystal in the kelp temple feeds the kelp. The dark is feeding on the crystal.",
+   "Plank and rope to shore up the stilt-houses, the shadow serpents and their Grumps chased out, the beacons lit. Then we wake the crystal."
   ],
   "need": {
    "plank": 30,
@@ -63,7 +166,7 @@
   },
   "need_text": "The stilt-houses lean further every tide.",
   "need_thanks": "That'll hold. That'll hold for years.",
-  "foe_word": "Shadow serpents",
+  "foe_word": "Shadow serpents and Moss Grumps",
   "kills": 10,
   "beacons": 3,
   "boss": "cboss_kelp",
@@ -75,7 +178,7 @@
   "thanks": "Swim with us any time. The sea knows you now.",
   "ability": "tideswim",
   "ability_name": "Tideswim",
-  "ability_desc": "You can swim in any deep water, no partner needed.",
+  "ability_desc": "You swim a quarter faster than any tail can manage, even through strong currents, no partner needed.",
   "spells": [],
   "mana": 10,
   "shop_who": "Kelp weaver",
@@ -92,16 +195,117 @@
     "rope",
     30
    ]
-  ]
+  ],
+  "intro_mer": "Mer's song is on you. Ha! She used to steal my pearls. I let her. Don't tell her.",
+  "intro_nomer": "No tail? Then mind the edges. The water here likes to keep things.",
+  "after_gave": [
+   "That'll hold. That'll hold for years. Now: the bell.",
+   "Our colony bell sank in the black tide. Its ring used to call the shoals home, like the tower bell on your mainland calls the town. Same bronze, they say. Same founder.",
+   "Without it the kelp forgets which way is up. Light the beacons; the light will guide its voice back."
+  ],
+  "beacon_lines": [
+   "The beacon catches. Somewhere under the fog, a bell answers, very faint.",
+   "Tidewhisker hums the second verse: 'Green for the forest that grows in the deep...'",
+   "'...rocked by the bell, so the little ones sleep.' The fog thins, and the kelp lifts toward the light."
+  ],
+  "kills_line": "The last shadow serpent slides off into deep water, and the fog seems a little lighter for it.",
+  "reveal": [
+   {
+    "text": "The Black Tide drains away into the sand. Left behind: a dark crystal splinter, wrapped in black kelp like a gift nobody wanted."
+   },
+   "There's his signature again. He doesn't break things. He whispers to them until they break themselves.",
+   "Listen. Hear that? The bell's ringing on its own. It hasn't done that in three hundred years. Show-off."
+  ],
+  "lore": [
+   "Catkins? That old cushion-sitter. She taught me stillness and I taught her to swim. She was terrible. She'll deny it.",
+   "Our kelp grows in spirals, and the spirals match the old star maps. We think the star drew them as it fell. We think it was saying goodbye.",
+   "Brine has the first verse, I have the second. Icewhisker keeps the third under all that snow, and Cinderpaw the last."
+  ],
+  "after": [
+   "The bell rings at dawn now. The kits complain. I love it.",
+   "Brine owes me a race. Tell her I said so. Tell her I've been practising.",
+   "The kelp's growing so fast I've had to move my hammock twice.",
+   "Handstand? On the stilts? At my age? Watch this."
+  ],
+  "kits": [
+   {
+    "name": "Reed",
+    "wait": "Old Tidewhisker first. He's the one juggling. He's always juggling.",
+    "quest": {
+     "id": "net",
+     "title": "The Lost Net",
+     "ask": "The black tide tangled our fishing net into knots. If you bring us four rope and three fish, we can make a new one and fill it the same day.",
+     "need": {
+      "rope": 4,
+      "#fish": 3
+     },
+     "thanks": "A new net, and supper already in it! You're better than a tide.",
+     "reward": {
+      "kelp_wrap": 3,
+      "crystals": 250
+     }
+    },
+    "after": [
+     "We caught a fish this big. Okay, this big. Okay, it was a minnow.",
+     "The new net glows a bit in the dark. We don't know why. We like it."
+    ]
+   },
+   {
+    "name": "Minnow",
+    "wait": "Grown-ups are with Tidewhisker. Go on. I'll wait. I'm good at waiting.",
+    "quest": {
+     "id": "lanterns",
+     "title": "Stilt Lantern Night",
+     "ask": "On lantern night every hut hangs a light so the shoals know we're still here. Ours all broke. Could you bring three glass and two honey? We make the candles from honey-wax.",
+     "need": {
+      "glass": 3,
+      "honey": 2
+     },
+     "thanks": "Lanterns on every hut! The shoals will come and look. They always come and look.",
+     "reward": {
+      "pearl": 1,
+      "crystals": 300
+     }
+    },
+    "after": [
+     "Lantern night was the best. A fish kissed my nose.",
+     "I'm keeping one lantern lit all year. For luck."
+    ]
+   },
+   {
+    "name": "Bubbles",
+    "lines": [
+     "I can hold my breath for a whole song. A short song.",
+     "The kelp tickles if you swim through it backwards.",
+     "Tidewhisker can do a handstand on one paw. I can do it on none."
+    ]
+   }
+  ],
+  "foe_kinds": [
+   "river_serpent",
+   "grump_moss",
+   "grump_coral"
+  ],
+  "deep_todo": {
+   "name": "Spiral Hollows",
+   "forage": [
+    "glow_kelp",
+    "spiral_shell"
+   ],
+   "hook": "kelp spirals as a star-map puzzle opening a star chest; the Sunken Bell's resting place"
+  }
  },
  "colony_ice": {
   "name": "Frostfin Isle",
   "tier": 3,
   "elder": "Captain Icewhisker",
   "intro": [
-   "You picked a cold day to visit. Every day is a cold day now.",
+   {
+    "text": "Someone skates straight down the frozen shore at you, stops in a spray of snow, and salutes. She has a captain's hat and a great deal of white whisker."
+   },
+   "Captain Icewhisker! Nine hundred winters, and I still skate the bay every morning. You broke the ice walls at the gate; I saw the steam from my mast.",
    "Our crystal used to keep the isle just warm enough. Now the winter has a mind of its own, and it copies us.",
-   "Firewood for the hearths, the wisps chased off, the beacons lit, and then we wake the crystal together."
+   "Firewood and coal for the hearths, the Frost Grumps and wisps chased off, the beacons lit. Then we wake the crystal together."
   ],
   "need": {
    "wood": 40,
@@ -109,7 +313,7 @@
   },
   "need_text": "The hearths are down to embers.",
   "need_thanks": "Warm hands. You don't know what that means up here.",
-  "foe_word": "Ice wisps",
+  "foe_word": "Frost Grumps and ice wisps",
   "kills": 10,
   "beacons": 4,
   "boss": "cboss_ice",
@@ -140,16 +344,116 @@
     "starfish_snack",
     90
    ]
-  ]
+  ],
+  "intro_mer": "Mer's song! Then you'll not freeze in our water, at least. Good. Our water is VERY cold.",
+  "intro_nomer": "No tail. Don't fall through the ice, then. I'm not fishing you out twice.",
+  "after_gave": [
+   "Warm hands. You don't know what that means up here.",
+   "There are lights under the ice. Frostfin cats who went out on the bay when the cold came, and didn't come back. They're not gone. They're frozen, waiting.",
+   "Every beacon you light thaws a few of them. Light all four and they'll come home."
+  ],
+  "beacon_lines": [
+   "The beacon catches. Under the ice, a small light blinks back, then another.",
+   "Two frozen cats pop up through a crack in the ice, shake themselves off, and skate straight to the lodge for cocoa.",
+   "Icewhisker sings the third verse from her mast: 'White for the winter that rests on the sea...'",
+   "'...and wakes up in spring, and lets the ice free.' The last of the lost cats come home in a laughing line."
+  ],
+  "kills_line": "The last Frost Grump melts into a puddle and, a moment later, the puddle looks embarrassed.",
+  "reveal": [
+   {
+    "text": "Hollow Winter's copies crack and fall to snow. In the middle of the heap: a splinter of dark crystal, cold enough to sting."
+   },
+   "It copied us because it had nothing of its own. That's what he gives them: an empty middle, and a voice saying they'll be full if they listen.",
+   "Our crystal's own snow is the gentle kind. Feel that? That's what winter is supposed to feel like."
+  ],
+  "lore": [
+   "We keep the third verse. White for the winter. I sang it to Catkins once and she cried. She'll deny that too.",
+   "When the star split, our piece fell on the coldest rock in the sea. It chose us because we didn't mind the cold. We still don't.",
+   "My crew used to say I'd outlive the ice. Turns out the ice and I are about the same age, and we get along."
+  ],
+  "after": [
+   "Cocoa's on in the lodge. It's always on in the lodge.",
+   "The kits you thawed are skating rings round the old-timers. As it should be.",
+   "Ice fishing derby at dawn. You're invited. You'll lose.",
+   "The aurora's back. It came out the night you woke the crystal, and it hasn't left."
+  ],
+  "kits": [
+   {
+    "name": "Flurry",
+    "wait": "Captain's over there. She'll skate at you. Just stand still.",
+    "quest": {
+     "id": "derby",
+     "title": "Ice Fishing Derby",
+     "ask": "The derby's coming and I've never caught anything. Will you help me practise? Bring me four fish and I'll study them. Very closely.",
+     "need": {
+      "#fish": 4
+     },
+     "thanks": "I've studied them. I know everything about fish now. I'm going to win!",
+     "reward": {
+      "hot_cocoa": 2,
+      "crystals": 250
+     }
+    },
+    "after": [
+     "I came second in the derby! Out of two. But still!",
+     "Fish look up at the ice like they're waiting for someone. Maybe us."
+    ]
+   },
+   {
+    "name": "Sleet",
+    "wait": "Talk to the captain first. Captain likes to be first.",
+    "quest": {
+     "id": "lilies",
+     "title": "Frost Lilies for the Lodge",
+     "ask": "Frost lilies never melt. We put them on the lodge table when someone comes home. Lots of cats came home. Could you bring two frost lilies? The ice fisher sells them, once the crystal's awake.",
+     "need": {
+      "frost_lily": 2
+     },
+     "thanks": "The table looks like home again. Thank you.",
+     "reward": {
+      "glass_frosted": 1,
+      "crystals": 300
+     }
+    },
+    "after": [
+     "The lilies are on the table. They'll be there for a hundred years.",
+     "Grandpa came home through a crack in the ice. He says he had a lovely nap."
+    ]
+   },
+   {
+    "name": "Snowdrop",
+    "lines": [
+     "My whiskers froze into a curl. I'm keeping it.",
+     "Captain says a real sailor never feels the cold. I feel it. I'm not a real sailor yet.",
+     "I licked the beacon. Don't lick the beacon."
+    ]
+   }
+  ],
+  "foe_kinds": [
+   "grump_frost",
+   "ice_wisp",
+   "grump_crystal"
+  ],
+  "deep_todo": {
+   "name": "Lantern Caves",
+   "forage": [
+    "ice_coral",
+    "aurora_shard"
+   ],
+   "hook": "the frozen Frostfin cats under the ice (now freed by the beacons) left lanterns behind"
+  }
  },
  "colony_ember": {
   "name": "Emberclaw Atoll",
   "tier": 4,
   "elder": "Lady Cinderpaw",
   "intro": [
-   "Careful, the sand is hot. It's always been hot. Now it's angry.",
-   "Our crystal tamed the mountain. The dark has woken it.",
-   "Bring us glass and silver to rebuild the vents, put out the moths, light the beacons, and wake the crystal before the mountain wakes properly."
+   {
+    "text": "A merkitty cartwheels across the hot sand barefoot, lands in front of you, and laughs at how you're hopping."
+   },
+   "Lady Cinderpaw. Two thousand years old and I still run the glassworks myself. You brought real stars back over our smoke at the Ember Gate. I stayed up all night looking.",
+   "Careful, the sand is hot. It's always been hot. Now it's angry. Our crystal tamed the mountain, and the dark has woken it.",
+   "Glass and silver to patch the vents, the Ember Grumps and moths put out, the beacons lit. Then we wake the crystal, before the mountain wakes properly."
   ],
   "need": {
    "glass": 10,
@@ -157,7 +461,7 @@
   },
   "need_text": "The vents are cracked. Glass and silver to patch them.",
   "need_thanks": "There. Now the mountain breathes where we tell it.",
-  "foe_word": "Lantern moths",
+  "foe_word": "Ember Grumps and lantern moths",
   "kills": 12,
   "beacons": 4,
   "boss": "cboss_ember",
@@ -188,6 +492,105 @@
     "tide_pearl",
     1400
    ]
-  ]
+  ],
+  "intro_mer": "Mer's song, all the way out here. Good. Then the sea will carry you home if the mountain throws you.",
+  "intro_nomer": "No tail? Then don't fall in the sea, and don't fall in the mountain. Simple rules.",
+  "after_gave": [
+   "There. Now the mountain breathes where we tell it.",
+   "The Never-Out Fire in the shrine has burned since the star fell. It was lit from the star itself. It's guttering now, and the moths are drawn to it like it's dying.",
+   "Light the beacons around the cone and the fire will have friends again. Fire likes friends."
+  ],
+  "beacon_lines": [
+   "The beacon catches. In the shrine, the Never-Out Fire flickers taller.",
+   "Cinderpaw sings the last verse, very softly: 'Gold for the fire that never goes out...'",
+   "'...lit from the star, so there's never a doubt...'",
+   "'...and four become one when the song's sung about.' The mountain goes quiet, listening."
+  ],
+  "kills_line": "The lantern moths drift off toward the beacons instead of the fire. Much better.",
+  "reveal": [
+   {
+    "text": "The Smother cools to black glass and cracks. Inside, the last splinter of dark crystal hisses and goes out."
+   },
+   "Four crystals, four colonies, four verses. They were one star, once. The fifth piece fell on land and went dark.",
+   "That's his Dark Crystal, dear. A piece of our own star that listened to the cold and forgot. Which means it can remember. Tell your Star Crystal. She'll know what to do with that."
+  ],
+  "lore": [
+   "The four of us were kits together when the star fell. We each grabbed a piece. Brine bit hers. Typical.",
+   "Catkins came out here once, a thousand years ago, to learn our fire-meditation. She sat in the hot sand for three days and never once complained. I've never forgiven her.",
+   "When the night comes that you need us, we'll come. All four. Old bones, young hearts. Just ring something loud."
+  ],
+  "after": [
+   "The glassworks are running again. Want a tumbler? Everybody wants a tumbler.",
+   "Icewhisker sent a block of ice by ferry. It arrived as a bucket of water. She thinks that's hilarious.",
+   "The Never-Out Fire is out of danger. It's showing off now, frankly.",
+   "Cartwheels keep you young. That and holding a star."
+  ],
+  "kits": [
+   {
+    "name": "Cinder",
+    "wait": "Lady Cinderpaw first. She's the one doing cartwheels. On hot sand. Show-off.",
+    "quest": {
+     "id": "vents",
+     "title": "Cooling Stones",
+     "ask": "My little brother's hut is right over a cracked vent. If you bring me ten stone and three coal, we can build him a proper hearth instead of a hot floor.",
+     "need": {
+      "stone": 10,
+      "coal": 3
+     },
+     "thanks": "A real hearth! He's asleep already. On the warm bit. On purpose this time.",
+     "reward": {
+      "ember_glass": 1,
+      "crystals": 300
+     }
+    },
+    "after": [
+     "My brother cooks on his new hearth. Mostly toast. Very good toast.",
+     "The vent sighs at night now instead of growling. I like the sigh."
+    ]
+   },
+   {
+    "name": "Flick",
+    "wait": "You want Lady Cinderpaw. Follow the laughing.",
+    "quest": {
+     "id": "glassbeads",
+     "title": "Glass Beads for the Fire",
+     "ask": "We hang glass beads round the Never-Out Fire so it can see itself and feel less lonely. Five glass and one silver bar and I'll make a whole string.",
+     "need": {
+      "glass": 5,
+      "silver_bar": 1
+     },
+     "thanks": "Look how it shines in all of them! It's not lonely now.",
+     "reward": {
+      "crystal_glass": 1,
+      "crystals": 350
+     }
+    },
+    "after": [
+     "The fire likes the beads. It does a little twirl.",
+     "I'm learning glassblowing. I've made eleven puddles and one bead."
+    ]
+   },
+   {
+    "name": "Soot",
+    "lines": [
+     "I'm not dirty, I'm volcanic.",
+     "Lady Cinderpaw says the mountain is a big grumpy cat. I'd like to pet it.",
+     "Hot sand, hot sand, hot sand, cool rock. Ahh."
+    ]
+   }
+  ],
+  "foe_kinds": [
+   "grump_ember",
+   "lantern_moth",
+   "grump_brute"
+  ],
+  "deep_todo": {
+   "name": "Lava Tubes",
+   "forage": [
+    "fire_coral",
+    "obsidian_pearl"
+   ],
+   "hook": "carry an ember from the Never-Out Fire through the tubes (timed, safe failure)"
+  }
  }
 }

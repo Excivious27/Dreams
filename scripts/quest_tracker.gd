@@ -55,7 +55,7 @@ static func open_quests() -> Array:
 			continue
 		var id := str(q.get("id", ""))
 		var d := GameState._quest_def(id)
-		var row := {"id": id, "text": str(q.get("text", "")), "main": is_main(id), "giver": str(d.get("giver", "")),
+		var row := {"id": id, "text": str(q.get("text", "")), "main": is_main(id), "giver": str(d.get("giver", "colony" if id.begins_with("colony_") else "")),  # colony quests are tickable (C7 P5)
 			"ready": d.has("done_when") and d["done_when"] is Dictionary and GameState._cond_ok(d["done_when"])}
 		if row["main"] or row["giver"] == "":
 			out.append(row)
@@ -66,6 +66,8 @@ static func open_quests() -> Array:
 
 ## Progress of an item quest, "3/5" ("" when it isn't an item count).
 static func progress(id: String) -> String:
+	if id.begins_with("colony_"):
+		return Colony.progress(id)  # C7 P5
 	var dw: Variant = GameState._quest_def(id).get("done_when", {})
 	if not (dw is Dictionary):
 		return ""
@@ -132,6 +134,8 @@ static func target(m: GameMap) -> Vector2:
 	var id := tracked()
 	if id == "" or is_main(id):
 		return GoalLine.target(m)
+	if id.begins_with("colony_"):
+		return Colony.pointer(m, id)  # colony quests: ferry, elder, beacons, crystal, kits (C7 P5)
 	return _giver_target(m, str(GameState._quest_def(id).get("giver", "")))
 
 
