@@ -96,6 +96,8 @@ func _run() -> void:
 	check(DecorCatalogue.hint("dc_peng_only") == "Cold places.", "rare uses its vague hint")
 	check(DecorCatalogue.hint("dc_t_legendary_0") == "???", "legendary without a hint stays ???")
 	check(not DecorCatalogue.hint("dc_t_unique_0").contains("Maple"), "unique never names its source")
+	DecorCatalogue.mark_seen("dc_t_legendary_1")
+	check(DecorCatalogue.hint("dc_t_legendary_1") == "Maple's Mercantile", "a seen legendary names where it was seen")
 	# Orders.
 	GameState.run["crystals"] = 1000
 	check(DecorCatalogue.order_block("dc_t_rare_0") != "", "missing pieces can't be ordered")

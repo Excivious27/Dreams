@@ -328,6 +328,8 @@ static func hint(id: String) -> String:
 			src.append(str(s))
 	src = src.filter(func(x: String) -> bool: return x != "")
 	var exact := ", ".join(src.slice(0, 2)) if not src.is_empty() else str(e.get("where", ""))
+	if state(id) != "missing" and r != "unique":
+		return exact if exact != "" else str(e.get("hint", "Found around the valley."))  # seen/owned: no riddles
 	match r:
 		"common", "uncommon":
 			return exact if exact != "" else "Sold in shops around the valley."
@@ -536,7 +538,6 @@ func _btn(text: String, cb: Callable, key := "") -> Button:
 	b.custom_minimum_size = Vector2(0, 22)
 	b.focus_mode = Control.FOCUS_NONE
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE
-	b.clip_text = true
 	b.pressed.connect(cb)
 	b.gui_input.connect(func(ev: InputEvent) -> void:
 		if b.disabled and TapInput.is_release(ev):
@@ -652,6 +653,7 @@ func _grid_view() -> void:
 		cb.custom_minimum_size = Vector2(60, 22)
 		cb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		cb.add_theme_font_size_override("font_size", Settings.font(7))
+		cb.clip_text = true  # long set names stay inside their chip
 		chips.add_child(cb)
 	var list := filtered()
 	var owned := 0
@@ -718,7 +720,7 @@ func _cell(id: String) -> Control:
 		tr.offset_right = -3
 		tr.offset_bottom = -3
 		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		tr.modulate = Color(0, 0, 0, 0.6) if s == "missing" else (Color(1, 1, 1, 0.55) if s == "seen" else Color.WHITE)
+		tr.modulate = Color(0, 0, 0, 0.6) if s == "missing" else (Color(0.7, 0.7, 0.75, 0.5) if s == "seen" else Color.WHITE)
 		b.add_child(tr)
 	if s == "missing":
 		b.text = "?"
@@ -894,6 +896,10 @@ func _sets_view() -> void:
 		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		bar.max_value = maxi(1, int(pr[1]))
 		bar.value = int(pr[0])
+		var fill := StyleBoxFlat.new()
+		fill.bg_color = Color(0.45, 0.85, 0.45) if int(pr[0]) >= int(pr[1]) else Color(0.95, 0.8, 0.4)
+		fill.set_corner_radius_all(2)
+		bar.add_theme_stylebox_override("fill", fill)
 		row.add_child(bar)
 		var ready := not done and int(pr[1]) > 0 and int(pr[0]) >= int(pr[1])
 		if ready:
