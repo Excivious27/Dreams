@@ -334,6 +334,23 @@ sheet("tabletop_gang2.png", "", "gangsters", "1940s underworld and cyberpunk tab
        [P("dc_top_mini_robot", "Desk Robot Pal", D, RA, [1, 1], "top"), P("dc_top_neon_cube", "Neon Name Cube", D, C, [1, 1], "top", glow=16),
         P("dc_top_radio_tube", "Tube Radio", D, U, [1, 1], "top"), P("dc_top_gold_bar", "Gold Bar Paperweight", D, E, [1, 1], "top")]])
 
+IGLOO = "Snowdrift Igloo: snug penguin igloo home, packed-snow blocks, knitted wool in teal and cream, driftwood, fish motifs"
+sheet("set_igloo_a.png", "snowdrift_igloo", "penguins", IGLOO,
+      [[P("dc_igloo_bed", "Snow-Nest Bed", F, U, [2, 2], rot=2), P("dc_igloo_sofa", "Knitted Snow Sofa", F, C, [2, 1], rot=2),
+        P("dc_igloo_stove", "Pebble Stove", F, U, [1, 1], glow=36), P("dc_igloo_shelf", "Snow-Block Shelf", F, C, [1, 1])],
+       [P("dc_igloo_table", "Driftwood Fish Table", F, C, [2, 1], rot=2), P("dc_igloo_sled", "Toy Sled", F, C, [1, 1]),
+        P("dc_igloo_yarn", "Yarn-Ball Basket", F, C, [1, 1]), P("dc_igloo_aurora_jar", "Aurora Jar", F, E, [1, 1], glow=28)]])
+rot_sheet("set_igloo_b.png", "snowdrift_igloo", "penguins", IGLOO,
+          ("dc_igloo_chair", "Snow Armchair", C), "dc_igloo_sofa",
+          [("dc_igloo_mittens", "Mitten Garland", C, 0), ("dc_igloo_fish_sign", "Fish Wall Plaque", C, 0),
+           ("dc_igloo_ice_window", "Round Ice Window", U, 0), ("dc_igloo_pebble_art", "Pebble Mosaic", RA, 0)])
+ORCHARD = "Orchard Harvest: warm farmhouse orchard kitchen-den, honey wood, apples and pears, wicker, green gingham"
+sheet("set_orchard_a.png", "orchard_harvest", "both", ORCHARD,
+      [[P("dc_orch_bed", "Apple Blossom Bed", F, U, [2, 2], rot=2), P("dc_orch_settee", "Wicker Settee", F, C, [2, 1], rot=2),
+        P("dc_orch_lamp", "Pear Lamp", F, C, [1, 1], glow=36), P("dc_orch_hutch", "Jam Jar Hutch", F, U, [1, 1])],
+       [P("dc_orch_table", "Fruit Press Table", F, RA, [2, 1], rot=2), P("dc_orch_crate", "Apple Crate Stack", F, C, [1, 1]),
+        P("dc_orch_basket", "Pear Basket", F, C, [1, 1]), P("dc_orch_tree", "Potted Apple Tree", F, E, [1, 1])]])
+
 sheet("ui_decor.png", "", "both", "decor UI: rarity frames for mythic and unique, Decor tab icon, decor box icon",
       [[P("ui_frame_mythic", "", "ui", M, [1, 1], "ui"), P("ui_frame_unique", "", "ui", Q, [1, 1], "ui"),
         P("ui_tab_decor", "", "ui", C, [1, 1], "ui"), P("ui_decor_box", "", "ui", C, [1, 1], "ui")]], kind="ui")

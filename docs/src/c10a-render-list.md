@@ -412,6 +412,30 @@ Prompt:
 
 > 16-bit pixel art game furniture sprites, top-down 3/4 view exactly like Stardew Valley / Sun Haven interiors, light from top-left, clean 1px dark outlines, crisp hard pixels, cosy saturated palette, transparent background, NO text, letters or numbers anywhere, no watermark, no floor, no cast shadow on the background. All ages. Exactly 8 separate objects in 2 rows of 4, each centred in its own equal grid cell, wide empty gaps between objects, nothing touching or overlapping. Theme: 1940s underworld and cyberpunk tabletop pieces (no drinks, no weapons). Row 1 left to right: Typewriter, Banker's Lamp, Locked Cash Box, Lucky Dice Cup. Row 2 left to right: Desk Robot Pal, Neon Name Cube, Tube Radio, Gold Bar Paperweight. Keep every object the same pixel scale (one floor tile = 32 pixels) and the same art style.
 
+## set_igloo_a.png (1536x1024, pieces, arc penguins)
+
+Pieces: dc_igloo_bed (uncommon), dc_igloo_sofa (common), dc_igloo_stove (uncommon), dc_igloo_shelf (common), dc_igloo_table (common), dc_igloo_sled (common), dc_igloo_yarn (common), dc_igloo_aurora_jar (epic)
+
+Prompt:
+
+> 16-bit pixel art game furniture sprites, top-down 3/4 view exactly like Stardew Valley / Sun Haven interiors, light from top-left, clean 1px dark outlines, crisp hard pixels, cosy saturated palette, transparent background, NO text, letters or numbers anywhere, no watermark, no floor, no cast shadow on the background. All ages. Exactly 8 separate objects in 2 rows of 4, each centred in its own equal grid cell, wide empty gaps between objects, nothing touching or overlapping. Theme: Snowdrift Igloo: snug penguin igloo home, packed-snow blocks, knitted wool in teal and cream, driftwood, fish motifs. Row 1 left to right: Snow-Nest Bed, Knitted Snow Sofa, Pebble Stove, Snow-Block Shelf. Row 2 left to right: Driftwood Fish Table, Toy Sled, Yarn-Ball Basket, Aurora Jar. Keep every object the same pixel scale (one floor tile = 32 pixels) and the same art style.
+
+## set_igloo_b.png (1536x1024, pieces, arc penguins)
+
+Pieces: dc_igloo_chair (common), dc_igloo_chair@r2, dc_igloo_chair@r1, dc_igloo_sofa@r1, dc_igloo_mittens (common), dc_igloo_fish_sign (common), dc_igloo_ice_window (uncommon), dc_igloo_pebble_art (rare)
+
+Prompt:
+
+> 16-bit pixel art game furniture sprites, top-down 3/4 view exactly like Stardew Valley / Sun Haven interiors, light from top-left, clean 1px dark outlines, crisp hard pixels, cosy saturated palette, transparent background, NO text, letters or numbers anywhere, no watermark, no floor, no cast shadow on the background. All ages. Exactly 8 separate objects in 2 rows of 4, each centred in its own equal grid cell, wide empty gaps between objects, nothing touching. Row 1 shows ONE seat drawn three times (same design and colours): facing the viewer, seen from behind, seen from its right side; then the matching sofa seen from its side. Row 2 holds 4 wall-hung pieces drawn straight-on (flat to the wall, no floor shadow). Theme: Snowdrift Igloo: snug penguin igloo home, packed-snow blocks, knitted wool in teal and cream, driftwood, fish motifs. Row 1 left to right: Snow Armchair, Snow Armchair seen from behind, Snow Armchair seen from its right side, Knitted Snow Sofa seen from its right side. Row 2 left to right: Mitten Garland (wall-hung, straight-on), Fish Wall Plaque (wall-hung, straight-on), Round Ice Window (wall-hung, straight-on), Pebble Mosaic (wall-hung, straight-on). Keep every object the same pixel scale (one floor tile = 32 pixels) and the same art style.
+
+## set_orchard_a.png (1536x1024, pieces, arc both)
+
+Pieces: dc_orch_bed (uncommon), dc_orch_settee (common), dc_orch_lamp (common), dc_orch_hutch (uncommon), dc_orch_table (rare), dc_orch_crate (common), dc_orch_basket (common), dc_orch_tree (epic)
+
+Prompt:
+
+> 16-bit pixel art game furniture sprites, top-down 3/4 view exactly like Stardew Valley / Sun Haven interiors, light from top-left, clean 1px dark outlines, crisp hard pixels, cosy saturated palette, transparent background, NO text, letters or numbers anywhere, no watermark, no floor, no cast shadow on the background. All ages. Exactly 8 separate objects in 2 rows of 4, each centred in its own equal grid cell, wide empty gaps between objects, nothing touching or overlapping. Theme: Orchard Harvest: warm farmhouse orchard kitchen-den, honey wood, apples and pears, wicker, green gingham. Row 1 left to right: Apple Blossom Bed, Wicker Settee, Pear Lamp, Jam Jar Hutch. Row 2 left to right: Fruit Press Table, Apple Crate Stack, Pear Basket, Potted Apple Tree. Keep every object the same pixel scale (one floor tile = 32 pixels) and the same art style.
+
 ## ui_decor.png (1536x1024, ui, arc both)
 
 Pieces: ui_frame_mythic (mythic), ui_frame_unique (unique), ui_tab_decor (common), ui_decor_box (common)

@@ -3690,6 +3690,266 @@
   ]
  },
  {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 28,
+  "id": "dc_igloo_aurora_jar",
+  "layer": "floor",
+  "name": "Aurora Jar",
+  "px": [
+   30,
+   39
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_igloo_bed",
+  "layer": "floor",
+  "name": "Snow-Nest Bed",
+  "px": [
+   60,
+   76
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_igloo_chair",
+  "layer": "floor",
+  "name": "Snow Armchair",
+  "px": [
+   30,
+   33
+  ],
+  "rarity": "common",
+  "rot": 4,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_igloo_fish_sign",
+  "layer": "wall",
+  "name": "Fish Wall Plaque",
+  "px": [
+   48,
+   39
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_igloo_ice_window",
+  "layer": "wall",
+  "name": "Round Ice Window",
+  "px": [
+   48,
+   48
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_igloo_mittens",
+  "layer": "wall",
+  "name": "Mitten Garland",
+  "px": [
+   48,
+   39
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "wall_art",
+  "glow": 0,
+  "id": "dc_igloo_pebble_art",
+  "layer": "wall",
+  "name": "Pebble Mosaic",
+  "px": [
+   40,
+   47
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_b.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_igloo_shelf",
+  "layer": "floor",
+  "name": "Snow-Block Shelf",
+  "px": [
+   30,
+   42
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_igloo_sled",
+  "layer": "floor",
+  "name": "Toy Sled",
+  "px": [
+   30,
+   20
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_igloo_sofa",
+  "layer": "floor",
+  "name": "Knitted Snow Sofa",
+  "px": [
+   60,
+   45
+  ],
+  "rarity": "common",
+  "rot": 2,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 36,
+  "id": "dc_igloo_stove",
+  "layer": "floor",
+  "name": "Pebble Stove",
+  "px": [
+   30,
+   39
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_igloo_table",
+  "layer": "floor",
+  "name": "Driftwood Fish Table",
+  "px": [
+   60,
+   46
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "penguins",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_igloo_yarn",
+  "layer": "floor",
+  "name": "Yarn-Ball Basket",
+  "px": [
+   30,
+   31
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "snowdrift_igloo",
+  "sheet": "set_igloo_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
   "arc": "both",
   "cat": "furniture",
   "glow": 24,
@@ -4568,6 +4828,166 @@
   "sheet": "set_neon_noir_a.png",
   "size": [
    2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_orch_basket",
+  "layer": "floor",
+  "name": "Pear Basket",
+  "px": [
+   30,
+   27
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_orch_bed",
+  "layer": "floor",
+  "name": "Apple Blossom Bed",
+  "px": [
+   60,
+   81
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   2,
+   2
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_orch_crate",
+  "layer": "floor",
+  "name": "Apple Crate Stack",
+  "px": [
+   30,
+   30
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_orch_hutch",
+  "layer": "floor",
+  "name": "Jam Jar Hutch",
+  "px": [
+   30,
+   45
+  ],
+  "rarity": "uncommon",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 36,
+  "id": "dc_orch_lamp",
+  "layer": "floor",
+  "name": "Pear Lamp",
+  "px": [
+   30,
+   64
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_orch_settee",
+  "layer": "floor",
+  "name": "Wicker Settee",
+  "px": [
+   60,
+   42
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_orch_table",
+  "layer": "floor",
+  "name": "Fruit Press Table",
+  "px": [
+   60,
+   73
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   2,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "cat": "furniture",
+  "glow": 0,
+  "id": "dc_orch_tree",
+  "layer": "floor",
+  "name": "Potted Apple Tree",
+  "px": [
+   30,
+   42
+  ],
+  "rarity": "epic",
+  "rot": 1,
+  "set": "orchard_harvest",
+  "sheet": "set_orchard_a.png",
+  "size": [
+   1,
    1
   ]
  },
