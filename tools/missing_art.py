@@ -7,7 +7,8 @@ import json, re, glob, os
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 man = json.load(open(f"{R}/art/gen/manifest.json"))
 def has(g, n):
-    return g in man and n in man[g]
+    # manifest entry, or a loose file (casino/arcade art loads straight from art/gen/<group>/<name>.png)
+    return (g in man and n in man[g]) or os.path.exists(f"{R}/art/gen/{g}/{n}.png")
 def J(p): return json.load(open(f"{R}/data/{p}"))
 items = J("items.json"); enemies = J("enemies.json").get("enemies", {}); npcs = J("npcs.json")
 crew = J("crew.json")["members"]; builds = J("buildings.json")
@@ -51,6 +52,68 @@ for f in glob.glob(f"{R}/scripts/*.gd"):
     for g, n in re.findall(r'Art\.(?:tex|has)\("([a-z_/0-9]+)", "([a-z_0-9]+)"\)', open(f).read()):
         if not has(g, n): lit.add(f"{g}/{n}")
 out["Named art the code asks for"] = sorted(lit)
+# skill-tree node icons: ui/node_<skill>_<id> for every non-unlock node (unlock nodes draw what they unlock)
+miss = []
+try:
+    skills = J("skills.json").get("skills", {})
+except Exception:
+    skills = {}
+for sk, sd in sorted(skills.items()):
+    if not isinstance(sd, dict):
+        continue
+    gone = [str(n.get("id")) for n in sd.get("nodes", []) if isinstance(n, dict) and not n.get("unlock") and not has("ui", f"node_{sk}_{n.get('id')}")]
+    if gone:
+        miss.append(f"{sk}: {len(gone)} node icons (item-icon fallback) - " + ", ".join(gone))
+out["Skill node icons"] = miss
+# ranch (C11a): every species kind's strips, building tier looks, product/station/interior art.
+# Reads data/ranch.json (tools/gen_ranch.py) when it lists species, else art/gen/animals/_ranch_art.json.
+miss = []
+RANCH_ANIMS = ["idle", "walk", "eat", "sleep", "sad", "happy", "produce"]
+ALIAS = {"sad": "hurt", "produce": "happy"}  # w175 families (goat/sheep/llama) draw these poses
+try:
+    ranch = J("ranch.json")
+except Exception:
+    ranch = {}
+art_meta = {}
+if os.path.exists(f"{R}/art/gen/animals/_ranch_art.json"):
+    art_meta = json.load(open(f"{R}/art/gen/animals/_ranch_art.json"))
+species = ranch.get("species") if isinstance(ranch.get("species"), dict) and ranch.get("species") else {k: v for k, v in art_meta.items() if not k.startswith("_")}
+for sp, d in sorted(species.items()):
+    kinds = [d.get("kind", sp)] + list(d.get("variants", [])) + list(d.get("rare", [])) + [d.get(k) for k in ("baby", "baby_kind", "shorn") if d.get(k)]
+    for k in kinds:
+        g = f"animals/{k}"
+        if g not in man:
+            miss.append(f"{sp}: animals/{k} (no strips)")
+            continue
+        need = ["hover", "fly"] if sp == "bees" else RANCH_ANIMS
+        lack = [a for a in need if a not in man[g] and ALIAS.get(a, "-") not in man[g]]
+        if lack:
+            miss.append(f"{sp}: animals/{k} lacks " + ", ".join(lack))
+blds = ranch.get("buildings") if isinstance(ranch.get("buildings"), dict) and ranch.get("buildings") else art_meta.get("_buildings", {})
+for home, tiers in sorted(blds.items()):
+    tl = tiers.get("tiers", tiers) if isinstance(tiers, dict) else {}
+    items_ = tl.items() if isinstance(tl, dict) else enumerate(tl, 1)
+    for t, td in items_:
+        spr = str(td.get("sprite", f"{home}_{t}")) if isinstance(td, dict) else f"{home}_{t}"
+        grp = str(td.get("group", "buildings")) if isinstance(td, dict) else "buildings"
+        for look in ("", "_snow", "_night"):
+            if not has(grp, spr + look) and not has("buildings", spr + look):
+                miss.append(f"{home} tier {t}: {grp}/{spr}{look}")
+for pid in ranch.get("products", {}) if isinstance(ranch.get("products"), dict) else []:
+    d = items.get(pid, {})
+    if not has("items", pid) and not has("items", str(d.get("icon", ""))):
+        miss.append(f"product icon items/{pid}")
+for i in art_meta.get("_items", []):
+    if not has("items", i):
+        miss.append(f"items/{i}")
+for s in art_meta.get("_stations", []):
+    if not has("stations", s):
+        miss.append(f"stations/{s}")
+for grp, ids in art_meta.get("_interior", {}).items():
+    for i in ids:
+        if not has(grp, i):
+            miss.append(f"{grp}/{i}")
+out["Ranch"] = miss
 # art that exists but is unusable (reported by audits): redraw requests
 out["Broken art to redraw"] = []  # Round 12 (image tool) redrew everything that was listed here + ([] if has("seamless", "teal_moss") else ["seamless/teal_moss (wrapping ground texture for colony_kelp)"]) + ([] if has("seamless", "violet_soil") else ["seamless/violet_soil (jungle soil patch)"])
 with open(f"{R}/docs/MISSING-ART.md", "w") as fh:

@@ -1,0 +1,674 @@
+{
+ "_buildings": {
+  "apiary": {
+   "1": {
+    "group": "buildings",
+    "night": "apiary_1_night",
+    "snow": "apiary_1_snow",
+    "sprite": "apiary_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "apiary_2_night",
+    "snow": "apiary_2_snow",
+    "sprite": "apiary_2"
+   }
+  },
+  "barn": {
+   "1": {
+    "group": "buildings",
+    "night": "barn_1_night",
+    "snow": "barn_1_snow",
+    "sprite": "barn_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "barn_2_night",
+    "snow": "barn_2_snow",
+    "sprite": "barn_2"
+   },
+   "3": {
+    "group": "buildings",
+    "night": "barn_3_night",
+    "snow": "barn_3_snow",
+    "sprite": "barn_3"
+   }
+  },
+  "coop": {
+   "1": {
+    "group": "buildings",
+    "night": "coop_1_night",
+    "snow": "coop_1_snow",
+    "sprite": "coop_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "coop_2_night",
+    "snow": "coop_2_snow",
+    "sprite": "coop_2"
+   },
+   "3": {
+    "group": "buildings",
+    "night": "coop_3_night",
+    "snow": "coop_3_snow",
+    "sprite": "coop_3"
+   }
+  },
+  "hutch": {
+   "1": {
+    "group": "buildings",
+    "night": "hutch_1_night",
+    "snow": "hutch_1_snow",
+    "sprite": "hutch_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "hutch_2_night",
+    "snow": "hutch_2_snow",
+    "sprite": "hutch_2"
+   }
+  },
+  "sty": {
+   "1": {
+    "group": "buildings",
+    "night": "sty_1_night",
+    "snow": "sty_1_snow",
+    "sprite": "sty_1"
+   },
+   "2": {
+    "group": "buildings",
+    "night": "sty_2_night",
+    "snow": "sty_2_snow",
+    "sprite": "sty_2"
+   }
+  }
+ },
+ "_interior": {
+  "furniture": [
+   "rn_nest_box",
+   "rn_nest_box_eggs",
+   "rn_perch",
+   "rn_feed_bench",
+   "rn_feed_bench_hay",
+   "rn_water_bowl",
+   "rn_coop_heater",
+   "rn_auto_grabber",
+   "rn_egg_crate",
+   "rn_stall_divider",
+   "rn_milking_stool",
+   "rn_hay_hopper",
+   "rn_hutch_box",
+   "rn_hutch_box_double",
+   "rn_mud_wallow",
+   "rn_bee_frame_rack",
+   "rn_salt_lick",
+   "rn_brush_hook",
+   "rn_pitchfork_bale",
+   "rn_feed_sacks",
+   "rn_water_trough",
+   "rn_lantern_post",
+   "rn_hay_round",
+   "rn_barn_gate"
+  ],
+  "seamless": [
+   "rn_straw_bed",
+   "rn_coop_plank",
+   "rn_barn_timber",
+   "rn_hay_floor",
+   "rn_mud_patch",
+   "rn_barn_cobble"
+  ]
+ },
+ "_items": [
+  "egg_brown",
+  "egg_large",
+  "egg_brown_large",
+  "egg_blue_plain",
+  "egg_golden",
+  "milk_large",
+  "goat_milk_large",
+  "duck_feather",
+  "rabbit_fur",
+  "rabbit_foot",
+  "truffle_oil",
+  "duck_mayonnaise",
+  "animal_treat",
+  "coop_heater",
+  "auto_grabber",
+  "hay_hopper",
+  "animal_bell",
+  "show_ribbon",
+  "name_tag",
+  "honey_wildflower",
+  "honey_clover",
+  "salt_lick",
+  "mixed_feed",
+  "wool_black"
+ ],
+ "_stations": [
+  "mayo_machine_1",
+  "mayo_machine_2",
+  "creamery",
+  "incubator_deluxe",
+  "wool_carder",
+  "truffle_press",
+  "cheese_rack",
+  "egg_sorter"
+ ],
+ "bees": {
+  "alias": {},
+  "anims": [
+   "enter",
+   "fly",
+   "hover",
+   "queen"
+  ],
+  "baby": "",
+  "height": {
+   "bee_swarm": 8
+  },
+  "kind": "bee_swarm",
+  "kind_anims": {
+   "bee_swarm": [
+    "enter",
+    "fly",
+    "hover",
+    "queen"
+   ]
+  },
+  "rare": [],
+  "shorn": "",
+  "variants": []
+ },
+ "chicken": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "baby": "chick",
+  "height": {
+   "chick": 7,
+   "chicken_blue": 12,
+   "chicken_brown": 12,
+   "chicken_golden": 12,
+   "chicken_rooster": 14,
+   "chicken_white": 12
+  },
+  "kind": "chicken_white",
+  "kind_anims": {
+   "chick": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chicken_blue": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chicken_brown": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chicken_golden": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chicken_rooster": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "chicken_white": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [
+   "chicken_golden",
+   "chicken_blue"
+  ],
+  "shorn": "",
+  "variants": [
+   "chicken_brown",
+   "chicken_rooster"
+  ]
+ },
+ "cow": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "baby": "cow_calf",
+  "height": {
+   "cow_calf": 17,
+   "cow_highland": 28,
+   "cow_holstein": 28,
+   "cow_jersey": 28
+  },
+  "kind": "cow_jersey",
+  "kind_anims": {
+   "cow_calf": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "cow_highland": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "cow_holstein": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "cow_jersey": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [
+   "cow_highland"
+  ],
+  "shorn": "",
+  "variants": [
+   "cow_holstein"
+  ]
+ },
+ "duck": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "baby": "duckling",
+  "height": {
+   "duck_pekin": 12,
+   "duck_white": 12,
+   "duckling": 7
+  },
+  "kind": "duck_white",
+  "kind_anims": {
+   "duck_pekin": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "duck_white": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "duckling": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [],
+  "shorn": "",
+  "variants": [
+   "duck_pekin"
+  ]
+ },
+ "goat": {
+  "alias": {
+   "produce": "happy",
+   "sad": "hurt"
+  },
+  "anims": [
+   "eat",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_b",
+   "sleep",
+   "walk"
+  ],
+  "baby": "goat_kid",
+  "height": {
+   "goat": 20,
+   "goat_kid": 12
+  },
+  "kind": "goat",
+  "kind_anims": {
+   "goat": [
+    "eat",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_b",
+    "sleep",
+    "walk"
+   ],
+   "goat_kid": [
+    "eat",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_b",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [],
+  "shorn": "",
+  "variants": []
+ },
+ "llama": {
+  "alias": {
+   "produce": "happy",
+   "sad": "hurt"
+  },
+  "anims": [
+   "eat",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_b",
+   "sleep",
+   "spit",
+   "walk"
+  ],
+  "baby": "llama_cria",
+  "height": {
+   "llama": 30,
+   "llama_cria": 17
+  },
+  "kind": "llama",
+  "kind_anims": {
+   "llama": [
+    "eat",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_b",
+    "sleep",
+    "spit",
+    "walk"
+   ],
+   "llama_cria": [
+    "eat",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_b",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [],
+  "shorn": "",
+  "variants": []
+ },
+ "pig": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "baby": "piglet",
+  "height": {
+   "pig": 17,
+   "pig_kunekune": 15,
+   "pig_spotted": 17,
+   "piglet": 9
+  },
+  "kind": "pig",
+  "kind_anims": {
+   "pig": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "pig_kunekune": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "pig_spotted": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "piglet": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [
+   "pig_spotted"
+  ],
+  "shorn": "",
+  "variants": [
+   "pig_kunekune"
+  ]
+ },
+ "rabbit": {
+  "alias": {},
+  "anims": [
+   "eat",
+   "happy",
+   "idle",
+   "produce",
+   "sad",
+   "sleep",
+   "walk"
+  ],
+  "baby": "bunny",
+  "height": {
+   "bunny": 6,
+   "rabbit_angora": 11,
+   "rabbit_brown": 10,
+   "rabbit_white": 10
+  },
+  "kind": "rabbit_white",
+  "kind_anims": {
+   "bunny": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "rabbit_angora": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "rabbit_brown": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "rabbit_white": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [
+   "rabbit_angora"
+  ],
+  "shorn": "",
+  "variants": [
+   "rabbit_brown"
+  ]
+ },
+ "sheep": {
+  "alias": {
+   "produce": "happy",
+   "sad": "hurt"
+  },
+  "anims": [
+   "eat",
+   "happy",
+   "hurt",
+   "idle",
+   "idle_b",
+   "sleep",
+   "walk"
+  ],
+  "baby": "lamb",
+  "height": {
+   "lamb": 12,
+   "sheep": 20,
+   "sheep_black": 20,
+   "sheep_shorn": 18
+  },
+  "kind": "sheep",
+  "kind_anims": {
+   "lamb": [
+    "eat",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_b",
+    "sleep",
+    "walk"
+   ],
+   "sheep": [
+    "eat",
+    "happy",
+    "hurt",
+    "idle",
+    "idle_b",
+    "sleep",
+    "walk"
+   ],
+   "sheep_black": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ],
+   "sheep_shorn": [
+    "eat",
+    "happy",
+    "idle",
+    "produce",
+    "sad",
+    "sleep",
+    "walk"
+   ]
+  },
+  "rare": [
+   "sheep_black"
+  ],
+  "shorn": "sheep_shorn",
+  "variants": []
+ }
+}
