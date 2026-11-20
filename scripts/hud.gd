@@ -398,8 +398,8 @@ func _draw_hud() -> void:
 			else:
 				c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if f >= 1.0 else Color(0, 0, 0, 0.4))
 	var hp_txt := "%d/%d" % [hp, max_hp]
-	c.draw_string_outline(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, 3, Color(0, 0, 0, 0.7))
-	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 0.95, 0.9))
+	c.draw_string_outline(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 8, 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 8, Color(1, 0.95, 0.9))
 	# Mana (small blue bar under the hearts), only once you can cast (a spell, or a partner's Gift).
 	if int(r.get("max_mana", 0)) > 0 and _shows_mana():
 		var mb := Rect2(6, 16, 50, 4)
@@ -411,8 +411,8 @@ func _draw_hud() -> void:
 			c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
 			c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
 		var mana_txt := "%d/%d" % [int(r.get("mana", 0)), int(r.get("max_mana", 0))]
-		c.draw_string_outline(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 7, 3, Color(0, 0, 0, 0.7))
-		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 7, Color(0.8, 0.9, 1.0))
+		c.draw_string_outline(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, 3, Color(0, 0, 0, 0.7))
+		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, Color(0.8, 0.9, 1.0))
 	# Active buffs (Prompts 10 icons) under the hearts.
 	var bx := 6.0
 	var buffs: Dictionary = r.get("buffs", {})
@@ -557,8 +557,8 @@ func _draw_hud() -> void:
 			toast.call_deferred("Heat: how closely the President's people are watching you.", Color(1, 0.75, 0.6))
 		var hx := 196.0 + ex
 		var hy := TOOLBAR_Y + SLOT + 5.0
-		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 2, Color(0, 0, 0, 0.8))
-		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(1, 0.75, 0.6))
+		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 2, Color(0, 0, 0, 0.8))
+		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.75, 0.6))
 		for i in 5:
 			var pc := Vector2(hx + 24 + i * 9, hy + 3)
 			c.draw_circle(pc, 3.2, Color(0, 0, 0, 0.6))
@@ -584,8 +584,8 @@ func _draw_hud() -> void:
 		c.draw_set_transform(Vector2(ex, y_offset))
 		_draw_energy_h(c, e)
 		if tired:
-			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 3, Color(0, 0, 0, 0.8))
-			c.draw_string(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(1, 0.35 + 0.4 * pulse, 0.3))
+			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
+			c.draw_string(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.35 + 0.4 * pulse, 0.3))
 		return
 	if Dialogue.instance(get_tree()).active:
 		return  # it would poke out past the dialogue box
@@ -620,9 +620,9 @@ func _draw_hud() -> void:
 		c.draw_string_outline(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, 3, Color(0, 0, 0, 0.85))
 		c.draw_string(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, Color(1, 0.4 + 0.4 * pulse, 0.3))
 	if lh:
-		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 7, Color(1, 1, 0.9))
+		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 8, Color(1, 1, 0.9))
 	else:
-		c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
+		c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 8, Color(1, 1, 0.9))
 
 
 func _draw_energy_h(c: CanvasItem, e: float) -> void:
@@ -634,8 +634,8 @@ func _draw_energy_h(c: CanvasItem, e: float) -> void:
 	if bolt:
 		c.draw_texture_rect(bolt, Rect2(r.position.x - 10, r.position.y - 3, 9, 9), false)
 	var et := "%d/%d" % [int(GameState.run["energy"]), int(GameState.run["max_energy"])]
-	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, 3, Color(0, 0, 0, 0.7))
-	c.draw_string(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, Color(1, 1, 0.9))
+	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 7, 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 7, Color(1, 1, 0.9))
 
 
 ## Close stand-ins from art we already have, until each item gets its own icon.
@@ -872,5 +872,5 @@ func _draw_boss_bar(c: CanvasItem) -> void:
 	if boss._gift:
 		var gn := str(boss._gift.d.get("name", ""))
 		var st := "OPEN" if opn else "guarded"
-		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))
+		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 7, 3, Color(0, 0, 0, 0.85))
+		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 7, Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))
