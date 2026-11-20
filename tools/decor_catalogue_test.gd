@@ -118,6 +118,9 @@ func _run() -> void:
 	check(GameState.count("dc_t_common_1") == 0, "decor never lands in the bag")
 	GameState.run["crystals"] = 5
 	check(DecorCatalogue.order("dc_t_common_1").begins_with("Not enough"), "order refused without money")
+	Decor.st()["placed"]["house"] = [{"id": "dc_t_common_0", "cell": [3, 3], "rot": 0}]
+	var ft := DecorCatalogue.find_text("dc_t_common_0")
+	check(ft.contains("box 2") and ft.contains("placed 1") and DecorCatalogue.have("dc_t_common_0") == 3, "find line counts box + placed (%s)" % ft)
 	# Unique: one per game.
 	Decor.give("dc_t_unique_1")
 	Decor.give("dc_t_unique_1")

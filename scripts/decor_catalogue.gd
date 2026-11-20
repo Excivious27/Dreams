@@ -122,6 +122,25 @@ static func have(id: String) -> int:
 	return Decor.owned(id) + Decor.placed_count(id) + (1 if worn_any(id) else 0)
 
 
+## Where the pieces you hold are (card "Find" line): "box 2, placed 1 (house), worn".
+static func find_text(id: String) -> String:
+	var bits := []
+	if Decor.owned(id) > 0:
+		bits.append("box %d" % Decor.owned(id))
+	var rooms := []
+	var placed: Dictionary = Decor.st()["placed"]
+	for key in placed:
+		for p in placed[key]:
+			if p is Dictionary and str(p.get("id", "")) == id and not rooms.has(str(key)):
+				rooms.append(str(key))
+	if not rooms.is_empty():
+		var names := rooms.map(func(k: String) -> String: return "home" if k == "house" else PlaceNames.for_id(k) if PlaceNames.for_id(k) != "" else k.replace("_", " "))
+		bits.append("placed %d (%s)" % [Decor.placed_count(id), ", ".join(names.slice(0, 2))])
+	if worn_any(id):
+		bits.append("worn")
+	return ", ".join(bits)
+
+
 ## "owned" | "seen" (seen in a shop, or owned once) | "missing".
 static func state(id: String) -> String:
 	if have(id) > 0:
@@ -470,11 +489,12 @@ func _ready() -> void:
 
 const TIP_COL := Color(0.8, 0.75, 0.65)
 const TIP_TOUCH := "Tap a chip to change it, a piece for its card. B closes."
-const TIP_PAD := "A: choose.  X (Action): chip back / order.  Page: next page.  B: back."
 
 
 func _tip_text() -> String:
-	return TIP_PAD if ScreenCursor.pad_active() or not TouchControls.visible_controls else TIP_TOUCH
+	if ScreenCursor.pad_active() or not TouchControls.visible_controls:
+		return "%s: choose.  %s: chip back / order.  %s: next page.  %s: back." % [InputSetup.prompt("a"), InputSetup.prompt("action"), InputSetup.prompt("cycle_tool"), InputSetup.prompt("b")]
+	return TIP_TOUCH
 
 
 func _say(t: String, col := Color(1, 0.9, 0.7)) -> void:
@@ -789,7 +809,7 @@ func _card_strip() -> void:
 		var sp := set_progress(sid)
 		meta += " · set %d/%d" % [sp[0], sp[1]]
 	if s == "owned":
-		meta += " · have %d" % have(id)
+		meta += " · " + find_text(id)
 	col.add_child(_label(meta, 7, Color(0.85, 0.85, 0.8)))
 	var where := _label(("From: " if s != "missing" else "") + hint(id), 7, Color(0.95, 0.95, 0.85))
 	where.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
