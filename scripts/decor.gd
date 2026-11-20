@@ -416,6 +416,18 @@ static func reserved(tier: int) -> Array:
 	return ((data().get("house_reserved", {}) as Dictionary).get(str(tier), []) as Array)
 
 
+## True when a house cell is kept free at this tier (the reason in reserved_why).
+static func is_reserved(tier: int, c: Vector2i) -> bool:
+	return reserved_why(tier, c) != ""
+
+
+static func reserved_why(tier: int, c: Vector2i) -> String:
+	for r in reserved(tier):
+		if r is Array and r.size() >= 5 and c.x >= int(r[0]) and c.x < int(r[0]) + int(r[2]) and c.y >= int(r[1]) and c.y < int(r[1]) + int(r[3]):
+			return str(r[4])
+	return ""
+
+
 # ---- migration (GameState._migrate) ---------------------------------------------------------------------
 
 ## Moves decor/wear ids out of the bag, toolbar, bag slots and every chest into the decor box (old saves

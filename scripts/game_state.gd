@@ -1793,6 +1793,12 @@ static func rarity_color(id: String) -> Color:
 	return Decor.rarity_color(rarity_of(id))
 
 
+## C10a/c10_07: one soft luck curve for every luck reader (10 x (1 - e^(-luck/8)): 3 -> 3.1, 10 -> 7.1,
+## 20 -> 9.2, never above 10). Decor.roll uses it; fishing/claw/drops should read it too (P4 hooks).
+static func luck_eff(luck: float) -> float:
+	return Decor.luck_eff(luck)
+
+
 static func rarity_of(id: String) -> String:
 	var r := str(Decor.entry(id).get("rarity", items.get(id, {}).get("rarity", "common")))
 	return r if r in RARITY_RANKS else "common"

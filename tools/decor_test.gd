@@ -162,6 +162,9 @@ func _run() -> void:
 	check(Decor.comfort() == base + int(d["sets"][sid]["comfort"]), "full set adds its comfort")
 	GameState.run["decor"]["placed"].erase("house")
 	check(Decor.reserved(3).size() >= 5, "tier-3 reserved cells")
+	check(Decor.reserved_why(1, Vector2i(8, 11)) == "door" and Decor.reserved_why(2, Vector2i(4, 3)) == "bed", "door and bed kept free (house.gd DOOR/BED)")
+	check(Decor.reserved_why(3, Vector2i(18, 10)) == "cellar" and not Decor.is_reserved(2, Vector2i(18, 10)), "cellar hatch only reserved in the Manor")
+	check(Decor.reserved_why(3, Vector2i(23, 8)) == "spouse" and not Decor.is_reserved(3, Vector2i(6, 6)), "spouse corner reserved, open floor free")
 	# --- migration: an old v9 save with rp_ decor in bag + chest -----------------------------------
 	GameState.new_run("gangsters", "kairi", "T", "Town", "Pup")
 	GameState.run.erase("decor")

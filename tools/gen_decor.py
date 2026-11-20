@@ -600,11 +600,16 @@ for pid, rows in POOLS.items():
             ENTRIES[k]['sources'].append({'kind': 'loot', 'ref': pid})
 
 # ---- 13) house: reserved cells per tier (mirror of house.gd consts; Decor.place refuses them) ------------
-HOUSE_RESERVED = {
-    '1': [[1, 1, 14, 1, 'wall'], [7, 11, 2, 1, 'door']],
-    '2': [[1, 1, 18, 1, 'wall'], [9, 11, 2, 1, 'door']],
-    '3': [[1, 1, 24, 1, 'wall'], [12, 11, 2, 1, 'door'], [17, 9, 2, 1, 'cellar'], [17, 3, 2, 1, 'study'], [23, 3, 1, 1, 'bath']],
-}
+# Mirror of house.gd consts (BED 3,2 (2x2), CHEST/dresser 12,2, DOOR 8,11 + the cell in front, stove 13,9,
+# CELLAR 17,9 (2x2), STUDY 17,3 (2x1), BATH 23,3, SPOUSE_CORNER per tier, back wall row 1). P2's Decor
+# placement refuses these cells; keep in step with house.gd (decor_test checks the door/bed cells).
+def _res(tier, cols):
+    out = [[1, 1, cols - 2, 1, 'wall'], [3, 2, 2, 2, 'bed'], [12, 2, 1, 1, 'dresser'], [8, 10, 1, 2, 'door'], [13, 9, 1, 1, 'stove']]
+    out.append({1: [14, 5, 1, 1, 'spouse'], 2: [17, 4, 1, 1, 'spouse'], 3: [23, 8, 1, 1, 'spouse']}[tier])
+    if tier >= 3:
+        out += [[17, 9, 2, 2, 'cellar'], [17, 3, 2, 1, 'study'], [23, 3, 1, 1, 'bath']]
+    return out
+HOUSE_RESERVED = {str(t): _res(t, c) for t, c in {1: 16, 2: 20, 3: 26}.items()}
 LEGACY = {'museum_trophy': 'dc_tt_trophy_crystal', 'fish_trophy': 'dc_tt_trophy_fish_a'}
 
 # ---- self-checks ---------------------------------------------------------------------------------------
