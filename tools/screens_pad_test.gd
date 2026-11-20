@@ -150,6 +150,7 @@ func _craft(m: GameMap) -> void:
 
 
 func _prizes(m: GameMap) -> void:
+	RecReno.all_open = true
 	Tickets.add(5000, "test")
 	GameState.run["time"] = 12 * 60
 	PrizeScreen.open(m)
@@ -164,6 +165,15 @@ func _prizes(m: GameMap) -> void:
 		if ps._rows.size() > PrizeScreen.VISIBLE:
 			big = i
 			break
+	if big < 0 and not ps._rows.is_empty():
+		# No 8+ shelf open in this save: a long shelf of repeats tests the same scrolling.
+		var rows: Array = []
+		while rows.size() < PrizeScreen.VISIBLE + 3:
+			rows.append(ps._rows[rows.size() % ps._rows.size()])
+		ps._rows = rows
+		ps.sel = 0
+		ps.top = 0
+		big = ps.tier
 	if big >= 0:
 		for k in ps._rows.size() - 1:
 			await _press("down")
@@ -244,7 +254,7 @@ func _mega() -> void:
 		check(moved, "step_sel moves between pins of " + id)
 		var mc := MegaMap.make_map(id)
 		check(mc.focus_mode == Control.FOCUS_ALL, "map is a focus stop")
-		mc.free()
+		mc.queue_free()
 		done = true
 		break
 	check(done, "a region with pins exists")
@@ -269,7 +279,7 @@ func _slot_drag() -> void:
 	check(got.size() == 1 and got[0][0] == "b" and str(got[0][1]["id"]) == "wood", "pad_drop drops on the target slot")
 	check(sd.dragging.is_empty() and not sd.pad_carry, "carry ends")
 	check(not sd.pad_lift("s:1"), "an empty slot lifts nothing")
-	host.free()
+	host.queue_free()
 
 
 func _rep() -> void:
@@ -321,7 +331,7 @@ func _arcade() -> void:
 	for i in 8:
 		hub.bot = {"_": false}
 		hub.frame()
-	var s0 := hub._sel
+	var s0: int = hub._sel
 	for i in 60:
 		hub.bot = {"down": true}
 		hub.frame()
@@ -345,7 +355,7 @@ func _bowling() -> void:
 	bw.manual = true
 	root.add_child(bw)
 	check(bw.BTN_GO.position.x < bw.BTN_L.position.x and bw.BTN_L.position.x < bw.BTN_R.position.x, "left-handed bowling: GO left, ◀ ▶ right")
-	bw.free()
+	bw.queue_free()
 	Settings.set_v("left_handed", false)
 	var bw2 := Bowling.new()
 	bw2.manual = true
@@ -355,5 +365,5 @@ func _bowling() -> void:
 	ScreenCursor.pad_used = true
 	check(bw2.deck_hidden(), "bowling buttons hide for a pad")
 	ScreenCursor.pad_used = false
-	bw2.free()
+	bw2.queue_free()
 	paused = false

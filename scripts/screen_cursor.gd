@@ -52,12 +52,15 @@ class Rep:
 	const DELAY := 0.35
 	const RATE := 0.09
 	var _t := {}
+	var _pf := {}  # the frame each press was taken (a second call that frame is "held")
 
 	func pressed(action: String, dt: float) -> bool:
 		if not InputMap.has_action(action):
 			return false
-		if Input.is_action_just_pressed(action):
+		var f := Engine.get_process_frames()
+		if Input.is_action_just_pressed(action) and int(_pf.get(action, -1)) != f:
 			_t[action] = 0.0
+			_pf[action] = f
 			return true
 		if not Input.is_action_pressed(action):
 			_t.erase(action)
@@ -259,7 +262,7 @@ func _process(delta: float) -> void:
 			if on_move.is_valid() and bool(on_move.call(DIRS[a])):
 				continue
 			move(DIRS[a])
-	if Input.is_action_just_pressed(CONFIRM) and shown and not Dialogue.input_blocked():
+	if Input.is_action_just_pressed(CONFIRM) and shown:
 		press()
 	if InputMap.has_action(CONFIRM_ALT) and Input.is_action_just_pressed(CONFIRM_ALT) and on_alt.is_valid():
 		resync()
