@@ -2406,6 +2406,16 @@
    "tier": 4
   },
   {
+   "id": "angora_yarn",
+   "name": "Yarn (rabbit fur)",
+   "need": {
+    "rabbit_fur": 1
+   },
+   "give": "yarn",
+   "tier": 1,
+   "n": 3
+  },
+  {
    "id": "dc_rug_rect_blue",
    "name": "Cottage Rect Blue Rug",
    "need": {

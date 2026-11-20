@@ -6713,7 +6713,7 @@
   "value": 5,
   "rarity": "common",
   "tier": 1,
-  "desc": "Animal feed. Scythe tall grass, grow wheat, bale fiber at the Mill, or buy it from Maple or Tam. A silo keeps it for the feeders."
+  "desc": "Animal feed. Scythe tall grass, grow wheat, bale fiber at the Mill, or buy it from Maple or Tam."
  },
  "bone": {
   "name": "Bone",
@@ -20909,12 +20909,12 @@
  },
  "beeswax": {
   "name": "Beeswax",
-  "type": "material",
+  "type": "craft",
   "value": 30,
   "rarity": "common",
   "tier": 1,
   "sprite": "wax",
-  "desc": "From the hives, now and then, with the honey.",
+  "desc": "Spun from honeycomb. Candles, polish and fine goods.",
   "ranch": true,
   "icon": "wax"
  },

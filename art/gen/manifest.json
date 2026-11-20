@@ -63,6 +63,14 @@
    "h": 65,
    "w": 67
   },
+  "idle": {
+   "cell_h": 65,
+   "cell_w": 70,
+   "file": "animals/bee_swarm/idle.png",
+   "frames": 4,
+   "h": 65,
+   "w": 280
+  },
   "queen": {
    "cell_h": 60,
    "cell_w": 94,
