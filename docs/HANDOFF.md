@@ -26,9 +26,9 @@ Whoever works next starts here. Keep it short and current; history goes in `docs
 
 - **Last update:** 2026-11-19 22:52 PT, personal account.
 - **Done:** CONDUCT 1-5 (C5 merged, CI c5b PASS: 6 shards + 20 bots + playtest). Report docs/reports/CONDUCT-5.md, Guide 29.
-- **In progress:** PAUSED for usage optimization (Tom 22:49, OPTIMIZE CONDUCT USAGE: effort by role, shared code map, tight briefs, lean main chat, adaptive watchdog). C6: 14 focus auditors done (/home/claude/wt/c6_reports/*.jsonl); fix plan /home/claude/wt/C6_PACKAGES.md (P1-P7, copy docs/reports/C6-PACKAGES.md); regression/perf/inventory auditors 15-20 not started.
-- **Next step:** finish the usage changes, then C5 package to Tom, C6 auditors 15-20 (low effort, checklists), C6 code map, launch C6 fix agents P1-P7 (medium).
-- **Jobs running elsewhere:** none.
+- **In progress:** CONDUCT 6 (audio). Auditors 01-14 done; 15-20 (low effort, checklists) running; 7 fix agents (medium) launched 22:58, cap ~00:15 (plan docs/reports/C6-PACKAGES.md; worktrees /home/claude/wt/c6f_p1..p7; reports /home/claude/wt/c6f_reports/pN.md). C5 package sent.
+- **Next step:** watchdog; merge C6 packages as they finish (merge_c.sh), local smoke, ci_run.sh c6, C6 package (low-effort subagent), C7 auditors at the merge (code map first).
+- **Jobs running elsewhere:** 6 auditors + 7 fix agents in the personal sandbox (lost on a switch: relaunch from C6-PACKAGES.md / C6-SCOPES.txt).
 - **WIP branches:** none.
 - **Open questions for Tom:** see PROJECT-MEMORY section 8.
 - **Tom is waiting on:** the nine CONDUCT runs plus CONDUCT 10 (decor and cosmetics), CONDUCT 11 (ranching), CONDUCT 12 (writing), CONDUCT 13 (audio depth), CONDUCT 14 (aesthetics), CONDUCT 15 (seasons), CONDUCT 16 (progression), CONDUCT 17 (multiplayer), CONDUCT 18 (cutscenes) and CONDUCT 19 (trading cards), CONDUCT 20 (hazards, jumping/flight, lava mega region), CONDUCT 21 (The General Store side arc), CONDUCT 22 (polish + code cleanup), CONDUCT 23 (art direction), then the fully updated artifact.
