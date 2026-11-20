@@ -42,7 +42,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_font = ThemeDB.fallback_font
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
-	get_tree().paused = true
+	Hud.pause(get_tree(), "prize_screen")
 	_canvas = Control.new()
 	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_canvas.draw.connect(_draw_it)

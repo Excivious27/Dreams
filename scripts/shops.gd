@@ -140,7 +140,7 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			if GameState.has_tool(id):
 				continue
 			var cd: Dictionary = GameState.crops.get(str(GameState.items.get(id, {}).get("crop", "")), {})
-			opts.append("%s  ◆%d%s" % [GameState.item_name(id), price(id), ("  · %d days" % int(cd.get("days", 0))) if not cd.is_empty() else ""])
+			opts.append("%s · ◆%d%s" % [GameState.item_name(id), price(id), (" · %d days" % int(cd.get("days", 0))) if not cd.is_empty() else ""])
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())
 		d.say([{"who": keeper, "text": "%s  (you have ◆%d)" % [greet, int(GameState.run["crystals"])], "choice": opts, "key": ""}])
@@ -206,7 +206,7 @@ static func hall(m: GameMap) -> void:
 			if nd.is_empty() or int(nd.get("permit", 0)) <= 0:
 				continue
 			var have := Builds.permitted(id) >= int(nd["tier"])
-			opts.append("%s%s permit  ◆%d%s" % ["✓ " if have else "", str(nd["name"]), Builds.permit_price(id), "" if not have else " (held)"])
+			opts.append("%s%s permit · ◆%d%s" % ["✓ " if have else "", str(nd["name"]), Builds.permit_price(id), "" if not have else " (held)"])
 			ids.append(id)
 		opts.append("Leave")
 		var d := Dialogue.instance(m.get_tree())

@@ -245,7 +245,7 @@ func _dresser() -> void:
 		var cr := Creator.new(GameState.run.get("look", {}), sprite_id if sprite_id == "penguin" else "", true)
 		panel.add_child(cr)
 		add_child(layer)
-		get_tree().paused = true
+		Hud.pause(get_tree(), "house")
 		Hud.modal_rect = Rect2(0, 0, 270, 480)
 		var finish := func(l: Dictionary) -> void:
 			if not l.is_empty():

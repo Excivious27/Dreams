@@ -3,7 +3,8 @@ extends SceneTree
 ## its own seed, arc, hero, story progress and play style, each in its own
 ## user:// (XDG_DATA_HOME), so they don't share a save.
 ##
-##   godot --headless --path . -s res://tools/bot.gd -- <seed> <arc> <playable> <style> <progress> <days>
+##   godot --headless --path . -s res://tools/bot.gd -- <seed> <arc> <playable> <style> <progress> [<difficulty 0-3> <day_len>] <days>
+##   (C5: the bots.sh / tools/conduct/bot_spec.sh tables give every bot a difficulty and a day length)
 ##
 ## style: wander | farmer | fighter | menus | story
 ## progress: 0..5 — how far the story is pushed before starting (flags/quests),
@@ -17,12 +18,17 @@ var arc := "penguins"
 var playable := "kairi"
 var style := "wander"
 var progress := 0
+var difficulty := 2
+var day_len := 15
+var kills := 0
 var days := 6
 var fails := 0
 var warns := 0
 var steps := 0
 var scenes_visited := {}
 
+## Gangster-only maps (the lieutenant cities and the Hideout): penguin bots stay out (C5 c5_19 #5).
+const GANG_ONLY := ["docks", "hideout", "neon", "underground", "uptown"]
 const SCENES_COMMON := ["farm", "town", "beach", "mountain", "forest", "lake", "meadow", "mine", "house", "moon",
 	"countryside", "docks", "hideout", "highlands", "jungle", "marsh", "neon", "orchard_hills", "quarry", "riverlands",
 	"ruins", "sky", "station", "underground", "uptown", "wastes", "interior"]
@@ -50,15 +56,23 @@ func _run() -> void:
 	if a.size() > 2: playable = a[2]
 	if a.size() > 3: style = a[3]
 	if a.size() > 4: progress = int(a[4])
-	if a.size() > 5: days = int(a[5])
+	if a.size() >= 8:  # seed arc playable style progress difficulty day_len days
+		difficulty = int(a[5])
+		day_len = int(a[6])
+		days = int(a[7])
+	elif a.size() > 5: days = int(a[5])
 	rng.seed = seed_
 	seed(seed_)
 	InputSetup.ensure_actions()
 	Dialogue.audit = true
 	GameState.new_run(arc, playable, "Bot%d" % seed_, "Bottown", "Pup")
 	GameState.run["intro_done"] = true
+	if not GameState.run.get("opts", null) is Dictionary:
+		GameState.run["opts"] = {}
+	GameState.run["opts"]["difficulty"] = clampi(difficulty, 0, 3)
+	GameState.run["day_len"] = day_len
 	_apply_progress()
-	print("BOT %d start arc=%s hero=%s style=%s progress=%d" % [seed_, arc, playable, style, progress])
+	print("BOT %d start arc=%s hero=%s style=%s progress=%d difficulty=%d day_len=%d" % [seed_, arc, playable, style, progress, Difficulty.level(), GameState.day_len()])
 	for d in days:
 		var n_scenes := 3 if style != "farmer" else 2
 		for s in n_scenes:
@@ -68,7 +82,7 @@ func _run() -> void:
 		await _sleep_and_roundtrip()
 	for t in Dialogue.audit_log:
 		_warn("menu B can't leave: " + str(t))
-	print("BOT %d done: %d fails, %d warns, %d steps, scenes %s, day %d, ◆%d" % [seed_, fails, warns, steps, str(scenes_visited.keys()), int(GameState.run["day"]), int(GameState.run["crystals"])])
+	print("BOT %d done: %d fails, %d warns, %d steps, %d kills, %d ownerless pauses, scenes %s, day %d, ◆%d" % [seed_, fails, warns, steps, kills, Hud.orphan_count, str(scenes_visited.keys()), int(GameState.run["day"]), int(GameState.run["crystals"])])
 	quit(1 if fails > 0 else 0)
 
 
@@ -127,6 +141,7 @@ func _pick_scene() -> String:
 			return arc_scenes[rng.randi_range(0, arc_scenes.size() - 1)]
 	var pool: Array = SCENES_COMMON.duplicate()
 	if arc == "penguins":
+		pool = pool.filter(func(x: String) -> bool: return not x in GANG_ONLY)
 		pool.append("crystal_meadow")
 	return pool[rng.randi_range(0, pool.size() - 1)]
 
@@ -164,8 +179,9 @@ func _play_scene(sc: String) -> void:
 				elif roll < 0.85: await _farm_step(m)
 				else: await _random_button()
 			"fighter":
-				if roll < 0.5: await _walk()
-				elif roll < 0.9: await _swing()
+				if roll < 0.7 and is_instance_valid(m) and await _hunt(m): pass  # C5: seek a foe and fight it
+				elif roll < 0.85: await _walk()
+				elif roll < 0.95: await _swing()
 				else: await _random_button()
 			"menus":
 				if roll < 0.5:
@@ -325,6 +341,39 @@ func _swing() -> void:
 	GameState.select_slot(slots[0])
 	await press("a", 2)
 	await frames(rng.randi_range(6, 14))
+
+
+## Fighter bots (C5 c5_19 #4): walk at the nearest live foe in sight and swing at it.
+## False when there's none near (the caller then walks instead).
+func _hunt(m: GameMap) -> bool:
+	if m.player == null:
+		return false
+	var best: Enemy = null
+	var bd := 170.0
+	for e in m.enemies:
+		if is_instance_valid(e) and e._alive and e.position.distance_to(m.player.position) < bd:
+			best = e
+			bd = e.position.distance_to(m.player.position)
+	if best == null:
+		return false
+	GameState.select_slot(4)  # sword / bat
+	for i in 14:
+		if not is_instance_valid(m) or not is_instance_valid(best) or not best._alive or m.player == null:
+			break
+		var d := best.position - m.player.position
+		if d.length() < 22.0:
+			var face := ("right" if d.x > 0 else "left") if absf(d.x) > absf(d.y) else ("down" if d.y > 0 else "up")
+			await press(face, 2)
+			await press("a", 2)
+			await frames(10)
+		else:
+			await press(("right" if d.x > 0 else "left") if absf(d.x) > absf(d.y) else ("down" if d.y > 0 else "up"), 8)
+		await _dialogue_tick()
+	if is_instance_valid(best) and not best._alive:
+		kills += 1
+	elif not is_instance_valid(best):
+		kills += 1
+	return true
 
 
 func _farm_step(m: GameMap) -> void:

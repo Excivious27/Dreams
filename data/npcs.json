@@ -1,7 +1,7 @@
 {
  "maple": {
   "name": "Maple",
-  "role": "General store",
+  "role": "Mercantile",
   "color": "c9622f",
   "spot": [
    8,
@@ -64,10 +64,10 @@
    "slime_goo"
   ],
   "perks": {
-   "2": "5% off at the General Store",
+   "2": "5% off at the Mercantile",
    "4": "10% off; Maple stocks rare seeds",
    "6": "Maple sends a seed pack each season",
-   "8": "20% off at the General Store",
+   "8": "20% off at the Mercantile",
    "10": "Maple gifts a Golden Watering Can's worth of growth: 3 Growth Elixirs"
   },
   "home": "store",

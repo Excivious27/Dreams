@@ -236,14 +236,26 @@ func _camp() -> void:
 		ch.append("%s  ◆%d" % [GameState.item_name(str(pk[0])), int(pk[1])])
 	# The gangster road to Space (CONDUCT 4): the smugglers run a cargo rocket to the
 	# moon, and once you've ridden it the farm's launchpad has a beacon to fly to.
+	# C5 c5_17 #2: the moon's foes are tier 4, so the run waits for the gang arc's
+	# chapter-4 step (Flame put out in the neon district), like the penguins' merkitties.
 	var moon_i := -1
-	if GameState.quest_done("clear_meadow"):
+	var moon_ready: bool = GameState.quest_done("clear_meadow") and (GameState.quest_done("neon") or GameState.run["flags"].has("moon_unlocked"))
+	if moon_ready:
 		moon_i = ch.size()
 		ch.append("Ride the cargo rocket to the moon")
 	ch.append("Leave")
-	d.say([{"who": "Smuggler", "text": "No names, no questions. You have ◆%d." % int(GameState.run["crystals"]), "choice": ch, "key": ""}])
+	var hello := "No names, no questions. You have ◆%d." % int(GameState.run["crystals"])
+	if GameState.quest_done("clear_meadow") and not moon_ready:
+		hello += " Moon runs are for people with a name in this town. Put Flame out in the neon district, then we talk."
+	d.say([{"who": "Smuggler", "text": hello, "choice": ch, "key": ""}])
 	await d.finished
 	if moon_i >= 0 and d.last_choice == moon_i:
+		if not GameState.run["flags"].has("moon_unlocked"):
+			var w := Dialogue.instance(get_tree())
+			w.say([{"who": "Smuggler", "text": "Fair warning: the moon's crawling with the President's security bots, and they hit hard. Pack food and potions. Still going?", "choice": ["Ride", "Not yet"], "key": ""}])
+			await w.finished
+			if w.last_choice != 0:
+				return
 		await say([{"who": "Smuggler", "text": "Moon run leaves when you sit down. We drop a landing beacon up there for regulars, so your own rocket can find it after. Don't touch the crates with the stamp on."}])
 		GameState.run["flags"]["moon_unlocked"] = true
 		fx("levelup", cell_center(PAD) + Vector2(0, -8), 10.0, 0.8)

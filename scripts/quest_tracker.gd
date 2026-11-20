@@ -196,7 +196,7 @@ static func caption(m: GameMap, tgt: Vector2) -> String:
 	if tgt == Vector2.ZERO:
 		return ""
 	var dist := int(m.call("pointer_dist")) if m.has_method("pointer_dist") else -1
-	return str(dist if dist >= 0 else int(m.player.position.distance_to(tgt) / 16.0))
+	return "%dm" % (dist if dist >= 0 else int(m.player.position.distance_to(tgt) / 16.0))  # C5: a unit, not a bare number
 
 
 ## The compass, drawn by the Hud (outdoors, no dialogue, no battle). Returns true when drawn.
@@ -241,9 +241,9 @@ static func draw(c: CanvasItem, m: GameMap, font: Font) -> bool:
 		c.draw_circle(ctr, 1.6, Color(rim, 0.6))
 	if cap != "":
 		# Left of the badge (toasts start right under it, so nothing hangs below).
-		var tp := ctr + Vector2(-R - 30, 2.5)
-		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 28, 6, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 28, 6, needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
+		var tp := ctr + Vector2(-R - 32, 2.5)
+		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 30, 7, 3, Color(0, 0, 0, 0.85))
+		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 30, 7, needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
 	# On screen: a small bobbing chevron over the spot itself (Stardew's quest mark).
 	if tgt != Vector2.ZERO and not m.has_method("pointer_aim"):
 		var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt

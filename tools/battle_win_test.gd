@@ -111,7 +111,7 @@ func _run() -> void:
 	GameState.run["flags"]["crystal_kin"] = true
 	check("crystal_kin" in Battle.spawner_kinds(), "Crystal Kin at spawners once befriended")
 	var cb := Battle.new()
-	check(cb._cost("crystal_kin") == 10, "Crystal Kin costs its data cost (%d)" % cb._cost("crystal_kin"))
+	check(cb._cost("crystal_kin") == 20, "Crystal Kin costs its data cost (%d)" % cb._cost("crystal_kin"))
 	cb.free()
 	check(Art.tex("helpers", "crystal_kin_crystal_idle_0") != null, "Crystal Kin art present")
 

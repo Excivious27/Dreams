@@ -67,7 +67,7 @@ static func story_due() -> Array:
 	var out: Array = []
 	if GameState.is_penguins():
 		if not flags.has("mail_1"):
-			out.append({"flag": "mail_1", "who": "Letter", "text": "Welcome to %s! Here are a few strawberry seeds to start you off: they fruit again every few days once they're up. Stop by the general store when you can. - Maple" % GameState.names()["town"], "give": ["strawberry_seed", 3]})
+			out.append({"flag": "mail_1", "who": "Letter", "text": "Welcome to %s! Here are a few strawberry seeds to start you off: they fruit again every few days once they're up. Stop by the Mercantile when you can. - Maple" % GameState.names()["town"], "give": ["strawberry_seed", 3]})
 		if day >= 3 and not flags.has("mail_2"):
 			out.append({"flag": "mail_2", "who": "Letter", "text": "Dear neighbor, something has been howling from the east meadow at night. Mayor Alder says it's nothing. It is not nothing. - Wren", "quest": ["clear_meadow", "Find out what's howling in the east meadow."]})
 	else:

@@ -69,7 +69,7 @@ func _run() -> void:
 	var tt := QuestTracker.target(farm)
 	check(tt != Vector2.ZERO and tt == GoalLine.exit_toward(farm, "town"), "tracked job: the compass points to the town exit")
 	var cap := QuestTracker.caption(farm, tt)
-	check(cap.contains("/") or cap.is_valid_int(), "caption shows the job count or distance (%s)" % cap)
+	check(cap.contains("/") or (cap.ends_with("m") and cap.trim_suffix("m").is_valid_int()), "caption shows the job count or distance (%s)" % cap)
 	await shot("farm_job")
 	QuestTracker.track(str(sq["id"]))
 	check(QuestTracker.tracked() == "", "ticking it again goes back to the story")

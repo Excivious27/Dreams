@@ -20,6 +20,7 @@ PROP_SETS = {"bf_frostfield": ["rock_snow_l", "rock_snow_m", "rock_snow_s", "bou
              "bf_dockside": ["crates_a", "crates_pallet", "barrel_a", "oil_drums"]}
 def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, water, points, enemies, props, crit, brief, who, win, lose, reward, back, music="battle", **kw):
     exits = [{"rect": [cols // 2 - 2, rows - 1, 4, 1], "scene": back[0], "spawn": back[1:], "facing": "down", "label": "▼ fall back"}]
+    kept = {k: R[rid][k] for k in ("light",) if k in R.get(rid, {})}  # C5: hand/other-package keys (P2's fixed darkness) survive a rerun
     R[rid] = {"cols": cols, "rows": rows, "music": music, "backdrop": "mountains" if "snow" in (patch or "") or "frost" in rid else "hills", "ground": ground,
               "path": path, "spawn": [cols // 2, rows - 9], "pad": 7, "border": {"n": "cliff", "s": "trees", "w": "trees", "e": "cliff"},
               "exits": exits, "paths": kw.get("lanes") or [[cols // 2 - 1, rows // 2, 2, rows // 2 - 1], [6, rows // 2, cols - 12, 2]],
@@ -29,7 +30,8 @@ def battle(rid, title, arc, tier, cols, rows, ground, patch, path, plateaus, wat
                          "tickets": 150, "supply": 15, "wave_every": 7.0, "enemy_cap": 16, "tier_bonus": max(0, tier - 2), "reward": reward, "back": back}}
     if patch is None:
         del R[rid]["patch_set"]
-    for k in ("backdrop", "border", "ground_threshold", "ground_seam", "cliff_style", "border_trees", "water_shore"):
+    R[rid].update(kept)
+    for k in ("backdrop", "border", "ground_threshold", "ground_seam", "cliff_style", "border_trees", "water_shore", "light"):
         if k in kw:
             R[rid][k] = kw[k]
     if "theme" in kw:  # bf_themes scatter theme (WorldGen.theme)
@@ -281,7 +283,7 @@ def gang_kind(k):
 # them, proving your purpose (a gift, or Meow Pow Wow) turns them into a helper
 # kind you can raise at spawners. HelperUnit reads "_helper_kinds" generically.
 KIN = {"crystal_kin": {"crystal": "Crystal Kin", "drone": "Crystal Kin", "hp": 30, "colour": "9fe8ff", "act": "striker", "arc": "penguins",
-               "flag": "crystal_kin", "art": "enemies/crystal_baby", "cost": 10, "does": "stomps foes"}}
+               "flag": "crystal_kin", "art": "enemies/crystal_baby", "cost": 20, "does": "stomps foes"}}
 KIN_GIFT = {"item": "crystal_refined", "n": 2}
 
 def _write_grumps():

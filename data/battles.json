@@ -11085,7 +11085,7 @@
    "arc": "penguins",
    "flag": "crystal_kin",
    "art": "enemies/crystal_baby",
-   "cost": 10,
+   "cost": 20,
    "does": "stomps foes"
   }
  }

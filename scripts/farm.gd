@@ -884,6 +884,11 @@ func scythe_sweep(c: Vector2i) -> void:
 		for i in 2:
 			_leaf(cell_center(sc) + Vector2(randf_range(-6, 6), -8))
 		pop_items(cell_center(sc), "fiber", 1)
+		# C5 c5_18 #5: side cells count too, at half the main cut's rolls (free swing, no extra energy)
+		if randf() < 0.5:
+			xp("foraging", 1)
+		if randf() < (0.06 + 0.01 * GameState.skill_level("foraging")) * 0.5:
+			pop_items(cell_center(sc), "seed_packet", 1)
 
 
 # ---- interaction -------------------------------------------------------------
@@ -1939,7 +1944,7 @@ func _place_props() -> void:
 			prop("props", "crates_c" if Art.has("props", "crates_c") else "crates_a", c, int(b["w"]))
 			var tag := Label.new()
 			tag.text = str(Builds.current_def(id).get("name", id))
-			tag.add_theme_font_size_override("font_size", 5)
+			tag.add_theme_font_size_override("font_size", 7)
 			tag.add_theme_color_override("font_color", Color(1, 0.95, 0.7))
 			tag.add_theme_color_override("font_outline_color", Color(0.1, 0.08, 0.05))
 			tag.add_theme_constant_override("outline_size", 3)

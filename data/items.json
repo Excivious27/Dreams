@@ -297,19 +297,19 @@
  },
  "strawberry_wine": {
   "name": "Strawberry Wine",
-  "type": "crop",
+  "type": "gift",
   "value": 90,
-  "energy": 30,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "desc": "Sweet strawberries, kegged and aged. A trade good: sold and gifted, never drunk."
  },
  "corn_ale": {
   "name": "Corn Ale",
-  "type": "crop",
+  "type": "gift",
   "value": 80,
-  "energy": 30,
   "rarity": "common",
-  "tier": 1
+  "tier": 1,
+  "desc": "Brewed from the farm's corn. A trade good: sold and gifted, never drunk."
  },
  "berry_juice": {
   "name": "Berry Juice",
@@ -7127,12 +7127,11 @@
  },
  "cider": {
   "name": "Cider",
-  "type": "food",
+  "type": "gift",
   "value": 90,
   "rarity": "uncommon",
   "tier": 2,
-  "energy": 40,
-  "heal": 1
+  "desc": "Pressed apples, kegged till they fizz. A trade good: sold and gifted, never drunk."
  },
  "jam": {
   "name": "Jam",
@@ -7872,12 +7871,11 @@
  },
  "harvest_ale": {
   "name": "Harvest Ale",
-  "type": "food",
+  "type": "gift",
   "value": 70,
   "rarity": "common",
   "tier": 2,
-  "energy": 30,
-  "desc": "Grain, water, patience."
+  "desc": "Grain, water, patience. A trade good: sold and gifted, never drunk."
  },
  "mushroom_broth": {
   "name": "Mushroom Broth",
@@ -7891,12 +7889,11 @@
  },
  "flower_mead": {
   "name": "Flower Mead",
-  "type": "food",
+  "type": "gift",
   "value": 95,
   "rarity": "uncommon",
   "tier": 2,
-  "energy": 40,
-  "desc": "Smells like the meadow in June."
+  "desc": "Smells like the meadow in June. A trade good: sold and gifted, never drunk."
  },
  "wonder_elixir": {
   "name": "Wonder Elixir",

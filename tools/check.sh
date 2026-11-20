@@ -283,6 +283,10 @@ echo "== art prompts: at most 3 images each =="
 python3 tools/prompt_size_check.py || { echo "Prompt size check failed"; exit 1; }
 echo "== every sound the game asks for exists =="
 python3 tools/sfx_audit.py || { echo "Sound audit failed"; exit 1; }
+echo "== text size floors (7 px) =="
+python3 tools/text_floor_check.py || { echo "Text floor check failed"; exit 1; }
+echo "== all ages: alcohol is a trade good, never drunk =="
+python3 tools/drink_rule_test.py || { echo "Drink rule failed"; exit 1; }
 
 echo "== music: every map has a song; web streaming works offline =="
 mmout="$("$GODOT" --headless --path . -s res://tools/music_map_test.gd 2>&1)"
@@ -497,6 +501,35 @@ echo "$haout" | grep -E "FAIL|SCRIPT ERROR|hidden_area_test" || true
 if ! echo "$haout" | grep -q "hidden_area_test: PASS"; then
   echo "Hidden area test failed"; exit 1
 fi
+
+echo "== crisp art shader on buildings/props (C2 P7) =="
+caout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/crisp_art_test.gd 2>&1)"
+echo "$caout" | grep -E "FAIL|SCRIPT ERROR|crisp_art_test" || true
+if ! echo "$caout" | grep -q "crisp_art_test: OK"; then
+  echo "Crisp art test failed"; exit 1
+fi
+
+echo "== fish critters only in deep water (C2 P4) =="
+cwout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/critter_water_test.gd 2>&1)"
+echo "$cwout" | grep -E "FAIL|SCRIPT ERROR|critter_water_test" || true
+if ! echo "$cwout" | grep -q "critter_water_test: PASS"; then
+  echo "Critter water test failed"; exit 1
+fi
+
+echo "== menu sweep: every menu button, both arcs (C2) =="
+msout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/menu_sweep_test.gd 2>&1)"
+echo "$msout" | grep -E "FAIL|SCRIPT ERROR|menu_sweep_test" || true
+if ! echo "$msout" | grep -q "menu_sweep_test: .* 0 failures"; then
+  echo "Menu sweep test failed"; exit 1
+fi
+
+echo "== hidden areas stay put day to day (C5) =="
+hsout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/hidden_stable_test.gd 2>&1)"
+echo "$hsout" | grep -E "FAIL|SCRIPT ERROR|hidden_stable_test" || true
+if ! echo "$hsout" | grep -q "hidden_stable_test: OK"; then
+  echo "Hidden stable test failed"; exit 1
+fi
+
 echo "== arcade: cabinets play, pay tickets; every jumper level can be finished =="
 jout="$("$GODOT" --headless --path . -s res://tools/jumper_solve.gd 2>&1)"
 echo "$jout" | grep -E "FAIL|jumper_solve" || true

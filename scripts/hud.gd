@@ -35,6 +35,19 @@ var _boss_on := false  # the boss bar is up: toasts start under it
 var _font: Font
 
 
+
+## HUD money text: whole numbers up to 9,999, then 12.3k / 123k / 1.2M (C5 c5_13 #1).
+static func short_money(n: int) -> String:
+	var a := absi(n)
+	var sg := "-" if n < 0 else ""
+	if a < 10000:
+		return str(n)
+	if a < 100000:
+		return sg + ("%.1fk" % (floorf(a / 100.0) / 10.0)).replace(".0k", "k")
+	if a < 1000000:
+		return sg + "%dk" % (a / 1000)
+	return sg + ("%.1fM" % (floorf(a / 100000.0) / 10.0)).replace(".0M", "M")
+
 func _ready() -> void:
 	layer = 5
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -174,6 +187,7 @@ func _process(delta: float) -> void:
 
 
 var _orphan_pause := 0
+static var orphan_count := 0  # ownerless pauses let go this session (bots print it; C5 c5_19 #1)
 
 
 ## Softlock guard: every pauser shows something (a dialogue, the menu, or a
@@ -229,6 +243,7 @@ func _pause_watch(sc: Node) -> void:
 	_orphan_pause += 1
 	if _orphan_pause >= 20:
 		_orphan_pause = 0
+		orphan_count += 1
 		# Name what's on screen, so the bots' log shows who left the pause behind.
 		var kids: Array = []
 		for n in sc.get_children():
@@ -385,8 +400,8 @@ func _draw_hud() -> void:
 			else:
 				c.draw_circle(p + Vector2(5, 5), 4.0, Color("e8484a") if f >= 1.0 else Color(0, 0, 0, 0.4))
 	var hp_txt := "%d/%d" % [hp, max_hp]
-	c.draw_string_outline(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, 3, Color(0, 0, 0, 0.7))
-	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 7, Color(1, 0.95, 0.9))
+	c.draw_string_outline(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 8, 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(6 + hearts * 11 + 2, 13), hp_txt, HORIZONTAL_ALIGNMENT_LEFT, 60, 8, Color(1, 0.95, 0.9))
 	# Mana (small blue bar under the hearts), only once you can cast (a spell, or a partner's Gift).
 	if int(r.get("max_mana", 0)) > 0 and _shows_mana():
 		var mb := Rect2(6, 16, 50, 4)
@@ -398,8 +413,8 @@ func _draw_hud() -> void:
 			c.draw_rect(mb.grow(1), Color(0.1, 0.07, 0.04, 0.8))
 			c.draw_rect(Rect2(mb.position, Vector2(mb.size.x * GameState.vital("mana"), mb.size.y)), Color("5aa8f0"))
 		var mana_txt := "%d/%d" % [int(r.get("mana", 0)), int(r.get("max_mana", 0))]
-		c.draw_string_outline(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 7, 3, Color(0, 0, 0, 0.7))
-		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 7, Color(0.8, 0.9, 1.0))
+		c.draw_string_outline(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, 3, Color(0, 0, 0, 0.7))
+		c.draw_string(_font, Vector2(mb.end.x + 3, mb.end.y), mana_txt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, Color(0.8, 0.9, 1.0))
 	# Active buffs (Prompts 10 icons) under the hearts.
 	var bx := 6.0
 	var buffs: Dictionary = r.get("buffs", {})
@@ -434,28 +449,33 @@ func _draw_hud() -> void:
 	var sicon := Art.tex("ui", "season2_" + GameState.season()) if Art.has("ui", "season2_" + GameState.season()) else Art.tex("ui", "season_" + GameState.season())
 	if sicon:
 		c.draw_texture_rect(sicon, Rect2(box.position.x + 4, box.position.y + 3, 9, 9), false)
-	c.draw_string(_font, Vector2(box.position.x + (15 if sicon else 6), box.position.y + 11), "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()], HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
-	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 22), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
+	var dtxt := "%s %d" % [GameState.season().capitalize().left(3), GameState.day_of_season()]
+	var dx := box.position.x + (15 if sicon else 6)
+	c.draw_string(_font, Vector2(dx, box.position.y + 11), dtxt, HORIZONTAL_ALIGNMENT_LEFT, 50, 8, dark)
+	c.draw_string(_font, Vector2(box.position.x + 6, box.position.y + 23), GameState.clock_text(), HORIZONTAL_ALIGNMENT_LEFT, 60, 8, dark)
+	# Weather sits beside the date (C5 c5_13 #1: under the money it was hidden by 5-digit sums).
 	var wx := GameState.weather_today()
 	if str(GameState.run.get("scene", "")) in ["moon", "station", "jungle"]:
 		wx = "sun"  # no rain in space
 	var wicon: String = {"rain": "☂", "storm": "⚡", "snow": "❄", "blizzard": "❄❄", "fog": "≈", "sun": "☀", "wind": "∿", "petals": "✿", "leaves": "❧", "fireflies": "✦"}.get(wx, "☼")
 	var wxa := "wx_" + (wx if wx != "petals" else "petals_a")
+	var wxx := dx + _font.get_string_size(dtxt, HORIZONTAL_ALIGNMENT_LEFT, -1, 8).x + 4
 	if Art.has("ui", wxa):
-		c.draw_texture_rect(Art.tex("ui", wxa), Rect2(box.position.x + 50, box.position.y + 14, 11, 11), false)
+		c.draw_texture_rect(Art.tex("ui", wxa), Rect2(wxx, box.position.y + 2, 11, 11), false)
 	else:
-		c.draw_string(_font, Vector2(box.position.x + 52, box.position.y + 22), str(wicon), HORIZONTAL_ALIGNMENT_LEFT, 20, 8, dark)
+		c.draw_string(_font, Vector2(wxx, box.position.y + 11), str(wicon), HORIZONTAL_ALIGNMENT_LEFT, 20, 8, dark)
+	# Money: bottom right, a fixed area; big sums shorten (12.3k) so they never reach the clock.
 	var crystal := Art.tex("ui", "crystal")
 	var cx := box.end.x - 6
-	var ctext := str(int(r["crystals"]))
+	var ctext := short_money(int(r["crystals"]))
 	var tw := _font.get_string_size(ctext, HORIZONTAL_ALIGNMENT_RIGHT, -1, 8).x
-	c.draw_string(_font, Vector2(cx - tw, box.position.y + 17), ctext, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
+	c.draw_string(_font, Vector2(cx - tw, box.position.y + 23), ctext, HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
 	if Money.cash():
-		MoneyIcon.draw(c, Rect2(cx - tw - 13, box.position.y + 8, 11, 11))
+		MoneyIcon.draw(c, Rect2(cx - tw - 13, box.position.y + 14, 11, 11))
 	elif crystal:
-		c.draw_texture_rect(crystal, Rect2(cx - tw - 11, box.position.y + 9, 9, 9), false)
+		c.draw_texture_rect(crystal, Rect2(cx - tw - 11, box.position.y + 15, 9, 9), false)
 	else:
-		c.draw_string(_font, Vector2(cx - tw - 10, box.position.y + 17), "◆", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
+		c.draw_string(_font, Vector2(cx - tw - 10, box.position.y + 23), "◆", HORIZONTAL_ALIGNMENT_LEFT, -1, 8, dark)
 	c.draw_set_transform(Vector2(0, y_offset))
 	# Toolbar
 	var tb: Array = r["toolbar"]
@@ -539,8 +559,8 @@ func _draw_hud() -> void:
 			toast.call_deferred("Heat: how closely the President's people are watching you.", Color(1, 0.75, 0.6))
 		var hx := 196.0 + ex
 		var hy := TOOLBAR_Y + SLOT + 5.0
-		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 2, Color(0, 0, 0, 0.8))
-		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(1, 0.75, 0.6))
+		c.draw_string_outline(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 2, Color(0, 0, 0, 0.8))
+		c.draw_string(_font, Vector2(hx, hy + 6), "HEAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.75, 0.6))
 		for i in 5:
 			var pc := Vector2(hx + 24 + i * 9, hy + 3)
 			c.draw_circle(pc, 3.2, Color(0, 0, 0, 0.6))
@@ -566,8 +586,8 @@ func _draw_hud() -> void:
 		c.draw_set_transform(Vector2(ex, y_offset))
 		_draw_energy_h(c, e)
 		if tired:
-			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, 3, Color(0, 0, 0, 0.8))
-			c.draw_string(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 6, Color(1, 0.35 + 0.4 * pulse, 0.3))
+			c.draw_string_outline(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, 3, Color(0, 0, 0, 0.8))
+			c.draw_string(_font, Vector2(206, 56), "EXHAUSTED", HORIZONTAL_ALIGNMENT_LEFT, -1, 7, Color(1, 0.35 + 0.4 * pulse, 0.3))
 		return
 	if Dialogue.instance(get_tree()).active:
 		return  # it would poke out past the dialogue box
@@ -602,9 +622,9 @@ func _draw_hud() -> void:
 		c.draw_string_outline(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, 3, Color(0, 0, 0, 0.85))
 		c.draw_string(_font, Vector2(tx, bar.position.y - 18), "TIRED", HORIZONTAL_ALIGNMENT_RIGHT if not lh else HORIZONTAL_ALIGNMENT_LEFT, tlw, 7, Color(1, 0.4 + 0.4 * pulse, 0.3))
 	if lh:
-		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 7, Color(1, 1, 0.9))
+		c.draw_string(_font, Vector2(bar.position.x - 4, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_LEFT, 40, 8, Color(1, 1, 0.9))
 	else:
-		c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 7, Color(1, 1, 0.9))
+		c.draw_string(_font, Vector2(bar.position.x - 30, bar.end.y + 10), "%d/%d" % [int(r["energy"]), int(r["max_energy"])], HORIZONTAL_ALIGNMENT_RIGHT, 40, 8, Color(1, 1, 0.9))
 
 
 func _draw_energy_h(c: CanvasItem, e: float) -> void:
@@ -616,8 +636,8 @@ func _draw_energy_h(c: CanvasItem, e: float) -> void:
 	if bolt:
 		c.draw_texture_rect(bolt, Rect2(r.position.x - 10, r.position.y - 3, 9, 9), false)
 	var et := "%d/%d" % [int(GameState.run["energy"]), int(GameState.run["max_energy"])]
-	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, 3, Color(0, 0, 0, 0.7))
-	c.draw_string(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 6, Color(1, 1, 0.9))
+	c.draw_string_outline(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 7, 3, Color(0, 0, 0, 0.7))
+	c.draw_string(_font, Vector2(r.end.x - 34, r.end.y + 8), et, HORIZONTAL_ALIGNMENT_RIGHT, 34, 7, Color(1, 1, 0.9))
 
 
 ## Close stand-ins from art we already have, until each item gets its own icon.
@@ -854,5 +874,5 @@ func _draw_boss_bar(c: CanvasItem) -> void:
 	if boss._gift:
 		var gn := str(boss._gift.d.get("name", ""))
 		var st := "OPEN" if opn else "guarded"
-		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 6, Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))
+		c.draw_string_outline(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 7, 3, Color(0, 0, 0, 0.85))
+		c.draw_string(_font, Vector2(r.end.x - 70, r.position.y - 2), "%s · %s" % [gn, st], HORIZONTAL_ALIGNMENT_RIGHT, 70, 7, Color(1, 1, 0.7) if st == "OPEN" else Color(0.8, 0.85, 1))

@@ -42,7 +42,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
-	get_tree().paused = true
+	Hud.pause(get_tree(), "craft_screen")
 	_root = PanelContainer.new()
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.16, 0.11, 0.07, 0.97)
@@ -307,7 +307,7 @@ func _hack() -> void:
 	var got := await HackGame.play(m, tier)
 	visible = true
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
-	get_tree().paused = true
+	Hud.pause(get_tree(), "craft_screen")
 	match got:
 		3:
 			Racket.set_heat(Racket.heat() - 1)

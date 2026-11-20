@@ -17,6 +17,8 @@ func _run() -> void:
 		GameState.run["day"] = int(OS.get_environment("DAY"))
 	if OS.get_environment("TIME") != "":
 		GameState.run["time"] = int(OS.get_environment("TIME"))
+	if OS.get_environment("MONEY") != "":
+		GameState.run["crystals"] = int(OS.get_environment("MONEY"))
 	GameState.run["flags"]["partner_scene"] = true
 	GameState.run["quests"] = [{"id": "clear_meadow", "text": "x", "done": true}]
 	for i in range(1, args.size()):

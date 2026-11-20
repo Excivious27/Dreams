@@ -193,7 +193,9 @@ static func how_to(id: String, aid: String) -> String:
 			var path: Array = []
 			var k := s
 			while k != aid and k != "":
-				path.append(MegaRegion.area_name(k))
+				# C5 c5_17 #7: unvisited areas on the way stay unnamed, like their pins
+				var here_now := str(GameState.run.get("scene", "")) == k
+				path.append(MegaRegion.area_name(k) if MegaRegion.seen(k) or here_now else "somewhere unexplored")
 				k = str(prev.get(k, ""))
 			var e: Dictionary = entry_to[s]
 			return "%s from %s, then walk on through %s" % [str(e.get("how", "the road")), str(e.get("label", "")), " > ".join(path)]
@@ -214,7 +216,10 @@ static func where_line() -> String:
 	var sc := str(GameState.run.get("scene", ""))
 	var reg := MegaRegion.region_of(sc)
 	if reg == "":
-		return "You are in: %s · %s Valley" % [sc.replace("_", " ").capitalize(), str(GameState.run.get("names", {}).get("town", "Home"))]
+		var nm := PlaceNames.for_id(sc)  # C5: the HUD's name ("Your Farm"), not the raw scene id
+		if nm == "":
+			nm = sc.replace("_", " ").capitalize()
+		return "You are in: %s · %s Valley" % [nm, str(GameState.run.get("names", {}).get("town", "Home"))]
 	return "You are in: %s · %s" % [MegaRegion.area_name(sc), str(MegaRegion.get_r(reg)["name"])]
 
 
