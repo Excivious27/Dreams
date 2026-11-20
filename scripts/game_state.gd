@@ -175,7 +175,7 @@ const NODE_RENAMES := {"combat_u_killing_edge": "combat_u_keen_edge", "combat_2_
 ## Renames that only apply when the old node was bought under this name.
 const NODE_RENAME_NAME := {"combat_2_8": "Iron Gut"}
 ## Bump when gen_skill_trees.py changes what existing filler nodes do: old saves get those points back.
-const SKILL_VER := 8
+const SKILL_VER := 9  # 9: C11a animal nodes moved from Farming to the Ranching tree (positional ranks refunded once)
 
 
 ## Older saves (or saves from before a new field existed) get the missing keys.
@@ -200,6 +200,7 @@ static func _migrate() -> void:
 		Decor.migrate()  # C10a: decor/wear out of the bag and chests into run.decor (idempotent)
 	if run.get("builds") is Dictionary:
 		Ranch.migrate()  # C11a: the animal roster from the builds/run.animals/coop_hatch (idempotent)
+		_seed_ranching()
 	if not (run.get("skills") is Dictionary):
 		run["skills"] = {}
 	for sk in (run["skills"] as Dictionary).keys():
@@ -1378,6 +1379,34 @@ static func bonus(skill: String, key: String) -> float:
 	var v := _bonus_raw(skill, key)
 	_bonus_cache[ck] = v
 	return v
+
+
+## C11a: an old save that already kept animals starts Ranching with XP for its history (20 per day since
+## the coop/barn went up, never more than its Farming XP), once (flags.ranch_seeded).
+static func _seed_ranching() -> void:
+	var fl: Dictionary = run.get("flags", {}) if run.get("flags") is Dictionary else {}
+	if fl.has("ranch_seeded") or not (run.get("skills") is Dictionary):
+		return
+	fl["ranch_seeded"] = true
+	if (run["skills"] as Dictionary).has("ranching") or Ranch.animals().is_empty():
+		return
+	var since := 9999
+	for k in ["coop_day", "barn_day"]:
+		if fl.has(k):
+			since = mini(since, int(fl[k]))
+	var days := maxi(0, int(run.get("day", 1)) - (since if since < 9999 else int(run.get("day", 1))))
+	var farm_xp := 0
+	var fs: Dictionary = (run["skills"] as Dictionary).get("farming", {}) if (run["skills"] as Dictionary).get("farming") is Dictionary else {}
+	for lv in range(1, int(fs.get("level", 1))):
+		farm_xp += xp_for_next(lv)
+	farm_xp += int(fs.get("xp", 0))
+	var xp := mini(20 * days, farm_xp)
+	var s := {"level": 1, "xp": 0, "nodes": {}}
+	while int(s["level"]) < MAX_LEVEL and xp >= xp_for_next(int(s["level"])):
+		xp -= xp_for_next(int(s["level"]))
+		s["level"] = int(s["level"]) + 1
+	s["xp"] = xp
+	run["skills"]["ranching"] = s
 
 
 ## C11a: a ranch effect from the Ranching tree plus any ranks still in Farming (old saves), one cap for both.
@@ -3123,6 +3152,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	run["sellbox"] = {}
 	# Hazel helps on the farm once you're friends (every other day at 4 hearts, daily at 6).
 	var hazel_waters := has_friend_perk("hazel", 6) or (has_friend_perk("hazel", 4) and int(run["day"]) % 2 == 0)
+	var hazel_perk := hazel_waters
 	hazel_waters = Romance.overnight(report) or hazel_waters  # the spouse's chore (water: every planted tile)
 	_sprinklers_water()
 	Project.overnight(report)
@@ -3198,9 +3228,14 @@ static func sleep(passed_out := false) -> Dictionary:
 	# Sprinklers and Hazel water again so the morning starts with wet soil.
 	_sprinklers_water()
 	if hazel_waters:
+		var hw := 0
 		for k2 in run["farm"].keys():
 			if str(run["farm"][k2].get("crop", "")) != "":
+				if not bool(run["farm"][k2].get("watered", false)):
+					hw += 1
 				run["farm"][k2]["watered"] = true
+		if hazel_perk and hw > 0 and str((report.get("spouse", {}) as Dictionary).get("chore", "")) != "water":
+			report["hazel"] = {"watered": hw}  # C11a (c11a_10): helpers' overnight work shows in the morning
 	for nm in Builds.tick_overnight():
 		report["built"] = report.get("built", []) + [nm]
 	Racket.overnight(report)

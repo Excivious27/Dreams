@@ -377,6 +377,7 @@ func _ranch_migrated() -> void:
 	check(not Ranch.is_adult(Ranch.uid_of_legacy("calf_35_7")) and Ranch.is_adult(Ranch.uid_of_legacy("chick_28_11")), "old save: the calf is still young, the chick grew up")
 	check(not (GameState.run["flags"] as Dictionary).has("hatch_peep_20") and int(GameState.run.get("save_ver", 0)) == GameState.SAVE_VERSION, "old save: hatch flags dropped, save version current")
 	check(SleepReport.extra_lines().is_empty(), "old save: no every-morning missed-pet nag")
+	check((GameState.run["skills"] as Dictionary).has("ranching") and (GameState.run["flags"] as Dictionary).has("ranch_seeded"), "old save with animals: Ranching seeded once")
 
 
 # ---- an old save meets Round 13 ---------------------------------------------------

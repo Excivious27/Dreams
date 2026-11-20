@@ -107,6 +107,10 @@ func _care(arc: String) -> void:
 		if str(l.get("text", "")).contains("A line."):
 			found = true
 	check(found, "%s: SleepReport shows ranch lines" % arc)
+	found = false
+	for l in SleepReport.lines({"hazel": {"watered": 3}}):
+		found = found or str(l.get("text", "")).contains("Watered your 3 beds")
+	check(found, "%s: Hazel's overnight watering shows in the morning" % arc)
 	check(Ranch.source_ok("milk") and Ranch.source_ok("cheese") and not Ranch.source_ok("truffle") or GameState.count("truffle") > 0, "%s: source_ok follows the herd and processing" % arc)
 	# Rehome: young ones pay nothing (no breed-and-rehome loop), grown ones a small thank-you.
 	var m0 := int(GameState.run.get("crystals", 0))

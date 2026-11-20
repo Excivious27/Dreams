@@ -50,6 +50,9 @@ static func lines(report: Dictionary) -> Array:
 		lines.append({"text": "%s took %d crop%s. Crops only live through their own season (or under the greenhouse glass)." % [GameState.season().capitalize(), int(report["died"]), "" if int(report["died"]) == 1 else "s"]})
 	for l in extra_lines():
 		lines.append(l)
+	if report.get("hazel", null) is Dictionary and int(report["hazel"].get("watered", 0)) > 0:
+		var hw := int(report["hazel"]["watered"])
+		lines.append({"who": "Hazel", "text": "Watered your %d bed%s on my way past." % [hw, "" if hw == 1 else "s"]})
 	var ranch: Array = report.get("ranch", [])
 	if not ranch.is_empty():
 		lines.append({"who": "Ranch" if str(GameState.run.get("arc", "")) != "gangsters" else "The pens", "text": "\n".join(ranch.slice(0, 5))})
