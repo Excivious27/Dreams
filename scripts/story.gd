@@ -16,6 +16,22 @@ class_name Story
 
 static var _data: Dictionary = {}
 static var _t := 0.0
+## Beats playing right now (C7): tick/talk/morning/quest-done wait while > 0,
+## so two beats never share the dialogue box; GameMenu.story_busy reads it.
+static var _playing := 0
+## A beat queued by tick (call_deferred) but not started yet: the frame it was queued.
+static var _queued_frame := -1000
+
+
+static func is_playing() -> bool:
+	return _playing > 0 or Engine.get_process_frames() - _queued_frame < 30
+
+
+## Something owns the screen (a full-screen UI, a pause, a beat or a dialogue): beats wait.
+static func _screen_busy(m: GameMap) -> bool:
+	if not is_instance_valid(m) or not m.is_inside_tree():
+		return true
+	return is_playing() or m.get_tree().paused or Hud.modal_rect.has_area() or Dialogue.instance(m.get_tree()).active or (m.player != null and m.player.frozen)
 
 
 static func data() -> Dictionary:
@@ -88,7 +104,7 @@ static func _ready_beat(b: Dictionary, m: GameMap) -> bool:
 ## Walk-in / arrival beats. Called from GameMap._process (twice a second).
 static func tick(m: GameMap, delta: float) -> void:
 	_t -= delta
-	if _t > 0.0 or m.player == null or m.player.frozen or m.get_tree().paused or Dialogue.instance(m.get_tree()).active or Dialogue.input_blocked():
+	if _t > 0.0 or m.player == null or _screen_busy(m) or Dialogue.input_blocked():
 		return
 	_t = 0.5
 	var pc := m.player.cell()
@@ -102,12 +118,30 @@ static func tick(m: GameMap, delta: float) -> void:
 				continue
 		if not _ready_beat(b, m):
 			continue
-		m.later(func() -> void: await play(m, b))
+		_queue(m, b)
 		return
+	# Backstop (C7): a quest-done beat whose moment was missed (a faint or a scene
+	# change right after the quest, the app closed) plays as soon as the screen is free.
+	for b in beats():
+		var q := str(b.get("trigger", {}).get("quest_done", ""))
+		if q == "" or not GameState.quest_done(q) or not _ready_beat(b, m):
+			continue
+		_queue(m, b)
+		return
+
+
+static func _queue(m: GameMap, b: Dictionary) -> void:
+	_queued_frame = Engine.get_process_frames()
+	m.later(func() -> void:
+		_queued_frame = -1000
+		if is_instance_valid(m) and m.is_inside_tree() and not fired(str(b["id"])):
+			await play(m, b))
 
 
 ## Talk beats. Returns true if one played (caller skips the daily chat).
 static func talk(m: GameMap, who: String) -> bool:
+	if is_playing():
+		return false
 	for b in beats():
 		var tr: Dictionary = b.get("trigger", {})
 		if str(tr.get("talk", "")) != who:
@@ -138,25 +172,37 @@ static func on_quest_done(m: GameMap, qid: String) -> void:
 					break
 			if next.is_empty():
 				return
-			while is_instance_valid(m) and m.is_inside_tree() and (Dialogue.instance(m.get_tree()).active or (m.player and m.player.frozen)):
+			# Wait for the screen: a dialogue, a frozen hero, another beat, or a
+			# full-screen UI (the Resonator's CraftScreen pauses the tree).
+			while is_instance_valid(m) and m.is_inside_tree() and _screen_busy(m):
 				await m.get_tree().process_frame
 			if not is_instance_valid(m) or not m.is_inside_tree():
-				return  # the map closed (scene change / quit) while the beat waited
+				return  # the map closed; Story.tick's quest-done backstop plays it later
+			if not _ready_beat(next, m):
+				continue  # played meanwhile (Story.tick's backstop): look for the next one
 			await play(m, next))
 
 
 ## Morning beats, at the bed (House calls after waking).
 static func on_morning(m: GameMap) -> void:
+	if is_playing():
+		return
 	for b in beats():
 		if not bool(b.get("trigger", {}).get("sleep", false)):
 			continue
 		if not _ready_beat(b, m):
 			continue
-		m.later(func() -> void: await play(m, b))
+		_queue(m, b)
 		return
 
 
 static func play(m: GameMap, b: Dictionary) -> void:
+	_playing += 1
+	await _play_beat(m, b)
+	_playing = maxi(0, _playing - 1)
+
+
+static func _play_beat(m: GameMap, b: Dictionary) -> void:
 	GameState.run["flags"]["st_" + str(b["id"])] = true
 	# If the app is closed mid-scene, the beat plays again next time (see GameState.has_run).
 	GameState.run["story_pending"] = str(b["id"])
@@ -170,6 +216,10 @@ static func play(m: GameMap, b: Dictionary) -> void:
 	# A scene owns the moment: a boss victory sting still waiting must not land after it.
 	_cancel_sting()
 	_prefetch_for(m, b)
+	# "pre": effects that run before the lines (p5_win clears the boss and adds
+	# so the quiet ending scene isn't played over a live boss bar).
+	if b.has("pre"):
+		_apply(m, b["pre"])
 	if b.has("chapter_title") and str(b.get("chapter_title", "")) != "" and bool(b.get("title_card", false)):
 		m.hud.toast(str(b["chapter_title"]), Color(1, 0.9, 0.6))
 		Music.instance(m.get_tree()).sfx("j_region", "j_page")
@@ -183,12 +233,24 @@ static func play(m: GameMap, b: Dictionary) -> void:
 				roll.append({"who": "", "text": fl})
 		if not roll.is_empty():
 			lines = roll + lines
-	await _play_lines(m, lines, str(b["id"]))
-	if not is_instance_valid(m):
-		# The scene changed under the beat (a door, a faint): finish on the new map.
-		m = (Engine.get_main_loop() as SceneTree).current_scene as GameMap
-		if m == null:
-			return
+	# Every beat can be skipped (Skip / MENU) up to its next choice; "keep" lines still show.
+	var dlg := Dialogue.instance(m.get_tree())
+	dlg.begin_skippable(m)
+	var status := await _play_lines(m, lines, str(b["id"]))
+	if is_instance_valid(dlg) and dlg._skip_owner == m:
+		dlg.end_skippable()
+	if status != "ok" or not is_instance_valid(m):
+		# Gated (the player can't pay yet: the beat's flag is already erased) or cut off
+		# by a scene change: no effects on the wrong map; the beat plays again later.
+		if status != "gated":
+			GameState.run["flags"].erase("st_" + str(b["id"]))
+		GameState.run.erase("story_pending")
+		var cur := (Engine.get_main_loop() as SceneTree).current_scene as GameMap
+		for mm in [m, cur]:
+			if is_instance_valid(mm) and (mm as GameMap).player:
+				(mm as GameMap).player.frozen = false
+		Dialogue.block_input()
+		return
 	_apply(m, b.get("effects", {}))
 	if is_instance_valid(m):
 		_quests_now.call_deferred(m)  # beat flags (final_done, catship_done) close/open quests now
@@ -206,7 +268,9 @@ static func _quests_now(m: GameMap) -> void:
 		m._check_quests()
 
 
-static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
+## Returns "ok", "gated" (a choice's price wasn't met: the beat is re-armed) or
+## "cut" (the map went away mid-scene).
+static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> String:
 	var d := Dialogue.instance(m.get_tree())
 	var seq: Array = []
 	for ln in lines:
@@ -221,7 +285,7 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
 			d.say([one])
 			await d.finished
 			if not is_instance_valid(m):
-				return  # the scene changed under the choice
+				return "cut"  # the scene changed under the choice
 			var br: Dictionary = l.get("branches", {})
 			var pick := str(d.last_choice)
 			var gates: Dictionary = l.get("gates", {})
@@ -238,13 +302,15 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
 				# Let the beat run again later.
 				if beat_id != "":
 					GameState.run["flags"].erase("st_" + beat_id)
-				return
+				return "gated"
 			if gates.has(pick) and (gates[pick] as Dictionary).has("crops"):
 				GameState.take_crops(int(gates[pick]["crops"]))
 			if br.has(pick):
-				await _play_lines(m, _fill(br[pick]), beat_id)
+				var st := await _play_lines(m, _fill(br[pick]), beat_id)
+				if st != "ok":
+					return st
 			if not is_instance_valid(m):
-				return
+				return "cut"
 			if l.has("effects_by_choice") and (l["effects_by_choice"] as Dictionary).has(pick):
 				_apply(m, l["effects_by_choice"][pick])
 		else:
@@ -252,6 +318,7 @@ static func _play_lines(m: GameMap, lines: Array, beat_id := "") -> void:
 	if not seq.is_empty():
 		d.say(seq)
 		await d.finished
+	return "ok" if is_instance_valid(m) else "cut"
 
 
 ## Substitute %hero, %pet, %town, %partner in texts.
@@ -287,6 +354,12 @@ static func _fill(lines: Array) -> Array:
 			continue
 		if l.has("unless_flag") and GameState.run["flags"].has(str(l["unless_flag"])):
 			continue
+		# "only_hero"/"not_hero": a playable id or list (penguin_f, penguin_m, big_jim...).
+		var hero := str(GameState.run.get("playable", ""))
+		if l.has("only_hero") and not _hero_in(l["only_hero"], hero):
+			continue
+		if l.has("not_hero") and _hero_in(l["not_hero"], hero):
+			continue
 		if l.has("branches"):
 			var br: Dictionary = l["branches"]
 			for bk in br:
@@ -307,6 +380,12 @@ static func _fill(lines: Array) -> Array:
 				out.append(first)
 		out.append(l)
 	return out
+
+
+static func _hero_in(v: Variant, hero: String) -> bool:
+	if v is Array:
+		return (v as Array).has(hero)
+	return str(v) == hero
 
 
 static func _apply(m: GameMap, fx: Dictionary) -> void:

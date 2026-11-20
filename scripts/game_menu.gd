@@ -162,10 +162,13 @@ var _opened_frame := 0
 ## A story beat is playing (its player is held). A beat that broke off and left
 ## the flag behind doesn't count, so the menu is never locked for good.
 static func story_busy(tree: SceneTree) -> bool:
-	if GameState.run.is_empty() or not GameState.run.has("story_pending"):
+	if GameState.run.is_empty():
 		return false
-	var gm := tree.current_scene as GameMap
-	return Dialogue.instance(tree).active or (gm != null and gm.player != null and gm.player.frozen)
+	if Story.is_playing() or Dialogue.instance(tree).skippable:
+		return true  # a beat between its dialogue batches, or a skippable scene's fades (C7)
+	if not GameState.run.has("story_pending"):
+		return false
+	return Dialogue.instance(tree).active  # a hung beat no longer blocks the freeze-safety release
 
 
 func toggle() -> void:
