@@ -7,6 +7,7 @@
 - **Crisp art (Tom #12):** baked ground chunks (premul twin shader), every AnimatedSprite2D under a map (`GameMap._crisp_hook`), hero/foe flash shader samples crisply; all ease to bilinear with smoothstep(0.8, 1.0).
 - **Night lighting:** town windows light up after dark (21 masks from the _night art, tools/make_window_glow.py, NightGlow additive; homes out 23:00, shops dim after 22:00); festival bonfire/lanterns, campfires and neon glow (`GameMap.glows`); underground regions steady dim with lamps lit and no weather (`fixed_dark`, regions.json "light"); mine lamps glow; indoor lamps glow at night; interior windows follow dusk/dawn; view-width glow cutoff. Test tools/night_light_test.gd.
 - **Gangster interiors (Tom):** interiors.json "gangsters" blocks via `Interior.arc_skin` for 14 town rooms, crew-shop looks via if_flag. Test tools/interior_skin_test.gd.
+- **Round 2:** co-op sync re-bakes per map; town roads memoised; crew shop fronts follow the clock; crew lots dressed; Rec sign clear; east road lamps; Lumi & Theo's own cottage (new art); lighthouse lamp dark until relit; cottages varied, overlaps nudged, day-blue glass in log/fish/reed/hut/curve rooms; crew shop room labels.
 - **Town:** crew shops sized to the building they replace (door row kept; door_check crew pass); crystal statue penguin-only; tall anim props fade when you walk behind them (3 probes, no tween fights).
 
 ## 2026-11-19 — CONDUCT 4 fix P1: difficulty modes, day length, money routing
