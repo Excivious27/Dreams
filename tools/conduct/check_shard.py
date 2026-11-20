@@ -14,7 +14,7 @@ Unlike the plain script, a shard keeps going after a failing step and exits 1 at
 the end, so one run reports every failure. Per-step wall times go to
 $CHECK_TIMES (JSON lines: step, name, rc, secs) when set.
 """
-import json, os, re, subprocess, sys, time
+import json, os, re, shlex, subprocess, sys, time
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 CHECK = os.path.join(ROOT, "tools", "check.sh")
@@ -96,7 +96,9 @@ def main():
             sh = 0 if k == 1 else (k - 2) % sn + 1
             print("%3d shard %s  %s" % (k, "all" if sh == 0 else sh, name_of(st, k)))
         return 0
-    head = "\n".join(l for l in pre if not l.startswith("#!")) + "\n"
+    # check.sh's own "cd $(dirname $0)/.." means nothing under bash -c ($0 = bash): cd to the repo root instead.
+    head = "\n".join(("cd %s" % shlex.quote(str(ROOT))) if l.startswith("cd ") else l
+                     for l in pre if not l.startswith("#!")) + "\n"
     times = os.environ.get("CHECK_TIMES", "")
     failed = []
     t_all = time.time()
