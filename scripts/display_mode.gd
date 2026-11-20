@@ -132,7 +132,7 @@ func _ready() -> void:
 		var tm := int(Settings.get_v("touch_ui"))
 		TouchControls.visible_controls = tm == 1 or (tm == 0 and touch_auto())
 		if not OS.has_feature("web") and force < 0:
-			_desktop_window()
+			_desktop_window(true)
 	elif int(Settings.get_v("touch_ui")) == 2:
 		TouchControls.visible_controls = false
 	_refit()
@@ -146,10 +146,10 @@ static func _tool_run() -> bool:
 
 ## Native desktop runs open in a landscape window (the project's window override
 ## is the phone's portrait 540x960), or fullscreen if that was chosen last time.
-func _desktop_window() -> void:
+func _desktop_window(startup := false) -> void:
 	var w := get_window()
 	# Handhelds (Deck) start fullscreen at the panel's native 16:10 size, never a shrunken 16:9 window.
-	if bool(Settings.get_v("fullscreen")) or is_deck():
+	if bool(Settings.get_v("fullscreen")) or (startup and is_deck()):
 		w.mode = Window.MODE_FULLSCREEN
 		return
 	var scr := DisplayServer.screen_get_usable_rect(w.current_screen)
