@@ -134,7 +134,6 @@
    "name": "Blue Bowtie",
    "penguin": {
     "neck": "decor/pg_bowtie",
-    "plain": "bowtie_blue",
     "tint": "3f6fd8"
    },
    "pools": [
@@ -184,7 +183,6 @@
    "name": "Red Bowtie",
    "penguin": {
     "neck": "decor/pg_bowtie",
-    "plain": "bowtie_red",
     "tint": "d8403a"
    },
    "pools": [
@@ -474,7 +472,6 @@
    "name": "Brass Goggles",
    "penguin": {
     "face": "decor/pg_goggles",
-    "plain": "goggles_a",
     "tint": "ffffff"
    },
    "pools": [
@@ -516,7 +513,6 @@
    "name": "Ice Goggles",
    "penguin": {
     "face": "decor/pg_goggles",
-    "plain": "goggles_b",
     "tint": "a8e0ff"
    },
    "pools": [
@@ -1362,7 +1358,6 @@
    "name": "Blue Scarf",
    "penguin": {
     "neck": "decor/pg_scarf",
-    "plain": "scarf_blue",
     "tint": "3f6fd8"
    },
    "pools": [],
@@ -1394,7 +1389,6 @@
    "name": "Green Scarf",
    "penguin": {
     "neck": "decor/pg_scarf",
-    "plain": "scarf_green",
     "tint": "4aa84a"
    },
    "pools": [],
@@ -1426,7 +1420,6 @@
    "name": "Purple Scarf",
    "penguin": {
     "neck": "decor/pg_scarf",
-    "plain": "scarf_purple",
     "tint": "8a5ad8"
    },
    "pools": [],
@@ -1458,7 +1451,6 @@
    "name": "Red Scarf",
    "penguin": {
     "neck": "decor/pg_scarf",
-    "plain": "scarf_red",
     "tint": "d8403a"
    },
    "pools": [],
@@ -1490,7 +1482,6 @@
    "name": "White Scarf",
    "penguin": {
     "neck": "decor/pg_scarf",
-    "plain": "scarf_white",
     "tint": "f4f4f4"
    },
    "pools": [],
@@ -1522,7 +1513,6 @@
    "name": "Yellow Scarf",
    "penguin": {
     "neck": "decor/pg_scarf",
-    "plain": "scarf_yellow",
     "tint": "e8c23a"
    },
    "pools": [],

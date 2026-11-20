@@ -887,8 +887,8 @@ func _do_order(id: String) -> void:
 func _use(id: String) -> void:
 	var e := Decor.entry(id)
 	var wear := str(e.get("cat", "")) in WEAR_CATS or str(e.get("layer", "")) == "wear"
-	var path := "res://scripts/wardrobe.gd" if wear else "res://scripts/decor_mode.gd"
-	var arg: Variant = str(e.get("cat", "")) if wear else id
+	var path := "res://scripts/wardrobe_screen.gd" if wear else "res://scripts/decor_mode.gd"  # C10b P5: WardrobeScreen.open(map, id)
+	var arg: Variant = id
 	if not open_other(path, m, arg):
 		_sfx("nope", "thud")
 		_say("Wear it from the dresser at home." if wear else "Decorate from your house: tap Decorate there.", Color(1, 0.8, 0.6))

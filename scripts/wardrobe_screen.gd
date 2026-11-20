@@ -20,11 +20,22 @@ var _root: Control
 var _arm := 0
 var _was_paused := false
 var _cursor: ScreenCursor
+var _picked := false
 
 
-static func open(m: Node) -> WardrobeScreen:
+## `pick`: a piece id (its tab opens with it selected) or a tab ("outfit", "hat", "acc", "more").
+static func open(m: Node, pick := "") -> WardrobeScreen:
 	var s := WardrobeScreen.new()
 	s.map = m
+	if pick != "":
+		var ws := Wardrobe.slot_of(pick)
+		if ws != "":
+			s.sel = Wardrobe.alias(pick)
+			s.slot = "more" if ws in ["top", "bottom", "shoes"] else ws
+			s._picked = true
+		elif pick in Wardrobe.SHOWN_SLOTS:
+			s.slot = pick
+			s._picked = true
 	m.add_child(s)
 	return s
 
@@ -37,7 +48,7 @@ func _ready() -> void:
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	Hud.pause(get_tree(), "wardrobe")
 	Wardrobe.register()
-	if Wardrobe.hero_kind() == "penguin":
+	if Wardrobe.hero_kind() == "penguin" and not _picked:
 		slot = "acc"  # what shows on Pip-Pip / Nova
 	var got := Wardrobe.sync_unlocks()
 	_root = Control.new()

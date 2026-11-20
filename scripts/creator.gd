@@ -13,6 +13,8 @@ var _preview: Node2D
 var _rows: VBoxContainer
 var _playable_sprite := ""
 var _show_cancel := false
+## The arc being built (title screen sets it: the run there may be stale or empty, c10b_11-23).
+var arc := ""
 
 
 func _init(start_look: Dictionary = {}, playable_sprite := "", with_cancel := false) -> void:
@@ -166,13 +168,30 @@ func _build() -> void:
 		_picker("Pet", ppets, "pet", func(v: String) -> String: return "Pup (classic)" if v == "" else v.replace("_", " ").capitalize())
 	elif PaperDoll.available():
 		# The look's outfit is what the hero wears (PaperDoll.body_for), so that's the picker (the bare skin/build bases never show).
-		var outs: Array = PaperDoll.starter_outfits()
-		_picker("Outfit", outs, "outfit", func(v: String) -> String: return v.trim_prefix("outfit_").capitalize())
+		# At the dresser (with Cancel) clothes and hats live in the wardrobe, so those rows
+		# would be covered by worn pieces (c10b_11-15); new game offers the arc's starters.
+		if not _show_cancel:
+			Wardrobe.arc_override = arc
+			var outs: Array = PaperDoll.starter_outfits()
+			Wardrobe.arc_override = ""
+			if not str(look.get("outfit", "")) in outs and not outs.is_empty():
+				look["outfit"] = outs[0]
+			_picker("Outfit", outs, "outfit", func(v: String) -> String: return v.trim_prefix("outfit_").capitalize())
 		_picker("Hair", PaperDoll.hair_styles(), "hair", func(v: String) -> String: return v.trim_suffix("_b").trim_suffix("_c").replace("_", " ").capitalize() + (" 2" if v.ends_with("_b") else (" 3" if v.ends_with("_c") else "")))
 		_picker("Hair colour", PaperDoll.HAIR_COLORS.keys(), "hair_color", func(v: String) -> String: return v.capitalize())
-		var hats: Array = [""]
-		hats.append_array(PaperDoll.hat_styles())
-		_picker("Hat", hats, "hat", func(v: String) -> String: return "None" if v == "" else v.replace("_", " ").capitalize())
+		if not _show_cancel:
+			var hats: Array = [""]
+			hats.append_array(starter_hats())  # only the free everyday hats; the rest come through the wardrobe (c10b_11-30)
+			if not str(look.get("hat", "")) in hats:
+				look["hat"] = ""
+			_picker("Hat", hats, "hat", func(v: String) -> String: return "None" if v == "" else v.replace("_", " ").capitalize())
+		else:
+			var nl := Label.new()
+			nl.text = "Clothes and hats: Wardrobe (Hero tab or this dresser)."
+			nl.add_theme_font_size_override("font_size", 7)
+			nl.add_theme_color_override("font_color", Color("4a2c14"))
+			nl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			_rows.add_child(nl)
 		var pets: Array = [""]
 		for k in Art.manifest().keys():
 			if str(k).begins_with("animals/dog_") or str(k).begins_with("animals/cat_"):
@@ -195,10 +214,12 @@ func _build() -> void:
 			var hs: Array = ["straw", "beanie", "tophat", "wizard", "flower_crown", "miner", "sailor", "crown", "pumpkin", "santa", "bucket", "visor"] if Art.has("characters/penguin_wear", "hat_straw_front") else PaperDoll.hat_styles()
 			look["hat"] = "" if hs.is_empty() or randf() < 0.4 else hs[randi() % hs.size()]
 		else:
-			var keep_outfit: Variant = look.get("outfit", null)
+			var keep := {}
+			for k: String in ["outfit", "show_armor", "pet"] + (["hat"] if _show_cancel else []):
+				if look.has(k):
+					keep[k] = look[k]  # dice re-rolls hair and face, not clothes or the wardrobe toggle (c10b_11-32)
 			look = PaperDoll.random_look()
-			if keep_outfit != null:
-				look["outfit"] = keep_outfit  # dice re-rolls hair and face, not the arc's clothes
+			look.merge(keep, true)
 		_build()
 	var fin := func() -> void: done.emit(look)
 	var bb := _icon_btn("dice", "Random", rnd)
@@ -215,6 +236,19 @@ func _build() -> void:
 	_row = clampi(_row, 0, _rows_cb.size())
 	_col = clampi(_col, 0, _bottom.size() - 1)
 	_light(PadFocus.wants_focus() and _nav_arm >= 6)
+
+
+## Free everyday hats (wardrobe starters drawn from hats/): what new game offers.
+static func starter_hats() -> Array:
+	var out: Array = []
+	var items: Dictionary = Wardrobe.data()["items"]
+	for id: String in items:
+		var e: Dictionary = items[id]
+		var h := str((e.get("doll", {}) as Dictionary).get("hat", ""))
+		if bool(e.get("starter", false)) and h.begins_with("hats/") and Art.has("hats", h.trim_prefix("hats/")):
+			out.append(h.trim_prefix("hats/"))
+	out.sort()
+	return out
 
 
 func _picker(label: String, options: Array, key: String, pretty: Callable) -> void:

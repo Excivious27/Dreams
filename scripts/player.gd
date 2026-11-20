@@ -315,7 +315,7 @@ func _update_doll_now() -> void:
 	var layers := {"hair": _hair, "hat": _hat}
 	if _face:
 		layers["face"] = _face
-	PaperDoll.place_all(layers, look, body, pose, flip, _doll_scale)
+	PaperDoll.place_all(layers, look, body, pose, flip, _doll_scale, str(_anim.animation))
 	if _hat.visible and _hair.visible:
 		_hair.modulate.a = 1.0
 	# Hurt blink and hit flash follow the body (c10_04): modulate + the shared flash material.

@@ -93,11 +93,11 @@ for hid, nm in [("beanie", "Beanie"), ("bandana", "Bandana")]:
         add("wr_hat_%s_%s" % (hid, col), "hat", "%s %s" % (col.capitalize(), nm), rar, "", "doll", {"hat": "hats/" + hid, "tint": hexv}, "", False, "Same cosy %s, new colour." % nm.lower())
 # Penguin accessories (pinned on Pip-Pip / Nova; whole-penguin wear sheets on the plain penguin)
 for col, rar in [("red", "common"), ("blue", "common"), ("green", "common"), ("yellow", "uncommon"), ("purple", "uncommon"), ("white", "rare")]:
-    add("wr_scarf_" + col, "acc", col.capitalize() + " Scarf", rar, "penguins", "penguin", {"neck": "decor/pg_scarf", "tint": SCARF[col], "plain": "scarf_" + col}, "snowfolk", col == "red", "Knitted with room for flippers.")
-add("wr_bowtie_red", "acc", "Red Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "d8403a", "plain": "bowtie_red"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
-add("wr_bowtie_blue", "acc", "Blue Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "3f6fd8", "plain": "bowtie_blue"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
-add("wr_goggles_brass", "hat", "Brass Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "ffffff", "plain": "goggles_a"}, "snowfolk", False, "For flying very fast. Or pretending to.")
-add("wr_goggles_ice", "hat", "Ice Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "a8e0ff", "plain": "goggles_b"}, "snowfolk", False, "Frosty lenses, perfect for snow.")
+    add("wr_scarf_" + col, "acc", col.capitalize() + " Scarf", rar, "penguins", "penguin", {"neck": "decor/pg_scarf", "tint": SCARF[col]}, "snowfolk", col == "red", "Knitted with room for flippers.")
+add("wr_bowtie_red", "acc", "Red Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "d8403a"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
+add("wr_bowtie_blue", "acc", "Blue Bowtie", "uncommon", "penguins", "penguin", {"neck": "decor/pg_bowtie", "tint": "3f6fd8"}, "snowfolk", False, "Ready for a very fancy fish dinner.")
+add("wr_goggles_brass", "hat", "Brass Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "ffffff"}, "snowfolk", False, "For flying very fast. Or pretending to.")
+add("wr_goggles_ice", "hat", "Ice Goggles", "rare", "penguins", "penguin", {"face": "decor/pg_goggles", "tint": "a8e0ff"}, "snowfolk", False, "Frosty lenses, perfect for snow.")
 
 
 def main():
