@@ -182,6 +182,9 @@ func setup(k: String, tier_override := -1) -> void:
 	max_hp = hp
 	var art_kind := str(ed.get("art", k if k != "big_grump" or Art.has("enemies/big_grump", "idle") else "grump"))
 	var group := "enemies/" + art_kind
+	var _fb := ed.has("art_fallback") and not ed.has("char") and not Art.has(group, "idle")  # grump variants before their sheet exists
+	if _fb:
+		group = "enemies/" + str(ed["art_fallback"])
 	if ed.has("char"):
 		group = "characters/" + str(ed["char"])
 	elif k.begins_with("thug_"):
@@ -214,8 +217,8 @@ func setup(k: String, tier_override := -1) -> void:
 		_sprite.play("idle")
 		_fit_sprite()
 		add_child(_sprite)
-		if ed.has("tint"):
-			_sprite.self_modulate = Color(str(ed["tint"]))  # recoloured kin (data "tint"): status tints still use modulate
+		if ed.has("tint") or (_fb and ed.has("fallback_tint")):
+			_sprite.self_modulate = Color(str(ed.get("tint", ed.get("fallback_tint", "#ffffff"))))  # recoloured kin (data "tint"): status tints still use modulate
 		_shadow_r = 6.0 * s * 2.0
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:

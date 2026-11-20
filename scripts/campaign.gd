@@ -40,6 +40,25 @@ static func get_c(cid: String) -> Dictionary:
 	return all().get(cid, {})
 
 
+## A campaign/node text that may be written per arc ({"penguins": .., "gangsters": ..}).
+static func text(d: Dictionary, key: String, dflt := "") -> String:
+	var v: Variant = d.get(key, dflt)
+	if v is Dictionary:
+		var vd: Dictionary = v
+		return str(vd.get(arc(), vd.values()[0] if not vd.is_empty() else dflt))
+	return str(v)
+
+
+## "army" in the penguin arc, "crew" in the gangster arc.
+static func force_word() -> String:
+	return "army" if arc() == "penguins" else "crew"
+
+
+## The captain this node fields in this run's arc ("" if none).
+static func boss_of(cid: String, nid: String) -> String:
+	return str(cfg(cid, nid).get("boss", node(cid, nid).get("boss", "")))
+
+
 ## This run's campaigns, easiest first.
 static func for_arc() -> Array:
 	var out: Array = []
@@ -91,9 +110,17 @@ static func _migrate(s: Dictionary) -> void:
 static func cs(cid: String) -> Dictionary:
 	var s := st()
 	if not (s["c"].get(cid) is Dictionary):
-		s["c"][cid] = {"at": "n0", "taken": {"n0": true}, "morale": MORALE_START, "supply": 10, "wins": 0, "losses": 0, "retreats": 0,
-			"rested": -1, "started": int(GameState.run.get("day", 1))}
-	return s["c"][cid]
+		s["c"][cid] = {}
+	var c: Dictionary = s["c"][cid]
+	# Fill whatever an old or hand-edited save is missing (C3 saves audit).
+	var dflt := {"at": "n0", "morale": MORALE_START, "supply": 10, "wins": 0, "losses": 0, "retreats": 0,
+		"rested": -1, "started": int(GameState.run.get("day", 1))}
+	for k: String in dflt:
+		if not c.has(k):
+			c[k] = dflt[k]
+	if not (c.get("taken") is Dictionary):
+		c["taken"] = {"n0": true}
+	return c
 
 
 ## Mustered (CampaignGate.muster), or under way in an older save.
@@ -252,11 +279,36 @@ static func cfg(cid: String, nid: String) -> Dictionary:
 	return c.values()[0] if not c.is_empty() else {}
 
 
+## Story beats that mark meeting a campaign leader (Tom C3: Catkins only voices
+## the late campaigns; each campaign has its own leader, see gen_battles LEAD).
+const MET := {"Big Jim": "st_p3_campfire", "Coldy": "st_p3_coldy", "Catkins": "st_p2_catkins"}
+
+
+## Whichever of Pip-Pip / Nova you are not playing.
+static func pal() -> String:
+	return "Pip-Pip" if str(GameState.run.get("playable", "")) == "penguin_f" else "Nova"
+
+
+static func met(nm: String) -> bool:
+	if nm == "":
+		return false
+	if MET.has(nm):
+		return (GameState.run.get("flags", {}) as Dictionary).has(MET[nm])
+	var id := nm.to_lower().replace(" ", "_")
+	return not Crew.members().has(id) or Crew.recruited(id)
+
+
+## Who leads (and voices) campaign cid: the first leader in its list you have met.
 static func who(cid: String) -> String:
-	var w: Dictionary = get_c(cid).get("who", {})
-	var n := str(w.get(arc(), ""))
-	var id := n.to_lower().replace(" ", "_")
-	return n if n == "" or not Crew.members().has(id) or Crew.recruited(id) else ""
+	var c := get_c(cid)
+	var lst: Array = (c.get("lead", {}) as Dictionary).get(arc(), [])
+	if lst.is_empty():
+		lst = [str((c.get("who", {}) as Dictionary).get(arc(), ""))]
+	for n in lst:
+		var nm := pal() if str(n) == "pal" else str(n)
+		if met(nm):
+			return nm
+	return pal() if arc() == "penguins" else "Sal"
 
 
 static func march(cid: String, nid: String) -> bool:
@@ -286,7 +338,7 @@ static func board_choices(cid: String, nid: String) -> Array:
 				return [["rest", "Make camp (+30 morale)"], ["forage", "Forage (+◇%d supply, +10 morale)" % int(lt.get("supply", 20) / 2 + 5)]]
 			if int(cs(cid).get("rested", -1)) == int(GameState.run.get("day", 1)):
 				return []
-			return [["rest", "Rest the army (+20 morale, once a day)"]]
+			return [["rest", "Rest the %s (+20 morale, once a day)" % force_word()]]
 	return []
 
 
@@ -320,6 +372,73 @@ static func settle(cid: String, nid: String, choice: String) -> String:
 	s["at"] = nid
 	GameState.add_xp("strategist", 10)
 	return out
+
+
+# ---- Crystal Kin (Tom C3) -----------------------------------------------------------
+## Crystal babies fight for the Grumps at first. After you win a campaign battle
+## they were in, prove your purpose (a gift of refined crystal, or Meow Pow Wow
+## once Nova knows it) and they join you as Crystal Kin, a helper kind raised at
+## spawners (battles.json "_helper_kinds", flag crystal_kin).
+const KIN_FLAG := "crystal_kin"
+
+
+static func kin_gift() -> Dictionary:
+	return GameState.load_json("res://data/battles.json").get("_campaigns", {}).get("kin_gift", {"item": "crystal_refined", "n": 2})
+
+
+## True when the crystal babies' nest is waiting for you on this board.
+static func kin_due(cid: String) -> bool:
+	if arc() != "penguins" or GameState.run.is_empty():
+		return false
+	var fl: Dictionary = GameState.run.get("flags", {})
+	if fl.has(KIN_FLAG) or int(fl.get("kin_later", -1)) == int(GameState.run.get("day", 1)):
+		return false
+	for nd: Dictionary in get_c(cid).get("nodes", []):
+		var cf: Dictionary = (nd.get("cfg", {}) as Dictionary).get("penguins", {})
+		if taken(cid, str(nd.get("id", ""))) and "crystal_baby" in (cf.get("enemies", []) as Array):
+			return true
+	return false
+
+
+static func kin_choices(cid: String) -> Array:
+	var g := kin_gift()
+	var out: Array = []
+	var it := str(g.get("item", "crystal_refined"))
+	var n := int(g.get("n", 2))
+	if GameState.count(it) >= n:
+		out.append(["gift", "✦ Crystal babies: offer %s ×%d" % [GameState.item_name(it), n]])
+	else:
+		out.append(["need", "✦ Crystal babies: bring %s ×%d (you have %d)" % [GameState.item_name(it), n, GameState.count(it)]])
+	if Companion.meow_known():
+		out.append(["meow", "✦ Crystal babies: Meow Pow Wow"])
+	out.append(["later", "Leave their nest in peace"])
+	return out
+
+
+## Returns dialogue-style lines; the last one is the result.
+static func kin_settle(cid: String, choice: String) -> Array:
+	var w := who(cid)
+	var fl: Dictionary = GameState.run["flags"]
+	match choice:
+		"need":
+			var g := kin_gift()
+			return [{"who": w, "text": "They won't trust empty paws. Bring %s ×%d and try again." % [GameState.item_name(str(g.get("item", "crystal_refined"))), int(g.get("n", 2))]}]
+		"later":
+			fl["kin_later"] = int(GameState.run.get("day", 1))
+			return [{"who": w, "text": "We'll leave the nest be. They saw that, I think."}]
+		"gift", "meow":
+			if choice == "gift":
+				var g := kin_gift()
+				var it := str(g.get("item", "crystal_refined"))
+				if GameState.count(it) < int(g.get("n", 2)):
+					return []
+				GameState.add_item(it, -int(g.get("n", 2)))
+			fl[KIN_FLAG] = true
+			var how := "You set the crystal down by their nest and step back." if choice == "gift" else "Nova purrs, and the warm wave rolls over the nest."
+			return [{"who": "", "text": how},
+				{"who": w, "text": "They were Crystopia crystals once, like the Grumps. Nobody had ever asked them before. Now they're with us."},
+				{"text": "Crystal Kin will answer you at battle spawners."}]
+	return []
 
 
 # ---- battles -----------------------------------------------------------------------
@@ -362,13 +481,14 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["node"] = nid
 	d["mode"] = typ
 	d["title"] = "%s: %s" % [str(get_c(cid)["title"]), str(n["name"])]
-	d["brief"] = str(n.get("brief", d.get("brief", "")))
-	d["who"] = str(get_c(cid).get("who", {}).get(arc(), d.get("who", "")))
+	d["brief"] = text(n, "brief", str(d.get("brief", "")))
+	d["who"] = who(cid)
 	d["points"] = cf.get("points", d.get("points", []))
 	d["enemies"] = cf.get("enemies", d.get("enemies", []))
 	d["enemy_tier"] = enemy_tier(cid, nid)
-	d["tickets"] = maxi(40, int(int(n.get("tickets", 120)) * (0.6 + 0.4 * morale / 100.0)))
-	d["tickets_max"] = int(n.get("tickets", 120))
+	var tk := int(cf.get("tickets", n.get("tickets", 120)))  # sieges carry their own (size-scaled) count
+	d["tickets"] = maxi(40, int(tk * (0.6 + 0.4 * morale / 100.0)))
+	d["tickets_max"] = tk
 	var et := int(n.get("enemy_tickets", 120))
 	if Settings.easy() and typ != "defend" and typ != "escort":
 		et = int(et * 0.75)
@@ -379,8 +499,9 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 	d["inspired"] = morale >= 85
 	d["reward"] = {}
 	d.erase("boss")
-	if n.has("boss"):
-		d["boss"] = str(n["boss"])
+	var bk := boss_of(cid, nid)
+	if bk != "":
+		d["boss"] = bk
 		d["boss_at"] = "start" if typ == "boss" else "half"
 	if typ == "boss":
 		d["win_by"] = "boss"
@@ -388,6 +509,7 @@ static func battle_data(base: Dictionary, f: Dictionary) -> Dictionary:
 		d["win_by"] = "convoy"
 		d["convoy"] = cf.get("convoy", [])
 		d["convoy_hp"] = int(n.get("convoy_hp", 80)) + (20 if Settings.easy() else 0)
+		d["vehicle"] = str(cf.get("vehicle", "wagon" if arc() == "penguins" else "truck"))
 	elif typ == "defend":
 		d["win_by"] = "hold"
 		d["hold"] = int(n.get("hold", 150)) - (30 if Settings.easy() else 0)
@@ -421,7 +543,7 @@ static func finish(won: bool, supply_left: int) -> Array:
 			Music.instance(Engine.get_main_loop() as SceneTree).sfx("j_campaign_won" if all_taken else "j_battle_won", "levelup")
 		s["wins"] = int(s.get("wins", 0)) + 1
 		var rw: Dictionary = n.get("reward", {})
-		s["supply"] = clampi(supply_left / 2 + int(rw.get("supply", 0)), 0, SUPPLY_CAP)
+		s["supply"] = clampi(maxi(10, supply_left / 2) + int(rw.get("supply", 0)), 0, SUPPLY_CAP)
 		s["morale"] = mini(100, int(s["morale"]) + int(rw.get("morale", 8)))
 		var cr := int(rw.get("crystals", 0))
 		GameState.run["crystals"] = int(GameState.run.get("crystals", 0)) + cr
@@ -429,14 +551,14 @@ static func finish(won: bool, supply_left: int) -> Array:
 		for it: String in rw.get("items", {}):
 			GameState.add_item(it, int(rw["items"][it]))
 			got.append("%s ×%d" % [GameState.item_name(it), int(rw["items"][it])])
-		lines.append({"who": w, "text": "%s is ours. The army moves up. Morale %d (%s), supply ◇%d." % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"])), int(s["supply"])]})
+		lines.append({"who": w, "text": ("%s is ours. The " + force_word() + " moves up. Morale %d (%s), supply ◇%d.") % [str(n["name"]), int(s["morale"]), morale_word(int(s["morale"])), int(s["supply"])]})
 		if not got.is_empty():
 			lines.append({"text": "+" + ", ".join(got)})
 		if str(n.get("type", "")) == "gate":
 			lines.append_array(_unlock(cid))
 	else:
 		s["losses"] = int(s.get("losses", 0)) + 1
-		s["supply"] = clampi(supply_left / 3, 0, SUPPLY_CAP)
+		s["supply"] = clampi(maxi(10, supply_left / 3), 0, SUPPLY_CAP)  # never too poor to place one helper
 		s["morale"] = int(s["morale"]) - 20
 		if int(s["morale"]) <= 0:
 			s["morale"] = 40
@@ -457,8 +579,8 @@ static func retreat(supply_left: int) -> void:
 		return
 	var s := cs(cid)
 	s["retreats"] = int(s.get("retreats", 0)) + 1
-	s["morale"] = maxi(10, int(s["morale"]) - 10)
-	s["supply"] = clampi(supply_left / 2, 0, SUPPLY_CAP)
+	s["morale"] = maxi(10, int(s["morale"]) - 15)
+	s["supply"] = clampi(supply_left / 3, 0, SUPPLY_CAP)
 
 
 ## The gate fell: the region opens.
@@ -481,7 +603,7 @@ static func _unlock(cid: String) -> Array:
 	GameState.add_xp("strategist", int(rw.get("strategist", 300)))
 	GameState.add_arc_xp(60 + 20 * int(c.get("tier", 1)))
 	GameState.run["flags"]["campaign_" + reg] = true
-	return [{"who": who(cid), "text": str(c.get("won", "The way is open."))},
+	return [{"who": who(cid), "text": text(c, "won", "The way is open.")},
 		{"text": "%s is open! +%s" % [str(c["region_name"]), ", ".join(got)]}]
 
 
@@ -501,18 +623,7 @@ static func story_pointer(qid: String) -> String:
 	var cid := gate_of(reg)
 	if cid == "":
 		return ""
-	# The first campaign in the chain that isn't won yet.
-	var guard := 0
-	while guard < 8:
-		guard += 1
-		var moved := false
-		for a in get_c(cid).get("after", []):
-			if all().has(a) and str(all()[a].get("arc", "both")) in ["both", arc()] and not region_open(str(all()[a]["region"])):
-				cid = str(a)
-				moved = true
-				break
-		if not moved:
-			break
+	cid = first_in_chain(cid)
 	var c := get_c(cid)
 	var held := ""
 	if started(cid) and taken_count(cid) > 1:
@@ -524,9 +635,49 @@ static func story_pointer(qid: String) -> String:
 		first = "Training with %s on the campaign map (Menu > Map)." % CampaignGate.trainer()
 	if first != "":
 		# The step comes first: the HUD shows two short lines, and the tail is what gets cut.
-		var where := "" if first.contains("campaign map") else " (campaign map, Menu > Map)"
-		return "%s is guarded. First: %s Then win \"%s\"%s." % [str(c["region_name"]), first.left(1).to_lower() + first.substr(1), str(c["title"]), where]
+		# Goal line budget (~112 chars): the step, then the campaign; no "X is guarded."
+		var where := "" if first.contains("campaign map") or first.contains("Menu > Map") else " (Menu > Map)"
+		var line := "First: %s Then win \"%s\"%s." % [first.left(1).to_lower() + first.substr(1), str(c["title"]), where]
+		if line.length() > 112:
+			line = "First: %s Then win \"%s\"." % [first.left(1).to_lower() + first.substr(1), str(c["title"])]
+		if line.length() > 112:
+			line = "First: %s" % first
+		return line
 	return "Open %s: win \"%s\" on the campaign map (Menu > Map)%s." % [str(c["region_name"]), str(c["title"]), held]
+
+
+## The first campaign in cid's chain of prerequisites that still holds its
+## region (cid itself when nothing comes before it).
+static func first_in_chain(cid: String) -> String:
+	var guard := 0
+	while guard < 8:
+		guard += 1
+		var moved := false
+		for a in get_c(cid).get("after", []):
+			if all().has(a) and str(all()[a].get("arc", "both")) in ["both", arc()] and not region_open(str(all()[a]["region"])):
+				cid = str(a)
+				moved = true
+				break
+		if not moved:
+			break
+	return cid
+
+
+## How many held campaigns stand before cid (its chain, cid excluded).
+static func chain_left(cid: String) -> int:
+	var n := 0
+	var cur := cid
+	while n < 8:
+		var nxt := ""
+		for a in get_c(cur).get("after", []):
+			if all().has(a) and str(all()[a].get("arc", "both")) in ["both", arc()] and not region_open(str(all()[a]["region"])):
+				nxt = str(a)
+				break
+		if nxt == "":
+			break
+		n += 1
+		cur = nxt
+	return n
 
 
 ## True (and offers the campaign) when `scene` is still held by a campaign.
@@ -560,7 +711,7 @@ static func offer(m: GameMap, cid: String) -> void:
 	await dl.finished
 	_last_offer = Time.get_ticks_msec()
 	if dl.last_choice == 0 and is_instance_valid(m):
-		CampaignScreen.open(m, cid)
+		CampaignScreen.open(m, str(gw.get("cid", cid)))
 
 
 ## What you sense walking up to a region campaign `cid` still holds, and the one
@@ -577,8 +728,8 @@ static func gate_words(cid: String) -> Dictionary:
 	if sense == "":
 		sense = "You hear a low rumbling ahead, and every hair on your neck stands up." if pen else "The street goes quiet ahead. Too quiet."
 	sense += " It doesn't feel safe to go on yet." if pen else " You'd be walking in alone. Not yet."
-	var lead := CampaignGate.trainer()
-	var out := {"stage": "", "lines": [sense], "board": false}
+	var lead := who(cid)
+	var out := {"stage": "", "lines": [sense], "board": false, "cid": cid}
 	if started(cid):
 		out["stage"] = "under_way"
 		out["board"] = true
@@ -598,14 +749,23 @@ static func gate_words(cid: String) -> Dictionary:
 		out["stage"] = "train"
 		out["board"] = true
 		out["lines"].append(("Catkins says one brave farmer can't take a valley alone. Drill with her first: MENU > Map > Campaign map > Training." if pen
-			else "Sal says you don't take a road with one pair of fists. Drill with Sal first: MENU > Map > Campaign map > Training.") if lead in ["Catkins", "Sal"]
-			else "Drill with %s first: MENU > Map > Campaign map > Training." % lead)
+			else "Sal says you don't take a road with one pair of fists. Drill with Sal first: MENU > Map > Campaign map > Training.") if CampaignGate.trainer() in ["Catkins", "Sal"]
+			else "Drill with %s first: MENU > Map > Campaign map > Training." % CampaignGate.trainer())
 		return out
-	for pre in c.get("after", []):
-		if all().has(pre) and str(all()[pre].get("arc", "both")) in ["both", a] and not region_open(str(all()[pre]["region"])):
-			out["stage"] = "after"
-			out["lines"].append("The only way into %s runs through %s, and that's held too. %s will lead you there first: win \"%s\" on the campaign map." % [reg, str(all()[pre]["region_name"]), lead, str(all()[pre]["title"])])
-			return out
+	var pre := first_in_chain(cid)
+	if pre != cid:
+		var more := chain_left(cid) - 1
+		var pc := get_c(pre)
+		out["stage"] = "after"
+		out["board"] = true
+		out["cid"] = pre
+		var t := "%s won't lead you into %s until %s is taken: win \"%s\" on the campaign map first." % [lead, reg, str(pc["region_name"]), str(pc["title"])]
+		if more > 0:
+			t += " After that, %d more campaign%s." % [more, "" if more == 1 else "s"]
+		if GameState.progress_tier() < int(pc.get("min_pt", 0)):
+			t += " That one comes later in the story."
+		out["lines"].append(t)
+		return out
 	if GameState.progress_tier() < int(c.get("min_pt", 0)):
 		out["stage"] = "later"
 		out["lines"].append("Even %s says it's too soon for %s. Follow the story further (your goal line shows the next step), then come back." % [lead, reg])
@@ -614,7 +774,7 @@ static func gate_words(cid: String) -> Dictionary:
 	out["board"] = true
 	if short != "":
 		out["stage"] = "gather"
-		out["lines"].append("%s is ready to lead you in, but an army needs more first. %s Then muster for \"%s\" on the campaign map." % [lead, short, str(c["title"])])
+		out["lines"].append(("%s is ready to lead you in, but the " + force_word() + " needs more first. %s Then muster for \"%s\" on the campaign map.") % [lead, short, str(c["title"])])
 		return out
 	out["stage"] = "ready"
 	out["lines"].append("%s has the team and the provisions ready. Muster for \"%s\" on the campaign map, win it, and the way to %s opens." % [lead, str(c["title"]), reg])

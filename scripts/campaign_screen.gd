@@ -266,7 +266,7 @@ func _refresh() -> void:
 		st_txt = " · " + "★".repeat(stars) + "☆".repeat(5 - stars) + " " + ["easy", "fair", "hard", "very hard"][Campaign.danger(cid, sel) + 1]
 	var state := "yours" if Campaign.taken(cid, sel) else ("can attack" if Campaign.can_attack(cid, sel) else "out of reach")
 	if str(Campaign.cs(cid)["at"]) == sel:
-		state = "your army is here"
+		state = "your %s is here" % Campaign.force_word()
 	_sub.text = "%s%s · %s" % [str(Campaign.TYPE_NAME.get(typ, typ)), st_txt, state]
 	var body := ""
 	if Campaign.is_won(cid):
@@ -276,14 +276,15 @@ func _refresh() -> void:
 	elif why != "":
 		body = "Locked: %s\n" % why
 	if typ in Campaign.NONBATTLE:
-		body += str(n.get("brief", "Your camp. The army gathers here."))
+		body += Campaign.text(n, "brief", "Your camp. The %s gathers here." % Campaign.force_word())
 	else:
 		var cf := Campaign.cfg(cid, sel)
-		body += str(n.get("brief", "")) + "\n"
+		body += Campaign.text(n, "brief") + "\n"
 		var foes: Array = []
 		for k in cf.get("enemies", []):
 			foes.append(_enemy_name(str(k)))
-		body += "Foes: %s%s.\n" % [", ".join(foes.slice(0, 4)), (" · captain: " + _enemy_name(str(n["boss"]))) if n.has("boss") else ""]
+		var bk := Campaign.boss_of(cid, sel)
+		body += "Foes: %s%s.\n" % [", ".join(foes.slice(0, 4)), (" · captain: " + _enemy_name(bk)) if bk != "" else ""]
 		var rw: Dictionary = n.get("reward", {})
 		var bits: Array = []
 		if int(rw.get("crystals", 0)) > 0:
@@ -306,7 +307,7 @@ func _refresh() -> void:
 		b.queue_free()
 	_acts = []
 	if why == "" and not Campaign.is_won(cid) and not Campaign.started(cid):
-		_acts.append(["⚑ Muster the army (%s)" % CampaignGate.provisions_text(cid), _muster])
+		_acts.append(["⚑ Muster the %s (%s)" % [Campaign.force_word(), CampaignGate.provisions_text(cid)], _muster])
 		_acts.append(["Briefing", _show_brief])
 	elif why == "" and not Campaign.is_won(cid):
 		if Campaign.can_attack(cid, sel):
@@ -322,11 +323,14 @@ func _refresh() -> void:
 		elif Campaign.taken(cid, sel) and str(Campaign.cs(cid)["at"]) == sel:
 			for ch in Campaign.board_choices(cid, sel):
 				_acts.append([str(ch[1]), _settle.bind(str(ch[0]))])
+	if Campaign.kin_due(cid):
+		for ch in Campaign.kin_choices(cid):
+			_acts.append([str(ch[1]), _kin.bind(str(ch[0]))])
 	if _acts.is_empty() and not Campaign.is_won(cid):
 		if why != "":
 			_acts.append(["What's needed", _show_brief])
 		else:
-			_acts.append(["Tap a glowing node next to ground you hold.", func() -> void: pass])
+			_acts.append(["Tap a glowing node next to ground you hold.", func() -> void: _flash_msg("Glowing nodes touch ground you hold: tap one, then Attack or March.")])
 	for a in _acts:
 		var b := _btn(str(a[0]), a[1])
 		b.custom_minimum_size = Vector2(0, 22)
@@ -347,6 +351,9 @@ func _enemy_name(k: String) -> String:
 
 
 func _muster() -> void:
+	if Net.visiting():
+		_flash_msg("You're visiting a friend's farm. Muster when you're home.")
+		return
 	var line := CampaignGate.muster(cid)
 	if line == "":
 		return
@@ -393,9 +400,10 @@ func _show_brief() -> void:
 		_brief_box.add_child(tr)
 	_brief_box.add_child(_label("CAMPAIGN BRIEFING · TIER %d" % int(c["tier"]), 7, Color(0.85, 0.85, 0.9)))
 	_brief_box.add_child(_label(str(c["title"]), 12, Color(1, 0.9, 0.6)))
-	_brief_box.add_child(_label(str(c.get("intro", "")), 7, Color(0.95, 0.93, 0.88)))
+	_brief_box.add_child(_label(Campaign.text(c, "intro"), 7, Color(0.95, 0.93, 0.88)))
+	_brief_box.add_child(_label("Led by %s." % Campaign.who(cid), 7, Color(0.75, 0.9, 1)))
 	_brief_box.add_child(_label("HOW IT WORKS", 7, Color(1, 0.8, 0.4)))
-	_brief_box.add_child(_label("• Attack a territory linked to one you hold. Battles are fought on a field; camps rest the army, caches give supply.\n• Morale sets your tickets in battle; supply is your starting purse for helpers.\n• Win the gate (the crown) and %s opens. Lose and you keep what you took." % str(c["region_name"]), 7, Color(0.92, 0.92, 0.95)))
+	_brief_box.add_child(_label("• Attack a territory linked to one you hold. Battles are fought on a field; camps rest the " + Campaign.force_word() + ", caches give supply.\n• Morale sets your tickets in battle; supply is your starting purse for helpers.\n• Win the gate (the crown) and %s opens. Lose and you keep what you took." % str(c["region_name"]), 7, Color(0.92, 0.92, 0.95)))
 	_brief_box.add_child(_label("LENGTH: %d territories · at least %d battle%s to the gate" % [(c["nodes"] as Array).size() - 1, int(c.get("min_battles", 3)), "" if int(c.get("min_battles", 3)) == 1 else "s"], 7, Color(0.7, 0.92, 1)))
 	if not Campaign.started(cid) and not Campaign.is_won(cid):
 		_brief_box.add_child(_label("TO MUSTER", 7, Color(1, 0.8, 0.4)))
@@ -424,6 +432,9 @@ func _toggle_brief() -> void:
 func _attack() -> void:
 	var id := cid
 	var nid := sel
+	if Net.visiting():
+		_flash_msg("You're visiting a friend's farm. Campaigns wait until you're home.")
+		return
 	_close_now()
 	Campaign.launch(m, id, nid)
 
@@ -433,7 +444,7 @@ func _march_attack() -> void:
 	Campaign.march(cid, Campaign.staging(cid, sel))
 	if str(Campaign.node(cid, sel).get("type", "")) in ["camp", "cache"]:
 		_refresh()
-		_flash_msg("The army marches out. Choose what to do there.")
+		_flash_msg("The %s marches out. Choose what to do there." % Campaign.force_word())
 	else:
 		_attack()
 
@@ -441,9 +452,19 @@ func _march_attack() -> void:
 func _march() -> void:
 	if Campaign.march(cid, sel):
 		Music.instance(get_tree()).sfx("step", "pickup")
-		_flash_msg("The army marches to %s." % str(Campaign.node(cid, sel)["name"]))
+		_flash_msg("The %s marches to %s." % [Campaign.force_word(), str(Campaign.node(cid, sel)["name"])])
 		GameState.save()
 	_refresh()
+
+
+## Crystal babies: prove your purpose (Campaign.kin_settle).
+func _kin(choice: String) -> void:
+	var lines := Campaign.kin_settle(cid, choice)
+	GameState.save()
+	_refresh()
+	if not lines.is_empty():
+		Music.instance(get_tree()).sfx("j_battle_won" if choice != "later" else "pickup", "levelup")
+		_flash_msg(str(lines[lines.size() - 1].get("text", "")))
 
 
 func _settle(choice: String) -> void:
