@@ -666,6 +666,7 @@ func _refresh() -> void:
 					row.add_child(bt)
 			_button("Night darkness: %s" % Settings.NIGHT_NAMES[clampi(int(Settings.get_v("night")), 0, 2)], func() -> void: Settings.set_v("night", (int(Settings.get_v("night")) + 1) % 3); _refresh())
 			_button("Button size: %s" % Settings.BTN_NAMES[clampi(int(Settings.get_v("btn_size")), 0, 2)], func() -> void: Settings.set_v("btn_size", (int(Settings.get_v("btn_size")) + 1) % 3); _refresh())
+			_button("Text size: %s" % Settings.TEXT_NAMES[Settings.text_bonus()], func() -> void: Settings.set_v("text_size", (Settings.text_bonus() + 1) % Settings.TEXT_NAMES.size()); _refresh())
 			_button("Screen shake: %s" % ("on" if bool(Settings.get_v("shake")) else "off"), func() -> void: Settings.set_v("shake", not bool(Settings.get_v("shake"))); _refresh())
 			_button("Controls: %s-handed" % ("left" if Settings.left_handed() else "right"), func() -> void: Settings.set_v("left_handed", not Settings.left_handed()); _refresh())
 			Difficulty.settings_rows(self)  # C4: difficulty + day length (this save slot)

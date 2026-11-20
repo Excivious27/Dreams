@@ -1732,7 +1732,7 @@ func _place_props() -> void:
 			prop("props", "crates_c" if Art.has("props", "crates_c") else "crates_a", c, int(b["w"]))
 			var tag := Label.new()
 			tag.text = str(Builds.current_def(id).get("name", id))
-			tag.add_theme_font_size_override("font_size", 5)
+			tag.add_theme_font_size_override("font_size", 7)
 			tag.add_theme_color_override("font_color", Color(1, 0.95, 0.7))
 			tag.add_theme_color_override("font_outline_color", Color(0.1, 0.08, 0.05))
 			tag.add_theme_constant_override("outline_size", 3)

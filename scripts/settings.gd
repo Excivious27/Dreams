@@ -4,10 +4,11 @@ extends RefCounted
 ## left-handed layout. Stored with SaveGame's global values. Difficulty and
 ## day length are per save slot (Difficulty, GameState.day_len).
 
-const DEFAULTS := {"music_vol": 8, "sfx_vol": 8, "amb_vol": 7, "btn_size": 1, "left_handed": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false}
+const DEFAULTS := {"music_vol": 8, "sfx_vol": 8, "amb_vol": 7, "btn_size": 1, "left_handed": false, "night": 2, "shake": true, "touch_ui": 0, "fullscreen": false, "text_size": 0}
 const NIGHT_NAMES := ["off", "soft", "full"]
 const BTN_SCALES := [0.85, 1.0, 1.2]
 const BTN_NAMES := ["small", "normal", "large"]
+const TEXT_NAMES := ["normal", "large"]  # C5 c5_13 #2: Text size for dialogue and its choices
 
 
 static func get_v(key: String) -> Variant:
@@ -22,6 +23,11 @@ static func set_v(key: String, v: Variant) -> void:
 
 static func btn_scale() -> float:
 	return float(BTN_SCALES[clampi(int(get_v("btn_size")), 0, 2)])
+
+
+## Extra font pixels for reading text (0 normal, 1 large).
+static func text_bonus() -> int:
+	return clampi(int(get_v("text_size")), 0, TEXT_NAMES.size() - 1)
 
 
 static func left_handed() -> bool:
