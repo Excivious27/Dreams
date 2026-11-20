@@ -29,6 +29,8 @@ static func to_evening(reason: String) -> bool:
 ## and a little more per mine floor. `mult` is the Juniper/easy discount.
 static func clinic_fee(cr: int, floor_no: int, mult: float) -> int:
 	var fl: Dictionary = GameState.run["flags"]
+	if mult <= 0.0:
+		return 0  # waived anyway (C8 P1): keep the free first visit for when a bill applies
 	if not fl.has("clinic_used"):
 		fl["clinic_used"] = 1
 		fl["clinic_first_free"] = true
@@ -44,7 +46,15 @@ static func free_line() -> String:
 	if fl.has("clinic_first_free"):
 		fl.erase("clinic_first_free")
 		return "First visit's on the house. Next time there's a bill: eat when your health runs low, and ROLL away from a red flash."
+	match waived_by:
+		"juniper": return "Juniper waves the bill away: friends don't pay."
+		"perk": return "No charge: the clinic owes you one."
+		"easy": return "No charge on Very easy."
 	return "No charge this time."
+
+
+## Why the last clinic bill was waived ("" = it wasn't): free_line names it.
+static var waived_by := ""
 
 
 ## Days 1-7: new in town. Juniper doesn't bill a newcomer, and nobody pockets
@@ -63,6 +73,7 @@ static func in_grace() -> bool:
 ## (reason "hurt"): late nights and exhaustion cost the same in every mode.
 static func fee(clinic: bool, floor_no: int, reason := "") -> int:
 	var cr := int(GameState.run.get("crystals", 0))
+	waived_by = ""
 	if in_grace():
 		return 0
 	if clinic:
@@ -71,14 +82,36 @@ static func fee(clinic: bool, floor_no: int, reason := "") -> int:
 			pass  # she left: no clinic perks
 		elif GameState.has_friend_perk("juniper", 6):
 			mult = 0.0
+			waived_by = "juniper"
 		elif GameState.has_friend_perk("juniper", 2):
 			mult = 0.5
-		if Perks.flag("no_clinic_fee"):
+		if Perks.flag("no_clinic_fee") and mult > 0.0:
 			mult = 0.0
-		if reason == "hurt":
+			waived_by = "perk"
+		if reason == "hurt" and mult > 0.0:
 			mult *= Difficulty.mul("clinic_fee")
+			if mult <= 0.0:
+				waived_by = "easy"
 		return clinic_fee(cr, floor_no, mult)  # first visit free, gentle flat part
+	if at_home():
+		return 0  # dropped in your own house: nobody carried you anywhere (C8 P1)
 	return mini(cr, mini(300, int(ceil(cr * 0.05))))
+
+
+## True when the collapse happens inside your own farmhouse (not visiting).
+static func at_home() -> bool:
+	var t := Engine.get_main_loop() as SceneTree
+	var m: Node = t.current_scene if t else null
+	return m is GameMap and (m as GameMap).scene_id() == "house" and not Net.visiting()
+
+
+## The wake-up words after a collapse that ends at home (game_map.player_down).
+static func home_note(evening: bool, fee: int, home: bool) -> String:
+	if home:
+		return "You nodded off on the floor and woke at 10pm, stiff. Get some proper sleep." if evening else "You nodded off on the floor before reaching the bed."
+	if evening:
+		return ("You come round on your own bed at 10pm, aching. Someone carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "You come round on your own bed at 10pm, aching. Someone carried you home. Get some proper sleep."
+	return ("Someone found you and carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "Someone found you and carried you home to bed."
 
 
 ## Bedtime warnings (Stardew's "getting late"): one at midnight, one at 1:30am,

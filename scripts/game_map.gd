@@ -2334,7 +2334,7 @@ func use_consumable(sel: String) -> bool:
 		effect_text(player.position, fx_out)
 		if fx_out.keys() == ["full"]:
 			# Nothing to gain: the food stays in the bag.
-			hud.toast("Too full for more energy today.", Color(1, 0.8, 0.6))
+			hud.toast(GameState.full_text(), Color(1, 0.8, 0.6))
 			return true
 		player.play_tool("eat")
 		hud.toast("Ate %s.%s" % [GameState.item_name(sel), "  Too full for more energy today." if fx_out.has("full") else ""])
@@ -2636,10 +2636,7 @@ func player_down(reason := "hurt") -> void:
 		GameMap.next_interior = "clinic"
 		go_to("interior", CLINIC_SPAWN, "down", true)
 		return
-	if evening:
-		GameState.run["flags"]["wake_note"] = ("You come round on your own bed at 10pm, aching. Someone carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "You come round on your own bed at 10pm, aching. Someone carried you home. Get some proper sleep."
-	else:
-		GameState.run["flags"]["wake_note"] = ("Someone found you and carried you home. ◆%d went missing on the way." % fee) if fee > 0 else "Someone found you and carried you home to bed."
+	GameState.run["flags"]["wake_note"] = Faint.home_note(evening, fee, scene_id() == "house" and not Net.visiting())
 	go_to("house", Vector2(5 * TILE + 8, 5 * TILE), "down", true)
 
 
