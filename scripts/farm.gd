@@ -184,6 +184,7 @@ func build() -> void:
 				add_child(mk)
 	if GameState.is_penguins() and bool(GameState.run["intro_done"]):
 		set_thing(CRYSTAL_SPOT.x, CRYSTAL_SPOT.y, {"type": "crystal", "hint": "A: talk to the Star Crystal"})
+	_decor_cells = _read_decor_cells()  # yard decor is known before debris/fences/migrate (c10b_02_09)
 	_place_debris()
 	_plan_fences()
 	_migrate_layout()
@@ -285,11 +286,18 @@ func _migrate_layout() -> void:
 		var c := Vector2i(int(kp[0]), int(kp[1]))
 		if blocked.has(c) and not _river.has(c):
 			solid[c] = true
+	var keep_free := _pen_cells()
+	keep_free.merge(_mega_cells())  # old saves: things in a built pen or on the limo's spot move aside (c10b_02_16/19)
 	for pk in GameState.run.get("placed", {}).keys():
 		var xy := str(pk).split(",")
 		var pc := Vector2i(int(xy[0]), int(xy[1]))
-		if blocked.has(pc):
+		if blocked.has(pc) or keep_free.has(pc):
 			solid[pc] = true
+	for k in farm.keys():
+		var kp2 := str(k).split(",")
+		var kc := Vector2i(int(kp2[0]), int(kp2[1]))
+		if _pen_cells().has(kc):
+			solid[kc] = true
 	if solid.is_empty():
 		return
 	for c: Vector2i in solid:
@@ -440,7 +448,7 @@ func _move_placed_off(solid: Dictionary) -> void:
 			for dy in range(-rad, rad + 1):
 				for dx in range(-rad, rad + 1):
 					var n := pc + Vector2i(dx, dy)
-					if to.x < 0 and in_content(n) and not solid.has(n) and not blocked.has(n) and not things.has(n) and not placed.has("%d,%d" % [n.x, n.y]) and not _path_cells.has(n) and str(farm.get("%d,%d" % [n.x, n.y], {}).get("crop", "")) == "":
+					if to.x < 0 and in_content(n) and not solid.has(n) and not blocked.has(n) and not things.has(n) and not placed.has("%d,%d" % [n.x, n.y]) and not _path_cells.has(n) and _tillable(n) and str(farm.get("%d,%d" % [n.x, n.y], {}).get("crop", "")) == "":
 						to = n
 			if to.x >= 0:
 				break
@@ -546,6 +554,8 @@ func _place_debris() -> void:
 			_rng.seed = 77 + x * 7919 + y * 104729  # per cell: clearing or tilling one cell never reshuffles the rest
 			if blocked.has(c) or things.has(c) or _path_cells.has(c) or _pond_cells.has(c) or _ledge_cells.has(c):
 				continue
+			if _decor_cells.has(c) or (GameState.run.get("placed", {}) as Dictionary).has("%d,%d" % [c.x, c.y]):
+				continue  # nothing regrows under a placed sprinkler/chest or yard decor (c10b_02_01)
 			if _path_cells.has(c + Vector2i.LEFT) or _path_cells.has(c + Vector2i.RIGHT) or _path_cells.has(c + Vector2i.UP) or _path_cells.has(c + Vector2i.DOWN):
 				continue  # the path's soft edge reaches its neighbours: nothing grows on the trail (C5)
 			if house_r.grow(2).has_point(c) or c.distance_to(CRYSTAL_SPOT) < 3 or keep_clear.has(c):
@@ -643,7 +653,7 @@ func _by_soil(c: Vector2i) -> bool:
 	for dy in range(-1, 2):
 		for dx in range(-1, 2):
 			var key := "%d,%d" % [c.x + dx, c.y + dy]
-			if farm.has(key) or placed.has(key):
+			if farm.has(key) or placed.has(key) or _decor_cells.has(Vector2i(c.x + dx, c.y + dy)):
 				return true
 	return false
 
@@ -783,6 +793,14 @@ func after_ready() -> void:
 	for pk in GameState.run.get("placed", {}):
 		var xy := str(pk).split(",")
 		_show_placed(Vector2i(int(xy[0]), int(xy[1])), str(GameState.run["placed"][pk]))
+	# Yard decor stands before critters, the spouse and the border pick their cells (c10b_02_09).
+	if not Net.visiting():
+		var gone: Array = DecorMode.relayout(self)
+		if not gone.is_empty():
+			hud.toast("The farm changed: %s went back to your decor box." % ", ".join(gone), Color(1, 0.9, 0.7))
+	DecorMode.dress(self)
+	_decor_after()
+	_entry_button()
 	# The partner scene's day comes from companions.json (penguins: day 2, the day after the crystal lands).
 	var pday := int(Companion.data().get("partner_scene", {}).get(str(GameState.run.get("arc", "")), {}).get("when", {}).get("day", 3))
 	if int(GameState.run["day"]) >= pday and not GameState.run["flags"].has("partner_scene") and bool(GameState.run["intro_done"]):
@@ -1025,6 +1043,9 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 					queue_redraw()
 				_place_item(c, sel)
 				return true
+			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and not guest and till_why(c) != "" and not things.has(c):
+				ToolHint.say(self, till_why(c))
+				return true
 			if str(GameState.items.get(sel, {}).get("type", "")) == "placeable" and GameState.count(sel) > 0 and not guest and GameState.run["farm"].has("%d,%d" % [c.x, c.y]):
 				hud.toast("Not on a growing crop. Put it on open ground or empty soil.")
 				return true
@@ -1039,6 +1060,19 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 ## Any free grass cell inside the field can be tilled, Stardew-style.
 func can_till(c: Vector2i) -> bool:
 	return _tillable(c) and not things.has(c) and not blocked.has(c)
+
+
+## Why a free cell can't take soil or a placeable ("" = it can, or it's an ordinary wall).
+func till_why(c: Vector2i) -> String:
+	if _decor_cells.has(c):
+		return "Your yard decor is there."
+	if _pen_cells().has(c):
+		return "That's the animals' pen."
+	if _apron_cells().has(c):
+		return "Keep that spot clear: it's in front of %s." % str(_apron_cells()[c])
+	if _mega_cells().has(c):
+		return "Leave room here: something will park on this spot."
+	return ""
 
 
 ## BUILDS-shaped record for what's actually built (tier-aware), from buildings.json.
@@ -1065,6 +1099,8 @@ func _tillable(c: Vector2i) -> bool:
 	for e in exits:
 		if (e["rect"] as Rect2i).has_point(c):
 			return false
+	if till_why(c) != "":
+		return false  # decor, built pens, service fronts, travel spots (c10b_02_16/19/20)
 	return true
 
 
@@ -2250,7 +2286,18 @@ func on_world_sync(d: Dictionary) -> void:
 			var pc := Vector2i(int(xy[0]), int(xy[1]))
 			if not things.has(pc):
 				_show_placed(pc, str(placed[pk]))
+	if d.has("decor_home") or d.has("decor_home_d"):
+		# The host changed the yard: redress it from the host's view (c10b_02_12).
+		var dsig := hash(DecorMode.placed("farm"))
+		if dsig != _decor_sig:
+			_decor_sig = dsig
+			DecorMode.dress(self)
+			decor_changed()
+			unstick_player()
 	super(d)
+
+
+var _decor_sig := 0
 
 
 func _show_placed(c: Vector2i, id: String) -> void:
@@ -2468,3 +2515,245 @@ func _silo_feed() -> void:
 		GameState.run["silo"] = Builds.silo_hay() - 1
 		all[str(ch.name)] = st
 	GameState.run["animals"] = all
+
+
+# ---- yard decorating (CONDUCT 10b P2: DecorMode outdoors) ---------------------------
+
+## Yard decor cells (cell -> layer) from the farm's placed decor (the host's while
+## visiting, through DecorMode.view()). Debris, soil, regrowth, placeables and
+## villager paths all read it.
+var _decor_cells := {}
+
+
+func _read_decor_cells() -> Dictionary:
+	var out := {}
+	for p in DecorMode.placed("farm"):
+		if not (p is Dictionary) or not Decor.is_decor(str(p.get("id", ""))):
+			continue
+		var id := str(p["id"])
+		for c: Vector2i in DecorMode.footprint(id, DecorMode._cell_of(p), int(p.get("rot", 0))):
+			out[c] = DecorMode.layer_of(id)
+	return out
+
+
+## Built coop/barn pens and a ring round them: the animals' ground (c10b_02_19).
+func _pen_cells() -> Dictionary:
+	var out := {}
+	if Builds.is_built("coop"):
+		for c: Vector2i in cells_of([COOP_PEN.grow(1)]):
+			out[c] = true
+	if Builds.is_built("barn"):
+		for c: Vector2i in cells_of([BARN_PEN.grow(1)]):
+			out[c] = true
+	return out
+
+
+## One-cell aprons in front of/beside the mailbox, shipping bin, plans board and the
+## Star Crystal (cell -> what it serves), shared by placeables and yard decor (c10b_02_20).
+func _apron_cells() -> Dictionary:
+	var out := {}
+	for pr: Array in [[mail_c, "the mailbox"], [SELLBOX, "the shipping bin"], [CRYSTAL_SPOT, "the Star Crystal"]]:
+		var c: Vector2i = pr[0]
+		for d: Vector2i in [Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0), Vector2i(-1, 1), Vector2i(1, 1)]:
+			out[c + d] = str(pr[1])
+	for dx in range(-1, 2):
+		out[PLANS + Vector2i(dx, 1)] = "the plans board"
+	return out
+
+
+## Where a travel keeper parks on the farm (the Gilt City limo): its cell, base row,
+## keeper and arrival spots stay free (c10b_02_16).
+func _mega_cells() -> Dictionary:
+	var out := {}
+	var regs: Variant = MegaTravel.data()
+	if not (regs is Dictionary):
+		return out
+	for id in regs:
+		var e: Variant = (regs[id] as Dictionary).get("entry", {}) if regs[id] is Dictionary else {}
+		if not (e is Dictionary) or str((e as Dictionary).get("scene", "")) != "farm":
+			continue
+		var c := Vector2i(int(e["cell"][0]), int(e["cell"][1]))
+		for dy in range(-1, 1):
+			for dx in range(-2, 2):
+				out[c + Vector2i(dx, dy)] = true
+		var ka: Array = (e as Dictionary).get("keeper_at", [-2, 0])
+		out[c + Vector2i(int(ka[0]), int(ka[1]))] = true
+		var sp: Array = (e as Dictionary).get("spawn", [c.x, c.y + 2])
+		out[Vector2i(int(sp[0]), int(sp[1]))] = true
+	return out
+
+
+func decor_outdoor() -> bool:
+	return true
+
+
+func decor_bounds() -> Rect2i:
+	return Rect2i(2, 2, cols - 4, rows - 4)
+
+
+func decor_door() -> Vector2i:
+	return door_c + Vector2i(0, 1)
+
+
+## Cells no yard piece may cover, with why (c10b_02_02 / 08 / 09 / 16 / 19 / 20 / 23).
+func decor_reserved() -> Dictionary:
+	var r := {}
+	for c: Vector2i in cells_of([house_r.grow(1)]):
+		r[c] = "the house"
+	for dy in range(1, 3):
+		r[door_c + Vector2i(0, dy)] = "the doorway"
+	r[mail_c] = "the mailbox"
+	r[SELLBOX] = "the shipping bin"
+	for dx in range(-1, 2):
+		r[PLANS + Vector2i(dx, 0)] = "the plans board"
+	if GameState.is_penguins():
+		r[CRYSTAL_SPOT] = "the Star Crystal"
+	r.merge(_apron_cells())
+	for e in exits:
+		for c: Vector2i in cells_of([(e["rect"] as Rect2i).grow(2)]):
+			r[c] = "the road out"
+	for c: Vector2i in _pond_cells:
+		r[c] = "the pond"
+	for c: Vector2i in _river:
+		r[c] = "the river"
+	for c: Vector2i in _bridge_cells:
+		for dy in range(-2, 3):
+			r[c + Vector2i(0, dy)] = "the bridge"
+	for c: Vector2i in _ledge_cells:
+		r[c] = "the terrace"
+	for c: Vector2i in _stair_keep:
+		r[c] = "the stairs"
+	for y in range(0, LEDGE_Y + 1):
+		for x in range(LEDGE_X0, cols):
+			r[Vector2i(x, y)] = "the terrace (for later)"
+	for c: Vector2i in _pen_cells():
+		r[c] = "the animals' pen"
+	for c: Vector2i in cells_of([COOP_PEN.grow(1), BARN_PEN.grow(1)]):
+		r[c] = "the animals' pen"
+	if Builds.is_built("greenhouse"):
+		for c: Vector2i in cells_of([GameState.GREENHOUSE_PLOT.grow(1)]):
+			r[c] = "the greenhouse plot"
+	# Every building slot of this story (built, being built or planned) with its roof
+	# rows and front: a building never goes up on top of a statue (c10b_02_08 / 23).
+	for bid in Builds.all():
+		if bid == "house" or not Builds.data().has(bid):
+			continue
+		var bd: Dictionary = Builds.all()[bid]
+		if not bd.has("cell"):
+			continue
+		var bc := Vector2i(int(bd["cell"][0]), int(bd["cell"][1]))
+		var bh := int(bd.get("h", 1))
+		var up := bh + 2
+		var lbl := "a %s spot" % str(bd.get("label", bid)).to_lower()
+		for c: Vector2i in cells_of([Rect2i(bc.x - 1, bc.y - up + 1, int(bd.get("w", 0)) + 3, up + 2)]):
+			r[c] = lbl
+	for c: Vector2i in _mega_cells():
+		r[c] = "a parking spot"
+	# The farmhouse roof reaches rows above its footprint: pieces there would hide behind it.
+	for c: Vector2i in cells_of([Rect2i(house_r.position.x, house_r.position.y - 4, house_r.size.x, 4)]):
+		r[c] = "behind the roof"
+	for pc: Vector2i in [Vector2i(44, 5), Vector2i(32, 56), Vector2i(60, 50), Vector2i(61, 50)]:
+		r[pc] = "a landmark"
+	var ha: Array = GameState.run["flags"].get("horse_at", [])
+	if ha.size() >= 3 and str(ha[0]) == "farm":
+		r[Vector2i(int(ha[1]), int(ha[2]))] = "your horse"
+	return r
+
+
+## Must stay reachable from the door: the services, each road out and every built front.
+func decor_must_reach() -> Array:
+	var out: Array = [mail_c + Vector2i(0, 1), SELLBOX + Vector2i(0, 1), PLANS + Vector2i(0, 1), Vector2i(STAIRS_X, LEDGE_Y + 1)]
+	for e in exits:
+		var er: Rect2i = e["rect"]
+		out.append(er.position + er.size / 2)
+	for bid: String in GameState.run.get("builds", {}):
+		var b := _build_rec(bid)
+		if not b.is_empty():
+			out.append((b["cell"] as Vector2i) + Vector2i(0, 1))
+	for pk in GameState.run.get("placed", {}):
+		var xy := str(pk).split(",")
+		out.append(Vector2i(int(xy[0]), int(xy[1])))
+	# One cell of every field.
+	var seen := {}
+	for k in GameState.run.get("farm", {}):
+		var xy := str(k).split(",")
+		var c := Vector2i(int(xy[0]), int(xy[1]))
+		var key := Vector2i(c.x / 6, c.y / 6)
+		if not seen.has(key):
+			seen[key] = true
+			out.append(c)
+	return out
+
+
+## After a decor change: only the flat layer redraws (DecorMode.dress did), never a
+## re-bake of the farm (c10b_02_06); fields and villager paths learn the new cells.
+func decor_changed() -> void:
+	_decor_cells = _read_decor_cells()
+	_decor_after()
+
+
+## Villagers keep off crop beds and flowerbeds (c10b_02_14); yard paths are paths for
+## footsteps and weather dressing (c10b_02_15).
+func _decor_after() -> void:
+	keep_off.clear()
+	for k in GameState.run.get("farm", {}):
+		var xy := str(k).split(",")
+		keep_off[Vector2i(int(xy[0]), int(xy[1]))] = true
+	for p in DecorMode.placed("farm"):
+		if not (p is Dictionary) or not Decor.is_decor(str(p.get("id", ""))):
+			continue
+		var id := str(p["id"])
+		var e := Decor.entry(id)
+		var cells: Array = DecorMode.footprint(id, DecorMode._cell_of(p), int(p.get("rot", 0)))
+		if bool(e.get("keep_off", false)) or str(e.get("sub", "")) == "flowerbed":
+			for c: Vector2i in cells:
+				keep_off[c] = true
+		var seam := str(e.get("seam", ""))
+		if seam != "" or str(e.get("sub", "")) == "path":
+			var w := "dirt" if ("dirt" in seam or "track" in seam) else ("wood" if "board" in seam else "stone")
+			for c: Vector2i in cells:
+				step_word[c] = w
+				# a puddle / drift / leaf pile under a new path goes
+				if props.has(c) and is_instance_valid(props[c]) and not blocked.has(c):
+					var pn := str((props[c] as Node).name).to_lower()
+					if pn.contains("puddle") or pn.contains("drift") or pn.contains("leaf"):
+						(props[c] as Node).queue_free()
+						props.erase(c)
+	_flows.clear()
+
+
+var _yard_btn: Button = null
+
+
+## "Decorate yard" (never for guests): a small button clear of the HUD and touch deck.
+func _entry_button() -> void:
+	if Net.visiting() or not is_instance_valid(hud):
+		return
+	var ly := CanvasLayer.new()
+	ly.layer = 5
+	var bt := Button.new()
+	bt.text = "Decorate yard"
+	bt.add_theme_font_size_override("font_size", Settings.font(7))
+	bt.clip_text = true
+	bt.position = Vector2(196, 64)
+	bt.size = Vector2(70, 18)
+	bt.custom_minimum_size = Vector2(70, 18)
+	bt.focus_mode = Control.FOCUS_NONE
+	bt.pressed.connect(func() -> void:
+		if not get_tree().paused and not Dialogue.instance(get_tree()).active:
+			DecorMode.open(self))
+	ly.add_child(bt)
+	add_child(ly)
+	_yard_btn = bt
+	var hide_t := Timer.new()
+	hide_t.wait_time = 0.25
+	hide_t.process_mode = Node.PROCESS_MODE_ALWAYS
+	hide_t.timeout.connect(func() -> void:
+		if is_instance_valid(bt):
+			# Only near the house (it's your yard tool, not a HUD fixture), never paused.
+			bt.visible = not get_tree().paused and player != null and Vector2(player.cell()).distance_to(Vector2(door_c)) < 14.0 and DecorMode.busy_why(self) == "")
+	ly.add_child(hide_t)
+	hide_t.start()
+	var rect := Rect2(bt.position, bt.size)
+	Hud.extra_rects.append(rect)
+	tree_exiting.connect(func() -> void: Hud.extra_rects.erase(rect))

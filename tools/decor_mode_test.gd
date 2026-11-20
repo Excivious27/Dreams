@@ -227,7 +227,155 @@ func _run() -> void:
 	# 16. Decor stays out of chests.
 	GameState.add_item("t_chair", 1)
 	check(Storage.deposit("chest", "t_chair", 1) == 0, "decor never goes in a chest")
+	await _c10b(items)
 	items.clear()
 	items.merge(saved)
 	print("decor_mode_test: %s (%d fails)" % ["OK" if fails == 0 else "FAILED", fails])
 	quit(1 if fails > 0 else 0)
+
+
+## CONDUCT 10b P2: catalogue surfaces, occupancy, undoable bulk, bar rect, paging,
+## and decorating the yard on the farm.
+func _c10b(items: Dictionary) -> void:
+	items["t_cwall"] = _ent("Catalogue Paper", "wall", [1, 1], "tiles/wl_striped_l", {"cat": "wallpaper", "style": "wl_striped"})
+	items["t_cfloor"] = _ent("Catalogue Floor", "under", [1, 1], "decor/dc_fl_blue_tile", {"cat": "flooring", "style": "decor/dc_fl_blue_tile"})
+	items["t_statue"] = _ent("Yard Statue", "outdoor", [1, 1], "props/birdbath")
+	items["t_path"] = _ent("Cobble Path", "outdoor", [1, 1], "props/birdbath", {"seam": "cobble_warm", "sub": "path"})
+	items["t_both"] = _ent("Bench", "floor", [2, 1], "props/bench_wood", {"where": "both"})
+	check(DecorMode.is_surface("t_cwall") and DecorMode.layer_of("t_cwall") == "wallpaper", "catalogue wallpaper (cat wallpaper, layer wall) is a room surface")
+	check(DecorMode.is_surface("t_cfloor") and DecorMode.layer_of("t_cfloor") == "flooring", "catalogue flooring is a room surface")
+	check(DecorMode.surface_art("t_cwall") == ["tiles", "wl_striped", false], "surfaces draw from their style kit")
+	check(DecorMode.layer_of("t_statue") == "floor" and DecorMode.layer_of("t_path") == "under", "yard pieces stand / lie by kind")
+	check(DecorMode.where_of("t_statue") == "out" and DecorMode.where_of("t_chair") == "in", "where: yard vs house")
+	var m := await _enter_house()
+	check(not DecorMode.fits_map(m, "t_statue") and DecorMode.fits_map(m, "t_both"), "yard pieces stay out of the house")
+	Decor.give("t_statue", 1)
+	check(DecorMode.place(m, "t_statue", Vector2i(5, 8)).contains("yard"), "a yard piece indoors: told where it goes")
+	# Nothing drops on the player's own cell.
+	Decor.give("t_chair", 1)
+	var pc: Vector2i = m.player.cell()
+	if DecorMode.bounds(m).has_point(pc):
+		check(DecorMode.why_not(m, "t_chair", pc) != "", "no furniture on the cell you stand on")
+	# Store all can be undone.
+	var before := DecorMode.placed("house").size()
+	DecorMode.undo_stack.clear()
+	DecorMode.store_all(m)
+	check(DecorMode.placed("house").is_empty(), "store all empties the house")
+	check(DecorMode.undo(m) and DecorMode.placed("house").size() == before, "undo brings every piece back (%d)" % before)
+	# The bar rect is freed on close (no dead strip at the bottom).
+	var rects := Hud.extra_rects.size()
+	var dm := DecorMode.open(m)
+	await frames(3)
+	dm._list_panel.visible = false
+	dm.close()
+	await frames(3)
+	check(Hud.extra_rects.size() == rects, "decorate mode leaves Hud.extra_rects as it found them (%d -> %d)" % [rects, Hud.extra_rects.size()])
+	# The box list pages (a full catalogue never builds 700 rows).
+	for k in 70:
+		items["t_many_%d" % k] = _ent("Many %02d" % k, "floor", [1, 1], "furniture/chair2_a_down")
+		Decor.give("t_many_%d" % k, 1)
+	dm = DecorMode.open(m)
+	await frames(3)
+	DecorMode.list_filter = "all"
+	DecorMode.list_search = ""
+	DecorMode.list_page = 0
+	dm._toggle_list()
+	await frames(2)
+	check(dm._list_box.get_child_count() <= DecorMode.PAGE_ROWS, "one page of rows (%d)" % dm._list_box.get_child_count())
+	DecorMode.list_search = "many 0"
+	dm._fill_list()
+	await frames(2)
+	check(dm.box_ids().size() == 10, "search filters by name (%d)" % dm.box_ids().size())
+	DecorMode.list_search = ""
+	dm.close()
+	await frames(2)
+	for k in 70:
+		items.erase("t_many_%d" % k)
+		(Decor.st()["box"] as Dictionary).erase("t_many_%d" % k)
+	# ---- the yard ----
+	GameState.run["intro_done"] = true
+	GameState.run["flags"]["partner_scene"] = true
+	change_scene_to_file("res://scenes/farm.tscn")
+	await frames(16)
+	var f := current_scene as GameMap
+	check(DecorMode.can_decorate(f) and DecorMode.outdoor(f), "the farm answers the decor hooks (outdoor)")
+	check(not DecorMode.fits_map(f, "t_chair") and DecorMode.fits_map(f, "t_statue"), "house pieces stay indoors")
+	# An open grass cell near the house, clear of everything.
+	var spot := Vector2i(-1, -1)
+	for y in range(16, 28):
+		for x in range(18, 30):
+			var c := Vector2i(x, y)
+			if spot.x < 0 and DecorMode.why_not(f, "t_statue", c) == "" and DecorMode.why_not(f, "t_statue", c + Vector2i(1, 0)) == "" and f.can_till(c + Vector2i(1, 0)):
+				spot = c
+	check(spot.x >= 0, "an open yard cell exists (%s)" % str(spot))
+	if spot.x >= 0:
+		Decor.give("t_statue", 1)
+		Decor.give("t_path", 3)
+		check(DecorMode.place(f, "t_statue", spot) == "", "a statue in the yard")
+		check(f.blocked.has(spot), "it blocks its cell")
+		check(not f.can_till(spot), "no soil under yard decor")
+		var pth := spot + Vector2i(1, 0)
+		check(DecorMode.place(f, "t_path", pth) == "", "a path tile in the yard")
+		check(not f.blocked.has(pth) and not f.can_till(pth), "a path is walkable and never tilled")
+		check(f.step_word.get(pth, "") == "stone", "a yard path is a path for footsteps / weather (%s)" % str(f.step_word.get(pth, "")))
+		# Fields and debris refuse decor.
+		var soil := Vector2i(-1, -1)
+		for y in range(16, 28):
+			for x in range(18, 30):
+				if soil.x < 0 and f.can_till(Vector2i(x, y)) and Vector2i(x, y) != pth:
+					soil = Vector2i(x, y)
+		if soil.x >= 0:
+			GameState.run["farm"]["%d,%d" % [soil.x, soil.y]] = {"crop": ""}
+			check(DecorMode.why_not(f, "t_statue", soil) == "That's your field.", "no decor on a field")
+			(GameState.run["farm"] as Dictionary).erase("%d,%d" % [soil.x, soil.y])
+		var deb := Vector2i(-1, -1)
+		for c: Vector2i in f.things:
+			if str(f.things[c].get("type", "")) in ["rock", "weeds"] and DecorMode.bounds(f).has_point(c):
+				deb = c
+				break
+		if deb.x >= 0:
+			check(DecorMode.why_not(f, "t_statue", deb) == "Clear it first.", "debris must be cleared first")
+		check(DecorMode.why_not(f, "t_statue", (f as Variant).mail_c + Vector2i(0, 1)) != "", "the mailbox front stays clear")
+		check(DecorMode.why_not(f, "t_statue", (f as Variant).door_c + Vector2i(0, 1)) != "", "the doorway stays clear")
+		# Live blocking outdoors: a sprinkler placed after opening is seen (c10b_02_03).
+		var sp := Vector2i(-1, -1)
+		for y in range(16, 28):
+			for x in range(18, 30):
+				if sp.x < 0 and f.can_till(Vector2i(x, y)) and DecorMode.why_not(f, "t_statue", Vector2i(x, y)) == "":
+					sp = Vector2i(x, y)
+		if sp.x >= 0:
+			if not GameState.run.has("placed"):
+				GameState.run["placed"] = {}
+			GameState.run["placed"]["%d,%d" % [sp.x, sp.y]] = "sprinkler"
+			f._show_placed(sp, "sprinkler")
+			check(DecorMode.why_not(f, "t_statue", sp) != "", "a sprinkler placed later blocks yard decor")
+			DecorMode.dress(f)
+			check(f.blocked.has(sp), "redressing the yard keeps the sprinkler solid")
+		# Reload: the statue is still there, no debris grew under it or the sprinkler.
+		change_scene_to_file("res://scenes/farm.tscn")
+		await frames(16)
+		f = current_scene as GameMap
+		check(f.blocked.has(spot) and not f.things.has(spot), "after reload the statue stands, nothing grew under it")
+		if sp.x >= 0:
+			check((GameState.run["placed"] as Dictionary).has("%d,%d" % [sp.x, sp.y]), "the sprinkler kept its cell")
+		# Decorate mode opens on the farm, pans both ways, and closes clean.
+		for k in 60:
+			if DecorMode.busy_why(f) == "":
+				break
+			if Dialogue.instance(self).active:
+				Dialogue.instance(self)._advance()
+			await frames(2)
+		dm = DecorMode.open(f)
+		await frames(3)
+		check(dm != null, "decorate mode opens in the yard (%s)" % DecorMode.busy_why(f))
+		if dm:
+			dm.cursor = DecorMode.bounds(f).end - Vector2i(20, 3)
+			dm._refresh()
+			var cam := f.get_viewport().get_camera_2d()
+			check(cam == null or cam.offset.y != 0.0, "the camera pans vertically for far yard cells (%s, player %s, zoom %s, view %s)" % [str(cam.offset if cam else Vector2.ZERO), str(f.player.position), str(cam.zoom if cam else Vector2.ONE), str(f.get_viewport().get_visible_rect().size)])
+			dm.close()
+			await frames(2)
+			check(cam == null or cam.offset == Vector2.ZERO, "closing resets the camera")
+	# Built pens and service fronts are never tilled.
+	var farm_v: Variant = f
+	check(not f.can_till((farm_v.mail_c as Vector2i) + Vector2i(0, 1)), "no soil in front of the mailbox")

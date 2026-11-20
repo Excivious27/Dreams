@@ -336,7 +336,9 @@ static func view_run(key: String) -> Variant:
 	return v if v is Dictionary else {}
 
 
-## Every must-reach cell keeps an open neighbour reachable from the door.
+## Every must-reach cell keeps an open neighbour reachable from the door. Outdoors
+## a target the yard already can't reach (behind trees, a fenced field) is not held
+## against the new piece: only what this piece would cut off counts.
 static func reach_ok(m: GameMap, extra: Dictionary = {}, skip := -1) -> bool:
 	var b := bounds(m)
 	var start := _map_call(m, "decor_door", Vector2i(-99, -99)) as Vector2i
@@ -345,6 +347,32 @@ static func reach_ok(m: GameMap, extra: Dictionary = {}, skip := -1) -> bool:
 	var fixed := fixed_blocked(m)
 	var mine := decor_blocked(m, skip)
 	var yard := outdoor(m)
+	var seen := _flood(m, b, start, fixed, mine, extra, yard)
+	if seen.is_empty():
+		return false
+	var before := {}
+	var targets: Array = _map_call(m, "decor_must_reach", [])
+	for t: Vector2i in targets:
+		var tc := Vector2i(clampi(t.x, b.position.x, b.end.x - 1), clampi(t.y, b.position.y, b.end.y - 1))
+		if _near(seen, tc):
+			continue
+		if yard:
+			if before.is_empty():
+				before = _flood(m, b, start, fixed, mine, {}, yard)
+			if not _near(before, tc):
+				continue  # already out of reach without this piece
+		return false
+	return true
+
+
+static func _near(seen: Dictionary, t: Vector2i) -> bool:
+	for d: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN, Vector2i.ZERO]:
+		if seen.has(t + d):
+			return true
+	return false
+
+
+static func _flood(m: GameMap, b: Rect2i, start: Vector2i, fixed: Dictionary, mine: Dictionary, extra: Dictionary, yard: bool) -> Dictionary:
 	var open := func(c: Vector2i) -> bool:
 		if not b.has_point(c) or mine.has(c) or extra.has(c):
 			return false
@@ -353,7 +381,7 @@ static func reach_ok(m: GameMap, extra: Dictionary = {}, skip := -1) -> bool:
 		# Outdoors debris and tall grass are clearable: open ground for the walk check.
 		return yard and m.things.get(c, {}) is Dictionary and str((m.things.get(c, {}) as Dictionary).get("type", "")) in CLEARABLE
 	if not open.call(start):
-		return false
+		return {}
 	var seen := {start: true}
 	var q: Array = [start]
 	while not q.is_empty():
@@ -363,15 +391,7 @@ static func reach_ok(m: GameMap, extra: Dictionary = {}, skip := -1) -> bool:
 			if not seen.has(n) and open.call(n):
 				seen[n] = true
 				q.append(n)
-	for t: Vector2i in _map_call(m, "decor_must_reach", []):
-		var ok := false
-		for d: Vector2i in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN, Vector2i.ZERO]:
-			if seen.has(t + d):
-				ok = true
-				break
-		if not ok:
-			return false
-	return true
+	return seen
 
 
 ## Index of the piece at a cell (wall pieces answer for their wall cells, rugs last;
