@@ -325,6 +325,9 @@ static func roll(pool: String, luck := 0.0, rng: RandomNumberGenerator = null) -
 		cand.append([id, w])
 		total_w += w
 	if cand.is_empty():
+		if force_rare:
+			pity_d[pool] = 0  # this pool holds no rare+ piece: pity has nothing to give
+			return roll(pool, luck, rng)
 		return ""
 	var r := (rng.randf() if rng != null else randf()) * total_w
 	var pick := str(cand[-1][0])

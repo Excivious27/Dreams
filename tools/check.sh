@@ -184,6 +184,14 @@ echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then
   echo "storage_test failed"; exit 1
 fi
+
+echo "== decor catalogue: box, uniques, rolls, rotation, prices, migration (C10a) =="
+dcout="$("$GODOT" --headless --path . -s res://tools/decor_test.gd 2>&1)"
+echo "$dcout" | grep -E "FAIL|SCRIPT ERROR|decor_test" || true
+if ! echo "$dcout" | grep -q "decor_test: [0-9]* checks, 0 failures"; then
+  echo "decor_test failed"; exit 1
+fi
+
 echo "== held-tool rules: right tool acts, wrong tool hints =="
 trout="$("$GODOT" --headless --path . -s res://tools/tool_rules_test.gd 2>&1)"
 echo "$trout" | grep -E "FAIL|SCRIPT ERROR|tool_rules_test" || true
