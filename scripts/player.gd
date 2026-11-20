@@ -349,7 +349,8 @@ func set_character(id: String) -> void:
 		_sprite = _anim
 		if id == "penguin":
 			Player.dress_penguin(self, _anim, GameState.run.get("look", {}), 1.0)
-		if PaperDoll.is_penguin(id):
+		var plain_dressed := id == "penguin" and (str(GameState.run.get("look", {}).get("scarf", "")) != "" or str(GameState.run.get("look", {}).get("hat", "")) != "")
+		if PaperDoll.is_penguin(id) and not plain_dressed:  # the plain penguin's creator scarf/hat overlays win
 			Wardrobe.dress_penguin_hero(self, _anim, id)  # wardrobe scarves/bowties/goggles (c10_04)
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
