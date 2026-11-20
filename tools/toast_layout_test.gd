@@ -45,6 +45,10 @@ func _run() -> void:
 		out_dir = a[0]
 		DirAccess.make_dir_recursive_absolute(out_dir)
 	InputSetup.ensure_actions()
+	# The layout checks assume the default layout: never inherit a left-handed or
+	# large-button setting another test left in a shared user:// (C9 c9_12).
+	for k: String in ["left_handed", "btn_size", "text_size", "toast_hold"]:
+		Settings.set_v(k, Settings.DEFAULTS[k])
 	TouchControls.visible_controls = true
 	GameState.new_run("penguins", "kairi", "T", "Town", "Pup")
 	GameState.run["intro_done"] = true

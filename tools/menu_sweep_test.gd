@@ -5,7 +5,8 @@ extends SceneTree
 ##   godot --headless --path . -s res://tools/menu_sweep_test.gd -- [penguins|gangsters] [-v]
 var fails := 0
 var verbose := false
-const SKIP := ["title", "Replay the ending", "Travel", "Warp"]  # these leave the map on purpose
+const SKIP := ["title", "Replay the ending", "Travel", "Warp", "quit"]  # these leave the map (or the game) on purpose
+var _saved_globals := {}  # every Settings global (and keys/mute) as found, put back at the end (C9 c9_12)
 
 
 func check(ok: bool, what: String) -> void:
@@ -67,6 +68,10 @@ func _run() -> void:
 	var a := OS.get_cmdline_user_args()
 	var arc := "gangsters" if a.has("gangsters") else "penguins"
 	verbose = a.has("-v")
+	for k: String in Settings.DEFAULTS:
+		_saved_globals["set_" + k] = SaveGame.get_value("set_" + k, null)
+	for k: String in ["keys", "muted"]:
+		_saved_globals[k] = SaveGame.get_value(k, null)
 	InputSetup.ensure_actions()
 	Dialogue.audit = true
 	Dialogue.audit_log.clear()
@@ -160,7 +165,19 @@ func _names(n: Node, out: Array) -> void:
 			_names(c, out)
 
 
+func _restore_globals() -> void:
+	# The sweep toggles every Options row (left-handed, text size, ...): later tests
+	# in a serial check.sh share user://, so leave the globals as they were.
+	for k: String in _saved_globals:
+		if _saved_globals[k] == null:
+			SaveGame.set_value(k, Settings.DEFAULTS.get(k.trim_prefix("set_"), {} if k == "keys" else false))
+		else:
+			SaveGame.set_value(k, _saved_globals[k])
+	InputSetup.reset_bindings() if _saved_globals.get("keys") == null else InputSetup.apply(InputSetup.keys())
+
+
 func _finish(presses: int) -> void:
+	_restore_globals()
 	for t in Dialogue.audit_log:
 		check(false, "menu B can't leave: " + str(t))
 	print("menu_sweep_test: %d buttons pressed, %d failures" % [presses, fails])

@@ -19,6 +19,20 @@ static func open(cat: String) -> void:
 	sel = ""
 
 
+## B on a Book page steps back one level (entry card, then page, then hub).
+## True when it went back; false on the hub (the menu then closes).
+static func back() -> bool:
+	if sel != "":
+		sel = ""
+		return true
+	if page != "":
+		page = ""
+		sub = ""
+		part = 0
+		return true
+	return false
+
+
 static func build(gm: Node) -> void:
 	if page == "":
 		_hub(gm)
