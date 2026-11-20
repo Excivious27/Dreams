@@ -56,25 +56,7 @@ const RIVER_FISH := ["minnow", "trout", "carp", "catfish", "salmon", "eel"]
 ## Raised ground: the old terrace gets a second, higher tier; a knoll by the pond.
 const UPPER_C := Vector2(62.0, 5.0)
 const KNOLL_C := Vector2(63.5, 36.0)
-## Buildable things: name -> {cell, w, h, cost, group, sprite, thing}
-const BUILDS := {
-	"workbench": {"cell": Vector2i(6, 13), "w": 1, "h": 1, "cost": {"wood": 20}, "group": "props", "sprite": "workbench3", "thing": "workbench", "label": "Workbench (20 wood)"},
-	"chest": {"cell": Vector2i(9, 13), "w": 0, "h": 1, "cost": {"wood": 10}, "group": "props", "sprite": "chest_closed", "thing": "chest", "label": "Storage chest (10 wood)"},
-	"furnace": {"cell": Vector2i(8, 13), "w": 0, "h": 1, "cost": {"stone": 20, "copper": 5}, "group": "props", "sprite": "furnace2_off", "thing": "furnace", "label": "Furnace (20 stone, 5 copper ore)"},
-	"well": {"cell": Vector2i(19, 13), "w": 0, "h": 1, "cost": {"stone": 30}, "group": "props", "sprite": "well_roofed", "thing": "well", "label": "Well (30 stone)"},
-	"keg": {"cell": Vector2i(6, 15), "w": 0, "h": 1, "cost": {"wood": 30, "copper_bar": 1}, "group": "props", "sprite": "keg2", "thing": "keg", "label": "Keg (30 wood, 1 copper bar)"},
-	"beehive": {"cell": Vector2i(29, 19), "w": 0, "h": 1, "cost": {"wood": 15, "fiber": 10}, "group": "props", "sprite": "beehive3_a", "thing": "beehive", "label": "Beehive (15 wood, 10 fiber)"},
-	"resonator": {"cell": Vector2i(16, 16), "w": 0, "h": 1, "cost": {"stone": 10, "shard": 1}, "group": "props", "sprite": "resonator", "thing": "resonator", "label": "Crystal resonator (10 stone, 1 shard)"},
-	"scarecrow": {"cell": Vector2i(21, 15), "w": 0, "h": 1, "cost": {"wood": 8, "fiber": 4}, "group": "props", "sprite": "scarecrow_classic", "thing": "", "label": "Scarecrow (8 wood, 4 fiber)"},
-	"coop": {"cell": Vector2i(26, 8), "w": 3, "h": 3, "cost": {"wood": 120, "stone": 40}, "group": "props", "sprite": "coop_small", "thing": "", "label": "Coop (120 wood, 40 stone) - chickens"},
-	"barn": {"cell": Vector2i(32, 5), "w": 4, "h": 3, "cost": {"wood": 200, "stone": 80}, "group": "props", "sprite": "barn_small", "thing": "", "label": "Barn (200 wood, 80 stone) - cows & sheep"},
-	"silo": {"cell": Vector2i(30, 4), "w": 1, "h": 3, "cost": {"stone": 60, "wood": 30}, "group": "props", "sprite": "silo2", "thing": "", "label": "Silo (60 stone, 30 wood)"},
-	"fish_pond": {"cell": Vector2i(26, 16), "w": 2, "h": 2, "cost": {"stone": 80, "wood": 20}, "group": "props", "sprite": "fish_pond", "anim": "fish_pond", "thing": "water", "label": "Fish pond (80 stone, 20 wood) - fish at home"},
-	"shed": {"cell": Vector2i(6, 20), "w": 2, "h": 2, "cost": {"wood": 80, "stone": 20}, "group": "props", "sprite": "shed", "thing": "chest", "label": "Shed (80 wood, 20 stone) - big storage"},
-	"stable": {"cell": Vector2i(32, 11), "w": 3, "h": 3, "cost": {"wood": 150, "iron_bar": 2}, "group": "props", "sprite": "stable2", "thing": "", "label": "Stable (150 wood, 2 iron bars) - a horse, soon"},
-	"mill": {"cell": Vector2i(26, 2), "w": 2, "h": 4, "cost": {"wood": 120, "stone": 60}, "group": "props", "sprite": "windmill3", "anim": "windmill3", "thing": "", "label": "Mill (120 wood, 60 stone)"},
-	"greenhouse": {"cell": Vector2i(22, 19), "w": 3, "h": 3, "cost": {"wood": 150, "stone": 100, "iron_bar": 2}, "group": "props", "sprite": "greenhouse2", "anim": "greenhouse2", "thing": "", "label": "Greenhouse (150 wood, 100 stone, 2 iron bars)"},
-}
+## (The old hard-coded BUILDS table is gone: every farm building comes from data/buildings.json, c11a_02_08.)
 
 const WITHERED_KITS := 5  # crops/withered_any_0..4 (copied from kits/crops/withered_kit_*)
 var _pond_cells := {}
@@ -322,9 +304,13 @@ func _migrate_layout() -> void:
 			solid[kc] = true
 	if solid.is_empty():
 		return
+	_cleared_note.clear()
 	for c: Vector2i in solid:
 		if farm.has("%d,%d" % [c.x, c.y]):
 			_clear_tile(c)
+	if not _cleared_note.is_empty() and hud:
+		var nn := _cleared_note.size()
+		hud.toast("The new building needed that ground: %d crop%s moved to your bag (%s)." % [nn, "" if nn == 1 else "s", ", ".join(_cleared_note.slice(0, 3))], Color(0.9, 1, 0.8))
 	_move_placed_off(solid)
 
 
@@ -533,11 +519,21 @@ func _add_hill(cells: Dictionary, ramp_cols: Array) -> void:
 
 
 ## Nothing grows under a building or the plans board: a crop there gives its seed back.
+var _cleared_note: Array = []
+
+
 func _clear_tile(c: Vector2i) -> void:
 	var pk := "%d,%d" % [c.x, c.y]
 	var pt = (GameState.run["farm"] as Dictionary).get(pk)
-	if pt is Dictionary and str(pt.get("crop", "")) != "" and GameState.items.has(str(pt["crop"]) + "_seed") and not Net.visiting():  # a guest gets no seed for the host's crop
-		GameState.add_item(str(pt["crop"]) + "_seed", 1)  # the seed back
+	if pt is Dictionary and str(pt.get("crop", "")) != "" and not Net.visiting():  # a guest gets nothing for the host's crop
+		var cid := str(pt["crop"])
+		var cd: Dictionary = GameState.crops.get(cid, {})
+		if not cd.is_empty() and not bool(pt.get("dead", false)) and int(pt.get("days", 0)) >= int(cd.get("days", 999)) and GameState.items.has(str(cd.get("yield", ""))):
+			GameState.add_item(str(cd["yield"]), 1)  # a ripe crop under a new building is picked, not lost (c11a_02_10)
+			_cleared_note.append(GameState.item_name(str(cd["yield"])))
+		elif GameState.items.has(cid + "_seed"):
+			GameState.add_item(cid + "_seed", 1)  # the seed back
+			_cleared_note.append(GameState.item_name(cid + "_seed"))
 	(GameState.run["farm"] as Dictionary).erase(pk)
 
 
@@ -1375,7 +1371,8 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		var n := harvest_count(flv, GameState.bonus("farming", "extra_crop"), GameState.bonus("farming", "double_harvest"), randf(), randf())
 		pop_items(cell_center(c), str(cd["yield"]), n)  # the crop hops out to you
 		if str(cd["yield"]) == "wheat" and not Net.visiting():
-			Builds.silo_add(1)  # chaff goes to the silo
+			if quest_wants("hay") or not Builds.silo_add(1):  # chaff goes to the silo; no silo/full: hay in hand (c11a_08)
+				pop_items(cell_center(c), "hay", 1)
 		# Quality: farming skill and fertiliser raise the odds of silver and gold.
 		var fert := bool(tile.get("fert", false))
 		var qd := quality_odds(flv, fert, GameState.bonus("farming", "star_chance"))
@@ -2193,6 +2190,7 @@ func _place_props() -> void:
 		if fp and str(f[1]).ends_with("_v"):
 			fp.offset.y += 4.0  # a side post stands on its cell, not above it
 	_spawn_roster(builds)
+	_place_incubator()
 	if builds.has("coop") and not RanchFarm.uses_roster("coop"):
 		var pen := COOP_PEN
 		_animal("chicken", Vector2i(27, 10), pen); _animal("chicken", Vector2i(29, 10), pen); _animal("rooster", Vector2i(30, 11), pen); _animal("chick" if coop_kids else "chicken", Vector2i(28, 11), pen, coop_kids, "chick_28_11")
@@ -2620,6 +2618,29 @@ func _silo_feed() -> void:
 		GameState.run["flags"]["silo_note_%d" % day] = true
 		GameState.run["flags"].erase("silo_note_%d" % (day - 1))
 		hud.toast("The silo fed %d animal%s (%d hay left).%s" % [fed, "" if fed == 1 else "s", Builds.silo_hay(), " %d went hungry: the silo ran out." % short if short > 0 else ""], Color(0.9, 1, 0.8))
+
+
+## The Big Coop's incubator stands outside the coop pen's front rail, so a warming egg shows
+## (art props/incubator, props/incubator_hatched on hatch day; c11a_05-05, 12-20). Tapping it is the coop.
+func _place_incubator() -> void:
+	if Builds.built_tier("coop") < 2 or not Art.has("props", "incubator"):
+		return
+	var pen := pen_of("coop")
+	var day := int(GameState.run["day"])
+	var hatched := false
+	var warming := false
+	var eggs: Array = RanchFarm.incubator() if RanchFarm.uses_roster("coop") else GameState.run.get("coop_hatch", [])
+	for e in eggs:
+		var d := int((e as Dictionary).get("day", 0)) if e is Dictionary else int(e)
+		warming = warming or d > day
+		hatched = hatched or d == day
+	for c: Vector2i in [Vector2i(pen.position.x + 1, pen.end.y + 1), Vector2i(pen.position.x, pen.end.y + 1), Vector2i(pen.position.x - 2, pen.end.y - 1)]:
+		if blocked.has(c) or things.has(c) or _path_cells.has(c) or not in_content(c) or _pen_cells().has(c) and c.y <= pen.end.y:
+			continue
+		var art := "incubator_hatched" if hatched and Art.has("props", "incubator_hatched") else "incubator"
+		prop("props", art, c, 0, 0.0, true, 0.5)
+		set_thing(c.x, c.y, {"type": "coop", "hint": "A: incubator (egg warming)" if warming else "A: incubator (hold an egg)"})
+		return
 
 
 ## Roster animals (C11a): one FarmAnimal per Ranch roster uid, spread over its home's pen.

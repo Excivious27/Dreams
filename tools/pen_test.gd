@@ -126,6 +126,15 @@ func _run() -> void:
 		hs = RanchFarm.state_of(hen)
 		check(int(hs["fed"]) == 30 and int(hs["streak"]) == 1 and int(hs["made"]) == 30, "hay held: munches, the day counts, egg made (%s)" % str(hs))
 		tb[0] = ""
+	var inc_things := 0
+	for tc: Vector2i in m.things:
+		if str((m.things[tc] as Dictionary).get("hint", "")).begins_with("A: incubator"):
+			inc_things += 1
+	check(inc_things == 1, "the Big Coop's incubator is drawn and tappable (%d)" % inc_things)
+	GameState.run["quests"].append({"id": "hazel_hay", "text": "x", "done": false})
+	check(GameMap.quest_wants("hay"), "an open hay quest keeps scythed hay in the bag")
+	GameState.run["quests"].pop_back()
+	check(not GameMap.quest_wants("hay"), "no hay quest: the silo takes it")
 	# Legacy incubator: four grown hatchlings no longer block a fifth egg.
 	GameState.run["coop_hatch"] = [1, 2, 3, 4]
 	GameState.add_item("egg", 1)

@@ -588,10 +588,10 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			if ToolHint.is_soft(GameState.held_tool()):
 				ToolHint.say(self, "Pull weeds by hand or with a blade, hoe or scythe.")
 				return true
-			if not GameState.spend_for("weed"):
+			var ht := GameState.held_tool()
+			if not GameState.spend_for("scythe" if ht == "scythe" and GameState.ENERGY_COST.has("scythe") else "weed"):  # the scythe's own (tier-discounted) cost (c11a_08)
 				hud.toast("Too tired.", Color(1, 0.7, 0.7))
 				return true
-			var ht := GameState.held_tool()
 			if ht == "scythe" or GameState.is_sword(ht):
 				player.play_tool("axe")
 			else:
@@ -600,7 +600,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			xp("foraging", 1)
 			# Cut with the scythe, weeds and tall grass make hay for the animals.
 			if ht == "scythe" and randf() < float(thing.get("hay", 0.5)):  # farm: old weed-spot grass always, meadow clumps half
-				if not (not Net.visiting() and Builds.silo_add(1)):  # a built silo takes it straight in (host's silo)
+				if quest_wants("hay") or not (not Net.visiting() and Builds.silo_add(1)):  # a built silo takes it straight in (host's silo), unless a quest still wants bag hay (c11a_08)
 					pop_items(cell_center(c), "hay", 1)
 			# Now and then a weed's roots hold a packet of wild seed.
 			if randf() < 0.06 + 0.01 * GameState.skill_level("foraging"):
@@ -997,6 +997,19 @@ static func notify(text: String, sfx := "") -> void:
 	(GameState.run["notes"] as Array).append({"text": text, "sfx": sfx} if sfx != "" else text)
 
 
+## An open quest asks for more of this item than the bag holds (hay goes to the bag, not the silo).
+static func quest_wants(item: String) -> bool:
+	for q in GameState.run.get("quests", []):
+		if not (q is Dictionary) or bool((q as Dictionary).get("done", false)):
+			continue
+		var dw: Variant = GameState._quest_def(str(q["id"])).get("done_when", {})
+		if dw is Dictionary and (dw as Dictionary).get("item", null) is Array:
+			var it: Array = (dw as Dictionary)["item"]
+			if it.size() >= 2 and str(it[0]) == item and GameState.count(item) < int(it[1]):
+				return true
+	return false
+
+
 ## Pet / feed / collect one farm animal (C11a P2). Rules live in RanchFarm (one feeder rule,
 ## one quality table, care days that need both a pet and a meal, missed days cost a little).
 func pet_farm_animal(a: Node2D) -> void:
@@ -1047,14 +1060,16 @@ func pet_farm_animal(a: Node2D) -> void:
 		elif int(st.get("made", -9)) == day or RanchFarm.product_for(kind, uid) == "" or baby:
 			hud.toast("Already happy today.")
 	if newly:
-		xp("farming", 2)
+		xp(RanchFarm.care_skill(), 2)
+	if bool(care["up"]):
+		xp(RanchFarm.care_skill(), 2)  # a full care day (fed + petted) trains ranching too (c11a_07)
 	RanchFarm.save_state(a, st)
 	# A happy, fed animal gives: eggs from hens, milk from cows, goat milk, wool.
 	var prod := RanchFarm.product_for(kind, uid)
 	if prod == "" or baby or int(st.get("made", -9)) == day or int(st["fed"]) != day:
 		return
 	st["made"] = day
-	var ay := GameState.bonus("farming", "animal_yield")
+	var ay := RanchFarm.yield_bonus()
 	var n := 1 + int(ay) + (1 if randf() < fmod(ay, 1.0) else 0)
 	if prod == "truffle":
 		n = 1 if randf() < 0.4 + 0.2 * float(["", "s", "g"].find(RanchFarm.quality_for(int(st["streak"])))) else 0  # pigs dig, not always
@@ -1063,7 +1078,7 @@ func pet_farm_animal(a: Node2D) -> void:
 		return
 	pop_items(a.position, prod, n)
 	# Care shows in the goods: silver and gold from RanchFarm.silver()/gold() care days.
-	var q := RanchFarm.quality_for(int(st["streak"]))
+	var q := RanchFarm.lift_quality(RanchFarm.quality_for(int(st["streak"])))
 	if q != "":
 		GameState.add_quality(prod, q, n)
 

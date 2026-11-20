@@ -23,6 +23,26 @@ const EGGS := {"egg": "chicken", "duck_egg": "duck"}
 const HATCH_DAYS := {"chicken": 3, "duck": 4}
 
 
+## The skill animal care trains: the Ranching tree once it exists (P3), else Farming.
+static func care_skill() -> String:
+	return "ranching" if GameState.skills_data.has("ranching") else "farming"
+
+
+## Extra goods from both trees (effect key animal_yield) and a chance to lift the star one step
+## (animal_quality, Ranching tree) on top of the care quality.
+static func yield_bonus() -> float:
+	var b := GameState.bonus("farming", "animal_yield")
+	if care_skill() == "ranching":
+		b += GameState.bonus("ranching", "animal_yield")
+	return b
+
+
+static func lift_quality(q: String) -> String:
+	if care_skill() != "ranching" or randf() >= GameState.bonus("ranching", "animal_quality"):
+		return q
+	return "s" if q == "" else "g"
+
+
 static func _rules() -> Dictionary:
 	return Ranch.data().get("rules", {}) as Dictionary
 
