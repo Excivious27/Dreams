@@ -9,6 +9,7 @@ var fails := 0
 
 
 func _initialize() -> void:
+	seed(7)
 	Campaign.bypass = true
 	_run.call_deferred()
 
@@ -27,7 +28,7 @@ func _run() -> void:
 	check(GameState.has_quest("first_harvest") and GameState.has_quest("meet_town"), "first quests given")
 	check(GameState.next_step().find("hoe") >= 0, "goal line starts with the hoe step (%s)" % GameState.next_step())
 	# Day 1: Maple's letter waits, so the mailbox marker shows.
-	await create_timer(0.7).timeout
+	await _wait_game(0.7)
 	check(Mail.waiting(), "a letter waits on day 1")
 	var mark: Sprite2D = farm.get("_mail_mark")
 	check(mark != null and mark.visible, "mailbox marker shows while a letter waits")
@@ -35,7 +36,7 @@ func _run() -> void:
 	farm.later(farm._mailbox)
 	said = await talk_through()
 	check(said.any(func(t: String) -> bool: return t.find("Maple") >= 0), "Maple's letter read")
-	await create_timer(0.7).timeout
+	await _wait_game(0.7)
 	check(not Mail.waiting(), "nothing waits after reading (unread=%d)" % Mail.unread())
 	check(not mark.visible, "mailbox marker hides after reading")
 	# Talking to the crystal before the harvest gives the next crop step and idle ideas.
@@ -61,12 +62,13 @@ func _run() -> void:
 	check(Companion.active_id() == "penguin_m", "Pip-Pip joined (%s)" % Companion.active_id())
 	check(farm.companion != null and is_instance_valid(farm.companion), "the new partner follows you right away")
 	check(said.any(func(t: String) -> bool: return t.find("round button") >= 0), "partner button explained by where it is")
-	await create_timer(2.5).timeout
+	await _wait_game(2.5)
 	var left := 0
 	for c in farm.get_children():
 		if c.has_meta("partner_visitor") and not c.is_queued_for_deletion():
 			left += 1
 	check(left == 0, "the visitors are gone (one follows, one left)")
+	await _chapter1()
 	print("newgame_penguin_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -82,7 +84,7 @@ func talk_through(pick := 0) -> Array:
 		var m := current_scene as GameMap
 		if not d.active and m and m.player and m.player.frozen:
 			idle = 0  # a fade between parts of a scene
-			await create_timer(0.1).timeout
+			await _wait_game(0.1)
 			continue
 		if not d.active:
 			idle += 1
@@ -116,3 +118,43 @@ func check(ok: bool, what: String) -> void:
 func frames(k: int) -> void:
 	for i in k:
 		await process_frame
+
+
+## Wait game time, not the wall clock (C2 determinism rule; check.sh runs this at --fixed-fps 60).
+func _wait_game(sec: float) -> void:
+	var gt := 0.0
+	while gt < sec:
+		await process_frame
+		gt += root.get_process_delta_time()
+
+
+## C7 (c7_12): chapter 1 goes on past day 2: the town arrival, the day-3 howl on the
+## farm, and the meadow's truth when clear_meadow is done.
+func _chapter1() -> void:
+	GameState.run["flags"]["town_seen"] = true
+	GameMap.next_spawn = Vector2.ZERO
+	change_scene_to_file("res://scenes/town.tscn")
+	await frames(20)
+	await talk_through()
+	check(Story.fired("p1_town"), "the town arrival beat (p1_town) played")
+	GameState.run["day"] = maxi(3, int(GameState.run["day"]))
+	GameMap.next_spawn = Vector2.ZERO
+	change_scene_to_file("res://scenes/farm.tscn")
+	await frames(20)
+	await talk_through()
+	var farm := current_scene as GameMap
+	if farm and farm.player:
+		farm.player.position = farm.cell_center(Vector2i(25, 10))
+		await frames(20)
+		await talk_through()
+	check(Story.fired("p1_howl") and GameState.run["flags"].has("farm_bubble"), "day 3: the howl on the farm (p1_howl, farm_bubble)")
+	if not GameState.has_quest("clear_meadow"):
+		GameState.add_quest("clear_meadow", "x")
+	GameState.run["flags"]["meadow_seen"] = true
+	GameState.complete_quest("clear_meadow")
+	await frames(10)
+	await talk_through()
+	check(Story.fired("p1_grump_truth"), "clear_meadow done -> p1_grump_truth played")
+	check(GameState.run["decisions"].has("tell_town"), "the tell-the-town choice was recorded")
+	check(GameState.count("old_collar") >= 1, "the old collar came with it")
+	check(GameState.has_quest("cattopia"), "cattopia is the next step")

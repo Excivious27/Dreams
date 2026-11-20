@@ -3,6 +3,7 @@ extends SceneTree
 ## the ♥6 quest is offered, daily lines change.
 var fails := 0
 func _initialize() -> void:
+	seed(7)
 	Campaign.bypass = true  # tests walk into every region
 	_run.call_deferred()
 func check(ok: bool, what: String) -> void:
@@ -21,7 +22,13 @@ func _advance_all() -> void:
 		await process_frame; await process_frame
 func _run() -> void:
 	InputSetup.ensure_actions()
-	GameState.new_run("penguins", "kairi", "Hero", "Dreamhollow", "Biscuit")
+	for arc in ["penguins", "gangsters"]:
+		await _pass(arc)
+	print("HEARTS DONE, failures: %d" % fails)
+	quit(1 if fails > 0 else 0)
+## One arc's walk through every villager's five milestones (C7: both arcs).
+func _pass(arc: String) -> void:
+	GameState.new_run(arc, "kairi" if arc == "penguins" else "pax", "Hero", "Dreamhollow", "Biscuit")
 	GameState.run["intro_done"] = true
 	GameState.run["flags"]["town_seen"] = true
 	GameMap.next_spawn = Vector2.ZERO
@@ -30,7 +37,7 @@ func _run() -> void:
 	var m := current_scene as GameMap
 	await _advance_all()
 	var vill := Hearts.data().keys()
-	check(vill.size() == 25, "25 villagers with arcs")
+	check(vill.size() >= 25, "%s: %d villagers with arcs" % [arc, vill.size()])
 	# ♥8 can wait on another villager's ♥8 (Hearts.NEEDS_FLAG): those go first.
 	var first := ["granite", "bram", "gideon", "hazel"]
 	var rank := func(x: String) -> int: return first.find(x) if x in first else 99
@@ -52,18 +59,19 @@ func _run() -> void:
 							qq["done"] = true
 				if Hearts.NEEDS_FLAG.has(id) and not str(Hearts.NEEDS_FLAG[id]).begins_with("hv_"):
 					GameState.run["flags"][Hearts.NEEDS_FLAG[id]] = true
-			check(Hearts.due(id) == n, "%s: ♥%d due" % [id, n])
+			check(Hearts.due(id) == n, "%s %s: ♥%d due" % [arc, id, n])
 			m.later(func() -> void: await Hearts.talk(m, id))
 			await frames(2)
 			await _advance_all()
-			check(Hearts.seen_level(id) == n, "%s: ♥%d played" % [id, n])
-			check(Hearts.daily(id) != "", "%s: daily line after ♥%d" % [id, n])
+			check(Hearts.seen_level(id) == n, "%s %s: ♥%d played" % [arc, id, n])
+			check(Hearts.daily(id) != "", "%s %s: daily line after ♥%d" % [arc, id, n])
+			# Heart perks (data/heart_perks.json) are handed out once, never twice.
+			Perks.check(id)
+			check(Perks.check(id).is_empty(), "%s %s: ♥%d perk not given twice" % [arc, id, n])
 		var q6 := Hearts.quest6(id)
 		var qd := GameState._quest_def(q6)
 		if qd.is_empty() or GameState._cond_ok(qd.get("when", {})):
-			check(offered, "%s: ♥6 quest %s offered" % [id, q6])
+			check(offered, "%s %s: ♥6 quest %s offered" % [arc, id, q6])
 		else:
-			check(not offered, "%s: ♥6 quest %s waits for its own gate %s" % [id, q6, str(qd.get("when"))])
-	check(Hearts.standing_with_you().size() == 25, "all 25 standing with you at ♥10")
-	print("HEARTS DONE, failures: %d" % fails)
-	quit(1 if fails > 0 else 0)
+			check(not offered, "%s %s: ♥6 quest %s waits for its own gate %s" % [arc, id, q6, str(qd.get("when"))])
+	check(Hearts.standing_with_you().size() == vill.size(), "%s: all %d standing with you at ♥10" % [arc, vill.size()])

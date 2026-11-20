@@ -34,6 +34,7 @@ func seen(part: String) -> bool:
 
 
 func _initialize() -> void:
+	seed(7)
 	Campaign.bypass = true
 	_run.call_deferred()
 
@@ -224,6 +225,10 @@ func _phase2() -> void:
 	print("  QUESTS: ", GameState.run["quests"])
 	check(not seen("sixty crystals"), "the boss-down scene and the coat scene agree")
 	check(seen("leaving his coat behind"), "the coat scene played")
+	# C7 (c7_12): the coat scene's choice and gifts.
+	check(GameState.run["decisions"].has("photo"), "the photo choice was recorded (%s)" % str(GameState.run["decisions"].get("photo", "-")))
+	check(GameState.count("burner_phone") >= 1, "the coat held a burner phone")
+	check(GameState.has_quest("hideout"), "the Hideout step is in the log")
 	var town := await go("town")
 	await drain("town3")
 	for n in town.npcs:
@@ -234,6 +239,7 @@ func _phase2() -> void:
 			await frames(30)
 			await drain("sal3b")
 	goal()
+	check(GameState.run["flags"].has("sal_recruited"), "telling Sal sets sal_recruited")
 	var cm := await go("crystal_meadow")
 	await drain("outskirts")
 	var marked_out := false

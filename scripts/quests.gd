@@ -84,7 +84,9 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 		if waited.has("wait_" + id):
 			return false
 		waited["wait_" + id] = true
-		var dflt := "Still waiting on that: " + str(pend["text"]).to_lower()
+		# C7: first person, what's still short (never the log's third-person text, lowercased).
+		var need := _still_need(d)
+		var dflt := ("Still need %s. You know where to find me." % need) if need != "" else "Still waiting on that one. It's in your quest log."
 		if bool(d.get("board", false)) and d.get("done_when", {}).has("item"):
 			dflt = "Still need those %d %s from the board. No rush. Some rush." % [int(d["done_when"]["item"][1]), GameState.item_name(str(d["done_when"]["item"][0]))]
 		await m.say(_as_lines(name, ql.get("wait", dflt)))
@@ -107,11 +109,39 @@ static func talk(m: GameMap, id: String, name: String) -> bool:
 	if dlg.last_choice == 0:
 		GameState.add_quest(qid2, str(offer["text"]))
 		m.hud.toast("New quest: %s" % str(offer["text"]), Color(1, 0.9, 0.4))
+		_job_taken(m, qid2)
 		await m.say(_as_lines(name, ql2.get("yes", "Thank you.")))
 	else:
 		GameState.run["talked_today"]["decline_" + id] = true  # asked again tomorrow, not every chat
 		await m.say(_as_lines(name, ql2.get("no", "Another time, then.")))
 	return true
+
+
+## What a job still needs, in words ("2 Gold Leaf and 1 Pearl Necklace"; "" = not an item job).
+static func _still_need(d: Dictionary) -> String:
+	var dw: Variant = d.get("done_when", {})
+	if not (dw is Dictionary):
+		return ""
+	var pairs: Array = []
+	if (dw as Dictionary).has("item"):
+		pairs.append(dw["item"])
+	for pr in (dw as Dictionary).get("items", []):
+		pairs.append(pr)
+	var bits: Array = []
+	for pr: Array in pairs:
+		var short := int(pr[1]) - GameState.count(str(pr[0]))
+		if short > 0:
+			bits.append("%d %s" % [short, GameState.item_name(str(pr[0]))])
+	return " and ".join(bits)
+
+
+## A job whose work happens on this map right away (C7): Rook's orchard foes show up
+## as soon as the job is taken, not only after the next visit to town.
+static func _job_taken(m: GameMap, qid: String) -> void:
+	if qid == "rook_tracks" and m.scene_id() == "town" and not bool(m.get("_orchard_watch")):
+		for i in 3:
+			m.spawn_enemy("grump" if GameState.is_penguins() else "thug_lookout", m.cell_center(Vector2i(75 + i * 3, 10 + i * 6)))
+		m.set("_orchard_watch", true)
 
 
 static func _npc_node(m: GameMap, id: String) -> Node2D:

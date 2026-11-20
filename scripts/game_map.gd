@@ -4577,6 +4577,10 @@ func confirm_gift(who_name: String, sel: String) -> bool:
 
 ## A reaction that tells you how much they liked it.
 func gift_reaction(who_name: String, sel: String, gain: int) -> String:
+	return GameState.articled(_gift_reaction_raw(who_name, sel, gain), GameState.item_name(sel))  # C7: "an Apple", "some Seeds"
+
+
+func _gift_reaction_raw(who_name: String, sel: String, gain: int) -> String:
 	var nm := GameState.item_name(sel)
 	var gid := ""
 	for k in GameState.npcs:

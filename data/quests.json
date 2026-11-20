@@ -864,7 +864,7 @@
   {
    "id": "wren_glowcap",
    "giver": "wren",
-   "text": "Wren wants a glow cap. They only show after dark in the forest.",
+   "text": "Wren wants a glow cap. They grow in the forest, if you know how to look (Foraging 3).",
    "when": {
     "friend": [
      "wren",
@@ -1039,7 +1039,7 @@
   {
    "id": "alder_wine",
    "giver": "alder",
-   "text": "Alder would like a bottle of wine for the council's fair toast.",
+   "text": "Alder would like a bottle of wine as a gift for the capital's inspector at the fair.",
    "when": {
     "friend": [
      "alder",
@@ -1119,7 +1119,7 @@
   {
    "id": "finn_trout",
    "giver": "finn",
-   "text": "Finn bets you can't bring 3 trout by week's end.",
+   "text": "Finn bets you can't bring him 3 trout.",
    "when": {
     "friend": [
      "finn",
@@ -1482,7 +1482,7 @@
   {
    "id": "bram_wine",
    "giver": "bram",
-   "text": "Bram wants 2 wine for the festival night.",
+   "text": "Bram wants 2 bottles of wine to give away as festival-night gifts.",
    "when": {
     "friend": [
      "bram",
@@ -1835,7 +1835,7 @@
   {
    "id": "sal_fish",
    "giver": "sal",
-   "text": "Sal wants 5 fish, no questions.",
+   "text": "Sal wants 5 minnows, no questions.",
    "when": {
     "friend": [
      "sal",
@@ -1933,7 +1933,7 @@
   {
    "id": "wrenjr_frog",
    "giver": "wren_jr",
-   "text": "Wren jr wants a frog. A live one. (Bring 2 bugs instead.)",
+   "text": "Wren jr wants a frog. A live one. (Bring 2 Bait instead: Finn's bait shop sells it.)",
    "when": {
     "quest": "meet_town"
    },
@@ -2183,7 +2183,7 @@
   {
    "id": "moss_glowcaps",
    "giver": "old_moss",
-   "text": "Old Moss wants 3 glow caps from the forest after dark.",
+   "text": "Old Moss wants 10 acorns from the forest, to plant along the marsh edge.",
    "when": {
     "friend": [
      "old_moss",
@@ -2192,8 +2192,8 @@
    },
    "done_when": {
     "item": [
-     "glowcap",
-     3
+     "acorn",
+     10
     ]
    },
    "take": true,
@@ -2291,7 +2291,7 @@
   {
    "id": "orla_oil",
    "giver": "orla",
-   "text": "Orla wants 3 lamp oil taken to Marlowe's lighthouse (give it to her; she'll send it).",
+   "text": "Orla wants 5 wheat to mill into bread for Marlowe at the lighthouse.",
    "when": {
     "friend": [
      "orla",
@@ -2300,8 +2300,8 @@
    },
    "done_when": {
     "item": [
-     "lamp_oil",
-     3
+     "wheat",
+     5
     ]
    },
    "take": true,
@@ -2343,7 +2343,7 @@
   {
    "id": "theo_coffee",
    "giver": "theo",
-   "text": "Theo wants 4 coffee beans you grew yourself.",
+   "text": "Theo wants 4 coffee beans.",
    "when": {
     "friend": [
      "theo",
@@ -2515,7 +2515,7 @@
   {
    "id": "wren_moonwort",
    "giver": "wren",
-   "text": "Wren needs moonwort: the blue herb that grows by the orchard wall.",
+   "text": "Wren needs moonwort: the blue herb that grows in Orchard Hills, north of the forest.",
    "when": {
     "friend": [
      "wren",
@@ -2545,7 +2545,7 @@
   {
    "id": "lumi_moonwort",
    "giver": "lumi",
-   "text": "Lumi wants moonwort from the orchard wall for a painting.",
+   "text": "Lumi wants moonwort from Orchard Hills (north of the forest) for a painting.",
    "when": {
     "friend": [
      "lumi",

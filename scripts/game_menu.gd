@@ -638,7 +638,14 @@ func _refresh() -> void:
 				_refresh()))
 			for oq: Dictionary in QuestTracker.open_quests():
 				if oq["main"] or str(oq["giver"]) == "":
-					_line("   • " + str(oq["text"]), 8, Color(0.92, 0.88, 0.75))
+					var gq := str(oq["id"])
+					if not oq["main"] and not QuestTracker.job_place(gq).is_empty():
+						# C7: a giverless job with a place (Rec Center, community farm, colony, grotto) can be followed.
+						_body.add_child(QuestTracker.checkbox_row(str(oq["text"]), trk == gq, false, QuestTracker.progress(gq), func() -> void:
+							QuestTracker.track(gq)
+							_refresh()))
+					else:
+						_line("   • " + str(oq["text"]), 8, Color(0.92, 0.88, 0.75))
 			_line("Townsfolk", 9, Color(0.7, 0.9, 1.0))
 			for oq: Dictionary in QuestTracker.open_quests():
 				if not (oq["main"] or str(oq["giver"]) == ""):
@@ -646,6 +653,9 @@ func _refresh() -> void:
 					var qid := str(oq["id"])
 					var who := str(GameState.npcs.get(str(oq["giver"]), {}).get("name", ""))
 					var sub := "ready" if bool(oq["ready"]) else QuestTracker.progress(qid)
+					var at := QuestTracker.npc_scene(str(oq["giver"]))  # C7: where an out-of-town giver lives
+					if at != "":
+						sub = PlaceNames.for_id(at) + ("" if sub == "" else " · " + sub)
 					_body.add_child(QuestTracker.checkbox_row(("%s: " % who if who != "" and not str(oq["text"]).begins_with(who) else "") + str(oq["text"]), trk == qid, false, sub, func() -> void:
 						QuestTracker.track(qid)
 						_refresh()))

@@ -2073,6 +2073,44 @@ static func gift_line(id: String, item: String, gain: int) -> String:
 static var _gift_lines := {}
 
 
+## Mass nouns and plural-looking names that take "some", never "a".
+const SOME_WORDS := ["wood", "stone", "hay", "fiber", "fibre", "milk", "honey", "flour", "coal", "sand", "clay", "rice", "wheat", "wool", "bait", "slime", "goo", "tea", "coffee", "sugar", "salt", "oil", "cash", "glass"]
+
+
+## "an Apple" / "a Carrot" / "some Turnip Seeds" (cap = capital first letter). C7.
+static func with_article(name: String, cap := false) -> String:
+	var low := name.to_lower()
+	var last := low.split(" ")[-1] if low != "" else ""
+	var art := "a"
+	if (last.ends_with("s") and not last.ends_with("ss")) or SOME_WORDS.has(last):
+		art = "some"
+	elif low != "" and "aeiou".contains(low.left(1)):
+		art = "an"
+	return (art.capitalize() if cap else art) + " " + name
+
+
+## A reaction line with the right article before the item's name ("A Apple" -> "An Apple").
+static func articled(text: String, name: String) -> String:
+	if name == "":
+		return text
+	return text.replace("A " + name, with_article(name, true)).replace(" a " + name, " " + with_article(name))
+
+
+## "4 Turnips", "1 Turnip", "3 Berries"; names already plural or mass nouns stay. C7.
+static func plural_name(id: String, n: int) -> String:
+	var nm := item_name(id)
+	if n == 1 or nm == "":
+		return nm
+	var last := nm.to_lower().split(" ")[-1]
+	if last.ends_with("s") or SOME_WORDS.has(last):
+		return nm
+	if last.ends_with("y") and not "aeiou".contains(last.substr(last.length() - 2, 1)):
+		return nm.left(nm.length() - 1) + "ies"
+	if last.ends_with("sh") or last.ends_with("ch") or last.ends_with("x"):
+		return nm + "es"
+	return nm + "s"
+
+
 static func birthday_today() -> String:
 	for id: String in npcs:
 		# Only people you can give gifts to (Catkins has no heart arc) who are still around.

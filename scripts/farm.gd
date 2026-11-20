@@ -1844,9 +1844,9 @@ func _intro_gangsters(n: Dictionary) -> void:
 	await hud.fade_in(0.8)
 	await say([
 		{"text": "There's a letter in the mailbox. You already know who it's from. M. is the only one who knows you're alive."},
-		{"text": "The envelope has something written on the back, in a hand you don't recognize:"},
+		{"text": "The envelope has something written on the back, in a hand you don't recognise:"},
 		{"who": "Unknown hand", "text": "\"WE KNOW WHERE YOU WENT.\""},
-		{"who": who, "text": "What do you do with the letter?", "choice": ["Burn the letter. Leave no trail.", "Keep it. Evidence is evidence.", "Read it twice. Memorize the handwriting."], "key": "letter"},
+		{"who": who, "text": "What do you do with the letter?", "choice": ["Burn the letter. Leave no trail.", "Keep it. Evidence is evidence.", "Read it twice. Memorise the handwriting."], "key": "letter"},
 	])
 	var ans := int(GameState.run["decisions"].get("letter", 0))
 	if ans == 0:

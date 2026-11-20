@@ -20,29 +20,76 @@ const ADJ := {
 }
 
 
+## Ways between scenes that are things, not exits (a gate, a tree stair, a pad, a manhole):
+## scene -> {neighbour: thing type}. Arc-only links carry the arc after a colon.
+const VIA := {
+	"crystal_meadow": {"wastes:penguins": "gate", "hideout:gangsters": "gate"},
+	"forest": {"sky:penguins": "great_tree"},
+	"mountain": {"moon:penguins": "pad"},
+	"neon": {"underground": "door"},
+	"sky": {"forest": "door"},
+	"underground": {"neon": "door"},
+	"moon": {"mountain": "pad"},
+}
+
+
 static var _thing_cache := {}
 static var _mega_adj := {}
+static var _graph_arc := ""
 
 
-## Neighbours of a scene: ADJ for the Valley, plus every mega area's own exits
-## (read from data/regions.json "exits" of areas with "mega", so new areas join by themselves).
+## Neighbours of a scene: ADJ for the Valley, every regions.json area's own exits
+## (both ways, so the Valley's outer regions and mega areas join by themselves), and
+## the thing-ways in VIA (C7: the compass reaches orchard_hills, quarry, marsh, wastes, sky...).
 static func adj(s: String) -> Array:
-	if ADJ.has(s):
-		return ADJ[s]
-	if _mega_adj.is_empty():
+	var arc := "penguins" if GameState.run.is_empty() or GameState.is_penguins() else "gangsters"
+	if _mega_adj.is_empty() or _graph_arc != arc:
+		_mega_adj = {}
+		_graph_arc = arc
+		var link := func(a: String, b: String) -> void:
+			if a == "" or b == "" or a == b:
+				return
+			for pr: Array in [[a, b], [b, a]]:
+				if not _mega_adj.has(pr[0]):
+					_mega_adj[pr[0]] = []
+				if not (_mega_adj[pr[0]] as Array).has(pr[1]):
+					(_mega_adj[pr[0]] as Array).append(pr[1])
+		for k: String in ADJ:
+			for n: String in ADJ[k]:
+				link.call(k, n)
 		var regs: Dictionary = GameState.load_json("res://data/regions.json")
 		for k: String in regs:
 			var r: Variant = regs[k]
-			if not (r is Dictionary) or not (r as Dictionary).has("mega"):
+			if not (r is Dictionary):
 				continue
-			var out: Array = []
 			for e in (r as Dictionary).get("exits", []):
 				var sc := str(e.get("scene", "")) if e is Dictionary else ""
-				if sc != "" and not out.has(sc):
-					out.append(sc)
-			_mega_adj[k] = out
+				link.call(k, sc)
+		for k: String in VIA:
+			for key: String in VIA[k]:
+				var parts := key.split(":")
+				if parts.size() > 1 and parts[1] != arc:
+					continue
+				link.call(k, parts[0])
+		# The outskirts gate leads to one place per arc.
+		if arc == "penguins":
+			for pr: Array in [["crystal_meadow", "hideout"], ["hideout", "crystal_meadow"]]:
+				if _mega_adj.has(pr[0]):
+					(_mega_adj[pr[0]] as Array).erase(pr[1])
+		else:
+			for pr: Array in [["crystal_meadow", "wastes"], ["wastes", "crystal_meadow"]]:
+				if _mega_adj.has(pr[0]):
+					(_mega_adj[pr[0]] as Array).erase(pr[1])
 		_mega_adj["_"] = []
 	return _mega_adj.get(s, [])
+
+
+## The thing on scene `from` that leads to `to` ("" = it's an ordinary exit or nothing).
+static func via_thing(from: String, to: String) -> String:
+	for key: String in VIA.get(from, {}):
+		if key.split(":")[0] == to:
+			return str(VIA[from][key])
+	return ""
 
 
 static func _scene() -> String:
@@ -100,6 +147,30 @@ static func text(qid: String) -> String:
 			if not r["flags"].has("hideout_seen"):
 				return "Recruit your first crew in Hideout town: the outskirts gate, east past the meadow."
 			return "Recruit your first crew: Deuce at his table or Mama Rosa at the kitchen door. Each wants a favour."
+	return late_text(qid)
+
+
+## Where-to-go words for later main steps once their region is open (C7). "" while a
+## campaign still holds it (GameState.next_step then shows the campaign pointer).
+static func late_text(qid: String) -> String:
+	if not ["knight", "docks", "neon", "pit", "uptown", "tower"].has(qid) or Campaign.story_pointer(qid) != "":
+		return ""
+	var here := _scene()
+	match qid:
+		"knight":
+			return "Face the Crystal Knight on the sky islands." if here == "sky" else "Climb the great tree in the forest to the sky islands. Face the Crystal Knight."
+		"docks":
+			return "Find the dock boss on the docks and take them." if here == "docks" else "Take the city bus from Hideout town (east side) to the docks. Beat the dock boss."
+		"neon":
+			return "Find Flame under the dragon sign. Put the fire out." if here == "neon" else "East from the docks to the neon district. Put out Flame."
+		"pit":
+			return "Win the fight pit." if here == "underground" else "The unmarked stairs off the neon street lead down to the fight pit. Win it."
+		"uptown":
+			return "Beat the Enforcer outside the President's tower." if here == "uptown" else "East from neon to Uptown. Beat the President's Enforcer (Combat 5 helps)."
+		"tower":
+			if not GameState.run["flags"].has("boss_uptown"):
+				return "East from neon to Uptown. Beat the Enforcer outside the tower."
+			return "Get inside the tower: talk your way past the doorman." if not GameState.run["flags"].has("tower_open") else "Into the President's tower uptown. Face the President."
 	return ""
 
 
@@ -153,14 +224,52 @@ static func goal_place() -> Array:
 			return ["crystal_meadow", "npc:catkins"]
 		"spark":
 			if not Builds.is_built("resonator"):
-				return ["farm", "thing:plans"] if GameState.count("stone") >= 10 and GameState.count("shard") >= 1 else ["", ""]
-			return ["farm", "build:resonator"] if GameState.count("shard") >= 3 else ["", ""]
+				return ["farm", "thing:plans"] if GameState.count("stone") >= 10 and GameState.count("shard") >= 1 else ["mountain", ""]  # C7: rocks and shards
+			return ["farm", "build:resonator"] if GameState.count("shard") >= 3 else ["mountain", ""]
 		"hideout", "gang":
 			if r["flags"].has("hideout_seen"):
-				return ["", ""]
+				# C7: in Hideout town the crew comes next (Deuce's card table); "hideout" itself is done there.
+				return ["hideout", "npc:deuce"] if qid == "gang" else ["", ""]
 			if not r["flags"].has("sal_recruited"):
 				return ["town", "npc:sal"]  # Sal first (optional, but the story asks for it)
 			return ["crystal_meadow", "thing:gate"]
+	return story_place(qid)
+
+
+## Mid and late main steps (C7): the region (its exits/gates lead there) and its boss.
+## A region still held by a campaign gets no arrow: the goal line points at the board.
+static func story_place(qid: String) -> Array:
+	var f: Dictionary = GameState.run.get("flags", {})
+	if qid == "sky_stair":
+		if not f.has("babies_done"):
+			return ["mountain", "cell:27,14"]  # the crystal babies on the pass (p3_babies)
+		if not f.has("campfire_done"):
+			return ["", ""]  # a night's sleep after the mountain (p3_campfire)
+	if Campaign.story_pointer(qid) != "":
+		return ["", ""]
+	match qid:
+		"wastes_gate", "commander":
+			return ["wastes", "thing:boss"]
+		"sky_stair":
+			return ["forest", "thing:great_tree"]
+		"knight":
+			return ["sky", "thing:boss"]
+		"teleporter":
+			return ["moon", "thing:tele"]
+		"finale":
+			return ["moon", "thing:spire"]
+		"docks":
+			return ["docks", "thing:boss"]
+		"neon":
+			return ["neon", "thing:boss"]
+		"pit":
+			return ["underground", "thing:boss"]
+		"uptown":
+			return ["uptown", "thing:boss"]
+		"tower":
+			if not f.has("boss_uptown"):
+				return ["uptown", "thing:boss"]
+			return ["uptown", "cell:17,12"] if not f.has("tower_open") else ["uptown", "cell:18,11"]  # the tower doors, then inside
 	return ["", ""]
 
 
@@ -178,25 +287,35 @@ static func target(m: GameMap) -> Vector2:
 				if ch is Npc and (ch as Npc).id == what.substr(4):
 					return (ch as Node2D).position
 		elif what.begins_with("thing:"):
-			# Things don't move: look once per map and kind.
-			var key := "%d:%s" % [m.get_instance_id(), what]
-			if not _thing_cache.has(key):
-				var spots: Array = []
-				for c: Vector2i in m.things:
-					if str((m.things[c] as Dictionary).get("type", "")) == what.substr(6):
-						spots.append(m.cell_center(c))
-				_thing_cache = {key: spots}
-			var best := Vector2.ZERO
-			for p: Vector2 in _thing_cache[key]:
-				if best == Vector2.ZERO or p.distance_to(m.player.position) < best.distance_to(m.player.position):
-					best = p
-			return best
+			return thing_near(m, what.substr(6))
+		elif what.begins_with("cell:"):
+			var xy := what.substr(5).split(",")
+			if xy.size() >= 2:
+				return m.cell_center(Vector2i(int(xy[0]), int(xy[1])))
 		elif what.begins_with("build:"):
 			var cell: Array = Builds.data().get(what.substr(6), {}).get("cell", [])
 			if cell.size() >= 2:
 				return m.cell_center(Vector2i(int(cell[0]), int(cell[1])))
 		return Vector2.ZERO
 	return exit_toward(m, goal)
+
+
+## The nearest thing of `kind` on map m (things don't move: looked up once per map and kind).
+static func thing_near(m: GameMap, kind: String) -> Vector2:
+	var key := "%d:%s" % [m.get_instance_id(), kind]
+	if not _thing_cache.has(key):
+		var spots: Array = []
+		for c: Vector2i in m.things:
+			if str((m.things[c] as Dictionary).get("type", "")) == kind:
+				spots.append(m.cell_center(c))
+		if _thing_cache.size() > 16:
+			_thing_cache = {}
+		_thing_cache[key] = spots
+	var best := Vector2.ZERO
+	for p: Vector2 in _thing_cache[key]:
+		if best == Vector2.ZERO or p.distance_to(m.player.position) < best.distance_to(m.player.position):
+			best = p
+	return best
 
 
 ## The nearest exit on map m that leads toward scene `goal` (Vector2.ZERO = none).
@@ -213,6 +332,8 @@ static func exit_toward(m: GameMap, goal: String) -> Vector2:
 		var p := m.cell_pos(rc.position.x + rc.size.x * 0.5, rc.position.y + rc.size.y * 0.5)
 		if best_e == Vector2.ZERO or p.distance_to(m.player.position) < best_e.distance_to(m.player.position):
 			best_e = p
+	if best_e == Vector2.ZERO and via_thing(m.scene_id(), hop) != "":
+		return thing_near(m, via_thing(m.scene_id(), hop))  # a gate, the great tree, a pad, a manhole
 	return best_e
 
 

@@ -38,6 +38,13 @@
 - Marked call out with a spoken line before the fight, and say their own join/home line; joined Marked and Brock/Mags stand in the hideout and talk; six lieutenants refuse in their own words; Big Jim waits at the hideout for a second ask if not picked at the farm gate.
 - Meow Pow Wow: Grumps float home as crystals, crystal babies calm and toddle off, finargles vanish into shadow (Companion.REVERT "@crystal/@calm/@vanish"). Penguin partner scene: they touched the crystal in your field; the other keeps watch over the island; Coldy's finargle lines.
 - Test: tools/c7_colony_crew_test.gd.
+## 2026-11-20 — CONDUCT 7 fix P6: quests, compass, story tests, text
+
+- Compass and goal line for every main step: `GoalLine.story_place` (wastes, sky, moon, docks, neon, pit, uptown, tower; campaign-held regions defer to the board), `late_text` where-to-go words for the gangster chapters and the knight; one two-way route graph (`GoalLine.adj`: ADJ + all regions.json exits + `VIA` thing-ways: gate, great tree, pad, neon stairs), so Tam/Granite/Old Moss/Sel jobs and every outer region get an arrow.
+- Quest tracker: givers indoors / at the community farm / at the Rec get their door or exit; Marlowe and Orla live at the lake; jobs done elsewhere point there first (`QuestTracker.job_place`: Rec Center, orchard, grotto, colony, community farm); giverless jobs are tickable; captions for skill, best score and colony steps; place tags on Quests rows.
+- Side-quest texts fixed (minnows, Bait at Finn's, Orchard Hills moonwort, Old Moss acorns, Orla's wheat for Marlowe's bread, no deadlines that don't exist); wine is a gift to carry home, never a toast; first-person wait lines with what's still short; Rook's orchard foes appear as soon as the job is taken.
+- Gift reactions use the right article ("an Apple", "some Turnip Seeds"); `GameState.plural_name` for letters; UK spellings in the gangster opening; heist brief matches the story.
+- Tests: story_test plays every story choice option and both endings per arc (+ epilogue key check), hearts_test runs both arcs in check.sh, gang_start_test chapter-1 asserts, deterministic flags/seeds and SCRIPT ERROR fails on the story blocks, new tools/c7_text_test.gd.
 
 ## 2026-11-19 — CONDUCT 6 fix P1: music engine, streaming, mix
 

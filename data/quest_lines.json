@@ -279,11 +279,11 @@
  "wren_glowcap": {
   "offer": [
    "There's a mushroom that glows. I know, Theo won't shut up about it either.",
-   "I don't want to write about it. I want to brew it. One cap, from the forest after dark."
+   "I don't want to write about it. I want to brew it. One cap, from the forest. You need a forager's eye to spot one."
   ],
-  "yes": "Careful. Things wake up when the sun goes down.",
+  "yes": "Look low, under the ferns. They hide from people who hurry.",
   "no": "Sensible. The dark's for owls.",
-  "wait": "A glow-cap. Forest. Night. Lantern off.",
+  "wait": "A glow-cap. Forest. Look low.",
   "done": [
    "It's warm. Feel it, it's warm.",
    "I can do something with this. Here, for you, and a little of what I learned."
@@ -356,20 +356,20 @@
  },
  "alder_wine": {
   "offer": [
-   "A bottle of wine. For the council's toast at the fair.",
+   "A bottle of wine. A gift for the capital's inspector at the fair; they like a bottle to carry home.",
    "...Discreetly. Bram talks."
   ],
   "yes": "Thank you. Discreetly.",
-  "no": "Quite right. Morale can wait.",
-  "wait": "The wine. For the fair toast.",
+  "no": "Quite right. The inspector can make do with a handshake.",
+  "wait": "The wine. For the inspector's gift.",
   "done": [
-   "Excellent vintage. The fair toast will be a proud one.",
+   "Excellent. The inspector will carry it home and think well of us.",
    "Here. With the council's thanks."
   ]
  },
  "alder_gold": {
   "offer": [
-   "The town bell has no clapper. It hasn't rung in twenty years.",
+   "The town bell has no clapper. It hasn't rung in twenty-one years.",
    "A gold bar, and it rings again. For weddings. For warnings. For the end of the thing in the east."
   ],
   "yes": "Then we'll hear it. All of us.",
@@ -378,7 +378,7 @@
   "done": [
    "...Listen.",
    "...",
-   "That's the bell. That's the first time my son has heard it. Thank you."
+   "That's the bell. My father pulled that rope the last time it rang. Thank you."
   ]
  },
  "finn_minnows": {
@@ -395,12 +395,12 @@
  },
  "finn_trout": {
   "offer": [
-   "Three trout by week's end. Another bet. Bram again. He's got a short memory.",
+   "Three trout. Another bet. Bram again. He's got a short memory.",
    "Pie's bigger this time."
   ],
   "yes": "That's the spirit. Deep water, early morning.",
   "no": "Bram wins twice in a row. I'll never hear the end.",
-  "wait": "Three trout. Week's end. Bram's smirking already.",
+  "wait": "Three trout. Bram's smirking already.",
   "done": [
    "THREE AGAIN. Bram's going to stop betting me and I'll have to find a hobby.",
    "Your share. And you've got the touch now, I can see it."
@@ -421,7 +421,7 @@
  },
  "finn_pearl": {
   "offer": [
-   "There's a pearl in the lake. Old story. My gran had one and said it came from down there.",
+   "There's a pearl in the lake. Marlowe swears he's seen it from the top. Tomas always said there wasn't one.",
    "I've fished that lake for thirty years. Maybe it wants somebody new."
   ],
   "yes": "Deep water. The deepest. Patience.",
@@ -429,7 +429,7 @@
   "wait": "The pearl. The lake's still keeping it.",
   "done": [
    "...",
-   "...That's hers. That's my gran's pearl. Same light.",
+   "...It's real. Tomas, you were wrong. Same light Marlowe said.",
    "I don't have words. I have crystals. Take them."
   ]
  },
@@ -560,15 +560,15 @@
  },
  "bram_wine": {
   "offer": [
-   "Two wine for the festival night. One toast for the council, and one for the town.",
-   "I'd like to have some for the rest of us."
+   "Two bottles of wine for festival night. Gifts: one for the band, one for whoever sweeps the square after.",
+   "Wine's a thing you give, here. Nobody opens it till the harvest's in."
   ],
   "yes": "Good. Grapes in a keg. Maple keeps grape seed back for friends, come fall.",
-  "no": "The council will be pleased. Nobody else will.",
-  "wait": "Two wine. The festival's coming.",
+  "no": "The band gets a handshake again, then.",
+  "wait": "Two bottles. The festival's coming.",
   "done": [
-   "Good year. Good year!",
-   "Here. And a slice of festival pie for you on the night, saved from the council."
+   "Good year. Good year! The band will frame theirs.",
+   "Here. And a slice of festival pie for you on the night."
   ]
  },
  "juniper_herbs": {
@@ -733,7 +733,7 @@
   ],
   "yes": "Good.",
   "no": "Fine.",
-  "wait": "Fish. Five. No questions.",
+  "wait": "Minnows. Five. No questions.",
   "done": [
    "...There's a cat by the warehouse. Three legs. Don't tell anyone I feed it.",
    "Here."
@@ -777,11 +777,11 @@
  },
  "wrenjr_frog": {
   "offer": [
-   "I need a frog. A LIVE one. Mum says no. So maybe just bugs. Two bugs. For the frog I don't have."
+   "I need a frog. A LIVE one. Mum says no. So maybe just bait. Two bait, from Finn's shop. For the frog I don't have."
   ],
   "yes": "Okay! Wiggly ones!",
   "no": "Aw.",
-  "wait": "Bugs! Two! Wiggly!",
+  "wait": "Bait! Two! From Finn's! Wiggly!",
   "done": [
    "Wiggly! The frog I don't have is going to love them.",
    "Here. I found these. Don't ask where."
@@ -893,13 +893,13 @@
  },
  "moss_glowcaps": {
   "offer": [
-   "Three glow caps. Forest, after dark. They glow, so you can't miss them, so don't."
+   "Ten acorns. From the forest oaks. The marsh edge needs trees, and trees keep the fog honest."
   ],
-  "yes": "Mind the fog.",
+  "yes": "Fat ones. The squirrels take the thin ones, and they're welcome to them.",
   "no": "The fog will wait. So will I.",
-  "wait": "Three. Glowing. After dark.",
+  "wait": "Ten acorns. Fat ones. Forest oaks.",
   "done": [
-   "Lovely. Here: lamp oil. Light it where the fog's thickest and watch it back off.",
+   "Lovely. In they go, one by one, along the edge. Here: lamp oil. Light it where the fog's thickest and watch it back off.",
    "I made that for myself, once."
   ]
  },
@@ -940,13 +940,13 @@
  },
  "orla_oil": {
   "offer": [
-   "Marlowe's lamp wants oil and he won't ask. Three lamp oil, from his own shop if you like; I'll send it over with the flour."
+   "Marlowe won't come ashore for bread, and he won't ask. Five wheat and I'll mill it and send a loaf out with the flour boat."
   ],
   "yes": "He'll pretend he didn't need it. Let him.",
-  "no": "Then he'll row in the dark. Stubborn man.",
-  "wait": "Three lamp oil, for the lighthouse.",
+  "no": "Then he'll eat ship's biscuit again. Stubborn man.",
+  "wait": "Five wheat, for Marlowe's bread.",
   "done": [
-   "There. He'll have light tonight and never know who to thank.",
+   "There. He'll have bread tonight and never know who to thank.",
    "Take this. Don't argue with my knees."
   ]
  },
@@ -968,9 +968,9 @@
   ],
   "yes": "Patience. A shrub, then a bean. Like research.",
   "no": "Then I'll keep reading the same page.",
-  "wait": "Four coffee beans. Home-grown.",
+  "wait": "Four coffee beans. Any kind. I'm not proud.",
   "done": [
-   "You grew these. Here, in this town.",
+   "Coffee. Real coffee, here in this town.",
    "Take this. It's a first edition. I have two."
   ]
  },
@@ -1049,12 +1049,12 @@
  },
  "wren_moonwort": {
   "offer": [
-   "Moonwort. One sprig, from the orchard wall. The blue one.",
+   "Moonwort. One sprig, from Orchard Hills, north of the forest. The blue one.",
    "If you're going out that way. If."
   ],
   "yes": "...Thank you. Don't bruise it.",
   "no": "It'll keep. It's kept this long.",
-  "wait": "The blue herb. Orchard wall. Moonwort.",
+  "wait": "The blue herb. Orchard Hills. Moonwort.",
   "done": [
    "That's it. That's the blue.",
    "I'll make the fever draught before I lose my nerve."
@@ -1062,7 +1062,7 @@
  },
  "lumi_moonwort": {
   "offer": [
-   "Moonwort. The blue by the orchard wall. I've tried to mix it for a year.",
+   "Moonwort. The blue that grows up in Orchard Hills, past the forest. I've tried to mix it for a year.",
    "Bring me a sprig and I'll stop trying."
   ],
   "yes": "You're a saint. A muddy one, soon.",
@@ -1075,15 +1075,15 @@
  },
  "bram_rootbeer": {
   "offer": [
-   "Two root beers for festival night. One toast for the council, and one for the town.",
+   "Two root beers for festival night. One for me, one for Posy's mother. She always had the first of the summer.",
    "The soda fountain on the avenue makes them. I never get there."
   ],
   "yes": "Good. Cold, if you can manage it.",
-  "no": "The council will be pleased. Nobody else will.",
+  "no": "Another year, then. Every year I mean to.",
   "wait": "Two root beers. The festival's coming.",
   "done": [
-   "Good fizz. Good fizz!",
-   "Here. And a slice of festival pie for you on the night, saved from the council."
+   "Good fizz. She'd have liked that.",
+   "Here. And a slice of festival pie for you on the night."
   ]
  },
  "rec_bowl_120": {
