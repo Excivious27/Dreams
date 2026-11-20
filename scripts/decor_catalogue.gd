@@ -33,6 +33,7 @@ static var rar_i := 0     # 0 = all, else Decor.RARITIES[rar_i - 1]
 static var show_i := 0
 static var set_i := 0     # 0 = all, else _set_ids()[set_i - 1]
 static var part := 0
+static var box_page := 0
 static var sel := ""
 static var _cache_key := ""
 static var _cache: Array = []   # sorted ids of this arc
@@ -98,8 +99,8 @@ static func ids() -> Array:
 	out.sort_custom(func(a: String, b: String) -> bool:
 		var ea: Dictionary = items[a]
 		var eb: Dictionary = items[b]
-		var ca := CATS.find(str(ea.get("cat", "")))
-		var cb := CATS.find(str(eb.get("cat", "")))
+		var ca := _cat_rank(str(ea.get("cat", "")))
+		var cb := _cat_rank(str(eb.get("cat", "")))
 		if ca != cb:
 			return ca < cb
 		var ra := Decor.rarity_rank(str(ea.get("rarity", "common")))
@@ -371,13 +372,25 @@ static func icon_tex(id: String) -> Texture2D:
 		if s.contains("/"):
 			var gp := s.split("/", true, 1)
 			if Art.has(gp[0], gp[1]):
-				return Art.tex(gp[0], gp[1])
+				return _frame0(gp[0], gp[1])
 	if Art.has("decor", id + "_icon"):
 		return Art.tex("decor", id + "_icon")
 	if Art.has("decor", id):
-		return Art.tex("decor", id)
+		return _frame0("decor", id)
 	var ic := Hud.icon_for(id)
 	return Art.tex("items", ic) if Art.has("items", ic) else null
+
+
+## A strip with frames shows its first frame as the icon, not 4 tiny copies (c10b_08-11).
+static func _frame0(g: String, n: String) -> Texture2D:
+	var t := Art.tex(g, n)
+	var fr := int(Art.info(g, n).get("frames", 1))
+	if t == null or fr <= 1:
+		return t
+	var at := AtlasTexture.new()
+	at.atlas = t
+	at.region = Rect2(0, 0, float(Art.info(g, n).get("cell_w", t.get_width() / fr)), t.get_height())
+	return at
 
 
 ## Rarity of any id: catalogue first, then items.json.
@@ -425,6 +438,13 @@ static func rarity_dots(b: Control, id: String, h: float) -> void:
 		inner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		dot.add_child(inner)
 		b.add_child(dot)
+
+
+## Sort rank of a category: the hand list first, then any new data category
+## (outdoor_*, exterior_*, casino...) after it, never first (c10b_14_26).
+static func _cat_rank(c: String) -> int:
+	var i := CATS.find(c)
+	return i if i >= 0 else CATS.size() + absi(hash(c)) % 1000
 
 
 ## The filtered id list for the current chips.
@@ -887,13 +907,52 @@ func _do_order(id: String) -> void:
 func _use(id: String) -> void:
 	var e := Decor.entry(id)
 	var wear := str(e.get("cat", "")) in WEAR_CATS or str(e.get("layer", "")) == "wear"
-	var path := "res://scripts/wardrobe.gd" if wear else "res://scripts/decor_mode.gd"
-	var arg: Variant = str(e.get("cat", "")) if wear else id
+	if not wear:
+		_place(id)
+		return
+	# The wardrobe's open() lives on WardrobeScreen (c10b_11-29).
+	var path := "res://scripts/wardrobe_screen.gd" if ResourceLoader.exists("res://scripts/wardrobe_screen.gd") else "res://scripts/wardrobe.gd"
+	var arg: Variant = str(e.get("cat", ""))
 	if not open_other(path, m, arg):
 		_sfx("nope", "thud")
 		_say("Wear it from the dresser at home." if wear else "Decorate from your house: tap Decorate there.", Color(1, 0.8, 0.6))
 		return
 	close()
+
+
+## Place from the box: close this screen (and the menu under it) first, then open
+## decorate mode on this map with the piece already held (c10b_09-33). Exterior
+## parts go to the farmhouse style picker (P3's HouseExterior) when it exists.
+func _place(id: String) -> void:
+	var gm: GameMap = (m if m is GameMap else (get_tree().current_scene if get_tree() else null)) as GameMap
+	var e := Decor.entry(id)
+	if str(e.get("cat", "")).begins_with("exterior") or str(e.get("layer", "")) == "exterior":
+		if gm and open_other("res://scripts/house_exterior.gd", gm, id):
+			close()
+			return
+		_sfx("nope", "thud")
+		_say("Restyle the farmhouse from its style sign by the door.", Color(1, 0.8, 0.6))
+		return
+	if gm == null or GameState.visiting() or not DecorMode.can_decorate(gm) or not DecorMode.fits_map(gm, id):
+		_sfx("nope", "thud")
+		var yard := DecorMode.where_of(id) == "out"
+		_say("Yard pieces go outside: Decorate yard on the farm." if yard else "Decorate from your house: tap Decorate there.", Color(1, 0.8, 0.6))
+		return
+	var why := DecorMode.busy_why(gm)
+	if why != "":
+		_say(why, Color(1, 0.8, 0.6))
+		return
+	close()
+	for ch in gm.get_children():
+		if ch is GameMenu and (ch as GameMenu)._open:
+			(ch as GameMenu).toggle()
+	var start := func() -> void:
+		if not is_instance_valid(gm):
+			return
+		var dm := DecorMode.open(gm)
+		if dm:
+			dm._choose.call_deferred(id)
+	start.call_deferred()
 
 
 ## Calls <script>.open(map[, arg]) when the script exists. True when it opened.
@@ -996,6 +1055,27 @@ func _box_view() -> void:
 	sc.add_child(v)
 	var keys := box.keys().filter(func(k: Variant) -> bool: return int(box[k]) > 0)
 	keys.sort_custom(func(a: Variant, b: Variant) -> bool: return name_of(str(a)) < name_of(str(b)))
+	# Pages of PAGE rows: a full box never builds one row + icon per kind (c10b_12).
+	var bpages := maxi(1, ceili(keys.size() / float(PAGE)))
+	box_page = clampi(box_page, 0, bpages - 1)
+	if bpages > 1:
+		var pr := HBoxContainer.new()
+		pr.add_theme_constant_override("separation", 4)
+		v.add_child(pr)
+		var pv := _btn("◀", func() -> void:
+			box_page = posmod(box_page - 1, bpages)
+			_refresh(), "box:prev")
+		pv.custom_minimum_size = Vector2(40, 22)
+		pr.add_child(pv)
+		var pl := _label("%d kinds · page %d/%d" % [keys.size(), box_page + 1, bpages], 8, Color(0.9, 0.9, 0.85))
+		pl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		pr.add_child(pl)
+		var nx := _btn("▶", func() -> void:
+			box_page = posmod(box_page + 1, bpages)
+			_refresh(), "box:next")
+		nx.custom_minimum_size = Vector2(40, 22)
+		pr.add_child(nx)
+	keys = keys.slice(box_page * PAGE, box_page * PAGE + PAGE)
 	if keys.is_empty():
 		var l := _label("Your decor box is empty. Pieces you buy, win or find land here, never in your bag.", 8, Color(0.8, 0.8, 0.75))
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

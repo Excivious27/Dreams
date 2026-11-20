@@ -292,11 +292,16 @@ func _dresser() -> void:
 	var sprite_id := GameState.sprite_for_playable(str(GameState.run.get("playable", "")))
 	var can_look := (bool(pdata.get("custom", false)) and PaperDoll.available()) or sprite_id == "penguin"
 	var opts: Array = ["Journal", "Change my look", "Decorate", "Close"] if can_look else ["Journal", "Decorate", "Close"]
+	if ResourceLoader.exists("res://scripts/wardrobe_screen.gd"):
+		opts.insert(1, "Wardrobe")  # "Wear it from the dresser at home" (c10b_11-04)
 	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": opts, "key": ""}])
 	await d.finished
 	var pickd := str(opts[d.last_choice]) if d.last_choice >= 0 and d.last_choice < opts.size() else "Close"
 	if pickd == "Decorate":
 		DecorMode.open(self)
+		return
+	if pickd == "Wardrobe":
+		DecorCatalogue.open_other("res://scripts/wardrobe_screen.gd", self)
 		return
 	if pickd == "Journal":
 		_journal()
@@ -619,8 +624,9 @@ func _entry_button() -> void:
 	var bt := Button.new()
 	bt.text = "Decorate"
 	bt.add_theme_font_size_override("font_size", Settings.font(8))
-	bt.position = Vector2(206, 252)  # the dark band under the room, clear of the furniture and the HUD
-	bt.size = Vector2(60, 22)
+	var bw := maxf(60.0, bt.get_combined_minimum_size().x)
+	bt.position = Vector2(270.0 - bw - 4.0, 252)  # the dark band under the room; never past the column's edge (c10b_09-23)
+	bt.size = Vector2(bw, 22)
 	bt.focus_mode = Control.FOCUS_NONE
 	bt.pressed.connect(func() -> void:
 		if not get_tree().paused and not Dialogue.instance(get_tree()).active:

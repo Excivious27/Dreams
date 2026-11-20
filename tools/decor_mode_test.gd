@@ -270,6 +270,21 @@ func _c10b(items: Dictionary) -> void:
 	dm.close()
 	await frames(3)
 	check(Hud.extra_rects.size() == rects, "decorate mode leaves Hud.extra_rects as it found them (%d -> %d)" % [rects, Hud.extra_rects.size()])
+	# Catalogue Box "Place": decorate mode opens paused, with the piece in hand (c10b_09-33).
+	var cat: Variant = DecorCatalogue.open(m)
+	await frames(4)
+	if cat:
+		cat._place("t_chair")
+		await frames(6)
+		var dmc: DecorMode = null
+		for ch in m.get_children():
+			if ch is DecorMode:
+				dmc = ch
+		check(dmc != null and dmc.held == "t_chair", "catalogue Place opens decorate mode holding the piece")
+		check(paused and Hud.modal_rect == Rect2(0, 0, 270, 480), "... paused, the screen owned by decorate mode")
+		if dmc:
+			dmc.close()
+			await frames(3)
 	# The box list pages (a full catalogue never builds 700 rows).
 	for k in 70:
 		items["t_many_%d" % k] = _ent("Many %02d" % k, "floor", [1, 1], "furniture/chair2_a_down")
