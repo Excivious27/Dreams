@@ -170,12 +170,26 @@ func _run() -> void:
 	check(pl._doll_body == "outfit_pinstripe", "player wears pinstripe: " + pl._doll_body)
 	check(pl._hat.visible and pl._hat.texture != null, "fedora on the player")
 	check(pl._face != null and pl._face.visible, "shades on the player")
+	GameState.run["look"]["body"] = "dark_slim"
+	pl.refresh_doll()
+	await process_frame
+	await process_frame
+	pl = m.player
+	check(pl._flash_mat.get_shader_parameter("skin_on") == true, "dark skin recolours the outfit's skin mask")
+	await _shot("0_dark_skin_player")
+	GameState.run["look"]["body"] = "medium_slim"
+	pl.refresh_doll()
+	await process_frame
+	await process_frame
+	pl = m.player
 	pl.invuln = 0.5
 	for i in 4:
 		await physics_frame
 	check(is_equal_approx(pl._hat.modulate.a, pl._anim.modulate.a), "hat follows the hurt blink")
-	check(pl._hat.material == pl._flash_mat, "hat shares the flash material")
+	check(pl._hat.material == pl._layer_mat and pl._layer_mat.get_shader_parameter("flash") == pl._flash, "hat flashes with the body")
+	check(pl._flash_mat.get_shader_parameter("skin_on") == false, "medium skin stays as drawn")
 	# screen
+	GameState.run["look"]["body"] = "dark_broad"  # the preview shows the creator's skin tone
 	var ws := WardrobeScreen.open(m)
 	await process_frame
 	check(get_root().get_tree().paused, "wardrobe pauses")

@@ -70,6 +70,36 @@ const ACT := {"hoe_down": [0, 1, 2], "hoe_right": [3, 4, 5], "hoe_up": [6, 7, 8]
 	"reel_down": [9], "reel_up": [10], "reel_right": [11], "eat_down": [13], "eat_up": [13], "eat_right": [13], "hurt": [12], "celebrate": [15], "powerup": [15]}
 
 
+## Skin tone on the painted (tan = medium) costume sheets: the look's body prefix picks
+## the target mid colour; shaders/doll_body.gdshader recolours the sheet's _skin mask
+## (tools/skin_masks.py). Medium (and armour sheets without a mask) stay as drawn.
+const SKIN_TONES := {"light": Color(1.0, 0.86, 0.76), "dark": Color(0.55, 0.36, 0.25)}
+
+
+static func skin_key(look: Dictionary) -> String:
+	return str(look.get("body", "medium_slim")).get_slice("_", 0)
+
+
+static func body_material(look: Dictionary) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = load("res://shaders/doll_body.gdshader")
+	m.set_meta("skin", skin_key(look))
+	return m
+
+
+## Point the body material at the mask of the sheet a frame comes from.
+static func apply_skin(m: ShaderMaterial, sheet: String) -> void:
+	if m == null:
+		return
+	var tone: Variant = SKIN_TONES.get(str(m.get_meta("skin", "medium")), null)
+	var mk := sheet + "_skin"
+	var on := tone != null and Art.has("body", mk)
+	m.set_shader_parameter("skin_on", on)
+	if on:
+		m.set_shader_parameter("skin_mask", Art.tex("body", mk))
+		m.set_shader_parameter("tone", Vector3((tone as Color).r, (tone as Color).g, (tone as Color).b))
+
+
 ## Everyday outfits the creator/dresser offer for the current arc (arc jacket first):
 ## the wardrobe's starter outfits (data/wardrobe.json), else OUTFITS.
 static func starter_outfits() -> Array:
@@ -198,6 +228,9 @@ static func build_preview(parent: Node2D, look: Dictionary, mult: float, anim :=
 	body.scale = Vector2(sc, sc)
 	body.play(anim)
 	body.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var bm := body_material(look)
+	bm.set_shader_parameter("crisp", false)
+	body.material = bm
 	parent.add_child(body)
 	var layers := {}
 	for k: String in ["hair", "hat", "face"]:
@@ -212,6 +245,7 @@ static func build_preview(parent: Node2D, look: Dictionary, mult: float, anim :=
 		if not is_instance_valid(body):
 			return
 		var src := frame_source(body.animation, body.frame, bname)
+		apply_skin(bm, src[0])
 		preview_bare = bare
 		place_all(layers, look, src[0], src[1], body.flip_h, sc)
 		preview_bare = false

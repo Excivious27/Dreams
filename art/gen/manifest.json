@@ -10178,6 +10178,18 @@
    "h": 59,
    "w": 736
   },
+  "outfit_armored_act_skin": {
+   "file": "body/outfit_armored_act_skin.png",
+   "h": 59,
+   "mask": true,
+   "w": 736
+  },
+  "outfit_armored_skin": {
+   "file": "body/outfit_armored_skin.png",
+   "h": 54,
+   "mask": true,
+   "w": 544
+  },
   "outfit_crystal_parka": {
    "cell_h": 53,
    "cell_w": 32,
@@ -10193,6 +10205,18 @@
    "frames": 16,
    "h": 58,
    "w": 736
+  },
+  "outfit_crystal_parka_act_skin": {
+   "file": "body/outfit_crystal_parka_act_skin.png",
+   "h": 58,
+   "mask": true,
+   "w": 736
+  },
+  "outfit_crystal_parka_skin": {
+   "file": "body/outfit_crystal_parka_skin.png",
+   "h": 53,
+   "mask": true,
+   "w": 512
   },
   "outfit_farmer": {
    "anchors": [
@@ -10438,6 +10462,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_farmer_act_skin": {
+   "file": "body/outfit_farmer_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_farmer_life": {
    "anchors": [
     [
@@ -10560,6 +10590,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_farmer_life_skin": {
+   "file": "body/outfit_farmer_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_farmer_ride": {
    "anchors": [
     [
@@ -10639,6 +10675,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_farmer_ride_skin": {
+   "file": "body/outfit_farmer_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_farmer_skin": {
+   "file": "body/outfit_farmer_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_farmer_water": {
    "anchors": [
@@ -10760,6 +10808,12 @@
    "file": "body/outfit_farmer_water.png",
    "frames": 16,
    "h": 96,
+   "w": 2048
+  },
+  "outfit_farmer_water_skin": {
+   "file": "body/outfit_farmer_water_skin.png",
+   "h": 96,
+   "mask": true,
    "w": 2048
   },
   "outfit_fisher": {
@@ -11006,6 +11060,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_fisher_act_skin": {
+   "file": "body/outfit_fisher_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_fisher_life": {
    "anchors": [
     [
@@ -11128,6 +11188,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_fisher_life_skin": {
+   "file": "body/outfit_fisher_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_fisher_ride": {
    "anchors": [
     [
@@ -11207,6 +11273,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_fisher_ride_skin": {
+   "file": "body/outfit_fisher_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_fisher_skin": {
+   "file": "body/outfit_fisher_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_fisher_water": {
    "anchors": [
@@ -11328,6 +11406,12 @@
    "file": "body/outfit_fisher_water.png",
    "frames": 16,
    "h": 96,
+   "w": 2048
+  },
+  "outfit_fisher_water_skin": {
+   "file": "body/outfit_fisher_water_skin.png",
+   "h": 96,
+   "mask": true,
    "w": 2048
   },
   "outfit_forester": {
@@ -11574,6 +11658,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_forester_act_skin": {
+   "file": "body/outfit_forester_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_forester_life": {
    "anchors": [
     [
@@ -11696,6 +11786,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_forester_life_skin": {
+   "file": "body/outfit_forester_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_forester_ride": {
    "anchors": [
     [
@@ -11775,6 +11871,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_forester_ride_skin": {
+   "file": "body/outfit_forester_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_forester_skin": {
+   "file": "body/outfit_forester_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_forester_water": {
    "anchors": [
@@ -11896,6 +12004,12 @@
    "file": "body/outfit_forester_water.png",
    "frames": 16,
    "h": 96,
+   "w": 2048
+  },
+  "outfit_forester_water_skin": {
+   "file": "body/outfit_forester_water_skin.png",
+   "h": 96,
+   "mask": true,
    "w": 2048
   },
   "outfit_merchant": {
@@ -12142,6 +12256,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_merchant_act_skin": {
+   "file": "body/outfit_merchant_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_merchant_life": {
    "anchors": [
     [
@@ -12264,6 +12384,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_merchant_life_skin": {
+   "file": "body/outfit_merchant_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_merchant_ride": {
    "anchors": [
     [
@@ -12343,6 +12469,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_merchant_ride_skin": {
+   "file": "body/outfit_merchant_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_merchant_skin": {
+   "file": "body/outfit_merchant_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_merchant_water": {
    "anchors": [
@@ -12464,6 +12602,12 @@
    "file": "body/outfit_merchant_water.png",
    "frames": 16,
    "h": 96,
+   "w": 2048
+  },
+  "outfit_merchant_water_skin": {
+   "file": "body/outfit_merchant_water_skin.png",
+   "h": 96,
+   "mask": true,
    "w": 2048
   },
   "outfit_miner": {
@@ -12710,6 +12854,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_miner_act_skin": {
+   "file": "body/outfit_miner_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_miner_life": {
    "anchors": [
     [
@@ -12832,6 +12982,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_miner_life_skin": {
+   "file": "body/outfit_miner_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_miner_ride": {
    "anchors": [
     [
@@ -12911,6 +13067,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_miner_ride_skin": {
+   "file": "body/outfit_miner_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_miner_skin": {
+   "file": "body/outfit_miner_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_miner_water": {
    "anchors": [
@@ -13032,6 +13200,12 @@
    "file": "body/outfit_miner_water.png",
    "frames": 16,
    "h": 96,
+   "w": 2048
+  },
+  "outfit_miner_water_skin": {
+   "file": "body/outfit_miner_water_skin.png",
+   "h": 96,
+   "mask": true,
    "w": 2048
   },
   "outfit_neon": {
@@ -13278,6 +13452,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_neon_act_skin": {
+   "file": "body/outfit_neon_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_neon_life": {
    "anchors": [
     [
@@ -13400,6 +13580,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_neon_life_skin": {
+   "file": "body/outfit_neon_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_neon_ride": {
    "anchors": [
     [
@@ -13479,6 +13665,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_neon_ride_skin": {
+   "file": "body/outfit_neon_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_neon_skin": {
+   "file": "body/outfit_neon_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_neon_water": {
    "anchors": [
@@ -13602,6 +13800,12 @@
    "h": 96,
    "w": 2048
   },
+  "outfit_neon_water_skin": {
+   "file": "body/outfit_neon_water_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 2048
+  },
   "outfit_parka": {
    "cell_h": 54,
    "cell_w": 34,
@@ -13617,6 +13821,18 @@
    "frames": 16,
    "h": 59,
    "w": 752
+  },
+  "outfit_parka_act_skin": {
+   "file": "body/outfit_parka_act_skin.png",
+   "h": 59,
+   "mask": true,
+   "w": 752
+  },
+  "outfit_parka_skin": {
+   "file": "body/outfit_parka_skin.png",
+   "h": 54,
+   "mask": true,
+   "w": 544
   },
   "outfit_penguin": {
    "anchors": [
@@ -13862,6 +14078,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_penguin_act_skin": {
+   "file": "body/outfit_penguin_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_penguin_life": {
    "anchors": [
     [
@@ -13984,6 +14206,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_penguin_life_skin": {
+   "file": "body/outfit_penguin_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_penguin_ride": {
    "anchors": [
     [
@@ -14063,6 +14291,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_penguin_ride_skin": {
+   "file": "body/outfit_penguin_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_penguin_skin": {
+   "file": "body/outfit_penguin_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_penguin_water": {
    "anchors": [
@@ -14186,6 +14426,12 @@
    "h": 96,
    "w": 2048
   },
+  "outfit_penguin_water_skin": {
+   "file": "body/outfit_penguin_water_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 2048
+  },
   "outfit_pinstripe": {
    "cell_h": 53,
    "cell_w": 33,
@@ -14201,6 +14447,18 @@
    "frames": 16,
    "h": 58,
    "w": 736
+  },
+  "outfit_pinstripe_act_skin": {
+   "file": "body/outfit_pinstripe_act_skin.png",
+   "h": 58,
+   "mask": true,
+   "w": 736
+  },
+  "outfit_pinstripe_skin": {
+   "file": "body/outfit_pinstripe_skin.png",
+   "h": 53,
+   "mask": true,
+   "w": 528
   },
   "outfit_scholar": {
    "anchors": [
@@ -14446,6 +14704,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_scholar_act_skin": {
+   "file": "body/outfit_scholar_act_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_scholar_life": {
    "anchors": [
     [
@@ -14568,6 +14832,12 @@
    "h": 96,
    "w": 1536
   },
+  "outfit_scholar_life_skin": {
+   "file": "body/outfit_scholar_life_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
+  },
   "outfit_scholar_ride": {
    "anchors": [
     [
@@ -14647,6 +14917,18 @@
    "frames": 10,
    "h": 128,
    "w": 1280
+  },
+  "outfit_scholar_ride_skin": {
+   "file": "body/outfit_scholar_ride_skin.png",
+   "h": 128,
+   "mask": true,
+   "w": 1280
+  },
+  "outfit_scholar_skin": {
+   "file": "body/outfit_scholar_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 1536
   },
   "outfit_scholar_water": {
    "anchors": [
@@ -14770,6 +15052,12 @@
    "h": 96,
    "w": 2048
   },
+  "outfit_scholar_water_skin": {
+   "file": "body/outfit_scholar_water_skin.png",
+   "h": 96,
+   "mask": true,
+   "w": 2048
+  },
   "outfit_starlight": {
    "cell_h": 54,
    "cell_w": 34,
@@ -14786,6 +15074,18 @@
    "h": 59,
    "w": 736
   },
+  "outfit_starlight_act_skin": {
+   "file": "body/outfit_starlight_act_skin.png",
+   "h": 59,
+   "mask": true,
+   "w": 736
+  },
+  "outfit_starlight_skin": {
+   "file": "body/outfit_starlight_skin.png",
+   "h": 54,
+   "mask": true,
+   "w": 544
+  },
   "outfit_vest": {
    "cell_h": 54,
    "cell_w": 33,
@@ -14801,6 +15101,18 @@
    "frames": 16,
    "h": 58,
    "w": 752
+  },
+  "outfit_vest_act_skin": {
+   "file": "body/outfit_vest_act_skin.png",
+   "h": 58,
+   "mask": true,
+   "w": 752
+  },
+  "outfit_vest_skin": {
+   "file": "body/outfit_vest_skin.png",
+   "h": 54,
+   "mask": true,
+   "w": 528
   },
   "swim_broad_down": {
    "anchors": [

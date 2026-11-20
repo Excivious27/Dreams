@@ -67,6 +67,8 @@ var _doll_body := "medium_slim"
 var _hair: Sprite2D
 var _hat: Sprite2D
 var _face: Sprite2D
+var _layer_mat: ShaderMaterial
+var _skin_sheet := ""
 
 
 # ---- vehicles (built at the Vehicle Workshop) -----------------------------------
@@ -273,6 +275,11 @@ func _update_doll() -> void:
 			PaperDoll.sync_layer(l, _anim)
 	if _hair.material is ShaderMaterial:
 		(_hair.material as ShaderMaterial).set_shader_parameter("flash", _flash)
+	if _layer_mat:
+		_layer_mat.set_shader_parameter("flash", _flash)
+	if body != _skin_sheet:
+		_skin_sheet = body
+		PaperDoll.apply_skin(_flash_mat, body)
 
 
 func set_character(id: String) -> void:
@@ -290,6 +297,7 @@ func set_character(id: String) -> void:
 		# Paper doll: body base + hair + hat layers (see PaperDoll).
 		_anim = AnimatedSprite2D.new()
 		_doll_body = PaperDoll.body_for(look)
+		_skin_sheet = ""
 		_anim.sprite_frames = PaperDoll.body_frames(look)
 		_anim.centered = true
 		_anim.offset = Vector2(0, -float(Art.info("body", _doll_body).get("cell_h", 96)) / 2.0)
@@ -315,13 +323,15 @@ func set_character(id: String) -> void:
 		_hat.centered = true
 		_face = Sprite2D.new()
 		_face.centered = true
+		# Body: flash + skin tone (doll_body.gdshader); hat/face share a plain flash material.
+		_flash_mat = PaperDoll.body_material(look)
+		_anim.material = _flash_mat
 		var sh := load("res://shaders/flash.gdshader")
 		if sh:
-			_flash_mat = ShaderMaterial.new()
-			_flash_mat.shader = sh
-			_anim.material = _flash_mat
-			_hat.material = _flash_mat
-			_face.material = _flash_mat
+			_layer_mat = ShaderMaterial.new()
+			_layer_mat.shader = sh
+			_hat.material = _layer_mat
+			_face.material = _layer_mat
 	elif id == "" or not CharacterLibrary.has_character(id):
 		var ph := PlaceholderSprite.new()
 		ph.tint = Color(str(pdata.get("color", "2b3a67")))
