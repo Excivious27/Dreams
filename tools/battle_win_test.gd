@@ -240,5 +240,18 @@ func _run() -> void:
 		check(b._over and Campaign.taken("c_highlands", en), "an arrived convoy wins")
 		await settle()
 
+	# --- gangster battles play their own funk/noir variants
+	GameState.new_run("gangsters", "dad", "T", "Town", "Pup")
+	GameState.run["flags"]["proj_war_table"] = true
+	m = await go("bf_frostfield")
+	if m:
+		check(Music.instance(self).wanted() == "battle_gang", "gangster field: battle_gang (%s)" % Music.instance(self).wanted())
+		var gb: Battle = m.get("battle")
+		if gb:
+			gb.mode = "siege"
+			check(m.area_track() == "battle_siege_gang", "gangster siege: battle_siege_gang (%s)" % m.area_track())
+			gb.mode = "escort"
+			check(m.area_track() == "battle_escort", "gangster escort keeps battle_escort (%s)" % m.area_track())
+
 	print("battle_win_test: %d fails" % fails)
 	quit(1 if fails else 0)
