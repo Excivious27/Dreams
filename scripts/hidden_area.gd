@@ -33,6 +33,7 @@ const SANCTUMS := {
 
 var map: GameMap = null
 var spots: Array = []  # [cell, kind] still to be found (sniff/sparkle)
+var sealed := {}  # cell -> mouth cell: inside a pocket that's still closed (tests skip these)
 var _t := 0.0
 var _sniffed := false
 
@@ -65,7 +66,7 @@ static func place(m: GameMap, rid: String, tier: int) -> HiddenArea:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(rid + "_hidden")
 	var theme := theme_of(rid)
-	var reach := _reach(m, _start(m))
+	var reach := _reach(m, _start(m), _arrivals(m))
 	var pocket: Dictionary = {}
 	if want.x > 0:
 		pocket = _place_pocket(m, rid, tier, theme, rng, reach, node)
@@ -76,9 +77,9 @@ static func place(m: GameMap, rid: String, tier: int) -> HiddenArea:
 			if str(m.things[c].get("type", "")) == "boss":
 				near = c
 		if near.x >= 0:
-			_place_pocket(m, rid, tier + 1, theme, rng, _reach(m, _start(m)), node, near, "_sanctum", sd)
+			_place_pocket(m, rid, tier + 1, theme, rng, _reach(m, _start(m), _arrivals(m)), node, near, "_sanctum", sd)
 	if want.y > 0:
-		_place_way(m, rid, theme, rng, _reach(m, _start(m)), pocket, node)
+		_place_way(m, rid, theme, rng, _reach(m, _start(m), _arrivals(m)), pocket, node)
 	m.add_child(node)
 	return node
 
@@ -87,10 +88,26 @@ static func _start(m: GameMap) -> Vector2i:
 	return m.world_to_cell(m.default_spawn() - Vector2(0, 2))
 
 
+## Every place you can arrive at: the default spawn, a hub's travel arrival, and
+## a cell inside each exit strip. A pocket or its walls may never sit on one.
+static func _arrivals(m: GameMap) -> Array:
+	var out: Array = [_start(m)]
+	var sid := m.scene_id()
+	for rid: String in MegaTravel.data():
+		var r: Dictionary = MegaTravel.data()[rid]
+		if str(r.get("hub", "")) == sid and r.has("hub_spawn"):
+			out.append(Vector2i(int(r["hub_spawn"][0]), int(r["hub_spawn"][1])))
+	for e in m.exits:
+		var er: Rect2i = e["rect"]
+		out.append(er.get_center())
+	return out
+
+
 ## Walkable cells reachable from `from` (4-way).
-static func _reach(m: GameMap, from: Vector2i) -> Dictionary:
+static func _reach(m: GameMap, from: Vector2i, more: Array = []) -> Dictionary:
 	var seen := {}
 	var st: Array = [from]
+	st.append_array(more)
 	while not st.is_empty():
 		var c: Vector2i = st.pop_back()
 		if seen.has(c) or not m.in_content(c) or m.blocked.has(c):
@@ -109,8 +126,8 @@ static func _keep(m: GameMap) -> Dictionary:
 		keep.merge(m.cells_of([Rect2i(int(p[0]), int(p[1]), int(p[2]), int(p[3]))]))
 	for e in m.exits:
 		keep.merge(m.cells_of([(e["rect"] as Rect2i).grow(2)]))
-	var s := _start(m)
-	keep.merge(m.cells_of([Rect2i(s.x - 3, s.y - 3, 7, 7)]))
+	for s: Vector2i in _arrivals(m):
+		keep.merge(m.cells_of([Rect2i(s.x - 3, s.y - 3, 7, 7)]))
 	for pl: Dictionary in m.plateaus:
 		for stc: Vector2i in pl["stairs"]:
 			keep.merge(m.cells_of([Rect2i(stc.x - 1, stc.y - 2, 3, 5)]))
@@ -179,7 +196,7 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 			m.blocked[c] = true
 		for c: Vector2i in inner:
 			m.blocked[c] = true
-		var after := _reach(m, _start(m))
+		var after := _reach(m, _start(m), _arrivals(m))
 		for c: Vector2i in added:
 			m.blocked.erase(c)
 		for c: Vector2i in inner:
@@ -216,6 +233,8 @@ static func _place_pocket(m: GameMap, rid: String, tier: int, theme: String, rng
 			"hint": str(sanctum.get("hint", "")) if kind == "door" else ("A: the vines stir in a draft" if kind == "vine" else "A: a cracked wall (pickaxe)")}, true)
 		m.hard[mouth] = true
 		node._mouth_art(mouth, kind, theme)
+		for ic: Vector2i in best["inner"]:
+			node.sealed[ic] = mouth
 		node.spots.append([mouth, "pocket"])
 	# Inside: the chest at the back middle, the page beside it.
 	var back: Vector2i = mouth + (best["d"] as Vector2i) * 2
@@ -432,6 +451,9 @@ static func interact(m: GameMap, c: Vector2i, thing: Dictionary) -> bool:
 			m._flows.clear()
 			if node:
 				node.found_spot(c)
+				for ic: Vector2i in node.sealed.keys():
+					if node.sealed[ic] == c:
+						node.sealed.erase(ic)
 			m.hud.toast({"vine": "A hidden nook!", "door": "The sun door grinds open: the inner sanctum!"}.get(str(thing.get("kind", "")), "The wall gives way: a hidden nook!"), Color(1, 0.95, 0.6))
 			Music.instance(m.get_tree()).sfx("j_secret", "j_treasure")
 			return true
