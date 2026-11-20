@@ -2,7 +2,7 @@ extends SceneTree
 ## Performance probe: load time, frame time, nodes, draw calls and memory per map.
 ##   xvfb-run -a godot --path . --rendering-driver opengl3 --resolution 540x960 -s res://tools/perf_probe.gd -- [scene ...]
 ## (headless works too: no draw calls then). ARC=gangsters for the other arc. FRAMES=n (default 180).
-## BREAKDOWN=1 lists the nodes costing the most draw calls. Exits are off while walking (EXITS=1 to allow).
+## BREAKDOWN=1 lists the nodes costing the most draw calls. WIDE=1 probes the desktop/Deck view. Exits are off while walking (EXITS=1 to allow).
 ## arcade:<id> probes a cabinet game (jumper stack whack claw gallery).
 ## in_<interior> probes an interior (in_rec, in_rec_up); REC=1 opens the Rec Center on league night.
 ## Each line: scene, load ms (change_scene -> first frame), median/p95/max frame ms while
@@ -24,6 +24,10 @@ func _run() -> void:
 	var frames := int(OS.get_environment("FRAMES")) if OS.get_environment("FRAMES") != "" else 180
 	InputSetup.ensure_actions()
 	GameMap.exits_off = OS.get_environment("EXITS") == ""  # stay on the probed map (EXITS=1: old behaviour)
+	if OS.get_environment("WIDE") != "":  # the desktop / Steam Deck view (run with --resolution 1280x800)
+		DisplayMode.force = 1
+		DisplayMode.test_size = Vector2i(1280, 800)
+		DisplayMode.refit()
 	var arc := OS.get_environment("ARC") if OS.get_environment("ARC") != "" else "penguins"
 	GameState.new_run(arc, "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	GameState.run["intro_done"] = true
