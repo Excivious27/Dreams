@@ -132,7 +132,7 @@
   "season": "summer",
   "color": "88aa66",
   "top": "55aa33",
-  "regrow": 2,
+  "regrow": 4,
   "tier": 2,
   "family": "herb"
  },
@@ -152,7 +152,7 @@
   "name": "Tea Leaf",
   "days": 7,
   "stages": 6,
-  "yield": "tea",
+  "yield": "tea_leaf",
   "season": "spring",
   "color": "88aa66",
   "top": "55aa33",
@@ -195,7 +195,7 @@
  },
  "rice": {
   "name": "Rice",
-  "days": 8,
+  "days": 5,
   "stages": 6,
   "yield": "rice",
   "season": "summer",
@@ -252,7 +252,7 @@
  },
  "sunflower": {
   "name": "Sunflower",
-  "days": 7,
+  "days": 5,
   "stages": 4,
   "yield": "sunflower",
   "color": "6aa040",
@@ -318,7 +318,7 @@
  },
  "bok_choy": {
   "name": "Bok Choy",
-  "days": 11,
+  "days": 6,
   "stages": 4,
   "yield": "bok_choy",
   "color": "4f9a3a",
@@ -421,7 +421,7 @@
  },
  "eggplant": {
   "name": "Eggplant",
-  "days": 11,
+  "days": 6,
   "stages": 4,
   "yield": "eggplant",
   "color": "4f9a3a",
@@ -465,7 +465,7 @@
  },
  "celery": {
   "name": "Celery",
-  "days": 11,
+  "days": 6,
   "stages": 4,
   "yield": "celery",
   "color": "4f9a3a",
@@ -476,7 +476,7 @@
  },
  "dill": {
   "name": "Dill",
-  "days": 11,
+  "days": 6,
   "stages": 4,
   "yield": "dill",
   "color": "4f9a3a",
@@ -487,7 +487,7 @@
  },
  "parsley": {
   "name": "Parsley",
-  "days": 11,
+  "days": 6,
   "stages": 4,
   "yield": "parsley",
   "color": "4f9a3a",
@@ -498,7 +498,7 @@
  },
  "basil": {
   "name": "Basil",
-  "days": 11,
+  "days": 6,
   "stages": 4,
   "yield": "basil",
   "color": "4f9a3a",
@@ -509,7 +509,7 @@
  },
  "mint": {
   "name": "Mint",
-  "days": 11,
+  "days": 6,
   "stages": 4,
   "yield": "mint",
   "color": "4f9a3a",
@@ -832,7 +832,8 @@
   "top": "d8d8ff",
   "season": "any",
   "tier": 3,
-  "family": "berry"
+  "family": "berry",
+  "regrow": 4
  },
  "starfruit": {
   "name": "Starfruit",

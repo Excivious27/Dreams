@@ -80,7 +80,7 @@ for id, name, typ, val, tier, extra in G:
     item(id, name, typ, val, tier, **extra)
 # Penguin arc only: crystal-shaped gear, Cat-topia's litter works, the campfire.
 for id, name, typ, val, tier, extra in [
- ('marshmallow', 'Marshmallow', 'food', 20, 1, {'energy': 12}), ('toasted_marshmallow', 'Toasted Marshmallow', 'food', 45, 1, {'energy': 30}),
+ ('marshmallow', 'Marshmallow', 'food', 20, 1, {'energy': 15}), ('toasted_marshmallow', 'Toasted Marshmallow', 'food', 45, 1, {'energy': 30}),
  ('smore', "S'more", 'food', 140, 2, {'energy': 55, 'heal': 2}), ('hot_cocoa', 'Hot Cocoa', 'food', 160, 2, {'energy': 45, 'buff': {'kind': 'warm', 'minutes': 480, 'amount': 1}, 'desc': 'Big Jim makes it too sweet. Warm for hours.'}),
  ('campfire_stew', "Big Jim's Stew", 'food', 240, 3, {'energy': 80, 'heal': 5}), ('starlight_smore', "Starlight S'more", 'food', 520, 3, {'energy': 100, 'heal': 4, 'buff': {'kind': 'luck', 'minutes': 300, 'amount': 2}, 'friend': 4}),
  ('scented_litter', 'Scented Litter Box', 'consumable', 40, 2, {'effect': 'stink', 'radius': 84, 'stun': 5.0, 'desc': 'Lavender. Somehow worse. A wider cloud, a longer nose-hold.'}),
