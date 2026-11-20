@@ -90,3 +90,8 @@ mega_gloam_thicket
 mega_desert_canyon
 mega_desert_temple
 mega_gloam_moonpool
+night_gang
+outskirts
+battle_escort_gang
+festival_night
+campaign_map_gang

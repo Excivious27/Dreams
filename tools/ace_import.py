@@ -90,9 +90,20 @@ def false_end(x, sr=SR, drop=18.0):
     return None
 
 
+def soft_tail(x, sr=SR, max_s=10.0):
+    """A loop shouldn't end on a soft last bar: drop up to max_s of trailing 0.5 s
+    windows more than 3.5 dB under the median. Returns the new length in samples."""
+    db = win_db(x, sr)
+    med = np.median(db)
+    j, lim = len(db), max(0, len(db) - int(max_s / 0.5))
+    while j > lim and db[j - 1] < med - 3.5:
+        j -= 1
+    return min(len(x), int(j * 0.5 * sr)) if j < len(db) else len(x)
+
+
 def onset_near(x, t, sr=SR, span=0.5):
     """Strongest onset (rise in 20 ms energy) within +-span s of sample t."""
-    m = np.abs(x.mean(axis=1))
+    m = np.abs(x.mean(axis=1) if x.ndim == 2 else x)
     h = int(0.02 * sr)
     a, b = max(h, t - int(span * sr)), min(len(m) - h, t + int(span * sr))
     if b - a < 4 * h:
@@ -103,40 +114,50 @@ def onset_near(x, t, sr=SR, span=0.5):
 
 
 def intro_end(x, sr=SR, xfade=3.0):
-    """Where a quiet intro has built up to the body level: the first 0.5 s window within
-    3 dB of the median, snapped to an onset. 0 when the head is already at level (a
-    head dip under 6 dB is left to the crossfade)."""
+    """Where a quiet intro has built up to the body level. A classic loop lands at
+    t = xfade; when the 1 s there sits more than 3 dB under the song's level (the
+    lower of its median and its last 2 s, which is what plays into the loop), the loop
+    point moves to the first 0.5 s window back within 3 dB of that level (snapped to an
+    onset), and the intro before it plays once. 0 = classic loop."""
     db = win_db(x, sr)
-    med = np.median(db)
-    head = np.mean(db[:6]) if len(db) > 6 else med
-    if med - head < 6.0:
+    if len(db) < 16:
         return 0
-    i = 0
-    while i < len(db) - 1 and db[i] < med - 3.0:
+    tail = float(np.mean(db[-2:]))
+    ref = min(float(np.median(db)), tail)
+    k = int(round(xfade / 0.5))
+    # the loop's crossfade passes through the 2 s before the loop point: a quiet
+    # bar there (hit, then silence, then the band) dips every loop too
+    at = min(float(np.mean(db[k:k + 2])), float(np.mean(db[max(0, k - 4):k + 2])))
+    if at >= ref - 3.0 and at >= tail - 3.5:
+        return 0
+    goal = ref - (1.5 if at >= ref - 3.0 else 3.0)
+    i = k
+    while i < len(db) // 3 and db[i] < goal:
         i += 1
-    t = int(i * 0.5 * sr)
-    if t < int(xfade * sr) + sr // 2:
+    if i >= len(db) // 3:
         return 0
-    return onset_near(x, t, sr)
+    return onset_near(x, int(i * 0.5 * sr), sr)
 
 
 def seamless_np(x, xfade, offset=0, sr=SR):
-    """Sample-accurate equal-power loop seam. The file ends with its tail crossfaded into
-    the music that leads up to the loop point, so end -> loop point is continuous.
-    offset 0: classic loop (file starts xfade s in, tail fades into the head; Godot loops
-    to 0). offset > 0: the intro is kept and Godot loops to `offset` (loop_offset).
+    """Sample-accurate equal-power loop seam: the last xfade s fade out while the music
+    from the loop point fades in, and Godot loops to the end of that fade-in, so
+    end -> loop point is continuous and at level.
+    offset 0: classic loop (the file starts xfade s in; loop_offset 0).
+    offset > 0: the intro before `offset` is kept and plays once; loop_offset =
+    offset + xfade (written to data/music_loops.json, read by Music).
     Returns (samples, loop_offset_seconds)."""
     n = len(x)
     X = int(max(0.2, min(xfade, n / sr / 4)) * sr)
     t = np.linspace(0, np.pi / 2, X, dtype=np.float32)[:, None]
     fo, fi = np.cos(t), np.sin(t)
-    if offset <= X:
+    if offset <= 0:
         y = np.concatenate([x[X:n - X], x[n - X:] * fo + x[:X] * fi])
         assert len(y) == n - X, (len(y), n, X)
         return y, 0.0
-    y = np.concatenate([x[:n - X], x[n - X:] * fo + x[offset - X:offset] * fi])
+    y = np.concatenate([x[:n - X], x[n - X:] * fo + x[offset:offset + X] * fi])
     assert len(y) == n, (len(y), n)
-    return y, offset / sr
+    return y, (offset + X) / sr
 
 
 def seam_ok(y, offset_s=0.0, sr=SR):
@@ -262,6 +283,7 @@ def main():
             if fe is not None and fe > 0.5 * (s1 - s0):
                 print(f"  false ending at {(s0 + fe) / sr:.1f} s: cut there")
                 s1 = s0 + fe
+            s1 = s0 + soft_tail(x[s0:s1], sr)
         run("ffmpeg", "-hide_banner", "-y", "-i", a.src, "-af",
             f"atrim={s0 / sr}:{s1 / sr},asetpts=PTS-STARTPTS", t1)
         t2 = os.path.join(tmp, "t2.wav")

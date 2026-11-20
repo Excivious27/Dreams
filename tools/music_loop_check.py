@@ -6,8 +6,9 @@ last second and the second after the loop point (data/music_loops.json, default 
 and fail when
   - the join (last sample -> loop point) steps more than STEP_X x the 99.9th pct
     sample step around it (an audible click / hard splice), or
-  - the level jumps more than LEVEL_DB across the join (0.5 s RMS before vs after:
-    a song that drops to a soft intro or out of a fade every loop).
+  - the level jumps across the join (1 s RMS before vs after) by more than LEVEL_DB
+    or than the song's own 98th-pct second-to-second change + 1 dB, whichever is
+    larger (a song that drops to a soft intro or out of a fade every loop).
     python3 tools/music_loop_check.py [-v] [names...]
 """
 import json, os, re, subprocess, sys
@@ -47,11 +48,24 @@ def check(path, offset):
     j = len(tail) - 1
     ref = float(np.percentile(np.delete(d, j), 99.9)) + 1e-4
     step = float(d[j]) / ref
-    w = SR // 2
+    w = SR
     lv = lambda x: 20 * np.log10(np.sqrt(np.mean(x ** 2)) + 1e-9)
     jump = lv(head[:w]) - lv(tail[-w:])
-    ok = step <= STEP_X and abs(jump) <= LEVEL_DB
-    return ok, f"step {step:.2f}x, level {jump:+.1f} dB"
+    # A song may itself change level from one second to the next (a new section on a
+    # downbeat): allow what the song does anyway (98th pct of its own 1 s steps).
+    allow = LEVEL_DB if abs(jump) <= LEVEL_DB else max(LEVEL_DB, own_steps(path) + 1.0)
+    ok = step <= STEP_X and abs(jump) <= allow
+    return ok, f"step {step:.2f}x, level {jump:+.1f} dB (allowed {allow:.1f})"
+
+
+def own_steps(path, sr=8000):
+    a = ["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", str(sr), "-f", "f32le", "-"]
+    m = np.frombuffer(subprocess.run(a, capture_output=True, check=True).stdout, np.float32)
+    k = len(m) // sr
+    if k < 4:
+        return 0.0
+    db = 20 * np.log10(np.sqrt(np.mean(m[:k * sr].reshape(k, sr) ** 2, axis=1)) + 1e-9)
+    return float(np.percentile(np.abs(np.diff(db)), 98))
 
 
 def main():

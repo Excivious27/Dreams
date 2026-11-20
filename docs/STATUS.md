@@ -2,6 +2,11 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 6 fix P2: songs (loop seam fix, re-renders, new tracks)
+
+- Every looping song had a hard splice and was 6 s short (the ffmpeg crossfade in ace_import dropped its join). The importer now crossfades in numpy, cuts false endings, keeps quiet intros once (data/music_loops.json, applied by Music), masters for phone speakers and encodes q3; all 95 songs re-imported from their raws (title/arc themes from Tom's uploads). tools/music_loop_check.py (check.sh) guards every join.
+- 30 ACE songs: the 15 weakest + gangster phone-weak set re-rendered (boss_penguin/boss_gang/endings now ~2.5-2.8 min), new night_gang, outskirts, battle_escort_gang, festival_night, campaign_map_gang; soft songs (house, meadow, night, forest, rain, moon, sanctuary, chapel, title_musicbox) re-rendered full-range with ACE v1.1.
+
 ## 2026-11-19 — CONDUCT 5 fix P1: farm and home look
 
 - Farmhouse upgrades show their own art (house / house_2 / house_3, day + night pictures swapped at dusk), with the solid rect, door, mailbox and exit spawn following the tier (`farm.HOUSE_TIERS`, `house_look(tier)`); the Manor stands where the old greenhouse plot was.
