@@ -89,7 +89,8 @@ func _run() -> void:
 	check(not card.is_empty() and str(card["value"]) == "%d%%" % roundi(_total() * 100), "Hero tab speed %s = moves at %d%%" % [card.get("value", "?"), roundi(_total() * 100)])
 	# A fully bought tree stops glowing even with points left over.
 	_buy_all("farming")
-	check(GameState.points_free("farming") > 0, "maxed farming still has raw points (%d)" % GameState.points_free("farming"))
+	var raw := GameState.skill_level("farming") - 1 - GameState.points_spent("farming")  # points_free is capped by ranks_left since C8 P1
+	check(raw > 0 and GameState.points_free("farming") == 0, "maxed farming still has raw points (%d), none to spend" % raw)
 	check(SkillGlow.usable("farming") == 0, "maxed tree: no glow, no 'points to spend'")
 	# Renown: one runaway skill no longer makes you a Legend.
 	var rn := CharSheet.renown()

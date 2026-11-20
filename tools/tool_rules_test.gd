@@ -249,7 +249,7 @@ func _region() -> void:
 		_put(m, c, {"type": "mrock", "ore": "stone", "hp": 2})
 		var tx := await _use(m, st, c, tool)
 		check(tx.contains("Pickaxe") and int(m.things.get(c, {}).get("hp", -1)) == 2, "region mrock with %s: pickaxe hint (%s)" % [tool if tool != "" else "hand", tx])
-	_put(m, c, {"type": "mrock", "ore": "stone", "hp": 9})
+	_put(m, c, {"type": "mrock", "ore": "stone", "hp": 9, "hp_scaled": true, "tough": true})  # first swing would rescale hp (C8 P4 mega hp, C6 P7 toughen)
 	await _use(m, st, c, "pickaxe")
 	check(int(m.things.get(c, {}).get("hp", 9)) < 9, "region mrock with the pickaxe: mined")
 	_put(m, c, {"type": "water"})

@@ -107,6 +107,7 @@ static func new_run(arc: String, playable_id: String, character_name: String, to
 		"mine_floor": 1,
 		"kills": 0,
 		"intro_done": false,
+		"coll": {},  # C8 collections: each player keeps their own logs (not a co-op world key)
 		"skill_ver": SKILL_VER,
 		"opts": {"difficulty": clampi(int(opts.get("difficulty", Difficulty.DEFAULT)), 0, 3)},
 		"day_len": _valid_len(int(opts.get("day_len", DAY_LEN_DEFAULT))),
