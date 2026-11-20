@@ -137,7 +137,16 @@
    "grump_coral",
    "rock_crab",
    "grump_wisp"
-  ]
+  ],
+  "deep_todo": {
+   "name": "Rainbow Reef Grotto",
+   "forage": [
+    "sun_coral",
+    "moon_coral",
+    "rainbow_anemone"
+   ],
+   "hook": "the reef shrine's underside; Shelly's 'Coral Garden' replant quest"
+  }
  },
  "colony_kelp": {
   "name": "Kelp Hollow",
@@ -276,7 +285,15 @@
    "river_serpent",
    "grump_moss",
    "grump_coral"
-  ]
+  ],
+  "deep_todo": {
+   "name": "Spiral Hollows",
+   "forage": [
+    "glow_kelp",
+    "spiral_shell"
+   ],
+   "hook": "kelp spirals as a star-map puzzle opening a star chest; the Sunken Bell's resting place"
+  }
  },
  "colony_ice": {
   "name": "Frostfin Isle",
@@ -416,7 +433,15 @@
    "grump_frost",
    "ice_wisp",
    "grump_crystal"
-  ]
+  ],
+  "deep_todo": {
+   "name": "Lantern Caves",
+   "forage": [
+    "ice_coral",
+    "aurora_shard"
+   ],
+   "hook": "the frozen Frostfin cats under the ice (now freed by the beacons) left lanterns behind"
+  }
  },
  "colony_ember": {
   "name": "Emberclaw Atoll",
@@ -558,6 +583,14 @@
    "grump_ember",
    "lantern_moth",
    "grump_brute"
-  ]
+  ],
+  "deep_todo": {
+   "name": "Lava Tubes",
+   "forage": [
+    "fire_coral",
+    "obsidian_pearl"
+   ],
+   "hook": "carry an ember from the Never-Out Fire through the tubes (timed, safe failure)"
+  }
  }
 }

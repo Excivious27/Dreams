@@ -261,6 +261,18 @@ for _rid, _st in STORY.items():
     COL[_rid].update({k: v for k, v in _st.items() if k not in ("enemies",)})
     COL[_rid]["enemies"] = _st["enemies"]
     COL[_rid]["foe_kinds"] = list(_st["enemies"])
+# TODO (C7 c7_10, not built yet): one underwater / glow-cave sub-area per island, opened by a
+# dive spot that needs the merkitty tail (Companion.has_ability("tail")). Kept here as data only
+# (nothing reads "deep" yet, nothing in-game promises it): build as colony_<id>_deep regions
+# ("cave": true, "light": 0.6, coral props per colour, glow forage, one chest/puzzle each).
+DEEP = {
+ "colony_coral": {"name": "Rainbow Reef Grotto", "forage": ["sun_coral", "moon_coral", "rainbow_anemone"], "hook": "the reef shrine's underside; Shelly's 'Coral Garden' replant quest"},
+ "colony_kelp": {"name": "Spiral Hollows", "forage": ["glow_kelp", "spiral_shell"], "hook": "kelp spirals as a star-map puzzle opening a star chest; the Sunken Bell's resting place"},
+ "colony_ice": {"name": "Lantern Caves", "forage": ["ice_coral", "aurora_shard"], "hook": "the frozen Frostfin cats under the ice (now freed by the beacons) left lanterns behind"},
+ "colony_ember": {"name": "Lava Tubes", "forage": ["fire_coral", "obsidian_pearl"], "hook": "carry an ember from the Never-Out Fire through the tubes (timed, safe failure)"},
+}
+for _rid, _dp in DEEP.items():
+    COL[_rid]["deep_todo"] = _dp
 # Kelp Hollow's gift no longer repeats the merkitty tail (c7_10): swim faster than any tail.
 COL["colony_kelp"]["ability_desc"] = "You swim a quarter faster than any tail can manage, even through strong currents, no partner needed."
 OUT = {}
