@@ -21,6 +21,9 @@ static var _t := 0.0
 static func data() -> Dictionary:
 	if _data.is_empty():
 		_data = GameState.load_json("res://data/story.json")
+		# Gangster beats (P3, C7) live in story_gang.json: its keys override story.json's.
+		if FileAccess.file_exists("res://data/story_gang.json"):
+			_data.merge(GameState.load_json("res://data/story_gang.json"), true)
 		# Campaign lead-in beats (CampaignGate) live in their own file.
 		var extra: Dictionary = GameState.load_json("res://data/campaign_story.json")
 		for k in ["penguins", "gangsters", "both"]:
