@@ -214,3 +214,8 @@ Queue: C5, C6, C7, C8, C9, C10a, C10b, C11a, C11b, C12, C13, C14, C15, C16, C17,
 
 ## CONDUCT timing (Tom 20:18)
 Every report carries a timing table (audit, sort, fix, merge+CI, package, total, gap since the last CONDUCT ended); the progress sheet has a Timing tab. Target about 1.5-2 h between finished CONDUCTs (Tom 20:22: ideally ~1.5 h all in).
+
+## Added 2026-11-19 22:27-22:37 (Tom)
+- C6 extra package P7 (Tom's phone playtest): early mining/harvesting much slower (work for it, faster with tool tiers/skills); watering can holds water and must be refilled at water (capacity grows with tiers); "planted seeds" toast no longer sticks at the top; the pup's Pack option only shows once you own a pack; inventory drag and drop; sorting options matching Stardew exactly (sort by type/name/value, auto-stack to chests, organise, trash slot, shift-move between bag and chest). Deeper pacing check in C8.
+- C11b: complete review of team, allies, crew, companions and pup: every command, menu, follow/guard/fight, pack, digging, sniffing, swimming, battle team, helpers; seamless, intuitive, works as intended.
+- C14: the town expanded and embellished; the beach region much larger with an expansive tier-based marina (dock upgrades, boats, marina NPCs who work, sell and trade, quests, boat passage to other regions as earned travel, fishing charters), tied into the unified engine (shops, quests, travel tiers, fishing, festivals).
