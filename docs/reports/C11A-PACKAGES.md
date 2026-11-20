@@ -1,0 +1,33 @@
+# CONDUCT 11a fix packages: ranching (classic animals, buildings, care, products, breeding, skill tree, feed, team animals base, helper automation base)
+Findings: /home/claude/wt/c11a_reports/c11a_NN.jsonl (01-20, ~280). Take every finding whose files fall in your OWNS list from ALL files; a finding naming files of several packages goes to the package owning its FIRST file; one-line hooks elsewhere are reported. Design source: c11a_01 (build plan, schema, migration), 02 buildings, 03 care, 04 products, 05 breeding, 06 pens, 07 skill tree, 08 feed, 09 team animals, 10 helpers, 11 villagers, 12 art, 13 audio, 14 tests.
+Rules: all ages: animals never die, are never slaughtered or sold for meat ("rehome" to a villager farm); breeding has no gender checks (any two of a species + the building's breeding upgrade, like Romance); both arcs (gangster flavour words, cash); phone first + pad; every number in gen_ranch.py tables; no money loops (econ_check).
+
+## Shared contract (read first)
+- scripts/ranch.gd is a CONTRACT STUB already on main (owner P1): data(), species(id), st(), animals(), animal(uid), roster(home), tier(home), capacity(home), add(species, home, name, born_day) -> uid, rehome(uid), is_adult(uid), pet(uid), overnight(report) -> lines, source_ok(item), migrate(). Signatures are fixed (P1 may add). data/ranch.json is empty on main: code and test so it works empty AND full (tests may inject Ranch._data).
+- Building tiers (coop/barn/hutch/sty/apiary) are Builds entries priced by gen_stations.py (P3); their capacity/adds/pen rects come from ranch.json "buildings" (P1). P2 places them on the farm.
+- FarmAnimal nodes are keyed by roster uid (P1 changes farm_animal.gd; P2 spawns them from Ranch.roster in farm.gd).
+- Art contract: P6 slices species strips into art/gen/animals/<species>_<anim>_<variant?> (idle/walk/sleep/produce/baby) and buildings into art/gen/buildings/<home>_<tier>(_open) and writes art/gen/animals/_ranch_art.json {species: {anims, variants, baby}} that P1's gen_ranch reads (missing art falls back to existing strips + tint).
+
+## P1 Ranch core (data + runtime)
+OWNS: new tools/gen_ranch.py (+ data/ranch.json, product items written into items.json by the generator), scripts/ranch.gd, scripts/farm_animal.gd, scripts/game_state.gd, scripts/sleep_report.gd, tools/econ_check.py, tools/regen_data.sh, tools/data_sync_check.sh, new tools/ranch_test.gd, tools/save_test.gd.
+DO: c11a_01, 03, 04 (data/runtime parts), 05, 08 all: species table v1 (chicken, duck, cow, sheep, goat, llama, pig, rabbit, bees) both arcs, products with quality from friendship/mood, care loop (feed/water/pet/mood/friendship, weather/season inside-outside, no death), breeding/babies/variants/naming, feed economy (hay/silo/grazing/feed crops), roster migration from today's builds/run.animals (LEGACY table, SAVE_VERSION bump), overnight report lines, source_ok for favours/quests, rehome. Self-checks in gen_ranch (ids, art, prices via econ_check, all-ages words). Test ranch_test.gd (care/product/breeding day sim both arcs, migration round trip).
+
+## P2 Farm placement, buildings, pens, interiors
+OWNS: scripts/farm.gd, scripts/builds.gd, scripts/game_map.gd, scripts/interior.gd, scripts/net.gd, scripts/project.gd, new tools/pen_test.gd.
+DO: c11a_02, 06 all + farm/game_map parts of 03/04/05/10: spawn FarmAnimal per Ranch.roster, pens/pastures from ranch.json pen rects (space rule), fences and gates, pasture grass regrowth, night/rain return to buildings (open/closed door art), coop/barn interiors to walk in (troughs, feeders, incubator interaction), product pickup, petting/brushing/feeding interactions and hints ("A: Clover (hungry)"), animal emotes, pathing inside pens (flow_dir/keep_off), yard decor not inside pens, co-op guest rules.
+
+## P3 Generators: buildings, processing, skill tree, shops, collections
+OWNS: tools/gen_stations.py (+ data/buildings.json, station books), tools/gen_skill_trees.py (+ skills data), scripts/shops.gd, tools/gen_collections.py, scripts/crafting.gd.
+DO: c11a_02 (tier costs/blueprints), 04 (processing stations: cheese press, loom, mayo machine, honey extractor, oil maker, truffle), 07 all (a full Ranching tree: production, quality, breeding, care, auto-feed, friendship, trained helpers; effect keys read via GameState.bonus: list the keys P1/P2/P4 must read in your report and add the reads yourself only in your files; caps mirrored; icons via skill-icon-order), 08 shop parts (animal seller stock, feed/hay prices), ranch log in collections. Drop gen_stations' hard-coded coop/barn costs in favour of the ranch tiers.
+
+## P4 Team animals and helper automation base
+OWNS: new scripts/team_animals.gd, new tools/gen_team_animals.py, scripts/team_beast.gd, new scripts/helpers.gd, new tools/gen_helpers.py, scripts/pet.gd, scripts/companion.gd, scripts/helper_unit.gd, scripts/battle.gd, scripts/char_sheet.gd, scripts/game_menu.gd, new tools/team_animals_test.gd.
+DO: c11a_09, 10 all + menu parts: training path for raised animals (a roster uid flagged team via Ranch), abilities, a team slot unified with Companion/HelperUnit, battle team integration; helper automation base (assign pup/crew/team animals to water/feed/harvest/pet/forage, work amounts, energy, deposit to Storage chests, levels); an Animals page in the game menu (roster, names, hearts, rename, rehome, team toggle) with pad cursor.
+
+## P5 Villagers, quests, mail, festivals, audio
+OWNS: scripts/mail.gd, scripts/romance.gd, scripts/town.gd, scripts/ambience.gd, tools/cc0_import.py, tools/cc0_sources.json, tools/gen_heart_perks.py, tools/write_hearts.py, data/quests.json, scripts/intros.gd.
+DO: c11a_11, 13 all: who sells animals (counter, hours) and what they say, first-animal/product letters, favour letters asking for ranch goods via Ranch.source_ok, heart perks and quests tied to ranching, animal show festival day hooks, spouse ranch chores (romance), gangster flavour; each species' voice + barn/coop beds via CC0 (licences recorded), GameMap.animal_voice table is in game_map.gd (P2): report the names.
+
+## P6 Art
+OWNS: new tools/slice_c11a.py, art/gen/animals/*, art/gen/buildings/{coop,barn,hutch,sty,apiary}_*, art/incoming/c11a/* (new renders only), tools/missing_art.py, docs/MISSING-ART.md.
+DO: c11a_12 all: species strips (idle/walk/sleep/produce/baby, variants) for pig, rabbit, bees/hive and any classic gaps, building tiers exterior (+ _open) and interiors, product icons, processing stations; reuse the 13 sliced-but-unused animal sheets and ranch props first; write art/gen/animals/_ranch_art.json; art_audit --fix <ids>, set_import_lossy, contact sheet once. Budget: up to 45 images.
