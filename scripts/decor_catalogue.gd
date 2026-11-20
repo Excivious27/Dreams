@@ -484,6 +484,7 @@ func _ready() -> void:
 	_cur = ScreenCursor.make(self, _root)
 	_cur.on_alt = _pad_alt
 	_cur.on_page = func(_d: int) -> void: _turn(1)
+	_cur.on_move = _edge_move
 	_refresh()
 
 
@@ -648,6 +649,33 @@ func _turn(dir: int) -> void:
 	sel = ""
 	_sfx("page")
 	_refresh()
+
+
+## Pad: left/right past the grid's edge turns the page (the cursor lands on the same row).
+func _edge_move(dir: Vector2) -> bool:
+	if view != "grid" or _cur.cur == null or not is_instance_valid(_cur.cur) or dir.y != 0.0:
+		return false
+	var k := _cur.key_of(_cur.cur)
+	if not k.begins_with("cell:"):
+		return false
+	var list := filtered()
+	var pages := maxi(1, int(ceil(list.size() / float(PAGE))))
+	if pages <= 1:
+		return false
+	var i := list.find(k.trim_prefix("cell:")) - part * PAGE
+	if i < 0:
+		return false
+	var col := i % COLS
+	var row := i / COLS
+	var last := mini(PAGE, list.size() - part * PAGE) - 1
+	if not ((dir.x < 0.0 and col == 0) or (dir.x > 0.0 and (col == COLS - 1 or i == last))):
+		return false
+	_turn(1 if dir.x > 0.0 else -1)
+	var shown := list.slice(part * PAGE, part * PAGE + PAGE)
+	if not shown.is_empty():
+		var j := clampi(row * COLS + (0 if dir.x > 0.0 else COLS - 1), 0, shown.size() - 1)
+		_cur.select_key.call_deferred("cell:" + str(shown[j]))
+	return true
 
 
 func _pad_alt(c: Control) -> void:

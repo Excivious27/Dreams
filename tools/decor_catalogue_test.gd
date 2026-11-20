@@ -185,6 +185,14 @@ func _run() -> void:
 		if str((b as Control).get_meta("pc_key", "")) == "act:order":
 			has_order = true
 	check(has_order, "card of a seen piece offers Order")
+	DecorCatalogue.sel = ""
+	scr._refresh()
+	await frames(2)
+	var fl := DecorCatalogue.filtered()
+	scr._cur.select_key("cell:" + str(fl[DecorCatalogue.COLS - 1]))
+	check(scr._edge_move(Vector2.RIGHT) and DecorCatalogue.part == 1, "pad right past the grid edge turns the page")
+	await frames(2)
+	check(scr._edge_move(Vector2.LEFT) and DecorCatalogue.part == 0, "pad left past the edge turns back")
 	scr._turn(1)
 	check(DecorCatalogue.part == 1, "Page › turns the page")
 	scr.cycle_chip(1, -1)
