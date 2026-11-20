@@ -153,7 +153,7 @@ func _ready() -> void:
 	if seen(mode) and mode != "drill":
 		_hide = Button.new()
 		# Keys/pad: the "action" button (X key / pad Y) presses it (C9 c9_02).
-		_hide.text = "Don't show again" if TouchControls.visible_controls else "Don't show again (%s)" % InputSetup.prompt("action")
+		_hide.text = "Don't show again" if TouchControls.visible_controls else "Don't show (%s)" % InputSetup.prompt("action")
 		_hide.custom_minimum_size = Vector2(100, 24)
 		_hide.add_theme_font_size_override("font_size", 7)
 		_hide.focus_mode = Control.FOCUS_NONE

@@ -1,5 +1,6 @@
 Area,System / feature,Status,Percent,Tests,Notes
 Core,"Engine, portrait 270x480, touch D-pad + A/B/MENU, input actions",done,95,"smoke_test, desktop_layout_test, touch_ui_test","C2: desktop/landscape fills the screen (DisplayMode), F11/fullscreen, touch controls auto-hide on computers; phones unchanged"
+Core,"Controllers: pad bindings, remap API, device prompts, PadFocus/PadCursor, analog walk",in progress,75,pad_test (not in check.sh),"C9 P1: every action on a pad, hot-plug, touch pad hides on a pad; menus/chest/craft/title pad navigation lands with P2/P3/P5 (PadFocus/PadCursor hooks)"
 Core,"Title, character creator, outfits, hair colours",done,90,creator_test (not in check.sh),19 playable characters (data/playable.json)
 Core,"Saves, 3 slots, migrations, settings page",done,90,"systems_test, storage_test",No save export/import yet (audit 17b deferred)
 Core,"Web build + PWA, deploy on push",done,90,CI runs check.sh,"Pack size/memory and loading bar still open (audit 17b F12, W15/W16)"
@@ -33,9 +34,9 @@ Systems,"Community farm (Commons), 8 stages, volunteers",done,95,"commons_test, 
 Systems,"Collections: museum, shipping log, fish log, cookbook/crafting/forage logs, milestones (badges)",done,85,"collections_test, gang_flavour_test, save_test, coop_test","C8 P3: Valley Museum / Curio Room (library east wing, 59 pieces in 4 wings, donation tray, Theo letters), Book menu tab, milestone letters + farmhouse decor + Curator's Loupe; open: wildlife log or bug catching (Tom), museum cases not synced to co-op guests"
 Systems,Haptics (phone vibration),missing,0,none,Audit 17b W7; Claude can build
 Multiplayer,Co-op up to 8 through relay (host-authoritative),rough,55,"coop_test, net_test (needs relay, not in check.sh)",Relay not deployed; audit 17b net findings F1-F11 partly fixed
-Art,"19,394 sliced pieces in 653 groups; Prompts 17-30 drawn",rough,88,"crisp_art_test, art_audit",C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs
+Art,"19,401 sliced pieces in 653 groups; Prompts 17-30 drawn",rough,88,"crisp_art_test, art_audit",C2: CrispArt shader; fuzzy-art ranking docs/FUZZY-ART.md (buildings to redraw C5); Tom: gangster heroes need unique One-Piece-level designs
 Audio,"105 music tracks (ACE), 467 sfx files, 61 ambience beds",done,97,"music_map_test, danger_music_test, sfx_audit","C6: seamless loops (numpy crossfade + loop points), 30 re-renders + new tracks, all sfx re-softened from source, real CC0 ambience/animal/war-horn sounds, music engine ducking/resume/prefetch, footsteps by ground"
-QA,"Headless tests, bots, playtest",done,85,101 *_test.gd; 95 run in check.sh,char_sheet/creator/hearts/ui/reach/net tests run outside check.sh
+QA,"Headless tests, bots, playtest",done,85,107 *_test.gd; 100 run in check.sh,char_sheet/creator/hearts/ui/reach/net tests run outside check.sh
 Systems,"Arcade: Block Jumper, Neon/Crystal Stack, Whack-a-Grump, Claw, Duck Pond, Skee-Ball",done,92,"arcade_test, jumper_test, stack_whack_test, rec_games_test, touch_ui_test","C2: pause card, curves, scoring, real Skee-Ball, checkpoints/respawn, tap-to-jump"
 Systems,"Decor and cosmetics ecosystem (furniture, wallpaper, floors, exteriors, outdoor decor, apparel, footwear; rarity to one-of-a-kind)",missing,5,none,Tom: CONDUCT 10
 Systems,"Seasonal content (festivals, holidays, seasonal items/quests per season, year-2+ events)",rough,45,none,Tom: CONDUCT 15
