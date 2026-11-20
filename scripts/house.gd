@@ -473,7 +473,10 @@ func _seed_starters() -> void:
 		if id == "" or done.has(key):
 			continue
 		done[key] = int(GameState.run.get("day", 1))
-		if DecorMode.why_not(self, id, c) == "":
+		DecorMode._no_people = true  # seeding is about the layout, not where you stand right now
+		var why := DecorMode.why_not(self, id, c)
+		DecorMode._no_people = false
+		if why == "":
 			list.append({"id": id, "cell": [c.x, c.y], "rot": 0})
 		else:
 			DecorMode._box_back(id)
