@@ -1317,7 +1317,7 @@ static func has_perk(skill: String, perk_name: String) -> bool:
 const BONUS_CAPS := {"farm_energy": 0.6, "mine_energy": 0.6, "block": 0.25, "crit": 0.3, "damage_reduction": 0.35, "wood_discount": 0.6,
 	"stone_discount": 0.6, "build_discount": 0.6, "spell_discount": 0.6, "craft_speed": 0.6, "escape_less": 0.5, "pass_risk": 0.2,
 	"heat_cool": 0.6, "ability_cooldown": 0.5, "capture_speed": 0.8, "spawner_discount": 0.6, "ticket_bleed": 1.0, "ticket_guard": 0.6, "colony_discount": 0.5, "double_hit": 0.6, "double_harvest": 0.6, "double_fish": 0.6,
-	"star_chance": 0.5, "gem_chance": 0.8, "chest_chance": 0.4, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.5,
+	"star_chance": 0.5, "gem_chance": 0.16, "chest_chance": 0.15, "bite_speed": 0.6, "interest": 0.05, "buy_discount": 0.5,
 	"sell_bonus": 0.30, "crop_value": 0.35, "fish_value": 0.5, "ore_bonus": 0.6, "extra_crop": 0.3, "forage_bonus": 12.0,
 	"rare_fish": 0.4, "rare_forage": 0.3, "growth": 0.5, "extra_day": 0.25, "shard_bonus": 1.5, "gift_bonus": 10.0, "mana_regen": 3.0,
 	"animal_yield": 1.0, "sap_chance": 1.0, "pet_def": 6.0, "pet_speed": 0.6, "supply_rate": 1.0,
