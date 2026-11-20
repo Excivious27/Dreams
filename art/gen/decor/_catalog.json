@@ -1227,14 +1227,15 @@
  },
  {
   "arc": "penguins",
+  "c10b": false,
   "cat": "wall_art",
   "glow": 0,
   "id": "dc_catkins_bell",
   "layer": "wall",
   "name": "Wind Bell",
   "px": [
-   14,
-   48
+   13,
+   43
   ],
   "rarity": "common",
   "rot": 1,
@@ -2431,11 +2432,34 @@
  },
  {
   "arc": "gangsters",
+  "c10b": false,
   "cat": "wall_art",
   "glow": 0,
   "id": "dc_gart_car_plate",
   "layer": "wall",
   "name": "Vintage Car Plates",
+  "px": [
+   48,
+   47
+  ],
+  "rarity": "common",
+  "rot": 1,
+  "set": "",
+  "sheet": "wallart_gang.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "gangsters",
+  "c10b": false,
+  "cat": "wall_art",
+  "colourway_of": "dc_gart_car_plate",
+  "glow": 0,
+  "id": "dc_gart_car_plate_navy",
+  "layer": "wall",
+  "name": "Navy Licence Plate",
   "px": [
    48,
    47
@@ -4264,6 +4288,27 @@
   "rot": 1,
   "set": "",
   "sheet": "lights_both.png",
+  "size": [
+   1,
+   1
+  ]
+ },
+ {
+  "arc": "both",
+  "c10b": true,
+  "cat": "decor",
+  "glow": 0,
+  "id": "dc_lucky_cat_gold",
+  "layer": "floor",
+  "name": "Golden Lucky Cat",
+  "px": [
+   28,
+   31
+  ],
+  "rarity": "rare",
+  "rot": 1,
+  "set": "",
+  "sheet": "out_fix_pieces.png",
   "size": [
    1,
    1
@@ -7074,14 +7119,15 @@
  },
  {
   "arc": "both",
+  "c10b": false,
   "cat": "decor",
   "glow": 0,
   "id": "dc_top_hourglass",
   "layer": "top",
   "name": "Hourglass",
   "px": [
-   17,
-   30
+   16,
+   29
   ],
   "rarity": "rare",
   "rot": 1,
@@ -7094,13 +7140,14 @@
  },
  {
   "arc": "both",
+  "c10b": false,
   "cat": "decor",
   "glow": 18,
   "id": "dc_top_ice_crystal",
   "layer": "top",
   "name": "Ice Cube Paperweight",
   "px": [
-   18,
+   21,
    30
   ],
   "rarity": "rare",

@@ -365,6 +365,21 @@ def _open(group, name):
     return Image.open(_out(group, name)).convert("RGBA")
 
 
+ORIG_REV = "bfe8a6c34"    # C10b base: crop/trim fixes always start from the art as it was (re-runnable)
+
+
+def _orig(group, name):
+    import io, subprocess
+    from PIL import Image
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    try:
+        b = subprocess.run(["git", "-C", root, "show", "%s:art/gen/%s/%s.png" % (ORIG_REV, group, name)],
+                           capture_output=True, check=True).stdout
+        return Image.open(io.BytesIO(b)).convert("RGBA")
+    except Exception:
+        return _open(group, name)
+
+
 def fix_tex():
     """Periodic redraws of seamless pieces with cross-fade ghosts (c10b_08-01/02/03/16)."""
     import numpy as np
@@ -374,7 +389,11 @@ def fix_tex():
     boxes = A.swatch_boxes(a)
     hows = {}
     for nm, b in zip(["dc_wp_penguin_print", "dc_fl_tatami", "dc_fl_casino_carpet", "fl_carpet_purple"], boxes):
-        im, how = A.tile_from(a[b[1]:b[3], b[0]:b[2]])
+        sw = a[b[1]:b[3], b[0]:b[2]]
+        if nm in ("dc_wp_penguin_print", "dc_fl_tatami"):
+            im, how = _exact_tile(sw)
+        else:
+            im, how = A.tile_from(sw)
         hows[nm] = how
         if nm == "dc_wp_penguin_print":
             # the wall shows rows 0-63: roll (exact wrap) so the quietest row is the top edge,
@@ -390,6 +409,29 @@ def fix_tex():
         A.save(im, nm)
         A.save(im.crop((112, 112, 144, 144)), nm + "_icon")
     return hows
+
+
+def _exact_tile(sw):
+    """Two pattern periods on axes with a short period, one period between the dark border lines on
+    long ones (tatami mats): the 256 output wraps exactly and the wall's 64-px band holds whole rows."""
+    import numpy as np
+    from PIL import Image
+    l = sw[..., :3].mean(2)
+    out = []
+    for axis in (1, 0):
+        pr = A._period(l, axis)
+        if pr:
+            out.append((0, 2 * pr, pr))
+            continue
+        prof = l.mean(0 if axis == 1 else 1)
+        dark = np.where(prof < prof.mean() - 25)[0]
+        starts = [int(d) for k, d in enumerate(dark) if k == 0 or d != dark[k - 1] + 1]
+        out.append((starts[0], starts[1], starts[1] - starts[0]) if len(starts) > 1 else (0, len(prof), 0))
+    (x0, x1, px), (y0, y1, py) = out
+    crop = sw[y0:y1, x0:x1].astype(np.uint8)
+    im = Image.fromarray(crop).resize((256, 256), Image.LANCZOS).convert("RGBA")
+    a = np.asarray(im).copy(); a[..., 3] = 255
+    return Image.fromarray(a), "exact x:%d y:%d" % (px, py)
 
 
 # piece fixes from out_fix_pieces.png: (cell, id, how, box)  how: wall/top/floor
@@ -466,7 +508,7 @@ def fix_colourways():
 
 
 def _trim_rows(group, name, top=0, bottom=0):
-    im = _open(group, name)
+    im = _orig(group, name)
     im = im.crop((0, top, im.width, im.height - bottom))
     bb = im.getbbox()
     _write(im.crop(bb) if bb else im, group, name)
@@ -493,15 +535,15 @@ def fix_crops(cat):
     from PIL import Image
     # caption plates baked into catalogue furniture
     for nm, top, bottom in (("table2_long4", 9, 0), ("table2_round", 9, 0), ("dog_bed", 3, 0)):
-        im = _open("furniture", nm)
+        im = _orig("furniture", nm)
         t = _band_top(im) or top
         _trim_rows("furniture", nm, top=t)
-    im = _open("furniture", "library_ladder")       # 'Library Ladder' text rows 51-55
+    im = _orig("furniture", "library_ladder")       # 'Library Ladder' text rows 51-55
     a = np.asarray(im).copy()
     a[50:, :, 3] = 0
     _write(Image.fromarray(a).crop(Image.fromarray(a).getbbox()), "furniture", "library_ladder")
     # two stacked plates: red keeps the id, navy becomes a colourway
-    im = _open(GROUP, "dc_gart_car_plate")
+    im = _orig(GROUP, "dc_gart_car_plate")
     al = np.asarray(im)[..., 3] > 0
     rows = np.where(~al.any(1))[0]
     gap = [y for y in rows if 8 < y < im.height - 8]
@@ -514,7 +556,7 @@ def fix_crops(cat):
         cat["dc_gart_car_plate_navy"] = dict(e, id="dc_gart_car_plate_navy", name="Navy Licence Plate", colourway_of="dc_gart_car_plate")
         e["name"] = e["name"] if "Plate" in e["name"] else "Red Licence Plate"
     # reed mats: one uncut sheet for two pieces
-    src = _open("furniture", "reed_mat_b")
+    src = _orig("furniture", "reed_mat_b")
     a = np.asarray(src)
     cols = a[..., 3].max(0) > 0
     mid = src.width // 2
@@ -524,7 +566,7 @@ def fix_crops(cat):
     _write(left.crop(left.getbbox()), "furniture", "reed_mat_b")
     _write(right.crop(right.getbbox()), "furniture", "reed_mat_round")
     # echo shell: drop the neighbour sliced into its left third
-    im = _open("items", "echo_shell")
+    im = _orig("items", "echo_shell")
     from slice_comp import blobs
     bl = blobs(np.asarray(im), merge=1, min_area=4)
     if len(bl) > 1:
@@ -575,38 +617,53 @@ def _defringe(im):
     return Image.fromarray(a.astype(np.uint8)), n
 
 
+SLIVERS = ["cattail_pot", "telescope2", "shelf_misc", "chandelier"]   # c10b_08-15/20
+
+
+def _drop_slivers(im):
+    """Clear small separate pieces touching the image edge (neighbour slivers from the sheet)."""
+    import numpy as np
+    from PIL import Image
+    from scipy import ndimage
+    a = np.asarray(im).copy()
+    lab, n = ndimage.label(a[..., 3] > 0, structure=np.ones((3, 3)))
+    if n < 2:
+        return im
+    sizes = ndimage.sum(np.ones(lab.shape), lab, range(1, n + 1))
+    big = sizes.max()
+    for k in range(1, n + 1):
+        ys, xs = np.where(lab == k)
+        edge = xs.min() <= 1 or ys.min() <= 1 or xs.max() >= a.shape[1] - 2
+        if edge and sizes[k - 1] < 0.03 * big:
+            a[lab == k, 3] = 0
+    return Image.fromarray(a)
+
+
 def fix_furniture():
-    """Trim the 9-px pads (pieces float above their cell) and clear magenta key halos (c10b_08-23/31).
-    Interiors fit these by size and ART_CROP lists none of them."""
-    for nm in DEFRINGE:
-        if os.path.exists(_out("furniture", nm)):
-            im, n = _defringe(_open("furniture", nm))
-            if n:
-                _write(im, "furniture", nm)
-    for nm in PAD_TRIM:
-        p = _out("furniture", nm)
-        if not os.path.exists(p):
+    """Clear magenta key halos and trim the 9-px pads (pieces float above their cell) (c10b_08-23/31).
+    Interiors fit these by size and ART_CROP lists none of them. Starts from the original art."""
+    from PIL import Image
+    S = _S()
+    for nm in sorted(set(DEFRINGE) | set(PAD_TRIM) | set(SLIVERS)):
+        if not os.path.exists(_out("furniture", nm)):
             continue
-        S = _S()
-        info = S.manifest.get("furniture", {}).get(nm, {})
-        im = _open("furniture", nm)
-        fr = int(info.get("frames", 1) or 1)
-        if fr > 1:      # strip: one box across all frames
+        im = _orig("furniture", nm)
+        if nm in SLIVERS:
+            im = _drop_slivers(im)
+        if nm in DEFRINGE:
+            im, _ = _defringe(im)
+        if nm in PAD_TRIM:
+            fr = int(S.manifest.get("furniture", {}).get(nm, {}).get("frames", 1) or 1)
             fw = im.width // fr
-            boxes = [im.crop((k * fw, 0, (k + 1) * fw, im.height)).getbbox() for k in range(fr)]
-            boxes = [b for b in boxes if b]
-            x0, y0 = min(b[0] for b in boxes), min(b[1] for b in boxes)
-            x1, y1 = max(b[2] for b in boxes), max(b[3] for b in boxes)
-            frames = [im.crop((k * fw + x0, y0, k * fw + x1, y1)) for k in range(fr)]
-            from PIL import Image
-            out = Image.new("RGBA", ((x1 - x0) * fr, y1 - y0))
-            for k, f in enumerate(frames):
-                out.paste(f, (k * (x1 - x0), 0))
-            _write(out, "furniture", nm)
-        else:
-            bb = im.getbbox()
-            if bb and bb != (0, 0, im.width, im.height):
-                _write(im.crop(bb), "furniture", nm)
+            boxes = [b for b in (im.crop((k * fw, 0, (k + 1) * fw, im.height)).getbbox() for k in range(fr)) if b]
+            if boxes:   # one box across all frames
+                x0, y0 = min(b[0] for b in boxes), min(b[1] for b in boxes)
+                x1, y1 = max(b[2] for b in boxes), max(b[3] for b in boxes)
+                out = Image.new("RGBA", ((x1 - x0) * fr, y1 - y0))
+                for k in range(fr):
+                    out.paste(im.crop((k * fw + x0, y0, k * fw + x1, y1)), (k * (x1 - x0), 0))
+                im = out
+        _write(im, "furniture", nm)
 
 
 # =====================================================================================
