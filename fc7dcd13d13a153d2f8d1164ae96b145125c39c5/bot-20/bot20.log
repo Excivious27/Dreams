@@ -1,0 +1,9 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 20 start arc=gangsters hero=pax style=menus progress=5 difficulty=2 day_len=15
+BOT FAIL [20 menus] screen won't close on B/MENU in bf_orchard_line: PadCursor, Scenery, NightGlow, GameMenu, BattleDrill, BattleBrief [menu open=false panel=false tab=Items rebind='' was_paused=false modal=[P: (0.0, 0.0), S: (270.0, 480.0)]] layers=["Dialogue(8)[\"@PanelContainer@188:PanelContainer\", \"@Button@198:Button\"]", "@CanvasLayer@52952(3)[\"@Node2D@52953:Node2D\"]", "@CanvasLayer@52955(1)[\"@Node2D@52956:Node2D\"]", "@CanvasLayer@52965(5)[\"@Control@52966:Control\", \"@CanvasLayer@52967:CanvasLayer\", \"@ColorRect@52969:ColorRect\"]", "@CanvasLayer@52970(10)[\"@Control@52971:Control\"]", "@CanvasLayer@52972(9)[\"@PanelContainer@52973:PanelContainer\"]", "@CanvasLayer@53000(5)[\"@Control@53001:Control\", \"@Button@53002:Button\", \"@Control@53003:Control:battle_drill.gd\"]", "@CanvasLayer@53222(65)[\"@Control@53223:Control\"]"] last=Hero >  act=menu_crawl
+BOT 20 done: 1 fails, 0 warns, 359 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "farm", "orchard_hills", "highlands", "neon", "gilt_grand_plaza", "hollow_deeps"], day 4, ◆5895
+WARNING: 153 RIDs of type "CanvasItem" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2678)
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

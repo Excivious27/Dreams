@@ -1,0 +1,146 @@
+
+#### step 1: import (shard 4/6)
+== import ==
+[  97% ] [90m[1mreimport[22m | getup.png[39m[0m
+[  97% ] [90m[1mreimport[22m | guard.png[39m[0m
+[  97% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  97% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  97% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  98% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  98% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  98% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  98% ] [90m[1mreimport[22m | produce.png[39m[0m
+[  98% ] [90m[1mreimport[22m | sad.png[39m[0m
+[  99% ] [90m[1mreimport[22m | sleep.png[39m[0m
+[  99% ] [90m[1mreimport[22m | walk.png[39m[0m
+[  99% ] [90m[1mreimport[22m | eat.png[39m[0m
+[  99% ] [90m[1mreimport[22m | happy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | icon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | idle.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (703 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 71.0s
+
+#### step 5: exits and spawns (shard 4/6)
+== exits and spawns ==
+exit_check: 0 failures
+#### step 5 exits and spawns: PASS in 31.8s
+
+#### step 11: C8 core curves: levels, caps, swings, food, prices, sleep (shard 4/6)
+== C8 core curves: levels, caps, swings, food, prices, sleep ==
+  pacing (level reached with steady XP/day): xp/day | d28 | d112 | d224 | d336
+  swings by tool tier (level 1): tree [7, 5, 4, 3, 2, 2, 1, 1], stone [3, 2, 2, 1, 1, 1, 1, 1], ore [6, 5, 4, 3, 2, 2, 1, 1]
+c8_curve_test: 0 failures
+#### step 11 C8 core curves: levels, caps, swings, food, prices, sleep: PASS in 2.4s
+
+#### step 17: performance guards (batched cliffs, texture cache) (shard 4/6)
+== performance guards (batched cliffs, texture cache) ==
+perf_test: 0 failures
+#### step 17 performance guards (batched cliffs, texture cache): PASS in 2.3s
+
+#### step 23: storage_test (shard 4/6)
+storage_test: 0 failures
+#### step 23 storage_test: PASS in 2.4s
+
+#### step 29: ticket_econ_test (shard 4/6)
+ticket_econ_test: 0 failures
+#### step 29 ticket_econ_test: PASS in 2.4s
+
+#### step 35: gang_play_test (shard 4/6)
+gang_play_test: 0 failures
+difficulty_test: 99 checks, 0 failures
+day_length_test: 28 checks, 0 failures
+#### step 35 gang_play_test: PASS in 18.2s
+
+#### step 41: house_exterior_test (shard 4/6)
+house exterior test: PASS (0 fails)
+#### step 41 house_exterior_test: PASS in 5.4s
+
+#### step 47: shop_econ_test (shard 4/6)
+shop_econ_test: 0 failures
+#### step 47 shop_econ_test: PASS in 2.7s
+
+#### step 53: early_gating_test (shard 4/6)
+early_gating_test: PASS (0 fails)
+#### step 53 early_gating_test: PASS in 3.3s
+
+#### step 59: music: loop points are applied (data/music_loops.json) (shard 4/6)
+== music: loop points are applied (data/music_loops.json) ==
+music_loops_test: 50 entries, 0 failures
+#### step 59 music: loop points are applied (data/music_loops.json): PASS in 2.5s
+
+#### step 65: economy: no money loops, crops and brews inside their bands (shard 4/6)
+== economy: no money loops, crops and brews inside their bands ==
+econ check: 134 crops, 405 recipes, 2 warnings, 0 failures
+#### step 65 economy: no money loops, crops and brews inside their bands: PASS in 0.0s
+
+#### step 71: footstep_test (shard 4/6)
+footstep_test: 0 failures
+#### step 71 footstep_test: PASS in 5.4s
+
+#### step 77: keeper encounters keep real hp (floor-1 swarms topped up) (shard 4/6)
+== keeper encounters keep real hp (floor-1 swarms topped up) ==
+keeper_min_hp_test: 0 failures
+#### step 77 keeper encounters keep real hp (floor-1 swarms topped up): PASS in 3.4s
+
+#### step 83: region campaigns: boards, locks, convoy (shard 4/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 83 region campaigns: boards, locks, convoy: PASS in 6.9s
+
+#### step 89: farm_debris_test (shard 4/6)
+farm_debris_test: 0 fails
+#### step 89 farm_debris_test: PASS in 4.1s
+
+#### step 95: skill_glow_test (shard 4/6)
+skill_glow_test: 0 fails
+#### step 95 skill_glow_test: PASS in 3.7s
+
+#### step 101: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 4/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 101 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 10.7s
+
+#### step 107: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 4/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 107 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 8.9s
+
+#### step 113: jumper_test (shard 4/6)
+jumper_test: 0 failures
+#### step 113 jumper_test: PASS in 2.6s
+
+#### step 119: toasts: never over a boss card, a region card, the pup strip or the en (shard 4/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 119 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 7.5s
+
+#### step 125: C11a P5: ranch villagers, mail, festivals, pen sounds (shard 4/6)
+== C11a P5: ranch villagers, mail, festivals, pen sounds ==
+ranch_villagers_test: OK
+#### step 125 C11a P5: ranch villagers, mail, festivals, pen sounds: PASS in 2.8s
+
+#### step 131: C9 P2: game menu with keys/pad (shard 4/6)
+== C9 P2: game menu with keys/pad ==
+menu_pad_test: 0 failures
+#### step 131 C9 P2: game menu with keys/pad: PASS in 3.6s
+
+#### step 137: C9 P6: generated data in sync (shard 4/6)
+== C9 P6: generated data in sync ==
+regen_data: ok (21 generators)
+data_sync_check: 0 failures
+#### step 137 C9 P6: generated data in sync: PASS in 21.4s
+
+#### shard 4/6 done in 226s: PASS

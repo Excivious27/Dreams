@@ -1,0 +1,24 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 165.4}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 5.9}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 3.5}
+{"step": 15, "name": "phone_ui_test", "rc": 0, "secs": 12.5}
+{"step": 21, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 3.4}
+{"step": 27, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 24.6}
+{"step": 33, "name": "bowling_test", "rc": 0, "secs": 18.1}
+{"step": 39, "name": "pen_test", "rc": 0, "secs": 4.6}
+{"step": 45, "name": "move_target_test", "rc": 0, "secs": 18.1}
+{"step": 51, "name": "gang_flavour_test", "rc": 0, "secs": 3.3}
+{"step": 57, "name": "every sound the game asks for exists", "rc": 0, "secs": 4.3}
+{"step": 63, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.3}
+{"step": 69, "name": "mix_test", "rc": 0, "secs": 5.0}
+{"step": 75, "name": "gifts: the Marked and boss powers", "rc": 0, "secs": 7.4}
+{"step": 81, "name": "campaign: battles, projects, colonies, big mines", "rc": 0, "secs": 8.0}
+{"step": 87, "name": "street_bat_test", "rc": 0, "secs": 3.2}
+{"step": 93, "name": "campaign_c3_test", "rc": 0, "secs": 3.2}
+{"step": 99, "name": "story: every chapter plays to the end", "rc": 0, "secs": 14.4}
+{"step": 105, "name": "mega UI: map pins, travel letters, mega quests, boss themes, caves (C4", "rc": 0, "secs": 5.5}
+{"step": 111, "name": "hidden areas stay put day to day (C5)", "rc": 0, "secs": 5.8}
+{"step": 117, "name": "softlocks: every menu/screen leaves on B, dialogues always finish", "rc": 0, "secs": 7.7}
+{"step": 123, "name": "C7 P3: endings and epilogue", "rc": 0, "secs": 3.3}
+{"step": 129, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 11.8}
+{"step": 135, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.2}

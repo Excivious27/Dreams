@@ -1,0 +1,36 @@
+CONDUCT CI FAIL  fc7dcd13d1  (ci/c11a-5e8fa2b6, run 44832114270)
+
+check shards (6/6):
+  shard 1: PASS  253s
+  shard 2: PASS  343s
+  shard 3: PASS  460s
+  shard 4: PASS  226s
+  shard 5: PASS  177s
+  shard 6: PASS  387s
+bots (20/20, finished 20):
+  bot1  1 penguins kairi wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 94s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["marsh", "lake", "wind_s
+  bot2  2 penguins penguin_f story 1 2 20    OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["mountain", "mine", "far
+  bot3  3 penguins penguin_m fighter 2 3 40  OK   errors=0 fails=0 warns=0 pauses=0 127s  0 fails, 0 warns, 630 steps, 1 kills, 0 ownerless pauses, scenes ["ruins", "sky_reaches", 
+  bot4  4 penguins merry farmer 0 2 30       OK   errors=0 fails=0 warns=0 pauses=0 59s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "desert_dune_sea
+  bot5  5 penguins coco menus 1 1 15         OK   errors=0 fails=0 warns=0 pauses=0 89s  0 fails, 0 warns, 333 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "colony_kelp",
+  bot6  6 penguins mer story 3 2 20          OK   errors=0 fails=0 warns=0 pauses=0 102s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "colony_ember", 
+  bot7  7 penguins coldy fighter 4 3 40      OK   errors=0 fails=0 warns=0 pauses=0 189s  0 fails, 0 warns, 630 steps, 11 kills, 0 ownerless pauses, scenes ["ruins", "mine", "waste
+  bot8  8 penguins big_jim wander 5 2 30     OK   errors=0 fails=0 warns=0 pauses=0 98s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "countrysid
+  bot9  9 penguins custom farmer 2 1 20      OK   errors=0 fails=0 warns=0 pauses=0 62s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["house", "farm"], day 4,
+  bot10 10 penguins pax story 5 2 15         OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["crystal_meadow", "moon"
+  bot11 11 gangsters dad wander 0 0 15       OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["moon", "forest", "lake"
+  bot12 12 gangsters mom story 1 2 30        OK   errors=0 fails=0 warns=0 pauses=0 93s  0 fails, 0 warns, 629 steps, 0 kills, 0 ownerless pauses, scenes ["lake", "mine", "moon", 
+  bot13 13 gangsters june fighter 2 3 40     OK   errors=0 fails=0 warns=0 pauses=0 167s  0 fails, 0 warns, 630 steps, 9 kills, 0 ownerless pauses, scenes ["desert_sunken_temple", 
+  bot14 14 gangsters rafe farmer 0 1 20      OK   errors=0 fails=0 warns=0 pauses=0 57s  0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "crystal
+  bot15 15 gangsters nia menus 3 2 15        OK   errors=0 fails=0 warns=0 pauses=0 96s  0 fails, 0 warns, 360 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "moon", "mount
+  bot16 16 gangsters ollie story 4 2 30      OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "mountai
+  bot17 17 gangsters marisol fighter 5 3 40  OK   errors=0 fails=0 warns=0 pauses=0 163s  0 fails, 0 warns, 630 steps, 5 kills, 0 ownerless pauses, scenes ["jungle", "mine", "meado
+  bot18 18 gangsters bo wander 3 2 20        OK   errors=0 fails=0 warns=0 pauses=0 91s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["highlands", "sky", "lak
+  bot19 19 gangsters custom story 2 1 30     OK   errors=0 fails=0 warns=0 pauses=0 92s  0 fails, 0 warns, 630 steps, 0 kills, 0 ownerless pauses, scenes ["sky", "mountain", "mine
+  bot20 20 gangsters pax menus 5 2 15        FAIL errors=0 fails=1 warns=0 pauses=0 197s  1 fails, 0 warns, 359 steps, 0 kills, 0 ownerless pauses, scenes ["meadow", "beach", "farm
+playtest: PASS  67s  21 screenshots (results playtest/shots/)
+
+longest job: 460s
+slowest check steps: import 265.0s; import 241.7s; import 165.4s; import 72.2s; import 71.0s; smoke test 50.2s; import 46.5s; first hours on the maps: goal line, arrow, mailbox, tour (both arcs) 42.5s
+distinct errors/fails/warns:
+    1  BOT FAIL screen won't close on B/MENU in bf_orchard_line: PadCursor, Scenery, NightGlow, GameMenu, BattleDrill, BattleBrief [menu open=fa
