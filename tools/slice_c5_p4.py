@@ -301,10 +301,10 @@ def _load_sheet(rel):
     return a
 
 
-def _figs(a, n_rows):
+def _figs(a, n_rows, merge=10):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import slice_comp as C
-    rows = C.rows_of(C.blobs(a, merge=10, min_area=1500))
+    rows = C.rows_of(C.blobs(a, merge=merge, min_area=1500))
     rows = sorted(rows, key=lambda r: min(b[1] for b in r))[:n_rows]
     return [sorted(r, key=lambda b: b[0]) for r in rows]
 
@@ -418,7 +418,7 @@ def redraw():
         if not rel:
             continue
         a = _load_sheet(rel)
-        rows = _figs(a, 3)
+        rows = _figs(a, 3, merge=14)  # halos/screens float a little off the body
         if len(rows) < 3 or any(len(r) < 4 for r in rows):
             print("redraw: %s rows %s, skipped" % (cid, [len(r) for r in rows]))
             continue
