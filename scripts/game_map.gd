@@ -4388,6 +4388,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 			if not bite:
 				hud.toast("Too soon! Wait for the !!!", Color(1, 0.8, 0.6))
 				Music.instance(get_tree()).sfx("nope")
+				player.set_meta("reel_early", true)  # one message, one cue (c6_10-03, P5 hook)
 			break
 	player.frozen = false
 	var bob_at := player.position
@@ -4428,9 +4429,10 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 			give("pearl")
 			hud.toast("Something pale rolls out of the net. Finn's pearl?", Color(1, 0.9, 0.6))
 		xp("fishing", 4)
-	else:
+	elif not player.has_meta("reel_early"):
 		hud.toast("It got away.")
 		Music.instance(get_tree()).sfx("fish_escape")
+	player.remove_meta("reel_early")
 
 
 ## A random index in [lo, hi), each step up `ratio` times as likely as the last

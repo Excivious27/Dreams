@@ -845,7 +845,7 @@ func _grass_step() -> void:
 	if not bool(t.get("walk", false)):
 		return
 	sway_grass(pc)
-	Music.instance(get_tree()).sfx("step_grass", "step")
+	Music.instance(get_tree()).sfx("step_grass", "step_leaves")  # (level: Music GROUP_DB "step_", P1)
 	if randf() < 0.35:
 		_leaf(cell_center(pc) + Vector2(randf_range(-5, 5), -6))
 
@@ -1208,6 +1208,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		var it: Dictionary = GameState.items.get(sel, {})
 		if it.get("type", "") == "seed" and GameState.count(sel) > 0 and not GameState.crops.has(str(it.get("crop", ""))):
 			hud.toast("%s won't take in this soil." % GameState.item_name(sel), Color(1, 0.8, 0.6))
+			Music.instance(get_tree()).sfx("nope", "thud")
 			return true
 		if it.get("type", "") == "seed" and GameState.count(sel) > 0:
 			var pcd: Dictionary = GameState.crops[str(it["crop"])]
@@ -1231,7 +1232,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			net_act({"a": "farm_tile", "key": key, "tile": tile})
 			GameState.add_item(sel, -1)
 			player.play_tool("hold")  # seeds go in by hand (a hoe swing read as tilling)
-			Music.instance(get_tree()).sfx("plant")
+			Music.instance(get_tree()).sfx("plant_pat" if Music.instance(get_tree()).has_sfx("plant_pat") else "plant", "dig")
 			fx("sprout_pop", cell_center(c), 8.0, 0.5)
 			xp("farming", 2)
 			_soil.queue_redraw() if _soil else queue_redraw()
@@ -1276,6 +1277,7 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 		elif qr < silver_p:
 			GameState.add_quality(str(cd["yield"]), "s", n)
 			hud.toast("☆ Silver-star %s: sells for a quarter more." % GameState.item_name(str(cd["yield"])), Color(0.85, 0.9, 1.0))
+			Music.instance(get_tree()).sfx("sparkle", "coin")
 		if GameState.log_grown(crop):
 			hud.toast("Field log: first %s! (%d of %d crops grown)" % [str(cd["name"]), (GameState.run["grown"] as Dictionary).size(), GameState.crops.size()], Color(0.8, 1, 0.7))
 		if randf() < GameState.bonus("farming", "seed_back"):
@@ -1283,7 +1285,10 @@ func _farm_tile(c: Vector2i, sel: String) -> bool:
 			if seed_id != "":
 				give(seed_id, 1)
 		player.play_tool("hold")
-		Music.instance(get_tree()).sfx("harvest", "pickup")
+		var hm := Music.instance(get_tree())
+		hm.sfx("harvest", "pickup")
+		# The reward pop on top of the rustle (c6_10-13).
+		get_tree().create_timer(0.12, false).timeout.connect(func() -> void: hm.sfx("harvest_pluck" if hm.has_sfx("harvest_pluck") else "pop", "pickup"))
 		xp("farming", 4 + 2 * int(cd.get("tier", 1)))
 		if cd.has("regrow"):
 			# Bushes and vines keep producing: back to a few days before ripe.
@@ -1625,6 +1630,7 @@ func pickup_placed(c: Vector2i) -> void:
 	if kind != "":
 		give(kind, 1)
 	hud.toast("Picked up the %s." % GameState.item_name(kind))
+	Music.instance(get_tree()).sfx("pickup")
 
 
 func _daily_pickup(key: String, item: String, wait_msg: String) -> void:
@@ -1648,17 +1654,21 @@ func _silo(sel: String) -> void:
 		var n := mini(GameState.count("hay"), cap - have)
 		if n <= 0:
 			hud.toast("The silo is full (%d hay)." % cap)
+			Music.instance(get_tree()).sfx("nope", "thud")
 			return
 		GameState.add_item("hay", -n)
 		GameState.run["silo"] = have + n
 		hud.toast("Stored %d hay. Silo: %d/%d." % [n, have + n, cap], Color(0.9, 1, 0.8))
+		Music.instance(get_tree()).sfx("cloth", "step_leaves")
 		return
 	var take := mini(20, have)
 	if take <= 0:
 		hud.toast("The silo is empty. Scythe weeds or grow wheat to fill it.")
+		Music.instance(get_tree()).sfx("nope", "thud")
 		return
 	GameState.run["silo"] = have - take
 	give("hay", take)
+	Music.instance(get_tree()).sfx("cloth", "step_leaves")
 	hud.toast("Took %d hay. Silo: %d/%d." % [take, have - take, cap])
 
 
@@ -1666,6 +1676,7 @@ func _silo(sel: String) -> void:
 func _coop(sel: String) -> void:
 	if Builds.built_tier("coop") < 2:
 		hud.toast("The hens cluck at you. (The Big Coop has an incubator.)")
+		Music.instance(get_tree()).sfx("cluck", "critter")
 		return
 	if Net.visiting():
 		hud.toast("The host minds the incubator.")
@@ -1686,6 +1697,8 @@ func _coop(sel: String) -> void:
 	hatch.append(day + 3)
 	GameState.run["coop_hatch"] = hatch
 	hud.toast("The egg is in the incubator. A chick in 3 days.", Color(0.9, 1, 0.8))
+	Music.instance(get_tree()).sfx("pop", "pickup")
+	get_tree().create_timer(0.3, false).timeout.connect(func() -> void: Music.instance(get_tree()).sfx("cluck", "critter"))
 
 
 func _keg(sel: String) -> void:
@@ -1706,6 +1719,7 @@ func _keg(sel: String) -> void:
 		var days := 2 + mini(4, t)
 		GameState.run["flags"]["keg"] = {"out": brew, "ready": day + days}
 		hud.toast("%s → %s. Ready in %d days." % [GameState.item_name(sel), GameState.item_name(brew), days])
+		Music.instance(get_tree()).sfx("bubble", "pot")
 	else:
 		hud.toast("Hold produce (fruit, vegetables, herbs, grain, mushrooms, flowers) and tap USE to brew.")
 
@@ -1719,6 +1733,7 @@ func _resonator(sel: String) -> void:
 		give("crystal_refined")
 		xp("mining", 8)
 		fx("pawring", cell_center(Vector2i(int(Builds.data()["resonator"]["cell"][0]), int(Builds.data()["resonator"]["cell"][1]))) + Vector2(0, -12), 10.0, 0.6)
+		Music.instance(get_tree()).sfx("spell", "sparkle")
 	else:
 		hud.toast("Hold 3 Crystal Shards to refine one.")
 
@@ -2156,6 +2171,7 @@ func _place_item(c: Vector2i, id: String) -> void:
 	_show_placed(c, id)
 	player.play_tool("hold")
 	fx("poof", cell_center(c) + Vector2(0, -4), 10.0, 0.4)
+	Music.instance(get_tree()).sfx("drop", "thud")
 	hud.toast("Placed the %s. USE it again to pick it up." % GameState.item_name(id), Color(0.8, 1, 0.8))
 
 
