@@ -64,7 +64,7 @@ static func portrait_for(who: String) -> String:
 		return "dog"
 	var lower := who.to_lower()
 	var map := {"star crystal": "light_crystal", "dark crystal": "dark_crystal", "the president": "president", "president": "president",
-		"maple": "barnaby", "gideon": "greta", "wren": "wren", "mayor alder": "mayor", "sal": "nico",
+		"maple": "barnaby", "gideon": "greta", "wren": "wren", "mayor alder": "mayor",
 		"riley": "riley", "manny": "manny", "eli": "eli", "jax": "jax", "vex": "vex", "nico": "nico",
 		"grandmother brine": "elder_brine", "old tidewhisker": "elder_tidewhisker", "captain icewhisker": "elder_icewhisker", "lady cinderpaw": "elder_cinderpaw",
 		"barnaby": "barnaby", "greta": "greta", "finn": "finn", "lumi": "lumi", "theo": "theo", "hazel": "hazel"}

@@ -923,6 +923,15 @@ func play_tool(action: String, restart := true) -> bool:
 	if not has_anim(a) and has_anim(action + "_down"):
 		a = action + "_down"
 	var drawn := has_anim(a) and not CharacterLibrary.is_alias(_anim.sprite_frames, a)
+	# Only a _down strip for this tool (the 12B heroes) while facing right/up:
+	# never swing toward the camera. Turn the way you face and draw the tool
+	# over the attack (side) or back pose instead (c5_15 #3).
+	if has_anim(a) and not a.ends_with("_" + d) and _tool_overlay(action):
+		var turn := _facing_work_pose(d)
+		if turn != "":
+			a = turn
+			drawn = false
+			_attack_hit_done = true
 	if not has_anim(a):
 		# No pose for this tool at all: swing the attack frames and draw the tool.
 		if not _tool_overlay(action) or not has_anim("attack"):
@@ -952,6 +961,17 @@ func play_tool(action: String, restart := true) -> bool:
 
 ## How long one work swing takes (seconds), for every hero alike.
 const TOOL_TIME := {"pickaxe": 0.46, "axe": 0.46, "hoe": 0.4, "water": 0.5}
+
+
+## A real (drawn) pose that faces `d` for a work swing with no tool strip that
+## way: the attack frames, else the back/side rest. "" when there is none.
+func _facing_work_pose(d: String) -> String:
+	var sf := _anim.sprite_frames if _anim else null
+	var opts: Array = ["attack", "idle_side", "view_right"] if d == "right" else (["attack_up", "idle_up", "view_back"] if d == "up" else [])
+	for o: String in opts:
+		if has_anim(o) and not CharacterLibrary.is_alias(sf, o):
+			return o
+	return ""
 
 
 static func _tool_overlay(action: String) -> bool:

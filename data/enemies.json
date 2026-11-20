@@ -1727,8 +1727,7 @@
    "abilities": [
     "ranged"
    ],
-   "status": "blind",
-   "scale": 1.75
+   "status": "blind"
   },
   "thug_brute": {
    "hp": 20,
@@ -1739,8 +1738,7 @@
    "abilities": [
     "lunge",
     "enrage"
-   ],
-   "scale": 1.75
+   ]
   },
   "thug_flame": {
    "hp": 14,
@@ -1751,8 +1749,7 @@
    "abilities": [
     "ranged"
    ],
-   "status": "burn",
-   "scale": 1.75
+   "status": "burn"
   },
   "thug_speedster": {
    "hp": 8,
@@ -1763,8 +1760,7 @@
    "abilities": [
     "lunge",
     "blink"
-   ],
-   "scale": 1.75
+   ]
   },
   "thug_gambler": {
    "hp": 10,
@@ -1777,8 +1773,7 @@
     "blink"
    ],
    "status": "blind",
-   "name": "Trickster",
-   "scale": 1.75
+   "name": "Trickster"
   },
   "thug_enforcer": {
    "hp": 26,
@@ -1789,8 +1784,7 @@
    "abilities": [
     "shield",
     "stomp"
-   ],
-   "scale": 1.75
+   ]
   },
   "president": {
    "hp": 200,
@@ -2427,8 +2421,7 @@
    "abilities": [],
    "reward": 4,
    "name": "Lookout",
-   "char": "lookout",
-   "scale": 1.75
+   "char": "lookout"
   },
   "gloom_moth": {
    "hp": 10,
