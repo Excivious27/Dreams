@@ -221,6 +221,15 @@ func _plan_fences() -> void:
 	var h_name := "chain_fence_h" if gang else "fence2_wood_h"
 	var v_name := "chain_fence_v" if gang else "fence2_wood_end"
 	var gate := "fence2_iron_gate_open" if gang else "fence2_wood_gate_open"
+	# P3's pen fence styles (c10b_01-08): HouseExterior.fence_set() -> {h, v, gate_open}, when it exists.
+	if ResourceLoader.exists("res://scripts/house_exterior.gd"):
+		var hx: Script = load("res://scripts/house_exterior.gd")
+		if hx and hx.get_script_method_list().any(func(md: Dictionary) -> bool: return str(md["name"]) == "fence_set"):
+			var fs: Variant = hx.call("fence_set")
+			if fs is Dictionary and Art.has("props", str((fs as Dictionary).get("h", ""))):
+				h_name = str(fs["h"])
+				v_name = str((fs as Dictionary).get("v", v_name)) if Art.has("props", str((fs as Dictionary).get("v", ""))) else v_name
+				gate = str((fs as Dictionary).get("gate_open", gate)) if Art.has("props", str((fs as Dictionary).get("gate_open", ""))) else gate
 	var specs: Array = []
 	if Builds.is_built("coop"):
 		specs.append([COOP_PEN, Vector2i(COOP_PEN.position.x + COOP_PEN.size.x / 2, COOP_PEN.end.y)])
