@@ -48,6 +48,7 @@ static func tab_row(body: Control, refresh: Callable) -> String:
 		b.mouse_filter = Control.MOUSE_FILTER_PASS  # a sideways drag scrolls the strip
 		var tid := id
 		b.pressed.connect(func() -> void:
+			GameMenu.last_press = "map > %s" % tid
 			tab = tid
 			sel = ""
 			refresh.call())

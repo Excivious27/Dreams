@@ -393,8 +393,8 @@ func _place_debris() -> void:
 				# Tall-grass meadows: patches of cuttable grass (fiber, hay) that
 				# move with the seasons, out past the house ring.
 				if dist >= 11.0 and r < chance + _meadow(c) and not is_cleared(c, regrow_days("grass", c)) and not _by_soil(c):
-					things[c] = {"type": "weeds", "grass": true, "hay": 1.0, "hint": "A: cut grass (a scythe makes hay)"}
-					blocked[c] = true
+					# Meadow clumps: walk-through tall grass (it rustles and sways), hay half the time.
+					things[c] = {"type": "weeds", "grass": true, "hay": MEADOW_HAY, "walk": true, "hint": "A: cut grass (a scythe makes hay)"}
 				continue
 			var k := _rng.randf()
 			if dist < 9.0:
@@ -403,14 +403,19 @@ func _place_debris() -> void:
 			# weeds/tall grass shift with the season. Rocks, logs and trees never
 			# come back near the house or beside your soil and builds.
 			var kind := _debris_kind(k)
+			var gk := _grass_or_weed(c) if k < 0.40 else ""
+			if k < 0.40 and gk == "grass":
+				kind = "grass"  # same regrow days as on_world_sync / the meadow clumps
 			if is_cleared(c, regrow_days(kind, c)):
 				continue
 			if k < 0.40:
-				var gk := _grass_or_weed(c)
 				if gk == "":
 					continue  # this season leaves it bare (winter thins the weeds)
-				things[c] = {"type": "weeds", "grass": true, "hay": 1.0, "hint": "A: cut grass (a scythe makes hay)"} if gk == "grass" else {"type": "weeds", "hint": "A: pull weeds"}
-				blocked[c] = true
+				if gk == "grass":
+					things[c] = {"type": "weeds", "grass": true, "hay": 1.0, "walk": true, "hint": "A: cut grass (a scythe makes hay)"}
+				else:
+					things[c] = {"type": "weeds", "hint": "A: pull weeds"}
+					blocked[c] = true  # weeds stay solid; tall grass is walk-through
 			elif k < 0.62:
 				things[c] = {"type": "rock", "hp": 2, "hint": "A: break rock"}
 				blocked[c] = true
@@ -429,6 +434,8 @@ func _place_debris() -> void:
 
 ## Days before cleared farm debris grows back, by how common it is (Tom, Guide 26
 ## #23): grass and weeds fast, stone and wood slower, trees slowest. 0 = never.
+## Hay from a scythed meadow clump (old weed-spot grass always gives hay).
+const MEADOW_HAY := 0.5
 const REGROW := {"grass": 4, "weeds": 7, "rock": 28, "log": 21, "stump": 21, "tree": 56, "bush": 0}
 ## Share of the old weed spots that are tall grass, and how lush the meadows run, per season.
 const GRASS_SHARE := {"spring": 0.45, "summer": 0.6, "fall": 0.45, "winter": 0.2}
@@ -651,6 +658,7 @@ func _make_crystal() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
+	_grass_step()
 	if _mail_mark:
 		_mail_t += delta
 		_mail_mark.position.y = cell_center(MAILBOX).y - 30.0 - absf(sin(_mail_t * 3.0)) * 3.0
@@ -667,6 +675,62 @@ func _process(delta: float) -> void:
 				var want := "speak" if talking and _crystal_spr.sprite_frames.has_animation("speak") else "idle"
 				if _crystal_spr.animation != want:
 					_crystal_spr.play(want)
+
+
+## Tall grass you walk through rustles and sways (Stardew-style), weeds stay solid.
+var _grass_cell := Vector2i(-99, -99)
+
+
+func _grass_step() -> void:
+	if player == null:
+		return
+	var pc: Vector2i = player.cell()
+	if pc == _grass_cell:
+		return
+	_grass_cell = pc
+	var t: Dictionary = things.get(pc, {})
+	if not bool(t.get("walk", false)):
+		return
+	sway_grass(pc)
+	Music.instance(get_tree()).sfx("step_grass", "step")
+	if randf() < 0.35:
+		_leaf(cell_center(pc) + Vector2(randf_range(-5, 5), -6))
+
+
+func sway_grass(c: Vector2i) -> void:
+	var sp: Variant = props.get(c, null)
+	if not (sp is Node2D) or not is_instance_valid(sp):
+		return
+	var n := sp as Node2D
+	var dir := -1.0 if player and player.position.x > n.position.x else 1.0
+	var tw := create_tween()  # the map's tween: props may not process on their own
+	tw.tween_property(n, "skew", 0.35 * dir, 0.08)
+	tw.tween_property(n, "skew", -0.18 * dir, 0.16)
+	tw.tween_property(n, "skew", 0.0, 0.22)
+
+
+## The scythe cuts a 3-cell swath: the cell you aimed at plus the two beside it
+## (across your facing). Called by GameMap's weed cut (has_method hook).
+func scythe_sweep(c: Vector2i) -> void:
+	if player == null:
+		return
+	var f := str(player.facing)
+	var side := Vector2i(1, 0) if f in ["up", "down"] else Vector2i(0, 1)
+	for sc: Vector2i in [c + side, c - side]:
+		var t: Dictionary = things.get(sc, {})
+		if str(t.get("type", "")) != "weeds":
+			continue
+		if randf() < float(t.get("hay", 0.5)):
+			if not (not Net.visiting() and Builds.silo_add(1)):
+				pop_items(cell_center(sc), "hay", 1)
+		_mark_cleared(sc)
+		var wsp: Node2D = props.get(sc, null)
+		clear_cell(sc)
+		if wsp:
+			wsp.queue_free()
+		for i in 2:
+			_leaf(cell_center(sc) + Vector2(randf_range(-6, 6), -8))
+		pop_items(cell_center(sc), "fiber", 1)
 
 
 # ---- interaction -------------------------------------------------------------
@@ -834,94 +898,98 @@ func _plans() -> void:
 		if d.last_choice < 0 or d.last_choice >= cids.size():
 			return
 		var cat := str(cids[d.last_choice])
-		var ids: Array = []
-		var opts: Array = []
-		for id: String in Builds.data():
-			if str(Builds.data()[id].get("cat", "farm")) != cat:
+		# Inside a category: a plan's "← Back" returns to this list, not the top (C4 P6).
+		while true:
+			var ids: Array = []
+			var opts: Array = []
+			for id: String in Builds.data():
+				if str(Builds.data()[id].get("cat", "farm")) != cat:
+					continue
+				var bt := Builds.built_tier(id)
+				var nd := Builds.next_def(id)
+				var uc := Builds.under_construction(id)
+				var label := str(Builds.data()[id]["label"])
+				if not uc.is_empty():
+					var dl := int(uc["done_day"]) - int(GameState.run["day"])
+					opts.append("◷ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
+					ids.append("")
+					continue
+				if nd.is_empty():
+					opts.append("✓ %s (%s, max)" % [label, str(Builds.current_def(id).get("name", ""))])
+					ids.append("")
+					continue
+				var g := Builds.gate(id)
+				var why := Builds.blocker(id)
+				var mark := "" if why == "" else ("⊘ " if g != "" else "✗ ")
+				var tag := ""
+				if g == "permit":
+					tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
+				elif g != "":
+					tag = "  [%s]" % g
+				opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
+				ids.append(id)
+			opts.append("← Back")
+			var legend := "⊘ = not open yet · ✗ = missing materials (you can still buy it)"
+			if cat == "operation":
+				legend = "Your racket: print bills, wash them clean, run fronts, arm and train the crew. Heat rises when a bill gets noticed.\n" + legend
+			elif cat == "sanctuary":
+				legend = "Cat-topia's crafts, and homes for friends you turn back: pool, burrow and shrine open as you meet who they're for.\n" + legend
+			d.say([{"who": "Plans", "text": legend, "choice": opts, "key": ""}])
+			await d.finished
+			var i := d.last_choice
+			if i < 0 or i >= ids.size():
+				break  # "← Back" (or B): back to the categories
+			if str(ids[i]) == "":
 				continue
-			var bt := Builds.built_tier(id)
-			var nd := Builds.next_def(id)
-			var uc := Builds.under_construction(id)
-			var label := str(Builds.data()[id]["label"])
-			if not uc.is_empty():
-				var dl := int(uc["done_day"]) - int(GameState.run["day"])
-				opts.append("◷ %s → %s (%d day%s left)" % [label, str(Builds.tier_def(id, int(uc["tier"]))["name"]), dl, "" if dl == 1 else "s"])
-				ids.append("")
+			var id := str(ids[i])
+			var nd2 := Builds.next_def(id)
+			var parts: Array = []
+			for need in nd2.get("cost", {}):
+				var c2 := Builds.cost_of(nd2)
+				parts.append("%d/%d %s" % [mini(Builds._bag_free(str(need)) + Storage.total(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
+			var g2 := Builds.gate(id)
+			var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
+			if int(nd2.get("days", 0)) > 0:
+				var dd := maxi(0, int(nd2.get("days", 0)) - int(GameState.bonus("building", "quick_build")))
+				text += ("\nTakes %d day%s." % [dd, "" if dd == 1 else "s"]) if dd > 0 else "\nReady at once (Quick Build)."
+			var ch: Array = []
+			var acts: Array = []
+			if g2 != "":
+				text += "\nNot yet: %s." % ("buy the permit from Alder (◆%d)" % Builds.permit_price(id) if g2 == "permit" else g2)
+			else:
+				ch.append("Build from materials  [%s]" % ", ".join(parts))
+				acts.append("build")
+				if Builds.price(id) > 0:
+					ch.append("Buy ready-made from %s  [◆%d]" % [str(Builds.data()[id].get("seller", "Hazel")), Builds.price(id)])
+					acts.append("buy")
+			ch.append("← Back")
+			d.say([{"who": "Plans", "text": text, "choice": ch, "key": ""}])
+			await d.finished
+			if d.last_choice < 0 or d.last_choice >= acts.size():
 				continue
-			if nd.is_empty():
-				opts.append("✓ %s (%s, max)" % [label, str(Builds.current_def(id).get("name", ""))])
-				ids.append("")
-				continue
-			var g := Builds.gate(id)
-			var why := Builds.blocker(id)
-			var mark := "" if why == "" else ("⊘ " if g != "" else "✗ ")
-			var tag := ""
-			if g == "permit":
-				tag = "  [permit ◆%d at Town Hall]" % Builds.permit_price(id)
-			elif g != "":
-				tag = "  [%s]" % g
-			opts.append("%s%s%s%s" % [mark, ("%s → " % str(Builds.current_def(id).get("name", label))) if bt > 0 else "", str(nd["name"]), tag])
-			ids.append(id)
-		opts.append("← Back")
-		var legend := "⊘ = not open yet · ✗ = missing materials (you can still buy it)"
-		if cat == "operation":
-			legend = "Your racket: print bills, wash them clean, run fronts, arm and train the crew. Heat rises when a bill gets noticed.\n" + legend
-		elif cat == "sanctuary":
-			legend = "Cat-topia's crafts, and homes for friends you turn back: pool, burrow and shrine open as you meet who they're for.\n" + legend
-		d.say([{"who": "Plans", "text": legend, "choice": opts, "key": ""}])
-		await d.finished
-		var i := d.last_choice
-		if i < 0 or i >= ids.size() or str(ids[i]) == "":
-			continue
-		var id := str(ids[i])
-		var nd2 := Builds.next_def(id)
-		var parts: Array = []
-		for need in nd2.get("cost", {}):
-			var c2 := Builds.cost_of(nd2)
-			parts.append("%d/%d %s" % [mini(Builds._bag_free(str(need)) + Storage.total(str(need)), int(c2[need])), int(c2[need]), GameState.item_name(str(need))])
-		var g2 := Builds.gate(id)
-		var text := "%s: %s" % [str(nd2["name"]), str(nd2.get("desc", ""))]
-		if int(nd2.get("days", 0)) > 0:
-			var dd := maxi(0, int(nd2.get("days", 0)) - int(GameState.bonus("building", "quick_build")))
-			text += ("\nTakes %d day%s." % [dd, "" if dd == 1 else "s"]) if dd > 0 else "\nReady at once (Quick Build)."
-		var ch: Array = []
-		var acts: Array = []
-		if g2 != "":
-			text += "\nNot yet: %s." % ("buy the permit from Alder (◆%d)" % Builds.permit_price(id) if g2 == "permit" else g2)
-		else:
-			ch.append("Build from materials  [%s]" % ", ".join(parts))
-			acts.append("build")
-			if Builds.price(id) > 0:
-				ch.append("Buy ready-made from %s  [◆%d]" % [str(Builds.data()[id].get("seller", "Hazel")), Builds.price(id)])
-				acts.append("buy")
-		ch.append("← Back")
-		d.say([{"who": "Plans", "text": text, "choice": ch, "key": ""}])
-		await d.finished
-		if d.last_choice < 0 or d.last_choice >= acts.size():
-			continue
-		var buy := str(acts[d.last_choice]) == "buy"
-		if Net.visiting():
-			# On someone else's farm the host decides (and pays).
-			if not Net.online():
-				hud.toast("Reconnecting to your host... try again in a moment.", Color(0.9, 0.95, 1.0))
+			var buy := str(acts[d.last_choice]) == "buy"
+			if Net.visiting():
+				# On someone else's farm the host decides (and pays).
+				if not Net.online():
+					hud.toast("Reconnecting to your host... try again in a moment.", Color(0.9, 0.95, 1.0))
+					return
+				net_act({"a": "build", "id": id})
+				hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
 				return
-			net_act({"a": "build", "id": id})
-			hud.toast("Asked the host to build it.", Color(0.9, 0.95, 1.0))
+			var msg := Builds.start(id, buy)
+			var ok := not msg.begins_with("Can't")
+			if not ok:
+				hud.toast(msg, Color(1, 0.7, 0.7))
+				continue
+			# The scene reloads below (a new HUD): a note survives it and is announced after.
+			GameState.notify(msg)
+			Music.instance(get_tree()).sfx("craft_done", "levelup")
+			GameState.save()
+			# Simplest reliable refresh: reload the scene in place.
+			GameMap.next_spawn = player.position - offset()
+			GameMap.next_facing = player.facing
+			get_tree().reload_current_scene()
 			return
-		var msg := Builds.start(id, buy)
-		var ok := not msg.begins_with("Can't")
-		if not ok:
-			hud.toast(msg, Color(1, 0.7, 0.7))
-			continue
-		# The scene reloads below (a new HUD): a note survives it and is announced after.
-		GameState.notify(msg)
-		Music.instance(get_tree()).sfx("craft_done", "levelup")
-		GameState.save()
-		# Simplest reliable refresh: reload the scene in place.
-		GameMap.next_spawn = player.position - offset()
-		GameMap.next_facing = player.facing
-		get_tree().reload_current_scene()
-		return
 
 
 func _farm_tile(c: Vector2i, sel: String) -> bool:
@@ -1747,7 +1815,7 @@ func _place_props() -> void:
 		match str(t.get("type", "")):
 			"weeds":
 				var wn := "%s_%s" % ["tgrass" if bool(t.get("grass", false)) else "weed", season]
-				prop("nature", wn if Art.has("nature", wn) else ("fdeco_%d" % ((c.x * 3 + c.y) % 4) if Art.has("nature", "fdeco_0") else "bush"), c)
+				prop("nature", wn if Art.has("nature", wn) else ("fdeco_%d" % ((c.x * 3 + c.y) % 4) if Art.has("nature", "fdeco_0") else "bush"), c, 0, 0.0, not bool(t.get("walk", false)))
 			"rock":
 				var nm := "rock_s" if (c.x + c.y) % 3 != 0 else "rock_m"
 				if season == "winter" and Art.has("nature", nm.replace("rock_", "rock_snow_")):

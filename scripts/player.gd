@@ -1173,6 +1173,8 @@ static func gun_sound(id: String) -> String:
 		return "shot_rifle"
 	if "laser" in w or "ray" in w or "plasma" in w:
 		return "laser"
+	if "gold" in w or "magnum" in w or "hand_cannon" in w:
+		return "shot_heavy"  # a big revolver booms deeper than the six-shooter
 	return "shot"
 
 
@@ -1183,16 +1185,25 @@ func _gun_sound() -> String:
 ## Rounds per load: after this many shots the hero reloads (a sound only; the
 ## gun's own cooldown already paces it). Unknown guns load six.
 const MAG := {"six_shooter": 6, "gold_revolver": 6, "scattergun": 2, "tommy_gun": 12}
-var _mag_used := {}
+const MAG_KEY := "mag_used"
+## Rounds fired from the current load, kept in the run (survives a scene change / save).
+var _mag_used: Dictionary:
+	get:
+		if GameState.run.is_empty():
+			return {}
+		if not GameState.run.has(MAG_KEY):
+			GameState.run[MAG_KEY] = {}
+		return GameState.run[MAG_KEY]
 
 
 ## Counts a shot; true when this one emptied the load (time to reload).
 func _count_shot(id: String) -> bool:
-	var n := int(_mag_used.get(id, 0)) + 1
+	var mu := _mag_used
+	var n := int(mu.get(id, 0)) + 1
 	if n >= int(MAG.get(id, 6)):
-		_mag_used[id] = 0
+		mu[id] = 0
 		return true
-	_mag_used[id] = n
+	mu[id] = n
 	return false
 
 

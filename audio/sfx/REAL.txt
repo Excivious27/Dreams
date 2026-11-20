@@ -193,6 +193,9 @@ sheep
 shot
 shot_2
 shot_3
+shot_heavy
+shot_heavy_2
+shot_heavy_3
 shot_rifle
 shot_rifle_2
 shot_rifle_3

@@ -94,7 +94,7 @@ func _first_visit() -> void:
 	for i in tb.size():
 		if GameState.is_sword(str(tb[i])):
 			GameState.select_slot(i)
-			hud.toast("Sword out. Tap USE to swing.", Color(1, 0.95, 0.7))
+			hud.toast("%s out. Tap USE to swing." % GameState.weapon_word().capitalize(), Color(1, 0.95, 0.7))
 			break
 	player.frozen = false
 

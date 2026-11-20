@@ -23,6 +23,12 @@ func _initialize() -> void:
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	check(GameState.item_name("sword") == "Wooden Sword" and Hud.icon_for("sword") == "sword_wood", "penguins keep the Wooden Sword")
 	check(Player.gun_sound("scattergun") == "shot_shotgun" and Player.gun_sound("tommy_gun") == "shot_rifle" and Player.gun_sound("six_shooter") == "shot", "gun sounds follow the gun in hand")
+	check(Player.gun_sound("gold_revolver") == "shot_heavy" and FileAccess.file_exists("res://audio/sfx/shot_heavy.ogg"), "the gold revolver booms deeper than the six-shooter")
+	var pl := Player.new()
+	pl._count_shot("six_shooter")
+	pl._count_shot("six_shooter")
+	pl.free()
+	check(int(GameState.run.get("mag_used", {}).get("six_shooter", 0)) == 2, "rounds fired stay in the run (survive a scene change)")
 	# Money in counts in earned_total, by source (c3_08 #9).
 	var e0 := int(GameState.run.get("earned_total", 0))
 	GameState.add_money(120, "campaign")

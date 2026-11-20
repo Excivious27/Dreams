@@ -189,7 +189,7 @@ func toggle() -> void:
 		_trash_arm = ""
 		_reset_arm = ""
 		_was_paused = get_tree().paused
-		get_tree().paused = true
+		Hud.pause(get_tree(), "GameMenu")
 		# Toasts still on screen would sit over the tab rows: clear them (new ones still show).
 		var gm0 := get_tree().current_scene as GameMap
 		if gm0 and gm0.hud and gm0.hud._toasts:
@@ -197,7 +197,9 @@ func toggle() -> void:
 				c.queue_free()
 		_refresh()
 	else:
-		get_tree().paused = _was_paused
+		# Only back to a pause something still needs (C4 P6); the menu's last press is done.
+		get_tree().paused = _was_paused and (Hud.keep_paused(get_tree(), self) or Hud.modal_rect.size != Vector2.ZERO)
+		last_press = ""
 		Dialogue.block_input()
 
 
@@ -238,6 +240,7 @@ func _slot_button(id: String, selected: bool, cb: Callable) -> Control:
 	b.custom_minimum_size = Vector2(SLOT, SLOT)
 	b.action_mode = BaseButton.ACTION_MODE_BUTTON_RELEASE  # scrolling the tab never picks or places
 	b.focus_mode = Control.FOCUS_NONE
+	b.pressed.connect(func() -> void: last_press = "%s > slot %s" % [_tab, id])
 	b.pressed.connect(cb)
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.55, 0.42, 0.2) if selected else Color(0.25, 0.17, 0.1)
@@ -459,6 +462,7 @@ func _refresh() -> void:
 					tb.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 					tb.custom_minimum_size = Vector2(104, 34)
 					tb.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+					tb.pressed.connect(func() -> void: last_press = "%s > card" % _tab)
 					tb.pressed.connect(pick)
 					h.add_child(tb)
 					var col := VBoxContainer.new()
@@ -657,6 +661,7 @@ func _refresh() -> void:
 					var bt := Button.new()
 					bt.text = " − " if step < 0 else " + "
 					bt.custom_minimum_size = Vector2(34, 22)
+					bt.pressed.connect(func() -> void: last_press = "%s > %s %+d" % [_tab, vk, step])
 					bt.pressed.connect(func() -> void: Settings.set_v(vk, clampi(int(Settings.get_v(vk)) + step, 0, 10)); Music.instance(get_tree()).sfx("ui_tap", "pickup"); _refresh())
 					row.add_child(bt)
 			_button("Night darkness: %s" % Settings.NIGHT_NAMES[clampi(int(Settings.get_v("night")), 0, 2)], func() -> void: Settings.set_v("night", (int(Settings.get_v("night")) + 1) % 3); _refresh())
@@ -860,6 +865,7 @@ func _skills_tab() -> void:
 		tb.focus_mode = Control.FOCUS_NONE
 		tb.modulate = Color(1, 0.88, 0.45) if k == sk else (Color(1, 0.97, 0.85) if pf > 0 else Color(0.78, 0.78, 0.78))
 		var kk := str(k)
+		tb.pressed.connect(func() -> void: last_press = "%s > skill %s" % [_tab, kk])
 		tb.pressed.connect(func() -> void: _skill_open = kk; _node_sel = ""; _reset_arm = ""; _refresh())
 		tabs.add_child(tb)
 		SkillGlow.set_glow(tb, pf, false)

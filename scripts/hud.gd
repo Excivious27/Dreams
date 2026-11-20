@@ -183,6 +183,21 @@ var _orphan_pause := 0
 ## True while something still needs the game paused: a dialogue, an open menu, or a
 ## full-screen UI other than `except` (screens call this as they close, so a stale
 ## "was paused" never leaves the game frozen with nothing on screen).
+## Who paused last (Hud.pause): named in the ownerless-pause warning, so a bot
+## log says which screen left the game frozen. Use Hud.pause(tree, "who") for
+## every new pauser instead of setting tree.paused directly.
+static var pause_owner := ""
+static var pause_frame := 0
+
+
+static func pause(tree: SceneTree, owner: String) -> void:
+	if tree == null:
+		return
+	tree.paused = true
+	pause_owner = owner
+	pause_frame = Engine.get_process_frames()
+
+
 static func keep_paused(tree: SceneTree, except: Node = null) -> bool:
 	if tree == null:
 		return false
@@ -198,7 +213,7 @@ static func keep_paused(tree: SceneTree, except: Node = null) -> bool:
 		if n is GameMenu and (n as GameMenu)._open:
 			return true
 		if n is ChestScreen or n is CraftScreen or n is CampaignScreen or n is ArcadeGame \
-				or n is HackGame or n is PrizeScreen or n is Bowling or n is Epilogue:
+				or n is HackGame or n is PrizeScreen or n is Bowling or n is Epilogue or n is BattleBrief:
 			if not n.is_queued_for_deletion():
 				return true
 	return false
@@ -219,7 +234,7 @@ func _pause_watch(sc: Node) -> void:
 		for n in sc.get_children():
 			if n is CanvasLayer or n is Control:
 				kids.append("%s%s" % [n.name, "" if not (n is CanvasItem) or (n as CanvasItem).visible else "(hidden)"])
-		push_warning("Hud: the game was paused with nothing on screen; resuming (scene %s, layers %s, last menu press: %s)" % [(sc as GameMap).scene_id(), ", ".join(kids), GameMenu.last_press])
+		push_warning("Hud: the game was paused with nothing on screen; resuming (scene %s, layers %s, last menu press: %s, paused by: %s %d frames ago)" % [(sc as GameMap).scene_id(), ", ".join(kids), GameMenu.last_press, pause_owner if pause_owner != "" else "?", Engine.get_process_frames() - pause_frame])
 		get_tree().paused = false
 
 

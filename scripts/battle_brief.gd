@@ -25,7 +25,7 @@ const LOSE := {
 	"defend": "You lose every point, or your tickets run out.",
 	"": "Your tickets run out (they bleed while they hold more points), or you're knocked out.",
 }
-const CONTROLS := "Walk into a ring to take a point. USE on your banner: helpers and upgrades (◇ supply). RALLY (top left) moves your helpers. Leave by the ▼ exit to fall back."
+const CONTROLS := "Walk into a ring to take a point. USE on your banner: helpers and upgrades (◇ supply). RALLY (top left) moves your helpers and team (early on, your team pushes by itself until you do). Leave by the ▼ exit to fall back."
 
 var d: Dictionary = {}
 var mode := ""
@@ -59,7 +59,7 @@ func _ready() -> void:
 	layer = 65
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_was_paused = get_tree().paused
-	get_tree().paused = true
+	Hud.pause(get_tree(), "BattleBrief")
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
 	_min_t = 0.3 if seen(mode) else 1.6
 	var root := Control.new()

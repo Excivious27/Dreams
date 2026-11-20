@@ -17,7 +17,15 @@ func _run() -> void:
 			GameState.run["flags"][id + "_seen"] = true
 		for f in ["cm_seen", "mine_open_1", "meow_taught", "moon_seen", "mine_seen", "intro_done", "gangsters_intro"]:
 			GameState.run["flags"][f] = true
-		for id in MAPS:
+		var maps: Array = MAPS.duplicate()
+		if OS.get_environment("MAPS") != "":
+			maps = Array(OS.get_environment("MAPS").split(","))
+		else:
+			# The mega-region areas open to this arc (data/mega_regions.json; C4 P6).
+			for id: String in _mega_areas(arc):
+				if id not in maps:
+					maps.append(id)
+		for id in maps:
 			GameMap.next_spawn = Vector2.ZERO
 			change_scene_to_file("res://scenes/%s.tscn" % id)
 			for i in 14:
@@ -70,6 +78,21 @@ func _run() -> void:
 					if m.blocked.has(m.world_to_cell(n.position)): print("   NPC %s in blocked cell" % n.id)
 	print("AUD DONE")
 	quit()
+
+func _mega_areas(a: String) -> Array:
+	var out: Array = []
+	var d: Dictionary = GameState.load_json("res://data/mega_regions.json")
+	for rid: String in d.get("order", []):
+		var r: Dictionary = d.get("list", {}).get(rid, {})
+		if str(r.get("arc", "both")) not in ["both", a]:
+			continue
+		var areas: Variant = r.get("areas", {})
+		for k: Variant in areas:
+			var id := str(k) if areas is Dictionary else str((k as Dictionary).get("id", ""))
+			if id != "" and id not in out and ResourceLoader.exists("res://scenes/%s.tscn" % id):
+				out.append(id)
+	return out
+
 
 func _flood(m: GameMap, start: Vector2i) -> Dictionary:
 	var seen := {}

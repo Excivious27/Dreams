@@ -266,7 +266,7 @@ func _altar() -> void:
 
 func _market() -> void:
 	var d := Dialogue.instance(get_tree())
-	var picks := [["iron_sword", 100], ["potion", GameState.shop_price("potion", 22)], ["dark", GameState.shop_price("dark", 60)]]
+	var picks := [[_blade(), 100], ["potion", GameState.shop_price("potion", 22)], ["dark", GameState.shop_price("dark", 60)]]
 	var ch: Array = []
 	for pk in picks:
 		ch.append("%s  ◆%d%s" % [GameState.item_name(str(pk[0])), int(pk[1]), "  (owned)" if GameState.has_tool(str(pk[0])) else ""])
@@ -283,9 +283,9 @@ func _market() -> void:
 			hud.toast("Not enough crystals.", Color(1, 0.7, 0.7))
 			return
 		GameState.run["crystals"] = int(GameState.run["crystals"]) - price
-		if id == "iron_sword":
+		if id == _blade():
 			GameState.add_tool(id)
-			hud.toast("Got the Iron Sword.", Color(1, 0.9, 0.4))
+			hud.toast("Got the %s." % GameState.item_name(id), Color(1, 0.9, 0.4))
 		else:
 			give(id)
 
@@ -348,3 +348,9 @@ func draw_corridor(cells: Dictionary) -> void:
 		draw_tileset_rect("asphalt", road, Color("3a3a40"))
 		if not rest.is_empty():
 			super(rest)
+
+
+## The vendor's weapon: an Iron Sword, or in the gangster arc a Crowbar (the
+## gang arc's blade-free equivalent, same punch; C4 P6).
+static func _blade() -> String:
+	return "crowbar" if GameState.street_bat() else "iron_sword"

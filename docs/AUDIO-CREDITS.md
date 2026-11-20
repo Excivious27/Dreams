@@ -163,7 +163,7 @@ Every pack below is CC0 (public domain), or dual-licensed with CC0 as one choice
 | [Gun reload sounds](https://opengameart.org/content/gun-reload-sounds) | SpringySpringo | CC0 | reload |
 | [Gunshot sound effect](https://opengameart.org/content/gunshot-sound-effect) | hingydunyas | CC0 | shot |
 | [Gunshot Sounds](https://opengameart.org/content/gunshot-sounds) | Tabasco | CC0 | shot_rifle, shot_shotgun |
-| [Gunshots](https://opengameart.org/content/gunshots) | kurt | CC0 | shot |
+| [Gunshots](https://opengameart.org/content/gunshots) | kurt | CC0 | shot, shot_heavy (shot pitched down, C4) |
 | [Hammer on Anvil](https://opengameart.org/content/hammer-on-anvil) | themightyglider | CC0 | anvil |
 | [High traffic road sounds](https://opengameart.org/content/high-traffic-road-sounds) | IgnasD | CC0 | city_hum |
 | [Horse Trotting](https://opengameart.org/content/horse-trotting) | EZduzziteh | CC0 | horse |

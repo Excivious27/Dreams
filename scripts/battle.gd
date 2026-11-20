@@ -158,6 +158,8 @@ const RALLY_RECT := Rect2(8, 146, 124, 21)   # >= 20 px tall: a comfortable tap
 var _rally_btn: Button
 var _rally := -1
 var _rally_flash := 0.0
+var _rally_given := false
+var _push_said := false
 
 
 ## Cycle: guard posts → follow me → each point in turn → guard posts.
@@ -198,6 +200,10 @@ func _helpers() -> int:
 
 func _set_rally(i: int, quiet := false) -> void:
 	_rally = i
+	if not quiet:
+		_rally_given = true  # your order: the early-fight team push stops
+		if map.has_meta("team_push"):
+			map.remove_meta("team_push")
 	if map.has_meta("follow_me"):
 		map.remove_meta("follow_me")
 	if i == -1:
@@ -240,6 +246,8 @@ func _exit_tree() -> void:
 	Hud.extra_rects.erase(RALLY_RECT)
 	if map and is_instance_valid(map) and map.has_meta("rally_pos"):
 		map.remove_meta("rally_pos")
+	if map and is_instance_valid(map) and map.has_meta("team_push"):
+		map.remove_meta("team_push")
 
 
 var _bleed_e := 0.0
@@ -248,7 +256,28 @@ var _bleed_a := 0.0
 
 
 func _cost(k: String) -> int:
-	return maxi(1, int(round(int(SPAWNER_COST[k]) * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
+	var base := int(SPAWNER_COST[k]) if SPAWNER_COST.has(k) else int(HelperUnit.kinds().get(k, {}).get("cost", 20))
+	return maxi(1, int(round(base * (1.0 - GameState.bonus("strategist", "spawner_discount")))))
+
+
+## The helper kinds this run can build at a spawner: the four built-ins, then
+## data kinds (battles.json "_helper_kinds") whose "arc" matches and whose
+## "flag" (if any) is set: e.g. Crystal Kin once the penguins befriend them.
+static func spawner_kinds() -> Array:
+	var out: Array = ["striker", "healer", "warden", "shade"]
+	var all := HelperUnit.kinds()
+	for k: String in all:
+		if k in out:
+			continue
+		var kd: Dictionary = all[k]
+		var arc := str(kd.get("arc", ""))
+		if arc != "" and arc != str(GameState.run.get("arc", "")):
+			continue
+		var fl := str(kd.get("flag", ""))
+		if fl != "" and not GameState.run.get("flags", {}).has(fl):
+			continue
+		out.append(k)
+	return out
 
 
 func point(id: String) -> Dictionary:
@@ -402,6 +431,7 @@ func _tick() -> void:
 					h.max_hp = int(h.max_hp * 1.25)  # an inspired army (campaign morale 85+)
 					h.hp = h.max_hp
 				(p["made"] as Array).append(h)
+	_team_push()
 	# Halfway through their tickets, their commander takes the field.
 	_elapsed += 1.0
 	if _boss_ref != null and is_instance_valid(_boss_ref):
@@ -424,6 +454,9 @@ func _tick() -> void:
 			bb.set_meta("boss_name", bb.display_name())
 			bb.max_hp = boss_hp(roundi(bb.max_hp / maxf(0.01, bb.diff_hp)), ctier(), GameState.progress_tier(), Difficulty.mul("boss_hp"))  # mode applied once, here
 			bb.hp = bb.max_hp
+			if _resume_boss_hp > 0:
+				bb.hp = mini(bb.max_hp, _resume_boss_hp)
+				_resume_boss_hp = -1
 			if ctier() <= 1:
 				bb.damage = maxi(1, bb.damage - 1)  # a first-campaign captain hits softer
 			map.hud.toast("%s takes the field!" % bb.display_name(), Color(1, 0.6, 0.4))
@@ -643,8 +676,11 @@ func _field_team() -> void:
 			break
 		if str(m[0]) == act_id:
 			continue
-		var at: Vector2 = map.player.position + Vector2(-24 + 16 * n, 18)
+		# Spread on a ring around you (not a row on top of you); free_spot keeps it dry.
+		var ang := PI * 0.5 + (float(n) - 1.5) * 0.9
+		var at: Vector2 = map.player.position + Vector2(cos(ang), sin(ang)) * Vector2(34, 24)
 		var h := HelperUnit.make_team(map, m, jobs[n % jobs.size()], at, team_sprite(m))
+		h.tag_row = n % 2
 		if bool(d.get("inspired", false)):
 			h.max_hp = int(h.max_hp * 1.25)
 			h.hp = h.max_hp
@@ -653,6 +689,35 @@ func _field_team() -> void:
 	if n > 0:
 		var nm: Array = team.map(func(h: HelperUnit) -> String: return h.team_name)
 		map.hud.toast("%s fight%s beside you." % [_and_list(nm), "s" if n == 1 else ""], Color(0.7, 0.95, 1.0))
+
+
+## Early fights (campaign tier 1, not the drill): until you give a RALLY order
+## your mustered team pushes on its own: the captain once out, else the
+## nearest point you don't hold. (A brand-new commander shouldn't watch an
+## idle team lose the field.)
+func _team_push() -> void:
+	if _rally_given or is_drill or team.is_empty() or ctier() > 1 or _elapsed < 6.0:
+		return
+	var tgt := Vector2.INF
+	if _boss_ref != null and is_instance_valid(_boss_ref) and _boss_ref._alive:
+		tgt = _boss_ref.position
+	else:
+		var bd := INF
+		for p in points:
+			if str(p["owner"]) == "ally" and float(p["prog"]) >= 1.0:
+				continue
+			var dd: float = map.player.position.distance_to(p["pos"])
+			if dd < bd:
+				bd = dd
+				tgt = p["pos"]
+	if tgt == Vector2.INF:
+		if map.has_meta("team_push"):
+			map.remove_meta("team_push")
+		return
+	map.set_meta("team_push", tgt)
+	if not _push_said:
+		_push_said = true
+		map.hud.toast("Your team pushes on. Tap RALLY to give orders.", Color(0.7, 0.95, 1.0))
 
 
 static func team_members() -> Array:
@@ -703,15 +768,17 @@ func interact(id: String) -> void:
 	opts.append("Barrage (◇%d): stun every foe near this point%s" % [_disc(35), (" (ready in %ds)" % int(ceil(_barrage_cd))) if _barrage_cd > 0.0 else ""])
 	keys.append("barrage")
 	# Spawners after the point actions (the list scrolls; B leaves).
-	for k in ["striker", "healer", "warden", "shade"]:
-		opts.append("%s (◇%d): %s" % [str(HelperUnit.KINDS[k]["crystal" if crystal else "drone"]), _cost(k), {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}[k]])
+	var does := {"striker": "zaps foes", "healer": "mends you", "warden": "shields you", "shade": "hides you"}
+	for k: String in spawner_kinds():
+		var kd: Dictionary = HelperUnit.kinds()[k]
+		opts.append("%s (◇%d): %s" % [str(kd.get("crystal" if crystal else "drone", k.capitalize())), _cost(k), str(kd.get("does", does.get(HelperUnit.act_of(k), "helps")))])
 		keys.append(k)
 	opts.append("%s (◇%d): holds the point" % ["Crystal Pylon" if crystal else "Gun Turret", _cost("turret")])
 	keys.append("turret")
 	var extra_cost := {"upgrade": 30 * lvl, "fortify": 40, "mend": 25, "barrage": 35}
 	for oi in opts.size():
 		var kk: String = keys[oi]
-		var cc := _cost(kk) if SPAWNER_COST.has(kk) else (_disc(int(extra_cost[kk])) if extra_cost.has(kk) else 0)
+		var cc := _cost(kk) if (SPAWNER_COST.has(kk) or HelperUnit.kinds().has(kk)) else (_disc(int(extra_cost[kk])) if extra_cost.has(kk) else 0)
 		if cc > supply:
 			opts[oi] = "✕ " + str(opts[oi])
 	var sp := str(p["spawner"])
@@ -719,7 +786,7 @@ func interact(id: String) -> void:
 	if sp == "turret":
 		now_nm = "Crystal Pylon" if crystal else "Gun Turret"
 	elif sp != "":
-		now_nm = str(HelperUnit.KINDS[sp]["crystal" if crystal else "drone"])
+		now_nm = str(HelperUnit.kinds().get(sp, {}).get("crystal" if crystal else "drone", sp.capitalize()))
 	opts.append("Leave")  # B picks it: the list is long and the fight goes on
 	var dl := Dialogue.instance(get_tree())
 	dl.say([{"who": str(p["name"]), "text": "Supply ◇%d.%s %s:" % [supply, (" Now: %s." % now_nm) if now_nm != "" else "", ("Change the %s" if sp != "" else "Build a %s here") % ("crystal spire" if crystal else "drone bay")], "choice": opts, "key": ""}])
@@ -1034,7 +1101,10 @@ func _keep() -> void:
 	if f.is_empty() or str(f.get("cid", "")) != camp:
 		return
 	f["state"] = {"tickets": tickets.duplicate(), "supply": supply, "hold": _hold, "elapsed": _elapsed,
-		"boss_out": _boss_out, "points": points.map(func(p: Dictionary) -> Array: return [str(p["id"]), str(p["owner"]), float(p["prog"]), str(p["spawner"]), int(p.get("lvl", 1)), bool(p.get("fort", false))])}
+		"boss_out": _boss_out, "boss_hp": (_boss_ref.hp if _boss_ref != null and is_instance_valid(_boss_ref) else -1), "points": points.map(func(p: Dictionary) -> Array: return [str(p["id"]), str(p["owner"]), float(p["prog"]), str(p["spawner"]), int(p.get("lvl", 1)), bool(p.get("fort", false))])}
+
+
+var _resume_boss_hp := -1
 
 
 func _resume(cf: Dictionary) -> void:
@@ -1060,6 +1130,7 @@ func _resume(cf: Dictionary) -> void:
 	if bool(stt.get("boss_out", false)) and d.has("boss"):
 		d["boss_at"] = "start"
 		_elapsed = maxf(_elapsed, 7.0)
+		_resume_boss_hp = int(stt.get("boss_hp", -1))  # the captain comes back as hurt as you left them
 	map.hud.toast("The fight picks up where you left it.", Color(0.8, 0.95, 1.0))
 
 
@@ -1074,7 +1145,10 @@ func _goal_text() -> String:
 				return "CONVOY %d%% · %s · ♥%d" % [int(convoy.progress() * 100), {"roll": "rolling", "wait": "walk with it", "blocked": "clear the foes!"}.get(convoy.state, ""), convoy.hp]
 		"boss":
 			if _boss_ref != null and is_instance_valid(_boss_ref) and _boss_ref._alive:
-				return "CAPTAIN %s ♥%d" % [_boss_ref.display_name(), _boss_ref.hp]
+				var bn := _boss_ref.display_name()
+				if bn.to_lower().begins_with("captain "):
+					bn = bn.substr(8)  # "CAPTAIN Captain Bramblesnout" -> "CAPTAIN Bramblesnout"
+				return "CAPTAIN %s ♥%d" % [bn, _boss_ref.hp]
 			return "Their captain is coming" if not _boss_out else ""
 	if mode == "siege" or mode == "gate":
 		var forts := points.filter(func(p: Dictionary) -> bool: return bool(p.get("efort", false)) and str(p["owner"]) != "ally").size()

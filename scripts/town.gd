@@ -894,11 +894,11 @@ func _lines(id: String, friend: int) -> Array:
 		"gideon":
 			if GameState.tool_tier("axe") >= 2 or GameState.tool_tier("pickaxe") >= 2:
 				return [{"who": "Gideon", "text": "Iron holds. Steel holds better. Bring me bars and I'll show you what a real edge is."}]
-			if GameState.has_tool("iron_sword"):
+			if GameState.has_tool("iron_sword") or (not peng and GameState.has_tool("crowbar")):
 				return [{"who": "Gideon", "text": "Keep the edge dry. Iron remembers rust the way people remember insults."}]
 			if peng:
 				return [{"who": "Gideon", "text": "Wooden sword. Hm. It'll do for whatever's bleating in that meadow. For now. Bring me copper bars and we'll talk."}]
-			return [{"who": "Gideon", "text": "I don't ask what a farmer needs an iron sword for. I only ask for %d crystals." % GameState.buy_price("iron_sword")}]
+			return [{"who": "Gideon", "text": "Street bat, huh. I don't ask what a farmer needs a harder swing for. Copper bars and cash, and I'll band that bat so it rings."}]
 		"wren":
 			if meadow_done:
 				return [{"who": "Wren", "text": "The howling stopped. You did that. The bottles on the left shelf are half price for you. Don't tell Alder, he'll want it in the records."}]
