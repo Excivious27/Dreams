@@ -1258,11 +1258,43 @@ func box_ids() -> Array:
 		if q != "" and not nm(sid).to_lower().contains(q):
 			continue
 		ids.append(sid)
+	_new_cache = _new_set()
 	ids.sort_custom(func(a: String, b: String) -> bool:
+		var na := is_new(a)
+		var nb := is_new(b)
+		if na != nb:
+			return na  # new pieces first (c10b_09-32)
 		var ra := Decor.rarity_rank(Decor.rarity(a))
 		var rb := Decor.rarity_rank(Decor.rarity(b))
 		return ra > rb if ra != rb else nm(a) < nm(b))
 	return ids
+
+
+## Arrived in the last two days and never placed: marked "new" in the box list.
+static var _new_cache := {}
+
+
+static func is_new(id: String) -> bool:
+	return _new_cache.has(id)
+
+
+## One pass over got + every placed piece (no per-id placed scans).
+static func _new_set() -> Dictionary:
+	var day := int(GameState.run.get("day", 1))
+	var out := {}
+	var got: Dictionary = Decor.st()["got"]
+	for id in got:
+		if int(got[id]) >= day - 1:
+			out[str(id)] = true
+	if out.is_empty():
+		return out
+	var pl: Dictionary = Decor.st()["placed"]
+	for room in pl:
+		if pl[room] is Array:
+			for p in pl[room]:
+				if p is Dictionary:
+					out.erase(str(p.get("id", "")))
+	return out
 
 
 func _filter_ok(id: String) -> bool:
@@ -1399,7 +1431,7 @@ func _fill_list() -> void:
 	for id: String in ids.slice(list_page * PAGE_ROWS, (list_page + 1) * PAGE_ROWS):
 		var r := Decor.rarity(id)
 		var bt := Button.new()
-		bt.text = "%s  x%d · %s" % [nm(id), Decor.owned(id), where_word(id)]
+		bt.text = "%s%s  x%d · %s" % ["★ " if is_new(id) else "", nm(id), Decor.owned(id), where_word(id)]
 		bt.tooltip_text = "%s %s" % [Decor.rarity_glyph(r), r.capitalize()]
 		bt.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		bt.clip_text = true
