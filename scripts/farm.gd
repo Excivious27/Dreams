@@ -1137,9 +1137,17 @@ func _plans() -> void:
 			if n > 0:
 				copts.append("%s  (%d of %d built)" % [str(pair[1]), have, n])
 				cids.append(str(pair[0]))
+		var yard_i := -1
+		if not Net.visiting():
+			yard_i = copts.size()
+			copts.append("Decorate the yard")  # yard decor from the decor box (C10b P2)
 		copts.append("Leave")
 		d.say([{"who": "Plans", "text": "Build it from materials, or buy it ready-made. Each tier opens as your story, skills and friendships grow.", "choice": copts, "key": ""}])
 		await d.finished
+		if yard_i >= 0 and d.last_choice == yard_i:
+			await get_tree().process_frame
+			DecorMode.open(self)
+			return
 		if d.last_choice < 0 or d.last_choice >= cids.size():
 			return
 		var cat := str(cids[d.last_choice])
