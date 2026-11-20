@@ -19,6 +19,11 @@ BANDS = {1: (2, 4), 2: (3, 7), 3: (6, 10), 4: (12, 18), 5: (25, 45)}   # profit/
 SLACK = 1.3       # a crop may beat its band ceiling by this much before it fails
 SEASON = 27
 LOOP_CAP = 1.1
+# Mirror of GameState.buy_price / sell_price (C8): buy_multiplier floor 0.4 x Specs 0.9, the 1.15 x sell floor,
+# and the top sell multiplier (sell_bonus + Alder + bartering 20% + Deuce 15%) applied to both sides.
+BUY_MIN = 0.4 * 0.9
+BUY_OF_SELL = 1.15
+SELL_MAX = 1.0
 fails, warns = [], []
 
 def val(k): return int(I.get(k, {}).get('value', 0))
@@ -75,8 +80,14 @@ for bk, rs in R.items():
             continue
         cost = sum(fval(k) * q for k, q in r['need'].items())
         out = int(it.get('value', 0)) * n
-        if all((not k.startswith('#')) and k in SHOP for k in r['need']) and out > LOOP_CAP * cost + n:
-            fails.append('loop: %s/%s makes %d from %d of shop goods (> %.2fx)' % (bk, r['id'], out, cost, LOOP_CAP))
+        if all((not k.startswith('#')) and k in SHOP for k in r['need']):
+            if out > LOOP_CAP * cost + n:
+                fails.append('loop: %s/%s makes %d from %d of shop goods (> %.2fx)' % (bk, r['id'], out, cost, LOOP_CAP))
+            # Buy price vs sell value, every perk on both sides: the cheapest a shop sells an input for is
+            # max(1.5 x value x BUY_MIN, BUY_OF_SELL x its sell price); the output sells for value x SELL_MAX.
+            buy_min = sum(max(1.5 * BUY_MIN * fval(k), BUY_OF_SELL * fval(k) * SELL_MAX) * q for k, q in r['need'].items())
+            if out * SELL_MAX > buy_min + n:
+                fails.append('buy-sell loop: %s/%s sells for %d with every perk, inputs bought for %d' % (bk, r['id'], int(out * SELL_MAX), int(buy_min)))
         if it.get('type') in ('craft', 'material', 'bar') and not r.get('tool') and out + n < cost:
             # several recipes may make one good: only the cheapest has to pay
             cheapest = min(sum(fval(k) * q for k, q in o['need'].items()) / float(o.get('n', 1)) for b2 in R.values() if isinstance(b2, list) for o in b2 if o['give'] == g)
