@@ -271,6 +271,88 @@ def tile_lines(pattern=("path2_cobble*", "path_cobble*")):
     print("tile lines cleaned in", n_files, "tiles")
 
 
+STAGES = ["seed", "sprout", "young", "growing", "mature", "ready"]
+CROP_SHEETS = [("c5/p5_crops_a.png", ["soulleaf", "lumiflora"]), ("c5/p5_crops_b.png", ["ethereal_corn", "dreamflower"]),
+               ("c5/p5_crops_c.png", ["wishfruit", "worldseed"]), ("c5/p5_crops_d.png", ["prism_tomato"])]
+
+
+def _row_slots(rgba, n_rows, n_per, min_big=1500):
+    """Pieces per row: the n_per biggest blobs of each row band are the
+    pieces; every small blob (sparkles) joins the nearest piece."""
+    m = rgba[..., 3] > 40
+    lab, n = ndimage.label(m)
+    sizes = ndimage.sum(m, lab, range(1, n + 1))
+    objs = ndimage.find_objects(lab)
+    bigs = [i for i in range(n) if sizes[i] >= min_big]
+    rows = C.rows_of([(objs[i][1].start, objs[i][0].start, objs[i][1].stop, objs[i][0].stop, i) for i in bigs])
+    rows = [sorted(r, key=lambda b: b[0]) for r in rows]
+    assert len(rows) == n_rows and all(len(r) == n_per for r in rows), [len(r) for r in rows]
+    owner = {b[4]: b[4] for r in rows for b in r}
+    cents = [((b[0] + b[2]) / 2, (b[1] + b[3]) / 2, b[4]) for r in rows for b in r]
+    for i in range(n):
+        if i in owner or sizes[i] < 4:
+            continue
+        sl = objs[i]
+        cx, cy = (sl[1].start + sl[1].stop) / 2, (sl[0].start + sl[0].stop) / 2
+        owner[i] = min(cents, key=lambda c: (c[0] - cx) ** 2 + (c[1] - cy) ** 2)[2]
+    out = []
+    for r in rows:
+        row = []
+        for b in r:
+            ids = [k + 1 for k, o in owner.items() if o == b[4]]
+            mask = np.isin(lab, ids)
+            ys, xs = np.nonzero(mask)
+            sub = rgba.copy()
+            sub[~mask] = 0
+            row.append(Image.fromarray(sub[ys.min():ys.max() + 1, xs.min():xs.max() + 1]))
+        out.append(row)
+    return out
+
+
+def _fit(im, f):
+    return S.scale_to(im, width=max(1, round(im.width * f)), height=max(1, round(im.height * f)))
+
+
+def crops_redraw():
+    """Magic crop growth strips redrawn opaque and crisp (c5_05 REDRAWS):
+    scaled so the ripe plant keeps its old height."""
+    for src, names in CROP_SHEETS:
+        rows = _row_slots(_load_keep_alpha(src), len(names), 6)
+        for crop, row in zip(names, rows):
+            f = float(S.manifest["crops"][crop + "_ready"]["h"]) / row[5].height
+            for st, im in zip(STAGES, row):
+                _rm("crops", crop + "_" + st)
+                S.save(_fit(im, f), "crops", crop + "_" + st)
+            print("crop", crop)
+
+
+def props_redraw():
+    """holo_table (4 frames) + moon teleporter pad, oil_drums/drums, bulbs."""
+    rgba = _load_keep_alpha("c5/p5_holo.png")
+    m = rgba[..., 3] > 40
+    lab, n = ndimage.label(m)
+    sizes = ndimage.sum(m, lab, range(1, n + 1))
+    # top row: 4 tables (hologram bits join their table); bottom: the pad
+    top = rgba.copy(); top[600:] = 0
+    bot = rgba.copy(); bot[:600] = 0
+    tables = _row_slots(top, 1, 4)[0]
+    pad = _row_slots(bot, 1, 1)[0][0]
+    f = 108.0 / max(t.height for t in tables)
+    _rm("props", "holo_table")
+    S.strip([_fit(t, f) for t in tables], "props", "holo_table")
+    _rm("props", "teleporter")
+    tp = _fit(pad, 64.0 / pad.width)
+    S.save(tp, "props", "teleporter")
+    S.manifest["props"]["teleporter"].update({"cell_w": tp.width, "cell_h": tp.height, "frames": 1})
+    pr = _row_slots(_load_keep_alpha("c5/p5_props.png"), 2, 2, min_big=800)
+    for nm, im in [("oil_drums", pr[0][0]), ("drums", pr[0][1]), ("bulb_on", pr[1][0]), ("bulb_off", pr[1][1])]:
+        old = S.manifest["props"][nm]
+        f = float(old["h"]) / im.height
+        _rm("props", nm)
+        S.save(_fit(im, f), "props", nm)
+    print("props redrawn")
+
+
 def poses():
     """Redraws of the cells Npc.BAD_CELLS used to hide (c5_08 #2)."""
     for src, sheet, names, ref in POSE_FIX:
@@ -407,7 +489,7 @@ def blobs(names=None):
             print(group, nm, "dropped", dropped, "size", im.size)
 
 
-STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix, sheep, tile_lines]
+STEPS = [wren_jr, rekey, blobs, bases, portraits, poses, w490_fix, sheep, tile_lines, crops_redraw, props_redraw]
 
 if __name__ == "__main__":
     mpath = os.path.join(S.OUT, "manifest.json")

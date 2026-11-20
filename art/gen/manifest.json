@@ -40752,33 +40752,33 @@
   },
   "dreamflower_growing": {
    "file": "crops/dreamflower_growing.png",
-   "h": 82,
-   "w": 84
+   "h": 91,
+   "w": 73
   },
   "dreamflower_mature": {
    "file": "crops/dreamflower_mature.png",
-   "h": 104,
-   "w": 95
+   "h": 100,
+   "w": 78
   },
   "dreamflower_ready": {
    "file": "crops/dreamflower_ready.png",
-   "h": 114,
-   "w": 106
+   "h": 113,
+   "w": 87
   },
   "dreamflower_seed": {
    "file": "crops/dreamflower_seed.png",
-   "h": 39,
-   "w": 73
+   "h": 29,
+   "w": 63
   },
   "dreamflower_sprout": {
    "file": "crops/dreamflower_sprout.png",
-   "h": 47,
-   "w": 75
+   "h": 44,
+   "w": 64
   },
   "dreamflower_young": {
    "file": "crops/dreamflower_young.png",
-   "h": 64,
-   "w": 78
+   "h": 65,
+   "w": 64
   },
   "dreamfruit_growing": {
    "file": "crops/dreamfruit_growing.png",
@@ -40872,12 +40872,12 @@
   },
   "ethereal_corn_growing": {
    "file": "crops/ethereal_corn_growing.png",
-   "h": 85,
-   "w": 53
+   "h": 73,
+   "w": 60
   },
   "ethereal_corn_mature": {
    "file": "crops/ethereal_corn_mature.png",
-   "h": 97,
+   "h": 85,
    "w": 58
   },
   "ethereal_corn_ready": {
@@ -40887,18 +40887,18 @@
   },
   "ethereal_corn_seed": {
    "file": "crops/ethereal_corn_seed.png",
-   "h": 24,
-   "w": 42
+   "h": 25,
+   "w": 52
   },
   "ethereal_corn_sprout": {
    "file": "crops/ethereal_corn_sprout.png",
-   "h": 44,
-   "w": 40
+   "h": 37,
+   "w": 53
   },
   "ethereal_corn_young": {
    "file": "crops/ethereal_corn_young.png",
-   "h": 66,
-   "w": 50
+   "h": 56,
+   "w": 53
   },
   "fig_growing": {
    "file": "crops/fig_growing.png",
@@ -41652,33 +41652,33 @@
   },
   "lumiflora_growing": {
    "file": "crops/lumiflora_growing.png",
-   "h": 69,
-   "w": 53
+   "h": 67,
+   "w": 45
   },
   "lumiflora_mature": {
    "file": "crops/lumiflora_mature.png",
    "h": 79,
-   "w": 59
+   "w": 61
   },
   "lumiflora_ready": {
    "file": "crops/lumiflora_ready.png",
    "h": 93,
-   "w": 70
+   "w": 63
   },
   "lumiflora_seed": {
    "file": "crops/lumiflora_seed.png",
-   "h": 27,
-   "w": 42
+   "h": 19,
+   "w": 38
   },
   "lumiflora_sprout": {
    "file": "crops/lumiflora_sprout.png",
-   "h": 41,
-   "w": 40
+   "h": 35,
+   "w": 38
   },
   "lumiflora_young": {
    "file": "crops/lumiflora_young.png",
-   "h": 52,
-   "w": 48
+   "h": 48,
+   "w": 40
   },
   "luminous_starfruit_growing": {
    "file": "crops/luminous_starfruit_growing.png",
@@ -42522,33 +42522,33 @@
   },
   "prism_tomato_growing": {
    "file": "crops/prism_tomato_growing.png",
-   "h": 87,
-   "w": 58
+   "h": 85,
+   "w": 50
   },
   "prism_tomato_mature": {
    "file": "crops/prism_tomato_mature.png",
-   "h": 92,
-   "w": 60
+   "h": 94,
+   "w": 55
   },
   "prism_tomato_ready": {
    "file": "crops/prism_tomato_ready.png",
    "h": 99,
-   "w": 72
+   "w": 62
   },
   "prism_tomato_seed": {
    "file": "crops/prism_tomato_seed.png",
-   "h": 27,
-   "w": 41
+   "h": 24,
+   "w": 45
   },
   "prism_tomato_sprout": {
    "file": "crops/prism_tomato_sprout.png",
-   "h": 48,
-   "w": 43
+   "h": 36,
+   "w": 45
   },
   "prism_tomato_young": {
    "file": "crops/prism_tomato_young.png",
-   "h": 69,
-   "w": 50
+   "h": 59,
+   "w": 45
   },
   "pumpkin": {
    "cell_h": 26,
@@ -43010,33 +43010,33 @@
   },
   "soulleaf_growing": {
    "file": "crops/soulleaf_growing.png",
-   "h": 76,
-   "w": 55
+   "h": 69,
+   "w": 52
   },
   "soulleaf_mature": {
    "file": "crops/soulleaf_mature.png",
-   "h": 86,
+   "h": 81,
    "w": 64
   },
   "soulleaf_ready": {
    "file": "crops/soulleaf_ready.png",
    "h": 98,
-   "w": 71
+   "w": 70
   },
   "soulleaf_seed": {
    "file": "crops/soulleaf_seed.png",
-   "h": 28,
-   "w": 42
+   "h": 21,
+   "w": 41
   },
   "soulleaf_sprout": {
    "file": "crops/soulleaf_sprout.png",
-   "h": 45,
-   "w": 42
+   "h": 34,
+   "w": 40
   },
   "soulleaf_young": {
    "file": "crops/soulleaf_young.png",
-   "h": 57,
-   "w": 49
+   "h": 52,
+   "w": 41
   },
   "spinach_growing": {
    "file": "crops/spinach_growing.png",
@@ -43776,63 +43776,63 @@
   },
   "wishfruit_growing": {
    "file": "crops/wishfruit_growing.png",
-   "h": 99,
-   "w": 112
+   "h": 95,
+   "w": 89
   },
   "wishfruit_mature": {
    "file": "crops/wishfruit_mature.png",
-   "h": 106,
-   "w": 114
+   "h": 108,
+   "w": 102
   },
   "wishfruit_ready": {
    "file": "crops/wishfruit_ready.png",
    "h": 116,
-   "w": 118
+   "w": 110
   },
   "wishfruit_seed": {
    "file": "crops/wishfruit_seed.png",
-   "h": 53,
-   "w": 95
+   "h": 34,
+   "w": 67
   },
   "wishfruit_sprout": {
    "file": "crops/wishfruit_sprout.png",
-   "h": 64,
-   "w": 90
+   "h": 45,
+   "w": 67
   },
   "wishfruit_young": {
    "file": "crops/wishfruit_young.png",
-   "h": 88,
-   "w": 95
+   "h": 75,
+   "w": 69
   },
   "worldseed_growing": {
    "file": "crops/worldseed_growing.png",
-   "h": 66,
-   "w": 49
+   "h": 71,
+   "w": 51
   },
   "worldseed_mature": {
    "file": "crops/worldseed_mature.png",
-   "h": 78,
-   "w": 54
+   "h": 79,
+   "w": 59
   },
   "worldseed_ready": {
    "file": "crops/worldseed_ready.png",
    "h": 93,
-   "w": 72
+   "w": 67
   },
   "worldseed_seed": {
    "file": "crops/worldseed_seed.png",
-   "h": 26,
-   "w": 40
+   "h": 23,
+   "w": 44
   },
   "worldseed_sprout": {
    "file": "crops/worldseed_sprout.png",
    "h": 36,
-   "w": 39
+   "w": 44
   },
   "worldseed_young": {
    "file": "crops/worldseed_young.png",
-   "h": 50,
-   "w": 41
+   "h": 54,
+   "w": 44
   },
   "yellow_squash_growing": {
    "file": "crops/yellow_squash_growing.png",
@@ -85124,13 +85124,13 @@
   },
   "bulb_off": {
    "file": "props/bulb_off.png",
-   "h": 41,
-   "w": 28
+   "h": 40,
+   "w": 16
   },
   "bulb_on": {
    "file": "props/bulb_on.png",
    "h": 41,
-   "w": 28
+   "w": 17
   },
   "bulb_plant": {
    "file": "props/bulb_plant.png",
@@ -86528,7 +86528,7 @@
   "drums": {
    "file": "props/drums.png",
    "h": 38,
-   "w": 56
+   "w": 39
   },
   "ds_bazaar_tent": {
    "file": "props/ds_bazaar_tent.png",
@@ -88215,11 +88215,11 @@
   },
   "holo_table": {
    "cell_h": 108,
-   "cell_w": 108,
+   "cell_w": 96,
    "file": "props/holo_table.png",
    "frames": 4,
    "h": 108,
-   "w": 432
+   "w": 384
   },
   "horse": {
    "file": "props/horse.png",
@@ -90413,7 +90413,7 @@
   "oil_drums": {
    "file": "props/oil_drums.png",
    "h": 38,
-   "w": 48
+   "w": 38
   },
   "oil_press": {
    "file": "props/oil_press.png",
@@ -95361,11 +95361,11 @@
    "w": 72
   },
   "teleporter": {
-   "cell_h": 16,
+   "cell_h": 41,
    "cell_w": 64,
    "file": "props/teleporter.png",
    "frames": 1,
-   "h": 16,
+   "h": 41,
    "w": 64
   },
   "teleporter2": {
