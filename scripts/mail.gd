@@ -150,6 +150,7 @@ static func _first_week(day: int) -> void:
 			send("Mayor Alder", "Welcome to %s, neighbour! What nobody tells new folk: the shops keep seven to nine (the bank eight to five), the community board on the plaza pins paid jobs every morning, and Bram's inn never closes. My office in the hall is open whenever the shops are. - Mayor Alder" % town, "news")
 		else:
 			send("Maple", "Saw a light on at the old plot. The store's open seven till nine: seeds in the back, bread by the door. The board on the plaza pays for errands, no questions asked, and Bram's inn never shuts. Come by. - Maple", "news")
+	DecorSources.carpenter_letter(day)  # C10b P1: Tess's workshop opens (day 3)
 	if day >= 5 and day <= 7 and not flags.has("wmail_5"):
 		flags["wmail_5"] = true
 		if GameState.is_penguins():

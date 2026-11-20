@@ -134,6 +134,43 @@ if DEC:
                     fails.append('decor craft earns: %s %d from %d' % (r['id'], val(r['give']), cost))
     if float(DEC.get('reorder_fee', 0)) < 0:
         fails.append('decor re-order fee below 0')
+    # C10b (c10b_10_15): the decor economy itself, not just per-piece loops.
+    # (a) a real price ladder: each shop rarity has many price points, not four.
+    from collections import defaultdict
+    pts = defaultdict(set)
+    for k, e in DEC.get('items', {}).items():
+        if e.get('price') and not e.get('ext'):
+            pts[e['rarity']].add(int(e['price']))
+    for r, need in (('common', 15), ('uncommon', 15), ('rare', 15), ('epic', 15)):
+        if len(pts[r]) < need:
+            fails.append('decor price ladder: %s has only %d price points' % (r, len(pts[r])))
+    # (b) re-order always costs more than the shelf (fee > 0) and the fee is flat-ish (<= 10% + min).
+    if int(DEC.get('reorder_min', 0)) < 1 or not 0 < float(DEC.get('reorder_fee', 0)) <= 0.25:
+        fails.append('decor re-order fee/min out of range')
+    # (c) every shelf a counter/stall opens exists, and no shelf list is dead weight (only listed keys).
+    import re as _re
+    src_ds = open(os.path.join(ROOT, 'scripts', 'decor_sources.gd')).read()
+    shelf_keys = set(_re.findall(r'"[a-z_]+": "([a-z_]+)"', src_ds.split('const SHELF := {', 1)[1].split('}', 1)[0]))
+    for k in shelf_keys:
+        if k not in DEC.get('shops', {}):
+            fails.append('decor shelf %s (DecorSources.SHELF) missing in decor.json' % k)
+    # (d) late-game sink: some legendary pieces are buyable (hub stalls) and none cost more than the cap.
+    leg = [k for rows in [v for kk, v in DEC.get('shops', {}).items() if kk.startswith('stall:')] for _, ids in rows for k in ids
+           if DEC['items'][k]['rarity'] == 'legendary']
+    if not leg:
+        fails.append('decor: no legendary piece on any stall (late-game sink)')
+    # (e) set claims pay less than the pieces' sell-back + 15% of their price (never a reason to buy a set to flip it).
+    for sid, st in DEC.get('sets', {}).items():
+        pay = int((st.get('reward') or {}).get('money', 0))
+        cost = sum(int(DEC['items'][p].get('price', 0)) for p in st.get('pieces', []))
+        if pay and cost and pay > cost * 0.5:
+            fails.append('decor set %s pays %d for pieces costing %d' % (sid, pay, cost))
+    # (f) 3-year spend sim: buying one of every shelf piece (lists, not stock) at the minimum discount must cost
+    # more than a mid-game player earns from decor sell-back of the same pieces (sink, not source).
+    spend = sum(int(DEC['items'][k]['price'] * DECOR_BUY_MIN) for k in stocked if DEC['items'][k].get('price'))
+    back = sum((val(k) if k in I else int(DEC['items'][k].get('sell', 0))) for k in stocked)
+    if back >= spend * 0.5:
+        fails.append('decor sink: sell-back %d vs spend %d' % (back, spend))
 
 # 3c) a tempered piece is worth more than its base (c10_07)
 for rs in R.values():

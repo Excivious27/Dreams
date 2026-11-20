@@ -168,7 +168,7 @@ static func food_note(id: String) -> String:
 
 
 static func run(m: GameMap, shop: String, absent := false) -> void:
-	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins", "hazel": "Hazel"}.get(shop, "Shop")
+	var keeper: String = {"store": "Maple", "smith": "Gideon", "potions": "Wren", "bait": "Finn", "lodge": "Rook", "orla": "Orla", "marlowe": "Marlowe", "tam": "Tam", "old_moss": "Old Moss", "granite": "Granite", "sel": "Sel", "catkins": "Catkins", "hazel": "Hazel", "carpenter": "Tess", "lumi": "Lumi", "crew_marlene": "Marlene", "crew_deuce": "Deuce", "crew_specs": "Specs", "crew_halo": "Halo"}.get(shop, "Shop")
 	var greet: String = {
 		"store": "Seeds, snacks, and whatever fell off the cart. What'll it be?",
 		"smith": "Iron holds an edge. Wood holds a splinter. Your call.",
@@ -182,7 +182,12 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 		"granite": "Ore from the walls. Dynamite if you've got the nerve.",
 		"sel": "Relics. Real ones. Mostly.",
 		"catkins": "Litter boxes. Every Grump stops to hold its nose. Don't ask how we found out.",
-		"hazel": "Plans and permits are at the hall. Chairs, shelves and rugs are right here.",  # decor counter (C10a P4; needs a counter thing in hazel_house)
+		"carpenter": "Chairs, beds, shelves, rugs, and pieces for the yard. New stock off the bench every few days.",  # Tess's workshop (C10b P1)
+		"lumi": "Off the loom this week. Try it on, it's all looks and no fuss.",  # wardrobe counter (C10b P1, cottage_c)
+		"crew_marlene": "Everything here has a price and a story. The story's free.",
+		"crew_deuce": "Signs, cabinets, lights. Make your place look like a winner's.",
+		"crew_specs": "Screens and gadgets, tested twice. Mostly.",
+		"crew_halo": "Garage stock. Chrome, drums, and the odd car for the yard.",
 	}.get(shop, "What'll it be?")
 	if absent:
 		# Nobody at the counter: a note on the till, no keeper's voice.
@@ -196,6 +201,10 @@ static func run(m: GameMap, shop: String, absent := false) -> void:
 			await m.say([{"who": keeper, "text": "You're the one who took the old plot! Here, first-timer's bundle. Don't tell Gideon I give things away."}])
 		m.give("turnip_seed", 10)
 		m.give("energy_tea", 1)
+	# A decor-only counter (Hazel, Lumi, crew shops: no item offers) opens its shelf straight away (C10b P1).
+	if offers(shop).is_empty() and not DecorSources.today(shop).is_empty():
+		await DecorSources.shelf(m, shop, keeper if keeper != "" else "Shelf")
+		return
 	while true:
 		var offers := offers(shop)
 		var opts: Array = []

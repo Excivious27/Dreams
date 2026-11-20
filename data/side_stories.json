@@ -153,7 +153,7 @@
      "flag": "ss_jim_cave",
      "hint": "Tell Big Jim his brother's message. The cave is behind a waterfall high on Mount Prismatica.",
      "give": [
-      "dc_bulb_plant",
+      "dc_antler_hooks",
       1
      ]
     }
@@ -304,7 +304,7 @@
      "flag": "ss_commander_home",
      "hint": "",
      "give": [
-      "dc_catkins_shrine",
+      "dc_flag_a",
       1
      ]
     }
@@ -376,7 +376,7 @@
      "flag": "ss_rosa_won",
      "hint": "",
      "give": [
-      "dc_arc_neon_joystick",
+      "dc_kit_stove",
       1
      ]
     }
@@ -448,7 +448,7 @@
      "flag": "ss_kid_school",
      "hint": "",
      "give": [
-      "dc_casino_ace_sign",
+      "dc_bookcase3_b",
       1
      ]
     }
@@ -509,7 +509,7 @@
      "flag": "ss_specs_files",
      "hint": "",
      "give": [
-      "dc_easel2",
+      "dc_chrome_screen",
       1
      ]
     }

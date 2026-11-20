@@ -43,6 +43,10 @@ const LINES := {
 	"hazel": {
 		"both": ["Another farmer! About time. Hazel; my farmhouse is down the south-west lane. I'm in the yard at dawn and at the market in the morning.", "Water before nine, plant what's in season, and don't till more than you can water. Ask me anything about crops. I mean it."],
 	},
+	"tess": {
+		"pen": ["Hi! Tess. I'm the carpenter: the old warehouse up by the farm road is my workshop now.", "Chairs, beds, shelves, rugs, garden benches and lamp posts. Eight till six. New pieces come off the bench every few days, so come and look often."],
+		"gang": ["Tess. Carpenter. I took the old warehouse by the farm road; the crews let me be because everyone needs a table.", "Furniture, rugs, things for your yard. Eight till six. New stock every few days. I don't ask what the back room's for."],
+	},
 	"bram": {
 		"pen": ["Welcome, welcome! Bram, of Bram's inn, south-east of the plaza. Hot soup, a warm seat, and the door's open all day and most of the night.", "Come by in the evening. Half the town eats here, and the other half wishes they did."],
 		"gang": ["Bram. The inn's south-east of the plaza, open all day, half the night. Soup's honest, the stories aren't.", "Evenings, half the town's in my dining room. Good place to listen, if you're a listener."],

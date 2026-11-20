@@ -20,6 +20,7 @@ const SHOPS := {
 	"bank": [8, 17, "Bank"],
 	"stable": [7, 21, "Stable"],
 	"lodge": [7, 21, "Rook's lodge"],
+	"workshop": [8, 18, "Tess's workshop"],  # C10b P1: the carpenter
 	"school": [7, 18, "School"],
 }
 const ALWAYS := ["inn", "chapel", "rec", "rec_up", "interior"]

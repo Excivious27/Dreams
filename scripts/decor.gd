@@ -26,7 +26,7 @@ const RARITY_COLORS := {
 ## Wear category -> slot (acc covers scarves, capes, gloves, glasses).
 const CAT_SLOT := {"hat": "hat", "top": "top", "bottom": "bottom", "outfit": "outfit", "acc": "acc", "shoes": "shoes"}
 const WEAR_CATS := ["hat", "top", "bottom", "outfit", "acc", "shoes"]
-const MIGRATION := 1
+const MIGRATION := 2  # 2 (C10b): C9 milestone keepsakes into the house, legacy ids renamed everywhere
 ## Toast/note for the last give (Hud may show it like GameState.overflow_note).
 static var last_note := ""
 
@@ -68,7 +68,7 @@ static func st() -> Dictionary:
 	if not (r.get("decor", null) is Dictionary):
 		r["decor"] = {}
 	var d: Dictionary = r["decor"]
-	for k in ["box", "placed", "wall", "floor", "wear", "seen", "got", "uniques", "pity", "sold", "sets_done", "viewed"]:
+	for k in ["box", "placed", "wall", "floor", "wear", "seen", "got", "uniques", "pity", "sold", "sets_done", "viewed", "exterior", "swept"]:
 		if not (d.get(k, null) is Dictionary):
 			d[k] = {}
 	if not (d.get("orders", null) is Array):
@@ -89,7 +89,7 @@ static func total(id: String) -> int:
 	for slot in d["wear"]:
 		if str(d["wear"][slot]) == id:
 			n += 1
-	for k in ["wall", "floor"]:
+	for k in ["wall", "floor", "exterior"]:  # exterior {part: id} = farmhouse parts applied (C10b P3)
 		for room in d[k]:
 			if str(d[k][room]) == id:
 				n += 1
@@ -295,7 +295,7 @@ static func stock(shop: String) -> Array:
 	var every := maxi(1, int((data().get("shop_days", {}) as Dictionary).get(shop, 1)))
 	var period := int(GameState.run.get("day", 1)) / every
 	var rng := RandomNumberGenerator.new()
-	rng.seed = hash("%s:%d:%d" % [shop, period, int(GameState.run.get("seed", 0))])
+	rng.seed = hash("%s:%d" % [shop, period])  # c10b_14_14: day-only, so a co-op guest sees the host's shelf
 	var left := pool.duplicate()
 	var out: Array = []
 	while out.size() < slots and not left.is_empty():
@@ -387,25 +387,31 @@ static func wear(slot: String, id: String) -> void:
 
 # ---- comfort score (sets + rarity) ---------------------------------------------------------------------
 
-## A room's comfort: each placed piece's rarity comfort, wallpaper/flooring 2 each, +set comfort when
-## every piece of a set stands in that room. key "" = the whole house (every "house*" key).
+## A room's comfort: each placed piece's rarity comfort (the first copy of an id in full, the next two 1
+## point each, more add nothing: c10b_07), wallpaper/flooring 2 each, yard pieces (key "farm") at half,
+## +set comfort when every piece of a set stands there. key "" = the whole home (every "house*" key, room
+## surfaces and the farm yard). Surfaces are keyed by room ("main", "pantry"...), so any "house*" key counts them.
 static func comfort(key := "") -> int:
 	var d := st()
 	var ids := {}
 	var pts := 0
 	for k in d["placed"]:
+		var yard := str(k) == "farm"
 		if key != "" and str(k) != key:
 			continue
-		if key == "" and not str(k).begins_with("house"):
+		if key == "" and not str(k).begins_with("house") and not yard:
 			continue
 		for p in d["placed"][k]:
 			if p is Dictionary:
 				var id := str(p.get("id", ""))
-				pts += int(entry(id).get("comfort", 1))
-				ids[id] = true
+				var c := int(entry(id).get("comfort", 1))
+				var seen := int(ids.get(id, 0))
+				var add := c if seen == 0 else (1 if seen < 3 else 0)
+				pts += (add + 1) / 2 if yard else add
+				ids[id] = seen + 1
 	for k in ["wall", "floor"]:
 		for room in d[k]:
-			if key == "" or str(room) == key:
+			if key == "" or key.begins_with("house") or str(room) == key:
 				pts += 2
 	for sid in data()["sets"]:
 		var s: Dictionary = data()["sets"][sid]
@@ -417,6 +423,48 @@ static func comfort(key := "") -> int:
 		if all_in:
 			pts += int(s.get("comfort", 0))
 	return pts
+
+
+## The comfort tier for a score: decor.json "comfort_tiers" [[min, name, luck_minutes, energy_floor]], highest
+## min <= score. [] with an empty catalogue.
+static func comfort_tier(score := -1) -> Array:
+	if score < 0:
+		score = comfort()
+	var best: Array = []
+	for t in data().get("comfort_tiers", []):
+		if t is Array and t.size() >= 4 and score >= int(t[0]):
+			best = t
+	return best
+
+
+## Morning comfort (GameState.sleep): a cosy home softens a late/passed-out wake (energy floor) and gives a
+## small luck lift for the morning. Returns the line for the morning toasts ("" when nothing happened).
+static func morning_comfort() -> String:
+	var score := comfort()
+	var t := comfort_tier(score)
+	if t.is_empty() or int(t[0]) <= 0:
+		return ""
+	var r: Dictionary = GameState.run
+	var floor_en := int(round(int(r.get("max_energy", 100)) * float(t[3])))
+	var lifted := false
+	if float(t[3]) > 0.0 and int(r.get("energy", 0)) < floor_en:
+		r["energy"] = floor_en
+		lifted = true
+	if int(t[2]) > 0 and GameState.buff("luck") < 1.0:
+		r["buffs"] = r.get("buffs", {})
+		r["buffs"]["luck"] = {"until": GameState.now_abs() + int(t[2]), "amount": 1.0}
+	var last := str(st().get("tier_seen", ""))
+	st()["tier_seen"] = str(t[1])
+	if lifted:
+		return "Your %s home (comfort %d) helped you rest: woke with %d%% energy." % [str(t[1]).to_lower(), score, int(float(t[3]) * 100)]
+	if last != str(t[1]):
+		var perks: Array = []
+		if float(t[3]) > 0.0:
+			perks.append("softens a late night")
+		if int(t[2]) > 0:
+			perks.append("lifts your luck each morning")
+		return "Home comfort %d: %s. Your home %s." % [score, str(t[1]), " and ".join(perks)]
+	return ""
 
 
 ## Set progress: [have (ever owned), total].
@@ -484,12 +532,21 @@ static func migrate() -> void:
 					for i in sl.size():
 						if is_decor(str(sl[i])):
 							sl[i] = ""
-	# Legacy ids renamed in the catalogue.
+	# Legacy ids renamed in the catalogue: box, placed records, worn slots, room surfaces (c10b_12).
 	var leg: Dictionary = data().get("legacy", {})
 	for old in d["box"].keys():
 		if leg.has(old) and is_decor(str(leg[old])):
 			_absorb(str(leg[old]), int(d["box"][old]))
 			(d["box"] as Dictionary).erase(old)
+	for key in d["placed"]:
+		if d["placed"][key] is Array:
+			for p in d["placed"][key]:
+				if p is Dictionary and leg.has(str(p.get("id", ""))) and is_decor(str(leg[str(p["id"])])):
+					p["id"] = str(leg[str(p["id"])])
+	for k in ["wear", "wall", "floor"]:
+		for slot in d[k]:
+			if leg.has(str(d[k][slot])) and is_decor(str(leg[str(d[k][slot])])):
+				d[k][slot] = str(leg[str(d[k][slot])])
 	# Once per save: uniques whose event this save already passed (decor.json "backgrant" {id: flag}).
 	if int(d.get("mig", 0)) < MIGRATION:
 		var fl: Variant = r.get("flags", {})
@@ -497,7 +554,37 @@ static func migrate() -> void:
 		for id in bg:
 			if fl is Dictionary and (fl as Dictionary).has(str(bg[id])) and is_decor(str(id)) and total(str(id)) == 0:
 				give(str(id), 1, "backgrant")
+	# C10b (mig 2): C9 saves kept milestone keepsakes in run.coll.decor, drawn at fixed house spots. C10a stopped
+	# drawing them once the catalogue knew the ids, so put each one in the house at its old spot (else the box).
+	if int(d.get("mig", 0)) < 2:
+		_seed_keepsakes(d)
 	d["mig"] = MIGRATION
+
+
+static func _seed_keepsakes(d: Dictionary) -> void:
+	var coll: Variant = GameState.run.get("coll", {})
+	if not (coll is Dictionary) or not ((coll as Dictionary).get("decor", null) is Dictionary):
+		return
+	if not (d["placed"].get("house", null) is Array):
+		d["placed"]["house"] = []
+	var house: Array = d["placed"]["house"]
+	for old in (coll["decor"] as Dictionary):
+		var did := Collections.decor_id(str(old))
+		if did == "" or total(did) > 0:
+			continue
+		var at: Variant = Collections.DECOR_AT.get(str(old), null)
+		var free := at is Vector2i
+		if free:
+			for p in house:
+				if p is Dictionary and p.get("cell") is Array and int(p["cell"][0]) == (at as Vector2i).x and int(p["cell"][1]) == (at as Vector2i).y:
+					free = false
+		if free:
+			house.append({"id": did, "cell": [(at as Vector2i).x, (at as Vector2i).y], "rot": 0})
+			if not (d["got"] as Dictionary).has(did):
+				d["got"][did] = int(GameState.run.get("day", 1))
+			see(did)
+		else:
+			_absorb(did, 1)
 
 
 static func _absorb(id: String, n: int) -> void:

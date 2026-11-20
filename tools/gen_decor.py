@@ -23,7 +23,7 @@ Rules (asserted below, the run fails otherwise):
   - every pool and shop id exists and is in-arc for at least one arc; pools hold no uniques
   - all-ages words (no drink/drug words; gang_flavour banned words stay out of both-arc names)
 """
-import json, os, re, sys, math
+import json, os, re, sys, math, zlib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, 'data')
@@ -44,12 +44,17 @@ RARITY = [
     {'id': 'unique',    'rank': 6, 'col': [0.40, 1.00, 0.95], 'glyph': '◆', 'label': 'One of a kind', 'band': [0, 0],      'weight': 0,   'comfort': 15},
 ]
 RK = {r['id']: r for r in RARITY}
+SET_PAY, SET_PAY_MIN, SET_PAY_CAP = 0.12, 200, 6000   # set claim money: 12% of the pieces' shelf total, 200-6000
 SELL_SHARE = 0.15      # sell-back = 15% of the shop price (c10_12: 10-25%), flat: no perks, no demand
 REORDER_FEE = 0.10     # re-order from the catalogue after selling: +10% (min 50)
-REORDER_MIN = 50
+REORDER_MIN = 10        # c10b_10_10: a flat 10% (min 10), not +45% on a common
+PRICE_TIER_W = 0.30     # price_for: share of the band position set by tier (rest = per-id spread)
+# Home comfort tiers (c10b_07): [min score, name, morning luck minutes, energy floor after a late/passed-out
+# night]. Small on purpose: comfort never pays money and never beats a food buff.
+COMFORT_TIERS = [[0, 'Bare', 0, 0.0], [25, 'Homey', 0, 0.80], [60, 'Cosy', 180, 0.85], [120, 'Lovely', 300, 0.90], [200, 'Dream Home', 480, 0.95]]
 PITY = 8               # Decor.roll: after 8 rolls on a pool without a rare+, the next one is rare+
 LUCK_STEP = 0.04       # weight x (1 + LUCK_STEP x rank x luck_eff), luck_eff = 10 x (1 - e^(-luck/8)) (c10_07)
-CATS = ['furniture', 'wall_art', 'decor', 'light', 'rug', 'wallpaper', 'flooring', 'hat', 'top', 'bottom', 'outfit', 'acc', 'shoes']
+CATS = ['furniture', 'wall_art', 'decor', 'light', 'rug', 'wallpaper', 'flooring', 'outdoor', 'exterior', 'hat', 'top', 'bottom', 'outfit', 'acc', 'shoes']
 WEAR_CATS = {'hat', 'top', 'bottom', 'outfit', 'acc', 'shoes'}
 TIER_PRICE = {1: 0.0, 2: 0.25, 3: 0.5, 4: 0.75, 5: 1.0}   # where in the rarity band a tier sits
 
@@ -92,7 +97,9 @@ def price_for(rarity, tier, salt=0):
     if hi == 0:
         return 0
     t = TIER_PRICE.get(tier, 0.5)
-    p = lo + (hi - lo) * (0.15 + 0.7 * t) + (salt % 7) * (hi - lo) * 0.01
+    h = (salt * 2654435761 % 1000) / 1000.0   # per-id spread (c10b_10_07: no four-price ladder)
+    f = 0.04 + 0.92 * (PRICE_TIER_W * t + (1.0 - PRICE_TIER_W) * h)
+    p = lo * (hi / float(lo)) ** f             # geometric inside the band: cheap pieces stay cheap
     step = 5 if p < 1000 else (50 if p < 10000 else 500)
     return int(round(p / step) * step)
 
@@ -109,7 +116,7 @@ def add(id, name, cat, rarity, art, layer='floor', tier=1, arc='both', sub='', s
         raise SystemExit('duplicate decor name %r (%s, %s)' % (name, id, NAMES[name]))
     NAMES[name] = id
     if price is None:
-        price = price_for(rarity, tier, sum(map(ord, id)))
+        price = price_for(rarity, tier, zlib.crc32(id.encode()))
     if sell is None:
         sell = int(round(price * SELL_SHARE))
     e = {'name': name, 'cat': cat, 'sub': sub or cat, 'rarity': rarity, 'tier': tier, 'arc': arc,
@@ -133,6 +140,7 @@ def default_desc(e):
     return {'furniture': 'Furniture for your house.', 'wall_art': 'Hangs on a wall.', 'decor': 'A little something for a shelf or table.',
             'light': 'Lights up a room at night.' if e['glow'] else 'A lamp for your house.', 'rug': 'Lies flat on the floor.',
             'wallpaper': 'Wallpaper for one room.', 'flooring': 'Flooring for one room.',
+            'outdoor': 'A piece for the yard outside.', 'exterior': 'Restyles your farmhouse.',
             'hat': 'A hat. Looks only, no stats.', 'top': 'A top. Looks only, no stats.', 'bottom': 'Looks only, no stats.',
             'outfit': 'A full outfit. Looks only, no stats.', 'acc': 'An accessory. Looks only, no stats.',
             'shoes': 'Shoes. Looks only, no stats.'}[c]
@@ -465,7 +473,7 @@ for icon, name, cat, rar, tier, arc in [('hoodie', 'Hoodie', 'top', 'common', 1,
                                         ('golem_crown', 'Golem Crown', 'hat', 'mythic', 5, 'both'),
                                         ('president_crown', 'Smuggler King Crown', 'hat', 'unique', 5, 'gangsters')]:
     if art_ok('items/' + icon):
-        src = [{'kind': 'boss', 'ref': {'grump_king_crown': 'grump_commander', 'president_crown': 'smuggler_king'}[icon], 'once': True}] if rar == 'unique' else None
+        src = [{'kind': 'quest', 'ref': {'grump_king_crown': 'commander', 'president_crown': 'tower'}[icon], 'once': True}] if rar == 'unique' else None
         add('wr_' + icon, name, cat, rar, 'items/' + icon, 'wear', tier, arc, renders='icon', fp=[1, 1], sources=src)
 
 # ---- 6) external entries: Rec prize decor already in items.json (gen_rec owns those items) --------------
@@ -481,9 +489,10 @@ for rid, it in sorted(I.items()):
 
 # ---- 7) unique showpieces (one per game; exactly one source each, owned by P4/P3 hooks) ----------------
 UNIQUES = [  # id, name, art, cat, layer, arc, source kind, ref
-    ('dc_u_aurum_statue', 'Golden Aurum Statue', 'props/gc_aurum_statue', 'decor', 'floor', 'gangsters', 'boss', 'madame_aurum'),
-    ('dc_u_vault_door', 'Gilt Vault Door', 'props/gc_vault_door', 'furniture', 'floor', 'gangsters', 'campaign', 'gilt_city'),
-    ('dc_u_horse_statue', 'Bronze Horse Statue', 'props/statue2_horse', 'decor', 'floor', 'penguins', 'quest', 'mayor_final'),
+    # c10b_06_01/c10b_07/c10b_04_19: every ref is a grant key that really fires (region boss win, pocket chest, main quest)
+    ('dc_u_aurum_statue', 'Golden Aurum Statue', 'props/gc_aurum_statue', 'decor', 'floor', 'gangsters', 'boss', 'gilt_vaults'),
+    ('dc_u_vault_door', 'Gilt Vault Door', 'props/gc_vault_door', 'furniture', 'floor', 'gangsters', 'chest', 'hidden_chest_gilt_vaults'),
+    ('dc_u_horse_statue', 'Bronze Horse Statue', 'props/statue2_horse', 'decor', 'floor', 'penguins', 'quest', 'finale'),
     ('dc_u_golden_fountain', 'Little Gold Fountain', 'props/gold_fountain', 'furniture', 'floor', 'both', 'set', 'set_master'),
     ('dc_u_lighthouse_lamp', 'Lighthouse Lens', 'props/lighthouse_lamp', 'light', 'floor', 'both', 'secret', 'lighthouse_lit'),
 ]
@@ -518,11 +527,149 @@ if art_ok('furniture/globe3'):
         sources=[{'kind': 'collection', 'ref': 'mus_all', 'once': True}], fp=[1, 1],
         desc='One of a kind. The founders charted the valley sky with it.')
 
+
+# ---- 7c) outdoor / yard decor (C10b P1, c10b_02/03): existing world props promoted, zero new renders ----
+# Layer "outdoor": placed on the farm/yards by DecorMode (P2). "scale" = the draw scale of the art (the world
+# draws these props at hand scales; c10b_03), "size" = footprint in cells from w*scale/16. "season" = a
+# festival/seasonal set (stall:festival_<season> sells them in season). P6 renders with layer "outdoor" merge below.
+OUTDOOR = [  # art, name, sub, rarity, tier, arc, glow, scale, season, name_gang
+    ('props/lamp2_tall_0', 'Garden Lamp Post', 'lamp', 'common', 1, 'both', True, 0.3, '', 'Street Lamp Post'),
+    ('props/lamp2_tall_1', 'Twin Garden Lamp', 'lamp', 'uncommon', 2, 'both', True, 0.3, '', 'Twin Street Lamp'),
+    ('props/lamp2_tall_2', 'Ornate Lamp Post', 'lamp', 'rare', 3, 'both', True, 0.3, '', ''),
+    ('props/lamp2_short_0', 'Short Path Lamp', 'lamp', 'common', 1, 'both', True, 0.35, '', ''),
+    ('props/lamp2_short_1', 'Bollard Lamp', 'lamp', 'common', 1, 'both', True, 0.35, '', ''),
+    ('props/lamp2_short_2', 'Lantern Bollard', 'lamp', 'uncommon', 2, 'both', True, 0.35, '', ''),
+    ('props/lantern_lit', 'Yard Lantern', 'lamp', 'common', 1, 'both', True, 0.5, '', ''),
+    ('props/ri_lantern_post', 'Rustic Lantern Post', 'lamp', 'common', 1, 'both', True, 0.5, '', ''),
+    ('props/dock_lantern', 'Harbour Lantern', 'lamp', 'rare', 3, 'both', True, 0.3, '', ''),
+    ('props/lanterns_red', 'Red Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'spring', ''),
+    ('props/lanterns_pink', 'Pink Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'spring', ''),
+    ('props/lanterns_cyan', 'Teal Paper Lanterns', 'lamp', 'uncommon', 2, 'both', True, 0.4, 'summer', ''),
+    ('props/planter2_0', 'Terracotta Planter', 'planter', 'common', 1, 'both', False, 0.32, '', ''),
+    ('props/planter2_1', 'Stone Planter', 'planter', 'common', 1, 'both', False, 0.32, '', ''),
+    ('props/planter2_2', 'Flower Urn', 'planter', 'uncommon', 2, 'both', False, 0.32, '', ''),
+    ('props/planter2_3', 'Herb Trough', 'planter', 'uncommon', 2, 'both', False, 0.32, 'summer', ''),
+    ('props/city_planter', 'Street Planter', 'planter', 'common', 1, 'gangsters', False, 0.5, '', ''),
+    ('props/hedge2_pot', 'Potted Hedge', 'planter', 'uncommon', 2, 'both', False, 0.35, '', ''),
+    ('props/flower_cart', 'Flower Cart', 'planter', 'epic', 4, 'both', False, 0.35, 'summer', ''),
+    ('props/flowerbed_blue', 'Bluebell Bed', 'flowerbed', 'common', 1, 'both', False, 0.5, 'spring', ''),
+    ('props/flowerbed_pink', 'Pink Tulip Bed', 'flowerbed', 'common', 1, 'both', False, 0.5, 'spring', ''),
+    ('props/flowerbed_red', 'Red Poppy Bed', 'flowerbed', 'common', 1, 'both', False, 0.5, 'summer', ''),
+    ('props/flowerbed_yellow', 'Marigold Bed', 'flowerbed', 'common', 1, 'both', False, 0.5, 'summer', ''),
+    ('nature/sunflowers', 'Sunflower Patch', 'flowerbed', 'common', 1, 'both', False, 0.5, 'summer', ''),
+    ('nature/sunflower_bush', 'Sunflower Clump', 'flowerbed', 'uncommon', 2, 'both', False, 0.5, 'summer', ''),
+    ('nature/fairy_ring', 'Fairy Ring', 'flowerbed', 'rare', 3, 'penguins', False, 0.5, 'fall', ''),
+    ('props/hedge2_ball', 'Round Hedge', 'hedge', 'common', 1, 'both', False, 0.35, '', ''),
+    ('props/hedge2_tree_s', 'Clipped Hedge Tree', 'hedge', 'uncommon', 2, 'both', False, 0.35, '', ''),
+    ('props/hedge2_tree', 'Tall Hedge Tree', 'hedge', 'uncommon', 2, 'both', False, 0.35, '', ''),
+    ('props/topiary_a', 'Spiral Topiary', 'hedge', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/topiary_b', 'Cone Topiary', 'hedge', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/topiary_c', 'Ball Topiary', 'hedge', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/hedge2_arch', 'Hedge Arch', 'arch', 'rare', 3, 'both', False, 0.35, '', ''),
+    ('props/statue', 'Garden Statue', 'statue', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/statue_cane', 'Gentleman Statue', 'statue', 'uncommon', 2, 'both', False, 0.5, '', 'Boss Statue'),
+    ('props/cat_statue', 'Stone Cat Statue', 'statue', 'rare', 3, 'both', False, 0.35, '', ''),
+    ('props/alien_statue', 'Star Visitor Statue', 'statue', 'epic', 4, 'both', False, 0.3, '', ''),
+    ('props/ds_sun_obelisk', 'Sun Obelisk', 'statue', 'epic', 4, 'both', False, 0.3, '', ''),
+    ('props/fountain', 'Garden Fountain', 'fountain', 'epic', 4, 'both', False, 0.5, '', ''),
+    ('props/fountain2', 'Grand Fountain', 'fountain', 'legendary', 5, 'both', False, 0.35, '', ''),
+    ('props/glow_pond', 'Glow Pond', 'fountain', 'rare', 3, 'both', True, 0.35, '', ''),
+    ('props/birdbath', 'Stone Birdbath', 'fountain', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/well_stone', 'Wishing Well', 'fountain', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/well_roofed', 'Roofed Well', 'fountain', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/bench2_wood_a', 'Park Bench', 'bench', 'common', 1, 'both', False, 0.35, '', ''),
+    ('props/bench2_iron_a', 'Iron Park Bench', 'bench', 'uncommon', 2, 'both', False, 0.35, '', ''),
+    ('props/bench2_green_a', 'Green Park Bench', 'bench', 'common', 1, 'both', False, 0.35, '', ''),
+    ('nature/log_bench', 'Log Seat', 'bench', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/cf_picnic_table', 'Picnic Table', 'bench', 'uncommon', 2, 'both', False, 0.35, 'summer', ''),
+    ('props/umbrella_red', 'Red Sun Umbrella', 'bench', 'common', 1, 'both', False, 0.4, 'summer', ''),
+    ('props/umbrella_blue', 'Blue Sun Umbrella', 'bench', 'common', 1, 'both', False, 0.4, 'summer', ''),
+    ('props/umbrella_yellow', 'Yellow Sun Umbrella', 'bench', 'common', 1, 'both', False, 0.4, 'summer', ''),
+    ('props/trellis', 'Rose Trellis', 'arch', 'uncommon', 2, 'both', False, 0.35, 'spring', ''),
+    ('props/wedding_arch', 'Flower Arch', 'arch', 'rare', 3, 'both', False, 0.4, 'spring', ''),
+    ('props/stone_arch', 'Stone Garden Arch', 'arch', 'rare', 3, 'both', False, 0.35, '', ''),
+    ('props/fence2_wood_h', 'Wood Fence Run', 'fence', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/fence2_iron_h', 'Iron Fence Run', 'fence', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/fence2_stone_h', 'Stone Wall Run', 'fence', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/rope_fence', 'Rope Fence', 'fence', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/gold_fence_a', 'Gilded Fence', 'fence', 'epic', 4, 'both', False, 0.5, '', ''),
+    ('props/chain_fence_h', 'Chain-Link Fence', 'fence', 'common', 1, 'gangsters', False, 0.5, '', ''),
+    ('props/scarecrow_knight', 'Knight Scarecrow', 'garden', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/scarecrow_pumpkin', 'Pumpkin Scarecrow', 'garden', 'uncommon', 2, 'both', False, 0.5, 'fall', ''),
+    ('props/ri_windmill_small', 'Garden Windmill', 'garden', 'uncommon', 2, 'both', False, 0.5, '', ''),
+    ('props/haystack', 'Hay Bale Stack', 'garden', 'common', 1, 'both', False, 0.5, 'fall', ''),
+    ('props/bee_house', 'Bee Hotel', 'garden', 'uncommon', 2, 'both', False, 0.35, '', ''),
+    ('props/signpost_1', 'Garden Signpost', 'garden', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/signpost_2', 'Tall Signpost', 'garden', 'common', 1, 'both', False, 0.5, '', ''),
+    ('props/fest_fw_00', 'Harvest Pumpkin Pile', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'fall', ''),
+    ('props/fest_fw_01', 'Pumpkin Patch Display', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'fall', ''),
+    ('props/fest_fw_38', 'Yard Snowman', 'seasonal', 'uncommon', 2, 'both', False, 0.3, 'winter', ''),
+    ('props/fest_fw_41', 'Ice Sculpture', 'seasonal', 'rare', 3, 'both', False, 0.25, 'winter', ''),
+    ('props/fest_fw_62', 'Festive Pine', 'seasonal', 'rare', 3, 'both', True, 0.2, 'winter', ''),
+    ('props/fest_ss_02', 'Maypole', 'seasonal', 'rare', 3, 'both', False, 0.25, 'spring', ''),
+    ('props/fest_ss_09', 'Egg Basket Display', 'seasonal', 'uncommon', 2, 'both', False, 0.25, 'spring', ''),
+    ('props/fest_ss_22', 'Lantern Garland', 'seasonal', 'uncommon', 2, 'both', True, 0.3, 'summer', ''),
+    ('props/fest_ss_31', 'String Lights', 'seasonal', 'uncommon', 2, 'both', True, 0.25, 'summer', ''),
+    ('props/lux_car_red', 'Red Coupe', 'yard_gang', 'epic', 4, 'gangsters', False, 0.75, '', ''),
+    ('props/taxi', 'Retired Cab', 'yard_gang', 'rare', 3, 'gangsters', False, 0.75, '', ''),
+    ('props/rusted_car', 'Project Car', 'yard_gang', 'uncommon', 2, 'gangsters', False, 0.6, '', ''),
+    ('props/oil_drums', 'Oil Drum Stack', 'yard_gang', 'common', 1, 'gangsters', False, 0.5, '', ''),
+    ('props/crates_pallet', 'Pallet of Crates', 'yard_gang', 'common', 1, 'gangsters', False, 0.5, '', ''),
+]
+
+
+def outdoor_fp(art, scale):
+    w, h = size_of(art)
+    cw = max(1, min(4, int(round(w * scale / 16.0))))
+    rows = max(1, min(3, int(round(h * scale / 16.0 * 0.35))))  # the base, not the full height (sprites stand up)
+    return [cw, rows]
+
+
+for art, name, sub, rar, tier, arc, glow, scale, season, ngang in OUTDOOR:
+    if not art_ok(art):
+        continue
+    oid = 'dc_out_' + art.split('/', 1)[1]
+    e = add(oid, name, 'outdoor', rar, art, 'outdoor', tier, arc, sub=sub, glow=glow, fp=outdoor_fp(art, scale),
+            name_gang=ngang, season=season, anim=int(M[art.split('/')[0]][art.split('/')[1]].get('frames', 0) or 0) if int(M[art.split('/')[0]][art.split('/')[1]].get('frames', 0) or 0) > 1 else 0)
+    e['scale'] = scale
+    e['desc'] = {'lamp': 'A light for the yard. Glows at night.', 'planter': 'A planter for the yard.', 'flowerbed': 'Flowers for the yard.',
+                 'hedge': 'Clipped greenery for the yard.', 'statue': 'A statue for the yard.', 'fountain': 'Water for the yard.',
+                 'bench': 'Somewhere to sit outside.', 'arch': 'An arch to walk under.', 'fence': 'A fence piece. Lay them in a row.',
+                 'garden': 'A touch of the farm life.', 'seasonal': 'A seasonal piece for the yard.', 'yard_gang': 'Street-style yard dressing.'}[sub]
+
+# ---- 7d) house exterior parts (C10b P3 contract): art/gen/house_parts/_catalog.json entries -----------
+# Each entry: {"id": "ext_<part>_<style>", "part": siding|roof|door|window|trim|chimney|porch|fence|mailbox,
+# "style": str, "name": str, "rarity", "tier", "arc", "icon": "<file in house_parts>"}. Written as cat
+# "exterior", layer "exterior", entry key "part" (never "ext": that flag already means external rp_ prizes).
+# The applied parts live in run.decor.exterior {part: id} (Decor.st(); Decor.total counts them).
+HP_DIR = os.path.join(ROOT, 'art', 'gen', 'house_parts')
+HP_CAT = os.path.join(HP_DIR, '_catalog.json')
+EXT_PARTS = ('siding', 'roof', 'door', 'window', 'trim', 'chimney', 'porch', 'fence', 'mailbox')
+EXT_WARN = []
+for c in (json.load(open(HP_CAT)) if os.path.exists(HP_CAT) else []):
+    try:
+        xid = str(c['id'])
+        if not re.match(r'^ext_[a-z0-9_]+$', xid) or c.get('part') not in EXT_PARTS:
+            EXT_WARN.append('%s: bad id/part' % xid); continue
+        icon = 'house_parts/' + str(c.get('icon', xid))
+        if not os.path.exists(os.path.join(HP_DIR, icon.split('/', 1)[1] + '.png')):
+            EXT_WARN.append('%s: no icon %s' % (xid, icon)); continue
+        rar = c.get('rarity', 'common') if c.get('rarity', 'common') in RK and c.get('rarity') != 'unique' else 'common'
+        e = add('dc_' + xid, str(c.get('name', xid))[:26], 'exterior', rar, icon, 'exterior', int(c.get('tier', 1 + min(4, RK[rar]['rank']))),
+                c.get('arc', 'both') or 'both', sub=c['part'], fp=[1, 1], desc='Restyles your farmhouse: the %s.' % c['part'])
+        e['part'] = c['part']
+        e['style'] = str(c.get('style', xid))
+        e['ext_id'] = xid
+    except (KeyError, ValueError, TypeError, SystemExit) as ex:
+        EXT_WARN.append('%s: %s' % (c, ex))
+for w in EXT_WARN:
+    print('WARN ext', w)
+
 # ---- 8) P6 renders: art/gen/decor/_catalog.json merged as-is (names/rarities from c10_01/c10_09) -------
 p6 = json.load(open(os.environ.get('DECOR_CATALOG', CAT_PATH))) if os.path.exists(os.environ.get('DECOR_CATALOG', CAT_PATH)) else []
 P6_WARN = []   # a bad render entry is skipped with a warning (never breaks regen_data at merge time)
 GANG_WORD = re.compile(r'(?i)penguin|crystal|casino|gambl|cigar')
-P6_LAYER = {'floor': 'floor', 'top': 'floor', 'flat': 'under', 'wall': 'wall', 'window': 'window', 'flooring': 'under', 'wallpaper': 'wall', 'under': 'under'}
+P6_LAYER = {'floor': 'floor', 'top': 'floor', 'flat': 'under', 'wall': 'wall', 'window': 'window', 'flooring': 'under', 'wallpaper': 'wall', 'under': 'under', 'outdoor': 'outdoor', 'yard': 'outdoor'}
 for c in p6:
     try:
         cid = c['id'] if c['id'].startswith(('dc_', 'wr_')) else (('wr_' if c.get('cat') in WEAR_CATS else 'dc_') + c['id'])
@@ -572,6 +719,32 @@ for c in p6:
 for w in P6_WARN:
     print('WARN p6', w)
 
+# ---- 8b) arc words (c10b_13_03/04/08, c10b_08-33): penguin pieces are penguin-arc only; "Crystal"/"Wisp"
+# both-arc names get a gangster name; "Crew" both-arc names read "Team" in the penguin arc.
+GANG_SWAP = [('Crystal', 'Glass'), ('Wisp', 'Glow'), ('Snowfolk', 'Winter')]
+for k, e in ENTRIES.items():
+    if e.get('ext'):
+        continue
+    if e['arc'] == 'both' and re.search(r'(?i)penguin|catkin', e['name'] + ' ' + k):
+        e['arc'] = 'penguins'
+    if e['arc'] == 'both' and not e.get('name_gang'):
+        ng = e['name']
+        for a, b in GANG_SWAP:
+            ng = ng.replace(a, b)
+        if ng != e['name']:
+            e['name_gang'] = ng
+    if e['arc'] == 'both' and re.search(r'\bCrew\b', e['name']):
+        pen = e['name'].replace('Crew', 'Team')
+        if pen not in NAMES:
+            del NAMES[e['name']]; e['name_gang'] = e['name']; e['name'] = pen; NAMES[pen] = k
+# Seasonal sets (c10b_06_03): dc_fest_* pieces carry their festival season.
+FEST_SEASON = {'cornucopia': 'fall', 'hay_scarecrow': 'fall', 'leaf_wreath': 'fall', 'pumpkins': 'fall',
+               'gift_pile': 'winter', 'snow_lantern': 'winter', 'stocking': 'winter', 'winter_tree': 'winter'}
+for k, e in ENTRIES.items():
+    for w, se in FEST_SEASON.items():
+        if k == 'dc_fest_' + w and not e.get('season'):
+            e['season'] = se
+
 # ---- 9) sets (+ comfort bonus when complete) -----------------------------------------------------------
 def ids_where(f):
     return sorted(k for k, e in ENTRIES.items() if f(k, e))
@@ -586,16 +759,30 @@ SETS = {
     'cosy_kitchen': {'name': 'Cosy Kitchen', 'arc': 'both', 'pieces': ids_where(lambda k, e: e['sub'] == 'kitchen')[:8]},
     'reading_nook': {'name': 'Reading Nook', 'arc': 'both', 'pieces': ids_where(lambda k, e: e['sub'] == 'study')[:6]},
 }
+SETS['rec_trophies']['name'] = 'Prize Trophy Case'   # c10b_13_02: "Rec Hall" is the gangster arc's name
 BUILT_SETS = set(SETS)
 for k0, e in ENTRIES.items():
     for s0 in e.get('sets', []):
         if s0 and s0 not in BUILT_SETS:
             SETS.setdefault(s0, {'name': s0.replace('wear_', '').replace('_', ' ').title() + ' Set', 'arc': e['arc'], 'pieces': []})
             SETS[s0]['pieces'].append(k0)
+SET_NAMES = {'casino': 'Lucky Lounge Set'}   # c10b_13_01: no "casino" in a set name
 for sid, s in SETS.items():
+    if sid in SET_NAMES:
+        s['name'] = SET_NAMES[sid]
+    if s.get('arc', 'both') in ('both', ''):   # c10b_07: a both-arc set never needs a one-arc piece (Arcade Den 11/12)
+        drop = [p for p in s['pieces'] if ENTRIES[p]['arc'] not in ('both', '')]
+        s['pieces'] = [p for p in s['pieces'] if p not in drop]
+        for p in drop:
+            ENTRIES[p]['sets'] = [x for x in ENTRIES[p].get('sets', []) if x != sid]
+            if ENTRIES[p].get('set') == sid:
+                ENTRIES[p]['set'] = ''
     s['pieces'] = sorted(set(s['pieces']))
     s['comfort'] = 5 + 2 * len(s['pieces'])
-    s['reward'] = {'comfort': s['comfort']}
+    # c10b_07: a claim pays: SET_PAY of what the pieces cost on the shelf (capped), wear sets the same; never a loop
+    # (you already bought the pieces; the pay is < their sell-back total + a fraction).
+    cost = sum(ENTRIES[p]['price'] for p in s['pieces'])
+    s['reward'] = {'comfort': s['comfort'], 'money': int(round(min(SET_PAY_CAP, max(SET_PAY_MIN, cost * SET_PAY)) / 10.0) * 10)}
     for p in s['pieces']:
         if sid not in ENTRIES[p]['sets']:
             ENTRIES[p]['sets'].append(sid)
@@ -640,10 +827,13 @@ for book, id, need in CRAFT:
         recipe(book, id, need, max(1, min(4, e['tier'])))
 
 # ---- 11) shops: {shop: [[tier, [ids]]]} -- Decor.stock(shop) rotates N of them per day -------------------
+EXT_OK = [False]
 def shop_rows(f):
     rows = {}
     for k, e in sorted(ENTRIES.items()):
         if e.get('ext') or e['rarity'] in ('mythic', 'unique') or not e['price'] or not f(k, e):
+            continue
+        if e['cat'] == 'exterior' and not EXT_OK[0]:   # c10b_01-14: exterior parts only on their own shelves
             continue
         rows.setdefault(min(4, e['tier']), []).append(k)
     return [[t, rows[t]] for t in sorted(rows)]
@@ -661,17 +851,29 @@ KEEPERS = {  # key: (cats, words (any; empty = every piece of those cats))
     'maple': (('decor', 'light', 'rug', 'wallpaper', 'flooring'), ()),
     'gideon': (('furniture', 'light'), ('iron', 'lantern', 'lamp', 'stove', 'safe', 'storage', 'chandelier', 'clock', 'steel', 'metal', 'forge')),
     'wren': (('decor', 'light', 'furniture'), ('plant', 'potion', 'bottle', 'wisp', 'herb', 'crystal', 'jar', 'candle', 'flower', 'bloom')),
-    'granite': (('decor', 'furniture', 'flooring', 'wallpaper'), ('stone', 'statue', 'fireplace', 'hearth', 'brick', 'marble', 'cobble', 'flagstone', 'quarry', 'bust')),
+    'granite': (('decor', 'furniture', 'flooring', 'wallpaper', 'light'), ('stone', 'statue', 'fireplace', 'hearth', 'brick', 'marble', 'cobble', 'flagstone', 'quarry', 'bust', 'rock', 'gem', 'geode', 'mineral', 'iron', 'ore', 'lamp', 'urn')),
     'sel': (('decor', 'wall_art', 'furniture'), ('study', 'globe', 'book', 'scroll', 'painting', 'telescope', 'relic', 'ink', 'easel', 'library', 'map')),
     'tam': (('rug', 'furniture', 'top', 'acc', 'hat'), ('rug', 'wool', 'quilt', 'knit', 'scarf', 'sweater', 'bed', 'beanie', 'pelt', 'mat')),
     'orla': (('furniture', 'decor', 'flooring'), ('kitchen', 'table', 'jug', 'kettle', 'coffee', 'mug', 'bread', 'pantry', 'tile')),
     'marlowe': (('light', 'wall_art', 'decor'), ('lantern', 'window', 'shell', 'sea', 'bottle', 'lighthouse', 'lamp', 'boat', 'anchor')),
-    'rook': (('rug', 'wall_art', 'furniture', 'hat', 'acc'), ('pelt', 'antler', 'lodge', 'hood', 'cloak', 'log', 'trophy', 'cabin', 'hunt')),
-    'old_moss': (('decor', 'rug', 'furniture'), ('plant', 'reed', 'cattail', 'frog', 'moss', 'hut', 'mat', 'ivy', 'fern')),
+    'rook': (('rug', 'wall_art', 'furniture', 'hat', 'acc', 'decor', 'light'), ('pelt', 'antler', 'lodge', 'hood', 'cloak', 'log', 'trophy', 'cabin', 'hunt', 'plaid', 'fur', 'hide', 'bear', 'deer', 'axe', 'rustic', 'country', 'lantern', 'camp')),
+    'old_moss': (('decor', 'rug', 'furniture', 'light'), ('plant', 'reed', 'cattail', 'frog', 'moss', 'mat', 'ivy', 'fern', 'jar', 'herb', 'mushroom', 'root', 'bottle', 'candle', 'bonsai', 'leaf')),
     'catkins': (('decor', 'furniture', 'rug', 'wall_art'), ('cat', 'paw', 'penguin', 'snow', 'cushion', 'figurine', 'yarn')),
-    'finn': (('decor', 'wall_art', 'rug'), ('fish', 'shell', 'sea', 'net', 'boat', 'koi', 'rod', 'anchor', 'coral', 'echo')),
-    'hazel': (('furniture', 'rug', 'wallpaper', 'flooring'), ('bed', 'chair', 'table', 'sofa', 'armchair', 'stool', 'dresser', 'wardrobe', 'shelf', 'bench', 'cottage', 'country')),
+    'finn': (('decor', 'wall_art', 'rug', 'light', 'furniture'), ('fish', 'shell', 'sea', 'net', 'boat', 'koi', 'rod', 'anchor', 'coral', 'echo', 'bottle', 'lantern', 'reed', 'wave', 'seaside', 'pier', 'dock')),
+    # Tess the carpenter (Tom 2026-11-20: a new villager runs the furniture shop, not Hazel): workshop by the farm road.
+    'carpenter': (('furniture', 'rug', 'wallpaper', 'flooring'), ('bed', 'chair', 'table', 'sofa', 'armchair', 'stool', 'dresser', 'wardrobe', 'shelf', 'bench', 'cottage', 'country')),
 }
+# c10b_10_19: theme words match whole words (ids/subs split on "_"), plural allowed.
+def has_word(t, words):
+    t = t.replace('_', ' ')
+    return any(re.search(r'(^|[^a-z])' + re.escape(w) + r's?($|[^a-z])', t) for w in words)
+# c10b_10_08: a gangster keeper shelf keeps a theme of its own (gangster-only pieces need one of these words).
+GANG_WORDS = {'maple': ('crate', 'lamp', 'rug', 'sign', 'clock', 'plant'), 'gideon': ('chrome', 'steel', 'safe', 'locker', 'tool', 'iron', 'metal'),
+              'wren': ('bottle', 'plant', 'neon', 'jar', 'candle'), 'granite': ('stone', 'marble', 'brick', 'statue', 'concrete'),
+              'sel': ('book', 'screen', 'map', 'painting', 'globe', 'study'), 'tam': ('rug', 'jacket', 'cap', 'bed', 'scarf', 'hoodie'),
+              'orla': ('kitchen', 'stove', 'diner', 'coffee', 'mug', 'table'), 'marlowe': ('neon', 'harbour', 'crate', 'lantern', 'anchor', 'boat'),
+              'rook': ('leather', 'hunt', 'trophy', 'garage', 'jacket', 'pelt'), 'old_moss': ('plant', 'jar', 'bottle', 'herb'),
+              'finn': ('fish', 'neon', 'harbour', 'boat', 'net'), 'carpenter': ()}
 for key, (cats, words) in KEEPERS.items():
     def keep_f(k, e, cats=cats, words=words, gang=False):
         if e['cat'] not in cats or e['rarity'] in ('legendary',):
@@ -680,11 +882,56 @@ for key, (cats, words) in KEEPERS.items():
             return False
         if not gang and e['sub'] in ('tech', 'neon', 'music'):  # arcade/neon pieces live on the crew shelves
             return False
-        return not words or any(w in text(k, e) for w in words)
+        return not words or has_word(text(k, e), words)
     SHOPS[key] = shop_rows(keep_f)
-    g = shop_rows(lambda k, e, f=keep_f: f(k, e, gang=True) or (e['arc'] == 'gangsters' and e['cat'] in cats and e['rarity'] != 'legendary'))
+    gw = GANG_WORDS.get(key, ())
+    g = shop_rows(lambda k, e, f=keep_f, gw=gw: f(k, e, gang=True) or (e['arc'] == 'gangsters' and e['cat'] in cats and e['rarity'] != 'legendary'
+                                                                        and (not gw or has_word(text(k, e), gw))))
     if g != SHOPS[key] and key != 'catkins':  # Catkins is penguin-only
         SHOPS[key + '_gang'] = g
+# C10b: yard pieces at Tess's workshop (the carpenter, decor key "carpenter"; c10b_10_03), exterior parts at Gideon's (he builds the
+# house upgrades), seasonal stalls at the festivals (stall:festival_<season>, Shops.stall via town.gd),
+# Lumi's loom sells the wardrobe (c10b_10_06), crew counters split crew_goods (c10b_10_04).
+OUT_F = lambda k, e: e['cat'] == 'outdoor' and e['rarity'] in ('common', 'uncommon', 'rare', 'epic')
+for key, gang in (('carpenter', False), ('carpenter_gang', True)):
+    rows = {t: list(ids) for t, ids in SHOPS.get(key, [])}
+    for t, ids in shop_rows(lambda k, e, g=gang: OUT_F(k, e) and (e['arc'] in ('both', 'gangsters' if g else 'penguins'))):
+        rows.setdefault(t, []).extend(ids)
+    SHOPS[key] = [[t, sorted(set(rows[t]))] for t in sorted(rows)]
+EXT_OK[0] = True
+for key in ('gideon', 'gideon_gang'):
+    rows = {t: list(ids) for t, ids in SHOPS.get(key, [])}
+    for t, ids in shop_rows(lambda k, e, g=key.endswith('_gang'): e['cat'] == 'exterior' and e['arc'] in ('both', 'gangsters' if g else 'penguins')):
+        rows.setdefault(t, []).extend(ids)
+    if rows:
+        SHOPS[key] = [[t, sorted(set(rows[t]))] for t in sorted(rows)]
+EXT_OK[0] = False
+for se in ('spring', 'summer', 'fall', 'winter'):
+    SHOPS['stall:festival_' + se] = shop_rows(lambda k, e, se=se: e.get('season') == se and e['rarity'] in ('common', 'uncommon', 'rare'))
+# Mega hub and Valley stalls (c10b_10_05/09): region.gd's Shops.stall reads "stall:<scene>". Hub stalls sell
+# rare-legendary pieces by region theme: the late-game sink (legendary only here, mythic never sold).
+HUB_STALLS = {'gloam_lanternfall': ('lantern', 'lamp', 'candle', 'moon', 'glow', 'wisp'),
+              'desert_mirage_post': ('rug', 'brass', 'sun', 'sand', 'urn', 'obelisk', 'pot'),
+              'frost_hearthhold': ('fur', 'pelt', 'snow', 'ice', 'hearth', 'fire', 'winter'),
+              'wind_breezehaven': ('sail', 'shell', 'sea', 'boat', 'kite', 'wind', 'anchor'),
+              'gilt_grand_plaza': ('gilt', 'gold', 'velvet', 'chandelier', 'marble', 'statue'),
+              'iron_junction': ('iron', 'rail', 'steel', 'clock', 'lantern', 'stove')}
+for sc, words in HUB_STALLS.items():
+    SHOPS['stall:' + sc] = shop_rows(lambda k, e, w=words: e['rarity'] in ('rare', 'epic', 'legendary') and e['cat'] not in WEAR_CATS
+                                     and any(x in text(k, e) for x in w))
+VALLEY_STALLS = {'docks': ('shell', 'net', 'anchor', 'boat', 'fish'), 'neon': ('neon', 'sign', 'arcade'), 'hideout': ('crate', 'lamp', 'rug')}
+for sc, words in VALLEY_STALLS.items():
+    SHOPS['stall:' + sc] = shop_rows(lambda k, e, w=words: e['rarity'] in ('common', 'uncommon', 'rare') and e['cat'] not in WEAR_CATS
+                                     and e['arc'] != 'penguins' and any(x in text(k, e) for x in w))
+SHOPS['lumi'] = SHOPS['wardrobe']
+SHOPS['lumi_gang'] = shop_rows(lambda k, e: e['cat'] in WEAR_CATS and e['rarity'] in ('common', 'uncommon', 'rare') and e['arc'] != 'penguins')
+CREW_WORDS = {'marlene': ('crate', 'rug', 'antique', 'clock', 'safe', 'vault', 'lamp', 'cabinet', 'chest'),
+              'deuce': ('arcade', 'neon', 'jukebox', 'pinball', 'music', 'lucky', 'dice', 'card', 'sign'),
+              'specs': ('tech', 'screen', 'computer', 'monitor', 'desk', 'study', 'book', 'chrome', 'lab'),
+              'halo': ('garage', 'chrome', 'motor', 'car', 'tyre', 'tire', 'oil', 'tool', 'drum', 'yard_gang')}
+crew_ids = {i for _, ids in SHOPS['crew_goods'] for i in ids} | {k for k, e in ENTRIES.items() if e['sub'] == 'yard_gang'}
+for cw, words in CREW_WORDS.items():
+    SHOPS['crew_' + cw] = shop_rows(lambda k, e, w=words: k in crew_ids and e['arc'] != 'penguins' and any(x in text(k, e) for x in w))
 SHOP_SLOTS = {'home_goods': 8, 'wall_art': 6, 'wardrobe': 6, 'crew_goods': 8, 'hub_goods': 5}
 SHOP_DAYS = {'home_goods': 1, 'wall_art': 3, 'wardrobe': 3, 'crew_goods': 1, 'hub_goods': 7}   # rotation period in days
 for s, rows in SHOPS.items():
@@ -696,7 +943,7 @@ for s, rows in SHOPS.items():
 # ---- 12) loot pools: [[id, weight]] (weights from RARITY; Decor.roll applies luck + pity) ----------------
 def pool(f, cap_rank=6):
     return [[k, RK[e['rarity']]['weight']] for k, e in sorted(ENTRIES.items())
-            if not e.get('ext') and e['rarity'] != 'unique' and RK[e['rarity']]['rank'] <= cap_rank and f(k, e)]
+            if not e.get('ext') and e['rarity'] != 'unique' and e['cat'] != 'exterior' and RK[e['rarity']]['rank'] <= cap_rank and f(k, e)]
 POOLS = {}
 for t in range(1, 6):
     POOLS['chest_t%d' % t] = pool(lambda k, e, t=t: e['tier'] <= t and e['tier'] >= t - 2 and e['cat'] not in ('wallpaper', 'flooring'), min(5, t))
@@ -707,7 +954,9 @@ POOLS['fishing_sea'] = pool(lambda k, e: any(w in text(k, e) for w in ('shell', 
 POOLS['fishing_deep'] = pool(lambda k, e: RK[e['rarity']]['rank'] >= 2 and any(w in text(k, e) for w in ('shell', 'sea', 'coral', 'wisp', 'koi', 'pearl', 'echo', 'bottle', 'crystal')), 5)
 POOLS['mail'] = pool(lambda k, e: e['sub'] in ('tabletop', 'plant') or (e['cat'] in ('decor', 'light') and e['tier'] <= 2), 1)
 POOLS['claw'] = pool(lambda k, e: e['sub'] in ('tabletop', 'pet', 'neon') and e['rarity'] in ('common', 'uncommon', 'rare'), 2)
-POOLS['festival'] = pool(lambda k, e: e['sub'] in ('tabletop', 'plant', 'light') or k.startswith('wr_flower_crown'), 3)
+POOLS['festival'] = pool(lambda k, e: e.get('season') or k.startswith(('dc_fest_', 'wr_flower_crown')), 3)   # c10b_06_17
+for se in ('spring', 'summer', 'fall', 'winter'):   # contest prizes (town festivals: places 1-3; c10b_06_02/04)
+    POOLS['festival_%s_prize' % se] = pool(lambda k, e, se=se: e.get('season') == se and e['rarity'] in ('uncommon', 'rare', 'epic'), 3)
 for pid, rows in POOLS.items():
     for k, _ in rows:
         if not any(x.get('kind') == 'loot' for x in ENTRIES[k]['sources']):
@@ -725,25 +974,54 @@ def first(f, any_arc=False):
         if not e.get('ext') and e.get('order') is not False and e['rarity'] not in ('unique',) and (any_arc or e['arc'] == 'both') and f(k, e) and k not in GRANTS.values():
             return k
     return ''
+# Every unique's single source is also a grant key ("<kind>:<ref>"): region boss wins call grant_key("boss:<rid>"),
+# pocket chests "chest:<key>", GameState.complete_quest "quest:<id>", DecorSources.sweep the rest
+# (secret flags, campaigns, collections, set:set_master) every morning.
+for k, e in sorted(ENTRIES.items()):
+    if e['rarity'] == 'unique' and e['sources'] and e['sources'][0]['kind'] in ('boss', 'chest', 'quest', 'secret', 'campaign', 'set', 'collection'):
+        GRANTS.setdefault('%s:%s' % (e['sources'][0]['kind'], e['sources'][0]['ref']), k)
 grant('secret:journal', first(lambda k, e: e['rarity'] == 'epic' and e['sub'] in ('study', 'tabletop')) or first(lambda k, e: e['rarity'] == 'epic'))
 grant('house:2', first(lambda k, e: e['sub'] == 'seating' and e['rarity'] == 'uncommon'))
 grant('house:3', first(lambda k, e: e['sub'] == 'clock' and e['rarity'] == 'rare') or first(lambda k, e: e['rarity'] == 'rare' and e['cat'] == 'furniture'))
 for fl, rar in ((25, 'rare'), (50, 'rare'), (75, 'epic'), (100, 'epic'), (120, 'legendary')):
     grant('mine:%d' % fl, first(lambda k, e, rar=rar: e['rarity'] == rar and any(w in text(k, e) for w in ('crystal', 'lantern', 'lamp', 'statue', 'stone', 'gem'))))
+KEEPER_NPC = {'carpenter': 'tess'}   # keeper shelf key -> villager id (heart grants)
 for npc in KEEPERS:
     rows = SHOPS.get(npc, [])
-    pick = first(lambda k, e, ids={i for _, ids in rows for i in ids}: k in ids and e['rarity'] in ('rare', 'epic'))
-    grant('heart:%s:8' % npc, pick)
+    pick = first(lambda k, e, ids={i for _, ids in rows for i in ids}: k in ids and e['rarity'] in ('rare', 'epic')) \
+        or first(lambda k, e, w=KEEPERS[npc][1]: e['rarity'] in ('rare', 'epic') and e['cat'] not in WEAR_CATS | {'exterior'} and any(x in text(k, e) for x in w)) \
+        or first(lambda k, e: e['rarity'] == 'rare' and e['cat'] in ('decor', 'wall_art', 'light'))
+    grant('heart:%s:8' % KEEPER_NPC.get(npc, npc), pick)
 CF = json.load(open(os.path.join(D, 'community_farm.json'))).get('stages', [])
+CF_WORDS = {'clear': ('signpost', 'bench'), 'shed': ('lantern', 'lamp'), 'beds': ('flowerbed', 'bed'), 'seeds': ('planter', 'trough'),
+            'well': ('well', 'birdbath'), 'orchard': ('hedge', 'topiary'), 'greenhouse': ('planter', 'urn'), 'market': ('umbrella', 'cart', 'picnic')}
+# Side-story keepsakes picked for the story (c10b_06_07, c10b_13_12): words per chain, arc-safe.
+SS_WORDS = {'babies': ('figurine', 'plush', 'cradle', 'snow'), 'jim_brother': ('photo', 'frame', 'painting', 'portrait'),
+            'coldy_key': ('key', 'chest', 'lantern', 'ice'), 'commander': ('banner', 'flag', 'trophy', 'statue'),
+            'rosa': ('kitchen', 'oven', 'stove', 'herb', 'bread', 'kettle'), 'kid_school': ('book', 'globe', 'study', 'desk', 'chalk'),
+            'specs_wire': ('tech', 'screen', 'radio', 'computer', 'monitor')}
 for st in (CF if isinstance(CF, list) else []):
     sid = st.get('id') if isinstance(st, dict) else None
     if sid:
-        grant('commons:' + sid, first(lambda k, e: e['sub'] in ('plant', 'rug', 'tabletop') and e['rarity'] == 'uncommon' and e['arc'] == 'both'))
+        # c10b_06_08: a garden/yard keepsake per stage, both arcs, no arc words
+        grant('commons:' + sid, first(lambda k, e, w=CF_WORDS.get(sid, ()): e['cat'] in ('outdoor', 'decor') and e['rarity'] in ('uncommon', 'rare')
+                                      and (not w or any(x in text(k, e) for x in w)) and not re.search(r'(?i)neon|penguin|crystal', e['name']))
+              or first(lambda k, e: e['sub'] in ('plant', 'tabletop') and e['rarity'] == 'uncommon' and not re.search(r'(?i)neon|penguin|crystal', e['name'])))
 SS = json.load(open(os.path.join(D, 'side_stories.json'))).get('chains', [])
 for ch in SS:
     cid2 = ch.get('id') if isinstance(ch, dict) else None
     if cid2:
-        grant('side:' + cid2, first(lambda k, e, a=ch.get('arc', ''): e['rarity'] == 'rare' and e['cat'] in ('wall_art', 'decor') and (e['arc'] == 'both' or e['arc'] == a), any_arc=True))
+        okarc = lambda e, a=ch.get('arc', ''): (e['arc'] == 'both' or e['arc'] == a) and not (a == 'gangsters' and re.search(r'(?i)penguin|crystal', e['name']))
+        grant('side:' + cid2, first(lambda k, e, w=SS_WORDS.get(cid2, ()): e['rarity'] in ('uncommon', 'rare') and e['cat'] in ('wall_art', 'decor', 'furniture')
+                                    and okarc(e) and any(x in text(k, e) for x in w) and not re.search(r'(?i)casino|lucky|ace|dice', e['name']), any_arc=True)
+              or first(lambda k, e: e['rarity'] == 'rare' and e['cat'] in ('wall_art', 'decor') and okarc(e), any_arc=True))
+# Festival contest places (town.gd): place 1 rolls "festival_<season>_prize"; the Rec Cup winner gets a trophy (c10b_06_06).
+grant('rec:cup', first(lambda k, e: 'cup' in k and 'trophy' in text(k, e)) or first(lambda k, e: 'trophy' in k and e['cat'] != 'exterior'))
+# Main quests with a home piece (c10b_06_12): the arc's chapter ends.
+for qid, qarc, w in (('cattopia', 'penguins', ('cat',)), ('knight', 'penguins', ('knight', 'shield', 'banner', 'pennant', 'armour')), ('docks', 'gangsters', ('anchor', 'boat', 'ship', 'harbour', 'lantern')),
+                     ('neon', 'gangsters', ('neon', 'sign')), ('uptown', 'gangsters', ('clock', 'velvet', 'chandelier'))):
+    grant('quest:' + qid, first(lambda k, e, w=w, a=qarc: e['rarity'] in ('rare', 'epic') and e['cat'] not in WEAR_CATS | {'exterior'} and e['arc'] in ('both', a)
+                                and not (a == 'gangsters' and re.search(r'(?i)penguin|crystal', e['name'])) and any(x in e['name'].lower() for x in w), any_arc=True))
 
 # ---- 13) house: reserved cells per tier (mirror of house.gd consts; Decor.place refuses them) ------------
 # Mirror of house.gd consts (BED 3,2 (2x2), CHEST/dresser 12,2, DOOR 8,11 + the cell in front, stove 13,9,
@@ -759,7 +1037,7 @@ HOUSE_RESERVED = {str(t): _res(t, c) for t, c in {1: 16, 2: 20, 3: 26}.items()}
 # Old saves that already passed a unique's event get it once at migration (Decor.migrate; c10_06):
 # {id: run.flags key}. Only events whose flag already exists in the game are listed.
 BACKGRANT = {'dc_u_lighthouse_lamp': 'lighthouse_lit'}
-LEGACY = {'museum_trophy': 'dc_tt_trophy_crystal', 'fish_trophy': 'dc_tt_trophy_fish_a'}
+LEGACY = {'museum_trophy': 'dc_museum_trophy', 'fish_trophy': 'dc_fish_trophy'}   # agrees with Collections.decor_id (c10b_12)
 
 # ---- self-checks ---------------------------------------------------------------------------------------
 fails = []
@@ -825,9 +1103,36 @@ if fails:
 
 # ---- write ---------------------------------------------------------------------------------------------
 out = {'rarity': RARITY, 'cats': CATS, 'sell_share': SELL_SHARE, 'reorder_fee': REORDER_FEE, 'reorder_min': REORDER_MIN,
-       'pity': PITY, 'luck_step': LUCK_STEP, 'items': ENTRIES, 'sets': SETS, 'shops': SHOPS, 'shop_slots': SHOP_SLOTS,
+       'pity': PITY, 'luck_step': LUCK_STEP, 'comfort_tiers': COMFORT_TIERS, 'items': ENTRIES, 'sets': SETS, 'shops': SHOPS, 'shop_slots': SHOP_SLOTS,
        'shop_days': SHOP_DAYS, 'pools': POOLS, 'recipes': RECIPES, 'house_reserved': HOUSE_RESERVED, 'legacy': LEGACY,
        'backgrant': {k: v for k, v in BACKGRANT.items() if k in ENTRIES}, 'grants': GRANTS}
+# c10b_13_10: boilerplate descriptions get a line by kind (sub) or set, picked per id (two per kind).
+SUB_DESC = {'seating': ['A good seat after a long day in the fields.', 'Sit down, put your feet up.'],
+            'table': ['A table for meals, maps and mail.', 'Sturdy legs, no wobble.'],
+            'storage': ['Somewhere to keep the clutter out of sight.', 'Shelves and drawers for everything.'],
+            'bed': ['A bed to dream in.', 'Soft enough to sleep through a storm.'],
+            'kitchen': ['For the kitchen corner.', 'Kitchen kit for a cook who means it.'],
+            'tabletop': ['A little something for a shelf or table.', 'Small, but it catches the eye.'],
+            'plant': ['Greenery for a sunny corner.', 'It only asks for a little light.'],
+            'painting': ['A picture for the wall.', 'Paint and frame, hung straight.'],
+            'window': ['A window for the wall.', 'Let the daylight in.'],
+            'tech': ['Screens and wires, neatly kept.', 'Hums quietly in the corner.'],
+            'study': ['For long evenings with a book.', 'Ink, paper and a quiet corner.'],
+            'wall_art': ['Hangs on a wall.', 'Something for a bare wall.'],
+            'decor': ['A little something for a shelf or table.', 'A finishing touch for a room.'],
+            'furniture': ['Furniture for your house.', 'Built to last a lifetime.']}
+for k, e in ENTRIES.items():
+    if e['desc'] in ('Furniture for your house.', 'Hangs on a wall.', 'A little something for a shelf or table.'):
+        if e.get('set') and e['set'] in SETS:
+            e['desc'] = 'Part of the %s.' % SETS[e['set']]['name']
+        elif e['sub'] in SUB_DESC:
+            e['desc'] = SUB_DESC[e['sub']][zlib.crc32(k.encode()) % 2]
+
+# c10b_08-08/09-01/12: catalogue wallpaper/flooring are room surfaces: DecorMode.SURFACE_LAYERS reads
+# layer "wallpaper"/"flooring" (the entry keeps "style" = the tile kit / seamless texture it paints).
+for e in ENTRIES.values():
+    if e['cat'] in ('wallpaper', 'flooring'):
+        e['layer'] = e['cat']
 # decor.json uses the contract's arc convention: "" = both arcs (P4/P3 test a == "" or a == run.arc)
 for e in ENTRIES.values():
     if e['arc'] == 'both':

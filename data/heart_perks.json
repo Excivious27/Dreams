@@ -163,6 +163,38 @@
    "text": "Theo's thesis: one free skill point in every tree"
   }
  },
+ "tess": {
+  "2": {
+   "weekly": {
+    "wood": 5
+   },
+   "text": "Tess saves you offcuts: 5 Wood each week"
+  },
+  "4": {
+   "give": {
+    "plank": 10
+   },
+   "text": "Tess's spare planks: 10 Plank"
+  },
+  "6": {
+   "weekly": {
+    "hardwood": 3
+   },
+   "text": "Tess sends hardwood: 3 Hardwood each week"
+  },
+  "10": {
+   "give": {
+    "hardwood": 10
+   },
+   "text": "Tess's master joinery: 10 Hardwood"
+  },
+  "8": {
+   "give": {
+    "#decor:dc_armchair_window": 1
+   },
+   "text": "Tess gives you a keepsake for your home: Window Seat"
+  }
+ },
  "hazel": {
   "2": {
    "weekly": {
@@ -245,9 +277,9 @@
   "8": {
    "give": {
     "greater_potion": 2,
-    "#decor:dc_pelt_bear": 1
+    "#decor:dc_painting2_a": 1
    },
-   "text": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Bear Pelt Rug"
+   "text": "Rook's field kit: 2 Greater Potions, and a keepsake for your home: Country Oak Painting"
   },
   "10": {
    "give": {
@@ -280,9 +312,9 @@
     "mana": 20
    },
    "give": {
-    "#decor:dc_stat_penguin_gold": 1
+    "#decor:dc_tt_snow_globe": 1
    },
-   "text": "A guardian's patience: +20 max mana, and a keepsake for your home: Golden Penguin Idol"
+   "text": "A guardian's patience: +20 max mana, and a keepsake for your home: Snow Globe"
   },
   "10": {
    "bonus": {
@@ -443,9 +475,9 @@
   "8": {
    "give": {
     "moonlight_elixir": 1,
-    "#decor:dc_tt_bottled_wind": 1
+    "#decor:dc_tt_echo_shell": 1
    },
-   "text": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Bottled Breeze"
+   "text": "Marlowe tells the story of the night the bell stopped: a Moonlight Elixir, and a keepsake for your home: Echo Shell"
   },
   "10": {
    "give": {
@@ -654,9 +686,9 @@
     "mana": 10
    },
    "give": {
-    "#decor:dc_bookcase3_b": 1
+    "#decor:dc_easel2": 1
    },
-   "text": "Sel's translation: +10 max mana, and a keepsake for your home: Manor Pine Bookcase"
+   "text": "Sel's translation: +10 max mana, and a keepsake for your home: Painter's Easel"
   },
   "10": {
    "bonus": {

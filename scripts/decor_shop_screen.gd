@@ -28,6 +28,9 @@ var _arm := 0
 var _flash := ""
 var _flash_t := 0.0
 var _flash_good := true
+var _was_paused := false
+var _confirm := ""      # c10b_10_20: rare+ buys ask once ("" = nothing armed)
+var _confirm_t := 0.0
 
 
 static func open(m: GameMap, shop_key: String, keeper: String) -> int:
@@ -45,6 +48,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_font = ThemeDB.fallback_font
 	Hud.modal_rect = Rect2(0, 0, 270, 480)
+	_was_paused = get_tree().paused
 	Hud.pause(get_tree(), "decor_shop")
 	_canvas = Control.new()
 	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -65,6 +69,9 @@ func _fill() -> void:
 func _process(delta: float) -> void:
 	_arm += 1
 	_flash_t = maxf(0.0, _flash_t - delta)
+	_confirm_t = maxf(0.0, _confirm_t - delta)
+	if _confirm_t <= 0.0:
+		_confirm = ""
 	_canvas.queue_redraw()
 	if _arm < 8:
 		return
@@ -97,10 +104,20 @@ func _buy() -> void:
 	if sel < 0 or sel >= _rows.size():
 		return
 	var id := str(_rows[sel])
+	if Decor.rarity_rank(Decor.rarity(id)) >= int(DecorSources.T.get("confirm_rank", 2)) and _confirm != id \
+			and int(GameState.run["crystals"]) >= Decor.buy_price(id) and not DecorSources.taken(id):
+		_confirm = id
+		_confirm_t = 3.0
+		_flash = Money.t("Buy again to pay %s for the %s." % [Money.fmt(Decor.buy_price(id)), DecorSources.name_of(id)])
+		_flash_good = true
+		_flash_t = 3.0
+		Music.instance(get_tree()).sfx("scroll_tick", "ui_tap")
+		return
+	_confirm = ""
 	match DecorSources.buy(map, id, 1):
 		"ok":
 			bought += 1
-			_flash = "Sent to your decor box: %s" % DecorSources.name_of(id)
+			_flash = "Sent to your %s: %s" % ["wardrobe" if DecorSources.is_wear(id) else "decor box", DecorSources.name_of(id)]
 			_flash_good = true
 			Music.instance(get_tree()).sfx("cash", "coin")
 			if map:
@@ -120,7 +137,7 @@ func _buy() -> void:
 func _close() -> void:
 	if not is_inside_tree():
 		return
-	get_tree().paused = false
+	get_tree().paused = _was_paused or Hud.keep_paused(get_tree(), self)  # c10b_10_14: the was-paused rule
 	Music.instance(get_tree()).sfx("menu_close", "ui_tap")
 	Dialogue.block_input(0.3)
 	Hud.modal_rect = Rect2()
@@ -161,16 +178,17 @@ func _draw_it() -> void:
 	var c := _canvas
 	var gang := not GameState.is_penguins()
 	c.draw_rect(Rect2(0, 0, 270, 480), Color(0.06, 0.05, 0.1) if gang else Color(0.14, 0.1, 0.07))
-	c.draw_string(_font, Vector2(0, 30), "HOME GOODS", HORIZONTAL_ALIGNMENT_CENTER, 270, 16, Color(1, 0.85, 0.45))
+	var wear_only := not _rows.is_empty() and _rows.all(func(i: Variant) -> bool: return DecorSources.is_wear(str(i)))
+	c.draw_string(_font, Vector2(0, 30), "WARDROBE" if wear_only else ("YARD AND HOME" if who == "Tess" else "HOME GOODS"), HORIZONTAL_ALIGNMENT_CENTER, 270, 16, Color(1, 0.85, 0.45))
 	c.draw_string(_font, Vector2(0, 46), Money.t("%s · you have %s" % [who if who != "" else "Shelf", Money.fmt(int(GameState.run["crystals"]))]), HORIZONTAL_ALIGNMENT_CENTER, 270, 9, Color(1, 1, 1, 0.75))
-	c.draw_string(_font, Vector2(0, 60), "New pieces every few days. Buys go to your decor box.", HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.45))
+	c.draw_string(_font, Vector2(0, 60), "New pieces every few days. Buys go to your %s." % ("wardrobe" if wear_only else "decor box"), HORIZONTAL_ALIGNMENT_CENTER, 270, 7, Color(1, 1, 1, 0.45))
 	if _rows.is_empty():
 		c.draw_string(_font, Vector2(0, LIST_Y + 30), "Shelf's bare today.", HORIZONTAL_ALIGNMENT_CENTER, 270, 9, Color(1, 1, 1, 0.6))
 	for i in range(top, mini(_rows.size(), top + VISIBLE)):
 		var id := str(_rows[i])
 		var y := LIST_Y + (i - top) * ROW_H
 		var r := Rect2(10, y, 250, ROW_H - 3)
-		var price := Decor.price(id)
+		var price := Decor.buy_price(id)  # c10b_10_01: discounts shown as charged
 		var can := int(GameState.run["crystals"]) >= price
 		c.draw_rect(r, Color(1, 0.85, 0.35, 0.22) if i == sel else Color(1, 1, 1, 0.06))
 		if i == sel:

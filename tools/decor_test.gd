@@ -43,7 +43,7 @@ func _run() -> void:
 	# --- keys P3/P4 reference ------------------------------------------------------------------
 	for p in ["fishing_sea", "fishing_deep", "mail"]:
 		check(((d["pools"] as Dictionary).get(p, []) as Array).size() > 0, "pool exists: " + p)
-	for k in ["maple", "gideon", "wren", "granite", "sel", "tam", "orla", "marlowe", "rook", "old_moss", "catkins", "finn", "hazel"]:
+	for k in ["maple", "gideon", "wren", "granite", "sel", "tam", "orla", "marlowe", "rook", "old_moss", "catkins", "finn", "carpenter"]:
 		check(((d["shops"] as Dictionary).get(k, []) as Array).size() > 0, "keeper shelf: " + k)
 		check(not (d["shop_slots"] as Dictionary).has(k), "keeper shelf is a full list (P4 rotates): " + k)
 	check((d["shops"] as Dictionary).has("maple_gang") and not (d["shops"] as Dictionary).has("catkins_gang"), "gang shelves (none for Catkins)")
@@ -105,7 +105,7 @@ func _run() -> void:
 	var pay := Decor.sell("dc_tt_vase")
 	check(pay == Decor.sell_value("dc_tt_vase") and int(GameState.run.get("crystals", 0)) == m0 + pay and Decor.owned("dc_tt_vase") == 0, "sell from the box pays flat value")
 	check(Decor.can_reorder("dc_tt_vase") and Decor.buy_price("dc_tt_vase", true) == Decor.buy_price("dc_tt_vase") + Decor.reorder_fee("dc_tt_vase"), "re-order adds the fee")
-	check(Decor.reorder_fee("dc_tt_vase") >= 50, "re-order fee minimum")
+	check(Decor.reorder_fee("dc_tt_vase") >= 10 and Decor.reorder_fee("dc_tt_vase") <= maxi(10, int(ceil(Decor.price("dc_tt_vase") * 0.1))), "re-order fee 10%, min 10 (c10b_10_10)")
 	# --- shop rotation: deterministic per day, filtered by arc --------------------------------------
 	GameState.run["day"] = 5
 	var a := Decor.stock("home_goods")
@@ -224,6 +224,7 @@ func _run() -> void:
 		if str(Decor.entry(str(id)).get("arc", "")) == "gangsters":
 			gang_ok = true
 	check(gang_ok, "gangster run sees crew pieces")
+	_c10b(d)
 	# --- empty data: everything still answers ---------------------------------------------------
 	Decor.reset_data({"items": {}, "sets": {}, "shops": {}, "pools": {}})
 	check(not Decor.is_decor("dc_sofa_red") and Decor.roll("chest_t1") == "" and Decor.stock("home_goods").is_empty(), "empty catalogue is inert")
@@ -233,3 +234,113 @@ func _run() -> void:
 	Decor.reset_data()
 	print("decor_test: %d checks, %d failures" % [checks, fails])
 	quit(1 if fails else 0)
+
+
+
+## C10b P1: catalogue data, shelves, grants, comfort, migration, the carpenter.
+func _c10b(d: Dictionary) -> void:
+	GameState.run["arc"] = "penguins"
+	var items: Dictionary = d["items"]
+	var outdoor := 0
+	var commons := {}
+	for id in items:
+		var e: Dictionary = items[id]
+		if str(e["cat"]) in ["wallpaper", "flooring"]:
+			check(str(e["layer"]) == str(e["cat"]), "surface layer is the cat (DecorMode.SURFACE_LAYERS): " + id)
+		if str(e["layer"]) == "outdoor":
+			outdoor += 1
+			check(float(e.get("scale", 0)) > 0.0 and str(e["cat"]) == "outdoor", "outdoor piece has a draw scale: " + id)
+		if str(e["rarity"]) == "common" and int(e["price"]) > 0:
+			commons[int(e["price"])] = true
+		if str(e.get("arc", "")) == "" and not e.get("ext", false):
+			check(not str(e["name"]).to_lower().contains("penguin"), "no penguin name in a both-arc piece: " + id)
+		if Decor.rarity(id) == "unique":
+			var src: Dictionary = (e["sources"] as Array)[0]
+			check(Decor.grant_id("%s:%s" % [src["kind"], src["ref"]]) == id, "unique has a live grant key: " + id)
+	check(outdoor >= 60, "outdoor catalogue %d pieces" % outdoor)
+	check(commons.size() >= 20, "common price ladder has %d steps" % commons.size())
+	for sid in d["sets"]:
+		var st: Dictionary = d["sets"][sid]
+		check(int((st.get("reward", {}) as Dictionary).get("money", 0)) > 0, "set pays on claim: " + sid)
+		check(not str(st["name"]).to_lower().contains("casino") and not str(st["name"]).to_lower().contains("rec hall"), "set name words: " + sid)
+		if str(st.get("arc", "")) == "":
+			for p in st["pieces"]:
+				check(str(Decor.entry(str(p)).get("arc", "")) == "", "both-arc set %s holds only both-arc pieces (%s)" % [sid, p])
+	for k in ["carpenter", "carpenter_gang", "lumi", "crew_marlene", "crew_deuce", "crew_specs", "crew_halo", "stall:festival_spring", "stall:festival_winter", "stall:gloam_lanternfall", "stall:docks"]:
+		check(((d["shops"] as Dictionary).get(k, []) as Array).size() > 0, "shelf exists: " + k)
+	for se in ["spring", "summer", "fall", "winter"]:
+		check(((d["pools"] as Dictionary).get("festival_%s_prize" % se, []) as Array).size() > 0, "festival prize pool " + se)
+	# Shelf prices: discounts apply, re-order costs more, flat 10% fee (min 10).
+	var sofa := "dc_sofa_red"
+	check(Decor.buy_price(sofa) <= Decor.price(sofa) and Decor.order_price(sofa) > Decor.buy_price(sofa), "shelf <= list < re-order")
+	check(DecorSources.order_price(sofa) == Decor.order_price(sofa), "one re-order price")
+	check(Decor.reorder_fee(sofa) == maxi(10, int(ceil(Decor.price(sofa) * 0.1))), "re-order fee 10%% (min 10)")
+	# Rotation: a mixed shelf (at most two of a kind while the pool allows).
+	var pool := Decor.stock_all("carpenter", 9)
+	for day in [1, 4, 7, 10]:
+		GameState.run["day"] = day
+		var shelf := DecorSources.rotate(pool, 6, 3, 5)
+		var subs := {}
+		for i in shelf:
+			subs[str(Decor.entry(str(i)).get("sub", ""))] = int(subs.get(str(Decor.entry(str(i)).get("sub", "")), 0)) + 1
+		var worst := 0
+		for k in subs:
+			worst = maxi(worst, int(subs[k]))
+		check(shelf.size() == 6 and worst <= 2, "day %d shelf mixed (max %d of a kind)" % [day, worst])
+	GameState.run["day"] = 1
+	# Event grants: a state-based key fires once from the morning sweep.
+	GameState.run["flags"]["lighthouse_lit"] = true
+	Decor.st()["box"].erase("dc_u_lighthouse_lamp")
+	Decor.st()["got"].erase("dc_u_lighthouse_lamp")
+	Decor.st()["uniques"].erase("dc_u_lighthouse_lamp")
+	Decor.st()["swept"] = {}
+	var got := DecorSources.sweep(null)
+	check(got.has("dc_u_lighthouse_lamp") and DecorSources.sweep(null).is_empty(), "sweep grants a secret-flag unique once")
+	# Comfort: duplicates count less; tiers; morning softens a late wake.
+	GameState.run["decor"]["placed"]["house"] = []
+	for i in 10:
+		GameState.run["decor"]["placed"]["house"].append({"id": "dc_sofa_red", "cell": [i, 5], "rot": 0})
+	var c10 := Decor.comfort()
+	check(c10 <= int(Decor.entry("dc_sofa_red")["comfort"]) + 2, "ten copies count as one + two points (%d)" % c10)
+	check(Decor.comfort_tier(0).size() == 4 and str(Decor.comfort_tier(500)[1]) == "Dream Home", "comfort tiers")
+	var big: Array = []
+	for id in items:
+		if str(items[id]["layer"]) == "floor" and big.size() < 80:
+			big.append({"id": id, "cell": [big.size() % 20, big.size() / 20], "rot": 0})
+	GameState.run["decor"]["placed"]["house"] = big
+	GameState.run["energy"] = 10
+	var line := Decor.morning_comfort()
+	check(int(GameState.run["energy"]) > 10 and line != "", "a cosy home lifts a short night's energy: " + line)
+	GameState.run["decor"]["placed"].erase("house")
+	# C9 keepsakes: run.coll.decor pieces land in the house once (mig 2).
+	GameState.run["coll"] = {"decor": {"fish_trophy": true}}
+	Decor.st()["mig"] = 1
+	Decor.st()["box"].erase("dc_fish_trophy")
+	Decor.migrate()
+	var placed_ok := false
+	for p in (Decor.st()["placed"].get("house", []) as Array):
+		if str(p.get("id", "")) == "dc_fish_trophy":
+			placed_ok = true
+	check(placed_ok and Decor.total("dc_fish_trophy") == 1, "C9 fish trophy placed in the house")
+	Decor.migrate()
+	check(Decor.total("dc_fish_trophy") == 1, "keepsake migration runs once")
+	Decor.st()["placed"].erase("house")
+	# Exterior parts count as held (P3 run.decor.exterior {part: id}).
+	check(Decor.st()["exterior"] is Dictionary, "run.decor.exterior exists")
+	# Gangster names: no penguin/crystal words on a gangster shelf or display name.
+	GameState.run["arc"] = "gangsters"
+	for k in ["maple_gang", "carpenter_gang", "crew_deuce", "stall:neon"]:
+		for id in Decor.stock_all(k, 9):
+			var nm := DecorSources.name_of(str(id)).to_lower()
+			check(not nm.contains("penguin") and not nm.contains("crystal"), "gang shelf %s word-clean: %s" % [k, nm])
+	GameState.run["arc"] = "penguins"
+	# The carpenter: villager, workshop counter, shelf key, heart keepsake.
+	check(GameState.npcs.has("tess") and str(GameState.npcs["tess"]["home"]) == "workshop", "Tess the carpenter lives at the workshop")
+	var rooms: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/interiors.json"))
+	var has_counter := false
+	for t in rooms["workshop"]["things"]:
+		if str(t.get("type", "")) == "counter" and str(t.get("shop", "")) == "carpenter":
+			has_counter = true
+	check(has_counter and DecorSources.SHELF.has("carpenter"), "workshop counter sells the carpenter shelf")
+	check(Decor.grant_id("heart:tess:8") != "" and Intros.LINES.has("tess"), "Tess: heart keepsake, first-meeting lines")
+	check(TownHours.SHOPS.has("workshop"), "workshop keeps shop hours")

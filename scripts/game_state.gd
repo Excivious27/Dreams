@@ -6,7 +6,7 @@ extends RefCounted
 const SAVE_KEY := "run"
 ## C9: bump when _migrate gains a step; written into every run, checked by save codes
 ## (SaveTransfer refuses codes/farms from a newer build).
-const SAVE_VERSION := 10  # 10: run.decor (C10a decor box/wardrobe; Decor.migrate)
+const SAVE_VERSION := 11  # 10: run.decor (C10a decor box/wardrobe; Decor.migrate); 11: C10b decor (exterior/yard/swept, keepsakes seeded: Decor.MIGRATION 2)
 ## Run blocks that must be containers; a JSON null here (hand-edited/partial import)
 ## is dropped by _migrate so the lazy accessors rebuild it.
 const RUN_BLOCKS := ["campaign", "cfarm", "mega", "romance", "coll", "project", "arcade", "arcade_hub",
@@ -2426,6 +2426,7 @@ static func complete_quest(id: String) -> bool:
 			if m:
 				Music.instance(m.get_tree()).sfx("quest_done", "levelup")
 				Story.on_quest_done(m, id)
+			DecorSources.on_quest(id)  # C10b P1: a home piece for some quests (decor.json grants "quest:<id>")
 			return true
 	return false
 
@@ -3216,6 +3217,7 @@ static func sleep(passed_out := false) -> Dictionary:
 	if late < 1.0:
 		run["energy"] = int(round(int(run["max_energy"]) * late))
 		report["late"] = true
+	var comfort_line := Decor.morning_comfort()  # C10b P1: a cosy home softens a late night, lifts morning luck
 	report["short"] = int(run["energy"]) < int(run["max_energy"])  # SleepReport says why
 	run["en_frac"] = 0.0
 	run["en_warn"] = 0
@@ -3232,6 +3234,9 @@ static func sleep(passed_out := false) -> Dictionary:
 	_drop_gone_quests(true)
 	for line in Perks.morning():
 		notify(str(line))
+	if comfort_line != "":
+		notify(comfort_line)
+	DecorSources.sweep(null)  # C10b P1: state-based home pieces (secret flags, campaigns, quests, set master)
 	# Traps in the bag catch something overnight (Rook's design): up to 3 work.
 	var caught := 0
 	for i in mini(count("trap"), 3):
