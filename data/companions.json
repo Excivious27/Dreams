@@ -29,7 +29,7 @@
    "arc": "both",
    "ability": "haul",
    "ability_name": "Haul",
-   "ability_desc": "Trees fall in one swing while he's with you.",
+   "ability_desc": "Trees fall twice as fast and give 2 more wood while he's with you.",
    "join": "Somebody has to carry the wood."
   },
   "mom": {

@@ -203,7 +203,7 @@ ENEMIES = {
 ART_AS = {"garden_boss": "gang_boss_gloam", "smuggler_king": "gang_boss_desert", "ice_hauler": "gang_boss_frost",
           "gilt_guard": "casino_guard"}
 OWN_ART = ["thornmother", "sun_colossus", "garden_boss", "smuggler_king", "ice_hauler", "dune_crab", "sand_hound", "sun_moth", "glass_golem", "gilt_guard", "rail_bot"]
-BOSS_REWARD = {3: 350, 4: 550, 5: 850}
+BOSS_REWARD = {3: 1000, 4: 1800, 5: 2800}  # C8 P4: boss cash + drops + charm >= the area's chests
 NATIVE_HP = [1.5, 2.2, 2.8, 3.5, 4.0, 5.0]  # mirrors Enemy.NATIVE_HP (rewards only)
 DROP_PER_HP = 3.4
 # Region bosses wait for the hub job (Moonpool after Liesl's, etc.): set per boss in main().
@@ -693,7 +693,7 @@ A("gilt_grand_plaza", cols=44, rows=40, music="mega_gilt", look="gilt", ground_s
   npcs=[("mg_pell", "Pell", "mg_pell", ["Madame owns the casinos, the gardens, the Vaults, and the fountain. The water is rented.", "Gilt Chips spend like cash on the Row.", "She'll see you in the Vaults. She sees everyone in the Vaults, eventually."]),
         ("mg_odette", "Odette", "mg_odette", ["I paint the statues. Madame keeps asking me to make them look more like her.", "Gold leaf on a flan. Disgusting. Delicious.", "The gardens are the only place in Gilt City that's free. Don't tell her."]),
         ("mg_cass", "Cass", "mg_cass", ["Fastest legs in Gilt. Madame's guards can't catch me.", "There's a lucky coin under every third bench. I've checked.", "I'd steal her crown, but it's glued on."])],
-  job={"giver": "mg_odette", "text": "Odette wants 3 Gold Leaf and a Pearl Necklace for her masterpiece.", "items": [["gold_bundle", 3], ["pearl_necklace", 1]], "reward": {"crystals": 2000, "item": ["wonder_elixir", 1], "friend": ["mg_odette", 15]},
+  job={"giver": "mg_odette", "text": "Odette wants 3 Gold Leaf and a Pearl Necklace for her masterpiece.", "items": [["gold_bundle", 3], ["pearl_necklace", 1]], "reward": {"crystals": 2000, "item": ["wonder_elixir", 1], "max_hp": 20, "friend": ["mg_odette", 15]},
        "lines": {"offer": ["I'm painting Gilt City as it really is. For that I need real gold leaf and a real pearl.", "Three Gold Leaf and one Pearl Necklace. The Vaults have both, if you're brave."], "yes": "Wonderful. Wear something dark, the guards hate that.", "done": ["Perfect. Look at it shine! She'll hate it. Here, for you."]}},
   intro=["The limousine purrs into a plaza paved with gold-veined stone. Statues, fountains, a mansion with a hundred windows, and every lamp post has a little crown on top.", "Gilt City. Everything glitters. Everything has a price."])
 A("gilt_casino_row", cols=50, rows=42, music="mega_gilt", look="gilt", ground_seam="city_pavement", path="brick_herring", links={"gilt_grand_plaza": ("w", 17), "gilt_vaults": ("n", 24)},

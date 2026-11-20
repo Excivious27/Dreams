@@ -34,6 +34,11 @@
 - Skill trees: five +5% movement nodes per arc (= the 25% cap; six were dead picks). Tunnel Legs = +15% in mines, Strong Strokes = swim 30% faster, Light Feet -> Smooth Ride (+10% horse/vehicles), Blink Step = Haste lasts 1.5x, Marching Pace -> Steady Ranks (team defence), Forced March = capture points faster (ids kept, ranks kept). Mining unlock Heavy Swing -> Iron Arm (no more two "Heavy Swing"); Fertilizer node -> Compost Lore; Golden Seeds text matches the code; Haste says "about 40 seconds"; gems tree total 0.35 -> 0.16, treasure 0.39 -> 0.15 (GEN_CAPS); no "faster levelling" capstones; Sharp Edge moved to column IV.
 - Maxed trees stop glowing (`SkillGlow.usable`); Hero tab renown counts at most 12 levels per skill; the fishing Night row waits for the lighthouse.
 - Test: tools/move_speed_test.gd (check.sh).
+## 2026-11-20 — CONDUCT 8 fix P4: mining, fishing, rewards
+- Fishing rebuilt on a rules table (`Fishing`): mega/sea waters keep their own fish (no forced minnow/sunfish), fish chosen at the bite with a shorter window for rarer fish, area-tier ceiling (Glacier Pike ~Fishing 5, Ember Koi ~8), Rare Catch from the top, rod tier and luck count, lighthouse only at lake/sea, treasure by water (no pond pearls), XP by fish value, Legendary Koi at the lit lake (night, bait, Fishing 10), bait only where it helps, a hit snaps the line, sea says "Fish". Colony seas get sea fish.
+- Mining: swing per pick tier 1..8 (every upgrade matters), smooth rock hp (no floor-15 sawtooth), gems mostly from ore rocks, floors 1-3 keeper thresholds 14/13/12 and no long waits there, mega ore uses the pick (scaled hp, lumps, gems, xp), moon rocks respawn (3/7 days) and Moon Shards need their gate, mountain ore stays broken (hook).
+- Rewards: hubs hide loot two tiers lower, caches on a value budget (relic masks single, tier 4+), page spacing retry + per-arc pages_total (gangster journal completable), LOOT[5] storm glass instead of moon shards, mega bosses 1000/1800/2800, main-line pay x3-6 (arcs equal), side quests sal_coffee/sal_bread/hazel_potatoes on curve, thugs on the per-hp kill curve, gangster story bosses give hearts + better items, Gilt job max hp, island kit pay by tier. Dad's Haul: x2 chop + 2 wood (no one-swing trees).
+- Test tools/c8_p4_test.gd (check.sh).
 
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 

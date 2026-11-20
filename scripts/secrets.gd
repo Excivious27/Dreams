@@ -14,11 +14,14 @@ const PENG_ONLY := ["wastes", "sky", "station", "jungle"]
 static func pages_total() -> int:
 	var n := 0
 	for rid: String in PAGES:
-		if (rid in GANG_ONLY and GameState.is_penguins()) or (rid in PENG_ONLY and not GameState.is_penguins()):
+		if (rid in GANG_ONLY and GameState.is_penguins()) or (rid in PENG_ONLY and not GameState.is_penguins()) or not _area_here(rid):
 			continue
 		n += 1
 	for rid: String in POCKET_PAGES:
 		if _area_here(rid):
+			n += 1
+	for rid: String in HiddenArea.SANCTUMS:  # sanctum pages behind bosses count too
+		if _area_here(rid) and str(HiddenArea.SANCTUMS[rid].get("page", "")) != "":
 			n += 1
 	return n
 
@@ -117,9 +120,46 @@ const LOOT := [
 	{"#gold": 600, "gold_bar": 2, "sapphire": 1},
 	{"#gold": 1000, "crystal_refined": 2, "ruby": 1},
 	{"#gold": 1600, "crystal_refined": 3, "relic_orb": 1},
-	{"#gold": 2500, "moon_shard": 2, "wonder_elixir": 1},
+	{"#gold": 2500, "storm_glass": 2, "wonder_elixir": 1},  # C8 P4: moon shards stay a moon find
 ]
+<<<<<<< HEAD
 const CACHE := [["copper", 4], ["iron", 3], ["gold", 2], ["fossil", 1], ["amethyst", 1], ["shard", 2], ["relic_mask", 1], ["ancient_urn", 1]]
+=======
+## Buried caches: one item kind per dig (hash), count = the tier's value budget / its value.
+const CACHE := ["copper", "iron", "gold", "fossil", "amethyst", "shard", "relic_mask", "ancient_urn"]
+const CACHE_BUDGET := [80, 150, 250, 400, 600, 900]
+const CACHE_SINGLE := {"relic_mask": 4, "ancient_urn": 2}  # one at a time, from this tier (museum relics)
+const HUB_TIER_DROP := 2        # areas with no foes (hubs) hide loot this many tiers lower
+const PAGE_SPACING := [10.0, 6.0, 3.0]  # path-side picks keep apart; looser until the page fits
+
+
+## Loot tier for an area's chest/pocket: safe hubs pay less than the dangerous areas.
+static func loot_tier(area_tier: int, has_foes: bool) -> int:
+	return area_tier if has_foes else maxi(0, area_tier - HUB_TIER_DROP)
+
+
+## [item, n] for one buried cache: a kind worth between 1/8 and all of the tier's
+## budget (CACHE_SINGLE relics one at a time from their tier), n = budget / value.
+static func cache_for(key: String, tier: int) -> Array:
+	var t := clampi(tier, 0, CACHE_BUDGET.size() - 1)
+	var b := int(CACHE_BUDGET[t])
+	var kinds: Array = []
+	for it: String in CACHE:
+		if not GameState.items.has(it):
+			continue
+		var v := GameState.item_value(it)
+		if CACHE_SINGLE.has(it):
+			if t >= int(CACHE_SINGLE[it]) and v <= b:
+				kinds.append(it)
+		elif v * 8 >= b and v <= b:
+			kinds.append(it)
+	if kinds.is_empty():
+		kinds = ["copper"]
+	var item: String = kinds[(hash(key) % kinds.size() + kinds.size()) % kinds.size()]
+	if CACHE_SINGLE.has(item):
+		return [item, 1]
+	return [item, maxi(1, int(round(float(b) / float(maxi(1, GameState.item_value(item))))))]
+>>>>>>> c8f/p4
 
 
 static func place(m: GameMap, rid: String, tier: int) -> void:
@@ -135,6 +175,8 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 			picks.clear()
 			break
 		picks.append(mc)
+	if picks.size() < 4 and PAGES.has(rid) and not GameState.run["flags"].has("page_" + rid):
+		picks.clear()  # remembered before the page fitted (C8 P4): place again so it lands
 	if not picks.is_empty():
 		_put(m, rid, tier, picks)
 		return
@@ -148,16 +190,19 @@ static func place(m: GameMap, rid: String, tier: int) -> void:
 	var tucked: Array = cands.filter(func(c: Vector2i) -> bool: return _walls(m, c) >= 4)
 	if not tucked.is_empty():
 		picks.append(tucked[rng.randi() % tucked.size()])
-	var tries := 0
-	while picks.size() < 4 and tries < 400:
-		tries += 1
-		var c: Vector2i = cands[rng.randi() % cands.size()]
-		var ok := true
-		for p: Vector2i in picks:
-			if p.distance_to(c) < 10.0:
-				ok = false
-		if ok:
-			picks.append(c)
+	for spacing: float in PAGE_SPACING:  # C8 P4: loosen the spacing so the page always lands
+		var tries := 0
+		while picks.size() < 4 and tries < 400:
+			tries += 1
+			var c: Vector2i = cands[rng.randi() % cands.size()]
+			var ok := true
+			for p: Vector2i in picks:
+				if p.distance_to(c) < spacing:
+					ok = false
+			if ok:
+				picks.append(c)
+		if picks.size() >= 4:
+			break
 	if picks.is_empty():
 		return
 	HiddenArea.remember("secrets_" + rid, {"picks": picks.map(func(c: Vector2i) -> Array: return [c.x, c.y])})
@@ -177,8 +222,8 @@ static func _put(m: GameMap, rid: String, tier: int, picks: Array) -> void:
 		var cc: Vector2i = picks[i]
 		var key := "secret_dig_%s_%d" % [rid, i]
 		if not GameState.run["flags"].has(key):
-			var cache: Array = CACHE[(hash(key) % CACHE.size() + t) % CACHE.size()]
-			m.set_thing(cc.x, cc.y, {"type": "secret_dig", "key": key, "item": cache[0], "n": int(cache[1]) + t, "hint": ""}, false)
+			var cache := cache_for(key, t)
+			m.set_thing(cc.x, cc.y, {"type": "secret_dig", "key": key, "item": cache[0], "n": int(cache[1]), "hint": ""}, false)
 	# A journal page.
 	if PAGES.has(rid) and picks.size() >= 4:
 		var pc: Vector2i = picks[3]

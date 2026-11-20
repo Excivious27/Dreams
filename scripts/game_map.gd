@@ -295,7 +295,9 @@ func default_spawn() -> Vector2:
 func interact(_cell: Vector2i, _thing: Dictionary) -> bool:
 	return false
 ## One short verb for what USE / CHECK would do on this cell (shown on the button).
-const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "mega_gate": "Travel", "elder": "Talk", "colony_kit": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
+const HAUL_CHOP_MULT := 2   # Dad's Haul: chop damage x this on trees/logs/stumps
+const HAUL_EXTRA_WOOD := 2  # ... and this much more wood per felled tree
+const ACTION_WORDS := {"tree": "Chop", "stump": "Chop", "log": "Chop", "rock": "Mine", "ore": "Mine", "bush": "Pick", "forage": "Pick", "chest": "Open", "door": "Enter", "sign": "Read", "board": "Read", "bed": "Sleep", "shop": "Shop", "station": "Craft", "fish": "Fish", "water": "Fish", "sea": "Fish", "grass": "Cut", "weeds": "Cut", "plot": "Farm", "animal": "Pet", "project": "Build", "cpoint": "Build", "ferry": "Sail", "mega_gate": "Travel", "elder": "Talk", "colony_kit": "Talk", "beacon": "Light", "secret_chest": "Open", "page": "Read", "boss": "Face"}
 
 
 func action_word(c: Vector2i) -> String:
@@ -671,9 +673,10 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			wobble(c, 0.08 if str(thing["type"]) == "tree" else 0.03)
 			fx("wood_chips", cell_center(c) + Vector2(0, -10), 16.0, 0.5)
 			hitstop = maxf(hitstop, 0.025)  # a little weight on each swing
-			thing["hp"] = int(thing.get("hp", 3)) - (1 + (GameState.tool_tier("axe") + 1) / 2 + int(GameState.bonus("foraging", "chop_power")))
+			var chop := 1 + (GameState.tool_tier("axe") + 1) / 2 + int(GameState.bonus("foraging", "chop_power"))
 			if Companion.has_ability("haul"):
-				thing["hp"] = 0  # Dad: "Just point at the tree."
+				chop *= HAUL_CHOP_MULT  # Dad swings with you (C8 P4: never one-swing; he carries extra wood)
+			thing["hp"] = int(thing.get("hp", 3)) - chop
 			if int(thing["hp"]) <= 0:
 				var is_tree := str(thing["type"]) == "tree"
 				xp("foraging", 3)
@@ -688,7 +691,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 						pop_items(cell_center(c), "sap", 1)
 					if randf() < 0.2 + (0.5 if GameState.has_perk("foraging", "Old Growth") else 0.0):
 						pop_items(cell_center(c), "hardwood" if GameState.items.has("hardwood") else "wood", 1)
-					fell_tree(c, 4 + bonus)
+					fell_tree(c, 4 + bonus + (HAUL_EXTRA_WOOD if Companion.has_ability("haul") else 0))
 					# Domino Fall (Foraging): the trunk knocks down the next tree in line.
 					if GameState.bonus("foraging", "timber") > 0:
 						var dd := c - player.cell()
@@ -729,7 +732,7 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
 			hitstop = maxf(hitstop, 0.025)
-			var swing := 1 + (GameState.tool_tier("pickaxe") + 1) / 2
+			var swing := Mining.pick_swing()
 			if randf() < GameState.bonus("mining", "double_hit"):
 				swing *= 2
 			swing += int(GameState.bonus("mining", "mine_power"))
@@ -743,8 +746,8 @@ func interact_common(c: Vector2i, thing: Dictionary) -> bool:
 				var big := props.has(c) and (props[c] as Sprite2D).texture and str((props[c] as Sprite2D).texture.resource_path).contains("rock_m")
 				var extra := "copper"
 				var en := 1 if randf() < 0.15 else 0
-				if randf() < GameState.bonus("mining", "gem_chance") + GameState.bonus("magic", "gem_chance"):
-					extra = ["amethyst", "ruby", "sapphire", "emerald"][randi() % 4]
+				if randf() < Mining.gem_chance(true):  # overworld rocks are stone: shallow gems, rarely
+					extra = ["amethyst", "amethyst", "ruby"][randi() % 3]
 					en = 1
 				break_rock(c, 1 + (1 if randf() < 0.5 else 0) + int(GameState.bonus("mining", "stone_bonus") / 3.0), extra, en, "m" if big else "")
 			return true
@@ -3071,11 +3074,11 @@ func xp(skill: String, n: int) -> void:
 	var up := GameState.add_xp(skill, n)
 	GameState._xp_loud = false
 	if up:
-		hud.toast("%s level %d! A skill point to spend." % [str(GameState.skills_data.get(skill, {}).get("name", skill.capitalize())), GameState.skill_level(skill)], Color(1, 0.9, 0.4))
+		hud.toast(GameState.level_up_text(skill), Color(1, 0.9, 0.4))  # C8 P1 words (plural points, full tree, mastered)
 		Music.instance(get_tree()).sfx("levelup")
 		if player:
 			fx("skill_up" if Art.has("fx", "skill_up") else "levelup", player.position + Vector2(0, -4), 10.0, 0.6)
-			if GameState.skill_level(skill) % 5 == 0 and Art.has("fx", "levelup2"):
+			if GameState.last_crossed5 and Art.has("fx", "levelup2"):
 				fx("levelup2", player.position + Vector2(0, -20), 12.0, 0.4)
 
 
@@ -4435,12 +4438,9 @@ func _border_stripes() -> void:
 ## water's fish from easiest to rarest; skill, night light, rain and perks
 ## reach deeper into it.
 func fish_at(c: Vector2i, pool_in: Array) -> void:
-	# Pools run cheapest → priciest, so the weighted pick keeps valuable fish rare.
-	var pool := pool_in.duplicate()
-	for f: String in ["minnow", "sunfish"]:  # every water has its common fish
-		if not pool.has(f):
-			pool.append(f)
-	pool.sort_custom(func(a: String, b: String) -> bool: return GameState.item_value(a) < GameState.item_value(b))
+	# Pools run cheapest → priciest (Fishing.pool_for); numbers live in Fishing.T.
+	var area_tier := fish_tier()
+	var pool := Fishing.pool_for(pool_in, area_tier)
 	if GameState.held_tool() != "rod":
 		# Only the rod in hand fishes (an axe or a hoe at the water does nothing).
 		ToolHint.need(self, "rod", "to fish")
@@ -4466,7 +4466,7 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 	var plop_tree := get_tree()
 	plop_tree.create_timer(0.35).timeout.connect(func() -> void: Music.instance(plop_tree).sfx("step_water", "splash"))  # bobber plop (c6_10-18)
 	var speed := 1.0 - GameState.bonus("fishing", "bite_speed") - (0.1 if GameState.has_friend_perk("finn", 2) else 0.0) - (0.1 if Sanctuary.on() and Builds.is_built("pool") else 0.0)
-	var night: bool = GameState.is_night() and GameState.run["flags"].has("lighthouse_lit")
+	var night: bool = Fishing.night_here(scene_id())  # the lighthouse draws fish to the lake and sea only
 	var wait := randf_range(1.5, 4.5) * maxf(0.4, speed) * (0.7 if night else 1.0) * (0.75 if GameState.is_wet() else 1.0)
 	# Tidecall (Fishing): the first cast of the day bites at once.
 	if GameState.bonus("fishing", "tidecall") > 0 and int(GameState.run["flags"].get("tide_day", -1)) != int(GameState.run["day"]):
@@ -4474,12 +4474,18 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		wait = 0.3
 		hud.toast("Tidecall!", Color(0.6, 0.9, 1))
 	var baited := false
-	if GameState.count("bait") > 0:  # bait: quicker bites and a shot at better fish
+	var lvl := GameState.skill_level("fishing")
+	# Bait: quicker bites and a shot at better fish, only spent where it opens one.
+	if GameState.count("bait") > 0 and Fishing.bait_helps(pool, lvl, night, area_tier):
 		GameState.add_item("bait", -1)
 		wait *= 0.6
 		baited = true
 		hud.toast("Bait on the hook (%d left)" % GameState.count("bait"), Color(0.8, 0.95, 1))
-	var window := 1.0 + GameState.bonus("fishing", "escape_less")
+	# The fish is chosen at the bite, so rarer fish give a shorter window (rod/skill widen it).
+	var fish: String = Fishing.pick(pool, lvl, night, baited, area_tier, GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0), scene_id())
+	var window := Fishing.window_for(fish)
+	var hp0 := int(GameState.run.get("hp", 0))
+	var snapped := false
 	var t := 0.0
 	var bite := false
 	var caught := false
@@ -4491,6 +4497,9 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		if tree.paused or Dialogue.instance(tree).active:
 			continue  # menu open: the fish waits
 		t += get_process_delta_time()
+		if int(GameState.run.get("hp", 0)) < hp0:
+			snapped = true  # a hit breaks the cast: the line snaps and you can move
+			break
 		if not bite and t >= wait:
 			bite = true
 			hud.toast("!!!  Tap USE!", Color(1, 1, 0.4))
@@ -4514,21 +4523,6 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 			fx(["fish_jump_a", "fish_jump_b", "fish_jump_c"][randi() % 3], bob.position + Vector2(0, 4), 12.0, 0.5, player.facing == "left")
 		bob.queue_free()
 	if caught:
-		var lvl := GameState.skill_level("fishing")
-		# Fish above a value ceiling (skill, night light, bait) stay out of reach.
-		var cap_v := 25 + 15 * lvl + (40 if night else 0) + (10 if baited else 0)
-		var open := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= cap_v)
-		if open.is_empty():
-			open = [pool[0]]
-		var reach := mini(open.size(), 1 + lvl + (2 if night else 0) + (1 if baited else 0))
-		# Pools run easiest → rarest: weight the pick so rare fish stay rare.
-		var fish: String = open[_weighted_index(0, reach, 0.8 if baited else 0.67)] if randf() > 0.08 else "boot"
-		if randf() < GameState.bonus("fishing", "rare_fish") + (0.1 if GameState.has_friend_perk("finn", 8) else 0.0):
-			# Rare Catch: one step up (ceiling +40, one more fish in reach), weighted as usual.
-			var up := pool.filter(func(f: String) -> bool: return GameState.item_value(f) <= cap_v + 40)
-			if up.is_empty():
-				up = open
-			fish = up[_weighted_index(0, mini(up.size(), reach + 1), 0.8 if baited else 0.67)]
 		Music.instance(get_tree()).sfx("reel")
 		player.play_tool("reel")
 		# The fish flies out of the water to you; a boot thuds, a rare one sparkles.
@@ -4537,19 +4531,30 @@ func fish_at(c: Vector2i, pool_in: Array) -> void:
 		Collections.record_catch(fish, 1, night, GameState.weather_today() in ["rain", "storm"])  # fish log
 		if fish == "boot":
 			Music.instance(get_tree()).sfx("thud", "nope")
-		elif open.find(fish) >= maxi(3, reach - 1) or not open.has(fish):
+		elif Fishing.band(fish) >= 2 or fish == pool[pool.size() - 1]:
 			Music.instance(get_tree()).sfx("quest_done", "levelup")
 			fx("sparkle", bob_at + Vector2(0, -8), 14.0, 0.7)
-		if randf() < GameState.bonus("fishing", "chest_chance"):
-			give(["old_coin", "pearl", "map_scrap"][randi() % 3])
+		var loot := Fishing.treasure(scene_id(), area_tier)
+		if loot != "":
+			give(loot)
 		elif scene_id() == "lake" and GameState.has_quest("finn_pearl") and not GameState.quest_done("finn_pearl") and GameState.count("pearl") == 0 and randf() < 0.05:
 			give("pearl")
 			hud.toast("Something pale rolls out of the net. Finn's pearl?", Color(1, 0.9, 0.6))
-		xp("fishing", 4)
+		if fish == "legendary_koi":
+			hud.toast("The Legendary Koi! The whole lake goes still.", Color(1, 0.9, 0.5))
+		xp("fishing", Fishing.xp_for(fish))
+	elif snapped:
+		hud.toast("Hit! The line snaps.", Color(1, 0.7, 0.6))
+		Music.instance(get_tree()).sfx("fish_escape")
 	elif not player.has_meta("reel_early"):
 		hud.toast("It got away.")
 		Music.instance(get_tree()).sfx("fish_escape")
 	player.remove_meta("reel_early")
+
+
+## Tier of this map's water for Fishing (0 = the Valley; Region returns its area tier).
+func fish_tier() -> int:
+	return 0
 
 
 ## A random index in [lo, hi), each step up `ratio` times as likely as the last

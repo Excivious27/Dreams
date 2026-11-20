@@ -126,11 +126,11 @@ STORY = {
    "kits": [
      {"name": "Shelly", "wait": "Talk to Grandmother Brine first! She's the one in the coral comb, doing backflips.",
       "quest": {"id": "shells", "title": "Shell Collector", "ask": "I'm making Grandmother a shell necklace for her eight-hundred-and-thirteenth birthday. I need five seashells. The mainland beach has loads!",
-                "need": {"seashell": 5}, "thanks": "Perfect! Don't tell her. She'll know anyway. She always knows.", "reward": {"pearl": 1, "crystals": 200}},
+                "need": {"seashell": 5}, "thanks": "Perfect! Don't tell her. She'll know anyway. She always knows.", "reward": {"pearl": 1, "crystals": 60}},
       "after": ["Grandmother wore the necklace to bed. And to breakfast. And swimming.", "I'm going to be a shrine-keeper. I've already polished the crystal four times today."]},
      {"name": "Barnaby", "wait": "Grandmother Brine's the one to see. I'm busy being sad about my raft.",
       "quest": {"id": "raft", "title": "Barnaby's Raft", "ask": "My raft fell apart. Again. If you bring me six driftwood and two rope, I'll name the next one after you.",
-                "need": {"driftwood": 6, "rope": 2}, "thanks": "She floats! I've called her the Land-Walker. She's very brave and only a bit wonky.", "reward": {"starfish_snack": 3, "crystals": 250}},
+                "need": {"driftwood": 6, "rope": 2}, "thanks": "She floats! I've called her the Land-Walker. She's very brave and only a bit wonky.", "reward": {"starfish_snack": 3, "crystals": 90}},
       "after": ["The Land-Walker hasn't sunk once. Well. Once.", "I rowed all the way round the islet. Twice. My arms are noodles."]},
      {"name": "Pebble", "lines": ["Grandmother says I can swim to the buoy when I'm a hundred.", "Did you know crabs walk sideways because forwards is boring?", "I'm guarding the jetty. From what? From everything."]}],
    "secrets": [{"type": "loot", "cell": [20, 18], "item": "pearl", "n": 1, "every": 7, "empty": "Just sand and a crab, now.", "hint": "A: dig", "solid": False},
@@ -165,11 +165,11 @@ STORY = {
    "kits": [
      {"name": "Reed", "wait": "Old Tidewhisker first. He's the one juggling. He's always juggling.",
       "quest": {"id": "net", "title": "The Lost Net", "ask": "The black tide tangled our fishing net into knots. If you bring us four rope and three fish, we can make a new one and fill it the same day.",
-                "need": {"rope": 4, "#fish": 3}, "thanks": "A new net, and supper already in it! You're better than a tide.", "reward": {"kelp_wrap": 3, "crystals": 250}},
+                "need": {"rope": 4, "#fish": 3}, "thanks": "A new net, and supper already in it! You're better than a tide.", "reward": {"kelp_wrap": 3, "crystals": 150}},
       "after": ["We caught a fish this big. Okay, this big. Okay, it was a minnow.", "The new net glows a bit in the dark. We don't know why. We like it."]},
      {"name": "Minnow", "wait": "Grown-ups are with Tidewhisker. Go on. I'll wait. I'm good at waiting.",
       "quest": {"id": "lanterns", "title": "Stilt Lantern Night", "ask": "On lantern night every hut hangs a light so the shoals know we're still here. Ours all broke. Could you bring three glass and two honey? We make the candles from honey-wax.",
-                "need": {"glass": 3, "honey": 2}, "thanks": "Lanterns on every hut! The shoals will come and look. They always come and look.", "reward": {"pearl": 1, "crystals": 300}},
+                "need": {"glass": 3, "honey": 2}, "thanks": "Lanterns on every hut! The shoals will come and look. They always come and look.", "reward": {"pearl": 1, "crystals": 160}},
       "after": ["Lantern night was the best. A fish kissed my nose.", "I'm keeping one lantern lit all year. For luck."]},
      {"name": "Bubbles", "lines": ["I can hold my breath for a whole song. A short song.", "The kelp tickles if you swim through it backwards.", "Tidewhisker can do a handstand on one paw. I can do it on none."]}],
    "secrets": [{"type": "loot", "cell": [20, 18], "item": "river_pearl", "n": 1, "every": 6, "empty": "Only kelp and a cross little crab.", "hint": "A: dig", "solid": False},
@@ -205,11 +205,11 @@ STORY = {
    "kits": [
      {"name": "Flurry", "wait": "Captain's over there. She'll skate at you. Just stand still.",
       "quest": {"id": "derby", "title": "Ice Fishing Derby", "ask": "The derby's coming and I've never caught anything. Will you help me practise? Bring me four fish and I'll study them. Very closely.",
-                "need": {"#fish": 4}, "thanks": "I've studied them. I know everything about fish now. I'm going to win!", "reward": {"hot_cocoa": 2, "crystals": 250}},
+                "need": {"#fish": 4}, "thanks": "I've studied them. I know everything about fish now. I'm going to win!", "reward": {"hot_cocoa": 2, "crystals": 300}},
       "after": ["I came second in the derby! Out of two. But still!", "Fish look up at the ice like they're waiting for someone. Maybe us."]},
      {"name": "Sleet", "wait": "Talk to the captain first. Captain likes to be first.",
       "quest": {"id": "lilies", "title": "Frost Lilies for the Lodge", "ask": "Frost lilies never melt. We put them on the lodge table when someone comes home. Lots of cats came home. Could you bring two frost lilies? The ice fisher sells them, once the crystal's awake.",
-                "need": {"frost_lily": 2}, "thanks": "The table looks like home again. Thank you.", "reward": {"glass_frosted": 1, "crystals": 300}},
+                "need": {"frost_lily": 2}, "thanks": "The table looks like home again. Thank you.", "reward": {"glass_frosted": 1, "crystals": 380}},
       "after": ["The lilies are on the table. They'll be there for a hundred years.", "Grandpa came home through a crack in the ice. He says he had a lovely nap."]},
      {"name": "Snowdrop", "lines": ["My whiskers froze into a curl. I'm keeping it.", "Captain says a real sailor never feels the cold. I feel it. I'm not a real sailor yet.", "I licked the beacon. Don't lick the beacon."]}],
    "secrets": [{"type": "loot", "cell": [20, 18], "item": "frost", "n": 1, "every": 6, "empty": "Just snow now.", "hint": "A: dig", "solid": False},
@@ -245,11 +245,11 @@ STORY = {
    "kits": [
      {"name": "Cinder", "wait": "Lady Cinderpaw first. She's the one doing cartwheels. On hot sand. Show-off.",
       "quest": {"id": "vents", "title": "Cooling Stones", "ask": "My little brother's hut is right over a cracked vent. If you bring me ten stone and three coal, we can build him a proper hearth instead of a hot floor.",
-                "need": {"stone": 10, "coal": 3}, "thanks": "A real hearth! He's asleep already. On the warm bit. On purpose this time.", "reward": {"ember_glass": 1, "crystals": 300}},
+                "need": {"ember_glass": 2, "coal": 6}, "thanks": "A real hearth! He's asleep already. On the warm bit. On purpose this time.", "reward": {"ember_glass": 1, "crystals": 600}},
       "after": ["My brother cooks on his new hearth. Mostly toast. Very good toast.", "The vent sighs at night now instead of growling. I like the sigh."]},
      {"name": "Flick", "wait": "You want Lady Cinderpaw. Follow the laughing.",
       "quest": {"id": "glassbeads", "title": "Glass Beads for the Fire", "ask": "We hang glass beads round the Never-Out Fire so it can see itself and feel less lonely. Five glass and one silver bar and I'll make a whole string.",
-                "need": {"glass": 5, "silver_bar": 1}, "thanks": "Look how it shines in all of them! It's not lonely now.", "reward": {"crystal_glass": 1, "crystals": 350}},
+                "need": {"glass": 5, "silver_bar": 1}, "thanks": "Look how it shines in all of them! It's not lonely now.", "reward": {"crystal_glass": 1, "crystals": 650}},
       "after": ["The fire likes the beads. It does a little twirl.", "I'm learning glassblowing. I've made eleven puddles and one bead."]},
      {"name": "Soot", "lines": ["I'm not dirty, I'm volcanic.", "Lady Cinderpaw says the mountain is a big grumpy cat. I'd like to pet it.", "Hot sand, hot sand, hot sand, cool rock. Ahh."]}],
    "secrets": [{"type": "loot", "cell": [20, 18], "item": "glass", "n": 1, "every": 5, "empty": "Sand gone to glass, then gone to someone's pocket.", "hint": "A: dig", "solid": False},
@@ -334,12 +334,16 @@ for rid, c in COL.items():
               "gen": {"clumps": 2, "scatter": 18, "critters": ["seagull", "crab", "sparrow"], "critter_count": 8},
               "things": things, "enemies": [{"kind": k, "count": 3, "colony": True} for k in c["enemies"]], "npcs": [],
               "intro": [c["arrive"]], "colony": rid}
+    # Each island's sea fish (Fishing: sorted by value; no river commons at tier 1+).
+    FISH = {"colony_coral": ["sunfish", "bass", "puffer", "starfin"], "colony_kelp": ["catfish", "eel", "salmon", "tuna"],
+            "colony_ice": ["salmon", "tuna", "ice_pike"], "colony_ember": ["puffer", "tuna", "ember_koi"]}
     # Each island looks and feels like itself.
     LOOK = {"colony_coral": {"music": "colony_coral", "critters": ["seagull", "crab", "turtle"]},
             "colony_kelp": {"water_blobs": [{"c": [29, 50], "r": 4, "seed": 77, "shore": "sand", "fish": ["catfish", "sunfish"]}], "music": "colony_kelp", "ground": "teal_moss", "ground_seam": "teal_moss", "patch_set": "bog", "critters": ["frog", "heron", "dragonfly"], "weather": "fog"},
             "colony_ice": {"music": "colony_ice", "season": "winter", "patch_set": "snowpatch", "critters": ["seagull", "otter", "moon_rabbit"], "weather": "snow"},
             "colony_ember": {"music": "colony_ember", "ground": "dead_grass", "ground_seam": "ash", "patch_set": "sand", "critters": ["firefly", "crow", "snake"]}}
     lk = LOOK.get(rid, {})
+    R[rid]["fish"] = FISH[rid]  # C8 P4: island seas have sea fish, not river minnows
     for key in ("music", "ground", "ground_seam", "patch_set", "weather", "season", "water_blobs"):
         if key in lk:
             R[rid][key] = lk[key]

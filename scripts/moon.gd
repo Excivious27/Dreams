@@ -7,6 +7,9 @@ const PAD := Vector2i(12, 19)
 const CRATER := Rect2i(18, 6, 8, 7)
 
 
+const ROCK_DAYS := [3, 7]          # stone / shard moon rocks come back after this many days
+const MOON_SHARD_CHANCE := 0.35    # a shard rock's Moon Shard roll (moon-tier pick + Mining 7)
+
 func scene_id() -> String:
 	return "moon"
 
@@ -35,7 +38,9 @@ func build() -> void:
 			continue
 		var roll := rng.randf()
 		if roll < 0.8:
-			set_thing(c.x, c.y, {"type": "mrock", "ore": "shard" if roll < 0.2 else "stone", "hp": 3, "hint": "A: mine"})
+			# C8 P4: broken moon rocks stay broken for ROCK_DAYS (shard rocks longer).
+			if GameState.respawned("mrock_moon_%d_%d" % [c.x, c.y], ROCK_DAYS[1] if roll < 0.2 else ROCK_DAYS[0]):
+				set_thing(c.x, c.y, {"type": "mrock", "ore": "shard" if roll < 0.2 else "stone", "hp": 3, "hint": "A: mine"})
 		else:
 			var key := "forage_moon_%d_%d" % [c.x, c.y]
 			if int(GameState.run["flags"].get(key, 0)) < int(GameState.run["day"]):
@@ -194,7 +199,8 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 			hitstop = maxf(hitstop, 0.025)
 			wobble(c, 0.04)
 			fx("stone_chips", cell_center(c) + Vector2(0, -8), 16.0, 0.5)
-			thing["hp"] = int(thing["hp"]) - (1 + (GameState.tool_tier("pickaxe") + 1) / 2 + int(GameState.bonus("mining", "mine_power")))
+			GameState.toughen(thing, "pickaxe")
+			thing["hp"] = int(thing["hp"]) - Mining.swing_roll()
 			if int(thing["hp"]) <= 0:
 				hitstop = maxf(hitstop, 0.05)
 				Music.instance(get_tree()).sfx("rock_break", "crate_break")
@@ -206,8 +212,10 @@ func interact(c: Vector2i, thing: Dictionary) -> bool:
 				if props.has(c):
 					(props[c] as Sprite2D).queue_free()
 					props.erase(c)
+				GameState.run["flags"]["mrock_moon_%d_%d" % [c.x, c.y]] = maxi(1, int(GameState.run["day"]))
 				give(ore, 2)
-				if ore == "shard" and randf() < 0.35:
+				# Moon Shards need the pick and Mining their tier asks for (ORE_TIER/ORE_SKILL).
+				if ore == "shard" and randf() < MOON_SHARD_CHANCE and GameState.ore_block("moon_shard") == "":
 					give("moon_shard", 1)
 				xp("mining", 4)
 			return true

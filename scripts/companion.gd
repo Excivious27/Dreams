@@ -204,7 +204,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 		return
 	if ab in ["haul", "tail"]:
 		# Passive helpers: the button only reminds you (no XP, no heal, no cooldown).
-		m.hud.toast("Dad: 'Just point at the tree.' (Trees fall in one swing while he's with you.)" if ab == "haul" else "Mer: 'The water's right there.'", Color(0.9, 0.95, 1.0))
+		m.hud.toast("Dad: 'Just point at the tree.' (Trees fall twice as fast and give 2 more wood while he's with you.)" if ab == "haul" else "Mer: 'The water's right there.'", Color(0.9, 0.95, 1.0))
 		return
 	if not ab.begins_with("gift:") and ab != "fence":
 		var left := cooldown_left(ab)
@@ -292,7 +292,7 @@ static func use_ability(m: GameMap, p: Player) -> void:
 				p._apply("powerup", false, true)
 			m.hud.toast("Power Pose! +5 mana, grumps stunned.", Color(0.85, 0.9, 1.0))
 		"haul":
-			m.hud.toast("Dad: 'Just point at the tree.' (Trees fall in one swing while he's with you.)", Color(0.9, 0.9, 0.9))
+			m.hud.toast("Dad: 'Just point at the tree.' (Trees fall twice as fast and give 2 more wood while he's with you.)", Color(0.9, 0.9, 0.9))
 		"scout":
 			var n := 0
 			var pc := p.cell()
