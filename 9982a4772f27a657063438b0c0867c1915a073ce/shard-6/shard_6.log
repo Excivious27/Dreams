@@ -1,0 +1,133 @@
+
+#### step 1: import (shard 6/6)
+== import ==
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_drum.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_gang.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whinny.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | symbols.ttf[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_144.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_180.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_512.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_192.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_512.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 71.7s
+
+#### step 7: themed battlefields (points open and reachable, themes, grump/kin/pylo (shard 6/6)
+== themed battlefields (points open and reachable, themes, grump/kin/pylon art) ==
+bf_themes_test: 19 fields, 0 failures
+#### step 7 themed battlefields (points open and reachable, themes, grump/kin/pylo: PASS in 7.0s
+
+#### step 13: first hours on the maps: goal line, arrow, mailbox, tour (both arcs) (shard 6/6)
+== first hours on the maps: goal line, arrow, mailbox, tour (both arcs) ==
+first_hours_test: 0 failures
+#### step 13 first hours on the maps: goal line, arrow, mailbox, tour (both arcs): PASS in 42.5s
+
+#### step 19: dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) (shard 6/6)
+== dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1) ==
+ROMANCE DONE, failures: 0
+#### step 19 dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1): PASS in 4.0s
+
+#### step 25: decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2) (shard 6/6)
+== decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2) ==
+decor_mode_test: OK (0 fails)
+#### step 25 decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2): PASS in 4.7s
+
+#### step 31: rec_audio_test (shard 6/6)
+rec_audio_test: 0 failures
+#### step 31 rec_audio_test: PASS in 2.6s
+
+#### step 37: farm_look_test (shard 6/6)
+farm_look_test: PASS (0 fails)
+#### step 37 farm_look_test: PASS in 4.1s
+
+#### step 43: move_target_test (shard 6/6)
+move_target_test: 0 failures
+#### step 43 move_target_test: PASS in 15.3s
+
+#### step 49: cf_layout_test (shard 6/6)
+cf_layout_test: 0 failures
+#### step 49 cf_layout_test: PASS in 8.7s
+
+#### step 55: music loop seams (join click + level jump) (shard 6/6)
+== music loop seams (join click + level jump) ==
+music_loop_check: 0 bad of 101
+#### step 55 music loop seams (join click + level jump): PASS in 8.8s
+
+#### step 61: economy: no money loops, crops and brews inside their bands (shard 6/6)
+== economy: no money loops, crops and brews inside their bands ==
+econ check: 134 crops, 394 recipes, 2 warnings, 0 failures
+#### step 61 economy: no money loops, crops and brews inside their bands: PASS in 0.1s
+
+#### step 67: footstep_test (shard 6/6)
+footstep_test: 0 failures
+#### step 67 footstep_test: PASS in 6.0s
+
+#### step 73: keeper encounters keep real hp (floor-1 swarms topped up) (shard 6/6)
+== keeper encounters keep real hp (floor-1 swarms topped up) ==
+keeper_min_hp_test: 0 failures
+#### step 73 keeper encounters keep real hp (floor-1 swarms topped up): PASS in 3.7s
+
+#### step 79: region campaigns: boards, locks, convoy (shard 6/6)
+== region campaigns: boards, locks, convoy ==
+campaign_map_test: 0 fails
+#### step 79 region campaigns: boards, locks, convoy: PASS in 7.5s
+
+#### step 85: farm_debris_test (shard 6/6)
+farm_debris_test: 0 fails
+#### step 85 farm_debris_test: PASS in 4.5s
+
+#### step 91: skill_glow_test (shard 6/6)
+skill_glow_test: 0 fails
+#### step 91 skill_glow_test: PASS in 4.0s
+
+#### step 97: gangster first hours: intro, day 2, meadow, Hideout, first crew (shard 6/6)
+== gangster first hours: intro, day 2, meadow, Hideout, first crew ==
+gang_start_test: 0 failures
+#### step 97 gangster first hours: intro, day 2, meadow, Hideout, first crew: PASS in 11.5s
+
+#### step 103: hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) (shard 6/6)
+== hidden areas: a pocket and a secret way in every mega area (CONDUCT 4) ==
+hidden_area_test: PASS (0 fails)
+#### step 103 hidden areas: a pocket and a secret way in every mega area (CONDUCT 4): PASS in 9.9s
+
+#### step 109: jumper_test (shard 6/6)
+jumper_test: 0 failures
+#### step 109 jumper_test: PASS in 2.8s
+
+#### step 115: toasts: never over a boss card, a region card, the pup strip or the en (shard 6/6)
+== toasts: never over a boss card, a region card, the pup strip or the energy bar ==
+toast_layout_test: 0 failures
+#### step 115 toasts: never over a boss card, a region card, the pup strip or the en: PASS in 7.6s
+
+#### step 121: C8 P3: collections (museum, logs, Book tab) (shard 6/6)
+== C8 P3: collections (museum, logs, Book tab) ==
+collections_test: 0 failures
+#### step 121 C8 P3: collections (museum, logs, Book tab): PASS in 3.7s
+
+#### step 127: C9 P4: haptics (shard 6/6)
+== C9 P4: haptics ==
+HAPTICS DONE, failures: 0
+#### step 127 C9 P4: haptics: PASS in 2.5s
+
+#### shard 6/6 done in 233s: PASS

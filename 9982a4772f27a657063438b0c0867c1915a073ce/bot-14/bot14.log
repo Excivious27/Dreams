@@ -1,0 +1,10 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 14 start arc=gangsters hero=rafe style=farmer progress=0 difficulty=1 day_len=20
+ERROR: Error calling deferred method: 'GDScript::apply_anim': Cannot convert argument 1 from Object to Object.
+   at: _call_function (core/object/message_queue.cpp:222)
+ERROR: Error calling deferred method: 'GDScript::apply_anim': Cannot convert argument 1 from Object to Object.
+   at: _call_function (core/object/message_queue.cpp:222)
+ERROR: Error calling deferred method: 'GDScript::apply_anim': Cannot convert argument 1 from Object to Object.
+   at: _call_function (core/object/message_queue.cpp:222)
+BOT 14 done: 0 fails, 0 warns, 420 steps, 0 kills, 0 ownerless pauses, scenes ["town", "farm", "hollow_heart"], day 4, ◆80

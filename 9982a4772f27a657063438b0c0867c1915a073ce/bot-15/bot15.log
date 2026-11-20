@@ -1,0 +1,8 @@
+Godot Engine v4.5.1.stable.official.f62fdbde1 - https://godotengine.org
+
+BOT 15 start arc=gangsters hero=nia style=menus progress=3 difficulty=2 day_len=15
+BOT 15 done: 0 fails, 0 warns, 332 steps, 0 kills, 0 ownerless pauses, scenes ["uptown", "quarry", "marsh", "gloam_crystal_thicket", "orchard_hills", "riverlands", "ruins"], day 4, ◆2195
+WARNING: 136 RIDs of type "CanvasItem" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2678)
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2514)

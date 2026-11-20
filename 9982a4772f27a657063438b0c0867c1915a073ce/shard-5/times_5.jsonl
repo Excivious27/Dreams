@@ -1,0 +1,23 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 67.3}
+{"step": 6, "name": "exits line up (top edge leads to the next map's bottom edge...)", "rc": 0, "secs": 25.5}
+{"step": 12, "name": "C8 month curve: 30 days, both arcs (energy still binds, purse grows)", "rc": 0, "secs": 4.5}
+{"step": 18, "name": "mine arrival: no black cover (c5_16)", "rc": 0, "secs": 2.9}
+{"step": 24, "name": "decor catalogue: box, uniques, rolls, rotation, prices, migration (C10", "rc": 0, "secs": 5.4}
+{"step": 30, "name": "rec_reno_test", "rc": 0, "secs": 2.4}
+{"step": 36, "name": "farm_week_test", "rc": 0, "secs": 5.1}
+{"step": 42, "name": "npc_anim_test", "rc": 0, "secs": 2.4}
+{"step": 48, "name": "gang_flavour_test", "rc": 0, "secs": 2.5}
+{"step": 54, "name": "every sound the game asks for exists", "rc": 0, "secs": 3.0}
+{"step": 60, "name": "C10b decor art: outdoor pieces, seams, names", "rc": 0, "secs": 0.2}
+{"step": 66, "name": "ambience_test", "rc": 0, "secs": 4.8}
+{"step": 72, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 3.8}
+{"step": 78, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 6.9}
+{"step": 84, "name": "c6_cue_test", "rc": 0, "secs": 2.3}
+{"step": 90, "name": "meow_gate_test", "rc": 0, "secs": 3.2}
+{"step": 96, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 5.2}
+{"step": 102, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 17.4}
+{"step": 108, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.7}
+{"step": 114, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.8}
+{"step": 120, "name": "C7 P4: heart scene content", "rc": 0, "secs": 2.7}
+{"step": 126, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.4}
+{"step": 132, "name": "C10b P4: casino", "rc": 0, "secs": 2.6}

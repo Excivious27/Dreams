@@ -1,0 +1,156 @@
+
+#### step 1: import (shard 3/6)
+== import ==
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | unsheathe_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_drum.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | war_horn_gang.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | water_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whimper_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whinny.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | whistle_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | yawn_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_2.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | zap_3.ogg[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | symbols.ttf[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_144.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_180.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_512.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_192.png[39m[0m
+[  99% ] [90m[1m_update_scan_actions[22m | icon_maskable_512.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 44.4s
+
+#### step 4: building doors (shard 3/6)
+== building doors ==
+door_check: 0 failures (127 buildings answer)
+#### step 4 building doors: PASS in 11.8s
+
+#### step 10: first week pacing, faint/clinic/sleep (shard 3/6)
+== first week pacing, faint/clinic/sleep ==
+first_week_test: 0 failures
+#### step 10 first week pacing, faint/clinic/sleep: PASS in 2.7s
+
+#### step 16: touch_ui_test (shard 3/6)
+touch_ui_test: 0 failures
+#### step 16 touch_ui_test: PASS in 36.4s
+
+#### step 22: Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a (shard 3/6)
+== Tom C6 phone playtest: pace, watering can, held name, pup menu, drag and drop, organise ==
+   tier 0: rock 3, log 4, tree 7, farm tree 9
+   tier 1: rock 2, log 3, tree 5, farm tree 7
+   tier 2: rock 2, log 2, tree 4, farm tree 5
+   tier 3: rock 1, log 2, tree 3, farm tree 4
+   tier 4: rock 1, log 1, tree 2, farm tree 3
+tom_playtest_c6_test: OK (0 fails)
+#### step 22 Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a: PASS in 3.9s
+
+#### step 28: ticket_econ_test (shard 3/6)
+ticket_econ_test: 0 failures
+#### step 28 ticket_econ_test: PASS in 2.1s
+
+#### step 34: gang_play_test (shard 3/6)
+gang_play_test: 0 failures
+difficulty_test: 99 checks, 0 failures
+day_length_test: 28 checks, 0 failures
+#### step 34 gang_play_test: PASS in 14.9s
+
+#### step 40: crop_test (shard 3/6)
+crop_test: 0 failures
+#### step 40 crop_test: PASS in 23.7s
+
+#### step 46: decor_sources_test (shard 3/6)
+decor_sources_test: 0 failures
+#### step 46 decor_sources_test: PASS in 2.3s
+
+#### step 52: workshop: no dead ends (shard 3/6)
+== workshop: no dead ends ==
+station_check: 0 failures
+#### step 52 workshop: no dead ends: PASS in 5.2s
+
+#### step 58: all ages: alcohol is a trade good, never drunk (shard 3/6)
+== all ages: alcohol is a trade good, never drunk ==
+drink rule: 12 alcoholic items checked
+ok
+#### step 58 all ages: alcohol is a trade good, never drunk: PASS in 0.0s
+
+#### step 64: danger_music_test (shard 3/6)
+danger_music_test: 0 failures
+#### step 64 danger_music_test: PASS in 19.5s
+
+#### step 70: allies: enemies fight back, pup commands (shard 3/6)
+== allies: enemies fight back, pup commands ==
+ally_test: 0 failures
+#### step 70 allies: enemies fight back, pup commands: PASS in 3.2s
+
+#### step 76: every script compiles (shard 3/6)
+== every script compiles ==
+compile_all: 0 bad
+#### step 76 every script compiles: PASS in 2.9s
+
+#### step 82: quest_tracker_test (shard 3/6)
+quest_tracker_test: 0 fails
+#### step 82 quest_tracker_test: PASS in 3.3s
+
+#### step 88: campaign_words_test (shard 3/6)
+campaign_words_test: 0 fails
+#### step 88 campaign_words_test: PASS in 2.3s
+
+#### step 94: saves: first run, slots, opening Skip, reopen at early milestones, old (shard 3/6)
+== saves: first run, slots, opening Skip, reopen at early milestones, old save -> Round 13 ==
+       [6] reboot (res://tools/save_test.gd:35)
+       [7] _corrupt_file (res://tools/save_test.gd:348)
+       [8] _run (res://tools/save_test.gd:148)
+       [9] _milestones (res://tools/save_test.gd:322)
+       [10] frames (res://tools/save_test.gd:28)
+         [5] reboot (res://tools/save_test.gd:35)
+         [6] _corrupt_file (res://tools/save_test.gd:348)
+         [7] _run (res://tools/save_test.gd:148)
+         [8] _milestones (res://tools/save_test.gd:322)
+         [9] frames (res://tools/save_test.gd:28)
+save_test: 152 checks, 0 failures
+#### step 94 saves: first run, slots, opening Skip, reopen at early milestones, old: PASS in 18.1s
+
+#### step 100: mega regions: map tabs, unlocks, travel (shard 3/6)
+== mega regions: map tabs, unlocks, travel ==
+mega_region_test: 0 failures
+#### step 100 mega regions: map tabs, unlocks, travel: PASS in 7.9s
+
+#### step 106: menu sweep: every menu button, both arcs (C2) (shard 3/6)
+== menu sweep: every menu button, both arcs (C2) ==
+menu_sweep_test: 165 buttons pressed, 0 failures
+#### step 106 menu sweep: every menu button, both arcs (C2): PASS in 19.3s
+
+#### step 112: rec_games_test (shard 3/6)
+rec_games_test: 0 failures
+#### step 112 rec_games_test: PASS in 2.5s
+
+#### step 118: C7 P5: colony stories and crew (shard 3/6)
+== C7 P5: colony stories and crew ==
+c7_colony_crew_test: PASS (0 fails)
+#### step 118 C7 P5: colony stories and crew: PASS in 4.3s
+
+#### step 124: C9 P2: game menu with keys/pad (shard 3/6)
+== C9 P2: game menu with keys/pad ==
+menu_pad_test: 0 failures
+#### step 124 C9 P2: game menu with keys/pad: PASS in 3.5s
+
+#### step 130: C9 P6: generated data in sync (shard 3/6)
+== C9 P6: generated data in sync ==
+regen_data: ok (18 generators)
+data_sync_check: 0 failures
+#### step 130 C9 P6: generated data in sync: PASS in 21.2s
+
+#### shard 3/6 done in 256s: PASS

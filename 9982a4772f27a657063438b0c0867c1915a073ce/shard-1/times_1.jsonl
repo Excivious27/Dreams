@@ -1,0 +1,23 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 68.2}
+{"step": 2, "name": "smoke test", "rc": 0, "secs": 55.6}
+{"step": 8, "name": "no invisible walls (rocket pad, moon)", "rc": 0, "secs": 3.9}
+{"step": 14, "name": "crops wired in", "rc": 0, "secs": 6.6}
+{"step": 20, "name": "night lighting: windows, festival fires, underground, mines (c5_10)", "rc": 0, "secs": 4.4}
+{"step": 26, "name": "held-tool rules: right tool acts, wrong tool hints", "rc": 0, "secs": 24.3}
+{"step": 32, "name": "bowling_test", "rc": 0, "secs": 17.6}
+{"step": 38, "name": "make_house_parts", "rc": 0, "secs": 0.5}
+{"step": 44, "name": "commons_test", "rc": 0, "secs": 40.8}
+{"step": 50, "name": "early_gating_test", "rc": 0, "secs": 4.1}
+{"step": 56, "name": "music: loop points are applied (data/music_loops.json)", "rc": 0, "secs": 3.1}
+{"step": 62, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 38.2}
+{"step": 68, "name": "workshop: stations at run time", "rc": 0, "secs": 4.5}
+{"step": 74, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 9.2}
+{"step": 80, "name": "campaign_story_test", "rc": 0, "secs": 3.1}
+{"step": 86, "name": "campaign_gate_test", "rc": 0, "secs": 6.6}
+{"step": 92, "name": "move_speed_test", "rc": 0, "secs": 4.5}
+{"step": 98, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 7.0}
+{"step": 104, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.9}
+{"step": 110, "name": "arcade_test", "rc": 0, "secs": 3.5}
+{"step": 116, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.9}
+{"step": 122, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 11.5}
+{"step": 128, "name": "C9 P5: save codes and files", "rc": 0, "secs": 3.0}
