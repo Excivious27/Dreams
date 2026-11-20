@@ -134808,6 +134808,51 @@
    "h": 43,
    "w": 48
   },
+  "node_ranching_rancher": {
+   "file": "ui/node_ranching_rancher.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_0": {
+   "file": "ui/node_ranching_ranching_0_0.png",
+   "h": 48,
+   "w": 42
+  },
+  "node_ranching_ranching_0_1": {
+   "file": "ui/node_ranching_ranching_0_1.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_2": {
+   "file": "ui/node_ranching_ranching_0_2.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_3": {
+   "file": "ui/node_ranching_ranching_0_3.png",
+   "h": 48,
+   "w": 42
+  },
+  "node_ranching_ranching_0_6": {
+   "file": "ui/node_ranching_ranching_0_6.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_7": {
+   "file": "ui/node_ranching_ranching_0_7.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_8": {
+   "file": "ui/node_ranching_ranching_0_8.png",
+   "h": 48,
+   "w": 43
+  },
+  "node_ranching_ranching_0_9": {
+   "file": "ui/node_ranching_ranching_0_9.png",
+   "h": 48,
+   "w": 43
+  },
   "node_star": {
    "file": "ui/node_star.png",
    "h": 24,

@@ -8,7 +8,7 @@
    "branches": {
     "0": "Crops",
     "1": "Soil & Water",
-    "2": "Animals",
+    "2": "Harvest Craft",
     "3": "Seeds & Gold"
    },
    "nodes": [
@@ -60,12 +60,12 @@
     {
      "id": "farming_0_4",
      "name": "Full Rows",
-     "desc": "+6% animal products (per rank)",
+     "desc": "+3% chance of a double harvest (per rank)",
      "ranks": 3,
      "tier": 4,
      "row": 0,
      "effect": {
-      "animal_yield": 0.06
+      "double_harvest": 0.03
      }
     },
     {
@@ -160,13 +160,13 @@
     },
     {
      "id": "farming_1_3",
-     "name": "Morning Dew",
-     "desc": "+6% animal products (per rank)",
+     "name": "Practice",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 1,
      "effect": {
-      "animal_yield": 0.06
+      "xp_gain": 0.03
      }
     },
     {
@@ -216,36 +216,39 @@
     },
     {
      "id": "farming_1_8",
-     "name": "Rain Reader",
-     "desc": "+6% animal products (per rank)",
+     "name": "Study",
+     "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 2,
      "tier": 8,
      "row": 1,
      "effect": {
-      "animal_yield": 0.06
+      "xp_gain": 0.03
      }
     },
     {
      "id": "farming_1_9",
      "name": "Loam Lore",
-     "desc": "+12% animal products",
+     "desc": "+4% chance a crop grows an extra day overnight",
      "ranks": 1,
      "tier": 9,
      "row": 1,
      "effect": {
-      "animal_yield": 0.12
+      "extra_day": 0.04
      }
     },
     {
      "id": "farming_2_0",
-     "name": "Practice",
+     "name": "Lessons",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 0,
      "row": 2,
      "effect": {
       "xp_gain": 0.03
-     }
+     },
+     "aka": [
+      "Practice"
+     ]
     },
     {
      "id": "farming_u_press_blueprint",
@@ -272,31 +275,34 @@
     },
     {
      "id": "farming_2_3",
-     "name": "Study",
+     "name": "Know-How",
      "desc": "+3% faster levelling in this skill (per rank)",
      "ranks": 3,
      "tier": 3,
      "row": 2,
      "effect": {
       "xp_gain": 0.03
+     },
+     "aka": [
+      "Study"
+     ]
+    },
+    {
+     "id": "farming_2_4",
+     "name": "Experience",
+     "desc": "+3% faster levelling in this skill (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 2,
+     "effect": {
+      "xp_gain": 0.03
      }
     },
     {
-     "id": "rancher",
-     "name": "Rancher",
-     "desc": "Animals give 20% more produce (per rank)",
-     "ranks": 2,
-     "tier": 4,
-     "effect": {
-      "animal_yield": 0.2
-     },
-     "row": 2
-    },
-    {
      "id": "farming_2_5",
-     "name": "Lessons",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 3,
+     "name": "Insight",
+     "desc": "+3% faster levelling in this skill",
+     "ranks": 1,
      "tier": 5,
      "row": 2,
      "effect": {
@@ -305,50 +311,46 @@
     },
     {
      "id": "farming_2_6",
-     "name": "Know-How",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
+     "name": "Drills",
+     "desc": "+3% faster levelling in this skill",
+     "ranks": 1,
      "tier": 6,
      "row": 2,
      "effect": {
       "xp_gain": 0.03
-     },
-     "aka": [
-      "Happy Herd",
-      "Study"
-     ]
+     }
     },
     {
      "id": "farming_2_7",
-     "name": "Experience",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
+     "name": "Homework",
+     "desc": "+2% faster levelling in this skill",
+     "ranks": 1,
      "tier": 7,
      "row": 2,
      "effect": {
-      "xp_gain": 0.03
+      "xp_gain": 0.02
      }
     },
     {
      "id": "farming_2_8",
-     "name": "Insight",
-     "desc": "+3% faster levelling in this skill (per rank)",
-     "ranks": 2,
+     "name": "Field Ledger",
+     "desc": "+1% faster crop growth",
+     "ranks": 1,
      "tier": 8,
      "row": 2,
      "effect": {
-      "xp_gain": 0.03
+      "growth": 0.01
      }
     },
     {
      "id": "farming_2_9",
-     "name": "Stamina",
-     "desc": "+3 max energy",
+     "name": "Ripe Eye",
+     "desc": "+1% crop sell value",
      "ranks": 1,
      "tier": 9,
      "row": 2,
      "effect": {
-      "energy": 3
+      "crop_value": 0.01
      }
     },
     {
@@ -4212,6 +4214,466 @@
      "row": 3,
      "effect": {
       "hp": 3
+     }
+    }
+   ]
+  },
+  "ranching": {
+   "name": "Ranching",
+   "desc": "Your coop, barn, hutch, sty and hives: animal goods and their quality, babies, daily care, feeding, animal friendship and trained farm hands. Levels up whenever you care for animals.",
+   "branches": {
+    "0": "Produce",
+    "1": "Quality & Care",
+    "2": "Breeding",
+    "3": "Friends & Helpers"
+   },
+   "nodes": [
+    {
+     "id": "ranching_0_0",
+     "name": "Gentle Hands",
+     "desc": "+6% animal products (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 0,
+     "effect": {
+      "animal_yield": 0.06
+     }
+    },
+    {
+     "id": "ranching_0_1",
+     "name": "Warm Barn",
+     "desc": "+2% chance an animal gives a second good (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 0,
+     "effect": {
+      "ani_double": 0.02
+     }
+    },
+    {
+     "id": "ranching_0_2",
+     "name": "Fresh Straw",
+     "desc": "+6% animal products (per rank)",
+     "ranks": 3,
+     "tier": 2,
+     "row": 0,
+     "effect": {
+      "animal_yield": 0.06
+     }
+    },
+    {
+     "id": "ranching_0_3",
+     "name": "Happy Herd",
+     "desc": "+2% chance an animal gives a second good (per rank)",
+     "ranks": 3,
+     "tier": 3,
+     "row": 0,
+     "effect": {
+      "ani_double": 0.02
+     }
+    },
+    {
+     "id": "rancher",
+     "name": "Rancher",
+     "desc": "Animals give 20% more produce (per rank)",
+     "ranks": 2,
+     "tier": 4,
+     "effect": {
+      "animal_yield": 0.2
+     },
+     "row": 0
+    },
+    {
+     "id": "ranching_u_feeder_hookup",
+     "name": "Feeder Hookup",
+     "desc": "Every coop and barn eats silo hay by itself each morning, from the first tier.",
+     "ranks": 1,
+     "tier": 5,
+     "row": 0,
+     "effect": {
+      "feeder": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_0_6",
+     "name": "Brushed Coats",
+     "desc": "+6% animal products (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "row": 0,
+     "effect": {
+      "animal_yield": 0.06
+     }
+    },
+    {
+     "id": "ranching_0_7",
+     "name": "Best in Show",
+     "desc": "+2% chance an animal gives a second good (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 0,
+     "effect": {
+      "ani_double": 0.02
+     }
+    },
+    {
+     "id": "ranching_0_8",
+     "name": "Big Eggs",
+     "desc": "+6% animal products (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 0,
+     "effect": {
+      "animal_yield": 0.06
+     }
+    },
+    {
+     "id": "ranching_0_9",
+     "name": "Full Pails",
+     "desc": "+4% chance an animal gives a second good",
+     "ranks": 1,
+     "tier": 9,
+     "row": 0,
+     "effect": {
+      "ani_double": 0.04
+     }
+    },
+    {
+     "id": "ranching_1_0",
+     "name": "Soft Brush",
+     "desc": "+3% animal goods sell value (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 1,
+     "effect": {
+      "ranch_value": 0.03
+     }
+    },
+    {
+     "id": "ranching_1_1",
+     "name": "Clean Stalls",
+     "desc": "+12% of a day sooner to silver and gold animal goods (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 1,
+     "effect": {
+      "ani_quality": 0.12
+     }
+    },
+    {
+     "id": "ranching_u_hutch_blueprint",
+     "name": "Hutch Blueprint",
+     "desc": "Learn to build the Rabbit Hutch.",
+     "ranks": 1,
+     "tier": 2,
+     "row": 1,
+     "effect": {
+      "blueprint": "hutch"
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_1_3",
+     "name": "Shiny Coats",
+     "desc": "+12% of a day sooner to silver and gold animal goods (per rank)",
+     "ranks": 3,
+     "tier": 3,
+     "row": 1,
+     "effect": {
+      "ani_quality": 0.12
+     }
+    },
+    {
+     "id": "ranching_1_4",
+     "name": "Proud Hens",
+     "desc": "+3% animal goods sell value (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 1,
+     "effect": {
+      "ranch_value": 0.03
+     }
+    },
+    {
+     "id": "ranching_1_5",
+     "name": "Blue Ribbon",
+     "desc": "+12% of a day sooner to silver and gold animal goods (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 1,
+     "effect": {
+      "ani_quality": 0.12
+     }
+    },
+    {
+     "id": "ranching_u_steady_routine",
+     "name": "Steady Routine",
+     "desc": "One missed day of care no longer breaks an animal's friendship streak.",
+     "ranks": 1,
+     "tier": 6,
+     "row": 1,
+     "effect": {
+      "care_grace": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_1_7",
+     "name": "Fine Fleece",
+     "desc": "+12% of a day sooner to silver and gold animal goods (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 1,
+     "effect": {
+      "ani_quality": 0.12
+     }
+    },
+    {
+     "id": "ranching_1_8",
+     "name": "Cream Top",
+     "desc": "+3% animal goods sell value (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 1,
+     "effect": {
+      "ranch_value": 0.03
+     }
+    },
+    {
+     "id": "ranching_u_golden_touch",
+     "name": "Golden Touch",
+     "desc": "Animal goods reach gold quality a whole day sooner.",
+     "ranks": 1,
+     "tier": 9,
+     "row": 1,
+     "effect": {
+      "ani_quality": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_2_0",
+     "name": "Nest Box",
+     "desc": "+12% of a day sooner for babies to grow up (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 2,
+     "effect": {
+      "grow_fast": 0.12
+     }
+    },
+    {
+     "id": "ranching_2_1",
+     "name": "Warm Lamp",
+     "desc": "+3% chance two animals have a baby overnight (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 2,
+     "effect": {
+      "breed_chance": 0.03
+     }
+    },
+    {
+     "id": "ranching_2_2",
+     "name": "Little Ones",
+     "desc": "+12% of a day sooner for babies to grow up (per rank)",
+     "ranks": 3,
+     "tier": 2,
+     "row": 2,
+     "effect": {
+      "grow_fast": 0.12
+     }
+    },
+    {
+     "id": "ranching_u_sty_blueprint",
+     "name": "Sty Blueprint",
+     "desc": "Learn to build the Pig Sty: pigs dig truffles.",
+     "ranks": 1,
+     "tier": 3,
+     "row": 2,
+     "effect": {
+      "blueprint": "sty"
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_2_4",
+     "name": "Spring Lambs",
+     "desc": "+12% of a day sooner for babies to grow up (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 2,
+     "effect": {
+      "grow_fast": 0.12
+     }
+    },
+    {
+     "id": "ranching_2_5",
+     "name": "Quick Chicks",
+     "desc": "+3% chance two animals have a baby overnight (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 2,
+     "effect": {
+      "breed_chance": 0.03
+     }
+    },
+    {
+     "id": "ranching_2_6",
+     "name": "Growing Up",
+     "desc": "+12% of a day sooner for babies to grow up (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "row": 2,
+     "effect": {
+      "grow_fast": 0.12
+     }
+    },
+    {
+     "id": "ranching_u_warm_incubator",
+     "name": "Warm Incubator",
+     "desc": "Eggs hatch a day sooner.",
+     "ranks": 1,
+     "tier": 7,
+     "row": 2,
+     "effect": {
+      "hatch_fast": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_2_8",
+     "name": "Strong Kids",
+     "desc": "+12% of a day sooner for babies to grow up (per rank)",
+     "ranks": 2,
+     "tier": 8,
+     "row": 2,
+     "effect": {
+      "grow_fast": 0.12
+     }
+    },
+    {
+     "id": "ranching_2_9",
+     "name": "Proud Parents",
+     "desc": "+6% chance two animals have a baby overnight",
+     "ranks": 1,
+     "tier": 9,
+     "row": 2,
+     "effect": {
+      "breed_chance": 0.06
+     }
+    },
+    {
+     "id": "ranching_3_0",
+     "name": "Kind Voice",
+     "desc": "+4% more chores a farm hand does each night (per rank)",
+     "ranks": 3,
+     "tier": 0,
+     "row": 3,
+     "effect": {
+      "hand_work": 0.04
+     }
+    },
+    {
+     "id": "ranching_3_1",
+     "name": "Known Face",
+     "desc": "+3% chance petting counts double toward friendship (per rank)",
+     "ranks": 3,
+     "tier": 1,
+     "row": 3,
+     "effect": {
+      "ani_friend": 0.03
+     }
+    },
+    {
+     "id": "ranching_u_farm_hand",
+     "name": "Farm Hand",
+     "desc": "A trained farm hand can take one ranch chore each night (feed, pet or collect).",
+     "ranks": 1,
+     "tier": 2,
+     "row": 3,
+     "effect": {
+      "hand_slot": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_3_3",
+     "name": "Treat Pocket",
+     "desc": "+3% chance petting counts double toward friendship (per rank)",
+     "ranks": 3,
+     "tier": 3,
+     "row": 3,
+     "effect": {
+      "ani_friend": 0.03
+     }
+    },
+    {
+     "id": "ranching_3_4",
+     "name": "Follow Me",
+     "desc": "+4% more chores a farm hand does each night (per rank)",
+     "ranks": 3,
+     "tier": 4,
+     "row": 3,
+     "effect": {
+      "hand_work": 0.04
+     }
+    },
+    {
+     "id": "ranching_3_5",
+     "name": "Trusted",
+     "desc": "+3% chance petting counts double toward friendship (per rank)",
+     "ranks": 3,
+     "tier": 5,
+     "row": 3,
+     "effect": {
+      "ani_friend": 0.03
+     }
+    },
+    {
+     "id": "ranching_3_6",
+     "name": "Barn Buddy",
+     "desc": "+4% more chores a farm hand does each night (per rank)",
+     "ranks": 2,
+     "tier": 6,
+     "row": 3,
+     "effect": {
+      "hand_work": 0.04
+     }
+    },
+    {
+     "id": "ranching_3_7",
+     "name": "Best Pals",
+     "desc": "+3% animal goods sell value (per rank)",
+     "ranks": 2,
+     "tier": 7,
+     "row": 3,
+     "effect": {
+      "ranch_value": 0.03
+     }
+    },
+    {
+     "id": "ranching_u_second_farm_hand",
+     "name": "Second Farm Hand",
+     "desc": "One more farm hand slot for ranch chores.",
+     "ranks": 1,
+     "tier": 8,
+     "row": 3,
+     "effect": {
+      "hand_slot": 1
+     },
+     "unlock": true
+    },
+    {
+     "id": "ranching_3_9",
+     "name": "Whistle Call",
+     "desc": "+8% more chores a farm hand does each night",
+     "ranks": 1,
+     "tier": 9,
+     "row": 3,
+     "effect": {
+      "hand_work": 0.08
      }
     }
    ]

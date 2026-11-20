@@ -1310,7 +1310,7 @@ static func _effects(body: Control) -> void:
 		t.autowrap_mode = TextServer.AUTOWRAP_OFF
 
 
-const SKILL_ICON := {"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter"}
+const SKILL_ICON := {"farming": "hoe", "mining": "pickaxe", "foraging": "axe", "fishing": "rod", "combat": "sword", "magic": "crystal", "pup": "bone", "bartering": "gold", "building": "hammer", "leadership": "paw_charm", "strategist": "map", "harmony": "big_crystal", "hustle": "six_shooter", "ranching": "egg"}
 
 
 static func _skills(body: Control) -> void:
