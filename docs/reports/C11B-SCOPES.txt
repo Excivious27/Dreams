@@ -1,0 +1,21 @@
+01 EXOTICS BUILD PLAN: ostrich (ostrich eggs), Komodo dragon, alpaca/emu-style extras; data rows in tools/gen_ranch.py (C11a) and runtime needs in scripts/ranch.gd; buy/import/quest sources, buildings (big barn/enclosure), care differences, products; both arcs; per-file plan.
+02 Fantastic creatures (penguin arc): moon/space creatures, Merkitty Islands creatures, mega-region creatures (Gloamwood, Frostpeak, Windward...); where each is earned (quests, campaigns, colonies, mega bosses), habitat needs, products, art needs.
+03 Gangster arc lab strains (all ages): genetically modified / cyber creatures from the Robotics Bench/Chrome Clinic chain (chrome hen, glow sheep, circuit eggs...), unlock path, words (no blood/meat), products, art needs.
+04 Quest-earned animals: every quest/heart perk/side story/festival that should give an animal; delivery (letter + the animal appears), uniqueness, naming; data generators to hook.
+05 Ranch building tiers v2: enclosures, aviary, terrarium, big barn tier 4, ranch hand hut, auto-feeders/heaters/incubators per tier; Builds/Plans board; farm space (pasture expansion area); art needs.
+06 HELPER AUTOMATION (full): assign pup/crew/team animals/helpers to farm (water, harvest, feed, pet), combat (guard farm, follow), forage (gather regions), chests (deposit to assigned placed chests); energy, work amounts, levels per skill; UI to assign and see results; save format; build on C11a's helpers base.
+07 TEAM/ALLY/CREW/PUP REVIEW A (Tom 22:33): pup commands (heel/attack/stay/guard/call), pup menu (pack only when owned), digging, sniffing, swimming, following through exits/interiors/regions, pup in mines/battles; every command works and reads clearly; list every bug.
+08 TEAM/ALLY/CREW/PUP REVIEW B: companions/partners (Nova etc.), crew members (gangster), the Marked, team animals: follow/guard/fight, abilities, team menu, battle team (TEAM_MAX), recruit/dismiss flows, co-op; seamless and intuitive; list every bug.
+09 Trainable team animals (finish): training path tiers, abilities per species, combat stats vs Difficulty, art needs (attack/hurt poses), team slot rules; balance vs pup/companions.
+10 Animal shows and competitions: festival animal show (judging by friendship/quality/variant), prizes (decor/unique), ribbons, collections; villager reactions; schedule.
+11 Breeding/genetics depth: rare variants and colours across new species, lineage display, mutation odds, unique variants; UI.
+12 Economy and balance: exotic product values vs crops/classic animals, feed costs, building costs, 3-year income curve with ranching (econ_check, month_curve), helper automation output caps (no idle money printer).
+13 Art plan: every new creature (idle/walk/sleep/produce/baby + attack/hurt for team-capable), buildings, products, icons; render list (<= 3 per call; front-load before Nov 25); slicer.
+14 Audio plan: voices for every new creature, enclosure ambience, helper work sounds; CC0 sources; sfx_audit names.
+15 REGRESSION CONDUCT 11a (ranch core): ranch_test, pen_test, team_animals_test, decor_test, farm_look_test, farm_week_test (--fixed-fps 60); log only what is broken.
+16 REGRESSION C10-11 UI: menu_pad_test, screens_pad_test, phone_ui_test, touch_ui_test, menu_sweep_test (both arcs); log only what is broken.
+17 REGRESSION data: bash tools/data_sync_check.sh; econ_check.py; python3 tools/ci_deps_check.py; gang_flavour_test; report drift.
+18 Bugs sweep after C11a: 4 single bots (1 day, both arcs, Hard + Very easy) on farm (animals), coop/barn interiors, town, meadow; script errors, freezes, ownerless pauses, softlocks around animal menus, buying, breeding.
+19 Performance after C11a on a quiet run: perf_probe farm (full ranch)/town/forest/house (FRAMES=60) vs C9 P6 numbers; thresholds load +25%, median/p95 +3 ms, nodes +15%.
+20 Docs/inventory after C11a: inventory.csv rows (ranch, buildings, team animals, helpers), INVENTORY.md regenerated, CONDUCT-11a Still open, PROJECT-MEMORY C11a entry; report only.
+Note: 01-14 medium (AUDIT_BRIEF depth floor); 15-20 low after the C11a push.
