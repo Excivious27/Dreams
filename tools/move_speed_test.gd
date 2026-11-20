@@ -67,11 +67,17 @@ func _run() -> void:
 	check(absf(_total("swim") - MoveSpeed.SWIM) < 0.001, "plain swim x%.2f" % MoveSpeed.SWIM)
 	# Converted nodes: Strong Strokes swims faster, Smooth Ride rides faster, Blink Step stretches Haste.
 	GameState.run["skills"]["fishing"] = {"level": 30, "xp": 0, "nodes": {"fishing_u_strong_strokes": 1}}
+	await process_frame  # GameState.bonus caches per frame
+	await process_frame
 	check(_total("swim") > MoveSpeed.SWIM * 1.25, "Strong Strokes: swim faster (%.2f)" % _total("swim"))
 	GameState.run["skills"]["building"] = {"level": 30, "xp": 0, "nodes": {"building_u_light_feet": 1}}
+	await process_frame  # GameState.bonus caches per frame
+	await process_frame
 	check(absf(_total("mount", true) - MoveSpeed.MOUNT_RUN * 1.1) < 0.001, "Smooth Ride: +10% on the horse")
 	var h0 := Spells.haste_secs()
 	GameState.run["skills"]["magic"] = {"level": 30, "xp": 0, "nodes": {"magic_u_blink_step": 1}}
+	await process_frame  # GameState.bonus caches per frame
+	await process_frame
 	check(absf(Spells.haste_secs() - h0 * 1.5) < 0.01, "Blink Step: Haste lasts half as long again (%.0f s)" % Spells.haste_secs())
 	check(not str(Spells.SPELLS["haste"]["desc"]).contains("hour"), "Haste text no longer promises an hour")
 	# Hero tab speed card shows the same number the hero moves by.
@@ -99,6 +105,24 @@ func _run() -> void:
 	var p := m.player
 	GameState.run["buffs"] = {"speed": {"amount": 4.0, "until": GameState.now_abs() + 600}}
 	p.mounted = true
+	# Start from an open stretch of the farm (a cell with 12 free cells each way).
+	var open_at := Vector2.INF
+	for y in range(8, 40):
+		for x in range(8, 40):
+			var cc := m.cell_center(Vector2i(x, y))
+			var hb := Rect2(cc - Vector2(5, 3), Vector2(10, 6))
+			var ok := true
+			for k in range(-12, 13):
+				if m.rect_blocked(Rect2(hb.position + Vector2(k * 16, 0), hb.size)) or m.rect_blocked(Rect2(hb.position + Vector2(0, k * 16), hb.size)):
+					ok = false
+					break
+			if ok:
+				open_at = cc
+				break
+		if open_at != Vector2.INF:
+			break
+	check(open_at != Vector2.INF, "found an open stretch on the farm")
+	p.position = open_at
 	var best := 999.0
 	var tried := 0
 	for dirv in [Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, -1)]:
@@ -122,6 +146,7 @@ func _run() -> void:
 			if p.auto_target == Vector2.INF and p.velocity.length() < 1.0:
 				break
 		var reached := (p.position - start).dot(dirv) > 150.0
+		print("    dir %s: went %.0f px, past %.1f, flips %d, busy %s, dlg %s" % [dirv, (p.position - start).dot(dirv), past, flips, p._busy, Dialogue.instance(self).active])
 		if reached:
 			tried += 1
 			best = minf(best, past)

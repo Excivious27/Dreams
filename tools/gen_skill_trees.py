@@ -180,7 +180,7 @@ UNLOCKS = {
                (0, 7, "Seismic Swing", "Another extra hit per pickaxe swing.", {"mine_power": 1}),
                (2, 6, "Tunnel Legs", "Move 15% faster in mines and caves.", {"cave_speed": 0.15}),
                (3, 9, "Tremor", "Breaking a rock cracks the rocks around it down to one last hit.", {"tremor": 1})],
-    "foraging": [(0, 1, "Sharp Edge", "Your axe fells trees with one more hit per swing.", {"chop_power": 1}),
+    "foraging": [(0, 3, "Sharp Edge", "Your axe fells trees with one more hit per swing.", {"chop_power": 1}),  # col IV, not II: it doubled the wooden axe on day 3 (c8_13)
                  (0, 6, "Lumberjack's Might", "Another extra hit per axe swing.", {"chop_power": 1}),
                  (2, 3, "Trailblazer", "Move 5% faster.", {"move_speed": 0.05}),
                  (2, 7, "Wind at Your Back", "Learn the Haste spell: run 30% faster for about 40 seconds.", {"spell": "haste"}),

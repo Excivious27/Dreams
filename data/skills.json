@@ -978,16 +978,15 @@
      "row": 0
     },
     {
-     "id": "foraging_u_sharp_edge",
-     "name": "Sharp Edge",
-     "desc": "Your axe fells trees with one more hit per swing.",
-     "ranks": 1,
+     "id": "foraging_0_1",
+     "name": "Keen Nose",
+     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
+     "ranks": 3,
      "tier": 1,
      "row": 0,
      "effect": {
-      "chop_power": 1
-     },
-     "unlock": true
+      "wood_bonus": 1
+     }
     },
     {
      "id": "herbalist",
@@ -1001,15 +1000,16 @@
      "row": 0
     },
     {
-     "id": "foraging_0_3",
-     "name": "Keen Nose",
-     "desc": "+1 toward an extra log per tree (4 = one more) (per rank)",
-     "ranks": 3,
+     "id": "foraging_u_sharp_edge",
+     "name": "Sharp Edge",
+     "desc": "Your axe fells trees with one more hit per swing.",
+     "ranks": 1,
      "tier": 3,
      "row": 0,
      "effect": {
-      "wood_bonus": 1
-     }
+      "chop_power": 1
+     },
+     "unlock": true
     },
     {
      "id": "foraging_0_4",

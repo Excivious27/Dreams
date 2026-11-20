@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-20 — CONDUCT 8 fix P5: skills and speed
+
+- One speed ladder (`MoveSpeed`, scripts/move_speed.gd): gear + food/potion + skill nodes add up to +60% at most; Haste/crew/cave bursts multiply but on foot tops out at x1.75; horse and vehicles keep half the foot bonus and stop at x2.2 / x2.4 (was ~7x stacked); snow/exhausted/statuses after the caps. Player and the Hero tab read the same parts (mount, vehicle, swim rows shown; the old card used other numbers).
+- Tap-to-move brakes on approach (no overshoot/bounce on a fast ride); the run strip follows the run input, legs play up to 1.6x; the pup keeps up with a galloping horse.
+- Skill trees: five +5% movement nodes per arc (= the 25% cap; six were dead picks). Tunnel Legs = +15% in mines, Strong Strokes = swim 30% faster, Light Feet -> Smooth Ride (+10% horse/vehicles), Blink Step = Haste lasts 1.5x, Marching Pace -> Steady Ranks (team defence), Forced March = capture points faster (ids kept, ranks kept). Mining unlock Heavy Swing -> Iron Arm (no more two "Heavy Swing"); Fertilizer node -> Compost Lore; Golden Seeds text matches the code; Haste says "about 40 seconds"; gems tree total 0.35 -> 0.16, treasure 0.39 -> 0.15 (GEN_CAPS); no "faster levelling" capstones; Sharp Edge moved to column IV.
+- Maxed trees stop glowing (`SkillGlow.usable`); Hero tab renown counts at most 12 levels per skill; the fishing Night row waits for the lighthouse.
+- Test: tools/move_speed_test.gd (check.sh).
+
 ## 2026-11-20 — CONDUCT 7 CI fixes (after the C7 merge)
 
 - Catkins' ♥6 quest `catkins_bell` (3 Copper Bars recast the old monastery bell; quests.json/quest_lines.json, write_hearts.py); `Hearts.in_arc(id)` keeps her penguins-only heart arc out of the gangster arc (due, standing_with_you).
