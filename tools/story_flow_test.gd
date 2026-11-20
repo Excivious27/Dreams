@@ -80,7 +80,7 @@ func _run() -> void:
 	d.end_skippable()
 	# Freeze safety: a hero frozen with nothing on screen is released after FREEZE_SAFETY.
 	m.player.frozen = true
-	GameState.run["story_pending"] = "nothing"  # a hung beat must not block the release
+	GameState.run["story_pending"] = "nothing"  # a hung beat (pending, nothing playing) must not block the release
 	await game_wait(float(m.player.FREEZE_SAFETY) + 1.0)
 	check(not m.player.frozen, "frozen hero with nothing on screen is released")
 	GameState.run.erase("story_pending")

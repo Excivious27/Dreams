@@ -168,7 +168,8 @@ static func story_busy(tree: SceneTree) -> bool:
 		return true  # a beat between its dialogue batches, or a skippable scene's fades (C7)
 	if not GameState.run.has("story_pending"):
 		return false
-	return Dialogue.instance(tree).active  # a hung beat no longer blocks the freeze-safety release
+	var gm := tree.current_scene as GameMap
+	return Dialogue.instance(tree).active or (gm != null and gm.player != null and gm.player.frozen)
 
 
 func toggle() -> void:
