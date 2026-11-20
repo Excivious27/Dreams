@@ -14,7 +14,11 @@ hardlinked to the main repo):
            into their own main colour and the neon trim into their accent, on
            every strip and on the lower part of every portrait (sprite and
            portrait stay matched). Outlines, faces and hair are kept.
-           Idempotent: the originals are kept in art/gen/kits/c5_p4_orig/.
+           Idempotent: the originals are kept in art/gen/kits/c5_p4_orig/
+           (rm -rf that folder after re-slicing the source sheets).
+  slivers  c5_07 #1: neighbour-row/column slivers in the 12B heroes' strips
+           (Pip-Pip, Nova, Coldy, Big Jim): small pieces touching a cell's top,
+           bottom or side edge away from the figure are dropped.
 """
 import json
 import os
@@ -203,7 +207,71 @@ def vicval():
     print("vicval: crew walk_down rebuilt (+ twins view_front)")
 
 
-STEPS = {"vicval": vicval, "crew": crew}
+HERO12_SLIVER = ["penguin_king", "penguin_wizard", "coldy", "big_jim"]
+
+
+def _clean_cell(a):
+    """Drop neighbour-row/column slivers from one cell (HxWx4 uint8)."""
+    from scipy import ndimage
+    a = a.copy()
+    rows = (a[..., 3] > 40).any(1)
+    H = rows.size
+    # A band at the top/bottom edge cut off from the figure by empty rows is
+    # the next row's figure: clear it.
+    if rows[:10].any():
+        t = int(np.argmax(rows))
+        k = t + int(np.argmin(rows[t:]))  # first empty row below the band
+        if t < k < H * 0.25 and rows[k:].any():
+            a[:k] = 0
+    if rows[-3:].any():
+        t = H - 1 - int(np.argmax(rows[::-1]))
+        k = t - int(np.argmin(rows[t::-1]))  # last empty row above the band
+        if H * 0.8 < k < t and rows[:k].any():
+            a[k + 1:] = 0
+    alpha = a[..., 3] > 40
+    lab, n = ndimage.label(alpha, structure=np.ones((3, 3)))
+    if n <= 1:
+        return a
+    sizes = ndimage.sum(alpha, lab, range(1, n + 1))
+    main = int(np.argmax(sizes)) + 1
+    msl = ndimage.find_objects(lab)[main - 1]
+    m_top, m_bot = msl[0].start, msl[0].stop
+    H, W = alpha.shape
+    out = a.copy()
+    for i, sl in enumerate(ndimage.find_objects(lab), start=1):
+        if i == main or sl is None:
+            continue
+        y0, y1, x0, x1 = sl[0].start, sl[0].stop, sl[1].start, sl[1].stop
+        small = sizes[i - 1] < 0.12 * sizes[main - 1]
+        top = y0 == 0 and y1 <= m_top + (m_bot - m_top) * 0.2
+        bottom = y1 >= H and y0 >= m_bot - 3
+        side = (x0 == 0 or x1 >= W) and (x1 - x0) <= 5
+        if small and (top or bottom or side):
+            out[lab == i] = 0
+    return out
+
+
+def slivers():
+    man = json.load(open(MAN))
+    n = 0
+    for cid in HERO12_SLIVER:
+        for anim, info in man.get("characters/" + cid, {}).items():
+            rel = info.get("file")
+            if not rel or not os.path.exists(os.path.join(GEN, rel)):
+                continue
+            a = np.array(_orig(rel))
+            cells = int(info.get("frames", 1) or 1)
+            cw = a.shape[1] // cells
+            b = a.copy()
+            for c in range(cells):
+                b[:, c * cw:(c + 1) * cw] = _clean_cell(a[:, c * cw:(c + 1) * cw])
+            if not np.array_equal(a, b):
+                _save(Image.fromarray(b), os.path.join(GEN, rel))
+                n += 1
+    print("slivers: cleaned %d strips" % n)
+
+
+STEPS = {"vicval": vicval, "crew": crew, "slivers": slivers}
 
 if __name__ == "__main__":
     for s in (sys.argv[1:] or list(STEPS)):

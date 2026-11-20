@@ -2,6 +2,14 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 5 fix P4: crew colours, strip repairs, facing tool swings
+
+- Gangster crew follow the "one colour pair" rule: `tools/slice_c5_p4.py crew` re-shades each member's dark clothing into their own main colour + accent on every strip and portrait (Deuce white/red, Rosa orange/cream, Specs teal, Ladder green, Vic blue, Val red, Halo gold/white, Dice purple/yellow, Kid lime, Doc white/mint, Marlene amber, Sasha steel/crimson); originals in art/gen/kits/c5_p4_orig.
+- Every crew walk_down was broken (two half figures + a back view): rebuilt from the drawn front frames; Vic/Val view_front now a front view (`vicval`).
+- 12B hero strips (Pip-Pip, Nova, Coldy, Big Jim) lose neighbour-row slivers (`slivers`).
+- Tool swings with only a _down strip now face right/up (attack / back pose + HeldSwing tool) instead of swinging toward the camera; gangster heroes fish with the rod pose any way and water from a standing pose, never a punch.
+- Thug scale left at 1.0: heroes are drawn 24 px, thugs 27 px (the audit compared 0.5-scaled cells with unscaled hero cells). Test: tools/anim_test.gd sections 8-10.
+
 ## 2026-11-19 — CONDUCT 4 fix P1: difficulty modes, day length, money routing
 - **Difficulty (Tom):** Very easy / Easy / Default / Hard per save slot (run.opts.difficulty, default Default), chosen on the new-game page (Difficulty button + one-line description) and in Options; COMBAT AND BATTLE CAMPAIGNS ONLY. `Difficulty` (scripts/difficulty.gd) holds the c4_15 table: foe HP (own `Enemy.diff_hp`, after hp_scale, no floor), boss HP (once, inside `Battle.boss_hp`), foe hits on you (`GameState.enemy_damage`, Very easy floor 3), on allies (`Enemy.ally_damage`), status length/power, wind-up time, battle tickets/cap/waves/convoy/hold/enemy capture/supply/morale loss (`Campaign.battle_data` -> `foe_capture`/`supply_mul`), mine keeper pack size, clinic fee only after a combat faint (`Faint.fee(clinic, floor, reason)`). Old global Easy switch migrates to Easy per slot and is gone. Hero tab shows the mode; campaign danger words light/fair/tough/fierce; co-op guests play at the host's mode (run.opts in Net.WORLD_KEYS). Hard gives no extra loot.
 - **Day length (Tom):** 15/20/30/40 real minutes for the 6am-2am day per slot (run.day_len, default 15; new-game page + Options; locked for a co-op guest, host's value via WORLD_KEYS). `GameState.minutes_per_second()` / `day_len()`; real-time timers use `GameState.real_min(sec)` (gift gale/iron buffs, haste, warden) and mana regen runs on real seconds (`GameState.mana_regen_secs()`, 14 s). Save slot info shows mode and day length.
