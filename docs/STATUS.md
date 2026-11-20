@@ -2,6 +2,13 @@
 
 **Play:** https://excivious27.github.io/Dreams/
 
+## 2026-11-19 — CONDUCT 4 fix P5: art for C4 (image tool)
+- **11 renders** in art/incoming/c4/, sliced by `tools/slice_c4_p5.py` (look at each step's output; contact sheets checked, bosses checked in game with `tools/c4_p5_enemy_shot.gd`).
+- **Enemies (face right, 2x detail):** thornmother, sun_colossus (walk 4, idle, attack 3, hurt); gang_boss_gloam (garden-syndicate boss), gang_boss_desert (smuggler king), gang_boss_frost (ice-hauler boss); dune_crab, sand_hound, sun_moth, glass_golem, casino_guard, rail_bot. enemies.json: the 7 kinds that already existed now use their own art (no borrowed art/tint; `gen_mega_new.py` does the same whenever `enemies/<kind>` exists). casino_guard and the gang bosses are art only (P2 wires kinds).
+- **Boss cards:** ui/card_thornmother, card_sun_colossus, card_gang_boss_gloam/_desert/_frost (shared gold frame, boss on the left).
+- **Props/kits:** props/hidden_crack_wall, hidden_vine_curtain, hidden_stairs, hidden_cave_mouth_cave/gloam/desert/frost/city; props/stall_knit, props/boutique_gold; nature/alien_tree_a..c; kits/station/station_wall, _window, _door, _pipes, _console, _corner; decals/glass_a..c; cliffs/cloudstone_strip, _side_l, _side_r (same size as grass_*); fx/firefly_0..3 (24 px glow pulse, procedural); props/cf_bed_halfdug_a/_b, cf_sapling_staked_a..c, cf_saplings_staked.
+- **Gloam villagers:** mg_liesl, mg_fenn, mg_bramble get real 4-frame walk_up (back) and walk (side) strips and a back idle_up.
+
 ## 2026-11-19 — CONDUCT 3 fix P1: campaign design, data and words
 - **Grumps (Tom):** penguin campaigns fight Grump variants (once Crystopia crystals the Dark Crystal turned): grump_crystal (tough, shard volley), grump_storm (violet zaps), grump_frost (slows), grump_coral (mends itself), grump_ember (burns, flares up), grump_moss (ambush, roots), grump_brute (big), grump_wisp (fast flyer), plus a named grump captain per penguin campaign (gcap_<region>, e.g. Captain Bramblesnout, Frostjaw, Stormcrest) on boss/gate nodes. Written by gen_battles.py into enemies.json; until P4's `enemies/grump_<v>` sheets exist Enemy draws the grump with `fallback_tint`. No soldiers/archers/knights/thugs in penguin lists.
 - **Leaders (Tom):** each campaign has its own leader list (gen_battles LEAD; `Campaign.who` picks the first you've met): partner (Pip-Pip/Nova) early, Big Jim highlands/sky, Coldy station/ice, merkitty elders on the islands, Catkins only on ruins/jungle. Battles and briefs use it.
