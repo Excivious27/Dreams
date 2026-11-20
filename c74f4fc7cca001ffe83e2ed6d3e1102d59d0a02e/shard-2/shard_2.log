@@ -1,0 +1,134 @@
+
+#### step 1: import (shard 2/6)
+== import ==
+[  99% ] [90m[1mreimport[22m | dc_safe_chair_r3.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_safe_couch.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_plant_glow.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_plant_hanging.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_plant_lemon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_plant_monstera.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_plant_orchid.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_plant_snake.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_plant_succulent.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_bear.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_braided.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_casino.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_casino_forest.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_casino_forest_r1.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_casino_navy.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_casino_navy_r1.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_casino_r1.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_moon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | dc_rug_neon.png[39m[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (13516 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+#### step 1 import: PASS in 174.2s
+
+#### step 3: interior reachability (shard 2/6)
+== interior reachability ==
+interior_reach: 0 failures
+#### step 3 interior reachability: PASS in 4.5s
+
+#### step 9: faint at 10pm, dawn light, region names (shard 2/6)
+== faint at 10pm, dawn light, region names ==
+r13_world_test: 0 failures
+#### step 9 faint at 10pm, dawn light, region names: PASS in 2.5s
+
+#### step 15: phone_ui_test (shard 2/6)
+glyphs ok: 51 non-ASCII characters
+phone_ui_test: 0 issue(s)
+#### step 15 phone_ui_test: PASS in 10.7s
+
+#### step 21: gangster interior skins (c5_04) (shard 2/6)
+== gangster interior skins (c5_04) ==
+interior_skin_test: 0 failures
+#### step 21 gangster interior skins (c5_04): PASS in 2.4s
+
+#### step 27: rec_test (shard 2/6)
+rec_test: 0 failures
+#### step 27 rec_test: PASS in 4.7s
+
+#### step 33: cash_test (shard 2/6)
+cash_test: scanned 76770 strings, 0 failures
+#### step 33 cash_test: PASS in 3.2s
+
+#### step 39: anim_test (shard 2/6)
+anim_test: 0 failures
+#### step 39 anim_test: PASS in 2.6s
+
+#### step 45: cf_volunteer_test (shard 2/6)
+cf_volunteer_test: 0 failures
+#### step 45 cf_volunteer_test: PASS in 6.9s
+
+#### step 51: art prompts: at most 3 images each (shard 2/6)
+== art prompts: at most 3 images each ==
+prompt_size_check: 0 failures
+#### step 51 art prompts: at most 3 images each: PASS in 0.0s
+
+#### step 57: C10a decor art: every catalogue piece and rotation exists (shard 2/6)
+== C10a decor art: every catalogue piece and rotation exists ==
+check ok: 373 catalogue pieces
+#### step 57 C10a decor art: every catalogue piece and rotation exists: PASS in 0.1s
+
+#### step 63: ambience_test (shard 2/6)
+ambience_test: 0 failures (40 checks)
+#### step 63 ambience_test: PASS in 4.6s
+
+#### step 69: mine: keeper, shaft, tiers (shard 2/6)
+== mine: keeper, shaft, tiers ==
+MINE DONE, failures: 0
+#### step 69 mine: keeper, shaft, tiers: PASS in 3.6s
+
+#### step 75: battle outcomes: drain, siege, boss, defend, convoy; team, helpers (shard 2/6)
+== battle outcomes: drain, siege, boss, defend, convoy; team, helpers ==
+battle_win_test: 0 fails
+#### step 75 battle outcomes: drain, siege, boss, defend, convoy; team, helpers: PASS in 6.6s
+
+#### step 81: c6_cue_test (shard 2/6)
+c6_cue_test: 0 fails
+#### step 81 c6_cue_test: PASS in 2.3s
+
+#### step 87: meow_gate_test (shard 2/6)
+meow_gate_test: 0 fails
+#### step 87 meow_gate_test: PASS in 3.1s
+
+#### step 93: penguin arc: new game to day 2 (crystal, mailbox marker, partner scene (shard 2/6)
+== penguin arc: new game to day 2 (crystal, mailbox marker, partner scene) ==
+newgame_penguin_test: 0 failures
+#### step 93 penguin arc: new game to day 2 (crystal, mailbox marker, partner scene: PASS in 5.1s
+
+#### step 99: mega regions: the new worlds walk end to end (shard 2/6)
+== mega regions: the new worlds walk end to end ==
+mega_regions_test: 0 failures
+#### step 99 mega regions: the new worlds walk end to end: PASS in 16.5s
+
+#### step 105: arcade: cabinets play, pay tickets; every jumper level can be finished (shard 2/6)
+== arcade: cabinets play, pay tickets; every jumper level can be finished ==
+jumper_solve: 0 failures (36 segments)
+#### step 105 arcade: cabinets play, pay tickets; every jumper level can be finished: PASS in 2.5s
+
+#### step 111: story flow (C7): one beat at a time, quest-done backstop, beats wait f (shard 2/6)
+== story flow (C7): one beat at a time, quest-done backstop, beats wait for screens, skippable, canon lines ==
+STORY FLOW DONE, failures: 0
+#### step 111 story flow (C7): one beat at a time, quest-done backstop, beats wait f: PASS in 3.5s
+
+#### step 117: C7 P4: heart scene content (shard 2/6)
+== C7 P4: heart scene content ==
+hearts_content_test: OK
+#### step 117 C7 P4: heart scene content: PASS in 2.6s
+
+#### step 123: C9 P3: full-screen screens with actions only (shard 2/6)
+== C9 P3: full-screen screens with actions only ==
+screens_pad_test: 0 failures
+#### step 123 C9 P3: full-screen screens with actions only: PASS in 3.1s
+
+#### shard 2/6 done in 265s: PASS

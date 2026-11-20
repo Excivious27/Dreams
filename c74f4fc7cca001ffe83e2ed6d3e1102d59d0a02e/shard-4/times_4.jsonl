@@ -1,0 +1,22 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 227.0}
+{"step": 5, "name": "exits and spawns", "rc": 0, "secs": 43.7}
+{"step": 11, "name": "C8 core curves: levels, caps, swings, food, prices, sleep", "rc": 0, "secs": 2.9}
+{"step": 17, "name": "performance guards (batched cliffs, texture cache)", "rc": 0, "secs": 2.8}
+{"step": 23, "name": "storage_test", "rc": 0, "secs": 2.9}
+{"step": 29, "name": "rec_links_test", "rc": 0, "secs": 2.9}
+{"step": 35, "name": "coop_test", "rc": 0, "secs": 2.9}
+{"step": 41, "name": "move_target_test", "rc": 0, "secs": 16.7}
+{"step": 47, "name": "cf_layout_test", "rc": 0, "secs": 10.5}
+{"step": 53, "name": "music loop seams (join click + level jump)", "rc": 0, "secs": 10.9}
+{"step": 59, "name": "music: every map has a song; web streaming works offline", "rc": 0, "secs": 37.3}
+{"step": 65, "name": "workshop: stations at run time", "rc": 0, "secs": 4.3}
+{"step": 71, "name": "mine keepers: tool damage, crates, keeper variety/pace, way-down arrow", "rc": 0, "secs": 9.1}
+{"step": 77, "name": "campaign_story_test", "rc": 0, "secs": 3.1}
+{"step": 83, "name": "campaign_gate_test", "rc": 0, "secs": 6.4}
+{"step": 89, "name": "move_speed_test", "rc": 0, "secs": 4.3}
+{"step": 95, "name": "villager heart arcs (2-10 hearts, 6-heart quests, daily lines)", "rc": 0, "secs": 6.9}
+{"step": 101, "name": "crisp art shader on buildings/props (C2 P7)", "rc": 0, "secs": 3.8}
+{"step": 107, "name": "arcade_test", "rc": 0, "secs": 3.5}
+{"step": 113, "name": "seasons/weather looks: no drifts on paths, summer regions stay green, ", "rc": 0, "secs": 4.7}
+{"step": 119, "name": "C8 P4: fishing rules, mining curve, reward tables", "rc": 0, "secs": 11.5}
+{"step": 125, "name": "C9 P5: save codes and files", "rc": 0, "secs": 2.9}

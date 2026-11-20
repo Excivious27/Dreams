@@ -1,0 +1,22 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 506.0}
+{"step": 7, "name": "themed battlefields (points open and reachable, themes, grump/kin/pylo", "rc": 0, "secs": 9.2}
+{"step": 13, "name": "first hours on the maps: goal line, arrow, mailbox, tour (both arcs)", "rc": 0, "secs": 43.4}
+{"step": 19, "name": "dating and marriage: bouquet, dates, locket, wedding, spouse (C7 P1)", "rc": 0, "secs": 4.9}
+{"step": 25, "name": "decorate mode: place/move/store/undo, rooms, walls, floors (C10a P2)", "rc": 0, "secs": 4.0}
+{"step": 31, "name": "rec_audio_test", "rc": 0, "secs": 3.4}
+{"step": 37, "name": "farm_look_test", "rc": 0, "secs": 5.2}
+{"step": 43, "name": "shop_econ_test", "rc": 0, "secs": 3.7}
+{"step": 49, "name": "town_first_test", "rc": 0, "secs": 5.3}
+{"step": 55, "name": "text size floors (7 px)", "rc": 0, "secs": 0.1}
+{"step": 61, "name": "danger_music_test", "rc": 0, "secs": 30.7}
+{"step": 67, "name": "allies: enemies fight back, pup commands", "rc": 0, "secs": 4.6}
+{"step": 73, "name": "every script compiles", "rc": 0, "secs": 4.5}
+{"step": 79, "name": "quest_tracker_test", "rc": 0, "secs": 5.0}
+{"step": 85, "name": "campaign_words_test", "rc": 0, "secs": 3.6}
+{"step": 91, "name": "saves: first run, slots, opening Skip, reopen at early milestones, old", "rc": 0, "secs": 20.9}
+{"step": 97, "name": "mega regions: map tabs, unlocks, travel", "rc": 0, "secs": 10.0}
+{"step": 103, "name": "menu sweep: every menu button, both arcs (C2)", "rc": 0, "secs": 48.8}
+{"step": 109, "name": "rec_games_test", "rc": 0, "secs": 3.2}
+{"step": 115, "name": "C7 P5: colony stories and crew", "rc": 0, "secs": 5.6}
+{"step": 121, "name": "C9 P2: game menu with keys/pad", "rc": 0, "secs": 5.0}
+{"step": 127, "name": "C9 P6: generated data in sync", "rc": 0, "secs": 30.1}

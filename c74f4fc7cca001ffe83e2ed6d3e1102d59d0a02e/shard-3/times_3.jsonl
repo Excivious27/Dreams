@@ -1,0 +1,22 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 179.5}
+{"step": 4, "name": "building doors", "rc": 0, "secs": 13.1}
+{"step": 10, "name": "first week pacing, faint/clinic/sleep", "rc": 0, "secs": 2.9}
+{"step": 16, "name": "touch_ui_test", "rc": 0, "secs": 39.0}
+{"step": 22, "name": "Tom C6 phone playtest: pace, watering can, held name, pup menu, drag a", "rc": 0, "secs": 4.3}
+{"step": 28, "name": "ticket_econ_test", "rc": 0, "secs": 2.3}
+{"step": 34, "name": "gang_play_test", "rc": 0, "secs": 17.2}
+{"step": 40, "name": "npc_anim_test", "rc": 0, "secs": 2.3}
+{"step": 46, "name": "gang_flavour_test", "rc": 0, "secs": 2.3}
+{"step": 52, "name": "every sound the game asks for exists", "rc": 0, "secs": 2.7}
+{"step": 58, "name": "economy: no money loops, crops and brews inside their bands", "rc": 0, "secs": 0.0}
+{"step": 64, "name": "footstep_test", "rc": 0, "secs": 5.2}
+{"step": 70, "name": "keeper encounters keep real hp (floor-1 swarms topped up)", "rc": 0, "secs": 3.2}
+{"step": 76, "name": "region campaigns: boards, locks, convoy", "rc": 0, "secs": 6.5}
+{"step": 82, "name": "farm_debris_test", "rc": 0, "secs": 3.8}
+{"step": 88, "name": "skill_glow_test", "rc": 0, "secs": 3.4}
+{"step": 94, "name": "gangster first hours: intro, day 2, meadow, Hideout, first crew", "rc": 0, "secs": 9.9}
+{"step": 100, "name": "hidden areas: a pocket and a secret way in every mega area (CONDUCT 4)", "rc": 0, "secs": 8.6}
+{"step": 106, "name": "jumper_test", "rc": 0, "secs": 2.3}
+{"step": 112, "name": "toasts: never over a boss card, a region card, the pup strip or the en", "rc": 0, "secs": 7.2}
+{"step": 118, "name": "C8 P3: collections (museum, logs, Book tab)", "rc": 0, "secs": 3.1}
+{"step": 124, "name": "C9 P4: haptics", "rc": 0, "secs": 2.1}

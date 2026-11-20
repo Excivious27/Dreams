@@ -1,0 +1,22 @@
+{"step": 1, "name": "import", "rc": 0, "secs": 174.2}
+{"step": 3, "name": "interior reachability", "rc": 0, "secs": 4.5}
+{"step": 9, "name": "faint at 10pm, dawn light, region names", "rc": 0, "secs": 2.5}
+{"step": 15, "name": "phone_ui_test", "rc": 0, "secs": 10.7}
+{"step": 21, "name": "gangster interior skins (c5_04)", "rc": 0, "secs": 2.4}
+{"step": 27, "name": "rec_test", "rc": 0, "secs": 4.7}
+{"step": 33, "name": "cash_test", "rc": 0, "secs": 3.2}
+{"step": 39, "name": "anim_test", "rc": 0, "secs": 2.6}
+{"step": 45, "name": "cf_volunteer_test", "rc": 0, "secs": 6.9}
+{"step": 51, "name": "art prompts: at most 3 images each", "rc": 0, "secs": 0.0}
+{"step": 57, "name": "C10a decor art: every catalogue piece and rotation exists", "rc": 0, "secs": 0.1}
+{"step": 63, "name": "ambience_test", "rc": 0, "secs": 4.6}
+{"step": 69, "name": "mine: keeper, shaft, tiers", "rc": 0, "secs": 3.6}
+{"step": 75, "name": "battle outcomes: drain, siege, boss, defend, convoy; team, helpers", "rc": 0, "secs": 6.6}
+{"step": 81, "name": "c6_cue_test", "rc": 0, "secs": 2.3}
+{"step": 87, "name": "meow_gate_test", "rc": 0, "secs": 3.1}
+{"step": 93, "name": "penguin arc: new game to day 2 (crystal, mailbox marker, partner scene", "rc": 0, "secs": 5.1}
+{"step": 99, "name": "mega regions: the new worlds walk end to end", "rc": 0, "secs": 16.5}
+{"step": 105, "name": "arcade: cabinets play, pay tickets; every jumper level can be finished", "rc": 0, "secs": 2.5}
+{"step": 111, "name": "story flow (C7): one beat at a time, quest-done backstop, beats wait f", "rc": 0, "secs": 3.5}
+{"step": 117, "name": "C7 P4: heart scene content", "rc": 0, "secs": 2.6}
+{"step": 123, "name": "C9 P3: full-screen screens with actions only", "rc": 0, "secs": 3.1}
