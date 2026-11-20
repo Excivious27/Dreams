@@ -9,9 +9,9 @@ class_name QuestTracker
 ## key predates the tracker (the old "Pin to the goal line" button), so older
 ## saves keep their pin.
 
-const CENTER := Vector2(257, 78)  # just under the clock box, right of the goal line
+const CENTER := Vector2(257, 76)  # just under the clock box, right of the goal line
 const R := 8.5
-const GOAL_W := 226.0  # the goal line's width while the compass is up (keeps clear of it)
+const GOAL_W := 206.0  # the goal line's width while the compass is up (keeps clear of it)
 
 
 ## The quest being followed ("" = the story). A finished or dropped quest lets go.
@@ -78,7 +78,10 @@ static func target(m: GameMap) -> Vector2:
 	if m == null or m.player == null or m.get("battle") != null:
 		return Vector2.ZERO
 	if m.has_method("pointer_target"):  # the mines: always the way down (or the awake keeper)
-		return m.call("pointer_target")
+		var pt: Vector2 = m.call("pointer_target")
+		if pt == Vector2.ZERO and m.get("_ladder") is Vector2i and m.get("_ladder") != Vector2i.ZERO:
+			pt = m.cell_center(m.get("_ladder"))  # still shut: the shaft site (its keeper sleeps there)
+		return pt
 	var id := tracked()
 	if id == "" or is_main(id):
 		return GoalLine.target(m)
@@ -107,7 +110,8 @@ static func caption(m: GameMap, tgt: Vector2) -> String:
 			return progress(id)
 	if tgt == Vector2.ZERO:
 		return ""
-	return str(int(m.call("pointer_dist")) if m.has_method("pointer_dist") else int(m.player.position.distance_to(tgt) / 16.0))
+	var dist := int(m.call("pointer_dist")) if m.has_method("pointer_dist") else -1
+	return str(dist if dist >= 0 else int(m.player.position.distance_to(tgt) / 16.0))
 
 
 ## The compass, drawn by the Hud (outdoors, no dialogue, no battle). Returns true when drawn.
@@ -151,9 +155,10 @@ static func draw(c: CanvasItem, m: GameMap, font: Font) -> bool:
 	else:
 		c.draw_circle(ctr, 1.6, Color(rim, 0.6))
 	if cap != "":
-		var tp := ctr + Vector2(-14, R + 8)
-		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_CENTER, 28, 6, 3, Color(0, 0, 0, 0.85))
-		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_CENTER, 28, 6, needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
+		# Left of the badge (toasts start right under it, so nothing hangs below).
+		var tp := ctr + Vector2(-R - 30, 2.5)
+		c.draw_string_outline(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 28, 6, 3, Color(0, 0, 0, 0.85))
+		c.draw_string(font, tp, cap, HORIZONTAL_ALIGNMENT_RIGHT, 28, 6, needle if tgt != Vector2.ZERO else Color(0.95, 0.92, 0.8))
 	# On screen: a small bobbing chevron over the spot itself (Stardew's quest mark).
 	if tgt != Vector2.ZERO and not m.has_method("pointer_aim"):
 		var sp: Vector2 = m.get_viewport().get_canvas_transform() * tgt

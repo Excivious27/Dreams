@@ -595,13 +595,13 @@ func _refresh() -> void:
 					_body.add_child(QuestTracker.checkbox_row(("%s: " % who if who != "" and not str(oq["text"]).begins_with(who) else "") + str(oq["text"]), trk == qid, false, sub, func() -> void:
 						QuestTracker.track(qid)
 						_refresh()))
+			if not any:
+				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 8, Color(0.7, 0.7, 0.7))
 			var fin: Array = r["quests"].filter(func(q: Dictionary) -> bool: return bool(q["done"]))
 			if not fin.is_empty():
 				_line("Finished (%d)" % fin.size(), 9, Color(0.7, 0.9, 0.7))
 				for q: Dictionary in fin.slice(maxi(0, fin.size() - 8)):
 					_line("✓ " + str(q["text"]), 8, Color(0.7, 0.9, 0.7))
-			if not any:
-				_line("  Talk to people in town; they'll ask for help. The plaza board has daily jobs.", 8, Color(0.7, 0.7, 0.7))
 			var ws := Crafting.summary()
 			var busy := 0
 			for w in ws:
