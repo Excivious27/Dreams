@@ -83,7 +83,7 @@ func _run() -> void:
 	check(txt.find("best deal you ever turned down") >= 0 and txt.find("It opened the tower doors") < 0, "letter kept: no double 'doors' line")
 	check(txt.find("the docks, Neon, Uptown and the pit") >= 0 or txt.find("The docks, Neon, Uptown and the pit") >= 0, "turf list joined with 'and'")
 	check(txt.find("the Cannery Job, the Neon Arcade and the Vault") >= 0, "heist names lower-case 'the' mid-sentence")
-	check(txt.find("sister") >= 0 and txt.find("big brother") < 0, "crew threads: the Kid's sister (not shown in the twins' line without Val's scene... vic thread hidden in The Chair)")
+	check(txt.find("went for the wire") >= 0 and txt.find("sister came down") < 0, "crew threads: Specs' wire shown; the Kid's sister not freed in The Chair")
 	# --- Clean Break conditions ----------------------------------------------
 	check(not Epilogue.clean_ok(), "no Clean Break with a shop still taken")
 	fl.erase("shop_2")
@@ -105,6 +105,7 @@ func _run() -> void:
 	_fits(sl, "gang/clean")
 	check(str(sl[0][0]) == "THE END: A Clean Break" and str(sl[0][2]) == "cut_clean_break", "Clean Break ending slide + picture")
 	check(_all_text(sl).find("lead box") >= 0, "Hale keeps the stone in the Clean Break epilogue")
+	check(_all_text(sl).find("sister came down") >= 0, "crew threads: the Kid's sister comes home when the stone is gone")
 	# --- the gangster story file ------------------------------------------------
 	var beats := {}
 	for ch in Story.data().get("gangsters", []):
