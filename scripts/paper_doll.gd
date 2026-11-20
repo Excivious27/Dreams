@@ -30,6 +30,10 @@ const ACTIONS := {"attack": ["act_attack_1", "act_attack_2", "act_attack_3"], "h
 const LIFE := {"sit": [0], "sleep": [1], "faint": [2], "carry": [3, 4], "pet": [5, 6], "wave": [7, 8], "dance": [9, 10, 11, 12], "eat_down": [13, 14], "eat_up": [13, 14], "eat_right": [13, 14], "drink": [15]}
 const WATER := {"swim": [0, 1, 2, 3], "swim_down": [4, 5, 6, 7], "swim_up": [8, 9, 10, 11], "float": [12], "dive": [13], "climb_out": [14, 15]}
 const RIDE := {"ride": [0, 1, 2, 3], "ride_run": [4, 5], "ride_down": [6, 7], "ride_up": [8, 9]}
+## Missing-row stand-ins for costume sheets (see body_frames); frame_source mirrors it.
+const POSE_FALLBACK := {"sit": "idle", "sleep": "idle", "faint": "idle", "carry": "walk_down", "pet": "idle", "wave": "idle", "dance": "walk_down",
+	"eat_up": "idle", "drink": "idle", "swim": "walk", "swim_down": "walk_down", "swim_up": "walk_up", "float": "idle", "dive": "idle", "climb_out": "idle",
+	"ride": "walk", "ride_run": "run", "ride_down": "walk_down", "ride_up": "walk_up", "swim_1": "walk", "hold_up": "idle_up"}
 const TOOL_POSES := {"hoe": "attack", "water": "hold", "axe": "attack", "pickaxe": "attack", "cast": "attack", "reel": "hold", "eat": "eat"}
 
 
@@ -66,11 +70,73 @@ const ACT := {"hoe_down": [0, 1, 2], "hoe_right": [3, 4, 5], "hoe_up": [6, 7, 8]
 	"reel_down": [9], "reel_up": [10], "reel_right": [11], "eat_down": [13], "eat_up": [13], "eat_right": [13], "hurt": [12], "celebrate": [15], "powerup": [15]}
 
 
+## Skin tone on the painted (tan = medium) costume sheets: the look's body prefix picks
+## the target mid colour; shaders/doll_body.gdshader recolours the sheet's _skin mask
+## (tools/skin_masks.py). Medium (and armour sheets without a mask) stay as drawn.
+const SKIN_TONES := {"light": Color(1.0, 0.86, 0.76), "dark": Color(0.55, 0.36, 0.25)}
+
+
+static func skin_key(look: Dictionary) -> String:
+	return str(look.get("body", "medium_slim")).get_slice("_", 0)
+
+
+static func body_material(look: Dictionary) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = load("res://shaders/doll_body.gdshader")
+	m.set_meta("skin", skin_key(look))
+	return m
+
+
+## Point the body material at the mask of the sheet a frame comes from.
+static func apply_skin(m: ShaderMaterial, sheet: String) -> void:
+	if m == null:
+		return
+	var tone: Variant = SKIN_TONES.get(str(m.get_meta("skin", "medium")), null)
+	var mk := sheet + "_skin"
+	var on := tone != null and Art.has("body", mk)
+	m.set_shader_parameter("skin_on", on)
+	if on:
+		m.set_shader_parameter("skin_mask", Art.tex("body", mk))
+		m.set_shader_parameter("tone", Vector3((tone as Color).r, (tone as Color).g, (tone as Color).b))
+
+
+## Everyday outfits the creator/dresser offer for the current arc (arc jacket first):
+## the wardrobe's starter outfits (data/wardrobe.json), else OUTFITS.
+static func starter_outfits() -> Array:
+	var first: Array = []
+	var rest: Array = []
+	var items: Dictionary = Wardrobe.data()["items"]
+	var ids := items.keys()
+	ids.sort()
+	for id: String in ids:
+		var e: Dictionary = items[id]
+		var b := str((e.get("doll", {}) as Dictionary).get("body", ""))
+		if str(e.get("slot", "")) != "outfit" or not bool(e.get("starter", false)) or not Art.has("body", b):
+			continue
+		var a := str(e.get("arc", ""))
+		if a != "" and a != Wardrobe.arc():
+			continue
+		(first if a != "" else rest).append(b)
+	if first.is_empty() and rest.is_empty():
+		for o: String in OUTFITS:
+			if Art.has("body", o):
+				rest.append(o)
+	if "outfit_farmer" in rest:
+		rest.erase("outfit_farmer")
+		rest.push_front("outfit_farmer")
+	return rest.slice(0, 1) + first + rest.slice(1)
+
+
 ## The body sheet to draw: the equipped costume (chest armor / outfit) when
 ## that sheet exists, else the bare base from the look.
 static func body_for(look: Dictionary) -> String:
+	# Wardrobe (C10a): a worn cosmetic outfit wins over armour unless the Look
+	# toggle says "show armour"; cosmetics never change stats.
+	var cos := "" if preview_bare else Wardrobe.outfit_body()
 	var chest := "" if preview_bare else GameState.equipped("body")
 	var cs := str(GameState.items.get(chest, {}).get("costume", ""))
+	if cos != "" and not (Wardrobe.show_armor() and cs != "" and Art.has("body", cs)):
+		return cos
 	if cs != "" and Art.has("body", cs):
 		return cs
 	# Nothing equipped: you still wear clothes. The look's outfit (farmer by
@@ -81,6 +147,138 @@ static func body_for(look: Dictionary) -> String:
 		return outfit
 	var body := str(look.get("body", "medium_slim"))
 	return body if Art.has("body", body) else "medium_slim"
+
+
+## Hat layers that cover the whole head: no hair drawn under them.
+const FULL_HATS := ["knight", "hood", "aurora_hood", "crystal_helm", "gold_helm", "moon_helm", "silver_helm"]
+
+
+## Body sheets with a helmet/hood painted in: no hair, no hat layer on top (c10_04).
+static func has_headgear(body: String) -> bool:
+	var b := body.trim_suffix("_act").trim_suffix("_life").trim_suffix("_water").trim_suffix("_ride")
+	return b.begins_with("armor_") or b == "outfit_miner" or b == "outfit_armored"
+
+
+## Any penguin hero sprite (penguin, penguin_king, penguin_wizard).
+static func is_penguin(sprite: String) -> bool:
+	return sprite.begins_with("penguin")
+
+
+## The hat layer to draw as [group, name]: worn helm (when shown) > cosmetic hat > look hat.
+static func hat_layer(look: Dictionary) -> Array:
+	var helm := "" if preview_bare else GameState.equipped("head")
+	var hs := str(GameState.items.get(helm, {}).get("sprite", helm))
+	var helm_l: Array = []
+	for g: String in ["hats", "hats_poses"]:
+		if hs != "" and Art.has(g, hs):
+			helm_l = [g, hs]
+			break
+	var cos: Array = [] if preview_bare else Wardrobe.doll_layer("hat")
+	if not cos.is_empty() and not (Wardrobe.show_armor() and not helm_l.is_empty()):
+		return cos
+	if not helm_l.is_empty():
+		return helm_l
+	var lh := str(look.get("hat", ""))
+	return ["hats", lh] if lh != "" and Art.has("hats", lh) else []
+
+
+## Face piece (shades, goggles) as [group, name] or [].
+static func face_layer(_look: Dictionary) -> Array:
+	return [] if preview_bare else Wardrobe.doll_layer("face")
+
+
+## Copy the body's hurt blink / tint onto a layer (keeps the layer's own alpha fade).
+static func sync_layer(layer: CanvasItem, anim: CanvasItem) -> void:
+	if layer == null or anim == null:
+		return
+	var a := layer.modulate.a
+	layer.modulate = Color(anim.modulate, a * anim.modulate.a)
+
+
+## Colourway of a layer (wardrobe "tint"): the luma recolour of hair_tint.gdshader
+## (it also carries the hit flash); "" puts the layer's own material back.
+static func _colourway(layer: Sprite2D, tint: String) -> void:
+	if not layer.has_meta("base_mat"):
+		layer.set_meta("base_mat", layer.material)
+	if tint == "":
+		if layer.material != layer.get_meta("base_mat"):
+			layer.material = layer.get_meta("base_mat")
+		return
+	if str(layer.get_meta("tint", "")) != tint or not (layer.material is ShaderMaterial):
+		var m := ShaderMaterial.new()
+		m.shader = load("res://shaders/hair_tint.gdshader")
+		m.set_shader_parameter("tint", Color(tint))
+		m.set_shader_parameter("on", true)
+		layer.material = m
+		layer.set_meta("tint", tint)
+
+
+## Pin hair/hat/face layers for a body frame. Layers: {"hair": Sprite2D, "hat": .., "face": ..}.
+static func place_all(layers: Dictionary, look: Dictionary, body: String, pose: int, flip: bool, sc: float) -> void:
+	var hg := has_headgear(body)
+	if layers.has("hair"):
+		if hg:
+			(layers["hair"] as Sprite2D).visible = false
+		else:
+			place_layer(layers["hair"], "hair", str(look.get("hair", "")), body, pose, flip, sc)
+	if layers.has("hat"):
+		var hl := hat_layer(look)
+		if hl.is_empty() or hg:
+			(layers["hat"] as Sprite2D).visible = false
+		else:
+			place_layer(layers["hat"], hl[0], hl[1], body, pose, flip, sc)
+			_colourway(layers["hat"], Wardrobe.doll_tint("hat"))
+			if str(hl[1]) in FULL_HATS and layers.has("hair"):
+				(layers["hair"] as Sprite2D).visible = false  # helms and hoods cover the hair
+	if layers.has("face"):
+		var fl := face_layer(look)
+		if fl.is_empty() or hg:
+			(layers["face"] as Sprite2D).visible = false
+		else:
+			place_layer(layers["face"], fl[0], fl[1], body, pose, flip, sc, "face")
+
+
+## A live paper-doll preview (body walking + layers) under `parent`, `scale` world px per
+## body px multiplier (1.0 = in-game size). Returns the body sprite.
+static func build_preview(parent: Node2D, look: Dictionary, mult: float, anim := "walk_down", bare := false) -> AnimatedSprite2D:
+	preview_bare = bare
+	var bname := body_for(look)
+	var body := AnimatedSprite2D.new()
+	body.sprite_frames = body_frames(look)
+	body.centered = true
+	var ch := float(Art.info("body", bname).get("cell_h", 96))
+	body.offset = Vector2(0, -ch / 2.0)
+	var h := float(anchor_of("body", bname, 0)[4])
+	var sc := mult * CharacterLibrary.HERO_H / maxf(20.0, h)
+	body.scale = Vector2(sc, sc)
+	body.play(anim)
+	body.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	var bm := body_material(look)
+	bm.set_shader_parameter("crisp", false)
+	body.material = bm
+	parent.add_child(body)
+	var layers := {}
+	for k: String in ["hair", "hat", "face"]:
+		var sp := Sprite2D.new()
+		sp.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+		sp.z_index = 1
+		if k == "hair":
+			sp.material = hair_material(str(look.get("hair_color", "brown")))
+		parent.add_child(sp)
+		layers[k] = sp
+	var upd := func() -> void:
+		if not is_instance_valid(body):
+			return
+		var src := frame_source(body.animation, body.frame, bname)
+		apply_skin(bm, src[0])
+		preview_bare = bare
+		place_all(layers, look, src[0], src[1], body.flip_h, sc)
+		preview_bare = false
+	body.frame_changed.connect(upd)
+	body.animation_changed.connect(upd)
+	upd.call()
+	preview_bare = false
+	return body
 
 
 ## SpriteFrames for the body of a look (walk poses + action row).
@@ -171,6 +369,19 @@ static func body_frames(look: Dictionary) -> SpriteFrames:
 				at.atlas = rtex
 				at.region = Rect2(int(i) * rcw, 0, rcw, rch)
 				sf.add_frame(anim, at)
+	# Costume sheets without life/water/ride rows (the six arc costumes): reuse the
+	# costume's own idle/walk poses, never the bald base's act_* frames (another look,
+	# drawn at a different scale).
+	if not body in BODIES:
+		for anim: String in POSE_FALLBACK:
+			if sf.has_animation(anim):
+				continue
+			var from := str(POSE_FALLBACK[anim])
+			sf.add_animation(anim)
+			sf.set_animation_speed(anim, sf.get_animation_speed(from))
+			sf.set_animation_loop(anim, not anim in ["dive", "climb_out", "faint", "sleep", "sit"])
+			for i in sf.get_frame_count(from):
+				sf.add_frame(anim, sf.get_frame_texture(from, i))
 	for anim: String in ACTIONS:
 		if sf.has_animation(anim):
 			continue
@@ -202,6 +413,9 @@ static func frame_source(anim: String, frame: int, body: String) -> Array:
 	if RIDE.has(anim) and Art.has("body", body + "_ride"):
 		var arr5: Array = RIDE[anim]
 		return [body + "_ride", int(arr5[clampi(frame, 0, arr5.size() - 1)])]
+	if POSE_FALLBACK.has(anim) and not body in BODIES:
+		var arr6: Array = POSES[str(POSE_FALLBACK[anim])]
+		return [body, int(arr6[clampi(frame, 0, arr6.size() - 1)])]
 	return [body, 0]
 
 
@@ -209,8 +423,46 @@ static func frame_source(anim: String, frame: int, body: String) -> Array:
 static func anchor_of(group: String, name: String, frame: int) -> Array:
 	var an: Array = Art.info(group, name).get("anchors", [])
 	if an.is_empty():
+		an = _measured_anchors(group, name)
+	if an.is_empty():
 		return [48.0, 20.0, 92.0, 40.0, 72.0]
 	return an[clampi(frame, 0, an.size() - 1)]
+
+
+static var _anchor_cache: Dictionary = {}
+
+
+## Sheets sliced without anchors (the six arc costumes, hats_poses): measure each
+## cell's opaque box once. Bodies: [cx, bottom - h, bottom, w, h] with h scaled like
+## the slicer's (figure fills ~92 of 96 px); layers: [cx, top, bottom, w, h].
+static func _measured_anchors(group: String, name: String) -> Array:
+	var key := group + "/" + name
+	if _anchor_cache.has(key):
+		return _anchor_cache[key]
+	var out: Array = []
+	var tex := Art.tex(group, name)
+	if tex:
+		var img := tex.get_image()
+		if img:
+			if img.is_compressed():
+				img.decompress()
+			var info := Art.info(group, name)
+			var cw := int(info.get("cell_w", img.get_width()))
+			var ch := int(info.get("cell_h", img.get_height()))
+			var n := maxi(1, int(info.get("frames", img.get_width() / maxi(1, cw))))
+			for i in n:
+				var r := img.get_region(Rect2i(i * cw, 0, cw, ch)).get_used_rect()
+				if r.size.x <= 0:
+					out.append([cw / 2.0, 0.0, float(ch), float(cw), float(ch)])
+					continue
+				var cx := r.position.x + r.size.x / 2.0
+				if group == "body":
+					var hh := r.size.y * 96.0 / 92.0
+					out.append([cx, r.end.y - hh, float(r.end.y), float(r.size.x), hh])
+				else:
+					out.append([cx, float(r.position.y), float(r.end.y), float(r.size.x), float(r.size.y)])
+	_anchor_cache[key] = out
+	return out
 
 
 ## Which pose index (0-15) a body animation frame shows (for layer matching).
@@ -268,7 +520,7 @@ static func place_hat_simple(layer: Sprite2D, name: String, head_w: float, top_y
 	layer.position = Vector2(-lcx * sc * body_scale * (-1.0 if flip else 1.0), (top_y + head_w * 0.25) - lby * sc * body_scale)
 
 
-static func place_layer(layer: Sprite2D, group: String, name: String, body_name: String, body_frame_pose: int, flip: bool, body_scale: float) -> void:
+static func place_layer(layer: Sprite2D, group: String, name: String, body_name: String, body_frame_pose: int, flip: bool, body_scale: float, kind := "") -> void:
 	if name == "" or not Art.has(group, name):
 		layer.visible = false
 		return
@@ -296,17 +548,24 @@ static func place_layer(layer: Sprite2D, group: String, name: String, body_name:
 	var l := anchor_of(group, name, lf)
 	# Scale the layer so hair is a bit wider than the head. The head is about
 	# 40% of the sprite height (shoulders can be wider than the head in armor).
+	if kind == "":
+		kind = "hair" if group == "hair" else "hat"
+	var bi := Art.info("body", body_name)
+	var bcw := float(bi.get("cell_w", 96))
+	var bch := float(bi.get("cell_h", 96))
 	var head_w := minf(float(b[3]), float(b[4]) * 0.52)
-	var want_w := head_w * (1.15 if group == "hair" else 1.25)
+	var want_w: float = head_w * {"hair": 1.15, "hat": 1.25, "face": 0.95}.get(kind, 1.25)
 	var sc := want_w / maxf(1.0, float(l[3]))
 	layer.scale = Vector2(sc, sc) * body_scale
 	# Pin: layer bbox centre x over the body centre; hair bottom sits a third
 	# of the way down the head; a hat's brim sits at the head top.
 	var head_h := float(b[4]) * 0.42
-	var target_y := float(b[1]) + (head_h * 0.72 if group == "hair" else head_h * 0.18)
+	var target_y: float = float(b[1]) + {"hair": head_h * 0.72, "hat": head_h * 0.18, "face": head_h * 0.62}.get(kind, head_h * 0.18)
 	var lcx := float(l[0]) - cw / 2.0
 	var lby := float(l[2]) - ch / 2.0
+	if kind == "face":
+		lby = (float(l[1]) + float(l[2])) / 2.0 - ch / 2.0  # centre the lenses on the eye line
 	# Body canvas → node space: the body sprite is centred with offset -h/2, so
 	# its canvas top-left sits at (-48, -96) × scale; the layer is plain-centred.
-	var off := Vector2((float(b[0]) - 48.0) - lcx * sc * (-1.0 if flip else 1.0), (target_y - 96.0) - lby * sc)
+	var off := Vector2((float(b[0]) - bcw / 2.0) - lcx * sc * (-1.0 if flip else 1.0), (target_y - bch) - lby * sc)
 	layer.position = off * body_scale

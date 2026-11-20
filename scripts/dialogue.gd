@@ -59,7 +59,7 @@ static func portrait_for(who: String) -> String:
 		# Paper-doll hero: portrait by equipped costume, else by body base.
 		var look: Dictionary = GameState.run.get("look", {})
 		if look.has("body"):
-			var cs := str(GameState.items.get(GameState.equipped("body"), {}).get("costume", ""))
+			var cs := PaperDoll.body_for(look)  # what the walking sprite wears (wardrobe, armour or outfit)
 			if cs != "" and _portrait_ok("hero_" + cs):
 				return "hero_" + cs
 			var body := str(look.get("body", "medium_slim"))

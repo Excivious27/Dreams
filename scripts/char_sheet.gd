@@ -1,13 +1,26 @@
 class_name CharSheet
 extends RefCounted
 
-const RARITY_RANK := {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
+## Dots per rarity on a slot: Decor.RARITIES order (the one table), capped at 5 dots so
+## they fit a 32 px slot; unique also gets a star plate (slot_cell) so it reads apart from mythic.
+const RARITY_RANK := {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4, "mythic": 5, "unique": 5}
 const RANK_DOT := 2  # px per rarity dot on a slot
 
 
-## 0 common .. 4 legendary (slot dots; ChestScreen may use it too).
+static func rarity_of(id: String) -> String:
+	if GameState.items.has(id):
+		return str(GameState.items[id].get("rarity", "common"))
+	return Decor.rarity(id) if Decor.is_decor(id) else "common"
+
+
+## 0 common .. 5 mythic/unique (slot dots; ChestScreen may use it too).
 static func rarity_rank(id: String) -> int:
-	return int(RARITY_RANK.get(str(GameState.items.get(id, {}).get("rarity", "common")), 0))
+	return mini(5, Decor.rarity_rank(rarity_of(id)))
+
+
+static func rarity_col(id: String) -> Color:
+	var r := rarity_of(id)
+	return Decor.rarity_color(r) if r in ["mythic", "unique"] else GameState.rarity_color(id)
 ## The Character tab of the pause menu (Stardew's inventory doll + Sun Haven's
 ## stat sheet): the hero card, title/rank from progression, a paper-doll of the
 ## ten gear slots (tap one to compare and swap what's in your bag), weapons and
@@ -18,6 +31,13 @@ static func rarity_rank(id: String) -> int:
 
 const SLOT_NAMES := {"head": "Head", "body": "Body", "legs": "Legs", "feet": "Feet", "hands": "Hands",
 	"offhand": "Shield", "back": "Cape", "belt": "Belt", "ring": "Ring", "charm": "Trinket"}
+## Gangster arc slot words (Chrome Arm is not a shield, a trench coat is not a cape).
+const GANG_SLOT_NAMES := {"head": "Head", "body": "Body", "legs": "Legs", "feet": "Feet", "hands": "Hands",
+	"offhand": "Arm", "back": "Coat", "belt": "Belt", "ring": "Ring", "charm": "Piece"}
+
+
+static func slot_name(slot: String) -> String:
+	return str((SLOT_NAMES if GameState.is_penguins() else GANG_SLOT_NAMES).get(slot, slot))
 const LEFT := ["head", "body", "legs", "feet", "hands"]
 const RIGHT := ["offhand", "back", "belt", "ring", "charm"]
 const STAT_SHORT := {"defense": "def", "speed": "spd", "luck": "luck", "energy": "energy", "damage": "dmg", "mana": "mana", "hp": "hp"}
@@ -431,7 +451,7 @@ static func stats() -> Array:
 		_p(p, "Set bonus", set_bonus("luck"))
 	_p(p, "Buff", int(GameState.buff("luck")))
 	out.append({"id": "luck", "name": "Luck", "icon": ["items", "clover" if Art.has("items", "clover") else "luck_potion"], "value": str(lk), "parts": p,
-		"note": "Each point adds 5%% to drop rolls (now ×%.2f)." % (1.0 + 0.05 * lk)})
+		"note": "Luck means better drops (now ×%.2f on drop rolls), rarer fish and Rare Catch, and a steadier claw and Skee-Ball hand." % (1.0 + 0.05 * lk)})
 	# Magic
 	if GameState.skill_in_arc("magic"):
 		p = [["Base", "20"]]
@@ -917,7 +937,7 @@ static func _slot_cell(slot: String) -> Control:
 		# players read it by count (C9 c9_07: uncommon/legendary and rare/epic collapsed).
 		for di in rarity_rank(id):
 			var pip := ColorRect.new()
-			pip.color = GameState.rarity_color(id)
+			pip.color = rarity_col(id)
 			pip.size = Vector2(RANK_DOT, RANK_DOT)
 			pip.position = Vector2(4 + di * (RANK_DOT + 1), 24)
 			pip.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -928,9 +948,19 @@ static func _slot_cell(slot: String) -> Control:
 			back.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			b.add_child(back)
 			b.add_child(pip)
+		if rarity_of(id) == "unique":
+			var star := Label.new()  # unique: a star plate beside the dots (colour-blind safe)
+			star.text = "★"
+			star.add_theme_font_size_override("font_size", 7)
+			star.add_theme_color_override("font_color", rarity_col(id))
+			star.add_theme_constant_override("outline_size", 2)
+			star.add_theme_color_override("font_outline_color", Color.BLACK)
+			star.position = Vector2(22, 19)
+			star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			b.add_child(star)
 	else:
 		var el := Label.new()
-		el.text = str(SLOT_NAMES.get(slot, slot))
+		el.text = slot_name(slot)
 		el.add_theme_font_size_override("font_size", 7)
 		el.add_theme_color_override("font_color", Color(0.85, 0.75, 0.6, 0.75))
 		el.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -968,6 +998,17 @@ static func _doll(body: Control) -> void:
 	mid.add_theme_constant_override("separation", 1)
 	row.add_child(mid)
 	var ht := _hero_tex()
+	if Wardrobe.hero_kind() == "doll" and PaperDoll.available():
+		var dv := Control.new()  # the build-your-own hero as they really look (outfit, hair, hat)
+		dv.custom_minimum_size = Vector2(0, 118)
+		dv.clip_contents = true
+		dv.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mid.add_child(dv)
+		var dh := Node2D.new()
+		dv.add_child(dh)
+		dv.resized.connect(func() -> void: dh.position = Vector2(dv.size.x / 2.0, 114))
+		PaperDoll.build_preview(dh, GameState.run.get("look", {}), 3.3, "idle")
+		ht = null
 	var hr := TextureRect.new()
 	hr.texture = ht
 	hr.custom_minimum_size = Vector2(0, 118)
@@ -975,7 +1016,25 @@ static func _doll(body: Control) -> void:
 	hr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	hr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if ht and ht.get_width() > 60 else CanvasItem.TEXTURE_FILTER_NEAREST
 	hr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	mid.add_child(hr)
+	if ht != null:
+		mid.add_child(hr)
+	var wn := 0
+	for ws: String in Wardrobe.SHOWN_SLOTS:
+		wn += Wardrobe.choices(ws).size()
+	var wb := _small_btn(mid, "Wardrobe (%d)" % wn, func() -> void:
+		var tree := Engine.get_main_loop() as SceneTree
+		if tree and tree.current_scene:
+			var w := WardrobeScreen.open(tree.current_scene)
+			w.closed.connect(_redo))
+	wb.set_meta("pc_key", "wardrobe")
+	var worn: Array = []
+	for ws2: String in Wardrobe.SHOWN_SLOTS:
+		var wid := Wardrobe.worn_id(ws2)
+		if wid != "":
+			worn.append(str(Wardrobe.entry(wid).get("name", wid)))
+	if not worn.is_empty():
+		var lk := _lab(mid, "Look: " + ", ".join(worn) + ("" if Wardrobe.hero_kind() != "doll" else ("  (armour shown)" if Wardrobe.show_armor() else "")), 7, INK_SOFT)
+		lk.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var gs: Array = []
 	for k: String in ["defense", "speed", "luck", "energy", "damage", "mana"]:
 		var n := GameState.gear_stat(k)
@@ -1006,7 +1065,7 @@ static func _doll(body: Control) -> void:
 static func _slot_panel(body: Control) -> void:
 	var slot := sel_slot
 	var cur := GameState.equipped(slot)
-	var v := _card(body, "%s slot" % str(SLOT_NAMES.get(slot, slot)))
+	var v := _card(body, "%s slot" % slot_name(slot))
 	var h := HBoxContainer.new()
 	h.add_theme_constant_override("separation", 4)
 	v.add_child(h)
@@ -1065,10 +1124,12 @@ static func _slot_panel(body: Control) -> void:
 
 
 ## Rarity colour readable on parchment (common reads as plain ink).
+## darkened(0.62) keeps every rank >= 4.5:1 on the parchment (c10_07; 0.4 left
+## uncommon/legendary near 3:1); the rank dots carry the colour-blind cue.
 static func ink_rarity(id: String) -> Color:
-	if str(GameState.items.get(id, {}).get("rarity", "common")) == "common":
+	if rarity_of(id) == "common":
 		return INK
-	return GameState.rarity_color(id).darkened(0.4)
+	return rarity_col(id).darkened(0.62)
 
 
 static func _refresh_player() -> void:
