@@ -15,7 +15,7 @@ class_name Ranch
 ##         due, q}]}}, news: [lines for the next morning]}
 ## No animal ever dies, is slaughtered or sold for meat (all ages): "rehome" sends one to a villager's pasture.
 ## Breeding has no gender checks: any two adults of a species in a home whose tier adds "breeding".
-## Effect keys read here (Ranching tree, P3): animal_yield, friend_gain, breed_chance, grow_speed, rare_breed,
+## Effect keys read here (Ranching tree, P3): animal_yield, animal_friend, breed_chance, grow_speed, rare_breed,
 ## ranch_value (GameState.unit_sell_value) through GameState.ranch_bonus(key).
 
 const VER := 1
@@ -98,7 +98,16 @@ static func roster(home: String) -> Array:
 ## The home's tier: the Plans build (Builds) or a tier set here (tests, homes not yet in Builds).
 static func tier(home: String) -> int:
 	var own := int(((st()["houses"] as Dictionary).get(home, {}) as Dictionary).get("tier", 0))
-	return maxi(own, Builds.built_tier(home))
+	return maxi(own, Builds.built_tier(build_of(home)))
+
+
+## The Plans build that houses a home (P3's buildings may carry "ranch": home, e.g. beehive -> apiary).
+static func build_of(home: String) -> String:
+	for bid in Builds.all():
+		var b: Variant = Builds.all()[bid]
+		if b is Dictionary and str((b as Dictionary).get("ranch", "")) == home:
+			return str(bid)
+	return home
 
 
 static func tier_row(home: String, t := -1) -> Dictionary:
@@ -239,7 +248,7 @@ static func is_adult(uid: String) -> bool:
 
 static func _friend_add(a: Dictionary, n: int) -> void:
 	if n > 0:
-		n = int(round(n * (1.0 + GameState.ranch_bonus("friend_gain"))))
+		n = int(round(n * (1.0 + GameState.ranch_bonus("animal_friend"))))
 	a["friend"] = clampi(int(a.get("friend", 0)) + n, 0, int(rule("friend_max", 1000)))
 
 

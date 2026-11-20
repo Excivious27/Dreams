@@ -312,6 +312,12 @@ if ! echo "$cout" | grep -q "shop_econ_test: 0 failures"; then
   echo "Shop economy test failed"; exit 1
 fi
 
+cout="$("$GODOT" --headless --path . -s res://tools/ranch_test.gd 2>&1)"
+echo "$cout" | grep -E "FAIL|SCRIPT ERROR|ranch_test" || true
+if ! echo "$cout" | grep -q "ranch_test: [0-9]* checks, 0 failures"; then
+  echo "Ranch test failed"; exit 1
+fi
+
 cout="$("$GODOT" --headless --path . -s res://tools/decor_sources_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|SCRIPT ERROR|decor_sources_test" || true
 if ! echo "$cout" | grep -q "decor_sources_test: 0 failures"; then
