@@ -4206,8 +4206,8 @@ func _build_border() -> void:
 	var rng := _border_rng
 	var has_big := Art.has("nature", "big_oak_a")
 	var season := GameState.look_se()
-	var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_birch", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
-	var bigs: Array = {"spring": ["big_oak_a", "big_oak_b", "big_pine_a", "big_birch_a", "big_cherry_a", "big_oak_c"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
+	var mids: Array = {"spring": ["mid_oak", "mid_pine", "mid_pine", "mid_birch", "mid_oak", "mid_pine", "mid_cherry"], "summer": ["mid_oak", "mid_pine", "mid_birch", "mid_willow"], "fall": ["mid_maple", "mid_oak", "mid_pine", "mid_maple_b", "mid_dead"], "winter": ["mid_snowpine", "mid_dead", "mid_snowpine_b", "mid_pine", "mid_dead_b"]}.get(season, ["mid_oak", "mid_pine"])
+	var bigs: Array = {"spring": ["big_oak_a", "big_pine_a", "big_oak_b", "big_pine_b", "big_birch_a", "big_pine_a", "big_oak_c", "big_cherry_a"], "summer": ["big_oak_a", "big_oak_b", "big_pine_b", "big_birch_b", "big_willow", "big_oak_c"], "fall": ["big_maple_a", "big_maple_b", "big_oak_a", "big_pine_a", "big_dead_a"], "winter": ["big_snowpine_a", "big_snowpine_b", "big_dead_a", "big_dead_b", "big_pine_c"]}.get(season, ["big_oak_a"])
 	if scene_id() == "wastes" and Art.has("nature", "mid_dead"):
 		mids = ["mid_dead", "mid_dead_b"]  # a corrupted wasteland, not a blossom ring
 		bigs = ["big_dead_a", "big_dead_b"]
@@ -4232,7 +4232,7 @@ func _build_border() -> void:
 		if depth <= 1 and in_content(c + Vector2i(0, 1)) and not _border_cells.has(c + Vector2i(0, 1)):
 			prop(bg, nm, c, 0, 0.0, false)  # inner-edge trees are props so you walk behind the canopy
 		else:
-			_border_draw.append([c, bg, nm, rng.randf_range(-3.0, 3.0)])
+			_border_draw.append([c, bg, nm, rng.randf_range(-3.0, 3.0), depth])
 	_border_draw.sort_custom(func(a: Array, b: Array) -> bool: return (a[0] as Vector2i).y < (b[0] as Vector2i).y)
 
 
@@ -4384,7 +4384,14 @@ func draw_border() -> void:
 		return
 	for item: Array in _border_draw:
 		var c: Vector2i = item[0]
-		Art.draw_prop(self, str(item[1]), str(item[2]), Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE))
+		var t := Art.tex(str(item[1]), str(item[2]))
+		if t == null:
+			continue
+		var feet := Vector2(c * TILE) + Vector2(TILE / 2.0 + float(item[3]), TILE)
+		var sz := Vector2(t.get_width(), t.get_height()) * 0.5
+		var tr := Rect2(feet - Vector2(sz.x / 2.0, sz.y), sz)
+		if not Art.clipped(tr):
+			draw_texture_rect(t, tr, false, band_tint(int(item[4]) if item.size() > 4 else 1))
 
 
 ## A flat shade over a cell set with rounded edges (deep woods, band depth).
@@ -4451,21 +4458,28 @@ func _border_stripes() -> void:
 			b = BorderBucket.new()
 			buckets[key] = b
 			order.append(key)
-		b.items.append([t, Rect2(base - Vector2(sz.x / 2.0, sz.y), sz)])
+		b.items.append([t, Rect2(base - Vector2(sz.x / 2.0, sz.y), sz), band_tint(int(item[4]) if item.size() > 4 else 1)])
 	order.sort_custom(func(a: Vector2i, b2: Vector2i) -> bool: return a.y < b2.y or (a.y == b2.y and a.x < b2.x))
 	for key in order:
 		holder.add_child(buckets[key])
 
 
 const BORDER_BUCKET_W := 256.0  # px: border-tree bucket width (one bake chunk)
+## Border trees deeper in the band are drawn darker and calmer (layered woods; the
+## spring band's bright yellow-greens and blossoms no longer shout, c9_13).
+const BAND_TINT := [Color(1, 1, 1), Color(0.93, 0.96, 0.92), Color(0.84, 0.9, 0.84), Color(0.76, 0.83, 0.77), Color(0.7, 0.77, 0.72)]
+
+
+static func band_tint(depth: int) -> Color:
+	return BAND_TINT[clampi(depth - 1, 0, BAND_TINT.size() - 1)]
 
 
 ## A bucket of border trees on one tile row: one canvas item, drawn in one go.
 class BorderBucket extends Node2D:
-	var items: Array = []  # [Texture2D, Rect2]
+	var items: Array = []  # [Texture2D, Rect2, Color]
 	func _draw() -> void:
 		for it: Array in items:
-			draw_texture_rect(it[0], it[1], false)
+			draw_texture_rect(it[0], it[1], false, it[2])
 
 
 ## Shared fishing minigame: cast, wait for the bite, press A. `pool` is the
