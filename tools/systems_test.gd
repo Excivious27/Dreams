@@ -140,7 +140,7 @@ func _run() -> void:
 	if not gif.is_empty():
 		var c0 := GameState.count(str(gif["item"]))
 		gif["got"] = false
-		check(Mail.act(gif) == "" and GameState.count(str(gif["item"])) == c0 + 1, "a gift letter gives its item")
+		check(Mail.act(gif) == "" and GameState.count(str(gif["item"])) == c0 + int(gif.get("n", 1)), "a gift letter gives its item")
 	Settings.set_v("music_vol", 8)
 	# A renamed skill node (same id and effect, old name in "aka") keeps its ranks
 	# silently; one bought under a foreign name is refunded.
