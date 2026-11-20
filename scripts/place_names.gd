@@ -39,6 +39,9 @@ static func for_id(id: String, m: GameMap = null) -> String:
 			var iid := str(r.get("interior", ""))
 			if str(r.get("interior_name_for", "")) == iid and str(r.get("interior_name", "")) != "":
 				return str(r["interior_name"])
+			var sk: String = load("res://scripts/interior.gd").skin_name(iid)  # crew shop moved in (C5 P2 hook)
+			if sk != "":
+				return sk
 			if iid == "rec":
 				return RecCenter.name()
 			if iid == "rec_up":

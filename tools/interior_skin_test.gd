@@ -34,6 +34,7 @@ func _run() -> void:
 	GameState.new_run("penguins", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	var lib: Dictionary = all["library"]
 	_ok(Interior.arc_skin(lib) == lib, "penguin arc: rooms unchanged")
+	_ok(Interior.skin_name("cottage_c") == "", "penguin arc: room labels unchanged")
 	GameState.new_run("gangsters", "kairi", "Kairi", "Dreamhollow", "Biscuit")
 	var n := 0
 	for id: String in all:
@@ -53,5 +54,6 @@ func _run() -> void:
 		var sk: Dictionary = Interior.arc_skin(all[pair[0]])
 		_ok(str(sk.get("intro", "")).contains(pair[1]), "%s shows %s's place once the flag is set" % pair)
 		_check_room(pair[0], sk, "crew")
+		_ok(Interior.skin_name(pair[0]).contains(pair[1]), "%s room label names %s" % pair)
 	print("interior_skin_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)

@@ -1147,7 +1147,8 @@
        ],
        "solid": false
       }
-     ]
+     ],
+     "name": "Mama Rosa's Kitchen"
     }
    }
   }
@@ -1367,7 +1368,8 @@
         3
        ]
       }
-     ]
+     ],
+     "name": "Deuce's Arcade"
     }
    }
   }
@@ -1556,7 +1558,8 @@
        ],
        "solid": false
       }
-     ]
+     ],
+     "name": "Doc's Back Room"
     }
    }
   }
@@ -1991,7 +1994,8 @@
     "crew_marlene": {
      "floor": "fl_grey_plank",
      "intro": "Marlene's trading post: pews pushed back, crates stacked high. Everything here has a price and a story.",
-     "props_add": []
+     "props_add": [],
+     "name": "Marlene's Trading Post"
     }
    }
   }
@@ -3478,7 +3482,8 @@
        ],
        "solid": false
       }
-     ]
+     ],
+     "name": "Specs' Net Cafe"
     }
    }
   }
@@ -3846,7 +3851,8 @@
        ],
        "solid": false
       }
-     ]
+     ],
+     "name": "Halo's Garage"
     }
    }
   }

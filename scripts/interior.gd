@@ -148,6 +148,20 @@ static func arc_skin(d: Dictionary) -> Dictionary:
 	return out
 
 
+## The room's name in this arc when a crew shop has moved in ("" = the usual
+## name): PlaceNames asks this so a reload inside still says Specs' Net Cafe.
+static var _all_rooms: Dictionary = {}
+static func skin_name(iid: String) -> String:
+	if GameState.is_penguins():
+		return ""
+	if _all_rooms.is_empty():
+		_all_rooms = GameState.load_json("res://data/interiors.json")
+	var d: Dictionary = _all_rooms.get(iid, {})
+	if not (d.get("gangsters") is Dictionary):
+		return ""
+	return str(arc_skin(d).get("name", ""))
+
+
 static func _skin_merge(out: Dictionary, g: Dictionary) -> void:
 	for k: String in g:
 		match k:
