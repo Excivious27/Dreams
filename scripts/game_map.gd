@@ -4579,6 +4579,8 @@ func _fade_in_when_baked() -> void:
 		await get_tree().process_frame
 		if not is_inside_tree() or hud == null:
 			return
+		if _painter == null and i >= 2:
+			break  # no bake started (a map that draws itself): never hold the cover (c5_16 #1)
 		if _painter != null and not _bake_visible_missing():
 			break
 	_bake_covered = false

@@ -127,6 +127,14 @@ echo "$pout" | grep -E "FAIL|SCRIPT ERROR|perf_test" || true
 if ! echo "$pout" | grep -q "perf_test: 0 failures"; then
   echo "perf_test failed"; exit 1
 fi
+
+echo "== mine arrival: no black cover (c5_16) =="
+maout="$("$GODOT" --headless --path . --fixed-fps 60 -s res://tools/mine_arrival_test.gd 2>&1)"
+echo "$maout" | grep -E "FAIL|SCRIPT ERROR|mine_arrival_test" || true
+if ! echo "$maout" | grep -q "mine_arrival_test: 0 failures"; then
+  echo "mine_arrival_test failed"; exit 1
+fi
+
 cout="$("$GODOT" --headless --path . -s res://tools/storage_test.gd 2>&1)"
 echo "$cout" | grep -E "FAIL|storage_test" || true
 if ! echo "$cout" | grep -q "storage_test: 0 failures"; then

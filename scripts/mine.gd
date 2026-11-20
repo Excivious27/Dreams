@@ -1077,6 +1077,12 @@ func draw_map() -> void:
 	_draw_part(self, Rect2i(-pad, -pad, cols + 2 * pad, rows + 2 * pad), -1)
 
 
+## Chunked mines never use GameMap's ground bake (their MineChunks draw the
+## floor), so the arrival cover must not wait for a bake that never starts (c5_16 #1).
+func _bake_on() -> bool:
+	return not CHUNKED and super()
+
+
 ## The floor lives in MineChunk nodes; the map's own canvas draws nothing.
 func _draw() -> void:
 	if CHUNKED:
