@@ -108,7 +108,9 @@ func _draw_play(c: Control) -> void:
 		var y := y0 + (j / 4) * 16.0
 		_draw_symbol(c, keys[j], Vector2(x + 7, y + 4), 1.0, 0.36)
 		text(c, Vector2(x + 16, y + 8), "x3 = %dx" % int(three.get(keys[j], 0)), 46, 7, Color(1, 0.95, 0.8))
-	text(c, Vector2(14 + 3 * 62.0, y0 + 24), "Ch Ch = %dx  Ch = %dx" % [int(s.get("cherry2", 0)), int(s.get("cherry1", 0))], 70, 7, Color(1, 0.95, 0.8))
+	_draw_symbol(c, "cherry", Vector2(14 + 3 * 62.0 + 7, y0 + 20), 1.0, 0.36)
+	text(c, Vector2(14 + 3 * 62.0 + 16, y0 + 18), "first 2: %dx" % int(s.get("cherry2", 0)), 50, 7, Color(1, 0.95, 0.8))
+	text(c, Vector2(14 + 3 * 62.0 + 16, y0 + 28), "first 1: %dx" % int(s.get("cherry1", 0)), 50, 7, Color(1, 0.95, 0.8))
 	draw_bet_strip(c)
 	draw_fx(c)
 
@@ -118,6 +120,8 @@ func _draw_symbol(c: Control, sym: String, ctr: Vector2, alpha := 1.0, scale := 
 	var sz := 30.0 * scale
 	if tx:
 		c.draw_texture_rect(tx, Rect2(ctr - Vector2(sz, sz) * 0.5, Vector2(sz, sz)), false, Color(1, 1, 1, alpha))
+		if sym == "bar":
+			text(c, ctr + Vector2(-sz * 0.5, sz * 0.12), "BAR", sz, maxi(7, int(9 * scale)), Color(1, 0.85, 0.3, alpha), HORIZONTAL_ALIGNMENT_CENTER)
 		return
 	var col: Color = SYM_COL.get(sym, Color.GRAY)
 	c.draw_circle(ctr, sz * 0.42, Color(col, alpha))

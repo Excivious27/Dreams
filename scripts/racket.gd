@@ -181,7 +181,7 @@ static func overnight(report: Dictionary) -> void:
 	set_heat(heat() - (2 if lt > 0 else 1) - (1 if randf() < GameState.bonus("hustle", "heat_cool") else 0))
 	var wash: Dictionary = GameState.run.get("wash", {})
 	var paid := 0
-	var face_left := int(WASH_FACE_CAP[clampi(lt, 0, 3)])
+	var face_left := wash_face_cap()
 	var back := {}
 	for id in wash:
 		var it: Dictionary = GameState.items.get(str(id), {})
@@ -203,6 +203,20 @@ static func overnight(report: Dictionary) -> void:
 	GameState.run["wash"] = {}
 
 
+## Face value the wash can still take tonight (c10b_04_20): one budget shared by
+## the laundromat menu and overnight(); bills over it come back unwashed.
+static func wash_face_cap() -> int:
+	return int(WASH_FACE_CAP[clampi(Builds.built_tier("laundromat"), 0, 3)])
+
+
+static func wash_room_left() -> int:
+	var used := 0
+	var wash: Dictionary = GameState.run.get("wash", {})
+	for id in wash:
+		used += int(GameState.items.get(str(id), {}).get("face", 0)) * int(wash[id])
+	return maxi(0, wash_face_cap() - used)
+
+
 static func laundromat(m: GameMap) -> void:
 	var lt := Builds.built_tier("laundromat")
 	var d := Dialogue.instance(m.get_tree())
@@ -213,22 +227,40 @@ static func laundromat(m: GameMap) -> void:
 		for id in wash:
 			inside += int(wash[id])
 		var room := int(WASH_CAP[lt]) - inside
+		var face_left := wash_room_left()
 		var ids: Array = []
 		var opts: Array = []
+		var too_big: Array = []
 		for id in ["bills_crude", "bills_passable", "bills_fine", "bills_perfect"]:
-			if GameState.count(id) > 0 and room > 0:
+			if GameState.count(id) <= 0:
+				continue
+			var face := int(GameState.items[id]["face"])
+			if face > wash_face_cap():
+				too_big.append(GameState.item_name(id))  # the machines can never take a note this big
+				continue
+			if room > 0 and face <= face_left:
 				ids.append(id)
-				opts.append("Wash %s  (have %d · pays ◆%d each tomorrow)" % [GameState.item_name(id), GameState.count(id), int(int(GameState.items[id]["face"]) * minf(0.92, float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(GameState.items[id].get("tier", 1)), 0, 4)]) + GameState.bonus("hustle", "wash_bonus")))])  # same rate overnight() pays
+				opts.append("Wash %s  (have %d · pays ◆%d each tomorrow)" % [GameState.item_name(id), GameState.count(id), int(face * minf(0.92, float(WASH_RATE[clampi(lt, 0, 3)]) - float(WASH_TIER_CUT[clampi(int(GameState.items[id].get("tier", 1)), 0, 4)]) + GameState.bonus("hustle", "wash_bonus")))])  # same rate overnight() pays
 		opts.append("Leave")
 		var note := ""
 		if ids.is_empty():
-			note = " The wash is full for tonight." if room <= 0 else (" No bills on you. Print them at the Back-Room Press." if Builds.is_built("print_shop") else " No bills on you. A Back-Room Press (Plans, on your farm) prints them.")
-		d.say([{"who": str(Builds.current_def("laundromat").get("name", "Laundromat")), "text": "%d of %d in the wash. Paid out clean in the morning, no risk. Heat: %d/5.%s" % [inside, int(WASH_CAP[lt]), heat(), note], "choice": opts, "key": ""}])
+			if room <= 0 or face_left <= 0:
+				note = " The wash is full for tonight."
+			elif not too_big.is_empty() or face_left < wash_face_cap():
+				note = " Nothing you carry fits in tonight's wash."
+			else:
+				note = " No bills on you. Print them at the Back-Room Press." if Builds.is_built("print_shop") else " No bills on you. A Back-Room Press (Plans, on your farm) prints them."
+		if not too_big.is_empty():
+			note += " Too big for these machines: %s (upgrade the laundromat)." % ", ".join(too_big)
+		d.say([{"who": str(Builds.current_def("laundromat").get("name", "Laundromat")), "text": "%d of %d in the wash, ◆%d of ◆%d face left tonight. Paid out clean in the morning, no risk. Heat: %d/5.%s" % [inside, int(WASH_CAP[lt]), face_left, wash_face_cap(), heat(), note], "choice": opts, "key": ""}])
 		await d.finished
 		if d.last_choice < 0 or d.last_choice >= ids.size():
 			return
 		var pick := str(ids[d.last_choice])
-		var n := mini(room, GameState.count(pick))
+		var pf := maxi(1, int(GameState.items[pick]["face"]))
+		var n := mini(mini(room, GameState.count(pick)), wash_room_left() / pf)
+		if n <= 0:
+			continue
 		GameState.add_item(pick, -n)
 		wash[pick] = int(wash.get(pick, 0)) + n
 		m.hud.toast("%d in the wash." % n, Color(0.8, 0.95, 1.0))

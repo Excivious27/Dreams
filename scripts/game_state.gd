@@ -9,7 +9,7 @@ const SAVE_KEY := "run"
 const SAVE_VERSION := 10  # 10: run.decor (C10a decor box/wardrobe; Decor.migrate)
 ## Run blocks that must be containers; a JSON null here (hand-edited/partial import)
 ## is dropped by _migrate so the lazy accessors rebuild it.
-const RUN_BLOCKS := ["campaign", "cfarm", "mega", "romance", "coll", "project", "arcade", "arcade_hub",
+const RUN_BLOCKS := ["casino", "campaign", "cfarm", "mega", "romance", "coll", "project", "arcade", "arcade_hub",
 	"pet", "party", "mail", "chests", "opts", "weather", "buffs", "status", "look",
 	"animals", "flags", "inventory", "farm", "friendship", "skills", "quests", "equip",
 	"decisions", "gifted_today", "talked_today", "sellbox", "mine_pace", "hidden_at", "earned_by", "decor"]

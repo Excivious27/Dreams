@@ -626,7 +626,10 @@ func _draw_all() -> void:
 	if message_t > 0.0 and message != "":
 		var a := clampf(message_t * 3.0, 0.0, 1.0)
 		panel(c, message_rect, Color(0.08, 0.05, 0.14, 0.92 * a), Color(accent, a))
-		text(c, message_rect.position + Vector2(0, 15), message, message_rect.size.x, 9, Color(1, 1, 1, a), HORIZONTAL_ALIGNMENT_CENTER)
+		if message_rect.size.y > 26:  # a tall banner wraps (casino dealer lines)
+			c.draw_multiline_string(_font, message_rect.position + Vector2(6, 12), Money.t(message), HORIZONTAL_ALIGNMENT_CENTER, message_rect.size.x - 12, 8, 3, Color(1, 1, 1, a))
+		else:
+			text(c, message_rect.position + Vector2(0, 15), message, message_rect.size.x, 9, Color(1, 1, 1, a), HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _draw_frame(c: Control) -> void:

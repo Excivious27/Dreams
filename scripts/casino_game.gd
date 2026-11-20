@@ -37,6 +37,7 @@ func _init() -> void:
 	super._init()
 	slide_follow = false
 	fee = 0
+	message_rect = Rect2(10, 314, 250, 34)
 
 
 func _start_music() -> void:
@@ -255,6 +256,8 @@ func finish(gross: int) -> void:
 	else:
 		result_text = _net_words(last_net)
 	note = "" if free else Casino.after_hand_note()
+	if note != "":
+		say(note, 4.0)
 	_result_t = 0.0
 	state = "result"
 	_result_cue()
@@ -347,6 +350,10 @@ func draw_chip(c: Control, p: Vector2, amount: int, rad := 9.0) -> void:
 func draw_card(c: Control, r: Rect2, label: String, red: bool, face_up := true, held := false) -> void:
 	c.draw_rect(Rect2(r.position + Vector2(1, 2), r.size), Color(0, 0, 0, 0.35))
 	if not face_up:
+		var bk := Art.tex("casino", "card_back")
+		if bk:
+			c.draw_texture_rect(bk, r, false)
+			return
 		c.draw_rect(r, Color(0.55, 0.1, 0.14))
 		c.draw_rect(r.grow(-2), FELT_EDGE, false, 1.0)
 		text(c, Vector2(r.position.x, r.get_center().y + 5), "A", r.size.x, 13, FELT_EDGE, HORIZONTAL_ALIGNMENT_CENTER)
@@ -370,7 +377,7 @@ func _draw_title(c: Control) -> void:
 		text(c, Vector2(16, y), PadInput.words(str(l)), W - 32, 9, Color(0.95, 0.95, 1), HORIZONTAL_ALIGNMENT_CENTER)
 		y += 14.0
 	var keep: Dictionary = Casino.data().get("house_keeps", {})
-	text(c, Vector2(16, y + 10), "House keeps about %s of every %s bet here." % [Money.amount(roundi(float(keep.get(table, 3.0)))) if float(keep.get(table, 3.0)) >= 1.0 else "$1", Money.amount(100)], W - 32, 8, Color(1, 0.9, 0.6), HORIZONTAL_ALIGNMENT_CENTER)
+	text(c, Vector2(16, y + 10), "House keeps about %s%.2f of every %s bet here." % [Money.sym(), float(keep.get(table, 3.0)), Money.amount(100)], W - 32, 8, Color(1, 0.9, 0.6), HORIZONTAL_ALIGNMENT_CENTER)
 	text(c, Vector2(16, y + 24), "Bets %s to %s. Stopping a spin early never changes it." % [Money.amount(Casino.min_bet()), Money.amount(Casino.max_bet())], W - 32, 8, Color(0.85, 0.85, 0.9), HORIZONTAL_ALIGNMENT_CENTER)
 	if practice:
 		text_outline(c, Vector2(0, y + 48), "First hand here is a free practice hand.", W, 9, Color(0.7, 1, 0.75), HORIZONTAL_ALIGNMENT_CENTER)
@@ -392,13 +399,11 @@ func draw_bet_strip(c: Control) -> void:
 		lbl = "PRACTICE (free)  " + lbl
 	text(c, Vector2(36, 305), lbl, 220, 9, Color.WHITE)
 	if state == "result":
-		var rr := Rect2(30, 118, 210, 74 if note == "" else 104)
+		# A compact banner over the bet board: the outcome itself (reels, wheel,
+		# cards, dice) stays in view.
+		var rr := Rect2(10, 238, 250, 48)
 		panel(c, rr, Color(0.08, 0.04, 0.06, 0.95), accent)
 		var col := Color(0.7, 1, 0.75) if last_net > 0 else (Color(1, 0.75, 0.75) if last_net < 0 else Color(0.9, 0.9, 0.95))
-		text_outline(c, Vector2(rr.position.x, rr.position.y + 28), result_text, rr.size.x, 14, col, HORIZONTAL_ALIGNMENT_CENTER)
-		var y := rr.position.y + 46
-		if note != "":
-			c.draw_multiline_string(_font, Vector2(rr.position.x + 8, y), Money.t(note), HORIZONTAL_ALIGNMENT_CENTER, rr.size.x - 16, 8, 3, Color(1, 0.92, 0.7))
-			y += 34
+		text_outline(c, Vector2(rr.position.x, rr.position.y + 22), result_text, rr.size.x, 14, col, HORIZONTAL_ALIGNMENT_CENTER)
 		if _result_t > 0.3 and not leave_after:
-			text(c, Vector2(rr.position.x, y + 14), "A: bet again   B: leave", rr.size.x, 9, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)
+			text(c, Vector2(rr.position.x, rr.position.y + 40), PadInput.words("A: bet again   B: leave"), rr.size.x, 8, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER)

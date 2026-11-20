@@ -34,6 +34,7 @@ func _run() -> void:
 	_no_luck()
 	_tables()
 	_region()
+	_wash()
 	print("casino_test: %d failures" % fails)
 	quit(1 if fails > 0 else 0)
 
@@ -270,3 +271,13 @@ func _region() -> void:
 	check(types.has("casino"), "Casino Row has the casino door")
 	check(types.has("casino_odds"), "Casino Row has the odds board")
 	check(Casino.odds_board().contains("Roulette $2.70"), "odds board posts the roulette edge")
+
+
+func _wash() -> void:
+	var cap := Racket.wash_face_cap()
+	GameState.run["wash"] = {}
+	check(Racket.wash_room_left() == cap, "empty wash: whole face budget")
+	var face := int(GameState.items["bills_crude"]["face"])
+	GameState.run["wash"] = {"bills_crude": 2}
+	check(Racket.wash_room_left() == maxi(0, cap - 2 * face), "wash budget counts what's inside")
+	GameState.run["wash"] = {}
