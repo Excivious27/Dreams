@@ -292,11 +292,16 @@ func _dresser() -> void:
 	var sprite_id := GameState.sprite_for_playable(str(GameState.run.get("playable", "")))
 	var can_look := (bool(pdata.get("custom", false)) and PaperDoll.available()) or sprite_id == "penguin"
 	var opts: Array = ["Journal", "Change my look", "Decorate", "Close"] if can_look else ["Journal", "Decorate", "Close"]
+	if ResourceLoader.exists("res://scripts/wardrobe_screen.gd"):
+		opts.insert(1, "Wardrobe")  # "Wear it from the dresser at home" (c10b_11-04)
 	d.say([{"text": "The dresser. A mirror on the inside of the door.", "choice": opts, "key": ""}])
 	await d.finished
 	var pickd := str(opts[d.last_choice]) if d.last_choice >= 0 and d.last_choice < opts.size() else "Close"
 	if pickd == "Decorate":
 		DecorMode.open(self)
+		return
+	if pickd == "Wardrobe":
+		DecorCatalogue.open_other("res://scripts/wardrobe_screen.gd", self)
 		return
 	if pickd == "Journal":
 		_journal()
@@ -468,7 +473,10 @@ func _seed_starters() -> void:
 		if id == "" or done.has(key):
 			continue
 		done[key] = int(GameState.run.get("day", 1))
-		if DecorMode.why_not(self, id, c) == "":
+		DecorMode._no_people = true  # seeding is about the layout, not where you stand right now
+		var why := DecorMode.why_not(self, id, c)
+		DecorMode._no_people = false
+		if why == "":
 			list.append({"id": id, "cell": [c.x, c.y], "rot": 0})
 		else:
 			DecorMode._box_back(id)
@@ -488,7 +496,6 @@ func decor_reset() -> int:
 		var id := _starter_id(str(pr[0]))
 		if id != "" and Decor.owned(id) > 0 and DecorMode.place(self, id, pr[1]) == "":
 			n += 1
-	DecorMode.undo_stack.clear()
 	return n
 
 
@@ -620,8 +627,9 @@ func _entry_button() -> void:
 	var bt := Button.new()
 	bt.text = "Decorate"
 	bt.add_theme_font_size_override("font_size", Settings.font(8))
-	bt.position = Vector2(206, 252)  # the dark band under the room, clear of the furniture and the HUD
-	bt.size = Vector2(60, 22)
+	var bw := maxf(60.0, bt.get_combined_minimum_size().x)
+	bt.position = Vector2(270.0 - bw - 4.0, 252)  # the dark band under the room; never past the column's edge (c10b_09-23)
+	bt.size = Vector2(bw, 22)
 	bt.focus_mode = Control.FOCUS_NONE
 	bt.pressed.connect(func() -> void:
 		if not get_tree().paused and not Dialogue.instance(get_tree()).active:
@@ -646,7 +654,7 @@ func _entry_button() -> void:
 func _draw_shell() -> void:
 	var I0: Variant = load("res://scripts/interior.gd")
 	var wid := DecorMode.surface_of("wall", "main")
-	var wa := DecorMode.art_of(wid) if wid != "" else ["tiles", "wl_floral", false]
+	var wa := DecorMode.surface_art(wid) if wid != "" else ["tiles", "wl_floral", false]
 	var trim := Art.tex("tiles", str(wa[1]) + "_m") if str(wa[0]) == "tiles" else null
 	if trim == null:
 		trim = Art.tex("tiles", "wl_floral_m")
@@ -690,7 +698,7 @@ func floor_at(c: Vector2i) -> String:
 		if c.x >= rr.position.x and c.x < rr.end.x:
 			var id := DecorMode.surface_of("floor", str(room))
 			if id != "":
-				var a := str(DecorMode.art_of(id)[1])
+				var a := str(DecorMode.surface_art(id)[1])
 				for w: Array in [["stone", "stone"], ["tile", "stone"], ["marble", "stone"], ["carpet", "grass"], ["rug", "grass"]]:
 					if str(w[0]) in a:
 						return str(w[1])
