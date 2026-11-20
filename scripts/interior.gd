@@ -23,7 +23,8 @@ const ART_CROP := {
 
 ## Back-wall middle pieces per kit that tile cleanly side by side (the full
 ## _m/_m2/_m3 cycle steps or breaks for these: marble capitals, floral roses).
-const WALL_MIDS := {"wl_marble": ["_m2"], "wl_floral": ["_m2"], "wl_wood": ["_m2"], "wl_hut": ["_m2"], "wl_log": ["_m", "_m2"], "wl_mill": ["_m2"], "wl_curve": ["_m"], "wl_reed": ["_m3"], "wl_plaster": ["_m2"], "wl_timber": ["_m2"]}
+const WALL_MIDS := {"wl_marble": ["_m2"], "wl_floral": ["_m2"], "wl_wood": ["_m2"], "wl_hut": ["_m2"], "wl_log": ["_m", "_m2"], "wl_mill": ["_m2"], "wl_curve": ["_m"], "wl_reed": ["_m3"], "wl_plaster": ["_m2"], "wl_timber": ["_m2"],
+		"wl_floral_blue": ["_m2"], "wl_striped": ["_m3"]}  # c10_03: measured edge joins (wl_fish/wl_tent have no clean pair: art list)
 
 
 static func art_crop(g: String, nm: String) -> Rect2:
@@ -509,7 +510,32 @@ static func clean_src(t: Texture2D) -> Rect2:
 	return r
 
 
-var _floor_vars: Array = []
+## Usable variants per floor set (keyed by floor name: a room with two floors keeps both right, c10_03).
+static var _floor_vars_by: Dictionary = {}
+
+
+static func floor_vars(fl: String) -> Array:
+	if not _floor_vars_by.has(fl):
+		var fv: Array = []
+		# Variants whose clean window is most of the tile (others would stretch too far),
+		# kept to those near the middle brightness so the floor doesn't read as a checker.
+		var lums := {}
+		for i in 8:
+			var tv := Art.tex("tiles", fl + "_%d" % i)
+			if tv and clean_src(tv).size.x >= tv.get_width() * 0.72:
+				fv.append(i)
+				lums[i] = _lum(tv)
+		if fv.size() > 2:
+			var ls: Array = lums.values()
+			ls.sort()
+			var mid: float = ls[ls.size() / 2]
+			var near := fv.filter(func(i: int) -> bool: return absf(float(lums[i]) - mid) <= 0.035)
+			if near.size() >= 2:
+				fv = near
+		if fv.is_empty():
+			fv = [0]
+		_floor_vars_by[fl] = fv
+	return _floor_vars_by[fl]
 
 
 ## Mean luminance of a floor tile's clean window (sampled every 3 px).
@@ -530,44 +556,34 @@ static func _lum(t: Texture2D) -> float:
 
 
 func _floor_cell(fl: String, c: Vector2i) -> void:
+	paint_floor_cell(self, fl, c)
+
+
+## One floor cell of a floor set on any canvas item (the house uses it too). False = no art.
+static func paint_floor_cell(ci: CanvasItem, fl: String, c: Vector2i) -> bool:
 	if Art.has("tiles", fl + "_0"):
-		if _floor_vars.is_empty():
-			# Variants whose clean window is most of the tile (others would stretch too far),
-			# kept to those near the middle brightness so the floor doesn't read as a checker.
-			var lums := {}
-			for i in 8:
-				var tv := Art.tex("tiles", fl + "_%d" % i)
-				if tv and clean_src(tv).size.x >= tv.get_width() * 0.72:
-					_floor_vars.append(i)
-					lums[i] = _lum(tv)
-			if _floor_vars.size() > 2:
-				var ls: Array = lums.values()
-				ls.sort()
-				var mid: float = ls[ls.size() / 2]
-				var near := _floor_vars.filter(func(i: int) -> bool: return absf(float(lums[i]) - mid) <= 0.035)
-				if near.size() >= 2:
-					_floor_vars = near
-			if _floor_vars.is_empty():
-				_floor_vars = [0]
-		var vi: int = _floor_vars[(c.x * 3 + c.y * 5) % _floor_vars.size()]
+		var fv := floor_vars(fl)
+		var vi: int = fv[(c.x * 3 + c.y * 5) % fv.size()]
 		var tt := Art.tex("tiles", fl + "_%d" % vi)
 		if tt:
-			draw_texture_rect_region(tt, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), clean_src(tt))
-		return
+			ci.draw_texture_rect_region(tt, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), clean_src(tt))
+		return true
 	var t := Art.tex("tiles", fl)
 	if t == null:
-		return
+		return false
 	if fl.begins_with("fl_carpet"):
 		# One bordered rug image: sample only inside its gold border.
 		var kc := t.get_width() / 96.0
-		draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2((22.0 + float(c.x % 2) * 26.0) * kc, (22.0 + float(c.y % 2) * 26.0) * kc, 26.0 * kc, 26.0 * kc))
-		return
+		ci.draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2((22.0 + float(c.x % 2) * 26.0) * kc, (22.0 + float(c.y % 2) * 26.0) * kc, 26.0 * kc, 26.0 * kc))
+		return true
 	# Stay inside the art's clean middle: its outer pixels carry a dark border.
 	var k := t.get_width() / 96.0
 	var band_h := minf(56.0, t.get_height() * 0.58)
 	var sx := (4.0 + float(c.x % 3) * 28.0) * k
 	var sy := 3.0 + float(c.y % 2) * (band_h - 30.0)
-	draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2(sx, sy, 28.0 * k, 26))
+	ci.draw_texture_rect_region(t, Rect2(Vector2(c * TILE), Vector2(TILE, TILE)), Rect2(sx, sy, 28.0 * k, 26))
+	return true
+
 
 
 ## First row of a wall tile that is mostly painted (tall walls like the mill's have a transparent top).
@@ -673,8 +689,7 @@ func draw_map() -> void:
 		# variants alternated and every cell was its own draw call, every frame.
 		var nv := 1
 		if Art.has("tiles", fl + "_0") and rows > 3 and cols > 2:
-			_floor_cell(fl, Vector2i(1, 2))  # picks _floor_vars
-			nv = maxi(1, _floor_vars.size())
+			nv = maxi(1, floor_vars(fl).size())
 		for k in nv:
 			for y in range(2, rows - 1):
 				for x in range(1, cols - 1):

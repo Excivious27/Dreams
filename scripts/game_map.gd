@@ -480,6 +480,8 @@ func try_interact(c: Vector2i, check := false) -> bool:
 		return true
 	if thing.is_empty() and scene_id() != "farm" and use_consumable(str(GameState.run["selected"])):
 		return true
+	if thing.is_empty() and scene_id() != "farm" and DecorMode.held_hint(self):
+		return true  # C10a: decor / a placeable held indoors says where it goes (never a silent USE)
 	if interact_common(c, thing):
 		return true
 	if thing.is_empty() and _building_doors.has(c) and _building_doors[c] != c and blocked.has(c):
