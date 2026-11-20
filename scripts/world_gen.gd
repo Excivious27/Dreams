@@ -138,19 +138,12 @@ static func clear_paths(m: GameMap) -> int:
 			continue
 		var t := str(m.things.get(c, {}).get("type", ""))
 		var node: Variant = m.props[c]
-		if t in ["tree", "rock", "log", "stump", "bush", "weeds", "grove"] or (t == "" and _small_prop(node) and m.blocked.has(c)):
+		# a generic prop wider than its cell (crates with a width) is left alone: removing it would leave its other cells as an invisible wall
+		if t in ["tree", "rock", "log", "stump", "bush", "weeds", "grove"] or (t == "" and _small_prop(node) and m.blocked.has(c) and not m.blocked.has(c + Vector2i(1, 0))):
 			m.things.erase(c)
 			m.blocked.erase(c)
 			m.hard.erase(c)
 			m.props.erase(c)
-			# a prop can block cells to its right (prop width): free those too, or they become invisible walls
-			if node is Sprite2D and (node as Sprite2D).texture != null:
-				var span := int(ceil((node as Sprite2D).texture.get_width() * (node as Sprite2D).scale.x / 16.0))
-				for dx in range(1, span + 1):
-					var cc := c + Vector2i(dx, 0)
-					if m.blocked.has(cc) and not m.props.has(cc) and not m.things.has(cc) and not m.is_water_cell(cc):
-						m.blocked.erase(cc)
-						m.hard.erase(cc)
 			if node is Node and is_instance_valid(node):
 				(node as Node).queue_free()
 			n += 1
