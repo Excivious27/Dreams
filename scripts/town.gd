@@ -647,6 +647,11 @@ func _place_props() -> void:
 			continue
 		prop("props", _lamp_name(x), Vector2i(x, 43))
 		prop("props", _lamp_name(x), Vector2i(x, 52))
+	# Across the bridge the east road ran dark and flat at night (c5_02 #10): lamps there too.
+	for x in [75, 82]:
+		for y in [43, 52]:
+			if not things.has(Vector2i(x, y)) and not _river.has(Vector2i(x, y)) and not blocked.has(Vector2i(x, y)):
+				prop("props", _lamp_name(x), Vector2i(x, y))
 	# Wells, carts, crates: the working edges of town.
 	prop("buildings", "well", Vector2i(30, 56), 2)
 	prop("props", "well_stone", Vector2i(60, 32), 1)
