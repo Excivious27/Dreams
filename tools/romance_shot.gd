@@ -28,7 +28,7 @@ func _run() -> void:
 	var s := Romance.st()
 	s["spouse"] = id
 	s["married_day"] = int(GameState.run["day"])
-	GameState.run["day"] = 2  # a day off for most
+	GameState.run["day"] = 3  # not a job day for lumi (job days 2, 4)
 	GameState.run["time"] = 11 * 60
 	GameMap.next_spawn = Vector2(15 * 16 + 8, 8 * 16 + 8)
 	change_scene_to_file("res://scenes/house.tscn")

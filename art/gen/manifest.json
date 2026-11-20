@@ -50780,6 +50780,56 @@
    "h": 215,
    "w": 126
   },
+  "spouse_benno": {
+   "file": "furniture/spouse_benno.png",
+   "h": 60,
+   "w": 48
+  },
+  "spouse_finn": {
+   "file": "furniture/spouse_finn.png",
+   "h": 60,
+   "w": 33
+  },
+  "spouse_ivy": {
+   "file": "furniture/spouse_ivy.png",
+   "h": 59,
+   "w": 54
+  },
+  "spouse_juniper": {
+   "file": "furniture/spouse_juniper.png",
+   "h": 60,
+   "w": 43
+  },
+  "spouse_lumi": {
+   "file": "furniture/spouse_lumi.png",
+   "h": 60,
+   "w": 36
+  },
+  "spouse_posy": {
+   "file": "furniture/spouse_posy.png",
+   "h": 60,
+   "w": 56
+  },
+  "spouse_rook": {
+   "file": "furniture/spouse_rook.png",
+   "h": 60,
+   "w": 38
+  },
+  "spouse_sel": {
+   "file": "furniture/spouse_sel.png",
+   "h": 60,
+   "w": 53
+  },
+  "spouse_tam": {
+   "file": "furniture/spouse_tam.png",
+   "h": 59,
+   "w": 44
+  },
+  "spouse_theo": {
+   "file": "furniture/spouse_theo.png",
+   "h": 60,
+   "w": 41
+  },
   "stacked_tablets": {
    "file": "furniture/stacked_tablets.png",
    "h": 190,
@@ -96273,6 +96323,21 @@
    "file": "props/wdeco_8.png",
    "h": 30,
    "w": 32
+  },
+  "wedding_arch": {
+   "file": "props/wedding_arch.png",
+   "h": 96,
+   "w": 67
+  },
+  "wedding_bench": {
+   "file": "props/wedding_bench.png",
+   "h": 34,
+   "w": 47
+  },
+  "wedding_heart_sign": {
+   "file": "props/wedding_heart_sign.png",
+   "h": 46,
+   "w": 30
   },
   "weight_bench": {
    "file": "props/weight_bench.png",
