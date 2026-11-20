@@ -2,9 +2,9 @@
 
 Every system in the game with its state, what is still outstanding, test coverage, and what Claude needs from Tom. `docs/inventory.csv` is the source (edit it, then run `python3 tools/inventory_md.py`). Percentages are estimates against Tom's bar ("100% = Stardew-grade commercial release").
 
-**Summary:** 59 systems: 40 done, 9 rough, 9 missing. Average 71%.
+**Summary:** 61 systems: 42 done, 9 rough, 9 missing. Average 72%.
 
-**Live counts:** 19,401 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 112 headless tests, 100 in check.sh.
+**Live counts:** 19,401 sliced art pieces in 653 groups; 105 music tracks, 467 sfx files, 61 ambience beds; 112 headless tests, 106 in check.sh.
 
 ## Systems
 
@@ -21,7 +21,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Core | Saves, 3 slots, migrations, settings page | done | 90 | systems_test, storage_test | No save export/import yet (audit 17b deferred) |
 | Core | Web build + PWA, deploy on push | done | 90 | CI runs check.sh | Pack size/memory and loading bar still open (audit 17b F12, W15/W16) |
 | Core | Desktop / full-screen play | done | 90 | desktop_layout_test | C2 P8 |
-| Core | Controllers: pad bindings, remap API, device prompts, PadFocus/PadCursor, analog walk | in progress | 75 | pad_test (not in check.sh) | C9 P1: every action on a pad, hot-plug, touch pad hides on a pad; menus/chest/craft/title pad navigation lands with P2/P3/P5 (PadFocus/PadCursor hooks) |
+| Core | Controllers: pad bindings, remap API, device prompts, PadFocus/PadCursor, analog walk | in progress | 75 | pad_test | C9 P1: every action on a pad, hot-plug, touch pad hides on a pad; menus/chest/craft/title pad navigation lands with P2/P3/P5 (PadFocus/PadCursor hooks) |
 | Core | Steam build (export, achievements, Steam networking) | missing | 0 | none | Planned last ('QA/Steam' depth round); needs Tom's Steamworks account |
 | Farm | Stardew start: empty house, overgrown field, debris | done | 96 | crop_test, playtest.gd | C3: debris regrows by rarity, seasonal weeds/tall grass, hay+fiber (decided; Tom may still change) |
 | Farm | Farming: 134 crops, seasons, watering, soil layer, star quality | done | 90 | crop_test | Quality stars via farming skill |
@@ -38,7 +38,7 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | People | 26 villagers: schedules, gifts, hearts, birthdays, 96+ heart perks | done | 90 | hearts_test, hearts_content_test | 10-heart endings and best-friend ceremony are story defaults not built |
 | People | Dating/marriage | done | 85 | romance_test | C7: bouquet at 8 hearts, 3 dates per candidate, locket at 10, wedding (penguin chapel / gangster plaza), spouse moves in and helps overnight; 10 candidates, G-rated; writing deepened in C12 |
 | People | Pet/pup: perks, hunter perk, mines | rough | 78 | systems_test, move_target_test | C2: pup swims (Paddle) instead of walking on water |
-| QA | Headless tests, bots, playtest | done | 85 | 112 *_test.gd; 100 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
+| QA | Headless tests, bots, playtest | done | 85 | 112 *_test.gd; 106 run in check.sh | char_sheet/creator/hearts/ui/reach/net tests run outside check.sh |
 | Story | Endings + epilogue slideshow | done | 90 | story_test, epilogue_test | Third ending (Clean Break) pending Tom |
 | Story | Penguin arc: 5 chapters, sanctuary, colonies | done | 85 | story_test, meow_gate_test | C7: canon (Crystopia crystals, 21-year bell timeline, Catkins guardian line, Nova dream, Fennimore beats, elders at the finale), beat flow fixes, story_flow_test |
 | Story | Gangster arc: 5 chapters, Racket, heat, turf, heists, crew | done | 85 | story_test, gang_play_test, cash_test | C7: origin + redemption path, Winter Kade, Inspector Hale, Clean Break ending, loyalty in the finale (data/story_gang.json) |
@@ -46,15 +46,17 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Story | Festivals: Egg, Lantern, Harvest, Star (scenes in town) | rough | 75 | none dedicated | C7 P4: lantern float (wish + steer past snags), crop contest (pick entry, rival entries), star-wish (wish + send a star). Full action mini-games still to come |
 | Systems | Community farm (Commons), 8 stages, volunteers | done | 95 | commons_test, cf_volunteer_test, cf_layout_test | C2: overnight builds, seasonal asks, working volunteers, lend-a-hand, woodland edge / gangster city-block edge; C3: builds take 2-4 nights with half-built pieces |
 | Systems | Rec Center: bowling, 5 arcade cabinets, tickets, prizes | done | 94 | rec_test, bowling_test, ticket_econ_test, rec_links_test, rec_audio_test | C2: hours, house lane, villager versus bowling, real phone controls and pin physics, economy without loops, quests/mail/perks links, new decor + RecGlow, bowling song + jukebox; C3: renovations to ~day 125 + seasonal Rec Cup, gang 2am, ticket stub |
+| Systems | Skill trees: 13 trees, unlock nodes, caps, renames | done | 92 | skill_glow_test, c8_curve_test, move_speed_test | C2: unspent points shimmer on tabs + banner; C8: level curve to MAX_LEVEL 100, LEVEL_EFFECT_CAP 20, tree HP/EN caps, 5 move-speed nodes per arc |
 | Systems | Arcade: Block Jumper, Neon/Crystal Stack, Whack-a-Grump, Claw, Duck Pond, Skee-Ball | done | 92 | arcade_test, jumper_test, stack_whack_test, rec_games_test, touch_ui_test | C2: pause card, curves, scoring, real Skee-Ball, checkpoints/respawn, tap-to-jump |
 | Systems | Workshop stations, CraftScreen, recipe books, cyber stations | done | 90 | station_test | Generated by gen_stations.py |
 | Systems | Quest tracker: pick tracked quest, themed corner compass (mines point down) | done | 90 | quest_tracker_test | C3 P6 |
 | Systems | Difficulty modes Very easy/Easy/Default/Hard (combat + battle campaigns only, per slot) | done | 90 | difficulty_test (not in check.sh) | C4 P1 |
 | Systems | Day length 15/20/30/40 min (new-game menu + Settings, per slot) | done | 90 | day_length_test (not in check.sh) | C4 P1 |
-| Systems | Skill trees: 13 trees, unlock nodes, caps, renames | done | 88 | skill_glow_test | C2: unspent points shimmer on tabs + banner |
+| Systems | Fishing: pools per water/season/time, rods/bait, treasure, Legendary Koi | done | 88 | c8_p4_test, collections_test | C8 P4: Fishing.T table, value-band windows, bait only where it helps, tier ceiling per area |
+| Systems | Shops, economy, money (gangster cash), kill-crystal cap | done | 88 | cash_test, shop_econ_test, econ_check.py | Balance sheet docs/economy.xlsx; C8: econ_check (no loops/outliers) in check.sh, ECON floors/caps per recipe, stand/market fixed, Valley Fund sink |
+| Systems | Collections: museum, shipping log, fish log, cookbook/crafting/forage logs, milestones (badges) | done | 88 | collections_test, gang_flavour_test, save_test, coop_test | C8 P3: Valley Museum / Curio Room (library east wing, 59 pieces in 4 wings, donation tray, Theo letters), Book menu tab, milestone letters + farmhouse decor + Curator's Loupe; open: wildlife log or bug catching (Tom), museum cases not synced to co-op guests |
+| Systems | Move speed ladder: gear, buffs, skills, bursts, mounts, vehicles (MoveSpeed caps) | done | 85 | move_speed_test | C8 P5: foot cap +60%, ride/vehicle caps, tap-to-move braking; buff stacking still open |
 | Systems | Hero tab, gear sets, energy revamp | done | 85 | char_sheet_test (not in check.sh) |  |
-| Systems | Collections: museum, shipping log, fish log, cookbook/crafting/forage logs, milestones (badges) | done | 85 | collections_test, gang_flavour_test, save_test, coop_test | C8 P3: Valley Museum / Curio Room (library east wing, 59 pieces in 4 wings, donation tray, Theo letters), Book menu tab, milestone letters + farmhouse decor + Curator's Loupe; open: wildlife log or bug catching (Tom), museum cases not synced to co-op guests |
-| Systems | Shops, economy, money (gangster cash), kill-crystal cap | done | 80 | cash_test | Balance sheet docs/economy.xlsx |
 | Systems | Long-run progression and balance (3-year pacing, year 2-3 unlocks) | rough | 50 | first_week_test | Tom: CONDUCT 16 |
 | Systems | Seasonal content (festivals, holidays, seasonal items/quests per season, year-2+ events) | rough | 45 | none | Tom: CONDUCT 15 |
 | Systems | Earned fast travel network (mine carts, ferries, trains, planes, clouds, cars/subway, currents) | missing | 10 |  | Tom 17:39; mega hub vehicles exist; built in C14, paced C16 |
@@ -64,8 +66,8 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 | Systems | Trading cards (packs, binder, regional sets, trading with NPCs/players, card game) | missing | 0 |  | Tom 17:21; CONDUCT 19 |
 | Systems | Casino side arc (gangster; tiered build-up against NPC pushback, staff) | missing | 0 |  | Tom 17:12; CONDUCT 10. Tom 20:03: real betting allowed, all-ages tone (no drinking: wines are trade goods) |
 | Systems | The General Store side arc | missing | 0 |  | CONDUCT 21 |
+| World | Mines: 26 layouts, chunks, pup in mines, Hollow Heart | done | 92 | mine_test, mine_keeper_test, c8_p4_test | C2: 35 varied guardian encounters, varied wake pace, route-following arrow, reliable crates/barrels, tools 30% of sword in fights; C8 P4: Mining curve (PICK_SWING, smooth rock hp, gem chance), early floors lighter |
 | World | Valley maps: farm, town, beach, mountain, forest, lake, meadow, crystal meadow, outskirts, community farm | done | 90 | reach_test (not in check.sh), exit_check, exit_edge_check, door_check, invisible_walls | Sun Haven openness via WorldGen |
-| World | Mines: 26 layouts, chunks, pup in mines, Hollow Heart | done | 90 | mine_test, mine_keeper_test | C2: 35 varied guardian encounters, varied wake pace, route-following arrow, reliable crates/barrels, tools 30% of sword in fights |
 | World | Day/night, seasons, weather, dawn glow, faint at 10pm | done | 90 | r13_world_test, day_length_test (not in check.sh) | Day length 15/20/30/40 min built (C4 P1); C5: desert/sky looks always summer, caves fixed darkness (light 0.5) |
 | World | Mega regions: 10 worlds, own map tabs, travel hooks | done | 88 | mega_region_test, mega_regions_test | Five built round 13; new and least played; C4: balance/rewards/unlocks per arc, pin cards, mega quest tracker, boss themes, hidden pockets + secret ways, gangster Space, new boss/foe art |
 | World | 67 regions (regions.json) incl. campaign-gated story regions | done | 85 | r13_world_test, campaign_gate_test | Story regions held until campaign won (Tom may want free) |
@@ -92,4 +94,4 @@ Status: **done** = built, tested, only polish left; **rough** = playable but con
 
 ## Tests outside check.sh
 
-border_bucket_test, char_sheet_test, creator_test, day_length_test, difficulty_test, haptics_test, menu_pad_test, net_test, pad_test, reach_test, save_transfer_test, screens_pad_test
+char_sheet_test, creator_test, day_length_test, difficulty_test, net_test, reach_test
