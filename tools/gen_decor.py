@@ -54,6 +54,7 @@ TIER_PRICE = {1: 0.0, 2: 0.25, 3: 0.5, 4: 0.75, 5: 1.0}   # where in the rarity 
 
 ENTRIES = {}
 NAMES = {}
+DRINK_P6 = re.compile(r'(?i)\b(wine|ale|rum|beer|whisk(e)?y|vodka|gin|brandy|liquor|booze|cocktail|drug|weed|pill)\b')
 ITEM_NAMES = {v.get('name') for k, v in I.items() if not k.startswith(('dc_', 'wr_', 'rp_'))}
 
 
@@ -479,23 +480,46 @@ for uid, name, art, cat, layer, arc, kind, ref in UNIQUES:
             glow=cat == 'light', fp=[2, 2] if cat != 'light' else [1, 1], desc='One of a kind. There is only one in the whole valley.')
 
 # ---- 8) P6 renders: art/gen/decor/_catalog.json merged as-is (names/rarities from c10_01/c10_09) -------
-p6 = json.load(open(CAT_PATH)) if os.path.exists(CAT_PATH) else []
+p6 = json.load(open(os.environ.get('DECOR_CATALOG', CAT_PATH))) if os.path.exists(os.environ.get('DECOR_CATALOG', CAT_PATH)) else []
+P6_WARN = []   # a bad render entry is skipped with a warning (never breaks regen_data at merge time)
+GANG_WORD = re.compile(r'(?i)penguin|crystal|casino|gambl|cigar')
 for c in p6:
-    cid = c['id'] if c['id'].startswith(('dc_', 'wr_')) else (('wr_' if c.get('cat') in WEAR_CATS else 'dc_') + c['id'])
-    if cid in ENTRIES:
-        continue
-    art = 'decor/' + c['id']
-    icon = 'decor/' + c['id'] + '_icon' if os.path.exists(os.path.join(ROOT, 'art', 'gen', 'decor', c['id'] + '_icon.png')) else art
-    if not art_ok(art):
-        continue
-    nm = c['name'] if c['name'] not in NAMES else c['name'] + ' II'
-    e = add(cid, nm, c.get('cat', 'decor'), c.get('rarity', 'common'), art, c.get('layer', 'floor'),
-            int(c.get('tier', 1 + min(4, RK[c.get('rarity', 'common')]['rank']))), c.get('arc', 'both') or 'both', sub=c.get('sub', ''),
-            glow=bool(c.get('glow')), icon=icon, rot=int(c.get('rot', 1)), sets=[c['set']] if c.get('set') else None,
-            fp=c.get('size') or [1, 1], renders=c.get('renders', 'icon' if c.get('cat') in WEAR_CATS else ''),
-            anim=int(c.get('frames', 0)))
-    if int(c.get('rot', 1)) > 1:
-        e['rot_art'] = ['decor/%s%s' % (c['id'], '' if i == 0 else '_r%d' % i) for i in range(int(c.get('rot', 1)))]
+    try:
+        cid = c['id'] if c['id'].startswith(('dc_', 'wr_')) else (('wr_' if c.get('cat') in WEAR_CATS else 'dc_') + c['id'])
+        if cid in ENTRIES or not re.match(r'^(dc|wr)_[a-z0-9_]+$', cid):
+            P6_WARN.append('%s: duplicate or bad id' % c.get('id')); continue
+        raw = c['id'][3:] if c['id'].startswith(('dc_', 'wr_')) else c['id']
+        art = 'decor/' + raw
+        icon = 'decor/' + raw + '_icon' if os.path.exists(os.path.join(ROOT, 'art', 'gen', 'decor', raw + '_icon.png')) else art
+        if not art_ok(art):
+            P6_WARN.append('%s: no art/gen/decor/%s.png' % (cid, raw)); continue
+        rar = c.get('rarity', 'common') if c.get('rarity', 'common') in RK else 'common'
+        arc = c.get('arc', 'both') or 'both'
+        cat = c.get('cat', 'decor') if c.get('cat', 'decor') in CATS else 'decor'
+        nm = str(c.get('name', raw.replace('_', ' ').title()))
+        if len(nm) > 26:
+            nm = nm[:26].rsplit(' ', 1)[0]
+        if arc == 'gangsters' and GANG_WORD.search(nm) or DRINK_P6.search(nm):
+            P6_WARN.append('%s: name %r has an arc/all-ages word' % (cid, nm)); continue
+        if nm in NAMES or nm in ITEM_NAMES:
+            nm = (nm[:23] + ' II') if (nm + ' II') not in NAMES else nm[:22] + ' III'
+        src = None
+        if rar == 'unique':  # one source each; P3/P4 hand it out (listed in the report)
+            src = [c['source']] if isinstance(c.get('source'), dict) else [{'kind': 'collection', 'ref': 'decor_' + raw, 'once': True}]
+        e = add(cid, nm, cat, rar, art, c.get('layer', 'floor'),
+                int(c.get('tier', 1 + min(4, RK[rar]['rank']))), arc, sub=c.get('sub', ''),
+                glow=bool(c.get('glow')), icon=icon, rot=int(c.get('rot', 1)), sets=[c['set']] if c.get('set') else None,
+                fp=[max(1, min(4, int(v))) for v in (c.get('size') or [1, 1])][:2], renders=c.get('renders', 'icon' if cat in WEAR_CATS else ''),
+                anim=int(c.get('frames', 0)), sources=src)
+        if int(c.get('rot', 1)) > 1:
+            e['rot_art'] = ['decor/%s%s' % (raw, '' if i == 0 else '_r%d' % i) for i in range(int(c.get('rot', 1)))]
+            if not all(art_ok(r) for r in e['rot_art']):
+                e['rot'] = 1; e.pop('rot_art')
+                P6_WARN.append('%s: rotation art missing, rot 1' % cid)
+    except (KeyError, ValueError, TypeError, SystemExit) as ex:
+        P6_WARN.append('%s: %s' % (c.get('id') if isinstance(c, dict) else c, ex))
+for w in P6_WARN:
+    print('WARN p6', w)
 
 # ---- 9) sets (+ comfort bonus when complete) -----------------------------------------------------------
 def ids_where(f):
@@ -721,7 +745,7 @@ for s in sorted(set(TARGET) | set(subs)):
     lines.append('| %s | %d | %d | %d |' % (s, subs.get(s, 0), TARGET.get(s, 0), max(0, TARGET.get(s, 0) - subs.get(s, 0))))
 lines += ['', 'By category: ' + ', '.join('%s %d' % kv for kv in sorted(cats.items())),
           'By rarity: ' + ', '.join('%s %d' % (r['id'], rars.get(r['id'], 0)) for r in RARITY),
-          'By arc: ' + ', '.join('%s %d' % kv for kv in sorted(arcs.items())), '']
+          'By arc: ' + ', '.join('%s %d' % kv for kv in sorted(arcs.items())), ''] + (['P6 entries skipped:'] + ['- ' + w for w in P6_WARN] + [''] if P6_WARN else [])
 open(os.path.join(ROOT, 'docs', 'DECOR-ART.md'), 'w').write('\n'.join(lines))
 print('gen_decor: %d entries (%s), %d sets, %d recipes, shops %s, pools %d' % (
     len(ENTRIES), ', '.join('%s %d' % (r['id'], rars.get(r['id'], 0)) for r in RARITY), len(SETS), len(RECIPES),
