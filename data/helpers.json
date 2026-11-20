@@ -102,6 +102,13 @@
    ],
    "energy": 24
   },
+  "hand": {
+   "chores": [
+    "feed",
+    "pet"
+   ],
+   "energy": 16
+  },
   "partner": {
    "chores": [
     "water",

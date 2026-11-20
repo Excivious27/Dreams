@@ -3231,7 +3231,7 @@ static func sleep(passed_out := false) -> Dictionary:
 			report["ripe"] = int(report.get("ripe", 0)) + 1
 	# Sprinklers and Hazel water again so the morning starts with wet soil.
 	_sprinklers_water()
-	if hazel_waters:
+	if hazel_waters or Project.waters_morning():  # the crew's "Mind the farm" job waters too (c11a_10)
 		var hw := 0
 		for k2 in run["farm"].keys():
 			if str(run["farm"][k2].get("crop", "")) != "":

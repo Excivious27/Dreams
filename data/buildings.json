@@ -914,8 +914,8 @@
    {
     "tier": 3,
     "name": "Apiary",
-    "sprite": "ri_beehive4",
-    "group": "props",
+    "sprite": "apiary_2",
+    "group": "buildings",
     "cost": {
      "hardwood_plank": 10,
      "glass": 10,
@@ -3711,8 +3711,8 @@
    {
     "tier": 1,
     "name": "Mayo Machine",
-    "sprite": "mayo_machine",
-    "group": "props",
+    "sprite": "mayo_machine_1",
+    "group": "stations",
     "cost": {
      "plank": 15,
      "copper_bar": 2,
@@ -3727,8 +3727,8 @@
    {
     "tier": 2,
     "name": "Deluxe Mayo Machine",
-    "sprite": "mayo_machine",
-    "group": "props",
+    "sprite": "mayo_machine_2",
+    "group": "stations",
     "cost": {
      "iron_bar": 4,
      "glass": 6,

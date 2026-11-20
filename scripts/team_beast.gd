@@ -107,6 +107,12 @@ func _process(delta: float) -> void:
 	if position.distance_to(map.player.position) > 260.0:
 		position = map.player.position + _slot_offset()  # left behind (door, cliff): catch up
 	var want := "walk" if moving and _spr.sprite_frames.has_animation("walk") else "idle"
+	if moving and to.length() > 60.0 and _spr.sprite_frames.has_animation("run"):
+		want = "run"
+	elif _cd > HIT_CD - 0.3 and _spr.sprite_frames.has_animation("attack"):
+		want = "attack"  # a butt just landed
+	elif not moving and fight != null and _spr.sprite_frames.has_animation("guard"):
+		want = "guard"
 	if _spr.animation != want:
 		_spr.play(want)
 

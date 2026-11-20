@@ -2172,7 +2172,14 @@ func _place_props() -> void:
 			var ssc := 0.5 if str(b["thing"]) != "station" or sw <= 0.0 else minf(0.5, float(int(b["w"]) + 3) * TILE / sw)  # a wide top-tier station stays in its slot (one cell spare each side)
 			if id in ["coop", "barn"] and sw > 0.0:
 				ssc = minf(0.667, float(int(b["w"]) + 2) * TILE / sw)  # the farmhouse's scale (at 0.5 they read as toys, C5), one cell spare
-			prop(str(b["group"]), str(b["sprite"]), c, int(b["w"]), 0.0, true, ssc)
+			var bpic := str(b["sprite"])
+			if str(b["group"]) == "buildings":  # P6 ranch tiers: snowy roof in winter, night picture after dark
+				bpic = WorldGen.winter_look("buildings", bpic)
+				if bpic == str(b["sprite"]) and GameState.is_night() and Art.has("buildings", bpic + "_night"):
+					bpic += "_night"
+			var bsp := prop(str(b["group"]), bpic, c, int(b["w"]), 0.0, true, ssc)
+			if bsp and glow and str(b["group"]) == "buildings":
+				glow.add_windows(bsp, str(b["sprite"]))
 	# Starter babies grow up young_days (7) after their coop/barn goes up (names kept, so friendship carries over).
 	# A visiting guest reads, never writes, these (the host's farm: c11a_06/14_06); a guest
 	# without them sees the starter herd grown.

@@ -272,6 +272,9 @@ static func sprite_group(uid: String) -> String:
 	var sp := str(a.get("species", ""))
 	var art: Dictionary = Ranch.species(sp).get("art", {})
 	var cands: Array = []
+	var ra := Ranch.art_for(uid)  # the roster look (variant art, baby strip): P6 team poses live on these kinds
+	if not bool(ra.get("baby", false)) and str(ra.get("group", "")) != "" and Art.has(str(ra["group"]), "idle"):
+		return str(ra["group"])
 	var v := str(a.get("variant", ""))
 	if art.has("adult"):
 		if v != "":

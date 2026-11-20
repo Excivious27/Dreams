@@ -29,6 +29,29 @@ const TARGET_H := {"chicken2": 16.0, "rooster": 17.0, "duck2": 15.0, "chick": 10
 	"llama_b": 30.0, "llama_cria": 16.0, "pig_b": 18.0, "piglet": 10.0, "rabbit_brown": 10.0, "rabbit_white": 10.0,
 	"donkey": 24.0, "donkey_b": 24.0, "foal": 16.0, "foal_b": 16.0, "sheep": 18.0, "kid_goat": 12.0, "bee_swarm": 8.0}
 const BABY_SHARE := 0.6
+static var _art_h := {}  # kind -> px from art/gen/animals/_ranch_art.json "height" (P6), loaded once
+static var _art_babies := {}  # baby kinds named in _ranch_art.json (drawn at their own height)
+
+
+## True-to-life drawn height of an art kind: P6's _ranch_art.json first, then TARGET_H (0 = unknown).
+static func target_h(k: String) -> float:
+	if _art_h.is_empty():
+		_art_h["_"] = 0.0
+		var f := FileAccess.open("res://art/gen/animals/_ranch_art.json", FileAccess.READ)
+		var d: Variant = JSON.parse_string(f.get_as_text()) if f else null
+		if d is Dictionary:
+			for sp: String in d:
+				if sp.begins_with("_") or not (d[sp] is Dictionary):
+					continue
+				var row: Dictionary = d[sp]
+				if row.get("height", null) is Dictionary:
+					for kk: String in row["height"]:
+						_art_h[kk] = float(row["height"][kk])
+				if str(row.get("baby", "")) != "":
+					_art_babies[str(row["baby"])] = true
+	if _art_h.has(k) and k != "_":
+		return float(_art_h[k])
+	return float(TARGET_H.get(k, 0.0))
 static var _h_cache := {}  # kind -> [drawn height, drawn width] of idle frame 0 at scale 1
 var _shadow: Node2D
 
@@ -61,7 +84,8 @@ var _need_t := 0.0
 
 ## Drawn scale for an art kind at its true-to-life height (followers, menus): 0.5 when unknown.
 static func scale_for(k: String, tex: Texture2D = null) -> float:
-	if not TARGET_H.has(k):
+	var th := target_h(k)
+	if th <= 0.0:
 		return 0.5
 	var h := 0.0
 	if _h_cache.has(k):
@@ -72,7 +96,7 @@ static func scale_for(k: String, tex: Texture2D = null) -> float:
 			if img.is_compressed():
 				img.decompress()
 			h = float(img.get_used_rect().size.y)
-	return float(TARGET_H[k]) / h if h > 4.0 else 0.5
+	return th / h if h > 4.0 else 0.5
 
 
 func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> void:
@@ -87,7 +111,7 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	if _strip != "idle" and Art.has(g, _strip):
 		anims["idle"] = _strip  # a hatchling drawn from its parent's baby strip (Ranch art.baby)
 	var fps := {"idle": 3.0}
-	if BABY_OF.has(k):
+	if BABY_OF.has(k) and not Art.has(g, "idle"):  # P6 drew a real chick: the scrap fallback only for old art
 		# The chick cut is an unusable scrap: a hatchling from the hen's baby strip.
 		var b: Array = BABY_OF[k]
 		g = "animals/" + str(b[0])
@@ -104,9 +128,9 @@ func setup(m: GameMap, k: String, c: Vector2i, p: Rect2i, is_baby := false) -> v
 	var hw := _drawn_size(k)
 	if _height > 0.0 and hw.y > 0.0:
 		sc = _height / hw.y  # Ranch: species/baby height from data
-	elif TARGET_H.has(k) and hw.y > 0.0:
-		sc = float(TARGET_H[k]) / hw.y
-		if is_baby and not k in ["calf", "lamb", "goat_kid", "chick"]:
+	elif target_h(k) > 0.0 and hw.y > 0.0:
+		sc = target_h(k) / hw.y
+		if is_baby and not k in ["calf", "lamb", "goat_kid", "chick"] and not _art_babies.has(k):
 			sc *= BABY_SHARE  # a young one drawn from its parent's strip
 	scale = Vector2(sc, sc)
 	_add_shadow(hw.x * sc if hw.x > 0.0 else 16.0)
