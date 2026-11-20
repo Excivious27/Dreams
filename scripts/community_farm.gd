@@ -940,6 +940,9 @@ func _talk(n: Npc) -> void:
 	if not talked.has(id):
 		talked[id] = true
 		GameState.add_friend(id, 5)
+	if await Hearts.talk(self, id):  # a heart scene waits here too (C7 P4)
+		player.frozen = false
+		return
 	if await Quests.talk(self, id, name):
 		player.frozen = false
 		return

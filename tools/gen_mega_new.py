@@ -327,7 +327,7 @@ CONTENT["sunscorch"] = {
 }
 # ---- Ironline (gangsters, chapter 3) -----------------------------------------------
 CONTENT["ironline"] = {
-    "keeper": "Conductor Hollis", "keeper_sprite": "mg_hollis", "keeper_at": [-2, 0], "home_name": "the town square", "hub_name": "Junction City", "sfx": "door",
+    "keeper": "Conductor Hollis", "keeper_sprite": "mg_hollis", "keeper_at": [-2, 0], "home_name": "the plaza", "hub_name": "Junction City", "sfx": "door",
     "hook": {"text": "Conductor Hollis needs 10 coal and 3 iron bars to run the night train to Ironline.", "items": [["coal", 10], ["iron_bar", 3]], "crystals": 120},
     "lines": {
         "locked": "Night train's not running. Line's tied up in somebody's paperwork. When your name means something in this valley, come back and we'll talk tickets.",
@@ -339,7 +339,7 @@ CONTENT["ironline"] = {
         "home": "Back to town, or another stop?",
         "wrong_arc": "Booth's closed. Sign says 'Not today'.",
     },
-    "mail": {"from": "Conductor Hollis", "text": "There's a ticket booth by the town square nobody uses. I run the night train out of it, when I've got coal. Stop by. Could be work in it. - Hollis"},
+    "mail": {"from": "Conductor Hollis", "text": "There's a ticket booth by the plaza nobody uses. I run the night train out of it, when I've got coal. Stop by. Could be work in it. - Hollis"},
 }
 # ---- Frostpeak (both, chapter 4) ----------------------------------------------------
 CONTENT["frostpeak"] = {

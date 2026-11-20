@@ -80,8 +80,8 @@ def P2(p, g):
 RENOVATIONS = [
     {"id": "arcade_wing", "after": 18, "build": 3, "opens": {"cabinets": ["whack", "gallery"]},
      "name": P2("the arcade wing", "the back room"),
-     "start": P2("Big news: the boarded-up back of the arcade is getting two new cabinets. Workers start tomorrow; that corner's taped off for three days. Keep your tickets warm! - The {hall} front desk",
-                 "Word from the {hall}: the back room's getting two new cabinets. Crew starts tomorrow, that corner's taped off three days. Keep your tickets warm. - Front desk"),
+     "start": P2("Big news: the boarded-up back of the arcade is getting two new cabinets. Workers start today; that corner's taped off for three days. Keep your tickets warm! - The {hall} front desk",
+                 "Word from the {hall}: the back room's getting two new cabinets. Crew's in from today, that corner's taped off three days. Keep your tickets warm. - Front desk"),
      "done": P2("The arcade wing is open! {games} are plugged in and waiting. First one to top the board gets their name on the wall. - The {hall} front desk",
                 "Back room's open. {games} are plugged in. Top the board and your initials go on the wall. - Front desk")},
     {"id": "skee_alley", "after": 42, "build": 4, "opens": {"skee": True},

@@ -164,7 +164,7 @@
      -2,
      0
     ],
-    "home_name": "the town square",
+    "home_name": "the plaza",
     "spawn": [
      50,
      6
@@ -199,7 +199,7 @@
    },
    "mail": {
     "from": "Conductor Hollis",
-    "text": "There's a ticket booth by the town square nobody uses. I run the night train out of it, when I've got coal. Stop by. Could be work in it. - Hollis"
+    "text": "There's a ticket booth by the plaza nobody uses. I run the night train out of it, when I've got coal. Stop by. Could be work in it. - Hollis"
    },
    "sfx": "door"
   },

@@ -245,9 +245,85 @@ v("sel", "sel_fossil",
   "Sel would go to the ruins and ring the cracked bell with a rock, because that's what the wall says to do, and Sel believes the wall.",
   {"2": "Rude about the sky.", "4": "They wrote it in the walls.", "6": "The sentence is about your field.", "8": "The town was awake.", "10": "A town can beat the dark by being awake."})
 
+# ---- C7 P4: staging for the ♥8 and ♥10 scenes (a narrated opening, and the
+# villager's own closing words), plus Catkins' arc. "" speaker = narration.
+def N(*texts):
+    return L("", *texts)
+
+EXTRA = {
+ "maple": {"8": (N("Maple turns the shop sign to CLOSED while you're still inside, and doesn't turn it back."), L("Maple", "You don't have to answer. I just wanted it asked, once, out loud, by somebody who'd mind the answer.")),
+           "10": (N("Maple has the letter flat on the counter under a jar of seeds, as if it might blow away."), L("Maple", "He'll want the top shelf back. I'll let him have it. You can have the bent packet's row; it's the best row in the shop."))},
+ "gideon": {"8": (N("The forge is banked low. Gideon has the little ring in his palm, closing his fist over it whenever the door creaks."), L("Gideon", "Don't tell her. I'll do it. Eleven years; I can manage a week.")),
+            "10": (N("Gideon is at the anvil, not working. He keeps glancing at the clinic across the way."), L("Gideon", "Here. A horseshoe nail, bent into a loop. It's not a ring. It's a thank-you that's shaped like a ring. Don't make it weird."))},
+ "wren": {"8": (N("Wren shuts the shop door and turns the little bell so it won't ring."), L("Wren", "Sit. I'll make tea. I never make anyone tea.")),
+          "10": (N("Wren junior is behind the counter on a crate, labelling bottles in very large letters. Wren watches her and not the brew."), L("Wren", "She spelled it 'fevver'. I'm leaving it. It's the right medicine either way."))},
+ "alder": {"8": (N("Alder locks the hall door behind you, then the drawer, then unlocks the drawer again."), L("Alder", "A box of brushes, a sketchbook, and one bad painting of the bell tower. Thirty years under the fee ledgers. Don't laugh. ...You can laugh a little.")),
+           "10": (N("There's paint on Alder's cuff and he hasn't noticed. Everyone in the hall has, and nobody's said a word."), L("Alder", "Lumi says it's 'honest'. I've decided that's a compliment. I'm painting the plaza next. With you in it, if you'll stand still."))},
+ "sal": {"8": (N("Sal walks you to the bench by the south gate and sits with the bad knee straight out, watching the road."), L("Sal", "Thanks for not saying anything. People always say something.")),
+         "10": (N("Sal is on the bench by the south gate, but facing the town for once, not the road."), L("Sal", "Funny. I always sat here so I'd see trouble coming. Turns out I like watching the town better."))},
+ "finn": {"8": (N("Finn walks you down the jetty to a little blue boat tied at the end, bobbing like it's pleased with itself."), L("Finn", "Tomas would've laughed at the paint job. That's how I know it's right.")),
+          "10": (N("The boat has a name now, in careful white letters, still a bit tacky to the touch."), L("Finn", "First fish off her goes to you. That's the rule. I just made it up, so it's the oldest rule on the lake."))},
+ "lumi": {"8": (N("Lumi pulls a sheet off the easel, then hesitates, then pulls it the rest of the way."), L("Lumi", "You're the first person to see it. Theo doesn't count; he only looks at the corners.")),
+          "10": (N("Half the town has been past the hall today to look. Lumi is pretending not to count them."), L("Lumi", "Next one's of the whole valley. It'll take years. Good. I'd like to have years here."))},
+ "theo": {"8": (N("Theo lays the miners' log open on the library desk and holds the pages flat with two inkwells."), L("Theo", "I'm putting it in a small notice. A very small one. Some things need to be read quietly first.")),
+          "10": (N("The two last books sit on Theo's desk, finished, with a ribbon in each. He's smiling at them like old friends."), L("Theo", "The library now has four hundred books and I've read four hundred. I'm going to need you to find me more. That's not a request, it's a crisis."))},
+ "hazel": {"8": (N("Hazel walks you to the end of the farm lane, where you can see the quarry road climbing the hill."), L("Hazel", "Nine years we looked at that road and thought it was the reason. It was only a road.")),
+           "10": (N("Hazel takes you down to the cellar by lantern light. Wheels of cheese line every shelf, each with a chalk name."), L("Hazel", "Two for the house, one for the town fair, and the lumpy one's yours. It's the best one. Don't tell the others."))},
+ "bram": {"8": (N("Bram is on the inn step with his boots off, rubbing his feet and looking at the lake road as if it owes him money."), L("Bram", "Next year I'll do it in an hour and a half. Don't tell Posy; she'll want to come.")),
+          "10": (N("Through the inn window, Posy is laughing at the front counter. Bram watches from the kitchen hatch, wiping the same plate."), L("Bram", "Her mother would've liked you. She liked anyone who sat with their back to the wall and still smiled at the door."))},
+ "posy": {"8": (N("Posy hands you a jar of jam still warm from the pan, then takes it back to wipe the lid, then gives it to you again."), L("Posy", "First batch that tasted like hers. You get the first jar. That's how it works now.")),
+          "10": (N("Posy is on the bakery step at closing time with a paper bag of crusts, the way you'd leave them out for someone."), L("Posy", "I still put crusts out. Just in case Biscuit's nose works better than my hope. Sit with me a minute?"))},
+ "juniper": {"8": (N("Juniper is rolling bandages at the clinic desk. The ring catches the lamplight every time her hands move."), L("Juniper", "If you say 'congratulations' I'll take your temperature in the least dignified way I know.")),
+             "10": (N("The clinic is quiet. Juniper shows you a ledger, then a second, much shorter list tucked in the back."), L("Juniper", "Gideon's on it. Maple. Granite. You, at the top. It's a short list. It's a good list."))},
+ "rook": {"8": (N("Rook crouches by your pup at the orchard edge and lets it sniff her glove for a long moment."), L("Rook", "Good nose. Better heart. Don't let anyone tell you those aren't the same thing.")),
+          "10": (N("Rook is sitting on a fence rail with a blank letter on her knee and a pencil she keeps not using."), L("Rook", "First line's done. 'I'm alive, and I'm sorry, and I live somewhere with apples.' The rest is just walking."))},
+ "pip": {"8": (N("Pip runs up waving a letter over their head so fast it's nearly a flag."), L("Pip", "Six lines! I'm going to write SEVEN. Then he'll have to write eight. It's a war. A nice war.")),
+         "10": (N("Pip drags you to the foot of the bell tower and points up, very seriously, like a mayor."), L("Pip", "Every day at noon. That's the law. You can ring it on Sundays. That's also the law. I just made it."))},
+ "wren_jr": {"8": (N("Wren jr has a jar with holes in the lid and a very large, very calm frog inside it, wearing a leaf like a hat."), L("Wren jr", "He's the mayor of the pond. Don't tell Alder. He gets jealous.")),
+             "10": (N("Wren jr pulls you down to her height to whisper, which is a very loud whisper."), L("Wren jr", "When I grow up I'm going to be a potion lady AND a frog lady. Mum says you can't be both. You're a farmer and a hero. So you can."))},
+ "tobin": {"8": (N("Tobin hauls you out into the inn yard by the sleeve. A red kite is already high over the roof, tugging at its line."), L("Tobin", "Hold it! Both hands! Feel that? That's the wind saying yes.")),
+           "10": (N("Tobin is sitting on the inn's back step with Bram, both of them looking up at the kite on the roof."), L("Tobin", "When the wind's right it points at your farm. I tied it that way on purpose. Don't tell Bram I'm sentimental."))},
+ "mabel": {"8": (N("Mabel takes your hand and walks you up the quarry road, humming, till you reach a cut stone by the gate."), L("Mabel", "That's his name. Granite carved it neat. I sing here on Saturdays. You can come. You don't have to sing.")),
+           "10": (N("Mabel is at the fence with Granite on a Sunday, handing him nails one at a time, very bossily."), L("Mabel", "He's slow. Mum says that's how stone people do things. I think it's so he can stay longer."))},
+ "marlowe": {"8": (N("Marlowe leads you up the lighthouse stairs, all of them, one hand on the rail and one on your shoulder."), L("Marlowe", "Look east. Nothing there now. That's the first time I've been glad to see nothing.")),
+             "10": (N("The lamp turns overhead. Marlowe is asleep in his chair by the window, a blanket over his knees, smiling."), N("On the table, a note in big letters: 'Gone to sleep. Lamp's lit. Thank you. - M.'"))},
+ "orla": {"8": (N("Orla lifts the lid of the flour tin and shows you three folded scraps of paper, dusted white."), L("Orla", "He never writes more than five words. I've read them five hundred times each. That's the maths of it.")),
+          "10": (N("Orla has her good shawl on and a basket of fresh rolls, and is looking at the lighthouse path."), L("Orla", "If I'm not back by supper, mind the wheel. It only needs feeding and talking to. Like the rest of us."))},
+ "benno": {"8": (N("Benno leads the grey mare out of the stable, and she noses at his pocket for the apple she knows is there."), L("Benno", "She knew. Horses always know. She stood like a statue till I stopped shaking.")),
+           "10": (N("Benno is in the paddock at dawn, walking the race course on foot, counting the turns out loud."), L("Benno", "Fourteen turns. I'll take every one of them slow. Finishing's the race. The rest is just horses."))},
+ "ivy": {"8": (N("Ivy slides a small brass key across the bank counter, then a passbook with your name on it in her neat hand."), L("Ivy", "Don't thank me. Thanking is for people who haven't earned it. You have.")),
+         "10": (N("Ivy is filing a letter into a drawer marked KEEP, with a small, satisfied click."), L("Ivy", "The capital can keep its vault. I've got a town that settles its accounts. That's worth more than interest."))},
+ "tam": {"8": (N("Tam brings the lamb on a rope that the lamb plainly thinks is optional. It headbutts your knee, gently."), L("Tam", "She's called Bramble. She's eaten two of my hats. Feed her and she's yours for life.")),
+         "10": (N("Tam is packing a rucksack with a crook tied to the side. The Dollys are watching from the fence, unimpressed."), L("Tam", "I'll write. Sheep don't, so I have to. Keep a light on at the farm; it helps, coming down off the hills."))},
+ "old_moss": {"8": (N("Old Moss stops listening to the frogs and listens to you instead, which feels like a bigger thing than it should."), L("Old Moss", "Fifty years is a long time to keep a promise to someone who can't hear it. I'd do it again. That's the trouble.")),
+              "10": (N("Old Moss has a clean coat on and is brushing marsh mud off his boots, slowly, the way you'd tidy for a visit."), L("Old Moss", "The frogs will manage a day without me. They pretend they won't. Walk me in when you're ready?"))},
+ "granite": {"8": (N("Granite has a hammer in one hand and a fence post over his shoulder, and he's smiling, which nobody at the quarry has seen."), L("Granite", "Nine years I thought the hard part was the rockfall. It was the knocking.")),
+             "10": (N("The fence at Hazel's is the straightest fence anyone has ever seen. Granite is adding another rail anyway."), L("Granite", "Sunday dinner. You're invited. Hazel said so, which means it's an order. Bring your appetite; Mabel cooks the beans."))},
+ "sel": {"8": (N("Sel traces the carved letters with a fingertip, lips moving, as if reading a bedtime story to the wall."), L("Sel", "Three thousand years, and the last word they cut was 'awake'. I'd like that on my stone. Not soon. But that word.")),
+         "10": (N("Sel's tent is packed. A rubbing of the wall is rolled up under one arm, tied with string."), L("Sel", "I'll come back. The stones aren't finished talking. Neither, I think, are we."))},
+}
+for vid, ms in EXTRA.items():
+    for n, (pre, post) in ms.items():
+        H[vid]["milestones"][n] = pre + H[vid]["milestones"][n] + post
+
+# Catkins (penguin arc only): taught by the Star Crystal long ago, thousands of
+# years old, last of an ancient line of cat guardians who keep the Meow Pow Wow
+# as a spiritual way (monasteries, meditations, the four elements). Tom 17:12 #5.
+v("catkins", "",
+  N("Catkins is sitting very still on a sun-warm rock, paws tucked, eyes half closed.") + L("Catkins", "Sit. Not like that; like a cat. Back straight, tail around your feet. You don't have a tail. Imagine one.", "Breathe in for four. Out for four. That's the first meditation. It took me two hundred years to like it."),
+  N("Catkins draws four small circles in the dust with one claw: a drop, a flame, a pebble, a feather.") + L("Catkins", "Water, fire, earth, air. Every guardian learns all four, and then learns that they're one thing wearing four coats.", "The Meow Pow Wow is that one thing, given away. Love, offered with no hook in it. That's all. That's the hardest thing there is."),
+  N("Catkins leads you to the edge of Cat-topia, where a mossy stair climbs into the trees to a crumbling gate.") + L("Catkins", "Up there was the old monastery. Cats came from every valley to sit in its courtyard and learn to purr at the dark until the dark sat down.", "It's quiet now. There used to be a bell. If you find anything up there that wants ringing, bring it to me."),
+  N("At dusk, Catkins looks up at the first star for a long time before she speaks.") + L("Catkins", "Long ago, before your town was a town, a star came down and sat with a small, frightened kitten. It taught her to breathe, and to purr at the dark, and to keep that gift safe till it was needed.", "I was the kitten. I have kept it for thousands of years. I did not know, until you came, who I was keeping it for.", "Your partners carry it now. I'm not sad. A gift that's kept forever isn't a gift. It's a lock."),
+  N("Catkins sits beside you on the warm rock. For once she isn't meditating. She's just sitting.") + L("Catkins", "I made a decision. I'm going to teach again. The courtyard, the four coats, the breathing. Kittens, merkitties, a penguin if one asks politely.", "The first student's name goes on the monastery wall. Yours is there already. Don't argue with a guardian; it's very bad luck.", "Heart at the chest. Hearts and paws. You remembered. You always remember."),
+  "Catkins would sit in the middle of the road with her eyes closed and purr, and whatever came would find it had nowhere it wanted to go but home.",
+  {"2": "Four in, four out. Don't forget your imaginary tail.", "4": "Water, fire, earth, air. One thing, four coats.", "6": "The monastery stair is mossy. Mind your paws.", "8": "Thousands of years, and it was worth every one.", "10": "A guardian with a student again. Imagine that."})
+H["catkins"]["arc"] = "penguins"
+
 # Lines that change when the story sent someone away (hearts.gd swaps them in).
-H["gideon"]["milestones"]["10"][0]["if_gone"] = {"juniper": "I gave her the ring the morning she left. She said I was an idiot. She took it with her."}
-H["bram"]["milestones"]["10"][0]["if_gone"] = {"posy": "Posy writes from the capital. There's a bakery there with her name over the door, and her mother's under it."}
+H["gideon"]["milestones"]["10"][0]["if_gone"] = {"juniper": "Gideon is at the anvil, not working. He keeps glancing up the road the clinic cart took."}
+H["gideon"]["milestones"]["10"][1]["if_gone"] = {"juniper": "I gave her the ring the morning she left. She said I was an idiot. She took it with her."}
+H["bram"]["milestones"]["10"][0]["if_gone"] = {"posy": "Bram is at the kitchen hatch with a letter propped against the salt, reading it again between plates."}
+H["bram"]["milestones"]["10"][1]["if_gone"] = {"posy": "Posy writes from the capital. There's a bakery there with her name over the door, and her mother's under it."}
 # ♥6 lines for a quest you finished before ♥6 (hearts.gd swaps them in).
 H["pip"]["milestones"]["6"][1]["if_done"] = "You already paid me candy for the secret. I kept one back and threw it in the fountain. I made my wish. I'm not telling. It's SCIENCE."
 H["tobin"]["milestones"]["6"][0]["if_done"] = "The five shells you got me are on the tail. Bram says a kite needs them. I think he made that up."

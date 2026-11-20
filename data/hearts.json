@@ -36,6 +36,10 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Maple turns the shop sign to CLOSED while you're still inside, and doesn't turn it back."
+     },
+     {
       "who": "Maple",
       "text": "When that light came down in your field, I was closing up. I saw it from the step. I didn't run out. I didn't tell anyone.",
       "text_gangsters": "The day you came in with that deed in the wrong name, I was closing up. I saw your face. I didn't ask. I didn't tell anyone."
@@ -43,9 +47,17 @@
      {
       "who": "Maple",
       "text": "I thought: whoever's out there, they're going to need somebody who doesn't ask questions. So I didn't. I'm asking one now. Are you all right?"
+     },
+     {
+      "who": "Maple",
+      "text": "You don't have to answer. I just wanted it asked, once, out loud, by somebody who'd mind the answer."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Maple has the letter flat on the counter under a jar of seeds, as if it might blow away."
+     },
      {
       "who": "Maple",
       "text": "Four lines came today. Five, actually. The fifth one says: 'Is it safe to come home?'"
@@ -53,6 +65,10 @@
      {
       "who": "Maple",
       "text": "I don't know what to write back. I think the answer's you. I think the answer's been you since the turnips."
+     },
+     {
+      "who": "Maple",
+      "text": "He'll want the top shelf back. I'll let him have it. You can have the bent packet's row; it's the best row in the shop."
      }
     ]
    },
@@ -100,15 +116,30 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "The forge is banked low. Gideon has the little ring in his palm, closing his fist over it whenever the door creaks."
+     },
+     {
       "who": "Gideon",
       "text": "The ring's for Juniper. There. Said it. Eleven years, I've said it to a farmer and a forge."
      },
      {
       "who": "Gideon",
       "text": "She set my arm when I broke it on the anvil. Said I was an idiot. Nobody's ever been so right about me."
+     },
+     {
+      "who": "Gideon",
+      "text": "Don't tell her. I'll do it. Eleven years; I can manage a week."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Gideon is at the anvil, not working. He keeps glancing at the clinic across the way.",
+      "if_gone": {
+       "juniper": "Gideon is at the anvil, not working. He keeps glancing up the road the clinic cart took."
+      }
+     },
      {
       "who": "Gideon",
       "text": "I gave her the ring. She said I was an idiot. She's wearing it.",
@@ -119,6 +150,10 @@
      {
       "who": "Gideon",
       "text": "You did that. Not the ruby. The... you came in every day and swung like a farmer until I had to talk to you. That's what you did."
+     },
+     {
+      "who": "Gideon",
+      "text": "Here. A horseshoe nail, bent into a loop. It's not a ring. It's a thank-you that's shaped like a ring. Don't make it weird."
      }
     ]
    },
@@ -167,6 +202,10 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Wren shuts the shop door and turns the little bell so it won't ring."
+     },
+     {
       "who": "Wren",
       "text": "The fever was Wren junior's. She was three. The starflower was the only thing in this town that was going to work, and it did, and I never told anyone how close it was. Not even her.",
       "text_gangsters": "The fever was Wren junior's. She was three. The moonwort was the only thing in this town that was going to work, and it did, and I never told anyone how close it was. Not even her."
@@ -174,9 +213,17 @@
      {
       "who": "Wren",
       "text": "Her father's not here now. That's a different story, and it's not yours. But you should know what you brought me."
+     },
+     {
+      "who": "Wren",
+      "text": "Sit. I'll make tea. I never make anyone tea."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Wren junior is behind the counter on a crate, labelling bottles in very large letters. Wren watches her and not the brew."
+     },
      {
       "who": "Wren",
       "text": "I've started talking to Wren junior instead of the plants. It's harder. She answers."
@@ -184,6 +231,10 @@
      {
       "who": "Wren",
       "text": "You did that. Not with the flower. With the coming back. Here: the recipe for the fever tonic. Nobody has it but me. Now two people."
+     },
+     {
+      "who": "Wren",
+      "text": "She spelled it 'fevver'. I'm leaving it. It's the right medicine either way."
      }
     ]
    },
@@ -235,15 +286,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Alder locks the hall door behind you, then the drawer, then unlocks the drawer again."
+     },
+     {
       "who": "Alder",
       "text": "I was going to be a painter. There. Lumi knows; nobody else. I had a place in the capital and my father got ill the week before I left."
      },
      {
       "who": "Alder",
       "text": "I still have the brushes. In the hall, bottom drawer, under the fee ledgers. That's where I keep the things I didn't do."
+     },
+     {
+      "who": "Alder",
+      "text": "A box of brushes, a sketchbook, and one bad painting of the bell tower. Thirty years under the fee ledgers. Don't laugh. ...You can laugh a little."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "There's paint on Alder's cuff and he hasn't noticed. Everyone in the hall has, and nobody's said a word."
+     },
      {
       "who": "Alder",
       "text": "I painted this morning. Four a.m., before the fees. It's bad. It's wonderful; it's bad."
@@ -251,6 +314,10 @@
      {
       "who": "Alder",
       "text": "The council seat's yours if you want it. You won't. That's why it's yours."
+     },
+     {
+      "who": "Alder",
+      "text": "Lumi says it's 'honest'. I've decided that's a compliment. I'm painting the plaza next. With you in it, if you'll stand still."
      }
     ]
    },
@@ -298,15 +365,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Sal walks you to the bench by the south gate and sits with the bad knee straight out, watching the road."
+     },
+     {
       "who": "Sal",
       "text": "The knee was a door. Uptown. I held it so the others could get out, and they wouldn't come. They stayed with him. I went."
      },
      {
       "who": "Sal",
       "text": "That's the whole story. There isn't a better version. I've looked."
+     },
+     {
+      "who": "Sal",
+      "text": "Thanks for not saying anything. People always say something."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Sal is on the bench by the south gate, but facing the town for once, not the road."
+     },
      {
       "who": "Sal",
       "text": "I've decided something. If this town goes, I go with it. Not away from it. With it."
@@ -314,6 +393,10 @@
      {
       "who": "Sal",
       "text": "First time I've picked a side since the door. Feels like the knee's going to hold."
+     },
+     {
+      "who": "Sal",
+      "text": "Funny. I always sat here so I'd see trouble coming. Turns out I like watching the town better."
      }
     ]
    },
@@ -361,15 +444,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Finn walks you down the jetty to a little blue boat tied at the end, bobbing like it's pleased with itself."
+     },
+     {
       "who": "Finn",
       "text": "I finished the boat. Last week. Just... did it, one morning, before I'd thought about it."
      },
      {
       "who": "Finn",
       "text": "She floats. I haven't named her. You name a boat, it's real. I'll get there."
+     },
+     {
+      "who": "Finn",
+      "text": "Tomas would've laughed at the paint job. That's how I know it's right."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "The boat has a name now, in careful white letters, still a bit tacky to the touch."
+     },
      {
       "who": "Finn",
       "text": "Named the boat. 'Second Cast.' Because you don't catch anything on the first one; that's just asking the water."
@@ -377,6 +472,10 @@
      {
       "who": "Finn",
       "text": "She's yours any time. Just say. I'll row."
+     },
+     {
+      "who": "Finn",
+      "text": "First fish off her goes to you. That's the rule. I just made it up, so it's the oldest rule on the lake."
      }
     ]
    },
@@ -425,6 +524,10 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Lumi pulls a sheet off the easel, then hesitates, then pulls it the rest of the way."
+     },
+     {
       "who": "Lumi",
       "text": "I mixed the blue. From the starflower. It's not the same; it's better, because I had to work for it.",
       "text_gangsters": "I mixed the blue. From the moonwort. It's not the same; it's better, because I had to work for it."
@@ -433,9 +536,17 @@
       "who": "Lumi",
       "text": "The painting's of the gate. Your gate. The morning the penguins came. Don't ask how I knew; painters know.",
       "text_gangsters": "The painting's of the gate. Your gate. The morning you came to town. Don't ask how I knew; painters know."
+     },
+     {
+      "who": "Lumi",
+      "text": "You're the first person to see it. Theo doesn't count; he only looks at the corners."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Half the town has been past the hall today to look. Lumi is pretending not to count them."
+     },
      {
       "who": "Lumi",
       "text": "It's hanging in the hall. Next to Alder's portrait. He cried; he'll say he didn't."
@@ -443,6 +554,10 @@
      {
       "who": "Lumi",
       "text": "It's the gate, and the light, and someone in it who looks like they've decided to stay. I didn't give them a face. They have yours."
+     },
+     {
+      "who": "Lumi",
+      "text": "Next one's of the whole valley. It'll take years. Good. I'd like to have years here."
      }
     ]
    },
@@ -491,6 +606,10 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Theo lays the miners' log open on the library desk and holds the pages flat with two inkwells."
+     },
+     {
       "who": "Theo",
       "text": "The log says the bell cracked the same night something fell in the east. The same night. Twenty-one years ago."
      },
@@ -498,9 +617,17 @@
       "who": "Theo",
       "text": "Your light isn't the first. Something came before. Something that didn't ask for help.",
       "text_gangsters": "You aren't the first stranger up that road. Something came before. Something that didn't ask for help."
+     },
+     {
+      "who": "Theo",
+      "text": "I'm putting it in a small notice. A very small one. Some things need to be read quietly first."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "The two last books sit on Theo's desk, finished, with a ribbon in each. He's smiling at them like old friends."
+     },
      {
       "who": "Theo",
       "text": "I've finished the two books. The language was mine after all; I just hadn't learned it yet."
@@ -508,6 +635,10 @@
      {
       "who": "Theo",
       "text": "The last line of the last one says: 'They came back for the town.' I don't know if it's a record or a prediction. I'd like it to be both."
+     },
+     {
+      "who": "Theo",
+      "text": "The library now has four hundred books and I've read four hundred. I'm going to need you to find me more. That's not a request, it's a crisis."
      }
     ]
    },
@@ -555,15 +686,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Hazel walks you to the end of the farm lane, where you can see the quarry road climbing the hill."
+     },
+     {
       "who": "Hazel",
       "text": "Granite told me. At the quarry. He didn't leave us. There was a rockfall; he got the whole crew out and hurt his back so badly he went to the coast to mend, too proud to write. Nine years, Granite's been carrying that up the road and not quite knocking."
      },
      {
       "who": "Hazel",
       "text": "I told Mabel. She cried, and then she asked if she could see the quarry, and I said yes. I don't know why I said yes. I'm glad I did."
+     },
+     {
+      "who": "Hazel",
+      "text": "Nine years we looked at that road and thought it was the reason. It was only a road."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Hazel takes you down to the cellar by lantern light. Wheels of cheese line every shelf, each with a chalk name."
+     },
      {
       "who": "Hazel",
       "text": "Cellar's full. Mabel named every wheel. One's called after you; it's the lumpy one."
@@ -571,6 +714,10 @@
      {
       "who": "Hazel",
       "text": "Granite comes by Sundays. Fixes the fence. Doesn't say much. The fence doesn't need fixing."
+     },
+     {
+      "who": "Hazel",
+      "text": "Two for the house, one for the town fair, and the lumpy one's yours. It's the best one. Don't tell the others."
      }
     ]
    },
@@ -620,6 +767,10 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Bram is on the inn step with his boots off, rubbing his feet and looking at the lake road as if it owes him money."
+     },
+     {
       "who": "Bram",
       "text": "I walked to the lake. Myself. Halfway, then I sat down, then the rest of the way.",
       "text_gangsters": "I walked to the avenue. Myself. Halfway, then I sat down, then the rest of the way."
@@ -628,9 +779,20 @@
       "who": "Bram",
       "text": "She used to walk it in forty minutes. Took me two hours. The sill was full again before I sat down.",
       "text_gangsters": "She used to walk it in forty minutes. Took me two hours. Her glass was full before I sat down."
+     },
+     {
+      "who": "Bram",
+      "text": "Next year I'll do it in an hour and a half. Don't tell Posy; she'll want to come."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Through the inn window, Posy is laughing at the front counter. Bram watches from the kitchen hatch, wiping the same plate.",
+      "if_gone": {
+       "posy": "Bram is at the kitchen hatch with a letter propped against the salt, reading it again between plates."
+      }
+     },
      {
       "who": "Bram",
       "text": "Posy's running the front now. She's better than her mother was, and I said so, and she threw a tea towel at me.",
@@ -641,6 +803,10 @@
      {
       "who": "Bram",
       "text": "Corner's still yours. Always will be. I've put your name on it; don't look, it's under the table."
+     },
+     {
+      "who": "Bram",
+      "text": "Her mother would've liked you. She liked anyone who sat with their back to the wall and still smiled at the door."
      }
     ]
    },
@@ -693,6 +859,10 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Posy hands you a jar of jam still warm from the pan, then takes it back to wipe the lid, then gives it to you again."
+     },
+     {
       "who": "Posy",
       "text": "It was right. The jam. I cried into it, which Mum would say was the secret ingredient, which is disgusting, which is exactly what she'd say."
      },
@@ -700,9 +870,17 @@
       "who": "Posy",
       "text": "Dad walked to the lake for two bottles for Mum's sill. Did you hear? Two hours. He's insufferable about it.",
       "text_gangsters": "Dad walked to the avenue for root beer. Did you hear? Two hours. He's insufferable about it."
+     },
+     {
+      "who": "Posy",
+      "text": "First batch that tasted like hers. You get the first jar. That's how it works now."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Posy is on the bakery step at closing time with a paper bag of crusts, the way you'd leave them out for someone."
+     },
      {
       "who": "Posy",
       "text": "I had a dog, when I was small. Biscuit. He ran off the week Mum— the week things went bad. I've never said that to anyone, because what's a dog, next to that."
@@ -710,6 +888,10 @@
      {
       "who": "Posy",
       "text": "A dog's a lot. I know that now. I don't know why I know it. Something about the way you look at yours."
+     },
+     {
+      "who": "Posy",
+      "text": "I still put crusts out. Just in case Biscuit's nose works better than my hope. Sit with me a minute?"
      }
     ]
    },
@@ -757,15 +939,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Juniper is rolling bandages at the clinic desk. The ring catches the lamplight every time her hands move."
+     },
+     {
       "who": "Juniper",
       "text": "Gideon gave me a ring. Eleven years of forging, he said, like that's a normal amount of time. I called him an idiot."
      },
      {
       "who": "Juniper",
       "text": "I'm wearing it. You've noticed. Say nothing; I've a reputation."
+     },
+     {
+      "who": "Juniper",
+      "text": "If you say 'congratulations' I'll take your temperature in the least dignified way I know."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "The clinic is quiet. Juniper shows you a ledger, then a second, much shorter list tucked in the back."
+     },
      {
       "who": "Juniper",
       "text": "I've started a ledger of who in this town would be hurt first, if something came. It's a nurse's habit."
@@ -773,6 +967,10 @@
      {
       "who": "Juniper",
       "text": "You're not on it. You're on the other list. The one of people who'd be standing in front."
+     },
+     {
+      "who": "Juniper",
+      "text": "Gideon's on it. Maple. Granite. You, at the top. It's a short list. It's a good list."
      }
     ]
    },
@@ -822,15 +1020,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Rook crouches by your pup at the orchard edge and lets it sniff her glove for a long moment."
+     },
+     {
       "who": "Rook",
       "text": "Your pup's got a nose. I've watched it. It tracks the way I did before I learned to, which means it'll be better than me."
      },
      {
       "who": "Rook",
       "text": "Bring it by. I'll show it the orchard the right way; the way you don't get seen."
+     },
+     {
+      "who": "Rook",
+      "text": "Good nose. Better heart. Don't let anyone tell you those aren't the same thing."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Rook is sitting on a fence rail with a blank letter on her knee and a pencil she keeps not using."
+     },
      {
       "who": "Rook",
       "text": "I've a daughter in the river cities. Grown. She doesn't know I'm alive. I've decided she should."
@@ -838,6 +1048,10 @@
      {
       "who": "Rook",
       "text": "I'm writing it tonight. Toe first, roll. That's the only way I know to do hard things."
+     },
+     {
+      "who": "Rook",
+      "text": "First line's done. 'I'm alive, and I'm sorry, and I live somewhere with apples.' The rest is just walking."
      }
     ]
    },
@@ -887,15 +1101,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Pip runs up waving a letter over their head so fast it's nearly a flag."
+     },
+     {
       "who": "Pip",
       "text": "I wrote Uncle five lines. He wrote back six. SIX. Mum read it and went in the back for a while."
      },
      {
       "who": "Pip",
       "text": "I think I won. I don't know what I won. I think it was important."
+     },
+     {
+      "who": "Pip",
+      "text": "Six lines! I'm going to write SEVEN. Then he'll have to write eight. It's a war. A nice war."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Pip drags you to the foot of the bell tower and points up, very seriously, like a mayor."
+     },
      {
       "who": "Pip",
       "text": "When I'm mayor— I'm going to be mayor, Alder says I can have it— I'm making a law that the bell rings every day."
@@ -903,6 +1129,10 @@
      {
       "who": "Pip",
       "text": "And a law about frogs. Wren jr's writing that one."
+     },
+     {
+      "who": "Pip",
+      "text": "Every day at noon. That's the law. You can ring it on Sundays. That's also the law. I just made it."
      }
     ]
    },
@@ -950,15 +1180,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Wren jr has a jar with holes in the lid and a very large, very calm frog inside it, wearing a leaf like a hat."
+     },
+     {
       "who": "Wren jr",
       "text": "Gerald came back! He was at the LAKE. He went on a TRIP. Mum says that's not how frogs work and I say Gerald isn't how frogs work."
      },
      {
       "who": "Wren jr",
       "text": "I'm seven. I'm allowed to be right sometimes."
+     },
+     {
+      "who": "Wren jr",
+      "text": "He's the mayor of the pond. Don't tell Alder. He gets jealous."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Wren jr pulls you down to her height to whisper, which is a very loud whisper."
+     },
      {
       "who": "Wren jr",
       "text": "Mum answered me today before I asked. She's never done that. She looked surprised at herself."
@@ -966,6 +1208,10 @@
      {
       "who": "Wren jr",
       "text": "I think you did something to her. The good kind. The frog kind."
+     },
+     {
+      "who": "Wren jr",
+      "text": "When I grow up I'm going to be a potion lady AND a frog lady. Mum says you can't be both. You're a farmer and a hero. So you can."
      }
     ]
    },
@@ -1015,15 +1261,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Tobin hauls you out into the inn yard by the sleeve. A red kite is already high over the roof, tugging at its line."
+     },
+     {
       "who": "Tobin",
       "text": "Kite flies. It FLIES. Bram cried. He says it was onions. There weren't any onions; I checked the whole kitchen."
      },
      {
       "who": "Tobin",
       "text": "I'm allowed in the kitchen now. For checking."
+     },
+     {
+      "who": "Tobin",
+      "text": "Hold it! Both hands! Feel that? That's the wind saying yes."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Tobin is sitting on the inn's back step with Bram, both of them looking up at the kite on the roof."
+     },
      {
       "who": "Tobin",
       "text": "Bram asked if I wanted to call him Dad. I said I already did, in my head, and he said that counts, and I said I know."
@@ -1031,6 +1289,10 @@
      {
       "who": "Tobin",
       "text": "The kite's on the inn roof. You can see it from your farm. Look up sometime."
+     },
+     {
+      "who": "Tobin",
+      "text": "When the wind's right it points at your farm. I tied it that way on purpose. Don't tell Bram I'm sentimental."
      }
     ]
    },
@@ -1079,15 +1341,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Mabel takes your hand and walks you up the quarry road, humming, till you reach a cut stone by the gate."
+     },
+     {
       "who": "Mabel",
       "text": "Granite told Mum. About Dad. I cried, and then I asked if I could see the quarry, and Mum said yes."
      },
      {
       "who": "Mabel",
       "text": "There's a stone at the quarry with his name on it, for getting everyone out. Granite cut it. I sang to it; stones are easier than dogs."
+     },
+     {
+      "who": "Mabel",
+      "text": "That's his name. Granite carved it neat. I sing here on Saturdays. You can come. You don't have to sing."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Mabel is at the fence with Granite on a Sunday, handing him nails one at a time, very bossily."
+     },
      {
       "who": "Mabel",
       "text": "The cellar's full and every wheel has a name and Granite comes Sundays and fixes a fence that doesn't need it."
@@ -1095,6 +1369,10 @@
      {
       "who": "Mabel",
       "text": "I've started calling him Granite. Just Granite. Mum says that's enough for now. I think it's enough forever."
+     },
+     {
+      "who": "Mabel",
+      "text": "He's slow. Mum says that's how stone people do things. I think it's so he can stay longer."
      }
     ]
    },
@@ -1143,15 +1421,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Marlowe leads you up the lighthouse stairs, all of them, one hand on the rail and one on your shoulder."
+     },
+     {
       "who": "Marlowe",
       "text": "New lens. Thirty years I've looked through a crack and now I can't remember what I was looking at."
      },
      {
       "who": "Marlowe",
       "text": "I'll tell you: the east. Every night. Waiting for whatever it was to try again."
+     },
+     {
+      "who": "Marlowe",
+      "text": "Look east. Nothing there now. That's the first time I've been glad to see nothing."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "The lamp turns overhead. Marlowe is asleep in his chair by the window, a blanket over his knees, smiling."
+     },
      {
       "who": "Marlowe",
       "text": "It tried again. The night your light came down. I saw it from the top, and I lit the lamp, and this time it wasn't the dark that landed.",
@@ -1160,6 +1450,10 @@
      {
       "who": "Marlowe",
       "text": "Thirty years of counting and the sum came out. I'm going to sleep tonight. First time in a while."
+     },
+     {
+      "who": "",
+      "text": "On the table, a note in big letters: 'Gone to sleep. Lamp's lit. Thank you. - M.'"
      }
     ]
    },
@@ -1207,15 +1501,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Orla lifts the lid of the flour tin and shows you three folded scraps of paper, dusted white."
+     },
+     {
       "who": "Orla",
       "text": "Marlowe came by. First time in nine years. Stood at the door, said the lamp was lit, left."
      },
      {
       "who": "Orla",
       "text": "That's a love letter, from him. I've had three. I keep them in the flour tin."
+     },
+     {
+      "who": "Orla",
+      "text": "He never writes more than five words. I've read them five hundred times each. That's the maths of it."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Orla has her good shawl on and a basket of fresh rolls, and is looking at the lighthouse path."
+     },
      {
       "who": "Orla",
       "text": "I sat still for Lumi. Finally. It's hanging in the mill; the wheel's behind me and I look like a woman who's kept something turning."
@@ -1223,6 +1529,10 @@
      {
       "who": "Orla",
       "text": "Which I have. Four letters now. The fourth one said 'come up and see.' I'm going up."
+     },
+     {
+      "who": "Orla",
+      "text": "If I'm not back by supper, mind the wheel. It only needs feeding and talking to. Like the rest of us."
      }
     ]
    },
@@ -1271,15 +1581,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Benno leads the grey mare out of the stable, and she noses at his pocket for the apple she knows is there."
+     },
+     {
       "who": "Benno",
       "text": "I got back on. Yesterday. Just round the paddock. The grey mare; she's patient with cowards."
      },
      {
       "who": "Benno",
       "text": "Didn't fall. Didn't do anything. Sat there and shook and it was the best ride of my life."
+     },
+     {
+      "who": "Benno",
+      "text": "She knew. Horses always know. She stood like a statue till I stopped shaking."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Benno is in the paddock at dawn, walking the race course on foot, counting the turns out loud."
+     },
      {
       "who": "Benno",
       "text": "Race at the festival. I'm riding. Alder's put it on the notice; Theo wrote it small, bless him."
@@ -1287,6 +1609,10 @@
      {
       "who": "Benno",
       "text": "I'll lose. I'll lose on purpose if I have to, so I can say I finished one. Come and watch me finish."
+     },
+     {
+      "who": "Benno",
+      "text": "Fourteen turns. I'll take every one of them slow. Finishing's the race. The rest is just horses."
      }
     ]
    },
@@ -1334,6 +1660,10 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Ivy slides a small brass key across the bank counter, then a passbook with your name on it in her neat hand."
+     },
+     {
       "who": "Ivy",
       "text": "The coins settled it. The bell, the light, the mine log: one night, twenty-one years ago. Theo's writing a small notice.",
       "text_gangsters": "The coins settled it. The bell, the dark lamp, the mine log: one night, twenty-one years ago. Theo's writing a small notice."
@@ -1341,9 +1671,17 @@
      {
       "who": "Ivy",
       "text": "I've opened an account in your name you don't know about. Interest only. Call it the bank's opinion of you."
+     },
+     {
+      "who": "Ivy",
+      "text": "Don't thank me. Thanking is for people who haven't earned it. You have."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Ivy is filing a letter into a drawer marked KEEP, with a small, satisfied click."
+     },
      {
       "who": "Ivy",
       "text": "Someone offered me a position in the capital. Twice my salary. A vault with something in it."
@@ -1351,6 +1689,10 @@
      {
       "who": "Ivy",
       "text": "I declined. In writing. I kept a copy. I'm keeping everything from here on; I've decided this is where the records are."
+     },
+     {
+      "who": "Ivy",
+      "text": "The capital can keep its vault. I've got a town that settles its accounts. That's worth more than interest."
      }
     ]
    },
@@ -1398,15 +1740,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Tam brings the lamb on a rope that the lamb plainly thinks is optional. It headbutts your knee, gently."
+     },
+     {
       "who": "Tam",
       "text": "The lamb's yours. I mean that. Take her up to the farm; she's got a look that says fences are a suggestion."
      },
      {
       "who": "Tam",
       "text": "First one I've given away. I'll pretend it's about the wool."
+     },
+     {
+      "who": "Tam",
+      "text": "She's called Bramble. She's eaten two of my hats. Feed her and she's yours for life."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Tam is packing a rucksack with a crook tied to the side. The Dollys are watching from the fence, unimpressed."
+     },
      {
       "who": "Tam",
       "text": "Going up. To the highlands. Spring. The Dollys voted and it was close and I overruled them, which I've never done."
@@ -1414,6 +1768,10 @@
      {
       "who": "Tam",
       "text": "Watch the lamb while I'm gone. If I don't come back, she's the flock. You're the shepherd. Sheep don't care who you are."
+     },
+     {
+      "who": "Tam",
+      "text": "I'll write. Sheep don't, so I have to. Keep a light on at the farm; it helps, coming down off the hills."
      }
     ]
    },
@@ -1461,15 +1819,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Old Moss stops listening to the frogs and listens to you instead, which feels like a bigger thing than it should."
+     },
+     {
       "who": "Old Moss",
       "text": "The marsh witch was my patient. Fifty years ago. The thing I couldn't fix. She got lost in the marsh fog one night and came out of it as what she is."
      },
      {
       "who": "Old Moss",
       "text": "I stayed out here to be near her. That's the whole reason. Juniper knows; she's the only one I told."
+     },
+     {
+      "who": "Old Moss",
+      "text": "Fifty years is a long time to keep a promise to someone who can't hear it. I'd do it again. That's the trouble."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Old Moss has a clean coat on and is brushing marsh mud off his boots, slowly, the way you'd tidy for a visit."
+     },
      {
       "who": "Old Moss",
       "text": "If you ever face her— the witch— don't stay to listen. Don't let her talk. She'll use my voice; she learned it from fifty years of me talking to her through the fog."
@@ -1477,6 +1847,10 @@
      {
       "who": "Old Moss",
       "text": "And then come and tell me. I'd like to go into town after. I'd like to see the clinic. Just once."
+     },
+     {
+      "who": "Old Moss",
+      "text": "The frogs will manage a day without me. They pretend they won't. Walk me in when you're ready?"
      }
     ]
    },
@@ -1524,15 +1898,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Granite has a hammer in one hand and a fence post over his shoulder, and he's smiling, which nobody at the quarry has seen."
+     },
+     {
       "who": "Granite",
       "text": "I walked up the road. Knocked. Hazel opened it and I said it, all of it, nine years of it, in about a minute."
      },
      {
       "who": "Granite",
       "text": "She said: 'I know. I've always known. Come in and fix the fence.' So I'm fixing the fence."
+     },
+     {
+      "who": "Granite",
+      "text": "Nine years I thought the hard part was the rockfall. It was the knocking."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "The fence at Hazel's is the straightest fence anyone has ever seen. Granite is adding another rail anyway."
+     },
      {
       "who": "Granite",
       "text": "The little one calls me Granite. Just Granite. Not Mr. Not sir. I cut the stone with her father's name on it and she sang to it and now she calls me Granite."
@@ -1540,6 +1926,10 @@
      {
       "who": "Granite",
       "text": "I'm going to be at that house every Sunday till I die. The fence will be the best fence in the valley."
+     },
+     {
+      "who": "Granite",
+      "text": "Sunday dinner. You're invited. Hazel said so, which means it's an order. Bring your appetite; Mabel cooks the beans."
      }
     ]
    },
@@ -1587,15 +1977,27 @@
     ],
     "8": [
      {
+      "who": "",
+      "text": "Sel traces the carved letters with a fingertip, lips moving, as if reading a bedtime story to the wall."
+     },
+     {
       "who": "Sel",
       "text": "The sentence: 'The light came; the town was awake; the dark went home.' That's it. That's the whole wall. Three thousand years to say three things."
      },
      {
       "who": "Sel",
       "text": "Awake. The bell. They had a bell; it's in the plaza, cracked. They rang it."
+     },
+     {
+      "who": "Sel",
+      "text": "Three thousand years, and the last word they cut was 'awake'. I'd like that on my stone. Not soon. But that word."
      }
     ],
     "10": [
+     {
+      "who": "",
+      "text": "Sel's tent is packed. A rubbing of the wall is rolled up under one arm, tied with string."
+     },
      {
       "who": "Sel",
       "text": "I'm going back to the university. To tell them. Not that I'm alive; that there's a wall three thousand years old that says a town can beat the dark by being awake."
@@ -1603,6 +2005,10 @@
      {
       "who": "Sel",
       "text": "They won't believe me. You will. That's why I waited to tell you first."
+     },
+     {
+      "who": "Sel",
+      "text": "I'll come back. The stones aren't finished talking. Neither, I think, are we."
      }
     ]
    },
@@ -1614,6 +2020,98 @@
     "8": "The town was awake.",
     "10": "A town can beat the dark by being awake."
    }
+  },
+  "catkins": {
+   "quest6": "",
+   "milestones": {
+    "2": [
+     {
+      "who": "",
+      "text": "Catkins is sitting very still on a sun-warm rock, paws tucked, eyes half closed."
+     },
+     {
+      "who": "Catkins",
+      "text": "Sit. Not like that; like a cat. Back straight, tail around your feet. You don't have a tail. Imagine one."
+     },
+     {
+      "who": "Catkins",
+      "text": "Breathe in for four. Out for four. That's the first meditation. It took me two hundred years to like it."
+     }
+    ],
+    "4": [
+     {
+      "who": "",
+      "text": "Catkins draws four small circles in the dust with one claw: a drop, a flame, a pebble, a feather."
+     },
+     {
+      "who": "Catkins",
+      "text": "Water, fire, earth, air. Every guardian learns all four, and then learns that they're one thing wearing four coats."
+     },
+     {
+      "who": "Catkins",
+      "text": "The Meow Pow Wow is that one thing, given away. Love, offered with no hook in it. That's all. That's the hardest thing there is."
+     }
+    ],
+    "6": [
+     {
+      "who": "",
+      "text": "Catkins leads you to the edge of Cat-topia, where a mossy stair climbs into the trees to a crumbling gate."
+     },
+     {
+      "who": "Catkins",
+      "text": "Up there was the old monastery. Cats came from every valley to sit in its courtyard and learn to purr at the dark until the dark sat down."
+     },
+     {
+      "who": "Catkins",
+      "text": "It's quiet now. There used to be a bell. If you find anything up there that wants ringing, bring it to me."
+     }
+    ],
+    "8": [
+     {
+      "who": "",
+      "text": "At dusk, Catkins looks up at the first star for a long time before she speaks."
+     },
+     {
+      "who": "Catkins",
+      "text": "Long ago, before your town was a town, a star came down and sat with a small, frightened kitten. It taught her to breathe, and to purr at the dark, and to keep that gift safe till it was needed."
+     },
+     {
+      "who": "Catkins",
+      "text": "I was the kitten. I have kept it for thousands of years. I did not know, until you came, who I was keeping it for."
+     },
+     {
+      "who": "Catkins",
+      "text": "Your partners carry it now. I'm not sad. A gift that's kept forever isn't a gift. It's a lock."
+     }
+    ],
+    "10": [
+     {
+      "who": "",
+      "text": "Catkins sits beside you on the warm rock. For once she isn't meditating. She's just sitting."
+     },
+     {
+      "who": "Catkins",
+      "text": "I made a decision. I'm going to teach again. The courtyard, the four coats, the breathing. Kittens, merkitties, a penguin if one asks politely."
+     },
+     {
+      "who": "Catkins",
+      "text": "The first student's name goes on the monastery wall. Yours is there already. Don't argue with a guardian; it's very bad luck."
+     },
+     {
+      "who": "Catkins",
+      "text": "Heart at the chest. Hearts and paws. You remembered. You always remember."
+     }
+    ]
+   },
+   "fall": "Catkins would sit in the middle of the road with her eyes closed and purr, and whatever came would find it had nowhere it wanted to go but home.",
+   "after": {
+    "2": "Four in, four out. Don't forget your imaginary tail.",
+    "4": "Water, fire, earth, air. One thing, four coats.",
+    "6": "The monastery stair is mossy. Mind your paws.",
+    "8": "Thousands of years, and it was worth every one.",
+    "10": "A guardian with a student again. Imagine that."
+   },
+   "arc": "penguins"
   }
  }
 }
